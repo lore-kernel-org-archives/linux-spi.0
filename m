@@ -1,12 +1,12 @@
-From: Easyflirt <newsletter-msAlHI2cm5w@public.gmane.org>
-Subject: Des milliers de contacts dans votre ville -
-	inscription gratuite
-Date: 22 Jul 2009 07:48:10 -0000
-Message-ID: <20090722074810.14215.qmail@ks365449.kimsufi.com>
-Reply-To: Easyflirt <newsletter-msAlHI2cm5w@public.gmane.org>
+From: "458-3mpuAFsUhUg@public.gmane.org" <458-3mpuAFsUhUg@public.gmane.org>
+Subject: [SPAM] ÂÆ¢Êà∑ÊúçÂä°‰ΩìÁ≥ª‰∏éÊúçÂä°ÊàêÊú¨ÊéßÂà∂
+Date: Thu, 2 Jan 2003 04:07:08 +0800
+Message-ID: <E1MTYzo-0006F2-N8@3yr0jf1.ch3.sourceforge.com>
+Reply-To: 458-3mpuAFsUhUg@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1857734421909243680=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,119 +18,161 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a multi-part message in MIME format
 
---===============1857734421909243680==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_fdddf37b2e961d6034e485dbfecd0924"
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
+«Îø¥∏Ωº˛£¨»Áπ˚”–¥Ú»≈£¨«Î‘≠¡¬£¨–ª–ª£°
 
---_----------=_parties_fdddf37b2e961d6034e485dbfecd0924
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: application/octet-stream;
+        name="6-øÕªß∑˛ŒÒÃÂœµ”Î∑˛ŒÒ≥…±æøÿ÷∆.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+        filename="6-øÕªß∑˛ŒÒÃÂœµ”Î∑˛ŒÒ≥…±æøÿ÷∆.txt"
 
-Version "en ligne" de ce message: http://www.tmrv.com/svi/miroir.php?bat=easyflirt0709_ctrm
+v827p7f+zvHM5c+10+u3/s7xs8mxvr/Y1sYNCg0K1vew7LWlzrujusnu29rW2sjL0NC53MDt18nR
+r834ICANCiAgICAgICAgICDJ7tvaytDSu7b+yP253MDt18nRr9PQz965q8u+DQoNCqG+yrG85LXY
+teOhvzIwMDnE6jfUwjE4LTE5yNUgye7b2g0Kob7Ksbzktdi146G/MjAwOcTqN9TCMjQtMjXI1SDJ
+z7qjDQoNCqG+t9GhoaGh08OhvzI1MDDUqi/IyyggKLD8uqyjur/Os8yhor2y0uWhos7nss2horLo
+teO1yLfR08MpICkNCqG+yM/WpLfR08Ohv9bQvLY2MDDUqi/Iyzu437y2ODAw1KovyMsNCiAgICAg
+ICAgICAgICiyzrzTyM/WpL+8ytS1xNGn1LHQ6727xMm0y7fRo6yyu7LOvNPO3tDrvbvEySkNCg0K
+sbihoaGh16I6DQoxLiC3srLOvNPIz9aktcTRp9Sxo6zU2sXg0bW94cr4ss6807+8ytS6z7jx1d/T
+yTw8ufq8ytaw0rXIz9akserXvMGqus+74T4+DQogICCw5LeiPDy/zbunudzA7cqmPj65+rzKufrE
+2tbQ06LOxLDmy6vWsNK118q48dakyumjrKOoufq8yrn6xNrIz9ako6/Iq8fyDQogICDNqNDQo6+5
+zdb3yM+/yaOvudm3vc34yc+y6dGvo7syo663srLOvNPIz9aktcTRp9Sx0OvM4b27sb7Iy8ntt93W
+pLrFwuu8sA0KICAgtPPSu7Tnyv3C69XVxqyjuw0KM6Ouv86zzL3hyvi68zE1uPa5pNf3yNXE2r2r
+1qTK6b/std28xLj40afUsaO7DQo0o660y9akv8nJ6sfr1tC5+rn6vNLIy7LFzfjI67/isbiwuKGj
+DQoNCqG+ss6807bUz/Ohv7/Nu6e+rcDto6y/zbun1ve53KOsv827p7f+zvHIy9Sxo6zG89K11tC4
+37LjudzA7dXfDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQrXydGvtee7sKO6MDc1NS0yNjA3
+NTM2NSAgMjYwNzU0MjkgIDEzNzI4NzE5OTQ4IA0KtKsgICAg1eajujA3NTUtNjEzNTEzOTYgIA0K
+waogz7UgyMujuiDB6NChveMNCg0KxuTL+9fu0MLX7sjIw8W1xL/Os8zH67XHwr13d3cuOTk2NjMz
+My5jb22jqNbayMvQ0LncwO3XydGvzfijqQ0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0Kv86z
+zLGzvrCjug0KICAgIL/Nu6e3/s7xzOXPtbXE19rWvMrHobC/zbun08DUtsrHtdrSu867obGjrLTT
+v827p7XEyrW8ytDox/Oz9reio6zOqr/Nu6fM4Q0KuanV5tX909C829a1tcS3/s7xo6yw79b6v827
+p7j8usO12Mq508Oy+sa3oaPM5c/WwcuhsMG8usO1xL/Nt/7Qzs/zoaLBvLrDtcS8vA0KyvWhosG8
+usO1xL/Nu6e52M+1oaLBvLrDtcTGt8XGobG1xLrL0MS3/s7xwO3E7qOs0qrH89LU1+7XqNK10NS1
+xLf+zvG2087po6y8sA0KyrG6zcirt73Ou7XYudjXor/Nu6e1xMO/0ru49rf+zvHQ6Mfzo6yyos2o
+uf3M4bmpueO3uqGiyKvD5rrNv+y93bXEt/7O8aOsyrm/zQ0Ku6fM5dHptb3O3rSmsrvU2rXEwvrS
+4rrNv8nQxcC1tcTM+dDEuNDK3KGjDQoNCiAgICDD5rbU0c+/4bXEytCzob661fmjrNTazOG5qdPF
+1sq3/s7xtcTNrMqxo6zI57rOssXE3L/Y1sa3/s7xs8mxvqOsyLexo8O/0rsNCsO2za2w5ba8v8nS
+1M6qxvPStbS01Oyz9tfutPO1xLzb1rWjrNXiyse3/s7xvq3A7cPHsru1w7K7v7zCx7XEw/zM4g0K
+DQq/zrPMxL+1xKO6DQqh9AnRp7vhubm9qLrPysq1xL/Nu6e3/s7xudzA7czlz7WjrM6qxvPStcno
+vMa/xtGntcS3/s7xwfezzKGit/7O8bHq17yjrA0KICAgICAgICDM4cn91fvM5bf+zvHWysG/DQqh
+9AnF4NH4uKi1vLj3wOC/zbunt/7O8cjL1LHK98Gi1f3It7XEt/7O8dDEzKyhosnuv8zIz8q2v827
+p7f+zvGjrMfQyrUNCiAgICAgICAgzOHJ/bj3wODUsbmktcS3/s7xvLzE3A0KofQJ1rvT0LOs1L2/
+zbunxtrN+7XEv827p7f+zvGyxcTc1Oy+zb/Nu6fW0rPPDQqh9AnTxdbKt/7O8c3FttO1xL2oyejT
+67yo0Ke/vMbADQqh9AnR0MzWt/7O8bPJsb6/2NbGtcS3vbeoDQoNCi0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tDQrF4NG1xNrI3aO6IA0KtdrSu9XCoaLF4NH4u/28q9b3tq+1xLf+zvHS4sq2DQqh9AnG
+xrH50NC2r6O6yM/KtsTjoaLO0qGiy/sNCqH0Cc/WtPq+utX5wezT8rfWzvYNCqH0Ccqyw7TKx7f+
+zvHS4sq2o78NCqH0CSDTxdbKtcS/zbunt/7O8bHtz9YgDQqh9Am3/s7xy67GvbXEuuLBv9a4seqj
+rLLpsunE48/W1Nq1xLf+zvHLrsa9DQqh9AnQodfp0dDM1qO6v827p86qus6yu8L6DQoNCrXatv7V
+wqGiubm9qNK7wfe1xL/Nu6e3/s7xzOXPtS0tzerJxrXEtcS/zbunt/7O8czlz7XKx9X7zOW3/s7x
+x7HBpreiu9O1xL/Jv7+xo9XPDQpBoaLIz8q2v827p7f+zvHM5c+1DQqh9AnBt8+wo7rQodfpxrS0
+yrvjDQqh9Am/zbunt/7O8czlz7W1xL/yvNwNCqH0Cdb4w/vG89K1tcS/zbunt/7O8czlz7WwuMD9
+0dDM1g0KDQpCoaLTxbuvv827p7f+zvHB97PMDQqh9Amyu82s0uLS5c/CtcS3/s7xwfezzLqs0uUg
+DQqh9Am3/s7xwfezzNPFu6+1xNb30qrNvr62us3SqrXjDQqh9AmwuMD9t9bO9qO6ILqjtvu3/s7x
+xKPKvQ0KDQogQ6GizOHJ/b/Nu6e3/s7xserXvA0KofQJt/7O8bHq17zTycutvva2qA0KofQJztK1
+xNDQzqrI57rO07DP7Lf+zvGx6te8DQqh9Am3/s7xserXvMzhyf21xLe9z/INCqH0Cbf+zvGx6te8
+zOHJ/dPrzerJxrXEu/rWxrGj1c8NCg0Kz9azodHdwbejus7KzOK1vM/yDQpEoaK/zbunt/7O8bnc
+wO3M5c+1tcTWxrbIoaK55re2oaLOxLz+IA0KofQJv827p7f+zvG53MDtz+C52NbGtsiw/LqstcTW
+99KqxNrI3SANCqH0CSC/zbunt/7O8bncwO3WxrbIvajJ6LXEvLjW1su8wrcgDQqh9Akgv827p7f+
+zvG53MDt1sa2yL2oyejT67ei1bm1xNSt1PIgDQqh9Akgv827p7f+zvG53MDt1sa2yLC4wP231s/t
+DQoNCrXayP3VwqGiv827p7f+zvHWysG/udzA7Q0KofQJt/7O8dbKwb+53MDtDQqh9Am3/s7x1srB
+v7ao0uUNCqH0CbTTtKvNs7XE1sbU7NDQ0rW1xNbKwb/A7cLbtb23/s7x0NDStbXE1srBv8q1vPmj
+rM7Sw8ex2NDrytfPyMP3yLejrA0KICAgICAgICDKssO00fm1xNbKwb/Kx9Xm1f25y7/Ny/nQ6NKq
+tcTWysG/oaMNCqH0Cbf+zvHWysG/v9jWxsH3s8wNCqH0CdPr0ruw47XEUERDQdbKwb+53MDt0a27
+t7K7zayjrLf+zvHWysG/udzA7dbQtObU2syrtuC1xNb3udvSqsvYus0NCiAgICAgICAgy+a7+rHk
+wb+ho9Ta1eLW1sfpv/bPwqOsssnTw7j8vNPB6bvutcS197/Yu/rWxqOsyse3/s7xsr/DxbXEzqjS
+u9Gh1PGjuw0KofQJt/7O8dbKwb++2cD9o7q5y7/NwvrS4g0KofQJt/7O8dbKwb++2cD9o7q/zbun
+z+zTptbQ0MS53MDtDQqh9Am3/s7x1srBv77ZwP2jurf+zvHF5Lz+udzA7Q0KofQJt/7O8bjEyca8
+xruuDQqh9AnDu9PQyq7Iq8quw8C1xLf+zvGho9a709Cyu7bPtcS4xMnGo6y3/s7x1srBv7LFv8nS
+1MjVvaXM4bjfoaMNCg0KtdrLxNXCoaK/zbunt/7O8c3FttO1xL2oyejT67yo0Ke/vMbADQqh9Am3
+/s7xzcW207XEvajJ6NPru/mxvrzcubkNCqH0CczWwtvTydTwyM7It8GitcS8qNCnxL+x6qOs0tS8
+sLyo0KfEv7HqsaPVz7v61sa1xL2owaINCqH0Cdfp1q/Uy9f3vKjQp7+8xsANCqH0Cbf+zvHKx7bU
+xvPStbei1bm6zcrQs6HP+srbtcTWsb3T1qfUrqGj1NrV4rj2suPD5snPo6zM1sLbt/7O8dfp1q+1
+xA0KICAgICAgICDV+8zlvKjQp7+8xsDT67/Y1sa7+tbGDQqh9AnIy9SxvKjQp7+8xsDT67ykwPgN
+CqH0CbTTsr/DxbrN1LG5pLXEsuPD5qOszNbC27yo0Ke/vMbA1rix6rrNt723qA0KDQq12s7l1cKh
+or/Nu6e3/s7xs8mxvr/Y1sYNCqH0Cbf+zvGzybG+1+mzyQ0KofQJzNbC27ncwO2zybG+oaLIy7mk
+s8mxvqGisbi8/rPJsb61yNKqy9gNCqH0CdOwz+y3/s7xs8mxvrXE0vLL2A0KofQJt/7O8bPQxbXK
+x9Owz+y3/s7xs8mxvrXE1tjSqtLyy9iho7P9tMvWrs3io6zU2rzGy+O6zcbAucCzybG+0KfCyrXE
+DQogICAgICAgIMqxuvKjrLK706a1sda716LS4tTaobDVy8PmobGx5Luvo6y2+NOmuMPWsb3TudjX
+otXKzeK1xLyo0Ke/vMbAoaMNCqH0Cbf+zvGzybG+v9jWxg0KofQJzNbC27PJsb6/2NbG1tC1xMzl
+z7W94bm5oaLB97PM08W7r6GiucrVz8LKt9bO9qGiudzA7b/ntsihotbKwb+87NHpoaINCiAgICAg
+ICAgzu/B97XI1u624NLyy9gNCg0KtdrB+dXCoaK/zbunt/7O8czlz7W1xNTL0NDT67ncwO0gDQqh
+9Am/zbunt/7O8bjEycbP7sS/udzA7SANCqHvCbjEycbP7sS/udzA7bXEwfm49tb30qqyvdboIA0K
+oe8JILjEycbP7sS/udzA7bXE1ti147u3vdogDQqh9Am/zbunt/7O8cjL1LG1xLncwO0gDQqh7wnR
+obDO08XQ47f+zvHIy9SxIA0Koe8JILykwPjT67Dv1vq/zbunt/7O8cjL1LEgDQqh7wkgv827p7f+
+zvHIy9SxtcTWsNK1t6LVuSANCqH0CbiotbzPwsr0zOHJ/b/Nu6e3/s7xvLzHySANCqHvCcbz0rXE
+2rK/v827p7f+zvHF4NG1tcTW99KqxNrI3SANCqHvCSC/zbunt/7O8by8x8nF4NG1tcTW99KqxNrI
+3SANCqHvCSDE2rK/v827p7f+zvHF4NG1IA0KofQJy9zU7Ne/1L21xLf+zvHOxLuvIA0Koe8Jt/7O
+8c7Eu6/L3NTsyse/zbunt/7O8bncwO21xLj5sb7Xt8fzDQqh7wm3/s7xzsS7r8vc1Oy1xNb30qq5
+pNf3DQqh7wkgt/7O8c7Eu6/L3NTstcS7+bG+y7zCt9PrsLjA/Q0KDQq94cr40++jurf+zvG0tNTs
+vNvWtSANCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0KvbLKpr3pydwgo7rVxebMwM/Kpg0K
+DQqhoaGhufq8ytaw0rXF4NG1yqbQrbvhyM/WpL2yyqahormkycy53MDty7bKv6Gix+W7qrTz0aeh
+otbQyb2089Gnv83X+b2yyqaho8D6DQrIzr/nufq5q8u+oaK429fKvK/Nxbmry76hokRFTEyjqNbQ
+ufqjqc/6ytu+rcDtoaK088f4vq3A7bXI1rDOu6Gi16jWsLTTysLTqs/6DQq5pNf3vfzKrsTqo6y0
+09K7z9/Stc7xyMvUsbW906rP+rncwO25pNf3o6yzybmmu/3A27rN19y94cHLt+G4u7XEytCzodOq
+z/q+q7TiDQq+rdHpo6yyos/IuvPU2rj3vNLG89K1yKG1w8HL08XQ49K1vKihow0KDQogICAgy/nK
+2r/Os8yjuiChtrPJuaa087/Nu6fP+srbucvOyrXEyKvE1LKp3sSht6GiobbSu8/fzfK98NauLS21
+57uwz/rK27y8x8mht6GiDQqhtr6rw+61xL/Nu6e3/s7xudjPtc3FttOhor/Nu6e3/s7xvLzHyczh
+yf2ht6GiobbP1rT6yczO8cDx0sfT69aw0rXQzs/zy9zU7KG3oaINCqG2yOe6ztPQ0Ke0psDtv827
+p822y9+ht6GiobbTxcrGzLjF0Ly8x8mht6Gioba437yo0KfP+srbzcW2072oyejT68/6ytvIy9Sx
+v7wNCrrL0+u8pMD4obe1yMXg0bW5/bDZs6GjrL75u/G1w9Gn1LG6zcbz0rW1xLjftsjGwLzboaMN
+Cg0KICAgIMrav87M2Mmro7qjqMq11b3QzaOp1/fOqsq11b29ssqmo6zVxcDPyqa1xMXg0bW9q7Tz
+wb+yydPDzNjJq72yytqhosfpvrCwuMD9oaINCr3Hyauw59HdvLDTzs+3tcjQzsq9o6zXotbYwO3C
+27y8x8nT68bz0rW1xMq1vMrH6b/2z+C94brPo6zHv7X30afUsdDEtcO9u8H3vLANCr6t0em31s/t
+o6zE3Mb0t6K6zdL9tbzRp9Sxy7zCt6OssqLU2tSivczT2sDWss7T67fVzqfW0Mq50afUsdbwvaW4
+xLHkudvE7qGizOENCsn9z/rK27y8xNzT67j2yMvQ3tH4oaMgDQoNCiAgICC3/s7xuf21xMbz0rWj
+usnPuqO/yb/av8nA1qGitqvduL/Jv9q/ycDWoaLPw8PFv8m/2r/JwNaholNPSG/W0Ln6oaLN8r/G
+t78NCrXYsvqhorCsxKzJ+qGivfC1+8jtvP6jqLGxvqmhosnu29qhosvV1t2hosnPuqO31rmry76j
+qaGiyc+6o7Xn0MWhosPg0fS159DFoaINCruqsLK8r83FoaK4o72otefQxaGiQUJCoaJCUNK6u6/K
+r9PNoaK589bd0sa2r6GitqvduNLGtq+horrJwLzFwcTJv8bSx8b3o6gzxtqjqaGiDQrP47jby7yw
+2byquavLvqGisbG+qb2o0NCjqDPG2qOpoaK589bdvajQ0KGiz8PDxcWp0NChosnPuqPD8cn60vjQ
+0KGixta3otL40NChog0Kyc+6o727zai089GnoaLH5buqtPPRp6GisbG+qcGqus+089Gno6gyxtqj
+qaGiv7W80byvzcWhotPRsO6xo8/Vo6jL1dbdo6mhotPRDQqw7rGjz9WjqMnPuqOjqaGiy9XW3cyr
+xr2xo8/VoaLGvbCysaPP1aGiz9a0+rzGy+O7+qGiyc+6o7uqyrW0q8O9oaLW0Ln60sfG97yvDQrN
+xb34s/a/2tPQz965q8u+o6gzxtqjqaGixt/GpcDHt/7XsKGiuePW3cjKsK7SvdS6oaK0usn6zMO7
+r9exxrehoszsxr3G+7O1saMNCs/Vucm33dPQz965q8u+oaK4u8Hiu6+5pKGiu6rDwLTvu/rQtdbG
+1OyhotLa9s7G+7O1z/rK26Giw8C5+tLasNi5+rzKuavLvqGiyb0NCrarvsXR9NChvNK156OoMsba
+o6mhosGqt6LI7bz+v8a8vKGiwarP67XnxNShoklCTbOks8ehotbQwarSvdKpvK/NxaGiVENMvK/N
+xaGiDQrW0Mz6v+zUy7yvzcWhotbQzajUttHzzu/B97yvzcWhosj9vsXSvdKpoaK6o8310qnStaGi
+v8+1wrv5oaLC3sC8u6/Xsca3oaLN0LKpDQrV/bv7xvfQtaGiv8axptLHxvfSx7HtoaK3qMyptefG
+96Gi0MKzx72oyei8r83FoaLJz7qjwO254qOoMsbao6mhosnPuqPO97K/vK/NxaGiDQrQxc+isvrS
+tbyvzcWhorfJwPvG1tXVw/ehorTzzMa159G2uqPEz9Ksyve8r83FoaLJz7qj1fC1qbyvzcWhorrs
+8t/y0byvzcWhosTPDQq+qbrszKvR9LyvzcWhorq8z/S41rm5oaK6wL70xKbN0KGi0KHM7LbsoaJM
+R7X717GhotDCva61wsKhzc2607nJt92hotDCva6wy7jWoaINCr+1tvextLGjvaHKs8a3oaKwxNK9
+saPB6aGiva3L1cftu6i8r83FoaLV472twO7E/qGiu7jIytKp0rW1yLDZ0+C80sbz0rXM4bmpxeAN
+CtG1vLDXydGvt/7O8aGjDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQrI59Kqss6807G+tM7R
+0MzWu+GjrL/Jzai5/c/Cw+a3vcq9sajD+7LOvNOjug0K18nRr7Xnu7CjujA3NTUtMjYwNzUzNjUg
+IDI2MDc1NDI5IDEzNzI4NzE5OTQ4DQq0qyAgICDV5qO6MDc1NS02MTM1MTM5NiAgDQrBqiDPtSDI
+y6O6wejQob3jDQoNCg0Ktv6hor2r0tTPwrGow/ux7cTayN208tOhzO7QtLrztKvV5rW9o7owNzU1
+LTYxMzUxMzk2DQoNCrGooaGhocP7oaGhobvYoaGhoda0DQoNCrLOvNO/zszio7rQwrL6xrfR0Lei
+wfezzNPFu6/T69HQt6LP7sS/udzA7Q0KDQq12LXjo7ogICAgoaGhocqxvOSjuqGhoaGhoaGhyM/W
+pKO6DQoNCrLOu+G1pc67w/uzxqO6X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18g
+RW1haWyjul9fX19fX19fX19fX19fX19fX19fX18goaENCiANCsGqz7XIy6O6X19fX19fX19fX19f
+X19fILXnu7Cjul9fX19fX19fX19fX19fX19fX19fXyC0q9Xmo7pfX19fX19fX19fX19fX19fX19f
+X18NCiChoQ0Kss6809Gn1LGjul9fX19fX19fX19fX19fX9awzvGjul9fX19fX19fX19fX19fX8rW
+u/qjul9fX19fX19fX19fX19fX0VtYWlso7pfX19fX19fX19fX18NCg0Kss6809Gn1LGjul9fX19f
+X19fX19fX19fX9awzvE6X19fX19fX19fX19fX19fIMrWu/qjul9fX19fX19fX19fX19fX0VtYWls
+o7pfX19fX19fX19fX18NCg0Kss6809Gn1LGjul9fX19fX19fX19fX19fX9awzvGjul9fX19fX19f
+X19fX19fX8rWu/qjul9fX19fX19fX19fX19fX0VtYWlso7pfX19fX19fX19fX18NCiAgICAgIA0K
+uLa/7re9yr2juqH1z9a98KGhofXWp8axoaGh9deq1coNCg0KyMvK/aO6X19fX19fyMsgICCyzrvh
+t9HTw6O6ubK8xqO6X19fX19f1KogDQoNCrG416INCjEuytW1vbnzy76xqMP70MXPorrzo6zO0sPH
+vau12tK7yrG85LrNufPLvrLOu+HBqs+1yMu9+NDQyLfIz6O7DQoyLtTav6q/zsew0rvW3KOsztLD
+x9PQ16jIy7j4ufPLvreiy82yzrzTxeDRtbXEyLfIz7qvo6zJz8Pm09DF4NG1sai1vda40v2jrNLU
+vLANCiAgz+rPuLXEyc+/zrXY1re6zcK3z9/NvKO7DQozLrTLv86zzNKyv8nS1LCyxcXG89K1xNrR
+taOsu7bTrcC0tefXydGvvLDJ6sfrxcXG2qO7DQo0LsjnttS0y7/Os8zT0MjOus7Syc7Ko6y7ttOt
+sqa08rXnu7DP8s7Sw8fXydGvoaM=
 
-Easyflirt
-
-Rencontres sur internet
-Inscription rapide - Essayez c'est gratuit !
-
-dÈj‡ 15 989 706 membres !
-
-Venez rencontrer tous les membres et faites plus de rencontres
-
-SpeedFlirt Gr‚ce au SpeedFlirt vous savez trËs rapidement si le coup de foudre est rÈciproque. ...
-
-EasyFlirt Messenger
-
-Avec EasyFlirt Messenger vous apparaissez en ligne pour les autres membres, mÍme sans avoir ouvert le site. ...
-Tchat avec webcam
-
-DÈcouvrez dËs maintenant toutes les nouvelles fonctionnalitÈs du Tchat Webcam. ...
-Recherche dÈtaillÈe
-
-Trouvez les personnes qui vous correspondent totalement, avec une recherche trËs dÈtaillÈe. ...
-
-
-plus d'infos sur http://www.tmrv.com/svi/linkserv.php?bat=easyflirt0709_ctrm&nb=1921&n=9047704&c=rencontres
-
---------------------------------
-Cette offre easyflirt vous est envoyÈe par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.tmrv.com/svi/gestionserv.php?nb=1921&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_fdddf37b2e961d6034e485dbfecd0924
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>Easyflirt
-Rencontres sur internet</title>
-</head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.tmrv.com/svi/miroir.php?bat=easyflirt0709_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre easyflirt vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 2px dashed #713552;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Times New Roman;color:#713552;font-size:28px'>
-<p style='display:inline;'> Easyflirt<br>
-Rencontres sur internet</p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#F1A1D0;font-family:Arial;color:#FFFFFF;font-size:20px;'>
-<a href="http://www.tmrv.com/svi/linkserv.php?bat=easyflirt0709_ctrm&nb=1921&n=9047704&c=rencontres" style="text-decoration:none;color:#FFFFFF;"><b>Inscription rapide - Essayez c'est gratuit !</b><br></a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;'>
-<br>
-
-<table cellspacing="5" cellpadding="5">
-<tr>
-
-<td valign=top style='font-family:arial;color:black'> <img src="http://imgpromo.easyrencontre.com/bannieres/ban-160-600-love-femme-red-ok-fr.jpg" alt="rencontres gratuites" border="0"> </td>
-<td>
- <table border="0" cellspacing="3" cellpadding="0">
- <tr> <td align=center style="background-color:#F1A1D0;color:white;font-size:18px;font-family:arial;font-weight:bold"><a href="http://www.tmrv.com/svi/linkserv.php?bat=easyflirt0709_ctrm&nb=1921&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;"><font style="background-color:#F1A1D0;color:white;font-size:18px;font-family:arial;font-weight:bold">d&eacute;j&agrave; 15 989 706 membres !</font></a></td>
- </tr>
- <tr> <td align="left" style="font-family:arial;color:black">
- <a href="http://www.tmrv.com/svi/linkserv.php?bat=easyflirt0709_ctrm&nb=1921&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;"> <img src='http://ks300910.kimsufi.com/~actuduwe/img/bat/easyflirt2.jpg' style='border:0px;'></a>
-<br><br>
- <div style='text-align:center;color:blue'><a href="http://www.tmrv.com/svi/linkserv.php?bat=easyflirt0709_ctrm&nb=1921&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;"><u><b>Venez rencontrer tous les membres et faites plus de rencontres</b></u></a></div>
-
-<br><br>
- <a href="http://www.tmrv.com/svi/linkserv.php?bat=easyflirt0709_ctrm&nb=1921&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;"><img src=http://www.easyflirt.com/img/interface/puce_verte.gif border=0><b>SpeedFlirt</b> <img src=http://www.easyflirt.com/img/interface/puce_news.gif border=0><br></a> <a href="http://www.tmrv.com/svi/linkserv.php?bat=easyflirt0709_ctrm&nb=1921&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;"> Gr&acirc;ce au SpeedFlirt vous savez tr&egrave;s rapidement si le coup de foudre est r&eacute;ciproque. <u style='color:blue'> ... </u><br><br><br></a>
- <a href="http://www.tmrv.com/svi/linkserv.php?bat=easyflirt0709_ctrm&nb=1921&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;"><img src=http://www.easyflirt.com/img/interface/puce_verte.gif border=0><b>EasyFlirt Messenger</b><img src=http://www.easyflirt.com/img/interface/puce_news.gif border=0><br>
- Avec EasyFlirt Messenger vous apparaissez en ligne pour les autres membres, m&ecirc;me sans avoir ouvert le site. <u style='color:blue'> ... </u><br><br><br>
- <img src=http://www.easyflirt.com/img/interface/puce_verte.gif border=0><b>Tchat avec webcam</b><br>
- D&eacute;couvrez d&egrave;s maintenant toutes les nouvelles fonctionnalit&eacute;s du Tchat Webcam. <u style='color:blue'> ... </u><br><br><br>
- <img src=http://www.easyflirt.com/img/interface/puce_verte.gif border=0><b>Recherche d&eacute;taill&eacute;e</b><br>
- Trouvez les personnes qui vous correspondent totalement, avec une recherche tr&egrave;s d&eacute;taill&eacute;e. <u style='color:blue'> ... </u><br><br><br></a> </td>
- </tr>
- </table>
-</td>
-</tr>
-</table>
-
-
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<a href="http://www.tmrv.com/svi/linkserv.php?bat=easyflirt0709_ctrm&nb=1921&n=9047704&c=rencontres" style="text-decoration:none;"><u>France</u> |<u> Allemagne</u> |<u> Espagne</u> | <u>Royaume Uni</u> | <u>Irlande</u> | <u>Pays Bas</u> | <u>Italie </u>| <u>Portugal </u>| <u>Argentine</u> |<u> Chili </u>| <u>Costa Rica </u>| <u>Uruguay </u>| <u>Brazil</u> | <u>Panama</u> | <u>Colombie </u>| <u>R&eacute;publique dominicaine</u> | <u>Venezuela</u> | <u>Perou </u>|<br><u>Canada(en) </u> | <u> Canada (fr)</u> |<u> Etats Unis</u> | <u>Mexique</u> | <u>Australie</u> | <u>Nouvelle Z&eacute;lande </u> </a>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.tmrv.com/svi/img_nb_1921_numuser_yyynumuseryyy.jpg" width=1 height=1>
-<p>
-<a href='http://www.tmrv.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.tmrv.com/svi/gestionserv.php?nb=1921&cat=rencontres&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
-
-
---_----------=_parties_fdddf37b2e961d6034e485dbfecd0924--
-
---===============1857734421909243680==
+--=_NextPart_2rfkindysadvnqw3nerasdf
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -138,7 +180,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============1857734421909243680==
+--=_NextPart_2rfkindysadvnqw3nerasdf
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -149,4 +191,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1857734421909243680==--
+--=_NextPart_2rfkindysadvnqw3nerasdf--

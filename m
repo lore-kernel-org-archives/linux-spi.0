@@ -1,21 +1,11 @@
-From: "Magnus Damm" <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [patch 2.6.27-git] spi_gpio driver
-Date: Tue, 21 Oct 2008 21:40:41 +0900
-Message-ID: <aec7e5c30810210540p6b50562ax50b0cdd9af9e12e7@mail.gmail.com>
-References: <200807202146.12759.mb@bu3sch.de>
-	<200810181354.23955.david-b@pacbell.net>
-	<aec7e5c30810191944u4c125943h895099b3f1eaa813@mail.gmail.com>
-	<200810192124.36402.david-b@pacbell.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+From: =?GB2312?B?wfXPyMn6?= <gh168gh-Xb2Y1Dfb9CI@public.gmane.org>
+Subject: [SPAM] 鍥炰俊
+Date: Fri, 20 Apr 2001 21:29:12 +0800
+Message-ID: <E1KsHIO-0006v8-Vl@335xhf1.ch3.sourceforge.com>
+Reply-To: gh168gh-Xb2Y1Dfb9CI@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0581173432108145277=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200810192124.36402.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,36 +16,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Oct 20, 2008 at 1:24 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> From: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
->
-> Generalize the old at91rm9200 "bootstrap" bitbanging SPI master driver
-> as "spi_gpio", so it works with arbitrary GPIOs and can be configured
-> through platform_data.  Such SPI masters support:
->
->  - any number of bus instances (bus_num is the platform_device.id)
->  - any number of chipselects (one GPIO per spi_device)
->  - all four SPI_MODE values, and SPI_CS_HIGH
->  - i/o word sizes from 1 to 32 bits;
->  - devices configured as with any other spi_master controller
->
-> When configured using platform_data, this provides relatively low clock
-> rates.  On platforms that support inlined GPIO calls, significantly
-> improved transfer speeds are also possible with a semi-custom driver.
-> (It's still painful when accessing flash memory, but less so.)
->
-> Sanity checked by using this version to replace both native controllers
-> on a board with six different SPI slaves, relying on three different
-> SPI_MODE_* values and both SPI_CS_HIGH settings for correct operation.
->
-> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+--===============0581173432108145277==
+Content-Type: text/plain;charset="GB2312"
 
-Works fine on SuperH together with the mmc_spi driver. Thanks!
+ TO:财务部    
 
-Acked-by: Magnus Damm <damm-AlSX/UN32fvPDbFq/vQRIQ@public.gmane.org>
+        您好，本公司现有正规{發}${票}提供,点数优惠!
+
+    所有{發/票}可验证后付款，我司可提供全方面服务。
+
+    注:本公司承诺所用票据为各单位在税务局所领取,
+
+    完全负法律责任,实行规范管理及严格履行保密制度,
+
+    保守有关商业运作机密,如有疑问请来电咨询!
+
+     联系人: 刘先生
+
+     电  话:136 9989 4869，（长期有效）
+
+     请保留号码以备急用!
+
+
+
+--===============0581173432108145277==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============0581173432108145277==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0581173432108145277==--

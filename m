@@ -1,11 +1,11 @@
-From: 13560740732-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] ä»£/å¼€â€•â€•å‘/ç¥¨
-Date: Sat, 31 Dec 2011 08:30:58 +0800
-Message-ID: <E1Rgmqj-0002oe-Ti@sfs-ml-1.v29.ch3.sourceforge.com>
+From: =?GB2312?B?x+vXqsjLysI=?= <cxaq-YtARGo/DgowAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] spi-devel-generalå¸‚åœºå¼€å‘ä¸ç»é”€å•†ç®¡ç†
+Date: Tue, 8 Jan 2002 11:44:38 +0800
+Message-ID: <E1Rh0vy-0005yy-Rd@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,17 +17,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAoKztK5q8u+09DLsKGqoarGsS+0+r+qo7sKCsjnOigxKcbVzajJzMa3z/rK28uwoaqh
-qsaxo7sKCiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwoaqhqsaxL7XItcihowoKufO5q8u+yOfT
-0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCgogCgogICAguLrU8MjLo7rVxc/IyfooMCkx
-MzU2MDc0MDczMgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClJpZGljdWxvdXNseSBlYXN5IFZESS4g
-V2l0aCBDaXRyaXggVkRJLWluLWEtQm94LCB5b3UgZG9uJ3QgbmVlZCBhIGNvbXBsZXgKaW5mcmFz
-dHJ1Y3R1cmUgb3IgdmFzdCBJVCByZXNvdXJjZXMgdG8gZGVsaXZlciBzZWFtbGVzcywgc2VjdXJl
-IGFjY2VzcyB0bwp2aXJ0dWFsIGRlc2t0b3BzLiBXaXRoIHRoaXMgYWxsLWluLW9uZSBzb2x1dGlv
-biwgZWFzaWx5IGRlcGxveSB2aXJ0dWFsIApkZXNrdG9wcyBmb3IgbGVzcyB0aGFuIHRoZSBjb3N0
-IG9mIFBDcyBhbmQgc2F2ZSA2MCUgb24gVkRJIGluZnJhc3RydWN0dXJlIApjb3N0cy4gVHJ5IGl0
-IGZyZWUhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvQ2l0cml4LVZESWluYWJveApfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+This is a multi-part message in MIME format
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+Ê±¼äµØµã£º2012Äê1ÔÂ7-8ÈÕ   ÉÏº£
+Ê±¼äµØµã£º2012Äê2ÔÂ25-26ÈÕ ¹ãÖİ
+Ê±¼äµØµã£º2012Äê3ÔÂ10-11ÈÕ ÉÏº£
+Ê±¼äµØµã£º2012Äê3ÔÂ24-25ÈÕ ÉîÛÚ
+¿Î³Ì·ÑÓÃ£º2500Ôª/ÈË£¬6800Ôª/3ÈË£¬9900Ôª/5ÈË (º¬ÅàÑµ·Ñ¡¢Îç²Í¡¢Ë°·Ñ[½¨Òé£º×Ü¾­Àí/ÓªÏú¸±×Ü/ÏúÊÛ¾­Àí3ÈËÍ¬Ê±±¨ÃûÑ§Ï°£¬Ğ§¹û¸ü¼Ñ])
+ÊÚ¿ÎĞÎÊ½£ºÀíÄî+·½·¨+¹¤¾ß£¬Ğ¡×é»¥¶¯¡¢°¸Àı·ÖÎö¡¢ÓÎÏ··ÖÏí¡¢½ÇÉ«ÑİÁ·
+¿Î³Ì¶ÔÏó£º×Ü¾­Àí¡¢ÓªÏú¸±×Ü¡¢ÇøÓò¾­Àí¡¢ÇşµÀ¾­Àí¡¢ÊĞ³¡¾­Àí¡¢ÅàÑµ¾­ÀíÒÔ¼°ÏúÊÛÈËÔ±
+
+×ÉÑ¯µç»°£º020-80560638£»020-85917945 Ğ»Ğ¡½ã£¨²»ĞèÒª´ËÀàĞÅ¼şÇë»Ø¸´µçÓÊÖÁchinammc2010-KN7UnAbNpbg@public.gmane.orgÍËĞÅ£©
+----------------------------------------------------------------------
+¿Î³ÌÏêÇéÇë²Î¿¼¸½¼ş
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Ridiculously easy VDI. With Citrix VDI-in-a-Box, you don't need a complex
+infrastructure or vast IT resources to deliver seamless, secure access to
+virtual desktops. With this all-in-one solution, easily deploy virtual 
+desktops for less than the cost of PCs and save 60% on VDI infrastructure 
+costs. Try it free! http://p.sf.net/sfu/Citrix-VDIinabox
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

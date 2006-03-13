@@ -1,11 +1,11 @@
-From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
-Subject: [SPAM] 票据代理
-Date: Thu, 12 Mar 2009 09:14:08 +0800
-Message-ID: <E1LhZQs-0007Uh-7A@3yr0jf1.ch3.sourceforge.com>
+From: "Susie" <maryann.x.lopez-9ktRC8seBcVTbYE2woCitUEOCMrvLtNR@public.gmane.org>
+Subject: [SPAM] See, It's look like a closeout sale!
+Date: Mon, 13 Mar 2006 06:51:23 +0530
+Message-ID: <002501c6463c$dc8873f0$7281bab9@rekic7846b7b8cvkyul>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,29 +17,12 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srH1f22q8q10rXT0M/euavLvrXE
-o6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+o6mho87S
-y77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvBy8O/1MLP
-+srbtu62yKGjCsO/1MLT0NK7sr+31tT21rXLsLXnxNS3osaxNiW6zcbVzai3osax1tbA4Mjnz8Kj
-usnMxrfP+srby7C3osaxo6y158TU1MvK5LeixrGjrAq547jmt6LGsdfiwd7StbeixrEst/7O8dK1
-t6LGsbXIICi5+suwtdjLsKOpMS0yJdPFu920+r+qu/K6z9f3o6y148r9vc+1zaGju7m/yQrS1Lj5
-vt3L+df2yv3Bv7butsi1xLTz0KHAtMnMzNbTxbvdtcS148r9o6y5q8u+s8nBorbgxOrSu9axvOGz
-1tLUobCzz9DFobHOqtbQCtDE1/fOqrmry761xLrL0MTLvM/roaLAzrnMyvfBormry77Qzs/zo6yx
-vrmry77Wo9bYs9DFtcv508O++LbUysfV5saxo6G4/M+jzfsKxNy5u9PQu/q74dPrufPLvrrP1/ej
-oQqhoaGhCiAgICDI57nzy77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQxKOsv8nJz834
-sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGjIAogICAgIAogICAgtMvQxc+i
-s6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOiAKICAgIAqhoaGhytYgILv6o7sxMzYyMjMyNjAwNQog
-ICAgCiAgICAgICAgUVE7IDIzNjM0MTI5OQogIAqhoaGhwarPtcjLo7vMxs/IyfoKy7PXowogICAg
-ICDJzOz3o6EgCiAgICAgCqGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaEgIKGhoaGhoaGh1f22
-q8q10rXT0M/euavLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFwcHMgYnVpbHQgd2l0aCB0aGUg
-QWRvYmUoUikgRmxleChSKSBmcmFtZXdvcmsgYW5kIEZsZXggQnVpbGRlcihUTSkgYXJlCnBvd2Vy
-aW5nIFdlYiAyLjAgd2l0aCBlbmdhZ2luZywgY3Jvc3MtcGxhdGZvcm0gY2FwYWJpbGl0aWVzLiBR
-dWlja2x5IGFuZAplYXNpbHkgYnVpbGQgeW91ciBSSUFzIHdpdGggRmxleCBCdWlsZGVyLCB0aGUg
-RWNsaXBzZShUTSliYXNlZCBkZXZlbG9wbWVudApzb2Z0d2FyZSB0aGF0IGVuYWJsZXMgaW50ZWxs
-aWdlbnQgY29kaW5nIGFuZCBzdGVwLXRocm91Z2ggZGVidWdnaW5nLgpEb3dubG9hZCB0aGUgZnJl
-ZSA2MCBkYXkgdHJpYWwuIGh0dHA6Ly9wLnNmLm5ldC9zZnUvd3d3LWFkb2JlLWNvbQpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
-bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
-dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
-cmFsCg==
+All my friends have already used it http://eqlxsj.supersalesonline.com/disc.php
+
+
+------------------------------------------------------------------------------
+Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
+powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
+easily build your RIAs with Flex Builder, the Eclipse(TM)based development
+software that enables intelligent coding and step-through debugging.
+Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com

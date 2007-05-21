@@ -1,18 +1,15 @@
-From: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH] mpc52xx_psc_spi: fix it for
-	CONFIG_PPC_MERGE
-Date: Mon, 21 May 2007 09:31:18 +0200
-Message-ID: <46514AC6.8080704@toptica.com>
-References: <20070516073707.GD9667@nd47.coderock.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch 2.6.22-rc2] spi doc update,
+	describe clock mode bits
+Date: Mon, 21 May 2007 12:10:03 -0700
+Message-ID: <200705211210.03244.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linuxppc-embedded-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: Domen Puncer <domen-CvScVCPLwOZg9hUCZPvPmw@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070516073707.GD9667-yTFm/CsSGdPT0JcTxXCzFdi2O/JbrIOy@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -24,112 +21,112 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Acked-by: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
+Update the SPI documentation to cover a few points that have proven
+to be confusing or unclear; most notably the two clock mode bits.
 
-Domen Puncer wrote:
-> Fix mpc5200 PSC SPI driver to actually work for CONFIG_PPC_MERGE
-> - s/mpc52xx/mpc5200/, as this was changed in device tree some time ago
-> - fix spi id detection
->
->
-> Signed-off-by: Domen Puncer <domen.puncer-P35k8AZwkyRBDgjK7y7TUQ@public.gmane.org>
->
-> ---
->  drivers/spi/mpc52xx_psc_spi.c |   25 +++++++++++--------------
->  1 file changed, 11 insertions(+), 14 deletions(-)
->
-> Index: work-powerpc.git/drivers/spi/mpc52xx_psc_spi.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- work-powerpc.git.orig/drivers/spi/mpc52xx_psc_spi.c
-> +++ work-powerpc.git/drivers/spi/mpc52xx_psc_spi.c
-> @@ -329,8 +329,8 @@ static int mpc52xx_psc_spi_port_config(i
->  	int ret =3D 0;
->  =
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ Documentation/spi/spi-summary |   53 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 48 insertions(+), 5 deletions(-)
 
->  #if defined(CONFIG_PPC_MERGE)
-> -	cdm =3D mpc52xx_find_and_map("mpc52xx-cdm");
-> -	gpio =3D mpc52xx_find_and_map("mpc52xx-gpio");
-> +	cdm =3D mpc52xx_find_and_map("mpc5200-cdm");
-> +	gpio =3D mpc52xx_find_and_map("mpc5200-gpio");
->  #else
->  	cdm =3D ioremap(MPC52xx_PA(MPC52xx_CDM_OFFSET), MPC52xx_CDM_SIZE);
->  	gpio =3D ioremap(MPC52xx_PA(MPC52xx_GPIO_OFFSET), MPC52xx_GPIO_SIZE);
-> @@ -445,9 +445,6 @@ static int __init mpc52xx_psc_spi_do_pro
->  	struct spi_master *master;
->  	int ret;
->  =
-
-> -	if (pdata =3D=3D NULL)
-> -		return -ENODEV;
-> -
->  	master =3D spi_alloc_master(dev, sizeof *mps);
->  	if (master =3D=3D NULL)
->  		return -ENOMEM;
-> @@ -594,17 +591,17 @@ static int __init mpc52xx_psc_spi_of_pro
->  	}
->  	regaddr64 =3D of_translate_address(op->node, regaddr_p);
->  =
-
-> +	/* get PSC id (1..6, used by port_config) */
->  	if (op->dev.platform_data =3D=3D NULL) {
-> -		struct device_node *np;
-> -		int i =3D 0;
-> +		const u32 *psc_nump;
->  =
-
-> -		for_each_node_by_type(np, "spi") {
-> -			if (of_find_device_by_node(np) =3D=3D op) {
-> -				id =3D i;
-> -				break;
-> -			}
-> -			i++;
-> +		psc_nump =3D of_get_property(op->node, "cell-index", NULL);
-> +		if (!psc_nump || *psc_nump > 5) {
-> +			printk(KERN_ERR "mpc52xx_psc_spi: Device node %s has invalid "
-> +					"cell-index property\n", op->node->full_name);
-> +			return -EINVAL;
->  		}
-> +		id =3D *psc_nump + 1;
->  	}
->  =
-
->  	return mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32)size64,
-> @@ -617,7 +614,7 @@ static int __exit mpc52xx_psc_spi_of_rem
->  }
->  =
-
->  static struct of_device_id mpc52xx_psc_spi_of_match[] =3D {
-> -	{ .type =3D "spi", .compatible =3D "mpc52xx-psc-spi", },
-> +	{ .type =3D "spi", .compatible =3D "mpc5200-psc-spi", },
->  	{},
->  };
->  =
-
->
->
->   =
-
-
-
--- =
-
-
-Dragos Carp
-Research & Development
-
-Phone: +49 89 85837-159, Fax: +49 89 85837-200
-Address: TOPTICA Photonics AG, Lochhamer Schlag 19, D-82166 Graefelfing, Ge=
-rmany
-
-TOPTICA =96 A Passion for Precision
-TOPTICA Photonics AG, Registered Office: 82166 Graefelfing, Germany
-Companies' Register: Amtsgericht M=FCnchen, HRB 137368
-Executive Directors: Dr. Wilhelm Kaenders, Dr. Thomas Weber
-Chairman of the Supervisory Board: Dr. Kristian Hohla
-www.toptica.com
-
+--- g26.orig/Documentation/spi/spi-summary	2007-05-21 07:21:40.000000000 -0700
++++ g26/Documentation/spi/spi-summary	2007-05-21 11:43:09.000000000 -0700
+@@ -1,26 +1,30 @@
+ Overview of Linux kernel SPI support
+ ====================================
+ 
+-02-Dec-2005
++21-May-2007
+ 
+ What is SPI?
+ ------------
+ The "Serial Peripheral Interface" (SPI) is a synchronous four wire serial
+ link used to connect microcontrollers to sensors, memory, and peripherals.
++It's a simple "de facto" standard, not complicated enough to acquire a
++standardization body.  SPI uses a master/slave configuration.
+ 
+ The three signal wires hold a clock (SCK, often on the order of 10 MHz),
+ and parallel data lines with "Master Out, Slave In" (MOSI) or "Master In,
+ Slave Out" (MISO) signals.  (Other names are also used.)  There are four
+ clocking modes through which data is exchanged; mode-0 and mode-3 are most
+ commonly used.  Each clock cycle shifts data out and data in; the clock
+-doesn't cycle except when there is data to shift.
++doesn't cycle except when there is a data bit to shift.  Not all data bits
++are used though; not every protocol uses those full duplex capabilities.
+ 
+-SPI masters may use a "chip select" line to activate a given SPI slave
++SPI masters use a fourth "chip select" line to activate a given SPI slave
+ device, so those three signal wires may be connected to several chips
+-in parallel.  All SPI slaves support chipselects.  Some devices have
++in parallel.  All SPI slaves support chipselects; they are usually active
++low signals, labeled nCSx for slave 'x' (e.g. nCS0).  Some devices have
+ other signals, often including an interrupt to the master.
+ 
+-Unlike serial busses like USB or SMBUS, even low level protocols for
++Unlike serial busses like USB or SMBus, even low level protocols for
+ SPI slave functions are usually not interoperable between vendors
+ (except for commodities like SPI memory chips).
+ 
+@@ -33,6 +37,11 @@ SPI slave functions are usually not inte
+   - Some devices may use eight bit words.  Others may different word
+     lengths, such as streams of 12-bit or 20-bit digital samples.
+ 
++  - Words are usually sent with their most significant bit (MSB) first,
++    but sometimes the least significant bit (LSB) goes first instead.
++
++  - Sometimes SPI is used to daisy-chain devices, like shift registers.
++
+ In the same way, SPI slaves will only rarely support any kind of automatic
+ discovery/enumeration protocol.  The tree of slave devices accessible from
+ a given SPI master will normally be set up manually, with configuration
+@@ -44,6 +53,14 @@ half-duplex SPI, for request/response pr
+ Serial Protocol"), PSP ("Programmable Serial Protocol"), and other
+ related protocols.
+ 
++Some chips eliminate a signal line by combining MOSI and MISO, and
++limiting themselves to half-duplex at the hardware level.  In fact
++some SPI chips have this signal mode as a strapping option.  These
++can be accessed using the same programming interface as SPI, but of
++course they won't handle full duplex transfers.  You may find such
++chips described as using "three wire" signaling: SCK, data, nCSx.
++(That data line is sometimes called MOMI or SISO.)
++
+ Microcontrollers often support both master and slave sides of the SPI
+ protocol.  This document (and Linux) currently only supports the master
+ side of SPI interactions.
+@@ -74,6 +91,32 @@ interfaces with SPI modes.  Given SPI su
+ cards without needing a special purpose MMC/SD/SDIO controller.
+ 
+ 
++I'm confused.  What are these four SPI "clock modes"?
++-----------------------------------------------------
++It's easy to be confused here, and the vendor documentation you'll
++find isn't necessarily helpful.  The four modes combine two mode bits:
++
++ - CPOL indicates the initial clock polarity.  CPOL=0 means the
++   clock starts low, so the first (leading) edge is rising, and
++   the second (trailing) edge is falling.  CPOL=1 means the clock
++   starts high, so the first (leading) edge is falling.
++
++ - CPHA indicates the clock phase used to sample data; CPHA=0 says
++   sample on the leading edge, CPHA=1 means the trailing edge.
++
++   Since the signal needs to stablize before it's sampled, CPHA=0
++   implies that its data is written half a clock before the first
++   clock edge.  The chipselect may have made it become available.
++
++Chip specs won't always say "uses SPI mode X" in as many words,
++but their timing diagrams will make the CPOL and CPHA modes clear.
++
++In the SPI mode number, CPOL is the high order bit and CPHA is the
++low order bit.  So when a chip's timing diagram shows the clock
++starting low (CPOL=0) and data stabilized for sampling during the
++trailing clock edge (CPHA=1), that's SPI mode 1.
++
++
+ How do these driver programming interfaces work?
+ ------------------------------------------------
+ The <linux/spi/spi.h> header file includes kerneldoc, as does the
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

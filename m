@@ -1,18 +1,18 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: Fwd: PXA270 + ads7846 (TI TSC2046)
-Date: Sun, 20 May 2007 20:08:58 -0700
-Message-ID: <200705202008.58743.david-b@pacbell.net>
-References: <200704240102.27508.david-b@pacbell.net>
-	<1177692001.4362.61.camel@truckin.grid-net.com>
-	<20070504155402.GA25198@zarina>
+From: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH] mpc52xx_psc_spi: fix it for
+	CONFIG_PPC_MERGE
+Date: Mon, 21 May 2007 09:31:18 +0200
+Message-ID: <46514AC6.8080704@toptica.com>
+References: <20070516073707.GD9667@nd47.coderock.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, cbou-JGs/UdohzUI@public.gmane.org
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linuxppc-embedded-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: Domen Puncer <domen-CvScVCPLwOZg9hUCZPvPmw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070504155402.GA25198@zarina>
-Content-Disposition: inline
+In-Reply-To: <20070516073707.GD9667-yTFm/CsSGdPT0JcTxXCzFdi2O/JbrIOy@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -24,28 +24,111 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 04 May 2007, Anton Vorontsov wrote:
+Acked-by: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
 
-> Why Motorola hardcoded in pxa2xx spi driver? Is that means that with
-> Motorola bit set we can do all we can with National bit? If not (and
-> from my observation it's not) is that means that we can't use pxa2xx
-> spi driver for chips requiring National/Microwire?
+Domen Puncer wrote:
+> Fix mpc5200 PSC SPI driver to actually work for CONFIG_PPC_MERGE
+> - s/mpc52xx/mpc5200/, as this was changed in device tree some time ago
+> - fix spi id detection
+>
+>
+> Signed-off-by: Domen Puncer <domen.puncer-P35k8AZwkyRBDgjK7y7TUQ@public.gmane.org>
+>
+> ---
+>  drivers/spi/mpc52xx_psc_spi.c |   25 +++++++++++--------------
+>  1 file changed, 11 insertions(+), 14 deletions(-)
+>
+> Index: work-powerpc.git/drivers/spi/mpc52xx_psc_spi.c
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- work-powerpc.git.orig/drivers/spi/mpc52xx_psc_spi.c
+> +++ work-powerpc.git/drivers/spi/mpc52xx_psc_spi.c
+> @@ -329,8 +329,8 @@ static int mpc52xx_psc_spi_port_config(i
+>  	int ret =3D 0;
+>  =
 
-Modulo the misconception there -- Microwire being a strict subset
-of the pure SPI/Motorola mode -- one other issue came up recently.
+>  #if defined(CONFIG_PPC_MERGE)
+> -	cdm =3D mpc52xx_find_and_map("mpc52xx-cdm");
+> -	gpio =3D mpc52xx_find_and_map("mpc52xx-gpio");
+> +	cdm =3D mpc52xx_find_and_map("mpc5200-cdm");
+> +	gpio =3D mpc52xx_find_and_map("mpc5200-gpio");
+>  #else
+>  	cdm =3D ioremap(MPC52xx_PA(MPC52xx_CDM_OFFSET), MPC52xx_CDM_SIZE);
+>  	gpio =3D ioremap(MPC52xx_PA(MPC52xx_GPIO_OFFSET), MPC52xx_GPIO_SIZE);
+> @@ -445,9 +445,6 @@ static int __init mpc52xx_psc_spi_do_pro
+>  	struct spi_master *master;
+>  	int ret;
+>  =
 
-It seems that the patch making drivers/input/touchscreen/ads7846.c
-use SPI_MODE_1 was incorrect.  It should use SPI_MODE_0 ... since
-it uses normal clock polarity (CPOL=0) and samples on the leading
-edge of that clock (CPHA=0).
+> -	if (pdata =3D=3D NULL)
+> -		return -ENODEV;
+> -
+>  	master =3D spi_alloc_master(dev, sizeof *mps);
+>  	if (master =3D=3D NULL)
+>  		return -ENOMEM;
+> @@ -594,17 +591,17 @@ static int __init mpc52xx_psc_spi_of_pro
+>  	}
+>  	regaddr64 =3D of_translate_address(op->node, regaddr_p);
+>  =
 
-When I tested -- with omap_uwire and pxa2xx_spi -- I used SPI_MODE_0;
-but it was later changed.  It seems that when it's used with the
-omap_uwire driver, SPI_MODE_1 also works.  That might explain some
-of the problems observed...
+> +	/* get PSC id (1..6, used by port_config) */
+>  	if (op->dev.platform_data =3D=3D NULL) {
+> -		struct device_node *np;
+> -		int i =3D 0;
+> +		const u32 *psc_nump;
+>  =
 
-- Dave
+> -		for_each_node_by_type(np, "spi") {
+> -			if (of_find_device_by_node(np) =3D=3D op) {
+> -				id =3D i;
+> -				break;
+> -			}
+> -			i++;
+> +		psc_nump =3D of_get_property(op->node, "cell-index", NULL);
+> +		if (!psc_nump || *psc_nump > 5) {
+> +			printk(KERN_ERR "mpc52xx_psc_spi: Device node %s has invalid "
+> +					"cell-index property\n", op->node->full_name);
+> +			return -EINVAL;
+>  		}
+> +		id =3D *psc_nump + 1;
+>  	}
+>  =
 
+>  	return mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32)size64,
+> @@ -617,7 +614,7 @@ static int __exit mpc52xx_psc_spi_of_rem
+>  }
+>  =
+
+>  static struct of_device_id mpc52xx_psc_spi_of_match[] =3D {
+> -	{ .type =3D "spi", .compatible =3D "mpc52xx-psc-spi", },
+> +	{ .type =3D "spi", .compatible =3D "mpc5200-psc-spi", },
+>  	{},
+>  };
+>  =
+
+>
+>
+>   =
+
+
+
+-- =
+
+
+Dragos Carp
+Research & Development
+
+Phone: +49 89 85837-159, Fax: +49 89 85837-200
+Address: TOPTICA Photonics AG, Lochhamer Schlag 19, D-82166 Graefelfing, Ge=
+rmany
+
+TOPTICA =96 A Passion for Precision
+TOPTICA Photonics AG, Registered Office: 82166 Graefelfing, Germany
+Companies' Register: Amtsgericht M=FCnchen, HRB 137368
+Executive Directors: Dr. Wilhelm Kaenders, Dr. Thomas Weber
+Chairman of the Supervisory Board: Dr. Kristian Hohla
+www.toptica.com
 
 
 -------------------------------------------------------------------------

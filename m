@@ -1,14 +1,15 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.22-rc2-git] SPI: add 3wire mode flag
-Date: Tue, 22 May 2007 12:42:48 -0700
-Message-ID: <200705221242.49050.david-b@pacbell.net>
+Subject: [patch 2.6.22-rc2-git] omap_uwire: SPI_CPHA
+	mode bugfix
+Date: Tue, 22 May 2007 13:58:31 -0700
+Message-ID: <200705221358.32467.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Kaiwan N Billimoria <kaiwan-IEKcLuOed2vyqGx8YZ3XskEOCMrvLtNR@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, imre.deak-EmnPodGKVbzby3iVrkZq2A@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Linux Kernel list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -22,39 +23,35 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add a new spi->mode bit:  SPI_3WIRE, for chips where the SI and SO signals
-are shared (and which are thus only half duplex).  Update the LM70 driver
-to require support for that hardware mode from the controller.
+From: Imre Deak <imre.deak-EmnPodGKVbzby3iVrkZq2A@public.gmane.org>
+
+The omap_uwire controller driver handles SPI_CPHA incorrectly;
+It should mean:
+
+  CPHA=0 ... sample at leading edge of clock
+  CPHA=1 ... sample at trailing edge of clock
+
+This bug has been masked by inverse bugs in layered drivers;
+and was uncovered by running some of them on non-OMAP hardware.
 
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/hwmon/lm70.c    |    4 ++++
- include/linux/spi/spi.h |    1 +
- 2 files changed, 5 insertions(+)
 
---- g26.orig/include/linux/spi/spi.h	2007-05-22 08:59:25.000000000 -0700
-+++ g26/include/linux/spi/spi.h	2007-05-22 09:07:52.000000000 -0700
-@@ -76,6 +76,7 @@ struct spi_device {
- #define	SPI_MODE_3	(SPI_CPOL|SPI_CPHA)
- #define	SPI_CS_HIGH	0x04			/* chipselect active high? */
- #define	SPI_LSB_FIRST	0x08			/* per-word bits-on-wire */
-+#define	SPI_3WIRE	0x10			/* SI/SO signals shared */
- 	u8			bits_per_word;
- 	int			irq;
- 	void			*controller_state;
---- g26.orig/drivers/hwmon/lm70.c	2007-05-22 09:00:24.000000000 -0700
-+++ g26/drivers/hwmon/lm70.c	2007-05-22 09:06:44.000000000 -0700
-@@ -96,6 +96,10 @@ static int __devinit lm70_probe(struct s
- 	struct lm70 *p_lm70;
- 	int status;
+--- o26.orig/drivers/spi/omap_uwire.c	2007-05-22 07:49:52.000000000 -0700
++++ o26/drivers/spi/omap_uwire.c	2007-05-22 08:02:03.000000000 -0700
+@@ -358,11 +358,11 @@ static int uwire_setup_transfer(struct s
+ 	switch (spi->mode & (SPI_CPOL | SPI_CPHA)) {
+ 	case SPI_MODE_0:
+ 	case SPI_MODE_3:
+-		flags |= UWIRE_WRITE_RISING_EDGE | UWIRE_READ_FALLING_EDGE;
++		flags |= UWIRE_WRITE_FALLING_EDGE | UWIRE_READ_RISING_EDGE;
+ 		break;
+ 	case SPI_MODE_1:
+ 	case SPI_MODE_2:
+-		flags |= UWIRE_WRITE_FALLING_EDGE | UWIRE_READ_RISING_EDGE;
++		flags |= UWIRE_WRITE_RISING_EDGE | UWIRE_READ_FALLING_EDGE;
+ 		break;
+ 	}
  
-+	/* signaling is SPI_MODE_0 on a 3-wire link (shared SI/SO) */
-+	if ((spi->mode & (SPI_CPOL|SPI_CPHA)) || !spi->mode & SPI_3WIRE)
-+		return -EINVAL;
-+
- 	p_lm70 = kzalloc(sizeof *p_lm70, GFP_KERNEL);
- 	if (!p_lm70)
- 		return -ENOMEM;
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

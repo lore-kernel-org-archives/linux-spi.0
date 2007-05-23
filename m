@@ -1,13 +1,18 @@
-From: Ivan Kuten <ivan.kuten-NihHnkIkDZhBDgjK7y7TUQ@public.gmane.org>
-Subject: problem with converting from at91_spi to
-	atmel_spi (AT91RM9200)
-Date: Wed, 23 May 2007 14:34:56 +0300
-Message-ID: <20070523143456.15fc49ab@newbox>
+From: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [patch 2.6.22-rc2-git] SPI: add 3wire mode
+	flag
+Date: Wed, 23 May 2007 13:48:53 +0200
+Message-ID: <20070523134853.69e5170b@hyperion.delvare>
+References: <200705221242.49050.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Kaiwan N Billimoria <kaiwan-IEKcLuOed2vyqGx8YZ3XskEOCMrvLtNR@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200705221242.49050.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -19,67 +24,52 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi David,
 
-Hello,
+On Tue, 22 May 2007 12:42:48 -0700, David Brownell wrote:
+> Add a new spi->mode bit:  SPI_3WIRE, for chips where the SI and SO signals
+> are shared (and which are thus only half duplex).  Update the LM70 driver
+> to require support for that hardware mode from the controller.
+> 
+> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+> ---
+>  drivers/hwmon/lm70.c    |    4 ++++
+>  include/linux/spi/spi.h |    1 +
+>  2 files changed, 5 insertions(+)
+> 
+> --- g26.orig/include/linux/spi/spi.h	2007-05-22 08:59:25.000000000 -0700
+> +++ g26/include/linux/spi/spi.h	2007-05-22 09:07:52.000000000 -0700
+> @@ -76,6 +76,7 @@ struct spi_device {
+>  #define	SPI_MODE_3	(SPI_CPOL|SPI_CPHA)
+>  #define	SPI_CS_HIGH	0x04			/* chipselect active high? */
+>  #define	SPI_LSB_FIRST	0x08			/* per-word bits-on-wire */
+> +#define	SPI_3WIRE	0x10			/* SI/SO signals shared */
+>  	u8			bits_per_word;
+>  	int			irq;
+>  	void			*controller_state;
+> --- g26.orig/drivers/hwmon/lm70.c	2007-05-22 09:00:24.000000000 -0700
+> +++ g26/drivers/hwmon/lm70.c	2007-05-22 09:06:44.000000000 -0700
+> @@ -96,6 +96,10 @@ static int __devinit lm70_probe(struct s
+>  	struct lm70 *p_lm70;
+>  	int status;
+>  
+> +	/* signaling is SPI_MODE_0 on a 3-wire link (shared SI/SO) */
+> +	if ((spi->mode & (SPI_CPOL|SPI_CPHA)) || !spi->mode & SPI_3WIRE)
 
-I'm trying to convert from legacy at91_spi to newer atmel_spi driver in my board.
-Linux kernel 2.6.22rc2 + corresponding patch from maxim.org.za/at91_26.html
+I don't know anything about SPI, but the second half of the test looks
+broken to me. Missing parentheses? Also note that (SPI_CPOL|SPI_CPHA)
+is SPI_MODE_3 according to the defines above, maybe you want to use
+that.
 
-board specific spi info :
-
-static struct spi_board_info chub_spi_devices[] = {
-        {       /* DataFlash chip */
-                .modalias       = "mtd_dataflash",
-                .chip_select    = 0,
-                .max_speed_hz   = 15 * 1000 * 1000,
-        },
-};
-
-snip from .config:
-
-CONFIG_MTD_DATAFLASH=y
-
-# 
-# SPI support
-# 
-CONFIG_SPI=y
-CONFIG_SPI_DEBUG=y
-CONFIG_SPI_MASTER=y
-
-#
-# SPI Master Controller Drivers
-# 
-CONFIG_SPI_ATMEL=y
-# CONFIG_SPI_BITBANG is not set
-CONFIG_SPI_AT91_MANUAL_CS=y
-#
-# SPI Protocol Masters
-#
-# CONFIG_SPI_AT25 is not set
-# CONFIG_SPI_SPIDEV is not set
-
-While boot, the board stumbles on SPI initialization:
-
-Uncompressing Linux....................................................................... done, booting the kernel.
-Linux version 2.6.22-rc1 (vano@newbox) (gcc version 3.4.2) #12 Wed May 23 14:05:30 EEST 2007
-CPU: ARM920T [41129200] revision 0 (ARMv4T), cr=c0007177
-Machine: Promwad Chub
----snip----
-eth0: Link now 100-FullDuplex
-eth0: AT91 ethernet at 0xfefbc000 int=24 100-FullDuplex (00:12:34:56:78:9a)
-eth0: National Semiconductor DP83848 PHY
-NAND device: Manufacturer ID: 0xec, Chip ID: 0x76 (Samsung NAND 64MiB 3,3V 8-bit)
-Scanning device for bad blocks
-Creating 1 MTD partitions on "NAND 64MiB 3,3V 8-bit":
-0x00000000-0x04000000 : "NAND Partition 1"
-atmel_spi atmel_spi.0: Atmel SPI Controller at 0xfffe0000 (irq 13)
-
-Not booting further. Timer led is still blinking. Is atmel_spi usable?
-I have working setup on 2.6.20 + corresponding patch from maxim.org.za/at91_26.html +  legacy "at91_dataflash" + legacy "at91_spi"
-
-Best regards, Ivan
+> +		return -EINVAL;
+> +
+>  	p_lm70 = kzalloc(sizeof *p_lm70, GFP_KERNEL);
+>  	if (!p_lm70)
+>  		return -ENOMEM;
 
 
+-- 
+Jean Delvare
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

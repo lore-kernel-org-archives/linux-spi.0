@@ -1,17 +1,15 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.22-rc2-git] omap_uwire: SPI_CPHA
-	mode bugfix
-Date: Tue, 22 May 2007 13:58:31 -0700
-Message-ID: <200705221358.32467.david-b@pacbell.net>
+From: Domen Puncer <domen.puncer-P35k8AZwkyRBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH] spi/spidev: check message size before
+	copying
+Date: Wed, 23 May 2007 07:58:44 +0200
+Message-ID: <20070523055844.GA5514@nd47.coderock.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, imre.deak-EmnPodGKVbzby3iVrkZq2A@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Linux Kernel list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
+Resent-Message-Id: <20070523061059.4046DBEE65-IR7e1bascun4oxQW5iQ/GQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -23,35 +21,46 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Imre Deak <imre.deak-EmnPodGKVbzby3iVrkZq2A@public.gmane.org>
+Message size needs to be checked before copying, or bad
+things could happen.
 
-The omap_uwire controller driver handles SPI_CPHA incorrectly;
-It should mean:
 
-  CPHA=0 ... sample at leading edge of clock
-  CPHA=1 ... sample at trailing edge of clock
+Signed-off-by: Domen Puncer <domen.puncer-P35k8AZwkyRBDgjK7y7TUQ@public.gmane.org>
 
-This bug has been masked by inverse bugs in layered drivers;
-and was uncovered by running some of them on non-OMAP hardware.
+---
+ drivers/spi/spidev.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-
---- o26.orig/drivers/spi/omap_uwire.c	2007-05-22 07:49:52.000000000 -0700
-+++ o26/drivers/spi/omap_uwire.c	2007-05-22 08:02:03.000000000 -0700
-@@ -358,11 +358,11 @@ static int uwire_setup_transfer(struct s
- 	switch (spi->mode & (SPI_CPOL | SPI_CPHA)) {
- 	case SPI_MODE_0:
- 	case SPI_MODE_3:
--		flags |= UWIRE_WRITE_RISING_EDGE | UWIRE_READ_FALLING_EDGE;
-+		flags |= UWIRE_WRITE_FALLING_EDGE | UWIRE_READ_RISING_EDGE;
- 		break;
- 	case SPI_MODE_1:
- 	case SPI_MODE_2:
--		flags |= UWIRE_WRITE_FALLING_EDGE | UWIRE_READ_RISING_EDGE;
-+		flags |= UWIRE_WRITE_RISING_EDGE | UWIRE_READ_FALLING_EDGE;
- 		break;
- 	}
+Index: work-powerpc.git/drivers/spi/spidev.c
+===================================================================
+--- work-powerpc.git.orig/drivers/spi/spidev.c
++++ work-powerpc.git/drivers/spi/spidev.c
+@@ -168,6 +168,12 @@ static int spidev_message(struct spidev_
+ 			n--, k_tmp++, u_tmp++) {
+ 		k_tmp->len = u_tmp->len;
  
++		total += k_tmp->len;
++		if (total > bufsiz) {
++			status = -EMSGSIZE;
++			goto done;
++		}
++
+ 		if (u_tmp->rx_buf) {
+ 			k_tmp->rx_buf = buf;
+ 			if (!access_ok(VERIFY_WRITE, u_tmp->rx_buf, u_tmp->len))
+@@ -179,12 +185,6 @@ static int spidev_message(struct spidev_
+ 					u_tmp->len))
+ 				goto done;
+ 		}
+-
+-		total += k_tmp->len;
+-		if (total > bufsiz) {
+-			status = -EMSGSIZE;
+-			goto done;
+-		}
+ 		buf += k_tmp->len;
+ 
+ 		k_tmp->cs_change = !!u_tmp->cs_change;
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

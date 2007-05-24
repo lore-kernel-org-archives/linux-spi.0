@@ -1,21 +1,21 @@
-From: Ivan Kuten <ivan.kuten-NihHnkIkDZhBDgjK7y7TUQ@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: problem with converting from at91_spi to
- atmel_spi (AT91RM9200)
-Date: Thu, 24 May 2007 18:27:15 +0300
-Message-ID: <20070524182715.47ff6cc8@newbox>
+	atmel_spi (AT91RM9200)
+Date: Thu, 24 May 2007 09:31:43 -0700
+Message-ID: <200705240931.43663.david-b@pacbell.net>
 References: <20070523143456.15fc49ab@newbox>
 	<200705230906.13353.david-b@pacbell.net>
+	<20070524133646.62bbc386@dhcp-255-175.norway.atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Nicolas Ferre <nicolas.ferre-XEyKDsrmbOsS+FvcfC7Uqw@public.gmane.org>,
-	Bill Gatliff <bgat-uPd5UNENI//N9NzbbXoYwQ@public.gmane.org>,
-	Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Haavard-MRDXTZLjjMs8G+1z+Pypc6QD96bmaF075NbjCUgZEJk@public.gmane.org, andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: Bill Gatliff <bgat-uPd5UNENI//N9NzbbXoYwQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Nicolas Ferre <nicolas.ferre-XEyKDsrmbOsS+FvcfC7Uqw@public.gmane.org>, andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org
+To: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200705230906.13353.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <20070524133646.62bbc386-RzfXdsu3MTOUA/xf2v/QOMGzbamoMwWuEvhb3Hwu1Ks@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -27,41 +27,44 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 23 May 2007 09:06:12 -0700
-David Brownell wrote:
+On Thursday 24 May 2007, Haavard Skinnemoen wrote:
+> On Wed, 23 May 2007 09:06:12 -0700
+> David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> > On Wednesday 23 May 2007, Ivan Kuten wrote:
+> > > 	
+> > >                 .chip_select    = 0,
+> > 
+> > Chipselect zero ... I've had one report that this driver has some issues
+> > on that chipselect.  There seem to be two errata in conflict here:
+> > ...
 > 
-> Chipselect zero ... I've had one report that this driver has some issues
-> on that chipselect.  There seem to be two errata in conflict here:
+> Neither of these should cause any problems for the atmel_spi driver
+> since it manages chip selects using gpio and sets the MODFDIS bit in MR
+> to disable mode fault detection (I actually ran into both erratas myself
+> while developing the driver.)
+
+Yet, I got the report (at91rm9200 specific).  Bill?  (I remember
+MODFDIS acting oddly, non-rm9200, but forget the details.)  And in
+any case there seem to be other folk reporting rm9200 + dataflash
+issues ... while mtd_dataflash doesn't seem to be at fault.  So
+maybe that combination of errata isn't the issue, but something
+else is making the problem. 
+
+
+> > I've CC'd the relevant folk from Atmel.  Seems that maybe rm9200
+> > needs to have a special case whereby chipselect zero is managed
+> > by the hardware despite the first erratum.  And maybe that because
+> > of that erratum, the DMA chaining needs to be made to work... else
+> > root-on-dataflash won't behave.  (Or some other workaround.)
 > 
->   - One saying that when the controller manages chipselects, it
->     does so incorrectly ... releasing it before it's told to do so,
->     which prematurely terminates transactions.  ("NPCSx rises if
->     no data is to be transmitted")
-> 
->   - Another saying that if it does *not* manage chipselects, then
->     broken mode fault detect logic kicks in; this could be what
->     you're seeing.  ("Mode Fault does not allow more than one
->     master on Chip Select 0")
-> 
+> Hmm...I don't think I understand why DMA chaining will help in this
+> case. Could you explain a bit more?
 
-David, as I understood new atmel_spi driver enables CONFIG_SPI_AT91_MANUAL_CS
-which in turn enables workaround for 1st errata item you mentioned
+It *might* help -- by keeping the transfer buffer busy enough that
+the "auto-deselect" erratum needn't kick in with some basic request
+and response protocol operations.
 
-at91rm9200_devices.c
-...
-in at91_add_device_spi function:
-
-#ifdef CONFIG_SPI_AT91_MANUAL_CS 
-                at91_set_gpio_output(cs_pin, 1);
-#else 
-                at91_set_A_periph(cs_pin, 0);
-#endif 
-
-Regarding second errata item - I have a single device (dataflash - 8MB) on SPI chip select 0, 
-so I do not think this is an issue here.
-
-Best regards, Ivan
-
+- Dave
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

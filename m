@@ -1,24 +1,12 @@
-From: Andrew Victor <andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org>
-Subject: Re: problem with converting from at91_spi
-	to	atmel_spi (AT91RM9200)
-Date: 25 May 2007 09:07:24 +0200
-Message-ID: <1180076844.23793.6.camel@fuzzie.sanpeople.com>
-References: <20070523143456.15fc49ab@newbox>
-	<200705230906.13353.david-b@pacbell.net>
-	<20070524133646.62bbc386@dhcp-255-175.norway.atmel.com>
-	<200705240931.43663.david-b@pacbell.net>
-	<4655C956.8080300@billgatliff.com> <20070524212409.7ee555d8@newbox>
+From: Jason Mcmullan <jason.mcmullan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: AT91 SPI Slave - Anyone get it to work?
+Date: Fri, 25 May 2007 10:06:56 -0400
+Message-ID: <1180102016.23577.25.camel@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Bill Gatliff <bgat-uPd5UNENI//N9NzbbXoYwQ@public.gmane.org>,
-	Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Nicolas Ferre <nicolas.ferre-XEyKDsrmbOsS+FvcfC7Uqw@public.gmane.org>
-To: Ivan Kuten <ivan.kuten-NihHnkIkDZhBDgjK7y7TUQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070524212409.7ee555d8@newbox>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -30,31 +18,29 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-hi,
+I'm working on an AT91SAM9260EK board, and am trying to use the
+SPI1 bus in slave mode under Linux.
 
-> static struct spi_board_info dk_spi_devices[] = {
->         {       /* DataFlash chip */
->                 .modalias       = "mtd_dataflash",
->                 .chip_select    = 0,
->                 .max_speed_hz   = 15 * 1000 * 1000,
->         },
-> 
-> are broken cause all of them have chip_select = 0 ?
+I have an interrupt handler, and am doing byte-at-time transactions
+using SPI_TDR and SPI_RDR (and SPI_TDRE and SPI_RDRF interrupts)
 
-I doubt it.
+I can receive bytes fine, but my transmitted bytes seem garbled.
 
-The DK board definitely works.
-All SAN People's RM9200-based products have DataFlash on CS0 - boot from
-CS0, mount root filesystem (cramfs) on CS0, writable JFFS2 partition on
-CS0.
+My scoped lines looks like clean data and clock, just *wrong* data.
 
-That's with legacy SPI and at91_dataflash.c. (ie, CS0 under SPI
-control).
+I am running at 100Khz, so it shouldn't be a speed issue.
 
+I'm using 8-bit data buffers.
 
-Regards,
-  Andrew Victor
+I've been working on this for about a week, and I'm ready to tear my
+hair out in frustration.
 
+Has *anyone* gotten their AT91 SPI to work in slave mode in any fashion?
+
+Thanks.
+-- 
+Jason Mcmullan <jason.mcmullan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Evil Labs
 
 
 -------------------------------------------------------------------------

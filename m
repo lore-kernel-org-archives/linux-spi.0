@@ -1,26 +1,22 @@
-From: Andrew Victor <andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org>
-Subject: Re: problem with converting from at91_spi
-	to	atmel_spi (AT91RM9200)
-Date: 25 May 2007 16:41:46 +0200
-Message-ID: <1180104106.23793.33.camel@fuzzie.sanpeople.com>
+From: Ivan Kuten <ivan.kuten-NihHnkIkDZhBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: problem with converting from at91_spi to
+ atmel_spi (AT91RM9200)
+Date: Fri, 25 May 2007 18:02:36 +0300
+Message-ID: <20070525180236.33f634d2@newbox>
 References: <20070523143456.15fc49ab@newbox>
 	<200705230906.13353.david-b@pacbell.net>
 	<20070524133646.62bbc386@dhcp-255-175.norway.atmel.com>
-	<200705240931.43663.david-b@pacbell.net>
-	<4655C956.8080300@billgatliff.com> <20070524212409.7ee555d8@newbox>
-	<1180076844.23793.6.camel@fuzzie.sanpeople.com>
-	<20070525171936.7668283d@newbox>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Nicolas-MRDXTZLjjMs8G+1z+Pypc6QD96bmaF075NbjCUgZEJk@public.gmane.org,
+	Ferre <nicolas.ferre-XEyKDsrmbOsS+FvcfC7Uqw@public.gmane.org>,
 	Bill Gatliff <bgat-uPd5UNENI//N9NzbbXoYwQ@public.gmane.org>,
-	Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Nicolas Ferre <nicolas.ferre-XEyKDsrmbOsS+FvcfC7Uqw@public.gmane.org>
-To: Ivan Kuten <ivan.kuten-NihHnkIkDZhBDgjK7y7TUQ@public.gmane.org>
+	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070525171936.7668283d@newbox>
+In-Reply-To: <20070524133646.62bbc386-RzfXdsu3MTOUA/xf2v/QOMGzbamoMwWuEvhb3Hwu1Ks@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -32,58 +28,63 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-hi Ivan,
-
-> In such a case it should have
-> 
-> static struct spi_board_info dk_spi_devices[] = {
->          {       /* DataFlash chip */
-> //                 .modalias       = "mtd_dataflash",
->                  .modalias       = "at91_dataflash",
->                  .chip_select    = 0,
->                  .max_speed_hz   = 15 * 1000 * 1000,
->          },
-
-Makes no difference for the legacy SPI drivers.  If they are used, the
-only field in this structure which is checked is "chip_select" so
-at91_add_device_spi() can configure the pin  (GPIO vs A_periph).
-
-What is important is what SPI_DEVNAME is set to in at91rm9200_devices.c.
-
-#if defined(CONFIG_AT91_SPI) || defined(CONFIG_AT91_SPI_MODULE)        
-/* legacy SPI driver */
-#define SPI_DEVNAME     "at91_spi"
-
-#elif defined(CONFIG_SPI_AT91) || defined(CONFIG_SPI_AT91_MODULE)      
-/* SPI bitbanging driver */
-#define SPI_DEVNAME     "at91_spi"
-
-#elif defined(CONFIG_SPI_ATMEL) || defined(CONFIG_SPI_ATMEL_MODULE)    
-/* new SPI driver */
-#define SPI_DEVNAME     "atmel_spi"
-
-And that depends on what SPI driver(s) you have enabled in the
-configuration.
-
-
-Changes since 2.6.19.....
-
-at91_dataflash.c:
--       device->flags = MTD_CAP_NORFLASH;
-+       device->flags = MTD_WRITEABLE;
-
-at91_spi.c:
-  asm/arch/at91rm9200_pdc.h replaced with linux/atmel_pdc.h
-  AT91_PDC_* definitions replaced with ATMEL_PDC_*
-
-
-Regards,
-  Andrew Victor
-
-
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by DB2 Express
-Download DB2 Express C - the FREE version of DB2 express and take
-control of your XML. No limits. Just data. Click to get it now.
-http://sourceforge.net/powerbar/db2/
+T24gVGh1LCAyNCBNYXkgMjAwNyAxMzozNjo0NiArMDIwMApIYWF2YXJkIFNraW5uZW1vZW4gd3Jv
+dGU6Cgo+IAo+IElzIHRoZXJlIGFueSB3YXkgeW91IGNhbiBnZXQgYSBkdW1wIG9mIHdoYXQgdGhl
+IENQVSBpcyBkb2luZz8gTWFnaWMKPiBTeXNScSwgTk1JLCBldGM/Cj4gCj4gSMOldmFyZAoKVW5m
+b3J0dW5hdGVseSBJIGNvdWxkIG5vdCBnZXQgU3lzUnEgd29ya2luZyBvbiBBdGVtbCBkYmd1LgpJ
+IGluc3RhbGxlZCBHUElPIElSUSBoYW5kbGVyIAoKc3RhdGljIGlycXJldHVybl90IGNodWJwb3dl
+cl9pcnFfaGFuZGxlcihpbnQgaXJxLCB2b2lkICpjb250ZXh0KQp7CiAgICAgICAgcHJpbnRrKEtF
+Uk5fRU1FUkcgIlBvd2VyIVxuIik7CiAgICAgICAgZHVtcF9zdGFjaygpOwogICAgICAgIHJldHVy
+biBJUlFfSEFORExFRDsKfQoKYW5kIHRyaWdnZXJlZCBpdCB3aGVuIHRoZSBzeXN0ZW0gc3R1bWJs
+ZWQgb24gRGF0YWZsYXNoIGluaXQsIGFsc28gSSBhZGRlZCBzb21lIHByaW50a3M6CgpldGgwOiBM
+aW5rIG5vdyAxMDAtRnVsbER1cGxleApldGgwOiBBVDkxIGV0aGVybmV0IGF0IDB4ZmVmYmMwMDAg
+aW50PTI0IDEwMC1GdWxsRHVwbGV4ICgwMDoxMjozNDo1Njo3ODo5YSkKZXRoMDogTmF0aW9uYWwg
+U2VtaWNvbmR1Y3RvciBEUDgzODQ4IFBIWQpzcGlfcmVnaXN0ZXJfZHJpdmVyIDogbGluZSAxNjMK
+ZW50ZXIgYXRtZWxfc3BpX3Byb2JlIDogbGluZSA1NDYKYXRtZWxfc3BpX3Byb2JlIDogbGluZSA2
+MDMKYXRtZWxfc3BpIGF0bWVsX3NwaS4wOiBBdG1lbCBTUEkgQ29udHJvbGxlciBhdCAweGZmZmUw
+MDAwIChpcnEgMTMpCnNwaV9yZWdpc3Rlcl9tYXN0ZXIgOiBsaW5lIDQyOApzY2FuX2JvYXJkaW5m
+byA6IGxpbmUgMzE4CnNwaV9uZXdfZGV2aWNlIDogbGluZSAyMTMKZW50ZXIgYXRtZWxfc3BpX3Nl
+dHVwIDogbGluZSAzOTAKbGVhdmUgYXRtZWxfc3BpX3NldHVwIDogbGluZSA0NjIKc3BpX2Rydl9w
+cm9iZSA6IGxpbmUgMTM2CmRhdGFmbGFzaF9wcm9iZSA6IGxpbmUgNTM2CmRhdGFmbGFzaF9zdGF0
+dXMgOiBsaW5lIDExNAplbnRlciBzcGlfdzhyOCA6IGxpbmUgNjE3CmVudGVyIHNwaV93cml0ZV90
+aGVuX3JlYWQgOiBsaW5lIDU5NgpiZWZvcmUgc3BpX3N5bmMgc3BpX3dyaXRlX3RoZW5fcmVhZCA6
+IGxpbmUgNjI5CmVudGVyIGF0bWVsX3NwaV90cmFuc2ZlciA6IGxpbmUgNDc0CmVudGVyIGF0bWVs
+X3NwaV9kbWFfbWFwX3hmZXIgOiBsaW5lIDIwMQpsZWF2ZSBhdG1lbF9zcGlfZG1hX21hcF94ZmVy
+IDogbGluZSAyMTIKZW50ZXIgYXRtZWxfc3BpX2RtYV9tYXBfeGZlciA6IGxpbmUgMjAxCmxlYXZl
+IGF0bWVsX3NwaV9kbWFfbWFwX3hmZXIgOiBsaW5lIDIxMgplbnRlciBhdG1lbF9zcGlfbmV4dF9t
+ZXNzYWdlIDogbGluZSAxODIKY3NfYWN0aXZhdGUgOiBsaW5lIDc3CmVudGVyIGF0bWVsX3NwaV9u
+ZXh0X3hmZXIgOiBsaW5lIDEwNgpsZWF2ZSBhdG1lbF9zcGlfbmV4dF94ZmVyIDogbGluZSAxNzMK
+bGVhdmUgYXRtZWxfc3BpX25leHRfbWVzc2FnZSA6IGxpbmUgMTk1CmxlYXZlIGF0bWVsX3NwaV90
+cmFuc2ZlciA6IGxpbmUgNTI0ClBvd2VyIQpbPGMwMDIzZTYwPl0gKGR1bXBfc3RhY2srMHgwLzB4
+MTQpIGZyb20gWzxjMDAyOTQ0MD5dIChjaHVicG93ZXJfaXJxX2hhbmRsZXIrMHgxOC8weDI0KQpb
+PGMwMDI5NDI4Pl0gKGNodWJwb3dlcl9pcnFfaGFuZGxlcisweDAvMHgyNCkgZnJvbSBbPGMwMDU0
+OTgwPl0gKGhhbmRsZV9JUlFfZXZlbnQrMHg0NC8weDgwKQpbPGMwMDU0OTNjPl0gKGhhbmRsZV9J
+UlFfZXZlbnQrMHgwLzB4ODApIGZyb20gWzxjMDA1NWMxOD5dIChoYW5kbGVfc2ltcGxlX2lycSsw
+eDgwLzB4YjQpCiByNzowMDAwMDAwMyByNjowMDAwMDAwMSByNTowMDAwMDA1YyByNDpjMDFlNDI4
+NApbPGMwMDU1Yjk4Pl0gKGhhbmRsZV9zaW1wbGVfaXJxKzB4MC8weGI0KSBmcm9tIFs8YzAwMjky
+OTg+XSAoZ3Bpb19pcnFfaGFuZGxlcisweGEwLzB4Y2MpCiByNTpjMDFlNDI4NCByNDowMDAwMDA1
+YwpbPGMwMDI5MWY4Pl0gKGdwaW9faXJxX2hhbmRsZXIrMHgwLzB4Y2MpIGZyb20gWzxjMDAxZjA0
+OD5dIChhc21fZG9fSVJRKzB4NDgvMHg3MCkKWzxjMDAxZjAwMD5dIChhc21fZG9fSVJRKzB4MC8w
+eDcwKSBmcm9tIFs8YzAwMWZhYzQ+XSAoX19pcnFfc3ZjKzB4MjQvMHg2MCkKRXhjZXB0aW9uIHN0
+YWNrKDB4YzAxZGRmNTAgdG8gMHhjMDFkZGY5OCkKZGY0MDogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgMDAwMDAwMDAgZmVmZmY4MzAgMDAwMDAwMDAgNjAwMDAwMTMgCmRmNjA6
+IGMwMWRjMDAwIGMwMDIwOTA4IGMwMWRmZjc4IGMwMjA4MmVjIDIwMDFjMTg0IDQxMTI5MjAwIDIw
+MDFjMTUwIGMwMWRkZmE0IApkZjgwOiBjMDFkZGZhOCBjMDFkZGY5OCBjMDAyMDk0OCBjMDAyMDk1
+NCA2MDAwMDAxMyBmZmZmZmZmZiAgICAgICAgICAgICAgICAgICAKIHI3OmMwMjA4MmVjIHI2OjAw
+MDAwMDAzIHI1OmZlZmZmMDAwIHI0OmZmZmZmZmZmCls8YzAwMjA5MDg+XSAoZGVmYXVsdF9pZGxl
+KzB4MC8weDU0KSBmcm9tIFs8YzAwMjA5YjQ+XSAoY3B1X2lkbGUrMHg1OC8weDdjKQpbPGMwMDIw
+OTVjPl0gKGNwdV9pZGxlKzB4MC8weDdjKSBmcm9tIFs8YzAwMWYyYmM+XSAoX19leGNlcHRpb25f
+dGV4dF9lbmQrMHg0OC8weDU4KQogcjY6YzAwMWRmMjggcjU6YzAxZWZlNDggcjQ6YzAxZjhhZTQK
+WzxjMDAxZjI3ND5dIChfX2V4Y2VwdGlvbl90ZXh0X2VuZCsweDAvMHg1OCkgZnJvbSBbPGMwMDA4
+YWI4Pl0gKHN0YXJ0X2tlcm5lbCsweDI3Yy8weDJlNCkKWzxjMDAwODgzYz5dIChzdGFydF9rZXJu
+ZWwrMHgwLzB4MmU0KSBmcm9tIFs8MjAwMDgwMzA+XSAoMHgyMDAwODAzMCkKIHI2OmMwMWRmYzU0
+IHI1OmMwMWYwMzA0IHI0OmMwMDA3MTc1CgpTZWVtcyBpdCB3YXMgaW4gdGhlIGlkbGUgc3RhdGUu
+CgpCUiwKSXZhbgoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVtYWlsIGlzIHNwb25z
+b3JlZCBieSBEQjIgRXhwcmVzcwpEb3dubG9hZCBEQjIgRXhwcmVzcyBDIC0gdGhlIEZSRUUgdmVy
+c2lvbiBvZiBEQjIgZXhwcmVzcyBhbmQgdGFrZQpjb250cm9sIG9mIHlvdXIgWE1MLiBObyBsaW1p
+dHMuIEp1c3QgZGF0YS4gQ2xpY2sgdG8gZ2V0IGl0IG5vdy4KaHR0cDovL3NvdXJjZWZvcmdlLm5l
+dC9wb3dlcmJhci9kYjIvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
+bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

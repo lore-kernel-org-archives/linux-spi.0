@@ -1,23 +1,22 @@
-From: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: problem with converting from at91_spi to
- atmel_spi (AT91RM9200)
-Date: Fri, 25 May 2007 17:55:02 +0200
-Message-ID: <20070525175502.4927c151@dhcp-255-175.norway.atmel.com>
+	atmel_spi (AT91RM9200)
+Date: Fri, 25 May 2007 09:51:01 -0700
+Message-ID: <200705250951.06614.david-b@pacbell.net>
 References: <20070523143456.15fc49ab@newbox>
-	<200705230906.13353.david-b@pacbell.net>
-	<20070524133646.62bbc386@dhcp-255-175.norway.atmel.com>
-	<20070525180236.33f634d2@newbox>
+	<1180076844.23793.6.camel@fuzzie.sanpeople.com>
+	<20070525171936.7668283d@newbox>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Nicolas-MRDXTZLjjMs8G+1z+Pypc6QD96bmaF075NbjCUgZEJk@public.gmane.org,
-	Ferre <nicolas.ferre-XEyKDsrmbOsS+FvcfC7Uqw@public.gmane.org>,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Andrew Victor <andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org>,
 	Bill Gatliff <bgat-uPd5UNENI//N9NzbbXoYwQ@public.gmane.org>,
-	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Ivan Kuten <ivan.kuten-NihHnkIkDZhBDgjK7y7TUQ@public.gmane.org>
+	Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Nicolas Ferre <nicolas.ferre-XEyKDsrmbOsS+FvcfC7Uqw@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070525180236.33f634d2@newbox>
+In-Reply-To: <20070525171936.7668283d@newbox>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -29,33 +28,40 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gRnJpLCAyNSBNYXkgMjAwNyAxODowMjozNiArMDMwMApJdmFuIEt1dGVuIDxpdmFuLmt1dGVu
-QHByb213YWQuY29tPiB3cm90ZToKPiBPbiBUaHUsIDI0IE1heSAyMDA3IDEzOjM2OjQ2ICswMjAw
-Cgo+IEhhYXZhcmQgU2tpbm5lbW9lbiB3cm90ZToKPiBVbmZvcnR1bmF0ZWx5IEkgY291bGQgbm90
-IGdldCBTeXNScSB3b3JraW5nIG9uIEF0ZW1sIGRiZ3UuCj4gSSBpbnN0YWxsZWQgR1BJTyBJUlEg
-aGFuZGxlciAKClJpZ2h0LiBJIHJlbWVtYmVyIHBvc3RpbmcgYSBwYXRjaCB0byBmaXggaXQsIGJ1
-dCBybWsgZm91bmQgc29tZSBpc3N1ZXMKd2l0aCBpdCBhbmQgSSBuZXZlciByZWFsbHkgZ290IGFy
-b3VuZCB0byBmaXggdGhlIGlzc3VlcyBoZSBjb21wbGFpbmVkCmFib3V0Li4uCgo+IHN0YXRpYyBp
-cnFyZXR1cm5fdCBjaHVicG93ZXJfaXJxX2hhbmRsZXIoaW50IGlycSwgdm9pZCAqY29udGV4dCkK
-PiB7Cj4gICAgICAgICBwcmludGsoS0VSTl9FTUVSRyAiUG93ZXIhXG4iKTsKPiAgICAgICAgIGR1
-bXBfc3RhY2soKTsKPiAgICAgICAgIHJldHVybiBJUlFfSEFORExFRDsKPiB9Cj4gCj4gYW5kIHRy
-aWdnZXJlZCBpdCB3aGVuIHRoZSBzeXN0ZW0gc3R1bWJsZWQgb24gRGF0YWZsYXNoIGluaXQsIGFs
-c28gSSBhZGRlZCBzb21lIHByaW50a3M6Cgo+IFNlZW1zIGl0IHdhcyBpbiB0aGUgaWRsZSBzdGF0
-ZS4KCkhtbS4uLm5vdCB0b28gc3VycHJpc2luZyByZWFsbHkuIENvdWxkIHlvdSBhZGQgYSBjYWxs
-IHRvIHNob3dfc3RhdGUoKQphcyB3ZWxsPyBJIHN1c3BlY3QgaXQgd2lsbCBqdXN0IHNob3cgaW5p
-dCB3YWl0aW5nIGZvciBjb21wbGV0aW9uIGluCnNwaV9zeW5jKCkgdGhvdWdoLgoKV2hhdCBtaWdo
-dCBiZSBtb3JlIGludGVyZXN0aW5nIGlzIGEgZHVtcCBvZiB0aGUgY29udGVudHMgb2YgdGhlIFNQ
-SQpjb250cm9sbGVyIHJlZ2lzdGVycywgaS5lLiBzb21ldGhpbmcgbGlrZSB0aGlzOgoKCXZvaWQg
-KnA7CglpbnQgaTsKCglwID0gaW9yZW1hcCgweGZmZmUwMDAwKTsKCWZvciAoaSA9IDA7IGkgPCAw
-eDEwMDsgaSArPSAxNikKCQlwcmludGsoIiUwNHg6ICUwOHggJTA4eCAlMDh4ICUwOHhcbiIsIGks
-CgkJCXJlYWRsKHAgKyBpKSwgcmVhZGwocCArIGkgKyA0KSwKCQkJcmVhZGwocCArIGkgKyA4KSwg
-cmVhZGwocCArIGkgKyAxMikpOwoJaW91bm1hcChwKTsKCkNvdWxkIHlvdSBhZGQgdGhhdD8KCkjD
-pXZhcmQKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5
-IERCMiBFeHByZXNzCkRvd25sb2FkIERCMiBFeHByZXNzIEMgLSB0aGUgRlJFRSB2ZXJzaW9uIG9m
-IERCMiBleHByZXNzIGFuZCB0YWtlCmNvbnRyb2wgb2YgeW91ciBYTUwuIE5vIGxpbWl0cy4gSnVz
-dCBkYXRhLiBDbGljayB0byBnZXQgaXQgbm93LgpodHRwOi8vc291cmNlZm9yZ2UubmV0L3Bvd2Vy
-YmFyL2RiMi8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
-by9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Friday 25 May 2007, Ivan Kuten wrote:
+> On 25 May 2007 09:07:24 +0200
+> Andrew Victor wrote:
+> 
+> > hi,
+> > 
+> > > static struct spi_board_info dk_spi_devices[] = {
+> > >         ...
+> > > 
+> > > are broken cause all of them have chip_select = 0 ?
+> > 
+> > I doubt it.
+> > 
+> > The DK board definitely works.
+> > All SAN People's RM9200-based products have DataFlash on CS0 - boot from
+> > CS0, mount root filesystem (cramfs) on CS0, writable JFFS2 partition on
+> > CS0.
+> > 
+> > That's with legacy SPI and at91_dataflash.c. (ie, CS0 under SPI
+> > control).
+
+It'd be good if someone with some rm9200 board that can boot
+from DataFlash tried a version of the atmel_spi config that
+leaves CS0 under control of the SPI controller ... updating
+the setup code would suffice, ISTR.
+
+Because we know that both atmel_spi and mtd_datflash behave on
+other hardware, even for CS0.  And ISTR hearing they work OK
+on rm9200, for other chipselects...
+
+- Dave
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by DB2 Express
+Download DB2 Express C - the FREE version of DB2 express and take
+control of your XML. No limits. Just data. Click to get it now.
+http://sourceforge.net/powerbar/db2/

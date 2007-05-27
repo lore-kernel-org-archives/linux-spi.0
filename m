@@ -1,24 +1,25 @@
-From: Ivan Kuten <ivan.kuten-NihHnkIkDZhBDgjK7y7TUQ@public.gmane.org>
+From: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Subject: Re: problem with converting from at91_spi to
  atmel_spi (AT91RM9200)
-Date: Sat, 26 May 2007 17:02:25 +0300
-Message-ID: <20070526170225.029c1448@newbox>
+Date: Sun, 27 May 2007 14:45:25 +0200
+Message-ID: <20070527144525.664c0fd7@dhcp-255-175.norway.atmel.com>
 References: <20070523143456.15fc49ab@newbox>
 	<200705230906.13353.david-b@pacbell.net>
 	<20070524133646.62bbc386@dhcp-255-175.norway.atmel.com>
 	<20070525180236.33f634d2@newbox>
 	<20070525175502.4927c151@dhcp-255-175.norway.atmel.com>
+	<20070526170225.029c1448@newbox>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: Nicolas-MRDXTZLjjMs8G+1z+Pypc6QD96bmaF075NbjCUgZEJk@public.gmane.org,
 	Ferre <nicolas.ferre-XEyKDsrmbOsS+FvcfC7Uqw@public.gmane.org>,
 	Bill Gatliff <bgat-uPd5UNENI//N9NzbbXoYwQ@public.gmane.org>,
 	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: Ivan Kuten <ivan.kuten-NihHnkIkDZhBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070525175502.4927c151-RzfXdsu3MTOUA/xf2v/QOMGzbamoMwWuEvhb3Hwu1Ks@public.gmane.org>
+In-Reply-To: <20070526170225.029c1448@newbox>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -30,75 +31,37 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 25 May 2007 17:55:02 +0200
-Haavard Skinnemoen wrote:
-
-> 
-> Hmm...not too surprising really. Could you add a call to show_state()
-> as well? I suspect it will just show init waiting for completion in
-> spi_sync() though.
-> 
-
-Haavard, log with show_state() is attached, seems you are right it's waiting for completion.
-
-[<c017f040>] (schedule+0x0/0x750) from [<c017f83c>] (wait_for_completion+0xac/0x110)
-[<c017f790>] (wait_for_completion+0x0/0x110) from [<c0120018>] (spi_sync+0x54/0x68)
- r6:00000000 r5:c0405c78 r4:c0405c00
-[<c011ffc4>] (spi_sync+0x0/0x68) from [<c0120170>] (spi_write_then_read+0x144/0x204)
- r7:c01eb978 r6:c0405c78 r5:c06aa6e0 r4:00000001
-[<c012002c>] (spi_write_then_read+0x0/0x204) from [<c011f664>] (dataflash_probe+0x6c/0x244)
-[<c011f5f8>] (dataflash_probe+0x0/0x244) from [<c011f99c>] (spi_drv_probe+0x3c/0x48)
- r6:c01eb634 r5:00000000 r4:c03ea200
-[<c011f960>] (spi_drv_probe+0x0/0x48) from [<c0104e7c>] (driver_probe_device+0xe8/0x18c)
- r4:c03ea200
-[<c0104d94>] (driver_probe_device+0x0/0x18c) from [<c0104f30>] (__device_attach+0x10/0x14)
-
-
-> What might be more interesting is a dump of the contents of the SPI
-> controller registers, i.e. something like this:
-> 
-> 	void *p;
-> 	int i;
-> 
-> 	p = ioremap(0xfffe0000);
-> 	for (i = 0; i < 0x100; i += 16)
-> 		printk("%04x: %08x %08x %08x %08x\n", i,
-> 			readl(p + i), readl(p + i + 4),
-> 			readl(p + i + 8), readl(p + i + 12));
-> 	iounmap(p);
-> 
-
-Here is dump of SPI regs:
-
-Power!
-0000: 00000000 000e0011 00000000 00000000
-0010: 000100a0 00000000 00000000 00000018
-0020: 00000000 00000000 00000000 00000000
-0030: 0a0a0202 00000000 00000000 00000000
-0040: 00000000 00000000 00000000 00000000
-0050: 00000000 00000000 00000000 00000000
-0060: 00000000 00000000 00000000 00000000
-0070: 00000000 00000000 00000000 00000000
-0080: 00000000 00000000 00000000 00000000
-0090: 00000000 00000000 00000000 00000000
-00a0: 00000000 00000000 00000000 00000000
-00b0: 00000000 00000000 00000000 00000000
-00c0: 00000000 00000000 00000000 00000000
-00d0: 00000000 00000000 00000000 00000000
-00e0: 00000000 00000000 00000000 00000000
-00f0: 00000000 00000000 00000000 00000000
-
-P.S. I placed ioremap outside irq handler, otherwise it complains
-kernel BUG at mm/vmalloc.c:171!
-Unable to handle kernel NULL pointer dereference at virtual address 00000000
-pgd = c0004000
-[00000000] *pgd=00000000
-
-BR, 
-Ivan
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by DB2 Express
-Download DB2 Express C - the FREE version of DB2 express and take
-control of your XML. No limits. Just data. Click to get it now.
-http://sourceforge.net/powerbar/db2/
+T24gU2F0LCAyNiBNYXkgMjAwNyAxNzowMjoyNSArMDMwMApJdmFuIEt1dGVuIDxpdmFuLmt1dGVu
+QHByb213YWQuY29tPiB3cm90ZToKCj4gSGVyZSBpcyBkdW1wIG9mIFNQSSByZWdzOgo+IAo+IFBv
+d2VyIQo+IDAwMDA6IDAwMDAwMDAwIDAwMGUwMDExIDAwMDAwMDAwIDAwMDAwMDAwCj4gMDAxMDog
+MDAwMTAwYTAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMTgKClRoaXMgaXMgaW50ZXJlc3Rpbmcu
+Li5TUiBoYXMgU1BJRU5TLCBUWEJVRkUgYW5kIEVORFRYIGJpdHMgc2V0LApub3RoaW5nIGVsc2Uu
+IFNvIHRoZSBETUEgdHJhbnNmZXIgaXMgY29tcGxldGUgb24gdGhlIFRYIHNpZGUsIGJ1dCBub3QK
+Zm9yIFJYIGFuZCB0aGUgVFggc2hpZnRlciBzdGlsbCBoYXMgZGF0YSBpbiBpdC4uLgoKT2ssIHRo
+aXMgX2lzXyBhY3R1YWxseSB0aGUgc2Vjb25kIGVycmF0YSAtLSBpdCBzZWVtcyB0byB0cmlnZ2Vy
+IGV2ZW4gaWYKbW9kZSBmYXVsdCBkZXRlY3Rpb24gaXMgdHVybmVkIG9mZi4gSSBkaWRuJ3Qga25v
+dyB0aGF0LCBidXQgdGhlIGVycmF0YQppcyBhY3R1YWxseSBxdWl0ZSBjbGVhcjogIklmIE1vZGUg
+ZmF1bHQgaXMgZGlzYWJsZWQsIENoaXAgU2VsZWN0IDAKY2Fubm90IGJlIGRyaXZlbiBieSBhIGNv
+bXBvbmVudCBvdGhlciB0aGFuIHRoZSBTUEkgb3RoZXJ3aXNlIHRoZQp0cmFuc2ZlciBkb2VzIG5v
+dCBvY2N1ci4iCgpOaWNvbGFzLCBkbyB5b3Uga25vdyBvZiBhbnkgd29ya2Fyb3VuZCBmb3IgdGhp
+cz8gSSBzdXBwb3NlIGltcGxlbWVudGluZwpETUEgY2hhaW5pbmcgd291bGQgaGVscCwgYnV0IGl0
+IGRvZXNuJ3Qgc291bmQgbGlrZSBhbiBlbnRpcmVseQp3YXRlcnRpZ2h0IHNvbHV0aW9uIHRvIG1l
+Li4uCgpGV0lXLCB0aGUgU0FNOSBhbmQgQVA3MDB4IGNoaXBzIGRvbid0IHNlZW0gdG8gaGF2ZSB0
+aGUgc2FtZSBlcnJhdGEuClRoZXkgaGF2ZSBhIHNvbWV3aGF0IHNpbWlsYXIgcXVpcmsgd2hpY2gg
+aXMgdGhhdCB3aGVuIG1vZGUgZmF1bHQKY2hlY2tpbmcgaXMgX2VuYWJsZWRfLCB0aGUgU1BJIGNv
+bnRyb2xsZXIgd2lsbCByZWZ1c2UgdG8gc3RhcnQgYQp0cmFuc2ZlciBpZiBDUzAgaXMgYWxyZWFk
+eSBsb3cuIFRoaXMgaXMgd2h5IEkgZGlzYWJsZWQgbW9kZSBmYXVsdApjaGVja2luZyBpbiB0aGUg
+Zmlyc3QgcGxhY2UuCgo+IFAuUy4gSSBwbGFjZWQgaW9yZW1hcCBvdXRzaWRlIGlycSBoYW5kbGVy
+LCBvdGhlcndpc2UgaXQgY29tcGxhaW5zCj4ga2VybmVsIEJVRyBhdCBtbS92bWFsbG9jLmM6MTcx
+IQo+IFVuYWJsZSB0byBoYW5kbGUga2VybmVsIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZSBhdCB2
+aXJ0dWFsIGFkZHJlc3MgMDAwMDAwMDAKPiBwZ2QgPSBjMDAwNDAwMAo+IFswMDAwMDAwMF0gKnBn
+ZD0wMDAwMDAwMAoKUmlnaHQuLi5pb3JlbWFwIGNhbid0IGJlIGNhbGxlZCBmcm9tIGludGVycnVw
+dCBjb250ZXh0LiBNeSBiYWQuCgpIw6V2YXJkCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0
+IGVtYWlsIGlzIHNwb25zb3JlZCBieSBEQjIgRXhwcmVzcwpEb3dubG9hZCBEQjIgRXhwcmVzcyBD
+IC0gdGhlIEZSRUUgdmVyc2lvbiBvZiBEQjIgZXhwcmVzcyBhbmQgdGFrZQpjb250cm9sIG9mIHlv
+dXIgWE1MLiBObyBsaW1pdHMuIEp1c3QgZGF0YS4gQ2xpY2sgdG8gZ2V0IGl0IG5vdy4KaHR0cDov
+L3NvdXJjZWZvcmdlLm5ldC9wb3dlcmJhci9kYjIvCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

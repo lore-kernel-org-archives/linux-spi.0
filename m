@@ -1,25 +1,16 @@
-From: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: problem with converting from at91_spi to
- atmel_spi (AT91RM9200)
-Date: Sun, 27 May 2007 14:45:25 +0200
-Message-ID: <20070527144525.664c0fd7@dhcp-255-175.norway.atmel.com>
-References: <20070523143456.15fc49ab@newbox>
-	<200705230906.13353.david-b@pacbell.net>
-	<20070524133646.62bbc386@dhcp-255-175.norway.atmel.com>
-	<20070525180236.33f634d2@newbox>
-	<20070525175502.4927c151@dhcp-255-175.norway.atmel.com>
-	<20070526170225.029c1448@newbox>
+From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Re: [patch 2.6.22-rc2-git] spidev compiler
+	warning gone
+Date: Tue, 29 May 2007 15:02:14 -0700
+Message-ID: <20070529150214.75204439.akpm@linux-foundation.org>
+References: <200705251035.10587.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Nicolas-MRDXTZLjjMs8G+1z+Pypc6QD96bmaF075NbjCUgZEJk@public.gmane.org,
-	Ferre <nicolas.ferre-XEyKDsrmbOsS+FvcfC7Uqw@public.gmane.org>,
-	Bill Gatliff <bgat-uPd5UNENI//N9NzbbXoYwQ@public.gmane.org>,
-	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, andrew-eS41wJS13H5l57MIdRCFDg@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Ivan Kuten <ivan.kuten-NihHnkIkDZhBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070526170225.029c1448@newbox>
+In-Reply-To: <200705251035.10587.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -31,37 +22,46 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU2F0LCAyNiBNYXkgMjAwNyAxNzowMjoyNSArMDMwMApJdmFuIEt1dGVuIDxpdmFuLmt1dGVu
-QHByb213YWQuY29tPiB3cm90ZToKCj4gSGVyZSBpcyBkdW1wIG9mIFNQSSByZWdzOgo+IAo+IFBv
-d2VyIQo+IDAwMDA6IDAwMDAwMDAwIDAwMGUwMDExIDAwMDAwMDAwIDAwMDAwMDAwCj4gMDAxMDog
-MDAwMTAwYTAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMTgKClRoaXMgaXMgaW50ZXJlc3Rpbmcu
-Li5TUiBoYXMgU1BJRU5TLCBUWEJVRkUgYW5kIEVORFRYIGJpdHMgc2V0LApub3RoaW5nIGVsc2Uu
-IFNvIHRoZSBETUEgdHJhbnNmZXIgaXMgY29tcGxldGUgb24gdGhlIFRYIHNpZGUsIGJ1dCBub3QK
-Zm9yIFJYIGFuZCB0aGUgVFggc2hpZnRlciBzdGlsbCBoYXMgZGF0YSBpbiBpdC4uLgoKT2ssIHRo
-aXMgX2lzXyBhY3R1YWxseSB0aGUgc2Vjb25kIGVycmF0YSAtLSBpdCBzZWVtcyB0byB0cmlnZ2Vy
-IGV2ZW4gaWYKbW9kZSBmYXVsdCBkZXRlY3Rpb24gaXMgdHVybmVkIG9mZi4gSSBkaWRuJ3Qga25v
-dyB0aGF0LCBidXQgdGhlIGVycmF0YQppcyBhY3R1YWxseSBxdWl0ZSBjbGVhcjogIklmIE1vZGUg
-ZmF1bHQgaXMgZGlzYWJsZWQsIENoaXAgU2VsZWN0IDAKY2Fubm90IGJlIGRyaXZlbiBieSBhIGNv
-bXBvbmVudCBvdGhlciB0aGFuIHRoZSBTUEkgb3RoZXJ3aXNlIHRoZQp0cmFuc2ZlciBkb2VzIG5v
-dCBvY2N1ci4iCgpOaWNvbGFzLCBkbyB5b3Uga25vdyBvZiBhbnkgd29ya2Fyb3VuZCBmb3IgdGhp
-cz8gSSBzdXBwb3NlIGltcGxlbWVudGluZwpETUEgY2hhaW5pbmcgd291bGQgaGVscCwgYnV0IGl0
-IGRvZXNuJ3Qgc291bmQgbGlrZSBhbiBlbnRpcmVseQp3YXRlcnRpZ2h0IHNvbHV0aW9uIHRvIG1l
-Li4uCgpGV0lXLCB0aGUgU0FNOSBhbmQgQVA3MDB4IGNoaXBzIGRvbid0IHNlZW0gdG8gaGF2ZSB0
-aGUgc2FtZSBlcnJhdGEuClRoZXkgaGF2ZSBhIHNvbWV3aGF0IHNpbWlsYXIgcXVpcmsgd2hpY2gg
-aXMgdGhhdCB3aGVuIG1vZGUgZmF1bHQKY2hlY2tpbmcgaXMgX2VuYWJsZWRfLCB0aGUgU1BJIGNv
-bnRyb2xsZXIgd2lsbCByZWZ1c2UgdG8gc3RhcnQgYQp0cmFuc2ZlciBpZiBDUzAgaXMgYWxyZWFk
-eSBsb3cuIFRoaXMgaXMgd2h5IEkgZGlzYWJsZWQgbW9kZSBmYXVsdApjaGVja2luZyBpbiB0aGUg
-Zmlyc3QgcGxhY2UuCgo+IFAuUy4gSSBwbGFjZWQgaW9yZW1hcCBvdXRzaWRlIGlycSBoYW5kbGVy
-LCBvdGhlcndpc2UgaXQgY29tcGxhaW5zCj4ga2VybmVsIEJVRyBhdCBtbS92bWFsbG9jLmM6MTcx
-IQo+IFVuYWJsZSB0byBoYW5kbGUga2VybmVsIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZSBhdCB2
-aXJ0dWFsIGFkZHJlc3MgMDAwMDAwMDAKPiBwZ2QgPSBjMDAwNDAwMAo+IFswMDAwMDAwMF0gKnBn
-ZD0wMDAwMDAwMAoKUmlnaHQuLi5pb3JlbWFwIGNhbid0IGJlIGNhbGxlZCBmcm9tIGludGVycnVw
-dCBjb250ZXh0LiBNeSBiYWQuCgpIw6V2YXJkCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0
-IGVtYWlsIGlzIHNwb25zb3JlZCBieSBEQjIgRXhwcmVzcwpEb3dubG9hZCBEQjIgRXhwcmVzcyBD
-IC0gdGhlIEZSRUUgdmVyc2lvbiBvZiBEQjIgZXhwcmVzcyBhbmQgdGFrZQpjb250cm9sIG9mIHlv
-dXIgWE1MLiBObyBsaW1pdHMuIEp1c3QgZGF0YS4gQ2xpY2sgdG8gZ2V0IGl0IG5vdy4KaHR0cDov
-L3NvdXJjZWZvcmdlLm5ldC9wb3dlcmJhci9kYjIvCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
-b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Fri, 25 May 2007 10:35:07 -0700
+David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+
+> Get rid of annoying GCC warning on 32-bit platforms.  The trick is to
+> add an extra cast using "ptrdiff_t" to convert the u64 to the correct
+> size integer, and only then casting it into a "void *" pointer.
+> 
+> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+> ---
+>  drivers/spi/spidev.c |    6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> --- g26.orig/drivers/spi/spidev.c	2007-05-24 12:04:46.000000000 -0700
+> +++ g26/drivers/spi/spidev.c	2007-05-25 10:31:56.000000000 -0700
+> @@ -181,7 +181,8 @@ static int spidev_message(struct spidev_
+>  		}
+>  		if (u_tmp->tx_buf) {
+>  			k_tmp->tx_buf = buf;
+> -			if (copy_from_user(buf, (const u8 __user *)u_tmp->tx_buf,
+> +			if (copy_from_user(buf, (const u8 __user *)
+> +						(ptrdiff_t) u_tmp->tx_buf,
+>  					u_tmp->len))
+>  				goto done;
+>  		}
+> @@ -213,7 +214,8 @@ static int spidev_message(struct spidev_
+>  	buf = spidev->buffer;
+>  	for (n = n_xfers, u_tmp = u_xfers; n; n--, u_tmp++) {
+>  		if (u_tmp->rx_buf) {
+> -			if (__copy_to_user((u8 __user *)u_tmp->rx_buf, buf,
+> +			if (__copy_to_user((u8 __user *)
+> +					(ptrdiff_t) u_tmp->rx_buf, buf,
+>  					u_tmp->len)) {
+>  				status = -EFAULT;
+>  				goto done;
+
+This seems overly tricky.  The way we normally squish that warning is
+via a (long) cast.
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by DB2 Express
+Download DB2 Express C - the FREE version of DB2 express and take
+control of your XML. No limits. Just data. Click to get it now.
+http://sourceforge.net/powerbar/db2/

@@ -1,16 +1,18 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: [patch 2.6.22-rc3-git] SPI dynamic busid
 	generation bugfix
-Date: Fri, 1 Jun 2007 16:33:39 -0700
-Message-ID: <20070601163339.482e2327.akpm@linux-foundation.org>
+Date: Fri, 1 Jun 2007 16:46:12 -0700
+Message-ID: <200706011646.12340.david-b@pacbell.net>
 References: <200706011612.19766.david-b@pacbell.net>
+	<20070601163339.482e2327.akpm@linux-foundation.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200706011612.19766.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <20070601163339.482e2327.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -22,28 +24,17 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 1 Jun 2007 16:12:19 -0700
-David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-
-> Fix SPI dynamic bus ID assignment to start at 2^15-1 rather than
-> a negative number.  Valid bus ids are supposed to be positive,
-> and are (now) stored in an 's16' value.
+On Friday 01 June 2007, Andrew Morton wrote:
 > 
-> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-> 
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -411,7 +411,7 @@ EXPORT_SYMBOL_GPL(spi_alloc_master);
->   */
->  int spi_register_master(struct spi_master *master)
->  {
-> -	static atomic_t		dyn_bus_id = ATOMIC_INIT((1<<16) - 1);
-> +	static atomic_t		dyn_bus_id = ATOMIC_INIT((1<<15) - 1);
->  	struct device		*dev = master->cdev.dev;
->  	int			status = -ENODEV;
->  	int			dynamic = 0;
+> Is this going to underflow then malfunction after 32k modprobe+rmmods?
 
-Is this going to underflow then malfunction after 32k modprobe+rmmods?
+Yes.  A better fix will be needed, for the crazy people amongst us.
+Dynamic busids are quite uncommon though, so that's not pressing.
+
+- Dave
+
+
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

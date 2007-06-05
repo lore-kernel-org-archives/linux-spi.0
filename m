@@ -1,8 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.22-rc4 2/7] SD 4wire bugfix
-Date: Mon, 4 Jun 2007 20:28:24 -0700
-Message-ID: <200706042028.24793.david-b@pacbell.net>
-References: <200706042025.18252.david-b@pacbell.net>
+Subject: [patch 2.6.22-rc4 0/7] latest MMC-over-SPI
+	patchset
+Date: Mon, 4 Jun 2007 20:25:17 -0700
+Message-ID: <200706042025.18252.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +12,6 @@ Cc: Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
 	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200706042025.18252.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,31 +24,40 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Once upon a debug dreary, while I pondered weak and weary,
-Over many a quaint and curious volume of forgotten lore--
-While I nodded, nearly napping, suddenly there came a trapping,
-As of some code gently thrashing, thrashing at a chip once more.
-"'Tis some bugginess," I muttered, "trapping MMC_CAP_4
-    Only this, and nothing more."
+It's been a while since the mmc-over-spi host driver has been
+updated, and I think it's time to do so ... and start getting
+it mergeable.  Hence the following series of patches.
 
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
-Sent already to Pierre ... this should get into 2.6.22-rc5!
+Kudos to Mike Lavender, original author; Hans-Peter Nilsson,
+who got this version to really work; Jan Nikitenko, who made
+more rough edges vanish and added CRC support; and Pierre Ossman,
+who has supported the notion of a bit more surgery on mmc-core
+to help keep some crap out of the host driver!
 
- drivers/mmc/core/sd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The first few patches are pretty separable:
 
---- g26.orig/drivers/mmc/core/sd.c	2007-05-06 08:27:52.000000000 -0700
-+++ g26/drivers/mmc/core/sd.c	2007-06-04 19:58:43.000000000 -0700
-@@ -402,7 +402,7 @@ static int mmc_sd_init_card(struct mmc_h
- 	/*
- 	 * Switch to wider bus (if supported).
- 	 */
--	if ((host->caps && MMC_CAP_4_BIT_DATA) &&
-+	if ((host->caps & MMC_CAP_4_BIT_DATA) &&
- 		(card->scr.bus_widths & SD_SCR_BUS_WIDTH_4)) {
- 		err = mmc_app_set_bus_width(card, MMC_BUS_WIDTH_4);
- 		if (err != MMC_ERR_NONE)
+  - CRC7 support (already in MM)
+  - SD 4wire bugfix (submitted to Pierre)
+  - SPI "exclusive mode" patch ... experimental, optional
+
+The rest are the guts of the MMC-over-SPI support, following
+Pierre's suggestion to teach the mmc core about SPI so that
+the host adapter doesn't have so much work to do.
+
+  - MMC headers expose SPI constants; add mmc_host_is_spi()
+  - MMC core uses those to support MMC or SD enumeration
+  - MMC block needed tweaks too
+  - Last but not least ... mmc_spi host adapter.
+
+This is distributed for testing and comments.  I believe that
+Pierre will have a few issues with the core patches.  The SPI
+"exclusive mode" patch will remain experimental for some time.
+
+I'd also like to see someone sign up as mmc_spi maintainer;
+ideally that person would start sheparding this the rest of
+the way upstream.
+
+- Dave
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

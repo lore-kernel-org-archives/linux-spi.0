@@ -1,8 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.22-rc4 3/7] SPI "exclusive access"
-	(experimental)
-Date: Mon, 4 Jun 2007 20:31:28 -0700
-Message-ID: <200706042031.29315.david-b@pacbell.net>
+Subject: [patch 2.6.22-rc4 4/7] MMC headers understand
+	SPI
+Date: Mon, 4 Jun 2007 20:34:35 -0700
+Message-ID: <200706042034.35542.david-b@pacbell.net>
 References: <200706042025.18252.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,288 +26,190 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a draft API and reference implementation for a new SPI protocol
-tweaking option, which supports more complex protocol stacks over SPI.
+Teach the MMC/SD/SDIO system headers that some hosts use SPI mode
 
-Examples: MMC/SD-over-SPI, wireless network chips, and hardware tools
-at the JTAG/ISP level.
+ - New host capabilities bits
+    * MMC_CAP_SPI, with mmc_host_is_spi() test
+    * MMC_CAP_SPI_CRC, if it's ready to use CRCs
+ 
+ - SPI-specific declarations:
+    * Response types, MMC_RSP_SPI_R*
+    * Two SPI-only commands 
+    * Status bits used native to SPI:  R1_SPI_*, R2_SPI_*
 
-  - A new SPI protocol tweaking interface, giving one driver exclusive
-    access to a SPI bus for transfer sequences too complex to fit into
-    one spi_message.
+ - Fix a few (unrelated) whitespace bugs in the headers.
 
-  - An initial implementation of that, for the "bitbang" core.  I'm
-    sure someone can come up with a much better implementation for this,
-    which I'd expect to feed back to improve that interface.
+None of these changes affects current code.
 
-It behaves in light testing without contention for the bus lock.
-
-Includes secondary queue code from Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-to make submissions to other devices act "normally"; they're executed
-when the exclusion is released.
-
-NOT YET READY for prime time.  An alternate scheme has recently been
-suggested, more amenable to IRQ-driven code that needs to start and
-sustain "exclusion" in contexts that can't sleep.
-
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_bitbang.c       |   92 +++++++++++++++++++++++++++++++++++++---
- include/linux/spi/spi.h         |   58 +++++++++++++++++++++++++
- include/linux/spi/spi_bitbang.h |    3 +
- 3 files changed, 148 insertions(+), 5 deletions(-)
+ include/linux/mmc/core.h |   25 ++++++++++++++++++++++--
+ include/linux/mmc/host.h |    4 +++
+ include/linux/mmc/mmc.h  |   48 ++++++++++++++++++++++++++++++++++++++++-------
+ 3 files changed, 68 insertions(+), 9 deletions(-)
 
---- g26.orig/include/linux/spi/spi.h	2007-06-04 19:57:23.000000000 -0700
-+++ g26/include/linux/spi/spi.h	2007-06-04 19:57:45.000000000 -0700
-@@ -182,6 +182,9 @@ static inline void spi_unregister_driver
-  *	the device whose settings are being modified.
-  * @transfer: adds a message to the controller's transfer queue.
-  * @cleanup: frees controller-specific state
-+ * @get_exclusive: Waits until the message queue is empty, then reserves
-+ *	the bus for exclusive use with that devices.
-+ * @put_exclusive: Reverses the effect of @get_exclusive.
-  *
-  * Each SPI master controller can communicate with one or more @spi_device
-  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
-@@ -237,6 +240,12 @@ struct spi_master {
+--- g26.orig/include/linux/mmc/host.h	2007-05-06 08:28:03.000000000 -0700
++++ g26/include/linux/mmc/host.h	2007-06-04 19:58:56.000000000 -0700
+@@ -90,6 +90,8 @@ struct mmc_host {
+ #define MMC_CAP_BYTEBLOCK	(1 << 2)	/* Can do non-log2 block sizes */
+ #define MMC_CAP_MMC_HIGHSPEED	(1 << 3)	/* Can do MMC high-speed timing */
+ #define MMC_CAP_SD_HIGHSPEED	(1 << 4)	/* Can do SD high-speed timing */
++#define MMC_CAP_SPI		(1 << 5)	/* Talks only SPI protocols */
++#define MMC_CAP_SPI_CRC		(1 << 6)	/* Handles CRC option in SPI */
  
- 	/* called on release() to free memory provided by spi_master */
- 	void			(*cleanup)(struct spi_device *spi);
-+
-+	/* Some protocols, like MMC or SD over SPI, need to lock a device's
-+	 * chipselect for an extended period of time.
-+	 */
-+	int			(*get_exclusive)(struct spi_device *spi);
-+	void			(*put_exclusive)(struct spi_device *spi);
- };
- 
- static inline void *spi_master_get_devdata(struct spi_master *master)
-@@ -538,6 +547,55 @@ spi_async(struct spi_device *spi, struct
- 	return spi->master->transfer(spi, message);
+ 	/* host specific block data */
+ 	unsigned int		max_seg_size;	/* see blk_queue_max_segment_size */
+@@ -137,6 +139,8 @@ static inline void *mmc_priv(struct mmc_
+ 	return (void *)host->private;
  }
  
++#define mmc_host_is_spi(host)	((host)->caps & MMC_CAP_SPI)
 +
-+#define SPI_HAS_EXCLUSIVE
+ #define mmc_dev(x)	((x)->parent)
+ #define mmc_classdev(x)	(&(x)->class_dev)
+ #define mmc_hostname(x)	((x)->class_dev.bus_id)
+--- g26.orig/include/linux/mmc/core.h	2007-05-06 08:28:03.000000000 -0700
++++ g26/include/linux/mmc/core.h	2007-06-04 19:58:56.000000000 -0700
+@@ -25,14 +25,19 @@ struct mmc_command {
+ #define MMC_RSP_CRC	(1 << 2)		/* expect valid crc */
+ #define MMC_RSP_BUSY	(1 << 3)		/* card may send busy */
+ #define MMC_RSP_OPCODE	(1 << 4)		/* response contains opcode */
+-#define MMC_CMD_MASK	(3 << 5)		/* command type */
 +
-+/**
-+ * spi_get_exclusive - temporarily acquire exclusive access to a SPI bus
-+ * @spi: device which will have exclusive access to the SPI bus.
-+ * Context: can sleep
++#define MMC_CMD_MASK	(3 << 5)		/* non-SPI command type */
+ #define MMC_CMD_AC	(0 << 5)
+ #define MMC_CMD_ADTC	(1 << 5)
+ #define MMC_CMD_BC	(2 << 5)
+ #define MMC_CMD_BCR	(3 << 5)
+ 
++#define MMC_RSP_SPI_S1	(1 << 7)		/* one status byte */
++#define MMC_RSP_SPI_S2	(1 << 8)		/* second status byte */
++#define MMC_RSP_SPI_OCR	(1 << 9)		/* OCR */
++
+ /*
+- * These are the response types, and correspond to valid bit
++ * These are the native response types, and correspond to valid bit
+  * patterns of the above flags.  One additional valid pattern
+  * is all zeros, which means we don't expect a response.
+  */
+@@ -47,6 +52,22 @@ struct mmc_command {
+ #define mmc_resp_type(cmd)	((cmd)->flags & (MMC_RSP_PRESENT|MMC_RSP_136|MMC_RSP_CRC|MMC_RSP_BUSY|MMC_RSP_OPCODE))
+ 
+ /*
++ * These are the SPI response types.  Commands return R1, with maybe
++ * more info.  Commands like SEND_CSD return a data block too, which
++ * we call 'R1D'.  Zero is an invalid type, meaning that the caller
++ * forgot to say which response type applies to this command.
 + *
-+ * Some SPI protocols, such as those for MMC and SD cards, involve keeping
-+ * a given device's chipselect active for more complex sequences of transfers
-+ * than the known-in-advance contents of one spi_message.  Drivers for such
-+ * protocols should use this method and its sibling spi_put_exclusive().
-+ *
-+ * When spi_get_exclusive() returns success, any pending transfers on that
-+ * bus will have completed, and that device's chipselect will be active.
-+ * From that point until spi_put_exclusive() is called, only spi_message
-+ * transfers to that device will be acted on, and the device will only be
-+ * (briefly) deselected mid-message, according to by spi_transfer.cs_change.
-+ *
-+ * Message being sent to other devices on this bus are queued for processing
-+ * after the matching put_exclusive() call.
-+ *
-+ * This call may only be from contexts which can sleep.  It returns zero
-+ * on success, else a negative error number.
++ * FIXME remove R1D; update SEND_CxD in the core.
 + */
-+static inline int spi_get_exclusive(struct spi_device *spi)
-+{
-+	if (!spi->master->get_exclusive)
-+		return -EIO;
-+	return spi->master->get_exclusive(spi);
-+}
++#define MMC_RSP_SPI_R1	(MMC_RSP_SPI_S1)
++#define MMC_RSP_SPI_R1B	(MMC_RSP_SPI_S1|MMC_RSP_BUSY)
++#define MMC_RSP_SPI_R2	(MMC_RSP_SPI_S1|MMC_RSP_SPI_S2)
++#define MMC_RSP_SPI_R3	(MMC_RSP_SPI_S1|MMC_RSP_SPI_OCR)
++#define MMC_RSP_SPI_R1D	(MMC_RSP_SPI_S1|MMC_RSP_136)
 +
-+/**
-+ * spi_put_exclusive - release exclusive access to a SPI bus
-+ * @spi: device which has been granted that access
-+ * Context: can sleep
-+ *
-+ * This reverses the effect of a successful spi_get_exclusive(), and
-+ * deselects the device.
-+ *
-+ * This call may only be from contexts which can sleep.  It is an error to
-+ * call this when messages are still queued to the specified device, or
-+ * from code that doesn't hold the exclusive access.
-+ */
-+static inline void spi_put_exclusive(struct spi_device *spi)
-+{
-+	spi->master->put_exclusive(spi);
-+}
++#define mmc_spi_resp_type(cmd)	((cmd)->flags & (MMC_RSP_SPI_S1|MMC_RSP_BUSY|MMC_RSP_SPI_S2|MMC_RSP_SPI_OCR|MMC_RSP_136))
 +
- /*---------------------------------------------------------------------------*/
- 
- /* All these synchronous SPI transfer routines are utilities layered
---- g26.orig/include/linux/spi/spi_bitbang.h	2007-06-04 19:57:23.000000000 -0700
-+++ g26/include/linux/spi/spi_bitbang.h	2007-06-04 19:57:45.000000000 -0700
-@@ -29,6 +29,9 @@ struct spi_bitbang {
- 	u8			flags;		/* extra spi->mode support */
- 
- 	struct spi_master	*master;
-+	struct spi_device	*exclusive;
-+	wait_queue_head_t	xwait;
-+	struct list_head	xqueue;
- 
- 	/* setup_transfer() changes clock and/or wordsize to match settings
- 	 * for this transfer; zeroes restore defaults from spi_device.
---- g26.orig/drivers/spi/spi_bitbang.c	2007-06-04 19:57:23.000000000 -0700
-+++ g26/drivers/spi/spi_bitbang.c	2007-06-04 19:57:45.000000000 -0700
-@@ -284,7 +284,6 @@ static void bitbang_work(struct work_str
- 
- 		m = container_of(bitbang->queue.next, struct spi_message,
- 				queue);
--		list_del_init(&m->queue);
- 		spin_unlock_irqrestore(&bitbang->lock, flags);
- 
- 		/* FIXME this is made-up ... the correct value is known to
-@@ -295,7 +294,7 @@ static void bitbang_work(struct work_str
- 
- 		spi = m->spi;
- 		tmp = 0;
--		cs_change = 1;
-+		cs_change = (spi != bitbang->exclusive);
- 		status = 0;
- 		setup_transfer = NULL;
- 
-@@ -369,7 +368,6 @@ static void bitbang_work(struct work_str
- 		}
- 
- 		m->status = status;
--		m->complete(m->context);
- 
- 		/* restore speed and wordsize */
- 		if (setup_transfer)
-@@ -377,17 +375,24 @@ static void bitbang_work(struct work_str
- 
- 		/* normally deactivate chipselect ... unless no error and
- 		 * cs_change has hinted that the next message will probably
--		 * be for this chip too.
-+		 * be for this chip too, or this device reserved the bus
- 		 */
--		if (!(status == 0 && cs_change)) {
-+		if (!(status == 0 && cs_change) && spi != bitbang->exclusive) {
- 			ndelay(nsecs);
- 			bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
- 			ndelay(nsecs);
- 		}
- 
- 		spin_lock_irqsave(&bitbang->lock, flags);
-+		list_del_init(&m->queue);
-+		spin_unlock_irqrestore(&bitbang->lock, flags);
-+
-+		m->complete(m->context);
-+
-+		spin_lock_irqsave(&bitbang->lock, flags);
- 	}
- 	bitbang->busy = 0;
-+	wake_up(&bitbang->xwait);
- 	spin_unlock_irqrestore(&bitbang->lock, flags);
- }
- 
-@@ -408,6 +413,8 @@ int spi_bitbang_transfer(struct spi_devi
- 	spin_lock_irqsave(&bitbang->lock, flags);
- 	if (!spi->max_speed_hz)
- 		status = -ENETDOWN;
-+	else if (bitbang->exclusive && bitbang->exclusive != spi)
-+		list_add_tail(&m->queue, &bitbang->xqueue);
- 	else {
- 		list_add_tail(&m->queue, &bitbang->queue);
- 		queue_work(bitbang->workqueue, &bitbang->work);
-@@ -418,6 +425,75 @@ int spi_bitbang_transfer(struct spi_devi
- }
- EXPORT_SYMBOL_GPL(spi_bitbang_transfer);
- 
 +/*
-+ * NOTE:  This current version of the exclusive access calls is not cast
-+ * in stone either for interface or implementation.
-+ *
-+ * In particular, if it gets used very widely, it's possible that handling
-+ * EBUSY returns from get_exclusive() might too annoying...
+  * These are the command types.
+  */
+ #define mmc_cmd_type(cmd)	((cmd)->flags & MMC_CMD_MASK)
+--- g26.orig/include/linux/mmc/mmc.h	2007-05-06 08:28:03.000000000 -0700
++++ g26/include/linux/mmc/mmc.h	2007-06-04 19:58:56.000000000 -0700
+@@ -27,7 +27,7 @@
+ 
+ /* Standard MMC commands (4.1)           type  argument     response */
+    /* class 1 */
+-#define	MMC_GO_IDLE_STATE         0   /* bc                          */
++#define MMC_GO_IDLE_STATE         0   /* bc                          */
+ #define MMC_SEND_OP_COND          1   /* bcr  [31:0] OCR         R3  */
+ #define MMC_ALL_SEND_CID          2   /* bcr                     R2  */
+ #define MMC_SET_RELATIVE_ADDR     3   /* ac   [31:16] RCA        R1  */
+@@ -39,8 +39,10 @@
+ #define MMC_SEND_CID             10   /* ac   [31:16] RCA        R2  */
+ #define MMC_READ_DAT_UNTIL_STOP  11   /* adtc [31:0] dadr        R1  */
+ #define MMC_STOP_TRANSMISSION    12   /* ac                      R1b */
+-#define MMC_SEND_STATUS	         13   /* ac   [31:16] RCA        R1  */
++#define MMC_SEND_STATUS          13   /* ac   [31:16] RCA        R1  */
+ #define MMC_GO_INACTIVE_STATE    15   /* ac   [31:16] RCA            */
++#define MMC_SPI_READ_OCR         58   /* spi                  spi_R3 */
++#define MMC_SPI_CRC_ON_OFF       59   /* spi  [0:0] flag      spi_R1 */
+ 
+   /* class 2 */
+ #define MMC_SET_BLOCKLEN         16   /* ac   [31:0] block len   R1  */
+@@ -90,15 +92,15 @@
+  */
+ 
+ /*
+-  MMC status in R1
++  MMC status in R1, for native mode (SPI bits are different)
+   Type
+-  	e : error bit
++	e : error bit
+ 	s : status bit
+ 	r : detected and set for the actual command response
+ 	x : detected and set during command execution. the host must poll
+             the card by sending status command in order to read these bits.
+   Clear condition
+-  	a : according to the card state
++	a : according to the card state
+ 	b : always related to the previous command. Reception of
+             a valid command will clear it (with a delay of one command)
+ 	c : clear by read
+@@ -124,10 +126,42 @@
+ #define R1_CARD_ECC_DISABLED	(1 << 14)	/* sx, a */
+ #define R1_ERASE_RESET		(1 << 13)	/* sr, c */
+ #define R1_STATUS(x)            (x & 0xFFFFE000)
+-#define R1_CURRENT_STATE(x)    	((x & 0x00001E00) >> 9)	/* sx, b (4 bits) */
++#define R1_CURRENT_STATE(x)	((x & 0x00001E00) >> 9)	/* sx, b (4 bits) */
+ #define R1_READY_FOR_DATA	(1 << 8)	/* sx, a */
+ #define R1_APP_CMD		(1 << 5)	/* sr, c */
+ 
++#define R1_STATE_IDLE		0		/* resetting; maybe opendrain */
++#define R1_STATE_READY		1		/* opendrain; ident soon */
++#define R1_STATE_IDENT		2		/* opendrain; setaddr soon */
++#define R1_STATE_STBY		3		/* addressed, ready to use */
++#define R1_STATE_TRAN		4
++#define R1_STATE_DATA		5
++#define R1_STATE_RCV		6
++#define R1_STATE_PRG		7
++#define R1_STATE_DIS		8
++#define R1_STATE(x)		(((x) & 0xf) << 9)
++
++/*
++ * MMC/SD in SPI mode reports R1 status always, and R2 for SEND_STATUS
 + */
++#define R1_SPI_IDLE		(1 << 0)
++#define R1_SPI_ERASE_RESET	(1 << 1)
++#define R1_SPI_ILLEGAL_COMMAND	(1 << 2)
++#define R1_SPI_COM_CRC		(1 << 3)
++#define R1_SPI_ERASE_SEQ	(1 << 4)
++#define R1_SPI_ADDRESS		(1 << 5)
++#define R1_SPI_PARAMETER	(1 << 6)
 +
-+static int check_empty(struct spi_bitbang *bitbang)
-+{
-+	unsigned long		flags;
-+	int			value;
++#define R2_SPI_CARD_LOCKED	(1 << 0)
++#define R2_SPI_WP_ERASE_SKIP	(1 << 1)	/* or lock/unlock fail */
++#define R2_SPI_ERROR		(1 << 2)
++#define R2_SPI_CC_ERROR		(1 << 3)
++#define R2_SPI_CARD_ECC_ERROR	(1 << 4)
++#define R2_SPI_WP_VIOLATION	(1 << 5)
++#define R2_SPI_ERASE_PARAM	(1 << 6)
++#define R2_SPI_OUT_OF_RANGE	(1 << 7)	/* or CSD overwrite */
 +
-+	/* this "knows" that bitbang_work() leaves requests at the head
-+	 * of the queue until it's done processing them.
-+	 */
-+	spin_lock_irqsave(&bitbang->lock, flags);
-+	value = list_empty(&bitbang->queue);
-+	spin_unlock_irqrestore(&bitbang->lock, flags);
-+	return value;
-+}
 +
-+static int spi_bitbang_get_exclusive(struct spi_device *spi)
-+{
-+	struct spi_bitbang	*bitbang;
-+	int			status = 0;
-+
-+	bitbang = spi_master_get_devdata(spi->master);
-+	might_sleep();
-+
-+	/* from now on, no more new messages except those to that device */
-+	spin_lock_irq(&bitbang->lock);
-+	if (bitbang->exclusive)
-+		status = -EBUSY;		/* REVISIT better to wait! */
-+	else
-+		bitbang->exclusive = spi;
-+	spin_unlock_irq(&bitbang->lock);
-+
-+	/* ... and chipselect for that device stays active */
-+	if (!status) {
-+		wait_event(bitbang->xwait, check_empty(bitbang));
-+		bitbang->chipselect(spi, BITBANG_CS_ACTIVE);
-+	}
-+	return status;
-+}
-+
-+static void spi_bitbang_put_exclusive(struct spi_device *spi)
-+{
-+	struct spi_bitbang	*bitbang;
-+
-+	bitbang = spi_master_get_devdata(spi->master);
-+	might_sleep();
-+
-+	if (bitbang->exclusive == spi) {
-+		wait_event(bitbang->xwait, check_empty(bitbang));
-+		bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
-+
-+		spin_lock_irq(&bitbang->lock);
-+		bitbang->exclusive = NULL;
-+		if (!list_empty(&bitbang->xqueue)) {
-+			__list_splice(&bitbang->xqueue, &bitbang->queue);
-+			INIT_LIST_HEAD(&bitbang->xqueue);
-+			queue_work(bitbang->workqueue, &bitbang->work);
-+		}
-+		spin_unlock_irq(&bitbang->lock);
-+
-+	}
-+}
-+
- /*----------------------------------------------------------------------*/
+ /* These are unpacked versions of the actual responses */
  
- /**
-@@ -454,6 +530,11 @@ int spi_bitbang_start(struct spi_bitbang
- 	spin_lock_init(&bitbang->lock);
- 	INIT_LIST_HEAD(&bitbang->queue);
- 
-+	init_waitqueue_head(&bitbang->xwait);
-+	INIT_LIST_HEAD(&bitbang->xqueue);
-+	bitbang->master->get_exclusive = spi_bitbang_get_exclusive;
-+	bitbang->master->put_exclusive = spi_bitbang_put_exclusive;
-+
- 	if (!bitbang->master->transfer)
- 		bitbang->master->transfer = spi_bitbang_transfer;
- 	if (!bitbang->txrx_bufs) {
-@@ -502,6 +583,7 @@ int spi_bitbang_stop(struct spi_bitbang 
- 	spi_unregister_master(bitbang->master);
- 
- 	WARN_ON(!list_empty(&bitbang->queue));
-+	WARN_ON(!list_empty(&bitbang->xqueue));
- 
- 	destroy_workqueue(bitbang->workqueue);
- 
+ struct _mmc_csd {
+@@ -181,7 +215,7 @@ struct _mmc_csd {
+  * Card Command Classes (CCC)
+  */
+ #define CCC_BASIC		(1<<0)	/* (0) Basic protocol functions */
+-					/* (CMD0,1,2,3,4,7,9,10,12,13,15) */
++					/* (CMD0,1,2,3,4,7,9,10,12,13,15,58,59) */
+ #define CCC_STREAM_READ		(1<<1)	/* (1) Stream read commands */
+ 					/* (CMD11) */
+ #define CCC_BLOCK_READ		(1<<2)	/* (2) Block read commands */
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

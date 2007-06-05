@@ -1,19 +1,12 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.22-rc4 8/7] mmc_spi cid/csd/ext_csd
-	updates, CRCs on
-Date: Tue, 5 Jun 2007 10:13:44 -0700
-Message-ID: <200706051013.44971.david-b@pacbell.net>
-References: <200706042025.18252.david-b@pacbell.net>
+From: Ben Dooks <ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org>
+Subject: [PATCH] Infineion TLE62X0 device driver
+Date: Tue, 5 Jun 2007 19:32:44 +0100
+Message-ID: <20070605183244.GE13353@trinity.fluff.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
-	Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
-	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
-	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200706042025.18252.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -26,311 +19,386 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Fix some of the "register"/descriptor access glitches in the
-preceding patches:
+Add support for the Infineon TLE62x0 series of low-side driver
+chips, such as the TLE6220 or TLE6230.
 
-  - Updated internal routines:
-      * previous mmc_send_cxd() renamed to mmc_send_cxd_native(); it
-        uses native "R2" responses, which include 16 bytes of data.
-      * previous mmc_send_ext_csd() becomes new mmc_send_cxd_data()
-        helper for command-and-data access
+Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-  - Modified mmc_send_ext_csd() now uses mmc_send_cxd_data() helper
-
-  - New mmc_send_csd() and mmc_spi_send_cid() routines now use one
-    of those helper routines based on whether they're native or SPI;
-
-  - Remove ugly "R1D" response pseudo-type for SPI
-
-  - Make it OK for MMC cards to try SEND_EXT_CSD; v4+ needs that
-
-  - Turn CRCs back on by default with the SPI protocol
-
-So this resolves most of the technical issues I know about, leaving
-nontechnical ones like "is this code clean enough" or "is this how
-we want to solve that problem".
-
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/mmc/core/mmc.c     |    2 
- drivers/mmc/core/mmc_ops.c |   93 +++++++++++++++++++++++++++++++++------------
- drivers/mmc/host/mmc_spi.c |   59 ----------------------------
- include/linux/mmc/core.h   |    8 ---
- 4 files changed, 72 insertions(+), 90 deletions(-)
-
---- g26.orig/drivers/mmc/core/mmc_ops.c	2007-06-04 19:58:58.000000000 -0700
-+++ g26/drivers/mmc/core/mmc_ops.c	2007-06-05 10:05:20.000000000 -0700
-@@ -175,7 +175,7 @@ int mmc_set_relative_addr(struct mmc_car
- }
+Index: linux-2.6.22-rc4-simtec/include/linux/spi/tle62x0.h
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ linux-2.6.22-rc4-simtec/include/linux/spi/tle62x0.h	2007-06-05 19:14:07.000000000 +0100
+@@ -0,0 +1,23 @@
++/* include/linux/spi/tle62x0.h
++ *
++ * Copyright 2007 Simtec Electronics
++ *	Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++*/
++
++struct tle62x0_pdata {
++	unsigned int		init_state;
++	unsigned int		gpio_count;
++};
+Index: linux-2.6.22-rc4-simtec/drivers/spi/Kconfig
+===================================================================
+--- linux-2.6.22-rc4-simtec.orig/drivers/spi/Kconfig	2007-06-05 18:27:11.000000000 +0100
++++ linux-2.6.22-rc4-simtec/drivers/spi/Kconfig	2007-06-05 19:14:07.000000000 +0100
+@@ -160,6 +160,13 @@ config SPI_S3C24XX_GPIO
+ # Add new SPI master controllers in alphabetical order above this line
+ #
  
- static int
--mmc_send_cxd(struct mmc_host *host, unsigned rca, u32 *cxd, int opcode)
-+mmc_send_cxd_native(struct mmc_host *host, unsigned rca, u32 *cxd, int opcode)
- {
- 	int err;
- 	struct mmc_command cmd;
-@@ -187,7 +187,7 @@ mmc_send_cxd(struct mmc_host *host, unsi
- 
- 	cmd.opcode = opcode;
- 	cmd.arg = rca << 16;
--	cmd.flags = MMC_RSP_SPI_R1D | MMC_RSP_R2 | MMC_CMD_AC;
-+	cmd.flags = MMC_RSP_R2 | MMC_CMD_AC;
- 
- 	err = mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
- 	if (err != MMC_ERR_NONE)
-@@ -198,16 +198,6 @@ mmc_send_cxd(struct mmc_host *host, unsi
- 	return MMC_ERR_NONE;
- }
- 
--int mmc_send_csd(struct mmc_card *card, u32 *csd)
--{
--	return mmc_send_cxd(card->host, card->rca, csd, MMC_SEND_CSD);
--}
--
--int mmc_spi_send_cid(struct mmc_host *host, u32 *cid)
--{
--	return mmc_send_cxd(host, 0, cid, MMC_SEND_CID);
--}
--
- int mmc_spi_read_ocr(struct mmc_host *host, u32 *ocrp)
- {
- 	struct mmc_command cmd;
-@@ -238,17 +228,22 @@ int mmc_spi_set_crc(struct mmc_host *hos
- 	return mmc_wait_for_cmd(host, &cmd, 0);
- }
- 
--int mmc_send_ext_csd(struct mmc_card *card, u8 *ext_csd)
-+struct mmc_cxd {
-+	struct mmc_card	*card;		/* optional */
-+	void		*buf;
-+	unsigned	len;
-+	u32		opcode;
-+	u32		arg;
-+	unsigned	flags;
++config SPI_TLE62X0
++	tristate "Infineon TLE62X0"
++	depends on SPI_MASTER
++	help
++	  SPI driver for Infineion TLE62X0 series line driver chips,
++	  such as the TLE6220, TLE6230 and TLE6240.
++
+ #
+ # There are lots of SPI device types, with sensors and memory
+ # being probably the most widely used ones.
+Index: linux-2.6.22-rc4-simtec/drivers/spi/tle62x0.c
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ linux-2.6.22-rc4-simtec/drivers/spi/tle62x0.c	2007-06-05 19:14:07.000000000 +0100
+@@ -0,0 +1,312 @@
++/* drivers/spi/tle62x0.c
++ *
++ * Copyright (c) 2007 Simtec Electronics
++ *	Ben Dooks, <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * Infineon TLE62x0 series driver
++*/
++
++#include <linux/device.h>
++#include <linux/kernel.h>
++
++#include <linux/spi/spi.h>
++#include <linux/spi/tle62x0.h>
++
++#define CMD_READ	(0x00)
++#define CMD_SET		(0xff)
++
++#define DIAG_NORMAL	(0x03)
++#define DIAG_OVERLOAD	(0x02)
++#define DIAG_OPEN	(0x01)
++#define DIAG_SHORTGND	(0x00)
++
++struct tle62x0_state {
++	struct spi_device	*us;
++	struct mutex		lock;
++	unsigned int		nr_gpio;
++	unsigned int		gpio_state;
++
++	unsigned char		tx_buff[4];
++	unsigned char		rx_buff[4];
 +};
 +
-+static int mmc_send_cxd_data(struct mmc_host *host, struct mmc_cxd *cxd)
- {
- 	struct mmc_request mrq;
- 	struct mmc_command cmd;
- 	struct mmc_data data;
- 	struct scatterlist sg;
- 
--	BUG_ON(!card);
--	BUG_ON(!card->host);
--	BUG_ON(!ext_csd);
--
- 	memset(&mrq, 0, sizeof(struct mmc_request));
- 	memset(&cmd, 0, sizeof(struct mmc_command));
- 	memset(&data, 0, sizeof(struct mmc_data));
-@@ -256,21 +251,22 @@ int mmc_send_ext_csd(struct mmc_card *ca
- 	mrq.cmd = &cmd;
- 	mrq.data = &data;
- 
--	cmd.opcode = MMC_SEND_EXT_CSD;
--	cmd.arg = 0;
--	cmd.flags = MMC_RSP_R1 | MMC_CMD_ADTC;
-+	cmd.opcode = cxd->opcode;
-+	cmd.arg = cxd->arg;
-+	cmd.flags = cxd->flags;
- 
--	data.blksz = 512;
-+	data.blksz = cxd->len;
- 	data.blocks = 1;
- 	data.flags = MMC_DATA_READ;
- 	data.sg = &sg;
- 	data.sg_len = 1;
- 
--	sg_init_one(&sg, ext_csd, 512);
-+	sg_init_one(&sg, cxd->buf, cxd->len);
- 
--	mmc_set_data_timeout(&data, card, 0);
-+	if (cxd->card)
-+		mmc_set_data_timeout(&data, cxd->card, 0);
- 
--	mmc_wait_for_req(card->host, &mrq);
-+	mmc_wait_for_req(host, &mrq);
- 
- 	if (cmd.error != MMC_ERR_NONE)
- 		return cmd.error;
-@@ -280,6 +276,55 @@ int mmc_send_ext_csd(struct mmc_card *ca
- 	return MMC_ERR_NONE;
- }
- 
-+int mmc_send_csd(struct mmc_card *card, u32 *csd)
++static int to_gpio_num(struct device_attribute *attr);
++
++static inline int tle62x0_write(struct tle62x0_state *st)
 +{
-+	struct mmc_cxd	cxd;
++	unsigned char *buff = st->tx_buff;
++	unsigned int gpio_state = st->gpio_state;
 +
-+	if (!mmc_host_is_spi(card->host))
-+		return mmc_send_cxd_native(card->host, card->rca,
-+				csd, MMC_SEND_CSD);
++	buff[0] = CMD_SET;
 +
-+	cxd.card = card;
-+	cxd.buf = csd;
-+	cxd.len = 16;
-+	cxd.opcode = MMC_SEND_CSD;
-+	cxd.arg = 0;
-+	cxd.flags = MMC_RSP_SPI_R1;
++	if (st->nr_gpio == 16) {
++		buff[1] = gpio_state >> 8;
++		buff[2] = gpio_state;
++	} else {
++		buff[1] = gpio_state;
++	}
 +
-+	return mmc_send_cxd_data(card->host, &cxd);
++	dev_dbg(&st->us->dev, "buff %02x,%02x,%02x\n",
++		buff[0], buff[1], buff[2]);
++
++	return spi_write(st->us, buff, (st->nr_gpio == 16) ? 3 : 2);
 +}
 +
-+int mmc_spi_send_cid(struct mmc_host *host, u32 *cid)
++static inline int tle62x0_read(struct tle62x0_state *st)
 +{
-+	struct mmc_cxd	cxd;
++	unsigned char *txbuff = st->tx_buff;
++	struct spi_transfer xfer = {
++		.tx_buf		= txbuff,
++		.rx_buf		= st->rx_buff,
++		.len		= (st->nr_gpio * 2) / 8,
++	};
++	struct spi_message msg;
 +
-+	if (!mmc_host_is_spi(host))
-+		return mmc_send_cxd_native(host, 0, cid, MMC_SEND_CID);
++	txbuff[0] = CMD_READ;
++	txbuff[1] = 0x00;
++	txbuff[2] = 0x00;
++	txbuff[3] = 0x00;
 +
-+	cxd.card = NULL;
-+	cxd.buf = cid;
-+	cxd.len = 16;
-+	cxd.opcode = MMC_SEND_CID;
-+	cxd.arg = 0;
-+	cxd.flags = MMC_RSP_SPI_R1;
++	spi_message_init(&msg);
++	spi_message_add_tail(&xfer, &msg);
 +
-+	return mmc_send_cxd_data(host, &cxd);
++	return spi_sync(st->us, &msg);
 +}
 +
-+int mmc_send_ext_csd(struct mmc_card *card, u8 *ext_csd)
++static unsigned char *decode_fault(unsigned int fault_code)
 +{
-+	struct mmc_cxd	cxd;
++	fault_code &= 3;
 +
-+	cxd.card = card;
-+	cxd.buf = ext_csd;
-+	cxd.len = 512;
-+	cxd.opcode = MMC_SEND_EXT_CSD;
-+	cxd.arg = 0;
-+	cxd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_ADTC;
++	switch (fault_code) {
++	case DIAG_NORMAL:
++		return "N";
++	case DIAG_OVERLOAD:
++		return "V";
++	case DIAG_OPEN:
++		return "O";
++	case DIAG_SHORTGND:
++		return "G";
++	}
 +
-+	return mmc_send_cxd_data(card->host, &cxd);
++	return "?";
 +}
 +
- int mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value)
- {
- 	int err;
---- g26.orig/drivers/mmc/host/mmc_spi.c	2007-06-04 19:59:01.000000000 -0700
-+++ g26/drivers/mmc/host/mmc_spi.c	2007-06-05 10:05:20.000000000 -0700
-@@ -181,13 +181,7 @@ module_param(debug, uint, 0644);
- #define	debug	0
- #endif
++static int tle62x0_status_show(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	struct tle62x0_state *st = dev_get_drvdata(dev);
++	char *bp = buf;
++	unsigned char *buff = st->rx_buff;
++	unsigned long fault = 0;
++	int ptr;
++	int ret;
++
++	mutex_lock(&st->lock);
++	ret = tle62x0_read(st);
++
++	dev_dbg(dev, "tle62x0_read() returned %d\n", ret);
++
++	for (ptr = 0; ptr < (st->nr_gpio * 2)/8; ptr += 1) {
++		fault <<= 8;
++		fault  |= ((unsigned long)buff[ptr]);
++
++		dev_dbg(dev, "byte %d is %02x\n", ptr, buff[ptr]);
++	}
++
++	for (ptr = 0; ptr < st->nr_gpio; ptr++) {
++		bp += sprintf(bp, "%s ", decode_fault(fault >> (ptr * 2)));
++	}
++
++	*bp++ = '\n';
++
++	mutex_unlock(&st->lock);
++	return bp - buf;
++}
++
++static DEVICE_ATTR(status_show, 0444, tle62x0_status_show, NULL);
++
++static int tle62x0_gpio_show(struct device *dev,
++			     struct device_attribute *attr, char *buf)
++{
++	struct tle62x0_state *st = dev_get_drvdata(dev);
++	int gpio_num = to_gpio_num(attr);
++	int value;
++
++	mutex_lock(&st->lock);
++	value = (st->gpio_state >> gpio_num) & 1;
++	mutex_unlock(&st->lock);
++
++	return snprintf(buf, PAGE_SIZE, "%d", value);
++}
++
++static int tle62x0_gpio_store(struct device *dev,
++			      struct device_attribute *attr,
++			      const char *buf, size_t len)
++{
++	struct tle62x0_state *st = dev_get_drvdata(dev);
++	int gpio_num = to_gpio_num(attr);
++	unsigned long val;
++	char *endp;
++
++	val = simple_strtoul(buf, &endp, 0);
++	if (buf == endp)
++		return -EINVAL;
++
++	dev_dbg(dev, "setting gpio %d to %ld\n", gpio_num, val);
++
++	mutex_lock(&st->lock);
++
++	if (val)
++		st->gpio_state |= 1 << gpio_num;
++	else
++		st->gpio_state &= ~(1 << gpio_num);
++
++	tle62x0_write(st);
++	mutex_unlock(&st->lock);
++
++	return len;
++}
++
++static DEVICE_ATTR(gpio1, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio2, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio3, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio4, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio5, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio6, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio7, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio8, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio9, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio10, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio11, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio12, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio13, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio14, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio15, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++static DEVICE_ATTR(gpio16, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
++
++static struct device_attribute *gpio_attrs[] = {
++	[0]		= &dev_attr_gpio1,
++	[1]		= &dev_attr_gpio2,
++	[2]		= &dev_attr_gpio3,
++	[3]		= &dev_attr_gpio4,
++	[4]		= &dev_attr_gpio5,
++	[5]		= &dev_attr_gpio6,
++	[6]		= &dev_attr_gpio7,
++	[7]		= &dev_attr_gpio8,
++	[8]		= &dev_attr_gpio9,
++	[9]		= &dev_attr_gpio10,
++	[10]		= &dev_attr_gpio11,
++	[11]		= &dev_attr_gpio12,
++	[12]		= &dev_attr_gpio13,
++	[13]		= &dev_attr_gpio14,
++	[14]		= &dev_attr_gpio15,
++	[15]		= &dev_attr_gpio16
++};
++
++static int to_gpio_num(struct device_attribute *attr)
++{
++	int ptr;
++
++	for (ptr = 0; ptr < ARRAY_SIZE(gpio_attrs); ptr++) {
++		if (gpio_attrs[ptr] == attr)
++			return ptr;
++	}
++
++	return -1;
++}
++
++static int __devinit tle62x0_probe(struct spi_device *spi)
++{
++	struct tle62x0_state *st;
++	struct tle62x0_pdata *pdata;
++	int ptr;
++	int ret;
++
++	pdata = spi->dev.platform_data;
++	if (pdata == NULL) {
++		dev_err(&spi->dev, "no device data specified\n");
++		return -EINVAL;
++	}
++
++	st = kzalloc(sizeof(struct tle62x0_state), GFP_KERNEL);
++	if (st == NULL) {
++		dev_err(&spi->dev, "no memory for device state\n");
++		return -ENOMEM;
++	}
++
++	st->us = spi;
++	st->nr_gpio = pdata->gpio_count;
++	st->gpio_state = pdata->init_state;
++
++	mutex_init(&st->lock);
++
++	ret = device_create_file(&spi->dev, &dev_attr_status_show);
++	if (ret) {
++		dev_err(&spi->dev, "cannot create status attribute\n");
++		goto err_status;
++	}
++
++	for (ptr = 0; ptr < pdata->gpio_count; ptr++) {
++		ret = device_create_file(&spi->dev, gpio_attrs[ptr]);
++		if (ret) {
++			dev_err(&spi->dev, "cannot create gpio attribute\n");
++			goto err_gpios;
++		}
++	}
++
++	//tle62x0_write(data);
++	spi_set_drvdata(spi, st);
++	return 0;
++
++ err_gpios:
++	for (; ptr > 0; ptr--)
++		device_remove_file(&spi->dev, gpio_attrs[ptr]);
++
++	device_remove_file(&spi->dev, &dev_attr_status_show);
++
++ err_status:
++	kfree(st);
++	return ret;
++}
++
++static int __devexit tle62x0_remove(struct spi_device *spi)
++{
++	struct tle62x0_state *st = spi_get_drvdata(spi);
++	int ptr;
++
++	for (ptr = 0; ptr < st->nr_gpio; ptr++)
++		device_remove_file(&spi->dev, gpio_attrs[ptr]);
++
++	kfree(st);
++	return 0;
++}
++
++static struct spi_driver tle62x0_driver = {
++	.driver = {
++		.name	= "tle62x0",
++		.owner	= THIS_MODULE,
++	},
++	.probe		= tle62x0_probe,
++	.remove		= __devexit_p(tle62x0_remove),
++};
++
++static __init int tle62x0_init(void)
++{
++	return spi_register_driver(&tle62x0_driver);
++}
++
++static __exit void tle62x0_exit(void)
++{
++	spi_unregister_driver(&tle62x0_driver);
++}
++
++module_init(tle62x0_init);
++module_exit(tle62x0_exit);
++
++MODULE_AUTHOR("Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>");
++MODULE_DESCRIPTION("TLE62x0 SPI driver");
++MODULE_LICENSE("GPL v2");
+Index: linux-2.6.22-rc4-simtec/drivers/spi/Makefile
+===================================================================
+--- linux-2.6.22-rc4-simtec.orig/drivers/spi/Makefile	2007-06-05 19:14:22.000000000 +0100
++++ linux-2.6.22-rc4-simtec/drivers/spi/Makefile	2007-06-05 19:14:46.000000000 +0100
+@@ -28,6 +28,7 @@ obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24x
+ # SPI protocol drivers (device/link on bus)
+ obj-$(CONFIG_SPI_AT25)		+= at25.o
+ obj-$(CONFIG_SPI_SPIDEV)	+= spidev.o
++obj-$(CONFIG_SPI_TLE62X0)	+= tle62x0.o
+ # 	... add above this line ...
  
--/* FIXME turn this back on by default ... needs retesting */
--#if 0
- static unsigned use_crc = 1;
--#else
--static unsigned use_crc = 0;
--#endif
--
- module_param(use_crc, uint, 0);
- 
- 
-@@ -384,51 +378,10 @@ static char *maptype(struct mmc_command 
- 	case MMC_RSP_SPI_R1B:	return "R1B";
- 	case MMC_RSP_SPI_R2:	return "R2";
- 	case MMC_RSP_SPI_R3:	return "R3";
--	case MMC_RSP_SPI_R1D:	return "R1D";
- 	default:		return "?";
- 	}
- }
- 
--static void mmc_spi_read_cXd(struct mmc_spi_host *host, struct mmc_command *cmd)
--{
--	int status;
--
--	/* skip till first byte of data block */
--	status = mmc_spi_scanbyte(host, mmc_spi_delayed, READ_TIMEOUT);
--
--	/* if we found the data block, read it; else report timeout */
--	if (status == SPI_TOKEN_SINGLE) {
--
--		spi_message_init(&host->m);
--		memset(&host->t, 0, sizeof(host->t));
--		spi_message_add_tail(&host->t, &host->m);
--
--		memset(cmd->resp, 0xff, 16);
--		host->t.tx_buf = cmd->resp;
--		host->t.rx_buf = cmd->resp;
--		host->t.len = 16;
--
--		/* REVISIT 16 bit CRC ... ? */
--
--		status = spi_sync(host->spi, &host->m);
--		if (status < 0)
--			cmd->error = MMC_ERR_FAILED;
--		else {
--			be32_to_cpus(&cmd->resp[0]);
--			be32_to_cpus(&cmd->resp[1]);
--			be32_to_cpus(&cmd->resp[2]);
--			be32_to_cpus(&cmd->resp[3]);
--		}
--	} else {
--		if (status > 0)
--			mmc_spi_map_data_err(cmd, status);
--		dev_dbg(&host->spi->dev,
--			"mmc_spi: read cXd, %02x %d \n",
--			status & 0xff, status);
--		cmd->error = MMC_ERR_TIMEOUT;
--	}
--}
--
- static int
- mmc_spi_response_get(struct mmc_spi_host *host, struct mmc_command *cmd)
- {
-@@ -486,18 +439,6 @@ mmc_spi_response_get(struct mmc_spi_host
- 		(void) mmc_spi_scanbyte(host, mmc_spi_busy, WRITE_TIMEOUT);
- 		break;
- 
--	/* SPI R1D == R1 + 16 bytes data; SEND_CSD, SEND_CID
--	 * for non-SPI this would be R2 type status
--	 *
--	 * FIXME remove the R1D "message type"; mmc core should
--	 * explicitly issue a data stage, handling CRCs right.
--	 */
--	case MMC_RSP_SPI_R1D:
--		mmc_spi_read_cXd(host, cmd);
--		dev_dbg(&host->spi->dev, "%s: status %d\n",
--			tag, cmd->error);
--		return 0;
--
- 	/* SPI R2 == R1 + second status byte; SEND_STATUS */
- 	case MMC_RSP_SPI_R2:
- 		host->response[1] = mmc_spi_readbyte(host);
---- g26.orig/include/linux/mmc/core.h	2007-06-04 19:58:56.000000000 -0700
-+++ g26/include/linux/mmc/core.h	2007-06-05 10:05:20.000000000 -0700
-@@ -53,19 +53,15 @@ struct mmc_command {
- 
- /*
-  * These are the SPI response types.  Commands return R1, with maybe
-- * more info.  Commands like SEND_CSD return a data block too, which
-- * we call 'R1D'.  Zero is an invalid type, meaning that the caller
-+ * more info.  Zero is an invalid type, meaning that the caller
-  * forgot to say which response type applies to this command.
-- *
-- * FIXME remove R1D; update SEND_CxD in the core.
-  */
- #define MMC_RSP_SPI_R1	(MMC_RSP_SPI_S1)
- #define MMC_RSP_SPI_R1B	(MMC_RSP_SPI_S1|MMC_RSP_BUSY)
- #define MMC_RSP_SPI_R2	(MMC_RSP_SPI_S1|MMC_RSP_SPI_S2)
- #define MMC_RSP_SPI_R3	(MMC_RSP_SPI_S1|MMC_RSP_SPI_OCR)
--#define MMC_RSP_SPI_R1D	(MMC_RSP_SPI_S1|MMC_RSP_136)
- 
--#define mmc_spi_resp_type(cmd)	((cmd)->flags & (MMC_RSP_SPI_S1|MMC_RSP_BUSY|MMC_RSP_SPI_S2|MMC_RSP_SPI_OCR|MMC_RSP_136))
-+#define mmc_spi_resp_type(cmd)	((cmd)->flags & (MMC_RSP_SPI_S1|MMC_RSP_BUSY|MMC_RSP_SPI_S2|MMC_RSP_SPI_OCR))
- 
- /*
-  * These are the command types.
---- g26.orig/drivers/mmc/core/mmc.c	2007-06-04 19:58:58.000000000 -0700
-+++ g26/drivers/mmc/core/mmc.c	2007-06-05 10:05:20.000000000 -0700
-@@ -325,7 +325,7 @@ static int mmc_sd_init_card(struct mmc_h
- 	if (err != MMC_ERR_NONE)
- 		goto free_card;
- 
--	if (!oldcard && !mmc_host_is_spi(host)) {
-+	if (!oldcard) {
- 		/*
- 		 * Fetch and process extended CSD.
- 		 */
+ # SPI slave controller drivers (upstream link)
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

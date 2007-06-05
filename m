@@ -1,7 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.22-rc4 1/7] CRC7 support
-Date: Mon, 4 Jun 2007 20:26:39 -0700
-Message-ID: <200706042026.39987.david-b@pacbell.net>
+Subject: [patch 2.6.22-rc4 3/7] SPI "exclusive access"
+	(experimental)
+Date: Mon, 4 Jun 2007 20:31:28 -0700
+Message-ID: <200706042031.29315.david-b@pacbell.net>
 References: <200706042025.18252.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,152 +26,288 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+This is a draft API and reference implementation for a new SPI protocol
+tweaking option, which supports more complex protocol stacks over SPI.
 
-Add CRC7 routines, used for example in MMC over SPI communication.
-Kerneldoc updates
+Examples: MMC/SD-over-SPI, wireless network chips, and hardware tools
+at the JTAG/ISP level.
 
-Signed-off-by: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+  - A new SPI protocol tweaking interface, giving one driver exclusive
+    access to a SPI bus for transfer sequences too complex to fit into
+    one spi_message.
+
+  - An initial implementation of that, for the "bitbang" core.  I'm
+    sure someone can come up with a much better implementation for this,
+    which I'd expect to feed back to improve that interface.
+
+It behaves in light testing without contention for the bus lock.
+
+Includes secondary queue code from Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+to make submissions to other devices act "normally"; they're executed
+when the exclusion is released.
+
+NOT YET READY for prime time.  An alternate scheme has recently been
+suggested, more amenable to IRQ-driven code that needs to start and
+sustain "exclusion" in contexts that can't sleep.
+
 ---
-NOTE:  this is already in the MM tree.
+ drivers/spi/spi_bitbang.c       |   92 +++++++++++++++++++++++++++++++++++++---
+ include/linux/spi/spi.h         |   58 +++++++++++++++++++++++++
+ include/linux/spi/spi_bitbang.h |    3 +
+ 3 files changed, 148 insertions(+), 5 deletions(-)
 
- Documentation/DocBook/kernel-api.tmpl |    4 +-
- include/linux/crc7.h                  |   14 +++++++
- lib/Kconfig                           |    8 ++++
- lib/Makefile                          |    1 
- lib/crc7.c                            |   68 ++++++++++++++++++++++++++++++++++
- 5 files changed, 94 insertions(+), 1 deletion(-)
-
---- g26.orig/Documentation/DocBook/kernel-api.tmpl	2007-05-11 00:49:19.000000000 -0700
-+++ g26/Documentation/DocBook/kernel-api.tmpl	2007-05-11 01:00:03.000000000 -0700
-@@ -139,8 +139,10 @@ X!Ilib/string.c
- !Elib/cmdline.c
-      </sect1>
+--- g26.orig/include/linux/spi/spi.h	2007-06-04 19:57:23.000000000 -0700
++++ g26/include/linux/spi/spi.h	2007-06-04 19:57:45.000000000 -0700
+@@ -182,6 +182,9 @@ static inline void spi_unregister_driver
+  *	the device whose settings are being modified.
+  * @transfer: adds a message to the controller's transfer queue.
+  * @cleanup: frees controller-specific state
++ * @get_exclusive: Waits until the message queue is empty, then reserves
++ *	the bus for exclusive use with that devices.
++ * @put_exclusive: Reverses the effect of @get_exclusive.
+  *
+  * Each SPI master controller can communicate with one or more @spi_device
+  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
+@@ -237,6 +240,12 @@ struct spi_master {
  
--     <sect1><title>CRC Functions</title>
-+     <sect1 id="crc"><title>CRC Functions</title>
-+!Elib/crc7.c
- !Elib/crc16.c
-+!Elib/crc-itu-t.c
- !Elib/crc32.c
- !Elib/crc-ccitt.c
-      </sect1>
---- g26.orig/lib/Kconfig	2007-05-11 00:46:44.000000000 -0700
-+++ g26/lib/Kconfig	2007-05-11 01:14:06.000000000 -0700
-@@ -41,6 +41,14 @@ config CRC32
- 	  kernel tree does. Such modules that use library CRC32 functions
- 	  require M here.
+ 	/* called on release() to free memory provided by spi_master */
+ 	void			(*cleanup)(struct spi_device *spi);
++
++	/* Some protocols, like MMC or SD over SPI, need to lock a device's
++	 * chipselect for an extended period of time.
++	 */
++	int			(*get_exclusive)(struct spi_device *spi);
++	void			(*put_exclusive)(struct spi_device *spi);
+ };
  
-+config CRC7
-+	tristate "CRC7 functions"
-+	help
-+	  This option is provided for the case where no in-kernel-tree
-+	  modules require CRC7 functions, but a module built outside
-+	  the kernel tree does. Such modules that use library CRC7
-+	  functions require M here.
-+
- config LIBCRC32C
- 	tristate "CRC32c (Castagnoli, et al) Cyclic Redundancy-Check"
- 	help
---- g26.orig/lib/Makefile	2007-05-11 00:46:44.000000000 -0700
-+++ g26/lib/Makefile	2007-05-11 01:14:06.000000000 -0700
-@@ -43,6 +43,7 @@ obj-$(CONFIG_CRC_CCITT)	+= crc-ccitt.o
- obj-$(CONFIG_CRC16)	+= crc16.o
- obj-$(CONFIG_CRC_ITU_T)	+= crc-itu-t.o
- obj-$(CONFIG_CRC32)	+= crc32.o
-+obj-$(CONFIG_CRC7)	+= crc7.o
- obj-$(CONFIG_LIBCRC32C)	+= libcrc32c.o
- obj-$(CONFIG_GENERIC_ALLOCATOR) += genalloc.o
+ static inline void *spi_master_get_devdata(struct spi_master *master)
+@@ -538,6 +547,55 @@ spi_async(struct spi_device *spi, struct
+ 	return spi->master->transfer(spi, message);
+ }
  
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ g26/include/linux/crc7.h	2007-05-11 00:49:35.000000000 -0700
-@@ -0,0 +1,14 @@
-+#ifndef _LINUX_CRC7_H
-+#define _LINUX_CRC7_H
-+#include <linux/types.h>
 +
-+extern const u8 crc7_syndrome_table[256];
-+
-+static inline u8 crc7_byte(u8 crc, const u8 data)
-+{
-+	return crc7_syndrome_table[(crc << 1) ^ data];
-+}
-+
-+extern u8 crc7(u8 crc, const u8 *buffer, size_t len);
-+
-+#endif
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ g26/lib/crc7.c	2007-05-11 00:57:30.000000000 -0700
-@@ -0,0 +1,68 @@
-+/*
-+ *      crc7.c
-+ *
-+ * This source code is licensed under the GNU General Public License,
-+ * Version 2. See the file COPYING for more details.
-+ */
-+
-+#include <linux/types.h>
-+#include <linux/module.h>
-+#include <linux/crc7.h>
-+
-+
-+/* Table for CRC-7 (polynomial x^7 + x^3 + 1) */
-+const u8 crc7_syndrome_table[256] = {
-+	0x00, 0x09, 0x12, 0x1b, 0x24, 0x2d, 0x36, 0x3f,
-+	0x48, 0x41, 0x5a, 0x53, 0x6c, 0x65, 0x7e, 0x77,
-+	0x19, 0x10, 0x0b, 0x02, 0x3d, 0x34, 0x2f, 0x26,
-+	0x51, 0x58, 0x43, 0x4a, 0x75, 0x7c, 0x67, 0x6e,
-+	0x32, 0x3b, 0x20, 0x29, 0x16, 0x1f, 0x04, 0x0d,
-+	0x7a, 0x73, 0x68, 0x61, 0x5e, 0x57, 0x4c, 0x45,
-+	0x2b, 0x22, 0x39, 0x30, 0x0f, 0x06, 0x1d, 0x14,
-+	0x63, 0x6a, 0x71, 0x78, 0x47, 0x4e, 0x55, 0x5c,
-+	0x64, 0x6d, 0x76, 0x7f, 0x40, 0x49, 0x52, 0x5b,
-+	0x2c, 0x25, 0x3e, 0x37, 0x08, 0x01, 0x1a, 0x13,
-+	0x7d, 0x74, 0x6f, 0x66, 0x59, 0x50, 0x4b, 0x42,
-+	0x35, 0x3c, 0x27, 0x2e, 0x11, 0x18, 0x03, 0x0a,
-+	0x56, 0x5f, 0x44, 0x4d, 0x72, 0x7b, 0x60, 0x69,
-+	0x1e, 0x17, 0x0c, 0x05, 0x3a, 0x33, 0x28, 0x21,
-+	0x4f, 0x46, 0x5d, 0x54, 0x6b, 0x62, 0x79, 0x70,
-+	0x07, 0x0e, 0x15, 0x1c, 0x23, 0x2a, 0x31, 0x38,
-+	0x41, 0x48, 0x53, 0x5a, 0x65, 0x6c, 0x77, 0x7e,
-+	0x09, 0x00, 0x1b, 0x12, 0x2d, 0x24, 0x3f, 0x36,
-+	0x58, 0x51, 0x4a, 0x43, 0x7c, 0x75, 0x6e, 0x67,
-+	0x10, 0x19, 0x02, 0x0b, 0x34, 0x3d, 0x26, 0x2f,
-+	0x73, 0x7a, 0x61, 0x68, 0x57, 0x5e, 0x45, 0x4c,
-+	0x3b, 0x32, 0x29, 0x20, 0x1f, 0x16, 0x0d, 0x04,
-+	0x6a, 0x63, 0x78, 0x71, 0x4e, 0x47, 0x5c, 0x55,
-+	0x22, 0x2b, 0x30, 0x39, 0x06, 0x0f, 0x14, 0x1d,
-+	0x25, 0x2c, 0x37, 0x3e, 0x01, 0x08, 0x13, 0x1a,
-+	0x6d, 0x64, 0x7f, 0x76, 0x49, 0x40, 0x5b, 0x52,
-+	0x3c, 0x35, 0x2e, 0x27, 0x18, 0x11, 0x0a, 0x03,
-+	0x74, 0x7d, 0x66, 0x6f, 0x50, 0x59, 0x42, 0x4b,
-+	0x17, 0x1e, 0x05, 0x0c, 0x33, 0x3a, 0x21, 0x28,
-+	0x5f, 0x56, 0x4d, 0x44, 0x7b, 0x72, 0x69, 0x60,
-+	0x0e, 0x07, 0x1c, 0x15, 0x2a, 0x23, 0x38, 0x31,
-+	0x46, 0x4f, 0x54, 0x5d, 0x62, 0x6b, 0x70, 0x79
-+};
-+EXPORT_SYMBOL(crc7_syndrome_table);
++#define SPI_HAS_EXCLUSIVE
 +
 +/**
-+ * crc7 - update the CRC7 for the data buffer
-+ * @crc:     previous CRC7 value
-+ * @buffer:  data pointer
-+ * @len:     number of bytes in the buffer
-+ * Context: any
++ * spi_get_exclusive - temporarily acquire exclusive access to a SPI bus
++ * @spi: device which will have exclusive access to the SPI bus.
++ * Context: can sleep
 + *
-+ * Returns the updated CRC7 value.
++ * Some SPI protocols, such as those for MMC and SD cards, involve keeping
++ * a given device's chipselect active for more complex sequences of transfers
++ * than the known-in-advance contents of one spi_message.  Drivers for such
++ * protocols should use this method and its sibling spi_put_exclusive().
++ *
++ * When spi_get_exclusive() returns success, any pending transfers on that
++ * bus will have completed, and that device's chipselect will be active.
++ * From that point until spi_put_exclusive() is called, only spi_message
++ * transfers to that device will be acted on, and the device will only be
++ * (briefly) deselected mid-message, according to by spi_transfer.cs_change.
++ *
++ * Message being sent to other devices on this bus are queued for processing
++ * after the matching put_exclusive() call.
++ *
++ * This call may only be from contexts which can sleep.  It returns zero
++ * on success, else a negative error number.
 + */
-+u8 crc7(u8 crc, const u8 *buffer, size_t len)
++static inline int spi_get_exclusive(struct spi_device *spi)
 +{
-+	while (len--)
-+		crc = crc7_byte(crc, *buffer++);
-+	return crc;
++	if (!spi->master->get_exclusive)
++		return -EIO;
++	return spi->master->get_exclusive(spi);
 +}
-+EXPORT_SYMBOL(crc7);
 +
-+MODULE_DESCRIPTION("CRC7 calculations");
-+MODULE_LICENSE("GPL");
++/**
++ * spi_put_exclusive - release exclusive access to a SPI bus
++ * @spi: device which has been granted that access
++ * Context: can sleep
++ *
++ * This reverses the effect of a successful spi_get_exclusive(), and
++ * deselects the device.
++ *
++ * This call may only be from contexts which can sleep.  It is an error to
++ * call this when messages are still queued to the specified device, or
++ * from code that doesn't hold the exclusive access.
++ */
++static inline void spi_put_exclusive(struct spi_device *spi)
++{
++	spi->master->put_exclusive(spi);
++}
++
+ /*---------------------------------------------------------------------------*/
+ 
+ /* All these synchronous SPI transfer routines are utilities layered
+--- g26.orig/include/linux/spi/spi_bitbang.h	2007-06-04 19:57:23.000000000 -0700
++++ g26/include/linux/spi/spi_bitbang.h	2007-06-04 19:57:45.000000000 -0700
+@@ -29,6 +29,9 @@ struct spi_bitbang {
+ 	u8			flags;		/* extra spi->mode support */
+ 
+ 	struct spi_master	*master;
++	struct spi_device	*exclusive;
++	wait_queue_head_t	xwait;
++	struct list_head	xqueue;
+ 
+ 	/* setup_transfer() changes clock and/or wordsize to match settings
+ 	 * for this transfer; zeroes restore defaults from spi_device.
+--- g26.orig/drivers/spi/spi_bitbang.c	2007-06-04 19:57:23.000000000 -0700
++++ g26/drivers/spi/spi_bitbang.c	2007-06-04 19:57:45.000000000 -0700
+@@ -284,7 +284,6 @@ static void bitbang_work(struct work_str
+ 
+ 		m = container_of(bitbang->queue.next, struct spi_message,
+ 				queue);
+-		list_del_init(&m->queue);
+ 		spin_unlock_irqrestore(&bitbang->lock, flags);
+ 
+ 		/* FIXME this is made-up ... the correct value is known to
+@@ -295,7 +294,7 @@ static void bitbang_work(struct work_str
+ 
+ 		spi = m->spi;
+ 		tmp = 0;
+-		cs_change = 1;
++		cs_change = (spi != bitbang->exclusive);
+ 		status = 0;
+ 		setup_transfer = NULL;
+ 
+@@ -369,7 +368,6 @@ static void bitbang_work(struct work_str
+ 		}
+ 
+ 		m->status = status;
+-		m->complete(m->context);
+ 
+ 		/* restore speed and wordsize */
+ 		if (setup_transfer)
+@@ -377,17 +375,24 @@ static void bitbang_work(struct work_str
+ 
+ 		/* normally deactivate chipselect ... unless no error and
+ 		 * cs_change has hinted that the next message will probably
+-		 * be for this chip too.
++		 * be for this chip too, or this device reserved the bus
+ 		 */
+-		if (!(status == 0 && cs_change)) {
++		if (!(status == 0 && cs_change) && spi != bitbang->exclusive) {
+ 			ndelay(nsecs);
+ 			bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
+ 			ndelay(nsecs);
+ 		}
+ 
+ 		spin_lock_irqsave(&bitbang->lock, flags);
++		list_del_init(&m->queue);
++		spin_unlock_irqrestore(&bitbang->lock, flags);
++
++		m->complete(m->context);
++
++		spin_lock_irqsave(&bitbang->lock, flags);
+ 	}
+ 	bitbang->busy = 0;
++	wake_up(&bitbang->xwait);
+ 	spin_unlock_irqrestore(&bitbang->lock, flags);
+ }
+ 
+@@ -408,6 +413,8 @@ int spi_bitbang_transfer(struct spi_devi
+ 	spin_lock_irqsave(&bitbang->lock, flags);
+ 	if (!spi->max_speed_hz)
+ 		status = -ENETDOWN;
++	else if (bitbang->exclusive && bitbang->exclusive != spi)
++		list_add_tail(&m->queue, &bitbang->xqueue);
+ 	else {
+ 		list_add_tail(&m->queue, &bitbang->queue);
+ 		queue_work(bitbang->workqueue, &bitbang->work);
+@@ -418,6 +425,75 @@ int spi_bitbang_transfer(struct spi_devi
+ }
+ EXPORT_SYMBOL_GPL(spi_bitbang_transfer);
+ 
++/*
++ * NOTE:  This current version of the exclusive access calls is not cast
++ * in stone either for interface or implementation.
++ *
++ * In particular, if it gets used very widely, it's possible that handling
++ * EBUSY returns from get_exclusive() might too annoying...
++ */
++
++static int check_empty(struct spi_bitbang *bitbang)
++{
++	unsigned long		flags;
++	int			value;
++
++	/* this "knows" that bitbang_work() leaves requests at the head
++	 * of the queue until it's done processing them.
++	 */
++	spin_lock_irqsave(&bitbang->lock, flags);
++	value = list_empty(&bitbang->queue);
++	spin_unlock_irqrestore(&bitbang->lock, flags);
++	return value;
++}
++
++static int spi_bitbang_get_exclusive(struct spi_device *spi)
++{
++	struct spi_bitbang	*bitbang;
++	int			status = 0;
++
++	bitbang = spi_master_get_devdata(spi->master);
++	might_sleep();
++
++	/* from now on, no more new messages except those to that device */
++	spin_lock_irq(&bitbang->lock);
++	if (bitbang->exclusive)
++		status = -EBUSY;		/* REVISIT better to wait! */
++	else
++		bitbang->exclusive = spi;
++	spin_unlock_irq(&bitbang->lock);
++
++	/* ... and chipselect for that device stays active */
++	if (!status) {
++		wait_event(bitbang->xwait, check_empty(bitbang));
++		bitbang->chipselect(spi, BITBANG_CS_ACTIVE);
++	}
++	return status;
++}
++
++static void spi_bitbang_put_exclusive(struct spi_device *spi)
++{
++	struct spi_bitbang	*bitbang;
++
++	bitbang = spi_master_get_devdata(spi->master);
++	might_sleep();
++
++	if (bitbang->exclusive == spi) {
++		wait_event(bitbang->xwait, check_empty(bitbang));
++		bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
++
++		spin_lock_irq(&bitbang->lock);
++		bitbang->exclusive = NULL;
++		if (!list_empty(&bitbang->xqueue)) {
++			__list_splice(&bitbang->xqueue, &bitbang->queue);
++			INIT_LIST_HEAD(&bitbang->xqueue);
++			queue_work(bitbang->workqueue, &bitbang->work);
++		}
++		spin_unlock_irq(&bitbang->lock);
++
++	}
++}
++
+ /*----------------------------------------------------------------------*/
+ 
+ /**
+@@ -454,6 +530,11 @@ int spi_bitbang_start(struct spi_bitbang
+ 	spin_lock_init(&bitbang->lock);
+ 	INIT_LIST_HEAD(&bitbang->queue);
+ 
++	init_waitqueue_head(&bitbang->xwait);
++	INIT_LIST_HEAD(&bitbang->xqueue);
++	bitbang->master->get_exclusive = spi_bitbang_get_exclusive;
++	bitbang->master->put_exclusive = spi_bitbang_put_exclusive;
++
+ 	if (!bitbang->master->transfer)
+ 		bitbang->master->transfer = spi_bitbang_transfer;
+ 	if (!bitbang->txrx_bufs) {
+@@ -502,6 +583,7 @@ int spi_bitbang_stop(struct spi_bitbang 
+ 	spi_unregister_master(bitbang->master);
+ 
+ 	WARN_ON(!list_empty(&bitbang->queue));
++	WARN_ON(!list_empty(&bitbang->xqueue));
+ 
+ 	destroy_workqueue(bitbang->workqueue);
+ 
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

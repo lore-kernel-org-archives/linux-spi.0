@@ -1,13 +1,13 @@
-From: Ben Dooks <ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org>
-Subject: [PATCH] Infineion TLE62X0 device driver
-Date: Tue, 5 Jun 2007 19:32:44 +0100
-Message-ID: <20070605183244.GE13353@trinity.fluff.org>
+From: Andrei Konovalov <akonovalov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: [PATCH] Simple driver for Xilinx SPI controler.
+Date: Wed, 06 Jun 2007 18:05:59 +0400
+Message-ID: <4666BF47.8080103@ru.mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Cc: linuxppc-embedded-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -19,386 +19,543 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add support for the Infineon TLE62x0 series of low-side driver
-chips, such as the TLE6220 or TLE6230.
+Only master mode is supported.
+No support for multiple masters. Slave mode is not supported either.
+Not using level 1 drivers from EDK.
 
-Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+The reason not to use EDK is basically this driver being a simple one:
+- SPI level 1 driver from EDK supports much more then needed for this
+   simple version of the SPI driver (slave mode, multiple masters etc).
+   And leaving just single master case alone is not possible without
+   changing the level 1 driver.
+- SPI level 1 driver from EDK manipulates chip selects on its own.
+   This makes it impossible to use the spi_bitbang.
 
-Index: linux-2.6.22-rc4-simtec/include/linux/spi/tle62x0.h
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.22-rc4-simtec/include/linux/spi/tle62x0.h	2007-06-05 19:14:07.000000000 +0100
-@@ -0,0 +1,23 @@
-+/* include/linux/spi/tle62x0.h
-+ *
-+ * Copyright 2007 Simtec Electronics
-+ *	Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+*/
-+
-+struct tle62x0_pdata {
-+	unsigned int		init_state;
-+	unsigned int		gpio_count;
+The driver has been tested with Xilinx ML300 reference design.
+
+The patch to enable SPI for Xilinx ML300 board (EDK reference design)
+will be sent to linuxppc-embedded list shortly.
+
+Would be nice to get this driver into mainline.
+Reviews and comments are welcome.
+
+Thanks,
+Andrei
+
+Signed-off-by: Yuri Frolov <yfrolov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Signed-off-by: Andrei Konovalov <akonovalov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+---
+  arch/ppc/syslib/virtex_devices.h |    6 +
+  drivers/spi/Kconfig              |    9 +
+  drivers/spi/Makefile             |    1 +
+  drivers/spi/xilinx_spi.c         |  447 ++++++++++++++++++++++++++++++++++++++
+  4 files changed, 463 insertions(+), 0 deletions(-)
+  create mode 100644 drivers/spi/xilinx_spi.c
+
+diff --git a/arch/ppc/syslib/virtex_devices.h b/arch/ppc/syslib/virtex_devices.h
+index b49dc61..9ab3152 100644
+--- a/arch/ppc/syslib/virtex_devices.h
++++ b/arch/ppc/syslib/virtex_devices.h
+@@ -45,4 +45,10 @@ struct xtemac_platform_data {
+  	u8 mac_addr[6];
+  };
+
++/* SPI Controller IP */
++struct xspi_platform_data {
++	s16 bus_num;
++	u16 num_chipselect;
 +};
-Index: linux-2.6.22-rc4-simtec/drivers/spi/Kconfig
-===================================================================
---- linux-2.6.22-rc4-simtec.orig/drivers/spi/Kconfig	2007-06-05 18:27:11.000000000 +0100
-+++ linux-2.6.22-rc4-simtec/drivers/spi/Kconfig	2007-06-05 19:14:07.000000000 +0100
-@@ -160,6 +160,13 @@ config SPI_S3C24XX_GPIO
- # Add new SPI master controllers in alphabetical order above this line
- #
- 
-+config SPI_TLE62X0
-+	tristate "Infineon TLE62X0"
-+	depends on SPI_MASTER
++
+  #endif  /* __ASM_VIRTEX_DEVICES_H__ */
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 5e3f748..851d651 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -156,6 +156,15 @@ config SPI_S3C24XX_GPIO
+  	  GPIO lines to provide the SPI bus. This can be used where
+  	  the inbuilt hardware cannot provide the transfer mode, or
+  	  where the board is using non hardware connected pins.
++
++config SPI_XILINX
++	tristate "Xilinx SPI controller"
++	depends on SPI_MASTER && XILINX_VIRTEX && EXPERIMENTAL
++	select SPI_BITBANG
 +	help
-+	  SPI driver for Infineion TLE62X0 series line driver chips,
-+	  such as the TLE6220, TLE6230 and TLE6240.
-+
- #
- # There are lots of SPI device types, with sensors and memory
- # being probably the most widely used ones.
-Index: linux-2.6.22-rc4-simtec/drivers/spi/tle62x0.c
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.22-rc4-simtec/drivers/spi/tle62x0.c	2007-06-05 19:14:07.000000000 +0100
-@@ -0,0 +1,312 @@
-+/* drivers/spi/tle62x0.c
++	  This enables using the SPI controller IP from Xilinx EDK in master
++	  mode. See the DS464, "OPB Serial Peripheral Interface (SPI) (v1.00e)"
++	  Product Specification document for the hardware details.
+  #
+  # Add new SPI master controllers in alphabetical order above this line
+  #
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 5788d86..a2412bd 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -23,6 +23,7 @@ obj-$(CONFIG_SPI_MPC52xx_PSC)		+= mpc52xx_psc_spi.o
+  obj-$(CONFIG_SPI_MPC83xx)		+= spi_mpc83xx.o
+  obj-$(CONFIG_SPI_S3C24XX_GPIO)		+= spi_s3c24xx_gpio.o
+  obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24xx.o
++obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
+  # 	... add above this line ...
+
+  # SPI protocol drivers (device/link on bus)
+diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
+new file mode 100644
+index 0000000..e5f149f
+--- /dev/null
++++ b/drivers/spi/xilinx_spi.c
+@@ -0,0 +1,447 @@
++/*
++ * xilinx_spi.c
 + *
-+ * Copyright (c) 2007 Simtec Electronics
-+ *	Ben Dooks, <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
++ * Xilinx SPI controler driver (master mode only)
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
++ * Author: MontaVista Software, Inc.
++ *         source-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org
 + *
-+ * Infineon TLE62x0 series driver
-+*/
++ * 2002-2007 (c) MontaVista Software, Inc.  This file is licensed under the
++ * terms of the GNU General Public License version 2.  This program is licensed
++ * "as is" without any warranty of any kind, whether express or implied.
++ */
 +
-+#include <linux/device.h>
-+#include <linux/kernel.h>
-+
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/platform_device.h>
 +#include <linux/spi/spi.h>
-+#include <linux/spi/tle62x0.h>
++#include <linux/spi/spi_bitbang.h>
 +
-+#define CMD_READ	(0x00)
-+#define CMD_SET		(0xff)
++#include <asm/io.h>
++#include <syslib/virtex_devices.h>
 +
-+#define DIAG_NORMAL	(0x03)
-+#define DIAG_OVERLOAD	(0x02)
-+#define DIAG_OPEN	(0x01)
-+#define DIAG_SHORTGND	(0x00)
++#define XILINX_SPI_NAME "xspi"
 +
-+struct tle62x0_state {
-+	struct spi_device	*us;
-+	struct mutex		lock;
-+	unsigned int		nr_gpio;
-+	unsigned int		gpio_state;
++/* Register definitions as per "OPB Serial Peripheral Interface (SPI) (v1.00e)
++ * Product Specification", DS464
++ */
++#define XSPI_CR_OFFSET		0x62	/* 16-bit Control Register */
 +
-+	unsigned char		tx_buff[4];
-+	unsigned char		rx_buff[4];
++#define XSPI_CR_ENABLE		0x02
++#define XSPI_CR_MASTER_MODE	0x04
++#define XSPI_CR_CPOL		0x08
++#define XSPI_CR_CPHA		0x10
++#define XSPI_CR_MODE_MASK	(XSPI_CR_CPHA | XSPI_CR_CPOL)
++#define XSPI_CR_TXFIFO_RESET	0x20
++#define XSPI_CR_RXFIFO_RESET	0x40
++#define XSPI_CR_MANUAL_SSELECT	0x80
++#define XSPI_CR_TRANS_INHIBIT	0x100
++
++#define XSPI_SR_OFFSET		0x67	/* 8-bit Status Register */
++
++#define XSPI_SR_RX_EMPTY_MASK	0x01	/* Receive FIFO is empty */
++#define XSPI_SR_RX_FULL_MASK	0x02	/* Receive FIFO is full */
++#define XSPI_SR_TX_EMPTY_MASK	0x04	/* Transmit FIFO is empty */
++#define XSPI_SR_TX_FULL_MASK	0x08	/* Transmit FIFO is full */
++#define XSPI_SR_MODE_FAULT_MASK	0x10	/* Mode fault error */
++
++#define XSPI_TXD_OFFSET		0x6b	/* 8-bit Data Transmit Register */
++#define XSPI_RXD_OFFSET		0x6f	/* 8-bit Data Receive Register */
++
++#define XSPI_SSR_OFFSET		0x70	/* 32-bit Slave Select Register */
++
++/* Register definitions as per "OPB IPIF (v3.01c) Product Specification", DS414
++ * IPIF registers are 32 bit
++ */
++#define XIPIF_V123B_DGIER_OFFSET	0x1c	/* IPIF global int enable reg */
++#define XIPIF_V123B_GINTR_ENABLE	0x80000000
++
++#define XIPIF_V123B_IISR_OFFSET		0x20	/* IPIF interrupt status reg */
++#define XIPIF_V123B_IIER_OFFSET		0x28	/* IPIF interrupt enable reg */
++
++#define XSPI_INTR_MODE_FAULT		0x01	/* Mode fault error */
++#define XSPI_INTR_SLAVE_MODE_FAULT	0x02	/* Selected as slave while
++                                                * disabled */
++#define XSPI_INTR_TX_EMPTY		0x04	/* TxFIFO is empty */
++#define XSPI_INTR_TX_UNDERRUN		0x08	/* TxFIFO was underrun */
++#define XSPI_INTR_RX_FULL		0x10	/* RxFIFO is full */
++#define XSPI_INTR_RX_OVERRUN		0x20	/* RxFIFO was overrun */
++
++#define XIPIF_V123B_RESETR_OFFSET	0x40	/* IPIF reset register */
++#define XIPIF_V123B_RESET_MASK		0x0a	/* the value to write */
++
++/* Simple macros to get the code more readable */
++#define xspi_in16(addr)		in_be16((u16 __iomem *)(addr))
++#define xspi_in32(addr)		in_be32((u32 __iomem *)(addr))
++#define xspi_out16(addr, value)	out_be16((u16 __iomem *)(addr), (value))
++#define xspi_out32(addr, value)	out_be32((u32 __iomem *)(addr), (value))
++
++struct xilinx_spi {
++	/* bitbang has to be first */
++	struct spi_bitbang bitbang;
++	struct completion done;
++
++	u32		regs_phys;	/* phys. address of the control registers */
++	void __iomem	*regs;		/* virt. address of the control registers */
++
++	u32 irq;
++
++	u8 *rx_ptr;		/* pointer in the Tx buffer */
++	const u8 *tx_ptr;	/* pointer in the Rx buffer */
++	int remaining_bytes;	/* the number of bytes left to transfer */
 +};
 +
-+static int to_gpio_num(struct device_attribute *attr);
-+
-+static inline int tle62x0_write(struct tle62x0_state *st)
++static void xspi_abort_transfer(u8 __iomem *regs_base)
 +{
-+	unsigned char *buff = st->tx_buff;
-+	unsigned int gpio_state = st->gpio_state;
++	/* Deselect the slave on the SPI bus */
++	xspi_out32(regs_base + XSPI_SSR_OFFSET, 0xffff);
 +
-+	buff[0] = CMD_SET;
++	/* Terminate transmit in progress (if any) and Reset the FIFOs */
++	xspi_out16(regs_base + XSPI_CR_OFFSET,
++		   xspi_in16(regs_base + XSPI_CR_OFFSET)
++		   | XSPI_CR_TRANS_INHIBIT | XSPI_CR_TXFIFO_RESET
++		   | XSPI_CR_RXFIFO_RESET);
++}
 +
-+	if (st->nr_gpio == 16) {
-+		buff[1] = gpio_state >> 8;
-+		buff[2] = gpio_state;
++static void xspi_init_hw(u8 __iomem *regs_base)
++{
++	/* Reset the SPI device */
++	xspi_out32(regs_base + XIPIF_V123B_RESETR_OFFSET,
++		   XIPIF_V123B_RESET_MASK);
++	/* Disable all the interrupts just in case */
++	xspi_out32(regs_base + XIPIF_V123B_IIER_OFFSET, 0);
++	/* Enable the global IPIF interrupt */
++	xspi_out32(regs_base + XIPIF_V123B_DGIER_OFFSET,
++		   XIPIF_V123B_GINTR_ENABLE);
++	/* Deselect the slave on the SPI bus */
++	xspi_out32(regs_base + XSPI_SSR_OFFSET, 0xffff);
++	/* Disable the transmitter, enable Manual Slave Select Assertion,
++	 * put SPI controller into master mode, and enable it */
++	xspi_out16(regs_base + XSPI_CR_OFFSET,
++		   XSPI_CR_TRANS_INHIBIT | XSPI_CR_MANUAL_SSELECT
++		   | XSPI_CR_MASTER_MODE | XSPI_CR_ENABLE);
++}
++
++static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
++{
++	struct xilinx_spi *xspi;
++	u8 __iomem *regs_base;
++
++	xspi = spi_master_get_devdata(spi->master);
++	regs_base = xspi->regs;
++
++	if (is_on == BITBANG_CS_INACTIVE) {
++		/* Deselect the slave on the SPI bus */
++		xspi_out32(regs_base + XSPI_SSR_OFFSET, 0xffff);
++	} else if (is_on == BITBANG_CS_ACTIVE) {
++		/* Set the SPI clock phase and polarity */
++		u16 cr = xspi_in16(regs_base + XSPI_CR_OFFSET)
++			 & ~XSPI_CR_MODE_MASK;
++		if (spi->mode & SPI_CPHA)
++			cr |= XSPI_CR_CPHA;
++		if (spi->mode & SPI_CPOL)
++			cr |= XSPI_CR_CPOL;
++		xspi_out16(regs_base + XSPI_CR_OFFSET, cr);
++
++		/* We do not check spi->max_speed_hz here as the SPI clock
++		 * frequency is not software programmable (the IP block design
++		 * parameter)
++		 */
++
++		/* Activate the chip select */
++		xspi_out32(regs_base + XSPI_SSR_OFFSET,
++			   ~(0x0001 << spi->chip_select));
++	}
++}
++
++/* spi_bitbang requires custom setup_transfer() to be defined if there is a
++ * custom txrx_bufs(). We have nothing to setup here as the SPI IP block
++ * supports just 8 bits per word, and SPI clock can't be changed in software.
++ * Check for 8 bits per word; speed_hz checking could be added if the SPI
++ * clock information is available. Chip select delay calculations could be
++ * added here as soon as bitbang_work() can be made aware of the delay value.
++ */
++static int xilinx_spi_setup_transfer(struct spi_device *spi,
++				     struct spi_transfer *t)
++{
++	u8 bits_per_word;
++
++	bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
++	if (bits_per_word != 8)
++		return -EINVAL;
++
++	return 0;
++}
++
++
++static int xilinx_spi_setup(struct spi_device *spi)
++{
++	struct spi_bitbang *bitbang;
++	struct xilinx_spi *xspi;
++	int retval;
++
++	xspi = spi_master_get_devdata(spi->master);
++	bitbang = &xspi->bitbang;
++
++	if (!spi->bits_per_word)
++		spi->bits_per_word = 8;
++
++	retval = xilinx_spi_setup_transfer(spi, NULL);
++	if (retval < 0)
++		return retval;
++
++	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
++		__FUNCTION__, spi->mode & (SPI_CPOL | SPI_CPHA),
++		spi->bits_per_word, 0);
++
++	return 0;
++}
++
++static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct xilinx_spi *xspi;
++	u8 __iomem *regs_base;
++	u32 ipif_ier;
++	u16 cr;
++	u8 sr;
++
++	/* We get here with transmitter inhibited */
++
++	xspi = spi_master_get_devdata(spi->master);
++	regs_base = xspi->regs;
++
++	xspi->tx_ptr = t->tx_buf;
++	xspi->rx_ptr = t->rx_buf;
++	xspi->remaining_bytes = t->len;
++	INIT_COMPLETION(xspi->done);
++
++	/* Fill the Tx FIFO with as many bytes as possible */
++	sr = in_8(regs_base + XSPI_SR_OFFSET);
++	while ((sr & XSPI_SR_TX_FULL_MASK) == 0 && xspi->remaining_bytes > 0) {
++		if (xspi->tx_ptr) {
++			out_8(regs_base + XSPI_TXD_OFFSET, *xspi->tx_ptr++);
++		} else {
++			out_8(regs_base + XSPI_TXD_OFFSET, 0);
++		}
++		xspi->remaining_bytes--;
++		sr = in_8(regs_base + XSPI_SR_OFFSET);
++	}
++
++	/* Enable the transmit empty interrupt, which we use to determine
++	 * progress on the transmission.
++	 */
++	ipif_ier = xspi_in32(regs_base + XIPIF_V123B_IIER_OFFSET);
++	xspi_out32(regs_base + XIPIF_V123B_IIER_OFFSET,
++		   ipif_ier | XSPI_INTR_TX_EMPTY);
++
++	/* Start the transfer by not inhibiting the transmitter any longer */
++	cr = xspi_in16(regs_base + XSPI_CR_OFFSET) & ~XSPI_CR_TRANS_INHIBIT;
++	xspi_out16(regs_base + XSPI_CR_OFFSET, cr);
++
++	wait_for_completion(&xspi->done);
++
++	/* Disable the transmit empty interrupt */
++	xspi_out32(regs_base + XIPIF_V123B_IIER_OFFSET, ipif_ier);
++
++	return t->len - xspi->remaining_bytes;
++}
++
++
++/* This driver supports single master mode only. Hence Tx FIFO Empty
++ * is the only interrupt we care about.
++ * Receive FIFO Overrun, Transmit FIFO Underrun, Mode Fault, and Slave Mode
++ * Fault are not to happen.
++ */
++static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
++{
++	struct xilinx_spi *xspi;
++	u8 __iomem *regs_base;
++	u32 ipif_isr;
++
++	xspi = (struct xilinx_spi *) dev_id;
++	regs_base = xspi->regs;
++
++     	/* Get the IPIF inetrrupts, and clear them immediately */
++	ipif_isr = xspi_in32(regs_base + XIPIF_V123B_IISR_OFFSET);
++	xspi_out32(regs_base + XIPIF_V123B_IISR_OFFSET, ipif_isr);
++
++	if (ipif_isr & XSPI_INTR_TX_EMPTY) {	/* Transmission completed */
++		u16 cr;
++		u8 sr;
++
++		/* A transmit has just completed. Process received data and
++		 * check for more data to transmit. Always inhibit the
++		 * transmitter while the Isr refills the transmit register/FIFO,
++		 * or make sure it is stopped if we're done.
++	         */
++		cr = xspi_in16(regs_base + XSPI_CR_OFFSET);
++		xspi_out16(regs_base + XSPI_CR_OFFSET,
++			   cr | XSPI_CR_TRANS_INHIBIT);
++
++		/* Read out all the data from the Rx FIFO */
++		sr = in_8(regs_base + XSPI_SR_OFFSET);
++		while ((sr & XSPI_SR_RX_EMPTY_MASK) == 0) {
++			u8 data;
++
++			data = in_8(regs_base + XSPI_RXD_OFFSET);
++			if (xspi->rx_ptr) {
++				*xspi->rx_ptr++ = data;
++			}
++			sr = in_8(regs_base + XSPI_SR_OFFSET);
++		}
++
++	        /* See if there is more data to send */
++		if (xspi->remaining_bytes > 0) {
++			/* sr content is valid here; no need for io_8() */
++			while ((sr & XSPI_SR_TX_FULL_MASK) == 0
++				&& xspi->remaining_bytes > 0) {
++				if (xspi->tx_ptr) {
++					out_8(regs_base + XSPI_TXD_OFFSET,
++					      *xspi->tx_ptr++);
++				} else {
++					out_8(regs_base + XSPI_TXD_OFFSET, 0);
++				}
++				xspi->remaining_bytes--;
++				sr = in_8(regs_base + XSPI_SR_OFFSET);
++			}
++			/* Start the transfer by not inhibiting the
++			 * transmitter any longer
++			 */
++			xspi_out16(regs_base + XSPI_CR_OFFSET, cr);
++		} else {
++			/* No more data to send.
++			 * Indicate the transfer is completed.
++			 */
++			complete(&xspi->done);
++		}
 +	} else {
-+		buff[1] = gpio_state;
++		/* spurious interrupt */
 +	}
 +
-+	dev_dbg(&st->us->dev, "buff %02x,%02x,%02x\n",
-+		buff[0], buff[1], buff[2]);
-+
-+	return spi_write(st->us, buff, (st->nr_gpio == 16) ? 3 : 2);
++	return IRQ_HANDLED;
 +}
 +
-+static inline int tle62x0_read(struct tle62x0_state *st)
++static int __init xilinx_spi_probe(struct platform_device *dev)
 +{
-+	unsigned char *txbuff = st->tx_buff;
-+	struct spi_transfer xfer = {
-+		.tx_buf		= txbuff,
-+		.rx_buf		= st->rx_buff,
-+		.len		= (st->nr_gpio * 2) / 8,
-+	};
-+	struct spi_message msg;
++	int ret = 0;
++	struct spi_master *master;
++	struct xilinx_spi *xspi;
++	struct xspi_platform_data *pdata;
++	struct resource *r;
 +
-+	txbuff[0] = CMD_READ;
-+	txbuff[1] = 0x00;
-+	txbuff[2] = 0x00;
-+	txbuff[3] = 0x00;
++	/* Get resources(memory, IRQ) associated with the device */
++	master = spi_alloc_master(&dev->dev, sizeof(struct xilinx_spi));
 +
-+	spi_message_init(&msg);
-+	spi_message_add_tail(&xfer, &msg);
-+
-+	return spi_sync(st->us, &msg);
-+}
-+
-+static unsigned char *decode_fault(unsigned int fault_code)
-+{
-+	fault_code &= 3;
-+
-+	switch (fault_code) {
-+	case DIAG_NORMAL:
-+		return "N";
-+	case DIAG_OVERLOAD:
-+		return "V";
-+	case DIAG_OPEN:
-+		return "O";
-+	case DIAG_SHORTGND:
-+		return "G";
-+	}
-+
-+	return "?";
-+}
-+
-+static int tle62x0_status_show(struct device *dev,
-+			       struct device_attribute *attr, char *buf)
-+{
-+	struct tle62x0_state *st = dev_get_drvdata(dev);
-+	char *bp = buf;
-+	unsigned char *buff = st->rx_buff;
-+	unsigned long fault = 0;
-+	int ptr;
-+	int ret;
-+
-+	mutex_lock(&st->lock);
-+	ret = tle62x0_read(st);
-+
-+	dev_dbg(dev, "tle62x0_read() returned %d\n", ret);
-+
-+	for (ptr = 0; ptr < (st->nr_gpio * 2)/8; ptr += 1) {
-+		fault <<= 8;
-+		fault  |= ((unsigned long)buff[ptr]);
-+
-+		dev_dbg(dev, "byte %d is %02x\n", ptr, buff[ptr]);
-+	}
-+
-+	for (ptr = 0; ptr < st->nr_gpio; ptr++) {
-+		bp += sprintf(bp, "%s ", decode_fault(fault >> (ptr * 2)));
-+	}
-+
-+	*bp++ = '\n';
-+
-+	mutex_unlock(&st->lock);
-+	return bp - buf;
-+}
-+
-+static DEVICE_ATTR(status_show, 0444, tle62x0_status_show, NULL);
-+
-+static int tle62x0_gpio_show(struct device *dev,
-+			     struct device_attribute *attr, char *buf)
-+{
-+	struct tle62x0_state *st = dev_get_drvdata(dev);
-+	int gpio_num = to_gpio_num(attr);
-+	int value;
-+
-+	mutex_lock(&st->lock);
-+	value = (st->gpio_state >> gpio_num) & 1;
-+	mutex_unlock(&st->lock);
-+
-+	return snprintf(buf, PAGE_SIZE, "%d", value);
-+}
-+
-+static int tle62x0_gpio_store(struct device *dev,
-+			      struct device_attribute *attr,
-+			      const char *buf, size_t len)
-+{
-+	struct tle62x0_state *st = dev_get_drvdata(dev);
-+	int gpio_num = to_gpio_num(attr);
-+	unsigned long val;
-+	char *endp;
-+
-+	val = simple_strtoul(buf, &endp, 0);
-+	if (buf == endp)
-+		return -EINVAL;
-+
-+	dev_dbg(dev, "setting gpio %d to %ld\n", gpio_num, val);
-+
-+	mutex_lock(&st->lock);
-+
-+	if (val)
-+		st->gpio_state |= 1 << gpio_num;
-+	else
-+		st->gpio_state &= ~(1 << gpio_num);
-+
-+	tle62x0_write(st);
-+	mutex_unlock(&st->lock);
-+
-+	return len;
-+}
-+
-+static DEVICE_ATTR(gpio1, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio2, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio3, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio4, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio5, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio6, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio7, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio8, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio9, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio10, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio11, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio12, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio13, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio14, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio15, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+static DEVICE_ATTR(gpio16, 0644, tle62x0_gpio_show, tle62x0_gpio_store);
-+
-+static struct device_attribute *gpio_attrs[] = {
-+	[0]		= &dev_attr_gpio1,
-+	[1]		= &dev_attr_gpio2,
-+	[2]		= &dev_attr_gpio3,
-+	[3]		= &dev_attr_gpio4,
-+	[4]		= &dev_attr_gpio5,
-+	[5]		= &dev_attr_gpio6,
-+	[6]		= &dev_attr_gpio7,
-+	[7]		= &dev_attr_gpio8,
-+	[8]		= &dev_attr_gpio9,
-+	[9]		= &dev_attr_gpio10,
-+	[10]		= &dev_attr_gpio11,
-+	[11]		= &dev_attr_gpio12,
-+	[12]		= &dev_attr_gpio13,
-+	[13]		= &dev_attr_gpio14,
-+	[14]		= &dev_attr_gpio15,
-+	[15]		= &dev_attr_gpio16
-+};
-+
-+static int to_gpio_num(struct device_attribute *attr)
-+{
-+	int ptr;
-+
-+	for (ptr = 0; ptr < ARRAY_SIZE(gpio_attrs); ptr++) {
-+		if (gpio_attrs[ptr] == attr)
-+			return ptr;
-+	}
-+
-+	return -1;
-+}
-+
-+static int __devinit tle62x0_probe(struct spi_device *spi)
-+{
-+	struct tle62x0_state *st;
-+	struct tle62x0_pdata *pdata;
-+	int ptr;
-+	int ret;
-+
-+	pdata = spi->dev.platform_data;
-+	if (pdata == NULL) {
-+		dev_err(&spi->dev, "no device data specified\n");
-+		return -EINVAL;
-+	}
-+
-+	st = kzalloc(sizeof(struct tle62x0_state), GFP_KERNEL);
-+	if (st == NULL) {
-+		dev_err(&spi->dev, "no memory for device state\n");
++	if (master == NULL) {
 +		return -ENOMEM;
 +	}
 +
-+	st->us = spi;
-+	st->nr_gpio = pdata->gpio_count;
-+	st->gpio_state = pdata->init_state;
++	platform_set_drvdata(dev, master);
++	pdata = dev->dev.platform_data;
 +
-+	mutex_init(&st->lock);
-+
-+	ret = device_create_file(&spi->dev, &dev_attr_status_show);
-+	if (ret) {
-+		dev_err(&spi->dev, "cannot create status attribute\n");
-+		goto err_status;
++	if (pdata == NULL) {
++		ret = -ENODEV;
++		goto put_master;
 +	}
 +
-+	for (ptr = 0; ptr < pdata->gpio_count; ptr++) {
-+		ret = device_create_file(&spi->dev, gpio_attrs[ptr]);
-+		if (ret) {
-+			dev_err(&spi->dev, "cannot create gpio attribute\n");
-+			goto err_gpios;
-+		}
++	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
++	if (r == NULL) {
++		ret = -ENODEV;
++		goto put_master;
 +	}
 +
-+	//tle62x0_write(data);
-+	spi_set_drvdata(spi, st);
-+	return 0;
++	xspi = spi_master_get_devdata(master);
++	xspi->bitbang.master = spi_master_get(master);
++	xspi->bitbang.chipselect = xilinx_spi_chipselect;
++	xspi->bitbang.setup_transfer = xilinx_spi_setup_transfer;
++	xspi->bitbang.txrx_bufs = xilinx_spi_txrx_bufs;
++	xspi->bitbang.master->setup = xilinx_spi_setup;
++	init_completion(&xspi->done);
 +
-+ err_gpios:
-+	for (; ptr > 0; ptr--)
-+		device_remove_file(&spi->dev, gpio_attrs[ptr]);
++	xspi->regs = ioremap(r->start, r->end - r->start + 1);
++	if (xspi->regs == NULL) {
++		ret = -ENOMEM;
++		goto put_master;
++	}
 +
-+	device_remove_file(&spi->dev, &dev_attr_status_show);
++	xspi->irq = platform_get_irq(dev, 0);
++	if (xspi->irq < 0) {
++		ret = -ENXIO;
++		goto unmap_io;
++	}
 +
-+ err_status:
-+	kfree(st);
++	master->bus_num = pdata->bus_num;
++	master->num_chipselect = pdata->num_chipselect;
++
++	/* SPI controller initializations */
++	xspi_init_hw(xspi->regs);
++
++	/* Register for SPI Interrupt */
++	ret = request_irq(xspi->irq, xilinx_spi_irq, 0, XILINX_SPI_NAME, xspi);
++	if (ret != 0)
++		goto unmap_io;
++
++	ret = spi_bitbang_start(&xspi->bitbang);
++	if (ret != 0) {
++		printk(KERN_ALERT "spi_btbang_start FAILED\n");
++		goto free_irq;
++	}
++
++	printk(KERN_INFO "%s: at 0x%08X mapped to 0x%08X, irq=%d\n",
++	       dev->dev.bus_id, r->start, (u32)xspi->regs, xspi->irq);
++
++	return ret;
++
++free_irq:
++        free_irq(xspi->irq, xspi);
++unmap_io:
++	iounmap(xspi->regs);
++put_master:
++        spi_master_put(master);
 +	return ret;
 +}
 +
-+static int __devexit tle62x0_remove(struct spi_device *spi)
++static int __devexit xilinx_spi_remove(struct platform_device *dev)
 +{
-+	struct tle62x0_state *st = spi_get_drvdata(spi);
-+	int ptr;
++	struct xilinx_spi *xspi;
++	struct spi_master *master;
 +
-+	for (ptr = 0; ptr < st->nr_gpio; ptr++)
-+		device_remove_file(&spi->dev, gpio_attrs[ptr]);
++	master = platform_get_drvdata(dev);
++	xspi = spi_master_get_devdata(master);
 +
-+	kfree(st);
++	spi_bitbang_stop(&xspi->bitbang);
++	xspi_abort_transfer(xspi->regs);
++	free_irq(xspi->irq, xspi);
++	iounmap(xspi->regs);
++	platform_set_drvdata(dev, 0);
++	spi_master_put(xspi->bitbang.master);
++
 +	return 0;
 +}
 +
-+static struct spi_driver tle62x0_driver = {
++static struct platform_driver xilinx_spi_driver = {
++	.probe	= xilinx_spi_probe,
++	.remove	= __devexit_p(xilinx_spi_remove),
 +	.driver = {
-+		.name	= "tle62x0",
-+		.owner	= THIS_MODULE,
++		   .name = XILINX_SPI_NAME,
++		   .owner = THIS_MODULE,
 +	},
-+	.probe		= tle62x0_probe,
-+	.remove		= __devexit_p(tle62x0_remove),
 +};
 +
-+static __init int tle62x0_init(void)
++static int __init xilinx_spi_init(void)
 +{
-+	return spi_register_driver(&tle62x0_driver);
++	return platform_driver_register(&xilinx_spi_driver);
 +}
 +
-+static __exit void tle62x0_exit(void)
++static void __exit xilinx_spi_exit(void)
 +{
-+	spi_unregister_driver(&tle62x0_driver);
++	platform_driver_unregister(&xilinx_spi_driver);
 +}
 +
-+module_init(tle62x0_init);
-+module_exit(tle62x0_exit);
++module_init(xilinx_spi_init);
++module_exit(xilinx_spi_exit);
 +
-+MODULE_AUTHOR("Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>");
-+MODULE_DESCRIPTION("TLE62x0 SPI driver");
-+MODULE_LICENSE("GPL v2");
-Index: linux-2.6.22-rc4-simtec/drivers/spi/Makefile
-===================================================================
---- linux-2.6.22-rc4-simtec.orig/drivers/spi/Makefile	2007-06-05 19:14:22.000000000 +0100
-+++ linux-2.6.22-rc4-simtec/drivers/spi/Makefile	2007-06-05 19:14:46.000000000 +0100
-@@ -28,6 +28,7 @@ obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24x
- # SPI protocol drivers (device/link on bus)
- obj-$(CONFIG_SPI_AT25)		+= at25.o
- obj-$(CONFIG_SPI_SPIDEV)	+= spidev.o
-+obj-$(CONFIG_SPI_TLE62X0)	+= tle62x0.o
- # 	... add above this line ...
- 
- # SPI slave controller drivers (upstream link)
++MODULE_AUTHOR("MontaVista Software, Inc. <source-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>");
++MODULE_DESCRIPTION("Xilinx SPI driver");
++MODULE_LICENSE("GPL");
+-- 
+1.5.1.1
+
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

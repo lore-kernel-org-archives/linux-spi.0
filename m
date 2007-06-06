@@ -1,103 +1,66 @@
-From: "Grant Likely" <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] Simple driver for Xilinx SPI controler.
-Date: Wed, 6 Jun 2007 13:00:38 -0600
-Message-ID: <fa686aa40706061200u1141fcc9k73b7cc80c07240d1@mail.gmail.com>
-References: <4666F598.2000004@ru.mvista.com>
-	<20070606180618.C4D861268059@mail88-blu.bigfish.com>
+From: "Stephen Neuendorffer" <stephen.neuendorffer-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] Simple driver for Xilinx SPI
+	controler.
+Date: Wed, 6 Jun 2007 12:06:38 -0700
+Message-ID: <20070606190640.B7028900053@mail104-cpk.bigfish.com>
+References: <fa686aa40706061200u1141fcc9k73b7cc80c07240d1@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	Andrei Konovalov <akonovalov@ru.mvista.com>,
-	Wolfgang Reissnegger <wre@xilinx.com>, linuxppc-embedded@ozlabs.org
-To: "Stephen Neuendorffer" <stephen.neuendorffer@xilinx.com>
-Return-path: <linuxppc-embedded-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org>
-In-Reply-To: <20070606180618.C4D861268059@mail88-blu.bigfish.com>
-Content-Disposition: inline
-List-Unsubscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-embedded>,
-	<mailto:linuxppc-embedded-request@ozlabs.org?subject=unsubscribe>
-List-Archive: <http://ozlabs.org/pipermail/linuxppc-embedded>
-List-Post: <mailto:linuxppc-embedded@ozlabs.org>
-List-Help: <mailto:linuxppc-embedded-request@ozlabs.org?subject=help>
-List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-embedded>,
-	<mailto:linuxppc-embedded-request@ozlabs.org?subject=subscribe>
-Sender: linuxppc-embedded-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
-Errors-To: linuxppc-embedded-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrei Konovalov <akonovalov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>,
+	Wolfgang Reissnegger <wre-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, linuxppc-embedded-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-class: urn:content-classes:message
+In-Reply-To: <fa686aa40706061200u1141fcc9k73b7cc80c07240d1-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 6/6/07, Stephen Neuendorffer <stephen.neuendorffer@xilinx.com> wrote:
->
-> Yes, except that microblazes systems run in non-virtex FPGAs...
->
-> It may be that XILINX_EDK is not the right thing either, but it
-> seemed like the easiest way to have a superset of powerpc and microblaze
-> systems
->
-> What I'm trying to do is (in concert with Grant's recent configuration
-> changes)
-> having an easy way for a new board configuration to select the Kconfig
-> options for
-> all of the Xilinx drivers.  Namely:
->
-> config XILINX_ML300
->         bool "Xilinx-ML300"
->         select XILINX_VIRTEX_II_PRO
->         select EMBEDDEDBOOT
->         help
->           This option enables support for the Xilinx ML300 evaluation
-> board.
->
-> config XILINX_VIRTEX_II_PRO
->         bool
->         select XILINX_VIRTEX
->
-> config XILINX_EDK
->         bool
->         depends on XILINX_VIRTEX || XILINX_MICROBLAZE
->         default y
 
-I don't have any problem with adding XILINX_EDK (or whatever), but
-think particular layout is back-assward.  Rather than XILINX_EDK
-depending on XILINX_VIRTEX/MICROBLAZE, XILINX_VIRTEX/MICROBLAZE should
-'select' XILINX_EDK and you need to drop the 'default y' line.
-Otherwise the XILINX_EDK option shows up in non-edk config files.
+> > config XILINX_EDK
+> >         bool
+> >         depends on XILINX_VIRTEX || XILINX_MICROBLAZE
+> >         default y
+> 
+> I don't have any problem with adding XILINX_EDK (or 
+> whatever), but think particular layout is back-assward.  
+> Rather than XILINX_EDK depending on XILINX_VIRTEX/MICROBLAZE, 
+> XILINX_VIRTEX/MICROBLAZE should 'select' XILINX_EDK and you 
+> need to drop the 'default y' line.
+> Otherwise the XILINX_EDK option shows up in non-edk config files.
 
->
-> config XILINX_GPIO
->         tristate "Xilinx OPB GPIO Support"
->         depends on XILINX_EDK
->         help
->         This option enables support for Xilinx GPIO.
->
->
-> It seems like I'm using XILINX_EDK to mean something different than you
-> are.
-> Perhaps it sould be instead:
->
-> config XILINX_DRIVERS
->         bool
->         depends on XILINX_VIRTEX || XILINX_MICROBLAZE
->         default y
+Good point...
+ 
+> Why still have XILINX_EDK?  I thought you meant replace 
+> XILINX_EDK with XILINX_DRIVERS.
 
-Hmmm, yes.  XILINX_DRIVERS is probably better.
+Yes, that's what I was suggesting.
+But I think that Andrei still wants to use XILINX_EDK to pull in the
+stuff in drivers/xilinx_common.
 
->
-> config XILINX_GPIO_EDK
->         tristate "Xilinx EDK-based OPB GPIO Support"
->         depends on XILINX_DRIVERS
->         select XILINX_EDK
->         help
->         This option enables support for Xilinx GPIO using EDK OS
-> independent driver.
+# The Xilinx OS common code 
+obj-$(CONFIG_XILINX_EDK) += xbasic_types.o xpacket_fifo_l_v2_00_a.o \
+			    xpacket_fifo_v2_00_a.o xversion.o \
+			    xdma_channel.o xdma_channel_sg.o
 
-Why still have XILINX_EDK?  I thought you meant replace XILINX_EDK
-with XILINX_DRIVERS.
+Which you wouldn't want if you were able to build a kernel completely
+from 'non-edk' drivers.
 
-Cheers,
-g.
+Steve
 
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-grant.likely@secretlab.ca
-(403) 399-0195
+
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by DB2 Express
+Download DB2 Express C - the FREE version of DB2 express and take
+control of your XML. No limits. Just data. Click to get it now.
+http://sourceforge.net/powerbar/db2/

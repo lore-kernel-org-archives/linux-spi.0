@@ -1,16 +1,19 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] Infineion TLE62X0 device driver
-Date: Tue, 12 Jun 2007 10:21:25 -0700
-Message-ID: <200706121021.25932.david-b@pacbell.net>
-References: <20070605183244.GE13353@trinity.fluff.org>
+From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Subject: Re: [patch 2/4] MMC-over-SPI card driver update
+Date: Tue, 12 Jun 2007 19:28:20 +0200
+Message-ID: <466ED7B4.4010102@drzeus.cx>
+References: <200706101257.45278.david-b@pacbell.net>
+	<200706101306.39081.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ben Dooks <ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
+	Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
+	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070605183244.GE13353-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200706101306.39081.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
@@ -22,23 +25,25 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 05 June 2007, Ben Dooks wrote:
-> Add support for the Infineon TLE62x0 series of low-side driver
-> chips, such as the TLE6220 or TLE6230.
+David Brownell wrote:
+> Teaching the MMC/SD block card driver about SPI.
+> 
+>  - Provide the SPI response type flags with each request issued.  The
+>    model is that if no such flags are provided, it will be rejected 
+>    by the MMC-over-SPI host.
+> 
+>  - Understand that multiblock SPI writes don't use STOP_TRANSMISSION.
+> 
+> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 
-I forwarded a version with minor updates/fixes; thanks.
+Looks ok.
 
-Ben, you might consider getting rid of the separate "status"
-file for diagnostic info and just bundling that with as part
-of each individual line's status ... it seems odd to view
-that apart from whether the switch is e.g. on or not, and
-there are sysfs fascists who object to multi-valued files.
+-- 
+     -- Pierre Ossman
 
-Also, it looked to me like the init_state should have been
-fed to the chip, rather than just assumed to be correct.
-
-- Dave
-
+  Linux kernel, MMC maintainer        http://www.kernel.org
+  PulseAudio, core developer          http://pulseaudio.org
+  rdesktop, core developer          http://www.rdesktop.org
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

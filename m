@@ -1,10 +1,9 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 1/4] MMC-over-SPI header updates
-Date: Tue, 12 Jun 2007 11:06:41 -0700
-Message-ID: <200706121106.42067.david-b@pacbell.net>
+From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Subject: Re: [patch 3/4] MMC-over-SPI core updates
+Date: Wed, 13 Jun 2007 10:12:48 +0200
+Message-ID: <466FA700.2080009@drzeus.cx>
 References: <200706101257.45278.david-b@pacbell.net>
-	<200706101305.53151.david-b@pacbell.net>
-	<466ED661.1010407@drzeus.cx>
+	<200706101307.11394.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,13 +11,12 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
 	Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
 	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>
-To: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <466ED661.1010407-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200706101307.11394.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum=spi-devel-general>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
 List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
 List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -27,72 +25,229 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 12 June 2007, Pierre Ossman wrote:
-> David Brownell wrote:
-> > Teach the MMC/SD/SDIO system headers that some hosts use SPI mode
-> > 
-> > ...
-> > 
-> > --- pxa.orig/include/linux/mmc/host.h	2007-06-06 16:48:44.000000000 -0700
-> > +++ pxa/include/linux/mmc/host.h	2007-06-10 13:00:23.000000000 -0700
-> > @@ -90,6 +90,8 @@ struct mmc_host {
-> >  #define MMC_CAP_BYTEBLOCK	(1 << 2)	/* Can do non-log2 block sizes */
-> >  #define MMC_CAP_MMC_HIGHSPEED	(1 << 3)	/* Can do MMC high-speed timing */
-> >  #define MMC_CAP_SD_HIGHSPEED	(1 << 4)	/* Can do SD high-speed timing */
-> > +#define MMC_CAP_SPI		(1 << 5)	/* Talks only SPI protocols */
-> > +#define MMC_CAP_SPI_CRC		(1 << 6)	/* Handles CRC option in SPI */
-> >  
-> >  	/* host specific block data */
-> >  	unsigned int		max_seg_size;	/* see blk_queue_max_segment_size */
-> 
-> I still don't see the point of the SPI_CRC cap. It's not like we will have
-> multiple SPI host drivers, so either we support CRC or we don't. No need to have
-> this dynamic.
+David Brownell wrote:
+> @@ -498,6 +505,19 @@ void mmc_detect_change(struct mmc_host *
+>  EXPORT_SYMBOL(mmc_detect_change);
+>  
+>  
+> +static int mmc_spi_fixup(struct mmc_host *host, u32 *ocrp)
+> +{
+> +	int err;
+> +
+> +	if (!mmc_host_is_spi(host))
+> +		return MMC_ERR_NONE;
+> +
+> +	err = mmc_spi_read_ocr(host, ocrp);
+> +	if (err == MMC_ERR_NONE);
+> +		err = mmc_spi_set_crc(host);
+> +	return err;
+> +}
+> +
+>  void mmc_rescan(struct work_struct *work)
+>  {
+>  	struct mmc_host *host =
 
-The point is that this way we can keep the host driver out of the business
-of deciding whether or not to enable CRC mode.  The main alternative would
-be to move that module parameter into the MMC core.
+I'd prefer if this is in mmc_rescan(). It's so little code that all this does is
+hide the init sequence.
 
+> @@ -519,11 +539,13 @@ void mmc_rescan(struct work_struct *work
+>  		mmc_power_up(host);
+>  		mmc_go_idle(host);
+>  
+> -		mmc_send_if_cond(host, host->ocr_avail);
+> +		if (!mmc_host_is_spi(host))
+> +			mmc_send_if_cond(host, host->ocr_avail);
+>  
 
-> > +#define MMC_RSP_SPI_S1	(1 << 7)		/* one status byte */
-> > +#define MMC_RSP_SPI_S2	(1 << 8)		/* second status byte */
-> > +#define MMC_RSP_SPI_OCR	(1 << 9)		/* OCR */
-> > +
-> 
-> You should describe form, not contents. The host driver shouldn't care what's in
-> the chunks, only how they need to be transferred. So size and things like CRC,
-> but not their meaning.
+If you have a look at the SD physical spec (the public one), you'll see that
+if_cond is needed on SPI aswell. I know you don't have cards for testing, but
+let's code according to spec and try to find people who can test all parts.
 
-This directly matches every MMC spec I've seen ... they define the response
-format in those terms.  And I made this change per your request ... the host
-driver checks for "R1", "R2", etc which are built up from those components.
+>  		err = mmc_send_app_op_cond(host, 0, &ocr);
+>  		if (err == MMC_ERR_NONE) {
+> -			if (mmc_attach_sd(host, ocr))
+> +			err = mmc_spi_fixup(host, &ocr);
+> +			if (err != MMC_ERR_NONE || mmc_attach_sd(host, ocr))
+>  				mmc_power_off(host);
+>  		} else {
+>  			/*
 
-I'll note that the "native" bits include meaning too ... opcode is most
-certainly meaning, as is CRC.
+Looking at the example flow charts in the specs, this is not the proper way.
+I've spent the morning staring at both specs in parallel, and here's how I think
+it should be done:
 
+[CMD8 for SD]
+CMD58 [with HCS bit for MMC]
+ACMD51, OK -> SD
+CMD1, OK -> MMC
 
-> > +#define R1_STATE_IDLE		0		/* resetting; maybe opendrain */
-> > +#define R1_STATE_READY		1		/* opendrain; ident soon */
-> > +#define R1_STATE_IDENT		2		/* opendrain; setaddr soon */
-> > +#define R1_STATE_STBY		3		/* addressed, ready to use */
-> > +#define R1_STATE_TRAN		4
-> > +#define R1_STATE_DATA		5
-> > +#define R1_STATE_RCV		6
-> > +#define R1_STATE_PRG		7
-> > +#define R1_STATE_DIS		8
-> > +#define R1_STATE(x)		(((x) & 0xf) << 9)
-> > +
-> 
-> This seems to be for the mapping voodoo in the spi host. And that is not
-> something we want, so this is not needed.
+The SD spec states that both ACMD51 and CMD1 is legal, but nothing about why
+both are supported. It also states that CMD1 has a bit indicating SDHC support
+(as if CMD8 isn't enough), but ACMD51 doesn't. But the flow charts show ACMD51,
+not CMD1. :/
 
-OK, I can remove that stuff now that the raw SPI status bytes are being
-returned in resp[] ... I'll have to update the spi_mmc driver though,
-and I'll hold off on that for a bit since I expect you'll send comments
-specifically on that driver.
+The next step, in the bus handlers, will have to get the OCR on their own. SD
+states that the OCR is valid in the initial CMD58 (before CMD1/ACMD51), but MMC
+states that it is not. So for the sake of consistency, let both paths reissue a
+CMD58 for the OCR.
 
-- Dave
+> --- pxa.orig/drivers/mmc/core/mmc_ops.c	2007-06-10 13:00:21.000000000 -0700
+> +++ pxa/drivers/mmc/core/mmc_ops.c	2007-06-10 13:00:34.000000000 -0700
+> @@ -31,6 +31,10 @@ static int _mmc_select_card(struct mmc_h
+>  
+>  	BUG_ON(!host);
+>  
+> +	/* SPI doesn't multiplex; "select" is meaningless */
+> +	if (mmc_host_is_spi(host))
+> +		return MMC_ERR_NONE;
+> +
+>  	memset(&cmd, 0, sizeof(struct mmc_command));
+>  
+>  	cmd.opcode = MMC_SELECT_CARD;
 
+I do not like this. Unsupported commands shouldn't be issued. We should not have
+voodoo in here that makes them a no-op. That just obscures things. Feel free to
+put a check in there if you feel the risk is too great.
+
+>  
+> -int mmc_send_ext_csd(struct mmc_card *card, u8 *ext_csd)
+> +struct mmc_cxd {
+> +	struct mmc_card	*card;		/* optional */
+> +	void		*buf;
+> +	unsigned	len;
+> +	u32		opcode;
+> +	u32		arg;
+> +	unsigned	flags;
+> +};
+> +
+
+This seems overly complex. You can do this with arguments as most of that struct
+is superfluous:
+
+ - card can be specified at all times if you reorg the init a bit, allowing you
+to drop the host argument.
+
+ - arg and flags are the same for all three commands, so those can be dropped.
+
+> @@ -230,6 +251,85 @@ int mmc_send_ext_csd(struct mmc_card *ca
+>  	return MMC_ERR_NONE;
+>  }
+>  
+> +int mmc_spi_read_ocr(struct mmc_host *host, u32 *ocrp)
+> +{
+
+How about moving these further down so that the mmc_send_cxd_data() users are
+right below it?
+
+Also, the theme I've tried to have here is to take a card pointer whenever you
+operate on a specific card, and a host pointer for bus wide things. It adds a
+bit of readability.
+
+> --- pxa.orig/drivers/mmc/core/mmc.c	2007-06-10 13:00:21.000000000 -0700
+> +++ pxa/drivers/mmc/core/mmc.c	2007-06-10 13:00:34.000000000 -0700
+> @@ -320,9 +320,15 @@ static int mmc_init_card(struct mmc_host
+>  	/*
+>  	 * Fetch CID from card.
+>  	 */
+> -	err = mmc_all_send_cid(host, cid);
+> -	if (err != MMC_ERR_NONE)
+> -		goto err;
+> +	if (mmc_host_is_spi(host)) {
+> +		err = mmc_spi_send_cid(host, cid);
+> +		if (err != MMC_ERR_NONE)
+> +			goto err;
+> +	} else {
+> +		err = mmc_all_send_cid(host, cid);
+> +		if (err != MMC_ERR_NONE)
+> +			goto err;
+> +	}
+>  
+>  	if (oldcard) {
+>  		if (memcmp(cid, oldcard->raw_cid, sizeof(cid)) != 0)
+
+This is entirely subjective, but wouldn't this be cleaner:
+
+	if (mmc_host_is_spi(host))
+		err = mmc_spi_send_cid(host, cid);
+	else
+		err = mmc_all_send_cid(host, cid);
+
+	if (err != MMC_ERR_NONE)
+		goto err;
+
+It's fewer lines at least, which should make Linus happy. ;)
+
+> @@ -401,13 +411,15 @@ static int mmc_sd_init_card(struct mmc_h
+>  	}
+>  
+>  	/*
+> -	 * Set card RCA.
+> +	 * For native busses:  set card RCA and leave open drain mode.
+>  	 */
+
+While your in the processes of fixing my crappy comments, this command actually
+gets, not sends the RCA (SD is a bit backwards). :)
+
+> @@ -455,9 +467,11 @@ static int mmc_sd_init_card(struct mmc_h
+>  		/*
+>  		 * Fetch switch information from card.
+>  		 */
+> -		err = mmc_read_switch(card);
+> -		if (err != MMC_ERR_NONE)
+> -			goto free_card;
+> +		if (!mmc_host_is_spi(host)) {
+> +			err = mmc_read_switch(card);
+> +			if (err != MMC_ERR_NONE)
+> +				goto free_card;
+> +		}
+>  	}
+>  
+>  	/*
+
+Don't you want high-speed on your SPI bus? ;)
+
+Add a FIXME here if you don't have the cards to test this. Or implement it
+according to spec and wait for bug reports.
+
+> --- pxa.orig/drivers/mmc/core/sd_ops.c	2007-06-06 16:47:58.000000000 -0700
+> +++ pxa/drivers/mmc/core/sd_ops.c	2007-06-10 13:00:34.000000000 -0700
+> @@ -89,10 +89,10 @@ int mmc_app_cmd(struct mmc_host *host, s
+>  
+>  	if (card) {
+>  		cmd.arg = card->rca << 16;
+> -		cmd.flags = MMC_RSP_R1 | MMC_CMD_AC;
+> +		cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_AC;
+>  	} else {
+>  		cmd.arg = 0;
+> -		cmd.flags = MMC_RSP_R1 | MMC_CMD_BCR;
+> +		cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_BCR;
+>  	}
+>  
+>  	err = mmc_wait_for_cmd(host, &cmd, 0);
+
+You also need to fix the check further down as SPI doesn't have a bit indicating
+if it toggled into ACMD mode.
+
+> @@ -175,6 +179,9 @@ int mmc_send_if_cond(struct mmc_host *ho
+>  	int err;
+>  	static const u8 test_pattern = 0xAA;
+>  
+> +	if (mmc_host_is_spi(host))
+> +		return MMC_ERR_FAILED;
+> +
+>  	/*
+>  	 * To support SD 2.0 cards, we must always invoke SD_SEND_IF_COND
+>  	 * before SD_APP_OP_COND. This command will harmlessly fail for
+
+See above, we need this for SDHC.
+
+Rgds
+-- 
+     -- Pierre Ossman
+
+  Linux kernel, MMC maintainer        http://www.kernel.org
+  PulseAudio, core developer          http://pulseaudio.org
+  rdesktop, core developer          http://www.rdesktop.org
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

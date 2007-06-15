@@ -1,10 +1,11 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 4/4] MMC-over-SPI host driver
-Date: Wed, 13 Jun 2007 21:05:51 -0700
-Message-ID: <200706132105.51711.david-b@pacbell.net>
+From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Subject: Re: [patch 1/4] MMC-over-SPI header updates
+Date: Fri, 15 Jun 2007 19:53:06 +0200
+Message-ID: <4672D202.3000901@drzeus.cx>
 References: <200706101257.45278.david-b@pacbell.net>
-	<200706101308.07910.david-b@pacbell.net>
-	<46704637.2090309@drzeus.cx>
+	<200706121106.42067.david-b@pacbell.net>
+	<466FAA0C.9020102@drzeus.cx>
+	<200706131433.21238.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,10 +13,9 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
 	Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
 	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>
-To: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <46704637.2090309-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200706131433.21238.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,376 +27,74 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 13 June 2007, Pierre Ossman wrote:
-> David Brownell wrote:
-> > +#include <linux/device.h>
-> > +#include <linux/blkdev.h>
-> > +#include <linux/dma-mapping.h>
-> > +
-> > +#include <linux/mmc/host.h>
-> > +#include <linux/mmc/mmc.h>
-> > +
+David Brownell wrote:
 > 
-> This header file is a warning sign. Hopefully it's just the mapping that needs
-> it, so it should go away in the next revision.
-
-There were other cases, as I recall.  Maybe the core has changed
-so much that some of them are no longer needed.  I removed as
-many as seemed safe.
-
-
-> > +
-> > +
-> > +#define CRC_GO_IDLE_STATE	0x95	/* constant CRC for GO_IDLE */
+> It starts "off", and needs to be turned "on".  Reasons to leave it
+> off include performance (I measured over 30% slower with CRCs on while
+> writing a 120+ MB SD partition), and of course the fact that the CRC
+> stuff is the very newest feature in the code (thanks Jan!), and is not
+> yet as trustworthy (viz. the intermittent bug I noted).
 > 
-> Isn't this just optimisation now that we have CRC calculation? And if so, is the
-> speed gain worth the complexity?
 
-Unless CRCs will always be on -- implying a significant performance
-penalty on the kind of platform which *most* needs the MMC-over-SPI
-support! -- ISTR that it's not optional; GO_IDLE always needs a CRC,
-even if other requests don't use one.  That's why the specs list that
-CRC explicitly.
- 
+Any CRC bugs should surface rather quickly, so that shouldn't be an isse.
+Performance might be though, but do people really feel that those 30% is worth
+losing CRC? I sure wouldn't feel comfortable with that.
 
-> > +/* The unit for these timeouts is milliseconds.  See mmc_spi_scanbyte.  */
-> > +#define MINI_TIMEOUT		1
-> > +#define READ_TIMEOUT		100
-> > +#define WRITE_TIMEOUT		250
-> > +
 > 
-> Shouldn't these be set in the request by the core?
-
-Not the MINI timeout, for sure.  Maybe some of the others.
-(MINI should actually be 1..8 bytes, not N msec.)
-
-The whole issue of timeouts needs investiation still ...
-like, does the core even understand them right (for SPI).
-
- 
-> > +
-> > +	/* Specs say to write ones most of the time, even when the card
-> > +	 * has no need to read its input data; and many cards won't care.
-> > +	 * This is our source of those ones.
-> > +	 */
-> > +	void			*ones;
+> Umm ... no, not really; did you cross-check with the SPI specs?  All
+> the requests return one status byte.  One returns a second one.  One
+> returns the OCR in the place that second byte would be.  Some leave
+> the chip in a "busy" state.  Those are the components out of which
+> the SPI_R1, SPI_R1B, SPI_R2, and SPI_R3 are built.  (R3 is the one
+> which includes OCR.)
 > 
-> If this is just read, can't it be a global const?
 
-What do you mean by that?  It can't be "static", since such memory
-is not generally DMA-safe.  Maybe the pointer could be static; but
-each device would need its own DMA mapping; and there will usually
-be more than one of these per system, so I can't see much need to
-share that buffer between host/card instances.
+But the controller will be fine just knowing "one byte", "two bytes" and "five
+bytes" respectively.
 
- 
-> > +
-> > +	if (cmd->opcode == MMC_STOP_TRANSMISSION) {
-> > +		/*
-> > +		 * We can't tell whether we read block data or the
-> > +		 * command reply, so to cope with trash data during
-> > +		 * the latency, we just read in 14 bytes (8 would be
-> > +		 * enough according to the MMC spec; SD doesn't say)
-> > +		 * after the command and fake a clean reply.  We could
-> > +		 * avoid this if we saved what the card sent us while
-> > +		 * we sent the command, and treat it like a normal
-> > +		 * response if we didn't get a SPI_TOKEN_SINGLE.
-> > +		 */
-> > +		(void) mmc_spi_readbytes(host, host->command.buf,
-> > +				sizeof host->command.buf);
-> > +		(void) mmc_spi_readbytes(host, host->command.buf,
-> > +				sizeof host->command.buf);
-> > +		value = 0;
 > 
-> Didn't you tweak the block driver to not send MMC_STOP_TRANSMISSION?
-
-Only for writes.  Reads still use this.  (Writes use a lowlevel
-token replacing the normal next-block token.)
-
- 
-> > +
-> > +	if (!host->app_cmd
-> > +			&& cmd->error == MMC_ERR_NONE
-> > +			&& cmd->opcode == MMC_APP_CMD) {
-> > +		host->app_cmd = 1;
-> > +		cmd->resp[0] |= R1_APP_CMD;
-> > +	}
+> That seems like a fantasy to me.  We don't know in advance how those
+> types will be defined (or if they even will be!), so there's no way
+> we can know whether or not new types will need to be defined.
 > 
-> Why does the host need to keep track of app command state?
-
-As noted in a previous reply (which you've not yet seen):
-  (a) Because the MMC core relies on it to do so, and
-  (b) Because otherwise diagnostics report CMDx instead of ACMDx.
-
-You didn't comment on the mapping applied to cmd->resp[0] ...
-
- 
-> > +
-> > +	/*
-> > +	 * If this was part of a successful request with a stop-part,
-> > +	 * our caller signals the request as done.
-> > +	 */
-> > +	if (status == 0 && mrq->stop == NULL)
-> > +		mmc_request_done(host->mmc, mrq);
-> > +	return status;
-> > +}
+> In fact it's almost certain that we *would* have to change that low
+> level protocol code to understand additional response types.  The
+> handling for them has to be hand coded in all cases...
 > 
-> I assume the comment should have read "without".
 
-No; this handles the request_done() for success without
-a stop part.  Caller does it otherwise...
+>From experience, I'd say it's likely that formats are reused. Looking at native
+mode, we originally had R1, R1b, R2 and R3. Yet we are now able to support R4
+through R7 using the components already defined.
 
-
-> > +
-> > +static inline int resp2status(u8 write_resp)
-> > +{
-> > +	switch (SPI_MMC_RESPONSE_CODE(write_resp)) {
-> > +	case SPI_RESPONSE_ACCEPTED:
-> > +		return 0;
-> > +	case SPI_RESPONSE_CRC_ERR:
-> > +		/* host shall then issue MMC_STOP_TRANSMISSION */
-> > +		return -ECRC;
 > 
-> What's with the made-up errno?
-
-Readability.
-
- 
-> We should check what other parts of the kernel uses for CRC errors.
-
-If you can find some convention for CRC errors, this can change;
-otherwise that won't matter, since only *this* code cares.
-
-The MMC layer seems to only use the MMC-internal status codes.
-(Which is a different issue ... that's generaly frowned upon.)
-
- 
-> > +
-> > +	if (data->flags & MMC_DATA_READ) {
-> > +		direction = DMA_FROM_DEVICE;
-> > +		multiple = (cmd->opcode == MMC_READ_MULTIPLE_BLOCK);
-> > +
+> Leaving the semantic question of where those 5 bytes would need to be
+> stored.  Clearly since it was defined as a new response type, the answer
+> used for R3 would not be appropriate... and R3 is the only 5 byte response
+> currently defined.
 > 
-> multiple = (cmd->data->blocks > 1)
 
-Can that now be relied upon?  The reason it was coded this way
-(and likewise for writes) was that previously that was NOT true.
+Why not? It's not like we store R1 and R2 differently except for their size.
 
-I recall trying that at some point, and watching lots of
-stuff break...
-
- 
-> > +		/* allow pio too, with kmap handling any highmem */
-> > +		kmap_addr = kmap(sg->page);
-> > +		if (direction == DMA_TO_DEVICE)
-> > +			t->tx_buf = kmap_addr + sg->offset;
-> > +		else
-> > +			t->rx_buf = kmap_addr + sg->offset;
-> > +
 > 
-> If you want highmem, you also need to be prepared for clustered sg entries. kmap
-> only maps a single page, and a clustered sg might be larger than that.
-
-Actually it'd be best if we never saw highmem.  Fortunately that
-conceptual abortion doesn't is rare (to the point of nonexistence)
-on platforms which use this.  Maybe the driver should even depend
-on !HIGHMEM, just to be sure.
-
-
-> > +
-> > +	/* NOTE if caller issues SET_BLOCK_COUNT before a multiblock write,
-> > +	 * this STOP_TRAN logic isn't needed except when we stop early for
-> > +	 * errors.  Currently, mmc_block doesn't issue that request.
-> > +	 */
+> You're missing the point that those values you're objecting to are fully
+> defined as part of the protocol, so we *DO* know exactly what to do ...
 > 
-> But will it hurt? Other commands might behave like that.
 
-I think it's unspecified whether it would hurt.  STOP_TRAN is
-however specified ONLY for those specific protocol messages.
+My point is that we're spreading that knowledge into too many areas. Keep it in
+the core and let the host driver deal with shuffling bits.
 
-I suspect you need to rethink how you're viewing this host
-driver a bit ... it implements low level protocols, and as
-such it can't avoid understanding relevant facts.  Offloading
-high level protocol stuff to the core is fine.  By analogy,
-link level drivers know about link level issues (STOP_TRAN,
-PPPOE, etc), but not about the packets they encapsulate
-(CMDx, ARP, etc).
-
- 
-> > +
-> > +	if (mrq->data && (mrq->data->blksz > MMC_SPI_BLOCKSIZE)) {
-> > +		mrq->cmd->error = MMC_ERR_INVALID;
-> > +		return -EINVAL;
-> > +	}
-> > +
 > 
-> If you've set your parameters correct, then this shouldn't be possible. So do a
-> BUG_ON() if you want to have a test.
-
-Which parameters?
-
-The standard kernel policy is to avoid BUG_ON like the plague
-if there's any way to report an error to the upper level code
-and have it proceed.  If the system can proceed, it's not any
-kind of BUG().
-
-
-> > +
-> > +/*
-> > + * RESET is started when cmd->opcode == MMC_GO_IDLE_STATE.  This can't
-> > + * be just a standard protocol operation.
-> > + *
-> > + * We expect the MMC core to be responsible for "very hard" resets like
-> > + * power cycling the card; there's no accessible reset signal.
-> > + */
+> Well, the R1_STATE bits of the mapping.
 > 
-> Why can't you do this on POWER_ON? I do not like it looking at opcodes, even if
-> this one isn't likely to change.
 
-Something to think about.  This is pretty much the way Jan's
-patch delievered it.  I found that "74 clocks" stuff in the
-powerup sequence, which is perhaps what you did.  That'd
-mean the set_ios() stuff *really* needs to be refactored.
-I don't really trust the reset logic anyway...
+All mappings. The host driver shouldn't lie to the core.
 
-Jan, any comments?  You were the last person to really look
-at this part.
+-- 
+     -- Pierre Ossman
 
- 
-> > +	/*
-> > +	 * Do a burst with chipselect deactivated.  We need to do this
-> > +	 * to meet the requirement of 74 clock cycles with chipselect
-> > +	 * high before CMD0.  (Section 6.4.1, in "Simplified Physical
-> > +	 * Layer Specification 2.0".)  Some cards are particularly
-> > +	 * needy of this (e.g. Viking "SD256") while most others don't
-> > +	 * seem to care.  Note that it's not enough to deactivate
-> > +	 * chipselect without toggling the clock.  Beware of the hack:
-> > +	 * we "know" that mmc_spi_readbytes uses the host->status
-> > +	 * spi_transfer.
-> > +	 *
-> > +	 * Note that this is one of two places MMC/SD plays games with
-> > +	 * the SPI protocol.  The other is that when chipselect is
-> > +	 * released while the card returns BUSY status, the clock must
-> > +	 * issue several cycles with chipselect high before the card
-> > +	 * will stop driving its output.
-> > +	 */
-> 
-> Sounds like this signaling can be done with the chip select ios already present
-> in the mmc layer. Then we won't need voodoo in the host driver.
-
-No.
-
-
-> > +
-> > +	/* issue software reset */
-> > +	cmd->arg = 0;
-> > +	status = mmc_spi_command_send(host, mrq, CRC_GO_IDLE_STATE, cmd, 0);
-> > +	if (status < 0) {
-> > +		/* Maybe:
-> > +		 *  - there's no card present
-> > +		 *  - the card isn't seated correctly (bad contacts)
-> > +		 *  - it didn't leave MMC/SD mode
-> > +		 *  - there's other confusion in the card state
-> > +		 *
-> > +		 * Power cycling the card ought to help a lot.
-> > +		 * At any rate, let's try again.
-> > +		 */
-> > +		status = mmc_spi_command_send(host, mrq,
-> > +				CRC_GO_IDLE_STATE, cmd, 0);
-> > +		if (status < 0)
-> > +			dev_dbg(&host->spi->dev,
-> > +				"can't initialize; no card%s?\n",
-> > +				could_invert_cs
-> > +					? ""
-> > +					: " or chip-select error");
-> > +	}
-> 
-> No, no, no... This is not the kind of behaviour you want to hide down in the
-> host driver. This is a decision the core should make. Don't put the layer cake
-> in the blender.
-
-Good point.  I think that came from frustration with some
-cases of the "we can't really power cycle on this board"
-logic not behaving.  I'll just return the first command_send().
-
-
-> > +
-> > +	/* MMC core and layered drivers *MUST* issue SPI-aware commands */
-> > +	cmd = mrq->stop;
-> > +	if (cmd && !mmc_spi_resp_type(cmd)) {
-> > +		dev_dbg(&host->spi->dev, "bogus STOP command\n");
-> > +		dump_stack();
-> > +		cmd->error = MMC_ERR_INVALID;
-> > +		goto fail;
-> > +	}
-> > +
-> 
-> This seems like something that should just be in debug builds.
-
-Just this sanity check, not both?
-
-
-> > +
-> > +static int mmc_spi_get_ro(struct mmc_host *mmc)
-> > +{
-> > +	struct mmc_spi_host *host = mmc_priv(mmc);
-> > +
-> > +	if (host->pdata && host->pdata->get_ro)
-> > +		return host->pdata->get_ro(mmc->parent);
-> > +	/* board doesn't support read only detection; assume writeable */
-> > +	return 0;
-> > +}
-> > +
-> 
-> A printk() might be nice so the user knows why the switch isn't being respected.
-
-ISTR that not many of the other drivers do that, at least not there.
-I can update the startup message to say if it has power on/off support.
-
-
-> > +
-> > +	/* SanDisk and Hitachi MMC docs both show clock timing diagrams
-> > +	 * with clock starting low (CPOL=0) and sampling on leading edge
-> > +	 * (CPHA=0); clock is measured between rising edges.  Sandisk SD
-> > +	 * docs show clock starting high (CPOL=1) and sampling on trailing
-> > +	 * edge (CPHA=1), measuring between falling edges.
-> > +	 *
-> > +	 * Docs are very explicit that sampling is on the rising edge, so
-> > +	 * the difference between SPI_MODE_0 and SPI_MODE_3 may not matter.
-> > +	 */
-> 
-> Sure you haven't looked at high-speed versus legacy clocking?
-
-Nyet.
-
-
-> > +
-> > +	if (spi->master->cdev.dev->dma_mask) {
-> > +		struct device	*dev = spi->master->cdev.dev;
-> > +
-> > +		host->dma_dev = dev;
-> > +		host->dma = dma_map_single(dev, host,
-> > +				sizeof *host, DMA_BIDIRECTIONAL);
-> > +		host->ones_dma = dma_map_single(dev, ones,
-> > +				MMC_SPI_BLOCKSIZE, DMA_TO_DEVICE);
-> > +		host->data_dma = dma_map_single(dev, host->data,
-> > +				sizeof *host->data, DMA_BIDIRECTIONAL);
-> > +
-> 
-> This might be wasteful if the system has an iommu.
-
-Systems without a "native" MMC/SD controller are unlikely to spend
-silicon to put an IOMMU on the SPI controller.  I've seen them
-on a few other controllers ... but that seems to have been a short
-lived experiment, phased out in newer chips.
-
-And in any case, that's like one page plus one cacheline.  If there
-were an IOMMU, surely it can afford that much overhead.
-
-- Dave
-
-
-
+  Linux kernel, MMC maintainer        http://www.kernel.org
+  PulseAudio, core developer          http://pulseaudio.org
+  rdesktop, core developer          http://www.rdesktop.org
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

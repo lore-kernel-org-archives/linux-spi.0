@@ -1,14 +1,21 @@
-From: anyway <tkgnl-iK5jlJkdgf9Jm/Hvfsr4+Q@public.gmane.org>
-Subject: Well,
-	he can do it because he has two distinctive sounds - two
-	deliciously, seductive, outstanding sounds.
-Date: Sun, 17 Jun 2007 15:29:12 +0300
-Message-ID: <46752918.1070201@carolina.rr.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [patch 4/4] MMC-over-SPI host driver
+Date: Sun, 17 Jun 2007 13:29:11 -0700
+Message-ID: <200706171329.12709.david-b@pacbell.net>
+References: <200706101257.45278.david-b@pacbell.net>
+	<200706132105.51711.david-b@pacbell.net>
+	<4672D9C5.9080707@drzeus.cx>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
+	Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
+	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>
+To: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4672D9C5.9080707-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,54 +27,136 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Word Is Out, Big News Monday!
+On Friday 15 June 2007, Pierre Ossman wrote:
+> David Brownell wrote:
+> > 
+> > There were other cases, as I recall.  Maybe the core has changed
+> > so much that some of them are no longer needed.  I removed as
+> > many as seemed safe.
+> 
+> Which are left? I doubt they are needed.
 
-Score One Inc.
-SREA
-$0.20 UP 33.3%
+If the MMC core and block code change more, many can go.  Remember
+that I was making such core changes in small, safe doses!
 
-This week's news has already been pushing SREA up. Word is out a BIG
-news release is expected Monday! Keep your eyes open and get on SREA
-Monday!
+Right now it looks like the main reason to keep including mmc.h is
+to handle one aspect of mapping the data error token.  Four of its
+bits are part of normal R2 response, suitable for shift-and-mask
+handling, but the 0x10 bit seems to be vendor specific ... so for
+now, if that's set I map it to R2_SPI_ERROR (generic "it broke")
+and use that symbol to avoid excess magic numbers.
 
-Three albums into his third group, and Joel sounds out of gas to these
-ears.
 
-Each EP is enclosed in a hand screened arigato sleeve and include a
-nifty googly-eyed insert. Check out these tips on how to properly load a
-dishwasher. However, if you crave more typical hardcore in your diet,
-This Is Hell might be a tasty snack. If the album is any indication,
-they have a great chance of succeeding.
-Seriously, go get them. A little weird, I know. What Causes
-WrinklesSunscreens By Skin TypeBest Sunscreen for KidsTop Cold Drinks
-for SummerCool recipes for hot days. However, I never found it necessary
-to delve into the hundreds of Godspeed!
+> 	 I suggest another feel
+> to the ios structure. And drop the CAP_CRC, we'll consider CRC support mandatory
+> (even though you can have the option of turning it off in runtime).
 
-While parts of it were a bit too messy, their overall digestible blend
-of weirdness and accessibility eventually won me over.
+That's not a complete description.  :)
+You're thinking of something like this?
 
-Whatever happened to her, anyway?
-Milk Man, however, was more song-oriented and even had a lyrical
-storyline! Anybody lucky enough to find a used copy, though, is in for
-one hell of a listening experience.
+ - always do the (dirt cheap) crc7 in the command;
+ - move the module parameter into mmc core, default spi_crc=y;
+ - add mmc_ios.spi_crc, initialized to match the module parameter;
+ - mmc_spi_set_crc() uses that parameter; and
+ - mmc_spi host will use that instead of its current use_crc, to
+   tell whether it should init or verify datablock CRC16 values.
 
-Clean-channeled guitars are eventually overcome by bouts of warm, fuzzy
-distortion. See More Newsletters Get your daily dose of About. Lets hope
-it works for Koufax. It has both of his sounds well-represented.
+Except this doesn't seem like an ios-style thing to me... that's
+on top of me disliking that confusing and error-prone "check N
+parameters to see which ones should change this time" API style.
 
-The hand-made case is what lured me in, but the music is why keep
-listening. Deerhoof have managed to confine their spastic tendencies in
-order to create a unique and astonishing pop album that is brimming with
-energy. Unfortunately, like most post-rock albums, Italian drags at
-moments, but always manages to pick up the pace before you start to tune
-it out completely. "The Life Pursuit" is shaping up to be a success in
-all the businessy definitions of the term, but the real question is how
-does it sound? However, I never found it necessary to delve into the
-hundreds of Godspeed! Joel himself slinks in after a few seconds with a
-twisting, almost-creepy melody, and piano and saxophone join the
-proceedings by the first chorus. By the end of the holiday season, my
-head is playing a non-stop music marathon of Christmas songs that lasts
-until Spring.
+Having a simple flag in mmc_host would be much better.
+
+
+> >>> +		return -ECRC;
+> >> What's with the made-up errno?
+> > 
+> > Readability.
+> > 
+> 
+> Not sure it helps in that area. Many will get confused by an errno they do not
+> recognize.
+
+I'll leave a #define pending a better solution though.
+Maybe MMC_ERRNO_BADCRC not ECRC?
+
+
+> >> We should check what other parts of the kernel uses for CRC errors.
+> > 
+> > If you can find some convention for CRC errors, this can change;
+> > otherwise that won't matter, since only *this* code cares.
+> > 
+> 
+> I'm a neat freak. ;)
+> 
+> Won't EILSEQ do?
+
+After changing the existing usage of that code, and assuming
+that code becomes reserved for that role within the MMC stack...
+
+
+> > Actually it'd be best if we never saw highmem.  Fortunately that
+> > conceptual abortion doesn't is rare (to the point of nonexistence)
+> > on platforms which use this.  Maybe the driver should even depend
+> > on !HIGHMEM, just to be sure.
+> > 
+> 
+> You can tell the MMC layer that by setting your DMA mask properly.
+
+That's at best an implementation quirk; those masks don't say
+a thing about how kernel virtual memory space is managed (which
+is why code needs to care about HIGHMEM).  For now I'll just
+say the driver depends on !HIGHMEM.
+
+
+> > I think it's unspecified whether it would hurt.  STOP_TRAN is
+> > however specified ONLY for those specific protocol messages.
+> 
+> I don't like sticking that information in here. We should code this into the
+> request somewhere and let the core determine which opcodes needs it.
+
+It *IS* already encoded in the request:  only multiblock writes
+need to use that token.  Likewise they use special start tokens
+for each block.  And in the same way, other data blocks use a
+third kind of start token; and may have data-dependent CRC values.
+All such values are managed below the core.
+
+This is just something that a person adding SET_BLOCK_COUNT
+support (CMD23, for MMC only) would need to worry about.  And
+that command seems to be "reserved" in more documents than not,
+so it's unlikely to ever matter.  I updated that comment.
+
+
+> >> If you've set your parameters correct, then this shouldn't be possible. So do a
+> >> BUG_ON() if you want to have a test.
+> > 
+> > Which parameters?
+> 
+> max_blk_size and friends in the host structure.
+
+OK, I'll just set that and get rid of the test.  I didn't much
+like that test, but I did want to make sure that the limit was
+not broken.
+
+ 
+> >> Sounds like this signaling can be done with the chip select ios already present
+> >> in the mmc layer. Then we won't need voodoo in the host driver.
+> > 
+> > No.
+> > 
+> 
+> Why not? It would allow us to keep higher protocol semantics (which varying
+> delays depending on opcodes is after all) in the core.
+
+Well for starters, it's packaged in the mmc_ios which holds things that
+don't change between requests, but SPI chipselect always goes active at
+the beginning of every request and then goes inactive when it's done.
+
+It seems the only reason to have it in mmc_ios is to help work around
+some wbsd quirks during card enumeration.  Other controllers manage to
+keep that signal pulled up until entering 4-wire mode.
+
+- Dave
 
 
 -------------------------------------------------------------------------

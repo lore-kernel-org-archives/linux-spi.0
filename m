@@ -1,21 +1,18 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 1/4] MMC-over-SPI header updates
-Date: Fri, 22 Jun 2007 13:08:33 -0700
-Message-ID: <200706221308.33907.david-b@pacbell.net>
-References: <200706101257.45278.david-b@pacbell.net>
-	<200706161150.58273.david-b@pacbell.net>
-	<46794D3B.1060009@drzeus.cx>
+From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+Subject: Re: [PATCH] TXx9 SPI controller driver
+Date: Sun, 24 Jun 2007 00:41:59 +0900 (JST)
+Message-ID: <20070624.004159.07644824.anemo@mba.ocn.ne.jp>
+References: <20070622.232111.36926005.anemo@mba.ocn.ne.jp>
+	<200706221103.19761.david-b@pacbell.net>
+	<200706221151.24959.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
-	Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
-	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>
-To: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Cc: sshtylyov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	mlachwani-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org, ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
+To: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <46794D3B.1060009-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200706221151.24959.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,20 +24,42 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 20 June 2007, Pierre Ossman wrote:
-> David Brownell wrote:
-> > On Friday 15 June 2007, Pierre Ossman wrote:
-> >> Any CRC bugs should surface rather quickly, so that shouldn't be an isse.
+On Fri, 22 Jun 2007 11:51:24 -0700, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> > > This is a driver for SPI controller built into TXx9 MIPS SoCs.
 > > 
-> > Surfaced != fixed.  The issue is that resolving them isn't all that
-> > straightforward.  There's that one issue I surfaced, for example; it
-> > turns up some nasty recovery issues wholly unrelated to CRCs.
+> > Looks mostly pretty good.  I made a few minor changes/cleanups
+> > in the appended version, notably:
+> >  - checking for spi->mode bits this code doesn't understand;
+> >  - updating to match latest patches;
+> > 
+> > Note that if gpio_set_value() needs an mmiowb(), that seems like
+> > a bug in this platform's  GPIO code; other platforms don't require
+> > I/O barriers after GPIO calls.  Comments?
+> > 
+> > Also:
+> > 
 > 
-> I still think we should have the ambition that this can be made to work. We can
-> always remove it if that proves impossible (or not worth the effort).
+> ... yeah, -ENOPATCH, sorry.  And the minor whitespace fixes.
+> 
+> One more comment:  surely platform_driver_probe() would be
+> appropriate here?
 
-And I never disagreed with that.
+Thank you for excellent review!  I'll look at each comments surely
+will update the driver but it may take a few days.
 
+For now, I'm quite sure your patch is OK for me except for one thing:
+
+> + * spi_tx99.c - TXx9 SPI controller driver.
+
+Name it spi_txx9.c, please ;)
+
+And for mmiowb() issue, I put it just only I was not sure whether
+gpio_set_value() guarantee I/O barrier.  Now I see i2c-gpio.c, etc. do
+not have such barriers.  I will remove these barriers and fix platform
+gpio codes.
+
+---
+Atsushi Nemoto
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by DB2 Express

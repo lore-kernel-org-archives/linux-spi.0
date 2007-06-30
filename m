@@ -1,16 +1,17 @@
 From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-Subject: [PATCH] spi_mpc83xx.c,
-	support QE enabled 83xx CPU's like mpc832x
-Date: Sat, 30 Jun 2007 16:22:50 +0200
-Message-ID: <1183213370.20673.100.camel@gentoo-jocke.transmode.se>
+Subject: Re: [PATCH] spi_mpc83xx.c,
+	support QE enabled 83xx CPU's like	mpc832x
+Date: Sat, 30 Jun 2007 16:55:55 +0200
+Message-ID: <1183215355.20673.106.camel@gentoo-jocke.transmode.se>
+References: <1183213370.20673.100.camel@gentoo-jocke.transmode.se>
 Reply-To: joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: 'David Brownell' <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
-	spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: 'David Brownell' <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1183213370.20673.100.camel-/EMGr9iCeazgSi9v3i4K4Pmbkio/vSLMs0AfqQuZ5sE@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,6 +23,12 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+
+> This is a resend of a patch Kumar and I tossed back and forth a few
+> times.
+> 
+>  Jocke
+
 Quicc Engine enabled mpc83xx CPU's has a somewhat different HW interface
 to the SPI controller. This patch adds a qe_mode knob that sees to that
 needed adaptions are performed.
@@ -29,10 +36,7 @@ needed adaptions are performed.
 Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 ---
 
-This is a resend of a patch Kumar and I tossed back and forth a few
-times.
-
- Jocke
+OOPS, forgot to add a small part, resending
 
 diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
 index e9798bf..c571f7c 100644
@@ -135,6 +139,19 @@ index e9798bf..c571f7c 100644
  	mpc83xx_spi_write_reg(&mpc83xx_spi->base->mode, regval);
  
  	ret = spi_bitbang_start(&mpc83xx_spi->bitbang);
+diff --git a/include/linux/fsl_devices.h b/include/linux/fsl_devices.h
+index 73710d6..2f69a56 100644
+--- a/include/linux/fsl_devices.h
++++ b/include/linux/fsl_devices.h
+@@ -112,7 +112,7 @@ struct fsl_usb2_platform_data {
+ struct fsl_spi_platform_data {
+ 	u32 	initial_spmode;	/* initial SPMODE value */
+ 	u16	bus_num;
+-
++	bool	qe_mode;
+ 	/* board specific information */
+ 	u16	max_chipselect;
+ 	void	(*activate_cs)(u8 cs, u8 polarity);
 
 
 -------------------------------------------------------------------------

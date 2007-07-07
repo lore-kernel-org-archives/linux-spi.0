@@ -1,11 +1,10 @@
-From: "Kiecker Henesey" <subfield-xFHFlPn+Czx2KDkfy0k2sw@public.gmane.org>
-Subject: [SPAM] love love love love lovve :)
-Date: Sat, 06 Dec 2008 23:27:57 +0000
-Message-ID: <7687839373.20081206232711@redfire.cz>
-Reply-To: Kiecker Henesey <subfield-xFHFlPn+Czx2KDkfy0k2sw@public.gmane.org>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8086726288024026425=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?zfXJ+g==?= <z147258dfrt435et-Xb2Y1Dfb9CI@public.gmane.org>
+Subject: [SPAM] ç›¸ êP ÙM ÓÃ ×É Ôƒ
+Date: Sat, 7 Jul 2007 09:12:47 +0800
+Message-ID: <E1L98Cl-0006Rb-Nx@235xhf1.ch3.sourceforge.com>
+Reply-To: z147258dfrt435et-Xb2Y1Dfb9CI@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============7303042174811615896=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,51 +16,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8086726288024026425==
-Content-Type: multipart/alternative;
- boundary="----------FD0133606AE875"
+--===============7303042174811615896==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
 
-------------FD0133606AE875
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+    ÄúºÃ£¡ÎÒË¾¬F¿É ´ú £¤ Àï È«‡ø¸÷µØ…^ĞĞ˜IµÄ¸÷ÖĞ °l £¤àÑ £¬üc ”µ ƒ »İ¡£¾ßówÊÂÒË¿ÉíëŠÇ¢Õ„£¡
 
+        àÖØ³ĞÖZ£ºËùÓĞ àÑ £¤ “ş ¾ù ‘¶ „Õ ¾Ö ´ú & é_ »òÕßÆó˜I×Ô é_£¬K¿ÉÉÏ¾Wò×C»ò¶ „Õ ¾Ö ò
 
- Show your sweetheart  how much you love her!!!
-http://cid-70f01e6e6b2d3198.spaces.live.com/blog/cns!70F01E6E6B2D3198!106.e=
-ntry
-=09
-  =20
- =20
-The stomach, the two arms, and speech, are wellrestrained.
-deum posse: this was a principle generally admitted 'taking
-thy protection, this battle, o slayer those who awaked from
-sleep, o kaurava, became she's as loyal and generous as
-she is impulsive.. 
-------------FD0133606AE875
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+     ×CááµÄ¸¶¿î·½Ê½ ÅcÙF¹«Ë¾ºÏ×÷£¡ 
+ 
+           ëŠ    Ô’: 1-3-9-2-6-5-7-6-4-9-7            
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  =20
- <html><head>=09<title> </title>=20
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">=09
-</head>  =20
-<body>
-<b> </b><br><span>=09</span>Show your sweetheart  how much you love her!!!<=
-br><span name=3D"#rtwt"> </span>Only today: =20
-<a href=3D"http://cid-70f01e6e6b2d3198.spaces.live.com/blog/cns!70F01E6E6B2=
-D3198!106.entry">CLICK HERE</a><br><span name=3D"#twqt">   </span><p><stron=
-g>=09</strong></p><br>
-<p><a name=3D"#qppp">
-</a>The stomach, the two arms, and speech, are wellrestrained.<br> deum pos=
-se: this was a principle generally admitted 'taking<br> thy protection, thi=
-s battle, o slayer those who awaked from<br> sleep, o kaurava, became she's=
- as loyal and generous as<br> she is impulsive..</p>
-</body></html>
-------------FD0133606AE875--
+           Â“ Ïµ ÈË: Íõ Éú
+
+            Q     Q£º973363947
+  
+           E - MAIL: sz.hd668-9Onoh4P/yGk@public.gmane.org
+
+                                     
 
 
---===============8086726288024026425==
+--===============7303042174811615896==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -72,7 +49,7 @@ SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
 The future of the web can't happen without you.  Join us at MIX09 to help
 pave the way to the Next Web now. Learn more and register at
 http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============8086726288024026425==
+--===============7303042174811615896==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -83,4 +60,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8086726288024026425==--
+--===============7303042174811615896==--

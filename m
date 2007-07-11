@@ -1,14 +1,17 @@
-From: MR.OBI-lZSIgVFbHKZDAQl1p9RvGDy8PWx26ez6G9Ur7JDdleE@public.gmane.org,
-	DODO-lZSIgVFbHKZDAQl1p9RvGDy8PWx26ez6G9Ur7JDdleE@public.gmane.org,
-	UNITED NATION CRIME PREVENTION UNIT <obi_dodo1-YbzV19J7KiEAvxtiuMwx3w@public.gmane.org>
-Subject: Attn: Beneficiary
-Date: Wed, 11 Jul 2007 15:30:48 +0200 (CEST)
-Message-ID: <20070711133048.BD05D267320@server46.publicompserver.de>
-Reply-To: obi_dodo-YbzV19J7KiEAvxtiuMwx3w@public.gmane.org
+From: Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
+Subject: pxa2xx_spi: PXA27x SSP1 doesn't work with DMA
+Date: Wed, 11 Jul 2007 09:26:15 -0700
+Message-ID: <1184171175.6762.17.camel@truckin.grid-net.com>
+References: <200707100913.22574.david-b@pacbell.net>
+Reply-To: stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1947246282=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="=-XVdHo8UCtqKsw+lfKfa4"
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
+	David Vrabel <david.vrabel-kQvG35nSl+M@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200707100913.22574.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,97 +23,92 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1947246282==
+
+--=-XVdHo8UCtqKsw+lfKfa4
 Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
 
+This is fine.  When I get more time, I will re-think handling of PXA2xx
+version differences.
 
-Attn: Beneficiary
-
-
-
-I am delighted to inform you that the UNITED NATION CRIME PREVENTION UNIT=
- Management through the Office of the SKYE BANK GOVERNOR and other bank d=
-irectors have decided to call back all approved fund Payment through offs=
-hore payment centers to the bank treasury following Interception of the U=
-NITED NATION CRIME PREVENTION UNIT AND WORLD BANK and have concluded arra=
-ngements to pay you this Funds by cash through the Diplomatic Agents who =
-will bring the cash in a Machine sealed consignment to you in the United =
-States as my bank has temporarily stopped further payment via wire transf=
-er.
+Stephen
 
 
+--=-XVdHo8UCtqKsw+lfKfa4
+Content-Description: 
+Content-Disposition: inline; filename=pxa27x-ssp1-fix-dma-hack.patch
+Content-Type: text/x-patch; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-In this regards we are going to send your inheritance/contract payment to=
- you via our accredited Diplomatic Agent/shipping Company and we have sec=
-ured every needed document to cover the money. Note: The money is coming =
-on 2 security proof box. The box are sealed with synthetic nylon seal and=
- padded with machine. Please you don=92t have to worry for anything, as t=
-he Transaction is 100% risk free. The Boxes are coming with A Diplomatic =
-agent who will accompany the boxes to your house address. All you need to=
- do now is to reconfirm to us
+pxa2xx_spi: add SSP types for the PXA27x
 
+The PXA27x's SSP1 is not like the PXA25x's SSP, so add some more PXA27x
+specific types so SSP1 works with DMA.
 
+Signed-off-by: David Vrabel <david.vrabel-kQvG35nSl+M@public.gmane.org>
+Signed-off-by: Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
 
+diff -u linux-2.6.16.28/drivers/spi/pxa2xx_spi.c linux-2.6.16.28/drivers/spi/pxa2xx_spi.c
+--- linux-2.6.16.28/drivers/spi/pxa2xx_spi.c
++++ linux-2.6.16.28/drivers/spi/pxa2xx_spi.c
+@@ -1260,18 +1260,20 @@
+ 
+ 		switch (platform_info->ssp_type) {
+ 			case PXA25x_SSP:
++			case PXA27x_SSP1:
+ 				DRCMRRXSSDR = DRCMR_MAPVLD
+ 						| drv_data->rx_channel;
+ 				DRCMRTXSSDR = DRCMR_MAPVLD
+ 						| drv_data->tx_channel;
+ 				break;
+ 			case PXA25x_NSSP:
++			case PXA27x_SSP2:
+ 				DRCMRRXSS2DR = DRCMR_MAPVLD
+ 						| drv_data->rx_channel;
+ 				DRCMRTXSS2DR = DRCMR_MAPVLD
+ 						| drv_data->tx_channel;
+ 				break;
+-			case PXA27x_SSP:
++			case PXA27x_SSP3:
+ 				DRCMRRXSS3DR = DRCMR_MAPVLD
+ 						| drv_data->rx_channel;
+ 				DRCMRTXSS3DR = DRCMR_MAPVLD
+@@ -1359,14 +1361,16 @@
+ 	if (drv_data->master_info->enable_dma) {
+ 		switch (drv_data->ssp_type) {
+ 			case PXA25x_SSP:
++			case PXA27x_SSP1:
+ 				DRCMRRXSSDR = 0;
+ 				DRCMRTXSSDR = 0;
+ 				break;
+ 			case PXA25x_NSSP:
++			case PXA27x_SSP2:
+ 				DRCMRRXSS2DR = 0;
+ 				DRCMRTXSS2DR = 0;
+ 				break;
+-			case PXA27x_SSP:
++			case PXA27x_SSP3:
+ 				DRCMRRXSS3DR = 0;
+ 				DRCMRTXSS3DR = 0;
+ 				break;
+diff -u linux-2.6.16.28/include/asm-arm/arch-pxa/pxa2xx_spi.h linux-2.6.16.28/include/asm-arm/arch-pxa/pxa2xx_spi.h
+--- linux-2.6.16.28/include/asm-arm/arch-pxa/pxa2xx_spi.h
++++ linux-2.6.16.28/include/asm-arm/arch-pxa/pxa2xx_spi.h
+@@ -25,7 +25,10 @@
+ 	SSP_UNDEFINED = 0,
+ 	PXA25x_SSP,  /* pxa 210, 250, 255, 26x */
+ 	PXA25x_NSSP, /* pxa 255, 26x (including ASSP) */
+-	PXA27x_SSP,
++	PXA27x_SSP1,
++	PXA27x_SSP2,
++	PXA27x_SSP3,
++	PXA27x_SSP = PXA27x_SSP3, /* for compatibility */
+ };
+ 
+ /* device.platform_data for SSP controller devices */
 
-
-Your Full Name=20
-
-Contact House Address
-
-Occupation
-
-Age
-
-Your mobile phone;
-
-
-
-The Diplomatic Attached will travel with it. They will call you immediate=
-ly they arrive in your countries airport to your house. I hope you unders=
-tand me.
-
-
-
-Note: The diplomat does not know the original contents of the boxes. What=
- l declared to them as the contents is Sensitive Photographic Film Materi=
-als for security reasons. I did not declare money to them please. If they=
- call you and ask you the contents please tell them the same thing Ok. Yo=
-u will secure the Diplomatic immunity clearance certificate and the=20
-
-Certificate of fund ownership, without this two certificate, your Payment=
- fund will not be approve, can not be courier for this payment season, th=
-e needed certificate will Make it pass every custom Checkpoint all over t=
-he world without hitch.
-
-
-
-Confirm the receipt of this message and re-send the requirements to me im=
-mediately you receive this message. Please I need urgent reply because th=
-e boxes are Schedule to live as soon as we hear from you. I will try to c=
-ontact you today again and attached the money as being taken to the diplo=
-mat service company for delivering. You are to call me for further direct=
-ives.
-
-
-
-Thanks
-
-Yours truly,
-
-MR.OBI DODO
-
-UNITED NATIONS CRIME PREVENTION UNIT,
-
-AFRICA CHAPTER.
-
-
-
-
-
-
---===============1947246282==
+--=-XVdHo8UCtqKsw+lfKfa4
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -121,7 +119,7 @@ This SF.net email is sponsored by DB2 Express
 Download DB2 Express C - the FREE version of DB2 express and take
 control of your XML. No limits. Just data. Click to get it now.
 http://sourceforge.net/powerbar/db2/
---===============1947246282==
+--=-XVdHo8UCtqKsw+lfKfa4
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -132,4 +130,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1947246282==--
+--=-XVdHo8UCtqKsw+lfKfa4--

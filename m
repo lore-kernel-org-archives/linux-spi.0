@@ -1,51 +1,48 @@
-From: David Vrabel <david.vrabel@csr.com>
-Subject: Re: pxa2xx_spi: PXA27x SSP1 doesn't work with DMA
-Date: Thu, 12 Jul 2007 16:54:51 +0100
-Message-ID: <46964ECB.3070500@csr.com>
+From: Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
+Subject: Re: pxa2xx_spi: PXA27x SSP1 doesn't work with
+	DMA
+Date: Thu, 12 Jul 2007 09:55:38 -0700
+Message-ID: <1184259338.22863.18.camel@truckin.grid-net.com>
 References: <200707100913.22574.david-b@pacbell.net>
 	<1184171175.6762.17.camel@truckin.grid-net.com>
 	<200707111008.11363.david-b@pacbell.net>
+Reply-To: stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.arm.linux.org.uk
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk>
-In-Reply-To: <200707111008.11363.david-b@pacbell.net>
-List-Unsubscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=unsubscribe>
-List-Archive: <http://lists.arm.linux.org.uk/pipermail/linux-arm-kernel>
-List-Post: <mailto:linux-arm-kernel@lists.arm.linux.org.uk>
-List-Help: <mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=help>
-List-Subscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.arm.linux.org.uk
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
+	David Vrabel <david.vrabel-kQvG35nSl+M@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200707111008.11363.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-David Brownell wrote:
+On Wed, 2007-07-11 at 10:08 -0700, David Brownell wrote:
 > On Wednesday 11 July 2007, Stephen Street wrote:
->> This is fine.  When I get more time, I will re-think handling of PXA2xx
->> version differences.
+> > This is fine.  When I get more time, I will re-think handling of PXA2xx
+> > version differences.
 > 
 > Except it's against 2.6.16 and doesn't apply against 2.6.22 ... which
-> doesn't have those switch statements!
+> doesn't have those switch statements!  
+Yikes,  I did not look at this closely enough... I look at this also.
+Give me a couple of days.
 
-Oops.  I checked to see if this driver had changed but thought it hadn't...
-
-> David, could you provide a fix for current kernels?
-
-I could, but I couldn't test it :(
-
-David
+Stephen
 
 
-To access the latest news from CSR copy this link into a web browser:  http://www.csr.com/email_sig.php
 
-To get further information regarding CSR, please visit our Investor Relations page at http://ir.csr.com/csr/about/overview
-
--------------------------------------------------------------------
-List admin: http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel
-FAQ:        http://www.arm.linux.org.uk/mailinglists/faq.php
-Etiquette:  http://www.arm.linux.org.uk/mailinglists/etiquette.php
+-------------------------------------------------------------------------
+This SF.net email is sponsored by DB2 Express
+Download DB2 Express C - the FREE version of DB2 express and take
+control of your XML. No limits. Just data. Click to get it now.
+http://sourceforge.net/powerbar/db2/

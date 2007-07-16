@@ -1,21 +1,21 @@
-From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: [patch 2.6.22-git5 0/4] MMC-over-SPI
-Date: Mon, 16 Jul 2007 20:48:37 +0400
-Message-ID: <20070716164837.GA18707@localhost.localdomain>
+Date: Mon, 16 Jul 2007 11:54:54 -0700
+Message-ID: <200707161154.54728.david-b@pacbell.net>
 References: <200707141504.51950.david-b@pacbell.net>
-Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
+	<20070716164837.GA18707@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
 	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
 	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20070716164837.GA18707-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <200707141504.51950.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,234 +27,350 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGVsbG8gRGF2aWQsCgpPbiBTYXQsIEp1bCAxNCwgMjAwNyBhdCAwMzowNDo1MVBNIC0wNzAwLCBE
-YXZpZCBCcm93bmVsbCB3cm90ZToKPiBIZXJlJ3MgYW4gdXBkYXRlZCB2ZXJzaW9uIG9mIHRoZSBN
-TUMtb3Zlci1TUEkgcGF0Y2hlcywgcmV3b3JrZWQgdG8KPiBhZGRyZXNzIG1vc3Qgb2YgUGllcnJl
-J3MgaXNzdWVzIChtb3ZpbmcgZXZlbiBtb3JlIGNvZGUgaW50byB0aGUgTU1DCj4gY29yZSkgYW5k
-IHRvIGNsZWFuIHVwIHRoZSBJL08gcGF0aHMuCj4gCj4gVG8gYnVpbGQvcnVuIHRoZXNlLCB5b3Un
-bGwgbmVlZCB0aGUgQ1JDNyBwYXRjaCBmcm9tIHJlY2VudCBNTSB0cmVlcy4KPiAKPiDCoC0gaGVh
-ZGVycyBsZWFybiBhYm91dCBTUEkKPiAKPiDCoC0gbW1jX2Jsb2NrIGxlYXJucyBhYm91dCBTUEkK
-PiAKPiDCoC0gbW1jIGNvcmUgdXBkYXRlcyAKPiAKPiDCoC0gbW1jX3NwaSBob3N0IGRyaXZlcgo+
-IAo+IFRoZSBiaXRzIHJlbGF0ZWQgdG8gY2FyZCBsb2NrL3VubG9jayBhcmVuJ3QgaW5jbHVkZWQg
-aGVyZSwgc2luY2UKPiB0aG9zZSBkaWRuJ3QgZ28gdXBzdHJlYW0geWV0LgoKTXVjaCB0aGFua3Mg
-Zm9yIHRoZSBwYXRjaGVzIQoKVGhvdWdoLCBJIHN0aWxsIGhhdmUgc29tZSB0cm91YmxlcyB3aXRo
-IGdldHRpbmcgTU1DKFNEKS1vdmVyLVNQSSB0bwp3b3JrLgoKSSdtIHVzaW5nIHNsaWdodGx5IHBh
-dGNoZWQgc3BpX21wYzgzeHguYyBkcml2ZXIgKyB0aGVzZSBmb3VyIG1tYwpwYXRjaGVzLgoKc3Bp
-X21wYzgzeHguYyB0ZXN0ZWQgb25seSBpbiBsb29wYmFjayBtb2RlIGFuZCB1c2luZyBvc2NpbGxv
-c2NvcGUuCkl0IF9zZWVtXyB0byB3b3JrIGZpbmUsIGJ1dCBhcyBJIGRpZG4ndCB0ZXN0ZWQgaXQg
-b24gcmVhbCBoYXJkd2FyZQoob3RoZXIgdGhhbiBNTUMvU0QpLCBJIGNhbid0IHNheSBpZiBpdCdz
-IGZhdWx0IG9mIHNwaV9tcGM4M3h4IG9yCm1tY19zcGkuCgpEYXZpZCwgY2FuIHlvdSBzZWUgYW55
-dGhpbmcgaGVscGZ1bCBpbiB0aGVzZSBkZWJ1ZyBtZXNzYWdlcz8KCi0gLSAtIC0KbW1jX3NwaSBz
-cGkxLjA6IEFTU1VNSU5HIHVuc2hhcmVkIFNQSSBidXMhCm1tY19zcGkgc3BpMS4wOiBBU1NVTUlO
-RyAzLjItMy40IFYgc2xvdCBwb3dlcgptbWMwOiBjbG9jayAwSHogYnVzbW9kZSAwIHBvd2VybW9k
-ZSAwIGNzIDAgVmRkIDAgd2lkdGggMCB0aW1pbmcgMAptbWNfc3BpIHNwaTEuMDogU0QvTU1DIGhv
-c3QgbW1jMCwgbm8gRE1BLCBubyBXUCwgbm8gcG93ZXJvZmYKbW1jMDogY2xvY2sgMEh6IGJ1c21v
-ZGUgMiBwb3dlcm1vZGUgMSBjcyAxIFZkZCAyMSB3aWR0aCAwIHRpbWluZyAwCm1tY19zcGkgc3Bp
-MS4wOiBtbWNfc3BpOiBwb3dlciB1cCAoMjEpCm1tYzA6IGNsb2NrIDQwMDAwMEh6IGJ1c21vZGUg
-MiBwb3dlcm1vZGUgMiBjcyAxIFZkZCAyMSB3aWR0aCAwIHRpbWluZyAwCm1tY19zcGkgc3BpMS4w
-OiBtbWNfc3BpOiBwb3dlciBvbiAoMjEpCm1tY19zcGkgc3BpMS4wOiBtbWNfc3BpOiAgY2xvY2sg
-dG8gNDAwMDAwIEh6LCAwCm1tYzA6IHN0YXJ0aW5nIENNRDAgYXJnIDAwMDAwMDAwIGZsYWdzIDAw
-MDAwMGMwCm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDAsIE1NQ19TUElfUjEKbW1jMDog
-cmVxIGRvbmUgKENNRDApOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAw
-MDAKbW1jMDogc3RhcnRpbmcgQ01EOCBhcmcgMDAwMDAxYWEgZmxhZ3MgMDAwMDAyZjUKbW1jX3Nw
-aSBzcGkxLjA6ICAgbW1jX3NwaTogQ01EOCwgTU1DX1NQSV9SMy9SNwptbWNfc3BpIHNwaTEuMDog
-ICAuLi4gQ01EOCByZXNwb25zZSBTUElfUjMvUjc6IHJlc3AgMDAwNSAwMDAwMDAwMAptbWMwOiBy
-ZXEgZG9uZSAoQ01EOCk6IDUvMC8wOiAwMDAwMDAwNSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAw
-MAptbWMwOiBzdGFydGluZyBDTUQ1NSBhcmcgMDAwMDAwMDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3Nw
-aSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENTUsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENN
-RDU1KTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0
-YXJ0aW5nIENNRDQxIGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBlMQptbWNfc3BpIHNwaTEuMDog
-ICBtbWNfc3BpOiBDTUQ0MSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENDEpOiAwLzAv
-MDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01E
-NTUgYXJnIDAwMDAwMDAwIGZsYWdzIDAwMDAwMGY1Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6
-IENNRDU1LCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAw
-MSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ0MSBhcmcgMDAw
-MDAwMDAgZmxhZ3MgMDAwMDAwZTEKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENDEsIE1N
-Q19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDQxKTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAw
-IDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDU1IGFyZyAwMDAwMDAwMCBmbGFn
-cyAwMDAwMDBmNQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ1NSwgTU1DX1NQSV9SMQpt
-bWMwOiByZXEgZG9uZSAoQ01ENTUpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAg
-MDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENDEgYXJnIDAwMDAwMDAwIGZsYWdzIDAwMDAwMGUx
-Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDQxLCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBk
-b25lIChDTUQ0MSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMApt
-bWMwOiBzdGFydGluZyBDTUQ1NSBhcmcgMDAwMDAwMDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3NwaSBz
-cGkxLjA6ICAgbW1jX3NwaTogQ01ENTUsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDU1
-KTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0
-aW5nIENNRDQxIGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBlMQptbWNfc3BpIHNwaTEuMDogICBt
-bWNfc3BpOiBDTUQ0MSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENDEpOiAwLzAvMDog
-MDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENTUg
-YXJnIDAwMDAwMDAwIGZsYWdzIDAwMDAwMGY1Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENN
-RDU1LCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAwMSAw
-MDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ0MSBhcmcgMDAwMDAw
-MDAgZmxhZ3MgMDAwMDAwZTEKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENDEsIE1NQ19T
-UElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDQxKTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAw
-MDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDU1IGFyZyAwMDAwMDAwMCBmbGFncyAw
-MDAwMDBmNQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ1NSwgTU1DX1NQSV9SMQptbWMw
-OiByZXEgZG9uZSAoQ01ENTUpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAw
-MDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENDEgYXJnIDAwMDAwMDAwIGZsYWdzIDAwMDAwMGUxCm1t
-Y19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDQxLCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25l
-IChDTUQ0MSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMw
-OiBzdGFydGluZyBDTUQ1NSBhcmcgMDAwMDAwMDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3NwaSBzcGkx
-LjA6ICAgbW1jX3NwaTogQ01ENTUsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDU1KTog
-MC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5n
-IENNRDQxIGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBlMQptbWNfc3BpIHNwaTEuMDogICBtbWNf
-c3BpOiBDTUQ0MSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENDEpOiAwLzAvMDogMDAw
-MDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENTUgYXJn
-IDAwMDAwMDAwIGZsYWdzIDAwMDAwMGY1Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDU1
-LCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAw
-MDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ0MSBhcmcgMDAwMDAwMDAg
-ZmxhZ3MgMDAwMDAwZTEKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENDEsIE1NQ19TUElf
-UjEKbW1jMDogcmVxIGRvbmUgKENNRDQxKTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAw
-MDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDU1IGFyZyAwMDAwMDAwMCBmbGFncyAwMDAw
-MDBmNQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ1NSwgTU1DX1NQSV9SMQptbWMwOiBy
-ZXEgZG9uZSAoQ01ENTUpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAw
-MDAKbW1jMDogc3RhcnRpbmcgQ01ENDEgYXJnIDAwMDAwMDAwIGZsYWdzIDAwMDAwMGUxCm1tY19z
-cGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDQxLCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChD
-TUQ0MSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBz
-dGFydGluZyBDTUQ1NSBhcmcgMDAwMDAwMDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3NwaSBzcGkxLjA6
-ICAgbW1jX3NwaTogQ01ENTUsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDU1KTogMC8w
-LzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENN
-RDQxIGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBlMQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3Bp
-OiBDTUQ0MSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENDEpOiAwLzAvMDogMDAwMDAw
-MDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENTUgYXJnIDAw
-MDAwMDAwIGZsYWdzIDAwMDAwMGY1Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDU1LCBN
-TUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAw
-MCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ0MSBhcmcgMDAwMDAwMDAgZmxh
-Z3MgMDAwMDAwZTEKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENDEsIE1NQ19TUElfUjEK
-bW1jMDogcmVxIGRvbmUgKENNRDQxKTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAw
-IDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDU1IGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBm
-NQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ1NSwgTU1DX1NQSV9SMQptbWMwOiByZXEg
-ZG9uZSAoQ01ENTUpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAK
-bW1jMDogc3RhcnRpbmcgQ01ENDEgYXJnIDAwMDAwMDAwIGZsYWdzIDAwMDAwMGUxCm1tY19zcGkg
-c3BpMS4wOiAgIG1tY19zcGk6IENNRDQxLCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ0
-MSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFy
-dGluZyBDTUQ1NSBhcmcgMDAwMDAwMDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3NwaSBzcGkxLjA6ICAg
-bW1jX3NwaTogQ01ENTUsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDU1KTogMC8wLzA6
-IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDQx
-IGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBlMQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBD
-TUQ0MSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENDEpOiAwLzAvMDogMDAwMDAwMDEg
-MDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENTUgYXJnIDAwMDAw
-MDAwIGZsYWdzIDAwMDAwMGY1Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDU1LCBNTUNf
-U1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAw
-MDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ0MSBhcmcgMDAwMDAwMDAgZmxhZ3Mg
-MDAwMDAwZTEKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENDEsIE1NQ19TUElfUjEKbW1j
-MDogcmVxIGRvbmUgKENNRDQxKTogMC8wLzA6IDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwIDAw
-MDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDU4IGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDI4MApt
-bWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ1OCwgTU1DX1NQSV9SMy9SNwptbWMwOiByZXEg
-ZG9uZSAoQ01ENTgpOiAwLzAvMDogMDAwMDAwMDAgODBmZjgwMDAgMDAwMDAwMDAgMDAwMDAwMDAK
-bW1jMDogY2xvY2sgNDAwMDAwSHogYnVzbW9kZSAyIHBvd2VybW9kZSAyIGNzIDEgVmRkIDIwIHdp
-ZHRoIDAgdGltaW5nIDAKbW1jMDogc3RhcnRpbmcgQ01EMCBhcmcgMDAwMDAwMDAgZmxhZ3MgMDAw
-MDAwYzAKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01EMCwgTU1DX1NQSV9SMQptbWMwOiBy
-ZXEgZG9uZSAoQ01EMCk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAw
-MAptbWMwOiBzdGFydGluZyBDTUQ4IGFyZyAwMDAwMDFhYSBmbGFncyAwMDAwMDJmNQptbWNfc3Bp
-IHNwaTEuMDogICBtbWNfc3BpOiBDTUQ4LCBNTUNfU1BJX1IzL1I3Cm1tY19zcGkgc3BpMS4wOiAg
-IC4uLiBDTUQ4IHJlc3BvbnNlIFNQSV9SMy9SNzogcmVzcCAwMDA1IDAwMDAwMDAwCm1tYzA6IHJl
-cSBkb25lIChDTUQ4KTogNS8wLzA6IDAwMDAwMDA1IDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAw
-Cm1tYzA6IHN0YXJ0aW5nIENNRDU1IGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBmNQptbWNfc3Bp
-IHNwaTEuMDogICBtbWNfc3BpOiBDTUQ1NSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01E
-NTUpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3Rh
-cnRpbmcgQ01ENDEgYXJnIDAwMzAwMDAwIGZsYWdzIDAwMDAwMGUxCm1tY19zcGkgc3BpMS4wOiAg
-IG1tY19zcGk6IENNRDQxLCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ0MSk6IDAvMC8w
-OiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ1
-NSBhcmcgMDAwMDAwMDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTog
-Q01ENTUsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDU1KTogMC8wLzA6IDAwMDAwMDAx
-IDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDQxIGFyZyAwMDMw
-MDAwMCBmbGFncyAwMDAwMDBlMQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ0MSwgTU1D
-X1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENDEpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAg
-MDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENTUgYXJnIDAwMDAwMDAwIGZsYWdz
-IDAwMDAwMGY1Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDU1LCBNTUNfU1BJX1IxCm1t
-YzA6IHJlcSBkb25lIChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAw
-MDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ0MSBhcmcgMDAzMDAwMDAgZmxhZ3MgMDAwMDAwZTEK
-bW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENDEsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRv
-bmUgKENNRDQxKTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1t
-YzA6IHN0YXJ0aW5nIENNRDU1IGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBmNQptbWNfc3BpIHNw
-aTEuMDogICBtbWNfc3BpOiBDTUQ1NSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENTUp
-OiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRp
-bmcgQ01ENDEgYXJnIDAwMzAwMDAwIGZsYWdzIDAwMDAwMGUxCm1tY19zcGkgc3BpMS4wOiAgIG1t
-Y19zcGk6IENNRDQxLCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ0MSk6IDAvMC8wOiAw
-MDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ1NSBh
-cmcgMDAwMDAwMDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01E
-NTUsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDU1KTogMC8wLzA6IDAwMDAwMDAxIDAw
-MDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDQxIGFyZyAwMDMwMDAw
-MCBmbGFncyAwMDAwMDBlMQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ0MSwgTU1DX1NQ
-SV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENDEpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAw
-MDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENTUgYXJnIDAwMDAwMDAwIGZsYWdzIDAw
-MDAwMGY1Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDU1LCBNTUNfU1BJX1IxCm1tYzA6
-IHJlcSBkb25lIChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAw
-MDAwMAptbWMwOiBzdGFydGluZyBDTUQ0MSBhcmcgMDAzMDAwMDAgZmxhZ3MgMDAwMDAwZTEKbW1j
-X3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENDEsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUg
-KENNRDQxKTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6
-IHN0YXJ0aW5nIENNRDU1IGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBmNQptbWNfc3BpIHNwaTEu
-MDogICBtbWNfc3BpOiBDTUQ1NSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENTUpOiAw
-LzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcg
-Q01ENDEgYXJnIDAwMzAwMDAwIGZsYWdzIDAwMDAwMGUxCm1tY19zcGkgc3BpMS4wOiAgIG1tY19z
-cGk6IENNRDQxLCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ0MSk6IDAvMC8wOiAwMDAw
-MDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ1NSBhcmcg
-MDAwMDAwMDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENTUs
-IE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDU1KTogMC8wLzA6IDAwMDAwMDAxIDAwMDAw
-MDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDQxIGFyZyAwMDMwMDAwMCBm
-bGFncyAwMDAwMDBlMQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ0MSwgTU1DX1NQSV9S
-MQptbWMwOiByZXEgZG9uZSAoQ01ENDEpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAw
-MDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENTUgYXJnIDAwMDAwMDAwIGZsYWdzIDAwMDAw
-MGY1Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDU1LCBNTUNfU1BJX1IxCm1tYzA6IHJl
-cSBkb25lIChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAw
-MAptbWMwOiBzdGFydGluZyBDTUQ0MSBhcmcgMDAzMDAwMDAgZmxhZ3MgMDAwMDAwZTEKbW1jX3Nw
-aSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENDEsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENN
-RDQxKTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0
-YXJ0aW5nIENNRDU1IGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBmNQptbWNfc3BpIHNwaTEuMDog
-ICBtbWNfc3BpOiBDTUQ1NSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENTUpOiAwLzAv
-MDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01E
-NDEgYXJnIDAwMzAwMDAwIGZsYWdzIDAwMDAwMGUxCm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6
-IENNRDQxLCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ0MSk6IDAvMC8wOiAwMDAwMDAw
-MSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ1NSBhcmcgMDAw
-MDAwMDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENTUsIE1N
-Q19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDU1KTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAw
-IDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDQxIGFyZyAwMDMwMDAwMCBmbGFn
-cyAwMDAwMDBlMQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ0MSwgTU1DX1NQSV9SMQpt
-bWMwOiByZXEgZG9uZSAoQ01ENDEpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAg
-MDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENTUgYXJnIDAwMDAwMDAwIGZsYWdzIDAwMDAwMGY1
-Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDU1LCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBk
-b25lIChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMApt
-bWMwOiBzdGFydGluZyBDTUQ0MSBhcmcgMDAzMDAwMDAgZmxhZ3MgMDAwMDAwZTEKbW1jX3NwaSBz
-cGkxLjA6ICAgbW1jX3NwaTogQ01ENDEsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDQx
-KTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0
-aW5nIENNRDU1IGFyZyAwMDAwMDAwMCBmbGFncyAwMDAwMDBmNQptbWNfc3BpIHNwaTEuMDogICBt
-bWNfc3BpOiBDTUQ1NSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENTUpOiAwLzAvMDog
-MDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENDEg
-YXJnIDAwMzAwMDAwIGZsYWdzIDAwMDAwMGUxCm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENN
-RDQxLCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25lIChDTUQ0MSk6IDAvMC8wOiAwMDAwMDAwMSAw
-MDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBzdGFydGluZyBDTUQ1NSBhcmcgMDAwMDAw
-MDAgZmxhZ3MgMDAwMDAwZjUKbW1jX3NwaSBzcGkxLjA6ICAgbW1jX3NwaTogQ01ENTUsIE1NQ19T
-UElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDU1KTogMC8wLzA6IDAwMDAwMDAxIDAwMDAwMDAwIDAw
-MDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5nIENNRDQxIGFyZyAwMDMwMDAwMCBmbGFncyAw
-MDAwMDBlMQptbWNfc3BpIHNwaTEuMDogICBtbWNfc3BpOiBDTUQ0MSwgTU1DX1NQSV9SMQptbWMw
-OiByZXEgZG9uZSAoQ01ENDEpOiAwLzAvMDogMDAwMDAwMDEgMDAwMDAwMDAgMDAwMDAwMDAgMDAw
-MDAwMDAKbW1jMDogc3RhcnRpbmcgQ01ENTUgYXJnIDAwMDAwMDAwIGZsYWdzIDAwMDAwMGY1Cm1t
-Y19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDU1LCBNTUNfU1BJX1IxCm1tYzA6IHJlcSBkb25l
-IChDTUQ1NSk6IDAvMC8wOiAwMDAwMDAwMSAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMw
-OiBzdGFydGluZyBDTUQ0MSBhcmcgMDAzMDAwMDAgZmxhZ3MgMDAwMDAwZTEKbW1jX3NwaSBzcGkx
-LjA6ICAgbW1jX3NwaTogQ01ENDEsIE1NQ19TUElfUjEKbW1jMDogcmVxIGRvbmUgKENNRDQxKTog
-MC8wLzA6IDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwIDAwMDAwMDAwCm1tYzA6IHN0YXJ0aW5n
-IENNRDU5IGFyZyAwMDAwMDAwMSBmbGFncyAwMDAwMDA4MAptbWNfc3BpIHNwaTEuMDogICBtbWNf
-c3BpOiBDTUQ1OSwgTU1DX1NQSV9SMQptbWMwOiByZXEgZG9uZSAoQ01ENTkpOiAwLzAvMDogMDAw
-MDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKbW1jMDogc3RhcnRpbmcgQ01EMTAgYXJn
-IDAwMDAwMDAwIGZsYWdzIDAwMDAwMGI1Cm1tY19zcGkgc3BpMS4wOiAgIG1tY19zcGk6IENNRDEw
-LCBNTUNfU1BJX1IxCm1tY19zcGkgc3BpMS4wOiAgICAgbW1jX3NwaTogcmVhZCBibG9jaywgMTYg
-Ynl0ZXMKbW1jX3NwaSBzcGkxLjA6IHJlYWQgZXJyb3IgZjggKDI0OCkKbW1jX3NwaSBzcGkxLjA6
-IHJlYWQgc3RhdHVzIC01Cm1tYzA6IHJlcSBkb25lIChDTUQxMCk6IDAvNC8wOiAwMDAwMDAwMSAw
-MDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMAptbWMwOiBjbG9jayAwSHogYnVzbW9kZSAyIHBvd2Vy
-bW9kZSAwIGNzIDEgVmRkIDAgd2lkdGggMCB0aW1pbmcgMAptbWNfc3BpIHNwaTEuMDogbW1jX3Nw
-aTogcG93ZXIgb2ZmICgwKQotIC0gLSAtCgoKU0QgY2FyZCBpcyBLaW5nc3RvbiAxR0IsIDMuM1Yu
-CgpUaGFua3MhCgpwLnMuIEkndmUgc2VudCBzdWJzY3JpcHRpb24gcmVxdWVzdCB0byB0aGlzIGxp
-c3QsIGJ1dCBTRiBzdGlsbApwcm9jZXNzaW5nIGl0LiBTbyBwbGVhc2UgQ2MgbWUsIGp1c3QgdG8g
-YmUgc3VyZSBJJ2xsIG5vdCBtaXNzCnNvbWV0aGluZy4KCi0tIApBbnRvbiBWb3JvbnRzb3YKZW1h
-aWw6IGNib3VAbWFpbC5ydQpiYWNrdXAgZW1haWw6IHlhLWNib3VAeWFuZGV4LnJ1CmlyYzovL2ly
-Yy5mcmVlbm9kZS5uZXQvYmQyCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVtYWlsIGlz
-IHNwb25zb3JlZCBieSBEQjIgRXhwcmVzcwpEb3dubG9hZCBEQjIgRXhwcmVzcyBDIC0gdGhlIEZS
-RUUgdmVyc2lvbiBvZiBEQjIgZXhwcmVzcyBhbmQgdGFrZQpjb250cm9sIG9mIHlvdXIgWE1MLiBO
-byBsaW1pdHMuIEp1c3QgZGF0YS4gQ2xpY2sgdG8gZ2V0IGl0IG5vdy4KaHR0cDovL3NvdXJjZWZv
-cmdlLm5ldC9wb3dlcmJhci9kYjIvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2Vu
-ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQv
-bGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Monday 16 July 2007, Anton Vorontsov wrote:
+> Hello David,
+> 
+> On Sat, Jul 14, 2007 at 03:04:51PM -0700, David Brownell wrote:
+> > Here's an updated version of the MMC-over-SPI patches, reworked to
+> > address most of Pierre's issues (moving even more code into the MMC
+> > core) and to clean up the I/O paths.
+> > 
+> > ...
+> 
+> Much thanks for the patches!
+> 
+> Though, I still have some troubles with getting MMC(SD)-over-SPI to
+> work.
+> 
+> I'm using slightly patched spi_mpc83xx.c driver + these four mmc
+> patches.
+> 
+> spi_mpc83xx.c tested only in loopback mode and using oscilloscope.
+> It _seem_ to work fine, but as I didn't tested it on real hardware
+> (other than MMC/SD), I can't say if it's fault of spi_mpc83xx or
+> mmc_spi.
+
+I can't say either, but my first thought is that it might be a
+card-specific quirk.  I already found one in that particular place,
+and the messages below look fine until the very end.
+
+
+> David, can you see anything helpful in these debug messages?
+> 
+> - - - -
+> mmc_spi spi1.0: ASSUMING unshared SPI bus!
+> mmc_spi spi1.0: ASSUMING 3.2-3.4 V slot power
+
+You should provide an ocr_mask in your platform data, saying what
+voltage range you can supply ... even if it's only 3V3 !!
+
+
+> mmc0: clock 0Hz busmode 0 powermode 0 cs 0 Vdd 0 width 0 timing 0
+> mmc_spi spi1.0: SD/MMC host mmc0, no DMA, no WP, no poweroff
+> mmc0: clock 0Hz busmode 2 powermode 1 cs 1 Vdd 21 width 0 timing 0
+> mmc_spi spi1.0: mmc_spi: power up (21)
+> mmc0: clock 400000Hz busmode 2 powermode 2 cs 1 Vdd 21 width 0 timing 0
+> mmc_spi spi1.0: mmc_spi: power on (21)
+> mmc_spi spi1.0: mmc_spi:  clock to 400000 Hz, 0
+> mmc0: starting CMD0 arg 00000000 flags 000000c0
+> mmc_spi spi1.0:   mmc_spi: CMD0, MMC_SPI_R1
+> mmc0: req done (CMD0): 0/0/0: 00000001 00000000 00000000 00000000
+
+Looks fine:  reset card, R1_SPI_IDLE status is set in
+the status word (00000001) ... it'll be resetting for
+some time.
+
+
+> mmc0: starting CMD8 arg 000001aa flags 000002f5
+> mmc_spi spi1.0:   mmc_spi: CMD8, MMC_SPI_R3/R7
+> mmc_spi spi1.0:   ... CMD8 response SPI_R3/R7: resp 0005 00000000
+> mmc0: req done (CMD8): 5/0/0: 00000005 00000000 00000000 00000000
+
+OK, it doesn't handle SEND_EXT_CSD at all (status R1_SPI_ILLEGAL_COMMAND
+in addition to the idle status), so it comes as MMC_ERR_INVALID.
+(Or SEND_IF_COND, if this were an SD 2.0+ card...)
+
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+ACMD41 == SD_SEND_OP_COND, it's still resetting.  Repeats..
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00000000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000000 00000000 00000000 00000000
+
+Finally the reset completed, R1_SPI_IDLE bit clears.
+
+
+> mmc0: starting CMD58 arg 00000000 flags 00000280
+> mmc_spi spi1.0:   mmc_spi: CMD58, MMC_SPI_R3/R7
+> mmc0: req done (CMD58): 0/0/0: 00000000 80ff8000 00000000 00000000
+
+Reads the OCR, fine.
+
+> mmc0: clock 400000Hz busmode 2 powermode 2 cs 1 Vdd 20 width 0 timing 0
+> mmc0: starting CMD0 arg 00000000 flags 000000c0
+> mmc_spi spi1.0:   mmc_spi: CMD0, MMC_SPI_R1
+> mmc0: req done (CMD0): 0/0/0: 00000001 00000000 00000000 00000000
+
+Restarts the enumeration, now knowing it's an SD card.
+
+> mmc0: starting CMD8 arg 000001aa flags 000002f5
+> mmc_spi spi1.0:   mmc_spi: CMD8, MMC_SPI_R3/R7
+> mmc_spi spi1.0:   ... CMD8 response SPI_R3/R7: resp 0005 00000000
+> mmc0: req done (CMD8): 5/0/0: 00000005 00000000 00000000 00000000
+
+... so here it's trying SEND_IF_COND (still failing) ...
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000001 00000000 00000000 00000000
+
+> mmc0: starting CMD55 arg 00000000 flags 000000f5
+> mmc_spi spi1.0:   mmc_spi: CMD55, MMC_SPI_R1
+> mmc0: req done (CMD55): 0/0/0: 00000001 00000000 00000000 00000000
+> mmc0: starting CMD41 arg 00300000 flags 000000e1
+> mmc_spi spi1.0:   mmc_spi: CMD41, MMC_SPI_R1
+> mmc0: req done (CMD41): 0/0/0: 00000000 00000000 00000000 00000000
+
+Reset finished, IDLE status is no longer set ...
+
+> mmc0: starting CMD59 arg 00000001 flags 00000080
+> mmc_spi spi1.0:   mmc_spi: CMD59, MMC_SPI_R1
+> mmc0: req done (CMD59): 0/0/0: 00000000 00000000 00000000 00000000
+
+Enables CRC mode (arg == 1).
+
+> mmc0: starting CMD10 arg 00000000 flags 000000b5
+> mmc_spi spi1.0:   mmc_spi: CMD10, MMC_SPI_R1
+> mmc_spi spi1.0:     mmc_spi: read block, 16 bytes
+> mmc_spi spi1.0: read error f8 (248)
+
+Hmm, the data block in the MMC_SEND_CID command didn't start
+with a valid token ... it saw 0xf8, not 0xfe, which is a
+lowlevel protocol error.
+
+Maybe your scope can show whether or not this was the actual
+data sent by the card... or you can otherwise verify that the
+input data (from start of CMD10) was a bunch of 0xff values
+then an 0xf8...
+
+
+> mmc_spi spi1.0: read status -5
+> mmc0: req done (CMD10): 0/4/0: 00000001 00000000 00000000 00000000
+> mmc0: clock 0Hz busmode 2 powermode 0 cs 1 Vdd 0 width 0 timing 0
+> mmc_spi spi1.0: mmc_spi: power off (0)
+
+Rather than retrying that command, everything shuts down.
+Which is annoying, but seems to be the intended behavior;
+if that's bug, it's not a bug in the SPI support.
+
+
+> - - - -
+> 
+> 
+> SD card is Kingston 1GB, 3.3V.
+
+I didn't try Kingston cards.  Since everything worked fine until
+that last command, maybe a different card will behave better.
+
+The driver does handle one protocol quirk.  A SanDisk SD card
+would issue an 0x00 byte right after issuing the command, in
+that SEND_CID case as well as the SEND_CSD case.  That should
+be an 0xff byte ... depending on exactly where that 0xf8 showed
+up, maybe the mmc_spi_readblock() code should be changed to skip
+not just 0x00 but *ANY* non-{0xff,0xfe} byte in that slot.
+
+- Dave
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by DB2 Express
+Download DB2 Express C - the FREE version of DB2 express and take
+control of your XML. No limits. Just data. Click to get it now.
+http://sourceforge.net/powerbar/db2/

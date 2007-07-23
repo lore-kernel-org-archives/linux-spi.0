@@ -1,24 +1,22 @@
-From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: [patch 2.6.22-git5 0/4] MMC-over-SPI
-Date: Mon, 23 Jul 2007 18:29:23 +0400
-Message-ID: <20070723142923.GA28979@localhost.localdomain>
+Date: Mon, 23 Jul 2007 10:33:31 -0700
+Message-ID: <200707231033.31717.david-b@pacbell.net>
 References: <200707141504.51950.david-b@pacbell.net>
-	<200707181027.17819.david-b@pacbell.net>
-	<20070719161553.GA15756@localhost.localdomain>
 	<200707191328.18846.david-b@pacbell.net>
-Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
+	<20070723142923.GA28979@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
 	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
 	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20070723142923.GA28979-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <200707191328.18846.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,77 +28,41 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBKdWwgMTksIDIwMDcgYXQgMDE6Mjg6MTdQTSAtMDcwMCwgRGF2aWQgQnJvd25lbGwg
-d3JvdGU6Cj4gT24gVGh1cnNkYXkgMTkgSnVseSAyMDA3LCBBbnRvbiBWb3JvbnRzb3Ygd3JvdGU6
-Cj4gPiA+IAo+ID4gPiBUaGFua3MuIMKgSW4gdGhhdCBjYXNlLCBJJ20gdGhpbmtpbmcgdGhlcmUg
-KklTKiBhIGJ1ZyBvZiBzb21lIGtpbmQKPiA+ID4gaW4gdGhlIGNvbnRyb2xsZXIgZHJpdmVyIEFu
-dG9uIGlzIHVzaW5nLCBlbHNlIG1vZGUgMyB3b3VsZCB3b3JrCj4gPiA+IGZvciBoaW0gbGlrZSBp
-dCAoZXZpZGVudGx5KSB3b3JrcyBmb3IgZXZlcnlvbmUgZWxzZS4KPiA+IAo+ID4gSSd2ZSBjaGVj
-a2VkIHdpdGggTVBDODMyM0UgcmVmZXJlbmNlIG1hbnVhbCwgYW5kIGFjY29yZGluZyB0byBpdAo+
-ID4gc3BpX21wYzgzeHggaXMgZG9pbmcgcmlnaHQgdGhpbmcuCj4gCj4gSSBub3RpY2UgdGhhdCBk
-cml2ZXIgZGlzcmVnYXJkcyB0aGUgY3NfY2hhbmdlIGluc3RydWN0aW9ucyBpbiB0aGUKPiBtZXNz
-YWdlcyAuLi4gSSBjb3VsZCBpbWFnaW5lIGhvdyB0aGF0IGNvdWxkIG1ha2UgYSBiaWcgZGlmZmVy
-ZW5jZS4KPiAKPiBJZiB0aGF0IGhhcmR3YXJlIHdlcmUgZG9pbmcgdGhlIHJpZ2h0IHRoaW5nLCB0
-aGVuIGl0IHdvdWxkIHdvcmsKPiByZWxpYWJseSEgIFNpbmNlIGl0J3Mgbm90IHJlbGlhYmxlLCBp
-dCdzIGRvaW5nIHNvbWV0aGluZyB3cm9uZy4KPiBZb3Ugc2VlbSB0byB0aGluayBpdCdzIG5vdCBh
-IGhhcmR3YXJlIGlzc3VlOyB0aGF0IG1heSBiZSB0cnVlLgo+IAo+IFJlY2FsbCB0aGF0IHRoZSBm
-aXJzdCBkb3plbiBvciBzbyBjb21tYW5kcyB3b3JrZWQganVzdCBmaW5lLiAgVGhlCj4gaXNzdWUg
-d2FzIHRoYXQgc29tZSBieXRlIHRoYXQgc2hvdWxkIGhhdmUgYmVlbiBhbGwtb25lcyBvciAweGZl
-Cj4gcmVwb3J0ZWQgaW5zdGVhZCBhbiAweGY4LiAgVGhhdCdzIG5vdCB0aGUga2luZCBvZiBlcnJv
-ciB0aGF0IGNhbgo+IGJlIGV4cGxhaW5lZCBieSBjbG9jayBza2V3OyBpdCBjb3ZlcnMgYXQgbGVh
-c3QgdHdvIGJpdHMuCgpZdXAsIEkndmUgZWl0aGVyIG5vdGljZWQgdGhhdCAweGY4IGFuZCAweGZl
-IGRpZmZlcnMgYnkgb25seSB0d28KYml0cyAoYW5kIGJ5IHRocmVlIGlmIGNvbXBhcmluZyB0byAw
-eGZmKS4gQnV0IEkgY2FuJ3QgcmVhbGx5CmV4cGxhaW4gaXQgeWV0LgoKPiA+ID4gSSdsbCBzZWUg
-YWJvdXQgbWFraW5nIHRpbWUgdG8gc2VlIGlmIG1vZGUgMCB3b3JrcyBmb3IgbWUgdG9vOyBidXQK
-PiA+ID4gZXZlbiBpZiBpdCBkb2VzLCBJJ2QgcHJlZmVyIHRvIGxlYXZlIHRoZSBkcml2ZXIgdGhl
-IHdheSBpdCBpcyBub3cKPiA+ID4gaW5zdGVhZCBvZiBjaGFuZ2luZyBpdCB0byBjb3ZlciB1cCBm
-b3IgdGhhdCBtcGM4M3h4IGJ1ZyAuLi4gcGx1cywKPiA+ID4gSSBqdXN0IGxpa2UgQ1BIQT0xIG1v
-ZGVzIGJldHRlciBiZWNhdXNlIHRoZXkgZG9uJ3QgbmVlZCB0byBzdGFydAo+ID4gPiB3aXRoIHRo
-YXQgc3RyYW5nZSBoYWxmLWNsb2NrLiDCoDspCj4gPiAKPiA+IFdlbGwuIEFzIFBpZXJyZSBPc3Nt
-YW4gdG9sZCwgaXQgc2hvdWxkIHdvcmsgYXQgYW55IG1vZGUuCj4gCj4gV2VsbCwgZWl0aGVyIG1v
-ZGUgMCBvciBtb2RlIDMuICBBbmQgc2luY2UgaXQgZG9lc24ndCB3b3JrIGluIGJvdGgKPiBtb2Rl
-cywgY2xlYXJseSBzb21ldGhpbmcgaW4geW91ciB0ZXN0IHN5c3RlbSBpcyBidWdneS4KPiAKPiAK
-PiA+IFRoYXQgYWxzbyAKPiA+IHByb3ZlcyB0aGF0IGl0J3Mgbm90IG1wYzgzeHgncyBidWcgKGJl
-Y2F1c2UgZXZlbiBpZiBpdCB3b3VsZCBiZSBhCj4gPiBidWcsIGFuZCBzcGlfbXBjODN4eCBoYXZp
-bmcgaW52ZXJzZWQgdmFsdWVzLCBpdCdzIHN0aWxsIHNob3VsZCB3b3JrKS4KPiAKPiBObyB3YXkg
-Y291bGQgaXQgInByb3ZlIiB0aGF0ISEKPiAKPiBIb3cgY291bGQgaXQgZXZlciBiZSBwb3NzaWJs
-ZSB0aGF0IHlvdXIgc3lzdGVtIG5vdCB3b3JrIGluIG1vZGUgMywgYW5kCj4geWV0IHRoYXQgbm90
-IGJlIGEgYnVnIGluIHlvdXIgdGVzdCBzeXN0ZW0/Pz8KPiAKPiBUaGUgb25seSB0aGluZyAicHJv
-dmVuIiBpcyB0aGF0IHRoZSBtbWNfc3BpIGNvZGUgaXMgYmFzaWNhbGx5IGNvcnJlY3Q7Cj4gb3Ro
-ZXJ3aXNlIG5laXRoZXIgY2xvY2sgbW9kZSBjb3VsZCBjYXVzZSB0aGUgcmlnaHQgZGF0YSB0cmFu
-c2ZlcnMuCj4gKEFuZCBvdGhlcmV3aXNlIG90aGVyIGZvbGsgd291bGRuJ3QgaGF2ZSBzZWVuIGl0
-IHdvcmsuLi4pCj4gCj4gVGhlIHByb2JsZW0gaXMgaW4gYSBsb3dlciBsZXZlbCAuLi4gbWF5YmUg
-dGhlIFNQSSBjb250cm9sbGVyIGRyaXZlciwKPiBvciB0aGUgc2lsaWNvbiwgb3IgdGhlIGJvYXJk
-IHdpcmluZy4KPiAKPiAKPiA+IFNvLCBpdCdzIGxpa2VseSBkZXBlbmRzIG9uIHNwaSBjb250cm9s
-bGVyLCBtYXliZSBzb21lIHRpbWluZyBpc3N1ZXMKPiA+IG9yIHNpZ25hbCBzaGFwZXMsIHdoaWNo
-IGRpc3RyYWN0cyBTRC9NTUMuLi4gTm90IHN1cmUuCj4gCj4gV2hhdCBkb2VzIHlvdXIgb3NjaWxs
-b3Njb3BlIHNob3cgaXMgZ29pbmcgb24gd2hlbiB0aGlzIGVycm9yIHRyaWdnZXJzPwoKV2VsbCwg
-aXQncyBub3QgaGFuZHkgdG8gY2F0Y2ggcGFydGljdWxhciBiaXQgdXNpbmcgbXkgb3NjaWxsb3Nj
-b3BlLgpJdCdzIHVuYWJsZSB0byBzY3JvbGwgaW4gdGltZS4gQnV0IGFzIGZhaWxpbmcgYml0cyBh
-cmUgaW4gdGhlIGxhc3QKc3BpIG1lc3NhZ2UsIG1heWJlIEkgY291bGQgZG8gc29tZXRoaW5nLgoK
-PiBSaWdodCBub3cgSSdkIG1vc3Qgc3VzcGVjdCB0aGUgbGFjayBvZiBjc19jaGFuZ2Ugc3VwcG9y
-dCBpbiB0aGF0Cj4gY29udHJvbGxlciBkcml2ZXIuCgpJIHNlZS4gVGhhbmtzIGZvciB0aGUgcG9p
-bnRlci4KCj4gPiBCdXQgdGhlbiwgbWF5IEkgYXNrIGZvciAiYWx0X21vZGUiIChib29sKSBwbGF0
-Zm9ybSBkYXRhIHZhcmlhYmxlPwo+IAo+IFdlbGwsIGFzIGFscmVhZHkgc2FpZDogIChhKSB3ZSBr
-bm93IG1vZGUgMyBpcyByZXF1aXJlZCB0byB3b3JrLAo+IChiKSB3ZSBrbm93IHRoYXQgb24geW91
-ciB0ZXN0IHN5c3RlbSBpdCBkb2Vzbid0LCBzbyBhY2NvcmRpbmdseQo+IChjKSB3ZSBrbm93IHRo
-ZXJlJ3MgYSBidWcgaW4geW91ciB0ZXN0IHN5c3RlbS4KPiAKPiBUaGUgb25seSByZWFzb24gdG8g
-YWRkIHN1Y2ggYSBmbGFnIHdvdWxkIGJlIHRvIHBhcGVyIG92ZXIgdGhhdCBidWcuCj4gCj4gVGhl
-IGlkZWEgd2l0aCBidWdzIGlzIHRvICpGSVgqIHRoZW0sIG5vdCBwYXBlciB0aGVtIG92ZXIgc28g
-dGhleSdsbAo+IG5ldmVyIGdldCBmaXhlZC4gIEVzcGVjaWFsbHkgaWYgeW91J3ZlIGdvdCBhIGxh
-YiBzZXR1cCB3aXRoIGV2ZW4KPiBiYXNpYyBoYXJkd2FyZSBkZWJ1ZyB0b29scywgbGlrZSB5b3Vy
-IG9zY2lsbG9zY29wZSwgd2hpY2ggbWFrZSBpdAo+IHNvIGVhc3kgdG8gdmVyaWZ5IHRoYXQgdGhl
-IHJpZ2h0IHNpZ25hbHMgYXJlIGdvaW5nIGRvd24gdGhlIHdpcmVzLgoKWWVhaCwgeW91J3JlIHJp
-Z2h0LiBBbmQgeW91ciB3aG9sZSByZXBseSBtYWtlcyBhIGxvdCBvZiBzZW5zZSwgbXVjaAp0aGFu
-a3MgZm9yIGV4cGxhbmF0aW9ucyBhbmQgaWRlYXMuCgotLSAKQW50b24gVm9yb250c292CmVtYWls
-OiBjYm91QG1haWwucnUKYmFja3VwIGVtYWlsOiB5YS1jYm91QHlhbmRleC5ydQppcmM6Ly9pcmMu
-ZnJlZW5vZGUubmV0L2JkMgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBz
-cG9uc29yZWQgYnk6IFNwbHVuayBJbmMuClN0aWxsIGdyZXBwaW5nIHRocm91Z2ggbG9nIGZpbGVz
-IHRvIGZpbmQgcHJvYmxlbXM/ICBTdG9wLgpOb3cgU2VhcmNoIGxvZyBldmVudHMgYW5kIGNvbmZp
-Z3VyYXRpb24gZmlsZXMgdXNpbmcgQUpBWCBhbmQgYSBicm93c2VyLgpEb3dubG9hZCB5b3VyIEZS
-RUUgY29weSBvZiBTcGx1bmsgbm93ID4+ICBodHRwOi8vZ2V0LnNwbHVuay5jb20vCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+On Monday 23 July 2007, Anton Vorontsov wrote:
+> On Thu, Jul 19, 2007 at 01:28:17PM -0700, David Brownell wrote:
+
+> > I notice that driver disregards the cs_change instructions in the
+> > messages ... I could imagine how that could make a big difference.
+
+For example, the extra flapping on the chipselect changes timings...
+
+
+> > If that hardware were doing the right thing, then it would work
+> > reliably!  Since it's not reliable, it's doing something wrong.
+> > You seem to think it's not a hardware issue; that may be true.
+> > 
+> > Recall that the first dozen or so commands worked just fine.  The
+> > issue was that some byte that should have been all-ones or 0xfe
+> > reported instead an 0xf8.  That's not the kind of error that can
+> > be explained by clock skew; it covers at least two bits.
+> 
+> Yup, I've either noticed that 0xf8 and 0xfe differs by only two
+> bits (and by three if comparing to 0xff). But I can't really
+> explain it yet.
+
+See if fixing the cs_change handling -- so that chipselect never
+goes inactive except between MMC requests -- helps.  Minimally,
+you'll notice that mode 0 adds extra delays (albeit only 1/2 clock)
+before the clock starts toggling; and that deslecting cards
+except between requests or while the card issues BUSY, falls into
+the "undefined behavior" category.  So while that might not be
+able to trigger certain perversions, dropping a few clocks in
+some odd cases would not seem to violate the spec...
+
+- Dave
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Splunk Inc.
+Still grepping through log files to find problems?  Stop.
+Now Search log events and configuration files using AJAX and a browser.
+Download your FREE copy of Splunk now >>  http://get.splunk.com/

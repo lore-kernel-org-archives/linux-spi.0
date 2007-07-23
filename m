@@ -1,23 +1,12 @@
-From: "Jesper Juhl" <jesper.juhl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH][14/37] Clean up duplicate includes
-	in drivers/spi/
-Date: Sat, 21 Jul 2007 20:59:00 +0200
-Message-ID: <9a8748490707211159i4a54b5cbl822503ce94252c14@mail.gmail.com>
-References: <200707211702.56466.jesper.juhl@gmail.com>
-	<200707211124.53195.david-b@pacbell.net>
+From: llandre <r&d2-4VKA1VU3ct/j+vYz1yj4TQ@public.gmane.org>
+Subject: Protocol driver probe function never invoked
+Date: Mon, 23 Jul 2007 10:54:34 +0200
+Message-ID: <46A46CCA.7010303@dave-tech.it>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Aubrey Li <aubrey.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Nicolas Pitre <nico-mo2vmkxb4K0@public.gmane.org>
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200707211124.53195.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -29,28 +18,87 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 21/07/07, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> On Saturday 21 July 2007, Jesper Juhl wrote:
-> > Hi,
-> >
-> > This patch cleans up duplicate includes in
-> >       drivers/spi/
-> >
-> >
-> > Signed-off-by: Jesper Juhl <jesper.juhl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->
-> ACK ... although, on general principles I suspect there are more
-> needless includes to remove, these are just especially obvious.  :)
->
-Yup. This patch series just removes the bulk of the low hanging fruit
-- there's still more to do for an enterprising janitor in need of a
-task. But you have to start somewhere :-)
+Hi all,
+
+I'm working with kernel 2.6.21.3 on Freescale iMXL-based platform.
+I have to write a SPI protocol driver for Quantum QT510 touch controller.
+As starting point for board-init code I used the driver released by 
+Pavel Pisa:
+http://rtime.felk.cvut.cz/repos/ppisa-linux-devel/kernel-patches/current/pimx1-board-spi.patch
+
+In protocol driver I defined spi_driver like this:
+
+static struct spi_driver qt510_driver = {
+	.driver = {
+		.name		= QT510_MODALIAS,
+		.owner		= THIS_MODULE,
+	},
+	.probe		= qt510_probe,
+	.remove		= __devexit_p(qt510_remove),
+};
+
+static int __init qt510_init(void)
+{
+	return spi_register_driver(&qt510_driver);
+}
+module_init(qt510_init);
 
 
--- 
-Jesper Juhl <jesper.juhl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Don't top-post  http://www.catb.org/~esr/jargon/html/T/top-post.html
-Plain text mails only, please      http://www.expita.com/nomime.html
+In board-init code I used the same name for modalias field:
+
+
+static struct spi_board_info parsy_spi_board_infos[] __initdata = {
+	{
+	 .modalias = "loopback",
+	 .max_speed_hz = 1600000,
+	 .bus_num = 1,
+	 .chip_select = 0x00,
+	 .mode = SPI_MODE_0,
+	 .controller_data = &spi_controller_data[0],
+	 },
+	{
+	 .modalias = QT510_MODALIAS,
+	 .max_speed_hz = QT510_SPI_CLK_MAX,
+	 .bus_num = 1,
+	 .chip_select = 0x01,
+	 .mode = SPI_MODE_3,
+	 .controller_data = &spi_controller_data[1],
+	 },
+	{
+	 .modalias = "tbd",
+	 .max_speed_hz = 1600000,
+	 .bus_num = 1,
+	 .chip_select = 0x2,
+	 .mode = SPI_MODE_0,
+	 .controller_data = &spi_controller_data[2],
+	 },
+};
+
+
+However the probe function (qt510_probe) is never invoked.
+In my understanding this is due to the fact that there are no devices 
+associated to the bus:
+
+bash-3.00# ls -la /sys/bus/spi/devices/
+total 0
+drwxr-xr-x  2 root root 0 Jan  1  1970 .
+drwxr-xr-x  4 root root 0 Jan  1  1970 ..
+bash-3.00# ls -la /sys/bus/spi/drivers/
+total 0
+drwxr-xr-x  4 root root 0 Jan  1  1970 .
+drwxr-xr-x  4 root root 0 Jan  1  1970 ..
+drwxr-xr-x  2 root root 0 Jan  1  1970 qt510
+drwxr-xr-x  2 root root 0 Jan  1  1970 spidev
+bash-3.00#
+
+Am I missing something?
+
+TIA,
+llandre
+
+DAVE Electronics System House - R&D Department
+web:   http://www.dave-tech.it
+email: r&d2-4VKA1VU3ct/j+vYz1yj4TQ@public.gmane.org
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

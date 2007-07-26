@@ -1,10 +1,10 @@
 From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-Subject: Re: [patch 2.6.22-git5 2/4] MMC block learns
+Subject: Re: [patch 2.6.22-git5 1/4] MMC headers learn
 	about SPI
-Date: Thu, 26 Jul 2007 18:33:39 +0200
-Message-ID: <20070726183339.6631243f@poseidon.drzeus.cx>
+Date: Thu, 26 Jul 2007 18:31:50 +0200
+Message-ID: <20070726183150.024930aa@poseidon.drzeus.cx>
 References: <200707141504.51950.david-b@pacbell.net>
-	<200707141506.42880.david-b@pacbell.net>
+	<200707141506.00262.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -14,7 +14,7 @@ Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200707141506.42880.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <200707141506.00262.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,30 +26,45 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 14 Jul 2007 15:06:42 -0700
+On Sat, 14 Jul 2007 15:05:59 -0700
 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
 
-> @@ -302,13 +309,14 @@ static int mmc_blk_issue_rq(struct mmc_q
->  			goto cmd_err;
->  		}
+> @@ -115,14 +116,16 @@ struct mmc_host {
+>  	wait_queue_head_t	wq;
+>  	unsigned int		claimed:1;	/* host exclusively claimed */
 >  
-> -		if (rq_data_dir(req) != READ) {
-> +		if (!mmc_host_is_spi(card->host) && rq_data_dir(req) != READ) {
->  			do {
->  				int err;
+> -	struct delayed_work	detect;
+> +	unsigned int		use_spi_crc:1;
+> +
+>  #ifdef CONFIG_MMC_DEBUG
+>  	unsigned int		removed:1;	/* host is being removed */
+>  #endif
+> +	unsigned int		bus_dead:1;	/* bus has been released */
+> +	struct delayed_work	detect;
 >  
->  				cmd.opcode = MMC_SEND_STATUS;
->  				cmd.arg = card->rca << 16;
-> -				cmd.flags = MMC_RSP_R1 | MMC_CMD_AC;
-> +				cmd.flags = MMC_RSP_SPI_R2 | MMC_RSP_R1
-> +						| MMC_CMD_AC;
->  				err = mmc_wait_for_cmd(card->host, &cmd, 5);
->  				if (err) {
->  					printk(KERN_ERR "%s: error %d requesting status\n",
+>  	const struct mmc_bus_ops *bus_ops;	/* current bus driver */
+>  	unsigned int		bus_refs;	/* reference counter */
+> -	unsigned int		bus_dead:1;	/* bus has been released */
+>  
+>  	unsigned long		private[0] ____cacheline_aligned;
+>  };
 
-Nitpicking, but if this code isn't executed on a SPI host then a SPI response type is hardly needed. :)
+Some needless shuffling of existing members here.
 
-Otherwise ok.
+> @@ -47,6 +52,20 @@ struct mmc_command {
+>  #define mmc_resp_type(cmd)	((cmd)->flags & (MMC_RSP_PRESENT|MMC_RSP_136|MMC_RSP_CRC|MMC_RSP_BUSY|MMC_RSP_OPCODE))
+>  
+>  /*
+> + * These are the SPI response types for MMC and SD cards (not SDIO).
+> + * Commands return R1, with maybe more info.  Zero is an error type;
+> + * callers must always provide the appropriate MMC_RSP_SPI_Rx flags.
+> + */
+> +#define MMC_RSP_SPI_R1	(MMC_RSP_SPI_S1)
+> +#define MMC_RSP_SPI_R1B	(MMC_RSP_SPI_S1|MMC_RSP_BUSY)
+
+I think it's probably safe to keep the two response types separate, even though it is very unlikely that we'll have a command that only uses busy signalling in one of the modes.
+
+Other than that, it looks fine.
 
 Rgds
 -- 

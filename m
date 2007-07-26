@@ -1,7 +1,7 @@
 From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH 1/3] [SPI] Sync spidev.{h, c} with spi.h
-Date: Thu, 26 Jul 2007 17:50:41 +0400
-Message-ID: <20070726135041.GA5550@localhost.localdomain>
+Subject: [PATCH 2/3] [SPI] Add new mode: SPI_LOOP
+Date: Thu, 26 Jul 2007 17:50:51 +0400
+Message-ID: <20070726135051.GB5550@localhost.localdomain>
 References: <20070726134754.GA3539@localhost.localdomain>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,38 +22,51 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Loopback mode is supported by various controllers, this mode
+is useful for testing, especially in conjunction with spidev
+driver.
+
 Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
 ---
- drivers/spi/spidev.c       |    4 ++--
- include/linux/spi/spidev.h |    3 +++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spidev.c       |    2 +-
+ include/linux/spi/spi.h    |    1 +
+ include/linux/spi/spidev.h |    1 +
+ 3 files changed, 3 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 38b60ad..4c51a61 100644
+index 4c51a61..24c8d4d 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -56,8 +56,8 @@ static unsigned long	minors[N_SPI_MINORS / BITS_PER_LONG];
- 
+@@ -57,7 +57,7 @@ static unsigned long	minors[N_SPI_MINORS / BITS_PER_LONG];
  
  /* Bit masks for spi_device.mode management */
--#define SPI_MODE_MASK			(SPI_CPHA | SPI_CPOL)
--
-+#define SPI_MODE_MASK			(SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | \
-+					 SPI_LSB_FIRST | SPI_3WIRE)
+ #define SPI_MODE_MASK			(SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | \
+-					 SPI_LSB_FIRST | SPI_3WIRE)
++					 SPI_LSB_FIRST | SPI_3WIRE | SPI_LOOP)
  
  struct spidev_data {
  	struct device		dev;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 302b81d..e180615 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -77,6 +77,7 @@ struct spi_device {
+ #define	SPI_CS_HIGH	0x04			/* chipselect active high? */
+ #define	SPI_LSB_FIRST	0x08			/* per-word bits-on-wire */
+ #define	SPI_3WIRE	0x10			/* SI/SO signals shared */
++#define	SPI_LOOP	0x20			/* loopback mode */
+ 	u8			bits_per_word;
+ 	int			irq;
+ 	void			*controller_state;
 diff --git a/include/linux/spi/spidev.h b/include/linux/spi/spidev.h
-index 7d700be..369d42e 100644
+index 369d42e..c93ef9d 100644
 --- a/include/linux/spi/spidev.h
 +++ b/include/linux/spi/spidev.h
-@@ -35,6 +35,9 @@
- #define SPI_MODE_2		(SPI_CPOL|0)
- #define SPI_MODE_3		(SPI_CPOL|SPI_CPHA)
- 
-+#define SPI_CS_HIGH		0x04
-+#define SPI_LSB_FIRST		0x08
-+#define SPI_3WIRE		0x10
+@@ -38,6 +38,7 @@
+ #define SPI_CS_HIGH		0x04
+ #define SPI_LSB_FIRST		0x08
+ #define SPI_3WIRE		0x10
++#define SPI_LOOP		0x20
  
  /*---------------------------------------------------------------------------*/
  

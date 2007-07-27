@@ -1,17 +1,17 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 1/3] [SPI] Sync spidev.{h,
-	c} with spi.h
-Date: Thu, 26 Jul 2007 20:02:02 -0700
-Message-ID: <200707262002.02677.david-b@pacbell.net>
+Subject: Re: [PATCH 2/3] [SPI] Add new mode: SPI_LOOP
+Date: Thu, 26 Jul 2007 20:07:07 -0700
+Message-ID: <200707262007.07537.david-b@pacbell.net>
 References: <20070726134754.GA3539@localhost.localdomain>
-	<20070726135041.GA5550@localhost.localdomain>
+	<20070726135051.GB5550@localhost.localdomain>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070726135041.GA5550-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
+In-Reply-To: <20070726135051.GB5550-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,27 +25,38 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On Thursday 26 July 2007, Anton Vorontsov wrote:
-> --- a/drivers/spi/spidev.c
-> +++ b/drivers/spi/spidev.c
-> @@ -56,8 +56,8 @@ static unsigned long	minors[N_SPI_MINORS / BITS_PER_LONG];
->  
->  
->  /* Bit masks for spi_device.mode management */
-> -#define SPI_MODE_MASK			(SPI_CPHA | SPI_CPOL)
-> -
-> +#define SPI_MODE_MASK			(SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | \
-> +					 SPI_LSB_FIRST | SPI_3WIRE)
+> Loopback mode is supported by various controllers, this mode
+> is useful for testing, especially in conjunction with spidev
+> driver.
 
-Hmm, I seem to recall explicitly leaving out CS_HIGH on the grounds
-that getting it wrong could corrupt the whole bus; Not Good (tm).
-And the same argument can apply to 3WIRE mode ...
+ISTR that Stephen Street provided a loopback mode for debug
+in his pxa2xx_spi code.  And I know you're fight that this
+mode shows up in a lot of hardware.
 
-On the other hand, that's not necessarily a good reason, since there
-are other ways to trash hardware too.
+Comments, anyone?  This seems like a fair way to expose this
+mechanism.  And I tend to agree that it'd mostly be useful in
+conjunction with "spidev".
 
-Comments anyone?
+Anton -- assuming this goes in, it'd be nice if you could
+contribute a simple test program using this, which we could
+keep in Documentation/spi somewhere.  (Maybe with other testing
+notes, if anyone comes up with such.)
 
 - Dave
+
+
+>	...
+>
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -77,6 +77,7 @@ struct spi_device {
+>  #define	SPI_CS_HIGH	0x04			/* chipselect active high? */
+>  #define	SPI_LSB_FIRST	0x08			/* per-word bits-on-wire */
+>  #define	SPI_3WIRE	0x10			/* SI/SO signals shared */
+> +#define	SPI_LOOP	0x20			/* loopback mode */
+>  	u8			bits_per_word;
+>  	int			irq;
+>  	void			*controller_state;
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

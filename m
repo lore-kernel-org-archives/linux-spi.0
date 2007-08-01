@@ -1,21 +1,17 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.22-git5 3/4] MMC core learns
-	about SPI
-Date: Wed, 1 Aug 2007 10:02:28 -0700
-Message-ID: <200708011002.28801.david-b@pacbell.net>
-References: <200707141504.51950.david-b@pacbell.net>
-	<200707261458.55558.david-b@pacbell.net>
-	<20070801170220.3c5ccff6@poseidon.drzeus.cx>
+Subject: Re: [PATCH 2/3] [SPI] Add new mode: SPI_LOOP
+Date: Wed, 1 Aug 2007 11:25:47 -0700
+Message-ID: <200708011125.47934.david-b@pacbell.net>
+References: <20070726134754.GA3539@localhost.localdomain>
+	<200707262007.07537.david-b@pacbell.net> <46A967D5.30606@whoi.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
-	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
-	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070801170220.3c5ccff6-mgABNEgzgxm+PRNnhPf8W5YgPPQkE1Si@public.gmane.org>
+In-Reply-To: <46A967D5.30606-/d+BM93fTQY@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -28,106 +24,36 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gV2VkbmVzZGF5IDAxIEF1Z3VzdCAyMDA3LCBQaWVycmUgT3NzbWFuIHdyb3RlOgo+IE9uIFRo
-dSwgMjYgSnVsIDIwMDcgMTQ6NTg6NTQgLTA3MDAKPiBEYXZpZCBCcm93bmVsbCA8ZGF2aWQtYkBw
-YWNiZWxsLm5ldD4gd3JvdGU6Cj4gCj4gPiA+IFRoaXMgd2lsbCBmYWlsIHRvIGluaXRpYWxpc2Ug
-YSBoaWdoIGNhcGFjaXR5IE1NQyBjYXJkLiBGcm9tIHRoZSBNTUMKPiA+ID4gc3BlYzoKPiA+ID4g
-Cj4gPiA+ICJXaXRob3V0IHRoZSBDTUQ1OCB3aXRoIGJpdHMgWzMwOjI5XSBzZXQgYXMgIjEwYiIg
-aW4gcHJpb3IgdG8gdGhlCj4gPiA+IENNRDEgYSBoaWdoZXIgdGhhbiAyR0Igb2YgZGVuc2l0eSBv
-ZiBtZW1vcnkgd2lsbCByZW1haW4gaW4gSWRsZQo+ID4gPiBzdGF0ZSBmb3JldmVyLiIgCj4gPiAK
-PiA+IFRoZSBmaXJzdCB0aGluZyBtbWNfYXR0YWNoX21tYygpIGRvZXMgaXMgcmVzZXQgdGhlIGNh
-cmQuLi4KPiA+IAo+ID4gQXJlIHlvdSBzdXJlIHRoYXQgImZvcmV2ZXIiIG1lYW5zIHRoYXQgcmVz
-ZXQgd2lsbCBmYWlsPwo+ID4gVGhhdCB3b3VsZCBiZSBhIHZlcnkgZm9vbGlzaCB0aGluZyB0byBz
-cGVjaWZ5LiAgQW5kIHdoaWxlCj4gPiBJJ3ZlIHNlZW4gc3RyYW5nZSB0aGluZ3MgaW4gc3BlY3Ms
-IHRoYXQgd291bGQgYmUgb25lIG9mCj4gPiB0aGUgd29yc3QgdGhhdCdzIG5vdCBhIHZlbmRvci1z
-cGVjaWZpYyBwYXJ0IG9mIGEgcGFwZXJpbmcKPiA+IG92ZXIgZXJyYXRhIC4uLgo+ID4gCj4gCj4g
-V2VsbCwgaXQncyByYXRoZXIgc3RyYWlnaHQtZm9yd2FyZCBpZiB5b3UgdGhpbmsgYWJvdXQgaXQu
-IEFzIHRoZXkndmUKPiBjaGFuZ2VkIHRoZSBhZGRyZXNzaW5nIHNjaGVtZSwKClNpbmNlIEkndmUg
-bm90IHNlZW4gdGhlIE1NQzQgc3BlYywgSSBjb3VsZG4ndCBrbm93LiAgOikKCkFuZCB0aGUgbmVh
-cmVzdCBhcHByb3hpbWF0aW9uIG9mIE1NQzQgSSd2ZSBnb3QgKGFuIGVhcmx5IFNhbXN1bmcKc3Bl
-Yykgc2F5cyBDTUQ1OCBoYXMgYXJndW1lbnQgIm5vbmUiICg9PSAwKSAuLi4gd2hpbGUgb25lIG9m
-IHRoZQpjYXJkcyBJJ3ZlIGdvdCByZWplY3RlZCBDTUQ1OCBiZWZvcmUgQ01EMS4gIFNvICJzdHJh
-aWdodGZvcndhcmQiCmlzIG5vdCBhIHdvcmQgSSBjb3VsZCBhcHBseSBoZXJlLi4uCgoKPiBidXQg
-cmV0YWluIHRoZSBvcmlnaW5hbCBjb21tYW5kcywgYSBob3N0IAo+IHRoYXQgZG9lcyBub3QgdW5k
-ZXJzdGFuZCB0aGUgbmV3IHNjaGVtZSB3b3VsZCB1dHRlcmx5IGRlc3Ryb3kgdGhlIGRhdGEuCj4g
-U28gdGhlIGNhcmQgcmVmdXNlcyB0byBpbml0IHVubGVzcyB0aGUgaG9zdCBjYW4gcHJlc2VudCBz
-b21lIGV2aWRlbmNlCj4gdGhhdCBpdCB1bmRlcnN0YW5kcyB0aGUgbmV3IHNjaGVtZS4KClJpZ2h0
-LCBidXQgdGhhdCBkb2Vzbid0IGFuc3dlciBteSBxdWVzdGlvbjogIHdoZXRoZXIgdGhlIGNhcmQK
-aXMgc3BlY2lmaWVkIHRvIGxvY2sgdXAgImZvcmV2ZXIiLCBvciB3aGV0aGVyIChhcyBJJ2QgZXhw
-ZWN0KQpyZWluaXRpYWxpemF0aW9uIChzdGFydGluZyB3aXRoIHJlc2V0KSB3b3JrcyB0aGUgbm9y
-bWFsIHdheS4KCgo+ID4gSSdkIGJlIGluY2xpbmVkIHRvIGxlYXZlIHRoaXMgYWxvbmUgdW5sZXNz
-IHNvbWVvbmUgZ2V0cwo+ID4gc3VjaCBhIGNhcmQgYW5kIG5vdGljZXMgdGhhdCBpdCBkb2Vzbid0
-IHdvcmsuICBBZnRlciBhbGwsCj4gPiBsYWNrIG9mIHRlc3Rpbmcgb24gdGhvc2UgbmV3IChhbmQt
-SS1zdGlsbC1jYW4ndC1maW5kLW9uZSkKPiA+IGNhcmRzIGlzIGEgZ2VuZXJhbCBkaXNjbGFpbWVy
-Lgo+ID4gCj4gCj4gVG9vIGJhZCBJIGhhdmUgbm8gU1BJIHNldHVwIGhlcmUuIDooCgpNeSBjdXJy
-ZW50IHNldHVwIHVzZXMgYSBicmVhZGJvYXJkLCBzbyBpdCBjYW4gaG9vayB1cCB0byB0aGUKcmVh
-bCBTUEkgaGFyZHdhcmUgLi4uIEkgc3RhcnRlZCBvdXQgdXNpbmcgYml0YmFuZ2VkIFNQSSB0byBh
-CmNhcmQgd2hpY2ggbm9ybWFsbHkgbXV4ZWQgdG8gYSAibmF0aXZlIiBjb250cm9sbGVyLiAgTWF5
-YmUKb25lIG9mIHRob3NlIGNvdWxkIHdvcmsgZm9yIHlvdS4KCgo+IFBsZWFzZSBhZGQgYSBjb21t
-ZW50IHRoYXQgd2Uga25vdyB0aGF0IE1NQyA0LjIgaXMgYnJva2VuIGFuZCBjYW4gYmUKPiBmaXhl
-ZCBvbmNlIHNvbWVvbmUgaXMgYWJsZSB0byB0ZXN0LgoKRG9lc24ndCB0aGUgZ2VuZXJhbCBkaXNj
-bGFpbWVyIHRoYXQgTU1DNCBjYXJkcyBoYXZlbid0IGJlZW4KdGVzdGVkIGFscmVhZHkgY292ZXIg
-dGhhdCBwYXJ0PyAgSWYgeW91IGxpa2UsIGp1c3QgdHdlYWsgdGhlCnBhdGNoIGNvbW1lbnRzIHRv
-IGNsYXJpZnkuCgoKPiA+ID4gVGhlICpfb3BzLmMgb25seSBjb250YWluIGZ1bmN0aW9uIHdyYXBw
-ZXJzIG9mIHByb3RvY29sIGNvbW1hbmRzLCBub3QKPiA+ID4gcG9saWN5LiBTbyBJIHRoaW5rIHRo
-aXMgaXMgYmV0dGVyIHBsYWNlZCB3aGVyZSBtbWNfc3BpX3NldF9jcmMoKSBpcwo+ID4gPiBjYWxs
-ZWQuIAo+ID4gCj4gPiBZb3UgbWVhbiwgaGF2ZSBzZXBhcmF0ZSBtb2R1bGUgcGFyYW1zIGZvciBT
-RCBhbmQgZm9yIE1NQz8KPiA+IEl0IHNlZW1zIGNsZWFuZXIgdGhpcyB3YXkuLi4KPiA+IAo+IAo+
-IE5vLCB0aGF0IHdvdWxkIGJlIHNpbGx5LiBZb3UnZCBwcm9iYWJseSBoYXZlIHRvIHN0aWNrIGl0
-IGluIGNvcmUuYyBhbmQKPiByZWZlcmVuY2UgaXQgZnJvbSBtbWMuYyBhbmQgc2QuYy4KPiAKPiBU
-aGUgcmVhc29uIEkgY29tcGxhaW4gaXMgdGhhdCBzZWVpbmcgbW1jX3NwaV9zZXRfY3JjKCkgd2ls
-bCBsb29rIGxpa2UKPiBpdCBhbHdheXMgYWN0aXZhdGVzIENSQywgYXMgYWxsIG90aGVyIGZ1bmN0
-aW9ucyBpbiAqX29wcy5jIGFyZSBzaW1wbGUKPiB3cmFwcGVycyBhcm91bmQgcHJvdG9jb2wgb3Bz
-LgoKU28sIG1vdmUgdGhlIHBhcmFtIGFuZCBtbWNfc3BpX3NldF9jcmMoKSBpbnRvIGNvcmUuYyB0
-aGVuLCBhbmQKbGVhdmUgdGhlIGNhbGxzIHdoZXJlIHRoZXkgYXJlPwoKQ2FuIHdlIGRvIHRoYXQg
-YXMgYSBzZXBhcmF0ZSBwYXRjaD8gIFlvdSBzYWlkIGJlbG93IHdlIGNhbiBwcm9jZWVkLAp3aGlj
-aCBzdWdnZXN0cyB0byBtZSB0aGF0IG5vdydzIHRoZSB0aW1lIHRvIGNvbnZlcnQgdG8gaW5jcm1l
-bnRhbHMuCkkgZG9uJ3QgbWluZCBhIGZldyBtb3JlIHVwZGF0ZSBwYXRjaGVzLCBidXQgaXQnZCBi
-ZSBlYXNpZXIgdG8gZG8KdGhlbSBhZ2FpbnN0IHNheSBhIGdpdC1tbWMgcGF0Y2ggYWdhaW5zdCAy
-LjYuMjMtcmMyIC4uLgoKCj4gPiA+ICJJbGxlZ2FsIGNvbW1hbmQiIHJlZmVycyB0byB0aGUgcHJl
-dmlvdXMgY29tbWFuZCBzZW50IChhbmQgZmFpbGVkKS4KPiA+ID4gU28gdGhpcyBjYW4gZ2l2ZSBm
-YWxzZSBuZWdhdGl2ZXMuIAo+ID4gCj4gPiBUaGUgaW1tZWRpYXRlbHkgcHJlY2VkaW5nIGNvbW1h
-bmQgd291bGQgYmUgTU1DX0FQUF9DTUQgLi4uID8KPiA+IEkgZGlkbid0IHNlZSBhbnkgbGFuZ3Vh
-Z2UgaW4gdGhlIHNwZWNzIHdoaWNoIGNvdWxkIGxldCBtZQo+ID4gaW50ZXJwcmV0IHRoaXMgYXMg
-YW55dGhpbmcgb3RoZXIgdGhhbiBBUFBfQ01EIGZhaWx1cmU6Cj4gPiAKPiA+ICAgIFdoZW4gYW4g
-ZXJyb3IgYml0IGlzIGRldGVjdGVkIGluIOKAnFLigJ0gbW9kZSB0aGUgY2FyZCB3aWxsCj4gPiAg
-ICByZXBvcnQgdGhlIGVycm9yIGluIHRoZSByZXNwb25zZSB0byB0aGUgY29tbWFuZCB0aGF0IHJh
-aXNlZAo+ID4gICAgdGhlIGV4Y2VwdGlvbi4gVGhlIGNvbW1hbmQgd2lsbCBub3QgYmUgZXhlY3V0
-ZWQgYW5kIHRoZQo+ID4gICAgYXNzb2NpYXRlZCBzdGF0ZSB0cmFuc2l0aW9uIHdpbGwgbm90IHRh
-a2UgcGxhY2UuIAo+ID4gCj4gPiBXaGF0IHRoaXMgZG9lcyBpcyB0byBxdWlja2x5IGFib3J0IHJl
-dHJpZXMgb2YgU0QgY2FyZCBvcHMKPiA+IHRoYXQgd2VyZSBzZW50IHRvIE1NQyBjYXJkcywgYW5k
-IHdoaWNoIGFsd2F5cyBmYWlsIHdpdGgKPiA+IElMTEVHQUxfQ09NTUFORC4KPiA+IAo+IAo+IEkg
-aGF0ZSB0aGlzIHBhcnQgb2YgdGhlIHNwZWMuIFRoZSBTRCBzcGVjIGFsc28gY2xhaW1zOgo+IAo+
-ICJDbGVhciBjb25kaXRpb24gQjogQWx3YXlzIHJlbGF0ZWQgdG8gdGhlIHByZXZpb3VzIGNvbW1h
-bmQiCj4gCj4gQnV0IGluIHRoZSBTUEkgc2VjdGlvbiwgdGhleSBiYWNrIG91dCBvZiB0aGF0IGNs
-YWltLiBTbyBmb3IgU1BJLCB0aGluZ3MKPiBzZWVtcyBzb21ld2hhdCBzYW5lLgoKSSBkb24ndCBo
-YXZlIGVpdGhlciBvZiB0aG9zZSBzcGVjcy4gICJQcmV2aW91cyBjb21tYW5kIiBpc24ndApwYXJ0
-aWN1bGFybHkgY2xlYXIsIHRob3VnaCBtYXliZSBpbiBjb250ZXh0IGl0IGNvdWxkIGJlIC4uLiBp
-dAptaWdodCBtZWFuIHRoZSBpbW1lZGlhdGVseSBwcmVjZWRpbmcgY29tbWFuZCwgb3IgdGhlIG9u
-ZSBiZWZvcmUKdGhhdCwgZGVwZW5kaW5nIG9uIHVzYWdlLgoKCj4gKFRoZSBNTUMgc3BlYyBpcyBl
-dmVuIG1vcmUgaGlsYXJpb3VzLiBJIGxpc3RzIGNsZWFyIGNvbmRpdGlvbiBBIGFuZCBCLAo+IGJ1
-dCBuZXZlciBleHBsYWlucyB3aGF0IHRoZXkgbWVhbi4gQW5kIGxvb2tpbmcgYXQgc29tZSBvbGRl
-ciBjYXJkCj4gc3BlY3MsIGl0IHNlZW1zIHRoYXQgdGhlIE1NQyBzcGVjIGhhZCB0aGUgc2FtZSBj
-b25kaXRpb25zIGFuZAo+IGRlZmluaXRpb25zIGFzIFNEICpzaWdoKikKClllZWNoIQoKIAo+IFdl
-IGNhbiBwcm9jZWVkIHdpdGggeW91ciBjb2RlLCBhbHRob3VnaCBJJ20gc3RpbGwgYSBiaXQgbmVy
-dm91cyBhYm91dAo+IHN0aWNraW5nIHRoYXQgcGFyc2luZyBpbiB0aGVyZS4KCkkgZG9uJ3QgdGhp
-bmsgeW91IG5lZWQgdG8gYmUgbmVydm91cyBhYm91dCB0aGF0LiAgSXQgY2xlYXJseSB3b3JrcywK
-YW5kIHRvIHRob3NlIG9mIHVzIHdobyd2ZSB3b3JrZWQgdGhpcyBkcml2ZXIgYW5kIGhhZCB0byBi
-ZWNvbWUgb25lCndpdGggdGhlIGRvY3Mgd2UgaGF2ZSwgdGhpcyBoYXNuJ3QgcmFpc2VkIGZsYWdz
-LgoKSXQgaXMgaG93ZXZlciAqbXVjaCogYmV0dGVyIG5vdCB0byBuZWVkIHRvIG1hcCB0aGUgU1BJ
-IHN0YXR1cyBjb2RlcwppbnRvIHRoZSAibmF0aXZlIiBvbmVzLiAgQXMgeW91IGltcGxpY2l0bHkg
-bm90ZWQgYWJvdmUsIGV4cGVjdGluZwp0aGVtIHRvIGJlaGF2ZSB0aGUgc2FtZSBkb2Vzbid0IHNl
-ZW0gbGlrZSBhIGdvb2QgaWRlYSEKCi0gRGF2ZQoKCiAKPiBSZ2RzCj4gLS0gCj4gICAgICAtLSBQ
-aWVycmUgT3NzbWFuCj4gCj4gICBMaW51eCBrZXJuZWwsIE1NQyBtYWludGFpbmVyICAgICAgICBo
-dHRwOi8vd3d3Lmtlcm5lbC5vcmcKPiAgIFB1bHNlQXVkaW8sIGNvcmUgZGV2ZWxvcGVyICAgICAg
-ICAgIGh0dHA6Ly9wdWxzZWF1ZGlvLm9yZwo+ICAgcmRlc2t0b3AsIGNvcmUgZGV2ZWxvcGVyICAg
-ICAgICAgIGh0dHA6Ly93d3cucmRlc2t0b3Aub3JnCj4gCgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhp
-cyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5OiBTcGx1bmsgSW5jLgpTdGlsbCBncmVwcGlu
-ZyB0aHJvdWdoIGxvZyBmaWxlcyB0byBmaW5kIHByb2JsZW1zPyAgU3RvcC4KTm93IFNlYXJjaCBs
-b2cgZXZlbnRzIGFuZCBjb25maWd1cmF0aW9uIGZpbGVzIHVzaW5nIEFKQVggYW5kIGEgYnJvd3Nl
-ci4KRG93bmxvYWQgeW91ciBGUkVFIGNvcHkgb2YgU3BsdW5rIG5vdyA+PiAgaHR0cDovL2dldC5z
-cGx1bmsuY29tLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
-c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
-bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Thursday 26 July 2007, Ned Forrester wrote:
+> David Brownell wrote:
+> > On Thursday 26 July 2007, Anton Vorontsov wrote:
+> >> Loopback mode is supported by various controllers, this mode
+> >> is useful for testing, especially in conjunction with spidev
+> >> driver.
+> > 
+> > ISTR that Stephen Street provided a loopback mode for debug
+> > in his pxa2xx_spi code.  And I know you're fight that this
+> > mode shows up in a lot of hardware.
+> > 
+> > Comments, anyone?  This seems like a fair way to expose this
+> > mechanism.  And I tend to agree that it'd mostly be useful in
+> > conjunction with "spidev".
+> 
+> Yes, it is in pxa2xx_spi.  It is passed in a structure that is attached 
+> to spi_board_info.controller_data.  I have used it to great effect to 
+> test data modes in the driver for which I have no external hardware 
+> support: various bits/word, clock frequencies, fifo thresholds, dma 
+> burst sizes, etc.
+
+Well, the SPI_LOOP stuff is now in kernel.org GIT and 2.6.23-rc2,
+so if someone wants to update pxa2xx_spi to support this through
+spi->mode instead of controller data, now is a good time to start
+working on that.
+
+- Dave
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Splunk Inc.
+Still grepping through log files to find problems?  Stop.
+Now Search log events and configuration files using AJAX and a browser.
+Download your FREE copy of Splunk now >>  http://get.splunk.com/

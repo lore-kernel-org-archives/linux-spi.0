@@ -1,22 +1,21 @@
 From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-Subject: Re: [patch 2.6.22-git5 3/4] MMC core learns
-	about SPI
-Date: Wed, 1 Aug 2007 17:02:20 +0200
-Message-ID: <20070801170220.3c5ccff6@poseidon.drzeus.cx>
+Subject: Re: [patch 2.6.22-git5 4/4] mmc_spi host driver
+Date: Wed, 1 Aug 2007 17:12:17 +0200
+Message-ID: <20070801171217.1478267b@poseidon.drzeus.cx>
 References: <200707141504.51950.david-b@pacbell.net>
-	<200707141507.17484.david-b@pacbell.net>
-	<20070726191824.569542fd@poseidon.drzeus.cx>
-	<200707261458.55558.david-b@pacbell.net>
+	<200707141508.07555.david-b@pacbell.net>
+	<20070726200202.5e5dcf62@poseidon.drzeus.cx>
+	<200707261632.37011.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
 	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
 	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200707261458.55558.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <200707261632.37011.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,75 +27,111 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCAyNiBKdWwgMjAwNyAxNDo1ODo1NCAtMDcwMApEYXZpZCBCcm93bmVsbCA8ZGF2aWQt
-YkBwYWNiZWxsLm5ldD4gd3JvdGU6Cgo+IAo+IFllcyB3ZSBjb3VsZCAuLi4gYnV0IHRoaXMgd2F5
-IGlzIElNTyBzaW1wbGVyLCBzaW5jZSBpdCByZXRhaW5zCj4gYSBzaW1wbGUgaW52YXJpYW50OiAg
-dGhhdCB0aGUgT0NSIHBhcmFtZXRlciB0byBhdHRhY2goKSBtZXRob2RzCj4gaXMgYWx3YXlzIHZh
-bGlkLiAgQXMgb25lIHdvdWxkIGV4cGVjdCEgIFdoaWNoIGdpdmVzIGFub3RoZXIKPiBhZHZhbnRh
-Z2U6ICBubyBzdXJwcmlzZXMuCj4gCgpGYWlyIGVub3VnaC4gSSdtIG5vdCB0aGF0IGF0dGFjaGVk
-IHRvIGl0LgoKPiA+IAo+ID4gVGhpcyB3aWxsIGZhaWwgdG8gaW5pdGlhbGlzZSBhIGhpZ2ggY2Fw
-YWNpdHkgTU1DIGNhcmQuIEZyb20gdGhlIE1NQwo+ID4gc3BlYzoKPiA+IAo+ID4gIldpdGhvdXQg
-dGhlIENNRDU4IHdpdGggYml0cyBbMzA6MjldIHNldCBhcyAiMTBiIiBpbiBwcmlvciB0byB0aGUK
-PiA+IENNRDEgYSBoaWdoZXIgdGhhbiAyR0Igb2YgZGVuc2l0eSBvZiBtZW1vcnkgd2lsbCByZW1h
-aW4gaW4gSWRsZQo+ID4gc3RhdGUgZm9yZXZlci4iIAo+IAo+IFRoZSBmaXJzdCB0aGluZyBtbWNf
-YXR0YWNoX21tYygpIGRvZXMgaXMgcmVzZXQgdGhlIGNhcmQuLi4KPiAKPiBBcmUgeW91IHN1cmUg
-dGhhdCAiZm9yZXZlciIgbWVhbnMgdGhhdCByZXNldCB3aWxsIGZhaWw/Cj4gVGhhdCB3b3VsZCBi
-ZSBhIHZlcnkgZm9vbGlzaCB0aGluZyB0byBzcGVjaWZ5LiAgQW5kIHdoaWxlCj4gSSd2ZSBzZWVu
-IHN0cmFuZ2UgdGhpbmdzIGluIHNwZWNzLCB0aGF0IHdvdWxkIGJlIG9uZSBvZgo+IHRoZSB3b3Jz
-dCB0aGF0J3Mgbm90IGEgdmVuZG9yLXNwZWNpZmljIHBhcnQgb2YgYSBwYXBlcmluZwo+IG92ZXIg
-ZXJyYXRhIC4uLgo+IAoKV2VsbCwgaXQncyByYXRoZXIgc3RyYWlnaHQtZm9yd2FyZCBpZiB5b3Ug
-dGhpbmsgYWJvdXQgaXQuIEFzIHRoZXkndmUKY2hhbmdlZCB0aGUgYWRkcmVzc2luZyBzY2hlbWUs
-IGJ1dCByZXRhaW4gdGhlIG9yaWdpbmFsIGNvbW1hbmRzLCBhIGhvc3QKdGhhdCBkb2VzIG5vdCB1
-bmRlcnN0YW5kIHRoZSBuZXcgc2NoZW1lIHdvdWxkIHV0dGVybHkgZGVzdHJveSB0aGUgZGF0YS4K
-U28gdGhlIGNhcmQgcmVmdXNlcyB0byBpbml0IHVubGVzcyB0aGUgaG9zdCBjYW4gcHJlc2VudCBz
-b21lIGV2aWRlbmNlCnRoYXQgaXQgdW5kZXJzdGFuZHMgdGhlIG5ldyBzY2hlbWUuCgo+IEknZCBi
-ZSBpbmNsaW5lZCB0byBsZWF2ZSB0aGlzIGFsb25lIHVubGVzcyBzb21lb25lIGdldHMKPiBzdWNo
-IGEgY2FyZCBhbmQgbm90aWNlcyB0aGF0IGl0IGRvZXNuJ3Qgd29yay4gIEFmdGVyIGFsbCwKPiBs
-YWNrIG9mIHRlc3Rpbmcgb24gdGhvc2UgbmV3IChhbmQtSS1zdGlsbC1jYW4ndC1maW5kLW9uZSkK
-PiBjYXJkcyBpcyBhIGdlbmVyYWwgZGlzY2xhaW1lci4KPiAKClRvbyBiYWQgSSBoYXZlIG5vIFNQ
-SSBzZXR1cCBoZXJlLiA6KAoKUGxlYXNlIGFkZCBhIGNvbW1lbnQgdGhhdCB3ZSBrbm93IHRoYXQg
-TU1DIDQuMiBpcyBicm9rZW4gYW5kIGNhbiBiZQpmaXhlZCBvbmNlIHNvbWVvbmUgaXMgYWJsZSB0
-byB0ZXN0LgoKPiA+IAo+ID4gVGhlICpfb3BzLmMgb25seSBjb250YWluIGZ1bmN0aW9uIHdyYXBw
-ZXJzIG9mIHByb3RvY29sIGNvbW1hbmRzLCBub3QKPiA+IHBvbGljeS4gU28gSSB0aGluayB0aGlz
-IGlzIGJldHRlciBwbGFjZWQgd2hlcmUgbW1jX3NwaV9zZXRfY3JjKCkgaXMKPiA+IGNhbGxlZC4g
-Cj4gCj4gWW91IG1lYW4sIGhhdmUgc2VwYXJhdGUgbW9kdWxlIHBhcmFtcyBmb3IgU0QgYW5kIGZv
-ciBNTUM/Cj4gSXQgc2VlbXMgY2xlYW5lciB0aGlzIHdheS4uLgo+IAoKTm8sIHRoYXQgd291bGQg
-YmUgc2lsbHkuIFlvdSdkIHByb2JhYmx5IGhhdmUgdG8gc3RpY2sgaXQgaW4gY29yZS5jIGFuZApy
-ZWZlcmVuY2UgaXQgZnJvbSBtbWMuYyBhbmQgc2QuYy4KClRoZSByZWFzb24gSSBjb21wbGFpbiBp
-cyB0aGF0IHNlZWluZyBtbWNfc3BpX3NldF9jcmMoKSB3aWxsIGxvb2sgbGlrZQppdCBhbHdheXMg
-YWN0aXZhdGVzIENSQywgYXMgYWxsIG90aGVyIGZ1bmN0aW9ucyBpbiAqX29wcy5jIGFyZSBzaW1w
-bGUKd3JhcHBlcnMgYXJvdW5kIHByb3RvY29sIG9wcy4KCj4gPiAKPiA+ICJJbGxlZ2FsIGNvbW1h
-bmQiIHJlZmVycyB0byB0aGUgcHJldmlvdXMgY29tbWFuZCBzZW50IChhbmQgZmFpbGVkKS4KPiA+
-IFNvIHRoaXMgY2FuIGdpdmUgZmFsc2UgbmVnYXRpdmVzLiAKPiAKPiBUaGUgaW1tZWRpYXRlbHkg
-cHJlY2VkaW5nIGNvbW1hbmQgd291bGQgYmUgTU1DX0FQUF9DTUQgLi4uID8KPiBJIGRpZG4ndCBz
-ZWUgYW55IGxhbmd1YWdlIGluIHRoZSBzcGVjcyB3aGljaCBjb3VsZCBsZXQgbWUKPiBpbnRlcnBy
-ZXQgdGhpcyBhcyBhbnl0aGluZyBvdGhlciB0aGFuIEFQUF9DTUQgZmFpbHVyZToKPiAKPiAgICBX
-aGVuIGFuIGVycm9yIGJpdCBpcyBkZXRlY3RlZCBpbiDigJxS4oCdIG1vZGUgdGhlIGNhcmQgd2ls
-bAo+ICAgIHJlcG9ydCB0aGUgZXJyb3IgaW4gdGhlIHJlc3BvbnNlIHRvIHRoZSBjb21tYW5kIHRo
-YXQgcmFpc2VkCj4gICAgdGhlIGV4Y2VwdGlvbi4gVGhlIGNvbW1hbmQgd2lsbCBub3QgYmUgZXhl
-Y3V0ZWQgYW5kIHRoZQo+ICAgIGFzc29jaWF0ZWQgc3RhdGUgdHJhbnNpdGlvbiB3aWxsIG5vdCB0
-YWtlIHBsYWNlLiAKPiAKPiBXaGF0IHRoaXMgZG9lcyBpcyB0byBxdWlja2x5IGFib3J0IHJldHJp
-ZXMgb2YgU0QgY2FyZCBvcHMKPiB0aGF0IHdlcmUgc2VudCB0byBNTUMgY2FyZHMsIGFuZCB3aGlj
-aCBhbHdheXMgZmFpbCB3aXRoCj4gSUxMRUdBTF9DT01NQU5ELgo+IAoKSSBoYXRlIHRoaXMgcGFy
-dCBvZiB0aGUgc3BlYy4gVGhlIFNEIHNwZWMgYWxzbyBjbGFpbXM6CgoiQ2xlYXIgY29uZGl0aW9u
-IEI6IEFsd2F5cyByZWxhdGVkIHRvIHRoZSBwcmV2aW91cyBjb21tYW5kIgoKQnV0IGluIHRoZSBT
-UEkgc2VjdGlvbiwgdGhleSBiYWNrIG91dCBvZiB0aGF0IGNsYWltLiBTbyBmb3IgU1BJLCB0aGlu
-Z3MKc2VlbXMgc29tZXdoYXQgc2FuZS4KCihUaGUgTU1DIHNwZWMgaXMgZXZlbiBtb3JlIGhpbGFy
-aW91cy4gSSBsaXN0cyBjbGVhciBjb25kaXRpb24gQSBhbmQgQiwKYnV0IG5ldmVyIGV4cGxhaW5z
-IHdoYXQgdGhleSBtZWFuLiBBbmQgbG9va2luZyBhdCBzb21lIG9sZGVyIGNhcmQKc3BlY3MsIGl0
-IHNlZW1zIHRoYXQgdGhlIE1NQyBzcGVjIGhhZCB0aGUgc2FtZSBjb25kaXRpb25zIGFuZApkZWZp
-bml0aW9ucyBhcyBTRCAqc2lnaCopCgpXZSBjYW4gcHJvY2VlZCB3aXRoIHlvdXIgY29kZSwgYWx0
-aG91Z2ggSSdtIHN0aWxsIGEgYml0IG5lcnZvdXMgYWJvdXQKc3RpY2tpbmcgdGhhdCBwYXJzaW5n
-IGluIHRoZXJlLgoKUmdkcwotLSAKICAgICAtLSBQaWVycmUgT3NzbWFuCgogIExpbnV4IGtlcm5l
-bCwgTU1DIG1haW50YWluZXIgICAgICAgIGh0dHA6Ly93d3cua2VybmVsLm9yZwogIFB1bHNlQXVk
-aW8sIGNvcmUgZGV2ZWxvcGVyICAgICAgICAgIGh0dHA6Ly9wdWxzZWF1ZGlvLm9yZwogIHJkZXNr
-dG9wLCBjb3JlIGRldmVsb3BlciAgICAgICAgICBodHRwOi8vd3d3LnJkZXNrdG9wLm9yZwoKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnk6IFNwbHVuayBJ
-bmMuClN0aWxsIGdyZXBwaW5nIHRocm91Z2ggbG9nIGZpbGVzIHRvIGZpbmQgcHJvYmxlbXM/ICBT
-dG9wLgpOb3cgU2VhcmNoIGxvZyBldmVudHMgYW5kIGNvbmZpZ3VyYXRpb24gZmlsZXMgdXNpbmcg
-QUpBWCBhbmQgYSBicm93c2VyLgpEb3dubG9hZCB5b3VyIEZSRUUgY29weSBvZiBTcGx1bmsgbm93
-ID4+ICBodHRwOi8vZ2V0LnNwbHVuay5jb20vCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Thu, 26 Jul 2007 16:32:36 -0700
+David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+
+> 
+> You said you weren't going to update the MMC core to check
+> the status bits after every request, and I'm certainly not
+> about to change *EVERY MMC/SD REQUEST* to adopt a radically
+> different callling convention either!!
+> 
+> Which leaves us needing a solution that actually works, and
+> this seems to be the only option:  continue to use the current
+> calling convention, ->error fields report the failures.
+> 
+
+I'm more concerned with where you check this, rather than how. If you
+want to apply it broadly, the request handling functions in core.c
+would seem more sane.
+
+> 
+> However, that bit looks deeply messy.  You'd be splitting
+> the OCR (and other SPI four byte responses) into two
+> different words, for example!
+> 
+> Or to put it differently, this way the structure that's
+> passed up to the core is actually meaningful:  one word
+> of status, and maybe another word of data.  And *never*
+> any mixed status/data words that'd need disentangling.
+> 
+> After all, if you really wanted to provide raw protocol
+> data to the mmc core, cmd->resp[] would be bytes, not
+> 32-bit words in cpu-order.
+> 
+
+It should, as that's how it's used everywhere. And I'd gladly accept a
+patch that fixes this.
+
+> 
+> I guess we'll have to disagree on this for now.  If it
+> matters, it can be changed later; but I certainly couldn't
+> call mixing data and status as an improvement!! 
+> 
+
+>From my point of view, it's all data. :)
+
+> 
+> The data block CRC is quite expensive, yes.  The CRC7 isn't;
+> and in any case, you had pretty much demanded that it always
+> be computed (to eliminate the #define for the crc needed in
+> the card reset command) ...
+> 
+
+Ah, didn't think of that distinction. Carry on.
+
+> > 
+> > At least we agree on error codes. This is precisely the change
+> > I have pending in my patch set to remove the MMC_ERR_* mess. :) 
+> 
+> I had to pick something.  ;)
+> 
+
+I have committed that to -mm now. Could I bother you with an update of
+your patch to remove all MMC_ERR_ stuff? :)
+
+> 
+> > I need a MAINTAINERS entry aswell.  
+> 
+> I was hoping someone would sign up for that, so I don't
+> have to stick myself there with "Odd fixes" status...
+> 
+
+Have you poked someone? I don't even have any SPI hardware, so I'm
+definitely the wrong person.
+
+> 
+> > I'd like to see those REVISIT things attended to before I push
+> > the stuff to Linus though. 
+> 
+> In this driver?  They're mostly performance tuning issues, which
+> are normally best left till later:
+> 
+>   - dma_map_single() operations could theoretically fail.
+>     Not that it'd be likely on hardware that uses this driver;
+>     but that's simple error path cleanup.
+> 
+
+This is the one I'm mostly concerned with. Dangling error paths give me
+the willies.
+
+> More significant are the two FIXMEs related to card reset.
+> One will require someone with relevant hardware (Jan?),
+> the other still needs investigation.
+> 
+
+Ok.
+
+Rgds
+-- 
+     -- Pierre Ossman
+
+  Linux kernel, MMC maintainer        http://www.kernel.org
+  PulseAudio, core developer          http://pulseaudio.org
+  rdesktop, core developer          http://www.rdesktop.org
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Splunk Inc.
+Still grepping through log files to find problems?  Stop.
+Now Search log events and configuration files using AJAX and a browser.
+Download your FREE copy of Splunk now >>  http://get.splunk.com/

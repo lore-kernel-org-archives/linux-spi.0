@@ -1,21 +1,22 @@
-From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-Subject: Re: [patch 2.6.22-git5 4/4] mmc_spi host driver
-Date: Wed, 1 Aug 2007 17:12:17 +0200
-Message-ID: <20070801171217.1478267b@poseidon.drzeus.cx>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [patch 2.6.22-git5 3/4] MMC core learns
+	about SPI
+Date: Wed, 1 Aug 2007 10:02:28 -0700
+Message-ID: <200708011002.28801.david-b@pacbell.net>
 References: <200707141504.51950.david-b@pacbell.net>
-	<200707141508.07555.david-b@pacbell.net>
-	<20070726200202.5e5dcf62@poseidon.drzeus.cx>
-	<200707261632.37011.david-b@pacbell.net>
+	<200707261458.55558.david-b@pacbell.net>
+	<20070801170220.3c5ccff6@poseidon.drzeus.cx>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
 	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
 	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200707261632.37011.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <20070801170220.3c5ccff6-mgABNEgzgxm+PRNnhPf8W5YgPPQkE1Si@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,111 +28,106 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 26 Jul 2007 16:32:36 -0700
-David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-
-> 
-> You said you weren't going to update the MMC core to check
-> the status bits after every request, and I'm certainly not
-> about to change *EVERY MMC/SD REQUEST* to adopt a radically
-> different callling convention either!!
-> 
-> Which leaves us needing a solution that actually works, and
-> this seems to be the only option:  continue to use the current
-> calling convention, ->error fields report the failures.
-> 
-
-I'm more concerned with where you check this, rather than how. If you
-want to apply it broadly, the request handling functions in core.c
-would seem more sane.
-
-> 
-> However, that bit looks deeply messy.  You'd be splitting
-> the OCR (and other SPI four byte responses) into two
-> different words, for example!
-> 
-> Or to put it differently, this way the structure that's
-> passed up to the core is actually meaningful:  one word
-> of status, and maybe another word of data.  And *never*
-> any mixed status/data words that'd need disentangling.
-> 
-> After all, if you really wanted to provide raw protocol
-> data to the mmc core, cmd->resp[] would be bytes, not
-> 32-bit words in cpu-order.
-> 
-
-It should, as that's how it's used everywhere. And I'd gladly accept a
-patch that fixes this.
-
-> 
-> I guess we'll have to disagree on this for now.  If it
-> matters, it can be changed later; but I certainly couldn't
-> call mixing data and status as an improvement!! 
-> 
-
->From my point of view, it's all data. :)
-
-> 
-> The data block CRC is quite expensive, yes.  The CRC7 isn't;
-> and in any case, you had pretty much demanded that it always
-> be computed (to eliminate the #define for the crc needed in
-> the card reset command) ...
-> 
-
-Ah, didn't think of that distinction. Carry on.
-
-> > 
-> > At least we agree on error codes. This is precisely the change
-> > I have pending in my patch set to remove the MMC_ERR_* mess. :) 
-> 
-> I had to pick something.  ;)
-> 
-
-I have committed that to -mm now. Could I bother you with an update of
-your patch to remove all MMC_ERR_ stuff? :)
-
-> 
-> > I need a MAINTAINERS entry aswell.  
-> 
-> I was hoping someone would sign up for that, so I don't
-> have to stick myself there with "Odd fixes" status...
-> 
-
-Have you poked someone? I don't even have any SPI hardware, so I'm
-definitely the wrong person.
-
-> 
-> > I'd like to see those REVISIT things attended to before I push
-> > the stuff to Linus though. 
-> 
-> In this driver?  They're mostly performance tuning issues, which
-> are normally best left till later:
-> 
->   - dma_map_single() operations could theoretically fail.
->     Not that it'd be likely on hardware that uses this driver;
->     but that's simple error path cleanup.
-> 
-
-This is the one I'm mostly concerned with. Dangling error paths give me
-the willies.
-
-> More significant are the two FIXMEs related to card reset.
-> One will require someone with relevant hardware (Jan?),
-> the other still needs investigation.
-> 
-
-Ok.
-
-Rgds
--- 
-     -- Pierre Ossman
-
-  Linux kernel, MMC maintainer        http://www.kernel.org
-  PulseAudio, core developer          http://pulseaudio.org
-  rdesktop, core developer          http://www.rdesktop.org
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Splunk Inc.
-Still grepping through log files to find problems?  Stop.
-Now Search log events and configuration files using AJAX and a browser.
-Download your FREE copy of Splunk now >>  http://get.splunk.com/
+T24gV2VkbmVzZGF5IDAxIEF1Z3VzdCAyMDA3LCBQaWVycmUgT3NzbWFuIHdyb3RlOgo+IE9uIFRo
+dSwgMjYgSnVsIDIwMDcgMTQ6NTg6NTQgLTA3MDAKPiBEYXZpZCBCcm93bmVsbCA8ZGF2aWQtYkBw
+YWNiZWxsLm5ldD4gd3JvdGU6Cj4gCj4gPiA+IFRoaXMgd2lsbCBmYWlsIHRvIGluaXRpYWxpc2Ug
+YSBoaWdoIGNhcGFjaXR5IE1NQyBjYXJkLiBGcm9tIHRoZSBNTUMKPiA+ID4gc3BlYzoKPiA+ID4g
+Cj4gPiA+ICJXaXRob3V0IHRoZSBDTUQ1OCB3aXRoIGJpdHMgWzMwOjI5XSBzZXQgYXMgIjEwYiIg
+aW4gcHJpb3IgdG8gdGhlCj4gPiA+IENNRDEgYSBoaWdoZXIgdGhhbiAyR0Igb2YgZGVuc2l0eSBv
+ZiBtZW1vcnkgd2lsbCByZW1haW4gaW4gSWRsZQo+ID4gPiBzdGF0ZSBmb3JldmVyLiIgCj4gPiAK
+PiA+IFRoZSBmaXJzdCB0aGluZyBtbWNfYXR0YWNoX21tYygpIGRvZXMgaXMgcmVzZXQgdGhlIGNh
+cmQuLi4KPiA+IAo+ID4gQXJlIHlvdSBzdXJlIHRoYXQgImZvcmV2ZXIiIG1lYW5zIHRoYXQgcmVz
+ZXQgd2lsbCBmYWlsPwo+ID4gVGhhdCB3b3VsZCBiZSBhIHZlcnkgZm9vbGlzaCB0aGluZyB0byBz
+cGVjaWZ5LiAgQW5kIHdoaWxlCj4gPiBJJ3ZlIHNlZW4gc3RyYW5nZSB0aGluZ3MgaW4gc3BlY3Ms
+IHRoYXQgd291bGQgYmUgb25lIG9mCj4gPiB0aGUgd29yc3QgdGhhdCdzIG5vdCBhIHZlbmRvci1z
+cGVjaWZpYyBwYXJ0IG9mIGEgcGFwZXJpbmcKPiA+IG92ZXIgZXJyYXRhIC4uLgo+ID4gCj4gCj4g
+V2VsbCwgaXQncyByYXRoZXIgc3RyYWlnaHQtZm9yd2FyZCBpZiB5b3UgdGhpbmsgYWJvdXQgaXQu
+IEFzIHRoZXkndmUKPiBjaGFuZ2VkIHRoZSBhZGRyZXNzaW5nIHNjaGVtZSwKClNpbmNlIEkndmUg
+bm90IHNlZW4gdGhlIE1NQzQgc3BlYywgSSBjb3VsZG4ndCBrbm93LiAgOikKCkFuZCB0aGUgbmVh
+cmVzdCBhcHByb3hpbWF0aW9uIG9mIE1NQzQgSSd2ZSBnb3QgKGFuIGVhcmx5IFNhbXN1bmcKc3Bl
+Yykgc2F5cyBDTUQ1OCBoYXMgYXJndW1lbnQgIm5vbmUiICg9PSAwKSAuLi4gd2hpbGUgb25lIG9m
+IHRoZQpjYXJkcyBJJ3ZlIGdvdCByZWplY3RlZCBDTUQ1OCBiZWZvcmUgQ01EMS4gIFNvICJzdHJh
+aWdodGZvcndhcmQiCmlzIG5vdCBhIHdvcmQgSSBjb3VsZCBhcHBseSBoZXJlLi4uCgoKPiBidXQg
+cmV0YWluIHRoZSBvcmlnaW5hbCBjb21tYW5kcywgYSBob3N0IAo+IHRoYXQgZG9lcyBub3QgdW5k
+ZXJzdGFuZCB0aGUgbmV3IHNjaGVtZSB3b3VsZCB1dHRlcmx5IGRlc3Ryb3kgdGhlIGRhdGEuCj4g
+U28gdGhlIGNhcmQgcmVmdXNlcyB0byBpbml0IHVubGVzcyB0aGUgaG9zdCBjYW4gcHJlc2VudCBz
+b21lIGV2aWRlbmNlCj4gdGhhdCBpdCB1bmRlcnN0YW5kcyB0aGUgbmV3IHNjaGVtZS4KClJpZ2h0
+LCBidXQgdGhhdCBkb2Vzbid0IGFuc3dlciBteSBxdWVzdGlvbjogIHdoZXRoZXIgdGhlIGNhcmQK
+aXMgc3BlY2lmaWVkIHRvIGxvY2sgdXAgImZvcmV2ZXIiLCBvciB3aGV0aGVyIChhcyBJJ2QgZXhw
+ZWN0KQpyZWluaXRpYWxpemF0aW9uIChzdGFydGluZyB3aXRoIHJlc2V0KSB3b3JrcyB0aGUgbm9y
+bWFsIHdheS4KCgo+ID4gSSdkIGJlIGluY2xpbmVkIHRvIGxlYXZlIHRoaXMgYWxvbmUgdW5sZXNz
+IHNvbWVvbmUgZ2V0cwo+ID4gc3VjaCBhIGNhcmQgYW5kIG5vdGljZXMgdGhhdCBpdCBkb2Vzbid0
+IHdvcmsuICBBZnRlciBhbGwsCj4gPiBsYWNrIG9mIHRlc3Rpbmcgb24gdGhvc2UgbmV3IChhbmQt
+SS1zdGlsbC1jYW4ndC1maW5kLW9uZSkKPiA+IGNhcmRzIGlzIGEgZ2VuZXJhbCBkaXNjbGFpbWVy
+Lgo+ID4gCj4gCj4gVG9vIGJhZCBJIGhhdmUgbm8gU1BJIHNldHVwIGhlcmUuIDooCgpNeSBjdXJy
+ZW50IHNldHVwIHVzZXMgYSBicmVhZGJvYXJkLCBzbyBpdCBjYW4gaG9vayB1cCB0byB0aGUKcmVh
+bCBTUEkgaGFyZHdhcmUgLi4uIEkgc3RhcnRlZCBvdXQgdXNpbmcgYml0YmFuZ2VkIFNQSSB0byBh
+CmNhcmQgd2hpY2ggbm9ybWFsbHkgbXV4ZWQgdG8gYSAibmF0aXZlIiBjb250cm9sbGVyLiAgTWF5
+YmUKb25lIG9mIHRob3NlIGNvdWxkIHdvcmsgZm9yIHlvdS4KCgo+IFBsZWFzZSBhZGQgYSBjb21t
+ZW50IHRoYXQgd2Uga25vdyB0aGF0IE1NQyA0LjIgaXMgYnJva2VuIGFuZCBjYW4gYmUKPiBmaXhl
+ZCBvbmNlIHNvbWVvbmUgaXMgYWJsZSB0byB0ZXN0LgoKRG9lc24ndCB0aGUgZ2VuZXJhbCBkaXNj
+bGFpbWVyIHRoYXQgTU1DNCBjYXJkcyBoYXZlbid0IGJlZW4KdGVzdGVkIGFscmVhZHkgY292ZXIg
+dGhhdCBwYXJ0PyAgSWYgeW91IGxpa2UsIGp1c3QgdHdlYWsgdGhlCnBhdGNoIGNvbW1lbnRzIHRv
+IGNsYXJpZnkuCgoKPiA+ID4gVGhlICpfb3BzLmMgb25seSBjb250YWluIGZ1bmN0aW9uIHdyYXBw
+ZXJzIG9mIHByb3RvY29sIGNvbW1hbmRzLCBub3QKPiA+ID4gcG9saWN5LiBTbyBJIHRoaW5rIHRo
+aXMgaXMgYmV0dGVyIHBsYWNlZCB3aGVyZSBtbWNfc3BpX3NldF9jcmMoKSBpcwo+ID4gPiBjYWxs
+ZWQuIAo+ID4gCj4gPiBZb3UgbWVhbiwgaGF2ZSBzZXBhcmF0ZSBtb2R1bGUgcGFyYW1zIGZvciBT
+RCBhbmQgZm9yIE1NQz8KPiA+IEl0IHNlZW1zIGNsZWFuZXIgdGhpcyB3YXkuLi4KPiA+IAo+IAo+
+IE5vLCB0aGF0IHdvdWxkIGJlIHNpbGx5LiBZb3UnZCBwcm9iYWJseSBoYXZlIHRvIHN0aWNrIGl0
+IGluIGNvcmUuYyBhbmQKPiByZWZlcmVuY2UgaXQgZnJvbSBtbWMuYyBhbmQgc2QuYy4KPiAKPiBU
+aGUgcmVhc29uIEkgY29tcGxhaW4gaXMgdGhhdCBzZWVpbmcgbW1jX3NwaV9zZXRfY3JjKCkgd2ls
+bCBsb29rIGxpa2UKPiBpdCBhbHdheXMgYWN0aXZhdGVzIENSQywgYXMgYWxsIG90aGVyIGZ1bmN0
+aW9ucyBpbiAqX29wcy5jIGFyZSBzaW1wbGUKPiB3cmFwcGVycyBhcm91bmQgcHJvdG9jb2wgb3Bz
+LgoKU28sIG1vdmUgdGhlIHBhcmFtIGFuZCBtbWNfc3BpX3NldF9jcmMoKSBpbnRvIGNvcmUuYyB0
+aGVuLCBhbmQKbGVhdmUgdGhlIGNhbGxzIHdoZXJlIHRoZXkgYXJlPwoKQ2FuIHdlIGRvIHRoYXQg
+YXMgYSBzZXBhcmF0ZSBwYXRjaD8gIFlvdSBzYWlkIGJlbG93IHdlIGNhbiBwcm9jZWVkLAp3aGlj
+aCBzdWdnZXN0cyB0byBtZSB0aGF0IG5vdydzIHRoZSB0aW1lIHRvIGNvbnZlcnQgdG8gaW5jcm1l
+bnRhbHMuCkkgZG9uJ3QgbWluZCBhIGZldyBtb3JlIHVwZGF0ZSBwYXRjaGVzLCBidXQgaXQnZCBi
+ZSBlYXNpZXIgdG8gZG8KdGhlbSBhZ2FpbnN0IHNheSBhIGdpdC1tbWMgcGF0Y2ggYWdhaW5zdCAy
+LjYuMjMtcmMyIC4uLgoKCj4gPiA+ICJJbGxlZ2FsIGNvbW1hbmQiIHJlZmVycyB0byB0aGUgcHJl
+dmlvdXMgY29tbWFuZCBzZW50IChhbmQgZmFpbGVkKS4KPiA+ID4gU28gdGhpcyBjYW4gZ2l2ZSBm
+YWxzZSBuZWdhdGl2ZXMuIAo+ID4gCj4gPiBUaGUgaW1tZWRpYXRlbHkgcHJlY2VkaW5nIGNvbW1h
+bmQgd291bGQgYmUgTU1DX0FQUF9DTUQgLi4uID8KPiA+IEkgZGlkbid0IHNlZSBhbnkgbGFuZ3Vh
+Z2UgaW4gdGhlIHNwZWNzIHdoaWNoIGNvdWxkIGxldCBtZQo+ID4gaW50ZXJwcmV0IHRoaXMgYXMg
+YW55dGhpbmcgb3RoZXIgdGhhbiBBUFBfQ01EIGZhaWx1cmU6Cj4gPiAKPiA+ICAgIFdoZW4gYW4g
+ZXJyb3IgYml0IGlzIGRldGVjdGVkIGluIOKAnFLigJ0gbW9kZSB0aGUgY2FyZCB3aWxsCj4gPiAg
+ICByZXBvcnQgdGhlIGVycm9yIGluIHRoZSByZXNwb25zZSB0byB0aGUgY29tbWFuZCB0aGF0IHJh
+aXNlZAo+ID4gICAgdGhlIGV4Y2VwdGlvbi4gVGhlIGNvbW1hbmQgd2lsbCBub3QgYmUgZXhlY3V0
+ZWQgYW5kIHRoZQo+ID4gICAgYXNzb2NpYXRlZCBzdGF0ZSB0cmFuc2l0aW9uIHdpbGwgbm90IHRh
+a2UgcGxhY2UuIAo+ID4gCj4gPiBXaGF0IHRoaXMgZG9lcyBpcyB0byBxdWlja2x5IGFib3J0IHJl
+dHJpZXMgb2YgU0QgY2FyZCBvcHMKPiA+IHRoYXQgd2VyZSBzZW50IHRvIE1NQyBjYXJkcywgYW5k
+IHdoaWNoIGFsd2F5cyBmYWlsIHdpdGgKPiA+IElMTEVHQUxfQ09NTUFORC4KPiA+IAo+IAo+IEkg
+aGF0ZSB0aGlzIHBhcnQgb2YgdGhlIHNwZWMuIFRoZSBTRCBzcGVjIGFsc28gY2xhaW1zOgo+IAo+
+ICJDbGVhciBjb25kaXRpb24gQjogQWx3YXlzIHJlbGF0ZWQgdG8gdGhlIHByZXZpb3VzIGNvbW1h
+bmQiCj4gCj4gQnV0IGluIHRoZSBTUEkgc2VjdGlvbiwgdGhleSBiYWNrIG91dCBvZiB0aGF0IGNs
+YWltLiBTbyBmb3IgU1BJLCB0aGluZ3MKPiBzZWVtcyBzb21ld2hhdCBzYW5lLgoKSSBkb24ndCBo
+YXZlIGVpdGhlciBvZiB0aG9zZSBzcGVjcy4gICJQcmV2aW91cyBjb21tYW5kIiBpc24ndApwYXJ0
+aWN1bGFybHkgY2xlYXIsIHRob3VnaCBtYXliZSBpbiBjb250ZXh0IGl0IGNvdWxkIGJlIC4uLiBp
+dAptaWdodCBtZWFuIHRoZSBpbW1lZGlhdGVseSBwcmVjZWRpbmcgY29tbWFuZCwgb3IgdGhlIG9u
+ZSBiZWZvcmUKdGhhdCwgZGVwZW5kaW5nIG9uIHVzYWdlLgoKCj4gKFRoZSBNTUMgc3BlYyBpcyBl
+dmVuIG1vcmUgaGlsYXJpb3VzLiBJIGxpc3RzIGNsZWFyIGNvbmRpdGlvbiBBIGFuZCBCLAo+IGJ1
+dCBuZXZlciBleHBsYWlucyB3aGF0IHRoZXkgbWVhbi4gQW5kIGxvb2tpbmcgYXQgc29tZSBvbGRl
+ciBjYXJkCj4gc3BlY3MsIGl0IHNlZW1zIHRoYXQgdGhlIE1NQyBzcGVjIGhhZCB0aGUgc2FtZSBj
+b25kaXRpb25zIGFuZAo+IGRlZmluaXRpb25zIGFzIFNEICpzaWdoKikKClllZWNoIQoKIAo+IFdl
+IGNhbiBwcm9jZWVkIHdpdGggeW91ciBjb2RlLCBhbHRob3VnaCBJJ20gc3RpbGwgYSBiaXQgbmVy
+dm91cyBhYm91dAo+IHN0aWNraW5nIHRoYXQgcGFyc2luZyBpbiB0aGVyZS4KCkkgZG9uJ3QgdGhp
+bmsgeW91IG5lZWQgdG8gYmUgbmVydm91cyBhYm91dCB0aGF0LiAgSXQgY2xlYXJseSB3b3JrcywK
+YW5kIHRvIHRob3NlIG9mIHVzIHdobyd2ZSB3b3JrZWQgdGhpcyBkcml2ZXIgYW5kIGhhZCB0byBi
+ZWNvbWUgb25lCndpdGggdGhlIGRvY3Mgd2UgaGF2ZSwgdGhpcyBoYXNuJ3QgcmFpc2VkIGZsYWdz
+LgoKSXQgaXMgaG93ZXZlciAqbXVjaCogYmV0dGVyIG5vdCB0byBuZWVkIHRvIG1hcCB0aGUgU1BJ
+IHN0YXR1cyBjb2RlcwppbnRvIHRoZSAibmF0aXZlIiBvbmVzLiAgQXMgeW91IGltcGxpY2l0bHkg
+bm90ZWQgYWJvdmUsIGV4cGVjdGluZwp0aGVtIHRvIGJlaGF2ZSB0aGUgc2FtZSBkb2Vzbid0IHNl
+ZW0gbGlrZSBhIGdvb2QgaWRlYSEKCi0gRGF2ZQoKCiAKPiBSZ2RzCj4gLS0gCj4gICAgICAtLSBQ
+aWVycmUgT3NzbWFuCj4gCj4gICBMaW51eCBrZXJuZWwsIE1NQyBtYWludGFpbmVyICAgICAgICBo
+dHRwOi8vd3d3Lmtlcm5lbC5vcmcKPiAgIFB1bHNlQXVkaW8sIGNvcmUgZGV2ZWxvcGVyICAgICAg
+ICAgIGh0dHA6Ly9wdWxzZWF1ZGlvLm9yZwo+ICAgcmRlc2t0b3AsIGNvcmUgZGV2ZWxvcGVyICAg
+ICAgICAgIGh0dHA6Ly93d3cucmRlc2t0b3Aub3JnCj4gCgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhp
+cyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5OiBTcGx1bmsgSW5jLgpTdGlsbCBncmVwcGlu
+ZyB0aHJvdWdoIGxvZyBmaWxlcyB0byBmaW5kIHByb2JsZW1zPyAgU3RvcC4KTm93IFNlYXJjaCBs
+b2cgZXZlbnRzIGFuZCBjb25maWd1cmF0aW9uIGZpbGVzIHVzaW5nIEFKQVggYW5kIGEgYnJvd3Nl
+ci4KRG93bmxvYWQgeW91ciBGUkVFIGNvcHkgb2YgU3BsdW5rIG5vdyA+PiAgaHR0cDovL2dldC5z
+cGx1bmsuY29tLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
+c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
+bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

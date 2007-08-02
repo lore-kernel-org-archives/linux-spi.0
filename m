@@ -1,12 +1,11 @@
 From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-Subject: Re: [patch 2.6.22-git5 3/4] MMC core learns
-	about SPI
-Date: Thu, 2 Aug 2007 14:54:45 +0200
-Message-ID: <20070802145445.1118d1e7@poseidon.drzeus.cx>
+Subject: Re: [patch 2.6.22-git5 4/4] mmc_spi host driver
+Date: Thu, 2 Aug 2007 15:06:15 +0200
+Message-ID: <20070802150615.36e073c6@poseidon.drzeus.cx>
 References: <200707141504.51950.david-b@pacbell.net>
-	<200707261458.55558.david-b@pacbell.net>
-	<20070801170220.3c5ccff6@poseidon.drzeus.cx>
-	<200708011002.28801.david-b@pacbell.net>
+	<200707261632.37011.david-b@pacbell.net>
+	<20070801171217.1478267b@poseidon.drzeus.cx>
+	<200708011117.24664.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -16,7 +15,7 @@ Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200708011002.28801.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <200708011117.24664.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,103 +27,111 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 1 Aug 2007 10:02:28 -0700
+On Wed, 1 Aug 2007 11:17:24 -0700
 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
 
 > On Wednesday 01 August 2007, Pierre Ossman wrote:
 > > 
-> > Well, it's rather straight-forward if you think about it. As they've
-> > changed the addressing scheme,
+> > I'm more concerned with where you check this, rather than how. If
+> > you want to apply it broadly, the request handling functions in
+> > core.c would seem more sane.
 > 
-> Since I've not seen the MMC4 spec, I couldn't know.  :)
-> 
-
-You can see the same thing in SD with the if cond thingy.
-
-> And the nearest approximation of MMC4 I've got (an early Samsung
-> spec) says CMD58 has argument "none" (== 0) ... while one of the
-> cards I've got rejected CMD58 before CMD1.  So "straightforward"
-> is not a word I could apply here...
+> That's not how any other host controller driver works though...
 > 
 
-We can just code it so that failure is acceptable for that initial
-CMD58.
+Other controllers don't care at all about status bits. Except for omap,
+which caused it to break in fun and interesting ways.
 
-> 
-> > but retain the original commands, a host 
-> > that does not understand the new scheme would utterly destroy the
-> > data. So the card refuses to init unless the host can present some
-> > evidence that it understands the new scheme.
-> 
-> Right, but that doesn't answer my question:  whether the card
-> is specified to lock up "forever", or whether (as I'd expect)
-> reinitialization (starting with reset) works the normal way.
+> I'm concerned with not becoming a guinea pig for experimenting
+> with deep MMC stack changes which are not directly related to
+> the SPI support.
 > 
 
-Like SDHC, it never goes out of idle mode.
+You're the one who started poking the error handling bear ;)
 
-> 
-> My current setup uses a breadboard, so it can hook up to the
-> real SPI hardware ... I started out using bitbanged SPI to a
-> card which normally muxed to a "native" controller.  Maybe
-> one of those could work for you.
-> 
+But we can ignore it for now.
 
-Well, I'd need something to do the banging.
-
+> > > After all, if you really wanted to provide raw protocol
+> > > data to the mmc core, cmd->resp[] would be bytes, not
+> > > 32-bit words in cpu-order.
+> > > 
+> > 
+> > It should, as that's how it's used everywhere. And I'd gladly
+> > accept a patch that fixes this.
 > 
-> > Please add a comment that we know that MMC 4.2 is broken and can be
-> > fixed once someone is able to test.
-> 
-> Doesn't the general disclaimer that MMC4 cards haven't been
-> tested already cover that part?  If you like, just tweak the
-> patch comments to clarify.
+> Erm, I don't follow.  It *is* used as 32-bit words
+> everywhere I've had occasion to check.
 > 
 
-The disclaimer is in the commit message. And people rarely go digging
-into the history for documentation.
-
-I'll add the comment before committing.
-
-> 
-> So, move the param and mmc_spi_set_crc() into core.c then, and
-> leave the calls where they are?
-> 
-
-mmc_spi_set_crc() fits quite nicely into mmc_ops.c, so no need for
-moving that. I was thinking more along the lines of:
-
-extern int mmc_spi_crc_enabled;
-
-mmc_spi_set_crc(host, mmc_spi_crc_enabled);
-
-> Can we do that as a separate patch?  You said below we can proceed,
-> which suggests to me that now's the time to convert to incrmentals.
-> I don't mind a few more update patches, but it'd be easier to do
-> them against say a git-mmc patch against 2.6.23-rc2 ...
-> 
-
-Sure.
+The only place it is used as that is when checking status bits (in the
+app cmd handling). In all other places it is treated as a data buffer.
+Just look at the UNSTUFF_BITS macro in mmc.c and sd.c.
 
 > > 
-> > I hate this part of the spec. The SD spec also claims:
-> > 
-> > "Clear condition B: Always related to the previous command"
-> > 
-> > But in the SPI section, they back out of that claim. So for SPI,
-> > things seems somewhat sane.
+> > From my point of view, it's all data. :)
 > 
-> I don't have either of those specs.  "Previous command" isn't
-> particularly clear, though maybe in context it could be ... it
-> might mean the immediately preceding command, or the one before
-> that, depending on usage.
+> Which of your points of view, though?  Clearly at some
+> point the MMC stack recognizes the different semantics
+> associated with for example OCR vs the command response
+> codes.  Data isn't necessarily opaque ... 
+>  
+
+Right. I'm talking about the layer the host driver handles. There things
+should be:
+
+<header> <payload> <tail>
+
+> > 
+> > I have committed that to -mm now. Could I bother you with an update
+> > of your patch to remove all MMC_ERR_ stuff? :)
+> 
+> You mean, git-mmc.patch from 2.6.23-rc1-mm2 which I see has
+> just come out?
 > 
 
-That's from the public SD physical spec. And the wording doesn't get
-much clearer. Sometimes they also talk about the "last" command, which
-is equally ambiguous.
+Unfortunately I have little insight into Andrew's schedule for
+producing new -mm. I push stuff to my "for-andrew" branch and he
+eventually pulls from that.
 
-Rgds
+> It really would have been easier all around if you had made
+> those changes *after* merging at least the core parts of the
+> SPI support.  It looks like most of the SPI patches won't even
+> apply any more, so I'm "gifted" with a needless quantity of
+> make-work.  The kind of stuff I've been trying to avoid by
+> submitting the SPI stuff *before* any of those newer patches
+> which jumped ahead of it in the queue ... :(
+> 
+
+I don't see how it would have been easier. The only difference is that
+I'd get a merge problem when I applied the new stuff. So the difference
+is really whose lap it would have fallen in.
+
+I can fix your patches if you'd like, but you'd probably have better
+insight into selecting relevant error codes now that the entire errno
+is available.
+
+> 
+> That will be a trivial incremental patch.  You are aware
+> that almost all DMA mapping calls in the kernel don't check
+> for errors, right?  Because the ability to return errors is
+> quite new ... and last I checked, not even documented.
+> 
+
+Somehow, that doesn't make me feel any better.
+
+> > > More significant are the two FIXMEs related to card reset.
+> > > One will require someone with relevant hardware (Jan?),
+> > > the other still needs investigation.
+> > > 
+> > 
+> > Ok.
+> 
+> I can't see those getting investigated before these patches
+> merge.
+> 
+
+Sure, that's fine.
+
 -- 
      -- Pierre Ossman
 

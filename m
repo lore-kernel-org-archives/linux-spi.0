@@ -1,14 +1,18 @@
-From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH] [SPI][POWERPC] spi_mpc83xx: fix
-	prescale modulus	calculation
-Date: Mon, 6 Aug 2007 17:10:14 +0400
-Message-ID: <20070806131014.GA6913@localhost.localdomain>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re:
+	=?iso-8859-1?q?=5BPATCH=5D_=5BSPI=5D=5BPOWERP?=
+	=?iso-8859-1?q?C=5D_spi=5Fmpc83xx=3A_fix_prescale_modulus=09calcul?=
+	=?iso-8859-1?q?ation?=
+Date: Mon, 6 Aug 2007 08:44:40 -0700
+Message-ID: <200708060844.40310.david-b@pacbell.net>
+References: <20070806131014.GA6913@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20070806131014.GA6913-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,68 +25,32 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Long ago I've noticed (but didn't pay much attention) that
-spi_mpc83xx using PM calculations that differs from what
-specs describe. I.e.
+On Monday 06 August 2007, Anton Vorontsov wrote:
+> +
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if =
+(pm)
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0pm--;
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0els=
+e /* this floods dmesg if using mmc_spi, so dbg */
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0dev_dbg(&spi->dev, "Requested speed is too "
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0"high: %d Hz. Will use %d Hz i=
+nstead.\n",
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0spi->max_speed_hz, mpc83xx_spi=
+->spibrg / 4);
 
-u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 4);
+Except that's not worthy of any message whatsoever, so it shouldn't
+even be a debug message:  user says "give me at most X", driver says
+"fine", end of story.
 
-While specs says: "The SPI baud rate generator clock source (either
-system clock or system clock divided by 16, depending on DIV16 bit) is
-divided by 4 * ([PM] + 1), a range from 4 to 64.".
+I'm more bothered by the earlier message, which gives a rate higher
+than X instead of cleanly failing.
 
-Thus " - 1" is missing in the spi_mpc83xx's formula.
+- Dave
 
-Why nobody noticed that bug? Probably because sysclk usually less then
-user expects, e.g. you expect 200 MHz, but real clock is 198 MHz,
-and integer rounding helps when this formula is used.
-
-Suppose it's SPI in QE, SYSCLK at 198 MHz, thus SPIBRG at 99MHz, 25 MHz
-requested.
-
-PM = (99MHz / ( 25 MHz * 4 )), PM == 0, output SPICLK will be 24.75 MHz
-
-At lower frequencies this bug is more noticeable, though.
-
-And this bug shows itself in all its beauty if SYSCLK is equal or a bit
-more than you expect (200 MHz SYSCLK, 100 MHz SPIBRG):
-PM = (100MHz / ( 25 MHz * 4 )), PM == 1, output SPICLK will be 12.625 MHz!
-
-Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
----
- drivers/spi/spi_mpc83xx.c |   10 +++++++++-
- 1 files changed, 9 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
-index 446b624..042704b 100644
---- a/drivers/spi/spi_mpc83xx.c
-+++ b/drivers/spi/spi_mpc83xx.c
-@@ -170,7 +170,8 @@ static void mpc83xx_spi_chipselect(struct spi_device *spi, int value)
- 		regval |= SPMODE_LEN(len);
- 
- 		if ((mpc83xx_spi->spibrg / spi->max_speed_hz) >= 64) {
--			u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 64);
-+			u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 64) - 1;
-+
- 			if (pm > 0x0f) {
- 				dev_warn(&spi->dev, "Requested speed is too "
- 					"low: %d Hz. Will use %d Hz instead.\n",
-@@ -180,6 +181,13 @@ static void mpc83xx_spi_chipselect(struct spi_device *spi, int value)
- 			regval |= SPMODE_PM(pm) | SPMODE_DIV16;
- 		} else {
- 			u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 4);
-+
-+			if (pm)
-+				pm--;
-+			else /* this floods dmesg if using mmc_spi, so dbg */
-+				dev_dbg(&spi->dev, "Requested speed is too "
-+					"high: %d Hz. Will use %d Hz instead.\n",
-+					spi->max_speed_hz, mpc83xx_spi->spibrg / 4);
- 			regval |= SPMODE_PM(pm);
- 		}
- 
--- 
-1.5.0.6
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

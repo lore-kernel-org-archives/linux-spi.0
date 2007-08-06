@@ -1,19 +1,19 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re:
-	=?iso-8859-1?q?=5BPATCH=5D_=5BSPI=5D=5BPOWERP?=
-	=?iso-8859-1?q?C=5D_spi=5Fmpc83xx=3A_fix_prescale_modulus=09calcul?=
-	=?iso-8859-1?q?ation?=
-Date: Mon, 6 Aug 2007 08:44:40 -0700
-Message-ID: <200708060844.40310.david-b@pacbell.net>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: Re: [PATCH] [SPI][POWERPC] spi_mpc83xx:
+	fix	prescale modulus?calculation
+Date: Mon, 6 Aug 2007 20:39:51 +0400
+Message-ID: <20070806163951.GA1724@localhost.localdomain>
 References: <20070806131014.GA6913@localhost.localdomain>
+	<200708060844.40310.david-b@pacbell.net>
+Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070806131014.GA6913-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <200708060844.40310.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,35 +25,76 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 06 August 2007, Anton Vorontsov wrote:
-> +
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if =
-(pm)
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0pm--;
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0els=
-e /* this floods dmesg if using mmc_spi, so dbg */
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0dev_dbg(&spi->dev, "Requested speed is too "
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0"high: %d Hz. Will use %d Hz i=
-nstead.\n",
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0spi->max_speed_hz, mpc83xx_spi=
-->spibrg / 4);
-
-Except that's not worthy of any message whatsoever, so it shouldn't
-even be a debug message:  user says "give me at most X", driver says
-"fine", end of story.
-
-I'm more bothered by the earlier message, which gives a rate higher
-than X instead of cleanly failing.
-
-- Dave
-
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Splunk Inc.
-Still grepping through log files to find problems?  Stop.
-Now Search log events and configuration files using AJAX and a browser.
-Download your FREE copy of Splunk now >>  http://get.splunk.com/
+T24gTW9uLCBBdWcgMDYsIDIwMDcgYXQgMDg6NDQ6NDBBTSAtMDcwMCwgRGF2aWQgQnJvd25lbGwg
+d3JvdGU6Cj4gT24gTW9uZGF5IDA2IEF1Z3VzdCAyMDA3LCBBbnRvbiBWb3JvbnRzb3Ygd3JvdGU6
+Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oGlmIChwbSkKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoHBtLS07Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoGVsc2UgLyogdGhpcyBmbG9vZHMgZG1lc2cgaWYgdXNpbmcgbW1j
+X3NwaSwgc28gZGJnICovCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBkZXZfZGJnKCZzcGktPmRldiwgIlJlcXVlc3RlZCBz
+cGVlZCBpcyB0b28gIgo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCJoaWdoOiAlZCBIei4gV2ls
+bCB1c2UgJWQgSHogaW5zdGVhZC5cbiIsCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3BpLT5t
+YXhfc3BlZWRfaHosIG1wYzgzeHhfc3BpLT5zcGlicmcgLyA0KTsKPiAKPiBFeGNlcHQgdGhhdCdz
+IG5vdCB3b3J0aHkgb2YgYW55IG1lc3NhZ2Ugd2hhdHNvZXZlciwgc28gaXQgc2hvdWxkbid0Cj4g
+ZXZlbiBiZSBhIGRlYnVnIG1lc3NhZ2U6ICB1c2VyIHNheXMgImdpdmUgbWUgYXQgbW9zdCBYIiwg
+ZHJpdmVyIHNheXMKPiAiZmluZSIsIGVuZCBvZiBzdG9yeS4KPiAKPiBJJ20gbW9yZSBib3RoZXJl
+ZCBieSB0aGUgZWFybGllciBtZXNzYWdlLCB3aGljaCBnaXZlcyBhIHJhdGUgaGlnaGVyCj4gdGhh
+biBYIGluc3RlYWQgb2YgY2xlYW5seSBmYWlsaW5nLgoKWy4uLl0KPiBTbyB0aGUgcGF0Y2ggc2hv
+dWxkIGJlIG1vcmUgbGlrZSB0aGUgYXBwZW5kZWQgLi4uCgpUaGFua3MhIFJlcG9zdGluZyBoZXJl
+LgoKLSAtIC0gLQpGcm9tOiBBbnRvbiBWb3JvbnRzb3YgPGF2b3JvbnRzb3ZAcnUubXZpc3RhLmNv
+bT4KU3ViamVjdDogc3BpX21wYzgzeHg6IGZpeCBwcmVzY2FsZSBtb2R1bHVzIGNhbGN1bGF0aW9u
+CgpMb25nIGFnbyBJJ3ZlIG5vdGljZWQgKGJ1dCBkaWRuJ3QgcGF5IG11Y2ggYXR0ZW50aW9uKSB0
+aGF0CnNwaV9tcGM4M3h4IHVzaW5nIFBNIGNhbGN1bGF0aW9ucyB0aGF0IGRpZmZlcnMgZnJvbSB3
+aGF0CnNwZWNzIGRlc2NyaWJlLiBJLmUuCgp1OCBwbSA9IG1wYzgzeHhfc3BpLT5zcGlicmcgLyAo
+c3BpLT5tYXhfc3BlZWRfaHogKiA0KTsKCldoaWxlIHNwZWNzIHNheXM6ICJUaGUgU1BJIGJhdWQg
+cmF0ZSBnZW5lcmF0b3IgY2xvY2sgc291cmNlIChlaXRoZXIKc3lzdGVtIGNsb2NrIG9yIHN5c3Rl
+bSBjbG9jayBkaXZpZGVkIGJ5IDE2LCBkZXBlbmRpbmcgb24gRElWMTYgYml0KSBpcwpkaXZpZGVk
+IGJ5IDQgKiAoW1BNXSArIDEpLCBhIHJhbmdlIGZyb20gNCB0byA2NC4iLgoKVGh1cyAiIC0gMSIg
+aXMgbWlzc2luZyBpbiB0aGUgc3BpX21wYzgzeHgncyBmb3JtdWxhLgoKV2h5IG5vYm9keSBub3Rp
+Y2VkIHRoYXQgYnVnPyBQcm9iYWJseSBiZWNhdXNlIHN5c2NsayB1c3VhbGx5IGxlc3MgdGhlbgp1
+c2VyIGV4cGVjdHMsIGUuZy4geW91IGV4cGVjdCAyMDAgTUh6LCBidXQgcmVhbCBjbG9jayBpcyAx
+OTggTUh6LAphbmQgaW50ZWdlciByb3VuZGluZyBoZWxwcyB3aGVuIHRoaXMgZm9ybXVsYSBpcyB1
+c2VkLgoKU3VwcG9zZSBpdCdzIFNQSSBpbiBRRSwgU1lTQ0xLIGF0IDE5OCBNSHosIHRodXMgU1BJ
+QlJHIGF0IDk5TUh6LCAyNSBNSHoKcmVxdWVzdGVkLgoKUE0gPSAoOTlNSHogLyAoIDI1IE1IeiAq
+IDQgKSksIFBNID09IDAsIG91dHB1dCBTUElDTEsgd2lsbCBiZSAyNC43NSBNSHoKCkF0IGxvd2Vy
+IGZyZXF1ZW5jaWVzIHRoaXMgYnVnIGlzIG1vcmUgbm90aWNlYWJsZSwgdGhvdWdoLgoKQW5kIHRo
+aXMgYnVnIHNob3dzIGl0c2VsZiBpbiBhbGwgaXRzIGJlYXV0eSBpZiBTWVNDTEsgaXMgZXF1YWwg
+b3IgYSBiaXQKbW9yZSB0aGFuIHlvdSBleHBlY3QgKDIwMCBNSHogU1lTQ0xLLCAxMDAgTUh6IFNQ
+SUJSRyk6ClBNID0gKDEwME1IeiAvICggMjUgTUh6ICogNCApKSwgUE0gPT0gMSwgb3V0cHV0IFNQ
+SUNMSyB3aWxsIGJlIDEyLjYyNSBNSHohCgpTaWduZWQtb2ZmLWJ5OiBBbnRvbiBWb3JvbnRzb3Yg
+PGF2b3JvbnRzb3ZAcnUubXZpc3RhLmNvbT4KU2lnbmVkLW9mZi1ieTogRGF2aWQgQnJvd25lbGwg
+PGRicm93bmVsbEB1c2Vycy5zb3VyY2Vmb3JnZS5uZXQ+Ci0tLQogZHJpdmVycy9zcGkvc3BpX21w
+YzgzeHguYyB8ICAgIDggKysrKysrLS0KIDEgZmlsZXMgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCsp
+LCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaV9tcGM4M3h4LmMg
+Yi9kcml2ZXJzL3NwaS9zcGlfbXBjODN4eC5jCmluZGV4IGZlNjllOTQuLjJhZGY4NTYgMTAwNjQ0
+Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaV9tcGM4M3h4LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpX21w
+YzgzeHguYwpAQCAtMTQ4LDYgKzE0OCw4IEBAIHN0YXRpYyB2b2lkIG1wYzgzeHhfc3BpX2NoaXBz
+ZWxlY3Qoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgaW50IHZhbHVlKQogCWlmICh2YWx1ZSA9PSBC
+SVRCQU5HX0NTX0FDVElWRSkgewogCQl1MzIgcmVndmFsID0gbXBjODN4eF9zcGlfcmVhZF9yZWco
+Jm1wYzgzeHhfc3BpLT5iYXNlLT5tb2RlKTsKIAkJdTMyIGxlbiA9IHNwaS0+Yml0c19wZXJfd29y
+ZDsKKwkJdTggcG07CisKIAkJaWYgKGxlbiA9PSAzMikKIAkJCWxlbiA9IDA7CiAJCWVsc2UKQEAg
+LTE3MCw3ICsxNzIsNyBAQCBzdGF0aWMgdm9pZCBtcGM4M3h4X3NwaV9jaGlwc2VsZWN0KHN0cnVj
+dCBzcGlfZGV2aWNlICpzcGksIGludCB2YWx1ZSkKIAkJcmVndmFsIHw9IFNQTU9ERV9MRU4obGVu
+KTsKIAogCQlpZiAoKG1wYzgzeHhfc3BpLT5zcGlicmcgLyBzcGktPm1heF9zcGVlZF9oeikgPj0g
+NjQpIHsKLQkJCXU4IHBtID0gbXBjODN4eF9zcGktPnNwaWJyZyAvIChzcGktPm1heF9zcGVlZF9o
+eiAqIDY0KTsKKwkJCXBtID0gbXBjODN4eF9zcGktPnNwaWJyZyAvIChzcGktPm1heF9zcGVlZF9o
+eiAqIDY0KSAtIDE7CiAJCQlpZiAocG0gPiAweDBmKSB7CiAJCQkJZGV2X2Vycigmc3BpLT5kZXYs
+ICJSZXF1ZXN0ZWQgc3BlZWQgaXMgdG9vICIKIAkJCQkJImxvdzogJWQgSHouIFdpbGwgdXNlICVk
+IEh6IGluc3RlYWQuXG4iLApAQCAtMTgwLDcgKzE4Miw5IEBAIHN0YXRpYyB2b2lkIG1wYzgzeHhf
+c3BpX2NoaXBzZWxlY3Qoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgaW50IHZhbHVlKQogCQkJfQog
+CQkJcmVndmFsIHw9IFNQTU9ERV9QTShwbSkgfCBTUE1PREVfRElWMTY7CiAJCX0gZWxzZSB7Ci0J
+CQl1OCBwbSA9IG1wYzgzeHhfc3BpLT5zcGlicmcgLyAoc3BpLT5tYXhfc3BlZWRfaHogKiA0KTsK
+KwkJCXBtID0gbXBjODN4eF9zcGktPnNwaWJyZyAvIChzcGktPm1heF9zcGVlZF9oeiAqIDQpOwor
+CQkJaWYgKHBtKQorCQkJCXBtLS07CiAJCQlyZWd2YWwgfD0gU1BNT0RFX1BNKHBtKTsKIAkJfQog
+Ci0tIAoxLjUuMC42CgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9u
+c29yZWQgYnk6IFNwbHVuayBJbmMuClN0aWxsIGdyZXBwaW5nIHRocm91Z2ggbG9nIGZpbGVzIHRv
+IGZpbmQgcHJvYmxlbXM/ICBTdG9wLgpOb3cgU2VhcmNoIGxvZyBldmVudHMgYW5kIGNvbmZpZ3Vy
+YXRpb24gZmlsZXMgdXNpbmcgQUpBWCBhbmQgYSBicm93c2VyLgpEb3dubG9hZCB5b3VyIEZSRUUg
+Y29weSBvZiBTcGx1bmsgbm93ID4+ICBodHRwOi8vZ2V0LnNwbHVuay5jb20vCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
+aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
+Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

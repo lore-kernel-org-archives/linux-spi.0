@@ -1,21 +1,21 @@
-From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-Subject: Re: [patch 2.6.22-git5 4/4] mmc_spi host driver
-Date: Sat, 4 Aug 2007 23:32:48 +0200
-Message-ID: <20070804233248.4e855743@poseidon.drzeus.cx>
-References: <200707141504.51950.david-b@pacbell.net>
-	<200708021334.50670.david-b@pacbell.net>
-	<20070804151452.0efaa5a9@poseidon.drzeus.cx>
-	<200708041032.10001.david-b@pacbell.net>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: Re: [PATCH] [SPI][POWERPC] spi_mpc83xx: in
+	"QE	mode" spiclk is sysclk/2
+Date: Mon, 6 Aug 2007 16:04:18 +0400
+Message-ID: <20070806120418.GA24742@localhost.localdomain>
+References: <20070802142641.GA6309@localhost.localdomain>
+	<200708021447.22028.david-b@pacbell.net>
+	<595EE3AF-CDD6-4260-83D9-A3FA3EA1DF95@kernel.crashing.org>
+Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
-	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
-	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200708041032.10001.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <595EE3AF-CDD6-4260-83D9-A3FA3EA1DF95-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,51 +27,99 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 4 Aug 2007 10:32:09 -0700
-David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-
+On Fri, Aug 03, 2007 at 04:29:48AM -0500, Kumar Gala wrote:
 > 
-> There's always writing negative tests ... i.e. issue requests
-> that will fail, and make sure they fail "correctly".  One of
-> those might be an alternative to the current block driver.
+> On Aug 2, 2007, at 4:47 PM, David Brownell wrote:
 > 
-
-I've thought about it, and the interesting cases are difficult to
-achieve with a standard card. If you have some ideas, I'd love to hear
-them.
-
-Also, a common problem is drivers that break layering. So my number one
-wanted test is to issue a command opcode that doesn't match what the
-spec says in terms of response and semantics.
-
-> One expects that code developed outside any test framework
-> will have fair coverage for success paths (e.g. whatever is
-> needed to make MMC and SD memory cards work), and the most
-> common fault paths (e.g. what's triggered during enumeration).
-> But beyond that ... passing illegal params, reading past end
-> of card, "unusual" write sizes, and other things are unlikely
-> to behave consistently between drivers.
+> > On Thursday 02 August 2007, Anton Vorontsov wrote:
+> >> Probably someday mpc83xx_spi->sysclk should be renamed to
+> >> mpc83xx_spi->spiclk to be less confusing.
+> >
+> > Why not "today", with this patch?  That would fix some of
+> > the root cause of this bug...
 > 
+> I'm fine with this as well.  I just called it sysclk to start with  
+> since when I wrote the driver it was just for the MPC834x.
 
-Now if only there was time. :)
+Ok, great.
 
-> > 
-> > It should just be a matter of replacing MMC_ERR_ codes with
-> > -Esomething.
-> 
-> Or MMC_ERR_NONE with zero.  Almost ... thing is, the new SDIO stuff
-> seems to bork things in some cases, more with SD cards than MMC.
-> 
+Now I think that `spiclk' is the bad name either, because it's output
+clock of the spi unit. `spibrg' should be the best name for this,
+as it's input clock to the SPI unit. Patch below.
 
-Well, the sdio code so far hasn't paid any attention to sdio. Perhaps
-it's best to just avoid that detection on a spi host for now.
+- - - -
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: [PATCH] spi_mpc83xx: for SPI in QE spibrg's input is sysclk/2
 
+For MPC8349E input to SPIBRG is SYSCLK, but it's SYSCLK/2 for
+MPC8323E (SPI in QE).
+
+Also mpc83xx_spi->sysclk renamed to mpc83xx_spi->spibrg.
+
+Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+---
+ drivers/spi/spi_mpc83xx.c |   20 ++++++++++++--------
+ 1 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+index 0c16a2b..446b624 100644
+--- a/drivers/spi/spi_mpc83xx.c
++++ b/drivers/spi/spi_mpc83xx.c
+@@ -86,7 +86,7 @@ struct mpc83xx_spi {
+ 
+ 	unsigned nsecs;		/* (clock cycle time)/2 */
+ 
+-	u32 sysclk;
++	u32 spibrg;		/* SPIBRG input clock */
+ 	u32 rx_shift;		/* RX data reg shift when in qe mode */
+ 	u32 tx_shift;		/* TX data reg shift when in qe mode */
+ 
+@@ -169,17 +169,17 @@ static void mpc83xx_spi_chipselect(struct spi_device *spi, int value)
+ 
+ 		regval |= SPMODE_LEN(len);
+ 
+-		if ((mpc83xx_spi->sysclk / spi->max_speed_hz) >= 64) {
+-			u8 pm = mpc83xx_spi->sysclk / (spi->max_speed_hz * 64);
++		if ((mpc83xx_spi->spibrg / spi->max_speed_hz) >= 64) {
++			u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 64);
+ 			if (pm > 0x0f) {
+-				printk(KERN_WARNING "MPC83xx SPI: SPICLK can't be less then a SYSCLK/1024!\n"
+-						"Requested SPICLK is %d Hz. Will use %d Hz instead.\n",
+-						spi->max_speed_hz, mpc83xx_spi->sysclk / 1024);
++				dev_warn(&spi->dev, "Requested speed is too "
++					"low: %d Hz. Will use %d Hz instead.\n",
++					spi->max_speed_hz, mpc83xx_spi->spibrg / 1024);
+ 				pm = 0x0f;
+ 			}
+ 			regval |= SPMODE_PM(pm) | SPMODE_DIV16;
+ 		} else {
+-			u8 pm = mpc83xx_spi->sysclk / (spi->max_speed_hz * 4);
++			u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 4);
+ 			regval |= SPMODE_PM(pm);
+ 		}
+ 
+@@ -429,13 +429,17 @@ static int __init mpc83xx_spi_probe(struct platform_device *dev)
+ 	mpc83xx_spi->bitbang.chipselect = mpc83xx_spi_chipselect;
+ 	mpc83xx_spi->bitbang.setup_transfer = mpc83xx_spi_setup_transfer;
+ 	mpc83xx_spi->bitbang.txrx_bufs = mpc83xx_spi_bufs;
+-	mpc83xx_spi->sysclk = pdata->sysclk;
+ 	mpc83xx_spi->activate_cs = pdata->activate_cs;
+ 	mpc83xx_spi->deactivate_cs = pdata->deactivate_cs;
+ 	mpc83xx_spi->qe_mode = pdata->qe_mode;
+ 	mpc83xx_spi->get_rx = mpc83xx_spi_rx_buf_u8;
+ 	mpc83xx_spi->get_tx = mpc83xx_spi_tx_buf_u8;
+ 
++	if (mpc83xx_spi->qe_mode)
++		mpc83xx_spi->spibrg = pdata->sysclk / 2;
++	else
++		mpc83xx_spi->spibrg = pdata->sysclk;
++
+ 	mpc83xx_spi->rx_shift = 0;
+ 	mpc83xx_spi->tx_shift = 0;
+ 	if (mpc83xx_spi->qe_mode) {
 -- 
-     -- Pierre Ossman
+1.5.0.6
 
-  Linux kernel, MMC maintainer        http://www.kernel.org
-  PulseAudio, core developer          http://pulseaudio.org
-  rdesktop, core developer          http://www.rdesktop.org
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

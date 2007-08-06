@@ -1,11 +1,15 @@
-From: "Loraine Monroe" <pabxfdfd-RUw9B0tchNLQT0dZR+AlfA@public.gmane.org>
-Subject: Join the millions
-Date: Mon, 6 Aug 2007 20:36:45 +0800
-Message-ID: <77029041862436.4ED8DBE373@9JPE>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: [PATCH] [SPI][POWERPC] spi_mpc83xx: fix
+	prescale modulus	calculation
+Date: Mon, 6 Aug 2007 17:10:14 +0400
+Message-ID: <20070806131014.GA6913@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1847529703=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,46 +21,71 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1847529703==
-Content-Type: text/html;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
+Long ago I've noticed (but didn't pay much attention) that
+spi_mpc83xx using PM calculations that differs from what
+specs describe. I.e.
 
-<font size="3" face="Times New Roman"><p class="subtextcialis"><font face="Tahoma" color="#333300" size="5"><strong>What is CIALIS?</strong></font></p>
-<p><font face="Tahoma" size="2">CIALIS is the only ED (Erectile Disfunction) tablet clinically proven to work both <br />up to 36 hours and in as fast as 30 minutes. </font><font face="Tahoma" size="2">And because CIALIS has an extended <br />period of effectiveness, you don’t have the pressure to perform within a few hours. <br />You and your partner can relax and take your time choosing the moment that is right for both of you.</font></p>
-<p class="subtextcialis"><font size="2"><font face="Tahoma"><font color="#003300" size="5"><strong>Benefits of CIALIS</strong></font> </font></font></p>
-<ul>
-    <li><font face="Tahoma" size="2">Works up to 36 hours </font></li>
-    <li><font face="Tahoma" size="2">Works fast </font></li>
-    <li><font face="Tahoma" size="2">Works Effectively </font></li>
-    <li><font face="Tahoma" size="2">Keeps you ready </font></li>
-    <li><font face="Tahoma" size="2">No need to plan around meals </font></li>
-    <li><font face="Tahoma" size="2">Used by millions of men </font></li>
-</ul>
-<p><font face="Tahoma" color="#003300" size="5"><strong><a href="http://hlabcdfgijmek.cozknav.cn/?ekxowwvyhlzcvabcdfgijm">Buy CIALIS online!</a></strong></font></p></font>
+u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 4);
 
+While specs says: "The SPI baud rate generator clock source (either
+system clock or system clock divided by 16, depending on DIV16 bit) is
+divided by 4 * ([PM] + 1), a range from 4 to 64.".
 
+Thus " - 1" is missing in the spi_mpc83xx's formula.
 
---===============1847529703==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Why nobody noticed that bug? Probably because sysclk usually less then
+user expects, e.g. you expect 200 MHz, but real clock is 198 MHz,
+and integer rounding helps when this formula is used.
+
+Suppose it's SPI in QE, SYSCLK at 198 MHz, thus SPIBRG at 99MHz, 25 MHz
+requested.
+
+PM = (99MHz / ( 25 MHz * 4 )), PM == 0, output SPICLK will be 24.75 MHz
+
+At lower frequencies this bug is more noticeable, though.
+
+And this bug shows itself in all its beauty if SYSCLK is equal or a bit
+more than you expect (200 MHz SYSCLK, 100 MHz SPIBRG):
+PM = (100MHz / ( 25 MHz * 4 )), PM == 1, output SPICLK will be 12.625 MHz!
+
+Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+---
+ drivers/spi/spi_mpc83xx.c |   10 +++++++++-
+ 1 files changed, 9 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+index 446b624..042704b 100644
+--- a/drivers/spi/spi_mpc83xx.c
++++ b/drivers/spi/spi_mpc83xx.c
+@@ -170,7 +170,8 @@ static void mpc83xx_spi_chipselect(struct spi_device *spi, int value)
+ 		regval |= SPMODE_LEN(len);
+ 
+ 		if ((mpc83xx_spi->spibrg / spi->max_speed_hz) >= 64) {
+-			u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 64);
++			u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 64) - 1;
++
+ 			if (pm > 0x0f) {
+ 				dev_warn(&spi->dev, "Requested speed is too "
+ 					"low: %d Hz. Will use %d Hz instead.\n",
+@@ -180,6 +181,13 @@ static void mpc83xx_spi_chipselect(struct spi_device *spi, int value)
+ 			regval |= SPMODE_PM(pm) | SPMODE_DIV16;
+ 		} else {
+ 			u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 4);
++
++			if (pm)
++				pm--;
++			else /* this floods dmesg if using mmc_spi, so dbg */
++				dev_dbg(&spi->dev, "Requested speed is too "
++					"high: %d Hz. Will use %d Hz instead.\n",
++					spi->max_speed_hz, mpc83xx_spi->spibrg / 4);
+ 			regval |= SPMODE_PM(pm);
+ 		}
+ 
+-- 
+1.5.0.6
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >>  http://get.splunk.com/
---===============1847529703==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1847529703==--

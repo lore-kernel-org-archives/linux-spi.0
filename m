@@ -1,18 +1,21 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: spi_async and heavy CPU occupation by
-	ksoftirqd
-Date: Thu, 9 Aug 2007 08:23:29 -0700
-Message-ID: <200708090823.29708.david-b@pacbell.net>
-References: <46B97D01.5000208@dave-tech.it>
-	<200708080927.36737.david-b@pacbell.net>
-	<46BB1F10.3030608@dave-tech.it>
+Subject: Re: [patch 3/4 2.6.23-rc2 + mm2-git-mmc] MMC
+	core learns about SPI
+Date: Thu, 9 Aug 2007 08:35:41 -0700
+Message-ID: <200708090835.42279.david-b@pacbell.net>
+References: <200708080906.18993.david-b@pacbell.net>
+	<200708080911.33099.david-b@pacbell.net>
+	<20070809150747.62b1447a@poseidon.drzeus.cx>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: llandre <r&d2-4VKA1VU3ct/j+vYz1yj4TQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
+	Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
+	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>
+To: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <46BB1F10.3030608-4VKA1VU3ct/j+vYz1yj4TQ@public.gmane.org>
+In-Reply-To: <20070809150747.62b1447a-mgABNEgzgxm+PRNnhPf8W5YgPPQkE1Si@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,49 +28,102 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 09 August 2007, llandre wrote:
-> > At a first glance, I wonder if you're not spending too much time
-> > in the spi_imx "pump_transfers" tasklet. =A0I have no idea how well
-> > tuned that driver is...
-> =
+On Thursday 09 August 2007, Pierre Ossman wrote:
+> > @@ -68,21 +72,26 @@ int mmc_io_rw_direct(struct mmc_card *ca
+> >  	cmd.arg |= (write && out) ? 0x08000000 : 0x00000000;
+> >  	cmd.arg |= addr << 9;
+> >  	cmd.arg |= in;
+> > -	cmd.flags = MMC_RSP_R5 | MMC_CMD_AC;
+> > +	cmd.flags = MMC_RSP_SPI_R5 | MMC_RSP_R5 | MMC_CMD_AC;
+> >  
+> >  	err = mmc_wait_for_cmd(card->host, &cmd, 0);
+> >  	if (err)
+> >  		return err;
+> >  
+> > -	if (cmd.resp[0] & R5_ERROR)
+> > -		return -EIO;
+> > -	if (cmd.resp[0] & R5_FUNCTION_NUMBER)
+> > -		return -EINVAL;
+> > -	if (cmd.resp[0] & R5_OUT_OF_RANGE)
+> > -		return -ERANGE;
+> > +	if (mmc_host_is_spi(card->host)) {
+> > +		if (out)
+> > +			*out = (cmd.resp[0] >> 8) & 0xFF;
+> > +	} else {
+> > +		if (cmd.resp[0] & R5_ERROR)
+> > +			return -EIO;
+> > +		if (cmd.resp[0] & R5_FUNCTION_NUMBER)
+> > +			return -EINVAL;
+> > +		if (cmd.resp[0] & R5_OUT_OF_RANGE)
+> > +			return -ERANGE;
+> >  
+> > -	if (out)
+> > -		*out = cmd.resp[0] & 0xFF;
+> > +		if (out)
+> > +			*out = cmd.resp[0] & 0xFF;
+> > +	}
+> >  
+> >  	return 0;
+> >  }
+> 
+> What about error bits in the spi case?
 
-> Hmmm ... how do you suggest me to investigate around this tasklet? Do I =
-
-> need to use the toggling pin technique
-
-That seems to be the most precise tool you have, unless you
-have access to the JTAG-style hardware tools giving access
-to the on-chip instruction trace buffers found in many ARMs.
+Either they're already handled correctly in the mmc_spi host code
+(and don't need duplicate handling here), or they need attention
+from someone with all the relevant hardware in hand...
 
 
-> or does the kernel provides some  =
+> And could you do two if:s, one 
+> for the error bits, and one for the different handling of getting the
+> data? I think that would be clearer in detailing the differences.
 
-> tools to do that? Could oprofile come to help?
+If you insist ... appended.
 
-Statistical profiling probably wouldn't help.  I'm not sure that
-anything like gprof is working in the kernel.  Folk that I know
-have done that level analysis tend to rely on hardware trace tools.
+=========
+Tweak the (untested) SDIO-over-SPI code paths.
 
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/mmc/core/sdio_ops.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-> > I'd expect that using spi_sync() wouldn't save much, but it might
-> > be worth verifying that.
->
-> Initially my driver used spi_sync. When I realized the huge CPU =
-
-> occupation I modified it in order to use spi_async instead but, again, =
-
-> nothing changed.
-
-And that should have been a HUGE clue that the way you were calling
-it wasn't a factor at all.  =
-
-
-- Dave
-
- =
-
-
-
+--- g26.orig/drivers/mmc/core/sdio_ops.c	2007-08-09 08:29:36.000000000 -0700
++++ g26/drivers/mmc/core/sdio_ops.c	2007-08-09 08:32:32.000000000 -0700
+@@ -79,8 +79,7 @@ int mmc_io_rw_direct(struct mmc_card *ca
+ 		return err;
+ 
+ 	if (mmc_host_is_spi(card->host)) {
+-		if (out)
+-			*out = (cmd.resp[0] >> 8) & 0xFF;
++		/* host driver already reported errors */
+ 	} else {
+ 		if (cmd.resp[0] & R5_ERROR)
+ 			return -EIO;
+@@ -88,8 +87,12 @@ int mmc_io_rw_direct(struct mmc_card *ca
+ 			return -EINVAL;
+ 		if (cmd.resp[0] & R5_OUT_OF_RANGE)
+ 			return -ERANGE;
++	}
+ 
+-		if (out)
++	if (out) {
++		if (mmc_host_is_spi(card->host))
++			*out = (cmd.resp[0] >> 8) & 0xFF;
++		else
+ 			*out = cmd.resp[0] & 0xFF;
+ 	}
+ 
+@@ -140,7 +143,9 @@ int mmc_io_rw_extended(struct mmc_card *
+ 	if (data.error)
+ 		return data.error;
+ 
+-	if (!mmc_host_is_spi(card->host)) {
++	if (mmc_host_is_spi(card->host)) {
++		/* host driver already reported errors */
++	} else {
+ 		if (cmd.resp[0] & R5_ERROR)
+ 			return -EIO;
+ 		if (cmd.resp[0] & R5_FUNCTION_NUMBER)
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

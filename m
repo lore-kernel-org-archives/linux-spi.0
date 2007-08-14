@@ -1,15 +1,17 @@
-From: joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org
-Subject: [PATCH] [449/2many] MAINTAINERS - SPI SUBSYSTEM
-Date: Sun, 12 Aug 2007 23:36:19 -0700
-Message-ID: <46bffbe3.6n/Ek/czawNxYYo0%joe@perches.com>
+From: llandre <r&d2-4VKA1VU3ct/j+vYz1yj4TQ@public.gmane.org>
+Subject: Re: R: spi_async and heavy CPU occupation by
+ ksoftirqd
+Date: Tue, 14 Aug 2007 10:29:36 +0200
+Message-ID: <46C167F0.4040100@dave-tech.it>
+References: <FLEPLOLKEPNLMHOILNHPIEKIDKAA.a.paterniani@swapp-eng.it>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <FLEPLOLKEPNLMHOILNHPIEKIDKAA.a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,24 +23,36 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add file pattern to MAINTAINER entry
+AFAIK introducing support for RDY in the driver is not a trivial matter.
+Since
+a) I just need to perform 1-byte transactions to communicate with 
+Quantum QT510
+b) I don't have much time to spend on this issue (customer needs to 
+assemble a demo quickly)
+I'm afraid I'll have to write a dirty patch just to make my specific 
+configuration work.
 
-Signed-off-by: Joe Perches <joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org>
+I'll keep you informed anyway.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a168f36..14633c4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4263,6 +4263,9 @@ P:	David Brownell
- M:	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
- L:	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
- S:	Maintained
-+F:	Documentation/spi/
-+F:	drivers/spi/
-+F:	include/linux/spi/
- 
- STABLE BRANCH:
- P:	Greg Kroah-Hartman
+Regards,
+llandre
+
+DAVE Electronics System House - R&D Department
+web:   http://www.dave-tech.it
+email: r&d2-4VKA1VU3ct/j+vYz1yj4TQ@public.gmane.org
+
+
+
+> You're right the current version of the driver doesn't support RDY control.
+> Infact SPI_DEFAULT_CONTROL is defined with SPI_CONTROL_DRCTL_0.
+> Also setup function doesn't managed DRCTL changes.
+> 
+> Then you probably changes SPI_DEFAULT_CONTROL to use SPI_CONTROL_DRCTL_2.
+> 
+> Please do your suggestions for driver modification in order to release a driver patch.
+> 
+> - Andrea
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

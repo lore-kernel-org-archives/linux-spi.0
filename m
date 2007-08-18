@@ -1,15 +1,11 @@
-From: "apaterniani.swapp-IWqWACnzNjyonA0d6jMUrA@public.gmane.org" <apaterniani.swapp-IWqWACnzNjyonA0d6jMUrA@public.gmane.org>
-Subject: Re: R: spi_async and heavy CPU occupation by
- ksoftirqd
-Date: Thu, 16 Aug 2007 09:40:49 +0200 (CEST)
-Message-ID: <15040948.1187250049152.JavaMail.root@ps11>
-Reply-To: "apaterniani.swapp-IWqWACnzNjyonA0d6jMUrA@public.gmane.org" <apaterniani.swapp-IWqWACnzNjyonA0d6jMUrA@public.gmane.org>
+From: "Blanche Swan" <a-1countertopsinc-Dr8mR6Zi8joAvxtiuMwx3w@public.gmane.org>
+Subject: Facebook, a popular
+Date: Sat, 18 Aug 2007 11:57:15 -0800
+Message-ID: <01c7e18e$eb969b30$753f227d@a-1countertopsinc>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: <r&d2-4VKA1VU3ct/j+vYz1yj4TQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -22,17 +18,14 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SSdsbCBiYWNrIGluIG15IG9mZmljZSBvbiBBdWcgMjcuCgotIEFuZHJlYQoKCgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkFEU0wg
-NCBNQiBGTEFUCm5hdmlnaGkgR1JBVElTIHBlciB0dXR0byBpbCAyMDA3IApBZmZyZXR0YXRpISBs
-J29mZmVydGEgw6ggdmFsaWRhIHNpbm8gYWwgMjMgYWdvc3RvIDIwMDcgCmh0dHA6Ly9hYmJvbmF0
-aS50aXNjYWxpLml0L2Fkc2wvcHJvZG90dGkvdGMvNGZsYXQvCgoKLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpU
-aGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnk6IFNwbHVuayBJbmMuClN0aWxsIGdyZXBw
-aW5nIHRocm91Z2ggbG9nIGZpbGVzIHRvIGZpbmQgcHJvYmxlbXM/ICBTdG9wLgpOb3cgU2VhcmNo
-IGxvZyBldmVudHMgYW5kIGNvbmZpZ3VyYXRpb24gZmlsZXMgdXNpbmcgQUpBWCBhbmQgYSBicm93
-c2VyLgpEb3dubG9hZCB5b3VyIEZSRUUgY29weSBvZiBTcGx1bmsgbm93ID4+ICBodHRwOi8vZ2V0
-LnNwbHVuay5jb20vCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+NOT to use them). 
+
+Good evening. How do you do? Email me at da-kWhfbkzJkpQVaR8sq3aqF5W6gX13ycwC@public.gmane.org only. I am pretty girl. I will show you some great pictures of me.
+healthy, development  liquidation and   "true toys"  by your IFA (the Firm) in
+
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Splunk Inc.
+Still grepping through log files to find problems?  Stop.
+Now Search log events and configuration files using AJAX and a browser.
+Download your FREE copy of Splunk now >>  http://get.splunk.com/

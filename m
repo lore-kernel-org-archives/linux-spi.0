@@ -1,7 +1,7 @@
-From: "Blanche Swan" <a-1countertopsinc-Dr8mR6Zi8joAvxtiuMwx3w@public.gmane.org>
-Subject: Facebook, a popular
-Date: Sat, 18 Aug 2007 11:57:15 -0800
-Message-ID: <01c7e18e$eb969b30$753f227d@a-1countertopsinc>
+From: "Domingo Mcgowan" <9csa-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
+Subject: Pictures
+Date: Mon, 20 Aug 2007 18:58:18 -0100
+Message-ID: <01c7e35c$126a20f0$fd09fa29@9csa>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,10 +18,7 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-NOT to use them). 
-
-Good evening. How do you do? Email me at da-kWhfbkzJkpQVaR8sq3aqF5W6gX13ycwC@public.gmane.org only. I am pretty girl. I will show you some great pictures of me.
-healthy, development  liquidation and   "true toys"  by your IFA (the Firm) in
+Hello! I am bored today. I am nice girl that would like to chat with you. Email me at gkld-kWhfbkzJkpQVaR8sq3aqF5W6gX13ycwC@public.gmane.org only, because I am writing not from my personal email. Don't miss some of my naughty pictures.
 
 
 -------------------------------------------------------------------------

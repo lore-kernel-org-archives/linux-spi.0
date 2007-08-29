@@ -1,20 +1,22 @@
-From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
-Subject: Re: [patch 2.6.23-rc3-git] SPI driver
-	hotplug/coldplug fixes
-Date: Thu, 23 Aug 2007 12:36:16 +0900 (JST)
-Message-ID: <20070823.123616.45518401.nemoto@toshiba-tops.co.jp>
-References: <200708221315.12184.david-b@pacbell.net>
-	<20070823.102958.126573100.nemoto@toshiba-tops.co.jp>
-	<20070823015656.6C67A231949@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [patch 3/4 2.6.23-rc2 + mm2-git-mmc]
+	MMC	core learns about SPI
+Date: Wed, 29 Aug 2007 11:22:47 +0200
+Message-ID: <20070829092247.GA15021@pengutronix.de>
+References: <200708080906.18993.david-b@pacbell.net>
+	<200708080911.33099.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
-	a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org, akonovalov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
-To: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
+	Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
+	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
+	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070823015656.6C67A231949-ZcXrCSuhvln6VZ3dlLfH/g4gEjPzgfUyLrfjE7I9kuVHxeISYlDBzl6hYfS7NtTn@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <200708080911.33099.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,18 +28,52 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 22 Aug 2007 18:56:57 -0700, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> Why don't you craft a patch that goes on top of what I sent, then
-> submit it to Andrew.  He'll either keep it separate or merge it
-> with the $SUBJECT patch (already in his MM tree) before he sends
-> it upstream to Linus.
-> 
-> Consider that pre-ACKed by me.  :)
+Hi David and all,
 
-OK, done ;)
+I need the following patch on my (little endian) System to successfully
+read the csd/cid structure.
+
+Sascha
+
+
+CSD/CID is transfered in big endian format. Convert it to cpu endianess.
+
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
 ---
-Atsushi Nemoto
+ drivers/mmc/core/mmc_ops.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+Index: linux-2.6-arm/drivers/mmc/core/mmc_ops.c
+===================================================================
+--- linux-2.6-arm.orig/drivers/mmc/core/mmc_ops.c
++++ linux-2.6-arm/drivers/mmc/core/mmc_ops.c
+@@ -207,6 +207,7 @@ mmc_send_cxd_data(struct mmc_host *host,
+ 	struct mmc_data data;
+ 	struct scatterlist sg;
+ 	void *data_buf;
++	int i;
+ 
+ 	/* dma onto stack is unsafe/nonportable, but callers here
+ 	 * normally provide temporary on-stack buffers.
+@@ -246,7 +247,11 @@ mmc_send_cxd_data(struct mmc_host *host,
+ 
+ 	mmc_wait_for_req(host, &mrq);
+ 
+-	memcpy(buf, data_buf, len);
++	for (i = 0; i < (len >> 2); i++) {
++		u32 *buf32 = buf;
++		buf32[i] = be32_to_cpu(*((u32 *)data_buf + i));
++	}
++
+ 	kfree(data_buf);
+ 
+ 	if (cmd.error != MMC_ERR_NONE)
+
+
+-- 
+Pengutronix - Linux Solutions for Science and Industry
+Entwicklungszentrum Nord     http://www.pengutronix.de
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

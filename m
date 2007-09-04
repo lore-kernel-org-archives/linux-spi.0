@@ -1,20 +1,26 @@
-From: Andrei Konovalov <akonovalov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: Re: [patch 2.6.23-rc3-git] SPI driver
-	hotplug/coldplug fixes
-Date: Fri, 24 Aug 2007 18:50:20 +0400
-Message-ID: <46CEF02C.2010505@ru.mvista.com>
-References: <200708221315.12184.david-b@pacbell.net>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [patch 4/4 2.6.23-rc2 +
+	mm2-git-mmc]	mmc_spi host driver
+Date: Tue, 4 Sep 2007 12:54:53 +0200
+Message-ID: <20070904105453.GD7579@pengutronix.de>
+References: <200708080906.18993.david-b@pacbell.net>
+	<200708080912.54918.david-b@pacbell.net>
+	<20070829100708.GB15021@pengutronix.de>
+	<200708290959.33584.david-b@pacbell.net>
+	<20070830085900.GA18374@pengutronix.de>
+	<20070830185623.9C6CD231986@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+	<20070831170054.GA11112@pengutronix.de>
+	<20070831230050.4F31F2371AF@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Wolfgang Reissnegger <wolfgang.reissnegger-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org, ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, mikael.starvik-VrBV9hrLPhE@public.gmane.org,
+	hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org, mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org,
+	drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200708221315.12184.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20070831230050.4F31F2371AF-ZcXrCSuhvln6VZ3dlLfH/g4gEjPzgfUyLrfjE7I9kuVHxeISYlDBzl6hYfS7NtTn@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,59 +32,81 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-David Brownell wrote:
-> Update various SPI drivers so they properly support
-> 
->   - coldplug through "modprobe $(cat /sys/devices/.../modalias)"
-> 
->   - hotplug through "modprobe $(MODALIAS)"
-> 
-> The basic rule for platform, SPI, and (new style) I2C drivers is just
-> to make sure that modprobing the driver name works.  In this case, all
-> the relevant drivers are platform drivers, and this patch either
-> 
->   (a)	Changes the driver name, if no in-tree code would break;
-> 	this is simpler and thus preferable in the long term.
-> 
->   (b)	Adds MODULE_ALIAS directives, when in-tree platforms declare
-> 	devices using the current driver name; less desirable.
-> 
-> Most systems will link SPI controller drivers statically, but
-> there's no point in being needlessly broken.
-> 
-> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-> ---
-> Build-tested for the ARM drivers.
-> 
->  drivers/spi/spi_bfin5xx.c      |    3 ++-
->  drivers/spi/spi_imx.c          |    2 +-
->  drivers/spi/spi_mpc83xx.c      |    1 +
->  drivers/spi/spi_s3c24xx.c      |    1 +
->  drivers/spi/spi_s3c24xx_gpio.c |    2 +-
->  drivers/spi/spi_txx9.c         |    1 +
->  drivers/spi/xilinx_spi.c       |    2 +-
->  7 files changed, 8 insertions(+), 4 deletions(-)
+Hi David,
 
-<snip>
-> --- g26.orig/drivers/spi/xilinx_spi.c	2007-08-11 11:48:09.000000000 -0700
-> +++ g26/drivers/spi/xilinx_spi.c	2007-08-11 12:13:19.000000000 -0700
-> @@ -21,7 +21,7 @@
->  
->  #include <syslib/virtex_devices.h>
->  
-> -#define XILINX_SPI_NAME "xspi"
-> +#define XILINX_SPI_NAME "xilinx_spi"
->  
->  /* Register definitions as per "OPB Serial Peripheral Interface (SPI) (v1.00e)
->   * Product Specification", DS464
+On Fri, Aug 31, 2007 at 04:00:51PM -0700, David Brownell wrote:
+> > > > The problem with the crc is reproducible. I watched this on the logic
+> > > > analyzer, it's the response from the card to a SPI_TOKEN_STOP_TRAN
+> > > > transfer. It occurs on the very last block on an SD card:
+> > > 
+> > > ISTR seeing some comment in a document pointing out that there can
+> > > be some odd faults reported when reading that block.  Maybe you've
+> > > found a case where the mmc_spi code needs updating.
+> 
+> Did you verify that even with CRCs disabled, a problem appears?
 
-Acked-by: Andrei Konovalov <akonovalov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Yes, this does not change anything.
 
-I'll add the corresponding modifications to the device registration stuff
-for the Xilinx boards to git://source.mvista.com/git/linux-xilinx-26.git shortly.
+> 
+> 
+> > > > I tested this with six SD cards. They all behave like this except one
+> > > > 512MB Kingston card which works. A MMC card I tested works too.
+> > > > Maybe we have to use a single block transfer on the last sector?
+> > > 
+> > > Could be.  See what the current "Simplified SD" spec says ... I do
+> > > recall language about reading that sector, but it didn't seem to
+> > > matter for any of the cards I have for testing.  So I probably didn't
+> > > pay enough attention to those words.
+> >
+> > Unfortunately I did not find anything about that in the spec.
+> 
+> I'm sure I saw that, but have no idea what document it was in.  If
+> not the "Simplified" spec, then a vendor's card spec ... either
+> Sandisk (MMC, SD), Samsung, Hitachi, whatever.
+> 
 
-Thanks,
-Andrei
+Still did not find something about it. I looked in the simplified spec
+and in vendor specs from Toshiba and Sandisk.
+
+I tried using a single block read for the last sector and this works for
+me. I would be glad if a third person confirms that he actually needs
+this patch as I'm still not sure whether theres a bug in my driver.
+
+Here's the patch:
+
+
+Some SD cards in SPI mode return a crc error when trying to read the
+last block using a multiple block read. Use a single block read instead.
+
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+
+---
+ drivers/mmc/card/block.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+Index: linux-2.6-arm/drivers/mmc/card/block.c
+===================================================================
+--- linux-2.6-arm.orig/drivers/mmc/card/block.c
++++ linux-2.6-arm/drivers/mmc/card/block.c
+@@ -244,6 +244,16 @@ static int mmc_blk_issue_rq(struct mmc_q
+ 		    !mmc_card_sd(card))
+ 			brq.data.blocks = 1;
+ 
++		/* Some SD cards in SPI mode return a crc error when trying
++		 * to read the last block using a multiread command.
++		 */
++		if (mmc_host_is_spi(card->host)
++				&& brq.data.blocks > 1
++				&& rq_data_dir(req) == READ
++				&& req->sector + req->nr_sectors ==
++					get_capacity(md->disk))
++			brq.data.blocks--;
++
+ 		if (brq.data.blocks > 1) {
+ 			brq.data.flags |= MMC_DATA_MULTI;
+ 			/* SPI multiblock writes terminate using a special
+
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

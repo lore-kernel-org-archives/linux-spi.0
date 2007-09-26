@@ -1,20 +1,24 @@
-From: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
-Subject: Re: [PATCH 7/7] [POWERPC][SPI]
-	spi_mpc83xx:	allow use on MPC85xx
-Date: Tue, 25 Sep 2007 23:00:38 -0500
-Message-ID: <7881139C-EEF1-41DC-AB0F-115632E892B8@kernel.crashing.org>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: [PATCH 7/7] [POWERPC][SPI] spi_mpc83xx: allow
+	use on any	processors with QUICC Engine
+Date: Wed, 26 Sep 2007 17:15:21 +0400
+Message-ID: <20070926131521.GA4034@localhost.localdomain>
 References: <20070925143126.GA30013@localhost.localdomain>
 	<20070925143531.GG5323@localhost.localdomain>
 	<16E78F0E-B57B-4084-887E-5D2F9C1D0331@kernel.crashing.org>
 	<20070925151819.GA6757@localhost.localdomain>
 	<20070925165845.40B0E2397FB@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-Mime-Version: 1.0 (Apple Message framework v752.2)
+	<7881139C-EEF1-41DC-AB0F-115632E892B8@kernel.crashing.org>
+Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
+Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20070925165845.40B0E2397FB-ZcXrCSuhvln6VZ3dlLfH/g4gEjPzgfUyLrfjE7I9kuVHxeISYlDBzl6hYfS7NtTn@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <7881139C-EEF1-41DC-AB0F-115632E892B8-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,45 +30,55 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, Sep 25, 2007 at 11:00:38PM -0500, Kumar Gala wrote:
+> I'm still in favor of making it PPC_83xx || QUICC_ENGINE.
 
-On Sep 25, 2007, at 11:58 AM, David Brownell wrote:
+Submitting... ;-)
 
->>>> -	depends on SPI_MASTER && PPC_83xx && EXPERIMENTAL
->>>> +	depends on SPI_MASTER && (PPC_83xx || PPC_85xx) && EXPERIMENTAL
->>>
->>> Should that really be just PPC_83xx || QUICC_ENGINE?
->>
->> Well, I thought about that. By now I'm unsure if every QE
->> implementation will be compatible with further ones.
->
-> How many other QE implementations exist?  Is that sort of
-> gratuitous breakage something Freescale makes a habit of?
+- - - -
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: [POWERPC][SPI] spi_mpc83xx: allow use on any processors with QUICC Engine
 
-We try not to, but HW people are know to do evil things to keep us  
-software guys employed.
+Currently, all QE SPI controllers are almost the same comparing to
+MPC83xx's, thus let's use that driver for them.
 
->> 	So far
->> I've tested this driver on MPC8323 and MPC8568. If we'll see
->> more and more compatible QE SPI controllers, of course we
->> may just do || QUICC_ENGINE.
->>
->> PPC_83xx || PPC_85xx
->> PPC_83xx || QUICC_ENGINE
->>
->> Today first option saves us four bytes. ;-)
->
-> It'd be good if someone would look at the relevant docs.
->
-> I'll wait for a PPC signoff before I forward this for
-> merge with SPI stuff...
+Tested to work on MPC85xx in loopback mode.
 
-I'm still in favor of making it PPC_83xx || QUICC_ENGINE.
+Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+---
+ drivers/spi/Kconfig |   13 +++++++------
+ 1 files changed, 7 insertions(+), 6 deletions(-)
 
-So if when we have 87xx with QUICC_ENGINE we don't have to tweak it  
-again, but its a minor thing.
-
-- k
-
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index b915711..a77ede5 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -124,16 +124,17 @@ config SPI_MPC52xx_PSC
+ 	  Controller in master SPI mode.
+ 
+ config SPI_MPC83xx
+-	tristate "Freescale MPC83xx SPI controller"
+-	depends on SPI_MASTER && PPC_83xx && EXPERIMENTAL
++	tristate "Freescale MPC83xx/QUICC Engine SPI controller"
++	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE) && EXPERIMENTAL
+ 	select SPI_BITBANG
+ 	help
+-	  This enables using the Freescale MPC83xx SPI controller in master
+-	  mode.
++	  This enables using the Freescale MPC83xx and QUICC Engine SPI
++	  controllers in master mode.
+ 
+ 	  Note, this driver uniquely supports the SPI controller on the MPC83xx
+-	  family of PowerPC processors.  The MPC83xx uses a simple set of shift
+-	  registers for data (opposed to the CPM based descriptor model).
++	  family of PowerPC processors, plus processors with QUICC Engine
++	  technology. This driver uses a simple set of shift registers for data
++	  (opposed to the CPM based descriptor model).
+ 
+ config SPI_OMAP_UWIRE
+ 	tristate "OMAP1 MicroWire"
+-- 
+1.5.0.6
 
 
 -------------------------------------------------------------------------

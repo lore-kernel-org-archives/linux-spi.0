@@ -1,10 +1,11 @@
-From: "Rodolfo stelma" <Rodolfostelma-rOgYh+KEzozQT0dZR+AlfA@public.gmane.org>
-Subject: sekamets
-Date: Sat, 29 Sep 2007 13:25:10 +0200
-Message-ID: <E1IbaRj-0006XL-Vh@mail.sourceforge.net>
+From: Carl-Daniel Hailfinger <c-d.hailfinger.devel.2006-hi6Y0CQ0nG0@public.gmane.org>
+Subject: IT8716F SPI driver submission?
+Date: Sat, 29 Sep 2007 15:45:37 +0200
+Message-ID: <46FE5701.2030000@gmx.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Cc: Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,12 +19,24 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi To spi-devel-general
+Hi!
 
-Emergency report. Check DMXC!
-Price up 21% in 30 minutes!
-5 day price: ~$0.50
+I have written a rough code skeleton to be able to use the ITE IT8716F
+Super I/O chip as SPI host/master. The code works fine in userspace, but
+the Linux kernel SPI framework looks like it could save me from
+implementing full support for SPI flash clients/slaves. That's why I'd
+like to rewrite my code in a manner that's suitable for kernel inclusion.
 
+The IT8716F accepts commands byte-wise and does all of the lifting on
+the SPI bus as well. There are limitations, though:
+- It can send 1,2,4,5 bytes (including command byte) to the slave and
+read 0,1,2,3 bytes back. Other values are not possible.
+- Bus clock rate is either 33 MHz or 16.5 MHz.
+
+Is there any driver I can start from as reference?
+
+Regards,
+Carl-Daniel
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

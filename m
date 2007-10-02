@@ -1,11 +1,13 @@
-From: =?GB2312?B?sszPyMn6?= <linbo762-9Onoh4P/yGk@public.gmane.org>
-Subject: (no subject)
-Date: Tue, 2 Oct 2007 22:33:44 +0800
-Message-ID: <E1IcinM-0001eu-PM@mail.sourceforge.net>
-Reply-To: linbo762-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1466117120=="
+From: "Bettie Yu" <tiqprovidecofuj-9fhzmsKnulugSpxsJD1C4w@public.gmane.org>
+Subject: Our present for your health
+Date: Tue, 2 Oct 2007 15:07:45 +0000 (UTC)
+Message-ID: <038192265.00060493048241@provideco.com>
+Reply-To: tiqprovidecofuj-9fhzmsKnulugSpxsJD1C4w@public.gmane.org
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============1334721609=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Tue, 32 Sep 2007 10:12:49 +0200
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,26 +19,60 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1466117120==
-Content-Type: text/plain;charset="GB2312"
+--===============1334721609==
+Content-Type: multipart/alternative;
+  boundary="----------D3946731F46E7A"
 
-                                                                                  宝恒实业有限公司
-　                                                           尊敬的贵公司（厂）财务部：
-                                                         您好！
-                                                             本公司身受多家包税公司委托代开各种税票，规范做帐，价格优惠，
-                                                         为企业争取最大的经济利益。
-                                                            发票种类分别为：增值税专用发票、海关增值税专用发票、普通国税
-                                                         (服务业、运输业、建筑安装业、广告业、加工业、销售业等等。)
-                                                            如贵公司（厂）需要本公司代开发票请来电联系.
-                                                             致
-                                                          礼
-                                                                                          请来电联系；0755-21054532
-                                                                                          13751120762 蔡先生
-                                                                                          LINBO762-guc8Kt/Hbbw@public.gmane.org
-        
+------------D3946731F46E7A
+Content-Type: text/plain; charset=iso-8859-2
+Content-Transfer-Encoding: 7bit
 
 
---===============1466117120==
+As our dear client you may examine first our new I-net site! 
+Only primal high quality drugs at a price easy to buy!! 
+20% guaranteed discount is for you only!!!  
+Take a note what write our glad customers: 
+From: Blenda Allen 
+Subject: Simply thank you! 
+"Thank you much you granted to me holiday cut rates and 
+your peculiar offers that save bucks and time, 
+proposing only best quality preparations. 
+You抮e one of my favorites, 
+I'll necessarily tell about your store all my buddies!" 
+
+Take notice some more gratitudes at our I-net page! 
+http://happymorning.cn/
+------------D3946731F46E7A
+Content-Type: text/html; charset=iso-8859-2
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE></TITLE>
+</HEAD>
+<BODY>
+
+<strong>
+As our dear client you may examine first our new I-net site!<br> 
+Only primal high quality drugs at a price easy to buy!!<br> 
+<font color="#FF0000">20%</font> guaranteed discount is for you only!!! </strong><br> 
+<strong><font color="#17960A">Take a note what write our glad customers:</font></strong><br> 
+<strong>From: </strong>Blenda Allen<strong><br> 
+Subject: </strong>Simply thank you!<br> 
+<strong><em>"Thank you much you granted to me holiday cut rates and 
+your peculiar offers that save bucks and time, 
+proposing only best quality preparations. 
+You抮e one of my favorites, 
+I'll necessarily tell about your store all my buddies!"</em></strong><br><br> 
+
+<em><strong><a href="http://happymorning.cn/" target="_blank">Take notice some more gratitudes at our I-net page!</a></strong></em><br> 
+<font color="#D9EDFF">http://happymorning.cn/</font>
+
+</BODY></HTML>
+------------D3946731F46E7A--
+
+
+
+--===============1334721609==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -46,7 +82,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2005.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1466117120==
+--===============1334721609==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -57,4 +93,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1466117120==--
+--===============1334721609==--

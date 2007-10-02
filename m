@@ -1,10 +1,11 @@
-From: =?GB2312?B?sszPyMn6?= <linbo762-9Onoh4P/yGk@public.gmane.org>
-Subject: (no subject)
-Date: Tue, 2 Oct 2007 13:55:36 +0800
-Message-ID: <E1Icahy-000214-02@mail.sourceforge.net>
-Reply-To: linbo762-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1859853841=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: =?shift-jis?B?bWF5dW1p?= <kjhfdhh357-Qt13gs6zZMY@public.gmane.org>
+Subject: =?iso-2022-jp?b?GyRCPz8kQ0A5JGohIT80MjkbKEI=?=
+	=?iso-2022-jp?b?GyRCJF4kayRhJDAkaiQiJCQbKEI=?=
+Date: Tue,  2 Oct 2007 05:14:03 -0700 (PDT)
+Message-ID: <E1IcgdP-0007Rh-2n@mail.sourceforge.net>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0056217130=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,26 +18,266 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1859853841==
-Content-Type: text/plain;charset="GB2312"
+This is a multi-part message in MIME format.
 
-                                                                                  ±¦ºãÊµÒµÓÐÏÞ¹«Ë¾
-¡¡                                                           ×ð¾´µÄ¹ó¹«Ë¾£¨³§£©²ÆÎñ²¿£º
-                                                         ÄúºÃ£¡
-                                                             ±¾¹«Ë¾ÉíÊÜ¶à¼Ò°üË°¹«Ë¾Î¯ÍÐ´ú¿ª¸÷ÖÖË°Æ±£¬¹æ·¶×öÕÊ£¬¼Û¸ñÓÅ»Ý£¬
-                                                         ÎªÆóÒµÕùÈ¡×î´óµÄ¾­¼ÃÀûÒæ¡£
-                                                            ·¢Æ±ÖÖÀà·Ö±ðÎª£ºÔöÖµË°×¨ÓÃ·¢Æ±¡¢º£¹ØÔöÖµË°×¨ÓÃ·¢Æ±¡¢ÆÕÍ¨¹úË°
-                                                         (·þÎñÒµ¡¢ÔËÊäÒµ¡¢½¨Öþ°²×°Òµ¡¢¹ã¸æÒµ¡¢¼Ó¹¤Òµ¡¢ÏúÊÛÒµµÈµÈ¡£)
-                                                            Èç¹ó¹«Ë¾£¨³§£©ÐèÒª±¾¹«Ë¾´ú¿ª·¢Æ±ÇëÀ´µçÁªÏµ.
-                                                             ÖÂ
-                                                          Àñ
-                                                                                          ÇëÀ´µçÁªÏµ£»0755-21054532
-                                                                                          13751120762 ²ÌÏÈÉú
-                                                                                          LINBO762-guc8Kt/Hbbw@public.gmane.org
-        
+--===============0056217130==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0009_01C7F796.34541830"
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0009_01C7F796.34541830
+Content-Type: text/plain;
+	charset="iso-2022-jp"
+Content-Transfer-Encoding: 7bit
+
+$B$H$K$+$/Bg@*$N=w@-$HCN$j0)$($^$9!#(B
+$B!!(Bhttp://sexfriend-club.net/pure/?h184
+
+$BJ?6Q#1=54V$G#1#0?M!!#17n$G#4#0?M!*!*(B
+$B$=$NCf$+$i5$$N2q$&=w@-$r8+$D$1(B
+$B?<$$Cf$K$J$l$k$+$O!"$"$J$?<!Bh$G$9!#(B
+
+$B$^$:$OL5NA$GL%NOE*$J(B
+$B%W%m%U%#!<%k$r:n@.$7$F$_$F$/$@$5$$!#(B
+$B!!(Bhttp://sexfriend-club.net/pure/?h184
 
 
---===============1859853841==
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$B<u?.5qH](B
+info_only_jp-Qt13gs6zZMY@public.gmane.org
+
+
+
+
+------=_NextPart_000_0009_01C7F796.34541830
+Content-Type: text/html;
+	charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-2022-jp">
+<META content=3D"MSHTML 6.00.2900.3157" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3D"MS UI Gothic" size=3D2>
+<DIV><FONT face=3D"MS UI Gothic" size=3D2><FONT =
+size=3D3>=1B$B$H$K$+$/Bg@*$N=3Dw@-$HCN$j0)$($^$9!#=1B(B<BR>=1B$B!!=1B(B<A=
+=20
+href=3D"">http://sexfriend-club.net/pure/?h184</A><BR><A=20
+href=3D""></A></FONT></FONT></DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D2><FONT=20
+size=3D3>=1B$BJ?6Q#1=3D54V$G#1#0?M!!#17n$G#4#0?M!*!*=1B(B<BR>=1B$B$=3D$NC=
+f$+$i5$$N2q$&=3Dw@-$r8+$D$1=1B(B<BR>=1B$B?<$$Cf$K$J$l$k$+$O!"$"$J$?<!Bh$G=
+$9!#=1B(B<BR><BR>=1B$B$^$:$OL5NA$GL%NOE*$J=1B(B<BR>=1B$B%W%m%U%#!<%k$r:n@=
+$7$F$_$F$/$@$5$$!#=1B(B<BR>=1B$B!!=1B(B<A=20
+href=3D"">http://sexfriend-club.net/pure/?h184</A><BR></FONT></DIV>
+<DIV><FONT face=3D"MS UI Gothic"></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D3></FONT>&nbsp;</DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D3></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D2>=1B$B<u?.5qH]=1B(B<BR><A=20
+href=3D"mailto:info_only_jp-Qt13gs6zZMY@public.gmane.org">info_only_jp-Qt13gs6zZMY@public.gmane.org</A><A=20
+href=3D""></A><BR></FONT></DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic" size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"MS UI Gothic"=20
+size=3D2></FONT>&nbsp;</DIV></FONT></FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0009_01C7F796.34541830--
+
+
+
+--===============0056217130==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -46,7 +287,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2005.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1859853841==
+--===============0056217130==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -57,4 +298,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1859853841==--
+--===============0056217130==--

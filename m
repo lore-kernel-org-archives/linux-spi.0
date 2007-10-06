@@ -1,10 +1,9 @@
-From: "Grover Hampton" <migridentistgyr-FKkeBMDfgT/by3iVrkZq2A@public.gmane.org>
-Subject: Can you imagine that you are healthy?
-Date: Fri, 5 Oct 2007 12:04:46 -0800
-Message-ID: <468317904.96941890351731@ridentist.com>
-Reply-To: migridentistgyr-FKkeBMDfgT/by3iVrkZq2A@public.gmane.org
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1299964528=="
+From: =?GB2312?B?sszPyMn6?= <linbo762-9Onoh4P/yGk@public.gmane.org>
+Subject: (no subject)
+Date: Sat, 6 Oct 2007 17:53:55 +0800
+Message-ID: <E1Ie6M7-0002ND-2R@mail.sourceforge.net>
+Reply-To: linbo762-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0477078363=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,51 +17,26 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1299964528==
-Content-Type: multipart/alternative;
-  boundary="----------8DA8D3B48D3B4F05"
+--===============0477078363==
+Content-Type: text/plain;charset="GB2312"
 
-------------8DA8D3B48D3B4F05
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 7bit
-
-LegalRX drug store offers all drugs you feel necessity in to restore your health at little cost. 
-We operate across the world with buyers from all continents. 
-At the time you got no need to seek out drugstore somewhere at your area.
-We surely bring high quality drugs to all parts of the planet. 
-
-Come to our site & acquire meds you demand instantly straight to your residence. 
-http://playduring.cn/ 
-
-We're verified by VISA and VeriSign accordingly we ensure certain & confidential purchase.
-
-------------8DA8D3B48D3B4F05
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML><HEAD><TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<b><font color="#00CC33"><em>LegalRX</em></font> drug store offers all drugs you feel necessity in to restore your health at little cost. <br>
-We operate across the world with buyers from all continents. <br>
-At the time you got no need to seek out drugstore somewhere at your area.<br>
-We surely bring high quality drugs to all parts of the planet.<br><br> 
-
-<a href="http://playduring.cn/" target="_blank"><em>Come to our site & acquire meds you demand instantly straight to your residence.</em></a></b> 
-<br>
-<font color="#D9EDFF">http://playduring.cn/</font> 
-
-<br><b>We're verified by <font color="#FF0000"><em>VISA</em></font> and <font color="#FF0000"><em>VeriSign</em></font> accordingly we ensure certain & confidential purchase.
-</b>
-
-</BODY></HTML>
-------------8DA8D3B48D3B4F05--
+                                                                                  宝恒实业有限公司
+　                                                           尊敬的贵公司（厂）财务部：
+                                                         您好！
+                                                             本公司身受多家包税公司委托代开各种税票，规范做帐，价格优惠，
+                                                         为企业争取最大的经济利益。
+                                                            发票种类分别为：增值税专用发票、海关增值税专用发票、普通国税
+                                                         (服务业、运输业、建筑安装业、广告业、加工业、销售业等等。)
+                                                            如贵公司（厂）需要本公司代开发票请来电联系.
+                                                             致
+                                                          礼
+                                                                                          请来电联系；0755-21054532
+                                                                                          13751120762 蔡先生
+                                                                                          LINBO762-guc8Kt/Hbbw@public.gmane.org
+        
 
 
-
---===============1299964528==
+--===============0477078363==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -73,7 +47,7 @@ This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1299964528==
+--===============0477078363==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -84,4 +58,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1299964528==--
+--===============0477078363==--

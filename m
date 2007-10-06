@@ -1,17 +1,18 @@
-From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH 7/7] [POWERPC][SPI] spi_mpc83xx: allow
-	use on any	processors with QUICC Engine
-Date: Fri, 5 Oct 2007 21:46:33 +0400
-Message-ID: <20071005174633.GA32145@localhost.localdomain>
-References: <20071005174015.GA11016@localhost.localdomain>
+From: WANG Cong <xiyou.wangcong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [Patch]Documentation/spi/spidev_test.c:
+	constify some variables
+Date: Sat, 6 Oct 2007 10:02:29 +0800
+Message-ID: <20071006020229.GB2436@hacking>
+Reply-To: WANG Cong <xiyou.wangcong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+Cc: Andrew Morton <akpm-3NddpPZAyC0@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20071005174015.GA11016-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,50 +24,48 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently, all QE SPI controllers are almost the same comparing to
-MPC83xx's, thus let's use that driver for them.
 
-Tested to work on MPC85xx in loopback mode.
+Constify two char pointers and a struct in Documentation/spi/spidev_test.c.
 
-Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+CC: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+CC: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Signed-off-by: WANG Cong <xiyou.wangcong-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+
 ---
+ Documentation/spi/spidev_test.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-This is respin. Hope this time it will get ack from the
-PowerPC team.
-
- drivers/spi/Kconfig |   13 +++++++------
- 1 files changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index b915711..a77ede5 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -124,16 +124,17 @@ config SPI_MPC52xx_PSC
- 	  Controller in master SPI mode.
+Index: linux-2.6.23-rc9/Documentation/spi/spidev_test.c
+===================================================================
+--- linux-2.6.23-rc9.orig/Documentation/spi/spidev_test.c
++++ linux-2.6.23-rc9/Documentation/spi/spidev_test.c
+@@ -29,7 +29,7 @@ static void pabort(const char *s)
+ 	abort();
+ }
  
- config SPI_MPC83xx
--	tristate "Freescale MPC83xx SPI controller"
--	depends on SPI_MASTER && PPC_83xx && EXPERIMENTAL
-+	tristate "Freescale MPC83xx/QUICC Engine SPI controller"
-+	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE) && EXPERIMENTAL
- 	select SPI_BITBANG
- 	help
--	  This enables using the Freescale MPC83xx SPI controller in master
--	  mode.
-+	  This enables using the Freescale MPC83xx and QUICC Engine SPI
-+	  controllers in master mode.
+-static char *device = "/dev/spidev1.1";
++static const char *device = "/dev/spidev1.1";
+ static uint8_t mode;
+ static uint8_t bits = 8;
+ static uint32_t speed = 500000;
+@@ -69,7 +69,7 @@ static void transfer(int fd)
+ 	puts("");
+ }
  
- 	  Note, this driver uniquely supports the SPI controller on the MPC83xx
--	  family of PowerPC processors.  The MPC83xx uses a simple set of shift
--	  registers for data (opposed to the CPM based descriptor model).
-+	  family of PowerPC processors, plus processors with QUICC Engine
-+	  technology. This driver uses a simple set of shift registers for data
-+	  (opposed to the CPM based descriptor model).
- 
- config SPI_OMAP_UWIRE
- 	tristate "OMAP1 MicroWire"
--- 
-1.5.0.6
+-void print_usage(char *prog)
++void print_usage(const char *prog)
+ {
+ 	printf("Usage: %s [-DsbdlHOLC3]\n", prog);
+ 	puts("  -D --device   device to use (default /dev/spidev1.1)\n"
+@@ -88,7 +88,7 @@ void print_usage(char *prog)
+ void parse_opts(int argc, char *argv[])
+ {
+ 	while (1) {
+-		static struct option lopts[] = {
++		static const struct option lopts[] = {
+ 			{ "device",  1, 0, 'D' },
+ 			{ "speed",   1, 0, 's' },
+ 			{ "delay",   1, 0, 'd' },
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

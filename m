@@ -1,9 +1,9 @@
 From: =?GB2312?B?sszPyMn6?= <linbo762-9Onoh4P/yGk@public.gmane.org>
 Subject: (no subject)
-Date: Tue, 9 Oct 2007 23:29:42 +0800
-Message-ID: <E1IfH1h-0004MT-GX@mail.sourceforge.net>
+Date: Wed, 10 Oct 2007 01:05:33 +0800
+Message-ID: <E1IfIWS-000863-IY@mail.sourceforge.net>
 Reply-To: linbo762-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1467625422=="
+Content-Type: multipart/mixed; boundary="===============1461909875=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,7 +17,7 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1467625422==
+--===============1461909875==
 Content-Type: text/plain;charset="GB2312"
 
                                                                                   宝恒实业有限公司
@@ -36,7 +36,7 @@ Content-Type: text/plain;charset="GB2312"
         
 
 
---===============1467625422==
+--===============1461909875==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -47,7 +47,7 @@ This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1467625422==
+--===============1461909875==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -58,4 +58,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1467625422==--
+--===============1461909875==--

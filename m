@@ -1,10 +1,10 @@
-From: =?GB2312?B?sszPyMn6?= <linbo762-9Onoh4P/yGk@public.gmane.org>
-Subject: (no subject)
-Date: Wed, 10 Oct 2007 04:03:30 +0800
-Message-ID: <E1IfLIf-0004mm-LW@mail.sourceforge.net>
-Reply-To: linbo762-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1355374422=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: "Stanley McColeman" <Stanley.McColeman-MiS3e43Ekl/VUFnaLb2RUdBPR1lH4CV8@public.gmane.org>
+Subject: imi{pp{n
+Date: Tue, 9 Oct 2007 23:34:01 +0200
+Message-ID: <000a01c80abc$1ba1b110$d27d66d5@l0iwqb>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0656301118=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,26 +17,49 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1355374422==
-Content-Type: text/plain;charset="GB2312"
+--===============0656301118==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0008_01C80ACC.DF2A8110"
 
-                                                                                  宝恒实业有限公司
-　                                                           尊敬的贵公司（厂）财务部：
-                                                         您好！
-                                                             本公司身受多家包税公司委托代开各种税票，规范做帐，价格优惠，
-                                                         为企业争取最大的经济利益。
-                                                            发票种类分别为：增值税专用发票、海关增值税专用发票、普通国税
-                                                         (服务业、运输业、建筑安装业、广告业、加工业、销售业等等。)
-                                                            如贵公司（厂）需要本公司代开发票请来电联系.
-                                                             致
-                                                          礼
-                                                                                          请来电联系；0755-21054532
-                                                                                          13751120762 蔡先生
-                                                                                          LINBO762-guc8Kt/Hbbw@public.gmane.org
-        
+------=_NextPart_000_0008_01C80ACC.DF2A8110
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+http://www.ridlizard.com/
+Good day spi-devel-general
+
+imagine the look on your wifes face when she sees the new you
+
+Stanley McColeman
+------=_NextPart_000_0008_01C80ACC.DF2A8110
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2900.3059" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT Arial size=3D2><A=20
+HREF=3D"http://www.ridlizard.com/">http://www.ridlizard.com/</A></FONT></=
+DIV>
+<DIV><FONT Arial size=3D2>Good day spi-devel-general</FONT></DIV>
+<DIV><FONT Arial size=3D2></FONT></DIV>
+<DIV><FONT Arial size=3D2>imagine the look on your wifes face when she =
+sees the=20
+new you</FONT></DIV>
+<DIV><FONT Arial size=3D2></FONT></DIV>
+<DIV><FONT Arial size=3D2>Stanley McColeman</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0008_01C80ACC.DF2A8110--
 
 
---===============1355374422==
+
+--===============0656301118==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -47,7 +70,7 @@ This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1355374422==
+--===============0656301118==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -58,4 +81,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1355374422==--
+--===============0656301118==--

@@ -1,8 +1,8 @@
 From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 9/9] Blackfin SPI driver: Clean up
-	useless wait in bfin SPI driver
-Date: Thu, 11 Oct 2007 18:10:41 +0800
-Message-ID: <1192097441-24962-10-git-send-email-bryan.wu@analog.com>
+Subject: [PATCH 7/9] Blackfin SPI driver: Move GPIO
+	config to setup and cleanup
+Date: Thu, 11 Oct 2007 18:10:39 +0800
+Message-ID: <1192097441-24962-8-git-send-email-bryan.wu@analog.com>
 References: <1192097441-24962-1-git-send-email-bryan.wu@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -30,238 +30,107 @@ From: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   84 ++++++++++++++++++++++++++++-----------------
- 1 files changed, 52 insertions(+), 32 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   52 +++++++++++++++++++++++---------------------
+ 1 files changed, 27 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 0cdfc2b..bfeaa7c 100644
+index ecfb7c5..c1516cb 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -276,22 +276,26 @@ static void u8_writer(struct driver_data *drv_data)
- 	dev_dbg(&drv_data->pdev->dev,
- 		"cr8-s is 0x%x\n", read_STAT());
+@@ -136,7 +136,6 @@ struct chip_data {
+ 	u16 flag;
  
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
-+
- 	while (drv_data->tx < drv_data->tx_end) {
- 		write_TDBR(*(u8 *) (drv_data->tx));
- 		while (read_STAT() & BIT_STAT_TXS)
- 			continue;
- 		++drv_data->tx;
- 	}
--
--	/* poll for SPI completion before returning */
--	while (!(read_STAT() & BIT_STAT_SPIF))
--		continue;
- }
- 
- static void u8_cs_chg_writer(struct driver_data *drv_data)
+ 	u8 chip_select_num;
+-	u8 chip_select_requested;
+ 	u8 n_bytes;
+ 	u8 width;		/* 0 or 1 */
+ 	u8 enable_dma;
+@@ -216,19 +215,7 @@ static int restore_state(struct driver_data *drv_data)
  {
  	struct chip_data *chip = drv_data->cur_chip;
- 
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
-+
- 	while (drv_data->tx < drv_data->tx_end) {
- 		cs_active(chip);
- 
-@@ -304,10 +308,6 @@ static void u8_cs_chg_writer(struct driver_data *drv_data)
- 			udelay(chip->cs_chg_udelay);
- 		++drv_data->tx;
- 	}
+ 	int ret = 0;
+-	u16 ssel[3][MAX_SPI_SSEL] = {
+-		{P_SPI0_SSEL1, P_SPI0_SSEL2, P_SPI0_SSEL3,
+-		P_SPI0_SSEL4, P_SPI0_SSEL5,
+-		P_SPI0_SSEL6, P_SPI0_SSEL7},
 -
--	/* poll for SPI completion before returning */
--	while (!(read_STAT() & BIT_STAT_SPIF))
--		continue;
+-		{P_SPI1_SSEL1, P_SPI1_SSEL2, P_SPI1_SSEL3,
+-		P_SPI1_SSEL4, P_SPI1_SSEL5,
+-		P_SPI1_SSEL6, P_SPI1_SSEL7},
+-
+-		{P_SPI2_SSEL1, P_SPI2_SSEL2, P_SPI2_SSEL3,
+-		P_SPI2_SSEL4, P_SPI2_SSEL5,
+-		P_SPI2_SSEL6, P_SPI2_SSEL7},
+-	};
++
+ 	/* Clear status and disable clock */
+ 	write_STAT(BIT_STAT_CLR);
+ 	bfin_spi_disable(drv_data);
+@@ -239,17 +226,6 @@ static int restore_state(struct driver_data *drv_data)
+ 	write_BAUD(chip->baud);
+ 	cs_active(chip);
+ 
+-	if (!chip->chip_select_requested) {
+-		int i = chip->chip_select_num;
+-
+-		dev_dbg(&drv_data->pdev->dev, "chip select number is %d\n", i);
+-		if ((i > 0) && (i <= MAX_SPI_SSEL))
+-			ret = peripheral_request(
+-				ssel[drv_data->master->bus_num][i-1], DRV_NAME);
+-
+-		chip->chip_select_requested = 1;
+-	}
+-
+ 	if (ret)
+ 		dev_dbg(&drv_data->pdev->dev,
+ 			": request chip select number %d failed\n",
+@@ -981,6 +957,22 @@ static int transfer(struct spi_device *spi, struct spi_message *msg)
+ 	return 0;
  }
  
- static void u8_reader(struct driver_data *drv_data)
-@@ -315,6 +315,10 @@ static void u8_reader(struct driver_data *drv_data)
- 	dev_dbg(&drv_data->pdev->dev,
- 		"cr-8 is 0x%x\n", read_STAT());
- 
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
++#define MAX_SPI_SSEL	7
 +
- 	/* clear TDBR buffer before read(else it will be shifted out) */
- 	write_TDBR(0xFFFF);
- 
-@@ -337,6 +341,10 @@ static void u8_cs_chg_reader(struct driver_data *drv_data)
++static u16 ssel[3][MAX_SPI_SSEL] = {
++	{P_SPI0_SSEL1, P_SPI0_SSEL2, P_SPI0_SSEL3,
++	P_SPI0_SSEL4, P_SPI0_SSEL5,
++	P_SPI0_SSEL6, P_SPI0_SSEL7},
++
++	{P_SPI1_SSEL1, P_SPI1_SSEL2, P_SPI1_SSEL3,
++	P_SPI1_SSEL4, P_SPI1_SSEL5,
++	P_SPI1_SSEL6, P_SPI1_SSEL7},
++
++	{P_SPI2_SSEL1, P_SPI2_SSEL2, P_SPI2_SSEL3,
++	P_SPI2_SSEL4, P_SPI2_SSEL5,
++	P_SPI2_SSEL6, P_SPI2_SSEL7},
++};
++
+ /* first setup for new devices */
+ static int setup(struct spi_device *spi)
  {
- 	struct chip_data *chip = drv_data->cur_chip;
+@@ -1109,6 +1101,12 @@ static int setup(struct spi_device *spi)
  
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
+ 	spi_set_ctldata(spi, chip);
+ 
++	dev_dbg(&spi->dev, "chip select number is %d\n", chip->chip_select_num);
++	if ((chip->chip_select_num > 0)
++		&& (chip->chip_select_num <= spi->master->num_chipselect))
++		peripheral_request(ssel[spi->master->bus_num]
++			[chip->chip_select_num-1], DRV_NAME);
 +
- 	/* clear TDBR buffer before read(else it will be shifted out) */
- 	write_TDBR(0xFFFF);
- 
-@@ -365,6 +373,10 @@ static void u8_cs_chg_reader(struct driver_data *drv_data)
- 
- static void u8_duplex(struct driver_data *drv_data)
- {
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
-+
- 	/* in duplex mode, clk is triggered by writing of TDBR */
- 	while (drv_data->rx < drv_data->rx_end) {
- 		write_TDBR(*(u8 *) (drv_data->tx));
-@@ -376,16 +388,16 @@ static void u8_duplex(struct driver_data *drv_data)
- 		++drv_data->rx;
- 		++drv_data->tx;
- 	}
--
--	/* poll for SPI completion before returning */
--	while (!(read_STAT() & BIT_STAT_SPIF))
--		continue;
+ 	return 0;
  }
  
- static void u8_cs_chg_duplex(struct driver_data *drv_data)
+@@ -1120,6 +1118,10 @@ static void cleanup(struct spi_device *spi)
  {
- 	struct chip_data *chip = drv_data->cur_chip;
+ 	struct chip_data *chip = spi_get_ctldata(spi);
  
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
++	if ((chip->chip_select_num > 0)
++		&& (chip->chip_select_num <= spi->master->num_chipselect))
++		peripheral_free(ssel[spi->master->bus_num][chip->chip_select_num-1]);
 +
- 	while (drv_data->rx < drv_data->rx_end) {
- 		cs_active(chip);
- 
-@@ -402,10 +414,6 @@ static void u8_cs_chg_duplex(struct driver_data *drv_data)
- 		++drv_data->rx;
- 		++drv_data->tx;
- 	}
--
--	/* poll for SPI completion before returning */
--	while (!(read_STAT() & BIT_STAT_SPIF))
--		continue;
+ 	kfree(chip);
  }
  
- static void u16_writer(struct driver_data *drv_data)
-@@ -413,22 +421,26 @@ static void u16_writer(struct driver_data *drv_data)
- 	dev_dbg(&drv_data->pdev->dev,
- 		"cr16 is 0x%x\n", read_STAT());
- 
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
-+
- 	while (drv_data->tx < drv_data->tx_end) {
- 		write_TDBR(*(u16 *) (drv_data->tx));
- 		while ((read_STAT() & BIT_STAT_TXS))
- 			continue;
- 		drv_data->tx += 2;
- 	}
--
--	/* poll for SPI completion before returning */
--	while (!(read_STAT() & BIT_STAT_SPIF))
--		continue;
- }
- 
- static void u16_cs_chg_writer(struct driver_data *drv_data)
- {
- 	struct chip_data *chip = drv_data->cur_chip;
- 
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
-+
- 	while (drv_data->tx < drv_data->tx_end) {
- 		cs_active(chip);
- 
-@@ -441,10 +453,6 @@ static void u16_cs_chg_writer(struct driver_data *drv_data)
- 			udelay(chip->cs_chg_udelay);
- 		drv_data->tx += 2;
- 	}
--
--	/* poll for SPI completion before returning */
--	while (!(read_STAT() & BIT_STAT_SPIF))
--		continue;
- }
- 
- static void u16_reader(struct driver_data *drv_data)
-@@ -452,6 +460,10 @@ static void u16_reader(struct driver_data *drv_data)
- 	dev_dbg(&drv_data->pdev->dev,
- 		"cr-16 is 0x%x\n", read_STAT());
- 
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
-+
- 	/* clear TDBR buffer before read(else it will be shifted out) */
- 	write_TDBR(0xFFFF);
- 
-@@ -474,6 +486,10 @@ static void u16_cs_chg_reader(struct driver_data *drv_data)
- {
- 	struct chip_data *chip = drv_data->cur_chip;
- 
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
-+
- 	/* clear TDBR buffer before read(else it will be shifted out) */
- 	write_TDBR(0xFFFF);
- 
-@@ -502,6 +518,10 @@ static void u16_cs_chg_reader(struct driver_data *drv_data)
- 
- static void u16_duplex(struct driver_data *drv_data)
- {
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
-+
- 	/* in duplex mode, clk is triggered by writing of TDBR */
- 	while (drv_data->tx < drv_data->tx_end) {
- 		write_TDBR(*(u16 *) (drv_data->tx));
-@@ -513,16 +533,16 @@ static void u16_duplex(struct driver_data *drv_data)
- 		drv_data->rx += 2;
- 		drv_data->tx += 2;
- 	}
--
--	/* poll for SPI completion before returning */
--	while (!(read_STAT() & BIT_STAT_SPIF))
--		continue;
- }
- 
- static void u16_cs_chg_duplex(struct driver_data *drv_data)
- {
- 	struct chip_data *chip = drv_data->cur_chip;
- 
-+	/* poll for SPI completion before start */
-+	while (!(read_STAT() & BIT_STAT_SPIF))
-+		continue;
-+
- 	while (drv_data->tx < drv_data->tx_end) {
- 		cs_active(chip);
- 
-@@ -539,10 +559,6 @@ static void u16_cs_chg_duplex(struct driver_data *drv_data)
- 		drv_data->rx += 2;
- 		drv_data->tx += 2;
- 	}
--
--	/* poll for SPI completion before returning */
--	while (!(read_STAT() & BIT_STAT_SPIF))
--		continue;
- }
- 
- /* test if ther is more transfer to be done */
-@@ -765,6 +781,10 @@ static void pump_transfers(unsigned long data)
- 			dma_width = WDSIZE_8;
- 		}
- 
-+		/* poll for SPI completion before start */
-+		while (!(read_STAT() & BIT_STAT_SPIF))
-+			continue;
-+
- 		/* dirty hack for autobuffer DMA mode */
- 		if (drv_data->tx_dma == 0xFFFF) {
- 			dev_dbg(&drv_data->pdev->dev,
 -- 
 1.5.3.4
 

@@ -1,18 +1,13 @@
-From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 3/9] Blackfin SPI driver: Blackfin SPI
-	driver does not respect the per-transfer cs_change field
-Date: Thu, 11 Oct 2007 18:10:35 +0800
-Message-ID: <1192097441-24962-4-git-send-email-bryan.wu@analog.com>
-References: <1192097441-24962-1-git-send-email-bryan.wu@analog.com>
+From: Juergen Beisert <jbe-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: MPC5200-SPI: Where to search
+Date: Thu, 11 Oct 2007 12:54:46 +0200
+Message-ID: <200710111254.47316.jbe@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1192097441-24962-1-git-send-email-bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,282 +19,86 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add cs_active/cs_deactive functions and try to catch the cs_change flag.
+Hi,
 
-Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi_bfin5xx.c |   76 ++++++++++++++++++++++++++++++++-------------
- 1 files changed, 54 insertions(+), 22 deletions(-)
+the following error happens on my system:
 
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 2f46283..7093065 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -115,6 +115,7 @@ struct driver_data {
- 	size_t rx_map_len;
- 	size_t tx_map_len;
- 	u8 n_bytes;
-+	int cs_change;
- 	void (*write) (struct driver_data *);
- 	void (*read) (struct driver_data *);
- 	void (*duplex) (struct driver_data *);
-@@ -179,6 +180,26 @@ static int flush(struct driver_data *drv_data)
- 	return limit;
- }
- 
-+/* Chip select operation functions for cs_change flag */
-+static void cs_active(struct chip_data *chip)
-+{
-+	u16 flag = read_FLAG();
-+
-+	flag |= chip->flag;
-+	flag &= ~(chip->flag << 8);
-+
-+	write_FLAG(flag);
-+}
-+
-+static void cs_deactive(struct chip_data *chip)
-+{
-+	u16 flag = read_FLAG();
-+
-+	flag |= (chip->flag << 8);
-+
-+	write_FLAG(flag);
-+}
-+
- #define MAX_SPI0_SSEL	7
- 
- /* stop controller and re-config current chip*/
-@@ -198,7 +219,7 @@ static int restore_state(struct driver_data *drv_data)
- 	/* Load the registers */
- 	write_CTRL(chip->ctl_reg);
- 	write_BAUD(chip->baud);
--	write_FLAG(chip->flag);
-+	cs_active(chip);
- 
- 	if (!chip->chip_select_requested) {
- 		int i = chip->chip_select_num;
-@@ -273,20 +294,20 @@ static void u8_cs_chg_writer(struct driver_data *drv_data)
- 	struct chip_data *chip = drv_data->cur_chip;
- 
- 	while (drv_data->tx < drv_data->tx_end) {
--		write_FLAG(chip->flag);
-+		cs_active(chip);
- 
- 		write_TDBR(*(u8 *) (drv_data->tx));
- 		while (read_STAT() & BIT_STAT_TXS)
- 			continue;
- 		while (!(read_STAT() & BIT_STAT_SPIF))
- 			continue;
--		write_FLAG(0xFF00 | chip->flag);
-+		cs_deactive(chip);
- 
- 		if (chip->cs_chg_udelay)
- 			udelay(chip->cs_chg_udelay);
- 		++drv_data->tx;
- 	}
--	write_FLAG(0xFF00);
-+	cs_deactive(chip);
- 
- }
- 
-@@ -318,7 +339,7 @@ static void u8_cs_chg_reader(struct driver_data *drv_data)
- 	struct chip_data *chip = drv_data->cur_chip;
- 
- 	while (drv_data->rx < drv_data->rx_end) {
--		write_FLAG(chip->flag);
-+		cs_active(chip);
- 
- 		read_RDBR();	/* kick off */
- 		while (!(read_STAT() & BIT_STAT_RXS))
-@@ -326,13 +347,13 @@ static void u8_cs_chg_reader(struct driver_data *drv_data)
- 		while (!(read_STAT() & BIT_STAT_SPIF))
- 			continue;
- 		*(u8 *) (drv_data->rx) = read_SHAW();
--		write_FLAG(0xFF00 | chip->flag);
-+		cs_deactive(chip);
- 
- 		if (chip->cs_chg_udelay)
- 			udelay(chip->cs_chg_udelay);
- 		++drv_data->rx;
- 	}
--	write_FLAG(0xFF00);
-+	cs_deactive(chip);
- 
- }
- 
-@@ -356,7 +377,7 @@ static void u8_cs_chg_duplex(struct driver_data *drv_data)
- 	struct chip_data *chip = drv_data->cur_chip;
- 
- 	while (drv_data->rx < drv_data->rx_end) {
--		write_FLAG(chip->flag);
-+		cs_active(chip);
- 
- 
- 		write_TDBR(*(u8 *) (drv_data->tx));
-@@ -365,15 +386,14 @@ static void u8_cs_chg_duplex(struct driver_data *drv_data)
- 		while (!(read_STAT() & BIT_STAT_RXS))
- 			continue;
- 		*(u8 *) (drv_data->rx) = read_RDBR();
--		write_FLAG(0xFF00 | chip->flag);
-+		cs_deactive(chip);
- 
- 		if (chip->cs_chg_udelay)
- 			udelay(chip->cs_chg_udelay);
- 		++drv_data->rx;
- 		++drv_data->tx;
- 	}
--	write_FLAG(0xFF00);
--
-+	cs_deactive(chip);
- }
- 
- static void u16_writer(struct driver_data *drv_data)
-@@ -398,20 +418,20 @@ static void u16_cs_chg_writer(struct driver_data *drv_data)
- 	struct chip_data *chip = drv_data->cur_chip;
- 
- 	while (drv_data->tx < drv_data->tx_end) {
--		write_FLAG(chip->flag);
-+		cs_active(chip);
- 
- 		write_TDBR(*(u16 *) (drv_data->tx));
- 		while ((read_STAT() & BIT_STAT_TXS))
- 			continue;
- 		while (!(read_STAT() & BIT_STAT_SPIF))
- 			continue;
--		write_FLAG(0xFF00 | chip->flag);
-+		cs_deactive(chip);
- 
- 		if (chip->cs_chg_udelay)
- 			udelay(chip->cs_chg_udelay);
- 		drv_data->tx += 2;
- 	}
--	write_FLAG(0xFF00);
-+	cs_deactive(chip);
- }
- 
- static void u16_reader(struct driver_data *drv_data)
-@@ -438,7 +458,7 @@ static void u16_cs_chg_reader(struct driver_data *drv_data)
- 	struct chip_data *chip = drv_data->cur_chip;
- 
- 	while (drv_data->rx < drv_data->rx_end) {
--		write_FLAG(chip->flag);
-+		cs_active(chip);
- 
- 		read_RDBR();	/* kick off */
- 		while (!(read_STAT() & BIT_STAT_RXS))
-@@ -446,13 +466,13 @@ static void u16_cs_chg_reader(struct driver_data *drv_data)
- 		while (!(read_STAT() & BIT_STAT_SPIF))
- 			continue;
- 		*(u16 *) (drv_data->rx) = read_SHAW();
--		write_FLAG(0xFF00 | chip->flag);
-+		cs_deactive(chip);
- 
- 		if (chip->cs_chg_udelay)
- 			udelay(chip->cs_chg_udelay);
- 		drv_data->rx += 2;
- 	}
--	write_FLAG(0xFF00);
-+	cs_deactive(chip);
- }
- 
- static void u16_duplex(struct driver_data *drv_data)
-@@ -475,7 +495,7 @@ static void u16_cs_chg_duplex(struct driver_data *drv_data)
- 	struct chip_data *chip = drv_data->cur_chip;
- 
- 	while (drv_data->tx < drv_data->tx_end) {
--		write_FLAG(chip->flag);
-+		cs_active(chip);
- 
- 		write_TDBR(*(u16 *) (drv_data->tx));
- 		while (!(read_STAT() & BIT_STAT_SPIF))
-@@ -483,14 +503,14 @@ static void u16_cs_chg_duplex(struct driver_data *drv_data)
- 		while (!(read_STAT() & BIT_STAT_RXS))
- 			continue;
- 		*(u16 *) (drv_data->rx) = read_RDBR();
--		write_FLAG(0xFF00 | chip->flag);
-+		cs_deactive(chip);
- 
- 		if (chip->cs_chg_udelay)
- 			udelay(chip->cs_chg_udelay);
- 		drv_data->rx += 2;
- 		drv_data->tx += 2;
- 	}
--	write_FLAG(0xFF00);
-+	cs_deactive(chip);
- }
- 
- /* test if ther is more transfer to be done */
-@@ -515,6 +535,7 @@ static void *next_transfer(struct driver_data *drv_data)
-  */
- static void giveback(struct driver_data *drv_data)
- {
-+	struct chip_data *chip = drv_data->cur_chip;
- 	struct spi_transfer *last_transfer;
- 	unsigned long flags;
- 	struct spi_message *msg;
-@@ -534,10 +555,13 @@ static void giveback(struct driver_data *drv_data)
- 
- 	/* disable chip select signal. And not stop spi in autobuffer mode */
- 	if (drv_data->tx_dma != 0xFFFF) {
--		write_FLAG(0xFF00);
-+		cs_deactive(chip);
- 		bfin_spi_disable(drv_data);
- 	}
- 
-+	if (!drv_data->cs_change)
-+		cs_deactive(chip);
-+
- 	if (msg->complete)
- 		msg->complete(msg->context);
- }
-@@ -546,6 +570,7 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
- {
- 	struct driver_data *drv_data = (struct driver_data *)dev_id;
- 	struct spi_message *msg = drv_data->cur_msg;
-+	struct chip_data *chip = drv_data->cur_chip;
- 
- 	dev_dbg(&drv_data->pdev->dev, "in dma_irq_handler\n");
- 	clear_dma_irqstat(CH_SPI);
-@@ -573,6 +598,9 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
- 
- 	msg->actual_length += drv_data->len_in_bytes;
- 
-+	if (drv_data->cs_change)
-+		cs_deactive(chip);
-+
- 	/* Move to next transfer */
- 	msg->state = next_transfer(drv_data);
- 
-@@ -659,6 +687,7 @@ static void pump_transfers(unsigned long data)
- 	drv_data->rx_dma = transfer->rx_dma;
- 	drv_data->tx_dma = transfer->tx_dma;
- 	drv_data->len_in_bytes = transfer->len;
-+	drv_data->cs_change = transfer->cs_change;
- 
- 	width = chip->width;
- 	if (width == CFG_SPI_WORDSIZE16) {
-@@ -683,7 +712,7 @@ static void pump_transfers(unsigned long data)
- 	} else {
- 		write_BAUD(chip->baud);
- 	}
--	write_FLAG(chip->flag);
-+	cs_active(chip);
- 
- 	dev_dbg(&drv_data->pdev->dev,
- 		"now pumping a transfer: width is %d, len is %d\n",
-@@ -834,6 +863,9 @@ static void pump_transfers(unsigned long data)
- 			/* Update total byte transfered */
- 			message->actual_length += drv_data->len;
- 
-+			if (drv_data->cs_change)
-+				cs_deactive(chip);
-+
- 			/* Move to next transfer of this msg */
- 			message->state = next_transfer(drv_data);
- 		}
--- 
-1.5.3.4
+--------------------------------
+Oops: Kernel access of bad area, sig: 11 [#1]
+PREEMPT
+Modules linked in: cam_spi_driver
+NIP: 00000000 LR: C30626C4 CTR: 00000000
+REGS: c0329a30 TRAP: 0400   Not tainted  (2.6.20-rt3-pcm030-3CAM-1)
+MSR: 20009032 <EE,ME,IR,DR>  CR: 24008222  XER: 20000000
+TASK =3D c030abf0[216] 'insmod' THREAD: c0328000
+GPR00: 00000000 C0329AE0 C030ABF0 C1F01CC0 00000002 00000000 00000000 00000=
+000
+GPR08: 00000000 FFFFFF8D 00000000 C0329B24 22008282 10069448 C3060714 C0791=
+840
+GPR16: C305F03C C305F064 00000000 00000124 C305EB3E C305F08C C0230000 C0329=
+C19
+GPR24: C0322800 C0329C18 C0240000 C1F01D14 C0329B68 C1F01CC0 C0329B68 00000=
+000
+NIP [00000000] _start+0x40000000/0xc
+LR [C30626C4] mpc52xx_psc_spi_transfer+0x44/0x94 [cam_spi_driver]
+Call Trace:
+[C0329AE0] [0000001C] 0x1c (unreliable)
+[C0329B00] [C0130DEC] spi_sync+0x90/0xbc
+[C0329B60] [C01315B0] spi_write_then_read+0x104/0x188
+[C0329C10] [C01305C8] dataflash_probe+0x30/0x178
+[C0329C30] [C0131460] spi_drv_probe+0x2c/0x3c
+[C0329C40] [C011367C] really_probe+0x64/0x14c
+[C0329C60] [C0112778] bus_for_each_drv+0x5c/0x9c
+[C0329C90] [C011399C] device_attach+0x98/0xbc
+[C0329CA0] [C011265C] bus_attach_device+0x34/0x88
+[C0329CB0] [C01111C0] device_add+0x450/0x514
+[C0329CF0] [C01310C0] spi_new_device+0xe0/0x148
+[C0329D10] [C0131208] spi_register_master+0xe0/0x13c
+[C0329D30] [C306298C] mpc52xx_spi_master_init+0x134/0x1c8 [cam_spi_driver]
+[C0329D60] [C30622D4] mpc52xx_spi_of_probe+0x174/0x458 [cam_spi_driver]
+[C0329DA0] [C00095E8] of_platform_device_probe+0x58/0x80
+[C0329DC0] [C011367C] really_probe+0x64/0x14c
+[C0329DE0] [C01138CC] __driver_attach+0x84/0x88
+[C0329E00] [C0112A70] bus_for_each_dev+0x58/0x94
+[C0329E30] [C01134E0] driver_attach+0x24/0x34
+[C0329E40] [C0112EC4] bus_add_driver+0x88/0x1b4
+[C0329E60] [C0113A9C] driver_register+0x68/0xb0
+[C0329E70] [C0009928] of_register_platform_driver+0x28/0x38
+[C0329E80] [C300601C] mpc52xx_spi_of_driver_init+0x1c/0xa8 [cam_spi_driver]
+[C0329E90] [C00403F4] sys_init_module+0x16c/0x1600
+[C0329F40] [C000E9F8] ret_from_syscall+0x0/0x38
+--- Exception: c01 at 0xff21a7c
+    LR =3D 0x1001d38c
+--------------------------------
+
+Its an RT preempt patched kernel. This happens most of the time when:
+
+- Running from JFFS2 flash
+- when insmod the SPI based MTD dataflash driver
+
+It happens always, when the JFFS2 is a fresh one (whole area was erased and =
+
+the new jffs2 image was written at the beginning of this flash area) and th=
+e =
+
+kernel boots the first time into it. It happens *not always*, if this jffs2 =
+
+filesystem was at least one times mounted and modified ($ touch <anything>; =
+
+sync; reboot).
+It never happens if I'm using NFS root instead.
+
+SPI related? MTD related? JFFS2 related? Any hints where to start the searc=
+h?
+
+JB
+-- =
+
+Dipl.-Ing. Juergen Beisert | http://www.pengutronix.de
+=A0Pengutronix - Linux Solutions for Science and Industry
+=A0   Handelsregister: Amtsgericht Hildesheim, HRA 2686
+=A0 =A0 =A0    Vertretung Sued/Muenchen, Germany
+   Phone: +49-8766-939 228 |  Fax: +49-5121-206917-9
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

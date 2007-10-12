@@ -1,20 +1,22 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Subject: Re: [PATCH 1/9] Blackfin SPI driver: use new
-	GPIO API and add error handling
-Date: Thu, 11 Oct 2007 14:46:29 -0700
-Message-ID: <200710111446.29725.david-b@pacbell.net>
+	GPIO API and add	error handling
+Date: Fri, 12 Oct 2007 10:59:28 +0800
+Message-ID: <1192157968.6247.1.camel@roc-laptop>
 References: <1192097441-24962-1-git-send-email-bryan.wu@analog.com>
 	<1192097441-24962-2-git-send-email-bryan.wu@analog.com>
+	<200710111446.29725.david-b@pacbell.net>
+Reply-To: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-To: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1192097441-24962-2-git-send-email-bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200710111446.29725.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,29 +28,32 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 11 October 2007, Bryan Wu wrote:
-> @@ -1182,12 +1198,9 @@ static int __init bfin5xx_spi_probe(struct platfor=
-m_device *pdev)
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0return -ENOMEM;
-> =A0=A0=A0=A0=A0=A0=A0=A0}
-> =A0
-> -=A0=A0=A0=A0=A0=A0=A0if (peripheral_request(P_SPI0_SCK, DRV_NAME) ||
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 peripheral_request(P_SPI0_=
-MISO, DRV_NAME) ||
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 peripheral_request(P_SPI0_=
-MOSI, DRV_NAME) ) {
-> -
-> +=A0=A0=A0=A0=A0=A0=A0if (setup_pin_mux(1)) {
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0dev_err(&pdev->dev, ": Re=
-questing Peripherals failed\n");
-> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0goto out_error_queue_alloc;
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0goto out_error;
-> =A0=A0=A0=A0=A0=A0=A0=A0}
-> =A0
-> =A0=A0=A0=A0=A0=A0=A0=A0drv_data =3D spi_master_get_devdata(master);
+On Thu, 2007-10-11 at 14:46 -0700, David Brownell wrote:
+> On Thursday 11 October 2007, Bryan Wu wrote:
+> > @@ -1182,12 +1198,9 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
+> >                 return -ENOMEM;
+> >         }
+> >  
+> > -       if (peripheral_request(P_SPI0_SCK, DRV_NAME) ||
+> > -                peripheral_request(P_SPI0_MISO, DRV_NAME) ||
+> > -                peripheral_request(P_SPI0_MOSI, DRV_NAME) ) {
+> > -
+> > +       if (setup_pin_mux(1)) {
+> >                 dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
+> > -               goto out_error_queue_alloc;
+> > +               goto out_error;
+> >         }
+> >  
+> >         drv_data = spi_master_get_devdata(master);
+> 
+> 
+> This doesn't apply against 2.6.23 ... ?
 
+Oops, I missed the first patch in this patch series.
+It will be sent as soon as possible.
 
-This doesn't apply against 2.6.23 ... ?
+Thanks a lot
+-Bryan
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

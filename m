@@ -1,14 +1,14 @@
 From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 02/10] Blackfin SPI driver: use new GPIO
-	API and add error handling
-Date: Fri, 12 Oct 2007 11:04:56 +0800
-Message-ID: <1192158304-8277-3-git-send-email-bryan.wu@analog.com>
+Subject: [PATCH 05/10] Blackfin SPI driver: prevent
+	people from setting bits in ctl_reg
+Date: Fri, 12 Oct 2007 11:04:59 +0800
+Message-ID: <1192158304-8277-6-git-send-email-bryan.wu@analog.com>
 References: <1192158304-8277-1-git-send-email-bryan.wu@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+	Mike Frysinger <michael.frysinger-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 To: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -24,92 +24,39 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+From: Mike Frysinger <michael.frysinger-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Prevent people from setting bits in ctl_reg that the SPI
+framework already handles, hopefully we can one day drop
+ctl_reg completely
+
+Signed-off-by: Mike Frysinger <michael.frysinger-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c                 |   29 +++++++++++++++++++++++------
- include/asm-blackfin/mach-bf533/portmux.h |    2 +-
- 2 files changed, 24 insertions(+), 7 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   10 ++++++++++
+ 1 files changed, 10 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 2992ada..8041b89 100644
+index 7093065..1a83656 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -1165,6 +1165,22 @@ static inline int destroy_queue(struct driver_data *drv_data)
- 	return 0;
- }
+@@ -996,6 +996,16 @@ static int setup(struct spi_device *spi)
  
-+static int setup_pin_mux(int action)
-+{
-+
-+	u16 pin_req[] = {P_SPI0_SCK, P_SPI0_MISO, P_SPI0_MOSI, 0};
-+
-+	if (action) {
-+		if (peripheral_request_list(pin_req, DRV_NAME)) {
-+			return -EFAULT;
+ 	/* chip_info isn't always needed */
+ 	if (chip_info) {
++		/* Make sure people stop trying to set fields via ctl_reg when they
++		 * should actually be using common SPI framework.  Currently we let
++		 * through: WOM EMISO PSSE GM SZ TIMOD.  Not sure if a user actually
++		 * needs/uses any of these, but let's assume (for now) they do.
++		 */
++		if (chip_info->ctl_reg & (SPE | MSTR | CPOL | CPHA | LSBF | SIZE)) {
++			dev_err(&spi->dev, "do not set bits in ctl_reg that the SPI framework provides\n");
++			return -EINVAL;
 +		}
-+	} else {
-+		peripheral_free_list(pin_req);
-+	}
 +
-+	return 0;
-+}
-+
- static int __init bfin5xx_spi_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -1182,12 +1198,9 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	}
- 
--	if (peripheral_request(P_SPI0_SCK, DRV_NAME) ||
--		 peripheral_request(P_SPI0_MISO, DRV_NAME) ||
--		 peripheral_request(P_SPI0_MOSI, DRV_NAME) ) {
--
-+	if (setup_pin_mux(1)) {
- 		dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
--		goto out_error_queue_alloc;
-+		goto out_error;
- 	}
- 
- 	drv_data = spi_master_get_devdata(master);
-@@ -1223,9 +1236,11 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
- 	dev_dbg(&pdev->dev, "controller probe successfully\n");
- 	return status;
- 
--      out_error_queue_alloc:
-+out_error_queue_alloc:
- 	destroy_queue(drv_data);
-+out_error:
- 	spi_master_put(master);
-+
- 	return status;
- }
- 
-@@ -1255,6 +1270,8 @@ static int __devexit bfin5xx_spi_remove(struct platform_device *pdev)
- 	/* Disconnect from the SPI framework */
- 	spi_unregister_master(drv_data->master);
- 
-+	setup_pin_mux(0);
-+
- 	/* Prevent double remove */
- 	platform_set_drvdata(pdev, NULL);
- 
-diff --git a/include/asm-blackfin/mach-bf533/portmux.h b/include/asm-blackfin/mach-bf533/portmux.h
-index b88d7a0..137f488 100644
---- a/include/asm-blackfin/mach-bf533/portmux.h
-+++ b/include/asm-blackfin/mach-bf533/portmux.h
-@@ -42,7 +42,7 @@
- #define P_SPORT0_DRPRI	(P_DONTCARE)
- 
- #define P_SPI0_MOSI	(P_DONTCARE)
--#define P_SPI0_MIS0	(P_DONTCARE)
-+#define P_SPI0_MISO	(P_DONTCARE)
- #define P_SPI0_SCK	(P_DONTCARE)
- #define P_SPI0_SSEL7	(P_DEFINED | P_IDENT(GPIO_PF7))
- #define P_SPI0_SSEL6	(P_DEFINED | P_IDENT(GPIO_PF6))
+ 		chip->enable_dma = chip_info->enable_dma != 0
+ 		    && drv_data->master_info->enable_dma;
+ 		chip->ctl_reg = chip_info->ctl_reg;
 -- 
 1.5.3.4
 

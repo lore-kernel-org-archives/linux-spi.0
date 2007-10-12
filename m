@@ -1,17 +1,20 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: MPC5200-SPI: Where to search
-Date: Fri, 12 Oct 2007 09:55:33 -0700
-Message-ID: <200710120955.34032.david-b@pacbell.net>
-References: <200710111254.47316.jbe@pengutronix.de>
-	<200710110930.02693.david-b@pacbell.net>
-	<200710121129.16663.jbe@pengutronix.de>
+Subject: Re: [PATCH 02/10] Blackfin SPI driver: use new
+	GPIO API and add error handling
+Date: Fri, 12 Oct 2007 10:17:47 -0700
+Message-ID: <200710121017.47645.david-b@pacbell.net>
+References: <1192158304-8277-1-git-send-email-bryan.wu@analog.com>
+	<200710112326.34500.david-b@pacbell.net>
+	<1192172077.6247.15.camel@roc-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Juergen Beisert <jbe-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+To: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200710121129.16663.jbe-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1192172077.6247.15.camel@roc-laptop>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -24,23 +27,75 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 12 October 2007, Juergen Beisert wrote:
-> > I've not had the best luck with jffs2 recently. =A0Even on fairly
-> > generic NOR flash it's crapped out quickly ... so I run NFS root
-> > more often than I'd really like. =A0Where "crapping out" means the
-> > JFFS partition turns itself to garbage, constantly spewing error
-> > messages, loses data, and so on. =A0(FWIW I've observed that most
-> > recently on big-endian hardware.)
-> =
+On Thursday 11 October 2007, Bryan Wu wrote:
+> On Thu, 2007-10-11 at 23:26 -0700, David Brownell wrote:
+> > On Thursday 11 October 2007, Bryan Wu wrote:
+> > > @@ -1182,12 +1198,9 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
+> > >                 return -ENOMEM;
+> > >         }
+> > >  
+> > > -       if (peripheral_request(P_SPI0_SCK, DRV_NAME) ||
+> > > -                peripheral_request(P_SPI0_MISO, DRV_NAME) ||
+> > > -                peripheral_request(P_SPI0_MOSI, DRV_NAME) ) {
+> > > -
+> > > +       if (setup_pin_mux(1)) {
+> > >                 dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
+> > > -               goto out_error_queue_alloc;
+> > > +               goto out_error;
+> > >         }
+> > >  
+> > >         drv_data = spi_master_get_devdata(master);
+> > > 
+> > 
+> > Still doesn't apply ... what tree are you generating this series against??
+> 
+> I apply this patch on Linus git tree at 2.6.23 tag
 
-> Really bad news.
+Then why don't my copies of that tree have the lines flagged
+above with "-" ??
 
-Right, but for the record that's with GCC support that's not yet
-gone upstream.  I have no reason to suspect it, since otherwise
-it seems OK ... but as you say, the behavior is bad news.  I've
-not yet made time to try it with 2.6.23 or a newer compiler.
+In fact, if I look at the kernel.org GIT tree, it doesn't have
+them either.  Your tree must have somehow gotten a bunch of
+private changes.
 
-- Dave
+
+> git-request-pull output:
+> ---
+> The following changes since commit bbf25010f1a6b761914430f5fca081ec8c7accd1:
+>   Linus Torvalds (1):
+>         Linux 2.6.23
+> 
+> Bryan Wu (4):
+>       Blackfin SPI driver: Initial supporting BF54x in SPI driver
+>       Blackfin SPI driver: add error handing
+>       Blackfin SPI driver: Blackfin SPI driver does not respect the per-transfer cs_change field
+>       Blackfin SPI driver: update spi driver to support multi-ports
+> 
+> Michael Hennerich (1):
+>       Blackfin SPI driver: use new GPIO API and add error handling
+> 
+> Mike Frysinger (1):
+>       Blackfin SPI driver: prevent people from setting bits in ctl_reg
+> 
+> Sonic Zhang (4):
+>       Blackfin SPI driver: Add SPI master controller platform device 1
+>       Blackfin SPI driver: Move GPIO config to setup and cleanup
+>       Blackfin SPI driver: Fix SPI driver to work with SPI flash ST25P16 on bf548
+>       Blackfin SPI driver: Clean up useless wait in bfin SPI driver
+> 
+>  drivers/spi/spi_bfin5xx.c                       |  586 ++++++++++++++---------
+>  include/asm-blackfin/mach-bf533/portmux.h       |    2 +-
+>  include/asm-blackfin/mach-bf548/defBF54x_base.h |   17 +
+>  3 files changed, 373 insertions(+), 232 deletions(-)
+> 
+> ---
+> Need I send out just one SPI patch.
+> 
+> Thanks
+> -Bryan Wu
+> 
+
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

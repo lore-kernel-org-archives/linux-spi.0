@@ -1,12 +1,13 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Subject: Re: Status of Linux SPI slave
-Date: Sat, 13 Oct 2007 08:47:47 -0700
-Message-ID: <20071013154747.2F7B023A5F4@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+Date: Sat, 13 Oct 2007 15:03:01 -0400
+Message-ID: <47111665.7000005@whoi.edu>
 References: <1190880999.29726.5.camel@shuttle>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, roger-UslnteNVNtIXWF+eFR7m5Q@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: =?ISO-8859-15?Q?Roger_Fr=F8ysaa?= <roger-UslnteNVNtIXWF+eFR7m5Q@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1190880999.29726.5.camel@shuttle>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -20,43 +21,54 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-PiBGcm9tOiBSb2dlciBGcsO4eXNhYSA8cm9nZXJAYml0ZnJvc3Qubm8+Cj4gVG86IHNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKU29ycnkgZm9yIHRoZSBkZWxheWVkIHJl
-c3BvbnNlIC4uLiB5b3Ugc2VudCBpdCBhcyBIVE1MIG1haWwsIHNvIGl0CmxhbmRlZCBpbiBhIHNw
-YW10cmFwLgoKCj4gSSdtIHdvbmRlcmluZyBpZiB0aGVyZSBhcmUgYW55IHBsYW5zIHRvIGFkZCBT
-UEkgc2xhdmUgbW9kZSB0byB0aGUgU1BJCj4gZHJpdmVyIGZyYW1ld29yayBpbiB0aGUgIm5lYXIi
-IGZ1dHVyZT8gSXMgYW55b25lIHdvcmtpbmcgb24gc29tZXRoaW5nCj4gbGlrZSB0aGlzPwoKSSBk
-b24ndCBrbm93IG9mIGFueSBzdWNoIHBsYW5zLCB0aG91Z2ggaWYgeW91IGxvb2sgdGhyb3VnaCBs
-aXN0CmFyY2hpdmVzIHlvdSdsbCBmaW5kIG90aGVyIHBlb3BsZSB3aG8ndmUgYXNrZWQgYWJvdXQg
-aXQuCgoKPiBJZiBub3QsIGhhcyBhbnlvbmUgZXZlciBjb25zaWRlcmVkIGl0IC0gYW5kIGVzdGlt
-YXRlZCB0aGUgYW1vdW50IG9mIHdvcmsKPiBpdCB3b3VsZCBiZSBldGM/CgpUaGUgZmlyc3QgdGFz
-ayBpcyB0byBjb21lIHVwIHdpdGggYSB3b3JrYWJsZSBkZXNpZ24uICBUaGVuIHdvdWxkCmNvbWUg
-aW1wbGVtZW50aW5nIGl0LgoKClRoZSBmaXJzdCBpc3N1ZXMgdGhhdCBjb21lIHRvIG1pbmQgYXJl
-IHRlY2huaWNhbC4gIFRoZXJlJ3MgYW4gaXNzdWUKb2YgcmVzcG9uc2UgdGltZSAuLi4gc2luY2Ug
-U1BJIGhhcyBubyBmbG93IGNvbnRyb2wsIHR5cGljYWwgdHlwZXMgb2YKcmVxdWVzdC9yZXNwb25z
-ZSBwcm90b2NvbCBoYXZlIGhhcmQgcmVzcG9uc2UgdGltZSBsaW1pdHMuICBTbyB0aGUgUlQKc3Rh
-Y2sgbWF5IGJlIGltcGxpY2l0bHkgcmVxdWlyZWQsIGV4Y2VwdCBmb3IgdmVyeSBzbG93IHNsYXZl
-LgoKRXhhbXBsZTogIHByb3RvY29sIHNwZWMgc2F5cyBTUEkgbWFzdGVyIHNlbmRzIHR3byBieXRl
-cyBvZiBjb21tYW5kLAp0aGVuIHRoZSBTUEkgc2xhdmUgc2VuZHMgTiBieXRlcyBvZiByZXNwb25z
-ZS4gIFRoYXQgbWVhbnMgYXQgbGVhc3QKcGFydCBvZiB0aGUgcmVzcG9uc2UgbXVzdCBiZSBjb21w
-dXRlZCB0aGVuIGlzc3VlZCB3aXRoaW4gb25lIGJpdAp0aW1lLCByaWdodCBhZnRlciB0aGUgbGFz
-dCBiaXQgc2VudCBmcm9tIHRoZSBtYXN0ZXIuCgpDbGVhcmx5LCBpbmNyZWFzaW5nIGJpdCB0aW1l
-cyAoc2xvd2luZyB0aGUgU1BJIGNsb2NrKSBjYW4gaGVscC4KU28gY2FuIHN1cHBvcnRpbmcgcHJv
-dG9jb2xzIHRoYXQgdXNlIHN0dWZmIGxpa2UgZHVtbXkgYnl0ZXMsIHdoaWNoCmNhbiBhbGxvdyBt
-b3JlIHRpbWUgYmVmb3JlIHRoZSAicmVhbCIgcmVzcG9uc2UgbXVzdCBiZSByZWFkeSwgb3IKd2hp
-Y2ggYXJlbid0IHN0cnVjdHVyZWQgYXMgcmVxdWVzdC9yZXNwb25zZSBwcm90b2NvbHMuICAoU3Vj
-aCBhcwpwZXJoYXBzIGp1c3Qgc3RyZWFtaW5nIGRhdGEgc2FtcGxlcyBpbiBvbmUgZGlyZWN0aW9u
-IG9yIHRoZSBvdGhlci4pCgoKQSBzZWNvbmQgaXNzdWUgaXMgaG93IHRvIGZhY3RvciB0aGUgcHJv
-Z3JhbW1pbmcgaW50ZXJmYWNlLiAgVGhlCm5vdGlvbiBvZiBhbiBzcGlfbWVzc2FnZSBpc24ndCBu
-ZWNlc3NhcmlseSB3cm9uZywgYnV0IHdoZW4gc2hvdWxkCml0IGdldCBpc3N1ZWQ/ICBIb3cgd291
-bGQgY29tbWFuZHMgc2VudCBieSB0aGUgaG9zdCBiZSBwYWNrYWdlZD8KSG93IHNob3VsZCBjaGlw
-c2VsZWN0L2Rlc2VsZWN0IGJlIHZpc2libGU/CgotIERhdmUKCgoKLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpU
-aGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnk6IFNwbHVuayBJbmMuClN0aWxsIGdyZXBw
-aW5nIHRocm91Z2ggbG9nIGZpbGVzIHRvIGZpbmQgcHJvYmxlbXM/ICBTdG9wLgpOb3cgU2VhcmNo
-IGxvZyBldmVudHMgYW5kIGNvbmZpZ3VyYXRpb24gZmlsZXMgdXNpbmcgQUpBWCBhbmQgYSBicm93
-c2VyLgpEb3dubG9hZCB5b3VyIEZSRUUgY29weSBvZiBTcGx1bmsgbm93ID4+IGh0dHA6Ly9nZXQu
-c3BsdW5rLmNvbS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Roger Fr=F8ysaa wrote:
+> Hi.
+> =
+
+> I'm wondering if there are any plans to add SPI slave mode to the SPI
+>  driver framework in the "near" future? Is anyone working on
+> something like this?
+> =
+
+> If not, has anyone ever considered it - and estimated the amount of
+> work it would be etc?
+
+I have been waiting to respond until there was a response from someone
+knowledgeable.  As David points out, true slave capability has serious
+real time implications, and the standard Linux kernel is not a real-time
+kernel, as I understand it.  However, if you don't need completely
+general slave capability, there may be ways to accomplish some
+slave-like tasks.
+
+For example, I have an SPI master device that streams data to a Linux
+processor at 11Mbit/sec, but never expects any response from the
+processor; this data is written over the 100baseT network to an NFS
+file system at an effective 5GBytes/hour.  To make it work, I have
+heavily modified the pxa2xx-spi driver for the target Gumstix system so
+that it can accept data driven by an external clock, and so that it uses
+a queue of DMA descriptors to prevent interrupt latency from limiting
+service of the receive FIFO.  I did not have to modify a single line of
+code anywhere else in the SPI framework.  All other parts of the SPI
+framework, as well as my protocol driver and user-space code, still
+operate as if they were part of an SPI master; they just keep full a
+queue of SPI messages that request buffers to be filled by SPI reads.
+Basically, this is a VERY limited slave function, where the Linux system
+is not in control of the timing, but also there is never any sort of
+query/response between the master and slave.
+
+-- =
+
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=3D7212
+http://www.whoi.edu/hpb/Site.do?id=3D1532
+http://www.whoi.edu/page.do?pid=3D10079
+
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Splunk Inc.
+Still grepping through log files to find problems?  Stop.
+Now Search log events and configuration files using AJAX and a browser.
+Download your FREE copy of Splunk now >> http://get.splunk.com/

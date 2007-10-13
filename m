@@ -1,21 +1,14 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 02/10] Blackfin SPI driver: use new
-	GPIO API and add error handling
-Date: Fri, 12 Oct 2007 10:17:47 -0700
-Message-ID: <200710121017.47645.david-b@pacbell.net>
-References: <1192158304-8277-1-git-send-email-bryan.wu@analog.com>
-	<200710112326.34500.david-b@pacbell.net>
-	<1192172077.6247.15.camel@roc-laptop>
+Subject: Re: Status of Linux SPI slave
+Date: Sat, 13 Oct 2007 08:47:47 -0700
+Message-ID: <20071013154747.2F7B023A5F4@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+References: <1190880999.29726.5.camel@shuttle>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-To: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, roger-UslnteNVNtIXWF+eFR7m5Q@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1192172077.6247.15.camel@roc-laptop>
-Content-Disposition: inline
+In-Reply-To: <1190880999.29726.5.camel@shuttle>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,78 +20,43 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 11 October 2007, Bryan Wu wrote:
-> On Thu, 2007-10-11 at 23:26 -0700, David Brownell wrote:
-> > On Thursday 11 October 2007, Bryan Wu wrote:
-> > > @@ -1182,12 +1198,9 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
-> > >                 return -ENOMEM;
-> > >         }
-> > >  
-> > > -       if (peripheral_request(P_SPI0_SCK, DRV_NAME) ||
-> > > -                peripheral_request(P_SPI0_MISO, DRV_NAME) ||
-> > > -                peripheral_request(P_SPI0_MOSI, DRV_NAME) ) {
-> > > -
-> > > +       if (setup_pin_mux(1)) {
-> > >                 dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
-> > > -               goto out_error_queue_alloc;
-> > > +               goto out_error;
-> > >         }
-> > >  
-> > >         drv_data = spi_master_get_devdata(master);
-> > > 
-> > 
-> > Still doesn't apply ... what tree are you generating this series against??
-> 
-> I apply this patch on Linus git tree at 2.6.23 tag
-
-Then why don't my copies of that tree have the lines flagged
-above with "-" ??
-
-In fact, if I look at the kernel.org GIT tree, it doesn't have
-them either.  Your tree must have somehow gotten a bunch of
-private changes.
-
-
-> git-request-pull output:
-> ---
-> The following changes since commit bbf25010f1a6b761914430f5fca081ec8c7accd1:
->   Linus Torvalds (1):
->         Linux 2.6.23
-> 
-> Bryan Wu (4):
->       Blackfin SPI driver: Initial supporting BF54x in SPI driver
->       Blackfin SPI driver: add error handing
->       Blackfin SPI driver: Blackfin SPI driver does not respect the per-transfer cs_change field
->       Blackfin SPI driver: update spi driver to support multi-ports
-> 
-> Michael Hennerich (1):
->       Blackfin SPI driver: use new GPIO API and add error handling
-> 
-> Mike Frysinger (1):
->       Blackfin SPI driver: prevent people from setting bits in ctl_reg
-> 
-> Sonic Zhang (4):
->       Blackfin SPI driver: Add SPI master controller platform device 1
->       Blackfin SPI driver: Move GPIO config to setup and cleanup
->       Blackfin SPI driver: Fix SPI driver to work with SPI flash ST25P16 on bf548
->       Blackfin SPI driver: Clean up useless wait in bfin SPI driver
-> 
->  drivers/spi/spi_bfin5xx.c                       |  586 ++++++++++++++---------
->  include/asm-blackfin/mach-bf533/portmux.h       |    2 +-
->  include/asm-blackfin/mach-bf548/defBF54x_base.h |   17 +
->  3 files changed, 373 insertions(+), 232 deletions(-)
-> 
-> ---
-> Need I send out just one SPI patch.
-> 
-> Thanks
-> -Bryan Wu
-> 
-
-
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Splunk Inc.
-Still grepping through log files to find problems?  Stop.
-Now Search log events and configuration files using AJAX and a browser.
-Download your FREE copy of Splunk now >> http://get.splunk.com/
+PiBGcm9tOiBSb2dlciBGcsO4eXNhYSA8cm9nZXJAYml0ZnJvc3Qubm8+Cj4gVG86IHNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKU29ycnkgZm9yIHRoZSBkZWxheWVkIHJl
+c3BvbnNlIC4uLiB5b3Ugc2VudCBpdCBhcyBIVE1MIG1haWwsIHNvIGl0CmxhbmRlZCBpbiBhIHNw
+YW10cmFwLgoKCj4gSSdtIHdvbmRlcmluZyBpZiB0aGVyZSBhcmUgYW55IHBsYW5zIHRvIGFkZCBT
+UEkgc2xhdmUgbW9kZSB0byB0aGUgU1BJCj4gZHJpdmVyIGZyYW1ld29yayBpbiB0aGUgIm5lYXIi
+IGZ1dHVyZT8gSXMgYW55b25lIHdvcmtpbmcgb24gc29tZXRoaW5nCj4gbGlrZSB0aGlzPwoKSSBk
+b24ndCBrbm93IG9mIGFueSBzdWNoIHBsYW5zLCB0aG91Z2ggaWYgeW91IGxvb2sgdGhyb3VnaCBs
+aXN0CmFyY2hpdmVzIHlvdSdsbCBmaW5kIG90aGVyIHBlb3BsZSB3aG8ndmUgYXNrZWQgYWJvdXQg
+aXQuCgoKPiBJZiBub3QsIGhhcyBhbnlvbmUgZXZlciBjb25zaWRlcmVkIGl0IC0gYW5kIGVzdGlt
+YXRlZCB0aGUgYW1vdW50IG9mIHdvcmsKPiBpdCB3b3VsZCBiZSBldGM/CgpUaGUgZmlyc3QgdGFz
+ayBpcyB0byBjb21lIHVwIHdpdGggYSB3b3JrYWJsZSBkZXNpZ24uICBUaGVuIHdvdWxkCmNvbWUg
+aW1wbGVtZW50aW5nIGl0LgoKClRoZSBmaXJzdCBpc3N1ZXMgdGhhdCBjb21lIHRvIG1pbmQgYXJl
+IHRlY2huaWNhbC4gIFRoZXJlJ3MgYW4gaXNzdWUKb2YgcmVzcG9uc2UgdGltZSAuLi4gc2luY2Ug
+U1BJIGhhcyBubyBmbG93IGNvbnRyb2wsIHR5cGljYWwgdHlwZXMgb2YKcmVxdWVzdC9yZXNwb25z
+ZSBwcm90b2NvbCBoYXZlIGhhcmQgcmVzcG9uc2UgdGltZSBsaW1pdHMuICBTbyB0aGUgUlQKc3Rh
+Y2sgbWF5IGJlIGltcGxpY2l0bHkgcmVxdWlyZWQsIGV4Y2VwdCBmb3IgdmVyeSBzbG93IHNsYXZl
+LgoKRXhhbXBsZTogIHByb3RvY29sIHNwZWMgc2F5cyBTUEkgbWFzdGVyIHNlbmRzIHR3byBieXRl
+cyBvZiBjb21tYW5kLAp0aGVuIHRoZSBTUEkgc2xhdmUgc2VuZHMgTiBieXRlcyBvZiByZXNwb25z
+ZS4gIFRoYXQgbWVhbnMgYXQgbGVhc3QKcGFydCBvZiB0aGUgcmVzcG9uc2UgbXVzdCBiZSBjb21w
+dXRlZCB0aGVuIGlzc3VlZCB3aXRoaW4gb25lIGJpdAp0aW1lLCByaWdodCBhZnRlciB0aGUgbGFz
+dCBiaXQgc2VudCBmcm9tIHRoZSBtYXN0ZXIuCgpDbGVhcmx5LCBpbmNyZWFzaW5nIGJpdCB0aW1l
+cyAoc2xvd2luZyB0aGUgU1BJIGNsb2NrKSBjYW4gaGVscC4KU28gY2FuIHN1cHBvcnRpbmcgcHJv
+dG9jb2xzIHRoYXQgdXNlIHN0dWZmIGxpa2UgZHVtbXkgYnl0ZXMsIHdoaWNoCmNhbiBhbGxvdyBt
+b3JlIHRpbWUgYmVmb3JlIHRoZSAicmVhbCIgcmVzcG9uc2UgbXVzdCBiZSByZWFkeSwgb3IKd2hp
+Y2ggYXJlbid0IHN0cnVjdHVyZWQgYXMgcmVxdWVzdC9yZXNwb25zZSBwcm90b2NvbHMuICAoU3Vj
+aCBhcwpwZXJoYXBzIGp1c3Qgc3RyZWFtaW5nIGRhdGEgc2FtcGxlcyBpbiBvbmUgZGlyZWN0aW9u
+IG9yIHRoZSBvdGhlci4pCgoKQSBzZWNvbmQgaXNzdWUgaXMgaG93IHRvIGZhY3RvciB0aGUgcHJv
+Z3JhbW1pbmcgaW50ZXJmYWNlLiAgVGhlCm5vdGlvbiBvZiBhbiBzcGlfbWVzc2FnZSBpc24ndCBu
+ZWNlc3NhcmlseSB3cm9uZywgYnV0IHdoZW4gc2hvdWxkCml0IGdldCBpc3N1ZWQ/ICBIb3cgd291
+bGQgY29tbWFuZHMgc2VudCBieSB0aGUgaG9zdCBiZSBwYWNrYWdlZD8KSG93IHNob3VsZCBjaGlw
+c2VsZWN0L2Rlc2VsZWN0IGJlIHZpc2libGU/CgotIERhdmUKCgoKLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpU
+aGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnk6IFNwbHVuayBJbmMuClN0aWxsIGdyZXBw
+aW5nIHRocm91Z2ggbG9nIGZpbGVzIHRvIGZpbmQgcHJvYmxlbXM/ICBTdG9wLgpOb3cgU2VhcmNo
+IGxvZyBldmVudHMgYW5kIGNvbmZpZ3VyYXRpb24gZmlsZXMgdXNpbmcgQUpBWCBhbmQgYSBicm93
+c2VyLgpEb3dubG9hZCB5b3VyIEZSRUUgY29weSBvZiBTcGx1bmsgbm93ID4+IGh0dHA6Ly9nZXQu
+c3BsdW5rLmNvbS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

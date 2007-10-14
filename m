@@ -1,15 +1,22 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: Status of Linux SPI slave
-Date: Sat, 13 Oct 2007 15:03:01 -0400
-Message-ID: <47111665.7000005@whoi.edu>
-References: <1190880999.29726.5.camel@shuttle>
+From: "Wu, Bryan" <cooloney.lkml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 02/10] Blackfin SPI driver: use new
+	GPIO API and add error handling
+Date: Mon, 15 Oct 2007 01:06:53 +0800
+Message-ID: <386072610710141006kc3897b3s80db77d348971c7e@mail.gmail.com>
+References: <1192158304-8277-1-git-send-email-bryan.wu@analog.com>
+	<200710112326.34500.david-b@pacbell.net>
+	<1192172077.6247.15.camel@roc-laptop>
+	<200710121017.47645.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: =?ISO-8859-15?Q?Roger_Fr=F8ysaa?= <roger-UslnteNVNtIXWF+eFR7m5Q@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1190880999.29726.5.camel@shuttle>
+In-Reply-To: <200710121017.47645.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,51 +28,48 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Roger Fr=F8ysaa wrote:
-> Hi.
-> =
+On 10/13/07, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> On Thursday 11 October 2007, Bryan Wu wrote:
+> > On Thu, 2007-10-11 at 23:26 -0700, David Brownell wrote:
+> > > On Thursday 11 October 2007, Bryan Wu wrote:
+> > > > @@ -1182,12 +1198,9 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
+> > > >                 return -ENOMEM;
+> > > >         }
+> > > >
+> > > > -       if (peripheral_request(P_SPI0_SCK, DRV_NAME) ||
+> > > > -                peripheral_request(P_SPI0_MISO, DRV_NAME) ||
+> > > > -                peripheral_request(P_SPI0_MOSI, DRV_NAME) ) {
+> > > > -
+> > > > +       if (setup_pin_mux(1)) {
+> > > >                 dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
+> > > > -               goto out_error_queue_alloc;
+> > > > +               goto out_error;
+> > > >         }
+> > > >
+> > > >         drv_data = spi_master_get_devdata(master);
+> > > >
+> > >
+> > > Still doesn't apply ... what tree are you generating this series against??
+> >
+> > I apply this patch on Linus git tree at 2.6.23 tag
+>
+> Then why don't my copies of that tree have the lines flagged
+> above with "-" ??
+>
+> In fact, if I look at the kernel.org GIT tree, it doesn't have
+> them either.  Your tree must have somehow gotten a bunch of
+> private changes.
+>
+>
+Yes, the GIT tree's code is without that lines, which are introduced
+by the first patch of my SPI update patches: Blackfin SPI driver:
+Initial supporting BF54x in SPI driver.
 
-> I'm wondering if there are any plans to add SPI slave mode to the SPI
->  driver framework in the "near" future? Is anyone working on
-> something like this?
-> =
+So please apply the latest whole Blackfin SPI driver update patchset
+including 10 patches instead of 9 patches in previous email.
 
-> If not, has anyone ever considered it - and estimated the amount of
-> work it would be etc?
-
-I have been waiting to respond until there was a response from someone
-knowledgeable.  As David points out, true slave capability has serious
-real time implications, and the standard Linux kernel is not a real-time
-kernel, as I understand it.  However, if you don't need completely
-general slave capability, there may be ways to accomplish some
-slave-like tasks.
-
-For example, I have an SPI master device that streams data to a Linux
-processor at 11Mbit/sec, but never expects any response from the
-processor; this data is written over the 100baseT network to an NFS
-file system at an effective 5GBytes/hour.  To make it work, I have
-heavily modified the pxa2xx-spi driver for the target Gumstix system so
-that it can accept data driven by an external clock, and so that it uses
-a queue of DMA descriptors to prevent interrupt latency from limiting
-service of the receive FIFO.  I did not have to modify a single line of
-code anywhere else in the SPI framework.  All other parts of the SPI
-framework, as well as my protocol driver and user-space code, still
-operate as if they were part of an SPI master; they just keep full a
-queue of SPI messages that request buffers to be filled by SPI reads.
-Basically, this is a VERY limited slave function, where the Linux system
-is not in control of the timing, but also there is never any sort of
-query/response between the master and slave.
-
--- =
-
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=3D7212
-http://www.whoi.edu/hpb/Site.do?id=3D1532
-http://www.whoi.edu/page.do?pid=3D10079
-
+Thanks a lot
+Best Regards
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

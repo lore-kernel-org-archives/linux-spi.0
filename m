@@ -1,7 +1,7 @@
 From: "Girish" <girishsg-l0cyMroinI0@public.gmane.org>
 Subject: Re: Status of Linux SPI slave
-Date: Mon, 15 Oct 2007 21:13:59 +0530
-Message-ID: <00a801c80f42$3612f790$6a8918ac@ent.ti.com>
+Date: Mon, 15 Oct 2007 21:38:22 +0530
+Message-ID: <00bc01c80f45$9d218980$6a8918ac@ent.ti.com>
 References: <20071013154747.2F7B023A5F4@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -21,17 +21,12 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
+Sorry, my outlook was wrapping up mail automatically, corrected it.
 
 >-----Original Message-----
 >From: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org [mailto:spi-devel-
 >general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org] On Behalf Of David Brownell
 
-
->
->> If not, has anyone ever considered it - and estimated the amount of work
->> it would be etc?
->
 >The first task is to come up with a workable design.  Then would
 >come implementing it.
 >
@@ -41,29 +36,32 @@ List-Id: linux-spi.vger.kernel.org
 >it get issued?  How would commands sent by the host be packaged?
 >How should chipselect/deselect be visible?
 
-
 I was looking for such discussion to be started on this thread from quite
-some time. 
+some time.
 Well, in my case, I have SPI hardware which can work in Master and Slave
 mode as well. Specifically speaking, Slave mode capabilities are as same as
-Master mode. Only major difference is in chipselect and clock generation. As
-such, in this case, notion of spi_message would definitely hold good for
+Master mode. Only major difference is in chipselect and clock generation.
+As such, in this case, notion of spi_message would definitely hold good for
 both and also to some extent the whole stack which exists today.
 
 I see in community, some use SPI slave for minimal functionality. As I
-understand, we have to have a stack support for 
-1. SPI in slave side transaction as similar as Master's.
-2. SPI in slave side transaction with minimal functionality.  
+understand, we have to have a stack support for
+1. SPI in slave side transaction (as similar as Master's).
+2. SPI in slave side transaction with minimal functionality.
 
-I don't know how the latter one is. But, in my case I was able to modify the
-controller driver to work for Master/Slave with full transaction without any
-stack changes. I know this is bad, as stack would never come to know about
-the slave side transaction :). 
+I don't know how the latter one is. But, in my case I was able to modify
+the controller driver to work for Master/Slave with full transaction
+without any stack changes. I know this is bad, as stack would never come to
+know about the slave side transaction :).
 I would like to know the best way we can make the stack know slave side
-transaction happening? 
+transaction happening?
+
+
 
 Regards,
 girish
+
+>
 >
 >-------------------------------------------------------------------------
 >This SF.net email is sponsored by: Splunk Inc.
@@ -74,6 +72,7 @@ girish
 >spi-devel-general mailing list
 >spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 >https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
 
 
 -------------------------------------------------------------------------

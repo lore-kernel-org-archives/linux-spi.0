@@ -1,15 +1,16 @@
-From: "Girish" <girishsg-l0cyMroinI0@public.gmane.org>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Subject: Re: Status of Linux SPI slave
-Date: Wed, 17 Oct 2007 19:30:03 +0530
-Message-ID: <01b001c810c6$053fdea0$6a8918ac@ent.ti.com>
-References: <20071016175920.7FA2923BCED@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+Date: Wed, 17 Oct 2007 17:36:41 -0400
+Message-ID: <47168069.4000208@whoi.edu>
+References: <01b001c810c6$053fdea0$6a8918ac@ent.ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "'David Brownell'" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <roger-UslnteNVNtIXWF+eFR7m5Q@public.gmane.org>
+Cc: 'David Brownell' <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Girish <girishsg-l0cyMroinI0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-reply-to: <20071016175920.7FA2923BCED-ZcXrCSuhvln6VZ3dlLfH/g4gEjPzgfUyLrfjE7I9kuVHxeISYlDBzl6hYfS7NtTn@public.gmane.org>
+In-Reply-To: <01b001c810c6$053fdea0$6a8918ac-tAZopdYwApTQT0dZR+AlfA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,113 +22,89 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Girish wrote:
+> 
+>> -----Original Message-----
+>> From: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org]
+>> Sent: Tuesday, October 16, 2007 11:29 PM
+>> To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; roger-UslnteNVNtIXWF+eFR7m5Q@public.gmane.org;
+>> girishsg-l0cyMroinI0@public.gmane.org
+>> Subject: Re: [spi-devel-general] Status of Linux SPI slave
+> 
 
+> And ya, It would be better if I list down some points from top of my head,
+> it will make me clear. Following things done for slave;
 
->-----Original Message-----
->From: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org]
->Sent: Tuesday, October 16, 2007 11:29 PM
->To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; roger-UslnteNVNtIXWF+eFR7m5Q@public.gmane.org;
->girishsg-l0cyMroinI0@public.gmane.org
->Subject: Re: [spi-devel-general] Status of Linux SPI slave
+This is a good starting summary.
 
->
->> Now we are changing the role what the SPI controller and the device is
->> playing. SPI controller will now work as slave and device will be master
->to
->> the slave SPI controller.
+> 1. Make SPI controller work in Master and Slave. There won't be any
+> separate controller driver for slave. (As of now there is no support from
+> stack, so stack will be blind about slave transaction)
 
->I don't follow that comment.  What do you mean when you say "device"?
+This is exactly how I have implemented my slave device.  Major 
+modifications to the controller driver, but the rest of the stack is 
+blind to that, as you say.  I'm not sure that such a simple scheme will 
+work for a generalized slave.
 
-Ok, I am adhering to the convention specified in
-Documentation/spi/spi-summary. We know that SPI controller driver is a
-master controller driver and spi protocol driver is for slave device.
-(e.g., TouchScreen will have a spi protocol driver and registers to stack
-with spi_driver_register() ). When I say "device" I meant SPI device (which
-is slave device for SPI master controller driver).
+> 2. Protocol driver will still register as spi_driver. No change here, only
+> difference is that the underlying device would be a master device and in
+> spi_board_info table it will populate a SPI controller info which will be
+> working as slave.
 
-Now, if the exisiting SPI controller driver (Which is a master controller
-as of now) is modified to work in slave, then we would be having a Slave
-SPI controller driver and spi device would be a master. I hope this time
-I'm making myself clear :D.
+This is exactly the way I register my device, with minor changes to the 
+board setup code, to compile in the new spi_board_info table.
 
->
->I'm guessing I will disagree with your comment about being master to
->the slave.  There's only one master in the system, and it's not on the
->slave side.  The slave driver must *REACT* to the master, which is why
->I said the interaction model must be different.
+> 3. One more thing I wanted to ask was about spi_setup(). How about
+> supporting selecting/deselecting SPI mode (master/slave) through
+> spi_setup()? We can make protocol driver free enough to override selection
+> of SPI mode(master/slave).
 
-Yes, agreed about interaction model part.
-Ok, to be clearer. I will be having a SPI slave controller registering to
-stack (Assuming Stack gives me spi_slave framework). Now, how does the
-protocol driver should fit in? It would still be for spi device(which will
-be a master). Right? This is what I meant.
+I have also implemented full control of master/slave, clock 
+source/direction, etc. through the setup() call to pxa2xx_spi, so this 
+is certainly possible.
 
+> 4. If only single controller driver is used for Master/Slave, then by
+> default it should be registering as Master/slave with stack?
 
->> I had to only take care of module control registers and to deactivate
->the
->> cs0 between spi words as required by slave. And also correct
->configuration
->> of mosi/simo lines for slave.
->
->I'm still not following what you're saying here.  By definition, a
->slave has no control of chipselect ... the master manages that signal.
->
-Actually, I have used the default master controller driver and modified it
-to work as slave controller driver. So, I had to remove the asserting of
-spi_cs between words which guess only works for master mode. This is what I
-meant.
+I guess the need to register as master or slave depends on whether there 
+will be any demands on the stack that differ for the two modes.  In my 
+data streaming application, there is no impact on the stack, and so 
+there is no need to differentiate whether the controller is acting as 
+master or slave. If, on the other hand, slave functions eventually need 
+to do something new, such as allocate, populate and pass a message 
+autonomously, that might require changes the stack, and thus require the 
+stack to know if the controller driver is registering as master or slave.
 
->Configuration of MOSI and MISO lines sounds like what you've actually
->got is DI and DO lines, which would need to be manually interchanged
->if the M and S roles change.  If the signal lines are true MOSI and
->MISO, the signal direction would change by the internal M/S switch.
->
-Yes.
+There is an interesting point o consider regarding the protocol driver. 
+  If my previous assertion is true that a Linux slave is never a master, 
+because there can be only one master on any SPI bus, then perhaps this 
+extension is also true: that there is only one protocol driver also. 
+This is certainly what I have implemented with my streaming data 
+application, but I had not considered that a single protocol driver 
+might be a consequence of slave operation.  I suppose that if some SPI 
+buses are implemented with multiple masters that are externally 
+arbitrated, then the idea of a single protocol driver in slave mode 
+would not be valid.
 
->
->Any badly written software can have redudant code.  :)
->
-I was just contemplating how much code can be reused for slave support in
-stack :)
+> Actually, I have couple of slave model floating in my mind with lots of
+> questions :). I think I'll go back and try to understand more about
+> transaction model required in slave, so that I can consolidate things upon
+> that.
 
->
->Slave support in a SOC is, I've assumed, mostly used with
->custom chip-to-chip communications.
->
+I still think that the timing issues for a generalized slave are going 
+to be a fatal flaw, except when the actions of the external master are 
+completely predictable (like the data streaming case).  Can anyone think 
+of an example of a non-predictable master, for which a useful 
+interaction can still take place without the need for zero latency response?
 
-Ok.
-
-
-And ya, It would be better if I list down some points from top of my head,
-it will make me clear. Following things done for slave;
-
-1. Make SPI controller work in Master and Slave. There won't be any
-separate controller driver for slave. (As of now there is no support from
-stack, so stack will be blind about slave transaction)
-
-2. Protocol driver will still register as spi_driver. No change here, only
-difference is that the underlying device would be a master device and in
-spi_board_info table it will populate a SPI controller info which will be
-working as slave.
-
-3. One more thing I wanted to ask was about spi_setup(). How about
-supporting selecting/deselecting SPI mode (master/slave) through
-spi_setup()? We can make protocol driver free enough to override selection
-of SPI mode(master/slave).
-
-4. If only single controller driver is used for Master/Slave, then by
-default it should be registering as Master/slave with stack?
-
-Actually, I have couple of slave model floating in my mind with lots of
-questions :). I think I'll go back and try to understand more about
-transaction model required in slave, so that I can consolidate things upon
-that.
-
-Regards,
-Girish
-
-
-
+-- 
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
+http://www.whoi.edu/hpb/Site.do?id=1532
+http://www.whoi.edu/page.do?pid=10079
 
 
 -------------------------------------------------------------------------

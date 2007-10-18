@@ -1,10 +1,11 @@
-From: Rufus Baarh <baarufus-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: Project 0200B
-Date: Fri, 17 Oct 2008 23:40:48 -0700 (PDT)
-Message-ID: <551086.53883.qm@web59706.mail.ac4.yahoo.com>
-Reply-To: rbaarh-SrPyuzuu+o61Qrn1Bg8BZw@public.gmane.org
+From: =?GB2312?B?wO7PyMn6?= <zhanhuishi111-9Onoh4P/yGk@public.gmane.org >
+Subject: =?gb2312?b?tPq/qrj30NDStbeixrHA7s/Iyfo=?=
+Date: Thu, 18 Oct 2007 17:21:42 +0800
+Message-ID: <E1Kr86U-0005Ze-Lf@235xhf1.ch3.sourceforge.com>
+Reply-To: zhanhuishi111-9Onoh4P/yGk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3086149340392290901=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,53 +18,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3086149340392290901==
-Content-Type: multipart/alternative; boundary="0-1103601209-1224312048=:53883"
-Content-Transfer-Encoding: 8bit
-
---0-1103601209-1224312048=:53883
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-I have a new email address!You can now email me at: baarufus-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
-
-
-
-- Hello, On August 13, 2008, I wrote a mail to you inquiring if you or your organization would like to help me with US$5 million payment. I am afraid that you have not received the mail because I am yet to receive an answer from you. I am a senior manager in charge of procurements at National Petroleum Commission of Ghana. As a government employee, the pitfalls and restrictions associated with my position has rendered me incapable of handling the above sum, hence my resolve to seek help outside my country. I would like to acknowledge that the money was proceeds from an over-invoiced contract payment originating from my office. I would deeply appreciate your providing the necessary support required to complete this transaction and would rely on you to invest and manage it in any business in
-  your country that may offer a moderate amount of risk and a decent return. I am suggesting compensation payment of 30% of the entire funds for you or your organization. This amount is the very most I can afford, especially in light of other expenses related to the transaction. Upon your agreement, I shall give you more details of the project and how to move the funds over to you. Thanks for your anticipated help in this matter.With sincere thanks, Rufus Baarh. You may please reply to rbaarh-SrPyuzuu+o61Qrn1Bg8BZw@public.gmane.org
-
-
---0-1103601209-1224312048=:53883
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://us.i1.yimg.com/us.yimg.com/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>baarufus-/E1597aS9LQAvxtiuMwx3w@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">Hello, On August 13, 2008, I wrote a mail to you inquiring if you or your organization would like to help me with US$5 million payment. I am afraid that you have not received the mail because I am yet to receive an answer from you. I am a senior manager in charge of procurements at National P
- etroleum Commission of Ghana. As a government employee, the pitfalls and restrictions associated with my position has rendered me incapable of handling the above sum, hence my resolve to seek help outside my country. I would like to acknowledge that the money was proceeds from an over-invoiced contract payment originating from my office. I would deeply appreciate your providing the necessary support required to complete this transaction and would rely on you to invest and manage it in any business in your country that may offer a moderate amount of risk and a decent return. I am suggesting compensation payment of 30% of the entire funds for you or your organization. This amount is the very most I can afford, especially in light of other expenses related to the transaction. Upon your agre
- ement, I shall give you more details of the project and how to move the funds over to you. Thanks for your anticipated help in this matter.With sincere thanks, Rufus Baarh. You may please reply to rbaarh-SrPyuzuu+o61Qrn1Bg8BZw@public.gmane.org</span></div></div>
---0-1103601209-1224312048=:53883--
-
-
-
---===============3086149340392290901==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============3086149340392290901==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3086149340392290901==--
+ILnzuavLvr6twO2hori61PDIyyA6CgogICAgIMT6usOjoc7SuavLvsnPuqO748qiy7DO8bT6wO3T
+0M/euavLvtPrtuC80rmry76jqMbz0rWjqdPQ0rXO8cC0zfmho8O/1MK2vNPQ0ru2qAoKIMr9tu61
+xLeixrG/ybbUzeK0+r+qo6zI57nzuavLvtTa1/bVyqGitda/27vyyczStbvutq/W0NPQtMvQ6NKq
+o6wKIAogztK5q8u+u/K6z9f3uavLvra8v8nS1M6qxOO0+r+qo7rA4NDNyOfPwqO6CgrSu6O6xtXN
+qLn6y7CjusnMxrfP+srboaK5pNK1zbPSu8/6ytuhowoKtv6jusbVzai12Muwo7rUy8rkoaK79dTL
+tPrA7aGi17DQtqGiwarUy6GiuqPUy6GjCgrI/aO6xuTL/Lf+zvGjur2o1v6wstewoaK547jmt9Gh
+otehy9630aGiu+HS6bfRoaLXydGvt9Ghoraotu6yzcz8tcguCgogICAg0tTJz8axvt2++b/Jyc/N
++LLp0a+78sTDtb21sbXYy7C+1tHp1qS689TZuLa/7qGjCiAgICAgICAgCiAgICAgtee7sCAgIKO6
+MTM5Mjc0MDA1NjUKCiAgICAgwarPtcjLIKO6IM310KG94woKICAgICC12Na3ICAgo7ogyc+6o8rQ
+xta2q9DCx/i2q7KowrczMTW6xSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAoKICAgICDTys/kICAgo7o1MjUyNzM3NDZAcXEuY29tICAg
+ICAgINK1zvFRIFEgIKO6NTI1MjczNzQ2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVt
+YWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFs
+bGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9i
+bGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28g
+dG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2Js
+aW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwg
+bWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRw
+czovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJh
+bAo=

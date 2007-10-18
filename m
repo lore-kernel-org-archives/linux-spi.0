@@ -1,21 +1,14 @@
-From: "Bryan Wu" <cooloney.lkml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 02/10] Blackfin SPI driver: use new
-	GPIO API and add error handling
-Date: Thu, 18 Oct 2007 14:06:53 +0800
-Message-ID: <386072610710172306m2a0831eds646da3d7c78809bb@mail.gmail.com>
-References: <1192158304-8277-1-git-send-email-bryan.wu@analog.com>
-	<200710112326.34500.david-b@pacbell.net>
-	<1192172077.6247.15.camel@roc-laptop>
-	<200710121017.47645.david-b@pacbell.net>
+From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
+Subject: [RFC,
+	PATCH] SPI: fix return value for spi_read and spi_write
+Date: Thu, 18 Oct 2007 18:40:38 +0200
+Message-ID: <200710181840.38821.marc.pignat@hevs.ch>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200710121017.47645.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -28,45 +21,64 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 10/13/07, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> On Thursday 11 October 2007, Bryan Wu wrote:
-> > On Thu, 2007-10-11 at 23:26 -0700, David Brownell wrote:
-> > > On Thursday 11 October 2007, Bryan Wu wrote:
-> > > > @@ -1182,12 +1198,9 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
-> > > >                 return -ENOMEM;
-> > > >         }
-> > > >
-> > > > -       if (peripheral_request(P_SPI0_SCK, DRV_NAME) ||
-> > > > -                peripheral_request(P_SPI0_MISO, DRV_NAME) ||
-> > > > -                peripheral_request(P_SPI0_MOSI, DRV_NAME) ) {
-> > > > -
-> > > > +       if (setup_pin_mux(1)) {
-> > > >                 dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
-> > > > -               goto out_error_queue_alloc;
-> > > > +               goto out_error;
-> > > >         }
-> > > >
-> > > >         drv_data = spi_master_get_devdata(master);
-> > > >
-> > >
-> > > Still doesn't apply ... what tree are you generating this series against??
-> >
-> > I apply this patch on Linus git tree at 2.6.23 tag
->
-> Then why don't my copies of that tree have the lines flagged
-> above with "-" ??
->
-> In fact, if I look at the kernel.org GIT tree, it doesn't have
-> them either.  Your tree must have somehow gotten a bunch of
-> private changes.
->
+spi_read and spi_write functions don't report late errors, for instance fifo
+underrun.
 
-Did you apply these patches, or I need resent a new patchset against
-latest Linus GIT tree?
-I noticed in latest GIT tree the Blackfin SPI driver are modified.
+Signed-off-by: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
 
-Thanks
--Bryan Wu
+---
+
+Hi all!
+
+spi_read and spi_write should not only report errors from spi_sync, but
+also from message->status when spi_sync worked.
+
+Regards
+
+Marc
+
+--- include/linux/spi/spi.h.orig	2007-10-18 18:24:15.000000000 +0200
++++ include/linux/spi/spi.h	2007-10-18 18:38:10.000000000 +0200
+@@ -593,6 +593,7 @@ extern int spi_sync(struct spi_device *s
+ static inline int
+ spi_write(struct spi_device *spi, const u8 *buf, size_t len)
+ {
++	int status;
+ 	struct spi_transfer	t = {
+ 			.tx_buf		= buf,
+ 			.len		= len,
+@@ -601,7 +602,10 @@ spi_write(struct spi_device *spi, const 
+ 
+ 	spi_message_init(&m);
+ 	spi_message_add_tail(&t, &m);
+-	return spi_sync(spi, &m);
++
++	status = spi_sync(spi, &m);
++
++	return (status) ? status : m.status;
+ }
+ 
+ /**
+@@ -617,6 +621,7 @@ spi_write(struct spi_device *spi, const 
+ static inline int
+ spi_read(struct spi_device *spi, u8 *buf, size_t len)
+ {
++	int status;
+ 	struct spi_transfer	t = {
+ 			.rx_buf		= buf,
+ 			.len		= len,
+@@ -625,7 +630,10 @@ spi_read(struct spi_device *spi, u8 *buf
+ 
+ 	spi_message_init(&m);
+ 	spi_message_add_tail(&t, &m);
+-	return spi_sync(spi, &m);
++
++	status = spi_sync(spi, &m);
++
++	return (status) ? status : m.status;
+ }
+ 
+ /* this copies txbuf and rxbuf data; for small transfers only! */
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

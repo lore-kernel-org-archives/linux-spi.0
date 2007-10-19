@@ -1,15 +1,22 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [RFC,
-	PATCH] SPI: fix return value for spi_read and spi_write
-Date: Fri, 19 Oct 2007 10:16:19 -0700
-Message-ID: <20071019171619.ADB4C23BF09@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-References: <200710181840.38821.marc.pignat@hevs.ch>
+Subject: Re: [PATCH 02/10] Blackfin SPI driver: use new
+	GPIO API and add error handling
+Date: Fri, 19 Oct 2007 10:57:30 -0700
+Message-ID: <20071019175730.8546323A5F7@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+References: <1192158304-8277-1-git-send-email-bryan.wu@analog.com>
+	<200710112326.34500.david-b@pacbell.net>
+	<1192172077.6247.15.camel@roc-laptop>
+	<200710121017.47645.david-b@pacbell.net>
+	<386072610710172306m2a0831eds646da3d7c78809bb@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, marc.pignat-7TsPiqsLilE@public.gmane.org
+Cc: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
+To: cooloney.lkml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200710181840.38821.marc.pignat-7TsPiqsLilE@public.gmane.org>
+In-Reply-To: <386072610710172306m2a0831eds646da3d7c78809bb-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,71 +28,31 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
-> Date: Thu, 18 Oct 2007 18:40:38 +0200
+> > In fact, if I look at the kernel.org GIT tree, it doesn't have
+> > them either.  Your tree must have somehow gotten a bunch of
+> > private changes.
 >
-> spi_read and spi_write functions don't report late errors, for
-> instance fifo underrun.
->
-> Signed-off-by: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
->
-> ---
+> Did you apply these patches, or I need resent a new patchset against
+> latest Linus GIT tree?
 
-Seems right to me.  This aspect of the spi_sync() calling
-convention can be annoying and error-prone.  I've sometimes
-thought about changing that instead of auditing all callers.
+I'm still not quite sure why the patches you sent didn't apply
+for me.  Why don't you send refreshed patches to me after RC1.
 
-Are there any comments from others on this list?  Which
-approach would be preferred:  fixing callers (this is at
-least a partial fix for that) or updating spi_sync() so
-that callers don't need to check m->status?
+
+> I noticed in latest GIT tree the Blackfin SPI driver are modified.
+
+Yes, various cleanup patches.  Missing newlines in dev_*() calls,
+class_device removal, remove extra includes, and so forth.  They
+might conflict with your patches (I suspect they won't).
+
+That's a big part of why you should arrange to submit patches well
+in advance of the merge window opening.  As a rule, maintainers
+won't have/make extra time during that window to review and/or fix
+nontrivial issues, or address conflicts with other patches.  Try to
+submit at least a few weeks before the previous kernel finalizes.
 
 - Dave
 
-
-> --- include/linux/spi/spi.h.orig	2007-10-18 18:24:15.000000000 +0200
-> +++ include/linux/spi/spi.h	2007-10-18 18:38:10.000000000 +0200
-> @@ -593,6 +593,7 @@ extern int spi_sync(struct spi_device *s
->  static inline int
->  spi_write(struct spi_device *spi, const u8 *buf, size_t len)
->  {
-> +	int status;
->  	struct spi_transfer	t = {
->  			.tx_buf		= buf,
->  			.len		= len,
-> @@ -601,7 +602,10 @@ spi_write(struct spi_device *spi, const 
->  
->  	spi_message_init(&m);
->  	spi_message_add_tail(&t, &m);
-> -	return spi_sync(spi, &m);
-> +
-> +	status = spi_sync(spi, &m);
-> +
-> +	return (status) ? status : m.status;
->  }
->  
->  /**
-> @@ -617,6 +621,7 @@ spi_write(struct spi_device *spi, const 
->  static inline int
->  spi_read(struct spi_device *spi, u8 *buf, size_t len)
->  {
-> +	int status;
->  	struct spi_transfer	t = {
->  			.rx_buf		= buf,
->  			.len		= len,
-> @@ -625,7 +630,10 @@ spi_read(struct spi_device *spi, u8 *buf
->  
->  	spi_message_init(&m);
->  	spi_message_add_tail(&t, &m);
-> -	return spi_sync(spi, &m);
-> +
-> +	status = spi_sync(spi, &m);
-> +
-> +	return (status) ? status : m.status;
->  }
->  
->  /* this copies txbuf and rxbuf data; for small transfers only! */
->
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

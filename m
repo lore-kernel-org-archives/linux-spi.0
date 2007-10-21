@@ -1,22 +1,13 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 02/10] Blackfin SPI driver: use new
-	GPIO API and add error handling
-Date: Fri, 19 Oct 2007 10:57:30 -0700
-Message-ID: <20071019175730.8546323A5F7@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-References: <1192158304-8277-1-git-send-email-bryan.wu@analog.com>
-	<200710112326.34500.david-b@pacbell.net>
-	<1192172077.6247.15.camel@roc-laptop>
-	<200710121017.47645.david-b@pacbell.net>
-	<386072610710172306m2a0831eds646da3d7c78809bb@mail.gmail.com>
+From: SIR DAVID MARK <eloise_loo9-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
+Subject: INTERNAL REVENUE/FUNDS DEPARTMENT
+Date: Sun, 21 Oct 2007 00:16:49 -0400
+Message-ID: <200710210416.l9L4GnPd010910@aztecsc.com>
+Reply-To: u_davidmark-/E1597aS9LT10XsdtD+oqA@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
-To: cooloney.lkml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <386072610710172306m2a0831eds646da3d7c78809bb-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,30 +19,49 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> > In fact, if I look at the kernel.org GIT tree, it doesn't have
-> > them either.  Your tree must have somehow gotten a bunch of
-> > private changes.
->
-> Did you apply these patches, or I need resent a new patchset against
-> latest Linus GIT tree?
+INTERNAL REVENUE/FUNDS DEPARTMENT 
+LONDON,ENGLAND
+COMMITTEE ON FOREIGN PAYMENT
+(RESOLUTIONPANEL ON CONTRACT PAYMENT)
+UNITED KINGDOM
+ 
+ 
+FILE CODE #: ATM/LAG/UK
+ATTN: BENEFICIARY,
+ 
+IMMEDIATE RELEASE OF YOUR INHERITANCE FUND VIA ATM SWIFT CARD.
+ 
+In close consultation with the World Bank, IMF and the European Union (EU), this is to notify you of your enlistment as a beneficiary of a recent Debt Management and Settlement Forum organized on the status of global arrangement to have your beneficiary fund settled once and for all. Of course, In the hope that you must have been aware of the past financial leakages in the European foreign inheritance payment system, and frustrations associated there from in your last attempt to claim the fund, wherein fund beneficiaries (like your self) was subjected to unnecessary bureaucratic bottlenecks in lieu of claiming funds due them. The World Body, having solicited and received the cooperation of British Government, in harmonizing the sequence of payments, have discovered from records of outstand
+ ing foreign inheritance fund beneficiaries due them, that your name and payment has been with held and remain unpaid as a result of such bottleneck. On the prompting of this finding, I wish!
+  to officially notify you that all aspects of your payment claim is being harmonized, enabling payment to be released to you as urgently as you act on the instructions of this mail.
 
-I'm still not quite sure why the patches you sent didn't apply
-for me.  Why don't you send refreshed patches to me after RC1.
+Consequently, Citibank london has been directed by the World Body to off set these outstanding debts, using ATM Swift Card payment arrangement. Already, a total amount of US$500 Million has been provided to the bank for this purpose and it is on first come first serve. With this arrangement, I wish to inform you that Citibank London has been instructed to issue in your name an ATM Cash Card with the valued amount of US$5M. In paying this amount to you, please note that it is without Prejudice to your original inheritance sum. Rather, it is a stop-gap payment arrangement put in place by the World Body to on the one hand ensure that you receive part of your fund, while on the other hand ensure that the process is smooth and without any form of stress whatsoever, whereas a comprehensive arran
+ gement shall be made in future to pay off the remaining fund due you.
+
+However, we are worried with the counter information received from one Mr. Jack Law, purporting to be from your directive, with express instruction to activate the ATM Cash Card for release of fund to his name a bank account in the "Cayman Islands" Obviously, we are hesitant to honor this instruction as it were, and would request that you clarify same upon your contact with Citibank London . In addition to that, you should provide the bank with the following details to forestall any mistake of issuing the ATM Card with the wrong information already submitted by Mr. Jack Law:
+ 
+(1) Your full names, address, phone, fax and Cell numbers (up to date) for ease of contact.
+(2) Beneficiary name for activation of your ATM CARD.
+
+Believing that this arrangement will suit your condition and expectations, we will therefore request for your expedited response to avoid any more delay. 
+
+Your response should be directed to Citibank London ,
+
+ Attention: Mr. James Wan ; Director Atm Payment Dept through his official email address: 
+
+jameswang.citibankgroup-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+
+Your file reference code for your payment is ATM/LAG/UK and should be quoted in your contact mail to the bank otherwise the bank will not recognize/process your ATM Swift Payment.
+ 
+ 
+ Sir David Mark
+Head Of Operations.
 
 
-> I noticed in latest GIT tree the Blackfin SPI driver are modified.
+ 
 
-Yes, various cleanup patches.  Missing newlines in dev_*() calls,
-class_device removal, remove extra includes, and so forth.  They
-might conflict with your patches (I suspect they won't).
 
-That's a big part of why you should arrange to submit patches well
-in advance of the merge window opening.  As a rule, maintainers
-won't have/make extra time during that window to review and/or fix
-nontrivial issues, or address conflicts with other patches.  Try to
-submit at least a few weeks before the previous kernel finalizes.
 
-- Dave
 
 
 -------------------------------------------------------------------------

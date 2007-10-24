@@ -1,11 +1,13 @@
-From: "Pauline Heath" <leguscfsaleszig-5q8tIclkyxyakBO8gow8eQ@public.gmane.org>
-Subject: She will love you more than any other guy
-Date: Wed, 24 Oct 2007 15:15:33 +0700
-Message-ID: <473332084.68800943388912@uscfsales.com>
-Reply-To: leguscfsaleszig-5q8tIclkyxyakBO8gow8eQ@public.gmane.org
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch 2.6.24-rc1] at25 driver is for EEPROM
+	not FLASH
+Date: Wed, 24 Oct 2007 15:00:24 -0700
+Message-ID: <20071024220024.76129239431@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1484986289=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,74 +20,40 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1484986289==
-Content-Type: multipart/alternative;
-  boundary="----------FDA05974BFD3DA21"
+Add comment to at25 driver that it's for EEPROM chips, not FLASH
+chips ... the AT25 series has both types of chip, and sometimes
+they're even pin-compatible.  The command sets are different, as
+is the treatment of erasure.  (FLASH needs explicit erasure, but
+with EEPROM it's implicit.)  Note that all vendors seem to have
+this same confusion in their *25* series SPI memory parts.
 
-------------FDA05974BFD3DA21
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+One person was about to forward patches teaching this driver how
+to talk to a flash chip.  Such wasted efforts should be avoided.
 
-Finally the true stuff - no more money tricks!
- P.E.P. are very hot at the time! Well here comes the genuine thing not a counterfeit!
- One of the very originals, absolutely unique stuff is accessible here and there!
- Take a look at just what people tell about this stuff: "I love how fast your stuff had an affect upon my boyfriend, he can't stop chatting on how excited he is having his new girth, extent, and libido!" Rita R., New York "At the beginning I thought the specimen parcel I received gratis was a kind of jest, till I tried using the P.E.P. I can not describe report how greatly satisfied I am with the results from using this remedy after 3 short months. I'll be ordering at every turn!" Rikky Martin, San Diego Look at more references about this astonishing product right here & right now! http://www.obelgyt.com/?mieekrwbzor
-------------FDA05974BFD3DA21
-Content-Type: text/html; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+ drivers/spi/at25.c |    7 +++++++
+ 1 files changed, 7 insertions(+)
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML><HEAD><TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<b>Finally the true stuff - no more money tricks!<br> 
-<a href="http://www.obelgyt.com/?mieekrwbzor" target="_blank">P.E.P.</a> are very hot at the time! 
-Well here comes the genuine thing not a counterfeit!<br> 
-One of the very originals, absolutely unique 
-stuff is accessible here and there!<br> 
-
-Take a look at just what people tell about this stuff: 
-<p><i>"I love how fast your stuff had an affect upon my boyfriend, 
-he can't stop chatting on how excited he is 
-having his new girth, extent, and libido!"</i></p> 
-Rita R., New York 
-
-<p><i>"At the beginning I thought the specimen parcel I received gratis was a kind of jest, 
-till I tried using the P.E.P. 
-I can not describe report how greatly satisfied I am 
-with the results from using this remedy after 3 short months. 
-I'll be ordering at every turn!"</i></p> 
-Rikky Martin, San Diego 
-
-<center><a href="http://www.obelgyt.com/?mieekrwbzor" target="_blank">Look at more references about this astonishing product right here & right now!</a></center></b> 
-<font color="#D9EDFF">http://www.obelgyt.com/?mieekrwbzor</font>
-
-</BODY></HTML>
-------------FDA05974BFD3DA21--
-
-
-
---===============1484986289==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+--- a/drivers/spi/at25.c	2007-07-17 21:03:42.000000000 -0700
++++ b/drivers/spi/at25.c	2007-10-15 04:04:43.000000000 -0700
+@@ -21,6 +21,13 @@
+ #include <linux/spi/eeprom.h>
+ 
+ 
++/*
++ * NOTE: this is an *EEPROM* driver.  The vagaries of product naming
++ * mean that some AT25 products are EEPROMs, and others are FLASH.
++ * Handle FLASH chips with the drivers/mtd/devices/m25p80.c driver,
++ * not this one!
++ */
++
+ struct at25_data {
+ 	struct spi_device	*spi;
+ 	struct mutex		lock;
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1484986289==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1484986289==--

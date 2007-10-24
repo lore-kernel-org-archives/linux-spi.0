@@ -1,10 +1,10 @@
-From: "Hannah Benavides" <legupsidedownspeakingzig-/BSoAVh55WsNP9YSrNAjjDKzEDxYleXD@public.gmane.org>
-Subject: Control your weight and appetite
-Date: Tue, 23 Oct 2007 16:52:15 +0100
-Message-ID: <595940262.27299468466747@upsidedownspeaking.com>
-Reply-To: legupsidedownspeakingzig-/BSoAVh55WsNP9YSrNAjjDKzEDxYleXD@public.gmane.org
+From: "Pauline Heath" <leguscfsaleszig-5q8tIclkyxyakBO8gow8eQ@public.gmane.org>
+Subject: She will love you more than any other guy
+Date: Wed, 24 Oct 2007 15:15:33 +0700
+Message-ID: <473332084.68800943388912@uscfsales.com>
+Reply-To: leguscfsaleszig-5q8tIclkyxyakBO8gow8eQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0807096960=="
+Content-Type: multipart/mixed; boundary="===============1484986289=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,31 +18,20 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0807096960==
+--===============1484986289==
 Content-Type: multipart/alternative;
-  boundary="----------1CE6ED3B486E6E6E"
+  boundary="----------FDA05974BFD3DA21"
 
-------------1CE6ED3B486E6E6E
-Content-Type: text/plain; charset=windows-1250
+------------FDA05974BFD3DA21
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-Anatrim - an extremely effectual lose flesh blend is now available anywhere!!!
- Like great number of people all over the world, you might have seen the fascinating ABC report about enchanting new diet feature "Anatrim Cactus", a marvelous up-to-date product that took the weight loss industry by storm!
-
- *Besiege Stoutness
- *Cuts short Appetite like second to none
- *100% Herbal and Innocuous
- *Neat Unsophisticated product – No mixture
- *Promotes harmless, fast weight loss
- *Without any Caffeine/Ephedra!
- *Can easily be integrated into existing diet schemes
- *See the pounds melt away and the new you stand up!
- *Helps you look and feel fine!
-
-Note what people say according to this stuff:
-"Nothing of the sort! Me and my wife been weakening diets for a long period.It was a frustrating trip I should confess.Your stuff rendered us a service tolose 33 kilos between us in two months.That was 168 days ago and until now the weight didn't get back!The warmest thanx to you we said. Thank you!!!"Natasha and Mike B., Colorado See more happy testimonials at our site!!! http://www.aboln.cn/?tgbsjmzgee
-------------1CE6ED3B486E6E6E
-Content-Type: text/html; charset=windows-1250
+Finally the true stuff - no more money tricks!
+ P.E.P. are very hot at the time! Well here comes the genuine thing not a counterfeit!
+ One of the very originals, absolutely unique stuff is accessible here and there!
+ Take a look at just what people tell about this stuff: "I love how fast your stuff had an affect upon my boyfriend, he can't stop chatting on how excited he is having his new girth, extent, and libido!" Rita R., New York "At the beginning I thought the specimen parcel I received gratis was a kind of jest, till I tried using the P.E.P. I can not describe report how greatly satisfied I am with the results from using this remedy after 3 short months. I'll be ordering at every turn!" Rikky Martin, San Diego Look at more references about this astonishing product right here & right now! http://www.obelgyt.com/?mieekrwbzor
+------------FDA05974BFD3DA21
+Content-Type: text/html; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -50,41 +39,34 @@ Content-Transfer-Encoding: 7bit
 </HEAD>
 <BODY>
 
-<b><center><a href="http://www.aboln.cn/?tgbsjmzgee" target="_blank">Anatrim - an extremely effectual lose flesh blend is now available anywhere!!!</a></center><br> 
+<b>Finally the true stuff - no more money tricks!<br> 
+<a href="http://www.obelgyt.com/?mieekrwbzor" target="_blank">P.E.P.</a> are very hot at the time! 
+Well here comes the genuine thing not a counterfeit!<br> 
+One of the very originals, absolutely unique 
+stuff is accessible here and there!<br> 
 
-Like great number of people all over the world, you might have seen 
-the fascinating ABC report about enchanting new diet feature 
-"Anatrim Cactus", a marvelous up-to-date product 
-that took the weight loss industry by storm!<br><br> 
+Take a look at just what people tell about this stuff: 
+<p><i>"I love how fast your stuff had an affect upon my boyfriend, 
+he can't stop chatting on how excited he is 
+having his new girth, extent, and libido!"</i></p> 
+Rita R., New York 
 
-*Besiege Stoutness<br> 
-*Cuts short Appetite like second to none<br> 
-*100% Herbal and Innocuous<br> 
-*Neat Unsophisticated product – No mixture<br> 
-*Promotes harmless, fast weight loss<br> 
-*Without any Caffeine/Ephedra!<br> 
-*Can easily be integrated into existing diet schemes<br> 
-*See the pounds melt away and the new you stand up!<br> 
-*Helps you look and feel fine!<br><br>
+<p><i>"At the beginning I thought the specimen parcel I received gratis was a kind of jest, 
+till I tried using the P.E.P. 
+I can not describe report how greatly satisfied I am 
+with the results from using this remedy after 3 short months. 
+I'll be ordering at every turn!"</i></p> 
+Rikky Martin, San Diego 
 
-Note what people say according to this stuff:<br><i>
-"Nothing of the sort! 
-Me and my wife been weakening diets for a long period.
-It was a frustrating trip I should confess.
-Your stuff rendered us a service tolose 33 kilos between us in two months.
-That was 168 days ago and until now the weight didn't get back!
-The warmest thanx to you we said. Thank you!!!"
-</i><p>Natasha and Mike B., Colorado</p> 
-
-<center><a href="http://www.aboln.cn/?tgbsjmzgee" target="_blank">See more happy testimonials at our site!!!</a></center></b> 
-<font color="#D9EDFF">http://www.aboln.cn/?tgbsjmzgee</font>
+<center><a href="http://www.obelgyt.com/?mieekrwbzor" target="_blank">Look at more references about this astonishing product right here & right now!</a></center></b> 
+<font color="#D9EDFF">http://www.obelgyt.com/?mieekrwbzor</font>
 
 </BODY></HTML>
-------------1CE6ED3B486E6E6E--
+------------FDA05974BFD3DA21--
 
 
 
---===============0807096960==
+--===============1484986289==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -95,7 +77,7 @@ This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============0807096960==
+--===============1484986289==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -106,4 +88,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0807096960==--
+--===============1484986289==--

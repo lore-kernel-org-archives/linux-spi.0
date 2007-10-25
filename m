@@ -1,17 +1,13 @@
 From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
-Subject: Re: [RFC,
-	PATCH] SPI: fix return value for spi_read and spi_write
-Date: Thu, 25 Oct 2007 12:52:06 +0200
-Message-ID: <200710251252.06603.marc.pignat@hevs.ch>
-References: <200710181840.38821.marc.pignat@hevs.ch>
-	<20071019171619.ADB4C23BF09@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+Subject: [RFC][PATCH 1/2] spi: fix spi_sync
+Date: Thu, 25 Oct 2007 13:42:55 +0200
+Message-ID: <200710251342.55501.marc.pignat@hevs.ch>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20071019171619.ADB4C23BF09-ZcXrCSuhvln6VZ3dlLfH/g4gEjPzgfUyLrfjE7I9kuVHxeISYlDBzl6hYfS7NtTn@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -24,31 +20,23 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Dave!
+Ease spi_sync calling convention. There is no more need to check the return
+value AND the message->status. As a side effect, this will correct the wrong
+behaviour of spi_read and spi_write.
 
-On Friday 19 October 2007, David Brownell wrote:
-> > From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
-> > Date: Thu, 18 Oct 2007 18:40:38 +0200
-> >
-> > spi_read and spi_write functions don't report late errors, for
-> > instance fifo underrun.
-> >
-> > Signed-off-by: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
-> >
-> > ---
-> 
-> Seems right to me.  This aspect of the spi_sync() calling
-> convention can be annoying and error-prone.  I've sometimes
-> thought about changing that instead of auditing all callers.
-> 
-> Are there any comments from others on this list?  Which
-> approach would be preferred:  fixing callers (this is at
-> least a partial fix for that) or updating spi_sync() so
-> that callers don't need to check m->status?
-> 
+Signed-off-by: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
 
-Here is a list of files using spi_sync (as in 2.6.23.1):
-check only return value, does not check m->status:
+---
+
+At this time (2.6.23.1), spi_read and spi_write functions only check the return
+value of spi_sync. This is wrong since they should check for message->status
+too.
+After a short inspection of all files using spi_sync in the kernel, it seems that we
+should change the spi_sync function (rather than all users).
+
+
+Inspection details:
+files using spi_sync without reading message->status:
 drivers/mtd/devices/m25p80.c
 drivers/mtd/devices/mtd_dataflash.c
 drivers/spi/tle62x0.c
@@ -56,18 +44,57 @@ drivers/spi/spidev.c
 drivers/spi/at25.c
 include/linux/spi.h
 
-read both return value and m->status, but does some unnecessary code when status!=0
+files using spi_sync, but executing some unnecessary code when the return value
+or message->status report an error:
 drivers/rtc/rtc-max6902.c
 drivers/spi/spi.c
 drivers/input/touchscreen/ads7846.c
 
-My conclusions: 
- * I can't find any spi_sync user wich does The Right Think(TM)
- * We should fix spi_sync (and not the callers), so forget the this patch and wait for the next one!
+files using spi_sync the Right Way(TM):
+[no files]
 
 Regards
 
 Marc
+
+--- drivers/spi/spi.c.orig	2007-10-25 13:24:09.000000000 +0200
++++ drivers/spi/spi.c	2007-10-25 13:22:23.000000000 +0200
+@@ -542,10 +542,7 @@ static void spi_complete(void *arg)
+  * Also, the caller is guaranteeing that the memory associated with the
+  * message will not be freed before this call returns.
+  *
+- * The return value is a negative error code if the message could not be
+- * submitted, else zero.  When the value is zero, then message->status is
+- * also defined;  it's the completion code for the transfer, either zero
+- * or a negative error code from the controller driver.
++ * It returns zero on success, else a negative error code.
+  */
+ int spi_sync(struct spi_device *spi, struct spi_message *message)
+ {
+@@ -555,8 +552,10 @@ int spi_sync(struct spi_device *spi, str
+ 	message->complete = spi_complete;
+ 	message->context = &done;
+ 	status = spi_async(spi, message);
+-	if (status == 0)
++	if (status == 0) {
+ 		wait_for_completion(&done);
++		status = m->status;
++	}
+ 	message->context = NULL;
+ 	return status;
+ }
+@@ -629,10 +628,8 @@ int spi_write_then_read(struct spi_devic
+ 
+ 	/* do the i/o */
+ 	status = spi_sync(spi, &message);
+-	if (status == 0) {
++	if (status == 0)
+ 		memcpy(rxbuf, x[1].rx_buf, n_rx);
+-		status = message.status;
+-	}
+ 
+ 	if (x[0].tx_buf == buf)
+ 		up(&lock);
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

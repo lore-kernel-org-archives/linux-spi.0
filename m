@@ -1,19 +1,13 @@
-From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v2] spi: Add PPC4xx SPI driver
-Date: Sat, 25 Oct 2008 20:12:51 +0200
-Message-ID: <200810252012.51920.sr@denx.de>
-References: <1224909004-18756-1-git-send-email-sr@denx.de>
-	<20081025113944.GA11828@zod.rchland.ibm.com>
-	<1224936384.4879.13.camel@galileo.recco.de>
+From: =?GB2312?B?wO7PyMn6?= <zhanhuishi111-9Onoh4P/yGk@public.gmane.org >
+Subject: [SPAM] 代开各行业发票
+Date: Fri, 26 Oct 2007 05:57:43 +0800
+Message-ID: <E1Ktr9i-00027J-HW@335xhf1.ch3.sourceforge.com>
+Reply-To: zhanhuishi111-9Onoh4P/yGk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Josh Boyer <jwboyer-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: Wolfgang Ocker <weo-pMF0Ia4UJXeoYr4blSSd5g@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1224936384.4879.13.camel-YsvTK5mC77BaEV4x6v6GwQ@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,28 +18,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Saturday 25 October 2008, Wolfgang Ocker wrote:
-> > >> This adds a SPI driver for the SPI controller found in the IBM/AMCC
-> > >> 4xx PowerPC's.
-> > >>
-> > >> Signed-off-by: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-> > >
-> > >Signed-off-by: Wolfgang Ocker <weo-pMF0Ia4UJXeoYr4blSSd5g@public.gmane.org>
-> >
-> > Unless you actually wrote code or it's going through a git
-> > tree of yours or you sent the patch out for someone, I think
-> > you mean Acked-by.
->
-> I contributed code.
-
-Yes. I probably should have communicated better with Wolfgang and added his 
-SOB line before sending it to the list.
-
-Best regards,
-Stefan
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+ILnzuavLvr6twO2hori61PDIyyA6CgogICAgIMT6usOjoc7SuavLvsnPuqO748qiy7DO8bT6wO3T
+0M/euavLvtPrtuC80rmry76jqMbz0rWjqdPQ0rXO8cC0zfmho8O/1MK2vNPQ0ru2qAoKIMr9tu61
+xLeixrG/ybbUzeK0+r+qo6zI57nzuavLvtTa1/bVyqGitda/27vyyczStbvutq/W0NPQtMvQ6NKq
+o6wKIAogztK5q8u+u/K6z9f3uavLvra8v8nS1M6qxOO0+r+qo7rA4NDNyOfPwqO6CgrSu6O6xtXN
+qLn6y7CjusnMxrfP+srboaK5pNK1zbPSu8/6ytuhowoKtv6jusbVzai12Muwo7rUy8rkoaK79dTL
+tPrA7aGi17DQtqGiwarUy6GiuqPUy6GjCgrI/aO6xuTL/Lf+zvGjur2o1v6wstewoaK547jmt9Gh
+otehy9630aGiu+HS6bfRoaLXydGvt9Ghoraotu6yzcz8tcguCgogICAg0tTJz8axvt2++b/Jyc/N
++LLp0a+78sTDtb21sbXYy7C+1tHp1qS689TZuLa/7qGjCiAgICAgICAgCiAgICAgtee7sCAgIKO6
+MTM5Mjc0MDA1NjUKCiAgICAgwarPtcjLIKO6IM310KG94woKICAgICC12Na3ICAgo7ogyc+6o8rQ
+xta2q9DCx/i2q7KowrczMTW6xSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAoKICAgICDTys/kICAgo7o1MjUyNzM3NDZAcXEuY29tICAg
+ICAgINK1zvFRIFEgIKO6NTI1MjczNzQ2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVt
+YWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFs
+bGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9i
+bGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28g
+dG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2Js
+aW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwg
+bWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRw
+czovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJh
+bAo=

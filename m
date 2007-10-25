@@ -1,14 +1,12 @@
-From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
-Subject: [RFC][PATCH 2/2] spi: fix spi_sync
-Date: Thu, 25 Oct 2007 13:43:18 +0200
-Message-ID: <200710251343.19356.marc.pignat@hevs.ch>
+From: "Elwood Guidry" <kebvisioncomputersxof-VknJwoNg5kHgU0tbg7O/M0EOCMrvLtNR@public.gmane.org>
+Subject: Can you imagine that you are healthy?
+Date: Thu, 25 Oct 2007 22:33:54 +0200
+Message-ID: <262712444.12775764384918@visioncomputers.com>
+Reply-To: kebvisioncomputersxof-VknJwoNg5kHgU0tbg7O/M0EOCMrvLtNR@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1537404502=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,71 +18,68 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Fix spi_sync calling convention, fix spi_sync users.
+--===============1537404502==
+Content-Type: multipart/alternative;
+  boundary="----------F057DAB4F29CA4F0"
 
-Signed-off-by: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
+------------F057DAB4F29CA4F0
+Content-Type: text/plain; charset=Windows-1252
+Content-Transfer-Encoding: 7bit
 
----
+LegalRX drug-shop introduce all cures that you feel need in to renew your health at low cost. 
+We manage across the whole world with customers from Europe, America, and Asia. 
+Today you got no need to seek chemist's somewhere at your area.
+We surely convey medications of the best quality to all parts of the planet.
 
-Regards
+ Visit our site to place an order for pharmas that you instantly demand straight to your dwelling. 
+http://summercomplete.cn/ 
+We're approved by VeriSign & VISA so then we support effective & confidential purchasing.
+------------F057DAB4F29CA4F0
+Content-Type: text/html; charset=Windows-1252
+Content-Transfer-Encoding: 7bit
 
-Marc
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE></TITLE>
+</HEAD>
+<BODY>
 
---- drivers/rtc/rtc-max6902.c.orig	2007-10-25 13:29:26.000000000 +0200
-+++ drivers/rtc/rtc-max6902.c	2007-10-25 13:29:17.000000000 +0200
-@@ -89,14 +89,12 @@ static int max6902_get_reg(struct device
- 
- 	/* do the i/o */
- 	status = spi_sync(spi, &message);
--	if (status == 0)
--		status = message.status;
--	else
-+	if (status)
- 		return status;
- 
- 	*data = chip->rx_buf[1];
- 
--	return status;
-+	return 0;
- }
- 
- static int max6902_get_datetime(struct device *dev, struct rtc_time *dt)
-@@ -125,9 +123,7 @@ static int max6902_get_datetime(struct d
- 
- 	/* do the i/o */
- 	status = spi_sync(spi, &message);
--	if (status == 0)
--		status = message.status;
--	else
-+	if (status)
- 		return status;
- 
- 	/* The chip sends data in this order:
---- drivers/input/touchscreen/ads7846.c.orig	2007-10-25 13:30:11.000000000 +0200
-+++ drivers/input/touchscreen/ads7846.c	2007-10-25 13:40:48.000000000 +0200
-@@ -267,13 +267,12 @@ static int ads7846_read12_ser(struct dev
- 	ts->irq_disabled = 0;
- 	enable_irq(spi->irq);
- 
--	if (req->msg.status)
--		status = req->msg.status;
--
--	/* on-wire is a must-ignore bit, a BE12 value, then padding */
--	sample = be16_to_cpu(req->sample);
--	sample = sample >> 3;
--	sample &= 0x0fff;
-+	if (status == 0) {
-+		/* on-wire is a must-ignore bit, a BE12 value, then padding */
-+		sample = be16_to_cpu(req->sample);
-+		sample = sample >> 3;
-+		sample &= 0x0fff;
-+	}
- 
- 	kfree(req);
- 	return status ? status : sample;
+<b><font color="#00CC33"><em>LegalRX</em></font> drug-shop introduce all cures that you feel need in to renew your health at low cost. <br>
+We manage across the whole world with customers from Europe, America, and Asia. <br>
+Today you got no need to seek chemist's somewhere at your area.<br>
+We surely convey medications of the best quality to all parts of the planet.<br><br> 
+
+<a href="http://summercomplete.cn/" target="_blank"><em>Visit our site to place an order for pharmas that you instantly demand straight to your dwelling.</em></a></b> 
+<br>
+<font color="#D9EDFF">http://summercomplete.cn/</font> 
+
+<br><b>We're approved by <font color="#FF0000"><em>VeriSign</em></font> & <font color="#FF0000"><em>VISA</em></font> so then we support effective & confidential purchasing.
+</b>
+
+</BODY></HTML>
+------------F057DAB4F29CA4F0--
+
+
+
+--===============1537404502==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
+--===============1537404502==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1537404502==--

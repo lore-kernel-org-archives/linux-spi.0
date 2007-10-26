@@ -1,10 +1,10 @@
-From: "Elwood Guidry" <kebvisioncomputersxof-VknJwoNg5kHgU0tbg7O/M0EOCMrvLtNR@public.gmane.org>
-Subject: Can you imagine that you are healthy?
-Date: Thu, 25 Oct 2007 22:33:54 +0200
-Message-ID: <262712444.12775764384918@visioncomputers.com>
-Reply-To: kebvisioncomputersxof-VknJwoNg5kHgU0tbg7O/M0EOCMrvLtNR@public.gmane.org
+From: "Sybil Nieves" <jevwahumphreysfeh-Z2He12bOTHKBCiQz0RPHcQ@public.gmane.org>
+Subject: Don't be the "little guy" in the club
+Date: Fri, 26 Oct 2007 07:59:07 +0700
+Message-ID: <467068498.16402635809928@wahumphreys.com>
+Reply-To: jevwahumphreysfeh-Z2He12bOTHKBCiQz0RPHcQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1537404502=="
+Content-Type: multipart/mixed; boundary="===============0453559917=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,24 +18,20 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1537404502==
+--===============0453559917==
 Content-Type: multipart/alternative;
-  boundary="----------F057DAB4F29CA4F0"
+  boundary="----------AB48DABBBB48676"
 
-------------F057DAB4F29CA4F0
-Content-Type: text/plain; charset=Windows-1252
+------------AB48DABBBB48676
+Content-Type: text/plain; charset=iso-8859-2
 Content-Transfer-Encoding: 7bit
 
-LegalRX drug-shop introduce all cures that you feel need in to renew your health at low cost. 
-We manage across the whole world with customers from Europe, America, and Asia. 
-Today you got no need to seek chemist's somewhere at your area.
-We surely convey medications of the best quality to all parts of the planet.
-
- Visit our site to place an order for pharmas that you instantly demand straight to your dwelling. 
-http://summercomplete.cn/ 
-We're approved by VeriSign & VISA so then we support effective & confidential purchasing.
-------------F057DAB4F29CA4F0
-Content-Type: text/html; charset=Windows-1252
+Ultimately the true stuff - with no ripoffs!
+ P.E.P. are piping hot at the time! Well this is the true stuff not a fictitious one!
+ One of the very exceptionals, totally unique stuff is available around the world!
+ Note what people tell on this product: "I pleased how quickly your product affected on my boyfriend, he can not stop chatting on how hot he is with his new size, length, and libido!" Amely S., Bellevue WA "At first I thought the sample package I acquired gratis was a prank, until I tried P.E.P. No words can describe how satisfied I am with the outcome I achieved from using the stuff after 7 short weeks. I will be asking for P.E.P. regularly!" Rikky Martin, New York Read more recommendations about this astonishing product right here! http://www.sylorta.com/?xnrqnmvxsnijm
+------------AB48DABBBB48676
+Content-Type: text/html; charset=iso-8859-2
 Content-Transfer-Encoding: 7bit
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -43,24 +39,34 @@ Content-Transfer-Encoding: 7bit
 </HEAD>
 <BODY>
 
-<b><font color="#00CC33"><em>LegalRX</em></font> drug-shop introduce all cures that you feel need in to renew your health at low cost. <br>
-We manage across the whole world with customers from Europe, America, and Asia. <br>
-Today you got no need to seek chemist's somewhere at your area.<br>
-We surely convey medications of the best quality to all parts of the planet.<br><br> 
+<b>Ultimately the true stuff - with no ripoffs!<br> 
+<a href="http://www.sylorta.com/?xnrqnmvxsnijm" target="_blank">P.E.P.</a> are piping hot at the time! 
+Well this is the true stuff not a fictitious one!<br> 
+One of the very exceptionals, totally unique 
+stuff is available around the world!<br> 
 
-<a href="http://summercomplete.cn/" target="_blank"><em>Visit our site to place an order for pharmas that you instantly demand straight to your dwelling.</em></a></b> 
-<br>
-<font color="#D9EDFF">http://summercomplete.cn/</font> 
+Note what people tell on this product: 
+<p><i>"I pleased how quickly your product affected on my boyfriend, 
+he can not stop chatting on how hot he is 
+with his new size, length, and libido!"</i></p> 
+Amely S., Bellevue WA 
 
-<br><b>We're approved by <font color="#FF0000"><em>VeriSign</em></font> & <font color="#FF0000"><em>VISA</em></font> so then we support effective & confidential purchasing.
-</b>
+<p><i>"At first I thought the sample package I acquired gratis was a prank, 
+until I tried P.E.P. 
+No words can describe how satisfied I am 
+with the outcome I achieved from using the stuff after 7 short weeks. 
+I will be asking for P.E.P. regularly!"</i></p> 
+Rikky Martin, New York 
+
+<center><a href="http://www.sylorta.com/?xnrqnmvxsnijm" target="_blank">Read more recommendations about this astonishing product right here!</a></center></b> 
+<font color="#D9EDFF">http://www.sylorta.com/?xnrqnmvxsnijm</font>
 
 </BODY></HTML>
-------------F057DAB4F29CA4F0--
+------------AB48DABBBB48676--
 
 
 
---===============1537404502==
+--===============0453559917==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -71,7 +77,7 @@ This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1537404502==
+--===============0453559917==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -82,4 +88,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1537404502==--
+--===============0453559917==--

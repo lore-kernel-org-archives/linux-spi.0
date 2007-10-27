@@ -1,12 +1,29 @@
-From: "Daryl Harrison" <mygwielensor-lCxKxNdlQ6XQT0dZR+AlfA@public.gmane.org>
-Subject: Wanna be more man? Check this dude
-Date: Sat, 27 Oct 2007 18:25:50 +0700
-Message-ID: <529760829.23840593719606@wielen.com>
-Reply-To: mygwielensor-lCxKxNdlQ6XQT0dZR+AlfA@public.gmane.org
+From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Subject: Re: [patch 3/4 2.6.23-rc2 + mm2-git-mmc] MMC
+ core learns about SPI
+Date: Sat, 27 Oct 2007 14:08:23 +0200
+Message-ID: <20071027140823.5d7ec7e2@poseidon.drzeus.cx>
+References: <200708080906.18993.david-b@pacbell.net>
+	<20070829092247.GA15021@pengutronix.de>
+	<20070829165243.0236cc89@poseidon.drzeus.cx>
+	<200708290943.59450.david-b@pacbell.net>
+	<470A644A.8030405@gmail.com>
+	<20071010203613.55676dba@poseidon.drzeus.cx>
+	<c4bc83220710190240wd13bfd1r991ba9b1b1128f6c@mail.gmail.com>
+	<c4bc83220710190250m6c3401end194917e2daa9104@mail.gmail.com>
+	<20071022203428.300117e4@poseidon.drzeus.cx>
+	<471DAB71.8000808@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1112525321=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
+	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
+	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <471DAB71.8000808-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,74 +35,41 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1112525321==
-Content-Type: multipart/alternative;
-  boundary="----------05C9321E44BFDA"
+On Tue, 23 Oct 2007 10:06:09 +0200
+Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
 
-------------05C9321E44BFDA
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+> Pierre Ossman wrote:
+> > Ah. I see what you mean now. The problem is in the data transfer, not a response field. So Sacha's patch was almost correct. Could you test if the included patch solves your issue?
+> 
+> With your patch it works as good as with the one from Sascha.
+> 
 
-At last, the real stuff - without ramp!
- P.E.P. are very hot at the time! This is the genuine thing not a forgery!
- One of the very originals, totally unparalleled stuff is accessible everywhere!
- Pay attention to just what people say on this stuff: "I pleased how rapidly P.E.P. worked on my boyfriend, he can't put an end to his talking on how hot he is with his new girth, length, and libido!" Lusia R., Washington "At first I considered the sample parcel I was given gratis was a kind of jest, until I have takentaking the P.E.P. I can not describe report how satisfied I am with the outcomes from using the remedy for 8 brief weeks. I'll be ordering constantly!" Charley Mock, Boston Read more references about this marvellouls product here now! http://www.vymonsi.com/?isiqucrabtrd
-------------05C9321E44BFDA
-Content-Type: text/html; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Great. I'll send it to Linus then.
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML><HEAD><TITLE></TITLE>
-</HEAD>
-<BODY>
+(Just in case it wasn't apparent, my patch was different from Sascha's as his flipped some stuff that shouldn't)
 
-<b>At last, the real stuff - without ramp!<br> 
-<a href="http://www.vymonsi.com/?isiqucrabtrd" target="_blank">P.E.P.</a> are very hot at the time! 
-This is the genuine thing not a forgery!<br> 
-One of the very originals, totally unparalleled 
-stuff is accessible everywhere!<br> 
+> > 
+> > Is this really a problem that plagues you, or just something you noticed in the code?
+> 
+> It is that we need to suspend as soon as possible because of power loss.
+> Waiting to flush all the caches does not help, because there will not be
+> enough time with backup power. So it's better not to start any new block
+> requests to safe as much backup power as possible and to avoid
+> interrupted block transfer.
+> 
 
-Pay attention to just what people say on this stuff: 
-<p><i>"I pleased how rapidly P.E.P. worked on my boyfriend, 
-he can't put an end to his talking on how hot he is 
-with his new girth, length, and libido!"</i></p> 
-Lusia R., Washington 
+Ah, that is a very good point. Could I bother you with having a look at how other parts of the kernel does things?
 
-<p><i>"At first I considered the sample parcel I was given gratis was a kind of jest, 
-until I have takentaking the P.E.P. 
-I can not describe report how satisfied I am 
-with the outcomes from using the remedy for 8 brief weeks. 
-I'll be ordering constantly!"</i></p> 
-Charley Mock, Boston 
+Rgds
+-- 
+     -- Pierre Ossman
 
-<center><a href="http://www.vymonsi.com/?isiqucrabtrd" target="_blank">Read more references about this marvellouls product here now!</a></center></b> 
-<font color="#D9EDFF">http://www.vymonsi.com/?isiqucrabtrd</font>
-
-</BODY></HTML>
-------------05C9321E44BFDA--
-
-
-
---===============1112525321==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+  Linux kernel, MMC maintainer        http://www.kernel.org
+  PulseAudio, core developer          http://pulseaudio.org
+  rdesktop, core developer          http://www.rdesktop.org
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1112525321==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1112525321==--

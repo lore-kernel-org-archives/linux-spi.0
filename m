@@ -1,14 +1,12 @@
-From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
-Subject: [RFC][PATCH 1/2 v2] spi: fix spi_sync
-Date: Fri, 26 Oct 2007 11:56:27 +0200
-Message-ID: <200710261156.27892.marc.pignat@hevs.ch>
+From: "Daryl Harrison" <mygwielensor-lCxKxNdlQ6XQT0dZR+AlfA@public.gmane.org>
+Subject: Wanna be more man? Check this dude
+Date: Sat, 27 Oct 2007 18:25:50 +0700
+Message-ID: <529760829.23840593719606@wielen.com>
+Reply-To: mygwielensor-lCxKxNdlQ6XQT0dZR+AlfA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1112525321=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,61 +18,74 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ease spi_sync calling convention. There is no more need to check the return
-value AND the message->status. As a side effect, this will correct the wrong
-behaviour of spi_read and spi_write.
+--===============1112525321==
+Content-Type: multipart/alternative;
+  boundary="----------05C9321E44BFDA"
 
-Signed-off-by: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
+------------05C9321E44BFDA
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
----
+At last, the real stuff - without ramp!
+ P.E.P. are very hot at the time! This is the genuine thing not a forgery!
+ One of the very originals, totally unparalleled stuff is accessible everywhere!
+ Pay attention to just what people say on this stuff: "I pleased how rapidly P.E.P. worked on my boyfriend, he can't put an end to his talking on how hot he is with his new girth, length, and libido!" Lusia R., Washington "At first I considered the sample parcel I was given gratis was a kind of jest, until I have takentaking the P.E.P. I can not describe report how satisfied I am with the outcomes from using the remedy for 8 brief weeks. I'll be ordering constantly!" Charley Mock, Boston Read more references about this marvellouls product here now! http://www.vymonsi.com/?isiqucrabtrd
+------------05C9321E44BFDA
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-This is version 2 (previous one didn't compile :-/ ).
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE></TITLE>
+</HEAD>
+<BODY>
 
-Regards
+<b>At last, the real stuff - without ramp!<br> 
+<a href="http://www.vymonsi.com/?isiqucrabtrd" target="_blank">P.E.P.</a> are very hot at the time! 
+This is the genuine thing not a forgery!<br> 
+One of the very originals, totally unparalleled 
+stuff is accessible everywhere!<br> 
 
-Marc
+Pay attention to just what people say on this stuff: 
+<p><i>"I pleased how rapidly P.E.P. worked on my boyfriend, 
+he can't put an end to his talking on how hot he is 
+with his new girth, length, and libido!"</i></p> 
+Lusia R., Washington 
 
---- drivers/spi/spi.c.orig	2007-10-25 13:24:09.000000000 +0200
-+++ drivers/spi/spi.c	2007-10-25 13:22:23.000000000 +0200
-@@ -542,10 +542,7 @@ static void spi_complete(void *arg)
-  * Also, the caller is guaranteeing that the memory associated with the
-  * message will not be freed before this call returns.
-  *
-- * The return value is a negative error code if the message could not be
-- * submitted, else zero.  When the value is zero, then message->status is
-- * also defined;  it's the completion code for the transfer, either zero
-- * or a negative error code from the controller driver.
-+ * It returns zero on success, else a negative error code.
-  */
- int spi_sync(struct spi_device *spi, struct spi_message *message)
- {
-@@ -555,8 +552,10 @@ int spi_sync(struct spi_device *spi, str
- 	message->complete = spi_complete;
- 	message->context = &done;
- 	status = spi_async(spi, message);
--	if (status == 0)
-+	if (status == 0) {
- 		wait_for_completion(&done);
-+		status = message->status;
-+	}
- 	message->context = NULL;
- 	return status;
- }
-@@ -629,10 +628,8 @@ int spi_write_then_read(struct spi_devic
- 
- 	/* do the i/o */
- 	status = spi_sync(spi, &message);
--	if (status == 0) {
-+	if (status == 0)
- 		memcpy(rxbuf, x[1].rx_buf, n_rx);
--		status = message.status;
--	}
- 
- 	if (x[0].tx_buf == buf)
- 		up(&lock);
+<p><i>"At first I considered the sample parcel I was given gratis was a kind of jest, 
+until I have takentaking the P.E.P. 
+I can not describe report how satisfied I am 
+with the outcomes from using the remedy for 8 brief weeks. 
+I'll be ordering constantly!"</i></p> 
+Charley Mock, Boston 
+
+<center><a href="http://www.vymonsi.com/?isiqucrabtrd" target="_blank">Read more references about this marvellouls product here now!</a></center></b> 
+<font color="#D9EDFF">http://www.vymonsi.com/?isiqucrabtrd</font>
+
+</BODY></HTML>
+------------05C9321E44BFDA--
+
+
+
+--===============1112525321==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
+--===============1112525321==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1112525321==--

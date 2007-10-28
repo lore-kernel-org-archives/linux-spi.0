@@ -1,21 +1,15 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 3/4 2.6.23-rc2 + mm2-git-mmc] MMC
-	core learns about SPI
-Date: Sat, 27 Oct 2007 09:33:29 -0700
-Message-ID: <200710270933.30538.david-b@pacbell.net>
-References: <200708080906.18993.david-b@pacbell.net>
-	<471DAB71.8000808@gmail.com>
-	<20071027140823.5d7ec7e2@poseidon.drzeus.cx>
+Subject: [patch 2.6.24-rc1-git] tle62x0 driver stops
+	ignoring read errors
+Date: Sat, 27 Oct 2007 17:38:05 -0700
+Message-ID: <200710271738.05977.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Hans-Peter Nilsson <hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org>,
-	Mikael Starvik <mikael.starvik-VrBV9hrLPhE@public.gmane.org>,
-	Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
+Cc: Ben Dooks <ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20071027140823.5d7ec7e2-mgABNEgzgxm+PRNnhPf8W5YgPPQkE1Si@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -28,38 +22,29 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Saturday 27 October 2007, Pierre Ossman wrote:
-> > > Is this really a problem that plagues you, or just something you
-> > > noticed in the code? 
-> > 
-> > It is that we need to suspend as soon as possible because of power loss.
-> > Waiting to flush all the caches does not help, because there will not be
-> > enough time with backup power. So it's better not to start any new block
-> > requests to safe as much backup power as possible and to avoid
-> > interrupted block transfer.
-> 
-> Ah, that is a very good point. Could I bother you with having a look at how
-> other parts of the kernel does things? 
+The tle62x0 driver was ignoring all read errors.  This patch makes it
+pass such errors up the stack, instead of returning bogus data.
 
-That'll be interesting to know ... but I think the "panic suspend"
-should probably have different code paths than "normal suspend".
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/tle62x0.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-In the normal case, there's no power shortage *just now* and the
-safest shutdown sequence is appropriate.  Notably, all removable
-media should have I/O be fully flushed, and the filesystem made
-consistent.  And on resume, the filesystem should NOT be assumed
-to be in the same state it was on suspend.
-
-In the panic case, like this, power may not be available, and the
-prayer is that some can be found before too long.
-
->From earlier discussions elsewhere, I think neither of those cases
-is handled all that well.  If anything, there's an assumption that
-suspend is never done in a panic ... but that there's no need to
-make the filesystem fully consistent/clean since media aren't
-removable.
-
-- Dave
+--- at91.orig/drivers/spi/tle62x0.c	2007-10-27 17:28:56.000000000 -0700
++++ at91/drivers/spi/tle62x0.c	2007-10-27 17:29:50.000000000 -0700
+@@ -107,8 +107,11 @@ static ssize_t tle62x0_status_show(struc
+ 
+ 	mutex_lock(&st->lock);
+ 	ret = tle62x0_read(st);
+-
+ 	dev_dbg(dev, "tle62x0_read() returned %d\n", ret);
++	if (ret < 0) {
++		mutex_unlock(&st->lock);
++		return ret;
++	}
+ 
+ 	for (ptr = 0; ptr < (st->nr_gpio * 2)/8; ptr += 1) {
+ 		fault <<= 8;
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

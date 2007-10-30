@@ -1,55 +1,51 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH 09/14] Blackfin SPI driver: Fix SPI driver to work with SPI flash ST25P16 on bf548
-Date: Tue, 30 Oct 2007 13:05:02 -0700
-Message-ID: <200710301305.02640.david-b@pacbell.net>
-References: <1193735885-8202-1-git-send-email-bryan.wu@analog.com> <1193735885-8202-10-git-send-email-bryan.wu@analog.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH 00/14] Blackfin on-chip SPI
+	controller driver updates and bug-fixing
+Date: Tue, 30 Oct 2007 13:24:07 -0700
+Message-ID: <200710301324.07691.david-b@pacbell.net>
+References: <1193735885-8202-1-git-send-email-bryan.wu@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, Sonic Zhang <sonic.zhang@analog.com>
-To: Bryan Wu <bryan.wu@analog.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1757818AbXJ3UYf@vger.kernel.org>
-In-Reply-To: <1193735885-8202-10-git-send-email-bryan.wu@analog.com>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1193735885-8202-1-git-send-email-bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 On Tuesday 30 October 2007, Bryan Wu wrote:
-> Current SPI driver enables SPI controller and set the SPI baud register
-> for each SPI transfer. But, they should never be changed within a SPI
-> message session, in which seveal SPI transfers are pumped.
+>  - BF54x supported
+>  - multi-port supported
+>  - bunch of bug fixing 
 
-That's actually not true.  If a driver sets spi_transfer.max_speed_hz
-to a nonzero value that's different from the previous bit rate (which
-may be spi_device.max_speed_hz), it should be updated before that
-transfer segment.  Example, sometimes data can't be clocked out at
-the same rate commands can be clocked in.
+OK, I forwarded these with some more checkpatch.pl fixes.
 
-Similarly with spi_transfer.bits_per_word ... again, it's very possible
-that commands and data have different sizes.
+But as I commented elsewhere, please work harder to make sure
+that your patch comments actually match the patches!!
 
-Of course, if those values don't change, there'd be no point in
-reconfiguring any aspect of those communications parameters...
-
-
-I'll be forwarding this patch, since this looks like another case
-where the main effect of the patch doesn't match its description
-and since this patch series has taken too long already.  (Does this
-patch even really relate primarily to working with an ST M25P16
-flash part??)  Though it'd be reasonable to be more hard-nosed
-about this and insist on another go-around for thesse patches.
-(Making this the fifth one??)
-
-But I *STRONGLY* suggest someone revisit the issue of whether those
-two per-transfer options are now being handled correctly.  As well
-as update procedures so that the patch comments start to have a
-direct correspondence to what the patches have changed...
+And also, pay closer attention to when you may be making
+changes that make device drivers work differently over
+your spi_master controller driver than anyone elses ...
+such platform-specific behaviors are undesirable, and when
+they go against specified behavior they are also bugs.
 
 - Dave
 
 
-> This patch 
-> move move SPI setting to the begining of a message session. And never
-> disables SPI controller until an error occurs.
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Splunk Inc.
+Still grepping through log files to find problems?  Stop.
+Now Search log events and configuration files using AJAX and a browser.
+Download your FREE copy of Splunk now >> http://get.splunk.com/

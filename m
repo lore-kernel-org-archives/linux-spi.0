@@ -1,52 +1,55 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 13/14] Blackfin SPI driver: Move
-	cs_chg_udelay to cs_deactive to fix bug when some SPI LCD
-	driver needs delay after cs_deactive
-Date: Tue, 30 Oct 2007 13:18:59 -0700
-Message-ID: <200710301319.00071.david-b@pacbell.net>
-References: <1193735885-8202-1-git-send-email-bryan.wu@analog.com>
-	<1193735885-8202-14-git-send-email-bryan.wu@analog.com>
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: [PATCH 09/14] Blackfin SPI driver: Fix SPI driver to work with SPI flash ST25P16 on bf548
+Date: Tue, 30 Oct 2007 13:05:02 -0700
+Message-ID: <200710301305.02640.david-b@pacbell.net>
+References: <1193735885-8202-1-git-send-email-bryan.wu@analog.com> <1193735885-8202-10-git-send-email-bryan.wu@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Cameron Barfield <cbarfield-uxMF5PKaPIoXhy9q4Lf3Ug@public.gmane.org>
-To: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1193735885-8202-14-git-send-email-bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, Sonic Zhang <sonic.zhang@analog.com>
+To: Bryan Wu <bryan.wu@analog.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1757818AbXJ3UYf@vger.kernel.org>
+In-Reply-To: <1193735885-8202-10-git-send-email-bryan.wu@analog.com>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Tuesday 30 October 2007, Bryan Wu wrote:
-> @@ -211,6 +211,10 @@ static void cs_deactive(struct driver_data *drv_data=
-, struct chip_data *chip)
-> =A0=A0=A0=A0=A0=A0=A0=A0flag |=3D (chip->flag << 8);
-> =A0
-> =A0=A0=A0=A0=A0=A0=A0=A0write_FLAG(drv_data, flag);
-> +
-> +=A0=A0=A0=A0=A0=A0=A0/* Move delay here for consistency */
-> +=A0=A0=A0=A0=A0=A0=A0if (chip->cs_chg_udelay)
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0udelay(chip->cs_chg_udelay);
-> =A0}
-> =A0
+> Current SPI driver enables SPI controller and set the SPI baud register
+> for each SPI transfer. But, they should never be changed within a SPI
+> message session, in which seveal SPI transfers are pumped.
 
-By the way, if this is something needed very often, that mechanism
-should be moved into the SPI framework.  It wouldn't be polite if
-such LCD drivers could only work on Blackfin boards.  :)
+That's actually not true.  If a driver sets spi_transfer.max_speed_hz
+to a nonzero value that's different from the previous bit rate (which
+may be spi_device.max_speed_hz), it should be updated before that
+transfer segment.  Example, sometimes data can't be clocked out at
+the same rate commands can be clocked in.
+
+Similarly with spi_transfer.bits_per_word ... again, it's very possible
+that commands and data have different sizes.
+
+Of course, if those values don't change, there'd be no point in
+reconfiguring any aspect of those communications parameters...
 
 
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Splunk Inc.
-Still grepping through log files to find problems?  Stop.
-Now Search log events and configuration files using AJAX and a browser.
-Download your FREE copy of Splunk now >> http://get.splunk.com/
+I'll be forwarding this patch, since this looks like another case
+where the main effect of the patch doesn't match its description
+and since this patch series has taken too long already.  (Does this
+patch even really relate primarily to working with an ST M25P16
+flash part??)  Though it'd be reasonable to be more hard-nosed
+about this and insist on another go-around for thesse patches.
+(Making this the fifth one??)
+
+But I *STRONGLY* suggest someone revisit the issue of whether those
+two per-transfer options are now being handled correctly.  As well
+as update procedures so that the patch comments start to have a
+direct correspondence to what the patches have changed...
+
+- Dave
+
+
+> This patch 
+> move move SPI setting to the begining of a message session. And never
+> disables SPI controller until an error occurs.

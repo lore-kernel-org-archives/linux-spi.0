@@ -1,77 +1,167 @@
-From: "Olen Geiger" <cohabacopagesgys-TrUJG1Bs1Xx0ubjbjo6WXg@public.gmane.org>
-Subject: Software
-Date: Tue, 30 Oct 2007 18:59:32 +0700
-Message-ID: <618777271.31693589967107@abacopages.com>
-Reply-To: cohabacopagesgys-TrUJG1Bs1Xx0ubjbjo6WXg@public.gmane.org
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: [PATCH 07/14] Blackfin SPI driver: Add SPI master controller platform device 1
+Date: Tue, 30 Oct 2007 12:08:13 -0700
+Message-ID: <200710301208.13367.david-b@pacbell.net>
+References: <1193735885-8202-1-git-send-email-bryan.wu@analog.com> <1193735885-8202-8-git-send-email-bryan.wu@analog.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0878845347=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, Sonic Zhang <sonic.zhang@analog.com>
+To: Bryan Wu <bryan.wu@analog.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755665AbXJ3TI0@vger.kernel.org>
+In-Reply-To: <1193735885-8202-8-git-send-email-bryan.wu@analog.com>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0878845347==
-Content-Type: multipart/alternative;
-  boundary="----------0C3867DABBBBBBBB"
+On Tuesday 30 October 2007, Bryan Wu wrote:
+> From: Sonic Zhang <sonic.zhang@analog.com>
+> 
+> Signed-off-by: Sonic Zhang <sonic.zhang@analog.com>
+> Signed-off-by: Bryan Wu <bryan.wu@analog.com>
 
-------------0C3867DABBBBBBBB
-Content-Type: text/plain; charset=iso-8859-2
-Content-Transfer-Encoding: 7bit
+The patch comments in this series leave a bit to be desired,
+especially patches from Sonic.  (Several are like this one:
+just a $SUBJECT, no description.)  I've improved them in the
+versions I'll be sending on ...
 
-Are you looking for the better price in software discounts? Now you'll catch the opportunity to use the softwares you dreamt of for a long time.
- And the better thing is, all softs are of utmost low price.
- Check out by yourself & get the softwares for cheap prices ever seen! http://lqalamg.topoemsoftforu.net/
-------------0C3867DABBBBBBBB
-Content-Type: text/html; charset=iso-8859-2
-Content-Transfer-Encoding: 7bit
+It's worth noting that in this case the $SUBJECT doesn't
+relate *at all* to what this patch actually does!  Namely,
+it uses the portmux mechanism to add support for two more
+SPI buses ... it doesn't add a platform device.
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML><HEAD><TITLE></TITLE>
-</HEAD>
-<BODY>
+- Dave
 
-<table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000"><tr><td align=center bgcolor="#CEF3FF"><b><font color="#FA3D05">Are you looking for the better price in software discounts?</font></b></td></tr><tr> 
-
-<td align=center bgcolor="#E9E9E9"><b>Now you'll catch the opportunity to use the softwares 
-you dreamt of for a long time.<br> 
-And the better thing is, all softs are of utmost low price.<br> 
-
-<a href="http://lqalamg.topoemsoftforu.net/" target="_blank"><em>Check out by yourself & get the softwares for cheap prices ever seen!</em></a></b></td></tr></table> 
-<font color="#D9EDFF">http://lqalamg.topoemsoftforu.net/</font>
-
-</BODY></HTML>
-------------0C3867DABBBBBBBB--
-
-
-
---===============0878845347==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Splunk Inc.
-Still grepping through log files to find problems?  Stop.
-Now Search log events and configuration files using AJAX and a browser.
-Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============0878845347==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0878845347==--
+> ---
+>  drivers/spi/spi_bfin5xx.c |   52 ++++++++++++++++++++++++++------------------
+>  1 files changed, 31 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+> index 3f3630c..3bd8359 100644
+> --- a/drivers/spi/spi_bfin5xx.c
+> +++ b/drivers/spi/spi_bfin5xx.c
+> @@ -209,17 +209,26 @@ static void cs_deactive(struct chip_data *chip)
+>  	write_FLAG(flag);
+>  }
+>  
+> -#define MAX_SPI0_SSEL	7
+> +#define MAX_SPI_SSEL	7
+>  
+>  /* stop controller and re-config current chip*/
+>  static int restore_state(struct driver_data *drv_data)
+>  {
+>  	struct chip_data *chip = drv_data->cur_chip;
+>  	int ret = 0;
+> -	u16 ssel[MAX_SPI0_SSEL] = {P_SPI0_SSEL1, P_SPI0_SSEL2, P_SPI0_SSEL3,
+> -					P_SPI0_SSEL4, P_SPI0_SSEL5,
+> -					P_SPI0_SSEL6, P_SPI0_SSEL7,};
+> -
+> +	u16 ssel[3][MAX_SPI_SSEL] = {
+> +		{P_SPI0_SSEL1, P_SPI0_SSEL2, P_SPI0_SSEL3,
+> +		P_SPI0_SSEL4, P_SPI0_SSEL5,
+> +		P_SPI0_SSEL6, P_SPI0_SSEL7},
+> +
+> +		{P_SPI1_SSEL1, P_SPI1_SSEL2, P_SPI1_SSEL3,
+> +		P_SPI1_SSEL4, P_SPI1_SSEL5,
+> +		P_SPI1_SSEL6, P_SPI1_SSEL7},
+> +
+> +		{P_SPI2_SSEL1, P_SPI2_SSEL2, P_SPI2_SSEL3,
+> +		P_SPI2_SSEL4, P_SPI2_SSEL5,
+> +		P_SPI2_SSEL6, P_SPI2_SSEL7},
+> +	};
+>  	/* Clear status and disable clock */
+>  	write_STAT(BIT_STAT_CLR);
+>  	bfin_spi_disable(drv_data);
+> @@ -234,9 +243,9 @@ static int restore_state(struct driver_data *drv_data)
+>  		int i = chip->chip_select_num;
+>  
+>  		dev_dbg(&drv_data->pdev->dev, "chip select number is %d\n", i);
+> -
+> -		if ((i > 0) && (i <= MAX_SPI0_SSEL))
+> -			ret = peripheral_request(ssel[i-1], DRV_NAME);
+> +		if ((i > 0) && (i <= MAX_SPI_SSEL))
+> +			ret = peripheral_request(
+> +				ssel[drv_data->master->bus_num][i-1], DRV_NAME);
+>  
+>  		chip->chip_select_requested = 1;
+>  	}
+> @@ -329,7 +338,6 @@ static void u8_reader(struct driver_data *drv_data)
+>  	write_TDBR(0xFFFF);
+>  
+>  	dummy_read();
+> -
+>  	while (drv_data->rx < drv_data->rx_end - 1) {
+>  		while (!(read_STAT() & BIT_STAT_RXS))
+>  			continue;
+> @@ -640,7 +648,6 @@ static void pump_transfers(unsigned long data)
+>  	message = drv_data->cur_msg;
+>  	transfer = drv_data->cur_transfer;
+>  	chip = drv_data->cur_chip;
+> -
+>  	/*
+>  	 * if msg is error or done, report it back using complete() callback
+>  	 */
+> @@ -1202,17 +1209,20 @@ static inline int destroy_queue(struct driver_data *drv_data)
+>  	return 0;
+>  }
+>  
+> -static int setup_pin_mux(int action)
+> +static int setup_pin_mux(int action, int bus_num)
+>  {
+>  
+> -	u16 pin_req[] = {P_SPI0_SCK, P_SPI0_MISO, P_SPI0_MOSI, 0};
+> +	u16 pin_req[3][4] = {
+> +		{P_SPI0_SCK, P_SPI0_MISO, P_SPI0_MOSI, 0},
+> +		{P_SPI1_SCK, P_SPI1_MISO, P_SPI1_MOSI, 0},
+> +		{P_SPI2_SCK, P_SPI2_MISO, P_SPI2_MOSI, 0},
+> +	};
+>  
+>  	if (action) {
+> -		if (peripheral_request_list(pin_req, DRV_NAME)) {
+> +		if (peripheral_request_list(pin_req[bus_num], DRV_NAME))
+>  			return -EFAULT;
+> -		}
+>  	} else {
+> -		peripheral_free_list(pin_req);
+> +		peripheral_free_list(pin_req[bus_num]);
+>  	}
+>  
+>  	return 0;
+> @@ -1236,11 +1246,6 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
+>  	}
+>  
+> -	if (setup_pin_mux(1)) {
+> -		dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
+> -		goto out_error;
+> -	}
+> -
+>  	drv_data = spi_master_get_devdata(master);
+>  	drv_data->master = master;
+>  	drv_data->master_info = platform_info;
+> @@ -1295,6 +1300,11 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
+>  		goto out_error_queue_alloc;
+>  	}
+>  
+> +	if (setup_pin_mux(1, master->bus_num)) {
+> +		dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
+> +		goto out_error;
+> +	}
+> +
+>  	dev_info(dev, "%s, Version %s, regs_base @ 0x%08x\n",
+>  		DRV_DESC, DRV_VERSION, spi_regs_base);
+>  	return status;
+> @@ -1337,7 +1347,7 @@ static int __devexit bfin5xx_spi_remove(struct platform_device *pdev)
+>  	/* Disconnect from the SPI framework */
+>  	spi_unregister_master(drv_data->master);
+>  
+> -	setup_pin_mux(0);
+> +	setup_pin_mux(0, drv_data->master->bus_num);
+>  
+>  	/* Prevent double remove */
+>  	platform_set_drvdata(pdev, NULL);
+> -- 
+> 1.5.3.4
+> 

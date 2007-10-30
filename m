@@ -1,15 +1,14 @@
 From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 05/14] Blackfin SPI driver: prevent
-	people from setting bits in ctl_reg
-Date: Tue, 30 Oct 2007 17:17:56 +0800
-Message-ID: <1193735885-8202-6-git-send-email-bryan.wu@analog.com>
+Subject: [PATCH 12/14] Blackfin SPI driver: Fix bug in
+	u16_cs_chg_reader to read data_len-2 bytes data firstly,
+	then read out the last 2 bytes data
+Date: Tue, 30 Oct 2007 17:18:03 +0800
+Message-ID: <1193735885-8202-13-git-send-email-bryan.wu@analog.com>
 References: <1193735885-8202-1-git-send-email-bryan.wu@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	Mike Frysinger <michael.frysinger-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -25,39 +24,24 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Mike Frysinger <michael.frysinger-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-
-Prevent people from setting bits in ctl_reg that the SPI
-framework already handles, hopefully we can one day drop
-ctl_reg completely
-
-Signed-off-by: Mike Frysinger <michael.frysinger-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   10 ++++++++++
- 1 files changed, 10 insertions(+), 0 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 1a55aa7..e4d64a0 100644
+index 5924903..41282bf 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -996,6 +996,16 @@ static int setup(struct spi_device *spi)
+@@ -501,7 +501,7 @@ static void u16_cs_chg_reader(struct driver_data *drv_data)
+ 	cs_active(drv_data, chip);
+ 	dummy_read(drv_data);
  
- 	/* chip_info isn't always needed */
- 	if (chip_info) {
-+		/* Make sure people stop trying to set fields via ctl_reg when they
-+		 * should actually be using common SPI framework.  Currently we let
-+		 * through: WOM EMISO PSSE GM SZ TIMOD.  Not sure if a user actually
-+		 * needs/uses any of these, but let's assume (for now) they do.
-+		 */
-+		if (chip_info->ctl_reg & (SPE | MSTR | CPOL | CPHA | LSBF | SIZE)) {
-+			dev_err(&spi->dev, "do not set bits in ctl_reg that the SPI framework provides\n");
-+			return -EINVAL;
-+		}
-+
- 		chip->enable_dma = chip_info->enable_dma != 0
- 		    && drv_data->master_info->enable_dma;
- 		chip->ctl_reg = chip_info->ctl_reg;
+-	while (drv_data->rx < drv_data->rx_end) {
++	while (drv_data->rx < drv_data->rx_end - 2) {
+ 		cs_deactive(drv_data, chip);
+ 
+ 		if (chip->cs_chg_udelay)
 -- 
 1.5.3.4
 

@@ -1,72 +1,63 @@
-From: Bryan Wu <bryan.wu@analog.com>
-Subject: Re: [PATCH 09/14] Blackfin SPI driver: Fix SPI driver to work with
-	SPI flash ST25P16 on bf548
-Date: Wed, 31 Oct 2007 14:50:31 +0800
-Message-ID: <1193813431.6971.24.camel@roc-laptop>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH 09/14] Blackfin SPI driver: Fix SPI
+	driver to work with SPI flash ST25P16 on bf548
+Date: Wed, 31 Oct 2007 00:11:33 -0700
+Message-ID: <200710310011.33545.david-b@pacbell.net>
 References: <1193735885-8202-1-git-send-email-bryan.wu@analog.com>
-	 <1193735885-8202-10-git-send-email-bryan.wu@analog.com>
-	 <200710301305.02640.david-b@pacbell.net>
-Reply-To: bryan.wu@analog.com
+	<200710301305.02640.david-b@pacbell.net>
+	<1193813431.6971.24.camel@roc-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Bryan Wu <bryan.wu@analog.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, Sonic Zhang <sonic.zhang@analog.com>
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755895AbXJaGus@vger.kernel.org>
-In-Reply-To: <200710301305.02640.david-b@pacbell.net>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1193813431.6971.24.camel@roc-laptop>
+Content-Disposition: inline
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-On Tue, 2007-10-30 at 13:05 -0700, David Brownell wrote:
-> On Tuesday 30 October 2007, Bryan Wu wrote:
-> > Current SPI driver enables SPI controller and set the SPI baud register
-> > for each SPI transfer. But, they should never be changed within a SPI
-> > message session, in which seveal SPI transfers are pumped.
+On Tuesday 30 October 2007, Bryan Wu wrote:
+> Maybe there are some confusion of mixing up the spi_trasnfer.speed_hz
+> with the spi_device.max_speed_hz.
 > 
-> That's actually not true.  If a driver sets spi_transfer.max_speed_hz
-> to a nonzero value that's different from the previous bit rate (which
-> may be spi_device.max_speed_hz), it should be updated before that
-> transfer segment.  Example, sometimes data can't be clocked out at
-> the same rate commands can be clocked in.
-> 
-> Similarly with spi_transfer.bits_per_word ... again, it's very possible
-> that commands and data have different sizes.
-> 
-I agree with you here. 
+> spi_device.max_speed_hz comes from spi_board_info.max_speed_hz, it is
+> for the default max speed value.
 
-Maybe there are some confusion of mixing up the spi_trasnfer.speed_hz
-with the spi_device.max_speed_hz.
+It's initialized from board_info, yes.  Drivers can override it
+using spi_setup().
 
-spi_device.max_speed_hz comes from spi_board_info.max_speed_hz, it is
-for the default max speed value.
-spi_transfer.speed_hz comes from upper applications for each spi
-transfer setting.
+One would expect they only override _downwards_ but that's not
+guaranteed anywhere.  A driver might have a way to establish that
+this particular board can run faster, for example.
 
-Am I right?
 
-I will fix this later.
+> spi_transfer.speed_hz comes from upper applications for each spi
+> transfer setting.
 
-> Of course, if those values don't change, there'd be no point in
-> reconfiguring any aspect of those communications parameters...
-> 
-> 
-> I'll be forwarding this patch, since this looks like another case
-> where the main effect of the patch doesn't match its description
-> and since this patch series has taken too long already.  (Does this
-> patch even really relate primarily to working with an ST M25P16
-> flash part??)  Though it'd be reasonable to be more hard-nosed
-> about this and insist on another go-around for thesse patches.
-> (Making this the fifth one??)
-> 
-> But I *STRONGLY* suggest someone revisit the issue of whether those
-> two per-transfer options are now being handled correctly.  As well
-> as update procedures so that the patch comments start to have a
-> direct correspondence to what the patches have changed...
-> 
+Certainly; all spi_transfer records come from applications!
+If that value is zero, that transfer segment uses the limit
+from the spi_device ... otherwise, it can differ.  Again,
+the limits can vary based on devise characteristics; maybe
+it can't feed data as fast for some commands.
 
-OK, we will test this on our hardware.
-Thanks, Dave
--Bryan Wu
+(ISTR the M25P16 in $SUBJECT has two read commands, one of
+which is only usable at clock rates below 33 MHz or so, but
+most other commands can work above that speed just fine.)
+
+- Dave
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Splunk Inc.
+Still grepping through log files to find problems?  Stop.
+Now Search log events and configuration files using AJAX and a browser.
+Download your FREE copy of Splunk now >> http://get.splunk.com/

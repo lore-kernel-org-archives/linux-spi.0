@@ -1,20 +1,21 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 00/14] Blackfin on-chip SPI
-	controller driver updates and bug-fixing
-Date: Tue, 30 Oct 2007 13:54:19 -0700
-Message-ID: <200710301354.19440.david-b@pacbell.net>
+From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH 07/14] Blackfin SPI driver: Add SPI
+	master controller	platform device 1
+Date: Wed, 31 Oct 2007 12:18:05 +0800
+Message-ID: <1193804285.6971.9.camel@roc-laptop>
 References: <1193735885-8202-1-git-send-email-bryan.wu@analog.com>
-	<8bd0f97a0710301329i8a21b22ncc9f71a81bc06543@mail.gmail.com>
-	<200710301342.18559.david-b@pacbell.net>
+	<1193735885-8202-8-git-send-email-bryan.wu@analog.com>
+	<200710301208.13367.david-b@pacbell.net>
+Reply-To: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "Mike Frysinger" <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200710301342.18559.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200710301208.13367.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,24 +27,37 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 30 October 2007, David Brownell wrote:
-> > =
 
-> > was there something that caught your eye other than the ugly udelay()
-> > you mentioned in the other thread ?
-> =
+On Tue, 2007-10-30 at 12:08 -0700, David Brownell wrote:
+> On Tuesday 30 October 2007, Bryan Wu wrote:
+> > From: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> > 
+> > Signed-off-by: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> > Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> 
+> The patch comments in this series leave a bit to be desired,
+> especially patches from Sonic.  (Several are like this one:
+> just a $SUBJECT, no description.)  I've improved them in the
+> versions I'll be sending on ...
+> 
+Sorry, that's my fault. 
 
-> That one was a feature that might be more generally necessary,
-> just to meet chip timing specs. =A0Mostly they're no trouble.
-> =
+Sonic's original patch modified this driver file and the Blackfin arch
+related files. So I separated the patch to this SPI driver specific code
+and Blackfin arch related patch which should be merged in Blackfin git
+tree.
 
+But I didn't change the description and subject here.
 
-... although I note that the referenced thread suggested maybe
-the problem there was a missing pullup on the chipselect line.  If
-that was really the cause, then I think that feature would best
-be left out of the framework.  :)
+> It's worth noting that in this case the $SUBJECT doesn't
+> relate *at all* to what this patch actually does!  Namely,
+> it uses the portmux mechanism to add support for two more
+> SPI buses ... it doesn't add a platform device.
+> 
 
+Sorry again, it will not happen again.
 
+-Bryan Wu
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

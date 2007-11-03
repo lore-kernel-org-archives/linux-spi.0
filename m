@@ -1,17 +1,11 @@
-From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 4/4] Blackfin SPI driver: reconfigure
-	speed_hz and bits_per_word in each spi transfer
-Date: Fri,  2 Nov 2007 10:38:32 +0800
-Message-ID: <1193971112-7744-5-git-send-email-bryan.wu@analog.com>
-References: <1193971112-7744-1-git-send-email-bryan.wu@analog.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
+From: =?GB2312?B?zfXZuw==?= <faf2afq-uZ5lm841B89BDgjK7y7TUQ@public.gmane.org>
+Subject: =?GB2312?B?0NDV/rmk1/fNs7PvudzA7bjfvLbR0NDesOA=?=
+Date: Sun, 4 Nov 2007 04:13:47 +0800
+Message-ID: <E1IoPCg-0002z8-DG@mail.sourceforge.net>
+Reply-To: faaw2ewq-FXjcTL3+ZRxWk0Htik3J/w@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1786780645=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1193971112-7744-1-git-send-email-bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,112 +17,140 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- - reconfigure SPI baud from speed_hz of each spi transfer
- - according to spi_transfer.bits_per_word to reprogram register and setup
-   correct SPI operation handlers
+--===============1786780645==
+Content-Type: text/plain;charset="GB2312"
 
-Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi_bfin5xx.c |   54 ++++++++++++++++++++++++++++++++++++++------
- 1 files changed, 46 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index f466fa0..3e5126e 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -234,10 +234,8 @@ static int restore_state(struct driver_data *drv_data)
- 	dev_dbg(&drv_data->pdev->dev, "restoring spi ctl state\n");
+
+                   行政工作统筹管理高级研修班        
+
+举办时间： 沪:12月5-6日苏:12月8-9日京:12月15-16日深:12月21-22广:12月28-29日  
+举办地点： 上海新梅华东大酒店 苏州新世纪大酒店 北京新兴宾馆 深圳 广州湖滨宾馆  
  
- 	/* Load the registers */
--	write_BAUD(drv_data, chip->baud);
--	chip->ctl_reg &= (~BIT_CTL_TIMOD);
--	chip->ctl_reg |= (chip->width << 8);
- 	write_CTRL(drv_data, chip->ctl_reg);
-+	write_BAUD(drv_data, chip->baud);
- 
- 	bfin_spi_enable(drv_data);
- 	cs_active(drv_data, chip);
-@@ -679,6 +677,7 @@ static void pump_transfers(unsigned long data)
- 	message = drv_data->cur_msg;
- 	transfer = drv_data->cur_transfer;
- 	chip = drv_data->cur_chip;
-+
- 	/*
- 	 * if msg is error or done, report it back using complete() callback
- 	 */
-@@ -736,23 +735,62 @@ static void pump_transfers(unsigned long data)
- 	drv_data->len_in_bytes = transfer->len;
- 	drv_data->cs_change = transfer->cs_change;
- 
--	width = chip->width;
-+	/* Bits per word setup */
-+	switch (transfer->bits_per_word) {
-+	case 8:
-+		drv_data->n_bytes = 1;
-+		width = CFG_SPI_WORDSIZE8;
-+		drv_data->read = chip->cs_change_per_word ?
-+			u8_cs_chg_reader : u8_reader;
-+		drv_data->write = chip->cs_change_per_word ?
-+			u8_cs_chg_writer : u8_writer;
-+		drv_data->duplex = chip->cs_change_per_word ?
-+			u8_cs_chg_duplex : u8_duplex;
-+		break;
-+
-+	case 16:
-+		drv_data->n_bytes = 2;
-+		width = CFG_SPI_WORDSIZE16;
-+		drv_data->read = chip->cs_change_per_word ?
-+			u16_cs_chg_reader : u16_reader;
-+		drv_data->write = chip->cs_change_per_word ?
-+			u16_cs_chg_writer : u16_writer;
-+		drv_data->duplex = chip->cs_change_per_word ?
-+			u16_cs_chg_duplex : u16_duplex;
-+		break;
-+
-+	default:
-+		/* No change, the same as default setting */
-+		drv_data->n_bytes = chip->n_bytes;
-+		width = chip->width;
-+		drv_data->write = drv_data->tx ? chip->write : null_writer;
-+		drv_data->read = drv_data->rx ? chip->read : null_reader;
-+		drv_data->duplex = chip->duplex ? chip->duplex : null_writer;
-+		break;
-+	}
-+	cr = (read_CTRL(drv_data) & (~BIT_CTL_TIMOD));
-+	cr |= (width << 8);
-+	write_CTRL(drv_data, cr);
-+
- 	if (width == CFG_SPI_WORDSIZE16) {
- 		drv_data->len = (transfer->len) >> 1;
- 	} else {
- 		drv_data->len = transfer->len;
- 	}
--	drv_data->write = drv_data->tx ? chip->write : null_writer;
--	drv_data->read = drv_data->rx ? chip->read : null_reader;
--	drv_data->duplex = chip->duplex ? chip->duplex : null_writer;
- 	dev_dbg(&drv_data->pdev->dev,
- 		"transfer: drv_data->write is %p, chip->write is %p, null_wr is %p\n",
--   		drv_data->write, chip->write, null_writer);
-+		drv_data->write, chip->write, null_writer);
- 
- 	/* speed and width has been set on per message */
- 	message->state = RUNNING_STATE;
- 	dma_config = 0;
- 
-+	/* Speed setup (surely valid because already checked) */
-+	if (transfer->speed_hz)
-+		write_BAUD(drv_data, hz_to_spi_baud(transfer->speed_hz));
-+	else
-+		write_BAUD(drv_data, chip->baud);
-+
- 	write_STAT(drv_data, BIT_STAT_CLR);
- 	cr = (read_CTRL(drv_data) & (~BIT_CTL_TIMOD));
- 	cs_active(drv_data, chip);
--- 
-1.5.3.4
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+● 授 课 对 象
+    行政总监，行政经理，办公室主任，行政文员
+
+⊙主 办单位：众 人 行 管 理 咨 询 
+⊙培 训价格： 2 5 0 0元 / 人
+
+深圳总部电话：0755-26075265 26075429 26075365 22008632 81069646 
+上海办事处电话：021-51875149
+北京办事处电话：010-51293353
+传真： 0755-61351396 82129209
+联系人：凌小姐 曾小姐 
+
+
+ ● 背景
+    如果您是一位企业管理者，没有专业尺度如何衡量行政工效？
+    如果您是一位行政负责人，欠缺专业工具如何自信面对员工？
+    如果您是一位文秘工作者，错过专业指导怎能获得职场晋升？
+
+    本课程将为您提供从理念到技能的全面训练，帮助您提高行政统筹管理的专业技
+能，主动掌握工作节奏，有效控制行政成本，防范行政工作“黑洞”！课程将以国际
+通用的职业标准为基础，结合老师多年海外留学、从业的经验，加之其独到精深的讲
+解呈现和训练点评的专业实力，对企业行政管理人员进行科学、专业、先进的系统化
+训练。
+
+● 课程形式
+   实操讲解-深度解析-实战分享-情境模拟-多媒体展示
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+● 课程大纲：
+第一天
+一、现代企业中行政管理的定位
+    1、现代企业运行模型          2、行政管理工作的绩效价值
+    3、行政管理人员的素质特点    4、行政管理制度的框架结构
+演练：工作漏洞究竟出在哪里？
+
+二、行政主管的自我管理
+    1、职业规范要点与评估标准    2、人际关系处理的准则与该注意的”陷井”
+    3、职业优势保持的要点
+演练：如何说服你的上司
+
+三、行政部门的内部管理
+    1、前台文员管理              2、秘书（领导秘书）管理
+    3、行政工作人员管理          4、司机、保安、清洁工管理
+    5、行政事务性工作的内部分工  6、强化行政工作执行机制
+    7、呈现突出行政工作业绩      
+演练：整合资源-分工协作-达成目标
+
+四、经验积累与知识创新管理
+    1、公文处理与管理             2、会议成果的提炼与分享
+    3、工作创新管理与应用
+
+五、行政统筹管理关键事物控制
+    1. 集团电话管理                2. 集团的复印机管理
+    3. 集团的车辆管理不同方式      4. 食堂管理的外包流程
+    5. 员工的应急安全保障          6. 办公室布局管理
+    7. 办公室搬家管理              8. 与物业的关系要点 
+    9. 对施工方的管理要点          10. 公司驻在地的社区关系
+   11. 公共关系管理                12. 危机处理
+
+六、行政经费管理与控制
+1、如何处理好三种关系与三项原则
+2、行政业务费用管理
+3、行政成本控制的重要路径
+4、办公成本控制的无项原则
+5、运用“白金触点”原理节省行政经费
+
+七、行政统筹必备的沟通技巧
+  1、施展人际影响解决管理冲突   2、感召他人的4大热键
+  3、表扬、批评5步法            4、令人心服口服的方法
+演练：为何费力不讨好！？
+
+八、会议组织与活动管理
+  1、成功会议的准备工作：会前、会中、会后  2、如何主持会议与公司活动
+  3、高效率会议的实用工具
+
+九、接待工作与职业礼仪
+  1、接待工作中的十大禁忌论            2、行政人员的着装、仪表、语言
+  3、使用电话、手机、E-mail的礼仪规范  4、宴请、参观、旅游的礼仪规范
+
+十、行政管理人员的职业规划
+  1、行政管理职业的职场阶梯            2、职业生涯规划中的五个一工程
+  3、从优秀到卓越，从技术到艺术
+毕业演练：八分钟设计职场八年！
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         
+● 讲师介绍：
+    刘老师  欧亚人力资源发展联盟中国区首席咨询师,亚洲咨询培训与发展协会
+秘书长。2001年开始专职从事于培训与咨询工作，以访问学者
+身份多次出访过法国、德国、瑞士等国知名大学和大型企业，在企业中高层经理人领
+导素质提升、企业行政体系构建及通用管理领域等方面拥有领先的视角和丰厚的实践
+经验。其授课特色是从国内企业所面临的实际问题出发，通过各种典型案例的讲解和
+分析，以及模拟现实环境的操作演练，系统提升企业解决问题的能力和实施操作水平。
+
+    指导过的企业有 ：安利（中国）、百度、海尔集团、美的集团、联想集团、
+深发展、东风日产、上海比亚迪、深圳移动、广州移动、中山移动、中科智担保集团、
+航天科工集团、广东核电集团、华侨城物业、长城物业、北京信威通讯、厦门名姿集团、
+深圳人保财险、深圳天虹商场、深圳市经纬科技有限公司、中国人才热线、
+西部人力资源市场、泰昂电子、超华电子、梁子时装等百余家中外企业。
+
+
+
+--===============1786780645==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
+--===============1786780645==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1786780645==--

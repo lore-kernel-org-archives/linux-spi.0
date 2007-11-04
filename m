@@ -1,9 +1,9 @@
-From: =?GB2312?B?zfXZuw==?= <faf2afq-uZ5lm841B89BDgjK7y7TUQ@public.gmane.org>
-Subject: =?GB2312?B?0NDV/rmk1/fNs7PvudzA7bjfvLbR0NDesOA=?=
-Date: Sun, 4 Nov 2007 04:13:47 +0800
-Message-ID: <E1IoPCg-0002z8-DG@mail.sourceforge.net>
-Reply-To: faaw2ewq-FXjcTL3+ZRxWk0Htik3J/w@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1786780645=="
+From: =?GB2312?B?wfUgvNE=?= <bgt6868-0GSiYjBpcig@public.gmane.org>
+Subject: =?GB2312?B?tPrA7beixrE=?=
+Date: Sun, 4 Nov 2007 14:59:55 +0800
+Message-ID: <E1IoZSi-0005OV-Hl@mail.sourceforge.net>
+Reply-To: bgt6868-0GSiYjBpcig@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1791379320=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,121 +17,53 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1786780645==
+--===============1791379320==
 Content-Type: text/plain;charset="GB2312"
+Content-Transfer-Encoding: quoted-printable
+
+=B8=BA=D4=F0=C8=CB=A3=BA
+      =C4=FA=BA=C3=A3=A1 =CE=D2=B9=AB=CB=BE=CA=C7=D2=BB=BC=D2=D5=FD=B3=A3=
+=C4=C9=CB=B0=B5=C4=C9=CF=BA=A3=CA=D0A=BC=B6=C6=F3=D2=B5,=D4=DA=D3=EB
+
+=C8=CE=BA=CE=BF=CD=BB=A7=A1=A2=B5=A5=CE=BB=B5=C4=BA=CF=D7=F7=B3=CC=D0=F2=B6=
+=BC=CA=C7=B0=B4=D5=D5=B9=FA=BC=D2=B7=A8=B9=E6=BD=F8=D0=D0, =C8=E7=D3=D0=CE=
+=A5=B9=E6
+
+=D4=B8=B3=D0=B5=A3=CF=E0=B9=D8=D4=F0=C8=CE,=B1=BE=B9=AB=CB=BE=D2=F2=D0=E8=
+=C0=A9=D5=B9=CA=D0=B3=A1=B5=C4=BE=BA=D5=F9=D0=D4,=CE=AA=BF=CD=BB=A7=B6=D4=
+=D3=AA=D2=B5
+
+=CB=B0=CA=D5=CC=E1=B9=A9=B7=BD=B1=E3=C1=E9=BB=EE=A1=A2=D3=C5=BB=DD=D3=A6=D3=
+=C3;=C4=DC=B9=BB=B6=D4=B9=F3=B9=AB=CB=BE=CC=E1=B9=A9=D3=C5=BB=DD=BD=C9=C4=
+=C9=CB=B0=BF=EE
+
+=B9=FA=CB=B0=B5=C4=C9=CC=D2=B5;=B5=D8=CB=B0=B5=C4=D4=CB=CA=E4=A1=A2=B9=E3=
+=B8=E6=A1=A2=C6=E4=CB=FC=B7=FE=CE=F1=D2=B5=A1=A2 =BD=A8=D6=FE=B0=B2=D7=B0
+
+=D2=B5;=B5=C8=B5=C8=CF=E0=B9=D8=B7=A2=C6=B1:=C8=E7=D3=D0=D0=CB=C8=A4=B5=C4=
+=C7=EB=BA=CD=CE=D2=C1=AA=CF=B5=A3=AC=C6=DA=B4=FD=C4=FA=B5=C4=BC=D1=D2=F4=A3=
+=BA
+=20
+=C9=CF=BA=A3=CA=D0=BB=E3=D4=B4=CA=B5=D2=B5=D3=D0=CF=DE=B9=AB=CB=BE =D7=A3=
+=A3=BA=C9=CC=BA=A3=C7=A7=D1=B0=D7=A3=B8=F7=CE=BB=C9=CC=D3=D1=B2=C6=D4=B4=B9=
+=E3=BD=F8=A3=AC
+
+=C9=FA=D2=E2=D0=CB=C2=A1=A3=A1 =BB=B6=D3=AD=C0=B4=B5=E7=D7=C9=D1=AF=A3=A1
 
 
+=20
+=C1=AA=CF=B5=C8=CB =A3=BA=B3=CC=CF=C8=C9=FA
 
-                   行政工作统筹管理高级研修班        
+=B5=E7 =BB=B0 =A3=BA13826558726
 
-举办时间： 沪:12月5-6日苏:12月8-9日京:12月15-16日深:12月21-22广:12月28-29日  
-举办地点： 上海新梅华东大酒店 苏州新世纪大酒店 北京新兴宾馆 深圳 广州湖滨宾馆  
- 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-● 授 课 对 象
-    行政总监，行政经理，办公室主任，行政文员
+=B4=AB =D5=E6  =A3=BB021-51901216=20
 
-⊙主 办单位：众 人 行 管 理 咨 询 
-⊙培 训价格： 2 5 0 0元 / 人
-
-深圳总部电话：0755-26075265 26075429 26075365 22008632 81069646 
-上海办事处电话：021-51875149
-北京办事处电话：010-51293353
-传真： 0755-61351396 82129209
-联系人：凌小姐 曾小姐 
+=D3=CA=CF=E4  =A3=BBsh888d-9Onoh4P/yGk@public.gmane.org
+                      =C9=CF=BA=A3=CA=D0=BB=E3=D4=B4=CA=B5=D2=B5=D3=D0=CF=
+=DE=B9=AB=CB=BE=20
 
 
- ● 背景
-    如果您是一位企业管理者，没有专业尺度如何衡量行政工效？
-    如果您是一位行政负责人，欠缺专业工具如何自信面对员工？
-    如果您是一位文秘工作者，错过专业指导怎能获得职场晋升？
-
-    本课程将为您提供从理念到技能的全面训练，帮助您提高行政统筹管理的专业技
-能，主动掌握工作节奏，有效控制行政成本，防范行政工作“黑洞”！课程将以国际
-通用的职业标准为基础，结合老师多年海外留学、从业的经验，加之其独到精深的讲
-解呈现和训练点评的专业实力，对企业行政管理人员进行科学、专业、先进的系统化
-训练。
-
-● 课程形式
-   实操讲解-深度解析-实战分享-情境模拟-多媒体展示
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-● 课程大纲：
-第一天
-一、现代企业中行政管理的定位
-    1、现代企业运行模型          2、行政管理工作的绩效价值
-    3、行政管理人员的素质特点    4、行政管理制度的框架结构
-演练：工作漏洞究竟出在哪里？
-
-二、行政主管的自我管理
-    1、职业规范要点与评估标准    2、人际关系处理的准则与该注意的”陷井”
-    3、职业优势保持的要点
-演练：如何说服你的上司
-
-三、行政部门的内部管理
-    1、前台文员管理              2、秘书（领导秘书）管理
-    3、行政工作人员管理          4、司机、保安、清洁工管理
-    5、行政事务性工作的内部分工  6、强化行政工作执行机制
-    7、呈现突出行政工作业绩      
-演练：整合资源-分工协作-达成目标
-
-四、经验积累与知识创新管理
-    1、公文处理与管理             2、会议成果的提炼与分享
-    3、工作创新管理与应用
-
-五、行政统筹管理关键事物控制
-    1. 集团电话管理                2. 集团的复印机管理
-    3. 集团的车辆管理不同方式      4. 食堂管理的外包流程
-    5. 员工的应急安全保障          6. 办公室布局管理
-    7. 办公室搬家管理              8. 与物业的关系要点 
-    9. 对施工方的管理要点          10. 公司驻在地的社区关系
-   11. 公共关系管理                12. 危机处理
-
-六、行政经费管理与控制
-1、如何处理好三种关系与三项原则
-2、行政业务费用管理
-3、行政成本控制的重要路径
-4、办公成本控制的无项原则
-5、运用“白金触点”原理节省行政经费
-
-七、行政统筹必备的沟通技巧
-  1、施展人际影响解决管理冲突   2、感召他人的4大热键
-  3、表扬、批评5步法            4、令人心服口服的方法
-演练：为何费力不讨好！？
-
-八、会议组织与活动管理
-  1、成功会议的准备工作：会前、会中、会后  2、如何主持会议与公司活动
-  3、高效率会议的实用工具
-
-九、接待工作与职业礼仪
-  1、接待工作中的十大禁忌论            2、行政人员的着装、仪表、语言
-  3、使用电话、手机、E-mail的礼仪规范  4、宴请、参观、旅游的礼仪规范
-
-十、行政管理人员的职业规划
-  1、行政管理职业的职场阶梯            2、职业生涯规划中的五个一工程
-  3、从优秀到卓越，从技术到艺术
-毕业演练：八分钟设计职场八年！
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         
-● 讲师介绍：
-    刘老师  欧亚人力资源发展联盟中国区首席咨询师,亚洲咨询培训与发展协会
-秘书长。2001年开始专职从事于培训与咨询工作，以访问学者
-身份多次出访过法国、德国、瑞士等国知名大学和大型企业，在企业中高层经理人领
-导素质提升、企业行政体系构建及通用管理领域等方面拥有领先的视角和丰厚的实践
-经验。其授课特色是从国内企业所面临的实际问题出发，通过各种典型案例的讲解和
-分析，以及模拟现实环境的操作演练，系统提升企业解决问题的能力和实施操作水平。
-
-    指导过的企业有 ：安利（中国）、百度、海尔集团、美的集团、联想集团、
-深发展、东风日产、上海比亚迪、深圳移动、广州移动、中山移动、中科智担保集团、
-航天科工集团、广东核电集团、华侨城物业、长城物业、北京信威通讯、厦门名姿集团、
-深圳人保财险、深圳天虹商场、深圳市经纬科技有限公司、中国人才热线、
-西部人力资源市场、泰昂电子、超华电子、梁子时装等百余家中外企业。
-
-
-
---===============1786780645==
+--===============1791379320==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -142,7 +74,7 @@ This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1786780645==
+--===============1791379320==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -153,4 +85,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1786780645==--
+--===============1791379320==--

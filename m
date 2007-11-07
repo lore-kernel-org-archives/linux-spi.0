@@ -1,11 +1,12 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: SD/MMC over SPI on 2.6.24-rc1
-Date: Tue, 6 Nov 2007 14:47:52 -0800
-Message-ID: <200711061447.52236.david-b@pacbell.net>
+Date: Tue, 6 Nov 2007 22:12:32 -0800
+Message-ID: <200711062212.32877.david-b@pacbell.net>
 References: <200711062132.lA6LWOLr005428@smtp43.singnet.com.sg>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Cc: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, cksim-rdc5FV7LBygPGFelY5Zqew@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <200711062132.lA6LWOLr005428-kStlDfoawLFc9vzhF02D5Ynh5Q2U4q7d@public.gmane.org>
@@ -22,57 +23,74 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On Tuesday 06 November 2007, cksim wrote:
-> I have 2 questions with regards to SD/MMC over SPI.
+>
+> 2) The kernel 2.6.24-rc1 boots up and detected the SD card with the console
+> output "new SD card on SPI". However, no device name, such as mmcblk0p1,
+> were allocated.
 
-Answering one at a time ...
-
-> 1) In the code, I have commented out all other SPI devices on SPI0 bus
-> except for the SD card at spi0.3. However, I got an error "can't share SPI
-> bus". Anyone can advise what is the reason behind this error ?
-
-This should be resolved in the current GIT code.  Getting rid of the
-class_device caused the "is this bus shared" check to break, and
-ISTR the fix was merged shortly after RC1.
+Did you load the mmc_block driver, and include partitioning support?
 
 
-> ...
+> In addition, I noted the following messages before the 
+> sentence "mmc0: new SD card on SPI".
 > 
-> Lastly, I would like to know if the SD/MMC over SPI can be shared with other
-> SPI devices, such as touchscreen controller ADS7843 (purposely left out in
-> the current code) ?
+> ****** extract from console output ***********
 
-By "shared" I presume you mean allowing e.g. both the MMC and
-touchscreen operations on the same bus, rather than continuing
-with the current "MMC must be alone" restriction?
+> mmc_spi spi0.3: ASSUMING 3.2-3.4 V slot power
+> mmc_spi spi0.3: SD/MMC host mmc0, no WP, no poweroff
 
-
-The issue is that MMC needs a way to issue a sequence of SPI
-messages without allowing another device on the bus.  For
-example, issuing a "read block" command, is one operation;
-then there can be several operations reading "busy" status
-until the card has data; then another operation reading that
-data block; and then a final operation.
-
-The way SPI normally works is that when one message completes,
-the next one in the controller queue is handled.  Which could
-mean for example reading touchscreen sensor values ... while
-that MMC card is writing "busy" status on the MISO line.  So
-the touchscreen sensor values would be corrupted, and maybe
-that MMC data block would be lost ...
-
-There are a couple nuances there (notably that it's possible
-to drop acess to the bus during that "busy" state), but the
-key point is that unless (and until!) the SPI stack gets a
-new primitive to let drivers temporarily get exclusive access,
-sharing a bus segment between MMC and anything else can't work.
+You should at least tell it the right values for what
+voltage is provided that slot ... that's part of what
+the platform data will let you do.  :)
 
 
-There are a few proposals for such an API extension that I
-know about, and as more people start to care about mmc_spi
-it seems likely they'll attract interest that has previously
-been lacking.  ;)
+> mmc_spi spi0.3: setup: 399730 Hz bpw 8 mode 0x0 -> csr3 0a0af902
+
+Which looks like a good match for 400 KHz.
+
+
+> WARNING: at drivers/mmc/core/core.c:397 mmc_set_clock()
+
+Which is presumably "WARN_ON(hz < host->f_min);" ...
+
+When you add some debug messages, what does it tell you
+about the actual speed being requested there?
+
+
+> [<c002901c>] (dump_stack+0x0/0x14) from [<c018dfd8>]
+> (mmc_set_clock+0x40/0xb4)
+> [<c018df98>] (mmc_set_clock+0x0/0xb4) from [<c01907b4>]
+> (mmc_attach_sd+0x610/0x844)
+> [<c01901a4>] (mmc_attach_sd+0x0/0x844) from [<c018e3e4>]
+> (mmc_rescan+0x204/0x2e0)
+> [<c018e1e0>] (mmc_rescan+0x0/0x2e0) from [<c004b154>]
+> (run_workqueue+0xb8/0x148)
+>  r7:00000000 r6:c018e1e0 r5:c044e000 r4:c048d4a0
+> [<c004b09c>] (run_workqueue+0x0/0x148) from [<c004bbe4>]
+> (worker_thread+0xa8/0xbc)
+>  r6:c004bb3c r5:c048d4a0 r4:c048d4a8
+> [<c004bb3c>] (worker_thread+0x0/0xbc) from [<c004f5f4>] (kthread+0x58/0x90)
+>  r5:c048d4a0 r4:c044e000
+> [<c004f59c>] (kthread+0x0/0x90) from [<c003e698>] (do_exit+0x0/0x6fc)
+>  r6:00000000 r5:00000000 r4:00000000
+
+> mmc0: clock 0Hz busmode 2 powermode 2 cs 1 Vdd 20 width 0 timing 0
+
+I'm guessing that for some reason part of the MMC stack tried
+to set hz == 0, triggering that warning ... I recall seeing it
+do that a long time ago, but that was without any WARN_ON() in
+the code.  The entire reason that atmel_spi will accept a
+command to set the clock rate to zero is because the MMC stack
+was using that convention.  ;)
 
 - Dave
+
+
+> ****** end of extract ***********
+> 
+> (I have attached a console debug output, including dmesg output, as well)
+> 
+> FYI, I am using a blank 16MB SD card with FAT filesystem.
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.

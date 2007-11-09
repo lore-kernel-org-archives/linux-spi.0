@@ -1,11 +1,16 @@
-From: "qwa" <weskypp7-k+cT0dCbe1g@public.gmane.org>
-Subject: =?GB2312?B?yOe6zrPJzqrJz8u+tcPBptb6ytY=?=
-Date: Fri, 9 Nov 2007 09:36:22 +0800
-Message-ID: <E1IqInF-0004m5-TE@mail.sourceforge.net>
-Reply-To: weskypp7-k+cT0dCbe1g@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1463260846=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch/rfc 2.6.24-rc2 3/3] mcp23s08 spi gpio
+	expander
+Date: Fri, 9 Nov 2007 11:51:30 -0800
+Message-ID: <200711091151.30695.david-b@pacbell.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
+To: Linux Kernel list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,224 +22,431 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1463260846==
-Content-Type: text/plain;charset="GB2312"
+Basic driver for 8-bit SPI based MCP23S08 GPIO expander, without
+support for IRQs or the shared chipselect mechanism.
 
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/Kconfig          |    7 
+ drivers/spi/Makefile         |    1 
+ drivers/spi/mcp23s08.c       |  355 +++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/mcp23s08.h |   24 ++
+ 4 files changed, 387 insertions(+)
 
-
-                高  级  文  秘  职  业  化  训  练         
-
-              中  国·上  海·2007 年 12月8-9日 
-              中  国·北  京·2007 年 11月9-10日
-              中  国·深  圳·2007 年 12月1-2日
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-● 授 课 对 象
-    企业中层行政管理干部和文秘工作人员，包括办公室主任、行政部经理、董事长秘书、
-总经理秘书、行政助理、行政主管、行政部门文员等
-
-⊙主 办单位：众 人 行 管 理 咨 询 
-⊙培 训价格： 1 8 0 0元 / 人
-
-深圳总部电话：0755-26075265 26075429 26075365 22008632 81069646 
-上海办事处电话：021-51875149
-北京办事处电话：010-51293353
-传真： 0755-61351396 82129209
-联系人：凌小姐 曾小姐 
-
-
- ● 背 景
-
-    对高级文秘来说，没有受到过系统训练，将无法从战略性全方位角度认知秘书与助理
-的工作；在所从事的工作中感觉缺乏理论支持；工作中总是被动行事，不能主动掌握工作
-节奏；想给公司节省费用，但却不知从何处下手，如何节省；行使对外界社会的管理职能
-时没有感觉到有很多事物的“黑洞”……  
-
-    诸如以上的问题，都是每个文秘人员所面对与困惑的，如何把握正确方向从而迅速提
-升自身职业素养，成了我们必须面对与解决的课题。
-
-● 课 程 收 获 
-
-  → 掌握高级行政文秘所具备的基本技能、技巧
-  → 善于处理工作中的难点，掌握待人接物的技巧，实现有效的时间管理
-  → 实现现代文秘工作和档案管理工作的规范衔接
-  → 善于上传下达，掌握有效沟通的技巧
-  → 学习掌握规范的商务写作技巧，提高公文写作水平
-  → 学习掌握会议的组织思路及高效率的组织方法。
-  → 掌握基本的商务活动礼仪，使您适应日常商务场合的礼仪要求
-  → 掌握拜访客户的必备礼节，从细微之处体现您对他人的尊重
-  → 了解接待客户的礼仪细节，让您的每一位客人宾至如归
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-课 程 大 纲
-一、企业行政文秘职业特性与素质要求
-  ◇ 文秘人员的职业价值和作用     
-     →  案例：秘书岗位的评价
-  ◇ 企业文秘工作的基本特征      
-  ◇ 文秘人员的职责与主要工作内容 
-     →  案例：文秘人员的职位说明书样板
-  ◇ 文秘人员的自我角色定位      
-  ◇ 优秀文秘人员的胜任素质      
-     →  案例分析： 
-  ◇ 文秘的职业发展前景与实现路径
-
-二、公文写作与处理实务
-  ◇ 公文分类            
-  ◇ 公文的结构       
-  ◇ 秘书文字支持应达到的要求
-  ◇ 公文写作基本要领    
-  ◇ 13种常用公文模版  
-  ◇ 常用公函
-  ◇ 请示与报告、批复的写作与范例   
-  ◇ SMART原则与SWOT方法   
-  ◇ 计划撰写注意事项
-
-三、会务组织与管理
-  ◇ 会务分类－组织思路     
-  ◇ 组织阶段：会前准备、会中协助、会后整理
-  ◇ 组织方法               
-  ◇ 例会的组织     
-  ◇ 大型会议、展会的组织
-  ◇ 如何担任会议主持人     
-  ◇ 如何当好会议秘书？
-  ◇ 全景案例：某公司年度大型庆典活动策划始末
-     →  案例：大型会议及活动策划案
-  ◇ 如何避免陷于会议忙碌之中？
-
-四、文件资料管理与运用
-  ◇ 文档分类标准       
-  ◇ 档案管理的原则       
-  ◇ 文档的索引
-  ◇ 电子文档的保管     
-  ◇ 名片系统管理        
-  ◇ 印章的管理
-  →   研讨：如何利用档案为公司业务服务？
-
-五、信息档案管理
-  ◇ 信息管理基本流程   
-  ◇ 信息的收集整理      
-  ◇ 信息的传递
-  ◇ 信息的储存与保密   
-  ◇ 保密意识与保密规则  
-  ◇ 秘书的基本职业道德
-
-六、人际沟通与工作协调技巧
-  ◇ 沟通对于秘书的意义 
-  ◇ 秘书常用沟通方式之比较 
-  ◇ 秘书人员的沟通技巧
-     →  案例：如何听懂老板的“没有说出来的意思”？ 
-  ◇ 秘书让领导刮目相看、获得信任？  
-  ◇ 如何与你的上司协调而不帮倒忙？
-  ◇ 秘书人员如何与各种上司相处？    
-  ◇ 问题：我的上级调走了怎么办？
-     →  案例：领导让我难为情，我该怎么办？
-     →  案例：如何与同事或下级相处？
-     →  案例：有人在你面前抱怨你的领导该怎么办？
-  ◇ 讨论：秘书应当如何发挥自身优势起好协调作用？
-
-七、办公室5S及办公用品管理
-  ◇ 整理、整顿、清扫、清洁、修养    
-  ◇ 文件处理流程化
-  ◇ 办公用品申购、领用              
-  ◇ 维护各类办公设备的正常使用
-
-八、时间管理及工作统筹技巧
-  ◇ 时间管理的误区         
-  ◇ 时间管理的原则
-     √目标管理与80/20法则  
-     √缓急轻重的优先管理 
-     √个人时间与领导工作时间计划与安排
-  ◇ 秘书时间管理小窍门     
-  ◇ 宾客接待与电话处理  
-  ◇ 自我情绪控制与压力管理
-
-九、访客接待
-  ◇ 接待客人流程   
-  ◇ 接待重要客户的注意事项   
-  ◇ 来访电话对策
-     →  案例分析一、二、三
-
-十、如何成为上司得力助手
-  ◇ 优秀秘书的核心竞争力        
-  ◇ 知己知彼：分析上司的特点
-  ◇ 如何对待不同类型的上司     
-  ◇ 站在下级的位置上思考上级的事
-  ◇ 与上级相处三大注意事项     
-  ◇ 上司的行程安排
-
-十一、商务礼仪与职业形象塑造
-  1、个人形象塑造及礼仪
-  ◇ 着装的TPO原则         
-  ◇ 女士着装的要点    
-  ◇ 男士着装的规范
-  ◇ 仪容礼仪规范         
-  ◇ 化妆的礼仪        
-  ◇ 站、坐、行的礼仪规范
-  ◇ 恰当的肢体语言
-
-  2、 基本社交礼仪
-  ◇ 见面介绍的礼仪             
-  ◇ 问候的礼仪        
-  ◇ 名片的使用
-  ◇ 日常商务活动中的礼仪规范  
-  ◇ 与工作有关的文体活动中的礼仪规范
-
-  3、 商务宴请礼仪
-  ◇ 中餐礼仪   
-  ◇ 西餐礼仪   
-  ◇ 自助餐礼仪 
-  ◇ 餐饮礼仪禁忌 
-
-  4、 电话礼仪
-  ◇ 接听电话的基本原则 
-  ◇ 接听电话的几项注意 
-  ◇ 拨打电话的几大要点
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         
-讲 师 介 绍：李 革 增
-
-    深圳管理咨询行业协会成员；深圳外商投资协会讲师、香港光华管理学院客座教授；
-十多年从事企业管理与咨询工作的经验，在德隆集团、深高速、深南招商集团等大型集团
-公司及管理顾问公司历任市场经理、行政总监、培训总监等职位。对沟通技巧、客户服务、
-行政统筹、企业文化等方面具有良好的培训与辅导经验；具有深厚的理论知识与丰富的实
-践操作能力；注重对企业实际问题的分析和解决、讲求实效性和适用性。
-
-    擅长课程：《职业经理人资格认证》、《领导力训练》、《企业中层管理技能培训》
-《时间管理》、《目标管理》、《企业文化》、《沟通技巧》、《高级文秘职业素质修
-养》等。
-
-    培训特色：以互动、情景式培训见长，注重受训人员的感悟及参与，通过各种实际
-案例及管理游戏等方式充分调动参训人员的培训热情。
-
-    曾培训或咨询过的企业有：中国电信、青岛中化集团、中石油、桑菲通讯、华侨城
-集团、奥林巴斯、金碟软件（中国）有限公司、厦门航空、苏州三星电子、广东移动通
-信、蛇口南顺面粉、深南招商集团、深高速、深圳中汽租赁有限公司、深圳恒波通讯、
-深圳华展国际、三洋机电等。
-
-
-
-
---===============1463260846==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+--- g26.orig/drivers/spi/Kconfig	2007-11-06 22:00:01.000000000 -0800
++++ g26/drivers/spi/Kconfig	2007-11-09 11:49:16.000000000 -0800
+@@ -220,6 +220,13 @@ config SPI_AT25
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called at25.
+ 
++config SPI_MCP23S08
++	tristate "Microchip MCP23S08 I/O expander"
++	depends on SPI_MASTER && GPIO_LIB
++	help
++	  SPI driver for Microchip MCP23S08 I/O expander.  This provides
++	  a GPIO interface supporting inputs and outputs.
++
+ config SPI_SPIDEV
+ 	tristate "User mode SPI device driver support"
+ 	depends on SPI_MASTER && EXPERIMENTAL
+--- g26.orig/drivers/spi/Makefile	2007-11-06 21:52:47.000000000 -0800
++++ g26/drivers/spi/Makefile	2007-11-06 22:00:01.000000000 -0800
+@@ -31,6 +31,7 @@ obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.
+ 
+ # SPI protocol drivers (device/link on bus)
+ obj-$(CONFIG_SPI_AT25)		+= at25.o
++obj-$(CONFIG_SPI_MCP23S08)	+= mcp23s08.o
+ obj-$(CONFIG_SPI_SPIDEV)	+= spidev.o
+ obj-$(CONFIG_SPI_TLE62X0)	+= tle62x0.o
+ # 	... add above this line ...
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ g26/drivers/spi/mcp23s08.c	2007-11-09 11:47:27.000000000 -0800
+@@ -0,0 +1,355 @@
++/*
++ * mcp23s08.c - SPI gpio expander driver
++ */
++
++#include <linux/kernel.h>
++#include <linux/device.h>
++#include <linux/workqueue.h>
++#include <linux/mutex.h>
++
++#include <linux/spi/spi.h>
++#include <linux/spi/mcp23s08.h>
++
++#include <asm/gpio.h>
++
++
++/* Registers are all 8 bits wide.
++ *
++ * The mcp23s17 has twice as many bits, and can be configured to work
++ * with either 16 bit registers or with two adjacent 8 bit banks.
++ *
++ * Also, there are I2C versions of both chips.
++ */
++#define MCP_IODIR	0x00		/* init/reset:  all ones */
++#define MCP_IPOL	0x01
++#define MCP_GPINTEN	0x02
++#define MCP_DEFVAL	0x03
++#define MCP_INTCON	0x04
++#define MCP_IOCON	0x05
++#	define IOCON_SEQOP	(1 << 5)
++#	define IOCON_HAEN	(1 << 3)
++#	define IOCON_ODR	(1 << 2)
++#	define IOCON_INTPOL	(1 << 1)
++#define MCP_GPPU	0x06
++#define MCP_INTF	0x07
++#define MCP_INTCAP	0x08
++#define MCP_GPIO	0x09
++#define MCP_OLAT	0x0a
++
++struct mcp23s08 {
++	struct spi_device	*spi;
++	u8			addr;
++
++	/* lock protects the cached values */
++	struct mutex		lock;
++	u8			cache[11];
++
++	struct gpio_chip	chip;
++
++	struct work_struct	work;
++};
++
++static int mcp23s08_read(struct mcp23s08 *mcp, unsigned reg)
++{
++	u8	tx[2], rx[1];
++	int	status;
++
++	tx[0] = mcp->addr | 0x01;
++	tx[1] = reg;
++	status = spi_write_then_read(mcp->spi, tx, sizeof tx, rx, sizeof rx);
++	return (status < 0) ? status : rx[0];
++}
++
++static int mcp23s08_write(struct mcp23s08 *mcp, unsigned reg, u8 val)
++{
++	u8	tx[3];
++
++	tx[0] = mcp->addr;
++	tx[1] = reg;
++	tx[2] = val;
++	return spi_write_then_read(mcp->spi, tx, sizeof tx, NULL, 0);
++}
++
++static int
++mcp23s08_read_regs(struct mcp23s08 *mcp, unsigned reg, u8 *vals, unsigned n)
++{
++	u8	tx[2];
++
++	if ((n + reg) > sizeof mcp->cache)
++		return -EINVAL;
++	tx[0] = mcp->addr | 0x01;
++	tx[1] = reg;
++	return spi_write_then_read(mcp->spi, tx, sizeof tx, vals, n);
++}
++
++/*----------------------------------------------------------------------*/
++
++static int mcp23s08_direction_input(struct gpio_chip *chip, unsigned offset)
++{
++	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
++	int status;
++
++	mutex_lock(&mcp->lock);
++	mcp->cache[MCP_IODIR] |= (1 << offset);
++	status = mcp23s08_write(mcp, MCP_IODIR, mcp->cache[MCP_IODIR]);
++	mutex_unlock(&mcp->lock);
++	return status;
++}
++
++static int mcp23s08_get(struct gpio_chip *chip, unsigned offset)
++{
++	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
++	int status;
++
++	mutex_lock(&mcp->lock);
++
++	/* REVISIT reading this clears any IRQ ... */
++	status = mcp23s08_read(mcp, MCP_GPIO);
++	if (status < 0)
++		status = 0;
++	else {
++		mcp->cache[MCP_GPIO] = status;
++		status = !!(status & (1 << offset));
++	}
++	mutex_unlock(&mcp->lock);
++	return status;
++}
++
++static int __mcp23s08_set(struct mcp23s08 *mcp, unsigned mask, int value)
++{
++	u8 olat = mcp->cache[MCP_OLAT];
++
++	if (value)
++		olat |= mask;
++	else
++		olat &= ~mask;
++	mcp->cache[MCP_OLAT] = olat;
++	return mcp23s08_write(mcp, MCP_OLAT, olat);
++}
++
++static void mcp23s08_set(struct gpio_chip *chip, unsigned offset, int value)
++{
++	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
++	u8 mask = 1 << offset;
++
++	mutex_lock(&mcp->lock);
++	__mcp23s08_set(mcp, mask, value);
++	mutex_unlock(&mcp->lock);
++}
++
++static int
++mcp23s08_direction_output(struct gpio_chip *chip, unsigned offset, int value)
++{
++	struct mcp23s08	*mcp = container_of(chip, struct mcp23s08, chip);
++	u8 mask = 1 << offset;
++	int status;
++
++	mutex_lock(&mcp->lock);
++	status = __mcp23s08_set(mcp, mask, value);
++	if (status == 0) {
++		mcp->cache[MCP_IODIR] &= ~mask;
++		status = mcp23s08_write(mcp, MCP_IODIR, mcp->cache[MCP_IODIR]);
++	}
++	mutex_unlock(&mcp->lock);
++	return status;
++}
++
++/*----------------------------------------------------------------------*/
++
++#ifdef CONFIG_DEBUG_FS
++
++#include <linux/seq_file.h>
++
++/*
++ * This shows more info than the generic gpio dump code:
++ * pullups, deglitching, open drain drive.
++ */
++static void mcp23s08_dbg_show(struct seq_file *s, struct gpio_chip *chip)
++{
++	struct mcp23s08	*mcp;
++	char		bank;
++	unsigned	t;
++	unsigned	mask;
++
++	mcp = container_of(chip, struct mcp23s08, chip);
++
++	/* NOTE: we only handle one bank for now ... */
++	bank = '0' + ((mcp->addr >> 1) & 0x3);
++
++	mutex_lock(&mcp->lock);
++	t = mcp23s08_read_regs(mcp, 0, mcp->cache, sizeof mcp->cache);
++	if (t < 0) {
++		seq_printf(s, " I/O ERROR %d\n", t);
++		goto done;
++	}
++
++	for (t = 0, mask = 1; t < 8; t++, mask <<= 1) {
++		if (!gpiochip_is_requested(chip, t))
++			continue;
++
++		seq_printf(s, " gpio-%-3d P%c.%d (%-12s) %s %s %s",
++			chip->base + t, bank, t,
++			chip->requested[t],
++			(mcp->cache[MCP_IODIR] & mask) ? "in " : "out",
++			(mcp->cache[MCP_GPIO] & mask) ? "hi" : "lo",
++			(mcp->cache[MCP_GPPU] & mask) ? "  " : "up");
++		/* NOTE:  ignoring the irq-related registers */
++		seq_printf(s, "\n");
++	}
++done:
++	mutex_unlock(&mcp->lock);
++}
++
++#else
++#define mcp23s08_dbg_show	NULL
++#endif
++
++/*----------------------------------------------------------------------*/
++
++static int mcp23s08_probe(struct spi_device *spi)
++{
++	struct mcp23s08			*mcp;
++	struct mcp23s08_platform_data	*pdata;
++	int				status;
++	int				do_update = 0;
++
++	pdata = spi->dev.platform_data;
++	if (!pdata || pdata->slave > 3 || !pdata->base)
++		return -ENODEV;
++
++	mcp = kzalloc(sizeof *mcp, GFP_KERNEL);
++	if (!mcp)
++		return -ENOMEM;
++
++	mutex_init(&mcp->lock);
++
++	mcp->spi = spi;
++	mcp->addr = 0x40 | (pdata->slave << 1);
++
++	mcp->chip.label = "mcp23s08",
++
++	mcp->chip.direction_input = mcp23s08_direction_input;
++	mcp->chip.get = mcp23s08_get;
++	mcp->chip.direction_output = mcp23s08_direction_output;
++	mcp->chip.set = mcp23s08_set;
++	mcp->chip.dbg_show = mcp23s08_dbg_show;
++
++	mcp->chip.base = pdata->base;
++	mcp->chip.ngpio = 8;
++	mcp->chip.can_sleep = 1;
++
++	spi_set_drvdata(spi, mcp);
++
++	/* verify MCP_IOCON.SEQOP = 0, so sequential reads work */
++	status = mcp23s08_read(mcp, MCP_IOCON);
++	if (status < 0)
++		goto fail;
++	if (status & IOCON_SEQOP) {
++		status &= ~IOCON_SEQOP;
++		status = mcp23s08_write(mcp, MCP_IOCON, (u8) status);
++		if (status < 0)
++			goto fail;
++	}
++
++	/* configure ~100K pullups */
++	status = mcp23s08_write(mcp, MCP_GPPU, pdata->pullups);
++	if (status < 0)
++		goto fail;
++
++	status = mcp23s08_read_regs(mcp, 0, mcp->cache, sizeof mcp->cache);
++	if (status < 0)
++		goto fail;
++
++	/* disable inverter on input */
++	if (mcp->cache[MCP_IPOL] != 0) {
++		mcp->cache[MCP_IPOL] = 0;
++		do_update = 1;
++	}
++
++	/* disable irqs */
++	if (mcp->cache[MCP_GPINTEN] != 0) {
++		mcp->cache[MCP_GPINTEN] = 0;
++		do_update = 1;
++	}
++
++	if (do_update) {
++		u8 tx[4];
++
++		tx[0] = mcp->addr;
++		tx[1] = MCP_IPOL;
++		memcpy(&tx[2], &mcp->cache[MCP_IPOL], sizeof(tx) - 2);
++		status = spi_write_then_read(mcp->spi, tx, sizeof tx, NULL, 0);
++
++		// FIXME check status...
++	}
++
++	status = gpiochip_add(&mcp->chip);
++
++	/* NOTE:  these chips have a relatively sane IRQ framework, with
++	 * per-signal masking and level/edge triggering.  It's not yet
++	 * handled here...
++	 */
++
++	if (pdata->setup) {
++		status = pdata->setup(spi, mcp->chip.base,
++				mcp->chip.ngpio, pdata->context);
++		if (status < 0)
++			dev_dbg(&spi->dev, "setup --> %d\n", status);
++	}
++
++	return 0;
++
++fail:
++	kfree(mcp);
++	return status;
++}
++
++static int mcp23s08_remove(struct spi_device *spi)
++{
++	struct mcp23s08			*mcp = spi_get_drvdata(spi);
++	struct mcp23s08_platform_data	*pdata = spi->dev.platform_data;
++	int				status = 0;
++
++	if (pdata->teardown) {
++		status = pdata->teardown(spi,
++				mcp->chip.base, mcp->chip.ngpio,
++				pdata->context);
++		if (status < 0) {
++			dev_err(&spi->dev, "%s --> %d\n", "teardown", status);
++			return status;
++		}
++	}
++
++	status = gpiochip_remove(&mcp->chip);
++	if (status == 0)
++		kfree(mcp);
++	else
++		dev_err(&spi->dev, "%s --> %d\n", "remove", status);
++	return status;
++}
++
++static struct spi_driver mcp23s08_driver = {
++	.probe		= mcp23s08_probe,
++	.remove		= mcp23s08_remove,
++	.driver = {
++		.name	= "mcp23s08",
++		.owner	= THIS_MODULE,
++	},
++};
++
++/*----------------------------------------------------------------------*/
++
++static int __init mcp23s08_init(void)
++{
++	return spi_register_driver(&mcp23s08_driver);
++}
++/* we want GPIOs to be ready at device_initcall() time when possible */
++subsys_initcall(mcp23s08_init);
++
++static void __exit mcp23s08_exit(void)
++{
++	spi_unregister_driver(&mcp23s08_driver);
++}
++module_exit(mcp23s08_exit);
++
++MODULE_LICENSE("GPL");
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ g26/include/linux/spi/mcp23s08.h	2007-11-09 11:44:21.000000000 -0800
+@@ -0,0 +1,24 @@
++
++/* FIXME driver should be able to handle all four slaves that
++ * can be hooked up to each chipselect, as well as IRQs...
++ */
++
++struct mcp23s08_platform_data {
++	/* four slaves can share one SPI chipselect */
++	u8		slave;
++
++	/* number assigned to the first GPIO */
++	unsigned	base;
++
++	/* pins with pullups */
++	u8		pullups;
++
++	void		*context;	/* param to setup/teardown */
++
++	int		(*setup)(struct spi_device *spi,
++					int gpio, unsigned ngpio,
++					void *context);
++	int		(*teardown)(struct spi_device *spi,
++					int gpio, unsigned ngpio,
++					void *context);
++};
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1463260846==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1463260846==--

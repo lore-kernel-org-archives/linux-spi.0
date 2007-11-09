@@ -1,13 +1,11 @@
-From: "Silvester Erdeg" <slipszi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] atmel_spi: Allow chained transfers
-Date: Thu, 8 Nov 2007 00:25:41 +0100
-Message-ID: <ac67d9130711071525q16c861b8yd03dd212828d5a13@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+From: "qwa" <weskypp7-k+cT0dCbe1g@public.gmane.org>
+Subject: =?GB2312?B?yOe6zrPJzqrJz8u+tcPBptb6ytY=?=
+Date: Fri, 9 Nov 2007 09:36:22 +0800
+Message-ID: <E1IqInF-0004m5-TE@mail.sourceforge.net>
+Reply-To: weskypp7-k+cT0dCbe1g@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1463260846=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,247 +17,224 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds support for chained transfers in the atmel_spi driver.
-Almost all of the logic can be found in the reworked
-atmel_spi_next_xfer() function. When it is called, the driver is in
-one of the following three states:
+--===============1463260846==
+Content-Type: text/plain;charset="GB2312"
 
-1. It isn't transferring anything (in which case the first transfer of
-the current message is going to be sent)
-2. It has finished transfering a non-chainable transfer (in which case
-it will go to the next transfer in the message)
-3. It has finished transfering a chained transfer (in which case the
-next transfer is already queued)
 
-After that it will queue the next transfer if it can be chained.
 
-The patch is made against 2.6.24-rc2.
+                高  级  文  秘  职  业  化  训  练         
 
-Signed-off-by: Szilveszter Ordog <slipszi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+              中  国·上  海·2007 年 12月8-9日 
+              中  国·北  京·2007 年 11月9-10日
+              中  国·深  圳·2007 年 12月1-2日
 
---- linux-2.6.24-rc2.orig/drivers/spi/atmel_spi.c	2007-11-01
-01:34:18.000000000 +0100
-+++ linux-2.6.24-rc2/drivers/spi/atmel_spi.c	2007-11-07 18:12:48.000000000 +0100
-@@ -51,7 +51,9 @@ struct atmel_spi {
- 	u8			stopping;
- 	struct list_head	queue;
- 	struct spi_transfer	*current_transfer;
--	unsigned long		remaining_bytes;
-+	unsigned long		current_remaining_bytes;
-+	struct spi_transfer	*next_transfer;
-+	unsigned long		next_remaining_bytes;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+● 授 课 对 象
+    企业中层行政管理干部和文秘工作人员，包括办公室主任、行政部经理、董事长秘书、
+总经理秘书、行政助理、行政主管、行政部门文员等
 
- 	void			*buffer;
- 	dma_addr_t		buffer_dma;
-@@ -121,6 +123,45 @@ static void cs_deactivate(struct atmel_s
- 		gpio_set_value(gpio, !active);
- }
+⊙主 办单位：众 人 行 管 理 咨 询 
+⊙培 训价格： 1 8 0 0元 / 人
 
-+static inline int atmel_spi_xfer_is_last(struct spi_message *msg,
-+					struct spi_transfer *xfer)
-+{
-+	return msg->transfers.prev == &xfer->transfer_list;
-+}
-+
-+static inline int atmel_spi_xfer_can_be_chained(struct spi_transfer *xfer)
-+{
-+	return xfer->delay_usecs == 0 && !xfer->cs_change;
-+}
-+
-+static void atmel_spi_next_xfer_data(struct spi_master *master,
-+				struct spi_transfer *xfer,
-+				dma_addr_t *tx_dma,
-+				dma_addr_t *rx_dma,
-+				u32 *len)
-+{
-+	struct atmel_spi	*as = spi_master_get_devdata(master);
-+
-+	/* use scratch buffer only when rx or tx data is unspecified */
-+	if (xfer->rx_buf)
-+		*rx_dma = xfer->rx_dma + xfer->len - *len;
-+	else {
-+		*rx_dma = as->buffer_dma;
-+		if (*len > BUFFER_SIZE)
-+			*len = BUFFER_SIZE;
-+	}
-+	if (xfer->tx_buf)
-+		*tx_dma = xfer->tx_dma + xfer->len - *len;
-+	else {
-+		*tx_dma = as->buffer_dma;
-+		if (*len > BUFFER_SIZE)
-+			*len = BUFFER_SIZE;
-+		memset(as->buffer, 0, *len);
-+		dma_sync_single_for_device(&as->pdev->dev,
-+				as->buffer_dma, *len, DMA_TO_DEVICE);
-+	}
-+}
-+
- /*
-  * Submit next transfer for DMA.
-  * lock is held, spi irq is blocked
-@@ -129,54 +170,72 @@ static void atmel_spi_next_xfer(struct s
- 				struct spi_message *msg)
- {
- 	struct atmel_spi	*as = spi_master_get_devdata(master);
--	struct spi_transfer	*xfer;
--	u32			len;
--	dma_addr_t		tx_dma, rx_dma;
--
--	xfer = as->current_transfer;
--	if (!xfer || as->remaining_bytes == 0) {
--		if (xfer)
--			xfer = list_entry(xfer->transfer_list.next,
--					struct spi_transfer, transfer_list);
--		else
--			xfer = list_entry(msg->transfers.next,
--					struct spi_transfer, transfer_list);
--		as->remaining_bytes = xfer->len;
-+	struct spi_transfer	*xfer, *next_xfer;
-+	u32			len, next_len;
-+	dma_addr_t		tx_dma, rx_dma, next_tx_dma, next_rx_dma;
-+
-+	if (!as->current_transfer) {
-+		xfer = list_entry(msg->transfers.next,
-+				struct spi_transfer, transfer_list);
- 		as->current_transfer = xfer;
--	}
--
--	len = as->remaining_bytes;
-+		as->current_remaining_bytes = xfer->len;
-+	} else if (!as->next_transfer) {
-+		xfer = list_entry(as->current_transfer->transfer_list.next,
-+				struct spi_transfer, transfer_list);
-+		as->current_transfer = xfer;
-+		as->current_remaining_bytes = xfer->len;
-+	} else {
-+		xfer = NULL;
-+		as->current_transfer = as->next_transfer;
-+		as->current_remaining_bytes = as->next_remaining_bytes;
-+	}
-+
-+	if (xfer) {
-+		len = as->current_remaining_bytes;
-+		atmel_spi_next_xfer_data(master, xfer, &tx_dma, &rx_dma, &len);
-+		as->current_remaining_bytes -= len;
-+
-+		spi_writel(as, RPR, rx_dma);
-+		spi_writel(as, TPR, tx_dma);
-+
-+		if (msg->spi->bits_per_word > 8)
-+			len >>= 1;
-+		spi_writel(as, TCR, len);
-+		spi_writel(as, RCR, len);
-+	}
-+
-+	if (as->current_remaining_bytes > 0) {
-+		next_xfer = as->current_transfer;
-+		next_len = as->current_remaining_bytes;
-+	} else if (!atmel_spi_xfer_is_last(msg, as->current_transfer) &&
-+		atmel_spi_xfer_can_be_chained(as->current_transfer)) {
-+		next_xfer = list_entry(as->current_transfer->transfer_list.next,
-+					struct spi_transfer, transfer_list);
-+		next_len = next_xfer->len;
-+	} else
-+		next_xfer = NULL;
+深圳总部电话：0755-26075265 26075429 26075365 22008632 81069646 
+上海办事处电话：021-51875149
+北京办事处电话：010-51293353
+传真： 0755-61351396 82129209
+联系人：凌小姐 曾小姐 
 
--	tx_dma = xfer->tx_dma + xfer->len - len;
--	rx_dma = xfer->rx_dma + xfer->len - len;
-+	as->next_transfer = next_xfer;
 
--	/* use scratch buffer only when rx or tx data is unspecified */
--	if (!xfer->rx_buf) {
--		rx_dma = as->buffer_dma;
--		if (len > BUFFER_SIZE)
--			len = BUFFER_SIZE;
--	}
--	if (!xfer->tx_buf) {
--		tx_dma = as->buffer_dma;
--		if (len > BUFFER_SIZE)
--			len = BUFFER_SIZE;
--		memset(as->buffer, 0, len);
--		dma_sync_single_for_device(&as->pdev->dev,
--				as->buffer_dma, len, DMA_TO_DEVICE);
-+	if (next_xfer) {
-+		as->next_remaining_bytes = next_len;
-+		atmel_spi_next_xfer_data(master, next_xfer, &next_tx_dma,
-+					&next_rx_dma, &next_len);
-+		as->next_remaining_bytes -= next_len;
-+
-+		spi_writel(as, RNPR, next_rx_dma);
-+		spi_writel(as, TNPR, next_tx_dma);
-+
-+		if (msg->spi->bits_per_word > 8)
-+			next_len >>= 1;
-+		spi_writel(as, TNCR, next_len);
-+		spi_writel(as, RNCR, next_len);
-+	} else {
-+		spi_writel(as, TNCR, 0);
-+		spi_writel(as, RNCR, 0);
- 	}
+ ● 背 景
 
--	spi_writel(as, RPR, rx_dma);
--	spi_writel(as, TPR, tx_dma);
--
--	as->remaining_bytes -= len;
--	if (msg->spi->bits_per_word > 8)
--		len >>= 1;
--
--	/* REVISIT: when xfer->delay_usecs == 0, the PDC "next transfer"
--	 * mechanism might help avoid the IRQ latency between transfers
--	 * (and improve the nCS0 errata handling on at91rm9200 chips)
--	 *
--	 * We're also waiting for ENDRX before we start the next
-+	/* REVISIT: We're waiting for ENDRX before we start the next
- 	 * transfer because we need to handle some difficult timing
- 	 * issues otherwise. If we wait for ENDTX in one transfer and
- 	 * then starts waiting for ENDRX in the next, it's difficult
-@@ -186,8 +245,6 @@ static void atmel_spi_next_xfer(struct s
- 	 *
- 	 * It should be doable, though. Just not now...
- 	 */
--	spi_writel(as, TNCR, 0);
--	spi_writel(as, RNCR, 0);
- 	spi_writel(as, IER, SPI_BIT(ENDRX) | SPI_BIT(OVRES));
+    对高级文秘来说，没有受到过系统训练，将无法从战略性全方位角度认知秘书与助理
+的工作；在所从事的工作中感觉缺乏理论支持；工作中总是被动行事，不能主动掌握工作
+节奏；想给公司节省费用，但却不知从何处下手，如何节省；行使对外界社会的管理职能
+时没有感觉到有很多事物的“黑洞”……  
 
- 	dev_dbg(&msg->spi->dev,
-@@ -195,8 +252,6 @@ static void atmel_spi_next_xfer(struct s
- 		xfer, xfer->len, xfer->tx_buf, xfer->tx_dma,
- 		xfer->rx_buf, xfer->rx_dma, spi_readl(as, IMR));
+    诸如以上的问题，都是每个文秘人员所面对与困惑的，如何把握正确方向从而迅速提
+升自身职业素养，成了我们必须面对与解决的课题。
 
--	spi_writel(as, TCR, len);
--	spi_writel(as, RCR, len);
- 	spi_writel(as, PTCR, SPI_BIT(TXTEN) | SPI_BIT(RXTEN));
- }
+● 课 程 收 获 
 
-@@ -294,6 +349,7 @@ atmel_spi_msg_done(struct spi_master *ma
- 	spin_lock(&as->lock);
+  → 掌握高级行政文秘所具备的基本技能、技巧
+  → 善于处理工作中的难点，掌握待人接物的技巧，实现有效的时间管理
+  → 实现现代文秘工作和档案管理工作的规范衔接
+  → 善于上传下达，掌握有效沟通的技巧
+  → 学习掌握规范的商务写作技巧，提高公文写作水平
+  → 学习掌握会议的组织思路及高效率的组织方法。
+  → 掌握基本的商务活动礼仪，使您适应日常商务场合的礼仪要求
+  → 掌握拜访客户的必备礼节，从细微之处体现您对他人的尊重
+  → 了解接待客户的礼仪细节，让您的每一位客人宾至如归
 
- 	as->current_transfer = NULL;
-+	as->next_transfer = NULL;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+课 程 大 纲
+一、企业行政文秘职业特性与素质要求
+  ◇ 文秘人员的职业价值和作用     
+     →  案例：秘书岗位的评价
+  ◇ 企业文秘工作的基本特征      
+  ◇ 文秘人员的职责与主要工作内容 
+     →  案例：文秘人员的职位说明书样板
+  ◇ 文秘人员的自我角色定位      
+  ◇ 优秀文秘人员的胜任素质      
+     →  案例分析： 
+  ◇ 文秘的职业发展前景与实现路径
 
- 	/* continue if needed */
- 	if (list_empty(&as->queue) || as->stopping)
-@@ -377,7 +433,7 @@ atmel_spi_interrupt(int irq, void *dev_i
+二、公文写作与处理实务
+  ◇ 公文分类            
+  ◇ 公文的结构       
+  ◇ 秘书文字支持应达到的要求
+  ◇ 公文写作基本要领    
+  ◇ 13种常用公文模版  
+  ◇ 常用公函
+  ◇ 请示与报告、批复的写作与范例   
+  ◇ SMART原则与SWOT方法   
+  ◇ 计划撰写注意事项
 
- 		spi_writel(as, IDR, pending);
+三、会务组织与管理
+  ◇ 会务分类－组织思路     
+  ◇ 组织阶段：会前准备、会中协助、会后整理
+  ◇ 组织方法               
+  ◇ 例会的组织     
+  ◇ 大型会议、展会的组织
+  ◇ 如何担任会议主持人     
+  ◇ 如何当好会议秘书？
+  ◇ 全景案例：某公司年度大型庆典活动策划始末
+     →  案例：大型会议及活动策划案
+  ◇ 如何避免陷于会议忙碌之中？
 
--		if (as->remaining_bytes == 0) {
-+		if (as->current_remaining_bytes == 0) {
- 			msg->actual_length += xfer->len;
+四、文件资料管理与运用
+  ◇ 文档分类标准       
+  ◇ 档案管理的原则       
+  ◇ 文档的索引
+  ◇ 电子文档的保管     
+  ◇ 名片系统管理        
+  ◇ 印章的管理
+  →   研讨：如何利用档案为公司业务服务？
 
- 			if (!msg->is_dma_mapped)
-@@ -387,7 +443,7 @@ atmel_spi_interrupt(int irq, void *dev_i
- 			if (xfer->delay_usecs)
- 				udelay(xfer->delay_usecs);
+五、信息档案管理
+  ◇ 信息管理基本流程   
+  ◇ 信息的收集整理      
+  ◇ 信息的传递
+  ◇ 信息的储存与保密   
+  ◇ 保密意识与保密规则  
+  ◇ 秘书的基本职业道德
 
--			if (msg->transfers.prev == &xfer->transfer_list) {
-+			if (atmel_spi_xfer_is_last(msg, xfer)) {
- 				/* report completed message */
- 				atmel_spi_msg_done(master, as, msg, 0,
- 						xfer->cs_change);
+六、人际沟通与工作协调技巧
+  ◇ 沟通对于秘书的意义 
+  ◇ 秘书常用沟通方式之比较 
+  ◇ 秘书人员的沟通技巧
+     →  案例：如何听懂老板的“没有说出来的意思”？ 
+  ◇ 秘书让领导刮目相看、获得信任？  
+  ◇ 如何与你的上司协调而不帮倒忙？
+  ◇ 秘书人员如何与各种上司相处？    
+  ◇ 问题：我的上级调走了怎么办？
+     →  案例：领导让我难为情，我该怎么办？
+     →  案例：如何与同事或下级相处？
+     →  案例：有人在你面前抱怨你的领导该怎么办？
+  ◇ 讨论：秘书应当如何发挥自身优势起好协调作用？
+
+七、办公室5S及办公用品管理
+  ◇ 整理、整顿、清扫、清洁、修养    
+  ◇ 文件处理流程化
+  ◇ 办公用品申购、领用              
+  ◇ 维护各类办公设备的正常使用
+
+八、时间管理及工作统筹技巧
+  ◇ 时间管理的误区         
+  ◇ 时间管理的原则
+     √目标管理与80/20法则  
+     √缓急轻重的优先管理 
+     √个人时间与领导工作时间计划与安排
+  ◇ 秘书时间管理小窍门     
+  ◇ 宾客接待与电话处理  
+  ◇ 自我情绪控制与压力管理
+
+九、访客接待
+  ◇ 接待客人流程   
+  ◇ 接待重要客户的注意事项   
+  ◇ 来访电话对策
+     →  案例分析一、二、三
+
+十、如何成为上司得力助手
+  ◇ 优秀秘书的核心竞争力        
+  ◇ 知己知彼：分析上司的特点
+  ◇ 如何对待不同类型的上司     
+  ◇ 站在下级的位置上思考上级的事
+  ◇ 与上级相处三大注意事项     
+  ◇ 上司的行程安排
+
+十一、商务礼仪与职业形象塑造
+  1、个人形象塑造及礼仪
+  ◇ 着装的TPO原则         
+  ◇ 女士着装的要点    
+  ◇ 男士着装的规范
+  ◇ 仪容礼仪规范         
+  ◇ 化妆的礼仪        
+  ◇ 站、坐、行的礼仪规范
+  ◇ 恰当的肢体语言
+
+  2、 基本社交礼仪
+  ◇ 见面介绍的礼仪             
+  ◇ 问候的礼仪        
+  ◇ 名片的使用
+  ◇ 日常商务活动中的礼仪规范  
+  ◇ 与工作有关的文体活动中的礼仪规范
+
+  3、 商务宴请礼仪
+  ◇ 中餐礼仪   
+  ◇ 西餐礼仪   
+  ◇ 自助餐礼仪 
+  ◇ 餐饮礼仪禁忌 
+
+  4、 电话礼仪
+  ◇ 接听电话的基本原则 
+  ◇ 接听电话的几项注意 
+  ◇ 拨打电话的几大要点
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         
+讲 师 介 绍：李 革 增
+
+    深圳管理咨询行业协会成员；深圳外商投资协会讲师、香港光华管理学院客座教授；
+十多年从事企业管理与咨询工作的经验，在德隆集团、深高速、深南招商集团等大型集团
+公司及管理顾问公司历任市场经理、行政总监、培训总监等职位。对沟通技巧、客户服务、
+行政统筹、企业文化等方面具有良好的培训与辅导经验；具有深厚的理论知识与丰富的实
+践操作能力；注重对企业实际问题的分析和解决、讲求实效性和适用性。
+
+    擅长课程：《职业经理人资格认证》、《领导力训练》、《企业中层管理技能培训》
+《时间管理》、《目标管理》、《企业文化》、《沟通技巧》、《高级文秘职业素质修
+养》等。
+
+    培训特色：以互动、情景式培训见长，注重受训人员的感悟及参与，通过各种实际
+案例及管理游戏等方式充分调动参训人员的培训热情。
+
+    曾培训或咨询过的企业有：中国电信、青岛中化集团、中石油、桑菲通讯、华侨城
+集团、奥林巴斯、金碟软件（中国）有限公司、厦门航空、苏州三星电子、广东移动通
+信、蛇口南顺面粉、深南招商集团、深高速、深圳中汽租赁有限公司、深圳恒波通讯、
+深圳华展国际、三洋机电等。
+
+
+
+
+--===============1463260846==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
+--===============1463260846==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1463260846==--

@@ -1,156 +1,140 @@
-From: =?GB2312?B?zfXZuw==?= <faf2afq-uZ5lm841B89BDgjK7y7TUQ@public.gmane.org>
-Subject: =?GB2312?B?0NAj1f7Ns7PvI7ncI8Dtt9YjzvY=?=
-Date: Sat, 10 Nov 2007 04:34:46 +0800
-Message-ID: <E1IqaO2-0005gd-Ur@mail.sourceforge.net>
-Reply-To: faaw2ewq-FXjcTL3+ZRxWk0Htik3J/w@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1160591975=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: <onlineinfo_winnings@yahoo.es>
+Subject: Your Email ID Has Won
+Date: Sat, 10 Nov 2007 00:50:20 -1100
+Message-ID: <48986835.BA8122C5@yahoo.es>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "Webmaster" <openipmi-developer@lists.sourceforge.net>,
+	"Postmaster" <kvm-devel@lists.sourceforge.net>,
+	"Administrator" <spi-devel-general@lists.sourceforge.net>
+Return-path: <openipmi-developer-bounces@lists.sourceforge.net>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/openipmi-developer>,
+	<mailto:openipmi-developer-request@lists.sourceforge.net?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=openipmi-developer>
+List-Post: <mailto:openipmi-developer@lists.sourceforge.net>
+List-Help: <mailto:openipmi-developer-request@lists.sourceforge.net?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/openipmi-developer>,
+	<mailto:openipmi-developer-request@lists.sourceforge.net?subject=subscribe>
+Sender: openipmi-developer-bounces@lists.sourceforge.net
+Errors-To: openipmi-developer-bounces@lists.sourceforge.net
 List-Id: linux-spi.vger.kernel.org
 
---===============1160591975==
-Content-Type: text/plain;charset="GB2312"
+SPANISH =80UROMILLION LOTTERY =
+
+PROMOTIONS/ PRIZE AWARD DEPARTMENT.
+HEAD OFFICE, PLAZA JUAN CARLOS C-14541                                     =
+
+    =
+
+MADRID. SPAIN.                                                     =
+
+FROM: THE DESK OF THE VICE PRESIDENT
+
+CUSTOMER SERVICE
+Ref. Number: G/O/U/2551256003/06
+Batch Number: 14/0017/IPD
+Ticket Number: 564 75600545-188
+Serial Number: 5388/02
+
+Date: 08-11-07.
+
+Attn: Winner,
+
+                                  ONLINE NOTIFICATION OF WINNING
+
+SPANISH LOTTERY, officially bring to your notice the draw result of the =
+
+2007 SPANISH LOTTERY-wheel  E-game which was conducted at our =
+
+international corporate office complex  in SPAIN. =
 
 
+Your e-mail address attached to ticket number 56475600545-188 with =
 
-                   行政工作统筹管理高级研修班        
+serial number 5388/02 drew lucky numbers 7-14-18-31-45, which =
 
-举办时间： 沪:12月5-6日苏:12月8-9日京:12月15-16日深:12月21-22广:12月28-29日  
-举办地点： 上海新梅华东大酒店 苏州新世纪大酒店 北京新兴宾馆 深圳 广州湖滨宾馆  
- 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-● 授 课 对 象
-    行政总监，行政经理，办公室主任，行政文员
+consequently won in the 1ST category, you have therefore been approved =
 
-⊙主 办单位：众 人 行 管 理 咨 询 
-⊙培 训价格： 2 5 0 0元 / 人
+for a lump sum pay out of 1,000,000.00=80uros (ONE MILLION
+=80UROS).CONGRATULATIONS!
 
-深圳总部电话：0755-26075265 26075429 26075365 22008632 81069646 
-上海办事处电话：021-51875149
-北京办事处电话：010-51293353
-传真： 0755-61351396 82129209
-联系人：凌小姐 曾小姐 
+The selection process was carried out through random selection in our =
 
+computerized email selection system(ess) from a database of over =
 
- ● 背景
-    如果您是一位企业管理者，没有专业尺度如何衡量行政工效？
-    如果您是一位行政负责人，欠缺专业工具如何自信面对员工？
-    如果您是一位文秘工作者，错过专业指导怎能获得职场晋升？
+250,000 email addresses drawn from which your Email was selected.
 
-    本课程将为您提供从理念到技能的全面训练，帮助您提高行政统筹管理的专业技
-能，主动掌握工作节奏，有效控制行政成本，防范行政工作“黑洞”！课程将以国际
-通用的职业标准为基础，结合老师多年海外留学、从业的经验，加之其独到精深的讲
-解呈现和训练点评的专业实力，对企业行政管理人员进行科学、专业、先进的系统化
-训练。
+Due to mix up of some numbers and names, we ask that you keep your =
 
-● 课程形式
-   实操讲解-深度解析-实战分享-情境模拟-多媒体展示
+winning information confidential until your claims have been fully =
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-● 课程大纲：
-第一天
-一、现代企业中行政管理的定位
-    1、现代企业运行模型          2、行政管理工作的绩效价值
-    3、行政管理人员的素质特点    4、行政管理制度的框架结构
-演练：工作漏洞究竟出在哪里？
+processed and your money remitted to you. This is part  of our security =
 
-二、行政主管的自我管理
-    1、职业规范要点与评估标准    2、人际关系处理的准则与该注意的”陷井”
-    3、职业优势保持的要点
-演练：如何说服你的上司
+protocol to avoid multiple claims and unwarranted abuse of  this =
 
-三、行政部门的内部管理
-    1、前台文员管理              2、秘书（领导秘书）管理
-    3、行政工作人员管理          4、司机、保安、清洁工管理
-    5、行政事务性工作的内部分工  6、强化行政工作执行机制
-    7、呈现突出行政工作业绩      
-演练：整合资源-分工协作-达成目标
+program by some members of the public.
 
-四、经验积累与知识创新管理
-    1、公文处理与管理             2、会议成果的提炼与分享
-    3、工作创新管理与应用
+For the release of your winning, kindly contact your claims officer at =
 
-五、行政统筹管理关键事物控制
-    1. 集团电话管理                2. 集团的复印机管理
-    3. 集团的车辆管理不同方式      4. 食堂管理的外包流程
-    5. 员工的应急安全保障          6. 办公室布局管理
-    7. 办公室搬家管理              8. 与物业的关系要点 
-    9. 对施工方的管理要点          10. 公司驻在地的社区关系
-   11. 公共关系管理                12. 危机处理
+the National Lottery Head Quarters via bellow information:
 
-六、行政经费管理与控制
-1、如何处理好三种关系与三项原则
-2、行政业务费用管理
-3、行政成本控制的重要路径
-4、办公成本控制的无项原则
-5、运用“白金触点”原理节省行政经费
+Mr Antonio Garcia
+Payment and Release Order Dept.
 
-七、行政统筹必备的沟通技巧
-  1、施展人际影响解决管理冲突   2、感召他人的4大热键
-  3、表扬、批评5步法            4、令人心服口服的方法
-演练：为何费力不讨好！？
+Phone:  + 1134 692 944 486, +34 692 944 486 =
 
-八、会议组织与活动管理
-  1、成功会议的准备工作：会前、会中、会后  2、如何主持会议与公司活动
-  3、高效率会议的实用工具
+  =
 
-九、接待工作与职业礼仪
-  1、接待工作中的十大禁忌论            2、行政人员的着装、仪表、语言
-  3、使用电话、手机、E-mail的礼仪规范  4、宴请、参观、旅游的礼仪规范
+Fax :    +1134 652 137 898, +34 652 137 898
 
-十、行政管理人员的职业规划
-  1、行政管理职业的职场阶梯            2、职业生涯规划中的五个一工程
-  3、从优秀到卓越，从技术到艺术
-毕业演练：八分钟设计职场八年！
+E-mail: claims_spanishlottery1@yahoo.es
+
+Furthermore, should there be any change in your address, do inform your =
+
+Claims officer as soon as possible.Complete the form below and send it =
+
+to the claims officer via email:
+
+Full name:........................................................
+Date of birth:.....................................................
+Sex:..............................................................
+Marital status:.................................................
+Email:.............................................................
+Occupation:......................................................
+Nationality:...................................................
+Lotto Batch Number:......................................
+Lotto Reference Numbers:............................
+phone Number:................................................
+Address:...........................................................
+Country of Residence:...................................
+
+Select mode of collection of winning prize:
+
+(1) ELECTRONIC ONLINE BANK TRANSFER
+
+(2) COURIER DELIVERY(CERTIFIED CHEQUE MADE OUT IN YOUR NAME DELIVERED =
+
+TO YOU THROUGH OUR AFFILIATE COURIER COMPANY)
+
+Upon completion of the above form,you will be directed to contact the =
+
+courier company or paying bank in charge of transfer of winning funds =
+
+to winners
+
+Congratulations once again from all members of our staff and thanks for =
+
+being part of our promotions program.
+
+Yours Sincerely,
+Mrs. Helena Marcos,
+Executive (International Sweepstakes).
 
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         
-● 讲师介绍：
-    刘老师  欧亚人力资源发展联盟中国区首席咨询师,亚洲咨询培训与发展协会
-秘书长。2001年开始专职从事于培训与咨询工作，以访问学者
-身份多次出访过法国、德国、瑞士等国知名大学和大型企业，在企业中高层经理人领
-导素质提升、企业行政体系构建及通用管理领域等方面拥有领先的视角和丰厚的实践
-经验。其授课特色是从国内企业所面临的实际问题出发，通过各种典型案例的讲解和
-分析，以及模拟现实环境的操作演练，系统提升企业解决问题的能力和实施操作水平。
-
-    指导过的企业有 ：安利（中国）、百度、海尔集团、美的集团、联想集团、
-深发展、东风日产、上海比亚迪、深圳移动、广州移动、中山移动、中科智担保集团、
-航天科工集团、广东核电集团、华侨城物业、长城物业、北京信威通讯、厦门名姿集团、
-深圳人保财险、深圳天虹商场、深圳市经纬科技有限公司、中国人才热线、
-西部人力资源市场、泰昂电子、超华电子、梁子时装等百余家中外企业。
-
-
-
---===============1160591975==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1160591975==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1160591975==--

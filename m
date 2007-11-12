@@ -1,13 +1,13 @@
-From: "=?ISO-8859-1?Q?Miguel_=C1ngel_=C1lvarez?=" <gotzoncabanes-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: SPI in IXP4XX
-Date: Wed, 12 Nov 2008 13:24:51 +0100
-Message-ID: <b0438a630811120424j76289a0ag8cb9e72bc30ff11f@mail.gmail.com>
+From: =?GB2312?B?wO7PyMn6?= <zhanhuishi111-9Onoh4P/yGk@public.gmane.org >
+Subject: [SPAM] 代开各行业发票
+Date: Mon, 12 Nov 2007 22:24:43 +0800
+Message-ID: <E1L0Gfb-0006QP-JU@235xhf1.ch3.sourceforge.com>
+Reply-To: zhanhuishi111-9Onoh4P/yGk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,22 +18,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi
-
-I have used PXA2XX code to implement SPI in IXP4XX. SPI in both of
-them is implemented using an SSP controller. My questions are:
-
-- Should I comment my changes in this list, or just in the linux-arm list?
-- SSP code for the PXA2XX is placed inside its own arch directories.
-Could it be useful to move it into the SPI directories?
-
-Thanks
-
-Miguel =C1ngel =C1lvarez
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+ILnzuavLvr6twO2hori61PDIyyA6CgogICAgIMT6usOjoc7SuavLvsnPuqO748qiy7DO8bT6wO3T
+0M/euavLvtPrtuC80rmry76jqMbz0rWjqdPQ0rXO8cC0zfmho8O/1MK2vNPQ0ru2qAoKIMr9tu61
+xLeixrG/ybbUzeK0+r+qo6zI57nzuavLvtTa1/bVyqGitda/27vyyczStbvutq/W0NPQtMvQ6NKq
+o6wKIAogztK5q8u+u/K6z9f3uavLvra8v8nS1M6qxOO0+r+qo7rA4NDNyOfPwqO6CgrSu6O6xtXN
+qLn6y7CjusnMxrfP+srboaK5pNK1zbPSu8/6ytuhowoKtv6jusbVzai12Muwo7rUy8rkoaK79dTL
+tPrA7aGi17DQtqGiwarUy6GiuqPUy6GjCgrI/aO6xuTL/Lf+zvGjur2o1v6wstewoaK547jmt9Gh
+otehy9630aGiu+HS6bfRoaLXydGvt9Ghoraotu6yzcz8tcguCgogICAg0tTJz8axvt2++b/Jyc/N
++LLp0a+78sTDtb21sbXYy7C+1tHp1qS689TZuLa/7qGjCiAgICAgICAgCiAgICAgtee7sCAgIKO6
+MTM5Mjc0MDA1NjUKCiAgICAgwarPtcjLIKO6IM310KG94woKICAgICC12Na3ICAgo7ogyc+6o8rQ
+xta2q9DCx/i2q7KowrczMTW6xSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAoKICAgICDTys/kICAgo7o1MjUyNzM3NDZAcXEuY29tICAg
+ICAgINK1zvFRIFEgIKO6NTI1MjczNzQ2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVt
+YWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFs
+bGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9i
+bGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28g
+dG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2Js
+aW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwg
+bWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRw
+czovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJh
+bAo=

@@ -1,15 +1,12 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.24-rc2 3/3] atmel_spi chains DMA
-	transfers
-Date: Wed, 14 Nov 2007 21:47:15 -0800
-Message-ID: <200711142147.16450.david-b@pacbell.net>
+From: "=?GB2312?B?sLK71cqhyP3Bprv6tLLWxtTs09DP3rmry74=?=" <sl-BYwvgrnV00vQT0dZR+AlfA@public.gmane.org>
+Subject: =?GB2312?B?uanTpqO6vPSw5bv6oaLV283ku/qhor7tsOW7+qGis+W0sqGi0KPGvbv6?=
+Date: Thu, 15 Nov 2007 16:16:54 +0800
+Message-ID: <E1IsZu3-0003Xd-TX@mail.sourceforge.net>
+Reply-To: sl-BYwvgrnV00vQT0dZR+AlfA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1526074448=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,249 +18,73 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: "Silvester Erdeg" <slipszi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+--===============1526074448==
+Content-Type: text/plain;
+	charset="GB2312"
+Content-Transfer-Encoding: base64
 
-This patch adds support for chained transfers in the atmel_spi driver,
-letting the DMA controller switch to the next buffer pair without CPU
-intervention.  This reduced I/O latencies by about 2% in one bulk I/O
-test.  It should also help work around several interrelated errata
-affecting chipselect 0 on at91rm9200 chips.
+uanTpqO6vPSw5bv6oaLV283ku/qhor7tsOW7+qGis+W0sqGi0KPGvbv6DQqwsrvVyqHI/cGmu/q0
+stbG1OzT0M/euavLvqOsyvSwsrvVyqHD+8XGoaLD4rzssvrGt8n6svrG89K1o6ywsrvVyqG439DC
+vLzK9cbz0rWjrMLtsLDJvcrQobDXqKGivquhoszYoaLQwqGxxvPStaOswu2wsMm9ytDPwrjayqfS
+tdawuaTU2b7N0rW7+bXYo6y96dPaxM++qaGizt+6/tauvOSjrNf4wuTU2tb4w/u1xLjWs8fC7bCw
+yb3K0KOst+G4u7XEuNbM+tfK1LTOqrmry761xLei1bnM4bmpwcu1w8zstsC68bXE08XKxqGjuavL
+vtW8tdjD5rv9MTA4MDAwxr23vcPXo6zW99Kqyfqy+qGwtPPKoqGxxcbPtcHQvPSw5bv6oaLV283k
+u/qhor7tsOW7+qGiv+zL2dG5waa7+qGis+W0sqGiv6q+7dCjxr27+qGi0M2yxM3kx/q7+rW2xKO+
+37XIsvrGt6Os16jStc6qur2/1aGix+G5pKGi0rG98KGiu6+5pKGivajW/sb7s7WhorXnwaahotew
+5Oq1yNDQ0rXM4bmpy/nQ6NKqtcTXqNPDu/rQtbrNs8nM18nosbijrLL6xrfP+s35yKu5+rj3tdi6
+zcW3w8u8sLarxM/Rx7XYx/iyotS2z/rEz7fHoaMgoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGh
+oaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGh
+oaG5q8u+08PP1rT6xvPStbXEudzA7be9t6ihosGi1+PT2rL6xre53MDto6zS1Mbk08XQ47XExrfW
+yqOs0MLTsbXEyei8xqOsus/A7bXEvNu48aOszerJxrXEytu687f+zvHTrrXDwcu547Tzv827p7XE
+0rvWwrrDxsCjrLG7xsDOqrCyu9XKoaGw1ti6z82soaLK2NDF08PPyL34taXOu6GxoaKwsrvVyqGh
+sNb4w/vJzLHqobGhorCyu9XKoaGww/vFxrL6xrehsaGiobDG89K1vfiz9r/a18q48dakobGhoqGw
+Q0W5+rzKyM/WpKGxsLK71cqhxanQ0KGwQUErvLbQxdPDxvPStaGxoaKwsrvVyqGhsNPF0OOzz9DF
+w/HTqsbz0rWhsaGisLK71cqhobCzz9DFtaXOu6GxoaKhsMLtsLDJvcrQz8i9+LyvzOWhsaGiobDC
+7bCwyb3K0NPF0OPLvdOqxvPStaGxoaKhsMLtsLDJvcrQs8/QxcTJy7DIy6GxoaKhsMLtsLDJvcrQ
+0vjQ0NDFtPuzz9DF1tDQocbz0rWhsaGiobDIq7n608O7p7L6xrfWysG/wvrS4qOsytu687f+zvHC
++tLiyr63trWlzruhsaGiobBBQUG8ttbKwb+zz9DFu+HUsbWlzruhsaGiobDW0Ln61srBv7n907K3
+xdDExrfFxqGxoaKhsNbQufrK0LOhuavIz7Opz/rGt8XGobGhoqGwyKu5+rv6tLLKrrzRw/vTxca3
+xcahsbXIyNnT/rPGusUgoaGhocirzOXUsbmk0tTPyL34tcS8vMr1us3P1rT6u6+1xLncwO3K1rbO
+zqrXt8fzsvrGt7XEzerDwLb4srvQuMWswaaho7mry77T2jIwMDHE6jEw1MLIq8Pmzai5/UlTTzkw
+MDGjujIwMDDWysG/udzA7czlz7XIz9ako6wyMDAzxOo41MLNqLn9wcvI/by2vMbBv8i3yM+jrNO1
+09DX1NOqvfiz9r/ayKijrM6qzOG437L6xre/xry8tcS6rL3wwb+8sLL6xrfQ1MTco6wyMDAzxOox
+MtTCuavLvtPrus+3yrmk0rW089Gnus/X97PJwaLBy6Gwu/q0srmks8y8vMr10dC+v9bQ0MShsaGj
+MjAwNMTqV0Y2N0vK/b/YsOXBz9XbzeS7+tDCxrfJ+rL6z9/P7sS/sbvIq8qht6LVubjEuO/Or9Sx
+u+HF+te8zqrKoaGwyP2436Gxz+7Ev6OssqKxu8HQyOvKoaGwODYxobG8xruu1ti1472oyejP7sS/
+oaO5+rzS1srBv7zs0em87NLf19y+1tPaMjAwNsTqOdTCttTO0rmry761xFFDMTJZLTSjqjMyMDDS
+utG5sNrKvbz0sOW7+r340NDBy7L6xrfWysG/ufq80rzgtr2z6bLpoaPO0rmry76y+sa30ru0ztDU
+zai5/bj3z+7WuLHqvOzR6aOss8m8qMirsr+48aOovOzR6bGouOax4LrFo7pESi0xMDU1LUQwMS1R
+o6mho6GhoaGhoaGhoaGhoaGhoaGhocj9waay+sa3vqvS5sfzvqujrMj9wabIy72rsru2z7+qzdij
+rLK7ts+0tNDCo6yyotXms8+12NS40+u4973nxfPT0dCvyta5sr34o6y5ss2st6LVuaGjDQq1pc67
+o7qwsrvVyqHI/cGmu/q0stbG1OzT0M/euavLvg0Ktee7sKO6MDU1NS02NzIxMjQ5ICAgtKvV5qO6
+MDU1NS02NjEyODQ4DQp3d3cuY25qY3p6LmNvbQ0Kc2xAY25qY3p6LmNvbQ0KCqGqoaqhqqGqoaqh
+qqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqgqhvtei0uKh
+v8nPw+a1xNPKvP7E2sjd0+vS1M/CzsTX1s7eudiho7G+yO28/r32z97T2rrPt6jTw82+IQq4w9PK
+vP7TyaG2Vm9sbGV5bWFpbNPKvP7Iurei16i80qG3yO28/reiy82ju7G7zfjT0cbAzqrX7sD3uqYK
+tcTTyrz+yLq3osjtvP62+LbgtM7Sqsfzxsa94qOhz9bD4rfRz8LU2KOszt7P3sqxvOTKudPDoaMK
+z+rH6cfrt8POys7Sw8e1xNb30rOjumh0dHA6Ly93d3cuY255c29mdC5jb20v
 
-Almost all of the changes are in the reworked atmel_spi_next_xfer()
-function.  That's now called with the driver in one of three states:
 
- 1. It isn't transferring anything (in which case the first transfer
-    of the current message is going to be sent)
- 2. It has finished transfering a non-chainable transfer (in which
-    case it will go to the next transfer in the message)
- 3. It has finished transfering a chained transfer (in which case the
-    next transfer is already queued)
-
-After that it will queue the next transfer if it can be chained.
-
-Signed-off-by: Szilveszter Ordog <slipszi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Acked-by: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/spi/atmel_spi.c |  146 +++++++++++++++++++++++++++++++++---------------
- 1 files changed, 101 insertions(+), 45 deletions(-)
-
---- a/drivers/spi/atmel_spi.c	2007-11-14 15:03:30.000000000 -0800
-+++ b/drivers/spi/atmel_spi.c	2007-11-14 15:09:59.000000000 -0800
-@@ -51,7 +51,9 @@ struct atmel_spi {
- 	u8			stopping;
- 	struct list_head	queue;
- 	struct spi_transfer	*current_transfer;
--	unsigned long		remaining_bytes;
-+	unsigned long		current_remaining_bytes;
-+	struct spi_transfer	*next_transfer;
-+	unsigned long		next_remaining_bytes;
- 
- 	void			*buffer;
- 	dma_addr_t		buffer_dma;
-@@ -121,6 +123,48 @@ static void cs_deactivate(struct atmel_s
- 		gpio_set_value(gpio, !active);
- }
- 
-+static inline int atmel_spi_xfer_is_last(struct spi_message *msg,
-+					struct spi_transfer *xfer)
-+{
-+	return msg->transfers.prev == &xfer->transfer_list;
-+}
-+
-+static inline int atmel_spi_xfer_can_be_chained(struct spi_transfer *xfer)
-+{
-+	return xfer->delay_usecs == 0 && !xfer->cs_change;
-+}
-+
-+static void atmel_spi_next_xfer_data(struct spi_master *master,
-+				struct spi_transfer *xfer,
-+				dma_addr_t *tx_dma,
-+				dma_addr_t *rx_dma,
-+				u32 *plen)
-+{
-+	struct atmel_spi	*as = spi_master_get_devdata(master);
-+	u32			len = *plen;
-+
-+	/* use scratch buffer only when rx or tx data is unspecified */
-+	if (xfer->rx_buf)
-+		*rx_dma = xfer->rx_dma + xfer->len - len;
-+	else {
-+		*rx_dma = as->buffer_dma;
-+		if (len > BUFFER_SIZE)
-+			len = BUFFER_SIZE;
-+	}
-+	if (xfer->tx_buf)
-+		*tx_dma = xfer->tx_dma + xfer->len - len;
-+	else {
-+		*tx_dma = as->buffer_dma;
-+		if (len > BUFFER_SIZE)
-+			len = BUFFER_SIZE;
-+		memset(as->buffer, 0, len);
-+		dma_sync_single_for_device(&as->pdev->dev,
-+				as->buffer_dma, len, DMA_TO_DEVICE);
-+	}
-+
-+	*plen = len;
-+}
-+
- /*
-  * Submit next transfer for DMA.
-  * lock is held, spi irq is blocked
-@@ -130,53 +174,68 @@ static void atmel_spi_next_xfer(struct s
- {
- 	struct atmel_spi	*as = spi_master_get_devdata(master);
- 	struct spi_transfer	*xfer;
--	u32			len;
-+	u32			len, remaining, total;
- 	dma_addr_t		tx_dma, rx_dma;
- 
--	xfer = as->current_transfer;
--	if (!xfer || as->remaining_bytes == 0) {
--		if (xfer)
--			xfer = list_entry(xfer->transfer_list.next,
--					struct spi_transfer, transfer_list);
--		else
--			xfer = list_entry(msg->transfers.next,
--					struct spi_transfer, transfer_list);
--		as->remaining_bytes = xfer->len;
--		as->current_transfer = xfer;
--	}
-+	if (!as->current_transfer)
-+		xfer = list_entry(msg->transfers.next,
-+				struct spi_transfer, transfer_list);
-+	else if (!as->next_transfer)
-+		xfer = list_entry(as->current_transfer->transfer_list.next,
-+				struct spi_transfer, transfer_list);
-+	else
-+		xfer = NULL;
- 
--	len = as->remaining_bytes;
-+	if (xfer) {
-+		len = xfer->len;
-+		atmel_spi_next_xfer_data(master, xfer, &tx_dma, &rx_dma, &len);
-+		remaining = xfer->len - len;
- 
--	tx_dma = xfer->tx_dma + xfer->len - len;
--	rx_dma = xfer->rx_dma + xfer->len - len;
-+		spi_writel(as, TPR, tx_dma);
-+		spi_writel(as, RPR, rx_dma);
- 
--	/* use scratch buffer only when rx or tx data is unspecified */
--	if (!xfer->rx_buf) {
--		rx_dma = as->buffer_dma;
--		if (len > BUFFER_SIZE)
--			len = BUFFER_SIZE;
--	}
--	if (!xfer->tx_buf) {
--		tx_dma = as->buffer_dma;
--		if (len > BUFFER_SIZE)
--			len = BUFFER_SIZE;
--		memset(as->buffer, 0, len);
--		dma_sync_single_for_device(&as->pdev->dev,
--				as->buffer_dma, len, DMA_TO_DEVICE);
-+		if (msg->spi->bits_per_word > 8)
-+			len >>= 1;
-+		spi_writel(as, TCR, len);
-+		spi_writel(as, RCR, len);
-+	} else {
-+		xfer = as->next_transfer;
-+		remaining = as->next_remaining_bytes;
- 	}
- 
--	spi_writel(as, RPR, rx_dma);
--	spi_writel(as, TPR, tx_dma);
-+	as->current_transfer = xfer;
-+	as->current_remaining_bytes = remaining;
- 
--	as->remaining_bytes -= len;
--	if (msg->spi->bits_per_word > 8)
--		len >>= 1;
-+	if (remaining > 0)
-+		len = remaining;
-+	else if (!atmel_spi_xfer_is_last(msg, xfer) &&
-+		atmel_spi_xfer_can_be_chained(xfer)) {
-+		xfer = list_entry(xfer->transfer_list.next,
-+				struct spi_transfer, transfer_list);
-+		len = xfer->len;
-+	} else
-+		xfer = NULL;
- 
--	/* REVISIT: when xfer->delay_usecs == 0, the PDC "next transfer"
--	 * mechanism might help avoid the IRQ latency between transfers
--	 * (and improve the nCS0 errata handling on at91rm9200 chips)
--	 *
--	 * We're also waiting for ENDRX before we start the next
-+	as->next_transfer = xfer;
-+
-+	if (xfer) {
-+		total = len;
-+		atmel_spi_next_xfer_data(master, xfer, &tx_dma, &rx_dma, &len);
-+		as->next_remaining_bytes = total - len;
-+
-+		spi_writel(as, TNPR, tx_dma);
-+		spi_writel(as, RNPR, rx_dma);
-+
-+		if (msg->spi->bits_per_word > 8)
-+			len >>= 1;
-+		spi_writel(as, TNCR, len);
-+		spi_writel(as, RNCR, len);
-+	} else {
-+		spi_writel(as, TNCR, 0);
-+		spi_writel(as, RNCR, 0);
-+	}
-+
-+	/* REVISIT: We're waiting for ENDRX before we start the next
- 	 * transfer because we need to handle some difficult timing
- 	 * issues otherwise. If we wait for ENDTX in one transfer and
- 	 * then starts waiting for ENDRX in the next, it's difficult
-@@ -186,8 +245,6 @@ static void atmel_spi_next_xfer(struct s
- 	 *
- 	 * It should be doable, though. Just not now...
- 	 */
--	spi_writel(as, TNCR, 0);
--	spi_writel(as, RNCR, 0);
- 	spi_writel(as, IER, SPI_BIT(ENDRX) | SPI_BIT(OVRES));
- 
- 	dev_dbg(&msg->spi->dev,
-@@ -195,8 +252,6 @@ static void atmel_spi_next_xfer(struct s
- 		xfer, xfer->len, xfer->tx_buf, xfer->tx_dma,
- 		xfer->rx_buf, xfer->rx_dma, spi_readl(as, IMR));
- 
--	spi_writel(as, TCR, len);
--	spi_writel(as, RCR, len);
- 	spi_writel(as, PTCR, SPI_BIT(TXTEN) | SPI_BIT(RXTEN));
- }
- 
-@@ -294,6 +349,7 @@ atmel_spi_msg_done(struct spi_master *ma
- 	spin_lock(&as->lock);
- 
- 	as->current_transfer = NULL;
-+	as->next_transfer = NULL;
- 
- 	/* continue if needed */
- 	if (list_empty(&as->queue) || as->stopping)
-@@ -377,7 +433,7 @@ atmel_spi_interrupt(int irq, void *dev_i
- 
- 		spi_writel(as, IDR, pending);
- 
--		if (as->remaining_bytes == 0) {
-+		if (as->current_remaining_bytes == 0) {
- 			msg->actual_length += xfer->len;
- 
- 			if (!msg->is_dma_mapped)
-@@ -387,7 +443,7 @@ atmel_spi_interrupt(int irq, void *dev_i
- 			if (xfer->delay_usecs)
- 				udelay(xfer->delay_usecs);
- 
--			if (msg->transfers.prev == &xfer->transfer_list) {
-+			if (atmel_spi_xfer_is_last(msg, xfer)) {
- 				/* report completed message */
- 				atmel_spi_msg_done(master, as, msg, 0,
- 						xfer->cs_change);
+--===============1526074448==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Splunk Inc.
 Still grepping through log files to find problems?  Stop.
 Now Search log events and configuration files using AJAX and a browser.
 Download your FREE copy of Splunk now >> http://get.splunk.com/
+--===============1526074448==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1526074448==--

@@ -1,12 +1,20 @@
-From: "=?GB2312?B?sLK71cqhyP3Bprv6tLLWxtTs09DP3rmry74=?=" <sl-BYwvgrnV00vQT0dZR+AlfA@public.gmane.org>
-Subject: =?GB2312?B?uanTpqO6vPSw5bv6oaLV283ku/qhor7tsOW7+qGis+W0sqGi0KPGvbv6?=
-Date: Thu, 15 Nov 2007 16:16:54 +0800
-Message-ID: <E1IsZu3-0003Xd-TX@mail.sourceforge.net>
-Reply-To: sl-BYwvgrnV00vQT0dZR+AlfA@public.gmane.org
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [patch 4/4 2.6.23-rc2 + mm2-git-mmc]
+	mmc_spi host driver
+Date: Thu, 15 Nov 2007 15:30:05 -0800
+Message-ID: <200711151530.06591.david-b@pacbell.net>
+References: <200708080906.18993.david-b@pacbell.net>
+	<20070831230050.4F31F2371AF@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+	<20070904105453.GD7579@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1526074448=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, mikael.starvik-VrBV9hrLPhE@public.gmane.org,
+	hans-peter.nilsson-VrBV9hrLPhE@public.gmane.org, mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20070904105453.GD7579-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,73 +26,198 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1526074448==
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
+On Tuesday 04 September 2007, Sascha Hauer wrote:
+> Hi David,
+> 
+> On Fri, Aug 31, 2007 at 04:00:51PM -0700, David Brownell wrote:
+> > > > > The problem with the crc is reproducible. I watched this on the logic
+> > > > > analyzer, it's the response from the card to a SPI_TOKEN_STOP_TRAN
+> > > > > transfer. It occurs on the very last block on an SD card:
+> > > > 
+> > > > ISTR seeing some comment in a document pointing out that there can
+> > > > be some odd faults reported when reading that block.  Maybe you've
+> > > > found a case where the mmc_spi code needs updating.
+> > 
+> > Did you verify that even with CRCs disabled, a problem appears?
+> 
+> Yes, this does not change anything.
 
-uanTpqO6vPSw5bv6oaLV283ku/qhor7tsOW7+qGis+W0sqGi0KPGvbv6DQqwsrvVyqHI/cGmu/q0
-stbG1OzT0M/euavLvqOsyvSwsrvVyqHD+8XGoaLD4rzssvrGt8n6svrG89K1o6ywsrvVyqG439DC
-vLzK9cbz0rWjrMLtsLDJvcrQobDXqKGivquhoszYoaLQwqGxxvPStaOswu2wsMm9ytDPwrjayqfS
-tdawuaTU2b7N0rW7+bXYo6y96dPaxM++qaGizt+6/tauvOSjrNf4wuTU2tb4w/u1xLjWs8fC7bCw
-yb3K0KOst+G4u7XEuNbM+tfK1LTOqrmry761xLei1bnM4bmpwcu1w8zstsC68bXE08XKxqGjuavL
-vtW8tdjD5rv9MTA4MDAwxr23vcPXo6zW99Kqyfqy+qGwtPPKoqGxxcbPtcHQvPSw5bv6oaLV283k
-u/qhor7tsOW7+qGiv+zL2dG5waa7+qGis+W0sqGiv6q+7dCjxr27+qGi0M2yxM3kx/q7+rW2xKO+
-37XIsvrGt6Os16jStc6qur2/1aGix+G5pKGi0rG98KGiu6+5pKGivajW/sb7s7WhorXnwaahotew
-5Oq1yNDQ0rXM4bmpy/nQ6NKqtcTXqNPDu/rQtbrNs8nM18nosbijrLL6xrfP+s35yKu5+rj3tdi6
-zcW3w8u8sLarxM/Rx7XYx/iyotS2z/rEz7fHoaMgoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGh
-oaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGh
-oaG5q8u+08PP1rT6xvPStbXEudzA7be9t6ihosGi1+PT2rL6xre53MDto6zS1Mbk08XQ47XExrfW
-yqOs0MLTsbXEyei8xqOsus/A7bXEvNu48aOszerJxrXEytu687f+zvHTrrXDwcu547Tzv827p7XE
-0rvWwrrDxsCjrLG7xsDOqrCyu9XKoaGw1ti6z82soaLK2NDF08PPyL34taXOu6GxoaKwsrvVyqGh
-sNb4w/vJzLHqobGhorCyu9XKoaGww/vFxrL6xrehsaGiobDG89K1vfiz9r/a18q48dakobGhoqGw
-Q0W5+rzKyM/WpKGxsLK71cqhxanQ0KGwQUErvLbQxdPDxvPStaGxoaKwsrvVyqGhsNPF0OOzz9DF
-w/HTqsbz0rWhsaGisLK71cqhobCzz9DFtaXOu6GxoaKhsMLtsLDJvcrQz8i9+LyvzOWhsaGiobDC
-7bCwyb3K0NPF0OPLvdOqxvPStaGxoaKhsMLtsLDJvcrQs8/QxcTJy7DIy6GxoaKhsMLtsLDJvcrQ
-0vjQ0NDFtPuzz9DF1tDQocbz0rWhsaGiobDIq7n608O7p7L6xrfWysG/wvrS4qOsytu687f+zvHC
-+tLiyr63trWlzruhsaGiobBBQUG8ttbKwb+zz9DFu+HUsbWlzruhsaGiobDW0Ln61srBv7n907K3
-xdDExrfFxqGxoaKhsNbQufrK0LOhuavIz7Opz/rGt8XGobGhoqGwyKu5+rv6tLLKrrzRw/vTxca3
-xcahsbXIyNnT/rPGusUgoaGhocirzOXUsbmk0tTPyL34tcS8vMr1us3P1rT6u6+1xLncwO3K1rbO
-zqrXt8fzsvrGt7XEzerDwLb4srvQuMWswaaho7mry77T2jIwMDHE6jEw1MLIq8Pmzai5/UlTTzkw
-MDGjujIwMDDWysG/udzA7czlz7XIz9ako6wyMDAzxOo41MLNqLn9wcvI/by2vMbBv8i3yM+jrNO1
-09DX1NOqvfiz9r/ayKijrM6qzOG437L6xre/xry8tcS6rL3wwb+8sLL6xrfQ1MTco6wyMDAzxOox
-MtTCuavLvtPrus+3yrmk0rW089Gnus/X97PJwaLBy6Gwu/q0srmks8y8vMr10dC+v9bQ0MShsaGj
-MjAwNMTqV0Y2N0vK/b/YsOXBz9XbzeS7+tDCxrfJ+rL6z9/P7sS/sbvIq8qht6LVubjEuO/Or9Sx
-u+HF+te8zqrKoaGwyP2436Gxz+7Ev6OssqKxu8HQyOvKoaGwODYxobG8xruu1ti1472oyejP7sS/
-oaO5+rzS1srBv7zs0em87NLf19y+1tPaMjAwNsTqOdTCttTO0rmry761xFFDMTJZLTSjqjMyMDDS
-utG5sNrKvbz0sOW7+r340NDBy7L6xrfWysG/ufq80rzgtr2z6bLpoaPO0rmry76y+sa30ru0ztDU
-zai5/bj3z+7WuLHqvOzR6aOss8m8qMirsr+48aOovOzR6bGouOax4LrFo7pESi0xMDU1LUQwMS1R
-o6mho6GhoaGhoaGhoaGhoaGhoaGhocj9waay+sa3vqvS5sfzvqujrMj9wabIy72rsru2z7+qzdij
-rLK7ts+0tNDCo6yyotXms8+12NS40+u4973nxfPT0dCvyta5sr34o6y5ss2st6LVuaGjDQq1pc67
-o7qwsrvVyqHI/cGmu/q0stbG1OzT0M/euavLvg0Ktee7sKO6MDU1NS02NzIxMjQ5ICAgtKvV5qO6
-MDU1NS02NjEyODQ4DQp3d3cuY25qY3p6LmNvbQ0Kc2xAY25qY3p6LmNvbQ0KCqGqoaqhqqGqoaqh
-qqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqqGqoaqhqgqhvtei0uKh
-v8nPw+a1xNPKvP7E2sjd0+vS1M/CzsTX1s7eudiho7G+yO28/r32z97T2rrPt6jTw82+IQq4w9PK
-vP7TyaG2Vm9sbGV5bWFpbNPKvP7Iurei16i80qG3yO28/reiy82ju7G7zfjT0cbAzqrX7sD3uqYK
-tcTTyrz+yLq3osjtvP62+LbgtM7Sqsfzxsa94qOhz9bD4rfRz8LU2KOszt7P3sqxvOTKudPDoaMK
-z+rH6cfrt8POys7Sw8e1xNb30rOjumh0dHA6Ly93d3cuY255c29mdC5jb20v
+I suspect this is a case where a fault code gets overloaded.
+There aren't many codes defined, after all!
 
 
---===============1526074448==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> > > > > I tested this with six SD cards. They all behave like this except one
+> > > > > 512MB Kingston card which works. A MMC card I tested works too.
+> > > > > Maybe we have to use a single block transfer on the last sector?
+> > > > 
+> > > > Could be.  See what the current "Simplified SD" spec says ... I do
+> > > > recall language about reading that sector, but it didn't seem to
+> > > > matter for any of the cards I have for testing.  So I probably didn't
+> > > > pay enough attention to those words.
+> > >
+> > > Unfortunately I did not find anything about that in the spec.
+> > 
+> > I'm sure I saw that, but have no idea what document it was in.  If
+> > not the "Simplified" spec, then a vendor's card spec ... either
+> > Sandisk (MMC, SD), Samsung, Hitachi, whatever.
+> > 
+> 
+> Still did not find something about it. I looked in the simplified spec
+> and in vendor specs from Toshiba and Sandisk.
+
+I'm still sure I saw it.  Maybe I'll try searching for that text
+myself, it's surely in one of half a dozen huge documents I have
+sitting around in PDF form.  ;)
+
+I think there may be a regression in this area.  When debugging
+this updated code, I was able to "dd" an entire SanDisk SD card
+without any errors.  But when I tried this a short while ago, I
+saw the kind of error you report.  I don't believe the SanDisk
+card suddenly broke.
+
+Your patch prevented that problem from appearing ...
+
+Now, taking only a very brief look at this, I wonder if maybe
+this isn't partly a symptom of an off-by-one error of some kind,
+with the current MMC stack asking for too much data.  It must
+be requesting two blocks, since subtracting one turns it into
+a single block read ... but for some reason I count a multiblock
+read of eight blocks, indicating sg_len is eight not two.
+
+Anyway, here's some debug output.  It's the tail end of two
+DD sessions, one with a generic kernel and one with your patch.
+Only the latter one worked.
+
+- Dave
+
+
+====	#1
+
+	This is generic 2.6.24-rc2 (in terms of MMC patches), with
+	mmc_spi debugging enabled
+
+	The card is a 128 MB SanDisk SD card.  The command is:
+
+	# dd bs=4k if=/dev/mmcblk0 of=/dev/null
+
+	Gets a CRC error (-84, -EILSEQ) from R1_SPI_COM_CRC status (0x08)
+	when issuing CMD12 (MMC_STOP_TRANSMISSION).
+
+mmc_spi spi1.0:   mmc_spi: CMD18, resp R1
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:   mmc_spi: CMD12, resp R1B
+mmc_spi spi1.0:   mmc_spi: CMD18, resp R1
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:   mmc_spi: CMD12, resp R1B
+mmc_spi spi1.0:   ... CMD12 response SPI_R1B: resp 0008 00000000
+mmcblk0: error -84 sending stop command
+end_request: I/O error, dev mmcblk0, sector 246008
+Buffer I/O error on device mmcblk0, logical block 30751
+mmc_spi spi1.0:   mmc_spi: CMD18, resp R1
+mmc_spi spi1.0:   ... CMD18 response SPI_R1: resp 0004 00000000
+mmcblk0: error -22 sending read/write command
+end_request: I/O error, dev mmcblk0, sector 246008
+Buffer I/O error on device mmcblk0, logical block 30751
+
+	... and the DD command failed.
+
+
+====	#2
+	This is generic 2.6.24-rc2 (in terms of MMC patches), with
+	mmc_spi debugging enabled, plus the patch from Sascha Hauer.
+
+	The card is a 128 MB SanDisk SD card.  The command is:
+ 
+	# dd bs=4k if=/dev/mmcblk0 of=/dev/null
+
+	No problems ... although note that there was only *ONE* block
+	read at the end, where the failing case tried reading eight.
+
+mmc_spi spi1.0:   mmc_spi: CMD18, resp R1
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:   mmc_spi: CMD12, resp R1B
+mmc_spi spi1.0:   mmc_spi: CMD18, resp R1
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+mmc_spi spi1.0:   mmc_spi: CMD12, resp R1B
+mmc_spi spi1.0:   mmc_spi: CMD17, resp R1
+mmc_spi spi1.0:     mmc_spi: read block, 512 bytes
+
+	... and the DD command succeeded.
+
+
+> I tried using a single block read for the last sector and this works for
+> me. I would be glad if a third person confirms that he actually needs
+> this patch as I'm still not sure whether theres a bug in my driver.
+
+Looks to me like an issue higher up in the stack than your driver.
+
+ 
+> Here's the patch:
+> 
+> 
+> Some SD cards in SPI mode return a crc error when trying to read the
+> last block using a multiple block read. Use a single block read instead.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> 
+> ---
+>  drivers/mmc/card/block.c |   10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> Index: linux-2.6-arm/drivers/mmc/card/block.c
+> ===================================================================
+> --- linux-2.6-arm.orig/drivers/mmc/card/block.c
+> +++ linux-2.6-arm/drivers/mmc/card/block.c
+> @@ -244,6 +244,16 @@ static int mmc_blk_issue_rq(struct mmc_q
+>  		    !mmc_card_sd(card))
+>  			brq.data.blocks = 1;
+>  
+> +		/* Some SD cards in SPI mode return a crc error when trying
+> +		 * to read the last block using a multiread command.
+> +		 */
+> +		if (mmc_host_is_spi(card->host)
+> +				&& brq.data.blocks > 1
+> +				&& rq_data_dir(req) == READ
+> +				&& req->sector + req->nr_sectors ==
+> +					get_capacity(md->disk))
+> +			brq.data.blocks--;
+> +
+>  		if (brq.data.blocks > 1) {
+>  			brq.data.flags |= MMC_DATA_MULTI;
+>  			/* SPI multiblock writes terminate using a special
+> 
+> 
+
+
 
 -------------------------------------------------------------------------
-This SF.net email is sponsored by: Splunk Inc.
-Still grepping through log files to find problems?  Stop.
-Now Search log events and configuration files using AJAX and a browser.
-Download your FREE copy of Splunk now >> http://get.splunk.com/
---===============1526074448==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1526074448==--
+This SF.net email is sponsored by: Microsoft
+Defy all challenges. Microsoft(R) Visual Studio 2005.
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/

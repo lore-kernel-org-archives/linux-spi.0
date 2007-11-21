@@ -1,12 +1,13 @@
-From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Subject: S3C2410: Add bus number to SPI GPIO driver
-Date: Tue, 20 Nov 2007 12:26:10 +0000
-Message-ID: <20071120122610.GA27539@fluff.org.uk>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch 2.6.24-rc mm] atmel_spi,
+	fix dmachain oops with DEBUG enabled
+Date: Wed, 21 Nov 2007 02:50:46 -0800
+Message-ID: <200711210250.46883.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Vincent Sanders <vince-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
-To: Linux SPI <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -20,34 +21,75 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Allow passing a bus number through the platform
-data for the S3C2410 SPI GPIO driver
+From: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+In atmel_spi_next_xfer, xfer can be NULL because the next transfer may
+already have been submitted to the PDC (using DMA chaining).  This can
+cause an oops, since the debug message assumed it was never null.  The
+fix changes how those debug messages are issued, ensuring that one is
+issued each time a transfer is started instead of once per call.
 
-diff -urpN -X linux-2.6.24-rc3-spigpio1/Documentation/dontdiff linux-2.6.24-rc3-spigpio1/include/asm-arm/arch-s3c2410/spi-gpio.h linux-2.6.24-rc3-spigpio2/include/asm-arm/arch-s3c2410/spi-gpio.h
---- linux-2.6.24-rc3-spigpio1/include/asm-arm/arch-s3c2410/spi-gpio.h	2007-10-09 21:31:38.000000000 +0100
-+++ linux-2.6.24-rc3-spigpio2/include/asm-arm/arch-s3c2410/spi-gpio.h	2007-11-20 12:11:18.000000000 +0000
-@@ -21,6 +21,8 @@ struct s3c2410_spigpio_info {
- 	unsigned long		 pin_mosi;
- 	unsigned long		 pin_miso;
- 
-+	int			 bus_num;
+Also, properly indent the "can this transfer be chained" test so it's
+not hidden as if it were non-conditional code.
+
+Signed-off-by: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+This was discussed on the ARM list.
+
+ drivers/spi/atmel_spi.c |   20 ++++++++++++--------
+ 1 files changed, 12 insertions(+), 8 deletions(-)
+
+--- a/drivers/spi/atmel_spi.c	2007-11-18 13:50:33.000000000 -0800
++++ b/drivers/spi/atmel_spi.c	2007-11-21 02:42:02.000000000 -0800
+@@ -198,6 +198,11 @@ static void atmel_spi_next_xfer(struct s
+ 			len >>= 1;
+ 		spi_writel(as, TCR, len);
+ 		spi_writel(as, RCR, len);
 +
- 	unsigned long		 board_size;
- 	struct spi_board_info	*board_info;
++		dev_dbg(&msg->spi->dev,
++			"  start xfer %p: len %u tx %p/%08x rx %p/%08x\n",
++			xfer, xfer->len, xfer->tx_buf, xfer->tx_dma,
++			xfer->rx_buf, xfer->rx_dma);
+ 	} else {
+ 		xfer = as->next_transfer;
+ 		remaining = as->next_remaining_bytes;
+@@ -208,8 +213,8 @@ static void atmel_spi_next_xfer(struct s
  
-diff -urpN -X linux-2.6.24-rc3-spigpio1/Documentation/dontdiff linux-2.6.24-rc3-spigpio1/drivers/spi/spi_s3c24xx_gpio.c linux-2.6.24-rc3-spigpio2/drivers/spi/spi_s3c24xx_gpio.c
---- linux-2.6.24-rc3-spigpio1/drivers/spi/spi_s3c24xx_gpio.c	2007-11-19 23:32:27.000000000 +0000
-+++ linux-2.6.24-rc3-spigpio2/drivers/spi/spi_s3c24xx_gpio.c	2007-11-20 12:12:28.000000000 +0000
-@@ -118,6 +118,7 @@ static int s3c2410_spigpio_probe(struct 
+ 	if (remaining > 0)
+ 		len = remaining;
+-	else if (!atmel_spi_xfer_is_last(msg, xfer) &&
+-		atmel_spi_xfer_can_be_chained(xfer)) {
++	else if (!atmel_spi_xfer_is_last(msg, xfer)
++			&& atmel_spi_xfer_can_be_chained(xfer)) {
+ 		xfer = list_entry(xfer->transfer_list.next,
+ 				struct spi_transfer, transfer_list);
+ 		len = xfer->len;
+@@ -230,6 +235,11 @@ static void atmel_spi_next_xfer(struct s
+ 			len >>= 1;
+ 		spi_writel(as, TNCR, len);
+ 		spi_writel(as, RNCR, len);
++
++		dev_dbg(&msg->spi->dev,
++			"  next xfer %p: len %u tx %p/%08x rx %p/%08x\n",
++			xfer, xfer->len, xfer->tx_buf, xfer->tx_dma,
++			xfer->rx_buf, xfer->rx_dma);
+ 	} else {
+ 		spi_writel(as, TNCR, 0);
+ 		spi_writel(as, RNCR, 0);
+@@ -246,12 +256,6 @@ static void atmel_spi_next_xfer(struct s
+ 	 * It should be doable, though. Just not now...
+ 	 */
+ 	spi_writel(as, IER, SPI_BIT(ENDRX) | SPI_BIT(OVRES));
+-
+-	dev_dbg(&msg->spi->dev,
+-		"  start xfer %p: len %u tx %p/%08x rx %p/%08x imr %03x\n",
+-		xfer, xfer->len, xfer->tx_buf, xfer->tx_dma,
+-		xfer->rx_buf, xfer->rx_dma, spi_readl(as, IMR));
+-
+ 	spi_writel(as, PTCR, SPI_BIT(TXTEN) | SPI_BIT(RXTEN));
+ }
  
- 	/* setup spi bitbang adaptor */
- 	sp->bitbang.master = spi_master_get(master);
-+	sp->bitbang.master->bus_num = info->bus_num;
- 	sp->bitbang.chipselect = s3c2410_spigpio_chipselect;
- 
- 	sp->bitbang.txrx_word[SPI_MODE_0] = s3c2410_spigpio_txrx_mode0;
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

@@ -1,15 +1,16 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.24-rc mm] atmel_spi,
-	fix dmachain oops with DEBUG enabled
-Date: Wed, 21 Nov 2007 02:50:46 -0800
-Message-ID: <200711210250.46883.david-b@pacbell.net>
+From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Re: problems with spi interface & ads 784X
+	under 2.6.23
+Date: Thu, 22 Nov 2007 23:34:27 -0800
+Message-ID: <20071122233427.a2a63837.akpm@linux-foundation.org>
+References: <d7b238da0711101602y61f8b5b9j4248c690cc79bb8d@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: "dave chung" <ponstrip-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <d7b238da0711101602y61f8b5b9j4248c690cc79bb8d-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,75 +22,67 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+On Sun, 11 Nov 2007 08:02:19 +0800 "dave chung" <ponstrip-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
 
-In atmel_spi_next_xfer, xfer can be NULL because the next transfer may
-already have been submitted to the PDC (using DMA chaining).  This can
-cause an oops, since the debug message assumed it was never null.  The
-fix changes how those debug messages are issued, ensuring that one is
-issued each time a transfer is started instead of once per call.
+> on kernel 2.6.23 , with an  Arm AT91rm9200
+> sometimes when i  "pen-down" on the touch screen,I'm seeing
+> 
+> ads7846 spi0.0: touchscreen, irq 75
+> input: ADS784x Touchscreen as /devices/platform/atmel_spi.0/spi0.0/input/input0
+> at91_rtc at91_rtc: rtc core: registered at91_rtc as rtc0
+> 
+> 
+> 
+> atmel_spi atmel_spi.0: fifo overrun (0/1 remaining)
+> atmel_spi atmel_spi.0: timeout waiting for TXEMPTY<7>ads7846 spi0.0:
+> DEactivate 35, mr 000f0011
+> atmel_spi atmel_spi.0: fifo overrun (0/1 remaining)
+> atmel_spi atmel_spi.0: timeout waiting for TXEMPTY<7>ads7846 spi0.0:
+> DEactivate 35, mr 000f0011
+> 
+> 
+> 
+> it appears to be coming from /drivers/touchscreen/ads7846.c
+> 
+> also even stranger, a cat of  the TS when the pen is down produces:
+> # cat /dev/ts |hexdump
+> returns
+> 0000000 ea9c 34aa 0d64 0007 0001 014a 0001 0000
+> 0000010 ea9c 34aa 0dde 0007 0003 0018 1d4c 0000
+> 0000020 ea9c 34aa 0e1b 0007 0000 0000 0000 0000
+> 0000030 ea9c 34aa 8c84 0008 0001 014a 0000 0000
+> 0000040 ea9c 34aa 8cdf 0008 0003 0018 0000 0000
+> 0000050 ea9c 34aa 8d1c 0008 0000 0000 0000 0000
+> 0000060 ea9d 34aa c9af 0004 0001 014a 0001 0000
+> 0000070 ea9d 34aa ca29 0004 0003 0018 1d4c 0000
+> 0000080 ea9d 34aa ca66 0004 0000 0000 0000 0000
+> 
+> when the pen is down , notice that the left column is a sequence of
+> incrementing words, at "second" intervals , the value of which change
+> when i turn off the "RTC" compillation in the kernel, but this may be
+> down to the interrupts.
+> After consulting the curcuit diagrams , the only "odd" thing i can see
+> is that the "penirq" is tied to pin  PB11, but it is obviously working
+> as i only get output when the pen is down
+> 
+> under kernel 2.6.13 the touchscreen actually works fine.
+> and a cat of it's output is more reasonable.
+> 
+> 000000 0001 0c39 07e0 be98 0001 0c33 0801 be98
+> 0000010 0001 0c35 07e2 be98 0001 0c41 07d4 be98
+> 0000020 0001 0c40 07d0 be98 0001 0c08 0859 be98
+> 0000030 0001 0c4c 07d1 be98 0001 0c5a 070f be98
+> 0000040 0001 0c3f 074a be98 0001 0bf3 07e5 be98
+> 0000050 0001 0c40 07e4 be98 0001 0c40 07f5 be98
+> 0000060 0001 0c63 07e3 be98 0001 0c3c 07d2 be98
+> 0000070 0001 0c44 07ce be98 0001 0c3e 07d2 be98
+> 0000080 0001 0c40 07cf be98 0001 0c56 071f be98
+> 
+> which does actually seem to be representative of reasonalbe screen positions
+> 
 
-Also, properly indent the "can this transfer be chained" test so it's
-not hidden as if it were non-conditional code.
-
-Signed-off-by: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
-This was discussed on the ARM list.
-
- drivers/spi/atmel_spi.c |   20 ++++++++++++--------
- 1 files changed, 12 insertions(+), 8 deletions(-)
-
---- a/drivers/spi/atmel_spi.c	2007-11-18 13:50:33.000000000 -0800
-+++ b/drivers/spi/atmel_spi.c	2007-11-21 02:42:02.000000000 -0800
-@@ -198,6 +198,11 @@ static void atmel_spi_next_xfer(struct s
- 			len >>= 1;
- 		spi_writel(as, TCR, len);
- 		spi_writel(as, RCR, len);
-+
-+		dev_dbg(&msg->spi->dev,
-+			"  start xfer %p: len %u tx %p/%08x rx %p/%08x\n",
-+			xfer, xfer->len, xfer->tx_buf, xfer->tx_dma,
-+			xfer->rx_buf, xfer->rx_dma);
- 	} else {
- 		xfer = as->next_transfer;
- 		remaining = as->next_remaining_bytes;
-@@ -208,8 +213,8 @@ static void atmel_spi_next_xfer(struct s
- 
- 	if (remaining > 0)
- 		len = remaining;
--	else if (!atmel_spi_xfer_is_last(msg, xfer) &&
--		atmel_spi_xfer_can_be_chained(xfer)) {
-+	else if (!atmel_spi_xfer_is_last(msg, xfer)
-+			&& atmel_spi_xfer_can_be_chained(xfer)) {
- 		xfer = list_entry(xfer->transfer_list.next,
- 				struct spi_transfer, transfer_list);
- 		len = xfer->len;
-@@ -230,6 +235,11 @@ static void atmel_spi_next_xfer(struct s
- 			len >>= 1;
- 		spi_writel(as, TNCR, len);
- 		spi_writel(as, RNCR, len);
-+
-+		dev_dbg(&msg->spi->dev,
-+			"  next xfer %p: len %u tx %p/%08x rx %p/%08x\n",
-+			xfer, xfer->len, xfer->tx_buf, xfer->tx_dma,
-+			xfer->rx_buf, xfer->rx_dma);
- 	} else {
- 		spi_writel(as, TNCR, 0);
- 		spi_writel(as, RNCR, 0);
-@@ -246,12 +256,6 @@ static void atmel_spi_next_xfer(struct s
- 	 * It should be doable, though. Just not now...
- 	 */
- 	spi_writel(as, IER, SPI_BIT(ENDRX) | SPI_BIT(OVRES));
--
--	dev_dbg(&msg->spi->dev,
--		"  start xfer %p: len %u tx %p/%08x rx %p/%08x imr %03x\n",
--		xfer, xfer->len, xfer->tx_buf, xfer->tx_dma,
--		xfer->rx_buf, xfer->rx_dma, spi_readl(as, IMR));
--
- 	spi_writel(as, PTCR, SPI_BIT(TXTEN) | SPI_BIT(RXTEN));
- }
- 
+I suppose spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org would be the place for
+this.
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

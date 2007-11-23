@@ -1,16 +1,18 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+From: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Subject: Re: problems with spi interface & ads 784X
-	under 2.6.23
-Date: Thu, 22 Nov 2007 23:34:27 -0800
-Message-ID: <20071122233427.a2a63837.akpm@linux-foundation.org>
+ under 2.6.23
+Date: Fri, 23 Nov 2007 14:10:50 +0100
+Message-ID: <20071123141050.5d4e352a@dhcp-255-175.norway.atmel.com>
 References: <d7b238da0711101602y61f8b5b9j4248c690cc79bb8d@mail.gmail.com>
+	<20071122233427.a2a63837.akpm@linux-foundation.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "dave chung" <ponstrip-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	dave chung <ponstrip-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <d7b238da0711101602y61f8b5b9j4248c690cc79bb8d-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20071122233427.a2a63837.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,69 +24,60 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 11 Nov 2007 08:02:19 +0800 "dave chung" <ponstrip-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-
-> on kernel 2.6.23 , with an  Arm AT91rm9200
-> sometimes when i  "pen-down" on the touch screen,I'm seeing
-> 
-> ads7846 spi0.0: touchscreen, irq 75
-> input: ADS784x Touchscreen as /devices/platform/atmel_spi.0/spi0.0/input/input0
-> at91_rtc at91_rtc: rtc core: registered at91_rtc as rtc0
-> 
-> 
-> 
-> atmel_spi atmel_spi.0: fifo overrun (0/1 remaining)
-> atmel_spi atmel_spi.0: timeout waiting for TXEMPTY<7>ads7846 spi0.0:
-> DEactivate 35, mr 000f0011
-> atmel_spi atmel_spi.0: fifo overrun (0/1 remaining)
-> atmel_spi atmel_spi.0: timeout waiting for TXEMPTY<7>ads7846 spi0.0:
-> DEactivate 35, mr 000f0011
-> 
-> 
-> 
-> it appears to be coming from /drivers/touchscreen/ads7846.c
-> 
-> also even stranger, a cat of  the TS when the pen is down produces:
-> # cat /dev/ts |hexdump
-> returns
-> 0000000 ea9c 34aa 0d64 0007 0001 014a 0001 0000
-> 0000010 ea9c 34aa 0dde 0007 0003 0018 1d4c 0000
-> 0000020 ea9c 34aa 0e1b 0007 0000 0000 0000 0000
-> 0000030 ea9c 34aa 8c84 0008 0001 014a 0000 0000
-> 0000040 ea9c 34aa 8cdf 0008 0003 0018 0000 0000
-> 0000050 ea9c 34aa 8d1c 0008 0000 0000 0000 0000
-> 0000060 ea9d 34aa c9af 0004 0001 014a 0001 0000
-> 0000070 ea9d 34aa ca29 0004 0003 0018 1d4c 0000
-> 0000080 ea9d 34aa ca66 0004 0000 0000 0000 0000
-> 
-> when the pen is down , notice that the left column is a sequence of
-> incrementing words, at "second" intervals , the value of which change
-> when i turn off the "RTC" compillation in the kernel, but this may be
-> down to the interrupts.
-> After consulting the curcuit diagrams , the only "odd" thing i can see
-> is that the "penirq" is tied to pin  PB11, but it is obviously working
-> as i only get output when the pen is down
-> 
-> under kernel 2.6.13 the touchscreen actually works fine.
-> and a cat of it's output is more reasonable.
-> 
-> 000000 0001 0c39 07e0 be98 0001 0c33 0801 be98
-> 0000010 0001 0c35 07e2 be98 0001 0c41 07d4 be98
-> 0000020 0001 0c40 07d0 be98 0001 0c08 0859 be98
-> 0000030 0001 0c4c 07d1 be98 0001 0c5a 070f be98
-> 0000040 0001 0c3f 074a be98 0001 0bf3 07e5 be98
-> 0000050 0001 0c40 07e4 be98 0001 0c40 07f5 be98
-> 0000060 0001 0c63 07e3 be98 0001 0c3c 07d2 be98
-> 0000070 0001 0c44 07ce be98 0001 0c3e 07d2 be98
-> 0000080 0001 0c40 07cf be98 0001 0c56 071f be98
-> 
-> which does actually seem to be representative of reasonalbe screen positions
-> 
-
-I suppose spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org would be the place for
-this.
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Microsoft
-Defy all challenges. Microsoft(R) Visual Studio 2005.
-http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+SG1tLiBJIGNhbiBzd2VhciBJJ3ZlIHNlZW4gRGF2aWQgcmVzcG9uZCB0byB0aGlzIGJlZm9yZSwg
+YnV0IEkgY2FuJ3QKc2VlbSB0byBmaW5kIHRoZSB0aHJlYWQuIEFueXdheS4uLgoKT24gVGh1LCAy
+MiBOb3YgMjAwNyAyMzozNDoyNyAtMDgwMApBbmRyZXcgTW9ydG9uIDxha3BtQGxpbnV4LWZvdW5k
+YXRpb24ub3JnPiB3cm90ZToKCj4gT24gU3VuLCAxMSBOb3YgMjAwNyAwODowMjoxOSArMDgwMCAi
+ZGF2ZSBjaHVuZyIgPHBvbnN0cmlwQGdtYWlsLmNvbT4gd3JvdGU6Cj4gCj4gPiBvbiBrZXJuZWwg
+Mi42LjIzICwgd2l0aCBhbiAgQXJtIEFUOTFybTkyMDAKPiA+IHNvbWV0aW1lcyB3aGVuIGkgICJw
+ZW4tZG93biIgb24gdGhlIHRvdWNoIHNjcmVlbixJJ20gc2VlaW5nCj4gPiAKPiA+IGFkczc4NDYg
+c3BpMC4wOiB0b3VjaHNjcmVlbiwgaXJxIDc1Cj4gPiBpbnB1dDogQURTNzg0eCBUb3VjaHNjcmVl
+biBhcyAvZGV2aWNlcy9wbGF0Zm9ybS9hdG1lbF9zcGkuMC9zcGkwLjAvaW5wdXQvaW5wdXQwCj4g
+PiBhdDkxX3J0YyBhdDkxX3J0YzogcnRjIGNvcmU6IHJlZ2lzdGVyZWQgYXQ5MV9ydGMgYXMgcnRj
+MAo+ID4gCj4gPiAKPiA+IAo+ID4gYXRtZWxfc3BpIGF0bWVsX3NwaS4wOiBmaWZvIG92ZXJydW4g
+KDAvMSByZW1haW5pbmcpCj4gPiBhdG1lbF9zcGkgYXRtZWxfc3BpLjA6IHRpbWVvdXQgd2FpdGlu
+ZyBmb3IgVFhFTVBUWTw3PmFkczc4NDYgc3BpMC4wOgo+ID4gREVhY3RpdmF0ZSAzNSwgbXIgMDAw
+ZjAwMTEKPiA+IGF0bWVsX3NwaSBhdG1lbF9zcGkuMDogZmlmbyBvdmVycnVuICgwLzEgcmVtYWlu
+aW5nKQo+ID4gYXRtZWxfc3BpIGF0bWVsX3NwaS4wOiB0aW1lb3V0IHdhaXRpbmcgZm9yIFRYRU1Q
+VFk8Nz5hZHM3ODQ2IHNwaTAuMDoKPiA+IERFYWN0aXZhdGUgMzUsIG1yIDAwMGYwMDExCgpJdCBz
+ZWVtcyBsaWtlIHRoZSBBVDkxUk05MjAwIGhhcyBhIGZldyBzZXJpb3VzIHF1aXJrcyB0aGF0IGxh
+dGVyIEFUOTEKYW5kIEFWUjMyIGNoaXBzIGRvbid0IGhhdmUuIFRoaXMgaXMgZXNwZWNpYWxseSBw
+cm9ibGVtYXRpYyBmb3IgdGhpbmdzCmNvbm5lY3RlZCB0byBDUzAuIElmIGl0J3Mgbm90IHRvbyBs
+YXRlIHRvIG1vZGlmeSB5b3VyIGJvYXJkIGRlc2lnbiBJCnN1Z2dlc3QgeW91IHRyeSBhIGRpZmZl
+cmVudCBjaGlwc2VsZWN0LgoKSG93ZXZlciwgc2V2ZXJhbCBwZW9wbGUgaGF2ZSByZXBvcnRlZCB0
+aGF0CmF0bWVsX3NwaS1jaGFpbi1kbWEtdHJhbnNmZXJzLnBhdGNoIChjdXJyZW50bHkgaW4gLW1t
+KSBtYWtlcyB0aGUgZHJpdmVyCmJlaGF2ZSBhIGxvdCBiZXR0ZXIgb24gQVQ5MVJNOTIwMCwgZXZl
+biBvbiBDUzAuIFNvIGlmIHlvdSBoYXZlbid0IHRyaWVkCnRoYXQgeWV0LCBJIHN1Z2dlc3QgeW91
+IGRvLgoKTWFrZSBzdXJlIHlvdSBhcHBseSB0aGUgZml4IHRvbywgb3IgaXQgd2lsbCBjcmFzaCBp
+ZiB5b3UgZGVmaW5lIERFQlVHOgoKaHR0cDovL3NvdXJjZWZvcmdlLm5ldC9tYWlsYXJjaGl2ZS9m
+b3J1bS5waHA/dGhyZWFkX25hbWU9MjAwNzExMjEwMjUwLjQ2ODgzLmRhdmlkLWIlNDBwYWNiZWxs
+Lm5ldCZmb3J1bV9uYW1lPXNwaS1kZXZlbC1nZW5lcmFsCgpJZiBldmVyeXRoaW5nIGVsc2UgZmFp
+bHMsIHRyeSByZWR1Y2luZyB0aGUgU0NLIGZyZXF1ZW5jeS4KCj4gPiBpdCBhcHBlYXJzIHRvIGJl
+IGNvbWluZyBmcm9tIC9kcml2ZXJzL3RvdWNoc2NyZWVuL2Fkczc4NDYuYwo+ID4gCj4gPiBhbHNv
+IGV2ZW4gc3RyYW5nZXIsIGEgY2F0IG9mICB0aGUgVFMgd2hlbiB0aGUgcGVuIGlzIGRvd24gcHJv
+ZHVjZXM6Cj4gPiAjIGNhdCAvZGV2L3RzIHxoZXhkdW1wCj4gPiByZXR1cm5zCj4gPiAwMDAwMDAw
+IGVhOWMgMzRhYSAwZDY0IDAwMDcgMDAwMSAwMTRhIDAwMDEgMDAwMAo+ID4gMDAwMDAxMCBlYTlj
+IDM0YWEgMGRkZSAwMDA3IDAwMDMgMDAxOCAxZDRjIDAwMDAKPiA+IDAwMDAwMjAgZWE5YyAzNGFh
+IDBlMWIgMDAwNyAwMDAwIDAwMDAgMDAwMCAwMDAwCj4gPiAwMDAwMDMwIGVhOWMgMzRhYSA4Yzg0
+IDAwMDggMDAwMSAwMTRhIDAwMDAgMDAwMAo+ID4gMDAwMDA0MCBlYTljIDM0YWEgOGNkZiAwMDA4
+IDAwMDMgMDAxOCAwMDAwIDAwMDAKPiA+IDAwMDAwNTAgZWE5YyAzNGFhIDhkMWMgMDAwOCAwMDAw
+IDAwMDAgMDAwMCAwMDAwCj4gPiAwMDAwMDYwIGVhOWQgMzRhYSBjOWFmIDAwMDQgMDAwMSAwMTRh
+IDAwMDEgMDAwMAo+ID4gMDAwMDA3MCBlYTlkIDM0YWEgY2EyOSAwMDA0IDAwMDMgMDAxOCAxZDRj
+IDAwMDAKPiA+IDAwMDAwODAgZWE5ZCAzNGFhIGNhNjYgMDAwNCAwMDAwIDAwMDAgMDAwMCAwMDAw
+Cj4gPiAKPiA+IHdoZW4gdGhlIHBlbiBpcyBkb3duICwgbm90aWNlIHRoYXQgdGhlIGxlZnQgY29s
+dW1uIGlzIGEgc2VxdWVuY2Ugb2YKPiA+IGluY3JlbWVudGluZyB3b3JkcywgYXQgInNlY29uZCIg
+aW50ZXJ2YWxzICwgdGhlIHZhbHVlIG9mIHdoaWNoIGNoYW5nZQo+ID4gd2hlbiBpIHR1cm4gb2Zm
+IHRoZSAiUlRDIiBjb21waWxsYXRpb24gaW4gdGhlIGtlcm5lbCwgYnV0IHRoaXMgbWF5IGJlCj4g
+PiBkb3duIHRvIHRoZSBpbnRlcnJ1cHRzLgoKVGhlIGxlZnQgY29sdW1uIGlzIHRoZSBvZmZzZXQg
+cHJpbnRlZCBieSBoZXhkdW1wLCBzbyBJIHRha2UgaXQgeW91J3JlCnRhbGtpbmcgYWJvdXQgdGhl
+IG9uZSBhZnRlciB0aGF0LCByaWdodD8KCklzIHRoZSBSVEMgY2hpcCBjb25uZWN0ZWQgdG8gdGhl
+IHNhbWUgU1BJIGJ1cz8gUGVyaGFwcyBpdCdzIG5vdCBwYXlpbmcKYXR0ZW50aW9uIHRvIGl0cyBj
+aGlwIHNlbGVjdCBzaWduYWwsIG9yIHRoZSBjaGlwIHNlbGVjdCBpcyBzZXQgdXAgd2l0aAp0aGUg
+d3JvbmcgcG9sYXJpdHk/CgpIw6V2YXJkCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVt
+YWlsIGlzIHNwb25zb3JlZCBieTogTWljcm9zb2Z0CkRlZnkgYWxsIGNoYWxsZW5nZXMuIE1pY3Jv
+c29mdChSKSBWaXN1YWwgU3R1ZGlvIDIwMDUuCmh0dHA6Ly9jbGsuYXRkbXQuY29tL01SVC9nby92
+c2UwMTIwMDAwMDcwbXJ0L2RpcmVjdC8wMS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

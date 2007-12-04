@@ -1,10 +1,10 @@
-From: "Catalina Goss" <spearheadsbg82-D2XzVSoAi8+KRkC0/ef7YVaTQe2KTcn/@public.gmane.org>
-Subject: Business Admin-Degree
-Date: Mon, 3 Dec 2007 21:19:57 -0600
-Message-ID: <01c835f2$41103c80$a69ae6d8@spearheadsbg82>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1667792435=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?wPvW2suwzvGh+LeixrG0+r+q?= <qiu798798-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org>
+Subject: =?GB2312?B?y7DCyta7ytUwLjUtMiU=?=
+Date: Wed, 5 Dec 2007 01:32:55 +0800
+Message-ID: <E1Izbde-0003Hz-4h@mail.sourceforge.net>
+Reply-To: qiu798798-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1849987612=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,88 +17,44 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+--===============1849987612==
+Content-Type: text/html;charset="GB2312"
 
---===============1667792435==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0007_01C835F2.41103C80"
+<html>
+<head>
 
-This is a multi-part message in MIME format.
-
-------=_NextPart_000_0007_01C835F2.41103C80
-Content-Type: text/plain;
-	charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
-
-F A S T    T R A C K   D E G R E E   P R O G R A M  Obtain the degree you=
- deserve, based on your present knowledge and life experience. A prospero=
-us future, money earning power, and the Admiration of all. Degrees from a=
-n Established, Prestigious, Leading Institution. Your Degree will show ex=
-actly what you really can do. Get the Job, Promotion, Business Opportunit=
-y and Social Advancement you Desire! Eliminates classrooms and traveling.=
- Achieve your Bachelors, Masters, MBA, or PhDin the field of your experti=
-se Professional and affordable Call now - your Graduation is a phone call=
- away. Please call:1-206-888-2083
-------=_NextPart_000_0007_01C835F2.41103C80
-Content-Type: text/html;
-	charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3DWindows-1=
-252">
-<META content=3D"MSHTML 6.00.2900.2670" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY>
-<DIV><FONT face=3DArial size=3D2>F A S T&nbsp;   T R A C K   D E 
-G R E E   P R O G R A M </FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Obtain the degree you deserve, based on =
-your 
-present knowledge and life experience.</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>A prosperous future, money earning power=
-, and the 
-Admiration of all.</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Degrees from an Established, Prestigious=
-, Leading 
-Institution.</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Your Degree will show exactly what you r=
-eally can 
-do.</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Get the Job, Promotion, Business 
-Opportunity</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>and Social Advancement you Desire!</FONT=
-></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Eliminates classrooms and traveling.</FO=
-NT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Achieve your Bachelors, Masters, MBA, or=
- PhD<BR>in 
-the field of your expertise</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Professional and affordable</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Call now - your Graduation is a phone ca=
-ll 
-away.</FONT></DIV>
-<DIV>&nbsp;</DIV>
-<DIV><FONT face=3DArial size=3D2>Please 
-call:<BR>1-206-888-2083</FONT></DIV>
-</BODY></HTML>
-
-------=_NextPart_000_0007_01C835F2.41103C80--
+<TABLE height=400 cellSpacing=0 cellPadding=0 width="100%" border=0>
+<TBODY>
+<TR>
+<TD vAlign=top align=middle>
+<TABLE cellSpacing=0 cellPadding=0 width="99%" border=0>
+<TBODY>
+<TR>
+<TD align=left width=111 background=http://mimg.163.com/stationery/20060921/d_coffee_1.gif height=101>&nbsp;</TD>
+<TD width=172 background=http://mimg.163.com/stationery/20060921/d_coffee_2.gif>
+<P>&nbsp;</P></TD>
+<TD bgColor=#dfdec4>&nbsp;</TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="99%" bgColor=#dfdec4 border=0>
+<TBODY>
+<TR>
+<TD>&nbsp;</TD>
+<TD style="TABLE-LAYOUT: fixed; FONT-SIZE: 12px; COLOR: #633a08; WORD-BREAK: break-all; LINE-HEIGHT: 28px" width="95%" background=http://mimg.163.com/stationery/20060921/d_coffee_line.gif>
+<DIV><STATIONERY><FONT color=#000000 size=4>¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡<STRONG></STRONG></FONT></DIV>
+<DIV><FONT color=#000000 size=4><STRONG>¹ó¹«Ë¾¸ºÔðÈËÄúºÃ!&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp; ±¾¹«Ë¾ÔÚÈ«¹ú¸÷´ó³ÇÊÐ¶¼ÉèÓÐ·Ö¹«Ë¾£¬ÒòÎªÒµÎñ¹ØÏµÏÖÓÐ²¿·Ö¹úË°ºÍµØË°·¢Æ±´ú¿ª,ÆÕÍ¨·¢Æ±ÊÕÈ¡Ë°ÂÊÎª</span><b style=""><span style="FONT-SIZE:22pt;COLOR:red;FONT-FAMILY:ËÎÌå;">0.5-2%</span></b><span style="FONT-SIZE:13.5pt;COLOR:black;FONT-FAMILY:ËÎÌå;">¡£ <span lang="EN-US"> <br></span>&nbsp; &nbsp; </span>´ú¿ª·¶Î§<span lang="EN-US"> <br></span>&nbsp; &nbsp; ¢Ù</span>¹úË°·¢Æ±£ºÉÌÆ·ÏúÊÛ£¨°üº¬ËùÓÐÐÐÒµµÄÉÌÆ·£©¡£<span lang="EN-US"> <br></span>&nbsp; &nbsp; ¢Ú</span>µØË°·¢Æ±£º½¨Öþ°²×°¡¢¹ã¸æ¡¢Éè¼Æ¡¢ÔËÊä¡¢×âÁÞ¡¢×ÉÑ¯¡¢ÅàÑµ¡¢ÂÃÓÎ¡¢×¡ËÞµÈÆäËü·þÎñÐÐÒµ¡£<span lang="EN-US"> <br></span>&nbsp; &nbsp; ¢Û</span>ÔöÖµË°·¢Æ±¡¢½ø³ö¿ÚÔöÖµË°·¢Æ±¼°º£¹Ø½É¿îÊé¡£<span lang="EN-US"> <br></span>&nbsp; &nbsp; ±¾¹«Ë¾Ëù¿ªÆ±¾ß±£Ö¤ÕæÆ
+ ±£¬</span><b style=""><span style="FONT-SIZE:18pt;COLOR:red;FONT-FAMILY:ËÎÌå;">¿ÉÏÈÑéÆ±ºó¸¶¿î£¬</span></b><span lang="EN-US" style="FONT-SIZE:12pt;COLOR:black;FONT-FAMILY:ËÎÌå;">»¶Ó­À´µçÇ¢Ì¸
+ ÏêÏ¸ºÏ×÷£¡<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ë³×£ÉÌì÷ £¡&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Áª Ïµ ÈË£ºÇñ-¾­ Àí<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ÁªÏµÊÖ»ú£º138 2438 0663<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; µç×ÓÓÊÏä£º</FONT><A href="mailto:w
+ ld798-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org"><FONT size=2>wld798-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org</FONT></A><FONT size=2>&nbsp;</FONT></DIV></TD>
+<TD>&nbsp;</TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="99%" border=0>
+<TBODY>
+<TR>
+<TD bgColor=#dfdec4 height=46>&nbsp;</TD>
+<TD width=81 background=http://mimg.163.com/stationery/20060921/d_coffee_3.gif>&nbsp;</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><!-- CoreMail Version 3.1_snapshot Copyright (c) 2002-2007 www.mailtech.cn -->
+<!-- web15208.mail.cnb.yahoo.com compressed/chunked Wed Oct 24 10:21:02 CST 2007 -->
 
 
 
---===============1667792435==
+--===============1849987612==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -109,7 +65,7 @@ SF.Net email is sponsored by: The Future of Linux Business White Paper
 from Novell.  From the desktop to the data center, Linux is going
 mainstream.  Let it simplify your IT future.
 http://altfarm.mediaplex.com/ad/ck/8857-50307-18918-4
---===============1667792435==
+--===============1849987612==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -120,4 +76,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1667792435==--
+--===============1849987612==--

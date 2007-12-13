@@ -1,8 +1,8 @@
 From: "LTI. - Ticmanis, Linards" <LTI-mKfYHFOTJHu+onKQ3Rj6Dg@public.gmane.org>
-Subject: please ignore last mail (was wpa_supplicant:
-	"LEAP (note: requires special support from the driver)")
+Subject: wpa_supplicant: "LEAP (note: requires special
+	support from the driver)"
 Date: Thu, 13 Dec 2007 01:11:30 +0100
-Message-ID: <37ED64EE21A398409D609EAF7B0525A021651F@hw-mail.hannover.huwag.net>
+Message-ID: <37ED64EE21A398409D609EAF7B0525A021651E@hw-mail.hannover.huwag.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -20,7 +20,17 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-I'm sorry, I just noticed I sent this to the wrong mailing list. Please simply ignore the mail.
+Hello to all of you,
+
+is there someone in here who could help me with this note found on the wpa_supplicant website?
+
+    "* LEAP (note: requires special support from the driver)"
+
+What exactly does my driver have to do extra to support LEAP? Is it another ioctl or some such?
+
+The driver I'm working on is basically an older version of the marvell-libertas code found in the most recent Linux kernel (currently, changing my project to that kernel is not yet possible for other resons). LEAP-based WPA works fine, but I can't find a way to get "LEAP with dynamic WEP keys" working.
+
+I'd be extremely grateful for any help or hints.
 
 Regards,
 -- 

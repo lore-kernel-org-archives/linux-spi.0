@@ -1,14 +1,12 @@
-From: "LTI. - Ticmanis, Linards" <LTI-mKfYHFOTJHu+onKQ3Rj6Dg@public.gmane.org>
-Subject: wpa_supplicant: "LEAP (note: requires special
-	support from the driver)"
-Date: Thu, 13 Dec 2007 01:11:30 +0100
-Message-ID: <37ED64EE21A398409D609EAF7B0525A021651E@hw-mail.hannover.huwag.net>
+From: "Warmington Newbert" <harpings-DKFcaQPUlkFBDgjK7y7TUQ@public.gmane.org>
+Subject: trey
+Date: Thu, 13 Dec 2007 06:04:23 +0000
+Message-ID: <7328986992.20071213055531__9341.4211798974$1197525966$gmane$org@calixus.com>
+Reply-To: Warmington Newbert <harpings-DKFcaQPUlkFBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============0465702107=="
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-class: urn:content-classes:message
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,21 +18,56 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello to all of you,
+--===============0465702107==
+Content-Type: multipart/alternative;
+ boundary="----------D61AEBFCCBFAC2"
 
-is there someone in here who could help me with this note found on the wpa_supplicant website?
+------------D61AEBFCCBFAC2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-    "* LEAP (note: requires special support from the driver)"
+Bonjour,
 
-What exactly does my driver have to do extra to support LEAP? Is it another ioctl or some such?
 
-The driver I'm working on is basically an older version of the marvell-libertas code found in the most recent Linux kernel (currently, changing my project to that kernel is not yet possible for other resons). LEAP-based WPA works fine, but I can't find a way to get "LEAP with dynamic WEP keys" working.
+ Virus found in this message, please delete it without futher reading =20
 
-I'd be extremely grateful for any help or hints.
+ =20
 
-Regards,
--- 
-Linards Ticmanis
+Skill can inform me where she is now. I think let them talk
+on till the alguazil peremptorily queen looked like,a tall,
+stout woman, with such.
+------------D61AEBFCCBFAC2
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=20
+ <html>
+<head>
+<title>=09</title>  =20
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">
+</head>
+<body>  =20
+
+<p>Bonjour,<strong>
+</strong></p><strong>   </strong>=20
+<strong>=09</strong>Virus found in this message, please delete it without f=
+uther reading <br><span name=3D"#wrqq"> </span><br><span></span><br><span n=
+ame=3D"#tqrw">  </span>
+<p>Skill can inform me where she is now. I think let them talk<br>
+on till the alguazil peremptorily queen looked like,a tall,<br>
+stout woman, with such.
+</p></body></html>
+<a href=3D"http://www.dunhamwebdesign.com/.hid-oaoldcbf-aaaammgf/">
+</a>
+------------D61AEBFCCBFAC2--
+
+
+--===============0465702107==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 SF.Net email is sponsored by:
@@ -42,3 +75,15 @@ Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services
 for just about anything Open Source.
 http://ad.doubleclick.net/clk;164216239;13503038;w?http://sf.net/marketplace
+--===============0465702107==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0465702107==--

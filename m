@@ -1,16 +1,15 @@
 From: Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH 0/12] neo1973: FIC/OpenMoko Neo1973
-	GTA01 machine support
-Date: Tue, 18 Dec 2007 12:06:16 +0100
-Message-ID: <20071218110616.GG29882@prithivi.gnumonks.org>
+Subject: [PATCH 7/12] neo1973: JBT6K74 LCM control
+	interface driver
+Date: Tue, 18 Dec 2007 12:08:00 +0100
+Message-ID: <20071218110800.GN29882@prithivi.gnumonks.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0860010752=="
-Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, i2c-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org,
-	ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org,
-	arnaud.patard-dQbF7i+pzddAfugRpC6u6w@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,75 +21,688 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This driver adds support for LCM initialization and power management of
+the JBT6K74 LCM as found on the FIC GTA01 hardware
 
---===============0860010752==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UHN/qo2QbUvPLonB"
-Content-Disposition: inline
+Signed-off-by: Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>
 
+---
 
---UHN/qo2QbUvPLonB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi!
-
-This is a patchset to add core machine support for the FIC/OpenMoko
-Neo1973 GTA01 GSM smartphone[1] to the Linux Kernel.  They all apply to
-Linus' linux-2.6 git tree as of today.
-
-The Neo1973 GTA01 is hardware that has been distributed to developers
-for about one year, and is on public sale since July 2007.
-
-There is a second reviison called GTA02 which is also already circulated
-among developers since September 2007.  It is expected to be publicly
-available soon.
-
-There is some code that is shared by GTA01 and GTA02, and 'neo1973' is
-used consistently whenever referring to shared code (platform devices,
-file names as well as CONFIG_ #defines).  Whenever GTA01 is used, this
-particular piece of code is specifically to the first hardware
-generation.
-
-I have some more patches piled up, including GTA02 support.  But I'd
-much rather see this patchset merged first.
-
-All your comments and feedback are welcome.  Please keep me in Cc
-whenever responding.
-
-[1] http://www.openmoko.org/
-
-Happy hacking,
---=20
+Index: linux-2.6/drivers/spi/Kconfig
+===================================================================
+--- linux-2.6.orig/drivers/spi/Kconfig
++++ linux-2.6/drivers/spi/Kconfig
+@@ -237,5 +237,11 @@
+ 
+ # (slave support would go here)
+ 
++config SPI_SLAVE_JBT6K74
++	tristate "tpo JP6K74 LCM ASIC control interface"
++	depends on SPI_MASTER && SYSFS
++	help
++	  Driver for the tpo JP6K74-AS LCM SPI control interface.
++
+ endmenu # "SPI support"
+ 
+Index: linux-2.6/drivers/spi/Makefile
+===================================================================
+--- linux-2.6.orig/drivers/spi/Makefile
++++ linux-2.6/drivers/spi/Makefile
+@@ -39,4 +39,5 @@
+ # 	... add above this line ...
+ 
+ # SPI slave drivers (protocol for that link)
++obj-$(CONFIG_SPI_SLAVE_JBT6K74)		+= jbt6k74.o
+ # 	... add above this line ...
+Index: linux-2.6/drivers/spi/jbt6k74.c
+===================================================================
+--- /dev/null
++++ linux-2.6/drivers/spi/jbt6k74.c
+@@ -0,0 +1,628 @@
++/* Linux kernel driver for the tpo JBT6K74-AS LCM ASIC
++ *
++ * Copyright (C) 2006-2007 by OpenMoko, Inc.
++ * Author: Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>,
++ * 	   Stefan Schmidt <stefan-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>
++ * All rights reserved.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++#include <linux/kernel.h>
++#include <linux/types.h>
++#include <linux/module.h>
++#include <linux/device.h>
++#include <linux/platform_device.h>
++#include <linux/delay.h>
++
++#include <linux/spi/spi.h>
++
++enum jbt_register {
++	JBT_REG_SLEEP_IN		= 0x10,
++	JBT_REG_SLEEP_OUT		= 0x11,
++
++	JBT_REG_DISPLAY_OFF		= 0x28,
++	JBT_REG_DISPLAY_ON		= 0x29,
++
++	JBT_REG_RGB_FORMAT		= 0x3a,
++	JBT_REG_QUAD_RATE		= 0x3b,
++
++	JBT_REG_POWER_ON_OFF		= 0xb0,
++	JBT_REG_BOOSTER_OP		= 0xb1,
++	JBT_REG_BOOSTER_MODE		= 0xb2,
++	JBT_REG_BOOSTER_FREQ		= 0xb3,
++	JBT_REG_OPAMP_SYSCLK		= 0xb4,
++	JBT_REG_VSC_VOLTAGE		= 0xb5,
++	JBT_REG_VCOM_VOLTAGE		= 0xb6,
++	JBT_REG_EXT_DISPL		= 0xb7,
++	JBT_REG_OUTPUT_CONTROL		= 0xb8,
++	JBT_REG_DCCLK_DCEV		= 0xb9,
++	JBT_REG_DISPLAY_MODE1		= 0xba,
++	JBT_REG_DISPLAY_MODE2		= 0xbb,
++	JBT_REG_DISPLAY_MODE		= 0xbc,
++	JBT_REG_ASW_SLEW		= 0xbd,
++	JBT_REG_DUMMY_DISPLAY		= 0xbe,
++	JBT_REG_DRIVE_SYSTEM		= 0xbf,
++
++	JBT_REG_SLEEP_OUT_FR_A		= 0xc0,
++	JBT_REG_SLEEP_OUT_FR_B		= 0xc1,
++	JBT_REG_SLEEP_OUT_FR_C		= 0xc2,
++	JBT_REG_SLEEP_IN_LCCNT_D	= 0xc3,
++	JBT_REG_SLEEP_IN_LCCNT_E	= 0xc4,
++	JBT_REG_SLEEP_IN_LCCNT_F	= 0xc5,
++	JBT_REG_SLEEP_IN_LCCNT_G	= 0xc6,
++
++	JBT_REG_GAMMA1_FINE_1		= 0xc7,
++	JBT_REG_GAMMA1_FINE_2		= 0xc8,
++	JBT_REG_GAMMA1_INCLINATION	= 0xc9,
++	JBT_REG_GAMMA1_BLUE_OFFSET	= 0xca,
++
++	/* VGA */
++	JBT_REG_BLANK_CONTROL		= 0xcf,
++	JBT_REG_BLANK_TH_TV		= 0xd0,
++	JBT_REG_CKV_ON_OFF		= 0xd1,
++	JBT_REG_CKV_1_2			= 0xd2,
++	JBT_REG_OEV_TIMING		= 0xd3,
++	JBT_REG_ASW_TIMING_1		= 0xd4,
++	JBT_REG_ASW_TIMING_2		= 0xd5,
++
++	/* QVGA */
++	JBT_REG_BLANK_CONTROL_QVGA	= 0xd6,
++	JBT_REG_BLANK_TH_TV_QVGA	= 0xd7,
++	JBT_REG_CKV_ON_OFF_QVGA		= 0xd8,
++	JBT_REG_CKV_1_2_QVGA		= 0xd9,
++	JBT_REG_OEV_TIMING_QVGA		= 0xde,
++	JBT_REG_ASW_TIMING_1_QVGA	= 0xdf,
++	JBT_REG_ASW_TIMING_2_QVGA	= 0xe0,
++
++
++	JBT_REG_HCLOCK_VGA		= 0xec,
++	JBT_REG_HCLOCK_QVGA		= 0xed,
++
++};
++
++enum jbt_state {
++	JBT_STATE_DEEP_STANDBY,
++	JBT_STATE_SLEEP,
++	JBT_STATE_NORMAL,
++	JBT_STATE_QVGA_NORMAL,
++};
++
++static const char *jbt_state_names[] = {
++	[JBT_STATE_DEEP_STANDBY]	= "deep-standby",
++	[JBT_STATE_SLEEP]		= "sleep",
++	[JBT_STATE_NORMAL]		= "normal",
++	[JBT_STATE_QVGA_NORMAL]		= "qvga-normal",
++};
++
++struct jbt_info {
++	enum jbt_state state, last_state;
++	u_int16_t tx_buf[8];
++	struct spi_device *spi_dev;
++	u_int16_t reg_cache[0xEE];
++};
++
++#define JBT_COMMAND	0x000
++#define JBT_DATA	0x100
++
++static int jbt_reg_write_nodata(struct jbt_info *jbt, u_int8_t reg)
++{
++	int rc;
++
++	jbt->tx_buf[0] = JBT_COMMAND | reg;
++
++	rc = spi_write(jbt->spi_dev, (u_int8_t *)jbt->tx_buf,
++		       1*sizeof(u_int16_t));
++	if (rc == 0)
++		jbt->reg_cache[reg] = 0;
++
++	return rc;
++}
++
++
++static int jbt_reg_write(struct jbt_info *jbt, u_int8_t reg, u_int8_t data)
++{
++	int rc;
++
++	jbt->tx_buf[0] = JBT_COMMAND | reg;
++	jbt->tx_buf[1] = JBT_DATA | data;
++
++	rc = spi_write(jbt->spi_dev, (u_int8_t *)jbt->tx_buf,
++		       2*sizeof(u_int16_t));
++	if (rc == 0)
++		jbt->reg_cache[reg] = data;
++
++	return rc;
++}
++
++static int jbt_reg_write16(struct jbt_info *jbt, u_int8_t reg, u_int16_t data)
++{
++	int rc;
++
++	jbt->tx_buf[0] = JBT_COMMAND | reg;
++	jbt->tx_buf[1] = JBT_DATA | (data >> 8);
++	jbt->tx_buf[2] = JBT_DATA | (data & 0xff);
++
++	rc = spi_write(jbt->spi_dev, (u_int8_t *)jbt->tx_buf,
++		       3*sizeof(u_int16_t));
++	if (rc == 0)
++		jbt->reg_cache[reg] = data;
++
++	return rc;
++}
++
++static int jbt_init_regs(struct jbt_info *jbt, int qvga)
++{
++	int rc;
++
++	dev_dbg(&jbt->spi_dev->dev, "entering %cVGA mode\n", qvga ? 'Q' : ' ');
++
++	rc = jbt_reg_write(jbt, JBT_REG_DISPLAY_MODE1, 0x01);
++	rc |= jbt_reg_write(jbt, JBT_REG_DISPLAY_MODE2, 0x00);
++	rc |= jbt_reg_write(jbt, JBT_REG_RGB_FORMAT, 0x60);
++	rc |= jbt_reg_write(jbt, JBT_REG_DRIVE_SYSTEM, 0x10);
++	rc |= jbt_reg_write(jbt, JBT_REG_BOOSTER_OP, 0x56);
++	rc |= jbt_reg_write(jbt, JBT_REG_BOOSTER_MODE, 0x33);
++	rc |= jbt_reg_write(jbt, JBT_REG_BOOSTER_FREQ, 0x11);
++	rc |= jbt_reg_write(jbt, JBT_REG_OPAMP_SYSCLK, 0x02);
++	rc |= jbt_reg_write(jbt, JBT_REG_VSC_VOLTAGE, 0x2b);
++	rc |= jbt_reg_write(jbt, JBT_REG_VCOM_VOLTAGE, 0x40);
++	rc |= jbt_reg_write(jbt, JBT_REG_EXT_DISPL, 0x03);
++	rc |= jbt_reg_write(jbt, JBT_REG_DCCLK_DCEV, 0x04);
++	rc |= jbt_reg_write(jbt, JBT_REG_ASW_SLEW, 0x02);
++	rc |= jbt_reg_write(jbt, JBT_REG_DUMMY_DISPLAY, 0x00);
++
++	rc |= jbt_reg_write(jbt, JBT_REG_SLEEP_OUT_FR_A, 0x11);
++	rc |= jbt_reg_write(jbt, JBT_REG_SLEEP_OUT_FR_B, 0x11);
++	rc |= jbt_reg_write(jbt, JBT_REG_SLEEP_OUT_FR_C, 0x11);
++	rc |= jbt_reg_write16(jbt, JBT_REG_SLEEP_IN_LCCNT_D, 0x2040);
++	rc |= jbt_reg_write16(jbt, JBT_REG_SLEEP_IN_LCCNT_E, 0x60c0);
++	rc |= jbt_reg_write16(jbt, JBT_REG_SLEEP_IN_LCCNT_F, 0x1020);
++	rc |= jbt_reg_write16(jbt, JBT_REG_SLEEP_IN_LCCNT_G, 0x60c0);
++
++	rc |= jbt_reg_write16(jbt, JBT_REG_GAMMA1_FINE_1, 0x5533);
++	rc |= jbt_reg_write(jbt, JBT_REG_GAMMA1_FINE_2, 0x00);
++	rc |= jbt_reg_write(jbt, JBT_REG_GAMMA1_INCLINATION, 0x00);
++	rc |= jbt_reg_write(jbt, JBT_REG_GAMMA1_BLUE_OFFSET, 0x00);
++
++	if (!qvga) {
++		rc |= jbt_reg_write16(jbt, JBT_REG_HCLOCK_VGA, 0x1f0);
++		rc |= jbt_reg_write(jbt, JBT_REG_BLANK_CONTROL, 0x02);
++		rc |= jbt_reg_write16(jbt, JBT_REG_BLANK_TH_TV, 0x0804);
++
++		rc |= jbt_reg_write(jbt, JBT_REG_CKV_ON_OFF, 0x01);
++		rc |= jbt_reg_write16(jbt, JBT_REG_CKV_1_2, 0x0000);
++
++		rc |= jbt_reg_write16(jbt, JBT_REG_OEV_TIMING, 0x0d0e);
++		rc |= jbt_reg_write16(jbt, JBT_REG_ASW_TIMING_1, 0x11a4);
++		rc |= jbt_reg_write(jbt, JBT_REG_ASW_TIMING_2, 0x0e);
++	} else {
++		rc |= jbt_reg_write16(jbt, JBT_REG_HCLOCK_QVGA, 0x00ff);
++		rc |= jbt_reg_write(jbt, JBT_REG_BLANK_CONTROL_QVGA, 0x02);
++		rc |= jbt_reg_write16(jbt, JBT_REG_BLANK_TH_TV_QVGA, 0x0804);
++
++		rc |= jbt_reg_write(jbt, JBT_REG_CKV_ON_OFF_QVGA, 0x01);
++		rc |= jbt_reg_write16(jbt, JBT_REG_CKV_1_2_QVGA, 0x0008);
++
++		rc |= jbt_reg_write16(jbt, JBT_REG_OEV_TIMING_QVGA, 0x050a);
++		rc |= jbt_reg_write16(jbt, JBT_REG_ASW_TIMING_1_QVGA, 0x0a19);
++		rc |= jbt_reg_write(jbt, JBT_REG_ASW_TIMING_2_QVGA, 0x0a);
++	}
++
++	return rc;
++}
++
++static int standby_to_sleep(struct jbt_info *jbt)
++{
++	int rc;
++
++	/* three times command zero */
++	rc = jbt_reg_write_nodata(jbt, 0x00);
++	mdelay(1);
++	rc = jbt_reg_write_nodata(jbt, 0x00);
++	mdelay(1);
++	rc = jbt_reg_write_nodata(jbt, 0x00);
++	mdelay(1);
++
++	/* deep standby out */
++	rc |= jbt_reg_write(jbt, JBT_REG_POWER_ON_OFF, 0x17);
++
++	return rc;
++}
++
++static int sleep_to_normal(struct jbt_info *jbt)
++{
++	int rc;
++
++	/* RGB I/F on, RAM wirte off, QVGA through, SIGCON enable */
++	rc = jbt_reg_write(jbt, JBT_REG_DISPLAY_MODE, 0x80);
++
++	/* Quad mode off */
++	rc |= jbt_reg_write(jbt, JBT_REG_QUAD_RATE, 0x00);
++
++	/* AVDD on, XVDD on */
++	rc |= jbt_reg_write(jbt, JBT_REG_POWER_ON_OFF, 0x16);
++
++	/* Output control */
++	rc |= jbt_reg_write16(jbt, JBT_REG_OUTPUT_CONTROL, 0xfff9);
++
++	/* Sleep mode off */
++	rc |= jbt_reg_write_nodata(jbt, JBT_REG_SLEEP_OUT);
++
++	/* initialize register set */
++	rc |= jbt_init_regs(jbt, 0);
++	return rc;
++}
++
++static int sleep_to_qvga_normal(struct jbt_info *jbt)
++{
++	int rc;
++
++	/* RGB I/F on, RAM wirte off, QVGA through, SIGCON enable */
++	rc = jbt_reg_write(jbt, JBT_REG_DISPLAY_MODE, 0x81);
++
++	/* Quad mode on */
++	rc |= jbt_reg_write(jbt, JBT_REG_QUAD_RATE, 0x22);
++
++	/* AVDD on, XVDD on */
++	rc |= jbt_reg_write(jbt, JBT_REG_POWER_ON_OFF, 0x16);
++
++	/* Output control */
++	rc |= jbt_reg_write16(jbt, JBT_REG_OUTPUT_CONTROL, 0xfff9);
++
++	/* Sleep mode off */
++	rc |= jbt_reg_write_nodata(jbt, JBT_REG_SLEEP_OUT);
++
++	/* initialize register set for qvga*/
++	rc |= jbt_init_regs(jbt, 1);
++	return rc;
++}
++
++static int normal_to_sleep(struct jbt_info *jbt)
++{
++	int rc;
++
++	rc = jbt_reg_write_nodata(jbt, JBT_REG_DISPLAY_OFF);
++	rc |= jbt_reg_write16(jbt, JBT_REG_OUTPUT_CONTROL, 0x8002);
++	rc |= jbt_reg_write_nodata(jbt, JBT_REG_SLEEP_IN);
++
++	return rc;
++}
++
++static int sleep_to_standby(struct jbt_info *jbt)
++{
++	return jbt_reg_write(jbt, JBT_REG_POWER_ON_OFF, 0x00);
++}
++
++/* frontend function */
++int jbt6k74_enter_state(struct jbt_info *jbt, enum jbt_state new_state)
++{
++	int rc = -EINVAL;
++
++	dev_dbg(&jbt->spi_dev->dev, "entering (old_state=%u, "
++		"new_state=%u)\n", jbt->state, new_state);
++
++	switch (jbt->state) {
++	case JBT_STATE_DEEP_STANDBY:
++		switch (new_state) {
++		case JBT_STATE_DEEP_STANDBY:
++			rc = 0;
++			break;
++		case JBT_STATE_SLEEP:
++			rc = standby_to_sleep(jbt);
++			break;
++		case JBT_STATE_NORMAL:
++			/* first transition into sleep */
++			rc = standby_to_sleep(jbt);
++			/* then transition into normal */
++			rc |= sleep_to_normal(jbt);
++			break;
++		case JBT_STATE_QVGA_NORMAL:
++			/* first transition into sleep */
++			rc = standby_to_sleep(jbt);
++			/* then transition into normal */
++			rc |= sleep_to_qvga_normal(jbt);
++			break;
++		}
++		break;
++	case JBT_STATE_SLEEP:
++		switch (new_state) {
++		case JBT_STATE_SLEEP:
++			rc = 0;
++			break;
++		case JBT_STATE_DEEP_STANDBY:
++			rc = sleep_to_standby(jbt);
++			break;
++		case JBT_STATE_NORMAL:
++			rc = sleep_to_normal(jbt);
++			break;
++		case JBT_STATE_QVGA_NORMAL:
++			rc = sleep_to_qvga_normal(jbt);
++			break;
++		}
++		break;
++	case JBT_STATE_NORMAL:
++		switch (new_state) {
++		case JBT_STATE_NORMAL:
++			rc = 0;
++			break;
++		case JBT_STATE_DEEP_STANDBY:
++			/* first transition into sleep */
++			rc = normal_to_sleep(jbt);
++			/* then transition into deep standby */
++			rc |= sleep_to_standby(jbt);
++			break;
++		case JBT_STATE_SLEEP:
++			rc = normal_to_sleep(jbt);
++			break;
++		case JBT_STATE_QVGA_NORMAL:
++			/* first transition into sleep */
++			rc = normal_to_sleep(jbt);
++			/* second transition into deep standby */
++			rc |= sleep_to_standby(jbt);
++			/* third transition into sleep */
++			rc |= standby_to_sleep(jbt);
++			/* fourth transition into normal */
++			rc |= sleep_to_qvga_normal(jbt);
++			break;
++		}
++		break;
++	case JBT_STATE_QVGA_NORMAL:
++		switch (new_state) {
++		case JBT_STATE_QVGA_NORMAL:
++			rc = 0;
++			break;
++		case JBT_STATE_DEEP_STANDBY:
++			/* first transition into sleep */
++			rc = normal_to_sleep(jbt);
++			/* then transition into deep standby */
++			rc |= sleep_to_standby(jbt);
++			break;
++		case JBT_STATE_SLEEP:
++			rc = normal_to_sleep(jbt);
++			break;
++		case JBT_STATE_NORMAL:
++			/* first transition into sleep */
++			rc = normal_to_sleep(jbt);
++			/* second transition into deep standby */
++			rc |= sleep_to_standby(jbt);
++			/* third transition into sleep */
++			rc |= standby_to_sleep(jbt);
++			/* fourth transition into normal */
++			rc |= sleep_to_normal(jbt);
++			break;
++		}
++		break;
++	}
++	if (rc == 0)
++		jbt->state = new_state;
++
++	return rc;
++}
++EXPORT_SYMBOL_GPL(jbt6k74_enter_state);
++
++int jbt6k74_display_onoff(struct jbt_info *jbt, int on)
++{
++	if (on)
++		return jbt_reg_write_nodata(jbt, JBT_REG_DISPLAY_ON);
++	else
++		return jbt_reg_write_nodata(jbt, JBT_REG_DISPLAY_OFF);
++}
++EXPORT_SYMBOL_GPL(jbt6k74_display_onoff);
++
++static ssize_t state_read(struct device *dev, struct device_attribute *attr,
++			  char *buf)
++{
++	struct jbt_info *jbt = dev_get_drvdata(dev);
++
++	if (jbt->state >= ARRAY_SIZE(jbt_state_names))
++		return -EIO;
++
++	return sprintf(buf, "%s\n", jbt_state_names[jbt->state]);
++}
++
++static ssize_t state_write(struct device *dev, struct device_attribute *attr,
++			   const char *buf, size_t count)
++{
++	struct jbt_info *jbt = dev_get_drvdata(dev);
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(jbt_state_names); i++) {
++		if (!strncmp(buf, jbt_state_names[i],
++			     strlen(jbt_state_names[i]))) {
++			jbt6k74_enter_state(jbt, i);
++			switch (i) {
++			case JBT_STATE_NORMAL:
++			case JBT_STATE_QVGA_NORMAL:
++				/* Enable display again after deep-standby */
++				jbt6k74_display_onoff(jbt, 1);
++				break;
++			default:
++				break;
++			}
++			return count;
++		}
++	}
++
++	return -EINVAL;
++}
++
++static DEVICE_ATTR(state, 0644, state_read, state_write);
++
++static int reg_by_string(const char *name)
++{
++	if (!strcmp(name, "gamma_fine1"))
++		return JBT_REG_GAMMA1_FINE_1;
++	else if (!strcmp(name, "gamma_fine2"))
++		return JBT_REG_GAMMA1_FINE_2;
++	else if (!strcmp(name, "gamma_inclination"))
++		return JBT_REG_GAMMA1_INCLINATION;
++	else
++		return JBT_REG_GAMMA1_BLUE_OFFSET;
++}
++
++static ssize_t gamma_read(struct device *dev, struct device_attribute *attr,
++			  char *buf)
++{
++	return strlcpy(buf, "N/A\n", PAGE_SIZE);
++}
++
++static ssize_t gamma_write(struct device *dev, struct device_attribute *attr,
++			   const char *buf, size_t count)
++{
++	struct jbt_info *jbt = dev_get_drvdata(dev);
++	int reg = reg_by_string(attr->attr.name);
++	unsigned long val = simple_strtoul(buf, NULL, 10);
++
++	jbt_reg_write(jbt, reg, val & 0xff);
++
++	return count;
++}
++
++static DEVICE_ATTR(gamma_fine1, 0644, gamma_read, gamma_write);
++static DEVICE_ATTR(gamma_fine2, 0644, gamma_read, gamma_write);
++static DEVICE_ATTR(gamma_inclination, 0644, gamma_read, gamma_write);
++static DEVICE_ATTR(gamma_blue_offset, 0644, gamma_read, gamma_write);
++
++static struct attribute *jbt_sysfs_entries[] = {
++	&dev_attr_state.attr,
++	&dev_attr_gamma_fine1.attr,
++	&dev_attr_gamma_fine2.attr,
++	&dev_attr_gamma_inclination.attr,
++	&dev_attr_gamma_blue_offset.attr,
++	NULL,
++};
++
++static struct attribute_group jbt_attr_group = {
++	.name	= NULL,
++	.attrs	= jbt_sysfs_entries,
++};
++
++/* linux device model infrastructure */
++
++static int __devinit jbt_probe(struct spi_device *spi)
++{
++	int rc;
++	struct jbt_info *jbt;
++
++	jbt = kzalloc(sizeof(*jbt), GFP_KERNEL);
++	if (!jbt)
++		return -ENOMEM;
++
++	jbt->spi_dev = spi;
++	jbt->state = JBT_STATE_DEEP_STANDBY;
++
++	/* since we don't have MISO connected, we can't do detection */
++
++	dev_set_drvdata(&spi->dev, jbt);
++
++	spi->mode = SPI_CPOL | SPI_CPHA;
++	spi->bits_per_word = 9;
++
++	rc = spi_setup(spi);
++	if (rc < 0) {
++		dev_err(&spi->dev,
++			"error during spi_setup of jbt6k74 driver\n");
++		dev_set_drvdata(&spi->dev, NULL);
++		kfree(jbt);
++		return rc;
++	}
++
++	rc = jbt6k74_enter_state(jbt, JBT_STATE_NORMAL);
++	if (rc < 0)
++		dev_warn(&spi->dev, "cannot enter NORMAL state\n");
++
++	jbt6k74_display_onoff(jbt, 1);
++
++	rc = sysfs_create_group(&spi->dev.kobj, &jbt_attr_group);
++	if (rc) {
++		dev_set_drvdata(&spi->dev, NULL);
++		kfree(jbt);
++		return rc;
++	}
++
++	return 0;
++}
++
++static int __devexit jbt_remove(struct spi_device *spi)
++{
++	struct jbt_info *jbt = dev_get_drvdata(&spi->dev);
++
++	sysfs_remove_group(&spi->dev.kobj, &jbt_attr_group);
++	kfree(jbt);
++
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int jbt_suspend(struct spi_device *spi, pm_message_t state)
++{
++	struct jbt_info *jbt = dev_get_drvdata(&spi->dev);
++
++	switch (state.event) {
++	case PM_EVENT_SUSPEND:
++	case 3:
++		/* Save mode for resume */
++		jbt->last_state = jbt->state;
++		jbt6k74_enter_state(jbt, JBT_STATE_DEEP_STANDBY);
++		return 0;
++	default:
++		return -1;
++	}
++}
++
++static int jbt_resume(struct spi_device *spi)
++{
++	struct jbt_info *jbt = dev_get_drvdata(&spi->dev);
++
++	jbt6k74_enter_state(jbt, jbt->last_state);
++	jbt6k74_display_onoff(jbt, 1);
++
++	return 0;
++}
++#else
++#define jbt_suspend	NULL
++#define jbt_resume	NULL
++#endif
++
++static struct spi_driver jbt6k74_driver = {
++	.driver = {
++		.name	= "jbt6k74",
++		.owner	= THIS_MODULE,
++	},
++
++	.probe	 = jbt_probe,
++	.remove	 = __devexit_p(jbt_remove),
++	.suspend = jbt_suspend,
++	.resume	 = jbt_resume,
++};
++
++static int __init jbt_init(void)
++{
++	return spi_register_driver(&jbt6k74_driver);
++}
++
++static void __exit jbt_exit(void)
++{
++	spi_unregister_driver(&jbt6k74_driver);
++}
++
++MODULE_DESCRIPTION("SPI driver for tpo JBT6K74-AS LCM control interface");
++MODULE_AUTHOR("Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>");
++MODULE_LICENSE("GPL");
++
++module_init(jbt_init);
++module_exit(jbt_exit);
+Index: linux-2.6/arch/arm/mach-s3c2410/Kconfig
+===================================================================
+--- linux-2.6.orig/arch/arm/mach-s3c2410/Kconfig
++++ linux-2.6/arch/arm/mach-s3c2410/Kconfig
+@@ -107,6 +107,7 @@
+ config MACH_QT2410
+ 	bool "QT2410"
+ 	select CPU_S3C2410
++	select SPI_SLAVE_JBT6K74
+ 	help
+ 	   Say Y here if you are using the Armzone QT2410
+ 
+-- 
 - Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>          	        http://openmoko.org/
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
+============================================================================
 Software for the world's first truly open Free Software mobile phone
-
---UHN/qo2QbUvPLonB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFHZ6moXaXGVTD0i/8RApiIAKCM9+gEmYg2yQs4nMQoPG1F6tLx3gCfRbXV
-spHtP0kIz0vJpwtitMdmfMs=
-=oD/y
------END PGP SIGNATURE-----
-
---UHN/qo2QbUvPLonB--
-
-
---===============0860010752==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 -------------------------------------------------------------------------
 SF.Net email is sponsored by:
@@ -98,15 +710,3 @@ Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services
 for just about anything Open Source.
 http://ad.doubleclick.net/clk;164216239;13503038;w?http://sf.net/marketplace
---===============0860010752==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0860010752==--

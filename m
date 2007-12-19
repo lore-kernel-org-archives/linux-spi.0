@@ -1,20 +1,17 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 7/12] neo1973: JBT6K74 LCM control
-	interface driver
-Date: Wed, 19 Dec 2007 12:04:04 -0800
-Message-ID: <200712191204.04353.david-b@pacbell.net>
-References: <20071218110800.GN29882@prithivi.gnumonks.org>
-	<20071218235954.5351225EA51@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-	<20071219095721.GU29882@prithivi.gnumonks.org>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: [PATCH 3/4] [POWERPC][SPI] use brg-frequency
+	for SPI in QE
+Date: Wed, 19 Dec 2007 23:38:05 +0300
+Message-ID: <20071219203805.GC20861@localhost.localdomain>
+References: <20071219203447.GA18285@localhost.localdomain>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20071219095721.GU29882-jI4mzJ+yNOMOwssVsN95jSCwEArCW2h5@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <20071219203447.GA18285-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,87 +23,66 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 19 December 2007, Harald Welte wrote:
-> > > +config SPI_SLAVE_JBT6K74
-> > > +	tristate "tpo JP6K74 LCM ASIC control interface"
-> > > +	depends on SPI_MASTER && SYSFS
-> > > +	help
-> > > +	  Driver for the tpo JP6K74-AS LCM SPI control interface.
-> > 
-> > It's not a slave-side driver though ... it's a master-side driver,
-> > depending on SPI_MASTER, and making bus master calls like spi_write().
-> 
-> I'm sorry, I must have misread/misinterpreted the terminology then. 
+In case of QE we can use brg-frequency (which is qeclk/2).
+Thus no need to divide sysclk in the spi_mpc83xx.
 
-See Documentation/spi/spi-summary ...
+Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+---
+ arch/powerpc/sysdev/fsl_soc.c |   18 +++++++++++-------
+ drivers/spi/spi_mpc83xx.c     |    6 +-----
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-
-> I thought master is the master controller driver, and 'slave driver' is
-> the driver for an SPI slave attached to that master.
-
-There are potentially four drivers involved.  A "controller" driver
-touches the hardware directly, and there can be both master and
-slave versions (based on which side of the link is involved).  The
-layer on top of each (master or slave sides) is a different flavor
-of driver, insulated from the hardware ... I call those "protocol"
-drivers, for lack of better terms.  That way terminology can at least
-be consistent:  {Master,Slave} x {Controller,Protocol} Driver gives
-four driver types.  The JBT6K74 driver is a "master protocol driver".
-
-There are protocol stacks that adopt confusing terminology, like
-having the "slave" driver not actually run inside the slave.  (So
-what would you call firmware drivers, inside the slaves?)  This
-doesn't happen to be one of those stacks.  ;)
-
+diff --git a/arch/powerpc/sysdev/fsl_soc.c b/arch/powerpc/sysdev/fsl_soc.c
+index 044dd7f..3cf84d0 100644
+--- a/arch/powerpc/sysdev/fsl_soc.c
++++ b/arch/powerpc/sysdev/fsl_soc.c
+@@ -1227,15 +1227,19 @@ int __init fsl_spi_init(struct spi_board_info *board_infos,
  
-> However, you seem to intend the names as 'slave driver' == driver for an
-> SPI unit running in slave mode on the Linux-controlled CPU/SoC itself.
-> Correct?
-
-Yes; though there are two types of slave drivers:  controller (touching
-hardware) and protocol (just sending/receiving messages).  If the slave
-code is on a resource-scarce system it might use an integrated driver to
-cut corners, at the cost of reusability.
-
+ 	/* SPI controller is either clocked from QE or SoC clock */
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,qe");
+-	if (!np)
++	if (np) {
++		sysclk = of_get_property(np, "brg-frequency", NULL);
++		if (!sysclk)
++			return -ENODEV;
++	} else {
+ 		np = of_find_node_by_type(NULL, "soc");
++		if (!np)
++			return -ENODEV;
  
-> > I think the Kconfig could stand to be more informative too.  "LCM" is
-> > as cryptic as "tpo", 
-> 
-> LCM == LCD Module.  I will expand that abbreviation in my patchset.
-> 
-> TPO == Name of the manufacturer. I think one of the biggest display
-> manufacturers in the hardware world (http://www.tpo.biz/) producing
-> about 17 Million LCD displays per month.  I can't rename or explain the
-> manufacturer.  What is your suggestion for this?
-
-"Driver for the JBT6K74 LCD Control Module, manufactured by TPO..."
-
+-	if (!np)
+-		return -ENODEV;
+-
+-	sysclk = of_get_property(np, "bus-frequency", NULL);
+-	if (!sysclk)
+-		return -ENODEV;
++		sysclk = of_get_property(np, "bus-frequency", NULL);
++		if (!sysclk)
++			return -ENODEV;
++	}
  
-> > there's no clue about what is controlled (SPI?),
-> 
-> I thought "LCM SPI control interface" is quite explicit. 
+ 	for (np = NULL, i = 1;
+ 	     (np = of_find_compatible_node(np, "spi", "fsl_spi")) != NULL;
+diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+index 4580b9c..04f7cd9 100644
+--- a/drivers/spi/spi_mpc83xx.c
++++ b/drivers/spi/spi_mpc83xx.c
+@@ -436,11 +436,7 @@ static int __init mpc83xx_spi_probe(struct platform_device *dev)
+ 	mpc83xx_spi->qe_mode = pdata->qe_mode;
+ 	mpc83xx_spi->get_rx = mpc83xx_spi_rx_buf_u8;
+ 	mpc83xx_spi->get_tx = mpc83xx_spi_tx_buf_u8;
+-
+-	if (mpc83xx_spi->qe_mode)
+-		mpc83xx_spi->spibrg = pdata->sysclk / 2;
+-	else
+-		mpc83xx_spi->spibrg = pdata->sysclk;
++	mpc83xx_spi->spibrg = pdata->sysclk;
+ 
+ 	mpc83xx_spi->rx_shift = 0;
+ 	mpc83xx_spi->tx_shift = 0;
+-- 
+1.5.2.2
 
-If you already know what's going on, sure.  People reading Kconfig
-helptext are less likely than usual to know that.
-
-
-> Many modern 
-> LCM's (especially the small-size models for embedded devices) have a SPI
-> control interface in addition to the actual RGB data interface.  The
-> control interface is used for power management, gamma calibration as
-> well as video timing configuration.
-
-Absolutely.  Same thing happens with audio codecs:  one interface
-streams data (I2S or whatever), and there's a separate control
-interface using an entirely different bus(*).  One sentence saying
-that's what is going on here would clarify things a lot.
-
-- Dave
-
-(*) And to confuse things even more ... some platforms use the same
-    type serial interface controller, configured very differently, to
-    talk to the two different interfaces.  One SSP implements I2S,
-    another SSP implements SPI.
 
 -------------------------------------------------------------------------
 SF.Net email is sponsored by:

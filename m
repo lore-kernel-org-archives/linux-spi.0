@@ -1,17 +1,20 @@
-From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH v2 3/4] [POWERPC][SPI] use brg-frequency
-	for SPI in QE
-Date: Thu, 20 Dec 2007 23:33:22 +0300
-Message-ID: <20071220203322.GC19553@localhost.localdomain>
-References: <20071220202714.GA18471@localhost.localdomain>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH 7/12] neo1973: JBT6K74 LCM control
+	interface driver
+Date: Thu, 20 Dec 2007 14:31:58 -0800
+Message-ID: <200712201431.58932.david-b@pacbell.net>
+References: <20071218110800.GN29882@prithivi.gnumonks.org>
+	<200712191316.45435.david-b@pacbell.net>
+	<20071220150659.GP29882@prithivi.gnumonks.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
+To: Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20071220150659.GP29882-jI4mzJ+yNOMOwssVsN95jSCwEArCW2h5@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20071220202714.GA18471-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,121 +26,118 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-In case of QE we can use brg-frequency (which is qeclk/2).
-Thus no need to divide sysclk in the spi_mpc83xx.
 
-This patch also adds code to use get_brgfreq() on QE chips.
+> > Since this is a LCD controller, it should be living in the
+> > drivers/video directory somewhere.   
+> 
+> Ok, no problem.
+> 
+> > Maybe in "backlight" and depending on LCD_CLASS_DEVICE like the
+> > LTV350QV code.  (Which is not dissimilar to this LCM driver, although
+> > that Samsung panel is much simpler.)
+> 
+> Well, the jbt6k74 driver does many things. But backlight switching is
+> not part of it :) the backlight is completely independent and machine
+> dependent.
 
-Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
----
- arch/powerpc/sysdev/fsl_soc.c |   37 ++++++++++++++++++++++++-------------
- drivers/spi/spi_mpc83xx.c     |    6 +-----
- 2 files changed, 25 insertions(+), 18 deletions(-)
+The "backlight" directory is a bit misnamed, since it also holds
+the LCD_CLASS_DEVICE stuff which is just "lowlevel LCD controls".
+You'll observe the LTV driver controls power and gamma just like
+this JBT driver does...
 
-diff --git a/arch/powerpc/sysdev/fsl_soc.c b/arch/powerpc/sysdev/fsl_soc.c
-index 60d9c4e..f04d5cc 100644
---- a/arch/powerpc/sysdev/fsl_soc.c
-+++ b/arch/powerpc/sysdev/fsl_soc.c
-@@ -66,7 +66,7 @@ phys_addr_t get_immrbase(void)
- 
- EXPORT_SYMBOL(get_immrbase);
- 
--#if defined(CONFIG_CPM2) || defined(CONFIG_8xx)
-+#if defined(CONFIG_CPM2) || defined(CONFIG_QUICC_ENGINE) || defined(CONFIG_8xx)
- 
- static u32 brgfreq = -1;
- 
-@@ -91,6 +91,11 @@ u32 get_brgfreq(void)
- 
- 	/* Legacy device binding -- will go away when no users are left. */
- 	node = of_find_node_by_type(NULL, "cpm");
-+	if (!node)
-+		node = of_find_compatible_node(NULL, NULL, "fsl,qe");
-+	if (!node)
-+		node = of_find_node_by_type(NULL, "qe");
-+
- 	if (node) {
- 		prop = of_get_property(node, "brg-frequency", &size);
- 		if (prop && size == 4)
-@@ -1223,22 +1228,26 @@ int __init fsl_spi_init(struct spi_board_info *board_infos,
- {
- 	struct device_node *np;
- 	unsigned int i;
--	const u32 *sysclk;
-+	u32 sysclk;
- 
- 	/* SPI controller is either clocked from QE or SoC clock */
--	np = of_find_compatible_node(NULL, NULL, "fsl,qe");
--	if (!np)
--		np = of_find_node_by_type(NULL, "qe");
-+	sysclk = get_brgfreq();
-+	if (sysclk == -1) {
-+		const u32 *prop;
- 
--	if (!np)
- 		np = of_find_node_by_type(NULL, "soc");
-+		if (!np)
-+			return -ENODEV;
- 
--	if (!np)
--		return -ENODEV;
-+		prop = of_get_property(np, "bus-frequency", NULL);
-+		if (!prop) {
-+			of_node_put(np);
-+			return -ENODEV;
-+		}
- 
--	sysclk = of_get_property(np, "bus-frequency", NULL);
--	if (!sysclk)
--		return -ENODEV;
-+		sysclk = *prop;
-+		of_node_put(np);
-+	}
- 
- 	for (np = NULL, i = 1;
- 	     (np = of_find_compatible_node(np, "spi", "fsl_spi")) != NULL;
-@@ -1255,7 +1264,7 @@ int __init fsl_spi_init(struct spi_board_info *board_infos,
- 
- 		memset(res, 0, sizeof(res));
- 
--		pdata.sysclk = *sysclk;
-+		pdata.sysclk = sysclk;
- 
- 		prop = of_get_property(np, "reg", NULL);
- 		if (!prop)
-@@ -1299,10 +1308,12 @@ int __init fsl_spi_init(struct spi_board_info *board_infos,
- 		if (ret)
- 			goto unreg;
- 
--		continue;
-+		goto next;
- unreg:
- 		platform_device_del(pdev);
- err:
-+next:
-+		of_node_put(np);
- 		continue;
- 	}
- 
-diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
-index 4580b9c..04f7cd9 100644
---- a/drivers/spi/spi_mpc83xx.c
-+++ b/drivers/spi/spi_mpc83xx.c
-@@ -436,11 +436,7 @@ static int __init mpc83xx_spi_probe(struct platform_device *dev)
- 	mpc83xx_spi->qe_mode = pdata->qe_mode;
- 	mpc83xx_spi->get_rx = mpc83xx_spi_rx_buf_u8;
- 	mpc83xx_spi->get_tx = mpc83xx_spi_tx_buf_u8;
--
--	if (mpc83xx_spi->qe_mode)
--		mpc83xx_spi->spibrg = pdata->sysclk / 2;
--	else
--		mpc83xx_spi->spibrg = pdata->sysclk;
-+	mpc83xx_spi->spibrg = pdata->sysclk;
- 
- 	mpc83xx_spi->rx_shift = 0;
- 	mpc83xx_spi->tx_shift = 0;
--- 
-1.5.2.2
+Of course there aren't yet many "lowlevel LCD controls" drivers,
+and this driver might suggest revisiting that class.  There's one
+LCD controller I know of with integral PWM contrast control, which
+might help motivate relocating that class code.  How about a new
+"lcm" directory?  :)
+
+
+> > > +	default:
+> > > +		return -1;
+> > 
+> > Why return "-EPERM" rather than "0"?  Are you trying to
+> > prevent use of this driver on systems that support hibernation?
+> > 
+> 
+> nope. I just didn't know what other cases there were, and since none of
+> them are implemented, I thought it's better to refuse them than to claim
+> we support something that was never tested.
+> 
+> I'm now following the suggestion of pm.h, i.e. treat all cases like
+> SUSPEND.  Do you agree this sounds like the right thing to do?
+
+Yes.  If it's not, then most Linux device drivers are
+broken, and at least this one would be compatible!
+
+
+> > > +static int jbt_resume(struct spi_device *spi)
+> > > +{
+> > > +	struct jbt_info *jbt = dev_get_drvdata(&spi->dev);
+> > > +
+> > > +	jbt6k74_enter_state(jbt, jbt->last_state);
+> > > +	jbt6k74_display_onoff(jbt, 1);
+> > 
+> > I suspect that if the last state isn't DEEP_STANDBY this
+> > should do nothing.  
+> 
+> Erm, you mean if the last state _is_ DEEP_STANDBY or SLEEP, it should do
+> nothing?  Thansk anyway for pointing it out, there definitely was a bug.
+
+I just meant that in a series of resume calls (matching the series of
+suspend calls that will happen with hibernation), it's probably best
+to do nothing if the device isn't in a suspended state.  And if the
+system suspended while this device was in any kind of runtime suspend,
+it should normally resume into that same runtime suspend state.
+
+
+> > Remember that during hibernation, this can be called multiple times.
+> 
+> And how would this be a problem? Sorry, I don't get it :/
+
+Waking up a power-aware system normally shouldn't force every device
+into its highest power state.  I don't know how much runtime PM is
+done on the systems you're working with, but I was assuming you do at
+least some of it as a way to minimize battery drain.
+
+
+
+> *************************
+> 
+> This driver adds support for the SPI-based control interface of the LCM (LCD
+> Panel) found on the FIC GTA01 hardware.  
+> 
+> The specific panel in this hardware is a TPO TD028TTEC1, but the driver should
+> be able to drive any other diplay based on the JBT6K74-AS controller ASIC.
+> 
+> Signed-off-by: Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>
+
+Looks much better IMO.  I still think that since this exposes
+"low level controls" it should depend on LCD_CLASS_DEVICE, since
+that's allegedly what that infrastructure is there for.  But I
+expect that feedback would be resolved by folk maintaining that
+part of the driver stack.
+
+Also:
+
+
+> +/* frontend function */
+> +int jbt6k74_enter_state(struct jbt_info *jbt, enum jbt_state new_state)
+> +{
+> +	int rc = -EINVAL;
+> +
+> +	...
+> +			/* first transition into sleep */
+> +			rc = standby_to_sleep(jbt);
+> +			/* then transition into normal */
+> +			rc |= sleep_to_normal(jbt);
+> +			break;
+> +	...
+> +	return rc;
+> +}
+
+This routine still has that error handling bug on most paths.
+
+- Dave
 
 
 -------------------------------------------------------------------------

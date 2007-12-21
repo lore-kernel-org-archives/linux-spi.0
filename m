@@ -1,18 +1,21 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH v2 3/4] [POWERPC][SPI] use
-	brg-frequency for SPI in QE
-Date: Thu, 20 Dec 2007 15:04:54 -0800
-Message-ID: <200712201504.54836.david-b@pacbell.net>
-References: <20071220202714.GA18471@localhost.localdomain>
-	<20071220203322.GC19553@localhost.localdomain>
+From: Richard Purdie <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>
+Subject: Re: [PATCH 7/12] neo1973: JBT6K74 LCM
+	control	interface driver
+Date: Fri, 21 Dec 2007 00:01:11 +0000
+Message-ID: <1198195271.4651.52.camel@localhost.localdomain>
+References: <20071218110800.GN29882@prithivi.gnumonks.org>
+	<200712191316.45435.david-b@pacbell.net>
+	<20071220150659.GP29882@prithivi.gnumonks.org>
+	<200712201431.58932.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20071220203322.GC19553-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200712201431.58932.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,27 +27,45 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 20 December 2007, Anton Vorontsov wrote:
-> In case of QE we can use brg-frequency (which is qeclk/2).
-> Thus no need to divide sysclk in the spi_mpc83xx.
-> =
+On Thu, 2007-12-20 at 14:31 -0800, David Brownell wrote:
+> The "backlight" directory is a bit misnamed, since it also holds
+> the LCD_CLASS_DEVICE stuff which is just "lowlevel LCD controls".
+> You'll observe the LTV driver controls power and gamma just like
+> this JBT driver does...
+> 
+> Of course there aren't yet many "lowlevel LCD controls" drivers,
+> and this driver might suggest revisiting that class.  There's one
+> LCD controller I know of with integral PWM contrast control, which
+> might help motivate relocating that class code.  How about a new
+> "lcm" directory?  :)
 
-> This patch also adds code to use get_brgfreq() on QE chips.
-> =
+Backlights and lcd controllers mainly reside in drivers/video/backlight
+although there are a number of backlight drivers spread about the tree.
+I'm effectively the maintainer of the lcd class alongside backlights
+since I've tried to keep the two roughly in sync style wise. 
 
-> Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-> ---
-> =A0arch/powerpc/sysdev/fsl_soc.c | =A0 37 ++++++++++++++++++++++++-------=
-------
-> =A0drivers/spi/spi_mpc83xx.c =A0 =A0 | =A0 =A06 +-----
-> =A02 files changed, 25 insertions(+), 18 deletions(-)
+> Looks much better IMO.  I still think that since this exposes
+> "low level controls" it should depend on LCD_CLASS_DEVICE, since
+> that's allegedly what that infrastructure is there for.  But I
+> expect that feedback would be resolved by folk maintaining that
+> part of the driver stack.
 
-For the SPI parts:
+I'm not sure the LCD class would be very helpful to this driver. As you
+say, this really suggests shortcomings of the LCD class but with only
+one LCD driver in mainline changing that class to work better for LCDs
+is possible.
 
-Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+The main question is whether the functionality here is suitably generic
+to turn into a class? Personally I'm not sure it is but I'm open to
+opinions (and patches).
 
-Though it all looks a bit confusing to me, and I wonder
-if the OF docs would make it less so.
+Cheers,
+
+Richard
+
+
+
+
 
 
 -------------------------------------------------------------------------

@@ -1,24 +1,11 @@
-From: Richard Purdie <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>
-Subject: Re:
-	display/lcm/backlight/framebuffer	interaction (was [PATCH
-	7/12] neo1973: JBT6K74 LCM control interface driver)
-Date: Fri, 21 Dec 2007 10:50:13 +0000
-Message-ID: <1198234213.4636.39.camel@localhost.localdomain>
-References: <20071218110800.GN29882@prithivi.gnumonks.org>
-	<200712191316.45435.david-b@pacbell.net>
-	<20071220150659.GP29882@prithivi.gnumonks.org>
-	<200712201431.58932.david-b@pacbell.net>
-	<1198195271.4651.52.camel@localhost.localdomain>
-	<20071221093934.GO6625@prithivi.gnumonks.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: Harald Welte <laforge-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>
+From: =?GB2312?B?wfUgvNE=?= <bgt6868-0GSiYjBpcig@public.gmane.org>
+Subject: =?GB2312?B?tPrA7beixrE=?=
+Date: Sun, 23 Dec 2007 21:50:50 +0800
+Message-ID: <E1J6RED-00085W-9m@mail.sourceforge.net>
+Reply-To: bgt6868-0GSiYjBpcig@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1078820037=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20071221093934.GO6625-jI4mzJ+yNOMOwssVsN95jSCwEArCW2h5@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,81 +17,71 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2007-12-21 at 10:39 +0100, Harald Welte wrote:
-> On Fri, Dec 21, 2007 at 12:01:11AM +0000, Richard Purdie wrote:
-> > Backlights and lcd controllers mainly reside in drivers/video/backlight
-> > although there are a number of backlight drivers spread about the tree.
-> 
-> well, there alsi is drivers/video/display now, which is where I have put
-> my driver now.  However, I'm not using the DISPLAY_CLASS, since it seems
-> to deal mainly with contrast settings.
-> 
-> > I'm not sure the LCD class would be very helpful to this driver. As you
-> > say, this really suggests shortcomings of the LCD class but with only
-> > one LCD driver in mainline changing that class to work better for LCDs
-> > is possible.
-> > 
-> > The main question is whether the functionality here is suitably generic
-> > to turn into a class? Personally I'm not sure it is but I'm open to
-> > opinions (and patches).
-> 
-> I think the power states and configuration parameters of different TFT
-> panels (in embedded devices) are fairly device-specific.  Even the power
-> states of different panels can differ a lot.  So I don't know how much
-> common abstrction is possible to implement.
+--===============1078820037==
+Content-Type: text/plain;charset="GB2312"
+Content-Transfer-Encoding: quoted-printable
 
-Agreed, I'm not sure how much common ground there is either.
+=C1=EC=B5=BC=A3=BA
+      =C4=FA=BA=C3=A3=A1=B1=BE=B9=AB=CB=BE=CA=C7=D2=BB=BC=D2=D2=C0=B7=A8=C4=
+=C9=CB=B0=B5=C4=C9=CF=BA=A3=CA=D0A=BC=B6=C6=F3=D2=B5,=D3=EB
 
-> One thing that we still need for the Neo1973 is some kind of interaction
-> betwee the display driver and the framebuffer driver.  The issue is that
-> if we change the framebuffer resolution from VGA to QVGA, the display
-> driver needs to alter the timing configuration of the display ASIC.
+=BF=CD=BB=A7=BC=B0=B5=A5=CE=BB=B5=C4=BA=CF=D7=F7=B3=CC=D0=F2=CD=EA=C8=AB=D2=
+=C0=D5=D5=B9=FA=BC=D2=B7=A8=B9=E6=BD=F8=D0=D0=B2=D9=D7=F7=D6=B4=D0=D0,=20
 
-I had this problem with the Zaurus and ended up with
-arch/arm/mach-pxa/corgi_lcd.c. It has two different mechanisms for
-connecting into w100fb and pxafb. I would like to see a common method
-for doing this and would be happy to change the corgi code to some kind
-of common framework. A problem, at least with w100fb was that the
-ordering of the calls to the LCD and w100 were quite critical, one wrong
-move and it doesn't work...
+=C8=E7=D3=D0=CE=A5=B9=E6=D4=B8=B3=D0=B5=A3=CF=E0=B9=D8=D4=F0=C8=CE.
+     =20
+      =B1=BE=B9=AB=CB=BE=CF=D6=D2=F2=D0=E8=C0=A9=D5=B9=CA=D0=B3=A1=B5=C4=BE=
+=BA=D5=F9=D0=D4=A3=AC=CC=D8=CE=AA=BF=CD=BB=A7=CC=E1=B9=A9=B7=BD=B1=E3
 
-> I was thinking of something abstact like a notifier_chain for resolution
-> changes.  This way the display driver (and other potential users) can
-> get informed about resolution changes. 
+=CA=B5=D3=C3=B5=C4=D3=AA=D2=B5=CB=B0=CA=D5=C6=B1=BE=DD=A3=AC=C4=DC=CE=AA=B9=
+=F3=B9=AB=CB=BE=CC=E1=B9=A9=D3=C5=BB=DD=BD=C9=C4=C9=CB=B0=BF=EE=B9=FA=CB=B0=
+=B5=C4
 
-In the w100 case we ended up with change(), suspend() and resume()
-function pointers. A call notifier could do the same job though. For
-pxafb its just a case of LCD on/off...
+=C9=CC=D2=B5=CF=EE=C4=BF=A3=A8=B0=FC=C0=A8=B5=D8=CB=B0=B5=C4=D4=CB=CA=E4=A1=
+=A2=B9=E3=B8=E6=A1=A2=BD=A8=D6=FE=B0=B2=D7=B0=A1=A2=C6=E4=CB=FC=B7=FE=CE=F1=
+=D2=B5=20
 
-> And then, after all, we have the issue of backlight, display and
-> framebuffer all together.  If you want to blank the screen, you would
-> want to switch off the backlight, but also put the display into a
-> lower-power mode.  Right now we're not doing any of this in the kenrel,
-> but I believe we definitely should.  Any suggestions on that?
+=B5=C8=B5=C8=CF=E0=B9=D8=B7=A2=C6=B1=A3=A9=C8=F4=B9=F3=B9=AB=CB=BE=D3=D0=B4=
+=CB=C0=E0=D0=E8=C7=F3=C7=EB=D3=EB=B1=BE=B9=AB=CB=BE=C1=AA=CF=B5=A3=AC=BB=B6=
+=D3=AD
 
-The backlight class does have a hook into the framebuffer blank call
-notifier chain (see drivers/video/backlight.c:fb_notifier_callback())
-and this works very effectively.
+=C0=B4=B5=E7=D7=C9=D1=AF=A3=AC=B7=C7=B3=A3=C6=DA=B4=FD=C4=FA=B5=C4=BC=D1=D2=
+=F4=A3=A1
+=20
+=C9=CF=BA=A3=CA=D0=BB=E3=D4=B4=CA=B5=D2=B5=D3=D0=CF=DE=B9=AB=CB=BE=C8=AB=CC=
+=E5=D4=B1=B9=A4=D7=A3=C4=FA=B2=C6=D4=B4=B9=E3=BD=F8=A3=AC=CD=F2=CA=C2=CB=B3=
+=C0=FB=A3=A1
 
-The LCD class does also power down when the display is blanked through a
-similar mechanism. One tricky problem here is working out which blank
-call belongs to which display. In the end I left this problem to the
-driver though the "check_fb" function pointer. On a device with a single
-display there is no problem...
+ =C1=AA=CF=B5=C8=CB =A3=BA=B3=CC=CF=C8=C9=FA
 
-Adding a resolution change notifier chain does sound good, the LCD class
-could then at least become useful for turning the LCD on/off and
-blanking + resolution change notification.
+ =B5=E7 =BB=B0 =A3=BA13632503903
 
-Cheers,
+ =B4=AB =D5=E6  =A3=BB021-51901216=20
 
-Richard
+ =D3=CA=CF=E4  =A3=BBsh888d-9Onoh4P/yGk@public.gmane.org
+                       =C9=CF=BA=A3=CA=D0=BB=E3=D4=B4=CA=B5=D2=B5=D3=D0=CF=
+=DE=B9=AB=CB=BE=20
 
 
-
-
+--===============1078820037==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2005.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+--===============1078820037==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1078820037==--

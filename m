@@ -1,13 +1,11 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.24-rc6] spi_bitbang: always grab
-	lock with irqs blocked
-Date: Thu, 27 Dec 2007 11:21:18 -0800
-Message-ID: <200712271121.18869.david-b@pacbell.net>
+From: chri <chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: SPI device driver suspend
+Date: Fri, 28 Dec 2007 13:51:02 +0100
+Message-ID: <cabda6420712280451x59e87ed5xef5cbe4002e84cde@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -21,38 +19,28 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Hi,
 
-Fix a glitch reported by lockdep in the spi_bitbang code:  it needs
-to consistently block IRQs when holding that spinlock. 
+I'm facing a problem with a driver for a SPI device: I think the
+problem may be more general or perhaps I'm just missing something
+obvious. I want to put a SPI device to sleep and this is done by
+sending a command on the SPI bus. The first place I tried is the
+suspend callback of struct spi_driver. That didn't work, the system
+deadlocked on suspending (by writting mem to /sys/power/state). I
+guess the reason is that the SPI master driver uses bit banging code
+that relies on workqueues, which are kernel threads that are stopped
+before the suspend callback is invoked. Does this make sense or I'm
+doing something wrong? Any pointer to devices with similar needs for
+going to sleep that I may study?
 
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Thanks!
 
---- a/drivers/spi/spi_bitbang.c
-+++ b/drivers/spi/spi_bitbang.c
-@@ -184,6 +184,7 @@ int spi_bitbang_setup(struct spi_device 
- 	struct spi_bitbang_cs	*cs = spi->controller_state;
- 	struct spi_bitbang	*bitbang;
- 	int			retval;
-+	unsigned long		flags;
- 
- 	bitbang = spi_master_get_devdata(spi->master);
- 
-@@ -222,12 +223,12 @@ int spi_bitbang_setup(struct spi_device 
- 	 */
- 
- 	/* deselect chip (low or high) */
--	spin_lock(&bitbang->lock);
-+	spin_lock_irqsave(&bitbang->lock, flags);
- 	if (!bitbang->busy) {
- 		bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
- 		ndelay(cs->nsecs);
- 	}
--	spin_unlock(&bitbang->lock);
-+	spin_unlock_irqrestore(&bitbang->lock, flags);
- 
- 	return 0;
- }
+-- 
+Christian Pellegrin, see http://www.evolware.org/chri/
+"Real Programmers don't play tennis, or any other sport which requires
+you to change clothes. Mountain climbing is OK, and Real Programmers
+wear their climbing boots to work in case a mountain should suddenly
+spring up in the middle of the computer room."
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

@@ -1,9 +1,9 @@
 From: "Pls check this new site" <acro3451-OUTMr2mT/NapJuVttbx5JA@public.gmane.org>
-Subject: www.selfbanking.com.ar
-Date: Sun, 30 Dec 2007 23:43 -0500
-Message-ID: <E1J9CVB-0001pO-CQ@mail.sourceforge.net>
+Subject: www.chequexpress.com.ar
+Date: Mon, 31 Dec 2007 04:21 -0500
+Message-ID: <E1J9Gq6-0001ew-S7@mail.sourceforge.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1886461660=="
+Content-Type: multipart/mixed; boundary="===============0906885200=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -21,15 +21,15 @@ This is a multi-part message in MIME format.
 This message is in 2 versions: TXT and HTML
 You need a reader with MIME to read this message!
 
---===============1886461660==
+--===============0906885200==
 Content-Type: multipart/alternative;
-	boundary="--=_Mail_SendEasy_DGhUmbC_72299_1199076209"
+	boundary="--=_Mail_SendEasy_Rjlur7O_86139_1199092885"
 
 This is a multi-part message in MIME format.
 This message is in 2 versions: TXT and HTML
 You need a reader with MIME to read this message!
 
-----=_Mail_SendEasy_DGhUmbC_72299_1199076209
+----=_Mail_SendEasy_Rjlur7O_86139_1199092885
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: quoted-printable
 
@@ -37,16 +37,16 @@ Content-Transfer-Encoding: quoted-printable
 =65=63=74
 
 
-----=_Mail_SendEasy_DGhUmbC_72299_1199076209
+----=_Mail_SendEasy_Rjlur7O_86139_1199092885
 Content-Type: text/html; charset=ISO-8859-1
 Content-Transfer-Encoding: quoted-printable
 
 <=62>=50=6C=65=61=73=65 =73=65=65 =74=68=69=73 =73=69=74=65 =69=6E =53=75=
 =62=6A=65=63=74<=2F=62>
-----=_Mail_SendEasy_DGhUmbC_72299_1199076209--
+----=_Mail_SendEasy_Rjlur7O_86139_1199092885--
 
 
---===============1886461660==
+--===============0906885200==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -56,7 +56,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2005.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1886461660==
+--===============0906885200==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -67,4 +67,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1886461660==--
+--===============0906885200==--

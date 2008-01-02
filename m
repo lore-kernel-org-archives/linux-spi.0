@@ -1,9 +1,9 @@
-From: "subhojit Kolaci" <subhojit-oiO5p6agZmA5m2VD8ZYrMQC/G2K4zDHf@public.gmane.org>
-Subject: smokes
-Date: Wed, 2 Jan 2008 12:17:30 +0100
-Message-ID: <22F28EF5.445563BE@asiacemerlang.com>
+From: "Pls check this new site" <acro3451-OUTMr2mT/NapJuVttbx5JA@public.gmane.org>
+Subject: www.electronicspurchase.com
+Date: Wed, 2 Jan 2008 14:30 -0500
+Message-ID: <E1JA9Ie-0003XZ-LU@mail.sourceforge.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1445062401=="
+Content-Type: multipart/mixed; boundary="===============2078415511=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,34 +17,36 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1445062401==
+This is a multi-part message in MIME format.
+This message is in 2 versions: TXT and HTML
+You need a reader with MIME to read this message!
+
+--===============2078415511==
 Content-Type: multipart/alternative;
-	boundary="------------010508010107050408060801"
+	boundary="--=_Mail_SendEasy_VjpHf3U_39115_1199302233"
 
---------------010508010107050408060801
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+This is a multi-part message in MIME format.
+This message is in 2 versions: TXT and HTML
+You need a reader with MIME to read this message!
 
-Millions of dollars spent researching, and now the miracle #1 penis enchancement product is on the market! http://www.pragushi.com/
+----=_Mail_SendEasy_VjpHf3U_39115_1199302233
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
---------------010508010107050408060801
+=50=6C=65=61=73=65 =73=65=65 =74=68=69=73 =73=69=74=65 =69=6E =53=75=62=6A=
+=65=63=74
+
+
+----=_Mail_SendEasy_VjpHf3U_39115_1199302233
 Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-</head>
-<body bgcolor="#ffffff" text="#000000">
-Millions of dollars spent researching, and now the miracle #1 penis<br>
-enchancement product is on the market! <a href="http://www.pragushi.com/">http://www.pragushi.com/</a><br>
-</body>
-</html>
-
---------------010508010107050408060801--
+<=62>=50=6C=65=61=73=65 =73=65=65 =74=68=69=73 =73=69=74=65 =69=6E =53=75=
+=62=6A=65=63=74<=2F=62>
+----=_Mail_SendEasy_VjpHf3U_39115_1199302233--
 
 
---===============1445062401==
+--===============2078415511==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +56,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2005.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1445062401==
+--===============2078415511==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -65,4 +67,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1445062401==--
+--===============2078415511==--

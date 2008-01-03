@@ -1,34 +1,45 @@
-From: Jarek Poplawski <jarkao2@gmail.com>
-Subject: Re: [PATCH 0/7] convert semaphore to mutex in struct class
-Date: Thu, 3 Jan 2008 08:41:32 +0100
-Message-ID: <20080103074132.GA2000@ff.dom.local>
-References: <20080103055019.GA4885@darkstar.te-china.tietoenator.com> <20080103070609.GA1677@ff.dom.local> <20080103072404.GB1677@ff.dom.local> <a8e1da0801022321u236d5f23ub6b5b8b61ebea505@mail.gmail.com>
+From: "Gernot Kvas" <gernot.kvas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: mmc_spi issues
+Date: Thu, 3 Jan 2008 10:29:30 +0100
+Message-ID: <b47ad75d0801030129p548151eeq78af47024e6f224b@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: gregkh@suse.de, stern@rowland.harvard.edu, peterz@infradead.org,
-	david-b@pacbell.net, davem@davemloft.net, krh@redhat.com,
-	stefanr@s5r6.in-berlin.de, dbrownell@users.sourceforge.net,
-	James.Bottomley@hansenpartnership.com, a.zummo@towertech.it,
-	cbou@mail.ru, dwmw2@infradead.org, khali@linux-fr.org,
-	i2c@lm-sensors.org, linux1394-devel@lists.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net,
-	linux-scsi@vger.kernel.org, rtc-linux@googlegroups.com,
-	linux-kernel@vger.kernel.org
-To: Dave Young <hidave.darkstar@gmail.com>
-Return-path: <linux-scsi-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <a8e1da0801022321u236d5f23ub6b5b8b61ebea505@mail.gmail.com>
-Sender: linux-scsi-owner@vger.kernel.org
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jan 03, 2008 at 03:21:36PM +0800, Dave Young wrote:
-...
-> I don't know if there's other possible warning places with this mutex
-> or not,  if you have any ideas about this, please tell me.
+Hello,
 
-I think lockdep is just to tell such things. So, the question is, how
-much it was tested already, because if there are many warnings
-reported e.g. after merging to -mm, then this could be better to re-do
-it this other way... But, I hope this will not be necessary.
+I have implemented a DMA/PIO driven SPI driver for the ARM based
+ns9xxx SoCs, largely based on the driver for the omap2. I'm using the
+mmc_spi stuff from the mm patches, currently 2.6.23-mm1. Apart from a
+small patch to the UNSTUFF_BITS macro in drivers/mmc/core/mmc.c to
+resolve some endianess issues, it works like a charm (for reading).
+The card gets properly detected, I can mount it and read files from it
+at a decent speed.
+However, when I try to write to it, it fails. I used a scope to
+monitor all 4 lines and discovered that after a CMD25 or CMD24, a
+subsequent CMD25 or CMD24 would fail. Both commands expect a R1
+response, 8-bits. However, prior to what looks like a 8-bit response,
+I read a couple of 0xFF (which is normal) and then suddenly a 0xFE. It
+seems as if the card goes low too early. Any ideas, hints?
 
-Jarek P.
+Cheers,
+
+Gernot
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Microsoft
+Defy all challenges. Microsoft(R) Visual Studio 2005.
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/

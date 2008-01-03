@@ -1,13 +1,10 @@
-From: "Dave Young" <hidave.darkstar@gmail.com>
+From: Jarek Poplawski <jarkao2@gmail.com>
 Subject: Re: [PATCH 0/7] convert semaphore to mutex in struct class
-Date: Thu, 3 Jan 2008 15:21:36 +0800
-Message-ID: <a8e1da0801022321u236d5f23ub6b5b8b61ebea505@mail.gmail.com>
-References: <20080103055019.GA4885@darkstar.te-china.tietoenator.com>
-	 <20080103070609.GA1677@ff.dom.local>
-	 <20080103072404.GB1677@ff.dom.local>
+Date: Thu, 3 Jan 2008 08:41:32 +0100
+Message-ID: <20080103074132.GA2000@ff.dom.local>
+References: <20080103055019.GA4885@darkstar.te-china.tietoenator.com> <20080103070609.GA1677@ff.dom.local> <20080103072404.GB1677@ff.dom.local> <a8e1da0801022321u236d5f23ub6b5b8b61ebea505@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Cc: gregkh@suse.de, stern@rowland.harvard.edu, peterz@infradead.org,
 	david-b@pacbell.net, davem@davemloft.net, krh@redhat.com,
 	stefanr@s5r6.in-berlin.de, dbrownell@users.sourceforge.net,
@@ -17,38 +14,21 @@ Cc: gregkh@suse.de, stern@rowland.harvard.edu, peterz@infradead.org,
 	spi-devel-general@lists.sourceforge.net,
 	linux-scsi@vger.kernel.org, rtc-linux@googlegroups.com,
 	linux-kernel@vger.kernel.org
-To: "Jarek Poplawski" <jarkao2@gmail.com>
+To: Dave Young <hidave.darkstar@gmail.com>
 Return-path: <linux-scsi-owner@vger.kernel.org>
-In-Reply-To: <20080103072404.GB1677@ff.dom.local>
 Content-Disposition: inline
+In-Reply-To: <a8e1da0801022321u236d5f23ub6b5b8b61ebea505@mail.gmail.com>
 Sender: linux-scsi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Jan 3, 2008 3:24 PM, Jarek Poplawski <jarkao2@gmail.com> wrote:
-> On Thu, Jan 03, 2008 at 08:06:09AM +0100, Jarek Poplawski wrote:
-> > On Thu, Jan 03, 2008 at 01:50:20PM +0800, Dave Young wrote:
-> > > Convert semaphore to mutex in struct class.
-> > ...
-> > > One lockdep warning detected as following, thus use mutex_lock_nested with SINGLE_DEPTH_NESTING in class_device_add
-> > >
-> > > Jan  3 10:45:15 darkstar kernel: =============================================
-> > > Jan  3 10:45:15 darkstar kernel: [ INFO: possible recursive locking detected ]
-> > > Jan  3 10:45:15 darkstar kernel: 2.6.24-rc6-mm1-mutex #1
-> > > Jan  3 10:45:15 darkstar kernel: ---------------------------------------------
-> > ...
-> > > If there's anything missed please help to point out, thanks.
-> >
-> > Dave, IMHO it's not 'the right' way to do it: [...]
->
-> OOPS! (I was sleeping...) Unless it has turned out it's not so hard
-> here, and you are quite sure there should be no more warnings after
-> this one nesting annotation - then of course, this is the right way!
+On Thu, Jan 03, 2008 at 03:21:36PM +0800, Dave Young wrote:
+...
+> I don't know if there's other possible warning places with this mutex
+> or not,  if you have any ideas about this, please tell me.
 
-Thanks ;)
-I don't know if there's other possible warning places with this mutex
-or not,  if you have any ideas about this, please tell me.
+I think lockdep is just to tell such things. So, the question is, how
+much it was tested already, because if there are many warnings
+reported e.g. after merging to -mm, then this could be better to re-do
+it this other way... But, I hope this will not be necessary.
 
->
-> Sorry (?)
-> Jarek P.
->
+Jarek P.

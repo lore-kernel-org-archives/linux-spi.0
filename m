@@ -1,8 +1,8 @@
-From: "lgntt" <lgntt-KN7UnAbNpbg@public.gmane.org>
+From: "lgntt" <zell123-cqUyKWFmAYAAvxtiuMwx3w@public.gmane.org>
 Subject: spi-devel-general
-Date: Fri, 4 Jan 2008 04:59:39 +0800
-Message-ID: <E1JAWwt-00045c-Rf@mail.sourceforge.net>
-Content-Type: multipart/mixed; boundary="===============1824034579=="
+Date: Fri, 4 Jan 2008 14:33:00 +0800
+Message-ID: <E1JAftj-00045C-7u@mail.sourceforge.net>
+Content-Type: multipart/mixed; boundary="===============0927509287=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,7 +16,7 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1824034579==
+--===============0927509287==
 Content-Type: text/plain;charset="GB2312"
 
 
@@ -187,7 +187,7 @@ Content-Type: text/plain;charset="GB2312"
 
 
 
---===============1824034579==
+--===============0927509287==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -197,7 +197,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2005.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1824034579==
+--===============0927509287==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -208,4 +208,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1824034579==--
+--===============0927509287==--

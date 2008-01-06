@@ -1,26 +1,63 @@
-From: "Lindsee Grosshandler" <Lindsee-+ahgdQSpy2BdVIOtu6fmbA@public.gmane.org>
-Subject: nedlik
-Date: Sat, 5 Jan 2008 19:18:57 -0000
-Message-ID: <EC83C690.F9671F14@weyermann-ag.ch>
+From: Stefan Richter <stefanr@s5r6.in-berlin.de>
+Subject: Re: [PATCH 0/7] convert semaphore to mutex in struct class
+Date: Sun, 06 Jan 2008 19:41:29 +0100
+Message-ID: <478120D9.5090404@s5r6.in-berlin.de>
+References: <20080103055019.GA4885@darkstar.te-china.tietoenator.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: gregkh@suse.de, stern@rowland.harvard.edu, peterz@infradead.org,
+	david-b@pacbell.net, davem@davemloft.net, jarkao2@gmail.com,
+	krh@redhat.com, dbrownell@users.sourceforge.net,
+	James.Bottomley@HansenPartnership.com, a.zummo@towertech.it,
+	cbou@mail.ru, dwmw2@infradead.org, khali@linux-fr.org,
+	i2c@lm-sensors.org, linux1394-devel@lists.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net,
+	linux-scsi@vger.kernel.org, rtc-linux@googlegroups.com,
+	linux-kernel@vger.kernel.org
+To: Dave Young <hidave.darkstar@gmail.com>
+Return-path: <linux-scsi-owner@vger.kernel.org>
+In-Reply-To: <20080103055019.GA4885@darkstar.te-china.tietoenator.com>
+Sender: linux-scsi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Melanie loved the feeling of my huge dick in her mouth - every cent I spent on VPXL was worth it! http://Inchesaddednows.com/
+Dave Young wrote:
+> Convert semaphore to mutex in struct class.
+> All the patches in this series should be applyed simultaneously
 
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Microsoft
-Defy all challenges. Microsoft(R) Visual Studio 2005.
-http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+Therefore you eventually need to repost it as a single patch.  It can't
+go into one of the maintainer trees otherwise, because they only take
+fully bijectable patches.  (Kernel must build and run at any point in
+between any patch series.)
+
+> toc:
+> ---
+> 1-driver-core-struct-class-convert-semaphore-to-mutex.patch
+> 2-i2c-struct-class-convert-semaphore-to-mutex.patch
+> 3-ieee1394-struct-class-convert-semaphore-to-mutex.patch
+> 4-power-struct-class-convert-semaphore-to-mutex.patch
+> 5-rtc-struct-class-convert-semaphore-to-mutex.patch
+> 6-scsi-struct-class-convert-semaphore-to-mutex.patch
+> 7-spi-struct-class-convert-semaphore-to-mutex.patch
+
+I was going to test it at runtime on top of 2.6.24-rc6, but the first
+and second patch depend on stuff in -mm.  So, my laziness wins for now,
+as -mm is not my cup of tea.
+
+About your changelog:
+
+	"xyz: convert semaphore to mutex in struct class
+
+	Use mutex instead of semaphore in struct class.
+
+	Signed-off-by: Dave Young <hidave.darkstar@gmail.com>"
+
+You don't need the second line because it says the same as the first
+line.  Either kill it, or replace it by an explanation _why_ the
+semaphore is to be replaced by mutex.  (I guess you do it because they
+are lighter-weight, both in semantics and in implementation, and because
+there are better facilities to debug mutexes...)
+-- 
+Stefan Richter
+-=====-==--- ---= --==-
+http://arcgraph.de/sr/

@@ -1,13 +1,13 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: mmc_spi issues
-Date: Mon, 7 Jan 2008 01:35:02 -0800
-Message-ID: <200801070135.02953.david-b@pacbell.net>
+Date: Mon, 7 Jan 2008 01:57:18 -0800
+Message-ID: <200801070157.18425.david-b@pacbell.net>
 References: <b47ad75d0801030129p548151eeq78af47024e6f224b@mail.gmail.com>
 	<200801030949.55373.david-b@pacbell.net>
 	<b47ad75d0801031142x5d550e43r77d19eafe8b92973@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <b47ad75d0801031142x5d550e43r77d19eafe8b92973-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
@@ -24,32 +24,17 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On Thursday 03 January 2008, Gernot Kvas wrote:
-> > I'd still recommend using more current code; especially with the
-> > 2.6.24 release nearly upon us. =A0:)
-> =
+> > And is your SPI controller driver keeping chipselect low during
+> > that whole period?
+> 
+> I tried it both with a toggling chipselect (which would be the
+> default, as the ns9xxx toggles if you write bytewise
 
-> I'm looking forward to 2.6.24.
-
-Get your RC7 while it's hot!  :)
-
-
-> Anyone volunteered to implement the =
-
-> spi-subsystem primitives to allowed mmc_spi on a shared bus?
-
-My old spi_get_exclusive() and spi_put_exclusive() patch still
-applies, for what it's worth ... not unlike mmc_claim_host()
-and friends.
-
-I have a prototype patch from Imre Deak that I seem to not yet
-have found time to really investigate, which attaches the
-exclusivity to a given spi_message.
-
-The downside of those is they both require changes at the level
-of the SPI master controller driver's queue handling.
+Note that this is a bug in the SPI master controller driver then.
+It's not allowed to change chipselect except when the caller says
+to do so (which is usually just between messages).
 
 - Dave
-
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

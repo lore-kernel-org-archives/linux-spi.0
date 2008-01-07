@@ -1,27 +1,25 @@
-From: "Dave Young" <hidave.darkstar@gmail.com>
+From: Stefan Richter <stefanr@s5r6.in-berlin.de>
 Subject: Re: [PATCH 0/7] convert semaphore to mutex in struct class
-Date: Mon, 7 Jan 2008 18:00:36 +0800
-Message-ID: <a8e1da0801070200l6a8630f2td27f2f0b993cd4da@mail.gmail.com>
+Date: Mon, 07 Jan 2008 14:23:33 +0100
+Message-ID: <478227D5.8050402@s5r6.in-berlin.de>
 References: <20080103055019.GA4885@darkstar.te-china.tietoenator.com>
-	<478120D9.5090404@s5r6.in-berlin.de>
 	<20080107020944.GA3637@darkstar.te-china.tietoenator.com>
 	<20080107084528.GA8365@suse.de>
+	<200801070101.15168.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: James.Bottomley@hansenpartnership.com,
-	dbrownell@users.sourceforge.net, rtc-linux@googlegroups.com,
-	linux-scsi@vger.kernel.org, a.zummo@towertech.it,
-	peterz@infradead.org, cbou@mail.ru, linux-kernel@vger.kernel.org,
-	david-b@pacbell.net, krh@redhat.com,
-	Stefan Richter <stefanr@s5r6.in-berlin.de>,
-	stern@rowland.harvard.edu, spi-devel-general@lists.sourceforge.net,
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: a.zummo@towertech.it, dbrownell@users.sourceforge.net,
+	Dave Young <hidave.darkstar@gmail.com>, linux-scsi@vger.kernel.org,
+	cbou@mail.ru, peterz@infradead.org, Greg KH <gregkh@suse.de>,
+	linux-kernel@vger.kernel.org, James.Bottomley@hansenpartnership.com,
+	krh@redhat.com, stern@rowland.harvard.edu,
+	rtc-linux@googlegroups.com, spi-devel-general@lists.sourceforge.net,
 	linux1394-devel@lists.sourceforge.net, dwmw2@infradead.org,
 	davem@davemloft.net, jarkao2@gmail.com
-To: "Greg KH" <gregkh@suse.de>
+To: David Brownell <david-b@pacbell.net>
 Return-path: <linux1394-devel-bounces@lists.sourceforge.net>
-In-Reply-To: <20080107084528.GA8365@suse.de>
-Content-Disposition: inline
+In-Reply-To: <200801070101.15168.david-b@pacbell.net>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/linux1394-devel>,
 	<mailto:linux1394-devel-request@lists.sourceforge.net?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=linux1394-devel>
@@ -33,33 +31,33 @@ Sender: linux1394-devel-bounces@lists.sourceforge.net
 Errors-To: linux1394-devel-bounces@lists.sourceforge.net
 List-Id: linux-spi.vger.kernel.org
 
-On Jan 7, 2008 4:45 PM, Greg KH <gregkh@suse.de> wrote:
-> On Mon, Jan 07, 2008 at 10:09:44AM +0800, Dave Young wrote:
-> >
-> > Thanks for your comment, I rewrite it for 2.6.24-rc7 as a all-in-one
-> > patch, please see following. Drop i2c maintainer and list in cc
-> > because there's no changes about i2c in this patch:
-> >
-> > Convert semaphore to mutex in struct class
->
-> Most of the non-driver core code should be converted to not use the
-> lock in the class at all.  They should use a local lock instead.
->
-> So how about a patch series that removes the usage of the current
-> semaphore from the different drivers, and then, a single patch that
-> converts the semaphore to mutex in the class code, it should not touch
-> anything outside of the drivers/base/ directory (not including the
-> driver.h file.)
->
-> Sound reasonable?
+David Brownell wrote:
+> On Monday 07 January 2008, Greg KH wrote:
+>> Most of the non-driver core code should be converted to not use the
+>> lock in the class at all.  They should use a local lock instead.
+> =
 
-looks like a better aproach, let me take a look ...
+> Or better yet, that yet-to-be-written class_for_each_instance()
+> iterator ... :)
 
->
-> thanks,
->
-> greg k-h
->
+By far most of the usages of class.semaphore or class.mutex in drivers
+are to protect the class.devices list.  The only=B9 right thing to do
+there is to keep using the class.{semaphore,mutex}.  The more elegant
+variation of this would be David's class_for_each_instance() iterator
+which would allow us to hide the locking details from the drivers.
+
+-------
+=B9)  Well, another correct thing to do would be to not take any locks or
+mutexes in the driver core but instead let the drivers do the necessary
+serialization between calls like class_device_add() and the likes and
+list iterations.  But this would complicate the API because of the
+additional locking requirements, and hence would invariably result in
+buggy usages of the API.
+-- =
+
+Stefan Richter
+-=3D=3D=3D=3D=3D-=3D=3D--- ---=3D --=3D=3D=3D
+http://arcgraph.de/sr/
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

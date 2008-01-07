@@ -1,69 +1,51 @@
-From: Jarek Poplawski <jarkao2@gmail.com>
-Subject: Re: [PATCH 0/7] convert semaphore to mutex in struct class
-Date: Mon, 7 Jan 2008 15:00:14 +0100
-Message-ID: <20080107140014.GA2961@ff.dom.local>
-References: <20080103055019.GA4885@darkstar.te-china.tietoenator.com>
-	<20080107020944.GA3637@darkstar.te-china.tietoenator.com>
-	<20080107084528.GA8365@suse.de>
-	<200801070101.15168.david-b@pacbell.net>
-	<478227D5.8050402@s5r6.in-berlin.de>
+From: Sebastian Siewior <sfgeneral-tbOqE5TproD1e3ktjv5YCg@public.gmane.org>
+Subject: drivers/spi/mpc52xx_psc_spi.c,
+	potential use after free
+Date: Mon, 7 Jan 2008 15:30:25 +0100
+Message-ID: <20080107143025.GA21720@Chamillionaire.breakpoint.cc>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: James.Bottomley@hansenpartnership.com,
-	dbrownell@users.sourceforge.net,
-	Dave Young <hidave.darkstar@gmail.com>, linux-scsi@vger.kernel.org,
-	a.zummo@towertech.it, peterz@infradead.org, Greg KH <gregkh@suse.de>,
-	linux-kernel@vger.kernel.org, David Brownell <david-b@pacbell.net>,
-	krh@redhat.com, stern@rowland.harvard.edu, cbou@mail.ru,
-	rtc-linux@googlegroups.com, spi-devel-general@lists.sourceforge.net,
-	linux1394-devel@lists.sourceforge.net, dwmw2@infradead.org,
-	davem@davemloft.net
-To: Stefan Richter <stefanr@s5r6.in-berlin.de>
-Return-path: <linux1394-devel-bounces@lists.sourceforge.net>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <478227D5.8050402@s5r6.in-berlin.de>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/linux1394-devel>,
-	<mailto:linux1394-devel-request@lists.sourceforge.net?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=linux1394-devel>
-List-Post: <mailto:linux1394-devel@lists.sourceforge.net>
-List-Help: <mailto:linux1394-devel-request@lists.sourceforge.net?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/linux1394-devel>,
-	<mailto:linux1394-devel-request@lists.sourceforge.net?subject=subscribe>
-Sender: linux1394-devel-bounces@lists.sourceforge.net
-Errors-To: linux1394-devel-bounces@lists.sourceforge.net
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 07, 2008 at 02:23:33PM +0100, Stefan Richter wrote:
-> David Brownell wrote:
-> > On Monday 07 January 2008, Greg KH wrote:
-> >> Most of the non-driver core code should be converted to not use the
-> >> lock in the class at all.  They should use a local lock instead.
-> > 
-> > Or better yet, that yet-to-be-written class_for_each_instance()
-> > iterator ... :)
-> 
-> By far most of the usages of class.semaphore or class.mutex in drivers
-> are to protect the class.devices list.  The only? right thing to do
-> there is to keep using the class.{semaphore,mutex}.  The more elegant
-> variation of this would be David's class_for_each_instance() iterator
-> which would allow us to hide the locking details from the drivers.
-> 
-> -------
-> ?)  Well, another correct thing to do would be to not take any locks or
-> mutexes in the driver core but instead let the drivers do the necessary
-> serialization between calls like class_device_add() and the likes and
-> list iterations.  But this would complicate the API because of the
-> additional locking requirements, and hence would invariably result in
-> buggy usages of the API.
-> -- 
+Hello Dragos,
 
-I hope I'm wrong, but IMHO it should be safer not to mix such changes,
-so do the mutexes first or delay them until the end. Otherwise some
-false blaming seems almost inevitable.
+Your mpc52xx_psc_spi_do_remove() from current git:
 
-Regards,
-Jarek P.
+| static int __exit mpc52xx_psc_spi_do_remove(struct device *dev)
+| {
+|         struct spi_master *master = dev_get_drvdata(dev);
+|         struct mpc52xx_psc_spi *mps = spi_master_get_devdata(master);
+| 
+|         flush_workqueue(mps->workqueue);
+|         destroy_workqueue(mps->workqueue);
+|         spi_unregister_master(master);
+|         free_irq(mps->irq, mps);
+|         if (mps->psc)
+|                 iounmap(mps->psc);
+| 
+|         return 0;
+| }
+
+It looks to me that spi_unregister_master() frees your mps struct and
+the following free_irq() and iounmap() touches deallocated memory.
+Might this be correct?
+
+Sebastian
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

@@ -1,212 +1,76 @@
-From: "lgntt" <lgntt-KN7UnAbNpbg@public.gmane.org>
-Subject: spi-devel-general
-Date: Tue, 8 Jan 2008 15:22:19 +0800
-Message-ID: <E1JC8ZS-0004Iz-Cx@mail.sourceforge.net>
-Content-Type: multipart/mixed; boundary="===============0205612907=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Greg KH <gregkh@suse.de>
+Subject: Re: [PATCH 0/7] convert semaphore to mutex in struct class
+Date: Tue, 8 Jan 2008 14:48:37 -0800
+Message-ID: <20080108224837.GA19623@suse.de>
+References: <20080103055019.GA4885@darkstar.te-china.tietoenator.com>
+	<20080107020944.GA3637@darkstar.te-china.tietoenator.com>
+	<20080107084528.GA8365@suse.de>
+	<200801070101.15168.david-b@pacbell.net>
+	<478227D5.8050402@s5r6.in-berlin.de>
+	<20080107154404.GA10880@suse.de>
+	<47825DC1.3090102@s5r6.in-berlin.de>
+	<20080107172009.GA25943@suse.de>
+	<a8e1da0801072305x3378c195qeb0bb7027030254c@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: a.zummo@towertech.it, dbrownell@users.sourceforge.net,
+	rtc-linux@googlegroups.com, linux-scsi@vger.kernel.org,
+	peterz@infradead.org, linux-kernel@vger.kernel.org,
+	James.Bottomley@hansenpartnership.com, cbou@mail.ru,
+	Stefan Richter <stefanr@s5r6.in-berlin.de>,
+	stern@rowland.harvard.edu, jarkao2@gmail.com,
+	spi-devel-general@lists.sourceforge.net,
+	David Brownell <david-b@pacbell.net>,
+	linux1394-devel@lists.sourceforge.net, dwmw2@infradead.org,
+	davem@davemloft.net, krh@redhat.com
+To: Dave Young <hidave.darkstar@gmail.com>
+Return-path: <linux1394-devel-bounces@lists.sourceforge.net>
+Content-Disposition: inline
+In-Reply-To: <a8e1da0801072305x3378c195qeb0bb7027030254c@mail.gmail.com>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/linux1394-devel>,
+	<mailto:linux1394-devel-request@lists.sourceforge.net?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=linux1394-devel>
+List-Post: <mailto:linux1394-devel@lists.sourceforge.net>
+List-Help: <mailto:linux1394-devel-request@lists.sourceforge.net?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/linux1394-devel>,
+	<mailto:linux1394-devel-request@lists.sourceforge.net?subject=subscribe>
+Sender: linux1394-devel-bounces@lists.sourceforge.net
+Errors-To: linux1394-devel-bounces@lists.sourceforge.net
 List-Id: linux-spi.vger.kernel.org
 
---===============0205612907==
-Content-Type: text/plain;charset="GB2312"
+On Tue, Jan 08, 2008 at 03:05:10PM +0800, Dave Young wrote:
+> On Jan 8, 2008 1:20 AM, Greg KH <gregkh@suse.de> wrote:
+> > On Mon, Jan 07, 2008 at 06:13:37PM +0100, Stefan Richter wrote:
+> > > It's already in the driver core to the most part.  It remains to be seen
+> > > what is less complicated in the end:  Transparent mutex-protected list
+> > > accesses provided by driver core (requires the iterator), or all the
+> > > necessary locking done by the drivers themselves (requires some more
+> > > lock-taking but perhaps fewer lock instances overall in the drivers, and
+> > > respective redefinitions and documentation of the driver core API).
+> >
+> > I favor changing the driver core api and doing this kind of thing there.
+> > It keeps the drivers simpler and should hopefully make their lives
+> > easier.
+> 
+> What about this?
+> 
+> #define class_for_each_dev(pos, head, member) \
+>         for (mutex_lock(&(container_of(head, struct class, devices))->mutex), po
+> s = list_entry((head)->next, typeof(*pos), member); \
+>         prefetch(pos->member.next), &pos->member != (head) ? 1 : (mutex_unlock(&
+> (container_of(head, struct class, devices))->mutex), 0); \
+>         pos = list_entry(pos->member.next, typeof(*pos), member))
 
+Eeek, just make the thing a function please, where you pass the iterator
+function in, like the driver core has (driver_for_each_device)
 
-            高  级  文  秘  职  业  化  训  练      
-   
-                中——国·深——圳·2008 年01月5-6日
-                中——国·上——海·2008 年01月12-13日
-                        
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-● 授/课/对/象
-    企业中层行政管理干部和文秘工作人员，包括办公室主任、行政部经理、董事长秘书、
-总经理秘书、行政助理、行政主管、行政部门文员等
-主/办/单/位：众/人/行/管/理/咨/询 
-培/训/价/格： １８００元 / 人
-公司网站：www.126px.hk
-深/圳/总/部/电/话：　０７５５-２６０７５３６５ 
-上/海/办/事/处/电/话：０２１-８５１８７５１４９
-北/京/办/事/处/电/话：０１０-５１２９３３５３
-传/真： ０７５５-６１３５１３９６
-联/系/人：凌/小/姐 
+thanks,
 
- ● 背 景
-    对高级文秘来说，没有受到过系统训练，将无法从战略性全方位角度认知秘书与
-助理的工作；在所从事的工作中感觉缺乏理论支持；工作中总是被动行事，不能主动
-掌握工作节奏；想给公司节省费用，但却不知从何处下手，如何节省；行使对外界社
-会的管理职能时没有感觉到有很多事物的“黑洞”……  
-    诸如以上的问题，都是每个文秘人员所面对与困惑的，如何把握正确方向从而迅
-速提升自身职业素养，成了我们必须面对与解决的课题。
-● 课 程 收 获 
-  → 掌握高级行政文秘所具备的基本技能、技巧
-  → 善于处理工作中的难点，掌握待人接物的技巧，实现有效的时间管理
-  → 实现现代文秘工作和档案管理工作的规范衔接
-  → 善于上传下达，掌握有效沟通的技巧
-  → 学习掌握规范的商务写作技巧，提高公文写作水平
-  → 学习掌握会议的组织思路及高效率的组织方法。
-  → 掌握基本的商务活动礼仪，使您适应日常商务场合的礼仪要求
-  → 掌握拜访客户的必备礼节，从细微之处体现您对他人的尊重
-  → 了解接待客户的礼仪细节，让您的每一位客人宾至如归
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-课 程 大 纲
-一、企业行政文秘职业特性与素质要求
-  ◇ 文秘人员的职业价值和作用     
-     →  案例：秘书岗位的评价
-  ◇ 企业文秘工作的基本特征      
-  ◇ 文秘人员的职责与主要工作内容 
-     →  案例：文秘人员的职位说明书样板
-  ◇ 文秘人员的自我角色定位      
-  ◇ 优秀文秘人员的胜任素质      
-     →  案例分析： 
-  ◇ 文秘的职业发展前景与实现路径
-二、公文写作与处理实务
-  ◇ 公文分类            
-  ◇ 公文的结构       
-  ◇ 秘书文字支持应达到的要求
-  ◇ 公文写作基本要领    
-  ◇ 13种常用公文模版  
-  ◇ 常用公函
-  ◇ 请示与报告、批复的写作与范例   
-  ◇ SMART原则与SWOT方法   
-  ◇ 计划撰写注意事项
-三、会务组织与管理
-  ◇ 会务分类－组织思路     
-  ◇ 组织阶段：会前准备、会中协助、会后整理
-  ◇ 组织方法               
-  ◇ 例会的组织     
-  ◇ 大型会议、展会的组织
-  ◇ 如何担任会议主持人     
-  ◇ 如何当好会议秘书？
-  ◇ 全景案例：某公司年度大型庆典活动策划始末
-     →  案例：大型会议及活动策划案
-  ◇ 如何避免陷于会议忙碌之中？
-四、文件资料管理与运用
-  ◇ 文档分类标准       
-  ◇ 档案管理的原则       
-  ◇ 文档的索引
-  ◇ 电子文档的保管     
-  ◇ 名片系统管理        
-  ◇ 印章的管理
-  →   研讨：如何利用档案为公司业务服务？
-五、信息档案管理
-  ◇ 信息管理基本流程   
-  ◇ 信息的收集整理      
-  ◇ 信息的传递
-  ◇ 信息的储存与保密   
-  ◇ 保密意识与保密规则  
-  ◇ 秘书的基本职业道德
-六、人际沟通与工作协调技巧
-  ◇ 沟通对于秘书的意义 
-  ◇ 秘书常用沟通方式之比较 
-  ◇ 秘书人员的沟通技巧
-     →  案例：如何听懂老板的“没有说出来的意思”？ 
-  ◇ 秘书让领导刮目相看、获得信任？  
-  ◇ 如何与你的上司协调而不帮倒忙？
-  ◇ 秘书人员如何与各种上司相处？    
-  ◇ 问题：我的上级调走了怎么办？
-     →  案例：领导让我难为情，我该怎么办？
-     →  案例：如何与同事或下级相处？
-     →  案例：有人在你面前抱怨你的领导该怎么办？
-  ◇ 讨论：秘书应当如何发挥自身优势起好协调作用？
-七、办公室5S及办公用品管理
-  ◇ 整理、整顿、清扫、清洁、修养    
-  ◇ 文件处理流程化
-  ◇ 办公用品申购、领用              
-  ◇ 维护各类办公设备的正常使用
-八、时间管理及工作统筹技巧
-  ◇ 时间管理的误区         
-  ◇ 时间管理的原则
-     √目标管理与80/20法则  
-     √缓急轻重的优先管理 
-     √个人时间与领导工作时间计划与安排
-  ◇ 秘书时间管理小窍门     
-  ◇ 宾客接待与电话处理  
-  ◇ 自我情绪控制与压力管理
-九、访客接待
-  ◇ 接待客人流程   
-  ◇ 接待重要客户的注意事项   
-  ◇ 来访电话对策
-     →  案例分析一、二、三
-十、如何成为上司得力助手
-  ◇ 优秀秘书的核心竞争力        
-  ◇ 知己知彼：分析上司的特点
-  ◇ 如何对待不同类型的上司     
-  ◇ 站在下级的位置上思考上级的事
-  ◇ 与上级相处三大注意事项     
-  ◇ 上司的行程安排
-十一、商务礼仪与职业形象塑造
-  1、个人形象塑造及礼仪
-  ◇ 着装的TPO原则         
-  ◇ 女士着装的要点    
-  ◇ 男士着装的规范
-  ◇ 仪容礼仪规范         
-  ◇ 化妆的礼仪        
-  ◇ 站、坐、行的礼仪规范
-  ◇ 恰当的肢体语言
-  2、 基本社交礼仪
-  ◇ 见面介绍的礼仪             
-  ◇ 问候的礼仪        
-  ◇ 名片的使用
-  ◇ 日常商务活动中的礼仪规范  
-  ◇ 与工作有关的文体活动中的礼仪规范
-  3、 商务宴请礼仪
-  ◇ 中餐礼仪   
-  ◇ 西餐礼仪   
-  ◇ 自助餐礼仪 
-  ◇ 餐饮礼仪禁忌 
-  4、 电话礼仪
-  ◇ 接听电话的基本原则 
-  ◇ 接听电话的几项注意 
-  ◇ 拨打电话的几大要点
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-         
-讲 师 介 绍：李 革 增
-    深圳管理咨询行业协会成员；深圳外商投资协会讲师、香港光华管理学院客座
-教授十多年从事企业管理与咨询工作的经验，在德隆集团、深高速、深南招商集团
-等大型集团公司及管理顾问公司历任市场经理、行政总监、培训总监等职位。对沟
-通技巧、客户服务、行政统筹、企业文化等方面具有良好的培训与辅导经验；具有
-深厚的理论知识与丰富的实践操作能力；注重对企业实际问题的分析和解决、讲求
-实效性和适用性。
-擅长课程：《职业经理人资格认证》、《领导力训练》、《企业中层管理技能培训》
-《时间管理》、《目标管理》、《企业文化》、《沟通技巧》、《高级文秘职业素
-质修养》等
-培训特色：以互动、情景式培训见长，注重受训人员的感悟及参与，通过各种实际
-案例及管理游戏等方式充分调动参训人员的培训热情。
-曾培训或咨询过的企业有：中国电信、青岛中化集团、中石油、桑菲通讯、华侨城集团、
-奥林巴斯、金碟软件（中国）有限公司、厦门航空、苏州三星电子、广东移动通信、
-蛇口南顺面粉、深南招商集团、深高速、深圳中汽租赁有限公司、深圳恒波通讯、
-深圳华展国际、三洋机电等。
-
-
-
---===============0205612907==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+greg k-h
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://ad.doubleclick.net/clk;164216239;13503038;w?http://sf.net/marketplace
---===============0205612907==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0205612907==--

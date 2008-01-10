@@ -1,39 +1,70 @@
-From: Alan Stern <stern@rowland.harvard.edu>
-Subject: Re: [PATCH 0/7] convert semaphore to mutex in struct class
-Date: Thu, 10 Jan 2008 10:41:15 -0500 (EST)
-Message-ID: <Pine.LNX.4.44L0.0801101038580.4267-100000@iolanthe.rowland.org>
-References: <20080110094843.GA3014@darkstar.te-china.tietoenator.com>
+From: Sebastian Siewior <sfgeneral-tbOqE5TproD1e3ktjv5YCg@public.gmane.org>
+Subject: Re: [PATCH] Re: drivers/spi/mpc52xx_psc_spi.c,
+	potential use after	free
+Date: Thu, 10 Jan 2008 19:22:02 +0100
+Message-ID: <20080110182202.GA16112@Chamillionaire.breakpoint.cc>
+References: <20080107143025.GA21720@Chamillionaire.breakpoint.cc>
+	<1199974746.3075.14.camel@carp.tuioptics.com>
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Cc: Greg KH <gregkh@suse.de>,
-	Stefan Richter <stefanr@s5r6.in-berlin.de>,
-	<James.Bottomley@hansenpartnership.com>,
-	SCSI development list <linux-scsi@vger.kernel.org>,
-	<a.zummo@towertech.it>, <peterz@infradead.org>, <cbou@mail.ru>,
-	Kernel development list <linux-kernel@vger.kernel.org>,
-	David Brownell <david-b@pacbell.net>, <krh@redhat.com>,
-	<rtc-linux@googlegroups.com>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux1394-devel@lists.sourceforge.net>, <dwmw2@infradead.org>,
-	<davem@davemloft.net>, <jarkao2@gmail.com>
-To: Dave Young <hidave.darkstar@gmail.com>
-Return-path: <linux-scsi-owner@vger.kernel.org>
-In-Reply-To: <20080110094843.GA3014@darkstar.te-china.tietoenator.com>
-Sender: linux-scsi-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1199974746.3075.14.camel-8qF8gS5z7PwcZLk9x1mbI9BPR1lH4CV8@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 10 Jan 2008, Dave Young wrote:
+* Dragos Carp | 2008-01-10 15:19:06 [+0100]:
 
-> Hi,
-> The patches are done on my side, please help to check. 
+>Fix mpc52xx_psc_spi_do_remove() use of drvdata after spi master
+>unregister.
+>
+>Signed-off-by: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
+Acked-by Sebastian Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+
+>---
+>
+> mpc52xx_psc_spi.c |    2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/drivers/spi/mpc52xx_psc_spi.c
+>b/drivers/spi/mpc52xx_psc_spi.c
+>index 7051e6c..a4463ba 100644
+>--- a/drivers/spi/mpc52xx_psc_spi.c
+>+++ b/drivers/spi/mpc52xx_psc_spi.c
+>@@ -534,10 +534,10 @@ static int __exit mpc52xx_psc_spi_do_remove(struct
+>device *dev)
 > 
-> This is the first one of the series about driver core changes. 
-> If this one is accepted and there's no other problem I will post the others for maintainer's review (they need your comment and help because I don't know well about the specific driver logic).
+>        flush_workqueue(mps->workqueue);
+>        destroy_workqueue(mps->workqueue);
+>-       spi_unregister_master(master);
+>        free_irq(mps->irq, mps);
+>        if (mps->psc)
+>                iounmap(mps->psc);
+>+       spi_unregister_master(master);
+> 
+>        return 0;
+> }
+This should work since you don't touch HW in cleanup.
+Another question: It seems you don't use any release_mem_region() /
+request_mem_region(). Are those hidden somewhere behind DT parsing or
+you don't do them at all?
 
-Before spending too much time on all these conversions, shouldn't you 
-first determine whether they will work with the lockdep checker?  In 
-one of your earlier messages there was a clear indication that they 
-will not.
+Sebastian
 
-Alan Stern
-
+-------------------------------------------------------------------------
+Check out the new SourceForge.net Marketplace.
+It's the best place to buy or sell services for
+just about anything Open Source.
+http://ad.doubleclick.net/clk;164216239;13503038;w?http://sf.net/marketplace

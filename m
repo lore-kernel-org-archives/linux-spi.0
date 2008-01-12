@@ -1,76 +1,78 @@
-From: "Dave Young" <hidave.darkstar@gmail.com>
-Subject: Re: [PATCH 0/7] convert semaphore to mutex in struct class
-Date: Fri, 11 Jan 2008 16:53:36 +0800
-Message-ID: <a8e1da0801110053j70a1b117n46983d8c0b073fde@mail.gmail.com>
-References: <478227D5.8050402@s5r6.in-berlin.de>
-	<20080108224837.GA19623@suse.de>
-	<a8e1da0801081732i3677245chef1fda1fea65f7cf@mail.gmail.com>
-	<20080109061316.GA3249@darkstar.te-china.tietoenator.com>
-	<a8e1da0801082237x37d2a56eqee6db19017499dbc@mail.gmail.com>
-	<a8e1da0801082239h198c4d45i5cd7cf183472a166@mail.gmail.com>
-	<20080110094843.GA3014@darkstar.te-china.tietoenator.com>
-	<20080110142341.71af4dc5@gondolin.boeblingen.de.ibm.com>
-	<a8e1da0801101833j6fd3bb56p6998e6e326858724@mail.gmail.com>
-	<20080111092359.7443af68@gondolin.boeblingen.de.ibm.com>
+From: Dave Young <hidave.darkstar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 6/7] spi : use class iteration api
+Date: Sat, 12 Jan 2008 17:57:11 +0800
+Message-ID: <20080112095711.GF2893@darkstar.te-china.tietoenator.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: a.zummo@towertech.it, krh@redhat.com, rtc-linux@googlegroups.com,
-	linux-scsi@vger.kernel.org, peterz@infradead.org,
-	Greg KH <gregkh@suse.de>, linux-kernel@vger.kernel.org,
-	James.Bottomley@hansenpartnership.com, cbou@mail.ru,
-	Stefan Richter <stefanr@s5r6.in-berlin.de>,
-	stern@rowland.harvard.edu, spi-devel-general@lists.sourceforge.net,
-	David Brownell <david-b@pacbell.net>,
-	linux1394-devel@lists.sourceforge.net, dwmw2@infradead.org,
-	davem@davemloft.net, jarkao2@gmail.com
-To: "Cornelia Huck" <cornelia.huck@de.ibm.com>
-Return-path: <linux1394-devel-bounces@lists.sourceforge.net>
-In-Reply-To: <20080111092359.7443af68@gondolin.boeblingen.de.ibm.com>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, gregkh-l3A5Bk7waGM@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/linux1394-devel>,
-	<mailto:linux1394-devel-request@lists.sourceforge.net?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=linux1394-devel>
-List-Post: <mailto:linux1394-devel@lists.sourceforge.net>
-List-Help: <mailto:linux1394-devel-request@lists.sourceforge.net?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/linux1394-devel>,
-	<mailto:linux1394-devel-request@lists.sourceforge.net?subject=subscribe>
-Sender: linux1394-devel-bounces@lists.sourceforge.net
-Errors-To: linux1394-devel-bounces@lists.sourceforge.net
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Jan 11, 2008 4:23 PM, Cornelia Huck <cornelia.huck@de.ibm.com> wrote:
-> On Fri, 11 Jan 2008 10:33:16 +0800,
-> "Dave Young" <hidave.darkstar@gmail.com> wrote:
->
->
-> > > > +struct device *class_find_device(struct class *class, void *data,
-> > > > +                                int (*match)(struct device *, void *))
-> > > > +{
-> > > > +     struct device *dev;
-> > > > +
-> > > > +     if (!class)
-> > > > +             return NULL;
-> > > > +
-> > > > +     mutex_lock(&class->mutex);
-> > > > +     list_for_each_entry(dev, &class->devices, node)
-> > > > +             if (match(dev, data) && get_device(dev))
-> > >
-> > > First get the reference and then drop it if the match function returns
-> > > 0 to make this analogous to the other _find_device() functions?
-> >
-> > It's just like other _find_device() functions. Are these more get/put
-> > really needed?
->
-> The other _find_device() functions operate on klists, which means that
-> there is an implicit get while the element is handled. This function
-> operates on a normal list, which means that getting/putting the
-> reference looks a bit different if we want the same effect.
->
+Convert to use the class iteration api.
 
-Hi, you are right. Will be fixed.
+Signed-off-by: Dave Young <hidave.darkstar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> 
 
-Thanks.
+---
+ drivers/spi/spi.c |   26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
+
+diff -upr linux/drivers/spi/spi.c linux.new/drivers/spi/spi.c
+--- linux/drivers/spi/spi.c	2008-01-11 18:06:38.000000000 +0800
++++ linux.new/drivers/spi/spi.c	2008-01-11 18:06:38.000000000 +0800
+@@ -485,6 +485,17 @@ void spi_unregister_master(struct spi_ma
+ }
+ EXPORT_SYMBOL_GPL(spi_unregister_master);
+ 
++static int __spi_master_match(struct device *dev, void *data)
++{
++	struct spi_master *m;
++	u16 *bus_num = (u16 *)data;
++
++	m = container_of(dev, struct spi_master, dev);
++	if (m->bus_num == *bus_num)
++		return 1;
++	return 0;
++}
++
+ /**
+  * spi_busnum_to_master - look up master associated with bus_num
+  * @bus_num: the master's bus number
+@@ -499,17 +510,12 @@ struct spi_master *spi_busnum_to_master(
+ {
+ 	struct device		*dev;
+ 	struct spi_master	*master = NULL;
+-	struct spi_master	*m;
+ 
+-	down(&spi_master_class.sem);
+-	list_for_each_entry(dev, &spi_master_class.children, node) {
+-		m = container_of(dev, struct spi_master, dev);
+-		if (m->bus_num == bus_num) {
+-			master = spi_master_get(m);
+-			break;
+-		}
+-	}
+-	up(&spi_master_class.sem);
++	dev = class_find_device(&spi_master_class, &bus_num,
++				__spi_master_match);
++	if (dev)
++		master = container_of(dev, struct spi_master, dev);
++	/* reference got in class_find_device */
+ 	return master;
+ }
+ EXPORT_SYMBOL_GPL(spi_busnum_to_master);
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.

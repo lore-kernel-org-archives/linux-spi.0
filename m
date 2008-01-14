@@ -1,8 +1,11 @@
-From: "lgntt" <zell123-cqUyKWFmAYAAvxtiuMwx3w@public.gmane.org>
-Subject: spi-devel-general
-Date: Mon, 14 Jan 2008 11:58:17 +0800
-Message-ID: <E1JEGF3-0002Xt-Lj@mail.sourceforge.net>
-Content-Type: multipart/mixed; boundary="===============2117565646=="
+From: Gary Jennejohn <gary.jennejohn-KuiJ5kEpwI6ELgA04lAiVw@public.gmane.org>
+Subject: [PATCH] SPI: driver for the 400EPx
+Date: Mon, 14 Jan 2008 14:58:37 +0100
+Message-ID: <20080114145837.16331f9d@peedub.jennejohn.org>
+Reply-To: gary.jennejohn-KuiJ5kEpwI6ELgA04lAiVw@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,224 +19,1087 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2117565646==
-Content-Type: text/plain;charset="GB2312"
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-            中层经理人管理技能提升研修班
+From: Gary Jennejohn <garyj-ynQEQJNshbs@public.gmane.org>
 
-【时间地点]    2OO7年12月14-16日 苏  州 
-               2OO8年01月18-20日 深  圳
-  
+commit d8af1d29fdbd0a6614c01582ea09115b7c51e773
+Author: Gary Jennejohn <garyj-ynQEQJNshbs@public.gmane.org>
+Date:   Thu Jan 10 13:25:48 2008 +0100
 
-【培训费用】2800元每人三天 （包含教 材 费、听 课 费、证 书、中 餐、课 间 茶 点）
+    Add a driver for the SPI controller in the 440EPx. The driver works
+    with both arch/ppc and arch/powerpc.
+    
+    Add hardware resources for SPI and GPIO (GPIO for powerpc only).
+    
+    Block use of IIC1 when the SPI controller is used because they share
+    a configuration register.
+    
+    Signed-off-by: Gary Jennejohn <garyj-ynQEQJNshbs@public.gmane.org>
+---
 
-【主办公司】 众 人 行 管 理 咨 询 机 构
-
-【公司网站】www.126px.hk
-
-⊙电     话： 0 755/26075429   22008632
-
-⊙传     真： 0 755/61351396   
-
-⊙联  系 人： 彭小姐
+diff --git a/arch/powerpc/boot/dts/sequoia.dts b/arch/powerpc/boot/dts/sequoia.dts
+index 27837ed..3316231 100644
+--- a/arch/powerpc/boot/dts/sequoia.dts
++++ b/arch/powerpc/boot/dts/sequoia.dts
+@@ -294,6 +294,29 @@
+ 				interrupts = <7 4>;
+ 			};
  
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-打造一支能打硬仗的中层队伍是每个老总梦寐以求的，但中层经理的问题往往也是老总们最头疼的。中层觉得自己最累，老总们觉得中层执行不力，基层员工觉得中层瞎指挥。
-多数中层都是从基层做起来的，而且往往是在基层工作很出色的，绝大部分是因为业务能力出色，对于管理，他们经常依靠零散的经验和感觉，并没有真正形成系统的、科学的、
-实操性的管理技能，本课程就是建立在培训和训练的基础上，让中层管理人员在最短的时间迅速掌握、提高实际的管理技能，从而提高企业的经营效益。
-
-一、培训特点
-
-?系统性：
-企业管理是一个系统工程，注重综合能力的均衡发展，因而在管理技术上也注重系统性的
-学习和培训。
-
-?改变行为：
-对企业来说，不能带来管理行为的改变，是没有任何意义的。本训练将职业经理经理的必
-备管理技能设计成一个个的能力点，使他们通过抓能力点而达到改变行为、转变观念的目的。
-
-?实践操作性：
-管理技能是动手能力、实战能力，不能用于企业管理实践的方法是无效的。本次管理技能
-训练聚焦于管理的实际操作能力提高。
-
-二、培训目的：
-从理论、技能与经验三个维度全方位提升管理人员素质。目的是在最短的时间迅速理解、
-掌握实用的管理技能、提升管理绩效、促使其转变观念达到改变行为的目标。
++			SPI0: spi@ef600900 {
++				device_type = "spi";
++				compatible = "ibm,spi-440epx", "ibm,spi";
++				reg = <ef600900 7>;
++				interrupt-parent = <&UIC0>;
++				interrupts = <8 4>;
++			};
++  			
++  
++			GPIO0: gpio@ef600b00 {
++				compatible = "ibm,gpio-440epx", "ibm,gpio";
++				#address-cells = <0>;
++				#size-cells = <0>;
++				reg = <ef600b00 44>;
++			};
++
++			GPIO1: gpio@ef600c00 {
++				compatible = "ibm,gpio-440epx", "ibm,gpio";
++				#address-cells = <0>;
++				#size-cells = <0>;
++				reg = <ef600c00 44>;
++			};
++
+ 			ZMII0: emac-zmii@ef600d00 {
+ 				device_type = "zmii-interface";
+ 				compatible = "ibm,zmii-440epx", "ibm,zmii";
+diff --git a/arch/ppc/platforms/4xx/ppc440epx.c b/arch/ppc/platforms/4xx/ppc440epx.c
+index 597bc79..a8e1566 100644
+--- a/arch/ppc/platforms/4xx/ppc440epx.c
++++ b/arch/ppc/platforms/4xx/ppc440epx.c
+@@ -69,9 +69,12 @@ static struct ocp_func_iic_data ppc440ep
+ 	.fast_mode	= 0,		/* Use standad mode (100Khz) */
+ };
  
-三、培训对象：
-企业副总、各部门经理、中层管理人员及其它预备管理人员
-培训合格者颁发由香港光华管理学院签署的《经理人培训证书》
++/* either IIC1 or SPI! */
++#if !defined(CONFIG_SPI_PPC4xx) && !defined(CONFIG_SPI_PPC4xx_MODULE)
+ static struct ocp_func_iic_data ppc440epx_iic1_def = {
+ 	.fast_mode	= 0,		/* Use standad mode (100Khz) */
+ };
++#endif
+ OCP_SYSFS_IIC_DATA()
+ 
+ struct ocp_def core_ocp[] = {
+@@ -119,6 +122,8 @@ struct ocp_def core_ocp[] = {
+ 	  .additions	= &ppc440epx_iic0_def,
+ 	  .show		= &ocp_show_iic_data
+ 	},
++/* either IIC1 or SPI! */
++#if !defined(CONFIG_SPI_PPC4xx) && !defined(CONFIG_SPI_PPC4xx_MODULE)
+ 	{ .vendor	= OCP_VENDOR_IBM,
+ 	  .function	= OCP_FUNC_IIC,
+ 	  .index	= 1,
+@@ -128,6 +133,7 @@ struct ocp_def core_ocp[] = {
+ 	  .additions	= &ppc440epx_iic1_def,
+ 	  .show		= &ocp_show_iic_data
+ 	},
++#endif
+ 	{ .vendor	= OCP_VENDOR_IBM,
+ 	  .function	= OCP_FUNC_GPIO,
+ 	  .index	= 0,
+@@ -241,6 +247,19 @@ static struct resource ehci_usb_resource
+ 	},
+ };
+ 
++static struct resource spi_resources[] = {
++	[0] = {
++		.start	= 0x0EF600900,
++		.end	= 0x0EF600906,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start	= 8,
++		.end	= 8,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
++
+ static u64 dma_mask = 0xffffffffULL;
+ 
+ static struct platform_device ohci_usb_device = {
+@@ -276,10 +295,19 @@ static struct platform_device ehci_usb_d
+ 	}
+ };
+ 
++static struct platform_device ppc4xx_spi_device = {
++	/* this must agree with driver.name  used in the SPI driver! */
++	.name		= "spi_ppc4xx",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(spi_resources),
++	.resource	= spi_resources,
++};
++
+ static struct platform_device *ppc440epx_devs[] __initdata = {
+ 	&ohci_usb_device,
+ 	&ehci_usb_device,
+ 	&usb_gadget_device,
++	&ppc4xx_spi_device,
+ };
+ 
+ static int __init ppc440epx_platform_add_devices(void)
+diff --git a/drivers/i2c/busses/i2c-ibm_of.c b/drivers/i2c/busses/i2c-ibm_of.c
+index 5fc6594..f2ea0ef 100644
+--- a/drivers/i2c/busses/i2c-ibm_of.c
++++ b/drivers/i2c/busses/i2c-ibm_of.c
+@@ -1,5 +1,5 @@
+ /*
+- * drivers/i2c/busses/i2c-ibm_iic.c
++ * drivers/i2c/busses/i2c-ibm_of.c
+  *
+  * Support for the IIC peripheral on IBM PPC 4xx
+  *
+@@ -703,6 +703,15 @@ static int __devinit iic_probe (struct o
+ 	}
+ 	dev->paddr = res.start;
+ 
++#if (defined(CONFIG_SPI_PPC4xx) || defined(CONFIG_SPI_PPC4xx_MODULE)) \
++	&& defined(CONFIG_440EPX)
++	/*
++	 * Hack, but on the 440EPx we can have either IIC1 or SPI.
++	 */
++	if (dev->paddr == 0x1ef600800ULL)
++		goto fail1;
++#endif
++
+ 	if (!request_mem_region(dev->paddr, sizeof(struct iic_regs),
+ 				"ibm_iic")) {
+ 		ret = -EBUSY;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index b2c8d53..088b3af 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -160,6 +160,13 @@ config SPI_OMAP24XX
+ 	  SPI master controller for OMAP24xx Multichannel SPI
+ 	  (McSPI) modules.
+ 
++config SPI_PPC4xx
++	tristate "PPC4xx SPI Controller"
++	depends on 440EPX && SPI_MASTER
++	select SPI_BITBANG
++	help
++	  This selects a driver for the 440EPx SPI Controller.
++
+ config SPI_PXA2XX
+ 	tristate "PXA2xx SSP SPI master"
+ 	depends on SPI_MASTER && ARCH_PXA && EXPERIMENTAL
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index dd1b39a..dfd6720 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -28,6 +28,7 @@ obj-$(CONFIG_SPI_S3C24XX_GPIO)		+= spi_s
+ obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24xx.o
+ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
+ obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
++obj-$(CONFIG_SPI_PPC4xx)		+= spi_ppc4xx.o
+ # 	... add above this line ...
+ 
+ # SPI protocol drivers (device/link on bus)
+diff --git a/drivers/spi/spi_ppc4xx.c b/drivers/spi/spi_ppc4xx.c
+new file mode 100644
+index 0000000..d5235c6
+--- /dev/null
++++ b/drivers/spi/spi_ppc4xx.c
+@@ -0,0 +1,880 @@
++/*
++ * SPI_PPC4XX SPI controller driver.
++ * Copyright (C) 2008 Gary Jenneohn <garyj-ynQEQJNshbs@public.gmane.org>
++ *
++ * Based in part on drivers/spi/spi_s3c24xx.c
++ *
++ * Copyright (c) 2006 Ben Dooks
++ * Copyright (c) 2006 Simtec Electronics
++ *	Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ */
++
++#undef DEBUG
++
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/sched.h>
++#include <linux/errno.h>
++#include <linux/wait.h>
++#ifdef CONFIG_PPC_OF
++#include <asm/of_platform.h>
++#else
++#include <asm/ocp.h> /* deprecated */
++#include <linux/platform_device.h>
++#endif
++#include <linux/interrupt.h>
++#include <linux/delay.h>
++
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_bitbang.h>
++
++#include <asm/io.h>
++#include <asm/dcr-native.h>
++
++/* Attention! These may be 440EPx specific. */
++struct spi_ppc4xx_regs {
++	u8	mode;
++	u8	rxd;
++	u8	txd;
++	u8	cr;
++	u8	sr;
++	u8	dummy;
++	/*
++	 * Clock divisor modulus register
++	 * This uses the follwing formula:
++	 *    SCPClkOut = OPBCLK/(4(CDM + 1))
++	 * or
++	 *    CDM = (OPBCLK/4*SCPClkOut) - 1
++	 */
++	u8	cdm;
++};
++
++/* bits in mode register - bit 0 ist MSb */
++/* data latched on leading edge of clock, else trailing edge */
++#define SPI_PPC4XX_MODE_SCP	(0x80 >> 3)
++/* port enabled */
++#define SPI_PPC4XX_MODE_SPE	(0x80 >> 4)
++/* MSB first, else LSB first */
++#define SPI_PPC4XX_MODE_RD	(0x80 >> 5)
++/* clock invert - idle clock = 1, active clock = 0; else reversed */
++#define SPI_PPC4XX_MODE_CI	(0x80 >> 6)
++/* loopback enable */
++#define SPI_PPC4XX_MODE_IL	(0x80 >> 7)
++/* bits in control register */
++/* starts a transfer when set */
++#define SPI_PPC4XX_CR_STR	(0x80 >> 7)
++/* bits in status register */
++/* port is busy with a transfer */
++#define SPI_PPC4XX_SR_BSY	(0x80 >> 6)
++/* RxD ready */
++#define SPI_PPC4XX_SR_RBR	(0x80 >> 7)
++
++/* the spi->mode bits understood by this driver */
++#define MODEBITS (SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST)
++
++/* clock settings (SCP and CI) for various SPI modes */
++#define SPI_CLK_MODE0		SPI_PPC4XX_MODE_SCP
++#define SPI_CLK_MODE1		0
++#define SPI_CLK_MODE2		SPI_PPC4XX_MODE_CI
++#define SPI_CLK_MODE3		(SPI_PPC4XX_MODE_SCP | SPI_PPC4XX_MODE_CI)
++
++#ifdef CONFIG_PPC_OF
++#define DRIVER_NAME		"spi_ppc4xx_of"
++static struct device_node *gpio0np;
++#else
++#define DRIVER_NAME		"spi_ppc4xx"
++#ifndef GPIO0_BASE
++#define GPIO0_BASE		0x1EF600B00ULL
++#define GPIO1_BASE		0x1EF600C00ULL
++#define GPIOx_SIZE		0x44
++#endif
++#endif
++
++#ifndef SDR0_CFGADDR
++#define SDR0_CFGADDR		0x00E
++#define SDR0_CFGDATA		0x00F
++#endif
++#define SDR0_PFC1		0x4101
++
++/*
++ * Offsets - these don't seem to be in any standard header,
++ * but these values may be true only for 440EPx.
++ */
++#define GPIOx_TCR		0x04
++#define GPIOx_OSRL		0x08
++#define GPIOx_OSRH		0x0C
++#define GPIOx_TSRL		0x10
++#define GPIOx_TSRH		0x14
++#define GPIOx_ODR		0x18
++
++/* may be true only for 440EPx */
++/* number of pins per GPIO controller */
++#define GPIO_NUMPINS		32
++/* total number of pins in all GPIO controllers */
++#define GPIO_TOTPINS		64
++
++struct ppc4xx_spi {
++	/* bitbang has to be first */
++	struct spi_bitbang	bitbang;
++	struct completion	done;
++
++	void __iomem		*gpio0;
++	void __iomem		*gpio1;
++	u64			mapbase;
++	u64			mapsize;
++	int			irqnum;
++	/* need this to set the SPI clock */
++	unsigned int		opb_freq;
++
++	/* for transfers */
++	int			len;
++	int			count;
++	/* data buffers */
++	const unsigned char	*tx;
++	unsigned char		*rx;
++	/* pointer to the registers */
++	struct spi_ppc4xx_regs __iomem *regs;
++	struct spi_master	*master;
++	struct device		*dev;
++
++	/* flags to record whether a GPIO pin has been set up as an output */
++	u8			gpio0_flags[GPIO_NUMPINS];
++	u8			gpio1_flags[GPIO_NUMPINS];
++};
++
++/* need this so we can set the clock in the chipselect routine */
++struct spi_ppc4xx_cs {
++	/* speed in hertz */
++	u32	speed_hz;
++	/* bits per word - must be 8! */
++	u8	bpw;
++};
++
++static int spi_ppc4xx_txrx(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct ppc4xx_spi *hw;
++	u8 data;
++
++	dev_dbg(&spi->dev, "txrx: tx %p, rx %p, len %d\n",
++		t->tx_buf, t->rx_buf, t->len);
++
++	hw = spi_master_get_devdata(spi->master);
++
++	hw->tx = t->tx_buf;
++	hw->rx = t->rx_buf;
++	hw->len = t->len;
++	hw->count = 0;
++
++	/* send the first byte */
++	data = hw->tx ? hw->tx[0] : 0;
++	out_8(&hw->regs->txd, data);
++	out_8(&hw->regs->cr, SPI_PPC4XX_CR_STR);
++	wait_for_completion(&hw->done);
++
++	return hw->count;
++}
++
++static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct ppc4xx_spi *hw;
++	struct spi_ppc4xx_cs *cs = spi->controller_state;
++
++	hw = spi_master_get_devdata(spi->master);
++
++	cs->bpw = t ? t->bits_per_word : spi->bits_per_word;
++	cs->speed_hz  = t ? t->speed_hz : spi->max_speed_hz;
++
++	if (cs->bpw != 8) {
++		dev_err(&spi->dev, "invalid bits-per-word (%d)\n", cs->bpw);
++		return -EINVAL;
++	}
++
++	spin_lock(&hw->bitbang.lock);
++	if (!hw->bitbang.busy)
++		hw->bitbang.chipselect(spi, BITBANG_CS_INACTIVE);
++	spin_unlock(&hw->bitbang.lock);
++
++	return 0;
++}
++
++static int spi_ppc4xx_setup(struct spi_device *spi)
++{
++	int ret;
++	struct spi_ppc4xx_cs *cs = spi->controller_state;
++
++	if (!spi->bits_per_word)
++		spi->bits_per_word = 8;
++
++	if (spi->mode & ~MODEBITS) {
++		dev_dbg(&spi->dev, "setup: unsupported mode bits %x\n",
++			spi->mode & ~MODEBITS);
++		return -EINVAL;
++	}
++
++	if (cs == NULL) {
++		cs = kzalloc(sizeof(*cs), GFP_KERNEL);
++		if (!cs)
++			return -ENOMEM;
++		spi->controller_state = cs;
++	}
++	cs->speed_hz = spi->max_speed_hz;
++	cs->bpw = spi->bits_per_word;
++
++	ret = spi_ppc4xx_setupxfer(spi, NULL);
++	if (ret < 0) {
++		dev_err(&spi->dev, "setupxfer returned %d\n", ret);
++		return ret;
++	}
++
++	dev_dbg(&spi->dev, "%s: mode %d, %u bpw, %d hz\n",
++		__FUNCTION__, spi->mode, spi->bits_per_word,
++		spi->max_speed_hz);
++
++	return 0;
++}
++
++/*
++ * The next two routines are very 440EPx specific!
++ * They should really be in a platform-specific file or be handled by
++ * generic GPIO handlers. They can go away once gnereic GPIO support is
++ * available for 4xx.
++ * NOTE: chipsel must be zero-based.
++ */
++
++/*
++ * Check whether a GPIO pin (used as chip select) is set up as an output.
++ * If not, set it up and note it in the appropriate flags array.
++ *
++ * NOTE: this assumes that the specified pin is really not needed for one
++ * of the alternate configurations and just blasts it.
++ */
++static void spi_ppc4xx_gpio_check(struct ppc4xx_spi *hw, u8 pin)
++{
++	u8 *flags;
++	void __iomem *gpio = hw->gpio0;
++	/*
++	 * Most of this code lifted from u-boot.
++	 * Thanks go to Stefan Roese.
++	 */
++	u32 mask;
++	u32 mask2;
++	u32 val;
++	u32 offs = 0;
++	u32 offs2 = 0;
++	int pin2 = pin << 1;
++
++	flags = hw->gpio0_flags;
++	if (pin >= GPIO_NUMPINS) {
++		offs = 0x100;
++		pin -= GPIO_NUMPINS;
++		flags = hw->gpio1_flags;
++	}
++	/* already set up for output */
++	if (flags[pin])
++		return;
++
++	if (pin >= GPIO_NUMPINS/2) {
++		/* point at OSRH/TSRH */
++		offs2 = 0x04;
++		pin2 = (pin - GPIO_NUMPINS/2) << 1;
++	}
++
++	mask = 0x80000000 >> pin;
++	mask2 = 0xc0000000 >> (pin2 << 1);
++
++	/* first set TCR to 0 */
++	val = in_be32(gpio + GPIOx_TCR + offs) & ~mask;
++	out_be32(gpio + GPIOx_TCR + offs, val);
++
++	/* always want to set up the pin for output */
++	/* clear GPIOx_OSRL/H */
++	val = in_be32(gpio + GPIOx_OSRL + offs + offs2) & ~mask2;
++	out_be32(gpio + GPIOx_OSRL + offs + offs2, val);
++	/* clear GPIOx_TSRL/H */
++	val = in_be32(gpio + GPIOx_TSRL + offs + offs2) & ~mask2;
++	out_be32(gpio + GPIOx_TSRL + offs + offs2, val);
++	/* clear GPIOx_ODR */
++	val = in_be32(gpio + GPIOx_ODR + offs) & ~mask;
++	out_be32(gpio + GPIOx_ODR + offs, val);
++
++	/* now configure TCR to drive output if selected */
++	val = in_be32(gpio + GPIOx_TCR + offs) | mask;
++	out_be32(gpio + GPIOx_TCR + offs, val);
++
++	flags[pin] = 1;
++}
++
++/*
++ * Set the chip select as a GPIO.
++ */
++static void spi_ppc4xx_gpio(struct ppc4xx_spi *hw, u8 chipsel, u8 pol)
++{
++	void __iomem *gpio = hw->gpio0;
++	u32 val;
++
++	/* check whether the pin is set up for output */
++	spi_ppc4xx_gpio_check(hw, chipsel);
++
++	if (chipsel >= GPIO_NUMPINS) {
++		gpio = hw->gpio1;
++		chipsel -= GPIO_NUMPINS;
++	}
++
++	val = in_be32(gpio);
++	if (pol)
++		val |= (0x80000000 >> chipsel);
++	else
++		val &= ~(0x80000000 >> chipsel);
++	out_be32(gpio, val);
++}
++
++static void spi_ppc4xx_chipsel(struct spi_device *spi, int value)
++{
++	struct ppc4xx_spi *hw;
++	struct spi_ppc4xx_cs *cs = spi->controller_state;
++	unsigned int cspol = spi->mode & SPI_CS_HIGH ? 1 : 0;
++	unsigned char mode;
++	unsigned char cdm, oldcdm;
++	int scr;
++
++	hw = spi_master_get_devdata(spi->master);
++
++	/* disable the controller here? */
++
++	switch (value) {
++	case BITBANG_CS_INACTIVE:
++		spi_ppc4xx_gpio(hw, spi->chip_select, cspol^1);
++		break;
++
++	case BITBANG_CS_ACTIVE:
++		mode = in_8(&hw->regs->mode);
++
++		/* clear the CLK bits */
++		mode &= ~SPI_CLK_MODE3;
++		switch (spi->mode & (SPI_CPHA|SPI_CPOL)) {
++		case SPI_MODE_0:
++			mode |= SPI_CLK_MODE0;
++			break;
++		case SPI_MODE_1:
++			mode |= SPI_CLK_MODE1;
++			break;
++		case SPI_MODE_2:
++			mode |= SPI_CLK_MODE2;
++			break;
++		case SPI_MODE_3:
++			mode |= SPI_CLK_MODE3;
++			break;
++		}
++
++		if (spi->mode & SPI_LSB_FIRST)
++			mode |= SPI_PPC4XX_MODE_RD;
++		else
++			mode &= ~SPI_PPC4XX_MODE_RD;
++
++		mode |= SPI_PPC4XX_MODE_SPE;
++
++		/* set the clock */
++		cdm = 0;
++		/* opb_freq was already divided by 4 */
++		scr = (hw->opb_freq/cs->speed_hz) - 1;
++
++		if (scr <= 0)
++			goto cdm_done;
++
++		cdm = scr & 0xff;
++
++cdm_done:
++		dev_dbg(&spi->dev, "setting pre-scaler to %d (hz %d)\n", cdm,
++			cs->speed_hz);
++		oldcdm = in_8(&hw->regs->cdm);
++		if (oldcdm != cdm)
++			out_8(&hw->regs->cdm, cdm);
++		/* write new configration */
++		out_8(&hw->regs->mode, mode);
++
++		spi_ppc4xx_gpio(hw, spi->chip_select, cspol);
++
++		break;
++	}
++}
++
++static irqreturn_t spi_ppc4xx_int(int irq, void *dev_id)
++{
++	struct ppc4xx_spi *hw;
++	u8 status;
++	u8 data;
++	unsigned int count;
++
++	hw = dev_id;
++
++	if (irq != hw->irqnum) {
++		printk(KERN_WARNING
++		       "spi_ppc4xx_int : "
++		       "Received wrong int %d. Waiting for %d\n", irq,
++			hw->irqnum);
++		return IRQ_NONE;
++	}
++
++	status = in_8(&hw->regs->sr);
++
++	/* should never happen but check anyway */
++	if (status & SPI_PPC4XX_SR_BSY) {
++		dev_dbg(hw->dev, "got interrupt but spi still busy?\n");
++		complete(&hw->done);
++		return IRQ_HANDLED;
++	}
++
++	count = hw->count;
++	hw->count++;
++
++	if (status & SPI_PPC4XX_SR_RBR) {
++		/* Data Ready */
++		data = in_8(&hw->regs->rxd);
++		if (hw->rx)
++			hw->rx[count] = data;
++	}
++
++	count++;
++
++	if (count < hw->len) {
++		data = hw->tx ? hw->tx[count] : 0;
++		out_8(&hw->regs->txd, data);
++		out_8(&hw->regs->cr, SPI_PPC4XX_CR_STR);
++	} else {
++		complete(&hw->done);
++	}
++
++	return IRQ_HANDLED;
++}
++
++static void spi_ppc4xx_cleanup(struct spi_device *spi)
++{
++	kfree(spi->controller_state);
++}
++
++static void spi_ppc4xx_enable(struct ppc4xx_spi *hw)
++{
++	unsigned long pfc1;
++	uint osrh, tsrh;
++
++	mtdcr(SDR0_CFGADDR, SDR0_PFC1);
++	pfc1 = mfdcr(SDR0_CFGDATA);
++	/* need to clear bit 14 to enable SPC */
++	pfc1 &= ~(1 << 17);
++	mtdcr(SDR0_CFGADDR, SDR0_PFC1);
++	mtdcr(SDR0_CFGDATA, pfc1);
++
++	/* enable SPCDO */
++	osrh = in_be32((void *)((u32)hw->gpio0 + GPIOx_OSRH));
++	tsrh = in_be32((void *)((u32)hw->gpio0 + GPIOx_TSRH));
++	/* need to set bits 14:15 in OSRH to 0x01 */
++	osrh &= ~(0x03 << 16);
++	osrh |= (0x01 << 16);
++	out_be32((void *)((u32)hw->gpio0 + GPIOx_OSRH), osrh);
++
++	/* need to set bits 14:15 in TSRH to 0x01 */
++	tsrh &= ~(0x03 << 16);
++	tsrh |= (0x01 << 16);
++	out_be32((void *)((u32)hw->gpio0 + GPIOx_TSRH), tsrh);
++}
++
++#ifdef CONFIG_PPC_OF
++static int __init spi_ppc4xx_of_probe(struct of_device *op,
++	const struct of_device_id *match)
++{
++	struct ppc4xx_spi *hw;
++	struct spi_master *master;
++	struct spi_bitbang *bbp;
++	struct resource resource;
++	struct device_node *np = op->node;
++	struct device *dev = &op->dev;
++	struct device_node *gpionp;
++	const u32 *regaddr;
++	u64 addr64, size64;
++	int ret;
++	const unsigned int *clk;
++
++	master = spi_alloc_master(dev, sizeof(*hw));
++	if (master == NULL)
++		return -ENOMEM;
++	dev_set_drvdata(dev, master);
++	hw = spi_master_get_devdata(master);
++	memset(hw, 0, sizeof(*hw));
++
++	hw->master = spi_master_get(master);
++	hw->dev = dev;
++
++	init_completion(&hw->done);
++
++	/* setup the state for the bitbang driver */
++	bbp = &hw->bitbang;
++	bbp->master = hw->master;
++	bbp->setup_transfer = spi_ppc4xx_setupxfer;
++	bbp->chipselect = spi_ppc4xx_chipsel;
++	bbp->txrx_bufs = spi_ppc4xx_txrx;
++	bbp->use_dma = 0;
++	bbp->master->setup = spi_ppc4xx_setup;
++	bbp->master->cleanup = spi_ppc4xx_cleanup;
++	/* only one SPI controller */
++	bbp->master->bus_num = 0;
++	if (bbp->master->num_chipselect == 0)
++		bbp->master->num_chipselect = GPIO_TOTPINS;
++
++	dev_dbg(dev, "bitbang at %p\n", bbp);
++
++	/* get the clock for the OPB */
++	gpionp = of_find_compatible_node(NULL, NULL, "ibm,opb");
++	if (gpionp == NULL) {
++		dev_warn(dev, "OPB: cannot find node\n");
++		ret = -ENODEV;
++		goto free_master;
++	}
++	/* get the clock (Hz) for the OPB */
++	clk = of_get_property(gpionp, "clock-frequency", NULL);
++	if (clk == NULL) {
++		dev_warn(dev, "OPB: no clock-frequency property set\n");
++		of_node_put(gpionp);
++		ret = -ENODEV;
++		goto free_master;
++	}
++	hw->opb_freq = *clk;
++	hw->opb_freq >>= 2;
++	of_node_put(gpionp);
++
++	ret = of_address_to_resource(np, 0, &resource);
++	if (ret) {
++		printk(KERN_ERR "Error while parsing device node resource\n");
++		goto free_master;
++	}
++	hw->mapbase = resource.start;
++	hw->mapsize = resource.end - resource.start + 1;
++
++	/* sanity check */
++	if (hw->mapsize < sizeof(struct spi_ppc4xx_regs)) {
++		dev_warn(dev, "too small to map registers\n");
++		/* XXXX */
++		ret = -EINVAL;
++		goto free_master;
++	}
++
++	hw->irqnum = irq_of_parse_and_map(np, 0);
++	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
++			  IRQF_DISABLED, "spi_ppc4xx_of", (void *)hw);
++	if (ret) {
++		dev_warn(dev, "unable to allocate interrupt\n");
++		goto free_master;
++	}
++
++	if (!request_mem_region(hw->mapbase, hw->mapsize, DRIVER_NAME)) {
++		dev_warn(dev, "resource unavailable\n");
++		ret = -EBUSY;
++		goto request_mem_error;
++	}
++
++	hw->regs = ioremap(hw->mapbase, sizeof(struct spi_ppc4xx_regs));
++
++	if (!hw->regs) {
++		dev_warn(dev, "unable to memory map registers\n");
++		ret = -ENXIO;
++		goto map_io_error;
++	}
++
++	/* since there's no GPIO driver we have to do it ourselves */
++	/* find the entry for GPIO0 */
++	gpionp = of_find_compatible_node(NULL, NULL, "ibm,gpio");
++	if (gpionp == NULL) {
++		dev_warn(dev, "unable to find node for GPIO0\n");
++		ret = -ENODEV;
++		goto unmap_regs;
++	}
++	regaddr = of_get_address(gpionp, 0, &size64, NULL);
++	if (regaddr == NULL) {
++		dev_warn(dev, "unable to get address for GPIO0\n");
++		of_node_put(gpionp);
++		ret = -ENODEV;
++		goto unmap_regs;
++	}
++	addr64 = of_translate_address(gpionp, regaddr);
++
++	hw->gpio0 = ioremap(addr64, size64);
++	if (!hw->gpio0) {
++		dev_warn(dev, "unable to memory map gpio0\n");
++		of_node_put(gpionp);
++		ret = -ENOMEM;
++		goto unmap_regs;
++	}
++	gpio0np = gpionp;
++
++	/* find the entry for GPIO1 */
++	/* note that this will of_node_put gpio0np! */
++	gpionp = of_find_compatible_node(gpio0np, NULL, "ibm,gpio");
++	if (gpionp == NULL) {
++		dev_warn(dev, "unable to find node for GPIO1\n");
++		ret = -ENODEV;
++		goto unmap_gpio0;
++	}
++	regaddr = of_get_address(gpionp, 0, &size64, NULL);
++	if (regaddr == NULL) {
++		dev_warn(dev, "unable to get address for GPIO1\n");
++		of_node_put(gpionp);
++		ret = -ENODEV;
++		goto unmap_gpio0;
++	}
++	addr64 = of_translate_address(gpionp, regaddr);
++
++	/* possibly needed for CS */
++	hw->gpio1 = ioremap(addr64, size64);
++	if (!hw->gpio1) {
++		dev_warn(dev, "unable to memory map gpio1\n");
++		of_node_put(gpionp);
++		ret = -ENOMEM;
++		goto unmap_gpio0;
++	}
++	of_node_put(gpionp);
++
++	spi_ppc4xx_enable(hw);
++
++	/* register our spi controller */
++	ret = spi_bitbang_start(bbp);
++	if (ret) {
++		dev_err(dev, "Failed to register SPI master\n");
++		goto unmap_gpio0;
++	}
++
++	printk(KERN_INFO "SPI: SPI_PPC4XX OF SPI driver\n");
++
++	return 0;
++
++unmap_gpio0:
++	iounmap(hw->gpio0);
++unmap_regs:
++	iounmap(hw->regs);
++map_io_error:
++	release_mem_region(hw->mapbase, hw->mapsize);
++request_mem_error:
++	free_irq(hw->irqnum, hw);
++free_master:
++	dev_set_drvdata(dev, NULL);
++	spi_master_put(master);
++
++	dev_err(dev, "initialization failed\n");
++	return ret;
++}
++
++static int __exit spi_ppc4xx_of_remove(struct of_device *op)
++{
++	struct spi_master *master = dev_get_drvdata(&op->dev);
++	struct ppc4xx_spi *hw;
++
++	hw = spi_master_get_devdata(master);
++	spi_bitbang_stop(&hw->bitbang);
++	spi_unregister_master(hw->master);
++	dev_set_drvdata(&op->dev, NULL);
++	release_mem_region(hw->mapbase, hw->mapsize);
++	free_irq(hw->irqnum, hw);
++	iounmap(hw->regs);
++	iounmap(hw->gpio0);
++	iounmap(hw->gpio1);
++
++	return 0;
++}
++
++static struct of_device_id spi_ppc4xx_of_match[] = {
++	{ .type = "spi", .compatible = "ibm,spi", },
++	{},
++};
++
++MODULE_DEVICE_TABLE(of, spi_ppc4xx_of_match);
++
++static struct of_platform_driver spi_ppc4xx_of_driver = {
++	.owner = THIS_MODULE,
++	.name = DRIVER_NAME,
++	.match_table = spi_ppc4xx_of_match,
++	.probe = spi_ppc4xx_of_probe,
++	.remove = __exit_p(spi_ppc4xx_of_remove),
++	.driver = {
++		.name = DRIVER_NAME,
++		.owner = THIS_MODULE,
++	},
++};
++
++static int __init spi_ppc4xx_init(void)
++{
++	return of_register_platform_driver(&spi_ppc4xx_of_driver);
++}
++
++static void __exit spi_ppc4xx_exit(void)
++{
++	of_unregister_platform_driver(&spi_ppc4xx_of_driver);
++}
++
++#else /* not OF-type probe */
++
++static int __devinit spi_ppc4xx_probe(struct platform_device *pdev)
++{
++	struct ppc4xx_spi *hw;
++	struct spi_master *master;
++	struct spi_bitbang *bbp;
++	struct device *dev = &pdev->dev;
++	struct resource *mem_io, *irqres;
++	int ret = -ENODEV;
++
++	master = spi_alloc_master(dev, sizeof(*hw));
++	if (master == NULL)
++		return -ENOMEM;
++
++	dev_set_drvdata(dev, master);
++	hw = spi_master_get_devdata(master);
++	memset(hw, 0, sizeof(*hw));
++
++	hw->master = spi_master_get(master);
++	hw->dev = dev;
++
++	platform_set_drvdata(pdev, hw);
++	init_completion(&hw->done);
++
++	/* setup the state for the bitbang driver */
++	bbp = &hw->bitbang;
++	bbp->master = hw->master;
++	bbp->setup_transfer = spi_ppc4xx_setupxfer;
++	bbp->chipselect = spi_ppc4xx_chipsel;
++	bbp->txrx_bufs = spi_ppc4xx_txrx;
++	bbp->use_dma = 0;
++	bbp->master->setup = spi_ppc4xx_setup;
++	bbp->master->cleanup = spi_ppc4xx_cleanup;
++	/* only one SPI controller */
++	bbp->master->bus_num = 0;
++	if (bbp->master->num_chipselect == 0)
++		bbp->master->num_chipselect = GPIO_TOTPINS;
++
++	dev_dbg(dev, "bitbang at %p\n", bbp);
++
++	/* get the clock (Hz) for the OPB. Set in sequoia_setup_arch() */
++	hw->opb_freq = ocp_sys_info.opb_bus_freq >> 2;
++
++	/* needed to set SCPD0 */
++	hw->gpio0 = ioremap(GPIO0_BASE, GPIOx_SIZE);
++	if (hw->gpio0 == NULL) {
++		printk(KERN_ERR DRIVER_NAME " unable to ioremap GPIO0\n");
++		ret = -ENOMEM;
++		goto free_master;
++	}
++	/* possibly needed for CS */
++	hw->gpio1 = ioremap(GPIO1_BASE, GPIOx_SIZE);
++	if (hw->gpio1 == NULL) {
++		printk(KERN_ERR DRIVER_NAME " unable to ioremap GPIO1\n");
++		iounmap(hw->gpio0);
++		ret = -ENOMEM;
++		goto free_master;
++	}
++
++	mem_io = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	irqres = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++
++	if ((!mem_io) | (!irqres))
++		goto out_err;
++	/* save value for release_mem_region use */
++	hw->mapbase = mem_io->start;
++	hw->mapsize = mem_io->end - mem_io->start + 1;
++	/* sanity check */
++	if (hw->mapsize < sizeof(struct spi_ppc4xx_regs)) {
++		dev_warn(dev, "too small to map registers\n");
++		/* XXXX */
++		ret = -EINVAL;
++		goto out_err;
++	}
++
++	hw->irqnum = irqres->start;
++	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
++			  IRQF_DISABLED, "spi_ppc4xx", (void *)hw);
++	if (ret)
++		goto out_err;
++
++	if (!request_mem_region(hw->mapbase, hw->mapsize, DRIVER_NAME)) {
++		printk(KERN_ERR DRIVER_NAME " - resource unavailable\n");
++		ret = -EBUSY;
++		goto request_mem_error;
++	}
++
++	hw->regs = ioremap(hw->mapbase, sizeof(struct spi_ppc4xx_regs));
++
++	if (!hw->regs) {
++		printk(KERN_ERR DRIVER_NAME " - failed to map spi regs\n");
++		ret = -ENXIO;
++		goto map_io_error;
++	}
++
++	spi_ppc4xx_enable(hw);
++
++	/* register our spi controller */
++	ret = spi_bitbang_start(bbp);
++	if (ret) {
++		dev_err(dev, "Failed to register SPI master\n");
++		goto map_io_error;
++	}
++
++	return 0;
++
++map_io_error:
++	release_mem_region(hw->mapbase, hw->mapsize);
++request_mem_error:
++	free_irq(hw->irqnum, hw);
++out_err:
++	iounmap(hw->gpio0);
++	iounmap(hw->gpio1);
++free_master:
++	platform_set_drvdata(pdev, NULL);
++	dev_set_drvdata(dev, NULL);
++	spi_master_put(master);
++
++	printk(KERN_ERR "SPI: SPI_PPC4XX SPI init FAILED !!!\n");
++	return ret;
++}
++
++static int __devexit spi_ppc4xx_remove(struct platform_device *dev)
++{
++	struct ppc4xx_spi *hw;
++
++	hw = platform_get_drvdata(dev);
++	spi_bitbang_stop(&hw->bitbang);
++	spi_unregister_master(hw->master);
++	dev_set_drvdata(&dev->dev, NULL);
++	platform_set_drvdata(dev, NULL);
++	release_mem_region(hw->mapbase, hw->mapsize);
++	free_irq(hw->irqnum, hw);
++	iounmap(hw->regs);
++	iounmap(hw->gpio0);
++	iounmap(hw->gpio1);
++
++	return 0;
++}
++
++static struct platform_driver spi_ppc4xx_platform_driver = {
++	.probe = spi_ppc4xx_probe,
++	.remove = __exit_p(spi_ppc4xx_remove),
++	.driver = {
++		   .name = "spi_ppc4xx",
++		   .owner = THIS_MODULE,
++	},
++};
++
++static int __init spi_ppc4xx_init(void)
++{
++	printk(KERN_INFO "SPI: SPI_PPC4XX SPI driver\n");
++	return platform_driver_register(&spi_ppc4xx_platform_driver);
++}
++
++static void __exit spi_ppc4xx_exit(void)
++{
++	platform_driver_unregister(&spi_ppc4xx_platform_driver);
++}
++#endif /* CONFIG_PPC_OF */
++
++module_init(spi_ppc4xx_init);
++module_exit(spi_ppc4xx_exit);
++
++MODULE_LICENSE("GPL");
 
-四、培训时间：三天
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-五、培训提纲：    
- 一、什么是管理
-二、如何管理心态
-三、管理的特点是什么 
-四、什么样的管理是最适合企业的管理
-五、管理、组织与领导的关系
-六、管理角色的自我认知
-七、领导力提升的技巧
-八、管理沟通的技巧
-九、时间管理的技巧
-十、创新管理
-十一、目标管理的应用
-十二、高绩效团队的建设
-十三、激励管理的技巧
-
-
-第一章、什么是管理
-
-第二章. 如何管理心态
-培养员工良好的心态是管理的第一要务
-
-第三章．管理的基本特性
-管理从哪些方向努力 才能达到管理的实效性？
-目的性  有效性   他人性   多样性
-
-第四章、什么样的管理是最适合企业的管理
-管理的方法和技术多种多样，什么样的管理模式才是最适合企业发展的？
-只有找到最适合我们企业发展的管理模式，才能避免管理的盲目性
-
-第五章.管理、组织、领导三者的相互关系和异同 
-作为一个管理者一定要清楚管理、组织、领导这三者之间的关系，才能算是一个合格的管理者
-
-第六章、 管理角色的认知
-一、职业经理的角色认知 
-二、职业经理的角色分析
-三、不同层面人员的工作重心
-四、管理者--角色转变的困难
-
-第七章、领导力提升的技巧
-一、领导权威的来源
-领导权威的八个性格特征
-二、领导方式
-三、情境领导与四种领导风格
-根据被领导者的具体情况决定不同的领导风格
-告知式  推销式  参与式  授权式 
-案例分析：
-四、领导的主要工作内容
-
-第八章、管理沟通的技巧
-一、什么是沟通 ？
-二、管理沟通的种类及形式
-    案例分析 、讨论  录像分析
-三、沟通的步骤 
-四、不同沟通风格的管理者分析与应对
-        分析型人的特征与沟通技巧
-支配型人的特征与沟通技巧
-表达型人的特征与沟通技巧
-和蔼型人的特征与沟通技巧
-案例分析：
-五、 沟通的方向
-职业经理人与上级、同级、下属沟通的技巧
-1、沟通的原则
-    2、沟通的方法
-3、沟通的障碍
-案例分析、讨论：
-六、有效沟通的要诀
-
-第九章、时间管理的技巧
-一、为什么要管理时间
-1、从企业来说—市场竞争的必然
-2、从个人来说– 个体生命的有限性
-二、时间管理的目标：
-三、时间管理的三个原则
-第一原则：目标管理原则
-第二原则：抓住重点原则 “80、20”法则运用
-第三原则：工作优先级综合分析
-四、	间管理的策略（22个秘诀）
-
-第十章.创新管理
-一、什么是创新管理
-二、为什么要创新
-社会发展的要求
-市场竞争的结果
-如何竞争中获得优势
-三、如何创新
-1、产品创新
-2、服务创新
-3、管理和营销创新
-四、创新的七个步骤
-创新的四个原则
-六、培养具有创新的企业文化
-七、追求创新的误区
-八、什么是好的创新管理
-
-第十一章.目标管理与控制
-一、目标管理的重要性
-二、目标管理在企业的应用
-三、如何制定正确的企业目标
-四、目标管理的具体操作
-五、目标的控制
-1、资源管理
-2、分工协作
-3、目标修正
-4、总结提高
-
-第十二章  高绩效团队的建设
-1、明确的目标 
-2、授权与自我管理
-3、沟通良好
-4、认可和赞美
-5、相互信任
-6、关心个人
-7、彼此之间保持平等、弹性、自由、开放、互助的团队气氛。
-案例分析、讨论：
-
-第十三章.激励管理
-低效率靠管理，高效率靠激励
-一、激励的误区
-二、激励的四原则
-原则一：公平原则
-原则二：系统原则
-原则三：时机原则
-原则四：清晰原则
-三、激励前要做好4项要事：
-四、领导者常用的三种激励法
-五、恐惧激励法遵循的5个原则：
-六、人性激励法的5个法宝：
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-六、讲师介绍：李革增
-
-管理咨询专家、高级培训师；MBA；清华大学特聘培训讲师；深圳管理咨询协会管理专家；外商投资协会培训专家；中国企业联合会顾问；香港光华管理学院客座教授；美国AITA认证国际职业培训师；欧洲SKP管理机构高级管理顾问；企业家协会特聘培训讲师；中国管理学会研究员；多年从事企业高层管理与咨询工作经验，在德隆集团、深高速、深南招商集团、美国“MOTHERS”、众人行管理咨询、中国企管网等大型集团公司及管理顾问公司历任市场经理、行政总监、营销总监、培训总监、总经理等职位。
-
-对企业管理、销售管理、客户服务、品牌管理、企业文化等具有良好的培训与咨询经验；不仅具有深厚的理论知识，而且具备丰富的实践操作能力；注重对企业实际问题的分析和解决、讲求实效性和适用性，对企业问题的分析和研究深入准确。
-
-擅长课程：《职业经理人资格认证》、《品牌管理》、《领导力训练》、《企业职业经理管理技能培训》《时间管理》、《目标管理》、《企业文化》、《团队建设》、《沟通技巧》、《全面服务管理》《从专业人才到管理高手》等。
-
-培训特色：以互动、情景式培训见长，注重受训人员的感悟及参与，培训风格深入浅出、条理清晰、课堂气氛轻松、活跃、实战性强，通过各种实际案例及管理游戏等方式充分调动参训人员的培训热情。
-
-曾培训或咨询过的企业有：
-中国电信、青岛中化集团、中石油、桑菲通讯、华侨城集团、奥林巴斯、厦门航空、苏州三星电子、广东移动、蛇口南顺面粉、深南招商集团、深高速、中汽租赁、恒波通讯、华展国际、三洋机电、中科诺集团、奥康集团、太平洋制罐、新华强眼镜、天资科技、北京启明星晨、联邦快递、三和国际集团、鹏达房地产、柯尼卡美能达、中信物业、信统光电、天华会计师事务所、南孚电池、朗宁通信、航嘉电源TCL集团、海欧卫浴、江铃汽车、中国网通、友邦保险、中电集团、海南马自达、壹时代传媒、创维集团、浙江金洲集团、长亮科技、联泰集团、飞利浦中国、科洋数码、佛山市海纳川药业、东莞虎彩印刷、味千拉面、恩普电子、南太集团、神龙汽车、中国石油、宁波新峰电器、威海北洋电气集团、和纪黄埔中药、河北热电等。
-
-
-
-
---===============2117565646==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Gary Jennejohn
+*********************************************************************
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+*********************************************************************
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://ad.doubleclick.net/clk;164216239;13503038;w?http://sf.net/marketplace
---===============2117565646==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2117565646==--

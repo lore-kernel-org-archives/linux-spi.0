@@ -1,11 +1,19 @@
-From: =?GB2312?B?wfXPyMn6?= <fjdghtuhgrt-9Onoh4P/yGk@public.gmane.org>
-Subject: =?GB2312?B?t6IvxrE=?=
-Date: Tue, 15 Jan 2008 06:14:30 +0800
-Message-ID: <E1JEXZg-0001KW-Ll@mail.sourceforge.net>
-Reply-To: fjdghtuhgrt-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1367264288=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] Re: drivers/spi/mpc52xx_psc_spi.c,
+	potential use after free
+Date: Mon, 14 Jan 2008 17:02:24 -0800
+Message-ID: <200801141702.24260.david-b@pacbell.net>
+References: <20080107143025.GA21720@Chamillionaire.breakpoint.cc>
+	<1199974746.3075.14.camel@carp.tuioptics.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sebastian Siewior <sfgeneral-tbOqE5TproD1e3ktjv5YCg@public.gmane.org>
+To: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1199974746.3075.14.camel-8qF8gS5z7PwcZLk9x1mbI9BPR1lH4CV8@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,53 +25,47 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1367264288==
-Content-Type: text/plain;charset="GB2312"
+On Thursday 10 January 2008, Dragos Carp wrote:
 
- TO:财务部     
-     
-      您好
-     
-      本公司现有（国税/地税）普通商品销售、咨询服务、房屋租赁、广告、建筑装饰/安装、
+> --- a/drivers/spi/mpc52xx_psc_spi.c
+> +++ b/drivers/spi/mpc52xx_psc_spi.c
+> @@ -534,10 +534,10 @@ static int __exit mpc52xx_psc_spi_do_remove(struct
+> device *dev)
+>  
+>         flush_workqueue(mps->workqueue);
 
-   运输海关等行业发票,可用于公司收款、充帐、抵扣等业务,如贵公司你有这方面的
+Between here ...
 
-   需要，请与我司联系，点数可从您的金额大小来优惠，如贵公司您对我司有认何疑
-   
-   问，我司可先开票后付款，详情请您来电咨询！
+>         destroy_workqueue(mps->workqueue);
+> -       spi_unregister_master(master);
+>         free_irq(mps->irq, mps);
+>         if (mps->psc)
+>                 iounmap(mps->psc);
 
-   
-      诚征合作伙伴！              此信息长期有效,敬请保留以便急用. 
-  
+... and here, drivers can submit I/O requests.  Which will then
+be completely lost!!
 
-          电话：138265 84716    刘 生
-                                     
-                      
-          电邮：szkaida-9Onoh4P/yGk@public.gmane.org                                         
+Can you provide a proper shutdown sequence for this driver?
 
-           祝：贵公司猪年大发                        
+ISTR that some other adapters grab an extra reference to the
+adapter so that they can unregister first (getting rid of
+the spi_device children, unbinding their drivers, and ensuring
+no more incoming requests) and then clean up resources stored
+with the driver, and then finally spi_master_put().
+
+- Dave
 
 
---===============1367264288==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> +       spi_unregister_master(master);
+>  
+>         return 0;
+>  }
+> 
+> 
+> 
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://ad.doubleclick.net/clk;164216239;13503038;w?http://sf.net/marketplace
---===============1367264288==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1367264288==--

@@ -1,17 +1,11 @@
-From: Dave Young <hidave.darkstar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 6/7] spi : use class iteration api
-Date: Wed, 16 Jan 2008 08:52:38 +0800
-Message-ID: <20080116005238.GC2929@darkstar.te-china.tietoenator.com>
-References: <20080112095711.GF2893@darkstar.te-china.tietoenator.com>
+From: "floarea Mocha" <floareaMocha-m311u4Fc0BeTnpBtbRfDVg@public.gmane.org>
+Subject: meborden
+Date: Wed, 16 Jan 2008 17:40:44 +0100
+Message-ID: <8042ED6C.E006D86F@dkh.bias.ne.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, gregkh-l3A5Bk7waGM@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1335921201=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20080112095711.GF2893-4/PLUo9XfK+r2/o/tYUWRb82SWQ1Dih0B/ovq0HbDYUAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,60 +17,39 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Update the patch with minor return path changes in match function:
+--===============1335921201==
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-Convert to use the class iteration api.
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+YOU ARE THE LUCKIEST, GET YOUR 1000 EURO <a href="http://www.pelscam.com/">http://www.pelscam.com/</a><br>
+</html>
 
-Signed-off-by: Dave Young <hidave.darkstar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> 
 
----
- drivers/spi/spi.c |   24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff -upr linux/drivers/spi/spi.c linux.new/drivers/spi/spi.c
---- linux/drivers/spi/spi.c	2008-01-16 08:43:35.000000000 +0800
-+++ linux.new/drivers/spi/spi.c	2008-01-16 08:43:35.000000000 +0800
-@@ -485,6 +485,15 @@ void spi_unregister_master(struct spi_ma
- }
- EXPORT_SYMBOL_GPL(spi_unregister_master);
- 
-+static int __spi_master_match(struct device *dev, void *data)
-+{
-+	struct spi_master *m;
-+	u16 *bus_num = (u16 *)data;
-+
-+	m = container_of(dev, struct spi_master, dev);
-+	return m->bus_num == *bus_num;
-+}
-+
- /**
-  * spi_busnum_to_master - look up master associated with bus_num
-  * @bus_num: the master's bus number
-@@ -499,17 +508,12 @@ struct spi_master *spi_busnum_to_master(
- {
- 	struct device		*dev;
- 	struct spi_master	*master = NULL;
--	struct spi_master	*m;
- 
--	down(&spi_master_class.sem);
--	list_for_each_entry(dev, &spi_master_class.children, node) {
--		m = container_of(dev, struct spi_master, dev);
--		if (m->bus_num == bus_num) {
--			master = spi_master_get(m);
--			break;
--		}
--	}
--	up(&spi_master_class.sem);
-+	dev = class_find_device(&spi_master_class, &bus_num,
-+				__spi_master_match);
-+	if (dev)
-+		master = container_of(dev, struct spi_master, dev);
-+	/* reference got in class_find_device */
- 	return master;
- }
- EXPORT_SYMBOL_GPL(spi_busnum_to_master);
+--===============1335921201==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+--===============1335921201==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1335921201==--

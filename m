@@ -1,8 +1,8 @@
-From: "lgntt" <zell123-cqUyKWFmAYAAvxtiuMwx3w@public.gmane.org>
+From: "lgntt" <lgntt-9Onoh4P/yGk@public.gmane.org>
 Subject: spi-devel-general
-Date: Sat, 19 Jan 2008 19:48:30 +0800
-Message-ID: <E1JGBxb-0000s2-Ay@mail.sourceforge.net>
-Content-Type: multipart/mixed; boundary="===============1843240239=="
+Date: Sun, 20 Jan 2008 06:27:45 +0800
+Message-ID: <E1JGLwC-00088F-Tv@mail.sourceforge.net>
+Content-Type: multipart/mixed; boundary="===============0891316179=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,7 +16,7 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1843240239==
+--===============0891316179==
 Content-Type: text/plain;charset="GB2312"
 
 研发项目管理
@@ -218,7 +218,7 @@ Content-Type: text/plain;charset="GB2312"
 7、成功实施管理变革的案例分享
 
 
---===============1843240239==
+--===============0891316179==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -228,7 +228,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1843240239==
+--===============0891316179==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -239,4 +239,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1843240239==--
+--===============0891316179==--

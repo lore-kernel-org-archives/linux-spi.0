@@ -1,242 +1,273 @@
-From: "lgntt" <lgntt-9Onoh4P/yGk@public.gmane.org>
-Subject: spi-devel-general
-Date: Sun, 20 Jan 2008 06:27:45 +0800
-Message-ID: <E1JGLwC-00088F-Tv@mail.sourceforge.net>
-Content-Type: multipart/mixed; boundary="===============0891316179=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Magnus Damm <magnus.damm@gmail.com>
+Subject: [PATCH] spi: add support for SPI over SuperH SCI pins
+Date: Mon, 21 Jan 2008 19:49:13 +0900
+Message-ID: <20080121104913.11908.50319.sendpatchset@clockwork.opensource.se>
+Cc: lethal@linux-sh.org, Magnus Damm <magnus.damm@gmail.com>,
+	dbrownell@users.sourceforge.net, magnus.damm@gmail.com,
+	linux-sh@vger.kernel.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0891316179==
-Content-Type: text/plain;charset="GB2312"
+spi: add support for SPI over SuperH SCI pins
 
-研发项目管理
- 关键词：研发 项目 管理 产品 开发 流程 风险 成本
+This patch adds support for SPI over SCI pins. SCI is a very simple serial
+controller block that can be found on older SuperH processors. In theory it
+is possible to use the SCI hardware block in syncronous mode, but this version
+of the driver simply hooks up the bit banging code on the SCI pins.
 
-【时间地点】2008年1月23~24日（深圳）/ 1月23~24日（北京）
-【培训费用】2500元/人（含两天中餐、指定教材、证书、茶点）
-【培训方式】案例分享、实务分析、互动讨论、项目模拟、培训游戏
-【主办单位】深圳众人行管理机构
-【咨询报名】0755 26075429 26075365（彭小姐、林小姐）
-.............................................
-◇课程背景
-   科技型企业在新产品/新服务的研发和项目管理过程中面临着如下一些长期困惑的问题：
-1. 如何平衡市场竞争的压力和客户多变的需求，快速将产品推向市场；
-2. 如何建立一个真正的“以客户为中心、以市场为导向”的研发组织体系，快速响应市场需求；
-3. 产品开发的过程中研发如何与市场、财务、生产、采购等相关职能部门协同工作；
-4. 矩阵式组织运作出现的问题（一个人两个主管听谁的、怎么考核、项目经理调不动其他部门资源、是否要给项目经理考核权重）
-5. 研发资源管理中的“会哭的孩子有奶吃”、一个人做多个项目资源冲突、公司优先级高的项目在每个部门却无法保证资源优先、开始了很多项目却总是不能上市、立项评审会上为何总是问题不断
-6. 领导“该管的时候不管、不该管的时候乱管”
-7. 如何在保证产品质量的同时又要降低产品的研发费用和设计成本；
-8. 如何在产品开发的过程中积累技术和管理的经验，从制度上保证公司的成功；
-9. ……    
-  课程在总结大量中国企业从“作坊式”的研发模式向“产业化”研发模式转变的过程中的成功经验和失败教训的基础上，提出一个有竞争力的科学的研发管理体系，同时分享业界企业在研发管理变革过程中应该注意的风险，确保企业的研发管理变革能够真正落地实施。
-.............................................
-◇参加对象
-企业CEO/总经理、研发总经理/副总、公司总工/技术总监、研发项目经理/产品经理、PMO（项目管理办公室）主任、质量部经理、研发骨干等。
-.............................................
-◇培训收益
-1. 分享讲师上百场研发管理培训的专业经验，通过现场互动帮助学员理清适合自己企业的研发管理思路
-2. 掌握业界最佳的研发管理模式与实践，并总结如何与公司的规模相适应来建立研发管理体系
-3. 掌握研发管理的决策体系、组织体系、流程体系、项目管理体系等关键构成要素
-4. 掌握科学的新产品开发流程和研发项目管理操作方法
-5. 分享中国企业推行研发管理体系建设、优化、变革过程中的经验和教训
-6. 分享讲师团队数十个研发管理咨询项目的案例资料（模板、表格、样例……），帮助学员制定Action Plan，使得学员参训后回到自己的公司能够很好实施研发管理体系的优化
-.............................................
-◇授课讲师  
- Richard   资深顾问　（1月23~24日  北京）
- 专业背景：
- 长期从事高科技企业开发管理工作，先后担任过软件开发工程师、项目小组长、系统分析师及项目经理等职位。曾在原国防科工委系统所从事6年的研发工作，参与了多个项目的开发、承担了多个项目的管理工作，先后担任过软件开发工程师、项目小组长、系统分析师及项目经理，涉及软件开发、电路设计，参与国家九五项目软件中间件技术的研究，参与了国家某重点C3I项目的全流程开发，有比较丰富的产品开发流程、研发项目管理经验；曾经作为某家电力产品公司总经理助理，负责公司研发管理和市场管理体系。后加入国内最专业的研发管理咨询公司，先后作为项目核心成员和项目经理成功完成了10多个研发管理咨询项目体系的建设（市场需求与产品规划、产品开发流程体系、研发项目管理体系、研发人力资源），辅导该体系在该公司的全面推行。对中国企业的研发管理体系有比较深刻的研究和理解。在产品开发流程设计、研发项目管理和体系推行方面具有丰富的咨询经验。
+Signed-off-by: Magnus Damm <damm@igel.co.jp>
+---
 
-咨询背景：
-○ 某研究所研发管理咨询(研发人力资源体系)
-○ 广东某电子公司研发管理咨询(含研发流程、研发项目管理及研发人力资源)
-○ 深圳某通信公司研发管理咨询（含研发流程、研发项目管理及研发人力资源）
-○ 家电行业某集团网络事业部研发管理咨询
+ drivers/spi/Kconfig      |    7 +
+ drivers/spi/Makefile     |    1 
+ drivers/spi/spi_sh_sci.c |  217 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 225 insertions(+)
+
+--- 0001/drivers/spi/Kconfig
++++ work/drivers/spi/Kconfig	2008-01-21 16:59:39.000000000 +0900
+@@ -175,6 +175,13 @@ config SPI_S3C24XX_GPIO
+ 	  the inbuilt hardware cannot provide the transfer mode, or
+ 	  where the board is using non hardware connected pins.
  
-培训背景
-  曾在各地多次举办产品开发流程设计、研发项目管理等公开课，曾经为数十家企业提供了专业的研发管理培训，并作为项目核心成员、项目经理参与或主导了近10个研发管理咨询项目，涉及的行业包括通信、软件、家电、运营商、芯片等，项目范围涉及需求工程、产品规划、产品开发流程、研发项目管理、研发绩效管理等模块体系，帮助这些企业建立高效、完备的研发管理体系。
-.......
-  Jason：资深顾问　 （1月23~24日  深圳）
-专业背景：
-10多年高科技企业产品研发和研发管理工作经历，先后担任过项目经理、研究管理部经理、开发部经理等职位，在长期的产品研发管理实践中积累了丰富的技术和管理经验。在某大型高科技公司工作期间，担任过项目经理、研发管理部经理。同时作为核心组成员与国际顶尖咨询顾问，在研发系统推动公司级研发管理变革，并具体负责此研发管理变革在该公司某一级职能部门的推动与具体实施工作。后进入某公司，担任公司管理部副经理，任职期间有针对性地将研发管理变革的理论和实践经验同公司现状相结合，全面建立并优化产品研发管理体系（研发流程体系、项目管理体系、研发绩效管理），同时兼任该公司讲师，具有丰富的研发管理实战经验。
-
-咨询背景：
-○ 某研究所研发管理咨询(研发人力资源体系)
-○ 广东某电子公司研发管理咨询(含研发流程、研发项目管理及研发人力资源)
-○ 深圳某通信公司研发管理咨询（含研发流程、研发项目管理及研发人力资源）
-○ 家电行业某集团网络事业部研发管理咨询 
-
-培训背景
-  曾在各地多次举办产品需求管理、研发项目管理的公开课，曾为数十家企业提供了专业的研发管理培训，并作为项目经理、项目核心成员参与并主导了近10个研发管理咨询项目，项目范围涉及市场需求、产品规划、产品开发流程、研发绩效管理、知识管理等模块体系。服务过的企业涉及通信、软件及互联网、医疗器械、家电电子、电力系统、集成电路（芯片）等多种行业。
-.............................................
-◇课程大纲
-一、案例分析
-
-二、产品开发管理概述
-1、 企业价值链介绍（研发与市场、供应链、财务、人力资源、IT的关系）
-2、 研发管理体系框架和思想
-3、 业界优秀的研发管理思想对比（NPD、CMMI、ISO9000的关系）
-4、 什么是产品（产品与样品的区别）
-5、 什么是产品开发
-6、 产品开发、技术开发、预研的区别（与基础研究、发明、创新的区别）
-7、 流程管理与项目管理的关系与不同
-8、 新产品开发流程与研发项目管理的关系
-9、 新产品开发成功与失败因素分析
-10、演练与问题讨论
-
-三、产品开发的组织与团队
-1、 产品开发组织存在的典型问题
-2、 典型的研发组织模式
-3、 成功的产品开发团队具备的典型特征
-4、 跨部门的产品开发团队构成及角色定位
-    a) 核心小组组长的角色和职责、技能、领导资格、知识、经验及实例讲解
-    b) 核心小组组长的培养和任职资格管理及实例讲解
-    c) 核心小组成员的角色和职责及实例讲解
-    d) 扩展小组组员的角色和职责及实例讲解
-    e) 职能部门经理在产品开发中的角色和职责及实例讲解
-5、矩阵式组织运作容易出现的问题和原因分析（一个人两个主管听谁的、怎么考核、项目经理调不动其他部门资源、是否要给项目经理考核权重）
-6、跨部门的产品开发团队的汇报模式与考核机制
-7、实例讲解：业界公司跨部门的产品开发团队的组织运作
-8、演练与问题讨论
-
-四、产品开发中的业务决策（公司高层对研发管理的具体操作）
-1、企业在业务决策管理中存在的典型问题（“会哭的孩子有奶吃”、一个人做多个项目资源冲突、公司优先级高的项目在每个部门却无法保证资源优先、开始了很多项目却总是不能上市、立项评审会上为何总是问题不断）
-2、产品开发中业务决策的意义
-3、为什么会有领导“该管的时候不管、不该管的时候乱管”
-4、高层领导在产品开发中扮演的角色（“杀贫济富”、什么时候该管、怎么管）
-5、业务决策团队的角色构成与职责定义
-6、产品开发中决策评审点的设置
-7、各业务决策点的评审要素
-8、产品开发中业务决策支撑
-9、业务计划实例讲解
-10、项目任务书实例讲解
-11、项目管理办公室（PMO）
-12、如何建立高效的业务决策机制
-13、实例讲解：业界公司产品业务决策的实际操作
-14、演练与问题讨论
-
-五、产品开发的结构化流程
-1、什么产品开发流程需要结构化
-2、结构化的产品开发流程所具备的特征
-3、产品开发流程如何结构化
-   a） 结构化流程的层次划分
-   b） 业界的产品开发流程架构示例
-   c） 业界的产品开发详细流程示例
-   d） 业界的产品开发子流程示例
-   e） 业界的产品开发操作指导书、模板、查检表示例
-4、产品开发流程结构化过程中的常见问题分析
-   a)  结构化的时机
-   b)	 结构化的程度
-   c)	 结构化容易陷入两个极端
-   d)	 结构化如何与企业实际情况相融合
-5、结构化的产品开发流程与研究项目管理的具体关系
-  * 项目管理活动在产品开发流程中的映射
-6、演练与问题讨论
-
-六、研发项目计划制定
-1、进度与资源计划
-   a)  质量管理计划
-   b)  风险管理计划
-2、进度与资源计划
-   a)  讨论：公司在研发项目计划制定中存在的问题？、
-   b)  研发项目计划的作用
-   c)  研发项目计划制定的流程
-   d)  项目计划制定的原则
-   e)  项目计划制定的要素
-   f)  研发项目计划的分级分层管理体系
-   g)  研发项目计划的制定的五个步骤
-   h)  WBS介绍（作用、示例）
-   i)  WBS分解的衡量标准
-   j)  PBS、WBS、OBS、RBS之间的对应关系
-   k)  五种常见的估计方法
-   l)  规模、工作量、工期估计
-   m)  PERT图的绘制
-   n)  如何加快项目开发进度
-       *关键路径法
-       *快速跟踪法
-   o)  演练与问题讨论
-
-七、研发项目计划控制
-1、研发项目计划控制中常见问题和解决办法
-2、项目的分层实施与分层监控
-3、监控计划
-   a) 控点设置原则
-   b) 监控计划总揽图
-   c) 监控计划一览表
-4、研发项目控制手段：项目报告
-   a) 项目报告种类
-   b) 项目报告机制
-5、研发项目控制手段：项目例会
-   a) 项目例会种类
-   b) 例会议程和内容
-6、研发项目控制手段：计划变更控制
-   a) 变更控制流程
-   b) 计划滚动刷新
-7、研发项目控制手段：状态转移
-8、研发项目控制手段：业务决策评审
-9、研发项目控制手段：研发合同书管理
-10、研发项目控制手段：项目审计
-11、研发项目控制手段：项目风险管理
-12、研发项目控制手段：项目度量管理
-   a) 产品级度量
-   b) 项目级度量 
-13、研发项目控制手段：技术评审 
-14、研发项目控制手段：需求跟踪
-15、研发项目控制手段：成本控制
-   a) 成本模型
-   b) 主要成本构成分析
-   c) 目标成本
-16、研发项目控制手段：QA状态报告
-17、研发项目控制手段：过程裁减 
-   a) 裁减的原则
-   b) 裁减的责任主体
-   c) 裁减时机
-18、研发项目控制手段：项目测试
-19、研发项目控制手段：项目测评
-   a) 项目测评指标定义
-   b) 计划测评
-   c) 计划完成率的计算
-20、演练与问题讨论
-
-八、如何成功实施产品开发管理体系的优化
-1、如何根据企业的实际情况选择产品开发管理体系优化的三个模式（小改进、优化、变革）
-2、案例分析：某公司产品开发流程变革失败的案例研讨
-3、变革失败的八大原因分析
-4、成功实施变革的关键要素
-5、企业如何实施变革管理
-6、如何处理变革管理中人的问题
-7、成功实施管理变革的案例分享
-
-
---===============0891316179==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Microsoft
-Defy all challenges. Microsoft(R) Visual Studio 2008.
-http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============0891316179==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0891316179==--
++config SPI_SH_SCI
++	tristate "SuperH SCI SPI controller"
++	depends on SPI_MASTER && SUPERH
++	select SPI_BITBANG
++	help
++	  SPI driver for SuperH SCI blocks.
++
+ config SPI_TXX9
+ 	tristate "Toshiba TXx9 SPI controller"
+ 	depends on SPI_MASTER && GENERIC_GPIO && CPU_TX49XX
+--- 0001/drivers/spi/Makefile
++++ work/drivers/spi/Makefile	2008-01-21 16:59:39.000000000 +0900
+@@ -27,6 +27,7 @@ obj-$(CONFIG_SPI_S3C24XX_GPIO)		+= spi_s
+ obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24xx.o
+ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
+ obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
++obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
+ # 	... add above this line ...
+ 
+ # SPI protocol drivers (device/link on bus)
+--- /dev/null
++++ work/drivers/spi/spi_sh_sci.c	2008-01-21 17:04:02.000000000 +0900
+@@ -0,0 +1,217 @@
++/* linux/drivers/spi/spi_sh_sci.c
++ *
++ * SH SCI SPI interface
++ *
++ * Based on S3C24XX GPIO based SPI driver
++ *
++ * Copyright (c) 2006 Ben Dooks
++ * Copyright (c) 2006 Simtec Electronics
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++*/
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/spinlock.h>
++#include <linux/workqueue.h>
++#include <linux/platform_device.h>
++
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_bitbang.h>
++
++#include <asm/spi.h>
++#include <asm/io.h>
++
++struct sh_sci_spi {
++	struct spi_bitbang bitbang;
++
++	unsigned long mapbase;
++	struct sh_spi_info *info;
++	struct platform_device *dev;
++};
++
++#define SCSPTR(sg) (sg->mapbase + 0x1c)
++#define PIN_SCK (1 << 2)
++#define PIN_TXD (1 << 0)
++#define PIN_RXD PIN_TXD
++#define PIN_INIT ((1 << 1) | (1 << 3))
++
++static inline struct sh_sci_spi *spidev_to_sg(struct spi_device *spi)
++{
++	return spi->controller_data;
++}
++
++static inline void setbits(struct sh_sci_spi *sg, int bits, int on)
++{
++	unsigned char val;
++
++	val = ctrl_inb(SCSPTR(sg));
++	if (on)
++		val |= bits;
++	else
++		val &= ~bits;
++	ctrl_outb(val, SCSPTR(sg));
++}
++
++static inline unsigned char getbits(struct sh_sci_spi *sg, int bits)
++{
++	return ctrl_inb(SCSPTR(sg)) & bits;
++}
++
++static inline void setsck(struct spi_device *dev, int on)
++{
++	setbits(spidev_to_sg(dev), PIN_SCK, on);
++}
++
++static inline void setmosi(struct spi_device *dev, int on)
++{
++	setbits(spidev_to_sg(dev), PIN_TXD, on);
++}
++
++static inline u32 getmiso(struct spi_device *dev)
++{
++	return getbits(spidev_to_sg(dev), PIN_RXD) ? 1 : 0;
++}
++
++#define spidelay(x) ndelay(x)
++
++#define	EXPAND_BITBANG_TXRX
++#include <linux/spi/spi_bitbang.h>
++
++static u32 sh_sci_spi_txrx_mode0(struct spi_device *spi,
++				      unsigned nsecs, u32 word, u8 bits)
++{
++	return bitbang_txrx_be_cpha0(spi, nsecs, 0, word, bits);
++}
++
++static u32 sh_sci_spi_txrx_mode1(struct spi_device *spi,
++				      unsigned nsecs, u32 word, u8 bits)
++{
++	return bitbang_txrx_be_cpha1(spi, nsecs, 0, word, bits);
++}
++
++static u32 sh_sci_spi_txrx_mode2(struct spi_device *spi,
++				      unsigned nsecs, u32 word, u8 bits)
++{
++	return bitbang_txrx_be_cpha0(spi, nsecs, 1, word, bits);
++}
++
++static u32 sh_sci_spi_txrx_mode3(struct spi_device *spi,
++				      unsigned nsecs, u32 word, u8 bits)
++{
++	return bitbang_txrx_be_cpha1(spi, nsecs, 1, word, bits);
++}
++
++
++static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
++{
++	struct sh_sci_spi *sg = spidev_to_sg(dev);
++
++	if (sg->info && sg->info->chip_select)
++		(sg->info->chip_select)(sg->info, dev->chip_select, value);
++}
++
++static int sh_sci_spi_probe(struct platform_device *dev)
++{
++	struct resource	*r;
++	struct sh_spi_info *info;
++	struct spi_master *master;
++	struct sh_sci_spi *sp;
++	int ret;
++	int i;
++
++	master = spi_alloc_master(&dev->dev, sizeof(struct sh_sci_spi));
++	if (master == NULL) {
++		dev_err(&dev->dev, "failed to allocate spi master\n");
++		ret = -ENOMEM;
++		goto err0;
++	}
++
++	sp = spi_master_get_devdata(master);
++
++	platform_set_drvdata(dev, sp);
++
++	/* copy in the platform data */
++	info = sp->info = dev->dev.platform_data;
++
++	/* setup spi bitbang adaptor */
++	sp->bitbang.master = spi_master_get(master);
++	sp->bitbang.master->bus_num = info->bus_num;
++	sp->bitbang.master->num_chipselect = info->num_chipselect;
++	sp->bitbang.chipselect = sh_sci_spi_chipselect;
++
++	sp->bitbang.txrx_word[SPI_MODE_0] = sh_sci_spi_txrx_mode0;
++	sp->bitbang.txrx_word[SPI_MODE_1] = sh_sci_spi_txrx_mode1;
++	sp->bitbang.txrx_word[SPI_MODE_2] = sh_sci_spi_txrx_mode2;
++	sp->bitbang.txrx_word[SPI_MODE_3] = sh_sci_spi_txrx_mode3;
++
++	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
++	if (r == NULL) {
++		ret = -ENOENT;
++		goto err1;
++	}
++	sp->mapbase = r->start;
++	setbits(sp, PIN_INIT, 1);
++
++	ret = spi_bitbang_start(&sp->bitbang);
++	if (ret)
++		goto err2;
++
++	/* register the chips to go with the board */
++
++	for (i = 0; i < sp->info->board_size; i++) {
++		dev_info(&dev->dev, "registering %p: %s\n",
++			 &sp->info->board_info[i],
++			 sp->info->board_info[i].modalias);
++
++		sp->info->board_info[i].controller_data = sp;
++		spi_new_device(master, sp->info->board_info + i);
++	}
++	return 0;
++ err2:
++	setbits(sp, PIN_INIT, 0);
++ err1:
++	spi_master_put(sp->bitbang.master);
++ err0:
++	return ret;
++}
++
++static int sh_sci_spi_remove(struct platform_device *dev)
++{
++	struct sh_sci_spi *sp = platform_get_drvdata(dev);
++
++	spi_bitbang_stop(&sp->bitbang);
++	setbits(sp, PIN_INIT, 0);
++	spi_master_put(sp->bitbang.master);
++	return 0;
++}
++
++static struct platform_driver sh_sci_spi_drv = {
++	.probe		= sh_sci_spi_probe,
++	.remove		= sh_sci_spi_remove,
++	.driver		= {
++		.name	= "spi_sh_sci",
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init sh_sci_spi_init(void)
++{
++	return platform_driver_register(&sh_sci_spi_drv);
++}
++
++static void __exit sh_sci_spi_exit(void)
++{
++	platform_driver_unregister(&sh_sci_spi_drv);
++}
++
++module_init(sh_sci_spi_init);
++module_exit(sh_sci_spi_exit);
++
++MODULE_DESCRIPTION("SH SCI SPI Driver");
++MODULE_AUTHOR("Magnus Damm");
++MODULE_LICENSE("GPL");

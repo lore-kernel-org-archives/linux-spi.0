@@ -1,15 +1,18 @@
 From: "Girish" <girishsg-l0cyMroinI0@public.gmane.org>
-Subject: Re: spi read issue
-Date: Fri, 25 Jan 2008 10:44:18 +0530
-Message-ID: <029201c85f11$2408d320$988818ac@ent.ti.com>
-References: <200801241242.33444.david-b@pacbell.net>
+Subject: Re: [patch 2.6.24-rc8] spi: omap2_mcspi PIO RX
+	fix
+Date: Fri, 25 Jan 2008 10:46:31 +0530
+Message-ID: <029301c85f11$736dfd50$988818ac@ent.ti.com>
+References: <200801241340.25207.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: 'Kalle Valo' <kalle.valo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
 To: "'David Brownell'" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	"'Andrew Morton'" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-reply-to: <200801241242.33444.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-reply-to: <200801241340.25207.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,31 +24,24 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- =
-
 
 >-----Original Message-----
->From: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org] =
-
-
->> =
-
->> =A0We are handling this issue.
+>From: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org] 
+>Sent: Friday, January 25, 2008 3:10 AM
+>To: Andrew Morton; spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+>Cc: Kalle Valo; Girish
+>Subject: [patch 2.6.24-rc8] spi: omap2_mcspi PIO RX fix
 >
->Could you elaborate?
+>From: Kalle Valo <kalle.valo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
 >
->I'd think the underlying SPI controller driver has a bug =
+>Before transmission of the last word in PIO RX_ONLY mode rx+tx 
+>mode is enabled:
+>
 
->there.  This "extra RX transfer" case reminds me of an odd =
 
->case in the OMAP2 McSPI controller driver, which I thought had =
+Yes, I had missed out this patch. Thanks dave.
 
->been resolved...
-
-Yes, this is about extra read cycle in rx-only transfer. I figured out the =
-patches for this fix, I had missed out earlier.
-
-Thanks,
+Regards,
 Girish
 
 

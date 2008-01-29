@@ -1,8 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: [patch 2.6.24-git] spi: omap2_mcspi handles
 	omap3 too
-Date: Tue, 29 Jan 2008 10:36:26 -0800
-Message-ID: <200801291036.27137.david-b@pacbell.net>
+Date: Tue, 29 Jan 2008 10:38:15 -0800
+Message-ID: <200801291038.15600.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -26,7 +26,10 @@ From: "Girish" <girishsg-l0cyMroinI0@public.gmane.org>
 This adds driver OMAP SPI specific changes to support OMAP 3430
 
 Signed-off-by: Girish S G <girishsg-l0cyMroinI0@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
+GRR -- this time with my signoff.
+
 There are also some related platform changes. Plus eventually this
 config symbol should change (probably to OMAP_MCSPI). 
 

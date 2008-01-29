@@ -1,13 +1,13 @@
-From: "Matt Gessner" <mgessner-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Need help w/ SPI dataflash AT45DB011B on
-	AT91RM9200 linux 2.6.20
-Date: Tue, 29 Jan 2008 10:50:37 -0500
-Message-ID: <85a5c2010801290750j624ffe3bt3d30f5fb7d5df020@mail.gmail.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch 2.6.24-git] spi: omap2_mcspi handles
+	omap3 too
+Date: Tue, 29 Jan 2008 10:36:26 -0800
+Message-ID: <200801291036.27137.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -21,46 +21,88 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+From: "Girish" <girishsg-l0cyMroinI0@public.gmane.org>
 
-I've got what seems to be a very odd problem.  There's a specific word
-(offset 0x20000) in my dataflash that for some reason I can't change.
+This adds driver OMAP SPI specific changes to support OMAP 3430
 
-I wrote a simple program that does the following:
-http://rafb.net/p/RU5LPy71.html
-     a) open the dataflash via /dev/mtdblock/0, seek, read a 32-bit value, close
-     b) open the dataflash via /dev/mtdblock/0, seek, write a 32-bit
-value, close
-     c) open the dataflash via /dev/mtdblock/0, seek, read a 32-bit value, close
+Signed-off-by: Girish S G <girishsg-l0cyMroinI0@public.gmane.org>
+---
+There are also some related platform changes. Plus eventually this
+config symbol should change (probably to OMAP_MCSPI). 
 
-The value in c) is the same value as from a), not that which was
-written in b), which is horribly wrong.
+ drivers/spi/Kconfig       |    6 +++---
+ drivers/spi/omap2_mcspi.c |   37 ++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 39 insertions(+), 4 deletions(-)
 
-If I try to change other words in the dataflash, it succeeds (I know
-this because I've modified parts of other pages).
-
-I've gone down into mtdblock, and it appears to be doing everything
-correctly.  I added a little bit of debugging, to show that the data
-from userspace is accurate:  http://rafb.net/p/KlocsG98.html
-
-As you can see on lines 10 and 30, from different points in the
-debugging, the data that the program is writing is being seen by the
-kernel, yet the write isn't happening.
-
-I've posted my modified modblock.c at http://rafb.net/p/RU5LPy71.html
-
-The issue I'm facing is that 0x20000 is the start of the u-boot
-environment (no, it's not page aligned with the erasesize, which is
-why i'm having to go through this exercise, and I can't change the
-structure because I don't have control over all parts of the system.
-So I'm booting a modified copy of linux with a different partition
-table to allow me to do all of this.) and when I try to write the CRC
-back to the environment table, I can update the environment table but
-the CRC won't change.
-
-Thanks in advance,
-
-Matt Gessner
+--- g26.orig/drivers/spi/Kconfig	2008-01-24 16:29:36.000000000 -0800
++++ g26/drivers/spi/Kconfig	2008-01-29 10:32:36.000000000 -0800
+@@ -151,10 +151,10 @@ config SPI_OMAP_UWIRE
+ 	  This hooks up to the MicroWire controller on OMAP1 chips.
+ 
+ config SPI_OMAP24XX
+-	tristate "McSPI driver for OMAP24xx"
+-	depends on SPI_MASTER && ARCH_OMAP24XX
++	tristate "McSPI driver for OMAP24xx/OMAP34xx"
++	depends on SPI_MASTER && (ARCH_OMAP24XX || ARCH_OMAP34XX)
+ 	help
+-	  SPI master controller for OMAP24xx Multichannel SPI
++	  SPI master controller for OMAP24xx/OMAP34xx Multichannel SPI
+ 	  (McSPI) modules.
+ 
+ config SPI_PXA2XX
+--- g26.orig/drivers/spi/omap2_mcspi.c	2008-01-24 15:26:32.000000000 -0800
++++ g26/drivers/spi/omap2_mcspi.c	2008-01-29 10:32:36.000000000 -0800
+@@ -915,6 +915,28 @@ static u8 __initdata spi2_txdma_id[] = {
+ 	OMAP24XX_DMA_SPI2_TX1,
+ };
+ 
++#if defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP34XX)
++static u8 __initdata spi3_rxdma_id[] = {
++	OMAP24XX_DMA_SPI3_RX0,
++	OMAP24XX_DMA_SPI3_RX1,
++};
++
++static u8 __initdata spi3_txdma_id[] = {
++	OMAP24XX_DMA_SPI3_TX0,
++	OMAP24XX_DMA_SPI3_TX1,
++};
++#endif
++
++#ifdef CONFIG_ARCH_OMAP3
++static u8 __initdata spi4_rxdma_id[] = {
++	OMAP34XX_DMA_SPI4_RX0,
++};
++
++static u8 __initdata spi4_txdma_id[] = {
++	OMAP34XX_DMA_SPI4_TX0,
++};
++#endif
++
+ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master	*master;
+@@ -935,7 +957,20 @@ static int __init omap2_mcspi_probe(stru
+ 		txdma_id = spi2_txdma_id;
+ 		num_chipselect = 2;
+ 		break;
+-	/* REVISIT omap2430 has a third McSPI ... */
++#if defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP3)
++	case 3:
++		rxdma_id = spi3_rxdma_id;
++		txdma_id = spi3_txdma_id;
++		num_chipselect = 2;
++		break;
++#endif
++#ifdef CONFIG_ARCH_OMAP3
++	case 4:
++		rxdma_id = spi4_rxdma_id;
++		txdma_id = spi4_txdma_id;
++		num_chipselect = 1;
++		break;
++#endif
+ 	default:
+ 		return -EINVAL;
+ 	}
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

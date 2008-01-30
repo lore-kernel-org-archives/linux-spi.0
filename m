@@ -1,18 +1,17 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: Need help w/ SPI dataflash AT45DB011B on
-	AT91RM9200 linux 2.6.20
-Date: Tue, 29 Jan 2008 11:29:30 -0800
-Message-ID: <200801291129.30497.david-b@pacbell.net>
-References: <85a5c2010801290750j624ffe3bt3d30f5fb7d5df020@mail.gmail.com>
+From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 3/6] [Blackfin] SPI driver: fix bug -
+	PBX cannot work with this SPI framework driver
+Date: Wed, 30 Jan 2008 17:13:38 +0800
+Message-ID: <1201684421-26124-4-git-send-email-bryan.wu@analog.com>
+References: <1201684421-26124-1-git-send-email-bryan.wu@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: "Matt Gessner" <mgessner-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <85a5c2010801290750j624ffe3bt3d30f5fb7d5df020-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <1201684421-26124-1-git-send-email-bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,28 +23,96 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 29 January 2008, Matt Gessner wrote:
-> Hello,
-> 
-> I've got what seems to be a very odd problem.  There's a specific word
-> (offset 0x20000) in my dataflash that for some reason I can't change.
-> 
-> I wrote a simple program that does the following:
-> http://rafb.net/p/RU5LPy71.html
->      a) open the dataflash via /dev/mtdblock/0, seek, read a 32-bit value, close
->      b) open the dataflash via /dev/mtdblock/0, seek, write a 32-bit
-> value, close
->      c) open the dataflash via /dev/mtdblock/0, seek, read a 32-bit value, close
-> 
-> The value in c) is the same value as from a), not that which was
-> written in b), which is horribly wrong.
+PBX 2 SPI device need cs change per word and this regression is due to commit
 
-If that were a character device, I'd agree with you.
+Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi_bfin5xx.c |   40 ++++++++++++----------------------------
+ 1 files changed, 12 insertions(+), 28 deletions(-)
 
-But it's a block device ... and you're not doing I/O in
-units of one block. Sso I would not expect that to work.
-
-- Dave
+diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+index c3f9ed4..ceb5b53 100644
+--- a/drivers/spi/spi_bfin5xx.c
++++ b/drivers/spi/spi_bfin5xx.c
+@@ -294,16 +294,14 @@ static void u8_cs_chg_writer(struct driver_data *drv_data)
+ {
+ 	struct chip_data *chip = drv_data->cur_chip;
+ 
+-	/* poll for SPI completion before start */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+-		cpu_relax();
+-
+ 	while (drv_data->tx < drv_data->tx_end) {
+ 		cs_active(drv_data, chip);
+ 
+ 		write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
+ 		while (read_STAT(drv_data) & BIT_STAT_TXS)
+ 			cpu_relax();
++		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
++			cpu_relax();
+ 
+ 		cs_deactive(drv_data, chip);
+ 
+@@ -342,31 +340,20 @@ static void u8_cs_chg_reader(struct driver_data *drv_data)
+ {
+ 	struct chip_data *chip = drv_data->cur_chip;
+ 
+-	/* poll for SPI completion before start */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+-		cpu_relax();
+-
+-	/* clear TDBR buffer before read(else it will be shifted out) */
+-	write_TDBR(drv_data, 0xFFFF);
++	while (drv_data->rx < drv_data->rx_end) {
++		cs_active(drv_data, chip);
++		read_RDBR(drv_data);	/* kick off */
+ 
+-	cs_active(drv_data, chip);
+-	dummy_read(drv_data);
++		while (!(read_STAT(drv_data) & BIT_STAT_RXS))
++			cpu_relax();
++		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
++			cpu_relax();
+ 
+-	while (drv_data->rx < drv_data->rx_end - 1) {
++		*(u8 *) (drv_data->rx) = read_SHAW(drv_data);
+ 		cs_deactive(drv_data, chip);
+ 
+-		while (!(read_STAT(drv_data) & BIT_STAT_RXS))
+-			cpu_relax();
+-		cs_active(drv_data, chip);
+-		*(u8 *) (drv_data->rx) = read_RDBR(drv_data);
+ 		++drv_data->rx;
+ 	}
+-	cs_deactive(drv_data, chip);
+-
+-	while (!(read_STAT(drv_data) & BIT_STAT_RXS))
+-		cpu_relax();
+-	*(u8 *) (drv_data->rx) = read_SHAW(drv_data);
+-	++drv_data->rx;
+ }
+ 
+ static void u8_duplex(struct driver_data *drv_data)
+@@ -392,15 +379,12 @@ static void u8_cs_chg_duplex(struct driver_data *drv_data)
+ {
+ 	struct chip_data *chip = drv_data->cur_chip;
+ 
+-	/* poll for SPI completion before start */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+-		cpu_relax();
+-
+ 	while (drv_data->rx < drv_data->rx_end) {
+ 		cs_active(drv_data, chip);
+ 
+ 		write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
+-		while (read_STAT(drv_data) & BIT_STAT_TXS)
++
++		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+ 			cpu_relax();
+ 		while (!(read_STAT(drv_data) & BIT_STAT_RXS))
+ 			cpu_relax();
+-- 
+1.5.3.4
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

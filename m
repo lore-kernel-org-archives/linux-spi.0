@@ -1,14 +1,15 @@
 From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 5/6] [Blackfin] SPI driver: Fix bug
-	SPI_write should not return until complete bit is set.
-Date: Wed, 30 Jan 2008 17:13:40 +0800
-Message-ID: <1201684421-26124-6-git-send-email-bryan.wu@analog.com>
+Subject: [PATCH 1/6] [Blackfin] SPI driver: remove
+	useless return status check in restore_state function pointed
+	by Michael.
+Date: Wed, 30 Jan 2008 17:13:36 +0800
+Message-ID: <1201684421-26124-2-git-send-email-bryan.wu@analog.com>
 References: <1201684421-26124-1-git-send-email-bryan.wu@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -24,77 +25,53 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-
-Signed-off-by: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Cc: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   22 ++++++++++------------
- 1 files changed, 10 insertions(+), 12 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   15 ++-------------
+ 1 files changed, 2 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index c5d4d77..9f12639 100644
+index 7ef39a6..8fd1365 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -278,16 +278,16 @@ static void u8_writer(struct driver_data *drv_data)
- 	dev_dbg(&drv_data->pdev->dev,
- 		"cr8-s is 0x%x\n", read_STAT(drv_data));
+@@ -223,10 +223,9 @@ static void cs_deactive(struct driver_data *drv_data, struct chip_data *chip)
+ #define MAX_SPI_SSEL	7
  
--	/* poll for SPI completion before start */
--	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
--		cpu_relax();
--
- 	while (drv_data->tx < drv_data->tx_end) {
- 		write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
- 		while (read_STAT(drv_data) & BIT_STAT_TXS)
- 			cpu_relax();
- 		++drv_data->tx;
- 	}
-+
-+	/* poll for SPI completion before return */
-+	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
-+		cpu_relax();
- }
- 
- static void u8_cs_chg_writer(struct driver_data *drv_data)
-@@ -398,32 +398,30 @@ static void u16_writer(struct driver_data *drv_data)
- 	dev_dbg(&drv_data->pdev->dev,
- 		"cr16 is 0x%x\n", read_STAT(drv_data));
- 
--	/* poll for SPI completion before start */
--	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
--		cpu_relax();
--
- 	while (drv_data->tx < drv_data->tx_end) {
- 		write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
- 		while ((read_STAT(drv_data) & BIT_STAT_TXS))
- 			cpu_relax();
- 		drv_data->tx += 2;
- 	}
-+
-+	/* poll for SPI completion before return */
-+	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
-+		cpu_relax();
- }
- 
- static void u16_cs_chg_writer(struct driver_data *drv_data)
+ /* stop controller and re-config current chip*/
+-static int restore_state(struct driver_data *drv_data)
++static void restore_state(struct driver_data *drv_data)
  {
  	struct chip_data *chip = drv_data->cur_chip;
+-	int ret = 0;
  
--	/* poll for SPI completion before start */
--	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
--		cpu_relax();
+ 	/* Clear status and disable clock */
+ 	write_STAT(drv_data, BIT_STAT_CLR);
+@@ -239,13 +238,6 @@ static int restore_state(struct driver_data *drv_data)
+ 
+ 	bfin_spi_enable(drv_data);
+ 	cs_active(drv_data, chip);
 -
- 	while (drv_data->tx < drv_data->tx_end) {
- 		cs_active(drv_data, chip);
+-	if (ret)
+-		dev_dbg(&drv_data->pdev->dev,
+-			": request chip select number %d failed\n",
+-			chip->chip_select_num);
+-
+-	return ret;
+ }
  
- 		write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
- 		while ((read_STAT(drv_data) & BIT_STAT_TXS))
- 			cpu_relax();
-+		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
-+			cpu_relax();
+ /* used to kick off transfer in rx mode */
+@@ -978,10 +970,7 @@ static void pump_messages(struct work_struct *work)
  
- 		cs_deactive(drv_data, chip);
+ 	/* Setup the SSP using the per chip configuration */
+ 	drv_data->cur_chip = spi_get_ctldata(drv_data->cur_msg->spi);
+-	if (restore_state(drv_data)) {
+-		spin_unlock_irqrestore(&drv_data->lock, flags);
+-		return;
+-	};
++	restore_state(drv_data);
+ 
+ 	list_del_init(&drv_data->cur_msg->queue);
  
 -- 
 1.5.3.4

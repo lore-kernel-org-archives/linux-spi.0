@@ -1,18 +1,13 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.24 3/6] spi_bfin: wait for tx to
-	complete on some cs_chg paths
-Date: Thu, 31 Jan 2008 13:53:34 -0800
-Message-ID: <200801311353.34281.david-b@pacbell.net>
-References: <200801311219.11238.david-b@pacbell.net>
-	<20080131132631.91075a19.akpm@linux-foundation.org>
+From: "Matt Gessner" <mgessner-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Linux, AT91RM9200 and SPI
+Date: Thu, 31 Jan 2008 17:09:19 -0500
+Message-ID: <85a5c2010801311409l437bdd4fla276a295e5c0bfc4@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080131132631.91075a19.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,25 +20,17 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 31 January 2008, Andrew Morton wrote:
-> On Thu, 31 Jan 2008 12:19:11 -0800
-> David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> 
-> > +		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
-> > +			cpu_relax();
-> 
-> I'd suggest that this commonly-occurring code sequence be implemented in a
-> standalone function.
+Hello,
 
-The bitmask to check can be a parameter too, as well as the
-termination result after the mask.  That will allow other loops
-to get properly limited too -- e.g. wait till RXS or TXS clears,
-not just SPIF getting set.
+I last worked with 2.6.20 with patches from maxim for this processor.
+At the time, user space access to the SPI bus (like /dev/spi-0) wasn't
+working.  Does it work now?  I'm asking because I didn't want to have
+to go through the 30 or so Changelogs; I thought someone might know
+off the top of their head.
 
+Thanks,
 
-> That'll probably produce less code and you can also 
-> add a timeout+printk+BUG (or whatever) to that function, rather than just
-> mysteriously locking up if something goes wrong.
+Matt
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

@@ -1,8 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.24 2/6] spi_bfin: use more useful
-	GPIO labels
-Date: Thu, 31 Jan 2008 12:16:39 -0800
-Message-ID: <200801311216.39818.david-b@pacbell.net>
+Subject: [patch 2.6.24 4/6] spi_bfin: wait for tx to
+	complete on full duplex paths
+Date: Thu, 31 Jan 2008 12:20:18 -0800
+Message-ID: <200801311220.18733.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -23,27 +23,69 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Use the SPI driver's name when requesting gpio lines.  When there are
-gpio conflicts, this helps to narrow down the problems; "bfin-spi"
-is not informative.
+Full duplex SPI operation should not read a dummy byte at the first
+transfer.  Bug and fix by Jean-Christian de Rivaz <jc-WsDXB8FQtm4@public.gmane.org>:
 
+http://blackfin.uclinux.org/gf/project/uclinux-dist/tracker/?action=TrackerItemEdit&tracker_item_id=3678
+
+Signed-off-by: Jean-Christian de Rivaz <jc-WsDXB8FQtm4@public.gmane.org>
 Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi_bfin5xx.c |   18 +++---------------
+ 1 file changed, 3 insertions(+), 15 deletions(-)
 
---- g26.orig/drivers/spi/spi_bfin5xx.c	2008-01-31 11:51:58.000000000 -0800
-+++ g26/drivers/spi/spi_bfin5xx.c	2008-01-31 11:51:59.000000000 -0800
-@@ -1176,7 +1176,7 @@ static int setup(struct spi_device *spi)
- 	if ((chip->chip_select_num > 0)
- 		&& (chip->chip_select_num <= spi->master->num_chipselect))
- 		peripheral_request(ssel[spi->master->bus_num]
--			[chip->chip_select_num-1], DRV_NAME);
-+			[chip->chip_select_num-1], spi->modalias);
+--- g26.orig/drivers/spi/spi_bfin5xx.c	2008-01-31 11:52:00.000000000 -0800
++++ g26/drivers/spi/spi_bfin5xx.c	2008-01-31 11:52:01.000000000 -0800
+@@ -358,14 +358,10 @@ static void u8_cs_chg_reader(struct driv
  
- 	cs_deactive(drv_data, chip);
+ static void u8_duplex(struct driver_data *drv_data)
+ {
+-	/* poll for SPI completion before start */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+-		cpu_relax();
+-
+ 	/* in duplex mode, clk is triggered by writing of TDBR */
+ 	while (drv_data->rx < drv_data->rx_end) {
+ 		write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
+-		while (read_STAT(drv_data) & BIT_STAT_TXS)
++		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+ 			cpu_relax();
+ 		while (!(read_STAT(drv_data) & BIT_STAT_RXS))
+ 			cpu_relax();
+@@ -495,14 +491,10 @@ static void u16_cs_chg_reader(struct dri
  
+ static void u16_duplex(struct driver_data *drv_data)
+ {
+-	/* poll for SPI completion before start */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+-		cpu_relax();
+-
+ 	/* in duplex mode, clk is triggered by writing of TDBR */
+ 	while (drv_data->tx < drv_data->tx_end) {
+ 		write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
+-		while (read_STAT(drv_data) & BIT_STAT_TXS)
++		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+ 			cpu_relax();
+ 		while (!(read_STAT(drv_data) & BIT_STAT_RXS))
+ 			cpu_relax();
+@@ -516,15 +508,11 @@ static void u16_cs_chg_duplex(struct dri
+ {
+ 	struct chip_data *chip = drv_data->cur_chip;
+ 
+-	/* poll for SPI completion before start */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+-		cpu_relax();
+-
+ 	while (drv_data->tx < drv_data->tx_end) {
+ 		cs_active(drv_data, chip);
+ 
+ 		write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
+-		while (read_STAT(drv_data) & BIT_STAT_TXS)
++		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+ 			cpu_relax();
+ 		while (!(read_STAT(drv_data) & BIT_STAT_RXS))
+ 			cpu_relax();
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

@@ -1,17 +1,14 @@
-From: "eric miao" <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: SPI related Kconfig warning
-Date: Thu, 31 Jan 2008 17:27:01 +0800
-Message-ID: <f17812d70801310127h64f77b10td33a4736b3a23836@mail.gmail.com>
-References: <D5CED6F1-A708-4866-BA3D-75F3CCBA43F6@kernel.crashing.org>
-	<200801302321.51120.david-b@pacbell.net>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch 2.6.24 5/6] spi_bfin: wait for tx to
+	complete on write paths
+Date: Thu, 31 Jan 2008 12:21:35 -0800
+Message-ID: <200801311221.35987.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Linux Kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200801302321.51120.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -24,39 +21,79 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Jan 31, 2008 3:21 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> On Wednesday 30 January 2008, Kumar Gala wrote:
-> > Was wondering if anyone was looking at the cause of this warning in
-> > top of linus's tree (8af03e782cae1e0a0f530ddd22301cdd12cf9dc0)
-> >
-> > drivers/spi/Kconfig:156:warning: 'select' used by config symbol
-> > 'SPI_PXA2XX' refers to undefined symbol 'PXA_SSP'
-> >
-> > I was doing a build of a ppc kernel.
->
-> Happens on x86, AVR32, and non-PXA ARM too.  Came from some PXA cleanup
-> patches.  Eric, didn't you have a patch for this?
->
+From: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Nope.
+SPI writes should also not return until the last bit is sent.
 
-If moving the symbol PXA_SSP to the "depends on" list, this option will
-remain invisible if a careless user does not select PXA_SSP.
+Signed-off-by: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/spi_bfin5xx.c |   22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-Yet I'm not sure this is the way to go or mandatory by the kconfig rules.
-
-> (Of course I *still* don't understand why kconfig bothers to look
-> at reverse dependencies whose "forward" ones can never be satisfied.
-> If it stopped looking at those, lots of similar problems would vanish.)
->
-> - Dave
->
-
-
-
--- 
-Cheers
-- eric
+--- g26.orig/drivers/spi/spi_bfin5xx.c	2008-01-31 11:52:01.000000000 -0800
++++ g26/drivers/spi/spi_bfin5xx.c	2008-01-31 11:52:02.000000000 -0800
+@@ -278,16 +278,16 @@ static void u8_writer(struct driver_data
+ 	dev_dbg(&drv_data->pdev->dev,
+ 		"cr8-s is 0x%x\n", read_STAT(drv_data));
+ 
+-	/* poll for SPI completion before start */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+-		cpu_relax();
+-
+ 	while (drv_data->tx < drv_data->tx_end) {
+ 		write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
+ 		while (read_STAT(drv_data) & BIT_STAT_TXS)
+ 			cpu_relax();
+ 		++drv_data->tx;
+ 	}
++
++	/* poll for SPI completion before return */
++	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
++		cpu_relax();
+ }
+ 
+ static void u8_cs_chg_writer(struct driver_data *drv_data)
+@@ -398,32 +398,30 @@ static void u16_writer(struct driver_dat
+ 	dev_dbg(&drv_data->pdev->dev,
+ 		"cr16 is 0x%x\n", read_STAT(drv_data));
+ 
+-	/* poll for SPI completion before start */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+-		cpu_relax();
+-
+ 	while (drv_data->tx < drv_data->tx_end) {
+ 		write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
+ 		while ((read_STAT(drv_data) & BIT_STAT_TXS))
+ 			cpu_relax();
+ 		drv_data->tx += 2;
+ 	}
++
++	/* poll for SPI completion before return */
++	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
++		cpu_relax();
+ }
+ 
+ static void u16_cs_chg_writer(struct driver_data *drv_data)
+ {
+ 	struct chip_data *chip = drv_data->cur_chip;
+ 
+-	/* poll for SPI completion before start */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+-		cpu_relax();
+-
+ 	while (drv_data->tx < drv_data->tx_end) {
+ 		cs_active(drv_data, chip);
+ 
+ 		write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
+ 		while ((read_STAT(drv_data) & BIT_STAT_TXS))
+ 			cpu_relax();
++		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
++			cpu_relax();
+ 
+ 		cs_deactive(drv_data, chip);
+ 
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

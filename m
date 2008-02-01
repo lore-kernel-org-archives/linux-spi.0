@@ -1,14 +1,17 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: Linux, AT91RM9200 and SPI
-Date: Thu, 31 Jan 2008 15:41:04 -0800
-Message-ID: <200801311541.04933.david-b@pacbell.net>
-References: <85a5c2010801311409l437bdd4fla276a295e5c0bfc4@mail.gmail.com>
+From: "Bryan Wu" <cooloney.lkml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 0/6] [Blackfin] SPI driver updates
+Date: Fri, 1 Feb 2008 17:41:14 +0800
+Message-ID: <386072610802010141g340cdb14gcd244ab87ffc855e@mail.gmail.com>
+References: <1201684421-26124-1-git-send-email-bryan.wu@analog.com>
+	<200801311250.46415.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <85a5c2010801311409l437bdd4fla276a295e5c0bfc4-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <200801311250.46415.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,25 +24,35 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 31 January 2008, Matt Gessner wrote:
-> Hello,
-> 
-> I last worked with 2.6.20 with patches from maxim for this processor.
-> At the time, user space access to the SPI bus (like /dev/spi-0) wasn't
-> working.  Does it work now?  I'm asking because I didn't want to have
-> to go through the 30 or so Changelogs; I thought someone might know
-> off the top of their head.
+On Feb 1, 2008 4:50 AM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> I've forwarded these to Andrew, with my signoff and updated comments.
+> You still need to work on having your patch descriptions match up
+> to what the patches actually do...
+>
 
-See Documentation/spi/spidev ... but be aware that even the latest
-code probably still has issues with nCS0 because of hardware errata
-on the rm9200 chips.
+Thanks a lot, I will try to make it more clearer next time.
 
-There are some SPI patches due to move upstream that should help that
-a bit, but I don't think there's a complete solution yet ... short of
-using the bitbang code I reposted to the ARM list within the last
-month or so.
+> Patches 3-5 in this series seem to have a common thread:  waiting
+> until BIT_STAT_SPIF is set before moving to the next step of the
+> transfer.  Next time something similar happens, I'd rather see just
+> one patch addressing the issue on all code paths ... not three small
+> patches that only fix it for a few of the code paths.
+>
 
-(ALSO:  don't cross-post to the ARM list.)
+OK, I will try to merge these same bug fixing into one patch.
+
+> Also, two of those three patches describe their updates as fixing
+> a "regression", or "reverting" the code.  Was this a bug that came
+> in those patches you wanted to merge to 2.6.24?  If so, shouldn't
+> those regression fixes go into the stable series?
+>
+
+Yes, I agree with you. Actually, I intend to send out these bug fixing
+patch ASAP, but we want to make sure our tester verify this bug was
+fixing first.
+
+Thanks
+-Bryan
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

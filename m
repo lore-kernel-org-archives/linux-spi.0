@@ -1,20 +1,17 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.24 3/6] spi_bfin: wait for tx to
-	complete on some cs_chg paths
-Date: Fri, 1 Feb 2008 22:59:35 -0800
-Message-ID: <200802012259.35878.david-b@pacbell.net>
-References: <200801311219.11238.david-b@pacbell.net>
-	<200801311353.34281.david-b@pacbell.net>
-	<1201933245.6978.5.camel@roc-laptop>
+From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Subject: Re: SPI related Kconfig warning
+Date: Sat, 2 Feb 2008 21:51:49 +0100
+Message-ID: <20080202205149.GC26635@uranus.ravnborg.org>
+References: <D5CED6F1-A708-4866-BA3D-75F3CCBA43F6@kernel.crashing.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
+	Linux Kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1201933245.6978.5.camel@roc-laptop>
 Content-Disposition: inline
+In-Reply-To: <D5CED6F1-A708-4866-BA3D-75F3CCBA43F6-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,41 +23,19 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 01 February 2008, Bryan Wu wrote:
-> =
+On Wed, Jan 30, 2008 at 10:41:33PM -0600, Kumar Gala wrote:
+> Was wondering if anyone was looking at the cause of this warning in  
+> top of linus's tree (8af03e782cae1e0a0f530ddd22301cdd12cf9dc0)
+> 
+> drivers/spi/Kconfig:156:warning: 'select' used by config symbol  
+> 'SPI_PXA2XX' refers to undefined symbol 'PXA_SSP'
+> 
+> I was doing a build of a ppc kernel.
 
-> > > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0while (!(read_STAT(drv_data) & BIT_STAT=
-_SPIF))
-> > > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0cpu_relax();
-> > > =
+I have now killed that warning. from kconfig. It has
+proved rather useless but annoying.
 
-> > > I'd suggest that this commonly-occurring code sequence be implemented=
- in a
-> > > standalone function.
-> > =
-
-> > The bitmask to check can be a parameter too, as well as the
-> > termination result after the mask. =A0That will allow other loops
-> > to get properly limited too -- e.g. wait till RXS or TXS clears,
-> > not just SPIF getting set.
-> > =
-
-> =
-
-> Before SPIF getting set, we do wait for RXS or TXS clears in the code,
-> right?
-
-Sure, but it's the same kind of loop-forever thing.
-All "loop-forever" primitives should be replaced by
-ones that have some kind of ceiling, since it's far
-from unheard-of that hardware glitch.
-
-My observation was that the standalone function
-can trivially handle "loop-till-set" as well as
-"loop-till-clear".
-
-- Dave
-
+	Sam
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

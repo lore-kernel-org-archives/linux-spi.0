@@ -1,13 +1,21 @@
-From: "DR. BEN OKEKE." <info.cbn-Qt13gs6zZMY@public.gmane.org>
-Subject: Respond urgently.
-Date: Fri, 1 Feb 2008 15:39:24 -0800
-Message-ID: <200802012339.m11NdOYl002821@relay.dotsterhost.com>
-Reply-To: info.cbn2-Qt13gs6zZMY@public.gmane.org
+From: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [patch 2.6.24 3/6] spi_bfin: wait for tx	to
+	complete on some cs_chg paths
+Date: Sat, 02 Feb 2008 14:20:45 +0800
+Message-ID: <1201933245.6978.5.camel@roc-laptop>
+References: <200801311219.11238.david-b@pacbell.net>
+	<20080131132631.91075a19.akpm@linux-foundation.org>
+	<200801311353.34281.david-b@pacbell.net>
+Reply-To: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Bryan Wu <bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200801311353.34281.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,46 +27,36 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->From The Central Bank of Nigeria.
-Lagos, Nigeria.
 
-Sir/Madam,
+On Thu, 2008-01-31 at 13:53 -0800, David Brownell wrote:
+> On Thursday 31 January 2008, Andrew Morton wrote:
+> > On Thu, 31 Jan 2008 12:19:11 -0800
+> > David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> > 
+> > > +		while (!(read_STAT(drv_data) & BIT_STAT_SPIF))
+> > > +			cpu_relax();
+> > 
+> > I'd suggest that this commonly-occurring code sequence be implemented in a
+> > standalone function.
+> 
+> The bitmask to check can be a parameter too, as well as the
+> termination result after the mask.  That will allow other loops
+> to get properly limited too -- e.g. wait till RXS or TXS clears,
+> not just SPIF getting set.
+> 
 
-Re-Confirmation of Instruction to Release your Outstanding Contract Payment of US$12,500,000.00 on Contract NO: NNPC/POX/FAX/KADREF-539/04 to the below Account Information.
+Before SPIF getting set, we do wait for RXS or TXS clears in the code,
+right?
 
-This is to notify you that with the directive of the constituted   Senate Committee Panel on Settlement for all outstanding contract payments   on  contracts awarded, executed and commissioned between 1999-2006 by the  Federal Government of Nigeria own firms, this department of the Apex  bank Nigeria (Central Bank of Nigeria) on the starting of the month of  November  published the names of the beneficiaries that are due for the  settlement which you happened to be one the beneficiaries, and the below named  person responded to the publication in person stating that she is your representative, also submitting the below banking details for the transfer of the said fund on your advice.Submitted Information's.
+> 
+> > That'll probably produce less code and you can also 
+> > add a timeout+printk+BUG (or whatever) to that function, rather than just
+> > mysteriously locking up if something goes wrong.
 
-NAME: JANET RAMNARINE.
-1759 WOODVIEW AVE. PICKERING ONT. LIVIS.
-BANK NAME: BANQUE CREDIT.SUISSE.
-1211 GENEVE 70, SWITZERLAND.
-A/C NO: 025152835962.
-A/C NAME: FINA TRD S.A.
+I will pull out these things to a generic standalone function later.
 
-With the changes of some of the information's to the one's in the  file that was handed over to us, we then became suspicious of her and her claim, thereby making it necessary that this office communicate with you to reconfirmation that yes you are aware of this and did authorized her so that the bank can carry on with the process of the release of the payment.
-
-PLEASE, DO RECONFIRM TO THIS OFFICE, AS A MATTER OF URGENCY IF THIS   WOMAN IS FROM YOU. YOU ARE REQUESTED TO FILL AND SEND THIS  INFORMATION'S   FOR VERIFICATIONS PURPOSES SO THAT YOUR FUND VALID US$12.5M US DOLLARS WILL BE REMITTED INTO YOUR NOMINATED BANK ACCOUNT. THIS FUND IS AS A RESULT  OF INHERITANCE ON YOUR BEHALF. INFORMATION NEEDED FROM YOU FOR 
-VERIFICATION IS AS FOLLOW:
-
-1. YOUR NAME:..............................
-2. YOUR FULL ADDRESS:...................................
-3. YOUR TELEPHONE ..................................
-4. FAX........EMAIL:...........................................
-5. AGE..................................................
-6. SEX:.........MALE...........................
-7. YOUR BANKING INFORMATION ..................................
-
-AS SOON AS WE RECEIVE THIS, WE WILL COMMENCE WITH ALL NECESSARY PROCEDURES IN OTHER TO REMIT THIS MONEY INTO YOUR ACCOUNT.
-In the next seven banking days if this office fail to receive your respond on the subject matter, we shall go on with the process and if the release is made wrongly for your failure to respond as requested,  be informed that the government of Nigeria nor her Apex bank (Central Bank of Nigeria) should not be liable to the outcome.
-
-Respond urgently.
-
-Yours faithfully,
-DR. BEN OKEKE.
-Director.(CBN)
-International Operations Department
-
-
+Thanks a lot
+-Bryan
 
 
 -------------------------------------------------------------------------

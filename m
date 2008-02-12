@@ -1,12 +1,16 @@
-From: "Resultados Concretos" <maricel.estay-VNyHAXAXEMI@public.gmane.org>
-Subject: Oferta Enero
-Date: Tue, 12 Feb 2008 04:28:21 -0400
-Message-ID: <20070123.WHUDMOKFSBEITQAB@icce.cl>
-Reply-To: Resultados Concretos <maricel.estay-VNyHAXAXEMI@public.gmane.org>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: Re: Fw: Re: PXA270 SSPSFRM gates chip select ?
+Date: Tue, 12 Feb 2008 11:24:00 -0500
+Message-ID: <47B1C820.2010202@whoi.edu>
+References: <20080212110118.3162a1d2.merrij3@rpi.edu>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0947186435=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
+To: "J. Scott Merritt" <merrij3-IL7dBOYR4Vg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080212110118.3162a1d2.merrij3-IL7dBOYR4Vg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,76 +22,55 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This message is in MIME format with multi-part. Since your mail reader does not
-understand this format, some or all of this message may not be legible.
+J. Scott Merritt wrote:
+> Ned wrote:
+> 
+>> I will try to think about a patch tomorrow.  I volunteer to be involved 
+>> in this so that it gets fixed without breaking the other things I need 
+>> to do.  Hopefully Stephen will be available to review any patches.
+> 
+> Thank you for volunterring to work on this.  For my particular (embedded)
+> application, I think that I can get around the problem with an initial
+> (dummy) transfer to get things set up.  ... but I think a general
+> repair for the Kernel mainline would be a good idea.
+> 
+> On an unrelated note, I received the message below from someone else
+> on the SPI list.  The issue he raises seems valid based on what I have
+> seen in my usage ... however, I suspect that a fix would be difficult.
+> I forward it simply for your information/consideration ....
+> 
+> Thanks, Scott.
+> 
+> 
+> While we're on the subject of the pxa2xx_spi driver, I've found that
+> it's incredibly slow to access. The problem appears to be related to
+> the use of a tasklet in pumping messages. The initial setup and
+> transfer is quick but then the tasklet is started and a context switch
+> causes terrible latency. It takes around a millisecond for the tasklet
+> to get control at which point the chip select is released and the SPI
+> bus is available for the next transfer. This means that running as
+> hard as it can the bus is idle 99% of the time. I've experimented with
+> removing the tasklet from the driver and it does improve the situation
+> markedly.
 
---===============0947186435==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_438_5428_25010263.20266649"
+Yes, I have seen this, and have communicated on the list about it.  It 
+might be easy to fix, but detrimental to kernel interrupt latency.  I 
+would like to hear what Stephen has to say about this, as I know that 
+his application, servicing audio A/Ds and D/As (and for which he wrote 
+the driver), is more typical than my application (a read-only fire hose, 
+streaming 11Mbit/sec data).
 
-This message is in MIME format with multi-part. Since your mail reader does not
-understand this format, some or all of this message may not be legible.
+-- 
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
+http://www.whoi.edu/hpb/Site.do?id=1532
+http://www.whoi.edu/page.do?pid=10079
 
-------=_NextPart_438_5428_25010263.20266649
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: base64
-
-RS1tYWlsIE1hc2l2b3MgcGFyYSB0dSBjYW1wYfFhIGRlIE1hcmtldGluZw0KJDUwLjAwMCBDT01Q
-TEVUQSBJTlNUQUxBQ0nTTiBERUwgU09GVFdBUkUgREUgRU5WzU8NCkVOIFVOIE1BWElNTyBERSAz
-IE9SREVOQURPUkVTICsgU09QT1JURSBERSBMVU5FUyANCkEgRE9NSU5HTyArIENPTkZJR1VSQUNJ
-T04gREUgVU5BIENVRU5UQSBERSBTQUxJREENCkFUUkFWRVogREUgVU4gU0VSVklET1IgRVNQRUNJ
-QUwgUVVFIE5PIFNFIFNBVFVSQQ0KWSBQVUVERSBNQU5EQVIgVU4gVE9UQUwgREUgMzAwLjAwMCBD
-T1JSRU9TIERJQVJJT1MNCk5PIFBJRVJEQSBNQVMgU1UgRElORVJPIEVOIFBVQkxJQ0lEQUQNCkVM
-IE1BUktFVElORyBERUwgRlVUVVJPIFlBIEVTVEEgQVFVzQ0KRm9ub3M6IDgtNzA2MDAyNSBvIDMx
-MzU5MzENClZBTE9SIElOQ0xVWUUgVU5BIEJBU0UgREUgREFUT1MgREUgUkVHQUxPIERFIDEwMC4w
-MDANClJFR0lTVFJPUyBBQ1RVQUxJWkFET1MgQSBOT1ZJRU1CUkUgREUgMjAwNyBZIFVOIEVYVFJB
-Q1RPUiBERSBDT1JSRU9T
-
-------=_NextPart_438_5428_25010263.20266649
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: base64
-
-PEhUTUw+PEhFQUQ+PHRpdGxlPk9mZXJ0YSBFbmVybzwvdGl0bGU+DQo8TUVUQSBodHRwLWVxdWl2
-PUNvbnRlbnQtVHlwZSBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9aXNvLTg4NTktMSI+DQo8
-TUVUQSBjb250ZW50PSJFbWFpbCBNYXJrZXRlciBNZXNzYWdlIEVkaXRvciIgbmFtZT1HRU5FUkFU
-T1I+DQo8U1RZTEUgdHlwZT10ZXh0L2Nzcz4NCmJvZHksdGFibGUsdGQsdHIscCxpbnB1dCB7Zm9u
-dC1mYW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIFNhbnMtU2VyaWY7IGZvbnQtc2l6
-ZTogMTFweH0NCmhyIHtoZWlnaHQ6IDFweH0NCjwvU1RZTEU+DQo8L0hFQUQ+DQo8Qk9EWT4NCjxQ
-PjxCPkUtbWFpbCBNYXNpdm9zIHBhcmEgdHUgY2FtcGHxYSBkZSBNYXJrZXRpbmc8L0I+PC9QPg0K
-PFA+PEI+JDUwLjAwMCBDT01QTEVUQSBJTlNUQUxBQ0nTTiBERUwgU09GVFdBUkUgREUgRU5WzU88
-QlI+RU4gVU4gTUFYSU1PIERFIDMgT1JERU5BRE9SRVMgKyBTT1BPUlRFIERFIExVTkVTIDxCUj5B
-IERPTUlOR08gKyBDT05GSUdVUkFDSU9OIERFIFVOQSBDVUVOVEEgREUgU0FMSURBPEJSPkFUUkFW
-RVogREUgVU4gU0VSVklET1IgRVNQRUNJQUwgUVVFIE5PIFNFIFNBVFVSQTxCUj5ZIFBVRURFIE1B
-TkRBUiBVTiBUT1RBTCBERSAzMDAuMDAwIENPUlJFT1MgRElBUklPUzwvQj48L1A+DQo8UD48Qj5O
-TyBQSUVSREEgTUFTIFNVIERJTkVSTyBFTiBQVUJMSUNJREFEPC9CPjwvUD4NCjxQPjxCPkVMIE1B
-UktFVElORyBERUwgRlVUVVJPIFlBIEVTVEEgQVFVzTwvQj48L1A+DQo8UD48Qj5Gb25vczogOC03
-MDYwMDI1IG8gMzEzNTkzMTwvQj48L1A+DQo8UD48Qj5WQUxPUiBJTkNMVVlFIFVOQSBCQVNFIERF
-IERBVE9TIERFIFJFR0FMTyBERSAxMDAuMDAwPEJSPlJFR0lTVFJPUyBBQ1RVQUxJWkFET1MgQSBO
-T1ZJRU1CUkUgREUgMjAwNyBZIFVOIEVYVFJBQ1RPUiBERSBDT1JSRU9TPC9CPjwvUD4NCjxQPjxC
-PjwvQj48L1A+PC9CT0RZPjwvSFRNTD4=
-
-------=_NextPart_438_5428_25010263.20266649--
-
-
---===============0947186435==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============0947186435==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0947186435==--

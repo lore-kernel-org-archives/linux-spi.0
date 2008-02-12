@@ -1,16 +1,17 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+From: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
 Subject: Re: PXA270 SSPSFRM gates chip select ?
-Date: Mon, 11 Feb 2008 20:16:58 -0800
-Message-ID: <200802112016.59411.david-b@pacbell.net>
+Date: Tue, 12 Feb 2008 15:19:46 +1100
+Message-ID: <33e9dd1c0802112019u3ae784a8yf45f2cac29f42325@mail.gmail.com>
 References: <20080211174339.73ca7ed5.merrij3@rpi.edu>
-	<47B11178.6090904@whoi.edu>
+	<33e9dd1c0802111454k5deeaa38o9d21cee610b79da7@mail.gmail.com>
+	<200802111851.10155.david-b@pacbell.net> <47B11178.6090904@whoi.edu>
 	<33e9dd1c0802111948u2256d0adj8caa478073795d78@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
-To: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
+To: "Ned Forrester" <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <33e9dd1c0802111948u2256d0adj8caa478073795d78-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Disposition: inline
@@ -25,16 +26,25 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 11 February 2008, Zik Saleeba wrote:
-> I'm using an earlier kernel (2.6.16) which I've back-ported the latest
-> SPI code so it's possible that tasklets work better in more recent
-> kernels. Anyone know if that might be true?
+On Feb 12, 2008 2:48 PM, Zik Saleeba <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org> wrote:
+>
+> pump_transfers() is called from pump_messages() and a few
+> other places, all of which run in a workqueue. So it's not called from
+> interrupt context but from a workqueue.
 
-I wouldn't think so ... but the most accurate answer would come
-from your own testing.  2.6.24+ should run on your cm-x270; can
-you do that the test on that kernel too?
+I just had a closer look at this and it's not true in all cases. It
+can also be invoked from dma_transfer_complete() which  is reached in
+interrupt context. This is probably the case which is improving my
+performance so much.
 
-- Dave
+So my change is bad in that it increases the maximum interrupt
+latency. It's also the only way I know to get decent SPI utilisation
+when you're doing large numbers of small transfers (as I am).
+
+Is there a better way of doing this?
+
+Cheers,
+Zik
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

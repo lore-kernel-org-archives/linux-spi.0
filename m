@@ -1,16 +1,18 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+From: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
 Subject: Re: PXA270 SSPSFRM gates chip select ?
-Date: Mon, 11 Feb 2008 18:51:09 -0800
-Message-ID: <200802111851.10155.david-b@pacbell.net>
+Date: Tue, 12 Feb 2008 14:15:40 +1100
+Message-ID: <33e9dd1c0802111915q48cb80ecxb33461a9263f9295@mail.gmail.com>
 References: <20080211174339.73ca7ed5.merrij3@rpi.edu>
 	<33e9dd1c0802111454k5deeaa38o9d21cee610b79da7@mail.gmail.com>
+	<200802111851.10155.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
+To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <33e9dd1c0802111454k5deeaa38o9d21cee610b79da7-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <200802111851.10155.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -23,22 +25,19 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 11 February 2008, Zik Saleeba wrote:
-> While we're on the subject of the pxa2xx_spi driver, I've found that
-> it has incredibly slow throughput. The problem appears to be related to
-> the use of a tasklet in pumping messages. The initial setup and
-> transfer is quick but then the tasklet is started and a context switch
-> causes terrible latency. It takes around a millisecond for the tasklet
-> to get control at which point the chip select is released and the SPI
-> bus is available for the next transfer. This means that running as
-> hard as it can the bus is idle 99% of the time. I've experimented with
-> removing the tasklet from the driver and it does improve the situation
-> markedly.
+On Feb 12, 2008 1:51 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+>
+> Got patch?  :)
 
-Got patch?  :)
+I'm using a version which I've backported to a slightly earlier kernel
+so it's not entirely clean. I'll try to sort out a clean patch
+shortly.
 
-- Dave
+Incidentally I've also written a driver for the NXP sc16is752 dual
+UART (connects via SPI). Is anyone interested in that?
 
+Cheers,
+Zik
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

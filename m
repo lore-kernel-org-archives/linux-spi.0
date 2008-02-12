@@ -1,16 +1,22 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: Fw: Re: PXA270 SSPSFRM gates chip select ?
-Date: Tue, 12 Feb 2008 11:24:00 -0500
-Message-ID: <47B1C820.2010202@whoi.edu>
-References: <20080212110118.3162a1d2.merrij3@rpi.edu>
+From: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
+Subject: Re: PXA270 SSPSFRM gates chip select ?
+Date: Wed, 13 Feb 2008 07:48:22 +1100
+Message-ID: <33e9dd1c0802121248q43883d6r481cb6f054de1050@mail.gmail.com>
+References: <20080211174339.73ca7ed5.merrij3@rpi.edu>
+	<33e9dd1c0802111454k5deeaa38o9d21cee610b79da7@mail.gmail.com>
+	<200802111851.10155.david-b@pacbell.net> <47B11178.6090904@whoi.edu>
+	<33e9dd1c0802111948u2256d0adj8caa478073795d78@mail.gmail.com>
+	<47B12406.9040208@whoi.edu>
+	<33e9dd1c0802112124y5ae8dd39ua9078f2b3878a018@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
-To: "J. Scott Merritt" <merrij3-IL7dBOYR4Vg@public.gmane.org>
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
+To: "Ned Forrester" <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080212110118.3162a1d2.merrij3-IL7dBOYR4Vg@public.gmane.org>
+In-Reply-To: <33e9dd1c0802112124y5ae8dd39ua9078f2b3878a018-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,53 +28,26 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-J. Scott Merritt wrote:
-> Ned wrote:
-> 
->> I will try to think about a patch tomorrow.  I volunteer to be involved 
->> in this so that it gets fixed without breaking the other things I need 
->> to do.  Hopefully Stephen will be available to review any patches.
-> 
-> Thank you for volunterring to work on this.  For my particular (embedded)
-> application, I think that I can get around the problem with an initial
-> (dummy) transfer to get things set up.  ... but I think a general
-> repair for the Kernel mainline would be a good idea.
-> 
-> On an unrelated note, I received the message below from someone else
-> on the SPI list.  The issue he raises seems valid based on what I have
-> seen in my usage ... however, I suspect that a fix would be difficult.
-> I forward it simply for your information/consideration ....
-> 
-> Thanks, Scott.
-> 
-> 
-> While we're on the subject of the pxa2xx_spi driver, I've found that
-> it's incredibly slow to access. The problem appears to be related to
-> the use of a tasklet in pumping messages. The initial setup and
-> transfer is quick but then the tasklet is started and a context switch
-> causes terrible latency. It takes around a millisecond for the tasklet
-> to get control at which point the chip select is released and the SPI
-> bus is available for the next transfer. This means that running as
-> hard as it can the bus is idle 99% of the time. I've experimented with
-> removing the tasklet from the driver and it does improve the situation
-> markedly.
+Followup on this problem: I did some experimentation using workqueues
+differently in my serial-via-spi driver and it seems to have fixed the
+problem with poor throughput in the pxa2xx_spi driver. I was
+previously using the default workqueue in my serial driver but changed
+it to use separate workqueues. To my surprise this completely fixed
+the problem I was having with the pxa2xx_spi driver being slow to
+respond to dma_transfer_complete(). Presumably the extra load on the
+default shared workqueue was holding up the service tasklet in
+pxa2xx_spi.
 
-Yes, I have seen this, and have communicated on the list about it.  It 
-might be easy to fix, but detrimental to kernel interrupt latency.  I 
-would like to hear what Stephen has to say about this, as I know that 
-his application, servicing audio A/Ds and D/As (and for which he wrote 
-the driver), is more typical than my application (a read-only fire hose, 
-streaming 11Mbit/sec data).
+So thanks to all - the problem is resolved at last. For what it's
+worth I'm still getting a 90us chip select period for only 6us of
+actual SPI transfer for short requests but I think that's down to the
+speed of the processor and the driver overhead.
 
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
+Thanks everyone for all the suggestions you've offered in the last
+couple of days!
 
+Cheers,
+Zik
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

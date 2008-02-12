@@ -1,19 +1,18 @@
-From: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: PXA270 SSPSFRM gates chip select ?
-Date: Tue, 12 Feb 2008 15:19:46 +1100
-Message-ID: <33e9dd1c0802112019u3ae784a8yf45f2cac29f42325@mail.gmail.com>
+Date: Mon, 11 Feb 2008 20:20:25 -0800
+Message-ID: <200802112020.25436.david-b@pacbell.net>
 References: <20080211174339.73ca7ed5.merrij3@rpi.edu>
-	<33e9dd1c0802111454k5deeaa38o9d21cee610b79da7@mail.gmail.com>
-	<200802111851.10155.david-b@pacbell.net> <47B11178.6090904@whoi.edu>
-	<33e9dd1c0802111948u2256d0adj8caa478073795d78@mail.gmail.com>
+	<200802111851.10155.david-b@pacbell.net>
+	<47B11178.6090904@whoi.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
-To: "Ned Forrester" <nforrester-/d+BM93fTQY@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
+To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <33e9dd1c0802111948u2256d0adj8caa478073795d78-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <47B11178.6090904-/d+BM93fTQY@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -26,25 +25,25 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Feb 12, 2008 2:48 PM, Zik Saleeba <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org> wrote:
->
-> pump_transfers() is called from pump_messages() and a few
-> other places, all of which run in a workqueue. So it's not called from
-> interrupt context but from a workqueue.
+On Monday 11 February 2008, Ned Forrester wrote:
+> I believe tasklets will never run later than the next timer =
 
-I just had a closer look at this and it's not true in all cases. It
-can also be invoked from dma_transfer_complete() which  is reached in
-interrupt context. This is probably the case which is improving my
-performance so much.
+> tick, which I believe is 1ms on most moder processors (but which can be =
 
-So my change is bad in that it increases the maximum interrupt
-latency. It's also the only way I know to get decent SPI utilisation
-when you're doing large numbers of small transfers (as I am).
+> changed). =A0Thus 1ms should be the maximum latency; I would expect bette=
+r =
 
-Is there a better way of doing this?
+> than 1ms most of the time.
 
-Cheers,
-Zik
+Actually, on ARM the default HZ is 100, not 1000 ... so the default
+latency would be 10 msec not 1 msec.
+
+Recent kernels have oneshot clockevent support for PXA though, so
+there are many options.  I don't recall whether HZ is settable there,
+but high-res timers might affect scheduling a bit.
+
+- Dave
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

@@ -1,17 +1,19 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+From: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
 Subject: Re: PXA270 SSPSFRM gates chip select ?
-Date: Mon, 11 Feb 2008 22:24:40 -0500
-Message-ID: <47B11178.6090904@whoi.edu>
-References: <20080211174339.73ca7ed5.merrij3@rpi.edu>	<33e9dd1c0802111454k5deeaa38o9d21cee610b79da7@mail.gmail.com>
-	<200802111851.10155.david-b@pacbell.net>
+Date: Tue, 12 Feb 2008 14:48:22 +1100
+Message-ID: <33e9dd1c0802111948u2256d0adj8caa478073795d78@mail.gmail.com>
+References: <20080211174339.73ca7ed5.merrij3@rpi.edu>
+	<33e9dd1c0802111454k5deeaa38o9d21cee610b79da7@mail.gmail.com>
+	<200802111851.10155.david-b@pacbell.net> <47B11178.6090904@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
+To: "Ned Forrester" <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200802111851.10155.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <47B11178.6090904-/d+BM93fTQY@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,62 +25,41 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-David Brownell wrote:
-> On Monday 11 February 2008, Zik Saleeba wrote:
->> While we're on the subject of the pxa2xx_spi driver, I've found that
->> it has incredibly slow throughput. The problem appears to be related to
->> the use of a tasklet in pumping messages. The initial setup and
->> transfer is quick but then the tasklet is started and a context switch
->> causes terrible latency. It takes around a millisecond for the tasklet
->> to get control at which point the chip select is released and the SPI
->> bus is available for the next transfer. This means that running as
->> hard as it can the bus is idle 99% of the time. I've experimented with
->> removing the tasklet from the driver and it does improve the situation
->> markedly.
-> 
-> Got patch?  :)
-> 
-> - Dave
+On Feb 12, 2008 2:24 PM, Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrote:
+>
+> I thought it was generally considered good practice...
 
-I thought it was generally considered good practice to separate 
-interrupt service into a top-half that executes only the code required 
-to satisfy the short-term hardware requirements, and a bottom-half that 
-is executed in a tasklet and that executes all data related code that is 
-not required to be executed immediately.  This separation allows 
-interrupts to be re-enabled as quickly as possible so that interrupt 
-latency for other parts of the kernel is not impacted any more than 
-necessary.  Is this not still the practice in the modern kernel?
+Yes, it probably is good practice. Unfortunately the tasklet seemed to
+be causing performance issues which made the driver essentially
+unusable for my application. I'm working with a serial chip which
+requires large numbers of small SPI transfers (several register reads
+etc. via SPI on each interrupt). If each of these transfers takes a
+millisecond it becomes impossible to service even a single fairly slow
+serial connection. I have to service 8 relatively fast serial ports so
+I can't put up with 99% SPI unavailability.
 
-I assume that "removing the tasklet" means calling pump_transfers() 
-directly from the interrupt service routines, rather than having the 
-ISRs schedule a tasklet to make that call.  Right?
+I'm using an earlier kernel (2.6.16) which I've back-ported the latest
+SPI code so it's possible that tasklets work better in more recent
+kernels. Anyone know if that might be true?
 
-I have been working with this driver for a couple of years and have not 
-noticed this problem, though I guess in my application it takes 3ms for 
-DMA to load a 4096byte buffer, so I might not have noticed an overall 
-effect.  However, during earlier work, 95% of the time I was able to 
-service the DMA interrupt and set up the next DMA (requiring the tasklet 
-to run) within the 366us that would have caused a hardware fifo overrun. 
-  That would indicate that tasklet execution was occurring in far less 
-than 1ms most of the time.  This is on a 400MHz PXA255.
+> I assume that "removing the tasklet" means calling pump_transfers()
+> directly from the interrupt service routines, rather than having the
+> ISRs schedule a tasklet to make that call.  Right?
 
-The latency of tasklet service must depend on what else the processor is 
-doing.  You might want to look at what else your system is doing, and 
-whether there are any scheduling parameters that might make sense to 
-adjust.  I believe tasklets will never run later than the next timer 
-tick, which I believe is 1ms on most moder processors (but which can be 
-changed).  Thus 1ms should be the maximum latency; I would expect better 
-than 1ms most of the time.
+Not exactly. pump_transfers() is called from pump_messages() and a few
+other places, all of which run in a workqueue. So it's not called from
+interrupt context but from a workqueue.
 
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
+> I believe tasklets will never run later than the next timer
+> tick, which I believe is 1ms on most moder processors (but which can be
+> changed).  Thus 1ms should be the maximum latency; I would expect better
+> than 1ms most of the time.
 
+I seem to be seeing 1ms consistently on a Compulab cm-x270 - or at
+least I did until I made this change.
+
+Cheers,
+Zik
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

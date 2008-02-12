@@ -1,21 +1,12 @@
-From: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
-Subject: Re: PXA270 SSPSFRM gates chip select ?
-Date: Tue, 12 Feb 2008 16:24:03 +1100
-Message-ID: <33e9dd1c0802112124y5ae8dd39ua9078f2b3878a018@mail.gmail.com>
-References: <20080211174339.73ca7ed5.merrij3@rpi.edu>
-	<33e9dd1c0802111454k5deeaa38o9d21cee610b79da7@mail.gmail.com>
-	<200802111851.10155.david-b@pacbell.net> <47B11178.6090904@whoi.edu>
-	<33e9dd1c0802111948u2256d0adj8caa478073795d78@mail.gmail.com>
-	<47B12406.9040208@whoi.edu>
+From: "Resultados Concretos" <maricel.estay-VNyHAXAXEMI@public.gmane.org>
+Subject: Oferta Enero
+Date: Tue, 12 Feb 2008 04:28:21 -0400
+Message-ID: <20070123.WHUDMOKFSBEITQAB@icce.cl>
+Reply-To: Resultados Concretos <maricel.estay-VNyHAXAXEMI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
-To: "Ned Forrester" <nforrester-/d+BM93fTQY@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0947186435=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <47B12406.9040208-/d+BM93fTQY@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,46 +18,76 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Feb 12, 2008 3:43 PM, Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrote:
->
-> I thought you might be doing lots of little transfers; that would
-> explain your need.  Is each transfer in a separate message, because you
-> have to interact with every transfer, or can you put several transfers
-> in one message, to be executed without higher level interaction?
+This message is in MIME format with multi-part. Since your mail reader does not
+understand this format, some or all of this message may not be legible.
 
-Yes, good idea. Unfortunately the transfers are of the form "how many
-bytes are waiting" followed by "please send x bytes" so they need to
-be separate transfers.
+--===============0947186435==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_438_5428_25010263.20266649"
 
-> Does your pxa2xx_spi.c contain the function
-> "set_dma_burst_and_threshold()"? If it does, you have Stephen's
-> 12/7/06 patch.
+This message is in MIME format with multi-part. Since your mail reader does not
+understand this format, some or all of this message may not be legible.
 
-Yes thanks, I have that function.
+------=_NextPart_438_5428_25010263.20266649
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: base64
 
-> Actually, it is scheduled from each of the xx_error_stop() and
-> xx_transfer_complete() routines, which all run in interrupt context.
+RS1tYWlsIE1hc2l2b3MgcGFyYSB0dSBjYW1wYfFhIGRlIE1hcmtldGluZw0KJDUwLjAwMCBDT01Q
+TEVUQSBJTlNUQUxBQ0nTTiBERUwgU09GVFdBUkUgREUgRU5WzU8NCkVOIFVOIE1BWElNTyBERSAz
+IE9SREVOQURPUkVTICsgU09QT1JURSBERSBMVU5FUyANCkEgRE9NSU5HTyArIENPTkZJR1VSQUNJ
+T04gREUgVU5BIENVRU5UQSBERSBTQUxJREENCkFUUkFWRVogREUgVU4gU0VSVklET1IgRVNQRUNJ
+QUwgUVVFIE5PIFNFIFNBVFVSQQ0KWSBQVUVERSBNQU5EQVIgVU4gVE9UQUwgREUgMzAwLjAwMCBD
+T1JSRU9TIERJQVJJT1MNCk5PIFBJRVJEQSBNQVMgU1UgRElORVJPIEVOIFBVQkxJQ0lEQUQNCkVM
+IE1BUktFVElORyBERUwgRlVUVVJPIFlBIEVTVEEgQVFVzQ0KRm9ub3M6IDgtNzA2MDAyNSBvIDMx
+MzU5MzENClZBTE9SIElOQ0xVWUUgVU5BIEJBU0UgREUgREFUT1MgREUgUkVHQUxPIERFIDEwMC4w
+MDANClJFR0lTVFJPUyBBQ1RVQUxJWkFET1MgQSBOT1ZJRU1CUkUgREUgMjAwNyBZIFVOIEVYVFJB
+Q1RPUiBERSBDT1JSRU9T
 
-Yep sorry - picked that one up in my followup email as I'm sure you've
-already seen.
+------=_NextPart_438_5428_25010263.20266649
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: base64
 
-> You might want to check the kernel config parameters for your system and
-> make sure that the timer ticks are at least 1000HZ.   I notice that mine
-> is set by default (by Gumstix perhaps) to be a tickless system (dynamic
-> ticks):
->
-> CONFIG_TICK_ONESHOT=y
-> CONFIG_NO_HZ=y
-> CONFIG_HIGH_RES_TIMERS=y
->
-> I don't know if this helps; it is just the way mine is set.
+PEhUTUw+PEhFQUQ+PHRpdGxlPk9mZXJ0YSBFbmVybzwvdGl0bGU+DQo8TUVUQSBodHRwLWVxdWl2
+PUNvbnRlbnQtVHlwZSBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9aXNvLTg4NTktMSI+DQo8
+TUVUQSBjb250ZW50PSJFbWFpbCBNYXJrZXRlciBNZXNzYWdlIEVkaXRvciIgbmFtZT1HRU5FUkFU
+T1I+DQo8U1RZTEUgdHlwZT10ZXh0L2Nzcz4NCmJvZHksdGFibGUsdGQsdHIscCxpbnB1dCB7Zm9u
+dC1mYW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIFNhbnMtU2VyaWY7IGZvbnQtc2l6
+ZTogMTFweH0NCmhyIHtoZWlnaHQ6IDFweH0NCjwvU1RZTEU+DQo8L0hFQUQ+DQo8Qk9EWT4NCjxQ
+PjxCPkUtbWFpbCBNYXNpdm9zIHBhcmEgdHUgY2FtcGHxYSBkZSBNYXJrZXRpbmc8L0I+PC9QPg0K
+PFA+PEI+JDUwLjAwMCBDT01QTEVUQSBJTlNUQUxBQ0nTTiBERUwgU09GVFdBUkUgREUgRU5WzU88
+QlI+RU4gVU4gTUFYSU1PIERFIDMgT1JERU5BRE9SRVMgKyBTT1BPUlRFIERFIExVTkVTIDxCUj5B
+IERPTUlOR08gKyBDT05GSUdVUkFDSU9OIERFIFVOQSBDVUVOVEEgREUgU0FMSURBPEJSPkFUUkFW
+RVogREUgVU4gU0VSVklET1IgRVNQRUNJQUwgUVVFIE5PIFNFIFNBVFVSQTxCUj5ZIFBVRURFIE1B
+TkRBUiBVTiBUT1RBTCBERSAzMDAuMDAwIENPUlJFT1MgRElBUklPUzwvQj48L1A+DQo8UD48Qj5O
+TyBQSUVSREEgTUFTIFNVIERJTkVSTyBFTiBQVUJMSUNJREFEPC9CPjwvUD4NCjxQPjxCPkVMIE1B
+UktFVElORyBERUwgRlVUVVJPIFlBIEVTVEEgQVFVzTwvQj48L1A+DQo8UD48Qj5Gb25vczogOC03
+MDYwMDI1IG8gMzEzNTkzMTwvQj48L1A+DQo8UD48Qj5WQUxPUiBJTkNMVVlFIFVOQSBCQVNFIERF
+IERBVE9TIERFIFJFR0FMTyBERSAxMDAuMDAwPEJSPlJFR0lTVFJPUyBBQ1RVQUxJWkFET1MgQSBO
+T1ZJRU1CUkUgREUgMjAwNyBZIFVOIEVYVFJBQ1RPUiBERSBDT1JSRU9TPC9CPjwvUD4NCjxQPjxC
+PjwvQj48L1A+PC9CT0RZPjwvSFRNTD4=
 
-I'll give it a try. Thanks.
+------=_NextPart_438_5428_25010263.20266649--
 
-Cheers,
-Zik
+
+--===============0947186435==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+--===============0947186435==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0947186435==--

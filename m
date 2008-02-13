@@ -1,13 +1,16 @@
-From: Alessandro Guido <alessandro.guido-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] Use menuconfig for CONFIG_SPI
-Date: Wed, 13 Feb 2008 23:28:00 +0100
-Message-ID: <200802132328.01729.alessandro.guido@gmail.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] Use menuconfig for CONFIG_SPI
+Date: Wed, 13 Feb 2008 15:39:06 -0800
+Message-ID: <200802131539.06642.david-b@pacbell.net>
+References: <200802132328.01729.alessandro.guido@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Alessandro Guido <alessandro.guido-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200802132328.01729.alessandro.guido-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,17 +23,17 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Alessandro Guido <alessandro.guido-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] Use menuconfig for CONFIG_SPI
+
 Signed-off-by: Alessandro Guido <alessandro.guido-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
-
  drivers/spi/Kconfig |   13 ++++++-------
- 1 files changed, 6 insertions(+), 7 deletions(-)
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index d810789..fae9e8f 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
+--- g26.orig/drivers/spi/Kconfig	2008-02-11 19:18:40.000000000 -0800
++++ g26/drivers/spi/Kconfig	2008-02-13 15:33:03.000000000 -0800
 @@ -5,11 +5,9 @@
  # nobody's needed a slave side API yet.  The master-role API is not
  # fully appropriate there, so it'd need some thought to do well.
@@ -58,7 +61,7 @@ index d810789..fae9e8f 100644
  	help
  	  Say "yes" to enable debug messaging (like dev_dbg and pr_debug),
  	  sysfs, and debugfs support in SPI controller and protocol drivers.
-@@ -245,5 +245,4 @@ config SPI_TLE62X0
+@@ -252,5 +252,4 @@ config SPI_TLE62X0
  
  # (slave support would go here)
  

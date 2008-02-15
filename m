@@ -1,18 +1,11 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: 2006/1/28 patches to pxa2xx-spi in 2.6.25
-	tree
-Date: Thu, 14 Feb 2008 20:09:55 -0500
-Message-ID: <47B4E663.7050001@whoi.edu>
-References: <47B4B67B.3010601@whoi.edu>
-	<E913911567467945BBEB9277E27868B0880975@msiexch01.marvell.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
-To: Eric Miao <ymiao3-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+From: Mail Delivery System <Mailer-Daemon-PatJo+VIPt04cpnwNp8Uvxar7b1XU7go@public.gmane.org>
+Subject: Mail delivery failed: returning message to
+	sender
+Date: Fri, 15 Feb 2008 03:40:52 -0200
+Message-ID: <E1JPtJz-0005F5-Pg@sinope.serverbr12.com>
+Content-Type: multipart/mixed; boundary="===============1297430538=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <E913911567467945BBEB9277E27868B0880975-3TKN+kxLw8+HXkj8w7BxOhL4W9x8LtSr@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,54 +17,64 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Eric Miao wrote:
-> Let me clarify:
-> 
-> Yes, I apologize I break the potential rules here for two reasons:
-> 
-> 1. I was not aware of the existence of spi-devel-general mailinglist
-> at that time (I know this now :)
-> 
-> 2. This patch is one of the series of patches refactoring PXA/ARM SSP
-> code, and the other patches are tightly PXA/ARM related, and David
-> reviewed part of the patch if not all.
+--===============1297430538==
 
-I guess change is the price of progress.
+This message was created automatically by mail delivery software.
 
-> And indeed yes, I will fire another patch correcting the doc, maybe
-> after another round of SSP code clean-up.
+A message that you sent could not be delivered to one or more of its
+recipients. This is a permanent error. The following address(es) failed:
 
-Thanks.
+  spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+    Domain restaurandoisrael.com.br has exceeded the max emails per hour (200) allowed. Message discarded.
 
-> Any other concerns/issues about the driver, please make me CC'ed, so
-> I'll try fix them if Stephen isn't available.
+------ This is a copy of the message, including all the headers. ------
 
-The only outstanding issue that I am aware of is a minor problem with 
-the sequence of setting chip select that was discussed on 
-spi-devel-general this week.  Stephen has not chimed in on that issue, 
-so I will submit a patch for that myself, either tomorrow or early next 
-week.  I will do this patch so that it won't break a heavily modified 
-version of pxa2xx_spi.c that I am working on, which deals with chained 
-transfers using DMA descriptors (don't expect to ever see it submitted 
-for inclusion in the kernel, but I am trying to stay in sync, anyway).
+Return-path: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Received: from 189-18-68-232.dsl.telesp.net.br ([189.18.68.232] helo=--------------------------)
+	by sinope.serverbr12.com with smtp (Exim 4.68)
+	(envelope-from <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>)
+	id 1JPtJz-0005EW-8w
+	for spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; Fri, 15 Feb 2008 03:40:52 -0200
+From: FACULDADE DE TEOLOGIA E FILOSOFIA =?ISO-8859-1?Q?SILO=C9?=
+ <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Promo=E7=E3o?= em Cursos de TEOLOGIA
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain;
+Message-ID: -----------------------------
+Date: Fri, 15 Feb 2008 03:41:11 -0200
+X-Priority: 3
 
-I have examined the patches you submitted, so far, and I think they do 
-not interfere with my version.  Someday I will be able to test, but I 
-work from the distribution provided with the Gumstix computers, and they 
-are currently at 2.6.21 (and I am still at 2.6.20), so it may be a year 
-or more before I see 2.6.25.
+FACULDADE DE TEOLOGIA E FILOSOFIA SILOÉ
+Graça e Paz do Senhor Jesus para sua vida! 
+TEOLOGIA A DISTÂNCIA
+Estude Teologia sem sair de casa! O curso a distância da FATESI têm ajudado Pastores(as), Obreiros(as) e amantes da Teologia Bíblica. O aluno recebe o material que pode ser através de: apostila, cd/ROM ou ainda por e-mail/PDF. Os valores da FATESI (estão no site www.fatesi.com.br) e são os melhores do mercado. A duração do curso varia conforme o tempo disponível do aluno que poderá concluir o curso no menor tempo possível. 
+O pagamento das mensalidades é via BOLETO BANCÁRIO.
+Acesse o site www.fatesi.com.br <http://www.fatesi.com.br>
+Nosso e-mail: secretaria-mRhrbp4JBolwFqzsTH5u/w@public.gmane.org <mailto:secretaria-mRhrbp4JBolwFqzsTH5u/w@public.gmane.org>
+Nosso telefone: 0xx11 5834-7672
+Nosso fax: 0xx11 5928-9067  
+A Diretoria
 
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
 
+--===============1297430538==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+--===============1297430538==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1297430538==--

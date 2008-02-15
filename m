@@ -1,12 +1,15 @@
-From: "Meng Hu" <meng.hu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: A question on Omap McSPI read/write
-Date: Fri, 15 Feb 2008 11:02:50 -0600
-Message-ID: <94d6903b0802150902m26de2cdfm2d99abeaad1e13d9@mail.gmail.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: A question on Omap McSPI read/write
+Date: Fri, 15 Feb 2008 10:04:09 -0800
+Message-ID: <200802151004.09657.david-b@pacbell.net>
+References: <94d6903b0802150902m26de2cdfm2d99abeaad1e13d9@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Cc: Meng Hu <meng.hu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <94d6903b0802150902m26de2cdfm2d99abeaad1e13d9-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,47 +22,22 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi
+On Friday 15 February 2008, Meng Hu wrote:
+> Hi
+> 
+> I am working on a SPI device driver on an Omap2 board. The McSPI
+> driver is the TI one.
 
-I am working on a SPI device driver on an Omap2 board. The McSPI
-driver is the TI one.
-I found a strange issue with read and write.
-So my SPI word length is set to 8. I have the following code sequence:
+Sorry, this mailing list relates to the generic SPI driver
+framework ... and thus the drivers/spi/omap2_mcspi.c code,
+not the older TI code.
 
-omap2_mcspi_raw_writetochannel( &spi_dev, 0xa1)
-omap2_mcspi_raw_readfromchannel ( &spi_dev, dataout)
+Among other things, it's a goal to have most SPI drivers not
+be specific to a given controller, by having all the master
+controller drivers expose the same programming interface.
 
-Say the data I expect from my device is 0xb1, now "dataout" value will
-be 0xa1b1.
-If I write 0xa2 in the first step, the "dataout" value will be  0xa2b1.
-I don't understand why the data I wrote to SPI would be read as part
-of the read operation. I think they are two different registers.
+- Dave
 
-Here is my McSPI debug info:
-
-MCSPI: entering omap2_mcspi_raw_writetochannel
-MCSPI INFO: R[0xd809a000+0x30]=0x6
-MCSPI INFO: W[0xd809a000+0x38]=0xa1
-MCSPI: exiting omap2_mcspi_raw_writetochannel ret: 0
-MCSPI: entering omap2_mcspi_disable_channel
-MCSPI INFO: W[0xd809a000+0x34]=0x0
-MCSPI: exiting omap2_mcspi_disable_channel ret: 0
-MCSPI: entering omap2_mcspi_raw_readfromchannel
-MCSPI INFO: R[0xd809a000+0x30]=0x7
-MCSPI INFO: R[0xd809a000+0x3c]=0xa1b1
-MCSPI: exiting omap2_mcspi_raw_readfromchannel ret: 0
-
-Is this normal? Since the word length is 8, I probably just need to
-use 8 least significant bits of "dataout".  But my question is 0xa1
-should be in MCSPI_TX1 while
-"dataout" should be from MCSPI_TX1. Why I am seeing 0xa1 as part of dataout?
-
-BTW: Do I need to enable channel before every read? It seems to work
-without enabling.
-
-Thank you in advance for any input!
-
-- Meng
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

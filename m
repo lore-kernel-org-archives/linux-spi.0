@@ -1,17 +1,15 @@
-From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
-Subject: Re: spi transfer with zero length
-Date: Sun, 17 Feb 2008 23:16:55 +0900 (JST)
-Message-ID: <20080217.231655.59465217.anemo@mba.ocn.ne.jp>
-References: <20080216.230232.25478328.anemo@mba.ocn.ne.jp>
-	<200802161058.49473.david-b@pacbell.net>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: [Patch 0/1] spi: Fix pxa2xx_spi.c chip select
+	sequence error
+Date: Sun, 17 Feb 2008 23:35:29 -0500
+Message-ID: <47B90B11.6000601@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org
+Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	merrij3-IL7dBOYR4Vg@public.gmane.org, Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200802161058.49473.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,46 +21,51 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 16 Feb 2008 10:58:48 -0800, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> On Saturday 16 February 2008, Atsushi Nemoto wrote:
-> > Hi.  Is it legal to use zero for 'len' field of struct spi_transfer?
-> > I mean, len=0, tx_buf=rx_buf=NULL, delay_usecs!=0.
-> 
-> Yes that should work ... it's uncommon, but not illegal.  Some
-> controller drivers may even handle that right!
-> 
-> If the delay were zero and cs_change didn't indicate a need to
-> briefly deselect the chip, it might make sense to reject such
-> a NOP transfer.  But that's not the case you identify.
+My next message of this subject contains a patch for the issue 
+initially raised by the thread: "PXA270 SSPSFRM gates chip select ?" 
 
-Thank you.  I suppose spi-bitbang can handle that right.  Then I'm
-going to fix drivers if it cannot handle such case.
+This patch is created to apply to the development kernel: 2.6.25-rc1.
+This kernel has a newly re-organized regs-ssp.h file, and since I
+needed to add a new bit definition to that file, it is included in the
+patch. However, as noted in the comments to the patch, kernels 2.6.20
+(when the bug was introduced) through 2.6.24 have the ssp bit
+definitions in pxa-regs.h, so the extra bit needs to be added there
+for the earlier versions.
 
-> > Some SPI devices need slightly long delay before first CLK edge after
-> > CS assertion.
-> 
-> For future reference ... could you identify a few such devices,
-> and say what "long" is relative to the clock period?
-> 
-> Some folk have just slowed down the clock in such cases, but
-> that's rather sub-optimal.
+David: 
 
-Well, the device I have is so special custom one implemented by PIC or
-something.  It needs 100us or so with 200ns clock period.  Slowing
-down might be an another solution but some spi driver cannot use such
-a slow bitrate (~10KHz).
-
-> > To achieve this, I think inserting using a zero length 
-> > transfer before real transfers.  But it seems some drivers do not
-> > handle this case properly.
-> 
-> Feel free to submit patches fixing those bugs.
-
-OK, if I had enough time to make a patch for uptodate version of the
-driver ;)
+Is there a defined procedure for distributing patches the can be
+applied to different kernel versions, when they won't apply directly?
 
 ---
-Atsushi Nemoto
+
+Also note that I am still developing on 2.6.20, and so I have only
+tested this code on that version.  Furthermore, I don't use chip
+select, so really I just compiled and ran the changes to show that
+they do no harm.
+
+David:
+
+Can I assume that you or someone up the chain will go through the
+motions of applying this patch to 2.6.25 and showing that it compiles?
+I really don't expect any trouble with that.
+
+Scott:
+
+Can you apply the patch to your 2.6.21 tree, and see if it fixes your
+original problem?  Note that you will have to add the bit definition 
+line to include/asm-arm/arch-pxa/pxa-regs.h, by hand, or alter the 
+file names in the patch from regs-ssp.h to pxa-regs.h
+
+-- 
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
+http://www.whoi.edu/hpb/Site.do?id=1532
+http://www.whoi.edu/page.do?pid=10079
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

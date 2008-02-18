@@ -1,13 +1,14 @@
 From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: [Patch 0/1] spi: Fix pxa2xx_spi.c chip select
+Subject: [Patch 1/1] spi: Fix pxa2xx_spi.c chip select
 	sequence error
-Date: Sun, 17 Feb 2008 23:35:29 -0500
-Message-ID: <47B90B11.6000601@whoi.edu>
+Date: Sun, 17 Feb 2008 23:38:47 -0500
+Message-ID: <47B90BD7.4000906@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	merrij3-IL7dBOYR4Vg@public.gmane.org, Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
+	"J. Scott Merritt" <merrij3-IL7dBOYR4Vg@public.gmane.org>,
+	Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -21,42 +22,135 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-My next message of this subject contains a patch for the issue 
-initially raised by the thread: "PXA270 SSPSFRM gates chip select ?" 
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 
-This patch is created to apply to the development kernel: 2.6.25-rc1.
-This kernel has a newly re-organized regs-ssp.h file, and since I
-needed to add a new bit definition to that file, it is included in the
-patch. However, as noted in the comments to the patch, kernels 2.6.20
-(when the bug was introduced) through 2.6.24 have the ssp bit
-definitions in pxa-regs.h, so the extra bit needs to be added there
-for the earlier versions.
+Applies to kernel 2.6.25-rc1
 
-David: 
+Fixes a sequencing bug in spi driver pxa2xx_spi.c in which the chip
+select for a transfer may be asserted before the transmission mode is
+set on the interface.  As a result of this bug, the pins of the
+interface can make extra transitions after chip select is set and
+before the intended clock/data signals begin.  This only occurs on the
+first transfer following a change in transmission mode.  The fix
+assures that all modes are set on the interface before asserting chip
+select.
 
-Is there a defined procedure for distributing patches the can be
-applied to different kernel versions, when they won't apply directly?
+This bug was introduced in a patch merged on 2006/12/10, kernel 2.6.20.
+
+The patch defines an additional bit in:
+include/asm-arm/arch-pxa/regs-ssp.h
+for 2.6.25 and newer kernels
+
+but this addition must be made in:
+include/asm-arm/arch-pxa/pxa-regs.h
+for kernels between 2.6.20 and 2.6.24, inclusive
+
+Signed-off-by: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 
 ---
 
-Also note that I am still developing on 2.6.20, and so I have only
-tested this code on that version.  Furthermore, I don't use chip
-select, so really I just compiled and ran the changes to show that
-they do no harm.
+ drivers/spi/pxa2xx_spi.c            |   48 ++++++++++++++++++--------
+ include/asm-arm/arch-pxa/regs-ssp.h |    1 
+ 2 files changed, 36 insertions(+), 13 deletions(-)
 
-David:
-
-Can I assume that you or someone up the chain will go through the
-motions of applying this patch to 2.6.25 and showing that it compiles?
-I really don't expect any trouble with that.
-
-Scott:
-
-Can you apply the patch to your 2.6.21 tree, and see if it fixes your
-original problem?  Note that you will have to add the bit definition 
-line to include/asm-arm/arch-pxa/pxa-regs.h, by hand, or alter the 
-file names in the patch from regs-ssp.h to pxa-regs.h
-
+diff -Nurp linux-2.6.25-rc1/drivers/spi/pxa2xx_spi.c linux-2.6.25-rc1_cs_patch/drivers/spi/pxa2xx_spi.c
+--- linux-2.6.25-rc1/drivers/spi/pxa2xx_spi.c	2008-02-12 21:52:35.000000000 +0000
++++ linux-2.6.25-rc1_cs_patch/drivers/spi/pxa2xx_spi.c	2008-02-17 21:30:23.000000000 +0000
+@@ -51,13 +51,19 @@ MODULE_LICENSE("GPL");
+ #define RESET_DMA_CHANNEL (DCSR_NODESC | DMA_INT_MASK)
+ #define IS_DMA_ALIGNED(x) (((u32)(x)&0x07)==0)
+ 
+-/* for testing SSCR1 changes that require SSP restart, basically
+- * everything except the service and interrupt enables */
+-#define SSCR1_CHANGE_MASK (SSCR1_TTELP | SSCR1_TTE | SSCR1_EBCEI | SSCR1_SCFR \
++/*
++ * for testing SSCR1 changes that require SSP restart, basically
++ * everything except the service and interrupt enables, the pxa270 developer
++ * manual says only SSCR1_SCFR, SSCR1_SPH, SSCR1_SPO need to be in this
++ * list, but the PXA255 dev man says all bits without really meaning the
++ * service and interrupt enables
++ */
++#define SSCR1_CHANGE_MASK (SSCR1_TTELP | SSCR1_TTE | SSCR1_SCFR \
+ 				| SSCR1_ECRA | SSCR1_ECRB | SSCR1_SCLKDIR \
+-				| SSCR1_RWOT | SSCR1_TRAIL | SSCR1_PINTE \
+-				| SSCR1_STRF | SSCR1_EFWR |SSCR1_RFT \
+-				| SSCR1_TFT | SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
++				| SSCR1_SFRMDIR | SSCR1_RWOT | SSCR1_TRAIL \
++				| SSCR1_IFS | SSCR1_STRF | SSCR1_EFWR \
++				| SSCR1_RFT | SSCR1_TFT | SSCR1_MWDS \
++				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
+ 
+ #define DEFINE_SSP_REG(reg, off) \
+ static inline u32 read_##reg(void *p) { return __raw_readl(p + (off)); } \
+@@ -973,9 +979,6 @@ static void pump_transfers(unsigned long
+ 		if (drv_data->ssp_type == PXA25x_SSP)
+ 			DCMD(drv_data->tx_channel) |= DCMD_ENDIRQEN;
+ 
+-		/* Fix me, need to handle cs polarity */
+-		drv_data->cs_control(PXA2XX_CS_ASSERT);
+-
+ 		/* Clear status and start DMA engine */
+ 		cr1 = chip->cr1 | dma_thresh | drv_data->dma_cr1;
+ 		write_SSSR(drv_data->clear_sr, reg);
+@@ -985,9 +988,6 @@ static void pump_transfers(unsigned long
+ 		/* Ensure we have the correct interrupt handler	*/
+ 		drv_data->transfer_handler = interrupt_transfer;
+ 
+-		/* Fix me, need to handle cs polarity */
+-		drv_data->cs_control(PXA2XX_CS_ASSERT);
+-
+ 		/* Clear status  */
+ 		cr1 = chip->cr1 | chip->threshold | drv_data->int_cr1;
+ 		write_SSSR(drv_data->clear_sr, reg);
+@@ -998,14 +998,36 @@ static void pump_transfers(unsigned long
+ 		|| (read_SSCR1(reg) & SSCR1_CHANGE_MASK) !=
+ 			(cr1 & SSCR1_CHANGE_MASK)) {
+ 
++		/* stop the SSP, and update the other bits */
+ 		write_SSCR0(cr0 & ~SSCR0_SSE, reg);
+ 		if (drv_data->ssp_type != PXA25x_SSP)
+ 			write_SSTO(chip->timeout, reg);
+-		write_SSCR1(cr1, reg);
++		/* first set CR1 without interrupt and service enables */
++		write_SSCR1(cr1 & SSCR1_CHANGE_MASK, reg);
++		/* restart the SSP */
+ 		write_SSCR0(cr0, reg);
++
++		/* FIXME, need to handle cs polarity,
++		 * this driver uses struct pxa2xx_spi_chip.cs_control to
++		 * specify a CS handling function, and it ignores most
++		 * struct spi_device.mode[s], including SPI_CS_HIGH */
++		drv_data->cs_control(PXA2XX_CS_ASSERT);
++
++		/* after chip select, release the data by enabling service
++		 * requests and interrupts, without changing any mode bits */
++		write_SSCR1(cr1, reg);
+ 	} else {
+ 		if (drv_data->ssp_type != PXA25x_SSP)
+ 			write_SSTO(chip->timeout, reg);
++
++		/* FIXME, need to handle cs polarity,
++		 * this driver uses struct pxa2xx_spi_chip.cs_control to
++		 * specify a CS handling function, and it ignores most
++		 * struct spi_device.mode[s], including SPI_CS_HIGH */
++		drv_data->cs_control(PXA2XX_CS_ASSERT);
++
++		/* after chip select, release the data by enabling service
++		 * requests and interrupts, without changing any mode bits */
+ 		write_SSCR1(cr1, reg);
+ 	}
+ }
+diff -Nurp linux-2.6.25-rc1/include/asm-arm/arch-pxa/regs-ssp.h linux-2.6.25-rc1_cs_patch/include/asm-arm/arch-pxa/regs-ssp.h
+--- linux-2.6.25-rc1/include/asm-arm/arch-pxa/regs-ssp.h	2008-02-15 19:41:37.000000000 +0000
++++ linux-2.6.25-rc1_cs_patch/include/asm-arm/arch-pxa/regs-ssp.h	2008-02-15 19:47:40.000000000 +0000
+@@ -85,6 +85,7 @@
+ #define SSCR1_RSRE		(1 << 20)	/* Receive Service Request Enable */
+ #define SSCR1_TINTE		(1 << 19)	/* Receiver Time-out Interrupt enable */
+ #define SSCR1_PINTE		(1 << 18)	/* Peripheral Trailing Byte Interupt Enable */
++#define SSCR1_IFS		(1 << 16)	/* Invert Frame Signal */
+ #define SSCR1_STRF		(1 << 15)	/* Select FIFO or EFWR */
+ #define SSCR1_EFWR		(1 << 14)	/* Enable FIFO Write/Read */
+ 
 -- 
 Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
 Oceanographic Systems Lab                                  508-289-2226

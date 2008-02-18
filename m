@@ -1,19 +1,17 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: atmel_spi clock polarity
-Date: Mon, 18 Feb 2008 11:57:56 -0800
-Message-ID: <200802181157.57299.david-b@pacbell.net>
-References: <20080216.223252.25909396.anemo@mba.ocn.ne.jp>
-	<20080218124237.0b5f701c@dhcp-252-066.norway.atmel.com>
-	<20080218.231243.41197917.anemo@mba.ocn.ne.jp>
+From: "J. Scott Merritt" <merrij3-IL7dBOYR4Vg@public.gmane.org>
+Subject: Re: [Patch 0/1] spi: Fix pxa2xx_spi.c chip
+	select sequence error
+Date: Mon, 18 Feb 2008 17:21:28 -0500
+Message-ID: <20080218172128.6fd1522c.merrij3@rpi.edu>
+References: <47B90B11.6000601@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
+To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080218.231243.41197917.anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <47B90B11.6000601-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,39 +23,22 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 18 February 2008, Atsushi Nemoto wrote:
-> 	 IIRC the clock state follows
-> CSRn.CPOL just before the real transfer.
+On Sun, 17 Feb 2008 23:35:29 -0500
+Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrote:
 
-No ... clock state should be valid *before* chipselect goes
-active.  So I'm thinking the patch from Haavard is likely
-the right change.
-
-
-> Like this (previous transfer 
-> was MODE 0, new transfer is MODE 3):
+> Scott:
 > 
->            T0                T1 T2
-> 
-> CS      ~~~|________________________________________________
-
-So at T0, some chip is selected (and never deselected) ...
-
-> 
-> CLK     ______________________|~|___|~~~|___|~~~|___|~~~|___
-
-... and at T1 CPOL is changed??  That's wrong.  There should
-never be a partial clock period while a chipselect is active.
-While it's inactive, sure -- no chip should care.
+> Can you apply the patch to your 2.6.21 tree, and see if it fixes your
+> original problem?  Note that you will have to add the bit definition 
+> line to include/asm-arm/arch-pxa/pxa-regs.h, by hand, or alter the 
+> file names in the patch from regs-ssp.h to pxa-regs.h
 
 
-> 
-> SO      ~~~~~~~~~~~~~~~~~~~~~~~~~~|___|~~~|___|~~~|___|~~~|_
->                                    MSB
-> 
-> T0-T1 was relatively longer then T1-T2.  I suppose T1 is not the
-> point of updating MR register, but the point of starting DMA transfer.
-> 
+I am pleased to report that the supplied Patch DOES indeed appear to
+correct the corruption (translation) that I was seeing in the first
+SPI data transferred after a reboot :)
+
+Thanks, Scott.
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

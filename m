@@ -1,50 +1,52 @@
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+From: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Subject: Re: atmel_spi clock polarity
-Date: Mon, 18 Feb 2008 23:12:43 +0900 (JST)
-Message-ID: <20080218.231243.41197917.anemo@mba.ocn.ne.jp>
+Date: Mon, 18 Feb 2008 15:31:58 +0100
+Message-ID: <20080218153158.2ff8842a@dhcp-252-066.norway.atmel.com>
 References: <20080216.223252.25909396.anemo@mba.ocn.ne.jp>
 	<20080218124237.0b5f701c@dhcp-252-066.norway.atmel.com>
+	<20080218.231243.41197917.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: david-b@pacbell.net, spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: hskinnemoen@atmel.com
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753740AbYBROMd@vger.kernel.org>
-In-Reply-To: <20080218124237.0b5f701c@dhcp-252-066.norway.atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080218.231243.41197917.anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 18 Feb 2008 12:42:37 +0100, Haavard Skinnemoen <hskinnemoen@atmel.com> wrote:
-> > Here is my quick workaround for this problem.  It makes all CSRn.CPOL
-> > match for the transfer before activating chipselect.  I'm not quite
-> > sure my analysis is correct, and there might be better solution.
-> > Could you give me any comments?
-> 
-> I'm not sure if I fully understand what problem you're seeing. Is the
-> clock state wrong when the chip select is activated?
+On Mon, 18 Feb 2008 23:12:43 +0900 (JST)
+Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org> wrote:
 
-Yes.
+> T0-T1 was relatively longer then T1-T2.  I suppose T1 is not the
+> point of updating MR register, but the point of starting DMA transfer.
 
-> If so, does the patch below help?
+Aw. I see.
 
-Hmm... It might fix my problem.  But IIRC the clock state follows
-CSRn.CPOL just before the real transfer.  Like this (previous transfer
-was MODE 0, new transfer is MODE 3):
+> Anyway, I will try your patch in a few days.
 
-           T0                T1 T2
+Ok, thanks. If it works, that would be great, but given your
+description above I'm not sure if I dare hope for it.
 
-CS      ~~~|________________________________________________
+Hmm...I suppose we could just use CSR0 for all transfers and not
+bother updating MR. That might actually be cheaper than doing it
+"the right way"...and allow us to support an arbitrary number of
+chipselects instead of just four.
 
-CLK     ______________________|~|___|~~~|___|~~~|___|~~~|___
+But I guess the AT91RM9200 won't be too happy about that...
 
-SO      ~~~~~~~~~~~~~~~~~~~~~~~~~~|___|~~~|___|~~~|___|~~~|_
-                                   MSB
+Haavard
 
-T0-T1 was relatively longer then T1-T2.  I suppose T1 is not the
-point of updating MR register, but the point of starting DMA transfer.
-
-Anyway, I will try your patch in a few days.
-
----
-Atsushi Nemoto
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Microsoft
+Defy all challenges. Microsoft(R) Visual Studio 2008.
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/

@@ -1,18 +1,18 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] documentation: move spidev_fdx
-	example to its own source file
-Date: Mon, 18 Feb 2008 18:14:24 -0800
-Message-ID: <200802181814.25463.david-b@pacbell.net>
-References: <20080218162625.1b4bd079.randy.dunlap@oracle.com>
+Subject: Re: [patch 2.6.25-rc2] SPI -- Freescale iMX SPI
+	controller driver
+Date: Tue, 19 Feb 2008 00:05:40 -0800
+Message-ID: <200802190005.41396.david-b@pacbell.net>
+References: <FLEPLOLKEPNLMHOILNHPCEJPECAA.a.paterniani@swapp-eng.it>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Randy Dunlap <randy.dunlap-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Cc: Andrew Morton <akpm-3NddpPZAyC0@public.gmane.org>,
+	SPI Devel General <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Linux ARM Kernel <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
+To: "Andrea Paterniani" <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080218162625.1b4bd079.randy.dunlap-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <FLEPLOLKEPNLMHOILNHPCEJPECAA.a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,368 +25,409 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 18 February 2008, Randy Dunlap wrote:
-> From: Randy Dunlap <randy.dunlap-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-> 
-> cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> 
-> Move sample source code to its own source file so that it can be used
-> easier and build-tested/check/maintained by anyone.
-> 
-> (Makefile changes are in a separate patch for all of Documentation/.)
-> 
-> Signed-off-by: Randy Dunlap <randy.dunlap-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+On Monday 18 February 2008, Andrea Paterniani wrote:
+> This patch fixes 2 bugs:
+> > flush() function revised.
+> > End of transfers management revised.
 
-Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+But what bugs were fixed??  "Revised" is useless to anyone trying
+to understand changes in a driver.
 
+
+> > Some cosmetics changes.
+
+Again, describe these...
+
+> 
+> Signed-off-by: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 > ---
->  Documentation/spi/spidev       |  168 -------------------------------
->  Documentation/spi/spidev_fdx.c |  158 +++++++++++++++++++++++++++++
->  2 files changed, 160 insertions(+), 166 deletions(-)
 > 
-> --- linux-2625-rc2-docsrc.orig/Documentation/spi/spidev
-> +++ linux-2625-rc2-docsrc/Documentation/spi/spidev
-> @@ -126,8 +126,8 @@ NOTES:
->  FULL DUPLEX CHARACTER DEVICE API
->  ================================
->  
-> -See the sample program below for one example showing the use of the full
-> -duplex programming interface.  (Although it doesn't perform a full duplex
-> +See the spidev_fdx.c sample program for one example showing the use of the
-> +full duplex programming interface.  (Although it doesn't perform a full duplex
->  transfer.)  The model is the same as that used in the kernel spi_sync()
->  request; the individual transfers offer the same capabilities as are
->  available to kernel drivers (except that it's not asynchronous).
-> @@ -141,167 +141,3 @@ and bitrate for each transfer segment.)
->  
->  To make a full duplex request, provide both rx_buf and tx_buf for the
->  same transfer.  It's even OK if those are the same buffer.
+> diff -uprN -X linux-2.6.25-rc2/Documentation/dontdiff linux-2.6.25-rc2/drivers/spi/spi_imx.c
+> linux-2.6.25-rc2-spi_imx/drivers/spi/spi_imx.c
+> --- linux-2.6.25-rc2/drivers/spi/spi_imx.c	2008-02-18 15:44:24.000000000 +0100
+> +++ linux-2.6.25-rc2-spi_imx/drivers/spi/spi_imx.c	2008-02-18 15:44:24.000000000 +0100
+> @@ -270,19 +270,26 @@ struct chip_data {
+> 
+>  static void pump_messages(struct work_struct *work);
+> 
+> -static int flush(struct driver_data *drv_data)
+> +static void flush(struct driver_data *drv_data)
+>  {
+> -	unsigned long limit = loops_per_jiffy << 1;
+> -	void __iomem *regs = drv_data->regs;
+> -	volatile u32 d;
+> +	void __iomem *regs = drv_data->regs;
+
+Something's odd with your patch generation; that "regs = ..." line
+didn't change at all.
+
+
+> +	u32 control;
+> 
+>  	dev_dbg(&drv_data->pdev->dev, "flush\n");
+> +
+> +	/* Wait for end of transaction */
+>  	do {
+> -		while (readl(regs + SPI_INT_STATUS) & SPI_STATUS_RR)
+> -			d = readl(regs + SPI_RXDATA);
+> -	} while ((readl(regs + SPI_CONTROL) & SPI_CONTROL_XCH) && limit--);
+
+No endless looping, good (although done badly, since the
+timeout should be fixed and not dependent on whatever 2/HZ
+happens to be) ...
+
+
+> +		control = readl(regs + SPI_CONTROL);
+> +	} while (control & SPI_CONTROL_XCH);
+
+... replaced by endless looping??  Bad!!  Please restore
+a limit mechanism.  (Fixing it would be good.)
+
+
+> +
+> +	/* Release chip select if requested, transfer delays are
+> +	   handled in pump_transfers */
+> +	if (drv_data->cs_change)
+> +		drv_data->cs_control(SPI_CS_DEASSERT);
+> 
+> -	return limit;
+> +	/* Disable SPI to flush FIFOs */
+> +	writel(control & ~SPI_CONTROL_SPIEN, regs + SPI_CONTROL);
+> +	writel(control, regs + SPI_CONTROL);
+
+I'm not following.  If you're going to flush FIFOs, that
+needs to be done before deasserting chipselect.  But on the
+other hand, once the transaction has ended, why would a FIFO
+possibly be non-empty?  If the idea is to discard RX data,
+that should show up in the comments... and maybe even as a
+better function name.  (You're changing all callers anyway,
+to have no return value, so fixing the name is easy.)
+
+
+>  }
+> 
+>  static void restore_state(struct driver_data *drv_data)
+> @@ -570,6 +577,7 @@ static void giveback(struct spi_message
+>  	writel(0, regs + SPI_INT_STATUS);
+>  	writel(0, regs + SPI_DMA);
+> 
+> +	/* Unconditioned deselct */
+>  	drv_data->cs_control(SPI_CS_DEASSERT);
+> 
+>  	message->state = NULL;
+> @@ -592,13 +600,10 @@ static void dma_err_handler(int channel,
+>  	/* Disable both rx and tx dma channels */
+>  	imx_dma_disable(drv_data->rx_channel);
+>  	imx_dma_disable(drv_data->tx_channel);
 > -
+> -	if (flush(drv_data) == 0)
+> -		dev_err(&drv_data->pdev->dev,
+> -				"dma_err_handler - flush failed\n");
 > -
-> -SAMPLE PROGRAM
-> -==============
+>  	unmap_dma_buffers(drv_data);
+> 
+> +	flush(drv_data);
+> +
+>  	msg->state = ERROR_STATE;
+>  	tasklet_schedule(&drv_data->pump_transfers);
+>  }
+> @@ -612,8 +617,7 @@ static void dma_tx_handler(int channel,
+>  	imx_dma_disable(channel);
+> 
+>  	/* Now waits for TX FIFO empty */
+> -	writel(readl(drv_data->regs + SPI_INT_STATUS) | SPI_INTEN_TE,
+> -			drv_data->regs + SPI_INT_STATUS);
+> +	writel(SPI_INTEN_TE, drv_data->regs + SPI_INT_STATUS);
+
+That doesn't exactly "wait" for anything does it?  Comment needs fixing...
+
+
+>  }
+> 
+>  static irqreturn_t dma_transfer(struct driver_data *drv_data)
+> @@ -621,19 +625,17 @@ static irqreturn_t dma_transfer(struct d
+>  	u32 status;
+>  	struct spi_message *msg = drv_data->cur_msg;
+>  	void __iomem *regs = drv_data->regs;
+> -	unsigned long limit;
+> 
+>  	status = readl(regs + SPI_INT_STATUS);
+> 
+> -	if ((status & SPI_INTEN_RO) && (status & SPI_STATUS_RO)) {
+> +	if ((status & (SPI_INTEN_RO | SPI_STATUS_RO)) == (SPI_INTEN_RO | SPI_STATUS_RO)) {
+>  		writel(status & ~SPI_INTEN, regs + SPI_INT_STATUS);
+> 
+> +		imx_dma_disable(drv_data->tx_channel);
+>  		imx_dma_disable(drv_data->rx_channel);
+>  		unmap_dma_buffers(drv_data);
+> 
+> -		if (flush(drv_data) == 0)
+> -			dev_err(&drv_data->pdev->dev,
+> -				"dma_transfer - flush failed\n");
+> +		flush(drv_data);
+> 
+>  		dev_warn(&drv_data->pdev->dev,
+>  				"dma_transfer - fifo overun\n");
+> @@ -649,20 +651,16 @@ static irqreturn_t dma_transfer(struct d
+> 
+>  		if (drv_data->rx) {
+>  			/* Wait end of transfer before read trailing data */
+> -			limit = loops_per_jiffy << 1;
+> -			while ((readl(regs + SPI_CONTROL) & SPI_CONTROL_XCH) &&
+> -					limit--);
 > -
-> ---------------------------------	CUT HERE
-> -#include <stdio.h>
-> -#include <unistd.h>
-> -#include <stdlib.h>
-> -#include <fcntl.h>
-> -#include <string.h>
+> -			if (limit == 0)
+> -				dev_err(&drv_data->pdev->dev,
+> -					"dma_transfer - end of tx failed\n");
+> -			else
+> -				dev_dbg(&drv_data->pdev->dev,
+> -					"dma_transfer - end of tx\n");
+> +			while (readl(regs + SPI_CONTROL) & SPI_CONTROL_XCH);
+
+Again ... there *SHOULD* be a limit on such looping.
+It shouldn't be 2/HZ, though having it depend on the
+clock rate used to talk to the device may make sense.
+
+It's also good style to have cpu_relax() inside such
+loops.
+
+
+> 
+>  			imx_dma_disable(drv_data->rx_channel);
+>  			unmap_dma_buffers(drv_data);
+> 
+> +			/* Release chip select if requested, transfer delays are
+> +			   handled in pump_transfers() */
+> +			if (drv_data->cs_change)
+> +				drv_data->cs_control(SPI_CS_DEASSERT);
+> +
+>  			/* Calculate number of trailing data and read them */
+>  			dev_dbg(&drv_data->pdev->dev,
+>  				"dma_transfer - test = 0x%08X\n",
+> @@ -676,19 +674,12 @@ static irqreturn_t dma_transfer(struct d
+>  			/* Write only transfer */
+>  			unmap_dma_buffers(drv_data);
+> 
+> -			if (flush(drv_data) == 0)
+> -				dev_err(&drv_data->pdev->dev,
+> -					"dma_transfer - flush failed\n");
+> +			flush(drv_data);
+>  		}
+> 
+>  		/* End of transfer, update total byte transfered */
+>  		msg->actual_length += drv_data->len;
+> 
+> -		/* Release chip select if requested, transfer delays are
+> -		   handled in pump_transfers() */
+> -		if (drv_data->cs_change)
+> -			drv_data->cs_control(SPI_CS_DEASSERT);
 > -
-> -#include <sys/ioctl.h>
-> -#include <sys/types.h>
-> -#include <sys/stat.h>
+>  		/* Move to next transfer */
+>  		msg->state = next_transfer(drv_data);
+> 
+> @@ -711,44 +702,43 @@ static irqreturn_t interrupt_wronly_tran
+> 
+>  	status = readl(regs + SPI_INT_STATUS);
+> 
+> -	while (status & SPI_STATUS_TH) {
+> +	if (status & SPI_INTEN_TE) {
+> +		/* TXFIFO Empty Interrupt on the last transfered word */
+> +		writel(status & ~SPI_INTEN, regs + SPI_INT_STATUS);
+>  		dev_dbg(&drv_data->pdev->dev,
+> -			"interrupt_wronly_transfer - status = 0x%08X\n", status);
+> +			"interrupt_wronly_transfer - end of tx\n");
+> 
+> -		/* Pump data */
+> -		if (write(drv_data)) {
+> -			writel(readl(regs + SPI_INT_STATUS) & ~SPI_INTEN,
+> -				regs + SPI_INT_STATUS);
+> +		flush(drv_data);
+> 
+> -			dev_dbg(&drv_data->pdev->dev,
+> -				"interrupt_wronly_transfer - end of tx\n");
+> +		/* Update total byte transfered */
+> +		msg->actual_length += drv_data->len;
+> 
+> -			if (flush(drv_data) == 0)
+> -				dev_err(&drv_data->pdev->dev,
+> -					"interrupt_wronly_transfer - "
+> -					"flush failed\n");
+> +		/* Move to next transfer */
+> +		msg->state = next_transfer(drv_data);
+> 
+> -			/* End of transfer, update total byte transfered */
+> -			msg->actual_length += drv_data->len;
+> +		/* Schedule transfer tasklet */
+> +		tasklet_schedule(&drv_data->pump_transfers);
+> 
+> -			/* Release chip select if requested, transfer delays are
+> -			   handled in pump_transfers */
+> -			if (drv_data->cs_change)
+> -				drv_data->cs_control(SPI_CS_DEASSERT);
+> +		return IRQ_HANDLED;
+> +	} else {
+> +		while (status & SPI_STATUS_TH) {
+> +			dev_dbg(&drv_data->pdev->dev,
+> +				"interrupt_wronly_transfer - status = 0x%08X\n",
+> +				status);
+> 
+> -			/* Move to next transfer */
+> -			msg->state = next_transfer(drv_data);
+> +			/* Pump data */
+> +			if (write(drv_data)) {
+> +				/* End of TXFIFO writes,
+> +				   now wait until TXFIFO is empty */
+> +				writel(SPI_INTEN_TE, regs + SPI_INT_STATUS);
+> +				return IRQ_HANDLED;
+> +			}
+> 
+> -			/* Schedule transfer tasklet */
+> -			tasklet_schedule(&drv_data->pump_transfers);
+> +			status = readl(regs + SPI_INT_STATUS);
+> 
+> -			return IRQ_HANDLED;
+> +			/* We did something */
+> +			handled = IRQ_HANDLED;
+>  		}
 > -
-> -#include <linux/types.h>
-> -#include <linux/spi/spidev.h>
+> -		status = readl(regs + SPI_INT_STATUS);
 > -
+> -		/* We did something */
+> -		handled = IRQ_HANDLED;
+>  	}
+> 
+>  	return handled;
+> @@ -758,45 +748,31 @@ static irqreturn_t interrupt_transfer(st
+>  {
+>  	struct spi_message *msg = drv_data->cur_msg;
+>  	void __iomem *regs = drv_data->regs;
+> -	u32 status;
+> +	u32 status, control;
+>  	irqreturn_t handled = IRQ_NONE;
+>  	unsigned long limit;
+> 
+>  	status = readl(regs + SPI_INT_STATUS);
+> 
+> -	while (status & (SPI_STATUS_TH | SPI_STATUS_RO)) {
+> +	if (status & SPI_INTEN_TE) {
+> +		/* TXFIFO Empty Interrupt on the last transfered word */
+> +		writel(status & ~SPI_INTEN, regs + SPI_INT_STATUS);
+>  		dev_dbg(&drv_data->pdev->dev,
+> -			"interrupt_transfer - status = 0x%08X\n", status);
 > -
-> -static int verbose;
+> -		if (status & SPI_STATUS_RO) {
+> -			writel(readl(regs + SPI_INT_STATUS) & ~SPI_INTEN,
+> -				regs + SPI_INT_STATUS);
 > -
-> -static void do_read(int fd, int len)
-> -{
-> -	unsigned char	buf[32], *bp;
-> -	int		status;
+> -			dev_warn(&drv_data->pdev->dev,
+> -				"interrupt_transfer - fifo overun\n"
+> -				"    data not yet written = %d\n"
+> -				"    data not yet read    = %d\n",
+> -				data_to_write(drv_data),
+> -				data_to_read(drv_data));
 > -
-> -	/* read at least 2 bytes, no more than 32 */
-> -	if (len < 2)
-> -		len = 2;
-> -	else if (len > sizeof(buf))
-> -		len = sizeof(buf);
-> -	memset(buf, 0, sizeof buf);
+> -			if (flush(drv_data) == 0)
+> -				dev_err(&drv_data->pdev->dev,
+> -					"interrupt_transfer - flush failed\n");
 > -
-> -	status = read(fd, buf, len);
-> -	if (status < 0) {
-> -		perror("read");
-> -		return;
-> -	}
-> -	if (status != len) {
-> -		fprintf(stderr, "short read\n");
-> -		return;
-> -	}
-> -
-> -	printf("read(%2d, %2d): %02x %02x,", len, status,
-> -		buf[0], buf[1]);
-> -	status -= 2;
-> -	bp = buf + 2;
-> -	while (status-- > 0)
-> -		printf(" %02x", *bp++);
-> -	printf("\n");
-> -}
-> -
-> -static void do_msg(int fd, int len)
-> -{
-> -	struct spi_ioc_transfer	xfer[2];
-> -	unsigned char		buf[32], *bp;
-> -	int			status;
-> -
-> -	memset(xfer, 0, sizeof xfer);
-> -	memset(buf, 0, sizeof buf);
-> -
-> -	if (len > sizeof buf)
-> -		len = sizeof buf;
-> -
-> -	buf[0] = 0xaa;
-> -	xfer[0].tx_buf = (__u64) buf;
-> -	xfer[0].len = 1;
-> -
-> -	xfer[1].rx_buf = (__u64) buf;
-> -	xfer[1].len = len;
-> -
-> -	status = ioctl(fd, SPI_IOC_MESSAGE(2), xfer);
-> -	if (status < 0) {
-> -		perror("SPI_IOC_MESSAGE");
-> -		return;
-> -	}
-> -
-> -	printf("response(%2d, %2d): ", len, status);
-> -	for (bp = buf; len; len--)
-> -		printf(" %02x", *bp++);
-> -	printf("\n");
-> -}
-> -
-> -static void dumpstat(const char *name, int fd)
-> -{
-> -	__u8	mode, lsb, bits;
-> -	__u32	speed;
-> -
-> -	if (ioctl(fd, SPI_IOC_RD_MODE, &mode) < 0) {
-> -		perror("SPI rd_mode");
-> -		return;
-> -	}
-> -	if (ioctl(fd, SPI_IOC_RD_LSB_FIRST, &lsb) < 0) {
-> -		perror("SPI rd_lsb_fist");
-> -		return;
-> -	}
-> -	if (ioctl(fd, SPI_IOC_RD_BITS_PER_WORD, &bits) < 0) {
-> -		perror("SPI bits_per_word");
-> -		return;
-> -	}
-> -	if (ioctl(fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed) < 0) {
-> -		perror("SPI max_speed_hz");
-> -		return;
-> -	}
-> -
-> -	printf("%s: spi mode %d, %d bits %sper word, %d Hz max\n",
-> -		name, mode, bits, lsb ? "(lsb first) " : "", speed);
-> -}
-> -
-> -int main(int argc, char **argv)
-> -{
-> -	int		c;
-> -	int		readcount = 0;
-> -	int		msglen = 0;
-> -	int		fd;
-> -	const char	*name;
-> -
-> -	while ((c = getopt(argc, argv, "hm:r:v")) != EOF) {
-> -		switch (c) {
-> -		case 'm':
-> -			msglen = atoi(optarg);
-> -			if (msglen < 0)
-> -				goto usage;
-> -			continue;
-> -		case 'r':
-> -			readcount = atoi(optarg);
-> -			if (readcount < 0)
-> -				goto usage;
-> -			continue;
-> -		case 'v':
-> -			verbose++;
-> -			continue;
-> -		case 'h':
-> -		case '?':
-> -usage:
-> -			fprintf(stderr,
-> -				"usage: %s [-h] [-m N] [-r N] /dev/spidevB.D\n",
-> -				argv[0]);
-> -			return 1;
+> -			msg->state = ERROR_STATE;
+> -			tasklet_schedule(&drv_data->pump_transfers);
+> +			"interrupt_transfer - end of tx\n");
+> 
+> -			return IRQ_HANDLED;
 > -		}
-> -	}
 > -
-> -	if ((optind + 1) != argc)
-> -		goto usage;
-> -	name = argv[optind];
+> -		/* Pump data */
+> -		read(drv_data);
+> -		if (write(drv_data)) {
+> -			writel(readl(regs + SPI_INT_STATUS) & ~SPI_INTEN,
+> -				regs + SPI_INT_STATUS);
+> +		if (msg->state == ERROR_STATE) {
+> +			/* RXFIFO overrun was detected and message aborted */
+> +			flush(drv_data);
+> +		} else {
+> +			/* Wait for end of transaction */
+> +			do {
+> +				control = readl(regs + SPI_CONTROL);
+> +			} while (control & SPI_CONTROL_XCH);
+> 
+> -			dev_dbg(&drv_data->pdev->dev,
+> -				"interrupt_transfer - end of tx\n");
+> +			/* Release chip select if requested, transfer delays are
+> +			   handled in pump_transfers */
+> +			if (drv_data->cs_change)
+> +				drv_data->cs_control(SPI_CS_DEASSERT);
+> 
+>  			/* Read trailing bytes */
+>  			limit = loops_per_jiffy << 1;
+> @@ -810,27 +786,54 @@ static irqreturn_t interrupt_transfer(st
+>  				dev_dbg(&drv_data->pdev->dev,
+>  					"interrupt_transfer - end of rx\n");
+> 
+> -			/* End of transfer, update total byte transfered */
+> +			/* Update total byte transfered */
+>  			msg->actual_length += drv_data->len;
+> 
+> -			/* Release chip select if requested, transfer delays are
+> -			   handled in pump_transfers */
+> -			if (drv_data->cs_change)
+> -				drv_data->cs_control(SPI_CS_DEASSERT);
 > -
-> -	fd = open(name, O_RDWR);
-> -	if (fd < 0) {
-> -		perror("open");
-> -		return 1;
-> -	}
-> -
-> -	dumpstat(name, fd);
-> -
-> -	if (msglen)
-> -		do_msg(fd, msglen);
-> -
-> -	if (readcount)
-> -		do_read(fd, readcount);
-> -
-> -	close(fd);
-> -	return 0;
-> -}
-> --- /dev/null
-> +++ linux-2625-rc2-docsrc/Documentation/spi/spidev_fdx.c
-> @@ -0,0 +1,158 @@
-> +#include <stdio.h>
-> +#include <unistd.h>
-> +#include <stdlib.h>
-> +#include <fcntl.h>
-> +#include <string.h>
-> +
-> +#include <sys/ioctl.h>
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +
-> +#include <linux/types.h>
-> +#include <linux/spi/spidev.h>
-> +
-> +
-> +static int verbose;
-> +
-> +static void do_read(int fd, int len)
-> +{
-> +	unsigned char	buf[32], *bp;
-> +	int		status;
-> +
-> +	/* read at least 2 bytes, no more than 32 */
-> +	if (len < 2)
-> +		len = 2;
-> +	else if (len > sizeof(buf))
-> +		len = sizeof(buf);
-> +	memset(buf, 0, sizeof buf);
-> +
-> +	status = read(fd, buf, len);
-> +	if (status < 0) {
-> +		perror("read");
-> +		return;
-> +	}
-> +	if (status != len) {
-> +		fprintf(stderr, "short read\n");
-> +		return;
-> +	}
-> +
-> +	printf("read(%2d, %2d): %02x %02x,", len, status,
-> +		buf[0], buf[1]);
-> +	status -= 2;
-> +	bp = buf + 2;
-> +	while (status-- > 0)
-> +		printf(" %02x", *bp++);
-> +	printf("\n");
-> +}
-> +
-> +static void do_msg(int fd, int len)
-> +{
-> +	struct spi_ioc_transfer	xfer[2];
-> +	unsigned char		buf[32], *bp;
-> +	int			status;
-> +
-> +	memset(xfer, 0, sizeof xfer);
-> +	memset(buf, 0, sizeof buf);
-> +
-> +	if (len > sizeof buf)
-> +		len = sizeof buf;
-> +
-> +	buf[0] = 0xaa;
-> +	xfer[0].tx_buf = (__u64) buf;
-> +	xfer[0].len = 1;
-> +
-> +	xfer[1].rx_buf = (__u64) buf;
-> +	xfer[1].len = len;
-> +
-> +	status = ioctl(fd, SPI_IOC_MESSAGE(2), xfer);
-> +	if (status < 0) {
-> +		perror("SPI_IOC_MESSAGE");
-> +		return;
-> +	}
-> +
-> +	printf("response(%2d, %2d): ", len, status);
-> +	for (bp = buf; len; len--)
-> +		printf(" %02x", *bp++);
-> +	printf("\n");
-> +}
-> +
-> +static void dumpstat(const char *name, int fd)
-> +{
-> +	__u8	mode, lsb, bits;
-> +	__u32	speed;
-> +
-> +	if (ioctl(fd, SPI_IOC_RD_MODE, &mode) < 0) {
-> +		perror("SPI rd_mode");
-> +		return;
-> +	}
-> +	if (ioctl(fd, SPI_IOC_RD_LSB_FIRST, &lsb) < 0) {
-> +		perror("SPI rd_lsb_fist");
-> +		return;
-> +	}
-> +	if (ioctl(fd, SPI_IOC_RD_BITS_PER_WORD, &bits) < 0) {
-> +		perror("SPI bits_per_word");
-> +		return;
-> +	}
-> +	if (ioctl(fd, SPI_IOC_RD_MAX_SPEED_HZ, &speed) < 0) {
-> +		perror("SPI max_speed_hz");
-> +		return;
-> +	}
-> +
-> +	printf("%s: spi mode %d, %d bits %sper word, %d Hz max\n",
-> +		name, mode, bits, lsb ? "(lsb first) " : "", speed);
-> +}
-> +
-> +int main(int argc, char **argv)
-> +{
-> +	int		c;
-> +	int		readcount = 0;
-> +	int		msglen = 0;
-> +	int		fd;
-> +	const char	*name;
-> +
-> +	while ((c = getopt(argc, argv, "hm:r:v")) != EOF) {
-> +		switch (c) {
-> +		case 'm':
-> +			msglen = atoi(optarg);
-> +			if (msglen < 0)
-> +				goto usage;
-> +			continue;
-> +		case 'r':
-> +			readcount = atoi(optarg);
-> +			if (readcount < 0)
-> +				goto usage;
-> +			continue;
-> +		case 'v':
-> +			verbose++;
-> +			continue;
-> +		case 'h':
-> +		case '?':
-> +usage:
-> +			fprintf(stderr,
-> +				"usage: %s [-h] [-m N] [-r N] /dev/spidevB.D\n",
-> +				argv[0]);
-> +			return 1;
+>  			/* Move to next transfer */
+>  			msg->state = next_transfer(drv_data);
 > +		}
-> +	}
+> 
+> -			/* Schedule transfer tasklet */
+> -			tasklet_schedule(&drv_data->pump_transfers);
+> +		/* Schedule transfer tasklet */
+> +		tasklet_schedule(&drv_data->pump_transfers);
+> 
+> -			return IRQ_HANDLED;
+> -		}
+> +		return IRQ_HANDLED;
+> +	} else {
+> +		while (status & (SPI_STATUS_TH | SPI_STATUS_RO)) {
+> +			dev_dbg(&drv_data->pdev->dev,
+> +				"interrupt_transfer - status = 0x%08X\n",
+> +				status);
 > +
-> +	if ((optind + 1) != argc)
-> +		goto usage;
-> +	name = argv[optind];
+> +			if (status & SPI_STATUS_RO) {
+> +				/* RXFIFO overrun, abort message end wait
+> +				   until TXFIFO is empty */
+> +				writel(SPI_INTEN_TE, regs + SPI_INT_STATUS);
 > +
-> +	fd = open(name, O_RDWR);
-> +	if (fd < 0) {
-> +		perror("open");
-> +		return 1;
-> +	}
+> +				dev_warn(&drv_data->pdev->dev,
+> +					"interrupt_transfer - fifo overun\n"
+> +					"    data not yet written = %d\n"
+> +					"    data not yet read    = %d\n",
+> +					data_to_write(drv_data),
+> +					data_to_read(drv_data));
 > +
-> +	dumpstat(name, fd);
+> +				msg->state = ERROR_STATE;
 > +
-> +	if (msglen)
-> +		do_msg(fd, msglen);
+> +				return IRQ_HANDLED;
+> +			}
+> 
+> -		status = readl(regs + SPI_INT_STATUS);
+> +			/* Pump data */
+> +			read(drv_data);
+> +			if (write(drv_data)) {
+> +				/* End of TXFIFO writes,
+> +				   now wait until TXFIFO is empty */
+> +				writel(SPI_INTEN_TE, regs + SPI_INT_STATUS);
+> +				return IRQ_HANDLED;
+> +			}
+> 
+> -		/* We did something */
+> -		handled = IRQ_HANDLED;
+> +			status = readl(regs + SPI_INT_STATUS);
 > +
-> +	if (readcount)
-> +		do_read(fd, readcount);
-> +
-> +	close(fd);
-> +	return 0;
-> +}
+> +			/* We did something */
+> +			handled = IRQ_HANDLED;
+> +		}
+>  	}
+> 
+>  	return handled;
 > 
 
 

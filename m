@@ -1,18 +1,12 @@
-From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
-Subject: Re: atmel_spi clock polarity
-Date: Wed, 20 Feb 2008 18:50:45 +0900 (JST)
-Message-ID: <20080220.185045.08317377.nemoto@toshiba-tops.co.jp>
-References: <20080218153158.2ff8842a@dhcp-252-066.norway.atmel.com>
-	<20080220.142109.11595419.nemoto@toshiba-tops.co.jp>
-	<20080220103446.1621c81f@dhcp-252-066.norway.atmel.com>
+From: "Corey Whitney" <lufbaseballprotectionkit-VyB4J5BHX1DgqPGKZi2hqdJR4SXAr38/@public.gmane.org>
+Subject: Software
+Date: Wed, 20 Feb 2008 13:15:02 +0200
+Message-ID: <188290125.80482128901314@baseballprotection.com>
+Reply-To: lufbaseballprotectionkit-VyB4J5BHX1DgqPGKZi2hqdJR4SXAr38/@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0025140359=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080220103446.1621c81f-STKoQgiEtS/cug01aK12UsGzbamoMwWuEvhb3Hwu1Ks@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,29 +18,59 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 20 Feb 2008 10:34:46 +0100, Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
-> In that case, I think the best fix is to let NPCS0 stay selected
-> permanently in MR and overwrite CSR0 with to the new slave's settings
-> before asserting CS. But that's a more complicated change, and I don't
-> know how it will affect the AT91RM9200 special cases.
-> 
-> So I suggest we merge your patch for 2.6.25, and try to optimize it
-> for 2.6.26.
+--===============0025140359==
+Content-Type: multipart/alternative;
+  boundary="----------80C9A6EB829329A6"
 
-I absolutely agree.
+------------80C9A6EB829329A6
+Content-Type: text/plain; charset=iso-8859-2
+Content-Transfer-Encoding: 7bit
 
-> David, do you want me to pass on the patch with my signoff or just ask
-> Andrew to add my Acked-by to the patch already in mm?
+Looking for the better costsin discount software? Right now you'll catch the chance to use the softs you dream of from very long ago.
+ And the best matter for you is, all softs are terribly cheap.
+ Make sure by yourself and get the softwares for lowest value! http://krutoyzagiboem.com/
+------------80C9A6EB829329A6
+Content-Type: text/html; charset=iso-8859-2
+Content-Transfer-Encoding: 7bit
 
-The patch in mm also lacks my Signed-off line.  I had thought Andrew
-never take a patch without Signed-off line ;)
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE></TITLE>
+</HEAD>
+<BODY>
 
-Should I resend my patch with my Signed-off and Haavard's Acked-by?
+<table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000"><tr><td align=center bgcolor="#CEF3FF"><b><font color="#FA3D05">Looking for the better costsin discount software?</font></b></td></tr><tr> 
 
----
-Atsushi Nemoto
+<td align=center bgcolor="#E9E9E9"><b>Right now you'll catch the chance to use the softs 
+you dream of from very long ago.<br> 
+And the best matter for you is, all softs are terribly cheap.<br> 
+
+<a href="http://krutoyzagiboem.com/" target="_blank"><em>Make sure by yourself and get the softwares for lowest value!</em></a></b></td></tr></table> 
+<font color="#D9EDFF">http://krutoyzagiboem.com/</font>
+
+</BODY></HTML>
+------------80C9A6EB829329A6--
+
+
+
+--===============0025140359==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+--===============0025140359==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0025140359==--

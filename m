@@ -1,51 +1,42 @@
-From: Adrian Bunk <bunk@stusta.de>
-Subject: Re: [PATCH] documentation: move spidev_fdx example to its own
-	source file
-Date: Tue, 19 Feb 2008 19:48:57 +0200
-Message-ID: <20080219174857.GC31955@cs181133002.pp.htv.fi>
-References: <20080218162625.1b4bd079.randy.dunlap@oracle.com> <20080219174719.GB31955@cs181133002.pp.htv.fi>
+From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+Subject: Re: atmel_spi clock polarity
+Date: Wed, 20 Feb 2008 14:21:09 +0900 (JST)
+Message-ID: <20080220.142109.11595419.nemoto@toshiba-tops.co.jp>
+References: <20080218124237.0b5f701c@dhcp-252-066.norway.atmel.com>
+	<20080218.231243.41197917.anemo@mba.ocn.ne.jp>
+	<20080218153158.2ff8842a@dhcp-252-066.norway.atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: Randy Dunlap <randy.dunlap@oracle.com>,
-	lkml <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net, akpm <akpm@linux-foundation.org>
-To: Adrian Bunk <bunk@kernel.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1759534AbYBSRto@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20080219174719.GB31955@cs181133002.pp.htv.fi>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080218153158.2ff8842a-STKoQgiEtS/cug01aK12UsGzbamoMwWuEvhb3Hwu1Ks@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 19, 2008 at 07:47:19PM +0200, Adrian Bunk wrote:
-> On Mon, Feb 18, 2008 at 04:26:25PM -0800, Randy Dunlap wrote:
-> > From: Randy Dunlap <randy.dunlap@oracle.com>
-> > 
-> > cc: dbrownell@users.sourceforge.net
-> > cc: spi-devel-general@lists.sourceforge.net
-> > 
-> > Move sample source code to its own source file so that it can be used
-> > easier and build-tested/check/maintained by anyone.
-> > 
-> > (Makefile changes are in a separate patch for all of Documentation/.)
-> > 
-> > Signed-off-by: Randy Dunlap <randy.dunlap@oracle.com>
-> > ---
-> >  Documentation/spi/spidev       |  168 -------------------------------
-> >  Documentation/spi/spidev_fdx.c |  158 +++++++++++++++++++++++++++++
-> >  2 files changed, 160 insertions(+), 166 deletions(-)
-> >...
+On Mon, 18 Feb 2008 15:31:58 +0100, Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
+> > Anyway, I will try your patch in a few days.
 > 
-> Wouldn't samples/spi/spidev_fdx.c be a better place?
+> Ok, thanks. If it works, that would be great, but given your
+> description above I'm not sure if I dare hope for it.
 
-Scrap this comment, I just realized that this is userspace code.
+Unfortunately it did not work.  The clock state did not change by
+writing MR register.
 
-cu
-Adrian
+---
+Atsushi Nemoto
 
--- 
-
-       "Is there not promise of rain?" Ling Tan asked suddenly out
-        of the darkness. There had been need of rain for many days.
-       "Only a promise," Lao Er said.
-                                       Pearl S. Buck - Dragon Seed
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Microsoft
+Defy all challenges. Microsoft(R) Visual Studio 2008.
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/

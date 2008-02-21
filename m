@@ -1,8 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.25-rc2] spi: pxa2xx_spi clock
-	polarity fix
-Date: Wed, 20 Feb 2008 17:27:33 -0800
-Message-ID: <200802201727.34009.david-b@pacbell.net>
+Subject: [patch 2.6.25-rc2] spi: pxa2xx_spi "sparse"
+	fixes
+Date: Wed, 20 Feb 2008 17:29:24 -0800
+Message-ID: <200802201729.24641.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -23,123 +23,223 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Various cleanups to pxa2xx_spi suggested by "sparse":  make sure
+that register addresess are "void __iomem *", and make a few
+functions properly static.
 
-Fixes a sequencing bug in spi driver pxa2xx_spi.c in which the chip
-select for a transfer may be asserted before the clock polarity is
-set on the interface.  As a result of this bug, the clock signal may
-have the wrong polarity at transfer start, so it may need to make an
-extra half transition before the intended clock/data signals begin.
-(This probably means all transfers are one bit out of sequence.)
-
-This only occurs on the first transfer following a change in clock
-polarity in systems using more than one more than one such polarity.
-The fix assures that the clock mode is properly set before asserting
-chip select.
-
-This bug was introduced in a patch merged on 2006/12/10, kernel 2.6.20.
-The patch defines an additional bit in: include/asm-arm/arch-pxa/regs-ssp.h
-for 2.6.25 and newer kernels
-but this addition must be made in: include/asm-arm/arch-pxa/pxa-regs.h
-for kernels between 2.6.20 and 2.6.24, inclusive
-
-Signed-off-by: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Cc: stable-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 ---
- drivers/spi/pxa2xx_spi.c            |   41 +++++++++++++++++++++++-------------
- include/asm-arm/arch-pxa/regs-ssp.h |    1 
- 2 files changed, 28 insertions(+), 14 deletions(-)
+ drivers/spi/pxa2xx_spi.c |   52 +++++++++++++++++++++++++----------------------
+ 1 file changed, 28 insertions(+), 24 deletions(-)
 
---- a/drivers/spi/pxa2xx_spi.c	2008-02-06 20:32:11.000000000 -0800
-+++ b/drivers/spi/pxa2xx_spi.c	2008-02-20 17:19:15.000000000 -0800
-@@ -51,13 +51,19 @@ MODULE_LICENSE("GPL");
- #define RESET_DMA_CHANNEL (DCSR_NODESC | DMA_INT_MASK)
- #define IS_DMA_ALIGNED(x) (((u32)(x)&0x07)==0)
- 
--/* for testing SSCR1 changes that require SSP restart, basically
-- * everything except the service and interrupt enables */
--#define SSCR1_CHANGE_MASK (SSCR1_TTELP | SSCR1_TTE | SSCR1_EBCEI | SSCR1_SCFR \
-+/*
-+ * for testing SSCR1 changes that require SSP restart, basically
-+ * everything except the service and interrupt enables, the pxa270 developer
-+ * manual says only SSCR1_SCFR, SSCR1_SPH, SSCR1_SPO need to be in this
-+ * list, but the PXA255 dev man says all bits without really meaning the
-+ * service and interrupt enables
-+ */
-+#define SSCR1_CHANGE_MASK (SSCR1_TTELP | SSCR1_TTE | SSCR1_SCFR \
- 				| SSCR1_ECRA | SSCR1_ECRB | SSCR1_SCLKDIR \
--				| SSCR1_RWOT | SSCR1_TRAIL | SSCR1_PINTE \
--				| SSCR1_STRF | SSCR1_EFWR |SSCR1_RFT \
--				| SSCR1_TFT | SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
-+				| SSCR1_SFRMDIR | SSCR1_RWOT | SSCR1_TRAIL \
-+				| SSCR1_IFS | SSCR1_STRF | SSCR1_EFWR \
-+				| SSCR1_RFT | SSCR1_TFT | SSCR1_MWDS \
-+				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
+--- a/drivers/spi/pxa2xx_spi.c	2008-02-20 17:17:16.000000000 -0800
++++ b/drivers/spi/pxa2xx_spi.c	2008-02-20 17:19:06.000000000 -0800
+@@ -66,8 +66,11 @@ MODULE_LICENSE("GPL");
+ 				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
  
  #define DEFINE_SSP_REG(reg, off) \
- static inline u32 read_##reg(void *p) { return __raw_readl(p + (off)); } \
-@@ -973,9 +979,6 @@ static void pump_transfers(unsigned long
- 		if (drv_data->ssp_type == PXA25x_SSP)
- 			DCMD(drv_data->tx_channel) |= DCMD_ENDIRQEN;
+-static inline u32 read_##reg(void *p) { return __raw_readl(p + (off)); } \
+-static inline void write_##reg(u32 v, void *p) { __raw_writel(v, p + (off)); }
++static inline u32 read_##reg(void const __iomem *p) \
++{ return __raw_readl(p + (off)); } \
++\
++static inline void write_##reg(u32 v, void __iomem *p) \
++{ __raw_writel(v, p + (off)); }
  
--		/* Fix me, need to handle cs polarity */
--		drv_data->cs_control(PXA2XX_CS_ASSERT);
--
- 		/* Clear status and start DMA engine */
- 		cr1 = chip->cr1 | dma_thresh | drv_data->dma_cr1;
- 		write_SSSR(drv_data->clear_sr, reg);
-@@ -985,9 +988,6 @@ static void pump_transfers(unsigned long
- 		/* Ensure we have the correct interrupt handler	*/
- 		drv_data->transfer_handler = interrupt_transfer;
+ DEFINE_SSP_REG(SSCR0, 0x00)
+ DEFINE_SSP_REG(SSCR1, 0x04)
+@@ -105,7 +108,7 @@ struct driver_data {
+ 	u32 *null_dma_buf;
  
--		/* Fix me, need to handle cs polarity */
--		drv_data->cs_control(PXA2XX_CS_ASSERT);
--
- 		/* Clear status  */
- 		cr1 = chip->cr1 | chip->threshold | drv_data->int_cr1;
- 		write_SSSR(drv_data->clear_sr, reg);
-@@ -998,16 +998,29 @@ static void pump_transfers(unsigned long
- 		|| (read_SSCR1(reg) & SSCR1_CHANGE_MASK) !=
- 			(cr1 & SSCR1_CHANGE_MASK)) {
+ 	/* SSP register addresses */
+-	void *ioaddr;
++	void __iomem *ioaddr;
+ 	u32 ssdr_physical;
  
-+		/* stop the SSP, and update the other bits */
- 		write_SSCR0(cr0 & ~SSCR0_SSE, reg);
- 		if (drv_data->ssp_type != PXA25x_SSP)
- 			write_SSTO(chip->timeout, reg);
--		write_SSCR1(cr1, reg);
-+		/* first set CR1 without interrupt and service enables */
-+		write_SSCR1(cr1 & SSCR1_CHANGE_MASK, reg);
-+		/* restart the SSP */
- 		write_SSCR0(cr0, reg);
-+
- 	} else {
- 		if (drv_data->ssp_type != PXA25x_SSP)
- 			write_SSTO(chip->timeout, reg);
--		write_SSCR1(cr1, reg);
- 	}
-+
-+	/* FIXME, need to handle cs polarity,
-+	 * this driver uses struct pxa2xx_spi_chip.cs_control to
-+	 * specify a CS handling function, and it ignores most
-+	 * struct spi_device.mode[s], including SPI_CS_HIGH */
-+	drv_data->cs_control(PXA2XX_CS_ASSERT);
-+
-+	/* after chip select, release the data by enabling service
-+	 * requests and interrupts, without changing any mode bits */
-+	write_SSCR1(cr1, reg);
+ 	/* SSP masks*/
+@@ -172,7 +175,7 @@ static int flush(struct driver_data *drv
+ {
+ 	unsigned long limit = loops_per_jiffy << 1;
+ 
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	do {
+ 		while (read_SSSR(reg) & SSSR_RNE) {
+@@ -190,7 +193,7 @@ static void null_cs_control(u32 command)
+ 
+ static int null_writer(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 	u8 n_bytes = drv_data->n_bytes;
+ 
+ 	if (((read_SSSR(reg) & 0x00000f00) == 0x00000f00)
+@@ -205,7 +208,7 @@ static int null_writer(struct driver_dat
+ 
+ static int null_reader(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 	u8 n_bytes = drv_data->n_bytes;
+ 
+ 	while ((read_SSSR(reg) & SSSR_RNE)
+@@ -219,7 +222,7 @@ static int null_reader(struct driver_dat
+ 
+ static int u8_writer(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	if (((read_SSSR(reg) & 0x00000f00) == 0x00000f00)
+ 		|| (drv_data->tx == drv_data->tx_end))
+@@ -233,7 +236,7 @@ static int u8_writer(struct driver_data 
+ 
+ static int u8_reader(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	while ((read_SSSR(reg) & SSSR_RNE)
+ 		&& (drv_data->rx < drv_data->rx_end)) {
+@@ -246,7 +249,7 @@ static int u8_reader(struct driver_data 
+ 
+ static int u16_writer(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	if (((read_SSSR(reg) & 0x00000f00) == 0x00000f00)
+ 		|| (drv_data->tx == drv_data->tx_end))
+@@ -260,7 +263,7 @@ static int u16_writer(struct driver_data
+ 
+ static int u16_reader(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	while ((read_SSSR(reg) & SSSR_RNE)
+ 		&& (drv_data->rx < drv_data->rx_end)) {
+@@ -273,7 +276,7 @@ static int u16_reader(struct driver_data
+ 
+ static int u32_writer(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	if (((read_SSSR(reg) & 0x00000f00) == 0x00000f00)
+ 		|| (drv_data->tx == drv_data->tx_end))
+@@ -287,7 +290,7 @@ static int u32_writer(struct driver_data
+ 
+ static int u32_reader(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	while ((read_SSSR(reg) & SSSR_RNE)
+ 		&& (drv_data->rx < drv_data->rx_end)) {
+@@ -411,7 +414,7 @@ static void giveback(struct driver_data 
+ 		msg->complete(msg->context);
  }
  
- static void pump_messages(struct work_struct *work)
---- a/include/asm-arm/arch-pxa/regs-ssp.h	2008-02-01 11:48:35.000000000 -0800
-+++ b/include/asm-arm/arch-pxa/regs-ssp.h	2008-02-20 16:16:04.000000000 -0800
-@@ -85,6 +85,7 @@
- #define SSCR1_RSRE		(1 << 20)	/* Receive Service Request Enable */
- #define SSCR1_TINTE		(1 << 19)	/* Receiver Time-out Interrupt enable */
- #define SSCR1_PINTE		(1 << 18)	/* Peripheral Trailing Byte Interupt Enable */
-+#define SSCR1_IFS		(1 << 16)	/* Invert Frame Signal */
- #define SSCR1_STRF		(1 << 15)	/* Select FIFO or EFWR */
- #define SSCR1_EFWR		(1 << 14)	/* Enable FIFO Write/Read */
+-static int wait_ssp_rx_stall(void *ioaddr)
++static int wait_ssp_rx_stall(void const __iomem *ioaddr)
+ {
+ 	unsigned long limit = loops_per_jiffy << 1;
+ 
+@@ -431,9 +434,9 @@ static int wait_dma_channel_stop(int cha
+ 	return limit;
+ }
+ 
+-void dma_error_stop(struct driver_data *drv_data, const char *msg)
++static void dma_error_stop(struct driver_data *drv_data, const char *msg)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	/* Stop and reset */
+ 	DCSR(drv_data->rx_channel) = RESET_DMA_CHANNEL;
+@@ -455,7 +458,7 @@ void dma_error_stop(struct driver_data *
+ 
+ static void dma_transfer_complete(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 	struct spi_message *msg = drv_data->cur_msg;
+ 
+ 	/* Clear and disable interrupts on SSP and DMA channels*/
+@@ -535,7 +538,7 @@ static void dma_handler(int channel, voi
+ static irqreturn_t dma_transfer(struct driver_data *drv_data)
+ {
+ 	u32 irq_status;
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	irq_status = read_SSSR(reg) & drv_data->mask_sr;
+ 	if (irq_status & SSSR_ROR) {
+@@ -569,7 +572,7 @@ static irqreturn_t dma_transfer(struct d
+ 
+ static void int_error_stop(struct driver_data *drv_data, const char* msg)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	/* Stop and reset SSP */
+ 	write_SSSR(drv_data->clear_sr, reg);
+@@ -587,7 +590,7 @@ static void int_error_stop(struct driver
+ 
+ static void int_transfer_complete(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	/* Stop SSP */
+ 	write_SSSR(drv_data->clear_sr, reg);
+@@ -613,7 +616,7 @@ static void int_transfer_complete(struct
+ 
+ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ {
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	u32 irq_mask = (read_SSCR1(reg) & SSCR1_TIE) ?
+ 			drv_data->mask_sr : drv_data->mask_sr & ~SSSR_TFS;
+@@ -674,7 +677,7 @@ static irqreturn_t interrupt_transfer(st
+ static irqreturn_t ssp_int(int irq, void *dev_id)
+ {
+ 	struct driver_data *drv_data = dev_id;
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 
+ 	if (!drv_data->cur_msg) {
+ 
+@@ -694,7 +697,8 @@ static irqreturn_t ssp_int(int irq, void
+ 	return drv_data->transfer_handler(drv_data);
+ }
+ 
+-int set_dma_burst_and_threshold(struct chip_data *chip, struct spi_device *spi,
++static int set_dma_burst_and_threshold(struct chip_data *chip,
++				struct spi_device *spi,
+ 				u8 bits_per_word, u32 *burst_code,
+ 				u32 *threshold)
+ {
+@@ -808,7 +812,7 @@ static void pump_transfers(unsigned long
+ 	struct spi_transfer *previous = NULL;
+ 	struct chip_data *chip = NULL;
+ 	struct ssp_device *ssp = drv_data->ssp;
+-	void *reg = drv_data->ioaddr;
++	void __iomem *reg = drv_data->ioaddr;
+ 	u32 clk_div = 0;
+ 	u8 bits = 0;
+ 	u32 speed = 0;
+@@ -1337,7 +1341,7 @@ static int __init pxa2xx_spi_probe(struc
+ 	struct device *dev = &pdev->dev;
+ 	struct pxa2xx_spi_master *platform_info;
+ 	struct spi_master *master;
+-	struct driver_data *drv_data = 0;
++	struct driver_data *drv_data = NULL;
+ 	struct ssp_device *ssp;
+ 	int status = 0;
  
 
 -------------------------------------------------------------------------

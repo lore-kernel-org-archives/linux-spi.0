@@ -1,16 +1,17 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: [Patch 1/1] spi: Fix pxa2xx_spi.c chip select
-	sequence error
-Date: Wed, 20 Feb 2008 18:47:44 -0500
-Message-ID: <47BCBC20.6080600@whoi.edu>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch 2.6.25-rc2] spi: pxa2xx_spi clock
+	polarity fix
+Date: Wed, 20 Feb 2008 17:27:33 -0800
+Message-ID: <200802201727.34009.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"J. Scott Merritt" <merrij3-IL7dBOYR4Vg@public.gmane.org>,
+Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,38 +25,34 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 
-Applies to kernel 2.6.25-rc1
-
 Fixes a sequencing bug in spi driver pxa2xx_spi.c in which the chip
-select for a transfer may be asserted before the transmission mode is
-set on the interface.  As a result of this bug, the pins of the
-interface can make extra transitions after chip select is set and
-before the intended clock/data signals begin.  This only occurs on the
-first transfer following a change in transmission mode.  The fix
-assures that all modes are set on the interface before asserting chip
-select.
+select for a transfer may be asserted before the clock polarity is
+set on the interface.  As a result of this bug, the clock signal may
+have the wrong polarity at transfer start, so it may need to make an
+extra half transition before the intended clock/data signals begin.
+(This probably means all transfers are one bit out of sequence.)
+
+This only occurs on the first transfer following a change in clock
+polarity in systems using more than one more than one such polarity.
+The fix assures that the clock mode is properly set before asserting
+chip select.
 
 This bug was introduced in a patch merged on 2006/12/10, kernel 2.6.20.
-
-The patch defines an additional bit in:
-include/asm-arm/arch-pxa/regs-ssp.h
+The patch defines an additional bit in: include/asm-arm/arch-pxa/regs-ssp.h
 for 2.6.25 and newer kernels
-
-but this addition must be made in:
-include/asm-arm/arch-pxa/pxa-regs.h
+but this addition must be made in: include/asm-arm/arch-pxa/pxa-regs.h
 for kernels between 2.6.20 and 2.6.24, inclusive
 
 Signed-off-by: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: stable-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 ---
-
- drivers/spi/pxa2xx_spi.c            |   41 +++++++++++++++++---------
+ drivers/spi/pxa2xx_spi.c            |   41 +++++++++++++++++++++++-------------
  include/asm-arm/arch-pxa/regs-ssp.h |    1 
  2 files changed, 28 insertions(+), 14 deletions(-)
 
-diff -Nurp linux-2.6.25-rc1/drivers/spi/pxa2xx_spi.c linux-2.6.25-rc1_cs_patch/drivers/spi/pxa2xx_spi.c
---- linux-2.6.25-rc1/drivers/spi/pxa2xx_spi.c	2008-02-12 21:52:35.000000000 +0000
-+++ linux-2.6.25-rc1_cs_patch/drivers/spi/pxa2xx_spi.c	2008-02-20 23:34:29.000000000 +0000
+--- a/drivers/spi/pxa2xx_spi.c	2008-02-06 20:32:11.000000000 -0800
++++ b/drivers/spi/pxa2xx_spi.c	2008-02-20 17:19:15.000000000 -0800
 @@ -51,13 +51,19 @@ MODULE_LICENSE("GPL");
  #define RESET_DMA_CHANNEL (DCSR_NODESC | DMA_INT_MASK)
  #define IS_DMA_ALIGNED(x) (((u32)(x)&0x07)==0)
@@ -134,9 +131,8 @@ diff -Nurp linux-2.6.25-rc1/drivers/spi/pxa2xx_spi.c linux-2.6.25-rc1_cs_patch/d
  }
  
  static void pump_messages(struct work_struct *work)
-diff -Nurp linux-2.6.25-rc1/include/asm-arm/arch-pxa/regs-ssp.h linux-2.6.25-rc1_cs_patch/include/asm-arm/arch-pxa/regs-ssp.h
---- linux-2.6.25-rc1/include/asm-arm/arch-pxa/regs-ssp.h	2008-02-15 19:41:37.000000000 +0000
-+++ linux-2.6.25-rc1_cs_patch/include/asm-arm/arch-pxa/regs-ssp.h	2008-02-15 19:47:40.000000000 +0000
+--- a/include/asm-arm/arch-pxa/regs-ssp.h	2008-02-01 11:48:35.000000000 -0800
++++ b/include/asm-arm/arch-pxa/regs-ssp.h	2008-02-20 16:16:04.000000000 -0800
 @@ -85,6 +85,7 @@
  #define SSCR1_RSRE		(1 << 20)	/* Receive Service Request Enable */
  #define SSCR1_TINTE		(1 << 19)	/* Receiver Time-out Interrupt enable */
@@ -145,7 +141,6 @@ diff -Nurp linux-2.6.25-rc1/include/asm-arm/arch-pxa/regs-ssp.h linux-2.6.25-rc1
  #define SSCR1_STRF		(1 << 15)	/* Select FIFO or EFWR */
  #define SSCR1_EFWR		(1 << 14)	/* Enable FIFO Write/Read */
  
-
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

@@ -1,19 +1,12 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.24-rc8] spi: s3c drivers
-	shouldn't care about spi_board_info
-Date: Wed, 20 Feb 2008 18:37:46 -0800
-Message-ID: <200802201837.46449.david-b@pacbell.net>
-References: <200801212341.07086.david-b@pacbell.net>
-	<20080219101048.GA24550@trinity.fluff.org>
+From: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
+Subject: Problems with suspend/resume of pxa2xx_spi
+Date: Thu, 21 Feb 2008 14:32:05 +1100
+Message-ID: <33e9dd1c0802201932v6873415bm9202ad478f192b7f@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080219101048.GA24550-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -26,39 +19,16 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 19 February 2008, Ben Dooks wrote:
-> On Mon, Jan 21, 2008 at 11:41:06PM -0800, David Brownell wrote:
-> > The two S3C SPI master drivers got merged without much review, so
-> > I just noticed that they're doing something that the SPI core code
-> > is responsible for, rather than any adapter driver:  they try to
-> > register SPI devices.
-> > 
-> > This removes that support from those drivers so they act normally.
-> > Interestingly, none of the current boards are affected.  So it's
-> > a net code shrink with no loss of functionality.
-> 
-> For you, for me you've just broken my current in-development patch-set.
+I've been having some more problems with my SPI application on the
+PXA270. When I suspend the system it all goes into suspend mode
+correctly but when it comes back on resume any call to the pxa2xx_spi
+code just hangs.
 
-So those patches have problems that won't get a chance to go upstream.  :)
+Has anyone experienced this? Has anyone used suspend/resume
+successfully with pxa2xx_spi?
 
-
-> Numbering busses makes life more difficult when registering the things,
-> as on a design using a pluggable cpu module, you do not know at compile
-> time what bus numbers are going to be assigned, especially if your
-> adapters are not all of the same hardware.
-
-Those problems are workable.  There's clearly *something* which knows
-which physical bus has which devices attached, and can connect them.
-It can call spi_new_device() for example -- with no driver-specific
-mechanisms required.
-
-If this is a general problem, it deserves a general solution, not one
-that's specific to one controller driver.  There are such mechanisms
-already, which you're not using.  If you want some different generic
-mechanisms, then feel free to propose them.
-
-- Dave
-
+Thanks,
+Zik
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

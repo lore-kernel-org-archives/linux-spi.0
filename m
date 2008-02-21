@@ -1,66 +1,66 @@
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Subject: [PATCH] atmel_spi: Fix clock polarity
-Date: Thu, 21 Feb 2008 11:11:38 +0900 (JST)
-Message-ID: <20080221.111138.41629131.nemoto@toshiba-tops.co.jp>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [patch 2.6.24-rc8] spi: s3c drivers
+	shouldn't care about spi_board_info
+Date: Wed, 20 Feb 2008 18:37:46 -0800
+Message-ID: <200802201837.46449.david-b@pacbell.net>
+References: <200801212341.07086.david-b@pacbell.net>
+	<20080219101048.GA24550@trinity.fluff.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b@pacbell.net>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: akpm@linux-foundation.org
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1759561AbYBUCLw@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080219101048.GA24550-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org>
+Content-Disposition: inline
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The atmel_spi driver does not initialize clock polarity correctly
-(except for at91rm9200 CS0 channel) in some case.
+On Tuesday 19 February 2008, Ben Dooks wrote:
+> On Mon, Jan 21, 2008 at 11:41:06PM -0800, David Brownell wrote:
+> > The two S3C SPI master drivers got merged without much review, so
+> > I just noticed that they're doing something that the SPI core code
+> > is responsible for, rather than any adapter driver:  they try to
+> > register SPI devices.
+> > 
+> > This removes that support from those drivers so they act normally.
+> > Interestingly, none of the current boards are affected.  So it's
+> > a net code shrink with no loss of functionality.
+> 
+> For you, for me you've just broken my current in-development patch-set.
 
-The atmel_spi driver uses gpio-controlled chipselect.  OTOH spi clock
-signal is controlled by CSRn.CPOL bit, but this register controls
-clock signal correctly only in 'real transfer' duration.  At the time
-of cs_activate() call, CSRn.CPOL will be initialized correctly, but
-the controller do not know which channel is to be used next, so clock
-signal will stay at the inactive state of last transfer.  If clock
-polarity of new transfer and last transfer was differ, new transfer
-will start with wrong clock signal state.
+So those patches have problems that won't get a chance to go upstream.  :)
 
-For example, if you started SPI MODE 2 or 3 transfer after SPI MODE 0
-or 1 transfer, the clock signal state at the assertion of chipselect
-will be low.  Of course this will violates SPI transfer.
 
-This patch is short term solution for this problem.  It makes all
-CSRn.CPOL match for the transfer before activating chipselect.  For
-longer term, the best fix might be to let NPCS0 stay selected
-permanently in MR and overwrite CSR0 with to the new slave's settings
-before asserting CS.
+> Numbering busses makes life more difficult when registering the things,
+> as on a design using a pluggable cpu module, you do not know at compile
+> time what bus numbers are going to be assigned, especially if your
+> adapters are not all of the same hardware.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Acked-by: Haavard Skinnemoen <hskinnemoen@atmel.com>
----
-This patch is already in mm tree as atmel_spi-fix-clock-polarity.patch.
-I just rewrite description slightly and add my signed-off and acked-by
-from Haavard Skinnemoen.
+Those problems are workable.  There's clearly *something* which knows
+which physical bus has which devices attached, and can connect them.
+It can call spi_new_device() for example -- with no driver-specific
+mechanisms required.
 
-diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
-index 293b7ca..85687aa 100644
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -87,6 +87,16 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
- 	unsigned gpio = (unsigned) spi->controller_data;
- 	unsigned active = spi->mode & SPI_CS_HIGH;
- 	u32 mr;
-+	int i;
-+	u32 csr;
-+	u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
-+
-+	/* Make sure clock polarity is correct */
-+	for (i = 0; i < spi->master->num_chipselect; i++) {
-+		csr = spi_readl(as, CSR0 + 4 * i);
-+		if ((csr ^ cpol) & SPI_BIT(CPOL))
-+			spi_writel(as, CSR0 + 4 * i, csr ^ SPI_BIT(CPOL));
-+	}
- 
- 	mr = spi_readl(as, MR);
- 	mr = SPI_BFINS(PCS, ~(1 << spi->chip_select), mr);
+If this is a general problem, it deserves a general solution, not one
+that's specific to one controller driver.  There are such mechanisms
+already, which you're not using.  If you want some different generic
+mechanisms, then feel free to propose them.
+
+- Dave
+
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Microsoft
+Defy all challenges. Microsoft(R) Visual Studio 2008.
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/

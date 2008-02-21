@@ -1,45 +1,45 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH] atmel_spi: support zero length transfer
-Date: Thu, 21 Feb 2008 11:23:34 -0800
-Message-ID: <20080221192334.EE97A230A58@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-References: <20080221.005432.07645461.anemo@mba.ocn.ne.jp>
- <200802201855.02605.marc.pignat@hevs.ch>
- <20080221.105233.41199605.nemoto@toshiba-tops.co.jp>
- <200802211026.17816.marc.pignat@hevs.ch>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: Problems with suspend/resume of pxa2xx_spi
+Date: Thu, 21 Feb 2008 11:38:01 -0800
+Message-ID: <20080221193801.E0069235007@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+References: <33e9dd1c0802201932v6873415bm9202ad478f192b7f@mail.gmail.com>
+	<47BCFEA4.1090105@whoi.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, hskinnemoen@atmel.com
-To: marc.pignat@hevs.ch, anemo@mba.ocn.ne.jp
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1759627AbYBUTXs@vger.kernel.org>
-In-Reply-To: <200802211026.17816.marc.pignat@hevs.ch>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
+To: zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org, nforrester-/d+BM93fTQY@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <47BCFEA4.1090105-/d+BM93fTQY@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> David, do you think writing 0 bytes is a valid use of this API?
+> Does the whole system hang (deadlock in kernel) or is it only the spi
+> that is stuck?
 
-Just a zero byte transfer ... no, though it depends what you mean
-by "valid".  (I'm not sure I'd expect all controller drivers to
-reject such requests.)  That has no effect on bits-on-the-wire,
-and would make trouble for various DMA engines.
-
-Passing zero bytes to get an inline delay at an exact spot in the
-overall protocol message ... I don't see why not.  Better than
-adding delay fields for every spot it might be needed by various
-oddball devices, for sure!!
+Yeah, speicifally *what* is going wrong?
 
 
-> IMHO, we should add a fied to the spi_transfer struct.
+> David:
+> Should there be a message if there is an error on suspend, or are
+> suspending devices supposed to be silent and do the best they can?
 
-What would that do, exactly?
-
-This *specific* usage might arguably belong in spi_device, since
-it's a delay required after chipselect goes active and before any
-bytes get transferred.  It's clearly not a per-transfer thing, and
-should also apply after a temporary mid-message chip deselect.
-
-And it would probably deserve a mode flag (sigh) unless someone
-can update every master controller driver.
+It's fair to issue error message.  Doesn't the PM core do that
+automatically though?
 
 - Dave
+
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Microsoft
+Defy all challenges. Microsoft(R) Visual Studio 2008.
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/

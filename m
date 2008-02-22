@@ -1,15 +1,14 @@
 From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Subject: Re: [PATCH] atmel_spi: support zero length	
 	transfer
-Date: Fri, 22 Feb 2008 14:36:53 -0500
-Message-ID: <47BF2455.8030904@whoi.edu>
-References: <20080221.005432.07645461.anemo@mba.ocn.ne.jp>
-	<200802201855.02605.marc.pignat@hevs.ch>
-	<20080221.105233.41199605.nemoto@toshiba-tops.co.jp>
-	<200802211026.17816.marc.pignat@hevs.ch>
+Date: Fri, 22 Feb 2008 14:52:06 -0500
+Message-ID: <47BF27E6.3010502@whoi.edu>
+References: <200802211026.17816.marc.pignat@hevs.ch>
 	<20080221192334.EE97A230A58@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-	<47BED734.5030002@whoi.edu>
-	<20080222190228.2B0CB28E363@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+	<200802221030.32263.marc.pignat@hevs.ch>
+	<20080222.231510.56565462.anemo@mba.ocn.ne.jp>
+	<47BEDBFB.5040305@whoi.edu>
+	<20080222190613.0043B229B4D@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,7 +16,7 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, anemo-7
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, marc.pignat-7TsPiqsLilE@public.gmane.org
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080222190228.2B0CB28E363-ZcXrCSuhvln6VZ3dlLfH/g4gEjPzgfUyLrfjE7I9kuVHxeISYlDBzl6hYfS7NtTn@public.gmane.org>
+In-Reply-To: <20080222190613.0043B229B4D-ZcXrCSuhvln6VZ3dlLfH/g4gEjPzgfUyLrfjE7I9kuVHxeISYlDBzl6hYfS7NtTn@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,52 +29,43 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 David Brownell wrote:
->> However, if the transfer is by DMA, note that the PXA255 and PXA270
->> Developer's Manuals have the following language regarding DMA lengths:
->>
->> 	LEN = 0 means zero bytes for descriptor-fetch transactions.
->> 	LEN = 0 is an invalid setting for no-descriptor-fetch
->> 	transactions. ...
->>
->> Because the pxa2xx_spi driver does not currently use DMA descriptors,
->> zero length DMAs are invalid.
+>> This would be OK.  It would not be hard to fix pxa2xx_spi, for example,
+>> to reject zero-length transfers in DMA mode, as long as it is acceptable
+>> to reject the message in mid-message.
 > 
-> In that case the pxa2xx_spi driver should add a special case to
-> avoid starting such transfers in DMA mode.
-
-So, what I think you said is that it would be better for pxa2xx_spi to
-silently ignore a zero-length message, passing it back with the rest of
-the message when all is complete, than to reject the message.  I see no
-reason why that could not be done, though it may be tricky to set other
-things like SSP modes and chip select and *not* start the DMA.  It would
-have to be tested, so I'm not sure when I could try that.
-
->> I agree with Marc: any such delay will be undefined, in the general
->> case.  It might work for a specific driver implementation.
+> Such "illegal message" rejection is best done early; "fail-fast".
+> Mid-message rejection isn't wrong, but it's a rude policy.
 > 
-> Is that what Marc said?  I couldn't tell.  In any case, I disagree;
-> the semantics of that delay are clearly define.
+> It'd be best to fix pxa2xx_spi to not start zero-length DMAs.
 
-Maybe I am missing something.  Aren't we talking about a transfer in a
-message, with or without other transfers, who's only unique
-characteristic is that that its length is zero?    What is clearly
-defined about what should happen during that transfer?  I think (maybe
-we are all confused) that Marc and I are talking about the delay, likely
-short, caused by the processing or ignoring of that zero length transfer.
+So again, same as my last reply, it would be best to handle a zero
+length transfer silently, as if it were non-zero, but just skipping over
+any invalid hardware operations due to the zero length.
 
-Or are you and Atsushi talking about using spi_transfer.delay_usecs
-*with* a zero length transfer to effectively put a delay between the
-assertion of CS and the start of the first clock?  If so, then I guess I
-missed the original point.  Sorry.
+>> 	If it were necessary to scan a
+>> whole message for zero-length transfers and refuse to queue an offending
+>> message, then that adds burden to all messages.
+> 
+> Sanity checking messages as they're submitted is easy; and it's
+> also the natural point for setting up DMA mappings (and making
+> those cachelines available for better use).
 
---
+Hmmm.... Obviously I have much to learn about modern computers.  It had
+not occurred to me, even after reading "Linux Device Drivers", Corbet,
+et.al, that by DMA mapping, one frees the cache for other uses.  It
+makes sense.  In my application I pass many large buffers to the master
+driver, and I map them in the protocol driver.  I did that without good
+reason, but now I see it was the proper choice.
 
-By the way, reading spi.h again, it looks like spi_transfer.delay_usecs
-is supposed to be implemented between the last bit movement of a
-transfer and any change of CS at the end of a transfer.  Is that right?
- I think that pxa2xx_spi is dropping CS, if requested, immediately at
-the end of transfer, and then putting spi_transfer.delay_usecs between
-that transfer and the next.
+Unfortunately, pxa2xx_spi does any DMA mapping not done by the protocol
+driver in pump_transfers, as each transfer is submitted to the hardware.
+ There is not currently any message checking done in transfer(), the
+only error return from that is if the master driver is shutdown (queue
+stopped).  The current scheme is to return the message with non-zero
+spi_message.status if it has failed *after* execution has been
+attempted.  I don't look forward to making major changes, if we really
+want all DMA mapping and error checking to be in transfer(), though I
+see no reason why it could not be done.
 
 -- 
 Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org

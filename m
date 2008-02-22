@@ -1,16 +1,18 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: [PATCH] atmel_spi: support zero
-	length	transfer
-Date: Fri, 22 Feb 2008 09:28:11 -0500
-Message-ID: <47BEDBFB.5040305@whoi.edu>
-References: <200802211026.17816.marc.pignat@hevs.ch>	<20080221192334.EE97A230A58@adsl-69-226-248-13.dsl.pltn13.pacbell.net>	<200802221030.32263.marc.pignat@hevs.ch>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] atmel_spi: support zero length
+ transfer
+Date: Fri, 22 Feb 2008 10:58:52 -0800
+Message-ID: <20080222185852.5863D28E371@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+References: <200802211026.17816.marc.pignat@hevs.ch>
+	<20080221192334.EE97A230A58@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+	<200802221030.32263.marc.pignat@hevs.ch>
 	<20080222.231510.56565462.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, marc.pignat-7TsPiqsLilE@public.gmane.org
-To: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: marc.pignat-7TsPiqsLilE@public.gmane.org, anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <20080222.231510.56565462.anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -24,27 +26,75 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Atsushi Nemoto wrote:
+Quoth Atsushi Nemoto on Fri, 22 Feb 2008:
+> On Fri, 22 Feb 2008 10:30:31 +0100, Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org> wrote:
+> > > > David, do you think writing 0 bytes is a valid use of this API?
+> > > 
+> > > Just a zero byte transfer ... no, though it depends what you mean
+> > > by "valid".  (I'm not sure I'd expect all controller drivers to
+> > > reject such requests.)  That has no effect on bits-on-the-wire,
+> > > and would make trouble for various DMA engines.
+> >
+> > So, the behaviour is undefined,
 
+Not what I said.  To repeat:  it makes sense to pass zero bytes
+in at least one case, which is not "just" a zero byte transfer.
+
+And in a practical sense, until we have some kind of regression
+testing scheme -- with some kind of "golden device" -- it's not
+very sensible for any SPI Protocol Driver to expect that all SPI
+Master Controller Drivers act consistently in such cases.
+
+
+> >	something between 'crash my dma engine',
+> > 'assert chip select and wait some time', or 'do_nothing'...
+>
 > If the driver could not handle zero length transfer, then the driver
-> should reject it (just like unsupported transfer mode).  Then the
+> should reject it (just like unsupported transfer mode).
+
+Exactly.  Behaviors like "crash my DMA engine" are clearly "invalid",
+in *ALL* cases.  Bugs to get fixed as soon as they're noticed.
+
+
+>	Then the
 > behavior will be 'assert chip select and wait some time' or 'rejected
 > by the driver'.
 
-This would be OK.  It would not be hard to fix pxa2xx_spi, for example,
-to reject zero-length transfers in DMA mode, as long as it is acceptable
-to reject the message in mid-message.  If it were necessary to scan a
-whole message for zero-length transfers and refuse to queue an offending
-message, then that adds burden to all messages.
+The "wait" mode is what started this thread -- not "just" a zero
+byte transfer, but one which does real work.
 
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
+For "just" a zero byte transfer, I see two main implementation
+options ... with no compelling reason to force either one.
+
+  - "ignored" ... the implementation sibling of "wait"
+  - "rejected" ... more work
+
+The argument for "rejected" would seem to be only that this is a
+case of "protocol drivers should not do this".  But if they don't,
+then the difference doesn't matter.
+
+
+> > > And it would probably deserve a mode flag (sigh) unless someone
+> > > can update every master controller driver.
+> >
+> > Supporting the zero-len-write means checking and perhpaps updating
+> > each driver for the benefit of having an unknown length delay.
+> > 
+> > We should add the delay field in the spi_device, but this means more work.
+> > 
+> > Is this kind of device so common that we need to do all that work? or can we
+> > leave it as is (verified to work only with atmel_spi)?
+>
+> I think my case is not so common.  But if the driver could support
+> zero length transfer easily, there is no reason to reject it.
+>
+> And if nobody wanted to support zero length transfer on that driver,
+> it would be no reason to update it ;)
+
+So long as the controller driver doesn't misbehave, I can't see any
+reason to worry about this behavior.
+
+- Dave
 
 
 -------------------------------------------------------------------------

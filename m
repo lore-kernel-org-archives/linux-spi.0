@@ -1,18 +1,19 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: [PATCH] atmel_spi: support zero
-	length	transfer
-Date: Fri, 22 Feb 2008 09:07:48 -0500
-Message-ID: <47BED734.5030002@whoi.edu>
-References: <20080221.005432.07645461.anemo@mba.ocn.ne.jp>	<200802201855.02605.marc.pignat@hevs.ch>	<20080221.105233.41199605.nemoto@toshiba-tops.co.jp>	<200802211026.17816.marc.pignat@hevs.ch>
+From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+Subject: Re: [PATCH] atmel_spi: support zero length
+	transfer
+Date: Fri, 22 Feb 2008 23:15:10 +0900 (JST)
+Message-ID: <20080222.231510.56565462.anemo@mba.ocn.ne.jp>
+References: <200802211026.17816.marc.pignat@hevs.ch>
 	<20080221192334.EE97A230A58@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
+	<200802221030.32263.marc.pignat@hevs.ch>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, marc.pignat-7TsPiqsLilE@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: marc.pignat-7TsPiqsLilE@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080221192334.EE97A230A58-ZcXrCSuhvln6VZ3dlLfH/g4gEjPzgfUyLrfjE7I9kuVHxeISYlDBzl6hYfS7NtTn@public.gmane.org>
+In-Reply-To: <200802221030.32263.marc.pignat-7TsPiqsLilE@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,64 +25,39 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-David Brownell wrote:
->> David, do you think writing 0 bytes is a valid use of this API?
->
-> Just a zero byte transfer ... no, though it depends what you mean
-> by "valid".  (I'm not sure I'd expect all controller drivers to
-> reject such requests.)  That has no effect on bits-on-the-wire,
-> and would make trouble for various DMA engines.
+On Fri, 22 Feb 2008 10:30:31 +0100, Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org> wrote:
+> > > David, do you think writing 0 bytes is a valid use of this API?
+> > 
+> > Just a zero byte transfer ... no, though it depends what you mean
+> > by "valid".  (I'm not sure I'd expect all controller drivers to
+> > reject such requests.)  That has no effect on bits-on-the-wire,
+> > and would make trouble for various DMA engines.
+> So, the behaviour is undefined, something between 'crash my dma engine',
+> 'assert chip select and wait some time', or 'do_nothing'...
 
-FWIW, the pxa2xx_spi driver does not, near as I can tell, reject zero
-length transfers, it will go through the motions, the same as for any
-other transfer.
+If the driver could not handle zero length transfer, then the driver
+should reject it (just like unsupported transfer mode).  Then the
+behavior will be 'assert chip select and wait some time' or 'rejected
+by the driver'.
 
-However, if the transfer is by DMA, note that the PXA255 and PXA270
-Developer's Manuals have the following language regarding DMA lengths:
+> > And it would probably deserve a mode flag (sigh) unless someone
+> > can update every master controller driver.
+> Supporting the zero-len-write means checking and perhpaps updating
+> each driver for the benefit of having an unknown length delay.
+> 
+> We should add the delay field in the spi_device, but this means more work.
+> 
+> Is this kind of device so common that we need to do all that work? or can we
+> leave it as is (verified to work only with atmel_spi)?
 
-	"LEN = 0 means zero bytes for descriptor-fetch transactions.
-	LEN = 0 is an invalid setting for no-descriptor-fetch
-	transactions. Programming LEN = 0 in the descriptor-fetch mode
-	when DCMD[CmpEn] is clear (normal data transfer mode) causes
-	the channel to immediately discard the descriptor after it is
-	fetched from memory. If the descriptor chain has more
-	descriptors, the channel fetches the next valid descriptor.
-	The channel stops if the descriptor chain has no more
-	descriptors."
+I think my case is not so common.  But if the driver could support
+zero length transfer easily, there is no reason to reject it.
 
-Because the pxa2xx_spi driver does not currently use DMA descriptors,
-zero length DMAs are invalid.  I don't know what the DMA controller will
-do if given a zero length.  If it were using using descriptors (as in my
-development code, useful only when chaining transfers that don't need
-any SSP parameters or chip selects changed, nor any time delays), then a
-zero length transfer would only introduce the insignificant delay of
-fetching one 4-word descriptor.
+And if nobody wanted to support zero length transfer on that driver,
+it would be no reason to update it ;)
 
-If, on the other hand, DMA is not used, it looks like the zero length
-case is handled gracefully.  The chip select and other SSP registers are
-set, but no bytes are transferred.  It does not look like any particular
-delay would be involved in this, as all transfers within a message are
-handled in interrupt context with an ISR and tasklet.  There is not much
-code being executed to limit the minimum delay, and the maximum would
-depend on interrupt/tasklet latency.
-
-> Passing zero bytes to get an inline delay at an exact spot in the
-> overall protocol message ... I don't see why not.  Better than
-> adding delay fields for every spot it might be needed by various
-> oddball devices, for sure!!
-
-I agree with Marc: any such delay will be undefined, in the general
-case.  It might work for a specific driver implementation.
-
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
-
+---
+Atsushi Nemoto
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

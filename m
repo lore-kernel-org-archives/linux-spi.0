@@ -1,18 +1,19 @@
-From: Juergen Beisert <jbe-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [patch 2.6.25-rc2] SPI -- Freescale iMX SPI
-	controller driver (resend)
-Date: Fri, 22 Feb 2008 10:15:50 +0100
-Message-ID: <200802221015.51624.jbe@pengutronix.de>
-References: <FLEPLOLKEPNLMHOILNHPOEKHECAA.a.paterniani@swapp-eng.it>
-	<20080220202752.GC25138@pengutronix.de>
+From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
+Subject: Re: [PATCH] atmel_spi: support zero length
+	transfer
+Date: Fri, 22 Feb 2008 10:30:31 +0100
+Message-ID: <200802221030.32263.marc.pignat@hevs.ch>
+References: <20080221.005432.07645461.anemo@mba.ocn.ne.jp>
+	<200802211026.17816.marc.pignat@hevs.ch>
+	<20080221192334.EE97A230A58@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-Cc: Andrew Morton <akpm-3NddpPZAyC0@public.gmane.org>
-To: linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
-	SPI Devel General <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080220202752.GC25138-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <20080221192334.EE97A230A58-ZcXrCSuhvln6VZ3dlLfH/g4gEjPzgfUyLrfjE7I9kuVHxeISYlDBzl6hYfS7NtTn@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,55 +26,39 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 20 February 2008 21:27, Robert Schwebel wrote:
-> On Tue, Feb 19, 2008 at 10:49:42AM +0100, Andrea Paterniani wrote:
-> > Subject: [patch-2.6.25-rc2-spi_imx] arm: SPI controller driver for
-> > Freescale iMX From: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
-> >
-> > Kernel version: linux-2.6.25-rc2.
-> > Patch description:
-> > 1) Some comments changed and/or added.
-> > 2) End of transfers is now managed on TXFIFO empty interrupt after the
-> > last write to TXFIFO. This management shorten interrupt execution time
-> > removing the waiting for TXFIFO emptying.
-> >    On TXFIFO empty interrupt the handler needs only to wait for the end
-> > of ongoing transaction (polling SPI_CONTROL_XCH) to close transfer. 2.1)
-> > Write only transfers are closed flushing RXFIFO.
-> >    2.2) Read transfers are closed reading trailing bytes from RXFIFO.
-> >    2.3) Read transfers where RXFIFO overrun occurred are closed flushing
-> >         RXFIFO and aborting message.
-> > 3) Fifos are now flushed via SPI disable after the end of ongoing
-> > transaction.
->
-> How different is the i.MX1 SPI driver from our combined i.MX27/i.MX21
-> driver?
+Hi Dave!
 
-Both SPI implementations differ in hardware.
+On Thursday 21 February 2008, David Brownell wrote:
+> > David, do you think writing 0 bytes is a valid use of this API?
+> 
+> Just a zero byte transfer ... no, though it depends what you mean
+> by "valid".  (I'm not sure I'd expect all controller drivers to
+> reject such requests.)  That has no effect on bits-on-the-wire,
+> and would make trouble for various DMA engines.
+So, the behaviour is undefined, something between 'crash my dma engine',
+'assert chip select and wait some time', or 'do_nothing'...
 
-Register	i.MX1		i.MX2
-RxData:		16 bit		32 bit
-TxData:		16 bit		32 bit
-ControlReg:	16 bit		32 Bit plus additional control bits
-IntReg		16 bit		32 Bit plus additional status/control bits,
-				   some are shifted to other bit positions
-				   than i.MX1
-TestReg		16 bit		16 bit, but additional control bits
-PeriodReg		same
-DMAreg		   seems the same
-ResetReg		same
+...
+> This *specific* usage might arguably belong in spi_device, since
+> it's a delay required after chipselect goes active and before any
+> bytes get transferred.  It's clearly not a per-transfer thing, and
+> should also apply after a temporary mid-message chip deselect.
+Ack, should be in spi_device (same remark for spi_transfer->delay_usec?).
 
-It would be nice of we could handle both hardware implementations with one =
+> 
+> And it would probably deserve a mode flag (sigh) unless someone
+> can update every master controller driver.
+Supporting the zero-len-write means checking and perhpaps updating each driver
+for the benefit of having an unknown length delay.
 
-driver.
+We should add the delay field in the spi_device, but this means more work.
 
-Juergen
--- =
+Is this kind of device so common that we need to do all that work? or can we
+leave it as is (verified to work only with atmel_spi)?
 
-Dipl.-Ing. Juergen Beisert | http://www.pengutronix.de
-=A0Pengutronix - Linux Solutions for Science and Industry
-=A0   Handelsregister: Amtsgericht Hildesheim, HRA 2686
-=A0 =A0 =A0    Vertretung Sued/Muenchen, Germany
-   Phone: +49-8766-939 228 |  Fax: +49-5121-206917-9
+Regards
+
+Marc
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

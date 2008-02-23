@@ -1,20 +1,18 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re:
-	=?iso-8859-1?q?=5BPATCH=5D_atmel=5Fspi=3A_sup?=
-	=?iso-8859-1?q?port_zero_length_transfer?=
-Date: Fri, 22 Feb 2008 18:37:01 -0800
-Message-ID: <200802221837.02012.david-b@pacbell.net>
-References: <20080221.005432.07645461.anemo@mba.ocn.ne.jp>
-	<20080222190228.2B0CB28E363@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-	<47BF2455.8030904@whoi.edu>
+Subject: Re: 2006/1/28 patches to pxa2xx-spi in 2.6.25
+	tree
+Date: Fri, 22 Feb 2008 18:44:03 -0800
+Message-ID: <200802221844.03971.david-b@pacbell.net>
+References: <47B4B67B.3010601@whoi.edu>
+	<E913911567467945BBEB9277E27868B0880975@msiexch01.marvell.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, marc.pignat-7TsPiqsLilE@public.gmane.org
-To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org
+To: "Eric Miao" <ymiao3-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <47BF2455.8030904-/d+BM93fTQY@public.gmane.org>
+In-Reply-To: <E913911567467945BBEB9277E27868B0880975-3TKN+kxLw8+HXkj8w7BxOhL4W9x8LtSr@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,137 +25,47 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 22 February 2008, Ned Forrester wrote:
-> =
+On Thursday 14 February 2008, Eric Miao topquoted (sigh):
 
-> So, what I think you said is that it would be better for pxa2xx_spi to
-> silently ignore a zero-length message, passing it back with the rest of
-> the message when all is complete, than to reject the message.
+> 2. This patch is one of the series of patches refactoring PXA/ARM SSP
+> code, and the other patches are tightly PXA/ARM related, and David
+> reviewed part of the patch if not all.
 
-Yes.  Remember that the reason to _use_ such a message is to get the
-inline delay ... and that if you've got code to handle that case
-(transfer.len =3D=3D 0 && transfer.delay_usecs !=3D 0) it's almost trivial
-to support the degenerate "delay_usecs =3D=3D 0" case too.
+I skimmed that bit.  Time to track all the details of the PXA overhaul
+is lacking.
 
 
-> I see no =
+> And indeed yes, I will fire another patch correcting the doc, maybe
+> after another round of SSP code clean-up.
 
-> reason why that could not be done, though it may be tricky to set other
-> things like SSP modes and chip select and *not* start the DMA.  It would
-> have to be tested, so I'm not sure when I could try that.
-
-Normally I'd expect it's little more than a "goto", but the pxa2xx_spi
-structure is relatively complex.
-
- =
-
-> >> I agree with Marc: any such delay will be undefined, in the general
-> >> case.  It might work for a specific driver implementation.
-> > =
-
-> > Is that what Marc said?  I couldn't tell.  In any case, I disagree;
-> > the semantics of that delay are clearly define.
-> =
-
-> Maybe I am missing something.  Aren't we talking about a transfer in a
-> message, with or without other transfers, who's only unique
-> characteristic is that that its length is zero?
-
-There were two cases ... delay_usecs being zero, or not.  In either
-case, the semantics are the same:  after the transfer (len =3D=3D 0),
-delay that many microseconds (zero or more).
+That doc update should happen before 2.6.25-final ...
 
 
-> Or are you and Atsushi talking about using spi_transfer.delay_usecs
-> *with* a zero length transfer to effectively put a delay between the
-> assertion of CS and the start of the first clock?  If so, then I guess I
-> missed the original point.  Sorry.
-
-As I noted, there are two cases.  The reason to use a zero length
-transfer is to get a delay ... in his case, specifically before
-the first clock, but in general *anywhere* in the transfer.  But
-the degenerate case is "delay for zero microseconds".
-
-
-> --
-> =
-
-> By the way, reading spi.h again, it looks like spi_transfer.delay_usecs
-> is supposed to be implemented between the last bit movement of a
-> transfer and any change of CS at the end of a transfer.  Is that right?
-
-Yes.
-
-
->  I think that pxa2xx_spi is dropping CS, if requested, immediately at
-> the end of transfer, and then putting spi_transfer.delay_usecs between
-> that transfer and the next.
-
-That's a bug then; it will matter with some drivers.
-
-
-
-> >> =A0=A0=A0=A0=A0If it were necessary to scan a
-> >> whole message for zero-length transfers and refuse to queue an offendi=
-ng
-> >> message, then that adds burden to all messages.
+> > From: Ned Forrester [mailto:nforrester-/d+BM93fTQY@public.gmane.org]
+> > 
+> > I wonder if you have seen the two patches submitted by Eric Miao that
+> > appeared in the 2.6.25 git tree on 1/26/08 for drivers/spi/pxa2xx-spi.c
+> > and related files.  ...
 > >
-> > Sanity checking messages as they're submitted is easy; and it's
-> > also the natural point for setting up DMA mappings (and making
-> > those cachelines available for better use).
->
-> Hmmm.... Obviously I have much to learn about modern computers. =A0It had
-> not occurred to me, even after reading "Linux Device Drivers", Corbet,
-> et.al, that by DMA mapping, one frees the cache for other uses. =A0It
-> makes sense. =
+> > Are these changes compatible with the grand scheme of things?  I don't
+> > have much visibility of the direction in which the kernel or the spi
+> > core is heading, so I can't tell.
 
-
-That's certainly what happens on systems where the buffer is from
-"normal" memory and the cache is DMA-incoherent ... like most ARMs,
-and probably the majority of non-x86 hardware.  Think of that as
-being a level or two deeper than what LDD covers.
-
-
-> In my application I pass many large buffers to the master =
-
-> driver, and I map them in the protocol driver. =A0I did that without good
-> reason, but now I see it was the proper choice.
->
-> Unfortunately, pxa2xx_spi does any DMA mapping not done by the protocol
-> driver in pump_transfers, as each transfer is submitted to the hardware.
-
-That's not wrong ... but it's sub-optimal:  those cache lines could
-have been doing better things all that time, and cleaning them out
-in the middle of a transfer will slow it down by some amount.
-
-
-> =A0There is not currently any message checking done in transfer(), the
-> only error return from that is if the master driver is shutdown (queue
-> stopped). =A0The current scheme is to return the message with non-zero
-> spi_message.status if it has failed *after* execution has been
-> attempted. =
-
-
-Again ... not wrong, but sub-optimal:  when it happens (which won't be
-common, fortunately!) the SPI slave will be left in a rude state.  And
-the protocol driver may not know how to recover.
-
-
-> I don't look forward to making major changes, if we really =
-
-> want all DMA mapping and error checking to be in transfer(), though I
-> see no reason why it could not be done.
-
-There's no rush on cleanups like that.  They'd be reasonable tasks for
-someone with some time to spare, who wanted to get their feet wet in
-some driver updates and who could set up some kind of test rig.  (Like
-one with a programmable slave that could be made to do all sorts of stuff
-that might otherwise be a bit uncommon.  A microcontroller slave would be
-easy ... programming a CPLD or FPGA would be much trickier!)
+It's more "PXA overhaul" stuff.  The *SSP modules should become more
+generally usable, not unlike what drivers/misc/atmel-ssc.c does, so
+that they can easily be used for SPI, I2S, or whatever.  It'd probably
+be good to have a dma-capable core, for example, that gets re-used.
 
 - Dave
 
 
+> > Eric:
+> > 
+> > It seems there should have been a related patch to
+> > Documentation/spi/pxa2xx to change the examples for platform setup,
+> > along the lines of what your patch calls for in
+> > arch/arm/mach-pxa/lubbock.c, and to add information about struct ssp_device.
+> > 
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

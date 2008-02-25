@@ -1,19 +1,20 @@
-From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
 Subject: Re: [PATCH] atmel_spi: support zero length
- transfer
-Date: Mon, 25 Feb 2008 09:25:15 +0900 (JST)
-Message-ID: <20080225.092515.126141645.anemo@mba.ocn.ne.jp>
-References: <47BED734.5030002@whoi.edu>
-	<20080222190228.2B0CB28E363@adsl-69-226-248-13.dsl.pltn13.pacbell.net>
-	<47BF2455.8030904@whoi.edu>
+	transfer
+Date: Mon, 25 Feb 2008 09:15:36 +0100
+Message-ID: <200802250915.37384.marc.pignat@hevs.ch>
+References: <20080221.005432.07645461.anemo@mba.ocn.ne.jp>
+	<200802221030.32263.marc.pignat@hevs.ch>
+	<200802221855.25892.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, marc.pignat-7TsPiqsLilE@public.gmane.org
-To: nforrester-/d+BM93fTQY@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <47BF2455.8030904-/d+BM93fTQY@public.gmane.org>
+In-Reply-To: <200802221855.25892.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,18 +26,17 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 22 Feb 2008 14:36:53 -0500, Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrote:
-> Or are you and Atsushi talking about using spi_transfer.delay_usecs
-> *with* a zero length transfer to effectively put a delay between the
-> assertion of CS and the start of the first clock?  If so, then I guess I
-> missed the original point.  Sorry.
+On Saturday 23 February 2008, David Brownell wrote:
+...
+> No, it's fully defined.  "Crash my engine" is not OK.  The delay
+> is controlled by transfer.delay_usecs ... possibly zero, which is
+> best viewed as a degenerate case.
+Ooops, I missed that (the delay *is* defined in transfer.delay_usecs).
+So I agree, it's fully defined.
 
-Yes.  I want to use zero length transfer with delay_usecs to achieve
-CS-CLK delay for my funny device.  And I was too lazy to reject true
-nop transfer.
+Regards
 
----
-Atsushi Nemoto
+Marc
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

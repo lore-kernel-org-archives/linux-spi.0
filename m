@@ -1,10 +1,10 @@
-From: "Imran Christenson" <_duraspin-azIp3xrNdps9k9hbvw1StdBPR1lH4CV8@public.gmane.org>
-Subject: It is greater than the oscar,
-	there will be blood.
-Date: Mon, 25 Feb 2008 14:51:18 -0500
-Message-ID: <001001c877e7$c9c598e0$d2061e40@aldermand4i4x2>
+From: "Shaddi Miles" <lebsklov1956-YfgRDQB2xln2Yo5hmoO8IxNDptHseIHJ@public.gmane.org>
+Subject: Armed with our rods,
+	we thrust forward - Private Ryan
+Date: Tue, 26 Feb 2008 11:07:03 +0800
+Message-ID: <000d01c87824$a96f7970$36d367ca@commonor0652f6>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1527518654=="
+Content-Type: multipart/mixed; boundary="===============1302876883=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,17 +18,17 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1527518654==
+--===============1302876883==
 Content-Type: multipart/alternative;
-	boundary="--------=_NextPart_000_000C_01C877BD.E0EF90E0"
+	boundary="--------=_NextPart_000_0009_01C87867.B792B970"
 
-----------=_NextPart_000_000C_01C877BD.E0EF90E0
+----------=_NextPart_000_0009_01C87867.B792B970
 Content-Type: text/plain;
         charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-She will start screaming in pleasure from now on!
-----------=_NextPart_000_000C_01C877BD.E0EF90E0
+Armed with our rods, we thrust forward - Private Ryan
+----------=_NextPart_000_0009_01C87867.B792B970
 Content-Type: text/html;
         charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -41,13 +41,13 @@ charset=3Diso-8859-1">
 <STYLE></STYLE>
 </HEAD>
 <BODY bgColor=3D#ffffff>
-<A href=3D"http://www.tropoue.com/">She will start screaming in pleasure =
-from now=20
-on!</A></BODY></HTML>
-----------=_NextPart_000_000C_01C877BD.E0EF90E0--
+<A href=3D"http://www.maligini.com/">Armed with our rods, we thrust =
+forward -=20
+Private Ryan</A></BODY></HTML>
+----------=_NextPart_000_0009_01C87867.B792B970--
 
 
---===============1527518654==
+--===============1302876883==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -57,7 +57,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1527518654==
+--===============1302876883==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -68,4 +68,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1527518654==--
+--===============1302876883==--

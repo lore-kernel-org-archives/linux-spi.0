@@ -1,10 +1,10 @@
-From: "Shaddi Miles" <lebsklov1956-YfgRDQB2xln2Yo5hmoO8IxNDptHseIHJ@public.gmane.org>
-Subject: Armed with our rods,
-	we thrust forward - Private Ryan
-Date: Tue, 26 Feb 2008 11:07:03 +0800
-Message-ID: <000d01c87824$a96f7970$36d367ca@commonor0652f6>
+From: "Abner McGinnis" <Abner-epounder-6WbRAg67T/+1c8clg97Keg@public.gmane.org>
+Subject: Get wall to wall women,
+	and twice as many nubile breasts.
+Date: Tue, 26 Feb 2008 22:31:26 +0800
+Message-ID: <001201c87884$44d5af10$46c2dc3c@lgewbnjicoj784>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1302876883=="
+Content-Type: multipart/mixed; boundary="===============0034764690=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,17 +18,17 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1302876883==
+--===============0034764690==
 Content-Type: multipart/alternative;
-	boundary="--------=_NextPart_000_0009_01C87867.B792B970"
+	boundary="--------=_NextPart_000_000E_01C878C7.52F8EF10"
 
-----------=_NextPart_000_0009_01C87867.B792B970
+----------=_NextPart_000_000E_01C878C7.52F8EF10
 Content-Type: text/plain;
         charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-Armed with our rods, we thrust forward - Private Ryan
-----------=_NextPart_000_0009_01C87867.B792B970
+Behind every great man lies a huge secret in his pants.
+----------=_NextPart_000_000E_01C878C7.52F8EF10
 Content-Type: text/html;
         charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -41,13 +41,13 @@ charset=3Diso-8859-1">
 <STYLE></STYLE>
 </HEAD>
 <BODY bgColor=3D#ffffff>
-<A href=3D"http://www.maligini.com/">Armed with our rods, we thrust =
-forward -=20
-Private Ryan</A></BODY></HTML>
-----------=_NextPart_000_0009_01C87867.B792B970--
+<A href=3D"http://www.Plonozeens.com/">Behind every great man lies a =
+huge secret=20
+in his pants.</A></BODY></HTML>
+----------=_NextPart_000_000E_01C878C7.52F8EF10--
 
 
---===============1302876883==
+--===============0034764690==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -57,7 +57,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1302876883==
+--===============0034764690==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -68,4 +68,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1302876883==--
+--===============0034764690==--

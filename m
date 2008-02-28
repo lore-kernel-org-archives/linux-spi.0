@@ -1,10 +1,11 @@
-From: "Rance ransley" <uranosta1993-NhQAV0NaKZdXrIkS9f7CXA@public.gmane.org>
-Subject: Maintain a rock-hard,
-	never-ending erect1on with this super solution.
-Date: Wed, 27 Feb 2008 22:23:23 +0300
-Message-ID: <000701c87976$37e7a950$bb43404d@ACERAMB>
+From: "Karalee Kadeshuk" <itavrene1952-EDptT2DkLGnby3iVrkZq2A@public.gmane.org>
+Subject: After years of boring, staid sex,
+	after I gained 2 inches,
+	Shannon comes EVERY NIGHT and she simply loves it.
+Date: Thu, 28 Feb 2008 09:39:18 +0800
+Message-ID: <000a01c879aa$bbdf8b90$874ed47d@carol>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0311583419=="
+Content-Type: multipart/mixed; boundary="===============0195232933=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,17 +19,18 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0311583419==
+--===============0195232933==
 Content-Type: multipart/alternative;
-	boundary="--------=_NextPart_000_0003_01C8798F.5D34E150"
+	boundary="--------=_NextPart_000_0006_01C879ED.CA005A90"
 
-----------=_NextPart_000_0003_01C8798F.5D34E150
+----------=_NextPart_000_0006_01C879ED.CA005A90
 Content-Type: text/plain;
         charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-Imagine if you could have a 9 inch tool in your pants - NOW YOU CAN.
-----------=_NextPart_000_0003_01C8798F.5D34E150
+Tired of being lonely? With a 9 inch monster, women will want you and =
+men will envy you.
+----------=_NextPart_000_0006_01C879ED.CA005A90
 Content-Type: text/html;
         charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -41,13 +43,13 @@ charset=3Diso-8859-1">
 <STYLE></STYLE>
 </HEAD>
 <BODY bgColor=3D#ffffff>
-<A href=3D"http://www.poligoil.com/">Imagine if you could have a 9 inch =
-tool in=20
-your pants - NOW YOU CAN.</A></BODY></HTML>
-----------=_NextPart_000_0003_01C8798F.5D34E150--
+<A href=3D"http://www.Megamuloves.com/">Tired of being lonely? With a 9 =
+inch=20
+monster, women will want you and men will envy you.</A></BODY></HTML>
+----------=_NextPart_000_0006_01C879ED.CA005A90--
 
 
---===============0311583419==
+--===============0195232933==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -57,7 +59,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============0311583419==
+--===============0195232933==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -68,4 +70,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0311583419==--
+--===============0195232933==--

@@ -1,15 +1,16 @@
-From: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: Problems with suspend/resume of pxa2xx_spi
-Date: Fri, 29 Feb 2008 11:35:48 +1100
-Message-ID: <33e9dd1c0802281635v18bcdd49te38d49e7a24abacf@mail.gmail.com>
+Date: Thu, 28 Feb 2008 16:56:45 -0800
+Message-ID: <200802281656.45757.david-b@pacbell.net>
 References: <33e9dd1c0802201932v6873415bm9202ad478f192b7f@mail.gmail.com>
 	<33e9dd1c0802281502x3d045a03pcb6282a781ac4e56@mail.gmail.com>
+	<33e9dd1c0802281635v18bcdd49te38d49e7a24abacf@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <33e9dd1c0802281502x3d045a03pcb6282a781ac4e56-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <33e9dd1c0802281635v18bcdd49te38d49e7a24abacf-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -22,99 +23,101 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-I fixed my other suspend/resume problem - it was unrelated to spi. So
-restoring the SSP registers is the fix. It's all working correctly for
-me now.
+On Thursday 28 February 2008, Zik Saleeba wrote:
+> I fixed my other suspend/resume problem - it was unrelated to spi. So
+> restoring the SSP registers is the fix. It's all working correctly for
+> me now.
 
-I've never submitted a patch before so I'd appreciate a review of this
-before I submit it properly:
-
-Index: pxa2xx_spi.c
-===================================================================
---- pxa2xx_spi.c        (revision 562)
-+++ pxa2xx_spi.c        (working copy)
-@@ -102,6 +102,12 @@
-        u32 int_cr1;
-        u32 clear_sr;
-        u32 mask_sr;
-+
-+        /* saved state for suspend/resume */
-+        u32 saved_sscr0;
-+        u32 saved_sscr1;
-+        u32 saved_sst0;
-+        u32 saved_sspsp;
-
-        /* Driver message queue */
-        struct workqueue_struct *workqueue;
-@@ -1570,11 +1576,16 @@
- static int pxa2xx_spi_suspend(struct platform_device *pdev, pm_message_t state)
- {
-        struct driver_data *drv_data = platform_get_drvdata(pdev);
-+       void *reg = drv_data->ioaddr;
-        int status = 0;
-
--       /* Check all childern for current power state */
-+        /* Save register state */
-+        drv_data->saved_sscr0 = read_SSCR0(reg);
-+        drv_data->saved_sscr1 = read_SSCR1(reg);
-+        if (drv_data->ssp_type != PXA25x_SSP)
-+                drv_data->saved_sst0 = read_SSTO(reg);
-+        drv_data->saved_sspsp = read_SSPSP(reg);
-+
-+       /* Check all children for current power state */
-        if (device_for_each_child(&pdev->dev, &state, suspend_devices) != 0) {
-                dev_warn(&pdev->dev, "suspend aborted\n");
-                return -1;
-@@ -1592,13 +1604,21 @@
- static int pxa2xx_spi_resume(struct platform_device *pdev)
- {
-        struct driver_data *drv_data = platform_get_drvdata(pdev);
-+       void *reg = drv_data->ioaddr;
-        int status = 0;
-
-        /* Enable the SSP clock */
-        pxa_set_cken(drv_data->master_info->clock_enable, 1);
-
-+       /* Load saved SSP configuration */
-+        write_SSCR0(0, reg);
-+        write_SSCR1(drv_data->saved_sscr1, reg);
-+        write_SSCR0(drv_data->saved_sscr0, reg);
-+        write_SSITR(0, reg);
-+       if (drv_data->ssp_type != PXA25x_SSP)
-+                write_SSTO(drv_data->saved_sst0, reg);
-+        write_SSPSP(drv_data->saved_sspsp, reg);
-+
-        /* Start the queue running */
-        status = start_queue(drv_data);
-        if (status != 0) {
+Good.  I can believe that driver hasn't had much suspend/resume testing;
+many platforms don't get such testing, and often not all drivers get
+covered.  PXA has had issues where even the reference boards (for folk
+who have them) don't really leverage all the peripherals.
 
 
-On Fri, Feb 29, 2008 at 10:02 AM, Zik Saleeba <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org> wrote:
-> On Thu, Feb 21, 2008 at 2:32 PM, Zik Saleeba <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org> wrote:
->  > I've been having some more problems with my SPI application on the
->  >  PXA270. When I suspend the system it all goes into suspend mode
->  >  correctly but when it comes back on resume any call to the pxa2xx_spi
->  >  code just hangs.
->
->  I've looked into this problem a bit more. It looks like suspend/resume
->  can never have worked on the pxa2xx spi subsystem.
->
->  One problem I've found is that after suspend the SSP registers don't
->  come back in their previous state. They need to be saved and restored.
->  I've added in some code to do that and it means that at least the
->  system doesn't hang as soon as spi is accessed during a resume. It
->  does however still hang at some later point. I'm still tracking that
->  one down.
->
->  I found that saving and restoring SSCR0, SSCR1, SSITR, SST0 (for
->  pxa270) and SSPSP was enough to bring the system back to life again.
->
->  Would more experienced people like to comment on whether I'm on the
->  right track here?
->
->  Cheers,
->  Zik
->
+> I've never submitted a patch before so I'd appreciate a review of this
+> before I submit it properly:
+
+See Documentation/SubmittingPatches.  The most obvious bit:
+
+> Index: pxa2xx_spi.c
+> ===================================================================
+> --- pxa2xx_spi.c        (revision 562)
+> +++ pxa2xx_spi.c        (working copy)
+
+Patch format should let it be applied at toplevei with "patch -p1" ...
+
+
+> @@ -102,6 +102,12 @@
+
+I prefer to see patches generated with "diff -p ..." so there's
+more context to review *just the patch* ...
+
+
+>         u32 int_cr1;
+>         u32 clear_sr;
+>         u32 mask_sr;
+> +
+> +        /* saved state for suspend/resume */
+> +        u32 saved_sscr0;
+> +        u32 saved_sscr1;
+> +        u32 saved_sst0;
+> +        u32 saved_sspsp;
+> 
+>         /* Driver message queue */
+>         struct workqueue_struct *workqueue;
+> @@ -1570,11 +1576,16 @@
+>  static int pxa2xx_spi_suspend(struct platform_device *pdev, pm_message_t state)
+>  {
+>         struct driver_data *drv_data = platform_get_drvdata(pdev);
+> +       void *reg = drv_data->ioaddr;
+>         int status = 0;
+> 
+> -       /* Check all childern for current power state */
+
+You should also generate patches aginst the *CURRENT* kernel,
+which in this case doesn't have that needless loop.
+
+
+> +        /* Save register state */
+> +        drv_data->saved_sscr0 = read_SSCR0(reg);
+> +        drv_data->saved_sscr1 = read_SSCR1(reg);
+> +        if (drv_data->ssp_type != PXA25x_SSP)
+> +                drv_data->saved_sst0 = read_SSTO(reg);
+> +        drv_data->saved_sspsp = read_SSPSP(reg);
+> +
+> +       /* Check all children for current power state */
+>         if (device_for_each_child(&pdev->dev, &state, suspend_devices) != 0) {
+
+I think you have some indentation problems ... looks like you're
+either not using TAB for indent, or added an extra space afterwards.
+
+
+>                 dev_warn(&pdev->dev, "suspend aborted\n");
+>                 return -1;
+> @@ -1592,13 +1604,21 @@
+>  static int pxa2xx_spi_resume(struct platform_device *pdev)
+>  {
+>         struct driver_data *drv_data = platform_get_drvdata(pdev);
+> +       void *reg = drv_data->ioaddr;
+>         int status = 0;
+> 
+>         /* Enable the SSP clock */
+>         pxa_set_cken(drv_data->master_info->clock_enable, 1);
+> 
+> +       /* Load saved SSP configuration */
+> +        write_SSCR0(0, reg);
+> +        write_SSCR1(drv_data->saved_sscr1, reg);
+> +        write_SSCR0(drv_data->saved_sscr0, reg);
+> +        write_SSITR(0, reg);
+> +       if (drv_data->ssp_type != PXA25x_SSP)
+> +                write_SSTO(drv_data->saved_sst0, reg);
+> +        write_SSPSP(drv_data->saved_sspsp, reg);
+> +
+>         /* Start the queue running */
+>         status = start_queue(drv_data);
+>         if (status != 0) {
+> 
+> 
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

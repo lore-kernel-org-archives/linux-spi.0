@@ -1,9 +1,9 @@
-From: "drapsta Kellner" <aecila_1978-X7q+Xe7TeCPQT0dZR+AlfA@public.gmane.org>
-Subject: You can now hold her hand to paradise.
-Date: Sat, 1 Mar 2008 16:33:41 +0100
-Message-ID: <001201c87bb1$a0841e20$d2ce5e3e@BAR01>
+From: "Komal Rakdee" <negadneg-djMFdlyumOkKOYt+vu3ZOw@public.gmane.org>
+Subject: I laughed at them in the locker-room.
+Date: Sat, 1 Mar 2008 15:21:28 -0300
+Message-ID: <000801c87bc9$10e1b710$29dafac9@russo8f2724ebd>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0358457877=="
+Content-Type: multipart/mixed; boundary="===============1940908131=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,18 +17,17 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0358457877==
+--===============1940908131==
 Content-Type: multipart/alternative;
-	boundary="--------=_NextPart_000_000E_01C87BBA.02488620"
+	boundary="--------=_NextPart_000_0004_01C87BAF.EB947F10"
 
-----------=_NextPart_000_000E_01C87BBA.02488620
+----------=_NextPart_000_0004_01C87BAF.EB947F10
 Content-Type: text/plain;
         charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-Quite simply put: the ONLY male enhancement product on the market that =
-works, and guarantees results or your money back.
-----------=_NextPart_000_000E_01C87BBA.02488620
+After I gained 3 inches, she moaned in ecstacy when i entered her..
+----------=_NextPart_000_0004_01C87BAF.EB947F10
 Content-Type: text/html;
         charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -41,14 +40,13 @@ charset=3Diso-8859-1">
 <STYLE></STYLE>
 </HEAD>
 <BODY bgColor=3D#ffffff>
-<A href=3D"http://www.durnape.com/">Quite simply put: the ONLY male =
-enhancement=20
-product on the market that works, and guarantees results or your money=20
-back.</A></BODY></HTML>
-----------=_NextPart_000_000E_01C87BBA.02488620--
+<A href=3D"http://www.ruggetir.com/">After I gained 3 inches, she moaned =
+in=20
+ecstacy when i entered her..</A></BODY></HTML>
+----------=_NextPart_000_0004_01C87BAF.EB947F10--
 
 
---===============0358457877==
+--===============1940908131==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -58,7 +56,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============0358457877==
+--===============1940908131==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -69,4 +67,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0358457877==--
+--===============1940908131==--

@@ -1,10 +1,12 @@
-From: =?GB2312?B?wfXPyMn6?= <ghntrhjrh-9Onoh4P/yGk@public.gmane.org>
-Subject: =?GB2312?B?t6IvxrE=?=
-Date: Tue, 4 Mar 2008 05:06:27 +0800
-Message-ID: <E1JWHr0-0004Io-CZ@mail.sourceforge.net>
-Reply-To: ghntrhjrh-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1975697743=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Rexanne Smith <jacke02-9Onoh4P/yGk@public.gmane.org>
+Subject: =?windows-1251?q?work_online_from_home?=
+Date: Tue, 4 Mar 2008 18:50:05 +0100
+Message-ID: <48378.094242844$1204653796@news.gmane.org>
+Reply-To: Rexanne Smith <illigmaximus1571-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: =?windows-1251?B?U3BpLWRldmVsLWdlbmVyYWw=?= <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,47 +19,24 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1975697743==
-Content-Type: text/plain;charset="GB2312"
+Hi,
 
-先生/女士：
+Our organization starts recruiting employees willing to take part in
+well-paying research studies conducted by leading online businesses. 
+Your opinion as a consumer is important for the success and profitability of
+many business ventures. 
 
-           您好！
-       
-      为解决广大客户财务票据不足与减少税收.我公司有全国
+You can earn very well for participating in on-line surveys, focus group
+discussions, and product/service evaluations. 
 
-  各地发票优惠向外代开:(国税/地税)、普通商业销售、服务、
+If you want to become one of our highly valued survey takers, please write
+back to guadalupehelgason1394-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and I will send you more information.
 
-  广告、建筑、运输、咨询、税务代开、另有海关代征增值税等
+Sincerely,
 
-  绝对保真,可先验证后再付款。
-  
-   电    话: 135 3783 2825
-  
-   联 系 人:  刘先生
-  
-   请留号码以备急用,
-
-
---===============1975697743==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Ann Stevenson
+Assistant HR
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1975697743==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1975697743==--

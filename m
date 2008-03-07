@@ -1,8 +1,7 @@
 From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-Subject: [PATCH] SPI bit bang: Deactivate CS before
-	restoring speed &	wordsize
-Date: Fri, 07 Mar 2008 16:52:28 +0100
-Message-ID: <1204905149.29669.22.camel@gentoo-jocke.transmode.se>
+Subject: bitbang & mpc83xx setup_transfer()
+Date: Fri, 07 Mar 2008 17:41:04 +0100
+Message-ID: <1204908064.29669.44.camel@gentoo-jocke.transmode.se>
 Reply-To: joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -20,43 +19,20 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Restoring speed & wordsize on mpc83xx disables the controller temporarily
-which makes the SPI outputs floating. This can cause a glich on
-the SPI CLK which makes the slave in the other end unhappy.
+I am a bit confused where one should do spi HW setup. Currently both
+mpc83xx_spi_setup_transfer() and mpc83xx_spi_chipselect() touches the
+HW controller. I suspect that this is so because
+mpc83xx_spi_setup_transfer() only gets called if one supply speed or
+word size thereby forcing mpc83xx_spi_chipselect() do it too and I doubt
+the speed and wordsize is correctly dealt with in
+mpc83xx_spi_chipselect().
 
-Make sure that CS is disabled before restoring speed & wordsize
-so any gliches are ignored by the SPI slave.
+The current situation for mpc83xx is suboptimal and can cause gliches on
+CLK as one must disable the controller before any change is to be
+performed and then reenabled it. The SPI I/O pins is floating while
+the controller is disabled.
 
-Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
----
-
-diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
-index 0c85c98..53649cd 100644
---- a/drivers/spi/spi_bitbang.c
-+++ b/drivers/spi/spi_bitbang.c
-@@ -371,10 +371,6 @@ static void bitbang_work(struct work_struct *work)
- 		m->status = status;
- 		m->complete(m->context);
- 
--		/* restore speed and wordsize */
--		if (setup_transfer)
--			setup_transfer(spi, NULL);
--
- 		/* normally deactivate chipselect ... unless no error and
- 		 * cs_change has hinted that the next message will probably
- 		 * be for this chip too.
-@@ -385,6 +381,10 @@ static void bitbang_work(struct work_struct *work)
- 			ndelay(nsecs);
- 		}
- 
-+		/* restore speed and wordsize */
-+		if (setup_transfer)
-+			setup_transfer(spi, NULL);
-+
- 		spin_lock_irqsave(&bitbang->lock, flags);
- 	}
- 	bitbang->busy = 0;
-
+ Jocke 
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

@@ -1,10 +1,13 @@
-From: "orkun Pellecchia" <oihccip_1984-wuqId4nAAQPMohDmgNdYFA@public.gmane.org>
-Subject: Too sexy for youtube.
-Date: Thu, 6 Mar 2008 13:20:57 +0100
-Message-ID: <001201c87f84$87f721f0$93210f4f@Salerno>
+From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Subject: [PATCH] SPI bit bang: Deactivate CS before
+	restoring speed &	wordsize
+Date: Fri, 07 Mar 2008 16:52:28 +0100
+Message-ID: <1204905149.29669.22.camel@gentoo-jocke.transmode.se>
+Reply-To: joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2135203835=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,54 +20,45 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2135203835==
-Content-Type: multipart/alternative;
-	boundary="--------=_NextPart_000_000E_01C87F8C.E9BB89F0"
+Restoring speed & wordsize on mpc83xx disables the controller temporarily
+which makes the SPI outputs floating. This can cause a glich on
+the SPI CLK which makes the slave in the other end unhappy.
 
-----------=_NextPart_000_000E_01C87F8C.E9BB89F0
-Content-Type: text/plain;
-        charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Make sure that CS is disabled before restoring speed & wordsize
+so any gliches are ignored by the SPI slave.
 
-Be a black belt in the art of lovemaking by clicking here
-----------=_NextPart_000_000E_01C87F8C.E9BB89F0
-Content-Type: text/html;
-        charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+---
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Diso-8859-1">
-<META content=3D"MSHTML 6.00.2900.3199" name=3DGENERATOR>
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<A href=3D"http://www.botriapi.com/">Be a black belt in the art of =
-lovemaking by=20
-clicking here</A></BODY></HTML>
-----------=_NextPart_000_000E_01C87F8C.E9BB89F0--
+diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
+index 0c85c98..53649cd 100644
+--- a/drivers/spi/spi_bitbang.c
++++ b/drivers/spi/spi_bitbang.c
+@@ -371,10 +371,6 @@ static void bitbang_work(struct work_struct *work)
+ 		m->status = status;
+ 		m->complete(m->context);
+ 
+-		/* restore speed and wordsize */
+-		if (setup_transfer)
+-			setup_transfer(spi, NULL);
+-
+ 		/* normally deactivate chipselect ... unless no error and
+ 		 * cs_change has hinted that the next message will probably
+ 		 * be for this chip too.
+@@ -385,6 +381,10 @@ static void bitbang_work(struct work_struct *work)
+ 			ndelay(nsecs);
+ 		}
+ 
++		/* restore speed and wordsize */
++		if (setup_transfer)
++			setup_transfer(spi, NULL);
++
+ 		spin_lock_irqsave(&bitbang->lock, flags);
+ 	}
+ 	bitbang->busy = 0;
 
-
---===============2135203835==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============2135203835==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2135203835==--

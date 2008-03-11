@@ -1,9 +1,9 @@
 From: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi_bitbang: txrx_bufs zero status fix
-Date: Tue, 11 Mar 2008 11:05:10 +0100
-Message-ID: <47D65956.9070205@gmail.com>
+Subject: [PATCH] au1550_spi: fix prototype of irq handler
+Date: Tue, 11 Mar 2008 11:04:15 +0100
+Message-ID: <47D6591F.4000604@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------090709070509050509020203"
+Content-Type: multipart/mixed; boundary="------------080404070502040403040005"
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -19,47 +19,54 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 This is a multi-part message in MIME format.
---------------090709070509050509020203
+--------------080404070502040403040005
 Content-Type: text/plain; charset=ISO-8859-2
 Content-Transfer-Encoding: 7bit
 
-SPI controller drivers return number of bytes actually transfered from
-bitbang->txrx_bufs() method. Returned zero number of bytes transfered
-when non-zero number of bytes to transfer was requested should be
-recognized as error.
-The patch fixes that.
+Remove struct pt_regs *regs from prototype of au1550_spi_irq handler to
+avoid warning in request_irq().
 
 Signed-off-by: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
 ---
 
- spi_bitbang.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Fixes also comment type leadin.
 
---------------090709070509050509020203
+ au1550_spi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+
+--------------080404070502040403040005
 Content-Type: text/plain;
- name="spi_bitbang-txrx_bufs-zero-status-fix.patch"
+ name="au1550_spi-remove-pt_regs.patch"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline;
-	filename="spi_bitbang-txrx_bufs-zero-status-fix.patch"
+ filename="au1550_spi-remove-pt_regs.patch"
 
-diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
-index f7f8580..83c911b 100644
---- a/drivers/spi/spi_bitbang.c
-+++ b/drivers/spi/spi_bitbang.c
-@@ -345,7 +345,9 @@ static void bitbang_work(struct work_struct *work)
- 				status = bitbang->txrx_bufs(spi, t);
- 			}
- 			if (status != t->len) {
--				if (status > 0)
-+				/* zero status, meaning zero number of bytes
-+				 * transfered, is also invalid in this case */
-+				if (status >= 0)
- 					status = -EMSGSIZE;
- 				break;
- 			}
+diff --git a/drivers/spi/au1550_spi.c b/drivers/spi/au1550_spi.c
+index c47a650..41a3d00 100644
+--- a/drivers/spi/au1550_spi.c
++++ b/drivers/spi/au1550_spi.c
+@@ -99,7 +99,7 @@ static dbdev_tab_t au1550_spi_mem_dbdev =
+ static void au1550_spi_bits_handlers_set(struct au1550_spi *hw, int bpw);
+ 
+ 
+-/**
++/*
+  *  compute BRG and DIV bits to setup spi clock based on main input clock rate
+  *  that was specified in platform data structure
+  *  according to au1550 datasheet:
+@@ -650,7 +650,7 @@ static int au1550_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	return hw->txrx_bufs(spi, t);
+ }
+ 
+-static irqreturn_t au1550_spi_irq(int irq, void *dev, struct pt_regs *regs)
++static irqreturn_t au1550_spi_irq(int irq, void *dev)
+ {
+ 	struct au1550_spi *hw = dev;
+ 	return hw->irq_callback(hw);
 
---------------090709070509050509020203
+--------------080404070502040403040005
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -69,7 +76,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---------------090709070509050509020203
+--------------080404070502040403040005
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,4 +87,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---------------090709070509050509020203--
+--------------080404070502040403040005--

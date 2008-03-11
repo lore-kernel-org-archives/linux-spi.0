@@ -1,8 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.25-rc5] au1550_spi: fix prototype of
-	irq handler
-Date: Tue, 11 Mar 2008 08:26:37 -0800
-Message-ID: <200803110926.37911.david-b@pacbell.net>
+Subject: [patch 2.6.25-rc5] spi_bitbang: short transfer
+	status fix
+Date: Tue, 11 Mar 2008 08:27:49 -0800
+Message-ID: <200803110927.49850.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -23,36 +23,44 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Remove struct pt_regs *regs from prototype of au1550_spi_irq handler to
-avoid warning in request_irq().  Also fix comment type leadin.
+SPI controller drivers return number of bytes actually transfered from
+bitbang->txrx_bufs() method.  This updates handling of short transfers
+(where the transfer size is less than requested):
+
+ - Even zero byte short transfers should report errors;
+ - Include short transfers in the total of transferred bytes;
+ - Use EREMOTEIO (like USB) not EMSGSIZE to report short transfers
+
+Short transfers don't normally mean invalid message sizes, but if the
+underlying controller driver needs to use EMSGSIZE it can still do so.
 
 Signed-off-by: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+[db: fix two more minor issues]
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
-Compile fix ... seems like 2.6.25-final fodder.
+ drivers/spi/spi_bitbang.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
- drivers/spi/au1550_spi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- g26.orig/drivers/spi/au1550_spi.c	2007-08-12 10:54:36.000000000 -0700
-+++ g26/drivers/spi/au1550_spi.c	2008-03-11 09:09:45.000000000 -0700
-@@ -99,7 +99,7 @@ static dbdev_tab_t au1550_spi_mem_dbdev 
- static void au1550_spi_bits_handlers_set(struct au1550_spi *hw, int bpw);
+--- g26.orig/drivers/spi/spi_bitbang.c	2008-03-10 19:44:19.000000000 -0700
++++ g26/drivers/spi/spi_bitbang.c	2008-03-11 09:24:03.000000000 -0700
+@@ -343,12 +343,14 @@ static void bitbang_work(struct work_str
+ 					t->rx_dma = t->tx_dma = 0;
+ 				status = bitbang->txrx_bufs(spi, t);
+ 			}
++			if (status > 0)
++				m->actual_length += status;
+ 			if (status != t->len) {
+-				if (status > 0)
+-					status = -EMSGSIZE;
++				/* always report some kind of error */
++				if (status >= 0)
++					status = -EREMOTEIO;
+ 				break;
+ 			}
+-			m->actual_length += status;
+ 			status = 0;
  
- 
--/**
-+/*
-  *  compute BRG and DIV bits to setup spi clock based on main input clock rate
-  *  that was specified in platform data structure
-  *  according to au1550 datasheet:
-@@ -650,7 +650,7 @@ static int au1550_spi_txrx_bufs(struct s
- 	return hw->txrx_bufs(spi, t);
- }
- 
--static irqreturn_t au1550_spi_irq(int irq, void *dev, struct pt_regs *regs)
-+static irqreturn_t au1550_spi_irq(int irq, void *dev)
- {
- 	struct au1550_spi *hw = dev;
- 	return hw->irq_callback(hw);
+ 			/* protocol tweaks before next transfer */
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

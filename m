@@ -1,9 +1,9 @@
 From: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] au1550_spi: fix prototype of irq handler
-Date: Tue, 11 Mar 2008 11:04:15 +0100
-Message-ID: <47D6591F.4000604@gmail.com>
+Subject: spi_bitbang cs_change hinting fix
+Date: Tue, 11 Mar 2008 11:05:51 +0100
+Message-ID: <47D6597F.4040503@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------080404070502040403040005"
+Content-Type: multipart/mixed; boundary="------------040502000407070502090003"
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -19,54 +19,67 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 This is a multi-part message in MIME format.
---------------080404070502040403040005
+--------------040502000407070502090003
 Content-Type: text/plain; charset=ISO-8859-2
 Content-Transfer-Encoding: 7bit
 
-Remove struct pt_regs *regs from prototype of au1550_spi_irq handler to
-avoid warning in request_irq().
+Fix condition for deactivating chipselect after processing of
+spi_message - if cs_change==0, chipselect should not be touched and left
+active for next spi_message to follow.
 
 Signed-off-by: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
 ---
 
-Fixes also comment type leadin.
+I am not sure about the meaning of spi message transfer cs_change attribute.
 
- au1550_spi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I assume that non-zero cs_change indicate that chipselect should be
+toggled between spi_transfers.
 
+What about cs_change in last spi_transfer of spi_message?
+Should zero cs_change provide hinting that chipselect should be left
+active, because spi_message to follow will be for the same spi device?
 
---------------080404070502040403040005
+If that is so, the handling in spi_bitbang.c would be incorrect, because
+chipselect would be deactivated when cs_change==0.
+
+Or is the meaning of cs_change in the last spi_transfer of spi_message
+different than in previous spi_transfers in single spi_message?
+Like cs_change==0 in last spi_transfer would indicate to deactivate
+chipselect and cs_change!=0 in last spi_transfer would provide hinting
+that next spi_message will be for the same spi device and chipselect
+should be left active?
+If that is so, it's quite confusing (and not documented), as the meaning
+of cs_change in the last spi_transfer would be opposite than in other
+spi_transfers in single spi_message.
+
+The patch here fixes the condition for the case that cs_change meaning
+is the first variant described.
+
+ spi_bitbang.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--------------040502000407070502090003
 Content-Type: text/plain;
- name="au1550_spi-remove-pt_regs.patch"
+ name="spi_bitbang-cs_change-hinting-fix.patch"
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="au1550_spi-remove-pt_regs.patch"
+Content-Disposition: inline; filename="spi_bitbang-cs_change-hinting-fix.patch"
 
-diff --git a/drivers/spi/au1550_spi.c b/drivers/spi/au1550_spi.c
-index c47a650..41a3d00 100644
---- a/drivers/spi/au1550_spi.c
-+++ b/drivers/spi/au1550_spi.c
-@@ -99,7 +99,7 @@ static dbdev_tab_t au1550_spi_mem_dbdev =
- static void au1550_spi_bits_handlers_set(struct au1550_spi *hw, int bpw);
- 
- 
--/**
-+/*
-  *  compute BRG and DIV bits to setup spi clock based on main input clock rate
-  *  that was specified in platform data structure
-  *  according to au1550 datasheet:
-@@ -650,7 +650,7 @@ static int au1550_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	return hw->txrx_bufs(spi, t);
- }
- 
--static irqreturn_t au1550_spi_irq(int irq, void *dev, struct pt_regs *regs)
-+static irqreturn_t au1550_spi_irq(int irq, void *dev)
- {
- 	struct au1550_spi *hw = dev;
- 	return hw->irq_callback(hw);
+diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
+index f7f8580..7ff31a3 100644
+--- a/drivers/spi/spi_bitbang.c
++++ b/drivers/spi/spi_bitbang.c
+@@ -380,7 +380,7 @@ static void bitbang_work(struct work_struct *work)
+ 		 * cs_change has hinted that the next message will probably
+ 		 * be for this chip too.
+ 		 */
+-		if (!(status == 0 && cs_change)) {
++		if (!(status == 0 && !cs_change)) {
+ 			ndelay(nsecs);
+ 			bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
+ 			ndelay(nsecs);
 
---------------080404070502040403040005
+--------------040502000407070502090003
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -76,7 +89,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---------------080404070502040403040005
+--------------040502000407070502090003
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -87,4 +100,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---------------080404070502040403040005--
+--------------040502000407070502090003--

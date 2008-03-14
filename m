@@ -1,19 +1,12 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [Uclinux-dist-devel] spi_mmc bus
-	concurrency fix
-Date: Wed, 12 Mar 2008 14:01:18 -0800
-Message-ID: <200803121501.19131.david-b@pacbell.net>
-References: <47C42D50.7020204@rubico.se>
-	<200802272155.29706.david-b@pacbell.net> <47C66D8A.3010904@cox.net>
+From: "CK Sim" <cksim-rdc5FV7LBygPGFelY5Zqew@public.gmane.org>
+Subject: Interpretation of SPI debug output
+Date: Fri, 14 Mar 2008 21:34:14 +0800
+Message-ID: <!~!UENERkVCMDkAAQACAAAAAAAAAAAAAAAAABgAAAAAAAAA33LEMKcTz06k3l6K9b/SmcKAAAAQAAAA3GVhRjpIl0iO5gj+NVEuJgEAAAAA@singnet.com.sg>
+Reply-To: cksim-rdc5FV7LBygPGFelY5Zqew@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: bryan.wu-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org,
-	Hans Eklund <hans-9ai+6vhHfRGzQB+pC5nmwQ@public.gmane.org>, Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, pwilshire-j9pdmedNgrk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0004732541=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <47C66D8A.3010904-j9pdmedNgrk@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,36 +18,245 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 28 February 2008, Phil Wilshire wrote:
-> I agree, I did have some concerns about the callback issue.
-> It also looks like we have enough people + momentum on this problem to
-> get a fix in good time. So I'll wait to see what happens.
+This is a multi-part message in MIME format.
 
-Actually, I'm not sure I'd agree on that.  Folk want a fix,
-but nobody (including me!) has sent something that's quite
-mergeable yet.
+--===============0004732541==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0094_01C8861B.26B2F340"
 
-I think part of the solution may be what someone (Brian?)
-observed:  that growing the mid-layer to handle some of the
-queue management functions should help, no matter what
-eventual solution is adopted.
+This is a multi-part message in MIME format.
 
-That might be as little as providing a default "add to queue"
-and "take from queue" mechanism and starting to phase it into
-use in the various master controller drivers.  When they use
-that scheme, it should be easy to splice in alternative queue
-management policies (notably:  "only spi_mmc can access the
-bus for now") without changing the controller drivers.
+------=_NextPart_000_0094_01C8861B.26B2F340
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-So it'd be really nice if someone could come up with a patch
-like that to help get some forward motion ... unless there's
-a better suggestion for how to move forward?
+Hi,
 
-- Dave
+ 
+
+Below is a captured log of the console output with SPI interface on
+AT91SAM9261 (SPI1):
+
+ 
+
+xfer c038fe24: len 2 tx c02eb3b5/202eb3b5 rx c02eb3b7/202eb3b7 imr 018
+
+at73c213 spi1.3: DEactivate 58
+
+atmel_spi atmel_spi.1: xfer complete: 2 bytes transferred
+
+ASoC version 0.13.1
+
+ALSA device list:
+
+  #0: AT73C213
+
+TCP cubic registered
+
+NET: Registered protocol family 1
+
+NET: Registered protocol family 17
+
+ 
+
+ 
+
+Can anyone help to give a brief description on how to interpret the first
+statement, especially "tx c02eb3b5/202eb3b5 rx c02eb3b7/202eb3b7" ?
+
+ 
+
+Thanks in advance.
+
+ 
+
+Best Regards.
+
+ 
+
+Sim CK
 
 
+------=_NextPart_000_0094_01C8861B.26B2F340
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:SimSun;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"\@SimSun";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hi,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Below is a captured log of the console output with =
+SPI interface
+on AT91SAM9261 (SPI1):<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>xfer c038fe24: len 2 tx c02eb3b5/202eb3b5 rx
+c02eb3b7/202eb3b7 imr 018<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>at73c213 spi1.3: DEactivate =
+58<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>atmel_spi atmel_spi.1: xfer complete: 2 bytes =
+transferred<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>ASoC version 0.13.1<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>ALSA device list:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp; #0: AT73C213<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>TCP cubic registered<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>NET: Registered protocol family =
+1<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>NET: Registered protocol family =
+17<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Can anyone help to give a brief description on how to =
+interpret
+the first statement, especially &#8220;tx c02eb3b5/202eb3b5 rx
+c02eb3b7/202eb3b7&#8221; ?<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thanks in advance.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Best Regards.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Sim CK<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_0094_01C8861B.26B2F340--
+
+
+
+--===============0004732541==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+--===============0004732541==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0004732541==--

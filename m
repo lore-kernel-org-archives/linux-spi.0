@@ -1,9 +1,9 @@
 From: =?GB2312?B?1cXPyMn6?= <linxuwei550-9Onoh4P/yGk@public.gmane.org>
 Subject: =?GB2312?B?yczStcGqz7U=?=
-Date: Sat, 22 Mar 2008 03:28:44 +0800
-Message-ID: <E1Jcmk1-0003SP-1p@mail.sourceforge.net>
+Date: Sun, 23 Mar 2008 00:39:51 +0800
+Message-ID: <E1Jd6aA-0000hG-67@mail.sourceforge.net>
 Reply-To: linxuwei550-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1082124993=="
+Content-Type: multipart/mixed; boundary="===============0811188837=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,7 +17,7 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1082124993==
+--===============0811188837==
 Content-Type: text/plain;charset="GB2312"
 
                                                                               宝恒实业有限公司
@@ -25,24 +25,20 @@ Content-Type: text/plain;charset="GB2312"
                                                     您好！
                                                        我是宝恒实业有限公司拥有多年工商财税代理经验,热情为您提供策划多项
                                                     服务(向外代开各地多种发票).
-                                                       宝恒实业有限公司.创建于1994年，是财政局批准设立的第一家会计咨询机
-                                                    构，也是唯一一家顺利通过ISO9001：2000版国际质量体系认证的财税代理服 
-                                                    务机构。公司拥有一批经验丰富的资深会计师和精通各类企业的帐务处理、工
-                                                    商、税务等方面的从业人员，是一家具服务质量高、办事效益快、收费合理的
-                                                    财税代理机构。
-                                                       本公司身受多家包税公司委托代开各种税票，规范做帐，价格优惠，为企
-                                                    业争取最大的经济利益。
                                                        发票种类分别为：增值税专用发票、海关增值税专用发票、普通国税(服务
                                                     业、运输业、建筑安装业、广告业、加工业、销售业等等。)
+                                                             普通发票:1-2%       增值税发票6%
+ 
                                                        如贵公司（厂）需要本公司代开发票请来电联系.
                                                             致
                                                        礼
-                                                       请来电联系；0755-21054532
-                                                       13751120762 蔡先生
-                                                       LINBO762-guc8Kt/Hbbw@public.gmane.org
+                                                                                                      请来电联系；
+                                                                                                    
+                                                                                                   13751120762蔡生   
+                                                                   如有打扰,还望见谅!
 
 
---===============1082124993==
+--===============0811188837==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -52,7 +48,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1082124993==
+--===============0811188837==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -63,4 +59,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1082124993==--
+--===============0811188837==--

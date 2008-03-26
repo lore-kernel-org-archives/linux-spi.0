@@ -1,17 +1,12 @@
-From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 3/3] Blackfin SPI Driver: Fix warning:
-	remove unused label
-Date: Wed, 26 Mar 2008 18:28:32 -0700
-Message-ID: <1206581312-25869-4-git-send-email-cooloney@kernel.org>
+From: "Mrs. Nancy Nek" <swiftcreditcarddepartennscamvmm-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org>
+Subject: 2008 SCAM VICTIMS COMPENSATION PAYMENT.
+Date: Wed, 26 Mar 2008 19:46:14 +0900 (JST)
+Message-ID: <20080326104614.16283.qmail@web4010.mail.ogk.yahoo.co.jp>
+Reply-To: asdccs_info-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0427784882=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <>
-References: <>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,31 +18,59 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+--===============0427784882==
+Content-Type: multipart/alternative; boundary="0-846400089-1206528374=:12938"
 
-Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi_bfin5xx.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+--0-846400089-1206528374=:12938
+Content-Type: text/plain; charset=iso-2022-jp
 
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index a4bf3af..6635e15 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -1319,7 +1319,6 @@ out_error_no_dma_ch:
- 	iounmap((void *) drv_data->regs_base);
- out_error_ioremap:
- out_error_get_res:
--out_error:
- 	spi_master_put(master);
- 
- 	return status;
--- 
-1.5.4.3
+新しいメールアドレスをお知らせします新しいメールアドレス： swiftcreditcarddepartennscamvmm-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org
+
+ATTN: BENEFICIARY,
+
+
+The ASDC,AUFC,IMF and UNITED NATIONS Body is now paying 350 Scam victims $1,000,000.00 USD 
+
+
+each in accordance with the UNITED NATIONS recommendations. 
+
+
+We shall feed you with further modalities as soon as we get response from you. 
+
+
+Yours faithfully,
+
+- Mrs. Nancy Nek
+
+
+--0-846400089-1206528374=:12938
+Content-Type: text/html; charset=iso-2022-jp
+
+<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://i.yimg.jp/i/jp/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">新しいメールアドレスをお知らせします</big></td></tr></table><div style="padding:10px;">新しいメールアドレス： <b>swiftcreditcarddepartennscamvmm-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org</b><br><br><span style="color:green;">ATTN: BENEFICIARY,<br><br><br>The ASDC,AUFC,IMF and UNITED NATIONS Body is now paying 350 Scam victims $1,000,000.00 USD <br><br><br>each in accordance with the UNITED NATIONS recommendations. <br><br><br>We shall feed you with further modalities as soon as we get response from you. <br><br><br>Yours faithful
+ ly,</span><br><br>- <span style="color:green;">Mrs. Nancy Nek</span></div></div>
+--0-846400089-1206528374=:12938--
+
+
+--===============0427784882==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://ad.doubleclick.net/clk;164216239;13503038;w?http://sf.net/marketplace
+--===============0427784882==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0427784882==--

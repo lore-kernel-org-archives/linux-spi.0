@@ -1,12 +1,12 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/3] Blackfin SPI driver: fix breakage
-	cause by overzealous line wrapping and only pass in 1 format string
-Date: Wed, 26 Mar 2008 18:28:30 -0700
-Message-ID: <1206581312-25869-2-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 2/3] Blackfin SPI Driver: Fix peripheral
+	pins initialization bug in SPI probe
+Date: Wed, 26 Mar 2008 18:28:31 -0700
+Message-ID: <1206581312-25869-3-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Vitja Makarov <vitja.makarov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -23,29 +23,48 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Vitja Makarov <vitja.makarov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Fix bug in SPI probe: first initialize peripheral pins,
+and just after register spi master device. This fixes
+problems with SPI drivers built-in kernel.
+
+Singed-off-by: Vitja Makarov <vitja.makarov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index d853fce..c93c9d6 100644
+index c93c9d6..a4bf3af 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -713,8 +713,8 @@ static void pump_transfers(unsigned long data)
- 	} else {
- 		drv_data->len = transfer->len;
+@@ -1294,6 +1294,12 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
+ 		goto out_error_queue_alloc;
  	}
--	dev_dbg(&drv_data->pdev->dev, "transfer: ",
--		"drv_data->write is %p, chip->write is %p, null_wr is %p\n",
-+	dev_dbg(&drv_data->pdev->dev,
-+		"transfer: drv_data->write is %p, chip->write is %p, null_wr is %p\n",
- 		drv_data->write, chip->write, null_writer);
  
- 	/* speed and width has been set on per message */
++	status = peripheral_request_list(drv_data->pin_req, DRV_NAME);
++	if (status != 0) {
++		dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
++		goto out_error_queue_alloc;
++	}
++
+ 	/* Register with the SPI framework */
+ 	platform_set_drvdata(pdev, drv_data);
+ 	status = spi_register_master(master);
+@@ -1302,12 +1308,6 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
+ 		goto out_error_queue_alloc;
+ 	}
+ 
+-	status = peripheral_request_list(drv_data->pin_req, DRV_NAME);
+-	if (status != 0) {
+-		dev_err(&pdev->dev, ": Requesting Peripherals failed\n");
+-		goto out_error;
+-	}
+-
+ 	dev_info(dev, "%s, Version %s, regs_base@%p, dma channel@%d\n",
+ 		DRV_DESC, DRV_VERSION, drv_data->regs_base,
+ 		drv_data->dma_channel);
 -- 
 1.5.4.3
 

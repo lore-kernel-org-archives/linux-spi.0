@@ -1,12 +1,15 @@
-From: "Mrs. Nancy Nek" <swiftcreditcarddepartennscamvmm-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org>
-Subject: 2008 SCAM VICTIMS COMPENSATION PAYMENT.
-Date: Wed, 26 Mar 2008 19:46:14 +0900 (JST)
-Message-ID: <20080326104614.16283.qmail@web4010.mail.ogk.yahoo.co.jp>
-Reply-To: asdccs_info-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+From: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: spi_bitbang cs_change hinting fix
+Date: Thu, 27 Mar 2008 09:30:28 +0100
+Message-ID: <47EB5B24.1060609@gmail.com>
+References: <47D6597F.4040503@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0427784882=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <47D6597F.4040503-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,59 +21,72 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0427784882==
-Content-Type: multipart/alternative; boundary="0-846400089-1206528374=:12938"
+Hi David,
 
---0-846400089-1206528374=:12938
-Content-Type: text/plain; charset=iso-2022-jp
+Jan Nikitenko wrote:
+> Fix condition for deactivating chipselect after processing of
+> spi_message - if cs_change==0, chipselect should not be touched and left
+> active for next spi_message to follow.
+> 
+> Signed-off-by: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> 
+> ---
+> 
+> I am not sure about the meaning of spi message transfer cs_change attribute.
+> 
+> I assume that non-zero cs_change indicate that chipselect should be
+> toggled between spi_transfers.
+> 
+> What about cs_change in last spi_transfer of spi_message?
+> Should zero cs_change provide hinting that chipselect should be left
+> active, because spi_message to follow will be for the same spi device?
+> 
+> If that is so, the handling in spi_bitbang.c would be incorrect, because
+> chipselect would be deactivated when cs_change==0.
+> 
+> Or is the meaning of cs_change in the last spi_transfer of spi_message
+> different than in previous spi_transfers in single spi_message?
+> Like cs_change==0 in last spi_transfer would indicate to deactivate
+> chipselect and cs_change!=0 in last spi_transfer would provide hinting
+> that next spi_message will be for the same spi device and chipselect
+> should be left active?
+> If that is so, it's quite confusing (and not documented), as the meaning
+> of cs_change in the last spi_transfer would be opposite than in other
+> spi_transfers in single spi_message.
+> 
+> The patch here fixes the condition for the case that cs_change meaning
+> is the first variant described.
+> 
+>  spi_bitbang.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
+> index f7f8580..7ff31a3 100644
+> --- a/drivers/spi/spi_bitbang.c
+> +++ b/drivers/spi/spi_bitbang.c
+> @@ -380,7 +380,7 @@ static void bitbang_work(struct work_struct *work)
+>  		 * cs_change has hinted that the next message will probably
+>  		 * be for this chip too.
+>  		 */
+> -		if (!(status == 0 && cs_change)) {
+> +		if (!(status == 0 && !cs_change)) {
+>  			ndelay(nsecs);
+>  			bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
+>  			ndelay(nsecs);
 
-新しいメールアドレスをお知らせします新しいメールアドレス： swiftcreditcarddepartennscamvmm-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org
 
-ATTN: BENEFICIARY,
+Could you, please, comment this issue and clarify the meaning of
+cs_change in the last spi_transfer of spi_message?
 
+It seems that I am not the only one confused about that:
+http://lkml.org/lkml/2006/2/28/2
+SPI: cs_change usage
 
-The ASDC,AUFC,IMF and UNITED NATIONS Body is now paying 350 Scam victims $1,000,000.00 USD 
-
-
-each in accordance with the UNITED NATIONS recommendations. 
-
-
-We shall feed you with further modalities as soon as we get response from you. 
-
-
-Yours faithfully,
-
-- Mrs. Nancy Nek
-
-
---0-846400089-1206528374=:12938
-Content-Type: text/html; charset=iso-2022-jp
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://i.yimg.jp/i/jp/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">新しいメールアドレスをお知らせします</big></td></tr></table><div style="padding:10px;">新しいメールアドレス： <b>swiftcreditcarddepartennscamvmm-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org</b><br><br><span style="color:green;">ATTN: BENEFICIARY,<br><br><br>The ASDC,AUFC,IMF and UNITED NATIONS Body is now paying 350 Scam victims $1,000,000.00 USD <br><br><br>each in accordance with the UNITED NATIONS recommendations. <br><br><br>We shall feed you with further modalities as soon as we get response from you. <br><br><br>Yours faithful
- ly,</span><br><br>- <span style="color:green;">Mrs. Nancy Nek</span></div></div>
---0-846400089-1206528374=:12938--
-
-
---===============0427784882==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Thanks and best regards,
+Jan
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://ad.doubleclick.net/clk;164216239;13503038;w?http://sf.net/marketplace
---===============0427784882==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0427784882==--

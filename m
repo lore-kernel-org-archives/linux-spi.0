@@ -1,11 +1,20 @@
-From: =?GB2312?B?wfXPyMn6?= <uhujhyhjt-9Onoh4P/yGk@public.gmane.org>
-Subject: =?GB2312?B?t6IvxrE=?=
-Date: Sat, 5 Apr 2008 06:17:38 +0800
-Message-ID: <E1JhuE5-0003EM-Nd@mail.sourceforge.net>
-Reply-To: uhujhyhjt-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1004419944=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH]  jffs2 summary allocation
+Date: Fri, 4 Apr 2008 16:09:40 -0700
+Message-ID: <200804041609.41092.david-b@pacbell.net>
+References: <713171.37644.qm@web26213.mail.ukl.yahoo.com>
+	<20080404124812.d39fa640.akpm@linux-foundation.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Michael Trimarchi <trimarchimichael-whZMOeQn8C0@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org
+To: linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080404124812.d39fa640.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,48 +26,27 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1004419944==
-Content-Type: text/plain;charset="GB2312"
+On Friday 04 April 2008, Andrew Morton wrote:
 
-先生/女士：
+> I'm assuming from the trace that the arm code tried to put that memory
+> under DMA (or at least, passed it into part of the DMA management code to
+> get the various caches sorted out) and that the arm DMA support code
+> doesn't like being given vmalloced memory.
 
-           您好！
-       
-      为解决广大客户财务票据不足与减少税收.我公司有全国
+Actually, Documentation/DMA-Mapping.txt has a section right up
+front called "What memory is DMA'able?" ... which despite its
+ungrammatical title, says clearly:
 
-  各地发票优惠向外代开:(国税/地税)、普通商业销售、服务、
+  ... This means specifically that you may _not_ use the
+  memory/addresses returned from vmalloc() for DMA.  ...
 
-  广告、建筑、运输、咨询、税务代开、另有海关代征增值税等
+So I'm rather surprised to see *ANY* kernel code trying to do
+that.  That rule has been in effect for many, many years now.
 
-  绝对保真,可先验证后再付款。
-  
-   电    话: 135 3783 2825
-  
-   联 系 人:  刘先生
-
-   请留号码以备急用,
-
-
---===============1004419944==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+- Dave
 
 -------------------------------------------------------------------------
-Check out the new SourceForge.net Marketplace.
-It's the best place to buy or sell services for
-just about anything Open Source.
-http://ad.doubleclick.net/clk;164216239;13503038;w?http://sf.net/marketplace
---===============1004419944==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1004419944==--
+This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
+Register now and save $200. Hurry, offer ends at 11:59 p.m., 
+Monday, April 7! Use priority code J8TLD2. 
+http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone

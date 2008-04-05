@@ -1,10 +1,10 @@
-From: Kauniskangas <otinrof_1952-aqXylyFgq2M@public.gmane.org>
-Subject: Luxury leather products and watches at a steal
-Date: Sat, 5 Apr 2008 13:09:21 +0200
-Message-ID: <CD19D3FF.3%otinrof_1952@OUJI.NET>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0787278254=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: weskypp5-k+cT0dCbe1g@public.gmane.org
+Subject: spi-devel-general
+Date: Sun, 6 Apr 2008 01:22:15 +0800
+Message-ID: <E1JiC5x-0007eD-41@mail.sourceforge.net>
+Reply-To: weskypp5-k+cT0dCbe1g@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1330840533=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,41 +17,210 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0787278254==
-Content-type: multipart/alternative;
-        boundary="B_9604985199_56362"
-
---B_9604985199_56362
-Content-type: text/plain;
-        charset="US-ASCII"
-Content-transfer-encoding: 7bit
-
-Mega sale is now on; grab your favorite selection right now. http://www.terniaglo.com/
+--===============1330840533==
+Content-Type: text/plain;charset="GB2312"
 
 
---B_9604985199_56362
-Content-type: text/html;
-        charset="US-ASCII"
-Content-transfer-encoding: quoted-printable
+               中层经理综合管理技能提升研修班(证书班三天)
 
-<HTML>
-<HEAD>
-<TITLE>Luxury leather products and watches at a steal</TITLE>
-</HEAD>
-<BODY>
-<FONT COLOR=3D"#000080"><FONT SIZE=3D"4"><FONT FACE=3D"Calibri, Verdana, =
-Helvetica, Arial"><SPAN STYLE=3D'font-size:11pt'>Mega sale is now on; =
-grab your favorite selection right now. <a =
-href=3D"http://www.terniaglo.com/">http://www.terniaglo.com/</a><BR>
-</SPAN></FONT></FONT></FONT>
-</BODY>
-</HTML>
+深圳 3月14-16日、4月11-13日、5月16-18日    深圳金百合大酒店
+上海 3月28-30日、4月25-27日、5月30-6月1日 上海新梅华东大酒店
+             
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+培训对象：
+企业副总、各部门经理、主管、各级中层管理人员、新提拔的、从专业人才转型到管理的、
+进一步想提高管理绩效的、晋升到高层管理以及其它预备管理人员。
+
+培训证书：
+培训合格者颁发由香港光华管理学院签署的《职业经理人培训证书》
+
+主办单位: 众人行管理咨询
+
+培训费用:2800元/人
+
+备    注：
+查询网站：www.126px.hk
+咨询电话：0755-26075365  26075429  22008632
+传    真：0755-61351396  
+联 系 人：凌小姐   彭小姐
 
 
---B_9604985199_56362--
+课程收获 
+☆ 全面学习企业管理的系统过程，让中高层管理人员统一观念、达成共识；
+☆ 学习在企业内部如何处理领导、下属、其它部门之间的协同合作关系，处理好工作
+   与人际关系，最大限度地发挥公司的综合实力；
+☆ 学习如何成为一个优秀的领导人，如何更好的带领下属完成工作目标；
+☆ 如何提高下属的能力，建设高绩效的管理团队，让下属在工作中发挥更高的工作积
+   极性和工作热情。
+
+培训特点：
+☆ 系统性：企业管理是一个系统工程，注重综合能力的均衡发展，因而在管理技术上
+   也注重系统性的学习和培训。
+☆ 改变行为：对企业来说，不能带来管理行为的改变，是没有任何意义的。本训练将
+   职业经理经理的必备管理技能设计成一个个的能力点，使他们通过抓能力点而达到
+   改变行为、转变观念的目的。
+☆ 实践操作性：管理技能是动手能力、实战能力，不能用于企业管理实践的方法是无
+   效的。本次管理技能训练聚焦于管理的实际操作能力提高。
 
 
---===============0787278254==
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+培 训 提 纲
+第一章、	什么是管理
+第二章、	如何管理心态
+第三章、	管理的特点是什么 
+第四章、	什么样的管理是最适合企业的管理
+第五章、	管理、组织与领导的关系
+第六章、	管理角色的自我认知
+第七章、	领导力提升的技巧
+第八章、	管理沟通与关系协调
+第九章、	高绩效团队的建设
+第十章、	激励管理的技巧
+
+第一章、什么是管理
+        管理的实质是什么?
+第二章. 如何管理心态
+        养员工良好的心态是管理的第一要务
+第三章．管理的基本特性
+        目的性  有效性   他人性   多样性
+
+第四章、什么样的管理是最适合企业的管理
+        管理的方法和技术多种多样，什么样的管理模式才是最适合企业发展的？
+        只有找到最适合我们企业发展的管理模式，才能避免管理的盲目性
+
+第五章、管理、组织、领导三者的相互关系和异同 
+        管理者、领导者到底应该做哪些事？
+        管理者和领导者到底有什么区别和联系？
+
+第六章、管理角色的认知
+        一、职业经理的角色认知 
+        二、职业经理的角色分析
+        三、不同层面人员的工作重心
+
+第七章、领导力提升的技巧
+        一、领导权威的来源
+            领导权威的八个性格特征
+            案例分析：什么样的领导是一个优秀的领导?
+        二、领导方式
+        三、情境领导与四种领导风格
+            根据被领导者的具体情况决定不同的领导风格
+            告知式  推销式  参与式  授权式 
+            案例分析：针对许三多与成才这两个员工应该用什么样的领导方法？
+        四、领导的主要工作内容
+        五、如何培养下属
+            1、培养下属有什么好处
+            2、培养下属的顾虑
+            3、培养下属的方法
+            4、培养下属的原则
+            案例分析：如何理解因材施教的培养原则？
+        六、授权管理
+            (一) 为什么要授权
+            (二) 授权管理的误区是什么
+            (三) 授权管理的原则
+            (四) 授权管理的方法 
+
+第八章、管理沟通与关系协调
+        一、什么是沟通 ？
+        二、沟通的特性 
+            双向反馈是沟通的基础
+            不同文化、民族的沟通原则不同
+        三、管理沟通的种类及形式
+            案例分析 、讨论  录像分析
+        四、沟通的步骤 
+        五、不同沟通风格的管理者分析与应对
+            分析型人的特征与沟通技巧
+            支配型人的特征与沟通技巧
+            表达型人的特征与沟通技巧
+            和蔼型人的特征与沟通技巧
+            案例分析：分析曹操、刘备、孙权的个性与沟通技巧
+        六、沟通的方向
+            职业经理人与上级、同级、下属沟通的技巧
+            1、沟通的原则
+            2、沟通的方法
+            3、沟通的障碍
+               案例讨论：对上级的工作有不同的意见你应该怎么办？
+               上级对你的报告有反对意见 你怎么办？
+               如何「处理下级越级向你汇报」？
+               如何「处理部属的过失行为」？
+               如何「处理上司调派自己部属工作的情况」？
+               如何「面对有能力但不听话的部属」？
+
+第九章、高绩效团队的建设
+        一、什么是团队
+            1、认识团队（1+1=？）
+            2、团队与群体的区别
+            3、团队行为曲线
+               讨论：请分析团队与群体之间最大的区别是什么？
+        二、高绩效团队的特征
+            1、明确的目标    （目标从哪里来？企业目标和个人目标如何统一？）
+            2、相互信任     （信任的基础是什么？如何建立？）
+            3、关心、帮助每个人（从哪些方面着手才是最有效的？）
+            4、沟通良好     （如何才能有效的沟通？）
+            5、分工与授权   （在具体工作中如何操作？）
+            6、合理的激励   （没有足够的条件怎么办？）
+            7、合理、完善的制度（制度目前不合理怎么办？）
+            8、融洽的团队气氛 (用什么方法培养良好的工作气氛？)
+               案例分析、讨论：大雁的故事给我们什么启示？
+        三、高绩效团队的成员
+            1、如何选择团队的成员
+            2、团队成员的关系如何协调
+            3、如何解决成员的冲突
+               案例分析、讨论：团队的成员能力不足应该如何处理
+        四、高绩效团队建设的流程及阶段
+            1、团队建设的流程
+            2、团队建设的阶段
+
+第十章、激励管理
+        低效率靠管理，高效率靠激励
+        一、激励的误区
+        二、激励的四原则
+            公平原则、系统原则、时机原则、清晰原则
+        三、激励的方法
+            1、信任
+               认可- 表扬-赏识   （如何培养对工作的成就感？）
+            2、	承担责任       (为什么要为下属承担责任)
+            3、	关心、帮助团队成员（工作与生活如何协调？）
+            4、	薪水与升迁     （基础还要有保障）
+            5、	工作兴趣       （如何才能把工作当成是一种兴趣？）
+            6、	合理的制度     （公平、公正、公开）
+            7、	工作气氛       （是一种软化剂）
+            8、	企业目标与使命 （最终的解决方案）
+        四、激励方法的综合运用
+            案例分析、讨论：智猪博弈的故事
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+         
+讲师介绍—李革增
+
+    众人行高级培训师、实战型培训专家；清华大学、北京大学特聘培训讲师；深圳
+管理咨询协会管理专家；外商投资协会培训专家；中国企业联合会顾问；香港光华管
+理学院客座教授；美国AITA认证国际职业培训师；欧洲SKP机构高级管理顾问；企业家
+协会特聘培训讲师；多年从事企业高层管理与咨询工作经验，在德隆集团、深高速、
+美国“MOTHERS”、众人行管理咨询等大型集团公司及管理顾问公司历任培训经理、行
+政总监、营销总监、培训总监、副总经理等职位。
+
+    对企业管理、客户服务、品牌管理、企业文化等具有良好的培训与咨询经验；不
+仅具有深厚的理论知识，而且具备丰富的实践操作能力；注重对企业管理问题的分析
+和解决、讲求实效性和适用性。
+
+    擅长课程：《职业经理人资格认证》、《企业中层经理综合管理技能培训》
+《高级秘书职业化培训》、《如何成为优秀员工》、《管理沟通与工作协调技巧》
+
+    培训特色：以互动、情景式培训见长，注重受训人员的感悟及参与，培训风格深入
+浅出、条理清晰、课堂气氛轻松、活跃、实战性强，通过各种实际案例及管理游戏等方
+式充分调动参训人员的培训热情。
+
+    培训或咨询的企业：中国电信、青岛中化集团、中石油、桑菲通讯、奥林巴斯、
+厦门航空、苏州三星电子、广东移动、蛇口南顺面粉、三洋机电、启明星晨、联邦快递、
+柯尼卡美能达、中信物业、信统光电、天华会计师事务所、南孚电池、朗宁通信、
+航嘉电源、TCL集团、海欧卫浴、江铃汽车、友邦保险、中电集团、海南马自达、
+壹时代传媒、创维集团、浙江金洲集团、长亮科技、联泰集团、飞利浦中国、科洋数码、
+佛山海纳川药业、南太集团、神龙汽车、中国石油、宁波新峰电器、威海北洋电气集团、
+和纪黄埔中药、河北热电、中集集装箱、三鑫股份、中信集团、华帝股份、美的家电、
+中海集团、飞利浦半导体、中国电子总公司、广西电力、上海浦东发展银行、
+建设银行福建支行、中国网通、北京首都机场、西门子、欧普照明等。
+
+
+--===============1330840533==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -62,7 +231,7 @@ This SF.net email is sponsored by the 2008 JavaOne(SM) Conference
 Register now and save $200. Hurry, offer ends at 11:59 p.m., 
 Monday, April 7! Use priority code J8TLD2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
---===============0787278254==
+--===============1330840533==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -73,4 +242,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0787278254==--
+--===============1330840533==--

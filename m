@@ -1,14 +1,14 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.25-rc8 1/3] spi_bfin5xx build fix
-Date: Sun, 6 Apr 2008 21:44:44 -0700
-Message-ID: <200804062144.44631.david-b@pacbell.net>
+Subject: Re: spi_bitbang cs_change hinting fix
+Date: Sun, 6 Apr 2008 22:09:47 -0700
+Message-ID: <200804062209.47470.david-b@pacbell.net>
+References: <47D6597F.4040503@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <47D6597F.4040503-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,33 +21,89 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Tuesday 11 March 2008, Jan Nikitenko wrote:
+> I am not sure about the meaning of spi message transfer cs_change attribute.
+> 
+> I assume that non-zero cs_change indicate that chipselect should be
+> toggled between spi_transfers.
+> 
+> What about cs_change in last spi_transfer of spi_message?
+> Should zero cs_change provide hinting that chipselect should be left
+> active, because spi_message to follow will be for the same spi device?
 
-Fix breakage cause by overzealous line wrapping;
-there should be only one format string.
+>From <linux/spi/spi.h>:
 
-Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
-Candidate for 2.6.25-final if there's time yet ...
+ * (i) If the transfer isn't the last one in the message, this flag is
+ * used to make the chipselect briefly go inactive in the middle of the
+ * message.  Toggling chipselect in this way may be needed to terminate
+ * a chip command, letting a single spi_message perform all of group of
+ * chip transactions together.
 
- drivers/spi/spi_bfin5xx.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+So you don't need to "assume" that first point.  For the second:
 
---- g26.orig/drivers/spi/spi_bfin5xx.c	2008-03-28 10:42:41.000000000 -0700
-+++ g26/drivers/spi/spi_bfin5xx.c	2008-04-06 21:38:34.000000000 -0700
-@@ -713,8 +713,8 @@ static void pump_transfers(unsigned long
- 	} else {
- 		drv_data->len = transfer->len;
- 	}
--	dev_dbg(&drv_data->pdev->dev, "transfer: ",
--		"drv_data->write is %p, chip->write is %p, null_wr is %p\n",
-+	dev_dbg(&drv_data->pdev->dev,
-+		"transfer: drv_data->write is %p, chip->write is %p, null_wr is %p\n",
- 		drv_data->write, chip->write, null_writer);
- 
- 	/* speed and width has been set on per message */
+ * (ii) When the transfer is the last one in the message, the chip may
+ * stay selected until the next transfer.  On multi-device SPI busses
+ * with nothing blocking messages going to other devices, this is just
+ * a performance hint; starting a message to another device deselects
+ * this one. 
+
+Yes, hinting.  However, in the case where there's some way to
+establish exclusive access to that bus, it can do more:
+
+ 		But in other cases, this can be used to ensure correctness.
+ * Some devices need protocol transactions to be built from a series of
+ * spi_message submissions, where the content of one message is determined
+ * by the results of previous messages and where the whole transaction
+ * ends when the chipselect goes intactive.
+
+(Where "other cases" means the converse of "multi-device SPI busses"
+with "nothing blocking messages" ... either single-device busses, or
+ones with such blocking.)
+
+
+> If that is so, the handling in spi_bitbang.c would be incorrect, because
+> chipselect would be deactivated when cs_change==0.
+
+It's correct as-is:
+
+    if (!(status == 0 && cs_change)) {
+        ... set chipselect to INACTIVE
+    }
+
+That is, it always goes inactive unless the message as a whole
+succeeded (status == 0) *and* cs_change == 0.
+
+
+> Or is the meaning of cs_change in the last spi_transfer of spi_message
+> different than in previous spi_transfers in single spi_message?
+
+I don't understand your "or" here.  It's explicit that it means
+something different there ... end-of-message chipselect semantics
+are *always* different from semantics internal to the message.  All
+that flag does is -- consistently!! -- toggle the default behavior.
+
+
+> Like cs_change==0 in last spi_transfer would indicate to deactivate
+> chipselect and cs_change!=0 in last spi_transfer would provide hinting
+> that next spi_message will be for the same spi device and chipselect
+> should be left active?
+>
+> If that is so, it's quite confusing (and not documented), as the meaning
+> of cs_change in the last spi_transfer would be opposite than in other
+> spi_transfers in single spi_message.
+
+I'll disagree about lack of documentation.  It's quite clear there
+are two cases -- (i) not-the-last, and (ii) the-last.  And that the
+normal behavior, cs_change==0, is (i) stay selected, (ii) deselect.
+But cs_change==1 toggles that to (i) deselect, (ii) stay selected.
+
+Confusing?  Maybe; but if you remember that what it changes is the
+default chipselect *behavior* not its value, then it should be easy
+enough to keep straight.  Having more bits to affect a single behavior
+would IMO be a lot more confusing than just one bit toggling it.
+
+- Dave
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 

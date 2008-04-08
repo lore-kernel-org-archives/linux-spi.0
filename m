@@ -1,14 +1,13 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.25-rc8] spi doc tweaks
-Date: Mon, 7 Apr 2008 14:32:45 -0700
-Message-ID: <200804071432.45500.david-b@pacbell.net>
+From: DR USMAN SHAMSUDEEN <info-zBUHx2jJwRFdG78yCdSDWg@public.gmane.org>
+Subject: NOTIFICATION OF PAYMENT VIA ATM CARD
+Date: Wed,  9 Apr 2008 01:39:38 +0200 (CEST)
+Message-ID: <20080409000313.B22BF197A361@bravo582.server4you.de>
+Reply-To: fmf.dr_usman-whZMOeQn8C0@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,50 +19,76 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Update SPI documentation to clarify some areas of recent confusion:
-clock polarity takes effect when chipselect goes active; and zero
-length buffers are OK in certain cases.
 
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- Documentation/spi/spi-summary |   15 ++++++++++++++-
- 1 files changed, 14 insertions(+), 1 deletion(-)
 
---- ngw.orig/Documentation/spi/spi-summary	2007-10-16 14:03:48.000000000 -0700
-+++ ngw/Documentation/spi/spi-summary	2008-02-22 12:36:46.000000000 -0800
-@@ -116,6 +116,13 @@ low order bit.  So when a chip's timing 
- starting low (CPOL=0) and data stabilized for sampling during the
- trailing clock edge (CPHA=1), that's SPI mode 1.
- 
-+Note that the clock mode is relevant as soon as the chipselect goes
-+active.  So the master must set the clock to inactive before selecting
-+a slave, and the slave can tell the chosen polarity by sampling the
-+clock level when its select line goes active.  That's why many devices
-+support for example both modes 0 and 3:  they don't care about polarity,
-+and alway clock data in/out on rising clock edges.
-+
- 
- How do these driver programming interfaces work?
- ------------------------------------------------
-@@ -379,8 +386,14 @@ any more such messages.
-       + when bidirectional reads and writes start ... by how its
-         sequence of spi_transfer requests is arranged;
- 
-+      + which I/O buffers are used ... each spi_transfer wraps a
-+        buffer for each transfer direction, supporting full duplex
-+        (two pointers, maybe the same one in both cases) and half
-+        duplex (one pointer is NULL) transfers;
-+
-       + optionally defining short delays after transfers ... using
--        the spi_transfer.delay_usecs setting;
-+        the spi_transfer.delay_usecs setting (this delay can be the
-+        only protocol effect, if the buffer length is zero);
- 
-       + whether the chipselect becomes inactive after a transfer and
-         any delay ... by using the spi_transfer.cs_change flag;
+>From the FMF, Federal Ministry of Finance
+
+No 12 edidi lane Idumota Lagos
+
+Honourable Minister of Finance, DR USMAN SHAMSUDEEN
+
+Approved by the Nigerian Government
+
+http://www.fmf.gov.ng/portal/detail.php?link=hmf
+
+
+
+
+
+NOTIFICATION OF PAYMENT VIA ATM CARD
+
+
+
+This is to officially inform you that we have verified your contract file presently on my desk, and I found out that you have not received your payment due to your lack of co-operation and not fulfilling the obligations giving to you in respect to your contract payment.
+
+
+
+Secondly, you are hereby advised to stop dealing with some non-officials in the bank as this is an illegal act and will have to stop if you so wish to receive your payment immediately.
+
+
+
+After the Board of director's meeting held in Abuja, we have resolved in finding a solution to your problem. We have arranged your payment through our SWIFT CARD PAYMENT CENTRE in Europe, America,Africa
+
+and Asia Pacific,This is part of an instruction/mandate passed by the Senate in respect to overseas contract payment and debt re scheduling. And also the Nigerian Government is using this mean to rewards all the citizens of the United states and all part of europe including asia,australia,south america, Antartica e.t.c and all those who have lost their funds in either scam, or an uncompleted business, or otherwise.
+
+
+
+You should know that if you are interested to receive your ATM card which will be credited with $920,000 united states dollars before it is been sent to you direct to your doorstep through any courier service of your choice.
+
+
+
+Kindly get back to me with the following informations below so i can start arrangement on how to get your Atm Card shipped to you
+
+
+
+(1) Your Full Name
+
+(2) Full residential address
+
+(3) Phone number
+
+
+
+This message is supported by the Nigerian Government, After you might have started making use of your ATM card, you can reward my firm one way or the other you knows best.
+
+
+
+Thanks for your co-operation.
+
+
+
+>From the FMF, Federal Ministry of Finance
+
+DR USMAN SHAMSUDEEN
+
+
+
+
+
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
-Register now and save $200. Hurry, offer ends at 11:59 p.m., 
-Monday, April 7! Use priority code J8TLD2. 
+Don't miss this year's exciting event. There's still time to save $100. 
+Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone

@@ -1,12 +1,10 @@
-From: DR USMAN SHAMSUDEEN <info-zBUHx2jJwRFdG78yCdSDWg@public.gmane.org>
-Subject: NOTIFICATION OF PAYMENT VIA ATM CARD
-Date: Wed,  9 Apr 2008 01:39:38 +0200 (CEST)
-Message-ID: <20080409000313.B22BF197A361@bravo582.server4you.de>
-Reply-To: fmf.dr_usman-whZMOeQn8C0@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: =?GB2312?B?zfXJ+g==?= <fdsaekjiioo-9Onoh4P/yGk@public.gmane.org>
+Subject: =?GB2312?B?x+uy6crVo6E=?=
+Date: Wed, 9 Apr 2008 12:56:20 +0800
+Message-ID: <E1JjSMB-0004Cx-1A@mail.sourceforge.net>
+Reply-To: fdsaekjiioo-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0856592906=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,76 +17,58 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============0856592906==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
+
+  =C4=FA=BA=C3!
+   =20
+       =B1=BE=B9=AB=CB=BE=BF=C9=D2=D4=B4=FA=C0=ED=C8=AB=B9=FA=B8=F7=B5=D8=
+=B8=F7=D6=D6=B7=A2\=C6=B1.=CB=B0\=C2=CA=D3=C5=BB=DD,=CF=EA=CF=B8=CB=B0\=C2=
+=CA=B0=B4=D5=D5=BF=AA=C6=B1=BD=F0=B6=EE=B4=F3=D0=A1=C0=B4=B5=E7
+
+  =C7=A2=CC=B8.
+ =20
+       =B1=BE=B9=AB=CB=BE=C8=B7=B1=A3=CB=F9=BF=AA=B3=F6=B5=C4=B7=A2\=C6=B1=
+=CA=C7=CB=B0=CE=F1=B5=C7=BC=C7=C1=EC=C8=A1=B5=C4.=B9=F3=B9=AB=CB=BE=C8=E7=
+=B9=FB=B2=BB=B7=C5=D0=C4=BF=C9=D2=D4=CF=C8=D1=E9=D6=A4=BA=F3=D4=D9=B8=B6
+
+  =BF=EE.=B1=BE=B9=AB=CB=BE=BB=B9=BF=C9=CC=E1=B9=A9=B8=F8=B4=FA=B0=EC=C8=CB=
+=BB=D8=BF=DB=B7=FE=CE=F1.=B6=D4=D3=DA=CE=D2=C3=C7=B5=C4=BA=CF=D7=F7=B9=D8=
+=CF=B5=CA=C7=BE=F8=B6=D4=B1=A3=C3=DC=B5=C4.=B9=F3=B9=AB=CB=BE=C8=E7=D3=D0=
+=D0=E8
+=20
+  =D2=AA=BB=B6=D3=AD=C0=B4=B5=E7=D7=C9=D1=AF.
 
 
->From the FMF, Federal Ministry of Finance
-
-No 12 edidi lane Idumota Lagos
-
-Honourable Minister of Finance, DR USMAN SHAMSUDEEN
-
-Approved by the Nigerian Government
-
-http://www.fmf.gov.ng/portal/detail.php?link=hmf
+           =C1=AA =CF=B5 =C8=CB: =CD=F5 =C9=FA
+         =20
+           =C1=AA=CF=B5=B5=E7=BB=B0: 13926576497
+          =20
+           =D3=CA    =CF=E4: sz.hd668-9Onoh4P/yGk@public.gmane.org
 
 
-
-
-
-NOTIFICATION OF PAYMENT VIA ATM CARD
-
-
-
-This is to officially inform you that we have verified your contract file presently on my desk, and I found out that you have not received your payment due to your lack of co-operation and not fulfilling the obligations giving to you in respect to your contract payment.
-
-
-
-Secondly, you are hereby advised to stop dealing with some non-officials in the bank as this is an illegal act and will have to stop if you so wish to receive your payment immediately.
-
-
-
-After the Board of director's meeting held in Abuja, we have resolved in finding a solution to your problem. We have arranged your payment through our SWIFT CARD PAYMENT CENTRE in Europe, America,Africa
-
-and Asia Pacific,This is part of an instruction/mandate passed by the Senate in respect to overseas contract payment and debt re scheduling. And also the Nigerian Government is using this mean to rewards all the citizens of the United states and all part of europe including asia,australia,south america, Antartica e.t.c and all those who have lost their funds in either scam, or an uncompleted business, or otherwise.
-
-
-
-You should know that if you are interested to receive your ATM card which will be credited with $920,000 united states dollars before it is been sent to you direct to your doorstep through any courier service of your choice.
-
-
-
-Kindly get back to me with the following informations below so i can start arrangement on how to get your Atm Card shipped to you
-
-
-
-(1) Your Full Name
-
-(2) Full residential address
-
-(3) Phone number
-
-
-
-This message is supported by the Nigerian Government, After you might have started making use of your ATM card, you can reward my firm one way or the other you knows best.
-
-
-
-Thanks for your co-operation.
-
-
-
->From the FMF, Federal Ministry of Finance
-
-DR USMAN SHAMSUDEEN
-
-
-
-
-
-
+--===============0856592906==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
+--===============0856592906==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0856592906==--

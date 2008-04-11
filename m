@@ -1,8 +1,8 @@
 From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Subject: [PATCH] SPI: spi_s3c24xx driver needs to pass
-	num_chipselect.
-Date: Fri, 11 Apr 2008 15:55:01 +0100
-Message-ID: <20080411145551.834933543@fluff.org.uk>
+Subject: [PATCH] SPI: spi_s3c24xx driver should
+	initialise completion before using it.
+Date: Fri, 11 Apr 2008 15:55:03 +0100
+Message-ID: <20080411145552.235395020@fluff.org.uk>
 References: <20080411145500.130608954@fluff.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -11,7 +11,7 @@ Cc: patch-out-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, Ben Dooks <ben-linux-elnM
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline;
-	filename=simtec/simtec-drivers-spi-s3c24xx-fix-numcs.patch
+	filename=simtec/simtec-drivers-spi-s3c24xx-initcompletion.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,41 +23,29 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The SPI core now expects num_chipselect to be set correctly as
-due to added checks on the chip being selected before an
-transfer is allowed. This patch adds a num_cs field to the
-platform data which needs to be set correctly before adding
-the SPI platform device.
+The s3c24xx_spi_txrx() function should initialise the completion
+each time before using it, otherwise we end up with the possibility
+of returning success before the interrupt handler has processed
+all the data.
 
 Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-Index: linux-2.6.25-rc8-spi/drivers/spi/spi_s3c24xx.c
+Index: linux-2.6.24-quilt16/drivers/spi/spi_s3c24xx.c
 ===================================================================
---- linux-2.6.25-rc8-spi.orig/drivers/spi/spi_s3c24xx.c	2008-04-11 15:25:28.000000000 +0100
-+++ linux-2.6.25-rc8-spi/drivers/spi/spi_s3c24xx.c	2008-04-11 15:25:32.000000000 +0100
-@@ -265,6 +265,10 @@ static int __init s3c24xx_spi_probe(stru
- 	platform_set_drvdata(pdev, hw);
- 	init_completion(&hw->done);
+--- linux-2.6.24-quilt16.orig/drivers/spi/spi_s3c24xx.c
++++ linux-2.6.24-quilt16/drivers/spi/spi_s3c24xx.c
+@@ -192,8 +192,11 @@ static int s3c24xx_spi_txrx(struct spi_d
+ 	hw->len = t->len;
+ 	hw->count = 0;
  
-+	/* setup the master state. */
++	init_completion(&hw->done);
 +
-+	master->num_chipselect = hw->pdata->num_cs;
+ 	/* send the first byte */
+ 	writeb(hw_txbyte(hw, 0), hw->regs + S3C2410_SPTDAT);
 +
- 	/* setup the state for the bitbang driver */
+ 	wait_for_completion(&hw->done);
  
- 	hw->bitbang.master         = hw->master;
-Index: linux-2.6.25-rc8-spi/include/asm-arm/arch-s3c2410/spi.h
-===================================================================
---- linux-2.6.25-rc8-spi.orig/include/asm-arm/arch-s3c2410/spi.h	2008-04-11 15:25:28.000000000 +0100
-+++ linux-2.6.25-rc8-spi/include/asm-arm/arch-s3c2410/spi.h	2008-04-11 15:25:32.000000000 +0100
-@@ -18,6 +18,7 @@ struct spi_board_info;
- 
- struct s3c2410_spi_info {
- 	unsigned long		 pin_cs;	/* simple gpio cs */
-+	unsigned int		 num_cs;	/* total chipselects */
- 
- 	unsigned long		 board_size;
- 	struct spi_board_info	*board_info;
+ 	return hw->count;
 
 -- 
 Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)

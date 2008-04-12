@@ -1,16 +1,11 @@
-From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Subject: [PATCH] SPI: spi_s3c24xx driver bus_num field.
-Date: Fri, 11 Apr 2008 15:55:02 +0100
-Message-ID: <20080411145552.044877041@fluff.org.uk>
-References: <20080411145500.130608954@fluff.org.uk>
+From: bassil <ednrehcs_1999-l6Fs0i57NURWk0Htik3J/w@public.gmane.org>
+Subject: Pen!s length guaranteed to grow
+Date: Sat, 12 Apr 2008 13:36:21 +0200
+Message-ID: <1035185B.F%ednrehcs_1999@CANARAIL.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: patch-out-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1468293600=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline;
-	filename=simtec/simtec-drivers-spi-s3c24xx-busnum.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,84 +17,60 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pass the bus number we expect the S3C24XX SPI driver to attach
-to via the platform data.
+--===============1468293600==
+Content-type: multipart/alternative;
+        boundary="B_1881631596_95618"
 
-Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+--B_1881631596_95618
+Content-type: text/plain;
+        charset="US-ASCII"
+Content-transfer-encoding: 7bit
 
-Index: linux-2.6.25-rc8-spi/include/asm-arm/arch-s3c2410/spi.h
-===================================================================
---- linux-2.6.25-rc8-spi.orig/include/asm-arm/arch-s3c2410/spi.h	2008-04-11 15:25:32.000000000 +0100
-+++ linux-2.6.25-rc8-spi/include/asm-arm/arch-s3c2410/spi.h	2008-04-11 15:27:17.000000000 +0100
-@@ -19,6 +19,7 @@ struct spi_board_info;
- struct s3c2410_spi_info {
- 	unsigned long		 pin_cs;	/* simple gpio cs */
- 	unsigned int		 num_cs;	/* total chipselects */
-+	int			 bus_num;       /* bus number to use. */
- 
- 	unsigned long		 board_size;
- 	struct spi_board_info	*board_info;
-Index: linux-2.6.25-rc8-spi/drivers/spi/spi_s3c24xx.c
-===================================================================
---- linux-2.6.25-rc8-spi.orig/drivers/spi/spi_s3c24xx.c	2008-04-11 15:25:32.000000000 +0100
-+++ linux-2.6.25-rc8-spi/drivers/spi/spi_s3c24xx.c	2008-04-11 15:27:17.000000000 +0100
-@@ -235,6 +235,7 @@ static irqreturn_t s3c24xx_spi_irq(int i
- 
- static int __init s3c24xx_spi_probe(struct platform_device *pdev)
- {
-+	struct s3c2410_spi_info *pdata;
- 	struct s3c24xx_spi *hw;
- 	struct spi_master *master;
- 	struct spi_board_info *bi;
-@@ -253,10 +254,10 @@ static int __init s3c24xx_spi_probe(stru
- 	memset(hw, 0, sizeof(struct s3c24xx_spi));
- 
- 	hw->master = spi_master_get(master);
--	hw->pdata = pdev->dev.platform_data;
-+	hw->pdata = pdata = pdev->dev.platform_data;
- 	hw->dev = &pdev->dev;
- 
--	if (hw->pdata == NULL) {
-+	if (pdata == NULL) {
- 		dev_err(&pdev->dev, "No platform data supplied\n");
- 		err = -ENOENT;
- 		goto err_no_pdata;
-@@ -268,7 +269,8 @@ static int __init s3c24xx_spi_probe(stru
- 	/* setup the master state. */
- 
- 	master->num_chipselect = hw->pdata->num_cs;
--
-+	master->bus_num = pdata->bus_num;
-+	
- 	/* setup the state for the bitbang driver */
- 
- 	hw->bitbang.master         = hw->master;
-@@ -336,13 +338,13 @@ static int __init s3c24xx_spi_probe(stru
- 
- 	/* setup any gpio we can */
- 
--	if (!hw->pdata->set_cs) {
-+	if (!pdata->set_cs) {
- 		hw->set_cs = s3c24xx_spi_gpiocs;
- 
--		s3c2410_gpio_setpin(hw->pdata->pin_cs, 1);
--		s3c2410_gpio_cfgpin(hw->pdata->pin_cs, S3C2410_GPIO_OUTPUT);
-+		s3c2410_gpio_setpin(pdata->pin_cs, 1);
-+		s3c2410_gpio_cfgpin(pdata->pin_cs, S3C2410_GPIO_OUTPUT);
- 	} else
--		hw->set_cs = hw->pdata->set_cs;
-+		hw->set_cs = pdata->set_cs;
- 
- 	/* register our spi controller */
- 
+Your big tool will give them the best pleasure ever http://www.kabeunat.com/
 
--- 
-Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)
 
-  'a smiley only costs 4 bytes'
+--B_1881631596_95618
+Content-type: text/html;
+        charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE>Pen!s length guaranteed to grow</TITLE>
+</HEAD>
+<BODY>
+<FONT COLOR=3D"#000080"><FONT SIZE=3D"4"><FONT FACE=3D"Calibri, Verdana, =
+Helvetica, Arial"><SPAN STYLE=3D'font-size:11pt'>Your big tool will give =
+them the best pleasure ever <a =
+href=3D"http://www.kabeunat.com/">http://www.kabeunat.com/</a><BR>
+</SPAN></FONT></FONT></FONT>
+</BODY>
+</HTML>
+
+
+--B_1881631596_95618--
+
+
+--===============1468293600==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
+--===============1468293600==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1468293600==--

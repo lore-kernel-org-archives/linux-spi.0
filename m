@@ -1,15 +1,15 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] SPI fixes for S3C24XX SPI driver
-Date: Tue, 15 Apr 2008 11:01:17 -0700
-Message-ID: <200804151101.17780.david-b@pacbell.net>
-References: <20080411145500.130608954@fluff.org.uk>
+Subject: [patch 2.6.25-rc9 1/3] spi_s3c24xx must
+	initialize num_chipselect
+Date: Tue, 15 Apr 2008 10:56:43 -0700
+Message-ID: <200804151056.43830.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: patch-out-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080411145500.130608954-elnMNo+KYs3pIgCt6eIbzw@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -22,17 +22,33 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 11 April 2008, Ben Dooks wrote:
-> These are fixes for the spi_s3c24xx driver, which
-> could be possibly applied before the 2.6.25 release.
+From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-Most of them seem to need additional patches to the
-board-specific init logic too ... so applying them
-won't eliminate the need for any SPI patches with a
-2.6.25-based release.
+The s3c24xx_spi_txrx() function should initialise the completion
+each time before using it, otherwise we end up with the possibility
+of returning success before the interrupt handler has processed
+all the data.
 
-- Dave
+Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/spi_s3c24xx.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
+--- at91.orig/drivers/spi/spi_s3c24xx.c	2008-04-15 10:30:32.000000000 -0700
++++ at91/drivers/spi/spi_s3c24xx.c	2008-04-15 10:30:35.000000000 -0700
+@@ -192,8 +192,11 @@ static int s3c24xx_spi_txrx(struct spi_d
+ 	hw->len = t->len;
+ 	hw->count = 0;
+ 
++	init_completion(&hw->done);
++
+ 	/* send the first byte */
+ 	writeb(hw_txbyte(hw, 0), hw->regs + S3C2410_SPTDAT);
++
+ 	wait_for_completion(&hw->done);
+ 
+ 	return hw->count;
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 

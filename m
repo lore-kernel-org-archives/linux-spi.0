@@ -1,8 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.25-rc9 2/3] spi_s3c24xx must
-	initialize bus_num
-Date: Tue, 15 Apr 2008 10:58:19 -0700
-Message-ID: <200804151058.19906.david-b@pacbell.net>
+Subject: [patch 2.6.25-rc9 3/3] spi_s3c24xx driver must
+	init completion
+Date: Tue, 15 Apr 2008 10:58:49 -0700
+Message-ID: <200804151058.49890.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -24,75 +24,31 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-Pass the bus number we expect the S3C24XX SPI driver to attach
-to via the platform data.
+The s3c24xx_spi_txrx() function should initialise the completion
+each time before using it, otherwise we end up with the possibility
+of returning success before the interrupt handler has processed
+all the data.
 
 Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_s3c24xx.c          |   14 ++++++++------
- include/asm-arm/arch-s3c2410/spi.h |    1 +
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/spi/spi_s3c24xx.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- at91.orig/drivers/spi/spi_s3c24xx.c	2008-04-15 10:30:28.000000000 -0700
-+++ at91/drivers/spi/spi_s3c24xx.c	2008-04-15 10:30:32.000000000 -0700
-@@ -235,6 +235,7 @@ static irqreturn_t s3c24xx_spi_irq(int i
+--- at91.orig/drivers/spi/spi_s3c24xx.c	2008-04-15 10:30:32.000000000 -0700
++++ at91/drivers/spi/spi_s3c24xx.c	2008-04-15 10:30:35.000000000 -0700
+@@ -192,8 +192,11 @@ static int s3c24xx_spi_txrx(struct spi_d
+ 	hw->len = t->len;
+ 	hw->count = 0;
  
- static int __init s3c24xx_spi_probe(struct platform_device *pdev)
- {
-+	struct s3c2410_spi_info *pdata;
- 	struct s3c24xx_spi *hw;
- 	struct spi_master *master;
- 	struct resource *res;
-@@ -251,10 +252,10 @@ static int __init s3c24xx_spi_probe(stru
- 	memset(hw, 0, sizeof(struct s3c24xx_spi));
++	init_completion(&hw->done);
++
+ 	/* send the first byte */
+ 	writeb(hw_txbyte(hw, 0), hw->regs + S3C2410_SPTDAT);
++
+ 	wait_for_completion(&hw->done);
  
- 	hw->master = spi_master_get(master);
--	hw->pdata = pdev->dev.platform_data;
-+	hw->pdata = pdata = pdev->dev.platform_data;
- 	hw->dev = &pdev->dev;
- 
--	if (hw->pdata == NULL) {
-+	if (pdata == NULL) {
- 		dev_err(&pdev->dev, "No platform data supplied\n");
- 		err = -ENOENT;
- 		goto err_no_pdata;
-@@ -266,6 +267,7 @@ static int __init s3c24xx_spi_probe(stru
- 	/* setup the master state. */
- 
- 	master->num_chipselect = hw->pdata->num_cs;
-+	master->bus_num = pdata->bus_num;
- 
- 	/* setup the state for the bitbang driver */
- 
-@@ -334,13 +336,13 @@ static int __init s3c24xx_spi_probe(stru
- 
- 	/* setup any gpio we can */
- 
--	if (!hw->pdata->set_cs) {
-+	if (!pdata->set_cs) {
- 		hw->set_cs = s3c24xx_spi_gpiocs;
- 
--		s3c2410_gpio_setpin(hw->pdata->pin_cs, 1);
--		s3c2410_gpio_cfgpin(hw->pdata->pin_cs, S3C2410_GPIO_OUTPUT);
-+		s3c2410_gpio_setpin(pdata->pin_cs, 1);
-+		s3c2410_gpio_cfgpin(pdata->pin_cs, S3C2410_GPIO_OUTPUT);
- 	} else
--		hw->set_cs = hw->pdata->set_cs;
-+		hw->set_cs = pdata->set_cs;
- 
- 	/* register our spi controller */
- 
---- at91.orig/include/asm-arm/arch-s3c2410/spi.h	2008-04-15 10:30:28.000000000 -0700
-+++ at91/include/asm-arm/arch-s3c2410/spi.h	2008-04-15 10:30:32.000000000 -0700
-@@ -16,6 +16,7 @@
- struct s3c2410_spi_info {
- 	unsigned long		 pin_cs;	/* simple gpio cs */
- 	unsigned int		 num_cs;	/* total chipselects */
-+	int			 bus_num;       /* bus number to use. */
- 
- 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
- };
+ 	return hw->count;
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 

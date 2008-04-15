@@ -1,14 +1,18 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: mmc_spi.c driver
-Date: Tue, 15 Apr 2008 11:37:00 -0700
-Message-ID: <200804151137.00997.david-b@pacbell.net>
+Date: Tue, 15 Apr 2008 12:04:19 -0700
+Message-ID: <200804151204.19776.david-b@pacbell.net>
 References: <1CF6EDDF0820924DA43C9A52FE7325950A27D544@MI8NYCMAIL17.Mi8.com>
+	<200804151137.00997.david-b@pacbell.net>
+	<1CF6EDDF0820924DA43C9A52FE7325950A89D882@MI8NYCMAIL17.Mi8.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+To: "hartleys" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1CF6EDDF0820924DA43C9A52FE7325950A27D544-3jZfQB9DylyX6QUl2nWcdlaTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1CF6EDDF0820924DA43C9A52FE7325950A89D882-3jZfQB9DylyX6QUl2nWcdlaTQe2KTcn/@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,65 +25,43 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 03 April 2008, hartleys wrote:
-> Hello all,
-> 
-> I'm trying to use the mmc_spi.c driver on an EP93xx platform and ran
-> into the "can't share SPI bus" issue.
-> 
-> My platform currently has an EEPROM (SST25LF040A using the at25.c
-> driver) and a MMC socket connected to the SPI bus. Just to see what
-> would happen I commented out the return when multiple devices are found
-> and just let the driver load. The driver then  appears to load ok and I
-> can mount the MMC card and still access the EEPROM.
+On Tuesday 15 April 2008, hartleys wrote:
+> I do get the IRQ on every card insertion and removal. Actually if I boot
+> the system with the card removed I end up getting a:
+> =
 
-Presumably that means you're doing mutual exclusion "by hand"
-and accessing one device at a time. 
+> mmc0: error -22 whilst initialising SDIO card
 
-If you access both devices concurrently -- say, running a
-script that loops over EEPROM access in the background while
-runing an FSCK over MMC in the foreground -- I'd expect you
-to see problems caused by EEPROM operations appearing in the
-midst of multi-phase MMC operations.
+That's correct, except for the obvious lie about SDIO.  ;)
 
 
-> Is there a patch to correctly handle the shared bus issue?
+> If I then insert the card I get the IRQ and:
+> =
 
-Nothinge mergeable.
+> mmc0: new MMC card on SPI
+> mmcblk0: mmc0:0001 SDM064 62720KiB
+> =A0mmcblk0: p1 p2 p3 p4
+> =
 
+> So it appears the initial card detect does work. But for some reason
+> it's not seeing the removal of the card or the insertion of a new card.
+> =
 
-> If not has anyone thought about what might need to be done?
+> Any ideas?
 
-Yes; check the list archives.
-
- 
-> Also, I have hooked up the card detect irq thru the
-> host->pdata->init(&spi->dev, mmc_spi_detect_irq, mmc) call and added a
-> comment in mmc_spi_detect_irq() to make sure it is called. Nothing
-> happens after that. I haven't looked into what mmc_detect_change() does
-> yet but shouldn't I see a new message from the mmc stuff about a "new
-> MMC card on SPI"?
-
-Are you actually getting the IRQ?
-
-However, card detection can be a bit troublesome for various reasons,
-and there's a known (but un-solved) issue whereby MMC-over-SPI really
-wants to start out with a card that's just been through a power cycle
-reset.
+No; that used to work OK.  I wonder if there have been
+changes in the MMC framework which caused this trouble;
+I've seen some oddness there too, the last few times I
+have tried to use those card detect code paths.
 
 - Dave
 
- 
-> Maybe I'm just missing something... still pretty new at this whole Linux
-> thing... ;-)
-> 
-> Thanks for the help,
-> Hartley Sweeten
-> 
-> 
-
 -------------------------------------------------------------------------
-This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
-Don't miss this year's exciting event. There's still time to save $100. 
-Use priority code J8TL2D2. 
-http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
+This SF.net email is sponsored by the 2008 JavaOne(SM) Conference =
+
+Don't miss this year's exciting event. There's still time to save $100. =
+
+Use priority code J8TL2D2. =
+
+http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/java=
+one

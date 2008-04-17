@@ -1,10 +1,13 @@
-From: =?GB2312?B?wfXPyMn6?= <wyf688c-9Onoh4P/yGk@public.gmane.org>
-Subject: =?GB2312?B?t6IvxrE=?=
-Date: Thu, 17 Apr 2008 11:47:03 +0800
-Message-ID: <E1JmL5Q-0005bN-2n@mail.sourceforge.net>
-Reply-To: wyf688c-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1405781902=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
+Subject: [PATCH] mcp23s08: check read_regs() retval
+Date: Thu, 17 Apr 2008 06:08:21 +0200
+Message-ID: <4806CD35.5020704@tiscali.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,53 +20,26 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1405781902==
-Content-Type: text/plain;charset="GB2312"
+The return value of mcp23s08_read_regs() can only be evaluated when signed
 
- TO:财务部     
-     
-      您好
-     
-      本公司现有（国税/地税）普通商品销售、咨询服务、房屋租赁、广告、建筑装饰/安装、
-
-   运输海关等行业发票,可用于公司收款、充帐、抵扣等业务,如贵公司你有这方面的
-
-   需要，请与我司联系，点数可从您的金额大小来优惠，如贵公司您对我司有认何疑
-   
-   问，我司可先开票后付款，详情请您来电咨询！
-
-   
-      诚征合作伙伴！              此信息长期有效,敬请保留以便急用. 
-  
-
-          电话：138265 84716    刘 生
-                                     
-                      
-          电邮：szkaida-9Onoh4P/yGk@public.gmane.org                                         
-
-           祝：贵公司鼠年大发                        
-
-
---===============1405781902==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
+---
+diff --git a/drivers/gpio/mcp23s08.c b/drivers/gpio/mcp23s08.c
+index bb60e8c..0eef8b8 100644
+--- a/drivers/gpio/mcp23s08.c
++++ b/drivers/gpio/mcp23s08.c
+@@ -168,7 +168,7 @@ static void mcp23s08_dbg_show(struct seq_file *s, struct gpio_chip *chip)
+ {
+ 	struct mcp23s08	*mcp;
+ 	char		bank;
+-	unsigned	t;
++	int		t;
+ 	unsigned	mask;
+ 
+ 	mcp = container_of(chip, struct mcp23s08, chip);
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
---===============1405781902==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1405781902==--

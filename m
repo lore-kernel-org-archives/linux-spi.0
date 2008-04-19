@@ -1,15 +1,11 @@
-From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-Subject: Re: mmc_spi lowlevel onetime retry?
-Date: Fri, 18 Apr 2008 08:24:09 +0200
-Message-ID: <20080418082409.09917b91@mjolnir.drzeus.cx>
-References: <47ECDED4.90404@gmail.com> <200804151120.27683.david-b@pacbell.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+From: =?GB2312?B?wfXPyMn6?= <gfgsg888-9Onoh4P/yGk@public.gmane.org>
+Subject: =?GB2312?B?t6IvxrE=?=
+Date: Sat, 19 Apr 2008 13:02:07 +0800
+Message-ID: <E1Jn5D5-0005me-R1@mail.sourceforge.net>
+Reply-To: gfgsg888-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0561004561=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200804151120.27683.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,53 +17,50 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 15 Apr 2008 11:20:27 -0700
-David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+--===============0561004561==
+Content-Type: text/plain;charset="GB2312"
 
-> On Friday 28 March 2008, Hans wrote:
-> > 
-> > I know i did the same to my old spi_mmc driver to improve stability. 
-> > However, i always got the feeling this was not the right way to do it. 
-> > Books and others told med to end_request with a status != 0 and let 
-> > block layer resubmit the request(eventually) for me to retry. Whats the 
-> > correct policy for this? 
-> 
-> Low level drivers should as a rule never retry unless they're
-> explicitly told to do so.  The current MMC stack doesn't have
-> a way to give such instructions, but it *should* have ways to
-> retry itself.
-> 
+先生/女士：
 
-It has, but see below...
+           您好！
+       
+      为解决广大客户财务票据不足与减少税收.我公司有全国
 
-> 
-> Since as far as I know the MMC drivers are not expected to
-> retry commands, I'd expect the upper MMC/SD/SDIO code to do
-> be issuing any retries.
-> 
-> In general, the lowlevel code isn't expected to understand
-> whether it's even safe to retry like that.  It's supposed to
-> understand protocol patterns, not command semantics ... and
-> there's no reason to believe that a block write must always
-> be idempotent.
-> 
+  各地发票优惠向外代开:(国税/地税)、普通商业销售、服务、
 
-The problem is that the mmc_block driver doesn't know what's safe
-either. We could add retries for reads as that should always be safe.
-But we can't do it for writes as we're supposed to at least give the
-guarantee that if given n blocks, we will write 0 to n blocks in a
-continuous manner. Retrying a write might end up with a random
-assortments of blocks on the media.
+  广告、建筑、运输、咨询、税务代开、另有海关代征增值税等
 
--- 
-     -- Pierre Ossman
+  绝对保真,可先验证后再付款。
+  
+   电    话: 135 3783 2825
+  
+   邮    箱:szwanxin-9Onoh4P/yGk@public.gmane.org
+   
+   联 系 人:  刘先生
+  
+   请留号码以备急用,
 
-  Linux kernel, MMC maintainer        http://www.kernel.org
-  PulseAudio, core developer          http://pulseaudio.org
-  rdesktop, core developer          http://www.rdesktop.org
+
+--===============0561004561==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
+--===============0561004561==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0561004561==--

@@ -1,11 +1,19 @@
-From: =?GB2312?B?wfXPyMn6?= <gfgsg888-9Onoh4P/yGk@public.gmane.org>
-Subject: =?GB2312?B?t6IvxrE=?=
-Date: Sat, 19 Apr 2008 13:02:07 +0800
-Message-ID: <E1Jn5D5-0005me-R1@mail.sourceforge.net>
-Reply-To: gfgsg888-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============0561004561=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Matthew Wilcox <matthew-Ztpu424NOJ8@public.gmane.org>
+Subject: Re: script to find incorrect tests on unsigneds
+Date: Sat, 19 Apr 2008 08:24:44 -0600
+Message-ID: <20080419142444.GL20637@parisc-linux.org>
+References: <4808C90A.5040600@tiscali.nl>
+	<Pine.LNX.4.64.0804182101200.14832@ask.diku.dk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>,
+	kernelnewbies-bounce-qDhp9YYfzQpg9hUCZPvPmw@public.gmane.org
+To: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64.0804182101200.14832-QfmoRoYWmW9knbxzx/v8hQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,50 +25,68 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0561004561==
-Content-Type: text/plain;charset="GB2312"
+On Fri, Apr 18, 2008 at 09:08:55PM +0200, Julia Lawall wrote:
+> I found 63 occurrences of this problem with the following semantic match
+> (http://www.emn.fr/x-info/coccinelle/):
+> 
+> @@ unsigned int i; @@
+> 
+> * i < 0
+> 
+> I looked through all of the results by hand, and they all seem to be 
+> problems.  In many cases, it seems like the variable should not be 
+> unsigned as it is used to hold the return value of a function that might 
+> return a negative error code, but I haven't looked into this in detail.
+> 
+> In the output below, the lines that begin with a single start contain a 
+> test of whether an unsigned variable or structure field is less than 0.
+> The output is actually generated with diff, but I converted the -s to *s 
+> to avoid confusion.
 
-先生/女士：
+> diff -u -p a/drivers/spi/spi_s3c24xx.c b/drivers/spi/spi_s3c24xx.c
+> *** a/drivers/spi/spi_s3c24xx.c 2008-03-12 14:13:14.000000000 +0100
+> @@ -127,7 +127,7 @@ static int s3c24xx_spi_setupxfer(struct 
+>  
+>  	div = (div / 2) - 1;
+>  
+> *	if (div < 0)
+>  		div = 1;
+>  
+>  	if (div > 255)
 
-           您好！
-       
-      为解决广大客户财务票据不足与减少税收.我公司有全国
+Since this one's always in the range 0-255, it could probably be made
+signed, but it's just as easy to make it work unsigned.
 
-  各地发票优惠向外代开:(国税/地税)、普通商业销售、服务、
+Reported-by: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>
+Signed-off-by: Matthew Wilcox <willy-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-  广告、建筑、运输、咨询、税务代开、另有海关代征增值税等
+diff --git a/drivers/spi/spi_s3c24xx.c b/drivers/spi/spi_s3c24xx.c
+index b7476b8..b398cc9 100644
+--- a/drivers/spi/spi_s3c24xx.c
++++ b/drivers/spi/spi_s3c24xx.c
+@@ -125,10 +125,10 @@ static int s3c24xx_spi_setupxfer(struct spi_device *spi,
+ 	/* is clk = pclk / (2 * (pre+1)), or is it
+ 	 *    clk = (pclk * 2) / ( pre + 1) */
+ 
+-	div = (div / 2) - 1;
++	div /= 2;
+ 
+-	if (div < 0)
+-		div = 1;
++	if (div > 0)
++		div -= 1;
+ 
+ 	if (div > 255)
+ 		div = 255;
 
-  绝对保真,可先验证后再付款。
-  
-   电    话: 135 3783 2825
-  
-   邮    箱:szwanxin-9Onoh4P/yGk@public.gmane.org
-   
-   联 系 人:  刘先生
-  
-   请留号码以备急用,
-
-
---===============0561004561==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Intel are signing my paycheques ... these opinions are still mine
+"Bill, look, we understand that you're interested in selling us this
+operating system, but compare it to ours.  We can't possibly take such
+a retrograde step."
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
---===============0561004561==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0561004561==--

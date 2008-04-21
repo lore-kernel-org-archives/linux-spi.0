@@ -1,19 +1,11 @@
-From: Matthew Wilcox <matthew-Ztpu424NOJ8@public.gmane.org>
-Subject: Re: script to find incorrect tests on unsigneds
-Date: Sat, 19 Apr 2008 08:24:44 -0600
-Message-ID: <20080419142444.GL20637@parisc-linux.org>
-References: <4808C90A.5040600@tiscali.nl>
-	<Pine.LNX.4.64.0804182101200.14832@ask.diku.dk>
+From: vilceanu <kruisker-oNh9TrC03Tll57MIdRCFDg@public.gmane.org>
+Subject: Secrets to erotic massages
+Date: Mon, 21 Apr 2008 16:05:50 +0300
+Message-ID: <104518CC.8%kruisker@1004drive.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>,
-	kernelnewbies-bounce-qDhp9YYfzQpg9hUCZPvPmw@public.gmane.org
-To: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0717511712=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.0804182101200.14832-QfmoRoYWmW9knbxzx/v8hQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,68 +17,60 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Apr 18, 2008 at 09:08:55PM +0200, Julia Lawall wrote:
-> I found 63 occurrences of this problem with the following semantic match
-> (http://www.emn.fr/x-info/coccinelle/):
-> 
-> @@ unsigned int i; @@
-> 
-> * i < 0
-> 
-> I looked through all of the results by hand, and they all seem to be 
-> problems.  In many cases, it seems like the variable should not be 
-> unsigned as it is used to hold the return value of a function that might 
-> return a negative error code, but I haven't looked into this in detail.
-> 
-> In the output below, the lines that begin with a single start contain a 
-> test of whether an unsigned variable or structure field is less than 0.
-> The output is actually generated with diff, but I converted the -s to *s 
-> to avoid confusion.
+--===============0717511712==
+Content-type: multipart/alternative;
+        boundary="B_9504770104_86123"
 
-> diff -u -p a/drivers/spi/spi_s3c24xx.c b/drivers/spi/spi_s3c24xx.c
-> *** a/drivers/spi/spi_s3c24xx.c 2008-03-12 14:13:14.000000000 +0100
-> @@ -127,7 +127,7 @@ static int s3c24xx_spi_setupxfer(struct 
->  
->  	div = (div / 2) - 1;
->  
-> *	if (div < 0)
->  		div = 1;
->  
->  	if (div > 255)
+--B_9504770104_86123
+Content-type: text/plain;
+        charset="US-ASCII"
+Content-transfer-encoding: 7bit
 
-Since this one's always in the range 0-255, it could probably be made
-signed, but it's just as easy to make it work unsigned.
+I know this works, for I am a new man with a humongous schI@ng, get yours now. http://www.theuigoe.com/
 
-Reported-by: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>
-Signed-off-by: Matthew Wilcox <willy-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-diff --git a/drivers/spi/spi_s3c24xx.c b/drivers/spi/spi_s3c24xx.c
-index b7476b8..b398cc9 100644
---- a/drivers/spi/spi_s3c24xx.c
-+++ b/drivers/spi/spi_s3c24xx.c
-@@ -125,10 +125,10 @@ static int s3c24xx_spi_setupxfer(struct spi_device *spi,
- 	/* is clk = pclk / (2 * (pre+1)), or is it
- 	 *    clk = (pclk * 2) / ( pre + 1) */
- 
--	div = (div / 2) - 1;
-+	div /= 2;
- 
--	if (div < 0)
--		div = 1;
-+	if (div > 0)
-+		div -= 1;
- 
- 	if (div > 255)
- 		div = 255;
+--B_9504770104_86123
+Content-type: text/html;
+        charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
 
--- 
-Intel are signing my paycheques ... these opinions are still mine
-"Bill, look, we understand that you're interested in selling us this
-operating system, but compare it to ours.  We can't possibly take such
-a retrograde step."
+<HTML>
+<HEAD>
+<TITLE>Secrets to erotic massages</TITLE>
+</HEAD>
+<BODY>
+<FONT SIZE=3D"4"><FONT FACE=3D"Verdana, Arial"><SPAN =
+STYLE=3D'font-size:11pt'>I know this works, for I am a new man with a =
+humongous schI@ng, get yours now. <a =
+href=3D"http://www.theuigoe.com/">http://www.theuigoe.com/</a><BR>
+</SPAN></FONT></FONT></FONT>
+</BODY>
+</HTML>
+
+
+--B_9504770104_86123--
+
+
+--===============0717511712==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
+--===============0717511712==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0717511712==--

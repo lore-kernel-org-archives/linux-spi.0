@@ -1,17 +1,20 @@
-From: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
-Subject: [PATCH 2/2] xilinx_spi: test below 0 on
-	unsigned irq in xilinx_spi_probe()
-Date: Wed, 23 Apr 2008 22:55:36 +0200
-Message-ID: <480FA248.7080900@tiscali.nl>
-References: <480F99D5.7070300@tiscali.nl>
+From: "Joakim Tjernlund" <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi_mpc83xx: test below 0 on
+	unsigned irq in	mpc83xx_spi_probe()
+Date: Wed, 23 Apr 2008 23:55:11 +0200
+Message-ID: <38758.4440563389$1208987809@news.gmane.org>
+References: <480FA234.1000601@tiscali.nl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	'lkml' <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: "'Roel Kluin'" <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>, <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
+	<linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <480F99D5.7070300-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
+In-Reply-To: <480FA234.1000601-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
+Content-Language: sv
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,33 +26,54 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-similarly,
----
-xilinx_spi->irq is unsigned, so the test fails
+> -----Original Message-----
+> From: linuxppc-dev-bounces+joakim.tjernlund=transmode.se-mnsaURCQ41sdnm+yROfE0A@public.gmane.org [mailto:linuxppc-dev-
+> bounces+joakim.tjernlund=transmode.se-mnsaURCQ41sdnm+yROfE0A@public.gmane.org] On Behalf Of Roel Kluin
+> Sent: den 23 april 2008 22:55
+> To: galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org; linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; lkml
+> Subject: [PATCH 1/2] spi_mpc83xx: test below 0 on unsigned irq in mpc83xx_spi_probe()
+> 
+> mpc83xx_spi->irq is unsigned, so the test fails
+> 
+> Signed-off-by: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
 
-Signed-off-by: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
----
-diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
-index cf6aef3..613db82 100644
---- a/drivers/spi/xilinx_spi.c
-+++ b/drivers/spi/xilinx_spi.c
-@@ -353,11 +353,12 @@ static int __init xilinx_spi_probe(struct platform_device *dev)
- 		goto put_master;
- 	}
- 
--	xspi->irq = platform_get_irq(dev, 0);
--	if (xspi->irq < 0) {
--		ret = -ENXIO;
-+	ret = platform_get_irq(dev, 0);
-+	if (ret < 0)
- 		goto unmap_io;
--	}
-+
-+	xspi->irq = ret;
-+	ret = 0;
- 
- 	master->bus_num = pdata->bus_num;
- 	master->num_chipselect = pdata->num_chipselect;
+hmm, I got a pretty large 83xx spi patch queued at dbrownell. I hope
+that one can be applied first. Then you probably need to rediff this patch.
+
+David, any progress on my patch?
+
+ Jocke
+> ---
+> diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+> index be15a62..033fd51 100644
+> --- a/drivers/spi/spi_mpc83xx.c
+> +++ b/drivers/spi/spi_mpc83xx.c
+> @@ -454,12 +454,12 @@ static int __init mpc83xx_spi_probe(struct platform_device *dev)
+>  		goto put_master;
+>  	}
+> 
+> -	mpc83xx_spi->irq = platform_get_irq(dev, 0);
+> -
+> -	if (mpc83xx_spi->irq < 0) {
+> -		ret = -ENXIO;
+> +	ret = platform_get_irq(dev, 0);
+> +	if (ret < 0)
+>  		goto unmap_io;
+> -	}
+> +
+> +	mpc83xx_spi->irq = ret;
+> +	ret = 0;
+> 
+>  	/* Register for SPI Interrupt */
+>  	ret = request_irq(mpc83xx_spi->irq, mpc83xx_spi_irq,
+> 
+> _______________________________________________
+> Linuxppc-dev mailing list
+> Linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+> https://ozlabs.org/mailman/listinfo/linuxppc-dev
+> 
+
 
 
 -------------------------------------------------------------------------

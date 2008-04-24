@@ -1,11 +1,19 @@
-From: tyuiop <dnehcsie_1952-9a2F1vOXjm9U/rLd1XvvrlesiRL1/sJc@public.gmane.org>
-Subject: Sensational topless pics
-Date: Thu, 24 Apr 2008 16:45:55 +0200
-Message-ID: <6F7E2E4A.9%dnehcsie_1952@TRINIDADBENHAM.COM>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [RFC / PATCH] [SPI] get_module while using
+	it.
+Date: Thu, 24 Apr 2008 11:26:00 -0700
+Message-ID: <200804241126.01158.david-b@pacbell.net>
+References: <20080414194549.GA1363@www.tglx.de>
+	<200804151109.43278.david-b@pacbell.net>
+	<20080424092605.GC7371@www.tglx.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0322094611=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Sebastian Siewior <bigeasy-kttTfShzVuc@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080424092605.GC7371-Hfxr4Dq0UpYb1SvskN2V4Q@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,60 +25,34 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0322094611==
-Content-type: multipart/alternative;
-        boundary="B_2102354059_03623"
+On Thursday 24 April 2008, Sebastian Siewior wrote:
+> >And removing the subsidiary devices is supposed to unbind
+> >them ... though looking at it quickly, I suspect that the
+> >"spidev" driver doesn't check for unbound devices in its
+> >various I/O paths.
+> 
+> Aha. So you mean that the read function which was spidev_read() while
+> the controller was available should point to something else once the
+> controller is gone?
 
---B_2102354059_03623
-Content-type: text/plain;
-        charset="US-ASCII"
-Content-transfer-encoding: 7bit
+No, I mean that the issue is most likely a spidev bug.
 
-Have a good night's sleep every night with amazing lovemaking all the time http://www.jueahhge.com/
+> >So this sounds like a bug in the controller driver, or else
+> >in how spidev handles unbind.
+>
+> I try to look later at spidev once I find something that does a similar
+> job and works as expected....
 
+They're all over the place, though not with SPI.  The unbind
+method just updates some state that's checked in the I/O ops.
 
---B_2102354059_03623
-Content-type: text/html;
-        charset="US-ASCII"
-Content-transfer-encoding: quoted-printable
-
-<HTML>
-<HEAD>
-<TITLE>Sensational topless pics</TITLE>
-</HEAD>
-<BODY>
-<FONT SIZE=3D"4"><FONT FACE=3D"Verdana, Arial"><SPAN =
-STYLE=3D'font-size:11pt'>Have a good night's sleep every night with =
-amazing lovemaking all the time <a =
-href=3D"http://www.jueahhge.com/">http://www.jueahhge.com/</a><BR>
-</SPAN></FONT></FONT></FONT>
-</BODY>
-</HTML>
+- Dave
+ 
 
 
---B_2102354059_03623--
-
-
---===============0322094611==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
---===============0322094611==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0322094611==--

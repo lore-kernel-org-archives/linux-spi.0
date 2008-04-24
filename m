@@ -1,17 +1,20 @@
-From: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
-Subject: [PATCH 2/2 v2] xilinx_spi: test below 0 on
-	unsigned irq in xilinx_spi_probe()
-Date: Thu, 24 Apr 2008 09:35:09 +0200
-Message-ID: <4810382D.8040405@tiscali.nl>
-References: <480F99D5.7070300@tiscali.nl> <480FA248.7080900@tiscali.nl>
+From: Sebastian Siewior <bigeasy-kttTfShzVuc@public.gmane.org>
+Subject: Re: [RFC / PATCH] [SPI] get_module while using
+	it.
+Date: Thu, 24 Apr 2008 11:26:05 +0200
+Message-ID: <20080424092605.GC7371@www.tglx.de>
+References: <20080414194549.GA1363@www.tglx.de>
+	<200804141623.36838.david-b@pacbell.net>
+	<20080415070723.GA18303@www.tglx.de>
+	<200804151109.43278.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <480FA248.7080900-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <200804151109.43278.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,67 +26,46 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Joe Perches wrote:
-> On Wed, 2008-04-23 at 22:55 +0200, Roel Kluin wrote:
+* David Brownell | 2008-04-15 11:09:43 [-0700]:
 
->> -	xspi->irq = platform_get_irq(dev, 0);
->> -	if (xspi->irq < 0) {
->> -		ret = -ENXIO;
->> +	ret = platform_get_irq(dev, 0);
->> +	if (ret < 0)
->>  		goto unmap_io;
->> -	}
->> +
->> +	xspi->irq = ret;
->> +	ret = 0;
-> 
-> Is the only negative return from platform_get_irq ENXIO?
-> I think you still need the ret = -ENXIO before the goto.
-> 
-> Also, you don't need the ret = 0 line, it's set again
-> a few lines below.
-> 
-> I think you should end up with:
-> 
-> 	ret = platform_get_irq(dev, 0);
-> 	if (ret < 0) {
-> 		ret = -ENXIO;
-> 		goto unmap_io;
-> 	}
-> 
-> 	xspi->irq = ret;
-> 
-> cheers, Joe
+>On Tuesday 15 April 2008, Sebastian Siewior wrote:
+>> * David Brownell | 2008-04-14 16:23:36 [-0700]:
+>> 
+>> >On Monday 14 April 2008, Sebastian Siewior wrote:
+>> >> Without this it is possible to unload the SPI-driver while an
+>> >> spidev user open()ed the spidev device.
+>> >
+>> >Does that misbehave in any way?  That sort of unloading of
+>>
+>> Yes. Unload, read() -> Ooops.
+>
+>What's the oops, and with which controller driver?
+I can't dump the Ooops right now. The conter driver is my own which is
+based on mpc52xx_psc_spi.c.
 
-In that case, this should suffice,
+>If the adapter is unloaded it's *supposed* to first complete
+>all pending transfers (and prevent submission of new ones).
+Yes, but the problem here is (I thing) that spidev doesn't know that the
+driver is gone. spi_async() (what is called straight from spidev_read()
+with no checks in between) is always using spi->master->* even if the
+master is gone.
 
-thanks again,
+>And removing the subsidiary devices is supposed to unbind
+>them ... though looking at it quickly, I suspect that the
+>"spidev" driver doesn't check for unbound devices in its
+>various I/O paths.
+Aha. So you mean that the read function which was spidev_read() while
+the controller was available should point to something else once the
+controller is gone?
 
-Roel
----
-xilinx_spi->irq is unsigned, so the test fails
+>
+>So this sounds like a bug in the controller driver, or else
+>in how spidev handles unbind.
+I try to look later at spidev once I find something that does a similar
+job and works as expected....
 
-Signed-off-by: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
----
-diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
-index cf6aef3..2a471b3 100644
---- a/drivers/spi/xilinx_spi.c
-+++ b/drivers/spi/xilinx_spi.c
-@@ -353,11 +353,12 @@ static int __init xilinx_spi_probe(struct platform_device *dev)
- 		goto put_master;
- 	}
- 
--	xspi->irq = platform_get_irq(dev, 0);
--	if (xspi->irq < 0) {
-+	ret = platform_get_irq(dev, 0);
-+	if (ret < 0) {
- 		ret = -ENXIO;
- 		goto unmap_io;
- 	}
-+	xspi->irq = ret;
- 
- 	master->bus_num = pdata->bus_num;
- 	master->num_chipselect = pdata->num_chipselect;
+>- Dave
+Sebastian
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 

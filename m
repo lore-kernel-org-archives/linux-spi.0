@@ -1,20 +1,20 @@
-From: Sebastian Siewior <bigeasy-kttTfShzVuc@public.gmane.org>
-Subject: Re: [RFC / PATCH] [SPI] get_module while using
-	it.
-Date: Thu, 24 Apr 2008 11:26:05 +0200
-Message-ID: <20080424092605.GC7371@www.tglx.de>
-References: <20080414194549.GA1363@www.tglx.de>
-	<200804141623.36838.david-b@pacbell.net>
-	<20080415070723.GA18303@www.tglx.de>
-	<200804151109.43278.david-b@pacbell.net>
+From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Subject: Re: mmc_spi.c driver
+Date: Thu, 24 Apr 2008 14:05:41 +0200
+Message-ID: <20080424140541.773f6e6b@mjolnir.drzeus.cx>
+References: <1CF6EDDF0820924DA43C9A52FE7325950A27D544@MI8NYCMAIL17.Mi8.com>
+	<200804151137.00997.david-b@pacbell.net>
+	<1CF6EDDF0820924DA43C9A52FE7325950A89D882@MI8NYCMAIL17.Mi8.com>
+	<200804151204.19776.david-b@pacbell.net>
+	<1CF6EDDF0820924DA43C9A52FE7325950A89DA47@MI8NYCMAIL17.Mi8.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "hartleys" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <200804151109.43278.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <1CF6EDDF0820924DA43C9A52FE7325950A89DA47-3jZfQB9DylyX6QUl2nWcdlaTQe2KTcn/@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,49 +26,59 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-* David Brownell | 2008-04-15 11:09:43 [-0700]:
-
->On Tuesday 15 April 2008, Sebastian Siewior wrote:
->> * David Brownell | 2008-04-14 16:23:36 [-0700]:
->> 
->> >On Monday 14 April 2008, Sebastian Siewior wrote:
->> >> Without this it is possible to unload the SPI-driver while an
->> >> spidev user open()ed the spidev device.
->> >
->> >Does that misbehave in any way?  That sort of unloading of
->>
->> Yes. Unload, read() -> Ooops.
->
->What's the oops, and with which controller driver?
-I can't dump the Ooops right now. The conter driver is my own which is
-based on mpc52xx_psc_spi.c.
-
->If the adapter is unloaded it's *supposed* to first complete
->all pending transfers (and prevent submission of new ones).
-Yes, but the problem here is (I thing) that spidev doesn't know that the
-driver is gone. spi_async() (what is called straight from spidev_read()
-with no checks in between) is always using spi->master->* even if the
-master is gone.
-
->And removing the subsidiary devices is supposed to unbind
->them ... though looking at it quickly, I suspect that the
->"spidev" driver doesn't check for unbound devices in its
->various I/O paths.
-Aha. So you mean that the read function which was spidev_read() while
-the controller was available should point to something else once the
-controller is gone?
-
->
->So this sounds like a bug in the controller driver, or else
->in how spidev handles unbind.
-I try to look later at spidev once I find something that does a similar
-job and works as expected....
-
->- Dave
-Sebastian
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
-Don't miss this year's exciting event. There's still time to save $100. 
-Use priority code J8TL2D2. 
-http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
+T24gVHVlLCAxNSBBcHIgMjAwOCAxNToyNjo1NCAtMDQwMAoiaGFydGxleXMiIDxoYXJ0bGV5c0B2
+aXNpb25lbmdyYXZlcnMuY29tPiB3cm90ZToKCj4gSSBkbyBnZXQgdGhlIElSUSBvbiBldmVyeSBj
+YXJkIGluc2VydGlvbiBhbmQgcmVtb3ZhbC4gQWN0dWFsbHkgaWYgSSBib290Cj4gdGhlIHN5c3Rl
+bSB3aXRoIHRoZSBjYXJkIHJlbW92ZWQgSSBlbmQgdXAgZ2V0dGluZyBhOgo+IAo+IG1tYzA6IGVy
+cm9yIC0yMiB3aGlsc3QgaW5pdGlhbGlzaW5nIFNESU8gY2FyZCAgCgpUaGlzIGlzIGEgYml0IG9k
+ZC4gSXQgc2hvdWxkbid0IGhhdmUgZ29uZSBkb3duIHRoYXQgcm91dGUgdW5sZXNzIGl0IGlzCnN1
+cmUgaXQncyBhbiBTRElPIGNhcmQgaXQgaXMgZGVhbGluZyB3aXRoLgoKPiBJZiBJIHRoZW4gaW5z
+ZXJ0IHRoZSBjYXJkIEkgZ2V0IHRoZSBJUlEgYW5kOgo+IAo+IG1tYzA6IG5ldyBNTUMgY2FyZCBv
+biBTUEkKPiBtbWNibGswOiBtbWMwOjAwMDEgU0RNMDY0IDYyNzIwS2lCCj4gwqBtbWNibGswOiBw
+MSBwMiBwMyBwNAo+IAo+IFNvIGl0IGFwcGVhcnMgdGhlIGluaXRpYWwgY2FyZCBkZXRlY3QgZG9l
+cyB3b3JrLiBCdXQgZm9yIHNvbWUgcmVhc29uCj4gaXQncyBub3Qgc2VlaW5nIHRoZSByZW1vdmFs
+IG9mIHRoZSBjYXJkIG9yIHRoZSBpbnNlcnRpb24gb2YgYSBuZXcgY2FyZC4KPiAKPiBBbnkgaWRl
+YXM/ICAKCldpdGhvdXQgZGVidWdnaW5nIGluZm8gaXQncyBpbXBvc3NpYmxlIHRvIHRlbGwgaWYg
+aXQncyB0aGUgZHJpdmVyIG9yIHRoZSBjb3JlIHRoYXQncyBkb2luZyBzb21ldGhpbmcgd3Jvbmcu
+IEhhdmUgeW91IGNoZWNrZWQgdGhhdCBpbnRlcnJ1cHRzIGtlZXAgY29taW5nPwoKPiAKPiBOZXcg
+aXNzdWUuIEFsbCBvZiBteSB0ZXN0aW5nIHNvIGZhciBoYXMgYmVlbiB3aXRoIE1NQyBjYXJkcy4g
+QWxsIG9mIHRoZW0KPiBoYXZlIHdvcmtlZCBzbyBmYXIuIEkganVzdCB0cmllZCBhIGNvdXBsZSBv
+ZiBTRCBjYXJkcyBhbmQgbm9uZSBvZiB0aGVtCj4gd29yayB3aXRoIHRoZSBkcml2ZXIsIHRoZXkg
+ZG8gd29yayBmaW5lIG9uIG15IGhvc3Qgc3lzdGVtLgo+IAo+IE9uZSBvZiB0aGUgY2FyZHMgYWN0
+dWFsbHkgcHJvZHVjZXMgYSAiRGl2aXNpb24gYnkgemVybyBpbiBrZXJuZWwuIiBlcnJvci4KPiBJ
+dCBhcHBlYXJzIHRvIGhhcHBlbiBpbiB0aGUgbW1jX3NldF9kYXRhX3RpbWVvdXQoKSBmdW5jdGlv
+bi4gSSBhZGRlZCBhCj4gcHJpbnRrIHRvIHRoZSBmdW5jdGlvbiBhbmQgZ2V0IHRoZSBmb2xsb3dp
+bmcgd2hlbiB0aGUgY2FyZCBpcyBpbnNlcnRlZC4KPiAKPiBtbWNfc2V0X2RhdGFfdGltZW91dCAg
+dGltZW91dF9uczowICB0aW1lb3V0X2Nsa3M6MCAgaW9zLmNsb2NrOjQwMDAwMAo+IG1tY19zZXRf
+ZGF0YV90aW1lb3V0ICB0aW1lb3V0X25zOi01ODk5MzQ1OTIgIHRpbWVvdXRfY2xrczowICBpb3Mu
+Y2xvY2s6NDAwMDAwCj4gbW1jMDogbmV3IFNEIGNhcmQgb24gU1BJCj4gbW1jYmxrMDogbW1jMDow
+MDAwICAgICAgIDI5ODg4S2lCCj4gIG1tY2JsazA6bW1jX3NldF9kYXRhX3RpbWVvdXQgIHRpbWVv
+dXRfbnM6LTU4OTkzNDU5MiAgdGltZW91dF9jbGtzOjAgIGlvcy5jbG9jazowCj4gRGl2aXNpb24g
+YnkgemVybyBpbiBrZXJuZWwuCgpPdWNoLgoKPiAKPiBGb3Igc29tZSByZWFzb24gdGhlIGNhcmQt
+Pmhvc3QtPmlvcy5jbG9jayB2YWx1ZSBpcyBnZXR0aW5nIGNoYW5nZWQgdG8gMCBvbgo+IHRoZSB0
+aGlyZCBjYWxsIHRvIHRoZSBmdW5jdGlvbi4gSSBoYXZlbid0IGJlZW4gYWJsZSB0byB0cmFjZSBk
+b3duIHdoZXJlL3doeQo+IHRoaXMgd291bGQgaGFwcGVuLiBBbnkgaWRlYSBvbiB0aGF0IG9uZT8K
+PiAKCk5vdCB0aGUgc2xpZ2h0ZXN0LiBJdCBzaG91bGQgbmV2ZXIgYmUgc2V0IHRvIHplcm8gZXhj
+ZXB0IHdoZW4gcG93ZXJpbmcKZG93biwgd2hpY2ggaXQgb25seSBkb2VzIHdoZW4gdGhlcmUgaXMg
+bm8gY2FyZCBhdHRhY2hlZC4KCj4gSSBkaWRuJ3QgdGhpbmsgb2YgY2hlY2tpbmcgZG1lc2cgYmVm
+b3JlLCBoZXJlJ3MgdGhlIGFjdHVhbCBkdW1wIGFmdGVyIEkKPiBpbnNlcnQKPiB0aGUgU0QgY2Fy
+ZDoKCk15IGd1ZXNzIHdvdWxkIGJlIHRyYW5zZmVyIHByb2JsZW1zIHRoYXQgY2F1c2VzIHRoZSBj
+b3JlIHRvIGJlbGlldmUgdGhlCmNhcmQgY2Fubm90IGhhbmRsZSBhIGhpZ2hlciBzcGVlZC4gV2Ug
+c2hvdWxkIG9mIGNvdXJzZSBoYXZlIGEgY2hlY2sKdGhhdCB3ZSBkb24ndCBjb21wdXRlIGEgdG9v
+IGxvdyBzcGVlZCwgYnV0IHRoYXQncyBub3QgdGhlIHJvb3Qgb2YgdGhlCnByb2JsZW0uCgpIYXZl
+IHlvdSBkaXNhYmxlZCB0aGUgQ1JDIGNoZWNrcz8KCkkgZ3Vlc3MgSSdsbCBoYXZlIHRvIHdhcm0g
+dXAgbXkgb2xkIFNQSSB0ZXN0IGJvYXJkIGFuZCBnZXQgaXQgdXBkYXRlZC4KRGF2aWQsIEkgZG9u
+J3Qgc3VwcG9zZSB5b3UndmUgY2hlY2tlZCBpZiB5b3UgY2FuIHJlcHJvZHVjZSB0aGlzPwoKUmdk
+cwotLSAKICAgICAtLSBQaWVycmUgT3NzbWFuCgogIExpbnV4IGtlcm5lbCwgTU1DIG1haW50YWlu
+ZXIgICAgICAgIGh0dHA6Ly93d3cua2VybmVsLm9yZwogIFB1bHNlQXVkaW8sIGNvcmUgZGV2ZWxv
+cGVyICAgICAgICAgIGh0dHA6Ly9wdWxzZWF1ZGlvLm9yZwogIHJkZXNrdG9wLCBjb3JlIGRldmVs
+b3BlciAgICAgICAgICBodHRwOi8vd3d3LnJkZXNrdG9wLm9yZwoKLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpU
+aGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgdGhlIDIwMDggSmF2YU9uZShTTSkgQ29u
+ZmVyZW5jZSAKRG9uJ3QgbWlzcyB0aGlzIHllYXIncyBleGNpdGluZyBldmVudC4gVGhlcmUncyBz
+dGlsbCB0aW1lIHRvIHNhdmUgJDEwMC4gClVzZSBwcmlvcml0eSBjb2RlIEo4VEwyRDIuIApodHRw
+Oi8vYWQuZG91YmxlY2xpY2submV0L2NsazsxOTg3NTc2NzM7MTM1MDMwMzg7cD9odHRwOi8vamF2
+YS5zdW4uY29tL2phdmFvbmUKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

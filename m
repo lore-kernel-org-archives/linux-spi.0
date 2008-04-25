@@ -1,15 +1,20 @@
-From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/1] Blackfin SPI Driver: Fix bug when
-	SPI full-duplex
-Date: Fri, 25 Apr 2008 11:58:46 +0800
-Message-ID: <1209095926-21279-1-git-send-email-cooloney@kernel.org>
+From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi_mpc83xx: test below 0 on
+	unsigned irq	in	mpc83xx_spi_probe()
+Date: Fri, 25 Apr 2008 13:25:06 +0200
+Message-ID: <1209122706.31117.8.camel@gentoo-jocke.transmode.se>
+References: <480FA234.1000601@tiscali.nl>
+	<00ed01c8a58c$b4a5fa40$1df1eec0$@Tjernlund@transmode.se>
+Reply-To: joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Vitja Makarov <vitja.makarov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	'lkml' <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: 'Roel Kluin' <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <00ed01c8a58c$b4a5fa40$1df1eec0$@Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,56 +26,68 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Vitja Makarov <vitja.makarov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Check if full-duplex and DMA are used together, fall-back to PIO mode.
+On Wed, 2008-04-23 at 23:55 +0200, Joakim Tjernlund wrote:
+> > -----Original Message-----
+> > From: linuxppc-dev-bounces+joakim.tjernlund=transmode.se-mnsaURCQ41sdnm+yROfE0A@public.gmane.org [mailto:linuxppc-dev-
+> > bounces+joakim.tjernlund=transmode.se-mnsaURCQ41sdnm+yROfE0A@public.gmane.org] On Behalf Of Roel Kluin
+> > Sent: den 23 april 2008 22:55
+> > To: galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org; linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+> > Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; lkml
+> > Subject: [PATCH 1/2] spi_mpc83xx: test below 0 on unsigned irq in mpc83xx_spi_probe()
+> > 
+> > mpc83xx_spi->irq is unsigned, so the test fails
+> > 
+> > Signed-off-by: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
+> 
+> hmm, I got a pretty large 83xx spi patch queued at dbrownell. I hope
+> that one can be applied first. Then you probably need to rediff this patch.
+> 
+> David, any progress on my patch?
 
-Signed-off-by: Vitja Makarov <vitja.makarov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi_bfin5xx.c |    6 ++++--
- 1 files changed, 4 insertions(+), 2 deletions(-)
+David, heard nothing from you in a while. Don't you get my mails?
 
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index a9ac1fd..a94f1e9 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -608,6 +608,7 @@ static void pump_transfers(unsigned long data)
- 	u8 width;
- 	u16 cr, dma_width, dma_config;
- 	u32 tranf_success = 1;
-+	u8 full_duplex = 0;
- 
- 	/* Get current state information */
- 	message = drv_data->cur_msg;
-@@ -658,6 +659,7 @@ static void pump_transfers(unsigned long data)
- 	}
- 
- 	if (transfer->rx_buf != NULL) {
-+		full_duplex = transfer->tx_buf != NULL;
- 		drv_data->rx = transfer->rx_buf;
- 		drv_data->rx_end = drv_data->rx + transfer->len;
- 		dev_dbg(&drv_data->pdev->dev, "rx_buf is %p, rx_end is %p\n",
-@@ -740,7 +742,7 @@ static void pump_transfers(unsigned long data)
- 	 * successful use different way to r/w according to
- 	 * drv_data->cur_chip->enable_dma
- 	 */
--	if (drv_data->cur_chip->enable_dma && drv_data->len > 6) {
-+	if (!full_duplex && drv_data->cur_chip->enable_dma && drv_data->len > 6) {
- 
- 		disable_dma(drv_data->dma_channel);
- 		clear_dma_irqstat(drv_data->dma_channel);
-@@ -828,7 +830,7 @@ static void pump_transfers(unsigned long data)
- 		/* IO mode write then read */
- 		dev_dbg(&drv_data->pdev->dev, "doing IO transfer\n");
- 
--		if (drv_data->tx != NULL && drv_data->rx != NULL) {
-+		if (full_duplex) {
- 			/* full duplex mode */
- 			BUG_ON((drv_data->tx_end - drv_data->tx) !=
- 			       (drv_data->rx_end - drv_data->rx));
--- 
-1.5.5
+   Jocke 
+
+> 
+>  Jocke
+> > ---
+> > diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+> > index be15a62..033fd51 100644
+> > --- a/drivers/spi/spi_mpc83xx.c
+> > +++ b/drivers/spi/spi_mpc83xx.c
+> > @@ -454,12 +454,12 @@ static int __init mpc83xx_spi_probe(struct platform_device *dev)
+> >  		goto put_master;
+> >  	}
+> > 
+> > -	mpc83xx_spi->irq = platform_get_irq(dev, 0);
+> > -
+> > -	if (mpc83xx_spi->irq < 0) {
+> > -		ret = -ENXIO;
+> > +	ret = platform_get_irq(dev, 0);
+> > +	if (ret < 0)
+> >  		goto unmap_io;
+> > -	}
+> > +
+> > +	mpc83xx_spi->irq = ret;
+> > +	ret = 0;
+> > 
+> >  	/* Register for SPI Interrupt */
+> >  	ret = request_irq(mpc83xx_spi->irq, mpc83xx_spi_irq,
+> > 
+> > _______________________________________________
+> > Linuxppc-dev mailing list
+> > Linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+> > https://ozlabs.org/mailman/listinfo/linuxppc-dev
+> > 
+> 
+> 
+> _______________________________________________
+> Linuxppc-dev mailing list
+> Linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+> https://ozlabs.org/mailman/listinfo/linuxppc-dev
+> 
+> 
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 

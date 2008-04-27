@@ -1,9 +1,10 @@
-From: asdadadddd-Y9sIeH5OGRo@public.gmane.org
-Subject: =?GB2312?B?tPogwO0g0rUgzvE=?=
-Date: Sun, 27 Apr 2008 07:18:21 +0800
-Message-ID: <E1JptY4-0002OL-83@mail.sourceforge.net>
-Content-Type: multipart/mixed; boundary="===============0544336397=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: Asher <tnreegba1975-xD3VLNE5d64QCreZJPw4LQ@public.gmane.org>
+Subject: Real men have real peckers
+Date: Sun, 27 Apr 2008 13:17:49 +0200
+Message-ID: <6BA6CBFF.E%tnreegba1975@NAZCANET.COM.BR>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0358258053=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,32 +17,41 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0544336397==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: quoted-printable
+--===============0358258053==
+Content-type: multipart/alternative;
+        boundary="B_4368144516_61189"
 
-   =B1=BE=B9=AB=CB=BE=CA=C7=D2=BB=BC=D2=B3=A3=C4=EA=D6=F7=D2=AA=D2=D4=C9=FA=
-=B2=FA=BA=CD=CF=FA=CA=DB=CE=AA=D2=BB=CC=E5=B5=C4=B6=A8=B6=EE=C4=C9=CB=B0=C6=
-=F3=D2=B5=A3=BB=B3=A4=C6=DA=D2=D4=C0=B4=CF=ED=D3=D0=B9=FA=BC=D2=D3=C5=BB=DD=
-=D5=FE=B2=DF=A3=AC=20
-=CE=AA=C1=CB=B8=F8=D3=DA=B7=BD=B1=E3=B9=F3=CB=BE=C4=C9=CB=B0=CE=CA=CC=E2=A3=
-=BB=CF=D6=CE=D2=B9=AB=CB=BE=D3=D0=D3=E0=B6=EE=B5=C4=A1=B6=B7=A2--=C6=B1=A1=
-=B7=B6=D4=CD=E2=B4=FA=BF=AA=A1=A3=20
-1=A1=A2=C6=D5=CD=A8=C9=CC=C6=B7=CF=FA=CA=DB=A1=A2=D4=CB=CA=E4=D2=B5=A1=A2=
-=B9=E3=B8=E6=D2=B5=A1=A2=B7=FE=CE=F1=D2=B5=A1=A2=BD=A8=D6=FE=D2=B5=B5=C8=A1=
-=B6=B7=A2---=C6=B1=A1=B7=A1=A3=20
-2=A1=A2=B4=CB=D0=C5=CF=A2=B3=A4=C6=DA=D3=D0=D0=A7=D2=D4=B1=B8=BA=F3=D3=C3=
-,=C8=E7=D3=D0=D0=E8=D5=DF=BB=B6=D3=AD=C0=B4=B5=E7=C7=A2=CC=B8=CF=EA=CF=B8=
-=BA=CF!=D7=F7=A1=A3 =20
-              =C1=AA=CF=B5=C8=CB=A3=BA=D5=C5=D1=DE=BA=EC
-               =CA=D6=BB=FA=A3=BA134-8081-0376 =20
-               Q Q:383751141
-               =CD=F8=D6=B7=A3=BA http://haiyuan888.3653h.com/
+--B_4368144516_61189
+Content-type: text/plain;
+        charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
+Express herbals promise you an increase in your size or money back http://www.oiejena.com/
 
 
+--B_4368144516_61189
+Content-type: text/html;
+        charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
 
---===============0544336397==
+<HTML>
+<HEAD>
+<TITLE>Real men have real peckers</TITLE>
+</HEAD>
+<BODY>
+<FONT SIZE=3D"4"><FONT FACE=3D"Verdana, Arial"><SPAN =
+STYLE=3D'font-size:11pt'>Express herbals promise you an increase in your =
+size or money back <a =
+href=3D"http://www.oiejena.com/">http://www.oiejena.com/</a><BR>
+</SPAN></FONT></FONT></FONT>
+</BODY>
+</HTML>
+
+
+--B_4368144516_61189--
+
+
+--===============0358258053==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -52,7 +62,7 @@ This SF.net email is sponsored by the 2008 JavaOne(SM) Conference
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
---===============0544336397==
+--===============0358258053==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -63,4 +73,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0544336397==--
+--===============0358258053==--

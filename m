@@ -1,38 +1,39 @@
-From: "Joakim Tjernlund" <Joakim.Tjernlund@transmode.se>
-Subject: RE: [patch 2.6.25-git] spi_mpc83xx much improved driver
+From: "Joakim Tjernlund" <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Subject: Re: [patch 2.6.25-git] spi_mpc83xx much
+	improved driver
 Date: Thu, 1 May 2008 12:42:01 +0200
-Message-ID: <1924.82319330356$1209638659@news.gmane.org>
+Message-ID: <5149.69274304367$1209638739@news.gmane.org>
 References: <200804301537.07965.david-b@pacbell.net>
 	<20080430154631.b86797de.akpm@linux-foundation.org>
 	<200804301555.34110.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net, 12o3l@tiscali.nl,
-	linuxppc-dev@ozlabs.org
-To: "'David Brownell'" <david-b@pacbell.net>,
-	"'Andrew Morton'" <akpm@linux-foundation.org>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org>
-In-Reply-To: <200804301555.34110.david-b@pacbell.net>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, 12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org,
+	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: "'David Brownell'" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	"'Andrew Morton'" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200804301555.34110.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Language: sv
-List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
-List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
-List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 > -----Original Message-----
-> From: David Brownell [mailto:david-b@pacbell.net]
+> From: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org]
 > Sent: den 1 maj 2008 00:56
 > To: Andrew Morton
-> Cc: spi-devel-general@lists.sourceforge.net; joakim.tjernlund@transmode.s=
-e; linuxppc-dev@ozlabs.org;
-> 12o3l@tiscali.nl
+> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; joakim.tjernlund@transmode.s=
+e; linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org;
+> 12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org
 > Subject: Re: [patch 2.6.25-git] spi_mpc83xx much improved driver
 > =
 
@@ -68,3 +69,15 @@ it and object if they feel differently.
  Yeah, that would be good.
 
  Jocke
+
+
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by the 2008 JavaOne(SM) Conference =
+
+Don't miss this year's exciting event. There's still time to save $100. =
+
+Use priority code J8TL2D2. =
+
+http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/java=
+one

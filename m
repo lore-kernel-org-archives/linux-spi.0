@@ -1,10 +1,10 @@
-From: Cheuk <vorfinde_1951-8ETcBgGwIwUo9P/RD/JcUQ@public.gmane.org>
-Subject: Fantastic pole for you
-Date: Sun, 4 May 2008 14:10:35 +0200
-Message-ID: <0DBA03CC.F%vorfinde_1951@IHsus.b.tep1.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1195009794=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?0rbJ+g==?= <sjgsfg-9Onoh4P/yGk@public.gmane.org>
+Subject: =?GB2312?B?t6IvxrE=?=
+Date: Mon, 5 May 2008 05:20:54 +0800
+Message-ID: <E1Jsldk-0005H0-TB@mail.sourceforge.net>
+Reply-To: sjgsfg-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1467652883=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,41 +17,32 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1195009794==
-Content-type: multipart/alternative;
-        boundary="B_0374140904_08805"
+--===============1467652883==
+Content-Type: text/plain;charset="GB2312"
 
---B_0374140904_08805
-Content-type: text/plain;
-        charset="US-ASCII"
-Content-transfer-encoding: 7bit
+先生/女士：
 
-Increase your libido and performance easily with just 2 tabs a day http://www.jessiplia.com/
+           您好！
 
+          本公司现有普通商品销售、咨询服务、房屋租赁、广告、建筑装饰/安装、
 
---B_0374140904_08805
-Content-type: text/html;
-        charset="US-ASCII"
-Content-transfer-encoding: quoted-printable
+   运输海关等行业发票可向外代开！可用于公司收款、充帐、抵扣等业务,如贵公
 
-<HTML>
-<HEAD>
-<TITLE>Fantastic pole for you</TITLE>
-</HEAD>
-<BODY>
-<FONT SIZE=3D"4"><FONT FACE=3D"Verdana, Arial"><SPAN =
-STYLE=3D'font-size:11pt'>Increase your libido and performance easily =
-with just 2 tabs a day <a =
-href=3D"http://www.jessiplia.com/">http://www.jessiplia.com/</a><BR>
-</SPAN></FONT></FONT></FONT>
-</BODY>
-</HTML>
+   司你有这方面的需要，请与我司联系，点数可从您的金额大小来优惠，如贵公司
+
+   您对我司有认何疑问，我司可先开票后付款，详情请您来电咨询！
+
+                                              
+   联系电话： 136 326 31316,
+         
+   联 系 人：  叶  生
+
+   E-mail  ： yeu13632631316-KN7UnAbNpbg@public.gmane.org
+
+   祝      ：贵公司鼠年旺旺旺
 
 
---B_0374140904_08805--
-
-
---===============1195009794==
+--===============1467652883==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -62,7 +53,7 @@ This SF.net email is sponsored by the 2008 JavaOne(SM) Conference
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
---===============1195009794==
+--===============1467652883==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -73,4 +64,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1195009794==--
+--===============1467652883==--

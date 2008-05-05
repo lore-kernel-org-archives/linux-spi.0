@@ -1,10 +1,10 @@
-From: =?GB2312?B?0rbJ+g==?= <sjgsfg-9Onoh4P/yGk@public.gmane.org>
-Subject: =?GB2312?B?t6IvxrE=?=
-Date: Mon, 5 May 2008 05:20:54 +0800
-Message-ID: <E1Jsldk-0005H0-TB@mail.sourceforge.net>
-Reply-To: sjgsfg-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1467652883=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Gordie <egauboce_1971-2YVarVnToQRXrIkS9f7CXA@public.gmane.org>
+Subject: Genuine Jimi Hendrix in compromising position
+Date: Mon, 5 May 2008 18:10:58 +0900
+Message-ID: <FE45D494.A%egauboce_1971@IRITEC.COM>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0677866299=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,32 +17,40 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1467652883==
-Content-Type: text/plain;charset="GB2312"
+--===============0677866299==
+Content-type: multipart/alternative;
+        boundary="B_1310040236_44085"
 
-先生/女士：
+--B_1310040236_44085
+Content-type: text/plain;
+        charset="US-ASCII"
+Content-transfer-encoding: 7bit
 
-           您好！
-
-          本公司现有普通商品销售、咨询服务、房屋租赁、广告、建筑装饰/安装、
-
-   运输海关等行业发票可向外代开！可用于公司收款、充帐、抵扣等业务,如贵公
-
-   司你有这方面的需要，请与我司联系，点数可从您的金额大小来优惠，如贵公司
-
-   您对我司有认何疑问，我司可先开票后付款，详情请您来电咨询！
-
-                                              
-   联系电话： 136 326 31316,
-         
-   联 系 人：  叶  生
-
-   E-mail  ： yeu13632631316-KN7UnAbNpbg@public.gmane.org
-
-   祝      ：贵公司鼠年旺旺旺
+Find out how Jimi Hendrix get his famous rod http://www.gommerti.com/
 
 
---===============1467652883==
+--B_1310040236_44085
+Content-type: text/html;
+        charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<HTML>
+<HEAD>
+<TITLE>Genuine Jimi Hendrix in compromising position</TITLE>
+</HEAD>
+<BODY>
+<FONT SIZE=3D"4"><FONT FACE=3D"Verdana, Arial"><SPAN =
+STYLE=3D'font-size:11pt'>Find out how Jimi Hendrix get his famous rod <a =
+href=3D"http://www.gommerti.com/">http://www.gommerti.com/</a><BR>
+</SPAN></FONT></FONT></FONT>
+</BODY>
+</HTML>
+
+
+--B_1310040236_44085--
+
+
+--===============0677866299==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -53,7 +61,7 @@ This SF.net email is sponsored by the 2008 JavaOne(SM) Conference
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
---===============1467652883==
+--===============0677866299==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -64,4 +72,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1467652883==--
+--===============0677866299==--

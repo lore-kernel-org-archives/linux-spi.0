@@ -1,17 +1,11 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi_mpc83xx: test below 0 on
- unsigned irq in mpc83xx_spi_probe()
-Date: Wed, 7 May 2008 15:46:41 -0700
-Message-ID: <20080507154641.83a09a06.akpm@linux-foundation.org>
-References: <480FA234.1000601@tiscali.nl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
+From: =?GB2312?B?u9gguLQ=?= <f660c541-0GSiYjBpcig@public.gmane.org>
+Subject: =?GB2312?B?Uk86sum/tNfKwc8=?=
+Date: Thu, 8 May 2008 10:06:38 +0800
+Message-ID: <E1JtvXj-0008B8-Ox@mail.sourceforge.net>
+Reply-To: d067aef6e-0GSiYjBpcig@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1283001542=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <480FA234.1000601-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,42 +17,48 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 23 Apr 2008 22:55:16 +0200
-Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org> wrote:
+--===============1283001542==
+Content-Type: text/plain;charset="GB2312"
 
-> mpc83xx_spi->irq is unsigned, so the test fails
-> 
-> Signed-off-by: Roel Kluin <12o3l-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
-> ---
-> diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
-> index be15a62..033fd51 100644
-> --- a/drivers/spi/spi_mpc83xx.c
-> +++ b/drivers/spi/spi_mpc83xx.c
-> @@ -454,12 +454,12 @@ static int __init mpc83xx_spi_probe(struct platform_device *dev)
->  		goto put_master;
->  	}
->  
-> -	mpc83xx_spi->irq = platform_get_irq(dev, 0);
-> -
-> -	if (mpc83xx_spi->irq < 0) {
-> -		ret = -ENXIO;
-> +	ret = platform_get_irq(dev, 0);
-> +	if (ret < 0)
->  		goto unmap_io;
-> -	}
-> +
-> +	mpc83xx_spi->irq = ret;
-> +	ret = 0;
->  
->  	/* Register for SPI Interrupt */
->  	ret = request_irq(mpc83xx_spi->irq, mpc83xx_spi_irq,
-> 
+        本公司我司可从业务关系中为你提供各种税/票等服务。
+    税率一定比别人低诚信为本，真诚合作。可为贵公司（厂）
+    以较低税率代开全国各地部分下例发票：
 
-In the recently-merged spi_mpc83xx-much-improved-driver.patch, mpc83xx_spi.irq
-has type `int' so I don't think we need this fix any more.
+   〈1〉普通国税发票为商品销售（包含所有行业的商品）。
+   〈2〉普通地税发票为建筑、安装、广告、设计、运输、 
+          信息、咨询、培训、劳务、住宿等其它服务行业 。    
+   〈3〉公司承诺：受理谨慎 成功收费 保证随时查询 验证 先验证后付款。 
+  
+        如贵公司在税务低扣，做帐或进销存方面 如需用到的话，
+        欢迎来电或留言咨询.我们会在第一时间回复您
+
+        联系人：许文祥           手　机: 135 381 99800
+            
+        业 务QQ：546843050   E - MALL： gdongxu2007-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
+            
+                                                           顺祝商祺！
+
+
+--===============1283001542==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by the 2008 JavaOne(SM) Conference 
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
+--===============1283001542==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1283001542==--

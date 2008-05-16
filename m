@@ -1,63 +1,74 @@
-From: =?GB2312?B?u9gguLQ=?= <caf095c4-k+cT0dCbe1g@public.gmane.org>
-Subject: =?GB2312?B?Uk86sum/tNfKwc8=?=
-Date: Sat, 17 May 2008 01:43:44 +0800
-Message-ID: <E1Jx3z2-0002CZ-1I@mail.sourceforge.net>
-Reply-To: c970cb51-k+cT0dCbe1g@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1150959694=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: [PATCH 1/4] spi: Change modalias from a pointer to a character array
+Date: Fri, 16 May 2008 13:36:03 -0600
+Message-ID: <20080516193603.28030.51689.stgit@trillian.secretlab.ca>
+References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: fabrizio.garetto@gmail.com, jonsmirl@gmail.com
+To: linuxppc-dev@ozlabs.org, spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, dbrownell@users.sourceforge.net
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756294AbYEPTg0@vger.kernel.org>
+In-reply-to: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1150959694==
-Content-Type: text/plain;charset="GB2312"
+From: Grant Likely <grant.likely@secretlab.ca>
 
-        本公司我司可从业务关系中为你提供各种税<>票等服务。
-    税率一定比别人低诚信为本，真诚合作。可为贵公司（厂）
-    以较低税率代开全国各地部分下例发<>票：
+Currently, 'modalias' in the spi_device structure is a 'const char *'.
+The spi_new_device() function fills in the modalias value from a passed
+in spi_board_info data block.  Since it is a pointer copy, the new
+spi_device remains dependent on the spi_board_info structure after the
+new spi_device is registered (no other fields in spi_device directly
+depend on the spi_board_info structure; all of the other data is copied).
 
-   〈1〉普通国/税/发<>票为商品销售（包含所有行业的商品）。
-   〈2〉普通地/税/发<>票为建筑业、广告业、设计、运输业、 
-          信息、咨询、培训、劳务、住宿等其它服务行业 。    
-   〈3〉公司承诺：受理谨慎 成功收费 保证随时查询 验证 先验证后付款。 
-  
-        如贵公司在税务低扣，做帐或进销存方面 如需用到的话，
-        欢迎来电或留言咨询.我们会在第一时间回复您！
+This causes a problem when dynamically propulating the list of attached
+SPI devices.  For example, in arch/powerpc, the list of SPI devices can
+be populated from data in the device tree.  With the current code, the
+device tree adapter must kmalloc() a new spi_board_info structure for
+each new SPI device it finds in the device tree, and there is no simple
+mechanism in place for keeping track of these allocations.
 
-        联系人：许文祥           手　机: 135 381 99800
-            
-        业 务QQ：546843050   E - MALL： gdongxu2007-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
-            
-                                                           顺祝商祺！
+This patch changes modalias from a 'const char *' to a fixed char array.
+By copying the modalias string instead of referencing it, the dependency
+on the spi_board_info structure is eliminated and an outside caller does
+not need to maintain a separate spi_board_info allocation for each device.
 
+If searched through the code to the best of my ability for any references
+to modalias which may be affected by this change and haven't found anything.
+It has been tested with the lite5200b platform in arch/powerpc.
 
---===============1150959694==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
+---
 
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Microsoft 
-Defy all challenges. Microsoft(R) Visual Studio 2008. 
-http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1150959694==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+ drivers/spi/spi.c       |    2 +-
+ include/linux/spi/spi.h |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1150959694==--
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 1ad12af..bdf1b70 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -229,7 +229,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
+ 	proxy->max_speed_hz = chip->max_speed_hz;
+ 	proxy->mode = chip->mode;
+ 	proxy->irq = chip->irq;
+-	proxy->modalias = chip->modalias;
++	strncpy(proxy->modalias, chip->modalias, KOBJ_NAME_LEN);
+ 
+ 	snprintf(proxy->dev.bus_id, sizeof proxy->dev.bus_id,
+ 			"%s.%u", master->dev.bus_id,
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 387e428..38a080b 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -82,7 +82,7 @@ struct spi_device {
+ 	int			irq;
+ 	void			*controller_state;
+ 	void			*controller_data;
+-	const char		*modalias;
++	char			modalias[KOBJ_NAME_LEN];
+ 
+ 	/*
+ 	 * likely need more hooks for more protocol options affecting how

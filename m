@@ -1,40 +1,63 @@
-From: Scott Wood <scottwood@freescale.com>
-Subject: Re: [PATCH 1/4] [SPI] [POWERPC] spi_mpc83xx: handles Freescale
-	MPC8610 as well
-Date: Fri, 16 May 2008 14:04:38 -0500
-Message-ID: <20080516190438.GA2758@loki.buserror.net>
-References: <20080516165052.GA24196@polina.dev.rtsoft.ru>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
-	spi-devel-general@lists.sourceforge.net, Timur Tabi <timur@freescale.com>,
-	Pierre Ossman <drzeus-mmc@drzeus.cx>
-To: Anton Vorontsov <avorontsov@ru.mvista.com>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org>
-Content-Disposition: inline
-In-Reply-To: <20080516165052.GA24196@polina.dev.rtsoft.ru>
-List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
-List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
-List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
+From: =?GB2312?B?u9gguLQ=?= <caf095c4-k+cT0dCbe1g@public.gmane.org>
+Subject: =?GB2312?B?Uk86sum/tNfKwc8=?=
+Date: Sat, 17 May 2008 01:43:44 +0800
+Message-ID: <E1Jx3z2-0002CZ-1I@mail.sourceforge.net>
+Reply-To: c970cb51-k+cT0dCbe1g@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1150959694=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 16, 2008 at 08:50:52PM +0400, Anton Vorontsov wrote:
->  config SPI_MPC83xx
->  	tristate "Freescale MPC83xx/QUICC Engine SPI controller"
-> -	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE) && EXPERIMENTAL
-> +	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE || PPC_86xx) && EXPERIMENTAL
+--===============1150959694==
+Content-Type: text/plain;charset="GB2312"
 
-How about "depends on SPI_MASTER && FSL_SOC && EXPERIMENTAL"?
+        本公司我司可从业务关系中为你提供各种税<>票等服务。
+    税率一定比别人低诚信为本，真诚合作。可为贵公司（厂）
+    以较低税率代开全国各地部分下例发<>票：
 
-Plus, we should change the option text to something like "MPC8xxx SPI
-controller".
+   〈1〉普通国/税/发<>票为商品销售（包含所有行业的商品）。
+   〈2〉普通地/税/发<>票为建筑业、广告业、设计、运输业、 
+          信息、咨询、培训、劳务、住宿等其它服务行业 。    
+   〈3〉公司承诺：受理谨慎 成功收费 保证随时查询 验证 先验证后付款。 
+  
+        如贵公司在税务低扣，做帐或进销存方面 如需用到的话，
+        欢迎来电或留言咨询.我们会在第一时间回复您！
 
--Scott
+        联系人：许文祥           手　机: 135 381 99800
+            
+        业 务QQ：546843050   E - MALL： gdongxu2007-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
+            
+                                                           顺祝商祺！
+
+
+--===============1150959694==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Microsoft 
+Defy all challenges. Microsoft(R) Visual Studio 2008. 
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+--===============1150959694==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1150959694==--

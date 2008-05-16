@@ -1,75 +1,47 @@
-From: Gornicki <unhatted-Gq+s3sBazeFXrIkS9f7CXA@public.gmane.org>
-Subject: Bigger does mean better
-Date: Wed, 14 May 2008 20:15:19 +0200
-Message-ID: <AE0C10BC.6%unhatted@KMSLAB.COM>
+From: Anton Vorontsov <avorontsov@ru.mvista.com>
+Subject: [PATCH 1/4] [SPI] [POWERPC] spi_mpc83xx: handles Freescale MPC8610
+	as well
+Date: Fri, 16 May 2008 20:50:52 +0400
+Message-ID: <20080516165052.GA24196@polina.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1681652438=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=utf8
+Cc: Jochen Friedrich <jochen@scram.de>,
+	Timur Tabi <timur@freescale.com>, linuxppc-dev@ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Kumar Gala <galak@kernel.crashing.org>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Pierre Ossman <drzeus-mmc@drzeus.cx>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1758685AbYEPQvR@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1681652438==
-Content-type: multipart/alternative;
-        boundary="B_6801329725_67935"
+With this patch we'll able to select spi_mpc83xx driver on the MPC86xx
+processors.
 
---B_6801329725_67935
-Content-type: text/plain;
-        charset="US-ASCII"
-Content-transfer-encoding: 7bit
+Signed-off-by: Anton Vorontsov <avorontsov@ru.mvista.com>
+---
 
-All the ladies want is some good old-fashioned length http://www.buiireo.com/
+This patch is on top of Jochen's patch (
+http://patchwork.ozlabs.org/linuxppc/patch?id=18261)
+that fixes SPI on MPC8610.
 
+ drivers/spi/Kconfig |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
---B_6801329725_67935
-Content-type: text/html;
-        charset="US-ASCII"
-Content-transfer-encoding: quoted-printable
-
-<HTML>
-<HEAD>
-<TITLE>Bigger does mean better</TITLE>
-</HEAD>
-<BODY>
-<FONT SIZE=3D"4"><FONT FACE=3D"Verdana, Arial"><SPAN =
-STYLE=3D'font-size:11pt'>All the ladies want is some good old-fashioned =
-length <a =
-href=3D"http://www.buiireo.com/">http://www.buiireo.com/</a><BR>
-</SPAN></FONT></FONT></FONT>
-</BODY>
-</HTML>
-
-
---B_6801329725_67935--
-
-
---===============1681652438==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Microsoft 
-Defy all challenges. Microsoft(R) Visual Studio 2008. 
-http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1681652438==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1681652438==--
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 66ec5d8..094c237 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -125,7 +125,7 @@ config SPI_MPC52xx_PSC
+ 
+ config SPI_MPC83xx
+ 	tristate "Freescale MPC83xx/QUICC Engine SPI controller"
+-	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE) && EXPERIMENTAL
++	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE || PPC_86xx) && EXPERIMENTAL
+ 	help
+ 	  This enables using the Freescale MPC83xx and QUICC Engine SPI
+ 	  controllers in master mode.
+-- 
+1.5.5.1

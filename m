@@ -1,49 +1,40 @@
-From: Anton Vorontsov <avorontsov@ru.mvista.com>
-Subject: [PATCH 4/4] [POWERPC] 86xx: mpc8610_hpcd: add SD/MMC card detect
-	polling
-Date: Fri, 16 May 2008 20:51:00 +0400
-Message-ID: <20080516165100.GD24196@polina.dev.rtsoft.ru>
+From: Scott Wood <scottwood@freescale.com>
+Subject: Re: [PATCH 1/4] [SPI] [POWERPC] spi_mpc83xx: handles Freescale
+	MPC8610 as well
+Date: Fri, 16 May 2008 14:04:38 -0500
+Message-ID: <20080516190438.GA2758@loki.buserror.net>
+References: <20080516165052.GA24196@polina.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf8
-Cc: Jochen Friedrich <jochen@scram.de>,
-	Timur Tabi <timur@freescale.com>, linuxppc-dev@ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Kumar Gala <galak@kernel.crashing.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
+	spi-devel-general@lists.sourceforge.net, Timur Tabi <timur@freescale.com>,
 	Pierre Ossman <drzeus-mmc@drzeus.cx>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1760323AbYEPQwT@vger.kernel.org>
+To: Anton Vorontsov <avorontsov@ru.mvista.com>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org>
 Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20080516165052.GA24196@polina.dev.rtsoft.ru>
+List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
+List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
+List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-MPC8610HPCD seem to not use interrupts for the SD CD line, so we need
-poll it.
+On Fri, May 16, 2008 at 08:50:52PM +0400, Anton Vorontsov wrote:
+>  config SPI_MPC83xx
+>  	tristate "Freescale MPC83xx/QUICC Engine SPI controller"
+> -	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE) && EXPERIMENTAL
+> +	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE || PPC_86xx) && EXPERIMENTAL
 
-Signed-off-by: Anton Vorontsov <avorontsov@ru.mvista.com>
----
- arch/powerpc/platforms/86xx/mpc8610_hpcd.c |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+How about "depends on SPI_MASTER && FSL_SOC && EXPERIMENTAL"?
 
-diff --git a/arch/powerpc/platforms/86xx/mpc8610_hpcd.c b/arch/powerpc/platforms/86xx/mpc8610_hpcd.c
-index be430bc..47078e3 100644
---- a/arch/powerpc/platforms/86xx/mpc8610_hpcd.c
-+++ b/arch/powerpc/platforms/86xx/mpc8610_hpcd.c
-@@ -63,9 +63,15 @@ static int mmc_get_ro(struct device *dev)
- 	return in_8(pixis_sdcsr) & PX_SDCSR_SD_WP;
- }
- 
-+static int mmc_get_cd(struct device *dev)
-+{
-+	return !(in_8(pixis_sdcsr) & PX_SDCSR_SD_nCD);
-+}
-+
- static struct mmc_spi_platform_data mmc_pdata = {
- 	.ocr_mask = MMC_VDD_33_34,
- 	.get_ro = mmc_get_ro,
-+	.get_cd = mmc_get_cd,
- };
- 
- static struct spi_board_info spi_boardinfo = {
--- 
-1.5.5.1
+Plus, we should change the option text to something like "MPC8xxx SPI
+controller".
+
+-Scott

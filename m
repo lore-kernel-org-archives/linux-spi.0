@@ -1,19 +1,20 @@
-From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+From: "Chen Gong" <G.Chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Subject: Re: [PATCH 3/4] [MMC] mmc_spi: add polling
- support for the card detect line
-Date: Sat, 17 May 2008 13:36:33 +0200
-Message-ID: <20080517133633.5aa26938@mjolnir.drzeus.cx>
+	support for the card detectline
+Date: Mon, 19 May 2008 11:02:13 +0800
+Message-ID: <58A20A281BAF1047B4EAE68DE5C0BDC2F16E6A@zch01exm21.fsl.freescale.net>
 References: <20080516165057.GC24196@polina.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	Jochen Friedrich <jochen-NIgtFMG+Po8@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Timur Tabi <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, Tabi Timur <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "Anton Vorontsov" <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>,
+	"Kumar Gala" <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
+	"David Brownell" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"Pierre Ossman" <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-class: urn:content-classes:message
 In-Reply-To: <20080516165057.GC24196-PHTr8nzUCjejyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -26,37 +27,31 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 16 May 2008 20:50:57 +0400
-Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org> wrote:
 
-> Some boards do not use interrupts on the CD line, so we want to poll
-> the CD and see if there was a change. 1 second poll interval seems
-> resonable.
+> -----Original Message-----
+> From: linuxppc-dev-bounces+b11801=freescale.com-mnsaURCQ41sdnm+yROfE0A@public.gmane.org 
+> [mailto:linuxppc-dev-bounces+b11801=freescale.com-mnsaURCQ41sdnm+yROfE0A@public.gmane.org] 
+> On Behalf Of Anton Vorontsov
+> Sent: 2008?5?17? 0:51
+> To: Kumar Gala; David Brownell; Pierre Ossman
+> Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; 
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; 
+> linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Tabi Timur
+> Subject: [PATCH 3/4] [MMC] mmc_spi: add polling support for 
+> the card detectline
 > 
+> Some boards do not use interrupts on the CD line, so we want 
+> to poll the CD and see if there was a change. 1 second poll 
+> interval seems resonable.
+> 
+> Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+> ---
+>  drivers/mmc/host/mmc_spi.c  |   51 
 
-The idea isn't bad, but I'm not sure about the mechanism.
-
-To poll a MMC slot, you do not really need a card detect at all. The
-MMC layer can just shoot off some requests and see if anything
-responds.  The PXA driver (if my memory serves me right) already does
-this. So the best idea there would be to add this feature to the MMC
-core and let the host indicate that it needs it via MMC_CAP_NEEDS_POLL
-or something like that.
-
-The card detection pin then becomes an optimisation, something that is
-also useful in other ways. Have the host driver check the card detection
-pin at the start of every request, and quickly fail it if there is no
-card present.
-
-That should give you what you want with much more flexibility for other
-uses as well.
-
-Rgds
--- 
-     -- Pierre Ossman
-
-  Linux kernel, MMC maintainer        http://www.kernel.org
-  rdesktop, core developer          http://www.rdesktop.org
+I want to know whether every card working well ? Because I'm working
+For 83xx MMC-over-SPI support, the presented concrete methods I used as
+you do,
+but only 256M card seems good, 512M or 1G/2G card all have some problems
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft 

@@ -1,49 +1,68 @@
-From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: Add OF binding support for
-	SPI busses
-Date: Mon, 19 May 2008 15:17:22 +0200 (CEST)
-Message-ID: <Pine.LNX.4.64.0805191446530.27140@axis700.grange>
+From: "Grant Likely" <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 3/4] spi: Add OF binding support for SPI busses
+Date: Mon, 19 May 2008 09:57:21 -0600
+Message-ID: <fa686aa40805190857u317d3304ie75d11870e109fc5@mail.gmail.com>
 References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
 	<20080516193613.28030.13950.stgit@trillian.secretlab.ca>
+	<Pine.LNX.4.64.0805191446530.27140@axis700.grange>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080516193613.28030.13950.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: fabrizio.garetto@gmail.com, linux-kernel@vger.kernel.org,
+	linuxppc-dev@ozlabs.org, dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net
+To: "Guennadi Liakhovetski" <g.liakhovetski@gmx.de>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org>
+In-Reply-To: <Pine.LNX.4.64.0805191446530.27140@axis700.grange>
+Content-Disposition: inline
+List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
+List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
+List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 16 May 2008, Grant Likely wrote:
+On Mon, May 19, 2008 at 7:17 AM, Guennadi Liakhovetski
+<g.liakhovetski@gmx.de> wrote:
+> On Fri, 16 May 2008, Grant Likely wrote:
+>
+>> +    However, the binding does not attempt to define the specific method for
+>> +    assigning chip select numbers.  Since SPI chip select configuration is
+>> +    flexible and non-standardized, it is left out of this binding with the
+>> +    assumption that board specific platform code will be used to manage
+>> +    chip selects.  Individual drivers can define additional properties to
+>> +    support describing the chip select layout.
+>
+> Yes, this looks like a problem to me. This means, SPI devices will need
+> two bindings - OF and platform?... Maybe define an spi_chipselect
+> OF-binding?
 
-> +    However, the binding does not attempt to define the specific method for
-> +    assigning chip select numbers.  Since SPI chip select configuration is
-> +    flexible and non-standardized, it is left out of this binding with the
-> +    assumption that board specific platform code will be used to manage
-> +    chip selects.  Individual drivers can define additional properties to
-> +    support describing the chip select layout.
+Actually, spi devices have *neither*.  :-)  They bind to the SPI bus.
+Not the platform bus or of_platform bus.  But that is Linux internal
+details; this discussion is about device tree bindings.
 
-Yes, this looks like a problem to me. This means, SPI devices will need 
-two bindings - OF and platform?... Maybe define an spi_chipselect 
-OF-binding?
+Note that I did say that drivers can define additional properties for
+supporting chip select changes as needed.  I'm just not attempting to
+encode them into the formal binding.  There is simply just too many
+different ways to manipulate chip select signals and so I don't feel
+confident trying to define a *common* binding at this moment in time.
+At some point in the future when we have a number of examples to
+choose from then we can extend this binding with chip select related
+properties.
 
-Thanks
-Guennadi
----
-Guennadi Liakhovetski
+As for the Linux internals, the 5200 SPI bus driver that I posted
+exports a function that allows another driver to call in and
+manipulated the CS lines before the transfer.  It isn't the prettiest
+solution, but I'm not locked into the approach and that gives some
+time to consider cleaner interfaces.
 
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Microsoft 
-Defy all challenges. Microsoft(R) Visual Studio 2008. 
-http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+Cheers,
+g.
+
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

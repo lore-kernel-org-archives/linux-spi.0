@@ -1,21 +1,19 @@
-From: "Chen Gong" <G.Chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH 3/4] [MMC] mmc_spi: add polling
-	support for the card detectline
-Date: Mon, 19 May 2008 11:02:13 +0800
-Message-ID: <58A20A281BAF1047B4EAE68DE5C0BDC2F16E6A@zch01exm21.fsl.freescale.net>
-References: <20080516165057.GC24196@polina.dev.rtsoft.ru>
+From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: Add OF binding support for
+	SPI busses
+Date: Mon, 19 May 2008 15:17:22 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.0805191446530.27140@axis700.grange>
+References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
+	<20080516193613.28030.13950.stgit@trillian.secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, Tabi Timur <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "Anton Vorontsov" <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>,
-	"Kumar Gala" <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
-	"David Brownell" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"Pierre Ossman" <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Cc: fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-class: urn:content-classes:message
-In-Reply-To: <20080516165057.GC24196-PHTr8nzUCjejyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
+In-Reply-To: <20080516193613.28030.13950.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,31 +25,23 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Fri, 16 May 2008, Grant Likely wrote:
 
-> -----Original Message-----
-> From: linuxppc-dev-bounces+b11801=freescale.com-mnsaURCQ41sdnm+yROfE0A@public.gmane.org 
-> [mailto:linuxppc-dev-bounces+b11801=freescale.com-mnsaURCQ41sdnm+yROfE0A@public.gmane.org] 
-> On Behalf Of Anton Vorontsov
-> Sent: 2008?5?17? 0:51
-> To: Kumar Gala; David Brownell; Pierre Ossman
-> Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; 
-> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; 
-> linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Tabi Timur
-> Subject: [PATCH 3/4] [MMC] mmc_spi: add polling support for 
-> the card detectline
-> 
-> Some boards do not use interrupts on the CD line, so we want 
-> to poll the CD and see if there was a change. 1 second poll 
-> interval seems resonable.
-> 
-> Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-> ---
->  drivers/mmc/host/mmc_spi.c  |   51 
+> +    However, the binding does not attempt to define the specific method for
+> +    assigning chip select numbers.  Since SPI chip select configuration is
+> +    flexible and non-standardized, it is left out of this binding with the
+> +    assumption that board specific platform code will be used to manage
+> +    chip selects.  Individual drivers can define additional properties to
+> +    support describing the chip select layout.
 
-I want to know whether every card working well ? Because I'm working
-For 83xx MMC-over-SPI support, the presented concrete methods I used as
-you do,
-but only 256M card seems good, 512M or 1G/2G card all have some problems
+Yes, this looks like a problem to me. This means, SPI devices will need 
+two bindings - OF and platform?... Maybe define an spi_chipselect 
+OF-binding?
+
+Thanks
+Guennadi
+---
+Guennadi Liakhovetski
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft 

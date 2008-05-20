@@ -1,25 +1,19 @@
-From: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: Add OF binding support for
-	SPI busses
-Date: Tue, 20 May 2008 09:48:29 -0600
-Message-ID: <fa686aa40805200848n2afcaf62pa45e076cb38c5f65@mail.gmail.com>
-References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
-	<20080516193613.28030.13950.stgit@trillian.secretlab.ca>
-	<Pine.LNX.4.64.0805191446530.27140@axis700.grange>
-	<fa686aa40805190857u317d3304ie75d11870e109fc5@mail.gmail.com>
-	<Pine.LNX.4.64.0805191811510.29559@axis700.grange>
-	<fa686aa40805192213y485c4ba2u750748f8201e0377@mail.gmail.com>
-	<Pine.LNX.4.64.0805201650280.5283@axis700.grange>
+From: mark gross <mgross-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: Accelerometer,
+	Gyros and ADC's etc within the kernel.
+Date: Tue, 20 May 2008 10:50:41 -0700
+Message-ID: <20080520175041.GA30909@linux.intel.com>
+References: <4832A211.4040206@gmail.com>
+Reply-To: mgross-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "Guennadi Liakhovetski" <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>
+To: Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <Pine.LNX.4.64.0805201650280.5283-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <4832A211.4040206-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -31,163 +25,111 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 20, 2008 at 9:26 AM, Guennadi Liakhovetski
-<g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
-> On Mon, 19 May 2008, Grant Likely wrote:
+On Tue, May 20, 2008 at 11:04:01AM +0100, Jonathan Cameron wrote:
+> This email is basically a request for opinions on how and where such 
+> sensors
+> should be integrated into the kernel.
 >
->> I'm not so fond of this approach.  cs-parent doesn't seem to make much
->> sense to me.  It might be better to have a cs-handler property on the
->> SPI bus node instead of on the SPI slave nodes, but even then it
->> leaves a number of questions about what it really means.  In some
->> cases it would be overkill.  For example, if the SPI node simply had
->> multiple GPIO lines then an extra cs-parent node wouldn't be needed at
->> all.
+> To set the scene...
 >
-> Right, it is optional.
+> Increasing numbers of embedded devices are being supplied attached MEMS
+> devices (www.xbow.com imote2 etc). Along with more traditional sensors such
+> as ADC's not being used for hardware monitoring, these do not really seem 
+> to
+> fit with in an particular subsystem of the kernel.  A previous discussion 
+> on
+> lkml in 2006 considered the accelerometers to be found within some laptop
+> hard drives, but I haven't been able to track down any more general 
+> discussions
+> of such non hardware monitoring sensors.
 >
->> Then there are the complex arrangements.  When setting CS
->> requires inserting a special 'set cs' SPI message at the right time.
->> Or worse; when setting CS requires /modifying/ the sent SPI message.
+> The obvious possibilities are:
 >
-> Hm, are there actually such SPI _controllers_ that use SPI data to toggle
-> chipselects? I.e., you would have to send your SPI client data (for the
-> RTC or whatever) plus some extra bytes or with some modifications, and
-> this extra information would then be intercepted by the SPI _controller_
-> itself and only client data would be sent out?
-
-Yes!  There really are!!!  One case I've been told of is an SPI bridge
-that uses the first byte of the transfer to obtain the chip select.
-
-> Isn't what you're
-> describing really a case of an SPI bridge, as you also call it below? In
-> which case, I think, it might make sense to cleanly differentiate these
-> two cases:
+> * To place the various drivers within the spi / i2c etc subsystems as 
+> relevant.
 >
-> 1. SPI chipselect. Either controlled by an external (typically a GPIO)
-> signal or by the controller itself, in the latter case the controller has
-> to be configured with the required address
+> * To place within the hwmon subsystem as this is probably closest.
+> (there is already at least one straight ADC driver in hwmon)
 >
-> 2. SPI bridge. I don't know such configurations, so, I can only guess: the
-> SPI controller has a single SPI client, which acts like a bridge. It
-> receives data from the primary host, and in this data the target client
-> data and its address are encoded.
-
-Yes, this is probably appropriate.
-
-> Now, I can also imagine case 2 where the bridge is actually a part of the
-> host controller... Even though this doesn't make any sense to me.
-
-Hmmm, yeah, I suppose it is possible; but if it is internal to the bus
-controller then it can also be handled internally by the bus
-controller driver and probably won't need to be reflected in the
-device tree layout.
-
->> Essentially, the binding would need to describe the ability to
->> completely intercept and rewrite all SPI messages going through the CS
->> scheme.
-
-It also needs to describe layouts which require SPI transfers in a
-particular order.  For example, if you're doing 2 SPI messages (M1 and
-M2) to 2 different SPI devices (S1 and S2), and the CS lines are on a
-GPIO expander which is a third SPI device (S3).  In which case 5 or 6
-SPI messages need to be transmitted:
-
-ctrl msg -> S3    // To set the CS to S1
-M1 -> S1
-ctrl msg -> S3    // To clear the CS to S1
-ctrl msg -> S3    // To set the CS to S2
-M2 -> S2
-ctrl msg -> S3    // To clear the CS to S2
-
-An important subtlety to note here is that the GPIO device (S3) cannot
-simply enqueue the control message to the SPI device when it is time
-to send M1 or M2.  Normal enqueuing would add the messages to the end
-of the queue; too late to actually activate the relevant CS line.
-Granted, the is mostly a driver issue; not a device tree issue; but it
-has some impact on the layout.  It could be handled with the
-spi_bridge construct, but S1 and S2 aren't really children of S3.  On
-the other hand; the spi_bridge is really more of a board level
-construct.  The spi_bridge could be considered the board wireup and
-S1, S2 and S3 are all children of the spi_bridge.  The spi_bridge
-would have to be knowledgeable enough to handle control messages to S3
-in a special order.
-
->> I'm not saying it's not possible to do, but I am saying that I'd like
->> to have a better feel for all the use cases before it is defined.  I'm
->> not convinced that adding a cs-parent phandle will do that
->> appropriately.  That being said, my gut feel is that the solution will
->> be to support spi-bridge nodes that handle the complex CS
->> configuration settings; the spi-bridge would be a child of the
->> spi-master and the parent of the spi devices; and simple CS settings
->> being handled with regular old GPIO bindings.  (Much like the last
->> suggestion you make; except that I think that it *does* looks
->> elegant.)  :-)
+> * To create a new subsystem, or perhaps merely sysfs class to contain these
+>  elements.
 >
-> Ok, elegance apart:-) You can use the SPI-bridge construct to also
-> describe simple SPI-chipselect configurations. But is it really a good
-> idea? Wouldn't it be better to handle these two cases separately? Using
-> "bridge" to describe CS's seems also confusing - imagine someone
-> implementing a new DTS, having to describe a bridge not having one doesn't
-> seem very intuitive:-)
-
-... and it must be said that I got rather lazy in my example below.  I
-really covered both layouts (simple GPIO and an SPI bridge in the same
-example without documenting it sufficiently.  I'll hash out my
-thoughts some more and post a series of better examples this
-afternoon.
-
+> Typical requirements within an application include simply polling for 
+> current
+> readings, and using device triggered interrupts to grab data continuously 
+> to a
+> ring buffer, for collection by suitable userspace code.  Obviously it would 
+> be
+> desirable to standardize sysfs controls for various calibration parameters 
+> as
+> much as possible across the various devices.
 >
->> example; here's an SPI bus that has 2 GPIOs for two bus CS lines and
->> an SPI bridge that uses both CSes; one address for accessing the
->> bridge's CS register and one CS to access the downstream devices.
->>
->> +    SPI example for an MPC5200 SPI bus:
->> +               spi@f00 {
->> +                   #address-cells = <1>;
->> +                   #size-cells = <0>;
->> +                   compatible = "fsl,mpc5200b-spi","fsl,mpc5200-spi";
->> +                   reg = <0xf00 0x20>;
->> +                   interrupts = <2 13 0 2 14 0>;
->> +                   interrupt-parent = <&mpc5200_pic>;
->> +                   gpios = <&gpio1 0 0 &gpio1 1 0>;
->> +                   spi-bridge@0 {
->> +                       compatible = "oem,spi-bridge-type";
->> +                       reg = < 0 1 >;  // note: 2 SPI CS addresses; first one to access bridge registers
->> +
->> +                       ethernet-switch@0 {
->> +                           compatible = "micrel,ks8995m";
->> +                           linux,modalias = "ks8995";
->> +                           max-speed = <1000000>;
->> +                           reg = <0>;
->> +                       };
->> ...                     // and more SPI child nodes here...
->> +                   };
->> +               };
->>
->> But even this doesn't reflect the hardware layout well.  What if the
->> SS lines are on SPI GPIO expanders on the same bus?  Then does it make
->> sense for them to be layed out as spi bridges?
+> Any other suggestions welcome!
 >
-> Well, in this case - yes, because addressing clients "behind" the expander
-> and the expander itself is done differently.
+> To illustrate the sort of devices here are a few I have drivers written for 
+> or will
+> shortly be writing  (some submitted to hwmon and spi mailing lists, some 
+> not
+> finished as of yet)
 >
-> On the whole, I think, it begins to look good - I think, it is better to
-> implement an imperfect but complete and consistent scheme and modify or
-> extend it in the future, than a perfect, but incomplete, and have to use
-> auxiliary means (platform bindings) to fill in the gaps.
+> ST Micro LIS3L02DQ 3D accelerometer.  SPI device, no buffering, interrupt 
+> pin
+> raised high on new data being available. Currently the driver assumes, if
+> interrupts are enabled, that this is connected to a specified gpio.
+> (http://www.st.com/stonline/books/pdf/docs/10175.pdf)
 
-I'm not too opposed to using non-standard properties to describe stuff
-in the short term; but I agree that avoiding hacky platform data stuff
-is not desired.
+FWIW: I have this device talking to a PIC-18 and pushing the results
+over the serial port.
 
-Thanks for all the feedback.
+WRT linux support, I can't think of a generalized way to create a driver
+that would be able to be used with this device in Linux.  You need to
+know witch IRQ line the DR line is connected too, and if you are
+bit-banging the SPI data off the thing, then you need to know which
+GPIO's of the host CPU you'll be using.  If you have SPI hardware then
+you need to know where to pull the data from.  The problem doesn't seem to
+generalize well.
 
-Cheers,
-g.
+Also, If you are playing with accelerometer data, you likely need some
+real time support or at lest a reliable time stamping of the data to do
+anything interesting.
 
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+Another problem area is around SPI itself.  There are variations of
+device implementations around chip select polarity, clock biasing
+(rising,falling, or midpoint) sampling from one SPI part to the next.
+
+> VTI SCA3000 E05 3D accelerometer equiped with substantial ring buffer. SPI
+> device.  Can operate either in buffered or direct mode.  In buffered mode, 
+> interrupts
+> can be used to indicate when the ring buffer is 3/4 full triggering a 
+> download to
+> a larger ring buffer in the kernel if necessary.
+> (http://www.vti.fi/en/products-solutions/products/accelerometers/sca3000-accelerometers/)
+>
+
+ring buffered data can make RT applications harder...
+
+> Analog Devices ADIS16350 combined 3D accelerometer and gyro unit.  SPI 
+> device.
+> (http://www.analog.com/en/prod/0,,764_801_ADIS16350%2C00.html)
+>
+> Maxim MAX1363, MAX1238 ADC's.  I2C devices. Some SPI ADC's (www.analog.com 
+> for
+> examples)
+>
+> Would be nice if practical to allow the framework to include RS232 devices 
+> such
+> as those from www.xsens.com, www.isense.com and others.
+
+
+I'm not sure what you are asking for, you started off with SPI driver
+for interfacing a handful of accelerometer devices.  Now your talking
+about the serial port.
+
+Besides the consumer of accelerometer data is user space applications
+(mine attempt to be somewhat RT applications) 
+
+--mgross
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft 

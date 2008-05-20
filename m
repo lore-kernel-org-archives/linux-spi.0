@@ -1,92 +1,124 @@
-From: Jean Delvare <khali@linux-fr.org>
-Subject: Re: Accelerometer, Gyros and ADC's etc within the kernel.
-Date: Tue, 20 May 2008 13:28:17 +0200
-Message-ID: <20080520132817.03fb74ea@hyperion.delvare>
-References: <4832A211.4040206@gmail.com>
+From: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+Subject: Re: [PATCH 3/4] spi: Add OF binding support for SPI busses
+Date: Tue, 20 May 2008 17:26:46 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.0805201650280.5283@axis700.grange>
+References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
+ <20080516193613.28030.13950.stgit@trillian.secretlab.ca>
+ <Pine.LNX.4.64.0805191446530.27140@axis700.grange>
+ <fa686aa40805190857u317d3304ie75d11870e109fc5@mail.gmail.com>
+ <Pine.LNX.4.64.0805191811510.29559@axis700.grange>
+ <fa686aa40805192213y485c4ba2u750748f8201e0377@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	LM Sensors <lm-sensors@lm-sensors.org>,
-	Dmitry Torokhov <dtor@mail.ru>
-To: Jonathan Cameron <Jonathan.Cameron@gmail.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1765041AbYETL2g@vger.kernel.org>
-In-Reply-To: <4832A211.4040206@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: linuxppc-dev@ozlabs.org, spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, dbrownell@users.sourceforge.net,
+	fabrizio.garetto@gmail.com, jonsmirl@gmail.com
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S934386AbYETP1P@vger.kernel.org>
+In-Reply-To: <fa686aa40805192213y485c4ba2u750748f8201e0377@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Jonathan,
+On Mon, 19 May 2008, Grant Likely wrote:
 
-On Tue, 20 May 2008 11:04:01 +0100, Jonathan Cameron wrote:
-> This email is basically a request for opinions on how and where such sensors
-> should be integrated into the kernel.
+> I'm not so fond of this approach.  cs-parent doesn't seem to make much
+> sense to me.  It might be better to have a cs-handler property on the
+> SPI bus node instead of on the SPI slave nodes, but even then it
+> leaves a number of questions about what it really means.  In some
+> cases it would be overkill.  For example, if the SPI node simply had
+> multiple GPIO lines then an extra cs-parent node wouldn't be needed at
+> all.
+
+Right, it is optional.
+
+> Then there are the complex arrangements.  When setting CS
+> requires inserting a special 'set cs' SPI message at the right time.
+> Or worse; when setting CS requires /modifying/ the sent SPI message.
+
+Hm, are there actually such SPI _controllers_ that use SPI data to toggle 
+chipselects? I.e., you would have to send your SPI client data (for the 
+RTC or whatever) plus some extra bytes or with some modifications, and 
+this extra information would then be intercepted by the SPI _controller_ 
+itself and only client data would be sent out? Isn't what you're 
+describing really a case of an SPI bridge, as you also call it below? In 
+which case, I think, it might make sense to cleanly differentiate these 
+two cases:
+
+1. SPI chipselect. Either controlled by an external (typically a GPIO) 
+signal or by the controller itself, in the latter case the controller has 
+to be configured with the required address
+
+2. SPI bridge. I don't know such configurations, so, I can only guess: the 
+SPI controller has a single SPI client, which acts like a bridge. It 
+receives data from the primary host, and in this data the target client 
+data and its address are encoded.
+
+Now, I can also imagine case 2 where the bridge is actually a part of the 
+host controller... Even though this doesn't make any sense to me.
+
+> Essentially, the binding would need to describe the ability to
+> completely intercept and rewrite all SPI messages going through the CS
+> scheme.
 > 
-> To set the scene...
+> I'm not saying it's not possible to do, but I am saying that I'd like
+> to have a better feel for all the use cases before it is defined.  I'm
+> not convinced that adding a cs-parent phandle will do that
+> appropriately.  That being said, my gut feel is that the solution will
+> be to support spi-bridge nodes that handle the complex CS
+> configuration settings; the spi-bridge would be a child of the
+> spi-master and the parent of the spi devices; and simple CS settings
+> being handled with regular old GPIO bindings.  (Much like the last
+> suggestion you make; except that I think that it *does* looks
+> elegant.)  :-)
+
+Ok, elegance apart:-) You can use the SPI-bridge construct to also 
+describe simple SPI-chipselect configurations. But is it really a good 
+idea? Wouldn't it be better to handle these two cases separately? Using 
+"bridge" to describe CS's seems also confusing - imagine someone 
+implementing a new DTS, having to describe a bridge not having one doesn't 
+seem very intuitive:-)
+
+> example; here's an SPI bus that has 2 GPIOs for two bus CS lines and
+> an SPI bridge that uses both CSes; one address for accessing the
+> bridge's CS register and one CS to access the downstream devices.
 > 
-> Increasing numbers of embedded devices are being supplied attached MEMS
-> devices (www.xbow.com imote2 etc). Along with more traditional sensors such
-> as ADC's not being used for hardware monitoring, these do not really 
-> seem to
-> fit with in an particular subsystem of the kernel.  A previous 
-> discussion on
-> lkml in 2006 considered the accelerometers to be found within some laptop
-> hard drives, but I haven't been able to track down any more general 
-> discussions
-> of such non hardware monitoring sensors.
+> +    SPI example for an MPC5200 SPI bus:
+> +               spi@f00 {
+> +                   #address-cells = <1>;
+> +                   #size-cells = <0>;
+> +                   compatible = "fsl,mpc5200b-spi","fsl,mpc5200-spi";
+> +                   reg = <0xf00 0x20>;
+> +                   interrupts = <2 13 0 2 14 0>;
+> +                   interrupt-parent = <&mpc5200_pic>;
+> +                   gpios = <&gpio1 0 0 &gpio1 1 0>;
+> +                   spi-bridge@0 {
+> +                       compatible = "oem,spi-bridge-type";
+> +                       reg = < 0 1 >;  // note: 2 SPI CS addresses; first one to access bridge registers
+> +
+> +                       ethernet-switch@0 {
+> +                           compatible = "micrel,ks8995m";
+> +                           linux,modalias = "ks8995";
+> +                           max-speed = <1000000>;
+> +                           reg = <0>;
+> +                       };
+> ...                     // and more SPI child nodes here...
+> +                   };
+> +               };
 > 
-> The obvious possibilities are:
-> 
-> * To place the various drivers within the spi / i2c etc subsystems as 
-> relevant.
+> But even this doesn't reflect the hardware layout well.  What if the
+> SS lines are on SPI GPIO expanders on the same bus?  Then does it make
+> sense for them to be layed out as spi bridges?
 
-Bad idea. Grouping drivers by connectivity is almost always the wrong
-thing to do, as it means that different persons will maintain them and
-they have all chances to diverge. You really want to group drivers by
-functionality. On top of that, I am busy enough maintaining the i2c
-core and bus drivers without having more i2c device drivers added to my
-plate. These days I am trying to _empty_ drivers/i2c/chips, if anything.
+Well, in this case - yes, because addressing clients "behind" the expander 
+and the expander itself is done differently.
 
-> * To place within the hwmon subsystem as this is probably closest.
-> (there is already at least one straight ADC driver in hwmon)
+On the whole, I think, it begins to look good - I think, it is better to 
+implement an imperfect but complete and consistent scheme and modify or 
+extend it in the future, than a perfect, but incomplete, and have to use 
+auxiliary means (platform bindings) to fill in the gaps.
 
-Probably not the wisest choice, if nothing else, because the hwmon
-maintainer is already overloaded. And I don't think that these devices
-have much in common with the traditional hardware monitoring components
-anyway.
-
-I'm not sure what "straight ADC driver" you are referring to, but
-anything which measures a voltage and exports the reading to user-space
-is, well, a voltage sensor, and thus fix within hwmon. If the same chip
-is used for a higher-level, dedicated function then we would probably
-have a separate driver for it, outside of hwmon.
-
-> * To create a new subsystem, or perhaps merely sysfs class to contain these
->   elements.
-
-Would be OK. Or:
-
-* Place these within the input subsystem. You might want to discuss
-this with the input subsystem maintainer Dmitry Torokhov (Cc'd). The
-Wii remote is essentially a joystick, and joysticks belong to the input
-subsystem.
-
-> Typical requirements within an application include simply polling for 
-> current
-> readings, and using device triggered interrupts to grab data 
-> continuously to a
-> ring buffer, for collection by suitable userspace code.  Obviously it 
-> would be
-> desirable to standardize sysfs controls for various calibration 
-> parameters as
-> much as possible across the various devices.
-> 
-> Any other suggestions welcome!
-
-This all sounds quite different from our hwmon drivers. Our hwmon
-drivers read all the sensor values at once and cache the readings for a
-couple seconds, so you can't get an instant reading at any time, and
-they also don't support interrupts in general.
-
--- 
-Jean Delvare
+Thanks
+Guennadi
+---
+Guennadi Liakhovetski, Ph.D.
+Freelance Open-Source Software Developer

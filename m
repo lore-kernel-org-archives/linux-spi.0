@@ -1,42 +1,108 @@
-From: Henrique de Moraes Holschuh <hmh@hmh.eng.br>
-Subject: Re: Accelerometer, Gyros and ADC's etc within the kernel.
-Date: Wed, 21 May 2008 11:09:27 -0300
-Message-ID: <20080521140927.GB3677@khazad-dum.debian.net>
-References: <4832A211.4040206@gmail.com> <20080520132817.03fb74ea@hyperion.delvare> <20080521093520.ZZRA012@mailhub.coreip.homeip.net>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: Add OF binding support for
+	SPI busses
+Date: Wed, 21 May 2008 19:19:29 +0400
+Message-ID: <20080521151928.GA28857@polina.dev.rtsoft.ru>
+References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
+	<20080516193613.28030.13950.stgit@trillian.secretlab.ca>
+Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Jean Delvare <khali@linux-fr.org>,
-	Jonathan Cameron <Jonathan.Cameron@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	LM Sensors <lm-sensors@lm-sensors.org>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S935265AbYEUOJk@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20080521093520.ZZRA012@mailhub.coreip.homeip.net>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20080516193613.28030.13950.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 21 May 2008, Dmitry Torokhov wrote:
-> I don't think that input subsystem woudl be the best choice. While we
-> do support the event-driven mechanism for delivering information to
-> userspace input is mostly oriented for human interface devices, not
-> general data acquisition. If anything input_dev is too fat. Another
-> thing is that input layer anonymizes input devices, makes them
-> capability-oriented. I.e. we dont really care what model of joystick
-> we have, we want something that reports ABS_X, ABS_Y, BTN_FIRE and
-> userpsace can use it whether it a simple analog joystick or something
-> fancy and USB connected. For your purposes you probably do want to know
-> what the device is and what exactly being sampled/measured.
+On Fri, May 16, 2008 at 01:36:13PM -0600, Grant Likely wrote:
+> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 > 
-> I'd go with a lean and mean new subsytem.
+> This patch adds support for populating an SPI bus based on data in the
+> OF device tree.  This is useful for powerpc platforms which use the
+> device tree instead of discrete code for describing platform layout.
+> 
+> Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> ---
+[...]
+> diff --git a/drivers/spi/spi_of.c b/drivers/spi/spi_of.c
+> new file mode 100644
+> index 0000000..b5ae434
+> --- /dev/null
+> +++ b/drivers/spi/spi_of.c
+> @@ -0,0 +1,86 @@
+> +/*
 
-Agreed.  I have put some thought on it in the past, and while the input
-subsystem is the only thing even remotely usable for this *right now*, a
-new subsystem for data acquisition would be the best way forward.
+I think better placement for this is drivers/of, no?
+
+> + * SPI OF support routines
+> + * Copyright (C) 2008 Secret Lab Technologies Ltd.
+> + *
+> + * Support routines for deriving SPI device attachments from the device
+> + * tree.
+> + */
+> +
+> +#include <linux/of.h>
+> +#include <linux/device.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/spi/spi_of.h>
+> +
+> +/**
+> + * spi_of_register_devices - Register child devices onto the SPI bus
+> + * @master:	Pointer to spi_master device
+> + * @np:		parent node of SPI device nodes
+> + *
+> + * Registers an spi_device for each child node of 'np' which has a 'reg'
+> + * property.
+> + */
+> +void spi_of_register_devices(struct spi_master *master, struct device_node *np)
+> +{
+> +	struct spi_device *spi;
+> +	struct device_node *nc;
+> +	const u32 *prop;
+> +	const char *sprop;
+> +	int rc;
+> +	int len;
+> +
+> +	for_each_child_of_node(np, nc) {
+> +		/* Alloc an spi_device */
+> +		spi = spi_alloc_device(master);
+> +		if (!spi) {
+> +			dev_err(&master->dev, "spi_device alloc error for %s\n",
+> +				np->full_name);
+> +			continue;
+> +		}
+> +
+> +		/* Device address */
+> +		prop = of_get_property(nc, "reg", &len);
+> +		if (!prop || len < sizeof(*prop)) {
+> +			dev_err(&master->dev, "%s has no 'reg' property\n",
+> +				np->full_name);
+
+Should be nc->full_name.
+
+> +			continue;
+> +		}
+[...]
 
 -- 
-  "One disk to rule them all, One disk to find them. One disk to bring
-  them all and in the darkness grind them. In the Land of Redmond
-  where the shadows lie." -- The Silicon Valley Tarot
-  Henrique Holschuh
+Anton Vorontsov
+email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+irc://irc.freenode.net/bd2
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Microsoft 
+Defy all challenges. Microsoft(R) Visual Studio 2008. 
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/

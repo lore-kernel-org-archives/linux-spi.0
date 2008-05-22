@@ -1,83 +1,130 @@
-From: Anton Vorontsov <avorontsov@ru.mvista.com>
-Subject: Re: [PATCH 3/4] [MMC] mmc_spi: add polling support for the card
-	detect line
-Date: Thu, 22 May 2008 22:17:13 +0400
-Message-ID: <20080522181713.GA26918@polina.dev.rtsoft.ru>
-References: <20080516165057.GC24196@polina.dev.rtsoft.ru> <20080517133633.5aa26938@mjolnir.drzeus.cx> <20080521184713.GA30284@polina.dev.rtsoft.ru> <20080521212831.523f344b@mjolnir.drzeus.cx>
-Reply-To: avorontsov@ru.mvista.com
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: [PATCH 1/3] mmc: add support for card-detection
+	polling
+Date: Thu, 22 May 2008 22:18:21 +0400
+Message-ID: <20080522181821.GA6104@polina.dev.rtsoft.ru>
+References: <20080522181713.GA26918@polina.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf8
-Cc: Kumar Gala <galak@kernel.crashing.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Jochen Friedrich <jochen@scram.de>,
-	Timur Tabi <timur@freescale.com>, linuxppc-dev@ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Pierre Ossman <drzeus-mmc@drzeus.cx>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1759220AbYEVSR3@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Jochen Friedrich <jochen-NIgtFMG+Po8@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Timur Tabi <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20080521212831.523f344b@mjolnir.drzeus.cx>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20080522181713.GA26918-PHTr8nzUCjejyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 21, 2008 at 09:28:31PM +0200, Pierre Ossman wrote:
-> On Wed, 21 May 2008 22:47:13 +0400
-> Anton Vorontsov <avorontsov@ru.mvista.com> wrote:
-> 
-> > 
-> > Calling get_cd() for every request smells like overhead, especially given
-> > that that get_cd() could ask for GPIO status via relatively slow bus (like
-> > I2C GPIO expanders). So, polling seems most reasonable solution here, no
-> > need to call it very often.
-> > 
-> 
-> Fair enough. You should probably add a comment about this somewhere so
-> that people do not call get_cd() in the core request function and
-> similar places. Place it so that both get_cd() and get_ro() are covered
-> though, as it should be relevant for both.
+Some hosts (and boards that use mmc_spi) do not use interrupts on the CD
+line, so they can't trigger mmc_detect_change. We want to poll the card
+and see if there was a change. 1 second poll interval seems resonable.
 
-I think this is applicable to the .set_ios() too.
+This patch also implements .get_cd() host operation, that could be used
+by the hosts that are able to report card-detect status without need to
+talk MMC.
 
-[...]
-> > +	if (host->ops->get_cd) {
-> > +		int old_cd_status = host->cd_status;
-> > +
-> > +		host->cd_status = !!host->ops->get_cd(host);
-> > +		if (!(old_cd_status ^ host->cd_status)) {
-> > +			mmc_bus_put(host);
-> > +			goto out;
-> > +		}
-> > +	}
-> > +
-> 
-> This should only be done when there is no bus handler. Since we are
-> polling, we might actually miss the user removing and reinserting the
-> card. The only way to check for that is to poke the card and see if it
-> is still alive. This also means you won't need that state variable.
+Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+---
+ drivers/mmc/core/core.c  |   12 +++++++++---
+ include/linux/mmc/host.h |    8 ++++++++
+ 2 files changed, 17 insertions(+), 3 deletions(-)
 
-Yeah, this makes sense. Indeed pretty easy to trigger [if poll interval
-increased to 3 seconds, for example].
-
-> Also, that second if clause seems fit for an obfuscation contest. ;)
-
-cd_status was a bitfield, so I thought that bit operations would be
-appropriate. :-)
-
-> > p.s. Since mmc_host_ops no longer the same for every instance of
-> > mmc_spi, struct mmc_host_ops can't be const and should be allocated
-> > dynamically.
-> 
-> This can be solved by allowing get_cd() to return an error that will be
-> treated as if get_cd() wasn't defined. -ENODEV seems suitable.
-
--ENOSYS (not implemented) sounds better for this purpose...
-
-> (get_ro() needs the same treatment, but I haven't gotten around to
-> that)
-
-Ok. How about this version?
-
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index 01ced4c..ede5d1e 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -638,6 +638,9 @@ void mmc_rescan(struct work_struct *work)
+ 		 */
+ 		mmc_bus_put(host);
+ 
++		if (host->ops->get_cd && host->ops->get_cd(host) == 0)
++			goto out;
++
+ 		mmc_claim_host(host);
+ 
+ 		mmc_power_up(host);
+@@ -652,7 +655,7 @@ void mmc_rescan(struct work_struct *work)
+ 		if (!err) {
+ 			if (mmc_attach_sdio(host, ocr))
+ 				mmc_power_off(host);
+-			return;
++			goto out;
+ 		}
+ 
+ 		/*
+@@ -662,7 +665,7 @@ void mmc_rescan(struct work_struct *work)
+ 		if (!err) {
+ 			if (mmc_attach_sd(host, ocr))
+ 				mmc_power_off(host);
+-			return;
++			goto out;
+ 		}
+ 
+ 		/*
+@@ -672,7 +675,7 @@ void mmc_rescan(struct work_struct *work)
+ 		if (!err) {
+ 			if (mmc_attach_mmc(host, ocr))
+ 				mmc_power_off(host);
+-			return;
++			goto out;
+ 		}
+ 
+ 		mmc_release_host(host);
+@@ -683,6 +686,9 @@ void mmc_rescan(struct work_struct *work)
+ 
+ 		mmc_bus_put(host);
+ 	}
++out:
++	if (host->caps & MMC_CAP_NEEDS_POLL)
++		mmc_schedule_delayed_work(&host->detect, HZ);
+ }
+ 
+ void mmc_start_host(struct mmc_host *host)
+diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+index 7ab962f..f2e9885 100644
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -51,8 +51,15 @@ struct mmc_ios {
+ 
+ struct mmc_host_ops {
+ 	void	(*request)(struct mmc_host *host, struct mmc_request *req);
++	/*
++	 * Avoid calling these three functions too often or in a "fast path",
++	 * since underlaying controller might implement them in an expensive
++	 * and/or slow way.
++	 */
+ 	void	(*set_ios)(struct mmc_host *host, struct mmc_ios *ios);
+ 	int	(*get_ro)(struct mmc_host *host);
++	int	(*get_cd)(struct mmc_host *host);
++
+ 	void	(*enable_sdio_irq)(struct mmc_host *host, int enable);
+ };
+ 
+@@ -94,6 +101,7 @@ struct mmc_host {
+ #define MMC_CAP_SD_HIGHSPEED	(1 << 3)	/* Can do SD high-speed timing */
+ #define MMC_CAP_SDIO_IRQ	(1 << 4)	/* Can signal pending SDIO IRQs */
+ #define MMC_CAP_SPI		(1 << 5)	/* Talks only SPI protocols */
++#define MMC_CAP_NEEDS_POLL	(1 << 6)	/* Needs polling for card-detection */
+ 
+ 	/* host specific block data */
+ 	unsigned int		max_seg_size;	/* see blk_queue_max_segment_size */
 -- 
-Anton Vorontsov
-email: cbouatmailru@gmail.com
-irc://irc.freenode.net/bd2
+1.5.5.1
+
+
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Microsoft
+Defy all challenges. Microsoft(R) Visual Studio 2008.
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/

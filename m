@@ -1,19 +1,21 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.26-rc3] spi: remove some spidev
-	oops-on-rmmod paths
-Date: Wed, 21 May 2008 21:36:14 -0700
-Message-ID: <200805212136.14517.david-b@pacbell.net>
-References: <200805211829.07189.david-b@pacbell.net>
-	<20080521205327.5aa27048.akpm@linux-foundation.org>
+From: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Subject: Re: Accelerometer,
+ Gyros and ADC's etc within the kernel.
+Date: Thu, 22 May 2008 10:35:01 +0100
+Message-ID: <48353E45.2080903@cam.ac.uk>
+References: <4832A211.4040206@gmail.com>	<20080520132817.03fb74ea@hyperion.delvare>
+	<200805211752.15670.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Sebastian Siewior <bigeasy-kttTfShzVuc@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Cc: Dmitry Torokhov <dtor-JGs/UdohzUI@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>,
+	Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080521205327.5aa27048.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200805211752.15670.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,52 +27,32 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 21 May 2008, Andrew Morton wrote:
-> On Wed, 21 May 2008 18:29:07 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+Hi David,
+> On Tuesday 20 May 2008, Jean Delvare wrote:
+>> This all sounds quite different from our hwmon drivers. Our hwmon
+>> drivers read all the sensor values at once and cache the readings for a
+>> couple seconds, so you can't get an instant reading at any time, and
+>> they also don't support interrupts in general.
 > 
-> > Somehow the spidev code forgot to include a critical mechanism:
-> > when the underlying device is removed (e.g. spi_master rmmod),
-> > open file descriptors must be prevented from issuing new I/O
-> > requests to that device.  On penalty of the oopsing reported
-> > by Sebastian Siewior <bigeasy-kttTfShzVuc@public.gmane.org> ...
-> > 
-> > This is a partial fix, adding handshaking between the lower
-> > level (SPI messaging) and the file operations using the spi_dev.
-> > There's still a refcounting issue to be addressed (separately)
-> > with respect to the spidev_data itself.
-> > 
+> That's something of an issue when the hardware monitor
+> triggers alarms though, right?  I couldn't figure out
+> how to get a TMP75 alert out to any userspace code that
+> would care, to pick one example, even after teaching
+> the i2c core how to handle SMBus alerts.  ;)
 > 
-> For 2.6.26, I assume?
-
-Yes please.
-
-
-> > +static inline int
-> > +spidev_sync_write(struct spidev_data *spidev, size_t len)
-> > +static inline int
-> > +spidev_sync_read(struct spidev_data *spidev, size_t len)
-> 
-> These strictly should return a ssize_t.
-
-True, but this was cut/paste from spi_write()/spi_read() which
-have that same issue.  Should you feel compelled to fix that,
-go ahead ... else I (or someone) will get to it "someday".
-
-
-> The inlining is wrong+pointless, but I appear to be losing that struggle.
-
-I wish it actually *were* pointless, but the last several times
-I've had occasion to look at what current GCCs do I've observed
-that it's doing the Stupid Thing.
-
-The short version of the story is that GCC inlining heuristics
-are still goofed.  I've seen a few cases where GCC 4.3 does it
-better, some where it has significant regressions ... it depends
-partly on what processor you're using.  It's vaguely possible it's
-OK for x86, but it's clearly more miss than hit on several other
-processors.
-
-- Dave
+> I suppose this just emphasizes the point made by Hans
+> that we kind of need (industrial) "control" components
+> (or "data acquisition"?) not just "monitoring" ones.
+I get the feeling even the name is going to evolve for some time to come, 
+getting broader as and when we add more classes of device.
+> Such alarms are of course different from the "data
+> ready" signals of an accelerometer.
+Whilst this is true, most accelerometers also have "alarm" triggers, for example
+the ST LIS3L02DQ will raise a pin on configurable conditions such as thresholds
+and even a double click detector (though I've never tried them!).  I suppose we
+will ideally support this functionality as well.
+--
+Jonathan Cameron
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

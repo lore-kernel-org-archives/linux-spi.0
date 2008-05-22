@@ -1,75 +1,83 @@
-From: eberle <Bennie-overplan-znZeBITIrzE7lw3+YtEGtQ@public.gmane.org>
-Subject: Enjoy a longer sexual experience with herbals
-Date: Thu, 22 May 2008 20:58:25 +0300
-Message-ID: <38D1EED5.8%Bennie-overplan@MAIL2SYRIA.COM>
+From: Anton Vorontsov <avorontsov@ru.mvista.com>
+Subject: Re: [PATCH 3/4] [MMC] mmc_spi: add polling support for the card
+	detect line
+Date: Thu, 22 May 2008 22:17:13 +0400
+Message-ID: <20080522181713.GA26918@polina.dev.rtsoft.ru>
+References: <20080516165057.GC24196@polina.dev.rtsoft.ru> <20080517133633.5aa26938@mjolnir.drzeus.cx> <20080521184713.GA30284@polina.dev.rtsoft.ru> <20080521212831.523f344b@mjolnir.drzeus.cx>
+Reply-To: avorontsov@ru.mvista.com
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0489173524=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=utf8
+Cc: Kumar Gala <galak@kernel.crashing.org>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Jochen Friedrich <jochen@scram.de>,
+	Timur Tabi <timur@freescale.com>, linuxppc-dev@ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Pierre Ossman <drzeus-mmc@drzeus.cx>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1759220AbYEVSR3@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20080521212831.523f344b@mjolnir.drzeus.cx>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0489173524==
-Content-type: multipart/alternative;
-        boundary="B_0918911945_31353"
+On Wed, May 21, 2008 at 09:28:31PM +0200, Pierre Ossman wrote:
+> On Wed, 21 May 2008 22:47:13 +0400
+> Anton Vorontsov <avorontsov@ru.mvista.com> wrote:
+> 
+> > 
+> > Calling get_cd() for every request smells like overhead, especially given
+> > that that get_cd() could ask for GPIO status via relatively slow bus (like
+> > I2C GPIO expanders). So, polling seems most reasonable solution here, no
+> > need to call it very often.
+> > 
+> 
+> Fair enough. You should probably add a comment about this somewhere so
+> that people do not call get_cd() in the core request function and
+> similar places. Place it so that both get_cd() and get_ro() are covered
+> though, as it should be relevant for both.
 
---B_0918911945_31353
-Content-type: text/plain;
-        charset="US-ASCII"
-Content-transfer-encoding: 7bit
+I think this is applicable to the .set_ios() too.
 
-Get more time in the sack with our new improved herbal formulas http://www.nonsemanu.com/
+[...]
+> > +	if (host->ops->get_cd) {
+> > +		int old_cd_status = host->cd_status;
+> > +
+> > +		host->cd_status = !!host->ops->get_cd(host);
+> > +		if (!(old_cd_status ^ host->cd_status)) {
+> > +			mmc_bus_put(host);
+> > +			goto out;
+> > +		}
+> > +	}
+> > +
+> 
+> This should only be done when there is no bus handler. Since we are
+> polling, we might actually miss the user removing and reinserting the
+> card. The only way to check for that is to poke the card and see if it
+> is still alive. This also means you won't need that state variable.
 
+Yeah, this makes sense. Indeed pretty easy to trigger [if poll interval
+increased to 3 seconds, for example].
 
---B_0918911945_31353
-Content-type: text/html;
-        charset="US-ASCII"
-Content-transfer-encoding: quoted-printable
+> Also, that second if clause seems fit for an obfuscation contest. ;)
 
-<HTML>
-<HEAD>
-<TITLE>Enjoy a longer sexual experience with herbals</TITLE>
-</HEAD>
-<BODY>
-<FONT SIZE=3D"4"><FONT FACE=3D"Verdana, Arial"><SPAN =
-STYLE=3D'font-size:11pt'>Get more time in the sack with our new improved =
-herbal formulas <a =
-href=3D"http://www.nonsemanu.com/">http://www.nonsemanu.com/</a><BR>
-</SPAN></FONT></FONT></FONT>
-</BODY>
-</HTML>
+cd_status was a bitfield, so I thought that bit operations would be
+appropriate. :-)
 
+> > p.s. Since mmc_host_ops no longer the same for every instance of
+> > mmc_spi, struct mmc_host_ops can't be const and should be allocated
+> > dynamically.
+> 
+> This can be solved by allowing get_cd() to return an error that will be
+> treated as if get_cd() wasn't defined. -ENODEV seems suitable.
 
---B_0918911945_31353--
+-ENOSYS (not implemented) sounds better for this purpose...
 
+> (get_ro() needs the same treatment, but I haven't gotten around to
+> that)
 
---===============0489173524==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Ok. How about this version?
 
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Microsoft
-Defy all challenges. Microsoft(R) Visual Studio 2008.
-http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============0489173524==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0489173524==--
+-- 
+Anton Vorontsov
+email: cbouatmailru@gmail.com
+irc://irc.freenode.net/bd2

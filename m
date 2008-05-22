@@ -1,20 +1,19 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: Accelerometer,
-	Gyros and ADC's etc within the kernel.
-Date: Wed, 21 May 2008 17:52:15 -0700
-Message-ID: <200805211752.15670.david-b@pacbell.net>
-References: <4832A211.4040206@gmail.com>
-	<20080520132817.03fb74ea@hyperion.delvare>
+Subject: Re: [PATCH 2/4] spi: split up spi_new_device()
+	to allow two stage registration.
+Date: Wed, 21 May 2008 17:17:13 -0700
+Message-ID: <200805211717.13206.david-b@pacbell.net>
+References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
+	<20080516193608.28030.34968.stgit@trillian.secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Dmitry Torokhov <dtor-JGs/UdohzUI@public.gmane.org>
-To: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080520132817.03fb74ea-ig7AzVSIIG7kN2dkZ6Wm7A@public.gmane.org>
+In-Reply-To: <20080516193608.28030.34968.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,27 +26,20 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 20 May 2008, Jean Delvare wrote:
-> This all sounds quite different from our hwmon drivers. Our hwmon
-> drivers read all the sensor values at once and cache the readings for a
-> couple seconds, so you can't get an instant reading at any time, and
-> they also don't support interrupts in general.
+On Friday 16 May 2008, Grant Likely wrote:
+> 
+> This patch splits the allocation and registration portions of code out
+> of spi_new_device() and creates three new functions; spi_alloc_device(),
+> spi_register_device(), and spi_device_release(). 
 
-That's something of an issue when the hardware monitor
-triggers alarms though, right?  I couldn't figure out
-how to get a TMP75 alert out to any userspace code that
-would care, to pick one example, even after teaching
-the i2c core how to handle SMBus alerts.  ;)
+I have no problem with the first two, but why the last?
 
-I suppose this just emphasizes the point made by Hans
-that we kind of need (industrial) "control" components
-(or "data acquisition"?) not just "monitoring" ones.
-
-Such alarms are of course different from the "data
-ready" signals of an accelerometer.
+If the devices are always allocated by spi_alloc_device() as
+they should be -- probably through an intermediary -- the
+only public function necessary for that cleanup should be
+the existing spi_dev_put().
 
 - Dave
-
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

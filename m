@@ -1,16 +1,16 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.26-rc3] spi: remove some spidev
-	oops-on-rmmod paths
-Date: Wed, 21 May 2008 18:29:07 -0700
-Message-ID: <200805211829.07189.david-b@pacbell.net>
+From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Re: [patch 2.6.26-rc3] spi: make
+ spi_board_info.modalias a char array
+Date: Wed, 21 May 2008 20:46:33 -0700
+Message-ID: <20080521204633.8234c7d7.akpm@linux-foundation.org>
+References: <200805211704.56761.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Sebastian Siewior <bigeasy-kttTfShzVuc@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200805211704.56761.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,224 +22,71 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Somehow the spidev code forgot to include a critical mechanism:
-when the underlying device is removed (e.g. spi_master rmmod),
-open file descriptors must be prevented from issuing new I/O
-requests to that device.  On penalty of the oopsing reported
-by Sebastian Siewior <bigeasy-kttTfShzVuc@public.gmane.org> ...
+On Wed, 21 May 2008 17:04:56 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
 
-This is a partial fix, adding handshaking between the lower
-level (SPI messaging) and the file operations using the spi_dev.
-There's still a refcounting issue to be addressed (separately)
-with respect to the spidev_data itself.
+> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> 
+> Currently, 'modalias' in the spi_device structure is a 'const char *'.
+> The spi_new_device() function fills in the modalias value from a passed
+> in spi_board_info data block.  Since it is a pointer copy, the new
+> spi_device remains dependent on the spi_board_info structure after the
+> new spi_device is registered (no other fields in spi_device directly
+> depend on the spi_board_info structure; all of the other data is copied).
+> 
+> This causes a problem when dynamically propulating the list of attached
+> SPI devices.  For example, in arch/powerpc, the list of SPI devices can
+> be populated from data in the device tree.  With the current code, the
+> device tree adapter must kmalloc() a new spi_board_info structure for
+> each new SPI device it finds in the device tree, and there is no simple
+> mechanism in place for keeping track of these allocations.
+> 
+> This patch changes modalias from a 'const char *' to a fixed char array.
+> By copying the modalias string instead of referencing it, the dependency
+> on the spi_board_info structure is eliminated and an outside caller does
+> not need to maintain a separate spi_board_info allocation for each device.
+> 
+> If searched through the code to the best of my ability for any references
+> to modalias which may be affected by this change and haven't found anything.
+> It has been tested with the lite5200b platform in arch/powerpc.
+> 
 
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/spi/spidev.c |   82 ++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 72 insertions(+), 10 deletions(-)
+Not for 2.6.26, I assume?
 
---- g26.orig/drivers/spi/spidev.c	2008-05-02 03:46:01.000000000 -0700
-+++ g26/drivers/spi/spidev.c	2008-05-02 10:57:05.000000000 -0700
-@@ -68,6 +68,7 @@ static unsigned long	minors[N_SPI_MINORS
- 
- struct spidev_data {
- 	struct device		dev;
-+	spinlock_t		spi_lock;
- 	struct spi_device	*spi;
- 	struct list_head	device_entry;
- 
-@@ -85,12 +86,72 @@ MODULE_PARM_DESC(bufsiz, "data bytes in 
- 
- /*-------------------------------------------------------------------------*/
- 
-+/*
-+ * We can't use the standard synchronous wrappers for file I/O; we
-+ * need to protect against async removal of the underlying spi_device.
-+ */
-+static void spidev_complete(void *arg)
-+{
-+	complete(arg);
-+}
-+
-+static int spidev_sync(struct spidev_data *spidev, struct spi_message *message)
-+{
-+	DECLARE_COMPLETION_ONSTACK(done);
-+	int status;
-+
-+	message->complete = spidev_complete;
-+	message->context = &done;
-+
-+	spin_lock_irq(&spidev->spi_lock);
-+	if (spidev->spi == NULL)
-+		status = -ESHUTDOWN;
-+	else
-+		status = spi_async(spidev->spi, message);
-+	spin_unlock_irq(&spidev->spi_lock);
-+
-+	if (status == 0) {
-+		wait_for_completion(&done);
-+		status = message->status;
-+	}
-+	return status;
-+}
-+
-+static inline int
-+spidev_sync_write(struct spidev_data *spidev, size_t len)
-+{
-+	struct spi_transfer	t = {
-+			.tx_buf		= spidev->buffer,
-+			.len		= len,
-+		};
-+	struct spi_message	m;
-+
-+	spi_message_init(&m);
-+	spi_message_add_tail(&t, &m);
-+	return spidev_sync(spidev, &m);
-+}
-+
-+static inline int
-+spidev_sync_read(struct spidev_data *spidev, size_t len)
-+{
-+	struct spi_transfer	t = {
-+			.rx_buf		= spidev->buffer,
-+			.len		= len,
-+		};
-+	struct spi_message	m;
-+
-+	spi_message_init(&m);
-+	spi_message_add_tail(&t, &m);
-+	return spidev_sync(spidev, &m);
-+}
-+
-+/*-------------------------------------------------------------------------*/
-+
- /* Read-only message with current device setup */
- static ssize_t
- spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
- {
- 	struct spidev_data	*spidev;
--	struct spi_device	*spi;
- 	ssize_t			status = 0;
- 
- 	/* chipselect only toggles at start or end of operation */
-@@ -98,10 +159,9 @@ spidev_read(struct file *filp, char __us
- 		return -EMSGSIZE;
- 
- 	spidev = filp->private_data;
--	spi = spidev->spi;
- 
- 	mutex_lock(&spidev->buf_lock);
--	status = spi_read(spi, spidev->buffer, count);
-+	status = spidev_sync_read(spidev, count);
- 	if (status == 0) {
- 		unsigned long	missing;
- 
-@@ -122,7 +182,6 @@ spidev_write(struct file *filp, const ch
- 		size_t count, loff_t *f_pos)
- {
- 	struct spidev_data	*spidev;
--	struct spi_device	*spi;
- 	ssize_t			status = 0;
- 	unsigned long		missing;
- 
-@@ -131,12 +190,11 @@ spidev_write(struct file *filp, const ch
- 		return -EMSGSIZE;
- 
- 	spidev = filp->private_data;
--	spi = spidev->spi;
- 
- 	mutex_lock(&spidev->buf_lock);
- 	missing = copy_from_user(spidev->buffer, buf, count);
- 	if (missing == 0) {
--		status = spi_write(spi, spidev->buffer, count);
-+		status = spidev_sync_write(spidev, count);
- 		if (status == 0)
- 			status = count;
- 	} else
-@@ -153,7 +211,6 @@ static int spidev_message(struct spidev_
- 	struct spi_transfer	*k_xfers;
- 	struct spi_transfer	*k_tmp;
- 	struct spi_ioc_transfer *u_tmp;
--	struct spi_device	*spi = spidev->spi;
- 	unsigned		n, total;
- 	u8			*buf;
- 	int			status = -EFAULT;
-@@ -215,7 +272,7 @@ static int spidev_message(struct spidev_
- 		spi_message_add_tail(k_tmp, &msg);
- 	}
- 
--	status = spi_sync(spi, &msg);
-+	status = spidev_sync(spidev, &msg);
- 	if (status < 0)
- 		goto done;
- 
-@@ -269,8 +326,16 @@ spidev_ioctl(struct inode *inode, struct
- 	if (err)
- 		return -EFAULT;
- 
-+	/* guard against device removal before, or while,
-+	 * we issue this ioctl.
-+	 */
- 	spidev = filp->private_data;
--	spi = spidev->spi;
-+	spin_lock_irq(&spidev->spi_lock);
-+	spi = spi_dev_get(spidev->spi);
-+	spin_unlock_irq(&spidev->spi_lock);
-+
-+	if (spi == NULL)
-+		return ESHUTDOWN;
- 
- 	switch (cmd) {
- 	/* read requests */
-@@ -356,8 +421,10 @@ spidev_ioctl(struct inode *inode, struct
- 	default:
- 		/* segmented and/or full-duplex I/O request */
- 		if (_IOC_NR(cmd) != _IOC_NR(SPI_IOC_MESSAGE(0))
--				|| _IOC_DIR(cmd) != _IOC_WRITE)
--			return -ENOTTY;
-+				|| _IOC_DIR(cmd) != _IOC_WRITE) {
-+			retval = -ENOTTY;
-+			break;
-+		}
- 
- 		tmp = _IOC_SIZE(cmd);
- 		if ((tmp % sizeof(struct spi_ioc_transfer)) != 0) {
-@@ -385,6 +452,7 @@ spidev_ioctl(struct inode *inode, struct
- 		kfree(ioc);
- 		break;
- 	}
-+	spi_dev_put(spi);
- 	return retval;
- }
- 
-@@ -488,6 +556,7 @@ static int spidev_probe(struct spi_devic
- 
- 	/* Initialize the driver data */
- 	spidev->spi = spi;
-+	spin_lock_init(&spidev->spi_lock);
- 	mutex_init(&spidev->buf_lock);
- 
- 	INIT_LIST_HEAD(&spidev->device_entry);
-@@ -526,13 +595,17 @@ static int spidev_remove(struct spi_devi
- {
- 	struct spidev_data	*spidev = dev_get_drvdata(&spi->dev);
- 
--	mutex_lock(&device_list_lock);
-+	/* make sure ops on existing fds can abort cleanly */
-+	spin_lock_irq(&spidev->spi_lock);
-+	spidev->spi = NULL;
-+	spin_unlock_irq(&spidev->spi_lock);
- 
-+	/* prevent new opens */
-+	mutex_lock(&device_list_lock);
- 	list_del(&spidev->device_entry);
- 	dev_set_drvdata(&spi->dev, NULL);
- 	clear_bit(MINOR(spidev->dev.devt), minors);
- 	device_unregister(&spidev->dev);
--
- 	mutex_unlock(&device_list_lock);
- 
- 	return 0;
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -229,7 +229,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
+>  	proxy->max_speed_hz = chip->max_speed_hz;
+>  	proxy->mode = chip->mode;
+>  	proxy->irq = chip->irq;
+> -	proxy->modalias = chip->modalias;
+> +	strncpy(proxy->modalias, chip->modalias, KOBJ_NAME_LEN);
+>  
+>  	snprintf(proxy->dev.bus_id, sizeof proxy->dev.bus_id,
+>  			"%s.%u", master->dev.bus_id,
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -82,7 +82,7 @@ struct spi_device {
+>  	int			irq;
+>  	void			*controller_state;
+>  	void			*controller_data;
+> -	const char		*modalias;
+> +	char			modalias[KOBJ_NAME_LEN];
+>  
+>  	/*
+>  	 * likely need more hooks for more protocol options affecting how
+
+a) strncpy() doesn't null-terminate the dest if it overran.  strlcpy() does.
+
+b) Given the uncertainly over the state of existing code, perhaps we
+   should have an explicit check for overflows here, with a WARN_ON()?
+
+c) I think it's better to use sizeof() in the strlcpy() rather than
+   duplicating the array size - it's a little more robust in the face
+   of future changes and it is more obviously-correct (don't need to go
+   elsewhere to check the size of the destination).
+
+d) KOBJ_NAME_LEN no longer exists in linux-next.  I'm not sure where
+   it went - Greg and Kay have been up to their usual tricks.
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

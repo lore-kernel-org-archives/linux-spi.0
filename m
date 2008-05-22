@@ -1,21 +1,16 @@
-From: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
-Subject: Re: Accelerometer,
- Gyros and ADC's etc within the kernel.
-Date: Thu, 22 May 2008 10:35:01 +0100
-Message-ID: <48353E45.2080903@cam.ac.uk>
-References: <4832A211.4040206@gmail.com>	<20080520132817.03fb74ea@hyperion.delvare>
-	<200805211752.15670.david-b@pacbell.net>
+From: Fabio Tosetto <tosettofabio83-VGgt2q2+T+FeoWH0uzbU5w@public.gmane.org>
+Subject: SD-MMC over SPI on PSC6
+Date: Thu, 22 May 2008 12:42:51 +0200
+Message-ID: <48354E2B.8010003@libero.it>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Dmitry Torokhov <dtor-JGs/UdohzUI@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>,
-	Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, garyj-ynQEQJNshbs@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, g.liakhovetski-Mmb7MZpHnFY@public.gmane.org,
+	drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org
+To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200805211752.15670.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,32 +22,72 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi David,
-> On Tuesday 20 May 2008, Jean Delvare wrote:
->> This all sounds quite different from our hwmon drivers. Our hwmon
->> drivers read all the sensor values at once and cache the readings for a
->> couple seconds, so you can't get an instant reading at any time, and
->> they also don't support interrupts in general.
-> 
-> That's something of an issue when the hardware monitor
-> triggers alarms though, right?  I couldn't figure out
-> how to get a TMP75 alert out to any userspace code that
-> would care, to pick one example, even after teaching
-> the i2c core how to handle SMBus alerts.  ;)
-> 
-> I suppose this just emphasizes the point made by Hans
-> that we kind of need (industrial) "control" components
-> (or "data acquisition"?) not just "monitoring" ones.
-I get the feeling even the name is going to evolve for some time to come, 
-getting broader as and when we add more classes of device.
-> Such alarms are of course different from the "data
-> ready" signals of an accelerometer.
-Whilst this is true, most accelerometers also have "alarm" triggers, for example
-the ST LIS3L02DQ will raise a pin on configurable conditions such as thresholds
-and even a double click detector (though I've never tried them!).  I suppose we
-will ideally support this functionality as well.
---
-Jonathan Cameron
+Hello, I have an embedded system with an on-board processor powerpc 
+MPC5200B
+and Linux kernel 2.6.22,
+I must turn over to MMC SPI on the PSC6.
+
+The MMC over SPI is connected to MPC5200b, here's how:
+
+  MPC5200B
+----------------                                        
+                       
+|                                                                 
+|------------------
+         PSC1_2 |--->------------Chip_Select (out)---------|      
+                       
+|                                                                 |
+                       |                        
+                                         |     SD CARD
+         ETH_17 |---<------------IRQ (in)------------------|   MMC over SPI
+                       |                                                
+                 |
+                       
+|                                                                 |
+         PSC6_0 |---<------------SPI_RXD (in)------------|
+                       
+|                                                                 |
+                       
+|                                                                 |
+         PSC6_2 |--->------------SPI_TXD (out)-----------|
+                       |                                                 
+                |
+                       |                                                 
+                |
+         PSC6_3 |--->------------SPI_CLK (out)-----------|
+                       
+|                                                                 
+|------------------
+----------------
+
+Now on the menuconfig enabling these options:
+
+$ make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- menuconfig
+
+Platform support  --->
+   [*] MPC5200 (L25R) bugfix support
+   [*] Freescale Lite5200 Eval Board
+
+Device Drivers  ---> SPI Support --->
+   [*] SPI support
+  <*> Freescale MPC52xx PSC SPI controller
+
+Now I have applied those patch:
+http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg00150.html
+
+Now on the menuconfig enabling these options:
+
+$ make ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu- menuconfig
+
+Device Drivers  --->  MMC/SD card support --->
+ [*] MMC debugging
+<*> MMC block device driver
+<*> MMC host test driver
+<*> MMC/SD over SPI
+
+Is correct applied those patch and enable those options into menuconfig?
+
+thanks Fabio
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

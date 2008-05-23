@@ -1,42 +1,29 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] spi: Push the BKL down into the
-	drivers
-Date: Thu, 22 May 2008 17:40:50 -0700
-Message-ID: <200805221740.51016.david-b@pacbell.net>
-References: <20080522224509.29ede566@core>
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: SD-MMC over SPI on PSC6
+Date: Thu, 22 May 2008 19:02:45 -0700
+Message-ID: <200805221902.45578.david-b@pacbell.net>
+References: <48354E2B.8010003@libero.it>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080522224509.29ede566@core>
+Cc: linuxppc-dev@ozlabs.org, avorontsov@ru.mvista.com,
+	drzeus-mmc@drzeus.cx, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net, galak@kernel.crashing.org,
+	garyj@denx.de, g.liakhovetski@gmx.de
+To: Fabio Tosetto <tosettofabio83@libero.it>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1764806AbYEWDhe@vger.kernel.org>
+In-Reply-To: <48354E2B.8010003@libero.it>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 22 May 2008, Alan Cox wrote:
-> Another step to removing ->ioctl and to removing the BKL
+On Thursday 22 May 2008, Fabio Tosetto wrote:
+> <*> MMC host test driver
 
-This happens to not apply with the latest patches; I'll
-address that.
-
-Where is the writeup about exactly what lock_kernel() is
-supposed to have been protecting against in ioctl code?
-
-- Dave
+Unwise unless you really want to trash every MMC or SD card
+you insert ...
 
 
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Microsoft
-Defy all challenges. Microsoft(R) Visual Studio 2008.
-http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+You might consider not crossposting to such a large proportion
+of the free world, by the way.

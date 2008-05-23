@@ -1,60 +1,43 @@
-From: Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-Subject: Re: [PATCH] spi: Push the BKL down into the
-	drivers
-Date: Fri, 23 May 2008 12:09:48 +0100
-Message-ID: <20080523120948.4b992d67@core>
-References: <20080522224509.29ede566@core>
-	<200805221740.51016.david-b@pacbell.net>
+From: Anton Vorontsov <avorontsov@ru.mvista.com>
+Subject: Re: [PATCH 3/4] [MMC] mmc_spi: add polling support for the card
+	detect line
+Date: Fri, 23 May 2008 19:42:04 +0400
+Message-ID: <20080523154204.GA19803@polina.dev.rtsoft.ru>
+References: <20080516165057.GC24196@polina.dev.rtsoft.ru> <20080517133633.5aa26938@mjolnir.drzeus.cx> <20080521184713.GA30284@polina.dev.rtsoft.ru> <20080521212831.523f344b@mjolnir.drzeus.cx> <20080522181713.GA26918@polina.dev.rtsoft.ru> <20080522213432.4a50629b@mjolnir.drzeus.cx>
+Reply-To: avorontsov@ru.mvista.com
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200805221740.51016.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=utf8
+Cc: Kumar Gala <galak@kernel.crashing.org>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Jochen Friedrich <jochen@scram.de>,
+	Timur Tabi <timur@freescale.com>, linuxppc-dev@ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Pierre Ossman <drzeus-mmc@drzeus.cx>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1758795AbYEWPmU@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20080522213432.4a50629b@mjolnir.drzeus.cx>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 22 May 2008 17:40:50 -0700
-David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-
-> On Thursday 22 May 2008, Alan Cox wrote:
-> > Another step to removing ->ioctl and to removing the BKL
+On Thu, May 22, 2008 at 09:34:32PM +0200, Pierre Ossman wrote:
+[...]
+> > Ok. How about this version?
+> > 
 > 
-> This happens to not apply with the latest patches; I'll
-> address that.
-> 
-> Where is the writeup about exactly what lock_kernel() is
-> supposed to have been protecting against in ioctl code?
+> Perfect. Unless there is some way you can pass flags in platform data?
+> Using the lack of an init() to determine the need for polling is a bit
+> circumstantial.
 
-There isn't one. The big problem we have is that the ioctl methods were
-implicitly called under the big kernel lock. Without pushing them down
-into drivers we can't take the step of actually thinking at the driver
-level "is this needed". Historically therefore we've never documented
-*why* or *if* it was needed - it's just there. Pushing them into the
-driver means the subsystem owner gets to see the implicit locking and can
-actually ask the right questions with internal driver knowledge.
+Aha, that's an idea, thanks. Implemented in the updated patches.
 
-Whether it is needed is dependant on the internal locking model of the
-driver - does it handle parallel ioctls correctly, are there races
-against other functions in the driver (eg hot unplugs). That can't be
-evaluated at a high level.
+p.s.
+I think, in case of capabilities, it's users' responsibility to not
+issue bogus flags, so mmc_spi doesn't mask anything, it just passes
+platform's caps. This also avoids drivers update when (if) new caps
+will be implemented.
 
-It's also made harder by the fact lots of drivers have buggy assumptions
-about ioctl locking (watchdog was a fine example).
-
-Alan
-
--------------------------------------------------------------------------
-This SF.net email is sponsored by: Microsoft
-Defy all challenges. Microsoft(R) Visual Studio 2008.
-http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+-- 
+Anton Vorontsov
+email: cbouatmailru@gmail.com
+irc://irc.freenode.net/bd2

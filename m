@@ -1,14 +1,21 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.23-rc3+] spidev: BKL removal
-Date: Thu, 22 May 2008 19:29:07 -0700
-Message-ID: <200805221929.08050.david-b@pacbell.net>
+Subject: Re: [PATCH 3/4] spi: Add OF binding support for
+	SPI busses
+Date: Thu, 22 May 2008 19:26:23 -0700
+Message-ID: <200805221926.24112.david-b@pacbell.net>
+References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
+	<716a0f1b6c9a544b480c06a329072483@kernel.crashing.org>
+	<fa686aa40805211233h72a258bpf8c945b9f662d6ee@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	Segher Boessenkool <segher-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <fa686aa40805211233h72a258bpf8c945b9f662d6ee-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,79 +28,34 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
+On Wednesday 21 May 2008, Grant Likely wrote:
+> > spi-controller {
+> > =A0 =A0 =A0 =A0#address-cells =3D 2;
+> > =A0 =A0 =A0 =A0#size-cells =3D 0;
+> > =A0 =A0 =A0 =A0some-device@0,f000 { reg =3D < 0 f000 >; } // CS 0, SPI =
+address f000
+> > =A0 =A0 =A0 =A0some-device@1,f000 { reg =3D < 1 f000 >; } // CS 1, SPI =
+address f000
+> > =A0 =A0 =A0 =A0some-device@1,ff00 { reg =3D < 1 ff00 >; } // CS 1, SPI =
+address ff00
+> > }
+> =
 
-Another step to removing ->ioctl and to removing the BKL
+> For SPI the CS # *is* the address. =A0:-)
+> =
 
-Signed-off-by: Alan Cox <alan-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-[ dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org -- take final step; BKL not needed ]
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
-Goes on top of the two patches addressing oopsing in "rmmod spi_master".
+> Unlike I2C, SPI doesn't impose any protocol on the data. =A0It is all
+> anonymous data out, anonymous data in, a clock and a chip select.
 
- drivers/spi/spidev.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+Very true ... but then there are SPI chips which embed addressing.
 
---- a/drivers/spi/spidev.c	2008-05-22 13:40:36.000000000 -0700
-+++ b/drivers/spi/spidev.c	2008-05-22 18:33:51.000000000 -0700
-@@ -229,7 +229,6 @@ static int spidev_message(struct spidev_
- 	 * We walk the array of user-provided transfers, using each one
- 	 * to initialize a kernel version of the same transfer.
- 	 */
--	mutex_lock(&spidev->buf_lock);
- 	buf = spidev->buffer;
- 	total = 0;
- 	for (n = n_xfers, k_tmp = k_xfers, u_tmp = u_xfers;
-@@ -297,14 +296,12 @@ static int spidev_message(struct spidev_
- 	status = total;
- 
- done:
--	mutex_unlock(&spidev->buf_lock);
- 	kfree(k_xfers);
- 	return status;
- }
- 
--static int
--spidev_ioctl(struct inode *inode, struct file *filp,
--		unsigned int cmd, unsigned long arg)
-+static long
-+spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- {
- 	int			err = 0;
- 	int			retval = 0;
-@@ -342,6 +339,14 @@ spidev_ioctl(struct inode *inode, struct
- 	if (spi == NULL)
- 		return -ESHUTDOWN;
- 
-+	/* use the buffer lock here for triple duty:
-+	 *  - prevent I/O (from us) so calling spi_setup() is safe;
-+	 *  - prevent concurrent SPI_IOC_WR_* from morphing
-+	 *    data fields while SPI_IOC_RD_* reads them;
-+	 *  - SPI_IOC_MESSAGE needs the buffer locked "normally".
-+	 */
-+	mutex_lock(&spidev->buf_lock);
-+
- 	switch (cmd) {
- 	/* read requests */
- 	case SPI_IOC_RD_MODE:
-@@ -457,6 +462,8 @@ spidev_ioctl(struct inode *inode, struct
- 		kfree(ioc);
- 		break;
- 	}
-+
-+	mutex_unlock(&spidev->buf_lock);
- 	spi_dev_put(spi);
- 	return retval;
- }
-@@ -532,7 +539,7 @@ static struct file_operations spidev_fop
- 	 */
- 	.write =	spidev_write,
- 	.read =		spidev_read,
--	.ioctl =	spidev_ioctl,
-+	.unlocked_ioctl = spidev_ioctl,
- 	.open =		spidev_open,
- 	.release =	spidev_release,
- };
+I have in mind the mcp23s08 (and mcp23s17) GPIO expanders, which
+support up to four chips wired in parallel on a given chipselect.
+The devices are distinguished by how two address pins are wired;
+and two bits in the command byte must match them.  (I think they
+just recycled an I2C design into the SPI world.)
+
+- Dave
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

@@ -1,22 +1,18 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: Add OF binding support for
-	SPI busses
-Date: Thu, 22 May 2008 19:26:23 -0700
-Message-ID: <200805221926.24112.david-b@pacbell.net>
-References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
-	<716a0f1b6c9a544b480c06a329072483@kernel.crashing.org>
-	<fa686aa40805211233h72a258bpf8c945b9f662d6ee@mail.gmail.com>
+From: Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
+Subject: Re: [PATCH] spi: Push the BKL down into the
+	drivers
+Date: Fri, 23 May 2008 12:09:48 +0100
+Message-ID: <20080523120948.4b992d67@core>
+References: <20080522224509.29ede566@core>
+	<200805221740.51016.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	Segher Boessenkool <segher-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa40805211233h72a258bpf8c945b9f662d6ee-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200805221740.51016.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,34 +24,35 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 21 May 2008, Grant Likely wrote:
-> > spi-controller {
-> > =A0 =A0 =A0 =A0#address-cells =3D 2;
-> > =A0 =A0 =A0 =A0#size-cells =3D 0;
-> > =A0 =A0 =A0 =A0some-device@0,f000 { reg =3D < 0 f000 >; } // CS 0, SPI =
-address f000
-> > =A0 =A0 =A0 =A0some-device@1,f000 { reg =3D < 1 f000 >; } // CS 1, SPI =
-address f000
-> > =A0 =A0 =A0 =A0some-device@1,ff00 { reg =3D < 1 ff00 >; } // CS 1, SPI =
-address ff00
-> > }
-> =
+On Thu, 22 May 2008 17:40:50 -0700
+David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
 
-> For SPI the CS # *is* the address. =A0:-)
-> =
+> On Thursday 22 May 2008, Alan Cox wrote:
+> > Another step to removing ->ioctl and to removing the BKL
+> 
+> This happens to not apply with the latest patches; I'll
+> address that.
+> 
+> Where is the writeup about exactly what lock_kernel() is
+> supposed to have been protecting against in ioctl code?
 
-> Unlike I2C, SPI doesn't impose any protocol on the data. =A0It is all
-> anonymous data out, anonymous data in, a clock and a chip select.
+There isn't one. The big problem we have is that the ioctl methods were
+implicitly called under the big kernel lock. Without pushing them down
+into drivers we can't take the step of actually thinking at the driver
+level "is this needed". Historically therefore we've never documented
+*why* or *if* it was needed - it's just there. Pushing them into the
+driver means the subsystem owner gets to see the implicit locking and can
+actually ask the right questions with internal driver knowledge.
 
-Very true ... but then there are SPI chips which embed addressing.
+Whether it is needed is dependant on the internal locking model of the
+driver - does it handle parallel ioctls correctly, are there races
+against other functions in the driver (eg hot unplugs). That can't be
+evaluated at a high level.
 
-I have in mind the mcp23s08 (and mcp23s17) GPIO expanders, which
-support up to four chips wired in parallel on a given chipselect.
-The devices are distinguished by how two address pins are wired;
-and two bits in the command byte must match them.  (I think they
-just recycled an I2C design into the SPI world.)
+It's also made harder by the fact lots of drivers have buggy assumptions
+about ioctl locking (watchdog was a fine example).
 
-- Dave
+Alan
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

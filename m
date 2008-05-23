@@ -1,21 +1,18 @@
-From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH 3/3] mmc: change .get_ro() callback
-	semantics
-Date: Fri, 23 May 2008 19:43:47 +0400
-Message-ID: <20080523154347.GC24862@polina.dev.rtsoft.ru>
-References: <20080523154204.GA19803@polina.dev.rtsoft.ru>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [patch 2.6.26-rc3] spi: make
+	spi_board_info.modalias a char array
+Date: Fri, 23 May 2008 10:31:25 -0700
+Message-ID: <200805231031.25919.david-b@pacbell.net>
+References: <200805211704.56761.david-b@pacbell.net>
+	<20080521204633.8234c7d7.akpm@linux-foundation.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Jochen Friedrich <jochen-NIgtFMG+Po8@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Timur Tabi <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080521204633.8234c7d7.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20080523154204.GA19803-PHTr8nzUCjejyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,146 +24,107 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-get_ro() callback must return values >= 0 for its logical state, and
-negative errno values in case of error.
+On Wednesday 21 May 2008, Andrew Morton wrote:
+> On Wed, 21 May 2008 17:04:56 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> 
+> > From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> >		...
+> > -	proxy->modalias = chip->modalias;
+> > +	strncpy(proxy->modalias, chip->modalias, KOBJ_NAME_LEN);
+> >		...
+> 
+> a) strncpy() doesn't null-terminate the dest if it overran.  strlcpy() does.
+> 
+> b) Given the uncertainly over the state of existing code, perhaps we
+>    should have an explicit check for overflows here, with a WARN_ON()?
+> 
+> c) I think it's better to use sizeof() in the strlcpy() rather than
+>    duplicating the array size - it's a little more robust in the face
+>    of future changes and it is more obviously-correct (don't need to go
+>    elsewhere to check the size of the destination).
 
-If particular host instance doesn't support RO/WP switch, it should
-return -ENOSYS.
+Good points.  I usually try to use sizeof() myself, for exactly
+that reason.  Updated version (below) uses strlcpy, sizeof, WARN_ON.
 
-This patch changes some hosts in two ways:
 
-1. Now functions should be smart to not return negative values in
-   "RO asserted" case (particularly gpio_ calls could return negative
-   values for the outermost GPIOs).
+> d) KOBJ_NAME_LEN no longer exists in linux-next.  I'm not sure where
+>    it went - Greg and Kay have been up to their usual tricks.
+ 
+Yeech.  Replacing symbols with inline constants isn't good when
+the constant is what ensures various fields are the same size.
 
-   Also, board code usually passes get_ro() callbacks that directly return
-   gpioreg & bit result, so imxmmc, pxamci and mmc_spi's get_ro() handlers
-   need take special care when returning platform's values to the mmc core.
+BTW -- four comments on one line is pretty good even for you.  ;)
 
-2. In case of host instance didn't implement get_ro() callback, it should
-   really return -ENOSYS and let the mmc core decide what to do about it
-   (mmc core thinks the same way as the hosts, so it isn't functional
-   change).
+- Dave
 
-Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+
+========= CUT HERE
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+
+Currently, 'modalias' in the spi_device structure is a 'const char *'.
+The spi_new_device() function fills in the modalias value from a passed
+in spi_board_info data block.  Since it is a pointer copy, the new
+spi_device remains dependent on the spi_board_info structure after the
+new spi_device is registered (no other fields in spi_device directly
+depend on the spi_board_info structure; all of the other data is copied).
+
+This causes a problem when dynamically propulating the list of attached
+SPI devices.  For example, in arch/powerpc, the list of SPI devices can
+be populated from data in the device tree.  With the current code, the
+device tree adapter must kmalloc() a new spi_board_info structure for
+each new SPI device it finds in the device tree, and there is no simple
+mechanism in place for keeping track of these allocations.
+
+This patch changes modalias from a 'const char *' to a fixed char array.
+By copying the modalias string instead of referencing it, the dependency
+on the spi_board_info structure is eliminated and an outside caller does
+not need to maintain a separate spi_board_info allocation for each device.
+
+If searched through the code to the best of my ability for any references
+to modalias which may be affected by this change and haven't found anything.
+It has been tested with the lite5200b platform in arch/powerpc.
+
+Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+[ cope with linux-next changes: KOBJ_NAME_LEN obliterated, etc ]
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/mmc/core/sd.c       |    4 ++--
- drivers/mmc/host/at91_mci.c |    2 +-
- drivers/mmc/host/imxmmc.c   |    9 ++++++---
- drivers/mmc/host/mmc_spi.c  |    9 ++++++---
- drivers/mmc/host/pxamci.c   |    9 ++++++---
- include/linux/mmc/host.h    |    3 +++
- 6 files changed, 24 insertions(+), 12 deletions(-)
+ drivers/spi/spi.c       |    4 +++-
+ include/linux/spi/spi.h |    2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-index 7ef3b15..b122eb9 100644
---- a/drivers/mmc/core/sd.c
-+++ b/drivers/mmc/core/sd.c
-@@ -494,13 +494,13 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
- 	 * Check if read-only switch is active.
- 	 */
- 	if (!oldcard) {
--		if (!host->ops->get_ro) {
-+		if (!host->ops->get_ro || host->ops->get_ro(host) < 0) {
- 			printk(KERN_WARNING "%s: host does not "
- 				"support reading read-only "
- 				"switch. assuming write-enable.\n",
- 				mmc_hostname(host));
- 		} else {
--			if (host->ops->get_ro(host))
-+			if (host->ops->get_ro(host) > 0)
- 				mmc_card_set_readonly(card);
- 		}
- 	}
-diff --git a/drivers/mmc/host/at91_mci.c b/drivers/mmc/host/at91_mci.c
-index 8979ad3..140c2b8 100644
---- a/drivers/mmc/host/at91_mci.c
-+++ b/drivers/mmc/host/at91_mci.c
-@@ -797,7 +797,7 @@ static int at91_mci_get_ro(struct mmc_host *mmc)
- 	struct at91mci_host *host = mmc_priv(mmc);
+--- a/drivers/spi/spi.c	2008-05-22 10:57:21.000000000 -0700
++++ b/drivers/spi/spi.c	2008-05-22 18:56:16.000000000 -0700
+@@ -218,6 +218,8 @@ struct spi_device *spi_new_device(struct
+ 	if (!spi_master_get(master))
+ 		return NULL;
  
- 	if (host->board->wp_pin) {
--		read_only = gpio_get_value(host->board->wp_pin);
-+		read_only = !!gpio_get_value(host->board->wp_pin);
- 		printk(KERN_WARNING "%s: card is %s\n", mmc_hostname(mmc),
- 				(read_only ? "read-only" : "read-write") );
- 	}
-diff --git a/drivers/mmc/host/imxmmc.c b/drivers/mmc/host/imxmmc.c
-index 95f33e8..5167679 100644
---- a/drivers/mmc/host/imxmmc.c
-+++ b/drivers/mmc/host/imxmmc.c
-@@ -889,9 +889,12 @@ static int imxmci_get_ro(struct mmc_host *mmc)
- 	struct imxmci_host *host = mmc_priv(mmc);
++	WARN_ON(strlen(chip->modalias) >= sizeof(proxy->modalias));
++
+ 	proxy = kzalloc(sizeof *proxy, GFP_KERNEL);
+ 	if (!proxy) {
+ 		dev_err(dev, "can't alloc dev for cs%d\n",
+@@ -229,7 +231,7 @@ struct spi_device *spi_new_device(struct
+ 	proxy->max_speed_hz = chip->max_speed_hz;
+ 	proxy->mode = chip->mode;
+ 	proxy->irq = chip->irq;
+-	proxy->modalias = chip->modalias;
++	strlcpy(proxy->modalias, chip->modalias, sizeof(proxy->modalias));
  
- 	if (host->pdata && host->pdata->get_ro)
--		return host->pdata->get_ro(mmc_dev(mmc));
--	/* Host doesn't support read only detection so assume writeable */
--	return 0;
-+		return !!host->pdata->get_ro(mmc_dev(mmc));
-+	/*
-+	 * Board doesn't support read only detection; let the mmc core
-+	 * decide what to do.
-+	 */
-+	return -ENOSYS;
- }
+ 	snprintf(proxy->dev.bus_id, sizeof proxy->dev.bus_id,
+ 			"%s.%u", master->dev.bus_id,
+--- a/include/linux/spi/spi.h	2008-05-22 10:57:21.000000000 -0700
++++ b/include/linux/spi/spi.h	2008-05-23 10:21:41.000000000 -0700
+@@ -82,7 +82,7 @@ struct spi_device {
+ 	int			irq;
+ 	void			*controller_state;
+ 	void			*controller_data;
+-	const char		*modalias;
++	char			modalias[32];
  
- 
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 724870c..85d9853 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -1126,9 +1126,12 @@ static int mmc_spi_get_ro(struct mmc_host *mmc)
- 	struct mmc_spi_host *host = mmc_priv(mmc);
- 
- 	if (host->pdata && host->pdata->get_ro)
--		return host->pdata->get_ro(mmc->parent);
--	/* board doesn't support read only detection; assume writeable */
--	return 0;
-+		return !!host->pdata->get_ro(mmc->parent);
-+	/*
-+	 * Board doesn't support read only detection; let the mmc core
-+	 * decide what to do.
-+	 */
-+	return -ENOSYS;
- }
- 
- static int mmc_spi_get_cd(struct mmc_host *mmc)
-diff --git a/drivers/mmc/host/pxamci.c b/drivers/mmc/host/pxamci.c
-index 65210fc..b6056bd 100644
---- a/drivers/mmc/host/pxamci.c
-+++ b/drivers/mmc/host/pxamci.c
-@@ -361,9 +361,12 @@ static int pxamci_get_ro(struct mmc_host *mmc)
- 	struct pxamci_host *host = mmc_priv(mmc);
- 
- 	if (host->pdata && host->pdata->get_ro)
--		return host->pdata->get_ro(mmc_dev(mmc));
--	/* Host doesn't support read only detection so assume writeable */
--	return 0;
-+		return !!host->pdata->get_ro(mmc_dev(mmc));
-+	/*
-+	 * Board doesn't support read only detection; let the mmc core
-+	 * decide what to do.
-+	 */
-+	return -ENOSYS;
- }
- 
- static void pxamci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index f2e9885..ef3b773 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -55,6 +55,9 @@ struct mmc_host_ops {
- 	 * Avoid calling these three functions too often or in a "fast path",
- 	 * since underlaying controller might implement them in an expensive
- 	 * and/or slow way.
-+	 *
-+	 * .get_ro and .get_cd should return >= 0 for their logical values,
-+	 * or negative errno value in case of error.
- 	 */
- 	void	(*set_ios)(struct mmc_host *host, struct mmc_ios *ios);
- 	int	(*get_ro)(struct mmc_host *host);
--- 
-1.5.5.1
+ 	/*
+ 	 * likely need more hooks for more protocol options affecting how
+
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

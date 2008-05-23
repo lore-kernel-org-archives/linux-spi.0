@@ -1,29 +1,40 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: SD-MMC over SPI on PSC6
-Date: Thu, 22 May 2008 19:02:45 -0700
-Message-ID: <200805221902.45578.david-b@pacbell.net>
-References: <48354E2B.8010003@libero.it>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: Add OF binding support for
+	SPI busses
+Date: Thu, 22 May 2008 19:05:32 -0700
+Message-ID: <200805221905.32288.david-b@pacbell.net>
+References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
+	<20080516193613.28030.13950.stgit@trillian.secretlab.ca>
+	<20080521151928.GA28857@polina.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev@ozlabs.org, avorontsov@ru.mvista.com,
-	drzeus-mmc@drzeus.cx, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net, galak@kernel.crashing.org,
-	garyj@denx.de, g.liakhovetski@gmx.de
-To: Fabio Tosetto <tosettofabio83@libero.it>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1764806AbYEWDhe@vger.kernel.org>
-In-Reply-To: <48354E2B.8010003@libero.it>
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080521151928.GA28857-PHTr8nzUCjejyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 22 May 2008, Fabio Tosetto wrote:
-> <*> MMC host test driver
+On Wednesday 21 May 2008, Anton Vorontsov wrote:
+> > +++ b/drivers/spi/spi_of.c
+> 
+> I think better placement for this is drivers/of, no?
 
-Unwise unless you really want to trash every MMC or SD card
-you insert ...
+Yes please.
 
 
-You might consider not crossposting to such a large proportion
-of the free world, by the way.
+-------------------------------------------------------------------------
+This SF.net email is sponsored by: Microsoft
+Defy all challenges. Microsoft(R) Visual Studio 2008.
+http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/

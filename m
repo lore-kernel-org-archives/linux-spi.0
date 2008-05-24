@@ -1,21 +1,18 @@
-From: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 2/4] spi: split up spi_new_device()
-	to allow two stage registration.
-Date: Sat, 24 May 2008 00:54:29 -0600
-Message-ID: <fa686aa40805232354g147acfcdx4753fce1a448ceb7@mail.gmail.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: Add OF binding support for
+	SPI busses
+Date: Sat, 24 May 2008 09:50:43 -0700
+Message-ID: <200805240950.43394.david-b@pacbell.net>
 References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
-	<20080516193608.28030.34968.stgit@trillian.secretlab.ca>
-	<200805211717.13206.david-b@pacbell.net>
-	<fa686aa40805232343x20031560j5659d203e25f494@mail.gmail.com>
+	<200805221915.59878.david-b@pacbell.net>
+	<fa686aa40805232331p1bf2c1bcn8c46c21a094ef01e@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa40805232343x20031560j5659d203e25f494-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <fa686aa40805232331p1bf2c1bcn8c46c21a094ef01e-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -28,47 +25,68 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, May 24, 2008 at 12:43 AM, Grant Likely
-<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> On Wed, May 21, 2008 at 6:17 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
->> On Friday 16 May 2008, Grant Likely wrote:
->>>
->>> This patch splits the allocation and registration portions of code out
->>> of spi_new_device() and creates three new functions; spi_alloc_device(),
->>> spi_register_device(), and spi_device_release().
->>
->> I have no problem with the first two, but why the last?
->>
->> If the devices are always allocated by spi_alloc_device() as
->> they should be -- probably through an intermediary -- the
->> only public function necessary for that cleanup should be
->> the existing spi_dev_put().
->
-> Ah, okay.  I'm still a bit fuzzy on the device model conventions.
-> I'll remove that then.
+On Friday 23 May 2008, Grant Likely wrote:
+> On Thu, May 22, 2008 at 8:15 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> > On Friday 16 May 2008, you wrote:
+> >> +               prop = of_get_property(nc, "max-speed", &len);
+> >> +               if (prop && len >= sizeof(*prop))
+> >> +                       spi->max_speed_hz = *prop;
+> >> +               else
+> >> +                       spi->max_speed_hz = 100000;
+> >
+> > This isn't I2C; I suggest a default more appropriate to SPI!
+> > Maybe 10 MHz, rather than 100 KHz; or if you want folk to use
+> > this *a lot* then maybe 1 MHz.  I'd consider it a bug to have
+> > folk rely on this very much, though.
+> 
+> Yeah, I thought it a little stinky when I wrote it, but I wanted to
+> put *something* in for the case where the driver sets it's own value
+> for max_speed and it can be omitted from the device tree.
 
-Question:  spi_alloc_device() (and the original code) does a
-spi_master_get() on the spi_master device.  Doesn't spi_master_put()
-need to be called when the device is discarded?  spi_dev_put() doesn't
-do that explicitly; is it an implicit operation after a device has
-been deregistered from the spi_master?
+That is, this is just so the spi_setup() from spi_new_device()
+doesn't fail?
 
-Thanks,
-g.
+Thing is, drivers playing with max_speed are rare.  They just
+can't know the board-specific factors involved in making some
+speed fail, even when the chip might handle it on other boards.
+(Factors like lower voltage and higher capacitance tend to
+reduce the speeds that will work.)
 
->
-> g.
->
-> --
-> Grant Likely, B.Sc., P.Eng.
-> Secret Lab Technologies Ltd.
->
+The only driver I know which mucks with max_speed_hz is the
+MMC-over-SPI driver, and that's because the cards themselves
+report various ranges that can work ... and even there, the
+driver remembers the board-specific maximum (which may be
+less than the card can handle).
 
 
+> Maybe it 
+> would just be better to leave it as 0 if the max-speed property is
+> non-existent.
 
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+Which would usually cause spi_setup() to fail, and thus cause
+the device not to be listed ...
+
+
+> What do you think?
+
+Technically, spi_setup() with max_speed set to 0 isn't what
+I'd call well specified ... the issue rarely came up before.
+"Max" of zero basically means "off", and there's not really
+any such state in the spi_device lifecycle.  Those are good
+reasons to avoid such boundary cases; also, it's easy to oops
+in divider calculations when zero is used.
+
+Instead, board init code has set up nonzero speeds, so the
+spi_new_device() call to spi_setup() hasn't had ar eason
+to fail because max_speed was illegal/unsupportable.
+
+If it's worth avoiding, that may mean it's worth defaulting
+it in core code (e.g. spi_new_device) not OF platform glue...
+but I basically think of that speed as a value that board
+setup code *must* provide.
+
+- Dave
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

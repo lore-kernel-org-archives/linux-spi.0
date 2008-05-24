@@ -1,18 +1,20 @@
 From: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: Add OF binding support for
-	SPI busses
-Date: Sat, 24 May 2008 00:31:38 -0600
-Message-ID: <fa686aa40805232331p1bf2c1bcn8c46c21a094ef01e@mail.gmail.com>
+Subject: Re: [PATCH 2/4] spi: split up spi_new_device()
+	to allow two stage registration.
+Date: Sat, 24 May 2008 00:43:58 -0600
+Message-ID: <fa686aa40805232343x20031560j5659d203e25f494@mail.gmail.com>
 References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
-	<20080516193613.28030.13950.stgit@trillian.secretlab.ca>
-	<200805221915.59878.david-b@pacbell.net>
+	<20080516193608.28030.34968.stgit@trillian.secretlab.ca>
+	<200805211717.13206.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200805221915.59878.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <200805211717.13206.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,28 +27,23 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, May 22, 2008 at 8:15 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> On Friday 16 May 2008, you wrote:
->> +               prop = of_get_property(nc, "max-speed", &len);
->> +               if (prop && len >= sizeof(*prop))
->> +                       spi->max_speed_hz = *prop;
->> +               else
->> +                       spi->max_speed_hz = 100000;
+On Wed, May 21, 2008 at 6:17 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> On Friday 16 May 2008, Grant Likely wrote:
+>>
+>> This patch splits the allocation and registration portions of code out
+>> of spi_new_device() and creates three new functions; spi_alloc_device(),
+>> spi_register_device(), and spi_device_release().
 >
-> This isn't I2C; I suggest a default more appropriate to SPI!
-> Maybe 10 MHz, rather than 100 KHz; or if you want folk to use
-> this *a lot* then maybe 1 MHz.  I'd consider it a bug to have
-> folk rely on this very much, though.
+> I have no problem with the first two, but why the last?
+>
+> If the devices are always allocated by spi_alloc_device() as
+> they should be -- probably through an intermediary -- the
+> only public function necessary for that cleanup should be
+> the existing spi_dev_put().
 
-Yeah, I thought it a little stinky when I wrote it, but I wanted to
-put *something* in for the case where the driver sets it's own value
-for max_speed and it can be omitted from the device tree.  Maybe it
-would just be better to leave it as 0 if the max-speed property is
-non-existent.
+Ah, okay.  I'm still a bit fuzzy on the device model conventions.
+I'll remove that then.
 
-What do you think?
-
-Cheers,
 g.
 
 -- 

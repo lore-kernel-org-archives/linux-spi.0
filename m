@@ -1,20 +1,23 @@
 From: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH 3/4] spi: Add OF binding support for
 	SPI busses
-Date: Sat, 24 May 2008 00:24:32 -0600
-Message-ID: <fa686aa40805232324k1505d02aj6790d0217482c732@mail.gmail.com>
+Date: Sat, 24 May 2008 00:25:47 -0600
+Message-ID: <fa686aa40805232325w65d4f706i50798121a8cce263@mail.gmail.com>
 References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
-	<20080516224916.GA16702@zarina>
-	<fa686aa40805162202m336aade4qd6cfa5b17d6f3892@mail.gmail.com>
-	<200805211816.10753.david-b@pacbell.net>
+	<716a0f1b6c9a544b480c06a329072483@kernel.crashing.org>
+	<fa686aa40805211233h72a258bpf8c945b9f662d6ee@mail.gmail.com>
+	<200805221926.24112.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	Segher Boessenkool <segher-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
 To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200805211816.10753.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <200805221926.24112.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,45 +30,31 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 21, 2008 at 7:16 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> On Friday 16 May 2008, Grant Likely wrote:
->> In my mind; platform_data and the device tree are all about the same
->> thing: representation.  In other words, how to describe the
->> configuration of the hardware independent of the driver itself.
+On Thu, May 22, 2008 at 8:26 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> On Wednesday 21 May 2008, Grant Likely wrote:
+>> > spi-controller {
+>> >        #address-cells = 2;
+>> >        #size-cells = 0;
+>> >        some-device@0,f000 { reg = < 0 f000 >; } // CS 0, SPI address f000
+>> >        some-device@1,f000 { reg = < 1 f000 >; } // CS 1, SPI address f000
+>> >        some-device@1,ff00 { reg = < 1 ff00 >; } // CS 1, SPI address ff00
+>> > }
+>>
+>> For SPI the CS # *is* the address.  :-)
+>>
+>> Unlike I2C, SPI doesn't impose any protocol on the data.  It is all
+>> anonymous data out, anonymous data in, a clock and a chip select.
 >
-> Platform_data isn't what I'd call independent of drivers.
+> Very true ... but then there are SPI chips which embed addressing.
 >
-> The reason the data is there in the first place is that
-> the driver needs it ... and chose not to hard-wire it.
+> I have in mind the mcp23s08 (and mcp23s17) GPIO expanders, which
+> support up to four chips wired in parallel on a given chipselect.
+> The devices are distinguished by how two address pins are wired;
+> and two bits in the command byte must match them.  (I think they
+> just recycled an I2C design into the SPI world.)
 
-Oh, of course the driver needs it!  I'm not claiming otherwise.  More
-what I mean is that the driver doesn't need to be loaded or even
-configured in for the platform code to make use of pdata.
-
->> One of the things I find rather interesting is just how frequently
->> drivers using platform data structures have a big block of code which
->> simply copy pdata fields into identically named fields in the device
->> private data...
->
-> ... because platform data was designed as a partial template
-> for that driver, letting it do that.  (Sometimes without even
-> doing scale conversions.)  As drivers grow functionally, they
-> sometimes end up needing more platform data fields, to expose
-> data that previously didn't matter.
->
-> Whether that data can usefully be stored in flash (or ROM)
-> and handed out through the bootloader is something of a
-> manufacturing issue.
-
-I do not dispute any of that.  My point, however, is that pdata is
-typically used simply as a representation that is convenient for
-platform code to pass that data into the driver and that often drivers
-don't use that representation directly.  Instead, the data is
-explicitly copied explicitly field by field into the driver at probe
-time and is not touched again.  That says to me that driver developers
-view pdata as somewhat decoupled from the internal workings of the
-driver and in the case of many powerpc devices a different
-representation is more convenient; namely a device tree node.
+Very good point.  Okay, so we cannot assume any correlation between
+the number of CS lines and the number of child nodes to the SPI bus.
 
 Cheers,
 g.

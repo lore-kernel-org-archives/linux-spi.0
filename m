@@ -1,25 +1,22 @@
-From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: Re: [PATCH 3/4] [MMC] mmc_spi: add polling
-	support for the	carddetectline
-Date: Mon, 26 May 2008 19:37:47 +0400
-Message-ID: <20080526153747.GA31663@polina.dev.rtsoft.ru>
-References: <20080516165057.GC24196@polina.dev.rtsoft.ru>
-	<58A20A281BAF1047B4EAE68DE5C0BDC2F16E6A@zch01exm21.fsl.freescale.net>
-	<20080522123838.GA27149@polina.dev.rtsoft.ru>
-	<58A20A281BAF1047B4EAE68DE5C0BDC2F176EF@zch01exm21.fsl.freescale.net>
-Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
+From: Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Accelerometer,
+ Gyros and ADC's etc within the kernel.
+Date: Mon, 26 May 2008 17:23:40 +0100
+Message-ID: <483AE40C.60204@gmail.com>
+References: <4832A211.4040206@gmail.com>	<20080520132817.03fb74ea@hyperion.delvare>
+	<200805211752.15670.david-b@pacbell.net>
+	<48353E45.2080903@cam.ac.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Tabi Timur <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-To: Chen Gong <G.Chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Dmitry Torokhov <dtor-JGs/UdohzUI@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>,
+	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <58A20A281BAF1047B4EAE68DE5C0BDC2F176EF-bKEhWGtIRULiD3AT8lUqWFjVikpgYyvb5NbjCUgZEJk@public.gmane.org>
+In-Reply-To: <48353E45.2080903-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -31,38 +28,165 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, May 22, 2008 at 09:44:57PM +0800, Chen Gong wrote:
-[...]
-> > > I want to know whether every card working well ? Because 
-> > I'm working 
-> > > For 83xx MMC-over-SPI support, the presented concrete 
-> > methods I used 
-> > > as you do, but only 256M card seems good, 512M or 1G/2G 
-> > card all have 
-> > > some problems
-> > 
-> > So far I don't have cards larger than 256M. Will try to get 
-> > one though.
-> > 
-> Thanks, if you have any new test report pls contact me.
+Dear All,
 
-Just tested with Apacer 1GB MicroSD (connected through dumb adapter),
-it works quite well here. I've successfully wrote 10 mb file onto ext2
-formatted partition...
+This email is intended to summarize the results of the discussions over
+the last week or so and to open up to further comments on the way foward.
 
-> BTW, a fews days ago Joakim Tjernlund made a heavy fix for 
-> spi_mpc83xx.c to resolve clock glitch. But it looks no any impact
-> for me, but maybe it has positive effect for you.
+The original question was related to garnering opinions on how and where to
+support devices such as accelerometers, gyros, general purpose ADCs (and
+possibly DACs).  Typical interfaces are SPI and I2C, rates varying from 10Hz
+to many kHz.  Real time and buffered access needed depending on application.
 
-Yup, I use it.
+Conclusions:
 
-Btw, which mmc driver are you using? The one from MPC8610HPCD
-BSP or mainline's mmc_spi?
+ 1.  The hwmon subsystem is unsuitable as it is intended to provide
+relatively low frequency cached updates of sensor readings.
 
--- 
-Anton Vorontsov
-email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-irc://irc.freenode.net/bd2
+2. Definitely a bad idea to simply put such drivers in the relevant bus
+subsystems due to unmaintainability and probable long term interface
+divergence due to differing maintainers.
+
+3. Whilst input subsystem is probably the only place that these sorts
+of device could be currently included this would come at the cost of
+input_dev being too fat and undesirable anonymization of the devices
+
+4. Some stuff to be learned from comedi project (www.comedi.org).
+Based on a quick browse of their documentation it looks like there
+may be  stuff to learn on what sort of userspace interfaces are interesting
+but the drivers themselves are (as Matt originally stated) io-port based.
+
+5. General consensus seems to be on a new subsytem (we'll bash out a
+suitable name later - for now I don't want a name effectively guiding
+the functionality!)
+
+What's next
+
+Obviously the exact functionality of this subsystem is going to be somewhat
+up in the air until we have a wide range of devices supported.
+
+The minimum needed seems to be a control interface to configure the devices
+and some level of event interface (similar to input subsystem) to 
+indicate to
+userspace programs that something of interest to them has occured.
+As configuration of the devices is a relatively infrequent event
+(at least in the applications I work with), it seems to me that a 
+suitable sys
+interface, under a new class would provide this.
+
+Types of parameter:
+
+Chip related:
+read/write -- Offsets, gains, sensor biases.
+read only -- Factory set versions of the above, version numbers etc.
+
+Mode related:
+Some chips will operative in buffered and unbuffered modes.
+Things like single ended vs differential modes on ADCs.
+
+Interface related:
+Like the input subsystem, things like parameters of an associated character
+device, and the type of events this may return.  This would allow different
+complexities of event depending on what is going on.  Down the line this 
+may
+allow the turning off and on of individual events as appropriate. For 
+example,
+if no-one is interested in an interrupt event such as freefall detection 
+of an
+accelerometer then depending on hardware support we may be a) able to turn
+it off and free the relevant interrupt, or b) simply free the relevant 
+interrupt
+and ignore the event.
+
+Simple read of current value:
+As the devices will not always be generating interrupts, it probably 
+also makes
+sense to have interfaces here to get the current values of readings.   
+Either this
+will be from a cached value in an interrupt providing device, or 
+actually initialise
+a read from the device if appropriate.
+
+The other interface element would be a stripped down /dev/ device 
+similar to those
+used by the input subsystem.  However, it may make sense to have an 
+independent one
+of these for each and every chip present?  Does it make sense to ever 
+aggregate these,
+or should this effectively be left to select calls in the userspace 
+code?  There is also an
+issue here of whether we want to group similar devices.  I.e. should we 
+group all
+accelerometers? My personal view is, not at the moment as it would 
+complicate the
+handling of devices combining several types of sensor.
+
+The fun bit of this subsystem will be in how buffering of incoming data 
+is accomplished.
+As an example, lets say we want a 100Hz set of readings from the device. 
+Several
+possibilities exist:
+
+a) The device itself has a ring buffer (the VTI accelerometers are an 
+example of this). 
+If this is the case, how would people suggest we go about reading from 
+the ring buffer in
+the event of an interrupt (typically 3/4 full).  We could have a the 
+kernel module interpret
+this interrupt and effectively fill a ring buffer in the kernel from the 
+hardware one.  This
+is efficient on interrupts and the kernel based ring buffer could have a 
+size controllable
+through the sys interface. 
+
+b) The device triggers an interrupt on each 'data ready' after sampling 
+some analog
+measurement.  Do we generate an event on each of these? (seems like 
+overkill to me)
+or again use a ring buffer in the kernel to store the results and 
+perhaps send an event
+out after a (sysfs interface controlled) number of readings.  If a near 
+real-time app is
+wanting the data, then this would be set to zero to indicate need to 
+send an event on each
+reading. The ST LIS3L02DQ accelerometer falls into this category.  
+Complexities here
+are concerned with the need to look directly at the relevant gpio value 
+in order to establish
+whether another even has occured before the bottom half of the interrupt 
+has run. See
+the LIS3L02DQ driver I posted to the spi-devel mailing list for an example.
+
+c) The device samples only on a request over the bus.  Either these 
+could only be read
+from via the sysfs interface or an event sent through the dev character 
+device. 
+Also feasible would be a board specific element of the platform_data, 
+perhaps specifying
+functions to initialize a hardware periodic clock interrupt or similar
+(I've done this before, but it was clunky - at high rates you frequently 
+miss interrupts.)
+The MAX123x and MAX1363 ADCs fall into this category.
+
+Obviously the challenge in all this is to keep the number of interrupts 
+and indeed events (in
+the input subsystem sense of sending to userspace via a char device) to 
+a minimum.
+
+For other issues such as time stamping, whilst vital, to a certain 
+extent may need to be
+handled within largely within the individual drivers (due to the 
+different types of read above).
+Clearly the subsystem should provide helper functions for this wherever 
+possible.
+
+All comments welcome and thanks to everyone who contributed to the 
+original discussion.
+
+
+--
+
+Jonathan Cameron
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

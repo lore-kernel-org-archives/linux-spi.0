@@ -1,22 +1,25 @@
-From: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: Add OF binding support for
-	SPI busses
-Date: Sat, 24 May 2008 22:56:25 -0600
-Message-ID: <fa686aa40805242156p132ef760u30f5151107ecb1c0@mail.gmail.com>
-References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
-	<48384D13.6010608@scram.de>
-	<fa686aa40805241033x128c30b0v826717cc879a712e@mail.gmail.com>
-	<200805241045.47448.david-b@pacbell.net>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: Re: [PATCH 3/4] [MMC] mmc_spi: add polling
+	support for the	carddetectline
+Date: Mon, 26 May 2008 19:37:47 +0400
+Message-ID: <20080526153747.GA31663@polina.dev.rtsoft.ru>
+References: <20080516165057.GC24196@polina.dev.rtsoft.ru>
+	<58A20A281BAF1047B4EAE68DE5C0BDC2F16E6A@zch01exm21.fsl.freescale.net>
+	<20080522123838.GA27149@polina.dev.rtsoft.ru>
+	<58A20A281BAF1047B4EAE68DE5C0BDC2F176EF@zch01exm21.fsl.freescale.net>
+Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Jochen Friedrich <jochen-NIgtFMG+Po8@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Tabi Timur <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+To: Chen Gong <G.Chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200805241045.47448.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <58A20A281BAF1047B4EAE68DE5C0BDC2F176EF-bKEhWGtIRULiD3AT8lUqWFjVikpgYyvb5NbjCUgZEJk@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,23 +31,38 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, May 24, 2008 at 11:45 AM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> On Saturday 24 May 2008, Grant Likely wrote:
->> > Isn't the same true for drivers/of/gpio.c or drivers/of/of_i2c.c, as well?
->>
->> I would argue 'yes!'
->
-> ... all the more reason to have the SPI glue go there too,
-> matching the ACPI/PCI precedent as well as those others!
+On Thu, May 22, 2008 at 09:44:57PM +0800, Chen Gong wrote:
+[...]
+> > > I want to know whether every card working well ? Because 
+> > I'm working 
+> > > For 83xx MMC-over-SPI support, the presented concrete 
+> > methods I used 
+> > > as you do, but only 256M card seems good, 512M or 1G/2G 
+> > card all have 
+> > > some problems
+> > 
+> > So far I don't have cards larger than 256M. Will try to get 
+> > one though.
+> > 
+> Thanks, if you have any new test report pls contact me.
 
-Alright; I give!  I'll put it in drivers/of.
+Just tested with Apacer 1GB MicroSD (connected through dumb adapter),
+it works quite well here. I've successfully wrote 10 mb file onto ext2
+formatted partition...
 
-Cheers,
-g.
+> BTW, a fews days ago Joakim Tjernlund made a heavy fix for 
+> spi_mpc83xx.c to resolve clock glitch. But it looks no any impact
+> for me, but maybe it has positive effect for you.
+
+Yup, I use it.
+
+Btw, which mmc driver are you using? The one from MPC8610HPCD
+BSP or mainline's mmc_spi?
 
 -- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+Anton Vorontsov
+email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+irc://irc.freenode.net/bd2
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

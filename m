@@ -1,25 +1,10 @@
-From: "Chen Gong" <G.Chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH 3/4] [MMC] mmc_spi: add polling
-	support for thecarddetectline
-Date: Tue, 27 May 2008 10:11:45 +0800
-Message-ID: <58A20A281BAF1047B4EAE68DE5C0BDC2F5939E@zch01exm21.fsl.freescale.net>
-References: <20080516165057.GC24196@polina.dev.rtsoft.ru>
-	<58A20A281BAF1047B4EAE68DE5C0BDC2F16E6A@zch01exm21.fsl.freescale.net>
-	<20080522123838.GA27149@polina.dev.rtsoft.ru>
-	<58A20A281BAF1047B4EAE68DE5C0BDC2F176EF@zch01exm21.fsl.freescale.net>
-	<20080526153747.GA31663@polina.dev.rtsoft.ru>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Tabi Timur <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-To: <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+From: gds.009-9Onoh4P/yGk@public.gmane.org
+Subject: =?GB2312?B?18rBz6Oh?=
+Date: Tue, 27 May 2008 20:35:44 +0800
+Message-ID: <E1K0yPF-0003Hv-K0@mail.sourceforge.net>
+Content-Type: multipart/mixed; boundary="===============1549566465=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-class: urn:content-classes:message
-In-Reply-To: <20080526153747.GA31663-PHTr8nzUCjejyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -31,57 +16,73 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============1549566465==
+Content-Type: text/plain;charset="GB2312"
+
+贵公司负责人(经理/财务)您好：
+    我是华源盛实业有限公司的（浙江、上海、广州、江苏等地方有分公司）。我司实力雄
+
+厚，有着良好的社会关系。因进项较多现完成不了每月销售额度。每月有一部分增值税电脑
+
+发票（6%左右）和普通商品销售发票（1%-1.5%左右）优惠代开或合作，点数较低。还可以根
+
+据所做数量额度的大小来商讨优惠的点数。本公司郑重承诺所用绝对是真票！更希望能够有
+
+机会与贵司合作！
+
+代开发票范围如下：
+
+一．普通国税发票：1．商品销售  2．货物统一销售  3．工业(企业)销售。
  
+二．普通地税发票：
 
-> -----Original Message-----
-> From: Anton Vorontsov [mailto:avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org] 
-> Sent: 2008?5?26? 23:38
-> To: Chen Gong
-> Cc: Kumar Gala; David Brownell; Pierre Ossman; 
-> linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; 
-> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; 
-> linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; Tabi Timur
-> Subject: Re: [PATCH 3/4] [MMC] mmc_spi: add polling support 
-> for thecarddetectline
-> 
-> On Thu, May 22, 2008 at 09:44:57PM +0800, Chen Gong wrote:
-> [...]
-> > > > I want to know whether every card working well ? Because
-> > > I'm working
-> > > > For 83xx MMC-over-SPI support, the presented concrete
-> > > methods I used
-> > > > as you do, but only 256M card seems good, 512M or 1G/2G
-> > > card all have
-> > > > some problems
-> > > 
-> > > So far I don't have cards larger than 256M. Will try to get one 
-> > > though.
-> > > 
-> > Thanks, if you have any new test report pls contact me.
-> 
-> Just tested with Apacer 1GB MicroSD (connected through dumb 
-> adapter), it works quite well here. I've successfully wrote 
-> 10 mb file onto ext2 formatted partition...
+   1．运输(电脑版运输、货运代理、装卸、联运、海运)；
 
-Oh, thanks for your info. The card I used is Kingston 1G SD card.
+   2．其它服务(广告费、住宿费、会议费、定额餐饮、咨询费等)； 
 
-> 
-> > BTW, a fews days ago Joakim Tjernlund made a heavy fix for 
-> > spi_mpc83xx.c to resolve clock glitch. But it looks no any 
-> impact for 
-> > me, but maybe it has positive effect for you.
-> 
-> Yup, I use it.
-> 
-> Btw, which mmc driver are you using? The one from MPC8610HPCD 
-> BSP or mainline's mmc_spi?
+   3．其它(租赁、行政事业专用、机动车销售、房地产交易、税务代开)；
 
-:-( the mmc driver now in the MPC8610HPCD BSP is ported from uClinux
- by me, it has many problems, because at that time MMC-over-SPI driver
-doen't exist in the kernel.
+   4．建筑安装、加工修理等专用发票。
 
+郑重承诺：所有票据均为税务局领出或由企业直接开出，并可网上查询或税务验证后付款。
+
+如贵公司有代开发票方面的问题，欢迎来电咨询，我们会在第一时间回复您。 
+    
+  详情请电：13926514489
+
+  联  系 人：廖京强
+
+  邮    箱：gds0089@163．com
+
+  QQ   号码：947436138
+
+
+   顺祝
+       
+        商祺！ 
+　　　　　　　　　　　　　　  　　　　　            　
+                                                          
+
+
+--===============1549566465==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
+--===============1549566465==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1549566465==--

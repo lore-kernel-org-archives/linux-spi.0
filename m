@@ -1,10 +1,21 @@
-From: gds.009-9Onoh4P/yGk@public.gmane.org
-Subject: =?GB2312?B?18rBz6Oh?=
-Date: Tue, 27 May 2008 20:35:44 +0800
-Message-ID: <E1K0yPF-0003Hv-K0@mail.sourceforge.net>
-Content-Type: multipart/mixed; boundary="===============1549566465=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: mark gross <mgross-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: Accelerometer,
+	Gyros and ADC's etc within	the kernel.
+Date: Tue, 27 May 2008 08:43:31 -0700
+Message-ID: <20080527154331.GA29868@linux.intel.com>
+References: <4832A211.4040206@gmail.com>
+	<20080520175041.GA30909@linux.intel.com> <4833EE22.80502@cam.ac.uk>
+Reply-To: mgross-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>
+To: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <4833EE22.80502-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,73 +27,132 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1549566465==
-Content-Type: text/plain;charset="GB2312"
+On Wed, May 21, 2008 at 10:40:50AM +0100, Jonathan Cameron wrote:
 
-贵公司负责人(经理/财务)您好：
-    我是华源盛实业有限公司的（浙江、上海、广州、江苏等地方有分公司）。我司实力雄
+First I'm sorry for not checking my email for a week and the late reply.
 
-厚，有着良好的社会关系。因进项较多现完成不了每月销售额度。每月有一部分增值税电脑
+> Hi Mark,
+>
+>>> ST Micro LIS3L02DQ 3D accelerometer.  SPI device, no buffering, interrupt 
+>>> pin
+>>> raised high on new data being available. Currently the driver assumes, if
+>>> interrupts are enabled, that this is connected to a specified gpio.
+>>> (http://www.st.com/stonline/books/pdf/docs/10175.pdf)
+>> FWIW: I have this device talking to a PIC-18 and pushing the results
+>> over the serial port.
+>
+> That's certainly interesting and I guess one of the easiest ways of getting 
+> data from spi to a desktop machine. I'll admit my interest is more with 
+> embedded machines.
+>
+>> WRT linux support, I can't think of a generalized way to create a driver
+>> that would be able to be used with this device in Linux.  You need to
+>> know witch IRQ line the DR line is connected too, and if you are
+>> bit-banging the SPI data off the thing, then you need to know which
+>> GPIO's of the host CPU you'll be using. 
+> Yes, and that means we would use the delights of platform data and the 
+> generic gpio subsystem.  Although I believe generic gpio isn't available on 
+> every platform as yet, it is getting there and is certainly in place for 
+> ARM (and cleans up an awful lot of hardware interfaces!)
+>> If you have SPI hardware then
+>> you need to know where to pull the data from.  The problem doesn't seem to
+>> generalize well.
+> Yes, the intention would not be to generalize the hardware comms, but 
+> rather the
+> interface on the user side.  This is similar to a number of other 
+> subsystems such as hwmon, where you share functionality as much as 
+> possible, but allow very different approaches to things like actual 
+> hardware register reads as and when they are necessary.
 
-发票（6%左右）和普通商品销售发票（1%-1.5%左右）优惠代开或合作，点数较低。还可以根
+Ok, say the HW SPI is pushed down to some lower level driver.  These
+things send streaming data, and sometimes signals (free-fall detect) out
+of band WRT the SPI comms.
 
-据所做数量额度的大小来商讨优惠的点数。本公司郑重承诺所用绝对是真票！更希望能够有
+I would like to see how a higher level API could encapsulate the
+generalization of a class of such devices.
 
-机会与贵司合作！
+Also, I'm not sure how one could generalize SPI communications at a high
+level given its bi-directional nature.
 
-代开发票范围如下：
+I guess I need to see some header files showing what you are thinking
+about.
 
-一．普通国税发票：1．商品销售  2．货物统一销售  3．工业(企业)销售。
- 
-二．普通地税发票：
-
-   1．运输(电脑版运输、货运代理、装卸、联运、海运)；
-
-   2．其它服务(广告费、住宿费、会议费、定额餐饮、咨询费等)； 
-
-   3．其它(租赁、行政事业专用、机动车销售、房地产交易、税务代开)；
-
-   4．建筑安装、加工修理等专用发票。
-
-郑重承诺：所有票据均为税务局领出或由企业直接开出，并可网上查询或税务验证后付款。
-
-如贵公司有代开发票方面的问题，欢迎来电咨询，我们会在第一时间回复您。 
-    
-  详情请电：13926514489
-
-  联  系 人：廖京强
-
-  邮    箱：gds0089@163．com
-
-  QQ   号码：947436138
+Keep in mind that one abstraction of these devices is they are simply
+streaming A2D 16 bit data values over SPI (or I2C).  The size of the
+data set is a function of the sensor axes.
 
 
-   顺祝
-       
-        商祺！ 
-　　　　　　　　　　　　　　  　　　　　            　
-                                                          
+>
+>> Also, If you are playing with accelerometer data, you likely need some
+>> real time support or at lest a reliable time stamping of the data to do
+>> anything interesting.
+> Definitely. Obviously the accuracy of this time stamp is going to be 
+> limited by
+> the variable nature of when an interrupt handler picks it up, but knowledge 
+> of the device specs can allow filtering of this timing data.  This is 
+> certainly something we would want to consider at a later date although it 
+> may well be more sensible to leave this to userspace applications.
+>
+>> Another problem area is around SPI itself.  There are variations of
+>> device implementations around chip select polarity, clock biasing
+>> (rising,falling, or midpoint) sampling from one SPI part to the next.
+> Indeed.  This is well handled by the SPI subsystem. I've spent far too much 
+> time with a scope recently fiddling with these parameters for badly 
+> documented chips!
+>
+>>> VTI SCA3000 E05 3D accelerometer equiped with substantial ring buffer. 
+>>> SPI
+>>> device.  Can operate either in buffered or direct mode.  In buffered 
+>>> mode, interrupts
+>>> can be used to indicate when the ring buffer is 3/4 full triggering a 
+>>> download to
+>>> a larger ring buffer in the kernel if necessary.
+>>> (http://www.vti.fi/en/products-solutions/products/accelerometers/sca3000-accelerometers/)
+>>>
+>> ring buffered data can make RT applications harder...
+> Agreed.  With this sort of device two modes would be needed (and are 
+> supported by the hardware).  The first gives direct data access and the 
+> second uses the ring buffer.  Which you use would obviously be dependent on 
+> the application. Some applications want the most recent data on all 
+> occasions, whilst some will be more interested in ensuring that all data is 
+> captured.
+>
+>>>
+>>> Would be nice if practical to allow the framework to include RS232 
+>>> devices such
+>>> as those from www.xsens.com, www.isense.com and others.
+>> I'm not sure what you are asking for, you started off with SPI driver
+>> for interfacing a handful of accelerometer devices.  Now your talking
+>> about the serial port.
+>
+> The question here is concerned with standardising mainly the userspace 
+> interfaces (and hardware interfaces only when appropriate). Some of these 
+> devices (the ST accel above for example) support multiple hardware 
+> interfaces specs (I2C and SPI for that one).  So in a similar way to it 
+> making sense to group all TV adapters irrespective of how they are 
+> interfaced to the computer, in order to ensure a consistent interface to 
+> user space, it makes sense to share these interfaces amongst drivers 
+> talking to these devices irrespective of what their hardware interface is.
+
+I guess I need to see some header files to see where you are going with
+this idea.  To be useful you'll also need to handle rotation sensors and
+communicate the temperature bias's up the stack too.
 
 
---===============1549566465==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+good luck keep me posted on where your going with this, it is
+interesting to me.
+
+--mgross
+
+>> Besides the consumer of accelerometer data is user space applications
+>> (mine attempt to be somewhat RT applications) 
+>
+> Thanks,
+>
+> --
+> Jonathan Cameron
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============1549566465==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1549566465==--

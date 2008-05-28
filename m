@@ -1,20 +1,14 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: Accelerometer,
-	Gyros and ADC's etc within the kernel.
-Date: Tue, 27 May 2008 16:42:42 -0700
-Message-ID: <200805271642.42291.david-b@pacbell.net>
-References: <4832A211.4040206@gmail.com>
-	<200805211753.39133.david-b@pacbell.net>
-	<20080527155641.GB29868@linux.intel.com>
+From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Subject: SPI: spi_s3c24xx bus_num fixup due to missing
+	part of previous	patch
+Date: Wed, 28 May 2008 20:01:10 +0100
+Message-ID: <20080528190110.GA6578@fluff.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>
-To: mgross-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: patch-out-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, Tom Walsh <tomw-jOXnU76SZe3OK8mupsKPhw@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080527155641.GB29868-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,41 +21,39 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 27 May 2008, mark gross wrote:
-> =
+The original "Pass the bus number we expect the S3C24XX SPI driver to attach
+to via the platform data." [1]  patch was mis-sent, and missed two important
+parts of the diff, which was to actually set the bus_num field and add
+the relevant field to the platform data.
 
-> > > Another problem area is around SPI itself. =A0There are variations of
-> > > device implementations around chip select polarity, clock biasing
-> > > (rising,falling, or midpoint) sampling from one SPI part to the next.
-> > =
+[1] git commit 50f426b55d919dd017af35bb6a08753d1f262920
 
-> > Midpoint? =A0That's not one I've come across before. =A0All four
-> > standard SPI clock/sample/shift modes are already supported
-> > in the SPI framework though. =A0Ditto active-high chipselects
-> > (vs normal active-low) etc.
-> =
+Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-> Yeah, its one of the sampling modes for the PIC18F4455 its one of the
-> master mode sampling options =A0(see page 194 of
-> http://ww1.microchip.com/downloads/en/DeviceDoc/39632D.pdf )
-
-Actually figure 19-3 (p. 198) may be a bit more clear.
-
-Curious.  That PIC18F controller has *three* bits ... equivalents
-of CPOL and CPHA, plus a bit saying whether to wait a whole or
-half clock after the leading clock edge before sampling it.
-
-A quick survey of some other SPI chips suggests that the most
-conventional interpretation is to sample on the trailing edge
-of the clock, and not presume long hold times.
-
-I would surely hope the SPI interface spec doesn't have to get
-into the mess of timing variations which typify anyone trying to
-make memory controllers do the Right thing ... *shudder* ...
-
-- Dave
-
-
+Index: linux-2.6.25-quilt3/include/asm-arm/arch-s3c2410/spi.h
+===================================================================
+--- linux-2.6.25-quilt3.orig/include/asm-arm/arch-s3c2410/spi.h	2008-04-18 11:34:07.000000000 +0100
++++ linux-2.6.25-quilt3/include/asm-arm/arch-s3c2410/spi.h	2008-04-18 11:36:15.000000000 +0100
+@@ -16,6 +16,7 @@
+ struct s3c2410_spi_info {
+ 	unsigned long		 pin_cs;	/* simple gpio cs */
+ 	unsigned int		 num_cs;	/* total chipselects */
++	int			 bus_num;       /* bus number to use. */
+ 
+ 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+ };
+Index: linux-2.6.25-quilt3/drivers/spi/spi_s3c24xx.c
+===================================================================
+--- linux-2.6.25-quilt3.orig/drivers/spi/spi_s3c24xx.c	2008-04-18 11:36:30.000000000 +0100
++++ linux-2.6.25-quilt3/drivers/spi/spi_s3c24xx.c	2008-04-18 11:39:10.000000000 +0100
+@@ -270,6 +270,7 @@ static int __init s3c24xx_spi_probe(stru
+ 	/* setup the master state. */
+ 
+ 	master->num_chipselect = hw->pdata->num_cs;
++	master->bus_num = pdata->bus_num;
+ 
+ 	/* setup the state for the bitbang driver */
+ 
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

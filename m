@@ -1,15 +1,19 @@
-From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Subject: SPI: spi_s3c24xx bus_num fixup due to missing
-	part of previous	patch
-Date: Wed, 28 May 2008 20:01:10 +0100
-Message-ID: <20080528190110.GA6578@fluff.org>
+From: Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Accelerometer,
+ Gyros and ADC's etc within the kernel.
+Date: Thu, 29 May 2008 12:57:19 +0100
+Message-ID: <483E9A1F.4070902@gmail.com>
+References: <4832A211.4040206@gmail.com>
+	<20080520175041.GA30909@linux.intel.com> <4833EE22.80502@cam.ac.uk>
+	<20080527154331.GA29868@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: patch-out-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, Tom Walsh <tomw-jOXnU76SZe3OK8mupsKPhw@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: mgross-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <20080527154331.GA29868-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,39 +25,112 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The original "Pass the bus number we expect the S3C24XX SPI driver to attach
-to via the platform data." [1]  patch was mis-sent, and missed two important
-parts of the diff, which was to actually set the bus_num field and add
-the relevant field to the platform data.
 
-[1] git commit 50f426b55d919dd017af35bb6a08753d1f262920
+> 
+> Ok, say the HW SPI is pushed down to some lower level driver.  These
+> things send streaming data, and sometimes signals (free-fall detect) out
+> of band WRT the SPI comms.
+Indeed.  This would have to handled using interrupts based on the
+generic gpio interface. (see the LIS3L02DQ driver on the SPI-devel
+mailing list for an example of how this might work.)
+ 
+> I would like to see how a higher level API could encapsulate the
+> generalization of a class of such devices.
+> 
+> Also, I'm not sure how one could generalize SPI communications at a high
+> level given its bi-directional nature.
+> 
+> I guess I need to see some header files showing what you are thinking
+> about.
+Sure.  I'll get something put together and sent out asap. The general
+form of this is going to look like a combination of the hwmon
+interface via sysfs and something similar to the input subsystems
+approach of using events sent over character devices.  The interesting
+bit is going to be working out how to provide fairly generic interface
+to ring buffers, whether these reside in the kernel or on the device
+itself.
 
-Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+> 
+> Keep in mind that one abstraction of these devices is they are simply
+> streaming A2D 16 bit data values over SPI (or I2C).  The size of the
+> data set is a function of the sensor axes.
+This is of course true, but there still seem to be some advantages in
+providing some common interfaces for these devices.  Almost all
+digital interfaced accelerometers share a number of common elements
+not typically found in ADC's.  These include bias and gain as well as
+commonly found alarm signals.  
 
-Index: linux-2.6.25-quilt3/include/asm-arm/arch-s3c2410/spi.h
-===================================================================
---- linux-2.6.25-quilt3.orig/include/asm-arm/arch-s3c2410/spi.h	2008-04-18 11:34:07.000000000 +0100
-+++ linux-2.6.25-quilt3/include/asm-arm/arch-s3c2410/spi.h	2008-04-18 11:36:15.000000000 +0100
-@@ -16,6 +16,7 @@
- struct s3c2410_spi_info {
- 	unsigned long		 pin_cs;	/* simple gpio cs */
- 	unsigned int		 num_cs;	/* total chipselects */
-+	int			 bus_num;       /* bus number to use. */
- 
- 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
- };
-Index: linux-2.6.25-quilt3/drivers/spi/spi_s3c24xx.c
-===================================================================
---- linux-2.6.25-quilt3.orig/drivers/spi/spi_s3c24xx.c	2008-04-18 11:36:30.000000000 +0100
-+++ linux-2.6.25-quilt3/drivers/spi/spi_s3c24xx.c	2008-04-18 11:39:10.000000000 +0100
-@@ -270,6 +270,7 @@ static int __init s3c24xx_spi_probe(stru
- 	/* setup the master state. */
- 
- 	master->num_chipselect = hw->pdata->num_cs;
-+	master->bus_num = pdata->bus_num;
- 
- 	/* setup the state for the bitbang driver */
- 
+Actually, on this point, it may well make sense to provide an
+accelerometer driver that is designed to run on top of any generic ADC
+driver, thus providing (based on a suitable board specific
+configuration) userspace access to analog accelerometers connected in
+this fashion.  This is definitely one for some way down the line!
+
+> 
+>>> Also, If you are playing with accelerometer data, you likely need some
+>>> real time support or at lest a reliable time stamping of the data to do
+>>> anything interesting.
+>> Definitely. Obviously the accuracy of this time stamp is going to be 
+>> limited by
+>> the variable nature of when an interrupt handler picks it up, but knowledge 
+>> of the device specs can allow filtering of this timing data.  This is 
+>> certainly something we would want to consider at a later date although it 
+>> may well be more sensible to leave this to userspace applications.
+>>
+>>> Another problem area is around SPI itself.  There are variations of
+>>> device implementations around chip select polarity, clock biasing
+>>> (rising,falling, or midpoint) sampling from one SPI part to the next.
+>> Indeed.  This is well handled by the SPI subsystem. I've spent far too much 
+>> time with a scope recently fiddling with these parameters for badly 
+>> documented chips!
+>>
+>>>> VTI SCA3000 E05 3D accelerometer equiped with substantial ring buffer. 
+>>>> SPI
+>>>> device.  Can operate either in buffered or direct mode.  In buffered 
+>>>> mode, interrupts
+>>>> can be used to indicate when the ring buffer is 3/4 full triggering a 
+>>>> download to
+>>>> a larger ring buffer in the kernel if necessary.
+>>>> (http://www.vti.fi/en/products-solutions/products/accelerometers/sca3000-accelerometers/)
+>>>>
+>>> ring buffered data can make RT applications harder...
+>> Agreed.  With this sort of device two modes would be needed (and are 
+>> supported by the hardware).  The first gives direct data access and the 
+>> second uses the ring buffer.  Which you use would obviously be dependent on 
+>> the application. Some applications want the most recent data on all 
+>> occasions, whilst some will be more interested in ensuring that all data is 
+>> captured.
+>>
+>>>> Would be nice if practical to allow the framework to include RS232 
+>>>> devices such
+>>>> as those from www.xsens.com, www.isense.com and others.
+>>> I'm not sure what you are asking for, you started off with SPI driver
+>>> for interfacing a handful of accelerometer devices.  Now your talking
+>>> about the serial port.
+>> The question here is concerned with standardising mainly the userspace 
+>> interfaces (and hardware interfaces only when appropriate). Some of these 
+>> devices (the ST accel above for example) support multiple hardware 
+>> interfaces specs (I2C and SPI for that one).  So in a similar way to it 
+>> making sense to group all TV adapters irrespective of how they are 
+>> interfaced to the computer, in order to ensure a consistent interface to 
+>> user space, it makes sense to share these interfaces amongst drivers 
+>> talking to these devices irrespective of what their hardware interface is.
+> 
+> I guess I need to see some header files to see where you are going with
+> this idea.  To be useful you'll also need to handle rotation sensors and
+> communicate the temperature bias's up the stack too.
+
+Definitely, although to get a reasonable number of devices integrated
+quickly they may not all support access to everything we would like
+initially. 
+
+> 
+> good luck keep me posted on where your going with this, it is
+> interesting to me.
+Will do,
+--
+Jonathan Cameron
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

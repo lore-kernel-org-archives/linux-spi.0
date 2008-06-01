@@ -1,19 +1,21 @@
-From: Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Accelerometer,
- Gyros and ADC's etc within the kernel.
-Date: Thu, 29 May 2008 12:57:19 +0100
-Message-ID: <483E9A1F.4070902@gmail.com>
-References: <4832A211.4040206@gmail.com>
-	<20080520175041.GA30909@linux.intel.com> <4833EE22.80502@cam.ac.uk>
-	<20080527154331.GA29868@linux.intel.com>
+From: Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+Subject: Re: [PATCH 1/3] mmc: add support for
+	card-detection polling
+Date: Sun, 1 Jun 2008 12:23:36 +0200
+Message-ID: <20080601122336.71915642@mjolnir.drzeus.cx>
+References: <20080523154204.GA19803@polina.dev.rtsoft.ru>
+	<20080523154340.GA24862@polina.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: mgross-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	Jochen Friedrich <jochen-NIgtFMG+Po8@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Timur Tabi <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080527154331.GA29868-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20080523154340.GA24862-PHTr8nzUCjejyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,112 +27,28 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Fri, 23 May 2008 19:43:40 +0400
+Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org> wrote:
 
+> Some hosts (and boards that use mmc_spi) do not use interrupts on the CD
+> line, so they can't trigger mmc_detect_change. We want to poll the card
+> and see if there was a change. 1 second poll interval seems resonable.
 > 
-> Ok, say the HW SPI is pushed down to some lower level driver.  These
-> things send streaming data, and sometimes signals (free-fall detect) out
-> of band WRT the SPI comms.
-Indeed.  This would have to handled using interrupts based on the
-generic gpio interface. (see the LIS3L02DQ driver on the SPI-devel
-mailing list for an example of how this might work.)
- 
-> I would like to see how a higher level API could encapsulate the
-> generalization of a class of such devices.
+> This patch also implements .get_cd() host operation, that could be used
+> by the hosts that are able to report card-detect status without need to
+> talk MMC.
 > 
-> Also, I'm not sure how one could generalize SPI communications at a high
-> level given its bi-directional nature.
-> 
-> I guess I need to see some header files showing what you are thinking
-> about.
-Sure.  I'll get something put together and sent out asap. The general
-form of this is going to look like a combination of the hwmon
-interface via sysfs and something similar to the input subsystems
-approach of using events sent over character devices.  The interesting
-bit is going to be working out how to provide fairly generic interface
-to ring buffers, whether these reside in the kernel or on the device
-itself.
+> Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+> ---
 
-> 
-> Keep in mind that one abstraction of these devices is they are simply
-> streaming A2D 16 bit data values over SPI (or I2C).  The size of the
-> data set is a function of the sensor axes.
-This is of course true, but there still seem to be some advantages in
-providing some common interfaces for these devices.  Almost all
-digital interfaced accelerometers share a number of common elements
-not typically found in ADC's.  These include bias and gain as well as
-commonly found alarm signals.  
+Applied the whole lot. Thanks. :)
 
-Actually, on this point, it may well make sense to provide an
-accelerometer driver that is designed to run on top of any generic ADC
-driver, thus providing (based on a suitable board specific
-configuration) userspace access to analog accelerometers connected in
-this fashion.  This is definitely one for some way down the line!
+Rgds
+-- 
+     -- Pierre Ossman
 
-> 
->>> Also, If you are playing with accelerometer data, you likely need some
->>> real time support or at lest a reliable time stamping of the data to do
->>> anything interesting.
->> Definitely. Obviously the accuracy of this time stamp is going to be 
->> limited by
->> the variable nature of when an interrupt handler picks it up, but knowledge 
->> of the device specs can allow filtering of this timing data.  This is 
->> certainly something we would want to consider at a later date although it 
->> may well be more sensible to leave this to userspace applications.
->>
->>> Another problem area is around SPI itself.  There are variations of
->>> device implementations around chip select polarity, clock biasing
->>> (rising,falling, or midpoint) sampling from one SPI part to the next.
->> Indeed.  This is well handled by the SPI subsystem. I've spent far too much 
->> time with a scope recently fiddling with these parameters for badly 
->> documented chips!
->>
->>>> VTI SCA3000 E05 3D accelerometer equiped with substantial ring buffer. 
->>>> SPI
->>>> device.  Can operate either in buffered or direct mode.  In buffered 
->>>> mode, interrupts
->>>> can be used to indicate when the ring buffer is 3/4 full triggering a 
->>>> download to
->>>> a larger ring buffer in the kernel if necessary.
->>>> (http://www.vti.fi/en/products-solutions/products/accelerometers/sca3000-accelerometers/)
->>>>
->>> ring buffered data can make RT applications harder...
->> Agreed.  With this sort of device two modes would be needed (and are 
->> supported by the hardware).  The first gives direct data access and the 
->> second uses the ring buffer.  Which you use would obviously be dependent on 
->> the application. Some applications want the most recent data on all 
->> occasions, whilst some will be more interested in ensuring that all data is 
->> captured.
->>
->>>> Would be nice if practical to allow the framework to include RS232 
->>>> devices such
->>>> as those from www.xsens.com, www.isense.com and others.
->>> I'm not sure what you are asking for, you started off with SPI driver
->>> for interfacing a handful of accelerometer devices.  Now your talking
->>> about the serial port.
->> The question here is concerned with standardising mainly the userspace 
->> interfaces (and hardware interfaces only when appropriate). Some of these 
->> devices (the ST accel above for example) support multiple hardware 
->> interfaces specs (I2C and SPI for that one).  So in a similar way to it 
->> making sense to group all TV adapters irrespective of how they are 
->> interfaced to the computer, in order to ensure a consistent interface to 
->> user space, it makes sense to share these interfaces amongst drivers 
->> talking to these devices irrespective of what their hardware interface is.
-> 
-> I guess I need to see some header files to see where you are going with
-> this idea.  To be useful you'll also need to handle rotation sensors and
-> communicate the temperature bias's up the stack too.
-
-Definitely, although to get a reasonable number of devices integrated
-quickly they may not all support access to everything we would like
-initially. 
-
-> 
-> good luck keep me posted on where your going with this, it is
-> interesting to me.
-Will do,
---
-Jonathan Cameron
-
+  Linux kernel, MMC maintainer        http://www.kernel.org
+  rdesktop, core developer          http://www.rdesktop.org
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft

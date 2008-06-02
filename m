@@ -1,9 +1,9 @@
-From: =?GB2312?B?wdbQob3j?= <sheshey-9Onoh4P/yGk@public.gmane.org>
-Subject: =?GB2312?B?t6IvxrE=?=
-Date: Sun, 1 Jun 2008 22:43:25 +0800
-Message-ID: <E1K2omJ-0002Ee-RG@mail.sourceforge.net>
-Reply-To: sheshey-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============0114423541=="
+From: china-gift-9Onoh4P/yGk@public.gmane.org
+Subject: =?GB2312?B?0rXO8cGqz7U=?=
+Date: Tue, 3 Jun 2008 06:09:41 +0800
+Message-ID: <E1K3IDl-0007GO-1D@mail.sourceforge.net>
+Reply-To: china-gift-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0953083840=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,32 +17,26 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0114423541==
+--===============0953083840==
 Content-Type: text/plain;charset="GB2312"
 
-您好!
-    
-       本公司是税务机关授权公司,可优惠对外开具(发/票),
-
-   专业代理普通国税,地税(发/票)与有关配套证明,
-
-   代开范围:(商品销售,广告,国内运输,国际货运,咨询,住宿,
-
-   建筑安装等等其他服务行业(发/票),贵公司在做帐方面或
-
-   进销方面,我司可提供全方面服务,
-    
-   
-   联系人:林小姐
-   
-   电  话: 136 8686 7312,
-   
-   邮  箱:  lin13686867312-KN7UnAbNpbg@public.gmane.org,
-   
-   请保留号码以备急用!
+          您好！
+              为方便贵公司做帐及提高经济效益。我公司现可代开发票。发票正规，
+              点数十分优惠！可验票后付款。
+              商品销售发票，广告发票，运输发票，服务发票，餐饮发票，建筑安装
+              发票,增值税发票等
+                （1）公司为一般纳税企业没有优惠政策而想合法避税的
+                （2）公司帐目进项与出项差额过大，需补充差额的
+                （3）对外销售商品或提供技术服务暂未正式申领的
+                （4）外出采购或公干而服务商没有提供可以报销的发票 
+                （5）事业单位记帐补帐冲帐旧帐整理,需要咨询的
+                （6）其他项目的
+                                联系人：周莉
+                                联系号：135 3812 9262
+                                  QQ号：784825633
 
 
---===============0114423541==
+--===============0953083840==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -52,7 +46,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============0114423541==
+--===============0953083840==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -63,4 +57,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0114423541==--
+--===============0953083840==--

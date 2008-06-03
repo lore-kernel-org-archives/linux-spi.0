@@ -1,11 +1,22 @@
-From: china-gift-9Onoh4P/yGk@public.gmane.org
-Subject: =?GB2312?B?0rXO8cGqz7U=?=
-Date: Tue, 3 Jun 2008 06:09:41 +0800
-Message-ID: <E1K3IDl-0007GO-1D@mail.sourceforge.net>
-Reply-To: china-gift-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============0953083840=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
+Subject: Re: [PATCH 3/3] mmc: change .get_ro() callback
+	semantics
+Date: Tue, 3 Jun 2008 12:07:49 +0200
+Message-ID: <200806031207.49843.marc.pignat@hevs.ch>
+References: <20080523154204.GA19803@polina.dev.rtsoft.ru>
+	<20080523154347.GC24862@polina.dev.rtsoft.ru>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jochen Friedrich <jochen-NIgtFMG+Po8@public.gmane.org>,
+	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Timur Tabi <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
+To: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080523154347.GC24862-PHTr8nzUCjejyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,44 +28,52 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0953083840==
-Content-Type: text/plain;charset="GB2312"
+Hi all!
 
-          您好！
-              为方便贵公司做帐及提高经济效益。我公司现可代开发票。发票正规，
-              点数十分优惠！可验票后付款。
-              商品销售发票，广告发票，运输发票，服务发票，餐饮发票，建筑安装
-              发票,增值税发票等
-                （1）公司为一般纳税企业没有优惠政策而想合法避税的
-                （2）公司帐目进项与出项差额过大，需补充差额的
-                （3）对外销售商品或提供技术服务暂未正式申领的
-                （4）外出采购或公干而服务商没有提供可以报销的发票 
-                （5）事业单位记帐补帐冲帐旧帐整理,需要咨询的
-                （6）其他项目的
-                                联系人：周莉
-                                联系号：135 3812 9262
-                                  QQ号：784825633
+On Friday 23 May 2008, Anton Vorontsov wrote:
+> get_ro() callback must return values >= 0 for its logical state, and
+...
+>  static void pxamci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> index f2e9885..ef3b773 100644
+> --- a/include/linux/mmc/host.h
+> +++ b/include/linux/mmc/host.h
+> @@ -55,6 +55,9 @@ struct mmc_host_ops {
+>  	 * Avoid calling these three functions too often or in a "fast path",
+>  	 * since underlaying controller might implement them in an expensive
+>  	 * and/or slow way.
+> +	 *
+> +	 * .get_ro and .get_cd should return >= 0 for their logical values,
+> +	 * or negative errno value in case of error.
+>  	 */
+
+I would suggest to use something more strict (bulletproof), something like:
+
+/*
+ * get_ro will return:
+ *   0 for a read/write card
+ *   1 for a read-only card 
+ *   -ENOSYS when not supported
+ *   or a negative errno when something bad happened
+ * 
+ * get_cd will return:
+ *   0 for a absent card
+ *   1 for a present card 
+ *   -ENOSYS when not supported
+ *   or a negative errno when something bad happened
+ */
+
+I think we have missed one important information: which context these callbacks
+can rely on (hard_irq, soft_irq, ...).
 
 
---===============0953083840==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+
+Best regards
+
+Marc
+
 
 -------------------------------------------------------------------------
 This SF.net email is sponsored by: Microsoft
 Defy all challenges. Microsoft(R) Visual Studio 2008.
 http://clk.atdmt.com/MRT/go/vse0120000070mrt/direct/01/
---===============0953083840==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0953083840==--

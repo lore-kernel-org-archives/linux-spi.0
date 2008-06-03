@@ -1,21 +1,12 @@
-From: Marc Pignat <marc.pignat-7TsPiqsLilE@public.gmane.org>
-Subject: Re: [PATCH 3/3] mmc: change .get_ro() callback
-	semantics
-Date: Tue, 3 Jun 2008 12:07:49 +0200
-Message-ID: <200806031207.49843.marc.pignat@hevs.ch>
-References: <20080523154204.GA19803@polina.dev.rtsoft.ru>
-	<20080523154347.GC24862@polina.dev.rtsoft.ru>
+From: "Hans J. Koch" <hjk-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+Subject: Driver for ADC088S052
+Date: Tue, 3 Jun 2008 16:59:32 +0200
+Message-ID: <20080603145927.GA2338@local>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jochen Friedrich <jochen-NIgtFMG+Po8@public.gmane.org>,
-	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Timur Tabi <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-To: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080523154347.GC24862-PHTr8nzUCjejyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -28,49 +19,18 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi all!
+Hi,
+I need a driver for an ADC088S052 (National Semiconductor). This is an
+8-bit successive-approximation A/D converter with 8 multiplexed inputs
+and an SPI interface.
+It's relatively new, and Google doesn't report anything useful for
+Linux. So I don't have much hope, but I try it anyway:
 
-On Friday 23 May 2008, Anton Vorontsov wrote:
-> get_ro() callback must return values >= 0 for its logical state, and
-...
->  static void pxamci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
-> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-> index f2e9885..ef3b773 100644
-> --- a/include/linux/mmc/host.h
-> +++ b/include/linux/mmc/host.h
-> @@ -55,6 +55,9 @@ struct mmc_host_ops {
->  	 * Avoid calling these three functions too often or in a "fast path",
->  	 * since underlaying controller might implement them in an expensive
->  	 * and/or slow way.
-> +	 *
-> +	 * .get_ro and .get_cd should return >= 0 for their logical values,
-> +	 * or negative errno value in case of error.
->  	 */
+Is anybody working on a driver for that chip, or knows of such a
+project? Any other hints?
 
-I would suggest to use something more strict (bulletproof), something like:
-
-/*
- * get_ro will return:
- *   0 for a read/write card
- *   1 for a read-only card 
- *   -ENOSYS when not supported
- *   or a negative errno when something bad happened
- * 
- * get_cd will return:
- *   0 for a absent card
- *   1 for a present card 
- *   -ENOSYS when not supported
- *   or a negative errno when something bad happened
- */
-
-I think we have missed one important information: which context these callbacks
-can rely on (hard_irq, soft_irq, ...).
-
-
-
-Best regards
-
-Marc
+Thanks,
+Hans
 
 
 -------------------------------------------------------------------------

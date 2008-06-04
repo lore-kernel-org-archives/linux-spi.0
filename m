@@ -1,16 +1,15 @@
-From: "Hans J. Koch" <hjk-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Subject: Re: Driver for ADC088S052
-Date: Tue, 3 Jun 2008 23:28:22 +0200
-Message-ID: <20080603212822.GA3269@local>
-References: <20080603145927.GA2338@local> <4845843E.2040000@cam.ac.uk>
+From: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] pxa2xx_spi.c: remove redundant
+ initialization, spelling fix, more verbose error
+Date: Wed, 4 Jun 2008 16:47:20 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.0806041645070.32657@axis700.grange>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <4845843E.2040000-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,53 +21,50 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jun 03, 2008 at 06:49:50PM +0100, Jonathan Cameron wrote:
-> Hi Hans,
+Minor fixes: remove redundant local variable initialization, fix "can not" to
+what I _think_ is a preferred spelling, output IRQ number if requesting it
+failed.
 
-Hi Jonathan,
+Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
-> > Hi,
-> > I need a driver for an ADC088S052 (National Semiconductor). This is an
-> > 8-bit successive-approximation A/D converter with 8 multiplexed inputs
-> > and an SPI interface.
-> > It's relatively new, and Google doesn't report anything useful for
-> > Linux. So I don't have much hope, but I try it anyway:
-> > 
-> > Is anybody working on a driver for that chip, or knows of such a
-> > project? Any other hints?
-> Whilst I'm not aware of a driver for that particular chip, it has a very
-> simple interface so a basic driver would be relatively straight forward.
-> As far as I can tell from a quick read it's just a case of doing full 
-> duplex 16 bit transfers with a few bits on the send specifying which 
-> channel to grab next?
+---
 
-Yep, looks like that.
+Nothing urgent, just, please, queue it for 2.6.27. Thanks
 
-> 
-> However, as per the recent thread on this list and lkml, there are some 
-> issues with how and where to integrate such a driver with the main kernel
-> that are somewhat dependent on what you want to do with it.  (search
-> for "accelerometer" to get the relevant discussion).
-
-Yes, I read that thread and gave my opinion as well. I'm aware of the
-problem, and we'll probably have some discussion again where to put the
-driver files and the Kconfig entries...
-
-> 
-> If your application is of the simple poll all inputs every now and then
-> variety where a sysfs "readall" attribute would do the job then it should
-> be straight forward to write such a driver from scratch.
-
-It is, I already wrote a basic skeleton. For _me_ it's sufficient to
-poll the inputs every now and then, but the chip could do much faster
-things. It has up to 500ksamples/sec, and if somebody wants to use that
-for some scope app, we'd need some other design. But it would be
-possible to add a char device on top of the basic SPI driver later that adds
-some ring buffer and a read() function.
-
-Thanks,
-Hans
-
+diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
+index 0c452c4..4cf72e9 100644
+--- a/drivers/spi/pxa2xx_spi.c
++++ b/drivers/spi/pxa2xx_spi.c
+@@ -1342,9 +1342,9 @@ static int __init pxa2xx_spi_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct pxa2xx_spi_master *platform_info;
+ 	struct spi_master *master;
+-	struct driver_data *drv_data = NULL;
++	struct driver_data *drv_data;
+ 	struct ssp_device *ssp;
+-	int status = 0;
++	int status;
+ 
+ 	platform_info = dev->platform_data;
+ 
+@@ -1357,7 +1357,7 @@ static int __init pxa2xx_spi_probe(struct platform_device *pdev)
+ 	/* Allocate master with space for drv_data and null dma buffer */
+ 	master = spi_alloc_master(dev, sizeof(struct driver_data) + 16);
+ 	if (!master) {
+-		dev_err(&pdev->dev, "can not alloc spi_master\n");
++		dev_err(&pdev->dev, "cannot alloc spi_master\n");
+ 		ssp_free(ssp);
+ 		return -ENOMEM;
+ 	}
+@@ -1393,7 +1393,7 @@ static int __init pxa2xx_spi_probe(struct platform_device *pdev)
+ 
+ 	status = request_irq(ssp->irq, ssp_int, 0, dev->bus_id, drv_data);
+ 	if (status < 0) {
+-		dev_err(&pdev->dev, "can not get IRQ\n");
++		dev_err(&pdev->dev, "cannot get IRQ %d\n", ssp->irq);
+ 		goto out_error_master_alloc;
+ 	}
+ 
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.

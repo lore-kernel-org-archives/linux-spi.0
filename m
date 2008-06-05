@@ -1,81 +1,71 @@
-From: "eric miao" <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: fix list scan success
-	verification in PXA ssp driver
-Date: Thu, 5 Jun 2008 16:54:44 +0800
-Message-ID: <f17812d70806050154u90fe08cu5ac1e29dbb2ae4d4@mail.gmail.com>
-References: <Pine.LNX.4.64.0806051027340.6598@axis700.grange>
+From: Anton Vorontsov <avorontsov@ru.mvista.com>
+Subject: Re: [PATCH 3/3] mmc: change .get_ro() callback semantics
+Date: Thu, 5 Jun 2008 18:43:10 +0400
+Message-ID: <20080605144310.GA31596@polina.dev.rtsoft.ru>
+References: <20080523154204.GA19803@polina.dev.rtsoft.ru> <20080523154347.GC24862@polina.dev.rtsoft.ru> <200806031207.49843.marc.pignat@hevs.ch>
+Reply-To: avorontsov@ru.mvista.com
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, eric miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	ARM Linux <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
-To: "Guennadi Liakhovetski" <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <Pine.LNX.4.64.0806051027340.6598-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
+Content-Type: text/plain; charset=utf8
+Cc: Kumar Gala <galak@kernel.crashing.org>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Pierre Ossman <drzeus-mmc@drzeus.cx>,
+	Jochen Friedrich <jochen@scram.de>,
+	Timur Tabi <timur@freescale.com>, linuxppc-dev@ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Marc Pignat <marc.pignat@hevs.ch>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754972AbYFEOn0@vger.kernel.org>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <200806031207.49843.marc.pignat@hevs.ch>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Acked-by: Eric Miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+On Tue, Jun 03, 2008 at 12:07:49PM +0200, Marc Pignat wrote:
+> Hi all!
+> 
+> On Friday 23 May 2008, Anton Vorontsov wrote:
+> > get_ro() callback must return values >= 0 for its logical state, and
+> ...
+> >  static void pxamci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+> > diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+> > index f2e9885..ef3b773 100644
+> > --- a/include/linux/mmc/host.h
+> > +++ b/include/linux/mmc/host.h
+> > @@ -55,6 +55,9 @@ struct mmc_host_ops {
+> >  	 * Avoid calling these three functions too often or in a "fast path",
+> >  	 * since underlaying controller might implement them in an expensive
+> >  	 * and/or slow way.
+> > +	 *
+> > +	 * .get_ro and .get_cd should return >= 0 for their logical values,
+> > +	 * or negative errno value in case of error.
+> >  	 */
+> 
+> I would suggest to use something more strict (bulletproof), something like:
+> 
+> /*
+>  * get_ro will return:
+>  *   0 for a read/write card
+>  *   1 for a read-only card 
 
-And this should really go through the ARM tree, please submit the
-patch to RMK's patch system. Thanks.
+This isn't always practical. For example, host is using u8 register for
+the status, so it might safely return u8 & mask, that will always fit
+into int. Or very smart/adventurous authors might be aware that, for the
+particular host, mask's bit isn't last, and safely do uXX & mask. :-)
 
-(I have to send this again through my gmail account, please ignore the
-other copy if any,
-sorry for this)
+The above is weak argument of course, since it is about optimization.
 
-On Thu, Jun 5, 2008 at 4:37 PM, Guennadi Liakhovetski
-<g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> The list search success check in arch/arm/mach-pxa/ssp.c is wrong: for
-> example, it didn't recognise failure for me when I requested port 0.
->
-> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
->
-> ---
->
->  arch/arm/mach-pxa/ssp.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> Index: linux-2.6/arch/arm/mach-pxa/ssp.c
-> ===================================================================
-> --- linux-2.6.orig/arch/arm/mach-pxa/ssp.c      2008-06-04 12:11:26.000000000 +0200
-> +++ linux-2.6/arch/arm/mach-pxa/ssp.c   2008-06-04 12:11:50.000000000 +0200
-> @@ -330,7 +330,7 @@
->
->        mutex_unlock(&ssp_lock);
->
-> -       if (ssp->port_id != port)
-> +       if (&ssp->node == &ssp_list)
->                return NULL;
->
->        return ssp;
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
->
+As an counter-evidence, the strict scheme that you described probably
+less error prone. But is it? To implement it we'll need something like
+WARN_ON(ret > 0 && ret != 1) to catch erroneous users. Take a closer
+look though, will it catch uXX & lastbit case? Nope. :-)
 
-
+We can catch bogus users though... via hack (_assuming_ that there
+are no errno values of 1 << (sizeof(int) * 8 - 1)), i.e.
+WARN_ON(ret == (1 << (sizeof(int) * 8 - 1)). Though, to do so, we don't
+need the strict scheme, this debugging hack will work in the current
+scheme too.
 
 -- 
-Cheers
-- eric
-
--------------------------------------------------------------------------
-Check out the new SourceForge.net Marketplace.
-It's the best place to buy or sell services for
-just about anything Open Source.
-http://sourceforge.net/services/buy/index.php
+Anton Vorontsov
+email: cbouatmailru@gmail.com
+irc://irc.freenode.net/bd2

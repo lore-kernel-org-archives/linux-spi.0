@@ -1,15 +1,12 @@
-From: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH] gpio: gpio driver for max7301 SPI GPIO
-	expander
-Date: Fri, 6 Jun 2008 16:37:05 +0200 (CEST)
-Message-ID: <Pine.LNX.4.64.0806061625260.3338@axis700.grange>
+From: "Ahmed, Suhail" <suhail.ahmed-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: SPI core support for Master
+Date: Fri, 6 Jun 2008 16:09:03 -0700
+Message-ID: <AF358A0C5B36EC4486D1A764A171904D03701267@fmsmsx411.amr.corp.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0753211842=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-class: urn:content-classes:message
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,413 +18,287 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Juergen Beisert <j.beisert-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+This is a multi-part message in MIME format.
 
-Maxim's MAX7301 is an SPI GPIO expander with 28 GPIOs. Note: MAX7301's interrupt
-feature is not supported yet.
+--===============0753211842==
+Content-class: urn:content-classes:message
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C8C82A.4FCC9A52"
 
-Signed-off-by: Juergen Beisert <j.beisert-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+This is a multi-part message in MIME format.
 
----
+------_=_NextPart_001_01C8C82A.4FCC9A52
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-I know it produces a warning
+Hello,
 
-warning: ignoring return value of 'gpiochip_remove', declared with attribute warn_unused_result
+=20
 
-but I really don't see a need to evaluate gpiochip_remove return value at 
-that place. Maybe it shouldn't be declared with warn_unused_result?
+I am newbie on SPI, and subscribed to the mailing list just today!
 
- drivers/gpio/Kconfig        |    7 
- drivers/gpio/Makefile       |    1 
- drivers/gpio/max7301.c      |  324 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/max7301.h |    9 +
- 4 files changed, 341 insertions(+)
+=20
 
-Index: linux-2.6/drivers/gpio/Kconfig
-===================================================================
---- linux-2.6.orig/drivers/gpio/Kconfig	2008-06-05 11:24:20.000000000 +0200
-+++ linux-2.6/drivers/gpio/Kconfig	2008-06-05 11:25:24.000000000 +0200
-@@ -78,6 +78,12 @@
- 
- comment "SPI GPIO expanders:"
- 
-+config GPIO_MAX7301
-+	tristate "Maxim MAX7301 GPIO expander"
-+	depends on SPI_MASTER
-+	help
-+	  gpio driver for Maxim MAX7301 SPI GPIO expander.
-+
- config GPIO_MCP23S08
- 	tristate "Microchip MCP23S08 I/O expander"
- 	depends on SPI_MASTER
-Index: linux-2.6/drivers/gpio/Makefile
-===================================================================
---- linux-2.6.orig/drivers/gpio/Makefile	2008-06-05 11:24:20.000000000 +0200
-+++ linux-2.6/drivers/gpio/Makefile	2008-06-05 11:25:24.000000000 +0200
-@@ -4,6 +4,7 @@
- 
- obj-$(CONFIG_HAVE_GPIO_LIB)	+= gpiolib.o
- 
-+obj-$(CONFIG_GPIO_MAX7301)	+= max7301.o
- obj-$(CONFIG_GPIO_MCP23S08)	+= mcp23s08.o
- obj-$(CONFIG_GPIO_PCA953X)	+= pca953x.o
- obj-$(CONFIG_GPIO_PCF857X)	+= pcf857x.o
-Index: linux-2.6/drivers/gpio/max7301.c
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6/drivers/gpio/max7301.c	2008-06-05 11:25:24.000000000 +0200
-@@ -0,0 +1,333 @@
-+/**
-+ * drivers/gpio/max7301.c
-+ *
-+ * Copyright (C) 2006 Juergen Beisert, Pengutronix
-+ * Copyright (C) 2008 Guennadi Liakhovetski, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ * The Maxim's MAX7301 device is an SPI driven GPIO expander. There are
-+ * 28 GPIOs. 8 of them can trigger an interrupt. See datasheet for more
-+ * details
-+ * Note:
-+ * - DIN must be stable at the rising edge of clock.
-+ * - when writing:
-+ *   - always clock in 16 clocks at once
-+ *   - at DIN: D15 first, D0 last
-+ *   - D0..D7 = databyte, D8..D14 = commandbyte
-+ *   - D15 = low -> write command
-+ * - when reading
-+ *   - always clock in 16 clocks at once
-+ *   - at DIN: D15 first, D0 last
-+ *   - D0..D7 = dummy, D8..D14 = register address
-+ *   - D15 = high -> read command
-+ *   - raise CS and assert it again
-+ *   - always clock in 16 clocks at once
-+ *   - at DOUT: D15 first, D0 last
-+ *   - D0..D7 contains the data from the first cycle
-+ *
-+ * The driver exports a standard gpiochip interface
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/platform_device.h>
-+#include <linux/mutex.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/max7301.h>
-+#include <linux/gpio.h>
-+
-+#define DRIVER_NAME "max7301"
-+
-+/*
-+ * Pin configurations, see MAX7301 datasheet page 6
-+ */
-+#define PIN_CONFIG_MASK 0x03
-+#define PIN_CONFIG_IN_PULLUP 0x03
-+#define PIN_CONFIG_IN_WO_PULLUP 0x02
-+#define PIN_CONFIG_OUT 0x01
-+
-+#define PIN_NUMBER 28
-+
-+
-+/*
-+ * Some registers must be read back to modify.
-+ * To save time we cache them here in memory
-+ */
-+struct max7301 {
-+	struct mutex	lock;
-+	u8		port_config[8];	/* field 0 is unused */
-+	u32		out_level;	/* cached output levels */
-+	struct gpio_chip chip;
-+	struct spi_device *spi;
-+};
-+
-+/**
-+ * max7301_write - Write a new register content
-+ * @spi: The SPI device
-+ * @reg: Register offset
-+ * @val: Value to write
-+ *
-+ * A write to the MAX7301 means one message with one transfer
-+ *
-+ * Returns 0 if successfull or a negative value on error
-+ */
-+static int max7301_write(struct spi_device *spi, unsigned int reg, unsigned int val)
-+{
-+	u16 word = ((reg & 0x7F) << 8) | (val & 0xFF);
-+	return spi_write(spi, (const u8*)&word, sizeof(word));
-+}
-+
-+/**
-+ * max7301_read - Read back register content
-+ * @spi: The SPI device
-+ * @reg: Register offset
-+ *
-+ * A read from the MAX7301 means one message with two transfers
-+ *
-+ * Returns positive 8 bit value from device if successfull or a
-+ * negative value on error
-+ */
-+static int max7301_read(struct spi_device *spi, unsigned int reg)
-+{
-+	int ret;
-+	u16 word;
-+
-+	word = 0x8000 | (reg << 8);
-+	if ((ret = spi_write(spi, (const u8*)&word, sizeof(word))) != 0)
-+		return ret;
-+	/*
-+	 * FIXME: This read should write 0x0000 (=NOOP at MAX7301 side)
-+	 */
-+	if ((ret = spi_read(spi, (u8*)&word, sizeof(word))))
-+		return ret;
-+	return word;
-+}
-+
-+static int max7301_direction_input(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct max7301 *ts = container_of(chip, struct max7301, chip);
-+	u8 *config;
-+	int ret;
-+
-+	/* First 4 pins are unused in the controller */
-+	offset += 4;
-+
-+	config = &ts->port_config[offset >> 2];
-+
-+	mutex_lock(&ts->lock);
-+
-+	/* Standard GPIO API doesn't support pull-ups, has to be extended.
-+	 * Hard-coding no pollup for now. */
-+	*config = (*config & ~(3 << (offset & 3))) | (1 << (offset & 3));
-+
-+	ret = max7301_write(ts->spi, 0x08 + (offset >> 2), *config);
-+
-+	mutex_unlock(&ts->lock);
-+
-+	return ret;
-+}
-+
-+static int __max7301_set(struct max7301 *ts, unsigned offset, int value)
-+{
-+	if (value) {
-+		ts->out_level |= 1 << offset;
-+		return max7301_write(ts->spi, 0x20 + offset, 0x01);
-+	} else {
-+		ts->out_level &= ~(1 << offset);
-+		return max7301_write(ts->spi, 0x20 + offset, 0x00);
-+	}
-+}
-+
-+static int max7301_direction_output(struct gpio_chip *chip, unsigned offset,
-+				    int value)
-+{
-+	struct max7301 *ts = container_of(chip, struct max7301, chip);
-+	u8 *config;
-+	int ret;
-+
-+	/* First 4 pins are unused in the controller */
-+	offset += 4;
-+
-+	config = &ts->port_config[offset >> 2];
-+
-+	mutex_lock(&ts->lock);
-+
-+	*config = (*config & ~(3 << (offset & 3))) | (1 << (offset & 3));
-+
-+	ret = __max7301_set(ts, offset, value);
-+
-+	if (!ret)
-+		ret = max7301_write(ts->spi, 0x08 + (offset >> 2), *config);
-+
-+	mutex_unlock(&ts->lock);
-+
-+	return ret;
-+}
-+
-+static int max7301_get(struct gpio_chip *chip, unsigned offset)
-+{
-+	struct max7301 *ts = container_of(chip, struct max7301, chip);
-+	int config, level = -EINVAL;
-+
-+	/* First 4 pins are unused in the controller */
-+	offset += 4;
-+
-+	mutex_lock(&ts->lock);
-+
-+	config = (ts->port_config[offset >> 2] >> ((offset & 3) * 2)) & 3;
-+
-+	switch (config) {
-+	case 1:
-+		/* Output: return cached level */
-+		level =  !!(ts->out_level & (1 << offset));
-+		break;
-+	case 2:
-+	case 3:
-+		/* Input: read out */
-+		level = max7301_read(ts->spi, 0x20 + offset) & 0x01;
-+	}
-+	mutex_unlock(&ts->lock);
-+
-+	return level;
-+}
-+
-+static void max7301_set(struct gpio_chip *chip, unsigned offset, int value)
-+{
-+	struct max7301 *ts = container_of(chip, struct max7301, chip);
-+
-+	/* First 4 pins are unused in the controller */
-+	offset += 4;
-+
-+	mutex_lock(&ts->lock);
-+
-+	__max7301_set(ts, offset, value);
-+
-+	mutex_unlock(&ts->lock);
-+}
-+
-+static int __devinit max7301_probe(struct spi_device *spi)
-+{
-+	struct max7301 *ts;
-+	struct max7301_platform_data *pdata;
-+	int i, ret;
-+
-+	pdata = spi->dev.platform_data;
-+	if (!pdata || !pdata->base)
-+		return -ENODEV;
-+
-+	/*
-+	 * bits_per_word cannot be configured in platform data
-+	 */
-+	spi->bits_per_word = 16;
-+
-+	spi->master->setup(spi);
-+
-+	ts = kzalloc(sizeof(struct max7301), GFP_KERNEL);
-+	if (!ts)
-+		return -ENOMEM;
-+
-+	mutex_init(&ts->lock);
-+
-+	dev_set_drvdata(&spi->dev, ts);
-+
-+	/* Power up the chip and disable IRQ output */
-+	max7301_write(spi, 0x04, 0x01);
-+
-+	ts->spi = spi;
-+
-+	ts->chip.label = DRIVER_NAME,
-+
-+	ts->chip.direction_input = max7301_direction_input;
-+	ts->chip.get = max7301_get;
-+	ts->chip.direction_output = max7301_direction_output;
-+	ts->chip.set = max7301_set;
-+
-+	ts->chip.base = pdata->base;
-+	ts->chip.ngpio = PIN_NUMBER;
-+	ts->chip.can_sleep = 1;
-+	ts->chip.dev = &spi->dev;
-+	ts->chip.owner = THIS_MODULE;
-+
-+	ret = gpiochip_add(&ts->chip);
-+	if (ret)
-+		goto exit_destroy;
-+
-+	/*
-+	 * tristate all pins in hardware and cache the
-+	 * register values for later use.
-+	 */
-+	for (i = 1; i < 8; i++) {
-+		int j;
-+		/* 0xAA means input with internal pullup disabled */
-+		max7301_write(spi, 0x08 + i, 0xAA);
-+		ts->port_config[i] = 0xAA;
-+		for (j = 0; j < 4; j++) {
-+			int idx = ts->chip.base + (i - 1) * 4 + j;
-+			ret = gpio_direction_input(idx);
-+			if (ret)
-+				goto exit_remove;
-+			gpio_free(idx);
-+		}
-+	}
-+	return ret;
-+
-+exit_remove:
-+	gpiochip_remove(&ts->chip);
-+exit_destroy:
-+	dev_set_drvdata(&spi->dev, NULL);
-+	mutex_destroy(&ts->lock);
-+	kfree(ts);
-+	return ret;
-+}
-+
-+static int max7301_remove(struct spi_device *spi)
-+{
-+	struct max7301 *ts;
-+	int ret;
-+
-+	ts = dev_get_drvdata(&spi->dev);
-+	if (ts == NULL)
-+		return -ENODEV;
-+
-+	dev_set_drvdata(&spi->dev, NULL);
-+
-+	/* Power down the chip and disable IRQ output */
-+	max7301_write(spi, 0x04, 0x00);
-+
-+	ret = gpiochip_remove(&ts->chip);
-+	if (!ret) {
-+		mutex_destroy(&ts->lock);
-+		kfree(ts);
-+	} else
-+		dev_err(&spi->dev, "Failed to remove the GPIO controller: %d\n", ret);
-+
-+	return ret;
-+}
-+
-+static struct spi_driver max7301_driver = {
-+	.driver = {
-+		.name		= DRIVER_NAME,
-+		.owner		= THIS_MODULE,
-+	},
-+	.probe		= max7301_probe,
-+	.remove		= __devexit_p(max7301_remove),
-+};
-+
-+static int __init max7301_init(void)
-+{
-+	return spi_register_driver(&max7301_driver);
-+}
-+
-+static void __exit max7301_exit(void)
-+{
-+	spi_unregister_driver(&max7301_driver);
-+}
-+
-+module_init(max7301_init);
-+module_exit(max7301_exit);
-+
-+MODULE_AUTHOR("Juergen Beisert");
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("MAX7301 SPI based GPIO-Expander");
-Index: linux-2.6/include/linux/spi/max7301.h
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6/include/linux/spi/max7301.h	2008-06-05 11:25:24.000000000 +0200
-@@ -0,0 +1,9 @@
-+#ifndef LINUX_SPI_MAX7301_H
-+#define LINUX_SPI_MAX7301_H
-+
-+struct max7301_platform_data {
-+	/* number assigned to the first GPIO */
-+	unsigned	base;
-+};
-+
-+#endif
+I did some reading on the linux SPI support and here is my
+understanding:
+
+=20
+
+1.       The controller drivers manages the SPI controller on the host
+
+2.       The protocol driver manages the SPI devices on the other side
+of the SPI link.
+
+3.       Currently, there is support only for SPI master mode on the
+host with devices connected as Slaves. This essentially means,
+currently, we can have Master controller driver(s) and protocol slave
+drivers
+
+=20
+
+Is the above correct understanding? I will appreciate any correction.
+
+=20
+
+Now, if I have a need to support Slave mode on the host with device
+connected in Master mode:
+
+=20
+
+1.       Is there any plan to support this configuration?
+
+2.       If not, how much work would it be? Can the existing core be
+extended to accommodate this, or is it a re-design?
+
+=20
+
+Thanks in advance,
+
+=20
+
+~Suhail
+
+=20
+
+=20
+
+
+------_=_NextPart_001_01C8C82A.4FCC9A52
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hello,</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I am newbie on SPI, and subscribed to the mailing =
+list just
+today!</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I did some reading on the linux SPI support and here =
+is my understanding:</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal =
+style=3D'margin-left:.25in;text-indent:-.25in'><font size=3D2
+face=3DArial><span style=3D'font-size:10.0pt;font-family:Arial'>1.<font =
+size=3D1
+face=3D"Times New Roman"><span style=3D'font:7.0pt "Times New =
+Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></font><span dir=3DLTR><font size=3D2 =
+face=3DArial><span
+style=3D'font-size:10.0pt;font-family:Arial'>The controller drivers =
+manages the
+SPI controller on the host</span></font></span></p>
+
+<p class=3DMsoNormal =
+style=3D'margin-left:.25in;text-indent:-.25in'><font size=3D2
+face=3DArial><span style=3D'font-size:10.0pt;font-family:Arial'>2.<font =
+size=3D1
+face=3D"Times New Roman"><span style=3D'font:7.0pt "Times New =
+Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></font><span dir=3DLTR><font size=3D2 =
+face=3DArial><span
+style=3D'font-size:10.0pt;font-family:Arial'>The protocol driver manages =
+the SPI
+devices on the other side of the SPI link.</span></font></span></p>
+
+<p class=3DMsoNormal =
+style=3D'margin-left:.25in;text-indent:-.25in'><font size=3D2
+face=3DArial><span style=3D'font-size:10.0pt;font-family:Arial'>3.<font =
+size=3D1
+face=3D"Times New Roman"><span style=3D'font:7.0pt "Times New =
+Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></font><span dir=3DLTR><font size=3D2 =
+face=3DArial><span
+style=3D'font-size:10.0pt;font-family:Arial'>Currently, there is support =
+only for
+SPI master mode on the host with devices connected as Slaves. This =
+essentially means,
+currently, we can have Master controller driver(s) and protocol slave =
+drivers</span></font></span></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Is the above correct understanding? I will appreciate =
+any
+correction.</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Now, if I have a need to support Slave mode on the =
+host with
+device connected in Master mode:</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal =
+style=3D'margin-left:.25in;text-indent:-.25in'><font size=3D2
+face=3DArial><span style=3D'font-size:10.0pt;font-family:Arial'>1.<font =
+size=3D1
+face=3D"Times New Roman"><span style=3D'font:7.0pt "Times New =
+Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></font><span dir=3DLTR><font size=3D2 =
+face=3DArial><span
+style=3D'font-size:10.0pt;font-family:Arial'>Is there any plan to =
+support this
+configuration?</span></font></span></p>
+
+<p class=3DMsoNormal =
+style=3D'margin-left:.25in;text-indent:-.25in'><font size=3D2
+face=3DArial><span style=3D'font-size:10.0pt;font-family:Arial'>2.<font =
+size=3D1
+face=3D"Times New Roman"><span style=3D'font:7.0pt "Times New =
+Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></font><span dir=3DLTR><font size=3D2 =
+face=3DArial><span
+style=3D'font-size:10.0pt;font-family:Arial'>If not, how much work would =
+it be? Can
+the existing core be extended to accommodate this, or is it a =
+re-design?</span></font></span></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thanks in advance,</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>~Suhail</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;</span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C8C82A.4FCC9A52--
+
+
+--===============0753211842==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
+--===============0753211842==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0753211842==--

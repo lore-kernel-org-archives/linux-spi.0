@@ -1,135 +1,57 @@
-From: Anton Vorontsov <avorontsov@ru.mvista.com>
-Subject: [PATCH] mmc: toughen get_ro() and get_cd() return values
-Date: Thu, 5 Jun 2008 21:10:13 +0400
-Message-ID: <20080605171013.GA10513@polina.dev.rtsoft.ru>
-References: <20080523154204.GA19803@polina.dev.rtsoft.ru> <200806031207.49843.marc.pignat@hevs.ch> <20080605144310.GA31596@polina.dev.rtsoft.ru> <200806051759.00202.marc.pignat@hevs.ch>
-Reply-To: avorontsov@ru.mvista.com
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf8
-Cc: Kumar Gala <galak@kernel.crashing.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Pierre Ossman <drzeus-mmc@drzeus.cx>,
-	Jochen Friedrich <jochen@scram.de>,
-	Timur Tabi <timur@freescale.com>, linuxppc-dev@ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Marc Pignat <marc.pignat@hevs.ch>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1758856AbYFERK2@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <200806051759.00202.marc.pignat@hevs.ch>
-Sender: linux-kernel-owner@vger.kernel.org
+From: =?GB2312?B?1cXPyMn6?= <gdszzhliii-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: =?GB2312?B?us/X98/qx+k=?=
+Date: Fri, 6 Jun 2008 10:26:00 +0800
+Message-ID: <E1K4ReP-00076x-JS@mail.sourceforge.net>
+Content-Type: multipart/mixed; boundary="===============0765123520=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-For the sake of safety, document that drivers should return only
-1 or 0 from the get_ro() and get_cd() callbacks. Also document context
-in which these callbacks should be executed.
+--===============0765123520==
+Content-Type: text/html;charset="GB2312"
 
-wbsd driver modified to comply with this requirement.
+RE:尊敬的公司负责人:
+    您好!我公司是联盟代理公司，在全国很多省市均有分公司。
+因业务关系,现有部分<<税-票>>可以优惠对外开具,如:商品.销售
+业、服务业、广告业、建筑安装等<<发-票>>。
+   收费点数:1%-2%之间,本公司可以先开票给贵公司,贵公司收到
+确认无问题后再付款。欢迎致电咨询洽谈!
 
-Also, fix mmc_spi driver to not return raw values from the platform
-get_cd hook (oops).
+       联 系 人:张(先生)
+       联系电话:135 4456 9836
+       邮 箱:gd9836li-Xb2Y1Dfb9CI@public.gmane.org
+       广州市鹏达实业有限公司
 
-Suggested-by: Marc Pignat <marc.pignat@hevs.ch>
-Signed-off-by: Anton Vorontsov <avorontsov@ru.mvista.com>
----
 
-On Thu, Jun 05, 2008 at 05:58:59PM +0200, Marc Pignat wrote:
-[...]
-> > >  * get_ro will return:
-> > >  *   0 for a read/write card
-> > >  *   1 for a read-only card 
-> > 
-> > This isn't always practical. For example, host is using u8 register for
-> > the status, so it might safely return u8 & mask, that will always fit
-> > into int. Or very smart/adventurous authors might be aware that, for the
-> > particular host, mask's bit isn't last, and safely do uXX & mask. :-)
-> > 
-> > The above is weak argument of course, since it is about optimization.
-> 
-> Ack, we will gain at most 1-4 assembly instructions, in a function that
-> is unlikely to be called more than once a second.
-> 
-> > 
-> > As an counter-evidence, the strict scheme that you described probably
-> > less error prone. But is it? To implement it we'll need something like
-> > WARN_ON(ret > 0 && ret != 1) to catch erroneous users. Take a closer
-> > look though, will it catch uXX & lastbit case? Nope. :-)
-> 
-> WARN_ON(ret > 0 && ret != 1 || ret == INT_MIN) will do ;)
-> 
-> I agree with you once more, I never thinked about a runtime check.
-> 
-> I don't really want to see a WARN_ON(foo) after each call to get_ro or get_cd.
-> 
-> But I'm sure if we specify "give me a positive value when a card is detected",
-> someone will write gpio & bit, and three years later, someone will fall in
-> the (gpio & lastbit < 0 case).
-> 
-> So we should specify: "give me 1 whan a card is present, 0 when not, -ENOSYS if
-> you don't know and a negative errno when something else goes wrong".
+--===============0765123520==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Well, ok.
+-------------------------------------------------------------------------
+Check out the new SourceForge.net Marketplace.
+It's the best place to buy or sell services for
+just about anything Open Source.
+http://sourceforge.net/services/buy/index.php
+--===============0765123520==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Pierre, I see you didn't yet pushed out the mmc tree, so.. would you
-prefer this patch folded into 0/3 series and resent?
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
- drivers/mmc/host/mmc_spi.c |    2 +-
- drivers/mmc/host/wbsd.c    |    2 +-
- include/linux/mmc/host.h   |   16 ++++++++++++++--
- 3 files changed, 16 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 85d9853..4e82f64 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -1139,7 +1139,7 @@ static int mmc_spi_get_cd(struct mmc_host *mmc)
- 	struct mmc_spi_host *host = mmc_priv(mmc);
- 
- 	if (host->pdata && host->pdata->get_cd)
--		return host->pdata->get_cd(mmc->parent);
-+		return !!host->pdata->get_cd(mmc->parent);
- 	return -ENOSYS;
- }
- 
-diff --git a/drivers/mmc/host/wbsd.c b/drivers/mmc/host/wbsd.c
-index be624a0..9283b85 100644
---- a/drivers/mmc/host/wbsd.c
-+++ b/drivers/mmc/host/wbsd.c
-@@ -939,7 +939,7 @@ static int wbsd_get_ro(struct mmc_host *mmc)
- 
- 	spin_unlock_bh(&host->lock);
- 
--	return csr & WBSD_WRPT;
-+	return !!(csr & WBSD_WRPT);
- }
- 
- static const struct mmc_host_ops wbsd_ops = {
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index ef3b773..753b723 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -56,8 +56,20 @@ struct mmc_host_ops {
- 	 * since underlaying controller might implement them in an expensive
- 	 * and/or slow way.
- 	 *
--	 * .get_ro and .get_cd should return >= 0 for their logical values,
--	 * or negative errno value in case of error.
-+	 * Also note that these functions might sleep, so don't call them
-+	 * in the atomic contexts!
-+	 *
-+	 * Return values for the get_ro callback should be:
-+	 *   0 for a read/write card
-+	 *   1 for a read-only card
-+	 *   -ENOSYS when not supported (equal to NULL callback)
-+	 *   or a negative errno value when something bad happened
-+	 *
-+	 * Return values for the get_ro callback should be:
-+	 *   0 for a absent card
-+	 *   1 for a present card
-+	 *   -ENOSYS when not supported (equal to NULL callback)
-+	 *   or a negative errno value when something bad happened
- 	 */
- 	void	(*set_ios)(struct mmc_host *host, struct mmc_ios *ios);
- 	int	(*get_ro)(struct mmc_host *host);
--- 
-1.5.5.1
+--===============0765123520==--

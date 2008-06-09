@@ -1,12 +1,11 @@
 From: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
-Subject: [PATCH] au1550_spi: proper platform driver
-Date: Sat, 7 Jun 2008 13:03:08 +0200
-Message-ID: <20080607110308.GB26935@roarinelk.homelinux.net>
+Subject: [PATCH #2] au1550-spi: proper platform driver
+Date: Mon, 9 Jun 2008 13:27:07 +0200
+Message-ID: <20080609112707.GA10669@roarinelk.homelinux.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -27,16 +26,20 @@ mainly due to the use of Au1550 specific resource constants in the probe()
 callback.
 
 This patch removes the au1550 resource "table" and lets the driver instead
-fetch mmio/irq/dma information from platform device resource data;  the
-bus-id is derived from the platform device id.
+fetch mmio/irq/dma information from platform device resource data; the
+bus-id is derived from the platform device id.  This makes the driver
+usable on Au12x0 too.
 
-Please test, as my board doesn't do SPI with PSC units!
+Also, the dbdma mem device is registered at driver load time since it can
+be shared among all instances.
+
+Try #2: leaves the awesome platform_driver_probe() in place.
 
 Thanks!
-        Manuel Lauss
+Manuel Lauss
 
 ---
-
+>From a63cc586fd8c7315bac8e3cb90627e115a6541ab Mon Sep 17 00:00:00 2001
 From: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
 Date: Sat, 7 Jun 2008 12:14:37 +0200
 Subject: [PATCH] au1550_spi: proper platform device
@@ -47,12 +50,12 @@ platform driver.
 
 Signed-off-by: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
 ---
- drivers/spi/au1550_spi.c                  |  135 +++++++++++++++--------------
+ drivers/spi/au1550_spi.c                  |  123 +++++++++++++++--------------
  include/asm-mips/mach-au1x00/au1550_spi.h |    1 -
- 2 files changed, 68 insertions(+), 68 deletions(-)
+ 2 files changed, 63 insertions(+), 61 deletions(-)
 
 diff --git a/drivers/spi/au1550_spi.c b/drivers/spi/au1550_spi.c
-index 072c4a5..517d129 100644
+index 072c4a5..a20fb2e 100644
 --- a/drivers/spi/au1550_spi.c
 +++ b/drivers/spi/au1550_spi.c
 @@ -26,6 +26,7 @@
@@ -72,13 +75,7 @@ index 072c4a5..517d129 100644
  static void au1550_spi_bits_handlers_set(struct au1550_spi *hw, int bpw);
  
  
-@@ -727,11 +730,11 @@ static void __init au1550_spi_setup_psc_as_spi(struct au1550_spi *hw)
- 	} while ((stat & PSC_SPISTAT_DR) == 0);
- }
- 
--
--static int __init au1550_spi_probe(struct platform_device *pdev)
-+static int __devinit au1550_spi_probe(struct platform_device *pdev)
+@@ -732,6 +735,7 @@ static int __init au1550_spi_probe(struct platform_device *pdev)
  {
  	struct au1550_spi *hw;
  	struct spi_master *master;
@@ -86,7 +83,7 @@ index 072c4a5..517d129 100644
  	int err = 0;
  
  	master = spi_alloc_master(&pdev->dev, sizeof(struct au1550_spi));
-@@ -753,45 +756,35 @@ static int __init au1550_spi_probe(struct platform_device *pdev)
+@@ -753,45 +757,35 @@ static int __init au1550_spi_probe(struct platform_device *pdev)
  		goto err_no_pdata;
  	}
  
@@ -160,7 +157,7 @@ index 072c4a5..517d129 100644
  	}
  
  	if (request_mem_region((unsigned long)hw->regs, sizeof(psc_spi_t),
-@@ -801,28 +794,25 @@ static int __init au1550_spi_probe(struct platform_device *pdev)
+@@ -801,28 +795,25 @@ static int __init au1550_spi_probe(struct platform_device *pdev)
  		goto err_no_iores;
  	}
  
@@ -205,7 +202,7 @@ index 072c4a5..517d129 100644
  			hw->dma_tx_id, NULL, (void *)hw);
  		if (hw->dma_tx_ch == 0) {
  			dev_err(&pdev->dev,
-@@ -841,7 +831,7 @@ static int __init au1550_spi_probe(struct platform_device *pdev)
+@@ -841,7 +832,7 @@ static int __init au1550_spi_probe(struct platform_device *pdev)
  
  
  		hw->dma_rx_ch = au1xxx_dbdma_chan_alloc(hw->dma_rx_id,
@@ -214,7 +211,7 @@ index 072c4a5..517d129 100644
  		if (hw->dma_rx_ch == 0) {
  			dev_err(&pdev->dev,
  				"Cannot allocate rx dma channel\n");
-@@ -874,7 +864,7 @@ static int __init au1550_spi_probe(struct platform_device *pdev)
+@@ -874,7 +865,7 @@ static int __init au1550_spi_probe(struct platform_device *pdev)
  		goto err_no_irq;
  	}
  
@@ -223,7 +220,7 @@ index 072c4a5..517d129 100644
  	master->num_chipselect = hw->pdata->num_chipselect;
  
  	/*
-@@ -924,7 +914,9 @@ err_no_txdma_descr:
+@@ -924,7 +915,9 @@ err_no_txdma_descr:
  		au1xxx_dbdma_chan_free(hw->dma_tx_ch);
  
  err_no_txdma:
@@ -234,16 +231,7 @@ index 072c4a5..517d129 100644
  	release_mem_region((unsigned long)hw->regs, sizeof(psc_spi_t));
  
  err_no_iores:
-@@ -935,7 +927,7 @@ err_nomem:
- 	return err;
- }
- 
--static int __exit au1550_spi_remove(struct platform_device *pdev)
-+static int __devexit au1550_spi_remove(struct platform_device *pdev)
- {
- 	struct au1550_spi *hw = platform_get_drvdata(pdev);
- 
-@@ -945,6 +937,7 @@ static int __exit au1550_spi_remove(struct platform_device *pdev)
+@@ -945,6 +938,7 @@ static int __exit au1550_spi_remove(struct platform_device *pdev)
  	spi_bitbang_stop(&hw->bitbang);
  	free_irq(hw->irq, hw);
  	release_mem_region((unsigned long)hw->regs, sizeof(psc_spi_t));
@@ -251,41 +239,28 @@ index 072c4a5..517d129 100644
  
  	if (hw->usedma) {
  		au1550_spi_dma_rxtmp_free(hw);
-@@ -961,8 +954,9 @@ static int __exit au1550_spi_remove(struct platform_device *pdev)
- /* work with hotplug and coldplug */
- MODULE_ALIAS("platform:au1550-spi");
- 
--static struct platform_driver au1550_spi_drv = {
--	.remove = __exit_p(au1550_spi_remove),
-+static struct platform_driver au1550_spi_driver = {
-+	.probe	= au1550_spi_probe,
-+	.remove = __devexit_p(au1550_spi_remove),
- 	.driver = {
- 		.name = "au1550-spi",
- 		.owner = THIS_MODULE,
-@@ -971,13 +965,20 @@ static struct platform_driver au1550_spi_drv = {
+@@ -971,12 +965,21 @@ static struct platform_driver au1550_spi_drv = {
  
  static int __init au1550_spi_init(void)
  {
--	return platform_driver_probe(&au1550_spi_drv, au1550_spi_probe);
 +	/*
 +	 * create memory device with 8 bits dev_devwidth
 +	 * needed for proper byte ordering to spi fifo
 +	 */
 +	ddma_memid = au1xxx_ddma_add_device(&au1550_spi_mem_dbdev);
-+	return platform_driver_register(&au1550_spi_driver);
++	if (!ddma_memid)
++		printk(KERN_ERR "au1550-spi: cannot add memory dbdma device\n");
+ 	return platform_driver_probe(&au1550_spi_drv, au1550_spi_probe);
  }
  module_init(au1550_spi_init);
  
  static void __exit au1550_spi_exit(void)
  {
--	platform_driver_unregister(&au1550_spi_drv);
 +	if (ddma_memid)
 +		au1xxx_ddma_del_device(ddma_memid);
-+	platform_driver_unregister(&au1550_spi_driver);
+ 	platform_driver_unregister(&au1550_spi_drv);
  }
  module_exit(au1550_spi_exit);
- 
 diff --git a/include/asm-mips/mach-au1x00/au1550_spi.h b/include/asm-mips/mach-au1x00/au1550_spi.h
 index 40e6c48..08e1958 100644
 --- a/include/asm-mips/mach-au1x00/au1550_spi.h

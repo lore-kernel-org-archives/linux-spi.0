@@ -1,10 +1,10 @@
-From: =?GB2312?B?zfXJ+g==?= <fdsaekjiioo-9Onoh4P/yGk@public.gmane.org>
-Subject: =?GB2312?B?8q+zz7rP1/ejoQ==?=
-Date: Sat, 10 Jun 2000 13:31:21 +0800
-Message-ID: <E1K5wSH-0006B2-CS@mail.sourceforge.net>
-Reply-To: fdsaekjiioo-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1798500836=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: china-gift-9Onoh4P/yGk@public.gmane.org
+Subject: =?GB2312?B?0rXO8cGqz7U=?=
+Date: Tue, 10 Jun 2008 15:44:10 +0800
+Message-ID: <E1K5yWX-0008RY-IS@mail.sourceforge.net>
+Reply-To: china-gift-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1239217255=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,42 +17,26 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1798500836==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: quoted-printable
+--===============1239217255==
+Content-Type: text/plain;charset="GB2312"
 
-   =C4=FA=BA=C3!
-   =20
-       =B1=BE=B9=AB=CB=BE=BF=C9=D2=D4=B4=FA=C0=ED=C8=AB=B9=FA=B8=F7=B5=D8=
-=B8=F7=D6=D6=B7=A2\=C6=B1.=CB=B0\=C2=CA=D3=C5=BB=DD,=CF=EA=CF=B8=CB=B0\=C2=
-=CA=B0=B4=D5=D5=BF=AA=C6=B1=BD=F0=B6=EE=B4=F3=D0=A1=C0=B4=B5=E7
-
-  =C7=A2=CC=B8.
- =20
-       =B1=BE=B9=AB=CB=BE=C8=B7=B1=A3=CB=F9=BF=AA=B3=F6=B5=C4=B7=A2\=C6=B1=
-=CA=C7=CB=B0=CE=F1=B5=C7=BC=C7=C1=EC=C8=A1=B5=C4.=B9=F3=B9=AB=CB=BE=C8=E7=
-=B9=FB=B2=BB=B7=C5=D0=C4=BF=C9=D2=D4=CF=C8=D1=E9=D6=A4=BA=F3=D4=D9=B8=B6
-
-  =BF=EE.=B1=BE=B9=AB=CB=BE=BB=B9=BF=C9=CC=E1=B9=A9=B8=F8=B4=FA=B0=EC=C8=CB=
-=BB=D8=BF=DB=B7=FE=CE=F1.=B6=D4=D3=DA=CE=D2=C3=C7=B5=C4=BA=CF=D7=F7=B9=D8=
-=CF=B5=CA=C7=BE=F8=B6=D4=B1=A3=C3=DC=B5=C4.=B9=F3=B9=AB=CB=BE=C8=E7=D3=D0=
-=D0=E8
-=20
-  =D2=AA=BB=B6=D3=AD=C0=B4=B5=E7=D7=C9=D1=AF.
+          您好！
+              为方便贵公司做帐及提高经济效益。我公司现可代开发票。发票正规，
+              点数十分优惠！可验票后付款。
+              商品销售发票，广告发票，运输发票，服务发票，餐饮发票，建筑安装
+              发票,增值税发票等
+                （1）公司为一般纳税企业没有优惠政策而想合法避税的
+                （2）公司帐目进项与出项差额过大，需补充差额的
+                （3）对外销售商品或提供技术服务暂未正式申领的
+                （4）外出采购或公干而服务商没有提供可以报销的发票 
+                （5）事业单位记帐补帐冲帐旧帐整理,需要咨询的
+                （6）其他项目的
+                                联系人：周莉
+                                联系号：135 3812 9262
+                                  QQ号：784825633
 
 
-           =C1=AA =CF=B5 =C8=CB: =CD=F5 =C9=FA
-         =20
-           =C1=AA=CF=B5=B5=E7=BB=B0: 13926576497  =A3=A8=B3=A4=C6=DA=D3=D0=
-=D0=A7=A3=A9
-
-            Q   Q  :973363947=20
-          =20
-           =D3=CA    =CF=E4: sz.hd668-9Onoh4P/yGk@public.gmane.org
-
-
---===============1798500836==
+--===============1239217255==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -63,7 +47,7 @@ Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
---===============1798500836==
+--===============1239217255==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -74,4 +58,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1798500836==--
+--===============1239217255==--

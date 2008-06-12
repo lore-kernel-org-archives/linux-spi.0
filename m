@@ -1,14 +1,17 @@
-From: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] mmc_spi: put signals to low power off
-	fix
-Date: Wed, 11 Jun 2008 16:04:15 +0200
-Message-ID: <20080611140415.GA32735@nikitenko.systec.local>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] gpio: gpio driver for max7301 SPI
+	GPIO expander
+Date: Thu, 12 Jun 2008 00:15:50 -0700
+Message-ID: <200806120015.50953.david-b@pacbell.net>
+References: <Pine.LNX.4.64.0806061625260.3338@axis700.grange>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <Pine.LNX.4.64.0806061625260.3338-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,39 +24,85 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The original intention was to write a zero byte to mmc to force spi
-signals to low when doing power off. Somehow the spi_w8r8 call got there
-so a read followed the write of single zero byte. This patch changes
-that to simple write of zero byte without the following read.
-This way the power off is more reliable and completely sufficient.
+Some comments about one routine; presumably more to follow:
 
-Signed-off-by: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
----
- drivers/mmc/host/mmc_spi.c |    3 ++-
-  1 file changed, 2 insertions(+), 1 deletion(-)
+On Friday 06 June 2008, Guennadi Liakhovetski wrote:
+> +/**
+> + * max7301_read - Read back register content
+> + * @spi: The SPI device
+> + * @reg: Register offset
+> + *
+> + * A read from the MAX7301 means one message with two transfers
 
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 3550858..7365168 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -1076,6 +1076,7 @@ static void mmc_spi_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
- 		 */
- 		if (canpower && ios->power_mode == MMC_POWER_OFF) {
- 			int mres;
-+			u8 nullbyte = 0;
- 
- 			host->spi->mode &= ~(SPI_CPOL|SPI_CPHA);
- 			mres = spi_setup(host->spi);
-@@ -1083,7 +1084,7 @@ static void mmc_spi_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
- 				dev_dbg(&host->spi->dev,
- 					"switch to SPI mode 0 failed\n");
- 
--			if (spi_w8r8(host->spi, 0x00) < 0)
-+			if (spi_write(host->spi, &nullbyte, 1) < 0)
- 				dev_dbg(&host->spi->dev,
- 					"put spi signals to low failed\n");
- 
+That's not what you implement though ... what it needs is:
+
+	- transfer #1:
+		* select
+		* write 16 bit command, discard rx data
+		* deselect
+	- transfer #2
+		* select
+		* write 16 bit command, saving rx data
+		* deselect
+
+That's from the data sheet.  Now, that *could* be implemented
+with a single message ... or, as you do, with two messages.
+
+You should at least correct the comment, if you don't want to
+switch to a slightly faster single-message implementation.  :)
+
+
+> + *
+> + * Returns positive 8 bit value from device if successfull or a
+> + * negative value on error
+
+Actually it returns a 16 bit value... also, "successful" has one "l".
+You seem to have forgotten to mask off the high byte ...
+
+
+> + */
+> +static int max7301_read(struct spi_device *spi, unsigned int reg)
+> +{
+> +=A0=A0=A0=A0=A0=A0=A0int ret;
+> +=A0=A0=A0=A0=A0=A0=A0u16 word;
+> +
+> +=A0=A0=A0=A0=A0=A0=A0word =3D 0x8000 | (reg << 8);
+> +=A0=A0=A0=A0=A0=A0=A0if ((ret =3D spi_write(spi, (const u8*)&word, siz
+
+> eof(word))) !=3D 0) =
+
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0return ret;
+> +=A0=A0=A0=A0=A0=A0=A0/*
+> +=A0=A0=A0=A0=A0=A0=A0 * FIXME: This read should write 0x0000 (=3DNOOP at=
+ MAX7301 side)
+
+Take out this FIXME, and just replace it with a note that this relies
+on the fact that TX always shifts out zeroes if there's no data specified.
+
+> +=A0=A0=A0=A0=A0=A0=A0 */
+> +=A0=A0=A0=A0=A0=A0=A0if ((ret =3D spi_read(spi, (u8*)&word, sizeof(word)=
+)))
+> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0return ret;
+> +=A0=A0=A0=A0=A0=A0=A0return word;
+> +}
+> +
+
+
+Oh, and in the probe():
+
+> +=A0=A0=A0=A0=A0=A0=A0spi->master->setup(spi);
+
+should be
+
+	ret =3D spi_setup(spi);
+	if (ret < 0)
+		return ret;
+
+It's quite possible that something get misconfigured, so you end up trying
+to talk through a spi_master controller that doesn't support 16-bit words.
+
+- Dave
 
 
 -------------------------------------------------------------------------

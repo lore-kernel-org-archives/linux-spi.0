@@ -1,9 +1,9 @@
 From: china-gift-9Onoh4P/yGk@public.gmane.org
 Subject: =?GB2312?B?0rXO8cGqz7U=?=
-Date: Tue, 17 Jun 2008 05:14:53 +0800
-Message-ID: <E1K8M2Q-0004Go-EZ@mail.sourceforge.net>
+Date: Tue, 17 Jun 2008 07:02:10 +0800
+Message-ID: <E1K8NiF-00047b-9s@mail.sourceforge.net>
 Reply-To: china-gift-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============0460554652=="
+Content-Type: multipart/mixed; boundary="===============0616107161=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,10 +17,10 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0460554652==
+--===============0616107161==
 Content-Type: text/plain;charset="GB2312"
 
-          您好！
+           您好！ 
               为方便贵公司做帐及提高经济效益。我公司现可代开发票。发票正规，
               点数十分优惠！可验票后付款。
               商品销售发票，广告发票，运输发票，服务发票，餐饮发票，建筑安装
@@ -31,12 +31,12 @@ Content-Type: text/plain;charset="GB2312"
                 （4）外出采购或公干而服务商没有提供可以报销的发票 
                 （5）事业单位记帐补帐冲帐旧帐整理,需要咨询的
                 （6）其他项目的
-                                联系人：周莉
-                                联系号：135 3812 9262
-                                  QQ号：980820886
+                                联系人：张永生
+                                联系号：135 2888 6461
+                                  QQ号：784825633
 
 
---===============0460554652==
+--===============0616107161==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -47,7 +47,7 @@ Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
---===============0460554652==
+--===============0616107161==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -58,4 +58,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0460554652==--
+--===============0616107161==--

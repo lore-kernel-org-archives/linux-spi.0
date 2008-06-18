@@ -1,13 +1,12 @@
-From: Pearle Cross <davhermann-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
-Subject: =?windows-1251?q?Take_Part_In_Paid_Surveys_Fr?=
-	=?windows-1251?q?om_Home?=
-Date: Tue, 17 Jun 2008 23:16:51 -0600
-Message-ID: <19750.4456075423$1213766400@news.gmane.org>
-Reply-To: Pearle Cross <christopherdeflorio1881-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Barrister happiness Paul <barrister_c_michael-CVfgzVlYcRg@public.gmane.org>
+Subject: COMPENSATION FROM BARRISTER HA...
+Date: Wed, 18 Jun 2008 19:50:29 +0800
+Message-ID: <E1K8wBJ-0001sQ-QH@paula.tw620.com>
+Reply-To: barrister_c_michael-CVfgzVlYcRg@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,37 +19,93 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Compliment of the season.  
 
-Since the start of 2008 our organization starts recruiting home workers
-willing to take part in well-paying research studies conducted by leading
-online businesses. 
-Your opinion as a consumer is important for the success and profitability of
-many business ventures. That is why they are ready to pay generously for
-what you think. 
+How are you doing? 
 
-You can earn from $300 to $600 a week for participating in on-line surveys,
-focus group discussions, and product/service evaluations. Become part of our
-team and earn: 
+Hope you have not forgotten me, I am Barrister 
 
-- from $5 to $50 for participating in on-line surveys 
-- from $20 to $120 for participating in product/service evaluations 
-- from $30 to $155 for participating in virtual focus group discussions 
+happiness Paul, the Lawyer from Benin who 
 
-What's best, all you need to work with us is a computer, an Internet
-connection, a valid e-mail address, and good English skills. You decide when
-to finish your tasks and how much time to devote to each survey assignment.
-You can also keep this job for the rest of the year!
+contacted you some time ago to assist me secure 
 
-If you want to become one of our highly valued survey takers, please write
-back to 13901willi.sergio-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and I will send you more information.
+the release of my late client funds to your
 
-Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
+account. 
 
-Sincerely,
+Though you were not able to assist me conclude 
 
-April Johnson
-Assistant HR
+the transaction, I'm happy to inform you about my 
+
+success in getting those funds transferred under 
+
+the assistance and cooperation of a new partner 
+from Brazil.   
+
+Presently I am in London, United Kingdom for 
+
+investment projects with my share of the total 
+
+sum. 
+
+Meanwhile, I didn't forget your past efforts and 
+
+attempts to assist me in transferring those 
+
+funds, I made sure you are not left out the 
+
+benefit of the transaction hence I kept aside for 
+
+you sum of 1,200.000.00(ONE MILLION TWO THOUSAND 
+
+US DOLLARS)  Draft. 
+
+
+I and my new partner agreed to compensate you 
+
+with that amount for all your past efforts and 
+
+attempt to assist me in this matter.   I 
+
+appreciated your efforts at that time very much, 
+
+so feel free and get in touch with my learned 
+
+friend Barrister Michael Conli and instruct him 
+
+on how to send the Bank draft to you. 
+
+Please do let me know immediately you receive the 
+
+Draft so that we can share the joy together after 
+
+all the sufferings at that time. 
+
+At the  moment, I, m very busy here in London 
+
+because of the investment projects  which myself 
+
+and my partners are having at hand. 
+
+Finally, remember that I had left  instruction 
+
+with my Learned friend so, as soon as you contact him, he will send the Draft to you.  
+
+Pls. feel free to get in touch with MY LEARNED FRIEND NOW. 
+
+Below is the contact of my learned friend:   
+
+BARRISTER MICHAEL CONLI Tel. No.: +229 97 05 10 43. E-mail: 
+
+barrister_c_michael-CVfgzVlYcRg@public.gmane.org      
+
+With Best Regards, 
+
+Barrister happiness Paul
+
+
+
+
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for

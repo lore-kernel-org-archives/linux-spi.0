@@ -1,7 +1,7 @@
 From: Barrister happiness Paul <barrister_c_michael-CVfgzVlYcRg@public.gmane.org>
 Subject: COMPENSATION FROM BARRISTER HA...
-Date: Wed, 18 Jun 2008 19:50:29 +0800
-Message-ID: <E1K8wBJ-0001sQ-QH@paula.tw620.com>
+Date: Wed, 18 Jun 2008 19:52:36 +0800
+Message-ID: <E1K8wDM-0002ev-63@paula.tw620.com>
 Reply-To: barrister_c_michael-CVfgzVlYcRg@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"

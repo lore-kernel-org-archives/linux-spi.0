@@ -1,9 +1,13 @@
-From: =?GB2312?B?uavLvrrP1/c=?= <hfxdgdsghhjgfvfg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: =?GB2312?B?ob65q8u+ueO45qG/?=
-Date: Wed, 18 Jun 2008 05:37:54 +0800
-Message-ID: <E1K8isH-0004Jr-Sm@mail.sourceforge.net>
-Content-Type: multipart/mixed; boundary="===============1726603803=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Pearle Cross <davhermann-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+Subject: =?windows-1251?q?Take_Part_In_Paid_Surveys_Fr?=
+	=?windows-1251?q?om_Home?=
+Date: Tue, 17 Jun 2008 23:16:51 -0600
+Message-ID: <19750.4456075423$1213766400@news.gmane.org>
+Reply-To: Pearle Cross <christopherdeflorio1881-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,55 +20,39 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1726603803==
-Content-Type: text/plain;charset="GB2312"
+Hi,
 
-                         
-                         深圳市隆永盛实业有限公司
+Since the start of 2008 our organization starts recruiting home workers
+willing to take part in well-paying research studies conducted by leading
+online businesses. 
+Your opinion as a consumer is important for the success and profitability of
+many business ventures. That is why they are ready to pay generously for
+what you think. 
 
-贵公司负责人您好! 
+You can earn from $300 to $600 a week for participating in on-line surveys,
+focus group discussions, and product/service evaluations. Become part of our
+team and earn: 
 
-    本公司在(广州.东莞.上海.浙江.福建.江苏.广西.山东.江西.四川等地均有分公司),
+- from $5 to $50 for participating in on-line surveys 
+- from $20 to $120 for participating in product/service evaluations 
+- from $30 to $155 for participating in virtual focus group discussions 
 
-因进项较多现完成不了每月销售额度，每月有一部分多余的普通发票如：商品销售.运输.
+What's best, all you need to work with us is a computer, an Internet
+connection, a valid e-mail address, and good English skills. You decide when
+to finish your tasks and how much time to devote to each survey assignment.
+You can also keep this job for the rest of the year!
 
-服务.广告.建筑工程等发票，税率按1%-2%左右向外优惠代开，贵公司在做帐或进销存方面
+If you want to become one of our highly valued survey takers, please write
+back to 13901willi.sergio-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and I will send you more information.
 
-如需用到的话，我司可提供全方面的服务。可根据所做数量额度的大小来衡量优惠的点数。
+Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
-可验证后付款给我司。本公司郑重承诺所用绝对是真票！ 顺祝： 商祺！
+Sincerely,
 
-    联 系 人：李 建 华 
-
-    手机：13824347268 
-
-    业务QQ：517153882
-
-    邮箱：sz488688-KN7UnAbNpbg@public.gmane.org 
-
-    公司网站：http://gdslys.3653h.com/
-
-
---===============1726603803==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+April Johnson
+Assistant HR
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
---===============1726603803==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1726603803==--

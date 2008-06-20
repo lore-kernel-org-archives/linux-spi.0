@@ -1,9 +1,12 @@
-From: =?GB2312?B?wda+rcDt?= <syxlcygjwsry-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org>
-Subject: =?GB2312?B?t6LGsbT6v6o=?=
-Date: Thu, 19 Jun 2008 10:50:12 +0800
-Message-ID: <E1K9AE1-00049e-Vk@mail.sourceforge.net>
-Reply-To: syxlcygjwsry-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============2052922785=="
+From: Chen Gong <g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH] fix mpc83xx spi prescale modulus
+	calculate
+Date: Fri, 20 Jun 2008 18:35:45 +0800
+Message-ID: <1213958145-18592-1-git-send-email-g.chen@freescale.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Chen Gong <g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,52 +20,59 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2052922785==
-Content-Type: text/plain;charset="GB2312"
+Signed-off-by: Chen Gong <g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+---
+ drivers/spi/spi_mpc83xx.c |   29 ++++++++++++++++-------------
+ 1 files changed, 16 insertions(+), 13 deletions(-)
 
-<html>
-<head>
+diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+index 6832da6..070c621 100644
+--- a/drivers/spi/spi_mpc83xx.c
++++ b/drivers/spi/spi_mpc83xx.c
+@@ -266,21 +266,24 @@ int mpc83xx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 
+ 	cs->hw_mode |= SPMODE_LEN(bits_per_word);
+ 
+-	if ((mpc83xx_spi->spibrg / hz) >= 64) {
+-		pm = mpc83xx_spi->spibrg / (hz * 64) - 1;
+-		if (pm > 0x0f) {
+-			dev_err(&spi->dev, "Requested speed is too "
+-				"low: %d Hz. Will use %d Hz instead.\n",
+-				hz, mpc83xx_spi->spibrg / 1024);
+-			pm = 0x0f;
++	if ((mpc83xx_spi->spibrg / hz) > 64) {
++		pm = mpc83xx_spi->spibrg / (hz * 64);
++		if (pm > 16) {
++			cs->hw_mode |= SPMODE_DIV16;
++			pm /= 16;
++			if (pm > 16) {
++				dev_err(&spi->dev, "Requested speed is too "
++					"low: %d Hz. Will use %d Hz instead.\n",
++					hz, mpc83xx_spi->spibrg / 1024);
++				pm = 16;
++			}
+ 		}
+-		cs->hw_mode |= SPMODE_PM(pm) | SPMODE_DIV16;
+-	} else {
++	} else
+ 		pm = mpc83xx_spi->spibrg / (hz * 4);
+-		if (pm)
+-			pm--;
+-		cs->hw_mode |= SPMODE_PM(pm);
+-	}
++	if (pm)
++		pm--;
++
++	cs->hw_mode |= SPMODE_PM(pm);
+ 	regval =  mpc83xx_spi_read_reg(&mpc83xx_spi->base->mode);
+ 	if (cs->hw_mode != regval) {
+ 		unsigned long flags;
+-- 
+1.5.4
 
-<TABLE style="BACKGROUND-POSITION: left top; BACKGROUND-REPEAT: repeat-x; BACKGROUND-COLOR: #f0f9c8" cellSpacing=0 cellPadding=0 width="99%" background=http://p.mail.163.com/images/letter/200709/wwf6_bg.gif border=0>
-<TBODY>
-<TR>
-<TD style="BACKGROUND-POSITION: right top; BACKGROUND-REPEAT: no-repeat" background=http://p.mail.163.com/images/letter/200709/wwf6_bg_book.gif colSpan=3 height=140><FONT size=4>&nbsp;</FONT></TD></TR>
-<TR>
-<TD width=32><FONT size=4>&nbsp;</FONT></TD>
-<TD style="FONT-SIZE: 12px; COLOR: #003300; LINE-HEIGHT: 30px; BACKGROUND-REPEAT: repeat" vAlign=top background=http://p.mail.163.com/images/letter/200709/wwf6_bg_line.gif>
-<DIV><STATIONERY><FONT size=5>   </FONT></DIV>
-<DIV><FONT color=#000000 size=4><STRONG>贵公司负责人您好!&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp; 本公司在全国各大城市都设有分公司，因为业务关系现可（低.税.率）代开部分国税和地税《发-票》。普通发票收取税率为</span><b style=""><span style="FONT-SIZE:20pt;COLOR:red;FONT-FAMILY:宋体;">0.5-2%</span></b><span style="FONT-SIZE:13.5pt;COLOR:black;FONT-FAMILY:宋体;">。 <span lang="EN-US"> <br></span>&nbsp; &nbsp; </span>☆发票代开范围<span lang="EN-US"> <br></span>&nbsp; &nbsp; ①</span>国税普通发票Φ：商品销售（包含所有行业的商品）。<span lang="EN-US"> <br></span>&nbsp; &nbsp; ②</span>地税普通发票Φ：会务费、会议费、旅游费、广告发票、咨询费、酒店住宿、国际货运代理发票、建筑安装发票等等各种行业发票。<span lang="EN-US"> <br></span>&nbsp; &nbsp; ③</span>增值税↑发票Φ：进出口增值税发票及海关缴款书
- 。<span lang="EN-US"> <br></span>&nbsp; &nbsp; 交易方式：<span lang="EN-US"> <br></span>&nbsp; &nbsp; 为增加双方信任，本公司可以先开票给贵公司，<b style="COLOR:black;BACKGROUND-COLOR:#ffff66
- ;">待验证后再付款。</b><span lang=
-"EN-US"> <br></span>&nbsp; &nbsp; <span lang="EN-US"> <br></span>&nbsp; &nbsp; 联 系 人：林 先 生<span lang="EN-US"> <br></span>&nbsp; &nbsp; 联系手机：<b style="COLOR:black;BACKGROUND-COLOR:#ffff66;">13530881026</b>&nbsp;&nbsp; <span lang="EN-US"> <br></span>&nbsp; &nbsp; 电子邮箱：</FONT><A href="mailto:whao326-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org "><FONT size=2>whao326-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org </FONT></A><FONT size=2>&nbsp;<br>2008.01</FONT></DIV></TD>
-<TD>&nbsp;</TD></TR></TBODY></TABLE>
-<TABLE cellSpacing=0 cellPadding=0 width="99%" border=0>
-<TBODY>
-<TR>
-<TD style="BACKGROUND-POSITION: left bottom; BACKGROUND-REPEAT: no-repeat" background=http://p.mail.163.com/images/letter/200709/wwf6_bg_cpy.gif colSpan=3 height=40>&nbsp;</TD></TR></TBODY></TABLE>
-
-
-
---===============2052922785==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
---===============2052922785==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2052922785==--

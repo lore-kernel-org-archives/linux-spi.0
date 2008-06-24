@@ -1,13 +1,9 @@
-From: Rexanne Harrold <huankediannao-9Onoh4P/yGk@public.gmane.org>
-Subject: =?windows-1251?q?Marketing_Job_Openings_Avail?=
-	=?windows-1251?q?able?=
-Date: Tue, 24 Jun 2008 12:22:23 +0200
-Message-ID: <26435.1031896242$1214303013@news.gmane.org>
-Reply-To: Rexanne Harrold <annkull1287-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?zfWxo7ar?= <hfxdgdsggffffvfg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: =?GB2312?B?us/X99DFz6KjoQ==?=
+Date: Tue, 24 Jun 2008 18:29:46 +0800
+Message-ID: <E1KB5m5-0006oP-1L@mail.sourceforge.net>
+Content-Type: multipart/mixed; boundary="===============0344943042=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,39 +16,44 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+--===============0344943042==
+Content-Type: text/plain;charset="GB2312"
 
-Since the start of 2008 our organization starts recruiting home workers
-willing to take part in well-paying research studies conducted by leading
-online businesses. 
-Your opinion as a consumer is important for the success and profitability of
-many business ventures. That is why they are ready to pay generously for
-what you think. 
+各位老板、财务：您好！ 
+     
+      本公司为税务机关授权代开发票的单位，与全国各地、各行业的代开机构
 
-You can earn from $300 to $600 a week for participating in on-line surveys,
-focus group discussions, and product/service evaluations. Become part of our
-team and earn: 
+ 有联网业务往来；以普通国、地税为主，收取费用优惠在１% 左右，确保所开票
 
-- from $5 to $50 for participating in on-line surveys 
-- from $20 to $120 for participating in product/service evaluations 
-- from $30 to $155 for participating in virtual focus group discussions 
+ 据为税务机关领取的真票并为合作方保密，按你司要求先开票验证后付款。
 
-What's best, all you need to work with us is a computer, an Internet
-connection, a valid e-mail address, and good English skills. You decide when
-to finish your tasks and how much time to devote to each survey assignment.
-You can also keep this job for the rest of the year!
+     联系人：王保东
+     
+     电 话：13713613632       QQ：977468756
 
-If you want to become one of our highly valued survey takers, please write
-back to isiah.lichenstein16217-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and I will send you more information.
+      深圳市国联贸易有限公司
 
-Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
-Sincerely,
+--===============0344943042==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-April Johnson
-Assistant HR
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
+--===============0344943042==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0344943042==--

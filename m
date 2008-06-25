@@ -1,9 +1,11 @@
-From: "Zik Saleeba" <zik-fsgeVU6Z5FysTnJN9+BGXg@public.gmane.org>
-Subject: Problems with latency
-Date: Wed, 25 Jun 2008 16:02:10 +1000
-Message-ID: <33e9dd1c0806242302y4e39b869n4a64f4955cc71dd5@mail.gmail.com>
+From: Guennadi Liakhovetski <lg-ynQEQJNshbs@public.gmane.org>
+Subject: SD card on an SPI bitbang interface (ppc4xx)
+	not working
+Date: Wed, 25 Jun 2008 08:02:19 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.0806250801060.10699@axis700.grange>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0805620175=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,77 +19,58 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0805620175==
-Content-Type: multipart/alternative;
-	boundary="----=_Part_30404_31158448.1214373730478"
+(forgot to cc spi-devel originally)
 
-------=_Part_30404_31158448.1214373730478
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Hi,
 
-I'm writing a driver for the NXP sc16is752 serial chip. This chip is
-accessed via SPI. I've actually had a working driver for quite some time now
-but I've been having problems with it since I changed from 2.6.16 to
-2.6.24.Occasionally the driver fails due to its 64 byte receive buffer
-overflowing
-before I can get the data.
+I'm trying to use an SPI bitbang driver for PPC4xx [1] to talk to an 
+SD-card, and it doesn't work. Enabling debugging in the mmc-spi driver I 
+first saw, that the mmc layer sends MMC_GO_IDLE_STATE several times during 
+initialization, after which the card enters the idle state and needs time 
+to recover, however, the driver doesn't wait and keeps sending further 
+commands. I am not quite sure this is bad, because queries do get answered 
+(with R1_SPI_IDLE bit set), still I somehow fixed that so, that the driver 
+now always repeats sending SD_APP_OP_COND until the card leaves the idle 
+state, and then the driver proceeds. I know this is probably not a correct 
+fix - I don't have the MMC/SD spec, I only found [2], still now I see that 
+indeed the card is given a chance to initialize before any further 
+commands are attempted. But then I come to the next problem: when the 
+driver requests the card ID with MMC_SEND_CID I get an error back:
 
-I've set the serial chip's receive buffer interrupt level to 16 bytes - so
-after I've received 16 bytes I have to get the data before the buffer
-overflows its 64 byte limit. This isn't too demanding - I need to have it
-done within 8ms of getting the interrupt at 57600bps. The tricky part is
-that I need to do three separate register reads to get status before I can
-do the final buffer read so it's actually four SPI transactions. And what's
-more the chip has two serial ports so I need to check both - which makes it
-up to eight SPI transactions.
+mmc0: starting CMD59 arg 00000001 flags 00000080
+mmc_spi spi0.51:   mmc_spi: CMD59, resp R1
+mmc_spi spi0.51: spi_ppc4xx_setup: mode 0, 8 bpw, 400000 hz
+mmc0: req done (CMD59): 0: 00000000 00000000 00000000 00000000
+mmc_sd_init_card[376]
+mmc0: starting CMD10 arg 00000000 flags 000000b5
+mmc0:     blksz 16 blocks 1 flags 00000200 tsac 0 ms nsac 0
+mmc_spi spi0.51:   mmc_spi: CMD10, resp R1
+mmc_spi spi0.51:     mmc_spi: read block, 16 bytes
+mmc_spi spi0.51: read error ffffff92 (-110)
+mmc_spi spi0.51: read status -110
+mmc_spi spi0.51: spi_ppc4xx_setup: mode 0, 8 bpw, 400000 hz
+mmc0: req done (CMD10): 0: 00000000 00000000 00000000 00000000
+mmc0:     0 bytes transferred: -110
+mmc_send_cxd_data[259] data err -110, cmd err 0
 
-Normally this is absolutely no problem - the bottom half work queue fires up
-and the SPI subsystem on my pxa2xx romps it in. Once in a while however the
-latency between the interrupt and removing the data is much, much longer and
-the chip's receive buffer overflows. This happens enough that it makes the
-driver unusable at higher bit rates.
+Any idea? Unfortunately, I do not have another platform where I could 
+verify spi-mmc. Maybe someone could send me a debug log of an SD-card 
+initialization in such a host? David?
 
-Does anyone have any suggestions what might be causing these random latency
-jumps, and also whether it might be related to work queue latency or to
-pxa2xx spi delays?
+Thanks
+Guennadi
 
-Thanks,
-Zik
+[1] http://article.gmane.org/gmane.linux.kernel.mentors/638 (an earlier version)
+[2] http://elm-chan.org/docs/mmc/mmc_e.html
+---
+Guennadi Liakhovetski, Ph.D.
 
-------=_Part_30404_31158448.1214373730478
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-I&#39;m writing a driver for the NXP sc16is752 serial chip. This chip is accessed via SPI. I&#39;ve actually had a working driver for quite some time now but I&#39;ve been having problems with it since I changed from 2.6.16 to <a href="http://2.6.24.">2.6.24.</a> Occasionally the driver fails due to its 64 byte receive buffer overflowing before I can get the data.<br>
-<br>I&#39;ve set the serial chip&#39;s receive buffer interrupt level to 16 bytes - so after I&#39;ve received 16 bytes I have to get the data before the buffer overflows its 64 byte limit. This isn&#39;t too demanding - I need to have it done within 8ms of getting the interrupt at 57600bps. The tricky part is that I need to do three separate register reads to get status before I can do the final buffer read so it&#39;s actually four SPI transactions. And what&#39;s more the chip has two serial ports so I need to check both - which makes it up to eight SPI transactions.<br>
-<br>Normally this is absolutely no problem - the bottom half work queue fires up and the SPI subsystem on my pxa2xx romps it in. Once in a while however the latency between the interrupt and removing the data is much, much longer and the chip&#39;s receive buffer overflows. This happens enough that it makes the driver unusable at higher bit rates.<br>
-<br>Does anyone have any suggestions what might be causing these random latency jumps, and also whether it might be related to work queue latency or to pxa2xx spi delays?<br><br>Thanks,<br>Zik<br>
-
-------=_Part_30404_31158448.1214373730478--
-
-
---===============0805620175==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
---===============0805620175==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0805620175==--

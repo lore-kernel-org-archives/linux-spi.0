@@ -1,17 +1,16 @@
-From: Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Accelerometer etc subsystem (Update on
-	progress)
-Date: Thu, 26 Jun 2008 19:26:39 +0100
-Message-ID: <4863DF5F.9040409@gmail.com>
-References: <4832A211.4040206@gmail.com>
-	<20080520132817.03fb74ea@hyperion.delvare>
-	<4863D97A.9090102@gmail.com>
+From: Lennert Buytenhek <buytenh-OLH4Qvv75CYX/NnBR394Jw@public.gmane.org>
+Subject: [PATCH] spi: driver for Marvell Orion SPI
+	controllers
+Date: Thu, 26 Jun 2008 20:39:11 +0200
+Message-ID: <20080626183911.GC16994@xi.wantstofly.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------030402030807090203070705"
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: nico-mo2vmkxb4K0@public.gmane.org
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4863D97A.9090102-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,622 +22,668 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------030402030807090203070705
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+From: Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 
-Sorry, forgot to include the headers in the original patch.  Obviously these
-are very rough and ready at the moment and if nothing else their overall
-layout isn't particularly logical.
-> Dear All,
->
-> This email is mainly to give people an idea of current progress towards
-> a new
-> subsystem as discussed in the thread starting with
-> http://lkml.org/lkml/2008/5/20/135
->
-> Sorry for the mass list bombardment, but clearly some elements of this
-> discussion
-> will end up in various different territories.
->
-> Some elements of a prototype subsystem are in place. It draws very heavily
-> on parts of the input and hwmon subsystems diverging only where necessary.
->
-> The only test driver currently integrated is for an ST LIS3L02DQ
-> accelerometer
-> which has more than a few quirks to make it tricky to handle (and some what
-> sketchy documentation.) More chips will follow over next week or so but
-> hopefully the driver for this chip gives enough of an idea of how I envision
-> the system working to encourage discussion / advice.
->
-> Note that I haven't dealt with anywhere near all the possible locking issues
-> etc and am well aware that this needs to be done. Other cleanups that will
-> need to be done include working out the layout in sysfs to make it more
-> intuitive. Also sorry for the somewhat rough and ready nature of the
-> attached
-> patch (against 2.6.26-rc4)
->
-> Ring buffer design is a large part of the attached patch. I'm not sure if
-> I am going about this the right way. Basically, we need ring buffers with
-> almost no write latency but can waste plenty of time reading from them
-> (in general case - we do however want reading the last available value to be
-> fast). What is there works, but probably has at least a few nasty corner
-> cases that I haven't prevented.
->
-> Interfaces (these are per device) - at somepoint a procfs interface similar
->        to that used in the input subsystem would make device querying
->        simpler.
->
-> Sysfs -    Parameter Control - gain / offsets etc
->     State control, turn interrupts on and off etc.
->     Interrupt control parameters (threshold etc)
->     Ring buffer parameters as relevant (currently fixed)
->     Individual input reading (acceleration values here)
->     Minor numbers for various chrdevs associated with this device.
->
-> chrdev-    3 types of chrdev at the moment
->     Ring buffer events
->     Ring buffer access (currently ripping data off the buffer only)
->     Interrupt events - for lis3l02dq these are only threshold breaks
->
-> Functionality yet to be implemented.
->     Polled based capture (use a peroidic timer if available)
->
->     Hardware ring buffering for devices that support it (two level ring
-> buffer -
->     hard and soft may be appropriate)
->
->     A chrdev for polling of whole device (with timestamps etc).
->
->     Composite interrupt handling (some devices allow logical combinations
->     of different interrupt signals to be used as the trigger condition).
->
->     Documenation ;)
->
->     Cleaner solution to data alignment in the ring buffer (currently I'm
-> cheating
->     and manually doing it)
->
->     Lots lots more....
->
-> Anyhow, all comments welcome.  Can anyone think of a better name?
-> (I'm not keen on industrialio. It's too long if nothing else!
->  It will do as a working title for now)
->
-> Thanks,
->
-> --
->
-> Jonathan Cameron
->   
+This adds a SPI driver for the SPI controller found in various
+Marvell Orion ARM SoCs.
 
+Signed-off-by: Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Saeed Bishara <saeed-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Lennert Buytenhek <buytenh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 
---------------030402030807090203070705
-Content-Type: text/x-patch;
- name="indio_headers.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="indio_headers.patch"
-
---- a/include/linux/industrialio.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/include/linux/industrialio.h	2008-06-26 12:10:31.000000000 +0100
-@@ -0,0 +1,275 @@
-+/* The industrial I/O core
+Index: linux-2.6.26-rc8/drivers/spi/Kconfig
+===================================================================
+--- linux-2.6.26-rc8.orig/drivers/spi/Kconfig
++++ linux-2.6.26-rc8/drivers/spi/Kconfig
+@@ -149,6 +149,12 @@ config SPI_OMAP24XX
+ 	  SPI master controller for OMAP24xx/OMAP34xx Multichannel SPI
+ 	  (McSPI) modules.
+ 
++config SPI_ORION
++	tristate "Orion SPI master (EXPERIMENTAL)"
++	depends on SPI_MASTER && PLAT_ORION && EXPERIMENTAL
++	help
++	  This enables using the SPI master controller on the Orion chips.
++
+ config SPI_PXA2XX
+ 	tristate "PXA2xx SSP SPI master"
+ 	depends on SPI_MASTER && ARCH_PXA && EXPERIMENTAL
+Index: linux-2.6.26-rc8/drivers/spi/Makefile
+===================================================================
+--- linux-2.6.26-rc8.orig/drivers/spi/Makefile
++++ linux-2.6.26-rc8/drivers/spi/Makefile
+@@ -18,6 +18,7 @@ obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.
+ obj-$(CONFIG_SPI_BUTTERFLY)		+= spi_butterfly.o
+ obj-$(CONFIG_SPI_IMX)			+= spi_imx.o
+ obj-$(CONFIG_SPI_LM70_LLP)		+= spi_lm70llp.o
++obj-$(CONFIG_SPI_ORION)			+= orion_spi.o
+ obj-$(CONFIG_SPI_PXA2XX)		+= pxa2xx_spi.o
+ obj-$(CONFIG_SPI_OMAP_UWIRE)		+= omap_uwire.o
+ obj-$(CONFIG_SPI_OMAP24XX)		+= omap2_mcspi.o
+Index: linux-2.6.26-rc8/drivers/spi/orion_spi.c
+===================================================================
+--- /dev/null
++++ linux-2.6.26-rc8/drivers/spi/orion_spi.c
+@@ -0,0 +1,594 @@
++/*
++ * Marvell Orion SPI controller driver
 + *
-+ * Copyright (c) 2008 Jonathan Cameron
++ * Author: Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
++ * Copyright (C) 2007-2008 Marvell Ltd.
 + *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
 + */
 +
-+#ifndef _INDUSTRIAL_IO_H_
-+#define _INDUSTRIAL_IO_H_
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/delay.h>
++#include <linux/platform_device.h>
++#include <linux/err.h>
++#include <linux/io.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/orion_spi.h>
++#include <asm/unaligned.h>
 +
-+#include <linux/device.h>
-+#include <linux/industrialio_sysfs.h>
++#define DRIVER_NAME			"orion_spi"
 +
-+/* TODO LIST */
-+/* Initial test drivers to implement
-+   SCA3000 VTI Accelerometers (hardware ring buffers)
-+   MAX1363 ADC (polled only for ring buffer )
++#define SPI_REG(orion_spi, reg)		(((u32)orion_spi->base) + (reg))
 +
-+   Static device specific elements (conversion factors etc) should be exported via sysfs
++#define ORION_SPI_MAX_FREQ 		20000000
++#define ORION_SPI_DEF_FREQ		20000000
++#define ORION_SPI_DEF_BPW		16
++#define ORION_NUM_CHIPSELECTS		1
++#define ORION_SPI_WAIT_RDY_MAX_LOOP	2000 /* in usec */
++#define DUMMY_8_BIT_TX_VAL		0xFF
++#define DUMMY_16_BIT_TX_VAL		0xFFFF
 +
-+   Finish writing ring buffer character interface
-+   Write general event character interfaces
-+   Another type of chardev to allow direct reading (typically in response to data ready events)
++#define ORION_SPI_IF_CTRL_REG		0x00
++#define ORION_SPI_IF_CONFIG_REG		0x04
++#define ORION_SPI_DATA_OUT_REG		0x08
++#define ORION_SPI_DATA_IN_REG		0x0c
++#define ORION_SPI_INT_CAUSE_REG		0x10
++
++#define ORION_SPI_IF_8_16_BIT_MODE	(1 << 5)
++#define ORION_SPI_CLK_PRESCALE_MASK	0x1F
++
++struct orion_spi {
++	struct work_struct	work;
++
++	/* Lock access to transfer list.	*/
++	spinlock_t		lock;
++
++	struct list_head	msg_queue;
++	struct spi_master	*master;
++	void __iomem		*base;
++	struct orion_spi_info 	*spi_info;
++};
++
++struct orion_spi_state {
++	u32	data_width;
++};
++
++static struct workqueue_struct *orion_spi_wq;
++
++static inline void
++orion_spi_setbits(struct orion_spi *orion_spi, u32 reg, u32 mask)
++{
++	u32 reg_addr = SPI_REG(orion_spi, reg);
++	u32 val;
++
++	val = readl(reg_addr);
++	val |= mask;
++	writel(val, reg_addr);
++}
++
++static inline void
++orion_spi_clrbits(struct orion_spi *orion_spi, u32 reg, u32 mask)
++{
++	u32 reg_addr = SPI_REG(orion_spi, reg);
++	u32 val;
++
++	val = readl(reg_addr);
++	val &= ~mask;
++	writel(val, reg_addr);
++}
++
++static int orion_spi_set_transfer_size(struct orion_spi *orion_spi, int size)
++{
++	if (size == 16) {
++		orion_spi_setbits(orion_spi, ORION_SPI_IF_CONFIG_REG,
++				  ORION_SPI_IF_8_16_BIT_MODE);
++	} else if (size == 8) {
++		orion_spi_clrbits(orion_spi, ORION_SPI_IF_CONFIG_REG,
++				  ORION_SPI_IF_8_16_BIT_MODE);
++	} else {
++		pr_debug("Bad bits per word value %d (only 8 or 16 are "
++			 "allowed).\n", size);
++		return -EINVAL;
++	}
++
++	return 0;
++}
 +
 +
-+   Opinions sought on:
-+   Shared interrupt lines.  Worth dealing with? (very time consuming to check
-+   whether some devices caused an interrupt or not - in some states anyway)
-+   Limiting length of event lists.  Could get silly numbers of them otherwise.
-+*/
++static u8 prescale[] = { 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30 };
++
++static int orion_spi_baudrate_set(struct spi_device *spi, unsigned int rate)
++{
++	u32 min_offset = 0xFFFFFFFF;
++	u8 best_idx = 100;
++	int i;
++	u32 cpu_clk;
++	u32 reg;
++	struct orion_spi *orion_spi;
++	struct orion_spi_info *spi_info;
++
++	orion_spi = spi_master_get_devdata(spi->master);
++	spi_info = orion_spi->spi_info;
++
++	cpu_clk = spi_info->tclk;
++
++	/* Find the best prescale configuration - less or equal */
++	for (i = 0; i < ARRAY_SIZE(prescale); i++) {
++		u32 tmp_rate = cpu_clk / prescale[i];
++
++		/* check for higher - irrelevant */
++		if (tmp_rate > rate)
++			continue;
++
++		/* check for exact fit */
++		if (tmp_rate == rate) {
++			best_idx = i;
++			break;
++		}
++
++		/* check if this is better than the previous one */
++		if ((rate - tmp_rate) < min_offset) {
++			min_offset = (rate - (cpu_clk / prescale[i]));
++			best_idx = i;
++		}
++	}
++
++	if (best_idx > ARRAY_SIZE(prescale))
++		return -EINVAL;
++
++	/* Convert the array index to SPI clock divisor value.	*/
++	reg = readl(SPI_REG(orion_spi, ORION_SPI_IF_CONFIG_REG));
++	reg = ((reg & ~ORION_SPI_CLK_PRESCALE_MASK) | (best_idx + 0x12));
++	writel(reg, SPI_REG(orion_spi, ORION_SPI_IF_CONFIG_REG));
++
++	return 0;
++}
++
++/*
++ * called only when no transfer is active to this device
++ */
++static int orion_spi_setup_transfer(struct spi_device *spi,
++				    struct spi_transfer *t)
++{
++	struct orion_spi *orion_spi;
++	struct orion_spi_state *spi_state = spi->controller_state;
++	unsigned int speed = spi->max_speed_hz;
++	unsigned int bits_per_word = spi->bits_per_word;
++
++	orion_spi = spi_master_get_devdata(spi->master);
++
++	if ((t != NULL) && t->speed_hz)
++		speed = t->speed_hz;
++
++	if ((t != NULL) && t->bits_per_word)
++		bits_per_word = t->bits_per_word;
++
++	if (orion_spi_baudrate_set(spi, speed) != 0)
++		return -EINVAL;
++
++	if (orion_spi_set_transfer_size(orion_spi, bits_per_word) != 0)
++		return -EINVAL;
++
++	spi_state->data_width = t->bits_per_word;
++
++	return 0;
++}
++
++static void orion_spi_set_cs(struct orion_spi *orion_spi, int enable)
++{
++	if (enable)
++		orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG, 0x1);
++	else
++		orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG, 0x1);
++}
++
++static inline int orion_spi_wait_till_ready(struct orion_spi *orion_spi)
++{
++	int i;
++
++	for (i = 0; i < ORION_SPI_WAIT_RDY_MAX_LOOP; i++) {
++		if (readl(SPI_REG(orion_spi, ORION_SPI_INT_CAUSE_REG)))
++			return 1;
++		else
++			udelay(1);
++	}
++
++	return -1;
++}
++
++static int
++orion_spi_write_read_8bit(struct spi_device *spi,
++			  const u8 **tx_buf, u8 **rx_buf)
++{
++	u32 tx_reg, rx_reg, int_reg;
++	struct orion_spi *orion_spi;
++
++	orion_spi = spi_master_get_devdata(spi->master);
++	tx_reg = SPI_REG(orion_spi, ORION_SPI_DATA_OUT_REG);
++	rx_reg = SPI_REG(orion_spi, ORION_SPI_DATA_IN_REG);
++	int_reg = SPI_REG(orion_spi, ORION_SPI_INT_CAUSE_REG);
++
++	/* clear the interrupt cause register */
++	writel(0x0, int_reg);
++
++	if (tx_buf && *tx_buf)
++		writel(*(*tx_buf)++, tx_reg);
++	else
++		writel(DUMMY_8_BIT_TX_VAL, tx_reg);
++
++	if (orion_spi_wait_till_ready(orion_spi) < 0)
++		return -1;
++
++	if (rx_buf && *rx_buf)
++		*(*rx_buf)++ = readl(rx_reg);
++
++	return 1;
++}
++
++static int
++orion_spi_write_read_16bit(struct spi_device *spi,
++			   const u16 **tx_buf, u16 **rx_buf)
++{
++	u32 tx_reg, rx_reg, int_reg;
++	struct orion_spi *orion_spi;
++
++	orion_spi = spi_master_get_devdata(spi->master);
++	tx_reg = SPI_REG(orion_spi, ORION_SPI_DATA_OUT_REG);
++	rx_reg = SPI_REG(orion_spi, ORION_SPI_DATA_IN_REG);
++	int_reg = SPI_REG(orion_spi, ORION_SPI_INT_CAUSE_REG);
++
++	/* clear the interrupt cause register */
++	writel(0x0, int_reg);
++
++	if (tx_buf && *tx_buf)
++		writel(__cpu_to_le16(get_unaligned((*tx_buf)++)), tx_reg);
++	else
++		writel(DUMMY_16_BIT_TX_VAL, tx_reg);
++
++	if (orion_spi_wait_till_ready(orion_spi) < 0) {
++		dev_err(&spi->dev, "TXS timed out\n");
++		return -1;
++	}
++
++	if (rx_buf && *rx_buf)
++		put_unaligned(__le16_to_cpu(readl(rx_reg)), (*rx_buf)++);
++
++	return 1;
++}
++
++static unsigned int
++orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
++{
++	struct orion_spi_state *spi_state = spi->controller_state;
++	struct orion_spi *orion_spi;
++	unsigned int count;
++	void __iomem *base;
++	int word_len;
++
++	orion_spi = spi_master_get_devdata(spi->master);
++	base = orion_spi->base;
++	word_len = spi_state->data_width;
++	count = xfer->len;
++
++	if (word_len == 8) {
++		const u8 *tx = xfer->tx_buf;
++		u8 *rx = xfer->rx_buf;
++
++		do {
++			if (orion_spi_write_read_8bit(spi, &tx, &rx) < 0)
++				goto out;
++			count--;
++		} while (count);
++	} else if (word_len == 16) {
++		const u16 *tx = xfer->tx_buf;
++		u16 *rx = xfer->rx_buf;
++
++		while (count > 1) {
++			if (orion_spi_write_read_16bit(spi, &tx, &rx) < 0)
++				goto out;
++			count -= 2;
++		}
++
++		if (count == 1) {
++			/* Set mode to 8 bit. */
++			orion_spi_set_transfer_size(orion_spi, 8);
++			if (orion_spi_write_read_8bit(spi, (const u8 **)&tx,
++						(u8 **)&rx) < 0)
++				goto out;
++
++			/* Set mode to 16 bit. */
++			orion_spi_set_transfer_size(orion_spi, 16);
++			count--;
++		}
++	}
++
++out:
++	return xfer->len - count;
++}
 +
 +
-+/* Event interface flags */
-+#define INDUSTRIALIO_BUSY_BIT_POS 1
++static void orion_spi_work(struct work_struct *work)
++{
++	struct orion_spi *orion_spi =
++		container_of(work, struct orion_spi, work);
 +
++	spin_lock_irq(&orion_spi->lock);
++	while (!list_empty(&orion_spi->msg_queue)) {
++		struct spi_message *m;
++		struct spi_device *spi;
++		struct spi_transfer *t = NULL;
++		int par_override = 0;
++		int status = 0;
++		int cs_active = 0;
 +
-+/* Could maintain a list of these for rapid clean up purposes,
-+   but it doesn't exactly take long to scan the array */
-+struct industrialio_handler {
-+	const struct file_operations *fops;
-+	int id;
++		m = container_of(orion_spi->msg_queue.next, struct spi_message,
++				 queue);
++
++		list_del_init(&m->queue);
++		spin_unlock_irq(&orion_spi->lock);
++
++		spi = m->spi;
++
++		list_for_each_entry(t, &m->transfers, transfer_list) {
++			if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
++				status = -EINVAL;
++				break;
++			}
++
++			if (par_override || t->speed_hz || t->bits_per_word) {
++				par_override = 1;
++				status = orion_spi_setup_transfer(spi, t);
++				if (status < 0)
++					break;
++				if (!t->speed_hz && !t->bits_per_word)
++					par_override = 0;
++			}
++
++			if (!cs_active) {
++				orion_spi_set_cs(orion_spi, 1);
++				cs_active = 1;
++			}
++
++			if (t->len)
++				m->actual_length +=
++					orion_spi_write_read(spi, t);
++
++			if (t->delay_usecs)
++				udelay(t->delay_usecs);
++
++			if (t->cs_change) {
++				orion_spi_set_cs(orion_spi, 0);
++				cs_active = 0;
++			}
++		}
++
++		/* Restore defaults if they were overriden */
++		if (par_override) {
++			par_override = 0;
++			status = orion_spi_setup_transfer(spi, NULL);
++		}
++
++		if (cs_active)
++			orion_spi_set_cs(orion_spi, 0);
++
++		m->status = status;
++		m->complete(m->context);
++
++		spin_lock_irq(&orion_spi->lock);
++	}
++
++	spin_unlock_irq(&orion_spi->lock);
++}
++
++static int __init orion_spi_reset(struct orion_spi *orion_spi)
++{
++	/* Verify that the CS is deasserted */
++	orion_spi_set_cs(orion_spi, 0);
++
++	return 0;
++}
++
++static int orion_spi_setup(struct spi_device *spi)
++{
++	struct orion_spi_state *spi_state;
++	struct orion_spi *orion_spi;
++	struct orion_spi_info *spi_info;
++
++	spi_state = spi->controller_state;
++	orion_spi = spi_master_get_devdata(spi->master);
++	spi_info = orion_spi->spi_info;
++
++	if (spi->bits_per_word == 0) {
++		spi->bits_per_word = ORION_SPI_DEF_BPW;
++	} else if (spi->bits_per_word < 8 || spi->bits_per_word > 16) {
++		dev_dbg(&spi->dev, "setup: unsupported %d bit words\n",
++			spi->bits_per_word);
++		return -EINVAL;
++	}
++
++	if (orion_spi_set_transfer_size(orion_spi, spi->bits_per_word) != 0)
++		return -EINVAL;
++
++	if (!spi_state) {
++		spi_state = kzalloc(sizeof(*spi_state), GFP_KERNEL);
++		if (!spi_state)
++			return -ENOMEM;
++		spi->controller_state = spi_state;
++	}
++	spi_state->data_width = spi->bits_per_word;
++
++	dev_dbg(&spi->dev, "setup: Set MAX Speed to %d ", spi->max_speed_hz);
++	if (orion_spi_baudrate_set(spi, spi->max_speed_hz) == 0)
++		dev_dbg(&spi->dev, "OK");
++	else
++		dev_dbg(&spi->dev, "Failed");
++
++	return 0;
++}
++
++static int orion_spi_transfer(struct spi_device *spi, struct spi_message *m)
++{
++	struct orion_spi *orion_spi;
 +	unsigned long flags;
-+	void *private;
-+};
++	struct spi_transfer *t;
 +
++	m->actual_length = 0;
++	m->status = 0;
 +
-+/* The actual event being pushed ot userspace */
-+struct industrialio_event_data {
-+	int id;
-+	s64 timestamp;
-+};
++	/* reject invalid messages and transfers */
++	if (list_empty(&m->transfers) || !m->complete)
++		return -EINVAL;
 +
-+/* FIXME -WORK ON NAMING*/
-+struct industrialio_detected_event_list {
-+	struct list_head list;
-+	struct industrialio_event_data ev;
-+	/* Part of shared event handling - (typicaly ring buffers) */
-+	struct industrialio_shared_ev_pointer *shared_pointer;
-+};
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		const void *tx_buf = t->tx_buf;
++		void *rx_buf = t->rx_buf;
++		unsigned len = t->len;
 +
++		if (t->speed_hz > ORION_SPI_MAX_FREQ
++				|| (len && !(rx_buf || tx_buf))
++				|| (t->bits_per_word &&
++					(t->bits_per_word < 8
++					|| t->bits_per_word > 16))) {
++			dev_dbg(&spi->dev, "transfer: %d Hz, %d %s%s, %d bpw\n",
++					t->speed_hz,
++					len,
++					tx_buf ? "tx" : "",
++					rx_buf ? "rx" : "",
++					t->bits_per_word);
++			return -EINVAL;
++		}
++	}
 +
-+/* Requires high resolution timers */
-+static inline s64 industrialio_get_time_ns(void)
-+{
-+	struct timespec ts;
-+	ktime_get_ts(&ts);
-+	return timespec_to_ns(&ts);
++	orion_spi = spi_master_get_devdata(spi->master);
++
++	spin_lock_irqsave(&orion_spi->lock, flags);
++	list_add_tail(&m->queue, &orion_spi->msg_queue);
++	queue_work(orion_spi_wq, &orion_spi->work);
++	spin_unlock_irqrestore(&orion_spi->lock, flags);
++
++	return 0;
 +}
 +
-+struct industrialio_dev;
-+/* Each device has one of these per interrupt */
-+struct industrialio_event_handler_list {
-+	struct list_head list;
-+	int (*handler)(struct industrialio_dev *dev_io, int index, s64 timestamp, int no_test);
-+	/* This element may be shared */
-+	int refcount;
-+};
-+/* wraps adding to lists and does reference counting to allowed shared handlers */
-+/* FIXME CONFUSING NAMING */
-+int industrialio_add_event_to_list(struct industrialio_event_handler_list *list,
-+				   struct industrialio_event_handler_list *el);
-+
-+int industrialio_remove_event_from_list(struct industrialio_event_handler_list *el);
-+
-+
-+
-+/* This means that interrupts can be turned off when no events are being generated,
-+   and also provides the interrupt handler the means to identify the incoming event */
-+//int industrialio_register_event_list_to_interrupt(int interrupt, industrialio_event_list *list);
-+
-+/* Want this to be as transparrent as possible from the point of view of the driver! */
-+
-+/* JIC23: This is my first serious attempt at a lock free ring buffer for this sort of
-+   situation so all suggestions on this code particularly welcome! */
-+
-+
-+
-+
-+struct industrialio_ring_buffer;
-+#define INIT_INDUSTRIALIO_RING_BUFFER(ring, _dim, _bytes, _length) {	\
-+		(ring)->size = _dim*_bytes;				\
-+		(ring)->skip = (ring)->size + sizeof(s64);		\
-+		(ring)->length = _length;				\
-+		(ring)->dimension = _dim;				\
-+		(ring)->bytes = _bytes;					\
-+		(ring)->read_p = 0;					\
-+		(ring)->write_p = 0;					\
-+		(ring)->last_written_p = 0;				\
-+		(ring)->loopcount = 0;					\
-+		(ring)->data						\
-+			= (unsigned char*)				\
-+			(kmalloc(_length*(ring)->skip,			\
-+				 GFP_KERNEL));				\
-+		(ring)->shared_ev_pointer.ev_p =0;			\
-+		(ring)->shared_ev_pointer.lock =			\
-+			__SPIN_LOCK_UNLOCKED((ring)->shared_ev_pointer->loc); \
++static void orion_spi_cleanup(struct spi_device *spi)
++{
++	kfree(spi->controller_state);
 +}
 +
-+#define FREE_INDUSTRIALIO_RING_BUFFER(ring)	\
-+	kfree((ring)->data)
 +
-+int industrialio_store_to_ring(struct industrialio_ring_buffer *ring,
-+			       unsigned char* data,
-+			       s64 timestamp);
-+
-+/* Edge cases :
-+   1) data at last_p is no longer valid - requires complete wrap around.
-+      To detect, loop count has changed - if only by 1 then problem only
-+      if current_lastp is equal to or greater than copy made at start.
-+      If we have wrapped an entire int in this time (loopcount) then
-+      something very very weird has occured!
-+*/
-+int industrialio_read_last_from_ring(struct industrialio_ring_buffer *ring,
-+					    unsigned char* data);
-+/* Dump the ring */
-+
-+int
-+industrialio_request_ring_buffer(int dimension,
-+				 int bytes_per_reading,
-+				 int length,
-+				 struct industrialio_ring_buffer **ring,
-+				 int id,
-+				 struct module *owner,
-+				 struct device *dev );
-+
-+
-+void industrialio_free_ring_buffer(struct industrialio_ring_buffer* ring, struct device *dev);
-+/* Device operating modes */
-+#define INDIO_DIRECT_MODE		0x01
-+#define INDIO_RING_POLLED		0x02
-+#define INDIO_RING_DATA_RDY		0x04
-+#define INDIO_RING_HARDWARE_BUFFER	0x08
-+
-+
-+
-+struct industrialio_event_interface {
-+	struct industrialio_handler		handler;
-+	wait_queue_head_t			wait;
-+	struct industrialio_detected_event_list	det_events;
-+	int					max_events;
-+	int					current_events;
-+	/* Integer id, used to differentiate this one form any others */
-+	int					id;
-+	struct industrialio_chrdev_minor_attr	attr;
-+	struct module				*owner;
-+	void					*private;
-+};
-+
-+
-+struct industrialio_shared_ev_pointer {
-+	struct industrialio_detected_event_list	*ev_p;
-+	spinlock_t lock;
-+};
-+/* A general ring buffer structure
-+   Intended to be completely lock free as we always want fills from the interrupt
-+   handler to not have to wait.  This obviously increases the possible time required
-+   to read from the buffer.  */
-+struct industrialio_ring_buffer
++static int __init orion_spi_probe(struct platform_device *pdev)
 +{
-+	unsigned char*		data;
-+	int			length;
-+	int			dimension;
-+	int			bytes;
-+	int			size;
-+	int			skip;
-+	unsigned char		*read_p;
-+	unsigned char		*write_p;
-+	unsigned char		*last_written_p;
-+	/* used to act as a point at which to signal an event */
-+	unsigned char		*half_p;
-+	int			loopcount;
-+	/* accessing the ring buffer */
-+	char*			access_minor_name;
-+	struct industrialio_chrdev_minor_attr	access_minor_attr;
-+	struct industrialio_handler		access_handler;
-+	/* events triggered by the ring buffer */
-+	char*			event_minor_name;
-+	struct industrialio_event_interface ev_int;
-+	/* a fully shared output event */
-+	struct industrialio_shared_ev_pointer shared_ev_pointer;
++	struct spi_master *master;
++	struct orion_spi *spi;
++	struct resource *r;
++	struct orion_spi_info *spi_info;
++	int status = 0;
++
++	spi_info = pdev->dev.platform_data;
++
++	master = spi_alloc_master(&pdev->dev, sizeof *spi);
++	if (master == NULL) {
++		dev_dbg(&pdev->dev, "master allocation failed\n");
++		return -ENOMEM;
++	}
++
++	if (pdev->id != -1)
++		master->bus_num = pdev->id;
++
++	master->setup = orion_spi_setup;
++	master->transfer = orion_spi_transfer;
++	master->cleanup = orion_spi_cleanup;
++	master->num_chipselect = ORION_NUM_CHIPSELECTS;
++
++	dev_set_drvdata(&pdev->dev, master);
++
++	spi = spi_master_get_devdata(master);
++	spi->master = master;
++	spi->spi_info = spi_info;
++
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (r == NULL) {
++		status = -ENODEV;
++		goto out;
++	}
++
++	if (!request_mem_region(r->start, (r->end - r->start) + 1,
++				pdev->dev.bus_id)) {
++		status = -EBUSY;
++		goto out;
++	}
++	spi->base = ioremap(r->start, SZ_1K);
++
++	INIT_WORK(&spi->work, orion_spi_work);
++
++	spin_lock_init(&spi->lock);
++	INIT_LIST_HEAD(&spi->msg_queue);
++
++	if (orion_spi_reset(spi) < 0)
++		goto out_rel_mem;
++
++	status = spi_register_master(master);
++	if (status < 0)
++		goto out_rel_mem;
++
++	return status;
++
++out_rel_mem:
++	release_mem_region(r->start, (r->end - r->start) + 1);
++
++out:
++	spi_master_put(master);
++	return status;
++}
++
++
++static int __exit orion_spi_remove(struct platform_device *pdev)
++{
++	struct spi_master *master;
++	struct orion_spi *spi;
++	struct resource *r;
++
++	master = dev_get_drvdata(&pdev->dev);
++	spi = spi_master_get_devdata(master);
++
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	release_mem_region(r->start, (r->end - r->start) + 1);
++
++	spi_unregister_master(master);
++
++	return 0;
++}
++
++static struct platform_driver orion_spi_driver = {
++	.driver = {
++		.name	= DRIVER_NAME,
++		.owner	= THIS_MODULE,
++	},
++	.remove		= __exit_p(orion_spi_remove),
 +};
-+/* Seperate registration functions were leading to very messy driver init */
-+/* Vast majority of this is set by the industrialio subsystem.
-+ * FIXME: Add a macro to set only the relevant stuff within a chip driver
++
++static int __init orion_spi_init(void)
++{
++	orion_spi_wq = create_singlethread_workqueue(
++				orion_spi_driver.driver.name);
++	if (orion_spi_wq == NULL)
++		return -1;
++
++	return platform_driver_probe(&orion_spi_driver, orion_spi_probe);
++}
++module_init(orion_spi_init);
++
++static void __exit orion_spi_exit(void)
++{
++	platform_driver_unregister(&orion_spi_driver);
++
++	destroy_workqueue(orion_spi_wq);
++}
++module_exit(orion_spi_exit);
++
++MODULE_DESCRIPTION("Orion SPI driver");
++MODULE_AUTHOR("Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS("platform:orion_spi");
+Index: linux-2.6.26-rc8/include/linux/spi/orion_spi.h
+===================================================================
+--- /dev/null
++++ linux-2.6.26-rc8/include/linux/spi/orion_spi.h
+@@ -0,0 +1,17 @@
++/*
++ * include/linux/spi/orion_spi.h
++ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2. This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
 + */
-+struct industrialio_dev {
-+/* generic handling data used by ind io */
-+	int id;
-+/* device specific data */
-+	void *dev_data;
 +
-+/* Modes the drivers supports */
-+	int modes; /* Driver Set */
-+	int currentmode;
-+/* Direct sysfs related functionality */
-+	struct device *sysfs_dev;
-+	struct device *dev; /* Driver Set */
-+	/* General attributes */
-+	const struct attribute_group *attrs;
++#ifndef __LINUX_SPI_ORION_SPI_H
++#define __LINUX_SPI_ORION_SPI_H
 +
-+/* Interrupt handling related */
-+	/* FIXME: GETTING MESSY! */
-+	struct module *driver_module;
-+	int 				num_interrupt_lines; /* Driver Set */
-+
-+	struct industrialio_interrupt **interrupts;
-+
-+
-+	/* Event control attributes */
-+	const struct attribute_group *event_attrs;
-+	/* The character device related elements */
-+	struct industrialio_event_interface *event_interfaces;
-+
-+/* Software Ring Buffer - for now assuming only makes sense to have a single ring */
-+	int ring_dimension;
-+	int ring_bytes_per_reading;
-+	int ring_length;
-+	struct industrialio_ring_buffer *ring;
-+	struct attribute_group *ring_attrs_group;
-+	struct industrialio_ring_attr *ring_attrs;
-+};
-+
-+int industrialio_device_register(struct industrialio_dev *dev_info);
-+
-+void industrialio_device_unregister(struct industrialio_dev *dev_info);
-+
-+/* Wrapper class used to allow easy specification of different line numbers */
-+struct industrialio_interrupt {
-+	struct industrialio_dev *dev_info;
-+	int line_number;
-+	int irq;
-+	struct industrialio_event_handler_list ev_list;
-+};
-+
-+irqreturn_t industrialio_interrupt_handler(int irq, void *_int_info);
-+
-+int industrialio_register_interrupt_line(unsigned int			irq,
-+					 struct industrialio_dev	*dev_info,
-+					 int				line_number,
-+					 unsigned long			type,
-+					 const char			*name);
-+
-+void industrialio_unregister_interrupt_line(struct industrialio_dev *dev_info,
-+					    int line_number);
-+
-+
-+/* Used to try inserting an event into the list for userspace reading via
-+ * chrdev */
-+int industrialio_put_event(struct industrialio_dev *dev_info,
-+			   int ev_line,
-+			   int ev_code,
-+			   s64 timestamp);
-+#endif /* _INDUSTRIAL_IO_H_ */
---- a/include/linux/industrialio_sysfs.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/include/linux/industrialio_sysfs.h	2008-06-26 16:44:50.000000000 +0100
-@@ -0,0 +1,207 @@
-+/* The industrial I/O core
-+ *
-+ *Copyright (c) 2008 Jonathan Cameron
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
-+ *
-+ * General attributes
-+ */
-+
-+#ifndef _INDUSTRIAL_IO_SYSFS_H_
-+#define _INDUSTRIAL_IO_SYSFS_H_
-+
-+#include <linux/industrialio.h>
-+
-+
-+struct industrialio_event_attr {
-+	struct device_attribute dev_attr;
-+	int mask;
-+	struct industrialio_event_handler_list *listel;
++struct orion_spi_info {
++	u32	tclk;
 +};
 +
 +
-+#define to_industrialio_event_attr(_dev_attr) \
-+	container_of(_dev_attr, struct industrialio_event_attr, dev_attr)
-+
-+
-+struct industrialio_chrdev_minor_attr {
-+	struct device_attribute dev_attr;
-+	int minor;
-+};
-+
-+#define to_industrialio_chrdev_minor_attr(_dev_attr) \
-+	container_of(_dev_attr, struct industrialio_chrdev_minor_attr, dev_attr);
-+
-+struct industrialio_dev_attr {
-+	struct device_attribute dev_attr;
-+	int address;
-+};
-+
-+
-+#define to_industrialio_dev_attr(_dev_attr) \
-+	container_of(_dev_attr, struct industrialio_dev_attr, dev_attr)
-+
-+/* Some attributes will be hard coded (device dependant) and not require an
-+   address, in these cases pass a negative */
-+#define INDUSTRIALIO_ATTR(_name, _mode, _show, _store, _addr)	\
-+	{ .dev_attr = __ATTR(_name, _mode, _show, _store), \
-+	  .address = _addr }
-+
-+#define INDUSTRIALIO_DEVICE_ATTR(_name, _mode, _show, _store, _addr)	\
-+	struct industrialio_dev_attr industrialio_dev_attr_##_name	\
-+	= INDUSTRIALIO_ATTR(_name, _mode, _show, _store, _addr)
-+
-+/* This may get broken down into separate files later */
-+
-+/* For devices with internal clocks - and possibly poling later */
-+
-+#define INDUSTRIALIO_DEV_ATTR_SAMP_FREQ(_mode, _show, _store) \
-+	INDUSTRIALIO_DEVICE_ATTR(sampling_frequency, _mode,   \
-+				 _show, _store, 0)
-+
-+#define INDUSTRIALIO_DEV_ATTR_AVAIL_SAMP_FREQ(_show)\
-+	INDUSTRIALIO_DEVICE_ATTR(available_sampling_frequency,	\
-+				 S_IRUGO, _show, NULL, 0)
-+
-+/* Accelerometer types of attribute */
-+
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_X_OFFSET(_mode, _show, _store, _addr) \
-+	INDUSTRIALIO_DEVICE_ATTR(x_offset, _mode, _show, _store, _addr)
-+
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_Y_OFFSET(_mode, _show, _store, _addr) \
-+	INDUSTRIALIO_DEVICE_ATTR(y_offset, _mode, _show, _store, _addr)
-+
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_Z_OFFSET(_mode, _show, _store, _addr) \
-+	INDUSTRIALIO_DEVICE_ATTR(z_offset, _mode, _show, _store, _addr)
-+
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_X_GAIN(_mode, _show, _store, _addr)	\
-+	INDUSTRIALIO_DEVICE_ATTR(x_gain, _mode, _show, _store, _addr)
-+
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_Y_GAIN(_mode, _show, _store, _addr)	\
-+	INDUSTRIALIO_DEVICE_ATTR(y_gain, _mode, _show, _store, _addr)
-+
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_Z_GAIN(_mode, _show, _store, _addr)	\
-+	INDUSTRIALIO_DEVICE_ATTR(z_gain, _mode, _show, _store, _addr)
-+
-+
-+/* The actual device readings are always going to be read only */
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_X(_show, _addr)			\
-+	INDUSTRIALIO_DEVICE_ATTR(x, S_IRUGO, _show, NULL, _addr)
-+
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_Y(_show, _addr)			\
-+	INDUSTRIALIO_DEVICE_ATTR(y, S_IRUGO, _show, NULL, _addr)
-+
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_Z(_show, _addr)			\
-+	INDUSTRIALIO_DEVICE_ATTR(z, S_IRUGO, _show, NULL, _addr)
-+
-+/* Thresholds are somewhat chip dependent - may need quite a few defs here */
-+#define INDUSTRIALIO_DEV_ATTR_ACCEL_THRESH(_mode, _show, _store, _addr) \
-+	INDUSTRIALIO_DEVICE_ATTR(thresh, _mode, _show, _store, _addr)
-+
-+
-+
-+/* Events that the device may generate */
-+/* How to do this. Is it valid to have sysfs elements which can be neither
-+   read nor written? */
-+/*  GOING TO NEED a usage count */
-+#define INDUSTRIALIO_EVENT_SH(_name, _handler)			\
-+	static struct industrialio_event_handler_list			\
-+	industrialio_event_##_name = {				\
-+		.handler=_handler,				\
-+		.refcount = 0,					\
-+	};
-+#define INDUSTRIALIO_EVENT_ATTR_SH(_name, _ev_list, _show, _store, _mask) \
-+	static struct industrialio_event_attr				\
-+	industrialio_event_attr_##_name					\
-+	= { .dev_attr = __ATTR(_name, S_IRUGO | S_IWUSR, _show, _store),\
-+	    .mask = _mask,\
-+	    .listel = &_ev_list };
-+
-+/*FIXME use the above to define this */
-+#define INDUSTRIALIO_EVENT_ATTR(_name, _show, _store, _mask, _handler)	\
-+	static struct industrialio_event_handler_list				\
-+	industrialio_event_##_name = {				\
-+		.handler=_handler,					\
-+	};								\
-+	static struct							\
-+	industrialio_event_attr						\
-+	industrialio_event_attr_##_name					\
-+	= { .dev_attr = __ATTR(_name, S_IRUGO | S_IWUSR, _show, _store), \
-+	    .mask = _mask,						\
-+	    .listel = &industrialio_event_##_name };		\
-+/*FIXME, add line number to the above?*/
-+
-+/* In most of these cases, this actually corresponds to something with a
-+   value attached */
-+
-+/* For some devices you can select whether all conditions or any condition
-+   must be met for interrupt generation */
-+#define INDUSTRIALIO_EVENT_ATTR_DATA_RDY(_show, _store, _mask, _handler) \
-+	INDUSTRIALIO_EVENT_ATTR(data_rdy, _show, _store, _mask, _handler)
-+
-+#define INDUSTRIALIO_EVENT_CODE_DATA_RDY  100
-+
-+/* Threshold pass events */
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_X_HIGH(_show, _store, _mask, _handler) \
-+	INDUSTRIALIO_EVENT_ATTR(x_high, _show, _store, _mask, _handler)
-+
-+#define INDUSTRIALIO_EVENT_CODE_ACCEL_X_HIGH 1
-+
-+/* Shared handler version */
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_X_HIGH_SH(_evlist, _show, _store, _mask)\
-+	INDUSTRIALIO_EVENT_ATTR_SH(x_high, _evlist, _show, _store, _mask)
-+
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_Y_HIGH(_show, _store, _mask, _handler) \
-+	INDUSTRIALIO_EVENT_ATTR(y_high, _show, _store, _mask, _handler)
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_Y_HIGH_SH(_evlist, _show, _store, _mask)\
-+	INDUSTRIALIO_EVENT_ATTR_SH(y_high, _evlist, _show, _store, _mask)
-+
-+#define INDUSTRIALIO_EVENT_CODE_ACCEL_Y_HIGH 2
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_Z_HIGH(_show, _store, _mask, _handler) \
-+	INDUSTRIALIO_EVENT_ATTR(z_high, _show, _store, _mask, _handler)
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_Z_HIGH_SH(_evlist, _show, _store, _mask)\
-+	INDUSTRIALIO_EVENT_ATTR_SH(z_high, _evlist, _show, _store, _mask)
-+
-+#define INDUSTRIALIO_EVENT_CODE_ACCEL_Z_HIGH 3
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_X_LOW(_show, _store, _mask, _handler) \
-+	INDUSTRIALIO_EVENT_ATTR(x_low, _show, _store, _mask, _handler)
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_X_LOW_SH(_evlist, _show, _store, _mask)\
-+	INDUSTRIALIO_EVENT_ATTR_SH(x_low, _evlist, _show, _store, _mask)
-+
-+#define INDUSTRIALIO_EVENT_CODE_ACCEL_X_LOW 4
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_Y_LOW(_show, _store, _mask, _handler) \
-+	INDUSTRIALIO_EVENT_ATTR(y_low, _show, _store, _mask, _handler)
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_Y_LOW_SH(_evlist,_show, _store, _mask)\
-+	INDUSTRIALIO_EVENT_ATTR_SH(y_low, _evlist, _show, _store, _mask)
-+
-+#define INDUSTRIALIO_EVENT_CODE_ACCEL_Y_LOW 5
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_Z_LOW(_show, _store, _mask, _handler) \
-+	INDUSTRIALIO_EVENT_ATTR(z_low, _show, _store, _mask, _handler)
-+
-+#define INDUSTRIALIO_EVENT_ATTR_ACCEL_Z_LOW_SH(_evlist, _show, _store, _mask)\
-+	INDUSTRIALIO_EVENT_ATTR_SH(z_low, _evlist, _show, _store, _mask)
-+
-+#define INDUSTRIALIO_EVENT_CODE_ACCEL_Z_LOW 6
-+
-+
-+#define INDUSTRIALIO_EVENT_CODE_RING_50_FULL 100
-+#define INDUSTRIALIO_EVENT_CODE_RING_100_FULL 101
-+/* HOW TO HANDLE COMPOSITE EVENTS? */
-+
-+
-+
-+
-+/* function that takes a list of these and puts them in an events directory? */
-+
-+#endif /* _INDUSTRIAL_IO_SYSFS_H_ */
---- a/include/linux/spi/lis3l02dq.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/include/linux/spi/lis3l02dq.h	2008-05-27 20:18:00.000000000 +0100
-@@ -0,0 +1,6 @@
-+
-+
-+struct LIS3L02DQ_platform_data {
-+  unsigned data_ready_gpio;
-+};
-+
-
---------------030402030807090203070705
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
++#endif
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
---------------030402030807090203070705
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---------------030402030807090203070705--

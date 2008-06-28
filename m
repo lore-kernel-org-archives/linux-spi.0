@@ -1,21 +1,16 @@
-From: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
-Subject: Re: [lm-sensors] Accelerometer etc subsystem
-	(Update on progress)
-Date: Fri, 27 Jun 2008 10:45:58 +0100
-Message-ID: <4864B6D6.3020509@cam.ac.uk>
-References: <4832A211.4040206@gmail.com>	<20080520132817.03fb74ea@hyperion.delvare>
-	<4863D97A.9090102@gmail.com>
-	<1214537367.8462.157.camel@moss.renham>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch 2.6.26-rc8] spi: au1550_spi: proper
+	platform device
+Date: Fri, 27 Jun 2008 17:02:09 -0700
+Message-ID: <200806271702.09684.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: mgross-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Dmitry Torokhov <dtor-JGs/UdohzUI@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LM Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>,
-	Jonathan Cameron <Jonathan.Cameron-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, hmh-N3TV7GIv+o9fyO9Q7EP/yw@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Ben Nizette <bn-pV1zxKMKwgg3AZtZ2NlBNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1214537367.8462.157.camel-L9Ekdhw1/RnCa3F4uneLBw@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,112 +22,258 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ben Nizette wrote:
-> On Thu, 2008-06-26 at 19:01 +0100, Jonathan Cameron wrote:
-> 
->> Sysfs -    Parameter Control - gain / offsets etc
->>     State control, turn interrupts on and off etc.
-> 
-> As in turn userspace [interrupt] event notification on and off?  I would
-> have thought it'd be the kernel driver's responsibility to turn the
-> device's interrupt generation on and off according to needs for
-> data/events etc.
-Ok, there is a division here between interrupt handling on the host side
-which indeed should be turned on and off transparently by the driver 
-and actually telling the sensor which interrupts to generate.  In a sense
-this is simply a case of terminology and what is actually being requested
-is event notifications (which then match with those sent up to userspace).
-> 
-> I know this is in a rough state but a few comments anyway.  First, there
-> are heaps of casts-of-void-pointers (eg casts of kmalloc returns) which
-> are superfluous and hard readability 'coz you have to split the line to
-> fit in 80cols.
-Oops, silly habit that one - I'll clean those out.
-> And hardcoded type-size assumptions everywhere.  Don't be scared of
-> sizeof ;-)
-Yup, definitely need to clean them up.
->> Anyhow, all comments welcome.  Can anyone think of a better name?
->> (I'm not keen on industrialio. It's too long if nothing else!
->>  It will do as a working title for now)
-> 
-> I don't mind industrial io but as a function prefix, iio works better.
-> I can't see it being used elsewhere.
-Good point - I'd droped to indio in some cases but iio will make those 80
-character limits even easier ;)
+From: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
+Date: Sat, 7 Jun 2008 12:14:37 +0200
+Subject: [PATCH] au1550_spi: proper platform device
 
-> also:
-> 
-> +/* As the ring buffer contents are device dependent this functionality
-> + * must remain part of the driver and not the ring buffer subsystem */
-> +static ssize_t
-> +lis3l02dq_read_accel_from_ring(struct industrialio_ring_buffer *ring,
-> +			       int element, char *buf)
-> +{
-> +	int val, ret, len;
-> +	uint16_t temp;
-> +	char *data, *datalock;
-> +
-> +	data = kmalloc(8, GFP_KERNEL);
-> +	if (data == NULL) {
-> +		ret = -ENOMEM;
-> +		goto error_ret;
-> +	}
-> +	ret = industrialio_read_last_from_ring(ring, data);
-> +	datalock = data + 2*element;
-> 
-> I haven't looked deeply at the ringbuffer code but can you guarantee
-> that later elements are at higher addresses than the lower ones?  As in,
-> can one datum in the the ring buffer wrap to the beginning again?
-At the moment the ring buffer has to be a whole number of datums big.
-I'm inclined to keep it way and move more towards dynamic allocation
-such that it is true than to try handling split data reading sets.
+Remove the Au1550 resource table and instead extract MMIO/IRQ/DMA
+resources from platform resource information like any well-behaved
+platform driver.
+
+Signed-off-by: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
+Signed-off-by: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/au1550_spi.c                  |  136 ++++++++++++++++--------------
+ include/asm-mips/mach-au1x00/au1550_spi.h |    1 
+ 2 files changed, 73 insertions(+), 64 deletions(-)
+
+--- a/drivers/spi/au1550_spi.c	2008-04-11 10:19:07.000000000 -0700
++++ b/drivers/spi/au1550_spi.c	2008-06-10 14:10:46.000000000 -0700
+@@ -26,6 +26,7 @@
+ #include <linux/errno.h>
+ #include <linux/device.h>
+ #include <linux/platform_device.h>
++#include <linux/resource.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/dma-mapping.h>
+@@ -81,6 +82,7 @@ struct au1550_spi {
+ 	struct spi_master *master;
+ 	struct device *dev;
+ 	struct au1550_spi_info *pdata;
++	struct resource *ioarea;
+ };
  
-> +	kfree(data);
-> 
-> You free the data before you use it?  Though you are using it through a
-> different pointer below.  I wouldn't be scared of allocating 8 bytes on
-> the stack rather than kmalloc'ing (unless you expect this to be called
-> in a deep callchain)
-Ouch.  That's an out and out bug!
-> 
-> +	temp = (((uint16_t)((datalock[1]))) << 8)
-> +		| (uint16_t)(datalock[0]);
-> +	val = *((int16_t *)(&temp));
-> 
-> All this data/datalock/bitshuffle nonsense would be nicer if you just
-> used structs and unions, yeah?
-> 
-> union channel {
-> 	char data[2];
-> 	int16_t val;
-> }
-Good point, I'd forgotten you could do that with unions.
-> 
-> struct datum {
-> 	union channel elements[3];
-> }
-> 
-> or something.
-> 
-> +	len = sprintf(buf, "ring %d\n", val);
-> +
-> +	return len;
-> +error_ret:
-> +	return ret;
-> +}
-Good approach, I'll switch to that.
-
-> 
-> Incidentally, is there much that your ringbuffer can do which kfifo
-> can't?  Apart from having a bunch of extra nice accessor-helpers sitting
-> on the top.
-Not sure, I'll look into it.
-> 
-> Overall looking good and useful, can't wait 'till it's done :-)
-Thanks for the comments.
-
-Jonathan
-
+ 
+@@ -96,6 +98,8 @@ static dbdev_tab_t au1550_spi_mem_dbdev 
+ 	.dev_intpolarity	= 0
+ };
+ 
++static int ddma_memid;	/* id to above mem dma device */
++
+ static void au1550_spi_bits_handlers_set(struct au1550_spi *hw, int bpw);
+ 
+ 
+@@ -732,6 +736,7 @@ static int __init au1550_spi_probe(struc
+ {
+ 	struct au1550_spi *hw;
+ 	struct spi_master *master;
++	struct resource *r;
+ 	int err = 0;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct au1550_spi));
+@@ -753,76 +758,64 @@ static int __init au1550_spi_probe(struc
+ 		goto err_no_pdata;
+ 	}
+ 
+-	platform_set_drvdata(pdev, hw);
+-
+-	init_completion(&hw->master_done);
++	r = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	if (!r) {
++		dev_err(&pdev->dev, "no IRQ\n");
++		err = -ENODEV;
++		goto err_no_iores;
++	}
++	hw->irq = r->start;
+ 
+-	hw->bitbang.master = hw->master;
+-	hw->bitbang.setup_transfer = au1550_spi_setupxfer;
+-	hw->bitbang.chipselect = au1550_spi_chipsel;
+-	hw->bitbang.master->setup = au1550_spi_setup;
+-	hw->bitbang.txrx_bufs = au1550_spi_txrx_bufs;
++	hw->usedma = 0;
++	r = platform_get_resource(pdev, IORESOURCE_DMA, 0);
++	if (r) {
++		hw->dma_tx_id = r->start;
++		r = platform_get_resource(pdev, IORESOURCE_DMA, 1);
++		if (r) {
++			hw->dma_rx_id = r->start;
++			if (usedma && ddma_memid) {
++				if (pdev->dev.dma_mask == NULL)
++					dev_warn(&pdev->dev, "no dma mask\n");
++				else
++					hw->usedma = 1;
++			}
++		}
++	}
+ 
+-	switch (hw->pdata->bus_num) {
+-	case 0:
+-		hw->irq = AU1550_PSC0_INT;
+-		hw->regs = (volatile psc_spi_t *)PSC0_BASE_ADDR;
+-		hw->dma_rx_id = DSCR_CMD0_PSC0_RX;
+-		hw->dma_tx_id = DSCR_CMD0_PSC0_TX;
+-		break;
+-	case 1:
+-		hw->irq = AU1550_PSC1_INT;
+-		hw->regs = (volatile psc_spi_t *)PSC1_BASE_ADDR;
+-		hw->dma_rx_id = DSCR_CMD0_PSC1_RX;
+-		hw->dma_tx_id = DSCR_CMD0_PSC1_TX;
+-		break;
+-	case 2:
+-		hw->irq = AU1550_PSC2_INT;
+-		hw->regs = (volatile psc_spi_t *)PSC2_BASE_ADDR;
+-		hw->dma_rx_id = DSCR_CMD0_PSC2_RX;
+-		hw->dma_tx_id = DSCR_CMD0_PSC2_TX;
+-		break;
+-	case 3:
+-		hw->irq = AU1550_PSC3_INT;
+-		hw->regs = (volatile psc_spi_t *)PSC3_BASE_ADDR;
+-		hw->dma_rx_id = DSCR_CMD0_PSC3_RX;
+-		hw->dma_tx_id = DSCR_CMD0_PSC3_TX;
+-		break;
+-	default:
+-		dev_err(&pdev->dev, "Wrong bus_num of SPI\n");
+-		err = -ENOENT;
+-		goto err_no_pdata;
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!r) {
++		dev_err(&pdev->dev, "no mmio resource\n");
++		err = -ENODEV;
++		goto err_no_iores;
+ 	}
+ 
+-	if (request_mem_region((unsigned long)hw->regs, sizeof(psc_spi_t),
+-			pdev->name) == NULL) {
++	hw->ioarea = request_mem_region(r->start, sizeof(psc_spi_t),
++					pdev->name);
++	if (!hw->ioarea) {
+ 		dev_err(&pdev->dev, "Cannot reserve iomem region\n");
+ 		err = -ENXIO;
+ 		goto err_no_iores;
+ 	}
+ 
+-
+-	if (usedma) {
+-		if (pdev->dev.dma_mask == NULL)
+-			dev_warn(&pdev->dev, "no dma mask\n");
+-		else
+-			hw->usedma = 1;
++	hw->regs = (psc_spi_t __iomem *)ioremap(r->start, sizeof(psc_spi_t));
++	if (!hw->regs) {
++		dev_err(&pdev->dev, "cannot ioremap\n");
++		err = -ENXIO;
++		goto err_ioremap;
+ 	}
+ 
+-	if (hw->usedma) {
+-		/*
+-		 * create memory device with 8 bits dev_devwidth
+-		 * needed for proper byte ordering to spi fifo
+-		 */
+-		int memid = au1xxx_ddma_add_device(&au1550_spi_mem_dbdev);
+-		if (!memid) {
+-			dev_err(&pdev->dev,
+-				"Cannot create dma 8 bit mem device\n");
+-			err = -ENXIO;
+-			goto err_dma_add_dev;
+-		}
++	platform_set_drvdata(pdev, hw);
++
++	init_completion(&hw->master_done);
++
++	hw->bitbang.master = hw->master;
++	hw->bitbang.setup_transfer = au1550_spi_setupxfer;
++	hw->bitbang.chipselect = au1550_spi_chipsel;
++	hw->bitbang.master->setup = au1550_spi_setup;
++	hw->bitbang.txrx_bufs = au1550_spi_txrx_bufs;
+ 
+-		hw->dma_tx_ch = au1xxx_dbdma_chan_alloc(memid,
++	if (hw->usedma) {
++		hw->dma_tx_ch = au1xxx_dbdma_chan_alloc(ddma_memid,
+ 			hw->dma_tx_id, NULL, (void *)hw);
+ 		if (hw->dma_tx_ch == 0) {
+ 			dev_err(&pdev->dev,
+@@ -841,7 +834,7 @@ static int __init au1550_spi_probe(struc
+ 
+ 
+ 		hw->dma_rx_ch = au1xxx_dbdma_chan_alloc(hw->dma_rx_id,
+-			memid, NULL, (void *)hw);
++			ddma_memid, NULL, (void *)hw);
+ 		if (hw->dma_rx_ch == 0) {
+ 			dev_err(&pdev->dev,
+ 				"Cannot allocate rx dma channel\n");
+@@ -874,7 +867,7 @@ static int __init au1550_spi_probe(struc
+ 		goto err_no_irq;
+ 	}
+ 
+-	master->bus_num = hw->pdata->bus_num;
++	master->bus_num = pdev->id;
+ 	master->num_chipselect = hw->pdata->num_chipselect;
+ 
+ 	/*
+@@ -924,8 +917,11 @@ err_no_txdma_descr:
+ 		au1xxx_dbdma_chan_free(hw->dma_tx_ch);
+ 
+ err_no_txdma:
+-err_dma_add_dev:
+-	release_mem_region((unsigned long)hw->regs, sizeof(psc_spi_t));
++	iounmap((void __iomem *)hw->regs);
++
++err_ioremap:
++	release_resource(hw->ioarea);
++	kfree(hw->ioarea);
+ 
+ err_no_iores:
+ err_no_pdata:
+@@ -944,7 +940,9 @@ static int __exit au1550_spi_remove(stru
+ 
+ 	spi_bitbang_stop(&hw->bitbang);
+ 	free_irq(hw->irq, hw);
+-	release_mem_region((unsigned long)hw->regs, sizeof(psc_spi_t));
++	iounmap((void __iomem *)hw->regs);
++	release_resource(hw->ioarea);
++	kfree(hw->ioarea);
+ 
+ 	if (hw->usedma) {
+ 		au1550_spi_dma_rxtmp_free(hw);
+@@ -971,12 +969,24 @@ static struct platform_driver au1550_spi
+ 
+ static int __init au1550_spi_init(void)
+ {
++	/*
++	 * create memory device with 8 bits dev_devwidth
++	 * needed for proper byte ordering to spi fifo
++	 */
++	if (usedma) {
++		ddma_memid = au1xxx_ddma_add_device(&au1550_spi_mem_dbdev);
++		if (!ddma_memid)
++			printk(KERN_ERR "au1550-spi: cannot add memory"
++					"dbdma device\n");
++	}
+ 	return platform_driver_probe(&au1550_spi_drv, au1550_spi_probe);
+ }
+ module_init(au1550_spi_init);
+ 
+ static void __exit au1550_spi_exit(void)
+ {
++	if (usedma && ddma_memid)
++		au1xxx_ddma_del_device(ddma_memid);
+ 	platform_driver_unregister(&au1550_spi_drv);
+ }
+ module_exit(au1550_spi_exit);
+--- a/include/asm-mips/mach-au1x00/au1550_spi.h	2008-05-13 08:56:43.000000000 -0700
++++ b/include/asm-mips/mach-au1x00/au1550_spi.h	2008-06-10 14:10:46.000000000 -0700
+@@ -6,7 +6,6 @@
+ #define _AU1550_SPI_H_
+ 
+ struct au1550_spi_info {
+-	s16 bus_num;		/* defines which PSC and IRQ to use */
+ 	u32 mainclk_hz;		/* main input clock frequency of PSC */
+ 	u16 num_chipselect;	/* number of chipselects supported */
+ 	void (*activate_cs)(struct au1550_spi_info *spi, int cs, int polarity);
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.

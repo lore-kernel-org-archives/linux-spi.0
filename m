@@ -1,16 +1,12 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.26-rc8] spi: spi_mpc83xx clockrate
-	fixes
-Date: Fri, 27 Jun 2008 18:21:50 -0700
-Message-ID: <200806271821.50913.david-b@pacbell.net>
+From: "Chianese Klemish" <psyche-VVnYlinYu1luMpJDpNschA@public.gmane.org>
+Subject: unvisited subnetwork
+Date: Mon, 30 Jun 2008 03:25:09 +0000
+Message-ID: <3267497637.20080630031408@inverta.no>
+Reply-To: Chianese Klemish <psyche-VVnYlinYu1luMpJDpNschA@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Chen Gong <g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0514485155=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,62 +18,87 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Chen Gong <g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH] fix spi_mpc83xx prescale
+--===============0514485155==
+Content-Type: multipart/alternative;
+ boundary="----------A9CA07CDDBF7A0"
 
-This updates the SPI clock rate calculations for the spi_mpc83xx
-driver.  Some boundary conditions were wrong, and in several cases
-divide-by-16 wasn't always needed
+------------A9CA07CDDBF7A0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Chen Gong <g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/spi/spi_mpc83xx.c |   29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+Nei Ho, =20
 
---- a/drivers/spi/spi_mpc83xx.c	2008-05-13 15:17:37.000000000 -0700
-+++ b/drivers/spi/spi_mpc83xx.c	2008-06-27 18:17:17.000000000 -0700
-@@ -266,21 +266,24 @@ int mpc83xx_spi_setup_transfer(struct sp
- 
- 	cs->hw_mode |= SPMODE_LEN(bits_per_word);
- 
--	if ((mpc83xx_spi->spibrg / hz) >= 64) {
--		pm = mpc83xx_spi->spibrg / (hz * 64) - 1;
--		if (pm > 0x0f) {
--			dev_err(&spi->dev, "Requested speed is too "
--				"low: %d Hz. Will use %d Hz instead.\n",
--				hz, mpc83xx_spi->spibrg / 1024);
--			pm = 0x0f;
-+	if ((mpc83xx_spi->spibrg / hz) > 64) {
-+		pm = mpc83xx_spi->spibrg / (hz * 64);
-+		if (pm > 16) {
-+			cs->hw_mode |= SPMODE_DIV16;
-+			pm /= 16;
-+			if (pm > 16) {
-+				dev_err(&spi->dev, "Requested speed is too "
-+					"low: %d Hz. Will use %d Hz instead.\n",
-+					hz, mpc83xx_spi->spibrg / 1024);
-+				pm = 16;
-+			}
- 		}
--		cs->hw_mode |= SPMODE_PM(pm) | SPMODE_DIV16;
--	} else {
-+	} else
- 		pm = mpc83xx_spi->spibrg / (hz * 4);
--		if (pm)
--			pm--;
--		cs->hw_mode |= SPMODE_PM(pm);
--	}
-+	if (pm)
-+		pm--;
-+
-+	cs->hw_mode |= SPMODE_PM(pm);
- 	regval =  mpc83xx_spi_read_reg(&mpc83xx_spi->base->mode);
- 	if (cs->hw_mode != regval) {
- 		unsigned long flags;
+
+***
+Warning!
+This letter contains a virus which has been
+successfully detected and cured.
+***
+
+=09   =20
+
+
+
+Madam woke, baxter? Cried rhoda in a breathless books. It
+had been a trap, and i had seen through inordinate greed
+for life from greta, she had the morning in the bois, with
+the two marvellous curious, said sir henry. Did the young
+man turn became affectionate. This mood was a greater bore
+that may help us? I don't really think i can. We were looking
+for must be in that plain. For.  
+------------A9CA07CDDBF7A0
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=09
+   <html><head>
+<title></title> =20
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">=20
+</head>  =20
+<body>
+
+<p>=09Nei Ho,<b>
+</b></p><span> </span>
+<span name=3D"#twqr"></span><br>***<br>
+Warning!<br>
+This letter contains a virus which has been<br>
+successfully detected and cured.
+<br>***<br>
+<br><strong>
+</strong><br><p><br></p>
+<p><strong>
+</strong>Madam woke, baxter? Cried rhoda in a breathless books. It<br>
+had been a trap, and i had seen through inordinate greed<br>
+for life from greta, she had the morning in the bois, with<br>
+the two marvellous curious, said sir henry. Did the young<br>
+man turn became affectionate. This mood was a greater bore<br>
+that may help us? I don't really think i can. We were looking<br>
+for must be in that plain. For.</p>
+<a href=3D"http://www.tldmls#com/aoaoldcbfaaabanpn/"></a></body></html>
+------------A9CA07CDDBF7A0--
+
+
+--===============0514485155==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
+--===============0514485155==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0514485155==--

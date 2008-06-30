@@ -1,21 +1,14 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 2/4] spi: split up spi_new_device()
-	to allow two stage registration.
-Date: Sun, 29 Jun 2008 21:10:25 -0700
-Message-ID: <200806292110.25793.david-b@pacbell.net>
-References: <20080516193054.28030.35126.stgit@trillian.secretlab.ca>
-	<fa686aa40805232343x20031560j5659d203e25f494@mail.gmail.com>
-	<fa686aa40806170028t2ccb679k22d2d3cea793ebc1@mail.gmail.com>
+From: Phemie Mcelroy <smicillo-7EJwN6hzp+g@public.gmane.org>
+Subject: =?windows-1251?q?Marketing_Job_Openings_Avail?=
+	=?windows-1251?q?able?=
+Date: Mon, 30 Jun 2008 13:53:06 +0200
+Message-ID: <19506.321513518$1214826867@news.gmane.org>
+Reply-To: Phemie Mcelroy <1679melicentsolonar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa40806170028t2ccb679k22d2d3cea793ebc1-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,76 +20,28 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 17 June 2008, Grant Likely wrote:
-> >>> This patch splits the allocation and registration portions of code out
-> >>> of spi_new_device() and creates three new functions; spi_alloc_device=
-(),
-> >>> spi_register_device(), and spi_device_release().
-> >>
-> >> I have no problem with the first two, but why the last?
-> >>
-> >> If the devices are always allocated by spi_alloc_device() as
-> >> they should be -- probably through an intermediary -- the
-> >> only public function necessary for that cleanup should be
-> >> the existing spi_dev_put().
-> >
-> > Ah, okay. =A0I'm still a bit fuzzy on the device model conventions.
-> > I'll remove that then.
-> =
+Hi,
 
-> I've dug into this some more. =A0spi_alloc_device only allocates the
-> memory. =A0It doesn't call device_initialize() to initialize the kref.
+Our online market research organization starts recruiting self-motivated and
+reliable individuals willing to take part in well-paying research conducted
+by leading international businesses. Your opinion as a consumer is important
+for the success and profitability of many business ventures. That is why
+they are ready to pay for what you think.
 
-Well, the driver model idiom is initialize() then add(), with
-register() calls combining the two.  An alloc() is just a bit
-outside those core idioms ...
+Our members are paid for participating in online surveys, focus group
+discussions, and product/service evaluations. What's best, all you need to
+work with us is a computer, an Internet connection, and will to voice your
+honest opinion. 
 
-But one alloc() example is platform_device_alloc(), which does
-the device_initialize() call ... followed by platform_device_add().
+We'd like to hear from you soon if you want to become one of our highly
+valued survey takers. 
 
-The spi_new_device() call does a bunch of stuff beyond a register(),
-but it also calls device_register().
+Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
+Please reply to tinklelibby1282-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 
-> All of that behaviour is handled within device_register(). =A0Therefore
-> if a driver uses spi_alloc_device() and then if a later part of the
-> initialization fails before spi_register_device() is called, then the
-> alloc'd memory needs to be freed, but spi_dev_put() won't work because
-> the kobj isn't set up so I need another function to handle freeing it
-> in on a failure path.
-
-I see ...
-
- =
-
-> Should I switch things around to do device_initialize() in the alloc
-> function =
-
-
-Yes.
-
-
-> and call device_add() instead of device_register() in the =
-
-> spi_register_device() function?
-
-You should also rename it to spi_add_device(), since register()
-calls always do the initialize() rather than having it done for
-them in advance.  People rely on those names supporting that
-pattern (as they should).
-
-
-> Is that sufficient to make put_device() work?
-
-Looks like it to me.  Calling device_initialize() will
-do a kobject_init(), which is documented as requiring
-a kobject_put() to clean up ... that's all put_device()
-will ever do.
-
-- Dave
-
-
-
+Best regards,
+Stephanie Cunningham
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for

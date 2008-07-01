@@ -1,13 +1,10 @@
-From: Phemie Mcelroy <smicillo-7EJwN6hzp+g@public.gmane.org>
-Subject: =?windows-1251?q?Marketing_Job_Openings_Avail?=
-	=?windows-1251?q?able?=
-Date: Mon, 30 Jun 2008 13:53:06 +0200
-Message-ID: <19506.321513518$1214826867@news.gmane.org>
-Reply-To: Phemie Mcelroy <1679melicentsolonar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "aron Cuthbert" <oath-mak-pJKKQwe84axwDcM0f6M0dQ@public.gmane.org>
+Subject: odnuolom
+Date: Tue, 1 Jul 2008 12:12:46 +0200
+Message-ID: <001101c8db63$026926b0$14840f4f@ufficio1>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0657367628=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,30 +17,58 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+--===============0657367628==
+Content-Type: multipart/alternative;
+	boundary="--------=_NextPart_000_000D_01C8DB73.C5F1F6B0"
 
-Our online market research organization starts recruiting self-motivated and
-reliable individuals willing to take part in well-paying research conducted
-by leading international businesses. Your opinion as a consumer is important
-for the success and profitability of many business ventures. That is why
-they are ready to pay for what you think.
+----------=_NextPart_000_000D_01C8DB73.C5F1F6B0
+Content-Type: text/plain;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Our members are paid for participating in online surveys, focus group
-discussions, and product/service evaluations. What's best, all you need to
-work with us is a computer, an Internet connection, and will to voice your
-honest opinion. 
+4 ancient greek secrets of rich intimate life.
+When your wife is angry with your bad potence.
+----------=_NextPart_000_000D_01C8DB73.C5F1F6B0
+Content-Type: text/html;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-We'd like to hear from you soon if you want to become one of our highly
-valued survey takers. 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2900.3199" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT Arial size=3D2>4 ancient greek secrets of rich intimate=20
+life.</FONT></DIV>
+<A href=3D"http://prescriptiondruglists.com">When your wife is angry =
+with your bad=20
+potence.</A></BODY></HTML>
+----------=_NextPart_000_000D_01C8DB73.C5F1F6B0--
 
-Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
-Please reply to tinklelibby1282-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+--===============0657367628==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Best regards,
-Stephanie Cunningham
 -------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It's the best place to buy or sell services for
 just about anything Open Source.
 http://sourceforge.net/services/buy/index.php
+--===============0657367628==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0657367628==--

@@ -1,9 +1,10 @@
-From: ALANCK <ALANCK-bugology-1U1/5P2GHd15soNxlVnkmw@public.gmane.org>
-Subject: She loves it that deep
-Date: Wed, 2 Jul 2008 16:18:07 +0200
-Message-ID: <4D4421BF-0B04-6654-0494-57D40E95F020@DMA.state.wi.us>
+From: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Subject: Specifying variant to use within a driver.
+Date: Wed, 02 Jul 2008 18:24:20 +0100
+Message-ID: <486BB9C4.1090303@cam.ac.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1471186689=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,45 +18,28 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1471186689==
-Content-type: multipart/alternative;
-	boundary="Boundary_(ID_xmsHoFHCZQLxq4xcSoOXQQ)"
+Dear All,
 
---Boundary_(ID_xmsHoFHCZQLxq4xcSoOXQQ)
-Content-type: text/plain; charset=UTF-8; format=flowed
-Content-transfer-encoding: 7BIT
+Is there a standard way specifying in a board_info structure which variant of a
+chip is present? Basically I'm looking for something equivalent to the alias
+based id_table of the i2c subsystem.
 
-Keep her satisfied and by your side forever with a stronger pecker. http://www.storealways.com/
+The situation is that I am writing an accelerometer driver for the vti sca3000
+series of chips and these vary considerably in what functionality they provide
+and there is no easy what of querying the chip to find out what it is (version
+numbers are not documented as far as I can tell). Thus it will be down to a
+info specified in board info to identify what we have.
 
---Boundary_(ID_xmsHoFHCZQLxq4xcSoOXQQ)
-Content-type: text/html; charset=UTF-8
-Content-transfer-encoding: 7BIT
+If not I guess it will have to a passed in as platform data, but that seems
+somewhat adhoc and messy.
 
-<html><body style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space; ">Keep her satisfied and by your side forever with a stronger pecker.<div><a href="http://www.storealways.com/">http://www.storealways.com/</a></div></body></html>
+Thanks,
 
---Boundary_(ID_xmsHoFHCZQLxq4xcSoOXQQ)--
-
-
---===============1471186689==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+--
+Jonathan Cameron
 
 -------------------------------------------------------------------------
 Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!
 Studies have shown that voting for your favorite open source project,
 along with a healthy diet, reduces your potential for chronic lameness
 and boredom. Vote Now at http://www.sourceforge.net/community/cca08
---===============1471186689==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1471186689==--

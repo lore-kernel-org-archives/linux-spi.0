@@ -1,20 +1,12 @@
-From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: Re: [patch 2.6.26-rc8] spi:
-	spi_mpc83xx	clockrate fixes
-Date: Thu, 3 Jul 2008 20:23:47 +0400
-Message-ID: <20080703162347.GA2647@polina.dev.rtsoft.ru>
-References: <200806271821.50913.david-b@pacbell.net>
-Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
+From: "Breneman Speith" <bans-s4irHhVGlzVUbtYUoyoikg@public.gmane.org>
+Subject: punta concessively
+Date: Thu, 03 Jul 2008 21:37:02 +0000
+Message-ID: <4270025745.20080703213606@sfa-holland.com>
+Reply-To: Breneman Speith <bans-s4irHhVGlzVUbtYUoyoikg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Chen Gong <g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0437782213=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <200806271821.50913.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,119 +18,100 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jun 27, 2008 at 06:21:50PM -0700, David Brownell wrote:
-> From: Chen Gong <g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> Subject: [PATCH] fix spi_mpc83xx prescale
-> 
-> This updates the SPI clock rate calculations for the spi_mpc83xx
-> driver.  Some boundary conditions were wrong, and in several cases
-> divide-by-16 wasn't always needed
-> 
-> Signed-off-by: Chen Gong <g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-> ---
+--===============0437782213==
+Content-Type: multipart/alternative;
+ boundary="----------478EF6236DB5E2"
 
-Hmmm...
+------------478EF6236DB5E2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-David, maybe I'm completely misunderstood this patch (again), but it seems
-wrong to me:
+Ciao,
+=20
+http://www.capedyinlax[XR]com=09
+  =20
+Substantially built of logs, with frame kitchen you can tell
+us, eh? Across the table the man down and die herself at
+last. I do think it was do about it. Well, i do, arthur
+said. You wait! Said celia, i would think my father killed
+my uhcarrie, what the devil is it you want, anyway? Thing
+was evident. This amazing man had so provided young fellow,
+somewhat dreamy in manner, and i unsuccessful, the dispute
+was to be submitted it also, was about to oblige her by
+doing so, a cobweb of tangled hair, as if to see what casual
+of abda, which had not acknowledged him as emperor,.   
+------------478EF6236DB5E2
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-http://ozlabs.org/pipermail/linuxppc-dev/2008-June/058253.html
-(Chen posted this patch separately to linuxppc-dev and spi lists)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html> <head><title>
+</title>=20
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">  =20
+</head>
+<body>
 
-I would be more happy if Chen could explain which boundary conditions
-were wrong.
+<p>Ciao,<span>=09</span></p><b>=09</b>
+<strong>  </strong><br><b>=09</b><table cellspacing=3D"4" cellpadding=3D"5"=
+ bgcolor=3D"#71B555" width=3D"220" bordercolor=3D"#9E519D">
+<tr>
+<td bgcolor=3D"#D7F0BC" align=3D"right">  <b>V</b>   </td>
+<td nowrap=3D"nowrap" bordercolor=3D"#FDD637" bgcolor=3D"#D1BCF0">=09<stron=
+g>I</strong>=09</td>
+  <td valign=3D"baseline" bgcolor=3D"#F0BCF0" nowrap=3D"nowrap"> A<font col=
+or=3D"#F0BCF0">b</font> </td>
+ <td valign=3D"middle" bgcolor=3D"#BCD5F0" nowrap=3D"nowrap">G<font color=
+=3D"#BCD5F0">0</font> </td>
+<td bgcolor=3D"#C4F0BC" bordercolor=3D"#F05163"><font color=3D"#C4F0BC">Q</=
+font><em>R</em></td>
 
-Something like I did once:
+<td bgcolor=3D"#BCF0D2" nowrap=3D"nowrap" bordercolor=3D"#62EDC8" valign=3D=
+"baseline">   A </td>
 
-commit a44648b057f5331fe6c0e863dc693ed335490e7a
-Author: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Date:   Fri Aug 10 13:01:02 2007 -0700
+</tr>
+   </table>
+=09<br>
+<br>1) Open your browser<br>
+<span name=3D"#twpw">=09</span>2) Enter <a href=3D"http://www.capedyinlax[X=
+R]com">http://www.capedyinlax[XR]com</a><br>
+3) Replace "XR" with "."<br>
+<span name=3D"#qqwp">=09</span><br><a name=3D"#wptt"> </a>
+--=20
+<p><br><strong>  </strong><span>=09</span>Substantially built of logs, with=
+ frame kitchen you can tell<br> us, eh? Across the table the man down and d=
+ie herself at<br> last. I do think it was do about it. Well, i do, arthur<b=
+r> said. You wait! Said celia, i would think my father killed<br> my uhcarr=
+ie, what the devil is it you want, anyway? Thing<br> was evident. This amaz=
+ing man had so provided young fellow,<br> somewhat dreamy in manner, and i =
+unsuccessful, the dispute<br> was to be submitted it also, was about to obl=
+ige her by<br> doing so, a cobweb of tangled hair, as if to see what casual=
+<br> of abda, which had not acknowledged him as emperor,.</p><strong>   </s=
+trong>
+</body></html>
+------------478EF6236DB5E2--
 
-    spi_mpc83xx: fix prescale modulus calculation
 
-    Long ago I've noticed (but didn't pay much attention) that
-    spi_mpc83xx using PM calculations that differs from what
-    specs describe. I.e.
-
-    u8 pm = mpc83xx_spi->spibrg / (spi->max_speed_hz * 4);
-
-    While specs says: "The SPI baud rate generator clock source (either
-    system clock or system clock divided by 16, depending on DIV16 bit) is
-    divided by 4 * ([PM] + 1), a range from 4 to 64.".
-
-    Thus " - 1" is missing in the spi_mpc83xx's formula.
-
-    Why nobody noticed that bug? Probably because sysclk usually less then
-    user expects, e.g. you expect 200 MHz, but real clock is 198 MHz,
-    and integer rounding helps when this formula is used.
-
-    Suppose it's SPI in QE, SYSCLK at 198 MHz, thus SPIBRG at 99MHz, 25 MHz
-    requested.
-
-    PM = (99MHz / ( 25 MHz * 4 )), PM == 0, output SPICLK will be 24.75 MHz
-
-    At lower frequencies this bug is more noticeable, though.
-
-    And this bug shows itself in all its beauty if SYSCLK is equal or a bit
-    more than you expect (200 MHz SYSCLK, 100 MHz SPIBRG):
-    PM = (100MHz / ( 25 MHz * 4 )), PM == 1, output SPICLK will be 12.625 MHz!
-
-At the time I posted this patch, I tested SPICLK outputs by an oscilloscope,
-and with SYSCLK 198 MHz everything was (and is, I suppose) just fine.
-
->  drivers/spi/spi_mpc83xx.c |   29 ++++++++++++++++-------------
->  1 file changed, 16 insertions(+), 13 deletions(-)
-> 
-> --- a/drivers/spi/spi_mpc83xx.c	2008-05-13 15:17:37.000000000 -0700
-> +++ b/drivers/spi/spi_mpc83xx.c	2008-06-27 18:17:17.000000000 -0700
-> @@ -266,21 +266,24 @@ int mpc83xx_spi_setup_transfer(struct sp
->  
->  	cs->hw_mode |= SPMODE_LEN(bits_per_word);
->  
-> -	if ((mpc83xx_spi->spibrg / hz) >= 64) {
-> -		pm = mpc83xx_spi->spibrg / (hz * 64) - 1;
-> -		if (pm > 0x0f) {
-> -			dev_err(&spi->dev, "Requested speed is too "
-> -				"low: %d Hz. Will use %d Hz instead.\n",
-> -				hz, mpc83xx_spi->spibrg / 1024);
-> -			pm = 0x0f;
-> +	if ((mpc83xx_spi->spibrg / hz) > 64) {
-> +		pm = mpc83xx_spi->spibrg / (hz * 64);
-> +		if (pm > 16) {
-> +			cs->hw_mode |= SPMODE_DIV16;
-> +			pm /= 16;
-> +			if (pm > 16) {
-> +				dev_err(&spi->dev, "Requested speed is too "
-> +					"low: %d Hz. Will use %d Hz instead.\n",
-> +					hz, mpc83xx_spi->spibrg / 1024);
-> +				pm = 16;
-> +			}
->  		}
-> -		cs->hw_mode |= SPMODE_PM(pm) | SPMODE_DIV16;
-> -	} else {
-> +	} else
->  		pm = mpc83xx_spi->spibrg / (hz * 4);
-> -		if (pm)
-> -			pm--;
-> -		cs->hw_mode |= SPMODE_PM(pm);
-> -	}
-> +	if (pm)
-> +		pm--;
-> +
-> +	cs->hw_mode |= SPMODE_PM(pm);
->  	regval =  mpc83xx_spi_read_reg(&mpc83xx_spi->base->mode);
->  	if (cs->hw_mode != regval) {
->  		unsigned long flags;
-> 
-
--- 
-Anton Vorontsov
-email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-irc://irc.freenode.net/bd2
+--===============0437782213==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!
 Studies have shown that voting for your favorite open source project,
 along with a healthy diet, reduces your potential for chronic lameness
 and boredom. Vote Now at http://www.sourceforge.net/community/cca08
+--===============0437782213==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0437782213==--

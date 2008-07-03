@@ -1,11 +1,15 @@
-From: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
-Subject: Specifying variant to use within a driver.
-Date: Wed, 02 Jul 2008 18:24:20 +0100
-Message-ID: <486BB9C4.1090303@cam.ac.uk>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: [PATCH v2 0/5] SPI OF bindings and mpc5200-spi
+	driver
+Date: Wed, 02 Jul 2008 19:02:52 -0600
+Message-ID: <20080703005749.26187.71719.stgit@trillian.secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,25 +22,30 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear All,
+I think I've addressed all the comments I've received.  This series
+adds OpenFirmware device tree bindings for SPI devices.  SPI master
+drivers which make use of of_spi.c can retrieve the set of spi
+devices from the device tree and automatically create them.
 
-Is there a standard way specifying in a board_info structure which variant of a
-chip is present? Basically I'm looking for something equivalent to the alias
-based id_table of the i2c subsystem.
+This series depends on previously posted patch:
+"spi: Change modalias from a pointer to a character array"
 
-The situation is that I am writing an accelerometer driver for the vti sca3000
-series of chips and these vary considerably in what functionality they provide
-and there is no easy what of querying the chip to find out what it is (version
-numbers are not documented as far as I can tell). Thus it will be down to a
-info specified in board info to identify what we have.
-
-If not I guess it will have to a passed in as platform data, but that seems
-somewhat adhoc and messy.
-
-Thanks,
+ Documentation/powerpc/booting-without-of.txt |   60 +++
+ drivers/of/Kconfig                           |    6 +
+ drivers/of/Makefile                          |    1 +
+ drivers/of/of_spi.c                          |   88 ++++
+ drivers/spi/Kconfig                          |    8 +
+ drivers/spi/Makefile                         |    1 +
+ drivers/spi/mpc52xx_spi.c                    |  595 ++++++++++++++++++++++++++
+ drivers/spi/spi.c                            |  141 +++++--
+ include/linux/of_spi.h                       |   18 +
+ include/linux/spi/mpc52xx_spi.h              |   10 +
+ include/linux/spi/spi.h                      |   12 +-
+ 11 files changed, 895 insertions(+), 45 deletions(-)
 
 --
-Jonathan Cameron
+Grant Likely, B.Sc. P.Eng.
+Secret Lab Technologies Ltd.
 
 -------------------------------------------------------------------------
 Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!

@@ -1,20 +1,11 @@
-From: "Jon Smirl" <jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 4/5] spi: Add OF binding support
-	for SPI busses
-Date: Wed, 2 Jul 2008 23:02:23 -0400
-Message-ID: <9e4733910807022002n3c739c7cs8ed642e4a6027bb6@mail.gmail.com>
-References: <20080703005749.26187.71719.stgit@trillian.secretlab.ca>
-	<20080703010313.26187.99119.stgit@trillian.secretlab.ca>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: "wj0755" <wj075580-KN7UnAbNpbg@public.gmane.org>
+Subject: =?GB2312?B?sGwgxrE=?=
+Date: Fri, 4 Jul 2008 00:04:00 +0800
+Message-ID: <E1KERHp-0004mV-97@mail.sourceforge.net>
+Reply-To: wj075580-KN7UnAbNpbg@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1522944876=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080703010313.26187.99119.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,180 +17,56 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 7/2/08, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
->
->  This patch adds support for populating an SPI bus based on data in the
->  OF device tree.  This is useful for powerpc platforms which use the
->  device tree instead of discrete code for describing platform layout.
->
->  Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
->  ---
->
->   drivers/of/Kconfig     |    6 +++
->   drivers/of/Makefile    |    1 +
->   drivers/of/of_spi.c    |   88 ++++++++++++++++++++++++++++++++++++++++++++++++
->   include/linux/of_spi.h |   18 ++++++++++
->   4 files changed, 113 insertions(+), 0 deletions(-)
->
->  diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
->  index 3a7a11a..edd6e92 100644
->  --- a/drivers/of/Kconfig
->  +++ b/drivers/of/Kconfig
->  @@ -13,3 +13,9 @@ config OF_I2C
->         depends on PPC_OF && I2C
->         help
->           OpenFirmware I2C accessors
->  +
->  +config OF_SPI
->  +       def_tristate SPI
->  +       depends on OF && PPC_OF && SPI
->  +       help
->  +         OpenFirmware SPI accessors
->  diff --git a/drivers/of/Makefile b/drivers/of/Makefile
->  index 548772e..4c3c6f8 100644
->  --- a/drivers/of/Makefile
->  +++ b/drivers/of/Makefile
->  @@ -2,3 +2,4 @@ obj-y = base.o
->   obj-$(CONFIG_OF_DEVICE) += device.o platform.o
->   obj-$(CONFIG_OF_GPIO)   += gpio.o
->   obj-$(CONFIG_OF_I2C)   += of_i2c.o
->  +obj-$(CONFIG_OF_SPI)   += of_spi.o
->  diff --git a/drivers/of/of_spi.c b/drivers/of/of_spi.c
->  new file mode 100644
->  index 0000000..ed0c807
->  --- /dev/null
->  +++ b/drivers/of/of_spi.c
->  @@ -0,0 +1,88 @@
->  +/*
->  + * SPI OF support routines
->  + * Copyright (C) 2008 Secret Lab Technologies Ltd.
->  + *
->  + * Support routines for deriving SPI device attachments from the device
->  + * tree.
->  + */
->  +
->  +#include <linux/of.h>
->  +#include <linux/device.h>
->  +#include <linux/spi/spi.h>
->  +#include <linux/of_spi.h>
->  +
->  +/**
->  + * of_register_spi_devices - Register child devices onto the SPI bus
->  + * @master:    Pointer to spi_master device
->  + * @np:                parent node of SPI device nodes
->  + *
->  + * Registers an spi_device for each child node of 'np' which has a 'reg'
->  + * property.
->  + */
->  +void of_register_spi_devices(struct spi_master *master, struct device_node *np)
->  +{
->  +       struct spi_device *spi;
->  +       struct device_node *nc;
->  +       const u32 *prop;
->  +       const char *sprop;
->  +       int rc;
->  +       int len;
->  +
->  +       for_each_child_of_node(np, nc) {
->  +               /* Alloc an spi_device */
->  +               spi = spi_alloc_device(master);
->  +               if (!spi) {
->  +                       dev_err(&master->dev, "spi_device alloc error for %s\n",
->  +                               nc->full_name);
->  +                       continue;
->  +               }
->  +
->  +               /* Device address */
->  +               prop = of_get_property(nc, "reg", &len);
->  +               if (!prop || len < sizeof(*prop)) {
->  +                       dev_err(&master->dev, "%s has no 'reg' property\n",
->  +                               nc->full_name);
->  +                       continue;
->  +               }
->  +               spi->chip_select = *prop;
->  +
->  +               /* Mode (clock phase/polarity/etc.) */
->  +               if (of_find_property(nc, "spi,cpha", NULL))
->  +                       spi->mode |= SPI_CPHA;
->  +               if (of_find_property(nc, "spi,cpol", NULL))
->  +                       spi->mode |= SPI_CPOL;
->  +
->  +               /* Device speed */
->  +               prop = of_get_property(nc, "max-speed", &len);
->  +               if (!prop || len < sizeof(*prop)) {
->  +                       dev_err(&master->dev, "%s has no 'max-speed' property\n",
->  +                               nc->full_name);
->  +                       continue;
->  +               }
->  +               spi->max_speed_hz = *prop;
->  +
->  +               /* IRQ */
->  +               spi->irq = irq_of_parse_and_map(nc, 0);
->  +
->  +               /* Select device driver */
->  +               sprop = of_get_property(nc, "linux,modalias", &len);
->  +               if (sprop && len > 0)
->  +                       strncpy(spi->modalias, sprop, KOBJ_NAME_LEN);
->  +               else
->  +                       strncpy(spi->modalias, "spidev", KOBJ_NAME_LEN);
+--===============1522944876==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
 
-You're missing a request_module("%s", info.type) to make sure the
-module is loaded.
+=D7=F0=BE=B4=B5=C4=C9=CC=BC=D2=C5=F3=D3=D1=C4=FA=BA=C3!
 
-It might make sense to share code with of_find_i2c_driver() so we have
-a common way of guessing module names.
+   =B1=BE=B9=AB=CB=BE=BF=C9=E9L=C6=DA=9E=E9=C4=FA=CC=E1=B9=A9=B6=90=84=D5=
+=B4=FA=C0=ED=CF=E0=EAP=D0=C5=CF=A2=D7=C9=D4=83,=BE=DF=F3w=B9=A0=87=FA:=C9=
+=CC=C6=B7=E4N=CA=DB=A1=A2
 
->  +
->  +               /* Store a pointer to the node in the device structure */
->  +               of_node_get(nc);
->  +               spi->dev.archdata.of_node = nc;
->  +
->  +               /* Register the new device */
->  +               rc = spi_add_device(spi);
->  +               if (rc) {
->  +                       dev_err(&master->dev, "spi_device register error %s\n",
->  +                               nc->full_name);
->  +                       spi_dev_put(spi);
->  +               }
->  +
->  +       }
->  +}
->  +EXPORT_SYMBOL(of_register_spi_devices);
->  diff --git a/include/linux/of_spi.h b/include/linux/of_spi.h
->  new file mode 100644
->  index 0000000..5f71ee8
->  --- /dev/null
->  +++ b/include/linux/of_spi.h
->  @@ -0,0 +1,18 @@
->  +/*
->  + * OpenFirmware SPI support routines
->  + * Copyright (C) 2008 Secret Lab Technologies Ltd.
->  + *
->  + * Support routines for deriving SPI device attachments from the device
->  + * tree.
->  + */
->  +
->  +#ifndef __LINUX_OF_SPI_H
->  +#define __LINUX_OF_SPI_H
->  +
->  +#include <linux/of.h>
->  +#include <linux/spi/spi.h>
->  +
->  +extern void of_register_spi_devices(struct spi_master *master,
->  +                                   struct device_node *np);
->  +
->  +#endif /* __LINUX_OF_SPI */
->
->
+=8FV=B8=E6=A1=A2=B7=FE=84=D5=A1=A2=D7=E2=D9U=A1=A2=BD=A8=BAB=B0=B2=D1b=A1=
+=A2=B2=CD=EF=8B=B6=A8=EE~=A1=A2=D4=F6=D6=B5=B0l=C6=B1=B5=C8.
+
+    =D9F=B9=AB=CB=BE=D4=DA=D7=F6=8E=A4=BB=F2=DFM=E4N=B7=BD=C3=E6=C8=E7=D0=
+=E8=D3=C3=B5=BD=B5=C4=D4=92=A3=AC=CE=D2=CB=BE=BF=C9=CC=E1=B9=A9=C8=AB=B7=BD=
+=C3=E6=B5=C4=B7=FE=84=D5=A1=A3
+
+=BF=C9=B8=F9=93=FE=CB=F9=D7=F6=94=B5=C1=BF=EE~=B6=C8=B5=C4=B4=F3=D0=A1=81=
+=ED=BA=E2=C1=BF=83=9E=BB=DD=B5=C4=FCc=94=B5=A1=A3=9Ag=D3=AD=81=ED=EB=8A=D7=
+=C9=D4=83=A3=A1=E0=8D=D6=D8=B3=D0
+
+=D6Z=A3=BA=CB=F9=D3=C3=C6=B1=93=FE=BE=F9=BF=C9=B2=E9=D4=83=F2=9E=D7C=E1=E1=
+=B8=B6=BF=EE=A3=A1=20
+
+      =C2=93=CF=B5=C8=CB=A3=BA=D6=DC=CF=C8=C9=FA =EB=8A=D4=92=A3=BA1 3 9 =
+2 8 4 4 2 0 6 0
 
 
--- 
-Jon Smirl
-jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+
+--===============1522944876==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!
 Studies have shown that voting for your favorite open source project,
 along with a healthy diet, reduces your potential for chronic lameness
 and boredom. Vote Now at http://www.sourceforge.net/community/cca08
+--===============1522944876==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1522944876==--

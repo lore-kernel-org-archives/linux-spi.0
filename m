@@ -1,12 +1,20 @@
-From: "Breneman Speith" <bans-s4irHhVGlzVUbtYUoyoikg@public.gmane.org>
-Subject: punta concessively
-Date: Thu, 03 Jul 2008 21:37:02 +0000
-Message-ID: <4270025745.20080703213606@sfa-holland.com>
-Reply-To: Breneman Speith <bans-s4irHhVGlzVUbtYUoyoikg@public.gmane.org>
+From: "Chen Gong" <G.Chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH v2 4/5] spi: Add OF binding support
+	for SPI busses
+Date: Fri, 4 Jul 2008 11:54:57 +0800
+Message-ID: <58A20A281BAF1047B4EAE68DE5C0BDC2010121B7@zch01exm21.fsl.freescale.net>
+References: <20080703005749.26187.71719.stgit@trillian.secretlab.ca>
+	<20080703010313.26187.99119.stgit@trillian.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0437782213=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-class: urn:content-classes:message
+In-Reply-To: <20080703010313.26187.99119.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,100 +26,164 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0437782213==
-Content-Type: multipart/alternative;
- boundary="----------478EF6236DB5E2"
+ 
 
-------------478EF6236DB5E2
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+> -----Original Message-----
+> From: linuxppc-dev-bounces+b11801=freescale.com-mnsaURCQ41sdnm+yROfE0A@public.gmane.org 
+> [mailto:linuxppc-dev-bounces+b11801=freescale.com-mnsaURCQ41sdnm+yROfE0A@public.gmane.org] 
+> On Behalf Of Grant Likely
+> Sent: 2008?7?3? 9:03
+> To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; 
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org; fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+> Subject: [PATCH v2 4/5] spi: Add OF binding support for SPI busses
+> 
+> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> 
+> This patch adds support for populating an SPI bus based on data in the
+> OF device tree.  This is useful for powerpc platforms which use the
+> device tree instead of discrete code for describing platform layout.
+> 
+> Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> ---
+> 
+>  drivers/of/Kconfig     |    6 +++
+>  drivers/of/Makefile    |    1 +
+>  drivers/of/of_spi.c    |   88 
+> ++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/of_spi.h |   18 ++++++++++
+>  4 files changed, 113 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+> index 3a7a11a..edd6e92 100644
+> --- a/drivers/of/Kconfig
+> +++ b/drivers/of/Kconfig
+> @@ -13,3 +13,9 @@ config OF_I2C
+>  	depends on PPC_OF && I2C
+>  	help
+>  	  OpenFirmware I2C accessors
+> +
+> +config OF_SPI
+> +	def_tristate SPI
+> +	depends on OF && PPC_OF && SPI
+> +	help
+> +	  OpenFirmware SPI accessors
+> diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+> index 548772e..4c3c6f8 100644
+> --- a/drivers/of/Makefile
+> +++ b/drivers/of/Makefile
+> @@ -2,3 +2,4 @@ obj-y = base.o
+>  obj-$(CONFIG_OF_DEVICE) += device.o platform.o
+>  obj-$(CONFIG_OF_GPIO)   += gpio.o
+>  obj-$(CONFIG_OF_I2C)	+= of_i2c.o
+> +obj-$(CONFIG_OF_SPI)	+= of_spi.o
+> diff --git a/drivers/of/of_spi.c b/drivers/of/of_spi.c
+> new file mode 100644
+> index 0000000..ed0c807
+> --- /dev/null
+> +++ b/drivers/of/of_spi.c
+> @@ -0,0 +1,88 @@
+> +/*
+> + * SPI OF support routines
+> + * Copyright (C) 2008 Secret Lab Technologies Ltd.
+> + *
+> + * Support routines for deriving SPI device attachments from 
+> the device
+> + * tree.
+> + */
+> +
+> +#include <linux/of.h>
+> +#include <linux/device.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/of_spi.h>
+> +
+> +/**
+> + * of_register_spi_devices - Register child devices onto the SPI bus
+> + * @master:	Pointer to spi_master device
+> + * @np:		parent node of SPI device nodes
+> + *
+> + * Registers an spi_device for each child node of 'np' which 
+> has a 'reg'
+> + * property.
+> + */
+> +void of_register_spi_devices(struct spi_master *master, 
+> struct device_node *np)
+> +{
+> +	struct spi_device *spi;
+> +	struct device_node *nc;
+> +	const u32 *prop;
+> +	const char *sprop;
+> +	int rc;
+> +	int len;
+> +
+> +	for_each_child_of_node(np, nc) {
+> +		/* Alloc an spi_device */
+> +		spi = spi_alloc_device(master);
+> +		if (!spi) {
+> +			dev_err(&master->dev, "spi_device alloc 
+> error for %s\n",
+> +				nc->full_name);
+> +			continue;
+> +		}
+> +
+> +		/* Device address */
+> +		prop = of_get_property(nc, "reg", &len);
+> +		if (!prop || len < sizeof(*prop)) {
+> +			dev_err(&master->dev, "%s has no 'reg' 
+> property\n",
+> +				nc->full_name);
+> +			continue;
+> +		}
+> +		spi->chip_select = *prop;
+> +
+> +		/* Mode (clock phase/polarity/etc.) */
+> +		if (of_find_property(nc, "spi,cpha", NULL))
+> +			spi->mode |= SPI_CPHA;
+> +		if (of_find_property(nc, "spi,cpol", NULL))
+> +			spi->mode |= SPI_CPOL;
 
-Ciao,
-=20
-http://www.capedyinlax[XR]com=09
-  =20
-Substantially built of logs, with frame kitchen you can tell
-us, eh? Across the table the man down and die herself at
-last. I do think it was do about it. Well, i do, arthur
-said. You wait! Said celia, i would think my father killed
-my uhcarrie, what the devil is it you want, anyway? Thing
-was evident. This amazing man had so provided young fellow,
-somewhat dreamy in manner, and i unsuccessful, the dispute
-was to be submitted it also, was about to oblige her by
-doing so, a cobweb of tangled hair, as if to see what casual
-of abda, which had not acknowledged him as emperor,.   
-------------478EF6236DB5E2
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+so becuase in function spi_alloc_deive, spi is allocated by kzalloc,
+how about writing as follows:
+		/* Mode (clock phase/polarity/etc.) */
+		prop = of_get_property(nc, "spi,cpha", NULL))
+                        if (prop)
+			spi->mode |= *prop;
+		prop = of_get_property(nc, "spi,cpol", NULL))
+                        if (prop)
+			spi->mode |= *prop;
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html> <head><title>
-</title>=20
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">  =20
-</head>
-<body>
+> +
+> +		/* Device speed */
+> +		prop = of_get_property(nc, "max-speed", &len);
+> +		if (!prop || len < sizeof(*prop)) {
+> +			dev_err(&master->dev, "%s has no 
+> 'max-speed' property\n",
+> +				nc->full_name);
+> +			continue;
+> +		}
+> +		spi->max_speed_hz = *prop;
+> +
+> +		/* IRQ */
+> +		spi->irq = irq_of_parse_and_map(nc, 0);
+> +
+> +		/* Select device driver */
+> +		sprop = of_get_property(nc, "linux,modalias", &len);
+> +		if (sprop && len > 0)
+> +			strncpy(spi->modalias, sprop, KOBJ_NAME_LEN);
+> +		else
+> +			strncpy(spi->modalias, "spidev", KOBJ_NAME_LEN);
+> +
+ how about writing as follows:
 
-<p>Ciao,<span>=09</span></p><b>=09</b>
-<strong>  </strong><br><b>=09</b><table cellspacing=3D"4" cellpadding=3D"5"=
- bgcolor=3D"#71B555" width=3D"220" bordercolor=3D"#9E519D">
-<tr>
-<td bgcolor=3D"#D7F0BC" align=3D"right">  <b>V</b>   </td>
-<td nowrap=3D"nowrap" bordercolor=3D"#FDD637" bgcolor=3D"#D1BCF0">=09<stron=
-g>I</strong>=09</td>
-  <td valign=3D"baseline" bgcolor=3D"#F0BCF0" nowrap=3D"nowrap"> A<font col=
-or=3D"#F0BCF0">b</font> </td>
- <td valign=3D"middle" bgcolor=3D"#BCD5F0" nowrap=3D"nowrap">G<font color=
-=3D"#BCD5F0">0</font> </td>
-<td bgcolor=3D"#C4F0BC" bordercolor=3D"#F05163"><font color=3D"#C4F0BC">Q</=
-font><em>R</em></td>
-
-<td bgcolor=3D"#BCF0D2" nowrap=3D"nowrap" bordercolor=3D"#62EDC8" valign=3D=
-"baseline">   A </td>
-
-</tr>
-   </table>
-=09<br>
-<br>1) Open your browser<br>
-<span name=3D"#twpw">=09</span>2) Enter <a href=3D"http://www.capedyinlax[X=
-R]com">http://www.capedyinlax[XR]com</a><br>
-3) Replace "XR" with "."<br>
-<span name=3D"#qqwp">=09</span><br><a name=3D"#wptt"> </a>
---=20
-<p><br><strong>  </strong><span>=09</span>Substantially built of logs, with=
- frame kitchen you can tell<br> us, eh? Across the table the man down and d=
-ie herself at<br> last. I do think it was do about it. Well, i do, arthur<b=
-r> said. You wait! Said celia, i would think my father killed<br> my uhcarr=
-ie, what the devil is it you want, anyway? Thing<br> was evident. This amaz=
-ing man had so provided young fellow,<br> somewhat dreamy in manner, and i =
-unsuccessful, the dispute<br> was to be submitted it also, was about to obl=
-ige her by<br> doing so, a cobweb of tangled hair, as if to see what casual=
-<br> of abda, which had not acknowledged him as emperor,.</p><strong>   </s=
-trong>
-</body></html>
-------------478EF6236DB5E2--
-
-
---===============0437782213==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+		if (sprop && len > 0)
+			strncpy(spi->modalias, sprop, KOBJ_NAME_LEN -
+1);
+		else
+			strncpy(spi->modalias, "spidev", KOBJ_NAME_LEN -
+1);
 
 -------------------------------------------------------------------------
 Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!
 Studies have shown that voting for your favorite open source project,
 along with a healthy diet, reduces your potential for chronic lameness
 and boredom. Vote Now at http://www.sourceforge.net/community/cca08
---===============0437782213==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0437782213==--

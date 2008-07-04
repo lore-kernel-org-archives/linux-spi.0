@@ -1,20 +1,21 @@
-From: "Chen Gong" <G.Chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH v2 3/5] of-bindings: Add binding
-	documentation for SPI bussesand devices
-Date: Fri, 4 Jul 2008 11:59:07 +0800
-Message-ID: <58A20A281BAF1047B4EAE68DE5C0BDC2010121B9@zch01exm21.fsl.freescale.net>
+	documentation for SPI	bussesand devices
+Date: Thu, 3 Jul 2008 22:05:50 -0600
+Message-ID: <20080704040550.GG12945@secretlab.ca>
 References: <20080703005749.26187.71719.stgit@trillian.secretlab.ca>
 	<20080703010308.26187.23037.stgit@trillian.secretlab.ca>
+	<58A20A281BAF1047B4EAE68DE5C0BDC2010121B9@zch01exm21.fsl.freescale.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Chen Gong <G.Chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-class: urn:content-classes:message
-In-Reply-To: <20080703010308.26187.23037.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <58A20A281BAF1047B4EAE68DE5C0BDC2010121B9-bKEhWGtIRULiD3AT8lUqWFjVikpgYyvb5NbjCUgZEJk@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,103 +27,35 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- 
+On Fri, Jul 04, 2008 at 11:59:07AM +0800, Chen Gong wrote:
+> > +    - reg             - (required) chip select address of device.
+> > +    - compatible      - (required) name of SPI device 
+> > following generic names
+> > +			recommended practice
+> > +    - max-speed       - (required) Maximum SPI clocking 
+> > speed of device in Hz
+> > +    - spi,cpol        - (optional) Device requires inverse 
+> > clock polarity
+> > +    - spi,cpha        - (optional) Device requires shifted 
+> > clock phase
+> > +    - linux,modalias  - (optional, Linux specific) Force 
+> > binding of SPI device
+> > +			to a particular spi_device driver.  
+> > Useful for changing
+> > +			driver binding between spidev and a 
+> > kernel SPI driver.
+> > +
+> 
+> How about adding a "model" property to describe actual devie type.
+> Such as using a "sst25vf040b" device with spi-interface, we can
+> use model="sst25vf040b" to describe it.
 
-> -----Original Message-----
-> From: linuxppc-dev-bounces+b11801=freescale.com-mnsaURCQ41sdnm+yROfE0A@public.gmane.org 
-> [mailto:linuxppc-dev-bounces+b11801=freescale.com-mnsaURCQ41sdnm+yROfE0A@public.gmane.org] 
-> On Behalf Of Grant Likely
-> Sent: 2008?7?3? 9:03
-> To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; 
-> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org; fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-> Subject: [PATCH v2 3/5] of-bindings: Add binding 
-> documentation for SPI bussesand devices
-> 
-> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> 
-> Add documentation about how to describe SPI busses in the device tree.
-> 
-> Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> ---
-> 
->  Documentation/powerpc/booting-without-of.txt |   60 
-> ++++++++++++++++++++++++++
->  1 files changed, 60 insertions(+), 0 deletions(-)
-> 
-> diff --git a/Documentation/powerpc/booting-without-of.txt 
-> b/Documentation/powerpc/booting-without-of.txt
-> index 1d2a772..7d3564f 100644
-> --- a/Documentation/powerpc/booting-without-of.txt
-> +++ b/Documentation/powerpc/booting-without-of.txt
-> @@ -58,6 +58,7 @@ Table of Contents
->        o) Xilinx IP cores
->        p) Freescale Synchronous Serial Interface
->  	  q) USB EHCI controllers
-> +      t) SPI busses
->  
->    VII - Marvell Discovery mv64[345]6x System Controller chips
->      1) The /system-controller node
-> @@ -2870,6 +2871,65 @@ platforms are moved over to use the 
-> flattened-device-tree model.
->  		reg = <0xe8000000 32>;
->  	};
->  
-> +    t) SPI (Serial Peripheral Interface) busses
-> +
-> +    SPI busses can be described with a node for the SPI master device
-> +    and a set of child nodes for each SPI slave on the bus.  For this
-> +    discussion, it is assumed that the system's SPI controller is in
-> +    SPI master mode.  This binding does not describe SPI controllers
-> +    in slave mode.
-> +
-> +    The SPI master node requires the following properties:
-> +    - #address-cells  - number of cells required to define a 
-> chip select
-> +			address on the SPI bus.
-> +    - #size-cells     - should be zero.
-> +    - compatible      - name of SPI bus controller following 
-> generic names
-> +			recommended practice.
-> +    No other properties are required in the SPI bus node.  
-> It is assumed
-> +    that a driver for an SPI bus device will understand that 
-> it is an SPI bus.
-> +    However, the binding does not attempt to define the 
-> specific method for
-> +    assigning chip select numbers.  Since SPI chip select 
-> configuration is
-> +    flexible and non-standardized, it is left out of this 
-> binding with the
-> +    assumption that board specific platform code will be 
-> used to manage
-> +    chip selects.  Individual drivers can define additional 
-> properties to
-> +    support describing the chip select layout.
-> +
-> +    SPI slave nodes must be children of the SPI master node and can
-> +    contain the following properties.
-> +    - reg             - (required) chip select address of device.
-> +    - compatible      - (required) name of SPI device 
-> following generic names
-> +			recommended practice
-> +    - max-speed       - (required) Maximum SPI clocking 
-> speed of device in Hz
-> +    - spi,cpol        - (optional) Device requires inverse 
-> clock polarity
-> +    - spi,cpha        - (optional) Device requires shifted 
-> clock phase
-> +    - linux,modalias  - (optional, Linux specific) Force 
-> binding of SPI device
-> +			to a particular spi_device driver.  
-> Useful for changing
-> +			driver binding between spidev and a 
-> kernel SPI driver.
-> +
+That's what "compatible" is for.  First value in the compatible list is
+the actual device, followed by devices it is compatible with.  In
+your particular example, the value would be "sst,sst25vf040b" so that it
+follows device tree conventions.
 
-How about adding a "model" property to describe actual devie type.
-Such as using a "sst25vf040b" device with spi-interface, we can
-use model="sst25vf040b" to describe it.
+g.
 
 -------------------------------------------------------------------------
 Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!

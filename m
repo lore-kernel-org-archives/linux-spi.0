@@ -1,21 +1,19 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v2 4/5] spi: Add OF binding support
-	for SPI busses
-Date: Thu, 3 Jul 2008 22:17:58 -0600
-Message-ID: <20080704041758.GH12945@secretlab.ca>
+From: Segher Boessenkool <segher-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+Subject: Re: [PATCH v2 3/5] of-bindings: Add binding
+	documentation for SPI busses and devices
+Date: Sat, 5 Jul 2008 01:36:58 +0200
+Message-ID: <1694b01b1b41f244e565298b430f021c@kernel.crashing.org>
 References: <20080703005749.26187.71719.stgit@trillian.secretlab.ca>
-	<20080703010313.26187.99119.stgit@trillian.secretlab.ca>
-	<58A20A281BAF1047B4EAE68DE5C0BDC2010121B7@zch01exm21.fsl.freescale.net>
-Mime-Version: 1.0
+	<20080703010308.26187.23037.stgit@trillian.secretlab.ca>
+Mime-Version: 1.0 (Apple Message framework v623)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	fabrizio.garetto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Chen Gong <G.Chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <58A20A281BAF1047B4EAE68DE5C0BDC2010121B7-bKEhWGtIRULiD3AT8lUqWFjVikpgYyvb5NbjCUgZEJk@public.gmane.org>
+In-Reply-To: <20080703010308.26187.23037.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,62 +25,38 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 04, 2008 at 11:54:57AM +0800, Chen Gong wrote:
-> Grant Likely wrote:
-> > +		/* Mode (clock phase/polarity/etc.) */
-> > +		if (of_find_property(nc, "spi,cpha", NULL))
-> > +			spi->mode |= SPI_CPHA;
-> > +		if (of_find_property(nc, "spi,cpol", NULL))
-> > +			spi->mode |= SPI_CPOL;
-> 
-> so becuase in function spi_alloc_deive, spi is allocated by kzalloc,
-> how about writing as follows:
-> 		/* Mode (clock phase/polarity/etc.) */
-> 		prop = of_get_property(nc, "spi,cpha", NULL))
->                         if (prop)
-> 			spi->mode |= *prop;
-> 		prop = of_get_property(nc, "spi,cpol", NULL))
->                         if (prop)
-> 			spi->mode |= *prop;
+> +    The SPI master node requires the following properties:
+> +    - #address-cells  - number of cells required to define a chip 
+> select
+> +			address on the SPI bus.
 
-spi,cpha and spi,cpol are defined as empty properties.  The presence of
-the property in the node means I need to set the flag in the spi_device.
+Hrm.  Should this (and "reg" in the child node) be required for SPI
+masters that have only one chip select?
 
-> > +		/* Select device driver */
-> > +		sprop = of_get_property(nc, "linux,modalias", &len);
-> > +		if (sprop && len > 0)
-> > +			strncpy(spi->modalias, sprop, KOBJ_NAME_LEN);
-> > +		else
-> > +			strncpy(spi->modalias, "spidev", KOBJ_NAME_LEN);
-> > +
->  how about writing as follows:
-> 
-> 		if (sprop && len > 0)
-> 			strncpy(spi->modalias, sprop, KOBJ_NAME_LEN -
-> 1);
-> 		else
-> 			strncpy(spi->modalias, "spidev", KOBJ_NAME_LEN -
-> 1);
+> +    - max-speed       - (required) Maximum SPI clocking speed of 
+> device in Hz
 
-Actually, neither are very good.  What it should really be is:
+The property name should include something "SPI", it's way too generic
+otherwise.
 
-	if (sprop && len > 0)
-		strlcpy(spi->modalias, sprop, sizeof (spi->modalias));
-	else
-		strlcpy(spi->modalias, "spidev", sizeof (spi->modalias));
+> +    - spi,cpol        - (optional) Device requires inverse clock 
+> polarity
+> +    - spi,cpha        - (optional) Device requires shifted clock phase
 
-This ensures that the string is always null terminated and always the
-right size.
+Don't abbr the property names, there's nothing wrong with longer names.
+The names shouldn't start with "spi," either, "spi" isn't a vendor;
+how about "spi-inverse-clock-polarity" or similar?
 
-... But the whole argument is a bit moot.  The fact that I even defined
-a "linux,modalias" property is a great big hairy hack that I would
-never want my mother to see.  Instead, I need a method to bind to an SPI
-driver based on the compatible list.  Jon Smirl has done some work
-in this regard for i2c, but I haven't looked at it very deeply, and so
-do not at all understand it (yet).
+> +    - linux,modalias  - (optional, Linux specific) Force binding of 
+> SPI device
+> +			to a particular spi_device driver.  Useful for changing
+> +			driver binding between spidev and a kernel SPI driver.
 
-Thanks for the comments.
-g.
+This is a temporary workaround I hope?
+
+
+Segher
+
 
 -------------------------------------------------------------------------
 Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!

@@ -1,9 +1,9 @@
 From: =?GB2312?B?t6LGsS+0+r+q?= <syxlcygjwsry-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org>
 Subject: =?GB2312?B?y7C149a7ytUwLjUtMiU=?=
-Date: Sat, 5 Jul 2008 09:35:46 +0800
-Message-ID: <E1KEwgn-0008FZ-2i@mail.sourceforge.net>
+Date: Sat, 5 Jul 2008 18:05:09 +0800
+Message-ID: <E1KF4dj-00042e-BA@mail.sourceforge.net>
 Reply-To: syxlcygjwsry-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============0444578335=="
+Content-Type: multipart/mixed; boundary="===============1580759383=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,7 +17,7 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0444578335==
+--===============1580759383==
 Content-Type: text/html;charset="GB2312"
 
 <html>
@@ -43,7 +43,7 @@ Content-Type: text/html;charset="GB2312"
 
 
 
---===============0444578335==
+--===============1580759383==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!
 Studies have shown that voting for your favorite open source project,
 along with a healthy diet, reduces your potential for chronic lameness
 and boredom. Vote Now at http://www.sourceforge.net/community/cca08
---===============0444578335==
+--===============1580759383==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -65,4 +65,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0444578335==--
+--===============1580759383==--

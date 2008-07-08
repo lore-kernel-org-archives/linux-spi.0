@@ -1,10 +1,12 @@
-From: "adrienne" <suusioto_1986-50fF10aQ+AMqdlJmJB21zg@public.gmane.org>
-Subject: China fires missle in Taiwan's direction
-Date: Mon, 7 Jul 2008 21:52:42 +0200
-Message-ID: <E1KFwla-0001Aw-PX@mail.sourceforge.net>
+From: Forest Losey <zoltan.markus-FUFFjfttTtmT9ig0jae3mg@public.gmane.org>
+Subject: =?windows-1251?q?Online_Survey_Job_Openings?=
+Date: Tue, 8 Jul 2008 14:00:09 +0300
+Message-ID: <27361.3170524643$1215514768@news.gmane.org>
+Reply-To: Forest Losey <17633huban.chris-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1610255894=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,59 +19,24 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+Hi, 
 
---===============1610255894==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_000B_01C8E07B.C7F8A6E0"
+We are recruiting motivated individuals for participating in well-paying
+online surveys, focus groups and previewing movie trailers. 
+No experience is needed and the job is strictly online. All you need is a
+little time to voice your opinion about different kinds of online products
+and services, helping major  business improve their online presence. 
+What we offer is work at your own pace and from any computer. 
 
-This is a multi-part message in MIME format.
+If you are interested, please reply to mohamed.cherish1680-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org as soon as places are limited.
 
-------=_NextPart_000_000B_01C8E07B.C7F8A6E0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
-Gays in U.S military http://dr-vorwerk.de/r.html
-------=_NextPart_000_000B_01C8E07B.C7F8A6E0
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Diso-8859-1" http-equiv=3DContent-Type>
-<META name=3DGENERATOR content=3D"MSHTML 6.00.6001.17509">
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT size=3D2 face=3DArial>Gays in U.S military <A=20
-href=3D"http://dr-vorwerk.de/r.html">http://dr-vorwerk.de/r.html</A></FON=
-T></DIV></BODY></HTML>
-
-------=_NextPart_000_000B_01C8E07B.C7F8A6E0--
-
-
---===============1610255894==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Best regards,
+Betty Smith
+HR Manager
 -------------------------------------------------------------------------
 Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!
 Studies have shown that voting for your favorite open source project,
 along with a healthy diet, reduces your potential for chronic lameness
 and boredom. Vote Now at http://www.sourceforge.net/community/cca08
---===============1610255894==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1610255894==--

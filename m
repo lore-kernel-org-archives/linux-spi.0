@@ -1,14 +1,16 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: [PATCH v3 1/5] of: adapt of_find_i2c_driver()
-	to be usable by SPI also
-Date: Sat, 12 Jul 2008 02:34:37 -0600
-Message-ID: <20080712083437.14782.65551.stgit@trillian.secretlab.ca>
+Subject: [PATCH v3 3/5] of-bindings: Add binding
+	documentation for SPI busses	and devices
+Date: Sat, 12 Jul 2008 02:34:48 -0600
+Message-ID: <20080712083447.14782.25031.stgit@trillian.secretlab.ca>
+References: <20080712083437.14782.65551.stgit@trillian.secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080712083437.14782.65551.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,214 +24,90 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 
-SPI has a similar problem as I2C in that it needs to determine an
-appropriate modalias value for each device node.  This patch adapts
-the of_i2c of_find_i2c_driver() function to be usable by of_spi also.
+Add documentation about how to describe SPI busses in the device tree.
 
 Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 ---
 
- drivers/of/base.c   |   88 +++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/of/of_i2c.c |   64 ++-----------------------------------
- include/linux/of.h  |    1 +
- 3 files changed, 92 insertions(+), 61 deletions(-)
+ Documentation/powerpc/booting-without-of.txt |   58 ++++++++++++++++++++++++++
+ 1 files changed, 58 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 23ffb7c..ad8ac1a 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -385,3 +385,91 @@ struct device_node *of_find_matching_node(struct device_node *from,
- 	return np;
- }
- EXPORT_SYMBOL(of_find_matching_node);
-+
-+/**
-+ * of_modalias_table: Table of explicit compatible ==> modalias mappings
-+ *
-+ * This table allows particulare compatible property values to be mapped
-+ * to modalias strings.  This is useful for busses which do not directly
-+ * understand the OF device tree but are populated based on data contained
-+ * within the device tree.  SPI and I2C are the two current users of this
-+ * table.
-+ *
-+ * In most cases, devices do not need to be listed in this table because
-+ * the modalias value can be derived directly from the compatible table.
-+ * However, if for any reason a value cannot be derived, then this table
-+ * provides a method to override the implicit derivation.
-+ *
-+ * At the moment, a single table is used for all bus types because it is
-+ * assumed that the data size is small and that the compatible values
-+ * should already be distinct enough to differentiate between SPI, I2C
-+ * and other devices.
-+ */
-+struct of_modalias_table {
-+	char *of_device;
-+	char *modalias;
-+};
-+static struct of_modalias_table of_modalias_table[] = {
-+	/* Empty for now; add entries as needed */
-+};
-+
-+/**
-+ * of_modalias_node - Lookup appropriate modalias for a device node
-+ * @node:	pointer to a device tree node
-+ * @modalias:	Pointer to buffer that modalias value will be copied into
-+ * @len:	Length of modalias value
-+ *
-+ * Based on the value of the compatible property, this routine will determine
-+ * an appropriate modalias value for a particular device tree node.  Three
-+ * separate methods are used to derive a modalias value.
-+ *
-+ * First method is to lookup the compatible value in of_modalias_table.
-+ * Second is to look for a "linux,<modalias>" entry in the compatible list
-+ * and used that for modalias.  Third is to strip off the manufacturer
-+ * prefix from the first compatible entry and use the remainder as modalias
-+ *
-+ * This routine returns 0 on success
-+ */
-+int of_modalias_node(struct device_node *node, char *modalias, int len)
-+{
-+	int i, cplen;
-+	const char *compatible;
-+	const char *p;
-+
-+	/* 1. search for exception list entry */
-+	for (i = 0; i < ARRAY_SIZE(of_modalias_table); i++) {
-+		compatible = of_modalias_table[i].of_device;
-+		if (!of_device_is_compatible(node, compatible))
-+			continue;
-+		strlcpy(modalias, of_modalias_table[i].modalias, len);
-+		return 0;
-+	}
-+
-+	compatible = of_get_property(node, "compatible", &cplen);
-+	if (!compatible)
-+		return -ENODEV;
-+
-+	/* 2. search for linux,<modalias> entry */
-+	p = compatible;
-+	while (cplen > 0) {
-+		if (!strncmp(p, "linux,", 6)) {
-+			p += 6;
-+			strlcpy(modalias, p, len);
-+			return 0;
-+		}
-+
-+		i = strlen(p) + 1;
-+		p += i;
-+		cplen -= i;
-+	}
-+
-+	/* 3. take first compatible entry and strip manufacturer */
-+	p = strchr(compatible, ',');
-+	if (!p)
-+		return -ENODEV;
-+	p++;
-+	strlcpy(modalias, p, len);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(of_modalias_node);
-+
-diff --git a/drivers/of/of_i2c.c b/drivers/of/of_i2c.c
-index 5c015d3..65fd26d 100644
---- a/drivers/of/of_i2c.c
-+++ b/drivers/of/of_i2c.c
-@@ -16,62 +16,6 @@
- #include <linux/of_i2c.h>
- #include <linux/module.h>
+diff --git a/Documentation/powerpc/booting-without-of.txt b/Documentation/powerpc/booting-without-of.txt
+index b68684d..3b964ed 100644
+--- a/Documentation/powerpc/booting-without-of.txt
++++ b/Documentation/powerpc/booting-without-of.txt
+@@ -62,6 +62,7 @@ Table of Contents
+       s) Freescale on board FPGA
+       t) Freescael MSI interrupt controller
+       u) Freescale General-purpose Timers Module
++      v) SPI busses
  
--struct i2c_driver_device {
--	char    *of_device;
--	char    *i2c_type;
--};
--
--static struct i2c_driver_device i2c_devices[] = {
--};
--
--static int of_find_i2c_driver(struct device_node *node,
--			      struct i2c_board_info *info)
--{
--	int i, cplen;
--	const char *compatible;
--	const char *p;
--
--	/* 1. search for exception list entry */
--	for (i = 0; i < ARRAY_SIZE(i2c_devices); i++) {
--		if (!of_device_is_compatible(node, i2c_devices[i].of_device))
--			continue;
--		if (strlcpy(info->type, i2c_devices[i].i2c_type,
--			    I2C_NAME_SIZE) >= I2C_NAME_SIZE)
--			return -ENOMEM;
--
--		return 0;
--	}
--
--	compatible = of_get_property(node, "compatible", &cplen);
--	if (!compatible)
--		return -ENODEV;
--
--	/* 2. search for linux,<i2c-type> entry */
--	p = compatible;
--	while (cplen > 0) {
--		if (!strncmp(p, "linux,", 6)) {
--			p += 6;
--			if (strlcpy(info->type, p,
--				    I2C_NAME_SIZE) >= I2C_NAME_SIZE)
--				return -ENOMEM;
--			return 0;
--		}
--
--		i = strlen(p) + 1;
--		p += i;
--		cplen -= i;
--	}
--
--	/* 3. take fist compatible entry and strip manufacturer */
--	p = strchr(compatible, ',');
--	if (!p)
--		return -ENODEV;
--	p++;
--	if (strlcpy(info->type, p, I2C_NAME_SIZE) >= I2C_NAME_SIZE)
--		return -ENOMEM;
--	return 0;
--}
--
- void of_register_i2c_devices(struct i2c_adapter *adap,
- 			     struct device_node *adap_node)
- {
-@@ -83,6 +27,9 @@ void of_register_i2c_devices(struct i2c_adapter *adap,
- 		const u32 *addr;
- 		int len;
+   VII - Marvell Discovery mv64[345]6x System Controller chips
+     1) The /system-controller node
+@@ -2967,6 +2968,63 @@ platforms are moved over to use the flattened-device-tree model.
+ 	clock-frequency = <0>;
+     };
  
-+		if (of_modalias_node(node, info.type, sizeof(info.type)) < 0)
-+			continue;
++    v) SPI (Serial Peripheral Interface) busses
 +
- 		addr = of_get_property(node, "reg", &len);
- 		if (!addr || len < sizeof(int) || *addr > (1 << 10) - 1) {
- 			printk(KERN_ERR
-@@ -94,11 +41,6 @@ void of_register_i2c_devices(struct i2c_adapter *adap,
- 		if (info.irq == NO_IRQ)
- 			info.irq = -1;
++    SPI busses can be described with a node for the SPI master device
++    and a set of child nodes for each SPI slave on the bus.  For this
++    discussion, it is assumed that the system's SPI controller is in
++    SPI master mode.  This binding does not describe SPI controllers
++    in slave mode.
++
++    The SPI master node requires the following properties:
++    - #address-cells  - number of cells required to define a chip select
++			address on the SPI bus.
++    - #size-cells     - should be zero.
++    - compatible      - name of SPI bus controller following generic names
++			recommended practice.
++    No other properties are required in the SPI bus node.  It is assumed
++    that a driver for an SPI bus device will understand that it is an SPI bus.
++    However, the binding does not attempt to define the specific method for
++    assigning chip select numbers.  Since SPI chip select configuration is
++    flexible and non-standardized, it is left out of this binding with the
++    assumption that board specific platform code will be used to manage
++    chip selects.  Individual drivers can define additional properties to
++    support describing the chip select layout.
++
++    SPI slave nodes must be children of the SPI master node and can
++    contain the following properties.
++    - reg             - (required) chip select address of device.
++    - compatible      - (required) name of SPI device following generic names
++			recommended practice
++    - spi-max-frequency - (required) Maximum SPI clocking speed of device in Hz
++    - spi-cpol        - (optional) Empty property indicating device requires
++			inverse clock polarity (CPOL) mode
++    - spi-cpha        - (optional) Empty property indicating device requires
++			shifted clock phase (CPHA) mode
++
++    SPI example for an MPC5200 SPI bus:
++		spi@f00 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "fsl,mpc5200b-spi","fsl,mpc5200-spi";
++			reg = <0xf00 0x20>;
++			interrupts = <2 13 0 2 14 0>;
++			interrupt-parent = <&mpc5200_pic>;
++
++			ethernet-switch@0 {
++				compatible = "micrel,ks8995m";
++				spi-max-frequency = <1000000>;
++				reg = <0>;
++			};
++
++			codec@1 {
++				compatible = "ti,tlv320aic26";
++				spi-max-frequency = <100000>;
++				reg = <1>;
++			};
++		};
++
++
+ VII - Marvell Discovery mv64[345]6x System Controller chips
+ ===========================================================
  
--		if (of_find_i2c_driver(node, &info) < 0) {
--			irq_dispose_mapping(info.irq);
--			continue;
--		}
--
- 		info.addr = *addr;
- 
- 		request_module(info.type);
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 59a61bd..79886ad 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -70,5 +70,6 @@ extern int of_n_addr_cells(struct device_node *np);
- extern int of_n_size_cells(struct device_node *np);
- extern const struct of_device_id *of_match_node(
- 	const struct of_device_id *matches, const struct device_node *node);
-+extern int of_modalias_node(struct device_node *node, char *modalias, int len);
- 
- #endif /* _LINUX_OF_H */
 
 
 -------------------------------------------------------------------------

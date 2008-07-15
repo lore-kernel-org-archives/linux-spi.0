@@ -1,9 +1,9 @@
-From: "rank" <ingroeve_1972-NiKlbCjeLHIN+BqQ9rBEUg@public.gmane.org>
-Subject: Dara Torres faces crippling injury
-Date: Tue, 15 Jul 2008 09:39:27 +0800
-Message-ID: <E1KIZVv-0004FY-SQ@mail.sourceforge.net>
+From: kbb-DU79CLUmun8xNU+NZBVoVw@public.gmane.org
+Subject: usinG mmc over spi
+Date: Tue, 15 Jul 2008 08:28:10 -0500 (CDT)
+Message-ID: <8811.216.207.242.34.1216128490.squirrel@www.texascellnet.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1399798561=="
+Content-Type: multipart/mixed; boundary="===============0899370905=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,43 +17,38 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+--===============0899370905==
+Content-Type: multipart/alternative;boundary="----=_20080715082810_32252"
 
---===============1399798561==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0006_01C8E65E.AC9F6260"
-
-This is a multi-part message in MIME format.
-
-------=_NextPart_000_0006_01C8E65E.AC9F6260
-Content-Type: text/plain;
-	charset="iso-8859-1"
+------=_20080715082810_32252
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-MLB All-Star game cancelled due to player boycott=20
-http://portalemobile.mobi/main.html
-------=_NextPart_000_0006_01C8E65E.AC9F6260
-Content-Type: text/html;
-	charset="iso-8859-1"
+
+
+Once I have enabled SPI and mmc over SPI, how do I create a spi device to
+get to driver working on a PXA2xx device?
+
+Do I need to create a
+platform device?
+
+Thanks,
+Kbb
+
+------=_20080715082810_32252
+Content-Type: text/html; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Diso-8859-1" http-equiv=3DContent-Type>
-<META name=3DGENERATOR content=3D"MSHTML 6.00.6001.17509">
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT size=3D2 face=3DArial>MLB All-Star game cancelled due to =
-player boycott=20
-<A=20
-href=3D"http://portalemobile.mobi/main.html">http://portalemobile.mobi/ma=
-in.html</A></FONT></DIV></BODY></HTML>
-
-------=_NextPart_000_0006_01C8E65E.AC9F6260--
+Once I have enabled SPI and mmc over SPI, how do I create a spi device to
+get to driver working on a PXA2xx device?<br /><br />Do I need to create =
+a
+platform device?<br /><br />Thanks,<br />Kbb
+------=_20080715082810_32252--
 
 
---===============1399798561==
+
+
+--===============0899370905==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -64,7 +59,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============1399798561==
+--===============0899370905==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -75,4 +70,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1399798561==--
+--===============0899370905==--

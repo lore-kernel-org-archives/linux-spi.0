@@ -1,15 +1,19 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: mmc over spi
-Date: Mon, 14 Jul 2008 17:57:03 -0400
-Message-ID: <487BCBAF.1050401@whoi.edu>
-References: <E92FEE65D4904D408A9BBE380F7E5E01014FA801@kramer.tem.drs.master>
-Mime-Version: 1.0
+From: Segher Boessenkool <segher-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+Subject: Re: [PATCH v3 3/5] of-bindings: Add binding
+	documentation for SPI busses and devices
+Date: Tue, 15 Jul 2008 02:12:36 +0200
+Message-ID: <0d6c2ff0c25c51f1a415f56cbfa7fcf5@kernel.crashing.org>
+References: <20080712083437.14782.65551.stgit@trillian.secretlab.ca>
+	<20080712083447.14782.25031.stgit@trillian.secretlab.ca>
+Mime-Version: 1.0 (Apple Message framework v623)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "BRADWAY, Kevin" <kbradway-t/Sy+Gd0MBBBDgjK7y7TUQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <E92FEE65D4904D408A9BBE380F7E5E01014FA801-AIXvuindoPmK+Y0BBN2wtLxIJ9H7+gyA@public.gmane.org>
+In-Reply-To: <20080712083447.14782.25031.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,41 +25,23 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-BRADWAY, Kevin wrote:
-> I am trying to use the mmc over spi in the 2.6.24 distro on a pxa25XX.
-> 
-> I have read and read the blackfin and the git pages for the 2.6.24 add ins for this topic but I still can not seem to get it going.
-> 
-> I am using 
->        gpio6 for the clock
->        gpio12 for the CD
->        gpio8 for the CS
+> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+>
+> Add documentation about how to describe SPI busses in the device tree.
+>
+> Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 
-Those pins on a PXA2xx don't have anything to do with SPI.  I see that 6
-and 8 have an MMC function, but I would guess that that is for some
-native MMC capability, and not for MMC over SPI.
+Very nice!  I wish all bindings were like this (namely, not overly 
+terse).
 
-> questions:
->         Do I need the pxa2XX_spi driver to make this work?
+Acked-by: Segher Boessenkool <segher-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
 
-The only pins that the pxa2xx_spi driver will operate with, are the SSP
-ports.  These are GPIO 23-27 (SSP) and GPIO 81-84 (NSSP).
 
-See Section 4.1.2 of the PXA255 developers manual for the various GPIO
-pin functions.
-
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
+Segher
 
 
 -------------------------------------------------------------------------
-Sponsored by: SourceForge.net Community Choice Awards: VOTE NOW!
-Studies have shown that voting for your favorite open source project,
-along with a healthy diet, reduces your potential for chronic lameness
-and boredom. Vote Now at http://www.sourceforge.net/community/cca08
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

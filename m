@@ -1,9 +1,8 @@
-From: "Madiha" <zerinu1959-ciFVGeVtkuepJuVttbx5JA@public.gmane.org>
-Subject: Roswell victims spill beans
-Date: Wed, 16 Jul 2008 16:45:49 +0800
-Message-ID: <E1KJ2d4-0005b4-AI@mail.sourceforge.net>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1481296505=="
+From: gds.009-9Onoh4P/yGk@public.gmane.org
+Subject: =?GB2312?B?0MXPotfJ0a+joQ==?=
+Date: Wed, 16 Jul 2008 17:05:49 +0800
+Message-ID: <E1KJ2ws-0002F4-SB@mail.sourceforge.net>
+Content-Type: multipart/mixed; boundary="===============1925479250=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,44 +16,55 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+--===============1925479250==
+Content-Type: text/plain;charset="GB2312"
 
---===============1481296505==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_000B_01C8E763.66D542D0"
+贵公司负责人(经理/财务)您好：
+    我是华源盛实业有限公司的（浙江、上海、广州、江苏等地方有分公司）。我司实力雄
 
-This is a multi-part message in MIME format.
+厚，有着良好的社会关系。因进项较多现完成不了每月销售额度。每月有一部分增值税电脑
 
-------=_NextPart_000_000B_01C8E763.66D542D0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+发-票（6%左右）和普通商品销售-发-票（1%-1.5%左右）优惠代开或合作，点数较低。还可以根
 
-Dozens of people killed and thousands injured in bomb blast in Afghan =
-capital=20
-causes international outrage http://graphique.it/about.html
-------=_NextPart_000_000B_01C8E763.66D542D0
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+据所做数量额度的大小来商讨优惠的点数。本公司郑重承诺所用绝对是真-票！更希望能够有
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Diso-8859-1" http-equiv=3DContent-Type>
-<META name=3DGENERATOR content=3D"MSHTML 6.00.6001.17509">
-<STYLE></STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT size=3D2 face=3DArial>Dozens of people killed and thousands =
-injured in=20
-bomb blast in Afghan capital causes international outrage <A=20
-href=3D"http://graphique.it/about.html">http://graphique.it/about.html</A=
-></FONT></DIV></BODY></HTML>
+机会与贵司合作！
 
-------=_NextPart_000_000B_01C8E763.66D542D0--
+代-开-发-票范围如下：
+
+一．普通-国-税-发-票：1．商品销售  2．货物统一销售  3．工业(企业)销售。
+ 
+二．普通-地-税-发-票：
+
+   1．运输(电脑版运输、货运代理、装卸、联运、海运)；
+
+   2．其它服务(广告费、住宿费、会议费、定额餐饮、咨询费等)； 
+
+   3．其它(租赁、行政事业专用、机动车销售、房地产交易、税务代-开)；
+
+   4．建筑安装、加工修理等专用发票。
+
+郑重承诺：所有票-据均为税-务-局领出或由企业直接开出，并可网上查询或税务验证后付款。
+
+如贵公司有代-开-发-票方面的问题，欢迎来电咨询，我们会在第一时间回复您。 
+    
+  详情请电：13928412318
+
+  联  系 人：钟敬龙
+
+  邮    箱：gds008@163．com
+
+ 
 
 
---===============1481296505==
+   顺祝
+       
+        商祺！ 
+　　　　　　　　　　　　　　  　　　　　            　
+                                                          
+
+
+--===============1925479250==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -65,7 +75,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============1481296505==
+--===============1925479250==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -76,4 +86,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1481296505==--
+--===============1925479250==--

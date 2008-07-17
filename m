@@ -1,11 +1,20 @@
-From: team-HLfIrLbLHD/QT0dZR+AlfA@public.gmane.org
-Subject: =?utf8?q?You=27re_on_Whozat!?=
-Date: Thu, 17 Jul 2008 12:56:31 -0500
-Message-ID: <20080717175631.7DF441B5B850@dev2.whozat.com>
+From: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [patch 2.6.26-rc3] spi: make
+	spi_board_info.modalias a char array
+Date: Thu, 17 Jul 2008 16:33:42 -0600
+Message-ID: <fa686aa40807171533l7920b96fi788eee0c72409e23@mail.gmail.com>
+References: <200805211704.56761.david-b@pacbell.net>
+	<20080521204633.8234c7d7.akpm@linux-foundation.org>
+	<200805231031.25919.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1408277429=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linuxppc-dev <linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>
+To: "David Brownell" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200805231031.25919.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,96 +26,130 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+David, are you going to pick up this and the other SPI of support
+patches (linked below)?  Or should I push them through my tree?  (I'm
+assuming that all the comments are addressed and they are ready to be
+merged).
 
---===============1408277429==
-Content-Type: multipart/related; charset=utf-8;
-	boundary="_----------=_1216317391286748223"
-Content-Transfer-Encoding: 7bit
+http://patchwork.ozlabs.org/linuxppc/patch?id=19597
+http://patchwork.ozlabs.org/linuxppc/patch?id=19601
+http://patchwork.ozlabs.org/linuxppc/patch?id=19602
 
-This is a multi-part message in MIME format.
+Thanks,
+g.
 
---_----------=_1216317391286748223
-Content-Disposition: inline
-Content-Length: 1778
-Content-Type: text/html
-Content-Transfer-Encoding: quoted-printable
+On Fri, May 23, 2008 at 11:31 AM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> On Wednesday 21 May 2008, Andrew Morton wrote:
+>> On Wed, 21 May 2008 17:04:56 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+>>
+>> > From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+>> >             ...
+>> > -   proxy->modalias = chip->modalias;
+>> > +   strncpy(proxy->modalias, chip->modalias, KOBJ_NAME_LEN);
+>> >             ...
+>>
+>> a) strncpy() doesn't null-terminate the dest if it overran.  strlcpy() does.
+>>
+>> b) Given the uncertainly over the state of existing code, perhaps we
+>>    should have an explicit check for overflows here, with a WARN_ON()?
+>>
+>> c) I think it's better to use sizeof() in the strlcpy() rather than
+>>    duplicating the array size - it's a little more robust in the face
+>>    of future changes and it is more obviously-correct (don't need to go
+>>    elsewhere to check the size of the destination).
+>
+> Good points.  I usually try to use sizeof() myself, for exactly
+> that reason.  Updated version (below) uses strlcpy, sizeof, WARN_ON.
+>
+>
+>> d) KOBJ_NAME_LEN no longer exists in linux-next.  I'm not sure where
+>>    it went - Greg and Kay have been up to their usual tricks.
+>
+> Yeech.  Replacing symbols with inline constants isn't good when
+> the constant is what ensures various fields are the same size.
+>
+> BTW -- four comments on one line is pretty good even for you.  ;)
+>
+> - Dave
+>
+>
+> ========= CUT HERE
+> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+>
+> Currently, 'modalias' in the spi_device structure is a 'const char *'.
+> The spi_new_device() function fills in the modalias value from a passed
+> in spi_board_info data block.  Since it is a pointer copy, the new
+> spi_device remains dependent on the spi_board_info structure after the
+> new spi_device is registered (no other fields in spi_device directly
+> depend on the spi_board_info structure; all of the other data is copied).
+>
+> This causes a problem when dynamically propulating the list of attached
+> SPI devices.  For example, in arch/powerpc, the list of SPI devices can
+> be populated from data in the device tree.  With the current code, the
+> device tree adapter must kmalloc() a new spi_board_info structure for
+> each new SPI device it finds in the device tree, and there is no simple
+> mechanism in place for keeping track of these allocations.
+>
+> This patch changes modalias from a 'const char *' to a fixed char array.
+> By copying the modalias string instead of referencing it, the dependency
+> on the spi_board_info structure is eliminated and an outside caller does
+> not need to maintain a separate spi_board_info allocation for each device.
+>
+> If searched through the code to the best of my ability for any references
+> to modalias which may be affected by this change and haven't found anything.
+> It has been tested with the lite5200b platform in arch/powerpc.
+>
+> Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> [ cope with linux-next changes: KOBJ_NAME_LEN obliterated, etc ]
+> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+> ---
+>  drivers/spi/spi.c       |    4 +++-
+>  include/linux/spi/spi.h |    2 +-
+>  2 files changed, 4 insertions(+), 2 deletions(-)
+>
+> --- a/drivers/spi/spi.c 2008-05-22 10:57:21.000000000 -0700
+> +++ b/drivers/spi/spi.c 2008-05-22 18:56:16.000000000 -0700
+> @@ -218,6 +218,8 @@ struct spi_device *spi_new_device(struct
+>        if (!spi_master_get(master))
+>                return NULL;
+>
+> +       WARN_ON(strlen(chip->modalias) >= sizeof(proxy->modalias));
+> +
+>        proxy = kzalloc(sizeof *proxy, GFP_KERNEL);
+>        if (!proxy) {
+>                dev_err(dev, "can't alloc dev for cs%d\n",
+> @@ -229,7 +231,7 @@ struct spi_device *spi_new_device(struct
+>        proxy->max_speed_hz = chip->max_speed_hz;
+>        proxy->mode = chip->mode;
+>        proxy->irq = chip->irq;
+> -       proxy->modalias = chip->modalias;
+> +       strlcpy(proxy->modalias, chip->modalias, sizeof(proxy->modalias));
+>
+>        snprintf(proxy->dev.bus_id, sizeof proxy->dev.bus_id,
+>                        "%s.%u", master->dev.bus_id,
+> --- a/include/linux/spi/spi.h   2008-05-22 10:57:21.000000000 -0700
+> +++ b/include/linux/spi/spi.h   2008-05-23 10:21:41.000000000 -0700
+> @@ -82,7 +82,7 @@ struct spi_device {
+>        int                     irq;
+>        void                    *controller_state;
+>        void                    *controller_data;
+> -       const char              *modalias;
+> +       char                    modalias[32];
+>
+>        /*
+>         * likely need more hooks for more protocol options affecting how
+>
+>
+>
 
-<body>
-You are receiving this email because someone found you when searching for=
- you or for somebody related to you on <b>Whozat, The People Search Engin=
-e.</b>
- We wanted to share this information with you and let you know some of wh=
-at they found!<br>
-<br>
-In addition, we are offering you a <b>free Whozat membership</b> that all=
-ows you to see the complete set of search results for yourself and others=
-, and to perform an <b>unlimited</b> number of queries. Please accept you=
-r invitation by going to http://www.whozat.com/auth/register/?email=3Dspi=
--devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&referral=3Dwhozat_73027_39 <br>
-<br>
-Some of the most significant words in the search results were:<br>
-
-tipc, maintainers
-<br>
-<br>
-Some of the web pages that the searcher found were:<br>
-http://www.gelato.unsw.edu.au/lxr/source/MAINTAINERS<br>
-http://lkml.org/lkml/2006/3/22/119<br>
-http://kerneltrap.org/mailarchive/linux-kernel/2007/10/30/370694<br>
-http://kerneltrap.org/mailarchive/linux-kernel/2007/10/30/370094<br>
-http://lkml.org/lkml/2006/3/26/33<br>
-
-<br>
-<br>
-Here are a few more good reasons to use Whozat:<br>
-- Whozat outsearched Google 3 to 1 in a blind comparison.<br>
-- Whozat tops AltSearchEngines ranking of Search Engines in Stealth.<br>
-- Whozat was named one of the hottest start-ups by renowned technology bl=
-og TechCrunch.<br>
-<br>
-
-We hope to welcome you to Whozat today!<br>
-<br>
 
 
-Alex Backer, Ph.D. and Marzia Polito, Ph.D. <br>
-Co-Founders (founders-HLfIrLbLHD/QT0dZR+AlfA@public.gmane.org)<br> Whozat, Inc. <br>
-P.O. Box 6332
-<br> Altadena, CA 91003-6332
-<br>
-<br>
-If you would like not to receive any further communication from us, pleas=
-e send email to unsubscribe-HLfIrLbLHD+Xj1p+fO2waQ@public.gmane.org<br>
-<br>
-<img src=3D"http://whozat.com/store/?email=3Dspi-devel-general-5NWGOfrQmnd4wTydcyPnfg@public.gmane.org=
-ceforge.net" width=3D0 height=3D0>
-</body>
-
---_----------=_1216317391286748223--
-
-
-
---===============1408277429==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============1408277429==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1408277429==--

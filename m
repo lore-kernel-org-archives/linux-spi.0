@@ -1,17 +1,20 @@
-From: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
-Subject: Re: [RFT PATCH] SuperH HSPI controller driver.
-Date: Mon, 21 Jul 2008 14:46:33 +0200
-Message-ID: <20080721124633.GB17848__38567.4582016238$1216644483$gmane$org@roarinelk.homelinux.net>
-References: <20080721090744.GA16714@roarinelk.homelinux.net>
-	<20080721123925.GC19854@linux-sh.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: 5088/3: the SPI dependency
+Date: Mon, 21 Jul 2008 17:45:27 -0700
+Message-ID: <200807211745.27555.david-b@pacbell.net>
+References: <20080721095850.GB2264@flint.arm.linux.org.uk>
+	<Pine.LNX.4.64.0807211243060.15255@axis700.grange>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Paul Mundt <lethal-M7jkjyW5wf5g9hUCZPvPmw@public.gmane.org>, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
+To: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <Pine.LNX.4.64.0807211243060.15255-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20080721123925.GC19854-M7jkjyW5wf5g9hUCZPvPmw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,33 +26,24 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jul 21, 2008 at 09:39:25PM +0900, Paul Mundt wrote:
-> On Mon, Jul 21, 2008 at 11:07:44AM +0200, Manuel Lauss wrote:
-> > +out2:
-> > +	release_resource(priv->ioarea);
-> > +	kfree(priv->ioarea);
-> 
-> What is this kfree() for?
-> 
-> > +static int __devexit hspi_remove(struct platform_device *pdev)
-> > +{
-> > +	struct hspi_priv *priv = platform_get_drvdata(pdev);
-> > +
-> > +	spi_bitbang_stop(&priv->bitbang);
-> > +	iowrite32(0, priv->io + SPCR);
-> > +	iowrite32(0, priv->io + SPSCR);
-> > +	iowrite32(0, priv->io + SPSR);
-> > +	free_irq(priv->irq, priv);
-> > +	iounmap(priv->io);
-> > +	release_resource(priv->ioarea);
-> > +	kfree(priv->ioarea);
-> 
-> Likewise here.
+On Monday 21 July 2008, Guennadi Liakhovetski wrote:
+> David, what are your plans wrt SPI changes? I think the required patches 
+> (max7301) are already in -mm, can we merge them, please? It is a new 
+> driver, so should not make any damage.
 
-__request_region() kzalloc's a new struct resource and returns it;
-release_resource doesn't free it.
+This should almost be resolved, now that we've had a "please merge
+the max7301 patches ASAP" request and Andrew has sent that code
+to Linus.  I expect Linus will have merged it in a few hours.
 
-Manuel Lauss
+One patch submission guideline I've heard from Andrew, which doesn't
+yet seem to be part of Documentation/SubmittingPatches (!!), is to list
+dependencies when submitting a patch.  I do this after the "---" line
+with other "comments not suitable for the changelog", if it's not
+evident from a $SUBJECT prefix like "[patch 2.6.26-git8 21/25]", which
+says the patch depends on patches 1-20 of that series as well as some
+stuff merged into a speicfiic GIT snapshot.
+
+- Dave
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

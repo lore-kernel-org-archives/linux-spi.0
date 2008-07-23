@@ -1,7 +1,7 @@
 From: Jonathan Cameron <Jonathan.Cameron@gmail.com>
-Subject: [Patch 1/4] Industrialio Core
-Date: Wed, 23 Jul 2008 18:08:53 +0100
-Message-ID: <488765A5.3040703@gmail.com>
+Subject: [Patch 3/4] ST LIS3L02DQ accelerometer
+Date: Wed, 23 Jul 2008 18:14:28 +0100
+Message-ID: <488766F4.20603@gmail.com>
 References: <488763AD.4050400@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
@@ -14,2529 +14,1618 @@ Cc: Jean Delvare <khali@linux-fr.org>, Dmitry Torokhov <dtor@mail.ru>,
 To: LKML <linux-kernel@vger.kernel.org>,
 	spi-devel-general@lists.sourceforge.net,
 	LM Sensors <lm-sensors@lm-sensors.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754260AbYGWRJQ@vger.kernel.org>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754616AbYGWROb@vger.kernel.org>
 In-Reply-To: <488763AD.4050400@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
 From: Jonathan Cameron <jic23@cam.ac.uk>
 
-Industrialio subsystem core patch. This subsystem is intended to support the use
-of (initially) sensors within linux for the purposes of data capture and its use
-within control applications. The intention is to provide consistent interfaces
-(where it makes sense) with device control occuring through sysfs interfaces and
-provision of events to userspace via chrdevs. Currently software ring buffers
-are available if the sensor provides a data ready signal or a periodic rtc is
-available (and registered with the subsystem in board init code).
+Add support for ST LIS3L02DQ accelerometer as found on the xbow imote2 sensor
+board. Provides direct access via sysfs interfaces and a software ring buffer
+using the chips datardy interrupt as a trigger. Motion detection and data ready
+events are available on a chrdev as are ring buffer 50% and 100% full events.
 
 Signed-off-by: Jonathan Cameron <jic23@cam.ac.uk>
 ---
-The periodic timer code is a temporary stop gap until a more generic subsystem
-becomes available.
+Patch depends on iio_core patch
+drivers/industrialio/Kconfig                   |    1
+drivers/industrialio/Makefile                  |    1
+drivers/industrialio/accelerometer/Kconfig     |   19
+drivers/industrialio/accelerometer/Makefile    |    5
+drivers/industrialio/accelerometer/lis3l02dq.c | 1371 +++++++++++++++++++++++++
+drivers/industrialio/accelerometer/lis3l02dq.h |  168 +++
+6 files changed, 1565 insertions(+)
 
-The intention of publishing these patches is to generate feedback both at the
-high level of suggestions / comments on the general approach taken by the
-subsystem as a whole and at the low level of implementation details.
-
-Areas that in my view need attention are the software ring buffer (particularly
-careful analysis of corner cases and efficiency of it as a storage method).
-Although none of the current drivers is capable of filling it in interrupt
-context, I can envision some hardware may need to and this will clearly require
-some changes.  The overall layout of the interfaces (and indeed the code) needs
-some work, particularly with a view to cutting down the dependancies if a
-given driver doesn't need all of the systems functionality.
-
-Additional test drivers will obviously assist in working out many of these
-issues and I hope to add several more over the comming weeks.
-
-My sincerest thanks goes to anyone who takes the time to read through or test
-this patch set.
-
-drivers/Kconfig                                       |    3
-drivers/Makefile                                      |    1
-drivers/industrialio/Kconfig                          |   19
-drivers/industrialio/Makefile                         |    7
-drivers/industrialio/industrialio-core.c              |  787 ++++++++++++++++++
-drivers/industrialio/industrialio-ring.c              |  770 +++++++++++++++++
-drivers/industrialio/industrialio-rtc.c               |  134 +++
-drivers/industrialio/industrialio_ptimer_board_info.c |   44 +
-include/linux/industrialio.h                          |  374 ++++++++
-include/linux/industrialio_ptimer.h                   |   18
-include/linux/industrialio_sysfs.h                    |  274 ++++++
-11 files changed, 2431 insertions(+)
-
------- a/drivers/Kconfig	2008-07-13 22:51:29.000000000 +0100
-+++ b/drivers/Kconfig	2008-07-14 17:26:34.000000000 +0100
-@@ -101,4 +101,7 @@ source "drivers/auxdisplay/Kconfig"
- source "drivers/uio/Kconfig"
+--- a/drivers/industrialio/Makefile	2008-07-23 16:49:28.000000000 +0100
++++ b/drivers/industrialio/Makefile	2008-07-23 16:54:42.000000000 +0100
+@@ -7,3 +7,4 @@ obj-$(CONFIG_INDUSTRIALIO)	+= industrial
+ obj-$(CONFIG_INDUSTRIALIO_PTIMER_BOARDINFO) += industrialio_ptimer_board_info.o
  
- source "drivers/xen/Kconfig"
-+
-+source "drivers/industrialio/Kconfig" 
- endmenu
-+
---- a/drivers/Makefile	2008-07-13 22:51:29.000000000 +0100
-+++ b/drivers/Makefile	2008-07-14 17:26:34.000000000 +0100
-@@ -62,6 +62,7 @@ obj-$(CONFIG_INPUT)		+= input/
- obj-$(CONFIG_I2O)		+= message/
- obj-$(CONFIG_RTC_LIB)		+= rtc/
- obj-y				+= i2c/
-+obj-y				+= industrialio/
- obj-$(CONFIG_W1)		+= w1/
- obj-$(CONFIG_POWER_SUPPLY)	+= power/
- obj-$(CONFIG_HWMON)		+= hwmon/
---- a/drivers/industrialio/Kconfig	1970-01-01 01:00:00.000000000 +0100
+ obj-y += adc/
++obj-y += accelerometer/
+--- a/drivers/industrialio/Kconfig	2008-07-23 16:52:14.000000000 +0100
 +++ b/drivers/industrialio/Kconfig	2008-07-23 15:44:45.000000000 +0100
+@@ -16,6 +16,7 @@ config INDUSTRIALIO_PTIMER_BOARDINFO
+        boolean
+        default y
+ 
++source drivers/industrialio/accelerometer/Kconfig
+ source drivers/industrialio/adc/Kconfig
+ 
+ endif
+--- a/drivers/industrialio/accelerometer/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ b/drivers/industrialio/accelerometer/Kconfig	2008-07-23 16:57:39.000000000 +0100
 @@ -0,0 +1,19 @@
 +#
-+# Industrial I/O subsytem configuration
++# Accelerometer drivers
 +#
 +
-+menuconfig INDUSTRIALIO
-+	tristate "Industrial I/O support"
-+	---help---
-+	  The industrial IO subsystem provides a unified framework for drivers
-+	  for many different types of embedded sensors using a number of
-+	  different phyiscal interfaces (i2c, spi etc). See
-+	  Documentation/industrialio for more information.
++config LIS3L02DQ
++	tristate "ST Microelectronics LIS3L02DQ Accelerometer Driver"
++	help
++	  Say yes here to build generic support for the ST microelectronics
++	  accelerometer. You will also need to one or more of the bus specific
++	  elements below. The driver supplies direct access via sysfs files
++	  and a software ring buffer using a supplied datardy interrupt.
 +
-+if INDUSTRIALIO
++config LIS3L02DQ_SPI
++	depends on LIS3L02DQ && SPI
++	tristate "SPI support"
++	help
++	  Say yes here to build support for the ST LIS3L02DQ accelerometer via
++	  an SPI bus.
 +
-+config INDUSTRIALIO_PTIMER_BOARDINFO
-+       boolean
-+       default y
-+
-+endif
---- a/drivers/industrialio/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ b/drivers/industrialio/Makefile	2008-07-23 12:05:27.000000000 +0100
-@@ -0,0 +1,7 @@
+--- a/drivers/industrialio/accelerometer/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ b/drivers/industrialio/accelerometer/Makefile	2008-07-14 17:26:34.000000000 +0100
+@@ -0,0 +1,5 @@
 +#
-+# Makefile for the industrial I/O core.
++# Makefile for industrial I/O accelerometer drivers
 +#
-+industrialio-objs := industrialio-core.o industrialio-ring.o industrialio-rtc.o
 +
-+obj-$(CONFIG_INDUSTRIALIO)	+= industrialio.o
-+obj-$(CONFIG_INDUSTRIALIO_PTIMER_BOARDINFO) += industrialio_ptimer_board_info.o
---- a/include/linux/industrialio.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/include/linux/industrialio.h	2008-07-23 15:20:19.000000000 +0100
-@@ -0,0 +1,374 @@
-+/* The industrial I/O core
++obj-$(CONFIG_LIS3L02DQ_SPI)	+= lis3l02dq.o
+--- a/drivers/industrialio/accelerometer/lis3l02dq.h	1970-01-01 01:00:00.000000000 +0100
++++ b/drivers/industrialio/accelerometer/lis3l02dq.h	2008-07-21 17:29:56.000000000 +0100
+@@ -0,0 +1,168 @@
++/*
++ * LISL02DQ.h -- support STMicroelectronics LISD02DQ
++ *               3d 2g Linear Accelerometers via SPI
 + *
-+ * Copyright (c) 2008 Jonathan Cameron
++ * Copyright (c) 2007 Jonathan Cameron <jic23@cam.ac.uk>
 + *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
++ * Loosely based upon tle62x0.c
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
 + */
 +
-+#ifndef _INDUSTRIAL_IO_H_
-+#define _INDUSTRIAL_IO_H_
++#ifndef SPI_LIS3L02DQ_H_
++#define SPI_LIS3L02DQ_H_
++#define LIS3L02DQ_READ_REG(a) ((a) | 0x80)
++#define LIS3L02DQ_WRITE_REG(a) a
 +
++/* Calibration parameters */
++#define LIS3L02DQ_REG_OFFSET_X_ADDRESS		0x16
++#define LIS3L02DQ_REG_OFFSET_Y_ADDRESS		0x17
++#define LIS3L02DQ_REG_OFFSET_Z_ADDRESS		0x18
++
++#define LIS3L02DQ_REG_GAIN_X_ADDRESS		0x19
++#define LIS3L02DQ_REG_GAIN_Y_ADDRESS		0x1A
++#define LIS3L02DQ_REG_GAIN_Z_ADDRESS		0x1B
++
++/* Control Register (1 of 2) */
++#define LIS3L02DQ_REG_CTRL_1_ADDRESS		0x20
++/* Power ctrl - either bit set corresponds to on*/
++#define LIS3L02DQ_REG_CTRL_1_PD_ON	0xC0
++
++/* Decimation Factor  */
++#define LIS3L02DQ_DEC_MASK			0x30
++#define LIS3L02DQ_REG_CTRL_1_DF_128		0x00
++#define LIS3L02DQ_REG_CTRL_1_DF_64		0x10
++#define LIS3L02DQ_REG_CTRL_1_DF_32		0x20
++#define LIS3L02DQ_REG_CTRL_1_DF_8		(0x10 | 0x20)
++
++/* Self Test Enable */
++#define LIS3L02DQ_REG_CTRL_1_SELF_TEST_ON	0x08
++
++/* Axes enable ctrls */
++#define LIS3L02DQ_REG_CTRL_1_AXES_Z_ENABLE	0x04
++#define LIS3L02DQ_REG_CTRL_1_AXES_Y_ENABLE	0x02
++#define LIS3L02DQ_REG_CTRL_1_AXES_X_ENABLE	0x01
++
++/* Control Register (2 of 2) */
++#define LIS3L02DQ_REG_CTRL_2_ADDRESS		0x21
++
++/* Block Data Update only after MSB and LSB read */
++#define LIS3L02DQ_REG_CTRL_2_BLOCK_UPDATE	0x40
++
++/* Set to big endian output */
++#define LIS3L02DQ_REG_CTRL_2_BIG_ENDIAN		0x20
++
++/* Reboot memory content */
++#define LIS3L02DQ_REG_CTRL_2_REBOOT_MEMORY	0x10
++
++/* Interupt Enable - applies data ready to the RDY pad */
++#define LIS3L02DQ_REG_CTRL_2_ENABLE_INTERRUPT	0x08
++
++/* Enable Data Ready Generation - relationship with previous unclear in docs */
++#define LIS3L02DQ_REG_CTRL_2_ENABLE_DATA_READY_GENERATION 0x04
++
++/* SPI 3 wire mode */
++#define LIS3L02DQ_REG_CTRL_2_THREE_WIRE_SPI_MODE	0x02
++
++/* Data alignment, default is 12 bit right justified
++ * - option for 16 bit left justified */
++#define LIS3L02DQ_REG_CTRL_2_DATA_ALIGNMENT_16_BIT_LEFT_JUSTIFIED	0x01
++
++/* Interupt related stuff */
++#define LIS3L02DQ_REG_WAKE_UP_CFG_ADDRESS		0x23
++
++/* Switch from or combination fo conditions to and */
++#define LIS3L02DQ_REG_WAKE_UP_CFG_BOOLEAN_AND		0x80
++
++/* Latch interupt request,
++ * if on ack must be given by reading the ack register */
++#define LIS3L02DQ_REG_WAKE_UP_CFG_LATCH_SRC		0x40
++
++/* Z Interupt on High (above threshold)*/
++#define LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_Z_HIGH	0x20
++/* Z Interupt on Low */
++#define LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_Z_LOW	0x10
++/* Y Interupt on High */
++#define LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_Y_HIGH	0x08
++/* Y Interupt on Low */
++#define LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_Y_LOW	0x04
++/* X Interupt on High */
++#define LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_X_HIGH	0x02
++/* X Interupt on Low */
++#define LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_X_LOW 0x01
++
++/* Register that gives description of what caused interupt
++ * - latched if set in CFG_ADDRES */
++#define LIS3L02DQ_REG_WAKE_UP_SRC_ADDRESS		0x24
++/* top bit ignored */
++/* Interupt Active */
++#define LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_ACTIVATED	0x40
++/* Interupts that have been triggered */
++#define LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_Z_HIGH	0x20
++#define LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_Z_LOW	0x10
++#define LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_Y_HIGH	0x08
++#define LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_Y_LOW	0x04
++#define LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_X_HIGH	0x02
++#define LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_X_LOW	0x01
++
++#define LIS3L02DQ_REG_WAKE_UP_ACK_ADDRESS		0x25
++
++/* Status register */
++#define LIS3L02DQ_REG_STATUS_ADDRESS			0x27
++/* XYZ axis data overrun - first is all overrun? */
++#define LIS3L02DQ_REG_STATUS_XYZ_OVERRUN		0x80
++#define LIS3L02DQ_REG_STATUS_Z_OVERRUN			0x40
++#define LIS3L02DQ_REG_STATUS_Y_OVERRUN			0x20
++#define LIS3L02DQ_REG_STATUS_X_OVERRUN			0x10
++/* XYZ new data available - first is all 3 available? */
++#define LIS3L02DQ_REG_STATUS_XYZ_NEW_DATA 0x08
++#define LIS3L02DQ_REG_STATUS_Z_NEW_DATA			0x04
++#define LIS3L02DQ_REG_STATUS_Y_NEW_DATA			0x02
++#define LIS3L02DQ_REG_STATUS_X_NEW_DATA			0x01
++
++/* The accelerometer readings - low and high bytes.
++Form of high byte dependant on justification set in ctrl reg */
++#define LIS3L02DQ_REG_OUT_X_L_ADDRESS			0x28
++#define LIS3L02DQ_REG_OUT_X_H_ADDRESS			0x29
++#define LIS3L02DQ_REG_OUT_Y_L_ADDRESS			0x2A
++#define LIS3L02DQ_REG_OUT_Y_H_ADDRESS			0x2B
++#define LIS3L02DQ_REG_OUT_Z_L_ADDRESS			0x2C
++#define LIS3L02DQ_REG_OUT_Z_H_ADDRESS			0x2D
++
++/* Threshold values for all axes and both above and below thresholds
++ * - i.e. there is only one value */
++#define LIS3L02DQ_REG_THS_L_ADDRESS			0x2E
++#define LIS3L02DQ_REG_THS_H_ADDRESS			0x2F
++
++#define LIS3L02DQ_DEFAULT_CTRL1 (LIS3L02DQ_REG_CTRL_1_PD_ON	      \
++				 | LIS3L02DQ_REG_CTRL_1_AXES_Z_ENABLE \
++				 | LIS3L02DQ_REG_CTRL_1_AXES_Y_ENABLE \
++				 | LIS3L02DQ_REG_CTRL_1_AXES_X_ENABLE \
++				 | LIS3L02DQ_REG_CTRL_1_DF_128)
++
++#define LIS3L02DQ_DEFAULT_CTRL2	0
++
++#define LIS3L02DQ_DIRECT_ONLY_MODE	-1
++#define LIS3L02DQ_DIRECT_MODE		0
++#define LIS3L02DQ_INTERRUPT_MODE	1
++
++#define LIS3L02DQ_BUFFER_LENGTH		100
++
++
++
++struct lis3l02dq_state {
++	struct spi_device		*us;
++	struct work_struct		work_data_rdy_ring;
++	struct work_struct		work_data_rdy_event;
++	struct iio_work_cont		work_cont_thresh;
++
++	/* Interrupt caught event - used as part of the datardy to ring bh
++	   in ensuring interrupt line does not become locked high */
++	bool				inter;
++	s64				last_timestamp;
++	struct iio_dev			*indio_dev;
++
++};
++#endif /* SPI_LIS3L02DQ_H_ */
+--- a/drivers/industrialio/accelerometer/lis3l02dq.c	1970-01-01 01:00:00.000000000 +0100
++++ b/drivers/industrialio/accelerometer/lis3l02dq.c	2008-07-23 17:02:12.000000000 +0100
+@@ -0,0 +1,1371 @@
++/*
++ * lis3l02dq.c	support STMicroelectronics LISD02DQ
++ *		3d 2g Linear Accelerometers via SPI
++ *
++ * Copyright (c) 2007 Jonathan Cameron <jic23@cam.ac.uk>
++ *
++ * Loosely based upon tle62x0.c
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * FIXME: MORE DOCS
++ *
++ * Settings:
++ * Latch on interrupt generation enabled as it simplifies when to reenable
++ * the interrupt.
++ * 16 bit left justified mode used.
++ *
++ * Not implemented as yet - 'channel' selection for scan. This will probably
++ * look quite similar to the mode selection code in max1363 but will affect only
++ * which channels are read and pushed to the ring.
++ * Complexities arise in preventing reads from ring for elements that are not
++ * there. Could move to an entirely 'scan' based interface, but at the cost
++ * of allowing direct reading (problem or not?).
++ */
++
++#include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/gpio.h>
++#include <linux/workqueue.h>
++#include <linux/mutex.h>
 +#include <linux/device.h>
++#include <linux/kernel.h>
++#include <linux/spi/spi.h>
++
++#include <linux/sysfs.h>
++#include <linux/list.h>
++#include <linux/rtc.h>
++#include <linux/industrialio.h>
 +#include <linux/industrialio_sysfs.h>
 +
-+/* TODO LIST */
-+/* Static device specific elements (conversion factors etc)
-+   should be exported via sysfs
-+   Break up this header - some drivers only want a fraction of this.
-+*/
++#include "lis3l02dq.h"
 +
-+
-+/* Event interface flags */
-+#define IIO_BUSY_BIT_POS 1
-+
-+
-+struct iio_handler {
-+	const struct file_operations *fops;
-+	int id;
-+	unsigned long flags;
-+	void *private;
++/* Somewhat wasteful under arm type alignments - endianess issues
++ as well?*/
++union lis3l02dq_channel {
++	char data[2];
++	int16_t val;
 +};
 +
-+/* The actual event being pushed ot userspace */
-+struct iio_event_data {
-+	int id;
-+	s64 timestamp;
++struct lis3l02dq_datum {
++	union lis3l02dq_channel el[3];
++	s64 time;
 +};
 +
-+
-+struct iio_detected_event_list {
-+	struct list_head list;
-+	struct iio_event_data ev;
-+	/* Part of shared event handling - (typicaly ring buffers) */
-+	struct iio_shared_ev_pointer *shared_pointer;
-+};
-+
-+/* Requires high resolution timers */
-+/*  TODO - provide alternative if not available? */
-+static inline s64 iio_get_time_ns(void)
++/* Read all inputs in one spi message */
++static const char read_all_tx_array[] =
 +{
-+	struct timespec ts;
-+	ktime_get_ts(&ts);
-+	return timespec_to_ns(&ts);
-+}
-+
-+struct iio_dev;
-+
-+/* Each device has one of these per interrupt */
-+struct iio_event_handler_list {
-+	struct list_head list;
-+	int (*handler)(struct iio_dev *dev_io, int index, s64 timestamp,
-+		       int no_test);
-+	/* This element may be shared */
-+	int refcount;
++	0, LIS3L02DQ_READ_REG(LIS3L02DQ_REG_OUT_X_L_ADDRESS),
++	0, LIS3L02DQ_READ_REG(LIS3L02DQ_REG_OUT_X_H_ADDRESS),
++	0, LIS3L02DQ_READ_REG(LIS3L02DQ_REG_OUT_Y_L_ADDRESS),
++	0, LIS3L02DQ_READ_REG(LIS3L02DQ_REG_OUT_Y_H_ADDRESS),
++	0, LIS3L02DQ_READ_REG(LIS3L02DQ_REG_OUT_Z_L_ADDRESS),
++	0, LIS3L02DQ_READ_REG(LIS3L02DQ_REG_OUT_Z_H_ADDRESS),
 +};
 +
-+/* Wraps adding to lists and does reference counting to allowed shared
-+ * handlers.
-+ */
-+int iio_add_event_to_list(struct iio_event_handler_list *list,
-+			  struct iio_event_handler_list *el);
-+
-+int iio_remove_event_from_list(struct iio_event_handler_list *el);
-+
-+struct iio_sw_ring_buffer;
-+struct iio_hw_ring_buffer;
-+
-+#define INIT_IIO_RING_BUFFER(ring_buf, _bytes_per_datum, _length) {	\
-+		(ring_buf)->size = _bytes_per_datum;			\
-+		(ring_buf)->length = _length;				\
-+		(ring_buf)->loopcount = 0;				\
-+		(ring_buf)->shared_ev_pointer.ev_p = 0;			\
-+		(ring_buf)->shared_ev_pointer.lock =			\
-+			__SPIN_LOCK_UNLOCKED((ring_buf)			\
-+					     ->shared_ev_pointer->loc);	\
-+	}
-+
-+#define INIT_IIO_SW_RING_BUFFER(ring, _bytes_per_datum, _length) {	\
-+		INIT_IIO_RING_BUFFER(&(ring)->buf,			\
-+				     _bytes_per_datum,			\
-+				     _length);				\
-+		(ring)->read_p = 0;					\
-+		(ring)->write_p = 0;					\
-+		(ring)->last_written_p = 0;				\
-+		(ring)->data = kmalloc(_length*(ring)->buf.size,	\
-+				       GFP_KERNEL);			\
-+		(ring)->use_count = 0;					\
-+		(ring)->use_lock = __SPIN_LOCK_UNLOCKED((ring)->use_lock); \
-+	}
-+
-+#define FREE_IIO_SW_RING_BUFFER(ring) kfree((ring)->data)
-+
-+
-+
-+int iio_store_to_sw_ring(struct iio_sw_ring_buffer *ring,
-+		      unsigned char *data,
-+		      s64 timestamp);
-+
-+/* Edge cases :
-+   1) data at last_p is no longer valid - requires complete wrap around.
-+   To detect, loop count has changed - if only by 1 then problem only
-+   if current_lastp is equal to or greater than copy made at start.
-+   If we have wrapped an entire int in this time (loopcount) then
-+   something very very weird has occured!
-+*/
-+int iio_read_last_from_sw_ring(struct iio_sw_ring_buffer *ring,
-+			       unsigned char *data);
-+
-+/* Up to the drivers to mark the ring whenever it must not change size
-+ * and unmark when it may without problems */
-+void iio_mark_sw_ring_buffer_in_use(struct iio_sw_ring_buffer *ring);
-+
-+void iio_unmark_sw_ring_buffer_in_use(struct iio_sw_ring_buffer *ring);
-+
-+int iio_request_sw_ring_buffer(int bytes_per_datum,
-+			       int length,
-+			       struct iio_sw_ring_buffer **ring,
-+			       int id,
-+			       struct module *owner,
-+			       struct device *dev);
-+
-+int iio_request_update_sw_ring_buffer(struct iio_dev *dev_info, int id);
-+
-+void iio_free_sw_ring_buffer(struct iio_sw_ring_buffer *ring,
-+			     struct device *dev);
-+
-+int iio_request_hw_ring_buffer(int bytes_per_datum,
-+			       int length,
-+			       struct iio_hw_ring_buffer **ring,
-+			       int id,
-+			       struct module *owner,
-+			       struct device *dev,
-+			       const struct file_operations *fops,
-+			       void *private);
-+
-+void iio_free_hw_ring_buffer(struct iio_hw_ring_buffer *ring,
-+			     struct device *dev);
-+
-+/* Device operating modes */
-+#define INDIO_DIRECT_MODE		0x01
-+#define INDIO_RING_POLLED		0x02
-+#define INDIO_RING_DATA_RDY		0x04
-+#define INDIO_RING_HARDWARE_BUFFER	0x08
-+
-+struct iio_event_interface {
-+	struct iio_handler			handler;
-+	wait_queue_head_t			wait;
-+	struct mutex				event_list_lock;
-+	struct iio_detected_event_list		det_events;
-+	int					max_events;
-+	int					current_events;
-+	/* Integer id, used to differentiate this one form any others */
-+	int					id;
-+	struct iio_chrdev_minor_attr		attr;
-+	struct module				*owner;
-+	void					*private;
-+	/* used to store name for associated sysfs file */
-+	char					_name[20];
-+};
-+
-+struct iio_shared_ev_pointer {
-+	struct iio_detected_event_list	*ev_p;
-+	spinlock_t lock;
-+};
-+
-+/* A general ring buffer structure
-+ *  Intended to be completely lock free as we always want fills from
-+ * the interrupt handler to not have to wait.  This obviously increases
-+ * the possible time required to read from the buffer.  */
-+struct iio_ring_buffer {
-+	/* Number of datums */
-+	int			length;
-+	/* length of single datum - including timestamp if there */
-+	int			size;
-+	int			loopcount;
-+	/* accessing the ring buffer */
-+	char			*access_minor_name;
-+	struct iio_chrdev_minor_attr	access_minor_attr;
-+	struct iio_handler		access_handler;
-+	/* events triggered by the ring buffer */
-+	char			*event_minor_name;
-+	struct iio_event_interface ev_int;
-+	/* a fully shared output event ? wtf?*/
-+	struct iio_shared_ev_pointer shared_ev_pointer;
-+};
-+
-+int iio_put_ring_event(struct iio_ring_buffer *ring_buf,
-+		       int event_code,
-+		       s64 timestamp);
-+
-+int iio_put_or_escallate_ring_event(struct iio_ring_buffer *ring_buf,
-+				    int event_code,
-+				    s64 timestamp);
-+
-+struct iio_sw_ring_buffer {
-+	struct iio_ring_buffer buf;
-+	unsigned char		*data;
-+	unsigned char		*read_p;
-+	unsigned char		*write_p;
-+	unsigned char		*last_written_p;
-+	/* used to act as a point at which to signal an event */
-+	unsigned char		*half_p;
-+	int			use_count;
-+	int			update_needed;
-+	spinlock_t		use_lock;
-+};
-+
-+struct iio_hw_ring_buffer {
-+	struct iio_ring_buffer buf;
-+	void *private;
-+};
-+
-+/* Vast majority of this is set by the industrialio subsystem on a
-+ * call to iio_device_register. */
-+/* TODO Macros to simplify setting the relevant stuff in the driver. */
-+struct iio_dev {
-+/* generic handling data used by ind io */
-+	int id;
-+/* device specific data */
-+	void *dev_data;
-+
-+/* Modes the drivers supports */
-+	int modes; /* Driver Set */
-+	int currentmode;
-+/* Direct sysfs related functionality */
-+	struct device *sysfs_dev;
-+	struct device *dev; /* Driver Set */
-+	/* General attributes */
-+	const struct attribute_group *attrs;
-+
-+/* Interrupt handling related */
-+	struct module *driver_module;
-+	int num_interrupt_lines; /* Driver Set */
-+
-+	struct iio_interrupt **interrupts;
-+
-+
-+	/* Event control attributes */
-+	struct attribute_group *event_attrs;
-+	/* The character device related elements */
-+	struct iio_event_interface *event_interfaces;
-+
-+/* Software Ring Buffer
-+   - for now assuming only makes sense to have a single ring */
-+	int ring_dimension;
-+	int ring_bytes_per_datum;
-+	int ring_length;
-+	struct iio_sw_ring_buffer *ring;
-+	struct attribute_group *ring_attrs_group;
-+	struct iio_ring_attr *ring_attrs;
-+	/* enabling / disabling related functions.
-+	 * post / pre refer to relative to the change of current_mode. */
-+	int (*ring_preenable)(struct iio_dev *);
-+	int (*ring_postenable)(struct iio_dev *);
-+	int (*ring_predisable)(struct iio_dev *);
-+	int (*ring_postdisable)(struct iio_dev *);
-+	void (*ring_poll_func)(void *private_data);
-+	struct iio_periodic  *ptimer;
-+
-+	/* Device state lock.
-+	 * Used to prevent simultaneous changes to device state.
-+	 * In here rather than modules as some ring buffer changes must occur
-+	 * with this locked.*/
-+	struct mutex			mlock;
-+
-+	/* Name used to allow releasing of the relevant ptimer on exit.
-+	 * Ideally the ptimers will only be held when the driver is actually
-+	 * using them, but for now they have one the whole time they are loaded.
++static int lis3l02dq_read_all(struct lis3l02dq_state *st,
++			      unsigned char *rx_array)
++{
++	/* Sadly the device appears to require deselection between
++	 * reading the different registers - hence the somewhat
++	 * convoluted nature of this transfer
 +	 */
-+	const char *ptimer_name;
-+};
-+
-+int iio_device_register(struct iio_dev *dev_info);
-+void iio_device_unregister(struct iio_dev *dev_info);
-+
-+/* Wrapper class used to allow easy specification of different line numbers */
-+struct iio_interrupt {
-+	struct iio_dev *dev_info;
-+	int line_number;
-+	int irq;
-+	struct iio_event_handler_list ev_list;
-+};
-+
-+irqreturn_t iio_interrupt_handler(int irq, void *_int_info);
-+
-+int iio_register_interrupt_line(unsigned int			irq,
-+				struct iio_dev	*dev_info,
-+				int				line_number,
-+				unsigned long			type,
-+				const char			*name);
-+
-+void iio_unregister_interrupt_line(struct iio_dev *dev_info,
-+				   int line_number);
-+
-+
-+/* Used to try inserting an event into the list for userspace reading via
-+ * chrdev */
-+int iio_put_event(struct iio_dev *dev_info,
-+		  int ev_line,
-+		  int ev_code,
-+		  s64 timestamp);
-+
-+struct iio_work_cont {
-+	struct work_struct ws;
-+	struct work_struct ws_nocheck;
-+	int address;
-+	int mask;
-+	void *st;
-+};
-+#define INIT_IIO_WORK_CONT(cont, _checkfunc, _nocheckfunc, _add, _mask, _st)\
-+	do {								\
-+	INIT_WORK(&(cont)->ws, _checkfunc);				\
-+	INIT_WORK(&(cont)->ws_nocheck, _nocheckfunc);			\
-+	(cont)->address = _add;						\
-+	(cont)->mask = _mask;						\
-+	(cont)->st = _st;						\
-+	} while (0)
-+
-+/* Ring buffer related */
-+int iio_device_register_sw_ring(struct iio_dev *dev_info, int id);
-+void iio_device_unregister_sw_ring(struct iio_dev *dev_info);
-+
-+int __iio_put_event(struct iio_event_interface *ev_int,
-+		int ev_code,
-+		s64 timestamp,
-+		struct iio_shared_ev_pointer*
-+		shared_pointer_p);
-+void __iio_change_event(struct iio_detected_event_list *ev,
-+			int ev_code,
-+			s64 timestamp);
-+
-+int iio_setup_ev_int(struct iio_event_interface *ev_int,
-+		     const char *name,
-+		     struct module *owner,
-+		     struct device *dev);
-+
-+void iio_free_ev_int(struct iio_event_interface *ev_int,  struct device *dev);
-+
-+int iio_allocate_chrdev(struct iio_handler *handler);
-+void iio_deallocate_chrdev(struct iio_handler *handler);
-+
-+ssize_t iio_show_attr_minor(struct device *dev,
-+			    struct device_attribute *attr,
-+			    char *buf);
-+
-+/* For now this is on the type of periodic timer used*/
-+struct iio_periodic {
-+	struct rtc_device *rtc;
-+	int frequency;
-+	struct rtc_task task;
-+};
-+
-+int iio_ptimer_request_periodic_timer(char *name, struct iio_dev *indio_dev);
-+void iio_ptimer_unrequest_periodic_timer(struct iio_dev *indio_dev);
-+int iio_ptimer_set_freq(struct iio_periodic *ptimer, unsigned frequency);
-+int iio_ptimer_irq_set_state(struct iio_dev *indio_dev, bool state);
-+
-+/* Board registration is handled by contents of
-+ * industrialio_ptimer_board_info.c
-+ */
-+extern struct mutex industrialio_ptimer_board_lock;
-+extern struct list_head industrialio_ptimer_board_info_list;
-+#endif /* _INDUSTRIAL_IO_H_ */
---- a/include/linux/industrialio_ptimer.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/include/linux/industrialio_ptimer.h	2008-07-23 15:41:29.000000000 +0100
-@@ -0,0 +1,18 @@
-+#ifndef _INDUSTRIALIO_PTIMER_H_
-+#define _INDUSTRIALIO_PTIMER_H_
-+
-+#define IIO_PTIMER_NAME_SIZE 10
-+
-+
-+struct ptimer_info {
-+	char name[IIO_PTIMER_NAME_SIZE];
-+};
-+struct ptimer_info_listel {
-+	struct list_head list;
-+	bool inuse;
-+	struct ptimer_info info;
-+};
-+
-+extern int
-+industrialio_register_ptimer(struct ptimer_info const *info, unsigned n);
-+#endif
---- a/include/linux/industrialio_sysfs.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/include/linux/industrialio_sysfs.h	2008-07-23 16:04:18.000000000 +0100
-@@ -0,0 +1,274 @@
-+/* The industrial I/O core
-+ *
-+ *Copyright (c) 2008 Jonathan Cameron
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
-+ *
-+ * General attributes
-+ */
-+
-+#ifndef _INDUSTRIAL_IO_SYSFS_H_
-+#define _INDUSTRIAL_IO_SYSFS_H_
-+
-+#include <linux/industrialio.h>
-+
-+
-+struct iio_event_attr {
-+	struct device_attribute dev_attr;
-+	int mask;
-+	struct iio_event_handler_list *listel;
-+};
-+
-+
-+#define to_iio_event_attr(_dev_attr) \
-+	container_of(_dev_attr, struct iio_event_attr, dev_attr)
-+
-+
-+struct iio_chrdev_minor_attr {
-+	struct device_attribute dev_attr;
-+	int minor;
-+};
-+
-+void
-+__init_iio_chrdev_minor_attr(struct iio_chrdev_minor_attr *minor_attr,
-+			   const char *name,
-+			   struct module *owner,
-+			   int id);
-+
-+
-+#define to_iio_chrdev_minor_attr(_dev_attr) \
-+	container_of(_dev_attr, struct iio_chrdev_minor_attr, dev_attr);
-+
-+struct iio_dev_attr {
-+	struct device_attribute dev_attr;
-+	int address;
-+};
-+
-+
-+#define to_iio_dev_attr(_dev_attr) \
-+	container_of(_dev_attr, struct iio_dev_attr, dev_attr)
-+
-+/* Some attributes will be hard coded (device dependant) and not require an
-+   address, in these cases pass a negative */
-+#define IIO_ATTR(_name, _mode, _show, _store, _addr)	\
-+	{ .dev_attr = __ATTR(_name, _mode, _show, _store),	\
-+	  .address = _addr }
-+
-+#define IIO_DEVICE_ATTR(_name, _mode, _show, _store, _addr)	\
-+	struct iio_dev_attr iio_dev_attr_##_name		\
-+	= IIO_ATTR(_name, _mode, _show, _store, _addr)
-+
-+/* This may get broken down into separate files later */
-+
-+/* Generic attributes of onetype or another */
-+
-+/* Revision number for the device. As the form of this varies greatly from
-+ * device to device, no particular form is specified. In most cases this will
-+ * only be for information to the user, not to effect functionality etc.
-+ */
-+#define IIO_DEV_ATTR_REV(_show)			\
-+	IIO_DEVICE_ATTR(revision, S_IRUGO, _show, NULL, 0)
-+
-+/* For devices with internal clocks - and possibly poling later */
-+
-+#define IIO_DEV_ATTR_SAMP_FREQ(_mode, _show, _store)			\
-+	IIO_DEVICE_ATTR(sampling_frequency, _mode, _show, _store, 0)
-+
-+#define IIO_DEV_ATTR_AVAIL_SAMP_FREQ(_show)				\
-+	IIO_DEVICE_ATTR(available_sampling_frequency, S_IRUGO, _show, NULL, 0)
-+
-+/* ADC types of attibute */
-+
-+#define IIO_DEV_ATTR_AVAIL_SCAN_MODES(_show)				\
-+	IIO_DEVICE_ATTR(available_scan_modes, S_IRUGO, _show, NULL, 0)
-+
-+#define IIO_DEV_ATTR_SCAN_MODE(_mode, _show, _store)		\
-+	IIO_DEVICE_ATTR(scan_mode, _mode, _show, _store, 0)
-+
-+#define IIO_DEV_ATTR_INPUT(_number, _show)				\
-+	IIO_DEVICE_ATTR(in##_number, S_IRUGO, _show, NULL, _number)
-+
-+#define IIO_DEV_ATTR_SCAN(_show)		\
-+	IIO_DEVICE_ATTR(scan, S_IRUGO, _show, NULL, 0);
-+/* Accelerometer types of attribute */
-+
-+#define IIO_DEV_ATTR_ACCEL_X_OFFSET(_mode, _show, _store, _addr) \
-+	IIO_DEVICE_ATTR(x_offset, _mode, _show, _store, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_Y_OFFSET(_mode, _show, _store, _addr) \
-+	IIO_DEVICE_ATTR(y_offset, _mode, _show, _store, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_Z_OFFSET(_mode, _show, _store, _addr) \
-+	IIO_DEVICE_ATTR(z_offset, _mode, _show, _store, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_X_GAIN(_mode, _show, _store, _addr)	\
-+	IIO_DEVICE_ATTR(x_gain, _mode, _show, _store, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_Y_GAIN(_mode, _show, _store, _addr)	\
-+	IIO_DEVICE_ATTR(y_gain, _mode, _show, _store, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_Z_GAIN(_mode, _show, _store, _addr)	\
-+	IIO_DEVICE_ATTR(z_gain, _mode, _show, _store, _addr)
-+
-+
-+/* The actual device readings are always going to be read only */
-+#define IIO_DEV_ATTR_ACCEL_X(_show, _addr)			\
-+	IIO_DEVICE_ATTR(x, S_IRUGO, _show, NULL, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_Y(_show, _addr)			\
-+	IIO_DEVICE_ATTR(y, S_IRUGO, _show, NULL, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_Z(_show, _addr)			\
-+	IIO_DEVICE_ATTR(z, S_IRUGO, _show, NULL, _addr)
-+
-+#define IIO_DEV_ATTR_TEMP(_show)					\
-+	IIO_DEVICE_ATTR(temp, S_IRUGO, _show, NULL, 0)
-+/* Thresholds are somewhat chip dependent - may need quite a few defs here */
-+/* For unified thesholds (shared across all directions */
-+#define IIO_DEV_ATTR_ACCEL_THRESH(_mode, _show, _store, _addr)	\
-+	IIO_DEVICE_ATTR(thresh, _mode, _show, _store, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_THRESH_X(_mode, _show, _store, _addr)	\
-+	IIO_DEVICE_ATTR(thresh_x, _mode, _show, _store, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_THRESH_Y(_mode, _show, _store, _addr)	\
-+	IIO_DEVICE_ATTR(thresh_y, _mode, _show, _store, _addr)
-+
-+#define IIO_DEV_ATTR_ACCEL_THRESH_Z(_mode, _show, _store, _addr)	\
-+	IIO_DEVICE_ATTR(thresh_z, _mode, _show, _store, _addr)
-+
-+/* This is an event attr in some case and a dev in others - FIX*/
-+#define IIO_DEV_ATTR_SW_RING_ENABLE(_show, _store)			\
-+	IIO_DEVICE_ATTR(sw_ring_enable, S_IRUGO | S_IWUSR, _show, _store, 0)
-+
-+/* Hardware ring buffer related attributes */
-+#define IIO_DEV_ATTR_HW_RING_ENABLE(_show, _store)			\
-+	IIO_DEVICE_ATTR(hw_ring_enable, S_IRUGO | S_IWUSR, _show, _store, 0)
-+
-+#define IIO_DEV_ATTR_RING_BPS(_mode, _show, _store)		\
-+	IIO_DEVICE_ATTR(ring_bps, _mode, _show, _store, 0)
-+
-+/* Bits per sample */
-+#define IIO_DEV_ATTR_RING_BPS_AVAILABLE(_show)				\
-+	IIO_DEVICE_ATTR(ring_bps_available, S_IRUGO, _show, NULL, 0)
-+
-+/* Events that the device may generate */
-+
-+#define IIO_EVENT_SH(_name, _handler)					\
-+	static struct iio_event_handler_list				\
-+	iio_event_##_name = {						\
-+		.handler = _handler,					\
-+		.refcount = 0,						\
++	struct spi_transfer xfers[] = {
++		/* x low byte */
++		{
++			.tx_buf = read_all_tx_array,
++			.rx_buf = rx_array,
++			.bits_per_word = 16,
++			.len = 2,
++			.cs_change = 1,
++		},
++		/* x high byte */
++		{
++			.tx_buf = read_all_tx_array+2,
++			.rx_buf = rx_array + 2,
++			.bits_per_word = 16,
++			.len = 2,
++			.cs_change = 1,
++		},
++		/* y low byte */
++		{
++			.tx_buf = read_all_tx_array+4,
++			.rx_buf = rx_array + 4,
++			.bits_per_word = 16,
++			.len = 2,
++			.cs_change = 1,
++		},
++		/* y high byte */
++		{
++			.tx_buf = read_all_tx_array+6,
++			.rx_buf = rx_array + 6,
++			.bits_per_word = 16,
++			.len = 2,
++			.cs_change = 1,
++		},
++		/* z low byte */
++		{
++			.tx_buf = read_all_tx_array+8,
++			.rx_buf = rx_array + 8,
++			.bits_per_word = 16,
++			.len = 2,
++			.cs_change = 1,
++		},
++		/* z high byte */
++		{
++			.tx_buf = read_all_tx_array+10,
++			.rx_buf = rx_array + 10,
++			.bits_per_word = 16,
++			.len = 2,
++			.cs_change = 0,
++		},
 +	};
-+#define IIO_EVENT_ATTR_SH(_name, _ev_list, _show, _store, _mask)	\
-+	static struct iio_event_attr				\
-+	iio_event_attr_##_name					\
-+	= { .dev_attr = __ATTR(_name, S_IRUGO | S_IWUSR, _show, _store),\
-+	    .mask = _mask,\
-+	    .listel = &_ev_list };
-+
-+/*FIXME use the above to define this */
-+#define IIO_EVENT_ATTR(_name, _show, _store, _mask, _handler)	\
-+	static struct iio_event_handler_list				\
-+	iio_event_##_name = {				\
-+		.handler = _handler,					\
-+	};								\
-+	static struct							\
-+	iio_event_attr						\
-+	iio_event_attr_##_name					\
-+	= { .dev_attr = __ATTR(_name, S_IRUGO | S_IWUSR, _show, _store), \
-+	    .mask = _mask,						\
-+	    .listel = &iio_event_##_name };		\
-+/*FIXME, add line number to the above?*/
-+
-+/* In most of these cases, this actually corresponds to something with a
-+   value attached */
-+
-+/* For some devices you can select whether all conditions or any condition
-+   must be met for interrupt generation */
-+#define IIO_EVENT_ATTR_DATA_RDY(_show, _store, _mask, _handler) \
-+	IIO_EVENT_ATTR(data_rdy, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_CODE_DATA_RDY  100
-+
-+/* Threshold pass events */
-+#define IIO_EVENT_ATTR_ACCEL_X_HIGH(_show, _store, _mask, _handler) \
-+	IIO_EVENT_ATTR(x_high, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_CODE_ACCEL_X_HIGH 1
-+
-+/* Shared handler version */
-+#define IIO_EVENT_ATTR_ACCEL_X_HIGH_SH(_evlist, _show, _store, _mask)\
-+	IIO_EVENT_ATTR_SH(x_high, _evlist, _show, _store, _mask)
-+
-+
-+#define IIO_EVENT_ATTR_ACCEL_Y_HIGH(_show, _store, _mask, _handler) \
-+	IIO_EVENT_ATTR(y_high, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_ATTR_ACCEL_Y_HIGH_SH(_evlist, _show, _store, _mask)\
-+	IIO_EVENT_ATTR_SH(y_high, _evlist, _show, _store, _mask)
-+
-+#define IIO_EVENT_CODE_ACCEL_Y_HIGH 2
-+
-+#define IIO_EVENT_ATTR_ACCEL_Z_HIGH(_show, _store, _mask, _handler) \
-+	IIO_EVENT_ATTR(z_high, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_ATTR_ACCEL_Z_HIGH_SH(_evlist, _show, _store, _mask)\
-+	IIO_EVENT_ATTR_SH(z_high, _evlist, _show, _store, _mask)
-+
-+#define IIO_EVENT_CODE_ACCEL_Z_HIGH 3
-+
-+#define IIO_EVENT_ATTR_ACCEL_X_LOW(_show, _store, _mask, _handler) \
-+	IIO_EVENT_ATTR(x_low, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_ATTR_ACCEL_X_LOW_SH(_evlist, _show, _store, _mask)\
-+	IIO_EVENT_ATTR_SH(x_low, _evlist, _show, _store, _mask)
-+
-+#define IIO_EVENT_CODE_ACCEL_X_LOW 4
-+
-+#define IIO_EVENT_ATTR_ACCEL_Y_LOW(_show, _store, _mask, _handler) \
-+	IIO_EVENT_ATTR(y_low, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_ATTR_ACCEL_Y_LOW_SH(_evlist, _show, _store, _mask)\
-+	IIO_EVENT_ATTR_SH(y_low, _evlist, _show, _store, _mask)
-+
-+#define IIO_EVENT_CODE_ACCEL_Y_LOW 5
-+
-+#define IIO_EVENT_ATTR_ACCEL_Z_LOW(_show, _store, _mask, _handler)	\
-+	IIO_EVENT_ATTR(z_low, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_ATTR_ACCEL_Z_LOW_SH(_evlist, _show, _store, _mask)	\
-+	IIO_EVENT_ATTR_SH(z_low, _evlist, _show, _store, _mask)
-+
-+#define IIO_EVENT_CODE_ACCEL_Z_LOW 6
-+
-+#define IIO_EVENT_ATTR_FREE_FALL_DETECT(_show, _store, _mask, _handler)	\
-+	IIO_EVENT_ATTR(free_fall, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_ATTR_FREE_FALL_DETECT_SH(_evlist, _show, _store, _mask) \
-+	IIO_EVENT_ATTR_SH(free_fall, _evlist, _show, _store, _mask)
-+
-+#define IIO_EVENT_CODE_FREE_FALL 7
-+
-+/* These may be software or hardware events depending on type of ring buffer */
-+
-+#define IIO_EVENT_ATTR_RING_50_FULL(_show, _store, _mask, _handler)	\
-+	IIO_EVENT_ATTR(ring_50_full, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_ATTR_RING_50_FULL_SH(_evlist, _show, _store, _mask)	\
-+	IIO_EVENT_ATTR_SH(ring_50_full, _evlist, _show, _store, _mask)
-+
-+#define IIO_EVENT_ATTR_RING_75_FULL_SH(_evlist, _show, _store, _mask)	\
-+	IIO_EVENT_ATTR_SH(ring_75_full, _evlist, _show, _store, _mask)
-+
-+#define IIO_EVENT_ATTR_SW_RING_ENABLE(_show, _store, _mask, _handler)	\
-+	IIO_EVENT_ATTR(sw_ring_enable, _show, _store, _mask, _handler)
-+
-+#define IIO_EVENT_CODE_RING_50_FULL 100
-+#define IIO_EVENT_CODE_RING_75_FULL 101
-+#define IIO_EVENT_CODE_RING_100_FULL 102
-+/* HOW TO HANDLE COMPOSITE EVENTS? */
-+
-+#endif /* _INDUSTRIAL_IO_SYSFS_H_ */
---- a/drivers/industrialio/industrialio_ptimer_board_info.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/drivers/industrialio/industrialio_ptimer_board_info.c	2008-07-23 14:16:28.000000000 +0100
-@@ -0,0 +1,44 @@
-+/* The industrial I/O periodic timer registration code
-+ *
-+ * Copyright (c) 2008 Jonathan Cameron
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
-+ *
-+ */
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/list.h>
-+#include <linux/mutex.h>
-+#include <linux/slab.h>
-+#include <linux/module.h>
-+#include <linux/industrialio_ptimer.h>
-+
-+LIST_HEAD(industrialio_ptimer_board_info_list);
-+EXPORT_SYMBOL_GPL(industrialio_ptimer_board_info_list);
-+
-+DEFINE_MUTEX(industrialio_ptimer_board_lock);
-+EXPORT_SYMBOL_GPL(industrialio_ptimer_board_lock);
-+
-+
-+int __init
-+industrialio_register_ptimer(struct ptimer_info const *info, unsigned n)
-+{
-+	int i;
-+	struct ptimer_info_listel *pi;
-+
-+	mutex_lock(&industrialio_ptimer_board_lock);
-+	for (i = 0; i < n; i++) {
-+		pi = kzalloc(sizeof(*pi), GFP_KERNEL);
-+		if (!pi) {
-+			mutex_unlock(&industrialio_ptimer_board_lock);
-+			return -ENOMEM;
-+		}
-+		strncpy(pi->info.name, info[i].name, IIO_PTIMER_NAME_SIZE);
-+		list_add_tail(&pi->list, &industrialio_ptimer_board_info_list);
-+	}
-+	mutex_unlock(&industrialio_ptimer_board_lock);
-+
-+	return 0;
-+}
---- a/drivers/industrialio/industrialio-core.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/drivers/industrialio/industrialio-core.c	2008-07-23 15:07:21.000000000 +0100
-@@ -0,0 +1,787 @@
-+/* The industrial I/O core
-+ *
-+ * Copyright (c) 2008 Jonathan Cameron
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
-+ *
-+ * Based on elements of hwmon and input subsystems.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/idr.h>
-+#include <linux/kdev_t.h>
-+#include <linux/err.h>
-+#include <linux/device.h>
-+#include <linux/fs.h>
-+#include <linux/interrupt.h>
-+#include <linux/poll.h>
-+#include <linux/rtc.h>
-+
-+#include <linux/industrialio.h>
-+#include <linux/industrialio_ptimer.h>
-+
-+MODULE_AUTHOR("Jonathan Cameron <jic23@cam.ac.uk>");
-+MODULE_DESCRIPTION("Industrial I/O core");
-+MODULE_LICENSE("GPL");
-+
-+#define IIO_ID_PREFIX "industrialio"
-+#define IIO_ID_FORMAT IIO_ID_PREFIX "%d"
-+#define IIO_MAJOR 244
-+
-+/* Integer id  - used to assign each registered device a unique id*/
-+static DEFINE_IDR(iio_idr);
-+static DEFINE_SPINLOCK(iio_idr_lock);
-+
-+struct class iio_class = {
-+	.name = "industrialio",
-+};
-+
-+/* Struct used to maintain internal state about industrialio.
-+ * This will be used to handle the character device accesses
-+ * and redirect them to the relevant driver.
-+ * Will reduce this to the included table if nothing else comes
-+ * up that should go in here!
-+ */
-+struct __iio_state {
-+	/* All initially set to NULL in init */
-+	struct iio_handler *fhs[256];
-+};
-+
-+static struct __iio_state iio_state;
-+static DEFINE_SPINLOCK(iio_state_lock);
-+
-+/* Used to escalate shared event.
-+ * Currently this is only used with ring buffer events.
-+ */
-+void __iio_change_event(struct iio_detected_event_list *ev,
-+			int ev_code,
-+			s64 timestamp)
-+{
-+	ev->ev.id = ev_code;
-+	ev->ev.timestamp = timestamp;
-+}
-+
-+/* Used both in the interrupt line put events and the ring buffer ones */
-+ int
-+__iio_put_event(struct iio_event_interface *ev_int,
-+		int ev_code,
-+		s64 timestamp,
-+		struct iio_shared_ev_pointer*
-+		shared_pointer_p)
-+{
-+	struct iio_detected_event_list *ev;
++	struct spi_message msg;
 +	int ret;
-+
-+	/* Does anyone care? */
-+	if (test_bit(IIO_BUSY_BIT_POS, &ev_int->handler.flags)) {
-+		if (ev_int->current_events == ev_int->max_events)
-+			return 0;
-+		ev = kmalloc(sizeof(struct iio_detected_event_list),
-+			     GFP_KERNEL);
-+		if (ev == NULL) {
-+			ret = -ENOMEM;
-+			goto error_ret;
-+		}
-+		ev->ev.id = ev_code;
-+		ev->ev.timestamp = timestamp;
-+		if (shared_pointer_p != NULL) {
-+			ev->shared_pointer = shared_pointer_p;
-+			shared_pointer_p->ev_p = ev;
-+		} else
-+			ev->shared_pointer = NULL;
-+
-+		mutex_lock(&ev_int->event_list_lock);
-+		list_add_tail(&ev->list, &ev_int->det_events.list);
-+		mutex_unlock(&ev_int->event_list_lock);
-+
-+		ev_int->current_events++;
-+		wake_up_interruptible(&ev_int->wait);
++	/* After these are trasmitted, the rx_buff should have
++	 * values in alternate bytes
++	 */
++	spi_message_init(&msg);
++	spi_message_add_tail(&xfers[0], &msg);
++	spi_message_add_tail(&xfers[2], &msg);
++	spi_message_add_tail(&xfers[4], &msg);
++	spi_message_add_tail(&xfers[1], &msg);
++	spi_message_add_tail(&xfers[3], &msg);
++	spi_message_add_tail(&xfers[5], &msg);
++	ret = spi_sync(st->us, &msg);
++	if (ret) {
++		dev_err(&st->us->dev, "problem with get all accels");
++		goto err_ret;
 +	}
 +
-+	return 0;
-+error_ret:
++err_ret:
 +	return ret;
-+
 +}
 +
-+int iio_put_event(struct iio_dev *dev_info,
-+		  int ev_line,
-+		  int ev_code,
-+		  s64 timestamp)
-+{
-+	return __iio_put_event(&dev_info->event_interfaces[ev_line],
-+			       ev_code, timestamp, NULL);
-+}
-+EXPORT_SYMBOL(iio_put_event);
-+
-+/* Confirming the validity of supplied irq is left to drivers.*/
-+int iio_register_interrupt_line(unsigned int irq,
-+					 struct iio_dev *dev_info,
-+					 int line_number,
-+					 unsigned long type,
-+					 const char *name)
++static int lis3l02dq_spi_read_reg_int8_t(struct device *dev,
++					 uint8_t reg_address,
++					 int8_t *val)
 +{
 +	int ret;
++	struct spi_message msg;
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++	struct spi_transfer xfer = {
++		.tx_buf = NULL,
++		.rx_buf = NULL,
++		.bits_per_word = 16,
++		.len = 2,
++	};
 +
-+	dev_info->interrupts[line_number] =
-+		kmalloc(sizeof(struct iio_interrupt), GFP_KERNEL);
-+	if (dev_info->interrupts[line_number] == NULL) {
++	xfer.tx_buf = kmalloc(4, GFP_KERNEL);
++	if (xfer.tx_buf == NULL) {
 +		ret = -ENOMEM;
 +		goto error_ret;
 +	}
 +
-+	INIT_LIST_HEAD(&dev_info->interrupts[line_number]->ev_list.list);
-+	dev_info->interrupts[line_number]->line_number = line_number;
-+	dev_info->interrupts[line_number]->irq = irq;
-+	dev_info->interrupts[line_number]->dev_info = dev_info;
-+
-+	/* Possibly only request on demand?
-+	 * Can see this may complicate the handling of interrupts.
-+	 * However, with this approach we end up handling lots of
-+	 * events no-one cares about.*/
-+	ret = request_irq(irq,
-+			  &iio_interrupt_handler,
-+			  type,
-+			  name,
-+			  dev_info->interrupts[line_number]);
-+	if (ret < 0)
-+		goto error_ret;
-+
-+	return 0;
-+
++	xfer.rx_buf = kmalloc(4, GFP_KERNEL);
++	if (xfer.rx_buf == NULL) {
++		ret = -ENOMEM;
++		goto error_free_tx;
++	}
++	((unsigned char *)(xfer.tx_buf))[1] = LIS3L02DQ_READ_REG(reg_address);
++	spi_message_init(&msg);
++	spi_message_add_tail(&xfer, &msg);
++	ret = spi_sync(st->us, &msg);
++	if (ret) {
++		dev_err(&st->us->dev, "problem with get x offset");
++		goto error_free_rx;
++	}
++	*val = ((unsigned char *)(xfer.rx_buf))[0];
++	kfree(xfer.rx_buf);
++	kfree(xfer.tx_buf);
++	return ret;
++error_free_rx:
++	kfree(xfer.rx_buf);
++error_free_tx:
++	kfree(xfer.tx_buf);
 +error_ret:
 +	return ret;
 +}
-+EXPORT_SYMBOL(iio_register_interrupt_line);
 +
-+/* Before this runs the interrupt generator must have been disabled */
-+void iio_unregister_interrupt_line(struct iio_dev *dev_info,
-+					    int line_number)
++/*Returns into to allow full 0/255 range with error codes in negative range */
++static int lis3l02dq_spi_read_reg_uint8_t(struct device *dev,
++					  uint8_t reg_address)
 +{
-+	/* make sure the interrupt handlers are all done */
-+	flush_scheduled_work();
-+	free_irq(dev_info->interrupts[line_number]->irq,
-+		 dev_info->interrupts[line_number]);
-+	kfree(dev_info->interrupts[line_number]);
-+}
-+EXPORT_SYMBOL(iio_unregister_interrupt_line);
++	uint8_t val;
++	int8_t ret;
++	struct spi_message msg;
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++	unsigned char *local_tx_buf;
++	unsigned char *local_rx_buf;
++	struct spi_transfer xfer = {
++		.tx_buf = NULL,
++		.rx_buf = NULL,
++		.bits_per_word = 16,
++		.len = 2,
++	};
 +
-+/* Generic interrupt line interrupt handler */
-+irqreturn_t iio_interrupt_handler(int irq, void *_int_info)
-+{
-+	struct iio_interrupt *int_info = _int_info;
-+	struct iio_dev *dev_info = int_info->dev_info;
-+	struct iio_event_handler_list *p;
-+	s64 time_ns;
++	local_rx_buf = kmalloc(4, GFP_KERNEL);
++	local_tx_buf = kmalloc(4, GFP_KERNEL);
 +
-+	if (list_empty(&int_info->ev_list.list))
-+		return IRQ_NONE;
-+
-+	time_ns = iio_get_time_ns();
-+	/* detect single element list*/
-+	if (int_info->ev_list.list.next->next == &int_info->ev_list.list) {
-+		disable_irq_nosync(irq);
-+		p = list_first_entry(&int_info->ev_list.list,
-+				     struct iio_event_handler_list,
-+				     list);
-+		p->handler(dev_info, 1, time_ns, 1);
-+	} else
-+		list_for_each_entry(p, &int_info->ev_list.list, list) {
-+		       disable_irq_nosync(irq);
-+		       p->handler(dev_info, 1, time_ns, 0);
-+		}
-+	return IRQ_HANDLED;
-+}
-+EXPORT_SYMBOL(iio_interrupt_handler);
-+
-+int iio_add_event_to_list(struct iio_event_handler_list *list,
-+				   struct iio_event_handler_list *el)
-+{
-+	if (el->refcount == 0)
-+		list_add(&list->list, &el->list);
-+	el->refcount++;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(iio_add_event_to_list);
-+
-+int iio_remove_event_from_list(struct iio_event_handler_list
-+					*el)
-+{
-+	el->refcount--;
-+	if (el->refcount == 0)
-+		list_del_init(&el->list);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(iio_remove_event_from_list);
-+
-+
-+int iio_allocate_chrdev(struct iio_handler *handler)
-+{
-+	int id;
-+
-+	spin_lock(iio_state_lock);
-+	for (id = 0; id <= 256; id++)
-+		if (iio_state.fhs[id] == NULL)
-+			break;
-+	if (id == 256) {
-+		spin_unlock(iio_state_lock);
-+		return -ENOMEM;
++	local_tx_buf[1] = LIS3L02DQ_READ_REG(reg_address);
++	spi_message_init(&msg);
++	spi_message_add_tail(&xfer, &msg);
++	ret = spi_sync(st->us, &msg);
++	kfree(local_tx_buf);
++	if (ret) {
++		dev_err(&st->us->dev, "problem with get x offset");
++		goto err_ret;
 +	}
-+	iio_state.fhs[id] = handler;
-+	spin_unlock(iio_state_lock);
-+	handler->id = id;
++	val = local_rx_buf[0];
++	kfree(local_rx_buf);
 +
-+	return 0;
++	return val;
++err_ret:
++	kfree(local_rx_buf);
++
++	return ret;
 +}
 +
-+void iio_deallocate_chrdev(struct iio_handler *handler)
++static int lis3l02dq_spi_write_reg_int8_t(struct device *dev,
++					  uint8_t reg_address,
++					  int value)
 +{
-+	spin_lock(iio_state_lock);
-+	iio_state.fhs[handler->id] = NULL;
-+	spin_unlock(iio_state_lock);
-+}
-+
-+/* Upon open, switch in the correct file ops
-+ * lifted directly from input subsystem */
-+static int iio_open_file(struct inode *inode, struct file *file)
-+{
-+	struct iio_handler *handler;
-+	const struct file_operations *old_fops, *new_fops = NULL;
-+	int err;
-+
-+	/* This lock needed as unlike input we are dynamically allocating
-+	 * chrdevs */
-+	spin_lock(iio_state_lock);
-+	handler = iio_state.fhs[iminor(inode)];
-+	spin_unlock(iio_state_lock);
-+
-+	if (!handler) {
-+		fops_put(file->f_op);
-+		return -ENODEV;
-+	}
-+	new_fops = fops_get(handler->fops);
-+	if (new_fops == NULL) {
-+		fops_put(file->f_op);
-+		return -ENODEV;
-+	}
-+
-+	/* cribbed from lp.c */
-+	if (test_and_set_bit(IIO_BUSY_BIT_POS, &handler->flags)) {
-+		fops_put(file->f_op);
-+		return -EBUSY;
-+	}
-+
-+	if (!new_fops->open) {
-+		fops_put(new_fops);
-+		return -ENODEV;
-+	}
-+	old_fops = file->f_op;
-+	file->f_op = new_fops;
-+	/* use the private data pointer in file to give access to device
-+	 * specific stuff */
-+	file->private_data = handler->private;
-+	err = new_fops->open(inode, file);
-+
-+	if (err) {
-+		fops_put(file->f_op);
-+		file->f_op = fops_get(old_fops);
-+	}
-+	fops_put(old_fops);
-+
-+	return err;
-+}
-+
-+
-+/* The main file ops structure. All open calls on the major number will
-+ * be handled by this with fops for the actual minor number assigned by
-+ * switching function above */
-+static const struct file_operations iio_fops = {
-+	.owner = THIS_MODULE,
-+	.open = iio_open_file,
-+};
-+
-+ssize_t iio_interrupt_read(struct file *filep,
-+			   char *buf,
-+			   size_t count,
-+			   loff_t *f_ps)
-+{
-+	struct iio_event_interface *ev_int = filep->private_data;
-+	struct iio_detected_event_list *el;
++	struct spi_message msg;
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++	unsigned char *local_tx_buf;
++	struct spi_transfer xfer = {
++		.tx_buf = NULL,
++		.rx_buf = NULL,
++		.bits_per_word = 16,
++		.len = 2,
++	};
 +	int ret;
 +
-+	mutex_lock(&ev_int->event_list_lock);
-+	if (list_empty(&ev_int->det_events.list)) {
-+		if (filep->f_flags & O_NONBLOCK) {
-+			ret = -EAGAIN;
-+			goto error_mutex_unlock;
-+		}
-+		mutex_unlock(&ev_int->event_list_lock);
-+		/* Blocking on device; waiting for something to be there */
-+		ret = wait_event_interruptible(ev_int->wait,
-+					       !list_empty(&ev_int
-+							   ->det_events.list));
-+		if (ret)
-+			goto error_ret;
-+		/* Single access device so noone else can get the data */
-+		mutex_lock(&ev_int->event_list_lock);
++	local_tx_buf = kmalloc(4, GFP_KERNEL);
++	if (local_tx_buf == NULL) {
++		ret = -ENOMEM;
++		goto error_ret;
++	}
++	xfer.tx_buf = local_tx_buf;
++	local_tx_buf[1] = LIS3L02DQ_WRITE_REG(reg_address);
++	local_tx_buf[0] = value;
++	spi_message_init(&msg);
++	spi_message_add_tail(&xfer, &msg);
++	ret = spi_sync(st->us, &msg);
++	kfree(local_tx_buf);
++
++	if (ret) {
++		dev_err(&st->us->dev, "problem with writing 8 bit register");
++		goto error_ret;
++
 +	}
 +
-+	el = list_first_entry(&ev_int->det_events.list,
-+			      struct iio_detected_event_list,
-+			      list);
-+
-+	if (copy_to_user(buf, &(el->ev),
-+			 sizeof(struct iio_event_data))) {
-+		ret = -EFAULT;
-+		goto error_mutex_unlock;
-+	}
-+
-+	list_del(&el->list);
-+	ev_int->current_events--;
-+	mutex_unlock(&ev_int->event_list_lock);
-+
-+	spin_lock(el->shared_pointer->lock);
-+	if (el->shared_pointer)
-+		(el->shared_pointer->ev_p) = NULL;
-+	spin_unlock(el->shared_pointer->lock);
-+
-+	kfree(el);
-+
-+	return sizeof(struct iio_event_data);
-+
-+error_mutex_unlock:
-+	mutex_unlock(&ev_int->event_list_lock);
++	return 0;
 +error_ret:
-+
 +	return ret;
 +}
 +
-+int iio_interrupt_release(struct inode *inode, struct file *filep)
++/* Relies on the MSB being one higher adress than the LSB */
++static int lis3l02dq_spi_write_reg_int16_t(struct device *dev,
++					   uint8_t lower_reg_address,
++					   int value)
 +{
-+	struct iio_event_interface *ev_int = filep->private_data;
++	struct spi_message msg;
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++	unsigned char *local_tx_buf;
++	int ret;
++	union lis3l02dq_channel tval;
++	struct spi_transfer xfers [] = { {
++			.tx_buf = NULL,
++			.rx_buf = NULL,
++			.bits_per_word = 16,
++			.len = 2,
++		}, {
++			.tx_buf = NULL,
++			.rx_buf = NULL,
++			.bits_per_word = 16,
++			.len = 2,
++		},
++	};
 +
-+	module_put(ev_int->owner);
-+	clear_bit(IIO_BUSY_BIT_POS, &ev_int->handler.flags);
++	tval.val = value;
++	local_tx_buf = kmalloc(4, GFP_KERNEL);
++	if (local_tx_buf == NULL) {
++		ret = -ENOMEM;
++		goto error_ret;
++	}
++	xfers[0].tx_buf = local_tx_buf;
++	xfers[1].tx_buf = local_tx_buf + 2;
++	local_tx_buf[1] = LIS3L02DQ_WRITE_REG(lower_reg_address);
++	local_tx_buf[0] = tval.data[0];
++	local_tx_buf[3] = LIS3L02DQ_WRITE_REG(lower_reg_address+1);
++	local_tx_buf[2] = tval.data[1];
++
++	spi_message_init(&msg);
++	spi_message_add_tail(&xfers[0], &msg);
++	spi_message_add_tail(&xfers[1], &msg);
++	ret = spi_sync(st->us, &msg);
++	kfree(local_tx_buf);
++	if (ret) {
++		dev_err(&st->us->dev, "problem when writing 16 bit register");
++		return ret;
++	}
 +
 +	return 0;
++error_ret:
++	return ret;
 +}
 +
-+int iio_interrupt_open(struct inode *inode, struct file *filep)
++static int lis3l02dq_spi_read_reg_int16_t(struct device *dev,
++					  uint8_t lower_reg_address,
++					  int16_t *val)
 +{
-+	struct iio_event_interface *ev_int = filep->private_data;
-+
-+	try_module_get(ev_int->owner);
-+
++	struct spi_message msg;
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++	unsigned char *local_tx_buf;
++	unsigned char *local_rx_buf;
++	int ret;
++	/* slight abuse, but same form */
++	union lis3l02dq_channel tval;
++	struct spi_transfer xfers [] = { {
++			.tx_buf = NULL,
++			.rx_buf = NULL,
++			.bits_per_word = 16,
++			.len = 2,
++		}, {
++			.tx_buf = NULL,
++			.rx_buf = NULL,
++			.bits_per_word = 16,
++			.len = 2,
++		},
++	};
++	local_tx_buf = kmalloc(4, GFP_KERNEL);
++	if (local_tx_buf == NULL) {
++		ret = -ENOMEM;
++		goto error_ret;
++	}
++	local_rx_buf = kmalloc(4, GFP_KERNEL);
++	if (local_rx_buf == NULL) {
++		ret = -ENOMEM;
++		goto error_free_tx_buf;
++	}
++	xfers[0].tx_buf = local_tx_buf;
++	xfers[0].rx_buf = local_rx_buf;
++	xfers[1].tx_buf = local_tx_buf + 2;
++	xfers[1].rx_buf = local_rx_buf + 2;
++	local_tx_buf[0] = 0;
++	local_tx_buf[1] = LIS3L02DQ_READ_REG(lower_reg_address);
++	local_tx_buf[2] = 0;
++	local_tx_buf[3] = LIS3L02DQ_READ_REG(lower_reg_address+1);
++	spi_message_init(&msg);
++	spi_message_add_tail(&xfers[0], &msg);
++	spi_message_add_tail(&xfers[1], &msg);
++	ret = spi_sync(st->us, &msg);
++	if (ret) {
++		dev_err(&st->us->dev, "problem when reading 16 bit register");
++		goto error_free_rx_buf;
++	}
++	/* FIXME - endianness problem? */
++	tval.data[0] = local_rx_buf[0];
++	tval.data[1] = local_rx_buf[2];
++	kfree(local_rx_buf);
++	kfree(local_tx_buf);
++	*val = tval.val;
 +	return 0;
++error_free_rx_buf:
++	kfree(local_rx_buf);
++error_free_tx_buf:
++	kfree(local_tx_buf);
++error_ret:
++	return ret;
 +}
-+static const struct file_operations iio_interrupt_fileops = {
-+	.read =  iio_interrupt_read,
-+	.release = iio_interrupt_release,
-+	.open = iio_interrupt_open,
-+	.owner = THIS_MODULE,
-+};
 +
 +
-+ssize_t iio_show_attr_minor(struct device *dev,
-+			    struct device_attribute *attr,
-+			    char *buf)
++
++static ssize_t lis3l02dq_read_signed(struct device *dev,
++				     struct device_attribute *attr,
++				     char *buf)
 +{
-+	int len;
++	int len, ret;
++	int8_t val;
++	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
 +
-+	struct iio_chrdev_minor_attr *_attr
-+		= to_iio_chrdev_minor_attr(attr);
-+	len = sprintf(buf, "%d\n", _attr->minor);
++	ret = lis3l02dq_spi_read_reg_int8_t(dev, this_attr->address, &val);
++	if (ret < 0)
++		goto err_ret;
++	len = sprintf(buf, "%d\n", val);
 +
 +	return len;
++
++err_ret:
++	return ret;
 +}
 +
-+void __init_iio_chrdev_minor_attr(struct iio_chrdev_minor_attr *minor_attr,
-+				const char *name,
-+				struct module *owner,
-+				int id)
++static ssize_t lis3l02dq_read_unsigned(struct device *dev,
++				       struct device_attribute *attr,
++				       char *buf)
 +{
-+	minor_attr->dev_attr.attr.name = name;
-+	minor_attr->dev_attr.attr.owner = owner;
-+	minor_attr->dev_attr.attr.mode = S_IRUGO;
-+	minor_attr->minor = id;
-+	minor_attr->dev_attr.show = &iio_show_attr_minor;
-+}
++	int val, len;
++	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
 +
-+int iio_setup_ev_int(struct iio_event_interface *ev_int,
-+		     const char *name,
-+		     struct module *owner,
-+		     struct device *dev)
++	val = lis3l02dq_spi_read_reg_uint8_t(dev, this_attr->address);
++	if (val < 0) {
++		dev_err(dev, "problem reading an unsigned 8 bit value");
++		goto err_ret;
++	}
++
++	len = sprintf(buf, "%d\n", val);
++	return len;
++err_ret:
++	return val;
++}
++/* Used for offsets etc so no need for lock. */
++static ssize_t lis3l02dq_write_signed(struct device *dev,
++				      struct device_attribute *attr,
++				      const char *buf,
++				      size_t len)
 +{
++	long val;
 +	int ret;
++	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
 +
-+	mutex_init(&ev_int->event_list_lock);
-+	/* discussion point - make this variable? */
-+	ev_int->max_events = 10;
-+	ev_int->current_events = 0;
-+	INIT_LIST_HEAD(&ev_int->det_events.list);
-+	init_waitqueue_head(&ev_int->wait);
-+	ev_int->handler.fops = &iio_interrupt_fileops;
-+	ev_int->handler.private = ev_int;
-+	ev_int->handler.flags = 0;
-+	ret = iio_allocate_chrdev(&ev_int->handler);
++	ret = strict_strtol(buf, 10, &val);
 +	if (ret)
-+		goto error_ret;
-+	__init_iio_chrdev_minor_attr(&ev_int->attr,
-+				     (const char *)(name),
-+				     owner,
-+				     ev_int->handler.id);
-+	ret = sysfs_create_file(&dev->kobj, &ev_int->attr.dev_attr.attr);
++		goto err_ret;
++	ret = lis3l02dq_spi_write_reg_int8_t(dev, this_attr->address, val);
 +	if (ret)
-+		goto error_deallocate_chrdev;
++		goto err_ret;
 +
-+	return 0;
-+error_deallocate_chrdev:
-+	iio_deallocate_chrdev(&ev_int->handler);
-+error_ret:
++	return len;
++
++err_ret:
 +	return ret;
 +}
-+
-+void iio_free_ev_int(struct iio_event_interface *ev_int, struct device *dev)
-+{
-+	sysfs_remove_file(&dev->kobj, &ev_int->attr.dev_attr.attr);
-+	iio_deallocate_chrdev(&ev_int->handler);
-+}
-+
-+static int __init iio_init(void)
++/* Used for gains etc so no need for lock. */
++static ssize_t lis3l02dq_write_unsigned(struct device *dev,
++					struct device_attribute *attr,
++					const char *buf,
++					size_t len)
 +{
 +	int ret;
-+
-+	memset(iio_state.fhs,
-+	       sizeof(struct iio_handler *)*256,
-+	       0);
-+
-+	/* Create sysfs class */
-+	ret  = class_register(&iio_class);
-+	if (ret < 0) {
-+		printk(KERN_ERR
-+		       "industrialio.c: could not create sysfs class\n");
-+		goto error_nothing;
-+	}
-+
-+	ret = register_chrdev(IIO_MAJOR, "industrialio", &iio_fops);
-+	if (ret) {
-+		printk(KERN_ERR
-+		       "industrialio: unable to register a char major %d",
-+		       IIO_MAJOR);
-+		goto error_unregister_class;
-+	}
-+
-+	return 0;
-+error_unregister_class:
-+	class_unregister(&iio_class);
-+error_nothing:
-+	return ret;
-+}
-+
-+static void __exit iio_exit(void)
-+{
-+	unregister_chrdev(IIO_MAJOR, "bob");
-+	class_unregister(&iio_class);
-+}
-+
-+int iio_device_register_sysfs(struct iio_dev *dev_info)
-+{
-+	int ret;
-+
-+	dev_info->sysfs_dev = device_create(&iio_class,
-+					    dev_info->dev,
-+					    MKDEV(0, 0),
-+					    IIO_ID_FORMAT,
-+					    dev_info->id);
-+
-+	if (IS_ERR(dev_info->sysfs_dev)) {
-+		/* what would correct error here be?*/
-+		ret = -EINVAL;
-+		goto error_ret;
-+	}
-+	/* register attributes */
-+	ret = sysfs_create_group(&dev_info->dev->kobj, dev_info->attrs);
-+	if (ret) {
-+		dev_err(dev_info->dev, "Failed to register sysfs hooks\n");
-+		goto error_free_sysfs_device;
-+	}
-+
-+	return 0;
-+
-+error_free_sysfs_device:
-+	device_unregister(dev_info->dev);
-+error_ret:
-+	return ret;
-+}
-+
-+void iio_device_unregister_sysfs(struct iio_dev *dev_info)
-+{
-+	sysfs_remove_group(&dev_info->dev->kobj, dev_info->attrs);
-+	device_unregister(dev_info->sysfs_dev);
-+}
-+
-+int iio_device_register_id(struct iio_dev *dev_info)
-+{
-+	int ret;
-+
-+idr_again:
-+	if (unlikely(idr_pre_get(&iio_idr, GFP_KERNEL) == 0))
-+		return -ENOMEM;
-+
-+	spin_lock(&iio_idr_lock);
-+	ret = idr_get_new(&iio_idr, NULL, &dev_info->id);
-+	spin_unlock(&iio_idr_lock);
-+	if (unlikely(ret == -EAGAIN))
-+		goto idr_again;
-+	else if (unlikely(ret))
-+		return ret;
-+	dev_info->id = dev_info->id & MAX_ID_MASK;
-+
-+	return 0;
-+}
-+void iio_device_unregister_id(struct iio_dev *dev_info)
-+{
-+	/* Can I use the save id? */
-+	int id;
-+
-+	if (likely(sscanf(dev_info->sysfs_dev->bus_id,
-+			  IIO_ID_FORMAT, &id) == 1)) {
-+		spin_lock(&iio_idr_lock);
-+		idr_remove(&iio_idr, id);
-+		spin_unlock(&iio_idr_lock);
-+	} else
-+		dev_dbg(dev_info->dev->parent,
-+			"indio_device_unregister() failed: bad class ID!\n");
-+}
-+
-+int iio_device_register_eventset(struct iio_dev *dev_info)
-+{
-+	int ret, i, j;
-+
-+	struct device_attribute *devattr;
-+	struct iio_event_attr *indio_devattr;
-+
-+	if (dev_info->num_interrupt_lines == 0)
-+		return 0;
-+	dev_info->event_interfaces = (struct iio_event_interface *)
-+		(kzalloc(sizeof(struct iio_event_interface)
-+			 *dev_info->num_interrupt_lines,
-+			 GFP_KERNEL));
-+	if (dev_info->event_interfaces == NULL) {
-+		ret = -ENOMEM;
-+		goto error_ret;
-+	}
-+	/* assign id's to the event_interface elements */
-+	for (i = 0; i < dev_info->num_interrupt_lines; i++) {
-+		dev_info->event_interfaces[i].id = i;
-+		dev_info->event_interfaces[i].owner = dev_info->driver_module;
-+	}
-+	dev_info->interrupts
-+		= kzalloc(sizeof(struct iio_interrupt *)
-+			  *dev_info->num_interrupt_lines,
-+			  GFP_KERNEL);
-+	if (dev_info->interrupts == NULL) {
-+		dev_err(dev_info->dev,
-+			"Failed to register sysfs hooks for events attributes");
-+		ret = -ENOMEM;
-+		goto error_free_event_interfaces;
-+	}
-+
-+	for (i = 0; i < dev_info->num_interrupt_lines; i++) {
-+
-+		snprintf(dev_info->event_interfaces[i]._name, 20,
-+			"event_line%d_minor", i);
-+		ret = iio_setup_ev_int(&dev_info->event_interfaces[i],
-+				       (const char *)(dev_info
-+						      ->event_interfaces[i]
-+						      ._name),
-+				       dev_info->driver_module,
-+				       dev_info->dev);
-+		if (ret) {
-+			dev_err(dev_info->dev,
-+				"Could not get chrdev interface\n");
-+			goto error_free_setup_ev_ints;
-+		}
-+	}
-+	dev_info->event_attrs->name = "event_sources";
-+	ret = sysfs_create_group(&dev_info->dev->kobj, dev_info->event_attrs);
-+	if (ret) {
-+		dev_err(dev_info->dev,
-+			"Failed to register sysfs hooks for events attributes");
-+		goto error_free_setup_ev_ints;
-+	}
-+	/* May double initialize lists in case of shared handlers,
-+	   but other than a slight overhead that isn't a problem */
-+	j = 0;
-+	while (1) {
-+		if (dev_info->event_attrs->attrs[j] == NULL)
-+			break;
-+		devattr = container_of(dev_info->event_attrs->attrs[j],
-+				       struct device_attribute, attr);
-+		indio_devattr = to_iio_event_attr(devattr);
-+		INIT_LIST_HEAD(&indio_devattr->listel->list);
-+		j++;
-+	}
-+	return 0;
-+
-+error_free_setup_ev_ints:
-+	for (j = 0; j < i; j++)
-+		iio_free_ev_int(&dev_info->event_interfaces[j],
-+				dev_info->dev);
-+	kfree(dev_info->interrupts);
-+error_free_event_interfaces:
-+	kfree(dev_info->event_interfaces);
-+error_ret:
-+	return ret;
-+}
-+
-+void iio_device_unregister_eventset(struct iio_dev *dev_info)
-+{
-+	int i;
-+	if (dev_info->num_interrupt_lines == 0)
-+		return;
-+	for (i = 0; i < dev_info->num_interrupt_lines; i++)
-+		iio_free_ev_int(&dev_info->event_interfaces[i],
-+					 dev_info->dev);
-+	if (dev_info->event_attrs)
-+		sysfs_remove_group(&dev_info->dev->kobj, dev_info->event_attrs);
-+	kfree(dev_info->event_interfaces);
-+}
-+
-+int iio_get_ptimer(const char **name)
-+{
-+	struct ptimer_info_listel *ptimer_i;
-+
-+	*name = NULL;
-+	mutex_lock(&industrialio_ptimer_board_lock);
-+
-+	list_for_each_entry(ptimer_i, &industrialio_ptimer_board_info_list,
-+			    list)
-+		if (ptimer_i->inuse == false) {
-+			ptimer_i->inuse = true;
-+			*name = ptimer_i->info.name;
-+			break;
-+		}
-+	mutex_unlock(&industrialio_ptimer_board_lock);
-+	if (*name == NULL)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+int iio_free_ptimer(const char *name)
-+{
-+	struct ptimer_info_listel *ptimer_i;
-+
-+	mutex_lock(&industrialio_ptimer_board_lock);
-+	list_for_each_entry(ptimer_i, &industrialio_ptimer_board_info_list,
-+			    list)
-+		if (ptimer_i->info.name == name) {
-+			ptimer_i->inuse = false;
-+			break;
-+		}
-+	mutex_unlock(&industrialio_ptimer_board_lock);
-+
-+	return 0;
-+}
-+
-+int iio_device_register_ptimer(struct iio_dev *dev_info)
-+{
-+	int ret = 0;
-+
-+	if (dev_info->modes & INDIO_RING_POLLED) {
-+		ret = iio_get_ptimer(&dev_info->ptimer_name);
-+		if (ret)
-+			goto error_ret;
-+		ret = iio_ptimer_request_periodic_timer((char *)
-+							(dev_info->ptimer_name),
-+							dev_info);
-+		if (ret)
-+			goto error_release_ptimer;
-+	}
-+
-+	return ret;
-+
-+error_release_ptimer:
-+	iio_free_ptimer(dev_info->ptimer_name);
-+error_ret:
-+	return ret;
-+
-+}
-+
-+void iio_device_unregister_ptimer(struct iio_dev *dev_info)
-+{
-+	if (dev_info->ptimer) {
-+		iio_ptimer_unrequest_periodic_timer(dev_info);
-+		iio_free_ptimer(dev_info->ptimer_name);
-+	}
-+}
-+
-+int iio_device_register(struct iio_dev *dev_info)
-+{
-+	int ret;
-+	mutex_init(&dev_info->mlock);
-+	dev_set_drvdata(dev_info->dev, (void *)(dev_info));
-+
-+/*Get a unique id */
-+	ret = iio_device_register_id(dev_info);
-+	if (ret)
-+		goto error_nothing;
-+
-+/* Create sysfs device */
-+	ret = iio_device_register_sysfs(dev_info);
-+	if (ret)
-+		goto error_free_idr;
-+
-+/* Interrupt triggered events setup */
-+	ret = iio_device_register_eventset(dev_info);
-+	if (ret)
-+		goto error_free_sysfs;
-+
-+/* Ring buffer init if relevant */
-+	if (dev_info->modes & (INDIO_RING_POLLED | INDIO_RING_DATA_RDY)) {
-+
-+		ret = iio_device_register_sw_ring(dev_info, 0);
-+		if (ret)
-+			goto error_free_eventset;
-+	}
-+/* Register ptimer if relevant */
-+	if (dev_info->modes & INDIO_RING_POLLED) {
-+		ret = iio_device_register_ptimer(dev_info);
-+		if (ret)
-+			goto error_unregister_sw_ring;
-+	}
-+
-+	return 0;
-+
-+error_unregister_sw_ring:
-+	iio_device_unregister_sw_ring(dev_info);
-+error_free_eventset:
-+	iio_device_unregister_eventset(dev_info);
-+error_free_sysfs:
-+	iio_device_unregister_sysfs(dev_info);
-+error_free_idr:
-+	iio_device_unregister_id(dev_info);
-+error_nothing:
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(iio_device_register);
-+
-+void iio_device_unregister(struct iio_dev *dev_info)
-+{
-+	if (dev_info->modes & INDIO_RING_POLLED)
-+		iio_device_unregister_ptimer(dev_info);
-+	if (dev_info->modes & (INDIO_RING_POLLED | INDIO_RING_DATA_RDY))
-+		iio_device_unregister_sw_ring(dev_info);
-+	iio_device_unregister_eventset(dev_info);
-+	iio_device_unregister_sysfs(dev_info);
-+	iio_device_unregister_id(dev_info);
-+
-+}
-+EXPORT_SYMBOL_GPL(iio_device_unregister);
-+
-+subsys_initcall(iio_init);
-+module_exit(iio_exit);
---- a/drivers/industrialio/industrialio-rtc.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/drivers/industrialio/industrialio-rtc.c	2008-07-23 15:08:43.000000000 +0100
-@@ -0,0 +1,134 @@
-+/* The industrial I/O core
-+ *
-+ * Copyright (c) 2008 Jonathan Cameron
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
-+ */
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/rtc.h>
-+#include <linux/industrialio.h>
-+#include <linux/industrialio_ptimer.h>
-+/* This is a temporary stop gap until a more generic timer subsystem is in place
-+ * within the kernel.
-+ * See discussion (initial thoughts so far) on the rtc mailing list.
-+ * Comments still welcomed though I may not do much about them!.
-+ */
-+int iio_ptimer_irq_set_state(struct iio_dev *indio_dev, bool state)
-+{
-+	return rtc_irq_set_state(indio_dev->ptimer->rtc,
-+				 &indio_dev->ptimer->task,
-+				 state);
-+}
-+EXPORT_SYMBOL(iio_ptimer_irq_set_state);
-+
-+int iio_ptimer_set_freq(struct iio_periodic *ptimer,
-+			    unsigned frequency)
-+{
-+	int ret;
-+
-+	ret = rtc_irq_set_freq(ptimer->rtc, &ptimer->task, frequency);
-+	if (ret == 0)
-+		ptimer->frequency = frequency;
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(iio_ptimer_set_freq);
-+
-+static ssize_t iio_ptimer_show_samp_freq(struct device *dev,
-+					 struct device_attribute *attr,
-+					 char *buf)
-+{
-+	struct iio_dev *dev_info = dev_get_drvdata(dev);
-+	struct iio_periodic *ptimer = dev_info->ptimer;
-+	return sprintf(buf, "%u\n", ptimer->frequency);
-+}
-+
-+static ssize_t iio_ptimer_store_samp_freq(struct device *dev,
-+					  struct device_attribute *attr,
-+					  const char *buf,
-+					  size_t len)
-+{
-+	struct iio_dev *dev_info = dev_get_drvdata(dev);
-+	struct iio_periodic *ptimer = dev_info->ptimer;
-+	int ret;
-+	unsigned long val;
++	ulong val;
++	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
 +
 +	ret = strict_strtoul(buf, 10, &val);
 +	if (ret)
-+		goto error_ret;
-+	ret = iio_ptimer_set_freq(ptimer, val);
++		goto err_ret;
++
++	ret = lis3l02dq_spi_write_reg_int8_t(dev, this_attr->address, val);
 +	if (ret)
-+		goto error_ret;
++		goto err_ret;
++
 +	return len;
 +
-+error_ret:
++err_ret:
 +	return ret;
 +}
 +
-+
-+IIO_DEV_ATTR_SAMP_FREQ(S_IRUGO | S_IWUSR,
-+		       iio_ptimer_show_samp_freq,
-+		       iio_ptimer_store_samp_freq);
-+
-+int iio_ptimer_request_periodic_timer(char *name,
-+				      struct iio_dev *indio_dev)
++static ssize_t lis3l02dq_read_16bit_signed(struct device *dev,
++					   struct device_attribute *attr,
++					   char *buf)
 +{
-+	int ret;
++	int len, ret;
++	int16_t val;
++	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
 +
-+	indio_dev->ptimer = kmalloc(sizeof(struct iio_periodic), GFP_KERNEL);
-+	indio_dev->ptimer->rtc = rtc_class_open(name);
-+	if (indio_dev->ptimer == NULL) {
-+		ret = -EINVAL;
-+		goto error_free_ptimer;
++	ret = lis3l02dq_spi_read_reg_int16_t(dev, this_attr->address, &val);
++	if (ret < 0) {
++		dev_err(dev, "problem reading a signed 16 bit value from chip");
++		return ret;
 +	}
-+	indio_dev->ptimer->task.func = indio_dev->ring_poll_func;
-+	indio_dev->ptimer->task.private_data = indio_dev;
-+	ret = rtc_irq_register(indio_dev->ptimer->rtc,
-+			       &indio_dev->ptimer->task);
-+	if (ret)
-+		goto error_close_class;
-+
-+	ret = sysfs_add_file_to_group(&indio_dev->dev->kobj,
-+				      &iio_dev_attr_sampling_frequency
-+				      .dev_attr.attr,
-+				      "ring_buffer");
-+	if (ret)
-+		goto error_unregister_irq;
-+
-+	return 0;
-+
-+error_unregister_irq:
-+	rtc_irq_unregister(indio_dev->ptimer->rtc, &indio_dev->ptimer->task);
-+
-+error_close_class:
-+	rtc_class_close(indio_dev->ptimer->rtc);
-+error_free_ptimer:
-+	kfree(indio_dev->ptimer);
-+	indio_dev->ptimer = NULL;
-+	return ret;
-+}
-+EXPORT_SYMBOL(iio_ptimer_request_periodic_timer);
-+
-+void iio_ptimer_unrequest_periodic_timer(struct iio_dev *indio_dev)
-+{
-+
-+	sysfs_remove_file_from_group(&indio_dev->dev->kobj,
-+				      &iio_dev_attr_sampling_frequency
-+				     .dev_attr.attr,
-+				     "ring_buffer");
-+
-+	if (indio_dev->ptimer->rtc) {
-+		rtc_irq_set_state(indio_dev->ptimer->rtc,
-+				  &indio_dev->ptimer->task, 0);
-+		rtc_irq_unregister(indio_dev->ptimer->rtc,
-+				   &indio_dev->ptimer->task);
-+				flush_scheduled_work();
-+		rtc_class_close(indio_dev->ptimer->rtc);
-+		flush_scheduled_work();
-+	}
-+	kfree(indio_dev->ptimer);
-+}
-+EXPORT_SYMBOL(iio_ptimer_unrequest_periodic_timer);
---- a/drivers/industrialio/industrialio-ring.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/drivers/industrialio/industrialio-ring.c	2008-07-23 15:10:39.000000000 +0100
-@@ -0,0 +1,770 @@
-+/* The industrial I/O core
-+ *
-+ * Copyright (c) 2008 Jonathan Cameron
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
-+ *
-+ * Handling of ring allocation / resizing.
-+ *
-+ *
-+ * Things to look at here.
-+ * - Better memory allocation techniques?
-+ * - Alternative access techniques?
-+ */
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/interrupt.h>
-+#include <linux/fs.h>
-+#include <linux/poll.h>
-+#include <linux/module.h>
-+#include <linux/rtc.h>
-+#include <linux/industrialio.h>
-+
-+/* Prevent resizing of the ring if it might break anything */
-+void iio_mark_sw_ring_buffer_in_use(struct iio_sw_ring_buffer *ring)
-+{
-+	spin_lock(ring->use_lock);
-+	ring->use_count++;
-+	spin_unlock(ring->use_lock);
-+}
-+EXPORT_SYMBOL_GPL(iio_mark_sw_ring_buffer_in_use);
-+
-+void iio_unmark_sw_ring_buffer_in_use(struct iio_sw_ring_buffer *ring)
-+{
-+	spin_lock(ring->use_lock);
-+	ring->use_count--;
-+	spin_unlock(ring->use_lock);
-+}
-+EXPORT_SYMBOL_GPL(iio_unmark_sw_ring_buffer_in_use);
-+
-+/* Mark that a resize is needed */
-+static void iio_mark_sw_ring_buffer_need_update(struct iio_sw_ring_buffer *ring)
-+{
-+	spin_lock(ring->use_lock);
-+	ring->update_needed = 1;
-+	spin_unlock(ring->use_lock);
-+}
-+
-+/* Event handling for the ring - allows escallation of events */
-+int iio_put_ring_event(struct iio_ring_buffer *ring_buf,
-+		       int event_code,
-+		       s64 timestamp)
-+{
-+	return __iio_put_event(&ring_buf->ev_int,
-+			       event_code,
-+			       timestamp,
-+			       &ring_buf->shared_ev_pointer);
-+}
-+EXPORT_SYMBOL(iio_put_ring_event);
-+
-+int iio_put_or_escallate_ring_event(struct iio_ring_buffer *ring_buf,
-+				    int event_code,
-+				    s64 timestamp)
-+{
-+	if (ring_buf->shared_ev_pointer.ev_p)
-+		__iio_change_event(ring_buf->shared_ev_pointer.ev_p,
-+				   event_code,
-+				   timestamp);
-+	else
-+		return iio_put_ring_event(ring_buf,
-+					  event_code,
-+					  timestamp);
-+	return 0;
-+}
-+EXPORT_SYMBOL(iio_put_or_escallate_ring_event);
-+
-+
-+/* Ring buffer related functionality */
-+/* Store to ring is typically called in the bh of a data ready interrupt handler
-+ * in the device driver */
-+/* Lock always held if their is a chance this may be called */
-+int iio_store_to_sw_ring(struct iio_sw_ring_buffer *ring,
-+			 unsigned char *data,
-+			 s64 timestamp)
-+{
-+	bool init_read = true;
-+	int ret;
-+	int code;
-+
-+	/* initial store */
-+	if (unlikely(ring->write_p == 0)) {
-+		ring->write_p = ring->data;
-+		/* doesn't actually matter if this is out of the set */
-+		ring->half_p = ring->data - ring->buf.length*ring->buf.size/2;
-+		init_read = false;
-+	}
-+	memcpy(ring->write_p, data, ring->buf.size);
-+	barrier();
-+	ring->last_written_p = ring->write_p;
-+	barrier();
-+	ring->write_p += ring->buf.size;
-+	/* End of ring, back to the beginning */
-+	if (ring->write_p == ring->data + ring->buf.length*ring->buf.size) {
-+		ring->write_p = ring->data;
-+		ring->buf.loopcount++;
-+	}
-+	if (ring->read_p == 0)
-+		ring->read_p = ring->data;
-+	/* Buffer full - move the read pointer and create / escalate
-+	 * ring event */
-+	else if (ring->write_p == ring->read_p) {
-+		ring->read_p += ring->buf.size;
-+		if (ring->read_p
-+		    == ring->data + ring->buf.length*ring->buf.size)
-+			ring->read_p = ring->data;
-+
-+		spin_lock(ring->buf.shared_ev_pointer.lock);
-+		if (ring->buf.shared_ev_pointer.ev_p) {
-+			/* Event escalation - probably quicker to let this
-+			   keep running than check if it is necessary */
-+			code = IIO_EVENT_CODE_RING_100_FULL;
-+			__iio_change_event(ring
-+					   ->buf.shared_ev_pointer.ev_p,
-+					   code,
-+					   timestamp);
-+		} else {
-+			code = IIO_EVENT_CODE_RING_100_FULL;
-+			ret = __iio_put_event(&ring->buf.ev_int,
-+					      code,
-+					      timestamp,
-+					      &ring
-+					      ->buf.shared_ev_pointer);
-+			if (ret) {
-+				spin_unlock(ring->buf.shared_ev_pointer.lock);
-+				goto error_ret;
-+			}
-+		}
-+		spin_unlock(ring->buf.shared_ev_pointer.lock);
-+	}
-+	/* investigate if our event barrier has been passed */
-+	/* There are definite 'issues' with this and chances of
-+	 * simultaneous read */
-+	/* Also need to use loop count to ensure this only happens once */
-+	ring->half_p += ring->buf.size;
-+	if (ring->half_p == ring->data + ring->buf.length*ring->buf.size)
-+		ring->half_p = ring->data;
-+	if (ring->half_p == ring->read_p) {
-+		spin_lock(ring->buf.shared_ev_pointer.lock);
-+		code = IIO_EVENT_CODE_RING_50_FULL;
-+		ret = __iio_put_event(&ring->buf.ev_int,
-+				      code,
-+				      timestamp,
-+				      &ring->buf.shared_ev_pointer);
-+		spin_unlock(ring->buf.shared_ev_pointer.lock);
-+
-+		if (ret)
-+			goto error_ret;
-+	}
-+	return 0;
-+error_ret:
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(iio_store_to_sw_ring);
-+
-+
-+/*doesn't currently read the timestamp */
-+/* For software ring buffers this function is needed to get the latest
-+ * reading without preventing it from ending up in the ring buffer.
-+*/
-+int iio_read_last_from_sw_ring(struct iio_sw_ring_buffer *ring,
-+			       unsigned char *data)
-+{
-+	int loopcount_copy;
-+	unsigned char *last_written_p_copy;
-+	iio_mark_sw_ring_buffer_in_use(ring);
-+again:
-+	loopcount_copy = ring->buf.loopcount;
-+	barrier();
-+	last_written_p_copy = ring->last_written_p;
-+	barrier(); /*unnessecary? */
-+
-+	memcpy(data, last_written_p_copy, ring->buf.size);
-+
-+	if (unlikely(loopcount_copy != ring->buf.loopcount)) {
-+		if (unlikely(ring->last_written_p >= last_written_p_copy))
-+			goto again;
-+	}
-+	iio_unmark_sw_ring_buffer_in_use(ring);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(iio_read_last_from_sw_ring);
-+
-+/* Ring buffer access fileops */
-+int iio_ring_open(struct inode *inode, struct file *filp)
-+{
-+	struct iio_sw_ring_buffer *ring = filp->private_data;
-+
-+	iio_mark_sw_ring_buffer_in_use(ring);
-+	try_module_get(ring->buf.access_minor_attr.dev_attr.attr.owner);
-+
-+	return 0;
-+}
-+
-+int iio_ring_release(struct inode *inode, struct file *filp)
-+{
-+	struct iio_sw_ring_buffer *ring = filp->private_data;
-+
-+	module_put(ring->buf.access_minor_attr.dev_attr.attr.owner);
-+	clear_bit(IIO_BUSY_BIT_POS, &ring->buf.access_handler.flags);
-+	iio_unmark_sw_ring_buffer_in_use(ring);
-+
-+	return 0;
-+}
-+
-+/* no point in ripping more than nearest number of whole records below count */
-+/* Depending on movement of pointers in the meantime this may return a lot
-+ * less than count*/
-+/* Also, we aren't going to wait for enough data to be available */
-+
-+/* Can only occur currently when the ring buffer is marked
-+   - from userspace call */
-+ssize_t iio_ring_rip(struct file *filp,
-+		     char *buf,
-+		     size_t count,
-+		     loff_t *f_ps)
-+{
-+	unsigned char *initial_read_p, *initial_write_p,
-+		*current_read_p, *end_read_p;
-+
-+	struct iio_sw_ring_buffer *ring = filp->private_data;
-+	unsigned char *data_cpy;
-+	int ret;
-+	int dead_offset;
-+	int bytes_to_rip = 0;
-+	int max_copied;
-+	/* Round down to nearest datum boundary */
-+	bytes_to_rip = (count - count % ring->buf.size);
-+	/* Limit size to whole of ring buffer */
-+	if (bytes_to_rip > ring->buf.size*ring->buf.length)
-+		bytes_to_rip = ring->buf.size*ring->buf.length;
-+	data_cpy = kmalloc(bytes_to_rip, GFP_KERNEL);
-+	if (data_cpy == NULL) {
-+		ret = -ENOMEM;
-+		goto error_ret;
-+	}
-+
-+	/* build local copy */
-+	initial_read_p = ring->read_p;
-+	if (unlikely(initial_read_p == 0)) {
-+		/* No data here as yet */
-+		ret = 0;
-+		goto error_free_data_cpy;
-+	}
-+	initial_write_p = ring->write_p;
-+
-+	/* Need a consistent pair */
-+	while (initial_read_p != ring->read_p
-+	      || initial_write_p != ring->write_p) {
-+		initial_read_p = ring->read_p;
-+		initial_write_p = ring->write_p;
-+	}
-+	if (initial_write_p == initial_read_p) {
-+		/* No new data available.*/
-+		ret = 0;
-+		goto error_free_data_cpy;
-+	}
-+
-+	if (initial_write_p > initial_read_p + bytes_to_rip) {
-+		/* write_p is greater than necessary, all is easy */
-+		max_copied = bytes_to_rip;
-+		memcpy(data_cpy, initial_read_p, max_copied);
-+		end_read_p = initial_read_p + max_copied;
-+	} else if (initial_write_p > initial_read_p) {
-+		/*not enough data to cpy */
-+		max_copied = initial_write_p - initial_read_p;
-+		memcpy(data_cpy, initial_read_p, max_copied);
-+		end_read_p = initial_write_p;
-+	} else { /* going through 'end' of ring buffer */
-+		max_copied = ring->data
-+			+ ring->buf.length*ring->buf.size - initial_read_p;
-+		memcpy(data_cpy, initial_read_p, max_copied);
-+		if (initial_write_p > ring->data + bytes_to_rip - max_copied) {
-+			/* enough data to finish */
-+			memcpy(data_cpy + max_copied, ring->data,
-+			       bytes_to_rip - max_copied);
-+			max_copied = bytes_to_rip;
-+			end_read_p = ring->data + (bytes_to_rip - max_copied);
-+		} else {  /* not enough data */
-+			memcpy(data_cpy + max_copied, ring->data,
-+			       initial_write_p - ring->data);
-+			max_copied += initial_write_p - ring->data;
-+			end_read_p = initial_write_p;
-+		}
-+	}
-+	/* Now to verify which section was cleanly copied - i.e. how far
-+	 * read pointer has been pushed */
-+	current_read_p = ring->read_p;
-+
-+	if (initial_read_p <= current_read_p)
-+		dead_offset = current_read_p - initial_read_p;
-+	else
-+		dead_offset = ring->buf.length*ring->buf.size
-+			- (initial_read_p - current_read_p);
-+
-+	/* possible issue if the initial write has been lapped or indeed
-+	 * the point we were reading to has been passed */
-+	/* No valid data read.
-+	 * In this case the read pointer is already correct having been
-+	 * pushed further than we would look. */
-+	if (max_copied - dead_offset < 0) {
-+		ret = 0;
-+		goto error_free_data_cpy;
-+	}
-+
-+	/* setup the next read position */
-+	ring->read_p = end_read_p;
-+
-+	if (copy_to_user(buf, data_cpy + dead_offset,
-+			 max_copied - dead_offset))  {
-+		ret =  -EFAULT;
-+		goto error_free_data_cpy;
-+	}
-+	kfree(data_cpy);
-+
-+	return max_copied - dead_offset;
-+
-+error_free_data_cpy:
-+	kfree(data_cpy);
-+error_ret:
-+	return 0;
-+}
-+
-+static const struct file_operations iio_ring_fileops = {
-+	.read = iio_ring_rip,
-+	.release = iio_ring_release,
-+	.open = iio_ring_open,
-+	.owner = THIS_MODULE,
-+};
-+
-+inline int __iio_request_ring_buffer_event_chrdev(struct iio_ring_buffer *buf,
-+						  int id,
-+						  struct module *owner,
-+						  struct device *dev)
-+{
-+	int ret;
-+
-+/* Create and register the event character device */
-+	buf->event_minor_name = kmalloc(20, GFP_KERNEL);
-+	if (buf->event_minor_name == NULL) {
-+		ret = -ENOMEM;
-+		goto error_ret;
-+	}
-+	sprintf(buf->event_minor_name, "ring_buffer%d_ev_minor", id);
-+	ret = iio_setup_ev_int(&(buf->ev_int),
-+			       (const char *)(buf->event_minor_name),
-+			       owner,
-+			       dev);
-+	if (ret)
-+		goto error_free_event_minor_name;
-+
-+	return 0;
-+
-+error_free_event_minor_name:
-+	kfree(buf->event_minor_name);
-+error_ret:
-+	return ret;
-+}
-+
-+inline void __iio_free_ring_buffer_event_chrdev(struct iio_ring_buffer *buf,
-+						struct device *dev)
-+{
-+	iio_free_ev_int(&(buf->ev_int), dev);
-+	kfree(buf->event_minor_name);
-+}
-+
-+inline int
-+__iio_request_ring_buffer_access_chrdev(struct iio_ring_buffer *buf,
-+					int id,
-+					struct module *owner,
-+					struct device *dev,
-+					const struct file_operations *fops)
-+{
-+	int ret;
-+/* Create and register the access character device */
-+	buf->access_minor_name = kmalloc(20, GFP_KERNEL);
-+	if (buf->access_minor_name == NULL) {
-+		ret = -ENOMEM;
-+		goto error_ret;
-+	}
-+	sprintf(buf->access_minor_name, "ring_buffer%d_access_minor", id);
-+
-+	ret = iio_allocate_chrdev(&buf->access_handler);
-+	if (ret)
-+		goto error_free_access_minor_name;
-+	buf->access_handler.fops = fops;
-+	buf->access_handler.flags = 0;
-+
-+	__init_iio_chrdev_minor_attr(&buf->access_minor_attr,
-+				   (const char *)(buf->access_minor_name),
-+				   owner,
-+				   buf->access_handler.id);
-+
-+	ret = sysfs_create_file(&dev->kobj,
-+				&(buf->access_minor_attr.dev_attr.attr));
-+	if (ret)
-+		goto error_deallocate_chrdev;
-+	return 0;
-+
-+error_deallocate_chrdev:
-+	iio_deallocate_chrdev(&buf->access_handler);
-+error_free_access_minor_name:
-+	kfree(buf->access_minor_name);
-+error_ret:
-+	return ret;
-+}
-+
-+inline void __iio_free_ring_buffer_access_chrdev(struct iio_ring_buffer *buf,
-+						 struct device *dev)
-+{
-+	sysfs_remove_file(&dev->kobj,
-+			  &buf->access_minor_attr.dev_attr.attr);
-+	iio_deallocate_chrdev(&buf->access_handler);
-+	kfree(buf->access_minor_name);
-+}
-+
-+int iio_request_hw_ring_buffer(int bytes_per_datum,
-+			       int length,
-+			       struct iio_hw_ring_buffer **ring,
-+			       int id,
-+			       struct module *owner,
-+			       struct device *dev,
-+			       const struct file_operations *fops,
-+			       void *private)
-+{
-+	int ret;
-+
-+	*ring = kmalloc(sizeof(struct iio_hw_ring_buffer),
-+			GFP_KERNEL);
-+
-+	if (*ring == NULL) {
-+		ret = -ENOMEM;
-+		goto error_ret;
-+	}
-+	(*ring)->private = private;
-+	INIT_IIO_RING_BUFFER(&((*ring)->buf), bytes_per_datum, length);
-+	ret = __iio_request_ring_buffer_event_chrdev(&(*ring)->buf,
-+						     id,
-+						     owner,
-+						     dev);
-+
-+	if (ret)
-+		goto error_free_ring_data;
-+	ret = __iio_request_ring_buffer_access_chrdev(&(*ring)->buf,
-+						      id,
-+						      owner,
-+						      dev,
-+						      fops);
-+	if (ret)
-+		goto error_free_ring_buffer_event_chrdev;
-+	(*ring)->buf.ev_int.private = (*ring);
-+	(*ring)->buf.access_handler.private = (*ring);
-+
-+	return 0;
-+
-+error_free_ring_buffer_event_chrdev:
-+	__iio_free_ring_buffer_event_chrdev(&(*ring)->buf, dev);
-+error_free_ring_data:
-+	/* there isn't any!*/
-+error_ret:
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(iio_request_hw_ring_buffer);
-+
-+void iio_free_hw_ring_buffer(struct iio_hw_ring_buffer *ring,
-+			     struct device *dev)
-+{
-+	__iio_free_ring_buffer_access_chrdev(&(ring->buf), dev);
-+	__iio_free_ring_buffer_event_chrdev(&(ring->buf), dev);
-+	kfree(ring);
-+}
-+EXPORT_SYMBOL_GPL(iio_free_hw_ring_buffer);
-+
-+
-+/* Resize the ring if requested - run whenever ring buffer mode entered */
-+int __iio_request_update_sw_ring_buffer(int bytes_per_datum,
-+					int length,
-+					struct iio_sw_ring_buffer *ring,
-+					int id,
-+					struct module *owner,
-+					struct device *dev)
-+{
-+/* Reference count the ring - if anyone is using it this will fail!*/
-+	int ret = 0;
-+/* Need to sanity check if this is necessary? */
-+	spin_lock(ring->use_lock);
-+
-+	if (ring->use_count || !ring->update_needed) {
-+		ret = -EAGAIN;
-+		goto error_ret;
-+	}
-+	kfree(ring->data);
-+	/* keeps clear of chr devs etc - so fine to use here - I THINK!*/
-+	INIT_IIO_SW_RING_BUFFER(ring, bytes_per_datum, length);
-+	if (ring->data == NULL)
-+		ret = -ENOMEM;
-+
-+error_ret:
-+	spin_unlock(ring->use_lock);
-+	return ret;
-+}
-+
-+int iio_request_update_sw_ring_buffer(struct iio_dev *dev_info, int id)
-+{
-+	return __iio_request_update_sw_ring_buffer(dev_info
-+						   ->ring_bytes_per_datum,
-+						   dev_info->ring_length,
-+						   dev_info->ring,
-+						   id,
-+						   dev_info->driver_module,
-+						   dev_info->dev);
-+}
-+EXPORT_SYMBOL_GPL(iio_request_update_sw_ring_buffer);
-+
-+/* Should only occur on init so no locking needed */
-+int iio_request_sw_ring_buffer(int bytes_per_datum,
-+			       int length,
-+			       struct iio_sw_ring_buffer **ring,
-+			       int id,
-+			       struct module *owner,
-+			       struct device *dev)
-+{
-+	int ret;
-+
-+	/* Actually do the ring buffer initialization */
-+	*ring = kzalloc(sizeof(struct iio_sw_ring_buffer),
-+			GFP_KERNEL);
-+	if (*ring == NULL) {
-+		ret = -ENOMEM;
-+		goto error_ret;
-+	}
-+	/* Moved to an allocation on demand model.*/
-+	iio_mark_sw_ring_buffer_need_update(*ring);
-+	ret = __iio_request_ring_buffer_event_chrdev(&(*ring)->buf,
-+						     id,
-+						     owner,
-+						     dev);
-+	if (ret)
-+		goto error_free_ring_data;
-+
-+	ret = __iio_request_ring_buffer_access_chrdev(&(*ring)->buf,
-+						      id,
-+						      owner,
-+						      dev,
-+						      &iio_ring_fileops);
-+	if (ret)
-+		goto error_free_ring_buffer_event_chrdev;
-+
-+	/* Setup the private pointer so the fileoperations will work */
-+	(*ring)->buf.ev_int.private = (*ring);
-+	(*ring)->buf.access_handler.private = (*ring);
-+
-+	return 0;
-+
-+error_free_ring_buffer_event_chrdev:
-+	__iio_free_ring_buffer_event_chrdev(&(*ring)->buf, dev);
-+error_free_ring_data:
-+	FREE_IIO_SW_RING_BUFFER(*ring);
-+	kfree(*ring);
-+error_ret:
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(iio_request_sw_ring_buffer);
-+
-+void iio_free_sw_ring_buffer(struct iio_sw_ring_buffer *ring,
-+			  struct device *dev)
-+{
-+	__iio_free_ring_buffer_access_chrdev(&(ring->buf), dev);
-+	__iio_free_ring_buffer_event_chrdev(&(ring->buf), dev);
-+	FREE_IIO_SW_RING_BUFFER(ring);
-+	kfree(ring);
-+}
-+EXPORT_SYMBOL_GPL(iio_free_sw_ring_buffer);
-+
-+static ssize_t iio_read_ring_length(struct device *dev,
-+					     struct device_attribute *attr,
-+					     char *buf)
-+{
-+	int len;
-+	struct iio_dev *dev_info = dev_get_drvdata(dev);
-+
-+	len = sprintf(buf, "%d\n", dev_info->ring_length);
++	len = sprintf(buf, "%d\n", val);
 +
 +	return len;
 +}
 +
-+static ssize_t iio_write_ring_length(struct device *dev,
-+					      struct device_attribute *attr,
-+					      const char *buf,
-+					      size_t len)
++/* As the ring buffer contents are device dependent this functionality
++ * must remain part of the driver and not the ring buffer subsystem */
++static ssize_t
++lis3l02dq_read_accel_from_ring(struct iio_sw_ring_buffer *ring,
++			       int element, char *buf)
 +{
-+	int ret;
-+	long val;
-+	struct iio_dev *dev_info = dev_get_drvdata(dev);
-+	ret = strict_strtol(buf, 10, &val);
++	int ret, len;
++	struct lis3l02dq_datum data;
++
++	ret = iio_read_last_from_sw_ring(ring, (char *)(&data));
 +	if (ret)
-+		goto error_ret;
-+	/* Ring length stored here and in ring? */
-+	if (val != dev_info->ring_length) {
-+		dev_info->ring_length = val;
-+		iio_mark_sw_ring_buffer_need_update(dev_info->ring);
-+	}
-+
-+	return len;
-+error_ret:
-+	return ret;
-+}
-+
-+static ssize_t iio_read_ring_bps(struct device *dev,
-+					  struct device_attribute *attr,
-+					  char *buf)
-+{
-+	int len;
-+	struct iio_dev *dev_info = dev_get_drvdata(dev);
-+
-+	len = sprintf(buf, "%d\n", dev_info->ring_bytes_per_datum);
++		return ret;
++	len = sprintf(buf, "ring %d\n", data.el[element].val);
 +
 +	return len;
 +}
-+
-+
-+DEVICE_ATTR(length, S_IRUGO | S_IWUSR,
-+	    iio_read_ring_length,
-+	    iio_write_ring_length);
-+/* The software ring buffers aren't currently capable of changing the
-+ * storage accuracy so this is read only.
-+ */
-+DEVICE_ATTR(bps, S_IRUGO,
-+	    iio_read_ring_bps,
-+	    NULL);
-+
-+ssize_t iio_store_ring_enable(struct device *dev,
-+			      struct device_attribute *attr,
-+			      const char *buf,
-+			      size_t len)
-+{
-+	int ret;
-+	bool requested_state, current_state;
-+	struct iio_dev *dev_info = dev_get_drvdata(dev);
-+
-+	mutex_lock(&dev_info->mlock);
-+	requested_state = (buf[0] == '0') ? 0 : 1;
-+	current_state = (dev_info->currentmode
-+			 & (INDIO_RING_DATA_RDY | INDIO_RING_POLLED))
-+			 ? 1: 0;
-+	if (current_state == requested_state)
-+		goto done;
-+	if (requested_state) {
-+		if (dev_info->ring_preenable) {
-+			ret = dev_info->ring_preenable(dev_info);
-+			if (ret)
-+				goto error_ret;
-+		}
-+		ret = iio_request_update_sw_ring_buffer(dev_info, 0);
-+		if (ret)
-+			goto error_ret;
-+		iio_mark_sw_ring_buffer_in_use(dev_info->ring);
-+		if (dev_info->modes & INDIO_RING_DATA_RDY)
-+			dev_info->currentmode = INDIO_RING_DATA_RDY;
-+		else if (dev_info->modes & INDIO_RING_POLLED)
-+			dev_info->currentmode = INDIO_RING_POLLED;
-+		else { /* should never be reached */
-+			ret = -EINVAL;
-+			goto error_ret;
-+		}
-+
-+		if (dev_info->ring_postenable) {
-+			ret = dev_info->ring_postenable(dev_info);
-+			if (ret)
-+				goto error_ret;
-+		}
-+	} else {
-+		if (dev_info->ring_predisable) {
-+			ret = dev_info->ring_predisable(dev_info);
-+			if (ret)
-+				goto error_ret;
-+		}
-+		iio_unmark_sw_ring_buffer_in_use(dev_info->ring);
-+		dev_info->currentmode = INDIO_DIRECT_MODE;
-+		if (dev_info->ring_postdisable) {
-+			ret = dev_info->ring_postdisable(dev_info);
-+			if (ret)
-+				goto error_ret;
-+		}
-+	}
-+done:
-+	mutex_unlock(&dev_info->mlock);
-+	return len;
-+error_ret:
-+	mutex_unlock(&dev_info->mlock);
-+	return ret;
-+}
-+
-+static ssize_t iio_show_ring_enable(struct device *dev,
++/* Prevents mode switching when running */
++static ssize_t lis3l02dq_read_accel(struct device *dev,
 +				    struct device_attribute *attr,
 +				    char *buf)
 +{
-+
-+	int len;
++	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
 +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	ssize_t returnval;
++	int element;
 +
-+	if (indio_dev->currentmode & (INDIO_RING_DATA_RDY | INDIO_RING_POLLED))
-+		len = sprintf(buf, "1\n");
-+	else
-+		len = sprintf(buf, "0\n");
++	mutex_lock(&indio_dev->mlock);
++	if (indio_dev->currentmode == INDIO_RING_DATA_RDY) {
++		switch (this_attr->address) {
++		case LIS3L02DQ_REG_OUT_X_L_ADDRESS:
++			element = 0;
++			break;
++		case LIS3L02DQ_REG_OUT_Y_L_ADDRESS:
++			element = 1;
++			break;
++		case LIS3L02DQ_REG_OUT_Z_L_ADDRESS:
++			element = 2;
++			break;
++		default:
++			returnval =  -EINVAL;
++			goto error_ret;
++		}
++		returnval = lis3l02dq_read_accel_from_ring(indio_dev->ring,
++							   element, buf);
++	} else
++		returnval =  lis3l02dq_read_16bit_signed(dev, attr, buf);
++error_ret:
++	mutex_unlock(&indio_dev->mlock);
++	return returnval;
++}
++
++/* For this device this is only relevant to the threshold for interrupt
++ * generation */
++static ssize_t lis3l02dq_write_16bit_signed(struct device *dev,
++					    struct device_attribute *attr,
++					    const char *buf,
++					    size_t len)
++{
++	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	int ret;
++	long val;
++
++	ret = strict_strtol(buf, 10, &val);
++	if (ret)
++		return ret;
++	mutex_lock(&indio_dev->mlock);
++	ret = lis3l02dq_spi_write_reg_int16_t(dev, this_attr->address, val);
++	mutex_unlock(&indio_dev->mlock);
++	if (ret)
++		return ret;
 +
 +	return len;
 +}
 +
-+DEVICE_ATTR(sw_ring_enable, S_IRUGO | S_IWUSR,
-+	    iio_show_ring_enable,
-+	    iio_store_ring_enable);
-+
-+static struct attribute *iio_ring_attributes[] = {
-+	&dev_attr_length.attr,
-+	&dev_attr_bps.attr,
-+	&dev_attr_sw_ring_enable.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group iio_ring_attribute_group = {
-+	.name = "ring_buffer",
-+	.attrs = iio_ring_attributes,
-+};
-+
-+int iio_device_register_sw_ring(struct iio_dev *dev_info, int id)
++static ssize_t lis3l02dq_read_av_freq(struct device *dev,
++				      struct device_attribute *attr,
++				      char *buf)
 +{
-+	int ret;
++	return sprintf(buf, "280 560 1120 4480\n");
++}
 +
-+	ret = iio_request_sw_ring_buffer(dev_info->ring_bytes_per_datum,
-+					 dev_info->ring_length,
-+					 &dev_info->ring,
-+					 id,
-+					 dev_info->driver_module,
-+					 dev_info->dev);
-+	if (ret < 0)
-+		goto error_ret;
-+
-+	ret = sysfs_create_group(&dev_info->dev->kobj,
-+				 &iio_ring_attribute_group);
++static ssize_t lis3l02dq_read_frequency(struct device *dev,
++					struct device_attribute *attr,
++					char *buf)
++{
++	int ret, len;
++	int8_t t;
++	ret = lis3l02dq_spi_read_reg_int8_t(dev,
++					    LIS3L02DQ_REG_CTRL_1_ADDRESS,
++					    &t);
 +	if (ret)
-+		goto error_free_ring;
++		goto error_ret;
++	t &= LIS3L02DQ_DEC_MASK;
++	if (t == LIS3L02DQ_REG_CTRL_1_DF_128)
++		len = sprintf(buf, "280");
++	else if (t == LIS3L02DQ_REG_CTRL_1_DF_64)
++		len = sprintf(buf, "560");
++	else if (t == LIS3L02DQ_REG_CTRL_1_DF_32)
++		len = sprintf(buf, "1120");
++	else
++		len = sprintf(buf, "4480");
++	len += sprintf(buf+len, "\n");
 +
-+	return 0;
++	return len;
 +
-+error_free_ring:
-+	iio_free_sw_ring_buffer(dev_info->ring, dev_info->dev);
 +error_ret:
 +	return ret;
 +}
 +
-+void iio_device_unregister_sw_ring(struct iio_dev *dev_info)
++static ssize_t lis3l02dq_write_frequency(struct device *dev,
++					 struct device_attribute *attr,
++					 const char *buf,
++					 size_t len)
 +{
-+	sysfs_remove_group(&dev_info->dev->kobj,
-+			   &iio_ring_attribute_group);
-+	/* deallocate ring buffer related stuff */
-+	if (dev_info->modes & (INDIO_RING_POLLED | INDIO_RING_DATA_RDY))
-+		iio_free_sw_ring_buffer(dev_info->ring, dev_info->dev);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	long val;
++	int ret;
++	int8_t t;
++
++	ret = strict_strtol(buf, 10, &val);
++	if (ret)
++		return ret;
++
++	mutex_lock(&indio_dev->mlock);
++	ret = lis3l02dq_spi_read_reg_int8_t(dev,
++					    LIS3L02DQ_REG_CTRL_1_ADDRESS,
++					    &t);
++	if (ret)
++		goto error_ret;
++	/* Wipe the bits clean */
++	t &= ~LIS3L02DQ_DEC_MASK;
++	switch (val) {
++	case 280:
++		t |= LIS3L02DQ_REG_CTRL_1_DF_128;
++		break;
++	case 560:
++		t |= LIS3L02DQ_REG_CTRL_1_DF_64;
++		break;
++	case 1120:
++		t |= LIS3L02DQ_REG_CTRL_1_DF_32;
++		break;
++	case 4480:
++		t |= LIS3L02DQ_REG_CTRL_1_DF_8;
++		break;
++	default:
++		ret = -EINVAL;
++		goto error_ret;
++	};
++
++	ret = lis3l02dq_spi_write_reg_int8_t(dev,
++					     LIS3L02DQ_REG_CTRL_1_ADDRESS,
++					     t);
++
++	if (ret)
++		goto error_ret;
++	mutex_unlock(&indio_dev->mlock);
++	return len;
++
++error_ret:
++	mutex_unlock(&indio_dev->mlock);
++	return ret;
 +
 +}
++
++static int lis3l02dq_initial_setup(struct lis3l02dq_state *st)
++{
++	int ret, val;
++
++	st->us->mode = SPI_MODE_3;
++	spi_setup(st->us);
++	/* Write suitable defaults to ctrl1 */
++	ret = lis3l02dq_spi_write_reg_int8_t(&st->us->dev,
++					     LIS3L02DQ_REG_CTRL_1_ADDRESS,
++					     LIS3L02DQ_DEFAULT_CTRL1);
++	if (ret) {
++		dev_err(&st->us->dev, "problem with setup control register 1");
++		goto err_ret;
++	}
++	ret = lis3l02dq_spi_write_reg_int8_t(&st->us->dev,
++					     LIS3L02DQ_REG_CTRL_2_ADDRESS,
++					     LIS3L02DQ_DEFAULT_CTRL2);
++	if (ret) {
++		dev_err(&st->us->dev, "problem with setup control register 2");
++		goto err_ret;
++	}
++	val = LIS3L02DQ_REG_WAKE_UP_CFG_LATCH_SRC;
++	ret = lis3l02dq_spi_write_reg_int8_t(&st->us->dev,
++					     LIS3L02DQ_REG_WAKE_UP_CFG_ADDRESS,
++					     val);
++	if (ret)
++		dev_err(&st->us->dev, "problem with interrupt cfg register");
++
++err_ret:
++
++	return ret;
++}
++
++
++
++/* These are all a case of reading / writing directly to the chip */
++
++static IIO_DEV_ATTR_ACCEL_X_OFFSET(S_IWUSR | S_IRUGO,
++				   lis3l02dq_read_signed,
++				   lis3l02dq_write_signed,
++				   LIS3L02DQ_REG_OFFSET_X_ADDRESS);
++
++static IIO_DEV_ATTR_ACCEL_Y_OFFSET(S_IWUSR | S_IRUGO,
++				   lis3l02dq_read_signed,
++				   lis3l02dq_write_signed,
++				   LIS3L02DQ_REG_OFFSET_Y_ADDRESS);
++
++static IIO_DEV_ATTR_ACCEL_Z_OFFSET(S_IWUSR | S_IRUGO,
++				   lis3l02dq_read_signed,
++				   lis3l02dq_write_signed,
++				   LIS3L02DQ_REG_OFFSET_Z_ADDRESS);
++
++static IIO_DEV_ATTR_ACCEL_X_GAIN(S_IWUSR | S_IRUGO,
++				 lis3l02dq_read_unsigned,
++				 lis3l02dq_write_unsigned,
++				 LIS3L02DQ_REG_GAIN_X_ADDRESS);
++
++static IIO_DEV_ATTR_ACCEL_Y_GAIN(S_IWUSR | S_IRUGO,
++				 lis3l02dq_read_unsigned,
++				 lis3l02dq_write_unsigned,
++				 LIS3L02DQ_REG_GAIN_Y_ADDRESS);
++
++static IIO_DEV_ATTR_ACCEL_Z_GAIN(S_IWUSR | S_IRUGO,
++				 lis3l02dq_read_unsigned,
++				 lis3l02dq_write_unsigned,
++				 LIS3L02DQ_REG_GAIN_Z_ADDRESS);
++
++static IIO_DEV_ATTR_ACCEL_THRESH(S_IWUSR | S_IRUGO,
++				 lis3l02dq_read_16bit_signed,
++				 lis3l02dq_write_16bit_signed,
++				 LIS3L02DQ_REG_THS_L_ADDRESS);
++
++/* Obviously the reading method for these will change depending on whether
++   ring buffer capture is in use. Allow specification here of alternate
++   function? Or take the approach used above of making this a driver issue
++   rather than part of industrialio */
++static IIO_DEV_ATTR_ACCEL_X(lis3l02dq_read_accel,
++			    LIS3L02DQ_REG_OUT_X_L_ADDRESS);
++
++static IIO_DEV_ATTR_ACCEL_Y(lis3l02dq_read_accel,
++			    LIS3L02DQ_REG_OUT_Y_L_ADDRESS);
++
++static IIO_DEV_ATTR_ACCEL_Z(lis3l02dq_read_accel,
++			    LIS3L02DQ_REG_OUT_Z_L_ADDRESS);
++
++static IIO_DEV_ATTR_SAMP_FREQ(S_IWUSR | S_IRUGO,
++			      lis3l02dq_read_frequency,
++			      lis3l02dq_write_frequency);
++
++static IIO_DEV_ATTR_AVAIL_SAMP_FREQ(lis3l02dq_read_av_freq);
++
++static ssize_t
++lis3l02dq_read_interrupt_config(struct device *dev,
++				struct device_attribute *attr,
++				char *buf)
++{
++	int len, ret, set;
++	int8_t val;
++	struct iio_event_attr *this_attr = to_iio_event_attr(attr);
++
++	ret = lis3l02dq_spi_read_reg_int8_t(dev,
++					    LIS3L02DQ_REG_WAKE_UP_CFG_ADDRESS,
++					    &val);
++	if (ret < 0)
++		return ret;
++	set = (val & this_attr->mask) ? 1 : 0;
++	len = sprintf(buf, "%d\n", set);
++
++	return len;
++}
++
++static ssize_t lis3l02dq_write_interrupt_config(struct device *dev,
++						struct device_attribute *attr,
++						const char *buf,
++						size_t len)
++{
++	struct iio_event_attr *this_attr = to_iio_event_attr(attr);
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++		int ret, currentlyset, addr, changed = 0;
++	int8_t valold, controlold;
++	bool val;
++
++	val = (buf[0] == '0') ? 0 : 1;
++
++	mutex_lock(&indio_dev->mlock);
++	/* read current value */
++	ret = lis3l02dq_spi_read_reg_int8_t(dev,
++					    LIS3L02DQ_REG_WAKE_UP_CFG_ADDRESS,
++					    &valold);
++	if (ret)
++		goto error_mutex_unlock;
++
++	/* read current control */
++	ret = lis3l02dq_spi_read_reg_int8_t(dev,
++					    LIS3L02DQ_REG_CTRL_2_ADDRESS,
++					    &controlold);
++	if (ret)
++		goto error_mutex_unlock;
++	currentlyset = valold & this_attr->mask ? 1 : 0;
++	if (val == false && currentlyset) {
++		valold &= ~this_attr->mask;
++		changed = 1;
++		ret = iio_remove_event_from_list(this_attr->listel);
++		if (ret)
++			goto error_mutex_unlock;
++	} else if (val == true && !currentlyset) {
++		changed = 1;
++		valold |= this_attr->mask;
++		/* move to a line spec rather than this? */
++		ret = iio_add_event_to_list(&indio_dev->interrupts[0]->ev_list,
++					    this_attr->listel);
++		if (ret)
++			goto error_mutex_unlock;
++	}
++
++	if (changed) {
++		addr = LIS3L02DQ_REG_WAKE_UP_CFG_ADDRESS;
++		ret = lis3l02dq_spi_write_reg_int8_t(dev, addr, valold);
++		if (ret)
++			goto error_mutex_unlock;
++		/* This always enables the interrupt, even if we've remove the
++		 * last thing using it. For this device we can use the reference
++		 * count on the handler to tell us if anyone
++		 * wants the interrupt */
++		controlold = this_attr->listel->refcount ?
++			(controlold | LIS3L02DQ_REG_CTRL_2_ENABLE_INTERRUPT):
++			(controlold & ~LIS3L02DQ_REG_CTRL_2_ENABLE_INTERRUPT);
++		addr = LIS3L02DQ_REG_CTRL_2_ADDRESS;
++		ret = lis3l02dq_spi_write_reg_int8_t(dev, addr, controlold);
++		if (ret)
++			goto error_mutex_unlock;
++	}
++	mutex_unlock(&indio_dev->mlock);
++
++	return len;
++
++error_mutex_unlock:
++	mutex_unlock(&indio_dev->mlock);
++	return ret;
++}
++
++static ssize_t lis3l02dq_read_data_ready_config(struct device *dev,
++						struct device_attribute *attr,
++						char *buf)
++{
++	int ret, set, len;
++	int8_t val;
++
++	ret = lis3l02dq_spi_read_reg_int8_t(dev,
++					    LIS3L02DQ_REG_CTRL_2_ADDRESS,
++					    &val);
++	if (ret < 0)
++		return ret;
++	set = (val & LIS3L02DQ_REG_CTRL_2_ENABLE_DATA_READY_GENERATION) ? 1 : 0;
++	len = sprintf(buf, "%d\n", set);
++
++	return len;
++}
++
++/* Caller responsible for locking as necessary. */
++static int __lis3l02dq_write_data_ready_config(struct device *dev,
++					       struct iio_event_handler_list
++					       *list,
++					       long state)
++{
++	int ret;
++	int8_t valold, addr;
++	bool currentlyset, changed = 0;
++
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++
++	ret = lis3l02dq_spi_read_reg_int8_t(dev,
++					    LIS3L02DQ_REG_CTRL_2_ADDRESS,
++					    &valold);
++	if (ret)
++		goto error_ret;
++
++	currentlyset
++		= valold & LIS3L02DQ_REG_CTRL_2_ENABLE_DATA_READY_GENERATION
++		? 1 : 0;
++	/* if set, disable requested and ring buffer not in use (FIXME) */
++	if (state == 0 && currentlyset) {
++		valold &= ~LIS3L02DQ_REG_CTRL_2_ENABLE_DATA_READY_GENERATION;
++		ret = iio_remove_event_from_list(list);
++		if (ret)
++			goto error_ret;
++		changed = true;
++	} else if (state != 0 && !currentlyset) {
++		/* if not set, enable requested */
++		valold |= LIS3L02DQ_REG_CTRL_2_ENABLE_DATA_READY_GENERATION;
++		ret = iio_add_event_to_list(&indio_dev->interrupts[0]->ev_list,
++					    list);
++		if (ret)
++			goto error_ret;
++		changed = true;
++	}
++	if (changed) {
++		addr = LIS3L02DQ_REG_CTRL_2_ADDRESS;
++		ret = lis3l02dq_spi_write_reg_int8_t(dev, addr, valold);
++		if (ret)
++			goto error_ret;
++	}
++
++	return 0;
++error_ret:
++	return ret;
++}
++
++/* Does nothing if the ring is in use */
++static ssize_t lis3l02dq_write_data_ready_config(struct device *dev,
++						 struct device_attribute *attr,
++						 const char *buf,
++						 size_t len)
++{
++	int ret;
++	long val;
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct iio_event_attr *this_attr = to_iio_event_attr(attr);
++
++	mutex_lock(&indio_dev->mlock);
++	if (indio_dev->currentmode ==  INDIO_RING_DATA_RDY)
++		return len;
++
++	/* fixme not the simplest method out!*/
++	ret = strict_strtol(buf, 10, &val);
++	if (ret)
++		goto error_ret;
++
++	ret = __lis3l02dq_write_data_ready_config(dev, this_attr->listel, val);
++
++	if (ret)
++		goto error_ret;
++	mutex_unlock(&indio_dev->mlock);
++
++	return len;
++error_ret:
++	mutex_unlock(&indio_dev->mlock);
++
++	return ret;
++}
++
++/* Whilst this makes a lot of calls to iio_sw_ring functions - it is to device
++ * specific to be rolled into the core.
++ */
++static void lis3l02dq_data_rdy_bh_to_ring(struct work_struct *work_s)
++{
++	struct lis3l02dq_state *st
++		= container_of(work_s, struct lis3l02dq_state,
++			       work_data_rdy_ring);
++	unsigned char *rx_array;
++	int i, j;
++	struct lis3l02dq_datum ring_data;
++
++	rx_array = kmalloc(12, GFP_KERNEL);
++	if (rx_array == NULL) {
++		dev_err(&st->us->dev, "memory alloc failed in ring bh");
++		return;
++	}
++	st->inter = 0;
++
++	if (lis3l02dq_read_all(st, rx_array) >= 0) {
++		for (i = 0; i < 3; i++)
++			for (j = 0; j < 2; j++)
++				ring_data.el[i].data[j] = rx_array[i*4+j*2];
++		ring_data.time = st->last_timestamp;
++		iio_store_to_sw_ring(&st->indio_dev->ring[0],
++				     (char *)(&ring_data),
++				     st->last_timestamp);
++	}
++	/* so the data should now be in the rx array */
++try_again:
++	while (gpio_get_value(irq_to_gpio(st->us->irq)))
++		if (lis3l02dq_read_all(st, rx_array) >= 0) {
++			for (i = 0; i < 3; i++)
++				for (j = 0; j < 2; j++)
++					ring_data.el[i].data[j]
++						= rx_array[i*4+j*2];
++			ring_data.time = 0;
++			/* Passing a negated time stamp to indicate that
++			 * we don't actually know when this occured! */
++			iio_store_to_sw_ring(&st->indio_dev->ring[0],
++					     (char *)(&ring_data),
++					     0);
++		}
++	/* push data into ring buffer before trying renable */
++	enable_irq(st->us->irq);
++	if (gpio_get_value(irq_to_gpio(st->us->irq)))
++		if (st->inter == 0) {
++			disable_irq_nosync(st->us->irq);
++			goto try_again;
++		}
++	kfree(rx_array);
++
++	return;
++}
++
++static void lis3l02dq_data_rdy_bh_to_event(struct work_struct *work_s)
++{
++	struct lis3l02dq_state *st
++		= container_of(work_s, struct lis3l02dq_state,
++			       work_data_rdy_event);
++
++	/* send an event up to user space */
++	iio_put_event(st->indio_dev, 0, IIO_EVENT_CODE_DATA_RDY,
++		      st->last_timestamp);
++	enable_irq(st->us->irq);
++
++	return;
++}
++
++static int lis3l02dq_data_rdy_event_th(struct iio_dev *dev_info,
++				 int index,
++				 s64 timestamp,
++				 int no_test)
++{
++	struct lis3l02dq_state *st = dev_info->dev_data;
++
++	st->last_timestamp = timestamp;
++	schedule_work(&st->work_data_rdy_event);
++
++	return IRQ_HANDLED;
++}
++
++static int lis3l02dq_data_rdy_ring_th(struct iio_dev *dev_info,
++				 int index,
++				 s64 timestamp,
++				 int no_test)
++{
++	struct lis3l02dq_state *st = dev_info->dev_data;
++
++	st->last_timestamp = timestamp;
++	schedule_work(&st->work_data_rdy_ring);
++	st->inter = 1;
++
++	return IRQ_HANDLED;
++}
++
++static int lis3l02dq_thresh_handler_th(struct iio_dev *dev_info,
++				       int index,
++				       s64 timestamp,
++				       int no_test)
++{
++	struct lis3l02dq_state *st = dev_info->dev_data;
++
++	/* Stash the timestamp somewhere convenient for the bh */
++	st->last_timestamp = timestamp;
++	schedule_work(&st->work_cont_thresh.ws);
++
++	return 0;
++}
++
++
++/* Unforunately it appears the interrupt won't clear unless you read from the
++ * src register.
++ */
++static void lis3l02dq_thresh_handler_bh_no_check(struct work_struct *work_s)
++{
++	struct iio_work_cont *wc
++		= container_of(work_s, struct iio_work_cont, ws_nocheck);
++	struct lis3l02dq_state *st = wc->st;
++
++	int8_t t;
++
++	lis3l02dq_spi_read_reg_int8_t(st->indio_dev->dev,
++				      LIS3L02DQ_REG_WAKE_UP_SRC_ADDRESS,
++				      &t);
++
++	if (t & LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_Z_HIGH)
++		iio_put_event(st->indio_dev, 0,
++			      IIO_EVENT_CODE_ACCEL_Z_HIGH,
++			      st->last_timestamp);
++
++	if (t & LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_Z_LOW)
++		iio_put_event(st->indio_dev, 0,
++			      IIO_EVENT_CODE_ACCEL_Z_LOW,
++			      st->last_timestamp);
++
++	if (t & LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_Y_HIGH)
++		iio_put_event(st->indio_dev, 0,
++			      IIO_EVENT_CODE_ACCEL_Y_HIGH,
++			      st->last_timestamp);
++
++	if (t & LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_Y_LOW)
++		iio_put_event(st->indio_dev, 0,
++			      IIO_EVENT_CODE_ACCEL_Y_LOW,
++			      st->last_timestamp);
++
++	if (t & LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_X_HIGH)
++		iio_put_event(st->indio_dev, 0,
++			      IIO_EVENT_CODE_ACCEL_X_HIGH,
++			      st->last_timestamp);
++
++	if (t & LIS3L02DQ_REG_WAKE_UP_SRC_INTERRUPT_X_LOW)
++		iio_put_event(st->indio_dev, 0,
++			      IIO_EVENT_CODE_ACCEL_X_LOW,
++			      st->last_timestamp);
++
++	enable_irq(st->us->irq);
++	/* Ack (and allow for new interrupts? (not clear on data sheet ) )*/
++	lis3l02dq_spi_read_reg_int8_t(st->indio_dev->dev,
++				      LIS3L02DQ_REG_WAKE_UP_ACK_ADDRESS,
++				      &t);
++
++	return;
++}
++
++/* This only enables direct output of data ready as an event - not the ring*/
++IIO_EVENT_ATTR_DATA_RDY(lis3l02dq_read_data_ready_config,
++			lis3l02dq_write_data_ready_config,
++			0,
++			&lis3l02dq_data_rdy_event_th);
++
++/* This is an event as it is a response to a physical interrupt */
++IIO_EVENT_SH(sw_ring_enable, &lis3l02dq_data_rdy_ring_th);
++
++static int lis3l02dq_data_rdy_ring_preenable(struct iio_dev *indio_dev)
++{
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++	__lis3l02dq_write_data_ready_config(&st->us->dev,
++					    &iio_event_data_rdy,
++					    0);
++	return 0;
++}
++
++static int lis3l02dq_data_rdy_ring_postenable(struct iio_dev *indio_dev)
++{
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++	__lis3l02dq_write_data_ready_config(&st->us->dev,
++					    &iio_event_sw_ring_enable,
++					    1);
++	return 0;
++}
++
++static int lis3l02dq_data_rdy_ring_predisable(struct iio_dev *indio_dev)
++{
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++	__lis3l02dq_write_data_ready_config(&st->us->dev,
++					    &iio_event_sw_ring_enable,
++					    0);
++	return 0;
++}
++
++/* A shared handler for a number of threshold types */
++IIO_EVENT_SH(threshold, &lis3l02dq_thresh_handler_th);
++
++IIO_EVENT_ATTR_ACCEL_X_HIGH_SH(iio_event_threshold,
++			       lis3l02dq_read_interrupt_config,
++			       lis3l02dq_write_interrupt_config,
++			       LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_X_HIGH);
++
++IIO_EVENT_ATTR_ACCEL_Y_HIGH_SH(iio_event_threshold,
++			       lis3l02dq_read_interrupt_config,
++			       lis3l02dq_write_interrupt_config,
++			       LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_Y_HIGH);
++
++IIO_EVENT_ATTR_ACCEL_Z_HIGH_SH(iio_event_threshold,
++			       lis3l02dq_read_interrupt_config,
++			       lis3l02dq_write_interrupt_config,
++			       LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_Z_HIGH);
++
++IIO_EVENT_ATTR_ACCEL_X_LOW_SH(iio_event_threshold,
++			      lis3l02dq_read_interrupt_config,
++			      lis3l02dq_write_interrupt_config,
++			      LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_X_LOW);
++
++IIO_EVENT_ATTR_ACCEL_Y_LOW_SH(iio_event_threshold,
++			      lis3l02dq_read_interrupt_config,
++			      lis3l02dq_write_interrupt_config,
++			      LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_Y_LOW);
++
++IIO_EVENT_ATTR_ACCEL_Z_LOW_SH(iio_event_threshold,
++			      lis3l02dq_read_interrupt_config,
++			      lis3l02dq_write_interrupt_config,
++			      LIS3L02DQ_REG_WAKE_UP_CFG_INTERRUPT_Z_LOW);
++
++static struct attribute *lis3l02dq_event_attributes[] = {
++	&iio_event_attr_x_high.dev_attr.attr,
++	&iio_event_attr_y_high.dev_attr.attr,
++	&iio_event_attr_z_high.dev_attr.attr,
++	&iio_event_attr_x_low.dev_attr.attr,
++	&iio_event_attr_y_low.dev_attr.attr,
++	&iio_event_attr_z_low.dev_attr.attr,
++	&iio_event_attr_data_rdy.dev_attr.attr,
++	NULL
++};
++
++static struct attribute_group lis3l02dq_event_attribute_group = {
++	.attrs = lis3l02dq_event_attributes,
++};
++
++static struct attribute *lis3l02dq_attributes[] = {
++	&iio_dev_attr_x_offset.dev_attr.attr,
++	&iio_dev_attr_y_offset.dev_attr.attr,
++	&iio_dev_attr_z_offset.dev_attr.attr,
++	&iio_dev_attr_x_gain.dev_attr.attr,
++	&iio_dev_attr_y_gain.dev_attr.attr,
++	&iio_dev_attr_z_gain.dev_attr.attr,
++	&iio_dev_attr_thresh.dev_attr.attr,
++	&iio_dev_attr_x.dev_attr.attr,
++	&iio_dev_attr_y.dev_attr.attr,
++	&iio_dev_attr_z.dev_attr.attr,
++	&iio_dev_attr_sampling_frequency.dev_attr.attr,
++	&iio_dev_attr_available_sampling_frequency.dev_attr.attr,
++	NULL
++};
++
++static const struct attribute_group lis3l02dq_attribute_group = {
++	.attrs = lis3l02dq_attributes,
++};
++
++
++static int __devinit lis3l02dq_probe(struct spi_device *spi)
++{
++	struct lis3l02dq_state *st;
++	int ret;
++	/* must init this somewhere */
++	INIT_LIST_HEAD(&iio_event_sw_ring_enable.list);
++	st = kzalloc(sizeof(struct lis3l02dq_state), GFP_KERNEL);
++	if (st == NULL) {
++		ret =  -ENOMEM;
++		goto error_ret;
++	}
++
++
++	st->us = spi;
++	/* setup the industrialio driver allocated elements */
++	st->indio_dev = kzalloc(sizeof(struct iio_dev), GFP_KERNEL);
++	if (st->indio_dev == NULL) {
++		ret = -ENOMEM;
++		goto error_free_st;
++	}
++
++	st->indio_dev->dev = &spi->dev;
++	st->indio_dev->num_interrupt_lines = 1;
++	st->indio_dev->event_attrs = &lis3l02dq_event_attribute_group;
++	st->indio_dev->attrs = &lis3l02dq_attribute_group;
++	st->indio_dev->dev_data = (void *)(st);
++	/* setup parameters of the ring buffer */
++	st->indio_dev->ring_bytes_per_datum = sizeof(struct lis3l02dq_datum);
++	st->indio_dev->ring_length = 500;
++	st->indio_dev->driver_module = THIS_MODULE;
++	st->indio_dev->modes = INDIO_DIRECT_MODE | INDIO_RING_DATA_RDY;
++	st->indio_dev->ring_preenable = &lis3l02dq_data_rdy_ring_preenable;
++	st->indio_dev->ring_postenable = &lis3l02dq_data_rdy_ring_postenable;
++	st->indio_dev->ring_predisable = &lis3l02dq_data_rdy_ring_predisable;
++
++	ret = iio_device_register(st->indio_dev);
++	if (ret < 0)
++		goto error_free_dev;
++
++	if (spi->irq && gpio_is_valid(irq_to_gpio(spi->irq)) > 0) {
++		INIT_WORK(&st->work_data_rdy_ring,
++			  lis3l02dq_data_rdy_bh_to_ring);
++		INIT_WORK(&st->work_data_rdy_event,
++			  lis3l02dq_data_rdy_bh_to_event);
++
++		/* This is a little unusual, in that the device seems
++		   to need a full read of the interrupt source reg before
++		   the interrupt will reset.
++		   Hence the two handlers are the same */
++
++		INIT_IIO_WORK_CONT(&(st->work_cont_thresh),
++				   lis3l02dq_thresh_handler_bh_no_check,
++				   lis3l02dq_thresh_handler_bh_no_check,
++				   LIS3L02DQ_REG_WAKE_UP_SRC_ADDRESS,
++				   0,
++				   st);
++		st->inter = 0;
++		ret = iio_register_interrupt_line(spi->irq,
++						  st->indio_dev,
++						  0,
++						  IRQF_TRIGGER_RISING,
++						  "lis3l02dq");
++		if (ret)
++			goto error_unregister_dev;
++	} else
++		st->indio_dev->modes &= ~INDIO_RING_DATA_RDY;
++
++	/* Get the device into a sane initial state */
++	ret = lis3l02dq_initial_setup(st);
++	if (ret)
++		goto error_unregister_line;
++	return 0;
++
++error_unregister_line:
++	if (st->indio_dev->modes & INDIO_RING_DATA_RDY)
++		iio_unregister_interrupt_line(st->indio_dev, 0);
++error_unregister_dev:
++	iio_device_unregister(st->indio_dev);
++error_free_dev:
++	kfree(st->indio_dev);
++error_free_st:
++	kfree(st);
++ error_ret:
++	return ret;
++}
++
++/* Power down the device */
++static int lis3l02dq_stop_device(struct iio_dev *indio_dev)
++{
++	int ret;
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++	mutex_lock(&indio_dev->mlock);
++	ret = lis3l02dq_spi_write_reg_int8_t(&st->us->dev,
++					     LIS3L02DQ_REG_CTRL_1_ADDRESS,
++					     0);
++	if (ret) {
++		dev_err(&st->us->dev, "problem with turning device off: ctrl1");
++		goto err_ret;
++	}
++
++	ret = lis3l02dq_spi_write_reg_int8_t(&st->us->dev,
++					     LIS3L02DQ_REG_CTRL_2_ADDRESS,
++					     0);
++	if (ret)
++		dev_err(&st->us->dev, "problem with turning device off: ctrl2");
++err_ret:
++	mutex_unlock(&indio_dev->mlock);
++	return ret;
++}
++
++/* fixme, confirm ordering in this function */
++static int lis3l02dq_remove(struct spi_device *spi)
++{
++	int ret;
++	struct iio_dev *indio_dev = spi_get_drvdata(spi);
++	struct lis3l02dq_state *st = indio_dev->dev_data;
++
++	/* stop the device*/
++	/* Amongst other things this must ensure no more interrupts are
++	 * generated by the device.
++	 */
++	ret = lis3l02dq_stop_device(indio_dev);
++	/* Make sure all bottom halfs of interrupts are done */
++	flush_scheduled_work();
++	if (ret)
++		goto err_ret;
++	/* Fixme slightly misleading test condition - even if valid */
++	if (indio_dev->modes & INDIO_RING_DATA_RDY)
++		iio_unregister_interrupt_line(indio_dev, 0);
++	iio_device_unregister(indio_dev);
++	kfree(indio_dev);
++	kfree(st);
++	return 0;
++
++err_ret:
++	return ret;
++}
++
++static struct spi_driver lis3l02dq_driver = {
++	.driver = {
++		.name = "lis3l02dq",
++		.owner = THIS_MODULE,
++	},
++	.probe = lis3l02dq_probe,
++	.remove = __devexit_p(lis3l02dq_remove),
++};
++
++static __init int lis3l02dq_init(void)
++{
++	return spi_register_driver(&lis3l02dq_driver);
++}
++
++static __exit void lis3l02dq_exit(void)
++{
++	spi_unregister_driver(&lis3l02dq_driver);
++}
++
++module_init(lis3l02dq_init);
++module_exit(lis3l02dq_exit);
++
++MODULE_AUTHOR("Jonathan Cameron <jic23@cam.ac.uk>");
++MODULE_DESCRIPTION("ST LIS3L02DQ Accelerometer SPI driver");
++MODULE_LICENSE("GPL v2");

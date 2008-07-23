@@ -1,12 +1,19 @@
-From: Xianguo Wu <xwu4-t+iU6Fs6Cel2agKppZcdFSwD8/FfD2ys@public.gmane.org>
-Subject: Ticket Number is 05-08-10-18-20-46-{43}
-Date: Wed, 23 Jul 2008 06:41:23 -0400 (EDT)
-Message-ID: <3167997.1216809683596.JavaMail.xwu4@connect.carleton.ca>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] at25: call spi_setup before
+	read/write access
+Date: Wed, 23 Jul 2008 12:11:19 -0700
+Message-ID: <200807231211.19974.david-b@pacbell.net>
+References: <BD79186B4FD85F4B8E60E381CAEE190948112F@mi8nycmail19.Mi8.com>
+	<200807231137.29170.david-b@pacbell.net>
+	<BD79186B4FD85F4B8E60E381CAEE1909481160@mi8nycmail19.Mi8.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: undisclosed-recipients:;
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "hartleys" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE1909481160-KURmP/Qoe8Pmp66j18f85VaTQe2KTcn/@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,24 +25,37 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-QXR0bjogV2lubmVyLAoKWW91IGhhdmUgd29uIHRoZSBzdW0gb2YgwqM4NTAsMDAwLjAwIEJyaXRp
-c2ggUG91bmRzIFN0ZXJsaW5nIGZyb20gT25saW5lIApTd2VlcHN0YWtlIEJvbmF6YSBmb3IgdGhl
-IG1vbnRoIG9mIEp1bGx5LgogCllvdXIgVGlja2V0IE51bWJlciBpcyAwNS0wOC0xMC0xOC0yMC00
-Ni17NDN9IFRvIGZ1cnRoZXIgdGhlIGNsYWltcyBvZiAKeW91ciBwcml6ZSwgeW91IGFyZSBhZHZp
-c2UgCgp0byBjb250YWN0IHlvdXIgY2xhaW1zIGRlcGFydG1lbnQgd2l0aCB0aGUgYmVsb3cgaW5m
-b3JtYXRpb25zLgoKQ29udGFjdCBQZXJzb246IERyLiBCcmFuZCBQYXJrZXIKRXhlY3V0aXZlIFNl
-Y3JldGFyeS9DbGFpbXMgYWdlbnQKRW1haWw6IGJyYW5kLnBhcmtlckBsaXZlLmNvbQpUZWxsOiAr
-NDQtNzAyLTQwMi0yMDMwCgoKQ2xhaW1zIFJlcXVpcmVtZW50czoKMS5mdWxsIG5hbWU6IDIuSG9t
-ZSBBZGRyZXNzOiAzLkFnZTogNC5TZXg6IDUuTWFyaXRhbCBTdGF0dXM6IDcuUGhvbmUgCk51bWJl
-cjogOC5OYXRpb25hbGl0eSwgT2NjdXBhdGlvbi4KCjkuQ291bnRyeSBPZiBSZXNpZGVuY2UuCgpS
-ZWdhcmRzLApYaWFuZ3VvIFd1CkhlYWQgQ3VzdG9tZXJjYXJlIFNlcnZpY2UKVGhlIEJyaXRpc2gg
-TG90dGVyeSBDb21wYW55CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNw
-b25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVp
-bGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAm
-IHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3Bl
-biBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVz
-dC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
-aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
-LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Wednesday 23 July 2008, hartleys wrote:
+> On Wednesday, July 23, 2008 David Brownell wrote:
+> >> This patch makes the at25 driver call spi_setup before any read/write
+> 
+> >> access to the eeprom to insure that the device mode and clock is set 
+> >> correctly.
+> >
+> > Why would this be needed though?  It was called before probe(), and
+> > nothing changed the setup ... so it should still be valid.
+> 
+> With multiple slaves another driver could change the clock.
+
+No it can't.  If you're seeing that behavior, it's a bug in your
+SPI controller driver ... it's not properly keeping track of
+the device settings.  The spi_setup() call only changes records
+of settings for that device; those settings become active the
+next time I/O is performed to that device.  The controllers often
+have per-chipselect registers with settings for speed, mode, word
+size, and so forth.  If they don't have such registers, they need
+to emulate having them.
+
+Also, note that your patch wouldn't actually work around that
+controller driver bug.  A driver for a different SPI device
+could issue requests between the spi_setup() you added and
+the I/O calls ...
+
+- Dave
+
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

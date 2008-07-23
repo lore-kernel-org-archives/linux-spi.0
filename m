@@ -1,46 +1,41 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: [Patch 0/4] IndustrialIO subsystem (ADCs, accelerometers etc)
-Date: Wed, 23 Jul 2008 11:36:25 -0700
-Message-ID: <200807231136.26115.david-b@pacbell.net>
-References: <488763AD.4050400@gmail.com>
+From: Xianguo Wu <xwu4-t+iU6Fs6Cel2agKppZcdFSwD8/FfD2ys@public.gmane.org>
+Subject: Ticket Number is 05-08-10-18-20-46-{43}
+Date: Wed, 23 Jul 2008 06:41:23 -0400 (EDT)
+Message-ID: <3167997.1216809683596.JavaMail.xwu4@connect.carleton.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net,
-	LM Sensors <lm-sensors@lm-sensors.org>,
-	Jean Delvare <khali@linux-fr.org>,
-	Dmitry Torokhov <dtor@mail.ru>,
-	"Hans J. Koch" <hjk@linutronix.de>, hmh@hmh.eng.br,
-	mgross@linux.intel.com, Ben Nizette <bn@niasdigital.com>,
-	Anton Vorontsov <avorontsov@ru.mvista.com>
-To: Jonathan Cameron <Jonathan.Cameron@gmail.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754987AbYGWSjy@vger.kernel.org>
-In-Reply-To: <488763AD.4050400@gmail.com>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: undisclosed-recipients:;
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 23 July 2008, Jonathan Cameron wrote:
-> * Software ring buffer support to allow semi regular capture of data =
-form the
-> =A0 device. =A0Typically this will be driven from either datardy even=
-ts, or from
-> =A0 a periodic timer interrupt (to this end a very simple wrapper for=
- periodic
-> =A0 RTC's is included. This will move to more generic timer interface=
-s as and when
-> =A0 they become available. =A0For now available rtc's must be registe=
-red with the
-> =A0 subsystem via the industrialio_register_ptimer function form with=
-in a board
-> =A0 init.
-
-Could you elaborate a bit on why you'd want hardware supported
-periodic timers, rather than either an hrtimer or a timer?
-Maybe provide some real-world scenarios where those software
-abstractions are inappropriate.
-
-I can imagine numerous reasons, but those might not be yours...
-
-- Dave
+QXR0bjogV2lubmVyLAoKWW91IGhhdmUgd29uIHRoZSBzdW0gb2YgwqM4NTAsMDAwLjAwIEJyaXRp
+c2ggUG91bmRzIFN0ZXJsaW5nIGZyb20gT25saW5lIApTd2VlcHN0YWtlIEJvbmF6YSBmb3IgdGhl
+IG1vbnRoIG9mIEp1bGx5LgogCllvdXIgVGlja2V0IE51bWJlciBpcyAwNS0wOC0xMC0xOC0yMC00
+Ni17NDN9IFRvIGZ1cnRoZXIgdGhlIGNsYWltcyBvZiAKeW91ciBwcml6ZSwgeW91IGFyZSBhZHZp
+c2UgCgp0byBjb250YWN0IHlvdXIgY2xhaW1zIGRlcGFydG1lbnQgd2l0aCB0aGUgYmVsb3cgaW5m
+b3JtYXRpb25zLgoKQ29udGFjdCBQZXJzb246IERyLiBCcmFuZCBQYXJrZXIKRXhlY3V0aXZlIFNl
+Y3JldGFyeS9DbGFpbXMgYWdlbnQKRW1haWw6IGJyYW5kLnBhcmtlckBsaXZlLmNvbQpUZWxsOiAr
+NDQtNzAyLTQwMi0yMDMwCgoKQ2xhaW1zIFJlcXVpcmVtZW50czoKMS5mdWxsIG5hbWU6IDIuSG9t
+ZSBBZGRyZXNzOiAzLkFnZTogNC5TZXg6IDUuTWFyaXRhbCBTdGF0dXM6IDcuUGhvbmUgCk51bWJl
+cjogOC5OYXRpb25hbGl0eSwgT2NjdXBhdGlvbi4KCjkuQ291bnRyeSBPZiBSZXNpZGVuY2UuCgpS
+ZWdhcmRzLApYaWFuZ3VvIFd1CkhlYWQgQ3VzdG9tZXJjYXJlIFNlcnZpY2UKVGhlIEJyaXRpc2gg
+TG90dGVyeSBDb21wYW55CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNw
+b25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVp
+bGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAm
+IHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3Bl
+biBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVz
+dC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
+aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
+LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

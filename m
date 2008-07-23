@@ -1,61 +1,93 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] at25: call spi_setup before
-	read/write access
-Date: Wed, 23 Jul 2008 12:11:19 -0700
-Message-ID: <200807231211.19974.david-b@pacbell.net>
-References: <BD79186B4FD85F4B8E60E381CAEE190948112F@mi8nycmail19.Mi8.com>
-	<200807231137.29170.david-b@pacbell.net>
-	<BD79186B4FD85F4B8E60E381CAEE1909481160@mi8nycmail19.Mi8.com>
+From: Ben Dooks <ben-linux@fluff.org>
+Subject: Re: [spi-devel-general] [Patch 0/4] IndustrialIO subsystem (ADCs, accelerometers etc)
+Date: Wed, 23 Jul 2008 20:19:18 +0100
+Message-ID: <20080723191918.GC26938@trinity.fluff.org>
+References: <488763AD.4050400@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "hartleys" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE1909481160-KURmP/Qoe8Pmp66j18f85VaTQe2KTcn/@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net,
+	LM Sensors <lm-sensors@lm-sensors.org>, mgross@linux.intel.com,
+	Dmitry Torokhov <dtor@mail.ru>,
+	David Brownell <david-b@pacbell.net>, hmh@hmh.eng.br,
+	Jean Delvare <khali@linux-fr.org>,
+	Ben Nizette <bn@niasdigital.com>
+To: Jonathan Cameron <Jonathan.Cameron@gmail.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754414AbYGWTTd@vger.kernel.org>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <488763AD.4050400@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 23 July 2008, hartleys wrote:
-> On Wednesday, July 23, 2008 David Brownell wrote:
-> >> This patch makes the at25 driver call spi_setup before any read/write
+On Wed, Jul 23, 2008 at 06:00:29PM +0100, Jonathan Cameron wrote:
+> Dear All,
 > 
-> >> access to the eeprom to insure that the device mode and clock is set 
-> >> correctly.
-> >
-> > Why would this be needed though?  It was called before probe(), and
-> > nothing changed the setup ... so it should still be valid.
+> The need for an industrialio subsystem was discussed in
+> http://lkml.org/lkml/2008/5/20/135
+
+The name is really bad, this sounds like something for doing large
+scale industrial process control.
+ 
+> Firstly thanks to all the people who have contributed to the discussion
+> of this in the past.
 > 
-> With multiple slaves another driver could change the clock.
+> In brief the intention is provide a kernel subsystem directed towards the
+> handling on sensors (and later related output devices) such as ADC's,
+> accelerometers and many others.
 
-No it can't.  If you're seeing that behavior, it's a bug in your
-SPI controller driver ... it's not properly keeping track of
-the device settings.  The spi_setup() call only changes records
-of settings for that device; those settings become active the
-next time I/O is performed to that device.  The controllers often
-have per-chipselect registers with settings for speed, mode, word
-size, and so forth.  If they don't have such registers, they need
-to emulate having them.
+We've already got an perfectly good hwmon framework, do we really need
+to do this again?
 
-Also, note that your patch wouldn't actually work around that
-controller driver bug.  A driver for a different SPI device
-could issue requests between the spi_setup() you added and
-the I/O calls ...
+> Key features of the subsystem include:
+> 
+> * Provision of sysfs access for direct reading from devices (similar to hwmon
+>   but without the buffering / update rate restrictions)
+> 
+> * Provision of chrdevs through which events may be passed to userspace in a
+>   similar fashion to the input subsystem.  These events may be anything from
+>   hardware thresholds set on the sensor itself to sw / hw ring buffer event
+>   notifications (50% full etc).
+> 
+> * Provision of access via chrdevs to hardware ring buffers on devices that
+>   provide them.
+> 
+> * Software ring buffer support to allow semi regular capture of data form the
+>   device.  Typically this will be driven from either datardy events, or from
+>   a periodic timer interrupt (to this end a very simple wrapper for periodic
+>   RTC's is included. This will move to more generic timer interfaces as and when
+>   they become available.  For now available rtc's must be registered with the
+>   subsystem via the industrialio_register_ptimer function form within a board
+>   init.
+> 
+> * A set of sample drivers illustrating the main 'classes' of device. By classes
+>   I really mean devices that are interfaced with in a similar way.
+> 
+> The subsystem is now in a functional state with a small set of drivers:
+> 
+> Max1363 (supports numerous Maxim i2c ADC's) (tested with max1363 and max1238 chips)
+>    - Uses a periodic timer to provide ring buffer mode.
+>    - All reads form these devices are scan modes so direct single element access
+>      is not provided.
+>    - Monitor mode on max1363 is not yet supported (need to do a bit debugging of
+>      the board I have so as to be able to test this).
+> 
+> ST LIS3L02DQ - SPI accelerometer.
+>    - Uses a datardy interrupt to driver a software ring buffer.
+>    - Most functionality of this device is supported.
+> 
+> VTI SCA3000 (tested with an e05)
+>    - Hardware ring buffer.
+> 
+> More drivers in preparation.
+> 
+> Next focus will be on cleaning up / implementing a more generic timer framework
+> and allowing the system to partly run if not all dependencies are met 
+> (particularly availability of timers).
+> 
+> An initial set of patches will be attached to this thread shortly.
 
-- Dave
+-- 
+Ben
 
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+Q:      What's a light-year?
+A:      One-third less calories than a regular year.

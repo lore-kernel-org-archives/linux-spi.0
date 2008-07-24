@@ -1,37 +1,145 @@
 From: Jonathan Cameron <jic23@cam.ac.uk>
-Subject: Re: [spi-devel-general] [Patch 1/4] Industrialio Core
-Date: Thu, 24 Jul 2008 12:56:09 +0100
-Message-ID: <48886DD9.7040906@cam.ac.uk>
-References: <488763AD.4050400@gmail.com> <488765A5.3040703@gmail.com> <488844F4.1090809@tremplin-utc.net>
+Subject: Re: [spi-devel-general] [Patch 0/4] IndustrialIO subsystem (ADCs,
+ accelerometers etc)
+Date: Thu, 24 Jul 2008 13:13:53 +0100
+Message-ID: <48887201.8090300@cam.ac.uk>
+References: <488763AD.4050400@gmail.com>	<20080723174801.GC11009@khazad-dum.debian.net> <48884F04.4070403@tremplin-utc.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: Jonathan Cameron <Jonathan.Cameron@gmail.com>,
 	mgross@linux.intel.com, Dmitry Torokhov <dtor@mail.ru>,
 	LKML <linux-kernel@vger.kernel.org>,
 	LM Sensors <lm-sensors@lm-sensors.org>,
-	David Brownell <david-b@pacbell.net>, hmh@hmh.eng.br,
+	David Brownell <david-b@pacbell.net>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
 	Jean Delvare <khali@linux-fr.org>,
 	spi-devel-general@lists.sourceforge.net,
 	Ben Nizette <bn@niasdigital.com>
 To: Eric Piel <eric.piel@tremplin-utc.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756671AbYGXL4T@vger.kernel.org>
-In-Reply-To: <488844F4.1090809@tremplin-utc.net>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1757303AbYGXMN5@vger.kernel.org>
+In-Reply-To: <48884F04.4070403@tremplin-utc.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Eric Piel wrote:
-> Jonathan Cameron schreef:
-> :
->> +
->> +static void __exit iio_exit(void)
->> +{
->> +	unregister_chrdev(IIO_MAJOR, "bob");
-> bob?! Maybe you meant "industrialio" ?
-> 
-> See you,
-> Eric
->
-Good spot ;)
 
-Jonathan
+>> I'd like to see something done to have the common parts of interface=
+s of the
+>> same class (e.g. accelerometers) be standard.  Like hwmon does with
+>> temp#_input, etc.
+>>
+>> Otherwise you made it easier to write drivers, but did nothing to he=
+lp
+>> userspace to USE the drivers :-)
+> Hi,
+> I completely agree with Henrique. There already exist 3 accelerometer=
+=20
+> drivers in the kernel (and I'm writing a fourth on). What we are=20
+> desperately in need of is a _user_ interface. So that a generic progr=
+am=20
+> can pop up and say "Oh, there is an accelerometer on this computer, I=
+'ll=20
+> use it to detect free falls."
+Agreed. (though on the whole I don't like testing that particular
+functionality ;)
+>=20
+> IMHO, I think the ADC should have a much more specific and specialise=
+d=20
+> (user and kernel) API corresponding to the accelerometers. Granted, y=
+ou=20
+> probably had in mind only the accelerometers for industrial usage, bu=
+t=20
+> it would be much better if the current accelerometer drivers had a=20
+> reason to be ported to this new subsystem.>=20
+
+> In particular, what I think would be worthy would be:
+> * Up to 3 pre-defined axes (X, Y, Z) - that's provided by your curren=
+t=20
+> version of industrialio
+> * If the accelerometer is soldered on the computer, define once for a=
+ll=20
+> to which _physical_ movement corresponds which axis (eg: a laptop on =
+its=20
+> normal position going up has axis Z increasing).
+Agreed, though this is more documentation (and strict enforcement on dr=
+ivers)
+> * Free fall event. Either it's hardware detected, or the acceleromete=
+r=20
+> infrastructure will detect it in software.
+Hadn't thought of doing that in software - should be relatively straigh=
+t
+forward, though would involve a fairly large overhead if the intention
+is to detect it fast enough to park hardware etc. (similar to that for
+the ring buffer I guess).  I'll look into getting that done for the nex=
+t
+version (maybe driver specific for now).
+> * For each axis, what is the maximum and minimum bound and the unit -=
+=20
+> Probably worthy for the whole ADC infrastructure
+Agreed - only laziness has prevented me adding the sysfs stuff to outpu=
+t
+that sort of thing.
+> * Joystick emulation (calibrated so that when the computer is not=20
+> moving, all the values are at 0). All the current drivers have it.
+Ok, this is a matter of writing an input subsystem element to do this.
+It was discussed in the original discussion on lkml and is definitely
+on the todo list (I like playing with that sort of thing as well :)
+=20
+> That's it for my wish-list for accelerometers :-)
+>=20
+>=20
+> Also, a couple of specific comments on the patches:
+> * At a quick glance, it seems the VTI SCA3000 driver sends events at =
+50%=20
+> and 75% ring full, while the ST LIS3L02DQ driver sends events at 50% =
+and=20
+> 100%. Why this difference?
+I wrote the lis3l02dq driver first, then discovered the VTI only gives =
+hardware
+interrupts on those values.  Probably not something that is going to be=
+ easy
+to standardize in general.  Can easily add more levels if only to ensur=
+e a
+consistentish set are available.
+> * The accelerometer infrastructure has axis offset and axis gain=20
+> attributes. However, it seems really specific to the ST accelerometer=
+=20
+> (and still, I doubt it's useful for most users as those values are=20
+> factory-set to good values).
+I'd seriously debate that! For starters that lis3l02dq is reading sligh=
+tly
+over 10g static on my desk.  For the sort of stuff I do with these, the
+factory calibration is typically shockingly inaccurate and subject to i=
+ssues
+like temperature of environment etc.
+> Shouldn't they be moved to the ST LIS3L02DQ=20
+> driver instead of being part of the accelerometer infrastructure?
+Based on the other accels I've used (quite a few different ones) these
+are pretty standard parameters - and I wish they were there on the VTI =
+chip
+as it's calibration is far from perfect.  They are to be found in about=
+ half
+of all the accelerometers I've come across.
+> * It would be also very good to provide a small userspace program=20
+> showing how to read an industrialio device (=C3=A0 la evtest).
+One is on it's way (oops, should have cleaned that up before posting th=
+ese
+patches)
+
+At the moment the big missing element of the subsystem is an easy way o=
+f
+querying what is there. (proc interface similar to that for the input s=
+ubsystem)
+The lack of this makes writing remotely generic tests pretty hideous.  =
+Currently
+I have separate ones for each of the drivers which is just plain silly.
+I guess for now posting a commented one of those would be a good start =
+and
+I'll do so after lunch.
+
+Thanks for taking a look and particularly the accelerometer wish list. =
+I'll see
+what I can do!
+
+--
+Jonathan Cameron

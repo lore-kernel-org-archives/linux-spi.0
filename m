@@ -1,52 +1,33 @@
-From: "Hans J. Koch" <hjk@linutronix.de>
-Subject: Re: [spi-devel-general] [Patch 0/4] IndustrialIO subsystem (ADCs,
-	accelerometers etc)
-Date: Thu, 24 Jul 2008 09:41:25 +0200
-Message-ID: <20080724074124.GB2254@local>
-References: <488763AD.4050400@gmail.com> <20080723191918.GC26938@trinity.fluff.org>
+From: Eric Piel <eric.piel@tremplin-utc.net>
+Subject: Re: [Patch 1/4] Industrialio Core
+Date: Thu, 24 Jul 2008 11:01:40 +0200
+Message-ID: <488844F4.1090809@tremplin-utc.net>
+References: <488763AD.4050400@gmail.com> <488765A5.3040703@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Jonathan Cameron <Jonathan.Cameron@gmail.com>,
-	mgross@linux.intel.com, Dmitry Torokhov <dtor@mail.ru>,
-	LKML <linux-kernel@vger.kernel.org>,
-	LM Sensors <lm-sensors@lm-sensors.org>,
-	David Brownell <david-b@pacbell.net>, hmh@hmh.eng.br,
-	Jean Delvare <khali@linux-fr.org>,
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: LKML <linux-kernel@vger.kernel.org>,
 	spi-devel-general@lists.sourceforge.net,
-	Ben Nizette <bn@niasdigital.com>
-To: Ben Dooks <ben-linux@fluff.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753556AbYGXHpJ@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20080723191918.GC26938@trinity.fluff.org>
+	LM Sensors <lm-sensors@lm-sensors.org>,
+	Jean Delvare <khali@linux-fr.org>,
+	Dmitry Torokhov <dtor@mail.ru>,
+	"Hans J. Koch" <hjk@linutronix.de>, hmh@hmh.eng.br,
+	David Brownell <david-b@pacbell.net>, mgross@linux.intel.com,
+	Ben Nizette <bn@niasdigital.com>,
+	Anton Vorontsov <avorontsov@ru.mvista.com>
+To: Jonathan Cameron <Jonathan.Cameron@gmail.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754572AbYGXJeV@vger.kernel.org>
+In-Reply-To: <488765A5.3040703@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jul 23, 2008 at 08:19:18PM +0100, Ben Dooks wrote:
-> On Wed, Jul 23, 2008 at 06:00:29PM +0100, Jonathan Cameron wrote:
-> > Dear All,
-> > 
-> > The need for an industrialio subsystem was discussed in
-> > http://lkml.org/lkml/2008/5/20/135
-> 
-> The name is really bad, this sounds like something for doing large
-> scale industrial process control.
+Jonathan Cameron schreef:
+:
+> +
+> +static void __exit iio_exit(void)
+> +{
+> +	unregister_chrdev(IIO_MAJOR, "bob");
+bob?! Maybe you meant "industrialio" ?
 
-Well, it says "Industrial I/O". To me, this means it handles I/O devices
-typically found in industrial applications.
-
->  
-> > Firstly thanks to all the people who have contributed to the discussion
-> > of this in the past.
-> > 
-> > In brief the intention is provide a kernel subsystem directed towards the
-> > handling on sensors (and later related output devices) such as ADC's,
-> > accelerometers and many others.
-> 
-> We've already got an perfectly good hwmon framework, do we really need
-> to do this again?
-
-hwmon is designed for slow I/O. It won't handle an ADC that does a few
-megasamples/sec.
-
-Thanks,
-Hans
+See you,
+Eric

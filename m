@@ -1,47 +1,40 @@
-From: Jonathan Cameron <jic23@cam.ac.uk>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Subject: Re: [spi-devel-general] [Patch 0/4] IndustrialIO subsystem (ADCs,
- accelerometers etc)
-Date: Thu, 24 Jul 2008 13:45:31 +0100
-Message-ID: <4888796B.9070003@cam.ac.uk>
-References: <488763AD.4050400@gmail.com>	<20080723174801.GC11009@khazad-dum.debian.net> <48884F04.4070403@tremplin-utc.net> <48887201.8090300@cam.ac.uk> <48887783.5000002@tremplin-utc.net>
+	accelerometers etc)
+Date: Thu, 24 Jul 2008 09:26:24 -0400
+Message-ID: <20080724092445.ZZRA012@mailhub.coreip.homeip.net>
+References: <488763AD.4050400@gmail.com> <20080723174801.GC11009@khazad-dum.debian.net> <48884F04.4070403@tremplin-utc.net> <48887201.8090300@cam.ac.uk> <48887783.5000002@tremplin-utc.net> <4888796B.9070003@cam.ac.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Cc: Jonathan Cameron <Jonathan.Cameron@gmail.com>,
-	mgross@linux.intel.com, Dmitry Torokhov <dtor@mail.ru>,
-	LKML <linux-kernel@vger.kernel.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Eric Piel <eric.piel@tremplin-utc.net>,
+	Jonathan Cameron <Jonathan.Cameron@gmail.com>,
+	mgross@linux.intel.com, LKML <linux-kernel@vger.kernel.org>,
 	LM Sensors <lm-sensors@lm-sensors.org>,
 	David Brownell <david-b@pacbell.net>,
 	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
 	Jean Delvare <khali@linux-fr.org>,
 	spi-devel-general@lists.sourceforge.net,
 	Ben Nizette <bn@niasdigital.com>
-To: Eric Piel <eric.piel@tremplin-utc.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754876AbYGXMpd@vger.kernel.org>
-In-Reply-To: <48887783.5000002@tremplin-utc.net>
+To: Jonathan Cameron <jic23@cam.ac.uk>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756064AbYGXN0o@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <4888796B.9070003@cam.ac.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-hat done for the next
->> version (maybe driver specific for now).
-> Yes, on a second though, this is a low priority point. If userspace is
-> able to know if the hardware has or not freefall detection, it should be
-> possible to just implement the software detection in the userspace
-> daemon. People might come up with lots of "clever" algorithms for that,
-> so it might be better to not do too much in the kernel ;-)
-Good point; will leave that one for now.
- 
+On Thu, Jul 24, 2008 at 01:45:31PM +0100, Jonathan Cameron wrote:
+> >>
+> >> At the moment the big missing element of the subsystem is an easy way of
+> >> querying what is there. (proc interface similar to that for the input
+> >> subsystem)
+> > You mean /sys/class/input/, right? Indeed, something inspired by the
+> > input subsystem should work well.
+> No, I meant /proc/bus/input/devices which gives machine readable description
+> of all devices registered with the input subsystem and their capabilities.
 > 
->>
->> At the moment the big missing element of the subsystem is an easy way of
->> querying what is there. (proc interface similar to that for the input
->> subsystem)
-> You mean /sys/class/input/, right? Indeed, something inspired by the
-> input subsystem should work well.
-No, I meant /proc/bus/input/devices which gives machine readable description
-of all devices registered with the input subsystem and their capabilities.
 
-Makes it easier to make userspace code reasonably generic.
+/proc/bus/input is a legacy interface (pre-sysfs). Newer subsystems
+should try to stay in /sys/.
 
---
-Jonathan
+-- 
+Dmitry

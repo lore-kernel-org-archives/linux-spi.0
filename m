@@ -1,95 +1,144 @@
-From: Ben Dooks <ben-linux@fluff.org>
-Subject: Re: [Patch 0/4] IndustrialIO subsystem (ADCs, accelerometers etc)
-Date: Thu, 24 Jul 2008 11:08:33 +0100
-Message-ID: <20080724100833.GB8301@fluff.org.uk>
-References: <488763AD.4050400@gmail.com> <20080723174801.GC11009@khazad-dum.debian.net> <48884F04.4070403@tremplin-utc.net>
+From: Jonathan Cameron <jic23@cam.ac.uk>
+Subject: Re: [spi-devel-general] [Patch 1/4] Industrialio Core
+Date: Thu, 24 Jul 2008 11:12:20 +0100
+Message-ID: <48885584.9070709@cam.ac.uk>
+References: <488763AD.4050400@gmail.com> <488765A5.3040703@gmail.com> <20080723183113.GA22142@polina.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Cc: Jonathan Cameron <Jonathan.Cameron@gmail.com>,
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	mgross@linux.intel.com, Dmitry Torokhov <dtor@mail.ru>,
 	LKML <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net,
 	LM Sensors <lm-sensors@lm-sensors.org>,
+	David Brownell <david-b@pacbell.net>, hmh@hmh.eng.br,
 	Jean Delvare <khali@linux-fr.org>,
-	Dmitry Torokhov <dtor@mail.ru>,
-	"Hans J. Koch" <hjk@linutronix.de>,
-	David Brownell <david-b@pacbell.net>, mgross@linux.intel.com,
-	Ben Nizette <bn@niasdigital.com>,
-	Anton Vorontsov <avorontsov@ru.mvista.com>
-To: Eric Piel <eric.piel@tremplin-utc.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754668AbYGXKIz@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <48884F04.4070403@tremplin-utc.net>
+	spi-devel-general@lists.sourceforge.net,
+	Ben Nizette <bn@niasdigital.com>
+To: avorontsov@ru.mvista.com
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1751599AbYGXKMa@vger.kernel.org>
+In-Reply-To: <20080723183113.GA22142@polina.dev.rtsoft.ru>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jul 24, 2008 at 11:44:36AM +0200, Eric Piel wrote:
-> Henrique de Moraes Holschuh schreef:
->> On Wed, 23 Jul 2008, Jonathan Cameron wrote:
->>> The subsystem is now in a functional state with a small set of drivers:
->>>
->>> Max1363 (supports numerous Maxim i2c ADC's) (tested with max1363 and max1238 chips)
->>>    - Uses a periodic timer to provide ring buffer mode.
->>>    - All reads form these devices are scan modes so direct single element access
->>>      is not provided.
->>>    - Monitor mode on max1363 is not yet supported (need to do a bit debugging of
->>>      the board I have so as to be able to test this).
->>>
->>> ST LIS3L02DQ - SPI accelerometer.
->>>    - Uses a datardy interrupt to driver a software ring buffer.
->>>    - Most functionality of this device is supported.
->>>
->>> VTI SCA3000 (tested with an e05)
->>>    - Hardware ring buffer.
->>
->> I'd like to see something done to have the common parts of interfaces of the
->> same class (e.g. accelerometers) be standard.  Like hwmon does with
->> temp#_input, etc.
->>
->> Otherwise you made it easier to write drivers, but did nothing to help
->> userspace to USE the drivers :-)
-> Hi,
-> I completely agree with Henrique. There already exist 3 accelerometer  
-> drivers in the kernel (and I'm writing a fourth on). What we are  
-> desperately in need of is a _user_ interface. So that a generic program  
-> can pop up and say "Oh, there is an accelerometer on this computer, I'll  
-> use it to detect free falls."
->
-> IMHO, I think the ADC should have a much more specific and specialised  
-> (user and kernel) API corresponding to the accelerometers. Granted, you  
-> probably had in mind only the accelerometers for industrial usage, but  
-> it would be much better if the current accelerometer drivers had a  
-> reason to be ported to this new subsystem.
->
-> In particular, what I think would be worthy would be:
-> * Up to 3 pre-defined axes (X, Y, Z) - that's provided by your current  
-> version of industrialio
-> * If the accelerometer is soldered on the computer, define once for all  
-> to which _physical_ movement corresponds which axis (eg: a laptop on its  
-> normal position going up has axis Z increasing).
-> * Free fall event. Either it's hardware detected, or the accelerometer  
-> infrastructure will detect it in software.
-> * For each axis, what is the maximum and minimum bound and the unit -  
-> Probably worthy for the whole ADC infrastructure
-> * Joystick emulation (calibrated so that when the computer is not  
-> moving, all the values are at 0). All the current drivers have it.
+Anton Vorontsov wrote:
+Hi Anton,
+> 
+> Sorry, I didn't comment on the first version. So my comments for
+> this version is below. Note, I only briefly looked in the code,
+> thus the comments are really superficial.
+> 
+> So... this subsystem is _huge_. And so it needs documentation. Yes,
+> the code is well commented, much thanks for this. But the
+> documentation is needed, for example, to answer these simple
+> questions:
+> 
+> - What userspace interface the subsystem provides (i.e. for use with
+>   userspace tools).
+> - What kernel interface the subsystem provides (i.e. for use with
+>   in-kernel drivers, for example touchscreens).
+> - What is iio_ring (as I see it, is one of basic concepts of this
+>   subsystem), I'd like to see description of its basic usage.
+> - What is struct iio_event_data, what is event's "id"? How it is used
+>   across subsystem?
+> 
+> There is a lot of questions more. Of course, half the questions I'll
+> answer myself through reading the code... But you really need to
+> describe basic ideas of 2431-LOC-subsystem.
+> 
+> Something like Documentation/gpio.txt would work.
 
-I think if we're trying to make something that will cover a number
-of device classes, we need to be more like HID and have a system
-that reports and possibly records the following:
+Agreed, sorry about that - docs are about half written and should probably have
+finished them off before I posted the patch.  I'll try and get a first version
+cleaned up and posted today. Main issue at the moment is getting example code
+into a state where it isn't too dependent on the exact board setup I'm testing
+on.
 
-1) What data is possible to be returned from each event, with the
-   units, magnitude and any scale applied by the device sending.
+> On the subsystem itself. I would recommend you to split the 
+> industrialio_{core,rtc,ring,ptimer_board_info} into separate modules
+> (if possible) and into separate patches (for better reviewing).
+> 
+> Few more comments below.
+> 
+> [...]
+>> +
+>> +#define INIT_IIO_RING_BUFFER(ring_buf, _bytes_per_datum, _length) {	\
+>> +		(ring_buf)->size = _bytes_per_datum;			\
+>> +		(ring_buf)->length = _length;				\
+>> +		(ring_buf)->loopcount = 0;				\
+>> +		(ring_buf)->shared_ev_pointer.ev_p = 0;			\
+>> +		(ring_buf)->shared_ev_pointer.lock =			\
+>> +			__SPIN_LOCK_UNLOCKED((ring_buf)			\
+>> +					     ->shared_ev_pointer->loc);	\
+>> +	}
+> 
+> Is it possible to convert this into function?
+Good point. No idea why I did it like that!
 
-2) Each event should be able to report a number of items, so that
-   if the sensor reports X/Y/Z in one go, there is just a single
-   event containing those values.
+> [...]
 
-3) A well defined set of information that can be read (like #1)
-   that can provide details of the device and how it relates to
-   the environment it is in.
+>> +	/* Event control attributes */
+>> +	struct attribute_group *event_attrs;
+>> +	/* The character device related elements */
+>> +	struct iio_event_interface *event_interfaces;
+>> +
+>> +/* Software Ring Buffer
+>> +   - for now assuming only makes sense to have a single ring */
+> 
+> These comments are really hard to parse. Try to turn off syntax
+> highlighting (if you use), and see the result. It is really
+> unreadable.
+> 
+> So, I'd suggest to use kernel doc syntax to describe the fields.
+> 
+> For example, I very like how include/linux/mtd/nand.h is commented.
+> It is in kernel doc, plus explains what fields are
+> internal/driver-specific/e.t.c.
+Thanks for the pointer, I'll do that.
+> [...]
+>> +	IIO_DEVICE_ATTR(z_gain, _mode, _show, _store, _addr)
+>> +
+> 
+> Why such a generic subsystem should be aware of X/Y/Z? ADC can measure
+> strength of wind, for example. But in fact it measures voltage and/or
+> current. Yes, it is convenient to tell user what exactly chip is
+> supposed to measure, but it is chip (and thus driver) specific,
+> subsystem should only provides means to expose that information, but
+> it should not be aware of what exactly we're measuring. At least that is
+> how I imagine the ADC subsystem.
+I'd argue this is actually connected to improving the usability of the system.
 
--- 
-Ben (ben@fluff.org, http://www.fluff.org/)
+I would envision that the set of definitions (probably broken out into specific
+headers for different classes of device) and will grow considerably. If a
+particular parameter is available in say 2 drivers, or looks like it will be,
+then it will get moved to the main headers rather than being driver specific.
 
-  'a smiley only costs 4 bytes'
+The basic advantages of doing it this way are concerned with user readability.
+If we know the device is an accelerometer rather than a general ADC is would be
+silly to have the user guessing which of the inputs are accelerations rather
+than say temperature readings. Clearly there are issues with definitions of axes
+on these devices but that will be something to clear up by clear documentation
+(pick a standard and stick to it!).
+
+Clearly there are cases, for example where an accelerometer is attached via a
+generic ADC in which we don't have the inherent ability to identify the inputs
+from the generic adc driver.  Given this is a common setup, there may well be
+some scope for custom drivers for any common sensor circuits or indeed providing
+a way specifying this in a board config.
+
+It will be interesting to see how this pans out.
+
+What I also forgot to mention alongside the patches is that each driver should
+be accompanied by a userspace header file providing conversion function
+to real world units as appropriate. This is clearly required to interpret the
+data coming out of the ring buffers (which will always be as raw as possible).
+
+There is also the question of whether the outputs in sysfs of say acceleration
+should be converted to SI units or left as raw readings. For now I'm inclined
+to leave them raw as the calibration of such sensors within systems is fairly
+complex and often done as an offline process.  However I'm definitely open
+to other opinions on this.
+
+
+Thanks for taking a look and providing feedback.
+--
+Jonathan Cameron

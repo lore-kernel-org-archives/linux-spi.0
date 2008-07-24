@@ -1,106 +1,67 @@
-From: Eric Piel <eric.piel@tremplin-utc.net>
-Subject: Re: [Patch 0/4] IndustrialIO subsystem (ADCs, accelerometers etc)
-Date: Thu, 24 Jul 2008 11:44:36 +0200
-Message-ID: <48884F04.4070403@tremplin-utc.net>
-References: <488763AD.4050400@gmail.com> <20080723174801.GC11009@khazad-dum.debian.net>
+From: Ben Dooks <ben-linux@fluff.org>
+Subject: Re: [spi-devel-general] [Patch 0/4] IndustrialIO subsystem (ADCs,
+	accelerometers etc)
+Date: Thu, 24 Jul 2008 11:01:44 +0100
+Message-ID: <20080724100144.GA8301@fluff.org.uk>
+References: <488763AD.4050400@gmail.com> <20080723191918.GC26938@trinity.fluff.org> <20080724074124.GB2254@local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Ben Dooks <ben-linux@fluff.org>,
+	Jonathan Cameron <Jonathan.Cameron@gmail.com>,
+	mgross@linux.intel.com, Dmitry Torokhov <dtor@mail.ru>,
 	LKML <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net,
 	LM Sensors <lm-sensors@lm-sensors.org>,
+	David Brownell <david-b@pacbell.net>, hmh@hmh.eng.br,
 	Jean Delvare <khali@linux-fr.org>,
-	Dmitry Torokhov <dtor@mail.ru>,
-	"Hans J. Koch" <hjk@linutronix.de>,
-	David Brownell <david-b@pacbell.net>, mgross@linux.intel.com,
-	Ben Nizette <bn@niasdigital.com>,
-	Anton Vorontsov <avorontsov@ru.mvista.com>
-To: Jonathan Cameron <Jonathan.Cameron@gmail.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754977AbYGXJpM@vger.kernel.org>
-In-Reply-To: <20080723174801.GC11009@khazad-dum.debian.net>
+	spi-devel-general@lists.sourceforge.net,
+	Ben Nizette <bn@niasdigital.com>
+To: "Hans J. Koch" <hjk@linutronix.de>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755164AbYGXKDB@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20080724074124.GB2254@local>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Henrique de Moraes Holschuh schreef:
-> On Wed, 23 Jul 2008, Jonathan Cameron wrote:
->> The subsystem is now in a functional state with a small set of drive=
-rs:
->>
->> Max1363 (supports numerous Maxim i2c ADC's) (tested with max1363 and=
- max1238 chips)
->>    - Uses a periodic timer to provide ring buffer mode.
->>    - All reads form these devices are scan modes so direct single el=
-ement access
->>      is not provided.
->>    - Monitor mode on max1363 is not yet supported (need to do a bit =
-debugging of
->>      the board I have so as to be able to test this).
->>
->> ST LIS3L02DQ - SPI accelerometer.
->>    - Uses a datardy interrupt to driver a software ring buffer.
->>    - Most functionality of this device is supported.
->>
->> VTI SCA3000 (tested with an e05)
->>    - Hardware ring buffer.
->=20
-> I'd like to see something done to have the common parts of interfaces=
- of the
-> same class (e.g. accelerometers) be standard.  Like hwmon does with
-> temp#_input, etc.
->=20
-> Otherwise you made it easier to write drivers, but did nothing to hel=
-p
-> userspace to USE the drivers :-)
-Hi,
-I completely agree with Henrique. There already exist 3 accelerometer=20
-drivers in the kernel (and I'm writing a fourth on). What we are=20
-desperately in need of is a _user_ interface. So that a generic program=
-=20
-can pop up and say "Oh, there is an accelerometer on this computer, I'l=
-l=20
-use it to detect free falls."
+On Thu, Jul 24, 2008 at 09:41:25AM +0200, Hans J. Koch wrote:
+> On Wed, Jul 23, 2008 at 08:19:18PM +0100, Ben Dooks wrote:
+> > On Wed, Jul 23, 2008 at 06:00:29PM +0100, Jonathan Cameron wrote:
+> > > Dear All,
+> > > 
+> > > The need for an industrialio subsystem was discussed in
+> > > http://lkml.org/lkml/2008/5/20/135
+> > 
+> > The name is really bad, this sounds like something for doing large
+> > scale industrial process control.
+> 
+> Well, it says "Industrial I/O". To me, this means it handles I/O devices
+> typically found in industrial applications.
 
-IMHO, I think the ADC should have a much more specific and specialised=20
-(user and kernel) API corresponding to the accelerometers. Granted, you=
-=20
-probably had in mind only the accelerometers for industrial usage, but=20
-it would be much better if the current accelerometer drivers had a=20
-reason to be ported to this new subsystem.
+Yes, industrial is generally process control of manufacturing
+processes which in my view is making this sound like it is limiting
+the field of operations.
 
-In particular, what I think would be worthy would be:
-* Up to 3 pre-defined axes (X, Y, Z) - that's provided by your current=20
-version of industrialio
-* If the accelerometer is soldered on the computer, define once for all=
-=20
-to which _physical_ movement corresponds which axis (eg: a laptop on it=
-s=20
-normal position going up has axis Z increasing).
-* Free fall event. Either it's hardware detected, or the accelerometer=20
-infrastructure will detect it in software.
-* For each axis, what is the maximum and minimum bound and the unit -=20
-Probably worthy for the whole ADC infrastructure
-* Joystick emulation (calibrated so that when the computer is not=20
-moving, all the values are at 0). All the current drivers have it.
+All the applications we would currently need are things like
+handheld PDA type devices which are hardly 'industrial' or small
+consumer measurement systems.
 
-That's it for my wish-list for accelerometers :-)
+> >  
+> > > Firstly thanks to all the people who have contributed to the discussion
+> > > of this in the past.
+> > > 
+> > > In brief the intention is provide a kernel subsystem directed towards the
+> > > handling on sensors (and later related output devices) such as ADC's,
+> > > accelerometers and many others.
+> > 
+> > We've already got an perfectly good hwmon framework, do we really need
+> > to do this again?
+> 
+> hwmon is designed for slow I/O. It won't handle an ADC that does a few
+> megasamples/sec.
+> 
+> Thanks,
+> Hans
 
+-- 
+Ben (ben@fluff.org, http://www.fluff.org/)
 
-Also, a couple of specific comments on the patches:
-* At a quick glance, it seems the VTI SCA3000 driver sends events at 50=
-%=20
-and 75% ring full, while the ST LIS3L02DQ driver sends events at 50% an=
-d=20
-100%. Why this difference?
-* The accelerometer infrastructure has axis offset and axis gain=20
-attributes. However, it seems really specific to the ST accelerometer=20
-(and still, I doubt it's useful for most users as those values are=20
-factory-set to good values). Shouldn't they be moved to the ST LIS3L02D=
-Q=20
-driver instead of being part of the accelerometer infrastructure?
-* It would be also very good to provide a small userspace program=20
-showing how to read an industrialio device (=C3=A0 la evtest).
-
-See you,
-Eric
+  'a smiley only costs 4 bytes'

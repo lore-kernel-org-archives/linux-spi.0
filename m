@@ -1,50 +1,60 @@
-From: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [spi][mpc52xx][PATCH] Fix mpc52xx_psc_spi
-	master driver
-Date: Fri, 25 Jul 2008 09:06:41 -0400
-Message-ID: <fa686aa40807250606y670a8419p1e62fe66afe4cc3c@mail.gmail.com>
-References: <20080725114341.GB6415@pengutronix.de>
+From: "Jon Smirl" <jonsmirl@gmail.com>
+Subject: Re: [PATCH v3 0/4 REPOST] OF infrastructure for SPI devices
+Date: Fri, 25 Jul 2008 10:46:11 -0400
+Message-ID: <9e4733910807250746g436307d7sbbf799b73a9f2c67@mail.gmail.com>
+References: <20080725072549.8485.90723.stgit@trillian.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: "Luotao Fu" <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080725114341.GB6415-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	spi-devel-general@lists.sourceforge.net,
+	dbrownell@users.sourceforge.net, linuxppc-dev@ozlabs.org
+To: "Grant Likely" <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753142AbYGYOqX@vger.kernel.org>
+In-Reply-To: <20080725072549.8485.90723.stgit@trillian.secretlab.ca>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 25, 2008 at 7:43 AM, Luotao Fu <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> Hi,
+On 7/25/08, Grant Likely <grant.likely@secretlab.ca> wrote:
+> I don't know what to do with these patches.  I'd really like to see them
+>  in .27, and now that akpm has cleared his queue, the prerequisite patch
+>  has been merged so they are ready to go in.  However, even though there
+>  has been favourable reception on the SPI and linuxppc lists for these
+>  changes I don't have any acks from anybody yet.
+
+I have compatible hardware but it has an MMC card socket hooked up. I
+haven't figured out yet how to get this driver hooked to the MMC
+subsystem and make the file system on the card work.  (I've been
+working on ALSA).
+
+I believe I need this:
+http://lkml.org/lkml/2008/6/5/209
+
+Then I need to get everything hooked together. Point me in the right
+direction and I can help with testing.
+
+
 >
-> this is a fix for full duplex transfer mode on the mpc52xx_psc_spi driver.
-> Details see the patch header. Tested on a mpc5200b board.
+>  David, can you please reply on if you are okay with these patches
+>  getting merged?  If so, do you want me to merge them via my tree, or
+>  do you want to pick them up?
 >
-> Cheers
-> Luotao fu
+>  Thanks,
+>  g.
+>
+>  --
+>  Grant Likely, B.Sc. P.Eng.
+>  Secret Lab Technologies Ltd.
+>
+> --
+>  To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+>  the body of a message to majordomo@vger.kernel.org
+>  More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>  Please read the FAQ at  http://www.tux.org/lkml/
+>
 
-Looks pretty good to me.  I'll pick this up.
 
-For future patches, please send patches inline and not as attachments.
- Attachments mess up the workflow because I cannot comment on the
-patch by just hitting 'reply' and it doesn't work with git-am.
-
-g.
 -- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+Jon Smirl
+jonsmirl@gmail.com

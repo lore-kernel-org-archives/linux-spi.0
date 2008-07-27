@@ -1,17 +1,20 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH v3 0/4 REPOST] OF infrastructure for
-	SPI devices
-Date: Sun, 27 Jul 2008 14:49:28 -0700
-Message-ID: <200807271449.28472.david-b@pacbell.net>
-References: <20080725072549.8485.90723.stgit@trillian.secretlab.ca>
+Subject: Re: [PATCH 1/4] [SPI] [POWERPC] spi_mpc83xx:
+	handles Freescale	MPC8610 as well
+Date: Sun, 27 Jul 2008 15:12:58 -0700
+Message-ID: <200807271512.58969.david-b@pacbell.net>
+References: <20080516165052.GA24196@polina.dev.rtsoft.ru>
+	<20080516190438.GA2758@loki.buserror.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Timur Tabi <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080725072549.8485.90723.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
+In-Reply-To: <20080516190438.GA2758-tDB31bHjl+hpTrP2zolEsF6hYfS7NtTn@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -24,31 +27,26 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 25 July 2008, Grant Likely wrote:
-> I don't know what to do with these patches. =A0I'd really like to see them
-> in .27, and now that akpm has cleared his queue, the prerequisite patch
-> has been merged so they are ready to go in. =A0However, even though there
-> has been favourable reception on the SPI and linuxppc lists for these
-> changes I don't have any acks from anybody yet.
-> =
+On Friday 16 May 2008, Scott Wood wrote:
+> On Fri, May 16, 2008 at 08:50:52PM +0400, Anton Vorontsov wrote:
+> >  config SPI_MPC83xx
+> >  	tristate "Freescale MPC83xx/QUICC Engine SPI controller"
+> > -	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE) && EXPERIMENTAL
+> > +	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE || PPC_86xx) && EXPERIMENTAL
+> 
+> How about "depends on SPI_MASTER && FSL_SOC && EXPERIMENTAL"?
+> 
+> Plus, we should change the option text to something like "MPC8xxx SPI
+> controller".
 
-> David, can you please reply on if you are okay with these patches
-> getting merged? =A0If so, do you want me to merge them via my tree, or
-> do you want to pick them up?
+Is there an approved-by-powerpc-folk version of this patch yet?
+(Noting that SPI_MASTER is now implicit ...)
 
-OK ... to recap, #1 and #3 are OF-specific, I'll be agnostic.
-If other OF folk think it's OK, great.
 
-Some cleanup was needed for #2, but it was basically ok ...
-I'd like to see the final version, and if it goes via an
-OF push that's OK by me.  (Though I'd like to see that change
-make it into 2.6.27 regardless, so let me know.)
 
-And #4 isn't quite cooked yet.
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
+Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

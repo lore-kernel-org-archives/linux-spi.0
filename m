@@ -1,13 +1,13 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.26-git] spi_s3c24xx: really assign
-	busnum
-Date: Sun, 27 Jul 2008 15:40:04 -0700
-Message-ID: <200807271540.05120.david-b@pacbell.net>
+Subject: [patch 2.6.26-git] mpc52xx_psc_spi: fix block
+	transfer
+Date: Sun, 27 Jul 2008 15:22:05 -0700
+Message-ID: <200807271522.05967.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+	Luotao Fu <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
@@ -22,42 +22,61 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+From: Luotao Fu <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
-The original "Pass the bus number we expect the S3C24XX SPI driver to attach
-to via the platform data." [1]  patch was mis-sent, and missed two important
-parts of the diff, which was to actually set the bus_num field and add
-the relevant field to the platform data.
+The block transfer routine in the mpc52xx psc spi driver misinterpret the
+datasheet. According to the processor datasheet the chipselect is held as
+long as the EOF is not written. Theoretically block of any sizes can be
+transferred in this way. The old routine however writes an EOF after every
+word, which has the size of size_of_word. This makes the transfer slow.
+Also fixed some duplicate code.
 
-[1] git commit 50f426b55d919dd017af35bb6a08753d1f262920
-
-Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Signed-off-by: Luotao Fu <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_s3c24xx.c          |    1 +
- include/asm-arm/arch-s3c2410/spi.h |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/spi/mpc52xx_psc_spi.c |   22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
---- a/drivers/spi/spi_s3c24xx.c	2008-05-01 12:53:37.000000000 -0700
-+++ b/drivers/spi/spi_s3c24xx.c	2008-07-27 15:36:03.000000000 -0700
-@@ -270,6 +270,7 @@ static int __init s3c24xx_spi_probe(stru
- 	/* setup the master state. */
+--- a/drivers/spi/mpc52xx_psc_spi.c	2008-07-24 18:27:52.000000000 -0700
++++ b/drivers/spi/mpc52xx_psc_spi.c	2008-07-27 15:16:29.000000000 -0700
+@@ -148,7 +148,6 @@ static int mpc52xx_psc_spi_transfer_rxtx
+ 	unsigned rfalarm;
+ 	unsigned send_at_once = MPC52xx_PSC_BUFSIZE;
+ 	unsigned recv_at_once;
+-	unsigned bpw = mps->bits_per_word / 8;
  
- 	master->num_chipselect = hw->pdata->num_cs;
-+	master->bus_num = pdata->bus_num;
+ 	if (!t->tx_buf && !t->rx_buf && t->len)
+ 		return -EINVAL;
+@@ -164,22 +163,15 @@ static int mpc52xx_psc_spi_transfer_rxtx
+ 		}
  
- 	/* setup the state for the bitbang driver */
+ 		dev_dbg(&spi->dev, "send %d bytes...\n", send_at_once);
+-		if (tx_buf) {
+-			for (; send_at_once; sb++, send_at_once--) {
+-				/* set EOF flag */
+-				if (mps->bits_per_word
+-						&& (sb + 1) % bpw == 0)
+-					out_8(&psc->ircr2, 0x01);
++		for (; send_at_once; sb++, send_at_once--) {
++			/* set EOF flag before the last word is sent */
++			if (send_at_once == 1)
++				out_8(&psc->ircr2, 0x01);
++
++			if (tx_buf)
+ 				out_8(&psc->mpc52xx_psc_buffer_8, tx_buf[sb]);
+-			}
+-		} else {
+-			for (; send_at_once; sb++, send_at_once--) {
+-				/* set EOF flag */
+-				if (mps->bits_per_word
+-						&& ((sb + 1) % bpw) == 0)
+-					out_8(&psc->ircr2, 0x01);
++			else
+ 				out_8(&psc->mpc52xx_psc_buffer_8, 0);
+-			}
+ 		}
  
---- a/include/asm-arm/arch-s3c2410/spi.h	2008-04-15 21:43:00.000000000 -0700
-+++ b/include/asm-arm/arch-s3c2410/spi.h	2008-07-27 15:36:03.000000000 -0700
-@@ -16,6 +16,7 @@
- struct s3c2410_spi_info {
- 	unsigned long		 pin_cs;	/* simple gpio cs */
- 	unsigned int		 num_cs;	/* total chipselects */
-+	int			 bus_num;       /* bus number to use. */
  
- 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
- };
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

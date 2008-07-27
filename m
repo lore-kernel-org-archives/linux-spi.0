@@ -1,17 +1,20 @@
-From: Daniel Walker <dwalker-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] powerpc/mpc5200: Fix locking on
-	mpc52xx_spi driver
-Date: Sat, 26 Jul 2008 08:35:50 -0400
-Message-ID: <1217075750.3970.16.camel@localhost.localdomain>
-References: <20080726062226.10506.65539.stgit@trillian.secretlab.ca>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v3 5/5] powerpc/mpc5200: Add
+	mpc5200-spi (non-PSC)	device driver
+Date: Sat, 26 Jul 2008 20:20:54 -0400
+Message-ID: <20080727002054.GC12191@secretlab.ca>
+References: <20080712083437.14782.65551.stgit@trillian.secretlab.ca>
+	<20080712083458.14782.59382.stgit@trillian.secretlab.ca>
+	<9e4733910807140621g69707c46tc23d26e9cf030c5c@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Jon Smirl <jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080726062226.10506.65539.stgit-8FIgwK2HfyId2tlXD8uQ6/kpB+XfMlBf@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <9e4733910807140621g69707c46tc23d26e9cf030c5c-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,27 +26,20 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 2008-07-26 at 02:24 -0400, Grant Likely wrote:
-> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+On Mon, Jul 14, 2008 at 09:21:08AM -0400, Jon Smirl wrote:
+> On 7/12/08, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+> > From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> >
+> >  Adds support for the dedicated SPI device on the Freescale MPC5200(b)
+> >  SoC.
 > 
-> Locking was incorrect for the state machine processing since there are
-> conditions where both the work queue and the IRQ can be active.  This
-> patch fixes the handling to ensure the spin lock is held whenever the
-> state machine is being processed.
-> 
-> Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> ---
-> 
-> Hi Daniel,
-> 
-> Here is the incremental change to the mpc52xx_spi driver to fix up the
-> locking.  It should be safe and unambiguous now.
+> Can you adjust the existing PSC based SPI driver to use this device
+> tree code? It will be confusing if there are two different ways to do
+> SPI on the mpc5200.
 
+Yes, I'll do that and post the patch
 
-Thank you, it looks much better..
-
-Daniel
-
+g.
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

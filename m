@@ -1,20 +1,15 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 1/4] [SPI] [POWERPC] spi_mpc83xx:
-	handles Freescale	MPC8610 as well
-Date: Sun, 27 Jul 2008 15:12:58 -0700
-Message-ID: <200807271512.58969.david-b@pacbell.net>
-References: <20080516165052.GA24196@polina.dev.rtsoft.ru>
-	<20080516190438.GA2758@loki.buserror.net>
+Subject: [patch 2.6.26-git] spi_s3c24xx: really assign
+	busnum
+Date: Sun, 27 Jul 2008 15:40:04 -0700
+Message-ID: <200807271540.05120.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Timur Tabi <timur-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080516190438.GA2758-tDB31bHjl+hpTrP2zolEsF6hYfS7NtTn@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,23 +22,42 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 16 May 2008, Scott Wood wrote:
-> On Fri, May 16, 2008 at 08:50:52PM +0400, Anton Vorontsov wrote:
-> >  config SPI_MPC83xx
-> >  	tristate "Freescale MPC83xx/QUICC Engine SPI controller"
-> > -	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE) && EXPERIMENTAL
-> > +	depends on SPI_MASTER && (PPC_83xx || QUICC_ENGINE || PPC_86xx) && EXPERIMENTAL
-> 
-> How about "depends on SPI_MASTER && FSL_SOC && EXPERIMENTAL"?
-> 
-> Plus, we should change the option text to something like "MPC8xxx SPI
-> controller".
+From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-Is there an approved-by-powerpc-folk version of this patch yet?
-(Noting that SPI_MASTER is now implicit ...)
+The original "Pass the bus number we expect the S3C24XX SPI driver to attach
+to via the platform data." [1]  patch was mis-sent, and missed two important
+parts of the diff, which was to actually set the bus_num field and add
+the relevant field to the platform data.
 
+[1] git commit 50f426b55d919dd017af35bb6a08753d1f262920
 
+Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/spi_s3c24xx.c          |    1 +
+ include/asm-arm/arch-s3c2410/spi.h |    1 +
+ 2 files changed, 2 insertions(+)
 
+--- a/drivers/spi/spi_s3c24xx.c	2008-05-01 12:53:37.000000000 -0700
++++ b/drivers/spi/spi_s3c24xx.c	2008-07-27 15:36:03.000000000 -0700
+@@ -270,6 +270,7 @@ static int __init s3c24xx_spi_probe(stru
+ 	/* setup the master state. */
+ 
+ 	master->num_chipselect = hw->pdata->num_cs;
++	master->bus_num = pdata->bus_num;
+ 
+ 	/* setup the state for the bitbang driver */
+ 
+--- a/include/asm-arm/arch-s3c2410/spi.h	2008-04-15 21:43:00.000000000 -0700
++++ b/include/asm-arm/arch-s3c2410/spi.h	2008-07-27 15:36:03.000000000 -0700
+@@ -16,6 +16,7 @@
+ struct s3c2410_spi_info {
+ 	unsigned long		 pin_cs;	/* simple gpio cs */
+ 	unsigned int		 num_cs;	/* total chipselects */
++	int			 bus_num;       /* bus number to use. */
+ 
+ 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+ };
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

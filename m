@@ -1,17 +1,11 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [patch 2.6.26-git] spi_s3c24xx: really
-	assign busnum
-Date: Sun, 27 Jul 2008 19:44:34 -0700
-Message-ID: <20080727194434.35b8f980.akpm@linux-foundation.org>
-References: <200807271540.05120.david-b@pacbell.net>
+From: ccc <gnabouri_1986-ih7KinS4eJjQT0dZR+AlfA@public.gmane.org>
+Subject: Angry man shoots lawnmower
+Date: Mon, 28 Jul 2008 11:25:23 +0800
+Message-ID: <000a01c8f061$92341580$4b1f7977@2320AB9508CB48A>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1974830232=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200807271540.05120.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,26 +17,58 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 27 Jul 2008 15:40:04 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+--===============1974830232==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0003_01C8F0A4.A0575580"
 
-> From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-> 
-> The original "Pass the bus number we expect the S3C24XX SPI driver to attach
-> to via the platform data." [1]  patch was mis-sent, and missed two important
-> parts of the diff, which was to actually set the bus_num field and add
-> the relevant field to the platform data.
-> 
+------=_NextPart_000_0003_01C8F0A4.A0575580
+Content-Type: text/plain;
+	charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-um, OK.  I'd consider that changelog to be partial, because it doesn't
-describe the consequences of the bug.
+Obama cancels trip after Brush denies him of right to visit deployed =
+troops http://www.madeleinekoziolek.de/fresh.html
+------=_NextPart_000_0003_01C8F0A4.A0575580
+Content-Type: text/html;
+	charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-It means that people who are scratching their heads over whether this
-should be in 2.6.26.x don't have enough info to go on.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3DISO-8859-1">
+<META content=3D"MSHTML 6.00.6000.16674" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>Obama cancels trip after Brush denies =
+him of right=20
+to visit deployed troops <A=20
+href=3D"http://www.madeleinekoziolek.de/fresh.html">http://www.madeleinek=
+oziolek.de/fresh.html</A></FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0003_01C8F0A4.A0575580--
 
 
+--===============1974830232==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============1974830232==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1974830232==--

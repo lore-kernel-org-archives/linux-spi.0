@@ -1,18 +1,18 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.26-git] mpc52xx_psc_spi: fix
-	block transfer
-Date: Sun, 27 Jul 2008 21:12:29 -0700
-Message-ID: <200807272112.29924.david-b@pacbell.net>
-References: <200807271522.05967.david-b@pacbell.net>
-	<20080727194055.7d3b839d.akpm@linux-foundation.org>
+Subject: Re: [patch 2.6.26-git] spi_s3c24xx: really
+	assign busnum
+Date: Sun, 27 Jul 2008 21:16:03 -0700
+Message-ID: <200807272116.03926.david-b@pacbell.net>
+References: <200807271540.05120.david-b@pacbell.net>
+	<20080727194434.35b8f980.akpm@linux-foundation.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Luotao Fu <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080727194055.7d3b839d.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+In-Reply-To: <20080727194434.35b8f980.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -26,30 +26,27 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On Sunday 27 July 2008, Andrew Morton wrote:
-> On Sun, 27 Jul 2008 15:22:05 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> On Sun, 27 Jul 2008 15:40:04 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
 > 
-> > From: Luotao Fu <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> > From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 > > 
-> > The block transfer routine in the mpc52xx psc spi driver misinterpret the
-> > datasheet. According to the processor datasheet the chipselect is held as
-> > long as the EOF is not written. Theoretically block of any sizes can be
-> > transferred in this way. The old routine however writes an EOF after every
-> > word, which has the size of size_of_word. This makes the transfer slow.
-> > Also fixed some duplicate code.
+> > The original "Pass the bus number we expect the S3C24XX SPI driver to attach
+> > to via the platform data." [1]  patch was mis-sent, and missed two important
+> > parts of the diff, which was to actually set the bus_num field and add
+> > the relevant field to the platform data.
 > > 
-> > Signed-off-by: Luotao Fu <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> > Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 > 
-> The patch applies to 2.6.25 and 2.6.26.  Should we backport it?
+> um, OK.  I'd consider that changelog to be partial, because it doesn't
+> describe the consequences of the bug.
 
-Sounds like someone already did the backport!  The issue would
-be whether it should be merged to 2.6.26-stable?
+Consequences:  only bus number zero will ever be used by that SPI controller.
 
-Getting the chipselect wrong like this is a fairly big deal;
-the protocol is wacked, many chips won't know what to do with
-lots of individual words, or will do the wrong thing.
 
-I'd vote for making this widely available.
+> It means that people who are scratching their heads over whether this
+> should be in 2.6.26.x don't have enough info to go on.
+
+I'd let Ben suggest that one.  This unfortunately sat in my queue for
+a while before I noticed it... else it could have made 2.6.26-final.
 
 - Dave
 

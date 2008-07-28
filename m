@@ -1,20 +1,20 @@
-From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Subject: Re: [patch 2.6.26-git] spi_s3c24xx: really
-	assign busnum
-Date: Mon, 28 Jul 2008 15:39:51 +0100
-Message-ID: <20080728143951.GB26938@trinity.fluff.org>
-References: <200807271540.05120.david-b@pacbell.net>
-	<20080727194434.35b8f980.akpm@linux-foundation.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v3 0/4 REPOST] OF infrastructure for
+	SPI devices
+Date: Mon, 28 Jul 2008 10:39:56 -0600
+Message-ID: <20080728163956.GC21039@secretlab.ca>
+References: <20080725072549.8485.90723.stgit@trillian.secretlab.ca>
+	<200807271449.28472.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20080727194434.35b8f980.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+In-Reply-To: <200807271449.28472.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,46 +26,50 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Jul 27, 2008 at 07:44:34PM -0700, Andrew Morton wrote:
-> On Sun, 27 Jul 2008 15:40:04 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> 
-> > From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-> > 
-> > The original "Pass the bus number we expect the S3C24XX SPI driver to attach
-> > to via the platform data." [1]  patch was mis-sent, and missed two important
-> > parts of the diff, which was to actually set the bus_num field and add
-> > the relevant field to the platform data.
-> > 
-> 
-> um, OK.  I'd consider that changelog to be partial, because it doesn't
-> describe the consequences of the bug.
+On Sun, Jul 27, 2008 at 02:49:28PM -0700, David Brownell wrote:
+> On Friday 25 July 2008, Grant Likely wrote:
+> > I don't know what to do with these patches. =A0I'd really like to see t=
+hem
+> > in .27, and now that akpm has cleared his queue, the prerequisite patch
+> > has been merged so they are ready to go in. =A0However, even though the=
+re
+> > has been favourable reception on the SPI and linuxppc lists for these
+> > changes I don't have any acks from anybody yet.
+> > =
 
-It does reference the original patch which describes the original
-itent of the change which unfortunately got broken when bringing
-forward to submission.
+> > David, can you please reply on if you are okay with these patches
+> > getting merged? =A0If so, do you want me to merge them via my tree, or
+> > do you want to pick them up?
+> =
 
-> It means that people who are scratching their heads over whether this
-> should be in 2.6.26.x don't have enough info to go on.
+> OK ... to recap, #1 and #3 are OF-specific, I'll be agnostic.
+> If other OF folk think it's OK, great.
+> =
 
-The only extra I can think of adding is:
+> Some cleanup was needed for #2, but it was basically ok ...
+> I'd like to see the final version, and if it goes via an
+> OF push that's OK by me.  (Though I'd like to see that change
+> make it into 2.6.27 regardless, so let me know.)
 
-The previous commit 50f426b55d919dd017af35bb6a08753d1f262920 promised to
-add a bus_num field, but failed to include the two hunks that added this
-field to include/asm-arm/arch-s3c2410/spi.h and then pass it to the
-spi core when creating the new master field in drivers/spi/spi_s3c24xx.c.
+Thanks for the review.  1-3 is already merged into my git tree and Ben
+has pulled them.  I hope that's okay.  Here's a link to the commit:
 
-This should fix any confusion when looking for the non-existant bus_num
-field.
+http://git.kernel.org/?p=3Dlinux/kernel/git/benh/powerpc.git;a=3Dcommitdiff=
+;h=3Ddc87c98e8f635a718f1abb2c3e15fc77c0001651
 
--- 
-Ben
+Let me know if you see anything else that needs to be changed and I'll
+submit a fixup patch.
 
-Q:      What's a light-year?
-A:      One-third less calories than a regular year.
+> And #4 isn't quite cooked yet.
 
+Okay, I'll hack on this more and post v4.
+
+Thanks again,
+g.
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

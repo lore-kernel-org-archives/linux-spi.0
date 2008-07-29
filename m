@@ -1,20 +1,18 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v3 0/4 REPOST] OF infrastructure for
-	SPI devices
-Date: Mon, 28 Jul 2008 10:39:56 -0600
-Message-ID: <20080728163956.GC21039@secretlab.ca>
-References: <20080725072549.8485.90723.stgit@trillian.secretlab.ca>
-	<200807271449.28472.david-b@pacbell.net>
+From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Re: [patch 2.6.26+] spi:  new orion_spi driver
+Date: Mon, 28 Jul 2008 21:16:55 -0700
+Message-ID: <20080728211655.4d51e921.akpm@linux-foundation.org>
+References: <200807221228.00958.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Lennert-MRDXTZLjjMs8G+1z+Pypc6QD96bmaF075NbjCUgZEJk@public.gmane.org, saeed <saeed-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Nicolas Pitre <nico-mo2vmkxb4K0@public.gmane.org>, Buijtenhek <buytenh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <200807271449.28472.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <200807221228.00958.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,50 +24,71 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Jul 27, 2008 at 02:49:28PM -0700, David Brownell wrote:
-> On Friday 25 July 2008, Grant Likely wrote:
-> > I don't know what to do with these patches. =A0I'd really like to see t=
-hem
-> > in .27, and now that akpm has cleared his queue, the prerequisite patch
-> > has been merged so they are ready to go in. =A0However, even though the=
-re
-> > has been favourable reception on the SPI and linuxppc lists for these
-> > changes I don't have any acks from anybody yet.
-> > =
+On Tue, 22 Jul 2008 12:28:00 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
 
-> > David, can you please reply on if you are okay with these patches
-> > getting merged? =A0If so, do you want me to merge them via my tree, or
-> > do you want to pick them up?
-> =
+> From: Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+> Date: Fri, 27 Jun 2008 19:10:06 +0200
+> Subject: [PATCH] spi: driver for Marvell Orion SPI controllers
+> 
+> This adds a SPI driver for the SPI controller found in various
+> Marvell Orion ARM SoCs.  It currently supports only one slave,
+> which must use SPI mode 0.
+> 
+> [ dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org: cleanups, meet specs, pass "sparse" ]
+> Signed-off-by: Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+> Signed-off-by: Saeed Bishara <saeed-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+> Signed-off-by: Lennert Buytenhek <buytenh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+>
+> ...
+>
+> +/*
+> + * called only when no transfer is active on the bus
+> + */
+> +static int
+> +orion_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+> +{
+> +	struct orion_spi *orion_spi;
+> +	unsigned int speed = spi->max_speed_hz;
+> +	unsigned int bits_per_word = spi->bits_per_word;
+> +
+> +	orion_spi = spi_master_get_devdata(spi->master);
+> +
+> +	if ((t != NULL) && t->speed_hz)
+> +		speed = t->speed_hz;
+> +
+> +	if ((t != NULL) && t->bits_per_word)
+> +		bits_per_word = t->bits_per_word;
+> +
+> +	if (orion_spi_baudrate_set(spi, speed) != 0)
+> +		return -EINVAL;
+> +
+> +	if (orion_spi_set_transfer_size(orion_spi, bits_per_word) != 0)
+> +		return -EINVAL;
 
-> OK ... to recap, #1 and #3 are OF-specific, I'll be agnostic.
-> If other OF folk think it's OK, great.
-> =
+Given that orion_spi_baudrate_set() and orion_spi_set_transfer_size()
+carefully return an -EFOO value, it's a bit unkind to just rub that out
+and return a hard-coded -EINVAL.
 
-> Some cleanup was needed for #2, but it was basically ok ...
-> I'd like to see the final version, and if it goes via an
-> OF push that's OK by me.  (Though I'd like to see that change
-> make it into 2.6.27 regardless, so let me know.)
+> ...
+>
+> +static void __exit orion_spi_exit(void)
+> +{
+> +	platform_driver_unregister(&orion_spi_driver);
+> +
+> +	destroy_workqueue(orion_spi_wq);
+> +}
 
-Thanks for the review.  1-3 is already merged into my git tree and Ben
-has pulled them.  I hope that's okay.  Here's a link to the commit:
+Please double-check the workqueue handling.  Without looking at it too
+closely, I think that this is waaaay too late to be running
+destroy_workqueue().  If a work is still pending, all the data upon
+which it will be operating will have been rubbed out.  I'm suspecting
+that an earlier flush_work() (or similar) will be needed.
 
-http://git.kernel.org/?p=3Dlinux/kernel/git/benh/powerpc.git;a=3Dcommitdiff=
-;h=3Ddc87c98e8f635a718f1abb2c3e15fc77c0001651
 
-Let me know if you see anything else that needs to be changed and I'll
-submit a fixup patch.
-
-> And #4 isn't quite cooked yet.
-
-Okay, I'll hack on this more and post v4.
-
-Thanks again,
-g.
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
+Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

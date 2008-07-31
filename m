@@ -1,13 +1,11 @@
-From: "Matt Fleming" <mjf-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: SPI bus sharing
-Date: Thu, 31 Jul 2008 11:57:47 +0100
-Message-ID: <5ff4a1e50807310357l8727aeay36cda0d48ca9db57@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: =?GB2312?B?wfXPyMn6?= <caifa338-KN7UnAbNpbg@public.gmane.org>
+Subject: =?GB2312?B?uanTpg==?=
+Date: Thu, 31 Jul 2008 23:11:13 +0800
+Message-ID: <E1KOZoC-0001MK-H0@mail.sourceforge.net>
+Reply-To: caifa338-KN7UnAbNpbg@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1128671703=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,22 +17,36 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-[please cc me on replies, I'm not subscribed]
+--===============1128671703==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+=C4=FA=BA=C3=A3=A1=CE=D2=B9=AB=CB=BE=CF=D6=D3=D0=BD=E1=D3=E0=B7=A2=C6=B1=BF=
+=C9=B4=FA=C0=ED=BF=AA=B3=F6=A1=A3=B9=A4=D7=F7QQ=A3=BA328.7060.74  =D7=C9=D1=
+=AF=CA=D6=BB=FA=A3=BA136.3281.1050 =C1=F5=CF=C8=C9=FA=A1=A3
 
-I know this issue has been discussed time and time again on the
-mailing lists but I can't seem to find any code out there for any
-implementations of bus locking primitives for the SPI layer. Has there
-been any work on getting a version into the mainline kernel? I know
-some design ideas have been batted around (was there ever consensus on
-a design) but has any actual code come of it?
 
-Thanks,
-Matt
+--===============1128671703==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============1128671703==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1128671703==--

@@ -1,19 +1,16 @@
 From: Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] atmel_spi: fix hang due to missed
-	interrupt
-Date: Fri, 1 Aug 2008 15:49:31 +0200
-Message-ID: <20080801154931.120632f1@hskinnemo-gx745.norway.atmel.com>
-References: <1217524213-4027-1-git-send-email-haavard.skinnemoen@atmel.com>
+Subject: [PATCH 1/4] avr32: Reduce DataFlash bus speed
+	to 8 MHz on ATNGW100
+Date: Fri,  1 Aug 2008 17:17:13 +0200
+Message-ID: <1217603836-21243-1-git-send-email-haavard.skinnemoen@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Lars Steubesand <lars.steubesand-//tT4aWmXyZBDgjK7y7TUQ@public.gmane.org>
-To: Gerard Kam <gerardk5-H+0wwilmMs3R7s880joybQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	kernel-o2ulR9ObcgE/ohRxsw7f2g@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1217524213-4027-1-git-send-email-haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,38 +22,43 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
->  		spi_writel(as, RNCR, 0);
->  		spi_writel(as, TNCR, 0);
-> +		ieval = SPI_BIT(RXBUFF) | SPI_BIT(ENDRX) | SPI_BIT(OVRES);
+Doing this in combination with "atmel_spi: fix hang due to missed
+interrupt" appears to eliminate the overruns I'm seeing when using
+JFFS2-on-DataFlash as /usr filesystem on the ATNGW100.
 
-Actually, I think the real bug happens right here: Writing RNCR to 0
-will clear any pending ENDRX interrupt, so if the transfer is completed
-before this, we won't see any interrupt. These writes are also
-completely pointless -- RNCR is zeroed automatically after it gets
-shifted into RCR. TNCR works the same way.
+Signed-off-by: Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+---
+The "atmel" releases have been running the DataFlash at 8 MHz for a
+while, so this brings mainline in sync with them.
 
-The RXBUFF interrupt is only cleared by writing a nonzero RCR or RNCR,
-so your patch should fix it. But I'm wondering if there may be another
-race left to fix: If we queue two transfers, and both of them complete
-before we handle the interrupt, I think we only consider one of them to
-be complete. If RXBUFF is set, we should complete any "next" transfer
-we have queued up as well.
+I think the only way to increase the bus speed beyond this is to use
+faster RAM. I'll look into using SRAM bounce buffers next.
 
-It could be your patch fixes this last case too -- when this happens,
-RXBUFF stays set when we return from the interrupt handler, so the
-interrupt gets retriggered immediately. We could handle this more
-efficiently, but I think it's handled correctly with your patch applied.
+I'll apply this patch to my avr32 tree. David, I'll let you decide
+whether the other three patches are important/safe enough for 2.6.27.
+I've verified that they don't break DataFlash on ATNGW100, but they
+could use some testing on other setups, in particular AT91RM9200 and
+other AT91 chips.
 
-I'll see if I can find a way to clean up the somewhat headache-inducing
-control flow in this driver, but until then, your patch should
-definitely improve things.
+ arch/avr32/boards/atngw100/setup.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-As for the overruns, I'm beginning to suspect that the only way to get
-rid of those and still maintain a reasonable transfer rate is to use
-bounce buffers in faster RAM (e.g. on-chip SRAM).
+diff --git a/arch/avr32/boards/atngw100/setup.c b/arch/avr32/boards/atngw100/setup.c
+index c7fe94d..12b21ac 100644
+--- a/arch/avr32/boards/atngw100/setup.c
++++ b/arch/avr32/boards/atngw100/setup.c
+@@ -47,7 +47,7 @@ static struct eth_platform_data __initdata eth_data[2];
+ static struct spi_board_info spi0_board_info[] __initdata = {
+ 	{
+ 		.modalias	= "mtd_dataflash",
+-		.max_speed_hz	= 10000000,
++		.max_speed_hz	= 8000000,
+ 		.chip_select	= 0,
+ 	},
+ };
+-- 
+1.5.6.3
 
-Haavard
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

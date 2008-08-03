@@ -1,20 +1,13 @@
-From: "Jon Smirl" <jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 0/4 REPOST] OF infrastructure for
-	SPI devices
-Date: Sat, 2 Aug 2008 18:46:12 -0400
-Message-ID: <9e4733910808021546o4aa5ebdcv4caa2878e4c17cf0@mail.gmail.com>
-References: <20080725072549.8485.90723.stgit@trillian.secretlab.ca>
-	<9e4733910807250746g436307d7sbbf799b73a9f2c67@mail.gmail.com>
+From: <estebandeterreros2006-NiuohdGkm+4@public.gmane.org>
+Subject: A proposal for collaboration.
+Date: Mon, 4 Aug 2008 00:22:09 +0400
+Message-ID: <006f01c40f9d$5d301432$5e604b5d@jveciuw>
+Reply-To: letters-36R/Dj0JWyblud2MYLJfbw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	"Anton Vorontsov" <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_006B_01C44B5D.5E601432"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <9e4733910807250746g436307d7sbbf799b73a9f2c67-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,94 +19,81 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 7/25/08, Jon Smirl <jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> On 7/25/08, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
->  > I don't know what to do with these patches.  I'd really like to see them
->  >  in .27, and now that akpm has cleared his queue, the prerequisite patch
->  >  has been merged so they are ready to go in.  However, even though there
->  >  has been favourable reception on the SPI and linuxppc lists for these
->  >  changes I don't have any acks from anybody yet.
->
->
-> I have compatible hardware but it has an MMC card socket hooked up. I
->  haven't figured out yet how to get this driver hooked to the MMC
->  subsystem and make the file system on the card work.  (I've been
->  working on ALSA).
->
->  I believe I need this:
->  http://lkml.org/lkml/2008/6/5/209
->
->  Then I need to get everything hooked together. Point me in the right
->  direction and I can help with testing.
+------=_NextPart_000_006B_01C44B5D.5E601432
+Content-Type: text/plain;
+        charset="windows-1251"
+Content-Transfer-Encoding: quoted-printable
 
-Grant, your SPI driver works with MMC cards. I needed to add the patch
-noted above.
-http://lkml.org/lkml/2008/6/5/209
-What's the status of merging Anton's patch?
+Hello Sir/Madam,
 
-And then tweak names until everything matches.
+I Valeriy Volik, Deputy Director of System Storage Software
+specializes in innovative IT solutions and complex software projects develo=
+pment.
 
-		spi@f00 {
-			#address-cells = <1>;
-			#size-cells = <0>;
-			compatible = "fsl,mpc5200b-spi","fsl,mpc5200-spi";
-			reg = <0xf00 0x20>;
-			interrupts = <0x2 0xd 0x0 0x2 0xe 0x0>;
-			interrupt-parent = <&mpc5200_pic>;
+My company based in Ukraine. We've earned ourselves a reputation of a=20
+reliable and trustworthy partner working successfully with a number of=20
+West European companies and providing them with reliable software=20
+development services in financial and media sectors.
+Unfortunately we are currently facing some difficulties with receiving=20
+payments for our services. It usually takes us 10-30 days to receive=20
+a payment and clearing from your country and such delays are harmful=20
+to our business. We do not have so much time to accept every wire transfer.
 
-			mmc-slot@0 {
-				compatible = "linux,mmc-spi";
-				reg = <0>;
-				spi-max-frequency = <20000000>;
-				/* Unregulated slot. */
-				voltage-range = <3300 3300>;
-				/*gpios = <&sdcsr_pio 1 0   /*  WP */
-				/*		 &sdcsr_pio 0 1>; /* nCD */
-			};
-		};
+That's why we are currently looking for partners in your country to help=20
+us accept and process these payments faster.
+If you are looking for a chance to make an additional profit you can=20
+become our representative in your country. As our representative you will=
+=20
+receive 8% of every deal we conduct. Your job will be accepting funds in=20
+the form of wire transfers and forwarding them to us.=20
+It is not a full-time job, but rather a very convenient and fast way=20
+to receive additional income. We also consider opening an office in your=20
+country in the nearest future and you will then have certain privileges=20
+should you decide to apply for a full-time job. Please if you are=20
+interested in transacting business with us we will be very glad.
 
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 7503b81..eb056b9 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -1400,7 +1400,7 @@ static int __devexit mmc_spi_remove(struct
-spi_device *spi)
+Please contact me for more information via email: SysStorSoftware-KK0ffGbhmjU@public.gmane.org
 
- static struct spi_driver mmc_spi_driver = {
- 	.driver = {
--		.name =		"mmc_spi",
-+		.name =		"mmc-spi",
- 		.bus =		&spi_bus_type,
- 		.owner =	THIS_MODULE,
- 	},
-diff --git a/drivers/of/of_mmc_spi.c b/drivers/of/of_mmc_spi.c
-index aa4e017..f189cdb 100644
---- a/drivers/of/of_mmc_spi.c
-+++ b/drivers/of/of_mmc_spi.c
-@@ -95,7 +95,7 @@ static int of_mmc_spi_add(struct device *dev)
- 	const u32 *voltage_range;
- 	int size;
+and send us the following information about yourself:=20=20
 
--	if (!np || !of_device_is_compatible(np, "mmc-spi"))
-+	if (!np || !of_device_is_compatible(np, "linux,mmc-spi"))
- 		return NOTIFY_DONE;
+1. Your Full Name as it appears on your resume.
+2. Education.
+3. Your Contact Address.
+4. Telephone/Fax number.
+5. Your present Occupation and Position currently held.
+6. Your Age
 
- 	oms = kzalloc(sizeof(*oms), GFP_KERNEL);
-@@ -152,7 +152,7 @@ static int of_mmc_spi_del(struct device *dev)
- 	struct device_node *np = dev->archdata.of_node;
- 	struct of_mmc_spi *oms;
+Please respond and we will provide you with additional details on how you=
+=20
+can become our representative. Joining us and starting business today will=
+=20
+cost you nothing and you will be able to earn a bit of extra money fast=20
+and easy. Should you have any questions, please feel free to contact us=20
+with all your questions.
 
--	if (!np || !of_device_is_compatible(np, "mmc-spi") ||
-+	if (!np || !of_device_is_compatible(np, "linux,mmc-spi") ||
- 			!dev->platform_data)
- 		return NOTIFY_DONE;
-
--- 
-Jon Smirl
-jonsmirl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Sincerely,
+Valeriy Volik,
+System Storage Software
+------=_NextPart_000_006B_01C44B5D.5E601432
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
+------=_NextPart_000_006B_01C44B5D.5E601432
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_006B_01C44B5D.5E601432--

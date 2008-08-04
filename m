@@ -1,19 +1,15 @@
-From: Paul Mundt <lethal-M7jkjyW5wf5g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [RFT PATCH] SuperH HSPI controller driver.
-Date: Mon, 4 Aug 2008 14:49:03 +0900
-Message-ID: <20080804054903.GB11682__38120.6719940112$1217829068$gmane$org@linux-sh.org>
-References: <20080721090744.GA16714@roarinelk.homelinux.net>
-	<20080803235247.GA6682@linux-sh.org>
-	<20080803235702.GB6682@linux-sh.org>
+From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Subject: SPI: Add pin configuration callback
+Date: Mon, 04 Aug 2008 11:50:38 +0100
+Message-ID: <20080804105038.522981786@fluff.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>,
-	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org
+Cc: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20080803235702.GB6682-M7jkjyW5wf5g9hUCZPvPmw@public.gmane.org>
+Content-Disposition: inline;
+	filename=simtec/simtec-drivers-spi-s3c24xx-gpiosetup.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,77 +21,58 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Aug 04, 2008 at 08:57:02AM +0900, Paul Mundt wrote:
-> On Mon, Aug 04, 2008 at 08:52:47AM +0900, Paul Mundt wrote:
-> > On Mon, Jul 21, 2008 at 11:07:44AM +0200, Manuel Lauss wrote:
-> > > Here is a very simple driver for the HSPI block on many SuperH processors.
-> > > I could only subject it to limited testings, as my sole SPI device here is
-> > > a write-only 8bit digital poti.  It seems to do the right thing as far as
-> > > I could see on an oscilloscope.
-> > > 
-> > > The driver doesn't do DMA and pushes/pops bytes one-at-a-time from/to fifos
-> > > (I'm going to fix that at a later time).
-> > > 
-> > > Please test and comment!
-> > > 
-> > > Thanks,
-> > > 	Manuel Lauss
-> > > 
-> > > ---
-> > > 
-> > > A simple driver for the HSPI block found on many SuperH processors.
-> > > 
-> > > Signed-off-by: Manuel Lauss <mano-nEyxjcs6f3Vin2gBucwGBecsttgLyre6@public.gmane.org>
-> > 
-> > I have no outstanding issues with this, though I did just break it with
-> > the header reorg. If David is fine with it and wants to Ack it, I can
-> > take it through my tree.
-> 
-> Taking a quick look at it again, I think you should be able to reuse
-> arch/sh/include/asm/spi.h as-is, and just drop the header you have now.
+Add a gpio configuration callback for the s3c24xx SPI driver, as
+there are several options depending on the channel and the chip
+in use.
 
-This should do it. You could also use priv->pd->bus_num directly instead
-of referencing pdev->id, but I suppose it doesn't really matter.
+This is needed as the controller may not have been setup by the
+initial bootloader and the fact that the SPI controller gets
+reset over suspend/resume into slave mode but the GPIO function
+registers do not.
 
----
+Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
---- a/drivers/spi/spi_hspi.c	2008-08-04 14:46:01.000000000 +0900
-+++ b/drivers/spi/spi_hspi.c	2008-08-04 14:45:51.000000000 +0900
-@@ -22,7 +22,7 @@
- #include <linux/spi/spi_bitbang.h>
- 
- #include <asm/clock.h>
--#include <asm/spi_hspi.h>
-+#include <asm/spi.h>
- 
- #define SPCR	0x00			/* control */
- #define SPSR	0x04			/* status */
-@@ -89,13 +89,13 @@
- 	struct device *dev;
- 	struct resource *ioarea;
- 	struct spi_master *master;
--	struct hspi_platdata *pd;
-+	struct sh_spi_info *pd;
- };
- 
- static inline void hspi_platcs(struct hspi_priv *priv, int cs, int pol)
- {
--	if (priv->pd && priv->pd->set_cs)
--		priv->pd->set_cs(priv->pd, cs, pol);
-+	if (priv->pd && priv->pd->chip_select)
-+		priv->pd->chip_select(priv->pd, cs, pol);
+Index: linux-2.6.27-rc1-quilt1/drivers/spi/spi_s3c24xx.c
+===================================================================
+--- linux-2.6.27-rc1-quilt1.orig/drivers/spi/spi_s3c24xx.c	2008-08-04 11:46:12.000000000 +0100
++++ linux-2.6.27-rc1-quilt1/drivers/spi/spi_s3c24xx.c	2008-08-04 11:46:54.000000000 +0100
+@@ -247,6 +247,9 @@ static void s3c24xx_spi_initialsetup(str
+ 	writeb(0xff, hw->regs + S3C2410_SPPRE);
+ 	writeb(SPPIN_DEFAULT, hw->regs + S3C2410_SPPIN);
+ 	writeb(SPCON_DEFAULT, hw->regs + S3C2410_SPCON);
++
++	if (hw->pdata && hw->pdata->gpio_setup)
++		hw->pdata->gpio_setup(hw->pdata, 1);
  }
  
- static inline struct hspi_priv *to_priv(struct spi_device *sdev)
-@@ -353,7 +353,7 @@
- 		goto out3;
- 	}
+ static int __init s3c24xx_spi_probe(struct platform_device *pdev)
+@@ -412,6 +415,9 @@ static int s3c24xx_spi_suspend(struct pl
+ {
+ 	struct s3c24xx_spi *hw = platform_get_drvdata(pdev);
  
--	master->num_chipselect = priv->pd ? priv->pd->num_cs : 1;
-+	master->num_chipselect = priv->pd ? priv->pd->num_chipselect : 1;
- 	master->bus_num = pdev->id;
- 	master->setup = hspi_setup;
++	if (hw->pdata && hw->pdata->gpio_setup)
++		hw->pdata->gpio_setup(hw->pdata, 0);
++
+ 	clk_disable(hw->clk);
+ 	return 0;
+ }
+Index: linux-2.6.27-rc1-quilt1/include/asm-arm/arch-s3c2410/spi.h
+===================================================================
+--- linux-2.6.27-rc1-quilt1.orig/include/asm-arm/arch-s3c2410/spi.h	2008-08-04 11:45:55.000000000 +0100
++++ linux-2.6.27-rc1-quilt1/include/asm-arm/arch-s3c2410/spi.h	2008-08-04 11:46:13.000000000 +0100
+@@ -18,6 +18,7 @@ struct s3c2410_spi_info {
+ 	unsigned int		 num_cs;	/* total chipselects */
+ 	int			 bus_num;       /* bus number to use. */
  
++	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
+ 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+ };
+ 
+
+-- 
+Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)
+
+  'a smiley only costs 4 bytes'
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

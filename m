@@ -1,15 +1,13 @@
-From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Subject: SPI: Add pin configuration callback
-Date: Mon, 04 Aug 2008 11:50:38 +0100
-Message-ID: <20080804105038.522981786@fluff.org.uk>
+From: "Miguel Angel Alvarez" <caronteycerbero-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: IXP4XX
+Date: Tue, 05 Aug 2008 16:07:19 +0200
+Message-ID: <48985E97.601@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline;
-	filename=simtec/simtec-drivers-spi-s3c24xx-gpiosetup.patch
+Content-Class: urn:content-classes:message
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,61 +19,76 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add a gpio configuration callback for the s3c24xx SPI driver, as
-there are several options depending on the channel and the chip
-in use.
+Hi.
 
-This is needed as the controller may not have been setup by the
-initial bootloader and the fact that the SPI controller gets
-reset over suspend/resume into slave mode but the GPIO function
-registers do not.
+I am new to this mailing list, so although I have tried to search in the =
 
-Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+mailing list archives without success, maybe I am asking for a trivial =
 
-Index: linux-2.6.27-rc1-quilt1/drivers/spi/spi_s3c24xx.c
-===================================================================
---- linux-2.6.27-rc1-quilt1.orig/drivers/spi/spi_s3c24xx.c	2008-08-04 11:46:12.000000000 +0100
-+++ linux-2.6.27-rc1-quilt1/drivers/spi/spi_s3c24xx.c	2008-08-04 11:46:54.000000000 +0100
-@@ -247,6 +247,9 @@ static void s3c24xx_spi_initialsetup(str
- 	writeb(0xff, hw->regs + S3C2410_SPPRE);
- 	writeb(SPPIN_DEFAULT, hw->regs + S3C2410_SPPIN);
- 	writeb(SPCON_DEFAULT, hw->regs + S3C2410_SPCON);
-+
-+	if (hw->pdata && hw->pdata->gpio_setup)
-+		hw->pdata->gpio_setup(hw->pdata, 1);
- }
- 
- static int __init s3c24xx_spi_probe(struct platform_device *pdev)
-@@ -412,6 +415,9 @@ static int s3c24xx_spi_suspend(struct pl
- {
- 	struct s3c24xx_spi *hw = platform_get_drvdata(pdev);
- 
-+	if (hw->pdata && hw->pdata->gpio_setup)
-+		hw->pdata->gpio_setup(hw->pdata, 0);
-+
- 	clk_disable(hw->clk);
- 	return 0;
- }
-Index: linux-2.6.27-rc1-quilt1/include/asm-arm/arch-s3c2410/spi.h
-===================================================================
---- linux-2.6.27-rc1-quilt1.orig/include/asm-arm/arch-s3c2410/spi.h	2008-08-04 11:45:55.000000000 +0100
-+++ linux-2.6.27-rc1-quilt1/include/asm-arm/arch-s3c2410/spi.h	2008-08-04 11:46:13.000000000 +0100
-@@ -18,6 +18,7 @@ struct s3c2410_spi_info {
- 	unsigned int		 num_cs;	/* total chipselects */
- 	int			 bus_num;       /* bus number to use. */
- 
-+	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
- 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
- };
- 
+question. So, please, forgive me.
 
--- 
-Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)
+I am trying to use an SD card in a system with an IXP465. I am using =
 
-  'a smiley only costs 4 bytes'
+kernel 2.6.18 (due to some problems with some Intel libraries), but I =
+
+will understand that your advices will be centered in newest kernels (as =
+
+2.6.26).
+
+I have two main problems / questions:
+a) Which should be the "abstract" model to use? MMC/SD driver over an =
+
+SPI host system?
+b) IXP465 has an SSP/SPI subsystem, but I cannot found a driver to use =
+
+it. Does it exist? Is it the same as pxa2xx (it seems similar)? I think =
+
+bitbanging is not the main option (as far as I understand), because the =
+
+SPI lines do not go to gpios.
+
+Any clue / guide / help would be appreciated.
+
+Thanks
+
+Miguel =C1ngel =C1lvarez
+This message (and any associated files) is intended only for the =
+
+use of the individual or entity to which it is addressed and may =
+
+contain information that is confidential, subject to copyright or
+constitutes a trade secret. If you are not the intended recipient =
+
+you are hereby notified that any dissemination, copying or =
+
+distribution of this message, or files associated with this message, =
+
+is strictly prohibited. If you have received this message in error, =
+
+please notify us immediately by replying to the message and deleting =
+
+it from your computer. Messages sent to and from us may be monitored. =
+
+
+Internet communications cannot be guaranteed to be secure or error-free =
+
+as information could be intercepted, corrupted, lost, destroyed, arrive =
+
+late or incomplete, or contain viruses. Therefore, we do not accept =
+
+responsibility for any errors or omissions that are present in this =
+
+message, or any attachment, that have arisen as a result of e-mail =
+
+transmission. If verification is required, please request a hard-copy =
+
+version. Any views or opinions presented are solely those of the author =
+
+and do not necessarily represent those of the company.
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

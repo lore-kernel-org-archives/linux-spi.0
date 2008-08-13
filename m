@@ -1,9 +1,9 @@
-From: china-gift-9Onoh4P/yGk@public.gmane.org
-Subject: =?GB2312?B?0rXO8cGqz7U=?=
-Date: Wed, 13 Aug 2008 12:32:58 +0800
-Message-ID: <E1KT82c-0003jF-HO@mail.sourceforge.net>
-Reply-To: china-gift-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============0004181856=="
+From: =?GB2312?B?0rYgICDJ+g==?= <vhkjmn-9Onoh4P/yGk@public.gmane.org>
+Subject: =?GB2312?B?t6IvxrE=?=
+Date: Wed, 13 Aug 2008 13:33:31 +0800
+Message-ID: <E1KT8yj-0008VX-Rc@mail.sourceforge.net>
+Reply-To: vhkjmn-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0890637221=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,26 +17,35 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0004181856==
+--===============0890637221==
 Content-Type: text/plain;charset="GB2312"
 
-          您好！
-              为方便贵公司做帐及提高经济效益。我公司现可代开发票。发票正规，
-              点数十分优惠！可验票后付款。
-              商品销售发票，广告发票，运输发票，服务发票，餐饮发票，建筑安装
-              发票,增值税发票等
-                （1）公司为一般纳税企业没有优惠政策而想合法避税的
-                （2）公司帐目进项与出项差额过大，需补充差额的
-                （3）对外销售商品或提供技术服务暂未正式申领的
-                （4）外出采购或公干而服务商没有提供可以报销的发票 
-                （5）事业单位记帐补帐冲帐旧帐整理,需要咨询的
-                （6）其他项目的
-                                联系人：周莉
-                                联系号：135 3812 9262
-                                  QQ号：980820886
+TO:财务部
+       
+         本公司成立于1993年，经过十多年的发展不断壮大,现在在全国大只城市均设有分公司,
+
+     与全国上百家公司有着密切业务的联系，可优惠对外代开增值税和海关增值税发/票，
+
+    （国税/地税），代开范围： 普通商品销售、运输、广告、建筑安装、服务咨询等发/票。
+       
+         本公司成立多年一直坚持以“诚信”作为公司核心思想，牢固树立公司形象，
+
+     真正做到“彼此合 作一次、必成永久朋友”的经营理念，我司可先提供发/票，
+
+     等贵司或贵厂收到票据认证后再付款，
+   
+     此信息长期有效,敬请保留以便急用，
+    
+     祝：生意兴隆、财源广进！
+   
+     联系人：小  叶
+
+     电话：  136 326 31316
+     
+     电邮：  yeu13632631316-9Onoh4P/yGk@public.gmane.org
 
 
---===============0004181856==
+--===============0890637221==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -47,7 +56,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============0004181856==
+--===============0890637221==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -58,4 +67,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0004181856==--
+--===============0890637221==--

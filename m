@@ -1,16 +1,11 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: pxa2xx_spi with SFRM
-Date: Fri, 22 Aug 2008 23:23:31 -0400
-Message-ID: <48AF82B3.8040709@whoi.edu>
-References: <1218182539.489bfd8b24a3d@webmail.whoi.edu>	<489C1B23.6040804@cam.ac.uk>	<48A0C35D.5010606@gmail.com>	<48A44F77.1020908@whoi.edu>	<48A4ED85.1030803@gmail.com>	<48A5D44D.6040106@whoi.edu>	<20080815223307.02db86aa@vsauder-lx.localdomain>	<48A9C0D0.5050304@whoi.edu>	<48AB6C8F.4040408@whoi.edu>
-	<20080821180826.491ac70b@vsauder-lx.localdomain>
+From: "juliet konan" <juliet12fr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Good Day Dear,
+Date: Thu, 14 Aug 2008 09:08:16 +0000
+Message-ID: <89f29ad50808140208lefde310oe482b0fc9ef1aa28@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0807671323=="
+To: undisclosed-recipients:;
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080821180826.491ac70b-W37fpRALFaH6NKmgiXY+hA0JkcsJGQge@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,320 +17,79 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vernon Sauder wrote:
-> Ned Forrester wrote:
-> 
->> Ned Forrester wrote:
->>> Vernon Sauder wrote:
->>>> <opinion> As a user, it would seem that the SSP should work with
->>>> minimum fuss. If there are values that enable 99% of devices to
->>>> work, then why would you *not* want them to be the defaults? If the
->>>> user needs to tweak the values because they need more performance,
->>>> then they can. But if they only need a low bandwidth connection,
->>>> causing transfers to hang because they did not provide a
->>>> "know-able" value seems less than useful. I know it took me
->>>> entirely too long to get this working. I am only trying to help the
->>>> next user that needs this. </opinion>
->>> I agree with your sentiment.  What I am not sure of is whether there
->>> are even 90% of applications that could use a single group of
->>> settings.  I think the DMA burst and the thresholds could likely be
->>> set to reasonable defaults: burst = bits/word (for 8, 16, and 32 bit
->>> words, this results in burst equaling half the FIFO), and thresholds
->>> of 8/8 (again, half the FIFO).  For the timeout, I'm less sure of
->>> the best approach; probably it should be very long, a millisecond or
->>> more (if we know what that translates to on a PXA270), and let users
->>> reduce it if they want faster response.  My main concern is the poor
->>> documentation of this in the PXA developer's manuals.
->> Vernon, have you had any more thoughts about this.  I am working on a
->> patch to deal with problems that were discovered a while ago, and which
->> finally tripped up another user (Re: [spi-devel-general] [PATCH]
->> pxa2xx_spi: wait_rx_stall before deasserting CS on PIO mode).  I
->> wondered if we are ready to converge on any changes.  On the one hand
->> it would be easy to throw improvement in the defaults in the with the
->> other changes, but on the other hand I think they are independent, and
->> so they should probably be in separate patches.
->>
->> As a consequence of studying the driver for the other patch (regarding
->> transfer delays and chip select), I have a new understanding of the
->> timeout that simplifies the problems I discussed above.  I am now
->> reasonably sure (but cannot test) that a timeout value that is "too
->> short" will only result in excess interrupt service for unneeded
->> timeouts, and not in early termination of a transfer.  In
->> interrupt_transfer, acceptance of a timeout interrupt is conditioned on
->> being able to retrieve all expected characters from the RX FIFO; in
->> dma_transfer, acceptance is similarly conditioned on the whole transmit
->> process being complete (and thus the receive process is done or will be
->> in nsec).
->>
->> The result is that neither a too short, nor a too long timeout is
->> fatal, and thus it IS reasonable to more firmly establish a default
->> timeout, even it is short.
->>
-> 
-> Would you be in favor of a patch like this? If the code does not
-> match the documentation, let me know if the documentation is correct. I
-> can then figure out what the code should do.
-> 
-> Regards,
-> Vern
+--===============0807671323==
+Content-Type: multipart/alternative;
+	boundary="----=_Part_82919_4808846.1218704896565"
 
-Looks fine, except as noted below...
+------=_Part_82919_4808846.1218704896565
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Also, you should make patches with something equivalent to:
+ Good Day Dear,
 
-rm -f $patch_file $tmp_file
-LC_ALL=C TZ=UTC0 diff -Nurp $src_dir $patch_dir > $tmp_file
-cat $patch_text > $patch_file
-diffstat -p 1 -w 70 $tmp_file >> $patch_file
-echo "" >> $patch_file
-cat $tmp_file >> $patch_file
-rm $tmp_file
+My name is  Juliet Konan, I am 22 years old,I am Ivorian Natinonality in
+West African regoin.I am the only daugther of late CHIEF WALEHJI  Konan, my
+late father is the former Director of Gold and Diamond Minning industry here
+in Bouakee before the rebels attacked our house  and kill my mother and my
+father,Luckly to me,i was in school at Ghana when the incident happens.
+Before the death of parents,my father told me that he deposited the sum of
+US$ 2,500,000.00( two Million,Five Hundred Thousand Dollars) with a Bank
+here in Abidjan under fixed suspence account that he used my name as the
+next of kin that i should be 25 years before having access to it.He also
+told me that his intention was to open Bank account in overseas and transfer
+the money for foreign investments.
 
-Note the environment variables and flags passed to diff, and the use of
-diffstat.
+Please,my reasons of contacting you is to request for your co-operation and
+assistance to help me transfer this money into a foreign account of yours by
+providing a bank account either companys or your private account where the
+money can be remitted in your care until I finished my Education career in
+your country. Please remember the confidentiality and urgency my mail
+required while I expect to hear from you.
 
-> ---
-> pxa2xx_spi: Fix chip_info defaults and documentation.
-> 
-> Make the chip info structure data optional by providing reasonable
-> defaults. Improve corresponding documentation.
-> 
-> DMA can determine appropriate dma_burst_size and thresholds
-> automatically so use DMA even if dma_burst_size is not specified.
-> 
-> Signed-off-by: Vernon Sauder <VernonInHand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
-> --- linux-2.6.24.4/drivers/spi/pxa2xx_spi.c	2008-03-24 14:49:18.000000000 -0400
-> +++ src.cache/drivers/spi/pxa2xx_spi.c	2008-08-20 13:20:19.000000000 -0400
-> @@ -44,6 +44,10 @@
->  
->  #define MAX_BUSES 3
->  
-> +#define RX_THRESH_DFLT 	8
-> +#define TX_THRESH_DFLT 	8
-> +#define TIMOUT_DFLT		1000
-> +
->  #define DMA_INT_MASK (DCSR_ENDINTR | DCSR_STARTINTR | DCSR_BUSERR)
->  #define RESET_DMA_CHANNEL (DCSR_NODESC | DMA_INT_MASK)
->  #define IS_DMA_ALIGNED(x) (((u32)(x)&0x07)==0)
-> @@ -1126,8 +1130,7 @@
->  
->  		chip->cs_control = null_cs_control;
->  		chip->enable_dma = 0;
-> -		chip->timeout = 1000;
-> -		chip->threshold = SSCR1_RxTresh(1) | SSCR1_TxTresh(1);
-> +		chip->timeout = TIMOUT_DFLT;
->  		chip->dma_burst_size = drv_data->master_info->enable_dma ?
->  					DCMD_BURST8 : 0;
->  	}
-> @@ -1138,25 +1141,28 @@
->  
->  	/* chip_info isn't always needed */
->  	chip->cr1 = 0;
-> +	uint tx_thres = TX_THRESH_DFLT;
-> +	uint rx_thres = RX_THRESH_DFLT;
->  	if (chip_info) {
->  		if (chip_info->cs_control)
->  			chip->cs_control = chip_info->cs_control;
-> -
-> - 		chip->timeout = chip_info->timeout;
-> +		if (chip_info->timeout)
-> + 			chip->timeout = chip_info->timeout;
-> +		if (chip_info->tx_threshold)
-> +			tx_thres = chip_info->tx_threshold;
-> +		if (chip_info->rx_threshold)
-> +			rx_thres = chip_info->rx_threshold;
->  
-> -		chip->threshold = (SSCR1_RxTresh(chip_info->rx_threshold) &
-> -								SSCR1_RFT) |
-> -				(SSCR1_TxTresh(chip_info->tx_threshold) &
-> -								SSCR1_TFT);
-> -
-> -		chip->enable_dma = chip_info->dma_burst_size != 0
-> -					&& drv_data->master_info->enable_dma;
-> +		chip->enable_dma = drv_data->master_info->enable_dma;
->  		chip->dma_threshold = 0;
->  
->  		if (chip_info->enable_loopback)
->  			chip->cr1 = SSCR1_LBM;
->  	}
->  
-> +	chip->threshold = (SSCR1_RxTresh(rx_thres) & SSCR1_RFT) |
-> +			(SSCR1_TxTresh(tx_thres) & SSCR1_TFT);
-> +
->  	/* set dma burst and threshold outside of chip_info path so that if
->  	 * chip_info goes away after setting chip->enable_dma, the
->  	 * burst and threshold can still respond to changes in bits_per_word */
-> @@ -1196,17 +1202,19 @@
->  
->  	/* NOTE:  PXA25x_SSP _could_ use external clocking ... */
->  	if (drv_data->ssp_type != PXA25x_SSP)
-> -		dev_dbg(&spi->dev, "%d bits/word, %d Hz, mode %d\n",
-> +		dev_dbg(&spi->dev, "%d bits/word, %d Hz, mode %d, %s\n",
->  				spi->bits_per_word,
->  				(CLOCK_SPEED_HZ)
->  					/ (1 + ((chip->cr0 & SSCR0_SCR) >> 8)),
-> -				spi->mode & 0x3);
-> +				spi->mode & 0x3,
-> +				chip->enable_dma ? "DMA" : "PIO");
+Thanks and God bless you and your family.
+Yours Sincerely,
 
-Oops! You are not patching the latest version of the code.  This version
-predates 1/26/08.  CLOCK_SPEED_HZ is no longer part of the code.  The
-patch will be rejected if it does not apply against the current git
-tree.  The latest version can be found at:
+ juliet konan
 
-http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=blob_plain;f=drivers/spi/pxa2xx_spi.c;hb=HEAD
+------=_Part_82919_4808846.1218704896565
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
->  	else
-> -		dev_dbg(&spi->dev, "%d bits/word, %d Hz, mode %d\n",
-> +		dev_dbg(&spi->dev, "%d bits/word, %d Hz, mode %d, %s\n",
->  				spi->bits_per_word,
->  				(CLOCK_SPEED_HZ/2)
+<div>
+<div>
+<div>Good Day Dear,<br><br>My name is&nbsp; Juliet Konan, I am 22 years old,I am Ivorian Natinonality in West African regoin.I am the only daugther of late CHIEF WALEHJI&nbsp; Konan, my late father is the former Director of Gold and Diamond Minning industry here in Bouakee before the rebels attacked our house&nbsp; and kill my mother and my father,Luckly to me,i was in school at Ghana when the incident happens. Before the death of parents,my father told me that he deposited the sum of US$ 2,500,000.00( two Million,Five Hundred Thousand Dollars) with a Bank here in Abidjan under fixed suspence account that he used my name as the next of kin that i should be 25 years before having access to it.He also told me that his intention was to open Bank account in overseas and transfer the money for 
+ foreign investments.<br>
+<br>Please,my reasons of contacting you is to request for your co-operation and assistance to help me transfer this money into a foreign account of yours by providing a bank account either companys or your private account where the money can be remitted in your care until I finished my Education career in your country. Please remember the confidentiality and urgency my mail required while I expect to hear from you.<br>
+<br>Thanks and God bless you and your family.<br>Yours Sincerely,<br>&nbsp;</div></div>
+<div>
+<div>
+<div>juliet konan</div></div></div></div>
 
-I note that when this line was changed in 1/26/08 commit, the author of
-that patch left out the /2, leaving the two branches of this if/else
-identical.  Please restore the /2 when you submit this patch.
-
->  					/ (1 + ((chip->cr0 & SSCR0_SCR) >> 8)),
-> -				spi->mode & 0x3);
-> +				spi->mode & 0x3,
-> +				chip->enable_dma ? "DMA" : "PIO");
->  
->  	if (spi->bits_per_word <= 8) {
->  		chip->n_bytes = 1;
-> @@ -1457,7 +1465,8 @@
->  
->  	/* Load default SSP configuration */
->  	write_SSCR0(0, drv_data->ioaddr);
-> -	write_SSCR1(SSCR1_RxTresh(4) | SSCR1_TxTresh(12), drv_data->ioaddr);
-> +	write_SSCR1(SSCR1_RxTresh(RX_THRESH_DFLT) | SSCR1_TxTresh(TX_THRESH_DFLT),
-> +				drv_data->ioaddr);
->  	write_SSCR0(SSCR0_SerClkDiv(2)
->  			| SSCR0_Motorola
->  			| SSCR0_DataSize(8),
-> --- linux-2.6.24.4/Documentation/spi/pxa2xx	2008-03-24 14:49:18.000000000 -0400
-> +++ src.cache/Documentation/spi/pxa2xx	2008-08-20 13:14:01.000000000 -0400
-> @@ -96,7 +96,7 @@
->  information via the structure "pxa2xx_spi_chip" found in
->  "include/asm-arm/arch-pxa/pxa2xx_spi.h".  The pxa2xx_spi master controller driver
-
-Again, you are trying to patch an obsolete version.  I'm not sure if the
-correctly made patch will apply to older versions, but this whole patch
-is not essential to back port, as it is a "clarification" and not a bug
-fix.  I realize that you consider it a bug fix, and in a way I agree,
-but it is not, in the sense that older drivers can be used if all fields
-in this structure are filled in.
-
->  will uses the configuration whenever the driver communicates with the slave
-> -device.
-> +device. All fields are optional.
-
-Do you need to note that unused fields should be set to zero, or is
-these always zeroed by the way the struct pxa2xx_spi_chip is declared
-(external or static declaration)?  I have forgotten and you probably
-looked at that recently.
-
->  
->  struct pxa2xx_spi_chip {
->  	u8 tx_threshold;
-> @@ -112,14 +112,17 @@
->  performance of pxa2xx_spi driver and misconfiguration will result in rx
->  fifo overruns (especially in PIO mode transfers). Good default values are
->  
-> -	.tx_threshold = 12,
-> -	.rx_threshold = 4,
-> +	.tx_threshold = 8,
-> +	.rx_threshold = 8,
-> +
-> +The range is 1 to 16 where zero indicates "use default".
->  
->  The "pxa2xx_spi_chip.dma_burst_size" field is used to configure PXA2xx DMA
->  engine and is related the "spi_device.bits_per_word" field.  Read and understand
->  the PXA2xx "Developer Manual" sections on the DMA controller and SSP Controllers
->  to determine the correct value. An SSP configured for byte-wide transfers would
-> -use a value of 8.
-> +use a value of 8. The driver will determine a reasonable default if
-> +dma_burst_size == 0.
->  
->  The "pxa2xx_spi_chip.timeout" fields is used to efficiently handle
->  trailing bytes in the SSP receiver fifo.  The correct value for this field is
-> @@ -135,7 +138,10 @@
->  The "pxa2xx_spi_chip.cs_control" field is used to point to a board specific
->  function for asserting/deasserting a slave device chip select.  If the field is
->  NULL, the pxa2xx_spi master controller driver assumes that the SSP port is
-> -configured to use SSPFRM instead.
-> +configured to use SSPFRM instead. NOTE: the SPI driver cannot control the chip
-> +select if SSPFRM is used so each transfer will assert/deassert SSPFRM around it.
-> +Many devices need chip select asserted around the complete message. The 
-> +cs_control method should use the SSPFRM pin as a GPIO to accomodate these chips.
-
-*could* use the SSPFRM pin.  It can also use any other GPIO line, and at
-most one could use SSPFRM if there are multiple chips on the bus.
-
->  
->  NSSP SALVE SAMPLE
->  -----------------
-> @@ -206,16 +212,15 @@
->  
->  DMA and PIO I/O Support
->  -----------------------
-> -The pxa2xx_spi driver support both DMA and interrupt driven PIO message
-> +The pxa2xx_spi driver supports both DMA and interrupt driven PIO message
->  transfers.  The driver defaults to PIO mode and DMA transfers must enabled by
-
-Add "be" between "must enabled".
-
-> -setting the "enable_dma" flag in the "pxa2xx_spi_master" structure and
-> -ensuring that the "pxa2xx_spi_chip.dma_burst_size" field is non-zero.  The DMA
-> +setting the "enable_dma" flag in the "pxa2xx_spi_master" structure.  The DMA
->  mode support both coherent and stream based DMA mappings.
-
-As long as you are fixing, then "supports" above.
-
->  
->  The following logic is used to determine the type of I/O to be used on
->  a per "spi_transfer" basis:
->  
-> -if !enable_dma or dma_burst_size == 0 then
-> +if !enable_dma then
->  	always use PIO transfers
-
-Well, that is true, but the user should probably note that simply
-requesting DMA via the enable_dma flag is not sufficient to guarantee
-that DMA will be used.  There are a number of criteria in
-map_dma_buffers that must be met.  I guess that is what the rest of that
-list is trying to say.
-
-Also note that the very recent patch that I submitted, tries to address
-a problem that you encountered with transfer lengths longer than 8192;
-in that case, I changed the behavior from "fail" to "do it in PIO mode
-with rate limited warning".  Some day the driver could be rewritten to
-bust long transfers and do the pieces by DMA, but that is too ambitious
-for now.  So you could add to the list of states that transfers longer
-than 8191 will be PIO.  Have you tested that patch to see if it fixes
-any of your other problems?
-
-I'm not sure I believe the words about coherent and stream DMA, but I
-will have to check that later.
-
->  
->  if spi_message.is_dma_mapped and rx_dma_buf != 0 and tx_dma_buf != 0 then
-> 
-> 
+------=_Part_82919_4808846.1218704896565--
 
 
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
-
+--===============0807671323==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============0807671323==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0807671323==--

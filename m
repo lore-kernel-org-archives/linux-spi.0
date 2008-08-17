@@ -1,9 +1,9 @@
-From: china-gift-9Onoh4P/yGk@public.gmane.org
-Subject: =?GB2312?B?0rXO8cGqz7U=?=
-Date: Sun, 17 Aug 2008 15:01:13 +0800
-Message-ID: <E1KUcGF-0002sP-Rw@mail.sourceforge.net>
-Reply-To: china-gift-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============0033517390=="
+From: =?GB2312?B?wdbQob3j?= <shewghg-9Onoh4P/yGk@public.gmane.org>
+Subject: =?GB2312?B?t6IvxrE=?=
+Date: Mon, 18 Aug 2008 04:24:03 +0800
+Message-ID: <E1KUonI-0005dn-Mm@mail.sourceforge.net>
+Reply-To: shewghg-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============2068329782=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,26 +17,32 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0033517390==
+--===============2068329782==
 Content-Type: text/plain;charset="GB2312"
 
-          您好！
-              为方便贵公司做帐及提高经济效益。我公司现可代开发票。发票正规，
-              点数十分优惠！可验票后付款。
-              商品销售发票，广告发票，运输发票，服务发票，餐饮发票，建筑安装
-              发票,增值税发票等
-                （1）公司为一般纳税企业没有优惠政策而想合法避税的
-                （2）公司帐目进项与出项差额过大，需补充差额的
-                （3）对外销售商品或提供技术服务暂未正式申领的
-                （4）外出采购或公干而服务商没有提供可以报销的发票 
-                （5）事业单位记帐补帐冲帐旧帐整理,需要咨询的
-                （6）其他项目的
-                                联系人：周莉
-                                联系号：135 3812 9262
-                                  QQ号：980820886
+您好!
+    
+       本公司是税务机关授权公司,可优惠对外开具(发/票),
+
+   专业代理普通国税,地税(发/票)与有关配套证明,
+
+   代开范围:(商品销售,广告,国内运输,国际货运,咨询,住宿,
+
+   建筑安装等等其他服务行业(发/票),贵公司在做帐方面或
+
+   进销方面,我司可提供全方面服务,
+    
+   
+   联系人:林小姐
+   
+   电  话: 136 8686 7312,
+   
+   邮  箱:  lin13686867312-KN7UnAbNpbg@public.gmane.org,
+   
+   请保留号码以备急用!
 
 
---===============0033517390==
+--===============2068329782==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -47,7 +53,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============0033517390==
+--===============2068329782==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -58,4 +64,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0033517390==--
+--===============2068329782==--

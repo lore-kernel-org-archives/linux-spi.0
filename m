@@ -1,11 +1,14 @@
-From: =?GB2312?B?wdbQob3j?= <shewghg-9Onoh4P/yGk@public.gmane.org>
-Subject: =?GB2312?B?t6IvxrE=?=
-Date: Mon, 18 Aug 2008 04:24:03 +0800
-Message-ID: <E1KUonI-0005dn-Mm@mail.sourceforge.net>
-Reply-To: shewghg-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============2068329782=="
+From: "Daniel Ribeiro" <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] pxa2xx_spi: wait_rx_stall before
+	deasserting CS on PIO mode
+Date: Sun, 17 Aug 2008 19:53:19 -0300
+Message-ID: <6669365c0808171553i3f64b667t18fcea589d94411a@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,51 +20,45 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2068329782==
-Content-Type: text/plain;charset="GB2312"
+Hi,
 
-您好!
-    
-       本公司是税务机关授权公司,可优惠对外开具(发/票),
+I am converting a driver from ssp.c API to pxa2xx_spi. But
+when using PIO mode i am getting bogus rx data.
 
-   专业代理普通国税,地税(发/票)与有关配套证明,
+I did some tests, and it looks like CS is being deasserted
+before the IO is done.
 
-   代开范围:(商品销售,广告,国内运输,国际货运,咨询,住宿,
+The following patch solved the issue for me.
 
-   建筑安装等等其他服务行业(发/票),贵公司在做帐方面或
+Please CC me on replies, im not subscribed to spi-devel.
 
-   进销方面,我司可提供全方面服务,
-    
-   
-   联系人:林小姐
-   
-   电  话: 136 8686 7312,
-   
-   邮  箱:  lin13686867312-KN7UnAbNpbg@public.gmane.org,
-   
-   请保留号码以备急用!
+-- 
+Daniel Ribeiro
 
 
---===============2068329782==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- patch --
+pxa2xx_spi: wait_rx_stall before deasserting CS on PIO mode
+
+Signed-off-by: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+
+diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
+index 0c452c4..4a9c34e 100644
+--- a/drivers/spi/pxa2xx_spi.c
++++ b/drivers/spi/pxa2xx_spi.c
+@@ -593,6 +593,10 @@ static void int_transfer_complete(struct
+driver_data *drv_d {
+        void __iomem *reg = drv_data->ioaddr;
+
++       if (wait_ssp_rx_stall(drv_data->ioaddr) == 0)
++               dev_err(&drv_data->pdev->dev,
++                       "interrupt_transfer: ssp rx stall failed\n");
++
+        /* Stop SSP */
+        write_SSSR(drv_data->clear_sr, reg);
+        write_SSCR1(read_SSCR1(reg) & ~drv_data->int_cr1, reg);
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============2068329782==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2068329782==--

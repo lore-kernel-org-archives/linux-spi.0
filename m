@@ -1,18 +1,20 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+From: "Daniel Ribeiro" <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] pxa2xx_spi: wait_rx_stall before
- deasserting CS on PIO mode
-Date: Mon, 18 Aug 2008 16:47:21 -0400
-Message-ID: <48A9DFD9.9000708@whoi.edu>
-References: <6669365c0808171553i3f64b667t18fcea589d94411a@mail.gmail.com>	
+	deasserting CS on PIO mode
+Date: Mon, 18 Aug 2008 20:06:36 -0300
+Message-ID: <6669365c0808181606u4ead2f27h1f2286f9365e8a7a@mail.gmail.com>
+References: <6669365c0808171553i3f64b667t18fcea589d94411a@mail.gmail.com>
 	<48A9C515.3000908@whoi.edu>
 	<6669365c0808181227k2fa01d6fu570cebc10630f55d@mail.gmail.com>
+	<48A9DFD9.9000708@whoi.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: "Ned Forrester" <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <6669365c0808181227k2fa01d6fu570cebc10630f55d-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <48A9DFD9.9000708-/d+BM93fTQY@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,150 +26,139 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Daniel Ribeiro wrote:
-> On Mon, Aug 18, 2008 at 3:53 PM, Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrot=
-e:
->> Can you be more specific about your problem?  If CS is not being
->> asserted/deasserted at the right times, then that needs to be fixed.
->> What are you using for CS; this driver only works correctly when a GPIO
->> pin is assigned for CS, and is controlled with the cs_control() callback.
-> =
+On Mon, Aug 18, 2008 at 5:47 PM, Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrote:
+> So far this looks good, but what have you declared about the chip in the
+> chip_info structure?  In particular, what timeout and FIFO thresholds?
+> What processor are you using, and which port on that processor; there is
+> a difference in the handling of the end of a transfer between the SSP
+> port on an PXA25x (which has no timeout interrupt) and all other ports
+> handled by this driver (including the NSSP port on the PXA25x and all
+> the ports on the PXA270).
 
-> Yes, I=B4m using a gpio for CS. cs_control is OK.
+.tx_threshold =3D 1,
+.rx_threshold =3D 1,
+.timeout =3D 1000,
 
-OK.
+Its a PXA270, SSP1.
 
->> The below patch seems to paper over some other problem.
->> wait_ssp_rx_stall() is used to recover from errors, by flushing and
->> discarding words from the RX fifo.  Also, int_transfer_complete() is
->> only called from places where we know that all expected characters have
->> been received and transferred to memory.
-> =
-
-> Not really, something is really wrong with the call to int_transfer_compl=
-ete.
-> If i replace the wait_ssp_rx_stall() call with a simple printk() call eve=
-rything
-> works just fine. Same with an udelay(300).
-> I may be wrong, but it seems that interrupt_transfer calls int_transfer_c=
-omplete
-> after the total amount of data is put on the FIFO, but it does not
-> guarantee that
-> the IO is actually done before calling it.
-
-Well, if you get the same effect by using a delay, then the problem is
-not extra data in the fifo.  If you read the code in the driver
-carefully, I think you will find that int_transfer_complete is called
-after every expected character is read from the FIFO and after that
-point, there is no opportunity to read anymore characters to memory.  I
-am puzzled as to why a delay in int_transfer_complete would have any
-influence because nothing is read from the FIFO to memory after it is
-called.  See a suggestion below.
-
->> This patch would "fix" a situation where extra words are in the RX FIFO
->> after the expected number have been read.  If there are more characters
->> in the FIFO than were transmitted, then that needs to be fixed and not
->> ignored.
+>> pcap_read: reg_num:3 value:00edf48a
+>> pcap_write: reg_num:3 value:00123456
+>> pcap_read: reg_num:3 value:00edf48a
+>> pcap_read: reg_num:3 value:00edf48a
 >>
->> Can you provide a patch or more information that addresses the
->> underlying problem?
-> =
+>> With the patch, or with an udelay(300) call instead of wait_ssp_rx_stall:
+>> pcap_read: reg_num:3 value:00edf48a
+>> pcap_write: reg_num:3 value:00123456
+>> pcap_read: reg_num:3 value:00123456
+>> pcap_read: reg_num:3 value:00123456
+>>
+>> Since the udelay(300) call works, and it doesnt touch the ssp registers,
+>> it looks like int_transfer_complete is being called before it should.
+>
+> Very strange, but I can't draw the same conclusion.
+> int_transfer_complete is only called from 4 places in int_transfer, and
+> then only after verifying that the full count of receive characters has
+> been transfered to memory.  Even if the transfer was not complete in
+> hardware, or if the CS was dropped too soon, this delay would not fix
+> the problem.  There has to be something else going on.
+> I am not familiar with the chip you are using.  Are you certain that
+> when you write a register, you should expect back the same value that
+> you wrote, when received on the same transfer.  It makes sense that the
+> chip might do this, but I thought I should ask, because there are other
+> possibilities.
 
-> As I already said, i am converting a working driver from ssp.c=B4s
-> ssp_read_word/ssp_write_word to pxa2xx_spi. The driver works just
-> fine with:
-> =
+Its not the same transfer. pcap_read and pcap_write each call pcap_putget.
+So, to _write_a_register_ i write then read a spi word. And to _read_a_regi=
+ster_
+i write then read another spi word. Those write/read register operations ca=
+n=B4t
+happen on the same CS assertion.
 
-> gpio_set_value(cs, 0);
-> ssp_write_word(&ssp_dev, data);
-> ssp_read_word(&ssp_dev, &ret);
-> gpio_set_value(cs, 1);
-> =
+> One thing that is odd about the setup of your message is the use of the
+> same buffer for transmit and receive.  I agree that this should be
+> possible, as nothing is received until the corresponding word has been
+> transmitted.  However, this might be obscuring some of the symptoms.
+> Can you try assigning separate buffers for tx and rx, and then test to
+> see what the results are with and without the added delay?  This might
+> shed some more light on what is happening.
 
-> After the conversion i ended with this code:
-> static int ezx_pcap_putget(u32 *data)
-> {
->         struct spi_transfer t;
->         struct spi_message m;
-> =
+I tried this already, used different buffers, and it makes no difference, s=
+ame
+wrong behaviour without the delay, and the same correct behaviour with the
+delay. The fact of using the same buffer is not the issue.
 
->         spi_message_init(&m);
->         t.len =3D 4;
->         t.tx_buf =3D (u8 *)data;
->         t.rx_buf =3D (u8 *)data;
->         t.bits_per_word =3D 32;
->         spi_message_add_tail(&t, &m);
->         return spi_sync(pcap.spi, &m);
-> }
+> Also try setting up the pxa2xx_spi driver to the correct bits-per-word
+> though chip_info and spi_setup(), and turn off (make 0) the per-transfer
+> bits-per-word, above.  This will test to see if there is an error
+> handling the per-transfer changes.  I don't think many applications use
+> the per-transfer changes, so that is another possible source of problems.
 
-So far this looks good, but what have you declared about the chip in the
-chip_info structure?  In particular, what timeout and FIFO thresholds?
-What processor are you using, and which port on that processor; there is
-a difference in the handling of the end of a transfer between the SSP
-port on an PXA25x (which has no timeout interrupt) and all other ports
-handled by this driver (including the NSSP port on the PXA25x and all
-the ports on the PXA270).
+Same. This doesnt seem to be the issue, as it only changes the ->read and
+->write pointers from u8_(reader|writer) to u32_(reader|writer), i
+certified that
+the u32 functions are being used, this is enough for me.
+It seems that checking the full count of receive/transmit bytes that
+_gets_in/out_the_FIFO_ is not enough to assert that the data is actually
+_transfered_to_the_hardware_.
 
-> The driver is a for a PMIC, it has 32 25bit registers, which i need to
-> access trough 32bit spi IO.
-> Without the wait_ssp_rx_stall patch (or any other delay before the
-> CS_DEASSERT) this is what i get:
 
-OK, this should be possible.
+I will try to explain how i came to this patch a little more verbose, see if
+agree with me now:
 
-> pcap_read: reg_num:3 value:00edf48a
-> pcap_write: reg_num:3 value:00123456
-> pcap_read: reg_num:3 value:00edf48a
-> pcap_read: reg_num:3 value:00edf48a
-> =
+do {
+      if (drv_data->read(drv_data)) {
+         int_transfer_complete(drv_data);
+         return IRQ_HANDLED;
+      }
+   } while (drv_data->write(drv_data));
 
-> With the patch, or with an udelay(300) call instead of wait_ssp_rx_stall:
-> pcap_read: reg_num:3 value:00edf48a
-> pcap_write: reg_num:3 value:00123456
-> pcap_read: reg_num:3 value:00123456
-> pcap_read: reg_num:3 value:00123456
-> =
+So, if i use u32_writer/u32_reader (t.bits_per_word =3D 32)
+to write/read a _single_ 32bits word (t.len =3D 4),
+the relevant code path on the above loop would be:
 
-> Since the udelay(300) call works, and it doesnt touch the ssp registers,
-> it looks like int_transfer_complete is being called before it should.
+first u32_reader call:
+read_SSSR(reg) & SSSR_RNE /* FIFO is still empty, u32_reader returns 0 */
 
-Very strange, but I can't draw the same conclusion.
-int_transfer_complete is only called from 4 places in int_transfer, and
-then only after verifying that the full count of receive characters has
-been transfered to memory.  Even if the transfer was not complete in
-hardware, or if the CS was dropped too soon, this delay would not fix
-the problem.  There has to be something else going on.
+first u32_writer call:
+write_SSDR(*(u32 *)(drv_data->tx), reg);
+drv_data->tx +=3D 4;
+/* data is transfered to FIFO, writer returns 1 */
 
-I am not familiar with the chip you are using.  Are you certain that
-when you write a register, you should expect back the same value that
-you wrote, when received on the same transfer.  It makes sense that the
-chip might do this, but I thought I should ask, because there are other
-possibilities.
+second u32_reader call:
+*(u32 *)(drv_data->rx) =3D read_SSDR(reg);
+drv_data->rx +=3D 4;
+/* u32_reader doesnt loop becase rx =3D=3D rx_end, reader returns 1 */
 
-One thing that is odd about the setup of your message is the use of the
-same buffer for transmit and receive.  I agree that this should be
-possible, as nothing is received until the corresponding word has been
-transmitted.  However, this might be obscuring some of the symptoms.
-Can you try assigning separate buffers for tx and rx, and then test to
-see what the results are with and without the added delay?  This might
-shed some more light on what is happening.
+then it calls int_transfer_complete.
 
-Also try setting up the pxa2xx_spi driver to the correct bits-per-word
-though chip_info and spi_setup(), and turn off (make 0) the per-transfer
-bits-per-word, above.  This will test to see if there is an error
-handling the per-transfer changes.  I don't think many applications use
-the per-transfer changes, so that is another possible source of problems.
+I dont see where it asserts that the hardware transfer was done. Or
+read_SSDR/write_SSDR do blocking???
+
+Shouldnt the driver wait SSSR_RNE be cleared before assuming that the
+data was received?
+while(read_SSSR(reg) & SSSR_RNE) ;
+
+Shouldnt it wait SSSR_TNF be set, before assuming the data was written?
+while(!(read_SSSR(reg) & SSSR_TNF)) ;
+
+Shouldnt it check if the SSP port is not doing IO (SSSR_BSY) before
+calling int_transfer_done?
+while(read_SSSR(reg) & SSSR_BSY) ;
+
+Any of the above 3 blocking loops on the first line of
+int_transfer_complete() fixes the problem. :)
+(yes, TNF works too, because threshold =3D 1. ;) )
+
+And finally, note that ssp_rx_stall() doesnt reads/discards any _data_
+from the port as you claimed,
+it is just a busy loop, equivalent to the third (SSSR_BSY) example above.
+And it IS called on dma_transfer_complete (by the way, when i
+configure the driver to use DMA,
+everything works as it should).
 
 -- =
 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=3D7212
-http://www.whoi.edu/hpb/Site.do?id=3D1532
-http://www.whoi.edu/page.do?pid=3D10079
-
+Daniel Ribeiro
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

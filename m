@@ -1,110 +1,64 @@
-From: Kumar Gala <galak@kernel.crashing.org>
-Subject: [PATCH 6/9] mpc52xx_psc_spi: remove code associated with !CONFIG_PPC_MERGE
-Date: Wed, 20 Aug 2008 23:46:55 -0500
-Message-ID: <1219294018-12557-7-git-send-email-galak@kernel.crashing.org>
-References: <1219294018-12557-1-git-send-email-galak@kernel.crashing.org>
- <1219294018-12557-2-git-send-email-galak@kernel.crashing.org>
- <1219294018-12557-3-git-send-email-galak@kernel.crashing.org>
- <1219294018-12557-4-git-send-email-galak@kernel.crashing.org>
- <1219294018-12557-5-git-send-email-galak@kernel.crashing.org>
- <1219294018-12557-6-git-send-email-galak@kernel.crashing.org>
-Cc: akpm@linux-foundation.org
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754278AbYHUEtd@vger.kernel.org>
-In-Reply-To: <1219294018-12557-6-git-send-email-galak@kernel.crashing.org>
-CC: dbrownell@users.sourceforge.net
-CC: spi-devel-general@lists.sourceforge.net
-Sender: linux-kernel-owner@vger.kernel.org
+From: Hendrik Sattler <post-azCMwr5LJFZ+Wm55xJeGF4QuADTiUCJX@public.gmane.org>
+Subject: SD-over-SPI with shared SPI bus
+Date: Thu, 21 Aug 2008 10:46:15 +0200
+Message-ID: <20080821104615.7zxonbllsgg0gw0o@v1539.ncsrv.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Now that arch/ppc is gone we don't need CONFIG_PPC_MERGE anymore
-remove the dead code associated with !CONFIG_PPC_MERGE.
+Hi,
 
-Signed-off-by: Kumar Gala <galak@kernel.crashing.org>
----
- drivers/spi/mpc52xx_psc_spi.c |   55 -----------------------------------------
- 1 files changed, 0 insertions(+), 55 deletions(-)
+I contact you because you are mentioned in the MAINTAINERS file of  
+linux-2.6.26 for the mmc_spi drive and SPI subsystem.
 
-diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
-index 25eda71..c3a9e5c 100644
---- a/drivers/spi/mpc52xx_psc_spi.c
-+++ b/drivers/spi/mpc52xx_psc_spi.c
-@@ -15,13 +15,7 @@
- #include <linux/init.h>
- #include <linux/errno.h>
- #include <linux/interrupt.h>
--
--#if defined(CONFIG_PPC_MERGE)
- #include <linux/of_platform.h>
--#else
--#include <linux/platform_device.h>
--#endif
--
- #include <linux/workqueue.h>
- #include <linux/completion.h>
- #include <linux/io.h>
-@@ -471,53 +465,6 @@ static int __exit mpc52xx_psc_spi_do_remove(struct device *dev)
- 	return 0;
- }
- 
--#if !defined(CONFIG_PPC_MERGE)
--static int __init mpc52xx_psc_spi_probe(struct platform_device *dev)
--{
--	switch(dev->id) {
--	case 1:
--	case 2:
--	case 3:
--	case 6:
--		return mpc52xx_psc_spi_do_probe(&dev->dev,
--			MPC52xx_PA(MPC52xx_PSCx_OFFSET(dev->id)),
--			MPC52xx_PSC_SIZE, platform_get_irq(dev, 0), dev->id);
--	default:
--		return -EINVAL;
--	}
--}
--
--static int __exit mpc52xx_psc_spi_remove(struct platform_device *dev)
--{
--	return mpc52xx_psc_spi_do_remove(&dev->dev);
--}
--
--/* work with hotplug and coldplug */
--MODULE_ALIAS("platform:mpc52xx-psc-spi");
--
--static struct platform_driver mpc52xx_psc_spi_platform_driver = {
--	.remove = __exit_p(mpc52xx_psc_spi_remove),
--	.driver = {
--		.name = "mpc52xx-psc-spi",
--		.owner = THIS_MODULE,
--	},
--};
--
--static int __init mpc52xx_psc_spi_init(void)
--{
--	return platform_driver_probe(&mpc52xx_psc_spi_platform_driver,
--			mpc52xx_psc_spi_probe);
--}
--module_init(mpc52xx_psc_spi_init);
--
--static void __exit mpc52xx_psc_spi_exit(void)
--{
--	platform_driver_unregister(&mpc52xx_psc_spi_platform_driver);
--}
--module_exit(mpc52xx_psc_spi_exit);
--
--#else	/* defined(CONFIG_PPC_MERGE) */
--
- static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
- 	const struct of_device_id *match)
- {
-@@ -586,8 +533,6 @@ static void __exit mpc52xx_psc_spi_exit(void)
- }
- module_exit(mpc52xx_psc_spi_exit);
- 
--#endif	/* defined(CONFIG_PPC_MERGE) */
--
- MODULE_AUTHOR("Dragos Carp");
- MODULE_DESCRIPTION("MPC52xx PSC SPI Driver");
- MODULE_LICENSE("GPL");
--- 
-1.5.5.1
+I want to share the bus with other SPI devices. The drivers mentions  
+pending updates that would allow that.
+Are those available somewhere?
+
+If not, the changes seem to fairly trivial: change SPI controller  
+drivers to allow adding a spi_transfer to an spi_message during the  
+complete() callback or add another callback that can do this.
+
+Additionally, the current definition of a chipselect number seems not  
+optimal. The pxa2xx driver even has it's own way to overcome this. The  
+problem is that the method about activating a device might not be that  
+sequentially numbered,
+e.g. I have devices here that have a group chipselect with a  
+subchipselect beside it.
+I suggest to actually tell the owner of the spi_transfer and  
+spi_message when a specific transfer starts and ends. The chipselect  
+could still be handled by the spi controller driver but e.g. the  
+subchipselect could be handled by the spi group device driver. Another  
+use case would be devices that needs e.g. to be powered-up/-down.
+
+Finally: is there a working SPI controller driver for the IXP46x out  
+there? The register layout is mostly like the PX2xx driver the IXP46x  
+doesn't have the DMA engine of the PXA2xx.
+
+Thanks for your help.
+
+HS
+
+PS: For the list, please CC me as I am not subscribed.
+
+
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

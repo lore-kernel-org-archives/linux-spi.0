@@ -1,15 +1,17 @@
-From: Erwin Authried <eauth-T13/FXdtSm+ALaLeEb27IQ@public.gmane.org>
+From: Hendrik Sattler <post-azCMwr5LJFZ+Wm55xJeGF4QuADTiUCJX@public.gmane.org>
 Subject: Re: SD-over-SPI with shared SPI bus
-Date: Thu, 21 Aug 2008 11:36:27 +0200
-Message-ID: <1219311387.3496.40.camel@justakiss.home.at>
+Date: Thu, 21 Aug 2008 11:47:50 +0200
+Message-ID: <20080821114750.uw580nkdssok4o84@v1539.ncsrv.de>
 References: <20080821104615.7zxonbllsgg0gw0o@v1539.ncsrv.de>
+	<1219311387.3496.40.camel@justakiss.home.at>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Hendrik Sattler <post-azCMwr5LJFZ+Wm55xJeGF4QuADTiUCJX@public.gmane.org>
+To: Erwin Authried <eauth-T13/FXdtSm+ALaLeEb27IQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080821104615.7zxonbllsgg0gw0o-mcLvVI60cSeH+6FY6glk5g@public.gmane.org>
+In-Reply-To: <1219311387.3496.40.camel-PHHJHpW2GuR0sls8neQjoV6hYfS7NtTn@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,42 +23,49 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Am Donnerstag, den 21.08.2008, 10:46 +0200 schrieb Hendrik Sattler:
+Zitat von Erwin Authried <eauth-T13/FXdtSm+ALaLeEb27IQ@public.gmane.org>:
+
+> Am Donnerstag, den 21.08.2008, 10:46 +0200 schrieb Hendrik Sattler:
+>> Hi,
+>>
+>> I contact you because you are mentioned in the MAINTAINERS file of
+>> linux-2.6.26 for the mmc_spi drive and SPI subsystem.
+>>
+>> I want to share the bus with other SPI devices. The drivers mentions
+>> pending updates that would allow that.
+>> Are those available somewhere?
+>>
+>> If not, the changes seem to fairly trivial: change SPI controller
+>> drivers to allow adding a spi_transfer to an spi_message during the
+>> complete() callback or add another callback that can do this.
+>
 > Hi,
-> 
-> I contact you because you are mentioned in the MAINTAINERS file of  
-> linux-2.6.26 for the mmc_spi drive and SPI subsystem.
-> 
-> I want to share the bus with other SPI devices. The drivers mentions  
-> pending updates that would allow that.
-> Are those available somewhere?
-> 
-> If not, the changes seem to fairly trivial: change SPI controller  
-> drivers to allow adding a spi_transfer to an spi_message during the  
-> complete() callback or add another callback that can do this.
+>
+> I have done this in a slightly different, rather simple way. I have
+> added a new "transfer_end" callback function pointer to the spi_transfer
+> structure. This function can have three return values:
+>
+> <0 ... stop spi message after the transfer
+> 0  ... continue with next transfer
+> 1  ... repeat current transfer
+>
+> If the transfer_end callback is not required, the function pointer must
+> be set to NULL.
+>
+> I have modified the bitbang driver for this new functionality. In
+> addition, the mmc_spi driver has been changed to make use of the
+> callback function. It is necessary to pack all transfers that must be
+> done without being interrupted into a single message. I have done a lot
+> of testing with a SD card on a shared bus with a lot of other activity,
+> and I couldn't see any problems.
 
-Hi,
+I'd imagine something like this but instead of the return code, let it  
+fill/clear spi_message::transfers as it likes during this callback and  
+let the caller check the that after the callback (list_empty()).
 
-I have done this in a slightly different, rather simple way. I have
-added a new "transfer_end" callback function pointer to the spi_transfer
-structure. This function can have three return values: 
+Nice to know that there are no further pitfalls :)
 
-<0 ... stop spi message after the transfer
-0  ... continue with next transfer 
-1  ... repeat current transfer
-
-If the transfer_end callback is not required, the function pointer must
-be set to NULL.
-
-I have modified the bitbang driver for this new functionality. In
-addition, the mmc_spi driver has been changed to make use of the
-callback function. It is necessary to pack all transfers that must be
-done without being interrupted into a single message. I have done a lot
-of testing with a SD card on a shared bus with a lot of other activity,
-and I couldn't see any problems. 
-
-Regards,
-Erwin
+HS
 
 
 

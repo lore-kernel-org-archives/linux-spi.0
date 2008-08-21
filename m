@@ -1,46 +1,110 @@
-From: "Daniel Ribeiro" <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [Patch 0/1] spi: Fix pxa2xx_spi.c transfer
-	delay, cs change, transfer length
-Date: Wed, 20 Aug 2008 20:34:43 -0300
-Message-ID: <6669365c0808201634h616224e9m3169c562d7f676bd@mail.gmail.com>
-References: <48AB900A.3070503@whoi.edu>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "Ned Forrester" <nforrester-/d+BM93fTQY@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <48AB900A.3070503-/d+BM93fTQY@public.gmane.org>
-Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Kumar Gala <galak@kernel.crashing.org>
+Subject: [PATCH 6/9] mpc52xx_psc_spi: remove code associated with !CONFIG_PPC_MERGE
+Date: Wed, 20 Aug 2008 23:46:55 -0500
+Message-ID: <1219294018-12557-7-git-send-email-galak@kernel.crashing.org>
+References: <1219294018-12557-1-git-send-email-galak@kernel.crashing.org>
+ <1219294018-12557-2-git-send-email-galak@kernel.crashing.org>
+ <1219294018-12557-3-git-send-email-galak@kernel.crashing.org>
+ <1219294018-12557-4-git-send-email-galak@kernel.crashing.org>
+ <1219294018-12557-5-git-send-email-galak@kernel.crashing.org>
+ <1219294018-12557-6-git-send-email-galak@kernel.crashing.org>
+Cc: akpm@linux-foundation.org
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754278AbYHUEtd@vger.kernel.org>
+In-Reply-To: <1219294018-12557-6-git-send-email-galak@kernel.crashing.org>
+CC: dbrownell@users.sourceforge.net
+CC: spi-devel-general@lists.sourceforge.net
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 20, 2008 at 12:31 AM, Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrote:
-> My next message of this subject contains a patch for many of the issues
-> raised by the threads:
->
-> [PATCH] atmel_spi: support zero length transfer, 2/22/08
-> [PATCH] pxa2xx_spi: wait_rx_stall before deasserting CS on PIO mode,
-> 8/18/08
-> pxa2xx_spi with SFRM, 8/7/08
+Now that arch/ppc is gone we don't need CONFIG_PPC_MERGE anymore
+remove the dead code associated with !CONFIG_PPC_MERGE.
 
-I tested the patch regarding the CS problems, and it works fine.
+Signed-off-by: Kumar Gala <galak@kernel.crashing.org>
+---
+ drivers/spi/mpc52xx_psc_spi.c |   55 -----------------------------------------
+ 1 files changed, 0 insertions(+), 55 deletions(-)
 
-Thanks Ned.
-
+diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
+index 25eda71..c3a9e5c 100644
+--- a/drivers/spi/mpc52xx_psc_spi.c
++++ b/drivers/spi/mpc52xx_psc_spi.c
+@@ -15,13 +15,7 @@
+ #include <linux/init.h>
+ #include <linux/errno.h>
+ #include <linux/interrupt.h>
+-
+-#if defined(CONFIG_PPC_MERGE)
+ #include <linux/of_platform.h>
+-#else
+-#include <linux/platform_device.h>
+-#endif
+-
+ #include <linux/workqueue.h>
+ #include <linux/completion.h>
+ #include <linux/io.h>
+@@ -471,53 +465,6 @@ static int __exit mpc52xx_psc_spi_do_remove(struct device *dev)
+ 	return 0;
+ }
+ 
+-#if !defined(CONFIG_PPC_MERGE)
+-static int __init mpc52xx_psc_spi_probe(struct platform_device *dev)
+-{
+-	switch(dev->id) {
+-	case 1:
+-	case 2:
+-	case 3:
+-	case 6:
+-		return mpc52xx_psc_spi_do_probe(&dev->dev,
+-			MPC52xx_PA(MPC52xx_PSCx_OFFSET(dev->id)),
+-			MPC52xx_PSC_SIZE, platform_get_irq(dev, 0), dev->id);
+-	default:
+-		return -EINVAL;
+-	}
+-}
+-
+-static int __exit mpc52xx_psc_spi_remove(struct platform_device *dev)
+-{
+-	return mpc52xx_psc_spi_do_remove(&dev->dev);
+-}
+-
+-/* work with hotplug and coldplug */
+-MODULE_ALIAS("platform:mpc52xx-psc-spi");
+-
+-static struct platform_driver mpc52xx_psc_spi_platform_driver = {
+-	.remove = __exit_p(mpc52xx_psc_spi_remove),
+-	.driver = {
+-		.name = "mpc52xx-psc-spi",
+-		.owner = THIS_MODULE,
+-	},
+-};
+-
+-static int __init mpc52xx_psc_spi_init(void)
+-{
+-	return platform_driver_probe(&mpc52xx_psc_spi_platform_driver,
+-			mpc52xx_psc_spi_probe);
+-}
+-module_init(mpc52xx_psc_spi_init);
+-
+-static void __exit mpc52xx_psc_spi_exit(void)
+-{
+-	platform_driver_unregister(&mpc52xx_psc_spi_platform_driver);
+-}
+-module_exit(mpc52xx_psc_spi_exit);
+-
+-#else	/* defined(CONFIG_PPC_MERGE) */
+-
+ static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
+ 	const struct of_device_id *match)
+ {
+@@ -586,8 +533,6 @@ static void __exit mpc52xx_psc_spi_exit(void)
+ }
+ module_exit(mpc52xx_psc_spi_exit);
+ 
+-#endif	/* defined(CONFIG_PPC_MERGE) */
+-
+ MODULE_AUTHOR("Dragos Carp");
+ MODULE_DESCRIPTION("MPC52xx PSC SPI Driver");
+ MODULE_LICENSE("GPL");
 -- 
-Daniel Ribeiro
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+1.5.5.1

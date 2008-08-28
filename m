@@ -1,9 +1,10 @@
-From: =?GB2312?B?1tzPyMn6?= <awersgfgdtytfj-eoT9m/NrTSQ@public.gmane.org>
-Subject: =?GB2312?B?oaO3ok3GsaGj?=
-Date: Mon, 25 Aug 2008 07:40:43 +0800
-Message-ID: <E1KXPCO-0005dP-95@mail.sourceforge.net>
-Content-Type: multipart/mixed; boundary="===============0204502065=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: "micheal stubrud" <jackalwe_1994-ySa9DVC/KY8w1FwZCODZ82ZHpeb/A1Y/@public.gmane.org>
+Subject: Blow them away with your man tool
+Date: Thu, 28 Aug 2008 11:24:57 +0100
+Message-ID: <001001c908f8$52146630$6a740b5c@robbieanddebbie>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0368972739=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,21 +17,41 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0204502065==
+--===============0368972739==
+Content-Type: multipart/alternative;
+	boundary="--------=_NextPart_000_000C_01C90900.B3D8CE30"
+
+----------=_NextPart_000_000C_01C90900.B3D8CE30
 Content-Type: text/plain;
-	charset="gb2312"
+        charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-=C4=E3=BA=C3=A3=BA
-     =CE=D2=B9=AB=CB=BE=D3=D0=C9=CC=C6=B7=A1=A2=B7=FE=CE=F1=A1=A2=D4=CB=CA=
-=E4=A1=A2=BD=A8=D6=FE=A1=A2=B2=CD=D2=FB=A1=A2=D7=A1=CB=DE=A3=AC=C6=D5=CD=A8=
-=D4=F6=D6=B5=CB=B0=B7=A2=C6=B1=B4=FA=BF=AA=A3=BB
-  =20
-  =C8=E7=D0=E8=C7=EB=C1=AA=CF=B5=A3=BA=D6=DC=CF=C8=C9=FA=A3=A80=A3=A91364=
-2347277
+
+Increase your chances of hitting a home run at the party =
+http://www.havethem.com/
+----------=_NextPart_000_000C_01C90900.B3D8CE30
+Content-Type: text/html;
+        charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.6000.16705" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>Increase your chances of hitting a home =
+run at the=20
+party <A=20
+href=3D"http://www.havethem.com/">http://www.havethem.com//</A></FONT></D=
+IV></BODY></HTML>
+
+----------=_NextPart_000_000C_01C90900.B3D8CE30--
 
 
---===============0204502065==
+--===============0368972739==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -41,7 +62,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============0204502065==
+--===============0368972739==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -52,4 +73,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0204502065==--
+--===============0368972739==--

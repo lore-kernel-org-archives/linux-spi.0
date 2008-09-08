@@ -1,16 +1,18 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.27-rc5] spi_mpc83xx: fix
-	clockrate calculation for low speed
-Date: Mon, 8 Sep 2008 12:38:16 -0700
-Message-ID: <200809081238.16996.david-b@pacbell.net>
-References: <200809081236.33731.david-b@pacbell.net>
+Subject: Re: Limitations on transfer length [was:
+	pxa2xx_spi with SFRM]
+Date: Mon, 8 Sep 2008 15:42:34 -0700
+Message-ID: <200809081542.34795.david-b@pacbell.net>
+References: <1218182539.489bfd8b24a3d@webmail.whoi.edu>
+	<48A4ED85.1030803@gmail.com> <48A5D272.1070804@whoi.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: g.chen-KZfg59tc24xl57MIdRCFDg@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
+	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200809081236.33731.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <48A5D272.1070804-/d+BM93fTQY@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -23,56 +25,61 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-[ resend with cc to spi-devel ... this patch was already seen there ]
+On Friday 15 August 2008, Ned Forrester wrote:
+> David,
+> =
 
-On Monday 08 September 2008, David Brownell wrote:
-> From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
-> 
-> Commit a61f5345 (spi_mpc83xx clockrate fixes) broke clockrate
-> calculation for low speeds. SPMODE_DIV16 should be set if the
-> divider is higher than 64, not only if the divider gets clipped
-> to 1024.
-> 
-> Furthermore, the clipping check was off by a factor 16 as well.
-> 
-> Signed-off-by: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
-> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-> ---
-> for 2.6.27 please ...
-> 
->  drivers/spi/spi_mpc83xx.c |   13 +++++--------
->  1 file changed, 5 insertions(+), 8 deletions(-)
-> 
-> --- a/drivers/spi/spi_mpc83xx.c
-> +++ b/drivers/spi/spi_mpc83xx.c
-> @@ -267,16 +267,13 @@ int mpc83xx_spi_setup_transfer(struct sp
->  	cs->hw_mode |= SPMODE_LEN(bits_per_word);
->  
->  	if ((mpc83xx_spi->spibrg / hz) > 64) {
-> +		cs->hw_mode |= SPMODE_DIV16;
->  		pm = mpc83xx_spi->spibrg / (hz * 64);
->  		if (pm > 16) {
-> -			cs->hw_mode |= SPMODE_DIV16;
-> -			pm /= 16;
-> -			if (pm > 16) {
-> -				dev_err(&spi->dev, "Requested speed is too "
-> -					"low: %d Hz. Will use %d Hz instead.\n",
-> -					hz, mpc83xx_spi->spibrg / 1024);
-> -				pm = 16;
-> -			}
-> +			dev_err(&spi->dev, "Requested speed is too "
-> +				"low: %d Hz. Will use %d Hz instead.\n",
-> +				hz, mpc83xx_spi->spibrg / 1024);
-> +			pm = 16;
->  		}
->  	} else
->  		pm = mpc83xx_spi->spibrg / (hz * 4);
-> 
+> Is there supposed to be any practical limit to the length of a transfer?
+
+Physical memory.  :)
+
+
+> =A0It seems that the /dev/mtdblock_spi driver has requested a transfer in
+> excess of 8191 bytes (though I don't know how long a transfer it
+> requested).
+
+SPI flash is often used for things like downloading FPGA
+configuration bitstreams or first stage bootloaders (after
+stage zero, an SOC's boot rom).
+
+To support those use cases, SPI flash basically has no limit
+on the number of bytes that can be read at once.  And the
+Linux drivers for those SPI flash chips happily leverage
+those requests.
+
+Not many other applications wor that way though.
+
+ =
+
+> In this case, I think pxa2xx_spi.c could handle long transfers in PIO
+> mode, but not if DMA has been requested. =A0It looks like we may have put
+> a bug in pxa2xx_spi by performing the length test even when DMA is not
+> requested.
+> =
+
+> Is it proper to require that PIO mode be used if long transfers will be
+> requested?
+
+It's a fair workaround, but sub-optimal.  Recall that large
+transfers are the place you most want to use DMA ... :)
+
+
+> 5. Require that pxa2xx_spi break long DMA transfers into the required
+> number of pieces to be performed in separate DMAs, silently giving back
+> the message after it has completed all of it (this requires a lot of
+> extra book-keeping in pxa2xx_spi).
+
+If this happens a lot, that's the way to go.  I'd expect the driver
+can be simplified to make this hurt less.
+
+- Dave
+
 
 
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

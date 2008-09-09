@@ -1,19 +1,21 @@
 From: "Eric Miao" <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [Patch 0/1] spi: Fix pxa2xx_spi.c transfer
-	delay, cs change, transfer length
-Date: Tue, 9 Sep 2008 10:36:58 +0800
-Message-ID: <f17812d70809081936i588dfad5i9ffa84f69d4e3cd7@mail.gmail.com>
-References: <48BFEBF7.1080902@whoi.edu>
-	<200809081644.26081.david-b@pacbell.net>
+Subject: Re: [PATCH] spi: pxa2xx_spi introduce chip
+	select gpio to simplify the common cases
+Date: Tue, 9 Sep 2008 10:42:04 +0800
+Message-ID: <f17812d70809081942t718aa081p23f4711ee53d8019@mail.gmail.com>
+References: <f17812d70809040221y477ec4x5c05460650266be8@mail.gmail.com>
+	<f17812d70809040403u4c33e376vd8b3a2c5f034081c@mail.gmail.com>
+	<200809081704.43404.david-b@pacbell.net> <48C5CFEE.6070601@whoi.edu>
+	<f17812d70809081842l703fa346k139cc14dc033d877@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
-	spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+To: "Ned Forrester" <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200809081644.26081.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <f17812d70809081842l703fa346k139cc14dc033d877-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -26,15 +28,21 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Is it possible that the GPIO CS patch merged first before this one?
-And the patch below includes actually multiple changes, which
-makes the merge not so straight-forward.
+On Tue, Sep 9, 2008 at 9:42 AM, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> +static int setup_cs(struct spi_device *spi, struct chip_data *chip,
+>>> +                 struct pxa2xx_spi_chip *chip_info)
+>>
+>> My understanding is that it is legal to call setup without a defined
+>> pointer to a struct pxa2xx_spi_chip in spi_dev->controller_data, if the
+>> chip is happy with the defaults (only works for a single chip bus that
+>> needs no CS, a degenerate case, but still legal).  Thus you should allow
+>> for that by always checking for existence (chip_info not NULL) before use.
+>>
 
-Ned, I think you have reviewed my patch, and will it be convenient
-for you to update this one against mine? I have a lot of other stuffs
-depending on that, so it will be appreciated if you do. Thanks.
-
-- eric
+Ah, checked again with the source, I don't think setup_cs()
+shall continue if (chip_info == NULL), which implies a
+null_cs_control(), and is now handled by cs_assert() and
+cs_deassert().
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

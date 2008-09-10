@@ -1,21 +1,13 @@
-From: "Eric Miao" <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: pxa2xx_spi introduce chip
-	select gpio to simplify the common cases
-Date: Wed, 10 Sep 2008 09:25:25 +0800
-Message-ID: <f17812d70809091825y4a57329fma8f72b20468dae67@mail.gmail.com>
-References: <f17812d70809040221y477ec4x5c05460650266be8@mail.gmail.com>
-	<200809081704.43404.david-b@pacbell.net> <48C5CFEE.6070601@whoi.edu>
-	<200809091049.49327.david-b@pacbell.net>
+From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+Subject: [PATCH] spi_mpc83xx: handle odd transfer sizes
+Date: Wed, 10 Sep 2008 11:17:30 +0200
+Message-ID: <1221038250-11656-1-git-send-email-jacmet@sunsite.dk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200809091049.49327.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,14 +19,70 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->> > +     if (gpio_is_valid(chip_info->gpio_cs)) {
->> > +             err = gpio_request(chip_info->gpio_cs, "SPI_CS");
->
-> I'd actually pass dev_name(&spi->dev) not "SPI_CS", since I
-> happen to like seeing /sys/kernel/debug/gpio be informative.
->
+Make spi_mpc83xx more robust against odd transfer sizes:
+- Error out on transfer length != multiple of bytes per word
+- Fix crash on transfer length = 0 (1 word was always sent and
+  length decremented before check against 0).
 
-Good suggestion, indeed. I'll include this in the next submission.
+Signed-off-by: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+---
+ drivers/spi/spi_mpc83xx.c |   33 ++++++++++++++++++++++-----------
+ 1 files changed, 22 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+index 070c621..35067a5 100644
+--- a/drivers/spi/spi_mpc83xx.c
++++ b/drivers/spi/spi_mpc83xx.c
+@@ -315,24 +315,35 @@ static int mpc83xx_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	if (t->bits_per_word)
+ 		bits_per_word = t->bits_per_word;
+ 	len = t->len;
+-	if (bits_per_word > 8)
++	if (bits_per_word > 8) {
++		/* invalid length? */
++		if (len & 1)
++			return len;
+ 		len /= 2;
+-	if (bits_per_word > 16)
++	}
++	if (bits_per_word > 16) {
++		/* invalid length? */
++		if (len & 1)
++			return len;
+ 		len /= 2;
++	}
+ 	mpc83xx_spi->count = len;
+-	INIT_COMPLETION(mpc83xx_spi->done);
+ 
+-	/* enable rx ints */
+-	mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, SPIM_NE);
++	if (len) {
++		INIT_COMPLETION(mpc83xx_spi->done);
++
++		/* enable rx ints */
++		mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, SPIM_NE);
+ 
+-	/* transmit word */
+-	word = mpc83xx_spi->get_tx(mpc83xx_spi);
+-	mpc83xx_spi_write_reg(&mpc83xx_spi->base->transmit, word);
++		/* transmit word */
++		word = mpc83xx_spi->get_tx(mpc83xx_spi);
++		mpc83xx_spi_write_reg(&mpc83xx_spi->base->transmit, word);
+ 
+-	wait_for_completion(&mpc83xx_spi->done);
++		wait_for_completion(&mpc83xx_spi->done);
+ 
+-	/* disable rx ints */
+-	mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, 0);
++		/* disable rx ints */
++		mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, 0);
++	}
+ 
+ 	return mpc83xx_spi->count;
+ }
+-- 
+1.5.6.3
+
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

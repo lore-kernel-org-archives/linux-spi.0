@@ -1,13 +1,14 @@
 From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: [Patch 1/2] spi: Fix pxa2xx_spi.c transfer
-	delay, cs change
-Date: Wed, 10 Sep 2008 18:31:04 -0400
-Message-ID: <48C84AA8.6090309@whoi.edu>
+Subject: [Patch 2/2] spi: Fix pxa2xx_spi.c handling of
+ zero and long dma transfer lengths
+Date: Wed, 10 Sep 2008 18:34:53 -0400
+Message-ID: <48C84B8D.8080104@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, stable-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+	vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	stable-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -23,31 +24,21 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 
-Fixes several related bugs in the pxa2xx_spi driver.  These
-bugs are in all versions of this driver and prevent using it
+Fixes two related bugs in the pxa2xx_spi driver.  The first
+bug is in all versions of this driver and the second was
+introduced in the 2.6.20 kernel.  They prevent using the driver
 with chips like m25p16 flash.
 
- 1. The spi_transfer.cs_change flag is handled too early:
-    before spi_transfer.delay_usecs applies, thus making the
-    delay ineffective at holding chip select.
+ 1. Zero length transfers are permitted for use to insert timing,
+    but pxa2xx_spi.c will fail if this is requested in DMA mode.
+    Fixed by using programmed I/O (PIO) mode for such transfers.
 
- 2. spi_transfer.delay_usecs is ignored on the last transfer
-    of a message (likewise not holding chipselect long enough).
-
- 3. If spi_transfer.cs_change is set on the last transfer, the
-    chip select is always disabled, instead of the intended
-    meaning: optionally holding chip select enabled for the
-    next message.  (Impact at least MMC-over-SPI.)
-
-Those first three bugs were fixed with a relocation of delays
-and chip select de-assertions.
-
- 4. If a message has the cs_change flag set on the last transfer,
-    and had the chip select stayed enabled as requested (see 3,
-    above), it would not have been disabled if the next message is
-    for a different chip.  Fixed by dropping chip select regardless
-    of cs_change at end of a message, if there is no next message
-    or if the next message is for a different chip.
+ 2. Transfers larger than 8191 are not permitted in DMA mode.  A
+    test for length rejects all large transfers regardless of DMA
+    or PIO mode.  Worked around by rejecting only large transfers
+    with DMA mapped buffers, and forcing all other transfers
+    larger than 8191 to use PIO mode.  A rate limited warning is
+    issued for DMA transfers forced to PIO mode.
 
 This patch should apply to all kernels back to and including 2.6.20;
 it was test patched against 2.6.20.  An additional patch would be
@@ -59,124 +50,100 @@ Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
 ---
 
- drivers/spi/pxa2xx_spi.c |   59 ++++++++++++++++++++++++++++++-------
- 1 file changed, 48 insertions(+), 11 deletions(-)
+ drivers/spi/pxa2xx_spi.c |   57 +++++++++++++++++++++++++++----------
+ 1 file changed, 43 insertions(+), 14 deletions(-)
 
-diff -Nurp linux-2.6.27-rc3/drivers/spi/pxa2xx_spi.c
-linux-2.6.27-rc3_delay_cs_patch/drivers/spi/pxa2xx_spi.c
---- linux-2.6.27-rc3/drivers/spi/pxa2xx_spi.c	2008-08-19
-18:08:22.000000000 +0000
-+++ linux-2.6.27-rc3_delay_cs_patch/drivers/spi/pxa2xx_spi.c	2008-09-10
+diff -Nurp linux-2.6.27-rc3_delay_cs_patch/drivers/spi/pxa2xx_spi.c
+linux-2.6.27-rc3_delay_dma_patch/drivers/spi/pxa2xx_spi.c
+--- linux-2.6.27-rc3_delay_cs_patch/drivers/spi/pxa2xx_spi.c	2008-09-10
 21:55:10.000000000 +0000
-@@ -144,7 +144,6 @@ struct driver_data {
- 	size_t tx_map_len;
- 	u8 n_bytes;
- 	u32 dma_width;
--	int cs_change;
- 	int (*write)(struct driver_data *drv_data);
- 	int (*read)(struct driver_data *drv_data);
- 	irqreturn_t (*transfer_handler)(struct driver_data *drv_data);
-@@ -406,8 +405,45 @@ static void giveback(struct driver_data
- 					struct spi_transfer,
- 					transfer_list);
++++ linux-2.6.27-rc3_delay_dma_patch/drivers/spi/pxa2xx_spi.c	2008-09-10
+17:17:06.000000000 +0000
+@@ -47,9 +47,10 @@ MODULE_ALIAS("platform:pxa2xx-spi");
 
-+	/* Delay if requested before any change in chip select */
-+	if (last_transfer->delay_usecs)
-+		udelay(last_transfer->delay_usecs);
-+
-+	/* Drop chip select UNLESS cs_change is true or we are returning
-+	 * a message with an error, or next message is for another chip
-+	 */
- 	if (!last_transfer->cs_change)
- 		drv_data->cs_control(PXA2XX_CS_DEASSERT);
-+	else {
-+		struct spi_message *next_msg;
-+
-+		/* Holding of cs was hinted, but we need to make sure
-+		 * the next message is for the same chip.  Don't waste
-+		 * time with the following tests unless this was hinted.
-+		 *
-+		 * We cannot postpone this until pump_messages, because
-+		 * after calling msg->complete (below) the driver that
-+		 * sent the current message could be unloaded, which
-+		 * could invalidate the cs_control() callback...
-+		 */
-+
-+		/* get a pointer to the next message, if any */
-+		spin_lock_irqsave(&drv_data->lock, flags);
-+		if (list_empty(&drv_data->queue))
-+			next_msg = NULL;
-+		else
-+			next_msg = list_entry(drv_data->queue.next,
-+					struct spi_message, queue);
-+		spin_unlock_irqrestore(&drv_data->lock, flags);
-+
-+		/* see if the next and current messages point
-+		 * to the same chip
-+		 */
-+		if (next_msg && next_msg->spi != msg->spi)
-+			next_msg = NULL;
-+		if (!next_msg || msg->state == ERROR_STATE)
-+			drv_data->cs_control(PXA2XX_CS_DEASSERT);
-+	}
+ #define MAX_BUSES 3
 
- 	msg->state = NULL;
- 	if (msg->complete)
-@@ -490,10 +526,9 @@ static void dma_transfer_complete(struct
- 	msg->actual_length += drv_data->len -
- 				(drv_data->rx_end - drv_data->rx);
+-#define DMA_INT_MASK (DCSR_ENDINTR | DCSR_STARTINTR | DCSR_BUSERR)
+-#define RESET_DMA_CHANNEL (DCSR_NODESC | DMA_INT_MASK)
+-#define IS_DMA_ALIGNED(x) (((u32)(x)&0x07)==0)
++#define DMA_INT_MASK		(DCSR_ENDINTR | DCSR_STARTINTR | DCSR_BUSERR)
++#define RESET_DMA_CHANNEL	(DCSR_NODESC | DMA_INT_MASK)
++#define IS_DMA_ALIGNED(x)	(((x) & 0x07) == 0)
++#define MAX_DMA_LEN		8191
 
--	/* Release chip select if requested, transfer delays are
--	 * handled in pump_transfers */
--	if (drv_data->cs_change)
--		drv_data->cs_control(PXA2XX_CS_DEASSERT);
-+	/* Transfer delays and chip select release are
-+	 * handled in pump_transfers or giveback
-+	 */
-
- 	/* Move to next transfer */
- 	msg->state = next_transfer(drv_data);
-@@ -602,10 +637,9 @@ static void int_transfer_complete(struct
- 	drv_data->cur_msg->actual_length += drv_data->len -
- 				(drv_data->rx_end - drv_data->rx);
-
--	/* Release chip select if requested, transfer delays are
--	 * handled in pump_transfers */
--	if (drv_data->cs_change)
--		drv_data->cs_control(PXA2XX_CS_DEASSERT);
-+	/* Transfer delays and chip select release are
-+	 * handled in pump_transfers or giveback
-+	 */
-
- 	/* Move to next transfer */
- 	drv_data->cur_msg->state = next_transfer(drv_data);
-@@ -840,13 +874,17 @@ static void pump_transfers(unsigned long
- 		return;
+ /*
+  * for testing SSCR1 changes that require SSP restart, basically
+@@ -887,14 +888,27 @@ static void pump_transfers(unsigned long
+ 			drv_data->cs_control(PXA2XX_CS_DEASSERT);
  	}
 
--	/* Delay if requested at end of transfer*/
-+	/* Delay if requested at end of transfer before CS change */
- 	if (message->state == RUNNING_STATE) {
- 		previous = list_entry(transfer->transfer_list.prev,
- 					struct spi_transfer,
- 					transfer_list);
- 		if (previous->delay_usecs)
- 			udelay(previous->delay_usecs);
+-	/* Check transfer length */
+-	if (transfer->len > 8191)
+-	{
+-		dev_warn(&drv_data->pdev->dev, "pump_transfers: transfer "
+-				"length greater than 8191\n");
+-		message->status = -EINVAL;
+-		giveback(drv_data);
+-		return;
++	/* Check for transfers that need multiple DMA segments */
++	if (transfer->len > MAX_DMA_LEN && chip->enable_dma) {
 +
-+		/* Drop chip select only if cs_change is requested */
-+		if (previous->cs_change)
-+			drv_data->cs_control(PXA2XX_CS_DEASSERT);
++		/* reject already-mapped transfers; PIO won't always work */
++		if (message->is_dma_mapped
++				|| transfer->rx_dma || transfer->tx_dma) {
++			dev_err(&drv_data->pdev->dev,
++				"pump_transfers: mapped transfer length "
++				"of %lu is greater than %d\n",
++				transfer->len, MAX_DMA_LEN);
++			message->status = -EINVAL;
++			giveback(drv_data);
++			return;
++		}
++
++		/* warn ... we force this to PIO mode */
++		if (printk_ratelimit())
++			dev_warn(&message->spi->dev, "pump_transfers: "
++				"DMA disabled for transfer length %ld "
++				"greater than %d\n",
++				(long)drv_data->len, MAX_DMA_LEN);
  	}
 
- 	/* Check transfer length */
-@@ -878,7 +916,6 @@ static void pump_transfers(unsigned long
- 	drv_data->len = transfer->len & DCMD_LENGTH;
- 	drv_data->write = drv_data->tx ? chip->write : null_writer;
- 	drv_data->read = drv_data->rx ? chip->read : null_reader;
--	drv_data->cs_change = transfer->cs_change;
+ 	/* Setup the transfer state based on the type of transfer */
+@@ -962,7 +976,7 @@ static void pump_transfers(unsigned long
+ 							&dma_thresh))
+ 				if (printk_ratelimit())
+ 					dev_warn(&message->spi->dev,
+-						"pump_transfer: "
++						"pump_transfers: "
+ 						"DMA burst size reduced to "
+ 						"match bits_per_word\n");
+ 		}
+@@ -976,8 +990,23 @@ static void pump_transfers(unsigned long
 
- 	/* Change speed and bit per word on a per transfer */
- 	cr0 = chip->cr0;
+ 	message->state = RUNNING_STATE;
+
+-	/* Try to map dma buffer and do a dma transfer if successful */
+-	if ((drv_data->dma_mapped = map_dma_buffers(drv_data))) {
++	/* Try to map dma buffer and do a dma transfer if successful, but
++	 * only if the length is non-zero and less than MAX_DMA_LEN.
++	 *
++	 * Zero-length non-descriptor DMA is illegal on PXA2xx; force use
++	 * of PIO instead.  Care is needed above because the transfer may
++	 * have have been passed with buffers that are already dma mapped.
++	 * A zero-length transfer in PIO mode will not try to write/read
++	 * to/from the buffers
++	 *
++	 * REVISIT large transfers are exactly where we most want to be
++	 * using DMA.  If this happens much, split those transfers into
++	 * multiple DMA segments rather than forcing PIO.
++	 */
++	drv_data->dma_mapped = 0;
++	if (drv_data->len > 0 && drv_data->len <= MAX_DMA_LEN)
++		drv_data->dma_mapped = map_dma_buffers(drv_data);
++	if (drv_data->dma_mapped) {
+
+ 		/* Ensure we have the correct interrupt handler */
+ 		drv_data->transfer_handler = dma_transfer;
 
 
 -------------------------------------------------------------------------

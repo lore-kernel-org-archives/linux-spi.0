@@ -1,19 +1,19 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] pxa2xx_spi: Fix chip_info defaults
-	and documentation.
-Date: Wed, 10 Sep 2008 10:20:15 -0700
-Message-ID: <200809101020.15382.david-b@pacbell.net>
-References: <20080909211842.59176caf@vsauder-lx.localdomain>
+From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+Subject: Re: [PATCH] spi_mpc83xx: handle odd transfer
+	sizes
+Date: Wed, 10 Sep 2008 20:49:43 +0200
+Message-ID: <87k5djdeew.fsf@macbook.be.48ers.dk>
+References: <1221041160-19342-1-git-send-email-jacmet@sunsite.dk>
+	<200809101028.01997.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080909211842.59176caf-W37fpRALFaH6NKmgiXY+hA0JkcsJGQge@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200809101028.01997.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> (David Brownell's
+	message of "Wed\, 10 Sep 2008 10\:28\:01 -0700")
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,21 +25,34 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 09 September 2008, Vernon Sauder wrote:
-> Make the chip info structure data optional by providing reasonable
-> defaults. Improve corresponding documentation.
-> 
-> DMA can determine appropriate dma_burst_size and thresholds
-> automatically so use DMA even if dma_burst_size is not specified.
-> 
-> Signed-off-by: Vernon Sauder <VernonInHand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Reviewed-by: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-
-Thanks, I'll send this after Ned's updated bugfixes ...
-
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+Pj4+Pj4gIkRhdmlkIiA9PSBEYXZpZCBCcm93bmVsbCA8ZGF2aWQtYkBwYWNiZWxsLm5ldD4gd3Jp
+dGVzOgoKIERhdmlkPiBPbiBXZWRuZXNkYXkgMTAgU2VwdGVtYmVyIDIwMDgsIFBldGVyIEtvcnNn
+YWFyZCB3cm90ZToKID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBpbnZhbGlk
+IGxlbmd0aD8gKi8KID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAobGVuICYg
+MSkKID4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0
+dXJuIGxlbjsKCiBEYXZpZD4gQ291bnQgbWUgcHV6emxlZCAuLi4gInJldHVybiAtRUlOVkFMOyIg
+d291bGQgbWFrZSBzZW5zZS4KIERhdmlkPiBZb3UncmUgc3VjY2VlZGluZyBoZXJlLCBub3QgZmFp
+bGluZy4KCiBEYXZpZD4gQnV0IHRoZW4gdGhpcyByb3V0aW5lIHB1enpsZXMgbWUgYW55d2F5LiAg
+SXQgYWx3YXlzIHJldHVybnMKIERhdmlkPiBsZW4sIGFuZCB0aGVuIHRoZSBjYWxsZXIgZmFpbHMg
+d2l0aCAtRU1TR1NJWkUgaWYgdGhhdCByZXR1cm4KIERhdmlkPiBpcyBub256ZXJvLiAgU3VyZWx5
+IHRoZSByb3V0aW5lIHNob3VsZCByZXR1cm4gemVyby1vci1lcnJubz8KClllYWgsIGl0IGlzbid0
+IHRoZSBwcmV0dGllc3QgY29kZS4gVGhlIGZ1bmN0aW9uIHJldHVybnMgdGhlIGFtb3VudCBvZgp3
+b3JkcyBOT1QgdHJhbnNmZXJyZWQgLSBBbmQgdGhlIGNhbGxlciBjb252ZXJ0cyB0aGF0IHRvIC1F
+TVNHU0laRSBpZgppdCdzICE9IDAuCgpJdCB3b3VsZCBpbmRlZWQgYmUgY2xlYXJlciB0byBjaGFu
+Z2UgaXQgdG8gdG8gcmV0dXJuIC1lcnJubyBvbiBlcnJvcnMKaW5zdGVhZCwgYnV0IHRoZSBwcm9i
+bGVtIG15IHBhdGNoIHNvbHZlcyBpcyByZWFsIChjcmFzaCBvbiB0b28gc21hbGwKbWVzc2FnZSBs
+ZW5ndGhzKSBhbmQgSSB3YW50ZWQgdG8ga2VlcCB0aGUgcGF0Y2ggdG8gaXQncyBtaW5pbXVtIG5v
+dwp0aGF0IHdlJ3JlIHNvIGNsb3NlIHRvIDIuNi4yNy4KCkJ1dCBJIGNhbiBjaGFuZ2UgaXQgdG8g
+dXNlIHJldHVybiAtRUlOVkFMIGluc3RlYWQgaWYgeW91IHByZWZlciAtIFRoZQpjYWxsZXIgZG9l
+c24ndCBjYXJlIGFzIGxvbmcgYXMgaXQncyAhPSAwLgoKVGhlbiB3ZSBjYW4gZG8gdGhlIHJlYWwg
+Y2xlYW51cCBsYXRlciBhbmQgcHVzaCBpdCBmb3IgMi42LjI4LgoKT0s/CgotLSAKQnllLCBQZXRl
+ciBLb3JzZ2FhcmQKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5OZXQgZW1haWwgaXMgc3BvbnNv
+cmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVsb3BlcidzIGNoYWxsZW5nZQpCdWlsZCB0
+aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlvbnMgd2l0aCBNb2JsaW4gU0RLICYgd2lu
+IGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRyaXAgZm9yIHR3byB0byBhbiBPcGVuIFNv
+dXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQKaHR0cDovL21vYmxpbi1jb250ZXN0Lm9y
+Zy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9LwpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
+cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

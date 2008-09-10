@@ -1,13 +1,17 @@
-From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
-Subject: [PATCH] spi_mpc83xx: handle odd transfer sizes
-Date: Wed, 10 Sep 2008 11:17:30 +0200
-Message-ID: <1221038250-11656-1-git-send-email-jacmet@sunsite.dk>
+From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Subject: Re: [PATCH] spi_mpc83xx: handle odd transfer
+	sizes
+Date: Wed, 10 Sep 2008 11:55:56 +0200
+Message-ID: <1221040556.17398.69.camel@gentoo-jocke.transmode.se>
+References: <1221038250-11656-1-git-send-email-jacmet@sunsite.dk>
+Reply-To: joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1221038250-11656-1-git-send-email-jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,24 +23,18 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Make spi_mpc83xx more robust against odd transfer sizes:
-- Error out on transfer length != multiple of bytes per word
-- Fix crash on transfer length = 0 (1 word was always sent and
-  length decremented before check against 0).
+On Wed, 2008-09-10 at 11:17 +0200, Peter Korsgaard wrote:
+> Make spi_mpc83xx more robust against odd transfer sizes:
+> - Error out on transfer length != multiple of bytes per word
 
-Signed-off-by: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
----
- drivers/spi/spi_mpc83xx.c |   33 ++++++++++++++++++++++-----------
- 1 files changed, 22 insertions(+), 11 deletions(-)
+This makes sense
 
-diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
-index 070c621..35067a5 100644
---- a/drivers/spi/spi_mpc83xx.c
-+++ b/drivers/spi/spi_mpc83xx.c
-@@ -315,24 +315,35 @@ static int mpc83xx_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	if (t->bits_per_word)
- 		bits_per_word = t->bits_per_word;
- 	len = t->len;
+> - Fix crash on transfer length = 0 (1 word was always sent and
+>   length decremented before check against 0).
+
+But not this, there is a check for len != 0 in mpc83xx_spi_work()
+However, if you use word size > 8 and and illegal size, then you get
+a crash. The 
 -	if (bits_per_word > 8)
 +	if (bits_per_word > 8) {
 +		/* invalid length? */
@@ -51,37 +49,9 @@ index 070c621..35067a5 100644
 +			return len;
  		len /= 2;
 +	}
- 	mpc83xx_spi->count = len;
--	INIT_COMPLETION(mpc83xx_spi->done);
- 
--	/* enable rx ints */
--	mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, SPIM_NE);
-+	if (len) {
-+		INIT_COMPLETION(mpc83xx_spi->done);
-+
-+		/* enable rx ints */
-+		mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, SPIM_NE);
- 
--	/* transmit word */
--	word = mpc83xx_spi->get_tx(mpc83xx_spi);
--	mpc83xx_spi_write_reg(&mpc83xx_spi->base->transmit, word);
-+		/* transmit word */
-+		word = mpc83xx_spi->get_tx(mpc83xx_spi);
-+		mpc83xx_spi_write_reg(&mpc83xx_spi->base->transmit, word);
- 
--	wait_for_completion(&mpc83xx_spi->done);
-+		wait_for_completion(&mpc83xx_spi->done);
- 
--	/* disable rx ints */
--	mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, 0);
-+		/* disable rx ints */
-+		mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, 0);
-+	}
- 
- 	return mpc83xx_spi->count;
- }
--- 
-1.5.6.3
+part will fix that, the rest isn't needed. len cannot be 0 after that.
+
+ Jocke
 
 
 -------------------------------------------------------------------------

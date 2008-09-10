@@ -1,17 +1,16 @@
-From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-Subject: Re: [PATCH] spi_mpc83xx: handle odd transfer
-	sizes
-Date: Wed, 10 Sep 2008 13:03:40 +0200
-Message-ID: <1221044620.17398.71.camel@gentoo-jocke.transmode.se>
-References: <1221041160-19342-1-git-send-email-jacmet@sunsite.dk>
-Reply-To: joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch 2.6.27-rc6] spi: simplify
+	spi_write_then_read()
+Date: Wed, 10 Sep 2008 10:18:01 -0700
+Message-ID: <200809101018.01661.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+Cc: Vernon Sauder <Vernon.Sauder-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1221041160-19342-1-git-send-email-jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,13 +22,67 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 2008-09-10 at 12:06 +0200, Peter Korsgaard wrote:
-> Error out on transfer length != multiple of bytes per word.
-> 
-> Signed-off-by: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+From: Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Acked-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Modify spi_write_then_read() to use one transfer.
+This speeds up all callers, and is a minor code shrink.
 
+Signed-off-by: Vernon Sauder <Vernon.Sauder-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/spi.c |   22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
+
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -660,7 +660,7 @@ int spi_write_then_read(struct spi_devic
+ 
+ 	int			status;
+ 	struct spi_message	message;
+-	struct spi_transfer	x[2];
++	struct spi_transfer	x;
+ 	u8			*local_buf;
+ 
+ 	/* Use preallocated DMA-safe buffer.  We can't avoid copying here,
+@@ -671,15 +671,9 @@ int spi_write_then_read(struct spi_devic
+ 		return -EINVAL;
+ 
+ 	spi_message_init(&message);
+-	memset(x, 0, sizeof x);
+-	if (n_tx) {
+-		x[0].len = n_tx;
+-		spi_message_add_tail(&x[0], &message);
+-	}
+-	if (n_rx) {
+-		x[1].len = n_rx;
+-		spi_message_add_tail(&x[1], &message);
+-	}
++	memset(&x, 0, sizeof x);
++	x.len = n_tx + n_rx;
++	spi_message_add_tail(&x, &message);
+ 
+ 	/* ... unless someone else is using the pre-allocated buffer */
+ 	if (!mutex_trylock(&lock)) {
+@@ -690,15 +684,15 @@ int spi_write_then_read(struct spi_devic
+ 		local_buf = buf;
+ 
+ 	memcpy(local_buf, txbuf, n_tx);
+-	x[0].tx_buf = local_buf;
+-	x[1].rx_buf = local_buf + n_tx;
++	x.tx_buf = local_buf;
++	x.rx_buf = local_buf;
+ 
+ 	/* do the i/o */
+ 	status = spi_sync(spi, &message);
+ 	if (status == 0)
+-		memcpy(rxbuf, x[1].rx_buf, n_rx);
++		memcpy(rxbuf, x.rx_buf + n_tx, n_rx);
+ 
+-	if (x[0].tx_buf == buf)
++	if (x.tx_buf == buf)
+ 		mutex_unlock(&lock);
+ 	else
+ 		kfree(local_buf);
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

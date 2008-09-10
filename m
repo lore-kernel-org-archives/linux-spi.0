@@ -1,15 +1,13 @@
 From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
 Subject: [PATCH] spi_mpc83xx: handle odd transfer sizes
-Date: Wed, 10 Sep 2008 22:31:08 +0200
-Message-ID: <1221078668-11680-2-git-send-email-jacmet@sunsite.dk>
-References: <1221078668-11680-1-git-send-email-jacmet@sunsite.dk>
+Date: Wed, 10 Sep 2008 22:31:07 +0200
+Message-ID: <1221078668-11680-1-git-send-email-jacmet@sunsite.dk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 To: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1221078668-11680-1-git-send-email-jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>

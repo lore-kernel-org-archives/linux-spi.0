@@ -1,13 +1,20 @@
-From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
-Subject: [PATCH] spi_mpc83xx: handle odd transfer sizes
-Date: Wed, 10 Sep 2008 22:31:07 +0200
-Message-ID: <1221078668-11680-1-git-send-email-jacmet@sunsite.dk>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] spi_mpc83xx: handle odd transfer
+	sizes
+Date: Wed, 10 Sep 2008 14:05:39 -0700
+Message-ID: <200809101405.39285.david-b@pacbell.net>
+References: <1221041160-19342-1-git-send-email-jacmet@sunsite.dk>
+	<200809101028.01997.david-b@pacbell.net>
+	<87k5djdeew.fsf@macbook.be.48ers.dk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
+To: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <87k5djdeew.fsf-uXGAPMMVk8amE9MCos8gUmSdvHPH+/yF@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,55 +26,51 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Error out on transfer length != multiple of bytes per word with -EINVAL.
-Fixes a buffer overrun crash if length < bytes per word.
+On Wednesday 10 September 2008, Peter Korsgaard wrote:
+> It would indeed be clearer to change it to to return -errno on errors
+> instead, but the problem my patch solves is real (crash on too small
+> message lengths) and I wanted to keep the patch to it's minimum now
+> that we're so close to 2.6.27.
+> 
+> But I can change it to use return -EINVAL instead if you prefer - The
+> caller doesn't care as long as it's != 0.
+> 
+> Then we can do the real cleanup later and push it for 2.6.28.
 
-Signed-off-by: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
-Acked-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
----
- drivers/spi/spi_mpc83xx.c |   16 +++++++++++++---
- 1 files changed, 13 insertions(+), 3 deletions(-)
+OK, I was thinking this minimal tweak to your patch.  It adds only
+one more patch segment, and makes the routine obey stndard kernel
+calling conventions ... still a small patch.  :)
 
-David, is this more 
-diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
-index 070c621..11c246f 100644
---- a/drivers/spi/spi_mpc83xx.c
-+++ b/drivers/spi/spi_mpc83xx.c
-@@ -315,11 +315,20 @@ static int mpc83xx_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	if (t->bits_per_word)
- 		bits_per_word = t->bits_per_word;
- 	len = t->len;
--	if (bits_per_word > 8)
-+	if (bits_per_word > 8) {
-+		/* invalid length? */
-+		if (len & 1)
+
+
+--- g26.orig/drivers/spi/spi_mpc83xx.c	2008-09-10 14:03:03.000000000 -0700
++++ g26/drivers/spi/spi_mpc83xx.c	2008-09-10 10:27:23.000000000 -0700
+@@ -315,13 +315,13 @@ static int mpc83xx_spi_bufs(struct spi_d
+ 	if (bits_per_word > 8) {
+ 		/* invalid length? */
+ 		if (len & 1)
+-			return len;
 +			return -EINVAL;
  		len /= 2;
--	if (bits_per_word > 16)
-+	}
-+	if (bits_per_word > 16) {
-+		/* invalid length? */
-+		if (len & 1)
+ 	}
+ 	if (bits_per_word > 16) {
+ 		/* invalid length? */
+ 		if (len & 1)
+-			return len;
 +			return -EINVAL;
  		len /= 2;
-+	}
+ 	}
  	mpc83xx_spi->count = len;
-+
- 	INIT_COMPLETION(mpc83xx_spi->done);
+@@ -340,7 +340,7 @@ static int mpc83xx_spi_bufs(struct spi_d
+ 	/* disable rx ints */
+ 	mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, 0);
  
- 	/* enable rx ints */
-@@ -376,7 +385,8 @@ static void mpc83xx_spi_work(struct work_struct *work)
- 			if (t->len)
- 				status = mpc83xx_spi_bufs(spi, t);
- 			if (status) {
--				status = -EMSGSIZE;
-+				if (status > 0)
-+					status = -EMSGSIZE;
- 				break;
- 			}
- 			m->actual_length += t->len;
--- 
-1.5.6.3
+-	return mpc83xx_spi->count;
++	return 0;
+ }
+ 
+ static void mpc83xx_spi_work(struct work_struct *work)
+
 
 
 -------------------------------------------------------------------------

@@ -1,21 +1,15 @@
-From: "Joakim Tjernlund" <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-Subject: Re: [PATCH] spi_mpc83xx: handle odd transfer
-	sizes
-Date: Wed, 10 Sep 2008 23:48:09 +0200
-Message-ID: <16243.1497280069$1221083374@news.gmane.org>
-References: <1221041160-19342-1-git-send-email-jacmet@sunsite.dk>
-	<200809101028.01997.david-b@pacbell.net>
-	<87k5djdeew.fsf@macbook.be.48ers.dk>
-	<200809101405.39285.david-b@pacbell.net>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: [Patch 1/2] spi: Fix pxa2xx_spi.c transfer
+	delay, cs change
+Date: Wed, 10 Sep 2008 18:31:04 -0400
+Message-ID: <48C84AA8.6090309@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "'David Brownell'" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	"'Peter Korsgaard'" <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, stable-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200809101405.39285.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Content-Language: sv
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,63 +21,162 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 
+Fixes several related bugs in the pxa2xx_spi driver.  These
+bugs are in all versions of this driver and prevent using it
+with chips like m25p16 flash.
 
-> -----Original Message-----
-> From: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org]
-> Sent: den 10 september 2008 23:06
-> To: Peter Korsgaard
-> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
-> Subject: Re: [PATCH] spi_mpc83xx: handle odd transfer sizes
-> 
-> On Wednesday 10 September 2008, Peter Korsgaard wrote:
-> > It would indeed be clearer to change it to to return -errno on errors
-> > instead, but the problem my patch solves is real (crash on too small
-> > message lengths) and I wanted to keep the patch to it's minimum now
-> > that we're so close to 2.6.27.
-> >
-> > But I can change it to use return -EINVAL instead if you prefer - The
-> > caller doesn't care as long as it's != 0.
-> >
-> > Then we can do the real cleanup later and push it for 2.6.28.
-> 
-> OK, I was thinking this minimal tweak to your patch.  It adds only
-> one more patch segment, and makes the routine obey stndard kernel
-> calling conventions ... still a small patch.  :)
+ 1. The spi_transfer.cs_change flag is handled too early:
+    before spi_transfer.delay_usecs applies, thus making the
+    delay ineffective at holding chip select.
 
-Yes, this is fine, but ..
-> 
-> 
-> 
-> --- g26.orig/drivers/spi/spi_mpc83xx.c	2008-09-10 14:03:03.000000000 -0700
-> +++ g26/drivers/spi/spi_mpc83xx.c	2008-09-10 10:27:23.000000000 -0700
-> @@ -315,13 +315,13 @@ static int mpc83xx_spi_bufs(struct spi_d
->  	if (bits_per_word > 8) {
->  		/* invalid length? */
->  		if (len & 1)
-> -			return len;
-> +			return -EINVAL;
->  		len /= 2;
->  	}
->  	if (bits_per_word > 16) {
->  		/* invalid length? */
->  		if (len & 1)
-> -			return len;
-> +			return -EINVAL;
->  		len /= 2;
->  	}
->  	mpc83xx_spi->count = len;
-> @@ -340,7 +340,7 @@ static int mpc83xx_spi_bufs(struct spi_d
->  	/* disable rx ints */
->  	mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, 0);
-> 
-> -	return mpc83xx_spi->count;
-> +	return 0;
-This hunk should probably stay untouched, not sure the mpc83xx_spi->count always
-is zero in case of TX errors.
+ 2. spi_transfer.delay_usecs is ignored on the last transfer
+    of a message (likewise not holding chipselect long enough).
 
- Jocke
+ 3. If spi_transfer.cs_change is set on the last transfer, the
+    chip select is always disabled, instead of the intended
+    meaning: optionally holding chip select enabled for the
+    next message.  (Impact at least MMC-over-SPI.)
 
+Those first three bugs were fixed with a relocation of delays
+and chip select de-assertions.
+
+ 4. If a message has the cs_change flag set on the last transfer,
+    and had the chip select stayed enabled as requested (see 3,
+    above), it would not have been disabled if the next message is
+    for a different chip.  Fixed by dropping chip select regardless
+    of cs_change at end of a message, if there is no next message
+    or if the next message is for a different chip.
+
+This patch should apply to all kernels back to and including 2.6.20;
+it was test patched against 2.6.20.  An additional patch would be
+required for older kernels, but those versions are very buggy anyway.
+
+Signed-off-by: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Cc: Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+
+---
+
+ drivers/spi/pxa2xx_spi.c |   59 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 48 insertions(+), 11 deletions(-)
+
+diff -Nurp linux-2.6.27-rc3/drivers/spi/pxa2xx_spi.c
+linux-2.6.27-rc3_delay_cs_patch/drivers/spi/pxa2xx_spi.c
+--- linux-2.6.27-rc3/drivers/spi/pxa2xx_spi.c	2008-08-19
+18:08:22.000000000 +0000
++++ linux-2.6.27-rc3_delay_cs_patch/drivers/spi/pxa2xx_spi.c	2008-09-10
+21:55:10.000000000 +0000
+@@ -144,7 +144,6 @@ struct driver_data {
+ 	size_t tx_map_len;
+ 	u8 n_bytes;
+ 	u32 dma_width;
+-	int cs_change;
+ 	int (*write)(struct driver_data *drv_data);
+ 	int (*read)(struct driver_data *drv_data);
+ 	irqreturn_t (*transfer_handler)(struct driver_data *drv_data);
+@@ -406,8 +405,45 @@ static void giveback(struct driver_data
+ 					struct spi_transfer,
+ 					transfer_list);
+
++	/* Delay if requested before any change in chip select */
++	if (last_transfer->delay_usecs)
++		udelay(last_transfer->delay_usecs);
++
++	/* Drop chip select UNLESS cs_change is true or we are returning
++	 * a message with an error, or next message is for another chip
++	 */
+ 	if (!last_transfer->cs_change)
+ 		drv_data->cs_control(PXA2XX_CS_DEASSERT);
++	else {
++		struct spi_message *next_msg;
++
++		/* Holding of cs was hinted, but we need to make sure
++		 * the next message is for the same chip.  Don't waste
++		 * time with the following tests unless this was hinted.
++		 *
++		 * We cannot postpone this until pump_messages, because
++		 * after calling msg->complete (below) the driver that
++		 * sent the current message could be unloaded, which
++		 * could invalidate the cs_control() callback...
++		 */
++
++		/* get a pointer to the next message, if any */
++		spin_lock_irqsave(&drv_data->lock, flags);
++		if (list_empty(&drv_data->queue))
++			next_msg = NULL;
++		else
++			next_msg = list_entry(drv_data->queue.next,
++					struct spi_message, queue);
++		spin_unlock_irqrestore(&drv_data->lock, flags);
++
++		/* see if the next and current messages point
++		 * to the same chip
++		 */
++		if (next_msg && next_msg->spi != msg->spi)
++			next_msg = NULL;
++		if (!next_msg || msg->state == ERROR_STATE)
++			drv_data->cs_control(PXA2XX_CS_DEASSERT);
++	}
+
+ 	msg->state = NULL;
+ 	if (msg->complete)
+@@ -490,10 +526,9 @@ static void dma_transfer_complete(struct
+ 	msg->actual_length += drv_data->len -
+ 				(drv_data->rx_end - drv_data->rx);
+
+-	/* Release chip select if requested, transfer delays are
+-	 * handled in pump_transfers */
+-	if (drv_data->cs_change)
+-		drv_data->cs_control(PXA2XX_CS_DEASSERT);
++	/* Transfer delays and chip select release are
++	 * handled in pump_transfers or giveback
++	 */
+
+ 	/* Move to next transfer */
+ 	msg->state = next_transfer(drv_data);
+@@ -602,10 +637,9 @@ static void int_transfer_complete(struct
+ 	drv_data->cur_msg->actual_length += drv_data->len -
+ 				(drv_data->rx_end - drv_data->rx);
+
+-	/* Release chip select if requested, transfer delays are
+-	 * handled in pump_transfers */
+-	if (drv_data->cs_change)
+-		drv_data->cs_control(PXA2XX_CS_DEASSERT);
++	/* Transfer delays and chip select release are
++	 * handled in pump_transfers or giveback
++	 */
+
+ 	/* Move to next transfer */
+ 	drv_data->cur_msg->state = next_transfer(drv_data);
+@@ -840,13 +874,17 @@ static void pump_transfers(unsigned long
+ 		return;
+ 	}
+
+-	/* Delay if requested at end of transfer*/
++	/* Delay if requested at end of transfer before CS change */
+ 	if (message->state == RUNNING_STATE) {
+ 		previous = list_entry(transfer->transfer_list.prev,
+ 					struct spi_transfer,
+ 					transfer_list);
+ 		if (previous->delay_usecs)
+ 			udelay(previous->delay_usecs);
++
++		/* Drop chip select only if cs_change is requested */
++		if (previous->cs_change)
++			drv_data->cs_control(PXA2XX_CS_DEASSERT);
+ 	}
+
+ 	/* Check transfer length */
+@@ -878,7 +916,6 @@ static void pump_transfers(unsigned long
+ 	drv_data->len = transfer->len & DCMD_LENGTH;
+ 	drv_data->write = drv_data->tx ? chip->write : null_writer;
+ 	drv_data->read = drv_data->rx ? chip->read : null_reader;
+-	drv_data->cs_change = transfer->cs_change;
+
+ 	/* Change speed and bit per word on a per transfer */
+ 	cr0 = chip->cr0;
 
 
 -------------------------------------------------------------------------

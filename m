@@ -1,15 +1,20 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.27-rc6] spi_s3c24xx: pin
-	configuration updates
-Date: Thu, 11 Sep 2008 11:07:38 -0700
-Message-ID: <200809111107.39002.david-b@pacbell.net>
+Subject: Re: [PATCH] spi: pxa2xx_spi introduce chip
+	select gpio to simplify the common cases
+Date: Thu, 11 Sep 2008 11:35:43 -0700
+Message-ID: <200809111135.44364.david-b@pacbell.net>
+References: <f17812d70809040221y477ec4x5c05460650266be8@mail.gmail.com>
+	<200809102308.31675.david-b@pacbell.net>
+	<48C91DFD.5020308@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <48C91DFD.5020308-/d+BM93fTQY@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -22,58 +27,47 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+On Thursday 11 September 2008, Ned Forrester wrote:
 
-Add a pin configuration callback for the s3c24xx SPI driver, as
-there are several options depending on the channel and the chip
-in use.
+> I'm puzzled.  What is there about the pxa2xx_spi.c that would be
+> simplified by doing anything with respect to SSPFRM?
 
-This is needed as the controller may not have been setup by the
-initial bootloader and the fact that the SPI controller gets
-reset over suspend/resume into slave mode but the GPIO function
-registers do not.
+The usage model ... callers must understand that option,
+evaluate whether it's even usable on their board, and
+then have an extra set of possibilities to debug.  And
+it's not a model needed with other SPI controllers...
 
-Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
-AFAICT not essential for 2.6.27, but Ben may have better data.
+The code ... has to support that more complex model.
 
- arch/arm/mach-s3c2410/include/mach/spi.h |    1 +
- drivers/spi/spi_s3c24xx.c                |    6 ++++++
- 2 files changed, 7 insertions(+)
+Developers ... have to answer questions about that
+mechanism when they could be doing more useful things.
 
---- a/arch/arm/mach-s3c2410/include/mach/spi.h
-+++ b/arch/arm/mach-s3c2410/include/mach/spi.h
-@@ -18,6 +18,7 @@ struct s3c2410_spi_info {
- 	unsigned int		 num_cs;	/* total chipselects */
- 	int			 bus_num;       /* bus number to use. */
- 
-+	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
- 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
- };
- 
---- a/drivers/spi/spi_s3c24xx.c
-+++ b/drivers/spi/spi_s3c24xx.c
-@@ -247,6 +247,9 @@ static void s3c24xx_spi_initialsetup(str
- 	writeb(0xff, hw->regs + S3C2410_SPPRE);
- 	writeb(SPPIN_DEFAULT, hw->regs + S3C2410_SPPIN);
- 	writeb(SPCON_DEFAULT, hw->regs + S3C2410_SPCON);
-+
-+	if (hw->pdata && hw->pdata->gpio_setup)
-+		hw->pdata->gpio_setup(hw->pdata, 1);
- }
- 
- static int __init s3c24xx_spi_probe(struct platform_device *pdev)
-@@ -412,6 +415,9 @@ static int s3c24xx_spi_suspend(struct pl
- {
- 	struct s3c24xx_spi *hw = platform_get_drvdata(pdev);
- 
-+	if (hw->pdata && hw->pdata->gpio_setup)
-+		hw->pdata->gpio_setup(hw->pdata, 0);
-+
- 	clk_disable(hw->clk);
- 	return 0;
- }
+
+> If use of gpio_cs were enforced, an existing 
+> application that uses the SSPFRM function of the PXA2xx chip would have
+> to be carefully checked for proper use of cs_change (cs_change would
+> have been previously ineffective). 
+
+Needing to fix latent bugs is a weak argument.  They'd
+need to be fixed when moving to other hardware in any
+case.  Note that needing such fixage is another cost
+to allowing this mechanism...
+
+
+> On a related aspect:
+> 
+> By "broken" cs_change, are you referring to the lack of support for
+> SPI_CS_HIGH?
+
+No; spi_transfer.cs_change is what controls whether chipselect
+should be deactivated (briefly) between transfers.  It's never
+supposed to be deactivated except between messages ... unless
+that flag is set.
+
+The brokenness is that when using the SSP frame signal as
+chipselect, it's *always* disabled between transfers.
+
+- Dave
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

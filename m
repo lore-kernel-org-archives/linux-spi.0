@@ -1,20 +1,14 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] spi: pxa2xx_spi introduce chip
-	select gpio to simplify the common cases
-Date: Thu, 11 Sep 2008 11:35:43 -0700
-Message-ID: <200809111135.44364.david-b@pacbell.net>
-References: <f17812d70809040221y477ec4x5c05460650266be8@mail.gmail.com>
-	<200809102308.31675.david-b@pacbell.net>
-	<48C91DFD.5020308@whoi.edu>
+Subject: [patch 2.6.27-rc6+mm] pxa2xx_spi: minor cleanup
+Date: Thu, 11 Sep 2008 14:25:33 -0700
+Message-ID: <200809111425.34178.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <48C91DFD.5020308-/d+BM93fTQY@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,47 +21,52 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 11 September 2008, Ned Forrester wrote:
+From: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
-> I'm puzzled.  What is there about the pxa2xx_spi.c that would be
-> simplified by doing anything with respect to SSPFRM?
+Minor fixes: remove redundant local variable initialization,
+fix "can not" to what I _think_ is a preferred spelling,
+output IRQ number if requesting it failed.
 
-The usage model ... callers must understand that option,
-evaluate whether it's even usable on their board, and
-then have an extra set of possibilities to debug.  And
-it's not a model needed with other SPI controllers...
+Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+Clearly not essential for 2.6.27 
 
-The code ... has to support that more complex model.
+ drivers/spi/pxa2xx_spi.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Developers ... have to answer questions about that
-mechanism when they could be doing more useful things.
-
-
-> If use of gpio_cs were enforced, an existing 
-> application that uses the SSPFRM function of the PXA2xx chip would have
-> to be carefully checked for proper use of cs_change (cs_change would
-> have been previously ineffective). 
-
-Needing to fix latent bugs is a weak argument.  They'd
-need to be fixed when moving to other hardware in any
-case.  Note that needing such fixage is another cost
-to allowing this mechanism...
-
-
-> On a related aspect:
-> 
-> By "broken" cs_change, are you referring to the lack of support for
-> SPI_CS_HIGH?
-
-No; spi_transfer.cs_change is what controls whether chipselect
-should be deactivated (briefly) between transfers.  It's never
-supposed to be deactivated except between messages ... unless
-that flag is set.
-
-The brokenness is that when using the SSP frame signal as
-chipselect, it's *always* disabled between transfers.
-
-- Dave
+--- a/drivers/spi/pxa2xx_spi.c
++++ b/drivers/spi/pxa2xx_spi.c
+@@ -1407,9 +1407,9 @@ static int __init pxa2xx_spi_probe(struc
+ 	struct device *dev = &pdev->dev;
+ 	struct pxa2xx_spi_master *platform_info;
+ 	struct spi_master *master;
+-	struct driver_data *drv_data = NULL;
++	struct driver_data *drv_data;
+ 	struct ssp_device *ssp;
+-	int status = 0;
++	int status;
+ 
+ 	platform_info = dev->platform_data;
+ 
+@@ -1422,7 +1422,7 @@ static int __init pxa2xx_spi_probe(struc
+ 	/* Allocate master with space for drv_data and null dma buffer */
+ 	master = spi_alloc_master(dev, sizeof(struct driver_data) + 16);
+ 	if (!master) {
+-		dev_err(&pdev->dev, "can not alloc spi_master\n");
++		dev_err(&pdev->dev, "cannot alloc spi_master\n");
+ 		ssp_free(ssp);
+ 		return -ENOMEM;
+ 	}
+@@ -1458,7 +1458,7 @@ static int __init pxa2xx_spi_probe(struc
+ 
+ 	status = request_irq(ssp->irq, ssp_int, 0, dev->bus_id, drv_data);
+ 	if (status < 0) {
+-		dev_err(&pdev->dev, "can not get IRQ\n");
++		dev_err(&pdev->dev, "cannot get IRQ %d\n", ssp->irq);
+ 		goto out_error_master_alloc;
+ 	}
+ 
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

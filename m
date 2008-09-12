@@ -1,15 +1,20 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.27-rc6+mm] pxa2xx_spi: minor cleanup
-Date: Thu, 11 Sep 2008 14:25:33 -0700
-Message-ID: <200809111425.34178.david-b@pacbell.net>
+From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] pxa2xx_spi: wait_rx_stall
+	before	deasserting CS on PIO mode
+Date: Thu, 11 Sep 2008 22:53:52 -0300
+Message-ID: <1221184432.5078.19.camel@brutus>
+References: <6669365c0808171553i3f64b667t18fcea589d94411a@mail.gmail.com>
+	<48A9C515.3000908@whoi.edu>
+	<6669365c0808181227k2fa01d6fu570cebc10630f55d@mail.gmail.com>
+	<200809111041.20900.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200809111041.20900.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,55 +26,34 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-
-Minor fixes: remove redundant local variable initialization,
-fix "can not" to what I _think_ is a preferred spelling,
-output IRQ number if requesting it failed.
-
-Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
-Clearly not essential for 2.6.27 
-
- drivers/spi/pxa2xx_spi.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -1407,9 +1407,9 @@ static int __init pxa2xx_spi_probe(struc
- 	struct device *dev = &pdev->dev;
- 	struct pxa2xx_spi_master *platform_info;
- 	struct spi_master *master;
--	struct driver_data *drv_data = NULL;
-+	struct driver_data *drv_data;
- 	struct ssp_device *ssp;
--	int status = 0;
-+	int status;
- 
- 	platform_info = dev->platform_data;
- 
-@@ -1422,7 +1422,7 @@ static int __init pxa2xx_spi_probe(struc
- 	/* Allocate master with space for drv_data and null dma buffer */
- 	master = spi_alloc_master(dev, sizeof(struct driver_data) + 16);
- 	if (!master) {
--		dev_err(&pdev->dev, "can not alloc spi_master\n");
-+		dev_err(&pdev->dev, "cannot alloc spi_master\n");
- 		ssp_free(ssp);
- 		return -ENOMEM;
- 	}
-@@ -1458,7 +1458,7 @@ static int __init pxa2xx_spi_probe(struc
- 
- 	status = request_irq(ssp->irq, ssp_int, 0, dev->bus_id, drv_data);
- 	if (status < 0) {
--		dev_err(&pdev->dev, "can not get IRQ\n");
-+		dev_err(&pdev->dev, "cannot get IRQ %d\n", ssp->irq);
- 		goto out_error_master_alloc;
- 	}
- 
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+RW0gUXVpLCAyMDA4LTA5LTExIMOgcyAxMDo0MSAtMDcwMCwgRGF2aWQgQnJvd25lbGwgZXNjcmV2
+ZXU6Cj4gWW91IGNvdWxkIGluc3RlYWQKPiAKPiAgICAgcmV0dXJuIHNwaV93cml0ZV90aGVuX3Jl
+YWQocGNhcC5zcGksIGRhdGEsIDQsIGRhdGEsIDQpOwoKVHJpZWQgdGhpcyBhbHJlYWR5LiBkYXRh
+ID09IDB4MDAwMDAwMDAuCkFueXdheSwgYWZ0ZXIgdGhlIGxhdGVzdCBjaGlwc2VsZWN0IGZpeGVz
+LCAoZGVhc3NlcnQgQ1Mgb24KcHVtcF90cmFuc2ZlcigpIHx8IGdpdmViYWNrKCkgaW5zdGVhZCBv
+ZiBpbnRfdHJhbnNmZXJfY29tcGxldGUoKSkgdGhlCmNvZGUgaXMgd29ya2luZy4KCj4gdG8gZ2V0
+IHRoZSBzZXF1ZW50aWFsIChub3QgY29uY3VycmVudCEpIEkvTyB5b3UgbmVlZC4gIEJlCj4gY2Fy
+ZWZ1bCBvZiBieXRlIG9yZGVyaW5nLCBvZiBjb3Vyc2U7IHlvdSBwcm9iYWJseSBzaG91bGQKPiBz
+ZXQgc3BpLT5iaXRzX3Blcl93b3JkIHRvIDMyIGFuZCB0aGVuIHNwaV9zZXR1cCgpLCBhcyBwYXJ0
+Cj4gb2YgeW91ciBkcml2ZXIgaW5pdC4KClllcywgaSBndWVzcyBpIHJlYWxseSBzaG91bGQgdXNl
+IHNwaV9zZXR1cCgpLgpNeSBjdXJyZW50IGNvZGUgaXM6CgogICAgICAgIHNwaV9tZXNzYWdlX2lu
+aXQoJm0pOwogICAgICAgIHQubGVuID0gNDsKICAgICAgICB0LnR4X2J1ZiA9ICh1OCAqKWRhdGE7
+CiAgICAgICAgdC5yeF9idWYgPSAodTggKilkYXRhOwogICAgICAgIHQuYml0c19wZXJfd29yZCA9
+IDMyOwogICAgICAgIHQuZGVsYXlfdXNlY3MgPSAwOwogICAgICAgIHQuY3NfY2hhbmdlID0gMDsK
+ICAgICAgICB0LnNwZWVkX2h6ID0gMTMwMDAwMDA7CiAgICAgICAgc3BpX21lc3NhZ2VfYWRkX3Rh
+aWwoJnQsICZtKTsKICAgICAgICByZXR1cm4gc3BpX3N5bmMocGNhcC5zcGksICZtKTsKCkkgbm90
+ZWQgdGhhdCBpZiBpIGRvbnQgc2V0IC5kZWxheV91c2VjcyBpdCBnZXRzIGEgZGVmYXVsdCBodWdl
+IHZhbHVlLApzYW1lIHdpdGggLnNwZWVkX2h6LCBpdCBkb250IHVzZSBzcGlfYm9hcmRfaW5mby0+
+bWF4X3NwZWVkX2h6IGFzCmRlZmF1bHQuIFdvdWxkIGNhbGxpbmcgc3BpX3NldHVwKCkgb24gbXkg
+ZHJpdmVyIGluaXQgc29sdmUgdGhpcz8gT3IgaXMKdGhpcyB5ZXQgYW5vdGhlciBpc3N1ZT8KClRo
+YW5rcyBmb3IgeW91ciByZXBseS4KCi0tCkRhbmllbCBSaWJlaXJvCgoKCi0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KVGhpcyBTRi5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3Zl
+IERldmVsb3BlcidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBs
+aWNhdGlvbnMgd2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBp
+cyBhIHRyaXAgZm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUg
+d29ybGQKaHR0cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEw
+MCZ1cmw9LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

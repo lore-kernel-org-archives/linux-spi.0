@@ -1,20 +1,21 @@
-From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] pxa2xx_spi: wait_rx_stall
-	before	deasserting CS on PIO mode
-Date: Thu, 11 Sep 2008 22:53:52 -0300
-Message-ID: <1221184432.5078.19.camel@brutus>
-References: <6669365c0808171553i3f64b667t18fcea589d94411a@mail.gmail.com>
-	<48A9C515.3000908@whoi.edu>
-	<6669365c0808181227k2fa01d6fu570cebc10630f55d@mail.gmail.com>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: Re: [PATCH] pxa2xx_spi: wait_rx_stall before
+ deasserting CS on PIO mode
+Date: Thu, 11 Sep 2008 22:53:48 -0400
+Message-ID: <48C9D9BC.1050306@whoi.edu>
+References: <6669365c0808171553i3f64b667t18fcea589d94411a@mail.gmail.com>	
+	<48A9C515.3000908@whoi.edu>	
+	<6669365c0808181227k2fa01d6fu570cebc10630f55d@mail.gmail.com>	
 	<200809111041.20900.david-b@pacbell.net>
+	<1221184432.5078.19.camel@brutus>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200809111041.20900.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <1221184432.5078.19.camel@brutus>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,34 +27,71 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-RW0gUXVpLCAyMDA4LTA5LTExIMOgcyAxMDo0MSAtMDcwMCwgRGF2aWQgQnJvd25lbGwgZXNjcmV2
-ZXU6Cj4gWW91IGNvdWxkIGluc3RlYWQKPiAKPiAgICAgcmV0dXJuIHNwaV93cml0ZV90aGVuX3Jl
-YWQocGNhcC5zcGksIGRhdGEsIDQsIGRhdGEsIDQpOwoKVHJpZWQgdGhpcyBhbHJlYWR5LiBkYXRh
-ID09IDB4MDAwMDAwMDAuCkFueXdheSwgYWZ0ZXIgdGhlIGxhdGVzdCBjaGlwc2VsZWN0IGZpeGVz
-LCAoZGVhc3NlcnQgQ1Mgb24KcHVtcF90cmFuc2ZlcigpIHx8IGdpdmViYWNrKCkgaW5zdGVhZCBv
-ZiBpbnRfdHJhbnNmZXJfY29tcGxldGUoKSkgdGhlCmNvZGUgaXMgd29ya2luZy4KCj4gdG8gZ2V0
-IHRoZSBzZXF1ZW50aWFsIChub3QgY29uY3VycmVudCEpIEkvTyB5b3UgbmVlZC4gIEJlCj4gY2Fy
-ZWZ1bCBvZiBieXRlIG9yZGVyaW5nLCBvZiBjb3Vyc2U7IHlvdSBwcm9iYWJseSBzaG91bGQKPiBz
-ZXQgc3BpLT5iaXRzX3Blcl93b3JkIHRvIDMyIGFuZCB0aGVuIHNwaV9zZXR1cCgpLCBhcyBwYXJ0
-Cj4gb2YgeW91ciBkcml2ZXIgaW5pdC4KClllcywgaSBndWVzcyBpIHJlYWxseSBzaG91bGQgdXNl
-IHNwaV9zZXR1cCgpLgpNeSBjdXJyZW50IGNvZGUgaXM6CgogICAgICAgIHNwaV9tZXNzYWdlX2lu
-aXQoJm0pOwogICAgICAgIHQubGVuID0gNDsKICAgICAgICB0LnR4X2J1ZiA9ICh1OCAqKWRhdGE7
-CiAgICAgICAgdC5yeF9idWYgPSAodTggKilkYXRhOwogICAgICAgIHQuYml0c19wZXJfd29yZCA9
-IDMyOwogICAgICAgIHQuZGVsYXlfdXNlY3MgPSAwOwogICAgICAgIHQuY3NfY2hhbmdlID0gMDsK
-ICAgICAgICB0LnNwZWVkX2h6ID0gMTMwMDAwMDA7CiAgICAgICAgc3BpX21lc3NhZ2VfYWRkX3Rh
-aWwoJnQsICZtKTsKICAgICAgICByZXR1cm4gc3BpX3N5bmMocGNhcC5zcGksICZtKTsKCkkgbm90
-ZWQgdGhhdCBpZiBpIGRvbnQgc2V0IC5kZWxheV91c2VjcyBpdCBnZXRzIGEgZGVmYXVsdCBodWdl
-IHZhbHVlLApzYW1lIHdpdGggLnNwZWVkX2h6LCBpdCBkb250IHVzZSBzcGlfYm9hcmRfaW5mby0+
-bWF4X3NwZWVkX2h6IGFzCmRlZmF1bHQuIFdvdWxkIGNhbGxpbmcgc3BpX3NldHVwKCkgb24gbXkg
-ZHJpdmVyIGluaXQgc29sdmUgdGhpcz8gT3IgaXMKdGhpcyB5ZXQgYW5vdGhlciBpc3N1ZT8KClRo
-YW5rcyBmb3IgeW91ciByZXBseS4KCi0tCkRhbmllbCBSaWJlaXJvCgoKCi0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0KVGhpcyBTRi5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3Zl
-IERldmVsb3BlcidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBs
-aWNhdGlvbnMgd2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBp
-cyBhIHRyaXAgZm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUg
-d29ybGQKaHR0cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEw
-MCZ1cmw9LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
-cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
-L3NwaS1kZXZlbC1nZW5lcmFsCg==
+Daniel Ribeiro wrote:
+> Em Qui, 2008-09-11 =C3 s 10:41 -0700, David Brownell escreveu:
+> Yes, i guess i really should use spi_setup().
+> My current code is:
+> =
+
+>         spi_message_init(&m);
+>         t.len =3D 4;
+>         t.tx_buf =3D (u8 *)data;
+>         t.rx_buf =3D (u8 *)data;
+>         t.bits_per_word =3D 32;
+>         t.delay_usecs =3D 0;
+>         t.cs_change =3D 0;
+>         t.speed_hz =3D 13000000;
+>         spi_message_add_tail(&t, &m);
+>         return spi_sync(pcap.spi, &m);
+> =
+
+> I noted that if i dont set .delay_usecs it gets a default huge value,
+> same with .speed_hz, it dont use spi_board_info->max_speed_hz as
+> default. Would calling spi_setup() on my driver init solve this? Or is
+> this yet another issue?
+
+In a past message, you showed the automatic declarations that went with
+the above code:
+
+>	struct spi_transfer t;
+>	struct spi_message m;
+
+While spi_message_init() zeros the memory in "m", you don't show any
+code above, other than your assignments, that clears the memory in "t".
+Thus, if you omit the assignments for t.delay_usecs or t.speed_hz (or
+any other member of t), then you are passing uninitialized memory.  You
+could use memset to clear t, or dynamically allocate zeroed memory.
+
+Normally, you use the per-transfer values:
+
+	t.bits_per_word
+	t.speed_hz
+
+only when you need to make them different from the default values set
+when you previously called spi_setup(), and the values of:
+
+	t.delay_usecs
+	t.cs_change
+
+when you need control over the changes in CS between transfers, and
+optionally a delay prior to changes in CS.  Errors in handling these
+last two were addressed by the patch you tested, and which David pushed
+recently.
+
+-- =
+
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=3D7212
+http://www.whoi.edu/hpb/Site.do?id=3D1532
+http://www.whoi.edu/page.do?pid=3D10079
+
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

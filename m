@@ -1,20 +1,22 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] pxa2xx_spi: Fix chip_info defaults
-	and documentation.
-Date: Fri, 12 Sep 2008 09:26:35 -0700
-Message-ID: <200809120926.35980.david-b@pacbell.net>
-References: <20080909211842.59176caf@vsauder-lx.localdomain>
+From: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Subject: Re: [PATCH] spi: pxa2xx_spi introduce chip
+ select gpio to simplify the common cases
+Date: Fri, 12 Sep 2008 19:18:17 +0100
+Message-ID: <48CAB269.8080301@cam.ac.uk>
+References: <f17812d70809040221y477ec4x5c05460650266be8@mail.gmail.com>
+	<200809102308.31675.david-b@pacbell.net>
+	<48C91DFD.5020308@whoi.edu>
+	<200809111135.44364.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080909211842.59176caf-W37fpRALFaH6NKmgiXY+hA0JkcsJGQge@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200809111135.44364.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,200 +28,58 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+David Brownell wrote:
+> On Thursday 11 September 2008, Ned Forrester wrote:
+> 
+>> I'm puzzled.  What is there about the pxa2xx_spi.c that would be
+>> simplified by doing anything with respect to SSPFRM?
+> 
+> The usage model ... callers must understand that option,
+> evaluate whether it's even usable on their board, and
+> then have an extra set of possibilities to debug.  And
+> it's not a model needed with other SPI controllers...
+> 
+> The code ... has to support that more complex model.
+> 
+> Developers ... have to answer questions about that
+> mechanism when they could be doing more useful things.
 
-Make the chip info structure data optional by providing reasonable
-defaults.  Improve corresponding documentation, and highlight the
-drawback of not providing explicit chipselect control.
+Having converted the boards I use over to a gpio model
+(was all sfrm based before) I agree that this is probably 
+the way to go.
 
-DMA can determine appropriate dma_burst_size and thresholds
-automatically so use DMA even if dma_burst_size is not specified.
+There are a few use cases though where using the hardware
+support (though broken as it is) would give higher performance.
 
-Signed-off-by: Vernon Sauder <VernonInHand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Reviewed-by: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
-Not essential for 2.6.27 ...
+For some devices it is necessary to deselect them for
+between transfers for an amount of time equal to say 
+4 times the SCK period.  Clearly the only way to
+make this happen on various spi controllers is to 
+set mdelay_usecs to the best value you can manage.
+(at high speed this is somewhat tedious, and in most cases
+the time to turn the gpio off and on again is sufficient)
 
- Documentation/spi/pxa2xx |   34 +++++++++++++++++++++++-----------
- drivers/spi/pxa2xx_spi.c |   44 +++++++++++++++++++++++++++-----------------
- 2 files changed, 50 insertions(+), 28 deletions(-)
+However, there is always a fixed min delay between the 
+transfers due to the passing of interrupts back to the
+driver etc so in many cases the use of SFRM allows
+this to be harnessed as it switches much closer to the
+actual transmission than a gpio based control. 
 
---- a/Documentation/spi/pxa2xx
-+++ b/Documentation/spi/pxa2xx
-@@ -96,7 +96,7 @@ Each slave device attached to the PXA mu
- information via the structure "pxa2xx_spi_chip" found in
- "arch/arm/mach-pxa/include/mach/pxa2xx_spi.h".  The pxa2xx_spi master controller driver
- will uses the configuration whenever the driver communicates with the slave
--device.
-+device. All fields are optional.
- 
- struct pxa2xx_spi_chip {
- 	u8 tx_threshold;
-@@ -112,14 +112,17 @@ used to configure the SSP hardware fifo.
- performance of pxa2xx_spi driver and misconfiguration will result in rx
- fifo overruns (especially in PIO mode transfers). Good default values are
- 
--	.tx_threshold = 12,
--	.rx_threshold = 4,
-+	.tx_threshold = 8,
-+	.rx_threshold = 8,
-+
-+The range is 1 to 16 where zero indicates "use default".
- 
- The "pxa2xx_spi_chip.dma_burst_size" field is used to configure PXA2xx DMA
- engine and is related the "spi_device.bits_per_word" field.  Read and understand
- the PXA2xx "Developer Manual" sections on the DMA controller and SSP Controllers
- to determine the correct value. An SSP configured for byte-wide transfers would
--use a value of 8.
-+use a value of 8. The driver will determine a reasonable default if
-+dma_burst_size == 0.
- 
- The "pxa2xx_spi_chip.timeout" fields is used to efficiently handle
- trailing bytes in the SSP receiver fifo.  The correct value for this field is
-@@ -137,7 +140,13 @@ function for asserting/deasserting a sla
- NULL, the pxa2xx_spi master controller driver assumes that the SSP port is
- configured to use SSPFRM instead.
- 
--NSSP SALVE SAMPLE
-+NOTE: the SPI driver cannot control the chip select if SSPFRM is used, so the
-+chipselect is dropped after each spi_transfer.  Most devices need chip select
-+asserted around the complete message.  Use SSPFRM as a GPIO (through cs_control)
-+to accomodate these chips.
-+
-+
-+NSSP SLAVE SAMPLE
- -----------------
- The pxa2xx_spi_chip structure is passed to the pxa2xx_spi driver in the
- "spi_board_info.controller_data" field. Below is a sample configuration using
-@@ -206,18 +215,21 @@ static void __init streetracer_init(void
- 
- DMA and PIO I/O Support
- -----------------------
--The pxa2xx_spi driver support both DMA and interrupt driven PIO message
--transfers.  The driver defaults to PIO mode and DMA transfers must enabled by
--setting the "enable_dma" flag in the "pxa2xx_spi_master" structure and
--ensuring that the "pxa2xx_spi_chip.dma_burst_size" field is non-zero.  The DMA
--mode support both coherent and stream based DMA mappings.
-+The pxa2xx_spi driver supports both DMA and interrupt driven PIO message
-+transfers.  The driver defaults to PIO mode and DMA transfers must be enabled
-+by setting the "enable_dma" flag in the "pxa2xx_spi_master" structure.  The DMA
-+mode supports both coherent and stream based DMA mappings.
- 
- The following logic is used to determine the type of I/O to be used on
- a per "spi_transfer" basis:
- 
--if !enable_dma or dma_burst_size == 0 then
-+if !enable_dma then
- 	always use PIO transfers
- 
-+if spi_message.len > 8191 then
-+	print "rate limited" warning
-+	use PIO transfers
-+
- if spi_message.is_dma_mapped and rx_dma_buf != 0 and tx_dma_buf != 0 then
- 	use coherent DMA mode
- 
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -47,6 +47,10 @@ MODULE_ALIAS("platform:pxa2xx-spi");
- 
- #define MAX_BUSES 3
- 
-+#define RX_THRESH_DFLT 	8
-+#define TX_THRESH_DFLT 	8
-+#define TIMOUT_DFLT		1000
-+
- #define DMA_INT_MASK		(DCSR_ENDINTR | DCSR_STARTINTR | DCSR_BUSERR)
- #define RESET_DMA_CHANNEL	(DCSR_NODESC | DMA_INT_MASK)
- #define IS_DMA_ALIGNED(x)	(((x) & 0x07) == 0)
-@@ -1171,6 +1175,8 @@ static int setup(struct spi_device *spi)
- 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
- 	struct ssp_device *ssp = drv_data->ssp;
- 	unsigned int clk_div;
-+	uint tx_thres = TX_THRESH_DFLT;
-+	uint rx_thres = RX_THRESH_DFLT;
- 
- 	if (!spi->bits_per_word)
- 		spi->bits_per_word = 8;
-@@ -1209,8 +1215,7 @@ static int setup(struct spi_device *spi)
- 
- 		chip->cs_control = null_cs_control;
- 		chip->enable_dma = 0;
--		chip->timeout = 1000;
--		chip->threshold = SSCR1_RxTresh(1) | SSCR1_TxTresh(1);
-+		chip->timeout = TIMOUT_DFLT;
- 		chip->dma_burst_size = drv_data->master_info->enable_dma ?
- 					DCMD_BURST8 : 0;
- 	}
-@@ -1225,21 +1230,22 @@ static int setup(struct spi_device *spi)
- 		if (chip_info->cs_control)
- 			chip->cs_control = chip_info->cs_control;
- 
--		chip->timeout = chip_info->timeout;
--
--		chip->threshold = (SSCR1_RxTresh(chip_info->rx_threshold) &
--								SSCR1_RFT) |
--				(SSCR1_TxTresh(chip_info->tx_threshold) &
--								SSCR1_TFT);
--
--		chip->enable_dma = chip_info->dma_burst_size != 0
--					&& drv_data->master_info->enable_dma;
-+		if (chip_info->timeout)
-+			chip->timeout = chip_info->timeout;
-+		if (chip_info->tx_threshold)
-+			tx_thres = chip_info->tx_threshold;
-+		if (chip_info->rx_threshold)
-+			rx_thres = chip_info->rx_threshold;
-+		chip->enable_dma = drv_data->master_info->enable_dma;
- 		chip->dma_threshold = 0;
- 
- 		if (chip_info->enable_loopback)
- 			chip->cr1 = SSCR1_LBM;
- 	}
- 
-+	chip->threshold = (SSCR1_RxTresh(rx_thres) & SSCR1_RFT) |
-+			(SSCR1_TxTresh(tx_thres) & SSCR1_TFT);
-+
- 	/* set dma burst and threshold outside of chip_info path so that if
- 	 * chip_info goes away after setting chip->enable_dma, the
- 	 * burst and threshold can still respond to changes in bits_per_word */
-@@ -1268,17 +1274,19 @@ static int setup(struct spi_device *spi)
- 
- 	/* NOTE:  PXA25x_SSP _could_ use external clocking ... */
- 	if (drv_data->ssp_type != PXA25x_SSP)
--		dev_dbg(&spi->dev, "%d bits/word, %ld Hz, mode %d\n",
-+		dev_dbg(&spi->dev, "%d bits/word, %ld Hz, mode %d, %s\n",
- 				spi->bits_per_word,
- 				clk_get_rate(ssp->clk)
- 					/ (1 + ((chip->cr0 & SSCR0_SCR) >> 8)),
--				spi->mode & 0x3);
-+				spi->mode & 0x3,
-+				chip->enable_dma ? "DMA" : "PIO");
- 	else
--		dev_dbg(&spi->dev, "%d bits/word, %ld Hz, mode %d\n",
-+		dev_dbg(&spi->dev, "%d bits/word, %ld Hz, mode %d, %s\n",
- 				spi->bits_per_word,
--				clk_get_rate(ssp->clk)
-+				clk_get_rate(ssp->clk) / 2
- 					/ (1 + ((chip->cr0 & SSCR0_SCR) >> 8)),
--				spi->mode & 0x3);
-+				spi->mode & 0x3,
-+				chip->enable_dma ? "DMA" : "PIO");
- 
- 	if (spi->bits_per_word <= 8) {
- 		chip->n_bytes = 1;
-@@ -1498,7 +1506,9 @@ static int __init pxa2xx_spi_probe(struc
- 
- 	/* Load default SSP configuration */
- 	write_SSCR0(0, drv_data->ioaddr);
--	write_SSCR1(SSCR1_RxTresh(4) | SSCR1_TxTresh(12), drv_data->ioaddr);
-+	write_SSCR1(SSCR1_RxTresh(RX_THRESH_DFLT) |
-+				SSCR1_TxTresh(TX_THRESH_DFLT),
-+				drv_data->ioaddr);
- 	write_SSCR0(SSCR0_SerClkDiv(2)
- 			| SSCR0_Motorola
- 			| SSCR0_DataSize(8),
+As an example, take the vti sca3000 range of accelerometers.
+The specs say that they must be deselected for 4 * the SCK
+period.  As some of these devices go at 325kHz this comes
+to 12.3 microsecs and a typical time I've observed for gpio
+deselecting is only 7 microsecs this would be a device that
+would benefit from such strategy (as long as the board
+config had the option of specifying a minimum delay between
+SRFM being deselected and control hitting the delay_usecs
+code in pxa2xx_spi.c.
+
+Still, despite the above being the case, I'm inclined
+to agree that at the very least people should be strongly
+discouraged from using SRFM!
+
+Jonathan
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

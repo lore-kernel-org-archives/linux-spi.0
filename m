@@ -1,8 +1,8 @@
 From: Lennert Buytenhek <buytenh-OLH4Qvv75CYX/NnBR394Jw@public.gmane.org>
 Subject: [RFC,
-	PATCH 2/2] SPI: orion_spi: accept zero clock speed
-Date: Tue, 16 Sep 2008 15:28:43 +0200
-Message-ID: <20080916132843.GB19493@xi.wantstofly.org>
+	PATCH 1/2] SPI: orion_spi: support for 88F6183
+Date: Tue, 16 Sep 2008 15:28:29 +0200
+Message-ID: <20080916132829.GA19493@xi.wantstofly.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -22,21 +22,39 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch below adds support to orion_spi for the 88F6183 ARM SoC
+by adding code to work around a 6183-specific erratum.
+
 Signed-off-by: Lennert Buytenhek <buytenh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 
 diff --git a/drivers/spi/orion_spi.c b/drivers/spi/orion_spi.c
-index e33412a..014becb 100644
+index c4eaacd..e33412a 100644
 --- a/drivers/spi/orion_spi.c
 +++ b/drivers/spi/orion_spi.c
-@@ -432,7 +432,7 @@ static int orion_spi_transfer(struct spi_device *spi, struct spi_message *m)
- 			goto msg_rejected;
- 		}
+@@ -364,6 +364,11 @@ static int orion_spi_setup(struct spi_device *spi)
+ 		return -EINVAL;
+ 	}
  
--		if (t->speed_hz < orion_spi->min_speed) {
-+		if (t->speed_hz && t->speed_hz < orion_spi->min_speed) {
- 			dev_err(&spi->dev,
- 				"message rejected : "
- 				"device min speed (%d Hz) exceeds "
++	/* Fix ac timing if required.   */
++	if (orion_spi->spi_info->enable_clock_fix)
++		orion_spi_setbits(orion_spi, ORION_SPI_IF_CONFIG_REG,
++				  (1 << 14));
++
+ 	if (spi->bits_per_word == 0)
+ 		spi->bits_per_word = 8;
+ 
+diff --git a/include/linux/spi/orion_spi.h b/include/linux/spi/orion_spi.h
+index b4d9fa6..decf6d8 100644
+--- a/include/linux/spi/orion_spi.h
++++ b/include/linux/spi/orion_spi.h
+@@ -11,6 +11,7 @@
+ 
+ struct orion_spi_info {
+ 	u32	tclk;		/* no <linux/clk.h> support yet */
++	u32	enable_clock_fix;
+ };
+ 
+ 
 -- 
 1.5.6.4
 

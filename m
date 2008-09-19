@@ -1,16 +1,12 @@
-From: stefano.babic-jEVQdWr+paajF4gvJNWmbkB+6BGkLq7r@public.gmane.org
-Subject: [PATCH] The of_register_spi_devices() was not
-	called after registering the spi master.
-Date: Wed, 17 Sep 2008 19:06:00 +0200
-Message-ID: <1221671160-602-1-git-send-email-stefano.babic@babic.homelinux.org>
+From: Bello Usman <bello_usman4a-Qt13gs6zZMY@public.gmane.org>
+Subject: As-Salaam Alaikum
+Date: 19 Sep 2008 00:58:35 -0700
+Message-ID: <E1Kgasz-0003pV-DM@mail.sourceforge.net>
+Reply-To: bello_usman4a-Qt13gs6zZMY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0430314823=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <>
-References: <>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,67 +18,194 @@ Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+--===============0430314823==
+Content-Type: multipart/alternative;
+	boundary="YCalInvites=7nuMHE0qDN5GqUXSNT1221811114-1"
 
-Signed-off-by: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
----
- drivers/spi/mpc52xx_psc_spi.c |   14 ++++++++++++--
- 1 files changed, 12 insertions(+), 2 deletions(-)
+--YCalInvites=7nuMHE0qDN5GqUXSNT1221811114-1
+Content-type: text/plain; charset=windows-1252;
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
-index 25eda71..41f9921 100644
---- a/drivers/spi/mpc52xx_psc_spi.c
-+++ b/drivers/spi/mpc52xx_psc_spi.c
-@@ -18,6 +18,7 @@
- 
- #if defined(CONFIG_PPC_MERGE)
- #include <linux/of_platform.h>
-+#include <linux/of_spi.h>
- #else
- #include <linux/platform_device.h>
- #endif
-@@ -439,8 +440,10 @@ static int __init mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	}
- 
- 	ret = spi_register_master(master);
--	if (ret < 0)
-+	if (ret < 0) {
-+		dev_err(dev,"spi_register_master FAILED\n");
- 		goto unreg_master;
-+	}
- 
- 	return ret;
- 
-@@ -524,6 +527,8 @@ static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
- 	const u32 *regaddr_p;
- 	u64 regaddr64, size64;
- 	s16 id = -1;
-+	struct spi_master *master;
-+	int ret;
- 
- 	regaddr_p = of_get_address(op->node, 0, &size64, NULL);
- 	if (!regaddr_p) {
-@@ -545,8 +550,13 @@ static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
- 		id = *psc_nump + 1;
- 	}
- 
--	return mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32)size64,
-+	ret=mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32)size64,
- 					irq_of_parse_and_map(op->node, 0), id);
-+	if (ret==0)  {
-+		master=spi_busnum_to_master(id);
-+		of_register_spi_devices(master, op->node);
-+	}
-+	return(ret);
- }
- 
- static int __exit mpc52xx_psc_spi_of_remove(struct of_device *op)
--- 
-1.5.4.3
+Invitation&nbsp;: "As-Salaam Alaikum ".
 
+
+Par votre h=F4te Bello Usman:
+
+
+     Date:		vendredi 19 septembre 2008
+
+     Heure:		7h 45 - 8h 45 (GMT+00:00)
+
+Viendrez-vous ? R=E9pondre =E0 cette invitation, =E0:
+
+     http://calendar.yahoo.com/bello_usman4a?v=3D126&a1=3D0&iid=3DHxhoFqz=
+%40-5tlaeDmehhVdFl%40ctes%40JD8c%40CHhx%40%40&igid=3Dgha5ltbbflt7%40ef3Vx=
+%40BYVd%40Ha%40faNn8DpGHZ47bY5v%40
+   =20
+Copyright =A9 2008 Tous droits r=E9serv=E9s.
+ www.yahoo.fr
+
+Donn=E9es personnelles:
+ http://privacy.yahoo.com/privacy/us
+
+Conditions d'utilisation:
+ http://docs.yahoo.com/info/terms/
+
+--YCalInvites=7nuMHE0qDN5GqUXSNT1221811114-1
+Content-type: text/html; charset=windows-1252;
+Content-Transfer-Encoding: quoted-printable
+
+
+
+
+                   =20
+
+<html>
+
+<style type=3D"text/css">
+    a {color:#0066CC;text-decoration:none;}
+    body {text-align:center; font-family:Arial;}
+    .propertyname{text-align:right; font-size:10px; font-size:13px; color=
+:7A8180; width:100px; vertical-align:top;white-space:nowrap;}
+    .propertyvalue{text-align:left; font-size:13px; vertical-align:top;}
+    .divider{width:10px; }
+    #invite_main {background-color:#4D94DB; width:525px; padding:0 0 10px=
+ 0;}
+    #invite_main_info {background-color:white; margin: 0px 10px 0px 10px;=
+clear:both; zoom:1; width:505px; overflow-x:auto;}
+    .header_images {height:55px; margin-left:10px; margin-right:10px;zoom=
+:1}
+    #header_yahoo_image {margin-top:13px; float:left; width:274px; height=
+:28px; text-align:left;}
+    #header_second_image {margin-top:10px; float:right; width:53px; heigh=
+t:35px;}
+    #invite_main {background-color:#4D94DB; width:525px; padding:0 0 10px=
+ 0;margin-bottom:10px}
+    #copyright_footer {font-size:10px;}
+    #tip_footer {font-size:10px;}
+    #main_table{padding:0; border-spacing:0; margin: 15px 10px 10px 10px;=
+}
+    #guests_div{overflow-y:auto; height:40px;}
+    .item_list { width:400px;}
+    .event_time { width:70px; text-align:right;}
+    .event_title { width:100px; text-align:left;}
+    .task_title { width:100px; text-align:left;}
+    .event_title_daily { width:250px; text-align:left;}
+    .add_link { width:300px; text-align:left;}
+    .task_header_priority{ width:100px; text-align:left;}
+    .task_header_date{ width:100px; text-align:right;}
+    .task_priority{ width:10px; text-align:center;}
+    .task_date{ width:75px; text-align:right;}
+    .nowrap {white-space:nowrap;} =20
+    .new {font-size:8px; text-transform:uppercase; color:#FF6600;}
+    .clear_line{font-size:8px}
+</style>
+
+<body>
+<center>
+<div id=3D"invite_main">
+	<div class=3D"header_images">=20
+		<div id=3D"header_yahoo_image"><img src=3D"http://us.i1.yimg.com/us.yim=
+g.com/i/fr/pim/cal/email/ma_2.gif" border=3D0 alt=3D""/></div>
+		<div id=3D"header_second_image"><img src=3D"http://us.i1.yimg.com/us.yi=
+mg.com/i/us/pim/cal/email/gr/cal_em_invite_1.gif" border=3D0 alt=3D""/></=
+div>
+	</div>
+	<div id=3D"invite_main_info">
+		<table id=3D"main_table" cellpadding=3D0>
+
+                            <tr><td class=3D"propertyname">Vous =EAtes in=
+vit=E9 ::</td>
+                <td class=3D"divider">&nbsp;</td>
+                <td class=3D"propertyvalue">As-Salaam Alaikum </td></tr>
+           =20
+                                                <tr><td class=3D"property=
+name">Par votre h=F4te:</td>
+                    <td class=3D"divider">&nbsp;</td>
+                    <td class=3D"propertyvalue">Bello Usman</td></tr>
+                               =20
+                <tr><td colspan=3D3 class=3D"clear_line">&nbsp;</td></tr>=
+             =20
+
+			    =09
+            =20
+             =20
+           =20
+
+                <tr><td class=3D"propertyname">Date:</td>
+    <td class=3D"divider">&nbsp;</td>=20
+			<td class=3D"propertyvalue">vendredi 19 septembre 2008
+		    	</td>
+	</tr>
+
+
+    <tr><td class=3D"propertyname">Heure:</td>
+    <td class=3D"divider">&nbsp;</td>=20
+			<td class=3D"propertyvalue">7h 45 - 8h 45
+				&nbsp;(GMT+00:00)
+				</td>
+	</tr>
+
+
+=09
+
+
+
+
+
+           =20
+            <tr><td colspan=3D3 class=3D"clear_line">&nbsp;</td></tr>
+           =20
+			                                     <tr><td class=3D"propertyname">Vi=
+endrez-vous ?</td>
+                     <td class=3D"divider">&nbsp;</td>
+                     <td class=3D"propertyvalue"><b><a href=3D"http://cal=
+endar.yahoo.com/bello_usman4a?v=3D126&a1=3D0&iid=3DHxhoFqz%40-5tlaeDmehhV=
+dFl%40ctes%40JD8c%40CHhx%40%40&igid=3Dgha5ltbbflt7%40ef3Vx%40BYVd%40Ha%40=
+faNn8DpGHZ47bY5v%40">R=E9pondre =E0 cette invitation</a></b></td></tr>
+	                                               =20
+            					=09
+		</table>
+	</div>
+</div>
+
+<span id=3D"copyright_footer">
+    Copyright =A9 2008
+&nbsp;<a target=3D_blank href=3D"http://www.yahoo.fr">Yahoo!</a>&nbsp;Tou=
+s droits r=E9serv=E9s. |
+<a target=3D_blank href=3D"http://fr.docs.yahoo.com/info/utos.html">Condi=
+tions d'utilisation</a> | <a target=3D_blank href=3D"http://privacy.yahoo=
+.com/privacy/fr/">Donn=E9es personnelles</a> =20
+
+</span>
+</center>
+
+</body>
+</html>
+
+--YCalInvites=7nuMHE0qDN5GqUXSNT1221811114-1--
+
+
+--===============0430314823==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============0430314823==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0430314823==--

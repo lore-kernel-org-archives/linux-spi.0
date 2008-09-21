@@ -1,12 +1,12 @@
-From: =?GB2312?B?1tw=?= <ggedrgwrwse-UHfn/LtQQVkAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] UI发OI票II
-Date: Sun, 21 Sep 2008 23:39:43 +0800
-Message-ID: <E1KhR3x-0000hU-DR@h25xhf1.ch3.sourceforge.com>
-Reply-To: axingyong-H32Fclmsjq1BDgjK7y7TUQ@public.gmane.org
+From: =?GB2312?B?wO7PyMn6?= <zhanhuishi111-9Onoh4P/yGk@public.gmane.org >
+Subject: =?gb2312?b?y7DO8bT6v6o=?=
+Date: Mon, 22 Sep 2008 00:44:14 +0800
+Message-ID: <E1KhS30-0005XB-LE@235xhf1.ch3.sourceforge.com>
+Reply-To: zhanhuishi111-9Onoh4P/yGk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,15 +18,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgogIMT6usOjuiAKICAgICAgztK5q8u+09DSu7K/t9bXqNPDt6ItLcaxL7T6v6qjuwogILnzuavL
-vsjn09DQ6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6IAoKICC4utTwyMujutbcz8jJ+qOoMKOp
-MTM2NDIzNDcyNzcKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFpbCBpcyBzcG9u
-c29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxlbmdlCkJ1aWxk
-IHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxpbiBTREsgJiB3
-aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRvIGFuIE9wZW4g
-U291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGluLWNvbnRlc3Qu
-b3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+ufO5q8u+uLrU8MjLKL6twO0vssbO8SnE+rrDOiAKCiAgICAgztLLvrTz1um9rcuwzvG0+sDt09DP
+3rmry77KtcGm0Nu68SzT0NfFwby6w7XEyee74bnYz7UuCgq5q8u+yty497XYx/i5q8u+zq/N0Mir
+yKi0+sDtuPfKoS/K0KOo1PbWtcuwLLqjudi9yb/uyuksCgrJzMa3z/rK27eixrGjrLnjuOa3osax
+LNTLyuS3osaxLMbky/y3/s7x0rW3osaxLLLN0vu3osaxLAoKvajW/rCy17C3osaxtcguIKOpv8nT
+xbvdz/LN4rT6v6ooMC41fjElKS4KCiAgICAgsb65q8u+1qPW2LPQxbXGsb7dvvm/ycnPzfiy6dGv
+u/K11r/b0enWpCzBvLrDtcTQxdP+ysfO0sPHCgq6z9f3tcTHsMzhLMbatP3E47XEus/X9zrW2LrP
+zawsytjQxdPDLiDO0sPHvau937PPzqrE+rf+zvEuLi4uLi4KCiAgICAgILu20624973nyMvKv8C0
+tefXydGv0+u6z9f3IQoKICAgICC157uwICAgo7ogMTM2ODIzMzM3ODYKCiAgICAgwarPtcjLIKO6
+IMDuz8jJ+goKICAgICC12Na3ICAgo7ogye7b2srQwt66/sf4ye7Ez7Tzz8MgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCgogICAgINPK
+z+QgICCjujEwMjY2OTA4NzZAcXEuY29tICAgICAgINK1zvFRIFEgIKO6MTAyNjY5MDg3NgoKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgdGhlIE1vYmxp
+biBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxlbmdlCkJ1aWxkIHRoZSBjb29sZXN0IExpbnV4
+IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxpbiBTREsgJiB3aW4gZ3JlYXQgcHJpemVzCkdy
+YW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRvIGFuIE9wZW4gU291cmNlIGV2ZW50IGFueXdo
+ZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGluLWNvbnRlc3Qub3JnL3JlZGlyZWN0LnBocD9i
+YW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
+dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

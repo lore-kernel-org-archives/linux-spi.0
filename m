@@ -1,10 +1,11 @@
-From: REGINA <amotocs1956-zgyObxtFtmjxKBtN+kF/EQ@public.gmane.org>
-Subject: Enter the New Year without ED_dysfunction
-Date: Tue, 23 Sep 2008 03:44:15 -0500
-Message-ID: <61215.209.214.997.609.1322323989.squirrel@GSEDYNAMICS.COM>
+From: hhvsdfdsed-H32Fclmsjq1BDgjK7y7TUQ@public.gmane.org
+Subject: [SPAM] （发 ***piao）
+Date: Mon, 22 Sep 2008 18:33:57 +0800
+Message-ID: <E1Khijy-0000dV-9E@3yr0jf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============9085799834830716513=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,43 +17,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============9085799834830716513==
-Content-Type: text/html;charset=utf-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-</head>
-<body bgcolor="#ffffff" text="#000000">
-<div align=center> <a href="http://www.yesbed.com" target="_blank">
-<img src="http://www.yesbed.com/05.gif" border=0 alt=""></a><br>
-Best offers. (c) 2008. To unsubscribe click <a href="http://www.yesbed.com/unsubscribe.php?mail=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&key=dcdbd362ea321f">here</a>
-</div>
-</body>
-</html>
-
-
---===============9085799834830716513==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============9085799834830716513==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============9085799834830716513==--
+xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDt6ItLcaxL7T6v6qju7nzuavLvsjn09DQ6NKq
+o6y7ttOtxPq1xMC0tefT687SwarPtaO6KDApMTM0MTA4OTc3NTjVxdChveMKIAogCgotLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlv
+dXIgTW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFz
+ZWQgYXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQg
+cHJpemUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUg
+aW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5l
+cl9pZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
+aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

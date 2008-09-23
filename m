@@ -1,11 +1,9 @@
-From: =?GB2312?B?wO7PyMn6?= <zhanhuishi111-9Onoh4P/yGk@public.gmane.org >
-Subject: =?gb2312?b?y7DO8bT6v6o=?=
-Date: Mon, 22 Sep 2008 00:44:14 +0800
-Message-ID: <E1KhS30-0005XB-LE@235xhf1.ch3.sourceforge.com>
-Reply-To: zhanhuishi111-9Onoh4P/yGk@public.gmane.org
+From: REGINA <amotocs1956-zgyObxtFtmjxKBtN+kF/EQ@public.gmane.org>
+Subject: Enter the New Year without ED_dysfunction
+Date: Tue, 23 Sep 2008 03:44:15 -0500
+Message-ID: <61215.209.214.997.609.1322323989.squirrel@GSEDYNAMICS.COM>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============9085799834830716513=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,24 +16,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8SnE+rrDOiAKCiAgICAgztLLvrTz1um9rcuwzvG0+sDt09DP
-3rmry77KtcGm0Nu68SzT0NfFwby6w7XEyee74bnYz7UuCgq5q8u+yty497XYx/i5q8u+zq/N0Mir
-yKi0+sDtuPfKoS/K0KOo1PbWtcuwLLqjudi9yb/uyuksCgrJzMa3z/rK27eixrGjrLnjuOa3osax
-LNTLyuS3osaxLMbky/y3/s7x0rW3osaxLLLN0vu3osaxLAoKvajW/rCy17C3osaxtcguIKOpv8nT
-xbvdz/LN4rT6v6ooMC41fjElKS4KCiAgICAgsb65q8u+1qPW2LPQxbXGsb7dvvm/ycnPzfiy6dGv
-u/K11r/b0enWpCzBvLrDtcTQxdP+ysfO0sPHCgq6z9f3tcTHsMzhLMbatP3E47XEus/X9zrW2LrP
-zawsytjQxdPDLiDO0sPHvau937PPzqrE+rf+zvEuLi4uLi4KCiAgICAgILu20624973nyMvKv8C0
-tefXydGv0+u6z9f3IQoKICAgICC157uwICAgo7ogMTM2ODIzMzM3ODYKCiAgICAgwarPtcjLIKO6
-IMDuz8jJ+goKICAgICC12Na3ICAgo7ogye7b2srQwt66/sf4ye7Ez7Tzz8MgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCgogICAgINPK
-z+QgICCjujEwMjY2OTA4NzZAcXEuY29tICAgICAgINK1zvFRIFEgIKO6MTAyNjY5MDg3NgoKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgdGhlIE1vYmxp
-biBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxlbmdlCkJ1aWxkIHRoZSBjb29sZXN0IExpbnV4
-IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxpbiBTREsgJiB3aW4gZ3JlYXQgcHJpemVzCkdy
-YW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRvIGFuIE9wZW4gU291cmNlIGV2ZW50IGFueXdo
-ZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGluLWNvbnRlc3Qub3JnL3JlZGlyZWN0LnBocD9i
-YW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
-bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
-dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+--===============9085799834830716513==
+Content-Type: text/html;charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<div align=center> <a href="http://www.yesbed.com" target="_blank">
+<img src="http://www.yesbed.com/05.gif" border=0 alt=""></a><br>
+Best offers. (c) 2008. To unsubscribe click <a href="http://www.yesbed.com/unsubscribe.php?mail=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&key=dcdbd362ea321f">here</a>
+</div>
+</body>
+</html>
+
+
+--===============9085799834830716513==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============9085799834830716513==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============9085799834830716513==--

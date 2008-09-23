@@ -1,8 +1,8 @@
 From: ATM CARD PAYMENT <john-lwB3PkLDmEM@public.gmane.org>
 Subject: [SPAM] PRESIDENTIAL DIRECTIVES ON YOUR AWAITING
 	FUND.
-Date: Tue, 23 Sep 2008 18:43:16 +0800 (CST)
-Message-ID: <20080923104623.A575243FCD@huming17zy.512cs.cn>
+Date: Tue, 23 Sep 2008 18:42:18 +0800 (CST)
+Message-ID: <20080923104828.79B0716C451@huming17zy.512cs.cn>
 Reply-To: johnfeedman111-/E1597aS9LTXPF5Rlphj1Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"

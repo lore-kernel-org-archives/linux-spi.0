@@ -1,12 +1,17 @@
-From: =?GB2312?B?wO65+sfs?= <dewwegg-KN7UnAbNpbg@public.gmane.org>
-Subject: [SPAM] 票据代理
-Date: Fri, 26 Sep 2008 03:06:11 +0800
-Message-ID: <E1KiwCs-00063J-CK@3yr0jf1.ch3.sourceforge.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re:
+	=?iso-8859-1?q?=5BSPAM=5D_NECESITAN_PARA_TERM?=
+	=?iso-8859-1?q?INAR_BIEN_EL_A=C3O_ESCOLAR?=
+Date: Thu, 25 Sep 2008 11:00:29 -0700
+Message-ID: <200809251100.29984.david-b@pacbell.net>
+References: <1113818765-220089425163131655@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1113818765-220089425163131655-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,30 +22,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CiDX8L60tcS4utTwyMujqL6twO2jr7LGzvGjqcT6usOjoQoKICAgICCxvrmry77Kx9DF0/7KtdK1
-09DP3rmry74syse+rdX+uK7XorLhtcTV/bnmuavLvqGjyKu5+rj3tPPW0LPHytC++dPQt9a5q8u+
-oaMKCtTayKvH8ruvtcS3otW5ufrE2srQs6G+rbzDvrrV+cjVx/e8pMHSo6HKucnMvNJcuavLvsD7
-yPPOorGho6G587mry77X99XKvLDP+srbt73D5goKysfQ6NKq08O1vdK70KnGsb7dyOejuqOotefE
-1LDm1PbWtcuwoaK158TUsOa6o7nYvcm/7srpt6LGsaGixtXNqMnMxre3osaxoaK12MuwoaK9qNb+
-sLLXsKGiCgrG5Mv8t/7O8aGiueO45qGitefE1LDm1MvK5LeixrGjqbXIoa2hraGjy7DCyr/JuPm+
-3cv5v6q98LbutcS089ChwLTQrcnMo6Gyor2o0umzpMbatcS6z9f3oaMKCiAgICAg1NrO0rmry76z
-ycGituDE6tK71rG84bPW0tTQxdPDO8v5v6q++LbUysfV5saxoaPU2rrP1/fS1LT6v6q1xLe9yr3M
-4bmptb3Ou7XEt/7O8aOsCgrI57nzuavLvtPQ0KnSycLHu/K1o9DEo6y/ycnPzfiy6daku/LEw8il
-y7DO8bXWv9u6y7bUyLfIz7rz1Nm4tr/uo6zU2s7SuavLvri61PC1xMystsgKCtf2tb2/zbunt8XQ
-xML60uKjocjntPLIxcT6saa588qxvOSjrL60x+u8+8HCo6EKCiAgICAgICAgINejCgogICAgICDJ
-zCAgICDs9yAgICAgICAgICAgICAgICAgu7bTrcC0tefXydGvoaLHosy4o6EKCiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICDBqiDPtSDIyyCjuiDDt8/IyfoKCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICDK1iAgILv6ICCjuiAxIDMgNiAxIDMgMCA4IDMgOCAwIDgKICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUSAg
-ICAgUSAgOyAgNSA0IDMgMSA5IDMgOCA2IDggCiAKICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgINPKICAgIM/kIKO7IHpzc3oxMTU1QDE2My5jb20KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBT
-Ri5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVsb3Bl
-cidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlvbnMg
-d2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRyaXAg
-Zm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQKaHR0
-cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9Lwpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
-Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
-bC1nZW5lcmFsCg==
+So it's thoughtful that SourceForge is sticking a [SPAM] header
+on the obvious spam ... but can someone have them actually stop
+forwarding the crap to at least this list?
+
+If not, maybe it's time to move SPI discussions to a list host
+with adequate spam filtration...
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

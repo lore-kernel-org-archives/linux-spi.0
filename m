@@ -1,12 +1,13 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.27-rc7] orion_spi: handle 88F6183
-	erratum
-Date: Wed, 24 Sep 2008 22:14:43 -0700
-Message-ID: <200809242214.43198.david-b@pacbell.net>
+Subject: [patch 2.6.27-rc7] orion_spi: bugfix handling
+	of default transfer speed
+Date: Wed, 24 Sep 2008 22:17:59 -0700
+Message-ID: <200809242218.00175.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Lennert Buytenhek <buytenh-OLH4Qvv75CYX/NnBR394Jw@public.gmane.org>
 To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
@@ -22,42 +23,28 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Lennert Buytenhek <buytenh-OLH4Qvv75CYX/NnBR394Jw@public.gmane.org>
 
-The patch below adds support to orion_spi for the 88F6183 ARM SoC
-by adding code to work around a 6183-specific erratum.
+Accept zero (the default!) as a per-transfer clock speed override.
 
 Signed-off-by: Lennert Buytenhek <buytenh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
-this is for the 2.6.28-rc0 merge window ...
+Seems important for 2.6.27-final ... this driver won't have
+worked well at all with this bug!
 
- drivers/spi/orion_spi.c       |    5 +++++
- include/linux/spi/orion_spi.h |    1 +
- 2 files changed, 6 insertions(+)
+ drivers/spi/orion_spi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/drivers/spi/orion_spi.c
 +++ b/drivers/spi/orion_spi.c
-@@ -364,6 +364,11 @@ static int orion_spi_setup(struct spi_de
- 		return -EINVAL;
- 	}
+@@ -432,7 +432,7 @@ static int orion_spi_transfer(struct spi
+ 			goto msg_rejected;
+ 		}
  
-+	/* Fix ac timing if required.   */
-+	if (orion_spi->spi_info->enable_clock_fix)
-+		orion_spi_setbits(orion_spi, ORION_SPI_IF_CONFIG_REG,
-+				  (1 << 14));
-+
- 	if (spi->bits_per_word == 0)
- 		spi->bits_per_word = 8;
- 
---- a/include/linux/spi/orion_spi.h
-+++ b/include/linux/spi/orion_spi.h
-@@ -11,6 +11,7 @@
- 
- struct orion_spi_info {
- 	u32	tclk;		/* no <linux/clk.h> support yet */
-+	u32	enable_clock_fix;
- };
- 
- 
+-		if (t->speed_hz < orion_spi->min_speed) {
++		if (t->speed_hz && t->speed_hz < orion_spi->min_speed) {
+ 			dev_err(&spi->dev,
+ 				"message rejected : "
+ 				"device min speed (%d Hz) exceeds "
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

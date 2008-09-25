@@ -1,12 +1,18 @@
-From: "TODO LO QUE SUS HIJOS" <ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] NECESITAN PARA TERMINAR BIEN EL AÑO ESCOLAR
-Date: Thu, 25 Sep 2008 12:31:31 -0400
-Message-ID: <1113818765-220089425163131655@gmail.com>
+From: Stefano Babic <stefano.babic-jEVQdWr+paajF4gvJNWmbkB+6BGkLq7r@public.gmane.org>
+Subject: Re: Fwd: [PATCH] The	of_register_spi_devices()
+ was not called after registering	the spi master.
+Date: Thu, 25 Sep 2008 19:37:43 +0200
+Message-ID: <48DBCC67.5070307@babic.homelinux.org>
+References: <200809242257.13832.david-b@pacbell.net>
+	<20080925161657.GA15138@secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20080925161657.GA15138-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,55 +23,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Estimado Apoderado:
+Grant Likely wrote:
+> On Wed, Sep 24, 2008 at 10:57:13PM -0700, David Brownell wrote:
+>> From: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+>>
+> 
+> Patch is missing a description of why it is needed.  I may understand
+> it, but will the next person?
 
-NO PERMITA QUE SU HIJO TENGA BAJO RENDIMIENTO, NI MENOS QUE REPITA.
+Sorry, I have used another time git-send-email with wrong
+parameters...and with two different mail addresses,too.
 
-En Ebook Chile hemos desarrollado un CD con todo lo que su hijo necesita pa=
-ra tener =E9xito en el estudio este a=F1o escolar 2008. Es apropiado para a=
-lumnos de 5=B0 b=E1sico hasta el 2=B0 a=F1o de la Universidad (desde el ter=
-cer a=F1o de universidad se supone que los estuadiantes ya han desarrollado=
- las herramientas suficientes para enfrentar el estudio y por ello han lleg=
-ado a ese nivel)
+> Also, some trivial whitespace irregularities in this patch, but otherwise...
 
+Sorry about that.
 
-El CD Consta de 4 partes:
+> Personally, I'd do this logic the other way around by putting
+> of_register_spi_devices() in the main flow of code and go on an abort
+> path if mpc52xx_psc_spi_do_probe() != 0; but I'm not concerned enough
+> about it to care or withhold my ack.
 
-1- Completo curso de H=E1bitos y T=E9cnicas de Estudio tipo E-book (libro e=
-lectr=F3nico) Desarrolla todos los t=F3picos necesarios para mejorar el ren=
-dimiento acad=E9mico a traves de cap=EDtulos.
-
-2- Interesante Software que desarrollara las habilidades de aprendizaje del=
- alumno como la comprensi=F3n, el an=E1lisis, etc. =
-
-
-3- Software que potenciara las habilidades de la Memoria y concentraci=F3n =
-a trav=E9s de interesantes ejercicios desarrollados en su PC. =
+I agree with you, I do not know why I did this time in this way...I will
+resubmit the patch with the corrections.
 
 
-4- El alumno  podr=E1 aprender a leer en forma r=E1pida a trav=E9s de un pr=
-ograma especializado de Lectura Veloz..
-
-Todos los ejercicios son interactivos, se trabajan y corrigen desde el PC.
-
-El valor del CD es de  $20.000.- (incluye env=EDo a todo Chile)
-
-
-
-Saluda atentamente,
-
-Antonio D=EDaz
-Ventas - Ebook Chile
-Fono: 278 10 78 C=E9l.: 08.9623577
-ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org - www.ebookchile.cl
----------------------------------------------------------------
-Remociones: remover-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org
+-- 
+stefano <stefano.babic-jEVQdWr+paajF4gvJNWmbkB+6BGkLq7r@public.gmane.org>
+GPG Key: 0x55814DDE
+Fingerprint 4E85 2A66 4CBA 497A 2A7B D3BF 5973 F216 5581 4DDE
 
 
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
+Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

@@ -1,77 +1,46 @@
-From: chri <chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH RESEND] max3100 driver
-Date: Thu, 25 Sep 2008 09:07:54 +0200
-Message-ID: <cabda6420809250007tb132ff8r8c6e5c7d821db664@mail.gmail.com>
-References: <12219154581088-git-send-email-chripell@gmail.com>
-	<200809242156.29505.david-b@pacbell.net>
+From: "Eric Miao" <eric.y.miao@gmail.com>
+Subject: Re: [spi-devel-general] linux-next: manual merge of the pxa tree
+Date: Thu, 25 Sep 2008 15:49:18 +0800
+Message-ID: <f17812d70809250049g3f3b86e7x12dab8cc4f8b1cd6@mail.gmail.com>
+References: <20080915052750.0b0c924c.sfr@canb.auug.org.au>
+	 <48CE60A6.4000705@whoi.edu>
+	 <f17812d70809152002p6df35c05o743d9d86fca37827@mail.gmail.com>
+	 <200809242157.47494.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org,
-	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200809242156.29505.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: spi-devel-general@lists.sourceforge.net,
+	"Stephen Rothwell" <sfr@canb.auug.org.au>,
+	"Ned Forrester" <nforrester@whoi.edu>, linux-next@vger.kernel.org
+To: "David Brownell" <david-b@pacbell.net>
+Return-path: <linux-next-owner@vger.kernel.org>
+In-Reply-To: <200809242157.47494.david-b@pacbell.net>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Sender: linux-next-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 25, 2008 at 6:56 AM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+On Thu, Sep 25, 2008 at 12:57 PM, David Brownell <david-b@pacbell.net> wrote:
+> On Monday 15 September 2008, Eric Miao wrote:
+>> >> I fixed it up (see below) and can carry the fixup (though it could be
+>> >> fixed in the pxa tree in a merge with Linus' tree).  Please check the
+>> >> fixup.
+>> >
+>> > The last word I had from David Brownell, was that Eric should make his
+>> > patch fit after mine.  I think Eric was planning to re-submit, but maybe
+>> > you have saved him the trouble.  I will leave it to Eric to decide if
+>> > you fixed everything needed.
+>> >
+>>
+>> I'll take off the patch to save Stephen's time on this. Sorry for the
+>> noise.
 >
-> Small suggestion:  next time you resend this, make sure
-> that $SUBJECT mentions it's a UART driver.  Maybe even that
-> it's a SPI UART driver.  That should help get more comments.
->
-
-OK!
-
->
-> This is a bit picky, but it's the first thing I noticed when
-> scanning the patch ... wierd comment layout!  Either indent
-> those all, or (better) convert to kerneldoc style.
-
-I will have a look at kerneldoc and do the change. I'm waiting for a
-minor number in "Low-density serial ports" before resending the
-modifications asked by Andrew and Alan, so I will do this too. I just
-trusted M-q in emacs for the comment layout.
-
->
-> Potentially less picky:  probe() doesn't lock max3100s[],
-> neither does remove(), and in fact there seems to be no
-> lock for that table.  Which suggests trouble in cases like
-
-I (wrongly!) was assuming that probing of devices is serialized. I
-will add the lock.
-
->
-> And is that workqueue single threaded?
+> Uh, I have yet to see any version of this patch... could someone post
+> it so the SPI maintainer at least has a chance to look at it?
 >
 
-it's freezeabe and (looking at include/linux/workqueue.) it implies
-that it's single-threaded. This is important because I don't do
-locking since I presume all the I/O to the MAX3100 is done in just one
-workqueue. When I do I/O in other places (suspend for example) I
-assume that the worqueue is friezed so not running.
-
-Best regards and thanks for the review,
+Expect a week or two before this happen, I'm currently busy with
+other stuffs. Sorry for the delay.
 
 -- 
-Christian Pellegrin, see http://www.evolware.org/chri/
-"Real Programmers don't play tennis, or any other sport which requires
-you to change clothes. Mountain climbing is OK, and Real Programmers
-wear their climbing boots to work in case a mountain should suddenly
-spring up in the middle of the computer room."
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+Cheers
+- eric

@@ -1,18 +1,12 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH RESEND] max3100 driver
-Date: Wed, 24 Sep 2008 21:56:29 -0700
-Message-ID: <200809242156.29505.david-b@pacbell.net>
-References: <12219154581088-git-send-email-chripell@gmail.com>
+From: =?GB2312?B?1cXPyMn6?= <dgherthht-DJBtAnuyjldBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] DN发FD票GH
+Date: Thu, 25 Sep 2008 14:39:01 +0800
+Message-ID: <E1KikVK-00016h-D8@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Christian Pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>,
-	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org
-To: Christian Pellegrin <chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <12219154581088-git-send-email-chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,49 +17,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-You got this working ... congrats!  :)
-
-Small suggestion:  next time you resend this, make sure
-that $SUBJECT mentions it's a UART driver.  Maybe even that
-it's a SPI UART driver.  That should help get more comments.
-
-
-On Saturday 20 September 2008, Christian Pellegrin wrote:
-> +struct plat_max3100 {
-> +/* force MAX3100 in loopback */
-> +=A0=A0=A0=A0=A0=A0=A0int loopback;
-> +/* 0 for 3.6864 Mhz, 1 for 1.8432 =A0*/
-> +=A0=A0=A0=A0=A0=A0=A0int crystal;
-> +/* for archs like PXA with only edge irqs */
-> +=A0=A0=A0=A0=A0=A0=A0int only_edge_irq;
-> +/* MAX3100 has a shutdown pin. This is a hook
-> + =A0 called on suspend and resume to activate it.*/
-> +=A0=A0=A0=A0=A0=A0=A0void (*max3100_hw_suspend) (int suspend);
-> +/* poll time for ctr signals in ms, 0 disables (so no hw flow
-> + * ctrl is possible) =A0*/
-> +=A0=A0=A0=A0=A0=A0=A0int poll_time;
-> +};
-
-This is a bit picky, but it's the first thing I noticed when
-scanning the patch ... wierd comment layout!  Either indent
-those all, or (better) convert to kerneldoc style.
-
-Potentially less picky:  probe() doesn't lock max3100s[],
-neither does remove(), and in fact there seems to be no
-lock for that table.  Which suggests trouble in cases like
-concurrent I/O (including open) and driver remove().  You
-should probably just allocate a mutex to help control that
-table, like most other drivers.
-
-And is that workqueue single threaded?
-
-
-I just skimmed the rest of the driver.  Seems to be
-fairly straightforward -- at least the non-TTY bits.
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+CiAgxOO6wzogsb65q8u+0tS24LzSuavLvrrP1/fTxbvdtPq/qi+3oi/GsQogICAKICAgMaO6xtXN
+qMnMxrfP+srb16jTw7eiL8axOwogICAyOtTLyuTStdeo08O3oi/GsaOouavCt6GixNq6082z0ru7
+9c7v1MvK5Neo08O3oi/GsaOpCiAgIDM6ueO45tK116jTw7eiL8axCiAgIDQ6xuTL/Lf+zvHStdeo
+08O3oi/GsXu24NbW0NDStdeo08O3oi/GsX0KICDI59PQ0OjSqqOsu7bTrcT60+vO0sGqz7WjuiAK
+ICAgICAgICAgICAgICAgICAg1cXPyMn6o7oxMzY0MjM0NzIyNSAKCiAgICAgICAgICAKCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KVGhpcyBTRi5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4g
+WW91ciBNb3ZlIERldmVsb3BlcidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBi
+YXNlZCBhcHBsaWNhdGlvbnMgd2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFu
+ZCBwcml6ZSBpcyBhIHRyaXAgZm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVy
+ZSBpbiB0aGUgd29ybGQKaHR0cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFu
+bmVyX2lkPTEwMCZ1cmw9LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

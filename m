@@ -1,19 +1,12 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: Fwd: [PATCH] The
-	of_register_spi_devices()	was not called after registering
-	the spi master.
-Date: Thu, 25 Sep 2008 10:16:57 -0600
-Message-ID: <20080925161657.GA15138@secretlab.ca>
-References: <200809242257.13832.david-b@pacbell.net>
+From: "TODO LO QUE SUS HIJOS" <ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] NECESITAN PARA TERMINAR BIEN EL AÑO ESCOLAR
+Date: Thu, 25 Sep 2008 12:31:31 -0400
+Message-ID: <1113818765-220089425163131655@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Resent-Message-ID: <20080925161900.GA16005-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <200809242257.13832.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,108 +14,58 @@ List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
 List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Sender: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 24, 2008 at 10:57:13PM -0700, David Brownell wrote:
-> From: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
-> 
+Estimado Apoderado:
 
-Patch is missing a description of why it is needed.  I may understand
-it, but will the next person?
+NO PERMITA QUE SU HIJO TENGA BAJO RENDIMIENTO, NI MENOS QUE REPITA.
 
-> Signed-off-by: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+En Ebook Chile hemos desarrollado un CD con todo lo que su hijo necesita pa=
+ra tener =E9xito en el estudio este a=F1o escolar 2008. Es apropiado para a=
+lumnos de 5=B0 b=E1sico hasta el 2=B0 a=F1o de la Universidad (desde el ter=
+cer a=F1o de universidad se supone que los estuadiantes ya han desarrollado=
+ las herramientas suficientes para enfrentar el estudio y por ello han lleg=
+ado a ese nivel)
 
-Also, some trivial whitespace irregularities in this patch, but otherwise...
 
-Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+El CD Consta de 4 partes:
 
-> ---
->  drivers/spi/mpc52xx_psc_spi.c |   14 ++++++++++++--
->  1 files changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
-> index 25eda71..41f9921 100644
-> --- a/drivers/spi/mpc52xx_psc_spi.c
-> +++ b/drivers/spi/mpc52xx_psc_spi.c
-> @@ -18,6 +18,7 @@
->  
->  #if defined(CONFIG_PPC_MERGE)
->  #include <linux/of_platform.h>
-> +#include <linux/of_spi.h>
->  #else
->  #include <linux/platform_device.h>
->  #endif
-> @@ -439,8 +440,10 @@ static int __init mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
->  	}
->  
->  	ret = spi_register_master(master);
-> -	if (ret < 0)
-> +	if (ret < 0) {
-> +		dev_err(dev,"spi_register_master FAILED\n");
+1- Completo curso de H=E1bitos y T=E9cnicas de Estudio tipo E-book (libro e=
+lectr=F3nico) Desarrolla todos los t=F3picos necesarios para mejorar el ren=
+dimiento acad=E9mico a traves de cap=EDtulos.
 
-need space after ','
+2- Interesante Software que desarrollara las habilidades de aprendizaje del=
+ alumno como la comprensi=F3n, el an=E1lisis, etc. =
 
->  		goto unreg_master;
-> +	}
->  
->  	return ret;
->  
-> @@ -524,6 +527,8 @@ static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
->  	const u32 *regaddr_p;
->  	u64 regaddr64, size64;
->  	s16 id = -1;
-> +	struct spi_master *master;
-> +	int ret;
->  
->  	regaddr_p = of_get_address(op->node, 0, &size64, NULL);
->  	if (!regaddr_p) {
-> @@ -545,8 +550,13 @@ static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
->  		id = *psc_nump + 1;
->  	}
->  
-> -	return mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32)size64,
-> +	ret=mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32)size64,
 
-need space both before and after '='.
+3- Software que potenciara las habilidades de la Memoria y concentraci=F3n =
+a trav=E9s de interesantes ejercicios desarrollados en su PC. =
 
->  					irq_of_parse_and_map(op->node, 0), id);
-> +	if (ret==0)  {
-> +		master=spi_busnum_to_master(id);
 
-Again, need space before and after '=' and '=='
+4- El alumno  podr=E1 aprender a leer en forma r=E1pida a trav=E9s de un pr=
+ograma especializado de Lectura Veloz..
 
-Personally, I'd do this logic the other way around by putting
-of_register_spi_devices() in the main flow of code and go on an abort
-path if mpc52xx_psc_spi_do_probe() != 0; but I'm not concerned enough
-about it to care or withhold my ack.
+Todos los ejercicios son interactivos, se trabajan y corrigen desde el PC.
 
-> +		of_register_spi_devices(master, op->node);
-> +	}
-> +	return(ret);
->  }
->  
->  static int __exit mpc52xx_psc_spi_of_remove(struct of_device *op)
-> -- 
-> 1.5.4.3
-> 
-> 
-> -------------------------------------------------------------------------
-> This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-> Build the coolest Linux based applications with Moblin SDK & win great prizes
-> Grand prize is a trip for two to an Open Source event anywhere in the world
-> http://moblin-contest.org/redirect.php?banner_id=100&url=/
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-> 
-> 
-> -------------------------------------------------------
+El valor del CD es de  $20.000.- (incluye env=EDo a todo Chile)
+
+
+
+Saluda atentamente,
+
+Antonio D=EDaz
+Ventas - Ebook Chile
+Fono: 278 10 78 C=E9l.: 08.9623577
+ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org - www.ebookchile.cl
+---------------------------------------------------------------
+Remociones: remover-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org
+
+
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

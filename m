@@ -1,18 +1,12 @@
-From: Stefano Babic <stefano.babic-jEVQdWr+paajF4gvJNWmbkB+6BGkLq7r@public.gmane.org>
-Subject: Re: Fwd: [PATCH] The	of_register_spi_devices()
- was not called after registering	the spi master.
-Date: Thu, 25 Sep 2008 19:37:43 +0200
-Message-ID: <48DBCC67.5070307@babic.homelinux.org>
-References: <200809242257.13832.david-b@pacbell.net>
-	<20080925161657.GA15138@secretlab.ca>
+From: =?GB2312?B?wO65+sfs?= <dewwegg-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 票据代理
+Date: Fri, 26 Sep 2008 03:06:11 +0800
+Message-ID: <E1KiwCs-00063J-CK@3yr0jf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20080925161657.GA15138-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,39 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Grant Likely wrote:
-> On Wed, Sep 24, 2008 at 10:57:13PM -0700, David Brownell wrote:
->> From: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
->>
-> 
-> Patch is missing a description of why it is needed.  I may understand
-> it, but will the next person?
-
-Sorry, I have used another time git-send-email with wrong
-parameters...and with two different mail addresses,too.
-
-> Also, some trivial whitespace irregularities in this patch, but otherwise...
-
-Sorry about that.
-
-> Personally, I'd do this logic the other way around by putting
-> of_register_spi_devices() in the main flow of code and go on an abort
-> path if mpc52xx_psc_spi_do_probe() != 0; but I'm not concerned enough
-> about it to care or withhold my ack.
-
-I agree with you, I do not know why I did this time in this way...I will
-resubmit the patch with the corrections.
-
-
--- 
-stefano <stefano.babic-jEVQdWr+paajF4gvJNWmbkB+6BGkLq7r@public.gmane.org>
-GPG Key: 0x55814DDE
-Fingerprint 4E85 2A66 4CBA 497A 2A7B D3BF 5973 F216 5581 4DDE
-
-
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+CiDX8L60tcS4utTwyMujqL6twO2jr7LGzvGjqcT6usOjoQoKICAgICCxvrmry77Kx9DF0/7KtdK1
+09DP3rmry74syse+rdX+uK7XorLhtcTV/bnmuavLvqGjyKu5+rj3tPPW0LPHytC++dPQt9a5q8u+
+oaMKCtTayKvH8ruvtcS3otW5ufrE2srQs6G+rbzDvrrV+cjVx/e8pMHSo6HKucnMvNJcuavLvsD7
+yPPOorGho6G587mry77X99XKvLDP+srbt73D5goKysfQ6NKq08O1vdK70KnGsb7dyOejuqOotefE
+1LDm1PbWtcuwoaK158TUsOa6o7nYvcm/7srpt6LGsaGixtXNqMnMxre3osaxoaK12MuwoaK9qNb+
+sLLXsKGiCgrG5Mv8t/7O8aGiueO45qGitefE1LDm1MvK5LeixrGjqbXIoa2hraGjy7DCyr/JuPm+
+3cv5v6q98LbutcS089ChwLTQrcnMo6Gyor2o0umzpMbatcS6z9f3oaMKCiAgICAg1NrO0rmry76z
+ycGituDE6tK71rG84bPW0tTQxdPDO8v5v6q++LbUysfV5saxoaPU2rrP1/fS1LT6v6q1xLe9yr3M
+4bmptb3Ou7XEt/7O8aOsCgrI57nzuavLvtPQ0KnSycLHu/K1o9DEo6y/ycnPzfiy6daku/LEw8il
+y7DO8bXWv9u6y7bUyLfIz7rz1Nm4tr/uo6zU2s7SuavLvri61PC1xMystsgKCtf2tb2/zbunt8XQ
+xML60uKjocjntPLIxcT6saa588qxvOSjrL60x+u8+8HCo6EKCiAgICAgICAgINejCgogICAgICDJ
+zCAgICDs9yAgICAgICAgICAgICAgICAgu7bTrcC0tefXydGvoaLHosy4o6EKCiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICDBqiDPtSDIyyCjuiDDt8/IyfoKCiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICDK1iAgILv6ICCjuiAxIDMgNiAxIDMgMCA4IDMgOCAwIDgKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUSAg
+ICAgUSAgOyAgNSA0IDMgMSA5IDMgOCA2IDggCiAKICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgINPKICAgIM/kIKO7IHpzc3oxMTU1QDE2My5jb20KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBT
+Ri5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVsb3Bl
+cidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlvbnMg
+d2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRyaXAg
+Zm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQKaHR0
+cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9Lwpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
+Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
+bC1nZW5lcmFsCg==

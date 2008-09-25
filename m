@@ -1,51 +1,39 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: removal of spidev oops on pxa270
-Date: Wed, 24 Sep 2008 22:04:20 -0700
-Message-ID: <200809242204.21175.david-b@pacbell.net>
-References: <f96d234e0809200806p7adecdd3hfb29b4e99dc9c83a@mail.gmail.com>
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: [spi-devel-general] linux-next: manual merge of the pxa tree
+Date: Wed, 24 Sep 2008 21:57:47 -0700
+Message-ID: <200809242157.47494.david-b@pacbell.net>
+References: <20080915052750.0b0c924c.sfr@canb.auug.org.au> <48CE60A6.4000705@whoi.edu> <f17812d70809152002p6df35c05o743d9d86fca37827@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <f96d234e0809200806p7adecdd3hfb29b4e99dc9c83a-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: "Ned Forrester" <nforrester@whoi.edu>, linux-next@vger.kernel.org
+To: spi-devel-general@lists.sourceforge.net,
+	"Eric Miao" <eric.y.miao@gmail.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>
+Return-path: <linux-next-owner@vger.kernel.org>
+In-Reply-To: <f17812d70809152002p6df35c05o743d9d86fca37827@mail.gmail.com>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Sender: linux-next-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Saturday 20 September 2008, Cliff Brake wrote:
-> static int spidev_remove(struct spi_device *spi)
-> {
-> =A0=A0=A0=A0=A0=A0=A0=A0struct spidev_data=A0=A0=A0=A0=A0=A0*spidev =3D s=
-pi_get_drvdata(spi);
-> =
+On Monday 15 September 2008, Eric Miao wrote:
+> >> I fixed it up (see below) and can carry the fixup (though it could=
+ be
+> >> fixed in the pxa tree in a merge with Linus' tree). =A0Please chec=
+k the
+> >> fixup.
+> >
+> > The last word I had from David Brownell, was that Eric should make =
+his
+> > patch fit after mine. =A0I think Eric was planning to re-submit, bu=
+t maybe
+> > you have saved him the trouble. =A0I will leave it to Eric to decid=
+e if
+> > you fixed everything needed.
+> >
+>=20
+> I'll take off the patch to save Stephen's time on this. Sorry for the
+> noise.
 
-> =A0=A0=A0=A0=A0=A0=A0=A0/* make sure ops on existing fds can abort cleanl=
-y */
-> =A0 =A0 =A0 =A0 spin_lock_irq(&spidev->spi_lock);
-> =A0 =A0 =A0 =A0 spidev->spi =3D NULL; =A0 =A0<<<<<< this line is crashing
-> =
-
-> spidev is NULL, thus the crash.
-
-Hmm, who would want to remove this driver?  :)
-
-Looks like spi_set_drvdata() isn't getting called.  This
-probably got goofed when some funkier crashes got fixed;
-unless it's been there forever...
-
-
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+Uh, I have yet to see any version of this patch... could someone post
+it so the SPI maintainer at least has a chance to look at it?

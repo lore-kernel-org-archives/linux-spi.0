@@ -1,11 +1,12 @@
-From: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+From: sbabic-ynQEQJNshbs@public.gmane.org
 Subject: [PATCH] The of_register_spi_devices() was not
- called after registering the spi master.
-Date: Fri, 26 Sep 2008 10:41:02 +0200
-Message-ID: <48DCA01E.50602@denx.de>
+	called after registering the spi master.
+Date: Fri, 26 Sep 2008 10:24:39 +0200
+Message-ID: <1222417480-3144-1-git-send-email-sbabic@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Cc: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,11 +19,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The of_register_spi_devices() was not called after registering the spi
-master.
+The of_register_spi_devices() was not called after registering the spi master.
 It should be called for powerpc platforms which use the device tree to
 populate the SPI bus.
-
+    
 Signed-off-by: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
 
 

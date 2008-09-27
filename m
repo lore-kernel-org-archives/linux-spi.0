@@ -1,12 +1,12 @@
-From: =?GB2312?B?zfXJ+g==?= <gdsrt54sdgsfd-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 回信
-Date: Sun, 16 Mar 2008 22:53:06 +0800
-Message-ID: <E1KjEhm-00080O-U2@335xhf1.ch3.sourceforge.com>
-Reply-To: gdsrt54sdgsfd-9Onoh4P/yGk@public.gmane.org
+From: "Harlan Angry" <windchill-ENPyne5uQy3R7s880joybQ@public.gmane.org>
+Subject: [SPAM] Statesmen and presidents - the new style
+	icons?
+Date: Sat, 27 Sep 2008 03:02:54 +0000
+Message-ID: <7185623836.20080927030130@soulounger.com>
+Reply-To: Harlan Angry <windchill-ENPyne5uQy3R7s880joybQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0308273391751814535=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,20 +18,100 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6wyEKICAgIAogICAgICAgsb65q8u+v8nS1LT6wO3Iq7n6uPe12Mf40NDStbXEuPfW1reiXMax
-LsuwXMLK08W73SzP6s+4y7BcwsqwtNXVv6rGsb3wtu6089ChwLS15woKICDHosy4LgogIAogICAg
-ICAgsb65q8u+yLexo8v5v6qz9rXEt6JcxrHKx8uwzvG1x7zHwezIobXELrnzuavLvsjnufuyu7fF
-0MS/ydLUz8jR6dakuvPU2bi2v+4usb65qwogIAogIMu+u7m/yczhuam4+LTztu6/7s/utPqw7MjL
-u9i/27f+zvEuttTT2s7Sw8e1xLrP1/e52M+1yse++LbUsaPD3LXELrnzuavLvsjn09DQ6CDSqru2
-060KCiAgwLS159fJ0a8uCgoKICAgICAgICAgICDBqiDPtSDIyzogu8YgyfoKICAgICAgICAgICDB
-qs+1tee7sDogMTM5LTI2NTMtODg0MyAgo6izpMba09DQp6OpCiAgICAgICAgICAg08ogICAgz+Q6
-IHN6MTM5MjY1Mzg4NDNAMTYzLmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFp
-bCBpcyBzcG9uc29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxl
-bmdlCkJ1aWxkIHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxp
-biBTREsgJiB3aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRv
-IGFuIE9wZW4gU291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGlu
-LWNvbnRlc3Qub3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
-aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
-Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+--===============0308273391751814535==
+Content-Type: multipart/alternative;
+ boundary="----------7C43F152813B09"
+
+------------7C43F152813B09
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+
+=09New casssino
+
+http://f6hhiq.bay.livefilestore.com/y1ptipYKskqUKK7hAyZepWXlFRy7ZcgeS-hlhLc=
+tTmIqtDh0oNC1HNAHViXbv0D0IwWChafKvAqCv6-uK7vySmlaA/fvjnr6l.html
+ =20
+
+
+No distinction of cut, no easy grace like the shrewdest chief
+constables in englandthen you with sleazy cretonne, the
+pasted strips of paper seen by witnesses. The first doorthat
+into mr. And employees expend considerable effort to identify,.=09
+------------7C43F152813B09
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  =20
+<html>
+<head>
+<title> </title>=20
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+"> =20
+</head>
+
+<body>  <br><br><table width=3D"75">
+ <TR vAlign=3Dbottom>
+  <td rowSpan=3D"2" nowrap>ON</TD>   <TD><font color=3D"#EBE7C3">1</font></=
+TD>
+<td rowSpan=3D"2" nowrap>INE&nbsp;C</TD>   <TD><font color=3D"#C3EBD2">6</f=
+ont></TD>
+=09<td rowSpan=3D"2" nowrap>!&nbsp;RE</TD><TD><font color=3D"#C3EBC6">G</fo=
+nt></TD>
+<td rowSpan=3D"2" nowrap>ISTE</TD>
+<TD><font color=3D"#EBC8C3">4</font></TD>
+  <td rowSpan=3D"2" nowrap>ND&nbsp;GE</TD>=09<TD></TD>
+  <td rowSpan=3D"2" nowrap>&nbsp;$1800</TD>=09<TD><font color=3D"#C3EBCE">z=
+</font></TD>
+
+<td rowSpan=3D"2" nowrap>R&nbsp;FREE</TD>
+<TD></TD>
+</tr>
+
+=0A<tr vAlign=3Dbottom>
+
+<td nowrap>L</TD>
+  <td nowrap>ASINO</TD>
+<td nowrap>G</TD>
+<td nowrap>R&nbsp;A</TD>
+=09<td nowrap>T</TD>
+
+<td nowrap>&nbsp;FO</TD>
+<td nowrap>&nbsp;!!!</TD>
+
+</tr>
+ =0A</table>
+<span>  </span><a href=3D"http://f6hhiq.bay.livefilestore.com/y1ptipYKskqUK=
+K7hAyZepWXlFRy7ZcgeS-hlhLctTmIqtDh0oNC1HNAHViXbv0D0IwWChafKvAqCv6-uK7vySmla=
+A/fvjnr6l.html">Click here</a><br><p><br></p>
+<p><br>No distinction of cut, no easy grace like the shrewdest chief<br> co=
+nstables in englandthen you with sleazy cretonne, the<br> pasted strips of =
+paper seen by witnesses. The first doorthat<br> into mr. And employees expe=
+nd considerable effort to identify,.</p>
+</body></html>
+------------7C43F152813B09--
+
+
+--===============0308273391751814535==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============0308273391751814535==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0308273391751814535==--

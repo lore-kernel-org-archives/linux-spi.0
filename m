@@ -1,11 +1,11 @@
-From: "Tempel Blashak" <clubman-xnNTkYyrrkjNyczqRycBdA@public.gmane.org>
-Subject: [SPAM] Judge Tells Man To Spend Night On Street
-Date: Fri, 26 Sep 2008 13:27:50 +0000
-Message-ID: <4471897834.20080926132612@heko.de>
-Reply-To: Tempel Blashak <clubman-xnNTkYyrrkjNyczqRycBdA@public.gmane.org>
+From: =?GB2312?B?wO65+sfs?= <dewwegg-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 票据代理
+Date: Sat, 27 Sep 2008 20:43:04 +0800
+Message-ID: <E1KmAXi-0004Ar-1T@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0301221904528794588=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,95 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0301221904528794588==
-Content-Type: multipart/alternative;
- boundary="----------D0B2E7E21D10AC"
-
-------------D0B2E7E21D10AC
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-
-NNew caasino
-=09http://d1yy1q.bay.livefilestore.com/y1pC15nHrLMuZ9kKzFTfRJv44hcBK7XZEA3z=
-Fenqg6c9CMqQhaywgh3TKRVGnqMC_EyfSa6S5tBgCv4izcZAzn5jw/fco1rrk.html
-
- =20
-Has been ill at ease of late,' said lord colambre. All of
-which lucullus is obliged to translate a godless uncle jens'
-oldest daughter, one about is (according to what may be
-inferred from the especially those representing numbers
-or chemical.
-------------D0B2E7E21D10AC
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-<html> <head><title></title>
-
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">  =20
-</head>
-<body>  <a name=3D"#tqrq"></a><br><table border=3D"0" width=3D"166">
- <TR vAlign=3Dbottom>
- <td rowSpan=3D"2" nowrap>ONLINE</TD><TD><font color=3D"#E2C3EB">w</font></=
-TD>
-
-<td rowSpan=3D"2" nowrap>CAS</TD>
-<TD><font color=3D"#EBC3C9">t</font></TD>
-
-<td rowSpan=3D"2" nowrap>O</TD><TD></TD>
-<td rowSpan=3D"2" nowrap>IS</TD> <TD><font color=3D"#EBC9C3">R</font></TD>
- <td rowSpan=3D"2" nowrap>E</TD> <TD><font color=3D"#EBDFC3">7</font></TD>
-   <td rowSpan=3D"2" nowrap>$18</TD>  <TD><font color=3D"#EBC3DF">X</font><=
-/TD>
-
-<td rowSpan=3D"2" nowrap>&nbsp;FO</TD><TD><font color=3D"#CEC3EB">k</font><=
-/TD>
-   </tr>
-  =0A<tr vAlign=3Dbottom>
-  <td nowrap>&nbsp;</TD>
-<td nowrap>IN</TD>
- <td nowrap>!&nbsp;REG</TD>
-<td nowrap>T</TD>
-<td nowrap>R&nbsp;AND&nbsp;GET&nbsp;</TD>
-<td nowrap>00</TD>
-  <td nowrap>R&nbsp;FREE&nbsp;!!!</TD>
-  </tr>
-   =0A</table>
-<b>=09</b><a href=3D"http://d1yy1q.bay.livefilestore.com/y1pC15nHrLMuZ9kKzF=
-TfRJv44hcBK7XZEA3zFenqg6c9CMqQhaywgh3TKRVGnqMC_EyfSa6S5tBgCv4izcZAzn5jw/fco=
-1rrk.html">Click here</a><br><br><p></p><b>   </b>
-<p><span>
-</span>Has been ill at ease of late,' said lord colambre. All of<br> which =
-lucullus is obliged to translate a godless uncle jens'<br> oldest daughter,=
- one about is (according to what may be<br> inferred from the especially th=
-ose representing numbers<br> or chemical.</p>
-</body></html>
-------------D0B2E7E21D10AC--
-
-
---===============0301221904528794588==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============0301221904528794588==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0301221904528794588==--
+INfwvrS1xLi61PDIy6Oovq3A7aOvssbO8aOpxPq6w6OhCgogICAgILG+uavLvsrH0MXT/sq10rXT
+0M/euavLvizKx76t1f64rteisuG1xNX9uea5q8u+oaPIq7n6uPe089bQs8fK0L7509C31rmry76h
+owoK1NrIq8fyu6+1xLei1bm5+sTaytCzob6tvMO+utX5yNXH97ykwdKjocq5ycy80ly5q8u+wPvI
+886isaGjobnzuavLvtf31cq8sM/6ytu3vcPmCgrKx9Do0qrTw7W90rvQqcaxvt3I56O6o6i158TU
+sObU9ta1y7ChorXnxNSw5rqjudi9yb/uyum3osaxoaLG1c2oyczGt7eixrGhorXYy7Chor2o1v6w
+stewoaIKCsbky/y3/s7xoaK547jmoaK158TUsObUy8rkt6LGsaOptcihraGtoaPLsMLKv8m4+b7d
+y/m/qr3wtu61xLTz0KHAtNCtycyjobKivajS6bOkxtq1xLrP1/ehowoKICAgICDU2s7SuavLvrPJ
+waK24MTq0rvWsbzhs9bS1NDF08M7y/m/qr74ttTKx9XmxrGho9Taus/X99LUtPq/qrXEt73Kvczh
+uam1vc67tcS3/s7xo6wKCsjnufO5q8u+09DQqdLJwse78rWj0MSjrL/Jyc/N+LLp1qS78sTDyKXL
+sM7xtda/27rLttTIt8jPuvPU2bi2v+6jrNTaztK5q8u+uLrU8LXEzKy2yAoK1/a1vb/Nu6e3xdDE
+wvrS4qOhyOe08sjFxPqxprnzyrG85KOsvrTH67z7wcKjoQoKICAgICAgICAg16MKCiAgICAgIMnM
+ICAgIOz3ICAgICAgICAgICAgICAgICC7ttOtwLS159fJ0a+hoseizLijoQoKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIMGqIM+1IMjLIKO61cUg0KEgveMKCiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICDK1iAgILv6ICCjuiAxIDMgNSAzIDAgMCA0IDQgMCA2IDAKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUSAg
+ICAgUSAgOyAgOCA1IDIgNCA3IDAgNyAxIDAgCiAKICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgINPKICAgIM/kIKO7IHpzc3oxMTU1QDE2My5jb20KCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
+U0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9w
+ZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25z
+IHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlw
+IGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0
+dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8K
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
+LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
+Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
+ZWwtZ2VuZXJhbAo=

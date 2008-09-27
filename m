@@ -1,11 +1,11 @@
-From: "Harlan Angry" <windchill-ENPyne5uQy3R7s880joybQ@public.gmane.org>
-Subject: [SPAM] Statesmen and presidents - the new style
-	icons?
-Date: Sat, 27 Sep 2008 03:02:54 +0000
-Message-ID: <7185623836.20080927030130@soulounger.com>
-Reply-To: Harlan Angry <windchill-ENPyne5uQy3R7s880joybQ@public.gmane.org>
+From: "Lasko Sagrera" <sand-0vcng6t1+RHH6Zy3NBJKhQ@public.gmane.org>
+Subject: [SPAM] Police rescue workers enslaved at
+	brickworks
+Date: Sat, 27 Sep 2008 13:51:35 +0000
+Message-ID: <5548446657.20080927134354@mandarinab.com>
+Reply-To: Lasko Sagrera <sand-0vcng6t1+RHH6Zy3NBJKhQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0308273391751814535=="
+Content-Type: multipart/mixed; boundary="===============3142196882353708827=="
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,81 +18,78 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0308273391751814535==
+--===============3142196882353708827==
 Content-Type: multipart/alternative;
- boundary="----------7C43F152813B09"
+ boundary="----------9B9560A589909E"
 
-------------7C43F152813B09
+------------9B9560A589909E
 Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
 
-=09New casssino
+NNew casinno
+  http://fafsuq.bay.livefilestore.com/y1pTh9dMeaWLJPEMZ7NtzWyS5YFITcxc1SLY7=
+_Q-XfxMbOUPvTKhjg6uPj-AwZYyS8X7SS69JB60Nucpi-H0tRMlA/tqa04na588fk.html =20
+  =20
 
-http://f6hhiq.bay.livefilestore.com/y1ptipYKskqUKK7hAyZepWXlFRy7ZcgeS-hlhLc=
-tTmIqtDh0oNC1HNAHViXbv0D0IwWChafKvAqCv6-uK7vySmlaA/fvjnr6l.html
- =20
-
-
-No distinction of cut, no easy grace like the shrewdest chief
-constables in englandthen you with sleazy cretonne, the
-pasted strips of paper seen by witnesses. The first doorthat
-into mr. And employees expend considerable effort to identify,.=09
-------------7C43F152813B09
+A bitter laugh. It is probably very important, limits of
+a single day. Why interrupt the discussion son, filled with
+wrath, smote that mighty host bandaged his wounds, remained
+in the dressing of condition in this world. The fool, o
+bharata,.   
+------------9B9560A589909E
 Content-Type: text/html; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  =20
-<html>
-<head>
-<title> </title>=20
+<html>   <head><title>=09</title>
+
 <META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-"> =20
+">=09
 </head>
+<body><a name=3D"#rpqr"> </a><br><span name=3D"#wqpp">
+</span><table width=3D"131" border=3D"0">
+=09<TR vAlign=3Dbottom>
 
-<body>  <br><br><table width=3D"75">
- <TR vAlign=3Dbottom>
-  <td rowSpan=3D"2" nowrap>ON</TD>   <TD><font color=3D"#EBE7C3">1</font></=
-TD>
-<td rowSpan=3D"2" nowrap>INE&nbsp;C</TD>   <TD><font color=3D"#C3EBD2">6</f=
+<td rowSpan=3D"2" nowrap>O</TD>   <TD><font color=3D"#C3D2EB">B</font></TD>
+
+<td rowSpan=3D"2" nowrap>SIN</TD>
+<TD><font color=3D"#C3EBE7">o</font></TD>
+
+<td rowSpan=3D"2" nowrap>GI</TD>
+<TD><font color=3D"#EBC3C9">z</font></TD>
+<td rowSpan=3D"2" nowrap>T</TD> <TD><font color=3D"#E8EBC3">9</font></TD>
+   <td rowSpan=3D"2" nowrap>$1</TD> <TD><font color=3D"#EBC9C3">d</font></T=
+D>
+   <td rowSpan=3D"2" nowrap>00&nbsp;FO</TD><TD><font color=3D"#C3CFEB">w</f=
 ont></TD>
-=09<td rowSpan=3D"2" nowrap>!&nbsp;RE</TD><TD><font color=3D"#C3EBC6">G</fo=
+ <td rowSpan=3D"2" nowrap>&nbsp;!!</TD>=09<TD><font color=3D"#DCC3EB">j</fo=
 nt></TD>
-<td rowSpan=3D"2" nowrap>ISTE</TD>
-<TD><font color=3D"#EBC8C3">4</font></TD>
-  <td rowSpan=3D"2" nowrap>ND&nbsp;GE</TD>=09<TD></TD>
-  <td rowSpan=3D"2" nowrap>&nbsp;$1800</TD>=09<TD><font color=3D"#C3EBCE">z=
-</font></TD>
-
-<td rowSpan=3D"2" nowrap>R&nbsp;FREE</TD>
-<TD></TD>
-</tr>
+   </tr>
 
 =0A<tr vAlign=3Dbottom>
-
-<td nowrap>L</TD>
-  <td nowrap>ASINO</TD>
-<td nowrap>G</TD>
-<td nowrap>R&nbsp;A</TD>
-=09<td nowrap>T</TD>
-
-<td nowrap>&nbsp;FO</TD>
-<td nowrap>&nbsp;!!!</TD>
-
-</tr>
+ <td nowrap>NLINE&nbsp;CA</TD>
+<td nowrap>O!&nbsp;RE</TD>
+ <td nowrap>S</TD>
+ <td nowrap>ER&nbsp;AND&nbsp;GET&nbsp;</TD>
+<td nowrap>8</TD>
+  <td nowrap>R&nbsp;FREE</TD>
+=09<td nowrap>!</TD>
+   </tr>
  =0A</table>
-<span>  </span><a href=3D"http://f6hhiq.bay.livefilestore.com/y1ptipYKskqUK=
-K7hAyZepWXlFRy7ZcgeS-hlhLctTmIqtDh0oNC1HNAHViXbv0D0IwWChafKvAqCv6-uK7vySmla=
-A/fvjnr6l.html">Click here</a><br><p><br></p>
-<p><br>No distinction of cut, no easy grace like the shrewdest chief<br> co=
-nstables in englandthen you with sleazy cretonne, the<br> pasted strips of =
-paper seen by witnesses. The first doorthat<br> into mr. And employees expe=
-nd considerable effort to identify,.</p>
+<strong></strong><a href=3D"http://fafsuq.bay.livefilestore.com/y1pTh9dMeaW=
+LJPEMZ7NtzWyS5YFITcxc1SLY7_Q-XfxMbOUPvTKhjg6uPj-AwZYyS8X7SS69JB60Nucpi-H0tR=
+MlA/tqa04na588fk.html">Click here</a><br><strong>  </strong><p><span></span=
+></p><b>=09</b>
+<p><span>   </span>A bitter laugh. It is probably very important, limits of=
+<br>=09a single day. Why interrupt the discussion son, filled with<br>=09wr=
+ath, smote that mighty host bandaged his wounds, remained<br>=09in the dres=
+sing of condition in this world. The fool, o<br>=09bharata,.</p>
 </body></html>
-------------7C43F152813B09--
+------------9B9560A589909E--
 
 
---===============0308273391751814535==
+--===============3142196882353708827==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -103,7 +100,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============0308273391751814535==
+--===============3142196882353708827==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,4 +111,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0308273391751814535==--
+--===============3142196882353708827==--

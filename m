@@ -1,13 +1,13 @@
-From: =?GB2312?B?wfU=?= <xfgvdfgdfg-h2+3O0goxnQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] S税GF票GF
-Date: Sun, 28 Sep 2008 04:22:59 +0800
-Message-ID: <E1KjgLd-0005yK-U1@335xhf1.ch3.sourceforge.com>
-Reply-To: baoshengda-H32Fclmsjq1BDgjK7y7TUQ@public.gmane.org
+From: cor <502afc1979-B1QMJB8MFMl27t9gUwhFOqgmJsyTd1tZ@public.gmane.org>
+Subject: [SPAM] No surgery! Enlarge your PE by simply
+	using new PE device
+Date: Sat, 27 Sep 2008 18:54:39 -0600
+Message-ID: <000d01c92104$c91b5fd0$e5c2084c@KIMJAK>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============3882435834798764788=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-class: urn:content-classes:message
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,18 +18,116 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-IAogxPq6w6O6IAogICAgztK5q8u+ysfSu7zSvK+/qreioaLJ+rL6oaLP+srb09rSu8zltcS089DN
-19u6z7mry76howogICAgz9axvrmry77T0NK7sr+31reiLcaxo7vLsMLKtc3BrqO708W73bT6v6qj
-uwogyOc6KDEpxtXNqNT21rXLsC0txrGjuwogICAoMinG1c2oyczGt8/6ytu3oi0txrGjuwogICAo
-MynUy8rk0rWhornjuObStaGiuPfA4Lf+zvHStbeiLS3GsS+1yLXIoaMKIMjn09DQ6NKqo6y7ttOt
-xPrT687SwarPtaO6CgogICAgICDBqs+1yMujusH1z8jJ+qOoMKOpMTU4MTczMDI3NjAKCgotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGlu
-IFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXgg
-YmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3Jh
-bmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hl
-cmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jh
-bm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--===============3882435834798764788==
+Content-class: urn:content-classes:message
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_000E_01C920D2.7E80EFD0"
+
+------=_NextPart_000_000E_01C920D2.7E80EFD0
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
+
+This message was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Unsubscribe | Manage Subscriptions | Privacy Policy
+To stop ALL email from CPA Newsletters, click here to remove yourself =
+from our lists.
+This email was sent by: CPA, 524 W. 57th St., Room 514/1, New York, NY, =
+10019
+2008 CPA
+------=_NextPart_000_000E_01C920D2.7E80EFD0
+Content-Type: text/html;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 10 (filtered)">
+<title></title>
+
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+        {margin:0in;
+        margin-bottom:.0001pt;
+        font-size:12.0pt;
+        font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+        {color:#003366;
+        text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+        {color:#003366;
+        text-decoration:underline;}
+span.EmailStyle17
+        {font-family:Arial;
+        color:navy;}
+@page Section1
+        {size:8.5in 11.0in;
+        margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+        {page:Section1;}
+-->
+</style>
+
+</head>
+
+<body bgcolor=3D"#D3D3DC" lang=3DEN-US link=3D"#003366" vlink=3D"#003366"
+alink=3D"#003366">
+<DIV align=3Dcenter> <a href=3D"http://www.sawbetter.com"=20
+target=3D"_blank"></DIV><BR><DIV><img =
+src=3D"http://www.sawbetter.com/huge.jpg"=20
+border=3D0 alt=3D""></a></DIV><BR><DIV><FONT face=3DArial size=3D2>This =
+message was sent=20
+to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</FONT></DIV><BR><DIV><a=20
+href=3D"http://www.sawbetter.com/unsubscribe.asp?email=3Dspi-devel-genera=
+l@lists.sourceforge.net&confirmation=3D3a91eb520cbfbad83">Unsubscribe</a>=
+=20
+| <a=20
+href=3D"http://www.sawbetter.com/manage.asp?email=3Dspi-devel-general@lis=
+ts.sourceforge.net&confirmation=3D1020ced9adbd914ae">Manage=20
+Subscriptions | <a=20
+href=3D"http://www.sawbetter.com/privacy.asp?email=3Dspi-devel-general@li=
+sts.sourceforge.net&confirmation=3D9471d50f526415976">Privacy=20
+Policy</a></DIV><BR><DIV>To stop ALL email from CPA Newsletters, click =
+<a=20
+href=3D"http://www.sawbetter.com/unsubscribe.asp?email=3Dspi-devel-genera=
+l@lists.sourceforge.net&confirmation=3D9b3e1bae4cc58a">here</a>=20
+to remove yourself from our lists.</DIV><BR><DIV><FONT face=3DArial =
+size=3D2>This=20
+email was sent by: CPA, 524 W. 57th St., Room 514/1, New York, NY,=20
+10019</FONT></DIV><BR><DIV><FONT face=3DArial size=3D2>2008 =
+CPA</FONT></DIV>
+</body>
+
+</html>
+
+------=_NextPart_000_000E_01C920D2.7E80EFD0--
+
+
+--===============3882435834798764788==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============3882435834798764788==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3882435834798764788==--

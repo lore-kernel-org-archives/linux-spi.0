@@ -1,7 +1,7 @@
-From: =?GB2312?B?wfU=?= <dsrgdhber4erg-RJz23cZKeiDQT0dZR+AlfA@public.gmane.org>
-Subject: [SPAM] S税GF票GF
-Date: Sun, 28 Sep 2008 08:38:37 +0800
-Message-ID: <E1KmBD9-0003Jg-28@235xhf1.ch3.sourceforge.com>
+From: =?GB2312?B?wfU=?= <vfbhnrt6ujhg-i7eW1Yz7gJPQT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] J税J票GF
+Date: Mon, 29 Sep 2008 13:10:10 +0800
+Message-ID: <E1KmCGD-0002Gw-Uj@235xhf1.ch3.sourceforge.com>
 Reply-To: baoshengda-H32Fclmsjq1BDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="gb2312"

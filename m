@@ -1,15 +1,17 @@
-From: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] mpc52xx_psc_spi setting the
-	tdfOnExit flag only on the last byte
-Date: Tue, 30 Sep 2008 08:44:18 -0600
-Message-ID: <fa686aa40809300744s77c7069elfd5a6802b3048a24@mail.gmail.com>
+From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: Re:
+	=?iso-8859-1?q?=5BPATCH=5D_mpc52xx=5Fpsc=5Fsp?=
+	=?iso-8859-1?q?i_setting_the=09tdfOnExit_flag_only_on_the_last_byt?=
+	=?iso-8859-1?q?e?=
+Date: Wed, 1 Oct 2008 13:12:27 +0200
+Message-ID: <200810011312.27678.sr@denx.de>
 References: <1222766572-17499-1-git-send-email-sbabic@denx.de>
 	<20080930140726.GG18313@secretlab.ca> <48E23473.8060604@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "Stefano Babic" <sbabic-ynQEQJNshbs@public.gmane.org>
+Cc: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <48E23473.8060604-ynQEQJNshbs@public.gmane.org>
 Content-Disposition: inline
@@ -23,11 +25,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Sep 30, 2008 at 8:15 AM, Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org> wrote:
-> Grant Likely wrote:
->> Your patchs and descriptions are getting sent in separate emails.  How are you
->> sending your patches?
->
+On Tuesday 30 September 2008, Stefano Babic wrote:
 > I know, I have not found a way how to tell git-send-email to send
 > everything in one e-mail:
 >
@@ -37,19 +35,17 @@ On Tue, Sep 30, 2008 at 8:15 AM, Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.
 >
 > Probably it is very easy, but I have not found the right way ;)
 
-You need to provide the patch description when you commit the change,
-not when you send the email.
+I generate the patch with "git format-patch -1 -o directory" and then send it 
+with "git send-email --to list directory/patch".
 
-While you cannot edit a commit directly (commits are immutable), you
-can create a new commit from the old using git-cherry-pick:
+Best regards,
+Stefan
 
-$ man git-cherry-pick
-$ git branch old                 # Save the current location
-$ git reset --hard old~1         # reset to just before the commit to edit
-$ git-cherry-pick -e old         # Cherry pick the commit that you
-                                 # want and edit the commit log.
-
-g.
+=====================================================================
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+=====================================================================
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

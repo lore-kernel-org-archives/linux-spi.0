@@ -1,11 +1,11 @@
-From: "Curso de oratoria en CD" <ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Más un CD de regalo de Educación de la Voz
-Date: Thu, 2 Oct 2008 23:34:05 -0400
-Message-ID: <789138763-2200810533345461@gmail.com>
+From: =?GB2312?B?1cW+rcDt?= <gfhdherg-868vvKMQs0AAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] VBDFG发DFG票JK
+Date: Sat, 4 Oct 2008 04:11:39 +0800
+Message-ID: <E1Klr10-00082Q-3S@335xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,66 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ebook Chile ha desarrollado un CD que le ayudar=E1 a desarrollar sus habili=
-dades de expresi=F3n y oratoria. Hablar correctamente en publico no es un t=
-alento innato, sino que es cuestion de practica, ensayo y tecnica. Es norma=
-l que hasta el mas experto ponente se quede en blanco por un ataque de nerv=
-ios=85para que esto no le suceda=85
-
-Este curso en CD es apto para: =
-
-
-- Alumnos de colegio o Universidad que tiene que hacer exposiciones, defens=
-as, debates. =
-
-- Profesionales que deben exponer sus ideas a un publico. =
-
-- Para quienes tienen puestos gerenciales y deben hablar con sus trabajador=
-es. =
-
-- Para profesores que deben hablar a sus apoderados. =
-
-- Para todo aquel que debe realizar un discurso. =
-
-
-Valor del CD  de Oratoria es $20.000.
-(incluye Impuestos y envio a todo Chile)
-
-Solicitelo a ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org - ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org =
-
-Vea otros cursos en: www.ebookchile.cl =
-
-
-
-Nota:  El valor del CD de Educaci=F3n de la Voz es de $20.000, por esta sem=
-ana se incluye como regalo.
-
-Saluda atentamente,
-
-Antonio Diaz
-Ebook Chile
-Fono: 56 - 2 - 2781078 ; Cel.: 08.9623577
-E-mail: ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org - ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org =
-
-Web: www.ebookchile.cl =
-
-
-
-Si desea retirarse de nuestra lista de distribucion debe  ir a  www.ebookch=
-ile.cl/retiro.htm =
-
-Se han eliminado todos los caracteres incompatibles con algunos sistemas de=
- correo electronico.
-
-
- =
-
-
-
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+IAogxPq6w6O6IAogICAgIM7SuavLvtPQtdjLsC0txrEvtPq/qqO7yOc6CiCjqDGjqcbVzajJzMa3
+z/rK28uwLS3GsaO7CiCjqDKjqbnjuObStaGiuPfA4Lf+zvHStcuwLS3GsaO7CiCjqDOjqdTLyuSh
+or2o1v6wstewoaK5pLPMLS0tLcaxCiAoNCkgxtXNqNT21rXLsLeixrEvtci1yKGjCiDI59PQ0OjS
+qqOsu7bTrcT60+vO0sGqz7WjugoKICAgICAguLrU8MjLo7rVxc/IyfqjqDCjqTEzNjQyMzQ3MjI1
+CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUg
+TW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3Qg
+TGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6
+ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQg
+YW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3Qu
+cGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
+ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
+dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

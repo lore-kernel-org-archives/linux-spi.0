@@ -1,9 +1,10 @@
-From: Mail Delivery System <Mailer-Daemon-m/PVOPnYVgNfKtzBj6G6Cw1n6mkYVzJh@public.gmane.org>
-Subject: Mail delivery failed: returning message to
-	sender
-Date: Thu, 02 Oct 2008 21:54:48 -0300
-Message-ID: <E1KlYwp-0000sy-Ff@saturno.serverbr7.com>
-Content-Type: multipart/mixed; boundary="===============6666631524887131096=="
+From: "Curso de oratoria en CD" <ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] MÃ¡s un CD de regalo de EducaciÃ³n de la Voz
+Date: Thu, 2 Oct 2008 23:34:05 -0400
+Message-ID: <789138763-2200810533345461@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,65 +17,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6666631524887131096==
+Ebook Chile ha desarrollado un CD que le ayudar=E1 a desarrollar sus habili=
+dades de expresi=F3n y oratoria. Hablar correctamente en publico no es un t=
+alento innato, sino que es cuestion de practica, ensayo y tecnica. Es norma=
+l que hasta el mas experto ponente se quede en blanco por un ataque de nerv=
+ios=85para que esto no le suceda=85
 
-This message was created automatically by mail delivery software.
-
-A message that you sent could not be delivered to one or more of its
-recipients. This is a permanent error. The following address(es) failed:
-
-  spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-    Domain restaurandoisrael.com.br has exceeded the max emails per hour (200) allowed. Message discarded.
-
------- This is a copy of the message, including all the headers. ------
-
-Return-path: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Received: from 189-18-69-64.dsl.telesp.net.br ([189.18.69.64] helo=--------------------------)
-	by saturno.serverbr7.com with smtp (Exim 4.69)
-	(envelope-from <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>)
-	id 1KlYwp-0000sW-4m
-	for spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; Thu, 02 Oct 2008 21:54:48 -0300
-From: FACULDADE DE TEOLOGIA E FILOSOFIA =?ISO-8859-1?Q?SILO=C9?=
- <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: Cursos de Teologia GRANDE =?ISO-8859-1?Q?PROMO=C7=C3O?=
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Content-Type: text/plain;
-Reply-To: secretaria-mRhrbp4JBolwFqzsTH5u/w@public.gmane.org
-Disposition-Notification-To: prizael-X/bbetz7Pne2xk9J+HOZKgkEGdtVDxJ8@public.gmane.org
-Message-ID: -----------------------------
-Date: Thu, 2 Oct 2008 21:55:21 -0300
-X-Priority: 2
-X-Antivirus: avast! (VPS 081002-0, 02/10/2008), Outbound message
-X-Antivirus-Status: Clean
-
-FACULDADE DE TEOLOGIA E FILOSOFIA SILOÉ
-TEOLOGIA A DISTÂNCIA
-Estude Teologia sem sair de casa! Você recebe o material didático pelo correio ou pela internet. Os valores da FATESI (estão no site www.fatesi.com.br) e são os melhores do mercado. Você poderá concluir o curso no menor tempo possível.  
-Acesse o site www.fatesi.com.br <http://www.fatesi.com.br>
-Nossos e-mails: secretaria-mRhrbp4JBolwFqzsTH5u/w@public.gmane.org <mailto:secretaria-mRhrbp4JBolwFqzsTH5u/w@public.gmane.org> ou secretaria.fatesi-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-Nossos telefones: 0xx11 5831-1078 ou 0xx11 5511-0631
+Este curso en CD es apto para: =
 
 
---===============6666631524887131096==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+- Alumnos de colegio o Universidad que tiene que hacer exposiciones, defens=
+as, debates. =
+
+- Profesionales que deben exponer sus ideas a un publico. =
+
+- Para quienes tienen puestos gerenciales y deben hablar con sus trabajador=
+es. =
+
+- Para profesores que deben hablar a sus apoderados. =
+
+- Para todo aquel que debe realizar un discurso. =
+
+
+Valor del CD  de Oratoria es $20.000.
+(incluye Impuestos y envio a todo Chile)
+
+Solicitelo a ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org - ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org =
+
+Vea otros cursos en: www.ebookchile.cl =
+
+
+
+Nota:  El valor del CD de Educaci=F3n de la Voz es de $20.000, por esta sem=
+ana se incluye como regalo.
+
+Saluda atentamente,
+
+Antonio Diaz
+Ebook Chile
+Fono: 56 - 2 - 2781078 ; Cel.: 08.9623577
+E-mail: ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org - ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org =
+
+Web: www.ebookchile.cl =
+
+
+
+Si desea retirarse de nuestra lista de distribucion debe  ir a  www.ebookch=
+ile.cl/retiro.htm =
+
+Se han eliminado todos los caracteres incompatibles con algunos sistemas de=
+ correo electronico.
+
+
+ =
+
+
+
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============6666631524887131096==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6666631524887131096==--
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

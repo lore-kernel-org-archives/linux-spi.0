@@ -1,11 +1,10 @@
-From: Hamza Ibrahim <hamzaonline-8zkDndRYoF7PDbFq/vQRIQ@public.gmane.org>
-Subject: Contact Rev David Ali
-Date: Sat, 4 Oct 2008 16:43:03 -0400
-Message-ID: <200810042043.m94Kh31h024233@cdmaximum.com>
-Reply-To: hamzaonline-8zkDndRYoF7PDbFq/vQRIQ@public.gmane.org
+From: rthgjhjdthfdh-9Onoh4P/yGk@public.gmane.org
+Subject: [SPAM] 诚信贸易!
+Date: Sat, 4 Oct 2008 17:37:13 +0800
+Message-ID: <E1KmFq6-0003Q4-91@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,27 +17,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-My Dear Friend,
-
-Hope this mail find you in an excellent condition of health. I'm happy to inform you about my success in getting those funds transferred under the co-operation of a new partner from London UK. Presently I'm in JAPAN for investment projects with my own share of the total sum. Meanwhile I didn't forget you're past efforts and attempts to assist me in transferring those funds that later failed some how, I have compensated you with the sum of $1.5M USD, One million five hundred thousand dollars.
- 
-Now contact my Rev David Ali in Ghana with this information:-
-
-Name:      Rev David Ali
-Email:     davidali-8zkDndRYoF7PDbFq/vQRIQ@public.gmane.org
-Mobile:    +233 2428 70426
-
-Ask him to send the money to you the sum of $1.5 million dollar, One million five hundred thousand dollars which I kept for your compensation for all your past efforts and attempts to assist me in this matter. I appreciated your efforts at that time very much. So feel free and get in touch with him and instruct him where to send the amount to you.
- 
-Please do let me know immediately if you receive it so that we can share the joy after all the sufferings at that time. I'm very busy here WITH MY STUDIES and the investment projects which me and the new partner are having at hand. This Money, I have left it for you to Ali.I have tried many times to talk to you on phone but you could not respond and I have no time for myself because we are very busy now. You can still reach me if you need anything.
-
-Barr Hammad Ibrahim.
-
-
-
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+uPfOu8DPsOWhorLGzvGjusT6usOjoQogICAgCrG+uavLvs6qy7DO8bv6udjK2siotPq/qreixrG1
+xLWlzrujrNPryKu5+rj3tdihorj30NDStbXEtPq/qrv6ubnT0MGqzfjStc7xzfnAtKO7CgrS1MbV
+zai5+qGitdjLsM6q1vcKCsnMxrfP+srboaK3/s7xoaK547jmoaLUy8rkoaKyzdL7oaK9qNb+oaLQ
+3sXkoaLXydGvoaK7+ravs7XP+srboaLX4sHeoaLSvcHGoaK5pMnM0rXNs9K7t6LGsQoKvLDIq7n6
+uPfKocrQtcTG1c2ot6LGsbXILi4uytXIobfR08PTxbvd1NowLjUtMqOl1/PT0qGjCgrIt7Gjy/nT
+w8axvt2++c6quPe1pc671NrLsM7xvtbL+cnqweyjrL/Jyc/N+LLp0a+78rW9y7DO8b7Wtda/29Hp
+1qS687i2v+4uCgogICAgICAgICAgye7b2srQs8/QxcOz0tfT0M/euavLvgoKoaGhocGqIM+1IMjL
+o7rB9SDA9iAKCqGhoaHBqs+1tee7sKO6MTU5MTk3NTU1MzUKIAogICAg0rUgIM7xUVGjujYxNjc1
+MDIyMgoKICAgILXn19PTys/ko7pnZHN6MTU5MTk3NTU1MzVAMTYzLmNvbSAgCgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIg
+TW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQg
+YXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJp
+emUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4g
+dGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9p
+ZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

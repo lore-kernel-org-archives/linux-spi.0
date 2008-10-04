@@ -1,18 +1,13 @@
-From: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH] mpc52xx_psc_spi setting the
- tdfOnExit flag only on the last byte
-Date: Wed, 01 Oct 2008 16:29:24 +0200
-Message-ID: <48E38944.7070309@denx.de>
-References: <1222766572-17499-1-git-send-email-sbabic@denx.de>
-	<20080930140726.GG18313@secretlab.ca>
-	<48E23473.8060604@denx.de> <200810011312.27678.sr@denx.de>
+From: Hamza Ibrahim <hamzaonline-8zkDndRYoF7PDbFq/vQRIQ@public.gmane.org>
+Subject: Contact Rev David Ali
+Date: Sat, 4 Oct 2008 16:43:03 -0400
+Message-ID: <200810042043.m94Kh31h024233@cdmaximum.com>
+Reply-To: hamzaonline-8zkDndRYoF7PDbFq/vQRIQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200810011312.27678.sr-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,29 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Grant Likely wrote:
-> $ man git-cherry-pick
-> $ git branch old                 # Save the current location
-> $ git reset --hard old~1         # reset to just before the commit to edit
-> $ git-cherry-pick -e old         # Cherry pick the commit that you
+My Dear Friend,
 
-Stefan Roese wrote:
-> I generate the patch with "git format-patch -1 -o directory" and then send it 
-> with "git send-email --to list directory/patch".
+Hope this mail find you in an excellent condition of health. I'm happy to inform you about my success in getting those funds transferred under the co-operation of a new partner from London UK. Presently I'm in JAPAN for investment projects with my own share of the total sum. Meanwhile I didn't forget you're past efforts and attempts to assist me in transferring those funds that later failed some how, I have compensated you with the sum of $1.5M USD, One million five hundred thousand dollars.
+ 
+Now contact my Rev David Ali in Ghana with this information:-
 
-Thanks a lot both ! I did not know how to use git-cherry-pick, I have
-learned now. By the way, the mistake was trivial (but I have not seen) :
-I forgot to add an empty line between subject and text when I commit the
-changes and git-send-email took everything as subject ;)
+Name:      Rev David Ali
+Email:     davidali-8zkDndRYoF7PDbFq/vQRIQ@public.gmane.org
+Mobile:    +233 2428 70426
 
-Stefano
+Ask him to send the money to you the sum of $1.5 million dollar, One million five hundred thousand dollars which I kept for your compensation for all your past efforts and attempts to assist me in this matter. I appreciated your efforts at that time very much. So feel free and get in touch with him and instruct him where to send the amount to you.
+ 
+Please do let me know immediately if you receive it so that we can share the joy after all the sufferings at that time. I'm very busy here WITH MY STUDIES and the investment projects which me and the new partner are having at hand. This Money, I have left it for you to Ali.I have tried many times to talk to you on phone but you could not respond and I have no time for myself because we are very busy now. You can still reach me if you need anything.
 
--- 
-=====================================================================
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
-=====================================================================
+Barr Hammad Ibrahim.
+
+
 
 
 -------------------------------------------------------------------------

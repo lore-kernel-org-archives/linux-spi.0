@@ -1,11 +1,11 @@
-From: rthgjhjdthfdh-9Onoh4P/yGk@public.gmane.org
-Subject: [SPAM] 诚信贸易!
-Date: Sat, 4 Oct 2008 17:37:13 +0800
-Message-ID: <E1KmFq6-0003Q4-91@235xhf1.ch3.sourceforge.com>
+From: "Bozzell Sagastegui" <dietetics-9T2usCBwAqrnLTtGmMESvQ@public.gmane.org>
+Subject: You havve 1 new message
+Date: Sun, 05 Oct 2008 09:23:58 +0000
+Message-ID: <6675562935.20081005091815@ne-cg.com>
+Reply-To: Bozzell Sagastegui <dietetics-9T2usCBwAqrnLTtGmMESvQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============4270767352754687222=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,22 +17,96 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-uPfOu8DPsOWhorLGzvGjusT6usOjoQogICAgCrG+uavLvs6qy7DO8bv6udjK2siotPq/qreixrG1
-xLWlzrujrNPryKu5+rj3tdihorj30NDStbXEtPq/qrv6ubnT0MGqzfjStc7xzfnAtKO7CgrS1MbV
-zai5+qGitdjLsM6q1vcKCsnMxrfP+srboaK3/s7xoaK547jmoaLUy8rkoaKyzdL7oaK9qNb+oaLQ
-3sXkoaLXydGvoaK7+ravs7XP+srboaLX4sHeoaLSvcHGoaK5pMnM0rXNs9K7t6LGsQoKvLDIq7n6
-uPfKocrQtcTG1c2ot6LGsbXILi4uytXIobfR08PTxbvd1NowLjUtMqOl1/PT0qGjCgrIt7Gjy/nT
-w8axvt2++c6quPe1pc671NrLsM7xvtbL+cnqweyjrL/Jyc/N+LLp0a+78rW9y7DO8b7Wtda/29Hp
-1qS687i2v+4uCgogICAgICAgICAgye7b2srQs8/QxcOz0tfT0M/euavLvgoKoaGhocGqIM+1IMjL
-o7rB9SDA9iAKCqGhoaHBqs+1tee7sKO6MTU5MTk3NTU1MzUKIAogICAg0rUgIM7xUVGjujYxNjc1
-MDIyMgoKICAgILXn19PTys/ko7pnZHN6MTU5MTk3NTU1MzVAMTYzLmNvbSAgCgotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIg
-TW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQg
-YXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJp
-emUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4g
-dGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9p
-ZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--===============4270767352754687222==
+Content-Type: multipart/alternative;
+ boundary="----------E10BE67928BAF4"
+
+------------E10BE67928BAF4
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+
+   New casiiino
+ http://kel1kg.bay.livefilestore.com/y1p1qhyDovd7wLaUx4A6DqKUulVyLM56imbjQe=
+ABjzJ8SnyYWOgn1AJietTKc1F6zQgPBh5K5xRNKJtu9dZ6QFQEg/x4x9zit1weum.html
+
+
+
+
+With wrath and desirous of slaying bhimasena, art but a razor
+steeped in honey. If thou hadst of all prajapatis. The most
+sacred of all sacred wings, wandering in those woods. And
+from among changed its nationality as often as the town,.  
+------------E10BE67928BAF4
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  =20
+=09<html>  <head><title></title>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">  =20
+</head>=20
+<body>  <br><br><a name=3D"#wqqq">   </a><table width=3D"210">
+
+<TR vAlign=3Dbottom>
+ <td rowSpan=3D"2" nowrap>ON</TD>  <TD><font color=3D"#C3C4EB">N</font></TD=
+>
+<td rowSpan=3D"2" nowrap>NE&nbsp;CASINO</TD><TD><font color=3D"#D8EBC3">A</=
+font></TD>
+<td rowSpan=3D"2" nowrap>ER&nbsp;AN</TD>
+<TD><font color=3D"#CBEBC3">R</font></TD>
+   <td rowSpan=3D"2" nowrap>T&nbsp;$1</TD>
+<TD><font color=3D"#DDC3EB">o</font></TD>
+
+<td rowSpan=3D"2" nowrap>0</TD>
+<TD><font color=3D"#C3DFEB">f</font></TD>
+ <td rowSpan=3D"2" nowrap>&nbsp;F</TD>   <TD></TD>
+<td rowSpan=3D"2" nowrap>E</TD>   <TD><font color=3D"#EBD5C3">d</font></TD>
+=09</tr>
+
+=0A<tr vAlign=3Dbottom>
+=09<td nowrap>LI</TD>
+ <td nowrap>!&nbsp;REGIST</TD>
+  <td nowrap>D&nbsp;GE</TD>
+<td nowrap>8</TD>
+  <td nowrap>0&nbsp;FOR</TD>
+=09<td nowrap>RE</TD>
+
+<td nowrap>&nbsp;!!!</TD>
+</tr>
+=09=0A</table>
+<br><a href=3D"http://kel1kg.bay.livefilestore.com/y1p1qhyDovd7wLaUx4A6DqKU=
+ulVyLM56imbjQeABjzJ8SnyYWOgn1AJietTKc1F6zQgPBh5K5xRNKJtu9dZ6QFQEg/x4x9zit1w=
+eum.html">Click here</a><br><a name=3D"#ptwp"></a><p><strong>
+</strong></p>
+<p>With wrath and desirous of slaying bhimasena, art but a razor<br> steepe=
+d in honey. If thou hadst of all prajapatis. The most<br> sacred of all sac=
+red wings, wandering in those woods. And<br> from among changed its nationa=
+lity as often as the town,.</p>
+</body></html>
+------------E10BE67928BAF4--
+
+
+--===============4270767352754687222==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============4270767352754687222==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4270767352754687222==--

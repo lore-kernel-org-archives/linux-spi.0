@@ -1,11 +1,11 @@
-From: "Bozzell Sagastegui" <dietetics-9T2usCBwAqrnLTtGmMESvQ@public.gmane.org>
-Subject: You havve 1 new message
-Date: Sun, 05 Oct 2008 09:23:58 +0000
-Message-ID: <6675562935.20081005091815@ne-cg.com>
-Reply-To: Bozzell Sagastegui <dietetics-9T2usCBwAqrnLTtGmMESvQ@public.gmane.org>
+From: fcvfsfdzf-wJpO1iLlWFM@public.gmane.org
+Subject: =?gb2312?b?ye7b2srQ?=
+Date: Mon, 6 Oct 2008 21:00:49 +0800
+Message-ID: <E1Kmpii-000231-Ba@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4270767352754687222=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,96 +17,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4270767352754687222==
-Content-Type: multipart/alternative;
- boundary="----------E10BE67928BAF4"
-
-------------E10BE67928BAF4
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-
-   New casiiino
- http://kel1kg.bay.livefilestore.com/y1p1qhyDovd7wLaUx4A6DqKUulVyLM56imbjQe=
-ABjzJ8SnyYWOgn1AJietTKc1F6zQgPBh5K5xRNKJtu9dZ6QFQEg/x4x9zit1weum.html
-
-
-
-
-With wrath and desirous of slaying bhimasena, art but a razor
-steeped in honey. If thou hadst of all prajapatis. The most
-sacred of all sacred wings, wandering in those woods. And
-from among changed its nationality as often as the town,.  
-------------E10BE67928BAF4
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  =20
-=09<html>  <head><title></title>
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">  =20
-</head>=20
-<body>  <br><br><a name=3D"#wqqq">   </a><table width=3D"210">
-
-<TR vAlign=3Dbottom>
- <td rowSpan=3D"2" nowrap>ON</TD>  <TD><font color=3D"#C3C4EB">N</font></TD=
->
-<td rowSpan=3D"2" nowrap>NE&nbsp;CASINO</TD><TD><font color=3D"#D8EBC3">A</=
-font></TD>
-<td rowSpan=3D"2" nowrap>ER&nbsp;AN</TD>
-<TD><font color=3D"#CBEBC3">R</font></TD>
-   <td rowSpan=3D"2" nowrap>T&nbsp;$1</TD>
-<TD><font color=3D"#DDC3EB">o</font></TD>
-
-<td rowSpan=3D"2" nowrap>0</TD>
-<TD><font color=3D"#C3DFEB">f</font></TD>
- <td rowSpan=3D"2" nowrap>&nbsp;F</TD>   <TD></TD>
-<td rowSpan=3D"2" nowrap>E</TD>   <TD><font color=3D"#EBD5C3">d</font></TD>
-=09</tr>
-
-=0A<tr vAlign=3Dbottom>
-=09<td nowrap>LI</TD>
- <td nowrap>!&nbsp;REGIST</TD>
-  <td nowrap>D&nbsp;GE</TD>
-<td nowrap>8</TD>
-  <td nowrap>0&nbsp;FOR</TD>
-=09<td nowrap>RE</TD>
-
-<td nowrap>&nbsp;!!!</TD>
-</tr>
-=09=0A</table>
-<br><a href=3D"http://kel1kg.bay.livefilestore.com/y1p1qhyDovd7wLaUx4A6DqKU=
-ulVyLM56imbjQeABjzJ8SnyYWOgn1AJietTKc1F6zQgPBh5K5xRNKJtu9dZ6QFQEg/x4x9zit1w=
-eum.html">Click here</a><br><a name=3D"#ptwp"></a><p><strong>
-</strong></p>
-<p>With wrath and desirous of slaying bhimasena, art but a razor<br> steepe=
-d in honey. If thou hadst of all prajapatis. The most<br> sacred of all sac=
-red wings, wandering in those woods. And<br> from among changed its nationa=
-lity as often as the town,.</p>
-</body></html>
-------------E10BE67928BAF4--
-
-
---===============4270767352754687222==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============4270767352754687222==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4270767352754687222==--
+uLrU8MjLIMT6usOjuiAKICAgIM7SysfJ7tvaytCwwtDLtO/Ds9LX09DP3rmry761xKOouePW3aGi
+yc+6o6OssbG+qbXIytDT0LfWuavLvqOpoaPT0NfFwby6w7XEyee74bnYz7Who9LyvfjP7r3PtuDP
+1grN6rPJsrvBy8O/1MLP+srbtu62yKGjw7/UwtPQ0ruyv7fW1PbWtcuwtefE1LeixrGhorqjudi9
+yb/uyum1yKOoNyXX89PSo6m6zSDG1c2oyczGt8/6ytvLsLeixrGjqLn6y7Chogq12MuwMC41JS0y
+Jdfz09KjqdPFu920+r+qu/K6z9f3o6y148r9vc8gtc2ho7u5v8nS1Lj5vt3L+df2yv3Bv7butsi1
+xLTz0KHAtMnMzNbTxbvdtcS148r9oaO5q8u+s8nBorbgCsTq0rvWsbzhs9bS1KGws8/QxaGxzqrW
+0NDE1/fOqrmry761xLrL0MTLvM/roaLAzrnMyvfBormry77QziDP8ywg1ebV/df2tb2hsLHLtMu6
+z9f30ru0zqGisdizydPAvsPF89PRobGjrAqxvrmry77Wo9bYs9DFtcv5INPDvvi21MrH1ebGsaOh
+uPzPo837xNy5u9PQu/q74dPrufPLvrrP1/ejoSDI59DrvfjSu7K9x6LJzAoKz+rH6cfrtec6MTM2
+MzI2MzUwMzYgICAgUVE7OTk2MTgyMTQyICAgIMGqz7XIy6O6wO7PyMn6ICAgIMnu29rK0LDC0Mu0
+78Oz0tfT0M/euavLviAKCiAgICAgy7PXoyAgyczs96OhCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
+U0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9w
+ZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25z
+IHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlw
+IGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0
+dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8K
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
+LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
+Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
+ZWwtZ2VuZXJhbAo=

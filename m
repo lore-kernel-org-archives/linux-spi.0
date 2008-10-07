@@ -1,7 +1,7 @@
 From: qasdfvbnm-H32Fclmsjq1BDgjK7y7TUQ@public.gmane.org
-Subject: =?gb2312?b?o6i3onFxcGlhb6Op?=
-Date: Tue, 7 Oct 2008 16:43:39 +0800
-Message-ID: <E1KnUqi-0006uw-So@3yr0jf1.ch3.sourceforge.com>
+Subject: [SPAM] （发qqpiao）
+Date: Tue, 7 Oct 2008 21:03:42 +0800
+Message-ID: <E1KnYqH-0007P8-OG@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64

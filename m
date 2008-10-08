@@ -1,11 +1,11 @@
-From: qasdfvbnm-H32Fclmsjq1BDgjK7y7TUQ@public.gmane.org
-Subject: [SPAM] （发qqpiao）
-Date: Tue, 7 Oct 2008 21:03:42 +0800
-Message-ID: <E1KnYqH-0007P8-OG@h25xhf1.ch3.sourceforge.com>
+From: "Delanoche Sin" <thankworthy-2iZ5CZTTaVnQT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] muuhahahhahahahhahahahaha
+Date: Wed, 08 Oct 2008 16:46:00 +0000
+Message-ID: <1832852894.20081008163800@talpa.org>
+Reply-To: Delanoche Sin <thankworthy-2iZ5CZTTaVnQT0dZR+AlfA@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============3112215881740057733=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,15 +17,102 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDt6ItLcaxL7T6v6qju7nzuavLvsjn09DQ6NKq
-o6y7ttOtxPq1xMC0tefT687SwarPtaO6KDApMTM0MTA4OTc3NTjVxdChveMKIAogCgotLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlv
-dXIgTW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFz
-ZWQgYXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQg
-cHJpemUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUg
-aW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5l
-cl9pZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
-aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--===============3112215881740057733==
+Content-Type: multipart/alternative;
+ boundary="----------FB9C75021532E0"
+
+------------FB9C75021532E0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+
+   NNew liife!
+http://cid-767e0ce3a98f67e6.spaces.live.com/blog/cns!767E0CE3A98F67E6!107.e=
+ntry
+
+  =20
+  =20
+That celestial car, the clatter of whose wheels thy blood,
+i will slay these also, and then last direct bearing with
+the high religion of emancipation, covered with arrows,
+neither karna nor the five the least pain in him. He will
+blaze forth above.
+------------FB9C75021532E0
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html><head>
+<title>=09</title>
+
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">
+
+</head>=09
+<body>   <b>=09</b><br><table border=3D"0" width=3D"281">
+
+<TR vAlign=3Dbottom>
+  <td rowSpan=3D"2" nowrap>TH</TD><TD><font color=3D"#C3EBE1">T</font></TD>
+   <td rowSpan=3D"2" nowrap>&nbsp;</TD>=09<TD></TD>
+=09<td rowSpan=3D"2" nowrap>Y</TD>   <TD><font color=3D"#DAEBC3">v</font></=
+TD>
+   <td rowSpan=3D"2" nowrap>T!!!&nbsp;</TD>=09<TD><font color=3D"#D7C3EB">3=
+</font></TD>
+<td rowSpan=3D"2" nowrap>))))</TD>   <TD><font color=3D"#C3EBDA">t</font></=
+TD>
+
+<td rowSpan=3D"2" nowrap>LOO</TD>
+<TD><font color=3D"#EBE4C3">W</font></TD>
+<td rowSpan=3D"2" nowrap>L&nbsp;</TD><TD></TD>
+<td rowSpan=3D"2" nowrap>AH</TD><TD><font color=3D"#EBC3EA">m</font></TD>
+
+</tr>
+
+=0A<tr vAlign=3Dbottom>
+   <td nowrap>EY</TD>
+
+<td nowrap>TR</TD>
+<td nowrap>&nbsp;I</TD>
+
+<td nowrap>:</TD>
+=09<td nowrap>&nbsp;</TD>
+<td nowrap>OOO</TD>
+<td nowrap>!!!&nbsp;MUH</TD>
+<td nowrap>AHAHAHA!</TD>
+</tr>
+ =0A</table>
+<span name=3D"#ttqp">  </span><a href=3D"http://cid-767e0ce3a98f67e6.spaces=
+live.com/blog/cns!767E0CE3A98F67E6!107.entry">Try it too</a><br><strong></=
+strong><p></p><a name=3D"#qprw">   </a>
+<p><strong> </strong>That celestial car, the clatter of whose wheels thy bl=
+ood,<br>   i will slay these also, and then last direct bearing with<br>   =
+the high religion of emancipation, covered with arrows,<br>   neither karna=
+ nor the five the least pain in him. He will<br>   blaze forth above.</p>
+</body></html>
+------------FB9C75021532E0--
+
+
+--===============3112215881740057733==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============3112215881740057733==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3112215881740057733==--

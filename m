@@ -1,17 +1,12 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [PATCH RESEND] MAX3100 SPI UART driver
-Date: Wed, 8 Oct 2008 14:26:37 -0700
-Message-ID: <20081008142637.10bc821d.akpm@linux-foundation.org>
-References: <12229367533638-git-send-email-chripell@gmail.com>
+From: =?GB2312?B?xOO6ww==?= <dewwegg-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 票据代理
+Date: Thu, 9 Oct 2008 07:41:29 +0800
+Message-ID: <E1Knifu-00086u-OI@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: chripell-VaTbYqLCNhc@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Christian Pellegrin <chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <12229367533638-git-send-email-chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,30 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu,  2 Oct 2008 10:39:13 +0200
-Christian Pellegrin <chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-
-> This patch adds support for the MAX3100 SPI UART. I am still
-> waiting for a minor number from device-7qcCgDSrTd8dnm+yROfE0A@public.gmane.org so that
-> may change.
-> 
-
-Both Alan and I had numerous review comments on the previous version of
-this patch.
-
-You have not sent us a point-by-point response to those review comments
-which forces us to a) go back and see what all the comments were then
-b) check the patch to see if/how each point was addressed.  Needless to
-say, that's not a ton of fun for us.
-
-Can you please reply to our earlier emails and let us know what changes
-were made against each review comment?
-
-Thanks.
-
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+INfwvrS1xLi61PAg1/C+tLXEuLrU8MjLo6i+rcDto6+yxs7xo6nE+rrDo6EKCiAgICAgsb65q8u+
+ysfQxdP+yrXStdPQz965q8u+LMrHvq3V/riu16Ky4bXE1f255rmry76ho8irufq497Tz1tCzx8rQ
+vvnT0LfWuavLvqGjCgrU2sirx/K7r7XEt6LVubn6xNrK0LOhvq28w7661fnI1cf3vKTB0qOhyrnJ
+zLzSXLmry77A+8jzzqKxoaOhufO5q8u+1/fVyrywz/rK27e9w+YKCsrH0OjSqtPDtb3Su9CpxrG+
+3cjno7qjqLXnxNSw5tT21rXLsKGitefE1LDmuqO52L3Jv+7K6beixrGhosbVzajJzMa3t6LGsaGi
+tdjLsKGivajW/rCy17ChogoKxuTL/Lf+zvGhornjuOahorXnxNSw5tTLyuS3osaxo6m1yKGtoa2h
+o8uwwsq/ybj5vt3L+b+qvfC27rXEtPPQocC00K3JzKOhsqK9qNLps6TG2rXEus/X96GjCgogICAg
+INTaztK5q8u+s8nBorbgxOrSu9axvOGz1tLU0MXTwzvL+b+qvvi21MrH1ebGsaGj1Nq6z9f30tS0
++r+qtcS3vcq9zOG5qbW9zru1xLf+zvGjrAoKyOe587mry77T0NCp0snCx7vytaPQxKOsv8nJz834
+sunWpLvyxMPIpcuwzvG11r/busu21Mi3yM+689TZuLa/7qOs1NrO0rmry764utTwtcTMrLbICgrX
+9rW9v827p7fF0MTC+tLio6HI57TyyMXE+rGmufPKsbzko6y+tMfrvPvBwqOhCgogICAgICAgICDX
+owoKICAgICAgycwgICAg7PcgICAgICAgICAgICAgICAgILu2063AtLXn18nRr6Gix6LMuKOhCgog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgwaogz7UgyMsgo7rDtyDQoSC94woKICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIMrWICAgu/ogIKO6IDEgMyA1IDMgNCAyIDIgNCAwIDAg
+MgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBRICAgICBRICA7ICA4IDUgMiA2IDYgMiA3IDcgNQogCiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICDTyiAgICDP5CCjuyB6c3N6MTE1NUAxNjMuY29tCgotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92
+ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBw
+bGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUg
+aXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhl
+IHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0x
+MDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
+dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
+by9zcGktZGV2ZWwtZ2VuZXJhbAo=

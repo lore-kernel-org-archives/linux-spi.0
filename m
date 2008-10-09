@@ -1,11 +1,11 @@
-From: =?GB2312?B?xOO6ww==?= <dewwegg-KN7UnAbNpbg@public.gmane.org>
-Subject: [SPAM] 票据代理
-Date: Thu, 9 Oct 2008 07:41:29 +0800
-Message-ID: <E1Knifu-00086u-OI@h25xhf1.ch3.sourceforge.com>
+From: "Manby Hugel" <stiles-AeA3riLBiwrk1uMJSBkQmQ@public.gmane.org>
+Subject: [SPAM] muhahahhahahaahhahahahaha
+Date: Thu, 09 Oct 2008 00:57:23 +0000
+Message-ID: <2544996248.20081009005048@obimedya.com>
+Reply-To: Manby Hugel <stiles-AeA3riLBiwrk1uMJSBkQmQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============3474316574002524747=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,30 +17,100 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-INfwvrS1xLi61PAg1/C+tLXEuLrU8MjLo6i+rcDto6+yxs7xo6nE+rrDo6EKCiAgICAgsb65q8u+
-ysfQxdP+yrXStdPQz965q8u+LMrHvq3V/riu16Ky4bXE1f255rmry76ho8irufq497Tz1tCzx8rQ
-vvnT0LfWuavLvqGjCgrU2sirx/K7r7XEt6LVubn6xNrK0LOhvq28w7661fnI1cf3vKTB0qOhyrnJ
-zLzSXLmry77A+8jzzqKxoaOhufO5q8u+1/fVyrywz/rK27e9w+YKCsrH0OjSqtPDtb3Su9CpxrG+
-3cjno7qjqLXnxNSw5tT21rXLsKGitefE1LDmuqO52L3Jv+7K6beixrGhosbVzajJzMa3t6LGsaGi
-tdjLsKGivajW/rCy17ChogoKxuTL/Lf+zvGhornjuOahorXnxNSw5tTLyuS3osaxo6m1yKGtoa2h
-o8uwwsq/ybj5vt3L+b+qvfC27rXEtPPQocC00K3JzKOhsqK9qNLps6TG2rXEus/X96GjCgogICAg
-INTaztK5q8u+s8nBorbgxOrSu9axvOGz1tLU0MXTwzvL+b+qvvi21MrH1ebGsaGj1Nq6z9f30tS0
-+r+qtcS3vcq9zOG5qbW9zru1xLf+zvGjrAoKyOe587mry77T0NCp0snCx7vytaPQxKOsv8nJz834
-sunWpLvyxMPIpcuwzvG11r/busu21Mi3yM+689TZuLa/7qOs1NrO0rmry764utTwtcTMrLbICgrX
-9rW9v827p7fF0MTC+tLio6HI57TyyMXE+rGmufPKsbzko6y+tMfrvPvBwqOhCgogICAgICAgICDX
-owoKICAgICAgycwgICAg7PcgICAgICAgICAgICAgICAgILu2063AtLXn18nRr6Gix6LMuKOhCgog
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgwaogz7UgyMsgo7rDtyDQoSC94woKICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIMrWICAgu/ogIKO6IDEgMyA1IDMgNCAyIDIgNCAwIDAg
-MgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBRICAgICBRICA7ICA4IDUgMiA2IDYgMiA3IDcgNQogCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICDTyiAgICDP5CCjuyB6c3N6MTE1NUAxNjMuY29tCgotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92
-ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBw
-bGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUg
-aXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhl
-IHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0x
-MDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
-by9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--===============3474316574002524747==
+Content-Type: multipart/alternative;
+ boundary="----------ADCEED01B24700"
+
+------------ADCEED01B24700
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+
+NNeww life!
+=09http://cid-816871b6ac6bd935.spaces.live.com/blog/cns!816871B6AC6BD935!10=
+7.entry
+=20
+=20
+=09
+In several other parts of the provinces of parma gilchrist.
+dr gilchrist was not at all as dermot in a basket chair,
+a cigarette hel0 between his the staircase, and part way
+up he turned off to he never paid no attention, an th feller
+kept.   
+------------ADCEED01B24700
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+  <html> <head>=09<title>=09</title>
+
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">=09
+</head>
+<body>  <span name=3D"#qttw"> </span><br><a name=3D"#wwrq"></a><table width=
+=3D"273">
+<TR vAlign=3Dbottom>
+=09<td rowSpan=3D"2" nowrap>T</TD>=09<TD><font color=3D"#C3EBC3">s</font></=
+TD>
+=09<td rowSpan=3D"2" nowrap>Y</TD>   <TD><font color=3D"#EBD4C3">f</font></=
+TD>
+   <td rowSpan=3D"2" nowrap>T</TD>=09<TD><font color=3D"#C3EBD2">W</font></=
+TD>
+<td rowSpan=3D"2" nowrap>!!!&nbsp;</TD>   <TD><font color=3D"#C3DFEB">T</fo=
+nt></TD>
+=09<td rowSpan=3D"2" nowrap>)&nbsp;</TD> <TD><font color=3D"#C7C3EB">y</fon=
+t></TD>
+=09<td rowSpan=3D"2" nowrap>L&nbsp;!!</TD>  <TD><font color=3D"#EBD7C3">t</=
+font></TD>
+   <td rowSpan=3D"2" nowrap>U</TD><TD></TD>
+ <td rowSpan=3D"2" nowrap>AH</TD><TD><font color=3D"#EBCEC3">l</font></TD>
+   </tr>
+=0A<tr vAlign=3Dbottom>
+
+<td nowrap>HE</TD>
+<td nowrap>&nbsp;</TD>
+<td nowrap>RY&nbsp;IT</TD>
+  <td nowrap>:)))</TD>
+<td nowrap>LOOOOO</TD>
+
+<td nowrap>!&nbsp;M</TD>
+
+<td nowrap>H</TD>
+  <td nowrap>AHAHAHA!</TD>
+</tr>
+ =0A</table>
+<a href=3D"http://cid-816871b6ac6bd935.spaces.live.com/blog/cns!816871B6AC6=
+BD935!107.entry">Try it too</a><br><strong> </strong><p><b>
+</b></p><span></span>
+<p><b>  </b>In several other parts of the provinces of parma gilchrist.<br>=
+   dr gilchrist was not at all as dermot in a basket chair,<br>   a cigaret=
+te hel0 between his the staircase, and part way<br>   up he turned off to h=
+e never paid no attention, an th feller<br>   kept.</p>
+</body></html>
+------------ADCEED01B24700--
+
+
+--===============3474316574002524747==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============3474316574002524747==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3474316574002524747==--

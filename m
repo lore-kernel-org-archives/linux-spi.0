@@ -1,9 +1,10 @@
-From: Herbal Worldwide <noreply-A+lxSsK1OnwvFyBF3ytruH5yN64r8l2t@public.gmane.org>
-Subject: [SPAM] Check out the latest party images
-Date: Thu, 9 Oct 2008 10:47:17 +0300
-Message-ID: <7cb86dfc1676f5bb323d7109e08d57ce@newsletter.EWEEK.COM>
+From: =?GB2312?B?xOO6ww==?= <fddddddddd00-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] <<代/开/发/票>>!
+Date: Thu, 9 Oct 2008 13:03:19 +0800
+Message-ID: <E1Knnc4-0003UV-Uw@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3901453324896480101=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,78 +17,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3901453324896480101==
-Content-Transfer-Encoding: 8bit
-Content-Type: text/html; charset="iso-8859-1"
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Herbal Worldwide</title>
-<style type="text/css">
-<!--
-style1 {
-	font-size: 18pt;
-	font-weight: bold;
-	color: #333399;
-}
-style2 {
-	color: #666666;
-	font-weight: bold;
-}
-style4 {
-	font-family: "Courier New", Courier, monospace
-}
--->
-</style>
-</head>
-
-<body>
-<table width="200" border="0" align="center">
-  <tr>
-    <td nowrap="nowrap">
-    <a href="http://www.joltmica.com/" target="_top">
-    <img src="http://www.joltmica.com/counter3.jpg" alt="Open" border=0></a></td>
-  </tr>
-  <tr>
-    <td nowrap="nowrap"><div align="center">
-      <p class="style4"><a href="http://www.joltmica.com/unsubscribe.php?mail=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&key=8fbe1abe36cd">Unsubscribe</a> |
-      <a href="http://www.joltmica.com/manage.php?mail=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&key=8edd589fc11d">Manage</a> | <a href="http://www.joltmica.com/legal/legal-notice.php">Legal notice</a></p>
-      </div></td>
-  </tr>
-  <tr>
-    <td nowrap="nowrap"><p>&nbsp;</p>
-    <p align="center"><span class="style4"><span class="style1">Herbal Worldwide Company</span><br />
-        <span class="style2">(c) 2006-2008<br />
-        </span>333 Tuckahoe Rd,
-    Yonkers, NY 10710</span></p></td>
-  </tr>
-</table>
-</body>
-</html>
-
-
---===============3901453324896480101==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============3901453324896480101==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3901453324896480101==--
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgo6jV4srH0ru34snG0uK1xNPKvP6jrMjn09C0
+8sjFx+vBwr3io6mhowogICAgztK5q8u+o6iw2cqitO/Ds9LX09DP3rmry76jqcrHwarDy7T6wO25
+q8u+o6zU2sirufq497Tzs8fK0Mno09C31gq5q8u+oaPS8tK1zvG52M+1o6y9+M/utuDP+s/uydnP
+1tPQtuDT4NK7sr+31jw8xtUtzagty7AtxrE+Pr/J0tTTxbvdttTN4gq0+r+qyOfPwqO6uaTJzMbz
+0rWhorv1zu/P+srboaK547jmoaK3/s7x0rWhor2o1v6wstewoaLE2rrTo6i5+rzKo6nUy8rkoaIK
+t8++yc7v18q1yDw8t6ItxrE+PqGjCsrVt9Gx6te8o7o8PMbVLc2oLcuwLcaxPj4yJS0wLjglo6y/
+ydLUz8jR6dakuvO4tr/uo6EKICC0y9DFz6LU2sirufq3ts6nxNqzpMba09DQp6OsICDI59DrvfjS
+u7K9x6LJzDogIAogICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAg
+ICAgICAgICAgICAgwaogz7UgyMsgo7qzwr+hvdyhoaGhoaGhoaGhoaGhoaGhoaEKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICChoaGhoaGhoaGhoaGhoaGhoaGhoQogICAgICAgICAgICAgICAg
+ytYgILv6IKO6MTM1LTgwOTctNDIxNQogICAgICAgICAgICAKICAgICAgICAgICAgICAgINK1zvFR
+IFGjujk3ODQ5MTY4MSAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgIKGhoaGhoaGhoaGhoaGhoaEKICAgICAg
+ICAgICAgICAgIAoKCsuz16MKICAgICDJzOz3o6EgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICCw2SDKoiC07yDDsyDS1yDT0CDP3iC5
+qyDLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkg
+dGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxlbmdlCkJ1aWxkIHRoZSBjb29s
+ZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxpbiBTREsgJiB3aW4gZ3JlYXQg
+cHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRvIGFuIE9wZW4gU291cmNlIGV2
+ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGluLWNvbnRlc3Qub3JnL3JlZGly
+ZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
+ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

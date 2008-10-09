@@ -1,11 +1,10 @@
-From: "Manby Hugel" <stiles-AeA3riLBiwrk1uMJSBkQmQ@public.gmane.org>
-Subject: [SPAM] muhahahhahahaahhahahahaha
-Date: Thu, 09 Oct 2008 00:57:23 +0000
-Message-ID: <2544996248.20081009005048@obimedya.com>
-Reply-To: Manby Hugel <stiles-AeA3riLBiwrk1uMJSBkQmQ@public.gmane.org>
+From: Herbal Worldwide <noreply-A+lxSsK1OnwvFyBF3ytruH5yN64r8l2t@public.gmane.org>
+Subject: [SPAM] Check out the latest party images
+Date: Thu, 9 Oct 2008 10:47:17 +0300
+Message-ID: <7cb86dfc1676f5bb323d7109e08d57ce@newsletter.EWEEK.COM>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3474316574002524747=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============3901453324896480101=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,81 +16,59 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3474316574002524747==
-Content-Type: multipart/alternative;
- boundary="----------ADCEED01B24700"
+--===============3901453324896480101==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/html; charset="iso-8859-1"
 
-------------ADCEED01B24700
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-
-NNeww life!
-=09http://cid-816871b6ac6bd935.spaces.live.com/blog/cns!816871B6AC6BD935!10=
-7.entry
-=20
-=20
-=09
-In several other parts of the provinces of parma gilchrist.
-dr gilchrist was not at all as dermot in a basket chair,
-a cigarette hel0 between his the staircase, and part way
-up he turned off to he never paid no attention, an th feller
-kept.   
-------------ADCEED01B24700
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-  <html> <head>=09<title>=09</title>
-
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">=09
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Herbal Worldwide</title>
+<style type="text/css">
+<!--
+style1 {
+	font-size: 18pt;
+	font-weight: bold;
+	color: #333399;
+}
+style2 {
+	color: #666666;
+	font-weight: bold;
+}
+style4 {
+	font-family: "Courier New", Courier, monospace
+}
+-->
+</style>
 </head>
-<body>  <span name=3D"#qttw"> </span><br><a name=3D"#wwrq"></a><table width=
-=3D"273">
-<TR vAlign=3Dbottom>
-=09<td rowSpan=3D"2" nowrap>T</TD>=09<TD><font color=3D"#C3EBC3">s</font></=
-TD>
-=09<td rowSpan=3D"2" nowrap>Y</TD>   <TD><font color=3D"#EBD4C3">f</font></=
-TD>
-   <td rowSpan=3D"2" nowrap>T</TD>=09<TD><font color=3D"#C3EBD2">W</font></=
-TD>
-<td rowSpan=3D"2" nowrap>!!!&nbsp;</TD>   <TD><font color=3D"#C3DFEB">T</fo=
-nt></TD>
-=09<td rowSpan=3D"2" nowrap>)&nbsp;</TD> <TD><font color=3D"#C7C3EB">y</fon=
-t></TD>
-=09<td rowSpan=3D"2" nowrap>L&nbsp;!!</TD>  <TD><font color=3D"#EBD7C3">t</=
-font></TD>
-   <td rowSpan=3D"2" nowrap>U</TD><TD></TD>
- <td rowSpan=3D"2" nowrap>AH</TD><TD><font color=3D"#EBCEC3">l</font></TD>
-   </tr>
-=0A<tr vAlign=3Dbottom>
 
-<td nowrap>HE</TD>
-<td nowrap>&nbsp;</TD>
-<td nowrap>RY&nbsp;IT</TD>
-  <td nowrap>:)))</TD>
-<td nowrap>LOOOOO</TD>
-
-<td nowrap>!&nbsp;M</TD>
-
-<td nowrap>H</TD>
-  <td nowrap>AHAHAHA!</TD>
-</tr>
- =0A</table>
-<a href=3D"http://cid-816871b6ac6bd935.spaces.live.com/blog/cns!816871B6AC6=
-BD935!107.entry">Try it too</a><br><strong> </strong><p><b>
-</b></p><span></span>
-<p><b>  </b>In several other parts of the provinces of parma gilchrist.<br>=
-   dr gilchrist was not at all as dermot in a basket chair,<br>   a cigaret=
-te hel0 between his the staircase, and part way<br>   up he turned off to h=
-e never paid no attention, an th feller<br>   kept.</p>
-</body></html>
-------------ADCEED01B24700--
+<body>
+<table width="200" border="0" align="center">
+  <tr>
+    <td nowrap="nowrap">
+    <a href="http://www.joltmica.com/" target="_top">
+    <img src="http://www.joltmica.com/counter3.jpg" alt="Open" border=0></a></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap"><div align="center">
+      <p class="style4"><a href="http://www.joltmica.com/unsubscribe.php?mail=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&key=8fbe1abe36cd">Unsubscribe</a> |
+      <a href="http://www.joltmica.com/manage.php?mail=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&key=8edd589fc11d">Manage</a> | <a href="http://www.joltmica.com/legal/legal-notice.php">Legal notice</a></p>
+      </div></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap"><p>&nbsp;</p>
+    <p align="center"><span class="style4"><span class="style1">Herbal Worldwide Company</span><br />
+        <span class="style2">(c) 2006-2008<br />
+        </span>333 Tuckahoe Rd,
+    Yonkers, NY 10710</span></p></td>
+  </tr>
+</table>
+</body>
+</html>
 
 
---===============3474316574002524747==
+--===============3901453324896480101==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -102,7 +79,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============3474316574002524747==
+--===============3901453324896480101==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,4 +90,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============3474316574002524747==--
+--===============3901453324896480101==--

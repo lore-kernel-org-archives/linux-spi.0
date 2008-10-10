@@ -1,9 +1,8 @@
 From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Subject: [patch 3/9] arch/arm/mach-s3c2410/pm.c: fix
-	sparse warnings
-Date: Fri, 10 Oct 2008 11:03:47 +0100
-Message-ID: <20081010100405.220798105@fluff.org.uk>
-References: <20081010100344.572052114@fluff.org.uk>
+Subject: [patch 1/4] SPI: Add pin configuration callback
+Date: Fri, 10 Oct 2008 11:04:29 +0100
+Message-ID: <20081010100454.558505539@fluff.org.uk>
+References: <20081010100428.047162446@fluff.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,7 +10,7 @@ Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, Ben Dooks <ben-linux-elnMNo
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline;
-	filename=simtec/simtec-sparse-s3c24xx-s3c2410-pm.patch
+	filename=simtec/simtec-drivers-spi-s3c24xx-gpiosetup.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,86 +21,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Do not use __raw_readl on straight pointers. Change the
-code to using 'u32 *' as we are only accessing kernel
-RAM using phys_to_virt() to find where it is.
+Add a gpio configuration callback for the s3c24xx SPI driver, as
+there are several options depending on the channel and the chip
+in use.
+
+This is needed as the controller may not have been setup by the
+initial bootloader and the fact that the SPI controller gets
+reset over suspend/resume into slave mode but the GPIO function
+registers do not.
 
 Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-Index: linux-2.6.27-rc6-quilt3/arch/arm/mach-s3c2410/pm.c
+Index: linux-2.6.27-rc1-quilt1/drivers/spi/spi_s3c24xx.c
 ===================================================================
---- linux-2.6.27-rc6-quilt3.orig/arch/arm/mach-s3c2410/pm.c	2008-09-16 10:29:59.000000000 +0100
-+++ linux-2.6.27-rc6-quilt3/arch/arm/mach-s3c2410/pm.c	2008-09-16 10:40:20.000000000 +0100
-@@ -44,6 +44,11 @@ extern void pm_dbg(const char *fmt, ...)
- #define DBG(fmt...) printk(KERN_DEBUG fmt)
- #endif
- 
-+static inline void write_u32(u32 value, void *to)
-+{
-+	*(u32 *)to = value;
-+}
+--- linux-2.6.27-rc1-quilt1.orig/drivers/spi/spi_s3c24xx.c	2008-08-04 11:46:12.000000000 +0100
++++ linux-2.6.27-rc1-quilt1/drivers/spi/spi_s3c24xx.c	2008-08-04 11:46:54.000000000 +0100
+@@ -247,6 +247,9 @@ static void s3c24xx_spi_initialsetup(str
+ 	writeb(0xff, hw->regs + S3C2410_SPPRE);
+ 	writeb(SPPIN_DEFAULT, hw->regs + S3C2410_SPPIN);
+ 	writeb(SPCON_DEFAULT, hw->regs + S3C2410_SPCON);
 +
- static void s3c2410_pm_prepare(void)
- {
- 	/* ensure at least GSTATUS3 has the resume address */
-@@ -54,35 +59,35 @@ static void s3c2410_pm_prepare(void)
- 	DBG("GSTATUS4 0x%08x\n", __raw_readl(S3C2410_GSTATUS4));
- 
- 	if (machine_is_h1940()) {
--		void *base = phys_to_virt(H1940_SUSPEND_CHECK);
--		unsigned long ptr;
--		unsigned long calc = 0;
-+		u32 *base = phys_to_virt(H1940_SUSPEND_CHECK);
-+		unsigned  ptr;
-+		u32 calc = 0;
- 
- 		/* generate check for the bootloader to check on resume */
- 
--		for (ptr = 0; ptr < 0x40000; ptr += 0x400)
--			calc += __raw_readl(base+ptr);
-+		for (ptr = 0; ptr < 0x40000/4; ptr += 0x400/4)
-+			calc += base[ptr];
- 
--		__raw_writel(calc, phys_to_virt(H1940_SUSPEND_CHECKSUM));
-+		write_u32(calc, phys_to_virt(H1940_SUSPEND_CHECKSUM));
- 	}
- 
- 	/* the RX3715 uses similar code and the same H1940 and the
- 	 * same offsets for resume and checksum pointers */
- 
- 	if (machine_is_rx3715()) {
--		void *base = phys_to_virt(H1940_SUSPEND_CHECK);
--		unsigned long ptr;
--		unsigned long calc = 0;
-+		u32 *base = phys_to_virt(H1940_SUSPEND_CHECK);
-+		unsigned ptr;
-+		u32 calc = 0;
- 
- 		/* generate check for the bootloader to check on resume */
- 
--		for (ptr = 0; ptr < 0x40000; ptr += 0x4)
--			calc += __raw_readl(base+ptr);
-+		for (ptr = 0; ptr < 0x40000/4; ptr += 0x4/4)
-+			calc += base[ptr];
- 
--		__raw_writel(calc, phys_to_virt(H1940_SUSPEND_CHECKSUM));
-+		write_u32(calc, phys_to_virt(H1940_SUSPEND_CHECKSUM));
- 	}
- 
--	if ( machine_is_aml_m5900() )
-+	if (machine_is_aml_m5900())
- 		s3c2410_gpio_setpin(S3C2410_GPF2, 1);
- 
++	if (hw->pdata && hw->pdata->gpio_setup)
++		hw->pdata->gpio_setup(hw->pdata, 1);
  }
-@@ -97,7 +102,7 @@ static int s3c2410_pm_resume(struct sys_
- 	tmp &= S3C2410_GSTATUS2_OFFRESET;
- 	__raw_writel(tmp, S3C2410_GSTATUS2);
  
--	if ( machine_is_aml_m5900() )
-+	if (machine_is_aml_m5900())
- 		s3c2410_gpio_setpin(S3C2410_GPF2, 0);
+ static int __init s3c24xx_spi_probe(struct platform_device *pdev)
+@@ -412,6 +415,9 @@ static int s3c24xx_spi_suspend(struct pl
+ {
+ 	struct s3c24xx_spi *hw = platform_get_drvdata(pdev);
  
++	if (hw->pdata && hw->pdata->gpio_setup)
++		hw->pdata->gpio_setup(hw->pdata, 0);
++
+ 	clk_disable(hw->clk);
  	return 0;
+ }
+Index: linux-2.6.27-rc1-quilt1/arch/arm/mach-s3c2410/include/mach/spi.h
+===================================================================
+--- linux-2.6.27-rc1-quilt1.orig/arch/arm/mach-s3c2410/include/mach/spi.h	2008-08-04 11:45:55.000000000 +0100
++++ linux-2.6.27-rc1-quilt1/arch/arm/mach-s3c2410/include/mach/spi.h	2008-08-04 11:46:13.000000000 +0100
+@@ -18,6 +18,7 @@ struct s3c2410_spi_info {
+ 	unsigned int		 num_cs;	/* total chipselects */
+ 	int			 bus_num;       /* bus number to use. */
+ 
++	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
+ 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+ };
+ 
 
 -- 
 Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)

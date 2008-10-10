@@ -1,16 +1,17 @@
 From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Subject: [patch 4/9] S3C24XX: AT2440EVB MMC
-Date: Fri, 10 Oct 2008 11:03:48 +0100
-Message-ID: <20081010100405.561617408@fluff.org.uk>
-References: <20081010100344.572052114@fluff.org.uk>
+Subject: [patch 2/4] spi_s3c24xx_gpio: fix spi-device to
+	our private data lookup
+Date: Fri, 10 Oct 2008 11:04:30 +0100
+Message-ID: <20081010100454.848326819@fluff.org.uk>
+References: <20081010100428.047162446@fluff.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
-	Ramax Lo <ramaxlo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline; filename=thirdparty/at2440evb-mmc.patch
+Content-Disposition: inline;
+	filename=simtec/simtec-s3c24xx-spi-gpio-fix-master-usage.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,52 +22,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add SD/MMC support for AT2440EVB board.
+The spidev_to_sg() call in spi_s3c24xx_gpio.c was using the
+wrong method to convert the spi device into the private data
+for the driver. Fix this by using spi_master_get_devdata.
 
-Signed-off-by: Ramax Lo <ramaxlo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-diff --git a/arch/arm/mach-s3c2440/mach-at2440evb.c b/arch/arm/mach-s3c2440/mach-at2440evb.c
-index f5e3c7f..ce18bc3 100644
---- a/arch/arm/mach-s3c2440/mach-at2440evb.c
-+++ b/arch/arm/mach-s3c2440/mach-at2440evb.c
-@@ -45,6 +45,7 @@
- #include <plat/clock.h>
- #include <plat/devs.h>
- #include <plat/cpu.h>
-+#include <asm/plat-s3c24xx/mci.h>
+Index: linux-2.6.27-rc7-quilt1/drivers/spi/spi_s3c24xx_gpio.c
+===================================================================
+--- linux-2.6.27-rc7-quilt1.orig/drivers/spi/spi_s3c24xx_gpio.c	2008-09-23 12:34:31.000000000 +0100
++++ linux-2.6.27-rc7-quilt1/drivers/spi/spi_s3c24xx_gpio.c	2008-09-23 12:34:43.000000000 +0100
+@@ -34,7 +34,7 @@ struct s3c2410_spigpio {
  
- static struct map_desc at2440evb_iodesc[] __initdata = {
- 	/* Nothing here */
-@@ -162,6 +163,10 @@ static struct platform_device at2440evb_device_eth = {
- 	},
- };
- 
-+static struct s3c24xx_mci_pdata at2440evb_mci_pdata = {
-+	.gpio_detect	= S3C2410_GPG10,
-+};
-+
- static struct platform_device *at2440evb_devices[] __initdata = {
- 	&s3c_device_usb,
- 	&s3c_device_wdt,
-@@ -169,12 +174,15 @@ static struct platform_device *at2440evb_devices[] __initdata = {
- 	&s3c_device_i2c,
- 	&s3c_device_rtc,
- 	&s3c_device_nand,
-+	&s3c_device_sdi,
- 	&at2440evb_device_eth,
- };
- 
- static void __init at2440evb_map_io(void)
+ static inline struct s3c2410_spigpio *spidev_to_sg(struct spi_device *spi)
  {
- 	s3c_device_nand.dev.platform_data = &at2440evb_nand_info;
-+	s3c_device_sdi.name = "s3c2440-sdi";
-+	s3c_device_sdi.dev.platform_data = &at2440evb_mci_pdata;
+-	return spi->controller_data;
++	return spi_master_get_devdata(spi->master);
+ }
  
- 	s3c24xx_init_io(at2440evb_iodesc, ARRAY_SIZE(at2440evb_iodesc));
- 	s3c24xx_init_clocks(16934400);
--- 
-1.5.4.3
+ static inline void setsck(struct spi_device *dev, int on)
 
 -- 
 Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)

@@ -1,9 +1,10 @@
-From: "HIPNOSIS CHILE" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] 2�  DIPLOMADO DE HIPNOSIS CONDUCTUAL
-Date: Fri, 10 Oct 2008 03:34:24 -0400
-Message-ID: <28051296383-220081051073424359@COORDMEDIA>
+From: cgfjhgkkhggh-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 诚信贸易!
+Date: Sun, 12 Oct 2008 02:02:29 +0800
+Message-ID: <E1Koinb-0004m5-Vo@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4488861749244522849=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,137 +17,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4488861749244522849==
-Content-type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-                  *********INVITACION************
-
-****LA HIPNOSIS PUEDE AYUDAR A SU RENDIMIENTO LABORAL, MEJORAR LA
-CREATIVIDAD, BAJAR SU ESTADO DE ESTRES Y DAR PAUTAS A SU EQUIPO DE
-TRABAJO****
-
-Realice un curso de 3 meses y acreditese intenacionalmente como
-Terapeuta en Hipnosis con doble diploma: En Chile otorgado por
-Hipnosis Chile y en  EE=2EUU=2E otorgado por Panamerican Center of Ethical=
-
-Hypnosis=2E
-
-Hipnosis Chile tienen el agrado de invitar a Ud=2E a realizar el segundo
-Diplomado Internacional sobre Hipnosis Conductual, habilit=E1ndolo como
-Hipn=F3logo Acreditado Internacionalmente=2E
-
-OBJETIVO DEL DIPLOMADO:
-**********************************
-El diplomado de Hipnosis Conductual tiene como finalidad formar
-s=F3lidamente en Hipnosis y la Conducta Humana=2E Se certifica una
-educaci=F3n profesional basada en modernas t=E9cnicas de disciplina
-conductual, emocional y laboral a nivel de terapia cognitiva=2E
-
-QUIENES PUEDEN HACER EL DIPLOMADO:
-***************************************************
-El diplomado lo puede realizar cualquier profesional titulado en
-Instituto o Universidad chilena o extranjera, como tambi=E9n quienes se
-dediquen a cualquier tipo de terapia complementaria=2E Si Ud=2E no re=FAne=
-
-estos requisitos debe solicitar una entrevista personal a
-cursosdehipnosis@gmail=2Ecom
-
-SI UD=2E ES DE REGI=D3N O NO PUEDE SEGUIRLO PRESENCIALMENTE:
-**************************************************************************=
-******
-Si Ud=2E no puede realizar el curso presencialmente puede seguirlo a
-distancia=2E El valor es el mismo y las sesiones se env=EDan por e-mail,
-pudiendo hacer todas las consultas que desee por esa misma v=EDa, por
-Chat (video conferencia) o por Facebook=2E Eso s=ED, el examen debe ser
-presencial en las fechas indicadas (optar por una de las dadas)
-
-LUGAR, FECHAS y HORARIO:
-************************************
-El lugar del diplomado ser=E1 en Santiago de Chile=2E La direcci=F3n se
-informar=E1 oportunamente y depender=E1 de la cantidad de alumnos
-inscritos=2E
-
-Inscripciones: Hasta el 21 de Octubre 2008
-
-Clases: Mi=E9rcoles de 19 a 21 hrs=2E
-Inicio de las clases: Mi=E9rcoles 22 de Octubre
-
-TEMARIO DEL DIPLOMADO:
-*********************************
-Rogamos verlo en http://www=2Ehipnosischile=2Ecom/DIPLOMADO=2Ehtm
-
- N=B0 DE HORAS DEL DIPLOMADO:
-***************************************
-130 hrs=2E pedag=F3gicas (26 presenciales, 52 de estudio personal y 52 de
-pr=E1ctica personal)
-
-CUPO:
-*******
-El diplomado se realiza con 10 alumnos m=EDnimo y 20 alumnos como m=E1ximo=
-=2E
-
-CERTIFICACION:
-*******************
-Diploma de HIPNOSIS CHILE (para todos los alumnos que hayan terminado
-el curso del diplomado)
-Diploma de Panamerican Center of Ethical Hypnosis  CEPAHIET,
-California (para todos los alumnos que hayan terminado el curso del
-diplomado y aprueben el examen final ante examinador internacional)
-
-ARANCELES:
-****************
-MATRICULA: El valor de la matr=EDcula es de $20=2E000=2E- que debe
-cancelarse en el momento de enviar sus antecedentes de inscripci=F3n en
-http://www=2Ehipnosischile=2Ecom/inscripciones=2Ehtm (revisar ah=ED los da=
-tos
-para el dep=F3sito o transferencia)
-DIPLOMADO: El diplomado tiene un valor de $280=2E000 que se puede
-cancelar con 4 cheques de $70=2E000=2E- (si cancela al contado tiene un
-10% de descuento)=2E Debe ser cancelado o documentado el primer d=EDa de
-clases=2E
-Este valor incluye:
-*    Material de apoyo impreso y/o digitalizado=2E
-*    Derecho a examen internacional ante examinador=2E
-*    Diploma de HIPNOSIS CHILE (para todos los alumnos que hayan
-terminado el curso del diplomado)
-*    Diploma de Panamerican Center of Ethical Hypnosis  CEPAHIET,
-Chicago (para todos los alumnos que hayan terminado el curso del
-diplomado y aprueben el examen final ante examinador internacional)
-
-
-CONSULTAS:
-*****************
-Ana Mar=EDa Villarroel Altamirano
-Hipnosis Chile - Las Rosas 1981 - Pe=F1alol=E9n
-Fono: 2781078 - diplomado@hipnosischile=2Ecom
-www=2Ehipnosischile=2Ecom
-=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=
-=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F=5F
-Remociones: remover@hipnosischile=2Ecom
-
-
-
---===============4488861749244522849==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============4488861749244522849==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4488861749244522849==--
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEKCrG+uavLvtTaKLnj1t0utqvduC7Jz7qjLtXj
+va0uurzW3S7Pw8PFLr2ty9Uu1MbEzy6589bdLsTPxP61yLXYvvnT0LfWuavLviksCiAgICAK0vK9
++M/uvc+24M/WzeqzybK7wcvDv9TCz/rK27butsijrMO/1MLT0LK/t9a24NPgtcTG1c2ot6LGsb/J
+ttTN4rT6v6qjrLT6v6q3ts6nOgoKyczGt8/6ytuhorf+zvGhornjuOahotTLyuShorLN0vuhor2o
+1v6hotDexeShotfJ0a+horv6tq+ztc/6ytuhotfiwd6hotK9wcahormkyczStc2z0ru3osaxCgq8
+sMirufq498qhytC1xMbVzai3osaxtcguLi7K1ciht9HTw9PFu93U2jAuNS0yo6XX89PSoaMKCsi3
+saPL+dPDxrG+3b75zqq497WlzrvU2suwzvG+1sv5yerB7KOsv8nJz834sunRr7vytb3LsM7xvta1
+1r/b0enWpLrzuLa/7i4KCiAgICAgICAgICDJ7tvaytCzz9DFw7PS19PQz965q8u+CgqhoaGhwaog
+z7UgyMujusH1IMD2IAoKoaGhocGqz7W157uwo7oxNTkxOTc1NTUzNQogCiAgICDStSAgzvFRUaO6
+NjE2NzUwMjIyCgogICAgtefX09PKz+Sjumdkc3oxNTkxOTc1NTUzNUAxNjMuY29tICAKCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KVGhpcyBTRi5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4g
+WW91ciBNb3ZlIERldmVsb3BlcidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBi
+YXNlZCBhcHBsaWNhdGlvbnMgd2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFu
+ZCBwcml6ZSBpcyBhIHRyaXAgZm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVy
+ZSBpbiB0aGUgd29ybGQKaHR0cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFu
+bmVyX2lkPTEwMCZ1cmw9LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

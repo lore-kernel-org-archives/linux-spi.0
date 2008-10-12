@@ -1,11 +1,18 @@
-From: =?GB2312?B?sbG+qQ==?= <e2b3e7b48cb4-WVlzvzqoTvw@public.gmane.org>
-Subject: [SPAM] 驗證後付款13538199800許
-Date: Sun, 12 Oct 2008 09:16:58 +0800
-Message-ID: <E1Kopah-0006O6-RV@335xhf1.ch3.sourceforge.com>
-Reply-To: h72a8fcb906f-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1217412174564707786=="
+From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Subject: [patch 2/4] spi_s3c24xx_gpio: fix spi-device to
+	our private data lookup
+Date: Sun, 12 Oct 2008 16:36:04 +0100
+Message-ID: <20081012153726.219828673@fluff.org.uk>
+References: <20081012153602.964236456@fluff.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline;
+	filename=simtec/simtec-s3c24xx-spi-gpio-fix-master-usage.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,42 +23,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1217412174564707786==
-Content-Type: text/plain;charset="GB2312"
+The spidev_to_sg() call in spi_s3c24xx_gpio.c was using the
+wrong method to convert the spi device into the private data
+for the driver. Fix this by using spi_master_get_devdata.
 
-我司可開具全國各地的普通發票，
+Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-收取詳細稅率以0.5-2%可根據大小商談！ 
+Index: linux-2.6.27-rc7-quilt1/drivers/spi/spi_s3c24xx_gpio.c
+===================================================================
+--- linux-2.6.27-rc7-quilt1.orig/drivers/spi/spi_s3c24xx_gpio.c	2008-09-23 12:34:31.000000000 +0100
++++ linux-2.6.27-rc7-quilt1/drivers/spi/spi_s3c24xx_gpio.c	2008-09-23 12:34:43.000000000 +0100
+@@ -34,7 +34,7 @@ struct s3c2410_spigpio {
+ 
+ static inline struct s3c2410_spigpio *spidev_to_sg(struct spi_device *spi)
+ {
+-	return spi->controller_data;
++	return spi_master_get_devdata(spi->master);
+ }
+ 
+ static inline void setsck(struct spi_device *dev, int on)
 
-若貴公司有需要，可直接來電聯繫！ ！
+-- 
+Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)
 
-聯 系 人：許 文 祥
-
-電 話：135-3819-9800
-
-QQ：546843050 
-
-
---===============1217412174564707786==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+  'a smiley only costs 4 bytes'
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============1217412174564707786==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1217412174564707786==--

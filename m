@@ -1,10 +1,9 @@
-From: cgfjhgkkhggh-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 璇氫俊璐告槗!
-Date: Sun, 12 Oct 2008 02:02:29 +0800
-Message-ID: <E1Koinb-0004m5-Vo@235xhf1.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+From: =?GB2312?B?sbG+qQ==?= <e2b3e7b48cb4-WVlzvzqoTvw@public.gmane.org>
+Subject: [SPAM] 驗證後付款13538199800許
+Date: Sun, 12 Oct 2008 09:16:58 +0800
+Message-ID: <E1Kopah-0006O6-RV@335xhf1.ch3.sourceforge.com>
+Reply-To: h72a8fcb906f-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1217412174564707786=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,23 +16,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEKCrG+uavLvtTaKLnj1t0utqvduC7Jz7qjLtXj
-va0uurzW3S7Pw8PFLr2ty9Uu1MbEzy6589bdLsTPxP61yLXYvvnT0LfWuavLviksCiAgICAK0vK9
-+M/uvc+24M/WzeqzybK7wcvDv9TCz/rK27butsijrMO/1MLT0LK/t9a24NPgtcTG1c2ot6LGsb/J
-ttTN4rT6v6qjrLT6v6q3ts6nOgoKyczGt8/6ytuhorf+zvGhornjuOahotTLyuShorLN0vuhor2o
-1v6hotDexeShotfJ0a+horv6tq+ztc/6ytuhotfiwd6hotK9wcahormkyczStc2z0ru3osaxCgq8
-sMirufq498qhytC1xMbVzai3osaxtcguLi7K1ciht9HTw9PFu93U2jAuNS0yo6XX89PSoaMKCsi3
-saPL+dPDxrG+3b75zqq497WlzrvU2suwzvG+1sv5yerB7KOsv8nJz834sunRr7vytb3LsM7xvta1
-1r/b0enWpLrzuLa/7i4KCiAgICAgICAgICDJ7tvaytCzz9DFw7PS19PQz965q8u+CgqhoaGhwaog
-z7UgyMujusH1IMD2IAoKoaGhocGqz7W157uwo7oxNTkxOTc1NTUzNQogCiAgICDStSAgzvFRUaO6
-NjE2NzUwMjIyCgogICAgtefX09PKz+Sjumdkc3oxNTkxOTc1NTUzNUAxNjMuY29tICAKCi0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KVGhpcyBTRi5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4g
-WW91ciBNb3ZlIERldmVsb3BlcidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBi
-YXNlZCBhcHBsaWNhdGlvbnMgd2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFu
-ZCBwcml6ZSBpcyBhIHRyaXAgZm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVy
-ZSBpbiB0aGUgd29ybGQKaHR0cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFu
-bmVyX2lkPTEwMCZ1cmw9LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
-L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+--===============1217412174564707786==
+Content-Type: text/plain;charset="GB2312"
+
+我司可開具全國各地的普通發票，
+
+收取詳細稅率以0.5-2%可根據大小商談！ 
+
+若貴公司有需要，可直接來電聯繫！ ！
+
+聯 系 人：許 文 祥
+
+電 話：135-3819-9800
+
+QQ：546843050 
+
+
+--===============1217412174564707786==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============1217412174564707786==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1217412174564707786==--

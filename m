@@ -1,11 +1,11 @@
-From: roel kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi documentation: __initdata on struct
-Date: Tue, 14 Oct 2008 20:00:14 -0400
-Message-ID: <48F5328E.2020608@gmail.com>
+From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
+Subject: [SPAM] 票据代理
+Date: Wed, 15 Oct 2008 07:58:20 +0800
+Message-ID: <E1Kptm8-0000bn-Gh@335xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,26 +17,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-use __initdata for data, not __init
-
-Signed-off-by: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-index 8bae2f0..0f5122e 100644
---- a/Documentation/spi/spi-summary
-+++ b/Documentation/spi/spi-summary
-@@ -215,7 +215,7 @@ So for example arch/.../mach-*/board-*.c files might have code like:
- 	/* if your mach-* infrastructure doesn't support kernels that can
- 	 * run on multiple boards, pdata wouldn't benefit from "__init".
- 	 */
--	static struct mysoc_spi_data __init pdata = { ... };
-+	static struct mysoc_spi_data __initdata pdata = { ... };
- 
- 	static __init board_init(void)
- 	{
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHu6rMqcOz0tfT0M/euavLvrXE
+o6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+o6mho87S
+y77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvBy8O/1MLP
++srbtu62yKGjCsO/1MLT0NK7sr+31tT21rXLsLXnxNS3osaxNiW6zcbVzai3osax1tbA4Mjnz8Kj
+usnMxrfP+srby7C3osaxo6y158TU1MvK5LeixrGjrAq547jmt6LGsdfiwd7StbeixrEst/7O8dK1
+t6LGsbXIICi5+suwtdjLsKOpMS0yJdPFu920+r+qu/K6z9f3o6y148r9vc+1zaGju7m/yQrS1Lj5
+vt3L+df2yv3Bv7butsi1xLTz0KHAtMnMzNbTxbvdtcS148r9o6y5q8u+s8nBorbgxOrSu9axvOGz
+1tLUobCzz9DFobHOqtbQCtDE1/fOqrmry761xLrL0MTLvM/roaLAzrnMyvfBormry77Qzs/zo6yx
+vrmry77Wo9bYs9DFtcv508O++LbUysfV5saxo6G4/M+jzfsKxNy5u9PQu/q74dPrufPLvrrP1/ej
+oQqhoaGhCiAgICDI57nzy77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQxKOsv8nJz834
+sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGjIAogICAgIAogICAgtMvQxc+i
+s6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOiAKICAgIAqhoaGhytYgILv6o7sxMzUxMDYxNjI1Ngog
+ICAgCiAgICAgICAgUVE7IDIzNjM0MTI5OQogIAqhoaGhwarPtcjLo7vDt8/IyfoKy7PXowogICAg
+ICDJzOz3o6EgCiAgICAgCqGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaEgIKGhoaGhoaGhoaGh
+oaGhu6rMqcOz0tfT0M/euavLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFpbCBp
+cyBzcG9uc29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxlbmdl
+CkJ1aWxkIHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxpbiBT
+REsgJiB3aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRvIGFu
+IE9wZW4gU291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGluLWNv
+bnRlc3Qub3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
+bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

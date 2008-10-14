@@ -1,12 +1,13 @@
-From: www.apalestra.com.br <godoymarins-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] PALESTRA PROF. MARINS EM RIBEIRÃO PRETO - IMPERDÍVEL
-Date: Mon, 13 Oct 2008 18:33:19 GMT
-Message-ID: <geyjmozxfjzy$1956508312091145$tct@wincom>
+From: =?GB2312?B?wO7PyMn6?= <zhanhuishi111-9Onoh4P/yGk@public.gmane.org >
+Subject: [SPAM] ç¨ŽåŠ¡ä»£å¼€
+Date: Tue, 14 Oct 2008 13:42:36 +0800
+Message-ID: <E1KpcgE-0002JH-LF@3yr0jf1.ch3.sourceforge.com>
+Reply-To: zhanhuishi111-9Onoh4P/yGk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0644726234986567978=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Mon, 13 Oct 2008 18:33:19 GMT
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,68 +18,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0644726234986567978==
-Content-Type: text/html; charset="iso-8859-1"
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE></TITLE>
-<META http-equiv=Content-Type content="text/html; charset=windows-1252">
-<META content="MSHTML 6.00.6000.16386" name=GENERATOR></HEAD>
-<BODY>
-<DIV align=left>
-<DIV><FONT face=Tahoma><FONT color=#000000 size=4><STRONG>PALESTRA PROF. MARINS 
-EM RIBEIRÃO PRETO - 22 OUT 2008 - 20h30</STRONG></FONT></FONT></DIV>
-<DIV><FONT face=Tahoma><FONT color=#ff0000 
-size=2><STRONG></STRONG></FONT></FONT>&nbsp;</DIV>
-<DIV><FONT face=Tahoma><FONT color=#ff0000 size=2><STRONG>FAVOR ENCAMINHAR ESTE 
-EMAIL: </STRONG></FONT><FONT color=#ff0000 size=2><STRONG>Recursos Humanos, 
-</STRONG></FONT><FONT color=#ff0000 size=2><STRONG>Departamento Comercial e 
-</STRONG></FONT><FONT color=#ff0000 
-size=2><STRONG>Diretoria;</STRONG></FONT></FONT></DIV>
-<UL>
-  <LI><FONT face=Tahoma><FONT color=#ff0000><FONT color=#000000 
-  size=2><STRONG>Segue anexo o folder de nosso evento em Ribeirão 
-  Preto</STRONG></FONT></FONT> </FONT>
-  <LI><FONT face=Tahoma><FONT size=2><STRONG>Quaisquer duvidas entre em contato, 
-  será um prazer atendê-los</STRONG></FONT> </FONT>
-  <LI><FONT face=Tahoma><STRONG><FONT color=#0000ff><FONT size=2>0800 773 
-  3634&nbsp;&nbsp; </FONT><FONT size=2>(16)9161 5099&nbsp;&nbsp;&nbsp;&nbsp; 
-  </FONT><FONT size=2>(11)3522 7521</FONT></FONT></STRONG> </FONT>
-  <LI>
-  <DIV><FONT size=2><STRONG><FONT face=Tahoma>Saiba mais: </FONT></STRONG><A 
-  href=""><STRONG><FONT 
-  face=Tahoma>www.apalestra.com.br</FONT></STRONG></A></FONT><FONT 
-  size=2></DIV></FONT></LI></UL>
-<DIV><FONT face=Tahoma size=2><STRONG></STRONG></FONT>&nbsp;</DIV>
-<DIV><FONT face=Tahoma size=2><STRONG>Atenciosamente, <BR>Paulo 
-Godoy</STRONG></FONT></DIV>
-<DIV><STRONG><FONT face=Tahoma size=2>(16)9161-5099</FONT></STRONG></DIV>
-<DIV><STRONG><FONT face=Tahoma size=2></FONT></STRONG>&nbsp;</DIV>
-<DIV><STRONG><IMG alt="" hspace=0 
-src="http://www.apalestra.com.br/images/Folder Marins Ribeirão.jpg" 
-align=baseline border=0></DIV></STRONG></DIV></BODY></HTML>
-
-
---===============0644726234986567978==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============0644726234986567978==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0644726234986567978==--
+ufO5q8u+uLrU8MjLKL6twO0vssbO8SnE+rrDOiAKCiAgICAgztLLvrTz1um9rcuwzvG0+sDt09DP
+3rmry77KtcGm0Nu68SzT0NfFwby6w7XEyee74bnYz7UuCgq5q8u+yty497XYx/i5q8u+zq/N0Mir
+yKi0+sDtuPfKoS/K0KOo1PbWtcuwLLqjudi9yb/uyuksCgrJzMa3z/rK27eixrGjrLnjuOa3osax
+LNTLyuS3osaxLMbky/y3/s7x0rW3osaxLLLN0vu3osaxLAoKvajW/rCy17C3osaxtcguIKOpv8nT
+xbvdz/LN4rT6v6ooMC41fjElKS4KCiAgICAgsb65q8u+1qPW2LPQxbXGsb7dvvm/ycnPzfiy6dGv
+u/K11r/b0enWpCzBvLrDtcTQxdP+ysfO0sPHCgq6z9f3tcTHsMzhLMbatP3E47XEus/X9zrW2LrP
+zawsytjQxdPDLiDO0sPHvau937PPzqrE+rf+zvEuLi4uLi4KCiAgICAgILu20624973nyMvKv8C0
+tefXydGv0+u6z9f3IQoKICAgICAgICAgCiAgICAgtee7sCAgIKO6MTM5Mjc0MDA1NjUKCiAgICAg
+warPtcjLIKO6IM310KG94woKICAgICC12Na3ICAgo7ogyc+6o8rQxta2q9DCx/i2q7KowrczMTW6
+xSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIAoKICAgICDTys/kICAgo7o1MjUyNzM3NDZAcXEuY29tICAgICAgINK1zvFRIFEgIKO6NTI1
+MjczNzQ2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBi
+eSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNv
+b2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVh
+dCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2Ug
+ZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVk
+aXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

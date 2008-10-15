@@ -1,10 +1,8 @@
-From: fcvfszdsf-wJpO1iLlWFM@public.gmane.org
-Subject: [SPAM] ~RO~
-Date: Wed, 15 Oct 2008 11:02:40 +0800
-Message-ID: <E1Kpwhs-0006dX-C4@h25xhf1.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+From: ahhge-uB8bxKUEBrdWk0Htik3J/w@public.gmane.org
+Subject: [SPAM] FREE auction site ¨C Free store. Free Listing
+Date: Thu, 16 Oct 2008 02:13:29 +0800
+Message-ID: <200810160152265.SM01700@tangjianjun>
+Content-Type: multipart/mixed; boundary="===============2946321904250298964=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,22 +15,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyAgICAgICAgICAgICAgICAgCgogICAgIM7SuavL
-vtPQ0+C27rXExrEvL77dz/LN4rT6v6osztLLvr/Jzqq587mry77M4bmpyOfPwtT21rXLsKOsyczG
-t8/6ytujrLnjuObStaOst/7O8dK1o6wKCtTLyuSjrNfJ0a+jrNehy96jrLDh1MujrL7Gteq3/s7x
-o6y9qNb+sLLXsKOsvNO5pNDewO2jrLvh0um30aOswM3O8bfRo6yyzdL7tqi27qOsuaTStc2z0ruj
-rAoKyczStc2z0rujrLXYt73LsL/Yo6zX4sHeo6y7+ravs7XP+srboaPS1LywufrE2rj3yqHK0Ln6
-y7AvtdjLsC8vW7eiLy/GsV0gKDAuNSUtMiUpLAoKwaogz7UgyMujuiDA7s/IyfogICC15yC7sKO6
-MTM5MTg2MzU5OTUgICAgICDTyiAgz+SjunN6YXNkeEAxNjMuY29tICAgy7PXoyAgyczs9wogIApR
-ICBROzMwMjU0MDI4MCAgICAgICDJz7qjxta2q8zGyMvDs9LX09DP3rmry74gICC12Na3o7vJz7qj
-xta2q8zGwr3CtzIzMDm6xb38wfq2q7TztcAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5OZXQg
-ZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVsb3BlcidzIGNo
-YWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlvbnMgd2l0aCBN
-b2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRyaXAgZm9yIHR3
-byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQKaHR0cDovL21v
-Ymxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9LwpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
-bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
-dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
-cmFsCg==
+--===============2946321904250298964==
+Content-Type: text/html;charset=gb2312
+
+<html><SPAN lang=EN-US style="FONT-SIZE: 10.5pt; FONT-FAMILY: &#39;Times New Roman&#39;; mso-ansi-language: EN-US; mso-fareast-font-family: ËÎÌå; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA"><SPAN lang=EN-US style="FONT-SIZE: 11pt; FONT-FAMILY: &#39;Times New Roman&#39;; mso-ansi-language: EN-US; mso-fareast-font-family: ËÎÌå; mso-fareast-language: ZH-CN; mso-bidi-language: AR-SA"><FONT face=Verdana><FONT size=5><FONT face="Arial Black"><FONT color=#ff3333>ahh</FONT><FONT color=#0066ff>ge</FONT></FONT></FONT><FONT color=#000000><FONT face=Arial><FONT size=4>.com</FONT><BR></FONT></FONT>&nbsp;&nbsp;&nbsp; &nbsp; <FONT face=Verdana size=2>Way to auction!<BR><!--  --></FONT></FONT></SPAN></SPAN><BR><!--  --><FONT size=2><FONT face=Arial>&nbsp;&nbsp;At ahhge.com, <BR>&nbsp;&nbsp;&nbs
+ p;&nbsp;1. Open store is free. <BR>&nbsp;&nbsp;&nbsp;&nbsp;2. Selling is free ¨C no insertion fee. <BR>&nbsp;&nbsp;&nbsp;&nbsp;3. You only pay a final value fee when your item gets sold. <BR>Register and start selling instantly!<BR>We welcome your participation!</FONT><BR></FONT><BR><BR>Click on:<a href='http://www.ahhge.com/index.php?lang=en&emailname=c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIA=='>http://www.ahhge.com</a><P></P>Thank you.<BR>Ahhge<BR><BR><div>This email is an advertisement sent by: Ahhge Inc.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n
+ bsp;&nbsp;&nbsp;41-05 Fuller place, Flushing NY 11355, USA<P></P><BR><BR><span style='color:#FF0000; font-size:14px'>If you wish to have your email removed from our mailing list, <a href='http://www.ahhge.com/deleteemail.php?emailname=c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIA==&lang=en'>click here</a></span></div></html>
+
+
+
+--===============2946321904250298964==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============2946321904250298964==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2946321904250298964==--

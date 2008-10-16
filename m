@@ -1,11 +1,9 @@
-From: =?GB2312?B?zfXPyMn6?= <dsfgESSDVr-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] HE绋嶸绁∟V
-Date: Thu, 16 Oct 2008 15:33:19 +0800
-Message-ID: <E1KqNNg-00063y-Au@235xhf1.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?z+rH6Q==?= <gdszaq3-dbdLmdGazhY@public.gmane.org>
+Subject: [SPAM] 鑱旂郴淇℃伅
+Date: Fri, 17 Oct 2008 03:35:21 +0800
+Message-ID: <E1KqYbo-0007Xy-V1@235xhf1.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============6452684352854006015=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,19 +15,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ICAKICAgxPq6w6O6IAogICAgICAgztK5q8u+1NrKx9K7vNK8r7+qt6Khosn6svqhos/6ytvT2tK7
-zOW1xLTz0M3X27rPuavLvqGjCiAgICAgICDP1rG+uavLvtPQ0ruyv7fWt6ItxrGju8uwwsq1zcGu
-o7vTxbvdtPq/qqO7CiAgIMjnOigxKcbVzajU9ta1y7AtLcaxo7sKICAgICAgKDIpxtXNqMnMxrfP
-+srbt6ItLcaxo7sKICAgICAgKDMp1MvK5NK1oaK547jm0rWhor2o1v6horj3wOC3/s7x0rW3oi0t
-xrEvoaMKCiAgIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtQoKICAgwarPtTrN9c/IyfqjqDCjqTEz
-NjQyMzQ3Mjc3IAoKICAgIMjn09C08sjFvrTH68HCveIKCgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhp
-cyBTRi5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVs
-b3BlcidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlv
-bnMgd2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRy
-aXAgZm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQK
-aHR0cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9
-LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
-ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
-Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
-ZXZlbC1nZW5lcmFsCg==
+--===============6452684352854006015==
+Content-Type: text/plain;charset="GB2312"
+
+贵先生/女士:您好!
+   本公司是联盟合作代理公司,实力雄厚。东莞.上海.深圳.杭州.
+江苏.青岛.辽宁.湖南等省市均有分公司。因进项较多,销项少每月
+有部分<<发-票>>可优惠对外开具,种类如下:
+   一：商品(货物)销售.工业销售
+   二：服务业.建筑业.广告业.咨询费.住宿费等
+   收费点数低，优惠代開与合作。详细税点根据所开行业的金额大
+小洽谈!如贵司在票的真伪方面有任何疑虑或担心，可上网查询验证
+后付款。如有需要详情请联系:
+
+       联系人：王先生
+       手  机：136-6260-7748
+       Q   Q：958811639
+
+
+--===============6452684352854006015==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============6452684352854006015==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============6452684352854006015==--

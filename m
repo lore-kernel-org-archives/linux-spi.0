@@ -1,58 +1,319 @@
-From: =?GB2312?B?z+rH6Q==?= <gdszaq3-dbdLmdGazhY@public.gmane.org>
-Subject: [SPAM] 鑱旂郴淇℃伅
-Date: Fri, 17 Oct 2008 03:35:21 +0800
-Message-ID: <E1KqYbo-0007Xy-V1@235xhf1.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============6452684352854006015=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Mark Jackson <mpfj@mimc.co.uk>
+Subject: Re: [PATCH] Add Dallas DS1390 RTC chip
+Date: Fri, 17 Oct 2008 09:02:04 +0100
+Message-ID: <48F8467C.5010902@mimc.co.uk>
+References: <48F452BE.2030901@mimc.co.uk> <20081014101703.1ded0259@i1501.lan.towertech.it>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Alessandro Zummo <alessandro.zummo@towertech.it>,
+	rtc-linux@googlegroups.com, lkml <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net
+To: dbrownell@users.sourceforge.net
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754005AbYJQIJO@vger.kernel.org>
+In-Reply-To: <20081014101703.1ded0259@i1501.lan.towertech.it>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6452684352854006015==
-Content-Type: text/plain;charset="GB2312"
+David ... please see comments below regarding spi buffers ...
 
-贵先生/女士:您好!
-   本公司是联盟合作代理公司,实力雄厚。东莞.上海.深圳.杭州.
-江苏.青岛.辽宁.湖南等省市均有分公司。因进项较多,销项少每月
-有部分<<发-票>>可优惠对外开具,种类如下:
-   一：商品(货物)销售.工业销售
-   二：服务业.建筑业.广告业.咨询费.住宿费等
-   收费点数低，优惠代開与合作。详细税点根据所开行业的金额大
-小洽谈!如贵司在票的真伪方面有任何疑虑或担心，可上网查询验证
-后付款。如有需要详情请联系:
+Regards
+Mark
 
-       联系人：王先生
-       手  机：136-6260-7748
-       Q   Q：958811639
+Alessandro Zummo wrote:
+> On Tue, 14 Oct 2008 09:05:18 +0100
+> Mark Jackson <mpfj@mimc.co.uk> wrote:
+> 
+>  Hi Mark,
+> 
+>    a few notes below:
+> 
+>> +#include <linux/module.h>
+>> +#include <linux/version.h>
+>> +
+>> +#include <linux/kernel.h>
+>> +#include <linux/platform_device.h>
+>> +#include <linux/init.h>
+>> +#include <linux/rtc.h>
+>> +#include <linux/spi/spi.h>
+>> +#include <linux/bcd.h>
+>> +#include <linux/delay.h>
+> 
+>  Please check that you require all of those includes.
+> 
+> 
+>> +struct ds1390
+>> +{
+>> +	struct rtc_device *rtc;
+>> +	u8 buf[9];	/* cmd + 8 registers */
+>> +	u8 tx_buf[2];
+>> +	u8 rx_buf[2];
+>> +};
+>> +
+>> +static void ds1390_set_reg(struct device *dev, unsigned char address,
+>> +				unsigned char data)
+>> +{
+>> +	struct spi_device *spi = to_spi_device(dev);
+>> +	unsigned char buf[2];
+>> +
+>> +	/* MSB must be '1' to write */
+>> +	buf[0] = address | 0x80;
+>> +	buf[1] = data;
+>> +
+>> +	spi_write(spi, buf, 2);
+>> +}
+>> +
+>> +static int ds1390_get_reg(struct device *dev, unsigned char address,
+>> +				unsigned char *data)
+>> +{
+>> +	struct spi_device *spi = to_spi_device(dev);
+>> +	struct ds1390 *chip = dev_get_drvdata(dev);
+>> +	struct spi_message message;
+>> +	struct spi_transfer xfer;
+>> +	int status;
+>> +
+>> +	if (!data)
+>> +		return -EINVAL;
+>> +
+>> +	/* Build our spi message */
+>> +	spi_message_init(&message);
+>> +	memset(&xfer, 0, sizeof(xfer));
+>> +	xfer.len = 2;
+>> +	/* Can tx_buf and rx_buf be equal? The doc in spi.h is not sure... */
+>> +	xfer.tx_buf = chip->tx_buf;
+>> +	xfer.rx_buf = chip->rx_buf;
+> 
+>  you use the same buffer a few functions below. either
+>  one way or the other. please investigate with the spi subsystem maintainer.
 
+David,
 
---===============6452684352854006015==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Just to double check (as per Alessandro's suggestion), is this okay use of the 
+spi buffers ?
 
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============6452684352854006015==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+I took the code from an existing RTC driver (rtc-max6902), so I am assuming that
+this code has already passed judgement.
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> 
+> 
+>> +
+>> +	/* Clear MSB to indicate read */
+>> +	chip->tx_buf[0] = address & 0x7f;
+>> +
+>> +	spi_message_add_tail(&xfer, &message);
+>> +
+>> +	/* do the i/o */
+>> +	status = spi_sync(spi, &message);
+>> +	if (status == 0)
+>> +	{
+>> +		status = message.status;
+>> +	}
+>> +	else
+>> +	{
+>> +		return status;
+>> +	}
+> 
+>  should be cleaner in this way:
+> 
+>  if (status != 0)
+> 	return status;
+> 
+>  *data = chip->rx_buf[1];
+> 
+>  return message.status;
+> 
+> 
+>> +static int ds1390_get_datetime(struct device *dev, struct rtc_time *dt)
+>> +{
+>> +	struct spi_device *spi = to_spi_device(dev);
+>> +	struct ds1390 *chip = dev_get_drvdata(dev);
+>> +	struct spi_message message;
+>> +	struct spi_transfer xfer;
+>> +	int status;
+>> +
+>> +	/* build the message */
+>> +	spi_message_init(&message);
+>> +	memset(&xfer, 0, sizeof(xfer));
+>> +	xfer.len = 1 + 7;	/* read command + 7 registers */
+>> +	xfer.tx_buf = chip->buf;
+>> +	xfer.rx_buf = chip->buf;
+> 
+>  the buffer mentioned above.
 
---===============6452684352854006015==--
+... see text above ...
+
+> 
+> 
+>> +	chip->buf[0] = DS1390_REG_SECONDS;
+>> +	spi_message_add_tail(&xfer, &message);
+>> +
+>> +	/* do the i/o */
+>> +	status = spi_sync(spi, &message);
+>> +	if (status == 0)
+>> +	{
+>> +		status = message.status;
+>> +	}
+>> +	else
+>> +	{
+>> +		return status;
+>> +	}
+> 
+>  ditto.
+> 
+>> +	/* The chip sends data in this order:
+>> +	 * Seconds, Minutes, Hours, Day, Date, Month / Century, Year */
+>> +	dt->tm_sec	= BCD2BIN(chip->buf[1]);
+>> +	dt->tm_min	= BCD2BIN(chip->buf[2]);
+>> +	dt->tm_hour	= BCD2BIN(chip->buf[3]);
+>> +	dt->tm_wday	= BCD2BIN(chip->buf[4]);
+>> +	dt->tm_mday	= BCD2BIN(chip->buf[5]);
+>> +	/* mask off century bit */
+>> +	dt->tm_mon	= BCD2BIN(chip->buf[6] & 0x7f) - 1;
+>> +	/* adjust for century bit */
+>> +	dt->tm_year = BCD2BIN(chip->buf[7]) + ((chip->buf[6] & 0x80) ? 100 : 0);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int ds1390_set_datetime(struct device *dev, struct rtc_time *dt)
+>> +{
+>> +	struct spi_device *spi = to_spi_device(dev);
+>> +	struct ds1390 *chip = dev_get_drvdata(dev);
+>> +	struct spi_message message;
+>> +	struct spi_transfer xfer;
+>> +	int status;
+>> +
+>> +	/* build the message */
+>> +	spi_message_init(&message);
+>> +	memset(&xfer, 0, sizeof(xfer));
+>> +	xfer.len = 1 + 8;	/* write command + 8 registers */
+>> +	xfer.tx_buf = chip->buf;
+>> +	xfer.rx_buf = chip->buf;
+
+... and I guess here as well ... ???
+
+>> +	chip->buf[0] = DS1390_REG_SECONDS | 0x80;
+>> +	chip->buf[1] = BIN2BCD(dt->tm_sec);
+>> +	chip->buf[2] = BIN2BCD(dt->tm_min);
+>> +	chip->buf[3] = BIN2BCD(dt->tm_hour);
+>> +	chip->buf[4] = BIN2BCD(dt->tm_wday);
+>> +	chip->buf[5] = BIN2BCD(dt->tm_mday);
+>> +	chip->buf[6] = BIN2BCD(dt->tm_mon + 1) | ((dt->tm_year > 99) ? 0x80 : 0x00);
+>> +	chip->buf[7] = BIN2BCD(dt->tm_year % 100);
+>> +	spi_message_add_tail(&xfer, &message);
+>> +
+>> +	/* do the i/o */
+>> +	status = spi_sync(spi, &message);
+>> +	if (status == 0)
+>> +	{
+>> +		status = message.status;
+>> +	}
+>> +	else
+>> +	{
+>> +		return status;
+>> +	}
+> 
+>  if status == 0, status is not used anymore, so you can
+>  just return if != 0;
+> 
+>> +	return 0;
+>> +}
+>> +
+>> +static int ds1390_read_time(struct device *dev, struct rtc_time *tm)
+>> +{
+>> +	return ds1390_get_datetime(dev, tm);
+>> +}
+>> +
+>> +static int ds1390_set_time(struct device *dev, struct rtc_time *tm)
+>> +{
+>> +	return ds1390_set_datetime(dev, tm);
+>> +}
+>> +
+>> +static const struct rtc_class_ops ds1390_rtc_ops = {
+>> +	.read_time	= ds1390_read_time,
+>> +	.set_time	= ds1390_set_time,
+>> +};
+>> +
+>> +static int __devinit ds1390_probe(struct spi_device *spi)
+>> +{
+>> +	struct rtc_device *rtc;
+>> +	unsigned char tmp;
+>> +	struct ds1390 *chip;
+>> +	int res;
+>> +
+>> +	printk("DS1390 SPI RTC driver\n");
+>> +
+>> +	rtc = rtc_device_register("ds1390",
+>> +				&spi->dev, &ds1390_rtc_ops, THIS_MODULE);
+>> +	if (IS_ERR(rtc))
+>> +	{
+>> +		printk("RTC : unable to register device\n");
+>> +		return PTR_ERR(rtc);
+>> +	}
+>> +
+>> +	spi->mode = SPI_MODE_3;
+>> +	spi->bits_per_word = 8;
+>> +	spi_setup(spi);
+>> +
+>> +	chip = kzalloc(sizeof *chip, GFP_KERNEL);
+>> +	if (!chip) {
+>> +		printk("RTC : unable to allocate device memory\n");
+>> +		rtc_device_unregister(rtc);
+>> +		return -ENOMEM;
+>> +	}
+>> +	chip->rtc = rtc;
+>> +	dev_set_drvdata(&spi->dev, chip);
+>> +
+>> +	res = ds1390_get_reg(&spi->dev, DS1390_REG_SECONDS, &tmp);
+>> +	if (res) {
+>> +		printk("RTC : unable to read device\n");
+>> +		rtc_device_unregister(rtc);
+>> +		return res;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int __devexit ds1390_remove(struct spi_device *spi)
+>> +{
+>> +	struct ds1390 *chip = platform_get_drvdata(spi);
+>> +	struct rtc_device *rtc = chip->rtc;
+>> +
+>> +	if (rtc)
+>> +		rtc_device_unregister(rtc);
+>> +
+>> +	kfree(chip);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static struct spi_driver ds1390_driver = {
+>> +	.driver = {
+>> +		.name	= "rtc-ds1390",
+>> +		.bus	= &spi_bus_type,
+>> +		.owner	= THIS_MODULE,
+>> +	},
+>> +	.probe	= ds1390_probe,
+>> +	.remove = __devexit_p(ds1390_remove),
+>> +};
+>> +
+>> +static __init int ds1390_init(void)
+>> +{
+>> +	return spi_register_driver(&ds1390_driver);
+>> +}
+>> +module_init(ds1390_init);
+>> +
+>> +static __exit void ds1390_exit(void)
+>> +{
+>> +	spi_unregister_driver(&ds1390_driver);
+>> +}
+>> +module_exit(ds1390_exit);
+>> +
+>> +MODULE_DESCRIPTION ("DS1390 SPI RTC driver");
+>> +MODULE_AUTHOR ("Mark Jackson");
+> 
+>  you email here please.
+> 
+>> +MODULE_LICENSE ("GPL");
+> 
+> 

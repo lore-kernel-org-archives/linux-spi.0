@@ -1,44 +1,44 @@
-From: =?GB2312?B?xOO6ww==?= <fddddddddd00-9Onoh4P/yGk@public.gmane.org>
-Subject: =?gb2312?b?PDy0+i+/qi+3oi/GsT4+IQ==?=
-Date: Sun, 19 Oct 2008 17:17:55 +0800
-Message-ID: <E1KrUMl-0007MZ-Jf@3yr0jf1.ch3.sourceforge.com>
+From: Lennert Buytenhek <buytenh@wantstofly.org>
+Subject: [PATCH] mtd m25p80: add support for Macronix MX25L12805D
+Date: Sun, 19 Oct 2008 19:32:52 +0200
+Message-ID: <20081019173252.GA16094@xi.wantstofly.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: nico@marvell.com, prafulla@marvell.com
+To: dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+Content-Disposition: inline
+Resent-Message-Id: <20081019193440.0945B7FAB3@xi.wantstofly.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+	<mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+	<mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: linux-mtd-bounces@lists.infradead.org
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgo6jV4srH0ru34snG0uK1xNPKvP6jrMjn09C0
-8sjFx+vBwr3io6mhowogICAgztK5q8u+o6iw2cqitO/Ds9LX09DP3rmry76jqcrHwarDy7T6wO25
-q8u+o6zU2sirufq497Tzs8fK0Mno09C31gq5q8u+oaPS8tK1zvG52M+1o6y9+M/utuDP+s/uydnP
-1tPQtuDT4NK7sr+31jw8xtUtzagty7AtxrE+Pr/J0tTTxbvdttTN4gq0+r+qyOfPwqO6uaTJzMbz
-0rWhorv1zu/P+srboaK547jmoaK3/s7x0rWhor2o1v6wstewoaLE2rrTo6i5+rzKo6nUy8rkoaIK
-t8++yc7v18q1yDw8t6ItxrE+PqGjCsrVt9Gx6te8o7o8PMbVLc2oLcuwLcaxPj4yJS0wLjglo6y/
-ydLUz8jR6dakuvO4tr/uo6EKICC0y9DFz6LU2sirufq3ts6nxNqzpMba09DQp6OsICDI59DrvfjS
-u7K9x6LJzDogIAogICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAg
-ICAgICAgICAgICAgwaogz7UgyMsgo7qzwr+hvdyhoaGhoaGhoaGhoaGhoaGhoaEKICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICChoaGhoaGhoaGhoaGhoaGhoaGhoQogICAgICAgICAgICAgICAg
-ytYgILv6IKO6MTM1LTgwOTctNDIxNQogICAgICAgICAgICAKICAgICAgICAgICAgICAgINK1zvFR
-IFGjujk3ODQ5MTY4MSAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAg
-ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgIKGhoaGhoaGhoaGhoaGhoaEKICAgICAg
-ICAgICAgICAgIAoKCsuz16MKICAgICDJzOz3o6EgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICCw2SDKoiC07yDDsyDS1yDT0CDP3iC5
-qyDLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkg
-dGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxlbmdlCkJ1aWxkIHRoZSBjb29s
-ZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxpbiBTREsgJiB3aW4gZ3JlYXQg
-cHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRvIGFuIE9wZW4gU291cmNlIGV2
-ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGluLWNvbnRlc3Qub3JnL3JlZGly
-ZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Signed-off-by: Lennert Buytenhek <buytenh@marvell.com>
+
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index b35c333..299047e 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -467,6 +467,9 @@ static struct flash_info __devinitdata m25p_data [] = {
+ 	{ "at26df161a", 0x1f4601, 64 * 1024, 32, SECT_4K, },
+ 	{ "at26df321",  0x1f4701, 64 * 1024, 64, SECT_4K, },
+ 
++	/* Macronix */
++	{ "mx25l12805d", 0xc22018, 64 * 1024, 256, SECT_4K, },
++
+ 	/* Spansion -- single (large) sector size only, at least
+ 	 * for the chips listed here (without boot sectors).
+ 	 */
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

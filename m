@@ -1,14 +1,17 @@
-From: "Joakim Tjernlund" <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-Subject: Performance of spi_mpc83xx.c sucks.
-Date: Tue, 21 Oct 2008 18:19:08 +0200
-Message-ID: <1224605947.14078.17.camel@gentoo-jocke.transmode.se>
-Reply-To: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+From: Alessandro Zummo <alessandro.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org>
+Subject: Re: [PATCH v4] Add Dallas DS1390/93/94 RTC chips
+Date: Tue, 21 Oct 2008 19:53:45 +0200
+Message-ID: <20081021195345.44ee74ba@i1501.lan.towertech.it>
+References: <48FDBFF9.2020901@mimc.co.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
+	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, rtc-linux-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+To: Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-content-class: urn:content-classes:message
+In-Reply-To: <48FDBFF9.2020901-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,51 +22,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-We have noticed that the spi_mpc83xx.c driver is very slow, the gap
-between words are huge.
-So I started to optimise it and it still sucks.
-However, if I poll the SPIE_NF SPIE_NE bits instead it works MUCH
-better, like so:
-		struct mpc83xx_spi_reg *regs = mpc83xx_spi->base;
-		u32 event=SPIE_NF;
+On Tue, 21 Oct 2008 12:41:45 +0100
+Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org> wrote:
 
-		mpc83xx_spi->tx_count -= 1;
-		word = mpc83xx_spi->get_tx(mpc83xx_spi);
-		mpc83xx_spi_write_reg(&regs->transmit, word);
-		if (len >= 2) { /* FIFO is 2 words */
-			mpc83xx_spi->tx_count -= 1;
-			word = mpc83xx_spi->get_tx(mpc83xx_spi);
-			mpc83xx_spi_write_reg(&regs->transmit, word);
-		}
-		clear_need_resched();
-		do {
-			if (event & SPIE_NE) {
-				word = mpc83xx_spi_read_reg(&regs->receive);
-				mpc83xx_spi->rx_count -= 1;
-				if (mpc83xx_spi->rx)
-					mpc83xx_spi->get_rx(word, mpc83xx_spi);
+> v4 of this patch with some code tidying as per previous comments.
+> Also only a single tx/rx buffer is used.
+> Now uses spi_write_then_read()
+> Comments changed to include extra chips in the family
+> 
+> This patch adds support for the Dallas DS1390/93/94 SPI RTC chip.
+> 
+> Signed-off-by: Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
 
-				if ((event & SPIE_NF) && mpc83xx_spi->tx_count) {
-					mpc83xx_spi->tx_count -= 1;
-					word = mpc83xx_spi->get_tx(mpc83xx_spi);
-					mpc83xx_spi_write_reg(&regs->transmit, word);
-				}
+ Acked-by: Alessandro Zummo <a.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org>
+-- 
 
-			} else if (need_resched()){
-				clear_need_resched();
-				schedule();
-				printk("Cond, rx:%d\n", mpc83xx_spi->rx_count);
-			}
+ Best regards,
 
-			event = mpc83xx_spi_read_reg(&regs->event);
-			} while (mpc83xx_spi->rx_count);
+ Alessandro Zummo,
+  Tower Technologies - Torino, Italy
 
-I am not sure what this polling will do to the system though. Is this really bad to do?
-The resched() stuff doesn't seem to work, probably becase I don't know how
-to use it properly :(
-
- Jocke
-
+  http://www.towertech.it
 
 
 -------------------------------------------------------------------------

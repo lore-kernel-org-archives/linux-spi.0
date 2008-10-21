@@ -1,17 +1,16 @@
-From: Alessandro Zummo <alessandro.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org>
-Subject: Re: [PATCH v4] Add Dallas DS1390/93/94 RTC chips
-Date: Tue, 21 Oct 2008 19:53:45 +0200
-Message-ID: <20081021195345.44ee74ba@i1501.lan.towertech.it>
-References: <48FDBFF9.2020901@mimc.co.uk>
+From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+Subject: Re: Performance of spi_mpc83xx.c sucks.
+Date: Tue, 21 Oct 2008 20:14:15 +0200
+Message-ID: <877i81rf2g.fsf@macbook.be.48ers.dk>
+References: <1224605947.14078.17.camel@gentoo-jocke.transmode.se>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, rtc-linux-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-To: Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
+Cc: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <48FDBFF9.2020901-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
+In-Reply-To: <1224605947.14078.17.camel-/EMGr9iCeazgSi9v3i4K4Pmbkio/vSLMs0AfqQuZ5sE@public.gmane.org> (Joakim
+	Tjernlund's message of "Tue\, 21 Oct 2008 18\:19\:08 +0200")
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,28 +21,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 21 Oct 2008 12:41:45 +0100
-Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org> wrote:
+>>>>> "Joakim" == Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org> writes:
 
-> v4 of this patch with some code tidying as per previous comments.
-> Also only a single tx/rx buffer is used.
-> Now uses spi_write_then_read()
-> Comments changed to include extra chips in the family
-> 
-> This patch adds support for the Dallas DS1390/93/94 SPI RTC chip.
-> 
-> Signed-off-by: Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
+ Joakim> We have noticed that the spi_mpc83xx.c driver is very slow, the gap
+ Joakim> between words are huge.
+ Joakim> So I started to optimise it and it still sucks.
+ Joakim> However, if I poll the SPIE_NF SPIE_NE bits instead it works MUCH
+ Joakim> better, like so:
 
- Acked-by: Alessandro Zummo <a.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org>
+Yes, I've noticed the same. I get around ~5 times higher throughput
+with a simple polled loop in U-Boot compared to under Linux (66MHz
+clock).
+
+I've written it of as simply being a question of interrupt overhead
+(at 66MHz / 32bits we're talking over 2 million interrupts per
+second - E.G. only ~100 instructions between each!)
+
+Maybe it indeed makes more sense to use polling for high bitrates.
+
 -- 
-
- Best regards,
-
- Alessandro Zummo,
-  Tower Technologies - Torino, Italy
-
-  http://www.towertech.it
-
+Bye, Peter Korsgaard
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

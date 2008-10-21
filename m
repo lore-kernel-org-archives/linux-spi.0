@@ -1,11 +1,14 @@
-From: =?GB2312?B?wfXPyMn6?= <gh168gh-Xb2Y1Dfb9CI@public.gmane.org>
-Subject: [SPAM] 鍥炰俊
-Date: Fri, 20 Apr 2001 21:29:12 +0800
-Message-ID: <E1KsHIO-0006v8-Vl@335xhf1.ch3.sourceforge.com>
-Reply-To: gh168gh-Xb2Y1Dfb9CI@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============0581173432108145277=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: "Joakim Tjernlund" <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Subject: Performance of spi_mpc83xx.c sucks.
+Date: Tue, 21 Oct 2008 18:19:08 +0200
+Message-ID: <1224605947.14078.17.camel@gentoo-jocke.transmode.se>
+Reply-To: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+content-class: urn:content-classes:message
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,49 +19,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0581173432108145277==
-Content-Type: text/plain;charset="GB2312"
+We have noticed that the spi_mpc83xx.c driver is very slow, the gap
+between words are huge.
+So I started to optimise it and it still sucks.
+However, if I poll the SPIE_NF SPIE_NE bits instead it works MUCH
+better, like so:
+		struct mpc83xx_spi_reg *regs = mpc83xx_spi->base;
+		u32 event=SPIE_NF;
 
- TO:财务部    
+		mpc83xx_spi->tx_count -= 1;
+		word = mpc83xx_spi->get_tx(mpc83xx_spi);
+		mpc83xx_spi_write_reg(&regs->transmit, word);
+		if (len >= 2) { /* FIFO is 2 words */
+			mpc83xx_spi->tx_count -= 1;
+			word = mpc83xx_spi->get_tx(mpc83xx_spi);
+			mpc83xx_spi_write_reg(&regs->transmit, word);
+		}
+		clear_need_resched();
+		do {
+			if (event & SPIE_NE) {
+				word = mpc83xx_spi_read_reg(&regs->receive);
+				mpc83xx_spi->rx_count -= 1;
+				if (mpc83xx_spi->rx)
+					mpc83xx_spi->get_rx(word, mpc83xx_spi);
 
-        您好，本公司现有正规{發}${票}提供,点数优惠!
+				if ((event & SPIE_NF) && mpc83xx_spi->tx_count) {
+					mpc83xx_spi->tx_count -= 1;
+					word = mpc83xx_spi->get_tx(mpc83xx_spi);
+					mpc83xx_spi_write_reg(&regs->transmit, word);
+				}
 
-    所有{發/票}可验证后付款，我司可提供全方面服务。
+			} else if (need_resched()){
+				clear_need_resched();
+				schedule();
+				printk("Cond, rx:%d\n", mpc83xx_spi->rx_count);
+			}
 
-    注:本公司承诺所用票据为各单位在税务局所领取,
+			event = mpc83xx_spi_read_reg(&regs->event);
+			} while (mpc83xx_spi->rx_count);
 
-    完全负法律责任,实行规范管理及严格履行保密制度,
+I am not sure what this polling will do to the system though. Is this really bad to do?
+The resched() stuff doesn't seem to work, probably becase I don't know how
+to use it properly :(
 
-    保守有关商业运作机密,如有疑问请来电咨询!
-
-     联系人: 刘先生
-
-     电  话:136 9989 4869，（长期有效）
-
-     请保留号码以备急用!
+ Jocke
 
 
-
---===============0581173432108145277==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============0581173432108145277==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0581173432108145277==--

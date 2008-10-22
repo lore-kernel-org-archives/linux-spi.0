@@ -1,10 +1,9 @@
-From: =?GB2312?B?xOO6ww==?= <dddddddddfff52365-k+cT0dCbe1g@public.gmane.org>
-Subject: =?gb2312?b?xrG+3bT6wO0=?=
-Date: Wed, 22 Oct 2008 16:31:01 +0800
-Message-ID: <E1KsZEj-0003HT-3H@3yr0jf1.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+From: =?GB2312?B?sbG+qQ==?= <f51d4423-WVlzvzqoTvw@public.gmane.org>
+Subject: =?GB2312?B?8p7XQ+HhuLa/7g==?=
+Date: Wed, 22 Oct 2008 16:48:24 +0800
+Message-ID: <E1KsZTB-0005mI-EU@235xhf1.ch3.sourceforge.com>
+Reply-To: h72a8fcb906f-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============2597780701648585054=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,30 +16,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-INfwvrS1xLi61PAg1/C+tLXEuLrU8MjLo6i+rcDto6+yxs7xo6nE+rrDo6EKCiAgICAgsb65q8u+
-ysfQxdP+yrXStdPQz965q8u+LMrHvq3V/riu16Ky4bXE1f255rmry76ho8irufq497Tz1tCzx8rQ
-vvnT0LfWuavLvqGjCgrU2sirx/K7r7XEt6LVubn6xNrK0LOhvq28w7661fnI1cf3vKTB0qOhyrnJ
-zLzSXLmry77A+8jzzqKxoaOhufO5q8u+1/fVyrywz/rK27e9w+YKCsrH0OjSqtPDtb3Su9CpxrG+
-3cjno7qjqLXnxNSw5tT21rXLsKGitefE1LDmuqO52L3Jv+7K6beixrGhosbVzajJzMa3t6LGsaGi
-tdjLsKGivajW/rCy17ChogoKxuTL/Lf+zvGhornjuOahorXnxNSw5tTLyuS3osaxo6m1yKGtoa2h
-o8uwwsq/ybj5vt3L+b+qvfC27rXEtPPQocC00K3JzKOhsqK9qNLps6TG2rXEus/X96GjCgogICAg
-INTaztK5q8u+s8nBorbgxOrSu9axvOGz1tLU0MXTwzvL+b+qvvi21MrH1ebGsaGj1Nq6z9f30tS0
-+r+qtcS3vcq9zOG5qbW9zru1xLf+zvGjrAoKyOe587mry77T0NCp0snCx7vytaPQxKOsv8nJz834
-sunWpLvyxMPIpcuwzvG11r/busu21Mi3yM+689TZuLa/7qOs1NrO0rmry764utTwtcTMrLbICgrX
-9rW9v827p7fF0MTC+tLio6HI57TyyMXE+rGmufPKsbzko6y+tMfrvPvBwqOhCgogICAgICAgICDX
-owoKICAgICAgycwgICAg7PcgICAgICAgICAgICAgICAgILu2063AtLXn18nRr6Gix6LMuKOhCgog
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgwaogz7UgyMsgo7rDtyDQoSC94woKICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIMrWICAgu/ogIKO6IDEgMyA1IDMgNCAyIDIgNCAwIDAg
-MgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBRICAgICBRICA7ICA4IDUgMiA2IDYgMiA3IDcgNQogCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICDTyiAgICDP5CCjuyB6c3N6MTE1NUAxNjMuY29tCgotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92
-ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBw
-bGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUg
-aXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhl
-IHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0x
-MDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
-by9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--===============2597780701648585054==
+Content-Type: text/plain;charset="GB2312"
+
+我司可開具全國各地的普通發票，
+
+收取詳細稅率以0.5-2%可根據大小商談！ 
+
+若貴公司有需要，可直接來電聯繫！ ！
+
+聯 系 人：許 文 祥
+
+電 話：135-3819-9800
+
+QQ：546843050 
+
+
+--===============2597780701648585054==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============2597780701648585054==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2597780701648585054==--

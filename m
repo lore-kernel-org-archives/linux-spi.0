@@ -1,9 +1,10 @@
-From: =?GB2312?B?sbG+qQ==?= <f51d4423-WVlzvzqoTvw@public.gmane.org>
-Subject: =?GB2312?B?8p7XQ+HhuLa/7g==?=
-Date: Wed, 22 Oct 2008 16:48:24 +0800
-Message-ID: <E1KsZTB-0005mI-EU@235xhf1.ch3.sourceforge.com>
-Reply-To: h72a8fcb906f-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============2597780701648585054=="
+From: Doan <Doan-etaseppo-M/bhVcJD4pk@public.gmane.org>
+Subject: [SPAM] I was completely frustrated about my
+	small penis!
+Date: Wed, 22 Oct 2008 17:11:41 -0200
+Message-ID: <E1Ksj7d-0001ga-NB@3yr0jf1.ch3.sourceforge.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============2589301902382133242=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,23 +17,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2597780701648585054==
-Content-Type: text/plain;charset="GB2312"
+--===============2589301902382133242==
+Content-Type: multipart/alternative;
+	boundary="------------080600030100000603070304"
 
-我司可開具全國各地的普通發票，
+--------------080600030100000603070304
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-收取詳細稅率以0.5-2%可根據大小商談！ 
+Don't be a chicken - go for a bigger cock.
+http://www.ewslova.cn/?cplvzbddny <Details...>
 
-若貴公司有需要，可直接來電聯繫！ ！
+--------------080600030100000603070304
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-聯 系 人：許 文 祥
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+</head>
+<body bgcolor="#ffffff" text="#000000">
+Don't be a chicken - go for a bigger cock.<br>
+<a href="http://www.ewslova.cn/?cplvzbddny">Details...</a><br>
+</body>
+</html>
 
-電 話：135-3819-9800
-
-QQ：546843050 
+--------------080600030100000603070304--
 
 
---===============2597780701648585054==
+--===============2589301902382133242==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -43,7 +57,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============2597780701648585054==
+--===============2589301902382133242==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,4 +68,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2597780701648585054==--
+--===============2589301902382133242==--

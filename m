@@ -1,10 +1,12 @@
-From: "CORNEL" <cornel1208-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: util
-Date: Thu, 23 Oct 2008 17:50:10 +0300
-Message-ID: <E1Kt1W0-0001gs-2y@h25xhf1.ch3.sourceforge.com>
+From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH] spi: Add PPC4xx SPI driver
+Date: Thu, 23 Oct 2008 17:27:32 +0200
+Message-ID: <1224775652-16738-1-git-send-email-sr@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6554203353022504171=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,107 +18,609 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+This adds a SPI driver for the SPI controller found in the IBM/AMCC
+4xx PowerPC's.
 
---===============6554203353022504171==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0000_01C6527E.AE8904D0"
+Signed-off-by: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+---
+ drivers/spi/Kconfig      |    7 +
+ drivers/spi/Makefile     |    1 +
+ drivers/spi/spi_ppc4xx.c |  550 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 558 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/spi/spi_ppc4xx.c
 
-This is a multi-part message in MIME format.
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index b9d0efb..69d5fee 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -155,6 +155,13 @@ config SPI_ORION
+ 	help
+ 	  This enables using the SPI master controller on the Orion chips.
+ 
++config SPI_PPC4xx
++	tristate "PPC4xx SPI Controller"
++	depends on 4xx && SPI_MASTER
++	select SPI_BITBANG
++	help
++	  This selects a driver for the PPC4xx SPI Controller.
++
+ config SPI_PXA2XX
+ 	tristate "PXA2xx SSP SPI master"
+ 	depends on ARCH_PXA && EXPERIMENTAL
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index ccf18de..a2e5816 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -24,6 +24,7 @@ obj-$(CONFIG_SPI_OMAP24XX)		+= omap2_mcspi.o
+ obj-$(CONFIG_SPI_ORION)			+= orion_spi.o
+ obj-$(CONFIG_SPI_MPC52xx_PSC)		+= mpc52xx_psc_spi.o
+ obj-$(CONFIG_SPI_MPC83xx)		+= spi_mpc83xx.o
++obj-$(CONFIG_SPI_PPC4xx)		+= spi_ppc4xx.o
+ obj-$(CONFIG_SPI_S3C24XX_GPIO)		+= spi_s3c24xx_gpio.o
+ obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24xx.o
+ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
+diff --git a/drivers/spi/spi_ppc4xx.c b/drivers/spi/spi_ppc4xx.c
+new file mode 100644
+index 0000000..7af2769
+--- /dev/null
++++ b/drivers/spi/spi_ppc4xx.c
+@@ -0,0 +1,550 @@
++/*
++ * SPI_PPC4XX SPI controller driver.
++ *
++ * Copyright (C) 2007 Gary Jennejohn <garyj-ynQEQJNshbs@public.gmane.org>
++ * Copyright 2008 Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, DENX Software Engineering
++ *
++ * Based in part on drivers/spi/spi_s3c24xx.c
++ *
++ * Copyright (c) 2006 Ben Dooks
++ * Copyright (c) 2006 Simtec Electronics
++ *	Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under the terms of the GNU General Public License version 2 as published
++ * by the Free Software Foundation.
++ */
++
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/sched.h>
++#include <linux/errno.h>
++#include <linux/wait.h>
++#include <linux/of_platform.h>
++#include <linux/of_spi.h>
++#include <linux/interrupt.h>
++#include <linux/delay.h>
++
++#include <linux/gpio.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_bitbang.h>
++
++#include <asm/io.h>
++#include <asm/dcr-native.h>
++#include <asm/dcr-regs.h>
++
++/* bits in mode register - bit 0 ist MSb */
++/* data latched on leading edge of clock, else trailing edge */
++#define SPI_PPC4XX_MODE_SCP	(0x80 >> 3)
++/* port enabled */
++#define SPI_PPC4XX_MODE_SPE	(0x80 >> 4)
++/* MSB first, else LSB first */
++#define SPI_PPC4XX_MODE_RD	(0x80 >> 5)
++/* clock invert - idle clock = 1, active clock = 0; else reversed */
++#define SPI_PPC4XX_MODE_CI	(0x80 >> 6)
++/* loopback enable */
++#define SPI_PPC4XX_MODE_IL	(0x80 >> 7)
++/* bits in control register */
++/* starts a transfer when set */
++#define SPI_PPC4XX_CR_STR	(0x80 >> 7)
++/* bits in status register */
++/* port is busy with a transfer */
++#define SPI_PPC4XX_SR_BSY	(0x80 >> 6)
++/* RxD ready */
++#define SPI_PPC4XX_SR_RBR	(0x80 >> 7)
++
++/* the spi->mode bits understood by this driver: */
++#define MODEBITS	(SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST)
++
++/* clock settings (SCP and CI) for various SPI modes */
++#define SPI_CLK_MODE0	SPI_PPC4XX_MODE_SCP
++#define SPI_CLK_MODE1	0
++#define SPI_CLK_MODE2	SPI_PPC4XX_MODE_CI
++#define SPI_CLK_MODE3	(SPI_PPC4XX_MODE_SCP | SPI_PPC4XX_MODE_CI)
++
++#define DRIVER_NAME	"spi_ppc4xx_of"
++
++/* XXX maximal number of GPIO ports for chip selects */
++#define CS_NUM		ARCH_NR_GPIOS
++
++struct spi_ppc4xx_regs {
++	u8 mode;
++	u8 rxd;
++	u8 txd;
++	u8 cr;
++	u8 sr;
++	u8 dummy;
++	/*
++	 * Clock divisor modulus register
++	 * This uses the follwing formula:
++	 *    SCPClkOut = OPBCLK/(4(CDM + 1))
++	 * or
++	 *    CDM = (OPBCLK/4*SCPClkOut) - 1
++	 * bit 0 is the MSb!
++	 */
++	u8 cdm;
++};
++
++/* SPI Controller driver's private data. */
++struct ppc4xx_spi {
++	/* bitbang has to be first */
++	struct spi_bitbang bitbang;
++	struct completion done;
++
++	u64 mapbase;
++	u64 mapsize;
++	int irqnum;
++	/* need this to set the SPI clock */
++	unsigned int opb_freq;
++
++	/* for transfers */
++	int len;
++	int count;
++	/* data buffers */
++	const unsigned char *tx;
++	unsigned char *rx;
++
++	/* GPIO chip selects */
++	unsigned long chip_selects[(CS_NUM+8*sizeof(unsigned long)-1) /
++				   sizeof(unsigned long)];
++
++	volatile struct spi_ppc4xx_regs __iomem *regs; /* pointer to the registers */
++	struct spi_master *master;
++	struct device *dev;
++};
++
++/* need this so we can set the clock in the chipselect routine */
++struct spi_ppc4xx_cs {
++	/* speed in hertz */
++	u32 speed_hz;
++	/* bits per word - must be 8! */
++	u8  bpw;
++};
++
++static int spi_ppc4xx_txrx(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct ppc4xx_spi *hw;
++	u8 data;
++
++	dev_dbg(&spi->dev, "txrx: tx %p, rx %p, len %d\n",
++		t->tx_buf, t->rx_buf, t->len);
++
++	hw = spi_master_get_devdata(spi->master);
++
++	hw->tx = t->tx_buf;
++	hw->rx = t->rx_buf;
++	hw->len = t->len;
++	hw->count = 0;
++
++	/* send the first byte */
++	data = hw->tx ? hw->tx[0] : 0;
++	out_8(&hw->regs->txd, data);
++	out_8(&hw->regs->cr, SPI_PPC4XX_CR_STR);
++	wait_for_completion(&hw->done);
++
++	return hw->count;
++}
++
++static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct ppc4xx_spi *hw = spi_master_get_devdata(spi->master);
++	struct spi_ppc4xx_cs *cs = spi->controller_state;
++	unsigned char cdm = 0;
++	int scr;
++
++	if (cs == NULL) {
++		cs = kzalloc(sizeof(*cs), GFP_KERNEL);
++		if (!cs)
++			return -ENOMEM;
++		spi->controller_state = cs;
++	}
++
++	/*
++	 * Allow platform reduce the interrupt load on the CPU during SPI
++	 * transfers. We do not target maximum performance, but rather allow
++	 * platform to limit SPI bus frequency and interrupt rate.
++	 */
++	cs->bpw = t ? t->bits_per_word : spi->bits_per_word;
++	cs->speed_hz = t ? min(t->speed_hz, spi->max_speed_hz) :
++		spi->max_speed_hz;
++
++	if (cs->bpw != 8) {
++		dev_err(&spi->dev, "invalid bits-per-word (%d)\n", cs->bpw);
++		return -EINVAL;
++	}
++
++	if (cs->speed_hz == 0) {
++		dev_err(&spi->dev, "invalid speed_hz (must be non-zero)\n");
++		return -EINVAL;
++	}
++
++	/* set the clock */
++	/* opb_freq was already divided by 4 */
++	scr = (hw->opb_freq / cs->speed_hz) - 1;
++
++	if (scr > 0)
++		cdm = min(scr, 0xff);
++
++	dev_dbg(&spi->dev, "setting pre-scaler to %d (hz %d)\n", cdm,
++		cs->speed_hz);
++
++	if (in_8(&hw->regs->cdm) != cdm)
++		out_8(&hw->regs->cdm, cdm);
++
++	spin_lock(&hw->bitbang.lock);
++	if (!hw->bitbang.busy) {
++		hw->bitbang.chipselect(spi, BITBANG_CS_INACTIVE);
++		/* need to ndelay here? */
++	}
++	spin_unlock(&hw->bitbang.lock);
++
++	return 0;
++}
++
++static int spi_ppc4xx_setup(struct spi_device *spi)
++{
++	struct ppc4xx_spi *hw = spi_master_get_devdata(spi->master);
++	int ret;
++	struct spi_ppc4xx_cs *cs = spi->controller_state;
++	unsigned char mode;
++
++	if (!spi->bits_per_word)
++		spi->bits_per_word = 8;
++
++	if (spi->mode & ~MODEBITS) {
++		dev_dbg(&spi->dev, "setup: unsupported mode bits %x\n",
++			spi->mode & ~MODEBITS);
++		return -EINVAL;
++	}
++
++	if (cs == NULL) {
++		cs = kzalloc(sizeof *cs, GFP_KERNEL);
++		if (!cs)
++			return -ENOMEM;
++		spi->controller_state = cs;
++	}
++
++	ret = spi_ppc4xx_setupxfer(spi, NULL);
++	if (ret < 0) {
++		dev_err(&spi->dev, "setupxfer returned %d\n", ret);
++		return ret;
++	}
++
++	/*
++	 * We set all bits of the SPI0_MODE register, so,
++	 * no need to read-modify-write
++	 */
++	mode = SPI_PPC4XX_MODE_SPE;
++
++	switch (spi->mode & (SPI_CPHA | SPI_CPOL)) {
++	case SPI_MODE_0:
++		mode |= SPI_CLK_MODE0;
++		break;
++	case SPI_MODE_1:
++		mode |= SPI_CLK_MODE1;
++		break;
++	case SPI_MODE_2:
++		mode |= SPI_CLK_MODE2;
++		break;
++	case SPI_MODE_3:
++		mode |= SPI_CLK_MODE3;
++		break;
++	}
++
++	if (spi->mode & SPI_LSB_FIRST) {
++		/* this assumes that bit 7 is the LSb! */
++		mode |= SPI_PPC4XX_MODE_RD;
++	}
++
++	/* write new configration */
++	out_8(&hw->regs->mode, mode);
++
++	dev_dbg(&spi->dev, "%s: mode %d, %u bpw, %d hz\n",
++		__FUNCTION__, spi->mode, spi->bits_per_word,
++		spi->max_speed_hz);
++
++	return 0;
++}
++
++static void spi_ppc4xx_chipsel(struct spi_device *spi, int value)
++{
++	struct ppc4xx_spi *hw;
++	unsigned int cspol = spi->mode & SPI_CS_HIGH ? 1 : 0;
++	unsigned int cs = spi->chip_select;
++
++	if (cs >= CS_NUM)
++		return;
++
++	if (value != BITBANG_CS_INACTIVE && value != BITBANG_CS_ACTIVE)
++		return;
++
++	if (value == BITBANG_CS_INACTIVE)
++		cspol = !cspol;
++
++	hw = spi_master_get_devdata(spi->master);
++
++	if (test_and_set_bit(cs, hw->chip_selects)) {
++		gpio_set_value(cs, cspol);
++	} else {
++		gpio_request(cs, "ppc4xx-spi");
++		gpio_direction_output(cs, cspol);
++	}
++}
++
++static irqreturn_t spi_ppc4xx_int(int irq, void *dev_id)
++{
++	struct ppc4xx_spi *hw;
++	u8 status;
++	u8 data;
++	unsigned int count;
++
++	hw = (struct ppc4xx_spi *)dev_id;
++
++	status = in_8(&hw->regs->sr);
++	if (!status)
++		return IRQ_NONE;
++
++	/* should never happen but check anyway */
++	if (status & SPI_PPC4XX_SR_BSY) {
++		u8 lstatus;
++		int cnt = 0;
++
++		dev_dbg(hw->dev, "got interrupt but spi still busy?\n");
++		do {
++			ndelay(10);
++			lstatus = in_8(&hw->regs->sr);
++		} while (++cnt < 100 && lstatus & SPI_PPC4XX_SR_BSY);
++
++		if (cnt >= 100) {
++			dev_err(hw->dev, "busywait: too many loops!\n");
++			complete(&hw->done);
++			return IRQ_HANDLED;
++		} else {
++			/* status is always 1 (RBR) here */
++			status = in_8(&hw->regs->sr);
++			dev_dbg(hw->dev, "loops %d status %x\n", cnt, status);
++		}
++	}
++
++	count = hw->count;
++	hw->count++;
++
++	if (status & SPI_PPC4XX_SR_RBR) {
++		/* Data Ready */
++		data = in_8(&hw->regs->rxd);
++		if (hw->rx)
++			hw->rx[count] = data;
++	}
++
++	count++;
++
++	if (count < hw->len) {
++		data = hw->tx ? hw->tx[count] : 0;
++		out_8(&hw->regs->txd, data);
++		out_8(&hw->regs->cr, SPI_PPC4XX_CR_STR);
++	} else {
++		complete(&hw->done);
++	}
++
++	return IRQ_HANDLED;
++}
++
++static void spi_ppc4xx_cleanup(struct spi_device *spi)
++{
++	kfree(spi->controller_state);
++}
++
++static void spi_ppc4xx_enable(struct ppc4xx_spi *hw)
++{
++	/*
++	 * On all 4xx PPC's the SPI bus is shared/multiplexed with
++	 * the 2nd I2C bus. We need to enable the the SPI bus before
++	 * using it.
++	 */
++
++	/* need to clear bit 14 to enable SPC */
++	dcri_clrset(SDR0, SDR0_PFC1, 0x80000000 >> 14, 0);
++}
++
++/*
++ * of_device layer stuff...
++ */
++static int __init spi_ppc4xx_of_probe(struct of_device *op,
++				      const struct of_device_id *match)
++{
++	struct ppc4xx_spi *hw;
++	struct spi_master *master;
++	struct spi_bitbang *bbp;
++	struct resource resource;
++	struct device_node *np = op->node;
++	struct device *dev = &op->dev;
++	struct device_node *opbnp;
++	int ret;
++	const unsigned int *clk;
++
++	master = spi_alloc_master(dev, sizeof *hw);
++	if (master == NULL)
++		return -ENOMEM;
++	dev_set_drvdata(dev, master);
++	hw = spi_master_get_devdata(master);
++	memset(hw, 0, sizeof(struct ppc4xx_spi));
++
++	hw->master = spi_master_get(master);
++	hw->dev = dev;
++
++	init_completion(&hw->done);
++
++	/* setup the state for the bitbang driver */
++	bbp = &hw->bitbang;
++	bbp->master = hw->master;
++	bbp->setup_transfer = spi_ppc4xx_setupxfer;
++	bbp->chipselect = spi_ppc4xx_chipsel;
++	bbp->txrx_bufs = spi_ppc4xx_txrx;
++	bbp->use_dma = 0;
++	bbp->master->setup = spi_ppc4xx_setup;
++	bbp->master->cleanup = spi_ppc4xx_cleanup;
++	/* only one SPI controller */
++	bbp->master->bus_num = 0;
++	if (bbp->master->num_chipselect == 0) {
++		/* this many pins in al GPIO controllers */
++		bbp->master->num_chipselect = CS_NUM;
++	}
++
++	dev_dbg(dev, "bitbang at %p\n", bbp);
++
++	/* get the clock for the OPB */
++	opbnp = of_find_compatible_node(NULL, NULL, "ibm,opb");
++	if (opbnp == NULL) {
++		dev_err(dev, "OPB: cannot find node\n");
++		ret = -ENODEV;
++		goto free_master;
++	}
++	/* get the clock (Hz) for the OPB */
++	clk = of_get_property(opbnp, "clock-frequency", NULL);
++	if (clk == NULL) {
++		dev_err(dev, "OPB: no clock-frequency property set\n");
++		of_node_put(opbnp);
++		ret = -ENODEV;
++		goto free_master;
++	}
++	hw->opb_freq = *clk;
++	hw->opb_freq >>= 2;
++	of_node_put(opbnp);
++
++	ret = of_address_to_resource(np, 0, &resource);
++	if (ret) {
++		dev_err(dev, "error while parsing device node resource\n");
++		goto free_master;
++	}
++	hw->mapbase = resource.start;
++	hw->mapsize = resource.end - resource.start + 1;
++
++	/* sanity check */
++	if (hw->mapsize < sizeof(struct spi_ppc4xx_regs)) {
++		dev_err(dev, "too small to map registers\n");
++		ret = -EINVAL;
++		goto free_master;
++	}
++
++	hw->irqnum = irq_of_parse_and_map(np, 0);
++	/* Request IRQ */
++	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
++			  IRQF_DISABLED, "spi_ppc4xx_of", (void *)hw);
++	if (ret) {
++		dev_err(dev, "unable to allocate interrupt\n");
++		goto free_master;
++	}
++
++	if (!request_mem_region(hw->mapbase, hw->mapsize, DRIVER_NAME)) {
++		dev_err(dev, "resource unavailable\n");
++		ret = -EBUSY;
++		goto request_mem_error;
++	}
++
++	hw->regs = ioremap(hw->mapbase, sizeof(struct spi_ppc4xx_regs));
++
++	if (!hw->regs) {
++		dev_err(dev, "unable to memory map registers\n");
++		ret = -ENXIO;
++		goto map_io_error;
++	}
++
++	spi_ppc4xx_enable(hw);
++
++	/* register our spi controller */
++	dev->dma_mask = 0;
++	ret = spi_bitbang_start(bbp);
++	if (ret) {
++		dev_err(dev, "failed to register SPI master\n");
++		goto unmap_regs;
++	}
++
++	dev_info(dev, "driver initialized\n");
++	of_register_spi_devices(master, np);
++
++	return 0;
++
++unmap_regs:
++	iounmap(hw->regs);
++map_io_error:
++	release_mem_region(hw->mapbase, hw->mapsize);
++request_mem_error:
++	free_irq(hw->irqnum, hw);
++free_master:
++	dev_set_drvdata(dev, NULL);
++	spi_master_put(master);
++
++	dev_err(dev, "initialization failed\n");
++	return ret;
++}
++
++static int __exit spi_ppc4xx_of_remove(struct of_device *op)
++{
++	struct spi_master *master = dev_get_drvdata(&op->dev);
++	struct ppc4xx_spi *hw;
++
++	hw = spi_master_get_devdata(master);
++	spi_bitbang_stop(&hw->bitbang);
++	dev_set_drvdata(&op->dev, NULL);
++	release_mem_region(hw->mapbase, hw->mapsize);
++	free_irq(hw->irqnum, hw);
++	iounmap(hw->regs);
++
++	return 0;
++}
++
++static struct of_device_id spi_ppc4xx_of_match[] = {
++	{ .compatible = "ibm,spi", },
++	{},
++};
++
++MODULE_DEVICE_TABLE(of, spi_ppc4xx_of_match);
++
++static struct of_platform_driver spi_ppc4xx_of_driver = {
++	.owner = THIS_MODULE,
++	.name = DRIVER_NAME,
++	.match_table = spi_ppc4xx_of_match,
++	.probe = spi_ppc4xx_of_probe,
++	.remove = __exit_p(spi_ppc4xx_of_remove),
++	.driver = {
++		.name = DRIVER_NAME,
++		.owner = THIS_MODULE,
++	},
++};
++
++static int __init spi_ppc4xx_init(void)
++{
++	return of_register_platform_driver(&spi_ppc4xx_of_driver);
++}
++
++static void __exit spi_ppc4xx_exit(void)
++{
++	of_unregister_platform_driver(&spi_ppc4xx_of_driver);
++}
++
++module_init(spi_ppc4xx_init);
++module_exit(spi_ppc4xx_exit);
++
++MODULE_AUTHOR("Gary Jennejohn & Stefan Roese");
++MODULE_DESCRIPTION("Simple PPC4xx SPI Driver");
++MODULE_LICENSE("GPL");
+-- 
+1.6.0.3
 
-------=_NextPart_000_0000_01C6527E.AE8904D0
-Content-Type: text/plain;
- charset="utf-8"
-Content-Transfer-Encoding: 8bit
-
-      
-Evrika Group - cursuri de perfectionare :
-- contabilitate costul cursului este de 300 ron cu incepere din 10 noiembrie 2008  . 
-- expert fiscal  costul cursului este de 1000 ron cu incepere in 01 noiembrie 2008. 
-- inspector protectia muncii costul cursului este de 300 ron cu incepere din 29 octombrie 2008 .
-- inspector resurse umane costul cursului este de 250 ron cu incepere din 05 ianuarie 2009 
-
-    
- In urma sustinerii examenului final se obtine un Certificat de absolvire eliberat de Ministerul Muncii Familiei si Egalitatii de Sanse,si Ministerul Educatiei, Cercetarii si Tineretului recunoscut pe piata muncii. 
-    
- Daca vreti sa profitati de oportunitatile ce pot aparea apasati aici: SUBSCRIBE ; daca nu, apasa aici :   UNSUBSCRIBE .. 
-------=_NextPart_000_0000_01C6527E.AE8904D0
-Content-Type: text/html;
- charset="utf-8"
-
-<HTML XMLNS:O><HEAD><META http-equiv=Content-Type content="text/html; charset=iso-8859-2">
-<META content="Email Marketer Message Editor" name=GENERATOR>
-<STYLE type=text/css>
-body,table,td,tr,p,input {font-family: Verdana, Arial, Helvetica, Sans-Serif; font-size: 11px}
-hr {height: 1px}
-</STYLE>
-
-</HEAD>
-<BODY>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify"><SPAN style="FONT-FAMILY: Arial; mso-ansi-language: EN-US"><O:P></O:P></SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify"><SPAN style="FONT-FAMILY: Arial; mso-ansi-language: EN-US">&nbsp;&nbsp;&nbsp;&nbsp;<FONT size=4>&nbsp;&nbsp;</SPAN></FONT><FONT size=3></FONT></P>
-<P class=MsoNormal 
-style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: normal; TEXT-ALIGN: justify"><SPAN 
-style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman','serif'; mso-bidi-font-family: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-fareast-language: RO"><FONT 
-size=4>Evrika Group - cursuri de perfectionare :<o:p></o:p></FONT></SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify" align=left><FONT size=4>- <B><A href="http://www.cursonline.eu/index.php?index=contabilitate"><FONT color=#800080>contabilitate </FONT></A><O:P></O:P></SPAN></U></B></SPAN><SPAN lang=RO style="FONT-FAMILY: Arial">costul cursului </SPAN><SPAN lang=RO style="FONT-FAMILY: Arial"> este de 300 ron cu incepere din 10 
-noiembrie 2008&nbsp;&nbsp;.         </SPAN></FONT></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify" align=left><FONT size=4>-&nbsp;</FONT><A href="http://www.cursonline.eu/index.php?index=ef"><FONT color=#800080><FONT 
-size=4><STRONG>expert 
-fiscal</STRONG>&nbsp;</FONT> </FONT></A></SPAN></U></B></SPAN><SPAN lang=RO style="FONT-FAMILY: Arial"><FONT size=4> costul cursului 
-este de 1000 ron cu incepere in&nbsp;01 noiembrie 2008.</FONT>           </SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify" align=left><FONT size=4>-&nbsp;<B><A href="http://www.cursonline.eu/index.php?index=ipm"><FONT color=#800080>inspector protectia muncii </FONT></A><O:P></O:P></SPAN></U></B></SPAN><SPAN lang=RO style="FONT-FAMILY: Arial">costul cursului </SPAN><SPAN lang=RO style="FONT-FAMILY: Arial">este de </SPAN>300 ron <FONT face=Arial>cu incepere din&nbsp;29 octombrie 2008 
-     </FONT>.</SPAN></FONT></FONT></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify" align=left><SPAN lang=RO style="FONT-FAMILY: Arial"><FONT face=Verdana><FONT size=4>- <B><A href="http://www.cursonline.eu/index.php?index=iru"><FONT color=#800080>inspector resurse umane </FONT></A><O:P></O:P></SPAN></U></B></SPAN><SPAN lang=RO style="FONT-FAMILY: Arial">costul cursului </SPAN><SPAN lang=RO style="FONT-FAMILY: Arial">  este  de 
-250 ron cu 
-incepere din&nbsp;05 ianuarie 2009          </SPAN></FONT></FONT></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify" align=left><FONT face=Verdana><FONT size=4><SPAN lang=RO style="FONT-FAMILY: Arial">   
-   
-             </SPAN></FONT></FONT>&nbsp;</P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt" align=center><SPAN lang=RO style="FONT-FAMILY: Arial"><FONT size=3>      
-        
-&nbsp;&nbsp;&nbsp;</FONT></SPAN>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"><SPAN lang=RO style="FONT-FAMILY: Arial"><O:P></O:P></SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: center" align=center><SPAN lang=RO style="FONT-SIZE: 14pt"><O:P></O:P></SPAN></P><B style="mso-bidi-font-weight: normal"><SPAN lang=RO style="FONT-SIZE: 14pt">&nbsp;In urma sustinerii examenului final se obtine un Certificat de absolvire  eliberat de Ministerul Muncii Familiei si Egalitatii de Sanse,si Ministerul Educatiei, Cercetarii si Tineretului recunoscut pe piata muncii.<O:P></O:P></SPAN></B>
-<P></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"><SPAN lang=RO style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><O:P></O:P></SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify"><SPAN style="FONT-FAMILY: Arial; mso-ansi-language: EN-US"><O:P></O:P></SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify"><SPAN style="FONT-FAMILY: Arial; mso-ansi-language: EN-US">&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt; LINE-HEIGHT: 150%; TEXT-ALIGN: justify"><SPAN style="FONT-FAMILY: Arial; mso-ansi-language: EN-US"><FONT size=3>&nbsp;<SPAN lang=IT 
-style="FONT-SIZE: 9pt; COLOR: #333333; LINE-HEIGHT: 115%; FONT-FAMILY: 'Arial','sans-serif'; mso-ansi-language: IT; mso-fareast-font-family: 'Times New Roman'; mso-fareast-language: RO; mso-bidi-font-size: 11.0pt; mso-bidi-language: AR-SA">Daca 
-vreti sa profitati de oportunitatile ce pot aparea apasati aici: 
-</SPAN>  </FONT></SPAN><FONT face=Arial><FONT size=1><SPAN class=style4><SPAN lang=IT style="FONT-SIZE: 9pt; COLOR: #333333; mso-ansi-language: IT; mso-bidi-font-family: Arial">                            <A href="mailto:subscribe-DmG0AY+wOSOhdH0EJOTedA@public.gmane.org">SUBSCRIBE</A>&nbsp;; <SPAN 
-lang=IT 
-style="FONT-SIZE: 9pt; COLOR: #333333; LINE-HEIGHT: 115%; FONT-FAMILY: 'Arial','sans-serif'; mso-ansi-language: IT; mso-fareast-font-family: 'Times New Roman'; mso-fareast-language: RO; mso-bidi-font-size: 11.0pt; mso-bidi-language: AR-SA">daca 
-nu, apasa aici&nbsp;: </SPAN>                                         &nbsp; <A href="mailto:unsubscribe-DmG0AY+wOSOhdH0EJOTedA@public.gmane.org">UNSUBSCRIBE</A>                                       ..</SPAN></SPAN></FONT></FONT>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"><SPAN lang=RO><O:P></O:P></SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"><SPAN lang=RO><O:P></O:P></SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"><SPAN lang=RO><O:P></O:P></SPAN></P>
-<P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"><SPAN lang=RO><O:P></O:P></SPAN></P><SPAN lang=RO><O:P></O:P></SPAN>
-<P></P></FONT></BODY></HTML>
-------=_NextPart_000_0000_01C6527E.AE8904D0--
-
-
---===============6554203353022504171==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============6554203353022504171==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6554203353022504171==--

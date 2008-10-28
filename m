@@ -1,11 +1,10 @@
-From: =?GB2312?B?wO7PyMn6?= <zhanhuishi111-9Onoh4P/yGk@public.gmane.org >
-Subject: [SPAM] 代开各行业发票
-Date: Sat, 27 Oct 2007 23:19:37 +0800
-Message-ID: <E1KuTth-0003v1-P8@h25xhf1.ch3.sourceforge.com>
-Reply-To: zhanhuishi111-9Onoh4P/yGk@public.gmane.org
+From: "Only best news" <simation_1951-Vh+OkqsSVsOuvtTkCOosKA@public.gmane.org>
+Subject: [SPAM] Sensational sales
+Date: Tue, 28 Oct 2008 12:45:29 -0400
+Message-ID: <28890385.9833544971989.JavaMail.root@FCF332CF61>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0001_01C938FB.0EDB4E50"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,25 +17,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ILnzuavLvr6twO2hori61PDIyyA6CgogICAgIMT6usOjoc7SuavLvsnPuqO748qiy7DO8bT6wO3T
-0M/euavLvtPrtuC80rmry76jqMbz0rWjqdPQ0rXO8cC0zfmho8O/1MK2vNPQ0ru2qAoKIMr9tu61
-xLeixrG/ybbUzeK0+r+qo6zI57nzuavLvtTa1/bVyqGitda/27vyyczStbvutq/W0NPQtMvQ6NKq
-o6wKIAogztK5q8u+u/K6z9f3uavLvra8v8nS1M6qxOO0+r+qo7rA4NDNyOfPwqO6CgrSu6O6xtXN
-qLn6y7CjusnMxrfP+srboaK5pNK1zbPSu8/6ytuhowoKtv6jusbVzai12Muwo7rUy8rkoaK79dTL
-tPrA7aGi17DQtqGiwarUy6GiuqPUy6GjCgrI/aO6xuTL/Lf+zvGjur2o1v6wstewoaK547jmt9Gh
-otehy9630aGiu+HS6bfRoaLXydGvt9Ghoraotu6yzcz8tcguCgogICAg0tTJz8axvt2++b/Jyc/N
-+LLp0a+78sTDtb21sbXYy7C+1tHp1qS689TZuLa/7qGjCiAgICAgICAgCiAgICAgtee7sCAgIKO6
-MTM5Mjc0MDA1NjUKCiAgICAgwarPtcjLIKO6IM310KG94woKICAgICC12Na3ICAgo7ogyc+6o8rQ
-xta2q9DCx/i2q7KowrczMTW6xSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIAoKICAgICDTys/kICAgo7o1MjUyNzM3NDZAcXEuY29tICAg
-ICAgINK1zvFRIFEgIKO6NTI1MjczNzQ2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVt
-YWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFs
-bGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9i
-bGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28g
-dG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2Js
-aW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwg
-bWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRw
-czovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJh
-bAo=
+------=_NextPart_000_0001_01C938FB.0EDB4E50
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Advanced Compounding Pharmacy</title>
+</head><body bgcolor="#000000" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
+<table cellspacing="0" cellpadding="0" width="100%" bgcolor="#000000" border="0">
+<tr><td valign="middle" align="center">
+<table cellspacing="0" cellpadding="0" width="560" bgcolor="#000000" border="0" height="523">
+<tr><td height="32" width="6">&nbsp;</td><td height="32" align="left" width="168">
+<p align="center"><strong><font style="color: #FFFFFF; margin-left:15px; margin-right:20px; font-style:normal; font-variant:normal; font-size:9px; font-family:Verdana">
+Advanced Compounding Pharmacy</font></strong></td><td height="32" align="right" width="382">
+<font style="font-size: 10px; color: #FFFFFF; font-family: Verdana, Arial, Helvetica, sans-serif;">
+if you unable to to see the message below,<a href="http://mysococ.cn" style="font-size: 10px; color: #FFFFFF; font-family: Verdana, Arial, Helvetica, sans-serif;">
+click here to view.</a></font></td><td height="32" width="4">&nbsp;</td></tr><tr><td colspan="4" height="405">
+<p align="center"><a href="http://mysococ.cn" target="_top"><img border="0" src="http://mysococ.cn/arrange.jpg"></a></td></tr><tr>
+<td colspan="4" align="center" valign="top" height="86">
+<p><span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9px; color: #FFFFFF; font-weight: bold;">
+Please click link below if you wish to unsubscribe:<br><a href="http://mysococ.cn/account/manage.asp" style="color:#FFFFFF;">
+Unsubscribe Now</a></span> </p><p><strong>
+<font style="font: 9px Verdana; color: #FFFFFF; margin-left:15px; margin-right:20px;">
+Advanced Compounding Pharmacy, 7225 Fulton Av<br>
+North Hollywood, CA 91605</font></strong></p>
+</td></tr></table></td></tr></table>
+</body>
+</html>
+------=_NextPart_000_0001_01C938FB.0EDB4E50
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+------=_NextPart_000_0001_01C938FB.0EDB4E50
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_0001_01C938FB.0EDB4E50--

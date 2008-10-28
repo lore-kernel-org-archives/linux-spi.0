@@ -1,12 +1,10 @@
-From: =?GB2312?B?yc+6oy8vtPq/qg==?= <cjhfgm556-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org>
-Subject: [SPAM] 李婷：13534008020多余税0票0代0开！
-Date: Wed, 29 Oct 2008 01:33:32 +0800
-Message-ID: <E1KusQR-0002xT-G6@235xhf1.ch3.sourceforge.com>
-Reply-To: linkuai2006-9Onoh4P/yGk@public.gmane.org
+From: Charles Adila <hopeezeca0-ur4TIblo6goN+BqQ9rBEUg@public.gmane.org>
+Subject: [SPAM] Do you have the management experience?
+Date: Tue, 28 Oct 2008 15:59:41 -0700 (PDT)
+Message-ID: <582027.60615.qm@web59808.mail.ac4.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8200658658780725876=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,19 +16,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-sb65q8u+ysfSu7zSs6PE6tb30qrS1Mn6svq6zc/6ytvOqtK7zOW1xLaotu7EycuwxvPStaO7Cgqz
-pMba0tTAtM/t09C5+rzS08W73dX+st+jrCDOqsHLuPjT2re9seO588u+xMnLsM7KzOKjuwoKz9bO
-0rmry77T0NPgtu61xLeiL8axz/LN4rT6L7+qo6jLsMLK0ru2qLHIxuTL+8jLuPy1zaOpoaMKCjGh
-osbVzaijqMnMxrfP+srbo6mhotTLyuTStaGiueO45tK1oaK3/s7x0rWhogoKICC9qNb+0rW1yMbk
-y/y3/s7x0NDStbXIt6IvxrGhowoKMqGitMvQxc+is6TG2tPQ0KfS1LG4uvPTwyzI59PQ0OjV37u2
-063AtLXnx6LMuM/qz7i6z9f3oaMgCgogIMGqz7XIy6O6wO4g5sMgIMrWILv6o7oxMzUtMzQwMC04
-MDIwICDStc7xUVGjujg2NDI0MDgwNAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFp
-bCBpcyBzcG9uc29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxl
-bmdlCkJ1aWxkIHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxp
-biBTREsgJiB3aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRv
-IGFuIE9wZW4gU291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGlu
-LWNvbnRlc3Qub3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
-aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
-Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+--===============8200658658780725876==
+Content-Type: multipart/alternative; boundary="0-720498443-1225234781=:60615"
+Content-Transfer-Encoding: 8bit
+
+--0-720498443-1225234781=:60615
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+I have a new email address!You can now email me at: hopeezeca0-ur4TIblo6goN+BqQ9rBEUg@public.gmane.org
+
+
+
+- Hello Friend,Please don't take this as a junk letter-it is real.My name is Mr.CHARLES ADILA, an auditor in one of the commercial Banks in Ghana.I am writing to solicit your urgent assistance to transfer the sum of US$14,000.00 to your account.This funds is the excess of what my Branch, in which i was the head of the team made as profit during the last year Auditing. I have already submitted an approved end of the year report for the year 2007 to our head office here in Accra-Ghana and they will never know of this excess.I placed this amount of $14,000.00 on the bank pool account without a beneficiary.As an employee in the Bank I can not be directly connected to the money that is why I am contacting you to assist in receiving the funds into your bank account in your country, so that both 
+ of us can share the funds.This transaction is going to be a Bank-to-Bank transfer and I need you to stand as the original depositor and beneficiary of the funds.If you accept this offer,I will appreciate you send to me your personal phone and fax numbers through this email address:( hopeezec-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org) for more details on the modalities of the transaction.I wait for your prompt response.Regards,Mr.CHARLES ADILA.
+
+
+--0-720498443-1225234781=:60615
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://us.i1.yimg.com/us.yimg.com/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>hopeezeca0-ur4TIblo6goN+BqQ9rBEUg@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">Hello Friend,Please don't take this as a junk letter-it is real.My name is Mr.CHARLES ADILA, an auditor in one of the commercial Banks in Ghana.I am writing to solicit your urgent assistance to transfer the sum of US$14,000.00 to your account.This funds is the excess of what my Branch,
+  in which i was the head of the team made as profit during the last year Auditing. I have already submitted an approved end of the year report for the year 2007 to our head office here in Accra-Ghana and they will never know of this excess.I placed this amount of $14,000.00 on the bank pool account without a beneficiary.As an employee in the Bank I can not be directly connected to the money that is why I am contacting you to assist in receiving the funds into your bank account in your country, so that both of us can share the funds.This transaction is going to be a Bank-to-Bank transfer and I need you to stand as the original depositor and beneficiary of the funds.If you accept this offer,I will appreciate you send to me your personal phone and fax numbers through this email address:( ho
+ peezec-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org) for more details on the modalities of the transaction.I wait for your prompt response.Regards,Mr.CHARLES ADILA.</span></div></div>
+--0-720498443-1225234781=:60615--
+
+
+
+--===============8200658658780725876==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============8200658658780725876==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8200658658780725876==--

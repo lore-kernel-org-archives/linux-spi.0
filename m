@@ -1,18 +1,18 @@
-From: "hartleys" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: mmc_spi.c driver
-Date: Thu, 30 Oct 2008 18:46:54 -0400
-Message-ID: <BD79186B4FD85F4B8E60E381CAEE1909C28EE4@mi8nycmail19.Mi8.com>
-References: <1CF6EDDF0820924DA43C9A52FE7325950A27D544@MI8NYCMAIL17.Mi8.com><200804151137.00997.david-b@pacbell.net><1CF6EDDF0820924DA43C9A52FE7325950A89D882@MI8NYCMAIL17.Mi8.com><200804151204.19776.david-b@pacbell.net><1CF6EDDF0820924DA43C9A52FE7325950A89DA47@MI8NYCMAIL17.Mi8.com><20080424140541.773f6e6b@mjolnir.drzeus.cx><1CF6EDDF0820924DA43C9A52FE7325950ADABC65@MI8NYCMAIL17.Mi8.com><20080507203753.44d18d4f@mjolnir.drzeus.cx><1CF6EDDF0820924DA43C9A52FE7325950B4DAA8C@MI8NYCMAIL17.Mi8.com>
-	<20080509212858.7220f665@mjolnir.drzeus.cx>
+From: "Jason Hanna" <jason.m.hanna.at.coincident-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3] spi: Add PPC4xx SPI driver
+Date: Thu, 30 Oct 2008 19:24:43 -0400
+Message-ID: <8f9e78f00810301624k5925a52ah924960f869388233@mail.gmail.com>
+References: <1225000124-29366-1-git-send-email-sr@denx.de>
+	<20081029145305.GA3676@yoda.jdub.homelinux.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "Pierre Ossman" <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>,
-	"David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>,
+	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: "Josh Boyer" <jwboyer-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-class: urn:content-classes:message
-In-Reply-To: <20080509212858.7220f665-OhHrUh4vRMSnewYJFaQfwJ5kstrrjoWp@public.gmane.org>
+In-Reply-To: <20081029145305.GA3676-JVa43G0qJ78RlTYtMZUE4cJ8OCA1ciLf@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,52 +23,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Pierre and David,
+On Wed, Oct 29, 2008 at 10:53 AM, Josh Boyer <jwboyer-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
 
-With the help you supplied to me back in Apr/May I was able to get my
-spi driver for the ep93xx cleaned up enough to get the mmc_spi driver to
-work correctly. Thanks for the help.
+> Also, do you have a patch for a DTS file that gives an example of how to
+> instantiate the SPI stuff in the device tree?
 
-Now I have run into another problem. But I don't know if it's a mdev
-issue or something in the mmc core.
+I'll second that request. I've updated the device tree for my Kilauea
+(405EX) board but am not sure I have everything correct.
 
-When I first boot my system, with the mmc card installed, the card is
-detected and the device nodes are created correctly. At that point I can
-mount the card and everything works great.
+Also, any pointers to sample/test code incorporating a spi protocol
+driver would be incredibly helpful. I'm very new to device driver
+programming and don't really know what I'm doing yet. I seem to be
+getting the spi_ppc4xx and spi_bitbang modules loaded, but am unsure
+how to verify proper initialization and what next steps I need to
+follow in order to develop and associate a protocol driver.
 
->From boot messages:
-...
-mmc0: new SD card on SPI
-mmcblk0: mmc0:0000 SR016 14400KiB
- mmcblk0: p1
-...
+I'd like to start quite simply - some test routines that would drive
+data over the SPI connector on my Kilauea, using a spare GPIO pin as a
+chip select. I've got a logic analyzer from which to verify the
+results.
 
-# ls /dev/mmc* -la
-brw-rw----    1 root     disk     179,   0 Oct 30 09:10 /dev/mmcblk0
-brw-rw----    1 root     disk     179,   1 Oct 30 09:10 /dev/mmcblk0p1
+I've been reading through all the documentation I can find but am a
+little stuck. A concrete example with a SPI protocol driver would be
+quite useful.
 
-Then, if I eject the card I get:
-
-mmc0: SPI card removed
-
-# ls /dev/mmc* -la
-
-And then re-insert it:
-
-mmc0: new SD card on SPI
-mmcblk1: mmc0:0000 SR016 14400KiB
-mmcblk1: p1
-
-# ls /dev/mmc* -la
-crw-rw----    1 root     disk     179,   8 Oct 30 09:30 /dev/mmcblk1
-crw-rw----    1 root     disk     179,   9 Oct 30 09:30 /dev/mmcblk1p1
-
-Why does the re-inserted card show up as mmcblk1* instead of mmcblk0*?
-Also, why would it change from a block device to a char device and the
-minor number has changed?
-
-Thanks for any help you can provide.
-Hartley
+Thanks,
+-jmh
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

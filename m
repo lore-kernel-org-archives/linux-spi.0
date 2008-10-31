@@ -1,15 +1,18 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: SPI or CSPI transfers using DMA
-Date: Fri, 31 Oct 2008 08:28:03 -0400
-Message-ID: <490AF9D3.8020401@whoi.edu>
-References: <10811398.477881225431989704.JavaMail.nabble@isper.nabble.com>
+From: "hartleys" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: Re: mmc_spi.c driver
+Date: Fri, 31 Oct 2008 14:12:42 -0400
+Message-ID: <BD79186B4FD85F4B8E60E381CAEE1909C2914D@mi8nycmail19.Mi8.com>
+References: <1CF6EDDF0820924DA43C9A52FE7325950A27D544@MI8NYCMAIL17.Mi8.com><200804151137.00997.david-b@pacbell.net><1CF6EDDF0820924DA43C9A52FE7325950A89D882@MI8NYCMAIL17.Mi8.com><200804151204.19776.david-b@pacbell.net><1CF6EDDF0820924DA43C9A52FE7325950A89DA47@MI8NYCMAIL17.Mi8.com><20080424140541.773f6e6b@mjolnir.drzeus.cx><1CF6EDDF0820924DA43C9A52FE7325950ADABC65@MI8NYCMAIL17.Mi8.com><20080507203753.44d18d4f@mjolnir.drzeus.cx><1CF6EDDF0820924DA43C9A52FE7325950B4DAA8C@MI8NYCMAIL17.Mi8.com><20080509212858.7220f665@mjolnir.drzeus.cx><BD79186B4FD85F4B8E60E381CAEE1909C28EE4@mi8nycmail19.Mi8.com>
+	<20081031080254.54b22b82@mjolnir.drzeus.cx>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: magene-5892unH0nlnYtjvyW6yDsg@public.gmane.org
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "Pierre Ossman" <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <10811398.477881225431989704.JavaMail.nabble-eSX/vLDKhQvUl7QJpGZvuQ@public.gmane.org>
+Content-class: urn:content-classes:message
+In-Reply-To: <20081031080254.54b22b82-OhHrUh4vRMSnewYJFaQfwJ5kstrrjoWp@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,44 +23,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-magene-5892unH0nlnYtjvyW6yDsg@public.gmane.org wrote:
-> I've been developing an application on an Eurotech (formerly Applied
-> Data Systems) Bitsy Xb PXA270 board that reads data from and ADC at
-> about 50 kSamples/sec.  It works fine when I poll the SPI port for
-> data but I get some drop outs in the data, probably when the OS is
-> off doing something else.  I'd like to use DMA put the DMA engine on
-> the PXA270 has a pretty steep learning curve.  Does anyone have a
-> code example that could help jumpstart me?  I may be upgrading to a
-> i.MX31 based board and similar examples with that device's CSPI and
-> DMA would also be helpful.
+On Friday, October 31, 2008 12:03 AM, Pierre Ossman wrote:
+>> 
+>> Why does the re-inserted card show up as mmcblk1* instead of
+mmcblk0*?
+>> Also, why would it change from a block device to a char device and
+the 
+>> minor number has changed?
+>> 
+>
+> I'd guess you forgot to unmount the card. The device name "mmcblk0"
+> will still be around in that case and it will take the next one in
+line.
+>
+> No idea why it pops up as a character device. Must be some mdev bug.
 
-While it's a driver for a different type of interface (SPI),
-drivers/spi/pxa2xx_spi.c uses DMA for TX and RX on the PXA270/255 and
-seems to be a good example of setting up DMA and mapping memory for it.
+You were correct on the first part. I just retested without mounting the
+card and it does come back as "mmcblk0" and "mmcblk0p1".
 
-Start with that example and see if it solves your problem.  The main
-issue may be that pxa2xx_spi.c uses non-descriptor DMA, and so interrupt
-service is still required to set up each DMA transfer, and you could
-still miss samples at that point.  I have a similar need for
-uninterrupted DMA transfer at 11Mbit/sec, probably about 8 times your
-data rate, so I extensively re-wrote pxa2xx_spi.c to use descriptor DMA
-chains so that the hardware can run for long periods (1Mbyte of data)
-without any service by the CPU.  That code is now working, but it is an
-organizational mess, so not really ready for release.
+But it also comes back as a character device not a block device even
+though the minor/major numbers are the same. Why would mdev initially
+create the node as a block device then change it? As far as I can tell
+/etc/mdev.conf just defines the ownership and permissions for the nodes.
 
-I would also recommend the book "Linux Device Drivers", Corbet, et al.
-from O'Reilly.  I would never have figured out the driver without some
-reference like that.
-
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
-
+Thanks,
+Hartley
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

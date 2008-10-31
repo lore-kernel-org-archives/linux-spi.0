@@ -1,20 +1,19 @@
-From: "hartleys" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: mmc_spi.c driver
-Date: Fri, 31 Oct 2008 14:51:15 -0400
-Message-ID: <BD79186B4FD85F4B8E60E381CAEE1909C2917A@mi8nycmail19.Mi8.com>
+Date: Fri, 31 Oct 2008 12:23:16 -0700
+Message-ID: <200810311223.16647.david-b@pacbell.net>
 References: <1CF6EDDF0820924DA43C9A52FE7325950A27D544@MI8NYCMAIL17.Mi8.com>
-	<200810311132.26213.david-b@pacbell.net>
-	<BD79186B4FD85F4B8E60E381CAEE1909C29174@mi8nycmail19.Mi8.com>
 	<200810311147.45945.david-b@pacbell.net>
+	<BD79186B4FD85F4B8E60E381CAEE1909C2917A@mi8nycmail19.Mi8.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: "hartleys" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-class: urn:content-classes:message
-In-Reply-To: <200810311147.45945.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE1909C2917A-KURmP/Qoe8Pmp66j18f85VaTQe2KTcn/@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,15 +24,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Friday, October 31, 2008 11:48 AM, David Brownell wrote:
->> Where is the sysfs legacy support enabled? In the kernel config
->
-> exactly.
+On Friday 31 October 2008, hartleys wrote:
+> Friday, October 31, 2008 11:48 AM, David Brownell wrote:
+> >> Where is the sysfs legacy support enabled? In the kernel config
+> >
+> > exactly.
+> 
+> Sorry if I'm being a pain. Is it CONFIG_SYSFS_DEPRECATED_V2?
 
-Sorry if I'm being a pain. Is it CONFIG_SYSFS_DEPRECATED_V2?
-
-Thanks,
-Hartley
+yes.
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

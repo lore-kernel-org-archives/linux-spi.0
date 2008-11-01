@@ -1,20 +1,13 @@
-From: "hartleys" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: Re: mmc_spi.c driver
-Date: Fri, 31 Oct 2008 16:23:04 -0400
-Message-ID: <BD79186B4FD85F4B8E60E381CAEE1909C291D8@mi8nycmail19.Mi8.com>
-References: <1CF6EDDF0820924DA43C9A52FE7325950A27D544@MI8NYCMAIL17.Mi8.com>
-	<200810311147.45945.david-b@pacbell.net>
-	<BD79186B4FD85F4B8E60E381CAEE1909C2917A@mi8nycmail19.Mi8.com>
-	<200810311223.16647.david-b@pacbell.net>
+From: "Beverly Hills Medical Plaza Pharmacy"
+	<Bud-etagiler-GEbKIYdJBOhYvbVVed4E/laTQe2KTcn/@public.gmane.org>
+Subject: [SPAM] Your source for best prices
+Date: Sat, 1 Nov 2008 08:24:55 +0100
+Message-ID: <71132165.8546469440201.JavaMail.root@9D0930CB7A92B>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Pierre Ossman <drzeus-mmc-p3sGCRWkH8CeZLLa646FqQ@public.gmane.org>
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_000B_01C93BFB.5244CB00"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-class: urn:content-classes:message
-In-Reply-To: <200810311223.16647.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,22 +18,63 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday, October 31, 2008 12:23 PM, David Brownell wrote:
->>>> Where is the sysfs legacy support enabled? In the kernel config
->>>
->>> exactly.
->>
->> Sorry if I'm being a pain. Is it CONFIG_SYSFS_DEPRECATED_V2?
->
-> yes.
+------=_NextPart_000_000B_01C93BFB.5244CB00
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-That fixed it. Don't think I would have figured that one out.
+<html>
+<head>
+<title>Beverly Hills Medical Plaza Pharmacy</title>
 
-Thanks,
-Hartley
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<p align="center"><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">If you are unable to see the message below, <A href="http://kbnadze.cn/">click here to view</A>.<br>
+</FONT><font face="ARIAL" color="#808080" size="2"><br></font></CENTER>
+</p>
+<div align="center">
+	<table border="0" width="600" cellspacing="0" cellpadding="0">
+		<tr>
+			<td>
+			<p align="center"><a href="http://kbnadze.cn/"><img border="0" src="http://kbnadze.cn/under1.jpg"></a></td>
+		</tr>
+	</table>
+</div>
+<table width="555" border="0" align="center" cellpadding="10" cellspacing="0">
+  <tr>
+    <td align="center" class="gray">
+      <p> <font size="-1" color="#999999" face="Arial, Helvetica, sans-serif">You have received this message because you opted in to receive Handango special <br>
+        offers via email. Login to your member account to</font> <font size="-2" face="Arial, Helvetica, sans-serif"><a href="http://kbnadze.cn/optout?mail=568e1d632e8&remove=0" ><font color="#999999" size="-1">edit your email subscription</font></a><font color="#999999" size="-1">.</font><font color="#999999"><br>
+        <font size="-1">Click here to</font></font></font> <font size="-2" face="Arial, Helvetica, sans-serif"><a href="http://kbnadze.cn/optout?mail=9a3e08feb6b16aaca&remove=1" ><font color="#999999" size="-1">unsubscribe</font></a><font color="#999999" size="-1">.</font><br>
+        <br>
+        <font color="#999999" size="-1">PLEASE DO NOT REPLY - This is being sent
+        from an unattended mailbox. <br>
+      <p><font color="#999999" size="-1" face="Arial, Helvetica, sans-serif">Copyright &copy; 2008 Beverly Hills Medical Plaza Pharmacy, Inc. All rights reserved.<br>
+        150 N Robertson Blvd STE 104 ~ Beverly Hills, CA 90211</font></p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+------=_NextPart_000_000B_01C93BFB.5244CB00
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
+------=_NextPart_000_000B_01C93BFB.5244CB00
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_000B_01C93BFB.5244CB00--

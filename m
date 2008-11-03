@@ -1,11 +1,10 @@
-From: "Beverly Hills Medical Plaza Pharmacy"
-	<Bud-etagiler-GEbKIYdJBOhYvbVVed4E/laTQe2KTcn/@public.gmane.org>
-Subject: [SPAM] Your source for best prices
-Date: Sat, 1 Nov 2008 08:24:55 +0100
-Message-ID: <71132165.8546469440201.JavaMail.root@9D0930CB7A92B>
+From: =?GB2312?B?w7fPyMn6?= <dewwegg-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 票据代理
+Date: Mon, 3 Nov 2008 18:32:23 +0800
+Message-ID: <E1Kwwm3-0003AZ-N9@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_000B_01C93BFB.5244CB00"
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,63 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-------=_NextPart_000_000B_01C93BFB.5244CB00
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-
-<html>
-<head>
-<title>Beverly Hills Medical Plaza Pharmacy</title>
-
-</head>
-<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<p align="center"><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">If you are unable to see the message below, <A href="http://kbnadze.cn/">click here to view</A>.<br>
-</FONT><font face="ARIAL" color="#808080" size="2"><br></font></CENTER>
-</p>
-<div align="center">
-	<table border="0" width="600" cellspacing="0" cellpadding="0">
-		<tr>
-			<td>
-			<p align="center"><a href="http://kbnadze.cn/"><img border="0" src="http://kbnadze.cn/under1.jpg"></a></td>
-		</tr>
-	</table>
-</div>
-<table width="555" border="0" align="center" cellpadding="10" cellspacing="0">
-  <tr>
-    <td align="center" class="gray">
-      <p> <font size="-1" color="#999999" face="Arial, Helvetica, sans-serif">You have received this message because you opted in to receive Handango special <br>
-        offers via email. Login to your member account to</font> <font size="-2" face="Arial, Helvetica, sans-serif"><a href="http://kbnadze.cn/optout?mail=568e1d632e8&remove=0" ><font color="#999999" size="-1">edit your email subscription</font></a><font color="#999999" size="-1">.</font><font color="#999999"><br>
-        <font size="-1">Click here to</font></font></font> <font size="-2" face="Arial, Helvetica, sans-serif"><a href="http://kbnadze.cn/optout?mail=9a3e08feb6b16aaca&remove=1" ><font color="#999999" size="-1">unsubscribe</font></a><font color="#999999" size="-1">.</font><br>
-        <br>
-        <font color="#999999" size="-1">PLEASE DO NOT REPLY - This is being sent
-        from an unattended mailbox. <br>
-      <p><font color="#999999" size="-1" face="Arial, Helvetica, sans-serif">Copyright &copy; 2008 Beverly Hills Medical Plaza Pharmacy, Inc. All rights reserved.<br>
-        150 N Robertson Blvd STE 104 ~ Beverly Hills, CA 90211</font></p>
-    </td>
-  </tr>
-</table>
-</body>
-</html>
-------=_NextPart_000_000B_01C93BFB.5244CB00
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
-------=_NextPart_000_000B_01C93BFB.5244CB00
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=_NextPart_000_000B_01C93BFB.5244CB00--
+INfwvrS1xLi61PDIy6Oovq3A7aOvssbO8aOpxPq6w6OhCgogICAgILG+uavLvsrH0MXT/sq10rXT
+0M/euavLvizKx76t1f64rteisuG1xNX9uea5q8u+oaPIq7n6uPe089bQs8fK0L7509C31rmry76h
+owoK1NrIq8fyu6+1xLei1bm5+sTaytCzob6tvMO+utX5yNXH97ykwdKjocq5ycy80ly5q8u+wPvI
+886isaGjobnzuavLvtf31cq8sM/6ytu3vcPmCgrKx9Do0qrTw7W90rvQqcaxvt3I56O6o6i158TU
+sObU9ta1y7ChorXnxNSw5rqjudi9yb/uyum3osaxoaLG1c2oyczGt7eixrGhorXYy7Chor2o1v6w
+stewoaIKCsbky/y3/s7xoaK547jmoaK158TUsObUy8rkt6LGsaOptcihraGtoaPLsMLKv8m4+b7d
+y/m/qr3wtu61xLTz0KHAtNCtycyjobKivajS6bOkxtq1xLrP1/ehowoKICAgICDU2s7SuavLvrPJ
+waK24MTq0rvWsbzhs9bS1NDF08M7y/m/qr74ttTKx9XmxrGho9Taus/X99LUtPq/qrXEt73Kvczh
+uam1vc67tcS3/s7xo6wKCsjnufO5q8u+09DQqdLJwse78rWj0MSjrL/Jyc/N+LLp1qS78sTDyKXL
+sM7xtda/27rLttTIt8jPuvPU2bi2v+6jrNTaztK5q8u+uLrU8LXEzKy2yAoK1/a1vb/Nu6e3xdDE
+wvrS4qOhyOe08sjFxPqxprnzyrG85KOsvrTH67z7wcKjoQoKICAgICAgICAg16MKCiAgICAgIMnM
+ICAgIOz3ICAgICAgICAgICAgICAgICC7ttOtwLS159fJ0a+hoseizLijoQoKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIMGqIM+1IMjLIKO6IMO3z8jJ+goKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIMrWICAgu/ogIKO6IDEgMyA2IDEgMyAwIDggMyA4IDAgOAogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBRICAg
+ICBRICA7ICA1IDQgMyAxIDkgMyA4IDYgOCAKIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAg08ogICAgz+Qgo7sgenNzejExNTVAMTYzLmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNG
+Lk5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVy
+J3MgY2hhbGxlbmdlCkJ1aWxkIHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3
+aXRoIE1vYmxpbiBTREsgJiB3aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBm
+b3IgdHdvIHRvIGFuIE9wZW4gU291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRw
+Oi8vbW9ibGluLWNvbnRlc3Qub3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

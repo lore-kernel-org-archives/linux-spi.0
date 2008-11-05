@@ -1,16 +1,12 @@
-From: Alessandro Zummo <alessandro.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org>
-Subject: Re: [PATCH v5] Add Dallas DS1390/93/94 RTC chips
-Date: Wed, 5 Nov 2008 01:41:00 +0100
-Message-ID: <20081105014100.419e22fd@i1501.lan.towertech.it>
-References: <491079DB.4030904@mimc.co.uk>
+From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
+Subject: [SPAM] 票据代理
+Date: Wed, 5 Nov 2008 17:34:27 +0800
+Message-ID: <E1KxemB-0005Zn-FW@335xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, rtc-linux-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-To: Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <491079DB.4030904-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,322 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 04 Nov 2008 16:35:39 +0000
-Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org> wrote:
-
-> v5 of this patch with even more code tidying as per previous comments.
-> Also only a single tx/rx buffer is used.
-> Now uses spi_write_then_read()
-> Comments changed to include extra chips in the family
-> 
-> This patch adds support for the Dallas DS1390/93/94 SPI RTC chip.
-
- Hi Mark, almost ok, it fails checkpatch.pl on a couple of points .
- 
- please find some notes below:
- 
-
-> Signed-off-by: Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
-> ---
->  drivers/rtc/Kconfig      |   11 +++
->  drivers/rtc/Makefile     |    1 +
->  drivers/rtc/rtc-ds1390.c |  217 ++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 229 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-> index 814f49f..4e10716 100644
-> --- a/drivers/rtc/Kconfig
-> +++ b/drivers/rtc/Kconfig
-> @@ -292,6 +292,17 @@ config RTC_DRV_DS1305
->  	  This driver can also be built as a module. If so, the module
->  	  will be called rtc-ds1305.
->  
-> +config RTC_DRV_DS1390
-> +	tristate "Dallas/Maxim DS1390/93/94"
-> +	help
-> +	  If you say yes here you get support for the DS1390/93/94 chips.
-> +	  
-> +	  This driver only supports the RTC feature, and not other chip
-> +	  features such as alarms and trickle charging.
-> +
-> +	  This driver can also be built as a module. If so, the module
-> +	  will be called rtc-ds1390.
-> +
->  config RTC_DRV_MAX6902
->  	tristate "Maxim MAX6902"
->  	help
-> diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-> index d6a9ac7..316c3ce 100644
-> --- a/drivers/rtc/Makefile
-> +++ b/drivers/rtc/Makefile
-> @@ -28,6 +28,7 @@ obj-$(CONFIG_RTC_DRV_DS1302)	+= rtc-ds1302.o
->  obj-$(CONFIG_RTC_DRV_DS1305)	+= rtc-ds1305.o
->  obj-$(CONFIG_RTC_DRV_DS1307)	+= rtc-ds1307.o
->  obj-$(CONFIG_RTC_DRV_DS1374)	+= rtc-ds1374.o
-> +obj-$(CONFIG_RTC_DRV_DS1390)	+= rtc-ds1390.o
->  obj-$(CONFIG_RTC_DRV_DS1511)	+= rtc-ds1511.o
->  obj-$(CONFIG_RTC_DRV_DS1553)	+= rtc-ds1553.o
->  obj-$(CONFIG_RTC_DRV_DS1672)	+= rtc-ds1672.o
-> diff --git a/drivers/rtc/rtc-ds1390.c b/drivers/rtc/rtc-ds1390.c
-> new file mode 100644
-> index 0000000..4ba9b02
-> --- /dev/null
-> +++ b/drivers/rtc/rtc-ds1390.c
-> @@ -0,0 +1,217 @@
-> +/*
-> + * rtc-ds1390.c -- driver for DS1390/93/94
-> + *
-> + * Copyright (C) 2008 Mercury IMC Ltd
-> + * Written by Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + *
-> + * NOTE : Currently this driver only supports the bare minimum for read
-> + * and write the RTC.  The extra features provided by the chip family
-> + * (alarms, trickle charger, different control registers) are unavailable.
-> + */
-> +
-> +#include <linux/platform_device.h>
-> +#include <linux/rtc.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/bcd.h>
-
- I think you need at least linux/module.h for the MODULE_XXX macros
- and linux/init.h for __devinit . they are probably included along
- the way, but it's more correct to declare includes for the things
- you are going to use.
-
-
-> +#define DS1390_REG_100THS		0x00
-> +#define DS1390_REG_SECONDS		0x01
-> +#define DS1390_REG_MINUTES		0x02
-> +#define DS1390_REG_HOURS		0x03
-> +#define DS1390_REG_DAY			0x04
-> +#define DS1390_REG_DATE			0x05
-> +#define DS1390_REG_MONTH_CENT		0x06
-> +#define DS1390_REG_YEAR			0x07
-> +
-> +#define DS1390_REG_ALARM_100THS		0x08
-> +#define DS1390_REG_ALARM_SECONDS	0x09
-> +#define DS1390_REG_ALARM_MINUTES	0x0A
-> +#define DS1390_REG_ALARM_HOURS		0x0B
-> +#define DS1390_REG_ALARM_DAY_DATE	0x0C
-> +
-> +#define DS1390_REG_CONTROL		0x0D
-> +#define DS1390_REG_STATUS		0x0E
-> +#define DS1390_REG_TRICKLE		0x0F
-> +
-> +struct ds1390 {
-> +	struct rtc_device *rtc;
-> +	u8 txrx_buf[9];	/* cmd + 8 registers */
-> +};
-> +
-> +static void ds1390_set_reg(struct device *dev, unsigned char address,
-> +				unsigned char data)
-> +{
-> +	struct spi_device *spi = to_spi_device(dev);
-> +	struct ds1390 *chip = dev_get_drvdata(dev);
-> +
-> +	/* Set MSB to indicate write */
-> +	chip->txrx_buf[0] = address | 0x80;
-> +	chip->txrx_buf[1] = data;
-> +
-> +	/* do the i/o */
-> +	spi_write_then_read(spi, chip->txrx_buf, 2, NULL, 0);
-> +}
-> +
-> +static int ds1390_get_reg(struct device *dev, unsigned char address,
-> +				unsigned char *data)
-> +{
-> +	struct spi_device *spi = to_spi_device(dev);
-> +	struct ds1390 *chip = dev_get_drvdata(dev);
-> +	int status;
-> +
-> +	/* Clear MSB to indicate read */
-> +	chip->txrx_buf[0] = address & 0x7f;
-> +	/* do the i/o */
-> +	status = spi_write_then_read(spi, chip->txrx_buf, 1, chip->txrx_buf, 1);
-> +	if (status != 0)
-> +		return status;
-> +
-> +	*data = chip->txrx_buf[1];
-> +
-> +	return 0;
-> +}
-> +
-> +static int ds1390_get_datetime(struct device *dev, struct rtc_time *dt)
-> +{
-> +	struct spi_device *spi = to_spi_device(dev);
-> +	struct ds1390 *chip = dev_get_drvdata(dev);
-> +	int status;
-> +
-> +	/* build the message */
-> +	chip->txrx_buf[0] = DS1390_REG_SECONDS;
-> +
-> +	/* do the i/o */
-> +	status = spi_write_then_read(spi, chip->txrx_buf, 1, chip->txrx_buf, 8);
-> +	if (status != 0)
-> +		return status;
-> +
-> +	/* The chip sends data in this order:
-> +	 * Seconds, Minutes, Hours, Day, Date, Month / Century, Year */
-> +	dt->tm_sec	= bcd2bin(chip->txrx_buf[0]);
-> +	dt->tm_min	= bcd2bin(chip->txrx_buf[1]);
-> +	dt->tm_hour	= bcd2bin(chip->txrx_buf[2]);
-> +	dt->tm_wday	= bcd2bin(chip->txrx_buf[3]);
-> +	dt->tm_mday	= bcd2bin(chip->txrx_buf[4]);
-> +	/* mask off century bit */
-> +	dt->tm_mon	= bcd2bin(chip->txrx_buf[5] & 0x7f) - 1;
-> +	/* adjust for century bit */
-> +	dt->tm_year = bcd2bin(chip->txrx_buf[6]) + ((chip->txrx_buf[5] & 0x80) ? 100 : 0);
-> +
-> +	return rtc_valid_tm(dt);
-> +}
-> +
-> +static int ds1390_set_datetime(struct device *dev, struct rtc_time *dt)
-> +{
-> +	struct spi_device *spi = to_spi_device(dev);
-> +	struct ds1390 *chip = dev_get_drvdata(dev);
-> +
-> +	/* build the message */
-> +	chip->txrx_buf[0] = DS1390_REG_SECONDS | 0x80;
-> +	chip->txrx_buf[1] = bin2bcd(dt->tm_sec);
-> +	chip->txrx_buf[2] = bin2bcd(dt->tm_min);
-> +	chip->txrx_buf[3] = bin2bcd(dt->tm_hour);
-> +	chip->txrx_buf[4] = bin2bcd(dt->tm_wday);
-> +	chip->txrx_buf[5] = bin2bcd(dt->tm_mday);
-> +	chip->txrx_buf[6] = bin2bcd(dt->tm_mon + 1) |
-> +				((dt->tm_year > 99) ? 0x80 : 0x00);
-> +	chip->txrx_buf[7] = bin2bcd(dt->tm_year % 100);
-> +
-> +	/* do the i/o */
-> +	return spi_write_then_read(spi, chip->txrx_buf, 8, NULL, 0);
-> +}
-> +
-> +static int ds1390_read_time(struct device *dev, struct rtc_time *tm)
-> +{
-> +	return ds1390_get_datetime(dev, tm);
-> +}
-> +
-> +static int ds1390_set_time(struct device *dev, struct rtc_time *tm)
-> +{
-> +	return ds1390_set_datetime(dev, tm);
-> +}
-> +
-> +static const struct rtc_class_ops ds1390_rtc_ops = {
-> +	.read_time	= ds1390_read_time,
-> +	.set_time	= ds1390_set_time,
-> +};
-> +
-> +static int __devinit ds1390_probe(struct spi_device *spi)
-> +{
-> +	struct rtc_device *rtc;
-> +	unsigned char tmp;
-> +	struct ds1390 *chip;
-> +	int res;
-> +
-> +	printk(KERN_INFO "DS1390 SPI RTC driver\n");
-> +
-> +	rtc = rtc_device_register("ds1390",
-> +				&spi->dev, &ds1390_rtc_ops, THIS_MODULE);
-> +	if (IS_ERR(rtc)) {
-> +		printk(KERN_ALERT "DS1390: unable to register device\n");
-
- please use dev_err instead of printk.
-
-> +		return PTR_ERR(rtc);
-> +	}
-> +
-> +	spi->mode = SPI_MODE_3;
-> +	spi->bits_per_word = 8;
-> +	spi_setup(spi);
-> +
-> +	chip = kzalloc(sizeof *chip, GFP_KERNEL);
-> +	if (!chip) {
-> +		printk(KERN_ALERT "DS1390: unable to allocate device memory\n");
-> +		rtc_device_unregister(rtc);
-> +		return -ENOMEM;
-> +	}
-> +	chip->rtc = rtc;
-> +	dev_set_drvdata(&spi->dev, chip);
-> +	res = ds1390_get_reg(&spi->dev, DS1390_REG_SECONDS, &tmp);
-> +	if (res) {
-> +		printk(KERN_ALERT "DS1390: unable to read device\n");
-
- dev_err
-
-> +		rtc_device_unregister(rtc);
-> +		return res;
-
-  you need to kfree(chip) here.
-
-  you might want to allocate chip at the beginning of this function,
-  initialize your chip structure, check that you are able to read and only
-  then you should register the rtc.
-
-  
-
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int __devexit ds1390_remove(struct spi_device *spi)
-> +{
-> +	struct ds1390 *chip = platform_get_drvdata(spi);
-> +	struct rtc_device *rtc = chip->rtc;
-> +
-> +	if (rtc)
- 
- no need to check rtc here
-
-> +		rtc_device_unregister(rtc);
-> +
-> +	kfree(chip);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct spi_driver ds1390_driver = {
-> +	.driver = {
-> +		.name	= "rtc-ds1390",
-> +		.owner	= THIS_MODULE,
-> +	},
-> +	.probe	= ds1390_probe,
-> +	.remove = __devexit_p(ds1390_remove),
-> +};
-> +
-> +static __init int ds1390_init(void)
-> +{
-> +	return spi_register_driver(&ds1390_driver);
-> +}
-> +module_init(ds1390_init);
-> +
-> +static __exit void ds1390_exit(void)
-> +{
-> +	spi_unregister_driver(&ds1390_driver);
-> +}
-> +module_exit(ds1390_exit);
-> +
-> +MODULE_DESCRIPTION("DS1390/93/94 SPI RTC driver");
-> +MODULE_AUTHOR("Mark Jackson <mpfj-kZtEnBLzDKq1Qrn1Bg8BZw@public.gmane.org>");
-> +MODULE_LICENSE("GPL");
-
-
--- 
-
- Best regards,
-
- Alessandro Zummo,
-  Tower Technologies - Torino, Italy
-
-  http://www.towertech.it
-
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+INfwvrS1xLi61PDIy6Oovq3A7aOvssbO8aOpxPq6w6OhCgogICAgILG+uavLvsrH0MXT/sq10rXT
+0M/euavLvizKx76t1f64rteisuG1xNX9uea5q8u+oaPIq7n6uPe089bQs8fK0L7509C31rmry76h
+owoK1NrIq8fyu6+1xLei1bm5+sTaytCzob6tvMO+utX5yNXH97ykwdKjocq5ycy80ly5q8u+wPvI
+886isaGjobnzuavLvtf31cq8sM/6ytu3vcPmCgrKx9Do0qrTw7W90rvQqcaxvt3I56O6o6i158TU
+sObU9ta1y7ChorXnxNSw5rqjudi9yb/uyum3osaxoaLG1c2oyczGt7eixrGhorXYy7Chor2o1v6w
+stewoaIKCsbky/y3/s7xoaK547jmoaK158TUsObUy8rkt6LGsaOptcihraGtoaPLsMLKv8m4+b7d
+y/m/qr3wtu61xLTz0KHAtNCtycyjobKivajS6bOkxtq1xLrP1/ehowoKICAgICDU2s7SuavLvrPJ
+waK24MTq0rvWsbzhs9bS1NDF08M7y/m/qr74ttTKx9XmxrGho9Taus/X99LUtPq/qrXEt73Kvczh
+uam1vc67tcS3/s7xo6wKCsjnufO5q8u+09DQqdLJwse78rWj0MSjrL/Jyc/N+LLp1qS78sTDyKXL
+sM7xtda/27rLttTIt8jPuvPU2bi2v+6jrNTaztK5q8u+uLrU8LXEzKy2yAoK1/a1vb/Nu6e3xdDE
+wvrS4qOhyOe08sjFxPqxprnzyrG85KOsvrTH67z7wcKjoQoKICAgICAgICAg16MKCiAgICAgIMnM
+ICAgIOz3ICAgICAgICAgICAgICAgICC7ttOtwLS159fJ0a+hoseizLijoQoKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIMGqIM+1IMjLIKO6w7cg0KEgveMKCiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICDK1iAgILv6ICCjuiAxIDMgNSAzIDQgMiAyIDQgMCAwIDIKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUSAg
+ICAgUSAgOyAgOCA1IDIgNiA2IDIgNyA3IDUKIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAg08ogICAgz+Qgo7sgenNzejExNTVAMTYzLmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNG
+Lk5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVy
+J3MgY2hhbGxlbmdlCkJ1aWxkIHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3
+aXRoIE1vYmxpbiBTREsgJiB3aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBm
+b3IgdHdvIHRvIGFuIE9wZW4gU291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRw
+Oi8vbW9ibGluLWNvbnRlc3Qub3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

@@ -1,10 +1,10 @@
-From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
-Subject: [SPAM] 票据代理
-Date: Wed, 5 Nov 2008 17:34:27 +0800
-Message-ID: <E1KxemB-0005Zn-FW@335xhf1.ch3.sourceforge.com>
+From: "Breaking news" <tteluttu-NNu/2P17gMdO9Pa/6s5aO1RmA4Ez0SVy@public.gmane.org>
+Subject: [SPAM] Uplong our dignity
+Date: Wed, 5 Nov 2008 20:42:08 -0600
+Message-ID: <72796047.9366496343773.JavaMail.root@B90A973DC882>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0007_01C93F86.F89D3670"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,30 +17,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-INfwvrS1xLi61PDIy6Oovq3A7aOvssbO8aOpxPq6w6OhCgogICAgILG+uavLvsrH0MXT/sq10rXT
-0M/euavLvizKx76t1f64rteisuG1xNX9uea5q8u+oaPIq7n6uPe089bQs8fK0L7509C31rmry76h
-owoK1NrIq8fyu6+1xLei1bm5+sTaytCzob6tvMO+utX5yNXH97ykwdKjocq5ycy80ly5q8u+wPvI
-886isaGjobnzuavLvtf31cq8sM/6ytu3vcPmCgrKx9Do0qrTw7W90rvQqcaxvt3I56O6o6i158TU
-sObU9ta1y7ChorXnxNSw5rqjudi9yb/uyum3osaxoaLG1c2oyczGt7eixrGhorXYy7Chor2o1v6w
-stewoaIKCsbky/y3/s7xoaK547jmoaK158TUsObUy8rkt6LGsaOptcihraGtoaPLsMLKv8m4+b7d
-y/m/qr3wtu61xLTz0KHAtNCtycyjobKivajS6bOkxtq1xLrP1/ehowoKICAgICDU2s7SuavLvrPJ
-waK24MTq0rvWsbzhs9bS1NDF08M7y/m/qr74ttTKx9XmxrGho9Taus/X99LUtPq/qrXEt73Kvczh
-uam1vc67tcS3/s7xo6wKCsjnufO5q8u+09DQqdLJwse78rWj0MSjrL/Jyc/N+LLp1qS78sTDyKXL
-sM7xtda/27rLttTIt8jPuvPU2bi2v+6jrNTaztK5q8u+uLrU8LXEzKy2yAoK1/a1vb/Nu6e3xdDE
-wvrS4qOhyOe08sjFxPqxprnzyrG85KOsvrTH67z7wcKjoQoKICAgICAgICAg16MKCiAgICAgIMnM
-ICAgIOz3ICAgICAgICAgICAgICAgICC7ttOtwLS159fJ0a+hoseizLijoQoKICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIMGqIM+1IMjLIKO6w7cg0KEgveMKCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICDK1iAgILv6ICCjuiAxIDMgNSAzIDQgMiAyIDQgMCAwIDIKICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUSAg
-ICAgUSAgOyAgOCA1IDIgNiA2IDIgNyA3IDUKIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAg08ogICAgz+Qgo7sgenNzejExNTVAMTYzLmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNG
-Lk5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVy
-J3MgY2hhbGxlbmdlCkJ1aWxkIHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3
-aXRoIE1vYmxpbiBTREsgJiB3aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBm
-b3IgdHdvIHRvIGFuIE9wZW4gU291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRw
-Oi8vbW9ibGluLWNvbnRlc3Qub3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
-ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
-LWdlbmVyYWwK
+------=_NextPart_000_0007_01C93F86.F89D3670
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<html>
+<head>
+<title>Mad 4 Marketing</title>
+
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<p align="center"><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">If you are unable to see the message below, <A href="http://dxxfj.ideaever.com/">click here to view</A>.<br>
+</FONT><font face="ARIAL" color="#808080" size="2"><br>
+</font></CENTER>
+</p>
+<div align="center">
+  <table border="0" width="600" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+      <p align="center"><a href="http://sduywzf.ideaever.com/"><img border="0" src="http://eoxdzq.ideaever.com/pic_under2.jpg"></a></td>
+    </tr>
+  </table>
+</div>
+<table width="555" border="0" align="center" cellpadding="10" cellspacing="0">
+  <tr>
+    <td align="center" class="gray">
+      <p> <font size="-1" color="#999999" face="Arial, Helvetica, sans-serif">You have received this message because you opted in to receives Mad 4 Marketing pecial <br>
+        offers via email. Login to your member account to</font> <font size="-2" face="Arial, Helvetica, sans-serif">
+  <a href="http://xjogyz.ideaever.com/" >
+  <font color="#999999" size="-1">edit your email subscription</font></a>
+  <font color="#999999" size="-1">.</font><font color="#999999"><br>
+        <font size="-1">Click here to</font>
+  </font></font> <font size="-2" face="Arial, Helvetica, sans-serif">
+  <a href="http://ecpeyc.ideaever.com/remove.php?remove=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" >
+  <font color="#999999" size="-1">unsubscribe</font></a><font color="#999999" size="-1">.</font><br>
+        <br>
+        <font color="#999999" size="-1">PLEASE DO NOT REPLY - This is being sent
+        from an unattended mailbox. <br>
+      <p><font color="#999999" size="-1" face="Arial, Helvetica, sans-serif">Copyright &copy; 2008 Mad 4 Marketing, Inc. All rights reserved.<br>
+        5203 NW 33rd Ave, Fort Lauderdale, FL 33309</font></p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+------=_NextPart_000_0007_01C93F86.F89D3670
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+------=_NextPart_000_0007_01C93F86.F89D3670
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_0007_01C93F86.F89D3670--

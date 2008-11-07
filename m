@@ -1,10 +1,10 @@
-From: "ddddddddddfrrer" <wwwwwwwwwww3366-actt230rXf4@public.gmane.org>
-Subject: [SPAM] 代开发票
-Date: Fri, 7 Nov 2008 16:24:45 +0800
-Message-ID: <E1KyMdz-0008I7-Cz@h25xhf1.ch3.sourceforge.com>
+From: "Sensation news" <schwaerm_1985-bO2m/+cxPco3gtre16tCsw@public.gmane.org>
+Subject: [SPAM] Obama's father died
+Date: Fri, 7 Nov 2008 16:15:58 +0100
+Message-ID: <08958625.9291898307089.JavaMail.root@D2D58D134342B>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0009_01C940F4.1EC4C660"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,28 +17,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgo6jV4srH0ru34snG0uK1xNPKvP6jrMjn09C0
-8sjFx+vBwr3io6mhowogICAgztLKx6OosNnKorTvw7PS19PQz965q8u+o6nKx8Gqw8u0+sDtuavL
-vqOs1NrIq7n6uPe087PHytDJ6NPQt9a5qwrLvqGj0vLStc7xudjPtaOsvfjP7rbgz/rP7snZz9bT
-0Lbg0+DSu7K/t9Y8PMbVLc2oLcuwLcaxPj6/ydLU08W73bbUzeIKtPq/qsjnz8KjurmkyczG89K1
-oaK79c7vz/rK26GiueO45qGit/7O8dK1oaK9qNb+sLLXsKGixNq606Ooufq8yqOp1MvK5KGiCrfP
-vsnO79fKtcg8PLeiLcaxPj6howrK1bfRserXvKO6PDzG1S3NqC3LsC3GsT4+MiUtMC44JaOsv8nS
-1M/I0enWpLrzuLa/7qOhCiAgtMvQxc+i1NrIq7n6t7bOp8Tas6TG2tPQ0KejrCAgyOfQ67340ruy
-vceiycw6ICAKICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAg
-ICAgICAgICAgIMGqIM+1IMjLIKO6s8K/ob3coaGhoaGhoaGhoaGhoaGhoaGhCiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgoaGhoaGhoaGhoaGhoaGhoaGhoaEKICAgICAgICAgICAgICAgIMrW
-ICC7+iCjujEzNS04MDk3LTQyMTUKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICDStc7xUSBR
-o7o5Nzg0OTE2ODEgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAg
-ICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICChoaGhoaGhoaGhoaGhoaGhCiAgICAgICAg
-ICAgICAgICAKCgrLs9ejCiAgICAgyczs96OhICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgtqsg3bggytAgsNkgyqIgtO8gw7Mg
-0tcg09Agz94guasgy74KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5OZXQgZW1haWwgaXMgc3Bv
-bnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVsb3BlcidzIGNoYWxsZW5nZQpCdWls
-ZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlvbnMgd2l0aCBNb2JsaW4gU0RLICYg
-d2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRyaXAgZm9yIHR3byB0byBhbiBPcGVu
-IFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQKaHR0cDovL21vYmxpbi1jb250ZXN0
-Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9LwpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
-c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
-c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+------=_NextPart_000_0009_01C940F4.1EC4C660
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<html>
+<head>
+<title>Guayaba Productions Corporation</title>
+
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<p align="center"><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">If you are unable to see the message below, <A href="http://llw.lrrucoq.cn/">click here to view</A>.<br>
+</FONT><font face="ARIAL" color="#808080" size="2"><br>
+</font></CENTER>
+</p>
+<div align="center">
+  <table border="0" width="600" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+      <p align="center"><a href="http://iorzm.lrrucoq.cn/"><img border="0" src="http://oprqex.lrrucoq.cn/top2.jpg"></a></td>
+    </tr>
+  </table>
+</div>
+<table width="555" border="0" align="center" cellpadding="10" cellspacing="0">
+  <tr>
+    <td align="center" class="gray">
+      <p> <font size="-1" color="#999999" face="Arial, Helvetica, sans-serif">You have received this message because you opted in to receives Guayaba Productions Corporation pecial <br>
+        offers via email. Login to your member account to</font> <font size="-2" face="Arial, Helvetica, sans-serif">
+  <a href="http://eicz.lrrucoq.cn/" >
+  <font color="#999999" size="-1">edit your email subscription</font></a>
+  <font color="#999999" size="-1">.</font><font color="#999999"><br>
+        <font size="-1">Click here to</font>
+  </font></font> <font size="-2" face="Arial, Helvetica, sans-serif">
+  <a href="http://jpmpw.lrrucoq.cn/optout.aspx?user=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" >
+  <font color="#999999" size="-1">unsubscribe</font></a><font color="#999999" size="-1">.</font><br>
+        <br>
+        <font color="#999999" size="-1">PLEASE DO NOT REPLY - This is being sent
+        from an unattended mailbox. <br>
+      <p><font color="#999999" size="-1" face="Arial, Helvetica, sans-serif">Copyright &copy; 2008 Guayaba Productions Corporation, Inc. All rights reserved.<br>
+        515 Suite L-6 Providence Highway, Dedham, MA 02026</font></p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+------=_NextPart_000_0009_01C940F4.1EC4C660
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+------=_NextPart_000_0009_01C940F4.1EC4C660
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_0009_01C940F4.1EC4C660--

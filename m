@@ -1,40 +1,44 @@
-From: Alessandro Zummo <alessandro.zummo@towertech.it>
-Subject: Re: [rtc-linux] [PATCH v6] Add Dallas DS1390/93/94 RTC chips
-Date: Thu, 6 Nov 2008 18:42:46 +0100
-Message-ID: <20081106184246.53950fa0@i1501.lan.towertech.it>
-References: <4912B459.2020704@mimc.co.uk>
+From: "ddddddddddfrrer" <wwwwwwwwwww3366-actt230rXf4@public.gmane.org>
+Subject: [SPAM] 代开发票
+Date: Fri, 7 Nov 2008 16:24:45 +0800
+Message-ID: <E1KyMdz-0008I7-Cz@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: mpfj@mimc.co.uk, dbrownell@users.sourceforge.net,
-	lkml <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net
-To: rtc-linux@googlegroups.com
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1751118AbYKFRnI@vger.kernel.org>
-In-Reply-To: <4912B459.2020704@mimc.co.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 06 Nov 2008 09:09:45 +0000
-Mark Jackson <mpfj@mimc.co.uk> wrote:
-
-> v6 (!!) of this patch with even more code tidying as per previous comments.
-
- I know.. I'm becoming stricter and stricter as the time goes by.. 
-
-> Also only a single tx/rx buffer is used.
-> Now uses spi_write_then_read()
-> Comments changed to include extra chips in the family
-> 
-> This patch adds support for the Dallas DS1390/93/94 SPI RTC chip.
-
- There's still one printk left that you can avoid :)
-
--- 
-
- Best regards,
-
- Alessandro Zummo,
-  Tower Technologies - Torino, Italy
-
-  http://www.towertech.it
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgo6jV4srH0ru34snG0uK1xNPKvP6jrMjn09C0
+8sjFx+vBwr3io6mhowogICAgztLKx6OosNnKorTvw7PS19PQz965q8u+o6nKx8Gqw8u0+sDtuavL
+vqOs1NrIq7n6uPe087PHytDJ6NPQt9a5qwrLvqGj0vLStc7xudjPtaOsvfjP7rbgz/rP7snZz9bT
+0Lbg0+DSu7K/t9Y8PMbVLc2oLcuwLcaxPj6/ydLU08W73bbUzeIKtPq/qsjnz8KjurmkyczG89K1
+oaK79c7vz/rK26GiueO45qGit/7O8dK1oaK9qNb+sLLXsKGixNq606Ooufq8yqOp1MvK5KGiCrfP
+vsnO79fKtcg8PLeiLcaxPj6howrK1bfRserXvKO6PDzG1S3NqC3LsC3GsT4+MiUtMC44JaOsv8nS
+1M/I0enWpLrzuLa/7qOhCiAgtMvQxc+i1NrIq7n6t7bOp8Tas6TG2tPQ0KejrCAgyOfQ67340ruy
+vceiycw6ICAKICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAg
+ICAgICAgICAgIMGqIM+1IMjLIKO6s8K/ob3coaGhoaGhoaGhoaGhoaGhoaGhCiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgoaGhoaGhoaGhoaGhoaGhoaGhoaEKICAgICAgICAgICAgICAgIMrW
+ICC7+iCjujEzNS04MDk3LTQyMTUKICAgICAgICAgICAgCiAgICAgICAgICAgICAgICDStc7xUSBR
+o7o5Nzg0OTE2ODEgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAg
+ICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICChoaGhoaGhoaGhoaGhoaGhCiAgICAgICAg
+ICAgICAgICAKCgrLs9ejCiAgICAgyczs96OhICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgtqsg3bggytAgsNkgyqIgtO8gw7Mg
+0tcg09Agz94guasgy74KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5OZXQgZW1haWwgaXMgc3Bv
+bnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVsb3BlcidzIGNoYWxsZW5nZQpCdWls
+ZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlvbnMgd2l0aCBNb2JsaW4gU0RLICYg
+d2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRyaXAgZm9yIHR3byB0byBhbiBPcGVu
+IFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQKaHR0cDovL21vYmxpbi1jb250ZXN0
+Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9LwpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
+c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
+c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

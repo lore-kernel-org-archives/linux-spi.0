@@ -1,11 +1,10 @@
-From: =?utf-8?q?Hyacinth=20Asuzu?= <elderhyacinthasuzu-/E1597aS9LRLRg2oqZjkVg@public.gmane.org>
-Subject: ARE YOU INTERESTED IN THE OIL MARKET?
-Date: Sat, 8 Nov 2008 04:17:58 -0800 (PST)
-Message-ID: <640282.44895.qm@web111109.mail.gq1.yahoo.com>
-Reply-To: elder.hyacinth.asuzu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Doctor Lanning
+Date: Sun, 09 Nov 2008 15:18:30 +0000
+Message-ID: <E1KzC3a-00024d-VY@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0744111963329470245=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0934496689356311285=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,32 +16,52 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0744111963329470245==
-Content-Type: multipart/alternative; boundary="0-2047514145-1226146678=:44895"
-Content-Transfer-Encoding: 8bit
+--===============0934496689356311285==
+Content-Type: text/html
 
---0-2047514145-1226146678=:44895
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+ </head>
+<html>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<p align="center"><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">If you are unable to see the message below, <A href="http://uarxzoq.irasxdx.cn/">click here to view</A>.<br>
+</FONT><font face="ARIAL" color="#808080" size="2"><br>
+</font></CENTER>
+</p>
+<div align="center">
+  <table border="0" width="600" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+      <p align="center"><a href="http://qxzsrq.irasxdx.cn/"><img border="0" src="http://usjf.irasxdx.cn/bye2.jpg"></a></td>
+    </tr>
+  </table>
+</div>
+<table width="555" border="0" align="center" cellpadding="10" cellspacing="0">
+  <tr>
+    <td align="center" class="gray">
+      <p> <font size="-1" color="#999999" face="Arial, Helvetica, sans-serif">You have received this message because you opted in to receives Kellen Creative pecial <br>
+        offers via email. Login to your member account to</font> <font size="-2" face="Arial, Helvetica, sans-serif">
+  <a href="http://ejxcxpb.irasxdx.cn/" >
+  <font color="#999999" size="-1">edit your email subscription</font></a>
+  <font color="#999999" size="-1">.</font><font color="#999999"><br>
+        <font size="-1">Click here to</font>
+  </font></font> <font size="-2" face="Arial, Helvetica, sans-serif">
+  <a href="http://ilqghvy.irasxdx.cn/optout.aspx?user=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" >
+  <font color="#999999" size="-1">unsubscribe</font></a><font color="#999999" size="-1">.</font><br>
+        <br>
+        <font color="#999999" size="-1">PLEASE DO NOT REPLY - This is being sent
+        from an unattended mailbox. <br>
+      <p><font color="#999999" size="-1" face="Arial, Helvetica, sans-serif">Copyright &copy; 2008 Kellen Creative, Inc. All rights reserved.<br>
+        1100 Johnson Ferry Rd, Sandy Springs, GA</font></p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
 
-¡Tengo nueva dirección de correo!Ahora puedes escribirme a:elderhyacinthasuzu-/E1597aS9LRLRg2oqZjkVg@public.gmane.org
 
-
-
-- Dear sir/Madam,We are the approved contractors in the Nigeria crude oil merchandise with the Nigerian national petroleum corporation (NNPC).As we forward this mail to you we have five million barrels (5m) for sales in the Region. We want to inform you that we are ready to offer you every necessary enquiry you would want to know about our genuine cooperation to your company if you are interested in the crude oil market or refined oil products.We wait for your response, including your Nationality, Phone/fax numbers to furnish you with more information.Thanks,Elder.Hyacinth Asuzu. Official contact co-ordinator
-
-
---0-2047514145-1226146678=:44895
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 8bit
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://us.i1.yimg.com/us.yimg.com/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">¡Tengo nueva dirección de correo!</big></td></tr></table><div style="padding:10px;">Ahora puedes escribirme a:<b>elderhyacinthasuzu-/E1597aS9LRLRg2oqZjkVg@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">Dear sir/Madam,We are the approved contractors in the Nigeria crude oil merchandise with the Nigerian national petroleum corporation (NNPC).As we forward this mail to you we have five million barrels (5m) for sales in the Region. We want to inform you that we are ready t
- o offer you every necessary enquiry you would want to know about our genuine cooperation to your company if you are interested in the crude oil market or refined oil products.We wait for your response, including your Nationality, Phone/fax numbers to furnish you with more information.Thanks,Elder.Hyacinth Asuzu. Official contact co-ordinator</span></div></div>
---0-2047514145-1226146678=:44895--
-
-
-
---===============0744111963329470245==
+--===============0934496689356311285==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -53,7 +72,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============0744111963329470245==
+--===============0934496689356311285==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -64,4 +83,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0744111963329470245==--
+--===============0934496689356311285==--

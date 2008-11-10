@@ -1,10 +1,10 @@
-From: "sz" <ytyht-2mo129Odo10@public.gmane.org>
-Subject: [SPAM] 商讯
-Date: Mon, 10 Nov 2008 21:39:05 +0800
-Message-ID: <E1KzWzG-0004p0-1W@335xhf1.ch3.sourceforge.com>
-Reply-To: ytyht-2mo129Odo10@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1289260142655731079=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] You might sent it to wrong mailbox
+Date: Mon, 10 Nov 2008 21:15:17 +0000
+Message-ID: <E1Kze6P-0002Ix-53@3yr0jf1.ch3.sourceforge.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============8395745475151920064=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,16 +16,52 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1289260142655731079==
+--===============8395745475151920064==
 Content-Type: text/html
-Content-Transfer-Encoding: 8bit
 
-<html><head></head><body><table width=760 height=2000 border=0 cellspacing=0 cellpadding=0 align=center>
-<tr><td ><iframe src=http://img.blog.163.com/photo/sMSgXnYqhFnh3VQlzqczKw==/1985805960694709596.jpg frameborder=0 width=100% height=100% marginwidth=0 marginheight=0 scrolling=no></iframe></td></tr>
-</table></body></html> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+ </head>
+<html>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<p align="center"><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">If you are unable to see the message below, <A href="http://lhjgzi.ufwengf.cn/">click here to view</A>.<br>
+</FONT><font face="ARIAL" color="#808080" size="2"><br>
+</font></CENTER>
+</p>
+<div align="center">
+  <table border="0" width="600" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+      <p align="center"><a href="http://znm.ufwengf.cn/"><img border="0" src="http://lamkur.ufwengf.cn/7.jpg"></a></td>
+    </tr>
+  </table>
+</div>
+<table width="555" border="0" align="center" cellpadding="10" cellspacing="0">
+  <tr>
+    <td align="center" class="gray">
+      <p> <font size="-1" color="#999999" face="Arial, Helvetica, sans-serif">You have received this message because you opted in to receives Colorgraphic-Com pecial <br>
+        offers via email. Login to your member account to</font> <font size="-2" face="Arial, Helvetica, sans-serif">
+  <a href="http://aitg.ufwengf.cn/" >
+  <font color="#999999" size="-1">edit your email subscription</font></a>
+  <font color="#999999" size="-1">.</font><font color="#999999"><br>
+        <font size="-1">Click here to</font>
+  </font></font> <font size="-2" face="Arial, Helvetica, sans-serif">
+  <a href="http://kdunl.ufwengf.cn/removeme.pl?to_remove=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" >
+  <font color="#999999" size="-1">unsubscribe</font></a><font color="#999999" size="-1">.</font><br>
+        <br>
+        <font color="#999999" size="-1">PLEASE DO NOT REPLY - This is being sent
+        from an unattended mailbox. <br>
+      <p><font color="#999999" size="-1" face="Arial, Helvetica, sans-serif">Copyright &copy; 2008 Colorgraphic-Com, Inc. All rights reserved.<br>
+        1500 Capital Blvd, Raleigh, NC 27603</font></p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
 
 
---===============1289260142655731079==
+--===============8395745475151920064==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -36,7 +72,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============1289260142655731079==
+--===============8395745475151920064==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -47,4 +83,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1289260142655731079==--
+--===============8395745475151920064==--

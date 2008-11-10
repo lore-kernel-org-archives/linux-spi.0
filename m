@@ -1,9 +1,9 @@
 From: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] You might sent it to wrong mailbox
-Date: Mon, 10 Nov 2008 21:15:17 +0000
-Message-ID: <E1Kze6P-0002Ix-53@3yr0jf1.ch3.sourceforge.com>
+Subject: [SPAM] Obama divides the country
+Date: Mon, 10 Nov 2008 22:01:43 +0000
+Message-ID: <E1KzepL-00052C-DJ@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8395745475151920064=="
+Content-Type: multipart/mixed; boundary="===============3939359294949661160=="
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,7 +16,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8395745475151920064==
+--===============3939359294949661160==
 Content-Type: text/html
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -25,7 +25,7 @@ Content-Type: text/html
  </head>
 <html>
 <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<p align="center"><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">If you are unable to see the message below, <A href="http://lhjgzi.ufwengf.cn/">click here to view</A>.<br>
+<p align="center"><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">If you are unable to see the message below, <A href="http://vgt.rpwnote.cn/">click here to view</A>.<br>
 </FONT><font face="ARIAL" color="#808080" size="2"><br>
 </font></CENTER>
 </p>
@@ -33,7 +33,7 @@ Content-Type: text/html
   <table border="0" width="600" cellspacing="0" cellpadding="0">
     <tr>
       <td>
-      <p align="center"><a href="http://znm.ufwengf.cn/"><img border="0" src="http://lamkur.ufwengf.cn/7.jpg"></a></td>
+      <p align="center"><a href="http://gmihh.rpwnote.cn/"><img border="0" src="http://ehfr.rpwnote.cn/7.jpg"></a></td>
     </tr>
   </table>
 </div>
@@ -42,12 +42,12 @@ Content-Type: text/html
     <td align="center" class="gray">
       <p> <font size="-1" color="#999999" face="Arial, Helvetica, sans-serif">You have received this message because you opted in to receives Colorgraphic-Com pecial <br>
         offers via email. Login to your member account to</font> <font size="-2" face="Arial, Helvetica, sans-serif">
-  <a href="http://aitg.ufwengf.cn/" >
+  <a href="http://qwjaj.rpwnote.cn/" >
   <font color="#999999" size="-1">edit your email subscription</font></a>
   <font color="#999999" size="-1">.</font><font color="#999999"><br>
         <font size="-1">Click here to</font>
   </font></font> <font size="-2" face="Arial, Helvetica, sans-serif">
-  <a href="http://kdunl.ufwengf.cn/removeme.pl?to_remove=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" >
+  <a href="http://wkyfqbs.rpwnote.cn/removeme.pl?to_remove=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" >
   <font color="#999999" size="-1">unsubscribe</font></a><font color="#999999" size="-1">.</font><br>
         <br>
         <font color="#999999" size="-1">PLEASE DO NOT REPLY - This is being sent
@@ -61,7 +61,7 @@ Content-Type: text/html
 </html>
 
 
---===============8395745475151920064==
+--===============3939359294949661160==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -72,7 +72,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============8395745475151920064==
+--===============3939359294949661160==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -83,4 +83,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8395745475151920064==--
+--===============3939359294949661160==--

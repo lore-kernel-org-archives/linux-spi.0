@@ -1,12 +1,12 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: SPI TX andRX buffer overlap
-Date: Thu, 13 Nov 2008 15:02:07 -0500
-Message-ID: <491C87BF.6030905@whoi.edu>
+From: Michael Holmer <mail1-BoNl9JPmOHUAvxtiuMwx3w@public.gmane.org>
+Subject: Re
+Date: 13 Nov 2008 15:46:59 -0300
+Message-ID: <20081113184659.13191.qmail@web02.fangio.net>
+Reply-To: michael.holmer1-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,35 +18,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-David,
 
-In DMA mode, pxa2xx_spi.c fails to detect the case where the tx and rx
-buffers overlap, and thus it performs dma_map_single incorrectly for
-that case.  I am working on a patch for that, but I have a question
-about overlapped buffers.
 
-I know that it is legitimate for the tx and rx buffers to be the same;
-spidev passes identical tx and rx addresses, for example.  I plan to fix
-pxa2xx_spi so that it handles buffers having the same start address
-(completely overlapped), in addition to the currently handled case of
-completely non-overlapped buffers.  For shared buffers, I plan to call
-dma_map_single() and dma_unmap_single() once for the buffer with a
-parameter of DMA_BIDIRECTIONAL (let me know if that is not correct).
+This message will be the last notification that I will send to you as my earlier letters to you through Post Office was returned undelivered.
 
-That said, I would like to know whether I can/should reject the case of
-overlapped buffers that do not have the same start address.  As I try to
-program for that case, the code is getting ugly.  It would be cleaner to
-detect overlapped but unequal buffers and refuse DMA in that case.
-Comments?
 
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
+
+Hence I decided to reach you via email because this information needs urgent attention. I'm contacting you because you bear the same surname with our deceased client who died in 2003, and the management of my bank have issued me a notice to provide an extended next of kin of the deceased or have the account confiscated within the next 14 banking days.
+
+
+
+I am the Telex Department manager of my bank and also the personal account officer to the deceased, and I will be disappointed if the labour of my deceased client is confiscated.
+
+
+
+So kindly get back to me with your full name and adress for appraisal.
+
+
+
+Michael Holmer.
+
+Private E-mail: micheal.holmer1-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
+
+
+
 
 
 -------------------------------------------------------------------------

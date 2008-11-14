@@ -1,13 +1,21 @@
-From: Michael Holmer <mail1-BoNl9JPmOHUAvxtiuMwx3w@public.gmane.org>
-Subject: Re
-Date: 13 Nov 2008 16:45:50 -0300
-Message-ID: <20081113194550.8593.qmail@web02.fangio.net>
-Reply-To: michael.holmer1-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: Re: [Gumstix-users] SPI output
+Date: Fri, 14 Nov 2008 13:45:37 -0500
+Message-ID: <491DC751.9020604@whoi.edu>
+References: <1206133276.47e4221cacd79@webmail.vt.edu>	
+	<20297759.post@talk.nabble.com> <490F3451.1070305@whoi.edu>	
+	<20309739.post@talk.nabble.com> <490F6006.8030205@whoi.edu>	
+	<20369138.post@talk.nabble.com> <491366E8.1040206@whoi.edu>	
+	<20371635.post@talk.nabble.com> <4913C07C.5060803@whoi.edu>	
+	<491B8318.7080208@whoi.edu>
+	<4753a0e30811141009l7a6899dchaf3b5ebf2b1654@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Pranav Sanghadia <pranav.sanghadia-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4753a0e30811141009l7a6899dchaf3b5ebf2b1654-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,30 +26,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Pranav Sanghadia wrote:
+> Hi Ned,
+> 
+> Thanks, I was stuck with Gumstix boot issue. But now the Gumstix is working
+> again.
+> 
+> I am taking a look at spidev documentation, looks like spidev is the way to
+> go.
 
+One other note.  For spidev to work with pxa2xx_spi in DMA mode, you
+will have to wait for a patch to pxa2xx_spi that I am working on.  There
+is a problem with DMA when using the same buffer for tx and rx, as
+spidev does.  It should still work as-is in PIO mode.
 
-This message will be the last notification that I will send to you as my earlier letters to you through Post Office was returned undelivered.
+> I am using buildroot latest version, do you know how to compile just one
+> kernel module say spidev without compiling whole kernel code?
 
+Not really.  Once you have compiled the whole kernel, if you then change
+one module, only that module (and maybe a few other minor things) will
+get re-compiled.
 
-
-Hence I decided to reach you via email because this information needs urgent attention. I'm contacting you because you bear the same surname with our deceased client who died in 2003, and the management of my bank have issued me a notice to provide an extended next of kin of the deceased or have the account confiscated within the next 14 banking days.
-
-
-
-I am the Telex Department manager of my bank and also the personal account officer to the deceased, and I will be disappointed if the labour of my deceased client is confiscated.
-
-
-
-So kindly get back to me with your full name and adress for appraisal.
-
-
-
-Michael Holmer.
-
-Private E-mail: micheal.holmer1-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-
-
-
+-- 
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
+http://www.whoi.edu/hpb/Site.do?id=1532
+http://www.whoi.edu/page.do?pid=10079
 
 
 -------------------------------------------------------------------------

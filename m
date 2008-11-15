@@ -1,10 +1,11 @@
-From: =?GB2312?B?g54qu93YlCqE1bK/?= <dfhdfhf-V1fLS7LMyRxWk0Htik3J/w@public.gmane.org>
-Subject: [SPAM] AD:(優*惠財*務部)
-Date: Mon, 15 Nov 2004 07:59:14 +0800
-Message-ID: <E1L18Z6-0000Fg-0u@h25xhf1.ch3.sourceforge.com>
-Reply-To: dfhdfhf-V1fLS7LMyRxWk0Htik3J/w@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============5011503624884392787=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: tftttfttghyytg-9Onoh4P/yGk@public.gmane.org
+Subject: [SPAM] 姹傝喘
+Date: Sat, 15 Nov 2008 11:09:44 +0800
+Message-ID: <E1L1BXc-0007X0-V6@235xhf1.ch3.sourceforge.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,41 +17,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5011503624884392787==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-
-
-  您好：
-
- 我公司現有各地區行業的（商品、建築、廣告、服務、等等）發嘌優惠代開！
-
- 可驗證後付款。如有需要請聯系 １３８２４３１３１８２ 陳先生！
-
- 順祝商祺！ QQ：３７２７４９９６３ 
-
-
---===============5011503624884392787==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============5011503624884392787==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5011503624884392787==--
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgCiAgICDO0rmry77Kx8Gsw8u0+sDtuavLvqOs
+1NrIq7n6uPe087PHytDJ6NPQt9a5q8u+oaPS8tK1zvG52M+1o6wKvfjP7rbgz/rP7snZz9bT0Lbg
+0+DSu7K/t9bG1c2oy7DGsb/J0tTTxbvdttTN4rT6v6rI58/Co7oKuaTJzMbz0rWhorv1zu/P+srb
+oaK547jmoaK3/s7x0rWhor2o1v6wstewoaLE2rrTo6i5+rzKo6nUy8rkoaIKt8++yc7v18q1yDw8
+t6ItxrE+PqGjCsrVt9Gx6te8o7o8PMbVLc2oLcuwLcaxPj4yJS0wLjglo6y/ydLUz8jR6dakuvO4
+tr/uo6EKICC0y9DFz6LU2sirufq3ts6nxNqzpMba09DQp6OsICDI59DrvfjSu7K9x6LJzDogIAog
+ICAgICAgICAgICAgICAgICAKICAgICAgICAgwarPtcjLo7rC3s/IyfogICAgICAgICAgIMrWICC7
++qO6MTM2MzI1MTY1MDAgICAgoaGhoaGhoaGhoaGhoaGhoaGhoaEKICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICBRICAgUTo0MDQyNzUxMTcKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5OZXQg
+ZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVsb3BlcidzIGNo
+YWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlvbnMgd2l0aCBN
+b2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRyaXAgZm9yIHR3
+byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQKaHR0cDovL21v
+Ymxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9LwpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

@@ -1,16 +1,15 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.28-rc4] spi: pxa2xx_spi.c fix
-	DMA	mapping sequence
-Date: Sat, 15 Nov 2008 14:09:41 -0800
-Message-ID: <200811151409.42097.david-b@pacbell.net>
-References: <491F3C1A.1030402@whoi.edu> <491F3D4E.8080502@whoi.edu>
+Subject: SPI controller bugfixes needed (full duplex +
+	DMA, data corruption)
+Date: Sat, 15 Nov 2008 14:22:32 -0800
+Message-ID: <200811151422.32748.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Andrea Paterniani@pogo, a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org,
+	Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <491F3D4E.8080502-/d+BM93fTQY@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -22,19 +21,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Saturday 15 November 2008, Ned Forrester wrote:
-> 
-> Assuming that you accept this patch, may I attach your Ack: and forward
-> this to stable along with a version for kernels older than 2.6.27, or
-> would you prefer to forward this to stable directly and for me to also
-> post the the older patch to spi-devel-general for your attention?
+Hi,
 
-I sent it along with some cosmetic tweaks (comments) ... thanks!
+We recently turned up a bug in the pxa2xx SPI driver, which
+turns out to also be present in the spi_imx.c and au1550_spi.c
+drivers too.
 
-Let me see the patch, then I'll ack ... note that you should hold
-off sending that until the 2.6.27-stable patch gets sent.
+Briefly, full duplex transfers are allowed to share the
+same buffer (or partially overlap it), which means that
+the dma mapping operations must be done in a safe order:
+
+ - first map the TX buffer, so cache data gets written
+   to memory where the DMA will pick it up;
+
+ - then map the RX buffer, so that cache entries (with
+   soon-to-be-stale data) get removed.
+
+Doing it the other order, as is done with spi_imx and
+with au1550_spi, causes data corruption by discarding
+data from the cache *before* writing it to memory.
+
+If you can do it, it'd be good to see this fixed before
+the 2.6.28 kernel ships.
 
 - Dave
+
+p.s. Note that full duplex transfers became a bit more
+     common after f9b90e39cbc5c4d6ef60022fd1f25d541df0aad1
+     merged (in the 2.6.28-rc0 merge frenzy).
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

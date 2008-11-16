@@ -1,9 +1,10 @@
-From: =?GB2312?B?wfXJ+g==?= <937722-asDsKnqBd0dSxwzBCSc979HuzzzSOjJt@public.gmane.org>
-Subject: [SPAM] 渚涘簲娑堟瘨椁愬叿 姹ゅ寵 13631001230
-Date: Mon, 17 Nov 2008 04:32:02 +0800
-Message-ID: <E1L1oJ2-0000X9-O0@3yr0jf1.ch3.sourceforge.com>
-Reply-To: cz13631001230-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============2036852985974720192=="
+From: fcfhdhfhgg-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 鎮ㄥソ!
+Date: Mon, 17 Nov 2008 04:53:07 +0800
+Message-ID: <E1L1ocu-0003sq-K0@335xhf1.ch3.sourceforge.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,39 +17,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2036852985974720192==
-Content-Type: text/plain
-
-饶平县华裕瓷业消毒餐具汤匙制作厂是在国内生产量最大调羹、勺子基地厂家(联系13631001230 刘李良）！主要生产：消毒餐具  汤匙、镁质晶钻瓷、镁质强化瓷、强化瓷、Q质瓷、美质瓷、贝质瓷、骨瓷、咖啡匙、色釉勺子等等汤匙大量批发和消毒餐具！（金钻瓷、浮雕金）新款酒店用瓷配套勺子和消毒餐具配套勺子等！欢迎你前来合作！
-           
- 联系方式：       
-
-QQ:120960238
-          0768-6883082
- E-MAIL: CZ13631001230-guc8Kt/Hbbw@public.gmane.org
- 联系人：刘李良先生      网址：www.rphytc.com
-
-
---===============2036852985974720192==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============2036852985974720192==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2036852985974720192==--
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgCgogICAgsb65q8u+1NoouePW3S62q924LsnP
+uqMu1eO9rS66vNbdLs/Dw8Uuva3L1S7UxsTPLrnz1t0uxM/E/rXItdi++dPQt9a5q8u+KSwKCiDS
+8r34z+69z7bgz9bN6rPJsrvBy8O/1MLP+srbtu62yKOsw7/UwtPQsr+31rbg0+C1xMbVzai3osax
+v8m21M3itPq/qqOstPq/qre2zqc6CgogyczGt82z0rvP+srboaK5pMnMxvPStaGiu/XO78/6ytuh
+ornjuOahorn6vMq79dTLtPqhor2o1v6wstewoaK3/s7x0rWhorXIuPfW1reixrEKCiAgICCxvrmr
+y77K1cihy7DCytPFu90wLjUloasyJdauvOSho8/qz7jLsMLKsLTV1b+qxrG98LbutPPQoceizLih
+o7G+uavLvr/J0tTPyL+qCgogxrG4+LnzuavLvqOsufO5q8u+ytW1vdHp1qTDu9PQzsrM4rrz1Nm4
+tr/uoaO587mry77I59PQ0OjSqsfrwLS158Gqz7WhowogCiAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIMuz16OjuiAgyczs96OhCgogICAgICAgICAgICAgIMnu29rK0NDC07HDs9LX09DP3rmr
+y74gICAgCgqhoaGhICDBqiDPtSDIy6O6wO68zsHhCgqhoaGhICDBqs+1tee7sKO6MTM2MjIzODY2
+MTYKICAgICAKICAgICAg0rUgIM7xUVGjujg3Njc1NDgyNAoKICAgICAgtefX09PKz+Sjumdkc3ox
+MzYyMjM4NjYxNkAxNjMuY29tIAogICAgCiAgIAoKCiAgICAKCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhp
+cyBTRi5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVs
+b3BlcidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlv
+bnMgd2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRy
+aXAgZm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQK
+aHR0cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9
+LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
+ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
+Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
+ZXZlbC1nZW5lcmFsCg==

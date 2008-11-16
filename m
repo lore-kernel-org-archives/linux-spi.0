@@ -1,9 +1,10 @@
-From: =?GB2312?B?wfXPyMn6?= <gh168gh-Xb2Y1Dfb9CI@public.gmane.org>
-Subject: [SPAM] 鍥炰俊
-Date: Sun, 16 Nov 2008 09:41:41 +0800
-Message-ID: <E1L1Wdx-0005z8-Ot@h25xhf1.ch3.sourceforge.com>
-Reply-To: gh168gh-Xb2Y1Dfb9CI@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1715855931018401193=="
+From: "=?utf-8?q?Brr.Frank=20Duke?=" <brr.frankduke-jtpRmYsQNJU@public.gmane.org>
+Subject: I seek your partnership in business
+Date: Mon, 17 Nov 2008 01:12:52 +0530 (IST)
+Message-ID: <839532.59070.qm@web95112.mail.in2.yahoo.com>
+Reply-To: frankduke_00-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============3796215749130918355=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,30 +17,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1715855931018401193==
-Content-Type: text/plain;charset="GB2312"
+--===============3796215749130918355==
+Content-Type: multipart/alternative; boundary="0-894773979-1226864572=:59070"
+Content-Transfer-Encoding: 8bit
 
-  TO:财务部    
+--0-894773979-1226864572=:59070
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-        您好，本公司现有正规{發}${票}提供,点数优惠!
+I have a new email address!You can now email me at: brr.frankduke-jtpRmYsQNJU@public.gmane.org
 
-    所有{發/票}可验证后付款，我司可提供全方面服务。
-
-    注:本公司承诺所用票据为各单位在税务局所领取,
-
-    完全负法律责任,实行规范管理及严格履行保密制度,
-
-    保守有关商业运作机密,如有疑问请来电咨询!
-
-     联系人: 刘先生
-
-     电  话:136 9989 4869，（长期有效）
-
-     请保留号码以备急用!
+Hello,
 
 
+I have proposal for you that involve US$12 Million.
 
---===============1715855931018401193==
+
+Reply for details
+
+
+regards
+
+- Honorable.Barr.Frank Duke
+
+
+--0-894773979-1226864572=:59070
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://us.i1.yimg.com/us.yimg.com/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>brr.frankduke-jtpRmYsQNJU@public.gmane.org</b><br><br><span style="color:green;">Hello,<br><br><br>I have proposal for you that involve US$12 Million.<br><br><br>Reply for details<br><br><br>regards</span><br><br>- <span style="color:green;">Honorable.Barr.Frank Duke</span></div></div>
+--0-894773979-1226864572=:59070--
+
+
+
+--===============3796215749130918355==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,7 +61,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============1715855931018401193==
+--===============3796215749130918355==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -61,4 +72,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1715855931018401193==--
+--===============3796215749130918355==--

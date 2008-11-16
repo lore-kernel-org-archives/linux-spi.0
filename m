@@ -1,16 +1,11 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: SPI controller bugfixes needed (full duplex +
-	DMA, data corruption)
-Date: Sat, 15 Nov 2008 14:22:32 -0800
-Message-ID: <200811151422.32748.david-b@pacbell.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Andrea Paterniani@pogo, a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org,
-	Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: =?GB2312?B?wfXPyMn6?= <gh168gh-Xb2Y1Dfb9CI@public.gmane.org>
+Subject: [SPAM] 鍥炰俊
+Date: Sun, 16 Nov 2008 09:41:41 +0800
+Message-ID: <E1L1Wdx-0005z8-Ot@h25xhf1.ch3.sourceforge.com>
+Reply-To: gh168gh-Xb2Y1Dfb9CI@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1715855931018401193=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,37 +16,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+--===============1715855931018401193==
+Content-Type: text/plain;charset="GB2312"
 
-We recently turned up a bug in the pxa2xx SPI driver, which
-turns out to also be present in the spi_imx.c and au1550_spi.c
-drivers too.
+  TO:财务部    
 
-Briefly, full duplex transfers are allowed to share the
-same buffer (or partially overlap it), which means that
-the dma mapping operations must be done in a safe order:
+        您好，本公司现有正规{發}${票}提供,点数优惠!
 
- - first map the TX buffer, so cache data gets written
-   to memory where the DMA will pick it up;
+    所有{發/票}可验证后付款，我司可提供全方面服务。
 
- - then map the RX buffer, so that cache entries (with
-   soon-to-be-stale data) get removed.
+    注:本公司承诺所用票据为各单位在税务局所领取,
 
-Doing it the other order, as is done with spi_imx and
-with au1550_spi, causes data corruption by discarding
-data from the cache *before* writing it to memory.
+    完全负法律责任,实行规范管理及严格履行保密制度,
 
-If you can do it, it'd be good to see this fixed before
-the 2.6.28 kernel ships.
+    保守有关商业运作机密,如有疑问请来电咨询!
 
-- Dave
+     联系人: 刘先生
 
-p.s. Note that full duplex transfers became a bit more
-     common after f9b90e39cbc5c4d6ef60022fd1f25d541df0aad1
-     merged (in the 2.6.28-rc0 merge frenzy).
+     电  话:136 9989 4869，（长期有效）
+
+     请保留号码以备急用!
+
+
+
+--===============1715855931018401193==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============1715855931018401193==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1715855931018401193==--

@@ -1,10 +1,9 @@
-From: "=?utf-8?q?Brr.Frank=20Duke?=" <brr.frankduke-jtpRmYsQNJU@public.gmane.org>
-Subject: I seek your partnership in business
-Date: Mon, 17 Nov 2008 01:12:52 +0530 (IST)
-Message-ID: <839532.59070.qm@web95112.mail.in2.yahoo.com>
-Reply-To: frankduke_00-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3796215749130918355=="
+From: =?GB2312?B?wfXJ+g==?= <937722-asDsKnqBd0dSxwzBCSc979HuzzzSOjJt@public.gmane.org>
+Subject: [SPAM] 渚涘簲娑堟瘨椁愬叿 姹ゅ寵 13631001230
+Date: Mon, 17 Nov 2008 04:32:02 +0800
+Message-ID: <E1L1oJ2-0000X9-O0@3yr0jf1.ch3.sourceforge.com>
+Reply-To: cz13631001230-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============2036852985974720192=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,40 +16,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3796215749130918355==
-Content-Type: multipart/alternative; boundary="0-894773979-1226864572=:59070"
-Content-Transfer-Encoding: 8bit
+--===============2036852985974720192==
+Content-Type: text/plain
 
---0-894773979-1226864572=:59070
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+饶平县华裕瓷业消毒餐具汤匙制作厂是在国内生产量最大调羹、勺子基地厂家(联系13631001230 刘李良）！主要生产：消毒餐具  汤匙、镁质晶钻瓷、镁质强化瓷、强化瓷、Q质瓷、美质瓷、贝质瓷、骨瓷、咖啡匙、色釉勺子等等汤匙大量批发和消毒餐具！（金钻瓷、浮雕金）新款酒店用瓷配套勺子和消毒餐具配套勺子等！欢迎你前来合作！
+           
+ 联系方式：       
 
-I have a new email address!You can now email me at: brr.frankduke-jtpRmYsQNJU@public.gmane.org
-
-Hello,
-
-
-I have proposal for you that involve US$12 Million.
+QQ:120960238
+          0768-6883082
+ E-MAIL: CZ13631001230-guc8Kt/Hbbw@public.gmane.org
+ 联系人：刘李良先生      网址：www.rphytc.com
 
 
-Reply for details
-
-
-regards
-
-- Honorable.Barr.Frank Duke
-
-
---0-894773979-1226864572=:59070
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 8bit
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://us.i1.yimg.com/us.yimg.com/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>brr.frankduke-jtpRmYsQNJU@public.gmane.org</b><br><br><span style="color:green;">Hello,<br><br><br>I have proposal for you that involve US$12 Million.<br><br><br>Reply for details<br><br><br>regards</span><br><br>- <span style="color:green;">Honorable.Barr.Frank Duke</span></div></div>
---0-894773979-1226864572=:59070--
-
-
-
---===============3796215749130918355==
+--===============2036852985974720192==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -61,7 +40,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============3796215749130918355==
+--===============2036852985974720192==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -72,4 +51,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============3796215749130918355==--
+--===============2036852985974720192==--

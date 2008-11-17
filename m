@@ -1,18 +1,15 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.28-rc5] SPI -- Freescale iMX SPI
-	controller driver
-Date: Mon, 17 Nov 2008 12:18:47 -0800
-Message-ID: <200811171218.47550.david-b@pacbell.net>
-References: <49217ACF.7080904@swapp-eng.it>
+Subject: [patch 2.6.28-rc5] atmel_spi: clean up SPIv1
+	quirk handling
+Date: Mon, 17 Nov 2008 11:47:44 -0800
+Message-ID: <200811171147.44411.david-b@pacbell.net>
 Reply-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: SPI Devel General <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Linux ARM Kernel <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
-To: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <49217ACF.7080904-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -24,89 +21,119 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 17 November 2008, Andrea Paterniani wrote:
-> Fix unsafe order in dma mapping operation.
+From: Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-This arrived horribly mangled.  Can you verify that the
-appended patch is an appropriate un-mangled version?
+Currently, we have a flag called "new_1" which is basically equivalent
+to cpu_is_at91rm9200(). The latter is also called directly a few places.
 
-======= CUT HERE
-From: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
+Clean up this mess by introducing a atmel_spi_v2() function for
+determining the controller version, and move all version dependent code
+over to use it. This allows us to remove the new_1 flag.
 
-Fix unsafe order in dma mapping operation: always flush data from
-the cache *BEFORE* invalidating it, to allow full duplex transfers
-where the same buffer may be used for both writes and reads.
-
-Signed-off-by: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
+Signed-off-by: Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_imx.c |   45 ++++++++++++++++++++++-----------------------
- 1 file changed, 22 insertions(+), 23 deletions(-)
+ drivers/spi/atmel_spi.c |   40 ++++++++++++++++++++++------------------
+ 1 file changed, 22 insertions(+), 18 deletions(-)
 
---- a/drivers/spi/spi_imx.c
-+++ b/drivers/spi/spi_imx.c
-@@ -506,20 +506,6 @@ static int map_dma_buffers(struct driver
- 	if (!IS_DMA_ALIGNED(drv_data->rx) || !IS_DMA_ALIGNED(drv_data->tx))
- 		return -1;
+--- a/drivers/spi/atmel_spi.c
++++ b/drivers/spi/atmel_spi.c
+@@ -30,13 +30,6 @@
+  * The core SPI transfer engine just talks to a register bank to set up
+  * DMA transfers; transfer queue progress is driven by IRQs.  The clock
+  * framework provides the base clock, subdivided for each spi_device.
+- *
+- * Newer controllers, marked with "new_1" flag, have:
+- *  - CR.LASTXFER
+- *  - SPI_MR.DIV32 may become FDIV or must-be-zero (here: always zero)
+- *  - SPI_SR.TXEMPTY, SPI_SR.NSSR (and corresponding irqs)
+- *  - SPI_CSRx.CSAAT
+- *  - SPI_CSRx.SBCR allows faster clocking
+  */
+ struct atmel_spi {
+ 	spinlock_t		lock;
+@@ -45,7 +38,6 @@ struct atmel_spi {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	struct platform_device	*pdev;
+-	unsigned		new_1:1;
+ 	struct spi_device	*stay;
  
--	/* NULL rx means write-only transfer and no map needed
--	   since rx DMA will not be used */
--	if (drv_data->rx) {
--		buf = drv_data->rx;
--		drv_data->rx_dma = dma_map_single(
--					dev,
--					buf,
--					drv_data->len,
--					DMA_FROM_DEVICE);
--		if (dma_mapping_error(dev, drv_data->rx_dma))
--			return -1;
--		drv_data->rx_dma_needs_unmap = 1;
--	}
--
- 	if (drv_data->tx == NULL) {
- 		/* Read only message --> use drv_data->dummy_dma_buf for dummy
- 		   writes to achive reads */
-@@ -533,18 +519,31 @@ static int map_dma_buffers(struct driver
- 					buf,
- 					drv_data->tx_map_len,
- 					DMA_TO_DEVICE);
--	if (dma_mapping_error(dev, drv_data->tx_dma)) {
--		if (drv_data->rx_dma) {
--			dma_unmap_single(dev,
--					drv_data->rx_dma,
--					drv_data->len,
--					DMA_FROM_DEVICE);
--			drv_data->rx_dma_needs_unmap = 0;
--		}
-+	if (dma_mapping_error(dev, drv_data->tx_dma))
- 		return -1;
--	}
- 	drv_data->tx_dma_needs_unmap = 1;
+ 	u8			stopping;
+@@ -63,6 +55,23 @@ struct atmel_spi {
+ #define INVALID_DMA_ADDRESS	0xffffffff
  
-+	/* NULL rx means write-only transfer and no map needed
-+	 * since rx DMA will not be used */
-+	if (drv_data->rx) {
-+		buf = drv_data->rx;
-+		drv_data->rx_dma = dma_map_single(dev,
-+						buf,
-+						drv_data->len,
-+						DMA_FROM_DEVICE);
-+		if (dma_mapping_error(dev, drv_data->rx_dma)) {
-+			if (drv_data->tx_dma) {
-+				dma_unmap_single(dev,
-+						drv_data->tx_dma,
-+						drv_data->tx_map_len,
-+						DMA_TO_DEVICE);
-+				drv_data->tx_dma_needs_unmap = 0;
-+			}
-+			return -1;
-+		}
-+		drv_data->rx_dma_needs_unmap = 1;
-+	}
+ /*
++ * Version 2 of the SPI controller has
++ *  - CR.LASTXFER
++ *  - SPI_MR.DIV32 may become FDIV or must-be-zero (here: always zero)
++ *  - SPI_SR.TXEMPTY, SPI_SR.NSSR (and corresponding irqs)
++ *  - SPI_CSRx.CSAAT
++ *  - SPI_CSRx.SBCR allows faster clocking
++ *
++ * We can determine the controller version by reading the VERSION
++ * register, but I haven't checked that it exists on all chips, and
++ * this is cheaper anyway.
++ */
++static bool atmel_spi_is_v2(void)
++{
++	return !cpu_is_at91rm9200();
++}
 +
- 	return 0;
++/*
+  * Earlier SPI controllers (e.g. on at91rm9200) have a design bug whereby
+  * they assume that spi slave device state will not change on deselect, so
+  * that automagic deselection is OK.  ("NPCSx rises if no data is to be
+@@ -105,7 +114,7 @@ static void cs_activate(struct atmel_spi
+ 			gpio, active ? " (high)" : "",
+ 			mr);
+ 
+-	if (!(cpu_is_at91rm9200() && spi->chip_select == 0))
++	if (atmel_spi_is_v2() || spi->chip_select != 0)
+ 		gpio_set_value(gpio, active);
+ 	spi_writel(as, MR, mr);
+ }
+@@ -129,7 +138,7 @@ static void cs_deactivate(struct atmel_s
+ 			gpio, active ? " (low)" : "",
+ 			mr);
+ 
+-	if (!(cpu_is_at91rm9200() && spi->chip_select == 0))
++	if (atmel_spi_is_v2() || spi->chip_select != 0)
+ 		gpio_set_value(gpio, !active);
  }
  
-
+@@ -536,19 +545,16 @@ static int atmel_spi_setup(struct spi_de
+ 	}
+ 
+ 	/* see notes above re chipselect */
+-	if (cpu_is_at91rm9200()
++	if (!atmel_spi_is_v2()
+ 			&& spi->chip_select == 0
+ 			&& (spi->mode & SPI_CS_HIGH)) {
+ 		dev_dbg(&spi->dev, "setup: can't be active-high\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	/*
+-	 * Pre-new_1 chips start out at half the peripheral
+-	 * bus speed.
+-	 */
++	/* v1 chips start out at half the peripheral bus speed. */
+ 	bus_hz = clk_get_rate(as->clk);
+-	if (!as->new_1)
++	if (!atmel_spi_is_v2())
+ 		bus_hz /= 2;
+ 
+ 	if (spi->max_speed_hz) {
+@@ -755,8 +761,6 @@ static int __init atmel_spi_probe(struct
+ 		goto out_free_buffer;
+ 	as->irq = irq;
+ 	as->clk = clk;
+-	if (!cpu_is_at91rm9200())
+-		as->new_1 = 1;
+ 
+ 	ret = request_irq(irq, atmel_spi_interrupt, 0,
+ 			pdev->dev.bus_id, master);
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

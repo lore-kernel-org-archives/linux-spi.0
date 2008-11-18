@@ -1,8 +1,9 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 05/16] Blackfin SPI Driver: pass DMA
-	overflow error to the higher level
-Date: Tue, 18 Nov 2008 15:52:29 +0800
-Message-ID: <1226994760-4301-6-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 03/16] Blackfin SPI Driver: move
+	bfin_addr_dcachable() and friends into the cacheflush header
+	where it belongs
+Date: Tue, 18 Nov 2008 15:52:27 +0800
+Message-ID: <1226994760-4301-4-git-send-email-cooloney@kernel.org>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,51 +24,26 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-If the SPI bus registers a receive overflow error,
-pass the result back up to the higher levels.
-
 Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   16 +++++++++++-----
- 1 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index cc415e8..642c402 100644
+index a38106a..6c5671e 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -559,6 +559,7 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
- 	struct driver_data *drv_data = dev_id;
- 	struct chip_data *chip = drv_data->cur_chip;
- 	struct spi_message *msg = drv_data->cur_msg;
-+	u16 spistat = read_STAT(drv_data);
+@@ -25,9 +25,6 @@
+ #include <asm/dma.h>
+ #include <asm/portmux.h>
+ #include <asm/bfin5xx_spi.h>
+-
+-/* reserved_mem_dcache_on and cache friends */
+-#include <asm/cplbinit.h>
+ #include <asm/cacheflush.h>
  
- 	dev_dbg(&drv_data->pdev->dev, "in dma_irq_handler\n");
- 	clear_dma_irqstat(drv_data->dma_channel);
-@@ -582,13 +583,18 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
- 	while (!(read_STAT(drv_data) & SPIF))
- 		cpu_relax();
- 
--	msg->actual_length += drv_data->len_in_bytes;
-+	if (spistat & RBSY) {
-+		msg->state = ERROR_STATE;
-+		dev_err(&drv_data->pdev->dev, "dma receive: fifo/buffer overflow\n");
-+	} else {
-+		msg->actual_length += drv_data->len_in_bytes;
- 
--	if (drv_data->cs_change)
--		cs_deactive(drv_data, chip);
-+		if (drv_data->cs_change)
-+			cs_deactive(drv_data, chip);
- 
--	/* Move to next transfer */
--	msg->state = next_transfer(drv_data);
-+		/* Move to next transfer */
-+		msg->state = next_transfer(drv_data);
-+	}
- 
- 	/* Schedule transfer tasklet */
- 	tasklet_schedule(&drv_data->pump_transfers);
+ #define DRV_NAME	"bfin-spi"
 -- 
 1.5.6.3
 

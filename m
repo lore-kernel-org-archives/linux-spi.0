@@ -1,8 +1,8 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 12/16] Blackfin SPI Driver: get dma
-	working for SPI flashes
-Date: Tue, 18 Nov 2008 15:52:36 +0800
-Message-ID: <1226994760-4301-13-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 06/16] Blackfin SPI Driver: unify
+	duplicated code in dma read/write paths
+Date: Tue, 18 Nov 2008 15:52:30 +0800
+Message-ID: <1226994760-4301-7-git-send-email-cooloney@kernel.org>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,75 +23,102 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-When using a BF533-STAMP here with a W25X10 SPI flash. It works fine when
-enable_dma is disabled, but doesn't work at all when turning DMA on.
-We get just 0xff bytes back when trying to read the device.
-
-If change the code around so that it programs the SPI first and then
-enables DMA, it seems to work a lot better ...
-
 Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   26 ++++++++++++++++----------
- 1 files changed, 16 insertions(+), 10 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   47 ++++++++++++++++++++------------------------
+ 1 files changed, 21 insertions(+), 26 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index fba77c2..5cd4873 100644
+index 642c402..df424a2 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -760,11 +760,10 @@ static void pump_transfers(unsigned long data)
+@@ -755,18 +755,19 @@ static void pump_transfers(unsigned long data)
  	if (!full_duplex && drv_data->cur_chip->enable_dma
  				&& drv_data->len > 6) {
  
--		unsigned long dma_start_addr;
-+		unsigned long dma_start_addr, flags;
- 
++		unsigned long dma_start_addr;
++
  		disable_dma(drv_data->dma_channel);
  		clear_dma_irqstat(drv_data->dma_channel);
--		bfin_spi_disable(drv_data);
+ 		bfin_spi_disable(drv_data);
  
  		/* config dma channel */
  		dev_dbg(&drv_data->pdev->dev, "doing dma transfer\n");
-@@ -795,8 +794,7 @@ static void pump_transfers(unsigned long data)
- 			enable_dma(drv_data->dma_channel);
++		set_dma_x_count(drv_data->dma_channel, drv_data->len);
+ 		if (width == CFG_SPI_WORDSIZE16) {
+-			set_dma_x_count(drv_data->dma_channel, drv_data->len);
+ 			set_dma_x_modify(drv_data->dma_channel, 2);
+ 			dma_width = WDSIZE_16;
+ 		} else {
+-			set_dma_x_count(drv_data->dma_channel, drv_data->len);
+ 			set_dma_x_modify(drv_data->dma_channel, 1);
+ 			dma_width = WDSIZE_8;
+ 		}
+@@ -801,6 +802,7 @@ static void pump_transfers(unsigned long data)
+ 		}
  
- 			/* start SPI transfer */
--			write_CTRL(drv_data,
--				(cr | BIT_CTL_TIMOD_DMA_TX | BIT_CTL_ENABLE));
-+			write_CTRL(drv_data, cr | BIT_CTL_TIMOD_DMA_TX);
+ 		/* In dma mode, rx or tx must be NULL in one transfer */
++		dma_config = (RESTART | dma_width | DI_EN);
+ 		if (drv_data->rx != NULL) {
+ 			/* set transfer mode, and enable SPI */
+ 			dev_dbg(&drv_data->pdev->dev, "doing DMA in.\n");
+@@ -814,19 +816,9 @@ static void pump_transfers(unsigned long data)
+ 			/* clear tx reg soformer data is not shifted out */
+ 			write_TDBR(drv_data, 0xFFFF);
  
- 			/* just return here, there can only be one transfer
- 			 * in this mode
-@@ -838,14 +836,22 @@ static void pump_transfers(unsigned long data)
- 		} else
- 			BUG();
- 
--		/* start dma */
--		dma_enable_irq(drv_data->dma_channel);
--		set_dma_config(drv_data->dma_channel, dma_config);
-+		/* oh man, here there be monsters ... and i dont mean the
-+		 * fluffy cute ones from pixar, i mean the kind that'll eat
-+		 * your data, kick your dog, and love it all.  do *not* try
-+		 * and change these lines unless you (1) heavily test DMA
-+		 * with SPI flashes on a loaded system (e.g. ping floods),
-+		 * (2) know just how broken the DMA engine interaction with
-+		 * the SPI peripheral is, and (3) have someone else to blame
-+		 * when you screw it all up anyways.
-+		 */
- 		set_dma_start_addr(drv_data->dma_channel, dma_start_addr);
-+		set_dma_config(drv_data->dma_channel, dma_config);
-+		local_irq_save(flags);
- 		enable_dma(drv_data->dma_channel);
+-			set_dma_x_count(drv_data->dma_channel, drv_data->len);
 -
--		/* start SPI transfer */
--		write_CTRL(drv_data, (cr | BIT_CTL_ENABLE));
-+		write_CTRL(drv_data, cr);
-+		dma_enable_irq(drv_data->dma_channel);
-+		local_irq_restore(flags);
+-			/* start dma */
+-			dma_enable_irq(drv_data->dma_channel);
+-			dma_config = (WNR | RESTART | dma_width | DI_EN);
+-			set_dma_config(drv_data->dma_channel, dma_config);
+-			set_dma_start_addr(drv_data->dma_channel,
+-					(unsigned long)drv_data->rx);
+-			enable_dma(drv_data->dma_channel);
+-
+-			/* start SPI transfer */
+-			write_CTRL(drv_data,
+-				(cr | CFG_SPI_DMAREAD | BIT_CTL_ENABLE));
++			dma_config |= WNR;
++			dma_start_addr = (unsigned long)drv_data->rx;
++			cr |= CFG_SPI_DMAREAD;
  
+ 		} else if (drv_data->tx != NULL) {
+ 			dev_dbg(&drv_data->pdev->dev, "doing DMA out.\n");
+@@ -837,18 +829,21 @@ static void pump_transfers(unsigned long data)
+ 						(unsigned long) (drv_data->tx +
+ 						drv_data->len_in_bytes));
+ 
+-			/* start dma */
+-			dma_enable_irq(drv_data->dma_channel);
+-			dma_config = (RESTART | dma_width | DI_EN);
+-			set_dma_config(drv_data->dma_channel, dma_config);
+-			set_dma_start_addr(drv_data->dma_channel,
+-					(unsigned long)drv_data->tx);
+-			enable_dma(drv_data->dma_channel);
++			dma_start_addr = (unsigned long)drv_data->tx;
++			cr |= CFG_SPI_DMAWRITE;
++
++		} else
++			BUG();
++
++		/* start dma */
++		dma_enable_irq(drv_data->dma_channel);
++		set_dma_config(drv_data->dma_channel, dma_config);
++		set_dma_start_addr(drv_data->dma_channel, dma_start_addr);
++		enable_dma(drv_data->dma_channel);
++
++		/* start SPI transfer */
++		write_CTRL(drv_data, (cr | BIT_CTL_ENABLE));
+ 
+-			/* start SPI transfer */
+-			write_CTRL(drv_data,
+-				(cr | CFG_SPI_DMAWRITE | BIT_CTL_ENABLE));
+-		}
  	} else {
  		/* IO mode write then read */
+ 		dev_dbg(&drv_data->pdev->dev, "doing IO transfer\n");
 -- 
 1.5.6.3
 

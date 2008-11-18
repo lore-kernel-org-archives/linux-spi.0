@@ -1,21 +1,18 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [Gumstix-users] Why I dont' see spidev
-	device entry under /dev
-Date: Tue, 18 Nov 2008 10:52:37 -0800
-Message-ID: <200811181052.37452.david-b@pacbell.net>
-References: <mailman.209529.1227024651.24145.gumstix-users@lists.sourceforge.net>
-	<D20834BA7297D24FBF1C7894D7C3F1D801B26539@lotus.oceanasensor.ad>
-	<4923093A.4030400@whoi.edu>
-Reply-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Subject: Re: SPI controller bugfixes needed (full duplex
+	+ DMA, data	corruption)
+Date: Tue, 18 Nov 2008 14:04:07 -0800
+Message-ID: <200811181404.07347.david-b@pacbell.net>
+References: <200811151422.32748.david-b@pacbell.net>
+	<20081118075215.GD9553@pengutronix.de>
+	<49227D0A.40506@swapp-eng.it>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
-	"General mailing list for gumstix users."
-	<gumstix-users-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4923093A.4030400-/d+BM93fTQY@public.gmane.org>
+In-Reply-To: <49227D0A.40506-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,12 +24,12 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> > As far as I can tell, the dev files aren't created automagically.
+On Tuesday 18 November 2008, Andrea Paterniani wrote:
+> I have an iMX1 based HW running kernel 2.6.25.8.
+> I checked the patch and to seems to be ok (solves old problems on full 
+> duplex transfers).
 
-They would be if udev (or even mdev) were in use.
-
-The sysfs class nodes have a "dev" file with the major
-and minor numbers to use with "mknod".
+Cool ... "solves old problems".  ;)
 
 
 -------------------------------------------------------------------------

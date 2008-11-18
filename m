@@ -1,8 +1,8 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 04/16] Blackfin SPI Driver: use
-	len_in_bytes when we care about the number of bytes transferred
-Date: Tue, 18 Nov 2008 15:52:28 +0800
-Message-ID: <1226994760-4301-5-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 09/16] Blackfin SPI Driver: do not check
+	for SPI errors if DMA itself did not flag any
+Date: Tue, 18 Nov 2008 15:52:33 +0800
+Message-ID: <1226994760-4301-10-git-send-email-cooloney@kernel.org>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,47 +23,25 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Use len_in_bytes when we care about the number of bytes transferred
-rather than the number of spi transactions. (this value will be the
-same for 8bit transfers, but not any other sizes)
-
 Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 6c5671e..cc415e8 100644
+index e293d19..3f4a603 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -803,7 +803,7 @@ static void pump_transfers(unsigned long data)
- 			if (bfin_addr_dcachable((unsigned long) drv_data->rx))
- 				invalidate_dcache_range((unsigned long) drv_data->rx,
- 							(unsigned long) (drv_data->rx +
--							drv_data->len));
-+							drv_data->len_in_bytes));
+@@ -587,7 +587,7 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
+ 	while (!(read_STAT(drv_data) & SPIF))
+ 		cpu_relax();
  
- 			/* clear tx reg soformer data is not shifted out */
- 			write_TDBR(drv_data, 0xFFFF);
-@@ -829,7 +829,7 @@ static void pump_transfers(unsigned long data)
- 			if (bfin_addr_dcachable((unsigned long) drv_data->tx))
- 				flush_dcache_range((unsigned long) drv_data->tx,
- 						(unsigned long) (drv_data->tx +
--						drv_data->len));
-+						drv_data->len_in_bytes));
- 
- 			/* start dma */
- 			dma_enable_irq(drv_data->dma_channel);
-@@ -892,7 +892,7 @@ static void pump_transfers(unsigned long data)
- 			message->state = ERROR_STATE;
- 		} else {
- 			/* Update total byte transfered */
--			message->actual_length += drv_data->len;
-+			message->actual_length += drv_data->len_in_bytes;
- 
- 			/* Move to next transfer of this msg */
- 			message->state = next_transfer(drv_data);
+-	if (spistat & RBSY) {
++	if ((dmastat & DMA_ERR) && (spistat & RBSY)) {
+ 		msg->state = ERROR_STATE;
+ 		dev_err(&drv_data->pdev->dev, "dma receive: fifo/buffer overflow\n");
+ 	} else {
 -- 
 1.5.6.3
 

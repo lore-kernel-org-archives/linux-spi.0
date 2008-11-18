@@ -1,11 +1,17 @@
-From: "li" <l13691957246-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 鍥炲
-Date: Tue, 18 Nov 2008 14:05:08 +0800
-Message-ID: <E1L2Jhv-0001qd-U5@h25xhf1.ch3.sourceforge.com>
-Reply-To: l13691957246-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============5972927443260635148=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 02/16] Blackfin SPI Driver: Fix
+	erroneous SPI Clock divisor calculation
+Date: Tue, 18 Nov 2008 15:52:26 +0800
+Message-ID: <1226994760-4301-3-git-send-email-cooloney@kernel.org>
+References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1226994760-4301-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,42 +22,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5972927443260635148==
-Content-Type: text/plain;charset="GB2312"
+From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-您好,本公司有多余的 發 票
+Fix erroneous SPI Clock divisor calculation. Make sure SPI_BAUD is
+always >= 2. Writing a value of 0 or 1 to the SPI_BAUD register disables
+the serial clock.
 
-(商品,運輸,廣告,服務,建築等)
+Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ arch/blackfin/include/asm/bfin5xx_spi.h |    2 ++
+ drivers/spi/spi_bfin5xx.c               |    3 +++
+ 2 files changed, 5 insertions(+), 0 deletions(-)
 
-向外代開,点数0.5－2.0% 
-
-驗證抵扣後付款,來電
-
- 李生：  13928472946
+diff --git a/arch/blackfin/include/asm/bfin5xx_spi.h b/arch/blackfin/include/asm/bfin5xx_spi.h
+index 9fa1915..b16c3cd 100644
+--- a/arch/blackfin/include/asm/bfin5xx_spi.h
++++ b/arch/blackfin/include/asm/bfin5xx_spi.h
+@@ -21,6 +21,8 @@
+ #ifndef _SPI_CHANNEL_H_
+ #define _SPI_CHANNEL_H_
  
-  QQ ： 670544827
-
-
---===============5972927443260635148==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
++#define MIN_SPI_BAUD_VAL	2
++
+ #define SPI_READ              0
+ #define SPI_WRITE             1
+ 
+diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+index e9b7366..a38106a 100644
+--- a/drivers/spi/spi_bfin5xx.c
++++ b/drivers/spi/spi_bfin5xx.c
+@@ -158,6 +158,9 @@ static u16 hz_to_spi_baud(u32 speed_hz)
+ 	if ((sclk % (2 * speed_hz)) > 0)
+ 		spi_baud++;
+ 
++	if (spi_baud < MIN_SPI_BAUD_VAL)
++		spi_baud = MIN_SPI_BAUD_VAL;
++
+ 	return spi_baud;
+ }
+ 
+-- 
+1.5.6.3
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============5972927443260635148==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5972927443260635148==--

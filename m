@@ -1,14 +1,13 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 02/16] Blackfin SPI Driver: Fix
-	erroneous SPI Clock divisor calculation
-Date: Tue, 18 Nov 2008 15:52:26 +0800
-Message-ID: <1226994760-4301-3-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 05/16] Blackfin SPI Driver: pass DMA
+	overflow error to the higher level
+Date: Tue, 18 Nov 2008 15:52:29 +0800
+Message-ID: <1226994760-4301-6-git-send-email-cooloney@kernel.org>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1226994760-4301-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -22,46 +21,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Fix erroneous SPI Clock divisor calculation. Make sure SPI_BAUD is
-always >= 2. Writing a value of 0 or 1 to the SPI_BAUD register disables
-the serial clock.
+If the SPI bus registers a receive overflow error,
+pass the result back up to the higher levels.
 
-Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- arch/blackfin/include/asm/bfin5xx_spi.h |    2 ++
- drivers/spi/spi_bfin5xx.c               |    3 +++
- 2 files changed, 5 insertions(+), 0 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   16 +++++++++++-----
+ 1 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/arch/blackfin/include/asm/bfin5xx_spi.h b/arch/blackfin/include/asm/bfin5xx_spi.h
-index 9fa1915..b16c3cd 100644
---- a/arch/blackfin/include/asm/bfin5xx_spi.h
-+++ b/arch/blackfin/include/asm/bfin5xx_spi.h
-@@ -21,6 +21,8 @@
- #ifndef _SPI_CHANNEL_H_
- #define _SPI_CHANNEL_H_
- 
-+#define MIN_SPI_BAUD_VAL	2
-+
- #define SPI_READ              0
- #define SPI_WRITE             1
- 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index e9b7366..a38106a 100644
+index cc415e8..642c402 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -158,6 +158,9 @@ static u16 hz_to_spi_baud(u32 speed_hz)
- 	if ((sclk % (2 * speed_hz)) > 0)
- 		spi_baud++;
+@@ -559,6 +559,7 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
+ 	struct driver_data *drv_data = dev_id;
+ 	struct chip_data *chip = drv_data->cur_chip;
+ 	struct spi_message *msg = drv_data->cur_msg;
++	u16 spistat = read_STAT(drv_data);
  
-+	if (spi_baud < MIN_SPI_BAUD_VAL)
-+		spi_baud = MIN_SPI_BAUD_VAL;
-+
- 	return spi_baud;
- }
+ 	dev_dbg(&drv_data->pdev->dev, "in dma_irq_handler\n");
+ 	clear_dma_irqstat(drv_data->dma_channel);
+@@ -582,13 +583,18 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
+ 	while (!(read_STAT(drv_data) & SPIF))
+ 		cpu_relax();
  
+-	msg->actual_length += drv_data->len_in_bytes;
++	if (spistat & RBSY) {
++		msg->state = ERROR_STATE;
++		dev_err(&drv_data->pdev->dev, "dma receive: fifo/buffer overflow\n");
++	} else {
++		msg->actual_length += drv_data->len_in_bytes;
+ 
+-	if (drv_data->cs_change)
+-		cs_deactive(drv_data, chip);
++		if (drv_data->cs_change)
++			cs_deactive(drv_data, chip);
+ 
+-	/* Move to next transfer */
+-	msg->state = next_transfer(drv_data);
++		/* Move to next transfer */
++		msg->state = next_transfer(drv_data);
++	}
+ 
+ 	/* Schedule transfer tasklet */
+ 	tasklet_schedule(&drv_data->pump_transfers);
 -- 
 1.5.6.3
 

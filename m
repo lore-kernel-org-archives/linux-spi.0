@@ -1,16 +1,16 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 06/16] Blackfin SPI Driver: unify
-	duplicated code in dma read/write paths
-Date: Tue, 18 Nov 2008 15:52:30 +0800
-Message-ID: <1226994760-4301-7-git-send-email-cooloney@kernel.org>
-References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 2/2] Blackfin SPI Driver: implement
+	spi_lock_bus(), spi_unlock_bus() in blackfin spi controller driver.
+Date: Tue, 18 Nov 2008 15:57:47 +0800
+Message-ID: <1226995067-4484-3-git-send-email-cooloney@kernel.org>
+References: <1226995067-4484-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1226994760-4301-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1226995067-4484-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,104 +21,157 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   47 ++++++++++++++++++++------------------------
- 1 files changed, 21 insertions(+), 26 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   81 +++++++++++++++++++++++++++++++++++++++++++--
+ 1 files changed, 78 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 642c402..df424a2 100644
+index 0e3102a..28dd0fe 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -755,18 +755,19 @@ static void pump_transfers(unsigned long data)
- 	if (!full_duplex && drv_data->cur_chip->enable_dma
- 				&& drv_data->len > 6) {
+@@ -45,6 +45,8 @@ MODULE_LICENSE("GPL");
+ #define QUEUE_RUNNING	0
+ #define QUEUE_STOPPED	1
  
-+		unsigned long dma_start_addr;
++#define BFIN_SPI_LOCK 1
 +
- 		disable_dma(drv_data->dma_channel);
- 		clear_dma_irqstat(drv_data->dma_channel);
- 		bfin_spi_disable(drv_data);
- 
- 		/* config dma channel */
- 		dev_dbg(&drv_data->pdev->dev, "doing dma transfer\n");
-+		set_dma_x_count(drv_data->dma_channel, drv_data->len);
- 		if (width == CFG_SPI_WORDSIZE16) {
--			set_dma_x_count(drv_data->dma_channel, drv_data->len);
- 			set_dma_x_modify(drv_data->dma_channel, 2);
- 			dma_width = WDSIZE_16;
- 		} else {
--			set_dma_x_count(drv_data->dma_channel, drv_data->len);
- 			set_dma_x_modify(drv_data->dma_channel, 1);
- 			dma_width = WDSIZE_8;
- 		}
-@@ -801,6 +802,7 @@ static void pump_transfers(unsigned long data)
- 		}
- 
- 		/* In dma mode, rx or tx must be NULL in one transfer */
-+		dma_config = (RESTART | dma_width | DI_EN);
- 		if (drv_data->rx != NULL) {
- 			/* set transfer mode, and enable SPI */
- 			dev_dbg(&drv_data->pdev->dev, "doing DMA in.\n");
-@@ -814,19 +816,9 @@ static void pump_transfers(unsigned long data)
- 			/* clear tx reg soformer data is not shifted out */
- 			write_TDBR(drv_data, 0xFFFF);
- 
--			set_dma_x_count(drv_data->dma_channel, drv_data->len);
+ struct driver_data {
+ 	/* Driver model hookup */
+ 	struct platform_device *pdev;
+@@ -68,7 +70,10 @@ struct driver_data {
+ 	struct list_head queue;
+ 	int busy;
+ 	int run;
 -
--			/* start dma */
--			dma_enable_irq(drv_data->dma_channel);
--			dma_config = (WNR | RESTART | dma_width | DI_EN);
--			set_dma_config(drv_data->dma_channel, dma_config);
--			set_dma_start_addr(drv_data->dma_channel,
--					(unsigned long)drv_data->rx);
--			enable_dma(drv_data->dma_channel);
++#ifdef BFIN_SPI_LOCK
++	/* SPI bus is lock by a slave for exclusive access */
++	int locked;
++#endif
+ 	/* Message Transfer pump */
+ 	struct tasklet_struct pump_transfers;
+ 
+@@ -932,6 +937,10 @@ static void pump_messages(struct work_struct *work)
+ {
+ 	struct driver_data *drv_data;
+ 	unsigned long flags;
++#ifdef BFIN_SPI_LOCK
++	int locked_cs = -1;
++	struct spi_message *next_msg = NULL, *msg = NULL;
++#endif
+ 
+ 	drv_data = container_of(work, struct driver_data, pump_messages);
+ 
+@@ -950,10 +959,35 @@ static void pump_messages(struct work_struct *work)
+ 		return;
+ 	}
+ 
++#ifdef BFIN_SPI_LOCK
++	/* Extract head of queue */
++	next_msg = list_entry(drv_data->queue.next,
++		struct spi_message, queue);
++
++	if (drv_data->locked)
++		locked_cs = drv_data->locked;
++
++	/* Someone has locked the bus */
++	if (drv_data->locked && next_msg->spi->chip_select != locked_cs) {
++		list_for_each_entry(msg, &drv_data->queue, queue) {
++			if (msg->spi->chip_select == locked_cs) {
++				next_msg = msg;
++				break;
++			}
++		}
++		/* Do nothing even if there are messages for other devices */
++		if (next_msg->spi->chip_select != locked_cs) {
++			drv_data->busy = 0;
++			spin_unlock_irqrestore(&drv_data->lock, flags);
++			return;
++		}
++	}
++	drv_data->cur_msg = next_msg;
++#else
+ 	/* Extract head of queue */
+ 	drv_data->cur_msg = list_entry(drv_data->queue.next,
+-				       struct spi_message, queue);
 -
--			/* start SPI transfer */
--			write_CTRL(drv_data,
--				(cr | CFG_SPI_DMAREAD | BIT_CTL_ENABLE));
-+			dma_config |= WNR;
-+			dma_start_addr = (unsigned long)drv_data->rx;
-+			cr |= CFG_SPI_DMAREAD;
++		struct spi_message, queue);
++#endif
+ 	/* Setup the SSP using the per chip configuration */
+ 	drv_data->cur_chip = spi_get_ctldata(drv_data->cur_msg->spi);
+ 	restore_state(drv_data);
+@@ -982,6 +1016,39 @@ static void pump_messages(struct work_struct *work)
+ }
  
- 		} else if (drv_data->tx != NULL) {
- 			dev_dbg(&drv_data->pdev->dev, "doing DMA out.\n");
-@@ -837,18 +829,21 @@ static void pump_transfers(unsigned long data)
- 						(unsigned long) (drv_data->tx +
- 						drv_data->len_in_bytes));
+ /*
++ * lock the spi bus for exclusive access
++ */
++static int lock_bus(struct spi_device *spi)
++{
++#ifdef BFIN_SPI_LOCK
++	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
++	unsigned long flags;
++
++	spin_lock_irqsave(&drv_data->lock, flags);
++	if (drv_data->locked) {
++		spin_unlock_irqrestore(&drv_data->lock, flags);
++		return -ENOLCK;
++	}
++	drv_data->locked = spi->chip_select;
++	spin_unlock_irqrestore(&drv_data->lock, flags);
++#endif
++	return 0;
++}
++
++static int unlock_bus(struct spi_device *spi)
++{
++#ifdef BFIN_SPI_LOCK
++	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
++	unsigned long flags;
++
++	spin_lock_irqsave(&drv_data->lock, flags);
++	drv_data->locked = 0;
++	spin_unlock_irqrestore(&drv_data->lock, flags);
++#endif
++	return 0;
++}
++
++/*
+  * got a msg to transfer, queue it in drv_data->queue.
+  * And kick off message pumper
+  */
+@@ -1188,6 +1255,9 @@ static inline int init_queue(struct driver_data *drv_data)
+ 	INIT_LIST_HEAD(&drv_data->queue);
+ 	spin_lock_init(&drv_data->lock);
  
--			/* start dma */
--			dma_enable_irq(drv_data->dma_channel);
--			dma_config = (RESTART | dma_width | DI_EN);
--			set_dma_config(drv_data->dma_channel, dma_config);
--			set_dma_start_addr(drv_data->dma_channel,
--					(unsigned long)drv_data->tx);
--			enable_dma(drv_data->dma_channel);
-+			dma_start_addr = (unsigned long)drv_data->tx;
-+			cr |= CFG_SPI_DMAWRITE;
-+
-+		} else
-+			BUG();
-+
-+		/* start dma */
-+		dma_enable_irq(drv_data->dma_channel);
-+		set_dma_config(drv_data->dma_channel, dma_config);
-+		set_dma_start_addr(drv_data->dma_channel, dma_start_addr);
-+		enable_dma(drv_data->dma_channel);
-+
-+		/* start SPI transfer */
-+		write_CTRL(drv_data, (cr | BIT_CTL_ENABLE));
++#ifdef BFIN_SPI_LOCK
++	drv_data->locked = 0;
++#endif
+ 	drv_data->run = QUEUE_STOPPED;
+ 	drv_data->busy = 0;
  
--			/* start SPI transfer */
--			write_CTRL(drv_data,
--				(cr | CFG_SPI_DMAWRITE | BIT_CTL_ENABLE));
--		}
- 	} else {
- 		/* IO mode write then read */
- 		dev_dbg(&drv_data->pdev->dev, "doing IO transfer\n");
+@@ -1235,6 +1305,9 @@ static inline int stop_queue(struct driver_data *drv_data)
+ 
+ 	spin_lock_irqsave(&drv_data->lock, flags);
+ 
++#ifdef BFIN_SPI_LOCK
++	drv_data->locked = 0;
++#endif
+ 	/*
+ 	 * This is a bit lame, but is optimized for the common execution path.
+ 	 * A wait_queue on the drv_data->busy could be used, but then the common
+@@ -1298,6 +1371,8 @@ static int __init bfin5xx_spi_probe(struct platform_device *pdev)
+ 	master->cleanup = cleanup;
+ 	master->setup = setup;
+ 	master->transfer = transfer;
++	master->lock_bus = lock_bus;
++	master->unlock_bus = unlock_bus;
+ 
+ 	/* Find and map our resources */
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -- 
 1.5.6.3
 

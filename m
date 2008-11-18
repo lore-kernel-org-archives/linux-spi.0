@@ -1,18 +1,16 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: SPI controller bugfixes needed (full duplex
-	+ DMA, data	corruption)
-Date: Tue, 18 Nov 2008 14:04:07 -0800
-Message-ID: <200811181404.07347.david-b@pacbell.net>
-References: <200811151422.32748.david-b@pacbell.net>
-	<20081118075215.GD9553@pengutronix.de>
-	<49227D0A.40506@swapp-eng.it>
+Subject: [patch 2.6.28-rc5] spi_imx: full duplex dma
+	corruption bugfix
+Date: Tue, 18 Nov 2008 14:06:24 -0800
+Message-ID: <200811181406.25041.david-b@pacbell.net>
+Reply-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <49227D0A.40506-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -24,13 +22,82 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 18 November 2008, Andrea Paterniani wrote:
-> I have an iMX1 based HW running kernel 2.6.25.8.
-> I checked the patch and to seems to be ok (solves old problems on full 
-> duplex transfers).
+From: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
 
-Cool ... "solves old problems".  ;)
+Fix unsafe order in dma mapping operation: always flush data from
+the cache *BEFORE* invalidating it, to allow full duplex transfers
+where the same buffer may be used for both writes and reads.
 
+Signed-off-by: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/spi_imx.c |   45 ++++++++++++++++++++++-----------------------
+ 1 file changed, 22 insertions(+), 23 deletions(-)
+
+--- a/drivers/spi/spi_imx.c
++++ b/drivers/spi/spi_imx.c
+@@ -506,20 +506,6 @@ static int map_dma_buffers(struct driver
+ 	if (!IS_DMA_ALIGNED(drv_data->rx) || !IS_DMA_ALIGNED(drv_data->tx))
+ 		return -1;
+ 
+-	/* NULL rx means write-only transfer and no map needed
+-	   since rx DMA will not be used */
+-	if (drv_data->rx) {
+-		buf = drv_data->rx;
+-		drv_data->rx_dma = dma_map_single(
+-					dev,
+-					buf,
+-					drv_data->len,
+-					DMA_FROM_DEVICE);
+-		if (dma_mapping_error(dev, drv_data->rx_dma))
+-			return -1;
+-		drv_data->rx_dma_needs_unmap = 1;
+-	}
+-
+ 	if (drv_data->tx == NULL) {
+ 		/* Read only message --> use drv_data->dummy_dma_buf for dummy
+ 		   writes to achive reads */
+@@ -533,18 +519,31 @@ static int map_dma_buffers(struct driver
+ 					buf,
+ 					drv_data->tx_map_len,
+ 					DMA_TO_DEVICE);
+-	if (dma_mapping_error(dev, drv_data->tx_dma)) {
+-		if (drv_data->rx_dma) {
+-			dma_unmap_single(dev,
+-					drv_data->rx_dma,
+-					drv_data->len,
+-					DMA_FROM_DEVICE);
+-			drv_data->rx_dma_needs_unmap = 0;
+-		}
++	if (dma_mapping_error(dev, drv_data->tx_dma))
+ 		return -1;
+-	}
+ 	drv_data->tx_dma_needs_unmap = 1;
+ 
++	/* NULL rx means write-only transfer and no map needed
++	 * since rx DMA will not be used */
++	if (drv_data->rx) {
++		buf = drv_data->rx;
++		drv_data->rx_dma = dma_map_single(dev,
++						buf,
++						drv_data->len,
++						DMA_FROM_DEVICE);
++		if (dma_mapping_error(dev, drv_data->rx_dma)) {
++			if (drv_data->tx_dma) {
++				dma_unmap_single(dev,
++						drv_data->tx_dma,
++						drv_data->tx_map_len,
++						DMA_TO_DEVICE);
++				drv_data->tx_dma_needs_unmap = 0;
++			}
++			return -1;
++		}
++		drv_data->rx_dma_needs_unmap = 1;
++	}
++
+ 	return 0;
+ }
+ 
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

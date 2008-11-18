@@ -1,13 +1,13 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 16/16] Blackfin SPI Driver: fix bug -
-	correct usage of struct spi_transfer.cs_change
-Date: Tue, 18 Nov 2008 15:52:40 +0800
-Message-ID: <1226994760-4301-17-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 11/16] Blackfin SPI Driver: remove
+	duplicated MAX_SPI_SSEL and remove unnecessary array size
+Date: Tue, 18 Nov 2008 15:52:35 +0800
+Message-ID: <1226994760-4301-12-git-send-email-cooloney@kernel.org>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1226994760-4301-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -21,79 +21,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-According to comments in linux/spi/spi.h:
-
- * All SPI transfers start with the relevant chipselect active.  Normally
- * it stays selected until after the last transfer in a message. Drivers
- * can affect the chipselect signal using cs_change.
- *
- * (i) If the transfer isn't the last one in the message, this flag is
- * used to make the chipselect briefly go inactive in the middle of the
- * message.  Toggling chipselect in this way may be needed to terminate
- * a chip command, letting a single spi_message perform all of group of
- * chip transactions together.
- *
- * (ii) When the transfer is the last one in the message, the chip may
- * stay selected until the next transfer.  On multi-device SPI busses
- * with nothing blocking messages going to other devices, this is just
- * a performance hint; starting a message to another device deselects
- * this one.  But in other cases, this can be used to ensure correctness.
- * Some devices need protocol transactions to be built from a series of
- * spi_message submissions, where the content of one message is determined
- * by the results of previous messages and where the whole transaction
- * ends when the chipselect goes intactive.
-
-Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   15 ++++++++-------
- 1 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    4 +---
+ 1 files changed, 1 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 8cf5d6e..0e3102a 100644
+index 4343a92..fba77c2 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -540,15 +540,13 @@ static void giveback(struct driver_data *drv_data)
- 
- 	msg->state = NULL;
- 
--	/* disable chip select signal. And not stop spi in autobuffer mode */
--	if (drv_data->tx_dma != 0xFFFF) {
--		cs_deactive(drv_data, chip);
--		bfin_spi_disable(drv_data);
--	}
--
- 	if (!drv_data->cs_change)
- 		cs_deactive(drv_data, chip);
- 
-+	/* Not stop spi in autobuffer mode */
-+	if (drv_data->tx_dma != 0xFFFF)
-+		bfin_spi_disable(drv_data);
-+
- 	if (msg->complete)
- 		msg->complete(msg->context);
+@@ -198,8 +198,6 @@ static void cs_deactive(struct driver_data *drv_data, struct chip_data *chip)
+ 		udelay(chip->cs_chg_udelay);
  }
-@@ -757,7 +755,8 @@ static void pump_transfers(unsigned long data)
  
- 	write_STAT(drv_data, BIT_STAT_CLR);
- 	cr = (read_CTRL(drv_data) & (~BIT_CTL_TIMOD));
--	cs_active(drv_data, chip);
-+	if (drv_data->cs_change)
-+		cs_active(drv_data, chip);
+-#define MAX_SPI_SSEL	7
+-
+ /* stop controller and re-config current chip*/
+ static void restore_state(struct driver_data *drv_data)
+ {
+@@ -997,7 +995,7 @@ static int transfer(struct spi_device *spi, struct spi_message *msg)
  
- 	dev_dbg(&drv_data->pdev->dev,
- 		"now pumping a transfer: width is %d, len is %d\n",
-@@ -920,6 +919,8 @@ static void pump_transfers(unsigned long data)
- 			message->state = next_transfer(drv_data);
- 		}
+ #define MAX_SPI_SSEL	7
  
-+		if (drv_data->cs_change)
-+			cs_active(drv_data, chip);
- 		/* Schedule next transfer tasklet */
- 		tasklet_schedule(&drv_data->pump_transfers);
- 
+-static u16 ssel[3][MAX_SPI_SSEL] = {
++static u16 ssel[][MAX_SPI_SSEL] = {
+ 	{P_SPI0_SSEL1, P_SPI0_SSEL2, P_SPI0_SSEL3,
+ 	P_SPI0_SSEL4, P_SPI0_SSEL5,
+ 	P_SPI0_SSEL6, P_SPI0_SSEL7},
 -- 
 1.5.6.3
 

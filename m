@@ -1,16 +1,11 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.28-rc5] atmel_spi: clean up SPIv1
-	quirk handling
-Date: Mon, 17 Nov 2008 11:47:44 -0800
-Message-ID: <200811171147.44411.david-b@pacbell.net>
-Reply-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+From: "li" <l13691957246-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 鍥炲
+Date: Tue, 18 Nov 2008 14:05:08 +0800
+Message-ID: <E1L2Jhv-0001qd-U5@h25xhf1.ch3.sourceforge.com>
+Reply-To: l13691957246-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5972927443260635148=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,122 +16,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+--===============5972927443260635148==
+Content-Type: text/plain;charset="GB2312"
 
-Currently, we have a flag called "new_1" which is basically equivalent
-to cpu_is_at91rm9200(). The latter is also called directly a few places.
+您好,本公司有多余的 發 票
 
-Clean up this mess by introducing a atmel_spi_v2() function for
-determining the controller version, and move all version dependent code
-over to use it. This allows us to remove the new_1 flag.
+(商品,運輸,廣告,服務,建築等)
 
-Signed-off-by: Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/spi/atmel_spi.c |   40 ++++++++++++++++++++++------------------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+向外代開,点数0.5－2.0% 
 
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -30,13 +30,6 @@
-  * The core SPI transfer engine just talks to a register bank to set up
-  * DMA transfers; transfer queue progress is driven by IRQs.  The clock
-  * framework provides the base clock, subdivided for each spi_device.
-- *
-- * Newer controllers, marked with "new_1" flag, have:
-- *  - CR.LASTXFER
-- *  - SPI_MR.DIV32 may become FDIV or must-be-zero (here: always zero)
-- *  - SPI_SR.TXEMPTY, SPI_SR.NSSR (and corresponding irqs)
-- *  - SPI_CSRx.CSAAT
-- *  - SPI_CSRx.SBCR allows faster clocking
-  */
- struct atmel_spi {
- 	spinlock_t		lock;
-@@ -45,7 +38,6 @@ struct atmel_spi {
- 	int			irq;
- 	struct clk		*clk;
- 	struct platform_device	*pdev;
--	unsigned		new_1:1;
- 	struct spi_device	*stay;
+驗證抵扣後付款,來電
+
+ 李生：  13928472946
  
- 	u8			stopping;
-@@ -63,6 +55,23 @@ struct atmel_spi {
- #define INVALID_DMA_ADDRESS	0xffffffff
- 
- /*
-+ * Version 2 of the SPI controller has
-+ *  - CR.LASTXFER
-+ *  - SPI_MR.DIV32 may become FDIV or must-be-zero (here: always zero)
-+ *  - SPI_SR.TXEMPTY, SPI_SR.NSSR (and corresponding irqs)
-+ *  - SPI_CSRx.CSAAT
-+ *  - SPI_CSRx.SBCR allows faster clocking
-+ *
-+ * We can determine the controller version by reading the VERSION
-+ * register, but I haven't checked that it exists on all chips, and
-+ * this is cheaper anyway.
-+ */
-+static bool atmel_spi_is_v2(void)
-+{
-+	return !cpu_is_at91rm9200();
-+}
-+
-+/*
-  * Earlier SPI controllers (e.g. on at91rm9200) have a design bug whereby
-  * they assume that spi slave device state will not change on deselect, so
-  * that automagic deselection is OK.  ("NPCSx rises if no data is to be
-@@ -105,7 +114,7 @@ static void cs_activate(struct atmel_spi
- 			gpio, active ? " (high)" : "",
- 			mr);
- 
--	if (!(cpu_is_at91rm9200() && spi->chip_select == 0))
-+	if (atmel_spi_is_v2() || spi->chip_select != 0)
- 		gpio_set_value(gpio, active);
- 	spi_writel(as, MR, mr);
- }
-@@ -129,7 +138,7 @@ static void cs_deactivate(struct atmel_s
- 			gpio, active ? " (low)" : "",
- 			mr);
- 
--	if (!(cpu_is_at91rm9200() && spi->chip_select == 0))
-+	if (atmel_spi_is_v2() || spi->chip_select != 0)
- 		gpio_set_value(gpio, !active);
- }
- 
-@@ -536,19 +545,16 @@ static int atmel_spi_setup(struct spi_de
- 	}
- 
- 	/* see notes above re chipselect */
--	if (cpu_is_at91rm9200()
-+	if (!atmel_spi_is_v2()
- 			&& spi->chip_select == 0
- 			&& (spi->mode & SPI_CS_HIGH)) {
- 		dev_dbg(&spi->dev, "setup: can't be active-high\n");
- 		return -EINVAL;
- 	}
- 
--	/*
--	 * Pre-new_1 chips start out at half the peripheral
--	 * bus speed.
--	 */
-+	/* v1 chips start out at half the peripheral bus speed. */
- 	bus_hz = clk_get_rate(as->clk);
--	if (!as->new_1)
-+	if (!atmel_spi_is_v2())
- 		bus_hz /= 2;
- 
- 	if (spi->max_speed_hz) {
-@@ -755,8 +761,6 @@ static int __init atmel_spi_probe(struct
- 		goto out_free_buffer;
- 	as->irq = irq;
- 	as->clk = clk;
--	if (!cpu_is_at91rm9200())
--		as->new_1 = 1;
- 
- 	ret = request_irq(irq, atmel_spi_interrupt, 0,
- 			pdev->dev.bus_id, master);
+  QQ ： 670544827
+
+
+--===============5972927443260635148==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============5972927443260635148==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5972927443260635148==--

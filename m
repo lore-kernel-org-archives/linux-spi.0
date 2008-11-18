@@ -1,8 +1,8 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 07/16] Blackfin SPI Driver: drop bogus
-	cast and touchup dma label
-Date: Tue, 18 Nov 2008 15:52:31 +0800
-Message-ID: <1226994760-4301-8-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 04/16] Blackfin SPI Driver: use
+	len_in_bytes when we care about the number of bytes transferred
+Date: Tue, 18 Nov 2008 15:52:28 +0800
+Message-ID: <1226994760-4301-5-git-send-email-cooloney@kernel.org>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,32 +23,47 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
+Use len_in_bytes when we care about the number of bytes transferred
+rather than the number of spi transactions. (this value will be the
+same for 8bit transfers, but not any other sizes)
+
 Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index df424a2..a7c8976 100644
+index 6c5671e..cc415e8 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -1076,13 +1076,13 @@ static int setup(struct spi_device *spi)
- 	 */
- 	if (chip->enable_dma && !drv_data->dma_requested) {
- 		/* register dma irq handler */
--		if (request_dma(drv_data->dma_channel, "BF53x_SPI_DMA") < 0) {
-+		if (request_dma(drv_data->dma_channel, "BFIN_SPI_DMA") < 0) {
- 			dev_dbg(&spi->dev,
- 				"Unable to request BlackFin SPI DMA channel\n");
- 			return -ENODEV;
- 		}
- 		if (set_dma_callback(drv_data->dma_channel,
--			(void *)dma_irq_handler, drv_data) < 0) {
-+		    dma_irq_handler, drv_data) < 0) {
- 			dev_dbg(&spi->dev, "Unable to set dma callback\n");
- 			return -EPERM;
- 		}
+@@ -803,7 +803,7 @@ static void pump_transfers(unsigned long data)
+ 			if (bfin_addr_dcachable((unsigned long) drv_data->rx))
+ 				invalidate_dcache_range((unsigned long) drv_data->rx,
+ 							(unsigned long) (drv_data->rx +
+-							drv_data->len));
++							drv_data->len_in_bytes));
+ 
+ 			/* clear tx reg soformer data is not shifted out */
+ 			write_TDBR(drv_data, 0xFFFF);
+@@ -829,7 +829,7 @@ static void pump_transfers(unsigned long data)
+ 			if (bfin_addr_dcachable((unsigned long) drv_data->tx))
+ 				flush_dcache_range((unsigned long) drv_data->tx,
+ 						(unsigned long) (drv_data->tx +
+-						drv_data->len));
++						drv_data->len_in_bytes));
+ 
+ 			/* start dma */
+ 			dma_enable_irq(drv_data->dma_channel);
+@@ -892,7 +892,7 @@ static void pump_transfers(unsigned long data)
+ 			message->state = ERROR_STATE;
+ 		} else {
+ 			/* Update total byte transfered */
+-			message->actual_length += drv_data->len;
++			message->actual_length += drv_data->len_in_bytes;
+ 
+ 			/* Move to next transfer of this msg */
+ 			message->state = next_transfer(drv_data);
 -- 
 1.5.6.3
 

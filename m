@@ -1,13 +1,13 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 09/16] Blackfin SPI Driver: do not check
-	for SPI errors if DMA itself did not flag any
-Date: Tue, 18 Nov 2008 15:52:33 +0800
-Message-ID: <1226994760-4301-10-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 16/16] Blackfin SPI Driver: fix bug -
+	correct usage of struct spi_transfer.cs_change
+Date: Tue, 18 Nov 2008 15:52:40 +0800
+Message-ID: <1226994760-4301-17-git-send-email-cooloney@kernel.org>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1226994760-4301-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -21,27 +21,79 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+According to comments in linux/spi/spi.h:
+
+ * All SPI transfers start with the relevant chipselect active.  Normally
+ * it stays selected until after the last transfer in a message. Drivers
+ * can affect the chipselect signal using cs_change.
+ *
+ * (i) If the transfer isn't the last one in the message, this flag is
+ * used to make the chipselect briefly go inactive in the middle of the
+ * message.  Toggling chipselect in this way may be needed to terminate
+ * a chip command, letting a single spi_message perform all of group of
+ * chip transactions together.
+ *
+ * (ii) When the transfer is the last one in the message, the chip may
+ * stay selected until the next transfer.  On multi-device SPI busses
+ * with nothing blocking messages going to other devices, this is just
+ * a performance hint; starting a message to another device deselects
+ * this one.  But in other cases, this can be used to ensure correctness.
+ * Some devices need protocol transactions to be built from a series of
+ * spi_message submissions, where the content of one message is determined
+ * by the results of previous messages and where the whole transaction
+ * ends when the chipselect goes intactive.
+
+Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   15 ++++++++-------
+ 1 files changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index e293d19..3f4a603 100644
+index 8cf5d6e..0e3102a 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -587,7 +587,7 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
- 	while (!(read_STAT(drv_data) & SPIF))
- 		cpu_relax();
+@@ -540,15 +540,13 @@ static void giveback(struct driver_data *drv_data)
  
--	if (spistat & RBSY) {
-+	if ((dmastat & DMA_ERR) && (spistat & RBSY)) {
- 		msg->state = ERROR_STATE;
- 		dev_err(&drv_data->pdev->dev, "dma receive: fifo/buffer overflow\n");
- 	} else {
+ 	msg->state = NULL;
+ 
+-	/* disable chip select signal. And not stop spi in autobuffer mode */
+-	if (drv_data->tx_dma != 0xFFFF) {
+-		cs_deactive(drv_data, chip);
+-		bfin_spi_disable(drv_data);
+-	}
+-
+ 	if (!drv_data->cs_change)
+ 		cs_deactive(drv_data, chip);
+ 
++	/* Not stop spi in autobuffer mode */
++	if (drv_data->tx_dma != 0xFFFF)
++		bfin_spi_disable(drv_data);
++
+ 	if (msg->complete)
+ 		msg->complete(msg->context);
+ }
+@@ -757,7 +755,8 @@ static void pump_transfers(unsigned long data)
+ 
+ 	write_STAT(drv_data, BIT_STAT_CLR);
+ 	cr = (read_CTRL(drv_data) & (~BIT_CTL_TIMOD));
+-	cs_active(drv_data, chip);
++	if (drv_data->cs_change)
++		cs_active(drv_data, chip);
+ 
+ 	dev_dbg(&drv_data->pdev->dev,
+ 		"now pumping a transfer: width is %d, len is %d\n",
+@@ -920,6 +919,8 @@ static void pump_transfers(unsigned long data)
+ 			message->state = next_transfer(drv_data);
+ 		}
+ 
++		if (drv_data->cs_change)
++			cs_active(drv_data, chip);
+ 		/* Schedule next transfer tasklet */
+ 		tasklet_schedule(&drv_data->pump_transfers);
+ 
 -- 
 1.5.6.3
 

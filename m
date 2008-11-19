@@ -1,17 +1,12 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.28-rc5] spi_imx: full duplex dma
-	corruption bugfix
-Date: Tue, 18 Nov 2008 14:06:24 -0800
-Message-ID: <200811181406.25041.david-b@pacbell.net>
-Reply-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: rtyrdudthfdh-9Onoh4P/yGk@public.gmane.org
+Subject: [SPAM] 您好!
+Date: Wed, 19 Nov 2008 11:37:52 +0800
+Message-ID: <E1L2dtB-0003av-G0@3yr0jf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,85 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
-
-Fix unsafe order in dma mapping operation: always flush data from
-the cache *BEFORE* invalidating it, to allow full duplex transfers
-where the same buffer may be used for both writes and reads.
-
-Signed-off-by: Andrea Paterniani <a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/spi/spi_imx.c |   45 ++++++++++++++++++++++-----------------------
- 1 file changed, 22 insertions(+), 23 deletions(-)
-
---- a/drivers/spi/spi_imx.c
-+++ b/drivers/spi/spi_imx.c
-@@ -506,20 +506,6 @@ static int map_dma_buffers(struct driver
- 	if (!IS_DMA_ALIGNED(drv_data->rx) || !IS_DMA_ALIGNED(drv_data->tx))
- 		return -1;
- 
--	/* NULL rx means write-only transfer and no map needed
--	   since rx DMA will not be used */
--	if (drv_data->rx) {
--		buf = drv_data->rx;
--		drv_data->rx_dma = dma_map_single(
--					dev,
--					buf,
--					drv_data->len,
--					DMA_FROM_DEVICE);
--		if (dma_mapping_error(dev, drv_data->rx_dma))
--			return -1;
--		drv_data->rx_dma_needs_unmap = 1;
--	}
--
- 	if (drv_data->tx == NULL) {
- 		/* Read only message --> use drv_data->dummy_dma_buf for dummy
- 		   writes to achive reads */
-@@ -533,18 +519,31 @@ static int map_dma_buffers(struct driver
- 					buf,
- 					drv_data->tx_map_len,
- 					DMA_TO_DEVICE);
--	if (dma_mapping_error(dev, drv_data->tx_dma)) {
--		if (drv_data->rx_dma) {
--			dma_unmap_single(dev,
--					drv_data->rx_dma,
--					drv_data->len,
--					DMA_FROM_DEVICE);
--			drv_data->rx_dma_needs_unmap = 0;
--		}
-+	if (dma_mapping_error(dev, drv_data->tx_dma))
- 		return -1;
--	}
- 	drv_data->tx_dma_needs_unmap = 1;
- 
-+	/* NULL rx means write-only transfer and no map needed
-+	 * since rx DMA will not be used */
-+	if (drv_data->rx) {
-+		buf = drv_data->rx;
-+		drv_data->rx_dma = dma_map_single(dev,
-+						buf,
-+						drv_data->len,
-+						DMA_FROM_DEVICE);
-+		if (dma_mapping_error(dev, drv_data->rx_dma)) {
-+			if (drv_data->tx_dma) {
-+				dma_unmap_single(dev,
-+						drv_data->tx_dma,
-+						drv_data->tx_map_len,
-+						DMA_TO_DEVICE);
-+				drv_data->tx_dma_needs_unmap = 0;
-+			}
-+			return -1;
-+		}
-+		drv_data->rx_dma_needs_unmap = 1;
-+	}
-+
- 	return 0;
- }
- 
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+ufO5q8u+uLrU8MjLKL6twO0vssbO8SnE+rrDo7oKCiC547aruLu8zrLGy7C0+sDt09DP3rmry761
+xKOo1eO9raGiyc+6o6GiuePW3aGiva3L1bXItdi3vdPQt9a5q8u+o6kKCiDS8r34z+69z7bgz9bN
+6rPJsrvBy8O/1MLP+srbtu62yKGjw7/UwtPQ0ruyv7fW1PbWtcuwtefE1LeixrGjqDUl1/PT0qOp
+Cgogus3G1c2oyczGt8/6ytu3osaxo6gwLjUlLTIl1/PT0qOp08W73bT6v6q78rrP1/ejrLXjyv29
+z7XNoaMKCiC7ub/J0tS4+b7dy/nX9sr9wb+27rbItcS089ChwLTJzMzW08W73bXEtePK/aGjCgog
+sb65q8u+1qPW2LPQxbXL+dPDvvi21MrH1ebGsaOhuPzPo837xNy5u9PQu/q74dPrufPLvrrP1/ej
+oQoKILT6v6q3osaxt7bOp8jnz8KjugoK0rujrsbVzai5+suwt6LGsaO6MaOuyczGt8/6ytsgMqOu
+u/XO782z0rvP+srbIDOjrrmk0rUoxvPStSnP+srboaMKCrb+o67G1c2otdjLsLeixrGjugoKMaOu
+1MvK5Ci158TUsObUy8rkoaK79dTLtPrA7aGi17DQtqGiwarUy6GiuqPUyymjuwoKMqOuxuTL/Lf+
+zvEoueO45rfRoaLXocvet9Ghorvh0um30aGitqi27rLN0vuhotfJ0a+30bXIKaO7IAoKM6OuxuTL
+/CjX4sHeoaLQ0NX+ysLStdeo08Ohorv6tq+ztc/6ytuhore/tdiy+r270tehosuwzvG0+r+qKaO7
+Cgo0o669qNb+sLLXsKGivNO5pNDewO21yNeo08O3osaxoaMKCtaj1tiz0MW1o7rL+dPQxrG+3b75
+zqrLsM7xvtbB7LP2u/LTycbz0rXWsb3Tv6qz9qOssqK/yc34yc+y6dGvu/LLsM7x0enWpLrzuLa/
+7qGjCgrI57nzuavLvtPQtPq/qreixrG3vcPmtcTOyszio6y7ttOtwLS159fJ0a+jrM7Sw8e74dTa
+tdrSu8qxvOS72Li0xPqhoyAKCsGqIM+1IMjLo7rB9dPAyfogICAgICAgICAgICAgICAgICAgIMuz
+16PJzOz3o6EKCs/qx+nH67Xno7oxMzYtOTk4OC01MTI2CgogINK1zvFRUaO6OTczMjg0MDcwCgog
+ICDTyiDP5KO6d3d3c3pwZkAxNjMuY29tCgoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0
+IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBj
+aGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGgg
+TW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0
+d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9t
+b2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
+YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
+dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
+ZXJhbAo=

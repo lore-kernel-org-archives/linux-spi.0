@@ -1,18 +1,18 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 01/16] Blackfin SPI Driver: ensure
-	cache coherency before doing DMA
-Date: Thu, 20 Nov 2008 12:24:15 -0800
-Message-ID: <200811201224.15493.david-b@pacbell.net>
+Subject: Re: [PATCH 02/16] Blackfin SPI Driver: Fix
+	erroneous SPI Clock divisor calculation
+Date: Thu, 20 Nov 2008 12:25:59 -0800
+Message-ID: <200811201226.00286.david-b@pacbell.net>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
-	<1226994760-4301-2-git-send-email-cooloney@kernel.org>
+	<1226994760-4301-3-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Vitja Makarov <vitja.makarov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 To: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1226994760-4301-2-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1226994760-4301-3-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,52 +25,58 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On Monday 17 November 2008, Bryan Wu wrote:
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0/=
-* set transfer mode, and enable SPI */
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0d=
-ev_dbg(&drv_data->pdev->dev, "doing DMA in.\n");
-> =A0
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0/* =
-invalidate caches, if needed */
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if =
-(bfin_addr_dcachable((unsigned long) drv_data->rx))
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0invalidate_dcache_range((unsigned long) drv_data->rx,
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0(unsigned long) (drv_data->rx +
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0drv_data->len));
+> From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> 
+> Fix erroneous SPI Clock divisor calculation. Make sure SPI_BAUD is
+> always >= 2. Writing a value of 0 or 1 to the SPI_BAUD register disables
+> the serial clock.
+> 
+> Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-Could you explain why you're not using dma_map_*() calls
-or the rx_dma (and tx_dma) addresses the caller may pass?
+Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 
-As a rule, you should use the standard kernel interfaces
-for such stuff instead of platform-specific calls like
-those two.  There are a LOT more developers who can find
-and fix bugs that way.
-
-
-Also, this patch affects the "not full duplex" branch of
-this routine.  DMA here seems unusually convoluted ... but
-if you didn't invalidate the cache (RX path) before
-flushing it (TX path) and instead did it the other way
-aroound, would you actually *need* separate branches?
-
-
+> ---
+>  arch/blackfin/include/asm/bfin5xx_spi.h |    2 ++
+>  drivers/spi/spi_bfin5xx.c               |    3 +++
+>  2 files changed, 5 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/blackfin/include/asm/bfin5xx_spi.h b/arch/blackfin/include/asm/bfin5xx_spi.h
+> index 9fa1915..b16c3cd 100644
+> --- a/arch/blackfin/include/asm/bfin5xx_spi.h
+> +++ b/arch/blackfin/include/asm/bfin5xx_spi.h
+> @@ -21,6 +21,8 @@
+>  #ifndef _SPI_CHANNEL_H_
+>  #define _SPI_CHANNEL_H_
+>  
+> +#define MIN_SPI_BAUD_VAL	2
 > +
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0/=
-* clear tx reg soformer data is not shifted out */
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0w=
-rite_TDBR(drv_data, 0xFFFF);
-> =A0
+>  #define SPI_READ              0
+>  #define SPI_WRITE             1
+>  
+> diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+> index e9b7366..a38106a 100644
+> --- a/drivers/spi/spi_bfin5xx.c
+> +++ b/drivers/spi/spi_bfin5xx.c
+> @@ -158,6 +158,9 @@ static u16 hz_to_spi_baud(u32 speed_hz)
+>  	if ((sclk % (2 * speed_hz)) > 0)
+>  		spi_baud++;
+>  
+> +	if (spi_baud < MIN_SPI_BAUD_VAL)
+> +		spi_baud = MIN_SPI_BAUD_VAL;
+> +
+>  	return spi_baud;
+>  }
+>  
+> -- 
+> 1.5.6.3
+> 
+> 
 
 
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
+Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

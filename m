@@ -1,10 +1,10 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 07/16] Blackfin SPI Driver: drop
-	bogus cast and touchup dma label
-Date: Thu, 20 Nov 2008 12:34:02 -0800
-Message-ID: <200811201234.02701.david-b@pacbell.net>
+Subject: Re: [PATCH 05/16] Blackfin SPI Driver: pass DMA
+	overflow error to the higher level
+Date: Thu, 20 Nov 2008 12:29:10 -0800
+Message-ID: <200811201229.10924.david-b@pacbell.net>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
-	<1226994760-4301-8-git-send-email-cooloney@kernel.org>
+	<1226994760-4301-6-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +12,7 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-k
 	Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1226994760-4301-8-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1226994760-4301-6-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,38 +27,54 @@ List-Id: linux-spi.vger.kernel.org
 On Monday 17 November 2008, Bryan Wu wrote:
 > From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > 
+> If the SPI bus registers a receive overflow error,
+> pass the result back up to the higher levels.
+> 
 > Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
 Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 
-... again, please to include real patch comments
-not just long $SUBJECT lines
-
 > ---
->  drivers/spi/spi_bfin5xx.c |    4 ++--
->  1 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/spi/spi_bfin5xx.c |   16 +++++++++++-----
+>  1 files changed, 11 insertions(+), 5 deletions(-)
 > 
 > diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-> index df424a2..a7c8976 100644
+> index cc415e8..642c402 100644
 > --- a/drivers/spi/spi_bfin5xx.c
 > +++ b/drivers/spi/spi_bfin5xx.c
-> @@ -1076,13 +1076,13 @@ static int setup(struct spi_device *spi)
->  	 */
->  	if (chip->enable_dma && !drv_data->dma_requested) {
->  		/* register dma irq handler */
-> -		if (request_dma(drv_data->dma_channel, "BF53x_SPI_DMA") < 0) {
-> +		if (request_dma(drv_data->dma_channel, "BFIN_SPI_DMA") < 0) {
->  			dev_dbg(&spi->dev,
->  				"Unable to request BlackFin SPI DMA channel\n");
->  			return -ENODEV;
->  		}
->  		if (set_dma_callback(drv_data->dma_channel,
-> -			(void *)dma_irq_handler, drv_data) < 0) {
-> +		    dma_irq_handler, drv_data) < 0) {
->  			dev_dbg(&spi->dev, "Unable to set dma callback\n");
->  			return -EPERM;
->  		}
+> @@ -559,6 +559,7 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
+>  	struct driver_data *drv_data = dev_id;
+>  	struct chip_data *chip = drv_data->cur_chip;
+>  	struct spi_message *msg = drv_data->cur_msg;
+> +	u16 spistat = read_STAT(drv_data);
+>  
+>  	dev_dbg(&drv_data->pdev->dev, "in dma_irq_handler\n");
+>  	clear_dma_irqstat(drv_data->dma_channel);
+> @@ -582,13 +583,18 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
+>  	while (!(read_STAT(drv_data) & SPIF))
+>  		cpu_relax();
+>  
+> -	msg->actual_length += drv_data->len_in_bytes;
+> +	if (spistat & RBSY) {
+> +		msg->state = ERROR_STATE;
+> +		dev_err(&drv_data->pdev->dev, "dma receive: fifo/buffer overflow\n");
+> +	} else {
+> +		msg->actual_length += drv_data->len_in_bytes;
+>  
+> -	if (drv_data->cs_change)
+> -		cs_deactive(drv_data, chip);
+> +		if (drv_data->cs_change)
+> +			cs_deactive(drv_data, chip);
+>  
+> -	/* Move to next transfer */
+> -	msg->state = next_transfer(drv_data);
+> +		/* Move to next transfer */
+> +		msg->state = next_transfer(drv_data);
+> +	}
+>  
+>  	/* Schedule transfer tasklet */
+>  	tasklet_schedule(&drv_data->pump_transfers);
 > -- 
 > 1.5.6.3
 > 

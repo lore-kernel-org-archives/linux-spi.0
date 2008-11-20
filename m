@@ -1,16 +1,18 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+From: "Massion, Gene" <magene-5892unH0nlnYtjvyW6yDsg@public.gmane.org>
 Subject: Re: SPI or CSPI transfers using DMA
-Date: Thu, 20 Nov 2008 18:07:07 -0500
-Message-ID: <4925ED9B.305@whoi.edu>
+Date: Thu, 20 Nov 2008 15:46:26 -0800
+Message-ID: <1FCC04E38B4F6C4094B67127333F86607CCC46@frost.shore.mbari.org>
 References: <10811398.477881225431989704.JavaMail.nabble@isper.nabble.com>
-	<200811201339.28627.david-b@pacbell.net>
+	<200811201339.28627.david-b@pacbell.net> <4925ED9B.305@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, magene-5892unH0nlnYtjvyW6yDsg@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "Ned Forrester" <nforrester-/d+BM93fTQY@public.gmane.org>,
+	"David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200811201339.28627.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-class: urn:content-classes:message
+In-Reply-To: <4925ED9B.305-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,6 +22,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
+
+David & Ned
+
+I did get Ned's earlier e-mail.  It was of some help although at this time we are looking at upgrading to a board with USB2.0 so we can write to disk faster.  We are currently evaluating an iMX31 board from Logic Product Development.
+
+I'm a little hesitant to admit it but I'm working in Windows CE.  This is kind of an experiment since all the software types at MBARI are committed Linux followers.  Since I'm not really a software guy, no one really cares what I do.  It turns out that Freescale has developed a WinCE driver for the iMX31 that uses DMA as the default.  I'll be looking at how hard it is to include that driver in the LogicPD BSP in the near future.  
+
+Thanks for your input and if you're interested, let me know and I'll let you know how my WinCE experiment turns out.
+
+Cheers
+
+Gene Massion
+Monterey Bay Aquarium Research Institute
+7700 Sandholdt Road
+Moss Landing, California 95039
+831 7751922 (tel)
+831 7751646 (fax) 
+
+-----Original Message-----
+From: Ned Forrester [mailto:nforrester-/d+BM93fTQY@public.gmane.org] 
+Sent: Thursday, November 20, 2008 3:07 PM
+To: David Brownell
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; Massion, Gene
+Subject: Re: [spi-devel-general] SPI or CSPI transfers using DMA
 
 David Brownell wrote:
 > On Thursday 30 October 2008, magene-5892unH0nlnYtjvyW6yDsg@public.gmane.org wrote:

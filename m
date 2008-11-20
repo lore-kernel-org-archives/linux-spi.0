@@ -1,10 +1,10 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 12/16] Blackfin SPI Driver: get dma
-	working for SPI flashes
-Date: Thu, 20 Nov 2008 12:43:32 -0800
-Message-ID: <200811201243.32749.david-b@pacbell.net>
+Subject: Re: [PATCH 08/16] Blackfin SPI Driver: add a
+	few more debug messages in useful places
+Date: Thu, 20 Nov 2008 12:35:29 -0800
+Message-ID: <200811201235.29955.david-b@pacbell.net>
 References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
-	<1226994760-4301-13-git-send-email-cooloney@kernel.org>
+	<1226994760-4301-9-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +12,7 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-k
 	Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1226994760-4301-13-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1226994760-4301-9-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,83 +27,72 @@ List-Id: linux-spi.vger.kernel.org
 On Monday 17 November 2008, Bryan Wu wrote:
 > From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > 
-> When using a BF533-STAMP here with a W25X10 SPI flash. It works fine when
-> enable_dma is disabled, but doesn't work at all when turning DMA on.
-> We get just 0xff bytes back when trying to read the device.
-> 
-> If change the code around so that it programs the SPI first and then
-> enables DMA, it seems to work a lot better ...
-> 
 > Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 
-Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-
-... and I observe some MM patches from you related to bugs
-identifying those chips; good to know I wasn't the only
-one to trip over those regressions!
+Grr.  I'm tired of acking with a "please provide a real
+patch comment".  Consider all the other patches in this
+series that don't have patch comments as getting NAKs,
+for that reason.
 
 
 > ---
->  drivers/spi/spi_bfin5xx.c |   26 ++++++++++++++++----------
->  1 files changed, 16 insertions(+), 10 deletions(-)
+>  drivers/spi/spi_bfin5xx.c |   12 ++++++++++--
+>  1 files changed, 10 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-> index fba77c2..5cd4873 100644
+> index a7c8976..e293d19 100644
 > --- a/drivers/spi/spi_bfin5xx.c
 > +++ b/drivers/spi/spi_bfin5xx.c
-> @@ -760,11 +760,10 @@ static void pump_transfers(unsigned long data)
->  	if (!full_duplex && drv_data->cur_chip->enable_dma
->  				&& drv_data->len > 6) {
+> @@ -559,9 +559,13 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
+>  	struct driver_data *drv_data = dev_id;
+>  	struct chip_data *chip = drv_data->cur_chip;
+>  	struct spi_message *msg = drv_data->cur_msg;
+> +	unsigned short dmastat = get_dma_curr_irqstat(drv_data->dma_channel);
+>  	u16 spistat = read_STAT(drv_data);
 >  
-> -		unsigned long dma_start_addr;
-> +		unsigned long dma_start_addr, flags;
+> -	dev_dbg(&drv_data->pdev->dev, "in dma_irq_handler\n");
+> +	dev_dbg(&drv_data->pdev->dev,
+> +		"in dma_irq_handler dmastat:0x%x spistat:0x%x\n",
+> +		dmastat, spistat);
+> +
+>  	clear_dma_irqstat(drv_data->dma_channel);
 >  
->  		disable_dma(drv_data->dma_channel);
->  		clear_dma_irqstat(drv_data->dma_channel);
-> -		bfin_spi_disable(drv_data);
+>  	/* Wait for DMA to complete */
+> @@ -631,6 +635,7 @@ static void pump_transfers(unsigned long data)
 >  
->  		/* config dma channel */
->  		dev_dbg(&drv_data->pdev->dev, "doing dma transfer\n");
-> @@ -795,8 +794,7 @@ static void pump_transfers(unsigned long data)
->  			enable_dma(drv_data->dma_channel);
+>  	 /* Handle for abort */
+>  	if (message->state == ERROR_STATE) {
+> +		dev_dbg(&drv_data->pdev->dev, "transfer: we've hit an error\n");
+>  		message->status = -EIO;
+>  		giveback(drv_data);
+>  		return;
+> @@ -638,6 +643,7 @@ static void pump_transfers(unsigned long data)
 >  
->  			/* start SPI transfer */
-> -			write_CTRL(drv_data,
-> -				(cr | BIT_CTL_TIMOD_DMA_TX | BIT_CTL_ENABLE));
-> +			write_CTRL(drv_data, cr | BIT_CTL_TIMOD_DMA_TX);
+>  	/* Handle end of message */
+>  	if (message->state == DONE_STATE) {
+> +		dev_dbg(&drv_data->pdev->dev, "transfer: all done!\n");
+>  		message->status = 0;
+>  		giveback(drv_data);
+>  		return;
+> @@ -645,6 +651,7 @@ static void pump_transfers(unsigned long data)
 >  
->  			/* just return here, there can only be one transfer
->  			 * in this mode
-> @@ -838,14 +836,22 @@ static void pump_transfers(unsigned long data)
->  		} else
->  			BUG();
+>  	/* Delay if requested at end of transfer */
+>  	if (message->state == RUNNING_STATE) {
+> +		dev_dbg(&drv_data->pdev->dev, "transfer: still running ...\n");
+>  		previous = list_entry(transfer->transfer_list.prev,
+>  				      struct spi_transfer, transfer_list);
+>  		if (previous->delay_usecs)
+> @@ -805,7 +812,8 @@ static void pump_transfers(unsigned long data)
+>  		dma_config = (RESTART | dma_width | DI_EN);
+>  		if (drv_data->rx != NULL) {
+>  			/* set transfer mode, and enable SPI */
+> -			dev_dbg(&drv_data->pdev->dev, "doing DMA in.\n");
+> +			dev_dbg(&drv_data->pdev->dev, "doing DMA in to %p (size %zx)\n",
+> +				drv_data->rx, drv_data->len_in_bytes);
 >  
-> -		/* start dma */
-> -		dma_enable_irq(drv_data->dma_channel);
-> -		set_dma_config(drv_data->dma_channel, dma_config);
-> +		/* oh man, here there be monsters ... and i dont mean the
-> +		 * fluffy cute ones from pixar, i mean the kind that'll eat
-> +		 * your data, kick your dog, and love it all.  do *not* try
-> +		 * and change these lines unless you (1) heavily test DMA
-> +		 * with SPI flashes on a loaded system (e.g. ping floods),
-> +		 * (2) know just how broken the DMA engine interaction with
-> +		 * the SPI peripheral is, and (3) have someone else to blame
-> +		 * when you screw it all up anyways.
-> +		 */
->  		set_dma_start_addr(drv_data->dma_channel, dma_start_addr);
-> +		set_dma_config(drv_data->dma_channel, dma_config);
-> +		local_irq_save(flags);
->  		enable_dma(drv_data->dma_channel);
-> -
-> -		/* start SPI transfer */
-> -		write_CTRL(drv_data, (cr | BIT_CTL_ENABLE));
-> +		write_CTRL(drv_data, cr);
-> +		dma_enable_irq(drv_data->dma_channel);
-> +		local_irq_restore(flags);
->  
->  	} else {
->  		/* IO mode write then read */
+>  			/* invalidate caches, if needed */
+>  			if (bfin_addr_dcachable((unsigned long) drv_data->rx))
 > -- 
 > 1.5.6.3
 > 

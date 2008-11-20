@@ -1,20 +1,17 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 01/16] Blackfin SPI Driver: ensure
-	cache coherency before doing DMA
-Date: Thu, 20 Nov 2008 14:05:06 -0800
-Message-ID: <200811201405.06811.david-b@pacbell.net>
-References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
-	<200811201347.46355.david-b@pacbell.net>
-	<8bd0f97a0811201357g1ffeb7d3pfad6e178fb20050e@mail.gmail.com>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: [patch 2.6.26 and earlier] pxa2xx_spi: bugfix
+ full duplex dma data corruption
+Date: Thu, 20 Nov 2008 17:56:38 -0500
+Message-ID: <4925EB26.7080604@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Vitja Makarov <vitja.makarov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "Mike Frysinger" <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"J. Scott Merritt" <merrij3-IL7dBOYR4Vg@public.gmane.org>,
+	Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <8bd0f97a0811201357g1ffeb7d3pfad6e178fb20050e-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,36 +22,77 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 20 November 2008, Mike Frysinger wrote:
-> On Thu, Nov 20, 2008 at 16:47, David Brownell wrote:
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 
-> > Basically, dma_map_single(), dma_unmap_single() ... and
-> > remember that the caller may have done the mappings for
-> > you already.
-> 
-> these arent required to provide coherent memory right ?  if that's the
-> case, i can take a look at getting things updated.
+Fixes a data corruption bug in pxa2xx_spi.c when operating in full
+duplex mode with DMA and using buffers that overlap.
 
-Right.  If caller provides dma-coherent memory to you, they
-must also have provided the DMA addresses the controller
-driver should be using ... so you won't need dma mapping
-calls on those paths.
+SPI transmit and receive buffers are allowed to be the same or to
+overlap.  However, this driver fails if such overlap is attempted in
+DMA mode because it maps the rx and tx buffers in the wrong order.  By
+mapping DMA_FROM_DEVICE (read) before DMA_TO_DEVICE (write), it
+invalidates the cache before flushing it, thus discarding data which
+should have been transmitted.
 
+The patch corrects the order of mapping.  This bug exists in all
+versions of pxa2xx_spi.c; similar bugs are in the drivers for two
+other SPI controllers (au1500, imx).
 
-> > It'd be nice if one of patches snuck in a comment on that
-> > point:  "Full duplex only works for non-DMA transfers."
-> > Same rationale:  you may know this hardware inside out,
-> > but the next person won't.
-> 
-> well, hopefully if they dont know they wont be touching the driver ;).
->  i'll add a comment in this code chunk.  thanks for the feedback.
+This patch has been tested on kernel 2.6.20 using verification of 
+loopback data with: random transfer length, random bits-per-word, 
+random positive offsets (both larger and smaller than transfer length) 
+between the start of the rx and tx buffers, and varying clock rates.
 
-The way it usually works is someone observes a problem and
-then starts experimenting on relevant code.  So they learn
-a bit while debugging ... and code authors/maintainers need
-to keep that learning curve from being too steep.  ;)
+This patch applies to all kernels from 2.6.17 t 2.6.26.
 
-- Dave
+Signed-off-by: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Cc: Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: J. Scott Merritt <merrij3-IL7dBOYR4Vg@public.gmane.org>
+Cc: Stephen Street <stephen-nl6u4wocdmy51APUEpUfAkEOCMrvLtNR@public.gmane.org>
+
+---
+
+ drivers/spi/pxa2xx_spi.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff -Nurp linux-2.6.20/drivers/spi/pxa2xx_spi.c linux-2.6.20_dma_overlap_patch/drivers/spi/pxa2xx_spi.c
+--- linux-2.6.20/drivers/spi/pxa2xx_spi.c	2007-02-04 18:44:54.000000000 +0000
++++ linux-2.6.20_dma_overlap_patch/drivers/spi/pxa2xx_spi.c	2008-11-17 18:21:57.000000000 +0000
+@@ -334,21 +334,21 @@ static int map_dma_buffers(struct driver
+ 	} else
+ 		drv_data->tx_map_len = drv_data->len;
+ 
+-	/* Stream map the rx buffer */
+-	drv_data->rx_dma = dma_map_single(dev, drv_data->rx,
+-						drv_data->rx_map_len,
+-						DMA_FROM_DEVICE);
+-	if (dma_mapping_error(drv_data->rx_dma))
+-		return 0;
+-
+-	/* Stream map the tx buffer */
++	/* Stream map the tx buffer. Always do DMA_TO_DEVICE first
++	 * so we flush the cache *before* invalidating it, in case
++	 * the tx and rx buffers overlap.
++	 */
+ 	drv_data->tx_dma = dma_map_single(dev, drv_data->tx,
+-						drv_data->tx_map_len,
+-						DMA_TO_DEVICE);
++					drv_data->tx_map_len, DMA_TO_DEVICE);
++	if (dma_mapping_error(drv_data->tx_dma))
++		return 0;
+ 
+-	if (dma_mapping_error(drv_data->tx_dma)) {
+-		dma_unmap_single(dev, drv_data->rx_dma,
++	/* Stream map the rx buffer */
++	drv_data->rx_dma = dma_map_single(dev, drv_data->rx,
+ 					drv_data->rx_map_len, DMA_FROM_DEVICE);
++	if (dma_mapping_error(drv_data->rx_dma)) {
++		dma_unmap_single(dev, drv_data->tx_dma,
++					drv_data->tx_map_len, DMA_TO_DEVICE);
+ 		return 0;
+ 	}
+
+-- 
 
 
 -------------------------------------------------------------------------

@@ -1,17 +1,17 @@
-From: "=?ISO-8859-1?Q?Miguel_=C1ngel_=C1lvarez?=" <gotzoncabanes-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: SPI in IXP4XX
-Date: Fri, 21 Nov 2008 09:03:14 +0100
-Message-ID: <b0438a630811210003v4d81c9d4g33c851f489c1743f@mail.gmail.com>
-References: <b0438a630811120424j76289a0ag8cb9e72bc30ff11f@mail.gmail.com>
-	<200811201256.44429.david-b@pacbell.net>
+From: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: au1550-spi: full duplex dma data corruption
+	bugfix
+Date: Fri, 21 Nov 2008 09:13:36 +0100
+Message-ID: <20081121081336.GA7220@nikitenko.systek.local>
+References: <200811181406.25041.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200811201256.44429.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <200811181406.25041.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,37 +22,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi
+Fix unsafe order in dma mapping operation: always flush data from
+the cache *BEFORE* invalidating it, to allow full duplex transfers
+where the same buffer may be used for both writes and reads.
+Tested with mmc-spi.
 
-On Thu, Nov 20, 2008 at 9:56 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> On Wednesday 12 November 2008, Miguel =C1ngel =C1lvarez wrote:
->> Hi
->>
->> I have used PXA2XX code to implement SPI in IXP4XX. SPI in both of
->> them is implemented using an SSP controller. My questions are:
->>
->> - Should I comment my changes in this list, or just in the linux-arm lis=
-t?
->
-> SPI code --> SPI list.  CC the ARM list if you like.
->
-Thanks. That is also my point of view.
->
->> - SSP code for the PXA2XX is placed inside its own arch directories.
->> Could it be useful to move it into the SPI directories?
->
-> Eventually the mach-pxa/*ssp*c code should vanish.
->
-Vanish? Into what? Who is working on it, and how can I help him
-introduce my modifications for ixp4xx?
+Signed-off-by: Jan Nikitenko <jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/au1550_spi.c |   26 ++++++++++++++++----------
+  1 file changed, 16 insertions(+), 10 deletions(-)
 
-Thanks
-
-Miguel =C1ngel =C1lvarez
+diff --git a/drivers/spi/au1550_spi.c b/drivers/spi/au1550_spi.c
+index 87b73e0..b02f25c 100644
+--- a/drivers/spi/au1550_spi.c
++++ b/drivers/spi/au1550_spi.c
+@@ -369,10 +369,23 @@ static int au1550_spi_dma_txrxb(struct spi_device *spi, struct spi_transfer *t)
+ 	dma_rx_addr = t->rx_dma;
+ 
+ 	/*
+-	 * check if buffers are already dma mapped, map them otherwise
++	 * check if buffers are already dma mapped, map them otherwise:
++	 * - first map the TX buffer, so cache data gets written to memory
++	 * - then map the RX buffer, so that cache entries (with
++	 *   soon-to-be-stale data) get removed
+ 	 * use rx buffer in place of tx if tx buffer was not provided
+ 	 * use temp rx buffer (preallocated or realloc to fit) for rx dma
+ 	 */
++	if (t->tx_buf) {
++		if (t->tx_dma == 0) {	/* if DMA_ADDR_INVALID, map it */
++			dma_tx_addr = dma_map_single(hw->dev,
++					(void *)t->tx_buf,
++					t->len, DMA_TO_DEVICE);
++			if (dma_mapping_error(hw->dev, dma_tx_addr))
++				dev_err(hw->dev, "tx dma map error\n");
++		}
++	}
++
+ 	if (t->rx_buf) {
+ 		if (t->rx_dma == 0) {	/* if DMA_ADDR_INVALID, map it */
+ 			dma_rx_addr = dma_map_single(hw->dev,
+@@ -396,15 +409,8 @@ static int au1550_spi_dma_txrxb(struct spi_device *spi, struct spi_transfer *t)
+ 		dma_sync_single_for_device(hw->dev, dma_rx_addr,
+ 			t->len, DMA_FROM_DEVICE);
+ 	}
+-	if (t->tx_buf) {
+-		if (t->tx_dma == 0) {	/* if DMA_ADDR_INVALID, map it */
+-			dma_tx_addr = dma_map_single(hw->dev,
+-					(void *)t->tx_buf,
+-					t->len, DMA_TO_DEVICE);
+-			if (dma_mapping_error(hw->dev, dma_tx_addr))
+-				dev_err(hw->dev, "tx dma map error\n");
+-		}
+-	} else {
++
++	if (!t->tx_buf) {
+ 		dma_sync_single_for_device(hw->dev, dma_rx_addr,
+ 				t->len, DMA_BIDIRECTIONAL);
+ 		hw->tx = hw->rx;
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
+Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

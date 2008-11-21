@@ -1,16 +1,12 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.28-rc6] spi: mpc52xx_psc_spi
-	chipselect bugfix
-Date: Thu, 20 Nov 2008 21:26:22 -0800
-Message-ID: <200811202126.23121.david-b@pacbell.net>
-Reply-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: "Curso de oratoria en CD" <ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Más un CD de regalo de Educación de la Voz
+Date: Fri, 21 Nov 2008 01:17:29 -0300
+Message-ID: <110138759-220081152141729391@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,54 +17,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+Ebook Chile ha desarrollado un CD que le ayudar=E1 a desarrollar sus habili=
+dades de expresi=F3n y oratoria. Hablar correctamente en publico no es un t=
+alento innato, sino que es cuestion de practica, ensayo y tecnica. Es norma=
+l que hasta el mas experto ponente se quede en blanco por un ataque de nerv=
+ios=85para que esto no le suceda=85
 
-According to the manual the "tdfOnExit" flag must be set on the last byte
-we want to send. The PSC controller holds SS low until the flag is set.
+Este curso en CD es apto para: =
 
-However, the flag was set always on the last byte of the FIFO, independently if
-it is the last byte of the transfer. This generates spurious toggling of the
-SS signals that breaks the protocol of some peripherals.  Fix.
 
-Signed-off-by: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
-Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/spi/mpc52xx_psc_spi.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+- Alumnos de colegio o Universidad que tiene que hacer exposiciones, defens=
+as, debates. =
 
---- a/drivers/spi/mpc52xx_psc_spi.c
-+++ b/drivers/spi/mpc52xx_psc_spi.c
-@@ -142,6 +142,7 @@ static int mpc52xx_psc_spi_transfer_rxtx
- 	unsigned rfalarm;
- 	unsigned send_at_once = MPC52xx_PSC_BUFSIZE;
- 	unsigned recv_at_once;
-+	int last_block = 0;
- 
- 	if (!t->tx_buf && !t->rx_buf && t->len)
- 		return -EINVAL;
-@@ -151,15 +152,17 @@ static int mpc52xx_psc_spi_transfer_rxtx
- 	while (rb < t->len) {
- 		if (t->len - rb > MPC52xx_PSC_BUFSIZE) {
- 			rfalarm = MPC52xx_PSC_RFALARM;
-+			last_block = 0;
- 		} else {
- 			send_at_once = t->len - sb;
- 			rfalarm = MPC52xx_PSC_BUFSIZE - (t->len - rb);
-+			last_block = 1;
- 		}
- 
- 		dev_dbg(&spi->dev, "send %d bytes...\n", send_at_once);
- 		for (; send_at_once; sb++, send_at_once--) {
- 			/* set EOF flag before the last word is sent */
--			if (send_at_once == 1)
-+			if (send_at_once == 1 && last_block)
- 				out_8(&psc->ircr2, 0x01);
- 
- 			if (tx_buf)
+- Profesionales que deben exponer sus ideas a un publico. =
+
+- Para quienes tienen puestos gerenciales y deben hablar con sus trabajador=
+es. =
+
+- Para profesores que deben hablar a sus apoderados. =
+
+- Para todo aquel que debe realizar un discurso. =
+
+
+Valor del CD  de Oratoria es $20.000.
+(incluye Impuestos y envio a todo Chile)
+
+Solicitelo a ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org - ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org =
+
+Vea otros cursos en: www.ebookchile.cl =
+
+
+
+Nota:  El valor del CD de Educaci=F3n de la Voz es de $20.000, por esta sem=
+ana se incluye como regalo.
+
+Saluda atentamente,
+
+Antonio Diaz
+Ebook Chile
+Fono: 56 - 2 - 2781078 ; Cel.: 08.9623577
+E-mail: ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org - ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org =
+
+Web: www.ebookchile.cl =
+
+
+
+Si desea retirarse de nuestra lista de distribucion debe  ir a  www.ebookch=
+ile.cl/retiro.htm =
+
+Se han eliminado todos los caracteres incompatibles con algunos sistemas de=
+ correo electronico.
+
+
+ =
+
+
+
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

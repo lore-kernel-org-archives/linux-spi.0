@@ -1,12 +1,17 @@
-From: "Curso de oratoria en CD" <ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Más un CD de regalo de Educación de la Voz
-Date: Fri, 21 Nov 2008 01:17:29 -0300
-Message-ID: <110138759-220081152141729391@gmail.com>
+From: "=?ISO-8859-1?Q?Miguel_=C1ngel_=C1lvarez?=" <gotzoncabanes-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: SPI in IXP4XX
+Date: Fri, 21 Nov 2008 09:03:14 +0100
+Message-ID: <b0438a630811210003v4d81c9d4g33c851f489c1743f@mail.gmail.com>
+References: <b0438a630811120424j76289a0ag8cb9e72bc30ff11f@mail.gmail.com>
+	<200811201256.44429.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200811201256.44429.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,62 +22,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ebook Chile ha desarrollado un CD que le ayudar=E1 a desarrollar sus habili=
-dades de expresi=F3n y oratoria. Hablar correctamente en publico no es un t=
-alento innato, sino que es cuestion de practica, ensayo y tecnica. Es norma=
-l que hasta el mas experto ponente se quede en blanco por un ataque de nerv=
-ios=85para que esto no le suceda=85
+Hi
 
-Este curso en CD es apto para: =
+On Thu, Nov 20, 2008 at 9:56 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> On Wednesday 12 November 2008, Miguel =C1ngel =C1lvarez wrote:
+>> Hi
+>>
+>> I have used PXA2XX code to implement SPI in IXP4XX. SPI in both of
+>> them is implemented using an SSP controller. My questions are:
+>>
+>> - Should I comment my changes in this list, or just in the linux-arm lis=
+t?
+>
+> SPI code --> SPI list.  CC the ARM list if you like.
+>
+Thanks. That is also my point of view.
+>
+>> - SSP code for the PXA2XX is placed inside its own arch directories.
+>> Could it be useful to move it into the SPI directories?
+>
+> Eventually the mach-pxa/*ssp*c code should vanish.
+>
+Vanish? Into what? Who is working on it, and how can I help him
+introduce my modifications for ixp4xx?
 
+Thanks
 
-- Alumnos de colegio o Universidad que tiene que hacer exposiciones, defens=
-as, debates. =
-
-- Profesionales que deben exponer sus ideas a un publico. =
-
-- Para quienes tienen puestos gerenciales y deben hablar con sus trabajador=
-es. =
-
-- Para profesores que deben hablar a sus apoderados. =
-
-- Para todo aquel que debe realizar un discurso. =
-
-
-Valor del CD  de Oratoria es $20.000.
-(incluye Impuestos y envio a todo Chile)
-
-Solicitelo a ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org - ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org =
-
-Vea otros cursos en: www.ebookchile.cl =
-
-
-
-Nota:  El valor del CD de Educaci=F3n de la Voz es de $20.000, por esta sem=
-ana se incluye como regalo.
-
-Saluda atentamente,
-
-Antonio Diaz
-Ebook Chile
-Fono: 56 - 2 - 2781078 ; Cel.: 08.9623577
-E-mail: ventas-GpHz5JpZTmsX+IlteNf3sA@public.gmane.org - ebookchile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org =
-
-Web: www.ebookchile.cl =
-
-
-
-Si desea retirarse de nuestra lista de distribucion debe  ir a  www.ebookch=
-ile.cl/retiro.htm =
-
-Se han eliminado todos los caracteres incompatibles con algunos sistemas de=
- correo electronico.
-
-
- =
-
-
-
+Miguel =C1ngel =C1lvarez
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

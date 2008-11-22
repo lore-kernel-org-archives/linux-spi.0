@@ -1,40 +1,58 @@
-From: "Eric Miao" <eric.y.miao@gmail.com>
-Subject: Re: [spi-devel-general] [patch 05/14] mfd: PCAP2 driver
-Date: Sat, 22 Nov 2008 22:01:58 +0800
-Message-ID: <f17812d70811220601p1d7af668mf3265224179753ab@mail.gmail.com>
+From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [patch 05/14] mfd: PCAP2 driver
+Date: Sat, 22 Nov 2008 13:54:22 -0200
+Message-ID: <1227369262.19591.41.camel@brutus>
 References: <20081121160403.073751031@dodger.lab.datenfreihafen.org>
-	 <20081121160521.016544616@dodger.lab.datenfreihafen.org>
-	 <200811212125.49068.david-b@pacbell.net>
+	<20081121160521.016544616@dodger.lab.datenfreihafen.org>
+	<200811212125.49068.david-b@pacbell.net>
+	<f17812d70811220601p1d7af668mf3265224179753ab@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net, stefan@datenfreihafen.org,
-	sameo@openedhand.com, linux-arm-kernel@lists.arm.linux.org.uk,
-	"Daniel Ribeiro" <drwyrm@gmail.com>, linux-kernel@vger.kernel.org
-To: "David Brownell" <david-b@pacbell.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1758258AbYKVOCT@vger.kernel.org>
-In-Reply-To: <200811212125.49068.david-b@pacbell.net>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-RWuK6r/cQWRpLGFMi4vTTA@public.gmane.org,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org, stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org
+To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <f17812d70811220601p1d7af668mf3265224179753ab-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Nov 22, 2008 at 1:25 PM, David Brownell <david-b@pacbell.net> wrote:
-> On Friday 21 November 2008, stefan@datenfreihafen.org wrote:
->> Since the last submission we are also using the spi subsystem and
->> pxa2xx-spi instead of ssp.c directly as before.
->
-> I took a quick glance at this and it seemed like it should be
-> able to build without depending on PXA ... should certainly
-> not include <mach/ssp.h> or <mach/regs-ssp.h>, and it doesn't
-> look like it needs PXA-specific stuff like <mach/mfp-pxa27x.h>
-> either.
->
-> It's also worth removing the reverse dependencies ("select X")
-> from Kconfig; they don't work very well for the things which
-> those dependencies rely on.
->
-> - Dave
->
-
-I'm wondering if it call fall into the regulator framework, along with
-a hwmon driver with its attributes being exported by sysfs.
+RW0gU8OhYiwgMjAwOC0xMS0yMiDDoHMgMjI6MDEgKzA4MDAsIEVyaWMgTWlhbyBlc2NyZXZldToK
+PiBPbiBTYXQsIE5vdiAyMiwgMjAwOCBhdCAxOjI1IFBNLCBEYXZpZCBCcm93bmVsbCA8ZGF2aWQt
+YkBwYWNiZWxsLm5ldD4gd3JvdGU6Cj4gPiBPbiBGcmlkYXkgMjEgTm92ZW1iZXIgMjAwOCwgc3Rl
+ZmFuQGRhdGVuZnJlaWhhZmVuLm9yZyB3cm90ZToKPiA+PiBTaW5jZSB0aGUgbGFzdCBzdWJtaXNz
+aW9uIHdlIGFyZSBhbHNvIHVzaW5nIHRoZSBzcGkgc3Vic3lzdGVtIGFuZAo+ID4+IHB4YTJ4eC1z
+cGkgaW5zdGVhZCBvZiBzc3AuYyBkaXJlY3RseSBhcyBiZWZvcmUuCj4gPgo+ID4gSSB0b29rIGEg
+cXVpY2sgZ2xhbmNlIGF0IHRoaXMgYW5kIGl0IHNlZW1lZCBsaWtlIGl0IHNob3VsZCBiZQo+ID4g
+YWJsZSB0byBidWlsZCB3aXRob3V0IGRlcGVuZGluZyBvbiBQWEEgLi4uIHNob3VsZCBjZXJ0YWlu
+bHkKPiA+IG5vdCBpbmNsdWRlIDxtYWNoL3NzcC5oPiBvciA8bWFjaC9yZWdzLXNzcC5oPiwgYW5k
+IGl0IGRvZXNuJ3QKPiA+IGxvb2sgbGlrZSBpdCBuZWVkcyBQWEEtc3BlY2lmaWMgc3R1ZmYgbGlr
+ZSA8bWFjaC9tZnAtcHhhMjd4Lmg+Cj4gPiBlaXRoZXIuCj4gPgo+ID4gSXQncyBhbHNvIHdvcnRo
+IHJlbW92aW5nIHRoZSByZXZlcnNlIGRlcGVuZGVuY2llcyAoInNlbGVjdCBYIikKPiA+IGZyb20g
+S2NvbmZpZzsgdGhleSBkb24ndCB3b3JrIHZlcnkgd2VsbCBmb3IgdGhlIHRoaW5ncyB3aGljaAo+
+ID4gdGhvc2UgZGVwZW5kZW5jaWVzIHJlbHkgb24uCj4gPgo+IEknbSB3b25kZXJpbmcgaWYgaXQg
+Y2FsbCBmYWxsIGludG8gdGhlIHJlZ3VsYXRvciBmcmFtZXdvcmssIGFsb25nIHdpdGgKPiBhIGh3
+bW9uIGRyaXZlciB3aXRoIGl0cyBhdHRyaWJ1dGVzIGJlaW5nIGV4cG9ydGVkIGJ5IHN5c2ZzLgoK
+VGhlIEFEQyBpcyBhbHNvIHVzZWQgYnkgdGhlIHRvdWNoc2NyZWVuIGRyaXZlciwgYW5kIGxhdGVy
+IHdpbGwgYmUgdXNlZApmb3IgYWNjZXNzb3J5IGRldGVjdGlvbiAodXNiIG90ZywgY2hhcmdlciwg
+RU1VIChhdWRpbyBhbmQgdWFydCBvbiB1c2IKcG9ydCkpLgoKQ3VycmVudGx5IHRoZSBvbmx5IHVz
+ZXIgZm9yIHRoZSB2b2x0YWdlIHJlZ3VsYXRvcnMgaXMgdGhlIE1NQywgaSBwbGFuIHRvCnVzZSB0
+aGUgcmVndWxhdG9yIHN1YnN5c3RlbSB3aGVuIG1vcmUgdXNlcnMgYXJpc2UuCgotLSAKRGFuaWVs
+IFJpYmVpcm8KCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3Jl
+ZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhl
+IGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9ibGluIFNESyAmIHdpbiBn
+cmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28gdG8gYW4gT3BlbiBTb3Vy
+Y2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcv
+cmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

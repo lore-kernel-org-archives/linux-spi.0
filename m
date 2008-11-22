@@ -1,8 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.8-rc6 2/3] spi: fix spi_s3c24xx_gpio
-	num_chipselect
-Date: Sat, 22 Nov 2008 12:19:12 -0800
-Message-ID: <200811221219.12473.david-b@pacbell.net>
+Subject: [patch 2.6.8-rc6 1/3] spi: fix spi_s3c24xx_gpio
+	device handle lookup
+Date: Sat, 22 Nov 2008 12:19:01 -0800
+Message-ID: <200811221219.01461.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -22,37 +22,27 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-The spi master driver must have num_chipselect set to
-allow the bus to initialise. Pass this through the
-platform data.
+The spidev_to_sg() call in spi_s3c24xx_gpio.c was using the
+wrong method to convert the spi device into the private data
+for the driver. Fix this by using spi_master_get_devdata.
 
 Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- arch/arm/mach-s3c2410/include/mach/spi-gpio.h |    1 +
- drivers/spi/spi_s3c24xx_gpio.c                |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/spi/spi_s3c24xx_gpio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/mach-s3c2410/include/mach/spi-gpio.h
-+++ b/arch/arm/mach-s3c2410/include/mach/spi-gpio.h
-@@ -18,6 +18,7 @@ struct s3c2410_spigpio_info {
- 	unsigned long		 pin_mosi;
- 	unsigned long		 pin_miso;
- 
-+	int			 num_chipselect;
- 	int			 bus_num;
- 
- 	void (*chip_select)(struct s3c2410_spigpio_info *spi, int cs);
 --- a/drivers/spi/spi_s3c24xx_gpio.c
 +++ b/drivers/spi/spi_s3c24xx_gpio.c
-@@ -118,6 +118,7 @@ static int s3c2410_spigpio_probe(struct 
- 	/* setup spi bitbang adaptor */
- 	sp->bitbang.master = spi_master_get(master);
- 	sp->bitbang.master->bus_num = info->bus_num;
-+	sp->bitbang.master->num_chipselect = info->num_chipselect;
- 	sp->bitbang.chipselect = s3c2410_spigpio_chipselect;
+@@ -34,7 +34,7 @@ struct s3c2410_spigpio {
  
- 	sp->bitbang.txrx_word[SPI_MODE_0] = s3c2410_spigpio_txrx_mode0;
+ static inline struct s3c2410_spigpio *spidev_to_sg(struct spi_device *spi)
+ {
+-	return spi->controller_data;
++	return spi_master_get_devdata(spi->master);
+ }
+ 
+ static inline void setsck(struct spi_device *dev, int on)
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

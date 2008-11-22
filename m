@@ -1,12 +1,16 @@
-From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
-Subject: [SPAM] 票据代理
-Date: Sun, 23 Nov 2008 04:27:07 +0800
-Message-ID: <E1L3z3G-0000Hr-1i@235xhf1.ch3.sourceforge.com>
+From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Re: [patch 2.6.8-rc6 1/3] spi: fix
+ spi_s3c24xx_gpio device handle lookup
+Date: Sat, 22 Nov 2008 13:16:53 -0800
+Message-ID: <20081122131653.859c0d37.akpm@linux-foundation.org>
+References: <200811221219.01461.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200811221219.01461.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,28 +21,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CrnzuavLvri61PDIyyi+rcDtL7LGzvGjqcT6usOjugogICAguuq078q10rXT0M/euavLvqOouePW
-3aGitqvduKGiyc+6o6Giz8PDxaGiurzW3aGiy9XW3bXItdi++dPQCrfWuavLvqOpoaPO0su+yrXB
-ptDbuvGjrNPQ18XBvLrDtcTJ57vhudjPtaGj0vK9+M/uvc+24M/WzeqzybK7wcvDv9TCz/rK27bu
-tsihowrDv9TC09DSu7K/t9bU9ta1y7C158TUt6LGsTYlus3G1c2ot6LGsdbWwODI58/Co7rJzMa3
-z/rK28uwt6LGsaOstefE1NTLyuS3osaxo6wKueO45reixrHX4sHe0rW3osaxLLf+zvHStbeixrG1
-yCAoufrLsLXYy7CjqTEtMiXTxbvdtPq/qrvyus/X96OstePK/b3Ptc2ho7u5v8kK0tS4+b7dy/nX
-9sr9wb+27rbItcS089ChwLTJzMzW08W73bXEtePK/aOsuavLvrPJwaK24MTq0rvWsbzhs9bS1KGw
-s8/QxaGxzqrW0ArQxNf3zqq5q8u+tcS6y9DEy7zP66GiwM65zMr3waK5q8u+0M7P86Ossb65q8u+
-1qPW2LPQxbXL+dPDvvi21MrH1ebGsaOhuPzPo837CsTcubvT0Lv6u+HT67nzy766z9f3o6EKoaGh
-oQogICAgyOe588u+1Nq3osaxtcTV5s6xt73D5tPQyM66ztLJwse78rWj0MSjrL/Jyc/N+LLp1qS7
-8s7Sy77Wsb3T0+u588u+yKXLsM7xvtYKtda/27rLttShoyAKICAgICAKICAgILTL0MXPorOkxtrT
-0NCno6zI59DrvfjSu7K9x6LJzDogCiAgICAKoaGhocrWICC7+joxMzU2MDAyMTA4OCAKCiAgICBR
-ICAgIFE6Nzc1OTIwNDg4CiAgICAKoaGhocGqz7XIy6O6OsH10MK7qgoKCsuz16MKICAgICAgyczs
-96OhIAogICAgIAqhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhICChoaGhoaGhoaGhoaGhoaGh
-oaGhoaGhoaG66rTvyrXStdPQz965q8u+CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YuTmV0IGVt
-YWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9wZXIncyBjaGFs
-bGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25zIHdpdGggTW9i
-bGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlwIGZvciB0d28g
-dG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0dHA6Ly9tb2Js
-aW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8KX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwg
-bWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRw
-czovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJh
-bAo=
+On Sat, 22 Nov 2008 12:19:01 -0800 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+
+> From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+> 
+> The spidev_to_sg() call in spi_s3c24xx_gpio.c was using the
+> wrong method to convert the spi device into the private data
+> for the driver. Fix this by using spi_master_get_devdata.
+> 
+> Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+> ---
+>  drivers/spi/spi_s3c24xx_gpio.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> --- a/drivers/spi/spi_s3c24xx_gpio.c
+> +++ b/drivers/spi/spi_s3c24xx_gpio.c
+> @@ -34,7 +34,7 @@ struct s3c2410_spigpio {
+>  
+>  static inline struct s3c2410_spigpio *spidev_to_sg(struct spi_device *spi)
+>  {
+> -	return spi->controller_data;
+> +	return spi_master_get_devdata(spi->master);
+>  }
+>  
+>  static inline void setsck(struct spi_device *dev, int on)
+
+hm.  Why doesn't this oops all over the place?  Is that info presently
+duplicated?
+
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

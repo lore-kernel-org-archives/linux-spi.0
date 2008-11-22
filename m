@@ -1,19 +1,19 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: [patch 05/14] mfd: PCAP2 driver
-Date: Sat, 22 Nov 2008 11:08:53 -0800
-Message-ID: <200811221108.54331.david-b@pacbell.net>
+Date: Sat, 22 Nov 2008 11:19:27 -0800
+Message-ID: <200811221119.27981.david-b@pacbell.net>
 References: <20081121160403.073751031@dodger.lab.datenfreihafen.org>
-	<f17812d70811220601p1d7af668mf3265224179753ab@mail.gmail.com>
-	<1227369262.19591.41.camel@brutus>
+	<200811212125.49068.david-b@pacbell.net>
+	<1227373948.19591.66.camel@brutus>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-RWuK6r/cQWRpLGFMi4vTTA@public.gmane.org,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org
+Cc: eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-RWuK6r/cQWRpLGFMi4vTTA@public.gmane.org,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org, stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org
+To: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1227369262.19591.41.camel@brutus>
+In-Reply-To: <1227373948.19591.66.camel@brutus>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -26,45 +26,48 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On Saturday 22 November 2008, Daniel Ribeiro wrote:
-> Em S=E1b, 2008-11-22 =E0s 22:01 +0800, Eric Miao escreveu:
-> > On Sat, Nov 22, 2008 at 1:25 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> w=
-rote:
-> > > On Friday 21 November 2008, stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org wrote:
-> > >> Since the last submission we are also using the spi subsystem and
-> > >> pxa2xx-spi instead of ssp.c directly as before.
-> > >
-> > > I took a quick glance at this and it seemed like it should be
-> > > able to build without depending on PXA ... should certainly
-> > > not include <mach/ssp.h> or <mach/regs-ssp.h>, and it doesn't
-> > > look like it needs PXA-specific stuff like <mach/mfp-pxa27x.h>
-> > > either.
-> > >
-> > > It's also worth removing the reverse dependencies ("select X")
-> > > from Kconfig; they don't work very well for the things which
-> > > those dependencies rely on.
-> > >
-> > I'm wondering if it call fall into the regulator framework, along with
-> > a hwmon driver with its attributes being exported by sysfs.
-
-Make it work like other MFD drivers, with child devices
-to encapsulate such functionality ... and drivers specific
-to those functionalities.
-
-Such as a regulator framework driver, an RTC, and so on.
+> Above comments are integrated on the attached patch. =
 
 
-> The ADC is also used by the touchscreen driver, and later will be used
-> for accessory detection (usb otg, charger, EMU (audio and uart on usb
-> port)).
+Not exactly:
 
-ADC integration may be an interesting little puzzle.
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -153,6 +153,13 @@ config MFD_WM8350_I2C
+> =A0=A0=A0=A0=A0=A0=A0=A0 =A0I2C as the control interface. =A0Additional o=
+ptions must be
+> =A0=A0=A0=A0=A0=A0=A0=A0 =A0selected to enable support for the functional=
+ity of the chip.
+> =A0
+> +config EZX_PCAP
+> +=A0=A0=A0=A0=A0=A0=A0bool "PCAP Support"
+> +=A0=A0=A0=A0=A0=A0=A0depends on PXA_EZX
 
- =
+It only builds on one platform.  Now, that may make sense if it's
+an ASIC currently used only on that platform; it's a "hardware"
+dependency.  But it's not a necessary "software" dependency, no
+code here seems to rely on PXA hardware, or EZX hardware.
 
-> Currently the only user for the voltage regulators is the MMC, i plan to
-> use the regulator subsystem when more users arise.
-> =
+One of the goals of getting drivers into mainline is to get rid
+of needless dependencies ... and thereby open the code up to
+many more developers.  Some may do nothing more than cleanup;
+others will be doing API overhauls, which can be a PITA if you
+place needless build dependencies on your code.
 
+Strike that dependency, and depend instead on SPI_MASTER since
+that's the only dependency truly required by the build system.
+
+Or tell me I'm wrong, and there's really a reason this code must
+not even *build* on x86 systems.
+
+
+> +=A0=A0=A0=A0=A0=A0=A0help
+> +=A0=A0=A0=A0=A0=A0=A0 =A0This enables the PCAP ASIC present on EZX Phone=
+s. This is
+> +=A0=A0=A0=A0=A0=A0=A0 =A0needed for MMC, TouchScreen, Sound, USB, etc..
+> +
+> =A0endmenu
+> =A0
 
 
 

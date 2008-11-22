@@ -1,13 +1,12 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.28-rc6] spi: fix spi_imx probe
-	oopsing
-Date: Sat, 22 Nov 2008 11:53:51 -0800
-Message-ID: <200811221153.51816.david-b@pacbell.net>
+Subject: [patch 2.6.8-rc6 3/3] spi: use generic gpio
+	calls in spi_s3c24xx_gpio
+Date: Sat, 22 Nov 2008 12:19:17 -0800
+Message-ID: <200811221219.17491.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Julien Boibessot <julien.boibessot-d2DlULPkwbNWk0Htik3J/w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
@@ -21,77 +20,125 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Julien Boibessot <julien.boibessot-GANU6spQydw@public.gmane.org>
+From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 
-Corrects spi_imx driver oops during initialization/probing:
-can't use drv_data before it's allocated.
+Change the spi_s3c2410 driver to use the generic gpio calls that
+are now available.
 
-Signed-off-by: Julien Boibessot <julien.boibessot-d2DlULPkwbNWk0Htik3J/w@public.gmane.org>
-Acked-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_imx.c |   25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ arch/arm/mach-s3c2410/include/mach/spi.h |    2 -
+ drivers/spi/spi_s3c24xx.c                |   38 ++++++++++++++++++++++-------
+ 2 files changed, 30 insertions(+), 10 deletions(-)
 
---- a/drivers/spi/spi_imx.c
-+++ b/drivers/spi/spi_imx.c
-@@ -1456,7 +1456,7 @@ static int __init spi_imx_probe(struct p
- 	struct device *dev = &pdev->dev;
- 	struct spi_imx_master *platform_info;
- 	struct spi_master *master;
--	struct driver_data *drv_data = NULL;
-+	struct driver_data *drv_data;
- 	struct resource *res;
- 	int irq, status = 0;
+--- a/arch/arm/mach-s3c2410/include/mach/spi.h
++++ b/arch/arm/mach-s3c2410/include/mach/spi.h
+@@ -14,7 +14,7 @@
+ #define __ASM_ARCH_SPI_H __FILE__
  
-@@ -1467,14 +1467,6 @@ static int __init spi_imx_probe(struct p
- 		goto err_no_pdata;
+ struct s3c2410_spi_info {
+-	unsigned long		 pin_cs;	/* simple gpio cs */
++	int			 pin_cs;	/* simple gpio cs */
+ 	unsigned int		 num_cs;	/* total chipselects */
+ 	int			 bus_num;       /* bus number to use. */
+ 
+--- a/drivers/spi/spi_s3c24xx.c
++++ b/drivers/spi/spi_s3c24xx.c
+@@ -19,6 +19,7 @@
+ #include <linux/err.h>
+ #include <linux/clk.h>
+ #include <linux/platform_device.h>
++#include <linux/gpio.h>
+ 
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+@@ -27,7 +28,6 @@
+ #include <asm/dma.h>
+ #include <mach/hardware.h>
+ 
+-#include <mach/regs-gpio.h>
+ #include <asm/plat-s3c24xx/regs-spi.h>
+ #include <mach/spi.h>
+ 
+@@ -66,7 +66,7 @@ static inline struct s3c24xx_spi *to_hw(
+ 
+ static void s3c24xx_spi_gpiocs(struct s3c2410_spi_info *spi, int cs, int pol)
+ {
+-	s3c2410_gpio_setpin(spi->pin_cs, pol);
++	gpio_set_value(spi->pin_cs, pol);
+ }
+ 
+ static void s3c24xx_spi_chipsel(struct spi_device *spi, int value)
+@@ -248,8 +248,13 @@ static void s3c24xx_spi_initialsetup(str
+ 	writeb(SPPIN_DEFAULT, hw->regs + S3C2410_SPPIN);
+ 	writeb(SPCON_DEFAULT, hw->regs + S3C2410_SPCON);
+ 
+-	if (hw->pdata && hw->pdata->gpio_setup)
+-		hw->pdata->gpio_setup(hw->pdata, 1);
++	if (hw->pdata) {
++		if (hw->set_cs == s3c24xx_spi_gpiocs)
++			gpio_direction_output(hw->pdata->pin_cs, 1);
++
++		if (hw->pdata->gpio_setup)
++			hw->pdata->gpio_setup(hw->pdata, 1);
++	}
+ }
+ 
+ static int __init s3c24xx_spi_probe(struct platform_device *pdev)
+@@ -343,18 +348,27 @@ static int __init s3c24xx_spi_probe(stru
+ 		goto err_no_clk;
  	}
  
--	drv_data->clk = clk_get(&pdev->dev, "perclk2");
--	if (IS_ERR(drv_data->clk)) {
--		dev_err(&pdev->dev, "probe - cannot get get\n");
--		status = PTR_ERR(drv_data->clk);
--		goto err_no_clk;
--	}
--	clk_enable(drv_data->clk);
+-	s3c24xx_spi_initialsetup(hw);
 -
- 	/* Allocate master with space for drv_data */
- 	master = spi_alloc_master(dev, sizeof(struct driver_data));
- 	if (!master) {
-@@ -1495,6 +1487,14 @@ static int __init spi_imx_probe(struct p
+ 	/* setup any gpio we can */
  
- 	drv_data->dummy_dma_buf = SPI_DUMMY_u32;
+ 	if (!pdata->set_cs) {
+-		hw->set_cs = s3c24xx_spi_gpiocs;
++		if (pdata->pin_cs < 0) {
++			dev_err(&pdev->dev, "No chipselect pin\n");
++			goto err_register;
++		}
  
-+	drv_data->clk = clk_get(&pdev->dev, "perclk2");
-+	if (IS_ERR(drv_data->clk)) {
-+		dev_err(&pdev->dev, "probe - cannot get clock\n");
-+		status = PTR_ERR(drv_data->clk);
-+		goto err_no_clk;
-+	}
-+	clk_enable(drv_data->clk);
+-		s3c2410_gpio_setpin(pdata->pin_cs, 1);
+-		s3c2410_gpio_cfgpin(pdata->pin_cs, S3C2410_GPIO_OUTPUT);
++		err = gpio_request(pdata->pin_cs, dev_name(&pdev->dev));
++		if (err) {
++			dev_err(&pdev->dev, "Failed to get gpio for cs\n");
++			goto err_register;
++		}
 +
- 	/* Find and map resources */
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!res) {
-@@ -1630,12 +1630,13 @@ err_no_iomap:
- 	kfree(drv_data->ioarea);
++		hw->set_cs = s3c24xx_spi_gpiocs;
++		gpio_direction_output(pdata->pin_cs, 1);
+ 	} else
+ 		hw->set_cs = pdata->set_cs;
  
- err_no_iores:
--	spi_master_put(master);
--
--err_no_pdata:
- 	clk_disable(drv_data->clk);
- 	clk_put(drv_data->clk);
++	s3c24xx_spi_initialsetup(hw);
 +
- err_no_clk:
-+	spi_master_put(master);
+ 	/* register our spi controller */
+ 
+ 	err = spi_bitbang_start(&hw->bitbang);
+@@ -366,6 +380,9 @@ static int __init s3c24xx_spi_probe(stru
+ 	return 0;
+ 
+  err_register:
++	if (hw->set_cs == s3c24xx_spi_gpiocs)
++		gpio_free(pdata->pin_cs);
 +
-+err_no_pdata:
- err_no_mem:
- 	return status;
- }
-
+ 	clk_disable(hw->clk);
+ 	clk_put(hw->clk);
+ 
+@@ -401,6 +418,9 @@ static int __exit s3c24xx_spi_remove(str
+ 	free_irq(hw->irq, hw);
+ 	iounmap(hw->regs);
+ 
++	if (hw->set_cs == s3c24xx_spi_gpiocs)
++		gpio_free(hw->pdata->pin_cs);
++
+ 	release_resource(hw->ioarea);
+ 	kfree(hw->ioarea);
+ 
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

@@ -1,22 +1,23 @@
-From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: [patch 05/14] mfd: PCAP2 driver
-Date: Sun, 23 Nov 2008 05:06:02 -0200
-Message-ID: <1227423962.3148.74.camel@brutus>
+Date: Sun, 23 Nov 2008 00:26:10 -0800
+Message-ID: <200811230026.11126.david-b@pacbell.net>
 References: <20081121160403.073751031@dodger.lab.datenfreihafen.org>
-	<200811221819.53186.david-b@pacbell.net>
-	<1227411537.3148.22.camel@brutus>
 	<200811222059.59806.david-b@pacbell.net>
+	<1227423962.3148.74.camel@brutus>
+Reply-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Stefan Schmidt <stefan-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-RWuK6r/cQWRpLGFMi4vTTA@public.gmane.org,
 	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
 	Stefan Schmidt <stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200811222059.59806.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <1227423962.3148.74.camel@brutus>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,36 +28,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-RW0gU8OhYiwgMjAwOC0xMS0yMiDDoHMgMjA6NTkgLTA4MDAsIERhdmlkIEJyb3duZWxsIGVzY3Jl
-dmV1Ogo+ID4gSSB0cmllZCBzcGlfd3JpdGVfdGhlbl9yZWFkIGJlZm9yZSwgYnV0IGl0IGRpZG4n
-dCB3b3JrLiBJIHN1cHBvc2VkIGl0Cj4gPiB3YXMgYmVjYXVzZSBpdCB3YXMgZG9pbmcgMiB0cmFu
-c2ZlcnMgYXMgdGhlIHNlY29uZCB0cmFuc2ZlciByeF9idWYKPiA+IGFsd2F5cyBjYW1lIHplcm9l
-ZC4KPiAKPiBZb3UgbWF5IGhhdmUgYmVlbiB1c2luZyBpdCB3cm9uZy4gIEFsc28sIHZlcmlmeSBh
-Z2FpbnN0Cj4gY3VycmVudCBrZXJuZWxzIC4uLiB0aGVyZSBoYXZlIGJlZW4gYnVnZml4ZXMgdG8g
-cHhhMnh4X3NwaS4KPiAKPiA+IEkgc2VlIHRoYXQgY29tbWl0IAo+ID4gZjliOTBlMzljYmM1YzRk
-NmVmNjAwMjJmZDFmMjVkNTQxZGYwYWFkMSBjaGFuZ2VkIGl0IHRvIGRvIGEgc2luZ2xlCj4gPiB0
-cmFuc2Zlciwgc28gaSB3aWxsIHRyeSBpdCBhZ2Fpbi4KPiAKPiBVbmxlc3MgaXQgbmVlZHMgdGhl
-IGZ1bGwgZHVwbGV4IGNhcGFiaWxpdHkgb2YgU1BJLCB0aGVuCj4geW91IHNob3VsZCBiZSBhYmxl
-IHRvIG1ha2Ugd3JpdGVfdGhlbl9yZWFkIHdvcmsgLi4uIG9uCj4gdGhlIG90aGVyIGhhbmQsIGlm
-IHlvdSBkbyBuZWVkIGZ1bGwgZHVwbGV4LCB0aGVuIHlvdQo+IHNob3VsZCBhZGRyZXNzIHRoZSBE
-TUEuICAoQW5kIGJ5dGVzd2FwcGluZywgZWl0aGVyIHdheS4pCgpXZWxsLCBpIGd1ZXNzIGl0IGlz
-IGZ1bGwgZHVwbGV4LCBhcyBpIHNldCBzcGlfdHJhbnNmZXIubGVuIHRvIDQgYnl0ZXMsCndyaXRl
-IDQgYnl0ZXMgX2FuZF8gcmVhZCA0IGJ5dGVzIHRvL2Zyb20gdGhlIGNoaXAuCgpJJ20gbG9va2lu
-ZyBhdCB3cml0ZV90aGVuX3JlYWQgYW5kIGlmIEkgcmVhZCBpdCBjb3JyZWN0bHksIGl0IHNlbmRz
-IG5fdHgKYnl0ZXMgb2YgZGF0YSBwbHVzIG5fcnggYnl0ZXMgb2Ygbm90aGluZywgYW5kIGRpc2Nh
-cmRzIG5fdHggYnl0ZXMgZnJvbQp0aGUgc3RhcnQgb2YgdGhlIHJlY2VpdmUgYnVmZmVyIGNvbnNp
-ZGVyaW5nIG9ubHkgbl9yeCBieXRlcyBmcm9tIHRoZSBlbmQKb2YgdGhlIHJlY2VpdmUgYnVmZmVy
-LiBUaGlzIGlzIG5vdCB3aGF0IGkgd2FudC4KCkNhbiB5b3UgYmUgbW9yZSBkZXNjcmlwdGl2ZSBv
-biAiYWRkcmVzcyB0aGUgRE1BIj8gSW0gbm90IGZhbWlsaWFyIG9uCndoYXQgaXMgdGhlIGlzc3Vl
-IGhlcmUuCgpJIHdpbGwgdGFrZSBjYXJlIG9mIGJ5dGUgc3dhcHBpbmcgZm9yIHRoZSBuZXh0IHBh
-dGNoLgoKLS0gCkRhbmllbCBSaWJlaXJvCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBl
-bWFpbCBpcyBzcG9uc29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hh
-bGxlbmdlCkJ1aWxkIHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1v
-YmxpbiBTREsgJiB3aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdv
-IHRvIGFuIE9wZW4gU291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9i
-bGluLWNvbnRlc3Qub3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+On Saturday 22 November 2008, Daniel Ribeiro wrote:
+> Can you be more descriptive on "address the DMA"? Im not familiar on
+> what is the issue here.
+
+You may not pass stack based buffers -- as you're now doing -- for
+the spi_transfer buffers.  Documentation/DMA-mapping.txt is very
+clear that such buffers are not DMA-safe, and the SPI kerneldoc is
+just as clear that spi_transfer.{tx,rx}_buf memory must be DMA-safe.
+
+- Dave
+
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/

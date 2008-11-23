@@ -1,22 +1,22 @@
-From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: [patch 05/14] mfd: PCAP2 driver
-Date: Sun, 23 Nov 2008 01:38:57 -0200
-Message-ID: <1227411537.3148.22.camel@brutus>
+Date: Sat, 22 Nov 2008 20:59:59 -0800
+Message-ID: <200811222059.59806.david-b@pacbell.net>
 References: <20081121160403.073751031@dodger.lab.datenfreihafen.org>
-	<200811221558.03915.david-b@pacbell.net>
-	<20081123003306.GE24437@datenfreihafen.org>
 	<200811221819.53186.david-b@pacbell.net>
+	<1227411537.3148.22.camel@brutus>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: Stefan Schmidt <stefan-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-RWuK6r/cQWRpLGFMi4vTTA@public.gmane.org,
 	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
 	Stefan Schmidt <stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200811221819.53186.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <1227411537.3148.22.camel@brutus>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,58 +27,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-RW0gU8OhYiwgMjAwOC0xMS0yMiDDoHMgMTg6MTkgLTA4MDAsIERhdmlkIEJyb3duZWxsIGVzY3Jl
-dmV1Ogo+IFNQSS1zcGVjaWZpYyBiaXRzOgo+IAo+ICAtIEknZCBoYXZlIHRvIHNlZSB0aGUgcGF0
-Y2guICBUaGUgbGFzdCBvbmUgSSBzYXcgc3RpbGwgZGlkbid0Cj4gICAgbGlzdCBhIFNQSV9NQVNU
-RVIgZGVwZW5kZW5jeSBmb3IgdGhlIGNvcmUgTUZEIG1vZHVsZS4KClRoZSBuZXh0IG9uZSB3aWxs
-LgoKPiAgLSBZb3Ugc2hvdWxkIG1ha2UgZXp4X3BjYXBfd3JpdGUoKSBhbmQgZXp4X3BjYXBfcmVh
-ZCgpIHN3aXRjaAo+ICAgIG92ZXIgdG8gc3BpX3dyaXRlX3RoZW5fcmVhZCgpLCB0byBlbnN1cmUg
-aXQncyBuZXZlciBkb2luZwo+ICAgIERNQSB0by9mcm9tIHRoZSBzdGFjay4gIEkgc2VlIGEgYnl0
-ZS1vcmRlciBkZXBlbmRlbmN5IHRvby4uLgoKSSB0cmllZCBzcGlfd3JpdGVfdGhlbl9yZWFkIGJl
-Zm9yZSwgYnV0IGl0IGRpZG4ndCB3b3JrLiBJIHN1cHBvc2VkIGl0CndhcyBiZWNhdXNlIGl0IHdh
-cyBkb2luZyAyIHRyYW5zZmVycyBhcyB0aGUgc2Vjb25kIHRyYW5zZmVyIHJ4X2J1ZgphbHdheXMg
-Y2FtZSB6ZXJvZWQuIEkgc2VlIHRoYXQgY29tbWl0CmY5YjkwZTM5Y2JjNWM0ZDZlZjYwMDIyZmQx
-ZjI1ZDU0MWRmMGFhZDEgY2hhbmdlZCBpdCB0byBkbyBhIHNpbmdsZQp0cmFuc2Zlciwgc28gaSB3
-aWxsIHRyeSBpdCBhZ2Fpbi4KCj4gIC0gRm9yIGdlbmVyYWwgcGFyYW5vaWEsIHRoZSBwcm9iZSgp
-IHNob3VsZCBhYm9ydCBpZiBwY2FwLnNwaSBpcwo+ICAgIGFscmVhZHkgc2V0IC4uLiBhbmQgaXRz
-IGNsZWFudXAgcGF0aCwgcGx1cyByZW1vdmUoKSwgc2hvdWxkCj4gICAgbnVsbCB0aGF0IHBvaW50
-ZXIuCgpPay4KCj4gIC0gSWYgeW91J3JlIGdvaW5nIHRvIG1hcmsgdGhlIHByb2JlKCkgYXMgX19k
-ZXZpbml0LCB0aGVuIG1hcmsKPiAgICB0aGUgcmVtb3ZlKCkgYXMgX19kZXZleGl0IGFuZCB1c2Ug
-X19kZXZleGl0X3AoKSBpbiB0aGUgZHJpdmVyCj4gICAgc3RydWN0LgoKT2suIFNob3VsZG4ndCBp
-IHVzZSBfX2luaXQgaW5zdGVhZD8KCj4gT3RoZXIgY29tbWVudHMgYWJvdXQgdGhlIHBjYXAyIGNv
-cmU6Cgo+IC0gVGhvc2Ugc2hvd19yZWdzL3N0b3JlX3JlZ3MgY2FsbHMgd291bGQgSU1PIG1ha2Ug
-bW9yZSBzZW5zZQo+ICAgIGluIGRlYnVnZnMgdGhhbiBpbiBzeXNmcy4KCkkgd2lsbCBqdXN0IHJl
-bW92ZSB0aG9zZSBmb3Igbm93LgoKPiAgLSBUaGUgc2V0X3ZyZWcoKSBzdHVmZiB3b3VsZCBzZWVt
-IHRvIG1ha2UgbW9yZSBzZW5zZSBpbiBhCj4gICAgcmVndWxhdG9yIHN1YmRldmljZSBhbmQgZHJp
-dmVyIC4uLiBidXQgdGhhdCdzIG1vcmUgb2YgYQo+ICAgIGdlbmVyYWwgZHJpdmVyIHN0cnVjdHVy
-ZSB0aGluZywgYW5kIG1pZ2h0IGJlIGZpeGVkIGxhdGVyLgo+IAo+ICAtIEFuZHJldyBzZWVtcyB0
-byBhbHdheXMgd2FudCBhIGNvbW1lbnQgZXhwbGFpbmluZyB3aHkgdGhlCj4gICAgSVJRIGhhbmRs
-ZXIgZm9yIEkyQyBhbmQgU1BJIGRldmljZXMgbmVlZHMgdG8gcXVldWVfd29yaygpLgo+ICAgIE1h
-eWJlIHRoZSB0aHJlYWRlZCBJUlEgc3R1ZmYgd2lsbCBoZWxwIHRoZXJlLi4uCj4gCj4gIC0gVGhl
-IG1hc2tfZXZlbnQoKS91bm1hc2tfZXZlbnQoKSBzdHVmZiBsb29rcyBsaWtlIHlvdSdyZQo+ICAg
-IG1vcmUgb3IgbGVzcyByZWludmVudGluZyBhIGJhYnkgInN0cnVjdCBpcnFfY2hpcCIsIHdpdGgK
-PiAgICByZWdpc3Rlcl9ldmVudCgpIGluc3RlYWQgb2YgcmVxdWVzdF9pcnEoKS4KCj4gUmUgdGhl
-IElSUSBzdHVmZiwgdGhpcyBsb29rcyBtb3JlIGxpa2Ugd2hhdCBpMmMvY2hpcHMvbWVuZWxhdXMu
-Ywo+IGRpZCB0aGFuIG1mZC90d2w0MDMwLWlycS5jIC4uLiBpbiBnZW5lcmFsIEkgdGhpbmsgaXQn
-cyBiZXR0ZXIgdG8KPiBwdXJzdWUgdGhlIGxhdHRlciBhcHByb2FjaCwgbWFraW5nIGdlbmlycSBo
-YW5kbGUgc3VjaCBzdHVmZi4KPiAoRXZlbiB0aG91Z2ggaXQncyBraW5kIG9mIGF3a3dhcmQgdG8g
-dXNlIGl0IGZvciBJMkMgb3IgU1BJIGJhc2VkCj4gaW50ZXJydXB0IGNvbnRyb2xsZXJzIGp1c3Qg
-bm93LikKCkkgZGlkbid0IGtub3cgaSBjb3VsZCB1c2UgZ2VuaXJxIHdpdGggc3BpLiBJbiBmYWN0
-IGkgd2FzIHVzaW5nIGdlbmlycQpiZWZvcmUsIHdoZW4gdGhlIGRyaXZlciB3YXMgdXNpbmcgc3Nw
-LmMuIE5vdywgbG9va2luZyBhdCB0d2w0MDMwLWlycS5jCml0cyBjbGVhciBob3cgaSBzaG91bGQg
-aGF2ZSBkb25lIHRoaXMuIFRoYW5rcyEhCgo+ICAtIEFuZCB0aGUgQURDIHN5c2ZzIHN1cHBvcnQg
-aXNuJ3Qgc3VwcG9ydGluZyBod21vbiBtb2RlbHMuCj4gICAgKE5laXRoZXIgZG9lcyB0aGUgdHds
-NDAzMCBBREMgc3VwcG9ydCwgYnV0IHRoYXQncyBub3QgYmVlbgo+ICAgIHN1Ym1pdHRlZCBmb3Ig
-bWFpbmxpbmUgeWV0IGVpdGhlci4uLikKCkkgd2lsbCBsb29rIGludG8gdGhpcyBhZnRlciBpIGZp
-bmlzaCB0aGUgaXJxIHN0dWZmLgoKClRoaXMgaXMgYSBsb3Qgb2Ygc3R1ZmYsIHRoYW5rcyBmb3Ig
-dGhlIHJldmlldy4gOikKCi0tIApEYW5pZWwgUmliZWlybwoKCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhp
-cyBTRi5OZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IHRoZSBNb2JsaW4gWW91ciBNb3ZlIERldmVs
-b3BlcidzIGNoYWxsZW5nZQpCdWlsZCB0aGUgY29vbGVzdCBMaW51eCBiYXNlZCBhcHBsaWNhdGlv
-bnMgd2l0aCBNb2JsaW4gU0RLICYgd2luIGdyZWF0IHByaXplcwpHcmFuZCBwcml6ZSBpcyBhIHRy
-aXAgZm9yIHR3byB0byBhbiBPcGVuIFNvdXJjZSBldmVudCBhbnl3aGVyZSBpbiB0aGUgd29ybGQK
-aHR0cDovL21vYmxpbi1jb250ZXN0Lm9yZy9yZWRpcmVjdC5waHA/YmFubmVyX2lkPTEwMCZ1cmw9
-LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
-ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
-Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
-ZXZlbC1nZW5lcmFsCg==
+On Saturday 22 November 2008, Daniel Ribeiro wrote:
+> > =A0- You should make ezx_pcap_write() and ezx_pcap_read() switch
+> > =A0 =A0over to spi_write_then_read(), to ensure it's never doing
+> > =A0 =A0DMA to/from the stack. =A0I see a byte-order dependency too...
+> =
+
+> I tried spi_write_then_read before, but it didn't work. I supposed it
+> was because it was doing 2 transfers as the second transfer rx_buf
+> always came zeroed.
+
+You may have been using it wrong.  Also, verify against
+current kernels ... there have been bugfixes to pxa2xx_spi.
+
+
+> I see that commit =
+
+> f9b90e39cbc5c4d6ef60022fd1f25d541df0aad1 changed it to do a single
+> transfer, so i will try it again.
+
+Unless it needs the full duplex capability of SPI, then
+you should be able to make write_then_read work ... on
+the other hand, if you do need full duplex, then you
+should address the DMA.  (And byteswapping, either way.)
+
+
+> > =A0- If you're going to mark the probe() as __devinit, then mark
+> > =A0 =A0the remove() as __devexit and use __devexit_p() in the driver
+> > =A0 =A0struct.
+> =
+
+> Ok. Shouldn't i use __init instead?
+
+I wouldn't.  There are ways that the probe() could be called
+more than once -- e.g. after rebinding either of the relevant
+SPI drivers through sysfs, or after rmmod/modprobe of the SPI
+master controller driver -- and using an __init annotation
+would make that point to memory that's unlikely to still hold
+that code.
+
+- Dave
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

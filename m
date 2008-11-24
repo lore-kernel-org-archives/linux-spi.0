@@ -1,9 +1,8 @@
-From: Sistec Informatica<atendimento-6djNODpgjW/GL5emXfDNdA/jyz+guNFm@public.gmane.org>
-Subject: [SPAM] Manuten玢o de Microcomputador
-Date: Sun, 23 Nov 2008 14:53:07 -0200
-Message-ID: <E1L4ICp-0002zu-6D@br1.servidorbr1.srv.br>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7004532329477126104=="
+From: "ad" <gaoxiao-TAT0DdZrcuk@public.gmane.org>
+Subject: [SPAM] spi-devel-generalHELLO2008-11-25
+Date: Tue, 25 Nov 2008 03:24:14 +0800
+Message-ID: <E1L4h2s-0006Cb-88@3yr0jf1.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============1111465576292038167=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,78 +15,368 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7004532329477126104==
-Content-type: text/html; charset=iso-8859-1
+--===============1111465576292038167==
+Content-Type: text/plain;charset="GB2312"
+
+如果邮件给您带来不便，请您回复etuiyou-KN7UnAbNpbg@public.gmane.org
+
+           破解销售困局                            
+                   ---全球领先企业的渠道管理与大客户开发
+
+时间:  上海    2008年11月22-23日
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+培训对象:本课程适合于初、中级主要以最终客户为销售目标的客户销售代表(Account Sales);销售经理;以及与客户销售有关的人员
+
+主办单位: 众人行管理咨询网   深圳市一二三管理咨询有限公司
+
+培训费用:2800元/人
+
+备    注：
+咨询电话：0755-26075363
+传    真：0755-61351396  
+联 系 人： 彭小姐
 
 
-<html>
-<head>
-<title>Campanha Novembro</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<style type="text/css">
-<!--
-body {
-	background-color: #333333;
-	margin-left: 15px;
-	margin-top: 15px;
-	margin-right: 15px;
-	margin-bottom: 15px;
-}
-.style1 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	color: #FFFFFF;
-}
--->
-</style></head>
-<body>
-<table width="600" height="537" border="0" align="center" cellpadding="0" cellspacing="0" id="Table_01">
-	<tr>
-		<td colspan="2">
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_01.jpg" width="200" height="200" alt=""></td>
-		<td colspan="2">
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_02.jpg" width="200" height="200" alt=""></td>
-		<td>
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_03.jpg" width="200" height="200" alt=""></td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_04.jpg" width="200" height="200" alt=""></td>
-		<td colspan="2">
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_05.jpg" width="200" height="200" alt=""></td>
-		<td>
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_06.jpg" width="200" height="200" alt=""></td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_07.jpg" width="200" height="95" alt=""></td>
-		<td colspan="2">
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_08.jpg" width="200" height="95" alt=""></td>
-		<td rowspan="3">
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_09.jpg" width="200" height="137" alt=""></td>
-	</tr>
-	<tr>
-		<td rowspan="2">
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_10.jpg" width="27" height="42" alt=""></td>
-		<td colspan="2">
-			<a href="mailto:atendimento-6djNODpgjW/GL5emXfDNdA/jyz+guNFm@public.gmane.org?subject=Manutencao"><img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_11.jpg" width="267" height="15" alt="" border="0"></a></td>
-		<td rowspan="2">
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_12.jpg" width="106" height="42" alt=""></td>
-	</tr>
-	<tr>
-		<td>
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_13.jpg" width="173" height="27" alt=""></td>
-		<td>
-			<img src="http://www.sistecinformatica.com.br/divulgacao/campanha_11/images/banner_14.jpg" width="94" height="27" alt=""></td>
-	</tr>
-</table>
-<div align="center" class="style1"><br>
-Caso n&atilde;o queira receber esse e-mail novamente, <a href="#">clique aqui</a></div>
-</body>
-</html>
+当今的中国市场越来越成熟，竞争也越来越激烈，不仅对销售人员的素质、技能等方面的要求越来越高,更是对于我们的管理者能否建立一套适应企业发展的制度提出了挑战;每个市场当中都有优秀的企业存在, 他们是如何成就当今的领袖地位, 他们在成长的过程中是如何成功迈向卓越? 企业发展的环境各不相同, 管理的模式无法照搬复制, 但对于成功企业管理理念的探讨与学习, 对他们经历的前车之鉴的回顾与反思, 必将有助于我们对自身企业管理的完善与提高. 
+
+本课程以讲师自身服务的几家财富500强企业在华发展经历为基础,以培养优秀营销管理人员为目标，系统地分析销售及市场的各个环节的特点、策略、技巧，旨在提高销售人员在每一个销售环节分析问题和解决问题的能力，打开通往成功之门。
+
+收 益：	
+?按照专业销售的标准来思考和行事。了解销售全过程及各阶段销售工作要点，做到在正确的时间、对正确的人、做正确的事提高客户访谈的能力，准确确定访谈和销售对象。
+?学会运用沟通技巧接近客户、赢得客户的信任并建立关系。
+?掌握如何全、准、及时地收集客户购买信息。
+?学会挖掘客户的真实需求，提出有竞争力的解决方案。
+
+新的销售环境，市场竞争更为激烈
+现在，我们遇到了更多的竞争对手，他们：
+1不断威胁我们的市场
+2、不断抢夺我们的客户
+现在，我们面对忠诚度不断降低的客户，他们：
+1、掌握着大量的市场信息
+2、拥有广泛的选择范围
+3、缺乏耐心，随时可能转向
+4、“永不满足”
+
+首先，思考一些最基本的问题
+
+我们卖的是什么? --行业的对手众多纷纭，我们靠什么取胜
+卖给谁?--- 客户的选择日益增多，但我们的客户在哪里
+他们有什么特点?
+他们大都在什么地方卖?
+我们产品（用户）通过谁卖（买）?—渠道主导市场还是品牌引导消费
+他们为什么会卖我们的产品?
+他们为什么会卖别人的产品?
 
 
---===============7004532329477126104==
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+第一单元：市场策略的制定
+1、制定营销计划前的准备：
+?环境分析：发现和评价市场机会
+?细分市场——目标市场——市场定位
+?开发市场营销组合策略（本次培训重点）
+?执行和控制市场营销组合策略
+
+2、营销计划的实施：
+
+营销第一步：了解企业所处的环境
+宏观营销环境分析
+?营销环境分析  
+?竞争分析及竞争策略
+?不同竞争者的竞争战略
+?客户分析
+营销第二步：确定目标市场
+?市场细分的标准和原则
+?目标市场的选择
+?评估细分市场
+?目标市场范围策略
+?市场细分化策略
+营销第三步：制订营销组合策略
+产品策略：整体产品与生命周期
+?价格策略：影响价格的主要因素及定价策略
+?渠道策略：渠道的选择与整合
+?促销策略：营销沟通的五个方面
+案例分析与讨论：
+小结：营销成功的关键在于？
+
+ 
+第二单元：迈向成功---经销商的开发与管理
+一．渠道设计的原则与要素	
+?外部环境：
+内部的优势与劣势
+?渠道管理的四项原则
+?渠道建设的6大目标
+
+二．经销商的选择：	
+我们要经销商做什么？
+厂家对经销商的期望---
+理想的经销商应该是---
+选择经销商的标准是---	
+渠道建设中的几种思考：
+销售商、代理商数量越多越好？
+自建渠道网络比中间商好？
+网络覆盖越大越密越好？
+一定要选实力强的经销商？
+合作只是暂时的？
+渠道政策是越优惠越好？
+… …
+?我们的结论是---            
+?经销商愿意经销的产品：   
+经销商对厂家的期望：
+厂家应尽的义务
+厂家可以提供的帮助
+厂家额外提供的服务
+?我们的结论是--
+  对方的需求，正是你对其管理的切入点
+
+二．经销商的管理
+?渠道营销管理四原则
+?如何制订分销政策                            
+分销权及专营权政策
+价格和返利政策
+年终奖励政策
+促销政策
+客户服务政策
+客户沟通和培训政策
+销售业绩是唯一的评估内容吗？
+确定业绩标准
+定额
+重要的可量化的信息补充
+产品组合和市场渗透
+*  评估年度业绩     
+定额完成率
+销售政策的认同和执行
+客户满意度
+市场增长率
+市场份额
+讨论：渠道管理中的几个难点
+
+三、如何更好地与经销商打好交道？
+与潜在经销商的沟通技巧
+*  表达诚意，了解对方
+*  充分表达自我
+有效沟通的方法
+１.明确沟通的重点是什么
+２.沟通的重要性
+３.对于要沟通的事情的好坏分析
+４.用何种手段和方法实行
+两点注意：
+１.思想敏锐，能说会干的人不一定是沟通能力强的人
+２.沟通时一定要留意对方的情绪
+有效沟通的听、说、读、写
+做一个“有心人”---
+–当客户犹豫时；
+–当客户疑虑时；
+–当客户的要求过于苛刻时；
+–当客户的兴趣不大时；
+
+四、渠道冲突的管理：
+渠道之间有哪些冲突？
+市场范围的冲突；
+经营价格的冲突；
+经营品种的冲突；
+经营方式的冲突；
+经营素质的冲突；
+渠道冲突的实质：
+利益的冲突是
+渠道冲突的应对：
+严格界定经营范围
+界定价格体系
+界定渠道的级别（从公司直接进货的不都是一级客户）
+不同类型渠道不同政策
+新经销的扶持与老经销管理上的人性化
+对我们的业务员严格要求
+
+五、销售队伍管理
+销售队伍的管理：
+销售代表与经销商的不同作用
+销售的基本素质及如何提高
+销售人员的4项基本工作
+销售拜访制度的建立
+-库存
+-销售完成
+-市场政策的执行
+-市场信息反馈
+-财务
+渠道管理中的观念转变                    
+在得到实际回款之前的销售额并不是真正的销售。
+控制风险并不会损害销售。
+现金到手之前销售并没有完成。
+公司所挣的每一分钱都经由我们的双手而实现。
+货款的拖欠比坏帐更能侵蚀利益。
+那是我们的钱--客户不过是暂借而已。
+越及时提醒客户就越早地收到货款。
+客户从来都不会因被提醒付款而不满
+
+六、客户信用管理与销售预警系统
+销售量不正常波动
+内外部过量库存
+关键人员变动
+新产品和新市场开发不利
+帐龄急剧恶化
+产品质量大幅下滑
+
+七、课堂演练：
+
+第三单元：迈向成功---大客户的开发与维护（第2天）
+
+前言：大客户管理的概述和发展
+什么是重要客户
+为什么进行大客户管理
+什么是大客户管理
+大客户管理发展模型及阶段
+区域运作模型
+
+第一章 针对大客户的销售流程
+一．现代大客户采购流程分析
+1.“谢绝推销”的启示
+2.客户关心的是什么
+3.研究客户购买流程
+
+二．客户满意式销售流程
+案例分析：美国戴尔计算机公司的成功
+1.建立客户满意式销售流程的思路
+2.客户满意式销售流程分析
+
+第二章 针对大客户的销售模式
+一.调查结论：大客户销售人员的成绩是天份吗？
+1.成功销售人员的特点
+–销售是什么
+–我们在卖什么？
+–产品的差异性表现
+–你卖的是价值,而不是产品      
+–顾客为何不想买你的产品
+–销售代表的角色
+
+2.成功销售人员的突出技能：四个善于
+3.性情论批判
+4.销售技能的贡献
+–销售自己
+–适应新的环境
+–准确判断您的新同事
+–心存感激之情
+–交往技能
+
+二.影响大客户销售业绩的六大因素分析
+
+三. 建立高绩效的大客户销售模型
+
+第三章 针对大客户的SPIN顾问式销售方略
+一. 传统销售线索和现代销售线索
+二.什么是SPIN提问方式
+三.封闭式提问和开放式提问
+四.如何起用SPIN提问
+五.SPIN提问方式的注意点
+
+第四章 如何了解或挖掘大客户的需求
+  引言：赢得客户信任的第一步—客户拜访
+一.初次拜访的程序
+
+二.初次拜访应注意的事项：
+三.再次拜访的程序：
+四.如何应付消极反应者
+五.要善于聆听客户说话
+1.多听少说的好处
+2.多说少听的危害：
+3.如何善于聆听
+
+六.了解或挖掘需求的具体方法
+1.客户需求的层次
+2.目标客户的综合拜访
+3.销售员和客户的四种信任关系
+4.挖掘决策人员个人的特殊需求
+
+第五章 如何具体推荐产品
+一.使客户购买特性和产品特性相一致
+二.处理好内部销售问题
+三. FAB方法的运用
+四.推荐商品时的注意事项
+1.不应把推销变成争论或战斗
+2.保持洽谈的友好气氛
+3.讲求诚信，说到做到
+4.控制洽谈方向
+5.选择合适时机
+6.要善于听买主说话
+7.注重选择推荐商品的地点和环境
+五.通过助销装备来推荐产品
+六.巧用戏剧效果推荐产品
+七.使用适于客户的语言交谈
+1.多用简短的词语
+2.使用买主易懂的语言
+3.与买主语言同步调
+4.少用产品代号
+5.用带有感情色彩的语言激发客户
+
+第六章 排除妨碍的有效法则
+一.对待障碍的态度
+二.障碍的种类
+三.如何查明目标客户隐蔽的心理障碍
+四.排除障碍的总策略
+
+第七章 如何做好大客户的优质服务
+一.优质服务的重要性
+二.四种服务类型分析
+三.如何处理客户的抱怨和投诉
+1.客户投诉的内容
+2.处理客户不满的原则和技巧
+
+第八章 大客户销售人员的自我管理和修炼
+一.时间分配管理
+二.成功销售人士的六项自我修炼
+1．建立在原则基础上的自我审视的修炼
+2．自我领导的修炼
+3．自我管理的修炼
+4．双赢思维人际领导的修炼
+5．有效沟通的修炼
+6．创造性合作的修炼
+	
+
+讲师介绍：PHILIPS
+?北京大学经济系研究生；
+?美国南加州大学（USC）工商管理硕士；
+?营销学、客户分析学、谈判技巧专家，资深营销管理培训师。
+?曾任荷兰飞利浦、德国西门子、法国施耐德等国际知名公司的经销商管理、大客户经理、销售经理、市场总监等职位。
+目前仍就职于财富500强企业，担任大中华区的营销管理工作。
+具有丰富的商业实战理论基础与实践经验，包括渠道管理、大客户管理、销售技巧、商务谈判、销售团队建设、等全方面流程培训，拥有丰富的针对中高层管理人员和一线销售人员进行培训和管理的经验。以独到的管理营销经验，讲解结合互动、情景式培训，基础知识与实际运用并重，注重受训人员的感悟及参与。培训方式灵活，语言幽默精辟，培训现场学员参与性强，气氛热烈，广受参训学员的强烈好评。
+
+已开设的部分优势培训项目:
+《职业经理人资格认证》、《工业制品的销售与队伍建设》、《经销商管理》、《中层营销管理人员的管理技能》、《团队管理》、《双赢谈判技巧》、《大客户管理》、《激励技巧》、《目标管理》、《市场营销》、《销售技巧》、《绩效管理》、《情景管理的艺术》等；
+
+
+
+--------------------------------------------------------------------------------
+
+如要参加本次研讨会，可通过下面方式报名参加：
+
+
+
+将以下报名表内容打印填写后传真到：（0755）61351396
+
+报　　名　　回　　执
+
+参加课题：非财务经理的财务管理高级研修班　　地点：    时间：
+
+参会单位名称：___________________________________ Email：______________________ 　
+ 
+联系人：_______________ 电话：_____________________ 传真：_____________________
+ 　
+参加学员：_______________职务：_______________手机：_______________Email：____________
+
+参加学员：_______________职务:_______________ 手机：_______________Email：____________
+
+参加学员：_______________职务：_______________手机：_______________Email：____________
+      
+付款方式：□现金　□支票　□转帐
+
+人数：______人   参会费用：共计：______元 
+
+备注
+1.收到贵司报名信息后，我们将第一时间和贵司参会联系人进行确认；
+2.在开课前一周，我们有专人给贵司发送参加培训的确认函，上面有培训报到指引，以及详细的上课地址和路线图；
+3.此课程也可以安排企业内训，欢迎来电咨询及申请排期；
+4.如对此课程有任何疑问，欢迎拨打电话向我们咨询。
+
+
+--===============1111465576292038167==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -98,7 +387,7 @@ This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
 Build the coolest Linux based applications with Moblin SDK & win great prizes
 Grand prize is a trip for two to an Open Source event anywhere in the world
 http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============7004532329477126104==
+--===============1111465576292038167==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -109,4 +398,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7004532329477126104==--
+--===============1111465576292038167==--

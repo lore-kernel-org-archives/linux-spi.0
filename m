@@ -1,10 +1,9 @@
-From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
-Subject: [SPAM] 票据代理
-Date: Wed, 26 Nov 2008 20:13:13 +0800
-Message-ID: <E1L5JFi-0003gs-PC@3yr0jf1.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+From: =?GB2312?B?yP27xrL9wqG/1dTLsr8=?= <ck-w4rWGExpMJIAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] 欧洲/日本空运专家
+Date: Thu, 27 Nov 2008 17:43:20 +0800
+Message-ID: <E1L5dPL-0005pl-PC@235xhf1.ch3.sourceforge.com>
+Reply-To: ck-w4rWGExpMJIAvxtiuMwx3w@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============3227563514521507420=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,28 +16,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHuePW3crQyPPQwsq10rXT0M/e
-uavLvrXEo6jJ7tvaoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+
-o6mho87Sy77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvB
-y8O/1MLP+srbtu62yKGjCsO/1MLT0NK7sr+31tT21rXLsLXnxNS3osaxNiW6zcbVzai3osax1tbA
-4Mjnz8KjusnMxrfP+srby7C3osaxo6y158TU1MvK5LeixrGjrAq547jmt6LGsdfiwd7StbeixrEs
-t/7O8dK1t6LGsbXIICi5+suwtdjLsKOpMS0yJdPFu920+r+qu/K6z9f3o6y148r9vc+1zaGju7m/
-yQrS1Lj5vt3L+df2yv3Bv7butsi1xLTz0KHAtMnMzNbTxbvdtcS148r9o6y5q8u+s8nBorbgxOrS
-u9axvOGz1tLUobCzz9DFobHOqtbQCtDE1/fOqrmry761xLrL0MTLvM/roaLAzrnMyvfBormry77Q
-zs/zo6yxvrmry77Wo9bYs9DFtcv508O++LbUysfV5saxo6G4/M+jzfsKxNy5u9PQu/q74dPrufPL
-vrrP1/ejoQqhoaGhCiAgICDI57nzy77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQxKOs
-v8nJz834sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGjIAogICAgIAogICAg
-tMvQxc+is6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOiAKICAgIAqhoaGhytYgILv6OjEzNjMxNDEz
-NjA3CgogICAgLS0tLVFROzQwNjcxNTYyOQoKoaHBqs+1yMujusDuufrH7ArLs9ejCiAgICAgIMnM
-7PejoSAKICAgICAKoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoSAgoaGhoaGhoaGhoaGhoaGh
-oaGhoaGhoaGhoaG549bdytDI89DCyrXStdPQz965q8u+CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
-U0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgTW9ibGluIFlvdXIgTW92ZSBEZXZlbG9w
-ZXIncyBjaGFsbGVuZ2UKQnVpbGQgdGhlIGNvb2xlc3QgTGludXggYmFzZWQgYXBwbGljYXRpb25z
-IHdpdGggTW9ibGluIFNESyAmIHdpbiBncmVhdCBwcml6ZXMKR3JhbmQgcHJpemUgaXMgYSB0cmlw
-IGZvciB0d28gdG8gYW4gT3BlbiBTb3VyY2UgZXZlbnQgYW55d2hlcmUgaW4gdGhlIHdvcmxkCmh0
-dHA6Ly9tb2JsaW4tY29udGVzdC5vcmcvcmVkaXJlY3QucGhwP2Jhbm5lcl9pZD0xMDAmdXJsPS8K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
-LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
-Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
-ZWwtZ2VuZXJhbAo=
+--===============3227563514521507420==
+Content-Type: text/html;charset="GB2312"
+Content-Transfer-Encoding: 8bit
+
+
+
+--===============3227563514521507420==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+-------------------------------------------------------------------------
+This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+Build the coolest Linux based applications with Moblin SDK & win great prizes
+Grand prize is a trip for two to an Open Source event anywhere in the world
+http://moblin-contest.org/redirect.php?banner_id=100&url=/
+--===============3227563514521507420==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3227563514521507420==--

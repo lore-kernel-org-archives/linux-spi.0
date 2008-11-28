@@ -1,10 +1,10 @@
-From: MRS ANITA ADAMS JOHNSON <aadamsnitaa3456-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org>
-Subject: HELLO DEAR
-Date: Thu, 27 Nov 2008 22:20:16 +0900 (JST)
-Message-ID: <20081127132016.23151.qmail@web2804.mail.bbt.yahoo.co.jp>
-Reply-To: adamsanita42-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: hunkyhy8ohyiu-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 合作
+Date: Fri, 28 Nov 2008 16:15:08 +0800
+Message-ID: <E1L5yUh-000462-N8@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0283623086642225426=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,59 +17,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0283623086642225426==
-Content-Type: multipart/alternative; boundary="0-130224196-1227792016=:20584"
-
---0-130224196-1227792016=:20584
-Content-Type: text/plain; charset=iso-2022-jp
-
-$B?7$7$$%a!<%k%"%I%l%9$r$*CN$i$;$7$^$9?7$7$$%a!<%k%"%I%l%9!'(B aadamsnitaa3456-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org
-
-Beloved.
-
- 
-
-I am  ANITA ADAMS JOHNSON from Nigeria.  I want to donate an inherited fund from my  late husband to you for charity.
-
-
-My Doctor told me that it is very likely i will die within the next 3 months 
-
-due to A Blood cancer {LUCAMIA}.
-
-
-Contact me for more details.
-
-- MRS ANITA ADAMS JOHNSON
-
-
---0-130224196-1227792016=:20584
-Content-Type: text/html; charset=iso-2022-jp
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://i.yimg.jp/i/jp/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">$B?7$7$$%a!<%k%"%I%l%9$r$*CN$i$;$7$^$9(B</big></td></tr></table><div style="padding:10px;">$B?7$7$$%a!<%k%"%I%l%9!'(B <b>aadamsnitaa3456-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org</b><br><br><span style="color:green;">Beloved.<br><br> <br><br>I am  ANITA ADAMS JOHNSON from Nigeria.  I want to donate an inherited fund from my  late husband to you for charity.<br><br><br>My Doctor told me that it is very likely i will die within the next 3 months <br><br>due to A Blood cancer {LUCAMIA}.<br><br><br>Contact me for more details.</span><br><br>
- - <span style="color:green;">MRS ANITA ADAMS JOHNSON</span></div></div>
---0-130224196-1227792016=:20584--
-
-
---===============0283623086642225426==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============0283623086642225426==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0283623086642225426==--
+ufO5q8u+uLrU8MjLxPq6wyEgKMjn09C08sjFx+vBwr3io6mhowogICAgsb65q8u+1NoouePW3S62
+q924LsnPuqMu1eO9rS64o72oLr2ty9UuuePO9y7JvbarLr2tzvcuy8S0qLXItdi++dPQt9a5q8u+
+KSwK0vK9+M/uvc+24M/WzeqzybK7wcvDv9TCz/rK27butsijrMO/1MLT0NK7sr+31rbg0+C1xMbV
+zai3osaxyOejusnMxrfP+srbLtTLyuQuCrf+zvEuueO45i69qNb+uaSzzLXIt6LGsaOsy7DCyrC0
+MSUtMiXX89PSz/LN4tPFu920+r+qo6y587mry77U2tf21cq78r34z/q05re9w+YKyOfQ6NPDtb21
+xLuwo6zO0su+v8nM4bmpyKu3vcPmtcS3/s7xoaO/ybj5vt3L+df2yv3Bv7butsi1xLTz0KHAtLri
+wb/TxbvdtcS148r9oaMgCiAgICC587mry77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQ
+xKOsv8nJz834sunWpLvy1rG908ily7DO8b7Wtda/27rLttShowqxvrmry77Wo9bYs9DFtcv508O+
++LbUysfV5saxo6EgIMuz16OjuiAgyczs96OhIAoKCiAgICDBqiDPtSDIy6O61cXQob3jCiAgICDB
+qs+1yta7+qO6MTM1Mzg4ODc2MjUKICAgINK1ICDO8VFRo7o4MjA0NTkyOTgKICAgIEUtbWFpbKO6
+aG9wcHlhYmNAMTI2LmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFpbCBpcyBz
+cG9uc29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxlbmdlCkJ1
+aWxkIHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxpbiBTREsg
+JiB3aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRvIGFuIE9w
+ZW4gU291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGluLWNvbnRl
+c3Qub3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
+bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
+cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

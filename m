@@ -1,39 +1,265 @@
-From: hunkyhy8ohyiu-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 合作
-Date: Mon, 1 Dec 2008 00:03:27 +0800
-Message-ID: <E1L6oky-0000FH-8F@335xhf1.ch3.sourceforge.com>
+From: Jonathan Cameron <jic23@cam.ac.uk>
+Subject: [Industrial I/O] [0/13] RFC: IIO v3 patchset
+Date: Mon, 01 Dec 2008 14:20:01 +0000
+Message-ID: <4933F291.4020001@cam.ac.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: LM Sensors <lm-sensors@lm-sensors.org>,
+	spi-devel-general@lists.sourceforge.net
+To: LKML <linux-kernel@vger.kernel.org>,
+	Dmitry Torokhov <dtor@mail.ru>,
+	David Brownell <david-b@pacbell.net>,
+	Jean Delvare <khali@linux-fr.org>,
+	Ben Nizette <bn@niasdigital.com>,
+	Jonat
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753375AbYLAOUZ@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLxPq6wyEgKMjn09C08sjFx+vBwr3io6mhowogICAgsb65q8u+1NoouePW3S62
-q924LsnPuqMu1eO9rS64o72oLr2ty9UuuePO9y7JvbarLr2tzvcuy8S0qLXItdi++dPQt9a5q8u+
-KSwK0vK9+M/uvc+24M/WzeqzybK7wcvDv9TCz/rK27butsijrMO/1MLT0NK7sr+31rbg0+C1xMbV
-zai3osaxyOejusnMxrfP+srbLtTLyuQuCrf+zvEuueO45i69qNb+uaSzzLXIt6LGsaOsy7DCyrC0
-MSUtMiXX89PSz/LN4tPFu920+r+qo6y587mry77U2tf21cq78r34z/q05re9w+YKyOfQ6NPDtb21
-xLuwo6zO0su+v8nM4bmpyKu3vcPmtcS3/s7xoaO/ybj5vt3L+df2yv3Bv7butsi1xLTz0KHAtLri
-wb/TxbvdtcS148r9oaMgCiAgICC587mry77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQ
-xKOsv8nJz834sunWpLvy1rG908ily7DO8b7Wtda/27rLttShowqxvrmry77Wo9bYs9DFtcv508O+
-+LbUysfV5saxo6EgIMuz16OjuiAgyczs96OhIAoKCiAgICDBqiDPtSDIy6O61cXPyMn6CiAgICDB
-qs+1yta7+qO6MTM2MzE1MjI5MTUKICAgINK1ICDO8VFRo7o5Njk4MTI4NDAKICAgIEUtbWFpbKO6
-aG9wcHlhYmNAMTI2LmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLk5ldCBlbWFpbCBpcyBz
-cG9uc29yZWQgYnkgdGhlIE1vYmxpbiBZb3VyIE1vdmUgRGV2ZWxvcGVyJ3MgY2hhbGxlbmdlCkJ1
-aWxkIHRoZSBjb29sZXN0IExpbnV4IGJhc2VkIGFwcGxpY2F0aW9ucyB3aXRoIE1vYmxpbiBTREsg
-JiB3aW4gZ3JlYXQgcHJpemVzCkdyYW5kIHByaXplIGlzIGEgdHJpcCBmb3IgdHdvIHRvIGFuIE9w
-ZW4gU291cmNlIGV2ZW50IGFueXdoZXJlIGluIHRoZSB3b3JsZApodHRwOi8vbW9ibGluLWNvbnRl
-c3Qub3JnL3JlZGlyZWN0LnBocD9iYW5uZXJfaWQ9MTAwJnVybD0vCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
-bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
-cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Dear All,
+
+Sorry this has been so long in coming, it has been a busy couple of
+months.
+
+Summary of what IIO is about:
+
+The Industrial I/O (name open to suggestions) subsystem is the result
+of discussions on LKML about suitable facilities in the kernel for
+the handling of Analog to Digital Converters (ADCs) and the huge classes
+of sensor that act in similar fashion (digital accelerometers etc). The
+intention is that this may also provide a home for DACs as a lot of chips
+have both functions. The sort of devices we are talking typically
+communicate over I2C or SPI buses though drivers for rs232 devices etc are
+definitely on the cards. Basically we are interested in devices where direct
+memory mapped access is not possible.
+
+My particular motivation was to produce an adaptable data capture platform
+and, seeing as that's what is paying the bills, it has been the initial focus of
+my efforts.  The RFCs below include the question of what other facilities should
+be included as options in this system.
+
+For discussion of why these don't fit within existing subsystems see 
+http://lkml.org/lkml/2008/5/20/135 and the rest of the associated thread.
+
+The design is intended to allow a disparate set of drivers providing whatever
+subset of functionality people have uses for. Hence, the intention is that it
+is not necessary or even desirable to support as much as the example drivers
+provided here. The system is designed to allow everything from simple drivers
+providing sysfs based reading of individual channels to the level of complexity
+seen in the sca3000 accelerometer driver found in patch 11.
+To this end any final submission will include at least one example of a minimal
+driver.
+
+I'm still fairly new to kernel coding so have doubtlessly made many mistakes
+and non optimal decisions within this code. So, whilst this is intended
+primarily to feed a discussion of the overall framework, I would be grateful
+to receive any more specific comments on the code! Particularly welcome are
+any suggestions that will result in reductions in code length without loss of
+functionality as this is still rather larger than would be ideal!
+
+As ever, thanks to the numerous people who commented on the last version posted
+and those who have been testing the various intermediate versions (Marcelo Pias
+in particular.)
+
+Contents:
+
+[1/13] The Industrial I/O core:
+		The core registration and event handling functionality of IIO.
+
+[2/13] The Industrial I/O core - ring buffer support:
+		Adds ring buffer handling to the IIO core.
+
+[3/13] IIO: Software ring buffer implementation.
+		An example software ring buffer module.
+
+[4/13] The Industrial I/O core - trigger support
+		Adds trigger support to the IIO core.
+
+[5/13] IIO: Periodic real time clock based trigger.
+		An example of IIO trigger supplying driver.
+
+[6/13] IIO: Proof of concept GPIO based IIO trigger
+		A very simple GPIO based trigger suitable for external
+		synchronization.
+
+[7/13] IIO: Maxim MAX1363 driver
+		Driver for the the MAX1363 ADC chip (core functionality)
+
+[8/13] IIO: Maxim MAX1363 driver (ring buffer support)
+		Add triggered software ring buffer support to the driver
+
+[9/13] IIO: ST LIS3L02DQ 3d accelerometer driver via SPI (core)
+		Driver for the ST LIS3L02DQ accelerometer (SPI only)
+
+[10/13] IIO: ST LIS3L02DQ 3d accelerometer driver via SPI (ring)
+		Add triggered software ring buffer support and a data
+		ready based trigger to the device.
+
+[11/13] IIO: VTI SCA3000 3d accelerometer driver.
+		Driver for the VTI SCA3000 range of accelerometers.
+
+[12/13] IIO: Documentation
+		Whilst most documentation related to IIO is contained
+		as kernel doc comments within the source code, a brief
+		overview of what it does and discussions of elements
+		of individual drivers are provided in
+		Documentation/industrialio.
+
+[13/13] IIO: Example user space ring buffer access.
+		Simple example program to illustrate how a user space
+		application can interact with the ring buffer
+		functionality of IIO (this includes event handling).
+		The example used uses the datardy trigger of the
+		lis3l02dq to drive the filling of a software ring buffer
+		from the lis3l02dq device.
+
+Overview of changes:
+
+* Introduction of trigger drivers to allow more flexible sampling
+  strategies and separate out the periodic RTC element (as only
+  one example of a trigger driver.) New triggers provided as example
+  / proofs of concept are GPIO based for external sync and data ready
+  on the lis3l02dq (to act as example of a unified iio:trigger /
+  iio:device driver)
+
+* Far more modular design:
+  - The core now acts as a registration system providing sysfs class
+    handling and registration of chrdevs. The registration is relatively
+    heavy weight pulling in other core elements such as ring buffers
+    as appropriate.
+  - Ring buffers are now an optional element (compile to near zero)
+    if not enabled. Intention is that it will be possible to select
+    most appropriate implementation at run time though for now this
+    is hard coded in the drivers (as there is only one software
+    implementation)
+  - Separate library module provides a fairly generic ring buffer
+    implementation.
+  - Drivers are now spit into core component (direct access to channels
+    and event chrdevs) and ring buffer related code.
+  - The intention is that, if appropriate, other additional optional
+    elements will be provided via a similar approach.  This would include
+    interfacing to hwmon and input subsystems.
+  - Hopefully this will make code review a much simpler exercise than
+    the behemoth patches sent last time!
+
+Requests for comment:
+
+Big general question - Is it sensible to try and have unified drivers
+providing all functionality users may want from a given sensor chip?
+This came up in the previous discussion but I'm still not sure we have
+a definitive answer. Basically, is it sensible to have the iio-core
+provide hwmon interfaces (for devices that are used as such complete
+with caching etc) or input interfaces (for things like accelerometers
+that are increasingly used as input devices.)
+It would be difficult to say the least to run these at the same time as
+for example the ring buffering elements.
+
+Is it worthwhile allowing multiple triggers for single device?  This may
+greatly increase the individual driver complexity and not actually be that
+useful.
+
+Devices supplied triggers.  These may be used to trigger other devices. Tricky
+to set this up unless they are already set to trigger themselves. A clean
+means of specifying restrictions on trigger / device associations is needed.
+
+Consider optimal approach to configuring scan modes.
+ * Somewhat clunky approach used with max1363 - basically associate formalized
+   text label with each scan mode.  Somewhat chip specific approach.
+
+ * Scan element selection as in lis3l02dq and sca3000 drivers.
+   Selectable sysfs elements represent each signal that is available.
+   Works well in this case where any combination is possible but complex in the
+   cases with exclusion problems such as unipolar and bipolar for the max1363.
+   Also nasty search functionality and masking of results would be needed to
+   apply this to chips like the max1363 where not every combination is
+   directly possible.
+
+Whilst it would be nice to clean this up, perhaps enforcing two rigid a set
+of rules here will just lead to fiddly unmaintainable code.  Maybe one to
+reconsider down the line when many more device drivers are available to
+consider.
+
+There are numerous RFCs concerned with more specific questions within the
+various patches.
+
+TO DO:
+
+There are still quite a few elements that I know need cleaning up in this
+code some of which are listed here.
+
+Protection on many of the control interfaces. In some cases this will require
+input via board configs.  For example the maximum sampling rate of a sensor
+is often limited by a complex interaction of bus speed and available
+processing power. The easiest option would be to allow board configuration
+data to specify limits that the developer has tested and verified to give
+reasonable performance.
+
+Provision of static sysfs elements to make things like conversion factors
+available in as generic a form as possible.
+
+Drivers are all currently missing things like power management support which
+will ideally be in place before final submission.
+
+Other drivers in development:
+
+Analog Devices ADIS16350 inertial measurement unit.
+
+Illustration of sysfs Interface:
+
+This is just intended to give an idea of what is available for a typical
+driver (lis3l02dq) under /sys/class/industrialio/ (There some RFCs after)
+
+ ls -R industrialio/
+industrialio/:
+iio:device0   iio:trigger0
+
+industrialio/iio:device0:
+accel_x                       event_line0_sources
+accel_x_gain                  name
+accel_x_offset                power
+accel_y                       ring_buf0_acc_minor
+accel_y_gain                  ring_buf0_ev_minor
+accel_y_offset                ring_buffer
+accel_z                       sampling_frequency
+accel_z_gain                  scan_elements
+accel_z_offset                subsystem
+available_sampling_frequency  thresh
+device                        trigger
+event_line0_minor             uevent
+
+industrialio/iio:device0/event_line0_sources:
+accel_x_high  accel_y_high  accel_z_high
+accel_x_low   accel_y_low   accel_z_low
+
+industrialio/iio:device0/power:
+wakeup
+
+industrialio/iio:device0/ring_buffer:
+bps          length       ring_enable
+
+industrialio/iio:device0/scan_elements:
+scan_en_accel_x    scan_en_accel_y    scan_en_accel_z    scan_en_timestamp
+
+industrialio/iio:device0/trigger:
+current_trigger
+
+industrialio/iio:trigger0:
+device     name       power      subsystem  uevent
+
+industrialio/iio:trigger0/power:
+wakeup
+
+RFC (on sysfs subsystem):
+
+Add an interface under the trigger to list which devices have it set
+as their 'current_trigger'? (useful for debugging if nothing else).
+Clearly this particular trigger driver only provides a name element.
+
+Directory structure: Basically any suggestions for a more coherent
+and intuitive structure would be welcomed.
+
+All other comments welcomed!
+
+--
+Jonathan Cameron

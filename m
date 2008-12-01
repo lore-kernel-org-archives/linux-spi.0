@@ -1,7 +1,7 @@
 From: Jonathan Cameron <jic23@cam.ac.uk>
-Subject: [Industrial I/O] [3/13] RFC: IIO Software ring buffer implementation
-Date: Mon, 01 Dec 2008 14:27:17 +0000
-Message-ID: <4933F445.2070403@cam.ac.uk>
+Subject: [Industrial I/O] [4/13] RFC: IIO trigger support
+Date: Mon, 01 Dec 2008 14:29:12 +0000
+Message-ID: <4933F4B8.90208@cam.ac.uk>
 References: <4933F291.4020001@cam.ac.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
@@ -14,76 +14,78 @@ Cc: LKML <linux-kernel@vger.kernel.org>,
 	LM Sensors <lm-sensors@lm-sensors.org>,
 	spi-devel-general@lists.sourceforge.net
 To: Jonathan Cameron <jic23@cam.ac.uk>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753391AbYLAO1f@vger.kernel.org>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753533AbYLAO31@vger.kernel.org>
 In-Reply-To: <4933F291.4020001@cam.ac.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Jonathan Cameron <jic23@cam.ac.uk>
 
-IIO: Software ring buffer implementation.
+The Industrial I/O core - trigger support
 
 Signed-off-by: Jonathan Cameron <jic23@cam.ac.uk>
-
 --
+This patch adds supports for IIO triggers.  These are effectively
+interrupt sources which are used to 'trigger' things to happen within
+IIO device drivers. Currently this limited to sampling data and
+pushing to a software ring buffers.
 
-Intended to act as an example of how a software ring buffer might
-function rather than as a definitive solution. The particular
-focus of this was an application that required relatively hight
-sampling rates (couple of Ksamples) with low computational load
-and few dropped samples.
+Current trigger drivers (found in next couple of patches) are
+1) Periodic RTC  - this replacement for the timer elements of the IIO v2
+2) GPIO - sample on raising an external pin (useful for synchronizing
+   samples with external hardware over which you do not have full
+   control) This one is very much a proof of concept.
+3) Data ready signals from certain hardware (currently LIS3L02DQ
+   accelerometer)
 
-To my mind this is the most flakey element of this patch set.
-All suggestions on alternative approaches / simplifications
-would be most welcome. My intention is to also provide a far
-simple locked ring buffer (hence all accesses in bh of interrupt
-handlers) to act as a very simple example for people coding up
-there own but this is not yet in place.
+The various triggers highlight some of the complexities to be overcome
+by any attempt to create a generic framework for handling these sort
+of events.
 
- drivers/industrialio/Kconfig         |    9
- drivers/industrialio/Makefile        |    4
- drivers/industrialio/ring_sw.c       |  370 +++++++++++++++++++++++++++++++++++
- include/linux/industrialio/ring_sw.h |  183 +++++++++++++++++
- 4 files changed, 565 insertions(+), 1 deletion(-)
+ drivers/industrialio/Kconfig                |    9 +
+ drivers/industrialio/Makefile               |    1 +
+ drivers/industrialio/industrialio-trigger.c |  363 +++++++++++++++++++++++++++
+ include/linux/industrialio/trigger.h        |  110 ++++++++
+ 4 files changed, 483 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/industrialio/Kconfig b/drivers/industrialio/Kconfig
-index d132ab6..73c5616 100644
+index 73c5616..9bf6a36 100644
 --- a/drivers/industrialio/Kconfig
 +++ b/drivers/industrialio/Kconfig
-@@ -17,3 +17,12 @@ config IIO_RING_BUFFER
- 	    Provide support for various ring buffer based data
- 	    acquisition methods.
+@@ -9,6 +9,15 @@ menuconfig INDUSTRIALIO
+ 	  drivers for many different types of embedded sensors using a
+ 	  number of different physical interfaces (i2c, spi etc). See
+ 	  Documentation/industrialio for more information.
++config IIO_TRIGGERS
++       boolean "Enable triggered sampling support"
++       depends on INDUSTRIALIO
++       default y
++         help
++	   Provides IIO core support for triggers.  Currently these
++	   are used to initialize capture of samples to push into 
++	   ring buffers.  The triggers are effectively a 'capture
++	   data now' interrupt.
  
-+config IIO_SW_RING
-+       tristate "Industrial I/O lock free software ring"
-+       depends on IIO_RING_BUFFER && INDUSTRIALIO
-+
-+       ---help---
-+	example software ring buffer implementation.  The design aim
-+	of this particular realization was to minize write locking
-+	with the intention that some devices would be able to write
-+	in interrupt context.
-\ No newline at end of file
+ config IIO_RING_BUFFER
+        bool "Enable ring buffer support within iio"
 diff --git a/drivers/industrialio/Makefile b/drivers/industrialio/Makefile
-index 1f47af3..0fda138 100644
+index 0fda138..15ef75f 100644
 --- a/drivers/industrialio/Makefile
 +++ b/drivers/industrialio/Makefile
-@@ -3,5 +3,7 @@
- #
- 
+@@ -5,5 +5,6 @@
  obj-$(CONFIG_INDUSTRIALIO)	+= industrialio.o
--industrialio-y := industrialio-core.o
-+industrialio-y := industrialio-core.o 
+ industrialio-y := industrialio-core.o 
  industrialio-$(CONFIG_IIO_RING_BUFFER) += industrialio-ring.o
-+
-+obj-$(CONFIG_IIO_SW_RING) += ring_sw.o
-diff --git a/drivers/industrialio/ring_sw.c b/drivers/industrialio/ring_sw.c
++industrialio-$(CONFIG_IIO_TRIGGERS) += industrialio-trigger.o
+ 
+ obj-$(CONFIG_IIO_SW_RING) += ring_sw.o
+diff --git a/drivers/industrialio/industrialio-trigger.c b/drivers/industrialio/industrialio-trigger.c
 new file mode 100644
-index 0000000..347ace1
+index 0000000..aa8dc01
 --- /dev/null
-+++ b/drivers/industrialio/ring_sw.c
-@@ -0,0 +1,370 @@
-+/* The industrial I/O simple minimally locked ring buffer.
++++ b/drivers/industrialio/industrialio-trigger.c
+@@ -0,0 +1,363 @@
++/* The industrial I/O core, trigger handling functions
 + *
 + * Copyright (c) 2008 Jonathan Cameron
 + *
@@ -93,552 +95,477 @@ index 0000000..347ace1
 + */
 +
 +#include <linux/kernel.h>
-+#include <linux/device.h>
 +#include <linux/module.h>
-+#include <linux/workqueue.h>
-+#include <linux/industrialio/ring_sw.h>
++#include <linux/idr.h>
++#include <linux/err.h>
++#include <linux/device.h>
++#include <linux/interrupt.h>
++#include <linux/list.h>
++#include <linux/platform_device.h>
++#include <linux/industrialio/iio.h>
++#include <linux/industrialio/trigger.h>
 +
-+static inline int __iio_init_sw_ring_buffer(struct iio_sw_ring_buffer *ring,
-+					    int bytes_per_datum, int length)
++/* RFC - Question of approach
++ * Make the common case (single sensor single trigger)
++ * simple by starting trigger capture from when first sensors
++ * is added.
++ *
++ * Complex simultaneous start requires use of 'hold' functionality
++ * of the trigger. (not implemented)
++ *
++ * Any other suggestions?
++ */
++
++
++static DEFINE_IDR(iio_trigger_idr);
++static DEFINE_SPINLOCK(iio_trigger_idr_lock);
++static LIST_HEAD(iio_trigger_list);
++static DEFINE_MUTEX(iio_trigger_list_lock);
++
++/**
++ * iio_trigger_register_sysfs() create a device for this trigger
++ * @trig_info:	the trigger
++ *
++ * Also adds any control attribute registered by the trigger driver
++ **/
++static int iio_trigger_register_sysfs(struct iio_trigger *trig_info)
 +{
-+	__iio_init_ring_buffer(&ring->buf, bytes_per_datum, length);
-+	ring->use_lock = __SPIN_LOCK_UNLOCKED((ring)->use_lock);
-+	ring->data = kmalloc(length*ring->buf.bpd, GFP_KERNEL);
++	int ret = 0;
 +
-+	return ring->data ? 0 : -ENOMEM;
-+}
-+
-+static inline void __iio_free_sw_ring_buffer(struct iio_sw_ring_buffer *ring)
-+{
-+	kfree(ring->data);
-+}
-+
-+void iio_mark_sw_rb_in_use(void *r)
-+{
-+	struct iio_sw_ring_buffer *ring = r;
-+	spin_lock(&ring->use_lock);
-+	ring->use_count++;
-+	spin_unlock(&ring->use_lock);
-+}
-+EXPORT_SYMBOL(iio_mark_sw_rb_in_use);
-+
-+void iio_unmark_sw_rb_in_use(void *r)
-+{
-+	struct iio_sw_ring_buffer *ring = r;
-+	spin_lock(&ring->use_lock);
-+	ring->use_count--;
-+	spin_unlock(&ring->use_lock);
-+}
-+EXPORT_SYMBOL(iio_unmark_sw_rb_in_use);
-+
-+
-+/* Ring buffer related functionality */
-+/* Store to ring is typically called in the bh of a data ready interrupt handler
-+ * in the device driver */
-+/* Lock always held if their is a chance this may be called */
-+int iio_store_to_sw_ring(struct iio_sw_ring_buffer *ring,
-+			 unsigned char *data,
-+			 s64 timestamp)
-+{
-+	bool init_read = true;
-+	int ret;
-+	int code;
-+
-+	/* initial store */
-+	if (unlikely(ring->write_p == 0)) {
-+		ring->write_p = ring->data;
-+		/* doesn't actually matter if this is out of the set */
-+		ring->half_p = ring->data - ring->buf.length*ring->buf.bpd/2;
-+		init_read = false;
++	trig_info->sysfs_dev = device_create(&iio_class,
++					     trig_info->dev,
++					     0,
++					     trig_info,
++					     IIO_TRIGGER_ID_FORMAT,
++					     trig_info->id);
++	if (IS_ERR(trig_info->sysfs_dev)) {
++		ret = PTR_ERR(trig_info->sysfs_dev);
++		goto error_ret;
 +	}
-+	memcpy(ring->write_p, data, ring->buf.bpd);
-+	barrier();
-+	ring->last_written_p = ring->write_p;
-+	barrier();
-+	ring->write_p += ring->buf.bpd;
-+	/* End of ring, back to the beginning */
-+	if (ring->write_p == ring->data + ring->buf.length*ring->buf.bpd) {
-+		ring->write_p = ring->data;
-+		ring->buf.loopcount++;
-+	}
-+	if (ring->read_p == 0)
-+		ring->read_p = ring->data;
-+	/* Buffer full - move the read pointer and create / escalate
-+	 * ring event */
-+	else if (ring->write_p == ring->read_p) {
-+		ring->read_p += ring->buf.bpd;
-+		if (ring->read_p
-+		    == ring->data + ring->buf.length*ring->buf.bpd)
-+			ring->read_p = ring->data;
 +
-+		spin_lock(&ring->buf.shared_ev_pointer.lock);
-+		if (ring->buf.shared_ev_pointer.ev_p) {
-+			/* Event escalation - probably quicker to let this
-+			   keep running than check if it is necessary */
-+			code = IIO_EVENT_CODE_RING_100_FULL;
-+			__iio_change_event(ring
-+					   ->buf.shared_ev_pointer.ev_p,
-+					   code,
-+					   timestamp);
-+		} else {
-+			code = IIO_EVENT_CODE_RING_100_FULL;
-+			ret = __iio_push_event(&ring->buf.ev_int,
-+					       code,
-+					       timestamp,
-+					       &ring
-+					       ->buf.shared_ev_pointer);
-+			if (ret) {
-+				spin_unlock(&ring->buf.shared_ev_pointer.lock);
-+				goto error_ret;
-+			}
-+		}
-+		spin_unlock(&ring->buf.shared_ev_pointer.lock);
-+	}
-+	/* investigate if our event barrier has been passed */
-+	/* There are definite 'issues' with this and chances of
-+	 * simultaneous read */
-+	/* Also need to use loop count to ensure this only happens once */
-+	ring->half_p += ring->buf.bpd;
-+	if (ring->half_p == ring->data + ring->buf.length*ring->buf.bpd)
-+		ring->half_p = ring->data;
-+	if (ring->half_p == ring->read_p) {
-+		spin_lock(&ring->buf.shared_ev_pointer.lock);
-+		code = IIO_EVENT_CODE_RING_50_FULL;
-+		ret = __iio_push_event(&ring->buf.ev_int,
-+				       code,
-+				       timestamp,
-+				       &ring->buf.shared_ev_pointer);
-+		spin_unlock(&ring->buf.shared_ev_pointer.lock);
++	if (trig_info->control_attrs)
++		ret = sysfs_create_group(&trig_info->sysfs_dev->kobj,
++					 trig_info->control_attrs);
 +
-+		if (ret)
-+			goto error_ret;
-+	}
-+	return 0;
 +error_ret:
 +	return ret;
 +}
 +
-+int iio_rip_sw_rb(void *r,  size_t count, u8 **data, int *dead_offset)
++static void iio_trigger_unregister_sysfs(struct iio_trigger *trig_info)
 +{
-+	struct iio_sw_ring_buffer *ring = r;
++	if (trig_info->control_attrs)
++		sysfs_remove_group(&trig_info->sysfs_dev->kobj,
++				   trig_info->control_attrs);
++	device_unregister(trig_info->sysfs_dev);
++}
 +
-+	u8 *initial_read_p, *initial_write_p, *current_read_p, *end_read_p;
++/**
++ * iio_trigger_register_id() get a unique id for this trigger
++ * @trig_info:	the trigger
++ **/
++static int iio_trigger_register_id(struct iio_trigger *trig_info)
++{
++	int ret = 0;
 +
-+	int ret, max_copied;
-+	/* Round down to nearest datum boundary */
-+	int bytes_to_rip = count - count % ring->buf.bpd;
++idr_again:
++	if (unlikely(idr_pre_get(&iio_trigger_idr, GFP_KERNEL) == 0))
++		return -ENOMEM;
 +
-+	/* Limit size to whole of ring buffer */
-+	bytes_to_rip = min(ring->buf.bpd*ring->buf.length, bytes_to_rip);
++	spin_lock(&iio_trigger_idr_lock);
++	ret = idr_get_new(&iio_trigger_idr, NULL, &trig_info->id);
++	spin_unlock(&iio_trigger_idr_lock);
++	if (unlikely(ret == -EAGAIN))
++		goto idr_again;
++	else if (likely(!ret))
++		trig_info->id = trig_info->id & MAX_ID_MASK;
 +
-+	*data = kmalloc(bytes_to_rip, GFP_KERNEL);
-+	if (*data == NULL) {
++	return ret;
++}
++/**
++ * iio_trigger_unregister_id() free up unique id for use by another trigger
++ **/
++static void iio_trigger_unregister_id(struct iio_trigger *trig_info)
++{
++		spin_lock(&iio_trigger_idr_lock);
++		idr_remove(&iio_trigger_idr, trig_info->id);
++		spin_unlock(&iio_trigger_idr_lock);
++}
++
++int iio_trigger_register(struct iio_trigger *trig_info,
++			 struct device *parent,
++			 int id)
++{
++	int ret;
++	struct platform_device *subdev;
++
++	subdev = platform_device_alloc(trig_info->name, id);
++	if (!subdev) {
 +		ret = -ENOMEM;
 +		goto error_ret;
 +	}
++	subdev->dev.parent = parent;
++	ret = platform_device_add(subdev);
++	if (ret)
++		goto error_free_platform_device;
++	trig_info->dev = &subdev->dev;
++	dev_set_drvdata(trig_info->dev, (void *)(trig_info));
++	ret = iio_trigger_register_id(trig_info);
++	if (ret)
++		goto error_free_platform_device;
++	ret = iio_trigger_register_sysfs(trig_info);
++	if (ret)
++		goto error_unregister_id;
 +
-+	/* build local copy */
-+	initial_read_p = ring->read_p;
-+	if (unlikely(initial_read_p == 0)) { /* No data here as yet */
-+		ret = 0;
-+		goto error_free_data_cpy;
-+	}
++	mutex_lock(&iio_trigger_list_lock);
++	list_add_tail(&trig_info->list, &iio_trigger_list);
++	mutex_unlock(&iio_trigger_list_lock);
 +
-+	initial_write_p = ring->write_p;
++	return 0;
 +
-+	/* Need a consistent pair */
-+	while ((initial_read_p != ring->read_p)
-+	       || (initial_write_p != ring->write_p)) {
-+		initial_read_p = ring->read_p;
-+		initial_write_p = ring->write_p;
-+	}
-+	if (initial_write_p == initial_read_p) {
-+		/* No new data available.*/
-+		ret = 0;
-+		goto error_free_data_cpy;
-+	}
-+
-+	if (initial_write_p > initial_read_p + bytes_to_rip) {
-+		/* write_p is greater than necessary, all is easy */
-+		max_copied = bytes_to_rip;
-+		memcpy(*data, initial_read_p, max_copied);
-+		end_read_p = initial_read_p + max_copied;
-+	} else if (initial_write_p > initial_read_p) {
-+		/*not enough data to cpy */
-+		max_copied = initial_write_p - initial_read_p;
-+		memcpy(*data, initial_read_p, max_copied);
-+		end_read_p = initial_write_p;
-+	} else {
-+		/* going through 'end' of ring buffer */
-+		max_copied = ring->data
-+			+ ring->buf.length*ring->buf.bpd - initial_read_p;
-+		memcpy(*data, initial_read_p, max_copied);
-+		if (initial_write_p > ring->data + bytes_to_rip - max_copied) {
-+			/* enough data to finish */
-+			memcpy(*data + max_copied, ring->data,
-+			       bytes_to_rip - max_copied);
-+			max_copied = bytes_to_rip;
-+			end_read_p = ring->data + (bytes_to_rip - max_copied);
-+		} else {  /* not enough data */
-+			memcpy(*data + max_copied, ring->data,
-+			       initial_write_p - ring->data);
-+			max_copied += initial_write_p - ring->data;
-+			end_read_p = initial_write_p;
-+		}
-+	}
-+	/* Now to verify which section was cleanly copied - i.e. how far
-+	 * read pointer has been pushed */
-+	current_read_p = ring->read_p;
-+
-+	if (initial_read_p <= current_read_p)
-+		*dead_offset = current_read_p - initial_read_p;
-+	else
-+		*dead_offset = ring->buf.length*ring->buf.bpd
-+			- (initial_read_p - current_read_p);
-+
-+	/* possible issue if the initial write has been lapped or indeed
-+	 * the point we were reading to has been passed */
-+	/* No valid data read.
-+	 * In this case the read pointer is already correct having been
-+	 * pushed further than we would look. */
-+	if (max_copied - *dead_offset < 0) {
-+		ret = 0;
-+		goto error_free_data_cpy;
-+	}
-+
-+	/* setup the next read position */
-+	ring->read_p = end_read_p;
-+	return max_copied - *dead_offset;
-+
-+error_free_data_cpy:
-+	kfree(data);
++error_unregister_id:
++	iio_trigger_unregister_id(trig_info);
++error_free_platform_device:
++	platform_device_put(subdev);
 +error_ret:
-+	return 0;
-+}
-+EXPORT_SYMBOL(iio_rip_sw_rb);
-+//EXPORT_SYMBOL_GPL(iio_store_to_sw_ring);
-+int iio_store_to_sw_rb(void *r, u8 *data, s64 timestamp)
-+{
-+	struct iio_sw_ring_buffer *ring = r;
-+	return iio_store_to_sw_ring(ring, data, timestamp);
-+}
-+EXPORT_SYMBOL(iio_store_to_sw_rb);
-+
-+int iio_read_last_from_sw_ring(struct iio_sw_ring_buffer *ring,
-+			       unsigned char *data)
-+{
-+	int loopcount_copy;
-+	unsigned char *last_written_p_copy;
-+
-+	iio_mark_sw_rb_in_use(ring);
-+again:
-+	loopcount_copy = ring->buf.loopcount;
-+	barrier();
-+	last_written_p_copy = ring->last_written_p;
-+	barrier(); /*unnessecary? */
-+	/* Check there is anything here */
-+	if (last_written_p_copy == 0)
-+		return -EAGAIN;
-+	memcpy(data, last_written_p_copy, ring->buf.bpd);
-+
-+	if (unlikely(loopcount_copy != ring->buf.loopcount)) {
-+		if (unlikely(ring->last_written_p >= last_written_p_copy))
-+			goto again;
-+	}
-+	iio_unmark_sw_rb_in_use(ring);
-+	return 0;
-+}
-+
-+int iio_read_last_from_sw_rb(void *r,
-+			     unsigned char *data)
-+{
-+	struct iio_sw_ring_buffer *ring = r;
-+	return iio_read_last_from_sw_ring(ring, data);
-+}
-+EXPORT_SYMBOL(iio_read_last_from_sw_rb);
-+
-+int iio_create_sw_rb(void **r)
-+{
-+	*r = kzalloc(sizeof(struct iio_sw_ring_buffer), GFP_KERNEL);
-+	return *r ? 0 : -ENOMEM;
-+}
-+EXPORT_SYMBOL(iio_create_sw_rb);
-+
-+int iio_init_sw_rb(void *r, void *indio_dev)
-+{
-+	return 0;
-+}
-+EXPORT_SYMBOL(iio_init_sw_rb);
-+
-+void iio_exit_sw_rb(void *r)
-+{
-+	struct iio_sw_ring_buffer *ring = r;
-+	__iio_free_sw_ring_buffer(ring);
-+
-+}
-+EXPORT_SYMBOL(iio_exit_sw_rb);
-+
-+
-+void iio_free_sw_rb(void *r)
-+{
-+	kfree(r);
-+}
-+EXPORT_SYMBOL(iio_free_sw_rb);
-+
-+int iio_request_update_sw_rb(void *r)
-+{
-+	int ret;
-+	struct iio_sw_ring_buffer *ring = r;
-+
-+	spin_lock(&ring->use_lock);
-+	if (ring->use_count || !ring->update_needed) {
-+		ret = -EAGAIN;
-+		goto error_ret;
-+	}
-+	__iio_free_sw_ring_buffer(ring);
-+	ret = __iio_init_sw_ring_buffer(ring, ring->buf.bpd, ring->buf.length);
-+error_ret:
-+	spin_unlock(&ring->use_lock);
 +	return ret;
 +}
-+EXPORT_SYMBOL(iio_request_update_sw_rb);
++EXPORT_SYMBOL(iio_trigger_register);
 +
-+int iio_get_bpd_sw_rb(void *r)
++void iio_trigger_unregister(struct iio_trigger *trig_info)
 +{
-+	struct iio_sw_ring_buffer *ring = r;
-+	return ring->buf.bpd;
++	struct iio_trigger *cursor;
++	struct platform_device *subdev;
++
++	mutex_lock(&iio_trigger_list_lock);
++	list_for_each_entry(cursor, &iio_trigger_list, list)
++		if (cursor == trig_info) {
++			list_del(&cursor->list);
++			break;
++		}
++	mutex_unlock(&iio_trigger_list_lock);
++
++	iio_trigger_unregister_sysfs(trig_info);
++	iio_trigger_unregister_id(trig_info);
++	subdev = to_platform_device(trig_info->dev);
++	platform_device_unregister(subdev);
 +}
-+EXPORT_SYMBOL(iio_get_bpd_sw_rb);
++EXPORT_SYMBOL(iio_trigger_unregister);
 +
-+int iio_set_bpd_sw_rb(void *r, size_t bpd)
++struct iio_trigger *iio_trigger_find_by_name(const char *name, size_t len)
 +{
-+	struct iio_sw_ring_buffer *ring = r;
-+	if (ring->buf.bpd != bpd) {
-+		ring->buf.bpd = bpd;
-+		if(ring->buf.ring_access->mark_param_change)
-+			ring->buf.ring_access->mark_param_change(r);
++	struct iio_trigger *trig;
++	bool found = false;
++
++	mutex_lock(&iio_trigger_list_lock);
++	list_for_each_entry(trig, &iio_trigger_list, list) {
++		if (strncmp(trig->name, name, len) == 0) {
++			found = true;
++			break;
++		}
 +	}
-+	return 0;
-+}
-+EXPORT_SYMBOL(iio_set_bpd_sw_rb);
++	mutex_unlock(&iio_trigger_list_lock);
 +
-+int iio_get_length_sw_rb(void *r)
-+{
-+	struct iio_sw_ring_buffer *ring = r;
-+	return ring->buf.length;
-+}
-+EXPORT_SYMBOL(iio_get_length_sw_rb);
++	return found ? trig : NULL;
++};
++EXPORT_SYMBOL(iio_trigger_find_by_name);
 +
-+int iio_set_length_sw_rb(void *r, int length)
++void iio_trigger_poll(struct iio_trigger *trig)
 +{
-+	struct iio_sw_ring_buffer *ring = r;
-+	if(ring->buf.length != length) {
-+		ring->buf.length = length;
-+		if(ring->buf.ring_access->mark_param_change)
-+			ring->buf.ring_access->mark_param_change(r);
++	struct iio_poll_func *pf_cursor;
++
++	list_for_each_entry(pf_cursor, &trig->pollfunc_list, list) {
++		if (pf_cursor->poll_func_immediate) {
++			pf_cursor->poll_func_immediate(pf_cursor->private_data);
++			trig->use_count++;
++		}
 +	}
-+	return 0;
++	list_for_each_entry(pf_cursor, &trig->pollfunc_list, list) {
++		if (pf_cursor->poll_func_main) {
++			pf_cursor->poll_func_main(pf_cursor->private_data);
++			trig->use_count++;
++		}
++	}
 +}
-+EXPORT_SYMBOL(iio_set_length_sw_rb);
++EXPORT_SYMBOL(iio_trigger_poll);
 +
-+int iio_mark_update_needed_sw_rb(void *r)
++void iio_trigger_notify_done(struct iio_trigger *trig)
 +{
-+	struct iio_sw_ring_buffer *ring = r;
-+	ring->update_needed = true;
-+	return 0;
++	trig->use_count--;
++	if (trig->use_count == 0 && trig->try_reenable)
++		if (trig->try_reenable(trig)) {
++			/* Missed and interrupt so launch new poll now */
++			trig->timestamp = 0;
++			iio_trigger_poll(trig);
++		}
 +}
-+EXPORT_SYMBOL(iio_mark_update_needed_sw_rb);
++EXPORT_SYMBOL(iio_trigger_notify_done);
 +
-+/* no init or exit as this is basically a library module */
++ssize_t iio_trigger_read_name(struct device *dev,
++				     struct device_attribute *attr,
++				     char *buf)
++{
++	struct iio_trigger *trig = dev_get_drvdata(dev);
++	return sprintf(buf, "%s\n", trig->name);
++}
++EXPORT_SYMBOL(iio_trigger_read_name);
 +
-+MODULE_DESCRIPTION("Industrialio I/O software ring buffer");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/industrialio/ring_sw.h b/include/linux/industrialio/ring_sw.h
-new file mode 100644
-index 0000000..0b85b56
---- /dev/null
-+++ b/include/linux/industrialio/ring_sw.h
-@@ -0,0 +1,183 @@
-+/* The industrial I/O simple minimally locked ring buffer.
-+ *
-+ * Copyright (c) 2008 Jonathan Cameron
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published by
-+ * the Free Software Foundation.
-+ *
-+ * This code is deliberately kept separate from the main industrialio I/O core
-+ * as it is intended that in the future a number of different software ring
-+ * buffer implementations will exist with different characteristics to suit
-+ * different applications.
-+ *
-+ * This particular one was designed for a data capture application where it was
-+ * particularly important that no userspace reads would interrupt the capture
-+ * process. To this end the ring is not locked during a read.
-+ *
-+ * Comments on this buffer design welcomed. It's far from efficient and some of
-+ * my understanding of the effects of scheduling on this are somewhat limited.
-+ * Frankly, to my mind, this is the current weak point in the industrial I/O
-+ * patch set.
++/* Trigger Consumer related functions */
++
++/* Complexity in here.  With certain triggers (datardy) an acknowledgement
++ * may be needed if the pollfuncs do not include the data read for the
++ * triggering device.
++ * This is not currently handled.  Alternative of not enabling trigger unless
++ * the relevant function is in there may be the best option.
 + */
-+
-+#ifndef _IIO_RING_SW_H_
-+#define _IIO_RING_SW_H_
-+/* NEEDS COMMENTS */
-+/* The intention is that this should be a separate module from the iio core.
-+ * This is a bit like supporting algorithms dependent on what the device
-+ * driver requests - some may support multiple options */
-+
-+
-+#include <linux/autoconf.h>
-+#include <linux/industrialio/iio.h>
-+#include <linux/industrialio/ring_generic.h>
-+
-+#if defined CONFIG_IIO_SW_RING || defined CONFIG_IIO_SW_RING_MODULE
-+
-+/**
-+ * iio_create_sw_rb() software ring buffer allocation
-+ * @r:		pointer to ring buffer pointer
-+ **/
-+int iio_create_sw_rb(void **r);
-+
-+/**
-+ * iio_init_sw_rb() initialize the software ring buffer
-+ * @r:		pointer to a software ring buffer created by an
-+ *		iio_create_sw_rb call.
-+ **/
-+int iio_init_sw_rb(void *r, void *indio_dev);
-+/**
-+ * iio_exit_sw_rb() reverse what was done in iio_init_sw_rb
-+ **/
-+void iio_exit_sw_rb(void *r);
-+
-+/**
-+ * iio_free_sw_rb() free memory occupied by the core ring buffer struct
-+ **/
-+void iio_free_sw_rb(void *r);
-+
-+/**
-+ * iio_mark_sw_rb_in_use() reference counting to prevent incorrect chances
-+ **/
-+void iio_mark_sw_rb_in_use(void *r);
-+
-+/**
-+ *  iio_unmark_sw_rb_in_use() notify the ring buffer that we don't care anymore
-+ **/
-+void iio_unmark_sw_rb_in_use(void *r);
-+
-+/**
-+ * iio_read_last_from_sw_rb() attempt to read the last stored datum from the rb
-+ **/
-+int iio_read_last_from_sw_rb(void *r, u8 *data);
-+
-+/**
-+ * iio_store_to_sw_rb() store a new datum to the ring buffer
-+ * @rb:	pointer to ring buffer instance
-+ * @data:	the datum to be stored including timestamp if relevant.
-+ * @timestamp:	timestamp which will be attached to buffer events if relevant.
-+ **/
-+int iio_store_to_sw_rb(void *rb, u8 *data, s64 timestamp);
-+
-+/**
-+ * iio_rip_sw_rb() attempt to read data from the ring buffer
-+ * @r:			ring buffer instance
-+ * @count:		number of datum's to try and read
-+ * @data:		where the data will be stored.
-+ * @dead_offset:	how much of the stored data was possibly invalidated by
-+ *			the end of the copy.
-+ **/
-+int iio_rip_sw_rb(void *r, size_t count, u8 **data, int *dead_offset);
-+
-+/**
-+ * iio_request_update_sw_rb() update params if update needed
-+ **/
-+int iio_request_update_sw_rb(void *r);
-+
-+/**
-+ * iio_mark_update_needed_sw_rb() tell the ring buffer it needs a param update
-+ **/
-+int iio_mark_update_needed_sw_rb(void *r);
-+
-+
-+/**
-+ * iio_get_bpd_sw_rb() get the datum size in bytes
-+ **/
-+int iio_get_bpd_sw_rb(void *r);
-+
-+/**
-+ * iio_set_bpd_sw_rb() set the datum size in bytes
-+ **/
-+int iio_set_bpd_sw_rb(void *r, size_t bpd);
-+
-+/**
-+ * iio_get_length_sw_rb() get how many datums the rb may contain
-+ **/
-+int iio_get_length_sw_rb(void *r);
-+
-+/**
-+ * iio_set_length_sw_rb() set how many datums the rb may contain
-+ **/
-+int iio_set_length_sw_rb(void *r, int length);
-+
-+/**
-+ * iio_ring_sw_register_funcs() helper function to set up rb access
-+ **/
-+static inline void iio_ring_sw_register_funcs(struct iio_ring_access_funcs *ra)
++/* Worth protecting against double additions?*/
++int iio_trigger_attach_poll_func(struct iio_trigger *trig,
++				 struct iio_poll_func *pf)
 +{
-+	ra->_create = &iio_create_sw_rb;
-+	ra->_free = &iio_free_sw_rb;
-+	ra->_init = &iio_init_sw_rb;
-+	ra->_exit = &iio_exit_sw_rb;
++	int ret = 0;
++	unsigned long flags;
 +
-+	ra->mark_in_use = &iio_mark_sw_rb_in_use;
-+	ra->unmark_in_use = &iio_unmark_sw_rb_in_use;
++	spin_lock_irqsave(&trig->pollfunc_list_lock, flags);
++	list_add_tail(&pf->list, &trig->pollfunc_list);
++	spin_unlock_irqrestore(&trig->pollfunc_list_lock, flags);
 +
-+	ra->store_to = &iio_store_to_sw_rb;
-+	ra->read_last = &iio_read_last_from_sw_rb;
-+	ra->rip_lots = &iio_rip_sw_rb;
++	if (trig->set_trigger_state)
++		ret = trig->set_trigger_state(trig, true);
 +
-+	ra->mark_param_change = &iio_mark_update_needed_sw_rb;
-+	ra->request_update = &iio_request_update_sw_rb;
++	return ret;
++}
++EXPORT_SYMBOL(iio_trigger_attach_poll_func);
 +
-+	ra->get_bpd = &iio_get_bpd_sw_rb;
-+	ra->set_bpd = &iio_set_bpd_sw_rb;
++int iio_trigger_dettach_poll_func(struct iio_trigger *trig,
++				  struct iio_poll_func *pf)
++{
++	struct iio_poll_func *pf_cursor;
++	unsigned long flags;
++	int succeeded = 0;
 +
-+	ra->get_length = &iio_get_length_sw_rb;
-+	ra->set_length = &iio_set_length_sw_rb;
++	spin_lock_irqsave(&trig->pollfunc_list_lock, flags);
++	list_for_each_entry(pf_cursor, &trig->pollfunc_list, list)
++		if (pf_cursor == pf) {
++			succeeded = 1;
++			break;
++		}
++	if (list_is_singular(&trig->pollfunc_list) && trig->set_trigger_state) {
++		spin_unlock_irqrestore(&trig->pollfunc_list_lock, flags);
++		/* May require sleeping */
++		trig->set_trigger_state(trig, false);
++		spin_lock_irqsave(&trig->pollfunc_list_lock, flags);
++	}
++	/* Now we can delete safe in the knowledge that no interrupts
++	 * can be generated if nothing is there to handle them. */
++	if (succeeded)
++		list_del(&pf_cursor->list);
++	spin_unlock_irqrestore(&trig->pollfunc_list_lock, flags);
++
++	return succeeded ? 0 : -EINVAL;
++}
++EXPORT_SYMBOL(iio_trigger_dettach_poll_func);
++
++/**
++ * iio_trigger_read_currrent() trigger consumer sysfs query which trigger
++ *
++ * For trigger consumers the current_trigger interface allows the trigger
++ * used by the device to be queried.
++ **/
++static ssize_t iio_trigger_read_current(struct device *dev,
++					 struct device_attribute *attr,
++					 char *buf)
++{
++	struct iio_dev *dev_info = dev_get_drvdata(dev);
++	int len = 0;
++	if (dev_info->trig)
++		len = snprintf(buf,
++			       IIO_TRIGGER_NAME_LENGTH,
++			       "%s\n",
++			       dev_info->trig->name);
++	return len;
++}
++
++/**
++ * iio_trigger_write_current() trigger consumer sysfs set current trigger
++ *
++ * For trigger consumers the current_trigger interface allows the trigger
++ * used for this device to be specified at run time based on the triggers
++ * name.
++ * Latter part of this function is concerned with maintaining use counts
++ * for any modules providing triggers to prevent removal when in use.
++ **/
++static ssize_t iio_trigger_write_current(struct device *dev,
++					 struct device_attribute *attr,
++					 const char *buf,
++					 size_t len)
++{
++	struct iio_dev *dev_info = dev_get_drvdata(dev);
++	struct iio_trigger *oldtrig = dev_info->trig;
++	mutex_lock(&dev_info->mlock);
++	if (dev_info->currentmode == INDIO_RING_TRIGGERED) {
++		mutex_unlock(&dev_info->mlock);
++		return -EBUSY;
++	}
++	mutex_unlock(&dev_info->mlock);
++
++	len = len < IIO_TRIGGER_NAME_LENGTH ? len : IIO_TRIGGER_NAME_LENGTH;
++
++	dev_info->trig = iio_trigger_find_by_name(buf, len);
++	if (dev_info->trig != oldtrig)
++		module_put(oldtrig->owner);
++	else if (dev_info->trig)
++		try_module_get(dev_info->trig->owner);
++
++	return len;
++}
++
++DEVICE_ATTR(current_trigger, S_IRUGO | S_IWUSR,
++	    iio_trigger_read_current,
++	    iio_trigger_write_current);
++
++static struct attribute *iio_trigger_consumer_attrs[] = {
++	&dev_attr_current_trigger.attr,
++	NULL,
++};
++
++static const struct attribute_group iio_trigger_consumer_attr_group = {
++	.name = "trigger",
++	.attrs = iio_trigger_consumer_attrs,
++};
++
++int iio_device_register_trigger_consumer(struct iio_dev *dev_info)
++{
++	int ret;
++	ret = sysfs_create_group(&dev_info->sysfs_dev->kobj,
++				 &iio_trigger_consumer_attr_group);
++	return ret;
++}
++EXPORT_SYMBOL(iio_device_register_trigger_consumer);
++
++int iio_device_unregister_trigger_consumer(struct iio_dev *dev_info)
++{
++	sysfs_remove_group(&dev_info->sysfs_dev->kobj,
++			   &iio_trigger_consumer_attr_group);
++	return 0;
++}
++EXPORT_SYMBOL(iio_device_unregister_trigger_consumer);
+diff --git a/include/linux/industrialio/trigger.h b/include/linux/industrialio/trigger.h
+index 517213d..bca0678 100644
+--- a/include/linux/industrialio/trigger.h
++++ b/include/linux/industrialio/trigger.h
+@@ -13,6 +13,116 @@
+ #define IIO_TRIGGER_ID_FORMAT IIO_TRIGGER_ID_PREFIX "%d"
+ 
+ #ifdef CONFIG_IIO_TRIGGERS
++
++/**
++ * struct iio_trigger - industrial I/O trigger device
++ *
++ * @id:			[INTERN] unique id number
++ * @name:		[DRIVER] unique name
++ * @dev:		[DRIVER] associated device (if relevant)
++ * @sysfs_dev:		[INTERN] sysfs relevant device
++ * @private_data:	[DRIVER] device specific data
++ * @list:		[INTERN] used in maintenance of global trigger list
++ * @alloc_list:		[DRIVER] used for driver specific trigger list
++ * @poll_func_list_lock:[INTERN] protection of the polling function list
++ * @pollfunc_list:	[INTERN] list of functions to run on trigger.
++ * @control_attrs:	[DRIVER] sysfs attributes relevant to trigger type
++ * @set_trigger_state:	[DRIVER] switch on/off the trigger on demand
++ * @timestamp:		[INTERN] timestamp usesd by some trigs (e.g. datardy)
++ * @owner:		[DRIVER] used to monitor usage count of the trigger.
++ **/
++struct iio_trigger {
++	int				id;
++	const char			*name;
++	struct device			*dev;
++	struct device			*sysfs_dev;
++	void				*private_data;
++	struct list_head		list;
++	struct list_head		alloc_list;
++	spinlock_t			pollfunc_list_lock;
++	struct list_head		pollfunc_list;
++	const struct attribute_group	*control_attrs;
++	s64				timestamp;
++	struct module			*owner;
++	int use_count;
++
++	int (*set_trigger_state)(struct iio_trigger *trig, bool state);
++	int (*try_reenable)(struct iio_trigger *trig);
 +};
 +
 +/**
-+ * struct iio_sw_ring_buffer - software ring buffer
-+ * @buf:		generic ring buffer elements
-+ * @data:		the ring buffer memory
-+ * @read_p:		read pointer (oldest available)
-+ * @write_p:		write pointer
-+ * @last_written_p:	read pointer (newest available)
-+ * @half_p:		half buffer length behind write_p (event generation)
-+ * @use_count:		reference count to prevent resizing when in use
-+ * @update_needed:	flag to indicated change in size requested
-+ * @use_lock:		lock to prevent change in size when in use
-+ *
-+ * Note that the first element of all ring buffers must be a
-+ * struct iio_ring_buffer.
-+**/
++ * iio_trigger_read_name() - sysfs access function to get the trigger name
++ **/
++ssize_t iio_trigger_read_name(struct device *dev,
++			      struct device_attribute *attr,
++			      char *buf);
 +
-+struct iio_sw_ring_buffer {
-+	struct iio_ring_buffer buf;
-+	unsigned char		*data;
-+	unsigned char		*read_p;
-+	unsigned char		*write_p;
-+	unsigned char		*last_written_p;
-+	/* used to act as a point at which to signal an event */
-+	unsigned char		*half_p;
-+	int			use_count;
-+	int			update_needed;
-+	spinlock_t		use_lock;
++#define IIO_TRIGGER_NAME_ATTR DEVICE_ATTR(name, S_IRUGO,		\
++					  iio_trigger_read_name,	\
++					  NULL);
++
++/**
++ * iio_trigger_find_by_name() - search global trigger list
++ **/
++struct iio_trigger *iio_trigger_find_by_name(const char *name, size_t len);
++
++/**
++ * iio_trigger_init() - initialize lists and spinlocks in iio_trigger struct
++ **/
++static inline void iio_trigger_init(struct iio_trigger *trig)
++{
++	spin_lock_init(&trig->pollfunc_list_lock);
++	INIT_LIST_HEAD(&trig->list);
++	INIT_LIST_HEAD(&trig->pollfunc_list);
 +};
-+#else /* CONFIG_IIO_RING_BUFFER*/
-+static inline void iio_ring_sw_register_funcs(struct iio_ring_access_funcs *ra)
-+{};
-+#endif /* !CONFIG_IIO_RING_BUFFER */
-+#endif /* _IIO_RING_SW_H_ */
++
++/**
++ * iio_trigger_register() - register a trigger with the IIO core
++ * @trig_info:	trigger to be registered
++ * @parent:	the device with which the trigger is associated
++ * @id:		unique indentification
++ **/
++int iio_trigger_register(struct iio_trigger *trig_info,
++			 struct device *parent,
++			 int id);
++
++/**
++ * iio_trigger_unregister() - unregister a trigger from the core
++ **/
++void iio_trigger_unregister(struct iio_trigger *trig_info);
++
++/**
++ * iio_trigger_attach_poll_func() - add a function pair to be run on trigger
++ * @trig:	trigger to which the function pair are being added
++ * @pf:	poll function pair
++ **/
++int iio_trigger_attach_poll_func(struct iio_trigger *trig,
++				 struct iio_poll_func *pf);
++
++/**
++ * iio_trigger_dettach_poll_func() -	remove function pair from those to be
++ *					run on trigger.
++ * @trig:	trigger from which the function is being removed.
++ * @pf:		poll function pair
++ **/
++int iio_trigger_dettach_poll_func(struct iio_trigger *trig,
++				  struct iio_poll_func *pf);
++
++/**
++ * iio_device_register_trigger_consumer() - set up an iio_dev to use triggers.
++ **/
++int iio_device_register_trigger_consumer(struct iio_dev *dev_info);
++/**
++ * iio_device_unregister_trigger_consumer() - reverse the registration process.
++ **/
++int iio_device_unregister_trigger_consumer(struct iio_dev *dev_info);
++
++/**
++ * iio_trigger_poll() - called on a trigger occuring
++ * Typically called in relevant hardware interrupt handler.
++ **/
++void iio_trigger_poll(struct iio_trigger *);
++void iio_trigger_notify_done(struct iio_trigger *);
+ #else
+ struct iio_trigger{};
+ static inline int iio_device_register_trigger_consumer(struct iio_dev *dev_info)

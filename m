@@ -1,8 +1,7 @@
 From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Subject: [PATCH] enc28j60: Fix sporadic packet loss
-	(correction)
-Date: Tue, 2 Dec 2008 10:59:47 +0200
-Message-ID: <20081202085947.GB24490@diamond.tkos.co.il>
+Date: Tue, 2 Dec 2008 10:10:16 +0200
+Message-ID: <20081202081016.GA24490@diamond.tkos.co.il>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -31,10 +30,6 @@ Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 
 ---
 
-The previous patch didn't increase the read pointer when no warp around was 
-needed. This is corrected here.
-
-
 --- drivers/net/enc28j60.c-git	2008-12-02 09:08:24.000000000 +0200
 +++ drivers/net/enc28j60.c	2008-12-02 09:38:33.000000000 +0200
 @@ -568,6 +568,17 @@ static u16 erxrdpt_workaround(u16 next_p
@@ -49,7 +44,7 @@ needed. This is corrected here.
 +	if (ptr + RSV_SIZE > RXEND_INIT)
 +		return (ptr + RSV_SIZE) - RXEND_INIT - 1;
 +	else
-+		return ptr + RSV_SIZE;
++		return ptr;
 +}
 +
  static void nolock_rxfifo_init(struct enc28j60_net *priv, u16 start, u16 end)

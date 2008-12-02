@@ -1,82 +1,50 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: [spi-devel-general] [PATCH] enc28j60: Fix sporadic packet loss (correction)
-Date: Tue, 2 Dec 2008 13:05:05 -0800
-Message-ID: <200812021305.06083.david-b@pacbell.net>
-References: <20081202085947.GB24490@diamond.tkos.co.il>
+From: Baruch Siach <baruch@tkos.co.il>
+Subject: Re: [spi-devel-general] [PATCH] enc28j60: Fix sporadic packet loss
+	(correction)
+Date: Tue, 2 Dec 2008 23:35:00 +0200
+Message-ID: <20081202213459.GA3361@tarshish>
+References: <20081202085947.GB24490@diamond.tkos.co.il> <200812021305.06083.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Cc: spi-devel-general@lists.sourceforge.net,
 	Claudio Lanconelli <lanconelli.claudio@eptar.com>,
 	Shachar Shemesh <shachar@lingnu.com>,
 	Network development list <netdev@vger.kernel.org>
-To: Baruch Siach <baruch@tkos.co.il>
+To: David Brownell <david-b@pacbell.net>
 Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <20081202085947.GB24490@diamond.tkos.co.il>
 Content-Disposition: inline
+In-Reply-To: <200812021305.06083.david-b@pacbell.net>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 02 December 2008, Baruch Siach wrote:
-> Packet data read from the RX buffer the when the RSV is at the end of the RX 
-> buffer does not warp around. This causes packet loss, as the actual data is 
-> never read. Fix this by calculating the right packet data location.
-> 
-> Thanks to Shachar Shemesh for suggesting the fix.
-> 
-> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> 
-> ---
+Hi David,
 
-Seems plausible to me, but network patches should be submitted
-to the netdev list.  :)
+On Tue, Dec 02, 2008 at 01:05:05PM -0800, David Brownell wrote:
+> Seems plausible to me, but network patches should be submitted
+> to the netdev list.  :)
 
-I CC'd them on this reply ... if nobody gives any feedback, I'll
-suggest you resubmit there on Friday.
+So I did after Claudio suggested the same (and acked the patch).
 
-- Dave
+> p.s. Just for info ... what kind of Linux system are you using
+>    this driver on?
 
-p.s. Just for info ... what kind of Linux system are you using
-   this driver on?
+I'm using this driver on a custom chip that includes ARM926 core. The kernel 
+version is (currently) 2.6.26. The SPI bus on this chip is the only way to 
+connect peripherals.  That's way we're stuck with this Ethernet interface.
 
-> 
-> --- drivers/net/enc28j60.c-git	2008-12-02 09:08:24.000000000 +0200
-> +++ drivers/net/enc28j60.c	2008-12-02 09:38:33.000000000 +0200
-> @@ -568,6 +568,17 @@ static u16 erxrdpt_workaround(u16 next_p
->  	return erxrdpt;
->  }
->  
-> +/*
-> + * Calculate wrap around when reading beyond the end of the RX buffer
-> + */
-> +static u16 rx_packet_start(u16 ptr)
-> +{
-> +	if (ptr + RSV_SIZE > RXEND_INIT)
-> +		return (ptr + RSV_SIZE) - RXEND_INIT - 1;
-> +	else
-> +		return ptr + RSV_SIZE;
-> +}
-> +
->  static void nolock_rxfifo_init(struct enc28j60_net *priv, u16 start, u16 end)
->  {
->  	u16 erxrdpt;
-> @@ -938,8 +949,9 @@ static void enc28j60_hw_rx(struct net_de
->  			skb->dev = ndev;
->  			skb_reserve(skb, NET_IP_ALIGN);
->  			/* copy the packet from the receive buffer */
-> -			enc28j60_mem_read(priv, priv->next_pk_ptr + sizeof(rsv),
-> -					len, skb_put(skb, len));
-> +			enc28j60_mem_read(priv,
-> +				rx_packet_start(priv->next_pk_ptr),
-> +				len, skb_put(skb, len));
->  			if (netif_msg_pktdata(priv))
->  				dump_packet(__func__, skb->len, skb->data);
->  			skb->protocol = eth_type_trans(skb, ndev);
-> 
-> -- 
->                                                      ~. .~   Tk Open Systems
-> =}------------------------------------------------ooO--U--Ooo------------{=
->    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
-> 
->
+Our on-chip SPI master is the Synopsys DesignWare one. I wrote a driver for 
+this SPI master. This driver is somewhat usable, but not complete yet. I'm now 
+in the process of adding DMA support to the driver (PL080) to overcome some 
+nasty  design peculiarities of this SPI master.
+
+Peter Pearse has poster a (incomplete) patch set with a driver for the PL080 
+DMA controller to the LAKL last week, but I see no push for integrating it 
+into the mainline. So I doubt there's any great value in this SPI master 
+driver as of now.
+
+baruch
+
+-- 
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -

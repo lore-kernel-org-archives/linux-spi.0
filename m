@@ -1,17 +1,18 @@
 From: "Joakim Tjernlund" <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 Subject: Re: Performance of spi_mpc83xx.c sucks.
-Date: Tue, 2 Dec 2008 19:20:15 +0100
-Message-ID: <8178.97760211981$1228242113@news.gmane.org>
-References: <1224605947.14078.17.camel@gentoo-jocke.transmode.se>	<877i81rf2g.fsf@macbook.be.48ers.dk>	<002f01c933ab$4bee9180$e3cbb480$@Tjernlund@transmode.se>	<200811202010.30845.david-b@pacbell.net>	<1228231118.9867.108.camel@gentoo-jocke.transmode.se>
-	<87d4gav94h.fsf@macbook.be.48ers.dk>
+Date: Tue, 2 Dec 2008 19:25:20 +0100
+Message-ID: <2156.91258567876$1228242446@news.gmane.org>
+References: <1224605947.14078.17.camel@gentoo-jocke.transmode.se>
+	<200811202010.30845.david-b@pacbell.net>
+	<1228231118.9867.108.camel@gentoo-jocke.transmode.se>
+	<200812021017.11880.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: 'David Brownell' <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "'Peter Korsgaard'" <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "'David Brownell'" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <87d4gav94h.fsf-uXGAPMMVk8amE9MCos8gUmSdvHPH+/yF@public.gmane.org>
+In-Reply-To: <200812021017.11880.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Language: sv
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -23,48 +24,59 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
 > -----Original Message-----
-> From: Peter Korsgaard [mailto:jacmet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org] On Behalf Of Peter Korsgaard
-> Sent: den 2 december 2008 17:24
+> From: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org]
+> Sent: den 2 december 2008 19:17
 > To: joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
-> Cc: David Brownell; spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> Cc: 'Peter Korsgaard'; spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 > Subject: Re: [spi-devel-general] Performance of spi_mpc83xx.c sucks.
-> 
-> >>>>> "Joakim" == Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org> writes:
-> 
-> Hi,
-> 
->  >> So long as you do the polling with IRQs enabled, I'd keep it
->  >> simple and just always poll.  YMMV of course, but most devices
->  >> seem to prefer more like 10 MHz clocks than 1 MHz ones.
-> 
->  Joakim> Sorry for the delay, forgot about this.
-> 
->  Joakim> Won't polling for long periods starve user space? How to
->  Joakim> overcome this?
-> 
-> I guess it won't be any worse than the processor being overloaded with
-> interrupts - In fact it's better, as there's more real work done.
+> =
 
-It gets the work done faster but will starve everyone else in the process.
-The IRQ version doesn't do that.
+> On Tuesday 02 December 2008, Joakim Tjernlund wrote:
+> > > > The question is if the poll code I sent is good, even for longer tr=
+ansfers?
+> > > > Perhaps some sort of LOWLAT flag could be used for transfers that r=
+eally need them?
+> > >
+> > > So long as you do the polling with IRQs enabled, I'd keep it simple a=
+nd
+> > > just always poll. =A0YMMV of course, but most devices seem to prefer =
+more
+> > > like 10 MHz clocks than 1 MHz ones.
+> >
+> > Sorry for the delay, forgot about this.
+> >
+> > Won't polling for long periods starve user space?
+> =
 
-> 
->  Joakim> Why use a kernel thread(mpc83xx_spi.0) to do the work?  Would
->  Joakim> it not be better if the polling was in process context?
-> 
-> I guess that's needed for the async stuff.
+> If your system is that I/O bound, use DMA ... :)
 
-hmm, yes that sounds reasonable. One could detect if the operation is
-async or not and use process context if it is synchronous.
+:), I wish I had the time to do such a driver.
 
- Jocke
+> =
+
+> > How to overcome this?
+> > Why use a kernel thread(mpc83xx_spi.0) to do the work?
+> > Would it not be better if the polling was in process context?
+> =
+
+> Using a kernel thread, like the not-so-well-named bitbang
+> utilities will do for you, *does* ensure the polling is
+> done in a process context.  If it's interruptible, as I
+> suggested, it should also be pre-emptible ... so if its
+> activity (polling) gets to be serious overhead, some other
+> task can be scheduled.
+
+Oh, so the kernel thread actually gets pre-empted(is that a word?)
+once it has consumed its "time slice"? Do I need to turn on
+pre-empt support in the kernel for this?
+
+     Jocke
 
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

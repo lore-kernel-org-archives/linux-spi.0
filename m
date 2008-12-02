@@ -1,21 +1,18 @@
-From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: Performance of spi_mpc83xx.c sucks.
-Date: Tue, 02 Dec 2008 17:23:42 +0100
-Message-ID: <87d4gav94h.fsf@macbook.be.48ers.dk>
+Date: Tue, 2 Dec 2008 10:17:11 -0800
+Message-ID: <200812021017.11880.david-b@pacbell.net>
 References: <1224605947.14078.17.camel@gentoo-jocke.transmode.se>
-	<877i81rf2g.fsf@macbook.be.48ers.dk>
-	<002f01c933ab$4bee9180$e3cbb480$@Tjernlund@transmode.se>
 	<200811202010.30845.david-b@pacbell.net>
 	<1228231118.9867.108.camel@gentoo-jocke.transmode.se>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1228231118.9867.108.camel-/EMGr9iCeazgSi9v3i4K4Pmbkio/vSLMs0AfqQuZ5sE@public.gmane.org> (Joakim
-	Tjernlund's message of "Tue\, 02 Dec 2008 16\:18\:38 +0100")
+In-Reply-To: <1228231118.9867.108.camel-/EMGr9iCeazgSi9v3i4K4Pmbkio/vSLMs0AfqQuZ5sE@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,32 +23,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->>>>> "Joakim" == Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org> writes:
+On Tuesday 02 December 2008, Joakim Tjernlund wrote:
+> > > The question is if the poll code I sent is good, even for longer tran=
+sfers?
+> > > Perhaps some sort of LOWLAT flag could be used for transfers that rea=
+lly need them?
+> > =
 
-Hi,
+> > So long as you do the polling with IRQs enabled, I'd keep it simple and
+> > just always poll. =A0YMMV of course, but most devices seem to prefer mo=
+re
+> > like 10 MHz clocks than 1 MHz ones.
+> =
 
- >> So long as you do the polling with IRQs enabled, I'd keep it
- >> simple and just always poll.  YMMV of course, but most devices
- >> seem to prefer more like 10 MHz clocks than 1 MHz ones.
+> Sorry for the delay, forgot about this.
+> =
 
- Joakim> Sorry for the delay, forgot about this.
+> Won't polling for long periods starve user space?
 
- Joakim> Won't polling for long periods starve user space? How to
- Joakim> overcome this?
+If your system is that I/O bound, use DMA ... :)
 
-I guess it won't be any worse than the processor being overloaded with
-interrupts - In fact it's better, as there's more real work done.
+> How to overcome this? =
 
- Joakim> Why use a kernel thread(mpc83xx_spi.0) to do the work?  Would
- Joakim> it not be better if the polling was in process context?
+> Why use a kernel thread(mpc83xx_spi.0) to do the work?
+> Would it not be better if the polling was in process context?
 
-I guess that's needed for the async stuff.
+Using a kernel thread, like the not-so-well-named bitbang
+utilities will do for you, *does* ensure the polling is
+done in a process context.  If it's interruptible, as I
+suggested, it should also be pre-emptible ... so if its
+activity (polling) gets to be serious overhead, some other
+task can be scheduled.
 
--- 
-Bye, Peter Korsgaard
+
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
+Build the coolest Linux based applications with Moblin SDK & win great priz=
+es
 Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
+http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/

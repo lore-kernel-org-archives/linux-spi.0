@@ -1,18 +1,16 @@
-From: Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-Subject: Re: [Industrial I/O] [0/13] RFC: IIO v3 patchset
-Date: Mon, 1 Dec 2008 19:41:36 +0000
-Message-ID: <20081201194136.039e201b@lxorguk.ukuu.org.uk>
-References: <4933F291.4020001@cam.ac.uk>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: [PATCH] enc28j60: Fix sporadic packet loss
+	(correction)
+Date: Tue, 2 Dec 2008 10:59:47 +0200
+Message-ID: <20081202085947.GB24490@diamond.tkos.co.il>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Dmitry Torokhov <dtor-JGs/UdohzUI@public.gmane.org>, LM, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>, Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Ben Nizette <bn-pV1zxKMKwgg3AZtZ2NlBNQ@public.gmane.org>
-To: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Cc: Shachar Shemesh <shachar-bEkjeIDUMOLQT0dZR+AlfA@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Claudio Lanconelli <lanconelli.claudio-DtroZxfa9uMAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4933F291.4020001-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,23 +21,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> have both functions. The sort of devices we are talking typically
-> communicate over I2C or SPI buses though drivers for rs232 devices etc are
-> definitely on the cards. Basically we are interested in devices where direct
-> memory mapped access is not possible.
+Packet data read from the RX buffer the when the RSV is at the end of the RX 
+buffer does not warp around. This causes packet loss, as the actual data is 
+never read. Fix this by calculating the right packet data location.
 
-We have I2C and SPI drivers so I assume you will use the lower layers of
-the stacks to do this ?
+Thanks to Shachar Shemesh for suggesting the fix.
 
-> For discussion of why these don't fit within existing subsystems see 
-> http://lkml.org/lkml/2008/5/20/135 and the rest of the associated thread.
+Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 
-I don't see much there which says why you can't unify all this in a user
-space library.
+---
 
-For RS232/423/.. devices you can go this path if you want (but I would
-keep it all in userspace anyway) as you can use a line discipline to sit
-on top of the port and provide another interface (eg the way PPP does)
+The previous patch didn't increase the read pointer when no warp around was 
+needed. This is corrected here.
+
+
+--- drivers/net/enc28j60.c-git	2008-12-02 09:08:24.000000000 +0200
++++ drivers/net/enc28j60.c	2008-12-02 09:38:33.000000000 +0200
+@@ -568,6 +568,17 @@ static u16 erxrdpt_workaround(u16 next_p
+ 	return erxrdpt;
+ }
+ 
++/*
++ * Calculate wrap around when reading beyond the end of the RX buffer
++ */
++static u16 rx_packet_start(u16 ptr)
++{
++	if (ptr + RSV_SIZE > RXEND_INIT)
++		return (ptr + RSV_SIZE) - RXEND_INIT - 1;
++	else
++		return ptr + RSV_SIZE;
++}
++
+ static void nolock_rxfifo_init(struct enc28j60_net *priv, u16 start, u16 end)
+ {
+ 	u16 erxrdpt;
+@@ -938,8 +949,9 @@ static void enc28j60_hw_rx(struct net_de
+ 			skb->dev = ndev;
+ 			skb_reserve(skb, NET_IP_ALIGN);
+ 			/* copy the packet from the receive buffer */
+-			enc28j60_mem_read(priv, priv->next_pk_ptr + sizeof(rsv),
+-					len, skb_put(skb, len));
++			enc28j60_mem_read(priv,
++				rx_packet_start(priv->next_pk_ptr),
++				len, skb_put(skb, len));
+ 			if (netif_msg_pktdata(priv))
+ 				dump_packet(__func__, skb->len, skb->data);
+ 			skb->protocol = eth_type_trans(skb, ndev);
+
+-- 
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 -------------------------------------------------------------------------
 This SF.Net email is sponsored by the Moblin Your Move Developer's challenge

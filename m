@@ -1,81 +1,82 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: Performance of spi_mpc83xx.c sucks.
-Date: Tue, 2 Dec 2008 12:46:27 -0800
-Message-ID: <200812021246.27884.david-b@pacbell.net>
-References: <1224605947.14078.17.camel@gentoo-jocke.transmode.se>
-	<200812021031.26711.david-b@pacbell.net>
-	<041201c954af$f32ad3d0$d9807b70$@Tjernlund@transmode.se>
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: [spi-devel-general] [PATCH] enc28j60: Fix sporadic packet loss (correction)
+Date: Tue, 2 Dec 2008 13:05:05 -0800
+Message-ID: <200812021305.06083.david-b@pacbell.net>
+References: <20081202085947.GB24490@diamond.tkos.co.il>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "Joakim Tjernlund" <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <041201c954af$f32ad3d0$d9807b70$@Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	Claudio Lanconelli <lanconelli.claudio@eptar.com>,
+	Shachar Shemesh <shachar@lingnu.com>,
+	Network development list <netdev@vger.kernel.org>
+To: Baruch Siach <baruch@tkos.co.il>
+Return-path: <netdev-owner@vger.kernel.org>
+In-Reply-To: <20081202085947.GB24490@diamond.tkos.co.il>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 02 December 2008, Joakim Tjernlund wrote:
-> > =
+On Tuesday 02 December 2008, Baruch Siach wrote:
+> Packet data read from the RX buffer the when the RSV is at the end of the RX 
+> buffer does not warp around. This causes packet loss, as the actual data is 
+> never read. Fix this by calculating the right packet data location.
+> 
+> Thanks to Shachar Shemesh for suggesting the fix.
+> 
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> 
+> ---
 
-> > I've not observed polling from a task context to starve anyone,
-> > when done sanely. =A0The opposite is true for doing an order of
-> > magnitude more instructions in IRQ context ...
-> =
+Seems plausible to me, but network patches should be submitted
+to the netdev list.  :)
 
-> When playing with this the app developer complained that the system didn't
-> behave as expected so I guessed it had to do with starvation. Perhaps
-> lowering the prio or something would be a wise thing to do? Or is the thr=
-ead
-> already at lower prio than normal userspace processes?
-
-If you're only guessing about what's going on, you need to go
-back and get solid data.  What does "as expected" mean?  Some
-app developers have silly expectations.  If you were "playing"
-the issue could more easily have been goofs in your code.
-
-
-> I guess you are not keen on a LOWLAT option for SPI transfers?
-
-Again, you're guessing in absence of facts ... including a
-concrete proposal for what a "LOWLAT option" would be here,
-and how it would relate to that one developer's possibly
-unrealistic expectations in the context of a collection of
-experimental kernel hacks vs. using a saner implementation
-of the I/O loops to start with.
-
- =
-
-> We a app that needs to do protection
-
-What is "do protection"?
-
-
-> (in its own RT pthread) so any SPI =
-
-> transfers should be performed as quickly as possible when the protection
-> thread is running, for the rest speed it doesn't matter.
-
-You're free to impose whatever queuing discipline you like
-so long as it's FIFO as observed by each spi_device driver.
-
-I would not advise trying to have spi_master.transfer()
-methods infer anything about the call context, though.
-Such methods are fragile, and are frowned upon in Linux.
+I CC'd them on this reply ... if nobody gives any feedback, I'll
+suggest you resubmit there on Friday.
 
 - Dave
 
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great priz=
-es
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=3D100&url=3D/
+p.s. Just for info ... what kind of Linux system are you using
+   this driver on?
+
+> 
+> --- drivers/net/enc28j60.c-git	2008-12-02 09:08:24.000000000 +0200
+> +++ drivers/net/enc28j60.c	2008-12-02 09:38:33.000000000 +0200
+> @@ -568,6 +568,17 @@ static u16 erxrdpt_workaround(u16 next_p
+>  	return erxrdpt;
+>  }
+>  
+> +/*
+> + * Calculate wrap around when reading beyond the end of the RX buffer
+> + */
+> +static u16 rx_packet_start(u16 ptr)
+> +{
+> +	if (ptr + RSV_SIZE > RXEND_INIT)
+> +		return (ptr + RSV_SIZE) - RXEND_INIT - 1;
+> +	else
+> +		return ptr + RSV_SIZE;
+> +}
+> +
+>  static void nolock_rxfifo_init(struct enc28j60_net *priv, u16 start, u16 end)
+>  {
+>  	u16 erxrdpt;
+> @@ -938,8 +949,9 @@ static void enc28j60_hw_rx(struct net_de
+>  			skb->dev = ndev;
+>  			skb_reserve(skb, NET_IP_ALIGN);
+>  			/* copy the packet from the receive buffer */
+> -			enc28j60_mem_read(priv, priv->next_pk_ptr + sizeof(rsv),
+> -					len, skb_put(skb, len));
+> +			enc28j60_mem_read(priv,
+> +				rx_packet_start(priv->next_pk_ptr),
+> +				len, skb_put(skb, len));
+>  			if (netif_msg_pktdata(priv))
+>  				dump_packet(__func__, skb->len, skb->data);
+>  			skb->protocol = eth_type_trans(skb, ndev);
+> 
+> -- 
+>                                                      ~. .~   Tk Open Systems
+> =}------------------------------------------------ooO--U--Ooo------------{=
+>    - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+> 
+>

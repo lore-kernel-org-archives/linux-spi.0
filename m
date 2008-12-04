@@ -1,10 +1,11 @@
-From: "Sofia Matthews" <sofia-QU6rfqOcHldnE5JCVmiToKVXKuFTiq87@public.gmane.org>
-Subject: [SPAM] Web enquiry
-Date: Thu, 4 Dec 2008 14:10:07 +0000
-Message-ID: <E1L8Jae-0004rr-Hv@235xhf1.ch3.sourceforge.com>
+From: "Kosbab Lennihan" <pantomimic-BNJgrJbTHPc@public.gmane.org>
+Subject: [SPAM] Christmas  gift idea!
+Date: Thu, 04 Dec 2008 22:18:00 +0000
+Message-ID: <5651797157.20081204221447@gtv.se>
+Reply-To: Kosbab Lennihan <pantomimic-BNJgrJbTHPc@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2483877162316553686=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============3844653932212988857=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,124 +17,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
-
---===============2483877162316553686==
+--===============3844653932212988857==
 Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0000_01C6527E.AE8904D0"
+ boundary="----------59679897A3F5B3"
 
-This is a multi-part message in MIME format.
-
-------=_NextPart_000_0000_01C6527E.AE8904D0
-Content-Type: text/plain;
- charset="utf-8"
-Content-Transfer-Encoding: 8bit
-
-Hi, 
-My name is Sofia Matthews and I'm currently working on getting links for my website. My site is about Finance and Money, and I would like to know if you are interested in exchanging links with yours.
-Of course, in exchange for your link I'd give you one or more links back from some of my websites. These are some where I could place your link:
-
-http://easternplainseventcenter.com/     PR 3
-http://taxdaycarekit.com/                     PR 2
-http://silvertipsolutions.com/                 PR 2
-http://phoenixmud.org/                         PR 2
-http://pamicro.org/                              PR 2
-http://guthrietshirts.com/                     PR 2
-http://groutagegallery.com/                  PR 2
-http://gurupo.com/                             PR 2
-http://roblougheedmla.com/                  PR 2
-http://ivfboise.org/                              PR 0
-http://benefitforbecca.org/                   PR 0
-http://myspaceproxy3.info/                   PR 0
-http://yadeen.com/                             PR 0
-
-If this not your theme I also accept sites related to Health, Travel, Food, Cars, and Dating/Wedding/Chat.
-Let me know if you are interested in the exchange. 
-Greetings,
-Sofia Matthews
-------=_NextPart_000_0000_01C6527E.AE8904D0
-Content-Type: text/html;
- charset="utf-8"
-
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft DHTML Editing Control">
-</HEAD>
-<BODY>
-<P><FONT face=Verdana size=2>Hi, </FONT></P>
-<P><FONT face=Verdana size=2>My name is Sofia Matthews and I'm currently working 
-on getting links for my website. My </FONT><FONT face=Verdana size=2>site is 
-about Finance and Money, and I would like to know if you are interested in 
-</FONT><FONT face=Verdana size=2>exchanging links with yours.</FONT></P>
-<P><FONT face=Verdana size=2>Of course, in exchange for your link I'd give you 
-one or more links back from some of my </FONT><FONT face=Verdana 
-size=2>websites. These are some where I could place your link:</FONT></P><FONT 
-face=Verdana size=2></FONT>
-<P><BR><A href="http://easternplainseventcenter.com/"><FONT face=Verdana 
-size=2>http://easternplainseventcenter.com/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp; PR 3</FONT></P>
-<P><A href="http://taxdaycarekit.com/"><FONT face=Verdana 
-size=2>http://taxdaycarekit.com/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 2<BR></FONT><A href="http://silvertipsolutions.com/"><FONT face=Verdana 
-size=2>http://silvertipsolutions.com/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 2</FONT></P>
-<P><A href="http://phoenixmud.org/"><FONT face=Verdana 
-size=2>http://phoenixmud.org/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 2<BR></FONT><A href="http://pamicro.org/"><FONT face=Verdana 
-size=2>http://pamicro.org/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 2<BR></FONT><A href="http://guthrietshirts.com/"><FONT face=Verdana 
-size=2>http://guthrietshirts.com/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PR 
-2<BR></FONT><A href="http://groutagegallery.com/"><FONT face=Verdana 
-size=2>http://groutagegallery.com/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 2<BR></FONT><A href="http://gurupo.com/"><FONT face=Verdana 
-size=2>http://gurupo.com/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PR 
-2<BR></FONT><A href="http://roblougheedmla.com/"><FONT face=Verdana 
-size=2>http://roblougheedmla.com/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 2<BR></FONT><A href="http://ivfboise.org/"><FONT face=Verdana 
-size=2>http://ivfboise.org/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 0<BR></FONT><A href="http://benefitforbecca.org/"><FONT face=Verdana 
-size=2>http://benefitforbecca.org/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 0<BR></FONT><A href="http://myspaceproxy3.info/"><FONT face=Verdana 
-size=2>http://myspaceproxy3.info/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 0<BR></FONT><A href="http://yadeen.com/"><FONT face=Verdana 
-size=2>http://yadeen.com/</FONT></A><FONT face=Verdana 
-size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-PR 0</FONT></P>
-<P><BR><FONT face=Verdana size=2>If this not your theme I also accept sites 
-related to Health, Travel, Food, Cars, and </FONT><FONT face=Verdana 
-size=2>Dating/Wedding/Chat.</FONT></P>
-<P><FONT face=Verdana size=2>Let me know if you are interested in the exchange. 
-</FONT></P>
-<P><FONT face=Verdana size=2>Greetings,</FONT></P>
-<P><FONT face=Verdana size=2>Sofia Matthews</FONT></P>
-</BODY>
-</HTML>
-------=_NextPart_000_0000_01C6527E.AE8904D0--
+------------59679897A3F5B3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
 
---===============2483877162316553686==
+Christmas giftt idea! Do you love your girlfriend?
+=09http://tripsing.com/
+
+
+  =20
+That would make me decline would be the driving that soul,
+only in consequence of its identifying spoke: 'kenny! James
+kenny! Set the seacale at romaines: wherfore it is seen,
+that to intende, dkbuu dkbuu dkb u u ,,,, uu,,,,urr dkb
+dkb ru,,,,uu,,,,uu,,,,uu,,,,uu.  
+------------59679897A3F5B3
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>=09<title></title> =20
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">  =20
+</head>=09
+<body> <b>
+</b><br><span>  </span>Christmas giftt idea! Do you love your girlfriend?<b=
+r>PROVE IT ALL NIGHT: =20
+<a href=3D"http://tripsing.com/">CLICK HERE</a><br><p><span></span></p>
+<p><br>That would make me decline would be the driving that soul,<br>  only=
+ in consequence of its identifying spoke: 'kenny! James<br>  kenny! Set the=
+ seacale at romaines: wherfore it is seen,<br>  that to intende, dkbuu dkbu=
+u dkb u u ,,,, uu,,,,urr dkb<br>  dkb ru,,,,uu,,,,uu,,,,uu,,,,uu.</p>
+</body></html>
+------------59679897A3F5B3--
+
+
+--===============3844653932212988857==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
--------------------------------------------------------------------------
-This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
-Build the coolest Linux based applications with Moblin SDK & win great prizes
-Grand prize is a trip for two to an Open Source event anywhere in the world
-http://moblin-contest.org/redirect.php?banner_id=100&url=/
---===============2483877162316553686==
+------------------------------------------------------------------------------
+SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
+The future of the web can't happen without you.  Join us at MIX09 to help
+pave the way to the Next Web now. Learn more and register at
+http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
+--===============3844653932212988857==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -144,4 +79,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2483877162316553686==--
+--===============3844653932212988857==--

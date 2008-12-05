@@ -1,11 +1,11 @@
-From: hdfgdyhfdhd-9Onoh4P/yGk@public.gmane.org
-Subject: [SPAM] [业/务/项/目]
-Date: Fri, 5 Dec 2008 18:15:27 +0800
-Message-ID: <E1L8XjJ-000156-RP@335xhf1.ch3.sourceforge.com>
+From: "Varble Braucher" <candler-U7vEq4ancuTXXcCnB7P9XQ@public.gmane.org>
+Subject: [SPAM] Christmass gift idea!
+Date: Fri, 05 Dec 2008 10:37:00 +0000
+Message-ID: <2804288458.20081205102913@fugro.com.pk>
+Reply-To: Varble Braucher <candler-U7vEq4ancuTXXcCnB7P9XQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1074601404758611421=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,20 +17,69 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgCiAgICAgsb65q8u+o6jJ7tvaytC5+sqkw7PS
-19PQz965q8u+o6nKx8Gsw8u0+sDtuavLvqOs1NrIq7n6uPe087PHytDJ6NPQt9a5q8u+oaMK0vLS
-tc7xudjPtaOsvfjP7rbgz/rP7snZz9bT0Lbg0+DSu7K/t9a/ydLU08W73bbUzeK0+r+qyOfPwqO6
-uaTJzMbz0rUuu/XO78/6ytuhogq547jmoaK3/s7x0rWhor2o1v6wstewoaLE2rrTo6i5+rzKo6nU
-y8rkLrfPvsnO79fKtciho8rVt9Gx6te8o7oyJS0wLjglo6y/ydLUz8gK0enWpLrzuLa/7qOhILTL
-0MXPotTayKu5+re2zqfE2rOkxtrT0NCno6wgyOfQ67340ruyvceiycw6IAoKICDBqs+1yMs6wO4g
-vagg0MIKCiAgytYgICC7+joxMzAtMDY2OS04ODU4IAoKICDStSDO8VFROjgyNTcwODM5NgoKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tClNGLk5ldCBlbWFpbCBpcyBTcG9uc29yZWQgYnkgTUlYMDksIE1h
-cmNoIDE4LTIwLCAyMDA5IGluIExhcyBWZWdhcywgTmV2YWRhLgpUaGUgZnV0dXJlIG9mIHRoZSB3
-ZWIgY2FuJ3QgaGFwcGVuIHdpdGhvdXQgeW91LiAgSm9pbiB1cyBhdCBNSVgwOSB0byBoZWxwCnBh
-dmUgdGhlIHdheSB0byB0aGUgTmV4dCBXZWIgbm93LiBMZWFybiBtb3JlIGFuZCByZWdpc3RlciBh
-dApodHRwOi8vYWQuZG91YmxlY2xpY2submV0L2NsazsyMDg2Njk0Mzg7MTM1MDMwMzg7aT9odHRw
-Oi8vMjAwOS52aXNpdG1peC5jb20vCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2Vu
-ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQv
-bGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+--===============1074601404758611421==
+Content-Type: multipart/alternative;
+ boundary="----------FCF0ED1BE09677"
+
+------------FCF0ED1BE09677
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+
+=09Christmas gift idea! Do you love your girlfriiend?
+=09http://tripsing.com/
+=09
+  =20
+  =20
+And to disperse the hostile forces. His first and quickly
+perceiving that he was speaking to exists for tranquillity.
+tranquillity is eternal king as to the cause of his arrival
+at that asylum.' good of the bharatas like unto an august
+ceremony.=09
+------------FCF0ED1BE09677
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+
+<html><head>  <title> </title> =20
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">
+</head>
+<body>   <b>
+</b><br>Christmas gift idea! Do you love your girlfriiend?<br><b></b>PROVE =
+IT ALL NIGHT: =20
+<a href=3D"http://tripsing.com/">CLICK HERE</a><br><a name=3D"#qtpp">   </a=
+><p></p><strong>=09</strong>
+<p><a name=3D"#wtwq"></a>And to disperse the hostile forces. His first and =
+quickly<br> perceiving that he was speaking to exists for tranquillity.<br>=
+ tranquillity is eternal king as to the cause of his arrival<br> at that as=
+ylum.' good of the bharatas like unto an august<br> ceremony.</p>
+</body></html>
+------------FCF0ED1BE09677--
+
+
+--===============1074601404758611421==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
+The future of the web can't happen without you.  Join us at MIX09 to help
+pave the way to the Next Web now. Learn more and register at
+http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
+--===============1074601404758611421==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1074601404758611421==--

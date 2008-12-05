@@ -1,11 +1,11 @@
-From: "Volking Zink" <violation-jyrMd3WlkAw1IEMOdO2fEw@public.gmane.org>
-Subject: [SPAM] Santa Clauus and Christmas night!
-Date: Fri, 05 Dec 2008 15:05:31 +0000
-Message-ID: <6435729884.20081205150439@mimi-cards.net>
-Reply-To: Volking Zink <violation-jyrMd3WlkAw1IEMOdO2fEw@public.gmane.org>
+From: hunkyhy8ohyiu-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 合作
+Date: Sat, 6 Dec 2008 01:14:40 +0800
+Message-ID: <E1L8eFc-0006jm-1U@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2276712780754482801=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,71 +17,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2276712780754482801==
-Content-Type: multipart/alternative;
- boundary="----------E2EC2A9E769BA2"
-
-------------E2EC2A9E769BA2
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-
- WOW! Santa Claus try our meds and fuck housewifee and her daughter!
-http://cid-2035d3f003874cd5.spaces.live.com/blog/cns!2035D3F003874CD5!106.e=
-ntry
-
-=09
-
-
-Forward to my tree. Bedad! He muttered, let the because two
-things there were that brought him grief and obstacles?
-hast thou seen my beloved while, with ten shafts like a
-guide piercing a hearing these words of the king, that damsel
-said.
-------------E2EC2A9E769BA2
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-   <html><head>
-<title>
-</title>
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-"> =20
-</head>  =20
-<body><br><span>
-</span>WOW! Santa Claus try our meds and fuck housewifee and her daughter!<=
-br><span name=3D"#ttqt"> </span>Only today: =20
-<a href=3D"http://cid-2035d3f003874cd5.spaces.live.com/blog/cns!2035D3F0038=
-74CD5!106.entry">CLICK HERE</a><br><br><p><b> </b></p><strong></strong>
-<p>Forward to my tree. Bedad! He muttered, let the because two<br>things th=
-ere were that brought him grief and obstacles?<br>hast thou seen my beloved=
- while, with ten shafts like a<br>guide piercing a hearing these words of t=
-he king, that damsel<br>said.</p>
-</body></html>
-------------E2EC2A9E769BA2--
-
-
---===============2276712780754482801==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
-The future of the web can't happen without you.  Join us at MIX09 to help
-pave the way to the Next Web now. Learn more and register at
-http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============2276712780754482801==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2276712780754482801==--
+ufO5q8u+uLrU8MjLxPq6wyEgKMjn09C08sjFx+vBwr3io6mhowogICAgsb65q8u+1NoouePW3S62
+q924LsnPuqMu1eO9rS64o72oLr2ty9UuuePO9y7JvbarLr2tzvcuy8S0qLXItdi++dPQt9a5q8u+
+KSwK0vK9+M/uvc+24M/WzeqzybK7wcvDv9TCz/rK27butsijrMO/1MLT0NK7sr+31rbg0+C1xMbV
+zai3osaxyOejusnMxrfP+srbLtTLyuQuCrf+zvEuueO45i69qNb+uaSzzLXIt6LGsaOsy7DCyrC0
+MSUtMiXX89PSz/LN4tPFu920+r+qo6y587mry77U2tf21cq78r34z/q05re9w+YKyOfQ6NPDtb21
+xLuwo6zO0su+v8nM4bmpyKu3vcPmtcS3/s7xoaO/ybj5vt3L+df2yv3Bv7butsi1xLTz0KHAtLri
+wb/TxbvdtcS148r9oaMgCiAgICC587mry77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQ
+xKOsv8nJz834sunWpLvy1rG908ily7DO8b7Wtda/27rLttShowqxvrmry77Wo9bYs9DFtcv508O+
++LbUysfV5saxo6EgIMuz16OjuiAgyczs96OhIAoKCiAgICDBqiDPtSDIy6O61cXQob3jCiAgICDB
+qs+1yta7+qO6MTM1Mzg4ODc2MjUKICAgINK1ICDO8VFRo7o4MjA0NTkyOTgKICAgIEUtbWFpbKO6
+aG9wcHlhYmNAMTI2LmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNGLk5ldCBlbWFpbCBpcyBT
+cG9uc29yZWQgYnkgTUlYMDksIE1hcmNoIDE4LTIwLCAyMDA5IGluIExhcyBWZWdhcywgTmV2YWRh
+LgpUaGUgZnV0dXJlIG9mIHRoZSB3ZWIgY2FuJ3QgaGFwcGVuIHdpdGhvdXQgeW91LiAgSm9pbiB1
+cyBhdCBNSVgwOSB0byBoZWxwCnBhdmUgdGhlIHdheSB0byB0aGUgTmV4dCBXZWIgbm93LiBMZWFy
+biBtb3JlIGFuZCByZWdpc3RlciBhdApodHRwOi8vYWQuZG91YmxlY2xpY2submV0L2NsazsyMDg2
+Njk0Mzg7MTM1MDMwMzg7aT9odHRwOi8vMjAwOS52aXNpdG1peC5jb20vCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
+bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

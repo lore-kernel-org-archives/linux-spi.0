@@ -1,8 +1,7 @@
 From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH 7/7] powerpc/83xx: Add mmc-spi support
-	via the device tree	for MPC8323E-RDB
-Date: Fri, 5 Dec 2008 23:10:43 +0300
-Message-ID: <20081205201043.GG19758@oksana.dev.rtsoft.ru>
+Subject: [PATCH 2/7] spi_mpc83xx: Fix sparse warnings
+Date: Fri, 5 Dec 2008 23:10:30 +0300
+Message-ID: <20081205201030.GB19758@oksana.dev.rtsoft.ru>
 References: <20081205200936.GA19137@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,88 +22,112 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-- Add gpio-controller node to manage QE GPIO Bank D;
-- Add mmc-spi node;
-- Modify board file so that it won't use legacy SPI support with the new
-  device trees.
+The patch fixes following sparse warnings:
+
+  CHECK   spi_mpc83xx.c
+spi_mpc83xx.c:145:1: warning: symbol 'mpc83xx_spi_rx_buf_u8' was not declared. Should it be static?
+spi_mpc83xx.c:146:1: warning: symbol 'mpc83xx_spi_rx_buf_u16' was not declared. Should it be static?
+spi_mpc83xx.c:147:1: warning: symbol 'mpc83xx_spi_rx_buf_u32' was not declared. Should it be static?
+spi_mpc83xx.c:148:1: warning: symbol 'mpc83xx_spi_tx_buf_u8' was not declared. Should it be static?
+spi_mpc83xx.c:149:1: warning: symbol 'mpc83xx_spi_tx_buf_u16' was not declared. Should it be static?
+spi_mpc83xx.c:150:1: warning: symbol 'mpc83xx_spi_tx_buf_u32' was not declared. Should it be static?
+spi_mpc83xx.c:175:32: warning: incorrect type in initializer (different address spaces)
+spi_mpc83xx.c:175:32:    expected void *tmp_ptr
+spi_mpc83xx.c:175:32:    got unsigned int [noderef] <asn:2>*<noident>
+spi_mpc83xx.c:183:26: warning: incorrect type in argument 1 (different address spaces)
+spi_mpc83xx.c:183:26:    expected unsigned int [noderef] [usertype] <asn:2>*reg
+spi_mpc83xx.c:183:26:    got void *tmp_ptr
+spi_mpc83xx.c:184:26: warning: incorrect type in argument 1 (different address spaces)
+spi_mpc83xx.c:184:26:    expected unsigned int [noderef] [usertype] <asn:2>*reg
+spi_mpc83xx.c:184:26:    got void *tmp_ptr
+spi_mpc83xx.c:287:31: warning: incorrect type in initializer (different address spaces)
+spi_mpc83xx.c:287:31:    expected void *tmp_ptr
+spi_mpc83xx.c:287:31:    got unsigned int [noderef] <asn:2>*<noident>
+spi_mpc83xx.c:295:25: warning: incorrect type in argument 1 (different address spaces)
+spi_mpc83xx.c:295:25:    expected unsigned int [noderef] [usertype] <asn:2>*reg
+spi_mpc83xx.c:295:25:    got void *tmp_ptr
+spi_mpc83xx.c:296:25: warning: incorrect type in argument 1 (different address spaces)
+spi_mpc83xx.c:296:25:    expected unsigned int [noderef] [usertype] <asn:2>*reg
+spi_mpc83xx.c:296:25:    got void *tmp_ptr
+spi_mpc83xx.c:486:13: warning: symbol 'mpc83xx_spi_irq' was not declared. Should it be static?
 
 Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
 ---
- arch/powerpc/boot/dts/mpc832x_rdb.dts     |   24 ++++++++++++++++++++++++
- arch/powerpc/platforms/83xx/mpc832x_rdb.c |    6 ++++++
- 2 files changed, 30 insertions(+), 0 deletions(-)
+ drivers/spi/spi_mpc83xx.c |   16 +++++++++-------
+ 1 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/boot/dts/mpc832x_rdb.dts b/arch/powerpc/boot/dts/mpc832x_rdb.dts
-index dea3091..4319bd7 100644
---- a/arch/powerpc/boot/dts/mpc832x_rdb.dts
-+++ b/arch/powerpc/boot/dts/mpc832x_rdb.dts
-@@ -152,10 +152,21 @@
- 		};
- 
- 		par_io@1400 {
-+			#address-cells = <1>;
-+			#size-cells = <1>;
- 			reg = <0x1400 0x100>;
-+			ranges = <3 0x1448 0x18>;
-+			compatible = "fsl,mpc8323-qe-pario";
- 			device_type = "par_io";
- 			num-ports = <7>;
- 
-+			qe_pio_d: gpio-controller@1448 {
-+				#gpio-cells = <2>;
-+				compatible = "fsl,mpc8323-qe-pario-bank";
-+				reg = <3 0x18>;
-+				gpio-controller;
-+			};
-+
- 			ucc2pio:ucc_pin@02 {
- 				pio-map = <
- 			/* port  pin  dir  open_drain  assignment  has_irq */
-@@ -225,12 +236,25 @@
- 		};
- 
- 		spi@4c0 {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 			cell-index = <0>;
- 			compatible = "fsl,spi";
- 			reg = <0x4c0 0x40>;
- 			interrupts = <2>;
- 			interrupt-parent = <&qeic>;
-+			gpios = <&qe_pio_d 13 0>;
- 			mode = "cpu-qe";
-+
-+			mmc-slot@0 {
-+				compatible = "fsl,mpc8323rdb-mmc-slot",
-+					     "mmc-spi-slot";
-+				reg = <0>;
-+				gpios = <&qe_pio_d 14 1
-+					 &qe_pio_d 15 0>;
-+				voltage-ranges = <3300 3300>;
-+				spi-max-frequency = <50000000>;
-+			};
- 		};
- 
- 		spi@500 {
-diff --git a/arch/powerpc/platforms/83xx/mpc832x_rdb.c b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-index 17abbd2..567ded7 100644
---- a/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-+++ b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-@@ -175,6 +175,12 @@ static int __init mpc832x_spi_init(void)
- 	par_io_config_pin(3, 14, 2, 0, 0, 0); /* SD_INSERT, I */
- 	par_io_config_pin(3, 15, 2, 0, 0, 0); /* SD_PROTECT,I */
- 
-+	/*
-+	 * Don't bother with legacy stuff when device tree contains
-+	 * mmc-spi-slot node.
-+	 */
-+	if (of_find_compatible_node(NULL, NULL, "mmc-spi-slot"))
-+		return 0;
- 	return fsl_spi_init(&mpc832x_spi_boardinfo, 1, mpc83xx_spi_cs_control);
+diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+index ac0e3e4..6ef8937 100644
+--- a/drivers/spi/spi_mpc83xx.c
++++ b/drivers/spi/spi_mpc83xx.c
+@@ -123,6 +123,7 @@ static inline u32 mpc83xx_spi_read_reg(__be32 __iomem * reg)
  }
- machine_device_initcall(mpc832x_rdb, mpc832x_spi_init);
+ 
+ #define MPC83XX_SPI_RX_BUF(type) 					  \
++static									  \
+ void mpc83xx_spi_rx_buf_##type(u32 data, struct mpc83xx_spi *mpc83xx_spi) \
+ {									  \
+ 	type * rx = mpc83xx_spi->rx;					  \
+@@ -131,6 +132,7 @@ void mpc83xx_spi_rx_buf_##type(u32 data, struct mpc83xx_spi *mpc83xx_spi) \
+ }
+ 
+ #define MPC83XX_SPI_TX_BUF(type)				\
++static								\
+ u32 mpc83xx_spi_tx_buf_##type(struct mpc83xx_spi *mpc83xx_spi)	\
+ {								\
+ 	u32 data;						\
+@@ -172,7 +174,7 @@ static void mpc83xx_spi_chipselect(struct spi_device *spi, int value)
+ 
+ 		if (cs->hw_mode != regval) {
+ 			unsigned long flags;
+-			void *tmp_ptr = &mpc83xx_spi->base->mode;
++			__be32 __iomem *mode = &mpc83xx_spi->base->mode;
+ 
+ 			regval = cs->hw_mode;
+ 			/* Turn off IRQs locally to minimize time that
+@@ -180,8 +182,8 @@ static void mpc83xx_spi_chipselect(struct spi_device *spi, int value)
+ 			 */
+ 			local_irq_save(flags);
+ 			/* Turn off SPI unit prior changing mode */
+-			mpc83xx_spi_write_reg(tmp_ptr, regval & ~SPMODE_ENABLE);
+-			mpc83xx_spi_write_reg(tmp_ptr, regval);
++			mpc83xx_spi_write_reg(mode, regval & ~SPMODE_ENABLE);
++			mpc83xx_spi_write_reg(mode, regval);
+ 			local_irq_restore(flags);
+ 		}
+ 		if (mpc83xx_spi->activate_cs)
+@@ -284,7 +286,7 @@ int mpc83xx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 	regval =  mpc83xx_spi_read_reg(&mpc83xx_spi->base->mode);
+ 	if (cs->hw_mode != regval) {
+ 		unsigned long flags;
+-		void *tmp_ptr = &mpc83xx_spi->base->mode;
++		__be32 __iomem *mode = &mpc83xx_spi->base->mode;
+ 
+ 		regval = cs->hw_mode;
+ 		/* Turn off IRQs locally to minimize time
+@@ -292,8 +294,8 @@ int mpc83xx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 		 */
+ 		local_irq_save(flags);
+ 		/* Turn off SPI unit prior changing mode */
+-		mpc83xx_spi_write_reg(tmp_ptr, regval & ~SPMODE_ENABLE);
+-		mpc83xx_spi_write_reg(tmp_ptr, regval);
++		mpc83xx_spi_write_reg(mode, regval & ~SPMODE_ENABLE);
++		mpc83xx_spi_write_reg(mode, regval);
+ 		local_irq_restore(flags);
+ 	}
+ 	return 0;
+@@ -483,7 +485,7 @@ static int mpc83xx_spi_setup(struct spi_device *spi)
+ 	return 0;
+ }
+ 
+-irqreturn_t mpc83xx_spi_irq(s32 irq, void *context_data)
++static irqreturn_t mpc83xx_spi_irq(s32 irq, void *context_data)
+ {
+ 	struct mpc83xx_spi *mpc83xx_spi = context_data;
+ 	u32 event;
 -- 
 1.5.6.5
+
 
 ------------------------------------------------------------------------------
 SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.

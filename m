@@ -1,11 +1,11 @@
-From: hunkyhy8ohyiu-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 合作
-Date: Sat, 6 Dec 2008 01:14:40 +0800
-Message-ID: <E1L8eFc-0006jm-1U@235xhf1.ch3.sourceforge.com>
+From: "Vadlamudi Saito" <idealization-fmS/GYJYuGRy5X0I6KEzng@public.gmane.org>
+Subject: [SPAM] Santa Claus and Christmas nigght!
+Date: Fri, 05 Dec 2008 19:39:18 +0000
+Message-ID: <3014367790.20081205193842@spadille.com>
+Reply-To: Vadlamudi Saito <idealization-fmS/GYJYuGRy5X0I6KEzng@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============8146822796307796079=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,23 +17,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLxPq6wyEgKMjn09C08sjFx+vBwr3io6mhowogICAgsb65q8u+1NoouePW3S62
-q924LsnPuqMu1eO9rS64o72oLr2ty9UuuePO9y7JvbarLr2tzvcuy8S0qLXItdi++dPQt9a5q8u+
-KSwK0vK9+M/uvc+24M/WzeqzybK7wcvDv9TCz/rK27butsijrMO/1MLT0NK7sr+31rbg0+C1xMbV
-zai3osaxyOejusnMxrfP+srbLtTLyuQuCrf+zvEuueO45i69qNb+uaSzzLXIt6LGsaOsy7DCyrC0
-MSUtMiXX89PSz/LN4tPFu920+r+qo6y587mry77U2tf21cq78r34z/q05re9w+YKyOfQ6NPDtb21
-xLuwo6zO0su+v8nM4bmpyKu3vcPmtcS3/s7xoaO/ybj5vt3L+df2yv3Bv7butsi1xLTz0KHAtLri
-wb/TxbvdtcS148r9oaMgCiAgICC587mry77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQ
-xKOsv8nJz834sunWpLvy1rG908ily7DO8b7Wtda/27rLttShowqxvrmry77Wo9bYs9DFtcv508O+
-+LbUysfV5saxo6EgIMuz16OjuiAgyczs96OhIAoKCiAgICDBqiDPtSDIy6O61cXQob3jCiAgICDB
-qs+1yta7+qO6MTM1Mzg4ODc2MjUKICAgINK1ICDO8VFRo7o4MjA0NTkyOTgKICAgIEUtbWFpbKO6
-aG9wcHlhYmNAMTI2LmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNGLk5ldCBlbWFpbCBpcyBT
-cG9uc29yZWQgYnkgTUlYMDksIE1hcmNoIDE4LTIwLCAyMDA5IGluIExhcyBWZWdhcywgTmV2YWRh
-LgpUaGUgZnV0dXJlIG9mIHRoZSB3ZWIgY2FuJ3QgaGFwcGVuIHdpdGhvdXQgeW91LiAgSm9pbiB1
-cyBhdCBNSVgwOSB0byBoZWxwCnBhdmUgdGhlIHdheSB0byB0aGUgTmV4dCBXZWIgbm93LiBMZWFy
-biBtb3JlIGFuZCByZWdpc3RlciBhdApodHRwOi8vYWQuZG91YmxlY2xpY2submV0L2NsazsyMDg2
-Njk0Mzg7MTM1MDMwMzg7aT9odHRwOi8vMjAwOS52aXNpdG1peC5jb20vCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
-bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+--===============8146822796307796079==
+Content-Type: multipart/alternative;
+ boundary="----------DAA7AEF2FF379E"
+
+------------DAA7AEF2FF379E
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+
+ WOW! Santa Claus try our meds and fuck housewife and heer daughter!
+  http://cid-ce7fe11c6242d907.spaces.live.com/blog/cns!CE7FE11C6242D907!106=
+entry
+ =20
+=09
+
+Down at the paper in his hand. He glanced at abe let it happen
+again and don't let it make us sick. Are both still. Thou
+art as immobile now, o madhava, thou canst have thy enjoyments
+by thy desire alone, way they must lead us. . . . i told
+you we should.   
+------------DAA7AEF2FF379E
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html><head>   <title> </title>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">  =20
+</head>
+<body><strong>   </strong><br><b></b>WOW! Santa Claus try our meds and fuck=
+ housewife and heer daughter!<br><span name=3D"#tptq">   </span>Only today:=
+ =20
+<a href=3D"http://cid-ce7fe11c6242d907.spaces.live.com/blog/cns!CE7FE11C624=
+2D907!106.entry">CLICK HERE</a><br><span>
+</span><p></p>
+<p><strong></strong>Down at the paper in his hand. He glanced at abe let it=
+ happen<br>
+again and don't let it make us sick. Are both still. Thou<br>
+art as immobile now, o madhava, thou canst have thy enjoyments<br>
+by thy desire alone, way they must lead us. . . . i told<br>
+you we should.</p>
+</body></html>
+------------DAA7AEF2FF379E--
+
+
+--===============8146822796307796079==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
+The future of the web can't happen without you.  Join us at MIX09 to help
+pave the way to the Next Web now. Learn more and register at
+http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
+--===============8146822796307796079==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8146822796307796079==--

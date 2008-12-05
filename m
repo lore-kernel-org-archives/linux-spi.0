@@ -1,7 +1,8 @@
 From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH 6/7] powerpc: Add mmc-spi-slot bindings
-Date: Fri, 5 Dec 2008 23:10:41 +0300
-Message-ID: <20081205201041.GF19758@oksana.dev.rtsoft.ru>
+Subject: [PATCH 1/7] powerpc: Implement get_brgfreq()
+	and get_baudrate()	stubs
+Date: Fri, 5 Dec 2008 23:10:26 +0300
+Message-ID: <20081205201026.GA19758@oksana.dev.rtsoft.ru>
 References: <20081205200936.GA19137@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,60 +23,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The bindings describes a case where MMC/SD/SDIO slot directly connected
-to a SPI bus. Such setups are widely used on embedded PowerPC boards.
-
-The patch also adds the mmc-spi-slot entry to the OpenFirmware modalias
-table.
+This is needed to not bother with ugly #ifdefs in the drivers.
 
 Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
 ---
- .../powerpc/dts-bindings/mmc-spi-slot.txt          |   23 ++++++++++++++++++++
- drivers/of/base.c                                  |    1 +
- 2 files changed, 24 insertions(+), 0 deletions(-)
- create mode 100644 Documentation/powerpc/dts-bindings/mmc-spi-slot.txt
+ arch/powerpc/sysdev/fsl_soc.h |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
 
-diff --git a/Documentation/powerpc/dts-bindings/mmc-spi-slot.txt b/Documentation/powerpc/dts-bindings/mmc-spi-slot.txt
-new file mode 100644
-index 0000000..c39ac28
---- /dev/null
-+++ b/Documentation/powerpc/dts-bindings/mmc-spi-slot.txt
-@@ -0,0 +1,23 @@
-+MMC/SD/SDIO slot directly connected to a SPI bus
-+
-+Required properties:
-+- compatible : should be "mmc-spi-slot".
-+- reg : should specify SPI address (chip-select number).
-+- spi-max-frequency : maximum frequency for this device (Hz).
-+- voltage-ranges : two cells are required, first cell specifies minimum
-+  slot voltage (mV), second cell specifies maximum slot voltage (mV).
-+  Several ranges could be specified.
-+- gpios : (optional) may specify GPIOs in this order: Card-Detect GPIO,
-+  Write-Protect GPIO.
-+
-+Example:
-+
-+	mmc-slot@0 {
-+		compatible = "fsl,mpc8323rdb-mmc-slot",
-+			     "mmc-spi-slot";
-+		reg = <0>;
-+		gpios = <&qe_pio_d 14 1
-+			 &qe_pio_d 15 0>;
-+		voltage-ranges = <3300 3300>;
-+		spi-max-frequency = <50000000>;
-+	};
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index cd17092..41c5dfd 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -446,6 +446,7 @@ struct of_modalias_table {
- };
- static struct of_modalias_table of_modalias_table[] = {
- 	{ "fsl,mcu-mpc8349emitx", "mcu-mpc8349emitx" },
-+	{ "mmc-spi-slot", "mmc_spi" },
- };
+diff --git a/arch/powerpc/sysdev/fsl_soc.h b/arch/powerpc/sysdev/fsl_soc.h
+index 60f7f22..9c744e4 100644
+--- a/arch/powerpc/sysdev/fsl_soc.h
++++ b/arch/powerpc/sysdev/fsl_soc.h
+@@ -5,8 +5,13 @@
+ #include <asm/mmu.h>
  
- /**
+ extern phys_addr_t get_immrbase(void);
++#if defined(CONFIG_CPM2) || defined(CONFIG_QUICC_ENGINE) || defined(CONFIG_8xx)
+ extern u32 get_brgfreq(void);
+ extern u32 get_baudrate(void);
++#else
++static inline u32 get_brgfreq(void) { return -1; }
++static inline u32 get_baudrate(void) { return -1; }
++#endif
+ extern u32 fsl_get_sys_freq(void);
+ 
+ struct spi_board_info;
 -- 
 1.5.6.5
 

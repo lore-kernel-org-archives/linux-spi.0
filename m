@@ -1,8 +1,8 @@
 From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH 5/7] powerpc/fsl_soc: Isolate legacy
-	fsl_spi support to	mpc832x_rdb boards
-Date: Fri, 5 Dec 2008 23:10:38 +0300
-Message-ID: <20081205201038.GE19758@oksana.dev.rtsoft.ru>
+Subject: [PATCH 7/7] powerpc/83xx: Add mmc-spi support
+	via the device tree	for MPC8323E-RDB
+Date: Fri, 5 Dec 2008 23:10:43 +0300
+Message-ID: <20081205201043.GG19758@oksana.dev.rtsoft.ru>
 References: <20081205200936.GA19137@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,279 +23,88 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The advantages of this:
-- Don't encourage legacy support;
-- Less external symbols, less code to compile-in for !MPC832x_RDB
-  platforms.
+- Add gpio-controller node to manage QE GPIO Bank D;
+- Add mmc-spi node;
+- Modify board file so that it won't use legacy SPI support with the new
+  device trees.
 
 Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
 ---
- arch/powerpc/platforms/83xx/mpc832x_rdb.c |  107 +++++++++++++++++++++++++++++
- arch/powerpc/sysdev/fsl_soc.c             |  107 -----------------------------
- arch/powerpc/sysdev/fsl_soc.h             |    4 -
- 3 files changed, 107 insertions(+), 111 deletions(-)
+ arch/powerpc/boot/dts/mpc832x_rdb.dts     |   24 ++++++++++++++++++++++++
+ arch/powerpc/platforms/83xx/mpc832x_rdb.c |    6 ++++++
+ 2 files changed, 30 insertions(+), 0 deletions(-)
 
+diff --git a/arch/powerpc/boot/dts/mpc832x_rdb.dts b/arch/powerpc/boot/dts/mpc832x_rdb.dts
+index dea3091..4319bd7 100644
+--- a/arch/powerpc/boot/dts/mpc832x_rdb.dts
++++ b/arch/powerpc/boot/dts/mpc832x_rdb.dts
+@@ -152,10 +152,21 @@
+ 		};
+ 
+ 		par_io@1400 {
++			#address-cells = <1>;
++			#size-cells = <1>;
+ 			reg = <0x1400 0x100>;
++			ranges = <3 0x1448 0x18>;
++			compatible = "fsl,mpc8323-qe-pario";
+ 			device_type = "par_io";
+ 			num-ports = <7>;
+ 
++			qe_pio_d: gpio-controller@1448 {
++				#gpio-cells = <2>;
++				compatible = "fsl,mpc8323-qe-pario-bank";
++				reg = <3 0x18>;
++				gpio-controller;
++			};
++
+ 			ucc2pio:ucc_pin@02 {
+ 				pio-map = <
+ 			/* port  pin  dir  open_drain  assignment  has_irq */
+@@ -225,12 +236,25 @@
+ 		};
+ 
+ 		spi@4c0 {
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 			cell-index = <0>;
+ 			compatible = "fsl,spi";
+ 			reg = <0x4c0 0x40>;
+ 			interrupts = <2>;
+ 			interrupt-parent = <&qeic>;
++			gpios = <&qe_pio_d 13 0>;
+ 			mode = "cpu-qe";
++
++			mmc-slot@0 {
++				compatible = "fsl,mpc8323rdb-mmc-slot",
++					     "mmc-spi-slot";
++				reg = <0>;
++				gpios = <&qe_pio_d 14 1
++					 &qe_pio_d 15 0>;
++				voltage-ranges = <3300 3300>;
++				spi-max-frequency = <50000000>;
++			};
+ 		};
+ 
+ 		spi@500 {
 diff --git a/arch/powerpc/platforms/83xx/mpc832x_rdb.c b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-index 28e23cd..17abbd2 100644
+index 17abbd2..567ded7 100644
 --- a/arch/powerpc/platforms/83xx/mpc832x_rdb.c
 +++ b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-@@ -20,6 +20,7 @@
- #include <linux/spi/mmc_spi.h>
- #include <linux/mmc/host.h>
- #include <linux/of_platform.h>
-+#include <linux/fsl_devices.h>
+@@ -175,6 +175,12 @@ static int __init mpc832x_spi_init(void)
+ 	par_io_config_pin(3, 14, 2, 0, 0, 0); /* SD_INSERT, I */
+ 	par_io_config_pin(3, 15, 2, 0, 0, 0); /* SD_PROTECT,I */
  
- #include <asm/time.h>
- #include <asm/ipic.h>
-@@ -39,6 +40,112 @@
- #endif
- 
- #ifdef CONFIG_QUICC_ENGINE
-+static int __init of_fsl_spi_probe(char *type, char *compatible, u32 sysclk,
-+				   struct spi_board_info *board_infos,
-+				   unsigned int num_board_infos,
-+				   void (*cs_control)(struct spi_device *dev,
-+						      bool on))
-+{
-+	struct device_node *np;
-+	unsigned int i = 0;
-+
-+	for_each_compatible_node(np, type, compatible) {
-+		int ret;
-+		unsigned int j;
-+		const void *prop;
-+		struct resource res[2];
-+		struct platform_device *pdev;
-+		struct fsl_spi_platform_data pdata = {
-+			.cs_control = cs_control,
-+		};
-+
-+		memset(res, 0, sizeof(res));
-+
-+		pdata.sysclk = sysclk;
-+
-+		prop = of_get_property(np, "reg", NULL);
-+		if (!prop)
-+			goto err;
-+		pdata.bus_num = *(u32 *)prop;
-+
-+		prop = of_get_property(np, "cell-index", NULL);
-+		if (prop)
-+			i = *(u32 *)prop;
-+
-+		prop = of_get_property(np, "mode", NULL);
-+		if (prop && !strcmp(prop, "cpu-qe"))
-+			pdata.qe_mode = 1;
-+
-+		for (j = 0; j < num_board_infos; j++) {
-+			if (board_infos[j].bus_num == pdata.bus_num)
-+				pdata.max_chipselect++;
-+		}
-+
-+		if (!pdata.max_chipselect)
-+			continue;
-+
-+		ret = of_address_to_resource(np, 0, &res[0]);
-+		if (ret)
-+			goto err;
-+
-+		ret = of_irq_to_resource(np, 0, &res[1]);
-+		if (ret == NO_IRQ)
-+			goto err;
-+
-+		pdev = platform_device_alloc("mpc83xx_spi", i);
-+		if (!pdev)
-+			goto err;
-+
-+		ret = platform_device_add_data(pdev, &pdata, sizeof(pdata));
-+		if (ret)
-+			goto unreg;
-+
-+		ret = platform_device_add_resources(pdev, res,
-+						    ARRAY_SIZE(res));
-+		if (ret)
-+			goto unreg;
-+
-+		ret = platform_device_add(pdev);
-+		if (ret)
-+			goto unreg;
-+
-+		goto next;
-+unreg:
-+		platform_device_del(pdev);
-+err:
-+		pr_err("%s: registration failed\n", np->full_name);
-+next:
-+		i++;
-+	}
-+
-+	return i;
-+}
-+
-+static int __init fsl_spi_init(struct spi_board_info *board_infos,
-+			       unsigned int num_board_infos,
-+			       void (*cs_control)(struct spi_device *spi,
-+						  bool on))
-+{
-+	u32 sysclk = -1;
-+	int ret;
-+
-+	/* SPI controller is either clocked from QE or SoC clock */
-+	sysclk = get_brgfreq();
-+	if (sysclk == -1) {
-+		sysclk = fsl_get_sys_freq();
-+		if (sysclk == -1)
-+			return -ENODEV;
-+	}
-+
-+	ret = of_fsl_spi_probe(NULL, "fsl,spi", sysclk, board_infos,
-+			       num_board_infos, cs_control);
-+	if (!ret)
-+		of_fsl_spi_probe("spi", "fsl_spi", sysclk, board_infos,
-+				 num_board_infos, cs_control);
-+
-+	return spi_register_board_info(board_infos, num_board_infos);
-+}
-+
- static void mpc83xx_spi_cs_control(struct spi_device *spi, bool on)
- {
- 	pr_debug("%s %d %d\n", __func__, spi->chip_select, on);
-diff --git a/arch/powerpc/sysdev/fsl_soc.c b/arch/powerpc/sysdev/fsl_soc.c
-index b9da579..727f27b 100644
---- a/arch/powerpc/sysdev/fsl_soc.c
-+++ b/arch/powerpc/sysdev/fsl_soc.c
-@@ -598,113 +598,6 @@ err:
- 
- arch_initcall(fsl_usb_of_init);
- 
--static int __init of_fsl_spi_probe(char *type, char *compatible, u32 sysclk,
--				   struct spi_board_info *board_infos,
--				   unsigned int num_board_infos,
--				   void (*cs_control)(struct spi_device *dev,
--						      bool on))
--{
--	struct device_node *np;
--	unsigned int i = 0;
--
--	for_each_compatible_node(np, type, compatible) {
--		int ret;
--		unsigned int j;
--		const void *prop;
--		struct resource res[2];
--		struct platform_device *pdev;
--		struct fsl_spi_platform_data pdata = {
--			.cs_control = cs_control,
--		};
--
--		memset(res, 0, sizeof(res));
--
--		pdata.sysclk = sysclk;
--
--		prop = of_get_property(np, "reg", NULL);
--		if (!prop)
--			goto err;
--		pdata.bus_num = *(u32 *)prop;
--
--		prop = of_get_property(np, "cell-index", NULL);
--		if (prop)
--			i = *(u32 *)prop;
--
--		prop = of_get_property(np, "mode", NULL);
--		if (prop && !strcmp(prop, "cpu-qe"))
--			pdata.qe_mode = 1;
--
--		for (j = 0; j < num_board_infos; j++) {
--			if (board_infos[j].bus_num == pdata.bus_num)
--				pdata.max_chipselect++;
--		}
--
--		if (!pdata.max_chipselect)
--			continue;
--
--		ret = of_address_to_resource(np, 0, &res[0]);
--		if (ret)
--			goto err;
--
--		ret = of_irq_to_resource(np, 0, &res[1]);
--		if (ret == NO_IRQ)
--			goto err;
--
--		pdev = platform_device_alloc("mpc83xx_spi", i);
--		if (!pdev)
--			goto err;
--
--		ret = platform_device_add_data(pdev, &pdata, sizeof(pdata));
--		if (ret)
--			goto unreg;
--
--		ret = platform_device_add_resources(pdev, res,
--						    ARRAY_SIZE(res));
--		if (ret)
--			goto unreg;
--
--		ret = platform_device_add(pdev);
--		if (ret)
--			goto unreg;
--
--		goto next;
--unreg:
--		platform_device_del(pdev);
--err:
--		pr_err("%s: registration failed\n", np->full_name);
--next:
--		i++;
--	}
--
--	return i;
--}
--
--int __init fsl_spi_init(struct spi_board_info *board_infos,
--			unsigned int num_board_infos,
--			void (*cs_control)(struct spi_device *spi, bool on))
--{
--	u32 sysclk = -1;
--	int ret;
--
--#ifdef CONFIG_QUICC_ENGINE
--	/* SPI controller is either clocked from QE or SoC clock */
--	sysclk = get_brgfreq();
--#endif
--	if (sysclk == -1) {
--		sysclk = fsl_get_sys_freq();
--		if (sysclk == -1)
--			return -ENODEV;
--	}
--
--	ret = of_fsl_spi_probe(NULL, "fsl,spi", sysclk, board_infos,
--			       num_board_infos, cs_control);
--	if (!ret)
--		of_fsl_spi_probe("spi", "fsl_spi", sysclk, board_infos,
--				 num_board_infos, cs_control);
--
--	return spi_register_board_info(board_infos, num_board_infos);
--}
--
- #if defined(CONFIG_PPC_85xx) || defined(CONFIG_PPC_86xx)
- static __be32 __iomem *rstcr;
- 
-diff --git a/arch/powerpc/sysdev/fsl_soc.h b/arch/powerpc/sysdev/fsl_soc.h
-index b5f3456..42381bb 100644
---- a/arch/powerpc/sysdev/fsl_soc.h
-+++ b/arch/powerpc/sysdev/fsl_soc.h
-@@ -19,10 +19,6 @@ extern u32 fsl_get_sys_freq(void);
- struct spi_board_info;
- struct device_node;
- 
--extern int fsl_spi_init(struct spi_board_info *board_infos,
--			unsigned int num_board_infos,
--			void (*cs_control)(struct spi_device *spi, bool on));
--
- extern void fsl_rstcr_restart(char *cmd);
- 
- #if defined(CONFIG_FB_FSL_DIU) || defined(CONFIG_FB_FSL_DIU_MODULE)
++	/*
++	 * Don't bother with legacy stuff when device tree contains
++	 * mmc-spi-slot node.
++	 */
++	if (of_find_compatible_node(NULL, NULL, "mmc-spi-slot"))
++		return 0;
+ 	return fsl_spi_init(&mpc832x_spi_boardinfo, 1, mpc83xx_spi_cs_control);
+ }
+ machine_device_initcall(mpc832x_rdb, mpc832x_spi_init);
 -- 
 1.5.6.5
-
 
 ------------------------------------------------------------------------------
 SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.

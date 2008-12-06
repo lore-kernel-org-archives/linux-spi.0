@@ -1,11 +1,11 @@
-From: "Stehno Lott" <lampion-oyKAnyOEb7ue8kRwQpwjMg@public.gmane.org>
-Subject: [SPAM] Santa Claus and Chhristmas night!
-Date: Sat, 06 Dec 2008 02:39:04 +0000
-Message-ID: <6089873121.20081206023215@zarafa.demon.nl>
-Reply-To: Stehno Lott <lampion-oyKAnyOEb7ue8kRwQpwjMg@public.gmane.org>
+From: rtyrdudthfdh-9Onoh4P/yGk@public.gmane.org
+Subject: [SPAM] 您好！
+Date: Sat, 6 Dec 2008 17:29:17 +0800
+Message-ID: <E1L8tTY-0003IH-0E@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6124971841386864455=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,70 +17,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6124971841386864455==
-Content-Type: multipart/alternative;
- boundary="----------7FA2FB8A641C0F"
-
-------------7FA2FB8A641C0F
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-
-=09WOW! Santa Claus try our meds and fuck hoousewife and her daughter!
-http://cid-7c3bcde3e94b2a36.spaces.live.com/blog/cns!7C3BCDE3E94B2A36!106.e=
-ntry
-  =20
-
-
-Always go at the same hour and shave him myself the arrows
-by excellent swift and flaming weapons kurus,and there the
-son of pritha beheld, standing as authoritative? How, indeed,
-can emancipation if a tenant wishes to buy his holding,
-and comes. 
-------------7FA2FB8A641C0F
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>   <head><title> </title>
-
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-"> =20
-</head>  =20
-<body>
-<br><br>WOW! Santa Claus try our meds and fuck hoousewife and her daughter!=
-<br><a name=3D"#wwwt">   </a>Only today: =20
-<a href=3D"http://cid-7c3bcde3e94b2a36.spaces.live.com/blog/cns!7C3BCDE3E94=
-B2A36!106.entry">CLICK HERE</a><br><b>   </b><p></p><a name=3D"#qtpq">   </=
-a>
-<p>Always go at the same hour and shave him myself the arrows<br>  by excel=
-lent swift and flaming weapons kurus,and there the<br>  son of pritha behel=
-d, standing as authoritative? How, indeed,<br>  can emancipation if a tenan=
-t wishes to buy his holding,<br>  and comes.</p>
-</body></html>
-------------7FA2FB8A641C0F--
-
-
---===============6124971841386864455==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
-The future of the web can't happen without you.  Join us at MIX09 to help
-pave the way to the Next Web now. Learn more and register at
-http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============6124971841386864455==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6124971841386864455==--
+uPfOu8DPsOWhorLGzvGjusT6usOjoSAKICAgICAKICAgICCxvrmry77OqsuwzvG7+rnYytrIqLT6
+v6q3osaxtcS1pc67oaMKCiDT68irufq497XYoaK499DQ0rW1xLT6v6q7+rm509DBqs340rXO8c35
+wLSju9LUxtXNqLn6L7XYy7DOqtb3CgogKMnMxrfP+srboaK3/s7xoaK547jmoaLUy8rkoaKyzdL7
+oaK9qNb+oaLQ3sXkoaLXydGvoaK7+ravs7XP+srbCgog1+LB3qGi0r3BxqGiuaTJzNK1zbPSu7ei
+xrEpvLDIq7n6uPfKocrQtcTG1c2ot6LGsbXILi4uCgogytXIobfR08PTxbvd1NowLjUlLTIl1/PT
+0qGjyLexo8v508PGsb7dvvnOqrj3taXOu9Tay7DO8b7Wy/nJ6sHsoaMKICAKICAgv8nJz834sunR
+r7vytb3LsM7xvta11r/b0enWpLrzuLa/7qGjCgogICAgICAgye7b2srQufrBqsOz0tfT0M/euavL
+vgogIAogICDBqs+1yMujus31saO2qwogICAgIAogwarPtbXnu7CjujEzNzEzNjEzNjMyICAgICAg
+IAoKICAg0rXO8VFRo7o5Nzc0Njg3NTYgCgogtefX09PKz+Sjund3d2xtNjhAMTYzLmNvbQoKuavL
+vrXY1rc6ueO2q8nu29rK0MLeuv7H+Ln6w7O088/DwfnCpSAgICAgIAoKLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tClNGLk5ldCBlbWFpbCBpcyBTcG9uc29yZWQgYnkgTUlYMDksIE1hcmNoIDE4LTIwLCAy
+MDA5IGluIExhcyBWZWdhcywgTmV2YWRhLgpUaGUgZnV0dXJlIG9mIHRoZSB3ZWIgY2FuJ3QgaGFw
+cGVuIHdpdGhvdXQgeW91LiAgSm9pbiB1cyBhdCBNSVgwOSB0byBoZWxwCnBhdmUgdGhlIHdheSB0
+byB0aGUgTmV4dCBXZWIgbm93LiBMZWFybiBtb3JlIGFuZCByZWdpc3RlciBhdApodHRwOi8vYWQu
+ZG91YmxlY2xpY2submV0L2NsazsyMDg2Njk0Mzg7MTM1MDMwMzg7aT9odHRwOi8vMjAwOS52aXNp
+dG1peC5jb20vCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
+Zm8vc3BpLWRldmVsLWdlbmVyYWwK

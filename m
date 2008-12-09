@@ -1,20 +1,12 @@
-From: Lauri Leukkunen <lauri.leukkunen-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] Add TI TSC2005 Touchscreen driver
-Date: Tue, 9 Dec 2008 15:17:05 +0200
-Message-ID: <20081209131705.GC6667@pure.research.nokia.com>
-References: <5d5443650812080949h5aff6010mb7341f581841f126@mail.gmail.com>
-	<20081208182648.GA9740@uranus.ravnborg.org>
+From: iekjdiiijfv-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 合作
+Date: Wed, 10 Dec 2008 05:55:56 +0800
+Message-ID: <E1LAAXi-0007Ym-QB@335xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org Mailing List" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: ext Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20081208182648.GA9740-QabhHTsIXMSnlFQ6Q1D1Y0B+6BGkLq7r@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,26 +17,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08/12/08 19:26 +0100, ext Sam Ravnborg wrote:
-> > Add Texas Instruments TSC2005 chip touchscreen driver.
-> > 
-> > Signed-off-by: Trilok Soni <soni.trilok-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> 
-> Hi Trilok.
-> A few nitpicks below.
-> 
-> In general a very clean written driver with adequate comments - nice work!
-
-Umm, isn't this code mostly written by Nokia? At least I remember modifying
-some of it, and this version looks like Konsta Karsisto might be the last
-person touching it. Originally I think it's written by Imre Deak, probably
-based on the tsc2301 code.
-
-/lauri
-
-
-------------------------------------------------------------------------------
-SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
-The future of the web can't happen without you.  Join us at MIX09 to help
-pave the way to the Next Web now. Learn more and register at
-http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
+ufO5q8u+uLrU8MjLxPq6wyEgKMjn09C08sjFx+vBwr3io6mhowogICAgsb65q8u+1NoouePW3S62
+q924LsnPuqMu1eO9rS64o72oLr2ty9UuuePO9y7JvbarLr2tzvcuy8S0qLXItdi++dPQt9a5q8u+
+KSwK0vK9+M/uvc+24M/WzeqzybK7wcvDv9TCz/rK27butsijrMO/1MLT0NK7sr+31rbg0+C1xMbV
+zai3osaxyOejusnMxrfP+srbLtTLyuQuCrf+zvEuueO45i69qNb+uaSzzLXIt6LGsaOsy7DCyrC0
+MSUtMiXX89PSz/LN4tPFu920+r+qo6y587mry77U2tf21cq78r34z/q05re9w+YKyOfQ6NPDtb21
+xLuwo6zO0su+v8nM4bmpyKu3vcPmtcS3/s7xoaO/ybj5vt3L+df2yv3Bv7butsi1xLTz0KHAtLri
+wb/TxbvdtcS148r9oaMgCiAgICC587mry77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQ
+xKOsv8nJz834sunWpLvy1rG908ily7DO8b7Wtda/27rLttShowqxvrmry77Wo9bYs9DFtcv508O+
++LbUysfV5saxo6EgIMuz16OjuiAgyczs96OhIAoKCiAgIMGqIM+1IMjLo7rVxdChveMKICAgIMGq
+z7XK1rv6o7oxMzUzODg4NzYyNQogICAg0rUgIM7xUVGjujgyMDQ1OTI5OAogICAgRS1tYWlso7po
+b3BweWFiY0AxMjYuY29tCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU0YuTmV0IGVtYWlsIGlzIFNw
+b25zb3JlZCBieSBNSVgwOSwgTWFyY2ggMTgtMjAsIDIwMDkgaW4gTGFzIFZlZ2FzLCBOZXZhZGEu
+ClRoZSBmdXR1cmUgb2YgdGhlIHdlYiBjYW4ndCBoYXBwZW4gd2l0aG91dCB5b3UuICBKb2luIHVz
+IGF0IE1JWDA5IHRvIGhlbHAKcGF2ZSB0aGUgd2F5IHRvIHRoZSBOZXh0IFdlYiBub3cuIExlYXJu
+IG1vcmUgYW5kIHJlZ2lzdGVyIGF0Cmh0dHA6Ly9hZC5kb3VibGVjbGljay5uZXQvY2xrOzIwODY2
+OTQzODsxMzUwMzAzODtpP2h0dHA6Ly8yMDA5LnZpc2l0bWl4LmNvbS8KX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
+ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
+c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

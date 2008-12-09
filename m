@@ -1,12 +1,20 @@
-From: =?GB2312?B?uvrPyMn6?= <amydse888-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 本司有税票代开税率0.8%左右可查验后付款！
-Date: Tue, 9 Dec 2008 21:00:31 +0800
-Message-ID: <E1LA2BB-0002Jh-45@h25xhf1.ch3.sourceforge.com>
+From: Lauri Leukkunen <lauri.leukkunen-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] Add TI TSC2005 Touchscreen driver
+Date: Tue, 9 Dec 2008 15:17:05 +0200
+Message-ID: <20081209131705.GC6667@pure.research.nokia.com>
+References: <5d5443650812080949h5aff6010mb7341f581841f126@mail.gmail.com>
+	<20081208182648.GA9740@uranus.ravnborg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org Mailing List" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: ext Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20081208182648.GA9740-QabhHTsIXMSnlFQ6Q1D1Y0B+6BGkLq7r@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,24 +25,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-1sK587mry74os6e80imyxs7xo6y4utTwyMvE+rrDIQogICAgsb65q8u+yse2qLbuxMnLsMbz0rWj
-rM/WzeqzybK7wcvDv9TCz/rK27butsiho8O/1MK2vNPQ0ruyv7fWKLn6LrXYy7ApxrHP8s3itPq/
-qqGjuavLvrPJwaLKrrbgxOrS1MC0o6zSu9axsb7Xxb/Nu6fC+tLio7vBpsfzvqHJxr6hw8C1xLf+
-zvHX2ta8o7vS1Lj808Wju7j8v+yju7j8usO1xLf+zvHA7cTuo7vS0dOutcO547Tzv827p7XE1qez
-1tPruvGwrqGjCtK7oaK0+r+qt7bOp9PQOyjG1c2oyczGt8/6ytuhotTLyuShor2o1v65pLPMoaK5
-47jmoaK3/s7x0rWhotfJ0a+6zbaotu61yKGtKQq2/qGiy7DCyrC0v6rGsb3wtu61xDEl1/PT0srV
-yKEsvfC27tS9tPPUvdPFu90hCsj9oaLI57n7ufPLvtTaxrG3vcPm09DIzrrO0snCx6Os0rvH0Max
-v8m+rbnzy77It8jPuvOyxbi2v+4hCiAgINeiIDrI59PQ0OjSqru2063AtLXn18nRryHI59PQtPK9
-wb60x+vBwr3iIdC70LshCiAgINejo7q587mry77J+tLi0MvCoSDF7rKqt6LVuSDStbyo1fTV9MjV
-yc8hus/X99Pkv+whCiAgIMGqz7XIyzq6+rrqya0gICC157uwOjEzNzE5NDM1MTI2ICAgICAgICAg
-ICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgILzR0MXKtdK109DP
-3rmry74KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTRi5OZXQgZW1haWwgaXMgU3BvbnNvcmVkIGJ5
-IE1JWDA5LCBNYXJjaCAxOC0yMCwgMjAwOSBpbiBMYXMgVmVnYXMsIE5ldmFkYS4KVGhlIGZ1dHVy
-ZSBvZiB0aGUgd2ViIGNhbid0IGhhcHBlbiB3aXRob3V0IHlvdS4gIEpvaW4gdXMgYXQgTUlYMDkg
-dG8gaGVscApwYXZlIHRoZSB3YXkgdG8gdGhlIE5leHQgV2ViIG5vdy4gTGVhcm4gbW9yZSBhbmQg
-cmVnaXN0ZXIgYXQKaHR0cDovL2FkLmRvdWJsZWNsaWNrLm5ldC9jbGs7MjA4NjY5NDM4OzEzNTAz
-MDM4O2k/aHR0cDovLzIwMDkudmlzaXRtaXguY29tLwpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
-Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On 08/12/08 19:26 +0100, ext Sam Ravnborg wrote:
+> > Add Texas Instruments TSC2005 chip touchscreen driver.
+> > 
+> > Signed-off-by: Trilok Soni <soni.trilok-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> 
+> Hi Trilok.
+> A few nitpicks below.
+> 
+> In general a very clean written driver with adequate comments - nice work!
+
+Umm, isn't this code mostly written by Nokia? At least I remember modifying
+some of it, and this version looks like Konsta Karsisto might be the last
+person touching it. Originally I think it's written by Imre Deak, probably
+based on the tsc2301 code.
+
+/lauri
+
+
+------------------------------------------------------------------------------
+SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
+The future of the web can't happen without you.  Join us at MIX09 to help
+pave the way to the Next Web now. Learn more and register at
+http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/

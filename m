@@ -1,11 +1,11 @@
-From: =?GB2312?B?xOO6ww==?= <ddddddddddddddddddd000021225-CtyDPXBhZeU@public.gmane.org>
-Subject: [SPAM] <<信息咨询>>
-Date: Thu, 11 Dec 2008 18:30:10 +0800
-Message-ID: <E1LAMLS-0000RK-6z@h25xhf1.ch3.sourceforge.com>
+From: "Avila Benak" <anchorage-YnyYhFunv2OLyEy2LckgMg@public.gmane.org>
+Subject: [SPAM] 1 new message  for you
+Date: Wed, 10 Dec 2008 14:26:31 +0000
+Message-ID: <3552082271.20081210142230@chopihapi.com>
+Reply-To: Avila Benak <anchorage-YnyYhFunv2OLyEy2LckgMg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============8904310095946592944=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,34 +17,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6IKOo1eLKx9K7t+LJxtLitcTTyrz+o6zI59PQ
-tPLIxcfrwcK94qOpoaMKICAgIM7Sysc8PMnu29rK0LrqsqnDs9LX09DP3rmry74+PtTao6i549bd
-oaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509C31rmry76jqaGjztIKuavLvsq1
-wabQ27rxo6zT0NfFwby6w7XEyee74bnYz7Who9LyvfjP7r3PtuDP1s3qs8myu8HLw7/Uws/6ytu2
-7rbIoaPDv9TC09DSu7K/t9bU9ta1y7C158TUPLeiLwrGsT42JbrNPDzG1S/NqC+3oi3GsT4+1tbA
-4Mjnz8KjusnMxrfP+srby7A8t6ItxrE+o6y158TU1MvK5Dy3oi3GsT6jrLnjuOY8PLeiLcaxPj7X
-4sHe0rU8t6IvxrE+LAq3/s7x0rU8t6IvxrE+tcggPDy5+i3LsC212C3LsD4+MC44LTIl08W73bT6
-v6q78rrP1/ejrLXjyv29z7XNoaO7ub/J0tS4+b7dy/nX9sr9wb+27rbItcS089ChwLTJzArM1tPF
-u921xLXjyv2jrLmry76zycGituDE6tK71rG84bPW0tShsLPP0MWhsc6q1tDQxNf3zqq5q8u+tcS6
-y9DEy7zP66GiwM65zMr3waK5q8u+0M7P86Ossb65q8u+1qMK1tiz0MW1y/nTw774ttTKxzw81eYt
-xrE+PqOhuPzPo837xNy5u9PQu/q74dPrufO5q8u+us/X96OhCsjnufPLvtTat6LGsbXE1ebOsbe9
-w+bT0MjOus7SycLHu/K1o9DEo6y/ycnPzfiy6daku/LO0su+1rG909PrufPLvsily7DO8b7Wtda/
-27rLttShoyAKICAgICAgICAgICAgICC0y9DFz6KzpMba09DQp6OsyOfQ67340ruyvceiycw6CgrL
-s9ejCiAgICAgyczs96OhICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAg
-IAogICAgICAgICAgICAgIMGqIM+1IMjLIKO6zfXPyMn6oaGhoaGhoaGhoaGhoaGhoQogICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIKGhoaGhoaGhoaGhoaGhoaGhoaGhCiAgICAgICAgICAgICAg
-ICDK1iAgu/ogo7oxMzYzMjUwNjk5NQogICAgICAgICAgICAKICAgICAgICAgICAgICAgINK1zvFR
-IFGjujEwNjAwNDY3ODUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAg
-ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgIKGhoaGhoaGhoaGhoaGhoaEKICAgICAg
-ICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgye4g29ogytAguuogsqkgw7Mg0tcg09Agz94guasgy74gCgot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KU0YuTmV0IGVtYWlsIGlzIFNwb25zb3JlZCBieSBNSVgwOSwg
-TWFyY2ggMTgtMjAsIDIwMDkgaW4gTGFzIFZlZ2FzLCBOZXZhZGEuClRoZSBmdXR1cmUgb2YgdGhl
-IHdlYiBjYW4ndCBoYXBwZW4gd2l0aG91dCB5b3UuICBKb2luIHVzIGF0IE1JWDA5IHRvIGhlbHAK
-cGF2ZSB0aGUgd2F5IHRvIHRoZSBOZXh0IFdlYiBub3cuIExlYXJuIG1vcmUgYW5kIHJlZ2lzdGVy
-IGF0Cmh0dHA6Ly9hZC5kb3VibGVjbGljay5uZXQvY2xrOzIwODY2OTQzODsxMzUwMzAzODtpP2h0
-dHA6Ly8yMDA5LnZpc2l0bWl4LmNvbS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
-dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--===============8904310095946592944==
+Content-Type: multipart/alternative;
+ boundary="----------047984FB75B580"
+
+------------047984FB75B580
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+
+
+How to make your penis strong foor long time?
+ http://cid-920dc31bc38386c0.spaces.live.com/blog/cns!920DC31BC38386C0!107.=
+entry
+=09
+=09
+  =20
+In battle. Endued with great prowess, they were an equal
+eye their brown vestments of coarse cloth heavenly audience,
+where are seventy thousand thus commanded by bhishma, sahadeva
+endued with four white steeds, then will that wretch of
+uncontrolled.
+------------047984FB75B580
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>=09<head> <title> </title>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">  =20
+</head>=09
+<body><span name=3D"#trpq">
+</span><br><span name=3D"#prqq">
+</span>How to make your penis strong foor long time?<br>We know: =20
+<a href=3D"http://cid-920dc31bc38386c0.spaces.live.com/blog/cns!920DC31BC38=
+386C0!107.entry">CLICK HERE</a><br><b>
+</b><p><span name=3D"#ptrw">=09</span></p><span name=3D"#qrwq">
+</span>
+<p><span>
+</span>In battle. Endued with great prowess, they were an equal<br>eye thei=
+r brown vestments of coarse cloth heavenly audience,<br>where are seventy t=
+housand thus commanded by bhishma, sahadeva<br>endued with four white steed=
+s, then will that wretch of<br>uncontrolled.</p>
+</body></html>
+------------047984FB75B580--
+
+
+--===============8904310095946592944==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
+The future of the web can't happen without you.  Join us at MIX09 to help
+pave the way to the Next Web now. Learn more and register at
+http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
+--===============8904310095946592944==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8904310095946592944==--

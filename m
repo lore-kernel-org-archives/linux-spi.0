@@ -1,49 +1,50 @@
-From: "Trilok Soni" <soni.trilok@gmail.com>
-Subject: Re: [PATCH] Add TI TSC2005 Touchscreen driver
-Date: Wed, 10 Dec 2008 12:44:21 +0530
-Message-ID: <5d5443650812092314s4b51abb2me5e0f16a36d2c18c@mail.gmail.com>
-References: <5d5443650812080949h5aff6010mb7341f581841f126@mail.gmail.com>
-	 <20081208182648.GA9740@uranus.ravnborg.org>
-	 <20081209131705.GC6667@pure.research.nokia.com>
+From: =?GB2312?B?xOO6ww==?= <ddddddddddddddddddd000021225-CtyDPXBhZeU@public.gmane.org>
+Subject: [SPAM] <<信息咨询>>
+Date: Thu, 11 Dec 2008 18:30:10 +0800
+Message-ID: <E1LAMLS-0000RK-6z@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: "ext Sam Ravnborg" <sam@ravnborg.org>,
-	"David Brownell" <david-b@pacbell.net>, dmitry.torokhov@gmail.com,
-	"linux-omap@vger.kernel.org Mailing List"
-	<linux-omap@vger.kernel.org>, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-input@vger.kernel.org
-To: "Lauri Leukkunen" <lauri.leukkunen@nokia.com>
-Return-path: <linux-input-owner@vger.kernel.org>
-In-Reply-To: <20081209131705.GC6667@pure.research.nokia.com>
-Content-Disposition: inline
-Sender: linux-input-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Lauri,
-
-On Tue, Dec 9, 2008 at 6:47 PM, Lauri Leukkunen
-<lauri.leukkunen@nokia.com> wrote:
-> On 08/12/08 19:26 +0100, ext Sam Ravnborg wrote:
->> > Add Texas Instruments TSC2005 chip touchscreen driver.
->> >
->> > Signed-off-by: Trilok Soni <soni.trilok@gmail.com>
->>
->> Hi Trilok.
->> A few nitpicks below.
->>
->> In general a very clean written driver with adequate comments - nice work!
->
-> Umm, isn't this code mostly written by Nokia? At least I remember modifying
-> some of it, and this version looks like Konsta Karsisto might be the last
-> person touching it. Originally I think it's written by Imre Deak, probably
-> based on the tsc2301 code.
-
-Yes, you are the author. Please check first few lines of this patch,
---from field has your name :)
-
--- 
----Trilok Soni
-http://triloksoni.wordpress.com
-http://www.linkedin.com/in/triloksoni
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6IKOo1eLKx9K7t+LJxtLitcTTyrz+o6zI59PQ
+tPLIxcfrwcK94qOpoaMKICAgIM7Sysc8PMnu29rK0LrqsqnDs9LX09DP3rmry74+PtTao6i549bd
+oaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509C31rmry76jqaGjztIKuavLvsq1
+wabQ27rxo6zT0NfFwby6w7XEyee74bnYz7Who9LyvfjP7r3PtuDP1s3qs8myu8HLw7/Uws/6ytu2
+7rbIoaPDv9TC09DSu7K/t9bU9ta1y7C158TUPLeiLwrGsT42JbrNPDzG1S/NqC+3oi3GsT4+1tbA
+4Mjnz8KjusnMxrfP+srby7A8t6ItxrE+o6y158TU1MvK5Dy3oi3GsT6jrLnjuOY8PLeiLcaxPj7X
+4sHe0rU8t6IvxrE+LAq3/s7x0rU8t6IvxrE+tcggPDy5+i3LsC212C3LsD4+MC44LTIl08W73bT6
+v6q78rrP1/ejrLXjyv29z7XNoaO7ub/J0tS4+b7dy/nX9sr9wb+27rbItcS089ChwLTJzArM1tPF
+u921xLXjyv2jrLmry76zycGituDE6tK71rG84bPW0tShsLPP0MWhsc6q1tDQxNf3zqq5q8u+tcS6
+y9DEy7zP66GiwM65zMr3waK5q8u+0M7P86Ossb65q8u+1qMK1tiz0MW1y/nTw774ttTKxzw81eYt
+xrE+PqOhuPzPo837xNy5u9PQu/q74dPrufO5q8u+us/X96OhCsjnufPLvtTat6LGsbXE1ebOsbe9
+w+bT0MjOus7SycLHu/K1o9DEo6y/ycnPzfiy6daku/LO0su+1rG909PrufPLvsily7DO8b7Wtda/
+27rLttShoyAKICAgICAgICAgICAgICC0y9DFz6KzpMba09DQp6OsyOfQ67340ruyvceiycw6CgrL
+s9ejCiAgICAgyczs96OhICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+IAogICAgICAgICAgICAgIMGqIM+1IMjLIKO6zfXPyMn6oaGhoaGhoaGhoaGhoaGhoQogICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIKGhoaGhoaGhoaGhoaGhoaGhoaGhCiAgICAgICAgICAgICAg
+ICDK1iAgu/ogo7oxMzYzMjUwNjk5NQogICAgICAgICAgICAKICAgICAgICAgICAgICAgINK1zvFR
+IFGjujEwNjAwNDY3ODUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgIKGhoaGhoaGhoaGhoaGhoaEKICAgICAg
+ICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgye4g29ogytAguuogsqkgw7Mg0tcg09Agz94guasgy74gCgot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KU0YuTmV0IGVtYWlsIGlzIFNwb25zb3JlZCBieSBNSVgwOSwg
+TWFyY2ggMTgtMjAsIDIwMDkgaW4gTGFzIFZlZ2FzLCBOZXZhZGEuClRoZSBmdXR1cmUgb2YgdGhl
+IHdlYiBjYW4ndCBoYXBwZW4gd2l0aG91dCB5b3UuICBKb2luIHVzIGF0IE1JWDA5IHRvIGhlbHAK
+cGF2ZSB0aGUgd2F5IHRvIHRoZSBOZXh0IFdlYiBub3cuIExlYXJuIG1vcmUgYW5kIHJlZ2lzdGVy
+IGF0Cmh0dHA6Ly9hZC5kb3VibGVjbGljay5uZXQvY2xrOzIwODY2OTQzODsxMzUwMzAzODtpP2h0
+dHA6Ly8yMDA5LnZpc2l0bWl4LmNvbS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
+ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
+dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

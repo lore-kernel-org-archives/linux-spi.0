@@ -1,17 +1,18 @@
-From: "Eric Miao" <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: [PATCH] spi: pxa2xx_spi introduces
 	chipselect GPIO to simplify the common cases
-Date: Thu, 11 Dec 2008 18:09:45 +0800
-Message-ID: <f17812d70812110209p1f51c64bw1957583d24314448@mail.gmail.com>
+Date: Thu, 11 Dec 2008 02:36:21 -0800
+Message-ID: <200812110236.22393.david-b@pacbell.net>
 References: <f17812d70811242317u706ff2bdq4410fd331975c463@mail.gmail.com>
 	<f17812d70812041828x6ff01993tbaa2d664c24681e6@mail.gmail.com>
+	<f17812d70812110209p1f51c64bw1957583d24314448@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "Eric Miao" <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <f17812d70812041828x6ff01993tbaa2d664c24681e6-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <f17812d70812110209p1f51c64bw1957583d24314448-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -23,16 +24,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 5, 2008 at 10:28 AM, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> David,
->
-> I have to ping you again on this patch due to the coming merge window.
->
+On Thursday 11 December 2008, Eric Miao wrote:
+> On Fri, Dec 5, 2008 at 10:28 AM, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> > David,
+> >
+> > I have to ping you again on this patch due to the coming merge window.
+> >
+> 
+> Well, one week passed and still no response, I'll push this
+> one through my tree anyway.
 
-Well, one week passed and still no response, I'll push this
-one through my tree anyway.
+I'm still catching up on stuff ... what's the rush?
 
-Thanks
+It's probably OK -- it was almost OK before -- but I'd
+still rather send it with my next batch of SPI updates.
+
+- Dave
 
 ------------------------------------------------------------------------------
 SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.

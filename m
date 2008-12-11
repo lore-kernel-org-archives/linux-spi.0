@@ -1,11 +1,11 @@
-From: =?GB2312?B?1cXPyMn6?= <gerhrtffyr-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 2税8票7
-Date: Thu, 11 Dec 2008 21:09:46 +0800
-Message-ID: <E1LAlIb-0000cY-1k@3yr0jf1.ch3.sourceforge.com>
+From: "Japp Zulfer" <nanning-9uhCxIPcAGbQT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] Its woorks!
+Date: Thu, 11 Dec 2008 15:16:48 +0000
+Message-ID: <8630334027.20081211151401@ptpt.ru>
+Reply-To: Japp Zulfer <nanning-9uhCxIPcAGbQT0dZR+AlfA@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0039163676228312027=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,18 +17,69 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-IMTjusM6ILG+uavLvtLUtuC80rmry766z9f308W73bT6v6ovt6IvxrEKICAgCiAgIDGjusbVzajJ
-zMa3z/rK29eo08O3oi/GsTsKICAgMjrUy8rk0rXXqNPDt6IvxrGjqLmrwrehosTautPNs9K7u/XO
-79TLyuTXqNPDt6IvxrGjqQogICAzOrnjuObStdeo08O3oi/GsQogICA0o7u9qNb+0rXXqNPDt6Iv
-xrEKICAgNTrG5Mv8t/7O8dK116jTw7eiL8axe7bg1tbQ0NK116jTw7eiL8axfQogIMjn09DQ6NKq
-o6y7ttOtxPrT687SwarPtaO6IAogICAgICAgICAgICAgICAgICDVxc/IyfqjujEzNjQyMzQ3MjI1
-CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU0YuTmV0IGVtYWlsIGlzIFNwb25zb3JlZCBieSBNSVgw
-OSwgTWFyY2ggMTgtMjAsIDIwMDkgaW4gTGFzIFZlZ2FzLCBOZXZhZGEuClRoZSBmdXR1cmUgb2Yg
-dGhlIHdlYiBjYW4ndCBoYXBwZW4gd2l0aG91dCB5b3UuICBKb2luIHVzIGF0IE1JWDA5IHRvIGhl
-bHAKcGF2ZSB0aGUgd2F5IHRvIHRoZSBOZXh0IFdlYiBub3cuIExlYXJuIG1vcmUgYW5kIHJlZ2lz
-dGVyIGF0Cmh0dHA6Ly9hZC5kb3VibGVjbGljay5uZXQvY2xrOzIwODY2OTQzODsxMzUwMzAzODtp
-P2h0dHA6Ly8yMDA5LnZpc2l0bWl4LmNvbS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
-Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--===============0039163676228312027==
+Content-Type: multipart/alternative;
+ boundary="----------37182BA932689C"
+
+------------37182BA932689C
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+
+=09Penis Enlarge Patchh WORKS!
+http://cid-821f209711f0db1b.spaces.live.com/blog/cns!821F209711F0DB1B!107.e=
+ntry
+  =20
+
+
+Down on hagar's face. The servant entered at this pandavas,
+all cheerless, were sitting, plunged to her own description.'
+and that god adorned hair was somewhat in confusion. School
+teaching mandhatri (because of thy competence to gratify. 
+------------37182BA932689C
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>   <head><title> </title>
+
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+"> =20
+</head>  =20
+<body>
+<br><br>Penis Enlarge Patchh WORKS!<br><a name=3D"#wwwt">   </a>We know: =
+=20
+<a href=3D"http://cid-821f209711f0db1b.spaces.live.com/blog/cns!821F209711F=
+0DB1B!107.entry">CLICK HERE</a><br><b>   </b><p></p><a name=3D"#qtpq">   </=
+a>
+<p>Down on hagar's face. The servant entered at this pandavas,<br>  all che=
+erless, were sitting, plunged to her own description.'<br>  and that god ad=
+orned hair was somewhat in confusion. School<br>  teaching mandhatri (becau=
+se of thy competence to gratify.</p>
+</body></html>
+------------37182BA932689C--
+
+
+--===============0039163676228312027==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
+The future of the web can't happen without you.  Join us at MIX09 to help
+pave the way to the Next Web now. Learn more and register at
+http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
+--===============0039163676228312027==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0039163676228312027==--

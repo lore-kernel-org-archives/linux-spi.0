@@ -1,11 +1,10 @@
-From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] Êú¨Âè∏ÊúâÁ®éÁ•®‰ª£ÂºÄÔºåÁ®éÁÇπÁâπ‰ºòÔºåÂèØÈ™åËØÅÂêé‰ªòÁ®éÈáë
-Date: Sat, 13 Dec 2008 00:56:19 +0800
-Message-ID: <E1LBBHv-0003ou-KQ@h25xhf1.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?u8bPyMn6?= <jiodfajlkajjhkghj-nFrnWvlYEfg@public.gmane.org>
+Subject: [SPAM] Âçó‰∫¨Â••Ëø™ÁâπÂÖ¨Âè∏
+Date: Sat, 13 Dec 2008 07:23:02 +0800
+Message-ID: <E1LBHLd-00056N-83@h25xhf1.ch3.sourceforge.com>
+Reply-To: jiodfajlkajjhkghj-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============8943065291186224580=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,25 +16,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
-vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
-1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
-uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
-xrG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
-uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/qsax19y98Lbu
-tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rGsdXm
-yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
-7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
-o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
-z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
-yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTRi5OZXQgZW1haWwgaXMgU3BvbnNvcmVkIGJ5IE1JWDA5
-LCBNYXJjaCAxOC0yMCwgMjAwOSBpbiBMYXMgVmVnYXMsIE5ldmFkYS4KVGhlIGZ1dHVyZSBvZiB0
-aGUgd2ViIGNhbid0IGhhcHBlbiB3aXRob3V0IHlvdS4gIEpvaW4gdXMgYXQgTUlYMDkgdG8gaGVs
-cApwYXZlIHRoZSB3YXkgdG8gdGhlIE5leHQgV2ViIG5vdy4gTGVhcm4gbW9yZSBhbmQgcmVnaXN0
-ZXIgYXQKaHR0cDovL2FkLmRvdWJsZWNsaWNrLm5ldC9jbGs7MjA4NjY5NDM4OzEzNTAzMDM4O2k/
-aHR0cDovLzIwMDkudmlzaXRtaXguY29tLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+--===============8943065291186224580==
+Content-Type: text/plain;charset="GB2312"
+Content-Transfer-Encoding: 8bit
+
+ƒ˙∫√£°Œ“Àæ¨Fø… ¥˙ £§ ¿Ô »´á¯∏˜µÿÖ^––òIµƒ∏˜÷– ∞l £§‡— £¨¸c îµ Éû ª›°£æﬂÛw ¬“Àø…ÅÌÎä«¢’Ñ£°
+
+        ‡ç÷ÿ≥–÷Z£∫À˘”– ‡— £§ ì˛ æ˘†ë∂ê Ñ’ æ÷ ¥˙ & È_ ªÚ’ﬂ∆ÛòI◊‘ È_£¨ÅKø……œæWÚû◊CªÚ∂ê Ñ’ æ÷ Úû
+
+     ◊C··µƒ∏∂øÓ∑Ω Ω ≈cŸFπ´Àæ∫œ◊˜£° 
+ 
+           Îä    ‘í: 132-7089-9938          
+
+           ¬ì œµ »À: ª∆œ»…˙
+
+           E - MAIL: nj13270899938-KN7UnAbNpbg@public.gmane.org
+
+
+
+--===============8943065291186224580==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
+The future of the web can't happen without you.  Join us at MIX09 to help
+pave the way to the Next Web now. Learn more and register at
+http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
+--===============8943065291186224580==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8943065291186224580==--

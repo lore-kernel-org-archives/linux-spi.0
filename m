@@ -1,10 +1,10 @@
-From: Mrs Vivian Adams <mrsvivianadams_natwestbankuk-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: Attn:Beneficiary,$15.5M
-Date: Sat, 13 Dec 2008 03:02:22 -0800 (PST)
-Message-ID: <608999.30685.qm@web111011.mail.gq1.yahoo.com>
-Reply-To: rev_as33-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+From: rtyrdudthfdh-9Onoh4P/yGk@public.gmane.org
+Subject: [SPAM] 您好!
+Date: Sat, 13 Dec 2008 23:07:14 +0800
+Message-ID: <E1LBW5M-0004LR-RJ@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7374313637812593496=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,51 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7374313637812593496==
-Content-Type: multipart/alternative; boundary="0-612778145-1229166142=:30685"
-Content-Transfer-Encoding: 8bit
-
---0-612778145-1229166142=:30685
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-I have a new email address!You can now email me at: mrsvivianadams_natwestbankuk-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
-
-
-
-- It was Resolved and Agreed upon that your Inheritance/Contract Fund would be released to you on a special method of payment which tag"HOME DELIVERY".You are Adviced to Re-comfirm YOUR NAME,ADDRESS,NEXT OF KIN.PHONE AND FAX  NUMBER  TO  CLAIM YOUR FUND.Mrs. VIVIAN ADAMS
-
-
---0-612778145-1229166142=:30685
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://us.i1.yimg.com/us.yimg.com/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>mrsvivianadams_natwestbankuk-/E1597aS9LQAvxtiuMwx3w@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">It was Resolved and Agreed upon that your Inheritance/Contract Fund would be released to you on a special method of payment which tag"HOME DELIVERY".You are Adviced to Re-comfirm YOUR NAME,ADDRESS,NEXT OF KIN.PHONE AND FAX  NUMBER  TO  CLAIM YOUR FUND.Mrs. VIVIAN ADAMS</sp
- an></div></div>
---0-612778145-1229166142=:30685--
-
-
-
---===============7374313637812593496==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
-The future of the web can't happen without you.  Join us at MIX09 to help
-pave the way to the Next Web now. Learn more and register at
-http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============7374313637812593496==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============7374313637812593496==--
+ufO5q8u+uLrU8MjLKL6twO0vssbO8SnE+rrDo7oKCiC547aruLu8zrLGy7C0+sDt09DP3rmry761
+xKOo1eO9raGiyc+6o6GiuePW3aGiva3L1bXItdi3vdPQt9a5q8u+o6kKCiDS8r34z+69z7bgz9bN
+6rPJsrvBy8O/1MLP+srbtu62yKGjw7/UwtPQ0ruyv7fW1PbWtcuwtefE1LeixrGjqDUl1/PT0qOp
+Cgogus3G1c2oyczGt8/6ytu3osaxo6gwLjUlLTIl1/PT0qOp08W73bT6v6q78rrP1/ejrLXjyv29
+z7XNoaMKCiC7ub/J0tS4+b7dy/nX9sr9wb+27rbItcS089ChwLTJzMzW08W73bXEtePK/aGjCgog
+sb65q8u+1qPW2LPQxbXL+dPDvvi21MrH1ebGsaOhuPzPo837xNy5u9PQu/q74dPrufPLvrrP1/ej
+oQoKILT6v6q3osaxt7bOp8jnz8KjugoK0rujrsbVzai5+suwt6LGsaO6MaOuyczGt8/6ytsgMqOu
+u/XO782z0rvP+srbIDOjrrmk0rUoxvPStSnP+srboaMKCrb+o67G1c2otdjLsLeixrGjugoKMaOu
+1MvK5Ci158TUsObUy8rkoaK79dTLtPrA7aGi17DQtqGiwarUy6GiuqPUyymjuwoKMqOuxuTL/Lf+
+zvEoueO45rfRoaLXocvet9Ghorvh0um30aGitqi27rLN0vuhotfJ0a+30bXIKaO7IAoKM6OuxuTL
+/CjX4sHeoaLQ0NX+ysLStdeo08Ohorv6tq+ztc/6ytuhore/tdiy+r270tehosuwzvG0+r+qKaO7
+Cgo0o669qNb+sLLXsKGivNO5pNDewO21yNeo08O3osaxoaMKCtaj1tiz0MW1o7rL+dPQxrG+3b75
+zqrLsM7xvtbB7LP2u/LTycbz0rXWsb3Tv6qz9qOssqK/yc34yc+y6dGvu/LLsM7x0enWpLrzuLa/
+7qGjCgrI57nzuavLvtPQtPq/qreixrG3vcPmtcTOyszio6y7ttOtwLS159fJ0a+jrM7Sw8e74dTa
+tdrSu8qxvOS72Li0xPqhoyAKCsGqIM+1IMjLo7rB9dPAyfogICAgICAgICAgICAgICAgICAgIMuz
+16PJzOz3o6EKCs/qx+nH67Xno7oxMzYtOTk4OC01MTI2CgogINK1zvFRUaO6OTczMjg0MDcwCgog
+ICDTyiDP5KO6d3d3bG02OEAxNjMuY29tCgoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU0YuTmV0
+IGVtYWlsIGlzIFNwb25zb3JlZCBieSBNSVgwOSwgTWFyY2ggMTgtMjAsIDIwMDkgaW4gTGFzIFZl
+Z2FzLCBOZXZhZGEuClRoZSBmdXR1cmUgb2YgdGhlIHdlYiBjYW4ndCBoYXBwZW4gd2l0aG91dCB5
+b3UuICBKb2luIHVzIGF0IE1JWDA5IHRvIGhlbHAKcGF2ZSB0aGUgd2F5IHRvIHRoZSBOZXh0IFdl
+YiBub3cuIExlYXJuIG1vcmUgYW5kIHJlZ2lzdGVyIGF0Cmh0dHA6Ly9hZC5kb3VibGVjbGljay5u
+ZXQvY2xrOzIwODY2OTQzODsxMzUwMzAzODtpP2h0dHA6Ly8yMDA5LnZpc2l0bWl4LmNvbS8KX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
+bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
+Z2VuZXJhbAo=

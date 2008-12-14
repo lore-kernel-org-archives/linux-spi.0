@@ -1,12 +1,12 @@
-From: =?GB2312?B?0MK/rbmry74=?= <luguangqin666-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 优惠代开发票，林先生：13533259546
-Date: Sun, 14 Dec 2008 18:34:38 +0800
-Message-ID: <E1LBoIx-0002qv-GX@335xhf1.ch3.sourceforge.com>
-Reply-To: luguangqin666-9Onoh4P/yGk@public.gmane.org
+From: GOOGLE INTERNATIONAL LOYALTY REWARD PROMO  <ggroupppromo01-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] GOOGLE INTERNATIONAL LOYALTY REWARD
+	PROMO WINNING NOTIFICATION
+Date: Sun, 14 Dec 2008 23:04:05 +0400
+Message-ID: <E1LBwGA-0002zL-K2@3yr0jf1.ch3.sourceforge.com>
+Reply-To: ggrouppromo02-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="ae584ebf-b83d-4ffd-940e-925ea2b8c65f"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,30 +18,68 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CiAgICAgICAgICAgICAgICAgICAgICAgICAgILnj1t3K0NDCv63Ds9LX09DP3rmry74gCiAgICAg
-ICAgCiAgICAgICAgICDE47rDISjK18/ILLbUztK1xMOww8HAtLqvz/LE+tbCx7gstavUuNXit+K6
-rbbUufPLvtPQy/mw79b6KS4KCiAgICAgICCxvrmry76zpMTqzqq497OnvNKhosnMw7Oyv8PFzOG5
-qdK1zvG3vbHjoaPO0rmry76z0MPJuPfQ1rXctaXOuwoKICAgICAgILXEuvGwrrKi09DSu7K/t9a3
-osaxv8nS1LbUzeK0+r+qoaMKICAgICAgCiAgICAgICAgICC0+sDtt7bOpyjIq7n6yczGt8/6ytu3
-osaxLLnjuOa3osaxLNTLyuS3osaxxuTL/Lf+zvG3osaxLLLN0vsKCiAgICAgICC3osaxLCC9qNb+
-sLLXsCy6o7nYLtT21rW3osaxKbXItry/ydLUzqq587mry760+sDtoaMKCiAgICAgICAgICAgsb65
-q8u+1qPW2LPQxbU6xrG+3b75v8nJz834sunRr7vytda/29Hp1qQswby6w7XE0MXT/srHztLDxwoK
-ICAgICAgILrP1/e1xMewzOGjrMbatP3E+rXEus/X96Gj1ti6z82so6zK2NDF08OjrM7Sw8e9q73f
-s8/OqsT6t/7O8aOhCgogICAgICAgu7bTrbj3vefIy8q/wLS159fJ0a/T67rP1/ejoQoKICAgICAg
-ICAgIM/qz7i148r9uPm+3bXYx/jQ0NK1oaLGsbbutPPQoceizLghINbB09q6z9f3zb6+tqOsvvi2
-1LGjw9wKCiAgICAgICC6z9f3udjPtaGjyPS587mry77T0Mqyw7TQ6NKqu/LT0Mbky/zSycLHzsrM
-4qGjx+vAtLXn18nRrwoKICAgICAgICAgICAgICAgICAgILv1ICDV5iAgvNsgIMq1ICCyxSAgyscg
-INOyICC1wCAgwO0KCiAgICAgICDSxravtee7sDogMTM1MzMyNTk1NDYgwdbWvse/ILvyvNPO0iBR
-UTo4MjcyMTg5NDYKCiAgICAgICAgRW1haWw6bHVndWFuZ3FpbjY2NkAxNjMuY29tCgogICAgICAg
-ILXY1rejurnj1t3K0MzsutPH+NHgweu088/DNjA4ytIKICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAguePW3crQ0MK/rcOz0tfT0M/euavLvgoKLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tClNGLk5ldCBlbWFpbCBpcyBTcG9uc29yZWQgYnkgTUlYMDksIE1hcmNoIDE4LTIw
-LCAyMDA5IGluIExhcyBWZWdhcywgTmV2YWRhLgpUaGUgZnV0dXJlIG9mIHRoZSB3ZWIgY2FuJ3Qg
-aGFwcGVuIHdpdGhvdXQgeW91LiAgSm9pbiB1cyBhdCBNSVgwOSB0byBoZWxwCnBhdmUgdGhlIHdh
-eSB0byB0aGUgTmV4dCBXZWIgbm93LiBMZWFybiBtb3JlIGFuZCByZWdpc3RlciBhdApodHRwOi8v
-YWQuZG91YmxlY2xpY2submV0L2NsazsyMDg2Njk0Mzg7MTM1MDMwMzg7aT9odHRwOi8vMjAwOS52
-aXNpdG1peC5jb20vCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+
+This is a multi-part message in MIME format
+
+--ae584ebf-b83d-4ffd-940e-925ea2b8c65f
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+  
+  
+GOOGLE INTERNATIONAL LOYALTY REWARD PROMO 
+THE DIRECTOR, 
+INTERNATIONAL AID DEPARTMENT, 
+GOOGLE INC. 
+1600 AMPHITHEATRE PARKWAY, 
+MOUNTAIN VIEW , CA 94043 , 
+USA. 
+   WINNING NOTIFICATION 
+We the board and management of Google Inc. wish to inform you of the results =
+of our bi-annual Google International Loyalty Reward Promo where Users of =
+Google Search Engine and Google Mail were randomly selected through a =
+computer draw. 
+In this year's e-Lottery Promo draws held on 8th Dec, 2008 your email ID =
+(address) was selected as one of the winners of $1.250,000.00 (One Million =
+Two Hundred And Fifty  thousand US Dollars) in the Class C category with the =
+following information. 
+  
+Ticket No.:   CCZ =96 10892776C
+Serial No.:    892-850-144
+Wining No.:  10892776/C
+Amount:      $1.250, 000.00
+Category:     Class C 
+The aim of this Promo is to reward User Loyalty and assist in alleviating =
+poverty around the world in line with Google Inc. objectives. So we hope the =
+Promo reward will be judiciously utilized. 
+You are advised to keep your Ticket, Serial and Wining Numbers private and to =
+quote same in all correspondence. 
+Congratulations once again. 
+Thank you, 
+John Ottman
+Director, 
+International Aid Department.
+Google Inc.    
+--ae584ebf-b83d-4ffd-940e-925ea2b8c65f
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
+The future of the web can't happen without you.  Join us at MIX09 to help
+pave the way to the Next Web now. Learn more and register at
+http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
+--ae584ebf-b83d-4ffd-940e-925ea2b8c65f
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--ae584ebf-b83d-4ffd-940e-925ea2b8c65f--

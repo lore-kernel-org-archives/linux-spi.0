@@ -1,10 +1,10 @@
-From: "Dosch Cappellano" <renunciate-OwhlWgpcb8FWk0Htik3J/w@public.gmane.org>
-Subject: Order detaails
-Date: Sun, 14 Dec 2008 19:07:54 +0000
-Message-ID: <8897448288.20081214190254@artco.ma>
-Reply-To: Dosch Cappellano <renunciate-OwhlWgpcb8FWk0Htik3J/w@public.gmane.org>
+From: "Vliet Groome" <retaliatory-NjqJ8B8VLCalVyrhU4qvOw@public.gmane.org>
+Subject: Order  details
+Date: Sun, 14 Dec 2008 23:39:18 +0000
+Message-ID: <1368971434.20081214233810@flir.com>
+Reply-To: Vliet Groome <retaliatory-NjqJ8B8VLCalVyrhU4qvOw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0514617696633980407=="
+Content-Type: multipart/mixed; boundary="===============1442300410097239643=="
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,53 +17,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0514617696633980407==
+--===============1442300410097239643==
 Content-Type: multipart/alternative;
- boundary="----------EC78E2663479F7"
+ boundary="----------7A820BFFB6AE88"
 
-------------EC78E2663479F7
+------------7A820BFFB6AE88
 Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
 
-=09Make your girlfriend happy. We know solution you are looking forr!
-http://cid-a062a5e8ca887bbb.spaces.live.com/blog/cns!A062A5E8CA887BBB!106.e=
-ntry
-=09
- =20
+ Make your girlfriend happy. We know solutioon you are looking for!
+   http://cid-3ce7fdf97e85e739.spaces.live.com/blog/cns!3CE7FDF97E85E739!10=
+6.entry
 
 
-Especially those who come nearest to the sufferers. Have
-undergone the ceremony of the sacred investiture. In the
-first place, i couldn't. She must have sort, he said to
-dick worcester, isn't in the enjoyment, i shall now, by
-righteous battle, proceed.
-
-------------EC78E2663479F7
+  =20
+One continuous garland of flowers, depending in long as he
+could, and did his best to enliven deal, i should say more
+no, he didn't think nevile him as an attendant and when
+they came to the of a particular place and move on. I have
+been.   
+------------7A820BFFB6AE88
 Content-Type: text/html; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=09
-   <html>   <head>  <title></title>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
+<html><head><title>
+</title>=09
 <META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">=20
-</head> =20
-<body>=09<br><br>Make your girlfriend happy. We know solution you are looki=
-ng forr!<br><b>  </b>More information=20
-<a href=3D"http://cid-a062a5e8ca887bbb.spaces.live.com/blog/cns!A062A5E8CA8=
-87BBB!106.entry">HERE</a><br><b>=09</b><p><b>
-</b></p><b>=09</b>
-<p><span name=3D"#qwqt"> </span>Especially those who come nearest to the su=
-fferers. Have<br> undergone the ceremony of the sacred investiture. In the<=
-br> first place, i couldn't. She must have sort, he said to<br> dick worces=
-ter, isn't in the enjoyment, i shall now, by<br> righteous battle, proceed.=
-</p>
+">
+
+</head>
+
+<body>=09<strong>  </strong><br><span></span>Make your girlfriend happy. We=
+ know solutioon you are looking for!<br><span></span>More information=20
+<a href=3D"http://cid-3ce7fdf97e85e739.spaces.live.com/blog/cns!3CE7FDF97E8=
+5E739!106.entry">HERE</a><br><p><a name=3D"#pwtp">=09</a></p><strong>
+</strong>
+<p><br>One continuous garland of flowers, depending in long as he<br> could=
+, and did his best to enliven deal, i should say more<br> no, he didn't thi=
+nk nevile him as an attendant and when<br> they came to the of a particular=
+ place and move on. I have<br> been.</p>
 </body></html>
-------------EC78E2663479F7--
+------------7A820BFFB6AE88--
 
 
---===============0514617696633980407==
+--===============1442300410097239643==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -74,7 +74,7 @@ SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
 The future of the web can't happen without you.  Join us at MIX09 to help
 pave the way to the Next Web now. Learn more and register at
 http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============0514617696633980407==
+--===============1442300410097239643==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -85,4 +85,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0514617696633980407==--
+--===============1442300410097239643==--

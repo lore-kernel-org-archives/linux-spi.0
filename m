@@ -1,12 +1,11 @@
-From: GOOGLE INTERNATIONAL LOYALTY REWARD PROMO  <ggroupppromo01-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] GOOGLE INTERNATIONAL LOYALTY REWARD
-	PROMO WINNING NOTIFICATION
-Date: Sun, 14 Dec 2008 23:04:05 +0400
-Message-ID: <E1LBwGA-0002zL-K2@3yr0jf1.ch3.sourceforge.com>
-Reply-To: ggrouppromo02-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: "Dosch Cappellano" <renunciate-OwhlWgpcb8FWk0Htik3J/w@public.gmane.org>
+Subject: Order detaails
+Date: Sun, 14 Dec 2008 19:07:54 +0000
+Message-ID: <8897448288.20081214190254@artco.ma>
+Reply-To: Dosch Cappellano <renunciate-OwhlWgpcb8FWk0Htik3J/w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="ae584ebf-b83d-4ffd-940e-925ea2b8c65f"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0514617696633980407=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,49 +17,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============0514617696633980407==
+Content-Type: multipart/alternative;
+ boundary="----------EC78E2663479F7"
 
-This is a multi-part message in MIME format
-
---ae584ebf-b83d-4ffd-940e-925ea2b8c65f
+------------EC78E2663479F7
 Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-  
-  
-GOOGLE INTERNATIONAL LOYALTY REWARD PROMO 
-THE DIRECTOR, 
-INTERNATIONAL AID DEPARTMENT, 
-GOOGLE INC. 
-1600 AMPHITHEATRE PARKWAY, 
-MOUNTAIN VIEW , CA 94043 , 
-USA. 
-   WINNING NOTIFICATION 
-We the board and management of Google Inc. wish to inform you of the results =
-of our bi-annual Google International Loyalty Reward Promo where Users of =
-Google Search Engine and Google Mail were randomly selected through a =
-computer draw. 
-In this year's e-Lottery Promo draws held on 8th Dec, 2008 your email ID =
-(address) was selected as one of the winners of $1.250,000.00 (One Million =
-Two Hundred And Fifty  thousand US Dollars) in the Class C category with the =
-following information. 
-  
-Ticket No.:   CCZ =96 10892776C
-Serial No.:    892-850-144
-Wining No.:  10892776/C
-Amount:      $1.250, 000.00
-Category:     Class C 
-The aim of this Promo is to reward User Loyalty and assist in alleviating =
-poverty around the world in line with Google Inc. objectives. So we hope the =
-Promo reward will be judiciously utilized. 
-You are advised to keep your Ticket, Serial and Wining Numbers private and to =
-quote same in all correspondence. 
-Congratulations once again. 
-Thank you, 
-John Ottman
-Director, 
-International Aid Department.
-Google Inc.    
---ae584ebf-b83d-4ffd-940e-925ea2b8c65f
+
+=09Make your girlfriend happy. We know solution you are looking forr!
+http://cid-a062a5e8ca887bbb.spaces.live.com/blog/cns!A062A5E8CA887BBB!106.e=
+ntry
+=09
+ =20
+
+
+Especially those who come nearest to the sufferers. Have
+undergone the ceremony of the sacred investiture. In the
+first place, i couldn't. She must have sort, he said to
+dick worcester, isn't in the enjoyment, i shall now, by
+righteous battle, proceed.
+
+------------EC78E2663479F7
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=09
+   <html>   <head>  <title></title>
+
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">=20
+</head> =20
+<body>=09<br><br>Make your girlfriend happy. We know solution you are looki=
+ng forr!<br><b>  </b>More information=20
+<a href=3D"http://cid-a062a5e8ca887bbb.spaces.live.com/blog/cns!A062A5E8CA8=
+87BBB!106.entry">HERE</a><br><b>=09</b><p><b>
+</b></p><b>=09</b>
+<p><span name=3D"#qwqt"> </span>Especially those who come nearest to the su=
+fferers. Have<br> undergone the ceremony of the sacred investiture. In the<=
+br> first place, i couldn't. She must have sort, he said to<br> dick worces=
+ter, isn't in the enjoyment, i shall now, by<br> righteous battle, proceed.=
+</p>
+</body></html>
+------------EC78E2663479F7--
+
+
+--===============0514617696633980407==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -71,7 +74,7 @@ SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
 The future of the web can't happen without you.  Join us at MIX09 to help
 pave the way to the Next Web now. Learn more and register at
 http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---ae584ebf-b83d-4ffd-940e-925ea2b8c65f
+--===============0514617696633980407==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -82,4 +85,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---ae584ebf-b83d-4ffd-940e-925ea2b8c65f--
+--===============0514617696633980407==--

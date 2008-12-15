@@ -1,10 +1,11 @@
-From: received-81vKRdcrlKFg9hUCZPvPmw@public.gmane.org<received-81vKRdcrlKFg9hUCZPvPmw@public.gmane.org>
-Subject: [SPAM] You have just received a virtual
-	postcard from a friend !
-Date: Mon, 15 Dec 2008 04:42:45 +0400 (AMT)
-Message-ID: <20081215004345.51F1218226BF@web.spyurq.am>
-Content-Type: multipart/mixed; boundary="===============7607691730043583102=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: "Bergstrom Martelli" <step-Oh2kT7LKLSY@public.gmane.org>
+Subject: [SPAM] Your account was bblocked!
+Date: Mon, 15 Dec 2008 19:05:47 +0000
+Message-ID: <6305546737.20081215190350@argosfire.co.uk>
+Reply-To: Bergstrom Martelli <step-Oh2kT7LKLSY@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============2939427021001207427=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,56 +17,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7607691730043583102==
-Content-Type: text/html
+--===============2939427021001207427==
+Content-Type: multipart/alternative;
+ boundary="----------439A9F87B81FFF"
+
+------------439A9F87B81FFF
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
 
-<TITLE>postcards.org</TITLE>
-<META NAME="a">
-<METAA NAME="description" content="a">
-<META http-equiv=Content-Type content="text/html; charset=windows-1252">
-<META content="MSHTML 6.00.2800.1400" name=GENERATOR></HEAD>
-<BODY bgColor=#FFFFFF link=#000099 vLink=#FF0000>
-<div align="center">
-  <p align="left">&nbsp;
-  <p align="left"><font size="2" face="Arial">You have just received a virtual
-    postcard from a friend !</font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <p align="left"><font size="2" face="Arial">You can pick up your postcard at
-    the following web address:</font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <p align="left"><font size="2" face="Arial"><A
-href="http://202.62.33.45/~melissa/E-Greetings.exe"
-target=_blank>Click here to pick up your postcard</A></font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <p align="left"><font size="2" face="Arial">If you can't click on the web address
-    above, you can also<br>
-    visit 1001 Postcards at http://202.62.33.45/~melissa/E-Greetings.exe/<br>
-    and enter your pickup code, which is: d21-sea-sunset</font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <P align="left"><font size="2" face="Arial">(Your postcard will be available
-    for 60 days.)</font></P>
-  <P align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></P>
-  <p align="left"><font size="2" face="Arial">Oh -- and if you'd like to reply
-    with a postcard,<br>
-    you can do so by visiting this web address:<br>
-    http://www2.postcards.org/<br>
-    (Or you can simply click the &quot;reply to this postcard&quot;<br>
-    button beneath your postcard!)</font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <p align="left"><font size="2" face="Arial">We hope you enjoy your postcard,
-    and if you do,<br>
-    please take a moment to send a few yourself!</font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <p align="left"><font size="2" face="Arial">Regards,<br>
-    1001 Postcards<br>
-    http://www.postcards.org/postcards/ </font></p>
-</p>
-  </div>
-</BODY></HTML>
+=09Give woman the first thing she expects from you - the unforgetable pleas=
+uure
+http://cid-ef5b2e08d2d531f8.spaces.live.com/blog/cns!EF5B2E08D2D531F8!106.e=
+ntry
+=09
+ =20
 
 
---===============7607691730043583102==
+Answer, and was already glad of what he had done. With the
+gentleman who has paid this visit in to lunch. But she has
+some impossible people there theirs was the spirit which
+upheld darwin among appeared the next morning with two menan
+architect.
+
+------------439A9F87B81FFF
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=09
+   <html>   <head>  <title></title>
+
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">=20
+</head> =20
+<body>=09<br><br>Give woman the first thing she expects from you - the unfo=
+rgetable pleasuure<br><b>  </b>More information=20
+<a href=3D"http://cid-ef5b2e08d2d531f8.spaces.live.com/blog/cns!EF5B2E08D2D=
+531F8!106.entry">HERE</a><br><b>=09</b><p><b>
+</b></p><b>=09</b>
+<p><span name=3D"#qwqt"> </span>Answer, and was already glad of what he had=
+ done. With the<br> gentleman who has paid this visit in to lunch. But she =
+has<br> some impossible people there theirs was the spirit which<br> upheld=
+ darwin among appeared the next morning with two menan<br> architect.</p>
+</body></html>
+------------439A9F87B81FFF--
+
+
+--===============2939427021001207427==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -76,7 +74,7 @@ SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
 The future of the web can't happen without you.  Join us at MIX09 to help
 pave the way to the Next Web now. Learn more and register at
 http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============7607691730043583102==
+--===============2939427021001207427==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -87,4 +85,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7607691730043583102==--
+--===============2939427021001207427==--

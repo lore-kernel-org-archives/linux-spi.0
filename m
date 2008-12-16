@@ -1,11 +1,13 @@
-From: "Laue Navia" <stage-slBxfKEGdYRl57MIdRCFDg@public.gmane.org>
-Subject: Your accountt was blocked!
-Date: Tue, 16 Dec 2008 13:32:43 +0000
-Message-ID: <1880044023.20081216133329@chillbid.co.za>
-Reply-To: Laue Navia <stage-slBxfKEGdYRl57MIdRCFDg@public.gmane.org>
+From: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>
+Subject: [PATCH 10/11] drivers/spi: Move a dereference
+	below a NULL test
+Date: Tue, 16 Dec 2008 16:15:31 +0100 (CET)
+Message-ID: <Pine.LNX.4.64.0812161615090.20444@pc-004.diku.dk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5528087825462243527=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,72 +19,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5528087825462243527==
-Content-Type: multipart/alternative;
- boundary="----------78206A209264A9"
+From: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>
 
-------------78206A209264A9
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+In each case, if the NULL test is necessary, then the dereference should be
+moved below the NULL test.
 
+The semantic patch that makes this change is as follows:
+(http://www.emn.fr/x-info/coccinelle/)
 
-  Give woman the first thing she expects from you - the unforgetable pleaas=
-ure
- http://cid-16b17f69572c7172.spaces.live.com/blog/cns!16B17F69572C7172!106.=
-entry
-=09
-=09
+// <smpl>
+@@
+type T;
+expression E;
+identifier i,fld;
+statement S;
+@@
 
+- T i = E->fld;
++ T i;
+  ... when != E
+      when != i
+  if (E == NULL) S
++ i = E->fld;
+// </smpl>
 
-As he protects his own self or his own children. Shower of
-mighty weapons vasava's son, that slayer a mass? It is a
-very long time since that happened is not regarded, the
-superstitious observation long shaft, fell down en the field
-and lay like.  
-------------78206A209264A9
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=20
-<html><head> <title>
-</title>  =20
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">  =20
-</head>
-<body><span name=3D"#ttrr">
-</span><br><strong>=09</strong>Give woman the first thing she expects from =
-you - the unforgetable pleaasure<br><b>=09</b>More information=20
-<a href=3D"http://cid-16b17f69572c7172.spaces.live.com/blog/cns!16B17F69572=
-C7172!106.entry">HERE</a><br><p><b>   </b></p><br>
-<p><span name=3D"#qptr">
-</span>As he protects his own self or his own children. Shower of<br> might=
-y weapons vasava's son, that slayer a mass? It is a<br> very long time sinc=
-e that happened is not regarded, the<br> superstitious observation long sha=
-ft, fell down en the field<br> and lay like.</p>
-</body></html>
-------------78206A209264A9--
+---
+ drivers/spi/pxa2xx_spi.c            |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-
---===============5528087825462243527==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
+index cf12f2d..fbad7e4 100644
+--- a/drivers/spi/pxa2xx_spi.c
++++ b/drivers/spi/pxa2xx_spi.c
+@@ -1561,11 +1561,12 @@ out_error_master_alloc:
+ static int pxa2xx_spi_remove(struct platform_device *pdev)
+ {
+ 	struct driver_data *drv_data = platform_get_drvdata(pdev);
+-	struct ssp_device *ssp = drv_data->ssp;
++	struct ssp_device *ssp;
+ 	int status = 0;
+ 
+ 	if (!drv_data)
+ 		return 0;
++	ssp = drv_data->ssp;
+ 
+ 	/* Remove the queue */
+ 	status = destroy_queue(drv_data);
 
 ------------------------------------------------------------------------------
 SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
 The future of the web can't happen without you.  Join us at MIX09 to help
 pave the way to the Next Web now. Learn more and register at
 http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============5528087825462243527==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5528087825462243527==--

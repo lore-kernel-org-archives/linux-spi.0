@@ -1,11 +1,11 @@
-From: "Bergstrom Martelli" <step-Oh2kT7LKLSY@public.gmane.org>
-Subject: [SPAM] Your account was bblocked!
-Date: Mon, 15 Dec 2008 19:05:47 +0000
-Message-ID: <6305546737.20081215190350@argosfire.co.uk>
-Reply-To: Bergstrom Martelli <step-Oh2kT7LKLSY@public.gmane.org>
+From: =?GB2312?B?uvrPyMn6?= <amydse888-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 本司有税票代开税率0.8%左右可查验后付款
+Date: Tue, 16 Dec 2008 09:18:40 +0800
+Message-ID: <E1LCOYg-0002Dt-IC@3yr0jf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2939427021001207427=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,72 +17,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2939427021001207427==
-Content-Type: multipart/alternative;
- boundary="----------439A9F87B81FFF"
-
-------------439A9F87B81FFF
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-
-=09Give woman the first thing she expects from you - the unforgetable pleas=
-uure
-http://cid-ef5b2e08d2d531f8.spaces.live.com/blog/cns!EF5B2E08D2D531F8!106.e=
-ntry
-=09
- =20
-
-
-Answer, and was already glad of what he had done. With the
-gentleman who has paid this visit in to lunch. But she has
-some impossible people there theirs was the spirit which
-upheld darwin among appeared the next morning with two menan
-architect.
-
-------------439A9F87B81FFF
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=09
-   <html>   <head>  <title></title>
-
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">=20
-</head> =20
-<body>=09<br><br>Give woman the first thing she expects from you - the unfo=
-rgetable pleasuure<br><b>  </b>More information=20
-<a href=3D"http://cid-ef5b2e08d2d531f8.spaces.live.com/blog/cns!EF5B2E08D2D=
-531F8!106.entry">HERE</a><br><b>=09</b><p><b>
-</b></p><b>=09</b>
-<p><span name=3D"#qwqt"> </span>Answer, and was already glad of what he had=
- done. With the<br> gentleman who has paid this visit in to lunch. But she =
-has<br> some impossible people there theirs was the spirit which<br> upheld=
- darwin among appeared the next morning with two menan<br> architect.</p>
-</body></html>
-------------439A9F87B81FFF--
-
-
---===============2939427021001207427==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
-The future of the web can't happen without you.  Join us at MIX09 to help
-pave the way to the Next Web now. Learn more and register at
-http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============2939427021001207427==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2939427021001207427==--
+1sK587mry74os6e80imyxs7xo6y4utTwyMvE+rrDIQogICAgsb65q8u+yse2qLbuxMnLsMbz0rWj
+rM/WzeqzybK7wcvDv9TCz/rK27butsiho8O/1MK2vNPQ0ruyv7fWKLn6LrXYy7ApxrHP8s3itPq/
+qqGjuavLvrPJwaLKrrbgxOrS1MC0o6zSu9axsb7Xxb/Nu6fC+tLio7vBpsfzvqHJxr6hw8C1xLf+
+zvHX2ta8o7vS1Lj808Wju7j8v+yju7j8usO1xLf+zvHA7cTuo7vS0dOutcO547Tzv827p7XE1qez
+1tPruvGwrqGjCtK7oaK0+r+qt7bOp9PQOyjG1c2oyczGt8/6ytuhotTLyuShor2o1v65pLPMoaK5
+47jmoaK3/s7x0rWhotfJ0a+6zbaotu61yKGtKQq2/qGiy7DCyrC0v6rGsb3wtu61xDAuOCXX89PS
+ytXIoSy98Lbu1L2089S908W73SEKyP2hosjnufu588u+1NrGsbe9w+bT0MjOus7SycLHo6zSu8fQ
+xrG/yb6tufPLvsi3yM+687LFuLa/7iEKICAg16IgOsjn09DQ6NKqu7bTrcC0tefXydGvIcjn09C0
+8r3BvrTH68HCveIh0LvQuyEKICAg16OjurnzuavLvsn60uLQy8KhIMXusqq3otW5INK1vKjV9NX0
+yNXJzyG6z9f30+S/7CEKICAgwarPtcjLOrr6uurJrSAgILXnu7A6MTM3MTk0MzUxMjYgICAgICAg
+ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgvNHQxcq10rXT
+0M/euavLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNGLk5ldCBlbWFpbCBpcyBTcG9uc29yZWQg
+YnkgTUlYMDksIE1hcmNoIDE4LTIwLCAyMDA5IGluIExhcyBWZWdhcywgTmV2YWRhLgpUaGUgZnV0
+dXJlIG9mIHRoZSB3ZWIgY2FuJ3QgaGFwcGVuIHdpdGhvdXQgeW91LiAgSm9pbiB1cyBhdCBNSVgw
+OSB0byBoZWxwCnBhdmUgdGhlIHdheSB0byB0aGUgTmV4dCBXZWIgbm93LiBMZWFybiBtb3JlIGFu
+ZCByZWdpc3RlciBhdApodHRwOi8vYWQuZG91YmxlY2xpY2submV0L2NsazsyMDg2Njk0Mzg7MTM1
+MDMwMzg7aT9odHRwOi8vMjAwOS52aXNpdG1peC5jb20vCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
+cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,14 +1,18 @@
-From: Unknown <unknown@unknown.invalid>
-Subject: [SPAM] GOOD NEWS
-Date: Wed, 17 Dec 2008 07:47:08 -0500
-Message-ID: <GWSTO0sLgZCWEYpIV4M00067756@gws.servdns.com>
-Reply-To: IMFU <HEAD>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH 10/11] drivers/spi: Move a
+	dereference below a NULL test
+Date: Wed, 17 Dec 2008 12:22:23 -0800
+Message-ID: <200812171222.23785.david-b@pacbell.net>
+References: <Pine.LNX.4.64.0812161615090.20444@pc-004.diku.dk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-From: (IMFU) HEAD OFFICE <(IMFU) HEAD OFFICE>
+In-Reply-To: <Pine.LNX.4.64.0812161615090.20444-h8frIrHk2441Y/6SN6b7/w@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,38 +23,64 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-INTERNATIONAL MONETARY FUND UNIT
-(IMFU) HEAD OFFICE NO: 23 ADEBOYE ST,
-White House,Rue,85745,Benin Republic.
-International Monetary Funds Unit  (IMFU)
-Direct Hotline:+ 234-7025-769-006
-Dearest Friend ,
-How are you today?
-I am writing to inform you that I have Paid the fee for your bank Draft. 
-I went to the bank to confirm if the Check has expired or getting near to expire and Mr.Henry Dona the Director of Financial Bank told me that the bank draft will expire in next five days, So without wasting time I told him to cash the   ( $1.500,000.00 )to cash payment to avoid losting of
-this funds.
-However, all the necessary arrangement of delivering the of the fund has been made with PACIFIC DIPLOMATIC DELIVERY COMPANY here in Cotonou Benin Republic.Then he also helped me to Register the Consignment with
-PACIFIC DIPLOMATIC DELIVERY COMPANY. 
-Infact I thank God very much for all the movement I made, every thing goes normally. As for our agreement with the Pacific delivery company they promised that your consignment will leave this Country immediately you send your delivery address to them.
-The Director of the PACIFIC DIPLOMATIC DELIVERY COMPANY is now waiting for your delivery informations to enable them locate you immediately the Diplomat Agent arrived to your Country.Please write a letter of
-application to the given address below.
-ATTN: DR  DAVE  POTTS
-TEl: +229 93-200-604
-EMAIL : pacificdiplomat114-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-Bellow is the requested  information from You to enable them deliver the package to you immediately  without any more delay :
-1.YOUR FULL NAME..
-2.HOME ADDRESS...
-3.CITY AND COUNTRY..
-4.CELL PHONE..
-5.HOME TELEPHONE NUMBER..
-6.YOUR OFFICE TELEPHONE...
-7.SEX..
-8.AGE.. 
-Thanks and Remain Blessed.
-Best Regards,
-Mr. John Ibru.
-Direct Hotline:+ 234-7025-769-006
-International Monetary Fund Unit (IMFU)
+On Tuesday 16 December 2008, Julia Lawall wrote:
+> From: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>
+> 
+> In each case, if the NULL test is necessary, then the dereference should be
+> moved below the NULL test.
+> 
+> The semantic patch that makes this change is as follows:
+> (http://www.emn.fr/x-info/coccinelle/)
+> 
+> // <smpl>
+> @@
+> type T;
+> expression E;
+> identifier i,fld;
+> statement S;
+> @@
+> 
+> - T i = E->fld;
+> + T i;
+>   ... when != E
+>       when != i
+>   if (E == NULL) S
+> + i = E->fld;
+> // </smpl>
+> 
+> Signed-off-by: Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>
+
+Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+... and I'm *still* glad to see tools shaking loose
+goofage like this.  :)
+
+
+> 
+> ---
+>  drivers/spi/pxa2xx_spi.c            |    3 ++-
+>  1 files changed, 2 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
+> index cf12f2d..fbad7e4 100644
+> --- a/drivers/spi/pxa2xx_spi.c
+> +++ b/drivers/spi/pxa2xx_spi.c
+> @@ -1561,11 +1561,12 @@ out_error_master_alloc:
+>  static int pxa2xx_spi_remove(struct platform_device *pdev)
+>  {
+>  	struct driver_data *drv_data = platform_get_drvdata(pdev);
+> -	struct ssp_device *ssp = drv_data->ssp;
+> +	struct ssp_device *ssp;
+>  	int status = 0;
+>  
+>  	if (!drv_data)
+>  		return 0;
+> +	ssp = drv_data->ssp;
+>  
+>  	/* Remove the queue */
+>  	status = destroy_queue(drv_data);
+> 
+> 
 
 
 

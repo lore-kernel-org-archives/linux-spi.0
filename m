@@ -1,14 +1,18 @@
-From: "Mrs. Helen Mpenza Kamara. Email: Helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org"
-	<helenkam001-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org>
-Subject: I Need Your Assistant. Email:
-	Helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-Date: Fri, 19 Dec 2008 00:48:35 +0900 (JST)
-Message-ID: <20081218154835.55733.qmail@web2805.mail.bbt.yahoo.co.jp>
-Reply-To: helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: Re: [PATCH 0/7] OpenFirmware support for the
+	spi_mpc83xx driver
+Date: Thu, 18 Dec 2008 21:33:01 +0300
+Message-ID: <20081218183301.GA32440@oksana.dev.rtsoft.ru>
+References: <20081205200936.GA19137@oksana.dev.rtsoft.ru>
+Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4809933722912224730=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20081205200936.GA19137-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,47 +23,52 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4809933722912224730==
-Content-Type: multipart/alternative; boundary="0-103692332-1229615315=:48316"
+On Fri, Dec 05, 2008 at 11:09:36PM +0300, Anton Vorontsov wrote:
+> Hi all,
+> 
+> The patch series are used to support SPI via the OF SPI subsystem
+> (driver/of/of_spi.c). Now the driver is able to manage its own
+> chip selects, and doesn't need any auxiliary support from the
+> board files or fsl_soc constructors.
+> 
+> The series also contains PowerPC portions of the MMC SPI support.
+> 
+> Since the series touches spi and powerpc trees, I think it would
+> be most convenient to pass it via one of these trees. The patches
+> doesn't touch any SPI functionality, only some probe routines, so
+> I believe powerpc.git is the best candidate...
+> 
+> The other reason for powerpc tree is that the patches depends on
+> other patches as found in paulus/powerpc.git + of_gpio_count()
+> as found here:
+> http://ozlabs.org/pipermail/linuxppc-dev/2008-December/065917.html
+> 
+> David, if you're OK with the patches, may I ask you to sign off on
+> the ones that touch drivers/spi so that we could pass it via Kumar's
+> powerpc.git?
 
---0-103692332-1229615315=:48316
-Content-Type: text/plain; charset=iso-2022-jp
+David, I'm sorry for bothering you, but have you had a chance to
+look into this patch set?
 
-新しいメールアドレスをお知らせします新しいメールアドレス： helenkam001-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org
+Thanks,
 
-My Dearest, I will like you to assist me receive this fund which my husband deposited in a security company in Ivory Coast the sum of (USD $8MILLION).I can offer you 25% percent for the money. +22507280875 Son Henshall.
+> The queue:
+> 
+> [1/7] powerpc: Implement get_brgfreq() and get_baudrate() stubs
+> [2/7] spi_mpc83xx: Fix sparse warnings
+> [3/7] spi_mpc83xx: Rework chip selects handling
+> [4/7] spi_mpc83xx: Add OF platform driver bindings
+> [5/7] powerpc/fsl_soc: Isolate legacy fsl_spi support to mpc832x_rdb boards
+> [6/7] powerpc: Add mmc-spi-slot bindings
+> [7/7] powerpc/83xx: Add mmc-spi support via the device tree for MPC8323E-RDB
 
-- Mrs. Helen Mpenza Kamara. Email: Helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-
-
---0-103692332-1229615315=:48316
-Content-Type: text/html; charset=iso-2022-jp
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://i.yimg.jp/i/jp/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">新しいメールアドレスをお知らせします</big></td></tr></table><div style="padding:10px;">新しいメールアドレス： <b>helenkam001-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org</b><br><br><span style="color:green;">My Dearest, I will like you to assist me receive this fund which my husband deposited in a security company in Ivory Coast the sum of (USD $8MILLION).I can offer you 25% percent for the money. +22507280875 Son Henshall.</span><br><br>- <span style="color:green;">Mrs. Helen Mpenza Kamara. Email: Helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org</span></d
- iv></div>
---0-103692332-1229615315=:48316--
-
-
---===============4809933722912224730==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Anton Vorontsov
+email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+irc://irc.freenode.net/bd2
 
 ------------------------------------------------------------------------------
 SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
 The future of the web can't happen without you.  Join us at MIX09 to help
 pave the way to the Next Web now. Learn more and register at
 http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============4809933722912224730==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4809933722912224730==--

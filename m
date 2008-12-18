@@ -1,99 +1,83 @@
-From: "Trilok Soni" <soni.trilok@gmail.com>
-Subject: Re: [PATCH] Add TI TSC2005 Touchscreen driver
-Date: Thu, 18 Dec 2008 13:25:16 +0530
-Message-ID: <5d5443650812172355j6e548fa9scd55a2636341abfb@mail.gmail.com>
-References: <5d5443650812080949h5aff6010mb7341f581841f126@mail.gmail.com>
-	 <20081208182648.GA9740@uranus.ravnborg.org>
+From: "McGue Dilligard" <tyke-lCtzUth0V3BBDgjK7y7TUQ@public.gmane.org>
+Subject: Christmas pleassure
+Date: Thu, 18 Dec 2008 14:45:11 +0000
+Message-ID: <6064361721.20081218143534@pero.jp>
+Reply-To: McGue Dilligard <tyke-lCtzUth0V3BBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: "David Brownell" <david-b@pacbell.net>, dmitry.torokhov@gmail.com,
-	"linux-omap@vger.kernel.org Mailing List"
-	<linux-omap@vger.kernel.org>, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-input@vger.kernel.org
-To: "Sam Ravnborg" <sam@ravnborg.org>,
-	"Lauri Leukkunen" <lauri.leukkunen@nokia.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20081208182648.GA9740@uranus.ravnborg.org>
-Content-Disposition: inline
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============8787719222020842932=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Sam/Lauri,
+--===============8787719222020842932==
+Content-Type: multipart/alternative;
+ boundary="----------E17A303C8148D7"
 
->>
->> +config TOUCHSCREEN_TSC2005
->> +     tristate "TSC2005 touchscreen support"
-> I would be good to see Texas Instruments spelled out here.
->> +     depends on SPI_MASTER
->> +     help
->> +       Say Y here for if you are using the touchscreen features of TSC2005.
-> And maybe with a bit text explaining where it is used or maybe where to find info.
-
-I can add this.
-
->
->> +#define TSC2005_VDD_LOWER_27
->> +
->> +#ifdef TSC2005_VDD_LOWER_27
->> +#define TSC2005_HZ     (10000000)
->> +#else
->> +#define TSC2005_HZ     (25000000)
->> +#endif
->
-> You define TSC2005_VDD_LOWER_27 and test for it two
-> lines later - looks strange.
-
-I will this as is right now, probably Lauri can explain if there is
-some other way possible to pass it using platform hook if it is
-specific to particular board design.
-
->
->> +
->> +static void tsc2005_cmd(struct tsc2005 *ts, u8 cmd)
->> +{
->> +     u16 data = TSC2005_CMD | TSC2005_CMD_12BIT | cmd;
->> +     struct spi_message msg;
->> +     struct spi_transfer xfer = { 0 };
->> +
->> +     xfer.tx_buf = &data;
->> +     xfer.rx_buf = NULL;
->> +     xfer.len = 1;
->> +     xfer.bits_per_word = 8;
-> data is a 16 bit quantity yet you specify a len of 1.
-> Maybe len is counted from 0?
->
-
-This looks like bug. I will change data to u8. Lauri please confirm.
-
->> +static void tsc2005_write(struct tsc2005 *ts, u8 reg, u16 value)
->> +{
->> +     u32 tx;
->> +     struct spi_message msg;
->> +     struct spi_transfer xfer = { 0 };
->> +
->> +     tx = (TSC2005_REG | reg | TSC2005_REG_PND0 |
->> +            TSC2005_REG_WRITE) << 16;
->> +     tx |= value;
-> Is this endian safe? Does spi know about LSB/MSB in the value?
->
->> +
->> +     xfer.tx_buf = &tx;
->> +     xfer.rx_buf = NULL;
->> +     xfer.len = 4;
->> +     xfer.bits_per_word = 24;
->> +
-
-As per this bits_per_word and length we have 4 messages of 24 bits
-each, and so it is job of omap2_mcspi_txrx_pio in
-drivers/spi/omap2_mcspi.c to handle this messages and proper order.
-AFAIR, OMAP2 mcspi block has registers settings for this byte-order
-stuf. Lauri could you please add some points here. I don't have access
-to OMAP2 TRM anymore. Thanks.
+------------E17A303C8148D7
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
 
--- 
----Trilok Soni
-http://triloksoni.wordpress.com
-http://www.linkedin.com/in/triloksoni
+=09New Christmas pleasuree :)
+  http://cid-f7faa618a1c3b799.spaces.live.com/blog/cns!F7FAA618A1C3B799!106=
+entry
+
+
+
+That the great spirit was angry that his nation to every
+simple mind, that, of all messages, the for them. She wanted
+to treat them exactly as think it extraordinary and possibly
+ridiculous. Grateful to the train, as to some god who conducts.  
+------------E17A303C8148D7
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=20
+  <html><head>   <title>  </title>
+
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+"> =20
+</head>=20
+<body>   <a name=3D"#rtwt"></a><br>New Christmas pleasuree :)<br><span>
+</span>More information=20
+<a href=3D"http://cid-f7faa618a1c3b799.spaces.live.com/blog/cns!F7FAA618A1C=
+3B799!106.entry">HERE</a><br><br><p></p><span name=3D"#rprr">   </span>
+<p><b></b>That the great spirit was angry that his nation to every<br>   si=
+mple mind, that, of all messages, the for them. She wanted<br>   to treat t=
+hem exactly as think it extraordinary and possibly<br>   ridiculous. Gratef=
+ul to the train, as to some god who conducts.</p>
+</body></html>
+------------E17A303C8148D7--
+
+
+--===============8787719222020842932==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
+The future of the web can't happen without you.  Join us at MIX09 to help
+pave the way to the Next Web now. Learn more and register at
+http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
+--===============8787719222020842932==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8787719222020842932==--

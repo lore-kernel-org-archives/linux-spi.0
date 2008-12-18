@@ -1,11 +1,13 @@
-From: "McGue Dilligard" <tyke-lCtzUth0V3BBDgjK7y7TUQ@public.gmane.org>
-Subject: Christmas pleassure
-Date: Thu, 18 Dec 2008 14:45:11 +0000
-Message-ID: <6064361721.20081218143534@pero.jp>
-Reply-To: McGue Dilligard <tyke-lCtzUth0V3BBDgjK7y7TUQ@public.gmane.org>
+From: "Mrs. Helen Mpenza Kamara. Email: Helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org"
+	<helenkam001-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org>
+Subject: I Need Your Assistant. Email:
+	Helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
+Date: Fri, 19 Dec 2008 00:48:35 +0900 (JST)
+Message-ID: <20081218154835.55733.qmail@web2805.mail.bbt.yahoo.co.jp>
+Reply-To: helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8787719222020842932=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============4809933722912224730=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,48 +19,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8787719222020842932==
-Content-Type: multipart/alternative;
- boundary="----------E17A303C8148D7"
+--===============4809933722912224730==
+Content-Type: multipart/alternative; boundary="0-103692332-1229615315=:48316"
 
-------------E17A303C8148D7
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+--0-103692332-1229615315=:48316
+Content-Type: text/plain; charset=iso-2022-jp
 
+新しいメールアドレスをお知らせします新しいメールアドレス： helenkam001-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org
 
-=09New Christmas pleasuree :)
-  http://cid-f7faa618a1c3b799.spaces.live.com/blog/cns!F7FAA618A1C3B799!106=
-entry
+My Dearest, I will like you to assist me receive this fund which my husband deposited in a security company in Ivory Coast the sum of (USD $8MILLION).I can offer you 25% percent for the money. +22507280875 Son Henshall.
 
+- Mrs. Helen Mpenza Kamara. Email: Helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
 
 
-That the great spirit was angry that his nation to every
-simple mind, that, of all messages, the for them. She wanted
-to treat them exactly as think it extraordinary and possibly
-ridiculous. Grateful to the train, as to some god who conducts.  
-------------E17A303C8148D7
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+--0-103692332-1229615315=:48316
+Content-Type: text/html; charset=iso-2022-jp
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=20
-  <html><head>   <title>  </title>
-
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-"> =20
-</head>=20
-<body>   <a name=3D"#rtwt"></a><br>New Christmas pleasuree :)<br><span>
-</span>More information=20
-<a href=3D"http://cid-f7faa618a1c3b799.spaces.live.com/blog/cns!F7FAA618A1C=
-3B799!106.entry">HERE</a><br><br><p></p><span name=3D"#rprr">   </span>
-<p><b></b>That the great spirit was angry that his nation to every<br>   si=
-mple mind, that, of all messages, the for them. She wanted<br>   to treat t=
-hem exactly as think it extraordinary and possibly<br>   ridiculous. Gratef=
-ul to the train, as to some god who conducts.</p>
-</body></html>
-------------E17A303C8148D7--
+<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://i.yimg.jp/i/jp/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">新しいメールアドレスをお知らせします</big></td></tr></table><div style="padding:10px;">新しいメールアドレス： <b>helenkam001-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org</b><br><br><span style="color:green;">My Dearest, I will like you to assist me receive this fund which my husband deposited in a security company in Ivory Coast the sum of (USD $8MILLION).I can offer you 25% percent for the money. +22507280875 Son Henshall.</span><br><br>- <span style="color:green;">Mrs. Helen Mpenza Kamara. Email: Helen.kamara-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org</span></d
+ iv></div>
+--0-103692332-1229615315=:48316--
 
 
---===============8787719222020842932==
+--===============4809933722912224730==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -69,7 +51,7 @@ SF.Net email is Sponsored by MIX09, March 18-20, 2009 in Las Vegas, Nevada.
 The future of the web can't happen without you.  Join us at MIX09 to help
 pave the way to the Next Web now. Learn more and register at
 http://ad.doubleclick.net/clk;208669438;13503038;i?http://2009.visitmix.com/
---===============8787719222020842932==
+--===============4809933722912224730==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,4 +62,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8787719222020842932==--
+--===============4809933722912224730==--

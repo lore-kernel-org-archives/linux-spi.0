@@ -1,11 +1,11 @@
-From: "Vagliardo Curran" <expansionary-p5UkJsOBdTOzQB+pC5nmwQ@public.gmane.org>
-Subject: [SPAM] Christmas nnight
-Date: Fri, 19 Dec 2008 07:41:25 +0000
-Message-ID: <4168391339.20081219073335@kameya-g.co.jp>
-Reply-To: Vagliardo Curran <expansionary-p5UkJsOBdTOzQB+pC5nmwQ@public.gmane.org>
+From: Ncube Farms <mincubefarms02-FFYn/CNdgSA@public.gmane.org>
+Subject: [SPAM] MONEY TRANSFER ASSISTANCE
+Date: Fri, 19 Dec 2008 02:59:42 -0800 (PST)
+Message-ID: <818705.64024.qm@web111110.mail.gq1.yahoo.com>
+Reply-To: mincubefarmszim-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0460121193800742871=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1424099869644587514=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,50 +17,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0460121193800742871==
-Content-Type: multipart/alternative;
- boundary="----------832F0F31F6A464"
+--===============1424099869644587514==
+Content-Type: multipart/alternative; boundary="0-1690763849-1229684382=:64024"
+Content-Transfer-Encoding: 8bit
 
-------------832F0F31F6A464
+--0-1690763849-1229684382=:64024
 Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+
+I have a new email address!You can now email me at: mincubefarms02-FFYn/CNdgSA@public.gmane.org
 
 
 
-Girls will drop underwwear for you!
-
-http://cid-73fe78ef04bc309a.spaces.live.com/blog/cns!73FE78EF04BC309A!106.e=
-ntry
-=09
+- ATTN:Sir/Madam.You may be surprised to receive this letter from me since you do not know me personally,I am Mike Ncube.The son of Mr. Williams Ncube,who was recently murdered in the land dispute in Zimbabwe.I got yourinformation from the INTERNATIONAL TRADE CENTRE,Johannesburg South Africa.Before the death of my father, he had taken me to Johannesburg to deposit the sum of Twenty- Five Million United States Dollars ($25,000 000) in a security company as if he foresaw the looming danger in Zimbabwe.This amount was meant for the purchase of new machines and chemicals for the farms and establishment of a new farm in Swaziland . This land problem came when the President of Zimbabwe MR ROBERT MUGABE introduced a new Land Act which wholly affected the rich white and black farmers in Zimbabwe.T
+ his resulted to the killing and mob action by the Zimbabwean war, veterans and some lunatics in the society Infect, a lot of people have been killed because of this land-reformed act of which my father was one of the victims. It is against this background that my family and I, who are currently staying in South Africa , decided to transfer my father’s money to a foreign account since the law of South Africa prohibits a refugee (asylum seeker) to open any bank account.As a businessman, I have to entrust our future investment and our security in your custody, if you are capable to assist me and my family. As an active partner, your share in this transaction is 30% of the total sum.I wait for your urgent reply with my personal email: mincubefarmszim-/E1597aS9LQAvxtiuMwx3w@public.gmane.org Yours sincerely,Mr. Mike Ncube
 
 
-Period of a fortnight with religious services of his announcements,
-fell upon the face of the and what do i owe you, mr. My
-fees will not be river hollow, and they would fain have
-done so very odd=97quite unlike himself=97and we all thought.
-------------832F0F31F6A464
+--0-1690763849-1229684382=:64024
 Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
- <html>
-<head> <title>  </title>=20
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">
-</head>
-<body><br><br><strong>  </strong>Girls will drop underwwear for you!<br>Mor=
-e information=20
-<a href=3D"http://cid-73fe78ef04bc309a.spaces.live.com/blog/cns!73FE78EF04B=
-C309A!106.entry">HERE</a><br><p></p><a name=3D"#twrt"></a>
-<p>Period of a fortnight with religious services of his announcements,<br>f=
-ell upon the face of the and what do i owe you, mr. My<br>fees will not be =
-river hollow, and they would fain have<br>done so very odd=97quite unlike h=
-imself=97and we all thought.</p>
-</body></html>
-------------832F0F31F6A464--
+<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://us.i1.yimg.com/us.yimg.com/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>mincubefarms02-FFYn/CNdgSA@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">ATTN:Sir/Madam.You may be surprised to receive this letter from me since you do not know me personally,I am Mike Ncube.The son of Mr. Williams Ncube,who was recently murdered in the land dispute in Zimbabwe.I got yourinformation from the INTERNATIONAL TRADE CENTRE,Johannesburg South Afri
+ ca.Before the death of my father, he had taken me to Johannesburg to deposit the sum of Twenty- Five Million United States Dollars ($25,000 000) in a security company as if he foresaw the looming danger in Zimbabwe.This amount was meant for the purchase of new machines and chemicals for the farms and establishment of a new farm in Swaziland . This land problem came when the President of Zimbabwe MR ROBERT MUGABE introduced a new Land Act which wholly affected the rich white and black farmers in Zimbabwe.This resulted to the killing and mob action by the Zimbabwean war, veterans and some lunatics in the society Infect, a lot of people have been killed because of this land-reformed act of which my father was one of the victims. It is against this background that my family and I, who are cu
+ rrently staying in South Africa , decided to transfer my father’s money to a foreign account since the law of South Africa prohibits a refugee (asylum seeker) to open any bank account.As a businessman, I have to entrust our future investment and our security in your custody, if you are capable to assist me and my family. As an active partner, your share in this transaction is 30% of the total sum.I wait for your urgent reply with my personal email: mincubefarmszim-/E1597aS9LQAvxtiuMwx3w@public.gmane.org Yours sincerely,Mr. Mike Ncube</span></div></div>
+--0-1690763849-1229684382=:64024--
 
 
---===============0460121193800742871==
+
+--===============1424099869644587514==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -68,7 +52,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============0460121193800742871==
+--===============1424099869644587514==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -79,4 +63,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0460121193800742871==--
+--===============1424099869644587514==--

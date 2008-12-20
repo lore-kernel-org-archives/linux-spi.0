@@ -1,9 +1,10 @@
-From: "BIBLIOTECA VIRTUAL" <bibliotebook-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] EL MEJOR REGALO: 8 GB EN LIBROS
-Date: Sat, 20 Dec 2008 04:31:40 -0300
-Message-ID: <4844391231-220081262073140328@COORDMEDIA>
+From: =?GB2312?B?w7fPyMn6?= <dewwegg-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 商@务#@资&&料
+Date: Sun, 21 Dec 2008 03:36:47 +0800
+Message-ID: <E1LE7fd-0004ht-9n@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8039770296417901709=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,146 +17,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8039770296417901709==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_48441592770202962373140328"
-
-------=_NextPart_48441592770202962373140328
-Content-type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-
-    ESPECTACULAR REGALO
-
-1 DVD CON 3 GB DE LIBROS DE MATEMATICA (mas de 100 libros)
-
-1 DVD CON 2 GB DE LIBROS DE FISICA (40 libros)
-
-1 DVD CON 6=2E000 LIBROS DE FILOSOFIA, LITERATURA, ECONOMIA=2E=2E=2E
-
-(Para leer los libros su computador debe tener lector de DVD y cada libro =
-esta en PDF, Word o TXT)
-
-1 DVD a $20=2E000=2E-
-
-2 DVD a $35=2E000=2E-
-
-3 DVD a $40=2E000=2E-
-
-El valor corresponde al servicio de recopilacion de la informacion, almace=
-namiento y servicio de entrega=2E
-
-Los libros no son cobrados y tienen una finalidad educativa
-
-=20
-
-Solicitelo en bibliotebook@gmail=2Ecom enviando la direccion donde desea q=
-ue sea enviado
-
-Si es de Santiago cancela contra entrega y si es de Region cancela a trave=
-s de una transferencia bancaria=2E
-
-=20
-
-
-
-=20
-
-
-
-------=_NextPart_48441592770202962373140328
-Content-Type: text/html; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-
-<head>
-<meta http-equiv=3D"Content-Language" content=3D"es-cl">
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
-1252">
-<title>ESPECTACULAR REGALO</title>
-</head>
-
-<body>
-
-<p align=3D"center"><b><font face=3D"Arial" size=3D"6">&nbsp;&nbsp;&nbsp; =
-ESPECTACULAR=20
-REGALO</font></b></p>
-<p align=3D"center"><b><font face=3D"Arial">1 DVD CON 3 GB DE LIBROS DE MA=
-TEMATICA=20
-(mas de 100 libros)</font></b></p>
-<p align=3D"center"><b><font face=3D"Arial">1 DVD CON 2 GB DE LIBROS DE FI=
-SICA (40=20
-libros)</font></b></p>
-<p align=3D"center"><b><font face=3D"Arial">1 DVD CON 6=2E000 LIBROS DE FI=
-LOSOFIA,=20
-LITERATURA, ECONOMIA=2E=2E=2E</font></b></p>
-<p align=3D"center"><b><font face=3D"Arial" size=3D"1">(Para leer los libr=
-os su=20
-computador debe tener lector de DVD y cada libro esta en PDF, Word o TXT)<=
-/font></b></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><b><font fac=
-e=3D"Arial">
-1 DVD a $20=2E000=2E-</font></b></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><b><font fac=
-e=3D"Arial">
-2 DVD a $35=2E000=2E-</font></b></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><b><font fac=
-e=3D"Arial">
-3 DVD a $40=2E000=2E-</font></b></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><b>
-<font face=3D"Arial" size=3D"1">El valor corresponde al servicio de recopi=
-lacion de=20
-la informacion, almacenamiento y servicio de entrega=2E</font></b></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><b>
-<font face=3D"Arial" size=3D"1">Los libros no son cobrados y tienen una fi=
-nalidad=20
-educativa</font></b></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">&nbsp;</p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><b><font fac=
-e=3D"Arial">
-Solicitelo en <a href=3D"mailto:bibliotebook@gmail=2Ecom">bibliotebook@gma=
-il=2Ecom</a>=20
-enviando la direccion donde desea que sea enviado</font></b></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><b><font fac=
-e=3D"Arial">
-Si es de Santiago cancela contra entrega y si es de Region cancela a trave=
-s de=20
-una transferencia bancaria=2E</font></b></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">&nbsp;</p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
-<img border=3D"0" src=3D"http://www=2Erdwebs=2Ecl/mailing/MATEFISICA/MATEM=
-ATICA=2Ejpg" width=3D"1002" height=3D"611"></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">&nbsp;</p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
-<img border=3D"0" src=3D"http://www=2Erdwebs=2Ecl/mailing/MATEFISICA/FISIC=
-A=2Ejpg" width=3D"938" height=3D"216"></p>
-
-</body>
-
-</html>
-
-------=_NextPart_48441592770202962373140328--
-
-
-
---===============8039770296417901709==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-
---===============8039770296417901709==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============8039770296417901709==--
+INfwvrS1xLi61PDIy6Oovq3A7aOvssbO8aOpxPq6w6OhCgogICAgILG+uavLvsrH0MXT/sq10rXT
+0M/euavLvizKx76t1f64rteisuG1xNX9uea5q8u+oaPIq7n6uPe089bQs8fK0L7509C31rmry76h
+owoK1NrIq8fyu6+1xLei1bm5+sTaytCzob6tvMO+utX5yNXH97ykwdKjocq5ycy80ly5q8u+wPvI
+886isaGjobnzuavLvtf31cq8sM/6ytu3vcPmCgrKx9Do0qrTw7W90rvQqcaxvt3I56O6o6i158TU
+sObU9ta1y7ChorXnxNSw5rqjudi9yb/uyum3osaxoaLG1c2oyczGt7eixrGhorXYy7Chor2o1v6w
+stewoaIKCsbky/y3/s7xoaK547jmoaK158TUsObUy8rkt6LGsaOptcihraGtoaPLsMLKv8m4+b7d
+y/m/qr3wtu61xLTz0KHAtNCtycyjobKivajS6bOkxtq1xLrP1/ehowoKICAgICDU2s7SuavLvrPJ
+waK24MTq0rvWsbzhs9bS1NDF08M7y/m/qr74ttTKx9XmxrGho9Taus/X99LUtPq/qrXEt73Kvczh
+uam1vc67tcS3/s7xo6wKCsjnufO5q8u+09DQqdLJwse78rWj0MSjrL/Jyc/N+LLp1qS78sTDyKXL
+sM7xtda/27rLttTIt8jPuvPU2bi2v+6jrNTaztK5q8u+uLrU8LXEzKy2yAoK1/a1vb/Nu6e3xdDE
+wvrS4qOhyOe08sjFxPqxprnzyrG85KOsvrTH67z7wcKjoQoKICAgICAgICAg16MKCiAgICAgIMnM
+ICAgIOz3ICAgICAgICAgICAgICAgICC7ttOtwLS159fJ0a+hoseizLijoQoKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIMGqIM+1IMjLIKO6IMO3z8jJ+goKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIMrWICAgu/ogIKO6IDEgMyA2IDEgMyAwIDggMyA4IDAgOAogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBRICAg
+ICBRICA7ICA1IDQgMyAxIDkgMyA4IDYgOCAKIAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5l
+cmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
+aHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdl
+bmVyYWwK

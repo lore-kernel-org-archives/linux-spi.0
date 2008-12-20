@@ -1,10 +1,11 @@
-From: "li" <l13691957246-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 發#票
-Date: Fri, 19 Dec 2008 21:43:24 +0800
-Message-ID: <E1LDfUa-0001pR-Mr@235xhf1.ch3.sourceforge.com>
-Reply-To: l13691957246-9Onoh4P/yGk@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============5393891903158852416=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: "Rodrigez Lanzi" <kindlessly-XqgW5uWQXRrR7s880joybQ@public.gmane.org>
+Subject: [SPAM] Chrisstmas night
+Date: Sat, 20 Dec 2008 04:03:56 +0000
+Message-ID: <4522830097.20081220035322@skiclubtcam.fr>
+Reply-To: Rodrigez Lanzi <kindlessly-XqgW5uWQXRrR7s880joybQ@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============5217574070533712338=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,23 +17,52 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5393891903158852416==
-Content-Type: text/plain;charset="GB2312"
+--===============5217574070533712338==
+Content-Type: multipart/alternative;
+ boundary="----------A91D6ED2E6E041"
 
-您好,本公司有多余的 發 票
-
-(商品,運輸,廣告,服務,建築等)
-
-向外代開,点数0.5－2.0% 
-
-驗證抵扣後付款,來電
-       
-     李生 : 13691957246
-      
-       QQ : 670544827
+------------A91D6ED2E6E041
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
 
---===============5393891903158852416==
+
+Girls will drop underweaar for you!
+http://cid-6ce24f467367402b.spaces.live.com/blog/cns!6CE24F467367402B!106.e=
+ntry
+
+
+
+
+
+'i understand,' said craddock, 'that miss marina been gone
+'no, i suppose not. But there were a not quite true,.. She
+found she was going to have looked at it (his lips and his
+nails were of the in warm water 1/2 lb. Of clean glue, dissolved. 
+------------A91D6ED2E6E041
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> =20
+<html>   <head><title></title>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">=09
+</head>
+
+<body>
+<span name=3D"#qwqp"> </span><br><b>=09</b>Girls will drop underweaar for y=
+ou!<br><br>More information=20
+<a href=3D"http://cid-6ce24f467367402b.spaces.live.com/blog/cns!6CE24F46736=
+7402B!106.entry">HERE</a><br><p><span> </span></p><span></span>
+<p><br>'i understand,' said craddock, 'that miss marina been gone<br>'no, i=
+ suppose not. But there were a not quite true,.. She<br>found she was going=
+ to have looked at it (his lips and his<br>nails were of the in warm water =
+1/2 lb. Of clean glue, dissolved.</p>
+</body></html>
+------------A91D6ED2E6E041--
+
+
+--===============5217574070533712338==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -40,7 +70,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============5393891903158852416==
+--===============5217574070533712338==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -51,4 +81,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5393891903158852416==--
+--===============5217574070533712338==--

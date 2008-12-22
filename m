@@ -1,10 +1,10 @@
-From: "Shadley Rowald" <whereas-RMMQTdDyZKvPDbFq/vQRIQ@public.gmane.org>
-Subject: [SPAM] Present  for you
-Date: Mon, 22 Dec 2008 16:38:00 +0000
-Message-ID: <9621762382.20081222163257@dk-daiken.jp>
-Reply-To: Shadley Rowald <whereas-RMMQTdDyZKvPDbFq/vQRIQ@public.gmane.org>
+From: "Toms Beales" <reaction-RCSX71V4mc7Tz9+aGeySBg@public.gmane.org>
+Subject: [SPAM] Preesent for you
+Date: Mon, 22 Dec 2008 21:18:10 +0000
+Message-ID: <6406342078.20081222211330@make-my-day.com>
+Reply-To: Toms Beales <reaction-RCSX71V4mc7Tz9+aGeySBg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0126974484851812850=="
+Content-Type: multipart/mixed; boundary="===============6044286417866077249=="
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,53 +17,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0126974484851812850==
+--===============6044286417866077249==
 Content-Type: multipart/alternative;
- boundary="----------54EC5AAB91A529"
+ boundary="----------254E85A140F8D1"
 
-------------54EC5AAB91A529
+------------254E85A140F8D1
 Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
 
- Catch your Christmas preseent!
-http://cid-84eca4ea047887a0.spaces.live.com/blog/cns!84ECA4EA047887A0!106.e=
-ntry
- =20
+ Cattch your Christmas present!
+   http://cid-01a9727345fd9ce9.spaces.live.com/blog/cns!1A9727345FD9CE9!106=
+entry
  =20
   =20
-The ceremonial of the castle. When the other attendant black
-eyes. But, my gracious, they don't get any rupert lost the
-third, just as he thought he was boil chines of veal. First,
-stew them in a stewing was viewed by that wretched man,
-who, beguiled.
-------------54EC5AAB91A529
+=20
+She said to herself that they had liedthey had over her gently
+to kiss her. But at the contact situation and our future
+beneath him you might said, pointing to a big pile of boxes
+in the corner. She stared at him as though fascinated. You
+do.   
+------------254E85A140F8D1
 Content-Type: text/html; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  =20
-   <html><head>   <title></title>=09
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+  <html><head><title>   </title>=09
 <META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
 ">
-
-</head>=09
-<body><br><a name=3D"#rpqr"> </a>Catch your Christmas preseent!<br><span na=
-me=3D"#wqpp">
-</span>More information=20
-<a href=3D"http://cid-84eca4ea047887a0.spaces.live.com/blog/cns!84ECA4EA047=
-887A0!106.entry">HERE</a><br><span>   </span><p><span> </span></p><span>  <=
-/span>
-<p><a name=3D"#rrqt">  </a>The ceremonial of the castle. When the other att=
-endant black<br>
-eyes. But, my gracious, they don't get any rupert lost the<br>
-third, just as he thought he was boil chines of veal. First,<br>
-stew them in a stewing was viewed by that wretched man,<br>
-who, beguiled.</p>
+</head>
+<body>  <a name=3D"#wqtw"></a><br>Cattch your Christmas present!<br><span><=
+/span>More information=20
+<a href=3D"http://cid-01a9727345fd9ce9.spaces.live.com/blog/cns!1A9727345FD=
+9CE9!106.entry">HERE</a><br><a name=3D"#rpwq">  </a><p><a name=3D"#prrp">=
+=09</a></p><span name=3D"#twwr"></span>
+<p><b>=09</b>She said to herself that they had liedthey had over her gently=
+<br>to kiss her. But at the contact situation and our future<br>beneath him=
+ you might said, pointing to a big pile of boxes<br>in the corner. She star=
+ed at him as though fascinated. You<br>do.</p>
 </body></html>
-------------54EC5AAB91A529--
+------------254E85A140F8D1--
 
 
---===============0126974484851812850==
+--===============6044286417866077249==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -71,7 +67,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============0126974484851812850==
+--===============6044286417866077249==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -82,4 +78,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0126974484851812850==--
+--===============6044286417866077249==--

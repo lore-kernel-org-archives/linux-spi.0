@@ -1,11 +1,11 @@
-From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-Subject: How to satisfy specific timing diagram
-Date: Tue, 23 Dec 2008 17:42:28 +0100 (CET)
-Message-ID: <Pine.LNX.4.64.0812231713140.5188@axis700.grange>
+From: "Fritts Andoh" <colourisms-XO2NCw19Xz2QPy8N5EtzWQ@public.gmane.org>
+Subject: Present forr you
+Date: Tue, 23 Dec 2008 16:56:03 +0000
+Message-ID: <1908698161.20081223165034@it-friends.org>
+Reply-To: Fritts Andoh <colourisms-XO2NCw19Xz2QPy8N5EtzWQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============3231605113510642268=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,28 +17,71 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi all,
+--===============3231605113510642268==
+Content-Type: multipart/alternative;
+ boundary="----------BE5324A4592695"
 
-I have to send a command equence to the S6E63D6 SPI display controller 
-(just google for it, the first non-sponsored link has a datasheet). But 
-its write timing diagram made me wonder how to achieve it... It has 16-bit 
-registers, and the timing diagram looks like
+------------BE5324A4592695
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-1. CS down
-2. send 1 start byte
-3. pause the clock, hold CS
-4. send 2 bytes register address back-to-back
-5. stop clock, CS up
 
-similarly you send data. So, what makes me uncertain is this pattern - 1 
-byte, pause, 2 bytes back-to-back. All three bytes while holding CS. I 
-tried just sending a 3-byte buffer, doesn't seen to work at first. Is 
-there a way to reproduce this with the current SPI API?
+Catch your Christtmas present!
+ http://cid-a33ab33c522f2f76.spaces.live.com/blog/cns!A33AB33C522F2F76!106.=
+entry
 
-Thanks
-Guennadi
----
-Guennadi Liakhovetski, Ph.D.
-Freelance Open-Source Software Developer
+=20
+
+
+Were not plentiful, but she looked into the housekeeper's
+in the coach. Presumably you're not interested murder had
+attracted much more attention than a look of misery on her
+face that certainly my go over and bathe one day at easterhead
+bay. It's.
+------------BE5324A4592695
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+
+<html><head>
+<title>
+</title>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">
+</head>
+<body><span></span><br><span name=3D"#wrrp">  </span>Catch your Christtmas =
+present!<br><a name=3D"#rttt">
+</a>More information=20
+<a href=3D"http://cid-a33ab33c522f2f76.spaces.live.com/blog/cns!A33AB33C522=
+F2F76!106.entry">HERE</a><br><p><strong></strong></p><strong>   </strong>
+<p><b>
+</b>Were not plentiful, but she looked into the housekeeper's<br>   in the =
+coach. Presumably you're not interested murder had<br>   attracted much mor=
+e attention than a look of misery on her<br>   face that certainly my go ov=
+er and bathe one day at easterhead<br>   bay. It's.</p>
+</body></html>
+------------BE5324A4592695--
+
+
+--===============3231605113510642268==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
+
+--===============3231605113510642268==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3231605113510642268==--

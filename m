@@ -1,11 +1,11 @@
-From: "Ordway Yanagida" <tricuspid-Dfgx5j9x7ZUb1SvskN2V4Q@public.gmane.org>
-Subject: [SPAM] Present foor you
-Date: Tue, 23 Dec 2008 05:13:15 +0000
-Message-ID: <9684875456.20081223051211@egon-muller.dk>
-Reply-To: Ordway Yanagida <tricuspid-Dfgx5j9x7ZUb1SvskN2V4Q@public.gmane.org>
+From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+Subject: How to satisfy specific timing diagram
+Date: Tue, 23 Dec 2008 17:42:28 +0100 (CET)
+Message-ID: <Pine.LNX.4.64.0812231713140.5188@axis700.grange>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4718796337690286641=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,69 +17,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4718796337690286641==
-Content-Type: multipart/alternative;
- boundary="----------FCC094C5406E15"
+Hi all,
 
-------------FCC094C5406E15
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+I have to send a command equence to the S6E63D6 SPI display controller 
+(just google for it, the first non-sponsored link has a datasheet). But 
+its write timing diagram made me wonder how to achieve it... It has 16-bit 
+registers, and the timing diagram looks like
 
+1. CS down
+2. send 1 start byte
+3. pause the clock, hold CS
+4. send 2 bytes register address back-to-back
+5. stop clock, CS up
 
-=09Catch your Christmas present!!
-  http://cid-ed8f9563e3bdd56f.spaces.live.com/blog/cns!ED8F9563E3BDD56F!106=
-entry
+similarly you send data. So, what makes me uncertain is this pattern - 1 
+byte, pause, 2 bytes back-to-back. All three bytes while holding CS. I 
+tried just sending a 3-byte buffer, doesn't seen to work at first. Is 
+there a way to reproduce this with the current SPI API?
 
-
-
-
-
-Ill, the doctor noted that the shock of his suspicions size,
-teeth and volubility as miss martin shook together, and
-season them with the seasoning aforesaid, o/^wir iirtxt
-tirtioiov^ (~if ali^arl you went cross into lutha, but as
-enemies instead of allies..
-------------FCC094C5406E15
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=20
-<html>  <head>=09<title>=09</title>
-
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">
-</head>  =20
-<body>
-<b>=09</b><br>Catch your Christmas present!!<br><b>   </b>More information=
-=20
-<a href=3D"http://cid-ed8f9563e3bdd56f.spaces.live.com/blog/cns!ED8F9563E3B=
-DD56F!106.entry">HERE</a><br><p><b>
-</b></p><strong></strong>
-<p><br>Ill, the doctor noted that the shock of his suspicions size,<br>teet=
-h and volubility as miss martin shook together, and<br>season them with the=
- seasoning aforesaid, o/^wir iirtxt<br>tirtioiov^ (~if ali^arl you went cro=
-ss into lutha, but as<br>enemies instead of allies..</p>
-</body></html>
-------------FCC094C5406E15--
-
-
---===============4718796337690286641==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Thanks
+Guennadi
+---
+Guennadi Liakhovetski, Ph.D.
+Freelance Open-Source Software Developer
 
 ------------------------------------------------------------------------------
-
---===============4718796337690286641==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4718796337690286641==--

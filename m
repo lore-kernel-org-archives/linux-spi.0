@@ -1,39 +1,66 @@
-From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
-Subject: [SPAM] @#商*业%代#理@@
-Date: Tue, 23 Dec 2008 09:07:03 +0800
-Message-ID: <E1LEviK-0000Yb-CV@235xhf1.ch3.sourceforge.com>
+From: Ingo Oeser <ioe-lkml@rameria.de>
+Subject: Re: [patch 2.6.28-rc9] spi: spi_write_then_read() regression fix
+Date: Tue, 23 Dec 2008 02:53:59 +0100
+Message-ID: <200812230254.00249.ioe-lkml@rameria.de>
+References: <200812202332.36281.david-b@pacbell.net> <alpine.LFD.2.00.0812211545520.24883@localhost.localdomain> <200812211648.26699.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	spi-devel-general@lists.sourceforge.net,
+	lkml <linux-kernel@vger.kernel.org>,
+	Vernon Sauder <vernoninhand@gmail.com>
+To: David Brownell <david-b@pacbell.net>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755916AbYLWByR@vger.kernel.org>
+In-Reply-To: <200812211648.26699.david-b@pacbell.net>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHye7b2srQ9s7Dr8q10rXT0M/e
-uavLvrXEo6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+
-o6mho87Sy77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvB
-y8O/1MLP+srbtu62yKGjCsO/1MLT0NK7sr+31tT21rXLsLXnxNS3osaxNiW6zcbVzai3osax1tbA
-4Mjnz8KjusnMxrfP+srby7C3osaxo6y158TU1MvK5LeixrGjrAq547jmt6LGsdfiwd7StbeixrEs
-t/7O8dK1t6LGsbXIICi5+suwtdjLsKOpMS0yJdPFu920+r+qu/K6z9f3o6y148r9vc+1zaGju7m/
-yQrS1Lj5vt3L+df2yv3Bv7butsi1xLTz0KHAtMnMzNbTxbvdtcS148r9o6y5q8u+s8nBorbgxOrS
-u9axvOGz1tLUobCzz9DFobHOqtbQCtDE1/fOqrmry761xLrL0MTLvM/roaLAzrnMyvfBormry77Q
-zs/zo6yxvrmry77Wo9bYs9DFtcv508O++LbUysfV5saxo6G4/M+jzfsKxNy5u9PQu/q74dPrufPL
-vrrP1/ejoQqhoaGhCiAgICDI57nzy77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQxKOs
-v8nJz834sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGjIAogICAgIAogICAg
-tMvQxc+is6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOiAKICAgIAqhoaGhytYgILv6OjEzNTMwOTA5
-MzQ0CgogICAgLS0tLVFROzc3MTUwOTM0NAoKoaGhocGqz7XIy6O6wO65+rflCsuz16MKICAgICAg
-yczs96OhIAogICAgIAqhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhICChoaGhoaGhoaGhoaGh
-oaGhoaGhoaGhoaGhocnu29rK0PbOw6/KtdK109DP3rmry74KCgoKCgotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
-LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
-ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
-cGktZGV2ZWwtZ2VuZXJhbAo=
+Hi David,
+
+On Monday 22 December 2008, you wrote:
+> On Sunday 21 December 2008, Linus Torvalds wrote:
+> > 
+> > On Sat, 20 Dec 2008, David Brownell wrote:
+> > > 
+> > > All SPI transfers are full duplex, and are packaged as half duplex
+> > > by either discarding the data that's read ("write only"), or else
+> > > by writing zeroes ("read only").  That patch wasn't ensuring that
+> > > zeroes were getting written out during the "half duplex read" part
+> > > of the transaction; instead, old RX bits were getting sent.
+> > 
+> > Hmm. In addition, isn't this broken (in that same function):
+> 
+> No -- this is full duplex.  The write_then_read() helper is
+> simplifying a common half-duplex idiom for short operations,
+> but the harware still does full duplex.  Buffer layout is:
+> 
+>   Before:	WWWWW0000000
+>   After:	xxxxxRRRRRRR
+> 
+> That is, for every bit shifted out (W, 0) another one gets
+> shifted in (x, R).  The I/O primitive essentially swaps
+> contents of a one-word shift register between master and
+> slave; or, sequences of such words.  Words don't need to
+> be byte-size, though that's a common option.
+
+> See above.  We only want the "R" bits which were shifted in
+> right *after* the n_tx "W" bits.  If we offset rx_buf before
+> the I/O, we'd start with the "x" don't-care bits and need to
+> do something else to discard them.  (Plus, allocate more
+> space at the end of the buffer.)
+
+Wow, what interesting hardware logic and a nice explanation.
+
+Could you put that into a comment somewhere close to those helpers?
+
+You can safely assume, that any code which Linus doesn't understand
+is non-trivial and needs a comment :-)
+
+
+Best Regards
+
+Ingo Oeser

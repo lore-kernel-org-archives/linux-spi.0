@@ -1,12 +1,23 @@
-From: linf2122112-FDB2ip3zO0c@public.gmane.org
-Subject: [SPAM] 代理业务
-Date: Wed, 24 Dec 2008 21:25:03 +0800
-Message-ID: <E1LFTiW-0001A5-OA@235xhf1.ch3.sourceforge.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [patch 2.6.28-rc9] spi:
+	spi_write_then_read() regression fix
+Date: Wed, 24 Dec 2008 11:43:04 -0800
+Message-ID: <200812241143.04706.david-b@pacbell.net>
+References: <200812202332.36281.david-b@pacbell.net>
+	<200812240039.32008.david-b@pacbell.net>
+	<20081224085844.GA11197@diamond.tkos.co.il>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20081224085844.GA11197-l+PWtdWbHAs2zBO71LVbc/qBs+8SCbDb@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,19 +28,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgo6jV4srH0ru34snG0uK1xNPKvP6jrMjn09C0
-8sjFx+vBwr3io6mhowogICAgxOO6w6OhztK5q8u+o6jJ7tvaytC66rqjyrXStdPQz965q8u+o6nK
-x8Gsw8u0+sDtuavLvqOs1NrIq7n6uPe087PHytDJ6NPQt9a5q8u+oaMK0vLStc7xudjPtaOsvfjP
-7rbgz/rP7snZz9bT0Lbg0+DSu7K/t9Y8PMbVLc2oLcuwLcaxPj6/ydLU08W73bbUzeK0+r+qyOfP
-wqO6CrmkyczG89K1oaK79c7vz/rK26GiueO45qGit/7O8dK1oaK9qNb+sLLXsKGixNq606Ooufq8
-yqOp1MvK5KGit8++yc7v18q1yDw8t6ItxrE+PqGjCsrVt9Gx6te8o7o8PMbVLc2oLcuwLcaxPj4y
-JS0wLjglo6y/ydLUz8jR6dakuvO4tr/uo6EKICC0y9DFz6LU2sirufq3ts6nxNqzpMba09DQp6Os
-ICDI59DrvfjSu7K9x6LJzDogIAogICAgICAgICAgICAgICAgICAgwarPtcjLo7rQ7NXxtqsKICAg
-ICAgICAgICAgICAgICDK1iAgu/qjujEzOS0yNjU2LTM1NjUgICAgICChoaGhoaGhoaGhoaGhoaGh
-oaGhoQogICAgICAgICAgICAgICAgICBRICAgUTo0OTM5NDIzMzMKICAgICAgICAgICAgICAgIM34
-1rejui8vaG9uZ2hhaS4zNjUzaC5jb20vCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwg
-bWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRw
-czovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJh
-bAo=
+On Wednesday 24 December 2008, Baruch Siach wrote:
+> > I've certainly seen a couple drivers that handled the
+> > full duplex behavior incorrectly, until they fixed that
+> > bug. =A0As in, they wrote the tx_buf *then* read rx_buf
+> > (a half-duplex model) instead of doing them concurrently
+> > (the full-duplex model a spi_master must implement).
+> =
+
+> May you name those drivers and the commits with the bug fixes?
+> I couldn't find them in Linus' tree.
+
+I don't recall such a driver merging to mainline;
+the idea is to catch such fundamental bugs before
+they merge.
+
+
+> I'm working on an SPI master (DesignWare) driver and I want
+> to make sure that  I'm implementing the API correctly.
+
+Lacking a test suite for the spi_master drivers,
+I suggest that you verify your driver works with
+some of the existing protocol drivers.  If at all
+possible, hook up a couple SPI slaves to different
+chipselects on your master, and test them all.
+
+Then, if you find misbehavior when you test a
+driver that's already known to work with a bunch
+of controller drivers, it's more likely that the
+bug is in your new code than the existing code.
+
+- Dave
+
+
+
+
+
+---------------------------------------------------------------------------=
+---

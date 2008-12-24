@@ -1,10 +1,24 @@
-From: =?GB2312?B?uanH89DFz6I=?= <fhgfjurrjnfn546jy-KN7UnAbNpbg@public.gmane.org>
-Subject: [SPAM] è¯·è”ç³»
-Date: Wed, 24 Dec 2008 16:49:28 +0800
-Message-ID: <E1LFPQ2-00011I-Jy@3yr0jf1.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============6140581723538560020=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: Re: [patch 2.6.28-rc9]
+	spi:	spi_write_then_read() regression fix
+Date: Wed, 24 Dec 2008 10:58:57 +0200
+Message-ID: <20081224085844.GA11197@diamond.tkos.co.il>
+References: <200812202332.36281.david-b@pacbell.net>
+	<200812231953.26407.david-b@pacbell.net>
+	<EADF0A36011179459010BDF5142A45750458C815@pdsmsx502.ccr.corp.intel.com>
+	<200812240039.32008.david-b@pacbell.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <200812240039.32008.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -15,38 +29,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6140581723538560020==
-Content-Type: text/plain;charset="GB2312"
+Hi David,
 
-×ğ¾´µÄ¹«Ë¾Ø“ØŸÈË:Äú:ºÃ! 
-    ±¾¹«Ë¾¿ÉÓÅ»İ¿ª¾ßÉÌÆ·(ÉÌÒµ)äNÊÛ.¹¤˜IäNÊÛ.·şÎñÒµ.½¨ÖşÒµ.¹ã¸æ
-Òµ.×ÉÑ¯·ÑµÈ<<·¢.Æ±>>
-   ÊÕÈ¡µÄ¶ücÓÅ»İ,¾ßÌå¸ù¾İËù¿ªĞĞÒµµÄ½ğ¶î´óĞ¡ÉÌÌ¸¡£ÈçÔÚÆ±µÄÕæÎ±
-·½ÃæÓĞÈÎºÎÒÉÂÇ»òµ£ĞÄ,¿Éµç»°.ÍøÉÏ²éÑ¯ÑéÖ¤ºó¸¶¿î£¡ÈçÓĞÕâ·½ÃæµÄĞè
-ÒªÇëÁªÏµ:
+On Wed, Dec 24, 2008 at 12:39:31AM -0800, David Brownell wrote:
+> I've certainly seen a couple drivers that handled the
+> full duplex behavior incorrectly, until they fixed that
+> bug.  As in, they wrote the tx_buf *then* read rx_buf
+> (a half-duplex model) instead of doing them concurrently
+> (the full-duplex model a spi_master must implement).
 
-      ÁªÏµµç»°£º135-4456-9836
-      Â“ÏµÈË£ºÕÅ(ÏÈÉú)
-      ùi´ïÊµÒµÓĞÏŞ¹«Ë¾
+May you name those drivers and the commits with the bug fixes? I couldn't find 
+them in Linus' tree.
 
+I'm working on an SPI master (DesignWare) driver and I want to make sure that 
+I'm implementing the API correctly.
 
---===============6140581723538560020==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+baruch
+
+-- 
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 ------------------------------------------------------------------------------
-
---===============6140581723538560020==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6140581723538560020==--

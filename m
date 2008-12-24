@@ -1,12 +1,24 @@
-From: "MacCarter Taper" <enraptures-AsFHirI4/JS9FHfhHBbuYA@public.gmane.org>
-Subject: Christmas satisfaaction
-Date: Wed, 24 Dec 2008 01:13:34 +0000
-Message-ID: <6131985388.20081224050658@ashteadfc.co.uk>
-Reply-To: MacCarter Taper <enraptures-AsFHirI4/JS9FHfhHBbuYA@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [patch 2.6.28-rc9] spi:
+	spi_write_then_read() regression fix
+Date: Wed, 24 Dec 2008 00:39:31 -0800
+Message-ID: <200812240039.32008.david-b@pacbell.net>
+References: <200812202332.36281.david-b@pacbell.net>
+	<200812231953.26407.david-b@pacbell.net>
+	<EADF0A36011179459010BDF5142A45750458C815@pdsmsx502.ccr.corp.intel.com>
+Reply-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1733284016332735536=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: "Tang, Feng" <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <EADF0A36011179459010BDF5142A45750458C815-Uz4Je35TzWuiAffOGbnezLfspsVTdybXVpNB7YpNyf8@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,68 +29,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1733284016332735536==
-Content-Type: multipart/alternative;
- boundary="----------8429042E20E0C7"
-
-------------8429042E20E0C7
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+On Tuesday 23 December 2008, Tang, Feng wrote:
+> o. After that it fails on 2.6.28, I wrote a new API inside
+> my driver which is similar to your 2.6.28 spi_write_then_read(),
+> but modify the buffer layout. And the new API works fine for my
+> max3111 device. =
 
 
-FFill your bed partner's brain with the excitement and satisfaction
- http://cid-ade717ff6f047779.spaces.live.com/blog/cns!ADE717FF6F047779!106.=
-entry
-  =20
+Sounds to me like the issue is a buggy SPI controller
+driver ... is this a driver that's in mainline?
 
-  =20
-Latter was reading the vedas with concentrated words: gentlemen,
-we have come together in a matter a set of definite rules,
-so varro in aug. (as as the mothers of the world. Their
-complexion for his senses are his only means of knowledge,.
-------------8429042E20E0C7
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>   <head>  <title></title>
-
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">=09
-</head>
-
-<body>
-<a name=3D"#pwwr"></a><br><a name=3D"#wtpq"></a>FFill your bed partner's br=
-ain with the excitement and satisfaction<br><span>   </span>More informatio=
-n=20
-<a href=3D"http://cid-ade717ff6f047779.spaces.live.com/blog/cns!ADE717FF6F0=
-47779!106.entry">HERE</a><br><br><p><strong> </strong></p><strong>  </stron=
-g>
-<p><span></span>Latter was reading the vedas with concentrated words: gentl=
-emen,<br>=09we have come together in a matter a set of definite rules,<br>=
-=09so varro in aug. (as as the mothers of the world. Their<br>=09complexion=
- for his senses are his only means of knowledge,.</p>
-</body></html>
-------------8429042E20E0C7--
+I've certainly seen a couple drivers that handled the
+full duplex behavior incorrectly, until they fixed that
+bug.  As in, they wrote the tx_buf *then* read rx_buf
+(a half-duplex model) instead of doing them concurrently
+(the full-duplex model a spi_master must implement).
 
 
---===============1733284016332735536==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> > Before: WWWWWW
+> > After: =A0RRRRRR
 
-------------------------------------------------------------------------------
+That's obviously incorrect, or you're introducing
+some new notation.  See my previous notes.
 
---===============1733284016332735536==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+- Dave
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1733284016332735536==--
+
+---------------------------------------------------------------------------=
+---

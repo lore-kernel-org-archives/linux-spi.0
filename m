@@ -1,21 +1,24 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.28-rc9] spi:
-	spi_write_then_read() regression fix
-Date: Tue, 23 Dec 2008 12:54:54 -0800
-Message-ID: <200812231254.55284.david-b@pacbell.net>
+From: "Tang, Feng" <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [patch 2.6.28-rc9]
+	spi:	spi_write_then_read() regression fix
+Date: Wed, 24 Dec 2008 11:26:38 +0800
+Message-ID: <EADF0A36011179459010BDF5142A45750458C7DD@pdsmsx502.ccr.corp.intel.com>
 References: <200812202332.36281.david-b@pacbell.net>
 	<200812211648.26699.david-b@pacbell.net>
 	<alpine.LFD.2.00.0812231040080.3535@localhost.localdomain>
+	<200812231254.55284.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, Linus Torvalds
+	<torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <alpine.LFD.2.00.0812231040080.3535-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200812231254.55284.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,134 +29,118 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 23 December 2008, Linus Torvalds wrote:
-> 
-> On Sun, 21 Dec 2008, David Brownell wrote:
-> 
-> > On Sunday 21 December 2008, Linus Torvalds wrote:
-> > > 
-> > > Hmm. In addition, isn't this broken (in that same function):
-> > 
-> > No -- this is full duplex.  The write_then_read() helper is
-> > simplifying a common half-duplex idiom for short operations,
-> > but the hardware still does full duplex.  Buffer layout is:
-> > 
-> >   Before:	WWWWW0000000
-> >   After:	xxxxxRRRRRRR
-> 
-> Then, the problem is this:
-> 
->         x.tx_buf = local_buf;
->         x.rx_buf = local_buf;
-> 
-> which makes no sense. It's not two separate "tx_buf"/"rx_buf" things,
-> it's just a single "buf".
-
-In *this* specific case, yes.  That's the whole point of this
-routine:  letting drivers treat a full duplex hardware protocol
-as if it were a half duplex model.
-
-Note that the *caller* provides two separate buffers ... which
-can safely be on the stack; memcpy is used to access them.
-
-The whole local_buf thing is a bounce-buffer, letting the caller
-ignore DMA and other I/O issues that can be confusing.
-
-
-You're not quite understanding an optimization, I suspect.
-
-The original version of this code had two separate tranfers,
-and each was half duplex:  first a TX, then an RX ... and with
-the buffer pointer in the RX transfer offset as you seem to
-expect.  But it uses local_buf in the *same* way.  The only thing
-different is how the I/O is described.  With ", " separating
-the first and second transfers:
-
-  Before:	WWWWW, 0000000
-  After:	xxxxx, RRRRRRR
-
-Previously "discard RX data" (xxxxx) and "TX zeroes" (000000)
-were implicit, because the TX transfer had no RX buffer and
-then the RX transfer had no TX buffer.  (You'll get that code
-if you revert the patch, as I suggest for '28-final.)  The
-"interesting" RX data landed in the same place.
-
-Thing is, the mid-message switch between two transfers made
-for nasty performance when DMA or similar pipelining (FIFOs)
-is involved.  The cost to switch from the TX transfer to the
-RX transfer could easily double the time to perform the whole
-write-then-read message.  (And it exposed a bug in one SPI
-master controller driver, since fixed.)
-
-
-Hence the switch to a lower overhead implementation, which
-implements the same on-the-wire protocol more efficiently.
-It made the "xxxxx" and "0000000" parts explicit, and uses
-one transfer not two.  (And exposed DMA bugs in other SPI
-master controller drivers ... in one case, its fix seemed
-to resolve some longstanding hard-to-reproduce problems.)
-
-And that's why the offset to the RRRRRRR bits went from
-being explicit to being implicit:  it's doing the whole
-thing in one transfer, rather than two.
-
-
-> Having two separate pointers is not only confusing, but it's actively 
-> WRONG, since the "rx_buf" clearly does not start at local_buf.
-
-Erm, no.  It's right as is.  Watch the bits on the wire,
-or as they arrive in the buffers -- it's correct.  Bits
-are arriving and going into rx_buf, starting at exactly
-the beginning of local_buf.  
-
-But none of those bits are interesting to the caller until
-the ones read AFTER the write completes. Hence the name
-of the function:  write, then read.  SPI itself does both
-at the same time.
-
-
-> So please explain how it can _possibly_ make sense to
-> 
->  - have two separate pointers
-
-In the general case, the full duplex nature of SPI is available for
-drivers to do what they want.  This version of write_then_read() is
-using that for a performance optimization.
-
-It would be extremely surprising for a driver to write data and
-always have its transmit buffer overwritten -- unless it asked
-for that behavior.  Especially for a driver that doesn't care
-about the data the slave returns from that particular message!
-Likewise if it had to initialize each RX buffer before using it.
-
-The per-transfer interface prevents such surprises by splitting
-out the RX and TX buffers.  Code that wants overwriting can get
-it; code that doesn't, isn't forced to cope with that.
-
-
->  - and have one of them point to what is clearly not the data it is 
->    supposed to point to.
-
-See above ... you're not seeing the consequences of each transfer
-being full duplex.  There aren't many ways to package an interface
-to hardware transfers where no bit is received without transmitting
-another one:
-
-  - Only provide half duplex transfers ... not a good choice,
-    some devices do need full duplex, and custom drivers have
-    wanted to leverage the full duplex hardware.
-
-  - Only provide a primitive where every TX buffer gets clobbered
-    by RX data, and every RX buffer must be zeroed ... limiting,
-    because of half-duplex variants (Microwire, and "3-wire SPI")
-    that would be precluded.
-
-  - Provide a primitive with both RX and TX buffers, and let the
-    drivers set them up as needed.
-
-The current framework uses the last option, which still seems to
-me to be the best choice.
-
-- Dave
-
-------------------------------------------------------------------------------
+SGkgRGF2aWQsDQoNCkknbSB3cml0aW5nIGEgU1BJLVVBUlQgZGV2aWNlIGRyaXZlciBmb3IgbWF4
+MzExMSwgaXRzIHdvcmtpbmcgbWVjaGFuaXNtIGlzIGlmIHlvdSB3YW50IHJlYWQgZGF0YSBiYWNr
+LCB5b3UgbmVlZCB3cml0ZSAwIHRvIGl0IGZpcnN0LCBhbmQgYWxtb3N0IGV2ZXJ5IHJlYWRiYWNr
+IGRhdGEgZnJvbSBtYXgzMTExIGlzIG1lYW5pbmdmdWwuIE15IGRyaXZlciB1c2VzIHRoZSBzcGlf
+d3JpdGVfdGhlbl9yZWFkKCkgQVBJLCBpdCB3cml0ZSBzb21lIDBzIHRvIHRoZSBkZXZpY2UsIGFu
+ZCByZWFkIGFsbCB0aGUgZmVlZGJhY2sgZnJvbSB0aGUgZGV2aWNlLCBhcyB0aGUgZmVlZGJhY2sg
+bWF5IGhhdmUgdmFsaWQgcmVjZWl2ZSBkYXRhLiBUaGUgZm9ybWF0IGlzDQpCZWZvcmU6IFdXV1dX
+Vw0KQWZ0ZXI6ICBSUlJSUlINCg0KVGhlIGRyaXZlciB3b3JrcyBpbiAyLjYuMjcgd2l0aCB5b3Vy
+IHByZXZpb3VzIHNwaV93cml0ZV90aGVuX3JlYWQoKSBpbXBsZW1lbnRhdGlvbiwgYnV0IGZhaWxz
+IG9uIDIuNi4yOCBhcyBpdCBkdW1wcyBhbGwgdGhlIHJlYWRiYWNrIHZhbHVlIG9mIHRoZSB3cml0
+ZS4NCg0KSG9wZSB0aGlzIGNhc2UgYmUgdXNlZnVsIHRvIHRoZSBkaXNjdXNzaW9uLg0KDQpUaGFu
+a3MsDQpGZW5nDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogRGF2aWQgQnJvd25l
+bGwgW21haWx0bzpkYXZpZC1iQHBhY2JlbGwubmV0XSANClNlbnQ6IDIwMDjE6jEy1MIyNMjVIDQ6
+NTUNClRvOiBMaW51cyBUb3J2YWxkcw0KQ2M6IHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
+ZWZvcmdlLm5ldDsgQW5kcmV3IE1vcnRvbjsgVmVybm9uIFNhdWRlcjsgbGttbA0KU3ViamVjdDog
+UmU6IFtzcGktZGV2ZWwtZ2VuZXJhbF0gW3BhdGNoIDIuNi4yOC1yYzldIHNwaTogc3BpX3dyaXRl
+X3RoZW5fcmVhZCgpIHJlZ3Jlc3Npb24gZml4DQoNCk9uIFR1ZXNkYXkgMjMgRGVjZW1iZXIgMjAw
+OCwgTGludXMgVG9ydmFsZHMgd3JvdGU6DQo+IA0KPiBPbiBTdW4sIDIxIERlYyAyMDA4LCBEYXZp
+ZCBCcm93bmVsbCB3cm90ZToNCj4gDQo+ID4gT24gU3VuZGF5IDIxIERlY2VtYmVyIDIwMDgsIExp
+bnVzIFRvcnZhbGRzIHdyb3RlOg0KPiA+ID4gDQo+ID4gPiBIbW0uIEluIGFkZGl0aW9uLCBpc24n
+dCB0aGlzIGJyb2tlbiAoaW4gdGhhdCBzYW1lIGZ1bmN0aW9uKToNCj4gPiANCj4gPiBObyAtLSB0
+aGlzIGlzIGZ1bGwgZHVwbGV4LiAgVGhlIHdyaXRlX3RoZW5fcmVhZCgpIGhlbHBlciBpcw0KPiA+
+IHNpbXBsaWZ5aW5nIGEgY29tbW9uIGhhbGYtZHVwbGV4IGlkaW9tIGZvciBzaG9ydCBvcGVyYXRp
+b25zLA0KPiA+IGJ1dCB0aGUgaGFyZHdhcmUgc3RpbGwgZG9lcyBmdWxsIGR1cGxleC4gIEJ1ZmZl
+ciBsYXlvdXQgaXM6DQo+ID4gDQo+ID4gICBCZWZvcmU6CVdXV1dXMDAwMDAwMA0KPiA+ICAgQWZ0
+ZXI6CXh4eHh4UlJSUlJSUg0KPiANCj4gVGhlbiwgdGhlIHByb2JsZW0gaXMgdGhpczoNCj4gDQo+
+ICAgICAgICAgeC50eF9idWYgPSBsb2NhbF9idWY7DQo+ICAgICAgICAgeC5yeF9idWYgPSBsb2Nh
+bF9idWY7DQo+IA0KPiB3aGljaCBtYWtlcyBubyBzZW5zZS4gSXQncyBub3QgdHdvIHNlcGFyYXRl
+ICJ0eF9idWYiLyJyeF9idWYiIHRoaW5ncywNCj4gaXQncyBqdXN0IGEgc2luZ2xlICJidWYiLg0K
+DQpJbiAqdGhpcyogc3BlY2lmaWMgY2FzZSwgeWVzLiAgVGhhdCdzIHRoZSB3aG9sZSBwb2ludCBv
+ZiB0aGlzDQpyb3V0aW5lOiAgbGV0dGluZyBkcml2ZXJzIHRyZWF0IGEgZnVsbCBkdXBsZXggaGFy
+ZHdhcmUgcHJvdG9jb2wNCmFzIGlmIGl0IHdlcmUgYSBoYWxmIGR1cGxleCBtb2RlbC4NCg0KTm90
+ZSB0aGF0IHRoZSAqY2FsbGVyKiBwcm92aWRlcyB0d28gc2VwYXJhdGUgYnVmZmVycyAuLi4gd2hp
+Y2gNCmNhbiBzYWZlbHkgYmUgb24gdGhlIHN0YWNrOyBtZW1jcHkgaXMgdXNlZCB0byBhY2Nlc3Mg
+dGhlbS4NCg0KVGhlIHdob2xlIGxvY2FsX2J1ZiB0aGluZyBpcyBhIGJvdW5jZS1idWZmZXIsIGxl
+dHRpbmcgdGhlIGNhbGxlcg0KaWdub3JlIERNQSBhbmQgb3RoZXIgSS9PIGlzc3VlcyB0aGF0IGNh
+biBiZSBjb25mdXNpbmcuDQoNCg0KWW91J3JlIG5vdCBxdWl0ZSB1bmRlcnN0YW5kaW5nIGFuIG9w
+dGltaXphdGlvbiwgSSBzdXNwZWN0Lg0KDQpUaGUgb3JpZ2luYWwgdmVyc2lvbiBvZiB0aGlzIGNv
+ZGUgaGFkIHR3byBzZXBhcmF0ZSB0cmFuZmVycywNCmFuZCBlYWNoIHdhcyBoYWxmIGR1cGxleDog
+IGZpcnN0IGEgVFgsIHRoZW4gYW4gUlggLi4uIGFuZCB3aXRoDQp0aGUgYnVmZmVyIHBvaW50ZXIg
+aW4gdGhlIFJYIHRyYW5zZmVyIG9mZnNldCBhcyB5b3Ugc2VlbSB0bw0KZXhwZWN0LiAgQnV0IGl0
+IHVzZXMgbG9jYWxfYnVmIGluIHRoZSAqc2FtZSogd2F5LiAgVGhlIG9ubHkgdGhpbmcNCmRpZmZl
+cmVudCBpcyBob3cgdGhlIEkvTyBpcyBkZXNjcmliZWQuICBXaXRoICIsICIgc2VwYXJhdGluZw0K
+dGhlIGZpcnN0IGFuZCBzZWNvbmQgdHJhbnNmZXJzOg0KDQogIEJlZm9yZToJV1dXV1csIDAwMDAw
+MDANCiAgQWZ0ZXI6CXh4eHh4LCBSUlJSUlJSDQoNClByZXZpb3VzbHkgImRpc2NhcmQgUlggZGF0
+YSIgKHh4eHh4KSBhbmQgIlRYIHplcm9lcyIgKDAwMDAwMCkNCndlcmUgaW1wbGljaXQsIGJlY2F1
+c2UgdGhlIFRYIHRyYW5zZmVyIGhhZCBubyBSWCBidWZmZXIgYW5kDQp0aGVuIHRoZSBSWCB0cmFu
+c2ZlciBoYWQgbm8gVFggYnVmZmVyLiAgKFlvdSdsbCBnZXQgdGhhdCBjb2RlDQppZiB5b3UgcmV2
+ZXJ0IHRoZSBwYXRjaCwgYXMgSSBzdWdnZXN0IGZvciAnMjgtZmluYWwuKSAgVGhlDQoiaW50ZXJl
+c3RpbmciIFJYIGRhdGEgbGFuZGVkIGluIHRoZSBzYW1lIHBsYWNlLg0KDQpUaGluZyBpcywgdGhl
+IG1pZC1tZXNzYWdlIHN3aXRjaCBiZXR3ZWVuIHR3byB0cmFuc2ZlcnMgbWFkZQ0KZm9yIG5hc3R5
+IHBlcmZvcm1hbmNlIHdoZW4gRE1BIG9yIHNpbWlsYXIgcGlwZWxpbmluZyAoRklGT3MpDQppcyBp
+bnZvbHZlZC4gIFRoZSBjb3N0IHRvIHN3aXRjaCBmcm9tIHRoZSBUWCB0cmFuc2ZlciB0byB0aGUN
+ClJYIHRyYW5zZmVyIGNvdWxkIGVhc2lseSBkb3VibGUgdGhlIHRpbWUgdG8gcGVyZm9ybSB0aGUg
+d2hvbGUNCndyaXRlLXRoZW4tcmVhZCBtZXNzYWdlLiAgKEFuZCBpdCBleHBvc2VkIGEgYnVnIGlu
+IG9uZSBTUEkNCm1hc3RlciBjb250cm9sbGVyIGRyaXZlciwgc2luY2UgZml4ZWQuKQ0KDQoNCkhl
+bmNlIHRoZSBzd2l0Y2ggdG8gYSBsb3dlciBvdmVyaGVhZCBpbXBsZW1lbnRhdGlvbiwgd2hpY2gN
+CmltcGxlbWVudHMgdGhlIHNhbWUgb24tdGhlLXdpcmUgcHJvdG9jb2wgbW9yZSBlZmZpY2llbnRs
+eS4NCkl0IG1hZGUgdGhlICJ4eHh4eCIgYW5kICIwMDAwMDAwIiBwYXJ0cyBleHBsaWNpdCwgYW5k
+IHVzZXMNCm9uZSB0cmFuc2ZlciBub3QgdHdvLiAgKEFuZCBleHBvc2VkIERNQSBidWdzIGluIG90
+aGVyIFNQSQ0KbWFzdGVyIGNvbnRyb2xsZXIgZHJpdmVycyAuLi4gaW4gb25lIGNhc2UsIGl0cyBm
+aXggc2VlbWVkDQp0byByZXNvbHZlIHNvbWUgbG9uZ3N0YW5kaW5nIGhhcmQtdG8tcmVwcm9kdWNl
+IHByb2JsZW1zLikNCg0KQW5kIHRoYXQncyB3aHkgdGhlIG9mZnNldCB0byB0aGUgUlJSUlJSUiBi
+aXRzIHdlbnQgZnJvbQ0KYmVpbmcgZXhwbGljaXQgdG8gYmVpbmcgaW1wbGljaXQ6ICBpdCdzIGRv
+aW5nIHRoZSB3aG9sZQ0KdGhpbmcgaW4gb25lIHRyYW5zZmVyLCByYXRoZXIgdGhhbiB0d28uDQoN
+Cg0KPiBIYXZpbmcgdHdvIHNlcGFyYXRlIHBvaW50ZXJzIGlzIG5vdCBvbmx5IGNvbmZ1c2luZywg
+YnV0IGl0J3MgYWN0aXZlbHkgDQo+IFdST05HLCBzaW5jZSB0aGUgInJ4X2J1ZiIgY2xlYXJseSBk
+b2VzIG5vdCBzdGFydCBhdCBsb2NhbF9idWYuDQoNCkVybSwgbm8uICBJdCdzIHJpZ2h0IGFzIGlz
+LiAgV2F0Y2ggdGhlIGJpdHMgb24gdGhlIHdpcmUsDQpvciBhcyB0aGV5IGFycml2ZSBpbiB0aGUg
+YnVmZmVycyAtLSBpdCdzIGNvcnJlY3QuICBCaXRzDQphcmUgYXJyaXZpbmcgYW5kIGdvaW5nIGlu
+dG8gcnhfYnVmLCBzdGFydGluZyBhdCBleGFjdGx5DQp0aGUgYmVnaW5uaW5nIG9mIGxvY2FsX2J1
+Zi4gIA0KDQpCdXQgbm9uZSBvZiB0aG9zZSBiaXRzIGFyZSBpbnRlcmVzdGluZyB0byB0aGUgY2Fs
+bGVyIHVudGlsDQp0aGUgb25lcyByZWFkIEFGVEVSIHRoZSB3cml0ZSBjb21wbGV0ZXMuIEhlbmNl
+IHRoZSBuYW1lDQpvZiB0aGUgZnVuY3Rpb246ICB3cml0ZSwgdGhlbiByZWFkLiAgU1BJIGl0c2Vs
+ZiBkb2VzIGJvdGgNCmF0IHRoZSBzYW1lIHRpbWUuDQoNCg0KPiBTbyBwbGVhc2UgZXhwbGFpbiBo
+b3cgaXQgY2FuIF9wb3NzaWJseV8gbWFrZSBzZW5zZSB0bw0KPiANCj4gIC0gaGF2ZSB0d28gc2Vw
+YXJhdGUgcG9pbnRlcnMNCg0KSW4gdGhlIGdlbmVyYWwgY2FzZSwgdGhlIGZ1bGwgZHVwbGV4IG5h
+dHVyZSBvZiBTUEkgaXMgYXZhaWxhYmxlIGZvcg0KZHJpdmVycyB0byBkbyB3aGF0IHRoZXkgd2Fu
+dC4gIFRoaXMgdmVyc2lvbiBvZiB3cml0ZV90aGVuX3JlYWQoKSBpcw0KdXNpbmcgdGhhdCBmb3Ig
+YSBwZXJmb3JtYW5jZSBvcHRpbWl6YXRpb24uDQoNCkl0IHdvdWxkIGJlIGV4dHJlbWVseSBzdXJw
+cmlzaW5nIGZvciBhIGRyaXZlciB0byB3cml0ZSBkYXRhIGFuZA0KYWx3YXlzIGhhdmUgaXRzIHRy
+YW5zbWl0IGJ1ZmZlciBvdmVyd3JpdHRlbiAtLSB1bmxlc3MgaXQgYXNrZWQNCmZvciB0aGF0IGJl
+aGF2aW9yLiAgRXNwZWNpYWxseSBmb3IgYSBkcml2ZXIgdGhhdCBkb2Vzbid0IGNhcmUNCmFib3V0
+IHRoZSBkYXRhIHRoZSBzbGF2ZSByZXR1cm5zIGZyb20gdGhhdCBwYXJ0aWN1bGFyIG1lc3NhZ2Uh
+DQpMaWtld2lzZSBpZiBpdCBoYWQgdG8gaW5pdGlhbGl6ZSBlYWNoIFJYIGJ1ZmZlciBiZWZvcmUg
+dXNpbmcgaXQuDQoNClRoZSBwZXItdHJhbnNmZXIgaW50ZXJmYWNlIHByZXZlbnRzIHN1Y2ggc3Vy
+cHJpc2VzIGJ5IHNwbGl0dGluZw0Kb3V0IHRoZSBSWCBhbmQgVFggYnVmZmVycy4gIENvZGUgdGhh
+dCB3YW50cyBvdmVyd3JpdGluZyBjYW4gZ2V0DQppdDsgY29kZSB0aGF0IGRvZXNuJ3QsIGlzbid0
+IGZvcmNlZCB0byBjb3BlIHdpdGggdGhhdC4NCg0KDQo+ICAtIGFuZCBoYXZlIG9uZSBvZiB0aGVt
+IHBvaW50IHRvIHdoYXQgaXMgY2xlYXJseSBub3QgdGhlIGRhdGEgaXQgaXMgDQo+ICAgIHN1cHBv
+c2VkIHRvIHBvaW50IHRvLg0KDQpTZWUgYWJvdmUgLi4uIHlvdSdyZSBub3Qgc2VlaW5nIHRoZSBj
+b25zZXF1ZW5jZXMgb2YgZWFjaCB0cmFuc2Zlcg0KYmVpbmcgZnVsbCBkdXBsZXguICBUaGVyZSBh
+cmVuJ3QgbWFueSB3YXlzIHRvIHBhY2thZ2UgYW4gaW50ZXJmYWNlDQp0byBoYXJkd2FyZSB0cmFu
+c2ZlcnMgd2hlcmUgbm8gYml0IGlzIHJlY2VpdmVkIHdpdGhvdXQgdHJhbnNtaXR0aW5nDQphbm90
+aGVyIG9uZToNCg0KICAtIE9ubHkgcHJvdmlkZSBoYWxmIGR1cGxleCB0cmFuc2ZlcnMgLi4uIG5v
+dCBhIGdvb2QgY2hvaWNlLA0KICAgIHNvbWUgZGV2aWNlcyBkbyBuZWVkIGZ1bGwgZHVwbGV4LCBh
+bmQgY3VzdG9tIGRyaXZlcnMgaGF2ZQ0KICAgIHdhbnRlZCB0byBsZXZlcmFnZSB0aGUgZnVsbCBk
+dXBsZXggaGFyZHdhcmUuDQoNCiAgLSBPbmx5IHByb3ZpZGUgYSBwcmltaXRpdmUgd2hlcmUgZXZl
+cnkgVFggYnVmZmVyIGdldHMgY2xvYmJlcmVkDQogICAgYnkgUlggZGF0YSwgYW5kIGV2ZXJ5IFJY
+IGJ1ZmZlciBtdXN0IGJlIHplcm9lZCAuLi4gbGltaXRpbmcsDQogICAgYmVjYXVzZSBvZiBoYWxm
+LWR1cGxleCB2YXJpYW50cyAoTWljcm93aXJlLCBhbmQgIjMtd2lyZSBTUEkiKQ0KICAgIHRoYXQg
+d291bGQgYmUgcHJlY2x1ZGVkLg0KDQogIC0gUHJvdmlkZSBhIHByaW1pdGl2ZSB3aXRoIGJvdGgg
+UlggYW5kIFRYIGJ1ZmZlcnMsIGFuZCBsZXQgdGhlDQogICAgZHJpdmVycyBzZXQgdGhlbSB1cCBh
+cyBuZWVkZWQuDQoNClRoZSBjdXJyZW50IGZyYW1ld29yayB1c2VzIHRoZSBsYXN0IG9wdGlvbiwg
+d2hpY2ggc3RpbGwgc2VlbXMgdG8NCm1lIHRvIGJlIHRoZSBiZXN0IGNob2ljZS4NCg0KLSBEYXZl
+DQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18NCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdA0Kc3BpLWRl
+dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0DQpodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbA0KLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNw
+aS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8v
+c3BpLWRldmVsLWdlbmVyYWwK

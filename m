@@ -1,24 +1,10 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.28-rc9] spi:
-	spi_write_then_read() regression fix
-Date: Wed, 24 Dec 2008 00:39:31 -0800
-Message-ID: <200812240039.32008.david-b@pacbell.net>
-References: <200812202332.36281.david-b@pacbell.net>
-	<200812231953.26407.david-b@pacbell.net>
-	<EADF0A36011179459010BDF5142A45750458C815@pdsmsx502.ccr.corp.intel.com>
-Reply-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: "Tang, Feng" <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: =?GB2312?B?uanH89DFz6I=?= <fhgfjurrjnfn546jy-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] è¯·è”ç³»
+Date: Wed, 24 Dec 2008 16:49:28 +0800
+Message-ID: <E1LFPQ2-00011I-Jy@3yr0jf1.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============6140581723538560020=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <EADF0A36011179459010BDF5142A45750458C815-Uz4Je35TzWuiAffOGbnezLfspsVTdybXVpNB7YpNyf8@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -29,32 +15,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 23 December 2008, Tang, Feng wrote:
-> o. After that it fails on 2.6.28, I wrote a new API inside
-> my driver which is similar to your 2.6.28 spi_write_then_read(),
-> but modify the buffer layout. And the new API works fine for my
-> max3111 device. =
+--===============6140581723538560020==
+Content-Type: text/plain;charset="GB2312"
+
+×ğ¾´µÄ¹«Ë¾Ø“ØŸÈË:Äú:ºÃ! 
+    ±¾¹«Ë¾¿ÉÓÅ»İ¿ª¾ßÉÌÆ·(ÉÌÒµ)äNÊÛ.¹¤˜IäNÊÛ.·şÎñÒµ.½¨ÖşÒµ.¹ã¸æ
+Òµ.×ÉÑ¯·ÑµÈ<<·¢.Æ±>>
+   ÊÕÈ¡µÄ¶ücÓÅ»İ,¾ßÌå¸ù¾İËù¿ªĞĞÒµµÄ½ğ¶î´óĞ¡ÉÌÌ¸¡£ÈçÔÚÆ±µÄÕæÎ±
+·½ÃæÓĞÈÎºÎÒÉÂÇ»òµ£ĞÄ,¿Éµç»°.ÍøÉÏ²éÑ¯ÑéÖ¤ºó¸¶¿î£¡ÈçÓĞÕâ·½ÃæµÄĞè
+ÒªÇëÁªÏµ:
+
+      ÁªÏµµç»°£º135-4456-9836
+      Â“ÏµÈË£ºÕÅ(ÏÈÉú)
+      ùi´ïÊµÒµÓĞÏŞ¹«Ë¾
 
 
-Sounds to me like the issue is a buggy SPI controller
-driver ... is this a driver that's in mainline?
+--===============6140581723538560020==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-I've certainly seen a couple drivers that handled the
-full duplex behavior incorrectly, until they fixed that
-bug.  As in, they wrote the tx_buf *then* read rx_buf
-(a half-duplex model) instead of doing them concurrently
-(the full-duplex model a spi_master must implement).
+------------------------------------------------------------------------------
 
+--===============6140581723538560020==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> > Before: WWWWWW
-> > After: =A0RRRRRR
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-That's obviously incorrect, or you're introducing
-some new notation.  See my previous notes.
-
-- Dave
-
-
-
----------------------------------------------------------------------------=
----
+--===============6140581723538560020==--

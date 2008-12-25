@@ -1,23 +1,24 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+From: "Tang, Feng" <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Subject: Re: [patch 2.6.28-rc9] spi:
-	spi_write_then_read() regression fix
-Date: Wed, 24 Dec 2008 11:43:04 -0800
-Message-ID: <200812241143.04706.david-b@pacbell.net>
+ spi_write_then_read() regression fix
+Date: Thu, 25 Dec 2008 15:03:55 +0800
+Message-ID: <EADF0A36011179459010BDF5142A4575045D46EF@pdsmsx502.ccr.corp.intel.com>
 References: <200812202332.36281.david-b@pacbell.net>
+	<200812231953.26407.david-b@pacbell.net>
+	<EADF0A36011179459010BDF5142A45750458C815@pdsmsx502.ccr.corp.intel.com>
 	<200812240039.32008.david-b@pacbell.net>
-	<20081224085844.GA11197@diamond.tkos.co.il>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
 	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+	Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20081224085844.GA11197-l+PWtdWbHAs2zBO71LVbc/qBs+8SCbDb@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200812240039.32008.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,41 +29,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 24 December 2008, Baruch Siach wrote:
-> > I've certainly seen a couple drivers that handled the
-> > full duplex behavior incorrectly, until they fixed that
-> > bug. =A0As in, they wrote the tx_buf *then* read rx_buf
-> > (a half-duplex model) instead of doing them concurrently
-> > (the full-duplex model a spi_master must implement).
-> =
-
-> May you name those drivers and the commits with the bug fixes?
-> I couldn't find them in Linus' tree.
-
-I don't recall such a driver merging to mainline;
-the idea is to catch such fundamental bugs before
-they merge.
-
-
-> I'm working on an SPI master (DesignWare) driver and I want
-> to make sure that  I'm implementing the API correctly.
-
-Lacking a test suite for the spi_master drivers,
-I suggest that you verify your driver works with
-some of the existing protocol drivers.  If at all
-possible, hook up a couple SPI slaves to different
-chipselects on your master, and test them all.
-
-Then, if you find misbehavior when you test a
-driver that's already known to work with a bunch
-of controller drivers, it's more likely that the
-bug is in your new code than the existing code.
-
-- Dave
-
-
-
-
-
----------------------------------------------------------------------------=
----
+DQoNCg0KPi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogRGF2aWQgQnJvd25lbGwg
+W21haWx0bzpkYXZpZC1iQHBhY2JlbGwubmV0XQ0KPlNlbnQ6IDIwMDjlubQxMuaciDI05pelIDE2
+OjQwDQo+VG86IFRhbmcsIEZlbmcNCj5DYzogTGludXMgVG9ydmFsZHM7IHNwaS1kZXZlbC1nZW5l
+cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldDsgQW5kcmV3IE1vcnRvbjsNCj5WZXJub24gU2F1ZGVy
+DQo+U3ViamVjdDogUmU6IFtzcGktZGV2ZWwtZ2VuZXJhbF0gW3BhdGNoIDIuNi4yOC1yYzldIHNw
+aTogc3BpX3dyaXRlX3RoZW5fcmVhZCgpDQo+cmVncmVzc2lvbiBmaXgNCj4NCj5PbiBUdWVzZGF5
+IDIzIERlY2VtYmVyIDIwMDgsIFRhbmcsIEZlbmcgd3JvdGU6DQo+PiBvLiBBZnRlciB0aGF0IGl0
+IGZhaWxzIG9uIDIuNi4yOCwgSSB3cm90ZSBhIG5ldyBBUEkgaW5zaWRlDQo+PiBteSBkcml2ZXIg
+d2hpY2ggaXMgc2ltaWxhciB0byB5b3VyIDIuNi4yOCBzcGlfd3JpdGVfdGhlbl9yZWFkKCksDQo+
+PiBidXQgbW9kaWZ5IHRoZSBidWZmZXIgbGF5b3V0LiBBbmQgdGhlIG5ldyBBUEkgd29ya3MgZmlu
+ZSBmb3IgbXkNCj4+IG1heDMxMTEgZGV2aWNlLg0KPg0KPlNvdW5kcyB0byBtZSBsaWtlIHRoZSBp
+c3N1ZSBpcyBhIGJ1Z2d5IFNQSSBjb250cm9sbGVyDQo+ZHJpdmVyIC4uLiBpcyB0aGlzIGEgZHJp
+dmVyIHRoYXQncyBpbiBtYWlubGluZT8NCltUYW5nLCBGZW5nXSBUaGUgSFcgSSB1c2UgaXMgYSBT
+UEkgY29udHJvbGxlciBmcm9tIFN5bm9wc3lzLCBJIHdyb3RlIGFuZCBhbSBzdGlsbCBkZWJ1Z2dp
+bmcgdGhlIGRyaXZlciBhcyB0aGUgc2lsaWNvbiBpcyBub3Qgc3RhYmxlIHlldC4NCj4NCj5JJ3Zl
+IGNlcnRhaW5seSBzZWVuIGEgY291cGxlIGRyaXZlcnMgdGhhdCBoYW5kbGVkIHRoZQ0KPmZ1bGwg
+ZHVwbGV4IGJlaGF2aW9yIGluY29ycmVjdGx5LCB1bnRpbCB0aGV5IGZpeGVkIHRoYXQNCj5idWcu
+ICBBcyBpbiwgdGhleSB3cm90ZSB0aGUgdHhfYnVmICp0aGVuKiByZWFkIHJ4X2J1Zg0KPihhIGhh
+bGYtZHVwbGV4IG1vZGVsKSBpbnN0ZWFkIG9mIGRvaW5nIHRoZW0gY29uY3VycmVudGx5DQo+KHRo
+ZSBmdWxsLWR1cGxleCBtb2RlbCBhIHNwaV9tYXN0ZXIgbXVzdCBpbXBsZW1lbnQpLg0KPg0KPg0K
+Pj4gPiBCZWZvcmU6IFdXV1dXVw0KPj4gPiBBZnRlcjogwqBSUlJSUlINCj4NCj5UaGF0J3Mgb2J2
+aW91c2x5IGluY29ycmVjdCwgb3IgeW91J3JlIGludHJvZHVjaW5nDQo+c29tZSBuZXcgbm90YXRp
+b24uICBTZWUgbXkgcHJldmlvdXMgbm90ZXMuDQoNCkkgYWdyZWUgd2l0aCB5b3VyIHNlY29uZCBh
+c3N1bXB0aW9uIDopLiBJdCdzIGEgbmV3IHVzZSBjYXNlLA0KZm9yIHRoZSBtYXgzMTExIHNwaS11
+YXJ0IGRldmljZSwgbm8gbWF0dGVyIHlvdSB3cml0ZSBhIHZhbGlkIGNoYXIgb3IgYSAwIHRvIGl0
+LCB0aGUgcmVhZGJhY2sgZGF0YSBtYXkgY29udGFpbiBhIHZhbGlkIGRhdGEgKHNvbWUgYml0cyBp
+bmRpY2F0aW5nIHRoZSBkYXRhIGlzIHZhbGlkIG9yIG5vdCksIHNvIG5vIGRhdGEgc2hvdWxkIGJl
+IGR1bXBlZC4gRm9sbG93aW5nIGxpbmsgY29udGFpbnMgdGhlIGRhdGFzaGVldCBvZiBtYXgzMTEx
+IGh0dHA6Ly9wZGYxLmFsbGRhdGFzaGVldC5jb20vZGF0YXNoZWV0LXBkZi92aWV3LzczMTIxL01B
+WElNL01BWDMxMTAuaHRtbCAuIA0KDQo+DQo+LSBEYXZlDQo+DQoNClRoYW5rcywNCkZlbmcNCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
+c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

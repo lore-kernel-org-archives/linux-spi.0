@@ -1,24 +1,12 @@
-From: "Tang, Feng" <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [patch 2.6.28-rc9] spi:
- spi_write_then_read() regression fix
-Date: Thu, 25 Dec 2008 15:03:55 +0800
-Message-ID: <EADF0A36011179459010BDF5142A4575045D46EF@pdsmsx502.ccr.corp.intel.com>
-References: <200812202332.36281.david-b@pacbell.net>
-	<200812231953.26407.david-b@pacbell.net>
-	<EADF0A36011179459010BDF5142A45750458C815@pdsmsx502.ccr.corp.intel.com>
-	<200812240039.32008.david-b@pacbell.net>
+From: =?GB2312?B?zMbPyMn6?= <TGRGRTUT6Uty-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] P票P
+Date: Fri, 26 Dec 2008 00:13:36 +0800
+Message-ID: <E1LFsqq-0002zD-BE@3yr0jf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Vernon Sauder <vernoninhand-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200812240039.32008.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -29,38 +17,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCg0KPi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogRGF2aWQgQnJvd25lbGwg
-W21haWx0bzpkYXZpZC1iQHBhY2JlbGwubmV0XQ0KPlNlbnQ6IDIwMDjlubQxMuaciDI05pelIDE2
-OjQwDQo+VG86IFRhbmcsIEZlbmcNCj5DYzogTGludXMgVG9ydmFsZHM7IHNwaS1kZXZlbC1nZW5l
-cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldDsgQW5kcmV3IE1vcnRvbjsNCj5WZXJub24gU2F1ZGVy
-DQo+U3ViamVjdDogUmU6IFtzcGktZGV2ZWwtZ2VuZXJhbF0gW3BhdGNoIDIuNi4yOC1yYzldIHNw
-aTogc3BpX3dyaXRlX3RoZW5fcmVhZCgpDQo+cmVncmVzc2lvbiBmaXgNCj4NCj5PbiBUdWVzZGF5
-IDIzIERlY2VtYmVyIDIwMDgsIFRhbmcsIEZlbmcgd3JvdGU6DQo+PiBvLiBBZnRlciB0aGF0IGl0
-IGZhaWxzIG9uIDIuNi4yOCwgSSB3cm90ZSBhIG5ldyBBUEkgaW5zaWRlDQo+PiBteSBkcml2ZXIg
-d2hpY2ggaXMgc2ltaWxhciB0byB5b3VyIDIuNi4yOCBzcGlfd3JpdGVfdGhlbl9yZWFkKCksDQo+
-PiBidXQgbW9kaWZ5IHRoZSBidWZmZXIgbGF5b3V0LiBBbmQgdGhlIG5ldyBBUEkgd29ya3MgZmlu
-ZSBmb3IgbXkNCj4+IG1heDMxMTEgZGV2aWNlLg0KPg0KPlNvdW5kcyB0byBtZSBsaWtlIHRoZSBp
-c3N1ZSBpcyBhIGJ1Z2d5IFNQSSBjb250cm9sbGVyDQo+ZHJpdmVyIC4uLiBpcyB0aGlzIGEgZHJp
-dmVyIHRoYXQncyBpbiBtYWlubGluZT8NCltUYW5nLCBGZW5nXSBUaGUgSFcgSSB1c2UgaXMgYSBT
-UEkgY29udHJvbGxlciBmcm9tIFN5bm9wc3lzLCBJIHdyb3RlIGFuZCBhbSBzdGlsbCBkZWJ1Z2dp
-bmcgdGhlIGRyaXZlciBhcyB0aGUgc2lsaWNvbiBpcyBub3Qgc3RhYmxlIHlldC4NCj4NCj5JJ3Zl
-IGNlcnRhaW5seSBzZWVuIGEgY291cGxlIGRyaXZlcnMgdGhhdCBoYW5kbGVkIHRoZQ0KPmZ1bGwg
-ZHVwbGV4IGJlaGF2aW9yIGluY29ycmVjdGx5LCB1bnRpbCB0aGV5IGZpeGVkIHRoYXQNCj5idWcu
-ICBBcyBpbiwgdGhleSB3cm90ZSB0aGUgdHhfYnVmICp0aGVuKiByZWFkIHJ4X2J1Zg0KPihhIGhh
-bGYtZHVwbGV4IG1vZGVsKSBpbnN0ZWFkIG9mIGRvaW5nIHRoZW0gY29uY3VycmVudGx5DQo+KHRo
-ZSBmdWxsLWR1cGxleCBtb2RlbCBhIHNwaV9tYXN0ZXIgbXVzdCBpbXBsZW1lbnQpLg0KPg0KPg0K
-Pj4gPiBCZWZvcmU6IFdXV1dXVw0KPj4gPiBBZnRlcjogwqBSUlJSUlINCj4NCj5UaGF0J3Mgb2J2
-aW91c2x5IGluY29ycmVjdCwgb3IgeW91J3JlIGludHJvZHVjaW5nDQo+c29tZSBuZXcgbm90YXRp
-b24uICBTZWUgbXkgcHJldmlvdXMgbm90ZXMuDQoNCkkgYWdyZWUgd2l0aCB5b3VyIHNlY29uZCBh
-c3N1bXB0aW9uIDopLiBJdCdzIGEgbmV3IHVzZSBjYXNlLA0KZm9yIHRoZSBtYXgzMTExIHNwaS11
-YXJ0IGRldmljZSwgbm8gbWF0dGVyIHlvdSB3cml0ZSBhIHZhbGlkIGNoYXIgb3IgYSAwIHRvIGl0
-LCB0aGUgcmVhZGJhY2sgZGF0YSBtYXkgY29udGFpbiBhIHZhbGlkIGRhdGEgKHNvbWUgYml0cyBp
-bmRpY2F0aW5nIHRoZSBkYXRhIGlzIHZhbGlkIG9yIG5vdCksIHNvIG5vIGRhdGEgc2hvdWxkIGJl
-IGR1bXBlZC4gRm9sbG93aW5nIGxpbmsgY29udGFpbnMgdGhlIGRhdGFzaGVldCBvZiBtYXgzMTEx
-IGh0dHA6Ly9wZGYxLmFsbGRhdGFzaGVldC5jb20vZGF0YXNoZWV0LXBkZi92aWV3LzczMTIxL01B
-WElNL01BWDMxMTAuaHRtbCAuIA0KDQo+DQo+LSBEYXZlDQo+DQoNClRoYW5rcywNCkZlbmcNCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
-c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+CiAgxOO6wzogsb65q8u+0tS24LzSuavLvrrP1/fTxbvdtPq/qi+3oi/GsQogICAKICAgMaO6xtXN
+qMnMxrfP+srb16jTw7eiL8axOwogICAyOtTLyuTStdeo08O3oi/GsaOouavCt6GixNq6082z0ru7
+9c7v1MvK5Neo08O3oi/GsaOpCiAgIDM6ueO45tK116jTw7eiL8axCiAgIDSju72o1v7Stdeo08O3
+oi/GsQogICA1Osbky/y3/s7x0rXXqNPDt6IvxrF7tuDW1tDQ0rXXqNPDt6IvxrF9CiAgyOfT0NDo
+0qqjrLu2063E+tPrztLBqs+1o7ogCiAgICAgICAgICDBqs+1yMstLSAgICDMxs/IyfqjujEzNDEw
+ODk3NzU4CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

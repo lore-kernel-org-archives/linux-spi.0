@@ -1,47 +1,98 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 Subject: Re: [PATCH v5] spi: Add PPC4xx SPI driver
-Date: Sat, 27 Dec 2008 11:32:25 -0800
-Message-ID: <200812271132.25468.david-b@pacbell.net>
+Date: Sun, 28 Dec 2008 08:36:55 +1100
+Message-ID: <20081228083655.0a59d6de.sfr@canb.auug.org.au>
 References: <1227628088-10849-1-git-send-email-sr@denx.de>
+	<200812271132.25468.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1227628088-10849-1-git-send-email-sr-ynQEQJNshbs@public.gmane.org>
-Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0656501824=="
+Cc: linuxppc-dev@ozlabs.org, Stefan Roese <sr@denx.de>,
+	spi-devel-general@lists.sourceforge.net
+To: David Brownell <david-b@pacbell.net>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org>
+In-Reply-To: <200812271132.25468.david-b@pacbell.net>
+List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
+List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
+List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
+Mime-version: 1.0
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-Also:
+--===============0656501824==
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Sun__28_Dec_2008_08_36_55_+1100_8E=Qtt2W.Yy1GNTk"
 
-> +static struct of_platform_driver spi_ppc4xx_of_driver =3D {
-> +=A0=A0=A0=A0=A0=A0=A0.owner =3D THIS_MODULE,
-> +=A0=A0=A0=A0=A0=A0=A0.name =3D DRIVER_NAME,
+--Signature=_Sun__28_Dec_2008_08_36_55_+1100_8E=Qtt2W.Yy1GNTk
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I'd hope the PPC folk eliminate this duplication soonish.
-Those fields are obvious duplicates of the driver model
-fields...
+Hi David, Stefan,
 
+On Sat, 27 Dec 2008 11:32:25 -0800 David Brownell <david-b@pacbell.net> wro=
+te:
+>
+> Also:
+>=20
+> > +static struct of_platform_driver spi_ppc4xx_of_driver =3D {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.owner =3D THIS_MODULE,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.name =3D DRIVER_NAME,
+>=20
+> I'd hope the PPC folk eliminate this duplication soonish.
+> Those fields are obvious duplicates of the driver model
+> fields...
 
-> +=A0=A0=A0=A0=A0=A0=A0.match_table =3D spi_ppc4xx_of_match,
-> +=A0=A0=A0=A0=A0=A0=A0.probe =3D spi_ppc4xx_of_probe,
-> +=A0=A0=A0=A0=A0=A0=A0.remove =3D __exit_p(spi_ppc4xx_of_remove),
-> +=A0=A0=A0=A0=A0=A0=A0.driver =3D {
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0.name =3D DRIVER_NAME,
-> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0.owner =3D THIS_MODULE,
-> +=A0=A0=A0=A0=A0=A0=A0},
-> +};
+We are on the path (have been for some time).  Only the driver model
+versions should be filled in for new drivers.  For old drivers we copy
+the values into the driver model fields if they are not already set.  We
+intend to remove the of_platform_drivers versions of "name" and "owner"
+soon.
 
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.match_table =3D spi_ppc4xx_=
+of_match,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.probe =3D spi_ppc4xx_of_pro=
+be,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.remove =3D __exit_p(spi_ppc=
+4xx_of_remove),
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.driver =3D {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0.name =3D DRIVER_NAME,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0.owner =3D THIS_MODULE,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0},
+> > +};
+--=20
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au
+http://www.canb.auug.org.au/~sfr/
 
+--Signature=_Sun__28_Dec_2008_08_36_55_+1100_8E=Qtt2W.Yy1GNTk
+Content-Type: application/pgp-signature
 
----------------------------------------------------------------------------=
----
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iEYEARECAAYFAklWn/cACgkQjjKRsyhoI8yTdQCfUK7NBTDokfdB2EZSBr5SIoss
+GygAnjsmRvhyCNyN9k3FFAKx6NdbDXBa
+=A0Pt
+-----END PGP SIGNATURE-----
+
+--Signature=_Sun__28_Dec_2008_08_36_55_+1100_8E=Qtt2W.Yy1GNTk--
+
+--===============0656501824==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linuxppc-dev mailing list
+Linuxppc-dev@ozlabs.org
+https://ozlabs.org/mailman/listinfo/linuxppc-dev
+--===============0656501824==--

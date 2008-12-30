@@ -1,13 +1,11 @@
-From: Guennadi Liakhovetski <lg-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH] fix SPI bitbang drivers'
-	.setup_transfer() method
-Date: Tue, 30 Dec 2008 12:45:51 +0100 (CET)
-Message-ID: <Pine.LNX.4.64.0812301243030.4059@axis700.grange>
+From: =?GB2312?B?1cXPyMn6?= <tyrhfyrt2576t-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM]
+Date: Wed, 31 Dec 2008 03:00:05 +0800
+Message-ID: <E1LHjpo-0008Vb-H5@335xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,55 +17,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Multiple SPI bitbang drivers do not verify t->bits_per_word and 
-t->speed_hz for != 0 in their .setup_transfer() methods. Fix them.
-
-Signed-off-by: Guennadi Liakhovetski <lg-ynQEQJNshbs@public.gmane.org>
----
-diff --git a/drivers/spi/au1550_spi.c b/drivers/spi/au1550_spi.c
-index b02f25c..3ab3728 100644
---- a/drivers/spi/au1550_spi.c
-+++ b/drivers/spi/au1550_spi.c
-@@ -237,8 +237,8 @@ static int au1550_spi_setupxfer(struct spi_device *spi, struct spi_transfer *t)
- 	unsigned bpw, hz;
- 	u32 cfg, stat;
- 
--	bpw = t ? t->bits_per_word : spi->bits_per_word;
--	hz = t ? t->speed_hz : spi->max_speed_hz;
-+	bpw = t && t->bits_per_word ? t->bits_per_word : spi->bits_per_word;
-+	hz = t && t->speed_hz ? t->speed_hz : spi->max_speed_hz;
- 
- 	if (bpw < 4 || bpw > 24) {
- 		dev_err(&spi->dev, "setupxfer: invalid bits_per_word=%d\n",
-diff --git a/drivers/spi/spi_s3c24xx.c b/drivers/spi/spi_s3c24xx.c
-index 256d183..39c3f4d 100644
---- a/drivers/spi/spi_s3c24xx.c
-+++ b/drivers/spi/spi_s3c24xx.c
-@@ -112,8 +112,8 @@ static int s3c24xx_spi_setupxfer(struct spi_device *spi,
- 	unsigned int hz;
- 	unsigned int div;
- 
--	bpw = t ? t->bits_per_word : spi->bits_per_word;
--	hz  = t ? t->speed_hz : spi->max_speed_hz;
-+	bpw = t && t->bits_per_word ? t->bits_per_word : spi->bits_per_word;
-+	hz  = t && t->speed_hz ? t->speed_hz : spi->max_speed_hz;
- 
- 	if (bpw != 8) {
- 		dev_err(&spi->dev, "invalid bits-per-word (%d)\n", bpw);
-diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
-index 68d6f49..bee1792 100644
---- a/drivers/spi/xilinx_spi.c
-+++ b/drivers/spi/xilinx_spi.c
-@@ -147,8 +147,8 @@ static int xilinx_spi_setup_transfer(struct spi_device *spi,
- 	u32 hz;
- 	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
- 
--	bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
--	hz = (t) ? t->speed_hz : spi->max_speed_hz;
-+	bits_per_word = t && t->bits_per_word ? t->bits_per_word : spi->bits_per_word;
-+	hz = t && t->speed_hz ? t->speed_hz : spi->max_speed_hz;
- 	if (bits_per_word != 8) {
- 		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
- 			__func__, bits_per_word);
-
-------------------------------------------------------------------------------
+CiDE+rrDo7ogCiAgICAgIM7SuavLvtPQ0ruyv7fW16jTw7eioaqhqsaxL7T6v6qjuwogILnzuavL
+vsjn09DQ6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6IAoKICC4utTwyMujutXFz8jJ+qOoMKOp
+MTM2NDIzNDcyMzUKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
+cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

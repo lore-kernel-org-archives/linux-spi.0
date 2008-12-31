@@ -1,10 +1,11 @@
-From: =?GB2312?B?s8LJ+g==?= <sdtgert-cqUyKWFmAYAAvxtiuMwx3w@public.gmane.org >
-Subject: [SPAM] è¯·æŸ¥æ”¶!
-Date: Wed, 31 Dec 2008 05:54:08 +0800
-Message-ID: <E1LHmXk-0007EH-Do@h25xhf1.ch3.sourceforge.com>
-Reply-To: sdtgert-cqUyKWFmAYAAvxtiuMwx3w@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============4325928778430020726=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: =?GB2312?B?wO7PyMn6?= <hrtdfhdhrthttg-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] Bå‘-Vç¥¨8N
+Date: Wed, 31 Dec 2008 12:55:56 +0800
+Message-ID: <E1LHt7J-0000Ye-NQ@h25xhf1.ch3.sourceforge.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,40 +17,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4325928778430020726==
-Content-Type: text/plain;charset="GB2312"
-
-±¾Ë¾ÏÖ¿É´ú£¤ÀïÈ«‡ø¸÷µØ…^ĞĞ˜IµÄ¸÷·N °l \àÑ .¶ \ ÂÊ ƒ »İ,Ô”¼š¶\ÂÊ°´ÕÕ é_ $àÑ ½ğî~´óĞ¡íëŠÇ¢ Õ„.
-  
-       ±¾¹«Ë¾´_±£Ëùé_³öµÄ °l \ àÑ ÊÇ¶ „ÕµÇ Ó›îIÈ¡µÄ.ÙF¹«Ë¾Èç¹û²»·ÅĞÄ¿ÉÒÔÏÈò ×CááÔÙ¸¶ ¿î.±¾¹«
-  
-  Ë¾ß€¿ÉÌá¹©½o´óî~¿îí—´úŞkÈË»Ø¿Û·ş„Õ.Œ¦ÓÚÎÒ‚ƒµÄºÏ×÷êPÏµÊÇ½^Œ¦±£ÃÜµÄ.ÙF¹«Ë¾ÈçÓĞĞèÒªšgÓ­
-
-  íëŠ×ÉÔƒ.
-
-           Â“ Ïµ ÈË: ³Â Éú
-           Â“ÏµëŠÔ’: 137-9838-0040  £¨éLÆÚÓĞĞ§£©
-           à]    Ïä: hongdafp-9Onoh4P/yGk@public.gmane.org
-           Q      Q: 864639228
-
-
---===============4325928778430020726==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-
---===============4325928778430020726==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4325928778430020726==--
+ICAKICAgxPq6w6O6ICAgIAogICAgICAgICAgIM7SuavLvtPQtdjLsC0txrEvtPq/qqO7yOc6CiAg
+IKOoMaOpxtXNqMnMxrfP+srby7AtLcaxo7sKICAgo6gyo6m547jm0rWhorj3wOC3/s7x0rXLsC0t
+xrGjuyAKICAgo6gzo6nUy8rkoaK9qNb+sLLXsKGiuaSzzC0tLS3GsQogICCjqDSjqSDG1c2o1PbW
+tcuwt6LGsS+1yLXIoaMKICAgyOfT0NDo0qqjrLu2063E+tPrztLBqs+1o7oKCiAgICAgICAgILi6
+1PDIy6O6wO7PyMn6o6gwo6kxMzY4OTU1NjA0MwoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5l
+cmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
+aHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdl
+bmVyYWwK

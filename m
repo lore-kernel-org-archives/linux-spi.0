@@ -1,7 +1,7 @@
-From: "Steven" <joel_rodriguez-vYQpPBDJ2Yd5UIUS4Q93Wb/el7Whxv6zAL8bYrjMMd8@public.gmane.org>
-Subject: [SPAM] Have a Happy New Year!
-Date: Wed, 31 Dec 2008 15:38:45 +0300
-Message-ID: <20081231153845.7040106@eur.appliedbiosystems.com>
+From: "Edward" <quothd-E2eHskfVrIqHXe+LvDLADg@public.gmane.org>
+Subject: [SPAM] New Year E-card for you
+Date: Thu, 1 Jan 2009 12:07:35 +1000
+Message-ID: <20090101120735.3030901@osumc.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,10 +17,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Steven sent a New Year ecard.
-Click on the link below to view your New Year card: 
-http://cardnewyear.com/?id=923226c48d057ad241
-Regards, Webmaster
+Edward just sent you an ecard.
+View your eGreeting at: http://superyearcard.com/?cardid=ccaa90d94051479c8
+Blessings to you from the riversongs.com
 
 
 ------------------------------------------------------------------------------

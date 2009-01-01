@@ -1,11 +1,11 @@
-From: "Edward" <quothd-E2eHskfVrIqHXe+LvDLADg@public.gmane.org>
-Subject: [SPAM] New Year E-card for you
-Date: Thu, 1 Jan 2009 12:07:35 +1000
-Message-ID: <20090101120735.3030901@osumc.edu>
+From: "Steven" <mfv04-1cPMCnQ5U/FBa3fvozWRvQC/G2K4zDHf@public.gmane.org>
+Subject: [SPAM] I made an Ecard for U!
+Date: Fri, 2 Jan 2009 09:11:07 +1200
+Message-ID: <001b01c96c4d$a94ae830$b691ecbe@MASSIVESSV8rfosxf>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,9 +17,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Edward just sent you an ecard.
-View your eGreeting at: http://superyearcard.com/?cardid=ccaa90d94051479c8
-Blessings to you from the riversongs.com
+Steven has created for you an electronic greeting card.
+Click the following link: http://newlifeyearsite.com/?ID=6720b945dd3429698
+For your convenience, the greeting card will be available for the next 30 days.
 
 
 ------------------------------------------------------------------------------

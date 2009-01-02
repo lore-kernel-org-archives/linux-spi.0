@@ -1,11 +1,11 @@
-From: "Steven" <mfv04-1cPMCnQ5U/FBa3fvozWRvQC/G2K4zDHf@public.gmane.org>
-Subject: [SPAM] I made an Ecard for U!
-Date: Fri, 2 Jan 2009 09:11:07 +1200
-Message-ID: <001b01c96c4d$a94ae830$b691ecbe@MASSIVESSV8rfosxf>
+From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 本司有多余税票代开，税点特优，可验证后付款
+Date: Fri, 2 Jan 2009 09:16:11 +0800
+Message-ID: <E1LIYcF-0002ap-PA@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,9 +17,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Steven has created for you an electronic greeting card.
-Click the following link: http://newlifeyearsite.com/?ID=6720b945dd3429698
-For your convenience, the greeting card will be available for the next 30 days.
-
-
-------------------------------------------------------------------------------
+ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
+vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
+1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
+uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
+xrG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
+uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/qsax19y98Lbu
+tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rGsdXm
+yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
+7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
+o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
+z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
+yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

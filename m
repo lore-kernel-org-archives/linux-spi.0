@@ -1,13 +1,16 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH,
-	RFC] Driver for the Synopsys DesignWare SPI master
-Date: Mon, 5 Jan 2009 19:14:19 +0200
-Message-ID: <20090105171417.GF3390@tarshish>
+From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v5] spi: Add PPC4xx SPI driver
+Date: Mon, 5 Jan 2009 19:12:25 +0100
+Message-ID: <200901051912.25874.sr__28061.8659373888$1231179300$gmane$org@denx.de>
+References: <1227628088-10849-1-git-send-email-sr@denx.de>
+	<200812271130.12513.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200812271130.12513.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,756 +22,207 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a driver for the Synopsys DesignWare SPI master. This driver was
-tested with an SPI flash device (m25p32), and an SPI Ethernet interface
-(enc28j60), using their mainline drivers. spidev was also tested with a custom
-SPI device.
+On Saturday 27 December 2008, David Brownell wrote:
+> On Tuesday 25 November 2008, Stefan Roese wrote:
+> > Changes in v5:
+> > - Don't call setupxfer() from setup() so that the baudrate etc
+> >   won't get changed while another transfer is active, as suggested
+> >   by David Brownell.
+>
+> Better, but this still doesn't seem quite right:
 
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
----
+David, thanks for the review. Please find some comments below.
 
- drivers/spi/Kconfig            |    6 
- drivers/spi/Makefile           |    1 
- drivers/spi/designware_spi.c   |  678 ++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/designware.h |   10 +
- 4 files changed, 695 insertions(+), 0 deletions(-)
- create mode 100644 drivers/spi/designware_spi.c
- create mode 100644 include/linux/spi/designware.h
+> > +static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct
+> > spi_transfer *t) +{
+> > +	struct ppc4xx_spi *hw = spi_master_get_devdata(spi->master);
+> > +	struct spi_ppc4xx_cs *cs = spi->controller_state;
+> > +	unsigned char cdm = 0;
+> > +	int scr;
+> > +	u8 bpw;
+> > +
+> > +	/* Write new configration */
+> > +	out_8(&hw->regs->mode, cs->mode);
+> > +
+> > +	/*
+> > +	 * Allow platform reduce the interrupt load on the CPU during SPI
+> > +	 * transfers. We do not target maximum performance, but rather allow
+> > +	 * platform to limit SPI bus frequency and interrupt rate.
+>
+> That comment doesn't seem even vaguely related to the
+> code it allegedly refers to ... nothing in this routine
+> affects the IRQ load.
 
+IIRC (I didn't write the original version of this driver) then this comments 
+simply refers to the fact that the platform can select a maximum SPI 
+frequency via spi->max_speed_hz which is pretty obvious. So I'll just remove 
+this comment in the next version.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index b9d0efb..ece3d39 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -100,6 +100,12 @@ config SPI_BUTTERFLY
- 	  inexpensive battery powered microcontroller evaluation board.
- 	  This same cable can be used to flash new firmware.
- 
-+config SPI_DESIGNWARE
-+	tristate "Synopsys DesignWare SPI controller"
-+	depends on ARCH_PVG610 && SPI_MASTER
-+	help
-+	  SPI controller driver for the Synopsys DesignWare DW_apb_ssi.
-+
- config SPI_IMX
- 	tristate "Freescale iMX SPI controller"
- 	depends on ARCH_IMX && EXPERIMENTAL
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index ccf18de..b033105 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -16,6 +16,7 @@ obj-$(CONFIG_SPI_BFIN)			+= spi_bfin5xx.o
- obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
- obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.o
- obj-$(CONFIG_SPI_BUTTERFLY)		+= spi_butterfly.o
-+obj-$(CONFIG_SPI_DESIGNWARE)		+= designware_spi.o
- obj-$(CONFIG_SPI_IMX)			+= spi_imx.o
- obj-$(CONFIG_SPI_LM70_LLP)		+= spi_lm70llp.o
- obj-$(CONFIG_SPI_PXA2XX)		+= pxa2xx_spi.o
-diff --git a/drivers/spi/designware_spi.c b/drivers/spi/designware_spi.c
-new file mode 100644
-index 0000000..240bb25
---- /dev/null
-+++ b/drivers/spi/designware_spi.c
-@@ -0,0 +1,678 @@
-+/*
-+ * designware_spi.c
-+ *
-+ * Synopsys DesignWare AMBA SPI controller driver (master mode only)
-+ *
-+ * Author: Baruch Siach, Tk Open Systems
-+ *	baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org
-+ *
-+ * Base on the Xilinx SPI controller driver by MontaVista
-+ *
-+ * 2002-2007 (c) MontaVista Software, Inc.  This file is licensed under the
-+ * terms of the GNU General Public License version 2.  This program is licensed
-+ * "as is" without any warranty of any kind, whether express or implied.
-+ *
-+ * 2008, 2009 (c) Provigent Ltd.
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/platform_device.h>
-+#include <linux/io.h>
-+#include <linux/delay.h>
-+#include <linux/gpio.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/designware.h>
-+
-+#define DESIGNWARE_SPI_NAME "designware_spi"
-+
-+/* Register definitions as per "DesignWare DW_apb_ssi Databook", Capture 6. */
-+
-+#define DWSPI_CTRLR0        0x00
-+#define DWSPI_CTRLR1        0x04
-+#define DWSPI_SSIENR        0x08
-+#define DWSPI_MWCR          0x0C
-+#define DWSPI_SER           0x10
-+#define DWSPI_BAUDR         0x14
-+#define DWSPI_TXFTLR        0x18
-+#define DWSPI_RXFTLR        0x1C
-+#define DWSPI_TXFLR         0x20
-+#define DWSPI_RXFLR         0x24
-+#define DWSPI_SR            0x28
-+#define DWSPI_IMR           0x2C
-+#define DWSPI_ISR           0x30
-+#define DWSPI_RISR          0x34
-+#define DWSPI_TXOICR        0x38
-+#define DWSPI_RXOICR        0x3C
-+#define DWSPI_RXUICR        0x40
-+#define DWSPI_ICR           0x44
-+#define DWSPI_DMACR         0x4C
-+#define DWSPI_DMATDLR       0x50
-+#define DWSPI_DMARDLR       0x54
-+#define DWSPI_IDR           0x58
-+#define DWSPI_SSI_COMP_VERSION 0x5C
-+#define DWSPI_DR            0x60
-+
-+#define DWSPI_CTRLR0_DFS_MASK	0x000f
-+#define DWSPI_CTRLR0_SCPOL	0x0080
-+#define DWSPI_CTRLR0_SCPH	0x0040
-+#define DWSPI_CTRLR0_TMOD_MASK	0x0300
-+
-+#define DWSPI_SR_BUSY_MASK	0x01
-+#define DWSPI_SR_TFNF_MASK	0x02
-+#define DWSPI_SR_TFE_MASK	0x04
-+#define DWSPI_SR_RFNE_MASK	0x08
-+#define DWSPI_SR_RFF_MASK	0x10
-+
-+#define DWSPI_ISR_TXEIS_MASK	0x01
-+#define DWSPI_ISR_RXFIS_MASK	0x10
-+
-+#define DWSPI_IMR_TXEIM_MASK	0x01
-+#define DWSPI_IMR_RXFIM_MASK	0x10
-+
-+struct designware_spi {
-+	struct device *dev;
-+	struct workqueue_struct *workqueue;
-+	struct work_struct   work;
-+
-+	struct tasklet_struct pump_transfers;
-+
-+	struct mutex         lock; /* lock this struct except from queue */
-+	struct list_head     queue; /* spi_message queue */
-+	spinlock_t           qlock; /* lock the queue */
-+
-+	void __iomem	*regs;	/* virt. address of the control registers */
-+	unsigned int ssi_clk;	/* clock in Hz */
-+	unsigned int tx_fifo_depth; /* bytes in TX FIFO */
-+	unsigned int rx_fifo_depth; /* bytes in RX FIFO */
-+
-+	u32		irq;
-+
-+	u8 bits_per_word;	/* current data frame size */
-+	struct spi_transfer *tx_t; /* current tx transfer */
-+	struct spi_transfer *rx_t; /* current rx transfer */
-+	const u8 *tx_ptr;       /* current tx buffer */
-+	u8 *rx_ptr;             /* current rx buffer */
-+	int remaining_tx_bytes;	/* bytes left to tx in the current transfer */
-+	int remaining_rx_bytes;	/* bytes left to rx in the current transfer */
-+	int status;             /* status of the current spi_transfer */
-+
-+	struct completion done; /* signal the end of tx for current sequence */
-+
-+	struct spi_device *spi; /* current spi slave device */
-+	struct list_head *transfers_list; /* head of the current sequence */
-+	unsigned int tx_count, rx_count; /* bytes in the current sequence */
-+};
-+
-+static void dwspi_init_hw(struct designware_spi *dwspi)
-+{
-+	u16 ctrlr0;
-+
-+	/* Disable the SPI master */
-+	writel(0, dwspi->regs + DWSPI_SSIENR);
-+	/* Disable all the interrupts just in case */
-+	writel(0, dwspi->regs + DWSPI_IMR);
-+	/* Set TX empty IRQ threshold */
-+	writew(dwspi->tx_fifo_depth / 2, dwspi->regs + DWSPI_TXFTLR);
-+
-+    /* Set transmit & receive mode */
-+	ctrlr0 = readw(dwspi->regs + DWSPI_CTRLR0);
-+    ctrlr0 &= ~DWSPI_CTRLR0_TMOD_MASK;
-+	writew(ctrlr0, dwspi->regs + DWSPI_CTRLR0);
-+}
-+
-+static void dwspi_baudcfg(struct designware_spi *dwspi, u32 speed_hz)
-+{
-+	u16 div = (speed_hz) ? dwspi->ssi_clk/speed_hz : 0xffff;
-+
-+	writew(div, dwspi->regs + DWSPI_BAUDR);
-+}
-+
-+static void dwspi_enable(struct designware_spi *dwspi, int on)
-+{
-+	writel(on ? 1 : 0, dwspi->regs + DWSPI_SSIENR);
-+}
-+
-+static void designware_spi_chipselect(struct spi_device *spi, int on)
-+{
-+	struct designware_spi *dwspi = spi_master_get_devdata(spi->master);
-+	long gpio = (long) spi->controller_data;
-+	unsigned active = spi->mode & SPI_CS_HIGH;
-+
-+	/*
-+	 * Note, the SPI controller must have been enabled at this point, i.e.
-+	 * SSIENR == 1
-+	 */
-+
-+	if (on) {
-+		/* Turn the actual chip select on for GPIO chip selects */
-+		if (gpio >= 0)
-+			gpio_set_value(gpio, active);
-+		/* Activate slave on the SPI controller */
-+		writel(1 << spi->chip_select, dwspi->regs + DWSPI_SER);
-+	} else {
-+		/* Deselect the slave on the SPI bus */
-+		writel(0, dwspi->regs + DWSPI_SER);
-+		if (gpio >= 0)
-+			gpio_set_value(gpio, !active);
-+	}
-+}
-+
-+static int designware_spi_setup_transfer(struct spi_device *spi,
-+		struct spi_transfer *t)
-+{
-+	u8 bits_per_word;
-+	u32 hz;
-+	struct designware_spi *dwspi = spi_master_get_devdata(spi->master);
-+	u16 ctrlr0 = readw(dwspi->regs + DWSPI_CTRLR0);
-+
-+	bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
-+	hz = (t) ? t->speed_hz : spi->max_speed_hz;
-+
-+	if (bits_per_word < 4 || bits_per_word > 16) {
-+		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
-+			__func__, bits_per_word);
-+		return -EINVAL;
-+	} else {
-+		ctrlr0 &= ~DWSPI_CTRLR0_DFS_MASK;
-+		ctrlr0 |= bits_per_word - 1;
-+
-+		dwspi->bits_per_word = bits_per_word;
-+	}
-+
-+	/* Set the SPI clock phase and polarity */
-+	if (spi->mode & SPI_CPHA)
-+		ctrlr0 |= DWSPI_CTRLR0_SCPH;
-+	else
-+		ctrlr0 &= ~DWSPI_CTRLR0_SCPH;
-+	if (spi->mode & SPI_CPOL)
-+		ctrlr0 |= DWSPI_CTRLR0_SCPOL;
-+	else
-+		ctrlr0 &= ~DWSPI_CTRLR0_SCPOL;
-+
-+	writew(ctrlr0, dwspi->regs + DWSPI_CTRLR0);
-+
-+	/* set speed */
-+	dwspi_baudcfg(dwspi, hz);
-+
-+	return 0;
-+}
-+
-+/* the spi->mode bits currently understood by this driver: */
-+#define MODEBITS (SPI_CPOL | SPI_CPHA)
-+
-+static int designware_spi_setup(struct spi_device *spi)
-+{
-+	struct designware_spi *dwspi;
-+	int retval;
-+
-+	dwspi = spi_master_get_devdata(spi->master);
-+
-+	if (!spi->bits_per_word)
-+		spi->bits_per_word = 8;
-+
-+	if (spi->mode & ~MODEBITS) {
-+		dev_err(&spi->dev, "%s, unsupported mode bits %x\n",
-+			__func__, spi->mode & ~MODEBITS);
-+		return -EINVAL;
-+	}
-+
-+	if (spi->chip_select > spi->master->num_chipselect) {
-+		dev_err(&spi->dev,
-+				"setup: invalid chipselect %u (%u defined)\n",
-+				spi->chip_select, spi->master->num_chipselect);
-+		return -EINVAL;
-+	}
-+
-+	retval = designware_spi_setup_transfer(spi, NULL);
-+	if (retval < 0)
-+		return retval;
-+
-+	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
-+		__func__, spi->mode & MODEBITS, spi->bits_per_word, 0);
-+
-+	return 0;
-+}
-+
-+static void designware_spi_do_tx(struct designware_spi *dwspi)
-+{
-+	u8 sr;
-+	int bytes_to_tx = dwspi->remaining_tx_bytes;
-+	u8 valid_tx_fifo_bytes = readb(dwspi->regs + DWSPI_TXFLR);
-+	u8 valid_rx_fifo_bytes = readb(dwspi->regs + DWSPI_RXFLR);
-+	int tx_limit = min(dwspi->tx_fifo_depth - valid_tx_fifo_bytes,
-+			dwspi->rx_fifo_depth - valid_rx_fifo_bytes) - 1;
-+
-+	/* Fill the Tx FIFO with as many bytes as possible */
-+	sr = readb(dwspi->regs + DWSPI_SR);
-+	while ((sr & DWSPI_SR_TFNF_MASK) && dwspi->remaining_tx_bytes > 0) {
-+		if (dwspi->bits_per_word <= 8) {
-+			u8 dr = (dwspi->tx_ptr) ? *dwspi->tx_ptr++ : 0;
-+
-+			writeb(dr, dwspi->regs + DWSPI_DR);
-+			dwspi->remaining_tx_bytes--;
-+		} else {
-+			u16 dr = (dwspi->tx_ptr) ? *(u16 *) dwspi->tx_ptr : 0;
-+
-+			dwspi->tx_ptr += 2;
-+			writew(dr, dwspi->regs + DWSPI_DR);
-+			dwspi->remaining_tx_bytes -= 2;
-+		}
-+		if (--tx_limit <= 0)
-+			break;
-+		sr = readb(dwspi->regs + DWSPI_SR);
-+	}
-+
-+	dwspi->tx_count += bytes_to_tx - dwspi->remaining_tx_bytes;
-+}
-+
-+/* Return 1 when done, 0 otherwise */
-+static int designware_spi_fill_tx_fifo(struct designware_spi *dwspi)
-+{
-+	unsigned cs_change = 0;
-+
-+	list_for_each_entry_from(dwspi->tx_t, dwspi->transfers_list,
-+		transfer_list) {
-+		if (dwspi->remaining_tx_bytes == 0) {
-+			/* Initialize new spi_transfer */
-+			dwspi->tx_ptr = dwspi->tx_t->tx_buf;
-+			dwspi->remaining_tx_bytes = dwspi->tx_t->len;
-+			dwspi->status = 0;
-+
-+			/* can't change speed or bits in the middle of a
-+			 * message. must disable the controller for this.
-+			 */
-+			if (dwspi->tx_t->speed_hz
-+					|| dwspi->tx_t->bits_per_word) {
-+				dwspi->status = -ENOPROTOOPT;
-+				break;
-+			}
-+
-+			if (!dwspi->tx_t->tx_buf && !dwspi->tx_t->rx_buf
-+					&& dwspi->tx_t->len) {
-+				dwspi->status = -EINVAL;
-+				break;
-+			}
-+
-+			if (cs_change)
-+				break;
-+		}
-+
-+		designware_spi_do_tx(dwspi);
-+
-+		/* Don't advance dwspi->tx_t, we'll get back to this
-+		 * spi_transfer later
-+		 */
-+		if (dwspi->remaining_tx_bytes > 0)
-+			return 0;
-+
-+		cs_change = dwspi->tx_t->cs_change;
-+	}
-+
-+	complete(&dwspi->done);
-+	return 1;
-+}
-+
-+static void designware_spi_do_rx(struct designware_spi *dwspi)
-+{
-+	u8 sr;
-+	int bytes_to_rx = dwspi->remaining_rx_bytes;
-+
-+	sr = readb(dwspi->regs + DWSPI_SR);
-+
-+	if (sr & DWSPI_SR_RFF_MASK) {
-+		dev_err(dwspi->dev, "%s: RX FIFO overflow\n", __func__);
-+		dwspi->status = -EIO;
-+	}
-+
-+	/* Read as long as RX FIFO is not empty */
-+	while ((sr & DWSPI_SR_RFNE_MASK) != 0
-+			&& dwspi->remaining_rx_bytes > 0) {
-+		int rx_level = readl(dwspi->regs + DWSPI_RXFLR);
-+
-+		while (rx_level-- && dwspi->remaining_rx_bytes > 0) {
-+			if (dwspi->bits_per_word <= 8) {
-+				u8 data;
-+
-+				data = readb(dwspi->regs + DWSPI_DR);
-+				dwspi->remaining_rx_bytes--;
-+				if (dwspi->rx_ptr)
-+					*dwspi->rx_ptr++ = data;
-+			} else {
-+				u16 data;
-+
-+				data = readw(dwspi->regs + DWSPI_DR);
-+				dwspi->remaining_rx_bytes -= 2;
-+				if (dwspi->rx_ptr) {
-+					*(u16 *) dwspi->rx_ptr = data;
-+					dwspi->rx_ptr += 2;
-+				}
-+			}
-+		}
-+		sr = readb(dwspi->regs + DWSPI_SR);
-+	}
-+
-+	dwspi->rx_count += (bytes_to_rx - dwspi->remaining_rx_bytes);
-+}
-+
-+/* return 1 if cs_change is true, 0 otherwise */
-+static int designware_spi_read_rx_fifo(struct designware_spi *dwspi)
-+{
-+	unsigned cs_change = 0;
-+
-+	list_for_each_entry_from(dwspi->rx_t, dwspi->transfers_list,
-+			transfer_list) {
-+		if (dwspi->remaining_rx_bytes == 0) {
-+			dwspi->rx_ptr = dwspi->rx_t->rx_buf;
-+			dwspi->remaining_rx_bytes = dwspi->rx_t->len;
-+
-+			if (cs_change)
-+				return 1;
-+		}
-+
-+		designware_spi_do_rx(dwspi);
-+
-+		/* The rx buffer is filling up with more bytes. Don't advance
-+		 * dwspi->rx_t, as we have more bytes to read in this
-+		 * spi_transfer.
-+		 */
-+		if (dwspi->remaining_rx_bytes > 0)
-+			return 0;
-+
-+		cs_change = dwspi->rx_t->cs_change;
-+	}
-+
-+	return 0;
-+}
-+
-+/* interate through the list of spi_transfer elements.
-+ * stop at the end of the list or when t->cs_change is true.
-+ */
-+static void designware_spi_do_transfers(struct designware_spi *dwspi)
-+{
-+	int tx_done, cs_change;
-+
-+	init_completion(&dwspi->done);
-+
-+	/* transfer kickoff */
-+	tx_done = designware_spi_fill_tx_fifo(dwspi);
-+	designware_spi_chipselect(dwspi->spi, 1);
-+
-+	if (!tx_done) {
-+		/* Enable the transmit empty interrupt, which we use to
-+		 * determine progress on the transmission in case we're
-+		 * not done yet.
-+		 */
-+		writeb(DWSPI_IMR_TXEIM_MASK, dwspi->regs + DWSPI_IMR);
-+
-+		/* wait for tx completion */
-+		wait_for_completion(&dwspi->done);
-+	}
-+
-+	/* This delay should be good enough for 100KHz spi transfers. Slower
-+	 * transfers may need a longer delay.
-+	 */
-+	udelay(10);
-+
-+	/* get remaining rx bytes */
-+    do {
-+		cs_change = designware_spi_read_rx_fifo(dwspi);
-+	} while (readb(dwspi->regs + DWSPI_SR) &
-+			(DWSPI_SR_BUSY_MASK | DWSPI_SR_RFNE_MASK));
-+
-+	/* transaction is done */
-+	designware_spi_chipselect(dwspi->spi, 0);
-+
-+	if (dwspi->status < 0)
-+		return;
-+
-+	if (!cs_change && (dwspi->remaining_rx_bytes > 0 ||
-+			dwspi->remaining_tx_bytes > 0)) {
-+		dev_err(dwspi->dev, "%s: remaining_rx_bytes = %d, "
-+				"remaining_tx_bytes = %d\n",
-+				__func__,  dwspi->remaining_rx_bytes,
-+				dwspi->remaining_tx_bytes);
-+		dwspi->status = -EIO;
-+    }
-+
-+	if (dwspi->rx_count != dwspi->tx_count) {
-+		dev_err(dwspi->dev, "%s: rx_count == %d, tx_count == %d\n",
-+				__func__, dwspi->rx_count, dwspi->tx_count);
-+		dwspi->status = -EIO;
-+    }
-+}
-+
-+static int designware_spi_transfer(struct spi_device *spi,
-+		struct spi_message *mesg)
-+{
-+	struct designware_spi *dwspi = spi_master_get_devdata(spi->master);
-+
-+	mesg->actual_length = 0;
-+	mesg->status = -EINPROGRESS;
-+
-+	/* we can't block here, so we use a spinlock
-+	 * here instead of the global mutex
-+	 */
-+	spin_lock(&dwspi->qlock);
-+	list_add_tail(&mesg->queue, &dwspi->queue);
-+	queue_work(dwspi->workqueue, &dwspi->work);
-+	spin_unlock(&dwspi->qlock);
-+
-+	return 0;
-+}
-+
-+static void designware_work(struct work_struct *work)
-+{
-+	struct designware_spi *dwspi = container_of(work,
-+			struct designware_spi, work);
-+
-+	mutex_lock(&dwspi->lock);
-+	spin_lock(&dwspi->qlock);
-+
-+	while (!list_empty(&dwspi->queue)) {
-+		struct spi_message *m;
-+
-+		m = container_of(dwspi->queue.next, struct spi_message, queue);
-+		list_del_init(&m->queue);
-+		spin_unlock(&dwspi->qlock);
-+
-+		dwspi->spi = m->spi;
-+		dwspi->tx_t = dwspi->rx_t =
-+			list_first_entry(&m->transfers, struct spi_transfer,
-+					transfer_list);
-+
-+		/*
-+		 * Interate through groups of spi_transfer structs
-+		 * that are separated by cs_change being true
-+		 */
-+		dwspi->transfers_list = &m->transfers;
-+		do {
-+			dwspi->remaining_tx_bytes =
-+				dwspi->remaining_rx_bytes = 0;
-+			dwspi->tx_count = dwspi->rx_count = 0;
-+			designware_spi_setup_transfer(m->spi, NULL);
-+			dwspi_enable(dwspi, 1);
-+			designware_spi_do_transfers(dwspi);
-+			dwspi_enable(dwspi, 0);
-+			if (dwspi->status < 0)
-+				break;
-+			m->actual_length +=
-+				dwspi->tx_count; /* same as rx_count */
-+		} while (&dwspi->tx_t->transfer_list != &m->transfers);
-+
-+		m->status = dwspi->status;
-+		m->complete(m->context);
-+
-+		spin_lock(&dwspi->qlock);
-+	}
-+	spin_unlock(&dwspi->qlock);
-+	mutex_unlock(&dwspi->lock);
-+}
-+
-+static void designware_pump_transfers(unsigned long data)
-+{
-+	struct designware_spi *dwspi = (struct designware_spi *) data;
-+
-+	designware_spi_read_rx_fifo(dwspi);
-+	if (!designware_spi_fill_tx_fifo(dwspi))
-+		/* reenable the interrupt */
-+		writeb(DWSPI_IMR_TXEIM_MASK, dwspi->regs + DWSPI_IMR);
-+}
-+
-+static irqreturn_t designware_spi_irq(int irq, void *dev_id)
-+{
-+	struct designware_spi *dwspi = dev_id;
-+
-+	tasklet_schedule(&dwspi->pump_transfers);
-+	/* disable the interrupt for now */
-+	writeb(0, dwspi->regs + DWSPI_IMR);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static void designware_spi_cleanup(struct spi_device *spi)
-+{
-+}
-+
-+static int __init designware_spi_probe(struct platform_device *dev)
-+{
-+	int ret = 0;
-+	struct spi_master *master;
-+	struct designware_spi *dwspi;
-+	struct designware_platform_data *pdata;
-+	struct resource *r;
-+
-+	pdata = dev->dev.platform_data;
-+	if (pdata == NULL) {
-+		dev_err(&dev->dev, "no device data specified\n");
-+		return -EINVAL;
-+	}
-+
-+	/* Get resources(memory, IRQ) associated with the device */
-+	master = spi_alloc_master(&dev->dev, sizeof(struct designware_spi));
-+	if (master == NULL)
-+		return -ENOMEM;
-+
-+	master->num_chipselect = pdata->num_chipselect;
-+	master->setup = designware_spi_setup;
-+	master->transfer = designware_spi_transfer;
-+	master->cleanup = designware_spi_cleanup;
-+	platform_set_drvdata(dev, master);
-+
-+	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (r == NULL) {
-+		ret = -ENODEV;
-+		goto put_master;
-+	}
-+
-+	dwspi = spi_master_get_devdata(master);
-+	dwspi->ssi_clk = pdata->ssi_clk;
-+	dwspi->tx_fifo_depth = pdata->tx_fifo_depth;
-+	dwspi->rx_fifo_depth = pdata->rx_fifo_depth;
-+	dwspi->dev = &dev->dev;
-+	spin_lock_init(&dwspi->qlock);
-+	mutex_init(&dwspi->lock);
-+	INIT_LIST_HEAD(&dwspi->queue);
-+	INIT_WORK(&dwspi->work, designware_work);
-+	dwspi->workqueue =
-+		create_singlethread_workqueue(master->dev.parent->bus_id);
-+	if (dwspi->workqueue == NULL) {
-+		ret = -EBUSY;
-+		goto put_master;
-+	}
-+	tasklet_init(&dwspi->pump_transfers, designware_pump_transfers,
-+			(unsigned long) dwspi);
-+
-+	if (!request_mem_region(r->start,
-+			r->end - r->start + 1, DESIGNWARE_SPI_NAME)) {
-+		ret = -ENXIO;
-+		goto destroy_wq;
-+	}
-+
-+	dwspi->regs = ioremap(r->start, r->end - r->start + 1);
-+	if (dwspi->regs == NULL) {
-+		ret = -ENOMEM;
-+		goto destroy_wq;
-+	}
-+
-+	dwspi->irq = platform_get_irq(dev, 0);
-+	if (dwspi->irq < 0) {
-+		ret = -ENXIO;
-+		goto unmap_io;
-+	}
-+
-+	/* SPI controller initializations */
-+	dwspi_init_hw(dwspi);
-+
-+	/* Register for SPI Interrupt */
-+	ret = request_irq(dwspi->irq, designware_spi_irq, 0,
-+			DESIGNWARE_SPI_NAME, dwspi);
-+	if (ret != 0)
-+		goto unmap_io;
-+
-+	ret = spi_register_master(master);
-+    if (ret < 0)
-+		goto free_irq;
-+
-+	dev_info(&dev->dev, "at 0x%08X mapped to 0x%08X, irq=%d\n",
-+			r->start, (u32)dwspi->regs, dwspi->irq);
-+
-+	return ret;
-+
-+free_irq:
-+	free_irq(dwspi->irq, dwspi);
-+unmap_io:
-+	iounmap(dwspi->regs);
-+destroy_wq:
-+	destroy_workqueue(dwspi->workqueue);
-+put_master:
-+	spi_master_put(master);
-+	return ret;
-+}
-+
-+static int __devexit designware_spi_remove(struct platform_device *dev)
-+{
-+	struct designware_spi *dwspi;
-+	struct spi_master *master;
-+
-+	master = platform_get_drvdata(dev);
-+	dwspi = spi_master_get_devdata(master);
-+
-+	free_irq(dwspi->irq, dwspi);
-+	iounmap(dwspi->regs);
-+	destroy_workqueue(dwspi->workqueue);
-+	tasklet_kill(&dwspi->pump_transfers);
-+	platform_set_drvdata(dev, 0);
-+	spi_master_put(master);
-+
-+	return 0;
-+}
-+
-+/* work with hotplug and coldplug */
-+MODULE_ALIAS("platform:" DESIGNWARE_SPI_NAME);
-+
-+static struct platform_driver designware_spi_driver = {
-+    .probe  = designware_spi_probe,
-+	.remove	= __devexit_p(designware_spi_remove),
-+	.driver = {
-+		.name = DESIGNWARE_SPI_NAME,
-+		.owner = THIS_MODULE,
-+	},
-+};
-+
-+static int __init designware_spi_init(void)
-+{
-+	return platform_driver_register(&designware_spi_driver);
-+}
-+module_init(designware_spi_init);
-+
-+static void __exit designware_spi_exit(void)
-+{
-+	platform_driver_unregister(&designware_spi_driver);
-+}
-+module_exit(designware_spi_exit);
-+
-+MODULE_AUTHOR("Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>");
-+MODULE_DESCRIPTION("Synopsys DesignWare SPI driver");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/spi/designware.h b/include/linux/spi/designware.h
-new file mode 100644
-index 0000000..26427cd
---- /dev/null
-+++ b/include/linux/spi/designware.h
-@@ -0,0 +1,10 @@
-+/*
-+ * designware.h - platform glue for the Synopsys DesignWare SPI controller
-+ */
-+
-+struct designware_platform_data {
-+	unsigned int	ssi_clk;	/* clock in Hz */
-+	unsigned int	tx_fifo_depth;	/* bytes in TX FIFO */
-+	unsigned int	rx_fifo_depth;	/* bytes in RX FIFO */
-+	u16		num_chipselect;	/* number of CSs */
-+};
+> > +	 */
+> > +	bpw = t ? t->bits_per_word : spi->bits_per_word;
+> > +	cs->speed_hz = t ? min(t->speed_hz, spi->max_speed_hz) :
+> > +		spi->max_speed_hz;
+> > +
+> > +	if (bpw != 8) {
+> > +		dev_err(&spi->dev, "invalid bits-per-word (%d)\n", bpw);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	if (cs->speed_hz == 0) {
+> > +		dev_err(&spi->dev, "invalid speed_hz (must be non-zero)\n");
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	/* set the clock */
+> > +	/* opb_freq was already divided by 4 */
+> > +	scr = (hw->opb_freq / cs->speed_hz) - 1;
+> > +
+> > +	if (scr > 0)
+> > +		cdm = min(scr, 0xff);
+> > +
+> > +	dev_dbg(&spi->dev, "setting pre-scaler to %d (hz %d)\n", cdm,
+> > +		cs->speed_hz);
+> > +
+> > +	if (in_8(&hw->regs->cdm) != cdm)
+> > +		out_8(&hw->regs->cdm, cdm);
+> > +
+> > +	spin_lock(&hw->bitbang.lock);
+> > +	if (!hw->bitbang.busy) {
+> > +		hw->bitbang.chipselect(spi, BITBANG_CS_INACTIVE);
+> > +		/* need to ndelay here? */
+> > +	}
+> > +	spin_unlock(&hw->bitbang.lock);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int spi_ppc4xx_setup(struct spi_device *spi)
+> > +{
+> > +	int ret;
+> > +	struct spi_ppc4xx_cs *cs = spi->controller_state;
+> > +	int init = 0;
+> > +
+> > +	if (!spi->bits_per_word)
+> > +		spi->bits_per_word = 8;
+>
+> Given the above restrictions, it'd be better to
+>
+> 	if (spi->bits_per_word != 8)
+> 		return -EINVAL;
+>
+> On the general policy of reporting such errors as near as
+> practical to the place they appear ... otherwise it gets
+> hard to track them down, since the faults get reported a
+> long time later, well after the point drivers expect to see
+> such reports.
 
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
+OK, point gotten. Will change in next version.
+
+> Likewise with spi->max_speed_hz. 
+
+OK.
+
+> > +
+> > +	if (spi->mode & ~MODEBITS) {
+> > +		dev_dbg(&spi->dev, "setup: unsupported mode bits %x\n",
+> > +			spi->mode & ~MODEBITS);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	if (cs == NULL) {
+> > +		cs = kzalloc(sizeof *cs, GFP_KERNEL);
+> > +		if (!cs)
+> > +			return -ENOMEM;
+> > +		spi->controller_state = cs;
+> > +
+> > +		/*
+> > +		 * First time called, so let's init the SPI controller
+> > +		 * at the end of this function
+> > +		 */
+> > +		init = 1;
+> > +	}
+> > +
+> > +	/*
+> > +	 * We set all bits of the SPI0_MODE register, so,
+> > +	 * no need to read-modify-write
+> > +	 */
+> > +	cs->mode = SPI_PPC4XX_MODE_SPE;
+> > +
+> > +	switch (spi->mode & (SPI_CPHA | SPI_CPOL)) {
+> > +	case SPI_MODE_0:
+> > +		cs->mode |= SPI_CLK_MODE0;
+> > +		break;
+> > +	case SPI_MODE_1:
+> > +		cs->mode |= SPI_CLK_MODE1;
+> > +		break;
+> > +	case SPI_MODE_2:
+> > +		cs->mode |= SPI_CLK_MODE2;
+> > +		break;
+> > +	case SPI_MODE_3:
+> > +		cs->mode |= SPI_CLK_MODE3;
+> > +		break;
+> > +	}
+> > +
+> > +	if (spi->mode & SPI_LSB_FIRST) {
+> > +		/* this assumes that bit 7 is the LSb! */
+> > +		cs->mode |= SPI_PPC4XX_MODE_RD;
+>
+> The Linux bit numbering convention is that BIT(0) is the LSB,
+> so that comment is nonsensical.  BIT(7) will always bee the
+> MSB of an 8-bit byte.
+>
+> If the issue is a PPC convention that BIT(0) is the MSB,
+> then please adjust comments accordingly.  Or better, just
+> strike the comment ... bit numbering is irrelevant here,
+> the only requirement is that LSB_FIRST causes the LSB
+> to be sent first, instead of the MSB.
+
+OK, comment removed.
+
+> > +	}
+> > +
+> > +	/*
+> > +	 * New configuration (mode, speed etc) will be written to the
+> > +	 * controller in spi_ppc4xx_setupxfer(). Only call
+> > +	 * spi_ppc4xx_setupxfer() directly upon first initialization.
+> > +	 */
+> > +	if (init) {
+> > +		ret = spi_ppc4xx_setupxfer(spi, NULL);
+>
+> Here it is, calling setupxfer()... despite one of the goals
+> of the v5 patch being to *not* do that from spi_setup()!
+
+It's only called upon first driver initialization (as the comment above 
+explains).
+
+> I suspect what you must intend here is to just force the
+> slave to be deselected.  If so, then just call your
+>
+>    hw->bitbang.chipselect(spi, BITBANG_CS_INACTIVE);
+>
+> directly,
+
+No, this doesn't work. I just tried it in my next driver version. Somehow the 
+communication doesn't start up when setupxfer is not called at least once 
+upon initialization. Sorry, but I worked on this driver quite some time ago 
+and don't remember the details now.
+
+> instead of letting setupxfer() trash register 
+> state that may be controlling some active transfer.
+
+As this call is done only upon first driver initialization, no active transfer 
+can be interrupted. Or did I miss something here?
+
+Please let me know if this approach is acceptable for now, or if I need to dig 
+into this deeper. The problem is that I don't have the time for this now so 
+further patch versions would come (much) later.
+
+Otherwise I will send a new patch version with the fixes/changes mentioned 
+above tomorrow.
+
+Thanks.
+
+Best regards,
+Stefan
 
 ------------------------------------------------------------------------------

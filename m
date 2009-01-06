@@ -1,11 +1,12 @@
-From: "Charles" <jparcell4-Vlk+BWL+Hwq6kmwD05IMgA@public.gmane.org>
-Subject: Charles has sent you a greeting card!
-Date: Tue, 6 Jan 2009 18:35:26 +0900
-Message-ID: <001501c96fe2$3adb1c60$d94e5e34@2zggo>
+From: Rod Clliff <rodclliff-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: Joint capital enterprise trade (second letter)
+Date: Tue,  6 Jan 2009 16:12:20 +0100 (CET)
+Message-ID: <20090106151220.A792C43B806@webbox240.server-home.org>
+Reply-To: rodclliff-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,10 +18,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Charles has mailed to you a greeting card.
-To view your eCard, click on the following link: 
-http://worldgreetingcard.com/?code=3048c15db3413a1c
-Your eCard will be available for the next 20 days.
+
+Greetings,
+
+I am Barristar Rod Cliff.I am reaching out to you as regards the handling of
+an investment portfolio.
+
+I am soliciting your assistance in repatriating the funds and property left behind by my late client before it is confiscated by the government and declared
+unserviceble by the bank where the huge deposit is lodged.
+
+My Client died intestate and every attempt to trace any member of his family has proved unsuccessful and abortive. Do note that your identity or country of
+origin does not matter. I will give you more information upon your response.
+
+You should respond by sending the following:
+1.Your full names
+2. Tel & fax numbers
+3. Complete Address
+4.Your occupation and your Age
+
+Please Reply me Via my Private Email:rodclliff-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org
+I humbly look forward to your soonest response.
+
+Yours Faithfully,
+
+Barristar
+Rod Cliff.
+London, U.K
+
+
+
 
 
 ------------------------------------------------------------------------------

@@ -1,18 +1,13 @@
-From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: Re: [PATCH v5] spi: Add PPC4xx SPI driver
-Date: Tue, 6 Jan 2009 05:06:03 +0300
-Message-ID: <20090106020603.GA14074@oksana.dev.rtsoft.ru>
-References: <1227628088-10849-1-git-send-email-sr@denx.de>
-Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
+From: =?GB2312?B?uvrPyMn6?= <amydse888-9Onoh4P/yGk@public.gmane.org>
+Subject: =?gb2312?b?sb7LvtPQy7DGsbT6v6rLsMLKMC44Jdfz?=
+	=?gb2312?b?09K/ybLp0em687i2v+4=?=
+Date: Tue, 6 Jan 2009 13:01:55 +0800
+Message-ID: <E1LK42g-0000Ze-E4@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1227628088-10849-1-git-send-email-sr-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,33 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Stefan,
-
-On Tue, Nov 25, 2008 at 04:48:08PM +0100, Stefan Roese wrote:
-> This adds a SPI driver for the SPI controller found in the IBM/AMCC
-> 4xx PowerPC's.
-> 
-> Signed-off-by: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-> Signed-off-by: Wolfgang Ocker <weo-pMF0Ia4UJXeoYr4blSSd5g@public.gmane.org>
-> Acked-by: Josh Boyer <jwboyer-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>
-> ---
-[...]
-> +static unsigned int of_num_gpios(struct device_node *node)
-> +{
-> +	unsigned int num = 0;
-> +
-> +	while (gpio_is_valid(of_get_gpio(node, num)))
-> +		num++;
-> +	return num;
-> +}
-
-FYI, as of commit 749820928a2fd47ff536773d869d2c3f8038b7d1 ("of/gpio:
-Implement of_gpio_count()") you can use of_gpio_count() from
-linux/of_gpio.h.
-
--- 
-Anton Vorontsov
-email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-irc://irc.freenode.net/bd2
-
-------------------------------------------------------------------------------
+1sK587mry74os6e80imyxs7xo6y4utTwyMvE+rrDIQogICAgsb65q8u+yse2qLbuxMnLsMbz0rWj
+rM/WzeqzybK7wcvDv9TCz/rK27butsiho8O/1MK2vNPQ0ruyv7fWKLn6LrXYy7ApxrHP8s3itPq/
+qqGjuavLvrPJwaLKrrbgxOrS1MC0o6zSu9axsb7Xxb/Nu6fC+tLio7vBpsfzvqHJxr6hw8C1xLf+
+zvHX2ta8o7vS1Lj808Wju7j8v+yju7j8usO1xLf+zvHA7cTuo7vS0dOutcO547Tzv827p7XE1qez
+1tPruvGwrqGjCtK7oaK0+r+qt7bOp9PQOyjG1c2oyczGt8/6ytuhotTLyuShor2o1v65pLPMoaK5
+47jmoaK3/s7x0rWhotfJ0a+6zbaotu61yKGtKQq2/qGiy7DCyrC0v6rGsb3wtu61xDAuOCXX89PS
+ytXIoSy98Lbu1L2089S908W73SEKyP2hosjnufu588u+1NrGsbe9w+bT0MjOus7SycLHo6zSu8fQ
+xrG/yb6tufPLvsi3yM+687LFuLa/7iEKICAg16IgOsjn09DQ6NKqu7bTrcC0tefXydGvIcjn09C0
+8r3BvrTH68HCveIh0LvQuyEKICAg16OjurnzuavLvsn60uLQy8KhIMXusqq3otW5INK1vKjV9NX0
+yNXJzyG6z9f30+S/7CEKICAgwarPtcjLOrr6uurJrSAgILXnu7A6MTM3MTk0MzUxMjYgICAgICAg
+ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgvNHQxcq10rXT
+0M/euavLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

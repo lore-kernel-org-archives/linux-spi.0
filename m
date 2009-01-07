@@ -1,80 +1,131 @@
-From: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
-Subject: Re: [PATCH 0/7] OpenFirmware support for the
-	spi_mpc83xx driver
-Date: Tue, 6 Jan 2009 22:28:10 -0600
-Message-ID: <6DC0606C-1CDA-4549-8A63-E3F86010291B@kernel.crashing.org>
-References: <20081205200936.GA19137@oksana.dev.rtsoft.ru>
-Mime-Version: 1.0 (Apple Message framework v929.2)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev list <linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20081205200936.GA19137-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: ben-elnMNo+KYs3pIgCt6eIbzw@public.gmane.org
+Subject: GPIO: Fix probe() error return in gpio driver probes
+Date: Wed, 07 Jan 2009 12:56:19 +0000
+Message-ID: <20090107125619.052023040@fluff.org.uk>
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline; filename=simtec/check-gpio-driver-return-codes.patch
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+A number of drivers in drivers/gpio return -ENODEV when confronted
+with missing setup parameters such as the platform data. However,
+returning -ENODEV causes the driver layer to silently ignore the
+driver as it assumes the probe did not find anything and was only
+speculative.
 
-On Dec 5, 2008, at 2:09 PM, Anton Vorontsov wrote:
+To make life easier to discern why a driver is not being attached,
+change to returning -EINVAL, which is a better description of the
+fact that the driver data was not valid.
 
-> Hi all,
->
-> The patch series are used to support SPI via the OF SPI subsystem
-> (driver/of/of_spi.c). Now the driver is able to manage its own
-> chip selects, and doesn't need any auxiliary support from the
-> board files or fsl_soc constructors.
->
-> The series also contains PowerPC portions of the MMC SPI support.
->
-> Since the series touches spi and powerpc trees, I think it would
-> be most convenient to pass it via one of these trees. The patches
-> doesn't touch any SPI functionality, only some probe routines, so
-> I believe powerpc.git is the best candidate...
->
-> The other reason for powerpc tree is that the patches depends on
-> other patches as found in paulus/powerpc.git + of_gpio_count()
-> as found here:
-> http://ozlabs.org/pipermail/linuxppc-dev/2008-December/065917.html
->
-> David, if you're OK with the patches, may I ask you to sign off on
-> the ones that touch drivers/spi so that we could pass it via Kumar's
-> powerpc.git?
->
-> The queue:
->
-> [1/7] powerpc: Implement get_brgfreq() and get_baudrate() stubs
-> [2/7] spi_mpc83xx: Fix sparse warnings
-> [3/7] spi_mpc83xx: Rework chip selects handling
-> [4/7] spi_mpc83xx: Add OF platform driver bindings
-> [5/7] powerpc/fsl_soc: Isolate legacy fsl_spi support to mpc832x_rdb  
-> boards
-> [6/7] powerpc: Add mmc-spi-slot bindings
-> [7/7] powerpc/83xx: Add mmc-spi support via the device tree for  
-> MPC8323E-RDB
->
-> Thanks,
->
-> -- 
-> Anton Vorontsov
-> email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-> irc://irc.freenode.net/bd2
+Also add a set of dev_dbg() statements to the error paths to provide
+an better explanation of the error as there may be more that one point
+in the driver.
 
-David,
+Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Index: linux.git3/drivers/gpio/max7301.c
+===================================================================
+--- linux.git3.orig/drivers/gpio/max7301.c	2008-10-22 09:50:45.000000000 +0100
++++ linux.git3/drivers/gpio/max7301.c	2009-01-07 12:37:46.000000000 +0000
+@@ -217,8 +217,10 @@ static int __devinit max7301_probe(struc
+ 	int i, ret;
+ 
+ 	pdata = spi->dev.platform_data;
+-	if (!pdata || !pdata->base)
+-		return -ENODEV;
++	if (!pdata || !pdata->base) {
++		dev_dbg(&spi->dev, "incorrect or missing platform data\n");
++		return -EINVAL;
++	}
+ 
+ 	/*
+ 	 * bits_per_word cannot be configured in platform data
+Index: linux.git3/drivers/gpio/max732x.c
+===================================================================
+--- linux.git3.orig/drivers/gpio/max732x.c	2008-10-22 09:50:45.000000000 +0100
++++ linux.git3/drivers/gpio/max732x.c	2009-01-07 12:22:10.000000000 +0000
+@@ -267,8 +267,10 @@ static int __devinit max732x_probe(struc
+ 	int ret, nr_port;
+ 
+ 	pdata = client->dev.platform_data;
+-	if (pdata == NULL)
+-		return -ENODEV;
++	if (pdata == NULL) {
++		dev_dbg(&client->dev, "no platform data\n");
++		return -EINVAL;
++	}
+ 
+ 	chip = kzalloc(sizeof(struct max732x_chip), GFP_KERNEL);
+ 	if (chip == NULL)
+Index: linux.git3/drivers/gpio/mcp23s08.c
+===================================================================
+--- linux.git3.orig/drivers/gpio/mcp23s08.c	2008-10-22 09:50:45.000000000 +0100
++++ linux.git3/drivers/gpio/mcp23s08.c	2009-01-07 12:23:24.000000000 +0000
+@@ -310,8 +310,10 @@ static int mcp23s08_probe(struct spi_dev
+ 	unsigned			base;
+ 
+ 	pdata = spi->dev.platform_data;
+-	if (!pdata || !gpio_is_valid(pdata->base))
+-		return -ENODEV;
++	if (!pdata || !gpio_is_valid(pdata->base)) {
++		dev_dbg(&spi->dev, "invalid or missing platform data\n");
++		return -EINVAL;
++	}
+ 
+ 	for (addr = 0; addr < 4; addr++) {
+ 		if (!pdata->chip[addr].is_present)
+Index: linux.git3/drivers/gpio/pca953x.c
+===================================================================
+--- linux.git3.orig/drivers/gpio/pca953x.c	2008-10-22 09:50:45.000000000 +0100
++++ linux.git3/drivers/gpio/pca953x.c	2009-01-07 12:36:00.000000000 +0000
+@@ -200,8 +200,10 @@ static int __devinit pca953x_probe(struc
+ 	int ret;
+ 
+ 	pdata = client->dev.platform_data;
+-	if (pdata == NULL)
+-		return -ENODEV;
++	if (pdata == NULL) {
++		dev_dbg(&client->dev, "no platform data\n");
++		return -EINVAL;
++	}
+ 
+ 	chip = kzalloc(sizeof(struct pca953x_chip), GFP_KERNEL);
+ 	if (chip == NULL)
+Index: linux.git3/drivers/gpio/pcf857x.c
+===================================================================
+--- linux.git3.orig/drivers/gpio/pcf857x.c	2008-10-22 09:50:45.000000000 +0100
++++ linux.git3/drivers/gpio/pcf857x.c	2009-01-07 12:27:00.000000000 +0000
+@@ -188,8 +188,10 @@ static int pcf857x_probe(struct i2c_clie
+ 	int				status;
+ 
+ 	pdata = client->dev.platform_data;
+-	if (!pdata)
+-		return -ENODEV;
++	if (!pdata) {
++		dev_dbg(&client->dev, "no platform data\n");
++		return -EINVAL;
++	}
+ 
+ 	/* Allocate, initialize, and register this gpio_chip. */
+ 	gpio = kzalloc(sizeof *gpio, GFP_KERNEL);
+@@ -248,8 +250,10 @@ static int pcf857x_probe(struct i2c_clie
+ 		else
+ 			status = i2c_read_le16(client);
+ 
+-	} else
+-		status = -ENODEV;
++	} else {
++		dev_dbg(&client->dev, "unsupported number of gpios\n");
++		status = -EINVAL;
++	}
+ 
+ 	if (status < 0)
+ 		goto fail;
 
-Any status on these patches?
+-- 
+Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)
 
-- k
-
-------------------------------------------------------------------------------
-Check out the new SourceForge.net Marketplace.
-It is the best place to buy or sell services for
-just about anything Open Source.
-http://p.sf.net/sfu/Xq1LFB
+  'a smiley only costs 4 bytes'

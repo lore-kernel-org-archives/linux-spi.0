@@ -1,13 +1,17 @@
-From: "el Secreto" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Haga Posible El Secreto en su Vida
-Date: Tue, 6 Jan 2009 14:57:42 -0300
-Message-ID: <784562669-22009126175742863@gmail.com>
-Reply-To: el Secreto <info-EllHPs1tUSIvxib2LTJeJQC/G2K4zDHf@public.gmane.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+Subject: Re: [PATCH 0/7] OpenFirmware support for the
+	spi_mpc83xx driver
+Date: Tue, 6 Jan 2009 22:28:10 -0600
+Message-ID: <6DC0606C-1CDA-4549-8A63-E3F86010291B@kernel.crashing.org>
+References: <20081205200936.GA19137@oksana.dev.rtsoft.ru>
+Mime-Version: 1.0 (Apple Message framework v929.2)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linuxppc-dev list <linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20081205200936.GA19137-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,73 +22,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hipnosis Chile tienen el agrado de invitar a Ud. al taller =
 
-"El Secreto del Secreto: se logra a trav=E9s de la Hipnosis"
+On Dec 5, 2008, at 2:09 PM, Anton Vorontsov wrote:
 
-Son millones de personas que ya conocen el Secreto, si Ud. aun no lo conoce=
- le invitamos a ver la pel=EDcula en http://www.tu.tv/videos/el-secreto-doc=
-umental-audio-latino pero... pr=E1cticamente ninguna ha logrado lo que dese=
-a =BFpor qu=E9?
-Es f=E1cil decir tenga pensamientos positivos... pero si toda mi vida he te=
-nido pensamientos negativos =BFc=F3mo lo hago..? =BFc=F3mo visualizo lo que=
- deseo si no me ense=F1an..?
+> Hi all,
+>
+> The patch series are used to support SPI via the OF SPI subsystem
+> (driver/of/of_spi.c). Now the driver is able to manage its own
+> chip selects, and doesn't need any auxiliary support from the
+> board files or fsl_soc constructors.
+>
+> The series also contains PowerPC portions of the MMC SPI support.
+>
+> Since the series touches spi and powerpc trees, I think it would
+> be most convenient to pass it via one of these trees. The patches
+> doesn't touch any SPI functionality, only some probe routines, so
+> I believe powerpc.git is the best candidate...
+>
+> The other reason for powerpc tree is that the patches depends on
+> other patches as found in paulus/powerpc.git + of_gpio_count()
+> as found here:
+> http://ozlabs.org/pipermail/linuxppc-dev/2008-December/065917.html
+>
+> David, if you're OK with the patches, may I ask you to sign off on
+> the ones that touch drivers/spi so that we could pass it via Kumar's
+> powerpc.git?
+>
+> The queue:
+>
+> [1/7] powerpc: Implement get_brgfreq() and get_baudrate() stubs
+> [2/7] spi_mpc83xx: Fix sparse warnings
+> [3/7] spi_mpc83xx: Rework chip selects handling
+> [4/7] spi_mpc83xx: Add OF platform driver bindings
+> [5/7] powerpc/fsl_soc: Isolate legacy fsl_spi support to mpc832x_rdb  
+> boards
+> [6/7] powerpc: Add mmc-spi-slot bindings
+> [7/7] powerpc/83xx: Add mmc-spi support via the device tree for  
+> MPC8323E-RDB
+>
+> Thanks,
+>
+> -- 
+> Anton Vorontsov
+> email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+> irc://irc.freenode.net/bd2
 
-El Secreto se puede sintetizar en un concepto, La ley de la atracci=F3n : l=
-o similar atrae lo similar.( tambi=E9n seg=FAn versa en un refr=E1n ; a la =
-gente le pasa lo que se le parece, no lo que se merece). Para resumir en qu=
-e consiste la ley de la atracci=F3n, me referir=E9 brevemente a las cuatro =
-etapas que la involucran, y que nos permitir=E1 conducir nuestra vida de me=
-jor forma, utilizando parte del enorme potencial que tenemos:
-1- Pensamiento: Todo pensamiento es energ=EDa que liberamos al universo, y =
-bajo la ley de atracci=F3n atraemos aquello en lo que pensamos, por lo tant=
-o es importante darse cuenta que tipo de pensamientos estamos manifestando. =
+David,
 
-2- Sentimiento: Cada pensamiento nos genera un sentimiento, si prestamos at=
-enci=F3n a ellos nos ser=E1 m=E1s f=E1cil saber si estamos creando pensamie=
-ntos positivos. =
+Any status on these patches?
 
-3- Visualizaci=F3n: Una vez que identificamos claramente lo que queremos pa=
-ra nuestra vida, pensaremos en ello con frecuencia de manera que el univers=
-o se encargue de manifestarlo, no nos debe preocupar el como suceder=E1, me=
-nos a=FAn pensar si ser=E1 posible o no. =
+- k
 
-4- Agradecer: Despu=E9s de los pasos anteriores, y tal vez el m=E1s importa=
-nte es, agradecer todo lo bueno que tenemos , y dentro de esto agradecer aq=
-uello que estamos deseando, como si ya nos hubiera sido concedido. =
-
-
-El Secreto del Secreto es que esto se puede lograr a trav=E9s de la Hipnosi=
-s, una Hipnosis suave, conciente, pero constante en el tiempo. Para ello he=
-mos desarrollado un taller de 1 hora cronol=F3gica donde se entregar=E1 el =
-material que debe usar todos los d=EDas (CD grabados con hipnosis suaves de=
- unos 25 minutos aproximados, para ser escuchados todos los d=EDas) Con est=
-o podr=E1 lograr lo que han deseado.
-
-Valor del taller, incluye 2 CD, es de $50.000.- (Se deben cancelar $20.000 =
-en el momento de matricularse en el taller y $30.000 el mismo d=EDa del tal=
-ler) Matr=EDculas en http://www.hipnosischile.com/inscripciones.htm =
-
-Cupo: 20 personas
-Lugar: Seminario 6 - Providencia (Estaci=F3n Baquedano)
-
-M=E1s informaciones en www.hipnosischile.com =
-
-
-Saluda atentamente,
-
-Ana Mar=EDa Villarroel Altamirano
-Hipnosis Chile - Las Rosas 1981 - Pe=F1alol=E9n =
-
-Fono: 2781078 - info-EllHPs1tUSIvxib2LTJeJQC/G2K4zDHf@public.gmane.org =
-
-www.hipnosischile.com =
-
-Remover: remover-EllHPs1tUSIvxib2LTJeJQC/G2K4zDHf@public.gmane.org
-
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Check out the new SourceForge.net Marketplace.
 It is the best place to buy or sell services for
 just about anything Open Source.

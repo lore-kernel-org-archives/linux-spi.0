@@ -1,14 +1,14 @@
-From: ben-elnMNo+KYs3pIgCt6eIbzw@public.gmane.org
+From: Ben Dooks <ben-linux@fluff.org>
 Subject: GPIO: Fix probe() error return in gpio driver probes
-Date: Wed, 07 Jan 2009 12:56:19 +0000
-Message-ID: <20090107125619.052023040@fluff.org.uk>
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Date: Wed, 07 Jan 2009 13:03:23 +0000
+Message-ID: <20090107130322.830591356@fluff.org.uk>
+Cc: david-b@pacbell.net, linux-i2c@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	Ben Dooks <ben-linux@fluff.org>
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754882AbZAGNDw@vger.kernel.org>
 Content-Disposition: inline; filename=simtec/check-gpio-driver-return-codes.patch
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 A number of drivers in drivers/gpio return -ENODEV when confronted
@@ -25,7 +25,7 @@ Also add a set of dev_dbg() statements to the error paths to provide
 an better explanation of the error as there may be more that one point
 in the driver.
 
-Signed-off-by: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Signed-off-by: Ben Dooks <ben-linux@fluff.org>
 Index: linux.git3/drivers/gpio/max7301.c
 ===================================================================
 --- linux.git3.orig/drivers/gpio/max7301.c	2008-10-22 09:50:45.000000000 +0100
@@ -126,6 +126,6 @@ Index: linux.git3/drivers/gpio/pcf857x.c
  		goto fail;
 
 -- 
-Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)
+Ben (ben@fluff.org, http://www.fluff.org/)
 
   'a smiley only costs 4 bytes'

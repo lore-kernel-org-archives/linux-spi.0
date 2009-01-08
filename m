@@ -1,13 +1,13 @@
 From: Unknown <unknown@unknown.invalid>
-Subject: [SPAM] Greeting you with heartiest wishes
-Date: Thu, 8 Jan 2009 19:52:23 +0530
-Message-ID: <001b01c9719d$0406abc0$e25bab66@com2yzxq>
+Subject: [SPAM] You have received an E-card
+Date: Fri, 9 Jan 2009 07:33:13 +0800
+Message-ID: <002d01c971e2$2c07dc30$ddd2dcec@modular8520229esi>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-From: "Mary" <cpuglia@Binary>
+From: "Kevin" <shishdir@Binary>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,10 +18,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Mary wants to show you a greeting.
-Visit the following web address to view your e-card: 
-http://greetingcardcalendar.com/?cardnum=edb7594e7acc24e6761
-Brought to you by 101Christmas.Net!
+Kevin has mailed an e-card.
+Click the above link to view the page! If you can't click it, copy and paste it 
+into your browser: http://greetingsupersite.com/?id=deed02e51c1d5628d1
+Your eCard will be available for the next 60 days.
 
 
 ------------------------------------------------------------------------------

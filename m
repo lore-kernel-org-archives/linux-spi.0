@@ -1,40 +1,37 @@
-From: =?GB2312?B?w7fPyMn6?= <oooooooooooaasa-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] @商#务￥洽%谈&&
-Date: Thu, 8 Jan 2009 19:01:14 +0800
-Message-ID: <E1LKsfe-000117-8v@3yr0jf1.ch3.sourceforge.com>
+From: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+Subject: Re: GPIO: Fix probe() error return in gpio driver probes
+Date: Thu, 8 Jan 2009 12:20:22 +0000
+Message-ID: <20090108122022.GO12431@fluff.org.uk>
+References: <20090107125619.052023040@fluff.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20090107125619.052023040-elnMNo+KYs3pIgCt6eIbzw@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICAgztLKx8nu29rK0PbOw6/KtdK109DP
-3rmry761xKOouePW3aGitqvduKGiyc+6o6Giz8PDxaGiurzW3aGiy9XW3bXItdi++dPQCrfWuavL
-vqOpoaPO0su+yrXBptDbuvGjrNPQ18XBvLrDtcTJ57vhudjPtaGj0vK9+M/uvc+24M/WzeqzybK7
-wcvDv9TCz/rK27butsihowrDv9TC09DSu7K/t9bU9ta1y7C158TUt6LGsTYlus3G1c2ot6LGsdbW
-wODI58/Co7rJzMa3z/rK28uwt6LGsaOstefE1NTLyuS3osaxo6wKueO45reixrHX4sHe0rW3osax
-LLf+zvHStbeixrG1yCAoufrLsLXYy7CjqTEtMiXTxbvdtPq/qrvyus/X96OstePK/b3Ptc2ho7u5
-v8kK0tS4+b7dy/nX9sr9wb+27rbItcS089ChwLTJzMzW08W73bXEtePK/aOsuavLvrPJwaK24MTq
-0rvWsbzhs9bS1KGws8/QxaGxzqrW0ArQxNf3zqq5q8u+tcS6y9DEy7zP66GiwM65zMr3waK5q8u+
-0M7P86Ossb65q8u+1qPW2LPQxbXL+dPDvvi21MrH1ebGsaOhuPzPo837CsTcubvT0Lv6u+HT67nz
-y766z9f3o6EKoaGhoQogICAgIMjnufPLvtTat6LGsbXE1ebOsbe9w+bT0MjOus7SycLHu/K1o9DE
-o6y/ycnPzfiy6daku/LO0su+1rG909PrufPLvsily7DO8b7WCrXWv9u6y7bUoaMKCiAgICAgtMvQ
-xc+is6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOgoKoaGhocrWICC7+joxMzUzMDkwOTM0NAoKICAg
-ICAgICBRUaO7IDc3MTUwOTM0NAoKIAogICAgwarPtcjLo7rA7rn6t+UKIAogICAgICAgICAgICAg
-ICAgICAgICAgICAgIAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkNoZWNrIG91dCB0aGUgbmV3IFNv
-dXJjZUZvcmdlLm5ldCBNYXJrZXRwbGFjZS4KSXQgaXMgdGhlIGJlc3QgcGxhY2UgdG8gYnV5IG9y
-IHNlbGwgc2VydmljZXMgZm9yCmp1c3QgYWJvdXQgYW55dGhpbmcgT3BlbiBTb3VyY2UuCmh0dHA6
-Ly9wLnNmLm5ldC9zZnUvWHExTEZCCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2Vu
-ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQv
-bGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Wed, Jan 07, 2009 at 12:56:19PM +0000, ben-elnMNo+KYs3pIgCt6eIbzw@public.gmane.org wrote:
+> A number of drivers in drivers/gpio return -ENODEV when confronted
+> with missing setup parameters such as the platform data. However,
+> returning -ENODEV causes the driver layer to silently ignore the
+> driver as it assumes the probe did not find anything and was only
+> speculative.
+> 
+> To make life easier to discern why a driver is not being attached,
+> change to returning -EINVAL, which is a better description of the
+> fact that the driver data was not valid.
+> 
+> Also add a set of dev_dbg() statements to the error paths to provide
+> an better explanation of the error as there may be more that one point
+> in the driver.
+
+sorry, sent from the wrong email address please ignore.
+-- 
+Ben (ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/)
+
+  'a smiley only costs 4 bytes'

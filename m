@@ -1,30 +1,31 @@
-From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+From: Stefan Roese <sr@denx.de>
 Subject: [PATCH v6] spi: Add PPC4xx SPI driver
 Date: Thu,  8 Jan 2009 11:40:50 +0100
-Message-ID: <1231411250-25380-1-git-send-email-sr__20228.8760724061$1231411390$gmane$org@denx.de>
+Message-ID: <1231411250-25380-1-git-send-email-sr__20999.6190890253$1231411412$gmane$org@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org
-To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: david-b@pacbell.net
+To: linuxppc-dev@ozlabs.org,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org>
+List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
+List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
+List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
 This adds a SPI driver for the SPI controller found in the IBM/AMCC
 4xx PowerPC's.
 
-Signed-off-by: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Signed-off-by: Wolfgang Ocker <weo-pMF0Ia4UJXeoYr4blSSd5g@public.gmane.org>
-Acked-by: Josh Boyer <jwboyer-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>
+Signed-off-by: Stefan Roese <sr@denx.de>
+Signed-off-by: Wolfgang Ocker <weo@reccoware.de>
+Acked-by: Josh Boyer <jwboyer@linux.vnet.ibm.com>
 ---
 Changes in v6:
 - Moved comment about high interrupt load to top of file and extended it
@@ -100,14 +101,14 @@ index 0000000..15d433a
 +/*
 + * SPI_PPC4XX SPI controller driver.
 + *
-+ * Copyright (C) 2007 Gary Jennejohn <garyj-ynQEQJNshbs@public.gmane.org>
-+ * Copyright 2008 Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, DENX Software Engineering
++ * Copyright (C) 2007 Gary Jennejohn <garyj@denx.de>
++ * Copyright 2008 Stefan Roese <sr@denx.de>, DENX Software Engineering
 + *
 + * Based in part on drivers/spi/spi_s3c24xx.c
 + *
 + * Copyright (c) 2006 Ben Dooks
 + * Copyright (c) 2006 Simtec Electronics
-+ *	Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
++ *	Ben Dooks <ben@simtec.co.uk>
 + *
 + * This program is free software; you can redistribute  it and/or modify it
 + * under the terms of the GNU General Public License version 2 as published
@@ -693,10 +694,3 @@ index 0000000..15d433a
 +MODULE_LICENSE("GPL");
 -- 
 1.6.1
-
-
-------------------------------------------------------------------------------
-Check out the new SourceForge.net Marketplace.
-It is the best place to buy or sell services for
-just about anything Open Source.
-http://p.sf.net/sfu/Xq1LFB

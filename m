@@ -1,11 +1,12 @@
-From: =?utf-8?q?Oceanic=20Bank=20Plc=20Nigeria?= <ngocebanplc-jtpRmYsQNJU@public.gmane.org>
-Subject: YOUR ATM CARD DELIVERY ($10.5M)
-Date: Fri, 9 Jan 2009 18:29:53 +0530 (IST)
-Message-ID: <506722.38115.qm@web95112.mail.in2.yahoo.com>
-Reply-To: ocebanplc-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
+From: =?ISO-8859-1?Q?Leonardo_Rodrigues_Magalh=E3es?=
+	<leolistas-RDcRC1KzKCbQ4tFLR8X5nw@public.gmane.org>
+Subject: SD-over-SPI with shared SPI bus
+Date: Fri, 09 Jan 2009 19:23:26 -0200
+Message-ID: <4967C04E.9030304@solutti.com.br>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8107007784838367059=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: SPI Devel ML <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,50 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8107007784838367059==
-Content-Type: multipart/alternative; boundary="0-1239017235-1231505993=:38115"
-Content-Transfer-Encoding: 8bit
 
---0-1239017235-1231505993=:38115
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+    Hello Guys,
 
-I have a new email address!You can now email me at: ngocebanplc-jtpRmYsQNJU@public.gmane.org
+    is there any news on the mmc_spi driver which supports shared SPI =
 
+bus ???
 
+    i'm looking for this feature for enabling MicroSD support on some =
 
-- DEAR SIR/MADAM,THIS IS TO INFORM YOU OFFICIALLY THAT WE HAVE VERIFIED YOUR CONTRACT/INHERITANCE FILE AND FOUND OUT  WHY YOU HAVE NOT RECEIVED YOUR ATM CARD KINDLY SEND YOUR NAME, ADDRESS AND CELL/PHONE FOR IMMEDIATE DELIVERY. CHUKWUEMEKA O.Jr. +234-80512-11552 
+RouterBoard boards with OpenWRT.
 
+    Thanks.
 
---0-1239017235-1231505993=:38115
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 8bit
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://us.i1.yimg.com/us.yimg.com/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>ngocebanplc-jtpRmYsQNJU@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">DEAR SIR/MADAM,THIS IS TO INFORM YOU OFFICIALLY THAT WE HAVE VERIFIED YOUR CONTRACT/INHERITANCE FILE AND FOUND OUT  WHY YOU HAVE NOT RECEIVED YOUR ATM CARD KINDLY SEND YOUR NAME, ADDRESS AND CELL/PHONE FOR IMMEDIATE DELIVERY. CHUKWUEMEKA O.Jr. +234-80512-11552 </span></div></div>
---0-1239017235-1231505993=:38115--
+-- =
 
 
 
---===============8107007784838367059==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+	Atenciosamente / Sincerily,
+	Leonardo Rodrigues
+	Solutti Tecnologia
+	http://www.solutti.com.br
 
-------------------------------------------------------------------------------
+	Minha armadilha de SPAM, N=C3O mandem email
+	gertrudes-RDcRC1KzKCbQ4tFLR8X5nw@public.gmane.org
+	My SPAMTRAP, do not email it
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
 Check out the new SourceForge.net Marketplace.
 It is the best place to buy or sell services for
 just about anything Open Source.
 http://p.sf.net/sfu/Xq1LFB
---===============8107007784838367059==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============8107007784838367059==--

@@ -1,11 +1,11 @@
-From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 本司有多余税票代开，税点特优，可验证后付款
-Date: Fri, 9 Jan 2009 08:45:07 +0800
-Message-ID: <E1LL5Sm-0006Rf-LD@235xhf1.ch3.sourceforge.com>
+From: =?utf-8?q?Oceanic=20Bank=20Plc=20Nigeria?= <ngocebanplc-jtpRmYsQNJU@public.gmane.org>
+Subject: YOUR ATM CARD DELIVERY ($10.5M)
+Date: Fri, 9 Jan 2009 18:29:53 +0530 (IST)
+Message-ID: <506722.38115.qm@web95112.mail.in2.yahoo.com>
+Reply-To: ocebanplc-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8107007784838367059=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,23 +17,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
-vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
-1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
-uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
-xrG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
-uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/qsax19y98Lbu
-tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rGsdXm
-yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
-7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
-o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
-z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
-yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDaGVjayBvdXQgdGhlIG5ldyBTb3VyY2VGb3JnZS5uZXQg
-TWFya2V0cGxhY2UuCkl0IGlzIHRoZSBiZXN0IHBsYWNlIHRvIGJ1eSBvciBzZWxsIHNlcnZpY2Vz
-IGZvcgpqdXN0IGFib3V0IGFueXRoaW5nIE9wZW4gU291cmNlLgpodHRwOi8vcC5zZi5uZXQvc2Z1
-L1hxMUxGQgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
-cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
-L3NwaS1kZXZlbC1nZW5lcmFsCg==
+--===============8107007784838367059==
+Content-Type: multipart/alternative; boundary="0-1239017235-1231505993=:38115"
+Content-Transfer-Encoding: 8bit
+
+--0-1239017235-1231505993=:38115
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+I have a new email address!You can now email me at: ngocebanplc-jtpRmYsQNJU@public.gmane.org
+
+
+
+- DEAR SIR/MADAM,THIS IS TO INFORM YOU OFFICIALLY THAT WE HAVE VERIFIED YOUR CONTRACT/INHERITANCE FILE AND FOUND OUT  WHY YOU HAVE NOT RECEIVED YOUR ATM CARD KINDLY SEND YOUR NAME, ADDRESS AND CELL/PHONE FOR IMMEDIATE DELIVERY. CHUKWUEMEKA O.Jr. +234-80512-11552 
+
+
+--0-1239017235-1231505993=:38115
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://us.i1.yimg.com/us.yimg.com/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>ngocebanplc-jtpRmYsQNJU@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">DEAR SIR/MADAM,THIS IS TO INFORM YOU OFFICIALLY THAT WE HAVE VERIFIED YOUR CONTRACT/INHERITANCE FILE AND FOUND OUT  WHY YOU HAVE NOT RECEIVED YOUR ATM CARD KINDLY SEND YOUR NAME, ADDRESS AND CELL/PHONE FOR IMMEDIATE DELIVERY. CHUKWUEMEKA O.Jr. +234-80512-11552 </span></div></div>
+--0-1239017235-1231505993=:38115--
+
+
+
+--===============8107007784838367059==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Check out the new SourceForge.net Marketplace.
+It is the best place to buy or sell services for
+just about anything Open Source.
+http://p.sf.net/sfu/Xq1LFB
+--===============8107007784838367059==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8107007784838367059==--

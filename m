@@ -1,13 +1,12 @@
-From: Unknown <unknown@unknown.invalid>
-Subject: [SPAM] You have received an E-card
-Date: Fri, 9 Jan 2009 07:33:13 +0800
-Message-ID: <002d01c971e2$2c07dc30$ddd2dcec@modular8520229esi>
+From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 本司有多余税票代开，税点特优，可验证后付款
+Date: Fri, 9 Jan 2009 08:45:07 +0800
+Message-ID: <E1LL5Sm-0006Rf-LD@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-From: "Kevin" <shishdir@Binary>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,14 +17,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Kevin has mailed an e-card.
-Click the above link to view the page! If you can't click it, copy and paste it 
-into your browser: http://greetingsupersite.com/?id=deed02e51c1d5628d1
-Your eCard will be available for the next 60 days.
-
-
-------------------------------------------------------------------------------
-Check out the new SourceForge.net Marketplace.
-It is the best place to buy or sell services for
-just about anything Open Source.
-http://p.sf.net/sfu/Xq1LFB
+ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
+vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
+1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
+uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
+xrG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
+uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/qsax19y98Lbu
+tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rGsdXm
+yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
+7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
+o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
+z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
+yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDaGVjayBvdXQgdGhlIG5ldyBTb3VyY2VGb3JnZS5uZXQg
+TWFya2V0cGxhY2UuCkl0IGlzIHRoZSBiZXN0IHBsYWNlIHRvIGJ1eSBvciBzZWxsIHNlcnZpY2Vz
+IGZvcgpqdXN0IGFib3V0IGFueXRoaW5nIE9wZW4gU291cmNlLgpodHRwOi8vcC5zZi5uZXQvc2Z1
+L1hxMUxGQgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

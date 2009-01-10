@@ -1,10 +1,9 @@
-From: "el Secreto" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Haga Posible El Secreto en su Vida
-Date: Fri, 9 Jan 2009 18:16:15 -0300
-Message-ID: <1251544948-22009159211615742@gmail.com>
-Reply-To: el Secreto <info-EllHPs1tUSIvxib2LTJeJQC/G2K4zDHf@public.gmane.org>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8448575395330239881=="
+From: =?GB2312?B?wdbQob3j?= <fhggg56-9Onoh4P/yGk@public.gmane.org >
+Subject: [SPAM] 鍐呭
+Date: Sat, 10 Jan 2009 12:11:08 +0800
+Message-ID: <E1LLVBb-0006Jm-KQ@335xhf1.ch3.sourceforge.com>
+Reply-To: fhggg56-9Onoh4P/yGk@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============3836138380986396631=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,61 +16,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8448575395330239881==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_1251517748295907211615743"
+--===============3836138380986396631==
+Content-Type: text/plain;charset="GB2312"
 
-------=_NextPart_1251517748295907211615743
-Content-type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+您好!
+    
+       本公司是税务机关授权公司,可优惠对外开具(發/票),
 
+   专业代理普通国税,地税(發/票)与有关配套证明,
 
+   代开范围:(商品销售,广告,国内运输,国际货运,咨询,住宿,
 
+   建筑安装等等其他服务行业(發/票),贵公司在做帐方面或
 
-------=_NextPart_1251517748295907211615743
-Content-Type: text/html; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
-1252">
-<title>El Secreto</title>
-</head>
-
-<body bgcolor=3D"#000000">
-
-<p align=3D"center">
-<map name=3D"FPMap0">
-<area href=3D"http://www=2Ehipnosischile=2Ecom/inscripciones=2Ehtm" shape=3D=
-"rect" coords=3D"131, 621, 430, 641">
-<area href=3D"mailto:info@hipnosischile=2Ecom" shape=3D"rect" coords=3D"29=
-5, 762, 385, 769">
-<area href=3D"mailto:remover@hipnosischile=2Ecom=3Fsubject=3DRemover" shap=
-e=3D"rect" coords=3D"275, 784, 389, 790">
-<area href=3D"http://www=2Ehipnosischile=2Ecom" shape=3D"rect" coords=3D"2=
-58, 772, 360, 781">
-<area coords=3D"204, 683, 406, 739" shape=3D"rect" href=3D"http://www=2Ehi=
-pnosischile=2Ecom/elsecreto=2Ehtm">
-<area href=3D"http://www=2Ehipnosischile=2Ecom/elsecreto=2Ehtm" shape=3D"d=
-efault">
-<area href=3D"http://www=2Ehipnosischile=2Ecom/elsecreto=2Ehtm" coords=3D"=
-0, 0, 10000, 10000" shape=3D"rect">
-</map>
-<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecom/PUBLICIDAD/El%20=
-Secreto=2Ejpg" width=3D"650" height=3D"800" usemap=3D"#FPMap0" alt=3D"Si n=
-o puede ver la imagen debe ir a www=2Ehipnosischile=2Ecom"></p>
-
-</body>
-
-</html>
-
-------=_NextPart_1251517748295907211615743--
+   进销方面,我司可提供全方面服务,
+    
+   如贵公司有需要,请直接来电联系,
+   
+   联系人:林小姐
+   
+   电  话: 135 8686 7312，
+   
+   请保留号码以备急用!
 
 
-
---===============8448575395330239881==
+--===============3836138380986396631==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -82,7 +51,7 @@ Check out the new SourceForge.net Marketplace.
 It is the best place to buy or sell services for
 just about anything Open Source.
 http://p.sf.net/sfu/Xq1LFB
---===============8448575395330239881==
+--===============3836138380986396631==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -93,4 +62,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8448575395330239881==--
+--===============3836138380986396631==--

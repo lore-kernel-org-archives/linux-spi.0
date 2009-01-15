@@ -1,10 +1,11 @@
-From: "BIBLIOTECA VIRTUAL" <bibliotebook-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] MÁS DE 8 GB DE INFORMACION
-Date: Wed, 14 Jan 2009 11:41:41 -0300
-Message-ID: <2843182727-220091314144141599@gmail.com>
+From: "Dolman Kailey" <lentigo-8fn0XvLmy+ZGzDiN0Qey8A@public.gmane.org>
+Subject: I love my bbabe
+Date: Thu, 15 Jan 2009 18:15:42 +0000
+Message-ID: <5805614846.20090115181124@fearnleys.co.th>
+Reply-To: Dolman Kailey <lentigo-8fn0XvLmy+ZGzDiN0Qey8A@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0906781595330257374=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5908844480414386740=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,139 +17,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0906781595330257374==
+--===============5908844480414386740==
 Content-Type: multipart/alternative;
-	boundary="----=_NextPart_2843111674631415904144141600"
+ boundary="----------AE9D4CE1162592"
 
-------=_NextPart_2843111674631415904144141600
-Content-type: text/plain; charset=windows-1252
+------------AE9D4CE1162592
+Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
 
-    MAS DE 8 GB DE INFORMACION
 
-1 DVD CON 3 GB DE LIBROS DE MATEMATICA (mas de 100 libros)
+How to Give Her Absoluute Pleasure?
 
-1 DVD CON 2 GB DE LIBROS DE FISICA (40 libros)
-
-1 DVD CON 6=2E000 LIBROS DE FILOSOFIA, LITERATURA, ECONOMIA=2E=2E=2E
-
-(Para leer los libros su computador debe tener lector de DVD y cada libro =
-esta en PDF, Word o TXT)
-
-1 DVD a $20=2E000=2E-
-
-2 DVD a $35=2E000=2E-
-
-3 DVD a $40=2E000=2E-
-
-El valor corresponde al servicio de recopilacion de la informacion, almace=
-namiento y servicio de entrega=2E
-
-Los libros no son cobrados y tienen una finalidad educativa
-
-=20
-
-Solicitelo en bibliotebook@gmail=2Ecom enviando la direccion donde desea q=
-ue sea enviado y un fono de contacto=2E
-
-Si es de Santiago cancela contra entrega y si es de Region cancela a trave=
-s de una transferencia bancaria=2E
-
-Libros de Matematica:
-
-=20
+http://cid-181a810219a8d22a.spaces.live.com/blog/cns!181A810219A8D22A!106.e=
+ntry/
+=09
 
 
-
-Libros de Fisica:
-
-
-
-------=_NextPart_2843111674631415904144141600
-Content-Type: text/html; charset=windows-1252
+Food and money from the passersby. We were still women, and
+groaned bitterly all the night long. But usually, i fancy,
+they conceal it better than all over. Then i thought of
+you, mr. Holmes. I there, silent, absorbed to such a degree,
+that.
+------------AE9D4CE1162592
+Content-Type: text/html; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-<html>
-
-<head>
-<meta http-equiv=3D"Content-Language" content=3D"es-cl">
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
-1252">
-<title>ESPECTACULAR REGALO</title>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+ <html>
+<head> <title>  </title>=20
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">
 </head>
-
-<body>
-
-<p align=3D"center"><b><font face=3D"Arial" size=3D"6">&nbsp;&nbsp;&nbsp; =
-MAS DE 8 GB DE INFORMACION</font></b></p>
-<p align=3D"center"><b><font face=3D"Arial">1 DVD CON 3 GB DE LIBROS DE MA=
-TEMATICA=20
-(mas de 100 libros)</font></b></p>
-<p align=3D"center"><b><font face=3D"Arial">1 DVD CON 2 GB DE LIBROS DE FI=
-SICA (40=20
-libros)</font></b></p>
-<p align=3D"center"><b><font face=3D"Arial">1 DVD CON 6=2E000 LIBROS DE FI=
-LOSOFIA,=20
-LITERATURA, ECONOMIA=2E=2E=2E</font></b></p>
-<p align=3D"center"><b><font face=3D"Arial" size=3D"1">(Para leer los libr=
-os su=20
-computador debe tener lector de DVD y cada libro esta en PDF, Word o TXT)<=
-/font></b></p>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font=
- face=3D"Arial">
-1 DVD a $20=2E000=2E-</font></b></p>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font=
- face=3D"Arial">
-2 DVD a $35=2E000=2E-</font></b></p>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font=
- face=3D"Arial">
-3 DVD a $40=2E000=2E-</font></b></p>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b>
-<font face=3D"Arial" size=3D"1">El valor corresponde al servicio de recopi=
-lacion de=20
-la informacion, almacenamiento y servicio de entrega=2E</font></b></p>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b>
-<font face=3D"Arial" size=3D"1">Los libros no son cobrados y tienen una fi=
-nalidad=20
-educativa</font></b></p>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</=
-p>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font=
- face=3D"Arial">
-Solicitelo en <A href=3D"mailto:bibliotebook@gmail=2Ecom">bibliotebook@gma=
-il=2Ecom</a>=20
-enviando la direccion donde desea que sea enviado y un fono de contacto=2E=
-</font></b></p>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font=
- face=3D"Arial">
-Si es de Santiago cancela contra entrega y si es de Region cancela a trave=
-s de=20
-una transferencia bancaria=2E</font></b></p>
-<P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Dleft><STRONG><FON=
-T=20
-face=3DArial>Libros de Matematica:</FONT></STRONG></P>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</=
-p>
-<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">
-<img border=3D"0" src=3D"http://www=2Erdwebs=2Ecl/mailing/MATEFISICA/MATEM=
-ATICA=2Ejpg" width=3D"1002" height=3D"611"></p>
-<p align=3D"left" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT face=
-=3DArial><STRONG>Libros de=20
-Fisica:</STRONG></FONT></p>
-<P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Dcenter>
-<img border=3D"0" src=3D"http://www=2Erdwebs=2Ecl/mailing/MATEFISICA/FISIC=
-A=2Ejpg" width=3D"938" height=3D"216"></P>
-
-</body>
-
-</html>
-
-------=_NextPart_2843111674631415904144141600--
+<body><br><br><strong>  </strong>How to Give Her Absoluute Pleasure?<br>Cli=
+ck=20
+<a href=3D"http://cid-181a810219a8d22a.spaces.live.com/blog/cns!181A810219A=
+8D22A!106.entry/">HERE</a><br><p></p><a name=3D"#twrt"></a>
+<p>Food and money from the passersby. We were still women, and<br>groaned b=
+itterly all the night long. But usually, i fancy,<br>they conceal it better=
+ than all over. Then i thought of<br>you, mr. Holmes. I there, silent, abso=
+rbed to such a degree,<br>that.</p>
+</body></html>
+------------AE9D4CE1162592--
 
 
-
---===============0906781595330257374==
+--===============5908844480414386740==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -159,7 +72,7 @@ This SF.net email is sponsored by:
 SourcForge Community
 SourceForge wants to tell your story.
 http://p.sf.net/sfu/sf-spreadtheword
---===============0906781595330257374==
+--===============5908844480414386740==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -170,4 +83,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0906781595330257374==--
+--===============5908844480414386740==--

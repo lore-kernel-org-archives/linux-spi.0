@@ -1,57 +1,47 @@
-From: Jaswinder Singh Rajput <jaswinder-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [GIT PULL -tip] fix 33 make headers_check warnings
-Date: Sun, 18 Jan 2009 09:08:24 +0530
-Message-ID: <1232249904.3097.15.camel@localhost.localdomain>
-References: <1232223441.3966.22.camel@localhost.localdomain>
-	 <1232228261.27094.0.camel@macbook.infradead.org>
-	 <20090117221932.GA4956@uranus.ravnborg.org>
-	 <1232247901.3097.12.camel@localhost.localdomain>
-	 <20090118033339.GA671@bombadil.infradead.org>
+From: Julianne Fye <vika_r-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Online-Based Part Time Job Available
+Date: Sat, 17 Jan 2009 13:15:37 +0000
+Message-ID: <46393.6059423306$1232252292@news.gmane.org>
+Reply-To: Julianne Fye <hhabomfbmwfo-0NmH7p4SfXGsTnJN9+BGXg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Ingo Molnar <mingo-X9Un+BFzKDI@public.gmane.org>, x86 maintainers <x86-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	urs.thuermann-l29pVbxQd1IUtdQbppsyvg@public.gmane.org, oliver.hartkopp-l29pVbxQd1IUtdQbppsyvg@public.gmane.org,
-	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, netfilter-devel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	netfilter-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, bfields-uC3wQj2KruNg9hUCZPvPmw@public.gmane.org, neilb-l3A5Bk7waGM@public.gmane.org,
-	linux-nfs-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-raid-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org, linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, tiwai-l3A5Bk7waGM@public.gmane.org,
-	mchehab-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: Kyle McMartin <kyle-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-Return-path: <linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20090118033339.GA671-PfSpb0PWhxZc2C7mugBRk2EX/6BAtgUQ@public.gmane.org>
-Sender: linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 2009-01-17 at 22:33 -0500, Kyle McMartin wrote:
-> On Sun, Jan 18, 2009 at 08:35:01AM +0530, Jaswinder Singh Rajput wrote:
-> > Hello Sam, David,
-> > 
-> > /home/jaswinder/jaswinder-git/linux-2.6-tip/usr/include/mtd/jffs2-user.h:20: extern's make no sense in userspace
-> > 
-> 
-> This file is for userspace only, and it makes sense where it's used
-> (mtd-utils.)
-> 
-> In general though, this file doesn't actually depend on the kernel and
-> could be entirely provided from the userspace library.
-> 
+Hi,
 
-If this file is _ONLY_ for userspace and kernel cannot use it then what
-is the point of keeping this file in kernel headers.
+Our online market research organization starts recruiting self-motivated and
+reliable individuals willing to take part in well-paying research conducted
+by leading international businesses. Your opinion as a consumer is important
+for the success and profitability of many business ventures. That is why
+they are ready to pay for what you think.
 
---
-JSR
+Our members are paid for participating in online surveys, focus group
+discussions, and product/service evaluations. What's best, all you need to
+work with us is a computer, an Internet connection, and will to voice your
+honest opinion. 
 
+We'd like to hear from you soon if you want to become one of our highly
+valued survey takers. 
 
+Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-usb" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Please reply to sterling.malia15425-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+
+Best regards,
+Stephanie Cunningham
+------------------------------------------------------------------------------
+This SF.net email is sponsored by:
+SourcForge Community
+SourceForge wants to tell your story.
+http://p.sf.net/sfu/sf-spreadtheword

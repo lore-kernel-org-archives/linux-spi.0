@@ -1,40 +1,56 @@
-From: "H. Peter Anvin" <hpa@kernel.org>
-Subject: Re: [GIT PULL -tip] fix 33 make headers_check warnings
-Date: Sat, 17 Jan 2009 14:26:38 -0800
-Message-ID: <49725B1E.604@kernel.org>
-References: <1232223441.3966.22.camel@localhost.localdomain> <1232228261.27094.0.camel@macbook.infradead.org> <20090117221932.GA4956@uranus.ravnborg.org>
+From: Xavier Elless <yahoo.co.inprincej003-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Career In Marketing Field Available
+Date: Sun, 18 Jan 2009 02:52:17 +0200
+Message-ID: <48141.3395879374$1232240048@news.gmane.org>
+Reply-To: Xavier Elless <0.00-DiLC7hUoe0M@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Jaswinder Singh Rajput <jaswinder@kernel.org>,
-	Ingo Molnar <mingo@elte.hu>, x86 maintainers <x86@kernel.org>,
-	urs.thuermann@volkswagen.de, oliver.hartkopp@volkswagen.de,
-	linux-media@vger.kernel.org, netfilter-devel@vger.kernel.org,
-	netfilter@vger.kernel.org, bfields@fieldses.org, neilb@suse.de,
-	linux-nfs@vger.kernel.org, linux-raid@vger.kernel.org,
-	dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net, netdev@vger.kernel.org,
-	greg@kroah.com, linux-usb@vger.kernel.org,
-	linux-mtd@lists.infradead.org, tiwai@suse.de,
-	mchehab@infradead.org, LKML <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-To: Sam Ravnborg <sam@ravnborg.org>
-Return-path: <linux-media-owner@vger.kernel.org>
-In-Reply-To: <20090117221932.GA4956@uranus.ravnborg.org>
-Sender: linux-media-owner@vger.kernel.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Sam Ravnborg wrote:
->>>  
->> That patch looks wrong, and unnecessary. It was fine before.
-> Nope - include/linux/dvb/audio.h failed to include linux/types.h
-> despite the fact that is uses __u32 etc.
-> 
-> But why the _kernel_ should include a userspace header is
-> much more questionable.
-> 
+Hi,
 
-<stdint.h> is one of a handful of headers provided by gcc itself.
+Since the start of 2008 our organization starts recruiting home workers
+willing to take part in well-paying research studies conducted by leading
+online businesses. 
+Your opinion as a consumer is important for the success and profitability of
+many business ventures. That is why they are ready to pay generously for
+what you think. 
 
-	-hpa
+You can earn from $300 to $600 a week for participating in on-line surveys,
+focus group discussions, and product/service evaluations. Become part of our
+team and earn: 
+
+- from $5 to $50 for participating in on-line surveys 
+- from $20 to $120 for participating in product/service evaluations 
+- from $30 to $155 for participating in virtual focus group discussions 
+
+What's best, all you need to work with us is a computer, an Internet
+connection, a valid e-mail address, and good English skills. You decide when
+to finish your tasks and how much time to devote to each survey assignment.
+You can also keep this job for the rest of the year!
+
+If you want to become one of our highly valued survey takers, please write
+back to karson.tellers1235-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and I will send you more information.
+
+Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
+
+Sincerely,
+
+April Johnson
+Assistant HR
+------------------------------------------------------------------------------
+This SF.net email is sponsored by:
+SourcForge Community
+SourceForge wants to tell your story.
+http://p.sf.net/sfu/sf-spreadtheword

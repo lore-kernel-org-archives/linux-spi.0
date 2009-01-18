@@ -1,82 +1,96 @@
-From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: Re: [GIT PULL -tip] fix 33 make headers_check warnings
-Date: Sun, 18 Jan 2009 11:10:29 +0100
-Message-ID: <20090118101029.GA31461@uranus.ravnborg.org>
-References: <1232223441.3966.22.camel@localhost.localdomain> <1232228261.27094.0.camel@macbook.infradead.org> <20090117221932.GA4956@uranus.ravnborg.org> <20090118091300.GA24849@elte.hu>
+From: "TALLER "EL SECRETO DEL SECRETO"" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] EN PUERTO MONTT y en SANTIAGO, últimos cupos
+Date: Sun, 18 Jan 2009 12:20:56 -0300
+Message-ID: <3000672695-220091018152056307@gmail.com>
+Reply-To: TALLER  EL SECRETO DEL SECRETO  <info-EllHPs1tUSIvxib2LTJeJQC/G2K4zDHf@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Jaswinder Singh Rajput <jaswinder-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	x86 maintainers <x86-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, urs.thuermann-l29pVbxQd1IUtdQbppsyvg@public.gmane.org,
-	oliver.hartkopp-l29pVbxQd1IUtdQbppsyvg@public.gmane.org, linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	netfilter-devel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, netfilter-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	bfields-uC3wQj2KruNg9hUCZPvPmw@public.gmane.org, neilb-l3A5Bk7waGM@public.gmane.org, linux-nfs-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-raid-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org, linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, tiwai-l3A5Bk7waGM@public.gmane.org,
-	mchehab-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: Ingo Molnar <mingo-X9Un+BFzKDI@public.gmane.org>
-Return-path: <linux-nfs-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20090118091300.GA24849-X9Un+BFzKDI@public.gmane.org>
-Sender: linux-nfs-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5110994555178838069=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Jan 18, 2009 at 10:13:00AM +0100, Ingo Molnar wrote:
-> 
-> * Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org> wrote:
-> 
-> > On Sun, Jan 18, 2009 at 08:37:41AM +1100, David Woodhouse wrote:
-> > > On Sun, 2009-01-18 at 01:47 +0530, Jaswinder Singh Rajput wrote:
-> > > > --- a/include/linux/dvb/audio.h
-> > > > +++ b/include/linux/dvb/audio.h
-> > > > @@ -24,9 +24,8 @@
-> > > >  #ifndef _DVBAUDIO_H_
-> > > >  #define _DVBAUDIO_H_
-> > > >  
-> > > > -#ifdef __KERNEL__
-> > > >  #include <linux/types.h>
-> > > > -#else
-> > > > +#ifndef __KERNEL__
-> > > >  #include <stdint.h>
-> > > >  #endif
-> > > >  
-> > > 
-> > > That patch looks wrong, and unnecessary. It was fine before.
-> > Nope - include/linux/dvb/audio.h failed to include linux/types.h
-> > despite the fact that is uses __u32 etc.
-> > 
-> > But why the _kernel_ should include a userspace header is
-> > much more questionable.
-> 
-> ok, i dropped this one for the time being.
-> 
-> Sam, Andrew, et al, i've got the commit lineup below, to fix the ~200 new 
-> CONFIG_HEADERS_CHECK=y warnings we have in current -git, on x86 
-> allyesconfig.
-> 
-> Note that i have restructured the tree and the commits so that this effort 
-> can be tracked more easily: each commit has a "headers_check fix" subject 
-> line prefix. So you can go back later and revisit these things - for 
-> example whether a header really needs to be exported to user-space, via:
-> 
->   git log --grep='headers_check fix:' --pretty=format:"%h: %s"
-> 
-> to get an overview and a historic track record. We can follow this 
-> notation in the future too.
-> 
-> So if there are no objections, i'll send this to Linus tomorrow-ish and 
-> we'll have the worst of the fallout behind us and can embark on a much 
-> more fluid (and per maintainer) headers_check related workflow.
+--===============5110994555178838069==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_300061125330184819152056308"
 
-Thanks for taking care of this Ingo and please push towards Linus.
-And thanks to all the contributors too - it was great to see this dealt
-with soo quickly!
+------=_NextPart_300061125330184819152056308
+Content-type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
-	Sam
---
-To unsubscribe from this list: send the line "unsubscribe linux-nfs" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+
+
+------=_NextPart_300061125330184819152056308
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
+1252">
+<title>El Secreto</title>
+</head>
+
+<body bgcolor=3D"#000000">
+
+<p align=3D"center">
+<map name=3D"FPMap0">
+<area href=3D"http://www=2Ehipnosischile=2Ecom/inscripciones=2Ehtm" shape=3D=
+"rect" coords=3D"216, 614, 538, 634">
+<area href=3D"mailto:info@hipnosischile=2Ecom" shape=3D"rect" coords=3D"31=
+5, 755, 455, 771">
+<area href=3D"mailto:remover@hipnosischile=2Ecom=3Fsubject=3DRemover" shap=
+e=3D"rect" coords=3D"302, 793, 416, 799">
+<area href=3D"http://www=2Ehipnosischile=2Ecom" shape=3D"rect" coords=3D"2=
+70, 774, 402, 789">
+<area coords=3D"234, 676, 436, 732" shape=3D"rect" href=3D"http://www=2Ehi=
+pnosischile=2Ecom/elsecreto=2Ehtm">
+<area href=3D"http://www=2Ehipnosischile=2Ecom/MONTT=2Ehtm" shape=3D"rect"=
+ coords=3D"45, 441, 265, 543">
+<area href=3D"http://www=2Ehipnosischile=2Ecom/elsecreto=2Ehtm" shape=3D"r=
+ect" coords=3D"373, 434, 620, 548">
+</map>
+<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecom/PUBLICIDAD/secre=
+toweb=2Ejpg" width=3D"650" height=3D"800" usemap=3D"#FPMap0" alt=3D"Si no =
+puede ver la imagen debe ir a www=2Ehipnosischile=2Ecom"></p>
+
+</body>
+
+</html>
+
+------=_NextPart_300061125330184819152056308--
+
+
+
+--===============5110994555178838069==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by:
+SourcForge Community
+SourceForge wants to tell your story.
+http://p.sf.net/sfu/sf-spreadtheword
+--===============5110994555178838069==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5110994555178838069==--

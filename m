@@ -1,96 +1,78 @@
-From: "TALLER "EL SECRETO DEL SECRETO"" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] EN PUERTO MONTT y en SANTIAGO, últimos cupos
-Date: Sun, 18 Jan 2009 12:20:56 -0300
-Message-ID: <3000672695-220091018152056307@gmail.com>
-Reply-To: TALLER  EL SECRETO DEL SECRETO  <info-EllHPs1tUSIvxib2LTJeJQC/G2K4zDHf@public.gmane.org>
+From: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
+Subject: Re: [GIT PULL -tip] fix 33 make headers_check warnings
+Date: Mon, 19 Jan 2009 11:24:29 +1100
+Message-ID: <20090119112429.78f5dc33.sfr@canb.auug.org.au>
+References: <1232223441.3966.22.camel@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5110994555178838069=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Mon__19_Jan_2009_11_24_29_+1100_YrWGFK.9COO2jjcI"
+Cc: Ingo Molnar <mingo-X9Un+BFzKDI@public.gmane.org>, x86 maintainers <x86-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	urs.thuermann-l29pVbxQd1IUtdQbppsyvg@public.gmane.org, oliver.hartkopp-l29pVbxQd1IUtdQbppsyvg@public.gmane.org,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, netfilter-devel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	netfilter-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, bfields-uC3wQj2KruNg9hUCZPvPmw@public.gmane.org, neilb-l3A5Bk7waGM@public.gmane.org,
+	linux-nfs-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-raid-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org, linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, tiwai-l3A5Bk7waGM@public.gmane.org,
+	mchehab-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: Jaswinder Singh Rajput <jaswinder-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-nfs-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1232223441.3966.22.camel-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
+Sender: linux-nfs-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5110994555178838069==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_300061125330184819152056308"
-
-------=_NextPart_300061125330184819152056308
-Content-type: text/plain; charset=windows-1252
+--Signature=_Mon__19_Jan_2009_11_24_29_+1100_YrWGFK.9COO2jjcI
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
+On Sun, 18 Jan 2009 01:47:21 +0530 Jaswinder Singh Rajput <jaswinder@kernel=
+.org> wrote:
+>
+> diff --git a/include/linux/nfsd/stats.h b/include/linux/nfsd/stats.h
+> index 7678cfb..0b53cfe 100644
+> --- a/include/linux/nfsd/stats.h
+> +++ b/include/linux/nfsd/stats.h
+> @@ -29,9 +29,11 @@ struct nfsd_stats {
+>  	unsigned int	ra_size;	/* size of ra cache */
+>  	unsigned int	ra_depth[11];	/* number of times ra entry was found that d=
+eep
+>  					 * in the cache (10percentiles). [10] =3D not found */
+> +#ifdef __KERNEL__
+>  #ifdef CONFIG_NFSD_V4
+>  	unsigned int	nfs4_opcount[LAST_NFS4_OP + 1];	/* count of individual nfs=
+v4 operations */
+>  #endif
+> +#endif /* __KERNEL__ */
+> =20
+>  };
 
+The only variable in the kernel of type "struct nfsd_stats" is only
+exported to user mode via procfs, so this whole structure could probably
+go inside __KERNEL__.  Then looking harder, I wonder if this header
+should be exported to user mode at all.
 
+--=20
+Cheers,
+Stephen Rothwell                    sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org
+http://www.canb.auug.org.au/~sfr/
 
-------=_NextPart_300061125330184819152056308
-Content-Type: text/html; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+--Signature=_Mon__19_Jan_2009_11_24_29_+1100_YrWGFK.9COO2jjcI
+Content-Type: application/pgp-signature
 
-<html>
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
 
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
-1252">
-<title>El Secreto</title>
-</head>
+iEYEARECAAYFAklzyD0ACgkQjjKRsyhoI8yt9QCgmEHLhNSAB2fYNfqbvgl+WPEm
+rRoAnRBfynsNZYdMSfUK9yUqeTiWdV62
+=eQRT
+-----END PGP SIGNATURE-----
 
-<body bgcolor=3D"#000000">
-
-<p align=3D"center">
-<map name=3D"FPMap0">
-<area href=3D"http://www=2Ehipnosischile=2Ecom/inscripciones=2Ehtm" shape=3D=
-"rect" coords=3D"216, 614, 538, 634">
-<area href=3D"mailto:info@hipnosischile=2Ecom" shape=3D"rect" coords=3D"31=
-5, 755, 455, 771">
-<area href=3D"mailto:remover@hipnosischile=2Ecom=3Fsubject=3DRemover" shap=
-e=3D"rect" coords=3D"302, 793, 416, 799">
-<area href=3D"http://www=2Ehipnosischile=2Ecom" shape=3D"rect" coords=3D"2=
-70, 774, 402, 789">
-<area coords=3D"234, 676, 436, 732" shape=3D"rect" href=3D"http://www=2Ehi=
-pnosischile=2Ecom/elsecreto=2Ehtm">
-<area href=3D"http://www=2Ehipnosischile=2Ecom/MONTT=2Ehtm" shape=3D"rect"=
- coords=3D"45, 441, 265, 543">
-<area href=3D"http://www=2Ehipnosischile=2Ecom/elsecreto=2Ehtm" shape=3D"r=
-ect" coords=3D"373, 434, 620, 548">
-</map>
-<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecom/PUBLICIDAD/secre=
-toweb=2Ejpg" width=3D"650" height=3D"800" usemap=3D"#FPMap0" alt=3D"Si no =
-puede ver la imagen debe ir a www=2Ehipnosischile=2Ecom"></p>
-
-</body>
-
-</html>
-
-------=_NextPart_300061125330184819152056308--
-
-
-
---===============5110994555178838069==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by:
-SourcForge Community
-SourceForge wants to tell your story.
-http://p.sf.net/sfu/sf-spreadtheword
---===============5110994555178838069==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5110994555178838069==--
+--Signature=_Mon__19_Jan_2009_11_24_29_+1100_YrWGFK.9COO2jjcI--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-nfs" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

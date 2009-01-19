@@ -1,8 +1,8 @@
-From: Dinah Cason <scottdoremuss77-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Marketing Job Openings Available
-Date: Mon, 19 Jan 2009 10:45:41 +0530
-Message-ID: <9874.94002697549$1232342239@news.gmane.org>
-Reply-To: Dinah Cason <a2t0ajv6sezcipaohgmrg-6IgxgAY4Je+zevH7/a9z7A@public.gmane.org>
+From: Angela Sullivan <kh_momo1-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Online Survey Job Available
+Date: Mon, 19 Jan 2009 13:46:06 +0700
+Message-ID: <49863.565064925$1232347672@news.gmane.org>
+Reply-To: Angela Sullivan <sesmarven-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,7 +27,7 @@ little time to voice your opinion about different kinds of online products
 and services, helping major  business improve their online presence. 
 What we offer is work at your own pace and from any computer. 
 
-If you are interested, please reply to plantz.cristen1297-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org as soon as places are limited.
+If you are interested, please reply to 1838zavannaduker-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org as soon as places are limited.
 
 Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 

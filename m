@@ -1,59 +1,41 @@
-From: Jaswinder Singh Rajput <jaswinder@kernel.org>
-Subject: Re: [GIT PULL -tip] fix 33 make headers_check warnings
-Date: Mon, 19 Jan 2009 08:23:14 +0530
-Message-ID: <1232333594.3129.31.camel@localhost.localdomain>
-References: <1232223441.3966.22.camel@localhost.localdomain>
-	 <20090119112429.78f5dc33.sfr@canb.auug.org.au>
+From: Dinah Cason <scottdoremuss77-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Marketing Job Openings Available
+Date: Mon, 19 Jan 2009 10:45:41 +0530
+Message-ID: <9874.94002697549$1232342239@news.gmane.org>
+Reply-To: Dinah Cason <a2t0ajv6sezcipaohgmrg-6IgxgAY4Je+zevH7/a9z7A@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ingo Molnar <mingo@elte.hu>, x86 maintainers <x86@kernel.org>,
-	urs.thuermann@volkswagen.de, oliver.hartkopp@volkswagen.de,
-	linux-media@vger.kernel.org, netfilter-devel@vger.kernel.org,
-	netfilter@vger.kernel.org, bfields@fieldses.org, neilb@suse.de,
-	linux-nfs@vger.kernel.org, linux-raid@vger.kernel.org,
-	dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net, netdev@vger.kernel.org,
-	greg@kroah.com, linux-usb@vger.kernel.org, dwmw2@infradead.org,
-	linux-mtd@lists.infradead.org, tiwai@suse.de,
-	mchehab@infradead.org, LKML <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Return-path: <linux-media-owner@vger.kernel.org>
-In-Reply-To: <20090119112429.78f5dc33.sfr@canb.auug.org.au>
-Sender: linux-media-owner@vger.kernel.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 2009-01-19 at 11:24 +1100, Stephen Rothwell wrote:
-> On Sun, 18 Jan 2009 01:47:21 +0530 Jaswinder Singh Rajput <jaswinder@kernel.org> wrote:
-> >
-> > diff --git a/include/linux/nfsd/stats.h b/include/linux/nfsd/stats.h
-> > index 7678cfb..0b53cfe 100644
-> > --- a/include/linux/nfsd/stats.h
-> > +++ b/include/linux/nfsd/stats.h
-> > @@ -29,9 +29,11 @@ struct nfsd_stats {
-> >  	unsigned int	ra_size;	/* size of ra cache */
-> >  	unsigned int	ra_depth[11];	/* number of times ra entry was found that deep
-> >  					 * in the cache (10percentiles). [10] = not found */
-> > +#ifdef __KERNEL__
-> >  #ifdef CONFIG_NFSD_V4
-> >  	unsigned int	nfs4_opcount[LAST_NFS4_OP + 1];	/* count of individual nfsv4 operations */
-> >  #endif
-> > +#endif /* __KERNEL__ */
-> >  
-> >  };
-> 
-> The only variable in the kernel of type "struct nfsd_stats" is only
-> exported to user mode via procfs, so this whole structure could probably
-> go inside __KERNEL__.  Then looking harder, I wonder if this header
-> should be exported to user mode at all.
-> 
+Hi, 
 
-I was in doubt may be this will be used by some userspace utilities.
+We are recruiting motivated individuals for participating in well-paying
+online surveys, focus groups and previewing movie trailers. 
+No experience is needed and the job is strictly online. All you need is a
+little time to voice your opinion about different kinds of online products
+and services, helping major  business improve their online presence. 
+What we offer is work at your own pace and from any computer. 
 
-Once I got confirmation that it is not required in userspace, I will
-remove it :-)
+If you are interested, please reply to plantz.cristen1297-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org as soon as places are limited.
 
---
-JSR
+Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
+Best regards,
+Betty Smith
+HR Manager
+------------------------------------------------------------------------------
+This SF.net email is sponsored by:
+SourcForge Community
+SourceForge wants to tell your story.
+http://p.sf.net/sfu/sf-spreadtheword

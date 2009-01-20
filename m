@@ -1,7 +1,7 @@
 From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 4/4] Move 93cx6 eeprom driver to the new directory /drivers/misc/eeprom
-Date: Tue, 20 Jan 2009 11:23:02 +0100
-Message-ID: <1232446982-7842-5-git-send-email-w.sang@pengutronix.de>
+Subject: [PATCH 3/4] Move at25-driver (for SPI eeproms) to the new directory /drivers/misc/eeprom
+Date: Tue, 20 Jan 2009 11:23:01 +0100
+Message-ID: <1232446982-7842-4-git-send-email-w.sang@pengutronix.de>
 References: <1232446982-7842-1-git-send-email-w.sang@pengutronix.de>
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	rt2400-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org,
@@ -15,564 +15,869 @@ List-Id: linux-spi.vger.kernel.org
 
 Signed-off-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/misc/Kconfig               |    8 --
- drivers/misc/Makefile              |    1 -
- drivers/misc/eeprom/Kconfig        |    8 ++
- drivers/misc/eeprom/Makefile       |    1 +
- drivers/misc/eeprom/eeprom_93cx6.c |  240 ++++++++++++++++++++++++++++++++++++
- drivers/misc/eeprom_93cx6.c        |  240 ------------------------------------
- 6 files changed, 249 insertions(+), 249 deletions(-)
- create mode 100644 drivers/misc/eeprom/eeprom_93cx6.c
- delete mode 100644 drivers/misc/eeprom_93cx6.c
+ drivers/misc/eeprom/Kconfig  |   11 ++
+ drivers/misc/eeprom/Makefile |    1 +
+ drivers/misc/eeprom/at25.c   |  389 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/Kconfig          |   11 --
+ drivers/spi/Makefile         |    1 -
+ drivers/spi/at25.c           |  389 ------------------------------------------
+ 6 files changed, 401 insertions(+), 401 deletions(-)
+ create mode 100644 drivers/misc/eeprom/at25.c
+ delete mode 100644 drivers/spi/at25.c
 
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 6c9cd9d..5607319 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -87,14 +87,6 @@ config PHANTOM
- 	  If you choose to build module, its name will be phantom. If unsure,
- 	  say N here.
- 
--config EEPROM_93CX6
--	tristate "EEPROM 93CX6 support"
--	---help---
--	  This is a driver for the EEPROM chipsets 93c46 and 93c66.
--	  The driver supports both read as well as write commands.
--
--	  If unsure, say N.
--
- config SGI_IOC4
- 	tristate "SGI IOC4 Base IO support"
- 	depends on PCI
-diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index 0ec2320..bc11998 100644
---- a/drivers/misc/Makefile
-+++ b/drivers/misc/Makefile
-@@ -13,7 +13,6 @@ obj-$(CONFIG_TIFM_CORE)       	+= tifm_core.o
- obj-$(CONFIG_TIFM_7XX1)       	+= tifm_7xx1.o
- obj-$(CONFIG_PHANTOM)		+= phantom.o
- obj-$(CONFIG_SGI_IOC4)		+= ioc4.o
--obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
- obj-$(CONFIG_ENCLOSURE_SERVICES) += enclosure.o
- obj-$(CONFIG_KGDB_TESTS)	+= kgdbts.o
- obj-$(CONFIG_SGI_XP)		+= sgi-xp/
 diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
-index 0853a8b..5d976ed 100644
+index 5a69ac8..0853a8b 100644
 --- a/drivers/misc/eeprom/Kconfig
 +++ b/drivers/misc/eeprom/Kconfig
-@@ -48,4 +48,12 @@ config SENSORS_EEPROM
+@@ -26,6 +26,17 @@ config AT24
  	  This driver can also be built as a module.  If so, the module
- 	  will be called eeprom.
+ 	  will be called at24.
  
-+config EEPROM_93CX6
-+	tristate "EEPROM 93CX6 support"
-+	---help---
-+	  This is a driver for the EEPROM chipsets 93c46 and 93c66.
-+	  The driver supports both read as well as write commands.
++config SPI_AT25
++	tristate "SPI EEPROMs from most vendors"
++	depends on SYSFS
++	help
++	  Enable this driver to get read/write support to most SPI EEPROMs,
++	  after you configure the board init code to know about each eeprom
++	  on your target board.
 +
-+	  If unsure, say N.
++	  This driver can also be built as a module.  If so, the module
++	  will be called at25.
 +
- endmenu
+ config SENSORS_EEPROM
+ 	tristate "Old I2C EEPROM reader"
+ 	depends on EXPERIMENTAL
 diff --git a/drivers/misc/eeprom/Makefile b/drivers/misc/eeprom/Makefile
-index a4fb5cf..3b7af6d 100644
+index a3dad28..a4fb5cf 100644
 --- a/drivers/misc/eeprom/Makefile
 +++ b/drivers/misc/eeprom/Makefile
-@@ -1,3 +1,4 @@
+@@ -1,2 +1,3 @@
  obj-$(CONFIG_AT24)		+= at24.o
- obj-$(CONFIG_SPI_AT25)		+= at25.o
++obj-$(CONFIG_SPI_AT25)		+= at25.o
  obj-$(CONFIG_SENSORS_EEPROM)	+= eeprom.o
-+obj-$(CONFIG_EEPROM_93CX6)	+= eeprom_93cx6.o
-diff --git a/drivers/misc/eeprom/eeprom_93cx6.c b/drivers/misc/eeprom/eeprom_93cx6.c
+diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
 new file mode 100644
-index 0000000..15b1780
+index 0000000..290dbe9
 --- /dev/null
-+++ b/drivers/misc/eeprom/eeprom_93cx6.c
-@@ -0,0 +1,240 @@
++++ b/drivers/misc/eeprom/at25.c
+@@ -0,0 +1,389 @@
 +/*
-+	Copyright (C) 2004 - 2006 rt2x00 SourceForge Project
-+	<http://rt2x00.serialmonkey.com>
-+
-+	This program is free software; you can redistribute it and/or modify
-+	it under the terms of the GNU General Public License as published by
-+	the Free Software Foundation; either version 2 of the License, or
-+	(at your option) any later version.
-+
-+	This program is distributed in the hope that it will be useful,
-+	but WITHOUT ANY WARRANTY; without even the implied warranty of
-+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+	GNU General Public License for more details.
-+
-+	You should have received a copy of the GNU General Public License
-+	along with this program; if not, write to the
-+	Free Software Foundation, Inc.,
-+	59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-+ */
-+
-+/*
-+	Module: eeprom_93cx6
-+	Abstract: EEPROM reader routines for 93cx6 chipsets.
-+	Supported chipsets: 93c46 & 93c66.
++ * at25.c -- support most SPI EEPROMs, such as Atmel AT25 models
++ *
++ * Copyright (C) 2006 David Brownell
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
 + */
 +
 +#include <linux/kernel.h>
++#include <linux/init.h>
 +#include <linux/module.h>
++#include <linux/slab.h>
 +#include <linux/delay.h>
-+#include <linux/eeprom_93cx6.h>
++#include <linux/device.h>
++#include <linux/sched.h>
 +
-+MODULE_AUTHOR("http://rt2x00.serialmonkey.com");
-+MODULE_VERSION("1.0");
-+MODULE_DESCRIPTION("EEPROM 93cx6 chip driver");
++#include <linux/spi/spi.h>
++#include <linux/spi/eeprom.h>
++
++
++/*
++ * NOTE: this is an *EEPROM* driver.  The vagaries of product naming
++ * mean that some AT25 products are EEPROMs, and others are FLASH.
++ * Handle FLASH chips with the drivers/mtd/devices/m25p80.c driver,
++ * not this one!
++ */
++
++struct at25_data {
++	struct spi_device	*spi;
++	struct mutex		lock;
++	struct spi_eeprom	chip;
++	struct bin_attribute	bin;
++	unsigned		addrlen;
++};
++
++#define	AT25_WREN	0x06		/* latch the write enable */
++#define	AT25_WRDI	0x04		/* reset the write enable */
++#define	AT25_RDSR	0x05		/* read status register */
++#define	AT25_WRSR	0x01		/* write status register */
++#define	AT25_READ	0x03		/* read byte(s) */
++#define	AT25_WRITE	0x02		/* write byte(s)/sector */
++
++#define	AT25_SR_nRDY	0x01		/* nRDY = write-in-progress */
++#define	AT25_SR_WEN	0x02		/* write enable (latched) */
++#define	AT25_SR_BP0	0x04		/* BP for software writeprotect */
++#define	AT25_SR_BP1	0x08
++#define	AT25_SR_WPEN	0x80		/* writeprotect enable */
++
++
++#define EE_MAXADDRLEN	3		/* 24 bit addresses, up to 2 MBytes */
++
++/* Specs often allow 5 msec for a page write, sometimes 20 msec;
++ * it's important to recover from write timeouts.
++ */
++#define	EE_TIMEOUT	25
++
++/*-------------------------------------------------------------------------*/
++
++#define	io_limit	PAGE_SIZE	/* bytes */
++
++static ssize_t
++at25_ee_read(
++	struct at25_data	*at25,
++	char			*buf,
++	unsigned		offset,
++	size_t			count
++)
++{
++	u8			command[EE_MAXADDRLEN + 1];
++	u8			*cp;
++	ssize_t			status;
++	struct spi_transfer	t[2];
++	struct spi_message	m;
++
++	cp = command;
++	*cp++ = AT25_READ;
++
++	/* 8/16/24-bit address is written MSB first */
++	switch (at25->addrlen) {
++	default:	/* case 3 */
++		*cp++ = offset >> 16;
++	case 2:
++		*cp++ = offset >> 8;
++	case 1:
++	case 0:	/* can't happen: for better codegen */
++		*cp++ = offset >> 0;
++	}
++
++	spi_message_init(&m);
++	memset(t, 0, sizeof t);
++
++	t[0].tx_buf = command;
++	t[0].len = at25->addrlen + 1;
++	spi_message_add_tail(&t[0], &m);
++
++	t[1].rx_buf = buf;
++	t[1].len = count;
++	spi_message_add_tail(&t[1], &m);
++
++	mutex_lock(&at25->lock);
++
++	/* Read it all at once.
++	 *
++	 * REVISIT that's potentially a problem with large chips, if
++	 * other devices on the bus need to be accessed regularly or
++	 * this chip is clocked very slowly
++	 */
++	status = spi_sync(at25->spi, &m);
++	dev_dbg(&at25->spi->dev,
++		"read %Zd bytes at %d --> %d\n",
++		count, offset, (int) status);
++
++	mutex_unlock(&at25->lock);
++	return status ? status : count;
++}
++
++static ssize_t
++at25_bin_read(struct kobject *kobj, struct bin_attribute *bin_attr,
++	      char *buf, loff_t off, size_t count)
++{
++	struct device		*dev;
++	struct at25_data	*at25;
++
++	dev = container_of(kobj, struct device, kobj);
++	at25 = dev_get_drvdata(dev);
++
++	if (unlikely(off >= at25->bin.size))
++		return 0;
++	if ((off + count) > at25->bin.size)
++		count = at25->bin.size - off;
++	if (unlikely(!count))
++		return count;
++
++	return at25_ee_read(at25, buf, off, count);
++}
++
++
++static ssize_t
++at25_ee_write(struct at25_data *at25, char *buf, loff_t off, size_t count)
++{
++	ssize_t			status = 0;
++	unsigned		written = 0;
++	unsigned		buf_size;
++	u8			*bounce;
++
++	/* Temp buffer starts with command and address */
++	buf_size = at25->chip.page_size;
++	if (buf_size > io_limit)
++		buf_size = io_limit;
++	bounce = kmalloc(buf_size + at25->addrlen + 1, GFP_KERNEL);
++	if (!bounce)
++		return -ENOMEM;
++
++	/* For write, rollover is within the page ... so we write at
++	 * most one page, then manually roll over to the next page.
++	 */
++	bounce[0] = AT25_WRITE;
++	mutex_lock(&at25->lock);
++	do {
++		unsigned long	timeout, retries;
++		unsigned	segment;
++		unsigned	offset = (unsigned) off;
++		u8		*cp = bounce + 1;
++
++		*cp = AT25_WREN;
++		status = spi_write(at25->spi, cp, 1);
++		if (status < 0) {
++			dev_dbg(&at25->spi->dev, "WREN --> %d\n",
++					(int) status);
++			break;
++		}
++
++		/* 8/16/24-bit address is written MSB first */
++		switch (at25->addrlen) {
++		default:	/* case 3 */
++			*cp++ = offset >> 16;
++		case 2:
++			*cp++ = offset >> 8;
++		case 1:
++		case 0:	/* can't happen: for better codegen */
++			*cp++ = offset >> 0;
++		}
++
++		/* Write as much of a page as we can */
++		segment = buf_size - (offset % buf_size);
++		if (segment > count)
++			segment = count;
++		memcpy(cp, buf, segment);
++		status = spi_write(at25->spi, bounce,
++				segment + at25->addrlen + 1);
++		dev_dbg(&at25->spi->dev,
++				"write %u bytes at %u --> %d\n",
++				segment, offset, (int) status);
++		if (status < 0)
++			break;
++
++		/* REVISIT this should detect (or prevent) failed writes
++		 * to readonly sections of the EEPROM...
++		 */
++
++		/* Wait for non-busy status */
++		timeout = jiffies + msecs_to_jiffies(EE_TIMEOUT);
++		retries = 0;
++		do {
++			int	sr;
++
++			sr = spi_w8r8(at25->spi, AT25_RDSR);
++			if (sr < 0 || (sr & AT25_SR_nRDY)) {
++				dev_dbg(&at25->spi->dev,
++					"rdsr --> %d (%02x)\n", sr, sr);
++				/* at HZ=100, this is sloooow */
++				msleep(1);
++				continue;
++			}
++			if (!(sr & AT25_SR_nRDY))
++				break;
++		} while (retries++ < 3 || time_before_eq(jiffies, timeout));
++
++		if (time_after(jiffies, timeout)) {
++			dev_err(&at25->spi->dev,
++				"write %d bytes offset %d, "
++				"timeout after %u msecs\n",
++				segment, offset,
++				jiffies_to_msecs(jiffies -
++					(timeout - EE_TIMEOUT)));
++			status = -ETIMEDOUT;
++			break;
++		}
++
++		off += segment;
++		buf += segment;
++		count -= segment;
++		written += segment;
++
++	} while (count > 0);
++
++	mutex_unlock(&at25->lock);
++
++	kfree(bounce);
++	return written ? written : status;
++}
++
++static ssize_t
++at25_bin_write(struct kobject *kobj, struct bin_attribute *bin_attr,
++	       char *buf, loff_t off, size_t count)
++{
++	struct device		*dev;
++	struct at25_data	*at25;
++
++	dev = container_of(kobj, struct device, kobj);
++	at25 = dev_get_drvdata(dev);
++
++	if (unlikely(off >= at25->bin.size))
++		return -EFBIG;
++	if ((off + count) > at25->bin.size)
++		count = at25->bin.size - off;
++	if (unlikely(!count))
++		return count;
++
++	return at25_ee_write(at25, buf, off, count);
++}
++
++/*-------------------------------------------------------------------------*/
++
++static int at25_probe(struct spi_device *spi)
++{
++	struct at25_data	*at25 = NULL;
++	const struct spi_eeprom *chip;
++	int			err;
++	int			sr;
++	int			addrlen;
++
++	/* Chip description */
++	chip = spi->dev.platform_data;
++	if (!chip) {
++		dev_dbg(&spi->dev, "no chip description\n");
++		err = -ENODEV;
++		goto fail;
++	}
++
++	/* For now we only support 8/16/24 bit addressing */
++	if (chip->flags & EE_ADDR1)
++		addrlen = 1;
++	else if (chip->flags & EE_ADDR2)
++		addrlen = 2;
++	else if (chip->flags & EE_ADDR3)
++		addrlen = 3;
++	else {
++		dev_dbg(&spi->dev, "unsupported address type\n");
++		err = -EINVAL;
++		goto fail;
++	}
++
++	/* Ping the chip ... the status register is pretty portable,
++	 * unlike probing manufacturer IDs.  We do expect that system
++	 * firmware didn't write it in the past few milliseconds!
++	 */
++	sr = spi_w8r8(spi, AT25_RDSR);
++	if (sr < 0 || sr & AT25_SR_nRDY) {
++		dev_dbg(&spi->dev, "rdsr --> %d (%02x)\n", sr, sr);
++		err = -ENXIO;
++		goto fail;
++	}
++
++	if (!(at25 = kzalloc(sizeof *at25, GFP_KERNEL))) {
++		err = -ENOMEM;
++		goto fail;
++	}
++
++	mutex_init(&at25->lock);
++	at25->chip = *chip;
++	at25->spi = spi_dev_get(spi);
++	dev_set_drvdata(&spi->dev, at25);
++	at25->addrlen = addrlen;
++
++	/* Export the EEPROM bytes through sysfs, since that's convenient.
++	 * Default to root-only access to the data; EEPROMs often hold data
++	 * that's sensitive for read and/or write, like ethernet addresses,
++	 * security codes, board-specific manufacturing calibrations, etc.
++	 */
++	at25->bin.attr.name = "eeprom";
++	at25->bin.attr.mode = S_IRUSR;
++	at25->bin.read = at25_bin_read;
++
++	at25->bin.size = at25->chip.byte_len;
++	if (!(chip->flags & EE_READONLY)) {
++		at25->bin.write = at25_bin_write;
++		at25->bin.attr.mode |= S_IWUSR;
++	}
++
++	err = sysfs_create_bin_file(&spi->dev.kobj, &at25->bin);
++	if (err)
++		goto fail;
++
++	dev_info(&spi->dev, "%Zd %s %s eeprom%s, pagesize %u\n",
++		(at25->bin.size < 1024)
++			? at25->bin.size
++			: (at25->bin.size / 1024),
++		(at25->bin.size < 1024) ? "Byte" : "KByte",
++		at25->chip.name,
++		(chip->flags & EE_READONLY) ? " (readonly)" : "",
++		at25->chip.page_size);
++	return 0;
++fail:
++	dev_dbg(&spi->dev, "probe err %d\n", err);
++	kfree(at25);
++	return err;
++}
++
++static int __devexit at25_remove(struct spi_device *spi)
++{
++	struct at25_data	*at25;
++
++	at25 = dev_get_drvdata(&spi->dev);
++	sysfs_remove_bin_file(&spi->dev.kobj, &at25->bin);
++	kfree(at25);
++	return 0;
++}
++
++/*-------------------------------------------------------------------------*/
++
++static struct spi_driver at25_driver = {
++	.driver = {
++		.name		= "at25",
++		.owner		= THIS_MODULE,
++	},
++	.probe		= at25_probe,
++	.remove		= __devexit_p(at25_remove),
++};
++
++static int __init at25_init(void)
++{
++	return spi_register_driver(&at25_driver);
++}
++module_init(at25_init);
++
++static void __exit at25_exit(void)
++{
++	spi_unregister_driver(&at25_driver);
++}
++module_exit(at25_exit);
++
++MODULE_DESCRIPTION("Driver for most SPI EEPROMs");
++MODULE_AUTHOR("David Brownell");
 +MODULE_LICENSE("GPL");
 +
-+static inline void eeprom_93cx6_pulse_high(struct eeprom_93cx6 *eeprom)
-+{
-+	eeprom->reg_data_clock = 1;
-+	eeprom->register_write(eeprom);
-+
-+	/*
-+	 * Add a short delay for the pulse to work.
-+	 * According to the specifications the "maximum minimum"
-+	 * time should be 450ns.
-+	 */
-+	ndelay(450);
-+}
-+
-+static inline void eeprom_93cx6_pulse_low(struct eeprom_93cx6 *eeprom)
-+{
-+	eeprom->reg_data_clock = 0;
-+	eeprom->register_write(eeprom);
-+
-+	/*
-+	 * Add a short delay for the pulse to work.
-+	 * According to the specifications the "maximum minimum"
-+	 * time should be 450ns.
-+	 */
-+	ndelay(450);
-+}
-+
-+static void eeprom_93cx6_startup(struct eeprom_93cx6 *eeprom)
-+{
-+	/*
-+	 * Clear all flags, and enable chip select.
-+	 */
-+	eeprom->register_read(eeprom);
-+	eeprom->reg_data_in = 0;
-+	eeprom->reg_data_out = 0;
-+	eeprom->reg_data_clock = 0;
-+	eeprom->reg_chip_select = 1;
-+	eeprom->register_write(eeprom);
-+
-+	/*
-+	 * kick a pulse.
-+	 */
-+	eeprom_93cx6_pulse_high(eeprom);
-+	eeprom_93cx6_pulse_low(eeprom);
-+}
-+
-+static void eeprom_93cx6_cleanup(struct eeprom_93cx6 *eeprom)
-+{
-+	/*
-+	 * Clear chip_select and data_in flags.
-+	 */
-+	eeprom->register_read(eeprom);
-+	eeprom->reg_data_in = 0;
-+	eeprom->reg_chip_select = 0;
-+	eeprom->register_write(eeprom);
-+
-+	/*
-+	 * kick a pulse.
-+	 */
-+	eeprom_93cx6_pulse_high(eeprom);
-+	eeprom_93cx6_pulse_low(eeprom);
-+}
-+
-+static void eeprom_93cx6_write_bits(struct eeprom_93cx6 *eeprom,
-+	const u16 data, const u16 count)
-+{
-+	unsigned int i;
-+
-+	eeprom->register_read(eeprom);
-+
-+	/*
-+	 * Clear data flags.
-+	 */
-+	eeprom->reg_data_in = 0;
-+	eeprom->reg_data_out = 0;
-+
-+	/*
-+	 * Start writing all bits.
-+	 */
-+	for (i = count; i > 0; i--) {
-+		/*
-+		 * Check if this bit needs to be set.
-+		 */
-+		eeprom->reg_data_in = !!(data & (1 << (i - 1)));
-+
-+		/*
-+		 * Write the bit to the eeprom register.
-+		 */
-+		eeprom->register_write(eeprom);
-+
-+		/*
-+		 * Kick a pulse.
-+		 */
-+		eeprom_93cx6_pulse_high(eeprom);
-+		eeprom_93cx6_pulse_low(eeprom);
-+	}
-+
-+	eeprom->reg_data_in = 0;
-+	eeprom->register_write(eeprom);
-+}
-+
-+static void eeprom_93cx6_read_bits(struct eeprom_93cx6 *eeprom,
-+	u16 *data, const u16 count)
-+{
-+	unsigned int i;
-+	u16 buf = 0;
-+
-+	eeprom->register_read(eeprom);
-+
-+	/*
-+	 * Clear data flags.
-+	 */
-+	eeprom->reg_data_in = 0;
-+	eeprom->reg_data_out = 0;
-+
-+	/*
-+	 * Start reading all bits.
-+	 */
-+	for (i = count; i > 0; i--) {
-+		eeprom_93cx6_pulse_high(eeprom);
-+
-+		eeprom->register_read(eeprom);
-+
-+		/*
-+		 * Clear data_in flag.
-+		 */
-+		eeprom->reg_data_in = 0;
-+
-+		/*
-+		 * Read if the bit has been set.
-+		 */
-+		if (eeprom->reg_data_out)
-+			buf |= (1 << (i - 1));
-+
-+		eeprom_93cx6_pulse_low(eeprom);
-+	}
-+
-+	*data = buf;
-+}
-+
-+/**
-+ * eeprom_93cx6_read - Read multiple words from eeprom
-+ * @eeprom: Pointer to eeprom structure
-+ * @word: Word index from where we should start reading
-+ * @data: target pointer where the information will have to be stored
-+ *
-+ * This function will read the eeprom data as host-endian word
-+ * into the given data pointer.
-+ */
-+void eeprom_93cx6_read(struct eeprom_93cx6 *eeprom, const u8 word,
-+	u16 *data)
-+{
-+	u16 command;
-+
-+	/*
-+	 * Initialize the eeprom register
-+	 */
-+	eeprom_93cx6_startup(eeprom);
-+
-+	/*
-+	 * Select the read opcode and the word to be read.
-+	 */
-+	command = (PCI_EEPROM_READ_OPCODE << eeprom->width) | word;
-+	eeprom_93cx6_write_bits(eeprom, command,
-+		PCI_EEPROM_WIDTH_OPCODE + eeprom->width);
-+
-+	/*
-+	 * Read the requested 16 bits.
-+	 */
-+	eeprom_93cx6_read_bits(eeprom, data, 16);
-+
-+	/*
-+	 * Cleanup eeprom register.
-+	 */
-+	eeprom_93cx6_cleanup(eeprom);
-+}
-+EXPORT_SYMBOL_GPL(eeprom_93cx6_read);
-+
-+/**
-+ * eeprom_93cx6_multiread - Read multiple words from eeprom
-+ * @eeprom: Pointer to eeprom structure
-+ * @word: Word index from where we should start reading
-+ * @data: target pointer where the information will have to be stored
-+ * @words: Number of words that should be read.
-+ *
-+ * This function will read all requested words from the eeprom,
-+ * this is done by calling eeprom_93cx6_read() multiple times.
-+ * But with the additional change that while the eeprom_93cx6_read
-+ * will return host ordered bytes, this method will return little
-+ * endian words.
-+ */
-+void eeprom_93cx6_multiread(struct eeprom_93cx6 *eeprom, const u8 word,
-+	__le16 *data, const u16 words)
-+{
-+	unsigned int i;
-+	u16 tmp;
-+
-+	for (i = 0; i < words; i++) {
-+		tmp = 0;
-+		eeprom_93cx6_read(eeprom, word + i, &tmp);
-+		data[i] = cpu_to_le16(tmp);
-+	}
-+}
-+EXPORT_SYMBOL_GPL(eeprom_93cx6_multiread);
-+
-diff --git a/drivers/misc/eeprom_93cx6.c b/drivers/misc/eeprom_93cx6.c
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 4a6fe01..83a185d 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -230,17 +230,6 @@ config SPI_XILINX
+ #
+ comment "SPI Protocol Masters"
+ 
+-config SPI_AT25
+-	tristate "SPI EEPROMs from most vendors"
+-	depends on SYSFS
+-	help
+-	  Enable this driver to get read/write support to most SPI EEPROMs,
+-	  after you configure the board init code to know about each eeprom
+-	  on your target board.
+-
+-	  This driver can also be built as a module.  If so, the module
+-	  will be called at25.
+-
+ config SPI_SPIDEV
+ 	tristate "User mode SPI device driver support"
+ 	depends on EXPERIMENTAL
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 5e9f521..5d04519 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -33,7 +33,6 @@ obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
+ # 	... add above this line ...
+ 
+ # SPI protocol drivers (device/link on bus)
+-obj-$(CONFIG_SPI_AT25)		+= at25.o
+ obj-$(CONFIG_SPI_SPIDEV)	+= spidev.o
+ obj-$(CONFIG_SPI_TLE62X0)	+= tle62x0.o
+ # 	... add above this line ...
+diff --git a/drivers/spi/at25.c b/drivers/spi/at25.c
 deleted file mode 100644
-index 15b1780..0000000
---- a/drivers/misc/eeprom_93cx6.c
+index 290dbe9..0000000
+--- a/drivers/spi/at25.c
 +++ /dev/null
-@@ -1,240 +0,0 @@
+@@ -1,389 +0,0 @@
 -/*
--	Copyright (C) 2004 - 2006 rt2x00 SourceForge Project
--	<http://rt2x00.serialmonkey.com>
--
--	This program is free software; you can redistribute it and/or modify
--	it under the terms of the GNU General Public License as published by
--	the Free Software Foundation; either version 2 of the License, or
--	(at your option) any later version.
--
--	This program is distributed in the hope that it will be useful,
--	but WITHOUT ANY WARRANTY; without even the implied warranty of
--	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
--	GNU General Public License for more details.
--
--	You should have received a copy of the GNU General Public License
--	along with this program; if not, write to the
--	Free Software Foundation, Inc.,
--	59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-- */
--
--/*
--	Module: eeprom_93cx6
--	Abstract: EEPROM reader routines for 93cx6 chipsets.
--	Supported chipsets: 93c46 & 93c66.
+- * at25.c -- support most SPI EEPROMs, such as Atmel AT25 models
+- *
+- * Copyright (C) 2006 David Brownell
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
 - */
 -
 -#include <linux/kernel.h>
+-#include <linux/init.h>
 -#include <linux/module.h>
+-#include <linux/slab.h>
 -#include <linux/delay.h>
--#include <linux/eeprom_93cx6.h>
+-#include <linux/device.h>
+-#include <linux/sched.h>
 -
--MODULE_AUTHOR("http://rt2x00.serialmonkey.com");
--MODULE_VERSION("1.0");
--MODULE_DESCRIPTION("EEPROM 93cx6 chip driver");
+-#include <linux/spi/spi.h>
+-#include <linux/spi/eeprom.h>
+-
+-
+-/*
+- * NOTE: this is an *EEPROM* driver.  The vagaries of product naming
+- * mean that some AT25 products are EEPROMs, and others are FLASH.
+- * Handle FLASH chips with the drivers/mtd/devices/m25p80.c driver,
+- * not this one!
+- */
+-
+-struct at25_data {
+-	struct spi_device	*spi;
+-	struct mutex		lock;
+-	struct spi_eeprom	chip;
+-	struct bin_attribute	bin;
+-	unsigned		addrlen;
+-};
+-
+-#define	AT25_WREN	0x06		/* latch the write enable */
+-#define	AT25_WRDI	0x04		/* reset the write enable */
+-#define	AT25_RDSR	0x05		/* read status register */
+-#define	AT25_WRSR	0x01		/* write status register */
+-#define	AT25_READ	0x03		/* read byte(s) */
+-#define	AT25_WRITE	0x02		/* write byte(s)/sector */
+-
+-#define	AT25_SR_nRDY	0x01		/* nRDY = write-in-progress */
+-#define	AT25_SR_WEN	0x02		/* write enable (latched) */
+-#define	AT25_SR_BP0	0x04		/* BP for software writeprotect */
+-#define	AT25_SR_BP1	0x08
+-#define	AT25_SR_WPEN	0x80		/* writeprotect enable */
+-
+-
+-#define EE_MAXADDRLEN	3		/* 24 bit addresses, up to 2 MBytes */
+-
+-/* Specs often allow 5 msec for a page write, sometimes 20 msec;
+- * it's important to recover from write timeouts.
+- */
+-#define	EE_TIMEOUT	25
+-
+-/*-------------------------------------------------------------------------*/
+-
+-#define	io_limit	PAGE_SIZE	/* bytes */
+-
+-static ssize_t
+-at25_ee_read(
+-	struct at25_data	*at25,
+-	char			*buf,
+-	unsigned		offset,
+-	size_t			count
+-)
+-{
+-	u8			command[EE_MAXADDRLEN + 1];
+-	u8			*cp;
+-	ssize_t			status;
+-	struct spi_transfer	t[2];
+-	struct spi_message	m;
+-
+-	cp = command;
+-	*cp++ = AT25_READ;
+-
+-	/* 8/16/24-bit address is written MSB first */
+-	switch (at25->addrlen) {
+-	default:	/* case 3 */
+-		*cp++ = offset >> 16;
+-	case 2:
+-		*cp++ = offset >> 8;
+-	case 1:
+-	case 0:	/* can't happen: for better codegen */
+-		*cp++ = offset >> 0;
+-	}
+-
+-	spi_message_init(&m);
+-	memset(t, 0, sizeof t);
+-
+-	t[0].tx_buf = command;
+-	t[0].len = at25->addrlen + 1;
+-	spi_message_add_tail(&t[0], &m);
+-
+-	t[1].rx_buf = buf;
+-	t[1].len = count;
+-	spi_message_add_tail(&t[1], &m);
+-
+-	mutex_lock(&at25->lock);
+-
+-	/* Read it all at once.
+-	 *
+-	 * REVISIT that's potentially a problem with large chips, if
+-	 * other devices on the bus need to be accessed regularly or
+-	 * this chip is clocked very slowly
+-	 */
+-	status = spi_sync(at25->spi, &m);
+-	dev_dbg(&at25->spi->dev,
+-		"read %Zd bytes at %d --> %d\n",
+-		count, offset, (int) status);
+-
+-	mutex_unlock(&at25->lock);
+-	return status ? status : count;
+-}
+-
+-static ssize_t
+-at25_bin_read(struct kobject *kobj, struct bin_attribute *bin_attr,
+-	      char *buf, loff_t off, size_t count)
+-{
+-	struct device		*dev;
+-	struct at25_data	*at25;
+-
+-	dev = container_of(kobj, struct device, kobj);
+-	at25 = dev_get_drvdata(dev);
+-
+-	if (unlikely(off >= at25->bin.size))
+-		return 0;
+-	if ((off + count) > at25->bin.size)
+-		count = at25->bin.size - off;
+-	if (unlikely(!count))
+-		return count;
+-
+-	return at25_ee_read(at25, buf, off, count);
+-}
+-
+-
+-static ssize_t
+-at25_ee_write(struct at25_data *at25, char *buf, loff_t off, size_t count)
+-{
+-	ssize_t			status = 0;
+-	unsigned		written = 0;
+-	unsigned		buf_size;
+-	u8			*bounce;
+-
+-	/* Temp buffer starts with command and address */
+-	buf_size = at25->chip.page_size;
+-	if (buf_size > io_limit)
+-		buf_size = io_limit;
+-	bounce = kmalloc(buf_size + at25->addrlen + 1, GFP_KERNEL);
+-	if (!bounce)
+-		return -ENOMEM;
+-
+-	/* For write, rollover is within the page ... so we write at
+-	 * most one page, then manually roll over to the next page.
+-	 */
+-	bounce[0] = AT25_WRITE;
+-	mutex_lock(&at25->lock);
+-	do {
+-		unsigned long	timeout, retries;
+-		unsigned	segment;
+-		unsigned	offset = (unsigned) off;
+-		u8		*cp = bounce + 1;
+-
+-		*cp = AT25_WREN;
+-		status = spi_write(at25->spi, cp, 1);
+-		if (status < 0) {
+-			dev_dbg(&at25->spi->dev, "WREN --> %d\n",
+-					(int) status);
+-			break;
+-		}
+-
+-		/* 8/16/24-bit address is written MSB first */
+-		switch (at25->addrlen) {
+-		default:	/* case 3 */
+-			*cp++ = offset >> 16;
+-		case 2:
+-			*cp++ = offset >> 8;
+-		case 1:
+-		case 0:	/* can't happen: for better codegen */
+-			*cp++ = offset >> 0;
+-		}
+-
+-		/* Write as much of a page as we can */
+-		segment = buf_size - (offset % buf_size);
+-		if (segment > count)
+-			segment = count;
+-		memcpy(cp, buf, segment);
+-		status = spi_write(at25->spi, bounce,
+-				segment + at25->addrlen + 1);
+-		dev_dbg(&at25->spi->dev,
+-				"write %u bytes at %u --> %d\n",
+-				segment, offset, (int) status);
+-		if (status < 0)
+-			break;
+-
+-		/* REVISIT this should detect (or prevent) failed writes
+-		 * to readonly sections of the EEPROM...
+-		 */
+-
+-		/* Wait for non-busy status */
+-		timeout = jiffies + msecs_to_jiffies(EE_TIMEOUT);
+-		retries = 0;
+-		do {
+-			int	sr;
+-
+-			sr = spi_w8r8(at25->spi, AT25_RDSR);
+-			if (sr < 0 || (sr & AT25_SR_nRDY)) {
+-				dev_dbg(&at25->spi->dev,
+-					"rdsr --> %d (%02x)\n", sr, sr);
+-				/* at HZ=100, this is sloooow */
+-				msleep(1);
+-				continue;
+-			}
+-			if (!(sr & AT25_SR_nRDY))
+-				break;
+-		} while (retries++ < 3 || time_before_eq(jiffies, timeout));
+-
+-		if (time_after(jiffies, timeout)) {
+-			dev_err(&at25->spi->dev,
+-				"write %d bytes offset %d, "
+-				"timeout after %u msecs\n",
+-				segment, offset,
+-				jiffies_to_msecs(jiffies -
+-					(timeout - EE_TIMEOUT)));
+-			status = -ETIMEDOUT;
+-			break;
+-		}
+-
+-		off += segment;
+-		buf += segment;
+-		count -= segment;
+-		written += segment;
+-
+-	} while (count > 0);
+-
+-	mutex_unlock(&at25->lock);
+-
+-	kfree(bounce);
+-	return written ? written : status;
+-}
+-
+-static ssize_t
+-at25_bin_write(struct kobject *kobj, struct bin_attribute *bin_attr,
+-	       char *buf, loff_t off, size_t count)
+-{
+-	struct device		*dev;
+-	struct at25_data	*at25;
+-
+-	dev = container_of(kobj, struct device, kobj);
+-	at25 = dev_get_drvdata(dev);
+-
+-	if (unlikely(off >= at25->bin.size))
+-		return -EFBIG;
+-	if ((off + count) > at25->bin.size)
+-		count = at25->bin.size - off;
+-	if (unlikely(!count))
+-		return count;
+-
+-	return at25_ee_write(at25, buf, off, count);
+-}
+-
+-/*-------------------------------------------------------------------------*/
+-
+-static int at25_probe(struct spi_device *spi)
+-{
+-	struct at25_data	*at25 = NULL;
+-	const struct spi_eeprom *chip;
+-	int			err;
+-	int			sr;
+-	int			addrlen;
+-
+-	/* Chip description */
+-	chip = spi->dev.platform_data;
+-	if (!chip) {
+-		dev_dbg(&spi->dev, "no chip description\n");
+-		err = -ENODEV;
+-		goto fail;
+-	}
+-
+-	/* For now we only support 8/16/24 bit addressing */
+-	if (chip->flags & EE_ADDR1)
+-		addrlen = 1;
+-	else if (chip->flags & EE_ADDR2)
+-		addrlen = 2;
+-	else if (chip->flags & EE_ADDR3)
+-		addrlen = 3;
+-	else {
+-		dev_dbg(&spi->dev, "unsupported address type\n");
+-		err = -EINVAL;
+-		goto fail;
+-	}
+-
+-	/* Ping the chip ... the status register is pretty portable,
+-	 * unlike probing manufacturer IDs.  We do expect that system
+-	 * firmware didn't write it in the past few milliseconds!
+-	 */
+-	sr = spi_w8r8(spi, AT25_RDSR);
+-	if (sr < 0 || sr & AT25_SR_nRDY) {
+-		dev_dbg(&spi->dev, "rdsr --> %d (%02x)\n", sr, sr);
+-		err = -ENXIO;
+-		goto fail;
+-	}
+-
+-	if (!(at25 = kzalloc(sizeof *at25, GFP_KERNEL))) {
+-		err = -ENOMEM;
+-		goto fail;
+-	}
+-
+-	mutex_init(&at25->lock);
+-	at25->chip = *chip;
+-	at25->spi = spi_dev_get(spi);
+-	dev_set_drvdata(&spi->dev, at25);
+-	at25->addrlen = addrlen;
+-
+-	/* Export the EEPROM bytes through sysfs, since that's convenient.
+-	 * Default to root-only access to the data; EEPROMs often hold data
+-	 * that's sensitive for read and/or write, like ethernet addresses,
+-	 * security codes, board-specific manufacturing calibrations, etc.
+-	 */
+-	at25->bin.attr.name = "eeprom";
+-	at25->bin.attr.mode = S_IRUSR;
+-	at25->bin.read = at25_bin_read;
+-
+-	at25->bin.size = at25->chip.byte_len;
+-	if (!(chip->flags & EE_READONLY)) {
+-		at25->bin.write = at25_bin_write;
+-		at25->bin.attr.mode |= S_IWUSR;
+-	}
+-
+-	err = sysfs_create_bin_file(&spi->dev.kobj, &at25->bin);
+-	if (err)
+-		goto fail;
+-
+-	dev_info(&spi->dev, "%Zd %s %s eeprom%s, pagesize %u\n",
+-		(at25->bin.size < 1024)
+-			? at25->bin.size
+-			: (at25->bin.size / 1024),
+-		(at25->bin.size < 1024) ? "Byte" : "KByte",
+-		at25->chip.name,
+-		(chip->flags & EE_READONLY) ? " (readonly)" : "",
+-		at25->chip.page_size);
+-	return 0;
+-fail:
+-	dev_dbg(&spi->dev, "probe err %d\n", err);
+-	kfree(at25);
+-	return err;
+-}
+-
+-static int __devexit at25_remove(struct spi_device *spi)
+-{
+-	struct at25_data	*at25;
+-
+-	at25 = dev_get_drvdata(&spi->dev);
+-	sysfs_remove_bin_file(&spi->dev.kobj, &at25->bin);
+-	kfree(at25);
+-	return 0;
+-}
+-
+-/*-------------------------------------------------------------------------*/
+-
+-static struct spi_driver at25_driver = {
+-	.driver = {
+-		.name		= "at25",
+-		.owner		= THIS_MODULE,
+-	},
+-	.probe		= at25_probe,
+-	.remove		= __devexit_p(at25_remove),
+-};
+-
+-static int __init at25_init(void)
+-{
+-	return spi_register_driver(&at25_driver);
+-}
+-module_init(at25_init);
+-
+-static void __exit at25_exit(void)
+-{
+-	spi_unregister_driver(&at25_driver);
+-}
+-module_exit(at25_exit);
+-
+-MODULE_DESCRIPTION("Driver for most SPI EEPROMs");
+-MODULE_AUTHOR("David Brownell");
 -MODULE_LICENSE("GPL");
--
--static inline void eeprom_93cx6_pulse_high(struct eeprom_93cx6 *eeprom)
--{
--	eeprom->reg_data_clock = 1;
--	eeprom->register_write(eeprom);
--
--	/*
--	 * Add a short delay for the pulse to work.
--	 * According to the specifications the "maximum minimum"
--	 * time should be 450ns.
--	 */
--	ndelay(450);
--}
--
--static inline void eeprom_93cx6_pulse_low(struct eeprom_93cx6 *eeprom)
--{
--	eeprom->reg_data_clock = 0;
--	eeprom->register_write(eeprom);
--
--	/*
--	 * Add a short delay for the pulse to work.
--	 * According to the specifications the "maximum minimum"
--	 * time should be 450ns.
--	 */
--	ndelay(450);
--}
--
--static void eeprom_93cx6_startup(struct eeprom_93cx6 *eeprom)
--{
--	/*
--	 * Clear all flags, and enable chip select.
--	 */
--	eeprom->register_read(eeprom);
--	eeprom->reg_data_in = 0;
--	eeprom->reg_data_out = 0;
--	eeprom->reg_data_clock = 0;
--	eeprom->reg_chip_select = 1;
--	eeprom->register_write(eeprom);
--
--	/*
--	 * kick a pulse.
--	 */
--	eeprom_93cx6_pulse_high(eeprom);
--	eeprom_93cx6_pulse_low(eeprom);
--}
--
--static void eeprom_93cx6_cleanup(struct eeprom_93cx6 *eeprom)
--{
--	/*
--	 * Clear chip_select and data_in flags.
--	 */
--	eeprom->register_read(eeprom);
--	eeprom->reg_data_in = 0;
--	eeprom->reg_chip_select = 0;
--	eeprom->register_write(eeprom);
--
--	/*
--	 * kick a pulse.
--	 */
--	eeprom_93cx6_pulse_high(eeprom);
--	eeprom_93cx6_pulse_low(eeprom);
--}
--
--static void eeprom_93cx6_write_bits(struct eeprom_93cx6 *eeprom,
--	const u16 data, const u16 count)
--{
--	unsigned int i;
--
--	eeprom->register_read(eeprom);
--
--	/*
--	 * Clear data flags.
--	 */
--	eeprom->reg_data_in = 0;
--	eeprom->reg_data_out = 0;
--
--	/*
--	 * Start writing all bits.
--	 */
--	for (i = count; i > 0; i--) {
--		/*
--		 * Check if this bit needs to be set.
--		 */
--		eeprom->reg_data_in = !!(data & (1 << (i - 1)));
--
--		/*
--		 * Write the bit to the eeprom register.
--		 */
--		eeprom->register_write(eeprom);
--
--		/*
--		 * Kick a pulse.
--		 */
--		eeprom_93cx6_pulse_high(eeprom);
--		eeprom_93cx6_pulse_low(eeprom);
--	}
--
--	eeprom->reg_data_in = 0;
--	eeprom->register_write(eeprom);
--}
--
--static void eeprom_93cx6_read_bits(struct eeprom_93cx6 *eeprom,
--	u16 *data, const u16 count)
--{
--	unsigned int i;
--	u16 buf = 0;
--
--	eeprom->register_read(eeprom);
--
--	/*
--	 * Clear data flags.
--	 */
--	eeprom->reg_data_in = 0;
--	eeprom->reg_data_out = 0;
--
--	/*
--	 * Start reading all bits.
--	 */
--	for (i = count; i > 0; i--) {
--		eeprom_93cx6_pulse_high(eeprom);
--
--		eeprom->register_read(eeprom);
--
--		/*
--		 * Clear data_in flag.
--		 */
--		eeprom->reg_data_in = 0;
--
--		/*
--		 * Read if the bit has been set.
--		 */
--		if (eeprom->reg_data_out)
--			buf |= (1 << (i - 1));
--
--		eeprom_93cx6_pulse_low(eeprom);
--	}
--
--	*data = buf;
--}
--
--/**
-- * eeprom_93cx6_read - Read multiple words from eeprom
-- * @eeprom: Pointer to eeprom structure
-- * @word: Word index from where we should start reading
-- * @data: target pointer where the information will have to be stored
-- *
-- * This function will read the eeprom data as host-endian word
-- * into the given data pointer.
-- */
--void eeprom_93cx6_read(struct eeprom_93cx6 *eeprom, const u8 word,
--	u16 *data)
--{
--	u16 command;
--
--	/*
--	 * Initialize the eeprom register
--	 */
--	eeprom_93cx6_startup(eeprom);
--
--	/*
--	 * Select the read opcode and the word to be read.
--	 */
--	command = (PCI_EEPROM_READ_OPCODE << eeprom->width) | word;
--	eeprom_93cx6_write_bits(eeprom, command,
--		PCI_EEPROM_WIDTH_OPCODE + eeprom->width);
--
--	/*
--	 * Read the requested 16 bits.
--	 */
--	eeprom_93cx6_read_bits(eeprom, data, 16);
--
--	/*
--	 * Cleanup eeprom register.
--	 */
--	eeprom_93cx6_cleanup(eeprom);
--}
--EXPORT_SYMBOL_GPL(eeprom_93cx6_read);
--
--/**
-- * eeprom_93cx6_multiread - Read multiple words from eeprom
-- * @eeprom: Pointer to eeprom structure
-- * @word: Word index from where we should start reading
-- * @data: target pointer where the information will have to be stored
-- * @words: Number of words that should be read.
-- *
-- * This function will read all requested words from the eeprom,
-- * this is done by calling eeprom_93cx6_read() multiple times.
-- * But with the additional change that while the eeprom_93cx6_read
-- * will return host ordered bytes, this method will return little
-- * endian words.
-- */
--void eeprom_93cx6_multiread(struct eeprom_93cx6 *eeprom, const u8 word,
--	__le16 *data, const u16 words)
--{
--	unsigned int i;
--	u16 tmp;
--
--	for (i = 0; i < words; i++) {
--		tmp = 0;
--		eeprom_93cx6_read(eeprom, word + i, &tmp);
--		data[i] = cpu_to_le16(tmp);
--	}
--}
--EXPORT_SYMBOL_GPL(eeprom_93cx6_multiread);
 -
 -- 
 1.5.6.5

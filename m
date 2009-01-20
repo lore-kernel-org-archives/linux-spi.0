@@ -1,7 +1,7 @@
 From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 2/4] Move old eeprom driver to the new directory /drivers/misc/eeprom
-Date: Tue, 20 Jan 2009 11:23:00 +0100
-Message-ID: <1232446982-7842-3-git-send-email-w.sang@pengutronix.de>
+Subject: [PATCH 1/4] Move at24 to drivers/misc/eeprom
+Date: Tue, 20 Jan 2009 11:22:59 +0100
+Message-ID: <1232446982-7842-2-git-send-email-w.sang@pengutronix.de>
 References: <1232446982-7842-1-git-send-email-w.sang@pengutronix.de>
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	rt2400-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org,
@@ -13,606 +13,1312 @@ In-Reply-To: <1232446982-7842-1-git-send-email-w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@pub
 Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+As drivers/i2c/chips is going to go away, move the driver to
+drivers/misc/eeprom. Other eeprom drivers may be moved here later, too.
 Update Kconfig text to specify this driver as I2C.
 
 Signed-off-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/i2c/chips/Kconfig    |   11 --
+ drivers/i2c/chips/Kconfig    |   26 --
  drivers/i2c/chips/Makefile   |    1 -
- drivers/i2c/chips/eeprom.c   |  257 ------------------------------------------
- drivers/misc/eeprom/Kconfig  |   11 ++
+ drivers/i2c/chips/at24.c     |  582 ------------------------------------------
+ drivers/misc/Kconfig         |    1 +
+ drivers/misc/Makefile        |    1 +
+ drivers/misc/eeprom/Kconfig  |   29 ++
  drivers/misc/eeprom/Makefile |    1 +
- drivers/misc/eeprom/eeprom.c |  257 ++++++++++++++++++++++++++++++++++++++++++
- 6 files changed, 269 insertions(+), 269 deletions(-)
- delete mode 100644 drivers/i2c/chips/eeprom.c
- create mode 100644 drivers/misc/eeprom/eeprom.c
+ drivers/misc/eeprom/at24.c   |  582 ++++++++++++++++++++++++++++++++++++++++++
+ 8 files changed, 614 insertions(+), 609 deletions(-)
+ delete mode 100644 drivers/i2c/chips/at24.c
+ create mode 100644 drivers/misc/eeprom/Kconfig
+ create mode 100644 drivers/misc/eeprom/Makefile
+ create mode 100644 drivers/misc/eeprom/at24.c
 
 diff --git a/drivers/i2c/chips/Kconfig b/drivers/i2c/chips/Kconfig
-index b58e770..c80312c 100644
+index b9bef04..b58e770 100644
 --- a/drivers/i2c/chips/Kconfig
 +++ b/drivers/i2c/chips/Kconfig
-@@ -16,17 +16,6 @@ config DS1682
+@@ -16,32 +16,6 @@ config DS1682
  	  This driver can also be built as a module.  If so, the module
  	  will be called ds1682.
  
--config SENSORS_EEPROM
--	tristate "EEPROM reader"
--	depends on EXPERIMENTAL
+-config AT24
+-	tristate "EEPROMs from most vendors"
+-	depends on SYSFS && EXPERIMENTAL
 -	help
--	  If you say yes here you get read-only access to the EEPROM data
--	  available on modern memory DIMMs and Sony Vaio laptops.  Such
--	  EEPROMs could theoretically be available on other devices as well.
+-	  Enable this driver to get read/write support to most I2C EEPROMs,
+-	  after you configure the driver to know about each EEPROM on
+-	  your target board.  Use these generic chip names, instead of
+-	  vendor-specific ones like at24c64 or 24lc02:
+-
+-	     24c00, 24c01, 24c02, spd (readonly 24c02), 24c04, 24c08,
+-	     24c16, 24c32, 24c64, 24c128, 24c256, 24c512, 24c1024
+-
+-	  Unless you like data loss puzzles, always be sure that any chip
+-	  you configure as a 24c32 (32 kbit) or larger is NOT really a
+-	  24c16 (16 kbit) or smaller, and vice versa. Marking the chip
+-	  as read-only won't help recover from this. Also, if your chip
+-	  has any software write-protect mechanism you may want to review the
+-	  code to make sure this driver won't turn it on by accident.
+-
+-	  If you use this with an SMBus adapter instead of an I2C adapter,
+-	  full functionality is not available.  Only smaller devices are
+-	  supported (24c16 and below, max 4 kByte).
 -
 -	  This driver can also be built as a module.  If so, the module
--	  will be called eeprom.
+-	  will be called at24.
 -
- config SENSORS_PCF8574
- 	tristate "Philips PCF8574 and PCF8574A (DEPRECATED)"
- 	depends on EXPERIMENTAL && GPIO_PCF857X = "n"
+ config SENSORS_EEPROM
+ 	tristate "EEPROM reader"
+ 	depends on EXPERIMENTAL
 diff --git a/drivers/i2c/chips/Makefile b/drivers/i2c/chips/Makefile
-index 5c14776..d142f23 100644
+index 00fcb51..5c14776 100644
 --- a/drivers/i2c/chips/Makefile
 +++ b/drivers/i2c/chips/Makefile
 @@ -11,7 +11,6 @@
  #
  
  obj-$(CONFIG_DS1682)		+= ds1682.o
--obj-$(CONFIG_SENSORS_EEPROM)	+= eeprom.o
+-obj-$(CONFIG_AT24)		+= at24.o
+ obj-$(CONFIG_SENSORS_EEPROM)	+= eeprom.o
  obj-$(CONFIG_SENSORS_MAX6875)	+= max6875.o
  obj-$(CONFIG_SENSORS_PCA9539)	+= pca9539.o
- obj-$(CONFIG_SENSORS_PCF8574)	+= pcf8574.o
-diff --git a/drivers/i2c/chips/eeprom.c b/drivers/i2c/chips/eeprom.c
+diff --git a/drivers/i2c/chips/at24.c b/drivers/i2c/chips/at24.c
 deleted file mode 100644
-index 2c27193..0000000
---- a/drivers/i2c/chips/eeprom.c
+index d477552..0000000
+--- a/drivers/i2c/chips/at24.c
 +++ /dev/null
-@@ -1,257 +0,0 @@
+@@ -1,582 +0,0 @@
 -/*
--    Copyright (C) 1998, 1999  Frodo Looijaard <frodol-B0qZmFHriGg@public.gmane.org> and
--			       Philip Edelbrock <phil-KXOFo5pg7o1l57MIdRCFDg@public.gmane.org>
--    Copyright (C) 2003 Greg Kroah-Hartman <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>
--    Copyright (C) 2003 IBM Corp.
--    Copyright (C) 2004 Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
--
--    This program is free software; you can redistribute it and/or modify
--    it under the terms of the GNU General Public License as published by
--    the Free Software Foundation; either version 2 of the License, or
--    (at your option) any later version.
--
--    This program is distributed in the hope that it will be useful,
--    but WITHOUT ANY WARRANTY; without even the implied warranty of
--    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--    GNU General Public License for more details.
--
--    You should have received a copy of the GNU General Public License
--    along with this program; if not, write to the Free Software
--    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
--*/
--
+- * at24.c - handle most I2C EEPROMs
+- *
+- * Copyright (C) 2005-2007 David Brownell
+- * Copyright (C) 2008 Wolfram Sang, Pengutronix
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- */
 -#include <linux/kernel.h>
 -#include <linux/init.h>
 -#include <linux/module.h>
 -#include <linux/slab.h>
+-#include <linux/delay.h>
+-#include <linux/mutex.h>
+-#include <linux/sysfs.h>
+-#include <linux/mod_devicetable.h>
+-#include <linux/log2.h>
+-#include <linux/bitops.h>
 -#include <linux/jiffies.h>
 -#include <linux/i2c.h>
--#include <linux/mutex.h>
+-#include <linux/i2c/at24.h>
 -
--/* Addresses to scan */
--static const unsigned short normal_i2c[] = { 0x50, 0x51, 0x52, 0x53, 0x54,
--					0x55, 0x56, 0x57, I2C_CLIENT_END };
+-/*
+- * I2C EEPROMs from most vendors are inexpensive and mostly interchangeable.
+- * Differences between different vendor product lines (like Atmel AT24C or
+- * MicroChip 24LC, etc) won't much matter for typical read/write access.
+- * There are also I2C RAM chips, likewise interchangeable. One example
+- * would be the PCF8570, which acts like a 24c02 EEPROM (256 bytes).
+- *
+- * However, misconfiguration can lose data. "Set 16-bit memory address"
+- * to a part with 8-bit addressing will overwrite data. Writing with too
+- * big a page size also loses data. And it's not safe to assume that the
+- * conventional addresses 0x50..0x57 only hold eeproms; a PCF8563 RTC
+- * uses 0x51, for just one example.
+- *
+- * Accordingly, explicit board-specific configuration data should be used
+- * in almost all cases. (One partial exception is an SMBus used to access
+- * "SPD" data for DRAM sticks. Those only use 24c02 EEPROMs.)
+- *
+- * So this driver uses "new style" I2C driver binding, expecting to be
+- * told what devices exist. That may be in arch/X/mach-Y/board-Z.c or
+- * similar kernel-resident tables; or, configuration data coming from
+- * a bootloader.
+- *
+- * Other than binding model, current differences from "eeprom" driver are
+- * that this one handles write access and isn't restricted to 24c02 devices.
+- * It also handles larger devices (32 kbit and up) with two-byte addresses,
+- * which won't work on pure SMBus systems.
+- */
 -
--/* Insmod parameters */
--I2C_CLIENT_INSMOD_1(eeprom);
+-struct at24_data {
+-	struct at24_platform_data chip;
+-	bool use_smbus;
 -
+-	/*
+-	 * Lock protects against activities from other Linux tasks,
+-	 * but not from changes by other I2C masters.
+-	 */
+-	struct mutex lock;
+-	struct bin_attribute bin;
 -
--/* Size of EEPROM in bytes */
--#define EEPROM_SIZE		256
+-	u8 *writebuf;
+-	unsigned write_max;
+-	unsigned num_addresses;
 -
--/* possible types of eeprom devices */
--enum eeprom_nature {
--	UNKNOWN,
--	VAIO,
+-	/*
+-	 * Some chips tie up multiple I2C addresses; dummy devices reserve
+-	 * them for us, and we'll use them with SMBus calls.
+-	 */
+-	struct i2c_client *client[];
 -};
 -
--/* Each client has this additional data */
--struct eeprom_data {
--	struct mutex update_lock;
--	u8 valid;			/* bitfield, bit!=0 if slice is valid */
--	unsigned long last_updated[8];	/* In jiffies, 8 slices */
--	u8 data[EEPROM_SIZE];		/* Register values */
--	enum eeprom_nature nature;
+-/*
+- * This parameter is to help this driver avoid blocking other drivers out
+- * of I2C for potentially troublesome amounts of time. With a 100 kHz I2C
+- * clock, one 256 byte read takes about 1/43 second which is excessive;
+- * but the 1/170 second it takes at 400 kHz may be quite reasonable; and
+- * at 1 MHz (Fm+) a 1/430 second delay could easily be invisible.
+- *
+- * This value is forced to be a power of two so that writes align on pages.
+- */
+-static unsigned io_limit = 128;
+-module_param(io_limit, uint, 0);
+-MODULE_PARM_DESC(io_limit, "Maximum bytes per I/O (default 128)");
+-
+-/*
+- * Specs often allow 5 msec for a page write, sometimes 20 msec;
+- * it's important to recover from write timeouts.
+- */
+-static unsigned write_timeout = 25;
+-module_param(write_timeout, uint, 0);
+-MODULE_PARM_DESC(write_timeout, "Time (in ms) to try writes (default 25)");
+-
+-#define AT24_SIZE_BYTELEN 5
+-#define AT24_SIZE_FLAGS 8
+-
+-#define AT24_BITMASK(x) (BIT(x) - 1)
+-
+-/* create non-zero magic value for given eeprom parameters */
+-#define AT24_DEVICE_MAGIC(_len, _flags) 		\
+-	((1 << AT24_SIZE_FLAGS | (_flags)) 		\
+-	    << AT24_SIZE_BYTELEN | ilog2(_len))
+-
+-static const struct i2c_device_id at24_ids[] = {
+-	/* needs 8 addresses as A0-A2 are ignored */
+-	{ "24c00", AT24_DEVICE_MAGIC(128 / 8, AT24_FLAG_TAKE8ADDR) },
+-	/* old variants can't be handled with this generic entry! */
+-	{ "24c01", AT24_DEVICE_MAGIC(1024 / 8, 0) },
+-	{ "24c02", AT24_DEVICE_MAGIC(2048 / 8, 0) },
+-	/* spd is a 24c02 in memory DIMMs */
+-	{ "spd", AT24_DEVICE_MAGIC(2048 / 8,
+-		AT24_FLAG_READONLY | AT24_FLAG_IRUGO) },
+-	{ "24c04", AT24_DEVICE_MAGIC(4096 / 8, 0) },
+-	/* 24rf08 quirk is handled at i2c-core */
+-	{ "24c08", AT24_DEVICE_MAGIC(8192 / 8, 0) },
+-	{ "24c16", AT24_DEVICE_MAGIC(16384 / 8, 0) },
+-	{ "24c32", AT24_DEVICE_MAGIC(32768 / 8, AT24_FLAG_ADDR16) },
+-	{ "24c64", AT24_DEVICE_MAGIC(65536 / 8, AT24_FLAG_ADDR16) },
+-	{ "24c128", AT24_DEVICE_MAGIC(131072 / 8, AT24_FLAG_ADDR16) },
+-	{ "24c256", AT24_DEVICE_MAGIC(262144 / 8, AT24_FLAG_ADDR16) },
+-	{ "24c512", AT24_DEVICE_MAGIC(524288 / 8, AT24_FLAG_ADDR16) },
+-	{ "24c1024", AT24_DEVICE_MAGIC(1048576 / 8, AT24_FLAG_ADDR16) },
+-	{ "at24", 0 },
+-	{ /* END OF LIST */ }
 -};
+-MODULE_DEVICE_TABLE(i2c, at24_ids);
 -
+-/*-------------------------------------------------------------------------*/
 -
--static void eeprom_update_client(struct i2c_client *client, u8 slice)
+-/*
+- * This routine supports chips which consume multiple I2C addresses. It
+- * computes the addressing information to be used for a given r/w request.
+- * Assumes that sanity checks for offset happened at sysfs-layer.
+- */
+-static struct i2c_client *at24_translate_offset(struct at24_data *at24,
+-		unsigned *offset)
 -{
--	struct eeprom_data *data = i2c_get_clientdata(client);
--	int i;
+-	unsigned i;
 -
--	mutex_lock(&data->update_lock);
--
--	if (!(data->valid & (1 << slice)) ||
--	    time_after(jiffies, data->last_updated[slice] + 300 * HZ)) {
--		dev_dbg(&client->dev, "Starting eeprom update, slice %u\n", slice);
--
--		if (i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_READ_I2C_BLOCK)) {
--			for (i = slice << 5; i < (slice + 1) << 5; i += 32)
--				if (i2c_smbus_read_i2c_block_data(client, i,
--							32, data->data + i)
--							!= 32)
--					goto exit;
--		} else {
--			for (i = slice << 5; i < (slice + 1) << 5; i += 2) {
--				int word = i2c_smbus_read_word_data(client, i);
--				if (word < 0)
--					goto exit;
--				data->data[i] = word & 0xff;
--				data->data[i + 1] = word >> 8;
--			}
--		}
--		data->last_updated[slice] = jiffies;
--		data->valid |= (1 << slice);
--	}
--exit:
--	mutex_unlock(&data->update_lock);
--}
--
--static ssize_t eeprom_read(struct kobject *kobj, struct bin_attribute *bin_attr,
--			   char *buf, loff_t off, size_t count)
--{
--	struct i2c_client *client = to_i2c_client(container_of(kobj, struct device, kobj));
--	struct eeprom_data *data = i2c_get_clientdata(client);
--	u8 slice;
--
--	if (off > EEPROM_SIZE)
--		return 0;
--	if (off + count > EEPROM_SIZE)
--		count = EEPROM_SIZE - off;
--
--	/* Only refresh slices which contain requested bytes */
--	for (slice = off >> 5; slice <= (off + count - 1) >> 5; slice++)
--		eeprom_update_client(client, slice);
--
--	/* Hide Vaio private settings to regular users:
--	   - BIOS passwords: bytes 0x00 to 0x0f
--	   - UUID: bytes 0x10 to 0x1f
--	   - Serial number: 0xc0 to 0xdf */
--	if (data->nature == VAIO && !capable(CAP_SYS_ADMIN)) {
--		int i;
--
--		for (i = 0; i < count; i++) {
--			if ((off + i <= 0x1f) ||
--			    (off + i >= 0xc0 && off + i <= 0xdf))
--				buf[i] = 0;
--			else
--				buf[i] = data->data[off + i];
--		}
+-	if (at24->chip.flags & AT24_FLAG_ADDR16) {
+-		i = *offset >> 16;
+-		*offset &= 0xffff;
 -	} else {
--		memcpy(buf, &data->data[off], count);
+-		i = *offset >> 8;
+-		*offset &= 0xff;
 -	}
 -
--	return count;
+-	return at24->client[i];
 -}
 -
--static struct bin_attribute eeprom_attr = {
--	.attr = {
--		.name = "eeprom",
--		.mode = S_IRUGO,
--	},
--	.size = EEPROM_SIZE,
--	.read = eeprom_read,
--};
--
--/* Return 0 if detection is successful, -ENODEV otherwise */
--static int eeprom_detect(struct i2c_client *client, int kind,
--			 struct i2c_board_info *info)
+-static ssize_t at24_eeprom_read(struct at24_data *at24, char *buf,
+-		unsigned offset, size_t count)
 -{
--	struct i2c_adapter *adapter = client->adapter;
+-	struct i2c_msg msg[2];
+-	u8 msgbuf[2];
+-	struct i2c_client *client;
+-	int status, i;
 -
--	/* EDID EEPROMs are often 24C00 EEPROMs, which answer to all
--	   addresses 0x50-0x57, but we only care about 0x50. So decline
--	   attaching to addresses >= 0x51 on DDC buses */
--	if (!(adapter->class & I2C_CLASS_SPD) && client->addr >= 0x51)
--		return -ENODEV;
+-	memset(msg, 0, sizeof(msg));
 -
--	/* There are four ways we can read the EEPROM data:
--	   (1) I2C block reads (faster, but unsupported by most adapters)
--	   (2) Word reads (128% overhead)
--	   (3) Consecutive byte reads (88% overhead, unsafe)
--	   (4) Regular byte data reads (265% overhead)
--	   The third and fourth methods are not implemented by this driver
--	   because all known adapters support one of the first two. */
--	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_READ_WORD_DATA)
--	 && !i2c_check_functionality(adapter, I2C_FUNC_SMBUS_READ_I2C_BLOCK))
--		return -ENODEV;
+-	/*
+-	 * REVISIT some multi-address chips don't rollover page reads to
+-	 * the next slave address, so we may need to truncate the count.
+-	 * Those chips might need another quirk flag.
+-	 *
+-	 * If the real hardware used four adjacent 24c02 chips and that
+-	 * were misconfigured as one 24c08, that would be a similar effect:
+-	 * one "eeprom" file not four, but larger reads would fail when
+-	 * they crossed certain pages.
+-	 */
 -
--	strlcpy(info->type, "eeprom", I2C_NAME_SIZE);
+-	/*
+-	 * Slave address and byte offset derive from the offset. Always
+-	 * set the byte address; on a multi-master board, another master
+-	 * may have changed the chip's "current" address pointer.
+-	 */
+-	client = at24_translate_offset(at24, &offset);
 -
--	return 0;
+-	if (count > io_limit)
+-		count = io_limit;
+-
+-	/* Smaller eeproms can work given some SMBus extension calls */
+-	if (at24->use_smbus) {
+-		if (count > I2C_SMBUS_BLOCK_MAX)
+-			count = I2C_SMBUS_BLOCK_MAX;
+-		status = i2c_smbus_read_i2c_block_data(client, offset,
+-				count, buf);
+-		dev_dbg(&client->dev, "smbus read %zu@%d --> %d\n",
+-				count, offset, status);
+-		return (status < 0) ? -EIO : status;
+-	}
+-
+-	/*
+-	 * When we have a better choice than SMBus calls, use a combined
+-	 * I2C message. Write address; then read up to io_limit data bytes.
+-	 * Note that read page rollover helps us here (unlike writes).
+-	 * msgbuf is u8 and will cast to our needs.
+-	 */
+-	i = 0;
+-	if (at24->chip.flags & AT24_FLAG_ADDR16)
+-		msgbuf[i++] = offset >> 8;
+-	msgbuf[i++] = offset;
+-
+-	msg[0].addr = client->addr;
+-	msg[0].buf = msgbuf;
+-	msg[0].len = i;
+-
+-	msg[1].addr = client->addr;
+-	msg[1].flags = I2C_M_RD;
+-	msg[1].buf = buf;
+-	msg[1].len = count;
+-
+-	status = i2c_transfer(client->adapter, msg, 2);
+-	dev_dbg(&client->dev, "i2c read %zu@%d --> %d\n",
+-			count, offset, status);
+-
+-	if (status == 2)
+-		return count;
+-	else if (status >= 0)
+-		return -EIO;
+-	else
+-		return status;
 -}
 -
--static int eeprom_probe(struct i2c_client *client,
--			const struct i2c_device_id *id)
+-static ssize_t at24_bin_read(struct kobject *kobj, struct bin_attribute *attr,
+-		char *buf, loff_t off, size_t count)
 -{
--	struct i2c_adapter *adapter = client->adapter;
--	struct eeprom_data *data;
+-	struct at24_data *at24;
+-	ssize_t retval = 0;
+-
+-	at24 = dev_get_drvdata(container_of(kobj, struct device, kobj));
+-
+-	if (unlikely(!count))
+-		return count;
+-
+-	/*
+-	 * Read data from chip, protecting against concurrent updates
+-	 * from this host, but not from other I2C masters.
+-	 */
+-	mutex_lock(&at24->lock);
+-
+-	while (count) {
+-		ssize_t	status;
+-
+-		status = at24_eeprom_read(at24, buf, off, count);
+-		if (status <= 0) {
+-			if (retval == 0)
+-				retval = status;
+-			break;
+-		}
+-		buf += status;
+-		off += status;
+-		count -= status;
+-		retval += status;
+-	}
+-
+-	mutex_unlock(&at24->lock);
+-
+-	return retval;
+-}
+-
+-
+-/*
+- * REVISIT: export at24_bin{read,write}() to let other kernel code use
+- * eeprom data. For example, it might hold a board's Ethernet address, or
+- * board-specific calibration data generated on the manufacturing floor.
+- */
+-
+-
+-/*
+- * Note that if the hardware write-protect pin is pulled high, the whole
+- * chip is normally write protected. But there are plenty of product
+- * variants here, including OTP fuses and partial chip protect.
+- *
+- * We only use page mode writes; the alternative is sloooow. This routine
+- * writes at most one page.
+- */
+-static ssize_t at24_eeprom_write(struct at24_data *at24, char *buf,
+-		unsigned offset, size_t count)
+-{
+-	struct i2c_client *client;
+-	struct i2c_msg msg;
+-	ssize_t status;
+-	unsigned long timeout, write_time;
+-	unsigned next_page;
+-
+-	/* Get corresponding I2C address and adjust offset */
+-	client = at24_translate_offset(at24, &offset);
+-
+-	/* write_max is at most a page */
+-	if (count > at24->write_max)
+-		count = at24->write_max;
+-
+-	/* Never roll over backwards, to the start of this page */
+-	next_page = roundup(offset + 1, at24->chip.page_size);
+-	if (offset + count > next_page)
+-		count = next_page - offset;
+-
+-	/* If we'll use I2C calls for I/O, set up the message */
+-	if (!at24->use_smbus) {
+-		int i = 0;
+-
+-		msg.addr = client->addr;
+-		msg.flags = 0;
+-
+-		/* msg.buf is u8 and casts will mask the values */
+-		msg.buf = at24->writebuf;
+-		if (at24->chip.flags & AT24_FLAG_ADDR16)
+-			msg.buf[i++] = offset >> 8;
+-
+-		msg.buf[i++] = offset;
+-		memcpy(&msg.buf[i], buf, count);
+-		msg.len = i + count;
+-	}
+-
+-	/*
+-	 * Writes fail if the previous one didn't complete yet. We may
+-	 * loop a few times until this one succeeds, waiting at least
+-	 * long enough for one entire page write to work.
+-	 */
+-	timeout = jiffies + msecs_to_jiffies(write_timeout);
+-	do {
+-		write_time = jiffies;
+-		if (at24->use_smbus) {
+-			status = i2c_smbus_write_i2c_block_data(client,
+-					offset, count, buf);
+-			if (status == 0)
+-				status = count;
+-		} else {
+-			status = i2c_transfer(client->adapter, &msg, 1);
+-			if (status == 1)
+-				status = count;
+-		}
+-		dev_dbg(&client->dev, "write %zu@%d --> %zd (%ld)\n",
+-				count, offset, status, jiffies);
+-
+-		if (status == count)
+-			return count;
+-
+-		/* REVISIT: at HZ=100, this is sloooow */
+-		msleep(1);
+-	} while (time_before(write_time, timeout));
+-
+-	return -ETIMEDOUT;
+-}
+-
+-static ssize_t at24_bin_write(struct kobject *kobj, struct bin_attribute *attr,
+-		char *buf, loff_t off, size_t count)
+-{
+-	struct at24_data *at24;
+-	ssize_t retval = 0;
+-
+-	at24 = dev_get_drvdata(container_of(kobj, struct device, kobj));
+-
+-	if (unlikely(!count))
+-		return count;
+-
+-	/*
+-	 * Write data to chip, protecting against concurrent updates
+-	 * from this host, but not from other I2C masters.
+-	 */
+-	mutex_lock(&at24->lock);
+-
+-	while (count) {
+-		ssize_t	status;
+-
+-		status = at24_eeprom_write(at24, buf, off, count);
+-		if (status <= 0) {
+-			if (retval == 0)
+-				retval = status;
+-			break;
+-		}
+-		buf += status;
+-		off += status;
+-		count -= status;
+-		retval += status;
+-	}
+-
+-	mutex_unlock(&at24->lock);
+-
+-	return retval;
+-}
+-
+-/*-------------------------------------------------------------------------*/
+-
+-static int at24_probe(struct i2c_client *client, const struct i2c_device_id *id)
+-{
+-	struct at24_platform_data chip;
+-	bool writable;
+-	bool use_smbus = false;
+-	struct at24_data *at24;
 -	int err;
+-	unsigned i, num_addresses;
+-	kernel_ulong_t magic;
 -
--	if (!(data = kzalloc(sizeof(struct eeprom_data), GFP_KERNEL))) {
--		err = -ENOMEM;
--		goto exit;
+-	if (client->dev.platform_data) {
+-		chip = *(struct at24_platform_data *)client->dev.platform_data;
+-	} else {
+-		if (!id->driver_data) {
+-			err = -ENODEV;
+-			goto err_out;
+-		}
+-		magic = id->driver_data;
+-		chip.byte_len = BIT(magic & AT24_BITMASK(AT24_SIZE_BYTELEN));
+-		magic >>= AT24_SIZE_BYTELEN;
+-		chip.flags = magic & AT24_BITMASK(AT24_SIZE_FLAGS);
+-		/*
+-		 * This is slow, but we can't know all eeproms, so we better
+-		 * play safe. Specifying custom eeprom-types via platform_data
+-		 * is recommended anyhow.
+-		 */
+-		chip.page_size = 1;
 -	}
 -
--	memset(data->data, 0xff, EEPROM_SIZE);
--	i2c_set_clientdata(client, data);
--	mutex_init(&data->update_lock);
--	data->nature = UNKNOWN;
+-	if (!is_power_of_2(chip.byte_len))
+-		dev_warn(&client->dev,
+-			"byte_len looks suspicious (no power of 2)!\n");
+-	if (!is_power_of_2(chip.page_size))
+-		dev_warn(&client->dev,
+-			"page_size looks suspicious (no power of 2)!\n");
 -
--	/* Detect the Vaio nature of EEPROMs.
--	   We use the "PCG-" or "VGN-" prefix as the signature. */
--	if (client->addr == 0x57
--	 && i2c_check_functionality(adapter, I2C_FUNC_SMBUS_READ_BYTE_DATA)) {
--		char name[4];
+-	/* Use I2C operations unless we're stuck with SMBus extensions. */
+-	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+-		if (chip.flags & AT24_FLAG_ADDR16) {
+-			err = -EPFNOSUPPORT;
+-			goto err_out;
+-		}
+-		if (!i2c_check_functionality(client->adapter,
+-				I2C_FUNC_SMBUS_READ_I2C_BLOCK)) {
+-			err = -EPFNOSUPPORT;
+-			goto err_out;
+-		}
+-		use_smbus = true;
+-	}
 -
--		name[0] = i2c_smbus_read_byte_data(client, 0x80);
--		name[1] = i2c_smbus_read_byte_data(client, 0x81);
--		name[2] = i2c_smbus_read_byte_data(client, 0x82);
--		name[3] = i2c_smbus_read_byte_data(client, 0x83);
+-	if (chip.flags & AT24_FLAG_TAKE8ADDR)
+-		num_addresses = 8;
+-	else
+-		num_addresses =	DIV_ROUND_UP(chip.byte_len,
+-			(chip.flags & AT24_FLAG_ADDR16) ? 65536 : 256);
 -
--		if (!memcmp(name, "PCG-", 4) || !memcmp(name, "VGN-", 4)) {
--			dev_info(&client->dev, "Vaio EEPROM detected, "
--				 "enabling privacy protection\n");
--			data->nature = VAIO;
+-	at24 = kzalloc(sizeof(struct at24_data) +
+-		num_addresses * sizeof(struct i2c_client *), GFP_KERNEL);
+-	if (!at24) {
+-		err = -ENOMEM;
+-		goto err_out;
+-	}
+-
+-	mutex_init(&at24->lock);
+-	at24->use_smbus = use_smbus;
+-	at24->chip = chip;
+-	at24->num_addresses = num_addresses;
+-
+-	/*
+-	 * Export the EEPROM bytes through sysfs, since that's convenient.
+-	 * By default, only root should see the data (maybe passwords etc)
+-	 */
+-	at24->bin.attr.name = "eeprom";
+-	at24->bin.attr.mode = chip.flags & AT24_FLAG_IRUGO ? S_IRUGO : S_IRUSR;
+-	at24->bin.read = at24_bin_read;
+-	at24->bin.size = chip.byte_len;
+-
+-	writable = !(chip.flags & AT24_FLAG_READONLY);
+-	if (writable) {
+-		if (!use_smbus || i2c_check_functionality(client->adapter,
+-				I2C_FUNC_SMBUS_WRITE_I2C_BLOCK)) {
+-
+-			unsigned write_max = chip.page_size;
+-
+-			at24->bin.write = at24_bin_write;
+-			at24->bin.attr.mode |= S_IWUSR;
+-
+-			if (write_max > io_limit)
+-				write_max = io_limit;
+-			if (use_smbus && write_max > I2C_SMBUS_BLOCK_MAX)
+-				write_max = I2C_SMBUS_BLOCK_MAX;
+-			at24->write_max = write_max;
+-
+-			/* buffer (data + address at the beginning) */
+-			at24->writebuf = kmalloc(write_max + 2, GFP_KERNEL);
+-			if (!at24->writebuf) {
+-				err = -ENOMEM;
+-				goto err_struct;
+-			}
+-		} else {
+-			dev_warn(&client->dev,
+-				"cannot write due to controller restrictions.");
 -		}
 -	}
 -
--	/* create the sysfs eeprom file */
--	err = sysfs_create_bin_file(&client->dev.kobj, &eeprom_attr);
+-	at24->client[0] = client;
+-
+-	/* use dummy devices for multiple-address chips */
+-	for (i = 1; i < num_addresses; i++) {
+-		at24->client[i] = i2c_new_dummy(client->adapter,
+-					client->addr + i);
+-		if (!at24->client[i]) {
+-			dev_err(&client->dev, "address 0x%02x unavailable\n",
+-					client->addr + i);
+-			err = -EADDRINUSE;
+-			goto err_clients;
+-		}
+-	}
+-
+-	err = sysfs_create_bin_file(&client->dev.kobj, &at24->bin);
 -	if (err)
--		goto exit_kfree;
+-		goto err_clients;
+-
+-	i2c_set_clientdata(client, at24);
+-
+-	dev_info(&client->dev, "%zu byte %s EEPROM %s\n",
+-		at24->bin.size, client->name,
+-		writable ? "(writable)" : "(read-only)");
+-	dev_dbg(&client->dev,
+-		"page_size %d, num_addresses %d, write_max %d%s\n",
+-		chip.page_size, num_addresses,
+-		at24->write_max,
+-		use_smbus ? ", use_smbus" : "");
 -
 -	return 0;
 -
--exit_kfree:
--	kfree(data);
--exit:
+-err_clients:
+-	for (i = 1; i < num_addresses; i++)
+-		if (at24->client[i])
+-			i2c_unregister_device(at24->client[i]);
+-
+-	kfree(at24->writebuf);
+-err_struct:
+-	kfree(at24);
+-err_out:
+-	dev_dbg(&client->dev, "probe error %d\n", err);
 -	return err;
 -}
 -
--static int eeprom_remove(struct i2c_client *client)
+-static int __devexit at24_remove(struct i2c_client *client)
 -{
--	sysfs_remove_bin_file(&client->dev.kobj, &eeprom_attr);
--	kfree(i2c_get_clientdata(client));
+-	struct at24_data *at24;
+-	int i;
 -
+-	at24 = i2c_get_clientdata(client);
+-	sysfs_remove_bin_file(&client->dev.kobj, &at24->bin);
+-
+-	for (i = 1; i < at24->num_addresses; i++)
+-		i2c_unregister_device(at24->client[i]);
+-
+-	kfree(at24->writebuf);
+-	kfree(at24);
+-	i2c_set_clientdata(client, NULL);
 -	return 0;
 -}
 -
--static const struct i2c_device_id eeprom_id[] = {
--	{ "eeprom", 0 },
--	{ }
--};
+-/*-------------------------------------------------------------------------*/
 -
--static struct i2c_driver eeprom_driver = {
+-static struct i2c_driver at24_driver = {
 -	.driver = {
--		.name	= "eeprom",
+-		.name = "at24",
+-		.owner = THIS_MODULE,
 -	},
--	.probe		= eeprom_probe,
--	.remove		= eeprom_remove,
--	.id_table	= eeprom_id,
--
--	.class		= I2C_CLASS_DDC | I2C_CLASS_SPD,
--	.detect		= eeprom_detect,
--	.address_data	= &addr_data,
+-	.probe = at24_probe,
+-	.remove = __devexit_p(at24_remove),
+-	.id_table = at24_ids,
 -};
 -
--static int __init eeprom_init(void)
+-static int __init at24_init(void)
 -{
--	return i2c_add_driver(&eeprom_driver);
+-	io_limit = rounddown_pow_of_two(io_limit);
+-	return i2c_add_driver(&at24_driver);
 -}
+-module_init(at24_init);
 -
--static void __exit eeprom_exit(void)
+-static void __exit at24_exit(void)
 -{
--	i2c_del_driver(&eeprom_driver);
+-	i2c_del_driver(&at24_driver);
 -}
+-module_exit(at24_exit);
 -
--
--MODULE_AUTHOR("Frodo Looijaard <frodol-B0qZmFHriGg@public.gmane.org> and "
--		"Philip Edelbrock <phil-KXOFo5pg7o1l57MIdRCFDg@public.gmane.org> and "
--		"Greg Kroah-Hartman <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>");
--MODULE_DESCRIPTION("I2C EEPROM driver");
+-MODULE_DESCRIPTION("Driver for most I2C EEPROMs");
+-MODULE_AUTHOR("David Brownell and Wolfram Sang");
 -MODULE_LICENSE("GPL");
--
--module_init(eeprom_init);
--module_exit(eeprom_exit);
-diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
-index 198525f..5a69ac8 100644
---- a/drivers/misc/eeprom/Kconfig
-+++ b/drivers/misc/eeprom/Kconfig
-@@ -26,4 +26,15 @@ config AT24
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called at24.
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 419c378..6c9cd9d 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -231,5 +231,6 @@ config DELL_LAPTOP
+ 	laptops.
  
-+config SENSORS_EEPROM
-+	tristate "Old I2C EEPROM reader"
-+	depends on EXPERIMENTAL
+ source "drivers/misc/c2port/Kconfig"
++source "drivers/misc/eeprom/Kconfig"
+ 
+ endif # MISC_DEVICES
+diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+index d5749a7..0ec2320 100644
+--- a/drivers/misc/Makefile
++++ b/drivers/misc/Makefile
+@@ -20,3 +20,4 @@ obj-$(CONFIG_SGI_XP)		+= sgi-xp/
+ obj-$(CONFIG_SGI_GRU)		+= sgi-gru/
+ obj-$(CONFIG_HP_ILO)		+= hpilo.o
+ obj-$(CONFIG_C2PORT)		+= c2port/
++obj-y				+= eeprom/
+diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
+new file mode 100644
+index 0000000..198525f
+--- /dev/null
++++ b/drivers/misc/eeprom/Kconfig
+@@ -0,0 +1,29 @@
++menu EEPROMS
++
++config AT24
++	tristate "I2C EEPROMs from most vendors"
++	depends on SYSFS && EXPERIMENTAL
 +	help
-+	  If you say yes here you get read-only access to the EEPROM data
-+	  available on modern memory DIMMs and Sony Vaio laptops via I2C. Such
-+	  EEPROMs could theoretically be available on other devices as well.
++	  Enable this driver to get read/write support to most I2C EEPROMs,
++	  after you configure the driver to know about each EEPROM on
++	  your target board.  Use these generic chip names, instead of
++	  vendor-specific ones like at24c64 or 24lc02:
++
++	     24c00, 24c01, 24c02, spd (readonly 24c02), 24c04, 24c08,
++	     24c16, 24c32, 24c64, 24c128, 24c256, 24c512, 24c1024
++
++	  Unless you like data loss puzzles, always be sure that any chip
++	  you configure as a 24c32 (32 kbit) or larger is NOT really a
++	  24c16 (16 kbit) or smaller, and vice versa. Marking the chip
++	  as read-only won't help recover from this. Also, if your chip
++	  has any software write-protect mechanism you may want to review the
++	  code to make sure this driver won't turn it on by accident.
++
++	  If you use this with an SMBus adapter instead of an I2C adapter,
++	  full functionality is not available.  Only smaller devices are
++	  supported (24c16 and below, max 4 kByte).
 +
 +	  This driver can also be built as a module.  If so, the module
-+	  will be called eeprom.
++	  will be called at24.
 +
- endmenu
++endmenu
 diff --git a/drivers/misc/eeprom/Makefile b/drivers/misc/eeprom/Makefile
-index 72cd478..a3dad28 100644
---- a/drivers/misc/eeprom/Makefile
-+++ b/drivers/misc/eeprom/Makefile
-@@ -1 +1,2 @@
- obj-$(CONFIG_AT24)		+= at24.o
-+obj-$(CONFIG_SENSORS_EEPROM)	+= eeprom.o
-diff --git a/drivers/misc/eeprom/eeprom.c b/drivers/misc/eeprom/eeprom.c
 new file mode 100644
-index 0000000..2c27193
+index 0000000..72cd478
 --- /dev/null
-+++ b/drivers/misc/eeprom/eeprom.c
-@@ -0,0 +1,257 @@
++++ b/drivers/misc/eeprom/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_AT24)		+= at24.o
+diff --git a/drivers/misc/eeprom/at24.c b/drivers/misc/eeprom/at24.c
+new file mode 100644
+index 0000000..d477552
+--- /dev/null
++++ b/drivers/misc/eeprom/at24.c
+@@ -0,0 +1,582 @@
 +/*
-+    Copyright (C) 1998, 1999  Frodo Looijaard <frodol-B0qZmFHriGg@public.gmane.org> and
-+			       Philip Edelbrock <phil-KXOFo5pg7o1l57MIdRCFDg@public.gmane.org>
-+    Copyright (C) 2003 Greg Kroah-Hartman <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>
-+    Copyright (C) 2003 IBM Corp.
-+    Copyright (C) 2004 Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
-+
-+    This program is free software; you can redistribute it and/or modify
-+    it under the terms of the GNU General Public License as published by
-+    the Free Software Foundation; either version 2 of the License, or
-+    (at your option) any later version.
-+
-+    This program is distributed in the hope that it will be useful,
-+    but WITHOUT ANY WARRANTY; without even the implied warranty of
-+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+    GNU General Public License for more details.
-+
-+    You should have received a copy of the GNU General Public License
-+    along with this program; if not, write to the Free Software
-+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+*/
-+
++ * at24.c - handle most I2C EEPROMs
++ *
++ * Copyright (C) 2005-2007 David Brownell
++ * Copyright (C) 2008 Wolfram Sang, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
 +#include <linux/kernel.h>
 +#include <linux/init.h>
 +#include <linux/module.h>
 +#include <linux/slab.h>
++#include <linux/delay.h>
++#include <linux/mutex.h>
++#include <linux/sysfs.h>
++#include <linux/mod_devicetable.h>
++#include <linux/log2.h>
++#include <linux/bitops.h>
 +#include <linux/jiffies.h>
 +#include <linux/i2c.h>
-+#include <linux/mutex.h>
++#include <linux/i2c/at24.h>
 +
-+/* Addresses to scan */
-+static const unsigned short normal_i2c[] = { 0x50, 0x51, 0x52, 0x53, 0x54,
-+					0x55, 0x56, 0x57, I2C_CLIENT_END };
++/*
++ * I2C EEPROMs from most vendors are inexpensive and mostly interchangeable.
++ * Differences between different vendor product lines (like Atmel AT24C or
++ * MicroChip 24LC, etc) won't much matter for typical read/write access.
++ * There are also I2C RAM chips, likewise interchangeable. One example
++ * would be the PCF8570, which acts like a 24c02 EEPROM (256 bytes).
++ *
++ * However, misconfiguration can lose data. "Set 16-bit memory address"
++ * to a part with 8-bit addressing will overwrite data. Writing with too
++ * big a page size also loses data. And it's not safe to assume that the
++ * conventional addresses 0x50..0x57 only hold eeproms; a PCF8563 RTC
++ * uses 0x51, for just one example.
++ *
++ * Accordingly, explicit board-specific configuration data should be used
++ * in almost all cases. (One partial exception is an SMBus used to access
++ * "SPD" data for DRAM sticks. Those only use 24c02 EEPROMs.)
++ *
++ * So this driver uses "new style" I2C driver binding, expecting to be
++ * told what devices exist. That may be in arch/X/mach-Y/board-Z.c or
++ * similar kernel-resident tables; or, configuration data coming from
++ * a bootloader.
++ *
++ * Other than binding model, current differences from "eeprom" driver are
++ * that this one handles write access and isn't restricted to 24c02 devices.
++ * It also handles larger devices (32 kbit and up) with two-byte addresses,
++ * which won't work on pure SMBus systems.
++ */
 +
-+/* Insmod parameters */
-+I2C_CLIENT_INSMOD_1(eeprom);
++struct at24_data {
++	struct at24_platform_data chip;
++	bool use_smbus;
 +
++	/*
++	 * Lock protects against activities from other Linux tasks,
++	 * but not from changes by other I2C masters.
++	 */
++	struct mutex lock;
++	struct bin_attribute bin;
 +
-+/* Size of EEPROM in bytes */
-+#define EEPROM_SIZE		256
++	u8 *writebuf;
++	unsigned write_max;
++	unsigned num_addresses;
 +
-+/* possible types of eeprom devices */
-+enum eeprom_nature {
-+	UNKNOWN,
-+	VAIO,
++	/*
++	 * Some chips tie up multiple I2C addresses; dummy devices reserve
++	 * them for us, and we'll use them with SMBus calls.
++	 */
++	struct i2c_client *client[];
 +};
 +
-+/* Each client has this additional data */
-+struct eeprom_data {
-+	struct mutex update_lock;
-+	u8 valid;			/* bitfield, bit!=0 if slice is valid */
-+	unsigned long last_updated[8];	/* In jiffies, 8 slices */
-+	u8 data[EEPROM_SIZE];		/* Register values */
-+	enum eeprom_nature nature;
++/*
++ * This parameter is to help this driver avoid blocking other drivers out
++ * of I2C for potentially troublesome amounts of time. With a 100 kHz I2C
++ * clock, one 256 byte read takes about 1/43 second which is excessive;
++ * but the 1/170 second it takes at 400 kHz may be quite reasonable; and
++ * at 1 MHz (Fm+) a 1/430 second delay could easily be invisible.
++ *
++ * This value is forced to be a power of two so that writes align on pages.
++ */
++static unsigned io_limit = 128;
++module_param(io_limit, uint, 0);
++MODULE_PARM_DESC(io_limit, "Maximum bytes per I/O (default 128)");
++
++/*
++ * Specs often allow 5 msec for a page write, sometimes 20 msec;
++ * it's important to recover from write timeouts.
++ */
++static unsigned write_timeout = 25;
++module_param(write_timeout, uint, 0);
++MODULE_PARM_DESC(write_timeout, "Time (in ms) to try writes (default 25)");
++
++#define AT24_SIZE_BYTELEN 5
++#define AT24_SIZE_FLAGS 8
++
++#define AT24_BITMASK(x) (BIT(x) - 1)
++
++/* create non-zero magic value for given eeprom parameters */
++#define AT24_DEVICE_MAGIC(_len, _flags) 		\
++	((1 << AT24_SIZE_FLAGS | (_flags)) 		\
++	    << AT24_SIZE_BYTELEN | ilog2(_len))
++
++static const struct i2c_device_id at24_ids[] = {
++	/* needs 8 addresses as A0-A2 are ignored */
++	{ "24c00", AT24_DEVICE_MAGIC(128 / 8, AT24_FLAG_TAKE8ADDR) },
++	/* old variants can't be handled with this generic entry! */
++	{ "24c01", AT24_DEVICE_MAGIC(1024 / 8, 0) },
++	{ "24c02", AT24_DEVICE_MAGIC(2048 / 8, 0) },
++	/* spd is a 24c02 in memory DIMMs */
++	{ "spd", AT24_DEVICE_MAGIC(2048 / 8,
++		AT24_FLAG_READONLY | AT24_FLAG_IRUGO) },
++	{ "24c04", AT24_DEVICE_MAGIC(4096 / 8, 0) },
++	/* 24rf08 quirk is handled at i2c-core */
++	{ "24c08", AT24_DEVICE_MAGIC(8192 / 8, 0) },
++	{ "24c16", AT24_DEVICE_MAGIC(16384 / 8, 0) },
++	{ "24c32", AT24_DEVICE_MAGIC(32768 / 8, AT24_FLAG_ADDR16) },
++	{ "24c64", AT24_DEVICE_MAGIC(65536 / 8, AT24_FLAG_ADDR16) },
++	{ "24c128", AT24_DEVICE_MAGIC(131072 / 8, AT24_FLAG_ADDR16) },
++	{ "24c256", AT24_DEVICE_MAGIC(262144 / 8, AT24_FLAG_ADDR16) },
++	{ "24c512", AT24_DEVICE_MAGIC(524288 / 8, AT24_FLAG_ADDR16) },
++	{ "24c1024", AT24_DEVICE_MAGIC(1048576 / 8, AT24_FLAG_ADDR16) },
++	{ "at24", 0 },
++	{ /* END OF LIST */ }
 +};
++MODULE_DEVICE_TABLE(i2c, at24_ids);
 +
++/*-------------------------------------------------------------------------*/
 +
-+static void eeprom_update_client(struct i2c_client *client, u8 slice)
++/*
++ * This routine supports chips which consume multiple I2C addresses. It
++ * computes the addressing information to be used for a given r/w request.
++ * Assumes that sanity checks for offset happened at sysfs-layer.
++ */
++static struct i2c_client *at24_translate_offset(struct at24_data *at24,
++		unsigned *offset)
 +{
-+	struct eeprom_data *data = i2c_get_clientdata(client);
-+	int i;
++	unsigned i;
 +
-+	mutex_lock(&data->update_lock);
-+
-+	if (!(data->valid & (1 << slice)) ||
-+	    time_after(jiffies, data->last_updated[slice] + 300 * HZ)) {
-+		dev_dbg(&client->dev, "Starting eeprom update, slice %u\n", slice);
-+
-+		if (i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_READ_I2C_BLOCK)) {
-+			for (i = slice << 5; i < (slice + 1) << 5; i += 32)
-+				if (i2c_smbus_read_i2c_block_data(client, i,
-+							32, data->data + i)
-+							!= 32)
-+					goto exit;
-+		} else {
-+			for (i = slice << 5; i < (slice + 1) << 5; i += 2) {
-+				int word = i2c_smbus_read_word_data(client, i);
-+				if (word < 0)
-+					goto exit;
-+				data->data[i] = word & 0xff;
-+				data->data[i + 1] = word >> 8;
-+			}
-+		}
-+		data->last_updated[slice] = jiffies;
-+		data->valid |= (1 << slice);
-+	}
-+exit:
-+	mutex_unlock(&data->update_lock);
-+}
-+
-+static ssize_t eeprom_read(struct kobject *kobj, struct bin_attribute *bin_attr,
-+			   char *buf, loff_t off, size_t count)
-+{
-+	struct i2c_client *client = to_i2c_client(container_of(kobj, struct device, kobj));
-+	struct eeprom_data *data = i2c_get_clientdata(client);
-+	u8 slice;
-+
-+	if (off > EEPROM_SIZE)
-+		return 0;
-+	if (off + count > EEPROM_SIZE)
-+		count = EEPROM_SIZE - off;
-+
-+	/* Only refresh slices which contain requested bytes */
-+	for (slice = off >> 5; slice <= (off + count - 1) >> 5; slice++)
-+		eeprom_update_client(client, slice);
-+
-+	/* Hide Vaio private settings to regular users:
-+	   - BIOS passwords: bytes 0x00 to 0x0f
-+	   - UUID: bytes 0x10 to 0x1f
-+	   - Serial number: 0xc0 to 0xdf */
-+	if (data->nature == VAIO && !capable(CAP_SYS_ADMIN)) {
-+		int i;
-+
-+		for (i = 0; i < count; i++) {
-+			if ((off + i <= 0x1f) ||
-+			    (off + i >= 0xc0 && off + i <= 0xdf))
-+				buf[i] = 0;
-+			else
-+				buf[i] = data->data[off + i];
-+		}
++	if (at24->chip.flags & AT24_FLAG_ADDR16) {
++		i = *offset >> 16;
++		*offset &= 0xffff;
 +	} else {
-+		memcpy(buf, &data->data[off], count);
++		i = *offset >> 8;
++		*offset &= 0xff;
 +	}
 +
-+	return count;
++	return at24->client[i];
 +}
 +
-+static struct bin_attribute eeprom_attr = {
-+	.attr = {
-+		.name = "eeprom",
-+		.mode = S_IRUGO,
-+	},
-+	.size = EEPROM_SIZE,
-+	.read = eeprom_read,
-+};
-+
-+/* Return 0 if detection is successful, -ENODEV otherwise */
-+static int eeprom_detect(struct i2c_client *client, int kind,
-+			 struct i2c_board_info *info)
++static ssize_t at24_eeprom_read(struct at24_data *at24, char *buf,
++		unsigned offset, size_t count)
 +{
-+	struct i2c_adapter *adapter = client->adapter;
++	struct i2c_msg msg[2];
++	u8 msgbuf[2];
++	struct i2c_client *client;
++	int status, i;
 +
-+	/* EDID EEPROMs are often 24C00 EEPROMs, which answer to all
-+	   addresses 0x50-0x57, but we only care about 0x50. So decline
-+	   attaching to addresses >= 0x51 on DDC buses */
-+	if (!(adapter->class & I2C_CLASS_SPD) && client->addr >= 0x51)
-+		return -ENODEV;
++	memset(msg, 0, sizeof(msg));
 +
-+	/* There are four ways we can read the EEPROM data:
-+	   (1) I2C block reads (faster, but unsupported by most adapters)
-+	   (2) Word reads (128% overhead)
-+	   (3) Consecutive byte reads (88% overhead, unsafe)
-+	   (4) Regular byte data reads (265% overhead)
-+	   The third and fourth methods are not implemented by this driver
-+	   because all known adapters support one of the first two. */
-+	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_READ_WORD_DATA)
-+	 && !i2c_check_functionality(adapter, I2C_FUNC_SMBUS_READ_I2C_BLOCK))
-+		return -ENODEV;
++	/*
++	 * REVISIT some multi-address chips don't rollover page reads to
++	 * the next slave address, so we may need to truncate the count.
++	 * Those chips might need another quirk flag.
++	 *
++	 * If the real hardware used four adjacent 24c02 chips and that
++	 * were misconfigured as one 24c08, that would be a similar effect:
++	 * one "eeprom" file not four, but larger reads would fail when
++	 * they crossed certain pages.
++	 */
 +
-+	strlcpy(info->type, "eeprom", I2C_NAME_SIZE);
++	/*
++	 * Slave address and byte offset derive from the offset. Always
++	 * set the byte address; on a multi-master board, another master
++	 * may have changed the chip's "current" address pointer.
++	 */
++	client = at24_translate_offset(at24, &offset);
 +
-+	return 0;
++	if (count > io_limit)
++		count = io_limit;
++
++	/* Smaller eeproms can work given some SMBus extension calls */
++	if (at24->use_smbus) {
++		if (count > I2C_SMBUS_BLOCK_MAX)
++			count = I2C_SMBUS_BLOCK_MAX;
++		status = i2c_smbus_read_i2c_block_data(client, offset,
++				count, buf);
++		dev_dbg(&client->dev, "smbus read %zu@%d --> %d\n",
++				count, offset, status);
++		return (status < 0) ? -EIO : status;
++	}
++
++	/*
++	 * When we have a better choice than SMBus calls, use a combined
++	 * I2C message. Write address; then read up to io_limit data bytes.
++	 * Note that read page rollover helps us here (unlike writes).
++	 * msgbuf is u8 and will cast to our needs.
++	 */
++	i = 0;
++	if (at24->chip.flags & AT24_FLAG_ADDR16)
++		msgbuf[i++] = offset >> 8;
++	msgbuf[i++] = offset;
++
++	msg[0].addr = client->addr;
++	msg[0].buf = msgbuf;
++	msg[0].len = i;
++
++	msg[1].addr = client->addr;
++	msg[1].flags = I2C_M_RD;
++	msg[1].buf = buf;
++	msg[1].len = count;
++
++	status = i2c_transfer(client->adapter, msg, 2);
++	dev_dbg(&client->dev, "i2c read %zu@%d --> %d\n",
++			count, offset, status);
++
++	if (status == 2)
++		return count;
++	else if (status >= 0)
++		return -EIO;
++	else
++		return status;
 +}
 +
-+static int eeprom_probe(struct i2c_client *client,
-+			const struct i2c_device_id *id)
++static ssize_t at24_bin_read(struct kobject *kobj, struct bin_attribute *attr,
++		char *buf, loff_t off, size_t count)
 +{
-+	struct i2c_adapter *adapter = client->adapter;
-+	struct eeprom_data *data;
++	struct at24_data *at24;
++	ssize_t retval = 0;
++
++	at24 = dev_get_drvdata(container_of(kobj, struct device, kobj));
++
++	if (unlikely(!count))
++		return count;
++
++	/*
++	 * Read data from chip, protecting against concurrent updates
++	 * from this host, but not from other I2C masters.
++	 */
++	mutex_lock(&at24->lock);
++
++	while (count) {
++		ssize_t	status;
++
++		status = at24_eeprom_read(at24, buf, off, count);
++		if (status <= 0) {
++			if (retval == 0)
++				retval = status;
++			break;
++		}
++		buf += status;
++		off += status;
++		count -= status;
++		retval += status;
++	}
++
++	mutex_unlock(&at24->lock);
++
++	return retval;
++}
++
++
++/*
++ * REVISIT: export at24_bin{read,write}() to let other kernel code use
++ * eeprom data. For example, it might hold a board's Ethernet address, or
++ * board-specific calibration data generated on the manufacturing floor.
++ */
++
++
++/*
++ * Note that if the hardware write-protect pin is pulled high, the whole
++ * chip is normally write protected. But there are plenty of product
++ * variants here, including OTP fuses and partial chip protect.
++ *
++ * We only use page mode writes; the alternative is sloooow. This routine
++ * writes at most one page.
++ */
++static ssize_t at24_eeprom_write(struct at24_data *at24, char *buf,
++		unsigned offset, size_t count)
++{
++	struct i2c_client *client;
++	struct i2c_msg msg;
++	ssize_t status;
++	unsigned long timeout, write_time;
++	unsigned next_page;
++
++	/* Get corresponding I2C address and adjust offset */
++	client = at24_translate_offset(at24, &offset);
++
++	/* write_max is at most a page */
++	if (count > at24->write_max)
++		count = at24->write_max;
++
++	/* Never roll over backwards, to the start of this page */
++	next_page = roundup(offset + 1, at24->chip.page_size);
++	if (offset + count > next_page)
++		count = next_page - offset;
++
++	/* If we'll use I2C calls for I/O, set up the message */
++	if (!at24->use_smbus) {
++		int i = 0;
++
++		msg.addr = client->addr;
++		msg.flags = 0;
++
++		/* msg.buf is u8 and casts will mask the values */
++		msg.buf = at24->writebuf;
++		if (at24->chip.flags & AT24_FLAG_ADDR16)
++			msg.buf[i++] = offset >> 8;
++
++		msg.buf[i++] = offset;
++		memcpy(&msg.buf[i], buf, count);
++		msg.len = i + count;
++	}
++
++	/*
++	 * Writes fail if the previous one didn't complete yet. We may
++	 * loop a few times until this one succeeds, waiting at least
++	 * long enough for one entire page write to work.
++	 */
++	timeout = jiffies + msecs_to_jiffies(write_timeout);
++	do {
++		write_time = jiffies;
++		if (at24->use_smbus) {
++			status = i2c_smbus_write_i2c_block_data(client,
++					offset, count, buf);
++			if (status == 0)
++				status = count;
++		} else {
++			status = i2c_transfer(client->adapter, &msg, 1);
++			if (status == 1)
++				status = count;
++		}
++		dev_dbg(&client->dev, "write %zu@%d --> %zd (%ld)\n",
++				count, offset, status, jiffies);
++
++		if (status == count)
++			return count;
++
++		/* REVISIT: at HZ=100, this is sloooow */
++		msleep(1);
++	} while (time_before(write_time, timeout));
++
++	return -ETIMEDOUT;
++}
++
++static ssize_t at24_bin_write(struct kobject *kobj, struct bin_attribute *attr,
++		char *buf, loff_t off, size_t count)
++{
++	struct at24_data *at24;
++	ssize_t retval = 0;
++
++	at24 = dev_get_drvdata(container_of(kobj, struct device, kobj));
++
++	if (unlikely(!count))
++		return count;
++
++	/*
++	 * Write data to chip, protecting against concurrent updates
++	 * from this host, but not from other I2C masters.
++	 */
++	mutex_lock(&at24->lock);
++
++	while (count) {
++		ssize_t	status;
++
++		status = at24_eeprom_write(at24, buf, off, count);
++		if (status <= 0) {
++			if (retval == 0)
++				retval = status;
++			break;
++		}
++		buf += status;
++		off += status;
++		count -= status;
++		retval += status;
++	}
++
++	mutex_unlock(&at24->lock);
++
++	return retval;
++}
++
++/*-------------------------------------------------------------------------*/
++
++static int at24_probe(struct i2c_client *client, const struct i2c_device_id *id)
++{
++	struct at24_platform_data chip;
++	bool writable;
++	bool use_smbus = false;
++	struct at24_data *at24;
 +	int err;
++	unsigned i, num_addresses;
++	kernel_ulong_t magic;
 +
-+	if (!(data = kzalloc(sizeof(struct eeprom_data), GFP_KERNEL))) {
-+		err = -ENOMEM;
-+		goto exit;
++	if (client->dev.platform_data) {
++		chip = *(struct at24_platform_data *)client->dev.platform_data;
++	} else {
++		if (!id->driver_data) {
++			err = -ENODEV;
++			goto err_out;
++		}
++		magic = id->driver_data;
++		chip.byte_len = BIT(magic & AT24_BITMASK(AT24_SIZE_BYTELEN));
++		magic >>= AT24_SIZE_BYTELEN;
++		chip.flags = magic & AT24_BITMASK(AT24_SIZE_FLAGS);
++		/*
++		 * This is slow, but we can't know all eeproms, so we better
++		 * play safe. Specifying custom eeprom-types via platform_data
++		 * is recommended anyhow.
++		 */
++		chip.page_size = 1;
 +	}
 +
-+	memset(data->data, 0xff, EEPROM_SIZE);
-+	i2c_set_clientdata(client, data);
-+	mutex_init(&data->update_lock);
-+	data->nature = UNKNOWN;
++	if (!is_power_of_2(chip.byte_len))
++		dev_warn(&client->dev,
++			"byte_len looks suspicious (no power of 2)!\n");
++	if (!is_power_of_2(chip.page_size))
++		dev_warn(&client->dev,
++			"page_size looks suspicious (no power of 2)!\n");
 +
-+	/* Detect the Vaio nature of EEPROMs.
-+	   We use the "PCG-" or "VGN-" prefix as the signature. */
-+	if (client->addr == 0x57
-+	 && i2c_check_functionality(adapter, I2C_FUNC_SMBUS_READ_BYTE_DATA)) {
-+		char name[4];
++	/* Use I2C operations unless we're stuck with SMBus extensions. */
++	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
++		if (chip.flags & AT24_FLAG_ADDR16) {
++			err = -EPFNOSUPPORT;
++			goto err_out;
++		}
++		if (!i2c_check_functionality(client->adapter,
++				I2C_FUNC_SMBUS_READ_I2C_BLOCK)) {
++			err = -EPFNOSUPPORT;
++			goto err_out;
++		}
++		use_smbus = true;
++	}
 +
-+		name[0] = i2c_smbus_read_byte_data(client, 0x80);
-+		name[1] = i2c_smbus_read_byte_data(client, 0x81);
-+		name[2] = i2c_smbus_read_byte_data(client, 0x82);
-+		name[3] = i2c_smbus_read_byte_data(client, 0x83);
++	if (chip.flags & AT24_FLAG_TAKE8ADDR)
++		num_addresses = 8;
++	else
++		num_addresses =	DIV_ROUND_UP(chip.byte_len,
++			(chip.flags & AT24_FLAG_ADDR16) ? 65536 : 256);
 +
-+		if (!memcmp(name, "PCG-", 4) || !memcmp(name, "VGN-", 4)) {
-+			dev_info(&client->dev, "Vaio EEPROM detected, "
-+				 "enabling privacy protection\n");
-+			data->nature = VAIO;
++	at24 = kzalloc(sizeof(struct at24_data) +
++		num_addresses * sizeof(struct i2c_client *), GFP_KERNEL);
++	if (!at24) {
++		err = -ENOMEM;
++		goto err_out;
++	}
++
++	mutex_init(&at24->lock);
++	at24->use_smbus = use_smbus;
++	at24->chip = chip;
++	at24->num_addresses = num_addresses;
++
++	/*
++	 * Export the EEPROM bytes through sysfs, since that's convenient.
++	 * By default, only root should see the data (maybe passwords etc)
++	 */
++	at24->bin.attr.name = "eeprom";
++	at24->bin.attr.mode = chip.flags & AT24_FLAG_IRUGO ? S_IRUGO : S_IRUSR;
++	at24->bin.read = at24_bin_read;
++	at24->bin.size = chip.byte_len;
++
++	writable = !(chip.flags & AT24_FLAG_READONLY);
++	if (writable) {
++		if (!use_smbus || i2c_check_functionality(client->adapter,
++				I2C_FUNC_SMBUS_WRITE_I2C_BLOCK)) {
++
++			unsigned write_max = chip.page_size;
++
++			at24->bin.write = at24_bin_write;
++			at24->bin.attr.mode |= S_IWUSR;
++
++			if (write_max > io_limit)
++				write_max = io_limit;
++			if (use_smbus && write_max > I2C_SMBUS_BLOCK_MAX)
++				write_max = I2C_SMBUS_BLOCK_MAX;
++			at24->write_max = write_max;
++
++			/* buffer (data + address at the beginning) */
++			at24->writebuf = kmalloc(write_max + 2, GFP_KERNEL);
++			if (!at24->writebuf) {
++				err = -ENOMEM;
++				goto err_struct;
++			}
++		} else {
++			dev_warn(&client->dev,
++				"cannot write due to controller restrictions.");
 +		}
 +	}
 +
-+	/* create the sysfs eeprom file */
-+	err = sysfs_create_bin_file(&client->dev.kobj, &eeprom_attr);
++	at24->client[0] = client;
++
++	/* use dummy devices for multiple-address chips */
++	for (i = 1; i < num_addresses; i++) {
++		at24->client[i] = i2c_new_dummy(client->adapter,
++					client->addr + i);
++		if (!at24->client[i]) {
++			dev_err(&client->dev, "address 0x%02x unavailable\n",
++					client->addr + i);
++			err = -EADDRINUSE;
++			goto err_clients;
++		}
++	}
++
++	err = sysfs_create_bin_file(&client->dev.kobj, &at24->bin);
 +	if (err)
-+		goto exit_kfree;
++		goto err_clients;
++
++	i2c_set_clientdata(client, at24);
++
++	dev_info(&client->dev, "%zu byte %s EEPROM %s\n",
++		at24->bin.size, client->name,
++		writable ? "(writable)" : "(read-only)");
++	dev_dbg(&client->dev,
++		"page_size %d, num_addresses %d, write_max %d%s\n",
++		chip.page_size, num_addresses,
++		at24->write_max,
++		use_smbus ? ", use_smbus" : "");
 +
 +	return 0;
 +
-+exit_kfree:
-+	kfree(data);
-+exit:
++err_clients:
++	for (i = 1; i < num_addresses; i++)
++		if (at24->client[i])
++			i2c_unregister_device(at24->client[i]);
++
++	kfree(at24->writebuf);
++err_struct:
++	kfree(at24);
++err_out:
++	dev_dbg(&client->dev, "probe error %d\n", err);
 +	return err;
 +}
 +
-+static int eeprom_remove(struct i2c_client *client)
++static int __devexit at24_remove(struct i2c_client *client)
 +{
-+	sysfs_remove_bin_file(&client->dev.kobj, &eeprom_attr);
-+	kfree(i2c_get_clientdata(client));
++	struct at24_data *at24;
++	int i;
 +
++	at24 = i2c_get_clientdata(client);
++	sysfs_remove_bin_file(&client->dev.kobj, &at24->bin);
++
++	for (i = 1; i < at24->num_addresses; i++)
++		i2c_unregister_device(at24->client[i]);
++
++	kfree(at24->writebuf);
++	kfree(at24);
++	i2c_set_clientdata(client, NULL);
 +	return 0;
 +}
 +
-+static const struct i2c_device_id eeprom_id[] = {
-+	{ "eeprom", 0 },
-+	{ }
-+};
++/*-------------------------------------------------------------------------*/
 +
-+static struct i2c_driver eeprom_driver = {
++static struct i2c_driver at24_driver = {
 +	.driver = {
-+		.name	= "eeprom",
++		.name = "at24",
++		.owner = THIS_MODULE,
 +	},
-+	.probe		= eeprom_probe,
-+	.remove		= eeprom_remove,
-+	.id_table	= eeprom_id,
-+
-+	.class		= I2C_CLASS_DDC | I2C_CLASS_SPD,
-+	.detect		= eeprom_detect,
-+	.address_data	= &addr_data,
++	.probe = at24_probe,
++	.remove = __devexit_p(at24_remove),
++	.id_table = at24_ids,
 +};
 +
-+static int __init eeprom_init(void)
++static int __init at24_init(void)
 +{
-+	return i2c_add_driver(&eeprom_driver);
++	io_limit = rounddown_pow_of_two(io_limit);
++	return i2c_add_driver(&at24_driver);
 +}
++module_init(at24_init);
 +
-+static void __exit eeprom_exit(void)
++static void __exit at24_exit(void)
 +{
-+	i2c_del_driver(&eeprom_driver);
++	i2c_del_driver(&at24_driver);
 +}
++module_exit(at24_exit);
 +
-+
-+MODULE_AUTHOR("Frodo Looijaard <frodol-B0qZmFHriGg@public.gmane.org> and "
-+		"Philip Edelbrock <phil-KXOFo5pg7o1l57MIdRCFDg@public.gmane.org> and "
-+		"Greg Kroah-Hartman <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>");
-+MODULE_DESCRIPTION("I2C EEPROM driver");
++MODULE_DESCRIPTION("Driver for most I2C EEPROMs");
++MODULE_AUTHOR("David Brownell and Wolfram Sang");
 +MODULE_LICENSE("GPL");
-+
-+module_init(eeprom_init);
-+module_exit(eeprom_exit);
 -- 
 1.5.6.5

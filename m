@@ -1,63 +1,86 @@
-From: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
+From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Subject: Re: Move eeprom drivers to drivers/misc/eeprom
-Date: Wed, 21 Jan 2009 10:56:05 +0100
-Message-ID: <20090121105605.018f10d4@hyperion.delvare>
+Date: Wed, 21 Jan 2009 11:03:51 +0100
+Message-ID: <20090121100351.GA3124@pengutronix.de>
 References: <1232446982-7842-1-git-send-email-w.sang@pengutronix.de>
+	<20090121105605.018f10d4@hyperion.delvare>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	rt2400-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1232446982-7842-1-git-send-email-w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1211381388660642894=="
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rt2400-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20090121105605.018f10d4-ig7AzVSIIG7kN2dkZ6Wm7A@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Wolfram,
 
-On Tue, 20 Jan 2009 11:22:58 +0100, Wolfram Sang wrote:
-> As the directory drivers/i2c/chips is going away, we needed a new place
-> for the I2C eeprom drivers. After some discussion, the idea of putting
-> them into a directory drivers/misc/eeprom was favoured. David Brownell
-> added that his SPI eeprom driver could go there as well.
-> 
-> This patch series carries out the proposal and while at it, moves an
-> eeprom driver which was already in drivers/misc to the new location.
-> 
-> No code inside the drivers was changed and everything was
-> succesfully compile-tested.
+--===============1211381388660642894==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="OXfL5xGRrasGEqWY"
+Content-Disposition: inline
 
-Thanks a lot for doing this. I've applied all 4 patches.
 
-Things which I think need to be improved on top of your patches:
+--OXfL5xGRrasGEqWY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-* Dependencies. The at24 and eeprom drivers should depend on I2C and the
-at25 driver should depend on SPI. They did beforehand, thanks to
-menu-level dependencies, there's no reason to change this. Should
-probably be merged into your patches so that there is no regression.
 
-This might be a good rationale to move the "Misc devices" entry at the
-end of the menu, so that users can select the dependencies first.
+> This gives some more work on "make oldconfig" but I think it's worth
+> it. Are there any objections to this change?
 
-* Symbol names. At the moment we have:
+No objections, full ACK.
 
-CONFIG_AT24
-CONFIG_SPI_AT25
-CONFIG_SENSORS_EEPROM
-CONFIG_EEPROM_93CX6
+   Wolfram
 
-I want to get rid of "SENSORS", at least. But maybe it is the right
-time to make the symbol names more consistent? For example:
+--=20
+  Dipl.-Ing. Wolfram Sang | http://www.pengutronix.de
+ Pengutronix - Linux Solutions for Science and Industry
 
-CONFIG_EEPROM_AT24
-CONFIG_EEPROM_AT25
-CONFIG_EEPROM_LEGACY
-CONFIG_EEPROM_93CX6
+--OXfL5xGRrasGEqWY
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-This gives some more work on "make oldconfig" but I think it's worth
-it. Are there any objections to this change?
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
 
-Thanks,
--- 
-Jean Delvare
+iEYEARECAAYFAkl28wcACgkQD27XaX1/VRvcWACfee56/6GofbG315IdlA5/NnQ1
+AocAn3Y8XgTkZ3/f1mpuWNIj12/62t+W
+=kwcs
+-----END PGP SIGNATURE-----
+
+--OXfL5xGRrasGEqWY--
+
+
+--===============1211381388660642894==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by:
+SourcForge Community
+SourceForge wants to tell your story.
+http://p.sf.net/sfu/sf-spreadtheword
+--===============1211381388660642894==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1211381388660642894==--

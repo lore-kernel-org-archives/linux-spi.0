@@ -1,92 +1,73 @@
-From: "Matt Gessner" <mgessner-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: AT91RM9200 spi, linux 2.6.25, and MOSI
-Date: Tue, 20 Jan 2009 10:12:16 -0500
-Message-ID: <85a5c2010901200712y5a74ac5fta578c9a2741a4237@mail.gmail.com>
+From: Jaswinder Singh Rajput <jaswinder-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [GIT PULL -tip] fix 33 make headers_check warnings
+Date: Wed, 21 Jan 2009 06:08:39 +0530
+Message-ID: <1232498319.3123.34.camel@localhost.localdomain>
+References: <1232223441.3966.22.camel@localhost.localdomain>
+	 <1232228261.27094.0.camel@macbook.infradead.org>
+	 <20090117221932.GA4956@uranus.ravnborg.org>  <49725B1E.604@kernel.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4223115535447158579=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Ingo Molnar <mingo-X9Un+BFzKDI@public.gmane.org>, x86 maintainers <x86-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	urs.thuermann-l29pVbxQd1IUtdQbppsyvg@public.gmane.org, oliver.hartkopp-l29pVbxQd1IUtdQbppsyvg@public.gmane.org,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, netfilter-devel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	netfilter-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, bfields-uC3wQj2KruNg9hUCZPvPmw@public.gmane.org, neilb-l3A5Bk7waGM@public.gmane.org,
+	linux-nfs-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-raid-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org, linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, tiwai-l3A5Bk7waGM@public.gmane.org,
+	mchehab-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: "H. Peter Anvin" <hpa-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-nfs-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <49725B1E.604-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Sender: linux-nfs-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4223115535447158579==
-Content-Type: multipart/alternative;
-	boundary="----=_Part_24971_24540437.1232464336759"
+On Sat, 2009-01-17 at 14:26 -0800, H. Peter Anvin wrote:
+> Sam Ravnborg wrote:
+> >>>  
+> >> That patch looks wrong, and unnecessary. It was fine before.
+> > Nope - include/linux/dvb/audio.h failed to include linux/types.h
+> > despite the fact that is uses __u32 etc.
+> > 
+> > But why the _kernel_ should include a userspace header is
+> > much more questionable.
+> > 
+> 
+> <stdint.h> is one of a handful of headers provided by gcc itself.
+> 
 
-------=_Part_24971_24540437.1232464336759
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Should I reintroduce my patch to solve this warning of 'make headers_check':
+ usr/include/linux/dvb/audio.h:133: found __[us]{8,16,32,64} type without #include <linux/types.h>
 
-Hi,
+diff --git a/include/linux/dvb/audio.h b/include/linux/dvb/audio.h
+index 89412e1..758a48c 100644
+--- a/include/linux/dvb/audio.h
++++ b/include/linux/dvb/audio.h
+@@ -24,9 +24,8 @@
+ #ifndef _DVBAUDIO_H_
+ #define _DVBAUDIO_H_
+ 
+-#ifdef __KERNEL__
+ #include <linux/types.h>
+-#else
++#ifndef __KERNEL__
+ #include <stdint.h>
+ #endif
 
-I have behaviour on my spi channel that seems odd.
+Or you guys have some better plan.
 
-I'm trying to communicate with a PROSlic 3210 from Silicon Labs.  Simply,
-the device allows a read on a register by first writing (0x80 | reg) (a 1
-followed by the 7 bit address of the register to be read), and then the next
-time the chip is activated, it is supposed to drive the results onto the
-MISO line.
+Thanks,
 
-I'm using spidev on top of atmel_spi.  What I'm seeing from the Atmel spi
-controller is that it's driving MOSI to all zeros.  I've issued an
-spi_ioc_transfer.  It closely matches the example in the Documentation/spi
-directory (.tx_buf is set in the first element of the array, and the .rx_buf
-is set in the second element, everything zero'd by memset at the start), but
-I have set .cs_change after the transfer occurs, because that's what the
-3210 wants.
-
-I can't find any documentation as to why this might be happening.  The
-PROSlic docs say that it will ignore MOSI during this time, but it's not
-driving MISO at all, and I"m wondering if for some reason this behaviour is
-confusing the device.  Is this normal for the SPI controller on reads?
-
-Thank you.
-
-Regards,
-
-Matt
-
-------=_Part_24971_24540437.1232464336759
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-Hi,<br><br>I have behaviour on my spi channel that seems odd.<br><br>I&#39;m trying to communicate with a PROSlic 3210 from Silicon Labs.&nbsp; Simply, the device allows a read on a register by first writing (0x80 | reg) (a 1 followed by the 7 bit address of the register to be read), and then the next time the chip is activated, it is supposed to drive the results onto the MISO line.<br>
-<br>I&#39;m using spidev on top of atmel_spi.&nbsp; What I&#39;m seeing from the Atmel spi controller is that it&#39;s driving MOSI to all zeros.&nbsp; I&#39;ve issued an spi_ioc_transfer.&nbsp; It closely matches the example in the Documentation/spi directory (.tx_buf is set in the first element of the array, and the .rx_buf is set in the second element, everything zero&#39;d by memset at the start), but I have set .cs_change after the transfer occurs, because that&#39;s what the 3210 wants.<br>
-<br>I can&#39;t find any documentation as to why this might be happening.&nbsp; The PROSlic docs say that it will ignore MOSI during this time, but it&#39;s not driving MISO at all, and I&quot;m wondering if for some reason this behaviour is confusing the device.&nbsp; Is this normal for the SPI controller on reads?<br>
-<br>Thank you.<br><br>Regards,<br><br>Matt<br><br>
-
-------=_Part_24971_24540437.1232464336759--
+--
+JSR
 
 
---===============4223115535447158579==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by:
-SourcForge Community
-SourceForge wants to tell your story.
-http://p.sf.net/sfu/sf-spreadtheword
---===============4223115535447158579==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4223115535447158579==--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-nfs" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

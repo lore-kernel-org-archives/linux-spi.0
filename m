@@ -1,94 +1,54 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: RFC: Working around dynamic device
-	allocation in i2c. Interaction with other subystems.
-Date: Thu, 22 Jan 2009 22:14:22 -0800
-Message-ID: <200901222214.22806.david-b@pacbell.net>
-References: <4974D20F.20209@cam.ac.uk> <49786CA6.8010303@cam.ac.uk>
+From: Jaswinder Singh Rajput <jaswinder-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [GIT PULL -tip] fix 33 make headers_check warnings
+Date: Fri, 23 Jan 2009 21:26:07 +0530
+Message-ID: <1232726167.3504.16.camel@localhost.localdomain>
+References: <1232223441.3966.22.camel@localhost.localdomain>
+	 <1232228261.27094.0.camel@macbook.infradead.org>
+	 <20090117221932.GA4956@uranus.ravnborg.org>
+	 <1232247901.3097.12.camel@localhost.localdomain>
+	 <20090118033339.GA671@bombadil.infradead.org>
+	 <1232249904.3097.15.camel@localhost.localdomain>
+	 <20090118041800.GB671@bombadil.infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: eric miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
-	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <49786CA6.8010303-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
-Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Ingo Molnar <mingo-X9Un+BFzKDI@public.gmane.org>, x86 maintainers <x86-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	urs.thuermann-l29pVbxQd1IUtdQbppsyvg@public.gmane.org, oliver.hartkopp-l29pVbxQd1IUtdQbppsyvg@public.gmane.org,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, netfilter-devel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	netfilter-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, bfields-uC3wQj2KruNg9hUCZPvPmw@public.gmane.org, neilb-l3A5Bk7waGM@public.gmane.org,
+	linux-nfs-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-raid-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org, linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, tiwai-l3A5Bk7waGM@public.gmane.org,
+	mchehab-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: Kyle McMartin <kyle-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Return-path: <linux-nfs-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20090118041800.GB671-PfSpb0PWhxZc2C7mugBRk2EX/6BAtgUQ@public.gmane.org>
+Sender: linux-nfs-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 22 January 2009, Jonathan Cameron wrote:
-> > Within board configuration files, i2c devices are currently allocated
-> > using i2c_board_info structures. =A0The only element of these that reta=
-ins
-> > it's memory address once the struct device elements are allocated (upon
-> > adapter initialization) is the platform data pointer.
-> >
-> > Several subsystems (regulator and clock for example) use an association
-> > method based upon a device specific string associated with a pointer to
-> > a device structure. =A0Unfortunately as things currently stand there is=
- no
-> > means of obtaining a suitable device for i2c devices at the point when
-> > it is required (in the board config).
+On Sat, 2009-01-17 at 23:18 -0500, Kyle McMartin wrote:
+> On Sun, Jan 18, 2009 at 09:08:24AM +0530, Jaswinder Singh Rajput wrote:
+> > If this file is _ONLY_ for userspace and kernel cannot use it then what
+> > is the point of keeping this file in kernel headers.
+> > 
+> 
+> There is effectively no point, especially when they reference a variable
+> that may or may not exist in the userspace code including it... It seems
+> entirely mtd-utils dependent.
+> 
+> Dave, will you queue Adrian's patch to nuke it?
 
-Yeah, kind of awkward.  Multi-Function Device (MFD) drivers have
-this kind of problem a lot.  A given I2C device might have a few
-dozen child devices -- including regulators and clock generators,
-RTCs, GPIOs, input devices, etc -- that can't be set up until the
-parent I2C device is probed.
+What is the status of include/mtd/jffs2-user.h
 
-It's solved easily enough by making sure the associations and their
-devices get set up after the core of the MFD comes up ... in the
-probe() routine.  And by making sure the MFD and its subsystem
-initializes early enough that those other devices don't fail too
-many hidden assumptions.
+--
+JSR
 
-
-> > What do people think? In particular can anyone come up with any other /
-> > better way round this issue. (or am I missing something?)
-> > In particular, are there any similar cases already in kernel that would
-> > suggest a particular approach to solving this issue?
-
-This is a special case of a general problem:  init sequencing.
-The initcall levels don't provide sufficient control, so you
-need to work around them.
-
-Static device allocation is a bit problematic, and some folk
-really dislike it ... I'm not that averse to it, but since
-the cost of a device keeps growing I'd rather avoid that in
-most cases.  A couple dozen bytes of board_info, especially
-if it's __initdata, versus several hundred bytes of "struct
-foo_device", multiplied by even just a dozen devices that
-won't always be present, adds up.
-
-That leaves a dynamic solution for setting up linkage between
-various devices.  In the past I've done that using callbacks
-to board-specific code that knows what linkages to establish.
-
-You can see that with the GPIO controllers that use I2C or SPI
-communications:  they have setup callbacks that receive the
-device and GPIO information, which can continue to set the
-stage for the main event ... and teardown callbacks to break
-it all down after the show is done.
-
-So for example those callbacks can be used to configure and
-then register the devices which rely on those GPIOs ... like
-LED banks, MMC/SD card sense switches, voltage regulator
-enables, and so on.
-
-- Dave
-
-
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by:
-SourcForge Community
-SourceForge wants to tell your story.
-http://p.sf.net/sfu/sf-spreadtheword
+--
+To unsubscribe from this list: send the line "unsubscribe linux-nfs" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

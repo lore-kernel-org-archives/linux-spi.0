@@ -1,7 +1,7 @@
 From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH 1/6] spi_mpc83xx: Fix sparse warnings
-Date: Fri, 23 Jan 2009 22:50:28 +0300
-Message-ID: <20090123195028.GA21237@oksana.dev.rtsoft.ru>
+Subject: [PATCH 4/6] powerpc: Add mmc-spi-slot bindings
+Date: Fri, 23 Jan 2009 22:50:37 +0300
+Message-ID: <20090123195037.GD21237@oksana.dev.rtsoft.ru>
 References: <20090123194958.GA17355@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,109 +23,60 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch fixes following sparse warnings:
+The bindings describes a case where MMC/SD/SDIO slot directly connected
+to a SPI bus. Such setups are widely used on embedded PowerPC boards.
 
-  CHECK   spi_mpc83xx.c
-spi_mpc83xx.c:145:1: warning: symbol 'mpc83xx_spi_rx_buf_u8' was not declared. Should it be static?
-spi_mpc83xx.c:146:1: warning: symbol 'mpc83xx_spi_rx_buf_u16' was not declared. Should it be static?
-spi_mpc83xx.c:147:1: warning: symbol 'mpc83xx_spi_rx_buf_u32' was not declared. Should it be static?
-spi_mpc83xx.c:148:1: warning: symbol 'mpc83xx_spi_tx_buf_u8' was not declared. Should it be static?
-spi_mpc83xx.c:149:1: warning: symbol 'mpc83xx_spi_tx_buf_u16' was not declared. Should it be static?
-spi_mpc83xx.c:150:1: warning: symbol 'mpc83xx_spi_tx_buf_u32' was not declared. Should it be static?
-spi_mpc83xx.c:175:32: warning: incorrect type in initializer (different address spaces)
-spi_mpc83xx.c:175:32:    expected void *tmp_ptr
-spi_mpc83xx.c:175:32:    got unsigned int [noderef] <asn:2>*<noident>
-spi_mpc83xx.c:183:26: warning: incorrect type in argument 1 (different address spaces)
-spi_mpc83xx.c:183:26:    expected unsigned int [noderef] [usertype] <asn:2>*reg
-spi_mpc83xx.c:183:26:    got void *tmp_ptr
-spi_mpc83xx.c:184:26: warning: incorrect type in argument 1 (different address spaces)
-spi_mpc83xx.c:184:26:    expected unsigned int [noderef] [usertype] <asn:2>*reg
-spi_mpc83xx.c:184:26:    got void *tmp_ptr
-spi_mpc83xx.c:287:31: warning: incorrect type in initializer (different address spaces)
-spi_mpc83xx.c:287:31:    expected void *tmp_ptr
-spi_mpc83xx.c:287:31:    got unsigned int [noderef] <asn:2>*<noident>
-spi_mpc83xx.c:295:25: warning: incorrect type in argument 1 (different address spaces)
-spi_mpc83xx.c:295:25:    expected unsigned int [noderef] [usertype] <asn:2>*reg
-spi_mpc83xx.c:295:25:    got void *tmp_ptr
-spi_mpc83xx.c:296:25: warning: incorrect type in argument 1 (different address spaces)
-spi_mpc83xx.c:296:25:    expected unsigned int [noderef] [usertype] <asn:2>*reg
-spi_mpc83xx.c:296:25:    got void *tmp_ptr
-spi_mpc83xx.c:486:13: warning: symbol 'mpc83xx_spi_irq' was not declared. Should it be static?
+The patch also adds the mmc-spi-slot entry to the OpenFirmware modalias
+table.
 
 Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
 ---
- drivers/spi/spi_mpc83xx.c |   16 +++++++++-------
- 1 files changed, 9 insertions(+), 7 deletions(-)
+ .../powerpc/dts-bindings/mmc-spi-slot.txt          |   23 ++++++++++++++++++++
+ drivers/of/base.c                                  |    1 +
+ 2 files changed, 24 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/powerpc/dts-bindings/mmc-spi-slot.txt
 
-diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
-index ac0e3e4..6ef8937 100644
---- a/drivers/spi/spi_mpc83xx.c
-+++ b/drivers/spi/spi_mpc83xx.c
-@@ -123,6 +123,7 @@ static inline u32 mpc83xx_spi_read_reg(__be32 __iomem * reg)
- }
+diff --git a/Documentation/powerpc/dts-bindings/mmc-spi-slot.txt b/Documentation/powerpc/dts-bindings/mmc-spi-slot.txt
+new file mode 100644
+index 0000000..c39ac28
+--- /dev/null
++++ b/Documentation/powerpc/dts-bindings/mmc-spi-slot.txt
+@@ -0,0 +1,23 @@
++MMC/SD/SDIO slot directly connected to a SPI bus
++
++Required properties:
++- compatible : should be "mmc-spi-slot".
++- reg : should specify SPI address (chip-select number).
++- spi-max-frequency : maximum frequency for this device (Hz).
++- voltage-ranges : two cells are required, first cell specifies minimum
++  slot voltage (mV), second cell specifies maximum slot voltage (mV).
++  Several ranges could be specified.
++- gpios : (optional) may specify GPIOs in this order: Card-Detect GPIO,
++  Write-Protect GPIO.
++
++Example:
++
++	mmc-slot@0 {
++		compatible = "fsl,mpc8323rdb-mmc-slot",
++			     "mmc-spi-slot";
++		reg = <0>;
++		gpios = <&qe_pio_d 14 1
++			 &qe_pio_d 15 0>;
++		voltage-ranges = <3300 3300>;
++		spi-max-frequency = <50000000>;
++	};
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index cd17092..41c5dfd 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -446,6 +446,7 @@ struct of_modalias_table {
+ };
+ static struct of_modalias_table of_modalias_table[] = {
+ 	{ "fsl,mcu-mpc8349emitx", "mcu-mpc8349emitx" },
++	{ "mmc-spi-slot", "mmc_spi" },
+ };
  
- #define MPC83XX_SPI_RX_BUF(type) 					  \
-+static									  \
- void mpc83xx_spi_rx_buf_##type(u32 data, struct mpc83xx_spi *mpc83xx_spi) \
- {									  \
- 	type * rx = mpc83xx_spi->rx;					  \
-@@ -131,6 +132,7 @@ void mpc83xx_spi_rx_buf_##type(u32 data, struct mpc83xx_spi *mpc83xx_spi) \
- }
- 
- #define MPC83XX_SPI_TX_BUF(type)				\
-+static								\
- u32 mpc83xx_spi_tx_buf_##type(struct mpc83xx_spi *mpc83xx_spi)	\
- {								\
- 	u32 data;						\
-@@ -172,7 +174,7 @@ static void mpc83xx_spi_chipselect(struct spi_device *spi, int value)
- 
- 		if (cs->hw_mode != regval) {
- 			unsigned long flags;
--			void *tmp_ptr = &mpc83xx_spi->base->mode;
-+			__be32 __iomem *mode = &mpc83xx_spi->base->mode;
- 
- 			regval = cs->hw_mode;
- 			/* Turn off IRQs locally to minimize time that
-@@ -180,8 +182,8 @@ static void mpc83xx_spi_chipselect(struct spi_device *spi, int value)
- 			 */
- 			local_irq_save(flags);
- 			/* Turn off SPI unit prior changing mode */
--			mpc83xx_spi_write_reg(tmp_ptr, regval & ~SPMODE_ENABLE);
--			mpc83xx_spi_write_reg(tmp_ptr, regval);
-+			mpc83xx_spi_write_reg(mode, regval & ~SPMODE_ENABLE);
-+			mpc83xx_spi_write_reg(mode, regval);
- 			local_irq_restore(flags);
- 		}
- 		if (mpc83xx_spi->activate_cs)
-@@ -284,7 +286,7 @@ int mpc83xx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
- 	regval =  mpc83xx_spi_read_reg(&mpc83xx_spi->base->mode);
- 	if (cs->hw_mode != regval) {
- 		unsigned long flags;
--		void *tmp_ptr = &mpc83xx_spi->base->mode;
-+		__be32 __iomem *mode = &mpc83xx_spi->base->mode;
- 
- 		regval = cs->hw_mode;
- 		/* Turn off IRQs locally to minimize time
-@@ -292,8 +294,8 @@ int mpc83xx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
- 		 */
- 		local_irq_save(flags);
- 		/* Turn off SPI unit prior changing mode */
--		mpc83xx_spi_write_reg(tmp_ptr, regval & ~SPMODE_ENABLE);
--		mpc83xx_spi_write_reg(tmp_ptr, regval);
-+		mpc83xx_spi_write_reg(mode, regval & ~SPMODE_ENABLE);
-+		mpc83xx_spi_write_reg(mode, regval);
- 		local_irq_restore(flags);
- 	}
- 	return 0;
-@@ -483,7 +485,7 @@ static int mpc83xx_spi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--irqreturn_t mpc83xx_spi_irq(s32 irq, void *context_data)
-+static irqreturn_t mpc83xx_spi_irq(s32 irq, void *context_data)
- {
- 	struct mpc83xx_spi *mpc83xx_spi = context_data;
- 	u32 event;
+ /**
 -- 
 1.5.6.5
 

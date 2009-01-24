@@ -1,8 +1,9 @@
-From: Stefanie Hatfield <avoalvaro-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] How To Start Your Own Online Business?
-Date: Sat, 24 Jan 2009 22:57:24 +0700
-Message-ID: <1124.64718190513$1232812758@news.gmane.org>
-Reply-To: Stefanie Hatfield <1415mardirossiandalia-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Tabby Spring <yahayakumalo-VsqqI1RANlHk1uMJSBkQmQ@public.gmane.org>
+Subject: =?windows-1251?q?=5BSPAM=5D_Get_the_inside_tr?=
+	=?windows-1251?q?ack_to_the_eBay_money_machine?=
+Date: Sat, 24 Jan 2009 18:10:11 +0000
+Message-ID: <29690.4978728437$1232820726@news.gmane.org>
+Reply-To: Tabby Spring <corboadaminna1820-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -28,7 +29,7 @@ Isn't it a good time for you to join and start with your own online business too
 
 Join the eBay CashFlow System - it is Fast and Easy! There is also a Free Kit Avilable, but you have to ACT QUICK, if you want to get the FREE KIT too, as the offers are very limited, and will be sent only to the first, who answer!
 
-If you are interested, please send a reply to hartley.riffel1739-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org in order to participate and receive the Free Kit of the eBay CashFlow System!
+If you are interested, please send a reply to 1938lutherredal-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org in order to participate and receive the Free Kit of the eBay CashFlow System!
 
 Best Regards,
 the eBay Profit Machine

@@ -1,9 +1,8 @@
-From: Anselm Diegel <mackbailey1960-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_Stop_Living_from_?=
-	=?windows-1251?q?Paycheck_to_Paycheck_-_Earn_Money_Now?=
-Date: Sat, 24 Jan 2009 04:16:32 +0100
-Message-ID: <6832.93801635063$1232767089@news.gmane.org>
-Reply-To: Anselm Diegel <guccione.makaila14478-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Stefanie Hatfield <avoalvaro-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] How To Start Your Own Online Business?
+Date: Sat, 24 Jan 2009 22:57:24 +0700
+Message-ID: <1124.64718190513$1232812758@news.gmane.org>
+Reply-To: Stefanie Hatfield <1415mardirossiandalia-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,18 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+Hello!
 
-We are offering this EarnGoogleCash system only to motivated individuals for participating in or even start their own well-paying online business. All you need is a little time spent in front of your home computer, read about the online products and services offered by our EarnGoogleCash system.
+May be you have heard of how many people are making money from Internet only working from their own computers in the comfort of their homes, but you had never known how you can do that. Now, it is not a secret anymore!
 
-What this system offers is work at your own pace and from any computer.
+What started as a hobby is now a cultural phenomenon. eBay seems to have tapped into something uniquely American and entrepreneurial. It's an auction house that never sleeps, where anyone can be a buyer or a seller. And no one could have predicted that within 2 years, the number of eBay users would rise up to more than double - 125 million users worldwide today. Those people are buying and selling more than $1,000 worth of goods every second.
 
-If you are interested, please reply to 1997maull.haylie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org as soon as possible, as the FREE TRIAL kits are limited and you have to act quick, before someone else takes your place!
+Isn't it a good time for you to join and start with your own online business too? Start Instantly! We are here to provide you with this opportunity. There is a FORTUNE to be made on eBay, and there is no better time than RIGHT NOW to get started. The eBay Success Kit is the EASY way to get your share of the fast-growing $10.6 Billion eBay pie!
 
-Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
+Join the eBay CashFlow System - it is Fast and Easy! There is also a Free Kit Avilable, but you have to ACT QUICK, if you want to get the FREE KIT too, as the offers are very limited, and will be sent only to the first, who answer!
 
-Best regards,
-EGP
+If you are interested, please send a reply to hartley.riffel1739-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org in order to participate and receive the Free Kit of the eBay CashFlow System!
+
+Best Regards,
+the eBay Profit Machine
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 SourcForge Community

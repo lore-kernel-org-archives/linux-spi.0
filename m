@@ -1,13 +1,17 @@
-From: Mordecai Whitten <nheitzman-uAjRD0nVeow@public.gmane.org>
-Subject: [SPAM] Get Funding Fast
-Date: Mon, 26 Jan 2009 10:33:40 -0500
-Message-ID: <14727.2411770702$1232984126@news.gmane.org>
-Reply-To: Mordecai Whitten <11248leilani.holan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: Move eeprom drivers to drivers/misc/eeprom
+Date: Mon, 26 Jan 2009 23:55:27 -0800
+Message-ID: <200901262355.27913.david-b@pacbell.net>
+References: <1232446982-7842-1-git-send-email-w.sang@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rt2400-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1232446982-7842-1-git-send-email-w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,40 +22,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-R292ZXJubWVudCBHcmFudHMgcHJvZ3JhbSBpcyBmaW5hbGx5IGF2YWlsYWJsZSBmb3IgcmVndWxh
-ciBwZW9wbGUhIFRoaXMgcHJvZ3JhbSBpcyBqdXN0IGZvciB5b3UhIFBsZWFzZSwgcmVhZCB0aGlz
-IGVtYWlsIC0gRE9OJ1QgbGV0IHRoZSBnb29kIG9mZmVyIHBhc3MgeW91IQ0KDQpBcyB5b3UgY2Fu
-IHNlZSwgdGhlcmUgYXJlIG1hbnksIG1hbnkgd2F5cyB0aGF0IGNyb29rZWQgb3JnYW5pemF0aW9u
-cyBjYW4gdHJ5IHRvIGNvbiB5b3Ugb3V0IG9mIHlvdXIgaGFyZCBlYXJuZWQgbW9uZXkuIFRoZSBn
-b29kIG5ld3MgaXMgdGhhdCBpZiB5b3UgYXJlIHNpbXBseSBjYXJlZnVsIGFuZCB1bmRlcnN0YW5k
-IGhvdyB0aGUgZ3JhbnQgcHJvY2VzcyByZWFsbHkgd29ya3MsIHlvdSB3aWxsIGJlIGFibGUgdG8g
-ZW5zdXJlIHlvdSBhcmUgbmV2ZXIgdGhlIHZpY3RpbSBvZiBnb3Zlcm5tZW50IGdyYW50IGZyYXVk
-Lg0KDQpUaGF0IGlzIHdoeSBvdXIgb3JnYW5pemF0aW9uIGlzIE9ORSBUTyBUUlVTVCwgd2hlbiB5
-b3UgZGVjaWRlIGl0J3MgdGltZSB0byBmaW5kIG91dCBpZiB5b3UgbWF5IGJlIGVsaWdpYmxlIGZv
-ciBnb3Zlcm5tZW50IGZ1bmRpbmcuIEl0IGlzIHZlcnkgaW1wb3J0YW50IHRvIHdvcmsgb25seSB3
-aXRoIGEgY29tcGFueSB5b3UgY2FuIHRydXN0IOKAkyBsaWtlIHVzLiBXZSBkb24ndCBtYWtlIGZh
-bHNlIHByb21pc2VzIG9yIGFueSBwcm9taXNlIHdlIGNhbid0IGtlZXAuIFdlIGRvbid0IGFzayBm
-b3IgeW91ciBzZW5zaXRpdmUgcGVyc29uYWwgaW5mb3JtYXRpb24uIEluc3RlYWQsIHdlIHNpbXBs
-eSB0YWtlIHlvdSBieSB0aGUgaGFuZCBhbmQgdGVhY2ggeW91IGhvdyB0byBzdWNjZXNzZnVsbHkg
-YXBwbHkgZm9yIHRoZSBncmFudHMgdGhhdCB5b3UgbWF5IGJlIGVsaWdpYmxlIGZvci4gV2UgYWxz
-byBtYWtlIGl0IGVhc2llciBmb3IgeW91IHRvIHNlYXJjaCB0aHJvdWdoIHRoZSB2YXJpb3VzIGdv
-dmVybm1lbnQgZnVuZGluZyBwcm9ncmFtcyAoYWxsIG9ubGluZSksIHNvIHlvdSBjYW4gc3BlZWQg
-dXAgdGhlIHByb2Nlc3Mgb2YgZmluZGluZyB0aGUgcmlnaHQgZ3JhbnQuDQoNCklmIHlvdSBxdWFs
-aWZ5IGZvciBvdXIgUmFwaWQgR3JhbnRzIFNvbHV0aW9ucyBLaXQgdG9kYXksIHlvdSdsbCBkaXNj
-b3ZlciB0aGUgaW5zIGFuZCBvdXRzIG9mIGZpbmRpbmcgYW5kIGFwcGx5aW5nIGZvciBnb3Zlcm5t
-ZW50IGdyYW50cyB0aGF0IHBlb3BsZSBsaWtlIHlvdSBxdWFsaWZ5IGZvciBldmVyeSBkYXkuIE91
-ciBSYXBpZCBHcmFudHMgU29sdXRpb25zIGtpdCBzaG93cyBBbWVyaWNhIHdoZXJlIGFuZCBob3cg
-dG8gYXBwbHkgZm9yIGdvdmVybm1lbnQgZnVuZGluZy4gV2UgZG9uJ3Qgc2ltcGx5IGhlbHAgeW91
-IGZpbmQgZ3JhbnQgcHJvZ3JhbXMgeW91IG1heSBxdWFsaWZ5IGZvciAtIHdlIGFsc28gbWFrZSBp
-dCBlYXN5IGZvciB5b3UgdG8gZmlsbCBvdXQgdGhlIHBhcGVyd29yay4gSXQncyBhbGwgdXAgdG8g
-eW91IHRvIHNlZSB3aGljaCBncmFudHMgeW91IG1heSBxdWFsaWZ5IGZvciENCg0KU2VuZCB1cyBh
-IHJlcGx5IGJhY2sgdG8gMTI5ODRtaXJhY2xlbUBnbWFpbC5jb20gaWYgeW91IHdhbnQgdG8gcGFy
-dGljaXBhdGUgYW5kIHNlZSBpZiB5b3UgcXVhbGlmeSBmb3Igb3VyIGZyZWUga2l0LCBhbmQgc3Rh
-cnQgYXBwbHlpbmcgcmlnaHQgbm93IQ0KDQpCZXN0IHdpc2hlcywNClJhcGlkIEdyYW50cyBTb2x1
-dGlvbnMKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVtYWlsIGlzIHNwb25zb3Jl
-ZCBieToKU291cmNGb3JnZSBDb21tdW5pdHkKU291cmNlRm9yZ2Ugd2FudHMgdG8gdGVsbCB5b3Vy
-IHN0b3J5LgpodHRwOi8vcC5zZi5uZXQvc2Z1L3NmLXNwcmVhZHRoZXdvcmQKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Tuesday 20 January 2009, Wolfram Sang wrote:
+> This patch series carries out the proposal and while at it, moves an
+> eeprom driver which was already in drivers/misc to the new location.
+> 
+> No code inside the drivers was changed and everything was
+> succesfully compile-tested.
+
+Now that thhis is in mainline ... I suggest two more changes:
+
+ - at24 (i2c eeprom) doesn't need to be EXPERIMENTAL
+
+ - we still need interfaces whereby kernel code can be
+   given handles to the EEPROM devices, and then use
+   them to read board config data out during boot.
+
+Obviously, the first one is easy.  ;)
+
+- Dave
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by:
+SourcForge Community
+SourceForge wants to tell your story.
+http://p.sf.net/sfu/sf-spreadtheword

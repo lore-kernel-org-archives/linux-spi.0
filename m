@@ -1,77 +1,46 @@
-From: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
-Subject: Re: Move eeprom drivers to drivers/misc/eeprom
-Date: Wed, 28 Jan 2009 13:42:45 +0100
-Message-ID: <20090128134245.3839d386@hyperion.delvare>
-References: <1232446982-7842-1-git-send-email-w.sang@pengutronix.de>
-	<200901262355.27913.david-b@pacbell.net>
-	<20090127090442.35190667@hyperion.delvare>
-	<20090127095326.GA8385@pengutronix.de>
+From: Madam Erlinda Williams <erlindawilliams27-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] See that this money is distributed to
+	charity organizations
+Date: Wed, 28 Jan 2009 15:31:09 +0100
+Message-ID: <E1LSBRd-0008Qx-EQ@srv214.hosteur.com>
+Reply-To: erlindawilliams27-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	rt2400-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20090127095326.GA8385-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Wolfram,
+Dear Blessed One,
 
-On Tue, 27 Jan 2009 10:53:26 +0100, Wolfram Sang wrote:
-> On Tue, Jan 27, 2009 at 09:04:42AM +0100, Jean Delvare wrote:
-> 
-> > > 
-> > > Now that thhis is in mainline ... I suggest two more changes:
-> > > 
-> > >  - at24 (i2c eeprom) doesn't need to be EXPERIMENTAL
-> > > 
-> > >  - we still need interfaces whereby kernel code can be
-> > >    given handles to the EEPROM devices, and then use
-> > >    them to read board config data out during boot.
-> > > 
-> > > Obviously, the first one is easy.  ;)
-> > 
-> > Indeed, but where's the patch?
-> 
-> I may be missing some irony here, but just in case I don't, here is a
-> patch :)
+Greetings to you blessed one. As you read through my message, I do not want you to feel pity or sorry for me, for I believe someday, somehow, we will all surely die, this is about mine, and a last wish. My name is Madam Erlinda Williams, a Citizen of the united kingdom, I am a 53 years old woman, I am diagnosed of Cancer of the Larynx and it is terminal, medical science can not do anything for me at this stage. I believe in miracles because I believe in GOD, however I prefer to pass on at this stage since I am bed ridden and in constant pain. Before this happened my business and concern for making money was all I lived for, I never really cared about other values in life. But since my present situation, I have found a new desire to assist helpless families.
 
-Don't know if this qualifies as irony. I was simply wondering why David
-was telling us that a change could be done instead of just doing it
-himself if he cared.
+I have been helping orphans in orphanage/motherless homs. I have once donated some money to orphans in war ravaged Eritrea,Somalia, Sudan and some East European Countries. Having known my condition I decided to entrust my last funds I have deposited in Europe( USD$ 6.7 MILLION) to either a philanthropic or devoted individual that will use his judgement to distribute the money to charity organizations, orhanages and feel free to reimburse yourself when you have the money with a total of 35% for your assistance also for any cost you incur during the process of collecting and distributing the money to charity organizations. I have left the hospital and presently at home, I have since lost my ability to talk and my doctors have told me that I have only few months to live.
 
-> From 622e104ea7c0ee99c631701919289792c8a890a4 Mon Sep 17 00:00:00 2001
-> From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> Date: Tue, 27 Jan 2009 10:46:11 +0100
-> Subject: [PATCH] at24: remove EXPERIMENTAL
-> 
-> This driver has been widely used since inclusion and no problems have
-> been reported.
-> 
-> Signed-off-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> ---
->  drivers/misc/eeprom/Kconfig |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
-> index c76df8c..89fec05 100644
-> --- a/drivers/misc/eeprom/Kconfig
-> +++ b/drivers/misc/eeprom/Kconfig
-> @@ -2,7 +2,7 @@ menu "EEPROM support"
->  
->  config EEPROM_AT24
->  	tristate "I2C EEPROMs from most vendors"
-> -	depends on I2C && SYSFS && EXPERIMENTAL
-> +	depends on I2C && SYSFS
->  	help
->  	  Enable this driver to get read/write support to most I2C EEPROMs,
->  	  after you configure the driver to know about each EEPROM on
-> 
+It is my last wish to see this money distributed to charity organizations, because I don't have any child and my relatives and friends has plundered so much of my wealth since my illness, I cannot live with the agony of entrusting this huge responsibility to any of them anymre. Please, I beg you in the name of God to help me collect the deposit and distribute it amongst charity organizations anbd orhnage homes. Since my health is retrogressing by the minute, you will have to send your: POSTAL ADDRESS, CONTACT PHONE NUMBER AND FAX and a little details about yourself, because I got your address from Chamber of Commerce of your country after a thorough search. With the information, I will make arrangement to prepare the authorization through an Attorney for you to get possession of the Deposi
+ t. I will give you the name and contact of the Deposit company where the money is lodged,thereafter, so you can claim the funds, Until I hear from you, I pray that this letter bring you and your family good tidings.
 
-Thanks, patch applied.
+Please Send your urgent reply to my direct email address for confidential reasons(madamerlinda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org)
 
--- 
-Jean Delvare
+Looking forward to hearing from you soonest. 
+
+Regards,
+Madam Erlinda Williams
+
+
+
+
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by:
+SourcForge Community
+SourceForge wants to tell your story.
+http://p.sf.net/sfu/sf-spreadtheword

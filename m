@@ -1,10 +1,12 @@
-From: Bryan Bui <bbui210-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: SPI Touch screen ADS7846
-Date: Wed, 28 Jan 2009 10:49:22 -0800
-Message-ID: <a2cd4c2e0901281049t735a8f53uf363410dca3496ee@mail.gmail.com>
+From: Jerrard Sidower <tasuku14-r0pZNE3XZSWMATGHZ+jqRs8NsWr+9BEh@public.gmane.org>
+Subject: [SPAM] Get Funding Fast
+Date: Thu, 29 Jan 2009 18:50:33 +0300
+Message-ID: <23803.7029900172$1233244379@news.gmane.org>
+Reply-To: Jerrard Sidower <lamontagnaleilani1199-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2326118260857870536=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="windows-1251"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,57 +18,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2326118260857870536==
-Content-Type: multipart/alternative; boundary=0014850b392c1d173a04618f6e69
-
---0014850b392c1d173a04618f6e69
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-
-Hello,
-I'm not sure if this is the correct list to post to, but the only one I can
-find.
-
-I am trying to interface my ARM board with the ADS7846 touch screen
-controller via SPI.  Is there a list specifically for this driver?  Or does
-anyone have experience with it?
-
-Regards,
-Bryan
-
---0014850b392c1d173a04618f6e69
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Hello,<br>I&#39;m not sure if this is the correct list to post to, but the =
-only one I can find.&nbsp; <br><br>I am trying to interface my ARM board wi=
-th the ADS7846 touch screen controller via SPI.&nbsp; Is there a list speci=
-fically for this driver?&nbsp; Or does anyone have experience with it? <br>
-<br>Regards,<br>Bryan<br>
-
---0014850b392c1d173a04618f6e69--
-
-
---===============2326118260857870536==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by:
-SourcForge Community
-SourceForge wants to tell your story.
-http://p.sf.net/sfu/sf-spreadtheword
---===============2326118260857870536==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2326118260857870536==--
+R292ZXJubWVudCBHcmFudHMgcHJvZ3JhbSBpcyBmaW5hbGx5IGF2YWlsYWJsZSBmb3IgcmVndWxh
+ciBwZW9wbGUhIFRoaXMgcHJvZ3JhbSBpcyBqdXN0IGZvciB5b3UhIFBsZWFzZSwgcmVhZCB0aGlz
+IGVtYWlsIC0gRE9OJ1QgbGV0IHRoZSBnb29kIG9mZmVyIHBhc3MgeW91IQ0KDQpBcyB5b3UgY2Fu
+IHNlZSwgdGhlcmUgYXJlIG1hbnksIG1hbnkgd2F5cyB0aGF0IGNyb29rZWQgb3JnYW5pemF0aW9u
+cyBjYW4gdHJ5IHRvIGNvbiB5b3Ugb3V0IG9mIHlvdXIgaGFyZCBlYXJuZWQgbW9uZXkuIFRoZSBn
+b29kIG5ld3MgaXMgdGhhdCBpZiB5b3UgYXJlIHNpbXBseSBjYXJlZnVsIGFuZCB1bmRlcnN0YW5k
+IGhvdyB0aGUgZ3JhbnQgcHJvY2VzcyByZWFsbHkgd29ya3MsIHlvdSB3aWxsIGJlIGFibGUgdG8g
+ZW5zdXJlIHlvdSBhcmUgbmV2ZXIgdGhlIHZpY3RpbSBvZiBnb3Zlcm5tZW50IGdyYW50IGZyYXVk
+Lg0KDQpUaGF0IGlzIHdoeSBvdXIgb3JnYW5pemF0aW9uIGlzIE9ORSBUTyBUUlVTVCwgd2hlbiB5
+b3UgZGVjaWRlIGl0J3MgdGltZSB0byBmaW5kIG91dCBpZiB5b3UgbWF5IGJlIGVsaWdpYmxlIGZv
+ciBnb3Zlcm5tZW50IGZ1bmRpbmcuIEl0IGlzIHZlcnkgaW1wb3J0YW50IHRvIHdvcmsgb25seSB3
+aXRoIGEgY29tcGFueSB5b3UgY2FuIHRydXN0IOKAkyBsaWtlIHVzLiBXZSBkb24ndCBtYWtlIGZh
+bHNlIHByb21pc2VzIG9yIGFueSBwcm9taXNlIHdlIGNhbid0IGtlZXAuIFdlIGRvbid0IGFzayBm
+b3IgeW91ciBzZW5zaXRpdmUgcGVyc29uYWwgaW5mb3JtYXRpb24uIEluc3RlYWQsIHdlIHNpbXBs
+eSB0YWtlIHlvdSBieSB0aGUgaGFuZCBhbmQgdGVhY2ggeW91IGhvdyB0byBzdWNjZXNzZnVsbHkg
+YXBwbHkgZm9yIHRoZSBncmFudHMgdGhhdCB5b3UgbWF5IGJlIGVsaWdpYmxlIGZvci4gV2UgYWxz
+byBtYWtlIGl0IGVhc2llciBmb3IgeW91IHRvIHNlYXJjaCB0aHJvdWdoIHRoZSB2YXJpb3VzIGdv
+dmVybm1lbnQgZnVuZGluZyBwcm9ncmFtcyAoYWxsIG9ubGluZSksIHNvIHlvdSBjYW4gc3BlZWQg
+dXAgdGhlIHByb2Nlc3Mgb2YgZmluZGluZyB0aGUgcmlnaHQgZ3JhbnQuDQoNCklmIHlvdSBxdWFs
+aWZ5IGZvciBvdXIgUmFwaWQgR3JhbnRzIFNvbHV0aW9ucyBLaXQgdG9kYXksIHlvdSdsbCBkaXNj
+b3ZlciB0aGUgaW5zIGFuZCBvdXRzIG9mIGZpbmRpbmcgYW5kIGFwcGx5aW5nIGZvciBnb3Zlcm5t
+ZW50IGdyYW50cyB0aGF0IHBlb3BsZSBsaWtlIHlvdSBxdWFsaWZ5IGZvciBldmVyeSBkYXkuIE91
+ciBSYXBpZCBHcmFudHMgU29sdXRpb25zIGtpdCBzaG93cyBBbWVyaWNhIHdoZXJlIGFuZCBob3cg
+dG8gYXBwbHkgZm9yIGdvdmVybm1lbnQgZnVuZGluZy4gV2UgZG9uJ3Qgc2ltcGx5IGhlbHAgeW91
+IGZpbmQgZ3JhbnQgcHJvZ3JhbXMgeW91IG1heSBxdWFsaWZ5IGZvciAtIHdlIGFsc28gbWFrZSBp
+dCBlYXN5IGZvciB5b3UgdG8gZmlsbCBvdXQgdGhlIHBhcGVyd29yay4gSXQncyBhbGwgdXAgdG8g
+eW91IHRvIHNlZSB3aGljaCBncmFudHMgeW91IG1heSBxdWFsaWZ5IGZvciENCg0KU2VuZCB1cyBh
+IHJlcGx5IGJhY2sgdG8gamFtZXMudmFyYmxlMTg3NkBnbWFpbC5jb20gaWYgeW91IHdhbnQgdG8g
+cGFydGljaXBhdGUgYW5kIHNlZSBpZiB5b3UgcXVhbGlmeSBmb3Igb3VyIGZyZWUga2l0LCBhbmQg
+c3RhcnQgYXBwbHlpbmcgcmlnaHQgbm93IQ0KDQpCZXN0IHdpc2hlcywNClJhcGlkIEdyYW50cyBT
+b2x1dGlvbnMKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVtYWlsIGlzIHNwb25z
+b3JlZCBieToKU291cmNGb3JnZSBDb21tdW5pdHkKU291cmNlRm9yZ2Ugd2FudHMgdG8gdGVsbCB5
+b3VyIHN0b3J5LgpodHRwOi8vcC5zZi5uZXQvc2Z1L3NmLXNwcmVhZHRoZXdvcmQKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwg
+bWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRw
+czovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJh
+bAo=

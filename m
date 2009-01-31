@@ -1,12 +1,10 @@
-From: Nathanael Ramsey <419barr_milton_lawchamber-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Government Funding Finally Available
-Date: Fri, 30 Jan 2009 20:17:59 +0100
-Message-ID: <12779.3887550526$1233343186@news.gmane.org>
-Reply-To: Nathanael Ramsey <fetterhoffesther1677-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: gmailer-QAsuKY85kAtBDgjK7y7TUQ@public.gmane.org
+Subject: [SPAM] Global trade product search!
+Date: Sat, 31 Jan 2009 20:28:47 +0800 (CST)
+Message-ID: <32566551.1233404927395.JavaMail.root@mail.qi360.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============2231685060936813790=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,19 +16,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-If you have received this email, take a time to really read it carefully!
+--===============2231685060936813790==
+Content-Type: text/html;charset=gb2312
+Content-Transfer-Encoding: 7bit
 
-You may be one of the luckiest people ever to get a Government Funded Grant. This Grant Kit could put thousands of dollars in your pocket. If you are in need of a financial assistance, you may qualify for a piece of the millions and millions of dollars awarded each year by private and government grant agencies to regular people like you.
+<a href='http://www.tradeim.com' target="_blank">tradeim.com</a>
 
-What makes grants so exciting is that most of the money is awarded INTEREST-FREE. So, unlike a bank loan, you won't see interest charges eating away at your obligations. That's a better offer than any bank will ever provide you.
 
-Many grants go unawarded every year, simply because most people don't know about the programs they may qualify for. Don't let this happen to you!
 
-Join this great program right away with no risk at all! Send us an email back to eichhorn.hubert11708-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you are interested to participate in the easy Government Funded Grant program. Don't miss your chance, as chances like that don't happen very often in our lives!
+--===============2231685060936813790==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-American Gov Money
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 SourcForge Community
 SourceForge wants to tell your story.
 http://p.sf.net/sfu/sf-spreadtheword
+--===============2231685060936813790==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2231685060936813790==--

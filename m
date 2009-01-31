@@ -1,10 +1,12 @@
-From: gmailer-QAsuKY85kAtBDgjK7y7TUQ@public.gmane.org
-Subject: [SPAM] Global trade product search!
-Date: Sat, 31 Jan 2009 20:28:47 +0800 (CST)
-Message-ID: <32566551.1233404927395.JavaMail.root@mail.qi360.com>
+From: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: limit reaches -1, tested 0
+Date: Sat, 31 Jan 2009 12:33:05 +0100
+Message-ID: <498436F1.4020505@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2231685060936813790=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,34 +18,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2231685060936813790==
-Content-Type: text/html;charset=gb2312
-Content-Transfer-Encoding: 7bit
+With a postfix decrement limit will reach -1 rather than 0,
+so the warning will not be issued.
 
-<a href='http://www.tradeim.com' target="_blank">tradeim.com</a>
-
-
-
---===============2231685060936813790==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
+index 269a55e..a4652f1 100644
+--- a/drivers/spi/spi_imx.c
++++ b/drivers/spi/spi_imx.c
+@@ -779,7 +779,7 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ 
+ 			/* Read trailing bytes */
+ 			limit = loops_per_jiffy << 1;
+-			while ((read(drv_data) == 0) && limit--);
++			while ((read(drv_data) == 0) && --limit);
+ 
+ 			if (limit == 0)
+ 				dev_err(&drv_data->pdev->dev,
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 SourcForge Community
 SourceForge wants to tell your story.
 http://p.sf.net/sfu/sf-spreadtheword
---===============2231685060936813790==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2231685060936813790==--

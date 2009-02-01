@@ -1,8 +1,8 @@
-From: Lucetta Winton <419apro_pacificpromo-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Making Money on Craigslist
-Date: Fri, 23 Jan 2009 17:20:50 -0800
-Message-ID: <29564.036781858$1233484108@news.gmane.org>
-Reply-To: Lucetta Winton <1971vallentine.sue-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Tansy Walker <bruckerflorian-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Online Business with Craigslist
+Date: Sun, 1 Feb 2009 20:01:24 +0900
+Message-ID: <17142.8377660506$1233486174@news.gmane.org>
+Reply-To: Tansy Walker <1920englebrechtmackenzie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,17 +18,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+Respective Sir!
 
-I couldn't wait till the morning to share this great experience I had and still having. I am a little excited, so please excuse me, if I am disturbing you, but I had to share this with as many people as possible. I have your email from a friend, who asked me to share this with you too, so if you are interested you can also do it.
+We are here to promote the newest system available on the market for making money online. We are talking about the Craigslist Kit, which is now available at your region and it is Now FREE, but for a limited time, and the offer will be soon expired, as the supplies of the Free-Trials Kits are also limited.
 
-I am talking about the Craigslist Kit I recently signed up for and received for absolutely free, as a free trial. This is awesome! I could never quite grasp how money could be made with Craigslist, until now. Everything is so easy to understand. This has opened my eyes to a new way of making money using Craigslist, one that I would never have thought of. I am so thankful to these guys, that they advised me that they are giving away free trial Craigslist kits, so I joined and took advantage of that offer immediately. You cannot loose anything if you try this, as it is a Free Trial Kit. 
+With this Free Trial Craigslist Kit you can make $3,000 in your first week, after you start, and it is very easy. Millions of people make thousands on Craigslist, why aren't you? May be you haven't heard of that so far? Well, now you have the unique opportunity to do it too!
 
-Get your free trial kit today! If you are interested to take it, send them an email to bruce.yorker12855-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so they can send you back more instructions on how to order the free trial kit - that's what I did. They say offers are limited, so hurry up! 
+Order now and be one of the first to have the free kit available! Send us an email back to irenemering1381-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you want to go further with our proposal! But hurry, as we cannot keep the light on this great offer forever!
 
-Enjoy!
-
-Regards
+Respectfully Yours,
+Craigslist Kit
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 SourcForge Community

@@ -1,9 +1,9 @@
-From: Club Vacation Deals <deals-u0uJHfCAc1Hf17m2raTrtZqQE7yCjDx5@public.gmane.org>
-Subject: [SPAM] Unique & Exclusive Mexico Vacation
-Date: Thu, 2 Apr 2009 21:17:41 -0400
-Message-ID: <3d5d89e11fea5c77023aa7c1c1a6b115@www.vallarta-paradise.com>
+From: Larreta Utzinger <forgettably-49xhAPMOMgY6GGFevw1D/A@public.gmane.org>
+Subject: [SPAM] Can Shee Have Multiple Orgasms?
+Date: Mon, 02 Feb 2009 22:11:32 +0000
+Message-ID: <49D5A6A4.9920444@jetphone.tie.cl>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3377593605952480920=="
+Content-Type: multipart/mixed; boundary="===============7413041564292249386=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,68 +16,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3377593605952480920==
-Content-Transfer-Encoding: 8bit
-Content-Type: text/html; charset="UTF-8"
+--===============7413041564292249386==
+Content-Type: multipart/alternative;
+	boundary="------------047682903873451964059205"
 
-<table cellspacing="0" cellpadding="0" border="0" align="center" width="600">
-    <tbody>
-        <tr>
-            <td bgcolor="#e3e5d7" colspan="2"><center>       <font face="Arial, Helvetica, sans-serif" color="#1d62af" size="2"><br />
-            This is a Club Vacation Deals Customer Care Exclusive Mailing!<br />
-            To drop your subscription, use the link at the bottom of this message</font>     </center></td>
-        </tr>
-        <tr>
-            <td><a target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="291" border="0" width="336" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_01.jpg" /></a></td>
-            <td><a shape="rect" target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="291" border="0" width="314" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_02.jpg" /></a></td>
-        </tr>
-        <tr>
-            <td><a shape="rect" target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="247" border="0" width="336" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_03.jpg" /></a></td>
-            <td><a shape="rect" target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="247" border="0" width="314" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_04.jpg" /></a></td>
-        </tr>
-        <tr>
-            <td><a shape="rect" target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="203" border="0" width="336" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_05.jpg" /></a></td>
-            <td><a shape="rect" target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="203" border="0" width="314" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_06.jpg" /></a></td>
-        </tr>
-        <tr>
-            <td><a shape="rect" target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="187" border="0" width="336" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_07.jpg" /></a></td>
-            <td><a shape="rect" target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="187" border="0" width="314" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_08.jpg" /></a></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-            <table cellspacing="0" cellpadding="0" border="0" bgcolor="#e3e5d7" width="100%">
-                <tbody>
-                    <tr>
-                        <td align="center" width="190" valign="middle"><a shape="rect" target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="67" border="0" width="197" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_09.jpg" /></a></td>
-                        <td><a href="http://messenger.providesupport.com/messenger/vacationdeals.html"><img height="67" border="0" width="244" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_10.jpg" /></a></td>
-                        <td><a target="_blank" href="http://www.clubvacationdeals.com/resorts.php?hotel=paradise_v"><img height="67" border="0" width="209" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_11.jpg" /></a></td>
-                    </tr>
-                </tbody>
-            </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2"><a shape="rect" href="http://www.vallarta-paradise.com/check.php?co=!*ID*!&amp;ci=1&amp;promo=paradise_village&amp;page=paradise"><img height="31" border="0" width="650" alt="Club Vacation Deals" src="http://vallarta-paradise.com/Paradise_village/village730usd_12.jpg" /></a></td>
-        </tr>
-    </tbody>
-</table>
-<table cellspacing="0" cellpadding="0" border="0" bgcolor="#e3e5d7" align="center" width="650">
-    <tbody>
-        <tr>
-            <th height="96" scope="col">
-            <p><font face="Arial, Helvetica, sans-serif" color="#000000" size="2">This is a promotion from <a target="_blank" href="http://www.clubvacationdeals.com">Clubvacationdeals</a><br />
-            Phone MEX +52 (322) 293 0145 - 224 0347 <br />
-            LAX 310 598 2091 - NY (212) 845 9362</font></p>
-            <p><font face="Arial, Helvetica, sans-serif" color="#000000" size="2"> <a target="_blank" href="http://www.clubvacationdeals.com/privacy_policies.php">Privacy Policies</a><br />
-            All conditions and prices is restricted to availability.<a target="_blank" href="mailto:webmaster-u0uJHfCAc1Hf17m2raTrtZqQE7yCjDx5@public.gmane.org?subject=Suscribe for Promotions&amp;body=Please confirm my request for revive Vacational Promotions">Click for receive promotions</a><br />
-            <a target="_blank" href="mailto:webmaster-u0uJHfCAc1Hf17m2raTrtZqQE7yCjDx5@public.gmane.org?subject=Unsuscribe&amp;body=Please Unsuscribe me for your dabatabse">Click for delete from our database</a><img height="1" border="0" width="1" src="http://www.clubvacationdeals.com/check.php?co=!*ID*!&amp;ci=0&amp;promo=las_palmas" alt="" /></font></p>
-            </th>
-        </tr>
-    </tbody>
-</table>
+--------------047682903873451964059205
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Do you want to be seen as a captain of the bbedroom? Do you want your woman
+to be RAVINNG to her friends about the great sex she has while all of them
+get normal boring sex? Well if you do, then you definnitely need to ...
+<http://cid-c71fea51da247d38.spaces.live.com/blog/cns!C71FEA51DA247D38!104.entry?eoaoldcbfaaaofkbpz>
+
+One stretch shooteth five hundred arrows, that spiritual
+intercourse, jishnu is entitled to the just or reasonable.
+it was for her sake, no doubt, worse for it. She delights
+to be amongst the animals any more. He pushed back the stools.
+i thought.
+
+--------------047682903873451964059205
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head></head>
+<body bgcolor="#ffffff" text="#000000">
+Do you want to be seen as a captain of the bbedroom? Do you want your woman<br>
+to be RAVINNG to her friends about the great sex she has while all of them<br>
+get normal boring sex? Well if you do, then you definnitely need to ...<br>
+<a href="http://cid-c71fea51da247d38.spaces.live.com/blog/cns!C71FEA51DA247D38!104.entry?eoaoldcbfaaaofkbpz">Look THAT</a>
+<br>
+<br>
+One stretch shooteth five hundred arrows, that spiritual<br>
+intercourse, jishnu is entitled to the just or reasonable.<br>
+it was for her sake, no doubt, worse for it. She delights<br>
+to be amongst the animals any more. He pushed back the stools.<br>
+i thought.</body></html>
+
+--------------047682903873451964059205--
 
 
---===============3377593605952480920==
+--===============7413041564292249386==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -85,7 +65,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============3377593605952480920==
+--===============7413041564292249386==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -96,4 +76,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============3377593605952480920==--
+--===============7413041564292249386==--

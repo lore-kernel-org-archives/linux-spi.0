@@ -1,9 +1,8 @@
-From: Anne Elless <419ek4192002-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_Craigslist_System?=
-	=?windows-1251?q?_-_How_To_Make_Money_Online?=
-Date: Sun, 1 Feb 2009 19:15:12 -0800
-Message-ID: <43116.4760062986$1233533837@news.gmane.org>
-Reply-To: Anne Elless <1398emma.devyn-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Tatyanna Cross <th7882-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Online Business with Craigslist
+Date: Mon, 2 Feb 2009 15:19:50 +0900
+Message-ID: <6223.75521711564$1233555693@news.gmane.org>
+Reply-To: Tatyanna Cross <1398emma.devyn-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -21,15 +20,23 @@ List-Id: linux-spi.vger.kernel.org
 
 Hello!
 
-I couldn't wait till the morning to share this great experience I had and still having. I am a little excited, so please excuse me, if I am disturbing you, but I had to share this with as many people as possible. I have your email from a friend, who asked me to share this with you too, so if you are interested you can also do it.
+Are you aware that a Free Trial of the Craigslist Kit is now available at your region.
 
-I am talking about the Craigslist Kit I recently signed up for and received for absolutely free, as a free trial. This is awesome! I could never quite grasp how money could be made with Craigslist, until now. Everything is so easy to understand. This has opened my eyes to a new way of making money using Craigslist, one that I would never have thought of. I am so thankful to these guys, that they advised me that they are giving away free trial Craigslist kits, so I joined and took advantage of that offer immediately. You cannot loose anything if you try this, as it is a Free Trial Kit. 
+After reading this awesome book, you will be able to finally
 
-Get your free trial kit today! If you are interested to take it, send them an email to bruce.yorker12855-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so they can send you back more instructions on how to order the free trial kit - that's what I did. They say offers are limited, so hurry up! 
+1. fire your boss,
+2. spend more time with your family,
+3. love what you do
+4. work less and earn more
+5. work from home
+6. start making money today
 
-Enjoy!
+ - and all of these are now presented to your attention as only this time this Craigslist Kit is given for a Free Trial. But if you want to order the free trial kit, you have to hurry up, as many people already took advantage of this offer, and the supplies of the free kits are limited.
+ 
+Send us an email to 1267spadaro.suzette-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you want to take advantage of our offer(please, be quick)!
 
-Regards
+Best whishes,
+the Craigslist Profits
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 SourcForge Community

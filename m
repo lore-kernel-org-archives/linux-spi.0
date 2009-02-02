@@ -1,12 +1,11 @@
-From: Tatyanna Cross <th7882-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Online Business with Craigslist
-Date: Mon, 2 Feb 2009 15:19:50 +0900
-Message-ID: <6223.75521711564$1233555693@news.gmane.org>
-Reply-To: Tatyanna Cross <1398emma.devyn-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "mike gordon" <mike.gordon-PeCUgM4zDv73fQ9qLvQP4Q@public.gmane.org>
+Subject: [SPAM] Technology - Oracle, SAP,
+	Communciation - Cisco, Nortel, HR - ADP, Peoplesoft customer lists
+Date: Mon, 2 Feb 2009 08:19:00 -0500
+Message-ID: <E1LTyhu-0000rK-Mi@3yr0jf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1658318727821492867=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,27 +17,572 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+This is a multi-part message in MIME format.
 
-Are you aware that a Free Trial of the Craigslist Kit is now available at your region.
+--===============1658318727821492867==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0000_01C6527E.AE8904D0"
 
-After reading this awesome book, you will be able to finally
+This is a multi-part message in MIME format.
 
-1. fire your boss,
-2. spend more time with your family,
-3. love what you do
-4. work less and earn more
-5. work from home
-6. start making money today
+------=_NextPart_000_0000_01C6527E.AE8904D0
+Content-Type: text/plain;
+ charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
- - and all of these are now presented to your attention as only this time this Craigslist Kit is given for a Free Trial. But if you want to order the free trial kit, you have to hurry up, as many people already took advantage of this offer, and the supplies of the free kits are limited.
+This email is to introduce our company Repharm and services we offer.
+Repharm is an international leader of sales and marketing database products for high technology businesses. We provide installed customer lists for companies such as Oracle, PeopleSoft, Siebel, etc. Our lists are continuously maintained to ensure the highest level of accuracy and completeness. We have hundreds of industry leaders as customers today - many whose names you would recognize.
+If you are interested, we could send you a sample of one of our lists complete with summary information, so that you could evaluate our content. To find out about the various lists we have available, in preparation for any sales or marketing campaigns that your organization may be considering in future, we'd love to hear from you. Or, perhaps you'd be interested in acquiring your competitors' customer lists? 
+If you would like more information, please contact us at (905) 721-8456 or email us at repharm1-YDxpq3io04c@public.gmane.org
+Below are just some of the lists available:
+ERP (ENTERPRISE RESOURCE PLANNING):
+Baan
+JD Edwards
+Lawson
+Made2Manage
+Mapics
+Marcam
+Oracle
+Peoplesoft
+SAP
+SSA
  
-Send us an email to 1267spadaro.suzette-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you want to take advantage of our offer(please, be quick)!
+E-BUSINESS APPLICATIONS:
+Ariba
+BMC
+BroadVision
+Commerce One
+Webtrends
+ 
+MIDDLEWARE/CONNECTIVITY/APP SERVERS/WEB SERVERS:
+Bea Systems
+Iona
+Unisys
+ 
+OPERATING SYSTEMS/HARDWARE/SOFTWARE:
+COMPAQ
+HP 3000
+HP 9000
+HP-UX
+IBM AS/400
+IBM OS/390
+Lotus Notes
+Microsoft
+Sun Microsystems
+DATABASE:
+DB2
+FileMaker
+Informix
+Oracle
+SQL
+SybaseCRM (CUSTOMER RELATIONSHIP MANAGEMENT):
+Clarify
+E.piphany
+HNC
+Onyx
+Pivotal
+Siebel
+Vantive
+Xchange
+ 
+SUPPLY CHAIN:
+Agile
+i2 Technologies
+Manugistics
+QAD
+Webplan
+COMMUNICATIONS:
+Nortel
+Cisco
+3com
+Siemens
+Alcatel
+Telecom Vars
+ASP’s
+CLECS
+ISP’s
+ 
+E-COMMERCE:
+Dot Com Directory
+Consultant Directory
+Software Directory
+ 
+EXECUTIVE DIRECTORIES:
+Chief Executive Officer
+Chief Financial Officer
+Chief Information Officer
+Engineering
+Human Resources
+Purchasing
+Sales/Marketing
+ 
+INDUSTRY SPECIFIC LISTS:
+Agriculture, Forestry and Fishing, Communications, Construction,
+Finance, Insurance and Real Estate, Manufacturing, Mining, Public Administration,
+Retail Trade, Services, Transportation,
+Utilities, Wholesale Trade
+------=_NextPart_000_0000_01C6527E.AE8904D0
+Content-Type: text/html;
+ charset="utf-8"
 
-Best whishes,
-the Craigslist Profits
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Microsoft DHTML Editing Control">
+</HEAD>
+<BODY>
+<DIV>
+<P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">This 
+email is to introduce our company Repharm and services we 
+offer.</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+<DIV>
+<P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Repharm 
+is an international leader of sales and marketing database products for high 
+technology businesses. We provide installed customer lists for companies such as 
+Oracle, PeopleSoft, Siebel, etc. Our lists are continuously maintained to ensure 
+the highest level of accuracy and completeness. We have hundreds of industry 
+leaders as customers today - many whose names you would 
+recognize.</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+<DIV>
+<P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">If 
+you are interested, we could send you a sample of one of our lists complete with 
+summary information, so that you could evaluate our content. To find out about 
+the various lists we have available, in preparation for any sales or marketing 
+campaigns that your organization may be considering in future, we'd love to hear 
+from you. Or, perhaps you'd be interested in acquiring your competitors' 
+customer lists?</SPAN></FONT></B><FONT face="Courier New" color=black 
+size=2><SPAN 
+style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'">&nbsp;</SPAN></FONT></P></DIV>
+<DIV>
+<P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">If 
+you would like more information, please contact us at (905) 721-8456 or email us 
+at </SPAN></FONT></B><U><FONT face=Arial color=green size=2><SPAN 
+style="FONT-SIZE: 10pt; COLOR: green; FONT-FAMILY: Arial">repharm1-YDxpq3io04c@public.gmane.org</SPAN></FONT></U><FONT 
+face="Courier New" color=black size=2><SPAN 
+style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+<DIV>
+<P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Below 
+are just some of the lists available:</SPAN></FONT></B><FONT face="Courier New" 
+color=black size=2><SPAN 
+style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+<DIV>
+<TABLE class=MsoNormalTable style="BORDER-COLLAPSE: collapse" cellSpacing=0 
+cellPadding=0 border=0>
+  
+  <TR>
+    <TD 
+    style="PADDING-RIGHT: 0in; PADDING-LEFT: 0in; PADDING-BOTTOM: 0in; WIDTH: 221.25pt; PADDING-TOP: 0in" 
+    vAlign=top width=295>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">ERP 
+      (ENTERPRISE RESOURCE PLANNING):</SPAN></FONT></B><FONT face="Courier New" 
+      color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Baan</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">JD 
+      Edwards</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Lawson</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Made2Manage</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Mapics</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Marcam</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Oracle</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Peoplesoft</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">SAP</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">SSA</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">&nbsp;</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">E-BUSINESS 
+      APPLICATIONS:</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Ariba</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">BMC</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">BroadVision</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Commerce 
+      One</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Webtrends</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR><B><SPAN 
+      style="FONT-WEIGHT: bold">&nbsp;</SPAN></B><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">MIDDLEWARE/CONNECTIVITY/APP 
+      SERVERS/WEB SERVERS:</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Bea 
+      Systems</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Iona</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Unisys</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">&nbsp;</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">OPERATING 
+      SYSTEMS/HARDWARE/SOFTWARE:</SPAN></FONT></B><FONT face="Courier New" 
+      color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">COMPAQ</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">HP 
+      3000</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">HP 
+      9000</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">HP-UX</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">IBM 
+      AS/400</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">IBM 
+      OS/390</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Lotus 
+      Notes</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Microsoft</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Sun 
+      Microsystems</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">DATABASE:</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">DB2</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">FileMaker</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Informix</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Oracle</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">SQL</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Sybase</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV></TD>
+    <TD 
+    style="PADDING-RIGHT: 0in; PADDING-LEFT: 0in; PADDING-BOTTOM: 0in; WIDTH: 221.25pt; PADDING-TOP: 0in" 
+    vAlign=top width=295>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">CRM 
+      (CUSTOMER RELATIONSHIP MANAGEMENT):</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Clarify</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">E.piphany</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">HNC</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Onyx</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Pivotal</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Siebel</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier
+       New'"><BR></SPAN></FONT><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Vantive</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Xchange</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">&nbsp;</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">SUPPLY 
+      CHAIN:</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Agile</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">i2 
+      Technologies</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Manugistics</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">QAD</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Webplan</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">COMMUNICATIONS:</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Nortel</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Cisco</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">3com</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Siemens</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Alcatel</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV>
+      <DIV>
+      <P class=MsoNormal><B><FONT face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Telecom 
+      Vars</SPAN></FONT></B><FONT face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">ASP’s</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">CLECS</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">ISP’s</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">&nbsp;</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">E-COMMERCE:</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Dot 
+      Com Directory</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Consultant 
+      Directory</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Software 
+      Directory</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">&nbsp;</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">EXECUTIVE 
+      DIRECTORIES:</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Chief 
+      Executive Officer</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Chief 
+      Financial Officer</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Chief 
+      Information Officer</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Engineering</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Human 
+      Resources</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Purchasing</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Sales/Marketing</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">&nbsp;</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">INDUSTRY 
+      SPECIFIC LISTS:</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Agriculture, 
+      Forestry and Fishing, Communications, Construction,</SPAN></FONT></B><FONT 
+      face="Courier New" color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Finance, 
+      Insurance and Real Estate, Manufacturing, Mining, Public 
+      Administration,</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Retail 
+      Trade, Services, Transportation,</SPAN></FONT></B><FONT face="Courier New" 
+      color=black size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"><BR></SPAN></FONT><B><FONT 
+      face=Arial color=navy size=2><SPAN 
+      style="FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: navy; FONT-FAMILY: Arial">Utilities, 
+      Wholesale Trade</SPAN></FONT></B><FONT face="Courier New" color=black 
+      size=2><SPAN 
+      style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: 'Courier New'"></SPAN></FONT></P></DIV></TD></TR></TABLE></DIV>
+</BODY>
+</HTML>
+------=_NextPart_000_0000_01C6527E.AE8904D0--
+
+
+--===============1658318727821492867==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 SourcForge Community
 SourceForge wants to tell your story.
 http://p.sf.net/sfu/sf-spreadtheword
+--===============1658318727821492867==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1658318727821492867==--

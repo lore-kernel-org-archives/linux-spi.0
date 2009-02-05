@@ -1,46 +1,69 @@
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 5/5] Blackfin SPI Driver: Make mmc_spi driver work on
- Blackfin
-Date: Thu, 5 Feb 2009 14:13:02 -0800
-Message-ID: <20090205141302.be8b3217.akpm@linux-foundation.org>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 3/5] Blackfin SPI Driver: fix NULL
+	pointer crash
+Date: Thu, 5 Feb 2009 17:29:18 -0500
+Message-ID: <8bd0f97a0902051429q2b76c7b7nf4187178b73f979@mail.gmail.com>
 References: <1233828453-13311-1-git-send-email-cooloney@kernel.org>
-	<1233828453-13311-6-git-send-email-cooloney@kernel.org>
+	<1233828453-13311-4-git-send-email-cooloney@kernel.org>
+	<20090205141250.cf66e663.akpm@linux-foundation.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, wolfgang.mues@auerswald.de,
-	yi.li@analog.com, cooloney@kernel.org
-To: Bryan Wu <cooloney@kernel.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755168AbZBEWOM@vger.kernel.org>
-In-Reply-To: <1233828453-13311-6-git-send-email-cooloney@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20090205141250.cf66e663.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu,  5 Feb 2009 18:07:33 +0800
-Bryan Wu <cooloney@kernel.org> wrote:
+On Thu, Feb 5, 2009 at 17:12, Andrew Morton wrote:
+> On Thu,  5 Feb 2009 18:07:31 +0800 Bryan Wu wrote:
+>> From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>> fix NULL pointer crash when cleaning up from invalid platform resources
+>>
+>> Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>> Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+>> ---
+>>  drivers/spi/spi_bfin5xx.c |    3 +++
+>>  1 files changed, 3 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+>> index ce24d5e..b6098b5 100644
+>> --- a/drivers/spi/spi_bfin5xx.c
+>> +++ b/drivers/spi/spi_bfin5xx.c
+>> @@ -1240,6 +1240,9 @@ static void bfin_spi_cleanup(struct spi_device *spi)
+>>  {
+>>       struct chip_data *chip = spi_get_ctldata(spi);
+>>
+>> +     if (!chip)
+>> +             return;
+>> +
+>>       if ((chip->chip_select_num > 0)
+>>               && (chip->chip_select_num <= spi->master->num_chipselect))
+>>               peripheral_free(ssel[spi->master->bus_num]
+>
+> This one looks like 2.6.29 material to me.
+>
+> If you believe that it should be backported to earlier kernels then
+> please let me know.  indicating whcih kernel versions would help things
+> a bit, too.
 
-> 1. Rewrite of the non-dma data transfer functions to use only ONE
-> mode of TIMOD (TIMOD=0x1). With TIMOD=0, it was not possible to set
-> the TX bit pattern. So the TDBR = 0xFFFF inside the read calls won't
-> work.
-> 
-> 2. Clear SPI_RDBR before reading and before duplex transfer. Otherwise
-> the garbage data in RDBR will get read. Since mmc_spi uses a lot of
-> duplex transfers, this is the main cause of mmc_spi failure.
-> 
-> 3. Poll RXS for transfer completion. Polling SPIF or TXS cannot
-> guarantee transfer completion. This may interrupt a transfer before
-> it is finished. Also this may leave garbage data in buffer and
-> affect next transfer.
-> 
-> [Yi Li <yi.li@analog.com>: add a field "u16 idle_tx_val" in "struct
-> bfin5xx_spi_chip" to specify the value to transmit if no TX value
-> is supplied.]
+including with 2.6.29 would be a good thing ... we havent quite synced
+up our development process enough yet to do that kind of tracking, so
+all of our stuff just goes into "the next thing" ...
+-mike
 
-
-again, driver-core has destroyed your patch.
-
-There was no _need_ to take the unusual and undesirable step of
-modifying SPI via an unrelated tree.
+------------------------------------------------------------------------------
+Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
+software. With Adobe AIR, Ajax developers can use existing skills and code to
+build responsive, highly engaging applications that combine the power of local
+resources and data with the reach of the web. Download the Adobe AIR SDK and
+Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com

@@ -1,12 +1,22 @@
-From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 本司有多余税票代开，税点特优，可验证后付款
-Date: Thu, 5 Feb 2009 15:56:19 +0800
-Message-ID: <E1LUz3A-0007yl-K3@335xhf1.ch3.sourceforge.com>
+From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 01/16] Blackfin SPI Driver: ensure
+	cache coherency before doing DMA
+Date: Thu, 5 Feb 2009 17:30:06 +0800
+Message-ID: <386072610902050130k27c6d7far752ac49183bf36ae@mail.gmail.com>
+References: <1226994760-4301-1-git-send-email-cooloney@kernel.org>
+	<200811201347.46355.david-b@pacbell.net>
+	<8bd0f97a0811201357g1ffeb7d3pfad6e178fb20050e@mail.gmail.com>
+	<200811201405.06811.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Vitja Makarov <vitja.makarov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <200811201405.06811.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,27 +27,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
-vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
-1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
-uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
-xrG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
-uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/qsax19y98Lbu
-tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rGsdXm
-yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
-7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
-o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
-z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
-yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDcmVhdGUgYW5kIERlcGxveSBSaWNoIEludGVybmV0IEFw
-cHMgb3V0c2lkZSB0aGUgYnJvd3NlciB3aXRoIEFkb2JlKFIpQUlSKFRNKQpzb2Z0d2FyZS4gV2l0
-aCBBZG9iZSBBSVIsIEFqYXggZGV2ZWxvcGVycyBjYW4gdXNlIGV4aXN0aW5nIHNraWxscyBhbmQg
-Y29kZSB0bwpidWlsZCByZXNwb25zaXZlLCBoaWdobHkgZW5nYWdpbmcgYXBwbGljYXRpb25zIHRo
-YXQgY29tYmluZSB0aGUgcG93ZXIgb2YgbG9jYWwKcmVzb3VyY2VzIGFuZCBkYXRhIHdpdGggdGhl
-IHJlYWNoIG9mIHRoZSB3ZWIuIERvd25sb2FkIHRoZSBBZG9iZSBBSVIgU0RLIGFuZApBamF4IGRv
-Y3MgdG8gc3RhcnQgYnVpbGRpbmcgYXBwbGljYXRpb25zIHRvZGF5LWh0dHA6Ly9wLnNmLm5ldC9z
-ZnUvYWRvYmUtY29tCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Fri, Nov 21, 2008 at 6:05 AM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> On Thursday 20 November 2008, Mike Frysinger wrote:
+>> On Thu, Nov 20, 2008 at 16:47, David Brownell wrote:
+>
+>> > Basically, dma_map_single(), dma_unmap_single() ... and
+>> > remember that the caller may have done the mappings for
+>> > you already.
+>>
+>> these arent required to provide coherent memory right ?  if that's the
+>> case, i can take a look at getting things updated.
+>
+> Right.  If caller provides dma-coherent memory to you, they
+> must also have provided the DMA addresses the controller
+> driver should be using ... so you won't need dma mapping
+> calls on those paths.
+>
+>
+>> > It'd be nice if one of patches snuck in a comment on that
+>> > point:  "Full duplex only works for non-DMA transfers."
+>> > Same rationale:  you may know this hardware inside out,
+>> > but the next person won't.
+>>
+>> well, hopefully if they dont know they wont be touching the driver ;).
+>>  i'll add a comment in this code chunk.  thanks for the feedback.
+>
+> The way it usually works is someone observes a problem and
+> then starts experimenting on relevant code.  So they learn
+> a bit while debugging ... and code authors/maintainers need
+> to keep that learning curve from being too steep.  ;)
+>
+> - Dave
+>
+>
+
+Hi Dave,
+
+As you acked this patchset, is that possible to merge it?
+Or need Andrew to keep them in -mm for a while.
+
+Thanks
+-Bryan
+
+------------------------------------------------------------------------------
+Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
+software. With Adobe AIR, Ajax developers can use existing skills and code to
+build responsive, highly engaging applications that combine the power of local
+resources and data with the reach of the web. Download the Adobe AIR SDK and
+Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com

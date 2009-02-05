@@ -1,41 +1,65 @@
-From: Bryan Wu <cooloney@kernel.org>
-Subject: [PATCH 3/5] Blackfin SPI Driver: fix NULL pointer crash
-Date: Thu,  5 Feb 2009 18:07:31 +0800
-Message-ID: <1233828453-13311-4-git-send-email-cooloney@kernel.org>
-References: <1233828453-13311-1-git-send-email-cooloney@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	Mike Frysinger <vapier.adi@gmail.com>,
-	Bryan Wu <cooloney@kernel.org>
-To: dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1759675AbZBEKG4@vger.kernel.org>
-In-Reply-To: <1233828453-13311-1-git-send-email-cooloney@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 0/2] Introduce SPI locking bus
+	interface to SPI framework
+Date: Thu, 5 Feb 2009 22:34:52 +0800
+Message-ID: <386072610902050634re64d415k3f612eaebe817a10@mail.gmail.com>
+References: <1226995067-4484-1-git-send-email-cooloney@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1226995067-4484-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Mike Frysinger <vapier.adi@gmail.com>
+Hi Dave,
 
-fix NULL pointer crash when cleaning up from invalid platform resources
+Could you please take a look at these 2 patches?
 
-Signed-off-by: Mike Frysinger <vapier.adi@gmail.com>
-Signed-off-by: Bryan Wu <cooloney@kernel.org>
----
- drivers/spi/spi_bfin5xx.c |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+Thanks
+-Bryan
 
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index ce24d5e..b6098b5 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -1240,6 +1240,9 @@ static void bfin_spi_cleanup(struct spi_device *spi)
- {
- 	struct chip_data *chip = spi_get_ctldata(spi);
- 
-+	if (!chip)
-+		return;
-+
- 	if ((chip->chip_select_num > 0)
- 		&& (chip->chip_select_num <= spi->master->num_chipselect))
- 		peripheral_free(ssel[spi->master->bus_num]
--- 
-1.5.6.3
+On Tue, Nov 18, 2008 at 3:57 PM, Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>
+> Hi Dave,
+>
+> Yi introduced SPI locking bus interface to SPI framework. This is
+> required by some SPI devices in bus sharing situation, for example,
+> the MMC card driver over SPI.
+>
+> We also use this API in our Blackfin SPI master driver and tested on
+> our own MMC over SPI driver. Since that MMC over SPI driver is different
+> with the mainline version, we will try to bring up the MMC_SPI driver by
+> adding these new SPI locking bus API.
+>
+> Please kindly review.
+>
+> Thanks
+> -Bryan
+>
+> -------------------------------------------------------------------------
+> This SF.Net email is sponsored by the Moblin Your Move Developer's challenge
+> Build the coolest Linux based applications with Moblin SDK & win great prizes
+> Grand prize is a trip for two to an Open Source event anywhere in the world
+> http://moblin-contest.org/redirect.php?banner_id=100&url=/
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+>
+
+------------------------------------------------------------------------------
+Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
+software. With Adobe AIR, Ajax developers can use existing skills and code to
+build responsive, highly engaging applications that combine the power of local
+resources and data with the reach of the web. Download the Adobe AIR SDK and
+Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com

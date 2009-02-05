@@ -1,69 +1,40 @@
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 3/5] Blackfin SPI Driver: fix NULL
-	pointer crash
-Date: Thu, 5 Feb 2009 17:29:18 -0500
-Message-ID: <8bd0f97a0902051429q2b76c7b7nf4187178b73f979@mail.gmail.com>
-References: <1233828453-13311-1-git-send-email-cooloney@kernel.org>
-	<1233828453-13311-4-git-send-email-cooloney@kernel.org>
-	<20090205141250.cf66e663.akpm@linux-foundation.org>
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: [PATCH 01/16] Blackfin SPI Driver: ensure cache coherency before  doing DMA
+Date: Thu, 5 Feb 2009 15:51:13 -0800
+Message-ID: <200902051551.14146.david-b@pacbell.net>
+References: <1226994760-4301-1-git-send-email-cooloney@kernel.org> <200811201405.06811.david-b@pacbell.net> <386072610902050130k27c6d7far752ac49183bf36ae@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090205141250.cf66e663.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Mike Frysinger <vapier.adi@gmail.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Vitja Makarov <vitja.makarov@gmail.com>
+To: Bryan Wu <cooloney@kernel.org>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755983AbZBEXv1@vger.kernel.org>
+In-Reply-To: <386072610902050130k27c6d7far752ac49183bf36ae@mail.gmail.com>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Feb 5, 2009 at 17:12, Andrew Morton wrote:
-> On Thu,  5 Feb 2009 18:07:31 +0800 Bryan Wu wrote:
->> From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> fix NULL pointer crash when cleaning up from invalid platform resources
->>
->> Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
->> ---
->>  drivers/spi/spi_bfin5xx.c |    3 +++
->>  1 files changed, 3 insertions(+), 0 deletions(-)
->>
->> diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
->> index ce24d5e..b6098b5 100644
->> --- a/drivers/spi/spi_bfin5xx.c
->> +++ b/drivers/spi/spi_bfin5xx.c
->> @@ -1240,6 +1240,9 @@ static void bfin_spi_cleanup(struct spi_device *spi)
->>  {
->>       struct chip_data *chip = spi_get_ctldata(spi);
->>
->> +     if (!chip)
->> +             return;
->> +
->>       if ((chip->chip_select_num > 0)
->>               && (chip->chip_select_num <= spi->master->num_chipselect))
->>               peripheral_free(ssel[spi->master->bus_num]
->
-> This one looks like 2.6.29 material to me.
->
-> If you believe that it should be backported to earlier kernels then
-> please let me know.  indicating whcih kernel versions would help things
-> a bit, too.
+On Thursday 05 February 2009, Bryan Wu wrote:
+> As you acked this patchset, is that possible to merge it?
+> Or need Andrew to keep them in -mm for a while.
 
-including with 2.6.29 would be a good thing ... we havent quite synced
-up our development process enough yet to do that kind of tracking, so
-all of our stuff just goes into "the next thing" ...
--mike
+ISTR *NOT* acking the whole series though.  In fact, I recall
+giving a generic NAK part way through because of patches that
+didn't include comments (after manually NAKing many individual
+patches) and ones where $SUBJECT didn't match the patch comments.
+Plus even a few which seemed to be wrong.
 
-------------------------------------------------------------------------------
-Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
-software. With Adobe AIR, Ajax developers can use existing skills and code to
-build responsive, highly engaging applications that combine the power of local
-resources and data with the reach of the web. Download the Adobe AIR SDK and
-Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
+(And I've said the same thing about Blackfin patches before,
+too.  Please help the message get through to your co-workers:
+make sure the patches come with useful public descriptions.)
+
+At this point, best to resend the whole series, with the
+updates I requested.  The few patches which I did ack can
+include that ack.
+
+- Dave

@@ -1,12 +1,11 @@
-From: David LAMPARTER <lists-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
-Subject: [ANNOUNCE] ftdi_spi FT2232 SPI master driver
-Date: Wed, 04 Feb 2009 23:45:55 +0100
-Message-ID: <1233787555.8074.28.camel@arkology.n2.diac24.net>
+From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 本司有多余税票代开，税点特优，可验证后付款
+Date: Thu, 5 Feb 2009 15:56:19 +0800
+Message-ID: <E1LUz3A-0007yl-K3@335xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,42 +17,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi all,
-
-
-I just hacked up a SPI master driver for FTDI's FT2232(C/D/L)
-USB-to-serial converter chip. It uses this chip's special
-"MPSSE" (multiprotocol serial something engine).
-
-Driver is, well, a hack for now. As you can see from the code, I tested
-it with an AT45DB161D flash device; it works pretty fine.
-
-The driver can be found at
-http://git.spaceboyz.net/?p=equinox/ftdi_spi.git;a=summary
-
-and should work with any recent kernel; you might want to edit the
-source though - for now it always puts an AT45DB161D device at CS# pin
-4. I figure I need a way to tell the driver what SPI devices to attach;
-I got started putting some device attributes but I'm not too sure if
-this is a good way to go.
-
-This is my first driver, created with some copy&pasting from ftdi_sio,
-few bits from atmel_spi and some lines from libftdi; feedback *very*
-welcome. Only SPI mode 0 is tested really, I'm to confused to figure out
-the proper engine commands for the other modes. (I might have gotten
-Mode 2 right, the others are probably wrong.)
-
-(Actually - is anyone even interested in this? I figure this driver
-isn't much use to anybody except maybe embedded systems developers.)
-
-
--David
-
-
-
-------------------------------------------------------------------------------
-Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
-software. With Adobe AIR, Ajax developers can use existing skills and code to
-build responsive, highly engaging applications that combine the power of local
-resources and data with the reach of the web. Download the Adobe AIR SDK and
-Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
+ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
+vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
+1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
+uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
+xrG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
+uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/qsax19y98Lbu
+tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rGsdXm
+yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
+7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
+o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
+z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
+yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDcmVhdGUgYW5kIERlcGxveSBSaWNoIEludGVybmV0IEFw
+cHMgb3V0c2lkZSB0aGUgYnJvd3NlciB3aXRoIEFkb2JlKFIpQUlSKFRNKQpzb2Z0d2FyZS4gV2l0
+aCBBZG9iZSBBSVIsIEFqYXggZGV2ZWxvcGVycyBjYW4gdXNlIGV4aXN0aW5nIHNraWxscyBhbmQg
+Y29kZSB0bwpidWlsZCByZXNwb25zaXZlLCBoaWdobHkgZW5nYWdpbmcgYXBwbGljYXRpb25zIHRo
+YXQgY29tYmluZSB0aGUgcG93ZXIgb2YgbG9jYWwKcmVzb3VyY2VzIGFuZCBkYXRhIHdpdGggdGhl
+IHJlYWNoIG9mIHRoZSB3ZWIuIERvd25sb2FkIHRoZSBBZG9iZSBBSVIgU0RLIGFuZApBamF4IGRv
+Y3MgdG8gc3RhcnQgYnVpbGRpbmcgYXBwbGljYXRpb25zIHRvZGF5LWh0dHA6Ly9wLnNmLm5ldC9z
+ZnUvYWRvYmUtY29tCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
+cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
+dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

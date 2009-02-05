@@ -1,40 +1,45 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH 01/16] Blackfin SPI Driver: ensure cache coherency before  doing DMA
-Date: Thu, 5 Feb 2009 15:51:13 -0800
-Message-ID: <200902051551.14146.david-b@pacbell.net>
-References: <1226994760-4301-1-git-send-email-cooloney@kernel.org> <200811201405.06811.david-b@pacbell.net> <386072610902050130k27c6d7far752ac49183bf36ae@mail.gmail.com>
+From: Mordecai Harrold <juckel-hennef-zqRNUXuvxA0b1SvskN2V4Q@public.gmane.org>
+Subject: [SPAM] Online-Based Part Time Job Available
+Date: Fri, 6 Feb 2009 09:04:09 +1100
+Message-ID: <38626.4448789463$1233883817@news.gmane.org>
+Reply-To: Mordecai Harrold <bonefont.eulia1721-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Mike Frysinger <vapier.adi@gmail.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Vitja Makarov <vitja.makarov@gmail.com>
-To: Bryan Wu <cooloney@kernel.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755983AbZBEXv1@vger.kernel.org>
-In-Reply-To: <386072610902050130k27c6d7far752ac49183bf36ae@mail.gmail.com>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 05 February 2009, Bryan Wu wrote:
-> As you acked this patchset, is that possible to merge it?
-> Or need Andrew to keep them in -mm for a while.
+Hi,
 
-ISTR *NOT* acking the whole series though.  In fact, I recall
-giving a generic NAK part way through because of patches that
-didn't include comments (after manually NAKing many individual
-patches) and ones where $SUBJECT didn't match the patch comments.
-Plus even a few which seemed to be wrong.
+Our organization starts recruiting employees willing to take part in
+well-paying research studies conducted by leading online businesses. 
+Your opinion as a consumer is important for the success and profitability of
+many business ventures. 
 
-(And I've said the same thing about Blackfin patches before,
-too.  Please help the message get through to your co-workers:
-make sure the patches come with useful public descriptions.)
+You can earn very well for participating in on-line surveys, focus group
+discussions, and product/service evaluations. 
 
-At this point, best to resend the whole series, with the
-updates I requested.  The few patches which I did ack can
-include that ack.
+If you want to become one of our highly valued survey takers, please write
+back to ednadense1980-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and I will send you more information.
 
-- Dave
+Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
+
+Sincerely,
+
+Ann Stevenson
+Assistant HR
+------------------------------------------------------------------------------
+Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
+software. With Adobe AIR, Ajax developers can use existing skills and code to
+build responsive, highly engaging applications that combine the power of local
+resources and data with the reach of the web. Download the Adobe AIR SDK and
+Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com

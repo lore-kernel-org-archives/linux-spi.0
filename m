@@ -1,14 +1,14 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 04/20] Blackfin SPI Driver: use
-	len_in_bytes when we care about the number of bytes transferred
-Date: Fri,  6 Feb 2009 15:12:52 +0800
-Message-ID: <1233904388-5765-5-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 15/20] Blackfin SPI Driver: fix bug -
+	spi controller driver does not assert/deassert CS correctly
+Date: Fri,  6 Feb 2009 15:13:03 +0800
+Message-ID: <1233904388-5765-16-git-send-email-cooloney@kernel.org>
 References: <1233904388-5765-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1233904388-5765-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -22,50 +22,61 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Use len_in_bytes when we care about the number of bytes transferred
-rather than the number of spi transactions. (this value will be the
-same for 8bit transfers, but not any other sizes)
+This bug can be observed when two SPI devices are sharing the spi bus:
+One device is set as SPI CS 7, another one is using SPI CS 4.
 
-Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In spi_bfin5xx.c: cs_active(), cs_deactive() are used to control SPI_FLG
+register. From the debug bellow:
+
+cs_active: flag: 0x7f91, chip->flag: 0x7f80, cs: 7
+cs_active: flag: 0xef91, chip->flag: 0xef10, cs: 4
+
+When device A (cs_7) activate CS 7, SPI_FLG is set as 0x7f91 (however,
+SPI_FLG should be set as 0x7f80, or 0x6f91 if in broadcast mode).
+
+Due to some HW bug (very possibly), if SPI_FLG is set as 0x7f91,
+SPISSEL7 is asserted, however SPISSEL4 will be asserted too (I can see
+this using the scope). This is unreasonable according to HRM.
+
+Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 1e046b1..4a67770 100644
+index d8c4be1..ed6a4c1 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -804,7 +804,7 @@ static void pump_transfers(unsigned long data)
- 			if (bfin_addr_dcachable((unsigned long) drv_data->rx))
- 				invalidate_dcache_range((unsigned long) drv_data->rx,
- 							(unsigned long) (drv_data->rx +
--							drv_data->len));
-+							drv_data->len_in_bytes));
+@@ -189,6 +189,7 @@ static void cs_deactive(struct driver_data *drv_data, struct chip_data *chip)
+ {
+ 	u16 flag = read_FLAG(drv_data);
  
- 			/* clear tx reg soformer data is not shifted out */
- 			write_TDBR(drv_data, 0xFFFF);
-@@ -830,7 +830,7 @@ static void pump_transfers(unsigned long data)
- 			if (bfin_addr_dcachable((unsigned long) drv_data->tx))
- 				flush_dcache_range((unsigned long) drv_data->tx,
- 						(unsigned long) (drv_data->tx +
--						drv_data->len));
-+						drv_data->len_in_bytes));
++	flag &= ~chip->flag;
+ 	flag |= (chip->flag << 8);
  
- 			/* start dma */
- 			dma_enable_irq(drv_data->dma_channel);
-@@ -893,7 +893,7 @@ static void pump_transfers(unsigned long data)
- 			message->state = ERROR_STATE;
- 		} else {
- 			/* Update total byte transfered */
--			message->actual_length += drv_data->len;
-+			message->actual_length += drv_data->len_in_bytes;
+ 	write_FLAG(drv_data, flag);
+@@ -1036,7 +1037,6 @@ static int setup(struct spi_device *spi)
+ 	struct bfin5xx_spi_chip *chip_info = NULL;
+ 	struct chip_data *chip;
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
+-	u8 spi_flg;
  
- 			/* Move to next transfer of this msg */
- 			message->state = next_transfer(drv_data);
+ 	/* Abort device setup if requested features are not supported */
+ 	if (spi->mode & ~(SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST)) {
+@@ -1119,8 +1119,7 @@ static int setup(struct spi_device *spi)
+ 	 * SPI_BAUD, not the real baudrate
+ 	 */
+ 	chip->baud = hz_to_spi_baud(spi->max_speed_hz);
+-	spi_flg = ~(1 << (spi->chip_select));
+-	chip->flag = ((u16) spi_flg << 8) | (1 << (spi->chip_select));
++	chip->flag = 1 << (spi->chip_select);
+ 	chip->chip_select_num = spi->chip_select;
+ 
+ 	switch (chip->bits_per_word) {
 -- 
 1.5.6.3
 

@@ -1,8 +1,8 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 07/20] Blackfin SPI Driver: drop bogus
-	cast and touchup dma label
-Date: Fri,  6 Feb 2009 15:12:55 +0800
-Message-ID: <1233904388-5765-8-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 09/20] Blackfin SPI Driver: do not check
+	for SPI errors if DMA itself did not flag any
+Date: Fri,  6 Feb 2009 15:12:57 +0800
+Message-ID: <1233904388-5765-10-git-send-email-cooloney@kernel.org>
 References: <1233904388-5765-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,37 +24,28 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Blackfin's related DMA callback API doesn't need void * cast, so drop it.
-And this driver is for all Blackfin processors not only for BF53x, we
-update the DMA request label for more meaningful information.
+We only need to check SPI error when DMA failes, cause that
+is the DMA IRQ handling routine.
 
 Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index acb9739..459ec36 100644
+index 7652da8..f7a4b5b 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -1077,13 +1077,13 @@ static int setup(struct spi_device *spi)
- 	 */
- 	if (chip->enable_dma && !drv_data->dma_requested) {
- 		/* register dma irq handler */
--		if (request_dma(drv_data->dma_channel, "BF53x_SPI_DMA") < 0) {
-+		if (request_dma(drv_data->dma_channel, "BFIN_SPI_DMA") < 0) {
- 			dev_dbg(&spi->dev,
- 				"Unable to request BlackFin SPI DMA channel\n");
- 			return -ENODEV;
- 		}
- 		if (set_dma_callback(drv_data->dma_channel,
--			(void *)dma_irq_handler, drv_data) < 0) {
-+		    dma_irq_handler, drv_data) < 0) {
- 			dev_dbg(&spi->dev, "Unable to set dma callback\n");
- 			return -EPERM;
- 		}
+@@ -587,7 +587,7 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
+ 	while (!(read_STAT(drv_data) & SPIF))
+ 		cpu_relax();
+ 
+-	if (spistat & RBSY) {
++	if ((dmastat & DMA_ERR) && (spistat & RBSY)) {
+ 		msg->state = ERROR_STATE;
+ 		dev_err(&drv_data->pdev->dev, "dma receive: fifo/buffer overflow\n");
+ 	} else {
 -- 
 1.5.6.3
 

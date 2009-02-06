@@ -1,8 +1,8 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 05/20] Blackfin SPI Driver: pass DMA
-	overflow error to the higher level
-Date: Fri,  6 Feb 2009 15:12:53 +0800
-Message-ID: <1233904388-5765-6-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 07/20] Blackfin SPI Driver: drop bogus
+	cast and touchup dma label
+Date: Fri,  6 Feb 2009 15:12:55 +0800
+Message-ID: <1233904388-5765-8-git-send-email-cooloney@kernel.org>
 References: <1233904388-5765-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,52 +24,37 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-If the SPI bus registers a receive overflow error,
-pass the result back up to the higher levels.
+Blackfin's related DMA callback API doesn't need void * cast, so drop it.
+And this driver is for all Blackfin processors not only for BF53x, we
+update the DMA request label for more meaningful information.
 
 Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   16 +++++++++++-----
- 1 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 4a67770..3945b59 100644
+index acb9739..459ec36 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -559,6 +559,7 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
- 	struct driver_data *drv_data = dev_id;
- 	struct chip_data *chip = drv_data->cur_chip;
- 	struct spi_message *msg = drv_data->cur_msg;
-+	u16 spistat = read_STAT(drv_data);
- 
- 	dev_dbg(&drv_data->pdev->dev, "in dma_irq_handler\n");
- 	clear_dma_irqstat(drv_data->dma_channel);
-@@ -582,13 +583,18 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
- 	while (!(read_STAT(drv_data) & SPIF))
- 		cpu_relax();
- 
--	msg->actual_length += drv_data->len_in_bytes;
-+	if (spistat & RBSY) {
-+		msg->state = ERROR_STATE;
-+		dev_err(&drv_data->pdev->dev, "dma receive: fifo/buffer overflow\n");
-+	} else {
-+		msg->actual_length += drv_data->len_in_bytes;
- 
--	if (drv_data->cs_change)
--		cs_deactive(drv_data, chip);
-+		if (drv_data->cs_change)
-+			cs_deactive(drv_data, chip);
- 
--	/* Move to next transfer */
--	msg->state = next_transfer(drv_data);
-+		/* Move to next transfer */
-+		msg->state = next_transfer(drv_data);
-+	}
- 
- 	/* Schedule transfer tasklet */
- 	tasklet_schedule(&drv_data->pump_transfers);
+@@ -1077,13 +1077,13 @@ static int setup(struct spi_device *spi)
+ 	 */
+ 	if (chip->enable_dma && !drv_data->dma_requested) {
+ 		/* register dma irq handler */
+-		if (request_dma(drv_data->dma_channel, "BF53x_SPI_DMA") < 0) {
++		if (request_dma(drv_data->dma_channel, "BFIN_SPI_DMA") < 0) {
+ 			dev_dbg(&spi->dev,
+ 				"Unable to request BlackFin SPI DMA channel\n");
+ 			return -ENODEV;
+ 		}
+ 		if (set_dma_callback(drv_data->dma_channel,
+-			(void *)dma_irq_handler, drv_data) < 0) {
++		    dma_irq_handler, drv_data) < 0) {
+ 			dev_dbg(&spi->dev, "Unable to set dma callback\n");
+ 			return -EPERM;
+ 		}
 -- 
 1.5.6.3
 

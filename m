@@ -1,8 +1,8 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 03/20] Blackfin SPI Driver: remove
-	useless <asm/cplbinit.h>
-Date: Fri,  6 Feb 2009 15:12:51 +0800
-Message-ID: <1233904388-5765-4-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 18/20] Blackfin SPI Driver: fix NULL
+	pointer crash
+Date: Fri,  6 Feb 2009 15:13:06 +0800
+Message-ID: <1233904388-5765-19-git-send-email-cooloney@kernel.org>
 References: <1233904388-5765-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,30 +24,28 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-We already moved bfin_addr_dcachable() and friends into the cacheflush
-header where it belongs, so don't need to include <asm/cplbinit.h> here.
+fix NULL pointer crash when cleaning up from invalid platform resources
 
 Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    3 ---
- 1 files changed, 0 insertions(+), 3 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index f2e18f7..1e046b1 100644
+index f9e1fbc..9459c42 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -25,9 +25,6 @@
- #include <asm/dma.h>
- #include <asm/portmux.h>
- #include <asm/bfin5xx_spi.h>
--
--/* reserved_mem_dcache_on and cache friends */
--#include <asm/cplbinit.h>
- #include <asm/cacheflush.h>
+@@ -1178,6 +1178,9 @@ static void bfin_spi_cleanup(struct spi_device *spi)
+ {
+ 	struct chip_data *chip = spi_get_ctldata(spi);
  
- #define DRV_NAME	"bfin-spi"
++	if (!chip)
++		return;
++
+ 	if ((chip->chip_select_num > 0)
+ 		&& (chip->chip_select_num <= spi->master->num_chipselect))
+ 		peripheral_free(ssel[spi->master->bus_num]
 -- 
 1.5.6.3
 

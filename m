@@ -1,8 +1,8 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 08/20] Blackfin SPI Driver: add a few
-	more DMA debug messages
-Date: Fri,  6 Feb 2009 15:12:56 +0800
-Message-ID: <1233904388-5765-9-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 14/20] Blackfin SPI Driver: tweak magic
+	spi dma sequence to get it working on BF54x
+Date: Fri,  6 Feb 2009 15:13:02 +0800
+Message-ID: <1233904388-5765-15-git-send-email-cooloney@kernel.org>
 References: <1233904388-5765-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,69 +24,30 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Because of DMA hardware issue, we were trying to use software workaround.
-This patch add some useful debug messages to help us debugging the DMA
-code.
+Without this changes, SPI DMA is not reliably under stress tests.
+Obiviously it's a hardware issue which is not addressed by any document.
 
 Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   12 ++++++++++--
- 1 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 459ec36..7652da8 100644
+index 748e98f..d8c4be1 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -559,9 +559,13 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
- 	struct driver_data *drv_data = dev_id;
- 	struct chip_data *chip = drv_data->cur_chip;
- 	struct spi_message *msg = drv_data->cur_msg;
-+	unsigned short dmastat = get_dma_curr_irqstat(drv_data->dma_channel);
- 	u16 spistat = read_STAT(drv_data);
+@@ -862,8 +862,9 @@ static void pump_transfers(unsigned long data)
+ 		set_dma_start_addr(drv_data->dma_channel, dma_start_addr);
+ 		set_dma_config(drv_data->dma_channel, dma_config);
+ 		local_irq_save(flags);
+-		enable_dma(drv_data->dma_channel);
++		SSYNC();
+ 		write_CTRL(drv_data, cr);
++		enable_dma(drv_data->dma_channel);
+ 		dma_enable_irq(drv_data->dma_channel);
+ 		local_irq_restore(flags);
  
--	dev_dbg(&drv_data->pdev->dev, "in dma_irq_handler\n");
-+	dev_dbg(&drv_data->pdev->dev,
-+		"in dma_irq_handler dmastat:0x%x spistat:0x%x\n",
-+		dmastat, spistat);
-+
- 	clear_dma_irqstat(drv_data->dma_channel);
- 
- 	/* Wait for DMA to complete */
-@@ -631,6 +635,7 @@ static void pump_transfers(unsigned long data)
- 
- 	 /* Handle for abort */
- 	if (message->state == ERROR_STATE) {
-+		dev_dbg(&drv_data->pdev->dev, "transfer: we've hit an error\n");
- 		message->status = -EIO;
- 		giveback(drv_data);
- 		return;
-@@ -638,6 +643,7 @@ static void pump_transfers(unsigned long data)
- 
- 	/* Handle end of message */
- 	if (message->state == DONE_STATE) {
-+		dev_dbg(&drv_data->pdev->dev, "transfer: all done!\n");
- 		message->status = 0;
- 		giveback(drv_data);
- 		return;
-@@ -645,6 +651,7 @@ static void pump_transfers(unsigned long data)
- 
- 	/* Delay if requested at end of transfer */
- 	if (message->state == RUNNING_STATE) {
-+		dev_dbg(&drv_data->pdev->dev, "transfer: still running ...\n");
- 		previous = list_entry(transfer->transfer_list.prev,
- 				      struct spi_transfer, transfer_list);
- 		if (previous->delay_usecs)
-@@ -806,7 +813,8 @@ static void pump_transfers(unsigned long data)
- 		dma_config = (RESTART | dma_width | DI_EN);
- 		if (drv_data->rx != NULL) {
- 			/* set transfer mode, and enable SPI */
--			dev_dbg(&drv_data->pdev->dev, "doing DMA in.\n");
-+			dev_dbg(&drv_data->pdev->dev, "doing DMA in to %p (size %zx)\n",
-+				drv_data->rx, drv_data->len_in_bytes);
- 
- 			/* invalidate caches, if needed */
- 			if (bfin_addr_dcachable((unsigned long) drv_data->rx))
 -- 
 1.5.6.3
 

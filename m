@@ -1,20 +1,14 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [PATCH 1/5] Blackfin SPI Driver: use
- bfin_spi_ prefix on all functions
-Date: Thu, 5 Feb 2009 18:47:35 -0800
-Message-ID: <20090205184735.f82c8bc3.akpm@linux-foundation.org>
-References: <1233828453-13311-1-git-send-email-cooloney@kernel.org>
-	<1233828453-13311-2-git-send-email-cooloney@kernel.org>
-	<20090205141245.2945141e.akpm@linux-foundation.org>
-	<20090206133436.199d9282.sfr@canb.auug.org.au>
+From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 00/20] Blackfin SPI Driver fixing and
+	updates
+Date: Fri,  6 Feb 2009 15:12:48 +0800
+Message-ID: <1233904388-5765-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090206133436.199d9282.sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,27 +19,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 6 Feb 2009 13:34:36 +1100 Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org> wrote:
 
-> Hi Andrew,
-> 
-> On Thu, 5 Feb 2009 14:12:45 -0800 Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org> wrote:
-> >
-> > As usual, the driver core guys have gone trompling all over other people's code
-> > and your patch doesn't apply to linux-next.
-> > 
-> > 11 out of 61 hunks FAILED -- saving rejects to file drivers/spi/spi_bfin5xx.c.rej
-> 
-> To be fair
+Dear David and Andrew,
 
-no, they don't deserve it!  They just got lucky this time ;)
+I updates this whole Blackfin SPI Driver patches (20 patches) as we
+discussed in LKML.
 
->, next-20090206 has one patch to that file it is a single hunk
-> and only affects 2 lines and the patch was cc'd to the spi folks (I can't
-> easily tell when as the driver-core stuff (being a quilt tree) gets
-> rebased often).
+Normally updates the comments and fold patch "Blackfin SPI Driver: add
+comment about full duplex dma according to David Brownell" to
+"Blackfin SPI Driver: ensure cache coherency before doing DMA".
 
-yup.
+Thanks a lot
+-Bryan
 
 ------------------------------------------------------------------------------
 Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)

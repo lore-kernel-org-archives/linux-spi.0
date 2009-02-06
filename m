@@ -1,14 +1,14 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 02/20] Blackfin SPI Driver: Fix
-	erroneous SPI Clock divisor calculation
-Date: Fri,  6 Feb 2009 15:12:50 +0800
-Message-ID: <1233904388-5765-3-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 03/20] Blackfin SPI Driver: remove
+	useless <asm/cplbinit.h>
+Date: Fri,  6 Feb 2009 15:12:51 +0800
+Message-ID: <1233904388-5765-4-git-send-email-cooloney@kernel.org>
 References: <1233904388-5765-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+	Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1233904388-5765-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -22,47 +22,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Fix erroneous SPI Clock divisor calculation. Make sure SPI_BAUD is
-always >= 2. Writing a value of 0 or 1 to the SPI_BAUD register disables
-the serial clock.
+We already moved bfin_addr_dcachable() and friends into the cacheflush
+header where it belongs, so don't need to include <asm/cplbinit.h> here.
 
-Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- arch/blackfin/include/asm/bfin5xx_spi.h |    2 ++
- drivers/spi/spi_bfin5xx.c               |    3 +++
- 2 files changed, 5 insertions(+), 0 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
 
-diff --git a/arch/blackfin/include/asm/bfin5xx_spi.h b/arch/blackfin/include/asm/bfin5xx_spi.h
-index 1306e6b..e1bb164 100644
---- a/arch/blackfin/include/asm/bfin5xx_spi.h
-+++ b/arch/blackfin/include/asm/bfin5xx_spi.h
-@@ -11,6 +11,8 @@
- #ifndef _SPI_CHANNEL_H_
- #define _SPI_CHANNEL_H_
- 
-+#define MIN_SPI_BAUD_VAL	2
-+
- #define SPI_READ              0
- #define SPI_WRITE             1
- 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 590f975..f2e18f7 100644
+index f2e18f7..1e046b1 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -158,6 +158,9 @@ static u16 hz_to_spi_baud(u32 speed_hz)
- 	if ((sclk % (2 * speed_hz)) > 0)
- 		spi_baud++;
+@@ -25,9 +25,6 @@
+ #include <asm/dma.h>
+ #include <asm/portmux.h>
+ #include <asm/bfin5xx_spi.h>
+-
+-/* reserved_mem_dcache_on and cache friends */
+-#include <asm/cplbinit.h>
+ #include <asm/cacheflush.h>
  
-+	if (spi_baud < MIN_SPI_BAUD_VAL)
-+		spi_baud = MIN_SPI_BAUD_VAL;
-+
- 	return spi_baud;
- }
- 
+ #define DRV_NAME	"bfin-spi"
 -- 
 1.5.6.3
 

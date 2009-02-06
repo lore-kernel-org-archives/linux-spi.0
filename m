@@ -1,8 +1,8 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 18/20] Blackfin SPI Driver: fix NULL
-	pointer crash
-Date: Fri,  6 Feb 2009 15:13:06 +0800
-Message-ID: <1233904388-5765-19-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 05/20] Blackfin SPI Driver: pass DMA
+	overflow error to the higher level
+Date: Fri,  6 Feb 2009 15:12:53 +0800
+Message-ID: <1233904388-5765-6-git-send-email-cooloney@kernel.org>
 References: <1233904388-5765-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,28 +24,52 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-fix NULL pointer crash when cleaning up from invalid platform resources
+If the SPI bus registers a receive overflow error,
+pass the result back up to the higher levels.
 
 Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   16 +++++++++++-----
+ 1 files changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index f9e1fbc..9459c42 100644
+index 4a67770..3945b59 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -1178,6 +1178,9 @@ static void bfin_spi_cleanup(struct spi_device *spi)
- {
- 	struct chip_data *chip = spi_get_ctldata(spi);
+@@ -559,6 +559,7 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
+ 	struct driver_data *drv_data = dev_id;
+ 	struct chip_data *chip = drv_data->cur_chip;
+ 	struct spi_message *msg = drv_data->cur_msg;
++	u16 spistat = read_STAT(drv_data);
  
-+	if (!chip)
-+		return;
-+
- 	if ((chip->chip_select_num > 0)
- 		&& (chip->chip_select_num <= spi->master->num_chipselect))
- 		peripheral_free(ssel[spi->master->bus_num]
+ 	dev_dbg(&drv_data->pdev->dev, "in dma_irq_handler\n");
+ 	clear_dma_irqstat(drv_data->dma_channel);
+@@ -582,13 +583,18 @@ static irqreturn_t dma_irq_handler(int irq, void *dev_id)
+ 	while (!(read_STAT(drv_data) & SPIF))
+ 		cpu_relax();
+ 
+-	msg->actual_length += drv_data->len_in_bytes;
++	if (spistat & RBSY) {
++		msg->state = ERROR_STATE;
++		dev_err(&drv_data->pdev->dev, "dma receive: fifo/buffer overflow\n");
++	} else {
++		msg->actual_length += drv_data->len_in_bytes;
+ 
+-	if (drv_data->cs_change)
+-		cs_deactive(drv_data, chip);
++		if (drv_data->cs_change)
++			cs_deactive(drv_data, chip);
+ 
+-	/* Move to next transfer */
+-	msg->state = next_transfer(drv_data);
++		/* Move to next transfer */
++		msg->state = next_transfer(drv_data);
++	}
+ 
+ 	/* Schedule transfer tasklet */
+ 	tasklet_schedule(&drv_data->pump_transfers);
 -- 
 1.5.6.3
 

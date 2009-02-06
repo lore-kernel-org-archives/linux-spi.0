@@ -1,8 +1,9 @@
-From: Forest Dull <yahoo.co.ukbritainza101-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Additional Job Earnings Available
-Date: Fri, 6 Feb 2009 14:44:53 +0530
-Message-ID: <49661.2952476882$1233911781@news.gmane.org>
-Reply-To: Forest Dull <1874consuegraaubyn-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Stefanie Leichter <ib_k.-j.meyer-zqRNUXuvxA0b1SvskN2V4Q@public.gmane.org>
+Subject: [SPAM] Part Time Marketing Research Job
+	Available
+Date: Fri, 6 Feb 2009 17:27:38 -0600
+Message-ID: <40968.2704638273$1233962965@news.gmane.org>
+Reply-To: Stefanie Leichter <1381ohearn.breanne-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -20,23 +21,26 @@ List-Id: linux-spi.vger.kernel.org
 
 Hi,
 
-Our organization starts recruiting employees willing to take part in
-well-paying research studies conducted by leading online businesses. 
-Your opinion as a consumer is important for the success and profitability of
-many business ventures. 
+Our online market research organization starts recruiting self-motivated and
+reliable individuals willing to take part in well-paying research conducted
+by leading international businesses. Your opinion as a consumer is important
+for the success and profitability of many business ventures. That is why
+they are ready to pay for what you think.
 
-You can earn very well for participating in on-line surveys, focus group
-discussions, and product/service evaluations. 
+Our members are paid for participating in online surveys, focus group
+discussions, and product/service evaluations. What's best, all you need to
+work with us is a computer, an Internet connection, and will to voice your
+honest opinion. 
 
-If you want to become one of our highly valued survey takers, please write
-back to 12185meiggs.moriah-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and I will send you more information.
+We'd like to hear from you soon if you want to become one of our highly
+valued survey takers. 
 
 Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
-Sincerely,
+Please reply to 1092raylose-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 
-Ann Stevenson
-Assistant HR
+Best regards,
+Stephanie Cunningham
 ------------------------------------------------------------------------------
 Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
 software. With Adobe AIR, Ajax developers can use existing skills and code to

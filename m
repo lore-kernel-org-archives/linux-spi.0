@@ -1,14 +1,14 @@
 From: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 06/20] Blackfin SPI Driver: unify
-	duplicated code in dma read/write paths
-Date: Fri,  6 Feb 2009 15:12:54 +0800
-Message-ID: <1233904388-5765-7-git-send-email-cooloney@kernel.org>
+Subject: [PATCH 19/20] Blackfin SPI Driver: Add GPIO
+	controlled SPI Slave Select support
+Date: Fri,  6 Feb 2009 15:13:07 +0800
+Message-ID: <1233904388-5765-20-git-send-email-cooloney@kernel.org>
 References: <1233904388-5765-1-git-send-email-cooloney@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1233904388-5765-1-git-send-email-cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -22,109 +22,136 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-For DMA TX/RX operation in pump_transfers, DMA contriguration code
-in TX and RX paths are almost the same. This patch unify the duplicated
-DMA code to make it more readable.
+This patch adds support for GPIO controlled SPI Chip Selects.
+To make use of this feature, set chip_select = 0 and add a proper
+cs_gpio to your controller_data.
 
-Signed-off-by: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+struct spi_board_info
+        .chip_select = 0
+
+struct bfin5xx_spi_chip
+        .cs_gpio = GPIO_P###
+
+There are various SPI devices that require SPI MODE_0,
+and need to have the Chip Selects asserted during the entire transfer.
+Consider using SPI_MODE_3 (SPI_CPHA | SPI_CPOL) if your device allows
+it.
+
+Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   47 ++++++++++++++++++++------------------------
- 1 files changed, 21 insertions(+), 26 deletions(-)
+ arch/blackfin/include/asm/bfin5xx_spi.h |    1 +
+ drivers/spi/spi_bfin5xx.c               |   40 ++++++++++++++++++++++++------
+ 2 files changed, 33 insertions(+), 8 deletions(-)
 
+diff --git a/arch/blackfin/include/asm/bfin5xx_spi.h b/arch/blackfin/include/asm/bfin5xx_spi.h
+index e1bb164..da8b9ca 100644
+--- a/arch/blackfin/include/asm/bfin5xx_spi.h
++++ b/arch/blackfin/include/asm/bfin5xx_spi.h
+@@ -124,6 +124,7 @@ struct bfin5xx_spi_chip {
+ 	u8 bits_per_word;
+ 	u8 cs_change_per_word;
+ 	u16 cs_chg_udelay; /* Some devices require 16-bit delays */
++	u32 cs_gpio;
+ };
+ 
+ #endif /* _SPI_CHANNEL_H_ */
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 3945b59..acb9739 100644
+index 9459c42..3e63a5d 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -756,18 +756,19 @@ static void pump_transfers(unsigned long data)
- 	if (!full_duplex && drv_data->cur_chip->enable_dma
- 				&& drv_data->len > 6) {
+@@ -111,6 +111,7 @@ struct chip_data {
+ 	u8 bits_per_word;	/* 8 or 16 */
+ 	u8 cs_change_per_word;
+ 	u16 cs_chg_udelay;	/* Some devices require > 255usec delay */
++	u32 cs_gpio;
+ 	void (*write) (struct driver_data *);
+ 	void (*read) (struct driver_data *);
+ 	void (*duplex) (struct driver_data *);
+@@ -177,22 +178,30 @@ static int bfin_spi_flush(struct driver_data *drv_data)
+ /* Chip select operation functions for cs_change flag */
+ static void bfin_spi_cs_active(struct driver_data *drv_data, struct chip_data *chip)
+ {
+-	u16 flag = read_FLAG(drv_data);
++	if (likely(chip->chip_select_num)) {
++		u16 flag = read_FLAG(drv_data);
  
-+		unsigned long dma_start_addr;
+-	flag |= chip->flag;
+-	flag &= ~(chip->flag << 8);
++		flag |= chip->flag;
++		flag &= ~(chip->flag << 8);
+ 
+-	write_FLAG(drv_data, flag);
++		write_FLAG(drv_data, flag);
++	} else {
++		gpio_set_value(chip->cs_gpio, 0);
++	}
+ }
+ 
+ static void bfin_spi_cs_deactive(struct driver_data *drv_data, struct chip_data *chip)
+ {
+-	u16 flag = read_FLAG(drv_data);
++	if (likely(chip->chip_select_num)) {
++		u16 flag = read_FLAG(drv_data);
+ 
+-	flag &= ~chip->flag;
+-	flag |= (chip->flag << 8);
++		flag &= ~chip->flag;
++		flag |= (chip->flag << 8);
+ 
+-	write_FLAG(drv_data, flag);
++		write_FLAG(drv_data, flag);
++	} else {
++		gpio_set_value(chip->cs_gpio, 1);
++	}
+ 
+ 	/* Move delay here for consistency */
+ 	if (chip->cs_chg_udelay)
+@@ -1036,6 +1045,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	struct bfin5xx_spi_chip *chip_info = NULL;
+ 	struct chip_data *chip;
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
++	int ret;
+ 
+ 	/* Abort device setup if requested features are not supported */
+ 	if (spi->mode & ~(SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST)) {
+@@ -1081,6 +1091,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		chip->bits_per_word = chip_info->bits_per_word;
+ 		chip->cs_change_per_word = chip_info->cs_change_per_word;
+ 		chip->cs_chg_udelay = chip_info->cs_chg_udelay;
++		chip->cs_gpio = chip_info->cs_gpio;
+ 	}
+ 
+ 	/* translate common spi framework into our register */
+@@ -1121,6 +1132,16 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	chip->flag = 1 << (spi->chip_select);
+ 	chip->chip_select_num = spi->chip_select;
+ 
++	if (chip->chip_select_num == 0) {
++		ret = gpio_request(chip->cs_gpio, spi->modalias);
++		if (ret) {
++			if (drv_data->dma_requested)
++				free_dma(drv_data->dma_channel);
++			return ret;
++		}
++		gpio_direction_output(chip->cs_gpio, 1);
++	}
 +
- 		disable_dma(drv_data->dma_channel);
- 		clear_dma_irqstat(drv_data->dma_channel);
- 		bfin_spi_disable(drv_data);
+ 	switch (chip->bits_per_word) {
+ 	case 8:
+ 		chip->n_bytes = 1;
+@@ -1186,6 +1207,9 @@ static void bfin_spi_cleanup(struct spi_device *spi)
+ 		peripheral_free(ssel[spi->master->bus_num]
+ 					[chip->chip_select_num-1]);
  
- 		/* config dma channel */
- 		dev_dbg(&drv_data->pdev->dev, "doing dma transfer\n");
-+		set_dma_x_count(drv_data->dma_channel, drv_data->len);
- 		if (width == CFG_SPI_WORDSIZE16) {
--			set_dma_x_count(drv_data->dma_channel, drv_data->len);
- 			set_dma_x_modify(drv_data->dma_channel, 2);
- 			dma_width = WDSIZE_16;
- 		} else {
--			set_dma_x_count(drv_data->dma_channel, drv_data->len);
- 			set_dma_x_modify(drv_data->dma_channel, 1);
- 			dma_width = WDSIZE_8;
- 		}
-@@ -802,6 +803,7 @@ static void pump_transfers(unsigned long data)
- 		}
- 
- 		/* In dma mode, rx or tx must be NULL in one transfer */
-+		dma_config = (RESTART | dma_width | DI_EN);
- 		if (drv_data->rx != NULL) {
- 			/* set transfer mode, and enable SPI */
- 			dev_dbg(&drv_data->pdev->dev, "doing DMA in.\n");
-@@ -815,19 +817,9 @@ static void pump_transfers(unsigned long data)
- 			/* clear tx reg soformer data is not shifted out */
- 			write_TDBR(drv_data, 0xFFFF);
- 
--			set_dma_x_count(drv_data->dma_channel, drv_data->len);
--
--			/* start dma */
--			dma_enable_irq(drv_data->dma_channel);
--			dma_config = (WNR | RESTART | dma_width | DI_EN);
--			set_dma_config(drv_data->dma_channel, dma_config);
--			set_dma_start_addr(drv_data->dma_channel,
--					(unsigned long)drv_data->rx);
--			enable_dma(drv_data->dma_channel);
--
--			/* start SPI transfer */
--			write_CTRL(drv_data,
--				(cr | CFG_SPI_DMAREAD | BIT_CTL_ENABLE));
-+			dma_config |= WNR;
-+			dma_start_addr = (unsigned long)drv_data->rx;
-+			cr |= CFG_SPI_DMAREAD;
- 
- 		} else if (drv_data->tx != NULL) {
- 			dev_dbg(&drv_data->pdev->dev, "doing DMA out.\n");
-@@ -838,18 +830,21 @@ static void pump_transfers(unsigned long data)
- 						(unsigned long) (drv_data->tx +
- 						drv_data->len_in_bytes));
- 
--			/* start dma */
--			dma_enable_irq(drv_data->dma_channel);
--			dma_config = (RESTART | dma_width | DI_EN);
--			set_dma_config(drv_data->dma_channel, dma_config);
--			set_dma_start_addr(drv_data->dma_channel,
--					(unsigned long)drv_data->tx);
--			enable_dma(drv_data->dma_channel);
-+			dma_start_addr = (unsigned long)drv_data->tx;
-+			cr |= CFG_SPI_DMAWRITE;
++	if (chip->chip_select_num == 0)
++		gpio_free(chip->cs_gpio);
 +
-+		} else
-+			BUG();
-+
-+		/* start dma */
-+		dma_enable_irq(drv_data->dma_channel);
-+		set_dma_config(drv_data->dma_channel, dma_config);
-+		set_dma_start_addr(drv_data->dma_channel, dma_start_addr);
-+		enable_dma(drv_data->dma_channel);
-+
-+		/* start SPI transfer */
-+		write_CTRL(drv_data, (cr | BIT_CTL_ENABLE));
+ 	kfree(chip);
+ }
  
--			/* start SPI transfer */
--			write_CTRL(drv_data,
--				(cr | CFG_SPI_DMAWRITE | BIT_CTL_ENABLE));
--		}
- 	} else {
- 		/* IO mode write then read */
- 		dev_dbg(&drv_data->pdev->dev, "doing IO transfer\n");
 -- 
 1.5.6.3
 

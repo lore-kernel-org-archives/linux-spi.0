@@ -1,11 +1,14 @@
-From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 本司有多余税票代开，税点特优，可验证后付款
-Date: Sat, 7 Feb 2009 13:47:49 +0800
-Message-ID: <E1LVfzs-0007xP-VS@235xhf1.ch3.sourceforge.com>
+From: "Legal & General"
+	<LegalGeneral-XTC-DS5R-CLQQO-DD-LOGSA@R.leadmailing.com>
+Subject: =?iso-8859-1?q?Dans_les_p=E9riodes_difficiles?=
+	=?iso-8859-1?q?=2C_mieux_vaut_=EAtre_un_Epargnant_Avis=E9=2E?=
+Date: Sat, 07 Feb 2009 10:07:39 +0100
+Message-ID: <ae6c6993647c44999dadd634f73397f9@R.leadmailing.com>
+Reply-To: LegalGeneral-XTC-DS5R-CLQQO-DD-LOGSA@R.leadmailing.com
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============5293210469513984460=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,27 +20,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
-vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
-1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
-uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
-xrG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
-uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/qsax19y98Lbu
-tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rGsdXm
-yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
-7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
-o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
-z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
-yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDcmVhdGUgYW5kIERlcGxveSBSaWNoIEludGVybmV0IEFw
-cHMgb3V0c2lkZSB0aGUgYnJvd3NlciB3aXRoIEFkb2JlKFIpQUlSKFRNKQpzb2Z0d2FyZS4gV2l0
-aCBBZG9iZSBBSVIsIEFqYXggZGV2ZWxvcGVycyBjYW4gdXNlIGV4aXN0aW5nIHNraWxscyBhbmQg
-Y29kZSB0bwpidWlsZCByZXNwb25zaXZlLCBoaWdobHkgZW5nYWdpbmcgYXBwbGljYXRpb25zIHRo
-YXQgY29tYmluZSB0aGUgcG93ZXIgb2YgbG9jYWwKcmVzb3VyY2VzIGFuZCBkYXRhIHdpdGggdGhl
-IHJlYWNoIG9mIHRoZSB3ZWIuIERvd25sb2FkIHRoZSBBZG9iZSBBSVIgU0RLIGFuZApBamF4IGRv
-Y3MgdG8gc3RhcnQgYnVpbGRpbmcgYXBwbGljYXRpb25zIHRvZGF5LWh0dHA6Ly9wLnNmLm5ldC9z
-ZnUvYWRvYmUtY29tCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+--===============5293210469513984460==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://leadmailing=2Ecom/a/?E=3D=
+XTC-DS5R-CLQQO-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"600" a=
+lign=3D"center">
+=09<tbody>
+=09=09<tr>
+=09=09=09<td><a href=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R-CLQQO-=
+DD-LOGSA-AWH"><img src=3D"http://u=2Eems7=2Enet/Img/2139/legalgeneral/E=
+mailPARAPLUIE_1=2Egif" border=3D"0" alt=3D"" width=3D"600" height=3D"10=
+00" /></a></td>
+=09=09</tr>
+=09</tbody>
+</table>
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/leadmailing=2Ecom/u/?E=3DLegalGeneral-XTC-DS5R-CLQQO-DD-LOGSA&EMail=3D=
+spi-devel-general@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez =
+ici</A> pour vous d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2E=
+net )<BR></div><IMG SRC=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R-CLQ=
+QO-DD-LOGSA-2" width=3D"1" height=3D"1">
+
+
+
+--===============5293210469513984460==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
+software. With Adobe AIR, Ajax developers can use existing skills and code to
+build responsive, highly engaging applications that combine the power of local
+resources and data with the reach of the web. Download the Adobe AIR SDK and
+Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
+--===============5293210469513984460==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5293210469513984460==--

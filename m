@@ -1,47 +1,32 @@
-From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
-Subject: [SPAM] 票据代理
-Date: Sun, 8 Feb 2009 08:38:21 +0800
-Message-ID: <E1LVxh9-0003h5-7N@235xhf1.ch3.sourceforge.com>
+From: Roel Kluin <roel.kluin@gmail.com>
+Subject: [PATCH] spi: limit reaches -1, tested 0
+Date: Sun, 08 Feb 2009 15:18:40 +0100
+Message-ID: <498EE9C0.3010601@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	lkml <linux-kernel@vger.kernel.org>
+To: dbrownell@users.sourceforge.net
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753772AbZBHOSy@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-INfwvrS1xLi61PAg1/C+tLXEuLrU8MjLo6i+rcDto6+yxs7xo6nE+rrDo6EKCiAgICAgsb65q8u+
-ysfQxdP+yrXStdPQz965q8u+LMrHvq3V/riu16Ky4bXE1f255rmry76ho8irufq497Tz1tCzx8rQ
-vvnT0LfWuavLvqGjCgrU2sirx/K7r7XEt6LVubn6xNrK0LOhvq28w7661fnI1cf3vKTB0qOhyrnJ
-zLzSXLmry77A+8jzzqKxoaOhufO5q8u+1/fVyrywz/rK27e9w+YKCsrH0OjSqtPDtb3Su9CpxrG+
-3cjno7qjqLXnxNSw5tT21rXLsKGitefE1LDmuqO52L3Jv+7K6beixrGhosbVzajJzMa3t6LGsaGi
-tdjLsKGivajW/rCy17ChogoKxuTL/Lf+zvGhornjuOahorXnxNSw5tTLyuS3osaxo6m1yKGtoa2h
-o8uwwsq/ybj5vt3L+b+qvfC27rXEtPPQocC00K3JzKOhsqK9qNLps6TG2rXEus/X96GjCgogICAg
-INTaztK5q8u+s8nBorbgxOrSu9axvOGz1tLU0MXTwzvL+b+qvvi21MrH1ebGsaGj1Nq6z9f30tS0
-+r+qtcS3vcq9zOG5qbW9zru1xLf+zvGjrAoKyOe587mry77T0NCp0snCx7vytaPQxKOsv8nJz834
-sunWpLvyxMPIpcuwzvG11r/busu21Mi3yM+689TZuLa/7qOs1NrO0rmry764utTwtcTMrLbICgrX
-9rW9v827p7fF0MTC+tLio6HI57TyyMXE+rGmufPKsbzko6y+tMfrvPvBwqOhCgogICAgICAgICDX
-owoKICAgICAgycwgICAg7PcgICAgICAgICAgICAgICAgILu2063AtLXn18nRr6Gix6LMuKOhCgog
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgwaogz7UgyMsgo7rA7iDQoSC94woKICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIMrWICAgu/ogIKO6IDEgMyA1IDMgNCAyIDIgNCAwIDAg
-MgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBRICAgICBRICA7ICA4IDUgMiA2IDYgMiA3IDcgNQogCiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkNyZWF0ZSBhbmQgRGVwbG95IFJpY2gg
-SW50ZXJuZXQgQXBwcyBvdXRzaWRlIHRoZSBicm93c2VyIHdpdGggQWRvYmUoUilBSVIoVE0pCnNv
-ZnR3YXJlLiBXaXRoIEFkb2JlIEFJUiwgQWpheCBkZXZlbG9wZXJzIGNhbiB1c2UgZXhpc3Rpbmcg
-c2tpbGxzIGFuZCBjb2RlIHRvCmJ1aWxkIHJlc3BvbnNpdmUsIGhpZ2hseSBlbmdhZ2luZyBhcHBs
-aWNhdGlvbnMgdGhhdCBjb21iaW5lIHRoZSBwb3dlciBvZiBsb2NhbApyZXNvdXJjZXMgYW5kIGRh
-dGEgd2l0aCB0aGUgcmVhY2ggb2YgdGhlIHdlYi4gRG93bmxvYWQgdGhlIEFkb2JlIEFJUiBTREsg
-YW5kCkFqYXggZG9jcyB0byBzdGFydCBidWlsZGluZyBhcHBsaWNhdGlvbnMgdG9kYXktaHR0cDov
-L3Auc2YubmV0L3NmdS9hZG9iZS1jb20KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
-dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+With a postfix decrement limit will reach -1 rather than 0,
+so the warning will not be issued.
+
+Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
+---
+diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
+index 269a55e..a4652f1 100644
+--- a/drivers/spi/spi_imx.c
++++ b/drivers/spi/spi_imx.c
+@@ -779,7 +779,7 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ 
+ 			/* Read trailing bytes */
+ 			limit = loops_per_jiffy << 1;
+-			while ((read(drv_data) == 0) && limit--);
++			while ((read(drv_data) == 0) && --limit);
+ 
+ 			if (limit == 0)
+ 				dev_err(&drv_data->pdev->dev,

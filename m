@@ -1,15 +1,18 @@
-From: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: pxa2xx_spi: spi_bfin5xx: limit reaches -1
-	rather than 0
-Date: Sun, 08 Feb 2009 16:53:40 +0100
-Message-ID: <498F0004.1030709@gmail.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] spi: limit reaches -1, tested 0
+Date: Sun, 8 Feb 2009 07:55:26 -0800
+Message-ID: <200902080755.26241.david-b@pacbell.net>
+References: <498EE9C0.3010601@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
 	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <498EE9C0.3010601-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,50 +23,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-vi drivers/spi/pxa2xx_spi.c +919 
-vi drivers/spi/spi_bfin5xx.c +645
+On Sunday 08 February 2009, Roel Kluin wrote:
+> With a postfix decrement limit will reach -1 rather than 0,
+> so the warning will not be issued.
+> 
+> Signed-off-by: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-        if (flush(drv_data) == 0) {
-                dev_err(&drv_data->pdev->dev, "pump_transfers: flush failed\n");
-                message->status = -EIO;
-                giveback(drv_data);
-                return;
-        }
+Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 
-But with a postfix decrement limit reaches -1 rather than 0.
 
-Signed-off-by: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/pxa2xx_spi.c  |    2 +-
- drivers/spi/spi_bfin5xx.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-index d0fc4ca..3164741 100644
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -185,7 +185,7 @@ static int flush(struct driver_data *drv_data)
- 		while (read_SSSR(reg) & SSSR_RNE) {
- 			read_SSDR(reg);
- 		}
--	} while ((read_SSSR(reg) & SSSR_BSY) && limit--);
-+	} while ((read_SSSR(reg) & SSSR_BSY) && --limit);
- 	write_SSSR(SSSR_ROR, reg);
- 
- 	return limit;
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 7fea3cf..ea94567 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -162,7 +162,7 @@ static int flush(struct driver_data *drv_data)
- 	unsigned long limit = loops_per_jiffy << 1;
- 
- 	/* wait for stop and clear stat */
--	while (!(read_STAT(drv_data) & BIT_STAT_SPIF) && limit--)
-+	while (!(read_STAT(drv_data) & BIT_STAT_SPIF) && --limit)
- 		cpu_relax();
- 
- 	write_STAT(drv_data, BIT_STAT_CLR);
+> ---
+> diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
+> index 269a55e..a4652f1 100644
+> --- a/drivers/spi/spi_imx.c
+> +++ b/drivers/spi/spi_imx.c
+> @@ -779,7 +779,7 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+>  
+>  			/* Read trailing bytes */
+>  			limit = loops_per_jiffy << 1;
+> -			while ((read(drv_data) == 0) && limit--);
+> +			while ((read(drv_data) == 0) && --limit);
+>  
+>  			if (limit == 0)
+>  				dev_err(&drv_data->pdev->dev,
+> 
+> 
+
+
 
 ------------------------------------------------------------------------------
 Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)

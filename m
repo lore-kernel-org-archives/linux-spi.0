@@ -1,8 +1,9 @@
 From: Mike Rapoport <mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
-Subject: [PATCH 0/3] Add dma_alignment field to
+Subject: [PATCH 1/3] SPI: add dma_alignment field to
 	spi_master
-Date: Mon,  9 Feb 2009 10:12:27 +0200
-Message-ID: <cover.1234167048.git.mike@compulab.co.il>
+Date: Mon,  9 Feb 2009 10:12:28 +0200
+Message-ID: <b9186e380ae53df7b4ce65a552b39d34879f3dd6.1234167048.git.mike@compulab.co.il>
+References: <cover.1234167048.git.mike@compulab.co.il>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -10,6 +11,9 @@ Cc: dcbw-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org, spi-devel-general-5NWGOfrQmneR
 	andrey-W/OLz77bvjtBDgjK7y7TUQ@public.gmane.org, mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org
 To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <cover.1234167048.git.mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
+In-Reply-To: <cover.1234167048.git.mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
+References: <cover.1234167048.git.mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,15 +30,37 @@ aligned, the controller silently performs transfer in PIO mode.
 Addition of dma_alignment field to spi_master allows protocol drivers to
 perform proper alignment.
 
-Mike Rapoport (3):
-  SPI: add dma_alignment field to spi_master
-  pxa2xx_spi: set spi_master.dma_alignment = 8
-  spi_imx: set spi_master.dma_alignment = 4
+Signed-off-by: Mike Rapoport <mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
+---
+ include/linux/spi/spi.h |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
 
- drivers/spi/pxa2xx_spi.c |    2 ++
- drivers/spi/spi_imx.c    |    2 ++
- include/linux/spi/spi.h  |    6 ++++++
- 3 files changed, 10 insertions(+), 0 deletions(-)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 68bb1c5..2cc43fa 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -204,6 +204,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	SPI slaves, and are numbered from zero to num_chipselects.
+  *	each slave has a chipselect signal, but it's common that not
+  *	every chipselect is connected to a slave.
++ * @dma_alignment: SPI controller constraint on DMA buffers alignment.
+  * @setup: updates the device mode and clocking records used by a
+  *	device's SPI controller; protocol code may call this.  This
+  *	must fail if an unrecognized or unsupported mode is requested.
+@@ -239,6 +240,11 @@ struct spi_master {
+ 	 */
+ 	u16			num_chipselect;
+ 
++	/* some SPI controllers pose alignment requirements on DMAable
++	 * buffers; let protocol drivers know about these requirements.
++	 */
++	u16			dma_alignment;
++
+ 	/* setup mode and clock, etc (spi driver may call many times) */
+ 	int			(*setup)(struct spi_device *spi);
+ 
+-- 
+1.5.6.4
 
 
 ------------------------------------------------------------------------------

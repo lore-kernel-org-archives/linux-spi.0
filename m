@@ -1,10 +1,10 @@
-From: "Clotilda" <rajesh.nair-R0Sn5aLu3goWI+UwmH2aBQ@public.gmane.org>
-Subject: [SPAM] A Valentine greetings for you
-Date: Tue, 10 Feb 2009 06:37:05 +0200
-Message-ID: <20090210063705.9080207@ms19.hinet.net>
+From: "sxwat_ok-KN7UnAbNpbg@public.gmane.org" <sxwat_ok-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 闈炶储鍔＄粡鐞嗙殑璐㈠姟绠＄悊
+Date: Tue, 10 Feb 2009 18:54:52 +0800
+Message-ID: <E1LWpmA-0002eE-2o@235xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed;
+	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,13 +17,104 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Clotilda has just sent a Valentine's Day card and wrote this to you:
-"You're all I can think about"
+This is a multi-part message in MIME format
 
-You can visit our website to view your card:
-http://yso.cherishpoems.com/?ID=41c62647c0bdd1d67aa05ac4
-Webmaster, Card Fountain.
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
+请看附件，如有打扰，请谅，谢谢
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: application/octet-stream;
+        name="非财务经理的财务管理高级研修班（09年3月20-21日）.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+        filename="非财务经理的财务管理高级研修班（09年3月20-21日）.txt"
+
+t8eyxs7xvq3A7bXEssbO8bncwO2437y20dDQ3rDgDQoNCsn6tq+hosq108OhotPQ0KcNCiAgICAg
+ICChqqGqyOe6zr/sy9m007LGzvGhsM3i0NChsbPJzqqhsMTa0NChsQ0KDQqjqNb3vbLIy6O6vNa7
+os/IyfqhodfKye6yxs7xudzA7deovNKhotb4w/vF4NG1ucvOyqOpDQoNCtb3ICAgILDso7rJ7tva
+ytDSu7b+yP253MDt18nRr9PQz965q8u+INbayMvQ0LncwO3XydGvzfgNCsqxICAgILzko7oyMDA5
+xOoz1MIyMKGiMjHI1aOoye7b2qOpIDPUwjI3LTI4yNUgo6jJz7qjo6kNCrXYICAgILXjo7rJ7tva
+DQqyzrzTttTP86O6xvPStcDPsOWhorix19yhokhSvq3A7aGi1tCy47ncwO24ybK/tcgNCsrVt9Gx
+6te8o7oyODAw1KovIMbao6i0y7fR08Ow/MCov86zzLfRoaK9stLlt9Ghos7nss230bywsujLrrfR
+o6nN4rXY0afUsaGiv8m0+rCyxcXKs8veo6y30dPD19TA7Q0KDQqxuNeio7rXyrjx1qTK6bfRo7o1
+MDDUqi/IyyiyzrzTyM/WpL+8ytS1xNGn1LHQ6727xMmxyLfR08OjrLK7ss6808jP1qS/vMrUtcTR
+p9Sxzt7Q6727xMkpDQoxLiC3ss+jzfuyzrzTyM/WpLXE0afUsaOs1NrF4NG1veHK+LLOvNO/vMrU
+us+48dXfo6yw5LeiKLn6vMrWsNK1yM/WpLHq17zBqrrPu+EpIDw8t8eyxs7xvq3A7bXEssbO8bnc
+wO0gPj65+rzKufrE2tbQ06LOxLDmy6vWsNK1uPHWpMrpo6yjqLn6vMq5+sTayM/WpKOvyKvH8s2o
+0NCjr7nN1vfIz7/Jo6+5+rzKufrE2rnZt73N+MnPzayyvbLp0a+jqQ0KMqOut7KyzrzTyM/WpLXE
+0afUsdDrzOG9u7G+yMvJ7bfd1qS6xcLrvLC089K7tOfK/cLr1dXGrKOhDQozo66/zrPMveHK+Lrz
+MTDM7MTavavWpMrpv+y8xLj40afUsQ0KNKOuv8nJ6sfr1tC5+rn6vNLIy7LFzfjI67/isbiwuA0K
+DQoNCr/Os8zM2Mmro7oNCrTTt8eyxs7xyMvUsbXEvce2yLbU16jStdaqyra9+NDQye7I68ezs/ah
+os2oy9fS17autcSy+8r2o6zKucT61Nq2zMqxvOTE2r/sy9nVxs7VssbO8bncwO21xMu8wrehor/y
+vNy6zdK7sOPUrcDto6HSu7jE0tTN+bSrzbOyxs7xxeDRtdbQv93U76Git6bOtrXE06HP86Os0+S/
+7LXYz+3K3LLGzvG53MDttPi4+M7Sw8e1xMrVu/HT68DWyKSjoQ0KDQrE48S/x7DKx7fxw+bB2bXE
+0tTPwrezxNWjug0KMS621Lj31tayxs7xyv2+3aGisaix7cvGtq63x7auo78NCjIu19zKx7jQvvWy
+xs7xyMvUsdTasajP+sqx0qrH87/Bv8yhosTR0tS5tc2oo6zKx7rOtcDA7aO/IA0KMy65pNf31tDS
+8s6qttSyxs7x1qrKtrXExKO6/bK7x+W+rbOj0+uyxs7x0K2197K7usOjrNPWsrvWqrXAyOe6zrjE
+ycajvyANCjQuyOe6zsq5ssbO8dPrxvPStbXEyfqy+s7vwc/Iy8Gm18rUtLXIuaTX97jftsjF5LrP
+o6y5ubPJ0ru49s/WtPq7r7XEudzA7czlz7WjrLeiu9PG89K1udzA7bXE1fvM5dCn06ajvw0KNS7X
+986q0rvD+7K/w8W+rcDto6zI57rOyMPX1Ly6tcSyv8PFtNPG89K1vq3TqrXEvce2yMilv7S0/bLG
+zvG53MDto78NCjYuz6PN+9Gnz7DBvLrDtcS49sjLtcTA7bLGt723qKOszOG437j2yMu+rbzD0KfS
+5qO/DQoNCg0KxeDRtcS/seqjug0KMaGiv+zL2dPQ0KejrNTa1+62zLXEyrG85MTa1cbO1c/WtPqy
+xs7xudzA7bXEusvQxMzlz7WhotStwO2joQ0KMqGizfLKwrK7x/PIy6OstsDBor+0tq6yxs7xyP20
+87Gose0stsG2rrLGzvGxqLjmo6y9+NDQssbO8bfWzvajoQ0KM6Gi0afPsM/WtPqyxs7xudzA7cu8
+zqzT67LGzvHT79HUo6zKucT60+uyxs7xyMvUsdTazazSu8a1tcC5tc2oo6EgDQo0oaLF4NH41rDE
+3LK/w8W9tbXNs8mxvrXE0uLKtrrNxNzBpqOhDQo1oaLI68PF0v21vLKis/WyvcXg0fjBy7LGzvHQ
+y8iko6zG9LavxPq1xNfU0afWrsPFo6ENCjahosr3waK49sjLwO2yxrnbxO6hotGnu+HA7bLGt723
+qLy8x8mjrMzhuN+49sjLvq28w9Cn0uajoQ0KDQoNCg0Kv86zzLTzuNmjug0K0ruhos/WtPqyxs7x
+udzA7bv5sb7UrcDtoaK4xcTuDQqyxs7xudzA7bjFxO68sLv5sb63vbeoDQq74bzG0+/R1NKqy9gN
+CrvhvMbT79HUuebU8g0Ktv6hosjnus631s72ssbO8bGouOYNCjEuICDXyrL6uLrVrrHttcTUxLbB
+o6jS1NfKsvq4utWuzqq7+bShtcS31s72o6kNCiAtICC5q8u+ssbO8bCyyKvGwLzbDQogLSAguavL
+vrOl1a7E3MGmxsC82w0KMi4gIMD7yPOx7bXE1MS2waOo0tTA+8jzse3Oqrv5tKG1xLfWzvajqQ0K
+IC0gILmry77Tr8D7xNzBpsbAvNsNCjMuICDP1r3wzqrN9bu5ysfA+8jz1sHJz6O/DQotICDG89K1
+z9a98MH3wb+31s72DQo0LiAgssbO8dfbus+31s720+vUpL6vu/rWxg0KxKPE4tHdwbejurfW1+nE
+o8Tisaix7bfWzvajqNaxvdO007Gose3W0LLpv7TV+8zlvq3TqrXEzsrM4rrN1qK94aOpDQo1LiDW
+sNK1vq3A7cjL09DTw7XE0rvV0C0tLcz4s/ayxs7xv7Syxs7xDQrI/aGiyOe6zrncwO3G89K1y7DO
+8bfnz9UNCjGhotb30qrLsNbWvenJ3A0KMqGixvPStdesx661xLXayP3M9c2+vrahqsuwzvGz77uu
+venJ3A0KM6GiyOe6zsbAucC8sL/Y1sbLsM7xt+fP1Q0Ky8Shosjnus653LrDxvPStbXE18q98A0K
+MaGixvPStbXEyNrXysf+tcANCi0gw/HTqsbz0rXI2tfKtcTKrrb+1tbW99KqtcS4utWuyNrXysrW
+ts4NCi0gxvPStcio0ubI2tfKtcTW99Kqt723qNLUvLCy2df3st/C1A0KMqGiyrLDtMrHssbO8bjc
+uMsNCi0gy8TBvbKmx6e977XEssbO8by8x8kNCjOhosjnus6/2NbGzbbXyrfnz9UgDQotILv1sdLK
+sbzkvNvWtbXEvMbL4w0KLSDNttfKvvay37XE1vfSqre9t6gNCi0gxvPStbXEzbbXyr/Y1sbM5c+1
+DQrO5aGiyOe6zr2owaLT0NCntcTE2r/Y1sa2yA0KMaGixNq/2NbGtsi1xNbY0qrQ1A0KsLjA/bfW
+zvajurDNwdbS+NDQtbmx1bC4xNqyv7/Y1sa3vcPmtcS31s72LS0tsru8+7n9s8y1xLDcwuQNCjKh
+osTasr+358/Vv9jWxrXEyq6w0cD7xvcNCjOhotbY0qq9u9LX0a27t7XExNqyv7/Y1sYNCi2hsLLJ
+ubotuLa/7qGx0rXO8bvutq+1xMTasr+yxs7xv9jWxg0KLaGwz/rK2y3K1b/uobHStc7xu+62r7XE
+xNqyv7LGzvG/2NbGDQotobC30dPD1qez9qGx0rXO8bvutq+1xMTasr+yxs7xv9jWxg0Kwfmhorj3
+1rDE3LK/w8XI57rOvbWzybG+DQoxoaKzybG+v9jWxrv5tKHWqsq2DQotILPJsb630dPDtcS94bm5
+DQotIMG/sb7A+7fWzvbT67Gjsb614w0KLSC007PJsb694bm5v7S+rdOqt+fP1Q0KLSCzybG+v9jW
+xrXEy8Syvda00NC3qA0KMqGiyMvBprPJsb7I57rOz/e89Q0KM6GissTBz7PJsb7I57rOz/e89Q0K
+NKGiv+K05rPJsb7I57rOz/e89Q0KDQrG36Giu9i5y9Pr19y94Q0K19y94cv50afWqsq2us28vMfJ
+o7sNCsDPyqbT69Gn1LG7pbavyrG85A0KDQq9ssqmvPK96aO6vNbAz8qmDQrLtsq/0dC+v8n6LCDW
+0Ln61rTStdeisuG74bzGyqahoteisuHLsM7xyqahorn6vMq74bzGyqajqEFJQaOpoaPPyLrzuanW
+sNPatqu358b7s7Whori7yr+/tbn6vMq/2LnJtcjJz8rQuavLvqOs1Pi1o8jOzeLXyrmry76yxs7x
+vq3A7aGi19y84KGjyq7I/cTqtcSyxsuwudzA7dPr18nRr76twPosILPJuaa3/s7xuf00MDAwtuC8
+0sbz0rWhojIwMLbgvNK8r83FtcS+rcD6yrnG5NO109DJ7rrxtcSyxs7x1qrKtszlz7W5prXXus23
+4bi7s8mxvrncwO2+rdHpo6zU2s6q1tq24L/Nu6fM4bmp16jStbf+zvG1xLn9s8zW0KOsyKG1w8HL
+wby6w7XE0Ke5+6Gj1NrG89K1ssbO8dXvts+horPJsb6/2NbGoaK089DNxvPStcnmy7C358/Vv9jW
+xqGiy7DO8bPvu668sLfnz9XNttfKoaLK1bm6vOayorXIwezT8tPQye6/zLXEwO294qGi0dC+v7yw
+yrW8+aGjIA0KDQrK2r/OzNi146O6ye6/zMDtveLG89K1v827p7XE0OjH86Oss+S31tPr0afUsbul
+tq+jrMnG09qwuMD9vczRp6Osy7zCt8flzvrD98HLoaK3vc/yuNDHv6Osye7I68ezs/ajrNDOz/PJ
++ravtcS357jxuKjWrtLU1PrKtbXEwO3C27v5tKG6zbfhuLu1xMq1vPm+rdHpoaMNCg0KxrfFxr/O
+s8yjuqG20MLG89K1u+G8xte81PL037n6vMq74bzG17zU8qG3oaKhtsbz0rW437y2y7DK1bPvu66h
+t6Gioba3x7LGzvHIy9SxtcSyxs7xudzA7aG3oaKhtrvhvMa07bHXyfO8xry8x8mht6Gioba74bzG
+saix7bfWzvbT67fnz9W3wLe2obehoqG2yKvD5tSky+PT67PJsb653MDtobcNCg0KxeDRtbn9tcTG
+89K1o7oNCtXQyczS+NDQoaK089HHzeW6y7XnoaKxsb6ptefQxaGiw8C5+tPRsO6xo8/VoaK80sDW
+uKOjqNbQufqjqaGi1f3W0LXYsvqhori7yr+/tcbz0rW8r83FoaLEz7e9ur2/1aGiye7b2rnjtee8
+r83FoaLW0Ln6tefQxaGiye7Ez7KjoaJUQ0yhotLn0+6/xry8oaK8zsDvwbjTzaGiye7b2rqjzOyz
+9rDmyeehorn+tvux9cahvsa8r83FoaLJ7szswu2hornj1t3OxLPl1Oy0rLOnoaK38Mm9ufrXys6v
+oaLL98bVwuW5+rzKoaK2q7z9vK/NxaGiwt648cDKtefG96Giye7b2sGqtPqhoszswaK6vc2ooaKz
+4M3lwuvNt7XIyv2w2bzSxvPStaGjDQogICAgIA0KsajD+7Xnu7CjujA3NTUtMjYwNzU0MjkgICAx
+MzU5MDM5Nzg3NyAgICAgIA0Kwaogz7UgyMujusXt0KG94yAgDQoNCg0K
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
@@ -31,3 +122,15 @@ software. With Adobe AIR, Ajax developers can use existing skills and code to
 build responsive, highly engaging applications that combine the power of local
 resources and data with the reach of the web. Download the Adobe AIR SDK and
 Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

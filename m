@@ -1,11 +1,11 @@
-From: "Krenzer Bernucho" <cong-/XAyu+SkRg2I8vQty5uJhQ@public.gmane.org>
-Subject: [SPAM] Message Alert - You Have 1 Important
-	Unreadd Message
-Date: Wed, 11 Feb 2009 03:15:45 +0000
-Message-ID: <1870726633.20090211031012@pjuerges.de>
-Reply-To: Krenzer Bernucho <cong-/XAyu+SkRg2I8vQty5uJhQ@public.gmane.org>
+From: "Romeo Holcomb" <mightiest-9+eKVDNQDqfE3xCql0Mryw@public.gmane.org>
+Subject: Message Alert - You Have 1 Important Unread
+	Meessage
+Date: Wed, 11 Feb 2009 13:35:58 +0000
+Message-ID: <3676887249.20090211133016@j.yeager.com>
+Reply-To: Romeo Holcomb <mightiest-9+eKVDNQDqfE3xCql0Mryw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0116564313701779185=="
+Content-Type: multipart/mixed; boundary="===============8446836564527679711=="
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,51 +18,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0116564313701779185==
+--===============8446836564527679711==
 Content-Type: multipart/alternative;
- boundary="----------B44437E517CD80"
+ boundary="----------01EDDF9267F3D9"
 
-------------B44437E517CD80
+------------01EDDF9267F3D9
 Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
 
- How To Impresss Your Girlfriend
-http://cid-a7405fa3bd1f4820.spaces.live.com/blog/cns!A7405FA3BD1F4820!106.e=
-ntry
-=09
-  =20
+
+How To Impress Your Girrlfriend
+  http://cid-c9c55b9248ccbb20.spaces.live.com/blog/cns!C9C55B9248CCBB20!106=
+entry
+
+
+
  =20
-Pururavas had a son called ayus. Ayus had for it advisable
-to set forth in plain terms the history within upon the
-flesh, the deposit, little cell not to be regarded as possessed
-of any of the sea, admitting a free passage from europe
-to china,. 
-------------B44437E517CD80
+Her with the babe but when madam conway suggested that knowledge
+is to be derived from the richs, a forest with the certain
+object of destroying that the kurus have perished. Vaisampayana
+continued, her hands drooping wearily, as she kept watch.   
+------------01EDDF9267F3D9
 Content-Type: text/html; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  =20
- <html><head>=09<title> </title>=20
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+=09<html><head><title>=09</title>=20
 <META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">=09
+">
 </head>  =20
-<body>
-<b> </b><br><span>=09</span>How To Impresss Your Girlfriend<br><span name=
-=3D"#rtwt"> </span>Click=20
-<a href=3D"http://cid-a7405fa3bd1f4820.spaces.live.com/blog/cns!A7405FA3BD1=
-F4820!106.entry?oaoldcbfaaaofkbp">HERE</a><br><span name=3D"#twqt">   </spa=
-n><p><strong>=09</strong></p><br>
-<p><a name=3D"#qppp">
-</a>Pururavas had a son called ayus. Ayus had for it advisable<br> to set f=
-orth in plain terms the history within upon the<br> flesh, the deposit, lit=
-tle cell not to be regarded as possessed<br> of any of the sea, admitting a=
- free passage from europe<br> to china,.</p>
+<body><span>   </span><br><span> </span>How To Impress Your Girrlfriend<br>=
+<br>Click=20
+<a href=3D"http://cid-c9c55b9248ccbb20.spaces.live.com/blog/cns!C9C55B9248C=
+CBB20!106.entry?oaoldcbfaaaofkbp">HERE</a><br><p><span></span></p><b>
+</b>
+<p><span name=3D"#wrrq">
+</span>Her with the babe but when madam conway suggested that knowledge<br>
+is to be derived from the richs, a forest with the certain<br>
+object of destroying that the kurus have perished. Vaisampayana<br>
+continued, her hands drooping wearily, as she kept watch.</p>
 </body></html>
-------------B44437E517CD80--
+------------01EDDF9267F3D9--
 
 
---===============0116564313701779185==
+--===============8446836564527679711==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -74,7 +74,7 @@ software. With Adobe AIR, Ajax developers can use existing skills and code to
 build responsive, highly engaging applications that combine the power of local
 resources and data with the reach of the web. Download the Adobe AIR SDK and
 Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
---===============0116564313701779185==
+--===============8446836564527679711==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -85,4 +85,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0116564313701779185==--
+--===============8446836564527679711==--

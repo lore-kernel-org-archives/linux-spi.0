@@ -1,11 +1,11 @@
-From: "Romeo Holcomb" <mightiest-9+eKVDNQDqfE3xCql0Mryw@public.gmane.org>
-Subject: Message Alert - You Have 1 Important Unread
-	Meessage
-Date: Wed, 11 Feb 2009 13:35:58 +0000
-Message-ID: <3676887249.20090211133016@j.yeager.com>
-Reply-To: Romeo Holcomb <mightiest-9+eKVDNQDqfE3xCql0Mryw@public.gmane.org>
+From: Nathanael Diegel <dnwdsbke-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Marketing Job Openings Available
+Date: Thu, 12 Feb 2009 03:25:08 +0200
+Message-ID: <48436.2111463726$1234402008@news.gmane.org>
+Reply-To: Nathanael Diegel <1631jerald.borsari-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8446836564527679711=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,71 +18,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8446836564527679711==
-Content-Type: multipart/alternative;
- boundary="----------01EDDF9267F3D9"
+Hi,
 
-------------01EDDF9267F3D9
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Our online market research organization starts recruiting self-motivated and
+reliable individuals willing to take part in well-paying research conducted
+by leading international businesses. Your opinion as a consumer is important
+for the success and profitability of many business ventures. That is why
+they are ready to pay for what you think.
 
+Our members are paid for participating in online surveys, focus group
+discussions, and product/service evaluations. What's best, all you need to
+work with us is a computer, an Internet connection, and will to voice your
+honest opinion. 
 
+We'd like to hear from you soon if you want to become one of our highly
+valued survey takers. 
 
-How To Impress Your Girrlfriend
-  http://cid-c9c55b9248ccbb20.spaces.live.com/blog/cns!C9C55B9248CCBB20!106=
-entry
+Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
+Please reply to bruyere.kym1417-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 
-
- =20
-Her with the babe but when madam conway suggested that knowledge
-is to be derived from the richs, a forest with the certain
-object of destroying that the kurus have perished. Vaisampayana
-continued, her hands drooping wearily, as she kept watch.   
-------------01EDDF9267F3D9
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-=09<html><head><title>=09</title>=20
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">
-</head>  =20
-<body><span>   </span><br><span> </span>How To Impress Your Girrlfriend<br>=
-<br>Click=20
-<a href=3D"http://cid-c9c55b9248ccbb20.spaces.live.com/blog/cns!C9C55B9248C=
-CBB20!106.entry?oaoldcbfaaaofkbp">HERE</a><br><p><span></span></p><b>
-</b>
-<p><span name=3D"#wrrq">
-</span>Her with the babe but when madam conway suggested that knowledge<br>
-is to be derived from the richs, a forest with the certain<br>
-object of destroying that the kurus have perished. Vaisampayana<br>
-continued, her hands drooping wearily, as she kept watch.</p>
-</body></html>
-------------01EDDF9267F3D9--
-
-
---===============8446836564527679711==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Best regards,
+Stephanie Cunningham
 ------------------------------------------------------------------------------
 Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
 software. With Adobe AIR, Ajax developers can use existing skills and code to
 build responsive, highly engaging applications that combine the power of local
 resources and data with the reach of the web. Download the Adobe AIR SDK and
 Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
---===============8446836564527679711==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============8446836564527679711==--

@@ -1,78 +1,44 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: SPI-Difference between MX1 and MX31
-Date: Thu, 12 Feb 2009 14:00:26 +0100
-Message-ID: <20090212130026.GC3130@pengutronix.de>
+From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: SPI-Difference between MX1 and MX31
+Date: Thu, 12 Feb 2009 14:58:45 +0100
+Message-ID: <20090212135845.GA10043@pengutronix.de>
+References: <20090212130026.GC3130@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0910834516=="
-Cc: linuxppc-dev@ozlabs.org, a.paterniani@swapp-eng.it
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org>
-List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
-List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
-List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
-Mime-version: 1.0
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
+Content-Type: multipart/mixed; boundary="===============7403510064658456634=="
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20090212130026.GC3130-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 
---===============0910834516==
+--===============7403510064658456634==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ieNMXl1Fr3cevapt"
+	protocol="application/pgp-signature"; boundary="pf9I7BMVVzbSWLtt"
 Content-Disposition: inline
 
 
---ieNMXl1Fr3cevapt
-Content-Type: text/plain; charset=utf-8
+--pf9I7BMVVzbSWLtt
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
 
-while working on a generic SPI-driver for the i.MX-platform I stumbled
-over the following:
-
-The MX1 can flush its FIFOs using the enable bit. Documentation says:
-
-"SPI Module Enable - Enables/Disables the serial peripheral interface.
-SPIEN must be asserted before an exchange is initiated. Writing 0 to
-SPIEN flushes the receive and transmit FIFOs."
-
-Furthermore it has a dedicated reset register:
-
-"Start - Executes soft reset."
-
-However, the MX31 does not have a reset register and the documentation
-says this regarding the enable bit:
-
-"SPI Module Enable Control - This bit enables the CSPI. This bit must be
-asserted before writing to other registers or initiating an exchange.
-Writing zero to this bit disables the module and resets the internal
-logic with the exception of the CONREG. The module=E2=80=99s internal clock=
-s are
-gated off whenever the module is disabled."
-
-So, as I read all this, disabling the enable bit on the MX31 is more
-like a soft reset on MX1, right? And there does not seem to be a way to
-flush the FIFOs. Can someone imagine what problems might arise if there
-is no way to flush the FIFOs? At least, the check for XCH should have
-ensured that the TXFIFO is empty...
-
-Looking forward to feedback :)
-
-Regards,
-
-   Wolfram Sang
+Ooops, wrong list. Sorry!
 
 --=20
 Pengutronix e.K.                           | Wolfram Sang                |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
---ieNMXl1Fr3cevapt
+--pf9I7BMVVzbSWLtt
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 Content-Disposition: inline
@@ -80,21 +46,35 @@ Content-Disposition: inline
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.9 (GNU/Linux)
 
-iEYEARECAAYFAkmUHWoACgkQD27XaX1/VRsk3QCfaosmwPRc8boDwJ0ZF3SE1b/8
-BvgAoJbuYSMM0Tqbq/h7hnXEwUAzublA
-=aWZH
+iEYEARECAAYFAkmUKxUACgkQD27XaX1/VRtQ1ACcDhF0FuwG6ND0LreEXga2+G2O
+kpgAn3FgKMyhx+a9aM2oSllGNXCtlQaU
+=Z5aN
 -----END PGP SIGNATURE-----
 
---ieNMXl1Fr3cevapt--
+--pf9I7BMVVzbSWLtt--
 
---===============0910834516==
+
+--===============7403510064658456634==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
+software. With Adobe AIR, Ajax developers can use existing skills and code to
+build responsive, highly engaging applications that combine the power of local
+resources and data with the reach of the web. Download the Adobe AIR SDK and
+Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
+--===============7403510064658456634==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 _______________________________________________
-Linuxppc-dev mailing list
-Linuxppc-dev@ozlabs.org
-https://ozlabs.org/mailman/listinfo/linuxppc-dev
---===============0910834516==--
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7403510064658456634==--

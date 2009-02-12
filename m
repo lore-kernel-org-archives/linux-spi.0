@@ -1,128 +1,100 @@
-From: "Wellpack jeu concours" <RET-XTC-DS5R-CC01P-DD-LOGSA@R.leadmailing.com>
-Subject: =?iso-8859-1?q?=2C_gagnez_un_plasma_et_un_hom?=
-	=?iso-8859-1?q?e_cin=E9ma_!?=
-Date: Thu, 12 Feb 2009 10:48:16 +0100
-Message-ID: <b45d47266a4849918c0a679fa4d2f972@R.leadmailing.com>
-Reply-To: RET-XTC-DS5R-CC01P-DD-LOGSA@R.leadmailing.com
+From: Wolfram Sang <w.sang@pengutronix.de>
+Subject: SPI-Difference between MX1 and MX31
+Date: Thu, 12 Feb 2009 14:00:26 +0100
+Message-ID: <20090212130026.GC3130@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4444902645439038331=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0910834516=="
+Cc: linuxppc-dev@ozlabs.org, a.paterniani@swapp-eng.it
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org>
+List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
+List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
+List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
+Mime-version: 1.0
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4444902645439038331==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://leadmailing=2Ecom/a/?E=3D=
-XTC-DS5R-CC01P-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
-
-<body>
-=09=09<center>
-=09=09=09<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspa=
-cing=3D"0" width=3D"600">
-=09=09=09=09<tr>
-=09=09=09=09=09<td><a href=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R-=
-CC01P-DD-LOGSA-AXI"><img alt=3D"Grand Jeu Concours WellPack" style=3D"b=
-order: 0px solid ; " src=3D"http://advertising=2Ewellpack=2Efr/sites_an=
-nexes/jeux_concours/03/images/email/nl2/header=2Ejpg" /></a></td>
-=09=09=09=09</tr>
-=09=09=09</table>
-=09=09=09<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspa=
-cing=3D"0" width=3D"600">
-=09=09=09=09<tr>
-=09=09=09=09=09<td><a href=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R-=
-CC01P-DD-LOGSA-ANE"><img alt=3D"Grand Jeu Concours WellPack" style=3D"b=
-order: 0px solid ;" src=3D"http://advertising=2Ewellpack=2Efr/sites_ann=
-exes/jeux_concours/03/images/email/nl2/ttr=2Ejpg" /></a></td>
-=09=09=09=09</tr>
-=09=09=09</table>
-=09=09=09<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspa=
-cing=3D"0" width=3D"600" height=3D"160px">
-=09=09=09=09<tr>
-=09=09=09=09=09<td><a href=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R-=
-CC01P-DD-LOGSA-AOJ"><img alt=3D"Grand Jeu Concours WellPack" style=3D"b=
-order: 0px solid ;" src=3D"http://advertising=2Ewellpack=2Efr/sites_ann=
-exes/jeux_concours/03/images/email/nl2/pdt=2Ejpg" /></a></td>
-=09=09=09=09</tr>
-=09=09=09</table>
-=09=09=09<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspa=
-cing=3D"0" width=3D"600">
-=09=09=09=09<tr>
-=09=09=09=09=09<td><a href=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R-=
-CC01P-DD-LOGSA-APK"><img alt=3D"Grand Jeu Concours WellPack" style=3D"b=
-order: 0px solid ;" src=3D"http://advertising=2Ewellpack=2Efr/sites_ann=
-exes/jeux_concours/03/images/email/nl2/txtpdt=2Egif" /></a></td>
-=09=09=09=09</tr>
-=09=09=09</table>
-=09=09=09<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspa=
-cing=3D"0" width=3D"600">
-=09=09=09=09<tr>
-=09=09=09=09=09<td><a href=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R-=
-CC01P-DD-LOGSA-ACL"><img style=3D"border: 0px solid ; " src=3D"http://a=
-dvertising=2Ewellpack=2Efr/sites_annexes/jeux_concours/03/images/email/=
-nl2/blcbt1=2Ejpg" alt=3D"Grand Jeu Concours WellPack" /></a></td>
-=09=09=09=09=09<td rowspan=3D"2"><a href=3D"http://leadmailing=2Ecom/r/=
-?E=3DXTC-DS5R-CC01P-DD-LOGSA-AQW"><img alt=3D"Grand Jeu Concours WellPa=
-ck" style=3D"border: 0px solid ;" src=3D"http://advertising=2Ewellpack=2E=
-fr/sites_annexes/jeux_concours/03/images/email/nl2/btjouez=2Egif" /></a=
-></td>=09=09=09=09
-=09=09=09=09=09<td><a href=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R-=
-CC01P-DD-LOGSA-ARM"><img style=3D"border: 0px solid ; " src=3D"http://a=
-dvertising=2Ewellpack=2Efr/sites_annexes/jeux_concours/03/images/email/=
-nl2/blcbt2=2Ejpg" alt=3D"Grand Jeu Concours WellPack" /></a></td>
-=09=09=09=09</tr>
-=09=09=09</table>
-=09=09=09<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspa=
-cing=3D"0" width=3D"600">
-=09=09=09=09<tr>
-=09=09=09=09=09<td><a href=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R-=
-CC01P-DD-LOGSA-AS5"><img alt=3D"voir CGV sur wellpack=2Efr" style=3D"bo=
-rder: medium none ; " src=3D"http://advertising=2Ewellpack=2Efr/sites_a=
-nnexes/jeux_concours/03/images/email/nl2/txtbas=2Ejpg" /></a></td>
-=09=09=09=09</tr>
-=09=09=09</table>
-=09=09</center>
-=09</body>
-<A href=3D"http://leadmailing=2Ecom/u/?E=3DRET-XTC-DS5R-CC01P-DD-LOGSA&=
-EMail=3Dspi-devel-general@lists=2Esourceforge=2Enet" target=3D"_blank">=
-Cliquez ici</A> pour vous d=E9sabonner ( spi-devel-general@lists=2Esour=
-ceforge=2Enet )<BR><IMG SRC=3D"http://leadmailing=2Ecom/r/?E=3DXTC-DS5R=
--CC01P-DD-LOGSA-2" width=3D"1" height=3D"1">
-
-
-
---===============4444902645439038331==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--===============0910834516==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ieNMXl1Fr3cevapt"
 Content-Disposition: inline
 
-------------------------------------------------------------------------------
-Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
-software. With Adobe AIR, Ajax developers can use existing skills and code to
-build responsive, highly engaging applications that combine the power of local
-resources and data with the reach of the web. Download the Adobe AIR SDK and
-Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
---===============4444902645439038331==
+
+--ieNMXl1Fr3cevapt
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+while working on a generic SPI-driver for the i.MX-platform I stumbled
+over the following:
+
+The MX1 can flush its FIFOs using the enable bit. Documentation says:
+
+"SPI Module Enable - Enables/Disables the serial peripheral interface.
+SPIEN must be asserted before an exchange is initiated. Writing 0 to
+SPIEN flushes the receive and transmit FIFOs."
+
+Furthermore it has a dedicated reset register:
+
+"Start - Executes soft reset."
+
+However, the MX31 does not have a reset register and the documentation
+says this regarding the enable bit:
+
+"SPI Module Enable Control - This bit enables the CSPI. This bit must be
+asserted before writing to other registers or initiating an exchange.
+Writing zero to this bit disables the module and resets the internal
+logic with the exception of the CONREG. The module=E2=80=99s internal clock=
+s are
+gated off whenever the module is disabled."
+
+So, as I read all this, disabling the enable bit on the MX31 is more
+like a soft reset on MX1, right? And there does not seem to be a way to
+flush the FIFOs. Can someone imagine what problems might arise if there
+is no way to flush the FIFOs? At least, the check for XCH should have
+ensured that the TXFIFO is empty...
+
+Looking forward to feedback :)
+
+Regards,
+
+   Wolfram Sang
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--ieNMXl1Fr3cevapt
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iEYEARECAAYFAkmUHWoACgkQD27XaX1/VRsk3QCfaosmwPRc8boDwJ0ZF3SE1b/8
+BvgAoJbuYSMM0Tqbq/h7hnXEwUAzublA
+=aWZH
+-----END PGP SIGNATURE-----
+
+--ieNMXl1Fr3cevapt--
+
+--===============0910834516==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 _______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4444902645439038331==--
+Linuxppc-dev mailing list
+Linuxppc-dev@ozlabs.org
+https://ozlabs.org/mailman/listinfo/linuxppc-dev
+--===============0910834516==--

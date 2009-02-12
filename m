@@ -1,14 +1,14 @@
-From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: SPI-Difference between MX1 and MX31
-Date: Thu, 12 Feb 2009 14:58:45 +0100
-Message-ID: <20090212135845.GA10043@pengutronix.de>
-References: <20090212130026.GC3130@pengutronix.de>
+From: Guennadi Liakhovetski <lg-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH] SPI: Only use per-transfer parameters,
+	if they are set
+Date: Thu, 12 Feb 2009 16:38:25 +0100 (CET)
+Message-ID: <Pine.LNX.4.64.0902121637120.6028@axis700.grange>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7403510064658456634=="
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090212130026.GC3130-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,62 +19,63 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+These three SPI drivers use bits_per_word and speed_hz per-transfer parameters
+without checking whether they are actually set. Fix them.
 
---===============7403510064658456634==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="pf9I7BMVVzbSWLtt"
-Content-Disposition: inline
+Signed-off-by: Guennadi Liakhovetski <lg-ynQEQJNshbs@public.gmane.org>
+---
+ drivers/spi/au1550_spi.c  |    4 ++--
+ drivers/spi/spi_s3c24xx.c |    4 ++--
+ drivers/spi/xilinx_spi.c  |    4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/spi/au1550_spi.c b/drivers/spi/au1550_spi.c
+index b02f25c..3ab3728 100644
+--- a/drivers/spi/au1550_spi.c
++++ b/drivers/spi/au1550_spi.c
+@@ -237,8 +237,8 @@ static int au1550_spi_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 	unsigned bpw, hz;
+ 	u32 cfg, stat;
+ 
+-	bpw = t ? t->bits_per_word : spi->bits_per_word;
+-	hz = t ? t->speed_hz : spi->max_speed_hz;
++	bpw = t && t->bits_per_word ? t->bits_per_word : spi->bits_per_word;
++	hz = t && t->speed_hz ? t->speed_hz : spi->max_speed_hz;
+ 
+ 	if (bpw < 4 || bpw > 24) {
+ 		dev_err(&spi->dev, "setupxfer: invalid bits_per_word=%d\n",
+diff --git a/drivers/spi/spi_s3c24xx.c b/drivers/spi/spi_s3c24xx.c
+index c252cba..e2cfa15 100644
+--- a/drivers/spi/spi_s3c24xx.c
++++ b/drivers/spi/spi_s3c24xx.c
+@@ -112,8 +112,8 @@ static int s3c24xx_spi_setupxfer(struct spi_device *spi,
+ 	unsigned int hz;
+ 	unsigned int div;
+ 
+-	bpw = t ? t->bits_per_word : spi->bits_per_word;
+-	hz  = t ? t->speed_hz : spi->max_speed_hz;
++	bpw = t && t->bits_per_word ? t->bits_per_word : spi->bits_per_word;
++	hz  = t && t->speed_hz ? t->speed_hz : spi->max_speed_hz;
+ 
+ 	if (bpw != 8) {
+ 		dev_err(&spi->dev, "invalid bits-per-word (%d)\n", bpw);
+diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
+index 68d6f49..bee1792 100644
+--- a/drivers/spi/xilinx_spi.c
++++ b/drivers/spi/xilinx_spi.c
+@@ -147,8 +147,8 @@ static int xilinx_spi_setup_transfer(struct spi_device *spi,
+ 	u32 hz;
+ 	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
+ 
+-	bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
+-	hz = (t) ? t->speed_hz : spi->max_speed_hz;
++	bits_per_word = t && t->bits_per_word ? t->bits_per_word : spi->bits_per_word;
++	hz = t && t->speed_hz ? t->speed_hz : spi->max_speed_hz;
+ 	if (bits_per_word != 8) {
+ 		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
+ 			__func__, bits_per_word);
+-- 
+1.5.4
 
---pf9I7BMVVzbSWLtt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-
-Ooops, wrong list. Sorry!
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---pf9I7BMVVzbSWLtt
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAkmUKxUACgkQD27XaX1/VRtQ1ACcDhF0FuwG6ND0LreEXga2+G2O
-kpgAn3FgKMyhx+a9aM2oSllGNXCtlQaU
-=Z5aN
------END PGP SIGNATURE-----
-
---pf9I7BMVVzbSWLtt--
-
-
---===============7403510064658456634==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
-Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
-software. With Adobe AIR, Ajax developers can use existing skills and code to
-build responsive, highly engaging applications that combine the power of local
-resources and data with the reach of the web. Download the Adobe AIR SDK and
-Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
---===============7403510064658456634==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============7403510064658456634==--

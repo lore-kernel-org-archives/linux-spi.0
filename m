@@ -1,12 +1,11 @@
-From: Nathanael Diegel <dnwdsbke-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Marketing Job Openings Available
-Date: Thu, 12 Feb 2009 03:25:08 +0200
-Message-ID: <48436.2111463726$1234402008@news.gmane.org>
-Reply-To: Nathanael Diegel <1631jerald.borsari-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: =?GB2312?B?zfXPyMn6?= <gfhdytyt-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] ！票 ！税 ！
+Date: Thu, 12 Feb 2009 11:03:52 +0800
+Message-ID: <E1LXRsU-0004xa-Et@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,31 +17,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-Our online market research organization starts recruiting self-motivated and
-reliable individuals willing to take part in well-paying research conducted
-by leading international businesses. Your opinion as a consumer is important
-for the success and profitability of many business ventures. That is why
-they are ready to pay for what you think.
-
-Our members are paid for participating in online surveys, focus group
-discussions, and product/service evaluations. What's best, all you need to
-work with us is a computer, an Internet connection, and will to voice your
-honest opinion. 
-
-We'd like to hear from you soon if you want to become one of our highly
-valued survey takers. 
-
-Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
-
-Please reply to bruyere.kym1417-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-
-Best regards,
-Stephanie Cunningham
-------------------------------------------------------------------------------
-Create and Deploy Rich Internet Apps outside the browser with Adobe(R)AIR(TM)
-software. With Adobe AIR, Ajax developers can use existing skills and code to
-build responsive, highly engaging applications that combine the power of local
-resources and data with the reach of the web. Download the Adobe AIR SDK and
-Ajax docs to start building applications today-http://p.sf.net/sfu/adobe-com
+CiAgIMT6usOjuiAKICAgICAgIM7SuavLvtTaysfSu7zSvK+/qreioaLJ+rL6oaLP+srb09rSu8zl
+tcS089DN19u6z7mry76howogICAgICAgz9axvrmry77T0NK7sr+31reiLcaxo7vLsMLKtc3BrqO7
+08W73bT6v6qjuwogICDI5zooMSnG1c2o1PbWtcuwLS3GsaO7CiAgICAgICgyKcbVzajJzMa3z/rK
+27eiLS3GsaO7CiAgICAgICgzKdTLyuTStaGiueO45tK1oaK9qNb+oaK498Dgt/7O8dK1t6ItLcax
+L6GjCgogICDI59PQ0OjSqqOsu7bTrcT60+vO0sGqz7UKCiAgIMGqz7U6zfXPyMn6o6gwo6kxMzY0
+MjM0NzI3NyAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDcmVhdGUgYW5kIERlcGxveSBSaWNoIElu
+dGVybmV0IEFwcHMgb3V0c2lkZSB0aGUgYnJvd3NlciB3aXRoIEFkb2JlKFIpQUlSKFRNKQpzb2Z0
+d2FyZS4gV2l0aCBBZG9iZSBBSVIsIEFqYXggZGV2ZWxvcGVycyBjYW4gdXNlIGV4aXN0aW5nIHNr
+aWxscyBhbmQgY29kZSB0bwpidWlsZCByZXNwb25zaXZlLCBoaWdobHkgZW5nYWdpbmcgYXBwbGlj
+YXRpb25zIHRoYXQgY29tYmluZSB0aGUgcG93ZXIgb2YgbG9jYWwKcmVzb3VyY2VzIGFuZCBkYXRh
+IHdpdGggdGhlIHJlYWNoIG9mIHRoZSB3ZWIuIERvd25sb2FkIHRoZSBBZG9iZSBBSVIgU0RLIGFu
+ZApBamF4IGRvY3MgdG8gc3RhcnQgYnVpbGRpbmcgYXBwbGljYXRpb25zIHRvZGF5LWh0dHA6Ly9w
+LnNmLm5ldC9zZnUvYWRvYmUtY29tCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2Vu
+ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQv
+bGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

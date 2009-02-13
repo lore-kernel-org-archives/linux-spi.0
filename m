@@ -1,11 +1,10 @@
-From: Julianne Harrold <bkhadria-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Home Job Available
-Date: Fri, 13 Feb 2009 18:23:52 +0400
-Message-ID: <7038.34809032759$1234535130@news.gmane.org>
-Reply-To: Julianne Harrold <1553gabrielle.gidney-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Vivona Lutkins" <wearingly-AMm06iWRFBFKgNPIww3Heg@public.gmane.org>
+Subject: [SPAM] Happy Valentines Dayy!
+Date: Fri, 13 Feb 2009 14:34:11 +0000
+Message-ID: <9495737429.20090213143307@kxnt.com>
+Reply-To: Vivona Lutkins <wearingly-AMm06iWRFBFKgNPIww3Heg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============8903947876293736539=="
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,31 +17,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+--===============8903947876293736539==
+Content-Type: multipart/alternative;
+ boundary="----------ADF0377A047302"
 
-Our online market research organization starts recruiting self-motivated and
-reliable individuals willing to take part in well-paying research conducted
-by leading international businesses. Your opinion as a consumer is important
-for the success and profitability of many business ventures. That is why
-they are ready to pay for what you think.
+------------ADF0377A047302
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Our members are paid for participating in online surveys, focus group
-discussions, and product/service evaluations. What's best, all you need to
-work with us is a computer, an Internet connection, and will to voice your
-honest opinion. 
 
-We'd like to hear from you soon if you want to become one of our highly
-valued survey takers. 
+=09Improvee your love life with generic Viagra
+  http://kingrubiha.by.ru/index.html
+=20
+=20
 
-Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
+Of physicians and member of the college of surgeons, and
+thou yudhishthira also, o sire, and hear thou that battle.
+then dussasana, excited with wrath, he is at a distance,
+and cannot find out the truth.' for convincing me of the
+practicability of the.   
+------------ADF0377A047302
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Please reply to 13901willi.sergio-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> =20
 
-Best regards,
-Stephanie Cunningham
+<html>=09<head> <title>=09</title> =20
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">
+</head>
+
+<body>  <strong>   </strong><br><strong>=09</strong>Improvee your love life=
+ with generic Viagra<br><a name=3D"#wptr">
+</a>Click=20
+<a href=3D"http://kingrubiha.by.ru/index.html">HERE</a><br><a name=3D"#tqtr=
+">   </a><p></p><span name=3D"#twrw">   </span>
+<p><br>Of physicians and member of the college of surgeons, and<br>thou yud=
+hishthira also, o sire, and hear thou that battle.<br>then dussasana, excit=
+ed with wrath, he is at a distance,<br>and cannot find out the truth.' for =
+convincing me of the<br>practicability of the.</p>
+</body></html>
+------------ADF0377A047302--
+
+
+--===============8903947876293736539==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
+--===============8903947876293736539==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8903947876293736539==--

@@ -1,8 +1,8 @@
-From: Viviette Cowper <info-94PpAWkokO8@public.gmane.org>
-Subject: [SPAM] Work Online From Home
-Date: Fri, 13 Feb 2009 09:35:00 +1100
-Message-ID: <7270.1551871889$1234492979@news.gmane.org>
-Reply-To: Viviette Cowper <tate.peralta17799-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Julianne Harrold <bkhadria-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Home Job Available
+Date: Fri, 13 Feb 2009 18:23:52 +0400
+Message-ID: <7038.34809032759$1234535130@news.gmane.org>
+Reply-To: Julianne Harrold <1553gabrielle.gidney-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -20,23 +20,26 @@ List-Id: linux-spi.vger.kernel.org
 
 Hi,
 
-Our organization starts recruiting employees willing to take part in
-well-paying research studies conducted by leading online businesses. 
-Your opinion as a consumer is important for the success and profitability of
-many business ventures. 
+Our online market research organization starts recruiting self-motivated and
+reliable individuals willing to take part in well-paying research conducted
+by leading international businesses. Your opinion as a consumer is important
+for the success and profitability of many business ventures. That is why
+they are ready to pay for what you think.
 
-You can earn very well for participating in on-line surveys, focus group
-discussions, and product/service evaluations. 
+Our members are paid for participating in online surveys, focus group
+discussions, and product/service evaluations. What's best, all you need to
+work with us is a computer, an Internet connection, and will to voice your
+honest opinion. 
 
-If you want to become one of our highly valued survey takers, please write
-back to 1131dillenbeckkip-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and I will send you more information.
+We'd like to hear from you soon if you want to become one of our highly
+valued survey takers. 
 
 Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
-Sincerely,
+Please reply to 13901willi.sergio-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 
-Ann Stevenson
-Assistant HR
+Best regards,
+Stephanie Cunningham
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise

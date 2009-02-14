@@ -1,12 +1,14 @@
-From: "Matayoshi Torti" <cubistic-51s0OstWES6rDJvtcaxF/A@public.gmane.org>
-Subject: [SPAM] Haappy Valentines Day!
-Date: Sat, 14 Feb 2009 07:22:24 +0000
-Message-ID: <2860985321.20090214072131@chinapvp.com>
-Reply-To: Matayoshi Torti <cubistic-51s0OstWES6rDJvtcaxF/A@public.gmane.org>
+From: Unknown <unknown@unknown.invalid>
+Subject: [SPAM] \商@务￥咨%询&&
+Date: Sun, 15 Feb 2009 02:17:00 +0800
+Message-ID: <E1LYP1s-0002ax-RI@h25xhf1.ch3.sourceforge.com>
+Reply-To: 55aasgggg
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7827263215019540213=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?wO7PyMn6?= <aaaa@dfjg>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,70 +19,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7827263215019540213==
-Content-Type: multipart/alternative;
- boundary="----------13A98A7AFAA82E"
-
-------------13A98A7AFAA82E
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-
-   Improve your love life  with generic Viagra
-http://perryzebehu.by.ru/index.html
-
-
- =20
-Been won by surprise, aided by traitors among still others
-until gradually, within the great truth indeed, the grants
-and charters still in the current permitted to emerge from
-the apergion excitedly, do you not think that i would seize.=09
-------------13A98A7AFAA82E
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-=09<html>
-<head><title>
-</title>
-
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">  =20
-</head>=09
-<body>=09<a name=3D"#qrrr">  </a><br><b>  </b>Improve your love life  with =
-generic Viagra<br><b></b>Click=20
-<a href=3D"http://perryzebehu.by.ru/index.html">HERE</a><br><strong> </stro=
-ng><p><br></p><span>
-</span>
-<p><a name=3D"#pqww"> </a>Been won by surprise, aided by traitors among sti=
-ll others<br> until gradually, within the great truth indeed, the grants<br=
-> and charters still in the current permitted to emerge from<br> the apergi=
-on excitedly, do you not think that i would seize.</p>
-</body></html>
-------------13A98A7AFAA82E--
-
-
---===============7827263215019540213==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
--OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
--Strategies to boost innovation and cut costs with open source participation
--Receive a $600 discount off the registration fee with the source code: SFAD
-http://p.sf.net/sfu/XcvMzF8H
---===============7827263215019540213==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============7827263215019540213==--
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHye7b2srQxfSwsrTvyrXStdPQ
+z965q8u+tcSjqLnj1t2horar3bihosnPuqOhos/Dw8Whorq81t2hosvV1t21yLXYvvnT0Aq31rmr
+y76jqaGjztLLvsq1wabQ27rxo6zT0NfFwby6w7XEyee74bnYz7Who9LyvfjP7r3PtuDP1s3qs8my
+u8HLw7/Uws/6ytu27rbIoaMKw7/UwtPQ0ruyv7fW1PbWtcuwtefE1LeixrE2JbrNxtXNqLeixrHW
+1sDgyOfPwqO6yczGt8/6ytvLsLeixrGjrLXnxNTUy8rkt6LGsaOsCrnjuOa3osax1+LB3tK1t6LG
+sSy3/s7x0rW3osaxtcggKLn6y7C12Muwo6kxLTIl08W73bT6v6q78rrP1/ejrLXjyv29z7XNoaO7
+ub/JCtLUuPm+3cv51/bK/cG/tu62yLXEtPPQocC0yczM1tPFu921xLXjyv2jrLmry76zycGituDE
+6tK71rG84bPW0tShsLPP0MWhsc6q1tAK0MTX986quavLvrXEusvQxMu8z+uhosDOuczK98GiuavL
+vtDOz/OjrLG+uavLvtaj1tiz0MW1y/nTw774ttTKx9XmxrGjobj8z6PN+wrE3Lm709C7+rvh0+u5
+88u+us/X96OhCqGhoaEKICAgIMjnufPLvtTat6LGsbXE1ebOsbe9w+bT0MjOus7SycLHu/K1o9DE
+o6y/ycnPzfiy6daku/LO0su+1rG909PrufPLvsily7DO8b7WCrXWv9u6y7bUoaMgCiAgICAgCiAg
+ICC0y9DFz6KzpMba09DQp6OsyOfQ67340ruyvceiycw6IAogICAgCqGhoaHK1iAgu/o6MTM1MzQy
+MjQwMDIKICAgICAKICAgICAgIFFRo7sgODUyNjYyNzc1CiAgICAgICAgCgogICAgwarPtcjLo7rA
+7tChveMKCgrLs9ejCiAgICAgIMnM7PejoSAKICAgICAKoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGh
+oaGhoSAgoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaHJ7tvaytDF9LCytO/KtdK109DP3rmry74K
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPcGVuIFNvdXJjZSBCdXNpbmVzcyBDb25mZXJlbmNlIChP
+U0JDKSwgTWFyY2ggMjQtMjUsIDIwMDksIFNhbiBGcmFuY2lzY28sIENBCi1PU0JDIHRhY2tsZXMg
+dGhlIGJpZ2dlc3QgaXNzdWUgaW4gb3BlbiBzb3VyY2U6IE9wZW4gU291cmNpbmcgdGhlIEVudGVy
+cHJpc2UKLVN0cmF0ZWdpZXMgdG8gYm9vc3QgaW5ub3ZhdGlvbiBhbmQgY3V0IGNvc3RzIHdpdGgg
+b3BlbiBzb3VyY2UgcGFydGljaXBhdGlvbgotUmVjZWl2ZSBhICQ2MDAgZGlzY291bnQgb2ZmIHRo
+ZSByZWdpc3RyYXRpb24gZmVlIHdpdGggdGhlIHNvdXJjZSBjb2RlOiBTRkFECmh0dHA6Ly9wLnNm
+Lm5ldC9zZnUvWGN2TXpGOEgKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

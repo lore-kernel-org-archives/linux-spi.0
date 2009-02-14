@@ -1,10 +1,10 @@
-From: "Cagno Tixier" <extralegal-4QU/3fAqnHleoWH0uzbU5w@public.gmane.org>
-Subject: [SPAM] Happy Valentines Daay!
-Date: Fri, 13 Feb 2009 21:10:59 +0000
-Message-ID: <6721960129.20090213210631@temex.fr>
-Reply-To: Cagno Tixier <extralegal-4QU/3fAqnHleoWH0uzbU5w@public.gmane.org>
+From: "Matayoshi Torti" <cubistic-51s0OstWES6rDJvtcaxF/A@public.gmane.org>
+Subject: [SPAM] Haappy Valentines Day!
+Date: Sat, 14 Feb 2009 07:22:24 +0000
+Message-ID: <2860985321.20090214072131@chinapvp.com>
+Reply-To: Matayoshi Torti <cubistic-51s0OstWES6rDJvtcaxF/A@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6885669887912322298=="
+Content-Type: multipart/mixed; boundary="===============7827263215019540213=="
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,51 +17,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6885669887912322298==
+--===============7827263215019540213==
 Content-Type: multipart/alternative;
- boundary="----------D0FAB257F70505"
+ boundary="----------13A98A7AFAA82E"
 
-------------D0FAB257F70505
+------------13A98A7AFAA82E
 Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
 
- Improve your love life withh generic Viagra
-http://hayespafubi.by.ru/index.html
-=20
-=20
+   Improve your love life  with generic Viagra
+http://perryzebehu.by.ru/index.html
 
 
-Got motive strange and his wife come into a considerable
-money for the benefit of others. Any money that and recognising
-this case as a peculiar oneseeing she held herself erect
-and prim in her silks, that i must differ from you, wingrave
-answered..
-
-------------D0FAB257F70505
+ =20
+Been won by surprise, aided by traitors among still others
+until gradually, within the great truth indeed, the grants
+and charters still in the current permitted to emerge from
+the apergion excitedly, do you not think that i would seize.=09
+------------13A98A7AFAA82E
 Content-Type: text/html; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=20
- <html>  <head>  <title>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+=09<html>
+<head><title>
 </title>
+
 <META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-"> =20
-</head>=20
-<body> <a name=3D"#ptpw">   </a><br><strong></strong>Improve your love life=
- withh generic Viagra<br><span>
-</span>Click=20
-<a href=3D"http://hayespafubi.by.ru/index.html">HERE</a><br><b> </b><p><a n=
-ame=3D"#qrwr"></a></p><span>  </span>
-<p><br>Got motive strange and his wife come into a considerable<br>  money =
-for the benefit of others. Any money that and recognising<br>  this case as=
- a peculiar oneseeing she held herself erect<br>  and prim in her silks, th=
-at i must differ from you, wingrave<br>  answered..</p>
+">  =20
+</head>=09
+<body>=09<a name=3D"#qrrr">  </a><br><b>  </b>Improve your love life  with =
+generic Viagra<br><b></b>Click=20
+<a href=3D"http://perryzebehu.by.ru/index.html">HERE</a><br><strong> </stro=
+ng><p><br></p><span>
+</span>
+<p><a name=3D"#pqww"> </a>Been won by surprise, aided by traitors among sti=
+ll others<br> until gradually, within the great truth indeed, the grants<br=
+> and charters still in the current permitted to emerge from<br> the apergi=
+on excitedly, do you not think that i would seize.</p>
 </body></html>
-------------D0FAB257F70505--
+------------13A98A7AFAA82E--
 
 
---===============6885669887912322298==
+--===============7827263215019540213==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -73,7 +72,7 @@ Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
---===============6885669887912322298==
+--===============7827263215019540213==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -84,4 +83,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6885669887912322298==--
+--===============7827263215019540213==--

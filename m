@@ -1,7 +1,8 @@
-From: "Connor Rivera" <inbox.vendors-V5hWO5646gu+3/BVW6l0MQ0wukdEqFKj@public.gmane.org>
-Subject: [SPAM] Excellent enlargement effect!
-Date: Sun, 15 Feb 2009 11:38:03 -0500
-Message-ID: <20090215113803.8000400@osoud.lou.justice.cz>
+From: "Jeffrey" <wolocko.jamison-NEXL2CZoxZg@public.gmane.org>
+Subject: [SPAM] l wants to share A Valentine Greeting
+	with you
+Date: Mon, 16 Feb 2009 15:34:58 +0800
+Message-ID: <20090216153458.3000900@wnco.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,8 +18,12 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-She will love the cnages that blue pilule made with you. 
-http://zyy.achievementback.com/
+Jeffrey mailed an electronic greeting card and wrote for you:
+"I am sorry I love u"
+
+You can see your card by clicking the following link:
+http://cyip.funloveonline.com/?cardnum=d6a3902585e5874ddb
+Best Wishes, 123greetings.com.
 
 
 ------------------------------------------------------------------------------

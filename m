@@ -1,12 +1,11 @@
-From: REVEREND  TIMOTHY  EDWARD <timothy.edward-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: CONTACT ZENITH INTERNATIONAL BANK PLC
-	IMMEDIATELY
-Date: Mon, 16 Feb 2009 12:33:30 -0800
-Message-ID: <E1LZA9i-0000Me-AL@atwood.emissum.com>
+From: Club Vacation Deals <newsletter-GADxlYviPG6C8CmZemzhMw@public.gmane.org>
+Subject: Vacations at the low rate for all season
+Date: Mon, 16 Feb 2009 14:51:44 -0500
+Message-ID: <E1LZ9l6-0002Bq-7g@235xhf1.ch3.sourceforge.com>
+Reply-To: hot-deals-u0uJHfCAc1Hf17m2raTrtZqQE7yCjDx5@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============2215095190153418097=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,67 +17,115 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a multi-part message in MIME format.
+--===============2215095190153418097==
+Content-type: multipart/alternative;
+	boundary="----=_NextPart_32252.1057009685.31.001";
+
+This is a multi-part message in MIME format.
+------=_NextPart_32252.1057009685.31.001
+Content-Type: text/plain; charset="utf-8"
+Content-Description: Enjoy your Holiday Vacations in the Best Mexican Beaches
+
+Enjoy your Holiday Vacations in the Best Mexican Beaches
+Our Exclusive Rates are the Best in the Market.
+All Inclusive Premier Class
+Luxurious Accomodations
+Meals at Fine Restaurants
+Unlimited Premium Drinks
+All Meals, Anytime Snacks
+All-Day Pool and Beach Activities
+Gourmet Dining
+Personal Concierge
+Room Service
+Fitness Center
+Live Entertainment
+Airport -Hotel -Airport Transfer
+Tips, Gratuites, Hotel Taxes
+100 USD Bonus coupon
+Book Now and Receive
+Fishin Tour
+Sunset Dinner Cruise
+2 Spa Coupons
+100 USD Certificate
+
+This is a promotion from Clubvacationtrip
+Clubvacationtrip av. Puerto Vallarta Jalisco Mexico © 2009 clubvacationtrip All Rigths is reserved
+Privacy Policy
+All conditions and prices is restricted to availability. To receive more promotions, Visit http://www.clubvacationdeals.com/check.php?co=1&amp;ci=1&amp;promo=marival7&amp;page=index
+To Unsuscribe from this Newsletter, Visit http://www.clubvacationdeals.com/check.php?co=487606&ci=0&promo=marival7
+
+------=_NextPart_32252.1057009685.31.001
+Content-Type: text/html; charset="utf-8"
+Content-Description: Enjoy your Holiday Vacations in the Best Mexican Beaches
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Documento sin t&iacute;tulo</title>
+</head>
+
+<body>
+<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td colspan="2" bgcolor="#e3e5d7"><center>
+      <font face="Arial, Helvetica, sans-serif" color="#1d62af" size="2"> <br />
+      This is a Club Vacation Deals Customer Care Exclusive Mailing!<br>
+   To drop your subscription, use the link at the bottom of this message</font>
+    </center></td>
+  </tr>
+  
+  <tr>
+    <td><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" target="_blank"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_01.jpg" alt="Club Vacation Deals" border="0"></a></td>
+    <td><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" shape="rect"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_02.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+  </tr>
+  
+  <tr>
+    <td><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" shape="rect"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_03.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+    <td><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" shape="rect"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_04.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+  </tr>
+  
+    <tr>
+    <td><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" shape="rect"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_05.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+    <td><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" shape="rect"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_06.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+  </tr>
+    <tr>
+      <td><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" shape="rect"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_07.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+      <td><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" shape="rect"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_08.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+    </tr>
+  <tr>
+    <td colspan="2"><table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#e3e5d7">
+      <tr>
+        <td width="190" align="center" valign="middle"><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" shape="rect"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_09.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+        <td><a href="http://www.clubvacationdeals.com/softphone/softphone.php" target="_blank"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_10.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+        <td><a href="http://www.clubvacationdeals.com/tellafriend.php?promo=marival7" target="_blank"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_11.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td colspan="2"><a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=index" shape="rect"><img src="http://www.clubvacationdeals.com/send/marival7/Flyaway_12.jpg" alt="Club Vacation Deals" border="0" /></a></td>
+  </tr>
+</table>
+<table width="650" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#e3e5d7">
+  <tr>
+    <th height="96" scope="col"><font face="Arial, Helvetica, sans-serif" size="2" color="#000000">This is a promotion from <a href="http://www.clubvacationdeals.com/check.php?co=1&amp;ci=1&amp;promo=marival7&amp;page=index" target="_blank">Clubvacationdeals</a><br />Phone MEX +52 (322) 293 7134 <br />Phone LAX 310 598 2091 <a href="http://www.clubvacationdeals.com/privacy_policies.php" target="_blank">Privacy Policies</a><br />
+      All conditions and prices is restricted to availability.<a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=1&amp;promo=marival7&amp;page=marival7" target="_blank">Click for receive promotions</a><br />
+    <a href="http://www.clubvacationdeals.com/check.php?co=487606&amp;remove=1&amp;promo=marival7" target="_blank">Click for delete from our database</a><img height="1" src="http://www.clubvacationdeals.com/check.php?co=487606&amp;ci=0&amp;promo=marival7" width="1" border="0" /></font></th>
+  </tr>
+</table>
+</body>
+</html>
 
 
 
+------=_NextPart_32252.1057009685.31.001--
 
-
- 
- 
- 
- 
- 
-ATTN: BENEFICIARY,
-
- 
-I have been waiting for you since to send us the delivery  fee so that i will be able to register your cheque so that it can be delivered to you  and i  did not receive the fee so i  went ahead to deposite the  funds  with trust   ($1,2ML)($One Million Twot hundred Thousand United State Dollars)  but i did not hear from you since that time.
-
-Then i went and deposited the cash with ZENITH BANK PLC here in (Benin Republic) because it has been in my office for a very long time after the courier company said that  it has entered  dumorrage time, so since them the fund was return to my office
- I want You to contact the ZENITH wire transfer bank BENIN REPUBLIC to let them know when they will Transfer your fund immediately.
-
-All this are  the information they may need to transfer your funds to your account within 24 hours.   
- 
-YOUR FULL NAME================
- 
-HOME ADDRESS==================
- 
-YOUR PHONE NUMBER-----------------------------------
- 
-YOUR INTERNATIONA L PASSPORT/DRIVING LICENCE -----------------------------
- 
-FULL BANKING INFORMATION.=====
- 
-NAME OF COUNTRY=============== 
- 
-BANKING ACCOUNT WERE YOU WANT THE FUND TO BE TRANSFER TO======
- 
-YOUR BANK   REGISTRATION  NUMBER............( $68UYTRQQA )
-
-YOUR BANK CODE NO .................( ZE68M8XS83 ) 
- 
- 
-YOUR PROFESSION------------------------------
- 
- 
-The only money you have to send to them is their opening of None-Residential Account fee, which is $120.00 Us Dollars to enable them wire the money into your account immediately without any delay.
-This is their Contact Address,  
- 
-ZENITH BANK PLC BENIN REPUBLIC.
-DIRECTOR,DR IDRIS JACK .
- EMAIL;( zenithplc86-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org  )
- 
-THANK YOU BY,
- 
-REVEREND TIMOTHY EDWARD,
- 
-THE DIRECTOR OF THE G.T.C.C COMPANY
- 
- 
-
-
-
-
-
+--===============2215095190153418097==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
@@ -86,3 +133,15 @@ Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
+--===============2215095190153418097==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2215095190153418097==--

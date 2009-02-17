@@ -1,12 +1,12 @@
-From: Aaliyah Whitten <shelly8842-YDxpq3io04c@public.gmane.org>
-Subject: [SPAM] The Best Weight Loss Diet Ever
-Date: Wed, 18 Feb 2009 08:35:35 +0800
-Message-ID: <41413.7677326382$1234917479@news.gmane.org>
-Reply-To: Aaliyah Whitten <mucerino.jimmy1304-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Westfloor" <contact-zotL0Y7LuMfsrOwW+9ziJQ@public.gmane.org>
+Subject: Amenajari interioare pentru casa
+	dumneavoastra!!!
+Date: Wed, 18 Feb 2009 00:03:38 +0200
+Message-ID: <00c2bd67$39862$ca070025246528@westfloor>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,36 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Good day!
 
-If you are in an urgent need to lose weight, this letter can change your life. What we offer is the latest and the most effective weight loss diet, that thousands of women already tried and the results are astonishing. 
+www.zugraveli.home.ro
 
-The principles and the meal plans we will teach you in our Diet Solution Program, will literally save your life. You will be able to control your once "out of control" condition and you will be able to lose more than 40 lbs in less than 3 months, staying healthy and energized all the time during this diet. Best of all, you will be also able to take off of your cholesterol and high blood pressure medications because both the products we will give you for this FREE TRIAL will come down as a result of your weight loss and food choices.
+Venind in intampinarea dorintelor dvs. o echipa de profesionisti cu experienta in amenajarea vilelor de lux va sta la dispozitie. 
+    
+Va oferim o gama variata de servicii pornind de la renovari pana la ultimul detaliu, toate realizate la cele mai inalte standarde occidentale :
 
-If you want to try the Free Trial products we offer, just give us an answer to this letter, or send us your positive answer that you wish to try this free diet to 17411breunigsimon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+amenajari interioare, decoratiuni, renovari, zugraveli, finisaje, compartimentari rigips, termoizolatii cu polistiren expandat, montaj gresie & faianta, montaj parchet & linileum PVC, instalatii electrice si sanitare, proiectare si executie mobilier la comanda.
 
-Believe us, this is something NEVER DONE BEFORE! But the FREE TRIALS are very limited, so hurry up to take them fast!
+Specialistii nostri isi indreapta atentia in directia calitatii si garantiei serviciilor oferite.
 
-Waiting for your quick reply! Thanks!
+Seriozitatea, promptitudinea, profesionalismul, experienta si garantia lucrarilor sunt doar cateva din cuvintele care ne caracterizeaza.Societatile noastre au ca domenii de activitate: constructiile civile, amenajarile interioare(zugraveli, tencuieli, placari gresie faianta, izolatii polistiren, montaje rigipe, parchet laminat), amenajarile exterioare(termosistem din polistiren expandat, tencuieli decorative, tinci, vopsitori lavabile etc), mobila la comanda( bucatarii, dormitoare, birouri din pal melaminat), Instalatii Electrice(proiectare, executie, reparatii instalatii electrice, montaje spoturi, prize, tablouri electrice) si Consultanta.
 
-Diet Solution Programs
+Din dorinta de a fi transparenti am afisat preturile actualizate pe pagina "PRETURI" din meniul de pe website.
 
-
-
-
-
+Pentru mai multe detalii, poze si preturi va asteptam pe WWW.ZUGRAVELI.HOME.RO Tel:  0765451480
 
 
 
 
 
 
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+PENTRU DEZABONARE TRIMITETI UN MESAJ TITLU Dezabonare
+Acesta nu este un email tip SPAM.Contine referiri la datele noastre de identificare si instructiuni pentru evitarea unor viitoare corespondente nesolicitate.
+V-a fost oferit din urmatoarele motive:
 
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
+* sunteti un client al firmei noastre;
+* adresa Dvs. a fost selectata dintr-o baza de date la care ati   subscris;
+* ati solicitat primirea ofertei noastre;  
+* adresa Dvs. a fost facuta publica de catre Dvs. prin afisari cu caracter publicitar;
+* sunteti in baza noastra de date, ca urmare a unor corespondente anterioare.
+
+
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise

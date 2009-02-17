@@ -1,9 +1,7 @@
-From: Angela Haile <celia.glasskg-L3/ajGGWOxqL0KbqLxZ0/g@public.gmane.org>
-Subject: [SPAM] Regulate your Insulin = Permanent FAT
-	LOSS
-Date: Wed, 18 Feb 2009 18:44:23 +0800
-Message-ID: <42620.8390309059$1234955386@news.gmane.org>
-Reply-To: Angela Haile <davise.abnar13931-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Virginia" <paladin_2-H6GJp29NQSSaMJb+Lgu22Q@public.gmane.org>
+Subject: [SPAM] You have received an E-card
+Date: Tue, 17 Feb 2009 17:48:08 +0300
+Message-ID: <001d01c9910f$c01b2070$7d501f8f@lonerxpnxnrr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,34 +17,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Do you want to discover how an Acai Berry and Colon Cleanse diet can undo years of damage in 10 days or less? Do you want to jump from overweighted and exhausted to slim and energetic?
+Virginia mailed an E-Card and wrote this to you:
+"I'm not myself without you"
 
-Ignores all the unhealthy diet schemes and discover a breakthrough nutrition system that literally blasts off unwanted body fat!
-
-Your free trial offer is waiting for you! Order it TODAY, before the supplies expire!
-
-How? Reply to this email, or to 1501hildringdamiana-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will send you the information you need.
-
-Hurry up!
-
-The Weight Loss Dieters
+Just click on the following link to see your E-card:
+http://gaoeq.bestadore.com/?id=8aac385168704728d1ee38
+Your eCard will be available for the next 20 days.
 
 
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise

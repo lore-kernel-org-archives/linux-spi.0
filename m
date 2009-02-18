@@ -1,12 +1,13 @@
-From: "Westfloor" <contact-zotL0Y7LuMfsrOwW+9ziJQ@public.gmane.org>
-Subject: Amenajari interioare pentru casa
-	dumneavoastra!!!
-Date: Wed, 18 Feb 2009 00:03:38 +0200
-Message-ID: <00c2bd67$39862$ca070025246528@westfloor>
+From: Angela Haile <celia.glasskg-L3/ajGGWOxqL0KbqLxZ0/g@public.gmane.org>
+Subject: [SPAM] Regulate your Insulin = Permanent FAT
+	LOSS
+Date: Wed, 18 Feb 2009 18:44:23 +0800
+Message-ID: <42620.8390309059$1234955386@news.gmane.org>
+Reply-To: Angela Haile <davise.abnar13931-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,39 +19,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Do you want to discover how an Acai Berry and Colon Cleanse diet can undo years of damage in 10 days or less? Do you want to jump from overweighted and exhausted to slim and energetic?
 
-www.zugraveli.home.ro
+Ignores all the unhealthy diet schemes and discover a breakthrough nutrition system that literally blasts off unwanted body fat!
 
-Venind in intampinarea dorintelor dvs. o echipa de profesionisti cu experienta in amenajarea vilelor de lux va sta la dispozitie. 
-    
-Va oferim o gama variata de servicii pornind de la renovari pana la ultimul detaliu, toate realizate la cele mai inalte standarde occidentale :
+Your free trial offer is waiting for you! Order it TODAY, before the supplies expire!
 
-amenajari interioare, decoratiuni, renovari, zugraveli, finisaje, compartimentari rigips, termoizolatii cu polistiren expandat, montaj gresie & faianta, montaj parchet & linileum PVC, instalatii electrice si sanitare, proiectare si executie mobilier la comanda.
+How? Reply to this email, or to 1501hildringdamiana-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will send you the information you need.
 
-Specialistii nostri isi indreapta atentia in directia calitatii si garantiei serviciilor oferite.
+Hurry up!
 
-Seriozitatea, promptitudinea, profesionalismul, experienta si garantia lucrarilor sunt doar cateva din cuvintele care ne caracterizeaza.Societatile noastre au ca domenii de activitate: constructiile civile, amenajarile interioare(zugraveli, tencuieli, placari gresie faianta, izolatii polistiren, montaje rigipe, parchet laminat), amenajarile exterioare(termosistem din polistiren expandat, tencuieli decorative, tinci, vopsitori lavabile etc), mobila la comanda( bucatarii, dormitoare, birouri din pal melaminat), Instalatii Electrice(proiectare, executie, reparatii instalatii electrice, montaje spoturi, prize, tablouri electrice) si Consultanta.
-
-Din dorinta de a fi transparenti am afisat preturile actualizate pe pagina "PRETURI" din meniul de pe website.
-
-Pentru mai multe detalii, poze si preturi va asteptam pe WWW.ZUGRAVELI.HOME.RO Tel:  0765451480
+The Weight Loss Dieters
 
 
 
 
 
 
-PENTRU DEZABONARE TRIMITETI UN MESAJ TITLU Dezabonare
-Acesta nu este un email tip SPAM.Contine referiri la datele noastre de identificare si instructiuni pentru evitarea unor viitoare corespondente nesolicitate.
-V-a fost oferit din urmatoarele motive:
-
-* sunteti un client al firmei noastre;
-* adresa Dvs. a fost selectata dintr-o baza de date la care ati   subscris;
-* ati solicitat primirea ofertei noastre;  
-* adresa Dvs. a fost facuta publica de catre Dvs. prin afisari cu caracter publicitar;
-* sunteti in baza noastra de date, ca urmare a unor corespondente anterioare.
 
 
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise

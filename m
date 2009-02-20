@@ -1,10 +1,10 @@
-From: "Ernest Johns" <scott_pearce-iOhcjCNXD8QAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] We deliver high-quality pilz worldwide!
-Date: Thu, 19 Feb 2009 09:38:02 -0500
-Message-ID: <20090219093802.1010305@paroc.com>
+From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
+Subject: [SPAM] 票据代理
+Date: Fri, 20 Feb 2009 12:59:06 +0800
+Message-ID: <E1LaNPA-0000xp-6U@3yr0jf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,12 +17,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Average gains are 3 inches for most men http://tbswre.blueglorious.com/
-
-
-------------------------------------------------------------------------------
-Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
--OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
--Strategies to boost innovation and cut costs with open source participation
--Receive a $600 discount off the registration fee with the source code: SFAD
-http://p.sf.net/sfu/XcvMzF8H
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srH1f22q8q10rXT0M/euavLvrXE
+o6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+o6mho87S
+y77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvBy8O/1MLP
++srbtu62yKGjCsO/1MLT0NK7sr+31tT21rXLsLXnxNS3osaxNiW6zcbVzai3osax1tbA4Mjnz8Kj
+usnMxrfP+srby7C3osaxo6y158TU1MvK5LeixrGjrAq547jmt6LGsdfiwd7StbeixrEst/7O8dK1
+t6LGsbXIICi5+suwtdjLsKOpMS0yJdPFu920+r+qu/K6z9f3o6y148r9vc+1zaGju7m/yQrS1Lj5
+vt3L+df2yv3Bv7butsi1xLTz0KHAtMnMzNbTxbvdtcS148r9o6y5q8u+s8nBorbgxOrSu9axvOGz
+1tLUobCzz9DFobHOqtbQCtDE1/fOqrmry761xLrL0MTLvM/roaLAzrnMyvfBormry77Qzs/zo6yx
+vrmry77Wo9bYs9DFtcv508O++LbUysfV5saxo6G4/M+jzfsKxNy5u9PQu/q74dPrufPLvrrP1/ej
+oQqhoaGhCiAgICDI57nzy77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQxKOsv8nJz834
+sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGjIAogICAgIAogICAgtMvQxc+i
+s6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOiAKICAgIAqhoaGhytYgILv6OjEzNjIyMzI2MDA1Cgog
+ICAgIFEgICBRo7oyMzYzNDEyOTkKCqGhoaHBqs+1yMujuszGz8jJ+grLs9ejCiAgICAgIMnM7Pej
+oSAKICAgICAKoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoSAgoaGhoaGhoaGhoaGhoaGhoaGh
+oaGhoaGh1f22q8q10rXT0M/euavLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk9wZW4gU291cmNl
+IEJ1c2luZXNzIENvbmZlcmVuY2UgKE9TQkMpLCBNYXJjaCAyNC0yNSwgMjAwOSwgU2FuIEZyYW5j
+aXNjbywgQ0EKLU9TQkMgdGFja2xlcyB0aGUgYmlnZ2VzdCBpc3N1ZSBpbiBvcGVuIHNvdXJjZTog
+T3BlbiBTb3VyY2luZyB0aGUgRW50ZXJwcmlzZQotU3RyYXRlZ2llcyB0byBib29zdCBpbm5vdmF0
+aW9uIGFuZCBjdXQgY29zdHMgd2l0aCBvcGVuIHNvdXJjZSBwYXJ0aWNpcGF0aW9uCi1SZWNlaXZl
+IGEgJDYwMCBkaXNjb3VudCBvZmYgdGhlIHJlZ2lzdHJhdGlvbiBmZWUgd2l0aCB0aGUgc291cmNl
+IGNvZGU6IFNGQUQKaHR0cDovL3Auc2YubmV0L3NmdS9YY3ZNekY4SApfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5n
+IGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlz
+dHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,16 +1,13 @@
-From: Holger Schurig <hs4233-x6+DxXLjN1AJvtFkdXX2Hg4jNU5vUVPG@public.gmane.org>
-Subject: Re: [RFC] generic iMX-spi driver
-Date: Fri, 20 Feb 2009 16:41:21 +0100
-Message-ID: <200902201641.21168.hs4233@mail.mn-solutions.de>
-References: <20090220144126.GA9203@pengutronix.de>
+From: Viviette Wiggins <m.flintoff18-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Money When You Need It Most
+Date: Sun, 22 Feb 2009 12:54:22 +0900
+Message-ID: <15658.7717043751$1235274964@news.gmane.org>
+Reply-To: Viviette Wiggins <kolar.darden16067-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090220144126.GA9203-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,58 +18,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> +	int (*exit)(struct platform_device *pdev);
+If you have received this email, take a time to really read it carefully!
 
-void (*exit)(struct platform_device *pdev);
+You may be one of the luckiest people ever to get a Government Funded Grant. This Grant Kit could put thousands of dollars in your pocket. If you are in need of a financial assistance, you may qualify for a piece of the millions and millions of dollars awarded each year by private and government grant agencies to regular people like you.
 
-> +struct spi_core_version {
-> +	u32 rxdata;
-> +	u32 txdata;
-> +	u32 ctrl;
-> +	u32 int_en;
-> +	u32 status;
-> +	u32 test;
-> +	u32 period;
-> +	u32 dma;
-> +	u32 reset;
-> +
-> +	u32 int_te;
-> +	u32 int_th;
-> +	u32 int_ro;
-> +	u32 int_te_en;
-> +	u32 int_th_en;
-> +	u32 int_ro_en;
-> +	u32 xch;
-> +
-> +	u8 bitcount_shift;
-> +	u8 sspol_shift;
-> +	u8 ssctl_shift;
-> +	u8 pha_shift;
-> +	u8 pol_shift;
-> +	u8 datarate_shift;
-> +	u8 reset_val;
-> +
-> +	u32 max_divider;
-> +	u32 max_bitcount;
-> +	u32 default_ctrl;
-> +	u32 (*calc_datarate)(struct driver_data *drv_data, u32
->           speed_hz, u32 *val); 
-> +}; 
+What makes grants so exciting is that most of the money is awarded INTEREST-FREE. So, unlike a bank loan, you won't see interest charges eating away at your obligations. That's a better offer than any bank will ever provide you.
 
-A number of u8's in the middle of a structure where later
-32 bit long entries are comming?
+Many grants go unawarded every year, simply because most people don't know about the programs they may qualify for. Don't let this happen to you!
 
-Move that to the end or change it to 32 (I yet have to verify if
-the compiler creates stupid or good code when accessing u8 out of
-a struct, but I assume that on ARM the code is more-or-less stupid).
+Join this great program right away with no risk at all! Send us an email back to 10539oceanboda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you are interested to participate in the easy Government Funded Grant program. Don't miss your chance, as chances like that don't happen very often in our lives!
+
+American Gov Money
 
 
-> +	/* Setup any GPIO active */
-> +	if (platform_info->init)
-> +		platform_info->init(pdev);
 
-This function can fail, so you need to handle the error case.
 
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise

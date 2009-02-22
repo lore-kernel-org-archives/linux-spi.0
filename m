@@ -1,11 +1,14 @@
-From: "Sebastian" <h-kondo-h2dRA7ayU+OIMPldBiBKAkhBS6J3L/06Vo9BGW+613A@public.gmane.org>
-Subject: [SPAM] Greeting Card from hdgreetings.com
-Date: Sun, 22 Feb 2009 14:59:48 +0300
-Message-ID: <20090222145948.6080403@ville-tremblay-en-france.fr>
+From: Mike Rapoport <mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
+Subject: [PATCH RESEND] spi_bfin5xx: remove unused
+	IS_DMA_ALIGNED macro
+Date: Sun, 22 Feb 2009 14:17:50 +0200
+Message-ID: <1235305070-9224-1-git-send-email-mike@compulab.co.il>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mike Rapoport <mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,12 +20,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Sebastian mailed to you an e-card and wrote for you:
-"I keep thinking of you"
+Signed-off-by: Mike Rapoport <mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
+---
+ drivers/spi/spi_bfin5xx.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
-Visit the following web address to view Valentine's Day E-card:
-http://uje.youradore.com/?ID=d2e8b2617903388
-Best Wishes, hdgreetings.com.
+diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+index 7fea3cf..abdbec9 100644
+--- a/drivers/spi/spi_bfin5xx.c
++++ b/drivers/spi/spi_bfin5xx.c
+@@ -35,8 +35,6 @@ MODULE_AUTHOR(DRV_AUTHOR);
+ MODULE_DESCRIPTION(DRV_DESC);
+ MODULE_LICENSE("GPL");
+ 
+-#define IS_DMA_ALIGNED(x) (((u32)(x)&0x07) == 0)
+-
+ #define START_STATE	((void *)0)
+ #define RUNNING_STATE	((void *)1)
+ #define DONE_STATE	((void *)2)
+-- 
+1.5.6.4
 
 
 ------------------------------------------------------------------------------

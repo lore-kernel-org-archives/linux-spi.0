@@ -1,14 +1,11 @@
-From: Mike Rapoport <mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
-Subject: [PATCH RESEND] spi_bfin5xx: remove unused
-	IS_DMA_ALIGNED macro
-Date: Sun, 22 Feb 2009 14:17:50 +0200
-Message-ID: <1235305070-9224-1-git-send-email-mike@compulab.co.il>
+From: =?GB2312?B?zfXPyMn6?= <drtydfdggt-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 56！票 ！税 ！
+Date: Mon, 23 Feb 2009 01:31:10 +0800
+Message-ID: <E1LbIAd-0005Op-V9@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mike Rapoport <mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,31 +17,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Mike Rapoport <mike-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
----
- drivers/spi/spi_bfin5xx.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 7fea3cf..abdbec9 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -35,8 +35,6 @@ MODULE_AUTHOR(DRV_AUTHOR);
- MODULE_DESCRIPTION(DRV_DESC);
- MODULE_LICENSE("GPL");
- 
--#define IS_DMA_ALIGNED(x) (((u32)(x)&0x07) == 0)
--
- #define START_STATE	((void *)0)
- #define RUNNING_STATE	((void *)1)
- #define DONE_STATE	((void *)2)
--- 
-1.5.6.4
-
-
-------------------------------------------------------------------------------
-Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
--OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
--Strategies to boost innovation and cut costs with open source participation
--Receive a $600 discount off the registration fee with the source code: SFAD
-http://p.sf.net/sfu/XcvMzF8H
+CiAgIMT6usOjuiAKICAgICAgIM7SuavLvtTaysfSu7zSvK+/qreioaLJ+rL6oaLP+srb09rSu8zl
+tcS089DN19u6z7mry76howogICAgICAgz9axvrmry77T0NK7sr+31reiLcaxo7vLsMLKtc3BrqO7
+08W73bT6v6qjuwogICDI5zooMSnG1c2o1PbWtcuwLS3GsaO7CiAgICAgICgyKcbVzajJzMa3z/rK
+27eiLS3GsaO7CiAgICAgICgzKdTLyuTStaGiueO45tK1oaK9qNb+oaK498Dgt/7O8dK1t6ItLcax
+L6GjCgogICDI59PQ0OjSqqOsu7bTrcT60+vO0sGqz7UKCiAgIMGqz7U6zfXPyMn6o6gwo6kxMzY0
+MjM0NzI3NyAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPcGVuIFNvdXJjZSBCdXNpbmVzcyBDb25m
+ZXJlbmNlIChPU0JDKSwgTWFyY2ggMjQtMjUsIDIwMDksIFNhbiBGcmFuY2lzY28sIENBCi1PU0JD
+IHRhY2tsZXMgdGhlIGJpZ2dlc3QgaXNzdWUgaW4gb3BlbiBzb3VyY2U6IE9wZW4gU291cmNpbmcg
+dGhlIEVudGVycHJpc2UKLVN0cmF0ZWdpZXMgdG8gYm9vc3QgaW5ub3ZhdGlvbiBhbmQgY3V0IGNv
+c3RzIHdpdGggb3BlbiBzb3VyY2UgcGFydGljaXBhdGlvbgotUmVjZWl2ZSBhICQ2MDAgZGlzY291
+bnQgb2ZmIHRoZSByZWdpc3RyYXRpb24gZmVlIHdpdGggdGhlIHNvdXJjZSBjb2RlOiBTRkFECmh0
+dHA6Ly9wLnNmLm5ldC9zZnUvWGN2TXpGOEgKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

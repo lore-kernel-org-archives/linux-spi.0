@@ -1,11 +1,10 @@
-From: =?GB2312?B?18nRrw==?= <fajfha-y8jxGgho/Gw@public.gmane.org>
-Subject: [SPAM] 涓撲笟绉樹功/鍔╃悊鍜岃鏀夸汉鍛樻妧鑳藉彂灞曞疄鎴樿缁冭惀
-Date: Mon, 23 Feb 2009 19:19:40 +0800
-Message-ID: <E1LbYqp-0005Qt-QW@h25xhf1.ch3.sourceforge.com>
-Reply-To: ganai-C3kvzk5ERS8AvxtiuMwx3w@public.gmane.org
+From: =?iso-8859-1?q?Dr=20Ben=20Mark?= <drben.mark-/E1597aS9LT0CCvOHzKKcA@public.gmane.org>
+Subject: Pay Master General
+Date: Mon, 23 Feb 2009 07:09:55 -0800 (PST)
+Message-ID: <817463.31971.qm@web111110.mail.gq1.yahoo.com>
+Reply-To: drbenmark-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+Content-Type: multipart/mixed; boundary="===============8922521382004679547=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,119 +17,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+--===============8922521382004679547==
+Content-Type: multipart/alternative; boundary="0-244440854-1235401795=:31971"
+Content-Transfer-Encoding: 8bit
 
-请看附件，如有打扰，请原谅，谢谢
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="专业秘书助理，行政人员专业技能提升研修班.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="专业秘书助理，行政人员专业技能提升研修班.txt"
+--0-244440854-1235401795=:31971
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-ICAgICAgICAgINeo0rXD2MrpL9b6wO26zdDQ1f7Iy9SxvLzE3Lei1bnKtdW90bXBt9OqDQoNCsqx
-vOS12LXjo7oNCsqxICAgvOSjujIwMDnE6jAy1MIyOMjVM9TCMcjVICAgICAgICAgICAgICC12LXj
-o7rJ7tvaDQogICAgICAgICAyMDA5xOowM9TCNy04yNUgICAgICAgICAgICAgICAgICAgtdi146O6
-yc+6ow0KICAgICAgICAgMjAwOcTqMDPUwjI4LTI5yNUgICAgICAgICAgICAgICAgILXYteOjurGx
-vqkNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppQ0Kytq/zrbUz/Ojug0KIMbz0rXQ0NX+1vrA7dPrzsTD
-2M/gudjIy9Sxo7qw7LmrytLW98jOoaLQ0NX+sr++rcDtoaK2rcrCs6TD2MrpoaLX3L6twO3D2Mrp
-oaKyv8PFw9jK6aGi0NDV/tb6wO2hotDQ1f7W97ncoaLQ0NX+sr/Dxc7E1rDIy9SxtcgNCrfRICAg
-INPDOjIwMDDUqi/Iy6OosPzAqNfKwc+30aGizueyzbywyc/Pws7nsui147XIo6kNCsjP1qS30dPD
-o7rW0Ly2NjAw1KovyMs7uN+8tjgwMNSqL8jLKLLOvNPIz9akv7zK1LXE0afUsdDrvbvEybTLt9HT
-w6OssruyzrzTyM/WpL+8ytS1xNGn1LHO3tDrvbvEySkNCrG416I6DQoxLiC3srLOvNPIz9aktcTR
-p9Sxo6zU2sXg0bW94cr4ss6807+8ytS6z7jx1d/TyTw8ufq8ytaw0rXIz9akserXvMGqus+74T4+
-sOS3ojw81tC8tg0KICAg1rDStcPYyukgu/K437y21rDStcPYyuk+Prn6vMq5+sTa1tDTos7EsObL
-q9aw0rXXyrjx1qTK6aOso6i5+rzKufrE2sjP1qSjr8irx/LNqNDQDQogICAgo6+5zdb3yM+/yaOv
-udm3vc34yc+y6dGvo7sNCjKjrreyss6808jP1qS1xNGn1LHQ68zhvbuxvsjLye233dakusXC67yw
-tPPSu7Tnyv3C69XVxqyjuw0KM6Ouv86zzL3hyvi68zE1uPa5pNf3yNXE2r2r1qTK6b/std28xLj4
-0afUsaO7DQo0o66/ycnqx+vW0Ln6ufq80sjLssXN+Mjrv+KxuLC4oaMNCg0K18nRr7Xnu7CjujA3
-NTUtMjYwNzUzNjUgIDI2MDc1NDI5IA0KtKsgICAg1eajujA3NTUtNjEzNTEzOTYgIA0Kwaogz7Ug
-yMujusHo0KG94yAgIMXt0KG94w0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCsT6yse38dP2tb3V
-4tH5x+m/9qO6DQoxLtTa0NDV/rmk1/fW0MO709DK3LW9uf3Ptc2z0bXBt6Oszt63qLTT1b3C1NDU
-yKu3vc67vce2yMjP1qrQ0NX+udzA7bmk1/cNCjIu1NrL+bTTysK1xNDQ1f653MDtuaTX99bQuNC+
-9cixt6bA7cLb1qez1g0KMy640L71uaTX99bQ19zKx7G7tq/Q0MrCo6yyu8Tc1ve2r9XGztW5pNf3
-vdrX4A0KNC7Q0Mq5ttTN4r3nyee74bXEudzA7dawxNzKscO709C40L71tb3T0LrctuDKws7vtcSh
-sLratrShsdKqzOG3wA0KNS7P67j4uavLvr3ayqG30dPDo6y1q8i0srvWqrTTus60ps/CytajrMjn
-us692sqhDQo2LrbU0NDV/rmk1/e1xLj3z+6x6te8srvH5bP+DQo3LtTauavLvrXE1rDOu7XYzruy
-u8Dtz+ujrNPruPeyv8PFubXNqLK7y7OzqQ0KOC7SqrjJtcTKwsfpzKu24KOsyee74dfK1LTSstPQ
-uty24KOstauyu9aqyOe6zsD708PJ57vh18rUtA0KOS621NPayOe6zrncwO25q8u+tcTPtc2z0NTV
-+8zl0NDV/srCzvHQxNbQw7u11w0KMTAuz+vPtc2z0afPsKOszOG439DQ1f653MDtvLzE3KOstavD
-u9PQus/KyrXEtKvK2r6t0em/zrPMo6y/1dPQwO3C29aqyrYNCqG+v86zzLGzvrChv6O6DQrL5tfF
-xvPStbncwO3Lrsa9tcTSqsfzsru2z8zhyf2jrLbU0NDV/rncwO3Iy9SxtcTXqNK1y9jWytKqx/PU
-vcC01L2436GjIL6ts6PM/bW90rvQqcbz0rW437LjsafUucrWz8K1xNDQ1f653MDt1d+7uda7ysfS
-u7j2obC437y2x9rU07mkobG1xL3HyaujrL6ts6PC8c23tKbA7dK70KnL9svptcTKws7xo6y1q7TT
-w7vT0M+1zbO12Mirt73Ou7SmwO3Q0NX+udzA7bmk1/ejuyDNrMqx0rLT0LK7ydm1xNDQ1f653MDt
-yMvKv7jQv66jrNfUvLrV+8zlw6a1w8zsu+i12LC1o6zItLK7tau1w7K7tb3Az7DloaLNrMrCtcS/
-z7aovLDIz82so6y7ubOjs6PS8rzQ1Nq53MDtsuO8sLv5suO2+LG7zbbL36GisafUuaOssrvWqrXA
-uMPI57rO09DQp8LKtdi0psDt0NDV/srCzvGjrLb4x9K40L710rLDu9PQ16jDxbXExeDRtcC01Pa8
-09fUvLrP4NOmtcTXqNK1vLzE3KGjDQrOqsHLyrnQ0NX+udzA7cjL1LHT0Lv6u+G/7MvZtdjIq7e9
-zrvM4cn916jStcuuxr2jrMzYtdi/qreiwcvV4rj2uaTX97e7o6zP4NDFuPfOu9Ta1rDQ0NX+udzA
-7bmk1/e1xMjLyr/T0NK7uPbIq7e9zru1xMjP1qqjrLKitNO24Lj2vce2yMzhyf3X1Ly6tcTXqNK1
-y67GvaGjDQqhvtGnz7DK1dLmob+jug0KICCh78zhuN+7+dDQ1f65pNf3xNzBpqOs1vCyvbPJzqq6
-z7jxtcTG89K1udzA7bLjDQogIKHv1cbO1dDQ1f653MDt1tC1xLj31ta8vMfJo6zM4cn90NDV/rfn
-z9W53MDtvLzE3A0KICCh79TL08PXqNK1tcSy4sbAuaS+36Oswcu94tfUvLq1xNDQzqq357jxsqLV
-xs7V1eu21NDUtcS4xMnGt723qA0KICCh79Gnu+G/7MvZxdC2z8bky/zIy9DQzqq357jxsqLT69au
-09DQp7m1zai1xLy8x8mjrMzhyf2w7MrC0KfCyg0Kytq/zrbUz/Ojusbz0rW21M3ivbvB97rNuN+8
-tr3TtP21xLncwO3Iy8q/us23/s7xyMvUsaO6sPzAqLDsuavK0tb3yM6hotDQ1f6yv76twO2horat
-ysKzpMPYyumhotfcvq3A7cPYyumhotDQ1f7W+sDtoaLQ0NX+1ve53KGi0NDV/rK/w8XOxNSxoaK4
-97K/w8W+rcDttcgNCg0Kytq/zre9yr061vfM4r2yveKhorfW1+nM1sLboaK7pbavvczRp6GiwbfP
-sLXIDQq/zrPMxNrI3aO6DQoxoaIJw9jK6S/W+sDttcS9x8mryM/Wqg0KPwnD2MrpL9b6wO3WsMTc
-DQo/CbP1vLbD2MrpL9b6wO2jusrCzvHQ1M7E1LENCj8J1tC8tsPYyukv1vrA7aO6ysLO8dDUzsTU
-saOruKjW+rncwO0NCj8JuN+8tsPYyukv1vrA7aO6tsDBorncwO2jq8rCzvG0psDtDQo/CdT10fnH
-5c7619S8urXEuNrOu9aw1PCoRKhE0ae74bHg0LS42s67y7XD98rpDQo/CdPF0OPD2Mrp0+vSu7Dj
-w9jK6bXExNzBprLu0uwNCjKhognO5dDHvLa1xMPYyukv1vrA7S/Q0NX+yMvUsQ0KPwnAz7DlL82s
-ysLQxMS/1tDX+LHqz7WoRKhEyrLDtMrHzuXQx7y2w9jK6S/W+sDtL9DQ1f7Iy9SxDQo/CcHLveLE
-47XEyc/Lvg0KPwnX1M7StcTGt8XG0uLKtg0KPwm5pNf3vLSy+sa3o6zRp7vhz/rK29fUvLoNCj8J
-0ae74bncwO3E47XEyc/Lvg0KPwnQodPOz7ejusz9tq6+rcDttcS7sMHLwvCjvw0KM6GiCbDsuavK
-0rXENVO53MDtDQo/CTVTtcS6rdLlDQo/CdT10fnX9rrDsOy5q8rStcTV+8DtuaTX9w0KPwnU9dH5
-1/a6w7DsuavK0rXE1fu22bmk1/cNCj8J1PXR+df2usOw7LmrytK1xMflveC5pNf3DQo/CdT10fnX
-9rrDsOy5q8rStcTH5cmouaTX9w0KNKGiCSAgzuXQx7y2w9jK6db6wO0v0NDV/sjL1LG1xNeo0rW8
-vMTcDQoxKQnE6rbIL9TCtsgv1ty2yMqxvOSx7bmk1/e8xruuudzA7Q0KPwlQRENBuaS+39Ta1sa2
-qLzGu67KsbXEwem77sq508MNCj8J1PXR+df2xOq2yC/UwrbIL9bctsi5pNf3vMa7rqOszOG5qdH5
-se0NCj8JyNWzo7mk1/e1xLj6vfi53MDto7rO5baose21xMq508MNCj8JuaTX97zGu661xNKqy9gN
-CjIpCcrCzvG5pNf3wuTKtbj6vfjXt9fZudzA7Q0KPwnKws7xuaTX99PQxMTQqQ0KPwnRp7vhwdDK
-ws7xx+W1pQ0KPwnI1bOjyrG85LncwO3Sqr73DQo/CcqxvOS53MDttcSzo9PDuaS+3w0KPwnExNCp
-z9a0+ruvtcSw7LmryO28/sTj0qrK7MG3yrnTww0KMykJz+7Ev9DUuaTX97XE1+nWr7ncwO0NCj8J
-ybPFzNHdwbejutT10fnX6dav0ruzodbcxOrH7LXktPO74Q0KPwnTw8/uxL/K1rLhudzA7bmk1/cN
-Cj8J1sbX98/uxL/K1rLhtcS3vbeoDQo/CbC4wP231s/tDQo0KQnOxLW1udzA7Q0KPwnOxLW1udzA
-7bHq17y55re2DQo/Cc7EtbW31sDgtcS5pNf3uea3tg0KPwnOxLW1tOa0orXEuaTX97nmt7YNCj8J
-zsS1tbLp1MS1xLmk1/e55re2DQo/Cc7EtbW31tewtcS5pNf3uea3tg0KPwnOxLW1z/q72bXEuaTX
-97nmt7YNCj8JzsS1tbGjw9y1xLmk1/e55re2DQo1o6kg0ae74dPDzbyx7cu1u7ANCj8Jzbyx7bXE
-1/fTww0KPwmzybmmzbyx7bXEvLi49rnYvPzSqsvYDQo/Cc28se3A4NDNo6jK/b7dwODNvLHtus24
-xcTuwODNvLHto6kNCj8J1sbX99LUyv2+3c6qu/m0obXEzbyx7Q0KQS/It7ao0qqx7bTvtcTQxc+i
-DQpCL8i3tqixyL3PwODQzdGh1PHNvLHtwODQzQ0KPwm4xcTuwODNvLHtyr7A/Q0KNaGiCcnMzvG5
-q87E0LTX9w0KMSkJyczO8bmrzsTQtNf3tcS4xcTuvLC5q87EtcTSqsvYDQoyKQm5q87E0LTX97XE
-vLzHyQ0KPwnH6bjQ1rjK/SANCj8JobC+3L74obG5q87EtcS48cq9DQo/Ccr3waLQzs/zo63OxNXC
-tcTV/cq9s8y2yA0KPwmw0c7VuavOxLXE1fvM5bfnuPENCj8J1Pa80730vLHQ1A0KPwnU9rzTv8nQ
-xbbIDQo/Ccq50NDOxLzyveANCj8JssnTw7v9vKu1xNPvtfcNCjMpCbmrzvG8sMnMzvHOxMrp0LTX
-97OjvPuyocD9DQo/CbmrzsS94bm5suO0ztDyusW07c7zDQo/Ccr919a1xMq508O07c7zDQo/CbzG
-wb+1pc67yrnTw7TtzvMNCj8Jseq147f7usXKudPDtO3O8w0KPwnD+7PGuea3ttPr0uvD+7XEyrnT
-ww0KNCkJs6PTw7mrzsTQtNf3vLC5q87EuPHKvdKqy9i3tsD9DQo/Cc2o1qoNCj8Jsai45g0KPwnH
-68q+DQo/CcX6uLQNCj8Ju+HS6bzN0qoNCj8J0fvH69DFDQo/CdfcveENCr2yyqa96cnco7ogDQrB
-1iC298Wuyr+jrNb4w/vIy8Gm18rUtLncwO3XqLzSoaLF4NG116i80qGjDQq437y2xeDRtcqmo6zT
-tdPQyq7E6taw0rXF4NG1yrXO8b6t0emjrNT4yM6/57n6vK/NxdbQufrH+LXE1tC3vcXg0bW+rcDt
-oaK5+sTaxLO159fTNce/xvPStbrNysC95zUwMMe/1q7Su7XExvuztdbG1OzG89K1tcTIy8Gm18rU
-tLjfvLa+rcDto6zU+M/IuvPOqsuztcLDwM2/yr+hotDcw6i159fToaLW0Ln6tefQxaGi1tC5+s34
-zaihotbQufrBqs2ooaLP47jbtqvQ8c2/wc+5q8u+oaK547aryqG5q8K3vajJ6Lmry761yLy4yq68
-0sbz0rXX9rn918nRr7rNxNrRtaGjy/nK2r/Os8yjutLUvKjQp86qtbzP8rXEv7y6y9bGtsiholRU
-VL2yyqbF4NG1oaLIy8Gm18rUtLncwO2y38LUoaLEv7HqoaLXqNK1w9jK6S/W+sDtus3Q0NX+yMvU
-sby8xNy3otW5oaLJzM7xzsTK6dC01/ehorfHyMvBptfK1LTW97ncus3Iy8Gm18rUtMXg0bWhorjf
-vKjQp9b3udzRtcG3oaLUsbmkvczT/cXg0bXT67ei1bm8xruuoaLUsbmk1dDEvKGiw+bMuNPr1efR
-oby8x8mhotC9s+q4o8D70+u9sb3wudzA7bXIo6yyzrzTuf3B1sDPyqaxvr/Os8y1xNGn1LHAtNfU
-09qjurnjtqvRxdm7u6/Xsca3oaLW0NDFtsi82bTlvsa16qGiy7O1wsuzzf6158b3oaLW0Ln6zfjN
-qKGi1tC5+sGqzaihosW1u/nRx6Gitqu358jVsvqzy9PDs7W5q8u+oaK/tbTzvK/NxaGiv8m/2r/J
-wNahosa9sLKxo8/VoaK7+cPAtefX06Ooy9XW3aOp09DP3rmry76holRDTKGiz8PQwrXn19Ohorq9
-0MK159fToaK7qsHotefG96GizfK6zbXnxvehorqjtvu158b3oaLDwLXEvK/NxaGisNfUxrXnxveh
-orro1se158b3oaLGvbCysaPP1aGiyMvK2bGjz9Whor2oyejS+NDQoaLW0Ln60vjQ0A0K
+I have a new email address!You can now email me at: drben.mark-/E1597aS9LT0CCvOHzKKcA@public.gmane.org
 
---=_NextPart_2rfkindysadvnqw3nerasdf
+
+
+- I'm Dr Ben Mark, Pay Master General Wish to inform you that we received instruction directly from the presidency to pay,your outstanding sum owed to you.yourfull name, Tel/Fax,expected amount and contact address is needed,this will boost Upon the veto power received to pay you.Thank you,Dr Ben Mark
+
+
+--0-244440854-1235401795=:31971
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+
+<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://l.yimg.com/a/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>drben.mark-/E1597aS9LT0CCvOHzKKcA@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">I'm Dr Ben Mark, Pay Master General Wish to inform you that we received instruction directly from the presidency to pay,your outstanding sum owed to you.yourfull name, Tel/Fax,expected amount and contact address is needed,this will boost Upon the veto power received to pay you.Thank you,Dr Ben Mark</s
+ pan></div></div>
+--0-244440854-1235401795=:31971--
+
+
+
+--===============8922521382004679547==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -142,7 +56,7 @@ Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
---=_NextPart_2rfkindysadvnqw3nerasdf
+--===============8922521382004679547==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -153,4 +67,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---=_NextPart_2rfkindysadvnqw3nerasdf--
+--===============8922521382004679547==--

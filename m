@@ -1,11 +1,12 @@
-From: =?ISO-8859-1?Q?Lea_et_Jack_de_Kdotomatic?= <membres-BAvTlcKZEOWukZHgTAicrQ@public.gmane.org>
-Subject: =?iso-8859-1?q?La_Chrononutrition_arrive_enfi?=
-	=?iso-8859-1?q?n_sur_Internet?=
-Date: Mon, 23 Feb 2009 10:25:00 +0100
-Message-ID: <MjAyMC43MDI3ODg5LjExNDI1NjY=@S15578>
+From: =?GB2312?B?18nRrw==?= <fajfha-y8jxGgho/Gw@public.gmane.org>
+Subject: [SPAM] ‰∏ì‰∏öÁßò‰π¶/Âä©ÁêÜÂíåË°åÊîø‰∫∫ÂëòÊäÄËÉΩÂèëÂ±ïÂÆûÊàòËÆ≠ÁªÉËê•
+Date: Mon, 23 Feb 2009 19:19:40 +0800
+Message-ID: <E1LbYqp-0005Qt-QW@h25xhf1.ch3.sourceforge.com>
+Reply-To: ganai-C3kvzk5ERS8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6369738310818946017=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,177 +18,119 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6369738310818946017==
-Content-Type: text/html; Charset="ISO-8859-1"
-Content-Transfer-Encoding: 8bit
+This is a multi-part message in MIME format
 
-<html><body><center>
-	<font color="#14195c" size="1" face="Arial, Helvetica, sans-serif">
-		Si  vous ne visualisez pas cet e-mailing, 
-		<a href="http://url.aart10.net/id.asp?l=51235-7027889-1142566-2020-0&l=2020-1142566-7922-d8d16d33" target="_blank">cliquez  ici</a>
-	</font>
-	<table border="0" width="610" cellpadding="0" cellspacing="0" style="border-width:1px; border-color:#77ABD6; border-style: solid;">
-		<tr>
-			<td>
-				<table id="Tableau_01" width="610" height="140" border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td rowspan="2" height="140">
-							<img src="http://www.kdotomatic.com/emailling/images/entete_acheter_01.jpg" width="410" height="140" alt="">
-</td>
-						<td width="200" height="101" BACKGROUND="http://www.kdotomatic.com/emailling/images/entete_acheter_02.jpg" valign="middle" align="center">
-							
-						</td>
-					</tr>
-					<tr>
-						<td height="39">
-							<img src="http://www.kdotomatic.com/emailling/images/entete_acheter_03.jpg" width="200" height="39" alt="">
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td align="center">
-<div align="center">
-<table style="background: rgb(162, 218, 243) none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 651px; height: 639px;" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-<td colspan="3" style="padding: 0cm;">
-<p><a href="http://url.aart10.net/id.asp?l=51232-7027889-1142566-2020-0" target="_blank"><span style="text-decoration: none;"><img style="border: 0px solid ; width: 651px; height: 122px;" src="http://nodes.reactivpub.fr/uploads/visuels/datas/Chronoregime/header.jpg" alt="GRATUIT : calculez votre Morphotype"></span></a></p>
-</td>
-</tr>
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-<tr>
-<td style="padding: 0cm;" valign="top">
-<p><img src="spacer.gif" border="0" width="9" height="1"></p>
-</td>
-<td style="padding: 0cm; background: white none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 465pt;" valign="top" width="620">
-<table style="width: 628px; height: 537px;" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-<td style="padding: 0cm;">
-<table style="background: white none repeat scroll 0% 50%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; width: 100%;" border="0" cellpadding="0" cellspacing="16" width="100%">
-<tbody>
-<tr>
-<td style="padding: 0cm;" valign="top">
-<table style="width: 588px; height: 454px;" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-<td style="padding: 0cm;" valign="top">
+«Îø¥∏Ωº˛£¨»Á”–¥Ú»≈£¨«Î‘≠¡¬£¨–ª–ª
 
-<p><a href="http://url.aart10.net/id.asp?l=51232-7027889-1142566-2020-0" target="_blank"><span style="text-decoration: none;"><img style="border: 0px solid ; width: 198px; height: 480px;" alt="Mince avec la Morphonutrition" src="http://nodes.reactivpub.fr/uploads/visuels/datas/Chronoregime/fille1.jpg"></span></a></p>
-</td>
-<td style="padding: 0cm;" valign="top">
-<p><img src="spacer.gif" border="0" width="9" height="1"></p>
-</td>
-<td style="padding: 0cm;" valign="top">
-<h1 style="margin: 0cm 0cm 0.0001pt; font-family: Arial; color: rgb(225, 0, 122);"><span style="font-size: 28.5pt;">La Chrononutrition</span></h1>
-<h3 style="margin: 0cm 0cm 0.0001pt; line-height: 13.5pt; font-family: Arial; color: rgb(225, 0, 122);"><span> 
-           
-       
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: application/octet-stream;
+        name="◊®“µ√ÿ È÷˙¿Ì£¨––’˛»À‘±◊®“µººƒ‹Ã·…˝—––ﬁ∞‡.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+        filename="◊®“µ√ÿ È÷˙¿Ì£¨––’˛»À‘±◊®“µººƒ‹Ã·…˝—––ﬁ∞‡.txt"
 
-       arrive enfin sur Internet !<br>
-<br>
-</span></h3>
-<span style="font-family: Tahoma;"><br>
-</span>
-<div style="text-align: center;"><a href="http://url.aart10.net/id.asp?l=51232-7027889-1142566-2020-0"><span style="font-family: Tahoma;"><img style="border: 0px solid ; width: 95px; height: 95px;" alt="GRATUIT" src="http://nodes.reactivpub.fr/uploads/visuels/datas/Chronoregime/stick.jpg" align="middle"></span></a><br>
-<br>
-<span style="font-family: Tahoma;"></span></div>
-<span style="font-family: Tahoma;">
-</span>
-<div style="text-align: center;">
-<div style="text-align: center;"><span style="font-family: Tahoma;"><big><big style="font-weight: bold;">   Calculez
-votre Morphotype <small><small>Æ</small></small></big></big></span><br>
+ICAgICAgICAgINeo0rXD2MrpL9b6wO26zdDQ1f7Iy9SxvLzE3Lei1bnKtdW90bXBt9OqDQoNCsqx
+vOS12LXjo7oNCsqxICAgvOSjujIwMDnE6jAy1MIyOMjVM9TCMcjVICAgICAgICAgICAgICC12LXj
+o7rJ7tvaDQogICAgICAgICAyMDA5xOowM9TCNy04yNUgICAgICAgICAgICAgICAgICAgtdi146O6
+yc+6ow0KICAgICAgICAgMjAwOcTqMDPUwjI4LTI5yNUgICAgICAgICAgICAgICAgILXYteOjurGx
+vqkNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaWppamlqaWppamlqaWppQ0Kytq/zrbUz/Ojug0KIMbz0rXQ0NX+1vrA7dPrzsTD
+2M/gudjIy9Sxo7qw7LmrytLW98jOoaLQ0NX+sr++rcDtoaK2rcrCs6TD2MrpoaLX3L6twO3D2Mrp
+oaKyv8PFw9jK6aGi0NDV/tb6wO2hotDQ1f7W97ncoaLQ0NX+sr/Dxc7E1rDIy9SxtcgNCrfRICAg
+INPDOjIwMDDUqi/Iy6OosPzAqNfKwc+30aGizueyzbywyc/Pws7nsui147XIo6kNCsjP1qS30dPD
+o7rW0Ly2NjAw1KovyMs7uN+8tjgwMNSqL8jLKLLOvNPIz9akv7zK1LXE0afUsdDrvbvEybTLt9HT
+w6OssruyzrzTyM/WpL+8ytS1xNGn1LHO3tDrvbvEySkNCrG416I6DQoxLiC3srLOvNPIz9aktcTR
+p9Sxo6zU2sXg0bW94cr4ss6807+8ytS6z7jx1d/TyTw8ufq8ytaw0rXIz9akserXvMGqus+74T4+
+sOS3ojw81tC8tg0KICAg1rDStcPYyukgu/K437y21rDStcPYyuk+Prn6vMq5+sTa1tDTos7EsObL
+q9aw0rXXyrjx1qTK6aOso6i5+rzKufrE2sjP1qSjr8irx/LNqNDQDQogICAgo6+5zdb3yM+/yaOv
+udm3vc34yc+y6dGvo7sNCjKjrreyss6808jP1qS1xNGn1LHQ68zhvbuxvsjLye233dakusXC67yw
+tPPSu7Tnyv3C69XVxqyjuw0KM6Ouv86zzL3hyvi68zE1uPa5pNf3yNXE2r2r1qTK6b/std28xLj4
+0afUsaO7DQo0o66/ycnqx+vW0Ln6ufq80sjLssXN+Mjrv+KxuLC4oaMNCg0K18nRr7Xnu7CjujA3
+NTUtMjYwNzUzNjUgIDI2MDc1NDI5IA0KtKsgICAg1eajujA3NTUtNjEzNTEzOTYgIA0Kwaogz7Ug
+yMujusHo0KG94yAgIMXt0KG94w0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCsT6yse38dP2tb3V
+4tH5x+m/9qO6DQoxLtTa0NDV/rmk1/fW0MO709DK3LW9uf3Ptc2z0bXBt6Oszt63qLTT1b3C1NDU
+yKu3vc67vce2yMjP1qrQ0NX+udzA7bmk1/cNCjIu1NrL+bTTysK1xNDQ1f653MDtuaTX99bQuNC+
+9cixt6bA7cLb1qez1g0KMy640L71uaTX99bQ19zKx7G7tq/Q0MrCo6yyu8Tc1ve2r9XGztW5pNf3
+vdrX4A0KNC7Q0Mq5ttTN4r3nyee74bXEudzA7dawxNzKscO709C40L71tb3T0LrctuDKws7vtcSh
+sLratrShsdKqzOG3wA0KNS7P67j4uavLvr3ayqG30dPDo6y1q8i0srvWqrTTus60ps/CytajrMjn
+us692sqhDQo2LrbU0NDV/rmk1/e1xLj3z+6x6te8srvH5bP+DQo3LtTauavLvrXE1rDOu7XYzruy
+u8Dtz+ujrNPruPeyv8PFubXNqLK7y7OzqQ0KOC7SqrjJtcTKwsfpzKu24KOsyee74dfK1LTSstPQ
+uty24KOstauyu9aqyOe6zsD708PJ57vh18rUtA0KOS621NPayOe6zrncwO25q8u+tcTPtc2z0NTV
++8zl0NDV/srCzvHQxNbQw7u11w0KMTAuz+vPtc2z0afPsKOszOG439DQ1f653MDtvLzE3KOstavD
+u9PQus/KyrXEtKvK2r6t0em/zrPMo6y/1dPQwO3C29aqyrYNCqG+v86zzLGzvrChv6O6DQrL5tfF
+xvPStbncwO3Lrsa9tcTSqsfzsru2z8zhyf2jrLbU0NDV/rncwO3Iy9SxtcTXqNK1y9jWytKqx/PU
+vcC01L2436GjIL6ts6PM/bW90rvQqcbz0rW437LjsafUucrWz8K1xNDQ1f653MDt1d+7uda7ysfS
+u7j2obC437y2x9rU07mkobG1xL3HyaujrL6ts6PC8c23tKbA7dK70KnL9svptcTKws7xo6y1q7TT
+w7vT0M+1zbO12Mirt73Ou7SmwO3Q0NX+udzA7bmk1/ejuyDNrMqx0rLT0LK7ydm1xNDQ1f653MDt
+yMvKv7jQv66jrNfUvLrV+8zlw6a1w8zsu+i12LC1o6zItLK7tau1w7K7tb3Az7DloaLNrMrCtcS/
+z7aovLDIz82so6y7ubOjs6PS8rzQ1Nq53MDtsuO8sLv5suO2+LG7zbbL36GisafUuaOssrvWqrXA
+uMPI57rO09DQp8LKtdi0psDt0NDV/srCzvGjrLb4x9K40L710rLDu9PQ16jDxbXExeDRtcC01Pa8
+09fUvLrP4NOmtcTXqNK1vLzE3KGjDQrOqsHLyrnQ0NX+udzA7cjL1LHT0Lv6u+G/7MvZtdjIq7e9
+zrvM4cn916jStcuuxr2jrMzYtdi/qreiwcvV4rj2uaTX97e7o6zP4NDFuPfOu9Ta1rDQ0NX+udzA
+7bmk1/e1xMjLyr/T0NK7uPbIq7e9zru1xMjP1qqjrLKitNO24Lj2vce2yMzhyf3X1Ly6tcTXqNK1
+y67GvaGjDQqhvtGnz7DK1dLmob+jug0KICCh78zhuN+7+dDQ1f65pNf3xNzBpqOs1vCyvbPJzqq6
+z7jxtcTG89K1udzA7bLjDQogIKHv1cbO1dDQ1f653MDt1tC1xLj31ta8vMfJo6zM4cn90NDV/rfn
+z9W53MDtvLzE3A0KICCh79TL08PXqNK1tcSy4sbAuaS+36Oswcu94tfUvLq1xNDQzqq357jxsqLV
+xs7V1eu21NDUtcS4xMnGt723qA0KICCh79Gnu+G/7MvZxdC2z8bky/zIy9DQzqq357jxsqLT69au
+09DQp7m1zai1xLy8x8mjrMzhyf2w7MrC0KfCyg0Kytq/zrbUz/Ojusbz0rW21M3ivbvB97rNuN+8
+tr3TtP21xLncwO3Iy8q/us23/s7xyMvUsaO6sPzAqLDsuavK0tb3yM6hotDQ1f6yv76twO2horat
+ysKzpMPYyumhotfcvq3A7cPYyumhotDQ1f7W+sDtoaLQ0NX+1ve53KGi0NDV/rK/w8XOxNSxoaK4
+97K/w8W+rcDttcgNCg0Kytq/zre9yr061vfM4r2yveKhorfW1+nM1sLboaK7pbavvczRp6GiwbfP
+sLXIDQq/zrPMxNrI3aO6DQoxoaIJw9jK6S/W+sDttcS9x8mryM/Wqg0KPwnD2MrpL9b6wO3WsMTc
+DQo/CbP1vLbD2MrpL9b6wO2jusrCzvHQ1M7E1LENCj8J1tC8tsPYyukv1vrA7aO6ysLO8dDUzsTU
+saOruKjW+rncwO0NCj8JuN+8tsPYyukv1vrA7aO6tsDBorncwO2jq8rCzvG0psDtDQo/CdT10fnH
+5c7619S8urXEuNrOu9aw1PCoRKhE0ae74bHg0LS42s67y7XD98rpDQo/CdPF0OPD2Mrp0+vSu7Dj
+w9jK6bXExNzBprLu0uwNCjKhognO5dDHvLa1xMPYyukv1vrA7S/Q0NX+yMvUsQ0KPwnAz7DlL82s
+ysLQxMS/1tDX+LHqz7WoRKhEyrLDtMrHzuXQx7y2w9jK6S/W+sDtL9DQ1f7Iy9SxDQo/CcHLveLE
+47XEyc/Lvg0KPwnX1M7StcTGt8XG0uLKtg0KPwm5pNf3vLSy+sa3o6zRp7vhz/rK29fUvLoNCj8J
+0ae74bncwO3E47XEyc/Lvg0KPwnQodPOz7ejusz9tq6+rcDttcS7sMHLwvCjvw0KM6GiCbDsuavK
+0rXENVO53MDtDQo/CTVTtcS6rdLlDQo/CdT10fnX9rrDsOy5q8rStcTV+8DtuaTX9w0KPwnU9dH5
+1/a6w7DsuavK0rXE1fu22bmk1/cNCj8J1PXR+df2usOw7LmrytK1xMflveC5pNf3DQo/CdT10fnX
+9rrDsOy5q8rStcTH5cmouaTX9w0KNKGiCSAgzuXQx7y2w9jK6db6wO0v0NDV/sjL1LG1xNeo0rW8
+vMTcDQoxKQnE6rbIL9TCtsgv1ty2yMqxvOSx7bmk1/e8xruuudzA7Q0KPwlQRENBuaS+39Ta1sa2
+qLzGu67KsbXEwem77sq508MNCj8J1PXR+df2xOq2yC/UwrbIL9bctsi5pNf3vMa7rqOszOG5qdH5
+se0NCj8JyNWzo7mk1/e1xLj6vfi53MDto7rO5baose21xMq508MNCj8JuaTX97zGu661xNKqy9gN
+CjIpCcrCzvG5pNf3wuTKtbj6vfjXt9fZudzA7Q0KPwnKws7xuaTX99PQxMTQqQ0KPwnRp7vhwdDK
+ws7xx+W1pQ0KPwnI1bOjyrG85LncwO3Sqr73DQo/CcqxvOS53MDttcSzo9PDuaS+3w0KPwnExNCp
+z9a0+ruvtcSw7LmryO28/sTj0qrK7MG3yrnTww0KMykJz+7Ev9DUuaTX97XE1+nWr7ncwO0NCj8J
+ybPFzNHdwbejutT10fnX6dav0ruzodbcxOrH7LXktPO74Q0KPwnTw8/uxL/K1rLhudzA7bmk1/cN
+Cj8J1sbX98/uxL/K1rLhtcS3vbeoDQo/CbC4wP231s/tDQo0KQnOxLW1udzA7Q0KPwnOxLW1udzA
+7bHq17y55re2DQo/Cc7EtbW31sDgtcS5pNf3uea3tg0KPwnOxLW1tOa0orXEuaTX97nmt7YNCj8J
+zsS1tbLp1MS1xLmk1/e55re2DQo/Cc7EtbW31tewtcS5pNf3uea3tg0KPwnOxLW1z/q72bXEuaTX
+97nmt7YNCj8JzsS1tbGjw9y1xLmk1/e55re2DQo1o6kg0ae74dPDzbyx7cu1u7ANCj8Jzbyx7bXE
+1/fTww0KPwmzybmmzbyx7bXEvLi49rnYvPzSqsvYDQo/Cc28se3A4NDNo6jK/b7dwODNvLHtus24
+xcTuwODNvLHto6kNCj8J1sbX99LUyv2+3c6qu/m0obXEzbyx7Q0KQS/It7ao0qqx7bTvtcTQxc+i
+DQpCL8i3tqixyL3PwODQzdGh1PHNvLHtwODQzQ0KPwm4xcTuwODNvLHtyr7A/Q0KNaGiCcnMzvG5
+q87E0LTX9w0KMSkJyczO8bmrzsTQtNf3tcS4xcTuvLC5q87EtcTSqsvYDQoyKQm5q87E0LTX97XE
+vLzHyQ0KPwnH6bjQ1rjK/SANCj8JobC+3L74obG5q87EtcS48cq9DQo/Ccr3waLQzs/zo63OxNXC
+tcTV/cq9s8y2yA0KPwmw0c7VuavOxLXE1fvM5bfnuPENCj8J1Pa80730vLHQ1A0KPwnU9rzTv8nQ
+xbbIDQo/Ccq50NDOxLzyveANCj8JssnTw7v9vKu1xNPvtfcNCjMpCbmrzvG8sMnMzvHOxMrp0LTX
+97OjvPuyocD9DQo/CbmrzsS94bm5suO0ztDyusW07c7zDQo/Ccr919a1xMq508O07c7zDQo/CbzG
+wb+1pc67yrnTw7TtzvMNCj8Jseq147f7usXKudPDtO3O8w0KPwnD+7PGuea3ttPr0uvD+7XEyrnT
+ww0KNCkJs6PTw7mrzsTQtNf3vLC5q87EuPHKvdKqy9i3tsD9DQo/Cc2o1qoNCj8Jsai45g0KPwnH
+68q+DQo/CcX6uLQNCj8Ju+HS6bzN0qoNCj8J0fvH69DFDQo/CdfcveENCr2yyqa96cnco7ogDQrB
+1iC298Wuyr+jrNb4w/vIy8Gm18rUtLncwO3XqLzSoaLF4NG116i80qGjDQq437y2xeDRtcqmo6zT
+tdPQyq7E6taw0rXF4NG1yrXO8b6t0emjrNT4yM6/57n6vK/NxdbQufrH+LXE1tC3vcXg0bW+rcDt
+oaK5+sTaxLO159fTNce/xvPStbrNysC95zUwMMe/1q7Su7XExvuztdbG1OzG89K1tcTIy8Gm18rU
+tLjfvLa+rcDto6zU+M/IuvPOqsuztcLDwM2/yr+hotDcw6i159fToaLW0Ln6tefQxaGi1tC5+s34
+zaihotbQufrBqs2ooaLP47jbtqvQ8c2/wc+5q8u+oaK547aryqG5q8K3vajJ6Lmry761yLy4yq68
+0sbz0rXX9rn918nRr7rNxNrRtaGjy/nK2r/Os8yjutLUvKjQp86qtbzP8rXEv7y6y9bGtsiholRU
+VL2yyqbF4NG1oaLIy8Gm18rUtLncwO2y38LUoaLEv7HqoaLXqNK1w9jK6S/W+sDtus3Q0NX+yMvU
+sby8xNy3otW5oaLJzM7xzsTK6dC01/ehorfHyMvBptfK1LTW97ncus3Iy8Gm18rUtMXg0bWhorjf
+vKjQp9b3udzRtcG3oaLUsbmkvczT/cXg0bXT67ei1bm8xruuoaLUsbmk1dDEvKGiw+bMuNPr1efR
+oby8x8mhotC9s+q4o8D70+u9sb3wudzA7bXIo6yyzrzTuf3B1sDPyqaxvr/Os8y1xNGn1LHAtNfU
+09qjurnjtqvRxdm7u6/Xsca3oaLW0NDFtsi82bTlvsa16qGiy7O1wsuzzf6158b3oaLW0Ln6zfjN
+qKGi1tC5+sGqzaihosW1u/nRx6Gitqu358jVsvqzy9PDs7W5q8u+oaK/tbTzvK/NxaGiv8m/2r/J
+wNahosa9sLKxo8/VoaK7+cPAtefX06Ooy9XW3aOp09DP3rmry76holRDTKGiz8PQwrXn19Ohorq9
+0MK159fToaK7qsHotefG96GizfK6zbXnxvehorqjtvu158b3oaLDwLXEvK/NxaGisNfUxrXnxveh
+orro1se158b3oaLGvbCysaPP1aGiyMvK2bGjz9Whor2oyejS+NDQoaLW0Ln60vjQ0A0K
 
-</div>
-<span style="font-family: Tahoma;"></span></div>
-<div style="text-align: center;"><span style="font-family: Tahoma;">   et
-dÈcouvrez vite comment gommer les kilos <br>
-l‡ o˘ vous voulez</span><br>
-</div>
-<div style="text-align: center; font-family: Tahoma;"><span style="font-size: 10.5pt;"></span><br>
-<a href="http://url.aart10.net/id.asp?l=51232-7027889-1142566-2020-0"><img style="border: 0px solid ; width: 244px; height: 28px;" alt="JE COMMENCE" src="http://nodes.reactivpub.fr/uploads/visuels/datas/Chronoregime/go2.jpg"></a><br>
-<a href="http://url.aart10.net/id.asp?l=51232-7027889-1142566-2020-0"><small><small>Je
-commence maintenant</small></small></a><br>
-<br>
-<div style="text-align: center;"><small>Tout
-le monde ne mincit pas de la mÍme faÁon.<br>
-Une seule rËgle d'or : se faire plaisir en fonction de ses
-besoins et
-de sa morphologie. Suivez le guide !</small><br>
-
-</div>
-<span style="font-size: 10.5pt;"></span></div>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-<br>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-<td style="padding: 0cm;" valign="top">
-
-<p><img src="http://nodes.reactivpub.fr/uploads/visuels/datas/Chronoregime/spacer.gif" border="0" width="10" height="1"></p>
-</td>
-</tr>
-<tr>
-<td colspan="3" style="padding: 0cm;">
-<p><img src="http://nodes.reactivpub.fr/uploads/visuels/datas/Chronoregime/spacer.gif" border="0" width="1" height="9"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<div align="center">
-<img src="http://et.eulerian.net/view/chronoregime/DEQwyRwgEDJm_8YpRfiIiOyyhkFDMTSuvh8yEMnc/pix.gif?eemail=" nosend="1" border="0" width="1" height="1">
-<table style="width: 412.5pt;" align="center" border="0" cellpadding="0" cellspacing="0" width="550">
-
-<tbody>
-<tr>
-<td style="padding: 0cm;">
-<p><span style="font-size: 8.5pt; color: rgb(51, 51, 51);">Copyright
-(c) 2008 Sprintic Ltd Tous droits
-rÈservÈs</span></p>
-<br>
-</td>
-</tr>
-</tbody>
-</table>
-</div><img src="http://nodes.reactivpub.fr/mailing-699-10228-10702&group=" border="0" height="1" width="1"/>
- </tr>
-
-			</td>
-		</tr>
-	</table><BR>
-	<table border="0" width="610" cellpadding="0" cellspacing="0">
-		<tr>
-			<td align="center">
-				<font color="#14195c" size="1" face="Arial, Helvetica, sans-serif">
-					Conform&eacute;ment &agrave; la Loi Informatique et Libert&eacute; du 6 janvier 1978, vous disposez d'un droit d'acc&egrave;s, de rectification et d'opposition aux informations vous concernant. Pour exercer ce droit,<a href="http://url.aart10.net/id.asp?l=51234-7027889-1142566-2020-0&l=2020-1142566-d8d16d33&res=fr">cliquez ici</a><br>
-					Pour vous d&eacute;sinscrire, <a href="http://url.aart10.net/id.asp?l=51233-7027889-1142566-2020-0&id=1142566-2020-7027889-d8d16d33&res=fr">cliquez ici</a>
-				</font>
-
-			</td>
-		</tr>
-	</table>
-</center>
-
-<img src='http://url.aart10.net/op-7027889-1142566-2020-59587-0.gif' width=1 height=1 border=0 alt=''>
-</body></html>
-
-
-
-
---===============6369738310818946017==
+--=_NextPart_2rfkindysadvnqw3nerasdf
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -199,7 +142,7 @@ Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
---===============6369738310818946017==
+--=_NextPart_2rfkindysadvnqw3nerasdf
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -210,4 +153,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6369738310818946017==--
+--=_NextPart_2rfkindysadvnqw3nerasdf--

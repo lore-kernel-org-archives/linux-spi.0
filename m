@@ -1,10 +1,10 @@
-From: linf2122112-FDB2ip3zO0c@public.gmane.org
-Subject: [SPAM] 代理业务
-Date: Mon, 23 Feb 2009 23:32:38 +0800
-Message-ID: <E1LbcnH-0006nT-AS@235xhf1.ch3.sourceforge.com>
+From: "Sadie Vargas" <cembalo-jd0OIvemWJU@public.gmane.org>
+Subject: [SPAM] Make your meat-stick massive
+Date: Mon, 23 Feb 2009 10:25:32 -0700
+Message-ID: <20090223102532.4030604@aebi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,23 +17,12 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgo6jV4srH0ru34snG0uK1xNPKvP6jrMjn09C0
-8sjFx+vBwr3io6mhowogICAgxOO6w6OhztK5q8u+ysfBrMPLtPrA7bmry76jrNTayKu5+rj3tPOz
-x8rQyejT0LfWuavLvqGj0vLStc7xudjPtaOsCr34z+624M/6z+7J2c/W09C24NPg0ruyv7fWPDzG
-1S3NqC3LsC3GsT4+v8nS1NPFu9221M3itPq/qsjnz8Kjugq5pMnMxvPStaGiu/XO78/6ytuhornj
-uOahorf+zvHStaGivajW/rCy17ChosTautOjqLn6vMqjqdTLyuShorfPvsnO7wrXyrXIPDy3oi3G
-sT4+oaMKytW30bHq17yjujw8xtUtzagty7AtxrE+PjIlLTAuOCWjrL/J0tTPyNHp1qS687i2v+6j
-oQogILTL0MXPotTayKu5+re2zqfE2rOkxtrT0NCno6wgIMjn0Ou9+NK7sr3HosnMOiAgCiAgICAg
-ICAgICAgICAgICAgICDBqs+1yMujusDu0KG94wogICAgICAgICAgICAgICAgIMrWICC7+qO6MTM2
-MzI2MDg4NTYgICChoaGhoaGhoaGhoaGhoaGhoaGhoQogICAgICAgICAgICAgICAgICBRICAgUToz
-ODM3NTExNDEKICAgICAgICAgICAgICAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPcGVuIFNvdXJj
-ZSBCdXNpbmVzcyBDb25mZXJlbmNlIChPU0JDKSwgTWFyY2ggMjQtMjUsIDIwMDksIFNhbiBGcmFu
-Y2lzY28sIENBCi1PU0JDIHRhY2tsZXMgdGhlIGJpZ2dlc3QgaXNzdWUgaW4gb3BlbiBzb3VyY2U6
-IE9wZW4gU291cmNpbmcgdGhlIEVudGVycHJpc2UKLVN0cmF0ZWdpZXMgdG8gYm9vc3QgaW5ub3Zh
-dGlvbiBhbmQgY3V0IGNvc3RzIHdpdGggb3BlbiBzb3VyY2UgcGFydGljaXBhdGlvbgotUmVjZWl2
-ZSBhICQ2MDAgZGlzY291bnQgb2ZmIHRoZSByZWdpc3RyYXRpb24gZmVlIHdpdGggdGhlIHNvdXJj
-ZSBjb2RlOiBTRkFECmh0dHA6Ly9wLnNmLm5ldC9zZnUvWGN2TXpGOEgKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
-ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
-c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Have surprisingly good lovemaking http://xoibp.ridebehind.com/
+
+
+------------------------------------------------------------------------------
+Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
+-OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
+-Strategies to boost innovation and cut costs with open source participation
+-Receive a $600 discount off the registration fee with the source code: SFAD
+http://p.sf.net/sfu/XcvMzF8H

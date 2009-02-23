@@ -1,11 +1,11 @@
-From: =?iso-8859-1?q?Dr=20Ben=20Mark?= <drben.mark-/E1597aS9LT0CCvOHzKKcA@public.gmane.org>
-Subject: Pay Master General
-Date: Mon, 23 Feb 2009 07:09:55 -0800 (PST)
-Message-ID: <817463.31971.qm@web111110.mail.gq1.yahoo.com>
-Reply-To: drbenmark-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: =?GB2312?B?zfXPyMn6?= <drtydfdggt-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 56！票 ！税 ！
+Date: Mon, 23 Feb 2009 23:28:23 +0800
+Message-ID: <E1LbcjN-0006wb-5H@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8922521382004679547=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,54 +17,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============8922521382004679547==
-Content-Type: multipart/alternative; boundary="0-244440854-1235401795=:31971"
-Content-Transfer-Encoding: 8bit
-
-
---0-244440854-1235401795=:31971
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-I have a new email address!You can now email me at: drben.mark-/E1597aS9LT0CCvOHzKKcA@public.gmane.org
-
-
-
-- I'm Dr Ben Mark, Pay Master General Wish to inform you that we received instruction directly from the presidency to pay,your outstanding sum owed to you.yourfull name, Tel/Fax,expected amount and contact address is needed,this will boost Upon the veto power received to pay you.Thank you,Dr Ben Mark
-
-
---0-244440854-1235401795=:31971
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://l.yimg.com/a/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>drben.mark-/E1597aS9LT0CCvOHzKKcA@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">I'm Dr Ben Mark, Pay Master General Wish to inform you that we received instruction directly from the presidency to pay,your outstanding sum owed to you.yourfull name, Tel/Fax,expected amount and contact address is needed,this will boost Upon the veto power received to pay you.Thank you,Dr Ben Mark</s
- pan></div></div>
---0-244440854-1235401795=:31971--
-
-
-
---===============8922521382004679547==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
--OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
--Strategies to boost innovation and cut costs with open source participation
--Receive a $600 discount off the registration fee with the source code: SFAD
-http://p.sf.net/sfu/XcvMzF8H
---===============8922521382004679547==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============8922521382004679547==--
+CiAgIMT6usOjuiAKICAgICAgIM7SuavLvtTaysfSu7zSvK+/qreioaLJ+rL6oaLP+srb09rSu8zl
+tcS089DN19u6z7mry76howogICAgICAgz9axvrmry77T0NK7sr+31reiLcaxo7vLsMLKtc3BrqO7
+08W73bT6v6qjuwogICDI5zooMSnG1c2o1PbWtcuwLS3GsaO7CiAgICAgICgyKcbVzajJzMa3z/rK
+27eiLS3GsaO7CiAgICAgICgzKdTLyuTStaGiueO45tK1oaK9qNb+oaK498Dgt/7O8dK1t6ItLcax
+L6GjCgogICDI59PQ0OjSqqOsu7bTrcT60+vO0sGqz7UKCiAgIMGqz7U6zfXPyMn6o6gwo6kxMzY0
+MjM0NzI3NyAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPcGVuIFNvdXJjZSBCdXNpbmVzcyBDb25m
+ZXJlbmNlIChPU0JDKSwgTWFyY2ggMjQtMjUsIDIwMDksIFNhbiBGcmFuY2lzY28sIENBCi1PU0JD
+IHRhY2tsZXMgdGhlIGJpZ2dlc3QgaXNzdWUgaW4gb3BlbiBzb3VyY2U6IE9wZW4gU291cmNpbmcg
+dGhlIEVudGVycHJpc2UKLVN0cmF0ZWdpZXMgdG8gYm9vc3QgaW5ub3ZhdGlvbiBhbmQgY3V0IGNv
+c3RzIHdpdGggb3BlbiBzb3VyY2UgcGFydGljaXBhdGlvbgotUmVjZWl2ZSBhICQ2MDAgZGlzY291
+bnQgb2ZmIHRoZSByZWdpc3RyYXRpb24gZmVlIHdpdGggdGhlIHNvdXJjZSBjb2RlOiBTRkFECmh0
+dHA6Ly9wLnNmLm5ldC9zZnUvWGN2TXpGOEgKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

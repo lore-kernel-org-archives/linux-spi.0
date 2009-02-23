@@ -1,19 +1,13 @@
-From: Balaji Rao <balajirrao-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH 0/2] spi: Add support for
-	non-blocking synchronous	transfers
-Date: Sun, 1 Mar 2009 03:42:49 +0530
-Message-ID: <20090228221247.GA3107@fedora.yogi>
-References: <20090228081036.31964.80618.stgit@fedora.yogi>
-	<200902281233.50612.david-b@pacbell.net>
+From: =?iso-8859-1?q?Hajia=20Farida=20Waziri?=
+	<hajiafaridawaziriefccatnig-/E1597aS9LT0CCvOHzKKcA@public.gmane.org>
+Subject: Attention; Beneficiary,
+Date: Mon, 23 Feb 2009 07:04:23 -0800 (PST)
+Message-ID: <874291.80203.qm@web111111.mail.gq1.yahoo.com>
+Reply-To: hajiafaridawaziri-EMRzualFZlQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Andy Green <andy-4Bgg8jF3iZdWk0Htik3J/w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0242792548453179760=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <200902281233.50612.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,63 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Feb 28, 2009 at 12:33:50PM -0800, David Brownell wrote:
-> Note that $SUBJECT concept is nonsense.
-> Synchronous calls are by definition blocking ones...
-> 
-> 
 
-FWIW, it is exactly this that we want to change.
+--===============0242792548453179760==
+Content-Type: multipart/alternative; boundary="0-676025983-1235401463=:80203"
+Content-Transfer-Encoding: 8bit
 
-> On Saturday 28 February 2009, Balaji Rao wrote:
-> > During the course of development of an accelerometer driver, we saw the
-> > necessity to execute spi transfers synchronously within an interrupt handler.
-> 
-> This sounds like a bad design.  How can you know that no other
-> transfers are going on ... or are queued in front of the transfer
-> you're requesting?
-> 
-> You'd need to wait for all the other transfers to work their
-> way through the transfer queue.  There are *much* better things
-> to do in interrupt handlers.
-> 
 
-Please do look at the patches. We *don't* use a transfer queue.
-Transfers requested through our proposed function should/will complete the
-transfer when it returns without sleeping in between. (Which is the whole
-point of this patch).
+--0-676025983-1235401463=:80203
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-> 
-> > When using a workqueue instead, we observed a huge number of overruns
-> > with very high cpu utlization, which is unacceptable.
-> 
-> Sure, but at least part of that seems to be caused by some
-> broken design assumptions.
-> 
+I have a new email address!You can now email me at: hajiafaridawaziriefccatnig-/E1597aS9LT0CCvOHzKKcA@public.gmane.org
 
-No, it's not. Read below.
 
-> Why are you even trying to touch SPI devices from hardirq
-> context?  That's never going to be OK; "can't-sleep" contexts
-> don't mix with "must-sleep" calls.
-> 
-> 
 
-Accelerometers can produce a huge amount of data and we need to quickly
-read them to avoid overruns. Also, scheduling workers for this greatly
-increases the number of context switches, unnecessarily.
+- Attention; Beneficiary, I am Hajia Farida Waziri Chairman Efcc Investigation Office Nigeria, there is presently a counter claims on your funds by one MR.JOHN WHEELER, who is presently trying to make us believe that you are dead and even explained that you entered into an agreement with him, to help you in receiving your fund, So here comes the big question. Did you sign any Deed of Assignment in favor of (JOHN WHEELER). thereby making him the current beneficiary with his following account details: MR JOHN WHEELER, AC/NUMBER: 6503809428. ROUTING/122006743, B/NAME:CITI BANK, ADDRESS:NEW YORK,USA, we shall proceed to issue all payments details to the said Mr. John Wheeler, if we do not hear from you within the next two working days from today Thanks Hajia Farida Waziri Chairman Efcc Investi
+ gation Office Nigeria
 
-> > This series adds a new interface for this and modifies no existing ones.
-> 
-> NAK on these two patches.
-> 
 
-Ok, it will be helpful if you please suggest an alternative keeping in
-mind the huge amount of data produced by the accelerometer and the need
-to read them quickly ?
+--0-676025983-1235401463=:80203
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Thanks,
-Balaji
+<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://l.yimg.com/a/i/us/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">I have a new email address!</big></td></tr></table><div style="padding:10px;">You can now email me at: <b>hajiafaridawaziriefccatnig-/E1597aS9LT0CCvOHzKKcA@public.gmane.org</b><br><br><span style="color:green;"></span><br><br>- <span style="color:green;">Attention; Beneficiary, I am Hajia Farida Waziri Chairman Efcc Investigation Office Nigeria, there is presently a counter claims on your funds by one MR.JOHN WHEELER, who is presently trying to make us believe that you are dead and even explained that you entered into an agreement with
+  him, to help you in receiving your fund, So here comes the big question. Did you sign any Deed of Assignment in favor of (JOHN WHEELER). thereby making him the current beneficiary with his following account details: MR JOHN WHEELER, AC/NUMBER: 6503809428. ROUTING/122006743, B/NAME:CITI BANK, ADDRESS:NEW YORK,USA, we shall proceed to issue all payments details to the said Mr. John Wheeler, if we do not hear from you within the next two working days from today Thanks Hajia Farida Waziri Chairman Efcc Investigation Office Nigeria</span></div></div>
+--0-676025983-1235401463=:80203--
+
+
+
+--===============0242792548453179760==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
@@ -88,3 +58,15 @@ Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
+--===============0242792548453179760==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0242792548453179760==--

@@ -1,44 +1,121 @@
-From: =?GB2312?B?w7fPyMn6?= <dewwegg-KN7UnAbNpbg@public.gmane.org>
-Subject: [SPAM] @商#务￥洽%谈&&
-Date: Mon, 23 Feb 2009 15:23:37 +0800
-Message-ID: <E1LbVCA-0003wQ-0l@335xhf1.ch3.sourceforge.com>
+From: Paulius Zaleckas <paulius.zaleckas@teltonika.lt>
+Subject: Re: [RFC] generic iMX-spi driver
+Date: Mon, 23 Feb 2009 10:57:02 +0200
+Message-ID: <49A264DE.8080805@teltonika.lt>
+References: <20090220144126.GA9203@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-arm <linux-arm-kernel@lists.arm.linux.org.uk>
+To: Wolfram Sang <public-w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@lo.gmane.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk>
+In-Reply-To: <20090220144126.GA9203@pengutronix.de>
+List-Unsubscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=unsubscribe>
+List-Archive: <http://lists.arm.linux.org.uk/lurker/list/linux-arm-kernel.html>
+List-Post: <mailto:linux-arm-kernel@lists.arm.linux.org.uk>
+List-Help: <mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=help>
+List-Subscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.arm.linux.org.uk
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICAgztLKx8nu29rK0PbOw6/KtdK109DP
-3rmry761xKOouePW3aGitqvduKGiyc+6o6Giz8PDxaGiurzW3aGiy9XW3bXItdi++dPQCgq31rmr
-y76jqaGjztLLvsq1wabQ27rxo6zT0NfFwby6w7XEyee74bnYz7Who9LyvfjP7r3PtuDP1s3qs8my
-u8HLw7/Uws/6ytu27rbIoaMKCsO/1MLT0NK7sr+31lvU9ta1y7BdtefE1Fu3okDGsV02JbrNW8bV
-zahdW7eiQMaxXdbWwODI58/Co7rJzMa3z/rK21u3okDGsV2jrLXnxNTUy8rkCgpbt6JAxrFdueO4
-5lu3osaxXdfiwd7StVu3osaxXSy3/s7x0rVbt6LGsV21yCAoufrLsLXYy7CjqTEtMiXTxbvdtPq/
-qrvyus/X96OstePK/b3Ptc2howoKu7m/ydLUuPm+3cv51/bK/cG/tu62yLXEtPPQocC0yczM1tPF
-u921xLXjyv2jrLmry76zycGituDE6tK71rG84bPW0tShsLPP0MWhsc6q1tAKCtDE1/fOqrmry761
-xLrL0MTLvM/roaLAzrnMyvfBormry77Qzs/zo6yxvrmry77Wo9bYs9DFtcv508O++LbUysfV5sax
-o6G4/M+jzfsKCsTcubvT0Lv6u+HT67nzy766z9f3o6EKoaGhoQogICAgIMjnufPLvtTaW7eiQEBA
-xrFdtcTV5s6xt73D5tPQyM66ztLJwse78rWj0MSjrL/Jyc/N+LLp1qS78s7Sy77Wsb3T0+u588u+
-yKXLsM7xvtYKtda/27rLttShowoKICAgICC0y9DFz6KzpMba09DQp6OsyOfQ67340ruyvceiycw6
-CgqhoaGhytYgILv6OjEzNTMwOTA5MzQ0CgogICAgICAgIFFRo7sgNzcxNTA5MzQ0CgogCiAgICDB
-qs+1yMujusDuufq35QogCiAgICAgICAgICAgICAgICAgICAgICAgICAgCgotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KT3BlbiBTb3VyY2UgQnVzaW5lc3MgQ29uZmVyZW5jZSAoT1NCQyksIE1hcmNoIDI0
-LTI1LCAyMDA5LCBTYW4gRnJhbmNpc2NvLCBDQQotT1NCQyB0YWNrbGVzIHRoZSBiaWdnZXN0IGlz
-c3VlIGluIG9wZW4gc291cmNlOiBPcGVuIFNvdXJjaW5nIHRoZSBFbnRlcnByaXNlCi1TdHJhdGVn
-aWVzIHRvIGJvb3N0IGlubm92YXRpb24gYW5kIGN1dCBjb3N0cyB3aXRoIG9wZW4gc291cmNlIHBh
-cnRpY2lwYXRpb24KLVJlY2VpdmUgYSAkNjAwIGRpc2NvdW50IG9mZiB0aGUgcmVnaXN0cmF0aW9u
-IGZlZSB3aXRoIHRoZSBzb3VyY2UgY29kZTogU0ZBRApodHRwOi8vcC5zZi5uZXQvc2Z1L1hjdk16
-RjhICl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
-ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
-b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
-LWRldmVsLWdlbmVyYWwK
+Wolfram Sang wrote:
+> @@ -1646,6 +1706,8 @@ static int __exit spi_imx_remove(struct platform_device *pdev)
+>  	struct driver_data *drv_data = platform_get_drvdata(pdev);
+>  	int irq;
+>  	int status = 0;
+> +	struct spi_imx_master *platform_info =
+> +			(struct spi_imx_master *)pdev->dev.platform_data;
+>  
+>  	if (!drv_data)
+>  		return 0;
+> @@ -1659,10 +1721,13 @@ static int __exit spi_imx_remove(struct platform_device *pdev)
+>  		return status;
+>  	}
+>  
+> +	if (platform_info->exit)
+> +		platform_info->exit(pdev);
+
+platform_info can be NULL here if when declaring platform_device platform data was not set.
+In this case you will get crash here.
+Should be if (platform_info && platform_info->exit)
+
+> +
+>  	/* Reset SPI */
+> -	writel(SPI_RESET_START, drv_data->regs + SPI_RESET);
+> -	writel(0, drv_data->regs + SPI_RESET);
+> +	writel(drv_data->version->reset_val, drv_data->regs + drv_data->version->reset);
+>  
+> +#ifdef CONFIG_SPI_IMX_DMA
+>  	/* Release DMA */
+>  	if (drv_data->master_info->enable_dma) {
+>  		RSSR(drv_data->rx_channel) = 0;
+> @@ -1670,6 +1735,7 @@ static int __exit spi_imx_remove(struct platform_device *pdev)
+>  		imx_dma_free(drv_data->tx_channel);
+>  		imx_dma_free(drv_data->rx_channel);
+>  	}
+> +#endif /* DMA */
+>  
+>  	/* Release IRQ */
+>  	irq = platform_get_irq(pdev, 0);
+> @@ -1701,8 +1767,7 @@ static void spi_imx_shutdown(struct platform_device *pdev)
+>  	struct driver_data *drv_data = platform_get_drvdata(pdev);
+>  
+>  	/* Reset SPI */
+> -	writel(SPI_RESET_START, drv_data->regs + SPI_RESET);
+> -	writel(0, drv_data->regs + SPI_RESET);
+> +	writel(drv_data->version->reset_val, drv_data->regs + drv_data->version->reset);
+>  
+>  	dev_dbg(&pdev->dev, "shutdown succeded\n");
+>  }
+> @@ -1714,12 +1779,20 @@ static int spi_imx_suspend(struct platform_device *pdev, pm_message_t state)
+>  	struct driver_data *drv_data = platform_get_drvdata(pdev);
+>  	int status = 0;
+>  
+> +	struct spi_imx_master *platform_info =
+> +			(struct spi_imx_master *)pdev->dev.platform_data;
+> +
+>  	status = stop_queue(drv_data);
+>  	if (status != 0) {
+>  		dev_warn(&pdev->dev, "suspend cannot stop queue\n");
+>  		return status;
+>  	}
+>  
+> +	if (platform_info->exit)
+> +		platform_info->exit(pdev);
+
+ditto
+
+> +
+> +	clk_disable(drv_data->clk);
+> +
+>  	dev_dbg(&pdev->dev, "suspended\n");
+>  
+>  	return 0;
+> @@ -1730,6 +1803,14 @@ static int spi_imx_resume(struct platform_device *pdev)
+>  	struct driver_data *drv_data = platform_get_drvdata(pdev);
+>  	int status = 0;
+>  
+> +	struct spi_imx_master *platform_info =
+> +			(struct spi_imx_master *)pdev->dev.platform_data;
+> +
+> +	clk_enable(drv_data->clk);
+> +
+> +	if (platform_info->init)
+> +		platform_info->init(pdev);
+
+ditto
+
+> +
+>  	/* Start the queue running */
+>  	status = start_queue(drv_data);
+>  	if (status != 0)
+
+
+-------------------------------------------------------------------
+List admin: http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel
+FAQ:        http://www.arm.linux.org.uk/mailinglists/faq.php
+Etiquette:  http://www.arm.linux.org.uk/mailinglists/etiquette.php

@@ -1,12 +1,11 @@
-From: Wolfgang Ocker <weo-pMF0Ia4UJXeoYr4blSSd5g@public.gmane.org>
-Subject: [PATCH] spidev: do not reference spidev_remove
-	using __devexit_p
-Date: Tue, 24 Feb 2009 13:48:03 +0100
-Message-ID: <1235479683.3964.31.camel@goedel.recco.de>
+From: "Doris" <creimchen-+XLVgPkwK4rQT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] Hottest coupons for you
+Date: Wed, 25 Feb 2009 01:16:59 +0100
+Message-ID: <000501c996de$bd697140$a0a3ef54@PticLaptop2uvqp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,26 +17,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch removes the usage of __devexit_p() for spidev_remove() in the
-definition of struct spi_driver spidev_spi.
-
-This causes a kernel oops if the master driver is removed and reinserted
-in case spidev is builtin.
-
-Signed-off-by: Wolfgang Ocker <weo-pMF0Ia4UJXeoYr4blSSd5g@public.gmane.org>
----
-linux-2.6.28.6/drivers/spi/spidev.c.fix_spidev_remove	2009-02-17 18:29:27.000000000 +0100
-+++ linux-2.6.28.6/drivers/spi/spidev.c	2009-02-24 13:30:07.000000000 +0100
-@@ -633,7 +633,7 @@ static struct spi_driver spidev_spi = {
- 		.owner =	THIS_MODULE,
- 	},
- 	.probe =	spidev_probe,
--	.remove =	__devexit_p(spidev_remove),
-+	.remove =	spidev_remove,
- 
- 	/* NOTE:  suspend/resume methods are not necessary here.
- 	 * We don't do anything except pass the requests to/from
-
+I think you may need it http://vj.smartsalesgroup.com/run.php
 
 
 ------------------------------------------------------------------------------

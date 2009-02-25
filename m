@@ -1,9 +1,9 @@
-From: Nathanael Hatcher <ombramarketing.comrcall5-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_Making_EASY_MONEY?=
-	=?windows-1251?q?_at_home_has_never_been_this_fast?=
-Date: Wed, 25 Feb 2009 16:45:43 +0100
-Message-ID: <28607.1397983052$1235576994@news.gmane.org>
-Reply-To: Nathanael Hatcher <13189doritabreyfogle-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Dinah Diegel <angelika.ostner-S0/GAf8tV78@public.gmane.org>
+Subject: =?windows-1251?q?=5BSPAM=5D_Start_Your_Own_On?=
+	=?windows-1251?q?line_Business_And_Earn_Real_Cash?=
+Date: Wed, 25 Feb 2009 13:38:08 -0300
+Message-ID: <13337.0404052132$1235580007@news.gmane.org>
+Reply-To: Dinah Diegel <1992frodo.rinauro-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,7 +27,7 @@ You don't need any special Internet experience to start your online business and
 
 Our eBay CashFlow System will teach you to all of these secrets in almost no time! Now, for the first time in history, this system is offered only to you absolutely FREE! You can just check out without any risk! But you have to know that this is a Limited Offer, so Act Quick!
 
-Send us an email to 15239lianapullins-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org in order to proceed further, if you are interested to join us. If you act NOW you will also receive a FREE access to your own personal Internet Marketing expert consultant!
+Send us an email to 1595jeanna.kincaide-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org in order to proceed further, if you are interested to join us. If you act NOW you will also receive a FREE access to your own personal Internet Marketing expert consultant!
 
 If you think you are not interested, just don't answer - we will give your Free Trial Kit to someone else, who will take the benefits of this FREE KIT offer!
 
@@ -45,7 +45,7 @@ Sincerely Yours,
 
 
 ------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to sign.out_me-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_from_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
 
 This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
 ------------------------------------------------------------------

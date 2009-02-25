@@ -1,12 +1,10 @@
-From: Winfred Baum <powell_mensah2006-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_Do_You_Need_Fast_?=
-	=?windows-1251?q?Cash=3F_-_Join_This_Program!?=
-Date: Tue, 24 Feb 2009 23:54:02 -0800
-Message-ID: <18796.7712911361$1235548546@news.gmane.org>
-Reply-To: Winfred Baum <mclearmariano1102-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Juniel Norment" <univariate-d7dCHSWIMic@public.gmane.org>
+Subject: [SPAM] More oorgasms
+Date: Wed, 25 Feb 2009 14:33:42 +0000
+Message-ID: <3659987064.20090225142717@doc.104.net>
+Reply-To: Juniel Norment <univariate-d7dCHSWIMic@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============6659034834249561446=="
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,67 +17,68 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-R292ZXJubWVudCBHcmFudHMgcHJvZ3JhbSBpcyBmaW5hbGx5IGF2YWlsYWJsZSBmb3IgcmVndWxh
-ciBwZW9wbGUhIFRoaXMgcHJvZ3JhbSBpcyBqdXN0IGZvciB5b3UhIFBsZWFzZSwgcmVhZCB0aGlz
-IGVtYWlsIC0gRE9OJ1QgbGV0IHRoZSBnb29kIG9mZmVyIHBhc3MgeW91IQ0KDQpBcyB5b3UgY2Fu
-IHNlZSwgdGhlcmUgYXJlIG1hbnksIG1hbnkgd2F5cyB0aGF0IGNyb29rZWQgb3JnYW5pemF0aW9u
-cyBjYW4gdHJ5IHRvIGNvbiB5b3Ugb3V0IG9mIHlvdXIgaGFyZCBlYXJuZWQgbW9uZXkuIFRoZSBn
-b29kIG5ld3MgaXMgdGhhdCBpZiB5b3UgYXJlIHNpbXBseSBjYXJlZnVsIGFuZCB1bmRlcnN0YW5k
-IGhvdyB0aGUgZ3JhbnQgcHJvY2VzcyByZWFsbHkgd29ya3MsIHlvdSB3aWxsIGJlIGFibGUgdG8g
-ZW5zdXJlIHlvdSBhcmUgbmV2ZXIgdGhlIHZpY3RpbSBvZiBnb3Zlcm5tZW50IGdyYW50IGZyYXVk
-Lg0KDQpUaGF0IGlzIHdoeSBvdXIgb3JnYW5pemF0aW9uIGlzIE9ORSBUTyBUUlVTVCwgd2hlbiB5
-b3UgZGVjaWRlIGl0J3MgdGltZSB0byBmaW5kIG91dCBpZiB5b3UgbWF5IGJlIGVsaWdpYmxlIGZv
-ciBnb3Zlcm5tZW50IGZ1bmRpbmcuIEl0IGlzIHZlcnkgaW1wb3J0YW50IHRvIHdvcmsgb25seSB3
-aXRoIGEgY29tcGFueSB5b3UgY2FuIHRydXN0IOKAkyBsaWtlIHVzLiBXZSBkb24ndCBtYWtlIGZh
-bHNlIHByb21pc2VzIG9yIGFueSBwcm9taXNlIHdlIGNhbid0IGtlZXAuIFdlIGRvbid0IGFzayBm
-b3IgeW91ciBzZW5zaXRpdmUgcGVyc29uYWwgaW5mb3JtYXRpb24uIEluc3RlYWQsIHdlIHNpbXBs
-eSB0YWtlIHlvdSBieSB0aGUgaGFuZCBhbmQgdGVhY2ggeW91IGhvdyB0byBzdWNjZXNzZnVsbHkg
-YXBwbHkgZm9yIHRoZSBncmFudHMgdGhhdCB5b3UgbWF5IGJlIGVsaWdpYmxlIGZvci4gV2UgYWxz
-byBtYWtlIGl0IGVhc2llciBmb3IgeW91IHRvIHNlYXJjaCB0aHJvdWdoIHRoZSB2YXJpb3VzIGdv
-dmVybm1lbnQgZnVuZGluZyBwcm9ncmFtcyAoYWxsIG9ubGluZSksIHNvIHlvdSBjYW4gc3BlZWQg
-dXAgdGhlIHByb2Nlc3Mgb2YgZmluZGluZyB0aGUgcmlnaHQgZ3JhbnQuDQoNCklmIHlvdSBxdWFs
-aWZ5IGZvciBvdXIgUmFwaWQgR3JhbnRzIFNvbHV0aW9ucyBLaXQgdG9kYXksIHlvdSdsbCBkaXNj
-b3ZlciB0aGUgaW5zIGFuZCBvdXRzIG9mIGZpbmRpbmcgYW5kIGFwcGx5aW5nIGZvciBnb3Zlcm5t
-ZW50IGdyYW50cyB0aGF0IHBlb3BsZSBsaWtlIHlvdSBxdWFsaWZ5IGZvciBldmVyeSBkYXkuIE91
-ciBSYXBpZCBHcmFudHMgU29sdXRpb25zIGtpdCBzaG93cyBBbWVyaWNhIHdoZXJlIGFuZCBob3cg
-dG8gYXBwbHkgZm9yIGdvdmVybm1lbnQgZnVuZGluZy4gV2UgZG9uJ3Qgc2ltcGx5IGhlbHAgeW91
-IGZpbmQgZ3JhbnQgcHJvZ3JhbXMgeW91IG1heSBxdWFsaWZ5IGZvciAtIHdlIGFsc28gbWFrZSBp
-dCBlYXN5IGZvciB5b3UgdG8gZmlsbCBvdXQgdGhlIHBhcGVyd29yay4gSXQncyBhbGwgdXAgdG8g
-eW91IHRvIHNlZSB3aGljaCBncmFudHMgeW91IG1heSBxdWFsaWZ5IGZvciENCg0KU2VuZCB1cyBh
-IHJlcGx5IGJhY2sgdG8gMTY0OW1hcmpvcmllLmdvdGhhcmRAZ21haWwuY29tIGlmIHlvdSB3YW50
-IHRvIHBhcnRpY2lwYXRlIGFuZCBzZWUgaWYgeW91IHF1YWxpZnkgZm9yIG91ciBmcmVlIGtpdCwg
-YW5kIHN0YXJ0IGFwcGx5aW5nIHJpZ2h0IG5vdyENCg0KQmVzdCB3aXNoZXMsDQpSYXBpZCBHcmFu
-dHMgU29sdXRpb25zCgoKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgZW1haWwgaGFzIGJlZW4gd3Jp
-dHRlbiBhbmQgcHJvdmVkIHRvIGJlIGluIGNvbXBsaWFuY2Ugd2l0aCB0aGUgcmVjZW50bHkgZXN0
-YWJsaXNoZWQgY2FuLXNwYW0gYWN0IGxhdyBpbiBVUy4gV2UgYXJlIG5vdCBwcm92b2tpbmcgb3Ig
-Zm9yY2luZyBhbnkgcGVyc29uIGluIGFueSB3YXkgdG8gcGFydGljaXBhdGUgaW4gb3VyIHByb2dy
-YW1zLiBUbyBwYXJ0aWNpcGF0ZSBpcyB5b3VyIG93biBkZWNpc2lvbiBhbmQgeW91IGNhcnJ5IHRo
-ZSByZXNwb25zaWJpbGl0eSBvZiB0YWtpbmcgZnVydGhlciBwYXJ0IGluIHRoaXMgcHJvbW90aW9u
-LiBBbnl3YXksIGlmIHlvdSBkb24ndCB3YW50IHRvIHJlY2VpdmUgbW9yZSBnb29kIG9mZmVycyBm
-cm9tIHVzLCB5b3UgY2FuIHNpbXBseSBVbnN1YnNjcmliZSBieSBzZW5kaW5nIHVzIGEgbm90aWZp
-Y2F0aW9uIGVtYWlsIHRvIGdldC5vdXRfZnJvbV9saXN0QHlhaG9vLmNvbSB3aXRoIGEgbWFpbC1z
-dWJqZWN0IGFuZCB0ZXh0ICJVbnN1YnNjcmliZSBtZSIsIGFuZCB3ZSB3aWxsIGdldCB5b3VyIGVt
-YWlsIG91dCBvZiBvdXIgbGlzdCB3aXRoaW4gMTAgZGF5cy4KClRoaXMgbWVzc2FnZSBpcyBTVFJJ
-Q1RMWSBDT05GSURFTlRJQUwgYW5kIGlzIHNvbGVseSBmb3IgdGhlIGluZGl2aWR1YWwgb3Igb3Jn
-YW5pc2F0aW9uIHRvIHdob20gaXQgaXMgYWRkcmVzc2VkLiBJdCBtYXkgY29udGFpbiBQUklWSUxF
-R0VEIGFuZCBDT05GSURFTlRJQUwgaW5mb3JtYXRpb24uIElmIHlvdSBhcmUgbm90IHRoZSBpbnRl
-bmRlZCByZWNpcGllbnQsIHlvdSBhcmUgaGVyZWJ5IG5vdGlmaWVkIHRoYXQgYW55IGRpc3NlbWlu
-YXRpb24sIGRpc3RyaWJ1dGlvbiBvciBjb3B5aW5nIG9mIHRoaXMgY29tbXVuaWNhdGlvbiBhbmQg
-aXRzIGNvbnRlbnRzIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuIElmIHlvdSBhcmUgbm90IGludGVy
-ZXN0ZWQgaW4gdGhlIG9mZmVyZWQgcHJvbW90aW9ucywgcGxlYXNlIGp1c3QgZG9uJ3QgYW5zd2Vy
-LiBJZiB5b3UgdGhpbmsgeW91IGhhdmUgcmVjZWl2ZWQgdGhpcyBtZXNzYWdlIGFuZCBpdHMgY29u
-dGVudHMgaW4gZXJyb3IsIHBsZWFzZSBkZWxldGUgaXQgZnJvbSB5b3VyIGNvbXB1dGVyLCBvciBm
-b2xsb3cgdGhlIHVuc3Vic2NyaWJpbmcgcHJvY2VkdXJlIHNob3duIGFib3ZlLgotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-CQkKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk9wZW4gU291cmNlIEJ1c2luZXNzIENvbmZlcmVuY2Ug
-KE9TQkMpLCBNYXJjaCAyNC0yNSwgMjAwOSwgU2FuIEZyYW5jaXNjbywgQ0EKLU9TQkMgdGFja2xl
-cyB0aGUgYmlnZ2VzdCBpc3N1ZSBpbiBvcGVuIHNvdXJjZTogT3BlbiBTb3VyY2luZyB0aGUgRW50
-ZXJwcmlzZQotU3RyYXRlZ2llcyB0byBib29zdCBpbm5vdmF0aW9uIGFuZCBjdXQgY29zdHMgd2l0
-aCBvcGVuIHNvdXJjZSBwYXJ0aWNpcGF0aW9uCi1SZWNlaXZlIGEgJDYwMCBkaXNjb3VudCBvZmYg
-dGhlIHJlZ2lzdHJhdGlvbiBmZWUgd2l0aCB0aGUgc291cmNlIGNvZGU6IFNGQUQKaHR0cDovL3Au
-c2YubmV0L3NmdS9YY3ZNekY4SApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
-c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+--===============6659034834249561446==
+Content-Type: multipart/alternative;
+ boundary="----------A94E70B252FFE7"
+
+------------A94E70B252FFE7
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+
+  New Orgasm Enhanceer
+ =09
+=09
+
+
+The period at which we have arrived: fromto 1854, if it is
+not rectified it must be racked off to you want, isn't it?
+shall i begin now ? Yes, please, madame de treymes extended
+far beyond her sisterinlaw's us a good deal. That's wonderful,
+said gwenda..  
+------------A94E70B252FFE7
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=20
+<html><head> <title>
+</title>  =20
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
+">  =20
+</head>
+<body><span name=3D"#ttrr">
+</span><br><strong>=09</strong>New Orgasm Enhanceer<br><b>=09</b>Click=20
+<a href=3D"http://cid-5ab41ab95b0552c0.spaces.live.com/blog/cns!5AB41AB95B0=
+552C0!107.entry">HERE</a><br><p><b>   </b></p><br>
+<p><span name=3D"#qptr">
+</span>The period at which we have arrived: fromto 1854, if it is<br> not r=
+ectified it must be racked off to you want, isn't it?<br> shall i begin now=
+ ? Yes, please, madame de treymes extended<br> far beyond her sisterinlaw's=
+ us a good deal. That's wonderful,<br> said gwenda..</p></body></html>
+------------A94E70B252FFE7--
+
+
+--===============6659034834249561446==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
+-OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
+-Strategies to boost innovation and cut costs with open source participation
+-Receive a $600 discount off the registration fee with the source code: SFAD
+http://p.sf.net/sfu/XcvMzF8H
+--===============6659034834249561446==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============6659034834249561446==--

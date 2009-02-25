@@ -1,10 +1,12 @@
-From: "Juniel Norment" <univariate-d7dCHSWIMic@public.gmane.org>
-Subject: [SPAM] More oorgasms
-Date: Wed, 25 Feb 2009 14:33:42 +0000
-Message-ID: <3659987064.20090225142717@doc.104.net>
-Reply-To: Juniel Norment <univariate-d7dCHSWIMic@public.gmane.org>
+From: Nathanael Hatcher <ombramarketing.comrcall5-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?windows-1251?q?=5BSPAM=5D_Making_EASY_MONEY?=
+	=?windows-1251?q?_at_home_has_never_been_this_fast?=
+Date: Wed, 25 Feb 2009 16:45:43 +0100
+Message-ID: <28607.1397983052$1235576994@news.gmane.org>
+Reply-To: Nathanael Hatcher <13189doritabreyfogle-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6659034834249561446=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,68 +19,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6659034834249561446==
-Content-Type: multipart/alternative;
- boundary="----------A94E70B252FFE7"
+Before you read this email, we want you to know that this is the greatest money making proposal you will ever receive! And we are sending this proposal only ONCE!
 
-------------A94E70B252FFE7
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+The CBS News has published a story about people making money on eBay. 60 Minutes recently spotlighted people who are making a comfortable living by selling on eBay. The company sells a motorcycle every 18 minutes and an SUV every 30 minutes. As many as 150,000 people have literally given up their jobs to create their own businesses selling on eBay.
 
+You don't need any special Internet experience to start your online business and earn good money with eBay. All you need is a computer, a camera, and something to sell, in order to build your own eBay business that can be earning you $30,000 to $40,000 in goods sales a month.
 
-  New Orgasm Enhanceer
- =09
-=09
+Our eBay CashFlow System will teach you to all of these secrets in almost no time! Now, for the first time in history, this system is offered only to you absolutely FREE! You can just check out without any risk! But you have to know that this is a Limited Offer, so Act Quick!
 
+Send us an email to 15239lianapullins-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org in order to proceed further, if you are interested to join us. If you act NOW you will also receive a FREE access to your own personal Internet Marketing expert consultant!
 
-The period at which we have arrived: fromto 1854, if it is
-not rectified it must be racked off to you want, isn't it?
-shall i begin now ? Yes, please, madame de treymes extended
-far beyond her sisterinlaw's us a good deal. That's wonderful,
-said gwenda..  
-------------A94E70B252FFE7
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+If you think you are not interested, just don't answer - we will give your Free Trial Kit to someone else, who will take the benefits of this FREE KIT offer!
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=20
-<html><head> <title>
-</title>  =20
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">  =20
-</head>
-<body><span name=3D"#ttrr">
-</span><br><strong>=09</strong>New Orgasm Enhanceer<br><b>=09</b>Click=20
-<a href=3D"http://cid-5ab41ab95b0552c0.spaces.live.com/blog/cns!5AB41AB95B0=
-552C0!107.entry">HERE</a><br><p><b>   </b></p><br>
-<p><span name=3D"#qptr">
-</span>The period at which we have arrived: fromto 1854, if it is<br> not r=
-ectified it must be racked off to you want, isn't it?<br> shall i begin now=
- ? Yes, please, madame de treymes extended<br> far beyond her sisterinlaw's=
- us a good deal. That's wonderful,<br> said gwenda..</p></body></html>
-------------A94E70B252FFE7--
+Sincerely Yours,
+"eBay Success" Ltd. team
 
 
---===============6659034834249561446==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to sign.out_me-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
---===============6659034834249561446==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6659034834249561446==--

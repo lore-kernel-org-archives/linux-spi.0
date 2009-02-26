@@ -1,14 +1,17 @@
-From: Kylie Smith <katamail.com-rev_williams3-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_Making_Money_With?=
-	=?windows-1251?q?_eBay_Has_Never_Been_Easier_-_Read_Below!?=
-Date: Thu, 26 Feb 2009 06:41:37 +0530
-Message-ID: <39651.8102418215$1235610825@news.gmane.org>
-Reply-To: Kylie Smith <1992frodo.rinauro-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [RFC] generic iMX-spi driver
+Date: Thu, 26 Feb 2009 10:58:25 +0100
+Message-ID: <20090226095825.GA3058@pengutronix.de>
+References: <20090220144126.GA9203@pengutronix.de>
+	<49A264DE.8080805@teltonika.lt>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============4042892363136439781=="
+Cc: Wolfram Sang <public-w.sang-bIcnvbaLZ9MEGnE8C9+IrQ-z5DuStaUktnZ+VzJOa5vwg@public.gmane.org>,
+	linux-arm <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Paulius Zaleckas <paulius.zaleckas-Ft0m5Q12RQ9xBelEqimL3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <49A264DE.8080805-Ft0m5Q12RQ9xBelEqimL3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,41 +22,76 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Good day, Dear Sir/Madam!
 
-Sorry to interrupt your peace, but what is in market today, cannot stay anymore as a secret: The way of making money with eBay has FINALLY BEEN REVEALED!
-
-Presenting to your attention the eBay CashFlow System available today only for a limited number of people, as the supplies are limited too. The lure of a bargain, combined with the excitement of a Las Vegas gamble, is what brings in millions of Internet customers to eBay. The loyalty and enthusiasm of devoted eBay users all over the country is what has helped build eBay into the powerhouse it is today. You can really earn an excellent amount of money with eBay every month. CBS News even published a story about all the people earning a living on eBay!
-
-So, Start Your Success Story Now! Sign Up Today and Get on The Fast Track To Cash! Over 1.2 Million People Have Already Done It!
-
-Please, send us an answer to this email 18647sammet.kimbra-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, so we can sign you up immediately, and send you the FREE KIT, which is still available untill the supplies expire, so be the first to take it!
-
-We are sorry, if this email is unwanted to you, but we had to share this secret with as many as possible people, who are in need of a fast money making.
-
-with Respect - the eBay Secrets Team
-
-P.S.: We cannot guarantee that we can keep the light on this offer forever, so act quick!
+--===============4042892363136439781==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="zhXaljGHf11kAtnf"
+Content-Disposition: inline
 
 
+--zhXaljGHf11kAtnf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 
+> > @@ -1659,10 +1721,13 @@ static int __exit spi_imx_remove(struct platfor=
+m_device *pdev)
+> >  		return status;
+> >  	}
+> > =20
+> > +	if (platform_info->exit)
+> > +		platform_info->exit(pdev);
+>=20
+> platform_info can be NULL here if when declaring platform_device platform=
+ data was not set.
+> In this case you will get crash here.
+> Should be if (platform_info && platform_info->exit)
+
+Well, that is the first thing the probe function checks :) It will fail
+if there is no platform_data.
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--zhXaljGHf11kAtnf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iEYEARECAAYFAkmmZ8EACgkQD27XaX1/VRuMegCfXP5byjHDPVHfHfydTCSLyidE
+LCgAnjzxXBUsBLH6+IToCj4qjFJrMSnq
+=KF1P
+-----END PGP SIGNATURE-----
+
+--zhXaljGHf11kAtnf--
 
 
+--===============4042892363136439781==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
+--===============4042892363136439781==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4042892363136439781==--

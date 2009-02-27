@@ -1,8 +1,9 @@
-From: Kathryn Wiggins <china.comremuv_me-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Let Google Make You Money While You Sleep
-Date: Fri, 27 Feb 2009 13:50:59 +0900
-Message-ID: <10304.099872201$1235710375@news.gmane.org>
-Reply-To: Kathryn Wiggins <1749choates.aymery-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Roly Fye <javion-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: =?windows-1251?q?=5BSPAM=5D_Simple_Google_Str?=
+	=?windows-1251?q?ategy_to_Put_Cash_in_Your_Pockets?=
+Date: Fri, 27 Feb 2009 11:18:19 +0530
+Message-ID: <13123.0234438137$1235713803@news.gmane.org>
+Reply-To: Roly Fye <gilcrest.toby1796-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,20 +19,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi!
+Good Day!
 
-Do you Know That Much Money is Being Spent Online Nowadays? Now is the Right Time to Get a Piece of It!
+Probably, you have always thought you had to be an expert to make money on the Internet. Do you have any idea on how much money is being spent online these days?
 
-Are you wondering how people make money through the Internet by doing almost nothing? At first, I was wary about working from home, because I had heard horror stories about the Internet. But I'd heard that there were rounds of layoffs coming at my company, so I figured I should do something to try and have a backup should the worst happen. 
+We are here to give people the opportunity to make fast cash only by sitting in front of their home computers.
 
-I was amazed when I got this Free-Trial Kit. It started working right away. By the time the layoffs happened, I was already making more money from Google than I was in my job. Now I use Google full time and have a great income.
+Learn how to start earning cash fast! Get your RISK-FREE trial kit! Google has earned people millions of dollars, it is time for you to get your share! See if you qualify for our RISK-FREE kit and start TODAY!
+ 
+This is a very limited opportunity! It CANNOT exist for long to preserve the value for our members, so be fast in joining us - send us an email back to 1926prochazka.caileigh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so we can sign you up immediately and you will get started! 
 
-Unfortunately, I cannot send this offer to everyone to prevent the value and potency of this information from being "watered down". That's why I am sending this email only to people I know and care about. A friend of mine gave me your email address, that's why I decided to send that offer to you too(I am sorry if I disturbed you in anyway).
+Please excuse us if you think that this email is sent to you by mistake or we have disturbed you in some way, but this is a serious and sincere offer, which made many people rich already.
 
-If you are interested to participate in this program, send an answer to 1137ciolek.aggye-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, saying that you want to join too, so you can receive your Risk-Free Kit and start enjoying a life free from money worries for the rest of your life!
-
-Regards,
-a trusted Friend
+With Respect,
+Google Cash Team
 
 
 

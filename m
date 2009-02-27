@@ -1,19 +1,13 @@
-From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [RFC] generic iMX-spi driver
-Date: Fri, 27 Feb 2009 11:38:40 +0100
-Message-ID: <20090227103840.GC3481@pengutronix.de>
-References: <20090220144126.GA9203@pengutronix.de>
-	<200902201641.21168.hs4233@mail.mn-solutions.de>
-	<20090226103844.GB3058@pengutronix.de>
-	<20090226232639.GF5811@n2100.arm.linux.org.uk>
+From: Azure Fye <yahoo.co.ukbritainza101-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Make New-Age Money Online with Google
+Date: Fri, 27 Feb 2009 12:49:17 +0000
+Message-ID: <36830.5393647917$1235739070@news.gmane.org>
+Reply-To: Azure Fye <1755theauxalannis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5953578275295218153=="
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Holger Schurig <hs4233-x6+DxXLjN1AJvtFkdXX2Hg4jNU5vUVPG@public.gmane.org>,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090226232639.GF5811-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,85 +18,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi!
 
---===============5953578275295218153==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="VywGB/WGlW4DM4P8"
-Content-Disposition: inline
+Do you Know That Much Money is Being Spent Online Nowadays? Now is the Right Time to Get a Piece of It!
 
+Are you wondering how people make money through the Internet by doing almost nothing? At first, I was wary about working from home, because I had heard horror stories about the Internet. But I'd heard that there were rounds of layoffs coming at my company, so I figured I should do something to try and have a backup should the worst happen. 
 
---VywGB/WGlW4DM4P8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I was amazed when I got this Free-Trial Kit. It started working right away. By the time the layoffs happened, I was already making more money from Google than I was in my job. Now I use Google full time and have a great income.
 
-> What it does do though is want to naturally align structure members, so
-> it's a good idea to group u8's together up to the next members natural
-> boundary.  So:
+Unfortunately, I cannot send this offer to everyone to prevent the value and potency of this information from being "watered down". That's why I am sending this email only to people I know and care about. A friend of mine gave me your email address, that's why I decided to send that offer to you too(I am sorry if I disturbed you in anyway).
 
-All the hot-path variables are u32 as I don't want to do shifting there.
-The u8-members are all cold-path, so I can use them as shift counters.
-They happen to be 8 in V2, so that seems to fit, too (for now that is).
-I know about aligning and will keep an eye on this.
-
-One more thing I had in mind: As every access to a register now looks
-like
-
- 'regs + drv_data->version->$some_offset'
-
-I also wondered if it would pay off to add the register base to the
-offset already in the probe routine, so we then can reduce the access to
-simply
-
-'drv_data->version->$some_reg'
-
-But this is for later, after the driver is stable, I think.
+If you are interested to participate in this program, send an answer to dipietrantoni.hurley1170-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, saying that you want to join too, so you can receive your Risk-Free Kit and start enjoying a life free from money worries for the rest of your life!
 
 Regards,
-
-   Wolfram
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---VywGB/WGlW4DM4P8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAkmnwrAACgkQD27XaX1/VRtJZgCghnulCB1WR/c4KMMrN3eQxPq0
-R0kAnR4Y59ihllGugMXyCxP/urfzPbmQ
-=82dj
------END PGP SIGNATURE-----
-
---VywGB/WGlW4DM4P8--
+a trusted Friend
 
 
---===============5953578275295218153==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
---===============5953578275295218153==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5953578275295218153==--

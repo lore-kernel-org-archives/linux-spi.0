@@ -1,9 +1,8 @@
-From: Richie Hatfield <mm_boma20-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_First_Time_in_His?=
-	=?windows-1251?q?tory_-_Earn_Real_Money_From_Home?=
-Date: Thu, 26 Feb 2009 20:52:22 -0500
-Message-ID: <46049.2977560081$1235699714@news.gmane.org>
-Reply-To: Richie Hatfield <1022ricardo.lotan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Kathryn Wiggins <china.comremuv_me-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Let Google Make You Money While You Sleep
+Date: Fri, 27 Feb 2009 13:50:59 +0900
+Message-ID: <10304.099872201$1235710375@news.gmane.org>
+Reply-To: Kathryn Wiggins <1749choates.aymery-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,18 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+Hi!
 
-We are offering this EarnGoogleCash system only to motivated individuals for participating in or even start their own well-paying online business. All you need is a little time spent in front of your home computer, read about the online products and services offered by our EarnGoogleCash system.
+Do you Know That Much Money is Being Spent Online Nowadays? Now is the Right Time to Get a Piece of It!
 
-What this system offers is work at your own pace and from any computer.
+Are you wondering how people make money through the Internet by doing almost nothing? At first, I was wary about working from home, because I had heard horror stories about the Internet. But I'd heard that there were rounds of layoffs coming at my company, so I figured I should do something to try and have a backup should the worst happen. 
 
-If you are interested, please reply to 16836everardchannell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org as soon as possible, as the FREE TRIAL kits are limited and you have to act quick, before someone else takes your place!
+I was amazed when I got this Free-Trial Kit. It started working right away. By the time the layoffs happened, I was already making more money from Google than I was in my job. Now I use Google full time and have a great income.
 
-Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
+Unfortunately, I cannot send this offer to everyone to prevent the value and potency of this information from being "watered down". That's why I am sending this email only to people I know and care about. A friend of mine gave me your email address, that's why I decided to send that offer to you too(I am sorry if I disturbed you in anyway).
 
-Best regards,
-EGP
+If you are interested to participate in this program, send an answer to 1137ciolek.aggye-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, saying that you want to join too, so you can receive your Risk-Free Kit and start enjoying a life free from money worries for the rest of your life!
+
+Regards,
+a trusted Friend
 
 
 
@@ -43,7 +44,7 @@ EGP
 
 
 ------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
 
 This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
 ------------------------------------------------------------------

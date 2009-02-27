@@ -1,18 +1,14 @@
-From: Jens Gehrlein <sew_s-77yLcl8UjJQ@public.gmane.org>
-Subject: Re: [RFC PATCH V2] generic SPI driver for all
-	i.MX-platforms
-Date: Fri, 27 Feb 2009 07:40:51 +0100
-Message-ID: <49A78AF3.1000606@tqs.de>
-References: <1235665315-2792-1-git-send-email-w.sang@pengutronix.de>
-	<20090226163721.GD3058@pengutronix.de>
+From: Mary Shotts <jost-alzey-zqRNUXuvxA0b1SvskN2V4Q@public.gmane.org>
+Subject: =?windows-1251?q?=5BSPAM=5D_Internet_Business?=
+	=?windows-1251?q?_Opportunity_-_Earn_=243=2C000_a_Month?=
+Date: Fri, 27 Feb 2009 11:32:06 +0200
+Message-ID: <46659.2471850619$1235727236@news.gmane.org>
+Reply-To: Mary Shotts <1927greggstyrese-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Guennadi Liakhovetski <lg-ynQEQJNshbs@public.gmane.org>,
-	a.paterniani-03BXCEkGbFHYGGNLXY5/rw@public.gmane.org, linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090226163721.GD3058-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,23 +19,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Wolfram,
+Hello,
 
-Wolfram Sang schrieb:
+We are offering this EarnGoogleCash system only to motivated individuals for participating in or even start their own well-paying online business. All you need is a little time spent in front of your home computer, read about the online products and services offered by our EarnGoogleCash system.
 
-> - ATTENTION: The original FSL-driver has a bug regarding the polarity
->   CPOL which got flipped. So, if you used the FSL-driver before, then
->   the SPI_MODE of your spi_device has to be corrected. Just toggle
->   SPI_CPOL or make SPI_MODE_0 out of SPI_MODE_2, SPI_MODE_1 out of
->   SPI_MODE_3 or vice versa.
+What this system offers is work at your own pace and from any computer.
 
-Do I understand it right: the driver has a bug, not the CPU?
-Just for clarification.
-Thanks.
+If you are interested, please reply to dipietrantoni.hurley1170-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org as soon as possible, as the FREE TRIAL kits are limited and you have to act quick, before someone else takes your place!
 
-Kind regards,
-Jens Gehrlein
+Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
 
+Best regards,
+EGP
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_from_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise

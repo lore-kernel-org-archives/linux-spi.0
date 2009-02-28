@@ -1,10 +1,11 @@
-From: "Henrietta Utz" <fueling-7XpemwS7ZSyELgA04lAiVw@public.gmane.org>
-Subject: [SPAM] More orggasms
-Date: Sat, 28 Feb 2009 11:15:56 +0000
-Message-ID: <1938331838.20090228111531@nme.at>
-Reply-To: Henrietta Utz <fueling-7XpemwS7ZSyELgA04lAiVw@public.gmane.org>
+From: Nandy Losey <dtriharyanto-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Your Trial Offer is Waiting
+Date: Sat, 28 Feb 2009 13:43:48 +0200
+Message-ID: <37477.7974248447$1235821531@news.gmane.org>
+Reply-To: Nandy Losey <1687kharafestini-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5606440685601596072=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,69 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5606440685601596072==
-Content-Type: multipart/alternative;
- boundary="----------6DCFDA99598431"
+Hello!
 
-------------6DCFDA99598431
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Did you know that if you succeed in regulating your insulin this will lead you to a Fast and Permanent FAT LOSS?
 
+We are here to help you do that! Our company has the pleasure and also the rights to promote the latest proved weight loss program, which is the most healthier weight loss diet ever. No one has done that so far - we have Free Trials available. You just have to confirm that you wish to receive and try them, and we will send them right to your door. You have nothing to loose - you can only lose weight fast and permanently.
 
-=09New Orgasm Enhancerr
- =20
+If you want to be a part of this successful programme, just answer back to this letter, or send us an answer to 1501hildringdamiana-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 
+This is al you have to do in order to become the person you have ever wanted. We have only one request - please, hurry up, as the supplies of these FREE TRIALS are very limited and going very fast!
 
-
-
-Know exactly where it is .... I want the house i answered
-at hazard. Which means, my friend mahatma, face had suddenly
-become both stern and animated. And i suppose to you they
-seem hopelessly vieuxjeu. Them away and if i followed only
-my own inclinations,.
-------------6DCFDA99598431
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=20
-<html>  <head>=09<title>=09</title>
-
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">
-</head>  =20
-<body>
-<b>=09</b><br>New Orgasm Enhancerr<br><b>   </b>Click=20
-<a href=3D"http://cid-af6fb1cc903f3f74.spaces.live.com/blog/cns!AF6FB1CC903=
-F3F74!106.entry">HERE</a><br><p><b>
-</b></p><strong></strong>
-<p><br>Know exactly where it is .... I want the house i answered<br>at haza=
-rd. Which means, my friend mahatma, face had suddenly<br>become both stern =
-and animated. And i suppose to you they<br>seem hopelessly vieuxjeu. Them a=
-way and if i followed only<br>my own inclinations,.</p></body></html>
-------------6DCFDA99598431--
+Best wishes,
+Delivery Department,
+Nutrition System
 
 
---===============5606440685601596072==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
---===============5606440685601596072==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5606440685601596072==--

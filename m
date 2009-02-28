@@ -1,13 +1,18 @@
-From: Nandy Losey <dtriharyanto-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Your Trial Offer is Waiting
-Date: Sat, 28 Feb 2009 13:43:48 +0200
-Message-ID: <37477.7974248447$1235821531@news.gmane.org>
-Reply-To: Nandy Losey <1687kharafestini-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH 0/2] spi: Add support for
+	non-blocking synchronous transfers
+Date: Sat, 28 Feb 2009 12:33:50 -0800
+Message-ID: <200902281233.50612.david-b@pacbell.net>
+References: <20090228081036.31964.80618.stgit@fedora.yogi>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Andy Green <andy-4Bgg8jF3iZdWk0Htik3J/w@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Balaji Rao <balajirrao-4Bgg8jF3iZdg9hUCZPvPmw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20090228081036.31964.80618.stgit-bnrf61MYqdMYW0ZX77RX+A@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,36 +23,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
-
-Did you know that if you succeed in regulating your insulin this will lead you to a Fast and Permanent FAT LOSS?
-
-We are here to help you do that! Our company has the pleasure and also the rights to promote the latest proved weight loss program, which is the most healthier weight loss diet ever. No one has done that so far - we have Free Trials available. You just have to confirm that you wish to receive and try them, and we will send them right to your door. You have nothing to loose - you can only lose weight fast and permanently.
-
-If you want to be a part of this successful programme, just answer back to this letter, or send us an answer to 1501hildringdamiana-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-
-This is al you have to do in order to become the person you have ever wanted. We have only one request - please, hurry up, as the supplies of these FREE TRIALS are very limited and going very fast!
-
-Best wishes,
-Delivery Department,
-Nutrition System
+Note that $SUBJECT concept is nonsense.
+Synchronous calls are by definition blocking ones...
 
 
+On Saturday 28 February 2009, Balaji Rao wrote:
+> During the course of development of an accelerometer driver, we saw the
+> necessity to execute spi transfers synchronously within an interrupt handler.
+
+This sounds like a bad design.  How can you know that no other
+transfers are going on ... or are queued in front of the transfer
+you're requesting?
+
+You'd need to wait for all the other transfers to work their
+way through the transfer queue.  There are *much* better things
+to do in interrupt handlers.
 
 
+> When using a workqueue instead, we observed a huge number of overruns
+> with very high cpu utlization, which is unacceptable.
+
+Sure, but at least part of that seems to be caused by some
+broken design assumptions.
+
+Why are you even trying to touch SPI devices from hardirq
+context?  That's never going to be OK; "can't-sleep" contexts
+don't mix with "must-sleep" calls.
 
 
+> This series adds a new interface for this and modifies no existing ones.
+
+NAK on these two patches.
 
 
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise

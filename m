@@ -1,47 +1,54 @@
-From: Balaji Rao <balajirrao@openmoko.org>
-Subject: Re: [PATCH 0/2] spi: Add support for non-blocking synchronous
-	transfers
-Date: Sun, 1 Mar 2009 15:53:35 +0530
-Message-ID: <20090301102333.GD3103@fedora.yogi>
-References: <20090228081036.31964.80618.stgit@fedora.yogi> <200902281519.55341.david-b@pacbell.net> <20090301051103.GA3103@fedora.yogi> <200903010149.19845.david-b@pacbell.net>
+From: Dorcas Fye <nilisham-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Stop Dieting, Start Eating
+Date: Sun, 1 Mar 2009 22:21:41 +0900
+Message-ID: <25729.7995653518$1235913975@news.gmane.org>
+Reply-To: Dorcas Fye <1066sweeney.trimis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Andy Green <andy@openmoko.com>
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755515AbZCAKYQ@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <200903010149.19845.david-b@pacbell.net>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Mar 01, 2009 at 01:49:19AM -0800, David Brownell wrote:
-> On Saturday 28 February 2009, Balaji Rao wrote:
-> > > That leaves un-answered the question of what to do when
-> > > the SPI bus is busy performing some other transfer. =A0I
-> > > looked at your [2/2] patch, and saw it ignoring that very
-> > > basic issue ... this new call will just poke at the bus,
-> > > trashing any transfer that was ongoing.
-> >=20
-> > We use s3c24xx_gpio as the master, which is a very simple gpio base=
-d
-> > bitbang.=20
-> >=20
-> > Yes, it is with this intention, interrupts are disabled around the
-> > actual bitbang code, so that it completes without being interrupted=
-=2E
-> > Doesn't this guarantee atomicity ?
->=20
-> Atomicity isn't the issue so much as the fact that if the
-> bus is in the middle of some transfer to one device,
-> your patch lets another device trash that transmission.
->=20
-> I don't know how many more times I can say that your
-> patches introduce DATA CORRUPTION to the system, but
-> it's surely not many more times.
+Do you want to discover how an Acai Berry and Colon Cleanse diet can undo years of damage in 10 days or less? Do you want to jump from overweighted and exhausted to slim and energetic?
 
-Yes, I get the point now. Sorry for not observing it earlier.
+Ignores all the unhealthy diet schemes and discover a breakthrough nutrition system that literally blasts off unwanted body fat!
 
-- Balaji
+Your free trial offer is waiting for you! Order it TODAY, before the supplies expire!
+
+How? Reply to this email, or to 14950audralowitz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will send you the information you need.
+
+Hurry up!
+
+The Weight Loss Dieters
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
+------------------------------------------------------------------------------
+Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
+-OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
+-Strategies to boost innovation and cut costs with open source participation
+-Receive a $600 discount off the registration fee with the source code: SFAD
+http://p.sf.net/sfu/XcvMzF8H

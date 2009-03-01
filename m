@@ -1,131 +1,85 @@
-From: Balaji Rao <balajirrao@openmoko.org>
-Subject: Re: [PATCH 0/2] spi: Add support for non-blocking synchronous
-	transfers
-Date: Sun, 1 Mar 2009 10:41:04 +0530
-Message-ID: <20090301051103.GA3103@fedora.yogi>
-References: <20090228081036.31964.80618.stgit@fedora.yogi> <200902281233.50612.david-b@pacbell.net> <20090228221247.GA3107@fedora.yogi> <200902281519.55341.david-b@pacbell.net>
+From: Andy Green <andy@openmoko.com>
+Subject: Re: [PATCH 0/2] spi: Add support for non-blocking synchronous transfers
+Date: Sun, 01 Mar 2009 07:48:38 +0000
+Message-ID: <49AA3DD6.4040807@openmoko.com>
+References: <20090228081036.31964.80618.stgit@fedora.yogi> <200902281233.50612.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Andy Green <andy@openmoko.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Balaji Rao <balajirrao@openmoko.org>, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
 To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756241AbZCAFLj@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <200902281519.55341.david-b@pacbell.net>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754149AbZCAHtX@vger.kernel.org>
+In-Reply-To: <200902281233.50612.david-b@pacbell.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Feb 28, 2009 at 03:19:55PM -0800, David Brownell wrote:
-> > > > During the course of development of an accelerometer driver, we saw the
-> > > > necessity to execute spi transfers synchronously within an interrupt handler.
-> > > 
-> > > This sounds like a bad design.  How can you know that no other
-> > > transfers are going on ... or are queued in front of the transfer
-> > > you're requesting?
-> > > 
-> > > You'd need to wait for all the other transfers to work their
-> > > way through the transfer queue.  There are *much* better things
-> > > to do in interrupt handlers.
-> > > 
-> > 
-> > Please do look at the patches. We *don't* use a transfer queue.
-> 
-> Another example of a conceptual bug.  Because SPI is a shared
-> bus, transfers to some other device may be happening when you
-> issue a request.  And accordingly, you'd need to wait for that
-> transfer to complete.  The SPI I/O queue is at least a logical
-> abstraction for that reality.  I have a hard time imagining any
-> spi_master driver not having some kind of queue data structure.
-> 
-> Plus, see Documentation/spi/spi-summary:
-> 
-> | SPI requests always go into I/O queues.  Requests for a given SPI device
-> | are always executed in FIFO order, and complete asynchronously through
-> | completion callbacks.  There are also some simple synchronous wrappers
-> | for those calls, including ones for common transaction types like writing
-> | a command and then reading its response.
-> 
-> Note that the queueing discipline is explicitly unspecified,
-> except in the context of a given spi_device.  If you want
-> your spi_master controller to prioritize one device, that's
-> fine ... but it's not part of the interface used by portable
-> drivers (it'd be platform-specific).
-> 
-> 
-> > Transfers requested through our proposed function should/will complete the
-> > transfer when it returns without sleeping in between. (Which is the whole
-> > point of this patch).
-> 
-> So instead of "non-blocking" you mean "non-sleeping".
-> 
-> That leaves un-answered the question of what to do when
-> the SPI bus is busy performing some other transfer.  I
-> looked at your [2/2] patch, and saw it ignoring that very
-> basic issue ... this new call will just poke at the bus,
-> trashing any transfer that was ongoing.
-> 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-We use s3c24xx_gpio as the master, which is a very simple gpio based
-bitbang. 
+Somebody in the thread at some point said:
 
-Yes, it is with this intention, interrupts are disabled around the
-actual bitbang code, so that it completes without being interrupted.
-Doesn't this guarantee atomicity ?
+| Note that $SUBJECT concept is nonsense.
+| Synchronous calls are by definition blocking ones...
 
+What's meant here is that it won't sleep you and make you wait for an
+asynchronous completion.  So the call itself will perform the bitbang
+action before returning.
 
-> > > Why are you even trying to touch SPI devices from hardirq
-> > > context?  That's never going to be OK; "can't-sleep" contexts
-> > > don't mix with "must-sleep" calls.
-> > 
-> > Accelerometers can produce a huge amount of data and we need to quickly
-> > read them to avoid overruns. Also, scheduling workers for this greatly
-> > increases the number of context switches, unnecessarily.
-> 
-> That sounds like a performance issue with the spi_master driver
-> you're using.  Using the bitbang framework, and worker tasks, is
-> a good way to get something going quickly.  But if I wanted high
-> performance, I'd likely use a more traditional driver structure
-> (with no tasks, IRQ driven, DMA).  Or I might just increase the
-> priority of the relevant tasks; depends on what bottlenecks turn
-> up when I measure things.
-> 
+| On Saturday 28 February 2009, Balaji Rao wrote:
+|> During the course of development of an accelerometer driver, we saw the
+|> necessity to execute spi transfers synchronously within an interrupt
+handler.
+|
+| This sounds like a bad design.  How can you know that no other
+| transfers are going on ... or are queued in front of the transfer
+| you're requesting?
+|
+| You'd need to wait for all the other transfers to work their
+| way through the transfer queue.  There are *much* better things
+| to do in interrupt handlers.
 
-OK, true. But since the master here is a simple s3c24xx based gpio
-bitbang, we can't do DMA, or bitbang is the only way to go.
+In our case, the sync and async SPI things are mutually exclusive, you
+either talk to your thing with interrupt-lockout protected sync
+transfers entirely or use the existing API.  It can be enforced if
+that's the concern.
 
-> That might combine with sub-optimal design for your accelerometer
-> driver or hardware.  Can you keep multiple transfers queued?  Are
-> you using async messaging intelligently?
-> 
+I think it's a little fast to call down the airstrike of "bad design" on
+being able to use bitbang SPI inside an ISR.  Clearly, adding this
+ability does not replace the existing system and exists parallel but
+compatibly with it; but the existing system cannot provide the same
+capability as it stands.  With two lis302dl motion sensors in GTA02,
+they can spam up to 800 interrupts a second that need servicing each
+with a 7-byte bitbang read.  The existing SPI setup in Linux does not
+provide a way to deal with that in a CPU-friendly and low latency way
+(there's no FIFO in these devices either).
 
-No, we can't queue multiple transfers. It would be very helpful if it
-were so.
+|> When using a workqueue instead, we observed a huge number of overruns
+|> with very high cpu utlization, which is unacceptable.
+|
+| Sure, but at least part of that seems to be caused by some
+| broken design assumptions.
+|
+| Why are you even trying to touch SPI devices from hardirq
+| context?  That's never going to be OK; "can't-sleep" contexts
+| don't mix with "must-sleep" calls.
 
-> 
-> > > > This series adds a new interface for this and modifies no existing ones.
-> > > 
-> > > NAK on these two patches.
-> > > 
-> > 
-> > Ok, it will be helpful if you please suggest an alternative keeping in
-> > mind the huge amount of data produced by the accelerometer and the need
-> > to read them quickly ?
-> 
-> If your spi_master driver isn't using DMA, fix that.  Nothing
-> else addresses "huge amount of data" well at all.
-> 
-> If some driver -- spi_master, accelerometer, or whatever -- is
-> introducing context switch delays in critical paths, get rid of
-> those.  The gap between one DMA transfer and the next can be on
-> the order of one IRQ latency, using current interfaces, if the
-> drivers are decently written.
+With the "sync" API addition it is OK, given the mutually exclusive
+aspect of it.
 
-Since it's a simple gpio bitbang we are using, we cannot do DMA, isn't
-it ? Sorry, I'm still not convinced of a way to make it work with
-queueable transfers. Do you still say that spi_async is the way to go ?
-Please explain.
+|> This series adds a new interface for this and modifies no existing ones.
+|
+| NAK on these two patches.
 
-Thanks a lot for your time.
+I hope this maybe gives some extra context about why we use this system,
+and why it can be an interesting option for others in the same situation.
 
-- Balaji
+- -Andy
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+Comment: Using GnuPG with Fedora - http://enigmail.mozdev.org
+
+iEYEARECAAYFAkmqPdYACgkQOjLpvpq7dMop/ACfUGHL+BilbzlN4E7rACmlC48N
+uv0AnjqgzshtVeYdIVz/14OGq4krCn7+
+=Qveo
+-----END PGP SIGNATURE-----

@@ -1,22 +1,15 @@
-From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Subject: Re: [RFC] generic iMX-spi driver
-Date: Mon, 2 Mar 2009 20:58:26 +0000
-Message-ID: <20090302205826.GG25699@n2100.arm.linux.org.uk>
-References: <20090220144126.GA9203@pengutronix.de>
-	<200902201641.21168.hs4233@mail.mn-solutions.de>
-	<20090226103844.GB3058@pengutronix.de>
-	<20090226232639.GF5811@n2100.arm.linux.org.uk>
-	<20090227103840.GC3481@pengutronix.de>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: Re: DSPI slave linux driver
+Date: Mon, 02 Mar 2009 13:41:03 -0500
+Message-ID: <49AC283F.2000708@whoi.edu>
+References: <5a775e870903020620k56f84f7cwfa6c11cbb4a9277a@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Holger Schurig <hs4233-x6+DxXLjN1AJvtFkdXX2Hg4jNU5vUVPG@public.gmane.org>,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: sivakumar borela <borelaskumar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20090227103840.GC3481-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <5a775e870903020620k56f84f7cwfa6c11cbb4a9277a-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,39 +20,69 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Feb 27, 2009 at 11:38:40AM +0100, Wolfram Sang wrote:
-> > What it does do though is want to naturally align structure members, so
-> > it's a good idea to group u8's together up to the next members natural
-> > boundary.  So:
+sivakumar borela wrote:
+> Hi,
 > 
-> All the hot-path variables are u32 as I don't want to do shifting there.
-> The u8-members are all cold-path, so I can use them as shift counters.
-
-What shifting are you referring to?  ARM GCC doesn't load a word and then
-shift to get at the byte it's interested in.  It uses the ARM byte load
-instruction or byte store instruction which are just as fast as word
-loads or stores.
-
-> One more thing I had in mind: As every access to a register now looks
-> like
+> My selef, SivaKumar working as Embedded software engineer. One of our
+> products is based on MCF5485 coldfire processor. We are using Embedded linux
+> from Freescale on our board. The BSP does have DSPI(DMA enabled SPI) master
+> driver. But our requirement is to configure MCF5485 as DSPI slave to
+> communicate with the external master which is 68332 processor board. The
+> protocol demands request/response model to communicate with the master. We
+> could not able to succeed in making the DSPI slave to work.
 > 
->  'regs + drv_data->version->$some_offset'
+> "Changed the chip control register from master to salve by modifying the bit
+> in mode control register"
 > 
-> I also wondered if it would pay off to add the register base to the
-> offset already in the probe routine, so we then can reduce the access to
-> simply
+> We are not getting any interrupts from the processor to call read and write
+> functions.
 > 
-> 'drv_data->version->$some_reg'
+> Freescale has done customization of coldfire_spi driver for MCF5485.
 > 
-> But this is for later, after the driver is stable, I think.
+> First of all my query is
+> 1) is there any piece of linux spi slave driver till now?
+> 2) If you have any slave driver implementation , could you please provide
+> the code for me to implement the SPI slave?
 
-The load instruction combines addition or subtraction:
+There is no support for a Linux host slave.  This has been discussed
+several times before.  I suggest you search the archives of this mailing
+list, and read the previous discussion. The official archive of
+spi-devel-general is at:
 
-	ldr	rd, [rn, rm]
+http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general
 
-optionally with a constant shift for 'rm', so the first version is
-entirely possible for the compiler to use one instruction to access
-[regs + offset] in one instruction.
+but I don't find that very searchable.  Try this thread:
+
+http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg00306.html
+
+which I found by googling these four key words:
+
+spi-devel-general spi slave support
+
+And another thread is here...
+
+http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg01123.html
+
+--
+
+The most serious problem for generalized slave support is the response
+time of the kernel to external requests; this is discussed in the
+threads above.  Some limited slave support can be created, where
+applications are transmit-only or receive-only, but not both, or any
+other situation in which the communication sequence is completely
+predictable and thus the response data can be queued in advance.  All of
+these possibilities are probably limited to configurations where there
+is only one device attached to the SPI bus.
+
+-- 
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
+http://www.whoi.edu/hpb/Site.do?id=1532
+http://www.whoi.edu/page.do?pid=10079
+
 
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA

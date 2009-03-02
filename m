@@ -1,11 +1,22 @@
-From: sivakumar borela <borelaskumar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: DSPI slave linux driver
-Date: Mon, 2 Mar 2009 09:20:09 -0500
-Message-ID: <5a775e870903020620k56f84f7cwfa6c11cbb4a9277a@mail.gmail.com>
+From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Subject: Re: [RFC] generic iMX-spi driver
+Date: Mon, 2 Mar 2009 20:58:26 +0000
+Message-ID: <20090302205826.GG25699@n2100.arm.linux.org.uk>
+References: <20090220144126.GA9203@pengutronix.de>
+	<200902201641.21168.hs4233@mail.mn-solutions.de>
+	<20090226103844.GB3058@pengutronix.de>
+	<20090226232639.GF5811@n2100.arm.linux.org.uk>
+	<20090227103840.GC3481@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0619238904976362394=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Holger Schurig <hs4233-x6+DxXLjN1AJvtFkdXX2Hg4jNU5vUVPG@public.gmane.org>,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
+To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20090227103840.GC3481-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,81 +27,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0619238904976362394==
-Content-Type: multipart/alternative; boundary=00221532c5b41cd04904642384c8
+On Fri, Feb 27, 2009 at 11:38:40AM +0100, Wolfram Sang wrote:
+> > What it does do though is want to naturally align structure members, so
+> > it's a good idea to group u8's together up to the next members natural
+> > boundary.  So:
+> 
+> All the hot-path variables are u32 as I don't want to do shifting there.
+> The u8-members are all cold-path, so I can use them as shift counters.
 
---00221532c5b41cd04904642384c8
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+What shifting are you referring to?  ARM GCC doesn't load a word and then
+shift to get at the byte it's interested in.  It uses the ARM byte load
+instruction or byte store instruction which are just as fast as word
+loads or stores.
 
-Hi,
+> One more thing I had in mind: As every access to a register now looks
+> like
+> 
+>  'regs + drv_data->version->$some_offset'
+> 
+> I also wondered if it would pay off to add the register base to the
+> offset already in the probe routine, so we then can reduce the access to
+> simply
+> 
+> 'drv_data->version->$some_reg'
+> 
+> But this is for later, after the driver is stable, I think.
 
-My selef, SivaKumar working as Embedded software engineer. One of our
-products is based on MCF5485 coldfire processor. We are using Embedded linux
-from Freescale on our board. The BSP does have DSPI(DMA enabled SPI) master
-driver. But our requirement is to configure MCF5485 as DSPI slave to
-communicate with the external master which is 68332 processor board. The
-protocol demands request/response model to communicate with the master. We
-could not able to succeed in making the DSPI slave to work.
+The load instruction combines addition or subtraction:
 
-"Changed the chip control register from master to salve by modifying the bit
-in mode control register"
+	ldr	rd, [rn, rm]
 
-We are not getting any interrupts from the processor to call read and write
-functions.
-
-Freescale has done customization of coldfire_spi driver for MCF5485.
-
-First of all my query is
-1) is there any piece of linux spi slave driver till now?
-2) If you have any slave driver implementation , could you please provide
-the code for me to implement the SPI slave?
-
-
-Thanks,
-Siva
-
---00221532c5b41cd04904642384c8
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<div>Hi,</div>
-<div>=A0</div>
-<div>My selef, SivaKumar working as Embedded software engineer. One of our =
-products is based on MCF5485 coldfire processor. We are using Embedded linu=
-x from Freescale on our board. The BSP does have DSPI(DMA enabled SPI) mast=
-er driver. But our requirement is to configure MCF5485 as DSPI slave to com=
-municate with the external master which is 68332 processor board. The proto=
-col demands request/response model to communicate with the master. We could=
- not able to succeed in making the DSPI slave to work.</div>
-
-<div>=A0</div>
-<div>&quot;Changed the chip control register from master to salve by modify=
-ing the bit in mode control register&quot;</div>
-<div>=A0</div>
-<div>We are not getting any interrupts from the processor to call read and =
-write functions.</div>
-<div>=A0</div>
-<div>Freescale has done customization of coldfire_spi driver for MCF5485.</=
-div>
-<div>=A0</div>
-<div>First of all my query is </div>
-<div>1) is there any piece of linux spi slave driver till now?</div>
-<div>2) If you have any slave driver implementation , could you please prov=
-ide the code for me to implement the SPI slave?</div>
-<div>=A0</div>
-<div>=A0</div>
-<div>Thanks,</div>
-<div>Siva</div>
-
---00221532c5b41cd04904642384c8--
-
-
---===============0619238904976362394==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+optionally with a constant shift for 'rm', so the first version is
+entirely possible for the compiler to use one instruction to access
+[regs + offset] in one instruction.
 
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
@@ -98,15 +67,3 @@ Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
---===============0619238904976362394==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0619238904976362394==--

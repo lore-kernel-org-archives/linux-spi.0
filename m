@@ -1,12 +1,10 @@
-From: Dorcas Fye <nilisham-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Stop Dieting, Start Eating
-Date: Sun, 1 Mar 2009 22:21:41 +0900
-Message-ID: <25729.7995653518$1235913975@news.gmane.org>
-Reply-To: Dorcas Fye <1066sweeney.trimis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: sivakumar borela <borelaskumar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: DSPI slave linux driver
+Date: Mon, 2 Mar 2009 09:20:09 -0500
+Message-ID: <5a775e870903020620k56f84f7cwfa6c11cbb4a9277a@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0619238904976362394=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,37 +16,97 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Do you want to discover how an Acai Berry and Colon Cleanse diet can undo years of damage in 10 days or less? Do you want to jump from overweighted and exhausted to slim and energetic?
+--===============0619238904976362394==
+Content-Type: multipart/alternative; boundary=00221532c5b41cd04904642384c8
 
-Ignores all the unhealthy diet schemes and discover a breakthrough nutrition system that literally blasts off unwanted body fat!
+--00221532c5b41cd04904642384c8
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-Your free trial offer is waiting for you! Order it TODAY, before the supplies expire!
+Hi,
 
-How? Reply to this email, or to 14950audralowitz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will send you the information you need.
+My selef, SivaKumar working as Embedded software engineer. One of our
+products is based on MCF5485 coldfire processor. We are using Embedded linux
+from Freescale on our board. The BSP does have DSPI(DMA enabled SPI) master
+driver. But our requirement is to configure MCF5485 as DSPI slave to
+communicate with the external master which is 68332 processor board. The
+protocol demands request/response model to communicate with the master. We
+could not able to succeed in making the DSPI slave to work.
 
-Hurry up!
+"Changed the chip control register from master to salve by modifying the bit
+in mode control register"
 
-The Weight Loss Dieters
+We are not getting any interrupts from the processor to call read and write
+functions.
+
+Freescale has done customization of coldfire_spi driver for MCF5485.
+
+First of all my query is
+1) is there any piece of linux spi slave driver till now?
+2) If you have any slave driver implementation , could you please provide
+the code for me to implement the SPI slave?
 
 
+Thanks,
+Siva
+
+--00221532c5b41cd04904642384c8
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div>Hi,</div>
+<div>=A0</div>
+<div>My selef, SivaKumar working as Embedded software engineer. One of our =
+products is based on MCF5485 coldfire processor. We are using Embedded linu=
+x from Freescale on our board. The BSP does have DSPI(DMA enabled SPI) mast=
+er driver. But our requirement is to configure MCF5485 as DSPI slave to com=
+municate with the external master which is 68332 processor board. The proto=
+col demands request/response model to communicate with the master. We could=
+ not able to succeed in making the DSPI slave to work.</div>
+
+<div>=A0</div>
+<div>&quot;Changed the chip control register from master to salve by modify=
+ing the bit in mode control register&quot;</div>
+<div>=A0</div>
+<div>We are not getting any interrupts from the processor to call read and =
+write functions.</div>
+<div>=A0</div>
+<div>Freescale has done customization of coldfire_spi driver for MCF5485.</=
+div>
+<div>=A0</div>
+<div>First of all my query is </div>
+<div>1) is there any piece of linux spi slave driver till now?</div>
+<div>2) If you have any slave driver implementation , could you please prov=
+ide the code for me to implement the SPI slave?</div>
+<div>=A0</div>
+<div>=A0</div>
+<div>Thanks,</div>
+<div>Siva</div>
+
+--00221532c5b41cd04904642384c8--
 
 
+--===============0619238904976362394==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
 -Strategies to boost innovation and cut costs with open source participation
 -Receive a $600 discount off the registration fee with the source code: SFAD
 http://p.sf.net/sfu/XcvMzF8H
+--===============0619238904976362394==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0619238904976362394==--

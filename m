@@ -1,8 +1,8 @@
-From: Brock Bennett <ga-cmng-cuda2-c5b-86-c7te1qsQlZg/TAPS9ZOQu16hYfS7NtTn@public.gmane.org>
-Subject: [SPAM] The Time to Get Paid is NOW!
-Date: Wed, 4 Mar 2009 05:26:48 +0100
-Message-ID: <12888.4822516286$1236140882@news.gmane.org>
-Reply-To: Brock Bennett <beezley.balder13259-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Denton Bennett <travel-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] 2009 Credit Report America - Free Check
+Date: Wed, 4 Mar 2009 06:59:59 +0100
+Message-ID: <43443.3157243349$1236146390@news.gmane.org>
+Reply-To: Denton Bennett <11134cesar.strunk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,16 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-What if we could show you a real system you can use to put $500 - $1,500 per day into your account, working from the comfort of your home? Would you be interested?
+Please, read the following:
 
-Online advertising has skyrocketed over the past few years. In 2008, companies spent close to $50 billion in online advertising. That figure is expected to increase substantially in 2009. What does this mean for you? - Money is going into your bank account a lot faster this year. And next year. And the year after. That's only IF you follow our methods!
+"I just wanted to let you know that I recently got back my three credit reports after sending out the form letter. Trans Union deleted my bankruptcy and 10 other items. Experian deleted 4 items and my BK and Equifax deleted several items. This is very exciting." - David Morrow, Antioch, CA
 
-You see, companies worldwide are desperately searching for people just like you to type up their ads and post them online, and they'll pay you nicely in return. It's a win-win situation. They get more customers, you get paid! It's as simple as that. These companies have cash, LOTS of it, and they're eager to share it with you. It's time for you to get a piece of the pie!
+"Not only have you helped me remove things that should not be on my credit report but you might have even kept me from sending information and money to people who rip off other people everyday. You have always responded in a timely manner and you seem to be sincere in wanting to help people. I had bad information taken off of my report the first time I sent out a letter to the Credit Bureaus." - Janet Coleman, Apopka, FL
 
-Please, send us an email back to 17996sulipiziolilac-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you are interested to participate too, so we can proceed further - we will send you all required information that you need in order to join these programs.
+"I wanted to report the latest on my credit repair. I have had three of the worst revolving credit accounts removed from my account. What a victory!!!" - Tyrone Williamson, Brooklyn, NY
 
-With respect,
-HR, Real Jobs At Home
+These statements, and also many more from many other happy people, are all explaining why the newly launched Free 2009 Credit Report for US Citizens is already so highly appreciated. If you want to be one of the next people, which happy statements will be shown to other users, managing with bad credit, then get your Free Credit Report now!
+
+Send us an email to 12461lenberglydia-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org replying that you are interested to receive the Free Credit Report and we will get back to you with further details on how to receive your Free Credit Report a.s.a.p.
+
+Yours,
+the Credit Report America team
 
 
 
@@ -40,7 +44,7 @@ HR, Real Jobs At Home
 
 
 ------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_from_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
 
 This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
 ------------------------------------------------------------------

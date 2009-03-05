@@ -1,8 +1,7 @@
-From: Maegan Whitten <usman1979x-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Online Market Research Job Available
-Date: Thu, 5 Mar 2009 05:16:54 +0000
-Message-ID: <23100.3753994175$1236230326@news.gmane.org>
-Reply-To: Maegan Whitten <12627baileykillibrew-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "John" <cwgrrt-WinUci6lD3F2QseZOV1FOUEOCMrvLtNR@public.gmane.org>
+Subject: [SPAM] Try to use this! It's also in your city!
+Date: Thu, 5 Mar 2009 10:12:38 +0100
+Message-ID: <001b01c99d73$4dd033a0$5a2747e4@botkova1qvp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,45 +17,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-Our online market research organization starts recruiting self-motivated and
-reliable individuals willing to take part in well-paying research conducted
-by leading international businesses. Your opinion as a consumer is important
-for the success and profitability of many business ventures. That is why
-they are ready to pay for what you think.
-
-Our members are paid for participating in online surveys, focus group
-discussions, and product/service evaluations. What's best, all you need to
-work with us is a computer, an Internet connection, and will to voice your
-honest opinion. 
-
-We'd like to hear from you soon if you want to become one of our highly
-valued survey takers. 
-
-Please excuse us if this email is unwanted for you and we have disturbed you in some way, but this is a serious and sincere enquiry.
-
-Please reply to codie.dettor13681-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-
-Best regards,
-Stephanie Cunningham
+Save money http://cee.codecouponsite.com/couponslist.php
 
 
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_from_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise

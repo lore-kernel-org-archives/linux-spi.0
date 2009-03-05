@@ -1,12 +1,11 @@
-From: Julianne Compton <abdulgeorge12-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Get Paid for Easy Work from Home
-Date: Thu, 5 Mar 2009 22:15:08 +0900
-Message-ID: <9011.08797775141$1236259015@news.gmane.org>
-Reply-To: Julianne Compton <1747senderlingarden-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
+Subject: [SPAM] 票据代理
+Date: Thu, 5 Mar 2009 23:36:22 +0800
+Message-ID: <E1LfFcT-0006NJ-3Q@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,35 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Are you used to think that all work at home opportunities on the Internet are just scam artists trying to steal your money. With your last bit of hope, you can try our offer, we are here to present to your attention today, and you will be glad you did! It may took a couple of days to really get the hang of the system, but then you will be up to $100 per day in earnings, and climbing!
-
-We are receiving hundreds of emails each day from our members, thanking us for providing such a great resource to actually earn a real income online.
-
-If you are interested in receiving more information about our work from home offers, and probably join with us, please send an email back to 16865kempter.imogen-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will get in touch with you again.
-
-Thanks for your time!
-
-Legit Jobs Online
-
-
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
-------------------------------------------------------------------------------
-Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
--OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
--Strategies to boost innovation and cut costs with open source participation
--Receive a $600 discount off the registration fee with the source code: SFAD
-http://p.sf.net/sfu/XcvMzF8H
+INfwvrS1xLi61PDIy6Oovq3A7aOvssbO8aOpxPq6w6OhCgogICAgILG+uavLvsrH0MXT/sq10rXT
+0M/euavLvizKx76t1f64rteisuG1xNX9uea5q8u+oaPIq7n6uPe089bQs8fK0L7509C31rmry76h
+owoK1NrIq8fyu6+1xLei1bm5+sTaytCzob6tvMO+utX5yNXH97ykwdKjocq5ycy80ly5q8u+wPvI
+886isaGjobnzuavLvtf31cq8sM/6ytu3vcPmCgrKx9Do0qrTw7W90rvQqcaxvt3I56O6o6i158TU
+sObU9ta1y7ChorXnxNSw5rqjudi9yb/uyum3osaxoaLG1c2oyczGt7eixrGhorXYy7Chor2o1v6w
+stewoaIKCsbky/y3/s7xoaK547jmoaK158TUsObUy8rkt6LGsaOptcihraGtoaPLsMLKv8m4+b7d
+y/m/qr3wtu61xLTz0KHAtNCtycyjobKivajS6bOkxtq1xLrP1/ehowoKICAgICDU2s7SuavLvrPJ
+waK24MTq0rvWsbzhs9bS1NDF08M7y/m/qr74ttTKx9XmxrGho9Taus/X99LUtPq/qrXEt73Kvczh
+uam1vc67tcS3/s7xo6wKCsjnufO5q8u+09DQqdLJwse78rWj0MSjrL/Jyc/N+LLp1qS78sTDyKXL
+sM7xtda/27rLttTIt8jPuvPU2bi2v+6jrNTaztK5q8u+uLrU8LXEzKy2yAoK1/a1vb/Nu6e3xdDE
+wvrS4qOhyOe08sjFxPqxprnzyrG85KOsvrTH67z7wcKjoQoKICAgICAgICAg16MKCiAgICAgIMnM
+ICAgIOz3ICAgICAgICAgICAgICAgICC7ttOtwLS159fJ0a+hoseizLijoQoKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIMGqIM+1IMjLIKO6wO4g0KEgveMKCiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICDK1iAgILv6ICCjuiAxIDMgNSAzIDQgMiAyIDQgMCAwIDIKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUSAg
+ICAgUSAgOyAgOCA1IDIgNiA2IDIgNyA3IDUKIAogICAgICAgICAgICAgICAgICAgICAgICAgCgot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KT3BlbiBTb3VyY2UgQnVzaW5lc3MgQ29uZmVyZW5jZSAoT1NC
+QyksIE1hcmNoIDI0LTI1LCAyMDA5LCBTYW4gRnJhbmNpc2NvLCBDQQotT1NCQyB0YWNrbGVzIHRo
+ZSBiaWdnZXN0IGlzc3VlIGluIG9wZW4gc291cmNlOiBPcGVuIFNvdXJjaW5nIHRoZSBFbnRlcnBy
+aXNlCi1TdHJhdGVnaWVzIHRvIGJvb3N0IGlubm92YXRpb24gYW5kIGN1dCBjb3N0cyB3aXRoIG9w
+ZW4gc291cmNlIHBhcnRpY2lwYXRpb24KLVJlY2VpdmUgYSAkNjAwIGRpc2NvdW50IG9mZiB0aGUg
+cmVnaXN0cmF0aW9uIGZlZSB3aXRoIHRoZSBzb3VyY2UgY29kZTogU0ZBRApodHRwOi8vcC5zZi5u
+ZXQvc2Z1L1hjdk16RjhICl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
+bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

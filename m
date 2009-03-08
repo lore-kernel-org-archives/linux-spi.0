@@ -1,11 +1,12 @@
-From: Richmal Elless <ramm85-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] US Citizen Money Available
-Date: Sat, 7 Mar 2009 07:25:15 +0100
-Message-ID: <19336.914321366$1236407248@news.gmane.org>
-Reply-To: Richmal Elless <eastland.clement16252-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Stacia Compton <pio111-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?windows-1251?q?=5BSPAM=5D_Making_Money_With?=
+	=?windows-1251?q?_eBay_Has_Never_Been_Easier_-_Read_Below!?=
+Date: Sun, 8 Mar 2009 15:13:42 +0100
+Message-ID: <49326.6735961244$1236521763@news.gmane.org>
+Reply-To: Stacia Compton <17186castle.edwin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,67 +19,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-R292ZXJubWVudCBHcmFudHMgcHJvZ3JhbSBpcyBmaW5hbGx5IGF2YWlsYWJsZSBmb3IgcmVndWxh
-ciBwZW9wbGUhIFRoaXMgcHJvZ3JhbSBpcyBqdXN0IGZvciB5b3UhIFBsZWFzZSwgcmVhZCB0aGlz
-IGVtYWlsIC0gRE9OJ1QgbGV0IHRoZSBnb29kIG9mZmVyIHBhc3MgeW91IQ0KDQpBcyB5b3UgY2Fu
-IHNlZSwgdGhlcmUgYXJlIG1hbnksIG1hbnkgd2F5cyB0aGF0IGNyb29rZWQgb3JnYW5pemF0aW9u
-cyBjYW4gdHJ5IHRvIGNvbiB5b3Ugb3V0IG9mIHlvdXIgaGFyZCBlYXJuZWQgbW9uZXkuIFRoZSBn
-b29kIG5ld3MgaXMgdGhhdCBpZiB5b3UgYXJlIHNpbXBseSBjYXJlZnVsIGFuZCB1bmRlcnN0YW5k
-IGhvdyB0aGUgZ3JhbnQgcHJvY2VzcyByZWFsbHkgd29ya3MsIHlvdSB3aWxsIGJlIGFibGUgdG8g
-ZW5zdXJlIHlvdSBhcmUgbmV2ZXIgdGhlIHZpY3RpbSBvZiBnb3Zlcm5tZW50IGdyYW50IGZyYXVk
-Lg0KDQpUaGF0IGlzIHdoeSBvdXIgb3JnYW5pemF0aW9uIGlzIE9ORSBUTyBUUlVTVCwgd2hlbiB5
-b3UgZGVjaWRlIGl0J3MgdGltZSB0byBmaW5kIG91dCBpZiB5b3UgbWF5IGJlIGVsaWdpYmxlIGZv
-ciBnb3Zlcm5tZW50IGZ1bmRpbmcuIEl0IGlzIHZlcnkgaW1wb3J0YW50IHRvIHdvcmsgb25seSB3
-aXRoIGEgY29tcGFueSB5b3UgY2FuIHRydXN0IOKAkyBsaWtlIHVzLiBXZSBkb24ndCBtYWtlIGZh
-bHNlIHByb21pc2VzIG9yIGFueSBwcm9taXNlIHdlIGNhbid0IGtlZXAuIFdlIGRvbid0IGFzayBm
-b3IgeW91ciBzZW5zaXRpdmUgcGVyc29uYWwgaW5mb3JtYXRpb24uIEluc3RlYWQsIHdlIHNpbXBs
-eSB0YWtlIHlvdSBieSB0aGUgaGFuZCBhbmQgdGVhY2ggeW91IGhvdyB0byBzdWNjZXNzZnVsbHkg
-YXBwbHkgZm9yIHRoZSBncmFudHMgdGhhdCB5b3UgbWF5IGJlIGVsaWdpYmxlIGZvci4gV2UgYWxz
-byBtYWtlIGl0IGVhc2llciBmb3IgeW91IHRvIHNlYXJjaCB0aHJvdWdoIHRoZSB2YXJpb3VzIGdv
-dmVybm1lbnQgZnVuZGluZyBwcm9ncmFtcyAoYWxsIG9ubGluZSksIHNvIHlvdSBjYW4gc3BlZWQg
-dXAgdGhlIHByb2Nlc3Mgb2YgZmluZGluZyB0aGUgcmlnaHQgZ3JhbnQuDQoNCklmIHlvdSBxdWFs
-aWZ5IGZvciBvdXIgUmFwaWQgR3JhbnRzIFNvbHV0aW9ucyBLaXQgdG9kYXksIHlvdSdsbCBkaXNj
-b3ZlciB0aGUgaW5zIGFuZCBvdXRzIG9mIGZpbmRpbmcgYW5kIGFwcGx5aW5nIGZvciBnb3Zlcm5t
-ZW50IGdyYW50cyB0aGF0IHBlb3BsZSBsaWtlIHlvdSBxdWFsaWZ5IGZvciBldmVyeSBkYXkuIE91
-ciBSYXBpZCBHcmFudHMgU29sdXRpb25zIGtpdCBzaG93cyBBbWVyaWNhIHdoZXJlIGFuZCBob3cg
-dG8gYXBwbHkgZm9yIGdvdmVybm1lbnQgZnVuZGluZy4gV2UgZG9uJ3Qgc2ltcGx5IGhlbHAgeW91
-IGZpbmQgZ3JhbnQgcHJvZ3JhbXMgeW91IG1heSBxdWFsaWZ5IGZvciAtIHdlIGFsc28gbWFrZSBp
-dCBlYXN5IGZvciB5b3UgdG8gZmlsbCBvdXQgdGhlIHBhcGVyd29yay4gSXQncyBhbGwgdXAgdG8g
-eW91IHRvIHNlZSB3aGljaCBncmFudHMgeW91IG1heSBxdWFsaWZ5IGZvciENCg0KU2VuZCB1cyBh
-IHJlcGx5IGJhY2sgdG8gMTUwNTRzYWxlYWRvcGF1bGVuZUBnbWFpbC5jb20gaWYgeW91IHdhbnQg
-dG8gcGFydGljaXBhdGUgYW5kIHNlZSBpZiB5b3UgcXVhbGlmeSBmb3Igb3VyIGZyZWUga2l0LCBh
-bmQgc3RhcnQgYXBwbHlpbmcgcmlnaHQgbm93IQ0KDQpCZXN0IHdpc2hlcywNClJhcGlkIEdyYW50
-cyBTb2x1dGlvbnMKCgoKCgoKCgoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBlbWFpbCBoYXMgYmVlbiB3cml0
-dGVuIGFuZCBwcm92ZWQgdG8gYmUgaW4gY29tcGxpYW5jZSB3aXRoIHRoZSByZWNlbnRseSBlc3Rh
-Ymxpc2hlZCBjYW4tc3BhbSBhY3QgbGF3IGluIFVTLiBXZSBhcmUgbm90IHByb3Zva2luZyBvciBm
-b3JjaW5nIGFueSBwZXJzb24gaW4gYW55IHdheSB0byBwYXJ0aWNpcGF0ZSBpbiBvdXIgcHJvZ3Jh
-bXMuIFRvIHBhcnRpY2lwYXRlIGlzIHlvdXIgb3duIGRlY2lzaW9uIGFuZCB5b3UgY2FycnkgdGhl
-IHJlc3BvbnNpYmlsaXR5IG9mIHRha2luZyBmdXJ0aGVyIHBhcnQgaW4gdGhpcyBwcm9tb3Rpb24u
-IEFueXdheSwgaWYgeW91IGRvbid0IHdhbnQgdG8gcmVjZWl2ZSBtb3JlIGdvb2Qgb2ZmZXJzIGZy
-b20gdXMsIHlvdSBjYW4gc2ltcGx5IFVuc3Vic2NyaWJlIGJ5IHNlbmRpbmcgdXMgYSBub3RpZmlj
-YXRpb24gZW1haWwgdG8gZ2V0Lm91dF9vZl90aGVfbGlzdEB5YWhvby5jb20gd2l0aCBhIG1haWwt
-c3ViamVjdCBhbmQgdGV4dCAiVW5zdWJzY3JpYmUgbWUiLCBhbmQgd2Ugd2lsbCBnZXQgeW91ciBl
-bWFpbCBvdXQgb2Ygb3VyIGxpc3Qgd2l0aGluIDEwIGRheXMuCgpUaGlzIG1lc3NhZ2UgaXMgU1RS
-SUNUTFkgQ09ORklERU5USUFMIGFuZCBpcyBzb2xlbHkgZm9yIHRoZSBpbmRpdmlkdWFsIG9yIG9y
-Z2FuaXNhdGlvbiB0byB3aG9tIGl0IGlzIGFkZHJlc3NlZC4gSXQgbWF5IGNvbnRhaW4gUFJJVklM
-RUdFRCBhbmQgQ09ORklERU5USUFMIGluZm9ybWF0aW9uLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50
-ZW5kZWQgcmVjaXBpZW50LCB5b3UgYXJlIGhlcmVieSBub3RpZmllZCB0aGF0IGFueSBkaXNzZW1p
-bmF0aW9uLCBkaXN0cmlidXRpb24gb3IgY29weWluZyBvZiB0aGlzIGNvbW11bmljYXRpb24gYW5k
-IGl0cyBjb250ZW50cyBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLiBJZiB5b3UgYXJlIG5vdCBpbnRl
-cmVzdGVkIGluIHRoZSBvZmZlcmVkIHByb21vdGlvbnMsIHBsZWFzZSBqdXN0IGRvbid0IGFuc3dl
-ci4gSWYgeW91IHRoaW5rIHlvdSBoYXZlIHJlY2VpdmVkIHRoaXMgbWVzc2FnZSBhbmQgaXRzIGNv
-bnRlbnRzIGluIGVycm9yLCBwbGVhc2UgZGVsZXRlIGl0IGZyb20geW91ciBjb21wdXRlciwgb3Ig
-Zm9sbG93IHRoZSB1bnN1YnNjcmliaW5nIHByb2NlZHVyZSBzaG93biBhYm92ZS4KLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CgkJCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPcGVuIFNvdXJjZSBCdXNpbmVzcyBDb25mZXJlbmNl
-IChPU0JDKSwgTWFyY2ggMjQtMjUsIDIwMDksIFNhbiBGcmFuY2lzY28sIENBCi1PU0JDIHRhY2ts
-ZXMgdGhlIGJpZ2dlc3QgaXNzdWUgaW4gb3BlbiBzb3VyY2U6IE9wZW4gU291cmNpbmcgdGhlIEVu
-dGVycHJpc2UKLVN0cmF0ZWdpZXMgdG8gYm9vc3QgaW5ub3ZhdGlvbiBhbmQgY3V0IGNvc3RzIHdp
-dGggb3BlbiBzb3VyY2UgcGFydGljaXBhdGlvbgotUmVjZWl2ZSBhICQ2MDAgZGlzY291bnQgb2Zm
-IHRoZSByZWdpc3RyYXRpb24gZmVlIHdpdGggdGhlIHNvdXJjZSBjb2RlOiBTRkFECmh0dHA6Ly9w
-LnNmLm5ldC9zZnUvWGN2TXpGOEgKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5l
-cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9s
-aXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hi, Dear Sir or Madam!
+
+Are you wondering how to start a business, which will bring you thousands of dollars every month?
+
+Now your troubles are over! We are having the pleasure to provide you with the latest Internet Business opportunity - the eBay CashFlow System kit, and it is FREE(but only this time)! The Success Kit will show you how you can start selling in under 10 minutes; how to get the highest bids and maximize your profits; how over 25 successful PowerSellers have generated easy profits from eBay; savvy buying, selling, and business advice from eBay Experts; numerous verified and proven tips to faster eBay profits!
+
+This Kit is literally BURSTING with valuable content: Mining Gold From eBay ebook, eBay Entrepreneur Kit ebook, RE-Sell it on eBay Application ebook, and the valuable eBay PRO ebook. And also there are some Bonus packs with all these: Top 100 Simplified eBay Tips & Tricks ebook, Secrets of Ebay PowerSellers ebook, Get Bids Like Crazy ebook and How to Increase Auction Profits ebook.
+
+And all of these will be given to you for ABSOLUTELY FREE, if you act now and fast! Our supplies are LIMITED, and we cannot keep this offer active for a long time - actually it will be active for a very short period of time, so be the first to order the FREE KIT of the eBay CashFlow System. You can only WIN! You have NOTHING TO LOOSE!
+
+If you are interested, send a reply to aria.stiefel1997-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org to receive further information from us, but ACT FAST, as the supplies of this FREE TRIAL KIT are very limited!
+
+With regards,
+PowerSellers
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
+------------------------------------------------------------------------------
+Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
+-OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
+-Strategies to boost innovation and cut costs with open source participation
+-Receive a $600 discount off the registration fee with the source code: SFAD
+http://p.sf.net/sfu/XcvMzF8H

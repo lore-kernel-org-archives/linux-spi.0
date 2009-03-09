@@ -1,10 +1,10 @@
-From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
-Subject: [SPAM] @商#业￥代%理**
-Date: Mon, 9 Mar 2009 09:24:54 +0800
-Message-ID: <E1LgUEa-00046a-9I@335xhf1.ch3.sourceforge.com>
+From: "=?windows-1252?Q?TALLER_PR=C1CTICO?=" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] APRENDE A MEJORAR DE TUS DOLORES FÍSICOS
+Date: Mon, 9 Mar 2009 09:13:08 -0300
+Message-ID: <1234662569-2200931912138466@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,29 +17,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHye7b2srQ9s7Dr8q10rXT0M/e
-uavLvrXEo6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+
-o6mho87Sy77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvB
-y8O/1MLP+srbtu62yKGjCsO/1MLT0NK7sr+31tT21rXLsLXnxNS3osaxNiW6zcbVzai3osax1tbA
-4Mjnz8KjusnMxrfP+srby7C3osaxo6y158TU1MvK5LeixrGjrAq547jmt6LGsdfiwd7StbeixrEs
-t/7O8dK1t6LGsbXIICi5+suwtdjLsKOpMS0yJdPFu920+r+qu/K6z9f3o6y148r9vc+1zaGju7m/
-yQrS1Lj5vt3L+df2yv3Bv7butsi1xLTz0KHAtMnMzNbTxbvdtcS148r9o6y5q8u+s8nBorbgxOrS
-u9axvOGz1tLUobCzz9DFobHOqtbQCtDE1/fOqrmry761xLrL0MTLvM/roaLAzrnMyvfBormry77Q
-zs/zo6yxvrmry77Wo9bYs9DFtcv508O++LbUysfV5saxo6G4/M+jzfsKxNy5u9PQu/q74dPrufPL
-vrrP1/ejoQqhoaGhCiAgICDI57nzy77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQxKOs
-v8nJz834sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGjIAogICAgIAogICAg
-tMvQxc+is6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOiAKICAgIAqhoaGhytYgILv6OjEzNTMwOTA5
-MzQ0CgogICAgLS0tLVFROzc3MTUwOTM0NAoKoaGhocGqz7XIy6O6wO65+rflCsuz16MKICAgICAg
-yczs96OhIAogICAgIAqhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhICChoaGhoaGhoaGhoaGh
-oaGhoaGhoaGhoaGhocnu29rK0PbOw6/KtdK109DP3rmry74KCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQpPcGVuIFNvdXJjZSBCdXNpbmVzcyBDb25mZXJlbmNlIChPU0JDKSwgTWFyY2ggMjQtMjUsIDIw
-MDksIFNhbiBGcmFuY2lzY28sIENBCi1PU0JDIHRhY2tsZXMgdGhlIGJpZ2dlc3QgaXNzdWUgaW4g
-b3BlbiBzb3VyY2U6IE9wZW4gU291cmNpbmcgdGhlIEVudGVycHJpc2UKLVN0cmF0ZWdpZXMgdG8g
-Ym9vc3QgaW5ub3ZhdGlvbiBhbmQgY3V0IGNvc3RzIHdpdGggb3BlbiBzb3VyY2UgcGFydGljaXBh
-dGlvbgotUmVjZWl2ZSBhICQ2MDAgZGlzY291bnQgb2ZmIHRoZSByZWdpc3RyYXRpb24gZmVlIHdp
-dGggdGhlIHNvdXJjZSBjb2RlOiBTRkFECmh0dHA6Ly9wLnNmLm5ldC9zZnUvWGN2TXpGOEgKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
-bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
-dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
-Z2VuZXJhbAo=
+Aprende a controlar tu dolor con imanes, relajaci=F3n y terapia de energ=EDa
+TALLER "APRENDE A MEJORAR DE TUS DOLORES F=CDSICOS"
+
+PARA TODAS LAS PERSONAS QUE SUFREN DOLORES F=CDSICOS CR=D3NICOS. =
+
+PARA QUIENES DEBEN CONVIVIR CON PERSONAS QUE SUFREN DOLORES F=CDSICOS. =
+
+ESTE TALLER LO PUEDE TOMAR PERSONAS DESDE LOS 15 A=D1OS
+
+SE REALIZAR=C1 ESTE TALLER S=D3LO A LAS PRIMERAS 20 PERSONAS QUE SE MATRICU=
+LEN EN http://www.hipnosischile.cl/inscripciones.htm =
+
+
+FECHA: JUEVES 12 DE MARZO
+LUGAR: SEMINARIO 6 - PROVIDENCIA
+HORARIO: 19:30 a 21 HRS.
+VALOR: $20.000
+
+DESPU=C9S DEL TALLER PUEDE OPTAR A TENER SESIONES INDIVIDUALES.
+
+LO PRIMERO QUE TIENE QUE APRENDER QUE EL DOLOR ES MENTAL
+LO SEGUNDO QUE LOS DOLORES DE ARTICULACIONES Y OTROS QUE YA ESTAN DIAGNOSTI=
+CADOS Y QUE NO HAY PROBLEMA DE QUITAR EL DOLOR ES POSIBLE HACERLO
+TERCERO QUE HAY DOLORES QUE SON PSICOLOGICOS, ES DECIR NACEN DE PELEAS, PEN=
+AS, RABIAS Y LUEGO DUELE EL COLON, EL ESTOMAGO, LA CABEZA
+PUEDE SOLUCIONAR INCLUSO LOS PROBLEMAS DE JAQUECAS
+=A1=A1=A1=A1 TODO SIN DEPENDER DE TERCERAS PERSONAS Y SIN QUIMICOS !!!!
+
+SOLO 20 PERSONAS TENDRAN ACCESO A ESTA INFORMACION
+http://www.hipnosischile.cl/inscripciones.htm =
+
+
+
+
+Saluda atentamente,
+
+
+Ana Mar=EDa Villarroel Altamirano
+Centro de Hipnosis y Terapias Afines "Hipnosis Chile"
+Seminario 6 - Providencia - Fono: 2781078
+Horario: Martes y Jueves de 11 a 19 hrs.
+info-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org - www.hipnosischile.cl
+Remover: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org
+
+
+
+---------------------------------------------------------------------------=
+---
+Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
+-OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
+-Strategies to boost innovation and cut costs with open source participation
+-Receive a $600 discount off the registration fee with the source code: SFAD
+http://p.sf.net/sfu/XcvMzF8H

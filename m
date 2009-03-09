@@ -1,21 +1,14 @@
-From: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
-Subject: Re: [PATCH resend 0/6] OpenFirmware support for
-	the spi_mpc83xx driver
-Date: Mon, 9 Mar 2009 11:53:17 -0500
-Message-ID: <9F1B582F-B01E-436D-9E46-81C2E4B4E8D0@kernel.crashing.org>
-References: <20081205200936.GA19137@oksana.dev.rtsoft.ru>
-	<6DC0606C-1CDA-4549-8A63-E3F86010291B@kernel.crashing.org>
-	<20090123194958.GA17355@oksana.dev.rtsoft.ru>
-Mime-Version: 1.0 (Apple Message framework v930.3)
+From: Allyn Walker <kirank_bond-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: =?windows-1251?q?=5BSPAM=5D_Stop_Living_from_?=
+	=?windows-1251?q?Paycheck_to_Paycheck_-_Earn_Money_Now?=
+Date: Mon, 9 Mar 2009 19:13:34 +0200
+Message-ID: <42024.6240952567$1236618931@news.gmane.org>
+Reply-To: Allyn Walker <10457zbinden.ray-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090123194958.GA17355-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,63 +19,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi!
 
-On Jan 23, 2009, at 1:49 PM, Anton Vorontsov wrote:
+Do you Know That Much Money is Being Spent Online Nowadays? Now is the Right Time to Get a Piece of It!
 
-> On Tue, Jan 06, 2009 at 10:28:10PM -0600, Kumar Gala wrote:
->> On Dec 5, 2008, at 2:09 PM, Anton Vorontsov wrote:
->>> Hi all,
->>>
->>> The patch series are used to support SPI via the OF SPI subsystem
->>> (driver/of/of_spi.c). Now the driver is able to manage its own
->>> chip selects, and doesn't need any auxiliary support from the
->>> board files or fsl_soc constructors.
->>>
->>> The series also contains PowerPC portions of the MMC SPI support.
->>>
->>> Since the series touches spi and powerpc trees, I think it would
->>> be most convenient to pass it via one of these trees. The patches
->>> doesn't touch any SPI functionality, only some probe routines, so
->>> I believe powerpc.git is the best candidate...
->>>
->>> The other reason for powerpc tree is that the patches depends on
->>> other patches as found in paulus/powerpc.git + of_gpio_count()
->>> as found here:
->>> http://ozlabs.org/pipermail/linuxppc-dev/2008-December/065917.html
->>>
->>> David, if you're OK with the patches, may I ask you to sign off on
->>> the ones that touch drivers/spi so that we could pass it via Kumar's
->>> powerpc.git?
->>>
->>> The queue:
->>>
->>> [1/7] powerpc: Implement get_brgfreq() and get_baudrate() stubs
->>> [2/7] spi_mpc83xx: Fix sparse warnings
->>> [3/7] spi_mpc83xx: Rework chip selects handling
->>> [4/7] spi_mpc83xx: Add OF platform driver bindings
->>> [5/7] powerpc/fsl_soc: Isolate legacy fsl_spi support to mpc832x_rdb
->>> boards
->>> [6/7] powerpc: Add mmc-spi-slot bindings
->>> [7/7] powerpc/83xx: Add mmc-spi support via the device tree for
->>> MPC8323E-RDB
->>>
->>
->> David,
->>
->> Any status on these patches?
->
-> Ping? No single comment on this patch set for ~2 months...
->
-> Resending...
->
-> Thanks,
+Are you wondering how people make money through the Internet by doing almost nothing? At first, I was wary about working from home, because I had heard horror stories about the Internet. But I'd heard that there were rounds of layoffs coming at my company, so I figured I should do something to try and have a backup should the worst happen. 
 
-David,
+I was amazed when I got this Free-Trial Kit. It started working right away. By the time the layoffs happened, I was already making more money from Google than I was in my job. Now I use Google full time and have a great income.
 
-Anything going on here?  Should we send this via some other channel?
+Unfortunately, I cannot send this offer to everyone to prevent the value and potency of this information from being "watered down". That's why I am sending this email only to people I know and care about. A friend of mine gave me your email address, that's why I decided to send that offer to you too(I am sorry if I disturbed you in anyway).
 
-- k
+If you are interested to participate in this program, send an answer to cogliano.mason1797-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, saying that you want to join too, so you can receive your Risk-Free Kit and start enjoying a life free from money worries for the rest of your life!
 
+Regards,
+a trusted Friend
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_from_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise

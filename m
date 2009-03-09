@@ -1,12 +1,21 @@
-From: "=?windows-1252?Q?TALLER_PR=C1CTICO?=" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] APRENDE A MEJORAR DE TUS DOLORES FÍSICOS
-Date: Mon, 9 Mar 2009 09:13:08 -0300
-Message-ID: <1234662569-2200931912138466@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+Subject: Re: [PATCH resend 0/6] OpenFirmware support for
+	the spi_mpc83xx driver
+Date: Mon, 9 Mar 2009 11:53:17 -0500
+Message-ID: <9F1B582F-B01E-436D-9E46-81C2E4B4E8D0@kernel.crashing.org>
+References: <20081205200936.GA19137@oksana.dev.rtsoft.ru>
+	<6DC0606C-1CDA-4549-8A63-E3F86010291B@kernel.crashing.org>
+	<20090123194958.GA17355@oksana.dev.rtsoft.ru>
+Mime-Version: 1.0 (Apple Message framework v930.3)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20090123194958.GA17355-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,54 +26,64 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Aprende a controlar tu dolor con imanes, relajaci=F3n y terapia de energ=EDa
-TALLER "APRENDE A MEJORAR DE TUS DOLORES F=CDSICOS"
 
-PARA TODAS LAS PERSONAS QUE SUFREN DOLORES F=CDSICOS CR=D3NICOS. =
+On Jan 23, 2009, at 1:49 PM, Anton Vorontsov wrote:
 
-PARA QUIENES DEBEN CONVIVIR CON PERSONAS QUE SUFREN DOLORES F=CDSICOS. =
+> On Tue, Jan 06, 2009 at 10:28:10PM -0600, Kumar Gala wrote:
+>> On Dec 5, 2008, at 2:09 PM, Anton Vorontsov wrote:
+>>> Hi all,
+>>>
+>>> The patch series are used to support SPI via the OF SPI subsystem
+>>> (driver/of/of_spi.c). Now the driver is able to manage its own
+>>> chip selects, and doesn't need any auxiliary support from the
+>>> board files or fsl_soc constructors.
+>>>
+>>> The series also contains PowerPC portions of the MMC SPI support.
+>>>
+>>> Since the series touches spi and powerpc trees, I think it would
+>>> be most convenient to pass it via one of these trees. The patches
+>>> doesn't touch any SPI functionality, only some probe routines, so
+>>> I believe powerpc.git is the best candidate...
+>>>
+>>> The other reason for powerpc tree is that the patches depends on
+>>> other patches as found in paulus/powerpc.git + of_gpio_count()
+>>> as found here:
+>>> http://ozlabs.org/pipermail/linuxppc-dev/2008-December/065917.html
+>>>
+>>> David, if you're OK with the patches, may I ask you to sign off on
+>>> the ones that touch drivers/spi so that we could pass it via Kumar's
+>>> powerpc.git?
+>>>
+>>> The queue:
+>>>
+>>> [1/7] powerpc: Implement get_brgfreq() and get_baudrate() stubs
+>>> [2/7] spi_mpc83xx: Fix sparse warnings
+>>> [3/7] spi_mpc83xx: Rework chip selects handling
+>>> [4/7] spi_mpc83xx: Add OF platform driver bindings
+>>> [5/7] powerpc/fsl_soc: Isolate legacy fsl_spi support to mpc832x_rdb
+>>> boards
+>>> [6/7] powerpc: Add mmc-spi-slot bindings
+>>> [7/7] powerpc/83xx: Add mmc-spi support via the device tree for
+>>> MPC8323E-RDB
+>>>
+>>
+>> David,
+>>
+>> Any status on these patches?
+>
+> Ping? No single comment on this patch set for ~2 months...
+>
+> Resending...
+>
+> Thanks,
 
-ESTE TALLER LO PUEDE TOMAR PERSONAS DESDE LOS 15 A=D1OS
+David,
 
-SE REALIZAR=C1 ESTE TALLER S=D3LO A LAS PRIMERAS 20 PERSONAS QUE SE MATRICU=
-LEN EN http://www.hipnosischile.cl/inscripciones.htm =
+Anything going on here?  Should we send this via some other channel?
 
+- k
 
-FECHA: JUEVES 12 DE MARZO
-LUGAR: SEMINARIO 6 - PROVIDENCIA
-HORARIO: 19:30 a 21 HRS.
-VALOR: $20.000
-
-DESPU=C9S DEL TALLER PUEDE OPTAR A TENER SESIONES INDIVIDUALES.
-
-LO PRIMERO QUE TIENE QUE APRENDER QUE EL DOLOR ES MENTAL
-LO SEGUNDO QUE LOS DOLORES DE ARTICULACIONES Y OTROS QUE YA ESTAN DIAGNOSTI=
-CADOS Y QUE NO HAY PROBLEMA DE QUITAR EL DOLOR ES POSIBLE HACERLO
-TERCERO QUE HAY DOLORES QUE SON PSICOLOGICOS, ES DECIR NACEN DE PELEAS, PEN=
-AS, RABIAS Y LUEGO DUELE EL COLON, EL ESTOMAGO, LA CABEZA
-PUEDE SOLUCIONAR INCLUSO LOS PROBLEMAS DE JAQUECAS
-=A1=A1=A1=A1 TODO SIN DEPENDER DE TERCERAS PERSONAS Y SIN QUIMICOS !!!!
-
-SOLO 20 PERSONAS TENDRAN ACCESO A ESTA INFORMACION
-http://www.hipnosischile.cl/inscripciones.htm =
-
-
-
-
-Saluda atentamente,
-
-
-Ana Mar=EDa Villarroel Altamirano
-Centro de Hipnosis y Terapias Afines "Hipnosis Chile"
-Seminario 6 - Providencia - Fono: 2781078
-Horario: Martes y Jueves de 11 a 19 hrs.
-info-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org - www.hipnosischile.cl
-Remover: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org
-
-
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
 -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
 -Strategies to boost innovation and cut costs with open source participation

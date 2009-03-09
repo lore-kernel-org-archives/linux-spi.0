@@ -1,9 +1,9 @@
-From: Allyn Walker <kirank_bond-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_Stop_Living_from_?=
-	=?windows-1251?q?Paycheck_to_Paycheck_-_Earn_Money_Now?=
-Date: Mon, 9 Mar 2009 19:13:34 +0200
-Message-ID: <42024.6240952567$1236618931@news.gmane.org>
-Reply-To: Allyn Walker <10457zbinden.ray-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Anne Wiggins <j.wittwer-xLnV79OblemELgA04lAiVw@public.gmane.org>
+Subject: =?windows-1251?q?=5BSPAM=5D_Making_Money_With?=
+	=?windows-1251?q?_eBay_Has_Never_Been_Easier_-_Read_Below!?=
+Date: Mon, 9 Mar 2009 19:22:28 -0400
+Message-ID: <9793.19223338298$1236641122@news.gmane.org>
+Reply-To: Anne Wiggins <14588gussiewears-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,20 +19,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi!
+Good day, Dear Sir/Madam!
 
-Do you Know That Much Money is Being Spent Online Nowadays? Now is the Right Time to Get a Piece of It!
+Sorry to interrupt your peace, but what is in market today, cannot stay anymore as a secret: The way of making money with eBay has FINALLY BEEN REVEALED!
 
-Are you wondering how people make money through the Internet by doing almost nothing? At first, I was wary about working from home, because I had heard horror stories about the Internet. But I'd heard that there were rounds of layoffs coming at my company, so I figured I should do something to try and have a backup should the worst happen. 
+Presenting to your attention the eBay CashFlow System available today only for a limited number of people, as the supplies are limited too. The lure of a bargain, combined with the excitement of a Las Vegas gamble, is what brings in millions of Internet customers to eBay. The loyalty and enthusiasm of devoted eBay users all over the country is what has helped build eBay into the powerhouse it is today. You can really earn an excellent amount of money with eBay every month. CBS News even published a story about all the people earning a living on eBay!
 
-I was amazed when I got this Free-Trial Kit. It started working right away. By the time the layoffs happened, I was already making more money from Google than I was in my job. Now I use Google full time and have a great income.
+So, Start Your Success Story Now! Sign Up Today and Get on The Fast Track To Cash! Over 1.2 Million People Have Already Done It!
 
-Unfortunately, I cannot send this offer to everyone to prevent the value and potency of this information from being "watered down". That's why I am sending this email only to people I know and care about. A friend of mine gave me your email address, that's why I decided to send that offer to you too(I am sorry if I disturbed you in anyway).
+Please, send us an answer to this email donald.sandison14411-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, so we can sign you up immediately, and send you the FREE KIT, which is still available untill the supplies expire, so be the first to take it!
 
-If you are interested to participate in this program, send an answer to cogliano.mason1797-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, saying that you want to join too, so you can receive your Risk-Free Kit and start enjoying a life free from money worries for the rest of your life!
+We are sorry, if this email is unwanted to you, but we had to share this secret with as many as possible people, who are in need of a fast money making.
 
-Regards,
-a trusted Friend
+with Respect - the eBay Secrets Team
+
+P.S.: We cannot guarantee that we can keep the light on this offer forever, so act quick!
 
 
 
@@ -45,14 +46,9 @@ a trusted Friend
 
 
 ------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_from_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
 
 This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
 ------------------------------------------------------------------
 		
 ------------------------------------------------------------------------------
-Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
--OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
--Strategies to boost innovation and cut costs with open source participation
--Receive a $600 discount off the registration fee with the source code: SFAD
-http://p.sf.net/sfu/XcvMzF8H

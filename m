@@ -1,9 +1,8 @@
-From: Anne Wiggins <j.wittwer-xLnV79OblemELgA04lAiVw@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_Making_Money_With?=
-	=?windows-1251?q?_eBay_Has_Never_Been_Easier_-_Read_Below!?=
-Date: Mon, 9 Mar 2009 19:22:28 -0400
-Message-ID: <9793.19223338298$1236641122@news.gmane.org>
-Reply-To: Anne Wiggins <14588gussiewears-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Sylvana Gaskins <419ek4192002-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
+Subject: [SPAM] The Secret of Making Money at Ebay
+Date: Mon, 9 Mar 2009 21:43:15 -0600
+Message-ID: <1114.41584672338$1236656880@news.gmane.org>
+Reply-To: Sylvana Gaskins <14588gussiewears-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,21 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Good day, Dear Sir/Madam!
+Before you read this email, we want you to know that this is the greatest money making proposal you will ever receive! And we are sending this proposal only ONCE!
 
-Sorry to interrupt your peace, but what is in market today, cannot stay anymore as a secret: The way of making money with eBay has FINALLY BEEN REVEALED!
+The CBS News has published a story about people making money on eBay. 60 Minutes recently spotlighted people who are making a comfortable living by selling on eBay. The company sells a motorcycle every 18 minutes and an SUV every 30 minutes. As many as 150,000 people have literally given up their jobs to create their own businesses selling on eBay.
 
-Presenting to your attention the eBay CashFlow System available today only for a limited number of people, as the supplies are limited too. The lure of a bargain, combined with the excitement of a Las Vegas gamble, is what brings in millions of Internet customers to eBay. The loyalty and enthusiasm of devoted eBay users all over the country is what has helped build eBay into the powerhouse it is today. You can really earn an excellent amount of money with eBay every month. CBS News even published a story about all the people earning a living on eBay!
+You don't need any special Internet experience to start your online business and earn good money with eBay. All you need is a computer, a camera, and something to sell, in order to build your own eBay business that can be earning you $30,000 to $40,000 in goods sales a month.
 
-So, Start Your Success Story Now! Sign Up Today and Get on The Fast Track To Cash! Over 1.2 Million People Have Already Done It!
+Our eBay CashFlow System will teach you to all of these secrets in almost no time! Now, for the first time in history, this system is offered only to you absolutely FREE! You can just check out without any risk! But you have to know that this is a Limited Offer, so Act Quick!
 
-Please, send us an answer to this email donald.sandison14411-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, so we can sign you up immediately, and send you the FREE KIT, which is still available untill the supplies expire, so be the first to take it!
+Send us an email to vic.pajak12698-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org in order to proceed further, if you are interested to join us. If you act NOW you will also receive a FREE access to your own personal Internet Marketing expert consultant!
 
-We are sorry, if this email is unwanted to you, but we had to share this secret with as many as possible people, who are in need of a fast money making.
+If you think you are not interested, just don't answer - we will give your Free Trial Kit to someone else, who will take the benefits of this FREE KIT offer!
 
-with Respect - the eBay Secrets Team
-
-P.S.: We cannot guarantee that we can keep the light on this offer forever, so act quick!
+Sincerely Yours,
+"eBay Success" Ltd. team
 
 
 

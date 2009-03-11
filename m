@@ -1,7 +1,7 @@
 From: Mark Bishop <mark-Wri040CV1BU@public.gmane.org>
 Subject: Re: Freescale MPC8313 & SPI
-Date: Wed, 11 Mar 2009 17:20:44 -0400
-Message-ID: <20090311172044.jlvpl8xs74ggo8sg@www.bish.net>
+Date: Wed, 11 Mar 2009 17:21:11 -0400
+Message-ID: <20090311172111.vleths44ys0gcgc4@www.bish.net>
 References: <20090303150112.7t6tpqkw0wsgoc4s@www.bish.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -19,13 +19,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
-
-
-I'm using kernel 2.6.28.6 with spidev compiled as a module.
-
-I have udev as an installed package on the board and even when I  
-insmod spidev the /dev/spidevX.Y aren't created.   Any ideas?
-
 
 Quoting Mark Bishop <mark-Wri040CV1BU@public.gmane.org>:
 
@@ -45,19 +38,8 @@ Quoting Mark Bishop <mark-Wri040CV1BU@public.gmane.org>:
 > as well.  I've looked at spidev_test.c and I would like to see another
 > example or two.
 >
-> ------------------------------------------------------------------------------
-> Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
-> -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
-> -Strategies to boost innovation and cut costs with open source participation
-> -Receive a $600 discount off the registration fee with the source code: SFAD
-> http://p.sf.net/sfu/XcvMzF8H
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
->
->
 
+And sorry for the top-post.
 
 ------------------------------------------------------------------------------
 Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are

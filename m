@@ -1,15 +1,15 @@
-From: "Prefeo via MailandGo" <RET-XTC-DS5R-QJEDM-DD-LOGSA@R.Ems7.net>
-Subject: =?iso-8859-1?q?All=E9gez_vos_mensualit=E9s_ju?=
-	=?iso-8859-1?q?squ=27=E0_-60=25=2C_regroupez_tous_vos_cr=E9dits_en?=
-	=?iso-8859-1?q?_1?=
-Date: Wed, 11 Mar 2009 17:26:30 +0100
-Message-ID: <74c0a798f1a2427cbf7176c632714666@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-QJEDM-DD-LOGSA@R.Ems7.net
+From: Mark Bishop <mark-Wri040CV1BU@public.gmane.org>
+Subject: Re: Freescale MPC8313 & SPI
+Date: Wed, 11 Mar 2009 17:20:44 -0400
+Message-ID: <20090311172044.jlvpl8xs74ggo8sg@www.bish.net>
+References: <20090303150112.7t6tpqkw0wsgoc4s@www.bish.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2818235464204026579=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20090303150112.7t6tpqkw0wsgoc4s-2+Z7l/WXEz7k1uMJSBkQmQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,65 +20,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2818235464204026579==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-QJEDM-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+I'm using kernel 2.6.28.6 with spidev compiled as a module.
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1=2E0 Transitional//EN" "http:=
-//www=2Ew3=2Eorg/TR/xhtml1/DTD/xhtml1-transitional=2Edtd">
+I have udev as an installed package on the board and even when I  
+insmod spidev the /dev/spidevX.Y aren't created.   Any ideas?
 
 
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8=
-" />
-<title>Document sans nom</title>
+Quoting Mark Bishop <mark-Wri040CV1BU@public.gmane.org>:
 
+> I am trying to understand more about how to talk to different spi
+> chips using the MPC8313.  The documentation that comes with the
+> development board is really lacking and I am relying on the
+> /usr/src/linux/Documentaion/spi.  However, I still can't seem to
+> answer my questions.
+>
+> 1) Which device do I open up to talk to the bus.  I would use
+> something like /dev/ttyS0 for a serial port, and I assume it would be
+> /dev/spidev.0 and I would have to make it manually using mknod - but
+> what ties the /dev/spidev.0 to the actual chip driver?  Is there
+> something I have to do in addition to mknod?
+>
+> 2) I would be looking for a few examples on how to talk to a SPI bus
+> as well.  I've looked at spidev_test.c and I would like to see another
+> example or two.
+>
+> ------------------------------------------------------------------------------
+> Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
+> -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
+> -Strategies to boost innovation and cut costs with open source participation
+> -Receive a $600 discount off the registration fee with the source code: SFAD
+> http://p.sf.net/sfu/XcvMzF8H
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+>
+>
 
-<body>
-<table width=3D"500" height=3D"700" border=3D"0" align=3D"center" cellp=
-adding=3D"0" cellspacing=3D"0">
-  <tr>
-    <td width=3D"170"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QJED=
-M-DD-LOGSA-HKN"><img src=3D"http://u=2Eems7=2Enet/Img/2139/prefeo/2/ima=
-ge_01=2Egif" alt=3D"Pr=E9f=E9o ma pr=E9f=E9rence, un seul cr=E9dit" wid=
-th=3D"170" height=3D"80" border=3D"0" /></a></td>
-    <td width=3D"330"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QJED=
-M-DD-LOGSA-HKN"><img src=3D"http://u=2Eems7=2Enet/Img/2139/prefeo/2/ima=
-ge_02=2Egif" width=3D"330" height=3D"80" border=3D"0" /></a></td>
-  </tr>
-  <tr>
-    <td colspan=3D"2"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QJED=
-M-DD-LOGSA-HKN"><img src=3D"http://u=2Eems7=2Enet/Img/2139/prefeo/2/ima=
-ge_03=2Ejpg" alt=3D"Trop de cr=E9dit? Regroupez tous vos credits et r=E9=
-duisez vos mensualit=E9s jusqu'=E0 -60% ! je clique" width=3D"500" heig=
-ht=3D"426" border=3D"0" /></a></td>
-  </tr>
-  <tr>
-    <td colspan=3D"2"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QJED=
-M-DD-LOGSA-HKN"><img src=3D"http://u=2Eems7=2Enet/Img/2139/prefeo/2/ima=
-ge_04=2Ejpg" alt=3D"prefeo" width=3D"500" height=3D"194" border=3D"0" /=
-></a></td>
-  </tr>
-</table>
-</body>
-
-<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
-/ems6=2Enet/u/?E=3DRET-XTC-DS5R-QJEDM-DD-LOGSA&EMail=3Dspi-devel-genera=
-l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
-s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
-t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QJEDM-DD-LOGSA-2"=
- width=3D"1" height=3D"1">
-
-
-
---===============2818235464204026579==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
@@ -86,15 +65,3 @@ powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
 easily build your RIAs with Flex Builder, the Eclipse(TM)based development
 software that enables intelligent coding and step-through debugging.
 Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
---===============2818235464204026579==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2818235464204026579==--

@@ -1,13 +1,11 @@
-From: Stacia Leichter <419honda_place-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_Start_Your_Own_On?=
-	=?windows-1251?q?line_Business_And_Earn_Real_Cash?=
-Date: Wed, 11 Mar 2009 19:49:24 +0800
-Message-ID: <5121.8964545571$1236772288@news.gmane.org>
-Reply-To: Stacia Leichter <gaccione.barnabas1592-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: pxa2xx_spi suspend/resume
+Date: Wed, 11 Mar 2009 08:30:11 -0300
+Message-ID: <1236771011.17708.37.camel@brutus>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,37 +17,92 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Before you read this email, we want you to know that this is the greatest money making proposal you will ever receive! And we are sending this proposal only ONCE!
+Hello linux spi experts.
 
-The CBS News has published a story about people making money on eBay. 60 Minutes recently spotlighted people who are making a comfortable living by selling on eBay. The company sells a motorcycle every 18 minutes and an SUV every 30 minutes. As many as 150,000 people have literally given up their jobs to create their own businesses selling on eBay.
+I'm trying to get suspend/resume working on my pxa27x board, but resume
+freezes waiting for SPI I/O.
 
-You don't need any special Internet experience to start your online business and earn good money with eBay. All you need is a computer, a camera, and something to sell, in order to build your own eBay business that can be earning you $30,000 to $40,000 in goods sales a month.
+After correcting suspend/resume ordering (i need MCI and UDC to resume
+after SPI, PMIC and USB transceiver on the SPI bus), it still freezes at
+the first SPI transfer.
 
-Our eBay CashFlow System will teach you to all of these secrets in almost no time! Now, for the first time in history, this system is offered only to you absolutely FREE! You can just check out without any risk! But you have to know that this is a Limited Offer, so Act Quick!
+I added some debug code to pxa2xx_spi.c as follows:
 
-Send us an email to aria.stiefel1997-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org in order to proceed further, if you are interested to join us. If you act NOW you will also receive a FREE access to your own personal Internet Marketing expert consultant!
+@@ -1095,6 +1097,14 @@ static void pump_transfers(unsigned long data)
+        /* after chip select, release the data by enabling service
+         * requests and interrupts, without changing any mode bits */
+        write_SSCR1(cr1, reg);
++       mdebug("pump_transfersA SSCR0=%08x SSCR1=%08x SSTO=%08x SSPSP=%08x SSSR=%08x\n",
++               read_SSCR0(drv_data->ioaddr), read_SSCR1(drv_data->ioaddr),
++               read_SSTO(drv_data->ioaddr), read_SSPSP(drv_data->ioaddr), read_SSSR(drv_data->ioaddr));
++       udelay(200);
++       mdebug("pump_transfersB SSCR0=%08x SSCR1=%08x SSTO=%08x SSPSP=%08x SSSR=%08x\n",
++               read_SSCR0(drv_data->ioaddr), read_SSCR1(drv_data->ioaddr),
++               read_SSTO(drv_data->ioaddr), read_SSPSP(drv_data->ioaddr), read_SSSR(drv_data->ioaddr));
++
+ }
+ 
+ static void pump_messages(struct work_struct *work)
+@@ -1626,11 +1636,16 @@ static int pxa2xx_spi_suspend(struct platform_device *pdev, pm_message_t state)
+        int status = 0;
+ 
+        status = stop_queue(drv_data);
+-       if (status != 0)
++       if (status != 0) {
++               mdebug("spi suspend: status error!\n");
+                return status;
++       }
+        write_SSCR0(0, drv_data->ioaddr);
+        clk_disable(ssp->clk);
+-
++       mdebug("spi suspend ok\n");
++       mdebug("SUSPEND SSCR0=%08x SSCR1=%08x SSTO=%08x SSPSP=%08x\n",
++               read_SSCR0(drv_data->ioaddr), read_SSCR1(drv_data->ioaddr),
++               read_SSTO(drv_data->ioaddr), read_SSPSP(drv_data->ioaddr));
+        return 0;
+ }
+@@ -1649,6 +1665,9 @@ static int pxa2xx_spi_resume(struct platform_device *pdev)
+                dev_err(&pdev->dev, "problem starting queue (%d)\n", status);
+                return status;
+        }
++       mdebug("RESUME SSCR0=%08x SSCR1=%08x SSTO=%08x SSPSP=%08x\n",
++               read_SSCR0(drv_data->ioaddr), read_SSCR1(drv_data->ioaddr),
++               read_SSTO(drv_data->ioaddr), read_SSPSP(drv_data->ioaddr));
+ 
+        return 0;
+ }
 
-If you think you are not interested, just don't answer - we will give your Free Trial Kit to someone else, who will take the benefits of this FREE KIT offer!
+ 
+And this generates the following debug output:
 
-Sincerely Yours,
-"eBay Success" Ltd. team
+I/O before suspend:
+ezx_pcap_putget: W 9c0253d2
+pump_transfersA SSCR0=0010008f SSCR1=00380740 SSTO=00000064 SSPSP=00000000 SSSR=0000f034
+pump_transfersB SSCR0=0010008f SSCR1=00000740 SSTO=00000000 SSPSP=00000000 SSSR=0000f024
+ezx_pcap_putget: R 000253d2
+
+Suspend/Resume:
+spi suspend ok
+SUSPEND SSCR0=00000000 SSCR1=00000740 SSTO=00000000 SSPSP=00000000
+RESUME SSCR0=00000000 SSCR1=00000740 SSTO=00000000 SSPSP=00000000
+
+I/O after resume:
+ezx_mci_setpower: 23
+ezx_pcap_putget: W 1c000000
+pump_transfersA SSCR0=0010008f SSCR1=00380740 SSTO=00000064 SSPSP=00000000 SSSR=0000f024
+pump_transfersB SSCR0=0010008f SSCR1=00380740 SSTO=00000064 SSPSP=00000000 SSSR=0000f024
 
 
+>From my limited knowledge on this, it looks like there is no SSP
+peripheral clock after resume,  SSTO is not decremented after 200us.
+
+Any pointer on how to fix this? Or other tests i should do?
 
 
+-- 
+Daniel Ribeiro
 
 
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
 powering Web 2.0 with engaging, cross-platform capabilities. Quickly and

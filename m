@@ -1,11 +1,12 @@
-From: =?GB2312?B?uvrJ+g==?= <amydse888-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 本司有税票代开税率0.8%左右可查验后付款
-Date: Wed, 11 Mar 2009 00:51:26 +0800
-Message-ID: <E1Lh57k-0001Of-Lw@235xhf1.ch3.sourceforge.com>
+From: Richie Diegel <dergump-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] How To Start Your Own Online Business?
+Date: Wed, 11 Mar 2009 12:27:36 +0800
+Message-ID: <6298.15798388353$1236745831@news.gmane.org>
+Reply-To: Richie Diegel <1284demiccopeyton-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,19 +18,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-1sK587mry74os6e80imyxs7xo6y4utTwyMvE+rrDIQogICAgsb65q8u+yse2qLbuxMnLsMbz0rWj
-rM/WzeqzybK7wcvDv9TCz/rK27butsiho8O/1MK2vNPQ0ruyv7fWKLn6LrXYy7ApxrHP8s3itPq/
-qqGjuavLvrPJwaLKrrbgxOrS1MC0o6zSu9axsb7Xxb/Nu6fC+tLio7vBpsfzvqHJxr6hw8C1xLf+
-zvHX2ta8o7vS1Lj808Wju7j8v+yju7j8usO1xLf+zvHA7cTuo7vS0dOutcO547Tzv827p7XE1qez
-1tPruvGwrqGjCtK7oaK0+r+qt7bOp9PQOyjG1c2oyczGt8/6ytuhotTLyuShor2o1v65pLPMoaK5
-47jmoaK3/s7x0rWhotfJ0a+6zbaotu61yKGtKQq2/qGiy7DCyrC0v6rGsb3wtu61xDAuOCXX89PS
-ytXIoSy98Lbu1L2089S908W73SEKyP2hosjnufu588u+1NrGsbe9w+bT0MjOus7SycLHo6zSu8fQ
-xrG/yb6tufPLvsi3yM+687LFuLa/7iEKICAg16IgOsjn09DQ6NKqu7bTrcC0tefXydGvIcjn09C0
-8r3BvrTH68HCveIh0LvQuyEKICAg16OjurnzuavLvsn60uLQy8KhIMXusqq3otW5INK1vKjV9NX0
-yNXJzyG6z9f30+S/7CEKICAgwarPtcjLOrr6uurJrSAgILXnu7A6MTM3MTk0MzUxMjYgICAgICAg
-ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgvNHQxcq10rXT
-0M/euavLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
-b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Hello!
+
+May be you have heard of how many people are making money from Internet only working from their own computers in the comfort of their homes, but you had never known how you can do that. Now, it is not a secret anymore!
+
+What started as a hobby is now a cultural phenomenon. eBay seems to have tapped into something uniquely American and entrepreneurial. It's an auction house that never sleeps, where anyone can be a buyer or a seller. And no one could have predicted that within 2 years, the number of eBay users would rise up to more than double - 125 million users worldwide today. Those people are buying and selling more than $1,000 worth of goods every second.
+
+Isn't it a good time for you to join and start with your own online business too? Start Instantly! We are here to provide you with this opportunity. There is a FORTUNE to be made on eBay, and there is no better time than RIGHT NOW to get started. The eBay Success Kit is the EASY way to get your share of the fast-growing $10.6 Billion eBay pie!
+
+Join the eBay CashFlow System - it is Fast and Easy! There is also a Free Kit Avilable, but you have to ACT QUICK, if you want to get the FREE KIT too, as the offers are very limited, and will be sent only to the first, who answer!
+
+If you are interested, please send a reply to chelle.vener1595-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org in order to participate and receive the Free Kit of the eBay CashFlow System!
+
+Best Regards,
+the eBay Profit Machine
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not interested in the offered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
+------------------------------------------------------------------------------
+Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
+powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
+easily build your RIAs with Flex Builder, the Eclipse(TM)based development
+software that enables intelligent coding and step-through debugging.
+Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com

@@ -1,10 +1,13 @@
-From: Mail Delivery Subsystem <MAILER-DAEMON-gHOL7L+a64JiyZqrA5wfWdHuzzzSOjJt@public.gmane.org>
-Subject: [SPAM] Returned mail: see transcript for details
-Date: Thu, 12 Mar 2009 16:27:59 +0900
-Message-ID: <200903120727.n2C7RxqV001773@mi33.tsb.2iij.net>
+From: "Le Parisien via MailandGo" <RET-XTC-DS5R-QK3SM-DD-LOGSA@R.Ems7.net>
+Subject: Le Parisien vous fait gagner 500.000 euros de
+	cadeaux !
+Date: Thu, 12 Mar 2009 11:00:24 +0100
+Message-ID: <0b8b7b6d505a4c57bb1fdb5e619055ba@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-QK3SM-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5070519413504295069=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============3558928587736562351=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,139 +19,153 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a MIME-encapsulated message
+--===============3558928587736562351==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
---===============5070519413504295069==
-Content-Type: multipart/report; report-type=delivery-status;
-	boundary="n2C7RxqV001773.1236842879/mi33.tsb.2iij.net"
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-QK3SM-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
-This is a MIME-encapsulated message
-
---n2C7RxqV001773.1236842879/mi33.tsb.2iij.net
-
-The original message was received at Thu, 12 Mar 2009 16:27:57 +0900
-from ppp-58-9-27-34.revip2.asianet.co.th [58.9.27.34]
-
-   ----- The following addresses had permanent fatal errors -----
-<spide-jKgBcCMGTpQtq7DqhBz1OngSJqDPrsil@public.gmane.org>
-    (reason: 554 Denied (Mode: normal))
-
-   ----- Transcript of session follows -----
-... while talking to mas-sby.tsb.2iij.net.:
->>> DATA
-<<< 554 Denied (Mode: normal)
-554 5.0.0 Service unavailable
-
---n2C7RxqV001773.1236842879/mi33.tsb.2iij.net
-Content-Type: message/delivery-status
-
-Reporting-MTA: dns; mi33.tsb.2iij.net
-Received-From-MTA: DNS; ppp-58-9-27-34.revip2.asianet.co.th
-Arrival-Date: Thu, 12 Mar 2009 16:27:57 +0900
-
-Final-Recipient: RFC822; spide-jKgBcCMGTpQtq7DqhBz1OngSJqDPrsil@public.gmane.org
-Action: failed
-Status: 5.0.0
-Remote-MTA: DNS; mas-sby.tsb.2iij.net
-Diagnostic-Code: SMTP; 554 Denied (Mode: normal)
-Last-Attempt-Date: Thu, 12 Mar 2009 16:27:58 +0900
-
---n2C7RxqV001773.1236842879/mi33.tsb.2iij.net
-Content-Type: message/rfc822
-
-Return-Path: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Authentication-Results: spf.tis.toshiba.co.jp; spf=neutral
-	smtp.mailfrom=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; dkim=none
-Received: TSB MI33 from boy (ppp-58-9-27-34.revip2.asianet.co.th [58.9.27.34])
-	for <spide-jKgBcCMGTpQtq7DqhBz1OngSJqDPrsil@public.gmane.org> id n2C7RpqV001562;
-	Thu, 12 Mar 2009 16:27:57 +0900
-Date: Thu, 12 Mar 2009 16:27:51 +0900
-Content-Return: allowed
-X-Mailer: devMail.Net (3.0.1854.22234-2)
-Received: (qmail 2241 by uid 709); Thu, 12 Mar 2009 02:27:54 +0700
-Message-Id: <20090312092754.2243.qmail@boy>
-To: spide-jKgBcCMGTpQtq7DqhBz1OngSJqDPrsil@public.gmane.org
-Subject: RE: Discount Message 470351
-From: VIAGRA ® Official Site <spide-jKgBcCMGTpQtq7DqhBz1OngSJqDPrsil@public.gmane.org>
-MIME-Version: 1.0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-
-<HTML>
-<BODY>
-
-
-<table border="0" cellpadding="0" cellspacing="0" width="660">
+<!-- BEGIN PARTNER PROGRAM - DO NOT CHANGE THE PARAMETERS OF THE HYPERL=
+INK -->
+<table width=3D"100%" height=3D"100%" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0">
 <tr>
-<td><A HREF="http://rofyacit.cn"><img alt="Men's Health ibgnn" border="0" height="131" src="http://a676.g.akamaitech.net/f/676/773/60m/images.delivery.net/cm50content/19415/2697/toplogo.jpg" width="266"></A><A HREF="http://rofyacit.cn"><img alt="Build Maximum MUSCLE, STRENGTH, and POWER!" border="0" height="131" src="http://a676.g.akamaitech.net/f/676/773/60m/images.delivery.net/cm50content/19415/2697/top2part.gif" width="394"></A></td>
+<td align=3D"center" valign=3D"top"><table border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0">
+<tr>
+<td height=3D"22" align=3D"center"></td>
+</tr>
+<tr>
+<td><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+<tr>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/g_lepari=2Ejpg" width=3D"20" height=3D"48" border=3D"0" />=
+</td>
+<td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QK3SM-DD-LOGSA-H5Q" ta=
+rget=3D"_blank"><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Lepari=
+sien_Quiz/img/mail/acqui/leparisien=2Egif" width=3D"303" height=3D"48" =
+border=3D"0" /></a></td>
+<td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QK3SM-DD-LOGSA-HXR" ta=
+rget=3D"_blank"><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Lepari=
+sien_Quiz/img/mail/acqui/revivez=2Egif" width=3D"217" height=3D"48" bor=
+der=3D"0" /></a></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/header=2Ejpg" width=3D"540" height=3D"27" border=3D"0" /><=
+/td>
+</tr>
+<tr>
+<td><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+<tr>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/g_venez=2Ejpg" width=3D"159" height=3D"45" border=3D"0" />=
+</td>
+<td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QK3SM-DD-LOGSA-HNS" ta=
+rget=3D"_blank"><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Lepari=
+sien_Quiz/img/mail/acqui/venez=2Egif" width=3D"361" height=3D"45" borde=
+r=3D"0" /></a></td>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/d_venez=2Ejpg" width=3D"20" height=3D"45" border=3D"0" /><=
+/td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/middle=2Ejpg" width=3D"540" height=3D"22" border=3D"0" /><=
+/td>
+</tr>
+<tr>
+<td><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+<tr>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/d_plus=2Ejpg" width=3D"38" height=3D"75" border=3D"0" /></=
+td>
+<td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QK3SM-DD-LOGSA-HOT" ta=
+rget=3D"_blank"><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Lepari=
+sien_Quiz/img/mail/acqui/plusde=2Egif" width=3D"482" height=3D"75" bord=
+er=3D"0" /></a></td>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/d_plusde=2Ejpg" width=3D"20" height=3D"75" border=3D"0" />=
+</td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/midle=2Ejpg" width=3D"540" height=3D"15" border=3D"0" /></=
+td>
+</tr>
+<tr>
+<td><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+<tr>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/g_btn=2Ejpg" width=3D"383" height=3D"35" border=3D"0" /></=
+td>
+<td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QK3SM-DD-LOGSA-HP4" ta=
+rget=3D"_blank"><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Lepari=
+sien_Quiz/img/mail/acqui/btn_jouez=2Egif" width=3D"137" height=3D"35" b=
+order=3D"0" /></a></td>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/d_btn=2Ejpg" width=3D"20" height=3D"35" border=3D"0" /></t=
+d>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+<tr>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/g_prix=2Ejpg" width=3D"110" height=3D"229" border=3D"0" />=
+</td>
+<td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QK3SM-DD-LOGSA-HCU" ta=
+rget=3D"_blank"><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Lepari=
+sien_Quiz/img/mail/acqui/prix=2Ejpg" width=3D"410" height=3D"229" borde=
+r=3D"0" /></a></td>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/mail/acqui/d_prix=2Ejpg" width=3D"20" height=3D"229" border=3D"0" /><=
+/td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td><img src=3D"http://mm=2Ecache=2Ecoltfrance=2Ecom/Leparisien_Quiz/im=
+g/px=2Egif" width=3D"1" height=3D"15" border=3D"0" /></td>
+</tr>
+<tr>
+<td width=3D"540"><font face=3D"Verdana" style=3D"font-size:10px;color:=
+#000000;">Jeu gratuit sans obligation d'achat=2E Photos non contractuel=
+les=2E <br />
+<br />
+*Consulter le <a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QK3SM-DD-LOG=
+SA-HQV" target=3D"_blank" style=3D"color:#000000;"><u>r&egrave;glement<=
+/u></a><br />
+Conform&eacute;ment &agrave; la loi "informatique et libert&eacute;s" d=
+u 6 janvier 1978 modifi&eacute;e, vous pouvez &agrave; tout moment dema=
+nder &agrave; acc&eacute;der, faire rectifier ou supprimer les informat=
+ions personnelles vous concernant ou vous opposer &agrave; leur traitem=
+ent par LeParisien=2Efr=2E<br />
+</u></a></font></td>
+</tr>
+</table></td>
 </tr>
 </table>
-<table border="0" cellpadding="2" cellspacing="0" width="660">
-<tr>
-<td>
-</tr>
-</table>
-<table border="0" cellpadding="7" cellspacing="0" width="660">
-<tr>
-<td width="47">
-<td style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px" valign="top"><A HREF="http://rofyacit.cn"><img align="right" alt="Try It FREE for 21 Days! ORDER NOW! Plus, get 2 FREE Bonus Gifts!" border="0" height="197" src="http://a676.g.akamaitech.net/f/676/773/60m/images.delivery.net/cm50content/19415/2697/index_05.gif" width="189"></A> 
- <BR>
-<font face="Verdana, Arial, Helvetica, sans-serif" originaltag="yes" size="2" style="font-size: 12px;">Dear spide-jKgBcCMGTpQtq7DqhBz1OngSJqDPrsil@public.gmane.org<BR>
- 
-<BR>
-  Gain posiive results </font> 
- <BR>
-
- <BR>
-<div align="left">
-  <p style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px"><a href="http://rofyacit.cn"><img src="http://rofyacit.cn/1.gif"></a></p>
-</div></td>
-</tr>
-</table>
-<table border="0" cellpadding="7" cellspacing="0" width="660">
-<tr>
-<td width="58">
-<td style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px" valign="top"><BR>  
-  <span style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bolder ; color: #990000"><font color="#990000" face="Verdana, Arial, Helvetica, sans-serif" originaltag="yes" style="font-size:14px;"><b>FREE gifts</b></font></span><font face="Verdana, Arial, Helvetica, sans-serif" originaltag="yes" size="2" style="font-size: 12px;"> reserved for you: <i>spide-jKgBcCMGTpQtq7DqhBz1OngSJqDPrsil@public.gmane.org</i></font></td>
-<td valign="top"><A HREF="http://rofyacit.cn"></A></td>
-</tr>
-<tr>
-<td width="58">
-<td colspan="2" style="font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px" valign="top">  If you would prefer not to receive future information about special offers from Men's Health, 
-<BR>
-  you may <a style="color:#990000; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; text-decoration: underline;" href="http://rofyacit.cn">Unsubscribe</a>. 
-<BR>
- 
-<BR>
- 
-<BR>
-  Customer Service Department, 33 East Minor Street, Emmaus, PA 18098 
-<BR>
- 
-<BR>
- 
-<BR>
-  Copyright, Men's Health <BR>
-<BR>
-<BR>
-</font> </td>
-</tr>
-</table>
-
-<BR>
-<BR>
-<BR>
-<font color="#666666" face="Verdana,Helvetica" originaltag="yes" size="1"></font><BR>
-<img width="1" height="1" src="http://open.delivery.net/o?2.2.3K5.2hv.12hk7c.CdQNXI..N..1TKO.ZpiqdejA%5fCaYSFOC0" alt=" ">
-</BODY>
-</HTML>
-
-
---n2C7RxqV001773.1236842879/mi33.tsb.2iij.net--
+<!-- END PARTNER PROGRAM -->
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-QK3SM-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QK3SM-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
 
 
 
---===============5070519413504295069==
+--===============3558928587736562351==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -160,7 +177,7 @@ powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
 easily build your RIAs with Flex Builder, the Eclipse(TM)based development
 software that enables intelligent coding and step-through debugging.
 Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
---===============5070519413504295069==
+--===============3558928587736562351==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -171,4 +188,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5070519413504295069==--
+--===============3558928587736562351==--

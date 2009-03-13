@@ -1,17 +1,14 @@
-From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: pxa2xx_spi suspend/resume
-Date: Fri, 13 Mar 2009 06:11:01 -0300
-Message-ID: <1236935461.623.38.camel@brutus>
-References: <1236771011.17708.37.camel@brutus>  <49B91E76.3090309@whoi.edu>
-	<1236880051.4605.37.camel@brutus>  <49B9D47C.8050105@whoi.edu>
+From: Julianne Overstreet <419yemidanielsbox01-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?windows-1251?q?=5BSPAM=5D_Stop_Being_a_Wage?=
+	=?windows-1251?q?_Slave!_Join_Our_Earn-Easy-Cash_Program!?=
+Date: Fri, 13 Mar 2009 21:17:43 +0800
+Message-ID: <16236.2666022547$1236950081@news.gmane.org>
+Reply-To: Julianne Overstreet <15317kilieshimko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <49B9D47C.8050105-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,64 +19,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-RW0gUXVpLCAyMDA5LTAzLTEyIMOgcyAyMzozNSAtMDQwMCwgTmVkIEZvcnJlc3RlciBlc2NyZXZl
-dToKPiBIbW1tLi4uIFRoaXMgbG9va3Mgc2NhcnkuICBJZiB0aGUgRFJDTVIgcmVnaXN0ZXJzIHdl
-bnQgdG8gemVybywgd2hhdAo+IGVsc2UgaGFzIGNoYW5nZWQgaW4gdGhlIERNQSBzZXR1cD8gIEEg
-Y2FsbCB0byBweGEyeHhfc3BpX3JlbW92ZSgpIHdvdWxkCj4gaGF2ZSBjbGVhcmVkIHRoZXNlLCBi
-dXQgdGhhdCBzaG91bGQgbm90IGJlIGNhbGxlZCBmb3Igc3VzcGVuZC9yZXN1bWUuCj4gSGF2ZSB5
-b3UgY2hlY2tlZCBhbGwgdGhlIG90aGVyIERNQSByZWxhdGVkIHJlZ2lzdGVycyB0aGF0IGFyZSBh
-c3NpZ25lZAo+IHRvIHRoZSBTU1AgZGV2aWNlPyAgQXJlIHRoZXNlIHRoZSBvbmx5IG9uZXMgdGhh
-dCBhcmUgYW5vbWFsb3VzLCBvciBhcmUKPiB0aGVzZSBqdXN0IHRoZSBmaXJzdCBvbmVzIHlvdSBm
-b3VuZD8KPiAKPiBBY3R1YWxseSwgSSBkb24ndCB0aGluayB0aGVyZSBhcmUgYW55IG90aGVyIHJl
-Z2lzdGVycywgc2F2ZSB0aGUgb25lcwo+IHRoYXQgd2lsbCBiZSBzZXQgdXAgYnkgcHVtcF90cmFu
-c2ZlcnMoKSwgYW55d2F5LiAgVGhlIFBYQTI3MCBoYXMgYSBmZXcKPiBtb3JlIERNQSByZWxhdGVk
-IHJlZ2lzdGVycyB0aGFuIHRoZSBQWEEyNTUsIGJ1dCBJIGRvbid0IHNlZSBhbnl0aGluZwo+IHRo
-YXQgbG9va3MgbGlrZSB0cm91YmxlLCBvdGhlciB0aGFuIHdoYXQgeW91IGZvdW5kIGFib3ZlLgoK
-RXZlcnl0aGluZyBlbHNlIGlzIE9LLiBEUkNNUiBpcyB0aGUgb25seSB0aGluZyB0aGF0IGdldHMg
-bnVrZWQgYW5kIGlzCm5vdCByZXN0b3JlZCBieSBwdW1wX3RyYW5zZmVycygpLgoKPiBJIHdvdWxk
-IG5vdCBqdW1wIHRvIHRoZSBjb25jbHVzaW9uIChwZXJoYXBzIHlvdSBoYXZlbid0LCBidXQgSSBk
-b24ndAo+IGhhdmUgdGhlIHdob2xlIHBpY3R1cmUpIHRoYXQgd2UganVzdCBuZWVkIHRvIHJlc3Rv
-cmUgdGhlc2UgdHdvCj4gcmVnaXN0ZXJzLiAgWW91IG5lZWQgdG8gbWFrZSBzdXJlIHRoYXQgdGhl
-IGFzc2lnbmVkIERNQSBjaGFubmVscyBhcmUKPiBzdGlsbCBhbGxvY2F0ZWQuICBJIHdvbmRlciB3
-aGF0IHByb2Nlc3MgY2xlYXJlZCB0aGVzZSByZWdpc3RlcnMgYW5kIHdoYXQKPiB0aGF0IG1pZ2h0
-IG1lYW4gYWJvdXQgdGhlIHBvc3NpYmlsaXR5IHRoYXQgRE1BIGNoYW5uZWwgYXNzaWdubWVudHMg
-d2VyZQo+IHB1cmdlZCBvbiByZXN1bWUuCgpDdXJyZW50bHkgaSBhbSByZXN0b3JpbmcgdGhlbSB0
-byB0aGVpciBwcm9iZSgpIHZhbHVlcyBvbiByZXN1bWUoKSwgb25seQppZiByeF9jaGFubmVsIGFu
-ZCB0eF9jaGFubmVsIGFyZSAhPSAtMSAoZG1hIGVuYWJsZWQpLiBJdCBzZWVtcyB0byBiZQp3b3Jr
-aW5nIGZpbmUuIEltIG5vdCBzdXJlIGlmIHRoaXMgaXMgYWxsIHRoYXQgaXMgbmVlZGVkLCBidXQg
-aSBzdXNwZWN0Cml0cyBlbm91Z2guCgpBbmQgaSB0aGluayB0aGF0IGl0cyBub3Qgc29mdHdhcmUg
-dGhhdCBpcyBudWtpbmcgRFJDTVIsIGFzIGkgc2FpZCBvbiBhCnByZXZpb3VzIGVtYWlsLCBpIGRv
-bnQgbmVlZCB0byByZXN0b3JlIERSQ01SIGlmIGkgdXNlIHRoZSAiY29yZSIgcG1fdGVzdAptb2Rl
-LiAodGhlIGNvcmUgcG1fdGVzdCBleGVjdXRlcyB0aGUgc3VzcGVuZC9yZXN1bWUgcm91dGluZXMg
-anVzdCBhcyBpZgppdCB3YXMgYSBub3JtYWwgc3VzcGVuZC9yZXN1bWUsIHRoZSBvbmx5IGRpZmZl
-cmVuY2UgaXMgdGhhdCBQWEEgd2lsbCBub3QKYmUgcmVhbGx5IHN1c3BlbmQpLgoKVGhlcmUgaXMg
-c3RpbGwgYSBjaGFuY2UgdGhhdCBteSBib290bG9hZGVyIGlzIG51a2luZyB0aGVzZSByZWdpc3Rl
-cnMgb24KcmVzdW1lIGJlZm9yZSBnaXZpbmcgY29udHJvbCB0byBrZXJuZWwsIGkgd2lsbCBjaGVj
-ayB0aGUgYm9vdGxvYWRlciBjb2RlCmFuZCBzZWUgaWYgdGhpcyBpcyB0aGUgY2FzZS4gSSBzdXNw
-ZWN0IGl0IGlzbid0LgoKPiBZb3UgY291bGQgdHJ5IGEgcGF0Y2ggdG8gcmVzdG9yZSBEUkNNUiBy
-ZWdpc3RlcnMgdG8gc2VlIGlmIHRoYXQgZml4ZXMKPiB0aGUgcHJvYmxlbSBvciBqdXN0IG1ha2Vz
-IHRoaW5ncyB3b3JzZS4gIEkgZG9uJ3QgcmVjb21tZW5kIHN1Ym1pdHRpbmcKPiBzdWNoIGEgcGF0
-Y2ggd2l0aG91dCBndWlkYW5jZSBmcm9tIHNvbWVvbmUgbW9yZSBrbm93bGVkZ2VhYmxlIGFib3V0
-IERNQQo+IGFuZCBzdXNwZW5kL3Jlc3VtZS4KCkl0IGZpeGVzIHRoZSBwcm9ibGVtIGhlcmUsIGlt
-IG5vdCBzdXJlIGlmIGl0cyBhbGwgdGhhdCBpcyBuZWVkZWQsIHNvLApsZXRzIHdhaXQgZm9yIG1v
-cmUgY29tbWVudHMgb24gdGhpcyBiZWZvcmUgaSBzdWJtaXQgdGhlIHBhdGNoLgoKPiBJbiB0aGUg
-cHJvY2VzcyBvZiBzZWFyY2hpbmcgZm9yIGluc3BpcmF0aW9uIG9uIHRoaXMgbWF0dGVyLCBJIHdh
-cwo+IHJlbWluZGVkIG9mIGFub3RoZXIgcG9zdGVyIHdobyBoYXMgdHJpZWQgZ2V0dGluZyBzdXNw
-ZW5kL3Jlc3VtZSB0byB3b3JrLgo+ICBJIGRvbid0IHRoaW5rIHRoYXQgdGhlIHRocmVhZDoKCkkg
-Z29vZ2xlZCB0aGUgTUwgYXJjaGl2ZXMgYmVmb3JlIHBvc3RpbmcgYW5kIGZvdW5kIHRoaXMgdGhy
-ZWFkLiBBbmQKYWx0b3VnaCBpdCBoYXMgdGhlIHNhbWUgc3ltcHRvbXMsIGkgdGhpbmsgaXQgbWF5
-IGJlIGEgZGlmZmVyZW50IHByb2JsZW0uCkkgZGlzY2FyZGVkIGhpcyBmaXggcHJvcG9zYWwgYXQg
-dGhlIGZpcnN0IGRlYnVnIHJ1biwgYmVjYXVzZSBteSBTU1AKcmVnaXN0ZXJzIGFyZSBleGFjdGx5
-IHdoYXQgaSBleHBlY3RlZCBvbiByZXN1bWUoKSwgYW5kIGV4YWN0bHkgdGhlIHNhbWUKYXMgdGhl
-eSB3ZXJlIG9uIHN1c3BlbmQoKS4KCi0tIApEYW5pZWwgUmliZWlybwoKCi0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLQpBcHBzIGJ1aWx0IHdpdGggdGhlIEFkb2JlKFIpIEZsZXgoUikgZnJhbWV3b3JrIGFu
-ZCBGbGV4IEJ1aWxkZXIoVE0pIGFyZQpwb3dlcmluZyBXZWIgMi4wIHdpdGggZW5nYWdpbmcsIGNy
-b3NzLXBsYXRmb3JtIGNhcGFiaWxpdGllcy4gUXVpY2tseSBhbmQKZWFzaWx5IGJ1aWxkIHlvdXIg
-UklBcyB3aXRoIEZsZXggQnVpbGRlciwgdGhlIEVjbGlwc2UoVE0pYmFzZWQgZGV2ZWxvcG1lbnQK
-c29mdHdhcmUgdGhhdCBlbmFibGVzIGludGVsbGlnZW50IGNvZGluZyBhbmQgc3RlcC10aHJvdWdo
-IGRlYnVnZ2luZy4KRG93bmxvYWQgdGhlIGZyZWUgNjAgZGF5IHRyaWFsLiBodHRwOi8vcC5zZi5u
-ZXQvc2Z1L3d3dy1hZG9iZS1jb20KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5l
-cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9s
-aXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Good day, Respective Sir/Madam!
+
+If you are worried about your job and future, you need to learn as much as you can about the non-traditional ways to bring in a solid monthly income working from your home. Already, lots of regular people just like you are using the Internet to make money. Don't you want to know if you can too?
+
+We offer you to work from the comfort of your home and earn excellent amounts of cash. You don't need any high tech expertise to use Internet to generate income. Our Free Kit will show you how easy it can be to use Google for making money.
+
+Many people are making money using the power of Google. Our Risk-Free Trial Kit will help you find out if Google is right for you! Our supplies of Risk-Free Kits are going fast and you don't have much time to hesitate! In other words, if you want in, you'll have to make your move NOW. All you have to do is to reply to 1789harland.schimming-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org as soon as possible, as these offers are limited and expiring soon. You cannot loose anything - YOU CAN ONLY WIN AND EARN CASH!
+
+We are sorry for any inconvenience caused by sending this email to you, but our offer is really serious and you have to react fast, if you want to be the chosen person and earn good cash very fast.
+
+With Respect,
+Easy-Google-Cash Manager
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
+------------------------------------------------------------------------------
+Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
+powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
+easily build your RIAs with Flex Builder, the Eclipse(TM)based development
+software that enables intelligent coding and step-through debugging.
+Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com

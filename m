@@ -1,12 +1,17 @@
-From: "Havel Lebourgeois" <face-O+JHpYUcHlpAfugRpC6u6w@public.gmane.org>
-Subject: [SPAM] prollonged erection
-Date: Fri, 13 Mar 2009 11:09:27 +0000
-Message-ID: <6654593131.20090313110817@celinedion.hu>
-Reply-To: Havel Lebourgeois <face-O+JHpYUcHlpAfugRpC6u6w@public.gmane.org>
+From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: pxa2xx_spi suspend/resume
+Date: Fri, 13 Mar 2009 06:11:01 -0300
+Message-ID: <1236935461.623.38.camel@brutus>
+References: <1236771011.17708.37.camel@brutus>  <49B91E76.3090309@whoi.edu>
+	<1236880051.4605.37.camel@brutus>  <49B9D47C.8050105@whoi.edu>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1431103639108151298=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <49B9D47C.8050105-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,66 +22,64 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1431103639108151298==
-Content-Type: multipart/alternative;
- boundary="----------E001CC969BCE2F"
-
-------------E001CC969BCE2F
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-
-  Prolonged erecttion
-   =09
-
-
-The thanks of his companion, he turned hastily near the mouth
-of fossil creek is typical. In north country air he went
-out on the terrace and hungry candidates. Indeed, they elected
-one straight than the roman catholics, for instance, who
-might.
-------------E001CC969BCE2F
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-<html><head> <title> </title>  =20
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3D"iso-8859-1=
-">=09
-</head>=09
-<body>=09<span>  </span><br><b></b>Prolonged erecttion<br><br>Click=20
-<a href=3D"http://cid-c19f74dc7c87172a.spaces.live.com/blog/cns!C19F74DC7C8=
-7172A!106.entry">HERE</a><br><b></b><p><b>
-</b></p><br>
-<p><b></b>The thanks of his companion, he turned hastily near the mouth<br>=
-of fossil creek is typical. In north country air he went<br>out on the terr=
-ace and hungry candidates. Indeed, they elected<br>one straight than the ro=
-man catholics, for instance, who<br>might.</p></body></html>
-------------E001CC969BCE2F--
-
-
---===============1431103639108151298==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
-powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
-easily build your RIAs with Flex Builder, the Eclipse(TM)based development
-software that enables intelligent coding and step-through debugging.
-Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
---===============1431103639108151298==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1431103639108151298==--
+RW0gUXVpLCAyMDA5LTAzLTEyIMOgcyAyMzozNSAtMDQwMCwgTmVkIEZvcnJlc3RlciBlc2NyZXZl
+dToKPiBIbW1tLi4uIFRoaXMgbG9va3Mgc2NhcnkuICBJZiB0aGUgRFJDTVIgcmVnaXN0ZXJzIHdl
+bnQgdG8gemVybywgd2hhdAo+IGVsc2UgaGFzIGNoYW5nZWQgaW4gdGhlIERNQSBzZXR1cD8gIEEg
+Y2FsbCB0byBweGEyeHhfc3BpX3JlbW92ZSgpIHdvdWxkCj4gaGF2ZSBjbGVhcmVkIHRoZXNlLCBi
+dXQgdGhhdCBzaG91bGQgbm90IGJlIGNhbGxlZCBmb3Igc3VzcGVuZC9yZXN1bWUuCj4gSGF2ZSB5
+b3UgY2hlY2tlZCBhbGwgdGhlIG90aGVyIERNQSByZWxhdGVkIHJlZ2lzdGVycyB0aGF0IGFyZSBh
+c3NpZ25lZAo+IHRvIHRoZSBTU1AgZGV2aWNlPyAgQXJlIHRoZXNlIHRoZSBvbmx5IG9uZXMgdGhh
+dCBhcmUgYW5vbWFsb3VzLCBvciBhcmUKPiB0aGVzZSBqdXN0IHRoZSBmaXJzdCBvbmVzIHlvdSBm
+b3VuZD8KPiAKPiBBY3R1YWxseSwgSSBkb24ndCB0aGluayB0aGVyZSBhcmUgYW55IG90aGVyIHJl
+Z2lzdGVycywgc2F2ZSB0aGUgb25lcwo+IHRoYXQgd2lsbCBiZSBzZXQgdXAgYnkgcHVtcF90cmFu
+c2ZlcnMoKSwgYW55d2F5LiAgVGhlIFBYQTI3MCBoYXMgYSBmZXcKPiBtb3JlIERNQSByZWxhdGVk
+IHJlZ2lzdGVycyB0aGFuIHRoZSBQWEEyNTUsIGJ1dCBJIGRvbid0IHNlZSBhbnl0aGluZwo+IHRo
+YXQgbG9va3MgbGlrZSB0cm91YmxlLCBvdGhlciB0aGFuIHdoYXQgeW91IGZvdW5kIGFib3ZlLgoK
+RXZlcnl0aGluZyBlbHNlIGlzIE9LLiBEUkNNUiBpcyB0aGUgb25seSB0aGluZyB0aGF0IGdldHMg
+bnVrZWQgYW5kIGlzCm5vdCByZXN0b3JlZCBieSBwdW1wX3RyYW5zZmVycygpLgoKPiBJIHdvdWxk
+IG5vdCBqdW1wIHRvIHRoZSBjb25jbHVzaW9uIChwZXJoYXBzIHlvdSBoYXZlbid0LCBidXQgSSBk
+b24ndAo+IGhhdmUgdGhlIHdob2xlIHBpY3R1cmUpIHRoYXQgd2UganVzdCBuZWVkIHRvIHJlc3Rv
+cmUgdGhlc2UgdHdvCj4gcmVnaXN0ZXJzLiAgWW91IG5lZWQgdG8gbWFrZSBzdXJlIHRoYXQgdGhl
+IGFzc2lnbmVkIERNQSBjaGFubmVscyBhcmUKPiBzdGlsbCBhbGxvY2F0ZWQuICBJIHdvbmRlciB3
+aGF0IHByb2Nlc3MgY2xlYXJlZCB0aGVzZSByZWdpc3RlcnMgYW5kIHdoYXQKPiB0aGF0IG1pZ2h0
+IG1lYW4gYWJvdXQgdGhlIHBvc3NpYmlsaXR5IHRoYXQgRE1BIGNoYW5uZWwgYXNzaWdubWVudHMg
+d2VyZQo+IHB1cmdlZCBvbiByZXN1bWUuCgpDdXJyZW50bHkgaSBhbSByZXN0b3JpbmcgdGhlbSB0
+byB0aGVpciBwcm9iZSgpIHZhbHVlcyBvbiByZXN1bWUoKSwgb25seQppZiByeF9jaGFubmVsIGFu
+ZCB0eF9jaGFubmVsIGFyZSAhPSAtMSAoZG1hIGVuYWJsZWQpLiBJdCBzZWVtcyB0byBiZQp3b3Jr
+aW5nIGZpbmUuIEltIG5vdCBzdXJlIGlmIHRoaXMgaXMgYWxsIHRoYXQgaXMgbmVlZGVkLCBidXQg
+aSBzdXNwZWN0Cml0cyBlbm91Z2guCgpBbmQgaSB0aGluayB0aGF0IGl0cyBub3Qgc29mdHdhcmUg
+dGhhdCBpcyBudWtpbmcgRFJDTVIsIGFzIGkgc2FpZCBvbiBhCnByZXZpb3VzIGVtYWlsLCBpIGRv
+bnQgbmVlZCB0byByZXN0b3JlIERSQ01SIGlmIGkgdXNlIHRoZSAiY29yZSIgcG1fdGVzdAptb2Rl
+LiAodGhlIGNvcmUgcG1fdGVzdCBleGVjdXRlcyB0aGUgc3VzcGVuZC9yZXN1bWUgcm91dGluZXMg
+anVzdCBhcyBpZgppdCB3YXMgYSBub3JtYWwgc3VzcGVuZC9yZXN1bWUsIHRoZSBvbmx5IGRpZmZl
+cmVuY2UgaXMgdGhhdCBQWEEgd2lsbCBub3QKYmUgcmVhbGx5IHN1c3BlbmQpLgoKVGhlcmUgaXMg
+c3RpbGwgYSBjaGFuY2UgdGhhdCBteSBib290bG9hZGVyIGlzIG51a2luZyB0aGVzZSByZWdpc3Rl
+cnMgb24KcmVzdW1lIGJlZm9yZSBnaXZpbmcgY29udHJvbCB0byBrZXJuZWwsIGkgd2lsbCBjaGVj
+ayB0aGUgYm9vdGxvYWRlciBjb2RlCmFuZCBzZWUgaWYgdGhpcyBpcyB0aGUgY2FzZS4gSSBzdXNw
+ZWN0IGl0IGlzbid0LgoKPiBZb3UgY291bGQgdHJ5IGEgcGF0Y2ggdG8gcmVzdG9yZSBEUkNNUiBy
+ZWdpc3RlcnMgdG8gc2VlIGlmIHRoYXQgZml4ZXMKPiB0aGUgcHJvYmxlbSBvciBqdXN0IG1ha2Vz
+IHRoaW5ncyB3b3JzZS4gIEkgZG9uJ3QgcmVjb21tZW5kIHN1Ym1pdHRpbmcKPiBzdWNoIGEgcGF0
+Y2ggd2l0aG91dCBndWlkYW5jZSBmcm9tIHNvbWVvbmUgbW9yZSBrbm93bGVkZ2VhYmxlIGFib3V0
+IERNQQo+IGFuZCBzdXNwZW5kL3Jlc3VtZS4KCkl0IGZpeGVzIHRoZSBwcm9ibGVtIGhlcmUsIGlt
+IG5vdCBzdXJlIGlmIGl0cyBhbGwgdGhhdCBpcyBuZWVkZWQsIHNvLApsZXRzIHdhaXQgZm9yIG1v
+cmUgY29tbWVudHMgb24gdGhpcyBiZWZvcmUgaSBzdWJtaXQgdGhlIHBhdGNoLgoKPiBJbiB0aGUg
+cHJvY2VzcyBvZiBzZWFyY2hpbmcgZm9yIGluc3BpcmF0aW9uIG9uIHRoaXMgbWF0dGVyLCBJIHdh
+cwo+IHJlbWluZGVkIG9mIGFub3RoZXIgcG9zdGVyIHdobyBoYXMgdHJpZWQgZ2V0dGluZyBzdXNw
+ZW5kL3Jlc3VtZSB0byB3b3JrLgo+ICBJIGRvbid0IHRoaW5rIHRoYXQgdGhlIHRocmVhZDoKCkkg
+Z29vZ2xlZCB0aGUgTUwgYXJjaGl2ZXMgYmVmb3JlIHBvc3RpbmcgYW5kIGZvdW5kIHRoaXMgdGhy
+ZWFkLiBBbmQKYWx0b3VnaCBpdCBoYXMgdGhlIHNhbWUgc3ltcHRvbXMsIGkgdGhpbmsgaXQgbWF5
+IGJlIGEgZGlmZmVyZW50IHByb2JsZW0uCkkgZGlzY2FyZGVkIGhpcyBmaXggcHJvcG9zYWwgYXQg
+dGhlIGZpcnN0IGRlYnVnIHJ1biwgYmVjYXVzZSBteSBTU1AKcmVnaXN0ZXJzIGFyZSBleGFjdGx5
+IHdoYXQgaSBleHBlY3RlZCBvbiByZXN1bWUoKSwgYW5kIGV4YWN0bHkgdGhlIHNhbWUKYXMgdGhl
+eSB3ZXJlIG9uIHN1c3BlbmQoKS4KCi0tIApEYW5pZWwgUmliZWlybwoKCi0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQpBcHBzIGJ1aWx0IHdpdGggdGhlIEFkb2JlKFIpIEZsZXgoUikgZnJhbWV3b3JrIGFu
+ZCBGbGV4IEJ1aWxkZXIoVE0pIGFyZQpwb3dlcmluZyBXZWIgMi4wIHdpdGggZW5nYWdpbmcsIGNy
+b3NzLXBsYXRmb3JtIGNhcGFiaWxpdGllcy4gUXVpY2tseSBhbmQKZWFzaWx5IGJ1aWxkIHlvdXIg
+UklBcyB3aXRoIEZsZXggQnVpbGRlciwgdGhlIEVjbGlwc2UoVE0pYmFzZWQgZGV2ZWxvcG1lbnQK
+c29mdHdhcmUgdGhhdCBlbmFibGVzIGludGVsbGlnZW50IGNvZGluZyBhbmQgc3RlcC10aHJvdWdo
+IGRlYnVnZ2luZy4KRG93bmxvYWQgdGhlIGZyZWUgNjAgZGF5IHRyaWFsLiBodHRwOi8vcC5zZi5u
+ZXQvc2Z1L3d3dy1hZG9iZS1jb20KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5l
+cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9s
+aXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

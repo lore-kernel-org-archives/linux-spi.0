@@ -1,13 +1,12 @@
-From: Julianne Overstreet <419yemidanielsbox01-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?windows-1251?q?=5BSPAM=5D_Stop_Being_a_Wage?=
-	=?windows-1251?q?_Slave!_Join_Our_Earn-Easy-Cash_Program!?=
-Date: Fri, 13 Mar 2009 21:17:43 +0800
-Message-ID: <16236.2666022547$1236950081@news.gmane.org>
-Reply-To: Julianne Overstreet <15317kilieshimko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Meetic Affinity" <RET-XTC-DS5R-QMJ15-DD-LOGSA@R.Ems7.net>
+Subject: On vous offre 3 jours pour faire des rencontres
+Date: Fri, 13 Mar 2009 13:35:50 +0100
+Message-ID: <ce5a95bd43ea49dbb71610f7d198a34a@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-QMJ15-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============2356149429432339701=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,39 +18,158 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Good day, Respective Sir/Madam!
+--===============2356149429432339701==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-If you are worried about your job and future, you need to learn as much as you can about the non-traditional ways to bring in a solid monthly income working from your home. Already, lots of regular people just like you are using the Internet to make money. Don't you want to know if you can too?
-
-We offer you to work from the comfort of your home and earn excellent amounts of cash. You don't need any high tech expertise to use Internet to generate income. Our Free Kit will show you how easy it can be to use Google for making money.
-
-Many people are making money using the power of Google. Our Risk-Free Trial Kit will help you find out if Google is right for you! Our supplies of Risk-Free Kits are going fast and you don't have much time to hesitate! In other words, if you want in, you'll have to make your move NOW. All you have to do is to reply to 1789harland.schimming-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org as soon as possible, as these offers are limited and expiring soon. You cannot loose anything - YOU CAN ONLY WIN AND EARN CASH!
-
-We are sorry for any inconvenience caused by sending this email to you, but our offer is really serious and you have to react fast, if you want to be the chosen person and earn good cash very fast.
-
-With Respect,
-Easy-Google-Cash Manager
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-QMJ15-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
 
 
+<body>
+
+=09<table width=3D"499" border=3D"0" cellspacing=3D"0" cellpadding=3D"0=
+" align=3D"center" bgcolor=3D"#ffffff">
+=09=09<tr>
+=09=09=09<td width=3D"499" height=3D"20" colspan=3D"3" bgcolor=3D"#e0e0=
+e0"></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"6" height=3D"643" rowspan=3D"4"><img src=3D"http:=
+//statics=2Emeetic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2=
+008/shadow_left=2Egif" border=3D"0" width=3D"6" height=3D"643" alt=3D""=
+ /></td>
+=09=09=09<td width=3D"487" height=3D"63"><a href=3D"http://ems6=2Enet/r=
+/?E=3DXTC-DS5R-QMJ15-DD-LOGSA-GBH" target=3D"_blank" style=3D"text-deco=
+ration:none"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/=
+affiliation/email/3d_7d_free_2008/header_v=2Egif" border=3D"0" width=3D=
+"487" height=3D"63" alt=3D"" /></a></td>
+=09=09=09<td width=3D"6" height=3D"643" rowspan=3D"4"><img src=3D"http:=
+//statics=2Emeetic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2=
+008/shadow_right=2Egif" border=3D"0" width=3D"6" height=3D"643" alt=3D"=
+" /></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"487" height=3D"43" align=3D"center" valign=3D"cen=
+ter"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QMJ15-DD-LOGSA-H28" t=
+arget=3D"_blank" style=3D"text-decoration:none"><font face=3D"arial" si=
+ze=3D"3" color=3D"#000000">D=E9couvrez <font color=3D"#b61922"><b>gratu=
+itement</b></font> Meetic Affinity <font color=3D"#b61922"><b>pendant 3=
+ jours</b></font><br />et rencontrez simplement les personnes faites po=
+ur vous&hellip;</font></a></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"487" height=3D"397"><a href=3D"http://ems6=2Enet/=
+r/?E=3DXTC-DS5R-QMJ15-DD-LOGSA-HD9" target=3D"_blank"><img src=3D"http:=
+//statics=2Emeetic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2=
+008/visu_couple3d_v=2Ejpg" width=3D"487" height=3D"397" border=3D"0" al=
+t=3D"" /></a></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"487" height=3D"140">
+=09=09=09=09<table width=3D"487" border=3D"0" cellspacing=3D"0" cellpad=
+ding=3D"0" bgcolor=3D"#ffffff">
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td width=3D"42"></td>
+=09=09=09=09=09=09<td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QMJ1=
+5-DD-LOGSA-HFI" target=3D"_blank" style=3D"text-decoration:none"><font =
+face=3D"arial" size=3D"4" color=3D"#b61922"><b>Meetic Affinity, essayez=
+ la diff=E9rence&nbsp;!</b></font></a></td>
+=09=09=09=09=09</tr>
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td height=3D"10"></td>
+=09=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<table width=3D"487" border=3D"0" cellspacing=3D"0" cellpad=
+ding=3D"0" bgcolor=3D"#ffffff">
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td width=3D"52"></td>
+=09=09=09=09=09=09<td valign=3D"center"><a href=3D"http://ems6=2Enet/r/=
+?E=3DXTC-DS5R-QMJ15-DD-LOGSA-HAE" target=3D"_blank" style=3D"text-decor=
+ation:none"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/a=
+ffiliation/email/3d_7d_free_2008/sign=2Egif" width=3D"11" height=3D"15"=
+ border=3D"0" alt=3D"" />&nbsp;<font face=3D"arial" size=3D"3" color=3D=
+"#000000">Remplissez votre test d'affinit=E9s</font></a></td>
+=09=09=09=09=09</tr>
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td width=3D"52"></td>
+=09=09=09=09=09=09<td valign=3D"center"><a href=3D"http://ems6=2Enet/r/=
+?E=3DXTC-DS5R-QMJ15-DD-LOGSA-HGJ" target=3D"_blank" style=3D"text-decor=
+ation:none"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/a=
+ffiliation/email/3d_7d_free_2008/sign=2Egif" width=3D"11" height=3D"15"=
+ border=3D"0" alt=3D"" />&nbsp;<font face=3D"arial" size=3D"3" color=3D=
+"#000000">Recevez les profils qui vous correspondent</font></a></td>
+=09=09=09=09=09</tr>
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td width=3D"52"></td>
+=09=09=09=09=09=09<td valign=3D"center"><a href=3D"http://ems6=2Enet/r/=
+?E=3DXTC-DS5R-QMJ15-DD-LOGSA-HHK" target=3D"_blank" style=3D"text-decor=
+ation:none"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/a=
+ffiliation/email/3d_7d_free_2008/sign=2Egif" width=3D"11" height=3D"15"=
+ border=3D"0" alt=3D"" />&nbsp;<font face=3D"arial" size=3D"3" color=3D=
+"#000000">D=E9voilez vos photos aux personnes de votre choix</font></a>=
+</td>
+=09=09=09=09=09</tr>
+=09=09=09=09</table></td>
+=09=09</tr>
+=09</table>
+=09<table width=3D"499" border=3D"0" cellspacing=3D"0" cellpadding=3D"0=
+" align=3D"center" bgcolor=3D"#ffffff">=09=09<tr>
+=09=09=09<td width=3D"15" height=3D"23"><img src=3D"http://statics=2Eme=
+etic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2008/footer_lef=
+t=2Egif" border=3D"0" width=3D"15" height=3D"23" alt=3D"" /></td>
+=09=09=09<td width=3D"469" height=3D"23" bgcolor=3D"#be1c19" align=3D"c=
+enter"><font type=3D"arial" size=3D"1" color=3D"#ffffff">*&nbsp;Jusqu'a=
+u 22/03/2009 et valable uniquement pour toute nouvelle inscription=2E</=
+font></td>
+=09=09=09<td width=3D"15" height=3D"23"><img src=3D"http://statics=2Eme=
+etic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2008/footer_rig=
+ht=2Egif" border=3D"0" width=3D"15" height=3D"23" alt=3D"" /></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"499" height=3D"12" colspan=3D"3" bgcolor=3D"#e0e0=
+e0"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/affiliati=
+on/email/3d_7d_free_2008/bottom=2Egif" width=3D"499" height=3D"12" bord=
+er=3D"0" alt=3D"" /></td>
+=09=09</tr>
+=09</table>
+<img src=3D"http://impfr=2Etradedoubler=2Ecom/imp/img/17848018/1627782"=
+ width=3D1 height=3D1 border=3D0><br><br><DIV align=3Dcenter><FONT face=
+=3DArial color=3D#000000 size=3D1></FONT></DIV>
+
+</body>
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-QMJ15-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QMJ15-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
 
 
 
+--===============2356149429432339701==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
 powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
 easily build your RIAs with Flex Builder, the Eclipse(TM)based development
 software that enables intelligent coding and step-through debugging.
 Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
+--===============2356149429432339701==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2356149429432339701==--

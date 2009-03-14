@@ -1,12 +1,18 @@
-From: "Judith Glass" <nava-R+Lk11EdEC1Wk0Htik3J/w@public.gmane.org>
-Subject: [SPAM] Make your baby-maker bigger and stronger!
-Date: Fri, 13 Mar 2009 14:50:48 -0300
-Message-ID: <001c01c9a404$3e44a3c0$627279f0@windowsxpzpzk>
+From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: pxa2xx_spi suspend/resume
+Date: Sat, 14 Mar 2009 01:08:26 -0300
+Message-ID: <1237003706.12841.8.camel@brutus>
+References: <1236771011.17708.37.camel@brutus>  <49B91E76.3090309@whoi.edu>
+	<1236880051.4605.37.camel@brutus>  <49B9D47C.8050105@whoi.edu>
+	<1236935461.623.38.camel@brutus>  <49BA607A.5020509@whoi.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <49BA607A.5020509-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,12 +23,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Do you care about her enjoyment  http://euiuae.imexakjueb.net/
-
-
-------------------------------------------------------------------------------
-Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
-powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
-easily build your RIAs with Flex Builder, the Eclipse(TM)based development
-software that enables intelligent coding and step-through debugging.
-Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
+RW0gU2V4LCAyMDA5LTAzLTEzIMOgcyAwOTozMiAtMDQwMCwgTmVkIEZvcnJlc3RlciBlc2NyZXZl
+dToKPiBJbnRlcmVzdGluZyBwb3NzaWJpbGl0eS4gIEkgdGhvdWdodCBzdXNwZW5kL3Jlc3VtZSB3
+YXMganVzdCBhIGxvdyBwb3dlcgo+IHN0YXRlIHRoYXQgYXdha2VucyBieSByZXN0YXJ0aW5nIHRo
+ZSBjbG9ja3MuICBEb2VzIHRoZSBib290IGxvYWRlcgo+IGFjdHVhbGx5IHJ1biBhIGJpdCBvbiBy
+ZXN1bWUgYmVmb3JlIGRpc2NvdmVyaW5nIHRoYXQgbWVtb3J5IGlzIGFscmVhZHkKPiBsb2FkZWQ/
+CgpMaW51eCBzdXBwb3J0cyB0aGUgc3RhbmRieSBhbmQgdGhlIHNsZWVwIFBYQSBtb2Rlcy4gVGhl
+IG1hbnVhbCBzYXlzIHRoYXQKb24gdGhlIHNsZWVwIChzdXNwZW5kL3Jlc3VtZSkgbW9kZSBhbGwg
+cHJvY2Vzc29yIHN0YXRlIGlzIGxvc3QgYW5kIGEgbmV3CmJvb3Qgc2VxdWVuY2UgaXMgbmVlZGVk
+LgoKSSBjaGVja2VkIG15IGJvb3Rsb2FkZXIsIHdoZW4gaXRzIGNvbWluZyBiYWNrIGZyb20gcmVz
+dW1lIGl0IGV4ZWN1dGVzCmxlc3MgdGhhbiAzMCBpbnN0cnVjdGlvbnMsIGFuZCBpdCBkb2Vzbid0
+IHRvdWNoIERSQ01SLiBTbyBpIHRoaW5rIHRoYXQKd2UgcmVhbGx5IG5lZWQgdG8gcmVzdG9yZSBE
+UkNNUiBvbiByZXN1bWUuCgo+IEhvcGVmdWxseSBEYXZlLCBvciBzb21lb25lIGVsc2Uga25vd2xl
+ZGdlYWJsZSB3aWxsIHNwZWFrIHVwLiAgT3RoZXJ3aXNlLAo+IGdvIGFoZWFkIHdpdGggc3VibWl0
+dGluZyB0aGUgcGF0Y2guICBBbmQgdGhhbmtzIGZvciB0cmFja2luZyB0aGlzIGRvd24uCgpUaGFu
+ayB5b3UgZm9yIG1lbnRvcmluZyB0aGlzISA6KQpJIHdpbGwgc3VibWl0IHRoZSBwYXRjaCB0b21v
+cnJvdyBtb3JuaW5nLgoKLS0gCkRhbmllbCBSaWJlaXJvCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+CkFwcHMgYnVpbHQgd2l0aCB0aGUgQWRvYmUoUikgRmxleChSKSBmcmFtZXdvcmsgYW5kIEZsZXgg
+QnVpbGRlcihUTSkgYXJlCnBvd2VyaW5nIFdlYiAyLjAgd2l0aCBlbmdhZ2luZywgY3Jvc3MtcGxh
+dGZvcm0gY2FwYWJpbGl0aWVzLiBRdWlja2x5IGFuZAplYXNpbHkgYnVpbGQgeW91ciBSSUFzIHdp
+dGggRmxleCBCdWlsZGVyLCB0aGUgRWNsaXBzZShUTSliYXNlZCBkZXZlbG9wbWVudApzb2Z0d2Fy
+ZSB0aGF0IGVuYWJsZXMgaW50ZWxsaWdlbnQgY29kaW5nIGFuZCBzdGVwLXRocm91Z2ggZGVidWdn
+aW5nLgpEb3dubG9hZCB0aGUgZnJlZSA2MCBkYXkgdHJpYWwuIGh0dHA6Ly9wLnNmLm5ldC9zZnUv
+d3d3LWFkb2JlLWNvbQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
+dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
+c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,11 +1,12 @@
-From: "Madge " <stormbringer1602-49Rm3DX9dRQ@public.gmane.org>
-Subject: [SPAM] I hope you are ok
-Date: Fri, 13 Feb 2009 18:14:56 -0800
-Message-ID: <002a01c98e4a$bb0dfcf0$80765165@a2c126f87ce984jbqo>
+From: "Jessica Larsen" <paulgbold-Noio/RbdA1Y@public.gmane.org>
+Subject: [SPAM] Dont let your gf play with toys,
+	satisfy her right now.
+Date: Mon, 16 Mar 2009 13:55:39 +0200
+Message-ID: <20090316135539.9040904@e-l-t.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,7 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-What a tragedy! http://eminv.breakingfreemichigan.com/run.php
+A step to happy life! http://ij.calmrest.com/
 
 
 ------------------------------------------------------------------------------

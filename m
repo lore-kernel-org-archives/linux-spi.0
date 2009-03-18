@@ -1,14 +1,11 @@
-From: "=?iso-8859-1?B?VHJhbnF1aWxpdOkgU2FudOkgdmlhIE1haWxhbmRHbw==?="
-	<RET-XTC-DS5R-QKBW4-DD-LOGSA@R.Ems7.net>
-Subject: Trois mois offert et un devis gratuit pour
-	votre mutuelle
-Date: Wed, 18 Mar 2009 18:37:55 +0100
-Message-ID: <798cec63ef974b0fb54eb0ab42e929c7@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-QKBW4-DD-LOGSA@R.Ems7.net
+From: "Tranquillite Sante par Club-Vanessa" <Club-Vanessa-UjpWPo6LobQ@public.gmane.org>
+Subject: Faites des economies, changez de mutuelle
+Date: Wed, 18 Mar 2009 22:31:47 +0100
+Message-ID: <UJSV03W0000VZ172000T9K8B018493@bp06.net>
+Reply-To: contact-iTHteKdmi+gvtab9mdV7tw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5795199293054043809=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0024827969444377889=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,120 +17,106 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5795199293054043809==
-Content-type: text/html; charset=iso-8859-1
+--===============0024827969444377889==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPartNP6AltUniqueBoundary633730123078661987--1"
+
+------=_NextPartNP6AltUniqueBoundary633730123078661987--1
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-QKBW4-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
-<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"579" a=
-lign=3D"center" bgcolor=3D"#ccff00">
-=09<tbody>
-=09=09<tr>
-=09=09=09<td rowspan=3D"3" width=3D"184"><a href=3D"http://ems6=2Enet/r=
-/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-H3E"><img src=3D"http://static=2Ead-maste=
-ring=2Enet/Tranq_Sante/HD_01=2Egif" border=3D"0" alt=3D"STOP" width=3D"=
-184" height=3D"173" /></a></td>
-=09=09=09<td width=3D"197" height=3D"29">=A0</td>
-=09=09=09<td width=3D"198" height=3D"29">=A0</td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"2" height=3D"119" align=3D"center" bgcolor=3D"#=
-000000"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-H6J=
-"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/titre=2Egi=
-f" border=3D"0" alt=3D"aux compl=E9mentaires trop ch=E8res !" width=3D"=
-365" height=3D"81" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td width=3D"197" height=3D"25">=A0</td>
-=09=09=09<td rowspan=3D"3" width=3D"198">
-=09=09=09<div align=3D"center">
-=09=09=09<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-H7=
-K"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/prix=2Egi=
-f" border=3D"0" alt=3D"prix" width=3D"148" height=3D"124" /></a>
-=09=09=09</div>
-=09=09=09</td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"2" height=3D"82" align=3D"center"><a href=3D"ht=
-tp://ems6=2Enet/r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-HBL"><img src=3D"http://=
-static=2Ead-mastering=2Enet/Tranq_Sante/raisons=2Egif" border=3D"0" alt=
-=3D"il est encore temps" width=3D"267" height=3D"72" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td width=3D"184" height=3D"22">=A0</td>
-=09=09=09<td width=3D"197" height=3D"22">=A0</td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"2" height=3D"187"><a href=3D"http://ems6=2Enet/=
-r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-82W"><img src=3D"http://static=2Ead-mast=
-ering=2Enet/Tranq_Sante/avantages=2Egif" border=3D"0" alt=3D"" width=3D=
-"381" height=3D"250" /></a></td>
-=09=09=09<td rowspan=3D"2" width=3D"198" valign=3D"bottom"><a href=3D"h=
-ttp://ems6=2Enet/r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-8DM"><img src=3D"http:/=
-/static=2Ead-mastering=2Enet/Tranq_Sante/petitefilleH2=2Egif" border=3D=
-"0" alt=3D"fillette" vspace=3D"15" width=3D"193" height=3D"270" /></a><=
-/td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"2" height=3D"101"><a href=3D"http://ems6=2Enet/=
-r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-8F5"><img src=3D"http://static=2Ead-mast=
-ering=2Enet/Tranq_Sante/bienvenue=2Egif" border=3D"0" alt=3D"texte2" wi=
-dth=3D"370" height=3D"95" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"3" height=3D"77"><a href=3D"http://ems6=2Enet/r=
-/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-8AX"><img src=3D"http://static=2Ead-maste=
-ring=2Enet/Tranq_Sante/decouvrez=2Egif" border=3D"0" alt=3D"Contactez" =
-width=3D"579" height=3D"77" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"3" height=3D"91" align=3D"right" valign=3D"top"=
-><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-8GN"><img =
-src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/bouton=2Egif" bor=
-der=3D"0" alt=3D"Demande de documentation" width=3D"400" height=3D"80" =
-/></a><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-8HO">=
-<img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/famille_01=2E=
-gif" border=3D"0" alt=3D"" width=3D"140" height=3D"91" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td width=3D"184" height=3D"77" align=3D"center" bgcolor=3D"#f=
-fffff"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-88P"=
-><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/HD_16=2Egif=
-" border=3D"0" alt=3D"HD" width=3D"184" height=3D"70" /></a><img src=3D=
-"http://static=2Ead-mastering=2Enet/Tranq_Sante/swisslife=2Egif" alt=3D=
-"" width=3D"155" height=3D"16" /></td>
-=09=09=09<td colspan=3D"2" height=3D"77" valign=3D"top" bgcolor=3D"#fff=
-fff">
-=09=09=09<div align=3D"right">
-=09=09=09<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-89=
-C"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/famille_0=
-2=2Egif" border=3D"0" alt=3D"" width=3D"140" height=3D"59" /></a><br />
-=09=09=09<br />
-=09=09=09</div>
-=09=09=09</td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td class=3D"top" colspan=3D"3" bgcolor=3D"#ffffff"><span><fon=
-t size=3D"2">(1) Offre valable pour l'option TM : Cotisation pour un ad=
-ulte de 19 ans option TM=2E Selon d=E9partement</font></span> </td>
-=09=09</tr>
-=09</tbody>
+Si=20vous=20ne=20lisez=20pas=20correctement=20cet=20email=20
+http://tr1=2Ebp51=2Enet/r5=2Easpx=3FGV1=3DUJSV03W000O30000VZ00012AZ000T9K8B=20=
+
+suivez=20ce=20lien
+
+http://tr1=2Ebp51=2Enet/r5=2Easpx=3FGV1=3DUJSV03W000O30000VZ00012B0000T9K8B=20=
+
+
+=A0*=20Cotisation=20pour=20un=20adulte=20de=2018=20ans,=20option=20TM=2E=20=
+Selon=20d=E9partement=2E
+
+Si=20vous=20ne=20souhaitez=20plus=20recevoir=20de=20message=20de=20la=20=
+part=20de=20Plan=20de=20Fou=20
+http://tr1=2Ebp51=2Enet/r5=2Easpx=3FGV1=3DUJSV03W000O30000VZ00012B1000T9K8B=20=
+
+suivez=20ce=20lien
+
+=20=20
+
+------=_NextPartNP6AltUniqueBoundary633730123078661987--1
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html><head>
+
+<title>Une=20sant=E9=20bien=20prot=E9g=E9e=20sans=20se=20ruiner=20=3F=20=
+c'est=20possible=20avec=20Tranquillit=E9=20Sant=E9</title>
+<meta=20http-equiv=3D=22Content-Type=22=20content=3D=22text/html;=20charset=3D=
+iso-8859-1=22>
+</head><body>
+<center>
+<table=20border=3D=220=22=20cellpadding=3D=220=22=20cellspacing=3D=220=22=20=
+width=3D=22544=22>
+=20=20<!--DWLayoutTable-->
+<tr>
+<td=20style=3D=22font-family:=20verdana;=20font-size:=209px;=20color:=20=
+rgb(100,=20151,=20168);=20padding-top:=2015px;=20padding-bottom:=2015px;=22=20=
+colspan=3D=223=22><div=20align=3D=22center=22><span=20class=3D=22top=22>Si=20=
+vous=20ne=20lisez=20pas=20correctement=20cet=20email=20<a=20href=3D=22=
+http://tr1=2Ebp51=2Enet/r5=2Easpx=3FGV1=3DUJSV03W000O30000VZ00012AW000T9K8B=22=
+=20target=3D=22_blank=22=20style=3D=22font-family:=20verdana;=20font-size:=20=
+9px;=20color:=20rgb(100,=20151,=20168);=20padding-top:=2015px;=20=
+padding-bottom:=2015px;=22>suivez=20ce=20lien</a></span></div></td>
+</tr>
+=20=20<tr>
+=20=20=20=20<td=20colspan=3D=222=22=20valign=3D=22top=22=20height=3D=22534=22=
+><a=20href=3D=22http://tr1=2Ebp51=2Enet/r5=2Easpx=3FGV1=3D=
+UJSV03W000O30000VZ00012AX000T9K8B=22><img=20src=3D=22http://static=2E=
+ad-mastering=2Enet/Tranq_Sante/crea7/img-sante_V7=2Ejpg=22=20border=3D=220=22=
+=20width=3D=22544=22=20height=3D=22534=22></a></td>
+=20=20</tr>
+=20=20<tr>
+=20=20=20=20<td=20width=3D=2220=22=20height=3D=2224=22>&nbsp;</td>
+=20=20=20=20<td=20valign=3D=22top=22=20width=3D=22524=22>
+	=20=20<div=20align=3D=22left=22><font=20color=3D=22#666666=22=20size=3D=22=
+1=22=20face=3D=22Arial,=20Helvetica,=20sans-serif=22>*=20Cotisation=20pour=20=
+un=20adulte=20de=2018=20ans,=20option=20TM=2E=20Selon=20d=E9partement=2E=
+</font>=20</div>
+	=20=20</td>
+=20=20</tr>
+=20=20<tr>
+=20=20=20=20<td=20colspan=3D=222=22=20height=3D=2224=22><div=20align=3D=22=
+center=22></div><br></td>
+=20=20</tr>
+			=20<tr>
+=20=20=20=20<td=20colspan=3D=222=22=20valign=3D=22bottom=22=20height=3D=22=
+50=22><div=20align=3D=22center=22><span=20style=3D=22font-family:=20=
+verdana;=20font-size:=209px;=20color:=20rgb(100,=20151,=20168);=20=
+padding-top:=2015px;=20padding-bottom:=2015px;=22>Si=20vous=20ne=20=
+souhaitez=20plus=20recevoir=20de=20message=20de=20la=20part=20de=20Plan=20=
+de=20Fou=20<a=20href=3D=22http://tr1=2Ebp51=2Enet/r5=2Easpx=3FGV1=3D=
+UJSV03W000O30000VZ00012AY000T9K8B=22=20target=3D=22_blank=22=20style=3D=22=
+font-family:=20verdana;=20font-size:=209px;=20color:=20rgb(100,=20151,=20=
+168);=20padding-top:=2015px;=20padding-bottom:=2015px;=22>suivez=20ce=20=
+lien</a>=20</span></div></td>
+
+=20=20</tr>
 </table>
-<img src=3D"http://nodes=2Ereactivpub=2Efr/mailing-208-12099-11008&grou=
-p=3D" border=3D"0" alt=3D"" width=3D"1" height=3D"1" />
-<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
-/ems6=2Enet/u/?E=3DRET-XTC-DS5R-QKBW4-DD-LOGSA&EMail=3Dspi-devel-genera=
-l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
-s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
-t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QKBW4-DD-LOGSA-2"=
- width=3D"1" height=3D"1">
+</center>
+<img=20src=3D=22http://eskdom028=2Enetmastering2=2Enet/c/a4MBVFCHH89EFYIPB=22=
+=20border=3D=220=22>
+<img=20src=3D=22http://tr1=2Ebp51=2Enet/o5=2Easpx=3FGV1=3D=
+UJSV03W000O30000VZ000T9K8B=22=20border=3D=220=22=20width=3D=220=22=20height=3D=
+=220=22></body></html>
+
+------=_NextPartNP6AltUniqueBoundary633730123078661987--1--
 
 
 
---===============5795199293054043809==
+
+--===============0024827969444377889==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -145,7 +128,7 @@ powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
 easily build your RIAs with Flex Builder, the Eclipse(TM)based development
 software that enables intelligent coding and step-through debugging.
 Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
---===============5795199293054043809==
+--===============0024827969444377889==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -156,4 +139,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5795199293054043809==--
+--===============0024827969444377889==--

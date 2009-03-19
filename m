@@ -1,8 +1,8 @@
-From: Lucetta Little <419canalseguros1-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] The Secret of Love is Revealed
-Date: Thu, 19 Mar 2009 09:57:21 +0530
-Message-ID: <46927.7288801551$1237437024@news.gmane.org>
-Reply-To: Lucetta Little <1914noelle.linnen-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Caesar Sullivan <419rabihassan_2006-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Have A Date This Friday
+Date: Thu, 19 Mar 2009 16:20:04 +0900
+Message-ID: <25181.3615010635$1237447344@news.gmane.org>
+Reply-To: Caesar Sullivan <1971radomchristen-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,18 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Good day!
+Hello Dear!
 
-Here is some good news!
+My name is T.W. Jackson and I am the author of the most commented relationships book lately "The Magic of Making Up".
 
-Did you know that most relationships CAN be salvaged? You may find it difficult to believe that almost every break up for whatever reason infidelity, plain old lost passion, loss of interest, a stolen heart and worse, even the worst situations you can imagine, like men serving prison sentences have salvaged their relationships. Yes, even Ex-cons have got back together with girlfriends and wives after being away for years!
+If you have broken up and want to get your guy or girl back, obviously I can't talk too or be with everyone, I just don't have enough time. But I have done what I believe to be the next best thing - I have put my years of experience into a really easy to follow love recipe for "getting back together" and again I forewarn you right now - these are techniques and strategies that are NOT conventional wisdom and I doubt you have ever read or heard these techniques before.
 
-All these secrets are finally revealed in the new book about relationships "The Magic of Making Up" by TW(T Dub) Jackson, the Man that has secretly helped 6,100 people in 67 countries.
+...and I'll tell you that this stuff works! ...maybe too well?
 
-If you are in need to have it, you can send us a reply to gransberrydelmar1206-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so we can send you back the Risk Free Kit of the book, which we have in promotion in the moment.
+If you want to read and learn more, and you are interested in having my book, just send me a reply to 1645kate.nixa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so I can send you more information.
 
 Best Regards,
-G. Jackson
+T. Jackson
 
 
 
@@ -42,7 +42,7 @@ G. Jackson
 
 
 ------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
 
 This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
  fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.

@@ -1,20 +1,13 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH] spi: fix m25p80 when the cs_change
-	hint is honored
-Date: Wed, 20 May 2009 08:25:47 +0300
-Message-ID: <20090520052547.GE28870@tarshish>
-References: <1242731340-12160-1-git-send-email-baruch@tkos.co.il>
-	<200905192134.14316.david-b@pacbell.net>
-	<20090520045506.GD28870@tarshish>
-	<200905192209.19125.david-b@pacbell.net>
+From: Azure Overstreet <susanford_zimbabwe-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Solution for Your weight problem!!!
+Date: Thu, 19 Mar 2009 03:04:30 -0300
+Message-ID: <31273.7933513292$1242799405@news.gmane.org>
+Reply-To: Azure Overstreet <1703syedkilpatrick-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <200905192209.19125.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,38 +18,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi David,
+Hi!
 
-On Tue, May 19, 2009 at 10:09:19PM -0700, David Brownell wrote:
-> On Tuesday 19 May 2009, Baruch Siach wrote:
-> > If so would a clarification of the relevant text at  
-> > include/linux/spi/spi.h be accepted?
-> 
-> In what way is the existing language unclear?  There are
-> two paragraphs in the "struct spi_transfer" kerneldoc.
+We all have heard about the magic fruit, discovered in the amazon forest. The Acai Berry with it's astonishing medical potential is finally reaching the public as AcaiBurn Detox - one of the finest products on the market. Strengthening Your heart and brain, removing the excessive fat, even reversing some of effects of aging, it's truly a Magic! 
+Two separate clinical studies demonstrated that some of the people who used the active ingredients in AcaiBurn Detox naturally ate less than people who were given a placebo. This has led researchers to believe that these ingredients could actually help people lower their appetite and thus naturally enhance their diet without putting any strain on the body.
+So you want to feel refreshed, lighter and healthy?
+Hurry up and try it! And don't worry - a FREE Trial is waiting for You, so you don't have to risk at all. Just send a request for more information at 10784durnil.astra-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org!
 
-I (wrongly) understood the name cs_change as saying "chip select change", that 
-is, "deactivate the chip select". Then I read the following text from 
-include/linux/spi/spi.h:
+Best regards,
+Acai Marketing Inc.
 
-    "(ii) When the transfer is the last one in the message, the chip may stay 
-    selected until the next transfer."
 
-I (wrongly again) understood that this description applies to that case of
-cs_change == 0. I'd rephrase the above sentence as follows:
 
-    "(ii) When the transfer is the last one in the message, and cs_change != 
-    0, the chip may stay selected until the next transfer."
 
-Does this make sense?
 
-baruch
 
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_from_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Crystal Reports - New Free Runtime and 30 Day Trial
 Check out the new simplified licensing option that enables 

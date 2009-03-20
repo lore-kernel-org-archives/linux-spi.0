@@ -1,8 +1,8 @@
-From: Allyn Sidower <l33tfukka-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Back Together In One Week
-Date: Sat, 21 Mar 2009 01:06:27 +0530
-Message-ID: <4280.76251778311$1237577931@news.gmane.org>
-Reply-To: Allyn Sidower <11760woodrow.roseland-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Dinah Little <elcondedealbi-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] The Magic of Making Up
+Date: Sat, 21 Mar 2009 05:52:15 +0800
+Message-ID: <25632.9707488932$1237585913@news.gmane.org>
+Reply-To: Dinah Little <halcon.sybil1036-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,18 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Good day!
+Are you in the middle of a desperation because your lover has gone away?
 
-Here is some good news!
+Now You Can Stop Your Break Up, Divorce or Lovers Rejection... Even If Your Situation Seems Hopeless!
 
-Did you know that most relationships CAN be salvaged? You may find it difficult to believe that almost every break up for whatever reason infidelity, plain old lost passion, loss of interest, a stolen heart and worse, even the worst situations you can imagine, like men serving prison sentences have salvaged their relationships. Yes, even Ex-cons have got back together with girlfriends and wives after being away for years!
+We'll take you by the hand and show you exactly what to do and what to say to get your ex lover back in your arms - Especially if you are the only one trying...
 
-All these secrets are finally revealed in the new book about relationships "The Magic of Making Up" by TW(T Dub) Jackson, the Man that has secretly helped 6,100 people in 67 countries.
+If you are interested to see more information and advices by the Man that has secretly helped thousands of people in 67 countries, reply back to this letter or send a mail to 1635beeglechloe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so you can receive a copy of the best selling relationships book available.
 
-If you are in need to have it, you can send us a reply to 1321ehrmann.darby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so we can send you back the Risk Free Kit of the book, which we have in promotion in the moment.
+Hurry up! The supplies are limited!
 
-Best Regards,
-G. Jackson
+Regards,
+M. Jackson
 
 
 

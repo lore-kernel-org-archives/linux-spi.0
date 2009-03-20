@@ -1,12 +1,12 @@
-From: Centralmarques <newsletter-B9csOW2os1kAvxtiuMwx3w@public.gmane.org>
-Subject: Felicitations,
-	vous avez maintenant acces aux meilleures affaires de l'internet
-Date: 20 Mar 2009 11:57:37 -0000
-Message-ID: <20090320115737.26229.qmail@ks363313.kimsufi.com>
-Reply-To: Centralmarques <newsletter-B9csOW2os1kAvxtiuMwx3w@public.gmane.org>
+From: "Meetic Affinity via MailandGo" <RET-XTC-DS5R-QXF0V-DD-LOGSA@R.Ems7.net>
+Subject: On vous offre 3 jours pour faire des rencontres
+Date: Fri, 20 Mar 2009 16:17:32 +0100
+Message-ID: <61f57897d9674e6ba73a2f42399b54ab@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-QXF0V-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6210706033685462109=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============4199052837755242114=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,96 +18,139 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============4199052837755242114==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
---===============6210706033685462109==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_4eb8bf922d32c02f1dc87bfd5ca4dd11"
-
-
---_----------=_parties_4eb8bf922d32c02f1dc87bfd5ca4dd11
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://www.ctrm1.com/miroir.php?bat=optout_sc2_ctrm
-
-Cher internaute,
-
-Lors de votre inscription sur les sites imenager , prestigefinance , ecovy , ou un de ses sites partenaires, vous avez manifesté le souhait de recevoir des offres preferentielles correspondant à vos besoins
-
-Aussi, nous avons le plaisir de vous informer que vous aurez dorenavant accès à la sélection d'offres, produits & services les plus avantageux et les plus variés du moment grâce à Centralmarques
-
-Central Marques est un nouveau service interactif entierement gratuit, qui centralise tout au long de l'année les offres promotionnelles des plus grandes marques de l'Internet (mode, E-commerce, tourisme, finance, culture...)
-
-Alors soyez informés immediatement et sans aucun engagement des meilleurs plans du web grace à centralMarques.
-
-Pour ceux qui le souhaiteraient, ils pourront à tout moment suspendre la réception de nos publicommuniqués d'un simple clic de souris ...
-
-Pour les autres , à très bientôt pour de nouvelles offres exclusives.
-
-Votre correspondant Yves
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-QXF0V-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
 
-plus d'infos sur http://www.ctrm1.com/linkserv.php?bat=optout_sc2_ctrm&nb=1094&n=9047704&c=culture
-
---------------------------------
-Cette offre liberad - optout vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm1.com/gestionserv.php?nb=1094&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_4eb8bf922d32c02f1dc87bfd5ca4dd11
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
 
 
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" ><html>
-<head> 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title></title>
-</head>
-<body><center>
-<p>
-<a href='http://www.ctrm1.com/miroir.php?bat=optout_sc2_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px'>9047704&code=HWeuIQdw&src=50</font><br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #EAEAEA;padding:0px'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#000000;font-family:Verdana;color:#FFFFFF;font-size:24px'>
+<body>
 
-<img id=INNER_LOGO_ANNONCEUR align=absmiddle src='http://www.actuduweb.net/img/transparent.gif' style='float:left;border:0px;margin-right:20px'>
-<p style='display:inline'></p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#000000;font-family:Arial;color:#FFFFFF;font-size:18px'>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#FFFFFF;font-size:12px;background-color:#000000'>
+=09<table width=3D"499" border=3D"0" cellspacing=3D"0" cellpadding=3D"0=
+" align=3D"center" bgcolor=3D"#ffffff">
+=09=09<tr>
+=09=09=09<td width=3D"499" height=3D"20" colspan=3D"3" bgcolor=3D"#e0e0=
+e0"></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"6" height=3D"643" rowspan=3D"4"><img src=3D"http:=
+//statics=2Emeetic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2=
+008/shadow_left=2Egif" border=3D"0" width=3D"6" height=3D"643" alt=3D""=
+ /></td>
+=09=09=09<td width=3D"487" height=3D"63"><a href=3D"http://ems6=2Enet/r=
+/?E=3DXTC-DS5R-QXF0V-DD-LOGSA-GBH" target=3D"_blank" style=3D"text-deco=
+ration:none"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/=
+affiliation/email/3d_7d_free_2008/header_v=2Egif" border=3D"0" width=3D=
+"487" height=3D"63" alt=3D"" /></a></td>
+=09=09=09<td width=3D"6" height=3D"643" rowspan=3D"4"><img src=3D"http:=
+//statics=2Emeetic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2=
+008/shadow_right=2Egif" border=3D"0" width=3D"6" height=3D"643" alt=3D"=
+" /></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"487" height=3D"43" align=3D"center" valign=3D"cen=
+ter"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QXF0V-DD-LOGSA-H28" t=
+arget=3D"_blank" style=3D"text-decoration:none"><font face=3D"arial" si=
+ze=3D"3" color=3D"#000000">D=E9couvrez <font color=3D"#b61922"><b>gratu=
+itement</b></font> Meetic Affinity <font color=3D"#b61922"><b>pendant 3=
+ jours</b></font><br />et rencontrez simplement les personnes faites po=
+ur vous&hellip;</font></a></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"487" height=3D"397"><a href=3D"http://ems6=2Enet/=
+r/?E=3DXTC-DS5R-QXF0V-DD-LOGSA-HD9" target=3D"_blank"><img src=3D"http:=
+//statics=2Emeetic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2=
+008/visu_couple3d_v=2Ejpg" width=3D"487" height=3D"397" border=3D"0" al=
+t=3D"" /></a></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"487" height=3D"140">
+=09=09=09=09<table width=3D"487" border=3D"0" cellspacing=3D"0" cellpad=
+ding=3D"0" bgcolor=3D"#ffffff">
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td width=3D"42"></td>
+=09=09=09=09=09=09<td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QXF0=
+V-DD-LOGSA-HFI" target=3D"_blank" style=3D"text-decoration:none"><font =
+face=3D"arial" size=3D"4" color=3D"#b61922"><b>Meetic Affinity, essayez=
+ la diff=E9rence&nbsp;!</b></font></a></td>
+=09=09=09=09=09</tr>
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td height=3D"10"></td>
+=09=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<table width=3D"487" border=3D"0" cellspacing=3D"0" cellpad=
+ding=3D"0" bgcolor=3D"#ffffff">
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td width=3D"52"></td>
+=09=09=09=09=09=09<td valign=3D"center"><a href=3D"http://ems6=2Enet/r/=
+?E=3DXTC-DS5R-QXF0V-DD-LOGSA-HAE" target=3D"_blank" style=3D"text-decor=
+ation:none"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/a=
+ffiliation/email/3d_7d_free_2008/sign=2Egif" width=3D"11" height=3D"15"=
+ border=3D"0" alt=3D"" />&nbsp;<font face=3D"arial" size=3D"3" color=3D=
+"#000000">Remplissez votre test d'affinit=E9s</font></a></td>
+=09=09=09=09=09</tr>
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td width=3D"52"></td>
+=09=09=09=09=09=09<td valign=3D"center"><a href=3D"http://ems6=2Enet/r/=
+?E=3DXTC-DS5R-QXF0V-DD-LOGSA-HGJ" target=3D"_blank" style=3D"text-decor=
+ation:none"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/a=
+ffiliation/email/3d_7d_free_2008/sign=2Egif" width=3D"11" height=3D"15"=
+ border=3D"0" alt=3D"" />&nbsp;<font face=3D"arial" size=3D"3" color=3D=
+"#000000">Recevez les profils qui vous correspondent</font></a></td>
+=09=09=09=09=09</tr>
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td width=3D"52"></td>
+=09=09=09=09=09=09<td valign=3D"center"><a href=3D"http://ems6=2Enet/r/=
+?E=3DXTC-DS5R-QXF0V-DD-LOGSA-HHK" target=3D"_blank" style=3D"text-decor=
+ation:none"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/a=
+ffiliation/email/3d_7d_free_2008/sign=2Egif" width=3D"11" height=3D"15"=
+ border=3D"0" alt=3D"" />&nbsp;<font face=3D"arial" size=3D"3" color=3D=
+"#000000">D=E9voilez vos photos aux personnes de votre choix</font></a>=
+</td>
+=09=09=09=09=09</tr>
+=09=09=09=09</table></td>
+=09=09</tr>
+=09</table>
+=09<table width=3D"499" border=3D"0" cellspacing=3D"0" cellpadding=3D"0=
+" align=3D"center" bgcolor=3D"#ffffff">=09=09<tr>
+=09=09=09<td width=3D"15" height=3D"23"><img src=3D"http://statics=2Eme=
+etic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2008/footer_lef=
+t=2Egif" border=3D"0" width=3D"15" height=3D"23" alt=3D"" /></td>
+=09=09=09<td width=3D"469" height=3D"23" bgcolor=3D"#be1c19" align=3D"c=
+enter"><font type=3D"arial" size=3D"1" color=3D"#ffffff">*&nbsp;Jusqu'a=
+u 22/03/2009 et valable uniquement pour toute nouvelle inscription=2E</=
+font></td>
+=09=09=09<td width=3D"15" height=3D"23"><img src=3D"http://statics=2Eme=
+etic-affinity=2Ecom/img/fr/affiliation/email/3d_7d_free_2008/footer_rig=
+ht=2Egif" border=3D"0" width=3D"15" height=3D"23" alt=3D"" /></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"499" height=3D"12" colspan=3D"3" bgcolor=3D"#e0e0=
+e0"><img src=3D"http://statics=2Emeetic-affinity=2Ecom/img/fr/affiliati=
+on/email/3d_7d_free_2008/bottom=2Egif" width=3D"499" height=3D"12" bord=
+er=3D"0" alt=3D"" /></td>
+=09=09</tr>
+=09</table>
+<img src=3D"http://impfr=2Etradedoubler=2Ecom/imp/img/17848018/1627782"=
+ width=3D1 height=3D1 border=3D0><br><br><DIV align=3Dcenter><FONT face=
+=3DArial color=3D#000000 size=3D1></FONT></DIV>
 
-<img alt="liberad - optout" src='http://www.centralmarque.com/logo2.gif' border='0'>
-Cher internaute,<br><br>
-Lors de votre inscription sur les sites <a style='color:white' href='http://www.imenager.fr'>imenager</a><a href="http://ctrm1.com/linkserv.php?bat=optout_sc2_ctrm&nb=1094&n=9047704&c=culture" style="text-decoration:none;color:#FFFFFF;font-family:Arial;background-color:#000000;font-size:12px;" target="_blank">, </a><a style='color:white' href='http://www.prestigefinance.fr'>prestigefinance</a>, <a style='color:white' href='http://www.ecovy.fr'>ecovy</a>, ou un de ses sites partenaires, vous avez manifest&eacute; le souhait de recevoir des offres preferentielles correspondant &agrave; vos besoins<br><br>
-Aussi, nous avons le plaisir de vous informer que vous aurez dorenavant acc&egrave;s &agrave; la s&eacute;lection d'offres, produits & services les plus avantageux et les plus vari&eacute;s du moment gr&acirc;ce &agrave; <b>Centralmarques</b><br>
-<br>
-Central Marques est un nouveau service interactif entierement gratuit, qui centralise tout au long de l'ann&eacute;e les offres promotionnelles des plus grandes marques de l'Internet (mode, E-commerce, tourisme, finance, culture...)<br>
-<br>
-Alors soyez inform&eacute;s immediatement et sans aucun engagement des meilleurs plans du web grace &agrave; centralMarques.
-<br><br>Pour ceux qui le souhaiteraient, ils pourront &agrave; tout moment suspendre la r&eacute;ception de nos publicommuniqu&eacute;s d'un simple <a href='http://www.centralmarques.com' style='color:white' target=#>clic de souris</a>...<br><br>
-Pour les autres , &agrave; tr&egrave;s bient&ocirc;t pour de nouvelles offres exclusives.<br>
-<br>
-Votre correspondant<br>Yves
-<br>
-<img alt="liberad - optout" src='http://www.centralmarque.com/logo2.gif' border='0'>
-</td></tr><tr>
-<td align='' style='padding:5px;background-color:#000000'>
-</td></tr></table>
-<br><br>
-<img src="http://www.ctrm1.com/img.php?nb=1094&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
-<p>
-<a href='http://www.ctrm1.com/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm1.com/gestionserv.php?nb=1094&cat=culture&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
+</body>
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-QXF0V-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QXF0V-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
 
 
---_----------=_parties_4eb8bf922d32c02f1dc87bfd5ca4dd11--
 
---===============6210706033685462109==
+--===============4199052837755242114==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -119,7 +162,7 @@ powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
 easily build your RIAs with Flex Builder, the Eclipse(TM)based development
 software that enables intelligent coding and step-through debugging.
 Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
---===============6210706033685462109==
+--===============4199052837755242114==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,4 +173,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6210706033685462109==--
+--===============4199052837755242114==--

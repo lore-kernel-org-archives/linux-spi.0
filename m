@@ -1,12 +1,12 @@
-From: "Solution Devis via MailandGo" <RET-XTC-DS5R-Q88SR-DD-LOGSA@R.Ems7.net>
-Subject: Votre comparateur : Solution-Devis
-Date: Fri, 20 Mar 2009 19:27:11 +0100
-Message-ID: <05a42518ba83461f9df111d7eda084d5@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-Q88SR-DD-LOGSA@R.Ems7.net
+From: Allyn Sidower <l33tfukka-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Back Together In One Week
+Date: Sat, 21 Mar 2009 01:06:27 +0530
+Message-ID: <4280.76251778311$1237577931@news.gmane.org>
+Reply-To: Allyn Sidower <11760woodrow.roseland-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4270479536231592529=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,117 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4270479536231592529==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Good day!
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-Q88SR-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+Here is some good news!
 
-<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
-" width=3D"600">
-    <tbody>
-        <tr>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/header_multi_01=2Egif" alt=3D"" border=3D"0"></a></=
-td>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/header_multi_02=2Egif" alt=3D"" border=3D"0"></a></=
-td>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/header_multi_03=2Egif" alt=3D"" border=3D"0"></a></=
-td>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/header_multi_04=2Egif" alt=3D"" border=3D"0"></a></=
-td>
-        </tr>
-        <tr>
-            <td colspan=3D"4"><a href=3D"http://nodes=2Ereactivpub=2Efr=
-/clic-493-12099-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9yb=
-XVsYWlyZXNfbmV3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJv=
-dj1lbWFpbGluZ19yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE=
-0NTY3&trackaff=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2E=
-net/solution-devis/kit_mailing/v8/middle=2Egif" alt=3D"" border=3D"0"><=
-/a></td>
-        </tr>
-    </tbody>
-</table>
-<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
-" width=3D"600">
-    <tbody>
-        <tr>
-            <td colspan=3D"3"><a href=3D"http://nodes=2Ereactivpub=2Efr=
-/clic-493-12099-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9yb=
-XVsYWlyZXNfbmV3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJv=
-dj1lbWFpbGluZ19yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE=
-0NTY3&trackaff=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2E=
-net/solution-devis/kit_mailing/v8/logo=2Egif" alt=3D"" border=3D"0"></a=
-></td>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/bord_droit=2Egif" alt=3D"" border=3D"0"></a></td>
-        </tr>
-    </tbody>
-</table>
-<p><br>
-<!-- pixel RAC--> <img src=3D"http://eskdom015=2Enetmastering2=2Enet/c/=
-a8FJS4PK87GF8FD1S" alt=3D"" border=3D"0"> <!-- pixel epargne--> <img sr=
-c=3D"http://eskdom019=2Enetmastering2=2Enet/c/aUDWUBH2G03QEYDTU" alt=3D=
-"" border=3D"0"> <!-- pixel sante--> <img src=3D"http://eskdom011=2Enet=
-mastering2=2Enet/c/aU6JBUKWN71ZAFQYC" alt=3D"" border=3D"0"> <!-- pixel=
- defisc--> <img src=3D"http://eskdom018=2Enetmastering2=2Enet/c/aG052Y5=
-MC9Y3UMQ3W" alt=3D"" border=3D"0"></p><img src=3D"http://nodes=2Ereacti=
-vpub=2Efr/mailing-493-12099-12068&group=3D" border=3D"0" height=3D"1" w=
-idth=3D"1"/><div align=3D"center"><font face=3D"arial" size=3D"1"><A hr=
-ef=3D"http://ems6=2Enet/u/?E=3DRET-XTC-DS5R-Q88SR-DD-LOGSA&EMail=3Dspi-=
-devel-general@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici<=
-/A> pour vous d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Ene=
-t )<BR></font></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q88SR=
--DD-LOGSA-2" width=3D"1" height=3D"1">
+Did you know that most relationships CAN be salvaged? You may find it difficult to believe that almost every break up for whatever reason infidelity, plain old lost passion, loss of interest, a stolen heart and worse, even the worst situations you can imagine, like men serving prison sentences have salvaged their relationships. Yes, even Ex-cons have got back together with girlfriends and wives after being away for years!
+
+All these secrets are finally revealed in the new book about relationships "The Magic of Making Up" by TW(T Dub) Jackson, the Man that has secretly helped 6,100 people in 67 countries.
+
+If you are in need to have it, you can send us a reply to 1321ehrmann.darby-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so we can send you back the Risk Free Kit of the book, which we have in promotion in the moment.
+
+Best Regards,
+G. Jackson
 
 
 
---===============4270479536231592529==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
 powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
 easily build your RIAs with Flex Builder, the Eclipse(TM)based development
 software that enables intelligent coding and step-through debugging.
 Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
---===============4270479536231592529==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4270479536231592529==--

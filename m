@@ -1,12 +1,13 @@
-From: Tabby Spring <bkhadria-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] The Secret of Making Up - By The Author
-Date: Fri, 20 Mar 2009 19:18:26 -0300
-Message-ID: <45384.391610469$1237501440@news.gmane.org>
-Reply-To: Tabby Spring <wegecass1687-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "=?iso-8859-1?B?QnV0aW7pbyB2aWEgTWFpbGFuZEdv?="
+	<RET-XTC-DS5R-Q5EQO-DD-LOGSA@R.Ems7.net>
+Subject: Cette nouvelle Honda Civic est pour vous
+Date: Fri, 20 Mar 2009 02:53:42 +0100
+Message-ID: <e54747bd41184d9f803079102f831919@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-Q5EQO-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============5385464654610354833=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,39 +19,94 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Good day!
+--===============5385464654610354833==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Here is some good news!
-
-Did you know that most relationships CAN be salvaged? You may find it difficult to believe that almost every break up for whatever reason infidelity, plain old lost passion, loss of interest, a stolen heart and worse, even the worst situations you can imagine, like men serving prison sentences have salvaged their relationships. Yes, even Ex-cons have got back together with girlfriends and wives after being away for years!
-
-All these secrets are finally revealed in the new book about relationships "The Magic of Making Up" by TW(T Dub) Jackson, the Man that has secretly helped 6,100 people in 67 countries.
-
-If you are in need to have it, you can send us a reply to 1635beeglechloe-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so we can send you back the Risk Free Kit of the book, which we have in promotion in the moment.
-
-Best Regards,
-G. Jackson
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-Q5EQO-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
 
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4=2E01 Transitional//EN"
+"http://www=2Ew3=2Eorg/TR/html4/loose=2Edtd">
+
+
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8=
+859-1">
+<title>Honda Civic</title>
+
+
+<body>
+
+<table width=3D"558" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" a=
+lign=3D"center">
+  <tr>
+    <td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q5EQO-DD-LOGSA-9H4=
+" target=3D"_blank"><img src=3D"http://impgb=2Etradedoubler=2Ecom/imp?t=
+ype(img)g(17841948)a(1619388)" alt=3D"Butineo width=3D"" height=3D"220"=
+ border=3D"0"328></a></td>
+    <td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q5EQO-DD-LOGSA-98U=
+" target=3D"_blank"><img src=3D"http://www=2Ehoryzon-clics=2Ecom/annonc=
+eurs/Butineo/Email_BUTINEO_Honda_Horyzonclic/images/top2=2Ejpg" alt=3D"=
+Honda Civic" width=3D"230" height=3D"220" border=3D"0"></a></td>
+  </tr>
+  <tr>
+    <td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q5EQO-DD-LOGSA-99V=
+" target=3D"_blank"><img src=3D"http://www=2Ehoryzon-clics=2Ecom/annonc=
+eurs/Butineo/Email_BUTINEO_Honda_Horyzonclic/images/honda1=2Ejpg" alt=3D=
+"Honda" width=3D"328" height=3D"271" border=3D"0"></a></td>
+    <td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q5EQO-DD-LOGSA-9IY=
+" target=3D"_blank"><img src=3D"http://www=2Ehoryzon-clics=2Ecom/annonc=
+eurs/Butineo/Email_BUTINEO_Honda_Horyzonclic/images/honda2=2Ejpg" alt=3D=
+"Civic" width=3D"230" height=3D"271" border=3D"0"></a></td>
+  </tr>
+  <tr>
+    <td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q5EQO-DD-LOGSA-9E2=
+" target=3D"_blank"><img src=3D"http://www=2Ehoryzon-clics=2Ecom/annonc=
+eurs/Butineo/Email_BUTINEO_Honda_Horyzonclic/images/bas=2Ejpg" alt=3D"G=
+agnez selon vos envies" width=3D"328" height=3D"87" border=3D"0"></a></=
+td>
+    <td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q5EQO-DD-LOGSA-9JD=
+" target=3D"_blank"><img src=3D"http://www=2Ehoryzon-clics=2Ecom/annonc=
+eurs/Butineo/Email_BUTINEO_Honda_Horyzonclic/images/bouton=2Egif" alt=3D=
+"Jouer" width=3D"230" height=3D"87" border=3D"0"></a></td>
+  </tr>
+</table>
+
+</body>
+
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-Q5EQO-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q5EQO-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
 
 
 
+--===============5385464654610354833==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
 powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
 easily build your RIAs with Flex Builder, the Eclipse(TM)based development
 software that enables intelligent coding and step-through debugging.
 Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
+--===============5385464654610354833==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5385464654610354833==--

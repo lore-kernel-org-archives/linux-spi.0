@@ -1,7 +1,8 @@
-From: "August Wilkins" <retter-bjuJGzOMqCU@public.gmane.org>
-Subject: [SPAM] OEM Software
-Date: Fri, 20 Mar 2009 11:30:26 -0600
-Message-ID: <002301c9a979$2d0f8aa0$aad3a970@MikesPCzl.lwwuhn>
+From: "Teddy Zamora" <joe.cordero-9H9owOTspMCgSpxsJD1C4w@public.gmane.org>
+Subject: [SPAM] Say no to being weak and dow,
+	keep it up all night long.
+Date: Fri, 20 Mar 2009 19:34:34 +0200
+Message-ID: <000301c9a982$225be460$1e589eb4@usere52f09cf03utdtd>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,8 +18,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-A lot of programs with 50-95% discount!
-Contact email: earlchsu-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+The best thing is that you'll see your wonderful drilling mastery in an hour 
+after taking! http://uxol.opchaer.net/
 
 
 ------------------------------------------------------------------------------

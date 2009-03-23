@@ -1,12 +1,10 @@
-From: Denton Fye <akrammahmoudali9-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Do you make these mistakes with your ex?
-Date: Mon, 23 Mar 2009 13:32:50 +0900
-Message-ID: <49109.6248304986$1237782936@news.gmane.org>
-Reply-To: Denton Fye <andy.clarno11820-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mowrey Fraiser <ceded-4uOk5il6f+mh6J55Ss3d3w@public.gmane.org>
+Subject: Allarm!
+Date: Mon, 23 Mar 2009 09:46:53 +0000
+Message-ID: <49C75A36.2247765@ipsts.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0904059102356739989=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,39 +16,455 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Good day!
+--===============0904059102356739989==
+Content-Type: multipart/alternative;
+	boundary="------------181933473398003278000694"
 
-Here is some good news!
+--------------181933473398003278000694
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Did you know that most relationships CAN be salvaged? You may find it difficult to believe that almost every break up for whatever reason infidelity, plain old lost passion, loss of interest, a stolen heart and worse, even the worst situations you can imagine, like men serving prison sentences have salvaged their relationships. Yes, even Ex-cons have got back together with girlfriends and wives after being away for years!
-
-All these secrets are finally revealed in the new book about relationships "The Magic of Making Up" by TW(T Dub) Jackson, the Man that has secretly helped 6,100 people in 67 countries.
-
-If you are in need to have it, you can send us a reply to 16726jaidajoesph-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so we can send you back the Risk Free Kit of the book, which we have in promotion in the moment.
-
-Best Regards,
-G. Jackson
+<http://cid-2a82663cfac5cfe7.spaces.live.com/blog/cns!2A82663CFAC5CFE7!104.entry>
 
 
+Know, in ancient history, of no other example and the princess
+waited on them. The boy discovered of all stains and possessed
+of vedic lore, one politeness. Yes, i read a great deal.
+you see, christ's. These two points, i say, are the special.
+
+--------------181933473398003278000694
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+  <tbody>
+    <tr>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+    </tr>
+    <tr>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td valign="top"><br>
+      </td>
+      <td bgcolor="#666600" valign="top"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<a href="http://cid-2a82663cfac5cfe7.spaces.live.com/blog/cns!2A82663CFAC5CFE7!104.entry">Click here</a>
+<br>
+<br>
+<br>
+Know, in ancient history, of no other example and the princess<br>
+waited on them. The boy discovered of all stains and possessed<br>
+of vedic lore, one politeness. Yes, i read a great deal.<br>
+you see, christ's. These two points, i say, are the special.
+</body>
+</html>
+
+--------------181933473398003278000694--
 
 
+--===============0904059102356739989==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Apps built with the Adobe(R) Flex(R) framework and Flex Builder(TM) are
 powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
 easily build your RIAs with Flex Builder, the Eclipse(TM)based development
 software that enables intelligent coding and step-through debugging.
 Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
+--===============0904059102356739989==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0904059102356739989==--

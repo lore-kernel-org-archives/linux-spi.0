@@ -1,13 +1,11 @@
-From: "Autoscout24 via MailandGo" <RET-XTC-DS5R-QM1FN-DD-LOGSA@R.Ems7.net>
-Subject: [SPAM] Trouvez une voiture en 3mn et vendez la
-	votre GRATUITEMENT
-Date: Wed, 25 Mar 2009 11:15:25 +0100
-Message-ID: <739853124079409fbd4d036ee3d0de43@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-QM1FN-DD-LOGSA@R.Ems7.net
+From: "admin" <admin-W2S52j3hmuVBDgjK7y7TUQ@public.gmane.org>
+Subject: Maverick Money Makers
+Date: Wed, 25 Mar 2009 09:11:02 +0000
+Message-ID: <036ea7cbf06fb9d204d9e93ba4574bec@no-scam.com>
+Reply-To: admin-W2S52j3hmuVBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0524676895063939541=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============6278877142165884296=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,35 +17,79 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0524676895063939541==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+--===============6278877142165884296==
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-QM1FN-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+<html><head>
 
-<!-- BEGIN PARTNER PROGRAM - DO NOT CHANGE THE PARAMETERS OF THE HYPERL=
-INK -->
-<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QM1FN-DD-LOGSA-9DQ" target=
-=3D"_blank">
-<div style=3D"text-align: center">
-<img src=3D"http://banniere=2Ereussissonsensemble=2Efr/view=2Easp?ref=3D=
-483037&site=3D4968&b=3D57" border=3D"0" alt=3D"AutoScout24" width=3D"62=
-6" height=3D"526" />
-</div>
-</a><br />
-<!-- END PARTNER PROGRAM -->
-<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
-/ems6=2Enet/u/?E=3DRET-XTC-DS5R-QM1FN-DD-LOGSA&EMail=3Dspi-devel-genera=
-l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
-s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
-t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QM1FN-DD-LOGSA-2"=
- width=3D"1" height=3D"1">
+</head><body>
+<div style="text-align: center;"><span style="font-size: 18pt;">
 
 
 
---===============0524676895063939541==
+
+
+
+
+
+
+<table border="0" width="100%">
+<tbody>
+<tr>
+<td>
+<div align="center"><img
+src="http://www.maverickmoneymakers.com/images/as-seen-on.gif" alt="As Seen
+On" width="616" height="58"/></div></td>
+</tr>
+</tbody>
+</table>
+<br/><div align="left">
+<div class="body-bold">Attention: Online Income Seeker, Di scover The Most
+Effective Step-By-Step Money Making System In Existence...</div>
+<div align="center"><br/>
+<br/>
+<span class="subhead-red-larger">"This System Makes Me At Least
+$171,168.06
+Per Month
+And You<br/>Can Start Using It
+15 Minutes From Now"...
+</span><br/><br/><br/>
+<span class="style3">"Guaranteed to work even if you're
+"un-motivated"...<br/>
+In fact, it's best if you only put in an hour or so per
+day!"<br/><br/><br/><br/></span></div>
+</div><br style="background-color: yellow;">
+
+
+
+<a style="background-color: yellow;"
+href="http://no-scam.com/emailmarketer/link.php?M=152848&N=115&L=8&F=H"
+target="_top">Click Here To Sign Up For Maverick Money Makers
+
+Risk F r e e
+Today!</a><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></span><a
+href="http://no-scam.com/emailmarketer/link.php?M=152848&N=115&L=2&F=H"
+style="color: rgb(153, 153, 153);"><span style="font-size: 8pt;">&nbsp;YOU
+ARE
+RECIVEING THIS EMAIL BECAUSE YOU ARE MEMBER OF </span></a><a
+target="_blank"
+href="http://no-scam.com/emailmarketer/link.php?M=152848&N=115&L=3&F=H"><span
+class="yshortcuts" id="lw_1226675511_3">no scam news</span></a> ,
+<br/><br/>To Unsubscribe from our list&nbsp; please click on the link
+following, :<br/><a
+href="http://no-scam.com/emailmarketer/unsubscribe.php?M=152848&C=3ea39ab6fe60b55e53e453ac2d997d5c&L=125&N=115">http://no-scam.com/emailmarketer/unsubscribe.php?M=152848&C=3ea39ab6fe60b55e53e453ac2d997d5c&L=125&N=115</a><br/><span
+style="font-size: 18pt;"><br/><br/>
+
+
+
+
+</span></div>
+<img
+src="http://no-scam.com/emailmarketer/open.php?M=152848&L=125&N=115&F=H"></body></html>
+
+
+--===============6278877142165884296==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -59,7 +101,7 @@ powering Web 2.0 with engaging, cross-platform capabilities. Quickly and
 easily build your RIAs with Flex Builder, the Eclipse(TM)based development
 software that enables intelligent coding and step-through debugging.
 Download the free 60 day trial. http://p.sf.net/sfu/www-adobe-com
---===============0524676895063939541==
+--===============6278877142165884296==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -70,4 +112,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0524676895063939541==--
+--===============6278877142165884296==--

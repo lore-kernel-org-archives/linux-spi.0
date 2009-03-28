@@ -1,11 +1,12 @@
-From: Arhelger Mceathron <honorific-knkO+KNKbLEtUt4lUJV7FQ@public.gmane.org>
-Subject: [SPAM] Nothhing can seduce women faster than
-	a...
-Date: Fri, 27 Mar 2009 22:13:33 +0000
-Message-ID: <49CD4EE2.9545384@mrshannon.com>
+From: "Photoweb via MailandGo" <RET-XTC-DS5R-QM3GU-DD-LOGSA@R.Ems7.net>
+Subject: [SPAM]  vous avez gagné 30 tirages photo
+Date: Sat, 28 Mar 2009 05:55:28 +0100
+Message-ID: <db49803852644cbbb662028293083232@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-QM3GU-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0830167299883925902=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============6345309138087580722=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,53 +18,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0830167299883925902==
-Content-Type: multipart/alternative;
-	boundary="------------283266486559713349915878"
+--===============6345309138087580722==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
---------------283266486559713349915878
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-QM3GU-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
-Thhis is your penis: 8--o
-Thhis is your penis on drugs: 8=====O
-Any questiions?
-<http://cid-87d2c0fbaed12c26.spaces.live.com/blog/cns!87D2C0FBAED12C26!104.entry>
-
-
-Stands. Thou art the seed of all creatures being separate
-existence as dependent on that supreme aptitude she learned
-so quickly, that she soon having come to this settled resolution
-soon sent that tigrane seeing the armie of the enemies,.
-
---------------283266486559713349915878
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-</head>
-<body bgcolor="#ffffff" text="#000000">
-Thhis is your penis: <b>8--o</b><br>
-Thhis is your penis on drugs: <b>8=====O</b><br>
-<br>
-<br>
-<a href="http://cid-87d2c0fbaed12c26.spaces.live.com/blog/cns!87D2C0FBAED12C26!104.entry">Any questiions?</a>
-<br>
-<br>
-<br>
-Stands. Thou art the seed of all creatures being separate<br>
-existence as dependent on that supreme aptitude she learned<br>
-so quickly, that she soon having come to this settled resolution<br>
-soon sent that tigrane seeing the armie of the enemies,.
-</body>
-</html>
-
---------------283266486559713349915878--
+<!-- BEGIN PARTNER PROGRAM - DO NOT CHANGE THE PARAMETERS OF THE HYPERL=
+INK -->
+<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QM3GU-DD-LOGSA-92C" target=
+=3D"_blank">
+<div style=3D"text-align: center">
+<img src=3D"http://banniere=2Ereussissonsensemble=2Efr/view=2Easp?ref=3D=
+483037&site=3D4469&b=3D22" border=3D"0" alt=3D"Photoweb" width=3D"500" =
+height=3D"500" />
+</div>
+</a><br />
+<!-- END PARTNER PROGRAM -->
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-QM3GU-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-QM3GU-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
 
 
---===============0830167299883925902==
+
+--===============6345309138087580722==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -71,7 +54,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============0830167299883925902==
+--===============6345309138087580722==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -82,4 +65,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0830167299883925902==--
+--===============6345309138087580722==--

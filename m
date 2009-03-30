@@ -1,11 +1,13 @@
-From: "admin" <admin-W2S52j3hmuVBDgjK7y7TUQ@public.gmane.org>
-Subject: Automated Google Software
-Date: Sun, 29 Mar 2009 14:24:02 +0100
-Message-ID: <b97039b8a421aff9f0386417eab49f62@no-scam.com>
-Reply-To: admin-W2S52j3hmuVBDgjK7y7TUQ@public.gmane.org
+From: "CreditGo via MailandGo" <RET-XTC-DS5R-Q52HU-DD-LOGSA@R.Ems7.net>
+Subject: =?iso-8859-1?q?Votre_pouvoir_d=27achat_peut-i?=
+	=?iso-8859-1?q?l_=EAtre_am=E9lior=E9_=3F?=
+Date: Mon, 30 Mar 2009 02:41:04 +0200
+Message-ID: <927457a3ee9b400b849bdcac816d55b4@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-Q52HU-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3907658497653227126=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0967291906744067347=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,81 +19,95 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3907658497653227126==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+--===============0967291906744067347==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-<html><head>
-</head><body>
-<div style="text-align: center;"><p style="text-align: center;"
-class="style1">From: David Lockley</p>
-              <p class="style1"><img
-src="http://www.mytrafficstrategy.com/images/traffic-box-150.jpg"
-width="150" align="right" height="206"/>Starting right now <span
-class="style6">YOU</span> can
-                use this very same strategy to <span
-class="style6">boost</span> traffic
-                to your website, any website, affiliate links, articles,
-you
-                name it! </p>
-              <p class="style1">And from the outset let's get the
-                cards on the table.
-                <strong>This has absolutely <span
-class="style1">NOTHING</span> to
-                do with advertising, SEO, Adwords, Adsense or Pay Per
-Click</strong> ...
-                I am sure<span class="style6"></span> you <span
-class="style6">WILL
-                NOT</span> have to pay a penny in advertising and I am
-sure that you have never heard of this before; I am sure that <span
-class="style6">NO ONE ELSE</span> has a
-              system even remotely like this!</p>
-              <p class="style1">My Traffic Strategy utilises a small but
-underdeveloped
-                piece of software created by and freely distributed by
-Google.
-                I have quite literally exploited Google's eagerness to
-work with
-                small developers by adapting this software (with Google's
-100%
-                approval of course), to allow anyone, literally anyone to
-siphon
-              traffic to any webpage they like. </p>
-              <p class="style1">Amazingly, I've discovered that by
-leveraging
-                this particular area of Google development,
-<em><strong>Google will positively
-                encourage and assist the likes of you and me to divert
-more and
-              more of their users to our own web pages.</strong></em></p>
-              <p class="style1">This is 0000 $$$ Traffic
-                  Strategy, that will <span class="style6">drive a
-super-highway
-              of traffic</span> predominantly from Google ... Yes,
-Google!</p><p class="style1"><br/></p></div>
-
-<div style="text-align: center;"><a style="background-color: yellow;"
-href="http://no-scam.com/emailmarketer/link.php?M=152848&N=211&L=9&F=H"
-target="_top">Click Here To Get It
-ToDay</a><br/><br/><br/><br/><br/><br/><br/><br/><br/></div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><a
-href="http://no-scam.com/emailmarketer/link.php?M=152848&N=211&L=2&F=H"
-style="color: rgb(153, 153, 153);"><span style="font-size: 8pt;">&nbsp;YOU
-ARE
-RECIVEING THIS EMAIL BECAUSE YOU ARE MEMBER OF </span></a><a
-target="_blank"
-href="http://no-scam.com/emailmarketer/link.php?M=152848&N=211&L=3&F=H"><span
-class="yshortcuts" id="lw_1226675511_3">no scam news</span></a> ,
-<br/><br/>To Unsubscribe from our list&nbsp; please click on the link
-following, :<br/><a
-href="http://no-scam.com/emailmarketer/unsubscribe.php?M=152848&C=3ea39ab6fe60b55e53e453ac2d997d5c&L=125&N=211">http://no-scam.com/emailmarketer/unsubscribe.php?M=152848&C=3ea39ab6fe60b55e53e453ac2d997d5c&L=125&N=211</a><br/><br/><br/>
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-Q52HU-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
 
 
-<img
-src="http://no-scam.com/emailmarketer/open.php?M=152848&L=125&N=211&F=H"></body></html>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8=
+859-1" />
+<title>Cr&eacute;diGo</title>
 
 
---===============3907658497653227126==
+
+<body><table width=3D"620" border=3D"0" align=3D"center" cellpadding=3D=
+"0" cellspacing=3D"0">
+  <tr>
+    <td height=3D"30">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><table width=3D"620" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" style=3D"border:solid 1px #FFD8EE">
+      <tr>
+        <td><a href=3D"http://action=2Emetaffiliation=2Ecom/suivi=2Ephp=
+?mclic=3DS413CD4B87C1516777222&urlrv=3Dhttp%3A%2F%2Fwww=2Enetmastering2=
+=2Enet%2FEFIJKLMNPTUX3478%2Fvisite%2Fwww=2Esolution-devis=2Ecom%2Fformu=
+laires_new%2Frachat-credit%2Findex=2Ephp%3Fcode%3Dcre9851%26prov%3Dneta=
+ffiliation%26id_crea%3DV1%26provEsk%3DEFIJKLMNPTUX3478&urlv=3Da0cb2c76e=
+95869bdfd25cb9da6018f31" target=3D"_blank"><img src=3D"http://static=2E=
+ad-mastering=2Enet/credigo/emailing/top=2Ejpg" border=3D"0" /></a></td>
+      </tr>
+      <tr>
+        <td><a href=3D"http://action=2Emetaffiliation=2Ecom/suivi=2Ephp=
+?mclic=3DS413CD4B87C1533554438&urlrv=3Dhttp%3A%2F%2Fwww=2Enetmastering2=
+=2Enet%2FEFIJKLMNPTUX3478%2Fvisite%2Fwww=2Esolution-devis=2Ecom%2Fformu=
+laires_new%2Frachat-credit%2Findex=2Ephp%3Fcode%3Dcre9851%26prov%3Dneta=
+ffiliation%26id_crea%3DV1%26provEsk%3DEFIJKLMNPTUX3478&urlv=3Da0cb2c76e=
+95869bdfd25cb9da6018f31" target=3D"_blank"><img src=3D"http://static=2E=
+ad-mastering=2Enet/credigo/emailing/clic=2Egif" border=3D"0" /></a></td=
+>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td style=3D"font-family: Verdana; font-size: 10px; color: #009AEE;=
+">&nbsp;</td>
+  </tr>
+  <tr>
+    <td style=3D"font-family: Verdana; font-size: 10px; color: #009AEE;=
+"><p>CREDIGO - Interm&eacute;diaire Bancaire &ndash; FINAPOLE &ndash; R=
+CS Amiens &ndash; SARL au capital de 100000&euro; - Siret 424 855 666=2E=
+ IOB mandat&eacute; par SYGMA BANQUE &ndash; 106/108, Avenue JF=2E Kenn=
+edy - 33696 MERIGNAC CEDEX=2E <br>
+      Listing &agrave; votre disposition sur simple demande=2E</p>
+    <p>Exemple r&eacute;el d&rsquo;un dossier financ&eacute; le 15/06/2=
+007=2E Pour des raisons de confidentialit&eacute; &eacute;videntes, nou=
+s pr&eacute;servons l&rsquo;identit&eacute; des emprunteurs=2E Pr&ecirc=
+;t personnel de 67811&euro; sur=20
+      une dur&eacute;e de 132 mois, accord&eacute; par notre partenaire=
+ bancaire SYGMA &ndash; 106/108 avenue JF Kennedy &ndash; 33696 MERIGNA=
+C CEDEX=2E Le TEG est de 8=2E67%=2E Sont inclus tous les=20
+      frais li&eacute;s &agrave; l&rsquo;op&eacute;ration conform&eacut=
+e;ment aux articles L313-1 &amp; L313=2E2 du Code de la Consommation, y=
+ compris notre r&eacute;mun&eacute;ration et les frais de dossiers, hor=
+s assurance=20
+      facultative=2E Le co&ucirc;t total du cr&eacute;dit sans assuranc=
+e est de 33906=2E66 &euro;=2E Conditions applicables aux cr&eacute;dits=
+ aux particuliers en vigueur au 31/05/2007=2E Financement accept&eacute=
+; par<br />
+    les clients le 31/05/2007=2E</p>
+    </td>
+  </tr>
+</table>
+
+<img src=3D"http://action=2Emetaffiliation=2Ecom/suivi=2Ephp?taff=3DS41=
+3CD4B87C156" width=3D"1" height=3D"1" border=3D"0"></body>
+
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-Q52HU-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q52HU-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
+
+
+
+--===============0967291906744067347==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -99,7 +115,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============3907658497653227126==
+--===============0967291906744067347==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -110,4 +126,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============3907658497653227126==--
+--===============0967291906744067347==--

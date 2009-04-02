@@ -1,23 +1,34 @@
-From: "Eleanor Diaz" <gary_wei-Cm7Ln4cMrJjENTYZowK78tBPR1lH4CV8@public.gmane.org>
-Subject: [SPAM] Best way to get the hottest chicks!
-Date: Wed, 1 Apr 2009 22:28:34 -0500
-Message-ID: <001701c9b33a$b8ab02e0$b27d59e1@USSTR3654ICAF1wdpknx>
+From: =?ISO-8859-1?Q?Daniel_Gl=F6ckner?= <dg@emlix.com>
+Subject: Re: [patch 3/6] xtensa: add spi mmc host to s6105 platform
+Date: Thu, 02 Apr 2009 12:31:29 +0200
+Message-ID: <49D49401.1090305@emlix.com>
+References: <1237822462-32109-1-git-send-email-dg@emlix.com> <1237822462-32109-3-git-send-email-dg@emlix.com> <200903241309.27310.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Chris Zankel <chris@zankel.net>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, Johannes Weiner <jw@emlix.com>
+To: David Brownell <david-b@pacbell.net>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S933527AbZDBKbs@vger.kernel.org>
+In-Reply-To: <200903241309.27310.david-b@pacbell.net>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-It gets you hard with minimal side effects! http://nu.zwefopcyn.com/
+On 03/24/2009 09:09 PM, David Brownell wrote:
+> Looks OK to me.  FWIW I don't expect to ack arch patches
+> that just use public interfaces...
 
+Then what do you think of patch 1/6 aka "spi: s6000 spi host driver"?
 
-------------------------------------------------------------------------------
+  Daniel
+
+--=20
+Dipl.-Math. Daniel Gl=F6ckner, emlix GmbH, http://www.emlix.com
+=46on +49 551 30664-0, Fax -11, Bahnhofsallee 1b, 37081 G=F6ttingen, Ge=
+rmany
+Gesch=E4ftsf=FChrung: Dr. Uwe Kracke, Dr. Cord Seele, Ust-IdNr.: DE 205=
+ 198 055
+Sitz der Gesellschaft: G=F6ttingen, Amtsgericht G=F6ttingen HR B 3160
+
+emlix - your embedded linux partner

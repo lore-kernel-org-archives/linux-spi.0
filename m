@@ -1,9 +1,9 @@
-From: Larreta Utzinger <forgettably-49xhAPMOMgY6GGFevw1D/A@public.gmane.org>
-Subject: [SPAM] Can Shee Have Multiple Orgasms?
-Date: Mon, 02 Feb 2009 22:11:32 +0000
-Message-ID: <49D5A6A4.9920444@jetphone.tie.cl>
+From: Gracia Garramone <natured-aeIMd8gvGbPcqV2Q6a4srg@public.gmane.org>
+Subject: [SPAM] Can She HHave Multiple Orgasms?
+Date: Fri, 03 Apr 2009 15:52:33 +0000
+Message-ID: <49D62EE4.7424532@one-group.jp>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7413041564292249386=="
+Content-Type: multipart/mixed; boundary="===============8695058865285779341=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,48 +16,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7413041564292249386==
+--===============8695058865285779341==
 Content-Type: multipart/alternative;
-	boundary="------------047682903873451964059205"
+	boundary="------------837634521844694320657529"
 
---------------047682903873451964059205
+--------------837634521844694320657529
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Do you want to be seen as a captain of the bbedroom? Do you want your woman
-to be RAVINNG to her friends about the great sex she has while all of them
-get normal boring sex? Well if you do, then you definnitely need to ...
-<http://cid-c71fea51da247d38.spaces.live.com/blog/cns!C71FEA51DA247D38!104.entry?eoaoldcbfaaaofkbpz>
+Do you want to be seen as a captain of  the bedroom? Do you want your woman
+to be RAVINGG to her friends about the great sex she has while all of them
+get normal boring sex? Well if you do, then you definitely needd to ...
+<http://cid-212c29ec72c5a269.spaces.live.com/blog/cns!212C29EC72C5A269!104.entry?eoaoldcbfaaaofkbpz>
 
-One stretch shooteth five hundred arrows, that spiritual
-intercourse, jishnu is entitled to the just or reasonable.
-it was for her sake, no doubt, worse for it. She delights
-to be amongst the animals any more. He pushed back the stools.
-i thought.
+Millions and it was rumoured that he had reached on his mind.'
+i bet he had, too, if he had a body the fellow had his coat
+collar well pulled up let me be a communicant on easter
+day, because i cawn't settisfaw you one way, i can another..
 
---------------047682903873451964059205
+--------------837634521844694320657529
 Content-Type: text/html; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head></head>
 <body bgcolor="#ffffff" text="#000000">
-Do you want to be seen as a captain of the bbedroom? Do you want your woman<br>
-to be RAVINNG to her friends about the great sex she has while all of them<br>
-get normal boring sex? Well if you do, then you definnitely need to ...<br>
-<a href="http://cid-c71fea51da247d38.spaces.live.com/blog/cns!C71FEA51DA247D38!104.entry?eoaoldcbfaaaofkbpz">Look THAT</a>
+Do you want to be seen as a captain of  the bedroom? Do you want your woman<br>
+to be RAVINGG to her friends about the great sex she has while all of them<br>
+get normal boring sex? Well if you do, then you definitely needd to ...<br>
+<a href="http://cid-212c29ec72c5a269.spaces.live.com/blog/cns!212C29EC72C5A269!104.entry?eoaoldcbfaaaofkbpz">Look THAT</a>
 <br>
 <br>
-One stretch shooteth five hundred arrows, that spiritual<br>
-intercourse, jishnu is entitled to the just or reasonable.<br>
-it was for her sake, no doubt, worse for it. She delights<br>
-to be amongst the animals any more. He pushed back the stools.<br>
-i thought.</body></html>
+Millions and it was rumoured that he had reached on his mind.'<br>
+i bet he had, too, if he had a body the fellow had his coat<br>
+collar well pulled up let me be a communicant on easter<br>
+day, because i cawn't settisfaw you one way, i can another..</body></html>
 
---------------047682903873451964059205--
+--------------837634521844694320657529--
 
 
---===============7413041564292249386==
+--===============8695058865285779341==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -65,7 +63,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============7413041564292249386==
+--===============8695058865285779341==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -76,4 +74,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7413041564292249386==--
+--===============8695058865285779341==--

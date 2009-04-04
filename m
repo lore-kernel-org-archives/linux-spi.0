@@ -1,10 +1,14 @@
-From: Deveau Nazir <kaolack-FrI7xnyVXPVmR6Xm/wNWPw@public.gmane.org>
-Subject: [SPAM] Inttense Female Orgasms
-Date: Sat, 04 Apr 2009 10:44:45 +0000
-Message-ID: <49D73751.3286208@woodaid.co.uk>
+From: "=?iso-8859-1?B?VHJhbnF1aWxpdOkgU2FudOkgdmlhIE1haWxhbmRHbw==?="
+	<RET-XTC-DS5R-Q7ZEG-DD-LOGSA@R.Ems7.net>
+Subject: Trois mois offert et un devis gratuit pour
+	votre mutuelle
+Date: Sat, 04 Apr 2009 14:14:39 +0200
+Message-ID: <be338b79089f40768a278b93f51a66a5@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-Q7ZEG-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1701711779755268756=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============7688724836252176083=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,23 +20,123 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1701711779755268756==
-Content-Type: multipart/alternative;
-	boundary="------------354413542421300502889201"
+--===============7688724836252176083==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
---------------354413542421300502889201
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-Q7ZEG-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
-Intense Female Orrgasms - The Real Secrets to Giving Her a Mind Blowing
-Orgasm Revealedd
-<http://cid-3b0cf3281e0fafbc.spaces.live.com/blog/cns!3B0CF3281E0FAFBC!104.entry?eoaoldcbfaaaofkbpz>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"579" a=
+lign=3D"center" bgcolor=3D"#ccff00">
+=09<tbody>
+=09=09<tr>
+=09=09=09<td rowspan=3D"3" width=3D"184"><a href=3D"http://ems6=2Enet/r=
+/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://static=2Ead-maste=
+ring=2Enet/Tranq_Sante/HD_01=2Egif" border=3D"0" alt=3D"STOP" width=3D"=
+184" height=3D"173" /></a></td>
+=09=09=09<td width=3D"197" height=3D"29">=A0</td>
+=09=09=09<td width=3D"198" height=3D"29">=A0</td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td colspan=3D"2" height=3D"119" align=3D"center" bgcolor=3D"#=
+000000"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E=
+"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/titre=2Egi=
+f" border=3D"0" alt=3D"aux compl=E9mentaires trop ch=E8res !" width=3D"=
+365" height=3D"81" /></a></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"197" height=3D"25">=A0</td>
+=09=09=09<td rowspan=3D"3" width=3D"198">
+=09=09=09<div align=3D"center">
+=09=09=09<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3=
+E"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/prix=2Egi=
+f" border=3D"0" alt=3D"prix" width=3D"148" height=3D"124" /></a>
+=09=09=09</div>
+=09=09=09</td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td colspan=3D"2" height=3D"82" align=3D"center"><a href=3D"ht=
+tp://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://=
+static=2Ead-mastering=2Enet/Tranq_Sante/raisons=2Egif" border=3D"0" alt=
+=3D"il est encore temps" width=3D"267" height=3D"72" /></a></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"184" height=3D"22">=A0</td>
+=09=09=09<td width=3D"197" height=3D"22">=A0</td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td colspan=3D"2" height=3D"187"><a href=3D"http://ems6=2Enet/=
+r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://static=2Ead-mast=
+ering=2Enet/Tranq_Sante/avantages=2Egif" border=3D"0" alt=3D"" width=3D=
+"381" height=3D"250" /></a></td>
+=09=09=09<td rowspan=3D"2" width=3D"198" valign=3D"bottom"><a href=3D"h=
+ttp://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http:/=
+/static=2Ead-mastering=2Enet/Tranq_Sante/petitefilleH2=2Egif" border=3D=
+"0" alt=3D"fillette" vspace=3D"15" width=3D"193" height=3D"270" /></a><=
+/td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td colspan=3D"2" height=3D"101"><a href=3D"http://ems6=2Enet/=
+r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://static=2Ead-mast=
+ering=2Enet/Tranq_Sante/bienvenue=2Egif" border=3D"0" alt=3D"texte2" wi=
+dth=3D"370" height=3D"95" /></a></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td colspan=3D"3" height=3D"77"><a href=3D"http://ems6=2Enet/r=
+/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://static=2Ead-maste=
+ring=2Enet/Tranq_Sante/decouvrez=2Egif" border=3D"0" alt=3D"Contactez" =
+width=3D"579" height=3D"77" /></a></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td colspan=3D"3" height=3D"91" align=3D"right" valign=3D"top"=
+><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img =
+src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/bouton=2Egif" bor=
+der=3D"0" alt=3D"Demande de documentation" vspace=3D"0" width=3D"400" h=
+eight=3D"80" /></a><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-D=
+D-LOGSA-H3E"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante=
+/famille_01=2Egif" border=3D"0" alt=3D"" vspace=3D"0" width=3D"140" hei=
+ght=3D"91" /></a></td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09<td width=3D"184" height=3D"77" align=3D"center" bgcolor=3D"#f=
+fffff"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"=
+><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/HD_16=2Egif=
+" border=3D"0" alt=3D"HD" width=3D"184" height=3D"70" /></a><img src=3D=
+"http://static=2Ead-mastering=2Enet/Tranq_Sante/swisslife=2Egif" alt=3D=
+"" width=3D"155" height=3D"16" /></td>
+=09=09=09<td colspan=3D"2" height=3D"77" valign=3D"top" bgcolor=3D"#fff=
+fff">
+=09=09=09<div align=3D"right">
+=09=09=09<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3=
+E"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/famille_0=
+2=2Egif" border=3D"0" alt=3D"" width=3D"140" height=3D"59" /></a><br />
+=09=09=09<br />
+=09=09=09</div>
+=09=09=09</td>
+=09=09</tr>
+=09=09<tr>
+=09=09=09=20
+=09=09=09<td class=3D"top" colspan=3D"3" bgcolor=3D"#ffffff">
+=09=09=09<font size=3D"2"><span>
+=09=09=09(1)   Offre valable pour l'option TM : Cotisation pour un adul=
+te de 19 ans option TM=2E Selon d=E9partement</span></font> </td>
+=09=09</tr>
+=09</tbody>
+</table>
+<img src=3D"http://nodes=2Ereactivpub=2Efr/mailing-208-12099-11008&grou=
+p=3D" border=3D"0" alt=3D"" width=3D"1" height=3D"1" />
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-Q7ZEG-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
 
 
 
---------------354413542421300502889201--
-
---===============1701711779755268756==
+--===============7688724836252176083==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -40,7 +144,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============1701711779755268756==
+--===============7688724836252176083==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -51,4 +155,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1701711779755268756==--
+--===============7688724836252176083==--

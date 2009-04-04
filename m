@@ -1,14 +1,11 @@
-From: "=?iso-8859-1?B?VHJhbnF1aWxpdOkgU2FudOkgdmlhIE1haWxhbmRHbw==?="
-	<RET-XTC-DS5R-Q7ZEG-DD-LOGSA@R.Ems7.net>
-Subject: Trois mois offert et un devis gratuit pour
-	votre mutuelle
-Date: Sat, 04 Apr 2009 14:14:39 +0200
-Message-ID: <be338b79089f40768a278b93f51a66a5@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-Q7ZEG-DD-LOGSA@R.Ems7.net
+From: =?GB2312?B?wdbQob3j?= <ahengxing668-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 我司有票据代办，税点0.9%左右，可验证后付款
+Date: Sat, 4 Apr 2009 21:53:15 +0800
+Message-ID: <E1Lq6FQ-0006q9-GA@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7688724836252176083=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,139 +17,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7688724836252176083==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-Q7ZEG-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
-
-<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"579" a=
-lign=3D"center" bgcolor=3D"#ccff00">
-=09<tbody>
-=09=09<tr>
-=09=09=09<td rowspan=3D"3" width=3D"184"><a href=3D"http://ems6=2Enet/r=
-/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://static=2Ead-maste=
-ring=2Enet/Tranq_Sante/HD_01=2Egif" border=3D"0" alt=3D"STOP" width=3D"=
-184" height=3D"173" /></a></td>
-=09=09=09<td width=3D"197" height=3D"29">=A0</td>
-=09=09=09<td width=3D"198" height=3D"29">=A0</td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"2" height=3D"119" align=3D"center" bgcolor=3D"#=
-000000"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E=
-"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/titre=2Egi=
-f" border=3D"0" alt=3D"aux compl=E9mentaires trop ch=E8res !" width=3D"=
-365" height=3D"81" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td width=3D"197" height=3D"25">=A0</td>
-=09=09=09<td rowspan=3D"3" width=3D"198">
-=09=09=09<div align=3D"center">
-=09=09=09<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3=
-E"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/prix=2Egi=
-f" border=3D"0" alt=3D"prix" width=3D"148" height=3D"124" /></a>
-=09=09=09</div>
-=09=09=09</td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"2" height=3D"82" align=3D"center"><a href=3D"ht=
-tp://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://=
-static=2Ead-mastering=2Enet/Tranq_Sante/raisons=2Egif" border=3D"0" alt=
-=3D"il est encore temps" width=3D"267" height=3D"72" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td width=3D"184" height=3D"22">=A0</td>
-=09=09=09<td width=3D"197" height=3D"22">=A0</td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"2" height=3D"187"><a href=3D"http://ems6=2Enet/=
-r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://static=2Ead-mast=
-ering=2Enet/Tranq_Sante/avantages=2Egif" border=3D"0" alt=3D"" width=3D=
-"381" height=3D"250" /></a></td>
-=09=09=09<td rowspan=3D"2" width=3D"198" valign=3D"bottom"><a href=3D"h=
-ttp://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http:/=
-/static=2Ead-mastering=2Enet/Tranq_Sante/petitefilleH2=2Egif" border=3D=
-"0" alt=3D"fillette" vspace=3D"15" width=3D"193" height=3D"270" /></a><=
-/td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"2" height=3D"101"><a href=3D"http://ems6=2Enet/=
-r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://static=2Ead-mast=
-ering=2Enet/Tranq_Sante/bienvenue=2Egif" border=3D"0" alt=3D"texte2" wi=
-dth=3D"370" height=3D"95" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"3" height=3D"77"><a href=3D"http://ems6=2Enet/r=
-/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img src=3D"http://static=2Ead-maste=
-ring=2Enet/Tranq_Sante/decouvrez=2Egif" border=3D"0" alt=3D"Contactez" =
-width=3D"579" height=3D"77" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td colspan=3D"3" height=3D"91" align=3D"right" valign=3D"top"=
-><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"><img =
-src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/bouton=2Egif" bor=
-der=3D"0" alt=3D"Demande de documentation" vspace=3D"0" width=3D"400" h=
-eight=3D"80" /></a><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-D=
-D-LOGSA-H3E"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante=
-/famille_01=2Egif" border=3D"0" alt=3D"" vspace=3D"0" width=3D"140" hei=
-ght=3D"91" /></a></td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09<td width=3D"184" height=3D"77" align=3D"center" bgcolor=3D"#f=
-fffff"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3E"=
-><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/HD_16=2Egif=
-" border=3D"0" alt=3D"HD" width=3D"184" height=3D"70" /></a><img src=3D=
-"http://static=2Ead-mastering=2Enet/Tranq_Sante/swisslife=2Egif" alt=3D=
-"" width=3D"155" height=3D"16" /></td>
-=09=09=09<td colspan=3D"2" height=3D"77" valign=3D"top" bgcolor=3D"#fff=
-fff">
-=09=09=09<div align=3D"right">
-=09=09=09<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-H3=
-E"><img src=3D"http://static=2Ead-mastering=2Enet/Tranq_Sante/famille_0=
-2=2Egif" border=3D"0" alt=3D"" width=3D"140" height=3D"59" /></a><br />
-=09=09=09<br />
-=09=09=09</div>
-=09=09=09</td>
-=09=09</tr>
-=09=09<tr>
-=09=09=09=20
-=09=09=09<td class=3D"top" colspan=3D"3" bgcolor=3D"#ffffff">
-=09=09=09<font size=3D"2"><span>
-=09=09=09(1)   Offre valable pour l'option TM : Cotisation pour un adul=
-te de 19 ans option TM=2E Selon d=E9partement</span></font> </td>
-=09=09</tr>
-=09</tbody>
-</table>
-<img src=3D"http://nodes=2Ereactivpub=2Efr/mailing-208-12099-11008&grou=
-p=3D" border=3D"0" alt=3D"" width=3D"1" height=3D"1" />
-<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
-/ems6=2Enet/u/?E=3DRET-XTC-DS5R-Q7ZEG-DD-LOGSA&EMail=3Dspi-devel-genera=
-l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
-s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
-t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-Q7ZEG-DD-LOGSA-2"=
- width=3D"1" height=3D"1">
-
-
-
---===============7688724836252176083==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-
---===============7688724836252176083==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============7688724836252176083==--
+ufO5q8u+KMbz0rUus6fJzCmyxs7xOiAKICAgIMT6usMhICAgICAgICAgCiAgICCxvsq10rW5q8u+
+yse80rTTysLDs9LXLsq10rW1xLTz0M28r83FuavLvizKx7zSvcm2qLbuy7C5q8u+oaO55sSj17O0
+8yzTtdPQ1tq24Ln6xNq5q8u+KLOnvNIpv827p6Gjsb65q8u+vObT0LT6wO3G5Mv7uavLvs3qy7Cj
+rNLUv827p7f+zvHWwcnPoaK7pbvdu6XA+7XE1K3U8qO70tTOyM3XoaK/7L3dtcS+rdOq1/e35yzJ
+7srcufrE2rmry74os6e80im1xNK71sLQxcjO0+u6w8bAoaMJCiAgILG+uavLvs/W09DT4LbuxrHP
+8s3itPrA7TooufrLsC612MuwKcuwtePTxbvdIQrSuy6xvrmry77P8rnzuavLvsrVyKHLsMLKLLC0
+v6rGsbXE19y98LbuMC45Jdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73dCtycwpoaMKtv4uv6rG
+sbe2zqcoyczGt8/6ytuhormks8yhorv60LWhornjuOahor2o1v6wstewoaK3/s7xoaLX4sHeoaLU
+y8rkoaK807mkzqzQ3rXIoa2hrSkKyP0uztK5q8u+y/m/qsaxyse38dXmyrXT0NCno6y/ybj5vt3G
+sb7dyc/N+LLp0a/R6daku/K5/dXKuvPU2bi2v+6howogICDBqs+1yMs6wdbI8CAo0rXO8db3udwp
+ICAgIMrWu/o6MTM3MTA3ODkzMjYKICAgICAgIMuz16MKICAgyczs9yEKICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICC649DLyrXStdPQz965q8u+CgotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
+LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
+ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
+cGktZGV2ZWwtZ2VuZXJhbAo=

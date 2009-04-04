@@ -1,12 +1,17 @@
-From: John Eze <john_eze23376-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org>
-Subject: [SPAM] DEAR : FRIEND
-Date: Sun, 5 Apr 2009 02:45:15 +0900 (JST)
-Message-ID: <20090404174515.57924.qmail@web4008.mail.ogk.yahoo.co.jp>
-Reply-To: john_eze_2345-/E1597aS9LTXPF5Rlphj1Q@public.gmane.org
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] spi: Add support for the OpenCores
+	SPI controller.
+Date: Sat, 4 Apr 2009 12:27:54 -0700
+Message-ID: <200904041227.54687.david-b@pacbell.net>
+References: <1238054874-28215-1-git-send-email-thierry.reding@avionic-design.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4715972965388745336=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Thierry Reding <thierry.reding-RM9K5IK7kjKj5M59NBduVrNAH6kLmebB@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1238054874-28215-1-git-send-email-thierry.reding-RM9K5IK7kjKj5M59NBduVrNAH6kLmebB@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,57 +22,226 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4715972965388745336==
-Content-Type: multipart/alternative; boundary="0-1533712417-1238867115=:57062"
+Hmm ... Open Hardware, Free Software.  Sounds like a good match!
 
---0-1533712417-1238867115=:57062
-Content-Type: text/plain; charset=iso-2022-jp
+This driver has some all-too-common failings though:
 
-新しいメールアドレスをお知らせします新しいメールアドレス： john_eze23376-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org
+ (a) doesn't correctly reject invalid device configurations
+     in the setup() method
 
-DEAR : FRIEND
+ (b) doesn't correctly reject unsupported per-message options
+     in the transfer() method
 
+ (c) the setup() method will trash concurrent transfers, since
+     it wrongly assumes there's only one device
 
-I AM JOHN EZE I WORK WITH THE CENTRAL BANK OF NIGERIA
-
-
-CAN YOU HELP ME CLEAR A PACKAGE THAT CONTAIN $20MILLION USD ALL IN $100 DOLLARS BILL, IF INTRESTED REPLY WITH YOUR HOUSE ADDRESS, TELEPHONE NUMBERS
-
+There are other minor nits too.
 
 
-REGARDS
+On Thursday 26 March 2009, Thierry Reding wrote:
+
+> +struct spioc {
+> +	struct spi_master *master;
+> +	struct spioc_info *info;
+
+Nothing in "info" is really needed after probe(); no
+point in recording it here.
 
 
-JOHN EZE
+> static void process_transfers(unsigned long data)
 
-- John Eze
-
-
---0-1533712417-1238867115=:57062
-Content-Type: text/html; charset=iso-2022-jp
-
-<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://i.yimg.jp/i/jp/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">新しいメールアドレスをお知らせします</big></td></tr></table><div style="padding:10px;">新しいメールアドレス： <b>john_eze23376-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org</b><br><br><span style="color:green;">DEAR : FRIEND<br><br><br>I AM JOHN EZE I WORK WITH THE CENTRAL BANK OF NIGERIA<br><br><br>CAN YOU HELP ME CLEAR A PACKAGE THAT CONTAIN $20MILLION USD ALL IN $100 DOLLARS BILL, IF INTRESTED REPLY WITH YOUR HOUSE ADDRESS, TELEPHONE NUMBERS<br><br><br><br>REGARDS<br><br><br>JOHN EZE</span><br><br>- <span style="color:green;">John
-  Eze</span></div></div>
---0-1533712417-1238867115=:57062--
+... buggy (by inference), see below
 
 
---===============4715972965388745336==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> +static int spioc_setup(struct spi_device *spi)
+> +{
+
+Hmm, you seem to have disregarded the Documentation/spi/spi-summary
+text describing what this does:
+
+	Unless each SPI slave has its own configuration registers, don't
+	change them right away ... otherwise drivers could corrupt I/O
+	that's in progress for other SPI devices.
+
+Because:
+
+
+> +	struct spioc *spioc = spi_master_get_devdata(spi->master);
+> +	unsigned long clkdiv = 0x0000ffff;
+> +	u32 ctrl = spioc_read(spioc, SPIOC_CTRL);
+
+CTRL is a controller-global register, not a per-chipselect one ...
+
+> +
+> +	/* make sure we're not busy */
+> +	ctrl &= ~CTRL_BUSY;
+> +
+> +	if (!spi->bits_per_word)
+> +		spi->bits_per_word = 8;
+> +
+> +	if (spi->mode & SPI_LSB_FIRST)
+> +		ctrl |=  CTRL_LSB;
+> +	else
+> +		ctrl &= ~CTRL_LSB;
+> +
+> +	/* adapt to clock polarity and phase */
+> +	if (spi->mode & SPI_CPOL) {
+> +		if (spi->mode & SPI_CPHA) {
+> +			ctrl |=  CTRL_TXNEG;
+> +			ctrl &= ~CTRL_RXNEG;
+> +		} else {
+> +			ctrl &= ~CTRL_TXNEG;
+> +			ctrl |=  CTRL_RXNEG;
+> +		}
+> +	} else {
+> +		if (spi->mode & SPI_CPHA) {
+> +			ctrl &= ~CTRL_TXNEG;
+> +			ctrl |=  CTRL_RXNEG;
+> +		} else {
+> +			ctrl |=  CTRL_TXNEG;
+> +			ctrl &= ~CTRL_RXNEG;
+> +		}
+> +	}
+
+Notice how you're accepting *all* spi->mode bits, instead of
+insisting that the only bits set there be ones you support.
+
+Best that you do something along the lines of
+
+/* mask of all SPI options this driver currently handles */
+#define MODEBITS (SPI_CPOL|SPI_CPHA|SPI_LSB_FIRST)
+
+	if (spi->mode & ~MODEBITS)
+		return -EINVAL;
+
+near the top of this routine.
+
+> +
+> +	/* set the clock divider */
+> +	if (spi->max_speed_hz)
+> +		clkdiv = DIV_ROUND_UP(clk_get_rate(spioc->clk),
+> +				2 * spi->max_speed_hz) - 1;
+> +
+> +	if (clkdiv > 0x0000ffff)
+> +		clkdiv = 0x0000ffff;
+
+Shouldn't you just be failing setup() if the slowest clock rate
+you support is still too fast for this peripheral?
+
+
+> +
+> +	spioc_write(spioc, SPIOC_DIV, clkdiv);
+> +	spioc_write(spioc, SPIOC_CTRL, ctrl);
+
+... here you reprogram parameters in use by the current
+transfer.
+
+Probably what you should do instead is compute the values to
+be used for those two registers, and save them in a struct
+referenced through spi_device.controller_state before you
+start any individual transfer.
+
+However, your process_transfers() currently seems to presume
+a global setup model; that will need to change.  Minimally
+you should set the transfer parameters for the current device.
+
+And it will need to cope with per-transfer overrides for the
+word size and bitrate, unless you reject them when messages
+get submitted.
+
+
+> +
+> +	/* deassert chip-select */
+> +	spioc_chipselect(spioc, NULL);
+> +
+> +	return 0;
+> +}
+> +
+> +static int spioc_transfer(struct spi_device *spi, struct spi_message *message)
+> +{
+> +	struct spi_master *master = spi->master;
+> +	struct spioc *spioc = spi_master_get_devdata(master);
+> +	unsigned long flags;
+
+Here you're accepting all messages, even ones that rely on
+mechanisms you don't support.  You should either implement
+the per-transfer wordsize, bitrate, and chipselect overrides;
+or else scan the transfer list of this message to make sure
+that no transfer requires them.
+
+> +
+> +	spin_lock_irqsave(&spioc->lock, flags);
+> +
+> +	list_add_tail(&message->queue, &spioc->queue);
+> +	queue_work(spioc->workqueue, &spioc->process_messages);
+> +
+> +	spin_unlock_irqrestore(&spioc->lock, flags);
+> +	return 0;
+> +}
+> +
+> +static void spioc_cleanup(struct spi_device *spi)
+> +{
+
+This would be where you should kfree() the struct holding
+per-device register settings that your setup() should allocate.
+
+Having such NOP methods should be a sign that something
+is wrong...
+
+> +}
+
+
+> +static int __devinit spioc_probe(struct platform_device *pdev)
+> +{
+> +	...
+> +
+> +	res = request_mem_region(res->start, res->end - res->start + 1,
+> +			res->name);
+
+I think resource_size(resource) should be used here and in the ioremap
+call below.
+
+> +	if (!res) {
+> +		dev_err(&pdev->dev, "unable to request memory region\n");
+> +		return -ENXIO;
+> +	}
+> +
+> +	mmio = ioremap_nocache(res->start, res->end - res->start + 1);
+> +	if (!mmio) {
+> +		dev_err(&pdev->dev, "can't remap I/O region\n");
+> +		retval = -ENXIO;
+> +		goto release;
+> +	}
+> +	...
+
+
+> +#ifdef CONFIG_PM
+> +static int spioc_suspend(struct platform_device *pdev, pm_message_t state)
+> +{
+> +	return -ENOSYS;
+> +}
+> +
+> +static int spioc_resume(struct platform_device *pdev)
+> +{
+> +	return -ENOSYS;
+> +}
+
+Why are you aborting system suspend transitions instead of
+just not supporting PM?  Better IMO to depend on !PM if
+this is trying to prevent nasty stuff from happening.
+
+
+> +
+> +struct spioc_info {
+> +	s16 bus_num;
+
+Better IMO to just use platform_device.id for this.
+
+> +	u16 num_chipselect;
+> +};
+> +
+> +#endif /* !LINUX_SPI_SPIOC_H */
+> +
+> 
 
 ------------------------------------------------------------------------------
-
---===============4715972965388745336==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4715972965388745336==--

@@ -1,11 +1,11 @@
-From: =?GB2312?B?wdbQob3j?= <ahengxing668-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 我司有票据代办，税点0.9%左右，可验证后付款
-Date: Sat, 4 Apr 2009 21:53:15 +0800
-Message-ID: <E1Lq6FQ-0006q9-GA@h25xhf1.ch3.sourceforge.com>
+From: John Eze <john_eze23376-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org>
+Subject: [SPAM] DEAR : FRIEND
+Date: Sun, 5 Apr 2009 02:45:15 +0900 (JST)
+Message-ID: <20090404174515.57924.qmail@web4008.mail.ogk.yahoo.co.jp>
+Reply-To: john_eze_2345-/E1597aS9LTXPF5Rlphj1Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============4715972965388745336=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,20 +17,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+KMbz0rUus6fJzCmyxs7xOiAKICAgIMT6usMhICAgICAgICAgCiAgICCxvsq10rW5q8u+
-yse80rTTysLDs9LXLsq10rW1xLTz0M28r83FuavLvizKx7zSvcm2qLbuy7C5q8u+oaO55sSj17O0
-8yzTtdPQ1tq24Ln6xNq5q8u+KLOnvNIpv827p6Gjsb65q8u+vObT0LT6wO3G5Mv7uavLvs3qy7Cj
-rNLUv827p7f+zvHWwcnPoaK7pbvdu6XA+7XE1K3U8qO70tTOyM3XoaK/7L3dtcS+rdOq1/e35yzJ
-7srcufrE2rmry74os6e80im1xNK71sLQxcjO0+u6w8bAoaMJCiAgILG+uavLvs/W09DT4LbuxrHP
-8s3itPrA7TooufrLsC612MuwKcuwtePTxbvdIQrSuy6xvrmry77P8rnzuavLvsrVyKHLsMLKLLC0
-v6rGsbXE19y98LbuMC45Jdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73dCtycwpoaMKtv4uv6rG
-sbe2zqcoyczGt8/6ytuhormks8yhorv60LWhornjuOahor2o1v6wstewoaK3/s7xoaLX4sHeoaLU
-y8rkoaK807mkzqzQ3rXIoa2hrSkKyP0uztK5q8u+y/m/qsaxyse38dXmyrXT0NCno6y/ybj5vt3G
-sb7dyc/N+LLp0a/R6daku/K5/dXKuvPU2bi2v+6howogICDBqs+1yMs6wdbI8CAo0rXO8db3udwp
-ICAgIMrWu/o6MTM3MTA3ODkzMjYKICAgICAgIMuz16MKICAgyczs9yEKICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICC649DLyrXStdPQz965q8u+CgotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
-LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
-ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
-cGktZGV2ZWwtZ2VuZXJhbAo=
+--===============4715972965388745336==
+Content-Type: multipart/alternative; boundary="0-1533712417-1238867115=:57062"
+
+--0-1533712417-1238867115=:57062
+Content-Type: text/plain; charset=iso-2022-jp
+
+$B?7$7$$%a!<%k%"%I%l%9$r$*CN$i$;$7$^$9?7$7$$%a!<%k%"%I%l%9!'(B john_eze23376-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org
+
+DEAR : FRIEND
+
+
+I AM JOHN EZE I WORK WITH THE CENTRAL BANK OF NIGERIA
+
+
+CAN YOU HELP ME CLEAR A PACKAGE THAT CONTAIN $20MILLION USD ALL IN $100 DOLLARS BILL, IF INTRESTED REPLY WITH YOUR HOUSE ADDRESS, TELEPHONE NUMBERS
+
+
+
+REGARDS
+
+
+JOHN EZE
+
+- John Eze
+
+
+--0-1533712417-1238867115=:57062
+Content-Type: text/html; charset=iso-2022-jp
+
+<div style="border: solid 1px #cccccc; width:448px; background-color:white; margin:10px 0px;";><table border=0 cellspacing=0 cellpadding=0 width="448"><tr><td class=tablot background="http://i.yimg.jp/i/jp/pim/gr/gr_announce_1.gif" valign=center height=57><big style="padding:10px;">$B?7$7$$%a!<%k%"%I%l%9$r$*CN$i$;$7$^$9(B</big></td></tr></table><div style="padding:10px;">$B?7$7$$%a!<%k%"%I%l%9!'(B <b>john_eze23376-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org</b><br><br><span style="color:green;">DEAR : FRIEND<br><br><br>I AM JOHN EZE I WORK WITH THE CENTRAL BANK OF NIGERIA<br><br><br>CAN YOU HELP ME CLEAR A PACKAGE THAT CONTAIN $20MILLION USD ALL IN $100 DOLLARS BILL, IF INTRESTED REPLY WITH YOUR HOUSE ADDRESS, TELEPHONE NUMBERS<br><br><br><br>REGARDS<br><br><br>JOHN EZE</span><br><br>- <span style="color:green;">John
+  Eze</span></div></div>
+--0-1533712417-1238867115=:57062--
+
+
+--===============4715972965388745336==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+
+--===============4715972965388745336==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4715972965388745336==--

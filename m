@@ -1,10 +1,10 @@
 From: "=?utf-8?B?VmlzaXQgQmFyY2Vsb25h?=" <catalunya-0mPAwttVeF3BJsykZ/ByYg@public.gmane.org>
 Subject: [SPAM] Visit Barcelona
-Date: Mon, 06 Apr 2009 21:33:51 +0200
-Message-ID: <20090406-21335192-1534-0@TAHOE>
+Date: Mon, 06 Apr 2009 22:05:31 +0200
+Message-ID: <20090406-22053102-181c-0@TAHOE>
 Mime-Version: 1.0
 Content-Type: multipart/mixed;
-	boundary="--=4C12BD926A104B20AA74_CC01_951B_7BBE"
+	boundary="--=87848EEECCF4488B83F2_8016_DDD3_00FB"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,7 +17,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-----=4C12BD926A104B20AA74_CC01_951B_7BBE
+----=87848EEECCF4488B83F2_8016_DDD3_00FB
 Content-Type: text/html;charset="UTF-8"
 Content-Transfer-Encoding: Quoted-Printable
 
@@ -66,11 +66,11 @@ px solid; border-top: #99cc00 1px solid; border-left: #99cc00 1px solid=
 ; border-bottom: #99cc00 1px solid' cellspacing=3D'2' cellpadding=3D'2'=
  width=3D'500' border=3D'0'>    <tbody>        <tr>            <td>    =
         <p align=3D'center'>Hotel Onix=C2=A0Rambla=C2=A0from=C2=A0<a hr=
-ef=3D'http://www.contact-mailing.com/public/url.aspx?val=3D-371329366&i=
+ef=3D'http://www.contact-mailing.com/public/url.aspx?val=3D-781584410&i=
 d=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=3D5355&fini=3D1=
 m2&dia=3D5&ffin=3D=2B12&nom=3Dhotel=2Bonix=2Brambla&habi=3D20&edades=3D=
 &idioma=3Den' href=3D'http://www.contact-mailing.com/public/url.aspx?va=
-l=3D-371329366&id=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=
+l=3D-781584410&id=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=
 =3D5355&fini=3D1m2&dia=3D5&ffin=3D=2B12&nom=3Dhotel=2Bonix=2Brambla&hab=
 i=3D20&edades=3D&idioma=3Den' alt=3D"http://www.vostoktours.com/" alt=3D=
 "http://www.vostoktours.com/">71 Euros</a></p>            </td>        =
@@ -79,11 +79,11 @@ ght: #99cc00 1px solid; border-top: #99cc00 1px solid; border-left: #99=
 cc00 1px solid; border-bottom: #99cc00 1px solid' cellspacing=3D'2' cel=
 lpadding=3D'2' width=3D'500' border=3D'0'>    <tbody>        <tr>      =
       <td>            <p align=3D'center'>Hotel Onix Liceo from=C2=A0<a=
- href=3D'http://www.contact-mailing.com/public/url.aspx?val=3D-37132936=
-6&id=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=3D5355&fini=3D=
+ href=3D'http://www.contact-mailing.com/public/url.aspx?val=3D-78158441=
+0&id=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=3D5355&fini=3D=
 1m2&dia=3D5&ffin=3D=2B12&nom=3Dhotel=2Bonix=2Bliceo&habi=3D20&edades=3D=
 &idioma=3Den' href=3D'http://www.contact-mailing.com/public/url.aspx?va=
-l=3D-371329366&id=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=
+l=3D-781584410&id=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=
 =3D5355&fini=3D1m2&dia=3D5&ffin=3D=2B12&nom=3Dhotel=2Bonix=2Bliceo&habi=
 =3D20&edades=3D&idioma=3Den' alt=3D"http://www.vostoktours.com/" alt=3D=
 "http://www.vostoktours.com/">71 Euros</a></p>            </td>        =
@@ -92,11 +92,11 @@ ght: #99cc00 1px solid; border-top: #99cc00 1px solid; border-left: #99=
 cc00 1px solid; border-bottom: #99cc00 1px solid' cellspacing=3D'2' cel=
 lpadding=3D'2' width=3D'500' border=3D'0'>    <tbody>        <tr>      =
       <td>            <p align=3D'center'>Hotel Onix Fira from=C2=A0<a =
-href=3D'http://www.contact-mailing.com/public/url.aspx?val=3D-371329366=
+href=3D'http://www.contact-mailing.com/public/url.aspx?val=3D-781584410=
 &id=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=3D5355&fini=3D=
 1m2&dia=3D5&ffin=3D=2B12&nom=3Dhotel=2Bonix=2Bfira&habi=3D20&edades=3D&=
 idioma=3Den' href=3D'http://www.contact-mailing.com/public/url.aspx?val=
-=3D-371329366&id=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=3D=
+=3D-781584410&id=3D55&dir=3Dhttp://www.vostoktours.com/reserveAlo?zona=3D=
 5355&fini=3D1m2&dia=3D5&ffin=3D=2B12&nom=3Dhotel=2Bonix=2Bfira&habi=3D2=
 0&edades=3D&idioma=3Den' alt=3D"http://www.vostoktours.com/" alt=3D"htt=
 p://www.vostoktours.com/">56 Euros</a></p>            </td>            =
@@ -106,9 +106,9 @@ p://www.vostoktours.com/">56 Euros</a></p>            </td>            =
 x solid' cellspacing=3D'2' cellpadding=3D'2' width=3D'500' border=3D'0'=
 >    <tbody>        <tr>            <td>            <p align=3D'center'=
 >Buy your flight from your ORIGIN to BARCELONA <a href=3D'http://www.co=
-ntact-mailing.com/public/url.aspx?val=3D-371329366&id=3D55&dir=3Dhttp:/=
+ntact-mailing.com/public/url.aspx?val=3D-781584410&id=3D55&dir=3Dhttp:/=
 /www.vostoktours.com/reserveVue/default.aspx' href=3D'http://www.contac=
-t-mailing.com/public/url.aspx?val=3D-371329366&id=3D55&dir=3Dhttp://www=
+t-mailing.com/public/url.aspx?val=3D-781584410&id=3D55&dir=3Dhttp://www=
 .vostoktours.com/reserveVue/default.aspx' alt=3D"http://www.vostoktours=
 .com/" alt=3D"http://www.vostoktours.com/"><span style=3D'color: #0000f=
 f'>Here</span></a></p>            </td>        </tr>    </tbody></table=
@@ -129,16 +129,16 @@ rge.net por Visit Barcelona.
 							Has recibido este mail porque est&aacute;s suscrito a nuestro bo=
 let&iacute;n. Si no deseas=20
 							seguir recibiendo este bolet&iacute;n haz <a href=3D"http://www.=
-contact-mailing.com/public/editar.aspx?val=3D-371329366&id=3D55">click =
+contact-mailing.com/public/editar.aspx?val=3D-781584410&id=3D55">click =
 aqu&iacute;</a>.
 						</td>
 					</tr>
 				</table>
 			</center>
-<img src=3D'http://www.contact-mailing.com/public/image.aspx?val=3D-371=
-329366&id=3D55'>
+<img src=3D'http://www.contact-mailing.com/public/image.aspx?val=3D-781=
+584410&id=3D55'>
 
-----=4C12BD926A104B20AA74_CC01_951B_7BBE
+----=87848EEECCF4488B83F2_8016_DDD3_00FB
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -149,7 +149,7 @@ This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.
 Download a free trial of Rational Requirements Composer Now!
 http://p.sf.net/sfu/www-ibm-com
-----=4C12BD926A104B20AA74_CC01_951B_7BBE
+----=87848EEECCF4488B83F2_8016_DDD3_00FB
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -160,4 +160,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-----=4C12BD926A104B20AA74_CC01_951B_7BBE--
+----=87848EEECCF4488B83F2_8016_DDD3_00FB--

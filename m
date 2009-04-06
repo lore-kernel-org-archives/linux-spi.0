@@ -1,11 +1,18 @@
-From: "China New Bridge Translation Expert" <gzxqfy-v3LAskRadZI@public.gmane.org>
-Subject: [SPAM] 鏂版ˉ瀛︽湳缈昏瘧鏈烘瀯
-Date: Mon, 6 Apr 2009 03:03:18 +0800
-Message-ID: <E1LqXcs-0000hz-H5@335xhf1.ch3.sourceforge.com>
-Reply-To: gzxqfy-v3LAskRadZI@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============4618414082097771313=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Mok Keith <ek9852-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: kernel-panic on pxa2xx_spi.c on pxa9xx cpu
+	with dma enable
+Date: Mon, 6 Apr 2009 10:22:29 +0800
+Message-ID: <69f617130904051922w72810b52v576546c10c069941@mail.gmail.com>
+References: <69f617130904042032o382f5084v4fe21884e2356c77@mail.gmail.com>
+	<49D8E537.1010307@whoi.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
+To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <49D8E537.1010307-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,279 +23,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4618414082097771313==
-Content-Type: text/html;charset="GB2312"
-Content-Transfer-Encoding: 8bit
+Hi Ned,
 
-<html>
+> Is your application using the SSP in some unusual way that allows the RX
+> FIFO to overrun? =A0I am not familiar with any PXA9xx chips. =A0What clock
+> speed are you using. =A0What timeout setting are you using? =A0Are you us=
+ing
+> power management with suspend/resume?
 
-<head>
-<meta http-equiv=Content-Type content="text/html; charset=gb2312">
-<meta name=Generator content="Microsoft Word 11 (filtered)">
-<title>Going beyond Words: Translations of Academic Integrity for
-Professionals, Businesses and the Community -- When Excellence is a Requirement</title>
+No, it is not allow RX FIFO overrun.
 
-<style>
-<!--
- /* Font Definitions */
- @font-face
-	{font-family:Wingdings;
-	panose-1:5 0 0 0 0 0 0 0 0 0;}
-@font-face
-	{font-family:宋体;
-	panose-1:2 1 6 0 3 1 1 1 1 1;}
-@font-face
-	{font-family:Gungsuh;
-	panose-1:2 3 6 0 0 1 1 1 1 1;}
-@font-face
-	{font-family:楷体_GB2312;
-	panose-1:2 1 6 9 3 1 1 1 1 1;}
-@font-face
-	{font-family:"\@宋体";
-	panose-1:2 1 6 0 3 1 1 1 1 1;}
-@font-face
-	{font-family:"\@Gungsuh";
-	panose-1:2 3 6 0 0 1 1 1 1 1;}
-@font-face
-	{font-family:"\@楷体_GB2312";
-	panose-1:2 1 6 9 3 1 1 1 1 1;}
- /* Style Definitions */
- p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	margin-bottom:.0001pt;
-	text-align:justify;
-	text-justify:inter-ideograph;
-	font-size:10.5pt;
-	font-family:"Times New Roman";}
-a:link, span.MsoHyperlink
-	{color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{color:purple;
-	text-decoration:underline;}
-p
-	{margin-right:0cm;
-	margin-left:0cm;
-	font-size:12.0pt;
-	font-family:宋体;}
- /* Page Definitions */
- @page Section1
-	{size:595.3pt 841.9pt;
-	margin:38.85pt 55.3pt 38.85pt 89.85pt;
-	layout-grid:15.6pt;}
-div.Section1
-	{page:Section1;}
- /* List Definitions */
- ol
-	{margin-bottom:0cm;}
-ul
-	{margin-bottom:0cm;}
--->
-</style>
+Here is the settings in arch:
+static struct pxa2xx_spi_chip libertas_spi=3D {
+        .tx_threshold           =3D 7,
+        .rx_threshold           =3D 8,
+        .cs_control             =3D libertas_spi_cs,
+        .dma_burst_size         =3D 8,
+        .timeout                =3D 230,
+};
 
-</head>
+Here is the settings in driver:
+        spi->mode =3D SPI_MODE_0;
+        spi->max_speed_hz =3D 1000000; /* REVISIT max=3D50MHz */
+        spi->bits_per_word =3D 16;
+        ret =3D spi_setup(spi);
 
-<body lang=ZH-CN link=blue vlink=purple style='text-justify-trim:punctuation'>
+I set the speed to : "spi->max_speed_hz =3D 1000000;" only, should be very =
+low.
+No power management has been enable, it just happen at the very
+beginning during firmware download to chip.
+I got a hint that if I enlarge the timeout to 1000, panic will not
+happen and FIFO overrun
+will not happen. But the chip just cannot run after firmware
+downloaded. (It is okay in pure PIO mode).
 
-<div class=Section1 style='layout-grid:15.6pt'>
+>
+> I have seen FIFO overruns in my application, but I use a heavily
+> modified version of pxa2xx_spi.c that implements descriptor-fetch DMA,
+> enables external clocks, and uses read-without-transmit (RWOT) mode, to
+> collect data from an 11Mbit/sec external master.
 
-<p class=MsoNormal style='line-height:12.0pt;layout-grid-mode:char'><b><i><span
-lang=EN-US style='font-size:10.0pt;font-family:Arial'>Going beyond Words:
-Translations of Academic Integrity for Professionals, Businesses and the
-Community -- When Excellence is a Requirement.</span></i></b></p>
+No modification to pxa2xx_spi.c in my case.
 
-<p class=MsoNormal style='margin-top:7.8pt'><span lang=EN-US style='font-size:
-8.0pt;font-family:Arial'>To remove your email </span><span lang=EN-US
-style='font-size:8.0pt;font-family:Arial'>from our mailing list, please reply
-to: gzxqfy-9Onoh4P/yGk@public.gmane.org</span></p>
+> Are you sure that your transfers are actually operating in DMA mode?
+> The driver reverts to PIO mode for any transfer that exceeds 8191bytes
+> in length.
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=624
- style='width:468.0pt;margin-left:5.4pt;border-collapse:collapse'>
- <tr>
-  <td width=624 valign=top style='width:468.0pt;border:double windowtext 1.5pt;
-  border-bottom:solid windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-top:7.8pt;margin-right:4.3pt;margin-bottom:
-  7.8pt;margin-left:8.9pt'><b><span lang=EN-US style='font-size:14.0pt;
-  font-family:Arial'>If you’re serious about translation, it’s time for you to
-  select <span style='color:blue'>Guangzhou</span><span style='color:blue'> New Bridge</span><span style='color:blue'> Translation</span> as your solid partner –</span></b></p>
-  <p class=MsoNormal align=center style='margin-top:7.8pt;margin-right:0cm;
-  margin-bottom:7.8pt;margin-left:0cm;text-align:center;line-height:12.0pt'><span
-  lang=EN-US style='font-family:Arial'>A PROFESSIONAL TRANSLATION AGENCY DRIVEN
-  BY ACADEMIC INTEGRITY</span></p>
-  </td>
- </tr>
- <tr>
-  <td width=624 valign=top style='width:468.0pt;border-top:none;border-left:
-  double windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:
-  double windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal align=center style='margin-top:7.8pt;margin-right:0cm;
-  margin-bottom:7.8pt;margin-left:0cm;text-align:center'><b><span
-  style='font-size:14.0pt;font-family:宋体'>严谨翻译，</span></b><b><span
-  style='font-size:14.0pt;font-family:宋体'>首选<span style='color:blue'>广州新桥中英文笔译专家</span></span></b><b><span
-  style='font-size:14.0pt;font-family:宋体'>！</span></b></p>
-  <p class=MsoNormal align=center style='margin-top:7.8pt;margin-right:4.3pt;
-  margin-bottom:7.8pt;margin-left:8.9pt;text-align:center;line-height:12.0pt'><b><span
-  style='font-size:12.0pt;font-family:宋体;letter-spacing:1.0pt'>研究院式的翻译机构</span></b><b><span
-  lang=EN-US style='font-size:12.0pt;font-family:宋体;letter-spacing:1.0pt'>&nbsp;&nbsp;&nbsp;
-  </span></b><b><span style='font-size:12.0pt;font-family:宋体;letter-spacing:
-  1.0pt'>用学术精神做翻译</span></b></p>
-  </td>
- </tr>
- <tr style='height:69.25pt'>
-  <td width=624 valign=top style='width:468.0pt;border-top:none;border-left:
-  double windowtext 1.5pt;border-bottom:none;border-right:double windowtext 1.5pt;
-  padding:0cm 5.4pt 0cm 5.4pt;height:69.25pt'>
-  <p class=MsoNormal style='margin-top:3.1pt;line-height:12.0pt'><b><span
-  lang=EN-US style='font-size:10.0pt;font-family:Arial'>We always make a
-  difference!</span></b><b><span lang=EN-US style='font-size:10.0pt;font-family:
-  Arial'> </span></b><b><span lang=EN-US style='font-size:10.0pt;font-family:
-  Arial'>We solemnly promise to serve you with:</span></b></p>
-  <p class=MsoNormal style='margin-top:0cm;margin-right:4.5pt;margin-bottom:
-  0cm;margin-left:21.45pt;margin-bottom:.0001pt;text-indent:-.05pt;line-height:
-  12.0pt'><span lang=EN-US style='font-size:10.0pt;font-family:宋体'>★</span><span
-  lang=EN-US style='font-size:10.0pt;font-family:Arial'> Academic integrity and
-  an assured outcome.</span></p>
-  <p class=MsoNormal style='margin-left:21.4pt;text-indent:.4pt;line-height:
-  12.0pt'><span lang=EN-US style='font-size:10.0pt;font-family:宋体'>★</span><span
-  lang=EN-US style='font-size:10.0pt;font-family:Arial'> International-level
-  quality but at the market prices of Mainland China.</span></p>
-  <p class=MsoNormal style='margin-top:3.1pt;line-height:12.0pt'><b><span
-  style='font-size:10.0pt;font-family:宋体'>我们始终出类拔萃！我们竭诚为您服务，并郑重承诺：</span></b></p>
-  <p class=MsoNormal style='margin-top:0cm;margin-right:4.5pt;margin-bottom:
-  0cm;margin-left:21.45pt;margin-bottom:.0001pt;text-indent:-.05pt;line-height:
-  12.0pt'><span lang=EN-US style='font-size:10.0pt;font-family:宋体'>★</span><span
-  lang=EN-US style='font-size:10.0pt;font-family:Arial'> </span><span
-  style='font-size:10.0pt;font-family:宋体'>学术精神，质量保证；</span></p>
-  <p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:3.1pt;
-  margin-left:21.4pt;line-height:12.0pt'><span lang=EN-US style='font-size:
-  10.0pt;font-family:宋体'>★</span><span lang=EN-US style='font-size:10.0pt;
-  font-family:Arial'> </span><span style='font-size:10.0pt;font-family:宋体'>大陆行价，国际水平。</span></p>
-  </td>
- </tr>
- <tr>
-  <td width=624 valign=top style='width:468.0pt;border-top:solid 1.0pt;
-  border-left:double 1.5pt;border-bottom:solid 1.0pt;border-right:double 1.5pt;
-  border-color:windowtext;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p style='margin-top:3.1pt;margin-right:0cm;margin-bottom:0cm;margin-left:
-  22.6pt;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;
-  text-indent:.7pt;line-height:12.0pt'><span lang=EN-US style='font-size:10.0pt;
-  font-family:Wingdings'>&#159;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span style='font-size:10.0pt'>专家型笔译服务</span></p>
-  <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:22.6pt;
-  margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;
-  text-indent:.7pt;line-height:12.0pt'><span lang=EN-US style='font-size:10.0pt;
-  font-family:Wingdings'>&#159;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span style='font-size:10.0pt'>经济型笔译服务</span></p>
-  <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:22.6pt;
-  margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;
-  text-indent:.7pt;line-height:12.0pt'><span lang=EN-US style='font-size:10.0pt;
-  font-family:Wingdings'>&#159;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span style='font-size:10.0pt'>加急型笔译服务</span></p>
-  <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:22.6pt;
-  margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;
-  text-indent:.7pt;line-height:12.0pt'><span lang=EN-US style='font-size:10.0pt;
-  font-family:Wingdings'>&#159;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span style='font-size:10.0pt'>外国专家润稿（编辑）服务</span></p>
-  <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:22.6pt;
-  margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;
-  text-indent:.7pt;line-height:12.0pt'><span lang=EN-US style='font-size:10.0pt;
-  font-family:Wingdings'>&#159;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span style='font-size:10.0pt'>免费提供中国法律档（中英文版）</span></p>
-  <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:22.6pt;
-  margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;
-  text-indent:.7pt;line-height:12.0pt'><span lang=EN-US style='font-size:10.0pt;
-  font-family:Wingdings'>&#159;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span lang=EN-US style='font-size:10.0pt;font-family:Arial'>Expert-level
-  Translation</span></p>
-  <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:22.6pt;
-  margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;
-  text-indent:.7pt;line-height:12.0pt'><span lang=EN-US style='font-size:10.0pt;
-  font-family:Wingdings'>&#159;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span lang=EN-US style='font-size:10.0pt;font-family:Arial'>Budget
-  Translation</span></p>
-  <p style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;margin-left:22.6pt;
-  margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;
-  text-indent:.7pt;line-height:12.0pt'><span lang=EN-US style='font-size:10.0pt;
-  font-family:Wingdings'>&#159;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span lang=EN-US style='font-size:10.0pt;font-family:Arial'>Urgent
-  Translation</span></p>
-  <p class=MsoNormal style='margin-left:22.6pt;text-indent:.7pt;line-height:
-  12.0pt'><span lang=EN-US style='font-size:10.0pt;font-family:Wingdings'>&#159;<span
-  style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span lang=EN-US style='font-size:10.0pt;font-family:Arial'>Copyediting
-  Service by Our Native English Language Area Experts</span></p>
-  <p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:3.1pt;
-  margin-left:22.6pt;text-indent:.7pt;line-height:12.0pt'><span lang=EN-US
-  style='font-size:14.0pt;font-family:Wingdings'>&#159;<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  </span></span><span lang=EN-US style='font-size:10.0pt;font-family:Arial'>Free
-  Bilingual Chinese Legal Documents Available </span></p>
-  </td>
- </tr>
- <tr>
-  <td width=624 valign=top style='width:468.0pt;border-top:none;border-left:
-  double windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;border-right:
-  double windowtext 1.5pt;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p style='margin-top:4.65pt;margin-right:0cm;margin-bottom:0cm;margin-left:
-  0cm;margin-bottom:.0001pt;text-align:justify;text-justify:inter-ideograph;
-  line-height:12.0pt'><b><span style='font-size:10.0pt'>外国专家润稿（编辑）服务 </span></b></p>
-  <p style='margin-top:0cm;margin-right:0cm;margin-bottom:3.1pt;margin-left:
-  22.7pt;text-align:justify;text-justify:inter-ideograph;line-height:12.0pt'><span
-  style='font-size:10.0pt'>本公司建立了稳定的外国英语专家润稿（编辑）团队。这些高级润稿专家均来自英国和美国，以英语为母语，十分精通英语，并具有丰富的英文编辑经验和相关专业背景。多年来，我们已经与中国地质大学、中国科学院下属多家研究所、深圳中西药研究所、西南科大、东南大学、中山大学等很多教育及学术机构建立了长期合作关系，为其专家、教授、学者编辑过大量英文学术论文，用于在英国、美国、香港、台湾等国际刊物发表。</span></p>
-  </td>
- </tr>
- <tr>
-  <td width=624 valign=top style='width:468.0pt;border:double windowtext 1.5pt;
-  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
-  <p class=MsoNormal style='margin-top:3.1pt;line-height:12.0pt'><b><span
-  lang=EN-US style='font-size:10.0pt;font-family:Arial'>For more information,
-  please contact us:</span></b></p>
-  <p class=MsoNormal style='line-height:12.0pt'><b><span style='font-size:10.0pt;
-  font-family:宋体'>如需更多信息，欢迎垂询：</span></b></p>
-  <p class=MsoNormal style='margin-right:3.8pt;line-height:12.0pt'><span
-  lang=FR style='font-size:10.0pt;font-family:Arial'>Tel: (8620) 87291876&nbsp;
-  37928316</span></p>
-  <p class=MsoNormal style='margin-right:3.8pt;line-height:12.0pt'><span
-  lang=FR style='font-size:10.0pt;font-family:Arial'>QQ: 188-266-149</span></p>
-  <p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:3.1pt;
-  margin-left:.85pt;line-height:12.0pt'><span lang=FR style='font-size:10.0pt;
-  font-family:Arial'>Email: <span class=MsoHyperlink><span style='color:windowtext;
-  text-decoration:none'><a href="mailto:gznewbridge-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org"><span
-  style='color:windowtext;text-decoration:none'>gznewbridge-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org</span></a>
-  </span></span></span></p>
-  </td>
- </tr>
-</table>
-
-<p class=MsoNormal><span lang=FR>&nbsp;</span></p>
-
-<p class=MsoNormal><span lang=FR>&nbsp;</span></p>
-
-<p class=MsoNormal><span lang=FR>&nbsp;</span></p>
-
-</div>
-
-</body>
-
-</html>
+I am sure it is in DMA mode since it hangs up during download of
+firmware to the chip
+which has length around 512 bytes only and is dma aligned. I had
+already add printk and
+confirm it.
 
 
---===============4618414082097771313==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> I would bet that the fundamental cause of your problem is the FIFO
+> overrun. =A0With some more information about your setup and use of
+> pxa2xx_spi, I might be able to provide more clues. =A0I would hesitate to
+> simply patch the above assignments without first understanding why
+> pump_transfers() is being executed out of sequence.
 
-------------------------------------------------------------------------------
+I agree, it is meaningless to just add a null pointer checking without
+knowning the execution sequence that leads to the problem.
 
---===============4618414082097771313==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Thanks,
+Keith
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4618414082097771313==--
+---------------------------------------------------------------------------=
+---

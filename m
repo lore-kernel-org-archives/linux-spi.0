@@ -1,8 +1,8 @@
-From: "Bertram Couch" <jsbigdaddy7-RPEaNS0KdFdWk0Htik3J/w@public.gmane.org>
-Subject: [SPAM] Make a smarter choice when it comes to
-	ordering meds online!
-Date: Wed, 8 Apr 2009 20:17:11 +0200
-Message-ID: <001801c9b86d$da79a100$e1aac8da@ManSnabrodjs>
+From: Phemie Sidower <littlemissvivica-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Get paid for your opinion!
+Date: Thu, 9 Apr 2009 01:26:37 +0800
+Message-ID: <44199.5026929819$1239211728@news.gmane.org>
+Reply-To: Phemie Sidower <19732susan.pangallo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,11 +18,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Spears caught in bath http://iiw.gooddrugworld.at/
-X-Antivirus: avast! (VPS 080611-1, 11.06.2008), Outbound message
-X-Antivirus-Status: Clean
+Here is a great way to earn some extra money in the comfort of your home!
+
+Our company is recruiting motivated individuals for participating in well-paid online surveys. You can get paid from $5 to $100 per survey, from $50 to $200 for a focus group discussion, and from $30 to $120 per product or service evaluation. You choose whether to receive a paycheck by mail or an on-line payment. 
+
+You may participate in as many surveys as you can to have fun and earn more! Your success depends only on your determination and devotion to the job! 
+
+If you are interested to join this wonderful work-from-home program, reply back to 1643virula.darren-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+
+With Respect,
+Consumer Opinion Administration
 
 
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to sign.out_me-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.

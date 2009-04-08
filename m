@@ -1,117 +1,121 @@
-From: =?iso-8859-1?Q?LEMERCIER_Gr=E9gory?= <glemercier-zjFYp9kwZlmZox4op4iWzw@public.gmane.org>
-Subject: Re: Patch submission for fixing a bug in the
-	SPIDEV driver.
-Date: Wed, 8 Apr 2009 10:32:53 +0200
-Message-ID: <51D9710FF5643747BB605F97B8DE56CD027734DA@STEGOSAURE.adetel.com>
-References: <51D9710FF5643747BB605F97B8DE56CD02773126@STEGOSAURE.adetel.com>
-	<200904071413.32917.david-b@pacbell.net>
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Subject: Re: [PATCH 6/6] powerpc/fsl_soc: Isolate legacy fsl_spi support to
+	mpc832x_rdb boards
+Date: Wed, 08 Apr 2009 11:18:43 +0200
+Message-ID: <87bpr71p1o.fsf_-_@macbook.be.48ers.dk>
+References: <20090123195041.GF21237@oksana.dev.rtsoft.ru>
+	<20090123194958.GA17355@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	=?iso-8859-1?Q?CLEMENT_Gr=E9gory?= <gclement-zjFYp9kwZlmZox4op4iWzw@public.gmane.org>
-To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-class: urn:content-classes:message
-In-Reply-To: <200904071413.32917.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org
+To: Anton Vorontsov <avorontsov@ru.mvista.com>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org>
+In-Reply-To: <20090318200048.GD8182@oksana.dev.rtsoft.ru> (Anton Vorontsov's
+	message of "Wed\, 18 Mar 2009 23\:00\:48 +0300")
+List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
+List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
+List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-Ok, after verification (that I definitely should have made earlier) it turn=
-s out that the issue comes from my SPI driver which does not make the conve=
-rsion "bytes / words to send". However, what got me confused in the first p=
-lace is in "Documentation/spi/spidev_test.c":
+>>>>> "Anton" == Anton Vorontsov <avorontsov@ru.mvista.com> writes:
 
+Hi,
 
-#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+ Anton> The advantages of this:
+ Anton> - Don't encourage legacy support;
+ Anton> - Less external symbols, less code to compile-in for !MPC832x_RDB
+ Anton>   platforms.
 
-static const char *device =3D "/dev/spidev1.1";
-static uint8_t mode;
-static uint8_t bits =3D 8;
-static uint32_t speed =3D 500000;
-static uint16_t delay;
+It's nice with your cleanups, but I wonder how to handle more
+complicated chip select handling than simply toggling a single gpio.
 
-...
+I have a board (or 2 actually, but they are similar in this regard)
+with a mpc8347 using SPI to a number of addon boards. For signal
+integrity reasons the SPI signals are routed to a MUX, so the chip
+select logic has to set the MUX in addition to controlling the CS line
+of the device.
 
-	uint8_t tx[] =3D {
-		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-		0x40, 0x00, 0x00, 0x00, 0x00, 0x95,
-		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-		0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD,
-		0xF0, 0x0D,
+I've been using code like this since late 2007, but this patch
+ofcourse breaks it:
+
+static void thinx_spi_activate_cs(u8 cs, u8 polarity)
+{
+	static u8 old_cs = 255;
+
+	if (cs != old_cs) {
+		/* mux setup (cs 2:1)*/
+		gpio_set_value(gpio1 + GPIO_SPI_MUX_NOE, 1);
+		gpio_set_value(gpio1 + GPIO_SPI_MUX_SEL0, cs&2);
+		gpio_set_value(gpio1 + GPIO_SPI_MUX_SEL1, cs&4);
+		gpio_set_value(gpio1 + GPIO_SPI_MUX_NOE, 0);
+		old_cs = cs;
+	}
+
+	switch (cs) {
+	case 0: gpio_set_value(gpio1 + GPIO_SPI_CS_BKL1, polarity); break;
+	case 1: gpio_set_value(gpio1 + GPIO_SPI_CS_BKL2, polarity); break;
+	case 2: gpio_set_value(gpio1 + GPIO_SPI_CS_OPT1, polarity); break;
+	case 3: gpio_set_value(gpio1 + GPIO_SPI_CS_OPT2, polarity); break;
+	}
+}
+
+static void thinx_spi_deactivate_cs(u8 cs, u8 polarity)
+{
+	switch (cs) {
+	case 0: gpio_set_value(gpio1 + GPIO_SPI_CS_BKL1, !polarity); break;
+	case 1: gpio_set_value(gpio1 + GPIO_SPI_CS_BKL2, !polarity); break;
+	case 2: gpio_set_value(gpio1 + GPIO_SPI_CS_OPT1, !polarity); break;
+	case 3: gpio_set_value(gpio1 + GPIO_SPI_CS_OPT2, !polarity); break;
+	}
+}
+
+static __init int thinx_spi_init(void)
+{
+	struct device_node *np;
+	struct of_gpio_chip *gc;
+	static const int gpios[] = {
+		GPIO_SPI_CS_BKL1,
+		GPIO_SPI_CS_BKL2,
+		GPIO_SPI_CS_OPT1,
+		GPIO_SPI_CS_OPT2,
+		GPIO_SPI_MUX_NOE,
+		GPIO_SPI_MUX_SEL0,
+		GPIO_SPI_MUX_SEL1
 	};
-	uint8_t rx[ARRAY_SIZE(tx)] =3D {0, };
-	struct spi_ioc_transfer tr =3D {
-		.tx_buf =3D (unsigned long)tx,
-		.rx_buf =3D (unsigned long)rx,
-		.len =3D ARRAY_SIZE(tx),
-		.delay_usecs =3D delay,
-		.speed_hz =3D speed,
-		.bits_per_word =3D bits,
-	};
+	int i;
 
+	np = of_find_node_by_name(NULL, "gpio-controller");
+	if (!np || !np->data) {
+		printk(KERN_ERR
+		       "gpio1 node not found or controller not registerred\n");
+		return -ENODEV;
+	}
+	gc = np->data;
+	gpio1 = gc->gc.base;
 
-ARRAY_SIZE here is used for both "number of elements in the array" and "num=
-ber of bytes of the array" which might be misleading in some cases. But I a=
-dmit that a quick look at spidev.h would have led me to the right way to go=
- :-)
+	for (i=0; i<ARRAY_SIZE(gpios); i++) {
+		gpio_request(gpio1 + gpios[i], "spi");
+		gpio_direction_output(gpio1 + gpios[i], 1);
+	}
 
-Anyway, thanks for your feedback.
+	fsl_spi_init(thinx_spi_boardinfo, ARRAY_SIZE(thinx_spi_boardinfo),
+		     thinx_spi_activate_cs, thinx_spi_deactivate_cs);
 
-Greg
+	return 0;
+}
 
------Message d'origine-----
-De=A0: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org] =
+Now, I don't quite see how to handle this with the new OF bindings -
+Any ideas?
 
-Envoy=E9=A0: mardi 7 avril 2009 23:14
-=C0=A0: LEMERCIER Gr=E9gory
-Cc=A0: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Objet=A0: Re: Patch submission for fixing a bug in the SPIDEV driver.
-
-On Tuesday 07 April 2009, LEMERCIER Gr=E9gory wrote:
-> When using the SPIDEV driver from the kernel, I found out that
-> there is a bug that occurs when sending words of width larger
-> than 8 bits. The buffer copy from Userspace will only copy =
-
-> "number of words" bytes where it should actually copy
-> "number of words * sizeof(word)" bytes.
-
-On closer examination ... <linux/spi/spidev.h> clearly
-specifies that this value is in bytes.  So, not a bug
-in the kernel, just in your userspace code.
-
-As a rule, you should expect buffers to be described to
-any OS using byte lengths; anything else is unusual.
-
-- Dave
-
-/**
- * struct spi_ioc_transfer - describes a single SPI transfer
- * @tx_buf: Holds pointer to userspace buffer with transmit data, or null.
- *	If no data is provided, zeroes are shifted out.
- * @rx_buf: Holds pointer to userspace buffer for receive data, or null.
- * @len: Length of tx and rx buffers, in bytes.
- * ...
-
-
-
-
-
-
-
-
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by:
-High Quality Requirements in a Collaborative Environment.
-Download a free trial of Rational Requirements Composer Now!
-http://p.sf.net/sfu/www-ibm-com
+-- 
+Bye, Peter Korsgaard

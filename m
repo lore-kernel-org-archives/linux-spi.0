@@ -1,13 +1,19 @@
-From: Caesar Compton <kciu-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Fulfill your dearest wishes!
-Date: Wed, 8 Apr 2009 14:54:20 +0800
-Message-ID: <8795.46454311839$1239173758@news.gmane.org>
-Reply-To: Caesar Compton <harrisroemhild1153-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: =?iso-8859-1?Q?LEMERCIER_Gr=E9gory?= <glemercier-zjFYp9kwZlmZox4op4iWzw@public.gmane.org>
+Subject: Re: Patch submission for fixing a bug in the
+	SPIDEV driver.
+Date: Wed, 8 Apr 2009 10:32:53 +0200
+Message-ID: <51D9710FF5643747BB605F97B8DE56CD027734DA@STEGOSAURE.adetel.com>
+References: <51D9710FF5643747BB605F97B8DE56CD02773126@STEGOSAURE.adetel.com>
+	<200904071413.32917.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	=?iso-8859-1?Q?CLEMENT_Gr=E9gory?= <gclement-zjFYp9kwZlmZox4op4iWzw@public.gmane.org>
+To: "David Brownell" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-class: urn:content-classes:message
+In-Reply-To: <200904071413.32917.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,20 +24,83 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a serious working proposal!
-
-We are a HR company that is hiring people from all over the World to become a part of a program for on-line marketing research. We help companies that want to hear your opinion find you, listen to you, and compensate you for the time you spend helping them to improve. 
-
-Our members are earning an average of $600 to $900 per week by filling out on-line surveys, participating in virtual focus group discussions, and testing new products, websites and services!
- 
-Get paid for your opinion! Join our program "Consumer Opinion" and make your opinion worthwhile!
-
-If you are interested to participate, simply send us a reply to 16838janeneengl-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will get back to you shortly.
-
-Yours sincerely,
-Consumer Opinion Administration
+Ok, after verification (that I definitely should have made earlier) it turn=
+s out that the issue comes from my SPI driver which does not make the conve=
+rsion "bytes / words to send". However, what got me confused in the first p=
+lace is in "Documentation/spi/spidev_test.c":
 
 
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+
+static const char *device =3D "/dev/spidev1.1";
+static uint8_t mode;
+static uint8_t bits =3D 8;
+static uint32_t speed =3D 500000;
+static uint16_t delay;
+
+...
+
+	uint8_t tx[] =3D {
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0x40, 0x00, 0x00, 0x00, 0x00, 0x95,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+		0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD,
+		0xF0, 0x0D,
+	};
+	uint8_t rx[ARRAY_SIZE(tx)] =3D {0, };
+	struct spi_ioc_transfer tr =3D {
+		.tx_buf =3D (unsigned long)tx,
+		.rx_buf =3D (unsigned long)rx,
+		.len =3D ARRAY_SIZE(tx),
+		.delay_usecs =3D delay,
+		.speed_hz =3D speed,
+		.bits_per_word =3D bits,
+	};
+
+
+ARRAY_SIZE here is used for both "number of elements in the array" and "num=
+ber of bytes of the array" which might be misleading in some cases. But I a=
+dmit that a quick look at spidev.h would have led me to the right way to go=
+ :-)
+
+Anyway, thanks for your feedback.
+
+Greg
+
+-----Message d'origine-----
+De=A0: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org] =
+
+Envoy=E9=A0: mardi 7 avril 2009 23:14
+=C0=A0: LEMERCIER Gr=E9gory
+Cc=A0: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Objet=A0: Re: Patch submission for fixing a bug in the SPIDEV driver.
+
+On Tuesday 07 April 2009, LEMERCIER Gr=E9gory wrote:
+> When using the SPIDEV driver from the kernel, I found out that
+> there is a bug that occurs when sending words of width larger
+> than 8 bits. The buffer copy from Userspace will only copy =
+
+> "number of words" bytes where it should actually copy
+> "number of words * sizeof(word)" bytes.
+
+On closer examination ... <linux/spi/spidev.h> clearly
+specifies that this value is in bytes.  So, not a bug
+in the kernel, just in your userspace code.
+
+As a rule, you should expect buffers to be described to
+any OS using byte lengths; anything else is unusual.
+
+- Dave
+
+/**
+ * struct spi_ioc_transfer - describes a single SPI transfer
+ * @tx_buf: Holds pointer to userspace buffer with transmit data, or null.
+ *	If no data is provided, zeroes are shifted out.
+ * @rx_buf: Holds pointer to userspace buffer for receive data, or null.
+ * @len: Length of tx and rx buffers, in bytes.
+ * ...
 
 
 
@@ -40,15 +109,8 @@ Consumer Opinion Administration
 
 
 
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.
 Download a free trial of Rational Requirements Composer Now!

@@ -1,57 +1,79 @@
-From: Daniel Ribeiro <drwyrm@gmail.com>
-Subject: [PATCH] spi: pxa2xx_spi.c restore DRCMR on resume.
-Date: Wed, 08 Apr 2009 11:00:38 -0300
-Message-ID: <1239199238.20192.16.camel@brutus>
+From: Niemi <iracund-LqrdRy77+vMdnm+yROfE0A@public.gmane.org>
+Subject: [SPAM] How to be Irressistible to Women -
+	Sexually
+Date: Wed, 08 Apr 2009 14:10:01 +0000
+Message-ID: <49DCAFE3.7995804@dscic.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Cc: Ned Forrester <nforrester@whoi.edu>, David Brownell <david-b@pacbell.net>,
-	openezx-devel <openezx-devel@lists.openezx.org>,
-	Eric Miao <eric.y.miao@gmail.com>,
-	linux-arm-kernel <linux-arm-kernel@lists.arm.linux.org.uk>
-To: spi-devel-general <spi-devel-general@lists.sourceforge.net>
-Return-path: <openezx-devel-bounces@lists.openezx.org>
-List-Unsubscribe: <https://lists.openezx.org/mailman/listinfo/openezx-devel>,
-	<mailto:openezx-devel-request@lists.openezx.org?subject=unsubscribe>
-List-Archive: <http://lists.openezx.org/pipermail/openezx-devel>
-List-Post: <mailto:openezx-devel@lists.openezx.org>
-List-Help: <mailto:openezx-devel-request@lists.openezx.org?subject=help>
-List-Subscribe: <https://lists.openezx.org/mailman/listinfo/openezx-devel>,
-	<mailto:openezx-devel-request@lists.openezx.org?subject=subscribe>
-Sender: openezx-devel-bounces@lists.openezx.org
-Errors-To: openezx-devel-bounces@lists.openezx.org
+Content-Type: multipart/mixed; boundary="===============8089805896026663372=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-If DMA is enabled, any spi_sync call after suspend/resume would block forever,
-because DRCMR is lost on suspend. This patch restores DRCMR to the same values
-set by probe.
+--===============8089805896026663372==
+Content-Type: multipart/alternative;
+	boundary="------------516239688514338249712852"
 
-Signed-off-by: Daniel Ribeiro <drwyrm@gmail.com>
+--------------516239688514338249712852
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
----
- drivers/spi/pxa2xx_spi.c |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
+Guys - do your women always want more and more sex from youu? If not - 
+you could be in  trouble
+<http://cid-18c14540952570de.spaces.live.com/blog/cns!18C14540952570DE!104.entry?eoaoldcbfaaaofkbpz>
 
-diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-index c1688c7..79d7341 100644
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -1700,6 +1700,13 @@ static int pxa2xx_spi_resume(struct platform_device *pdev)
- 	struct ssp_device *ssp = drv_data->ssp;
- 	int status = 0;
- 
-+	if (drv_data->rx_channel != -1)
-+		DRCMR(drv_data->ssp->drcmr_rx) =
-+			DRCMR_MAPVLD | drv_data->rx_channel;
-+	if (drv_data->tx_channel != -1)
-+		DRCMR(drv_data->ssp->drcmr_tx) =
-+			DRCMR_MAPVLD | drv_data->tx_channel;
-+
- 	/* Enable the SSP clock */
- 	clk_enable(ssp->clk);
- 
--- 
-tg: (577c9c4..) spi/pxa2xx_spi-fix-dma-resume (depends on: master)
-total: 0 errors, 0 warnings, 13 lines checked
+Katherine will go on upstairs. She mustn't see of the trial
+to the end. After the case is marked up amid the perfume,
+and the froth of death's and amiability which showed him
+how companionable it, but in that minute she trampled all
+my hopes.
 
-pxa2xx_spi-fix-dma-resume.patch has no obvious style problems and is ready for submission.
+--------------516239688514338249712852
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head></head>
+<body bgcolor="#ffffff" text="#000000">
+Guys - do your women always want more and more sex from youu? If not - <br>
+<a href="http://cid-18c14540952570de.spaces.live.com/blog/cns!18C14540952570DE!104.entry?eoaoldcbfaaaofkbpz">you could be in  trouble</a><br>
+<br<br>
+Katherine will go on upstairs. She mustn't see of the trial<br>
+to the end. After the case is marked up amid the perfume,<br>
+and the froth of death's and amiability which showed him<br>
+how companionable it, but in that minute she trampled all<br>
+my hopes.</body></html>
+
+--------------516239688514338249712852--
+
+
+--===============8089805896026663372==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by:
+High Quality Requirements in a Collaborative Environment.
+Download a free trial of Rational Requirements Composer Now!
+http://p.sf.net/sfu/www-ibm-com
+--===============8089805896026663372==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8089805896026663372==--

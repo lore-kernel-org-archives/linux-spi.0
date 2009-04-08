@@ -1,19 +1,12 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: kernel-panic on pxa2xx_spi.c on pxa9xx cpu
- with dma enable
-Date: Wed, 08 Apr 2009 11:19:57 -0400
-Message-ID: <49DCC09D.1040701@whoi.edu>
-References: <69f617130904042032o382f5084v4fe21884e2356c77@mail.gmail.com>	
-	<49D8E537.1010307@whoi.edu>
-	<69f617130904051922w72810b52v576546c10c069941@mail.gmail.com>
+From: Elodie du grattage en ligne <email-EDMMFeZ8Zt4MmjqBbUL2q//Y4X6HLzII@public.gmane.org>
+Subject: Grattez maintenant et encaissez maintenant
+Date: Wed, 8 Apr 2009 18:05:19 +0200 (CEST)
+Message-ID: <27529247630.5282434.1239206719870@schr1>
+Reply-To: Elodie du grattage en ligne <nepasrepondre-EDMMFeZ8Zt5BDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: Mok Keith <ek9852-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============6518836255584873188=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <69f617130904051922w72810b52v576546c10c069941-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,119 +17,323 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Sorry for the delayed response.
+--===============6518836255584873188==
+Content-Type: multipart/alternative; boundary=528243427529247630
 
-Mok Keith wrote:
-> Hi Ned,
-> 
->> Is your application using the SSP in some unusual way that allows the RX
->> FIFO to overrun?  I am not familiar with any PXA9xx chips.  What clock
->> speed are you using.  What timeout setting are you using?  Are you using
->> power management with suspend/resume?
-> 
-> No, it is not allow RX FIFO overrun.
-> 
-> Here is the settings in arch:
-> static struct pxa2xx_spi_chip libertas_spi= {
->         .tx_threshold           = 7,
->         .rx_threshold           = 8,
->         .cs_control             = libertas_spi_cs,
->         .dma_burst_size         = 8,
->         .timeout                = 230,
-> };
+--528243427529247630
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
 
-Keep in mind that threshold is measured in "registers", of which there
-are 16 in the FIFO (at least on PXA2xx devices), regardless of
-byte-width, while burst_size is measured in bytes.  So if you are doing
-16 bits_per_word (below), then the threshold should be 8 with a matching
-burst of 16; these values each equal 1/2 of the FIFO.  Also, matching
-the tx and rx thresholds at 8 and 8 makes more sense to me, however...
+   Click Here
 
-In DMA mode, the burst is significant, while the thresholds are ignored
-and computed from burst in set_dma_burst_and_threshold().  If the
-requested burst is more than 1/2 the FIFO for a given bits/word, then it
-is reduced accordingly before computing threshold.  If you give it burst
-of 8 at 16bits/word, it will compute a matching rx_threshold of 4, and a
-tx_threshold of 12 (not to be confused with the actual register values,
-which are one less: 3 and 11).
+           Si ce message n'apparaît pas correctement, suivez ce lien http://trc1.emv2.com/HM?a=A9X7Cq9OU8ph8XCnsq,aw6vilQ
+         Suivez ce lien si vous souhaitez ne plus recevoir nos emails http://trc1.emv2.com/HD?a=A9X7Cq9OU8ph8XCnsq,aw6jilg
 
-Try setting dma_burst_size to 16.  That will compute tx and rx
-thresholds of 8, representing half the FIFO.  That is the way I normally
-use the driver.  If there is a bug in the computation of burst and
-threshold, then this might change the behavior.
+                     Le No.1 des Jeux de Grattage en Ligne
+                                 ALLEZ-Y JOUEZ
 
---
+       La chance est de votre côté, nous vous offrons 5 Euros !!!
+       Aucun dépôt n'est requis.
 
-You did not show your values for struct pxa2xx_spi_master.  I assume you
-have enable_dma = 1, in this structure.
+       Scratch2Cash.com, le meilleur site de grattage en ligne au monde,
+       vous offre 5 Euros gratuits pour tenter votre chance, sans aucun
+       dépôt requis, ni obligation. Vous pouvez gagner 200 000 Euros !
 
-> Here is the settings in driver:
->         spi->mode = SPI_MODE_0;
->         spi->max_speed_hz = 1000000; /* REVISIT max=50MHz */
->         spi->bits_per_word = 16;
->         ret = spi_setup(spi);
-> 
-> I set the speed to : "spi->max_speed_hz = 1000000;" only, should be very low.
-> No power management has been enable, it just happen at the very
-> beginning during firmware download to chip.
-> I got a hint that if I enlarge the timeout to 1000, panic will not
-> happen and FIFO overrun
-> will not happen. But the chip just cannot run after firmware
-> downloaded. (It is okay in pure PIO mode).
+       Inscrivez-vous aujourd'hui pour vos 5 Euros gratuits, et
+       rejoignez des milliers d'heureux gagnants sur Scratch2Cash.com
 
-Timeout is an important setting.  It is used to clean up any trailing
-bytes at the end of a transfer that were not handled by DMA (due to
-transfer length not being divisible by burst-size, or whatever other
-cause).  If the timeout is too short, so that the timeout occurs between
-words, then spurious interrupts will be fielded and ignored; because you
-have 16bits/word at 1MHz, = 16us, this might be happening if you have a
-short timeout.  If the timeout is too long, you waste time at the end of
-any transfer with trailing bytes.
+       Tous vos rêves sont à un grattage près, n'attendez pas plus
+       longtemps, commencez à gratter dès maintenant.
 
-The difficult issue with the timeout is that it is not specified what
-clock is counted within the chip to generate the timeout.   That may
-seem strange, but the developer's manuals for the PXA255 and PXA270 say
-that the clock used for timing is the "peripheral clock" but never say
-what that clock is.  On the PXA255, running at 400MHz, I carefully
-measured the clock (using long timeouts) to be 99.5MHz, which is
-run-clock/4.  I have no idea what clock is used on a PXA3xx or PXA9xx.
-At 99.5MHz, the default timeout setting of 1000 results in a 10usec
-timeout, which is shorter than the time between your arriving 16-bit
-words.  If you really use a value of 230, and *if* the PXA9xx uses a
-similar clock to count from, then your timeout is only 2.3usec.  You
-probably want to use a value of at least 10,000.
+               Scratch2Cash - grattez et changez votre journée !
 
-I have no theory about why timeout interrupts might contribute to
-receiver FIFO overruns in DMA mode, however.
+        Bonne chance, John Sher Directeur  Le No.1 des Jeux de Grattage
+        Service Clientèle                                      en Ligne
+        www.Scratch2Cash.com
 
->> I would bet that the fundamental cause of your problem is the FIFO
->> overrun.  With some more information about your setup and use of
->> pxa2xx_spi, I might be able to provide more clues.  I would hesitate to
->> simply patch the above assignments without first understanding why
->> pump_transfers() is being executed out of sequence.
-> 
-> I agree, it is meaningless to just add a null pointer checking without
-> knowning the execution sequence that leads to the problem.
-> 
-> Thanks,
-> Keith
-> 
-> 
+       * Termes et conditions applicables à tous les bonus.
+
+    Conformément à la  loi «Informatique  et Libertés» du  6 janvier  1978,
+    vous disposez d'un droit d'accès, de rectification et d'opposition, aux
+    informations qui vous concernent. Vous  pouvez exercer ce droit  auprès
+    de l'émetteur  en  répondant  directement  à  cet  email.  Vous  pouvez
+    également obtenir  à  cette  adresse des  informations  concernant  les
+    transferts de données  mentionnés ci-dessus. Si  vous ne souhaitez  pas
+    recevoir  des  propositions  commerciales  de  notre  part  ou  de  nos
+    partenaires  par  voie   électronique,  merci  de   procéder  à   votre
+    désinscription.
+
+--528243427529247630
+Content-Type: text/html; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
 
 
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
 
+  
+  <title>March-crown-4312</title>
+</head>
+
+
+<body>
+
+
+<a href="http://trc1.emv2.com/HS?a=A9X7Cq9OU8ph8XCnsq,aw6nilw"><img src="http://ad.fr.doubleclick.net/ad/N5493.datamel_france/B3434868.2;sz=1x1;ord=123456789?" alt="Click Here" border="0" height="1" width="1" /></a>
+<br />
+
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td align="center"><font color="#999999"><b><small><font face="Verdana"><small>Si ce message
+n'appara&icirc;t pas correctement,&nbsp;<font color="#a0a0a0"><a href="http://trc1.emv2.com/HM?a=A9X7Cq9OU8ph8XCnsq,aw6vilQ">suivez
+ce lien</a><br />
+
+
+      </font></small></font></small></b></font><font color="#999999"><b><small><font face="Verdana"><small><a href="http://trc1.emv2.com/HD?a=A9X7Cq9OU8ph8XCnsq,aw6jilg">Suivez
+ce lien</a> si vous souhaitez ne plus recevoir nos emails</small></font></small></b></font></td>
+
+
+    </tr>
+
+
+    <tr>
+
+
+      <td height="10"></td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+
+
+  <tbody>
+
+
+    <tr valign="top">
+
+
+      <td>
+      
+      <table style="border: 1px solid black;" align="center" border="0" cellpadding="10" cellspacing="0" width="468">
+
+
+        <tbody>
+
+
+          <tr valign="middle">
+
+
+            <td align="center"><a href="http://trc1.emv2.com/HS?a=A9X7Cq9OU8ph8XCnsq,aw67iiA" target="_blank"><img style="border: 0px solid ; width: 400px; height: 300px;" alt="Le No.1 des Jeux de Grattage en Ligne" src="http://download.neogames-tech.com/Resources/HTMLEmails/4312/FRE_EUR.gif" /></a><br />
+
+
+            <a href="http://trc1.emv2.com/HS?a=A9X7Cq9OU8ph8XCnsq,aw6_iiQ" target="_blank"><img style="border: 0px solid ; width: 474px; height: 44px;" alt="ALLEZ-Y JOUEZ" src="http://download.neogames-tech.com/Resources/HTMLEmails/4312/download_gold_FRE.gif" /></a></td>
+
+
+          </tr>
+
+
+          <tr valign="top">
+
+
+            <td><b>La chance est de votre
+c&ocirc;t&eacute;, nous vous offrons 5 Euros !!!<br />
+
+
+Aucun
+d&eacute;p&ocirc;t n&rsquo;est requis. </b> </td>
+
+
+          </tr>
+
+
+          <tr valign="top">
+
+
+            <td>Scratch2Cash.com, le meilleur
+site de grattage en ligne au monde, vous offre 5 Euros gratuits pour
+tenter votre chance, sans aucun d&eacute;p&ocirc;t requis, ni
+obligation. Vous pouvez gagner 200 000 Euros !<br />
+
+
+            <br />
+
+
+Inscrivez-vous
+aujourd&rsquo;hui pour vos 5 Euros gratuits, et rejoignez des
+milliers d&rsquo;heureux gagnants sur Scratch2Cash.com </td>
+
+
+          </tr>
+
+
+          <tr valign="top">
+
+
+            <td>Tous
+vos
+r&ecirc;ves sont &agrave; un grattage pr&egrave;s,
+n&rsquo;attendez pas plus longtemps, commencez &agrave; gratter
+d&egrave;s maintenant.&nbsp; &nbsp;<br />
+
+
+            <br />
+
+
+            
+            <div style="text-align: center;"><a href="http://trc1.emv2.com/HS?a=A9X7Cq9OU8ph8XCnsq,aw6ziig" target="_blank"><b>Scratch2Cash
+- grattez et changez votre journ&eacute;e !</b></a></div>
+
+
+            </td>
+
+
+          </tr>
+
+
+          <tr valign="top">
+
+
+            <td align="center">
+            
+            <table border="0" cellpadding="20" cellspacing="0">
+
+
+              <tbody>
+
+
+                <tr valign="top">
+
+
+                  <td align="left" width="50%">Bonne
+chance, John Sher Directeur Service Client&egrave;le <a href="http://trc1.emv2.com/HS?a=A9X7Cq9OU8ph8XCnsq,aw63iiw" target="_blank">www.Scratch2Cash.com</a> </td>
+
+
+                  <td align="right" width="50%"> <a href="http://trc1.emv2.com/HS?a=A9X7Cq9OU8ph8XCnsq,aw6LijA" target="_blank"> <img style="border: 0px solid ; width: 192px; height: 65px;" alt="Le No.1 des Jeux de Grattage en Ligne" src="http://download.neogames-tech.com/Resources/HTMLEmails/1738/french_logo.gif" />
+                  </a> </td>
+
+
+                </tr>
+
+
+              
+              </tbody>
+            
+            </table>
+
+
+            </td>
+
+
+          </tr>
+
+
+          <tr>
+
+
+            <td><font size="-2"> * <a href="http://trc1.emv2.com/HS?a=A9X7Cq9OU8ph8XCnsq,aw6PijQ" target="_blank">Termes et conditions</a> applicables
+&agrave; tous les bonus.</font> </td>
+
+
+          </tr>
+
+
+        
+        </tbody>
+      
+      </table>
+
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td align="justify"><font color="#c0c0c0" face="Arial, Helvetica, sans-serif" size="1">Conform&eacute;ment
+&agrave; la loi &laquo;Informatique et
+Libert&eacute;s&raquo; du 6 janvier 1978, vous disposez d'un
+droit d'acc&egrave;s, de rectification et d'opposition, aux
+informations qui vous concernent. Vous pouvez exercer ce droit
+aupr&egrave;s de l'&eacute;metteur en r&eacute;pondant
+directement &agrave; cet email. Vous pouvez &eacute;galement
+obtenir &agrave; cette adresse des informations concernant les
+transferts de donn&eacute;es mentionn&eacute;s ci-dessus. Si
+vous ne souhaitez pas recevoir des propositions commerciales de notre
+part ou de nos partenaires par voie &eacute;lectronique, merci de
+proc&eacute;der &agrave; votre d&eacute;sinscription.</font></td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<br />
+
+
+<img src="http://trc1.emv2.com/HO?AdX7Cq9OU8ph8SCzZ6IfQXjnK9w6KvE.gif" border="0" alt="" width="1" height="1"></body>
+</html>
+
+--528243427529247630--
+
+
+
+--===============6518836255584873188==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.
 Download a free trial of Rational Requirements Composer Now!
 http://p.sf.net/sfu/www-ibm-com
+--===============6518836255584873188==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============6518836255584873188==--

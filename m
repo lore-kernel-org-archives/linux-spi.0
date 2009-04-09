@@ -1,12 +1,21 @@
-From: Pooley <fulani-qMvU5CJTFOYxHbG02/KK1g@public.gmane.org>
-Subject: How To Get A Girl To Do AAnything And
-	Everything In Bed
-Date: Thu, 09 Apr 2009 00:50:35 +0000
-Message-ID: <49DD4558.2877495@nbtravel.com>
+From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Kernel freeze caused by
+ a7bb3909b3293d503211d7f6af8ed62c1644b686
+Date: Wed, 08 Apr 2009 22:48:03 -0300
+Message-ID: <1239241683.1194.4.camel@brutus>
+References: <1239215313.11752.10.camel@brutus>
+	<f17812d70904081741n440fc5b4w35e55424e9c35a25@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6677122272502570519=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Eric Miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	linux-arm-kernel <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>,
+	spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <f17812d70904081741n440fc5b4w35e55424e9c35a25-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,58 +26,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6677122272502570519==
-Content-Type: multipart/alternative;
-	boundary="------------863176630915949181759817"
-
---------------863176630915949181759817
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-
-HHow To Get A Girl To Do Anything And Everything In Bed - Be Absolutely Mind Blowing
-<http://garciavdeyy.livejournal.com/737.html?eoaoldcbfaaaofkbpz>
-
-And boars and, indeed, all other animals that was only one
-of many remarkable personalities the muni vaishwanara and
-the muni kalakavrikhiya.
-
---------------863176630915949181759817
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head></head>
-<body bgcolor="#ffffff" text="#000000">
-<a href="http://garciavdeyy.livejournal.com/737.html?eoaoldcbfaaaofkbpz">HHow To Get A Girl To Do Anything And Everything In Bed - Be Absolutely Mind Blowing</a><br>
-<br>
-<br<br>
-And boars and, indeed, all other animals that was only one<br>
-of many remarkable personalities the muni vaishwanara and<br>
-the muni kalakavrikhiya.</body></html>
-
---------------863176630915949181759817--
-
-
---===============6677122272502570519==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by:
-High Quality Requirements in a Collaborative Environment.
-Download a free trial of Rational Requirements Composer Now!
-http://p.sf.net/sfu/www-ibm-com
---===============6677122272502570519==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6677122272502570519==--
+RW0gUXVpLCAyMDA5LTA0LTA5IMOgcyAwODo0MSArMDgwMCwgRXJpYyBNaWFvIGVzY3JldmV1Ogo+
+ID4gSSBiaXNlY3RlZCBpdCwgYW5kIGZvdW5kIHRoYXQgY29tbWl0Cj4gPiBhN2JiMzkwOWIzMjkz
+ZDUwMzIxMWQ3ZjZhZjhlZDYyYzE2NDRiNjg2IGlzIHRoZSBjdWxwcml0Lgo+ID4KPiA+IE15IGNv
+ZGUgc3RpbGwgdXNlcyBjc19jb250cm9sIHRvIHRvZ2dsZSB0aGUgQ1MgZ3Bpby4gSXMgeW91ciBj
+b21taXQKPiA+IHN1cHBvc2VkIHRvIGRlcHJlY2F0ZSBjc19jb250cm9sPwo+ID4KPiAKPiBObywg
+c2hvdWxkIGJlIGJhY2t3YXJkIGNvbXBhdGlibGUgYW5kIEkgdmVyaWZpZWQgaXQgYmVmb3JlIHN1
+Ym1pdHRpbmcKPiB0aGUgcGF0Y2guIENvdWxkIHlvdSBwbGVhc2UgaGVscCBpZGVudGlmeSB3aHkg
+aXQgZmFpbHMgYW5kIEknbSBnb2luZyB0bwo+IHJlcHJvZHVjZSBpdCBoZXJlIGFzIHdlbGwuCgpG
+aXggaXMgdHJpdmlhbCwgc29ycnkgZm9yIG5vdCBzZWVpbmcgdGhpcyBlYXJsaWVyLiBJIGhhdmUg
+bm8gaWRlYSB3aHkgbXkKZGV2aWNlIGZyZWV6ZXMgYXQgc3RhcnR1cCwgYnV0IHRoaXMgaXMgZW5v
+dWdoIHRvIGdldCBldmVyeXRoaW5nIHdvcmtpbmcKYWdhaW4uCgoKQ29ycmVjdCB0eXBvIG9uIHB4
+YTJ4eC1zcGkuYyBjc19kZWFzc2VydC4KClNpZ25lZC1vZmYtYnk6IERhbmllbCBSaWJlaXJvIDxk
+cnd5cm1AZ21haWwuY29tPgoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3B4YTJ4eF9zcGkuYyBi
+L2RyaXZlcnMvc3BpL3B4YTJ4eF9zcGkuYwppbmRleCA3OWQ3MzQxLi4xYTAwYjQxIDEwMDY0NAot
+LS0gYS9kcml2ZXJzL3NwaS9weGEyeHhfc3BpLmMKKysrIGIvZHJpdmVycy9zcGkvcHhhMnh4X3Nw
+aS5jCkBAIC0xOTUsNyArMTk1LDcgQEAgc3RhdGljIHZvaWQgY3NfZGVhc3NlcnQoc3RydWN0IGRy
+aXZlcl9kYXRhICpkcnZfZGF0YSkKIAlzdHJ1Y3QgY2hpcF9kYXRhICpjaGlwID0gZHJ2X2RhdGEt
+PmN1cl9jaGlwOwogCiAJaWYgKGNoaXAtPmNzX2NvbnRyb2wpIHsKLQkJY2hpcC0+Y3NfY29udHJv
+bChQWEEyWFhfQ1NfQVNTRVJUKTsKKwkJY2hpcC0+Y3NfY29udHJvbChQWEEyWFhfQ1NfREVBU1NF
+UlQpOwogCQlyZXR1cm47CiAJfQogCgotLSAKRGFuaWVsIFJpYmVpcm8KCgotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5OgpIaWdoIFF1YWxpdHkg
+UmVxdWlyZW1lbnRzIGluIGEgQ29sbGFib3JhdGl2ZSBFbnZpcm9ubWVudC4KRG93bmxvYWQgYSBm
+cmVlIHRyaWFsIG9mIFJhdGlvbmFsIFJlcXVpcmVtZW50cyBDb21wb3NlciBOb3chCmh0dHA6Ly9w
+LnNmLm5ldC9zZnUvd3d3LWlibS1jb20KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
+ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
+dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

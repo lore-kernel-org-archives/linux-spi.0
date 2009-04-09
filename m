@@ -1,11 +1,19 @@
-From: oleg zemlyanaya <olegzemlyanaya-PghkNxVxaSvk1uMJSBkQmQ@public.gmane.org>
-Subject: [SPAM] Корпоративное обучение по всей украине и зарубежом
-Date: Thu, 09 Apr 2009 09:50:13 +0400
-Message-ID: <1748167088.20090409095013@xx0007xx.net>
+From: =?iso-8859-1?Q?LEMERCIER_Gr=E9gory?= <glemercier-zjFYp9kwZlmZox4op4iWzw@public.gmane.org>
+Subject: Re: Patch submission for fixing a bug in the
+	SPIDEV driver.
+Date: Thu, 9 Apr 2009 11:06:11 +0200
+Message-ID: <51D9710FF5643747BB605F97B8DE56CD0279E811@STEGOSAURE.adetel.com>
+References: <51D9710FF5643747BB605F97B8DE56CD02773126@STEGOSAURE.adetel.com>
+	<200904071413.32917.david-b@pacbell.net>
+	<51D9710FF5643747BB605F97B8DE56CD027734DA@STEGOSAURE.adetel.com>
+	<200904082129.45057.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6367216397374672762=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="----_=_NextPart_001_01C9B8F2.6E352BCA"
+Cc: =?iso-8859-1?Q?CLEMENT_Gr=E9gory?= <gclement-zjFYp9kwZlmZox4op4iWzw@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-class: urn:content-classes:message
+In-Reply-To: <200904082129.45057.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,213 +24,172 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6367216397374672762==
-Content-Type: multipart/related;
-	boundary="----=_NextPart_000_0003_AB90C205.D80789F3"
+This is a multi-part message in MIME format.
 
-------=_NextPart_000_0003_AB90C205.D80789F3
-Content-Type: text/html;
-	charset=Windows-1251
+------_=_NextPart_001_01C9B8F2.6E352BCA
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Ok, here it is :
+
+--------Start of =
+File-------------------------------------------------------------------
+
+>From 65bbb516aa0e210b92548fd19e4b91d6317a6b1b Mon Sep 17 00:00:00 2001
+From: Gregory Lemercier <glemercier-HH5893ap9ioXz/+GnIZSFEEOCMrvLtNR@public.gmane.org>
+Date: Thu, 9 Apr 2009 10:55:34 +0200
+Subject: [PATCH] Changed ambiguous information in SPIDEV test sample =
+code
+
+
+Signed-off-by: Gregory Lemercier <glemercier-HH5893ap9ioXz/+GnIZSFEEOCMrvLtNR@public.gmane.org>
+---
+ Documentation/spi/spidev_test.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/Documentation/spi/spidev_test.c =
+b/Documentation/spi/spidev_test.c
+index cf0e3ce..315c0f1 100644
+--- a/Documentation/spi/spidev_test.c
++++ b/Documentation/spi/spidev_test.c
+@@ -51,7 +51,7 @@ static void transfer(int fd)
+ 	struct spi_ioc_transfer tr =3D {
+ 		.tx_buf =3D (unsigned long)tx,
+ 		.rx_buf =3D (unsigned long)rx,
+-		.len =3D ARRAY_SIZE(tx),
++		.len =3D sizeof(tx),
+ 		.delay_usecs =3D delay,
+ 		.speed_hz =3D speed,
+ 		.bits_per_word =3D bits,
+--=20
+1.5.4.3
+
+--------End of =
+File-------------------------------------------------------------------
+
+-----Message d'origine-----
+De=A0: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org]=20
+Envoy=E9=A0: jeudi 9 avril 2009 06:30
+=C0=A0: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc=A0: LEMERCIER Gr=E9gory; CLEMENT Gr=E9gory
+Objet=A0: Re: [spi-devel-general] Patch submission for fixing a bug in =
+the SPIDEV driver.
+
+On Wednesday 08 April 2009, LEMERCIER Gr=E9gory wrote:
+> Ok, after verification (that I definitely should have
+> made earlier) it turns out that the issue comes from
+> my SPI driver which does not make the conversion
+> "bytes / words to send". However, what got me confused
+> in the first place is in "Documentation/spi/spidev_test.c":   =20
+
+You might submit a patch for that ...
+
+
+> #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+>=20
+> static const char *device =3D "/dev/spidev1.1";
+> static uint8_t mode;
+> static uint8_t bits =3D 8;
+> static uint32_t speed =3D 500000;
+> static uint16_t delay;
+>=20
+> ...
+>=20
+> 	uint8_t tx[] =3D {
+> 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+> 		0x40, 0x00, 0x00, 0x00, 0x00, 0x95,
+> 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+> 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+> 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+> 		0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD,
+> 		0xF0, 0x0D,
+> 	};
+> 	uint8_t rx[ARRAY_SIZE(tx)] =3D {0, };
+> 	struct spi_ioc_transfer tr =3D {
+> 		.tx_buf =3D (unsigned long)tx,
+> 		.rx_buf =3D (unsigned long)rx,
+> 		.len =3D ARRAY_SIZE(tx),
+
+... making this be "sizeof tx".  You're right, someone seems to
+have gone out of their way to do the most misleading thing here.  :(
+
+
+> 		.delay_usecs =3D delay,
+> 		.speed_hz =3D speed,
+> 		.bits_per_word =3D bits,
+> 	};
+>=20
+>=20
+> ARRAY_SIZE here is used for both "number of elements in the array" and =
+"number of bytes of the array" which might be misleading in some cases. =
+But I admit that a quick look at spidev.h would have led me to the right =
+way to go :-)
+>=20
+> Anyway, thanks for your feedback.
+>=20
+> Greg
+>=20
+> -----Message d'origine-----
+> De=A0: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org]=20
+> Envoy=E9=A0: mardi 7 avril 2009 23:14
+> =C0=A0: LEMERCIER Gr=E9gory
+> Cc=A0: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> Objet=A0: Re: Patch submission for fixing a bug in the SPIDEV driver.
+>=20
+> On Tuesday 07 April 2009, LEMERCIER Gr=E9gory wrote:
+> > When using the SPIDEV driver from the kernel, I found out that
+> > there is a bug that occurs when sending words of width larger
+> > than 8 bits. The buffer copy from Userspace will only copy=20
+> > "number of words" bytes where it should actually copy
+> > "number of words * sizeof(word)" bytes.
+>=20
+> On closer examination ... <linux/spi/spidev.h> clearly
+> specifies that this value is in bytes.  So, not a bug
+> in the kernel, just in your userspace code.
+>=20
+> As a rule, you should expect buffers to be described to
+> any OS using byte lengths; anything else is unusual.
+>=20
+> - Dave
+>=20
+> /**
+>  * struct spi_ioc_transfer - describes a single SPI transfer
+>  * @tx_buf: Holds pointer to userspace buffer with transmit data, or =
+null.
+>  *	If no data is provided, zeroes are shifted out.
+>  * @rx_buf: Holds pointer to userspace buffer for receive data, or =
+null.
+>  * @len: Length of tx and rx buffers, in bytes.
+>  * ...
+>=20
+
+------_=_NextPart_001_01C9B8F2.6E352BCA
+Content-Type: application/octet-stream;
+	name="Changed-ambiguous-information-in-SPIDEV-test-sample.patch"
 Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBYSFRNTCAxLjAgVHJhbnNpdGlv
-bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL3hodG1sMS9EVEQveGh0bWwxLXRyYW5z
-aXRpb25hbC5kdGQiPg0KPGh0bWwgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0
-bWwiPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9
-InRleHQvaHRtbDsgY2hhcnNldD13aW5kb3dzLTEyNTEiIC8+DQo8dGl0bGU+Li4uPC90aXRs
-ZT4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQpib2R5LHRkLHRoIHsNCglmb250
-LWZhbWlseTogVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsNCn0NCi5z
-dHlsZTEge2ZvbnQtc2l6ZTogMTNweH0NCi5zdHlsZTIge2ZvbnQtc2l6ZTogMTVweH0NCi5z
-dHlsZTMgew0KCWNvbG9yOiAjMDA2NjAwOw0KCWZvbnQtd2VpZ2h0OiBib2xkOw0KfQ0KLnN0
-eWxlNCB7DQoJZm9udC1zaXplOiAxNHB4Ow0KCWZvbnQtd2VpZ2h0OiBib2xkOw0KfQ0KLnN0
-eWxlNiB7DQoJZm9udC1zaXplOiAxNXB4Ow0KCWZvbnQtc3R5bGU6IGl0YWxpYzsNCglmb250
-LXdlaWdodDogYm9sZDsNCn0NCi5zdHlsZTggew0KCWZvbnQtc2l6ZTogMTNweDsNCglmb250
-LXdlaWdodDogYm9sZDsNCglmb250LXN0eWxlOiBpdGFsaWM7DQp9DQouc3R5bGU5IHsNCglm
-b250LXNpemU6IDFweDsNCgljb2xvcjogI0ZGRkZGRjsNCn0NCi0tPg0KPC9zdHlsZT48L2hl
-YWQ+DQoNCjxib2R5Pg0KPGRpdiBhbGlnbj0iY2VudGVyIj4NCiAgPHA+PGltZyBzcmM9ImNp
-ZDpwZW5pdGVudGlhcnkuZ2lmIiB3aWR0aD0iMjAiIGhlaWdodD0iMTAiIC8+PC9wPg0KICA8
-dGFibGUgd2lkdGg9IjgwMCIgYm9yZGVyPSIxIj4NCiAgICA8dHI+DQogICAgICA8dGQ+PHAg
-YWxpZ249ImNlbnRlciIgY2xhc3M9InN0eWxlMSI+PHNwYW4gY2xhc3M9InN0eWxlMiI+PGEg
-aHJlZj0iaHR0cDovL3d3dy5uYmMudWEvIj7T9+Xh7fvpIC0g9uXt8vA8L2E+PGJyIC8+DQog
-ICAgICAgICAgICA8c3Ryb25nPu/w5eTr4OPg5fIg6u7w7+7w4PLo4u3u5SDu4fP35e3o5Swg
-5Ov/IMLg+OXpIOru7O/g7ejoLjxiciAvPg0KICAgICAgICDC7ufs7ubt++Ug8uXs+yDq7vDv
-7vDg8uji7fv1IO7h8/fl7ejpOjwvc3Ryb25nPjwvc3Bhbj48L3A+DQogICAgICAgIDxwIGNs
-YXNzPSJzdHlsZTEiPiZuYnNwO8zl7eXk5uzl7fIsIDxhIGhyZWY9Imh0dHA6Ly93d3cubmJj
-LnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9hcmhpdi95YW52YXJf
-MjAwOS9wb2RjaGluZW5ueWVfX3phY2hlbV9vbmlfbnV6aG55X2lfY2h0b19zX25pbWlfZGVs
-YXQuaHRtIj7z7/Dg4uvl7ejlIO/l8PHu7eDr7uw8L2E+LCDs7vLo4uD26P8g7+Xw8e7t4Ovg
-LCAg6u7s4O3k7u7h8ODn7uLg7ejlLCDu8OPg7ejn4Pbo/yAg4Ory6OLt+/UgJm5ic3A77/Du
-5ODmIOgg8ODh7vL7IPEg6uvo5e3y4OzoLCDr6Pft4P8g/fT05ery6OLt7vHy/CDoIPDg5+Lo
-8ujlLiDM4PDq5fLo7eMsIPDl6uvg7OAsIFBSICwg9Ojt4O3x+4U8L3A+DQogICAgICAgIDxw
-IGNsYXNzPSJzdHlsZTEiPiZuYnNwOzxzdHJvbmc+zOXy7uT7IPDg4e7y+yDxIOTu6+bt6Org
-7Ogg7+4g8uXr5fTu7fMuPC9zdHJvbmc+PC9wPg0KICAgICAgICA8cCBjbGFzcz0ic3R5bGUx
-Ij4gJm5ic3A7LSDS5evl7ODw6uXy6O3jIC0g7/Du5ODm6CDv7iDy5evl9O7t8zxiciAvPg0K
-ICAgICAgICAgICZuYnNwOy0gxOXr7uL75SDv5fDl4+7i7vD7LCD99PTl6vLo4u375SDv5fDl
-4+7i7vD7OiDx8vDg8uXj6P8gV0lOLVdJTiA8YnIgLz4NCiAgICAgICAgICAmbmJzcDstINLg
-6ewt7OXt5eTm7OXt8iDoIO/w6O326O/7IOTl6+Xj6PDu4uDt6P88YnIgLz4NCiAgICAgICAg
-ICAmbmJzcDstIENSTSCWIPHo8fLl7O3g/yDw4OHu8uAg8SDq6+jl7fLg7Og8YnIgLz4NCiAg
-ICAgICAgICAmbmJzcDstIMzg8fLl8CDv8OXn5e3y4Pbo6TxiciAvPg0KICAgICAgICAgICZu
-YnNwOy0g0ODh7vLgIPEg4u7n8ODm5e3o/+zoIOgg8e7s7eXt6P/s6CDq6+jl7fLgPGJyIC8+
-DQogICAgICAgICAgJm5ic3A7LSDE6PDl6vLu8CDv7iDv5fDx7u3g6/M6PGJyIC8+DQogICAg
-ICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7yuDqIPHy4PL8IPLu7y3s5e3l5Obl8O7sIOgg7+7i
-+/Ho8vwg5+3g9+js7vHy/CDx4u7l4+4g7+7k8ODn5OXr5e3o/zxiciAvPg0KICAgICAgICAg
-ICZuYnNwOy0gzvDj4O3o5+D26P8g4f7k5uXy7e7j7iDz7/Dg4uvl7ej/IOIg6u7s7+Dt6Ogg
-PGJyIC8+DQogICAgICAgICAgJm5ic3A7LSDU6O3g7fHu4uD/IOTo4OPt7vHy6OrgIOru7O/g
-7ejoIDxiciAvPg0KICAgICAgICAgICZuYnNwOy0gz+7x8uDt7uLq4CDz7/Dg4uvl7ffl8eru
-4+4g8/fl8uAg6CDh/uTm5fLo8O7i4O3o/yA8YnIgLz4NCiAgICAgICAgICAmbmJzcDstIM/r
-4O3o8O7i4O3o5SDw5efz6/zy4PLgIOgg7vbl7ergIPDg4e7y+zxiciAvPg0KICAgICAgICAg
-ICZuYnNwOy0gy+jk5fDx8uLuOiDu8iDv8O7l6vLgIOog/fT05ery8zxiciAvPg0KICAgICAg
-ICAgICZuYnNwOy0gzeDi++roIP309OXq8uji7fv1IOru7Ozz7ejq4Pbo6TxiciAvPg0KICAg
-ICAgICAgICZuYnNwOy0g0uX17ejq6CDoIPLl9e3u6+7j6Ogg4Ory6OLt+/Ug7/Du5ODmPGJy
-IC8+DQogICAgICAgICAgJm5ic3A7LSDBzs3T0S3x5fDi6PEsIPDl5/Pr/PLg8uji7fvlIO/w
-7uTg5ugg4iDw7uft6PblPGJyIC8+DQogICAgICAgICAgJm5ic3A7LSDT7/Dg4uvl7ejlIOv+
-5Pzs6Cwg8fLo7PPr6PDu4uDt6OUg6CDs7vLo4uD26P88YnIgLz4NCiAgICAgICAgICAmbmJz
-cDstINTu8Ozo8O7i4O3o5SDq7uzg7eT7IO7w6OXt8ujw7uLg7e3u6SDt4CDw5efz6/zy4PI8
-YnIgLz4NCiAgICAgICAgICAmbmJzcDstINHy8OXx8S3s5e3l5Obs5e3yPGJyIC8+DQogICAg
-ICAgICAgJm5ic3A7LSDO8OPg7ejn4Pbo7u3t4P8g8uXr5fTu7e3g/yDq8+v88vPw4CDiIPDg
-4e7y5SBjYWxsLfbl7fLw4C48YnIgLz4NCiAgICAgICAgICAmbmJzcDsmbmJzcDsmbmJzcDvU
-7vDs6PDu4uDt6OUg7+7n6PLo4u3u4+4g8uXr5fTu7e3u4+4g6Ozo5ObgIOru7O/g7ejoLjxi
-ciAvPg0KICAgICAgICAgICZuYnNwOy0gwOry5fDx6u7lIOzg8fLl8PHy4u4gKyDy5fXt6Org
-IPDl9+g8L3A+DQogICAgICAgIDxwIGNsYXNzPSJzdHlsZTEiPiAmbmJzcDs8c3Ryb25nPsvu
-4+jx8ujq4Do8L3N0cm9uZz4gPGJyIC8+DQogICAgICAgICZuYnNwO+ru8O/u8ODy6OLt4P8g
-6O3y5ePw6PDu4uDt7eD/IOvu4+jx8ujq4Cwg/fT05ery6OLt7uUg8+/w4OLr5e3o5SDn4O/g
-8eDs6Cwg8err4OTx6uD/IOvu4+jx8ujq4CwgICZuYnNwO/Lw4O3x7+7w8u3g/yDr7uPo8fLo
-6uCFIDwvcD4NCiAgICAgICAgPHAgY2xhc3M9InN0eWxlMSI+ICZuYnNwOzxzdHJvbmc+wuDm
-7e7lIOfg7OX34O3o5S48L3N0cm9uZz48YnIgLz4NCiAgICAgICAgICAmbmJzcDvU7vDs+ywg
-7OXy7uT7IOgg6u7t6vDl8u3g/yDy5ezg8ujq4CDw4Ofw4OHg8vvi4OXy8f8g7eDs6CDv7iDo
-7eTo4ujk8+Dr/O3u7PMgIOfg7/Du8fMgIOgg5Ov/IPDl+OXt6P8gJm5ic3A7wuD46PUg6u7t
-6vDl8u379SDz7/Dg4uvl7ffl8ero9SDn4OTg9y4g0uDq6Owg7uHw4Ofu7Cwgwvsg/eru7e7s
-6PLlIMLg+OUgIOTw4OPu9uXt7e7lIOLw5ez/LCAg7eUgJm5ic3A77+Xw5e/r4Pfo4uDl8uUg
-5+Ag7eUg7fPm7fvlIMLg7CDn7eDt6P8g6CDx7vXw4O3/5fLlIPHi7ukg5PP45eLt++kg6u7s
-9O7w8i48L3A+DQogICAgICA8cCBjbGFzcz0ic3R5bGUxIj4mbmJzcDvO4fP35e3o5SDs7ubl
-8iDv8O7i7uTo8vzx/yDq4Oog4iA8YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9wYWdlcy9z
-ZXJ2aWNlcy9ob3RlbHMuaHRtIj7K6OXi5TwvYT4sIPLg6iDoIOIgPGEgaHJlZj0iaHR0cDov
-L3d3dy5uYmMudWEvcGFnZXMvc2VydmljZXMvc2VtaW5hcnMtYWJyb2FkLmh0bSI+6/7h7uwg
-4+7w7uTlINPq8ODo7fsg6CDs6PDgPC9hPi4gyu7w7+7w4PLo4vsgIOzu4/PyICDv8O717uTo
-8vwgJm5ic3A77eAg8uXw8Ojy7vDo6CDn4Org5/fo6uAg6OvoIOIg7eD45ewg8/fl4e3u7CD2
-5e3y8OUuINLg6ublIO3g+Ogg7OXt5eTm5fD7IOjs5f7yICDi7ufs7ubt7vHy/CAgJm5ic3A7
-7vDj4O3o5+7i4PL8IOzl8fLuIO/w7uLl5OXt6P8g7uHz9+Xt6P8g5+Ag7/Dl5OXr4OzoIMro
-5eLgICjt4O/w6Ozl8Cwg4iDn4OPu8O7k7fv1IO7y5ev/9SwgIOrl7O/o7ePg9SwgICZuYnNw
-O+/g7fHo7u3g8uD1KS48aHIgLz4NCiAgICAgIDx0YWJsZSB3aWR0aD0iMTAwIiBib3JkZXI9
-IjAiIGNlbGxwYWRkaW5nPSI1Ij4NCiAgICAgICAgPHRyPg0KICAgICAgICAgIDx0ZD48c3Bh
-biBjbGFzcz0ic3R5bGU2Ij7RIPPi4Obl7ejl7CwgPC9zcGFuPjwvdGQ+DQogICAgICAgIDwv
-dHI+DQogICAgICAgIDx0cj4NCiAgICAgICAgICA8dGQ+PHRhYmxlIHdpZHRoPSI5OCIgYm9y
-ZGVyPSIwIj4NCiAgICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgICAgPHRkPjxpbWcgc3Jj
-PSJjaWQ6Y2hhbmNlbHMuZ2lmIiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIC8+PC90ZD4NCiAg
-ICAgICAgICAgICAgPHRkPjxkaXYgYWxpZ249ImNlbnRlciI+PHNwYW4gY2xhc3M9InN0eWxl
-NCI+wcjHSEVDLdZFSFRQPC9zcGFuPjxiciAvPg0KICAgICAgICAgICAgICAgICAgPHNwYW4g
-Y2xhc3M9InN0eWxlMyI+JnF1b3Q7SEHWyE9IQcvcSNvJJnF1b3Q7PC9zcGFuPjwvZGl2Pjwv
-dGQ+DQogICAgICAgICAgICA8L3RyPg0KICAgICAgICAgIDwvdGFibGU+PC90ZD4NCiAgICAg
-ICAgPC90cj4NCiAgICAgICAgPHRyPg0KICAgICAgICAgIDx0ZD48aW1nIHNyYz0iY2lkOmds
-aWJiZXN0LmdpZiIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIyMCIgLz48L3RkPg0KICAgICAgICA8
-L3RyPg0KICAgICAgPC90YWJsZT4NCiAgICAgIDxwPjxzcGFuIGNsYXNzPSJzdHlsZTgiPiZu
-YnNwO1N1Y2Nlc3MgaW4gYnVzaW5lc3MhPC9zcGFuPjwvcD4gICAgICA8L3RkPg0KICAgIDwv
-dHI+DQogIDwvdGFibGU+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8
-cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4m
-bmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJz
-cDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8
-L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+
-DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQog
-IDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxw
-PiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZu
-YnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNw
-OzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwv
-cD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4N
-CiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAg
-PHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+
-Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5i
-c3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7
-PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9w
-Pg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0K
-ICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8
-cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4m
-bmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJz
-cDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8
-L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+
-DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQog
-IDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxw
-PiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZu
-YnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNw
-OzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwv
-cD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4N
-CiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwIGNsYXNzPSJzdHlsZTki
-PvHr8/fg6e375SDx8vDu6ug66iDtIFBvbG92b3lQQUB1cmQudXJhbHNpYi5yde3o5ewg8GFu
-Z2VsQHJlZ2lvbnJrLnJ1CeLr5e3o5SDwYWkwZHdxYTVAYmRzLnJ1CSDNIDd0YW50YW43QGdt
-YWlsLmNvbTwvcD4NCjwvZGl2Pg0KPC9ib2R5Pg0KPC9odG1sPg0K
-
-
-------=_NextPart_000_0003_AB90C205.D80789F3
-Content-Type: image/gif;
-	name="chancels.gif"
-Content-Transfer-Encoding: base64
+Content-Description: Changed-ambiguous-information-in-SPIDEV-test-sample.patch
 Content-Disposition: attachment;
-	filename="chancels.gif"
-Content-ID: <chancels.gif>
+	filename="Changed-ambiguous-information-in-SPIDEV-test-sample.patch"
 
-R0lGODlhMgAyALMAABwZHZSUlQCQNg+XQk5OT5PIp+/18Va0ecnJyXLCkMnm1bPewx6cTi+h
-W0SgZv///yH5BAEAAA8ALAAAAAAyADIAAAT/kI1Jq7046y26/2AojmRpnmiYLErrsvAbz3Sd
-lG2gK0//KLqAwUcsGouFShLUAjgDxIATgDhajYqGx2FQhJrP6LR6vRpunsQQXQEDoD6pk1wu
-ni2L3pKJmMJ7clR1RHcfanoZbgSLjGODP2wdBzyII25TmHN1CpECk0R7GJeMi45WnBafPoWe
-C199YXGmRaiGeaASkl2vfmKaRLVplD5ZhpVtsG++gj3BurQHHw6UXryxgI7ODIfA0YZDP7l8
-vbJz3h0NBeDE58/NWiIsQXQ/AQUBFA76BQj3Ow4guL0jcevUOQKZMn1DouTLFVdbECZ0QqCD
-OmhbWjg8EiqPxDfi/wSkW9cs0ieIbThm7CGxYkaSkEJeDMfEyJ4D6z6SCoBgnTZVzTb6uAnu
-zMeEBFq0a4VFKE1PQyXoLDXF5cojKCkUrAb1AauP4JJZXVEma4dbBuBx8QoQHVhUH0cOMivg
-FpshxSwaaNnWQVWYDx1yzZN3wK2pmf7Mddg2wVMG1I5iIqB4MR90uzCzFakvyI4hBgIw8skI
-Dt0FbRek1Zx1GmCvYIlVDRoQ8zkeoWYe2UvRJzm6HhbswX3VTEvfsYCLRJmHDc5BvAEklZ18
-xAF4jp0/gt2burLH0myn2c5dOvLvyoOjLEC+/PRmv0vwo+C4ffT3P+KPaJD3uf3j3plGkFQ3
-DbxWR3RveFaVOso5cFd7q0g2EQCZXcAGexD2gOCETlSYwQEZriIDAiSS+JYJBoZYRCAeOqXi
-FXIQ0KI0NdRo443C8aNNCjz26OOPQHIg5JBDRgAAOwj6ZDw/ROGo+buo6PmKGaXtc+0lbell
-SIfsMPsedyGcO1EJErTLGr4iqtHGLtre1LLCa3g4qnV5cZChFWsLCltsS1zeie9YpJbEB79r
-jSkAsnhx9N8/zpsFffjC+hbnq2srypXV87Voj2ZgEVg4/N9fthhrC8TtzAYlpv7mrQOOHovM
-9QE9dCcLk+2m7KUuKsU0cPaHgpWnRG0PW5M07o/fn2GiAaQKHl+j0YqUCB8THxidqvRlYRF/
-HLhHmyRtXQQMp7hr8d+DPhh5QzfpEkoLwKTX8lEU1VgeRCJNgIRvqyo7lHk=
-------=_NextPart_000_0003_AB90C205.D80789F3
-Content-Type: image/gif;
-	name="penitentiary.gif"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="penitentiary.gif"
-Content-ID: <penitentiary.gif>
+RnJvbSA2NWJiYjUxNmFhMGUyMTBiOTI1NDhmZDE5ZTRiOTFkNjMxN2E2YjFiIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBHcmVnb3J5IExlbWVyY2llciA8Z2xlbWVyY2llckBhZGVuZW8t
+ZW1iZWRkZWQuY29tPgpEYXRlOiBUaHUsIDkgQXByIDIwMDkgMTA6NTU6MzQgKzAyMDAKU3ViamVj
+dDogW1BBVENIXSBDaGFuZ2VkIGFtYmlndW91cyBpbmZvcm1hdGlvbiBpbiBTUElERVYgdGVzdCBz
+YW1wbGUgY29kZQoKClNpZ25lZC1vZmYtYnk6IEdyZWdvcnkgTGVtZXJjaWVyIDxnbGVtZXJjaWVy
+QGFkZW5lby1lbWJlZGRlZC5jb20+Ci0tLQogRG9jdW1lbnRhdGlvbi9zcGkvc3BpZGV2X3Rlc3Qu
+YyB8ICAgIDIgKy0KIDEgZmlsZXMgY2hhbmdlZCwgMSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
+cygtKQoKZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vc3BpL3NwaWRldl90ZXN0LmMgYi9Eb2N1
+bWVudGF0aW9uL3NwaS9zcGlkZXZfdGVzdC5jCmluZGV4IGNmMGUzY2UuLjMxNWMwZjEgMTAwNjQ0
+Ci0tLSBhL0RvY3VtZW50YXRpb24vc3BpL3NwaWRldl90ZXN0LmMKKysrIGIvRG9jdW1lbnRhdGlv
+bi9zcGkvc3BpZGV2X3Rlc3QuYwpAQCAtNTEsNyArNTEsNyBAQCBzdGF0aWMgdm9pZCB0cmFuc2Zl
+cihpbnQgZmQpCiAJc3RydWN0IHNwaV9pb2NfdHJhbnNmZXIgdHIgPSB7CiAJCS50eF9idWYgPSAo
+dW5zaWduZWQgbG9uZyl0eCwKIAkJLnJ4X2J1ZiA9ICh1bnNpZ25lZCBsb25nKXJ4LAotCQkubGVu
+ID0gQVJSQVlfU0laRSh0eCksCisJCS5sZW4gPSBzaXplb2YodHgpLAogCQkuZGVsYXlfdXNlY3Mg
+PSBkZWxheSwKIAkJLnNwZWVkX2h6ID0gc3BlZWQsCiAJCS5iaXRzX3Blcl93b3JkID0gYml0cywK
+LS0gCjEuNS40LjMKCg==
 
-R0lGODlhFAAKAIAAAP///zMAMyH5BAAAAAAALAAAAAAUAAoAAAIShI+py+0PT5i0WmqutrH7
-DyoFADs1dWI0Tt5oiOJBfLKtrT+a9wD5VLd/3q0UB9JUrC9NRGPxRae9tc==
-------=_NextPart_000_0003_AB90C205.D80789F3
-Content-Type: image/gif;
-	name="glibbest.gif"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="glibbest.gif"
-Content-ID: <glibbest.gif>
-
-R0lGODlh+gAUALMAAGyaXv///6vFo5CzhkaANMvbxvP28drl1ubu5AAAAAAAAAAAAAAAAAAA
-AAAAAAAAACH5BAAAAAAALAAAAAD6ABQAAAT/MMhJq7046827/2AojmRpnmiqrmzrvmNxXDKy
-1RNeHvOt5z9RUMIzcIokJK2wbJqGzooSNCBYAb2AwHo10gg2LZcguFiZlSpAskVfqtwyERAn
-jrnrN94bONCtAxl+dRN/hBYEeWl4bnCJWYOAR2c5Y3I0hoFzhxZBW4ldfYCfmlKJdqCUFH9u
-qIqneomsElezBXehi6mvV6qIvWQTuJcUt6WFtZSkucnBGrOisr4VzXJ/f8cUVtTOyrC3YBZV
-cmoSdMef4dq542bO5Z9G5QY1BfHuaHRM4PKwpuFb8oCrF2ZRq2j5gp1DKAagv1jq2hnQp0dT
-O37R+KzT4E3gtl9e/xaKUXQgVSs1/m4pKnYpYA42D805+1epjMuM4r59vPlMHUtkxGj57DHv
-C7SPGyguUqSUGwZSQKEuFaYO40QwvgLyNIA0g0gicLLAXFkMabmv02Re6kgHC4aY+MrOBJt2
-FVaHAOBkW/fJ7UiglXD5DACtYS4KEgOowtjO17atTWMVbLg3MrdAJU+hHayWKhNDnOzsrdCW
-dFqpFRU7xKWR6p193maCG8aSUmYBBUqbXlv1MSxVFCHP1RWUR9G/QHCk27N5H47mhJ19rdmT
-s71pxr8p/70asyQeOEKJBC0JZAZ4M7t2FoqG3yhSuBPhbntpOuK6ngG71ilfc3ows5EBHf9N
-BnmFH3Lc8GDJewxG5B8XqrVn1ijDCSVFS/7xdtBXIrkkWH+CJRTUWK0cgFt+7K2SV1452cRf
-HyvmdVNmbGDIGVzI+AVWJWuY6MYZfqy43BhrTLjGADFGJyFnSrpzWWfzWDVBYvMshNuV710p
-AH1hWEYZQVEiJWVqV83AGI5n9ghcTCWN9mV40gUTJpNawtdkdKOF2SNFNEYhkzTdocbjOoZM
-luJUKNp1h5qAlrJVLNfkWJhpJsEE6EFtvEWbXrZUw8FizRjqylHAjKiBIzrmtoeTgeFXF08q
-dSKYR5w8CtExkVSYQyb3hXanLq9Z+siuvsYlrK6blAdjsUeIldxHecNBEUJiIEjrwRQ/Ndsa
-EQepAIW113brJxDbwkCdC3SUa+667LbrLgxVqLsDsu/Wa++9+D7lLAr25OvvvwAHLPDABBds
-QQQAOwNbkjmCjesXztV8CA//OQFdBX3fUl8sRJH2tu4QMlo/T97V+6VMLaqMyisGIozZy7Qg
-pJw1uZ0CWwXVrsh2HMD5uvA2Y0QKvhqZqbOZ0DbL0zgfgCWoOZh9Ii0gXErGmWfQyuqmxFym
-5SFZUbBj1jg9GUedZKj/gDPSx55j/rJ4+PSTrT2g3We9r9aEH+DoCT7zN1XNhhGfxYzcsp9j
-AchsZ8wh60K8HFwV6Iicqo8bBv3tZ1RaRzGqv2MqqWnybXIWgqzKTvmUedC4TTSkGYO1Pbf6
-xHsMf0j/fWKyGwHkOJdhcvFjHUZXv5RgA+tfzReSopFuaMToVwKyfQVnku+UnQ1nOjHB0lUd
-PZLpmeR7OcutsDVRyT==
-------=_NextPart_000_0003_AB90C205.D80789F3--
-
-
-
-
---===============6367216397374672762==
+------_=_NextPart_001_01C9B8F2.6E352BCA
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -233,7 +200,7 @@ This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.
 Download a free trial of Rational Requirements Composer Now!
 http://p.sf.net/sfu/www-ibm-com
---===============6367216397374672762==
+------_=_NextPart_001_01C9B8F2.6E352BCA
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -244,4 +211,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6367216397374672762==--
+------_=_NextPart_001_01C9B8F2.6E352BCA--

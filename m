@@ -1,22 +1,20 @@
-From: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Kernel freeze caused by
-	a7bb3909b3293d503211d7f6af8ed62c1644b686
-Date: Thu, 9 Apr 2009 10:03:08 +0800
-Message-ID: <f17812d70904081903r385495d5ob0f8f69b86b42f1f@mail.gmail.com>
-References: <1239215313.11752.10.camel@brutus>
-	<f17812d70904081741n440fc5b4w35e55424e9c35a25@mail.gmail.com>
-	<1239241683.1194.4.camel@brutus>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: Patch submission for fixing a bug in the
+	SPIDEV driver.
+Date: Wed, 8 Apr 2009 21:29:44 -0700
+Message-ID: <200904082129.45057.david-b@pacbell.net>
+References: <51D9710FF5643747BB605F97B8DE56CD02773126@STEGOSAURE.adetel.com>
+	<200904071413.32917.david-b@pacbell.net>
+	<51D9710FF5643747BB605F97B8DE56CD027734DA@STEGOSAURE.adetel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Eric Miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>,
-	spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: LEMERCIER =?iso-8859-1?q?Gr=E9gory?= <glemercier-zjFYp9kwZlmZox4op4iWzw@public.gmane.org>,
+	CLEMENT =?iso-8859-1?q?Gr=E9gory?= <gclement-zjFYp9kwZlmZox4op4iWzw@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1239241683.1194.4.camel@brutus>
+In-Reply-To: <51D9710FF5643747BB605F97B8DE56CD027734DA-60eonUy6E0Ou6pEdMXsbNRL4W9x8LtSr@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,28 +25,112 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBBcHIgOSwgMjAwOSBhdCA5OjQ4IEFNLCBEYW5pZWwgUmliZWlybyA8ZHJ3eXJtQGdt
-YWlsLmNvbT4gd3JvdGU6Cj4gRW0gUXVpLCAyMDA5LTA0LTA5IMOgcyAwODo0MSArMDgwMCwgRXJp
-YyBNaWFvIGVzY3JldmV1Ogo+PiA+IEkgYmlzZWN0ZWQgaXQsIGFuZCBmb3VuZCB0aGF0IGNvbW1p
-dAo+PiA+IGE3YmIzOTA5YjMyOTNkNTAzMjExZDdmNmFmOGVkNjJjMTY0NGI2ODYgaXMgdGhlIGN1
-bHByaXQuCj4+ID4KPj4gPiBNeSBjb2RlIHN0aWxsIHVzZXMgY3NfY29udHJvbCB0byB0b2dnbGUg
-dGhlIENTIGdwaW8uIElzIHlvdXIgY29tbWl0Cj4+ID4gc3VwcG9zZWQgdG8gZGVwcmVjYXRlIGNz
-X2NvbnRyb2w/Cj4+ID4KPj4KPj4gTm8sIHNob3VsZCBiZSBiYWNrd2FyZCBjb21wYXRpYmxlIGFu
-ZCBJIHZlcmlmaWVkIGl0IGJlZm9yZSBzdWJtaXR0aW5nCj4+IHRoZSBwYXRjaC4gQ291bGQgeW91
-IHBsZWFzZSBoZWxwIGlkZW50aWZ5IHdoeSBpdCBmYWlscyBhbmQgSSdtIGdvaW5nIHRvCj4+IHJl
-cHJvZHVjZSBpdCBoZXJlIGFzIHdlbGwuCj4KPiBGaXggaXMgdHJpdmlhbCwgc29ycnkgZm9yIG5v
-dCBzZWVpbmcgdGhpcyBlYXJsaWVyLiBJIGhhdmUgbm8gaWRlYSB3aHkgbXkKPiBkZXZpY2UgZnJl
-ZXplcyBhdCBzdGFydHVwLCBidXQgdGhpcyBpcyBlbm91Z2ggdG8gZ2V0IGV2ZXJ5dGhpbmcgd29y
-a2luZwo+IGFnYWluLgo+Cj4KPiBDb3JyZWN0IHR5cG8gb24gcHhhMnh4LXNwaS5jIGNzX2RlYXNz
-ZXJ0Lgo+CgpHcnJyLi4uLiB0aGlzIGlzIHJlYWxseSBlbWJhcmFzc2luZywgc2hhbWUgbWUgLy8v
-Cgo+IFNpZ25lZC1vZmYtYnk6IERhbmllbCBSaWJlaXJvIDxkcnd5cm1AZ21haWwuY29tPgo+CgpB
-Y2tlZC1ieTogRXJpYyBNaWFvIDxlcmljLm1pYW9AbWFydmVsbC5jb20+CgpEYXZpZCwKClBsZWFz
-ZSBoZWxwIG1lcmdlIHRoaXMgcGF0Y2gsIHRoYW5rcy4KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpU
-aGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnk6CkhpZ2ggUXVhbGl0eSBSZXF1aXJlbWVu
-dHMgaW4gYSBDb2xsYWJvcmF0aXZlIEVudmlyb25tZW50LgpEb3dubG9hZCBhIGZyZWUgdHJpYWwg
-b2YgUmF0aW9uYWwgUmVxdWlyZW1lbnRzIENvbXBvc2VyIE5vdyEKaHR0cDovL3Auc2YubmV0L3Nm
-dS93d3ctaWJtLWNvbQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
-dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
-c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Wednesday 08 April 2009, LEMERCIER Gr=E9gory wrote:
+> Ok, after verification (that I definitely should have
+> made earlier) it turns out that the issue comes from
+> my SPI driver which does not make the conversion
+> "bytes / words to send". However, what got me confused
+> in the first place is in "Documentation/spi/spidev_test.c":    =
+
+
+You might submit a patch for that ...
+
+
+> #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+> =
+
+> static const char *device =3D "/dev/spidev1.1";
+> static uint8_t mode;
+> static uint8_t bits =3D 8;
+> static uint32_t speed =3D 500000;
+> static uint16_t delay;
+> =
+
+> ...
+> =
+
+> 	uint8_t tx[] =3D {
+> 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+> 		0x40, 0x00, 0x00, 0x00, 0x00, 0x95,
+> 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+> 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+> 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+> 		0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD,
+> 		0xF0, 0x0D,
+> 	};
+> 	uint8_t rx[ARRAY_SIZE(tx)] =3D {0, };
+> 	struct spi_ioc_transfer tr =3D {
+> 		.tx_buf =3D (unsigned long)tx,
+> 		.rx_buf =3D (unsigned long)rx,
+> 		.len =3D ARRAY_SIZE(tx),
+
+... making this be "sizeof tx".  You're right, someone seems to
+have gone out of their way to do the most misleading thing here.  :(
+
+
+> 		.delay_usecs =3D delay,
+> 		.speed_hz =3D speed,
+> 		.bits_per_word =3D bits,
+> 	};
+> =
+
+> =
+
+> ARRAY_SIZE here is used for both "number of elements in the array" and "n=
+umber of bytes of the array" which might be misleading in some cases. But I=
+ admit that a quick look at spidev.h would have led me to the right way to =
+go :-)
+> =
+
+> Anyway, thanks for your feedback.
+> =
+
+> Greg
+> =
+
+> -----Message d'origine-----
+> De=A0: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org] =
+
+> Envoy=E9=A0: mardi 7 avril 2009 23:14
+> =C0=A0: LEMERCIER Gr=E9gory
+> Cc=A0: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> Objet=A0: Re: Patch submission for fixing a bug in the SPIDEV driver.
+> =
+
+> On Tuesday 07 April 2009, LEMERCIER Gr=E9gory wrote:
+> > When using the SPIDEV driver from the kernel, I found out that
+> > there is a bug that occurs when sending words of width larger
+> > than 8 bits. The buffer copy from Userspace will only copy =
+
+> > "number of words" bytes where it should actually copy
+> > "number of words * sizeof(word)" bytes.
+> =
+
+> On closer examination ... <linux/spi/spidev.h> clearly
+> specifies that this value is in bytes.  So, not a bug
+> in the kernel, just in your userspace code.
+> =
+
+> As a rule, you should expect buffers to be described to
+> any OS using byte lengths; anything else is unusual.
+> =
+
+> - Dave
+> =
+
+> /**
+>  * struct spi_ioc_transfer - describes a single SPI transfer
+>  * @tx_buf: Holds pointer to userspace buffer with transmit data, or null.
+>  *	If no data is provided, zeroes are shifted out.
+>  * @rx_buf: Holds pointer to userspace buffer for receive data, or null.
+>  * @len: Length of tx and rx buffers, in bytes.
+>  * ...
+> =
+
+
+---------------------------------------------------------------------------=
+---
+This SF.net email is sponsored by:
+High Quality Requirements in a Collaborative Environment.
+Download a free trial of Rational Requirements Composer Now!
+http://p.sf.net/sfu/www-ibm-com

@@ -1,20 +1,12 @@
-From: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Kernel freeze caused by
-	a7bb3909b3293d503211d7f6af8ed62c1644b686
-Date: Thu, 9 Apr 2009 08:41:23 +0800
-Message-ID: <f17812d70904081741n440fc5b4w35e55424e9c35a25@mail.gmail.com>
-References: <1239215313.11752.10.camel@brutus>
+From: Pooley <fulani-qMvU5CJTFOYxHbG02/KK1g@public.gmane.org>
+Subject: How To Get A Girl To Do AAnything And
+	Everything In Bed
+Date: Thu, 09 Apr 2009 00:50:35 +0000
+Message-ID: <49DD4558.2877495@nbtravel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Eric Miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>,
-	spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============6677122272502570519=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1239215313.11752.10.camel@brutus>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,25 +17,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Apr 9, 2009 at 2:28 AM, Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Hi Eric!
->
-> Today i was updating my code from linus git, and all my devices freeze
-> with a white screen of death at early boot.
->
-> I bisected it, and found that commit
-> a7bb3909b3293d503211d7f6af8ed62c1644b686 is the culprit.
->
-> My code still uses cs_control to toggle the CS gpio. Is your commit
-> supposed to deprecate cs_control?
->
+--===============6677122272502570519==
+Content-Type: multipart/alternative;
+	boundary="------------863176630915949181759817"
 
-No, should be backward compatible and I verified it before submitting
-the patch. Could you please help identify why it fails and I'm going to
-reproduce it here as well.
+--------------863176630915949181759817
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+HHow To Get A Girl To Do Anything And Everything In Bed - Be Absolutely Mind Blowing
+<http://garciavdeyy.livejournal.com/737.html?eoaoldcbfaaaofkbpz>
+
+And boars and, indeed, all other animals that was only one
+of many remarkable personalities the muni vaishwanara and
+the muni kalakavrikhiya.
+
+--------------863176630915949181759817
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head></head>
+<body bgcolor="#ffffff" text="#000000">
+<a href="http://garciavdeyy.livejournal.com/737.html?eoaoldcbfaaaofkbpz">HHow To Get A Girl To Do Anything And Everything In Bed - Be Absolutely Mind Blowing</a><br>
+<br>
+<br<br>
+And boars and, indeed, all other animals that was only one<br>
+of many remarkable personalities the muni vaishwanara and<br>
+the muni kalakavrikhiya.</body></html>
+
+--------------863176630915949181759817--
+
+
+--===============6677122272502570519==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.
 Download a free trial of Rational Requirements Composer Now!
 http://p.sf.net/sfu/www-ibm-com
+--===============6677122272502570519==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============6677122272502570519==--

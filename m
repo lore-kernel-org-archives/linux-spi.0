@@ -1,10 +1,11 @@
-From: Dr Pierre Dukan <newsletter-XlQtmw7qKGcAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Votre régime minceur personnalisé
-Date: 10 Apr 2009 12:13:50 -0000
-Message-ID: <20090410121350.15932.qmail@ks24820.kimsufi.com>
-Reply-To: Dr Pierre Dukan <newsletter-XlQtmw7qKGcAvxtiuMwx3w@public.gmane.org>
+From: Easyflirt - Rencontres <newsletter-YGge9CITkGIAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Des milliers de contacts dans votre
+	ville - inscription gratuite
+Date: 10 Apr 2009 16:18:40 -0000
+Message-ID: <20090410161840.18019.qmail@ks351762.kimsufi.com>
+Reply-To: Easyflirt - Rencontres <newsletter-YGge9CITkGIAvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0018519530045940819=="
+Content-Type: multipart/mixed; boundary="===============5240461861269861977=="
 To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,87 +19,137 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
---===============0018519530045940819==
+--===============5240461861269861977==
 Content-Type: multipart/alternative;
-	boundary="_----------=_parties_1ed51541403d8476e1536d905147c235"
+	boundary="_----------=_parties_43196e2c090626beb57e92cd9bf57e90"
 
 
---_----------=_parties_1ed51541403d8476e1536d905147c235
+--_----------=_parties_43196e2c090626beb57e92cd9bf57e90
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
 
-Version "en ligne" de ce message: http://www.ctrm8.com/miroir.php?bat=dukan0409_ctrm
+Version "en ligne" de ce message: http://www.ctrm7.com/miroir.php?bat=easyflirt0409_ctrm
 
-COACHING MINCEUR
+Easyflirt
 
-personnalisé par Pierre Dukan
-OFFRE EXCEPTIONNELLE !!
+Rencontres sur internet
+Inscription rapide - Essayez c'est gratuit !
 
--25% avec le code PRINTEMPS*
-En 2 clics calculez votre juste poids GRATUITEMENT ...
 
-plus d'infos sur http://www.ctrm8.com/linkserv.php?bat=dukan0409_ctrm&nb=1323&n=9047704&c=divertissement
+
+
+
+
+
+déjà 15 989 706 membres !
+
+
+
+Venez rencontrer tous les membres et faites plus de rencontres
+
+
+SpeedFlirt
+
+Grâce au SpeedFlirt vous savez très rapidement si le coup de foudre est réciproque. ...
+
+EasyFlirt Messenger
+
+Avec EasyFlirt Messenger vous apparaissez en ligne pour les autres membres, même sans avoir ouvert le site. ...
+
+Tchat avec webcam
+
+Découvrez dès maintenant toutes les nouvelles fonctionnalités du Tchat Webcam. ...
+
+Recherche détaillée
+
+Trouvez les personnes qui vous correspondent totalement, avec une recherche très détaillée. ...
+
+
+
+
+
+
+
+plus d'infos sur http://www.ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres
 
 --------------------------------
-Cette offre Pierre Dukan vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm8.com/gestionserv.php?nb=1323&numuser=9047704&code=HWeuIQdw&src=50
+Cette offre easyflirt vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm7.com/gestionserv.php?nb=1327&numuser=9047704&code=HWeuIQdw&src=50
 
---_----------=_parties_1ed51541403d8476e1536d905147c235
+--_----------=_parties_43196e2c090626beb57e92cd9bf57e90
 Content-Type: text/html; charset="iso-8859-1" 
 Content-Transfer-Encoding: 8bit
 
 
  <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
 <head> 
-<title>COACHING MINCEUR
- personnalis&eacute; par Pierre Dukan</title>
+<title>Easyflirt
+Rencontres sur internet</title>
 </head>
 <body><center>
 <p>
-<a href='http://www.ctrm8.com/miroir.php?bat=dukan0409_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre Pierre Dukan vous est propos&eacute;e par CentralMarques<br><br>
+<a href='http://www.ctrm7.com/miroir.php?bat=easyflirt0409_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre easyflirt vous est propos&eacute;e par CentralMarques<br><br>
 </p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px'>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 2px dashed #713552;padding:0px'>
 <tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#007573;font-size:24px'>
-<a style='text-decoration:none' href='http://www.ctrm8.com/linkserv.php?bat=dukan0409_ctrm&nb=1323&n=9047704&c=divertissement' target='_blank'>
-<img id=INNER_LOGO_ANNONCEUR align=absmiddle src='http://centralmarques.com/img/transparent.gif' style='float:left;border:0px;margin-right:20px'>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Times New Roman;color:#713552;font-size:28px'>
+<a style='text-decoration:none' href='http://www.ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres' target='_blank'>
+<img id=INNER_LOGO_ANNONCEUR align=absmiddle src='http://www.jesuisleroi.com/img/transparent.gif ' style='float:left;border:0px;margin-right:20px'>
 </a>
-<p style='display:inline'><a style="text-decoration:none;color:#007573;font-family:Verdana;background-color:#FFFFFF;font-size:24px;" href="http://ctrm8.com/linkserv.php?bat=dukan0409_ctrm&nb=1323&n=9047704&c=divertissement" target="_blank"> <b>COACHING MINCEUR<BR>
-<span style="font-size:17px"> personnalis&eacute; par Pierre Dukan</b></a></p>
+<p style='display:inline'><a style="text-decoration:none;color:#713552;font-family:Times New Roman;background-color:#FFFFFF;font-size:28px;" href="http://ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres" target="_blank"> Easyflirt<br>
+Rencontres sur internet</a></p>
 </td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#76c5cc;font-family:Verdana;color:#FFFFFF;font-size:24px'>
-<a style="text-decoration:none;color:#FFFFFF;font-family:Verdana;background-color:#76c5cc;font-size:24px;" href="http://ctrm8.com/linkserv.php?bat=dukan0409_ctrm&nb=1323&n=9047704&c=divertissement" target="_blank"> OFFRE EXCEPTIONNELLE !!<br><br>
- <span style="color:#D33C8D"> <span style="font-size:36px">-25% </span>avec le code PRINTEMPS*</span> </a>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#F1A1D0;font-family:Arial;color:#FFFFFF;font-size:20px'>
+<a style="text-decoration:none;color:#FFFFFF;font-family:Arial;background-color:#F1A1D0;font-size:20px;" href="http://ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres" target="_blank"> <b>Inscription rapide - Essayez c'est gratuit !</b><br>
+</a>
 </td></tr>
 <tr>
-<td align='center' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#FFFFFF'>
-<a style="text-decoration:none;color:#000000;font-family:Arial;background-color:#FFFFFF;font-size:16px;" href="http://ctrm8.com/linkserv.php?bat=dukan0409_ctrm&nb=1323&n=9047704&c=divertissement" target="_blank"> En 2 clics calculez votre juste poids GRATUITEMENT <span style="color:blue"><u>...</u></span></a>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#'>
+<a style="text-decoration:none;color:#000000;font-family:Arial;font-size:16px;" href="http://ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres" target="_blank"><br>
+
+</a><table cellspacing="5" cellpadding="5">
+<tr>
+
+<td style="font-family:arial; color:black;" valign="top"><a href="http://ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;font-family:Arial;font-size:16px; font-family:arial; color:black;" target="_blank"> <img width="160" height="600" src="http://imgpromo.easyrencontre.com/bannieres/ban-160-600-love-femme-red-ok-fr.jpg" alt="rencontres gratuites" border="0"></a></td>
+<td><table border="0" cellspacing="3" cellpadding="0">
+ <tr> <td style="background-color:#F1A1D0; color:white; font-size:18px; font-family:arial; font-weight:bold;" align="center"><a href="http://ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;font-family:Arial;font-size:16px; background-color:#F1A1D0; color:white; font-size:18px; font-family:arial; font-weight:bold;" target="_blank"><font style="background-color:#F1A1D0;color:white;font-size:18px;font-family:arial;font-weight:bold">d&eacute;j&agrave; 15 989 706 membres !</font></a></td>
+ </tr>
+ <tr> <td style="font-family:arial; color:black;" align="left"><a href="http://ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;font-family:Arial;font-size:16px; font-family:arial; color:black;" target="_blank">
+ <img border="0" alt="easyflirt" src='http://ks300910.kimsufi.com/~actuduwe/img/bat/easyflirt2.jpg' style='border:0px'>
+<br><br>
+ </a><div style="text-align:center; color:blue;"><a href="http://ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;font-family:Arial;font-size:16px; font-family:arial; color:black; text-align:center; color:blue;" target="_blank"><u><b>Venez rencontrer tous les membres et faites plus de rencontres</b></u></a></div><a href="http://ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;font-family:Arial;font-size:16px; font-family:arial; color:black;" target="_blank">
+
+<br><br>
+ <img alt="easyflirt" src=http://www.easyflirt.com/img/interface/puce_verte.gif border=0><b>SpeedFlirt</b> <img alt="easyflirt" src=http://www.easyflirt.com/img/interface/puce_news.gif border=0><br>
+ Gr&acirc;ce au SpeedFlirt vous savez tr&egrave;s rapidement si le coup de foudre est r&eacute;ciproque. <u style='color:blue'> ... </u><br><br><br>
+ <img alt="easyflirt" src=http://www.easyflirt.com/img/interface/puce_verte.gif border=0><b>EasyFlirt Messenger</b><img alt="easyflirt" src=http://www.easyflirt.com/img/interface/puce_news.gif border=0><br>
+ Avec EasyFlirt Messenger vous apparaissez en ligne pour les autres membres, m&ecirc;me sans avoir ouvert le site. <u style='color:blue'> ... </u><br><br><br>
+ <img alt="easyflirt" src=http://www.easyflirt.com/img/interface/puce_verte.gif border=0><b>Tchat avec webcam</b><br>
+ D&eacute;couvrez d&egrave;s maintenant toutes les nouvelles fonctionnalit&eacute;s du Tchat Webcam. <u style='color:blue'> ... </u><br><br><br>
+ <img alt="easyflirt" src=http://www.easyflirt.com/img/interface/puce_verte.gif border=0><b>Recherche d&eacute;taill&eacute;e</b><br>
+ Trouvez les personnes qui vous correspondent totalement, avec une recherche tr&egrave;s d&eacute;taill&eacute;e. <u style='color:blue'> ... </u><br><br><br>
+ </a></td>
+ </tr>
+ </table></td>
+</tr>
+</table>
 </td></tr><tr>
 <td align='center' style='padding:5px;background-color:#FFFFFF'>
-<table style="width:600px;" align="center" border="0" cellpadding="0" cellspacing="0">
- <tbody>
- <tr>
- <td><a href="http://ctrm8.com/linkserv.php?bat=dukan0409_ctrm&nb=1323&n=9047704&c=divertissement&leroiurl=http%3A%2F%2Fnodes.reactivpub.fr%2Fclic-784-12014-13292-url-aHR0cDovL3d3dy5yZWdpbWVkdWthbi5jb20vaW5kZXgucGhwP2lkPTE1JmFfYWlkPWI2NzgxY2UzJmFfYmlkPWIwNzUwZjhmJmRhdGExPXByaW50ZW1wcyZkYXRhMj1NYXJzMDk%3Ftrackaff%3D%26group%3D" target="_blank"><img src="http://www.regimedukan.com/emailingminceur/mailing-printemps/mailing-printemps/images/bande_ht_livre.jpg" alt="image du haut" border="0" width="600" height="85"></a></td>
- </tr>
- <tr>
- <td><a href="http://ctrm8.com/linkserv.php?bat=dukan0409_ctrm&nb=1323&n=9047704&c=divertissement&leroiurl=http%3A%2F%2Fnodes.reactivpub.fr%2Fclic-784-12014-13292-url-aHR0cDovL3d3dy5yZWdpbWVkdWthbi5jb20vaW5kZXgucGhwP2lkPTE1JmFfYWlkPWI2NzgxY2UzJmFfYmlkPWIwNzUwZjhmJmRhdGExPXByaW50ZW1wcyZkYXRhMj1NYXJzMDk%3Ftrackaff%3D%26group%3D" target="_blank"><img alt="Pierre Dukan" src="http://www.regimedukan.com/emailingminceur/mailing-printemps/mailing-printemps/images/bande_bas.jpg" border="0" width="600" height="415"></a></td>
- </tr>
- </tbody>
-</table><a href="http://ctrm8.com/linkserv.php?bat=dukan0409_ctrm&nb=1323&n=9047704&c=divertissement" style="text-decoration:none;background-color:#FFFFFF;" target="_blank"><img alt="Pierre Dukan" src="http://nodes.reactivpub.fr/mailing-784-12014-13292&group=" border="0" height="1" width="1"> </a>
+<a style="text-decoration:none;background-color:#FFFFFF;" href="http://ctrm7.com/linkserv.php?bat=easyflirt0409_ctrm&nb=1327&n=9047704&c=rencontres" target="_blank"> <u>France</u> |<u> Allemagne</u> |<u> Espagne</u> | <u>Royaume Uni</u> | <u>Irlande</u> | <u>Pays Bas</u> | <u>Italie </u>| <u>Portugal </u>| <u>Argentine</u> |<u> Chili </u>| <u>Costa Rica </u>| <u>Uruguay </u>| <u>Brazil</u> | <u>Panama</u> | <u>Colombie </u>| <u>R&eacute;publique dominicaine</u> | <u>Venezuela</u> | <u>Perou </u>|<br><u>Canada(en) </u> | <u> Canada (fr)</u> |<u> Etats Unis</u> | <u>Mexique</u> | <u>Australie</u> | <u>Nouvelle Z&eacute;lande </u> </a>
 </td></tr></table>
 <br><br>
-<img src="http://www.ctrm8.com/img.php?nb=1323&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
+<img src="http://www.ctrm7.com/img.php?nb=1327&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
 <p>
-<a href='http://www.ctrm8.com/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm8.com/gestionserv.php?nb=1323&cat=divertissement&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+<a href='http://www.ctrm7.com/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm7.com/gestionserv.php?nb=1327&cat=rencontres&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
 </p>
 </center></body>
 </html>
 
 
---_----------=_parties_1ed51541403d8476e1536d905147c235--
+--_----------=_parties_43196e2c090626beb57e92cd9bf57e90--
 
---===============0018519530045940819==
+--===============5240461861269861977==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -109,7 +160,7 @@ This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.
 Download a free trial of Rational Requirements Composer Now!
 http://p.sf.net/sfu/www-ibm-com
---===============0018519530045940819==
+--===============5240461861269861977==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -120,4 +171,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0018519530045940819==--
+--===============5240461861269861977==--

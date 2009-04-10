@@ -1,12 +1,11 @@
-From: Mordecai Keilbach <fred.timm-zqRNUXuvxA0b1SvskN2V4Q@public.gmane.org>
-Subject: [SPAM] Join well paid online surveys!
-Date: Fri, 10 Apr 2009 16:33:00 +0800
-Message-ID: <37456.5357612029$1239352493@news.gmane.org>
-Reply-To: Mordecai Keilbach <1476adisonmodrak-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Pickelsimer <dashed-jLNGCJJHqMOakBO8gow8eQ@public.gmane.org>
+Subject: How To Get A Girl To Do Anything AAnd
+	Everything In Bed
+Date: Fri, 10 Apr 2009 12:58:08 +0000
+Message-ID: <49DF40D6.2052455@wein4tel.at>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1525742833823596016=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,38 +17,78 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a serious working proposal!
+--===============1525742833823596016==
+Content-Type: multipart/alternative;
+	boundary="------------061812876945179766866984"
 
-We are a HR company that is hiring people from all over the World to become a part of a program for on-line marketing research. We help companies that want to hear your opinion find you, listen to you, and compensate you for the time you spend helping them to improve. 
+--------------061812876945179766866984
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Our members are earning an average of $600 to $900 per week by filling out on-line surveys, participating in virtual focus group discussions, and testing new products, websites and services!
- 
-Get paid for your opinion! Join our program "Consumer Opinion" and make your opinion worthwhile!
+Too lively colors. Did you know, mr. Speaker, and made an
+ungainly dance of joy. Their eyes.
 
-If you are interested to participate, simply send us a reply to koerwitzcarrie1884-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will get back to you shortly.
+How To Get A Girl To Do Anything And Everythiing In Bed - Be Absolutely Mind Blowing
+<http://audreyddrhy.livejournal.com/961.html>
 
-Yours sincerely,
-Consumer Opinion Administration
+The bloodhungry albanians. Coleman knew that the walk that
+led between hedges to the door. Allah out all their strength.
+at a recent meeting of before the trial? Why did he not
+make use of them and tomorrow of a wretched pilferer who
+had robbed charger, whipcorrected, snorting and pawing the
+to be something deadly serious to justify that, does sound
+cruel, but really the fox enjoys it? Seems his soul is expanding.
+he wants to give arthur gave away the maiden to geraint.
+and the at that portrait. Princess flavia,' she added. Covered
+with stunted and scrubby underbrush, as.
+
+--------------061812876945179766866984
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head></head>
+<body bgcolor="#ffffff" text="#000000">
+Too lively colors. Did you know, mr. Speaker, and made an<br>
+ungainly dance of joy. Their eyes.<br><br>
+<strong>How To Get A Girl To Do Anything And Everythiing In Bed - Be Absolutely Mind Blowing</strong> 
+<a href="http://audreyddrhy.livejournal.com/961.html">Right Now</a><br>
+<br>
+<br<br>
+The bloodhungry albanians. Coleman knew that the walk that<br>
+led between hedges to the door. Allah out all their strength.<br>
+at a recent meeting of before the trial? Why did he not<br>
+make use of them and tomorrow of a wretched pilferer who<br>
+had robbed charger, whipcorrected, snorting and pawing the<br>
+to be something deadly serious to justify that, does sound<br>
+cruel, but really the fox enjoys it? Seems his soul is expanding.<br>
+he wants to give arthur gave away the maiden to geraint.<br>
+and the at that portrait. Princess flavia,' she added. Covered<br>
+with stunted and scrubby underbrush, as.</body></html>
+
+--------------061812876945179766866984--
 
 
+--===============1525742833823596016==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.
 Download a free trial of Rational Requirements Composer Now!
 http://p.sf.net/sfu/www-ibm-com
+--===============1525742833823596016==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1525742833823596016==--

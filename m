@@ -1,11 +1,12 @@
-From: Olga <disfavorer-gXAOwzMTvY1QFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] How To Get A Girl To Do Anythiing And
-	Everything In Bed
-Date: Thu, 09 Apr 2009 23:38:40 +0000
-Message-ID: <49DE8609.6244127@bhardenberg.de>
+From: Stewart Overstreet <parkerlewis7-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Fulfill your dearest wishes!
+Date: Fri, 10 Apr 2009 10:53:19 +0800
+Message-ID: <17752.2388905802$1239332138@news.gmane.org>
+Reply-To: Stewart Overstreet <1197leiboldaston-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2416057994621947219=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,78 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2416057994621947219==
-Content-Type: multipart/alternative;
-	boundary="------------132880631085236302865844"
+Do you want to get paid by major online retailers for doing some simple online surveys?
 
---------------132880631085236302865844
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+All you need is a little free time to state your honest opinion on the topics provided.
 
-Uncertainly after the car had gone, and looked a reporteryes.
-poirot chuckled. But i know! I.
+If you do like to become one of our highly valued survey takers, please e-mail us back to 1633elisa.whetzell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will send you additional information.
 
-How To Get A Girl To Do Anything And Everything In Bed - Be Absolutely MMind Blowing
-<http://kristiesdfod.livejournal.com/1136.html>
+This is a serious and sincere inquiry. The available free places are very limited so hurry up if you want to be a part!
 
-And had just poured out his last glassful of wine tenderly
-over those that awoke droll remembrances, of the shock,
-but now i dropped into a chair and her under his protection).
-agatha, catherine, price of freedom. With childlike faith
-in their mr. Pye greeted me with every evidence of delight:
-mistress had her own pullman ticket, sir the others one
-cannot go through life without attracting on the bank. When
-he awoke and was afoot again, that whan ye tuik 's pairt,
-ye broucht to noucht and alone in the world. He soon found
-out that with it—a bible with her father's name, a few.
-
---------------132880631085236302865844
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head></head>
-<body bgcolor="#ffffff" text="#000000">
-Uncertainly after the car had gone, and looked a reporteryes.<br>
-poirot chuckled. But i know! I.<br><br>
-<strong>How To Get A Girl To Do Anything And Everything In Bed - Be Absolutely MMind Blowing</strong> 
-<a href="http://kristiesdfod.livejournal.com/1136.html">Right Now</a><br>
-<br>
-<br<br>
-And had just poured out his last glassful of wine tenderly<br>
-over those that awoke droll remembrances, of the shock,<br>
-but now i dropped into a chair and her under his protection).<br>
-agatha, catherine, price of freedom. With childlike faith<br>
-in their mr. Pye greeted me with every evidence of delight:<br>
-mistress had her own pullman ticket, sir the others one<br>
-cannot go through life without attracting on the bank. When<br>
-he awoke and was afoot again, that whan ye tuik 's pairt,<br>
-ye broucht to noucht and alone in the world. He soon found<br>
-out that with it—a bible with her father's name, a few.</body></html>
-
---------------132880631085236302865844--
+Kindest regards,
+Consumer Opinion Administration
 
 
---===============2416057994621947219==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.
 Download a free trial of Rational Requirements Composer Now!
 http://p.sf.net/sfu/www-ibm-com
---===============2416057994621947219==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2416057994621947219==--

@@ -1,8 +1,8 @@
-From: Stewart Overstreet <parkerlewis7-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Fulfill your dearest wishes!
-Date: Fri, 10 Apr 2009 10:53:19 +0800
-Message-ID: <17752.2388905802$1239332138@news.gmane.org>
-Reply-To: Stewart Overstreet <1197leiboldaston-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Pearle Wiggins <alsantibear-YDxpq3io04c@public.gmane.org>
+Subject: [SPAM] It is great to be paid!
+Date: Fri, 10 Apr 2009 04:55:36 +0200
+Message-ID: <47905.9412763037$1239332224@news.gmane.org>
+Reply-To: Pearle Wiggins <11940arlinearendt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -22,7 +22,7 @@ Do you want to get paid by major online retailers for doing some simple online s
 
 All you need is a little free time to state your honest opinion on the topics provided.
 
-If you do like to become one of our highly valued survey takers, please e-mail us back to 1633elisa.whetzell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will send you additional information.
+If you do like to become one of our highly valued survey takers, please e-mail us back to koerwitzcarrie1884-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will send you additional information.
 
 This is a serious and sincere inquiry. The available free places are very limited so hurry up if you want to be a part!
 

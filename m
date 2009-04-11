@@ -1,12 +1,11 @@
-From: "Partners Finance par MailandGo" <RET-XTC-DS5R-RD6YT-DD-LOGSA@R.Ems7.net>
-Subject: notre proposition...
-Date: Sat, 11 Apr 2009 13:37:49 +0200
-Message-ID: <a7fea64354ee4712bac1770bda899a7d@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-RD6YT-DD-LOGSA@R.Ems7.net
+From: "Citroën" par Central Marques <newsletter-kYZS1+sBsfoAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Essayez la Citroën de votre choix et profitez du super bonus
+Date: 11 Apr 2009 11:11:36 -0000
+Message-ID: <20090411111136.2669.qmail@ks359609.kimsufi.com>
+Reply-To: Citroën par Central Marques <newsletter-kYZS1+sBsfoAvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5512178820825522393=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0465774249165491942=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,97 +17,95 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5512178820825522393==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-RD6YT-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
-<center> <br>
-<table id=3D"emailing" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
- width=3D"600">
-    <tbody>
-        <tr>
-            <td><a target=3D"_blank" href=3D"http://ems6=2Enet/r/?E=3DX=
-TC-DS5R-RD6YT-DD-LOGSA-IYU"><img src=3D"http://nodes=2Ereactivpub=2Efr/=
-uploads/visuels/3014/443/kits/visuel_1=2Ejpg" alt=3D"" border=3D"0" wid=
-th=3D"600" height=3D"122"></a></td>
-        </tr>
-        <tr>
-            <td><a target=3D"_blank" href=3D"http://ems6=2Enet/r/?E=3DX=
-TC-DS5R-RD6YT-DD-LOGSA-IZV"><img src=3D"http://nodes=2Ereactivpub=2Efr/=
-uploads/visuels/3014/443/kits/visuel_2=2Ejpg" alt=3D"" border=3D"0" wid=
-th=3D"600" height=3D"114"></a></td>
-        </tr>
-        <tr>
-            <td><a target=3D"_blank" href=3D"http://ems6=2Enet/r/?E=3DX=
-TC-DS5R-RD6YT-DD-LOGSA-I0Y"><img src=3D"http://nodes=2Ereactivpub=2Efr/=
-uploads/visuels/3014/443/kits/visuel_3=2Ejpg" alt=3D"" border=3D"0" wid=
-th=3D"600" height=3D"103"></a></td>
-        </tr>
-        <tr>
-            <td><a target=3D"_blank" href=3D"http://ems6=2Enet/r/?E=3DX=
-TC-DS5R-RD6YT-DD-LOGSA-I12"><img src=3D"http://nodes=2Ereactivpub=2Efr/=
-uploads/visuels/3014/443/kits/visuel_4=2Ejpg" alt=3D"" border=3D"0" wid=
-th=3D"600" height=3D"111"></a></td>
-        </tr>
-        <tr>
-            <td><a target=3D"_blank" href=3D"http://ems6=2Enet/r/?E=3DX=
-TC-DS5R-RD6YT-DD-LOGSA-I3D"><img src=3D"http://nodes=2Ereactivpub=2Efr/=
-uploads/visuels/3014/443/kits/visuel_5=2Ejpg" alt=3D"" border=3D"0" wid=
-th=3D"600" height=3D"89"></a></td>
-        </tr>
-        <tr>
-            <td style=3D"padding-left: 6px;" bgcolor=3D"#fccb0c"><font =
-style=3D"font-family: Arial; font-size: 10px;">  =09=09Aucun versement,=
- de quelque nature que ce soit ne peut =EAtre exig=E9 d'un particulier,=
- avant l'obtention d'un ou de plusieurs pr=EAt(s) d'argent=2E<br>
-            <br>
-            Sous r=E9serve d'acceptation du dossier par Sygma Banque et=
- apr=E8s d=E9lai de r=E9tractation en vigueur=2E Conditions en vigueur =
-au 31/07/2008=2E Le TEG est calcul=E9 hors assurance facultative=2E La =
-garantie Caution est une innovation Sygma Banque en partenariat avec l'=
-Equit=E9=2E Equit=E9 - SA r=E9gie par le code des Assurances,  si=E8ge =
-social 7/9 Boulevard Haussmann 75442 Paris Cedex 9 - RCS Paris N=B0B 57=
-2 084 097=2E<br>
-            Nombre de mensualit=E9s si aucun retirage n'est effectu=E9 =
-et hors assurance du compte=2E<br>
-            Montant correspondant au remboursement des cr=E9dits en cou=
-rs et au paiement des frais de dossier, de mandat et de caution=2E<br>
-            Le co=FBt total de l'op=E9ration =E0 cr=E9dit comprend les =
-frais de dossier de 1 000 ?, les frais de mandat de 6 168 ?, les frais =
-de caution de 1 789 ? hors assurance facultative et report d'=E9ch=E9an=
-ce effectu=E9 sur la  premi=E8re mensualit=E9=2E Report aux conditions =
-du taux contractuel=2E<br>
-            La baisse de mensualit=E9s doit s'appr=E9cier par rapport =E0=
- la dur=E9e restant =E0 courir sur les pr=EAts objets du regroupement d=
-e cr=E9dit=2E <br>
-            <br>
-            Partners Finances mandat=E9 par Sygma Banque=2E<br>
-            Sygma Banque - SA au capital de 158 637 884 ? - 66, rue des=
- Archives 75003 Paris - SIREN 327 511 036 RCS Paris<br>
-            Partners Finances - SAS au capital de 1=2E000=2E000 ? - 16,=
- rue Victor Hugo BP 70583 54009 Nancy Cedex - RCS Nancy N=B0B 404 681 4=
-96 =09 =09=09</font></td>
-        </tr>
-    </tbody>
+--===============0465774249165491942==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_e38246cbae226641b8828f4c4ddffe00"
+
+
+--_----------=_parties_e38246cbae226641b8828f4c4ddffe00
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.ctrm5.com/miroir.php?bat=citroen0409_ctrm
+
+Découvrez l'Univers Citroën : Technologie, Innovation, Créativité. Demandez un Essai !
+
+plus d'infos sur http://www.ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce
+
+--------------------------------
+Cette offre Citroen vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm5.com/gestionserv.php?nb=1307&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_e38246cbae226641b8828f4c4ddffe00
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title></title>
+</head>
+<body><center>
+<p>
+<a href='http://www.ctrm5.com/miroir.php?bat=citroen0409_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Citroen vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#003464;font-size:24px'>
+<a style='text-decoration:none' href='http://www.ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce' target='_blank'>
+<img id=INNER_LOGO_ANNONCEUR align=absmiddle src='http://centralmarques.com/img/transparent.gif' style='float:left;border:0px;margin-right:20px'>
+</a>
+<p style='display:inline'></p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#003464;font-family:Verdana;color:#FFFFFF;font-size:18px'>
+<a style="text-decoration:none;color:#FFFFFF;font-family:Verdana;background-color:#003464;font-size:18px;" href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce" target="_blank"> D&eacute;couvrez l'Univers Citroën : Technologie, Innovation, Cr&eacute;ativit&eacute;.<br><br>Demandez un Essai ! </a>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:18px;background-color:#FFFFFF'>
+</td></tr><tr>
+<td align='center' style='padding:5px;background-color:#FFFFFF'>
+<table style="width:500px;" border="0" align="center" cellpadding="0" cellspacing="0">
+ <tr>
+ <td style="width:111px; height:72px;"><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F11929023C1266537900%26ULP%3Dhttp%3A%2F%2Fwww.citroen.fr%2FCwf%2FCitroen%2FGenericIframeSB.aspx%3FRubricId%3D31e95ccf-15a9-480a-8a60-57e7cb839f95"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/logo.gif" alt="CITROEN" width="111" height="72" border="0" /></a></td>
+ <td><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F11929023C1266537900%26ULP%3Dhttp%3A%2F%2Fwww.citroen.fr%2FCwf%2FCitroen%2FGenericIframeSB.aspx%3FRubricId%3D31e95ccf-15a9-480a-8a60-57e7cb839f95"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/entete.gif" alt="PORTES OUVERTES DU 13 AU 16 MARS 2009, www.citroen.fr" width="389" height="72" border="0" /></a></td>
+ </tr>
+ <tr>
+ <td style="width:111px; height:49px;"><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce" style="text-decoration:none;background-color:#FFFFFF;" target="_blank"><img border="0" alt="Citroen" src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/BLOCK1.gif" width="111" height="49" /></a></td>
+ <td><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F11929023C1266537900%26ULP%3Dhttp%3A%2F%2Fwww.citroen.fr%2FCwf%2FCitroen%2FGenericIframeSB.aspx%3FRubricId%3D31e95ccf-15a9-480a-8a60-57e7cb839f95"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/Mars.gif" alt="EN MARS, CITROEN A ENCORE LE DERNIER MOT" width="389" height="49" border="0" /></a></td>
+ </tr>
+ <tr>
+ <td style="width:111px; height:90px;"><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce" style="text-decoration:none;background-color:#FFFFFF;" target="_blank"><img border="0" alt="Citroen" src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/BLOCK2.gif" width="111" height="90" /></a></td>
+ <td><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F11929023C1266537900%26ULP%3Dhttp%3A%2F%2Fwww.citroen.fr%2FCwf%2FCitroen%2FGenericIframeSB.aspx%3FRubricId%3D31e95ccf-15a9-480a-8a60-57e7cb839f95"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/superbonus.gif" alt="CITROEN DOUBLE LE SUPERBONUS" width="389" height="90" border="0" /></a></td>
+ </tr>
+ <tr>
+ <td style="width:111px; height:268px;"><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce" style="text-decoration:none;background-color:#FFFFFF;" target="_blank"><img border="0" alt="Citroen" src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/BLOCK3.gif" width="111" height="268" /></a></td>
+ <td><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F11929023C1266537900%26ULP%3Dhttp%3A%2F%2Fwww.citroen.fr%2FCwf%2FCitroen%2FGenericIframeSB.aspx%3FRubricId%3D31e95ccf-15a9-480a-8a60-57e7cb839f95"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/vehicules.gif" alt="CITROEN C3 C4 C4PICASSO" width="389" height="268" border="0" /></a></td>
+ </tr>
+ <tr>
+ <td style="width:111px; height:51px;"><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce" style="text-decoration:none;background-color:#FFFFFF;" target="_blank"><img border="0" alt="Citroen" src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/BLOCK4.gif" width="111" height="51" /></a></td><td><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F11929023C1266537900%26ULP%3Dhttp%3A%2F%2Fwww.citroen.fr%2FCwf%2FCitroen%2FGenericIframeSB.aspx%3FRubricId%3D31e95ccf-15a9-480a-8a60-57e7cb839f95"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/essai.gif" alt="Demande Essai" width="389" height="51" border="0" /></a></td>
+ </tr><tr><td style="width:111px; height:233px;"><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F11929023C1266537900%26ULP%3Dhttp%3A%2F%2Fwww.citroen.fr%2FCwf%2FCitroen%2FGenericIframeSB.aspx%3FRubricId%3D31e95ccf-15a9-480a-8a60-57e7cb839f95"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/creative.gif" alt="CREATIVE TECHNOLOGIE" width="111" height="233" border="0"/></a></td>
+ <td style="width:389px; height:233px; background-color:#003465;"><div style="color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:8px; margin-left:20px; margin-right:10px; text-align:justify; margin-top:0px; margin-bottom:0px; position:relative; top:-10px;"><a href="http://ctrm5.com/linkserv.php?bat=citroen0409_ctrm&nb=1307&n=9047704&c=commerce" style="text-decoration:none;background-color:#FFFFFF; background-color:#003465; color:#FFFFFF; font-family:Arial, Helvetica, sans-serif; font-size:8px; text-align:justify; position:relative; top:-10px;" target="_blank">(1) Avantage Client compos&eacute; du Bonus &eacute;cologique de 700&euro; et d'une &eacute;conomie de 2 300&euro; sur le Tarif VP conseill&eacute; du 02/02/09, pour l'achat d'une Citroën C3 HDi 92 Airdream Collection 
+ neuve. (2) Avantage Client compos&eacute;, pour l'achat d'une C4 Berline HDi 92 Airdream Collection avec option Pack Panoramique neuve, du Bonus Ecologique de 700&euro;, d'une &eacute;conomie de 2 750&euro; sur le Tarif VP conseill&eacute; du 02/02/09 et de 550&euro; d'Avantage &eacute;quipement : option Pack Panoramique (toit vitr&eacute; panoramique et jantes 16”) &agrave; 590 &euro; par rapport aux options toit vitr&eacute; panoramique et jantes alliage 16” &agrave; 1 140&euro; au tarif VP conseill&eacute; du 02/02/09. (3) Avantage Client compos&eacute;, pour l'achat d'un Citroën C4 Picasso HDi 110 FAP Collection neuf, d'une &eacute;conomie de 2 660&euro; sur le Tarif VP conseill&eacute; du 02/02/09 et de 840 &euro; d'Avantage &eacute;quipement : Citroën C4 Picasso HDi 110 FAP Collect
+ ion disponible &agrave; 26 950&euro; par rapport &agrave; un Citroën C4 Picasso HDi 110 FAP Pack Ambiance avec options jantes alliage 17'', toit vitr&eacute; panoramique et Pack Urbain &agrave; 27 790&euro; au Tarif VP conseill&eacute; du 02/02/09. * Prime Verte Citroën de 1 000&euro; valable jusqu'au 30/04/09 pour la reprise d'un v&eacute;hicule de plus de 8 ans destin&eacute; &agrave; la casse (hors achat de C1, C2 et C3 Picasso neufs) cumulable avec le **Super Bonus Gouvernemental de 1 000&euro; dans le cas d'une reprise d'un v&eacute;hicule de plus de 10 ans destin&eacute; &agrave; la casse et l'achat d'un v&eacute;hicule neuf particulier &eacute;mettant jusqu'&agrave; 160g/km de CO2. (1)(2)(3) Offres r&eacute;serv&eacute;es aux particuliers, non cumulables, valables dans le r&eacute
+ ;seau Citroën participant du 02/03/09 au 30/04/09. Consommations mixtes (en l/100 km) et &eacute;missions de CO2 (g/km) (normes CEE 99-100) de C3 HDi 92 Airdream Collection : 4,4l/100km et 115g/km; C4 HDi 92 Airdream Collection : 4,4l/100km et 117g/km; C4 Picasso HDi 110 FAP Collection : 5,6l/100km et 147g/km.<br />
+ Qui Veut Gagner Des Millions logo, TM and © 2009 2waytraffic. All rights reserved.<img alt="Citroen" src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Avril09/mini_logo.gif" width="49" height="12" border="0" /></a></div></td>
+ </tr>
 </table>
-</center>
-<p><img src=3D"http://nm=2Eeulerian=2Enet/view/partners-finances/9WEzt=2E=
-Ng_QO_4I=2Elc2tpa0EbP=2EmqDRAi6gfq02Qz0qA-/pix=2Egif" alt=3D"" border=3D=
-"0" width=3D"1" height=3D"1"></p><img src=3D"http://nodes=2Ereactivpub=2E=
-fr/mailing-443-12099-12660&group=3D" border=3D"0" height=3D"1" width=3D=
-"1"/><div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"h=
-ttp://ems6=2Enet/u/?E=3DRET-XTC-DS5R-RD6YT-DD-LOGSA&EMail=3Dspi-devel-g=
-eneral@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pou=
-r vous d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR>=
-</font></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RD6YT-DD-LOG=
-SA-2" width=3D"1" height=3D"1">
+</td></tr></table>
+<br><br>
+<img src="http://www.ctrm5.com/img.php?nb=1307&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
+<p>
+<a href='http://www.ctrm5.com/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm5.com/gestionserv.php?nb=1307&cat=commerce&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
 
 
+--_----------=_parties_e38246cbae226641b8828f4c4ddffe00--
 
---===============5512178820825522393==
+--===============0465774249165491942==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -119,7 +116,7 @@ This SF.net email is sponsored by:
 High Quality Requirements in a Collaborative Environment.
 Download a free trial of Rational Requirements Composer Now!
 http://p.sf.net/sfu/www-ibm-com
---===============5512178820825522393==
+--===============0465774249165491942==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,4 +127,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5512178820825522393==--
+--===============0465774249165491942==--

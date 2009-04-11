@@ -1,13 +1,11 @@
-From: "Communication Officer OptIN Customer Base" <CleanPlusMail-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org>
-Subject: [SPAM] The Next Billion Dollar Brand -
-	Distribute IT OTC FLKI
-Date: Sat, 11 Apr 2009 19:38:58 +0200
-Message-ID: <a8552d31741c5989aff28d3e0018a144@freesurf.fr>
-Reply-To: CleanPlusMail-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org
+From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 本司有多余税票代开，税点特优，可验证后付款
+Date: Sun, 12 Apr 2009 06:03:13 +0800
+Message-ID: <E1LslE5-0000h4-Pc@3yr0jf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6349434227505215650=="
-To: "Communications Officer OptIN Preferred Customers OptIN"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,48 +17,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6349434227505215650==
-Content-Type: text/html;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<meta http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Dwindows-1252">
-</head>
-<body STYLE=3D"FONT-FAMILY: Tahoma">
-<p align=3Dcenter><img=20
-src=3D"C:\Documents and Settings\E. David Gouiran\Desktop\Marketing &amp; =
-Mailings\Project-Messages\Leather-WEB-121207.jpg"=20
-border=3D0></p>
-</body>
-</html>
-
-
-
-
---===============6349434227505215650==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by:
-High Quality Requirements in a Collaborative Environment.
-Download a free trial of Rational Requirements Composer Now!
-http://p.sf.net/sfu/www-ibm-com
---===============6349434227505215650==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6349434227505215650==--
+ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
+vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
+1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
+uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
+xrG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
+uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/qsax19y98Lbu
+tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rGsdXm
+yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
+7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
+o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
+z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
+yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnk6
+CkhpZ2ggUXVhbGl0eSBSZXF1aXJlbWVudHMgaW4gYSBDb2xsYWJvcmF0aXZlIEVudmlyb25tZW50
+LgpEb3dubG9hZCBhIGZyZWUgdHJpYWwgb2YgUmF0aW9uYWwgUmVxdWlyZW1lbnRzIENvbXBvc2Vy
+IE5vdyEKaHR0cDovL3Auc2YubmV0L3NmdS93d3ctaWJtLWNvbQpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
+c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
+c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

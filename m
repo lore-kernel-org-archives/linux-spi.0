@@ -1,11 +1,11 @@
-From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] Êú¨Âè∏ÊúâÂ§ö‰ΩôÁ®éÁ•®‰ª£ÂºÄÔºåÁ®éÁÇπÁâπ‰ºòÔºåÂèØÈ™åËØÅÂêé‰ªòÊ¨æ
-Date: Sun, 12 Apr 2009 06:03:13 +0800
-Message-ID: <E1LslE5-0000h4-Pc@3yr0jf1.ch3.sourceforge.com>
+From: =?iso-8859-15?Q?Voyage_Priv=E9?= <email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org>
+Subject: Bienvenue dans notre club
+Date: Sun, 12 Apr 2009 06:03:37 +0200 (CEST)
+Message-ID: <1006691824261.1102623280.1239509017868@enginex1.emv2.com>
+Reply-To: =?iso-8859-15?Q?Voyage_Priv=E9?= <voyageprive-WkL/9FkmuN+ACwpp83mF1A@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8901119694360015937=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,23 +17,204 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
-vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
-1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
-uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
-xrG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
-uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/qsax19y98Lbu
-tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rGsdXm
-yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
-7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
-o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
-z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
-yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnk6
-CkhpZ2ggUXVhbGl0eSBSZXF1aXJlbWVudHMgaW4gYSBDb2xsYWJvcmF0aXZlIEVudmlyb25tZW50
-LgpEb3dubG9hZCBhIGZyZWUgdHJpYWwgb2YgUmF0aW9uYWwgUmVxdWlyZW1lbnRzIENvbXBvc2Vy
-IE5vdyEKaHR0cDovL3Auc2YubmV0L3NmdS93d3ctaWJtLWNvbQpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
-c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
-c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+--===============8901119694360015937==
+Content-Type: multipart/alternative; boundary=11026232801006691824261
+
+--11026232801006691824261
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
+
+
+Si le message ne s'affiche pas correctement, vous pouvez accÈder ‡ la version en ligne en suivant ce lien :
+http://news.voyageprive.com/HM?a=A9X7CkNFDwNqsJiPAOYaPI3hQQ
+
+Pour Ítre s˚r(e) de recevoir nos prochaines invitations, ajoutez
+l'adresse de Voyage PrivÈ "email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org"
+dans votre carnet d'adresses ou dans votre liste d'expÈditeurs autorisÈs.
+
+Bienvenue chez Voyageprive.com
+                                  
+
+Cher Membre,
+
+Vous faites partie depuis peu de nos membres et je suis ravie de vous
+compter dans notre club. Afin de mieux comprendre voici en dÈtail les
+avantages du club voyageprive.com que vous venez de rejoindre.
+
+N'oubliez pas, pour Ítre s˚r de bien recevoir toutes nos offres,
+Ajoutez tout de suite dans votre carnet d'expÈditeurs
+email-qTgdgRYxYbPiu4h37z32LBTTglE0JFCO@public.gmane.org
+
+Encore bienvenue dans le club et retrouvons nous tout de suite dans le 
+monde des privilÈgiÈs avec les offres du moment
+http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJiPAOYaPI7hTg
+
+Bon voyage avec voyageprive.com
+
+Nos engagements                                      
+Des sÈjours diversifiÈs et de qualitÈ, disponibles en temps rÈel.                                                         
+Des offres nÈgociÈes chaque semaine spÈcialement pour vous.              
+Le suivi de notre service client pour assurer                                              
+la qualitÈ de nos prestations.                       
+L'accËs 7/7 * notre service client pour vous guider dans vos choix et              
+rÈpondre ‡ toutes vos questions.                 
+Le respect et la protection de vos donnÈes selon la loi informatique et libertÈs.               
+                                                
+                                                 
+Vos avantages                       
+Les "ventes flashs" jusqu'‡ 70% de rÈduction
+Chaque semaine profitez de notre
+sÈlection d'offres exceptionnelles et exclusives
+Des avant-premiËres
+Si voyageprive.com dÈniche pour vous
+l'offre sur la destination ‡ ne pas manquer
+vous serez parmi les premiers ‡ en profiter.
+L'accËs au catalogue avec
+Nos produits prÈfÈrÈs disponibles
+toute l'annÈe dans un large choix et avec
+la garantie du meilleur prix .    
+Les " derniËres minutes "
+Des offres pour les inconditionnels
+du dÈpart au pied levÈ et des bonnes affaires
+‡ ne pas manquer.
+
+Si vous ne souhaitez plus recevoir d'e-mail de notre part, cliquez-ici :
+http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJiPAOYaPIPhQw
+
+                                  
+
+--11026232801006691824261
+Content-Type: text/html; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Voyageprive.com</title>
+</head>
+<body bgcolor="ffffff">
+<table width="640" border="0" align="center" cellpadding="0" cellspacing="0">
+	<tr>
+		<td width="640"><center><font face="Arial,Verdana" size="1"><a href="http://news.voyageprive.com/HM?a=A9X7CkNFDwNqsJiPAOYaPI3hQQ">Si le message ne s'affiche pas correctement, vous pouvez accÈder ‡ la version en ligne</a><br>Pour Ítre s˚r(e) de recevoir nos prochaines invitations, ajoutez l'adresse de Voyage PrivÈ "<a href="mailto:email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org">email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org</a>"<br>dans votre carnet d'adresses ou dans votre liste d'expÈditeurs autorisÈs.<br></font></center></td>
+	</tr>
+	<tr>
+		<td width="640"><center><a href="#"><img src="http://webe.emv3.com/voyageprive/welcome_pack/entete.jpg" width="640" height="190" border="0" alt="Bienvenue chez Voyageprive.com"><br><img src="http://webe.emv3.com/voyageprive/welcome_pack/entete1.jpg" width="640" height="100" border="0" alt=""></center></td>
+	</tr>
+	<tr>
+		<td width="640" bgcolor="#000000">
+			<table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+				<tr>
+					<td valign="top">
+						<div align="left"><font face="Arial,Verdana" size="2" color="#ffffff">
+
+						  ChËre madame    
+<br><br>
+						Vous faites partie depuis peu de nos membres et je suis ravie de vous compter dans notre club. Afin de mieux comprendre voici en dÈtail les avantages du club voyageprive.com que vous venez de rejoindre.<br><br>
+						N'oubliez pas, pour Ítre s˚r de bien recevoir toutes nos offres,<br>
+						Ajoutez tout de suite dans votre carnet d'expÈditeurs <font color="#2a92be">email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org</font>.<br><br>
+						Encore bienvenue dans le club et retrouvons nous tout de suite dans le monde des privilÈgiÈs avec les offres du moment <a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJiPAOYaPI_hTw"><font color="#2a92be">http://www.voyage-prive.com/salle-des-ventes.php</font></a>.<br><br><img src="http://webe.emv3.com/voyageprive/welcome_pack/signature.gif" width="200" height="80" border="0" align="right" alt="Nos engagements">
+						Bon voyage avec voyageprive.com<br>
+						</font></div>
+					</td>
+				</tr>
+			</table><br>
+			<table width="620" border="0" align="center" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="305"><center><img src="http://webe.emv3.com/voyageprive/welcome_pack/engagements.gif" width="305" height="50" border="0" alt="Nos engagements"></center></td>
+					<td width="10"></td>
+					<td width="305"><center><img src="http://webe.emv3.com/voyageprive/welcome_pack/avantages.gif" width="305" height="50" border="0" alt="Vos avantages"></center></td>
+				</tr>
+				<tr>
+					<td valign="top" bgcolor="#323232">
+						<table width="280" border="0" align="center" cellpadding="0" cellspacing="0">
+							<tr>
+								<td width="10" valign="top"><center><img src="http://webe.emv3.com/voyageprive/welcome_pack/puce.gif" width="8" height="8" border="0" alt="" vspace="5"></center></td>
+								<td width="270" valign="top"><div align="left"><font face="Arial,Verdana" size="2" color="#cccccc">Des sÈjours <font color="#ffffff"><strong>diversifiÈs</strong></font> et de <font color="#ffffff"><strong>qualitÈ</strong></font>, disponibles en <font color="#ffffff"><strong>temps rÈel</strong></font>.<br><br></font></div></td>
+							</tr>
+							<tr>
+								<td valign="top"><center><img src="http://webe.emv3.com/voyageprive/welcome_pack/puce.gif" width="8" height="8" border="0" alt="" vspace="5"></center></td>
+								<td valign="top"><div align="left"><font face="Arial,Verdana" size="2" color="#cccccc">Des <font color="#ffffff"><strong>offres nÈgociÈes</strong></font> chaque semaine spÈcialement <font color="#ffffff"><strong>pour vous</strong></font>.<br><br></font></div></td>
+							</tr>
+							<tr>
+								<td valign="top"><center><img src="http://webe.emv3.com/voyageprive/welcome_pack/puce.gif" width="8" height="8" border="0" alt="" vspace="5"></center></td>
+								<td valign="top"><div align="left"><font face="Arial,Verdana" size="2" color="#cccccc"><font color="#ffffff"><strong>Le suivi de notre service</strong></font> client pour assurer<br>la qualitÈ de nos prestations.<br><br></font></div></td>
+							</tr>
+							<tr>
+								<td valign="top"><center><img src="http://webe.emv3.com/voyageprive/welcome_pack/puce.gif" width="8" height="8" border="0" alt="" vspace="5"></center></td>
+								<td valign="top"><div align="left"><font face="Arial,Verdana" size="2" color="#cccccc"><font color="#ffffff"><strong>L'accËs 7/7</strong></font> ‡ notre service client pour vous guider dans vos choix et <font color="#ffffff"><strong>rÈpondre ‡ toutes<br>vos questions</strong></font>.<br><br></font></div></td>
+							</tr>
+							<tr>
+								<td valign="top"><center><img src="http://webe.emv3.com/voyageprive/welcome_pack/puce.gif" width="8" height="8" border="0" alt="" vspace="5"></center></td>
+								<td valign="top"><div align="left"><font face="Arial,Verdana" size="2" color="#cccccc"><font color="#ffffff"><strong>Le respect et la protection de vos donnÈes</strong></font> selon la loi informatique et libertÈs.<br><br></font></div></td>
+							</tr>
+						</table>
+					</td>
+					<td></td>
+					<td valign="top" bgcolor="#252525">
+						<table width="280" border="0" align="center" cellpadding="0" cellspacing="0">
+							<tr>
+								<td>
+									<div align="left"><font face="Arial,Verdana" size="2" color="#cccccc">
+									<img src="http://webe.emv3.com/voyageprive/welcome_pack/puce.gif" width="8" height="8" border="0" alt=""><font color="#2a92be"><strong>Les "ventes flashs" jusqu'‡ 70%<br>&nbsp;&nbsp;de rÈduction</strong></font><br>
+									Chaque semaine profitez de notre sÈlection d'offres exceptionnelles et exclusives<br><br>
+									<img src="http://webe.emv3.com/voyageprive/welcome_pack/puce.gif" width="8" height="8" border="0" alt=""><font color="#2a92be"><strong>Des avant-premiËres</strong></font><br>
+									Si voyageprive.com dÈniche pour vous l'offre<br>sur la destination ‡ ne pas manquer vous<br>serez parmi les premiers ‡ en profiter.<br><br>
+									<img src="http://webe.emv3.com/voyageprive/welcome_pack/puce.gif" width="8" height="8" border="0" alt=""><font color="#2a92be"><strong>L'accËs ´ catalogue ª</strong></font><br>
+									Nos produits prÈfÈrÈs disponibles toute<br>l'annÈe dans un large choix et avec<br>la garantie du meilleur
+prix.<br><br>
+									<img src="http://webe.emv3.com/voyageprive/welcome_pack/puce.gif" width="8" height="8" border="0" alt=""><font color="#2a92be"><strong>Les ´ derniËres minutes ª</strong></font><br>
+									Des offres pour les inconditionnels du dÈpart<br>au pied levÈ et des bonnes affaires ‡ ne<br>pas manquer.<br>
+									</font><div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td><center><img src="http://webe.emv3.com/voyageprive/welcome_pack/corner.gif" width="305" height="10" border="0" alt=""></center></td>
+					<td></td>
+					<td><center><img src="http://webe.emv3.com/voyageprive/welcome_pack/corner1.gif" width="305" height="10" border="0" alt=""></center></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td width="640"><center><a href="http://news.voyageprive.com/HS?a=A9X7CkNFDwNqsJiPAOYaPIzhQA"><img src="http://webe.emv3.com/voyageprive/welcome_pack/footer.gif" width="640" height="130" border="0" alt=""></a></center></td>
+	</tr>
+	<tr>
+		<td colspan="2" width="640"><center><font face="Arial,Verdana" size="1">Si vous ne souhaitez plus recevoir d'e-mail de la part de Voyage Prive, <a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJiPAOYaPILhQg">cliquez-ici</a></font></center></td>
+	</tr>
+
+<img src="http://webe.emv3.com/voyageprive/welcome_pack/http://et.eulerian.net/view/vp-catalogue/8lL.QlYVeQ7BL6AqQORYhv.6bogqik12pX4r.N4rVg--/pix.gif?email=" border="0" width="1" height="1" NOSEND="1" />
+<img src="http://news.voyageprive.com/HO?AdX7CkNFDwNqsLCHXOP3acqmguEbJLk.gif" border="0" alt="" width="1" height="1"></body></HTML>	
+
+
+
+--11026232801006691824261--
+
+
+
+--===============8901119694360015937==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by:
+High Quality Requirements in a Collaborative Environment.
+Download a free trial of Rational Requirements Composer Now!
+http://p.sf.net/sfu/www-ibm-com
+--===============8901119694360015937==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8901119694360015937==--

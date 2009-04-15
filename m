@@ -1,8 +1,8 @@
-From: Stewart Newbern <jonaggert-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] The Time to Get Paid is NOW!
-Date: Wed, 15 Apr 2009 06:37:12 +0700
-Message-ID: <40502.9878406369$1239752373@news.gmane.org>
-Reply-To: Stewart Newbern <kasandra.blem1185-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Roly Cross <gua.netalextaffa-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Real Jobs At Home
+Date: Tue, 14 Apr 2009 22:07:45 -0400
+Message-ID: <26843.3221070611$1239761398@news.gmane.org>
+Reply-To: Roly Cross <1496porterleavins-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,14 +18,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Are you sick and tired of all the money-making scams on the web? If you're looking for the real deal when it comes to making money from home, then this may be the most important message you will ever read online!
+Do you want to have an access to a huge database of real, verified companies, looking to hire individuals willing to work at home?
 
-What if there was a system that you could use in the comfort of your own home and make more money than you ever could in your job, using just your computer and the Internet?
+Now you have that opportunity! Our database is constantly updated with the latest job offers. These are all legitimate, no-fee jobs from real employers that can be done from your home. Companies will often pay per hour! This is a great opportunity for those looking for a part time job or those looking to replace their full time job with a real company. You will be able to access 1000s of jobs such as 100% legitimate data entry jobs, writing, translating, sales, tutoring, assistants, transcription, processing, coding and more!
 
-What if it only took a couple of hours per day and was available worldwide? Sounds too good to be true? It isn't! You can even start working in just a few minutes from now. We are here to explain! Simply send us an aswer to 16737daking.margret-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you are interested in our promotion, so we can answer you back with further details.
+Simply answer to this email saying that you are interested to join, and we will send you all further details about how to proceed. And it is all for free, no starting fees or funds needed. Reply to 1882rigoberto.malcolm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if interested!
 
-Best Regards,
-Legit Online Jobs
+Wishing you a good day,
+Online Jobs Marketing
 
 
 
@@ -38,7 +38,7 @@ Legit Online Jobs
 
 
 ------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
 
 This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
  fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.

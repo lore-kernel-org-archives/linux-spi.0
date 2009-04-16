@@ -1,12 +1,10 @@
-From: Voyage Prive <informations-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org>
-Subject: =?iso-8859-15?q?Corse=2C_Canada=2C_Carcassonn?=
-	=?iso-8859-15?q?e_jusqu=27=E0_-59=25?=
-Date: Thu, 16 Apr 2009 08:08:59 +0200 (CEST)
-Message-ID: <1006691824261.1102636789.1239862139245@enginex4.emv2.com>
-Reply-To: Voyage prive <voyageprive-WkL/9FkmuN+ACwpp83mF1A@public.gmane.org>
+From: Vladislav Anatolevich <vladislavanatolevich-YuisnD8UvSi3CdJRPK1N2g@public.gmane.org>
+Subject: [SPAM] –¢–µ—Å—Ç–∏—Ä–æ–≤–∞–Ω–∏–µ –∏ –ó–∞–∫–æ–Ω.
+Date: Thu, 16 Apr 2009 10:12:56 +0400
+Message-ID: <4826132925.20090416101256@eto-reclama.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2893494554083416723=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0823278883986945374=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,505 +16,160 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2893494554083416723==
-Content-Type: multipart/alternative; boundary=11026367891006691824261
+--===============0823278883986945374==
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
---11026367891006691824261
-Content-Type: text/plain; charset=iso-8859-15
-Content-Transfer-Encoding: 8bit
-
-
-Si le message ne s'affiche pas correctement, vous pouvez accÈder ‡ la version en ligne en suivant ce lien :
-http://news.voyageprive.com/HM?a=A9X7CkNFDwNqsJjbxecTOf7h,g
-
-Pour Ítre s˚r(e) de recevoir nos prochaines invitations, ajoutez l'adresse de Voyage PrivÈ "email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org" dans votre carnet d'adresses ou dans votre liste d'expÈditeurs autorisÈs.
-
-Actuellement : Du jeudi 16 avril 10h00 au dimanche 19 avril 23h55 
-
-
-H‘TELS EN FRANCE -59%
-Chantilly, La Baule, Porticcio, Carcassonne ou Trouville
-Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=e1ee97df65508d82861e03ecdbfc87f5&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=71
-AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=e46bc064f8e92ac2c404b9871b2a4ef2
-
-SOLEIL EN EGYPTE -51%
-HÙtel 5 * en All inclusive
-Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=1e37651c3a1706496c2f32a2a549ef1b&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=b052e2e0c0ad1b2d5036bd56e27d061c
-AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=e46bc064f8e92ac2c404b9871b2a4ef2
-
-LE MAROC -53%
-Une superbe rÈsidence ‡ Marrakech
-Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=1e37651c3a1706496c2f32a2a549ef1b&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=38087d90fe0083a5d17fef54ed2b3220
-AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=e46bc064f8e92ac2c404b9871b2a4ef2
-
-
-
-Prochainement : Du vendedi 17 avril 10h00 au lundi 20 avril 23h55 
-
-
-PARTEZ AUX BAHAMAS -35%
-Choisissez votre hÙtel et vivez des vacances au soleil
-Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=1e37651c3a1706496c2f32a2a549ef1b&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=2bf7e9e8f3f3bce1ac5212f22414aa57
-AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=e46bc064f8e92ac2c404b9871b2a4ef2
-
-L'ANDALOUSIE -51%
-Au sud de l'Espagne, Marbella...
-Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=1e37651c3a1706496c2f32a2a549ef1b&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=8526e0962a844e4a2f158d831d5fddf7
-AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=e46bc064f8e92ac2c404b9871b2a4ef2
-
-D…COUVREZ CHYPRE -38%
-4 Ètoiles en tout inclus
-Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=1e37651c3a1706496c2f32a2a549ef1b&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=9a86d531e19ec6f5937ad1373bb118bd
-AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=e46bc064f8e92ac2c404b9871b2a4ef2
-
-D…COUVERTE DU CANADA -32%
-L'essentiel du Canada de Toronto ‡ QuÈbec, les chutes du Niagara, MontrÈal...
-Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=1e37651c3a1706496c2f32a2a549ef1b&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=d6cf4da5ced8580c991e16fb54faa1b6
-AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=e46bc064f8e92ac2c404b9871b2a4ef2
-
-VISITEZ LA CR»TE -31%
-Un superbe resort vous attend au bord de la plage
-Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=1e37651c3a1706496c2f32a2a549ef1b&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=b035d6563a2adac9f822940c145263ce
-AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=e46bc064f8e92ac2c404b9871b2a4ef2
-
-L'ŒLE MAURICE -36%
-3 Ètoiles ‡ Grand Baie
-Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=1e37651c3a1706496c2f32a2a549ef1b&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=8cb94e7a9661ea20b1293c589216d396
-AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b.ll5FFWKEoACxBIs6fNCGfAhGMj/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=e46bc064f8e92ac2c404b9871b2a4ef2
-
-
-
-
-Si vous ne souhaitez plus recevoir d'e-mail de notre part, cliquez-ici :
-http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOfjh,A
-
---11026367891006691824261
-Content-Type: text/html; charset=iso-8859-15
-Content-Transfer-Encoding: 8bit
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
-<title>Voyageprive.com - 1er site de ventes priv&eacute;es de voyages</title>
-</head><body bgcolor="#ffffff">
-<center><font size="1" face="Verdana,Arial">
-<a target="_blank" href="http://news.voyageprive.com/HM?a=A9X7CkNFDwNqsJjbxecTOf7h,g">Si le message ne s'affiche pas correctement, vous pouvez acc&eacute;der &agrave; la version en ligne</a><br>
-Pour &ecirc;tre s&ucirc;r(e) de recevoir nos prochaines invitations, ajoutez l'adresse de Voyage Priv&eacute; "email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org"<br>
-dans votre carnet d'adresses ou dans votre liste d'exp&eacute;diteurs autoris&eacute;s.<br></font></center>
-<table width="720" align="center" bgcolor="#000000" border="0" cellpadding="0" cellspacing="0">
-    <tbody><tr><td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOhng2A"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/header.jpg" alt="Voyageprive.com - 1er site de ventes priv&eacute;es de voyages" width="720" border="0" height="120"></a></center></td></tr>
-    <tr>
-        <td>
-            <table width="700" align="center" bgcolor="#312b2b" border="0" cellpadding="0" cellspacing="0">
-                <tbody><tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="10"></center></td></tr>
-                <tr>
-                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="10" border="0" height="30"></center></td>
-                    <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="700" align="center">
-        <!--txt actuellement-->
-                        <strong>Actuellement :</strong> Du jeudi 16 avril 10h00 au dimanche 19 avril 23h55 
-        <!--FIN txt actuellement-->
-                    </td>
-                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="10" border="0" height="1"></center></td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-       <!--DEBUT thematique 71-->
-                        <table width="700" align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                            <tr>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" alt="" width="10" border="0" height="181"></center></td>
-                                <td width="386"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOh3g3A"><img src="http://photos.voyage-prive.com/vpi/fr/front/thematiques/71/image.jpg" alt="" width="386" border="0" height="181"></a></center></td>
-                                <td valign="top" width="294" bgcolor="#423c3c">
-                                    <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                        <tbody><tr>
-                                            <td width="244"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="30"></center></td>
-                                            <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="50" align="center" bgcolor="#960641">-59%</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" align="left">
-                                                <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody><tr>
-                                                        <td width="10"></td>
-                                                        <td colspan="2" width="274" align="center" height="121">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">H&Ocirc;TELS EN FRANCE</font><br><br>
-															Chantilly, La Baule, Porticcio, Carcassonne ou Trouville
-															<br>
-                                                            </font>
-                                                        </td>
-                                                        <td width="10"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td width="145"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOhLg3Q"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" alt="Voir la Bande Annonce" width="145" border="0" height="30"></a></center></td>
-                                                        <td width="129"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOhPg3g"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif" alt="Acc&eacute;der aux Ventes" width="129" border="0" height="30"></a></center></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" alt="" width="10" border="0" height="181"></center></td>
-                            </tr>
-                            <tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                        </tbody></table>
-            <!--FIN thematique 71--><!--DEBUT thematique 67-->
-                        <table width="700" align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                            <tr>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" alt="" width="10" border="0" height="181"></center></td>
-                                <td width="386"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOhDg3w"><img src="http://photos.voyage-prive.com/vpi/fr/front/thematiques/67/image.jpg" alt="" width="386" border="0" height="181"></a></center></td>
-                                <td valign="top" width="294" bgcolor="#423c3c">
-                                    <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                        <tbody><tr>
-                                            <td width="244"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="30"></center></td>
-                                            <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="50" align="center" bgcolor="#960641">-51%</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" align="left">
-                                                <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody><tr>
-                                                        <td width="10"></td>
-                                                        <td colspan="2" width="274" align="center" height="121">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">SOLEIL EN EGYPTE</font><br><br>
-															H&ocirc;tel 5 * en All inclusive
-															<br>
-                                                            </font>
-                                                        </td>
-                                                        <td width="10"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td width="145"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOhHg0A"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" alt="Voir la Bande Annonce" width="145" border="0" height="30"></a></center></td>
-                                                        <td width="129"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOhbg0Q"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif" alt="Acc&eacute;der aux Ventes" width="129" border="0" height="30"></a></center></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" alt="" width="10" border="0" height="181"></center></td>
-                            </tr>
-                            <tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                        </tbody></table>
-            <!--FIN thematique 67--><!--DEBUT thematique 70-->
-                        <table width="700" align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                            <tr>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" alt="" width="10" border="0" height="181"></center></td>
-                                <td width="386"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOhfg0g"><img src="http://photos.voyage-prive.com/vpi/fr/front/thematiques/70/image.jpg" alt="" width="386" border="0" height="181"></a></center></td>
-                                <td valign="top" width="294" bgcolor="#423c3c">
-                                    <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                        <tbody><tr>
-                                            <td width="244"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="30"></center></td>
-                                            <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="50" align="center" bgcolor="#960641">-53%</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" align="left">
-                                                <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody><tr>
-                                                        <td width="10"></td>
-                                                        <td colspan="2" width="274" align="center" height="121">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 12px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">LE MAROC</font><br><br>
-															Une superbe r&eacute;sidence &agrave; Marrakech
-															<br>
-                                                            </font>
-                                                        </td>
-                                                        <td width="10"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td width="145"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOhTg0w"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" alt="Voir la Bande Annonce" width="145" border="0" height="30"></a></center></td>
-                                                        <td width="129"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOhXg1A"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif" alt="Acc&eacute;der aux Ventes" width="129" border="0" height="30"></a></center></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" alt="" width="10" border="0" height="181"></center></td>
-                            </tr>
-                            <tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                        </tbody></table>
-            <!--FIN thematique 70-->
-                    </td>
-                </tr>
-            </tbody></table>
-        </td>
-    </tr>
-    
-    <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="10"></center></td></tr>
-    <tr>
-        <td>
-            <table width="700" align="center" bgcolor="#312b2b" border="0" cellpadding="0" cellspacing="0">
-                <tbody><tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="10"></center></td></tr>
-                <tr>
-                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="10" border="0" height="30"></center></td>
-                    <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="700" align="center">
-        <!--txt actuellement-->
-                        <strong>Prochainement :</strong> Du vendedi 17 avril 10h00 au lundi 20 avril 23h55 
-        <!--FIN txt actuellement-->
-                    </td>
-                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="10" border="0" height="1"></center></td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-        <table width="700" align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                            <tr>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" alt="" width="10" border="0" height="181"></center></td>
-                                <td valign="top" width="294" bgcolor="#423c3c">
-                                    <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                        <tbody><tr>
-                                            <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="50" align="center" bgcolor="#312b2b">-35%</td>
-                                            <td width="244"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="30"></center></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" align="left">
-                                                <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody><tr>
-                                                        <td width="10"></td>
-                                                        <td colspan="2" valign="top" width="274" align="center" height="121">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">PARTEZ AUX BAHAMAS</font><br><br>
-                                                            Choisissez votre h&ocirc;tel et vivez des vacances au soleil
-                                                            </font>
-                                                        </td>
-                                                        <td width="10"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td width="145"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgrg1Q"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" alt="Voir la Bande Annonce" width="145" border="0" height="30"></a></center></td>
-                                                        <td width="129"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgvg1g"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif" alt="Acc&eacute;der aux Ventes" width="129" border="0" height="30"></a></center></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="386"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgjg1w"><img src="http://photos.voyage-prive.com/vpi/fr/front/thematiques/74/image.jpg" alt="" width="386" border="0" height="181"></a></center></td>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" alt="" width="10" border="0" height="181"></center></td>
-                            </tr>
-                            <tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                        </tbody></table><table width="700" align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                            <tr>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" alt="" width="10" border="0" height="181"></center></td>
-                                <td valign="top" width="294" bgcolor="#423c3c">
-                                    <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                        <tbody><tr>
-                                            <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="50" align="center" bgcolor="#312b2b">-51%</td>
-                                            <td width="244"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="30"></center></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" align="left">
-                                                <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody><tr>
-                                                        <td width="10"></td>
-                                                        <td colspan="2" valign="top" width="274" align="center" height="121">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">L'ANDALOUSIE</font><br><br>
-                                                            Au sud de l'Espagne, Marbella...
-                                                            </font>
-                                                        </td>
-                                                        <td width="10"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td width="145"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgngyA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" alt="Voir la Bande Annonce" width="145" border="0" height="30"></a></center></td>
-                                                        <td width="129"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOg7gyQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif" alt="Acc&eacute;der aux Ventes" width="129" border="0" height="30"></a></center></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="386"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOg_gyg"><img src="http://photos.voyage-prive.com/vpi/fr/front/thematiques/72/image.jpg" alt="" width="386" border="0" height="181"></a></center></td>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" alt="" width="10" border="0" height="181"></center></td>
-                            </tr>
-                            <tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                        </tbody></table><table width="700" align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                            <tr>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" alt="" width="10" border="0" height="181"></center></td>
-                                <td valign="top" width="294" bgcolor="#423c3c">
-                                    <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                        <tbody><tr>
-                                            <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="50" align="center" bgcolor="#312b2b">-38%</td>
-                                            <td width="244"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="30"></center></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" align="left">
-                                                <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody><tr>
-                                                        <td width="10"></td>
-                                                        <td colspan="2" valign="top" width="274" align="center" height="121">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">D&Eacute;COUVREZ CHYPRE</font><br><br>
-                                                            4 &eacute;toiles en tout inclus
-                                                            </font>
-                                                        </td>
-                                                        <td width="10"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td width="145"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgzgyw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" alt="Voir la Bande Annonce" width="145" border="0" height="30"></a></center></td>
-                                                        <td width="129"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOg3gzA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif" alt="Acc&eacute;der aux Ventes" width="129" border="0" height="30"></a></center></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="386"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgLgzQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/thematiques/75/image.jpg" alt="" width="386" border="0" height="181"></a></center></td>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" alt="" width="10" border="0" height="181"></center></td>
-                            </tr>
-                            <tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                        </tbody></table><table width="700" align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                            <tr>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" alt="" width="10" border="0" height="181"></center></td>
-                                <td valign="top" width="294" bgcolor="#423c3c">
-                                    <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                        <tbody><tr>
-                                            <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="50" align="center" bgcolor="#312b2b">-32%</td>
-                                            <td width="244"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="30"></center></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" align="left">
-                                                <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody><tr>
-                                                        <td width="10"></td>
-                                                        <td colspan="2" valign="top" width="274" align="center" height="121">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">D&Eacute;COUVERTE DU CANADA</font><br><br>
-                                                            L'essentiel du Canada de Toronto &agrave; Qu&eacute;bec, les chutes du Niagara, Montr&eacute;al...
-                                                            </font>
-                                                        </td>
-                                                        <td width="10"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td width="145"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgPgzg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" alt="Voir la Bande Annonce" width="145" border="0" height="30"></a></center></td>
-                                                        <td width="129"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgDgzw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif" alt="Acc&eacute;der aux Ventes" width="129" border="0" height="30"></a></center></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="386"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgHgwA"><img src="http://photos.voyage-prive.com/vpi/fr/front/thematiques/68/image.jpg" alt="" width="386" border="0" height="181"></a></center></td>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" alt="" width="10" border="0" height="181"></center></td>
-                            </tr>
-                            <tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                        </tbody></table><table width="700" align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                            <tr>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" alt="" width="10" border="0" height="181"></center></td>
-                                <td valign="top" width="294" bgcolor="#423c3c">
-                                    <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                        <tbody><tr>
-                                            <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="50" align="center" bgcolor="#312b2b">-31%</td>
-                                            <td width="244"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="30"></center></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" align="left">
-                                                <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody><tr>
-                                                        <td width="10"></td>
-                                                        <td colspan="2" valign="top" width="274" align="center" height="121">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">VISITEZ LA CR&Egrave;TE</font><br><br>
-                                                            Un superbe resort vous attend au bord de la plage
-                                                            </font>
-                                                        </td>
-                                                        <td width="10"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td width="145"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgbgwQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" alt="Voir la Bande Annonce" width="145" border="0" height="30"></a></center></td>
-                                                        <td width="129"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgfgwg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif" alt="Acc&eacute;der aux Ventes" width="129" border="0" height="30"></a></center></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="386"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgTgww"><img src="http://photos.voyage-prive.com/vpi/fr/front/thematiques/69/image.jpg" alt="" width="386" border="0" height="181"></a></center></td>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" alt="" width="10" border="0" height="181"></center></td>
-                            </tr>
-                            <tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                        </tbody></table><table width="700" align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                            <tr>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" alt="" width="10" border="0" height="181"></center></td>
-                                <td valign="top" width="294" bgcolor="#423c3c">
-                                    <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                        <tbody><tr>
-                                            <td style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 16px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);" width="50" align="center" bgcolor="#312b2b">-36%</td>
-                                            <td width="244"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" alt="" width="1" border="0" height="30"></center></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" align="left">
-                                                <table width="294" align="center" border="0" cellpadding="0" cellspacing="0">
-                                                    <tbody><tr>
-                                                        <td width="10"></td>
-                                                        <td colspan="2" valign="top" width="274" align="center" height="121">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: normal; font-size: 14px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">
-                                                            <font style="font-family: Arial,Verdana; font-style: normal; font-variant: normal; font-weight: bold; font-size: 13px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none; color: rgb(255, 255, 255);">L'&Icirc;LE MAURICE</font><br><br>
-                                                            3 &eacute;toiles &agrave; Grand Baie
-                                                            </font>
-                                                        </td>
-                                                        <td width="10"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td width="145"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOgXgxA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" alt="Voir la Bande Annonce" width="145" border="0" height="30"></a></center></td>
-                                                        <td width="129"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOfrhxg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif" alt="Acc&eacute;der aux Ventes" width="129" border="0" height="30"></a></center></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="386"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOfvhxw"><img src="http://photos.voyage-prive.com/vpi/fr/front/thematiques/73/image.jpg" alt="" width="386" border="0" height="181"></a></center></td>
-                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" alt="" width="10" border="0" height="181"></center></td>
-                            </tr>
-                            <tr><td colspan="5"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" alt="" width="700" border="0" height="10"></center></td></tr>
-                        </tbody></table>
-                    </td>
-                </tr>
-            </tbody></table>
-        </td>
-    </tr>
-    
-    <tr><td><center>    <br>
-            <font face="Verdana,Arial" size="1" color="#808080">*Offres r&eacute;serv&eacute;es aux membres. R&eacute;duction maximum constat&eacute;e</font>
-            <br>    <br>
-            </center>
-    </td></tr>
-</tbody></table>
-<center><font size="1" face="Verdana,Arial">Si vous ne souhaitez plus recevoir d'e-mail de la part de Voyage Prive, <a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJjbxecTOfjh,A">cliquez-ici</a></font></center>
-<img src="http://et.eulerian.net/view/vp-catalogue/8lL.QlYVeQ7BL6AqQORY2HqH32ltLOohNOlfYd6VLQ--/pix.gif?eemail=" border="0" width="1" height="1" NOSEND="1" />
-http://news.voyageprive.com/HM?a=A9X7CkNFDwNqsJjbxecTOf7h,g<img src="http://news.voyageprive.com/HO?AdX7CkNFDwNqsLCHXOP3PQ,mhz3QJZI.gif" border="0" alt="" width="1" height="1"></body></html>    
-
---11026367891006691824261--
+PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
+bmFsLy9FTiI+DQoNCjxodG1sPjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1U
+eXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjxzdHls
+ZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQouc3R5bGUxIHtjb2xvcjogIzAwMDA4OH0NCi5z
+dHlsZTEzIHsNCglmb250LXNpemU6IDFweDsNCgljb2xvcjogI0ZGRkZGRjsNCn0NCi5zdHls
+ZTE5IHsNCglmb250LWZhbWlseTogIlRpbWVzIE5ldyBSb21hbiIsIFRpbWVzLCBzZXJpZjsN
+Cglmb250LXN0eWxlOiBpdGFsaWM7DQp9DQouc3R5bGUyNiB7Y29sb3I6ICM5OTAwMDB9DQot
+LT4NCjwvc3R5bGU+DQo8dGl0bGU+yuDk8O7i4P8g4eXn7u/g8e3u8fL8IO/w7vLo4iDi7vDu
+4vHy4uAg6CDs7vjl7e3o9+Xx8uLgIPHu4fHy4uXt7e7j7iDv5fDx7u3g6+AuPC90aXRsZT48
+L2hlYWQ+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KcHtmb250LWZhbWlseTpUYWhvbWEs
+IEFyaWFsOyBmb250LXNpemU6IDEycHg7IHBhZGRpbmc6MnB4OyB9DQpsaXtmb250LWZhbWls
+eTpUYWhvbWEsIEFyaWFsOyBmb250LXNpemU6IDEycHg7IH0NCnRkIHtQQURESU5HOjEwcHg7
+IHRleHQtYWxpZ246bGVmdDt9DQouc3R5bGUxNSB7Zm9udC1zaXplOiAxM3B4OyBmb250LWZh
+bWlseTogVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgfQ0KLnN0eWxl
+MjEgew0KCWZvbnQtZmFtaWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNl
+cmlmOw0KCWZvbnQtc2l6ZTogMThweDsNCgljb2xvcjogIzAwNjYwMDsNCn0NCi5zdHlsZTIy
+IHtmb250LWZhbWlseTogVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZn0N
+Ci5zdHlsZTI3IHsNCgljb2xvcjogIzY2NjY2NjsNCglmb250LXdlaWdodDogYm9sZDsNCn0N
+Ci5zdHlsZTI5IHsNCglmb250LWZhbWlseTogVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwg
+c2Fucy1zZXJpZjsNCglmb250LXNpemU6IDE0cHg7DQp9DQouc3R5bGUzMCB7Zm9udC1zaXpl
+OiAxM3B4fQ0KLnN0eWxlMzIgew0KCWNvbG9yOiAjNDA0MDQwOw0KCWZvbnQtd2VpZ2h0OiBi
+b2xkOw0KfQ0KLnN0eWxlMzMgew0KCWZvbnQtZmFtaWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVs
+dmV0aWNhLCBzYW5zLXNlcmlmOw0KCWZvbnQtc2l6ZTogMTRweDsNCgljb2xvcjogIzQwNDA0
+MDsNCglmb250LXdlaWdodDogYm9sZDsNCn0NCi5zdHlsZTM0IHtjb2xvcjogI0ZGMDAwMDsg
+Zm9udC1zaXplOiAxNXB4O30NCi5zdHlsZTM1IHsNCgljb2xvcjogI0ZGMDAwMDsNCglmb250
+LXdlaWdodDogYm9sZDsNCn0NCi5zdHlsZTM3IHtmb250LXNpemU6IDEzcHg7IGZvbnQtZmFt
+aWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyBmb250LXdlaWdo
+dDogYm9sZDsgfQ0KLnN0eWxlMzkge2NvbG9yOiAjRUMwMDAwOyBmb250LXdlaWdodDogYm9s
+ZDsgfQ0KLnN0eWxlNDEge2NvbG9yOiAjNDA0MDQwOyBmb250LXdlaWdodDogYm9sZDsgZm9u
+dC1zaXplOiAxMnB4OyB9DQouc3R5bGU0MiB7DQoJZm9udC1zaXplOiAxMnB4Ow0KCWNvbG9y
+OiAjNDA0MDQwOw0KfQ0KLnN0eWxlNDMge2ZvbnQtc2l6ZTogMTJweH0NCjwvc3R5bGU+DQo8
+Ym9keT4NCjxwIGFsaWduPSJsZWZ0IiBjbGFzcz0ic3R5bGUxOSI+Jm5ic3A7Jm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7z/Do4uXy8fLi8/4gwuDxISD98u4gwuDr5e3y6O08L3A+DQo8dGFi
+bGUgd2lkdGg9IjExNTAiIGJvcmRlcj0iMCIgYWxpZ249ImNlbnRlciIgY2VsbHBhZGRpbmc9
+IjAiIGNlbGxzcGFjaW5nPSIwIiBiZ2NvbG9yPSIjMDAwMDg4Ij4NCjx0ciBib3JkZXJjb2xv
+cj0iI0RERERERCIgYmdjb2xvcj0iI2U1ZjJmZiI+IA0KPHRkIGNvbHNwYW49IjIiIGJnY29s
+b3I9IiNGRkZGRkYiPjxwIGNsYXNzPSJzdHlsZTIxIHN0eWxlMjYiPjxzcGFuIGNsYXNzPSJz
+dHlsZTM5Ij7K4OTw7uLg/yDh5efu7+Dx7e7x8vwg7/Du8ujiIOLu8O7i8fLi4CA8YnI+DQog
+IOgg7O745e3t6Pfl8fLi4CDx7uHx8uLl7e3u4+4g7+Xw8e7t4OvgLjwvc3Bhbj48L3A+DQog
+IDxwIGNsYXNzPSJzdHlsZTIyIj48c3BhbiBjbGFzcz0ic3R5bGUyNyI+Mjkg4O/w5ev/LiAy
+MDA5IOMuPC9zcGFuPjxicj4NCuMuIMro5eIsIOHz6/ziLiDY5eL35e3q7iwgNDwvcD4NCjxw
+PjxzcGFuIGNsYXNzPSJzdHlsZTI5Ij48c3BhbiBjbGFzcz0ic3R5bGUzMCI+0uXrLjo8L3Nw
+YW4+ICszIDggMCA0IDQgPHN0cm9uZz4yMzMgNDYgNjkgLyAyMzcgOU8gTzU8L3N0cm9uZz48
+L3NwYW4+PGJyPg0KPC9wPjwvdGQ+DQo8L3RyPg0KPHRyIGJnY29sb3I9IiMwMDAwODgiPjx0
+ZCBoZWlnaHQ9IjEwcHgiIGNvbHNwYW49IjIiIGJnY29sb3I9IiNGRkZGMDAiIHN0eWxlPSJw
+YWRkaW5nOjBweDsgbWFyZ2luOjBweDsiPjwvdGQ+DQo8L3RyPg0KPHRyPg0KPHRkIHdpZHRo
+PSI4MDYiIGJnY29sb3I9IkYxRjFGMSI+PHAgY2xhc3M9InN0eWxlMTUiPjxzcGFuIGNsYXNz
+PSJzdHlsZTMyIj7N7uL75SDn7eDt6P8g5Ov/Ojwvc3Bhbj4g4uvg5OXr/Pbl4iDoIODq9uju
+7eXw7uIg4ejn7eXx4Cwg8u7vLezl7eXk5uXw7uIsIPDz6u7i7uTo8uXr5ekg7+7k8ODn5OXr
+5e3o6SDRwSDoIEhSLCDg7eDr6OfgIPDo8eru4i4gIMTr/yDy5fUsIOry7iD17vfl8iDv7uvz
+9+jy/CDv8ODq8uj35fHq6OUg5+3g7ej/IOgg6O3x8vDz7OXt8vsg5Ov/IOHu8Pzh+yDxIOLu
+8O7i8fLi7uwg6CDs7vjl7e3o9+Xx8uLu7CDv5fDx7u3g6+AuPC9wPg0KICA8cCBjbGFzcz0i
+c3R5bGUxNSI+PHNwYW4gY2xhc3M9InN0eWxlMzIiPsHo5+1lYy1rb+1j8+v88mHt8jo8L3Nw
+YW4+ICDD7vDu5O3o9uro6SDB7uPk4O0gwe7j5ODt7uLo9ywg5Ojw5ery7vAgq8Dj5e3y8fLi
+4CD96vHv5fDy7fv1IOjx8evl5O7i4O3o6bsgKMro5eIpLCDv8OXk8fLg4ujy5ev8IE1JRE9U
+IOIg0O7x8ejoIOgg0+rw4Ojt5Swg4uXy5fDg7SDu8OPg7e7iIOPu8eHl5+7v4PHt7vHy6Cwg
+9+vl7SBBQ0ZFICjs5ebk8+3g8O7k7eD/IODx8e726OD26P8g/erx7+Xw8u7iIO/uIOHu8Pzh
+5SDxIOzu+OXt7ej35fHy4u7sIOIg6u7s7+Dt6P/1KS48L3A+DQogIDxwIGNsYXNzPSJzdHls
+ZTE1Ij48c3BhbiBjbGFzcz0ic3R5bGUzMiI+1uXr/Do8L3NwYW4+PGJyPg0KICAgIJUgzu/w
+5eTl6+jy/CDs5fHy7iDoIPDu6/wg6uDk8O7i7ukg4eXn7u/g8e3u8fLoLjxicj4NCiAgICCV
+IM7v8OXk5evo8vwg7/Ho9e7r7uPo9+Xx6vP+IOgg8e726ODr/O3z/iDv8Ojw7uTzIOTu6+bt
+7vHy7e7j7iDs7vjl7e3o9+Xx8uLgLCDi7vDu4vHy4uAsIOru8PDz7/bo6C48YnI+DQogICAg
+lSDQ4PHx7O7y8OXy/CDx7+7x7uH7IO/w7vTo6+Dq8ujq6CDs7vjl7e3o9+Xx8uLgIO/l8PHu
+7eDr4C48YnI+DQogICAglSDO7/Dl5OXr6PL8ICDv8Oj36O3zLCDv7iDq7vLu8O7pIPHl4+7k
+7f8g6uDk8O7i4P8g4eXn7u/g8e3u8fL8IPLu6/zq7iDk5err4PDo8PPl8vH/LCDt7iDt5SD0
+8+3q9uju7ejw8+XyLjxicj4NCiAgICCVINDg8fHs7vLw5fL8IO/w5ejs8/nl8fLi4CDoIO3l
+5O7x8uDy6uggIOjn4uXx8u379SDy5fHy7uL79SDs5fLu5OjqOiDw8/ft++Ug6+j37e7x8u37
+5SDy5fHy+ywg5OXy5ery7vAg6+boLCBNaW5kUmVhZGVyLCBNaWRvdC48L3A+DQogIDxwIGNs
+YXNzPSJzdHlsZTMzIj5PwUPTxMhNOjwvcD4NCiAgPHAgY2xhc3M9InN0eWxlMTUiPjxzdHJv
+bmc+MS48L3N0cm9uZz4gyuDk8O7i4P8g4eXn7u/g8e3u8fL8LCDq7vLu8O7pIO3l8i48L3A+
+DQogIDxwIGNsYXNzPSJzdHlsZTE1Ij48c3Ryb25nPjIuPC9zdHJvbmc+INfy7iDy4Oru5SD9
+6u7t7uzo9+Xx6uD/IOHl5+7v4PHt7vHy/CDh6Oft5fHgPzwvcD4NCiAgPHAgY2xhc3M9InN0
+eWxlMTUiPjxzdHJvbmc+My48L3N0cm9uZz4gxfHy/CDr6CDiIOLg+Oj1IOru7O/g7ej/9SDq
+4OTw7uLg/yDh5efu7+Dx7e7x8vw/PC9wPg0KICA8cCBjbGFzcz0ic3R5bGUxNSI+PHN0cm9u
+Zz40Ljwvc3Ryb25nPiDQ6PHq6CDh6Oft5fHgOiDi7eX47ejlIOgg4u3z8vDl7e3o5S48L3A+
+DQogIDxwIGNsYXNzPSJzdHlsZTE1Ij48c3Ryb25nPjUuPC9zdHJvbmc+IMPw8+/v+yDw6PHq
+4CDoIOrg6iDi++Lo8vwg7/Dl5PHy4OLo8uXr5ekg4/Dz7+8g8Ojx6uAuPC9wPg0KICA8cCBj
+bGFzcz0ic3R5bGUxNSI+PHN0cm9uZz42Ljwvc3Ryb25nPiDM7vjl7e3o9+Xx8uLuLCDi7vDu
+4vHy4u4sIOru8PDz7/bo/yDoIOLn//Lu9+3o9+Xx8uLuLjxicj4NCiAgICAmbmJzcDsmbmJz
+cDsmbmJzcDuVIM/x6PXu6+7j6P8g6CDx7vbo4Ov87eD/IO/w6PDu5OAg/+Lr5e3o/y48YnI+
+DQogICAgJm5ic3A7Jm5ic3A7Jm5ic3A7lSCr0vDl8+Pu6/zt6Oog7O745e3t6Pfl8fLi4Ls8
+YnI+DQogICAgJm5ic3A7Jm5ic3A7Jm5ic3A7lSDR7+7x7uH7IOL7/+Lr5e3o/yDoIO/w7vTo
+6+Dq8ujq6CDs7vjl7e3o9+Xx8uLgLjwvcD4NCiAgPHAgY2xhc3M9InN0eWxlMTUiPjxzdHJv
+bmc+Ny48L3N0cm9uZz4gzO745e3t6Pfl8fLi7iDv5fDx7u3g6+AsIOrg6iDs6PDu4uD/IO/w
+7uHr5ezgLjwvcD4NCiAgPHAgY2xhc3M9InN0eWxlMTUiPjxzdHJvbmc+OC48L3N0cm9uZz4g
+yvLuIOTu6+bl7SDn4O3o7ODy/PH/IOrg5PDu4u7pIOHl5+7v4PHt7vHy/P4sIEhSIOjr6CDR
+wT88YnI+DQogICAgJm5ic3A7Jm5ic3A7Jm5ic3A7lSDT8e/l9SDiIPHu8vDz5O3o9+Xx8uLl
+LCDgIO3lIOIg6u7t9PDu7fLg9ujoIO/u5PDg5+Tl6+Xt6OkuPC9wPg0KICA8cCBjbGFzcz0i
+c3R5bGUxNSI+PHN0cm9uZz45Ljwvc3Ryb25nPiDD5OUg7eD36O3g5fLx/yDoIOPk5SDn4Org
+7ffo4uDl8vH/IOrg5PDu4uD/IOHl5+7v4PHt7vHy/D8gyCDk7uvm7eAg6+gg7u3gIOfg6uDt
+9+ji4PL88f8/PGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwO5Ug1/LuIPLg6u7lIOHr4OPu
+7eDkuObt7vHy/CDq4O3k6OTg8uAg7eAg8ODh7vLzIOgg6uDqIOW4IO725e3o8vw/PGJyPg0K
+ICAgICZuYnNwOyZuYnNwOyZuYnNwO5Ug1/LuIPLg6u7lIOvu/+v87e7x8vwg8e7y8PPk7ejq
+4CDoIOrg6iDluCDu9uXt6PL8Pzxicj4NCiAgICAmbmJzcDsmbmJzcDsmbmJzcDuVINfy7iDy
+4Oru5SDg7eDr6Ocg8Ojx6u7iIOTu6+bt7vHy7fv1IOfr7vPv7vLw5eHr5e3o6SDoIOrg6iDl
+4+4g7vbl7ejy/D88L3A+DQogIDxwIGNsYXNzPSJzdHlsZTE1Ij48c3Ryb25nPjEwLjwvc3Ry
+b25nPiDM5fLu5Ojq6CDu9uXt6ugg4evg4+7t4OS45u3u8fLoLCDr7v/r/O3u8fLoLCDw6PHq
+7uIuPGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwO5Ug0uXx8ujw7uLg7ejlIOggx+Dq7u0u
+PGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwO5Ug0PP37fvlIOvo9+3u8fLt++Ug8uXx8vss
+IOTl8uXq8u7wIOvm6CwgTWluZFJlYWRlciwgTWlkb3QuPGJyPg0KICAgICZuYnNwOyZuYnNw
+OyZuYnNwO5Ug1/LuIO7t6CDk5err4PDo8PP+8iDoIPfl7CDs7uPz8iDw5eDr/O3uIO/u7O73
+/CDq4OTw7uLu6SDh5efu7+Dx7e7x8ug/PGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwO5Ug
+z/Dl6Ozz+eXx8uLgIOgg7eXk7vHy4PLq6C48YnI+DQogICAgJm5ic3A7Jm5ic3A7Jm5ic3A7
+lSDE5ezu7fHy8OD26P8g8ODh7vL7IE1pbmRSZWFkZXLgLjxicj4NCiAgICAmbmJzcDsmbmJz
+cDsmbmJzcDuVIMTl7O7t8fLw4Pbo/yDy5fHy4CBNaWRvdC48L3A+PC90ZD4NCjx0ZCB3aWR0
+aD0iMjk0IiB2YWxpZ249InRvcCIgYmdjb2xvcj0iI0ZGRkY5OSI+PHAgY2xhc3M9InN0eWxl
+MTUiPjxzcGFuIGNsYXNzPSJzdHlsZTQxIj5D0k/IzE9D0twg09dBQ9LI3yBPxM1Pw08g09dB
+Q9LNyMpBOjwvc3Bhbj48YnI+DQogICAgPHNwYW4gY2xhc3M9InN0eWxlMzQiPjgwMC4wMCDj
+8O0uPC9zcGFuPiA8c3BhbiBjbGFzcz0ic3R5bGU0MyI+5+Ag7uTt7uPuIO9wZeRj8mHi6PJl
+6/8uPC9zcGFuPjxicj4NCiAgxOv/IOLy7vDu4+4g6CDy8OXy/OXj7iDz9+Dx8u3o6uAg8ero
+5OrgIC0gNSUg6CA3JSDx7u7y4uXy8fLi5e3t7i48L3A+DQogIDxwIGNsYXNzPSJzdHlsZTE1
+Ij48c3BhbiBjbGFzcz0ic3R5bGU0MSI+QiBDVDDIzDDR0twgwkvL3tdFzds6PC9zcGFuPjxi
+cj4NCiAgICDo7fTu8Ozg9uju7e3uLeru7fHz6/zy4Pbo7u3t7uWg7uHx6/Pm6OLg7ejlLDxi
+cj4NCiAgICD96vHq6/7n6OLt++kg8eHu8O3o6iDs4PLl8Ojg6+7iLCDh6+7q7e7yLDxicj4N
+CiAgICDw8/fq4Cwg6u705S3h8OXp6iwg7uHl5CDiIPDl8fLu8ODt5S48L3A+DQogIDxwIGNs
+YXNzPSJzdHlsZTE1Ij48c3BhbiBjbGFzcz0ic3R5bGU0MSI+0ODx7+7w/+Tu6jo8L3NwYW4+
+IDkuMzAtMTguMDA8YnI+DQogICAgPHNwYW4gY2xhc3M9InN0eWxlNDEiPs/l8OXw++I8L3Nw
+YW4+IDEzLjMwLTE0LjMwPGJyPg0KICAgIDxzcGFuIGNsYXNzPSJzdHlsZTQxIj7Q5ePo8fLw
+4Pbo/zwvc3Bhbj4g8SA5LjAwIOIg9e7r5S4NCiAgPGhyPg0KICA8L3A+PHNwYW4gY2xhc3M9
+InN0eWxlMzciPjxzcGFuIGNsYXNzPSJzdHlsZTQyIj7P8Ogg8OXj6PHy8OD26Ogg7eA8L3Nw
+YW4+IDxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVu
+aW5naS1TZW1pbmFyeS9hcHJlbF8yMDA5L2thZHJvdmF5YV9iZXpvcGFzbm9zdF9wcm90aXZf
+dm9yb3ZzdHZhX2lfX19fX19fX19fX19fX19fX19fXy5odG0iPvHg6fLlPC9hPiA8c3BhbiBj
+bGFzcz0ic3R5bGU0MiI+8ero5OrgPC9zcGFuPjwvc3Bhbj48c3BhbiBjbGFzcz0ic3R5bGUx
+NSI+IDxzcGFuIGNsYXNzPSJzdHlsZTM1Ij4tNSUgPC9zcGFuPjwvc3Bhbj4NCiAgPHAgY2xh
+c3M9InN0eWxlMTUiPlN1Y2Nlc3NmdWwgeW91IGRheSE8L3A+PC90ZD4NCjwvdHI+DQo8L3Rh
+YmxlPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
+Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
+c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
+PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
+PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
+Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
+c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
+PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
+PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
+Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
+c3A7PC9wPg0KPHAgY2xhc3M9InN0eWxlMSBzdHlsZTEzIj5zbHVjaHluaWUgc3Ryb2tpOiD/
+LCCWIPHl6fcgYmdyb3VwQHVjLnJ1CdHy6OvuIOL772FuZHJleXNAcnJvc3QucnUJIOvl8fLt
+6PbzIOgg7+7x7O7y8OXrYWtobHVkb3ZhQGRlbGlnaHQyMDAwLnJ1CVNoZSBpcyByZWFsbHkg
+aW4gYSBmaXggQmFoYW1hIE1hbWFhdWdtZW50Y3Jvd2xleUByb3lhbC11YS5jb208L3A+DQo8
+L2JvZHk+DQo8L2h0bWw+DQoNCg0KDQo=
 
 
 
---===============2893494554083416723==
+
+--===============0823278883986945374==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -528,7 +181,7 @@ around Java (TM) technology - register by April 22, and save
 $200 on the JavaOne (SM) conference, June 2-5, 2009, San Francisco.
 300 plus technical and hands-on sessions. Register today. 
 Use priority code J9JMT32. http://p.sf.net/sfu/p
---===============2893494554083416723==
+--===============0823278883986945374==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -539,4 +192,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2893494554083416723==--
+--===============0823278883986945374==--

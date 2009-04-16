@@ -1,8 +1,8 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.30-rc2+] pxa2xx_spi: fix kernel
-	freeze regression
-Date: Thu, 16 Apr 2009 11:41:49 -0700
-Message-ID: <200904161141.49664.david-b@pacbell.net>
+Subject: [patch 2.6.30-rc2] pxa2xx_spi: restore DRCMR on
+	resume
+Date: Thu, 16 Apr 2009 11:44:23 -0700
+Message-ID: <200904161144.23813.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -22,31 +22,32 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-The "introduce chipselect GPIO" patch introduced a serious regression
-in the PXA SPI driver, for boards not using that new mechanism.  On
-one board this caused a kernel frees on system startup.
-
-Fix is trivial:  correct typo on pxa2xx-spi.c cs_deassert.
+If DMA is enabled, any spi_sync call after suspend/resume would block forever,
+because DRCMR is lost on suspend. This patch restores DRCMR to the same values
+set by probe.
 
 Signed-off-by: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Acked-by: Eric Miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/pxa2xx_spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/pxa2xx_spi.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
 --- a/drivers/spi/pxa2xx_spi.c
 +++ b/drivers/spi/pxa2xx_spi.c
-@@ -195,7 +195,7 @@ static void cs_deassert(struct driver_da
- 	struct chip_data *chip = drv_data->cur_chip;
+@@ -1700,6 +1700,13 @@ static int pxa2xx_spi_resume(struct plat
+ 	struct ssp_device *ssp = drv_data->ssp;
+ 	int status = 0;
  
- 	if (chip->cs_control) {
--		chip->cs_control(PXA2XX_CS_ASSERT);
-+		chip->cs_control(PXA2XX_CS_DEASSERT);
- 		return;
- 	}
++	if (drv_data->rx_channel != -1)
++		DRCMR(drv_data->ssp->drcmr_rx) =
++			DRCMR_MAPVLD | drv_data->rx_channel;
++	if (drv_data->tx_channel != -1)
++		DRCMR(drv_data->ssp->drcmr_tx) =
++			DRCMR_MAPVLD | drv_data->tx_channel;
++
+ 	/* Enable the SSP clock */
+ 	clk_enable(ssp->clk);
  
-
 
 ------------------------------------------------------------------------------
 Stay on top of everything new and different, both inside and 

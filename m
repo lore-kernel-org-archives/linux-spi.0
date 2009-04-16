@@ -1,15 +1,13 @@
-From: Jerrard Blackburn <bernd.harnischmacher-zqRNUXuvxA0b1SvskN2V4Q@public.gmane.org>
-Subject: [SPAM] A Real System You Can Use for Daily
-	Income
-Date: Thu, 16 Apr 2009 15:24:13 +0000 (UTC)
-Message-ID: <47597.4104287618$1239895540@news.gmane.org>
-Reply-To: Jerrard Blackburn <13601myrrine.peroff-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Solution Devis par MailandGo" <RET-XTC-DS5R-R9Z1A-DD-LOGSA@R.Ems7.net>
+Subject: Votre comparateur : Solution-Devis
+Date: Thu, 16 Apr 2009 18:07:02 +0200
+Message-ID: <622c8b15dff14968ba1bb8402779906f@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-R9Z1A-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0786171474841485304=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Sun, 14 Jun 2009 18:22:37 +0545
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,35 +18,119 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Do you want to have an access to a huge database of real, verified companies, looking to hire individuals willing to work at home?
+--===============0786171474841485304==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Now you have that opportunity! Our database is constantly updated with the latest job offers. These are all legitimate, no-fee jobs from real employers that can be done from your home. Companies will often pay per hour! This is a great opportunity for those looking for a part time job or those looking to replace their full time job with a real company. You will be able to access 1000s of jobs such as 100% legitimate data entry jobs, writing, translating, sales, tutoring, assistants, transcription, processing, coding and more!
-
-Simply answer to this email saying that you are interested to join, and we will send you all further details about how to proceed. And it is all for free, no starting fees or funds needed. Reply to 11570teschlerdeborah-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if interested!
-
-Wishing you a good day,
-Online Jobs Marketing
-
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-R9Z1A-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
 
 
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
+" width=3D"600">
+    <tbody>
+        <tr>
+            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
+9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
+3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
+9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
+=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
+evis/kit_mailing/v8/header_multi_01=2Egif" alt=3D"" border=3D"0"></a></=
+td>
+            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
+9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
+3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
+9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
+=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
+evis/kit_mailing/v8/header_multi_02=2Egif" alt=3D"" border=3D"0"></a></=
+td>
+            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
+9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
+3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
+9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
+=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
+evis/kit_mailing/v8/header_multi_03=2Egif" alt=3D"" border=3D"0"></a></=
+td>
+            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
+9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
+3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
+9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
+=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
+evis/kit_mailing/v8/header_multi_04=2Egif" alt=3D"" border=3D"0"></a></=
+td>
+        </tr>
+        <tr>
+            <td colspan=3D"4"><a href=3D"http://nodes=2Ereactivpub=2Efr=
+/clic-493-12099-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9yb=
+XVsYWlyZXNfbmV3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJv=
+dj1lbWFpbGluZ19yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE=
+0NTY3&trackaff=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2E=
+net/solution-devis/kit_mailing/v8/middle=2Egif" alt=3D"" border=3D"0"><=
+/a></td>
+        </tr>
+    </tbody>
+</table>
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
+" width=3D"600">
+    <tbody>
+        <tr>
+            <td colspan=3D"3"><a href=3D"http://nodes=2Ereactivpub=2Efr=
+/clic-493-12099-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9yb=
+XVsYWlyZXNfbmV3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJv=
+dj1lbWFpbGluZ19yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE=
+0NTY3&trackaff=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2E=
+net/solution-devis/kit_mailing/v8/logo=2Egif" alt=3D"" border=3D"0"></a=
+></td>
+            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
+9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
+3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
+9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
+=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
+evis/kit_mailing/v8/bord_droit=2Egif" alt=3D"" border=3D"0"></a></td>
+        </tr>
+    </tbody>
+</table>
+<p><br>
+<!-- pixel RAC--> <img src=3D"http://eskdom015=2Enetmastering2=2Enet/c/=
+a8FJS4PK87GF8FD1S" alt=3D"" border=3D"0"> <!-- pixel epargne--> <img sr=
+c=3D"http://eskdom019=2Enetmastering2=2Enet/c/aUDWUBH2G03QEYDTU" alt=3D=
+"" border=3D"0"> <!-- pixel sante--> <img src=3D"http://eskdom011=2Enet=
+mastering2=2Enet/c/aU6JBUKWN71ZAFQYC" alt=3D"" border=3D"0"> <!-- pixel=
+ defisc--> <img src=3D"http://eskdom018=2Enetmastering2=2Enet/c/aG052Y5=
+MC9Y3UMQ3W" alt=3D"" border=3D"0"></p><img src=3D"http://nodes=2Ereacti=
+vpub=2Efr/mailing-493-12099-12068&group=3D" border=3D"0" height=3D"1" w=
+idth=3D"1"/><div align=3D"center"><font face=3D"arial" size=3D"1"><A hr=
+ef=3D"http://ems6=2Enet/u/?E=3DRET-XTC-DS5R-R9Z1A-DD-LOGSA&EMail=3Dspi-=
+devel-general@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici<=
+/A> pour vous d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Ene=
+t )<BR></font></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R9Z1A=
+-DD-LOGSA-2" width=3D"1" height=3D"1">
 
 
 
+--===============0786171474841485304==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Stay on top of everything new and different, both inside and 
 around Java (TM) technology - register by April 22, and save
 $200 on the JavaOne (SM) conference, June 2-5, 2009, San Francisco.
 300 plus technical and hands-on sessions. Register today. 
 Use priority code J9JMT32. http://p.sf.net/sfu/p
+--===============0786171474841485304==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0786171474841485304==--

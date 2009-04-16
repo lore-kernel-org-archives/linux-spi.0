@@ -1,12 +1,11 @@
-From: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi_bfin5xx: limit reaches -1
-Date: Thu, 16 Apr 2009 23:37:44 +0200
-Message-ID: <49E7A528.9070400@gmail.com>
+From: "Mat Morris" <axel.tattegrain-4FDH1NQV/Kw1cw+0VyYLFlaTQe2KTcn/@public.gmane.org>
+Subject: [SPAM] Show her your passion
+Date: Thu, 16 Apr 2009 18:38:35 -0300
+Message-ID: <20090416183835.9060408@mchari-institute.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,24 +17,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-bfin_spi_flush() returns limit, which reaches -1 upon timeout. but in function
-bfin_spi_pump_transfers() it is compared with 0.
+She wont resist your thick shaft http://xesbl.nradilbiwi.com/
 
-Signed-off-by: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index f014cc2..6545b0c 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -169,7 +169,7 @@ static int bfin_spi_flush(struct driver_data *drv_data)
- 	unsigned long limit = loops_per_jiffy << 1;
- 
- 	/* wait for stop and clear stat */
--	while (!(read_STAT(drv_data) & BIT_STAT_SPIF) && limit--)
-+	while (!(read_STAT(drv_data) & BIT_STAT_SPIF) && --limit)
- 		cpu_relax();
- 
- 	write_STAT(drv_data, BIT_STAT_CLR);
 
 ------------------------------------------------------------------------------
 Stay on top of everything new and different, both inside and 

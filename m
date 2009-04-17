@@ -1,114 +1,177 @@
-From: Anton Vorontsov <avorontsov@ru.mvista.com>
-Subject: Re: [PATCH 6/6] powerpc/fsl_soc: Isolate legacy fsl_spi support to
-	mpc832x_rdb boards
-Date: Fri, 17 Apr 2009 16:23:59 +0400
-Message-ID: <20090417122359.GA6707@oksana.dev.rtsoft.ru>
-References: <20090123195041.GF21237@oksana.dev.rtsoft.ru>
-	<20090123194958.GA17355@oksana.dev.rtsoft.ru>
-	<87bpr71p1o.fsf_-_@macbook.be.48ers.dk>
-Reply-To: avorontsov@ru.mvista.com
+From: "32" <qingsisi78-k+cT0dCbe1g@public.gmane.org>
+Subject: [SPAM] å¦‚<ä½•#é™<ä½Ž#é‡‡<è´­#æˆ<æœ¬#åŠ#è°ˆ<åˆ¤#æŠ€<å·§
+Date: Sat, 18 Apr 2009 02:26:21 +0800
+Message-ID: <E1LusnB-0000EE-KO@335xhf1.ch3.sourceforge.com>
+Reply-To: qingsisi78-k+cT0dCbe1g@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org
-To: Peter Korsgaard <jacmet@sunsite.dk>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org>
-Content-Disposition: inline
-In-Reply-To: <87bpr71p1o.fsf_-_@macbook.be.48ers.dk>
-List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
-List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
-List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
+Content-Type: multipart/mixed;
+	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Peter,
+This is a multi-part message in MIME format
 
-Sorry for the late response (and don't hesitate to ping me if I
-don't answer, some things get lost in my inbox traffic, sorry).
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 08, 2009 at 11:18:43AM +0200, Peter Korsgaard wrote:
-> >>>>> "Anton" == Anton Vorontsov <avorontsov@ru.mvista.com> writes:
-> 
-> Hi,
-> 
->  Anton> The advantages of this:
->  Anton> - Don't encourage legacy support;
->  Anton> - Less external symbols, less code to compile-in for !MPC832x_RDB
->  Anton>   platforms.
-> 
-> It's nice with your cleanups, but I wonder how to handle more
-> complicated chip select handling than simply toggling a single gpio.
-> 
-> I have a board (or 2 actually, but they are similar in this regard)
-> with a mpc8347 using SPI to a number of addon boards. For signal
-> integrity reasons the SPI signals are routed to a MUX, so the chip
-> select logic has to set the MUX in addition to controlling the CS line
-> of the device.
+Çë¿´¸½¼þ£¬Èç¹û´òÈÅ£¬ÇëÔ­ÁÂ£¬Ð»Ð»
 
-So that's just a bit complicated GPIO controller. I believe you
-should describe it in the device tree and use it's muxed lines as
-usual GPIOs.
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: application/octet-stream;
+        name="½µµÍ²É¹º³É±¾¼°Ì¸ÅÐ¼¼ÇÉ.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+        filename="½µµÍ²É¹º³É±¾¼°Ì¸ÅÐ¼¼ÇÉ.txt"
 
-Something ling
+ICAgICAgIMjnus69tbXNssm5urPJsb68sMy4xdC8vMfJDQoNCr+qv87I1cbaOiAyMDA5xOo01MIx
+MS0xMsjVICAgICAgIL+qv8612LXjOiCxsb6pDQq/qr/OyNXG2jogMjAwOcTqNNTCMTgtMTnI1SAg
+ICAgICC/qr/Otdi14zogt/DJvQ0Kv6q/zsjVxto6IDIwMDnE6jXUwjMwLTMxyNUgICAgICAgv6q/
+zrXYteM6ILq81t0NCr+qv87I1cbaOiAyMDA5xOo21MI2LTfI1SAgICAgICAgIL+qv8612LXjOiDJ
+z7qjDQq/qr/OyNXG2jogMjAwOcTqNtTCMjAtMjHI1SAgICAgICC/qr/Otdi14zogye7b2g0Kv6q/
+zsjVxto6IDIwMDnE6jfUwjExLTEyIMjVICAgICAgIL+qv8612LXjOiCxsb6pDQoNCqmlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaWppQ0KytW30bHq17yjuqOkMjUwMCAvyMujqLqsytq/zrfRoaLXysHPt9Ghorvh
+zvG30aGizueyzbfRo6kNCsXg0bW21M/zOiDJ+rL6uLHX3L6twO2horLGzvHX3LzgoaJDSU+hotDo
+x/PT67mp06bBtLncwO2+rcDtoaKyybm6vq3A7aGizu/Bz76twO2hos7vwfe+rcDtoaLJ+rL6vq3A
+7aGivMa7rr6twO2hor/Nu6e3/s7xoaLJ+rL6vMa7rqGissm5utb3udyhos7vwc+8xruuoaJNUlCh
+ok1SUC1JSaGiRVJQ1qez1rmks8zKprXIoaMNCg0Kv86zzMS/seogo7qyybm6vKjQp7ncwO21xMa/
+vrHU2sTEwO+jv7/Os8zV67bUxvPStcbVsem05tTatcS5qdOmycy/qrei0+u53MDttcTKtbzKzsrM
+4qOsveG6z9PF0OPG89K1uanTpsnMudzA7bXEt723qKGivNvWtcH3t9bO9rXEyta2zrrNysC957y2
+uanTpsG0udzA7bXEwO3E7qOsyKvD5rL7ys3I57rOyrax8LrNt6LP1sex1Nq1xLmp06bJzKOssqK2
+1MbkvfjQ0L+qt6LT67ncwO21xLn9s8y6zbe9t6i8vMfJo6zN6snGvajJ6NfUvLrG89K1tcS5qdOm
+ycy2087po6zM4bjfxvPStbLJubq1xL/sy9nQ1KGi17zIt9DUoaLBrsPA0NS6zca9zsjQ1KGjDQoN
+CsjP1qS30dPDo7rW0Ly2o6Q2MDDUqi/IyyAgILjfvLajpDgwMNSqL8jLDQooss6808jP1qS/vMrU
+tcTRp9Sx0Ou9u8TJtMu30dPDo6yyu7LOvNPIz9akv7zK1LXE0afUsc7e0Ou9u8TJKQ0KsbjXoqO6
+DQoxLiC3srLOvNPIz9aktcTRp9Sxo6zU2sXg0bW94cr4ss6807+8ytS6z7jx1d/TyTw8ufq8ytaw
+0rXIz9akserXvMGqus+74T4+sOS3ojw8ssm5urncwO3Kpj4+ufq8yrn6xNrW0NOizsSw5sur1rDS
+tdfKuPHWpMrpo6yjqLn6vMq5+sTayM/WpKOvyKvH8s2o0NCjr7nN1vfIz7/Jo6+52be9zfjJz7Lp
+0a+jqaO7DQoyo663srLOvNPIz9aktcTRp9Sx0OvM4b27sb7Iy8ntt93WpLrFwuu8sLTz0ru058r9
+wuvV1caso7sNCjOjrr/Os8y94cr4uvMxNbj2uaTX98jVxNq9q9akyum/7LXdvMS4+NGn1LGjuw0K
+NKOutMvWpL/JyerH69bQufq5+rzSyMuyxc34yOu/4rG4sLihow0KDQoNCtfJ0a+157uwo7owNzU1
+LTI2MDc1MzY1ICAyNjA3NTQyOSANCrSrICAgINXmo7owNzU1LTYxMzUxMzk2ICANCsGqIM+1IMjL
+o7rB6NChveMgICDF7dChveMNCg0KqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlDQq/zrPMtPO42aO6DQq1
+2tK7vbKjusjnus7J6Laossm5urncwO21xLyo0KfEv7Hqo78gCQ0KbgnP+7fRssm5utPryczO8bLJ
+ubq1xLHIvc8NCm4Jssm5uryo0Ke53MDttcTGv76x1NrExMDvo78NCm4Jssm5uryo0Ke53MDttcTI
+/bTzt73D5g0Kbgmyybm6udzA7bXEwfm087yo0KfEv7HqDQpuCbLJubq53MDttcTLxLTzwOCx8A0K
+bgm499bWssm5urncwO21xMS/seqy7tLsDQpuCcbftPOyv8PFtcSyybm6udzA7dCttfcNCm4Jssm5
+ur3a1Ly21MD7yPO1xLmxz9cNCm4JttSyybm6yMvUsbXEwfm088TcwabSqsfzDQpuCcSzzeLXysbz
+0rWyybm6yMvUsbyo0Ke/vLrLxsC5wLHtDQpuCbLJubqzybG+v9jWxrXEt7bOp9PQtuC08w0Kbgmy
+ybm6s8mxvrncwO21xLe9t6jT0MTE0Kmjvw0Ktdq2/r2yo7rI57rOsdzD4rK7sdjSqrXEssm5urPJ
+sb6jvw0KbgnKssO0yseyybm6udzA7bXEVkEvVkW3qKO/DQpuCc6qyrLDtNKqttSyybm6vfjQ0FZB
+L1ZFudzA7aO/DQoNCm4JvNu48dPr1vfSqrrPzazM9b/utcS52M+1DQpuCdbKwb/T67zbuPG1xLnY
+z7UNCm4Jssm5utKqx/O1xMDgsfANCm4Jssm5utKqx/O1xLfWwOANCm4Jvsa16tK1obGy+sa3obG1
+xLriwb/WuLHqDQpuCcjnvNK/7L3dvsa16rXEvNvWtbS00MINCrXayP29sqO6yOe6ztPQ0Ke55rHc
+1ce826O/CQ0Kbgm827jxz9bS0cnP1cfU9cO0sOyjvw0KbgnG2rv1vbvS19Prz9a79b270te1xLHI
+vc8NCm4Jxtq79b270te1xMDgsfANCm4JucnGsb270tfT68bau/W9u9LXtcSxyL3PDQpuCcbau/W8
+27jxtcTQzrPJDQpuCczXxtqxo9a1IA0KbgnC8sjrzNfG2rGj1rUgDQpuCcL0s/bM18basaPWtQ0K
+bgnC9LP2zNfG2rGj1rWwuMD9DQpuCdbQufrI/bTzxtq79b270tfL+Q0KbgnDwLn6sr+31sbau/XK
+0LOhDQpuCbfHxtq79dDUyczGt7XEvNu48dOmttQNCrXay8S9sqO6ssm5usy4xdC1xMz01b3Kx8qy
+w7SjvyAJDQpuCbLJubrMuMXQ0+vP+srbzLjF0LXEx/ix8KO/DQpuCcT6srvIz7/Jz8LB0MTE0Km5
+27Xjo78NCm4Jus7Oqsur064/DQpuCbrOzqqhsbmrxr2hsQ0Kbgmyybm6zLjF0LXEy8S087rL0MQN
+Cm4Jssm5usy4xdC1xLv5sb7B97PMDQpuCcy4xdCyu7zRtcTUrdLy09DExNCpo78NCm4JzLjF0MTc
+waa1xLLiytQNCrXazuW9sqO6yOe6zrfWzvbMuMXQy6u3vbXEx7/I9crGtdjOu6O/CQ0KtdrSu73a
+o7rO0sPHysfI57rOtqjOu7mp06bJzLXEo78JDQpuCcjnus621LLJubrO78a3vfjQ0LfWwOCjvw0K
+bgmjrbLJubq5qdOmtcS2qM67xKPQzaOtDQpuCcSzzeLXyrH9uMm5q8u+tcTUrbLEwc+31sDgDQpu
+CbG+xvPStbXEsLjA/Q0Kbgmyybm6zu/Gt7XEudzA7dW9wtQNCm4JyrLDtMrHobC8r9bQobHT66Gw
+t9bJoqGxssm5ug0KbgnNrNK7zu/Gt7XEtaXSu9PrtuC80tW9wtQNCm4JsrvNrM7vxrfTydK7vNK5
+qdOmu7nKx7j3uanTprj3o78NCm4JxbextrXCtcS8r9bQ0+u31smissm5uiANCm4JvK/W0NPrt9bJ
+orXEsci9zw0KbgnExMDgzu/Gt9Om08m8r83FvK/W0LLJubqjvw0Kbgm21NPaobCzo9PDzu/Gt6Gx
+tcS53MDtDQpuCcLywvS52M+1sLTV1b270te3vcq9tcS31sDgDQpuCcjnus7D5rbUvbvS19DNuanT
+psnMPw0KbgnI57rOw+a21LrP1/fQzbmp06bJzD8NCm4JwvLC9LnYz7W1xMi3tqgNCm4JyOe6zr21
+tc2yybm6s8mxvg0Kbgmyybm6zu/Gt7ncwO2y38LUtcTKp87zu+HU2sTEwO+jvw0Ktdq2/r3ao7q5
+qdOmyczKx8jnus62qM67ztLDx7XEo78JDQpuCcLywvTLq7e9tcTA+9Lm1q6y7g0KDQpuCcqyw7TK
+x7mp06bJzLXEudjPtdOqz/o/DQpuCbmp06bJzLXEv827p7fWwOANCm4JuanTpsnMzqq6zrvhsaiy
+u82stcS826O/DQpuCcqyw7TKx8LywvTWrrzktcTDxbWxu6e21D8NCrXawfm9sqO6yOe6ztbGtqjM
+uMXQtcS8xruuo78NCm4JvLTQy9DUzLjF0NPrvMa7rtDUzLjF0A0KbgnWxraozLjF0Le9sLi1xMH5
+tPOyvdboDQpuCbXa0ruyvaO6y6u3vdLiz/K1xMP3yLcNCm4Jtdq2/rK9o7rLq7e9su7S7LXEt9bO
+9g0Kbgm8xsvju/q5usLyz+7Ev7rPzayy3bC4IA0Kbgm12sj9sr2jurj3z+631sbntcTW2NKq0NTF
+xdDyDQpuCbXay8SyvaO6yei2qLj3z+631sbntcTMuMXQxL+x6g0Kbgm12s7lsr2jurTvs8nMuMXQ
+xL+x6rXEuPfW1re9t6i6zc2+vrYNCm4JtdrB+bK9o7rMuMXQt73KvbXEyLe2qA0Kbgm499bWzLjF
+0Le9yr21xMrK0su21M/zo78NCrXaxt+9sqO6srvNrNDUuPG21My4xdC74dPQyrLDtLXE07DP7KO/
+CQ0KbgnMuMXQyMvUsbXEy8TW1tDUuPENCm4JvKTH6dDNtcTM2LXjDQpuCb/Y1sbQzbXEzNi14w0K
+bgm31s720M21xMzYteMNCm4Jus3Qs9DNtcTM2LXjDQpuCdDUuPG1xMvE1tbX6brPDQpuCdDUuPG1
+xMalxeTQ1A0KbgnE+tfuyN3S17rN1+6yu8jd0tfP4LSmtcTMuMXQttTK1g0KbgnI57rOw+a21Lyk
+x+nQzaO/DQpuCcjnus7D5rbUv9jWxtDNo78NCm4JyOe6zsPmttS31s720M2jvw0KbgnI57rOw+a2
+1LrN0LPQzaO/DQq12rDLvbKjusjnus7Ktcqp09DQp7XEzLjF0KO/CQ0KbgnKtdW90d3Btw0KbgnM
+uMXQt72wuA0KbgnQodfpzNbC2w0Kbgmyybm6zLjF0LXEu/mxvrn9s8wNCm4JyOe6zr+qusOzoaO/
+DQpuCcjnus608sbGvam+1qO/DQpuCcjnus6x3MPiwOSzoaO/DQpuCcjnus694cr4zLjF0KO/DQpu
+Ccy4xdC5/bPM1tC1xMj9tPO9+7zJDQpuCcy4xdC5tc2otcS9+7zJ09DExNCpo78NCm4JzqrKssO0
+obDM/aGxsru6w6O/DQpuCc6qyrLDtKGwtPChsbK7usOjvw0KbgnI57rOobDOyqGxusPOyszio78N
+Cm4JyOe6zsTcubvLtbf+ttS3vaO/DQq12r7FvbKjusjnus7NqLn91dDNtrHqvfjQ0NPQ0Ke1xKGw
+v7O826Gxo78JDQpuCbLJubq827jxtcTI/dbWv7O827e9t6gNCm4J1dDNtrHqt7bOp7XEt9bA4A0K
+bgm499bWsai828Sjyr21xLLfwtQNCm4Jxuu2/tKpvNnSqbrO0tTW0LHqueO2q7yv1tCyybm6DQpu
+Cbmrv6rV0LHq0+vR+8fr1dCx6rXEsci9zw0KbgnBvbbOyr0NCm4J0fvH69XQseq1xM7lsr3W6A0K
+bgnG89K11dCx6rXEu/mxvsH3s8wNCm4J0fvH67qvtcTW99KqxNrI3Q0KbgnV0M22seq3vcq9tcS3
+1sDgDQpuCbC1serT68P3seq1xLHIvc8NCm4J1dCx6rXEwb3W1tDOyr0NCm4JyrLDtMrHtK7NqM22
+serX76O/zNjV99PQxMTQqaO/IA0Kssm5utDU1sq5qdOmycy1xNa4serJuNGho78NCm4JyOe6zrfW
+zva199HQveG5+6O/DQpuCcbAucDWuLHqtcTIqNbYt9bO9g0KbgnI57rOt9bO9rX30dC94bn7o78N
+Cm4JyOe6ztf2usPJzM7xseq1xLfWzvajvw0Kbgm5qdOmycyzybG+t9bO9rHtKMvw0uax7Sm7+bG+
+w/7KvQ0KbgmyzbrQuanTpsnMs8mxvrGovNux7Q0KbgnI57rOt9bO9tfKsvrQ1LLJubrX3LPJsb4/
+DQq12squvbKjusjnus69tbXNssm5us7vxre1xL/itOazybG+o78JDQpuCb/itOa53MDttcTE0bbI
+1NrExMDvo78NCm4JyrLDtMrHv+K05rPW09CzybG+o78NCm4Jv+K05rncwO264sG/1rix6qO/DQpu
+Cb/itOa1xMbf1tazybfWDQpuCdb30qrM9NW9o78NCrXa0ru92qO6yOe6zte8yLe2qbv1o78JDQpu
+Cb/itOa1vM/y0M21xLapu/XM9NW9o78NCm4Jv+K05rW8z/LQzbXEtqm79be9t6ijvw0KbgnKssO0
+yse2qMG/o6jBrND4o6m2qbv1t6g/DQpuCbaowb+jqMGs0Pijqbapu/W3qA0KbgnI57rOyLe2qLao
+wb+3qLXEz8K1pbXjPw0Kbgm+rbzDtqm79cG/tcTRodTxsLjA/Q0Kbgm+rbzDtqm79cX6wb9FT1G1
+xMG9tPOzybG+udjPtQ0Kbgm+rbzDtqm79cX6wb+1xLzGy+MNCm4JyrLDtMrHtqjG2qOovOS2z6Op
+tqm79beoPw0KbgnBvdbWyLe2qLeotcSxyL3PDQpuCcjnus7It7aotqjG2rzkuPTM7Mr9o78NCm4J
+tqjG2rapu/W3qNa4seqjrb/itOa4srjHxtqjvw0KbgnI57rOyLe2qLaoxtq85Lj0zOzK/aO/DQpu
+Ccjnus7It7aovOS49Mbao63H6b/2QQ0KbgnI57rOyLe2qLzkuPTG2qOtx+m/9kINCrXatv692qO6
+yOe6ztTL08NWTUm53MDto78JDQpuCcqyw7TKx8P0vd3T676r0uajvw0KbgnD9L3du6+1xLrDtKbK
+x8qyw7Sjvw0KbgnI57rO1/a1vbmp06bBtLXEw/S93dDUo78NCm4JuanTpsnMudzA7b/itOajqFZN
+SaOpDQpuCbG8s9ujqFNtYXJ0o6m9zrO1tcRWTUm5qdOmwbQNCg0KqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlDQoNCr2yyqa96cnco7ogDQrVxcDPyqbKx7jEuO+/qrfFuvPU58bauqO56cXJvbLKpqGjMTk4
+NsTqu/HDwLn6R2VyYmVyuavLvrXEvbHRp73wuLDDwLn6TWljaGlnYW4gU3RhdGUgVW5pdmVyc2l0
+eSAow9zO97j51t3BorTz0acpIMH00aejrLvxy7bKv9Gnzruho7HP0rW68yzK3Ma409rDwLn6SGVp
+bnoouuDKzym8r83FuavLvqGj1cXAz8qm1PjPyLrzytzGuNPaw8C5+rrgys+5q8u+oaLTorn6waq6
+z7H9uMm5q8u+oaLDwLn6w8DU3rO8uavLvrXIo6zU+MjOw8DU3rO8uavLvrXEvLzK9byw1MvX99fc
+vOCho7TTMjAwMMTqv6rKvCzVxcDPyqa/qsq819S8urS00rWjrLTTysLT2rbg0NDStbXEvq3Tqrnc
+wO2ho8v50tQs1cXAz8qmvMjT0MrAvec1MDDHv8bz0rXWsNK1vq3A7cjLtcS34bi71MTA+izT1tPQ
+1/fOqsbz0rXAz7DltcTQxLXDzOW74aGj1Nq2/squtuDE6rXE1rDStcn60cTW0KOs1cXAz8qm1Pi9
+08rcuf2499bWufq8yrn6xNq1xNaw0rXF4NG1oaPU+LiwvNPEw7TzoaLDwLn6oaLTorn6oaLQwrzT
+xsKhosypufqhorfGwsmx9qGiwu3AtM730ce1yLn6v7yy7NGnz7ChoyDU+MjOufq80ry8yvW84La9
+vtbKs8a3serXvLuvzq/Usbvhs8nUsbrNufq80ry8yvW84La9vtbKs8a3zO2807zBserXvLuvvLzK
+9c6v1LG74bPJ1LGjrLLO0+uhotbGtqi6zcnzusu5+rzSvLax8LXEyrPGt7Hq17y6zcqzxrfM7bzT
+vMGx6te8oaPU+MjOueO2q8qhyrPGt7mk0rXQrbvhtcTA7crC0tS8sMbky/y24M/uyee74dawzvGh
+oyDVxcDPyqa1xMrav864u9PQutzHv7XEvKTH6SzP1rOhuNDIvsGmx7+jrLfnyKQs08TErCzP1rOh
+xvi31bvu1L6ju8u8zqzD9L3dLLe006bE3MGmx78sv7TOyszivc/Oqsnuv8yho9XFwM/KprXEv84N
+Crz+yei8xsGmx/PJ7rbIoaLKtdPDo7uwuMD9tuDOqrmkvt/Q1LC4wP0s09C63Me/tcTKtbLZoaO/
+zrPMxNrI3b/ntsi08yy+ocG/zvzIobj3uPbQ0NK1tcS+q7Tio6y+39PQuN+2yLXExajL9dDUoaMN
+Cg0K
 
-muxed_pio: gpio-controller@.. {
-	#gpio-cells = <2>;
-	compatible = "..,<board>-muxed-gpios";
-	reg = <...>;
-	gpios = <...>; <- specify pure BLK1, BLK2, OPT1, OPT2 GPIOs
-	gpio-controller;
-};
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-And then,
+------------------------------------------------------------------------------
+Stay on top of everything new and different, both inside and 
+around Java (TM) technology - register by April 22, and save
+$200 on the JavaOne (SM) conference, June 2-5, 2009, San Francisco.
+300 plus technical and hands-on sessions. Register today. 
+Use priority code J9JMT32. http://p.sf.net/sfu/p
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> I've been using code like this since late 2007, but this patch
-> ofcourse breaks it:
-> 
-> static void thinx_spi_activate_cs(u8 cs, u8 polarity)
-> {
-> 	static u8 old_cs = 255;
-> 
-> 	if (cs != old_cs) {
-> 		/* mux setup (cs 2:1)*/
-> 		gpio_set_value(gpio1 + GPIO_SPI_MUX_NOE, 1);
-> 		gpio_set_value(gpio1 + GPIO_SPI_MUX_SEL0, cs&2);
-> 		gpio_set_value(gpio1 + GPIO_SPI_MUX_SEL1, cs&4);
-> 		gpio_set_value(gpio1 + GPIO_SPI_MUX_NOE, 0);
-> 		old_cs = cs;
-> 	}
-> 
-> 	switch (cs) {
-> 	case 0: gpio_set_value(gpio1 + GPIO_SPI_CS_BKL1, polarity); break;
-> 	case 1: gpio_set_value(gpio1 + GPIO_SPI_CS_BKL2, polarity); break;
-> 	case 2: gpio_set_value(gpio1 + GPIO_SPI_CS_OPT1, polarity); break;
-> 	case 3: gpio_set_value(gpio1 + GPIO_SPI_CS_OPT2, polarity); break;
-> 	}
-> }
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-^^^ Put this logic into the "<board>-muxed-gpios" GPIO controller
-driver.
-
-Then spi node would look like this:
-
-spi-controller@.. {
-	...
-	gpios = <&muxed_pio cs1 0   /* muxed CS_BLK1 */
-		 &muxed_pio cs2 0   /* muxed CS_BLK2 */
-		 &muxed_pio cs3 0   /* muxed CS_OPT1 */
-		 &muxed_pio cs4 0>; /* muxed CS_OPT2 */
-};
-
-Hope this helps,
-
--- 
-Anton Vorontsov
-email: cbouatmailru@gmail.com
-irc://irc.freenode.net/bd2
+--=_NextPart_2rfkindysadvnqw3nerasdf--

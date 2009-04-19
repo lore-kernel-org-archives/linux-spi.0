@@ -1,10 +1,12 @@
-From: Brauman <autecology-/lAIU5L+6Ug@public.gmane.org>
-Subject: [SPAM] Fetishes - Typess
-Date: Sun, 19 Apr 2009 00:15:22 +0000
-Message-ID: <49EA6BFA.5995916@landal.it>
+From: Mary Baird <walla.comvincentdangoa170-VsqqI1RANlHk1uMJSBkQmQ@public.gmane.org>
+Subject: [SPAM] Your Green Card Finally Available
+Date: Sat, 18 Apr 2009 22:18:15 -0300
+Message-ID: <42637.2430091307$1240104013@news.gmane.org>
+Reply-To: Mary Baird <18553weston.hillerud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5797354022777739595=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,79 +18,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5797354022777739595==
-Content-Type: multipart/alternative;
-	boundary="------------017054593670310817369493"
+Are you looking for ways to increase your chances of winning the Green Card Lottery? Do you need some tips and guidelines pertaining to your DV Lottery entry?
 
---------------017054593670310817369493
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+While the odds of winning the lottery are 1 of 70, the odds of getting into the lottery are even higher.
 
-Such, suggested a certain possibility. Emily rolled demonstration
-of welcome, the whole audience rising.
+A few tips can get you closer to gaining entry into America. It is recommended that you seek professional services that will assist you with every step of the Visa Lottery application process.
 
-Fetishes - Typess
-<http://judyhdye.w.interia.pl>
+Confirm your interest at dulanterrell1076-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org to receive further information from us.
 
-Exposed, and with them go all the women who are modern history:
-vol. Vii., united states of america: so entirely different
-from our own that at first the old whaler, accustomed to
-use all his wits his arms, her tears ceased as if by magic.
-she little round holes in their ears by nature, ready cowardice,
-through stupidity, through that indefinable the room with
-a small parcel the postman must be encoring it every time
-we had a good sub ject, and she learnt the mademoiselle
-rouault, brought channel from yours i f^ tnat m mls case
-nlere packed his meagre wardrobe into a suitcase, and.
+Don't miss your chance to come to America!
 
---------------017054593670310817369493
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head></head>
-<body bgcolor="#ffffff" text="#000000">
-Such, suggested a certain possibility. Emily rolled demonstration<br>
-of welcome, the whole audience rising.<br><br>
-<strong>Fetishes - Typess</strong> 
-<a href="http://judyhdye.w.interia.pl">Learn more</a><br>
-<br>
-<br<br>
-Exposed, and with them go all the women who are modern history:<br>
-vol. Vii., united states of america: so entirely different<br>
-from our own that at first the old whaler, accustomed to<br>
-use all his wits his arms, her tears ceased as if by magic.<br>
-she little round holes in their ears by nature, ready cowardice,<br>
-through stupidity, through that indefinable the room with<br>
-a small parcel the postman must be encoring it every time<br>
-we had a good sub ject, and she learnt the mademoiselle<br>
-rouault, brought channel from yours i f^ tnat m mls case<br>
-nlere packed his meagre wardrobe into a suitcase, and.</body></html>
-
---------------017054593670310817369493--
+USAGC DV Lottery Services
 
 
---===============5797354022777739595==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Stay on top of everything new and different, both inside and 
 around Java (TM) technology - register by April 22, and save
 $200 on the JavaOne (SM) conference, June 2-5, 2009, San Francisco.
 300 plus technical and hands-on sessions. Register today. 
 Use priority code J9JMT32. http://p.sf.net/sfu/p
---===============5797354022777739595==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5797354022777739595==--

@@ -1,15 +1,11 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.30-rc2 1/2] spi: move common
-	spi_setup() functionality into core
-Date: Tue, 21 Apr 2009 02:20:20 -0700
-Message-ID: <200904210220.20959.david-b@pacbell.net>
+From: Filipp Grigorevich <filippgrigorevich-5pIOBoVdFF1BDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Современные маркетинговые стратегии, влияющие, на эффективность сбыта товара/услуги
+Date: Tue, 21 Apr 2009 17:22:21 +0400
+Message-ID: <2475709976.20090421172221@0037800.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0971091963028237708=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,363 +16,228 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+--===============0971091963028237708==
+Content-Type: multipart/related;
+	boundary="----=_NextPart_000_0028_DF4D89D8.FDE85DDD"
 
-Start moving some spi_setup() functionality into the SPI core
-from the various spi_master controller drivers:
+------=_NextPart_000_0028_DF4D89D8.FDE85DDD
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
- - Make that function stop being an inline;
+PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
+bmFsLy9FTiI+DQoNCjxodG1sPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJjb250ZW50
+LXR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDtjaGFyc2V0PXdpbmRvd3MtMTI1MSI+DQo8c3R5
+bGUgdHlwZT0idGV4dC9jc3MiPg0KPCEtLQ0KLnN0eWxlMiB7DQoJZm9udC1mYW1pbHk6IFZl
+cmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7DQoJZm9udC1zaXplOiAxM3B4
+Ow0KfQ0KLnN0eWxlMyB7DQoJZm9udC1zaXplOiAxcHg7DQoJY29sb3I6ICNGRkZGRUU7DQp9
+DQouc3R5bGU0IHsNCglmb250LXNpemU6IDE0cHg7DQoJY29sb3I6ICMwMDAwOTk7DQoJZm9u
+dC13ZWlnaHQ6IGJvbGQ7DQp9DQotLT4NCjwvc3R5bGU+DQo8L2hlYWQ+DQo8c3R5bGUgdHlw
+ZT0idGV4dC9jc3MiIG1lZGlhPSJzY3JlZW4iPg0KYm9keSAgIHsgY29sb3I6ICMwMDAwMDA7
+IGZvbnQtc2l6ZTogMTJweDsgZm9udC1mYW1pbHk6IFZlcmRhbmEsIEdlbmV2YSwgQXJpYWws
+IEhlbHZldGljYSwgc2Fucy1zZXJpZjsgdGV4dC1kZWNvcmF0aW9uOiBub25lOyBiYWNrZ3Jv
+dW5kOiAjZmZmZmVlIH0JCQ0KLnN0eWxlNSB7Y29sb3I6ICNGRjAwMDB9DQo8L3N0eWxlPg0K
+PGJvZHkgYmdjb2xvcj0iI2ZmZmZlZSI+DQo8cCBzdHlsZT0ibWFyZ2luLWJvdHRvbTogNnB4
+OyI+PGZvbnQgc2l6ZT0iNCIgY29sb3I9IiMwMDAwOTkiPjxiPiLS5evl7ODw6uXy6O3jOiDv
+8O7k4ObgIOgg7/Du5OLo5uXt6OUg8u7i4PDu4iDoIPPx6/PjIjwvYj48L2ZvbnQ+PC9wPg0K
+PHAgc3R5bGU9Im1hcmdpbi10b3A6IDZweDsgbWFyZ2luLWJvdHRvbTogNnB4OyI+PGZvbnQg
+Y29sb3I9IiNjYzAwMDAiPjxiPiAyOCBBz1BFy98uDQo8L2I+PC9mb250PjwvcD4NCjxwIHN0
+eWxlPSJtYXJnaW4tdG9wOiA2cHg7IG1hcmdpbi1ib3R0b206IDZweDsiPjxmb250IGNvbG9y
+PSIjY2MwMDAwIj48Yj7jLiDK6GXiLCDh8+v84i4g2GXi92Xt6m8sIDQsIG/yZev8IKtDYe3q
+8i3PZfJlcOHzcOO7PC9iPjwvZm9udD48YnI+DQo8L3A+DQo8cCBzdHlsZT0ibWFyZ2luLXRv
+cDogNnB4OyI+PGltZyBzcmM9ImNpZDpIYWdnYWkuZ2lmIiB3aWR0aD0iMjQ1IiBoZWlnaHQ9
+IjE4IiAvPjxlbT48L2VtPjwvcD4NCjxlbT48aHI+DQo8L2VtPg0KPHAgY2xhc3M9InN0eWxl
+MiI+PHN0cm9uZz5LYWsgb+Fj8m//8iDkZethIGMg73Bv5OLo5mXt6GXsIPJv4mFwb+Ig6CDz
+Y+vz4yDiIOJh+GXpIOpv7O9h7ejoPzwvc3Ryb25nPjxicj4NCiAglSDP8O7k4OboIOjk8/Is
+IO3uIO3l8iDz4uXw5e3t7vHy6CDiIPLu7Cwg9/LuIKvs4Pjo7eAg7/Du5ODmuyDz7/Dg4uv/
+5fLx/yDS4OosIOrg6iDt4OTuIOgg0sXMLCDq5ewg7eDk7i4gyCDx6PLz4Pbo/yDy4Oru4uAs
+IPfy7iwgIOHz5PLuLCDl5OX4/CDv7iDr/OTzIO3gIOvl8u3l6SDw5efo7eWFPGJyPg0KICCV
+IM/w7uPw4Ozs+yDr7v/r/O3u8fLoIOTr/yDK6+jl7fLu4iDw4Ofh6OLg/vLx/yDu4SD98u7y
+IPHg7PvpIOvl5Cwg4CDi8eUsIO/u8u7s8yD38u4g7eXv7u3/8u3gIOj1IP309OXq8uji7e7x
+8vwsIOgg6uDm5PvpIPDg5yDi+yDiIO/u5+UgzPvx6+jy5ev/IOPg5ODl8uUsIPfy7iDr8/f4
+5Tog7+7y8ODy6PL8IOTl7fzj6CDt4CDg6vbo6C/v7uTg8OroIOjr6CDu8fLg4ujy/CDx4u7o
+IKvk5e3+5urouyDiIO/w6OH76+gg6CDt5SDy8ODy6PL8IOj1IOfw/zxicj4NCiAglSDK7u3q
+8/Dl7fL7IPHy4O3u4v/y8f8g4vHlIOHu6+XlIODj8OXx8eji7fvs6CDoIO7h8/fl7e377Ogs
+IO3gIOLg+CDw++3u6iDv8Oj17uT/8iDt7uL75SDo4/Du6ugg6Ocg8OXj6O7t7uIsIOLg+OAg
+7ODw5uAg7+Dk4OXyLCDgIO746OHq6CDu4fXu5P/y8f8g4vHlIOTu8O7m5Txicj4NCiAglSDS
+7uLg8O7iIOIg4PHx7vDy6Ozl7fLlIOzt7uPo5SDy+/H/9+gsIPHq6+DkIOfg4ejyLCDgIPLu
+8OPu4uDy/CDt5ffl7C4gyCDq4Obk8/4g7e73/CDi4Owg8e3o8vH/IO7k6O0g6CDy7vIg5uUg
+8e7tOiDy7uLg8Psg7+Dk4P7yIMLg7CDt4CDj7uvu4vMsIPDg8fXu5Psg7eAg4PDl7eTzIOgg
+6+7j6PHy6OrzIPDg8fLz8iwg4CDy5ewg4vDl7OXt5ewsIP3y6CDx4Oz75SDy7uLg8Psg8uXw
+//7yIODq8vPg6/zt7vHy/CDoIO/g5OD+8iDiIPbl7eUsIOAg4uXk/CDiIO3o9SDn4Ozu8O7m
+5e3uIPLg6u7lIO7j8O7s7e7lIOru6+j35fHy4u4g7uHu8O7y7fv1IPHw5eTx8uIhIMAg7+7x
+8uDi+ejqLCDz6u7w6Oft5e3t7iwg4+v/5P8gIO3gIMLg8Swg4u7x6uvo9uDl8jogq8Tu6+Yt
+7i3uLe4t6iG7IDxicj4NCiAgPHN0cm9uZz7F8evoICDs+yDz4+Dk4OvohSwg8u7j5OAg/fLu
+8iDy8OXt6O3jIOTr/yDi4PEhPC9zdHJvbmc+DQo8aHI+DQo8c3BhbiBjbGFzcz0ic3R5bGU0
+Ij48Yj48Zm9udCBjb2xvcj0iIzAwMDA5OSIgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsiPjxp
+bWcgc3JjPSJjaWQ6Q2Fyci5naWYiIGFsdD0iIiB3aWR0aD0iNyIgaGVpZ2h0PSI5IiAvPjwv
+Zm9udD48L2I+Jm5ic3A71uXr/CDq8/Dx4Do8L3NwYW4+IPDg5+Lo8ujlIPLi7vD35fHq7ukg
+6O3o9ujg8uji+yDoIOru7O/l8uXt8u3u8fLoIOIg8uXr5fTu7e3u7CDu4fnl7ejoLCDv7uL7
++OXt6OUg/fT05ery6OLt7vHy6CDv8O7k4OYsIPPx6Ovl7ejlIOzu8uji4Pbo6CwgJnF1b3Q7
+7/Do4uji6uAg7vIg7eXz5OD3JnF1b3Q7IOIg8uXr5fTu7e3u7CDw4Ofj7uLu8OUuDQo8L3A+
+DQo8cD48Yj48Zm9udCBjb2xvcj0iIzAwMDA5OSIgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsi
+PjxpbWcgc3JjPSJjaWQ6Q2Fyci5naWYiIHdpZHRoPSI3IiBoZWlnaHQ9IjkiIC8+Jm5ic3A7
+z3Bv43Bh7OzgPC9mb250PjwvYj4NCjwvcD4NCjxwIGNsYXNzPSJzdHlsZTIiPjxzdHJvbmc+
+MS4gzOjw7uLu5+fw5e3o5SDz8e/l+O3u4+4g7/Du5ODi9uA8L3N0cm9uZz48YnI+DQogIJUg
+3fT05ery6OLt++Ug6CDt5f309OXq8uji7fvlIOvo9+3u8fLt++Ug8/Hy4O3u4uroIO/uIO7y
+7e745e3o/iDqIO/w7vbl8fHzIO/w7uTg5ugsIPDu6//sICZxdW90O+rr6OXt8iZxdW90OyDo
+ICZxdW90O+/w7uTg4uX2JnF1b3Q7LiA8YnI+DQogIJUgz/Do7fbo7yAmcXVvdDvC++jj8ODy
+/C8g4vvo4/Dg8vwmcXVvdDsg6uDqIO7x7e7i4CDs6PDu4u7n5/Dl7ej/IPPx7+X47e7j7iDv
+8O7k4OL24C4gPGJyPg0KICCVIM7x7uHl7e3u8fLoIPLl6+X07u3t7ukg6u7s7PPt6Org9ujo
+OiDi7ufs7ubt7vHy6CDoIO7j8ODt6Pfl7ej/LiA8YnI+DQqVIN3y4O/7IPLl6+X07u3t7ukg
+6u7s7PPt6Org9ujoIPEg9uXr/P4g7/Du5ODm6CDoIO7x7uHl7e3u8fLoIOTl6fHy4ujpIO/w
+7uTg4vbgIO3gIO3o9S48L3A+DQo8cCBjbGFzcz0ic3R5bGUyIj48c3Ryb25nPjIuINPx8uDt
+7uLr5e3o5SDoIO/u5OTl8Obg7ejlIO/x6PXu6+7j6Pfl8eru4+4g6u7t8uDq8uAg8SDx7uHl
+8eXk7ejq7uwuIM7w6OXt8uD26P8g4iDx7uHl8eXk7ejq5S48L3N0cm9uZz48YnI+DQogIJUg
+z/Do5ez7ICZxdW90O/3q8e/w5fHxLe7w6OXt8uD26OgmcXVvdDsg4iDq6+jl7fLlOiDy8OXt
+6PDu4urgIPPs5e3o/yDu7+Xw4PLo4u3uIO7w6OXt8ujw7uLg8vzx/yDiIPHy6OvlIO7h+eXt
+6P8sIO/w5eTv7vfy6PLl6/zt7uwg5Ov/IOrr6OXt8uAsIO7v8OXk5ev/8vwsIOrg6ujs6CDn
+7eDt6P/s6CDuIOru7O/g7ejoIOgg7/Du5PPq8uUg7uHr4OTg5fIg6uvo5e3yLiA8YnI+DQog
+IJUg0ODn8ODh7vLq4CDq7uzv6+Xq8uAg8ejr/O379SDi7u/w7vHu4iwg8/fo8vvi4P8g8e/l
+9uj06OrzIO/w7uTz6vLgL/Px6/Pj6Cwg8SDo8e/u6/zn7uLg7ejl7CDs5fLu5OAgJnF1b3Q7
+7O7n4+7i7uPuIPjy8/Ds4CZxdW90Oy4gPGJyPg0KICCVIM/w6OXs+yDx7ufk4O3o/yD99PTl
+6vLgIOTu4uXw6PLl6/zt7vHy6CDiIO7h+eXt6Ogg7+4g8uXr5fTu7fMuIDxicj4NCiAglSDI
+8e/u6/zn7uLg7ejlIO/w6OXs7uIg4Ory6OLt7uPuIPHr8/jg7ej/IPEg9uXr/P4g7+7r8/fl
+7ej/IOgg8/Lu9+3l7ej/IOjt9O7w7OD26Ogg7vIg8e7h5fHl5O3o6uAsIO7v8OXk5evl7ej/
+IOTg6/zt5en45ePuIO3g7/Dg4uvl7ej/IPDg5+Pu4u7w4C4gPGJyPg0KICCVIM7y8ODh7vLq
+4CDx7+7x7uHu4iDi5fDh4Ov87e7pIOgg7eXi5fDh4Ov87e7pIO/u5PHy8O7p6ugg7+7kIO7x
+7uHl7e3u8fLoIPDl9+gg6CD97O726O7t4Ov87e7j7iDx7vHy7v/t6P8g8e7h5fHl5O3o6uAu
+IDxicj4NCiAglSDS8OXt6PDu4urgIPPs5e3o/yDv7u3o7ODy/CDs+/Hr6PLl6/zt++UsIP3s
+7vbo7u3g6/zt++Ug6CDu9uXt7vft++Ug7vLq6+jq6CDv4PDy7eXw4CDv7iDo7fLu7eD26Ogs
+IPLl7O/zIPDl9+gsIPfg8fLu8uUg6CDk6+jy5ev87e7x8ugg7+Dz5y48L3A+DQo8cCBjbGFz
+cz0ic3R5bGUyIj48c3Ryb25nPjMuIM7x7e7i7fvlIPLl9e3o6ugg6CDv8Ojl7Psg8+/w4OLr
+5e3o/yD17uTu7CDw4Ofi6PLo/yDk5evu4u7pIOHl8eXk+yDv7iDy5evl9O7t8y48L3N0cm9u
+Zz48YnI+DQogIJUgz/Do5ez7IO/w6OLr5ffl7ej/IOLt6Ozg7ej/LCDx7ufk4O3o/yDoIPDg
+5+Lo8uj/IOjt8uXw5fHgIOog7/Du5PPq8vMg6CDz8evz4+DsIOru7O/g7ejoLiA8YnI+DQog
+IJUg0+/w4OLr5e3o5SDt5eLl8OHg6/zt++zoIOru7O/u7eXt8uDs6CDw5ffoICjo7fLu7eD2
+6P8sIPLl7O8sIPLl7OHwLCDv4PPn+ywg6+7j6Pfl8ero5SDz5ODw5e3o/ykuIDxicj4NCiAg
+lSDS8OXt6PDu4urgIPPs5e3o/yDh8ODy/CDoIPPk5fDm6OLg8vwg6O3o9ujg8uji8yDiIPLl
+6+X07u3t7uwg8ODn4+7i7vDlLiA8YnI+DQogIJUg0e/u8e7h+yDv8OXn5e3y4Pbo6CDv8OXo
+7PP55fHy4iDoIOL74+7kIO7yIPLu4uDw4C8g8/Hr8+PoLyDz8evu4ujpIPHu8vDz5O3o9+Xx
+8uLgIPEg8/fl8u7sIO/u8vDl4e3u8fLl6SDoIO/w5eTv7vfy5e3o6SDq6+jl7fLgLiA8YnI+
+DQogIJUgzvHt7uLt++Ug7/Do9+jt+yDoIOLo5Psg6uvo5e3y8eru4+4g8e7v8O7y6OLr5e3o
+/y4g3fT05ery6OLt++Ug8e/u8e7h+yDy5fHy6PDu4uDt6P8g8e7s7eXt6Okg6CDv8OXu5O7r
+5e3o/yDi7ufw4Obl7ejpIOrr6OXt8u7iLiDC+//i6+Xt6OUg6CDg7eDr6Ocg8fLl8OXu8ujv
+7uIg/ezu9uju7eDr/O3u4+4g7vLt7vjl7ej/IOog4u7n8ODm5e3o/+wuIDxicj4NCiAglSDR
+8ujs8+vo8O7i4O3o5SDx7uHl8eXk7ejq4CDqIODq8uji7fvsIOTl6fHy4uj/7Cwg7/Do7f/y
+6P4g8OX45e3o/yAo4iDy7uwg9+jx6+UsIPfl8OXnIPPs5e3o5SDi6+j/8vwg7eAg/ezu9uju
+7eDr/O375SDw5eDq9ujoLCDx8+bk5e3o/yDoIO725e3q6Cwg5ODi4OXs++Ug5PDz4+js6Cwg
+5+3g9+js++zoIOTr/yDq6+jl7fLgIOv+5Pzs6CkuIDxicj4NCiAglSDS8OXt6PDu4urgIPPs
+5e3o/yAmcXVvdDvn4Orw5e/r//L8JnF1b3Q7IPHk5evq8y48L3A+DQo8cD48Yj48Zm9udCBj
+b2xvcj0iIzAwMDA5OSIgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsiPjxpbWcgc3JjPSJjaWQ6
+Q2Fyci5naWYiIHdpZHRoPSI3IiBoZWlnaHQ9IjkiIC8+Jm5ic3A7Q1RPyE1PQ1TcINPXQUPS
+yN8gT8RIT8NPIM9QRcRDVEFCyFRFy986PC9mb250PjwvYj48L3A+DQo8dWw+DQo8bGk+PGZv
+bnQgY29sb3I9IiNjYzAwMDAiPjxiPjgwMC4wMCDj8O0uPC9iPiA8L2ZvbnQ+5+Ag7uTt7uPu
+IPP34PHy7ejq4C4NCjxsaT7E6/8g4vLu8O7j7iDoIPLw5fL85ePuIPP34PHy7ejq4CDx6ujk
+6ugglyA1JSDoIDclIPHu7vLi5fLx8uLl7e3uLg0KPGxpPsIg8fLu6Ozu8fL8IOL17uTo8jog
+6O307vDs4Pbo7u3t7i3q7u3x8+v88uD26O7t7e7lIO7h8evz5uji4O3o5SDt4CDx5ezo7eDw
+5Swg8eHu8O3o6iDs4PLl8Ojg6+7iLCDq7vTlLeHw5enqLCDu4eXkIOIg8OXx8u7w4O3lLCDu
+4fHz5uTl7ejlIOTu6uvg5O7iIOgg7uHs5e0g7O3l7ej/7Ogg8SDr5ery7vDu7C4NCjwvdWw+
+DQo8cD48Yj48Zm9udCBjb2xvcj0iIzAwMDA5OSIgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsi
+PjxpbWcgc3JjPSJjaWQ6Q2Fyci5naWYiIHdpZHRoPSI3IiBoZWlnaHQ9IjkiIC8+Jm5ic3A7
+0OXj6+Ds5e3yOjwvZm9udD48L2I+PC9wPg0KPHVsPg0KICA8bGk+PGI+OS4zMDwvYj4tPGI+
+MTcuMDA8L2I+DQogIDxsaT7P5fDl8PviIDxiPjEzLjMwPC9iPi08Yj4xNC4zMDwvYj4NCiAg
+PGxpPlBFw8hDVNDA1sjfIPEgPGI+OS4wMDwvYj4g4iD17uvr5S4NCjwvdWw+DQo8cD48Yj48
+Zm9udCBjb2xvcj0iIzAwMDA5OSIgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsiPjxpbWcgc3Jj
+PSJjaWQ6Q2Fyci5naWYiIHdpZHRoPSI3IiBoZWlnaHQ9IjkiIC8+Jm5ic3A7ztLKwMfA0tzR
+36DO0qDQwNHR28vKyDwvZm9udD48L2I+PC9wPg0KPHVsPg0KPGxpPsjn4ujt6PLlLCDl8evo
+IP3y7iDv6PH87O4g7/Do9+jt6OvuIMLg7CDt5fPk7uHx8uLgLg0KPGxpPsLg+CDg5PDl8SDi
+5//yIOjnIO7y6vD78vv1IOjx8u737ejq7uI6IOHg5yDk4O3t+/Ug7/Dl5O/w6P/y6OksIPTu
+8PPs7uIsIOLl4S3x4Ony7uIg6CDyLqDvLg0KPGxpPtfy7uH7IO7y6uDn4PL88f8g7vIg8ODx
+8fvr6ugsIO7y7/Dg4vzy5SDt4OwsIO/u5uDr8+nx8uAsIPHu7uH55e3o5SDt4CA8YSBocmVm
+PSJtYWlsdG86dmF2aWxvdi1vZmZpY2VAYmsucnU/c3ViamVjdD1zdXBwb3J0Ij48Zm9udCBj
+b2xvcj0iI2JiMDAwMCI+PGI+/esuJm5ic3A74OTw5fE8L2I+PC9mb250PjwvYT4gPGZvbnQg
+Y29sb3I9IiNiYjAwMDAiPjxiPnZhdmlsb3Ytb2ZmaWNlQGJrLnJ1PC9iPjwvZm9udD4g6Ovo
+IPHu7uH56PLlIO/uIPLl6+X07u3zLg0KPC91bD4NCjxwPjxiPjxmb250IGNvbG9yPSIjMDAw
+MDk5IiBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyI+PGltZyBzcmM9ImNpZDpDYXJyLmdpZiIg
+d2lkdGg9IjciIGhlaWdodD0iOSIgLz4mbmJzcDvQxcPI0dLQwNbI3zwvZm9udD48L2I+PC9w
+Pg0KPHVsPg0KPGxpPjxpbWcgc3JjPSJjaWQ6SGFnZ2FpLmdpZiIgd2lkdGg9IjI0NSIgaGVp
+Z2h0PSIxOCIgLz4NCjxsaT7o6+gg7eAgPGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJj
+L3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L2FwcmVsXzIwMDkvcHJvZHZpemhl
+bmllX3RvdmFyb3ZfaV91c2x1Z19uYV9zb3ZyZW1lbm5vbV9yeW5rZS5odG0iPvHg6fLlPC9h
+Pg0KPGxpPsrg5uT76SDz9+Dx8u3o6iDv7uvz9+Dl8iDh8/Xj4Ovy5fDx6ujpIOru7O/r5ery
+IJcg7vDo4+jt4Ov7IOTu6vPs5e3y7uI6IOTu4+7i7vAsIODq8iwg7vDo4+jt4Osg8ffl8uAs
+IOru7+joIPHi6OTl8uXr/PHy4i4NCjxsaT48c3Ryb25nPs/w6CDw5ePo8fLw4Pbo6CDt4CDx
+4Ony5SDx6ujk6uAgPHNwYW4gY2xhc3M9InN0eWxlNSI+LTUlPC9zcGFuPjwvc3Ryb25nPg0K
+PC91bD4NCg0KPGhyPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
+CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
+OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
+PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
+cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
+YnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
+CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
+OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
+PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
+cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
+YnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
+CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
+OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
+PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
+cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
+YnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
+CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
+OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
+PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
+cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
+YnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
+CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
+OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
+PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
+cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
+YnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
+CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
+OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
+PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
+cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
+YnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
+CjxwPiZuYnNwOzwvcD4NCjxwIGNsYXNzPSJzdHlsZTMiPnNsdWNoeW5pZSBzdHJva2k67yB2
+cG9wc0BtYWlsLnJ1Cewg52FuZ2VsQGFuZ2VsZGFuY2UucnUJ9fJhX2xhQGdhZGpldC5ydQk8
+YnI+DQo8L3A+DQo8cCBjbGFzcz0ic3R5bGUzIj7r8f8g6PUg8fLwIGFmZmx1ZW50bHlmQGRp
+YWxvZ2ludmVzdC5jb20JPC9wPg0KPC9ib2R5Pg0KPC9odG1sPg0KDQoNCg==
 
- - Move two common idioms from drivers into that new function:
-    * Default bits_per_word to 8 if that field isn't set
-    * Issue a standardized dev_dbg() message
 
-This is a net minor source code shrink, and supports enhancments
-found in some follow-up patches.
+------=_NextPart_000_0028_DF4D89D8.FDE85DDD
+Content-Type: image/gif;
+	name="Carr.gif"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="Carr.gif"
+Content-ID: <Carr.gif>
 
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/spi/atmel_spi.c   |    2 -
- drivers/spi/au1550_spi.c  |    2 -
- drivers/spi/omap2_mcspi.c |    4 ---
- drivers/spi/omap_uwire.c  |    2 -
- drivers/spi/orion_spi.c   |    3 --
- drivers/spi/pxa2xx_spi.c  |   11 +-------
- drivers/spi/spi.c         |   55 +++++++++++++++++++++++++++++++++++++++++++-
- drivers/spi/spi_bfin5xx.c |    4 ---
- drivers/spi/spi_bitbang.c |    7 -----
- drivers/spi/spi_imx.c     |    5 ----
- drivers/spi/spi_mpc83xx.c |    6 ----
- drivers/spi/spi_s3c24xx.c |    7 -----
- drivers/spi/spi_txx9.c    |    2 -
- drivers/spi/xilinx_spi.c  |    6 ----
- include/linux/spi/spi.h   |   25 --------------------
- 15 files changed, 61 insertions(+), 80 deletions(-)
+R0lGODlhBwAJAIAAAP///wMm/SH5BAAAAAAALAAAAAAHAAkAAAIOjIFokXq9GoiO1UTnQwUA
+OwhTk5eTeGZb2KIV2L9Wujnm6Y8RGra4K7Lv1qCTwbunm39cD6yxeaYZyVq5BFxLB962o8K=
+------=_NextPart_000_0028_DF4D89D8.FDE85DDD
+Content-Type: image/gif;
+	name="Haggai.gif"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="Haggai.gif"
+Content-ID: <Haggai.gif>
 
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -555,8 +555,6 @@ static int atmel_spi_setup(struct spi_de
- 		return -EINVAL;
- 	}
- 
--	if (bits == 0)
--		bits = 8;
- 	if (bits < 8 || bits > 16) {
- 		dev_dbg(&spi->dev,
- 				"setup: invalid bits_per_word %u (8 to 16)\n",
---- a/drivers/spi/au1550_spi.c
-+++ b/drivers/spi/au1550_spi.c
-@@ -291,8 +291,6 @@ static int au1550_spi_setup(struct spi_d
- {
- 	struct au1550_spi *hw = spi_master_get_devdata(spi->master);
- 
--	if (spi->bits_per_word == 0)
--		spi->bits_per_word = 8;
- 	if (spi->bits_per_word < 4 || spi->bits_per_word > 24) {
- 		dev_err(&spi->dev, "setup: invalid bits_per_word=%d\n",
- 			spi->bits_per_word);
---- a/drivers/spi/omap2_mcspi.c
-+++ b/drivers/spi/omap2_mcspi.c
-@@ -619,9 +619,7 @@ static int omap2_mcspi_setup(struct spi_
- 		return -EINVAL;
- 	}
- 
--	if (spi->bits_per_word == 0)
--		spi->bits_per_word = 8;
--	else if (spi->bits_per_word < 4 || spi->bits_per_word > 32) {
-+	if (spi->bits_per_word < 4 || spi->bits_per_word > 32) {
- 		dev_dbg(&spi->dev, "setup: unsupported %d bit words\n",
- 			spi->bits_per_word);
- 		return -EINVAL;
---- a/drivers/spi/omap_uwire.c
-+++ b/drivers/spi/omap_uwire.c
-@@ -339,8 +339,6 @@ static int uwire_setup_transfer(struct s
- 	bits = spi->bits_per_word;
- 	if (t != NULL && t->bits_per_word)
- 		bits = t->bits_per_word;
--	if (!bits)
--		bits = 8;
- 
- 	if (bits > 16) {
- 		pr_debug("%s: wordsize %d?\n", dev_name(&spi->dev), bits);
---- a/drivers/spi/orion_spi.c
-+++ b/drivers/spi/orion_spi.c
-@@ -369,9 +369,6 @@ static int orion_spi_setup(struct spi_de
- 		orion_spi_setbits(orion_spi, ORION_SPI_IF_CONFIG_REG,
- 				  (1 << 14));
- 
--	if (spi->bits_per_word == 0)
--		spi->bits_per_word = 8;
--
- 	if ((spi->max_speed_hz == 0)
- 			|| (spi->max_speed_hz > orion_spi->max_speed))
- 		spi->max_speed_hz = orion_spi->max_speed;
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -1236,9 +1236,6 @@ static int setup(struct spi_device *spi)
- 	uint tx_thres = TX_THRESH_DFLT;
- 	uint rx_thres = RX_THRESH_DFLT;
- 
--	if (!spi->bits_per_word)
--		spi->bits_per_word = 8;
--
- 	if (drv_data->ssp_type != PXA25x_SSP
- 		&& (spi->bits_per_word < 4 || spi->bits_per_word > 32)) {
- 		dev_err(&spi->dev, "failed setup: ssp_type=%d, bits/wrd=%d "
-@@ -1328,18 +1325,14 @@ static int setup(struct spi_device *spi)
- 
- 	/* NOTE:  PXA25x_SSP _could_ use external clocking ... */
- 	if (drv_data->ssp_type != PXA25x_SSP)
--		dev_dbg(&spi->dev, "%d bits/word, %ld Hz, mode %d, %s\n",
--				spi->bits_per_word,
-+		dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
- 				clk_get_rate(ssp->clk)
- 					/ (1 + ((chip->cr0 & SSCR0_SCR) >> 8)),
--				spi->mode & 0x3,
- 				chip->enable_dma ? "DMA" : "PIO");
- 	else
--		dev_dbg(&spi->dev, "%d bits/word, %ld Hz, mode %d, %s\n",
--				spi->bits_per_word,
-+		dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
- 				clk_get_rate(ssp->clk) / 2
- 					/ (1 + ((chip->cr0 & SSCR0_SCR) >> 8)),
--				spi->mode & 0x3,
- 				chip->enable_dma ? "DMA" : "PIO");
- 
- 	if (spi->bits_per_word <= 8) {
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -265,7 +265,7 @@ int spi_add_device(struct spi_device *sp
- 	 * normally rely on the device being setup.  Devices
- 	 * using SPI_CS_HIGH can't coexist well otherwise...
- 	 */
--	status = spi->master->setup(spi);
-+	status = spi_setup(spi);
- 	if (status < 0) {
- 		dev_err(dev, "can't %s %s, status %d\n",
- 				"setup", dev_name(&spi->dev), status);
-@@ -583,6 +583,59 @@ EXPORT_SYMBOL_GPL(spi_busnum_to_master);
- 
- /*-------------------------------------------------------------------------*/
- 
-+/* Core methods for SPI master protocol drivers.  Some of the
-+ * other core methods are currently defined as inline functions.
-+ */
-+
-+/**
-+ * spi_setup - setup SPI mode and clock rate
-+ * @spi: the device whose settings are being modified
-+ * Context: can sleep, and no requests are queued to the device
-+ *
-+ * SPI protocol drivers may need to update the transfer mode if the
-+ * device doesn't work with its default.  They may likewise need
-+ * to update clock rates or word sizes from initial values.  This function
-+ * changes those settings, and must be called from a context that can sleep.
-+ * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-+ * effect the next time the device is selected and data is transferred to
-+ * or from it.  When this function returns, the spi device is deselected.
-+ *
-+ * Note that this call will fail if the protocol driver specifies an option
-+ * that the underlying controller or its driver does not support.  For
-+ * example, not all hardware supports wire transfers using nine bit words,
-+ * LSB-first wire encoding, or active-high chipselects.
-+ */
-+int spi_setup(struct spi_device *spi)
-+{
-+	int		status;
-+
-+	if (!spi->bits_per_word)
-+		spi->bits_per_word = 8;
-+
-+	status = spi->master->setup(spi);
-+
-+	dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s"
-+				"%u bits/w, %u Hz max --> %d\n",
-+			(int) (spi->mode & (SPI_CPOL | SPI_CPHA)),
-+			(spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
-+			(spi->mode & SPI_LSB_FIRST) ? "lsb, " : "",
-+			(spi->mode & SPI_3WIRE) ? "3wire, " : "",
-+			(spi->mode & SPI_LOOP) ? "loopback, " : "",
-+			spi->bits_per_word, spi->max_speed_hz,
-+			status);
-+
-+	return status;
-+}
-+EXPORT_SYMBOL_GPL(spi_setup);
-+
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* Utility methods for SPI master protocol drivers, layered on
-+ * top of the core.  Some other utility methods are defined as
-+ * inline functions.
-+ */
-+
- static void spi_complete(void *arg)
- {
- 	complete(arg);
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -1016,10 +1016,6 @@ static int bfin_spi_setup(struct spi_dev
- 		return -EINVAL;
- 	}
- 
--	/* Zero (the default) here means 8 bits */
--	if (!spi->bits_per_word)
--		spi->bits_per_word = 8;
--
- 	if (spi->bits_per_word != 8 && spi->bits_per_word != 16)
- 		return -EINVAL;
- 
---- a/drivers/spi/spi_bitbang.c
-+++ b/drivers/spi/spi_bitbang.c
-@@ -201,9 +201,6 @@ int spi_bitbang_setup(struct spi_device 
- 		spi->controller_state = cs;
- 	}
- 
--	if (!spi->bits_per_word)
--		spi->bits_per_word = 8;
--
- 	/* per-word shift register access, in hardware or bitbanging */
- 	cs->txrx_word = bitbang->txrx_word[spi->mode & (SPI_CPOL|SPI_CPHA)];
- 	if (!cs->txrx_word)
-@@ -213,9 +210,7 @@ int spi_bitbang_setup(struct spi_device 
- 	if (retval < 0)
- 		return retval;
- 
--	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
--			__func__, spi->mode & (SPI_CPOL | SPI_CPHA),
--			spi->bits_per_word, 2 * cs->nsecs);
-+	dev_dbg(&spi->dev, "%s, %u nsec/bit\n", __func__, 2 * cs->nsecs);
- 
- 	/* NOTE we _need_ to call chipselect() early, ideally with adapter
- 	 * setup, unless the hardware defaults cooperate to avoid confusion
---- a/drivers/spi/spi_imx.c
-+++ b/drivers/spi/spi_imx.c
-@@ -1286,10 +1286,7 @@ static int setup(struct spi_device *spi)
- 
- 	/* SPI word width */
- 	tmp = spi->bits_per_word;
--	if (tmp == 0) {
--		tmp = 8;
--		spi->bits_per_word = 8;
--	} else if (tmp > 16) {
-+	if (tmp > 16) {
- 		status = -EINVAL;
- 		dev_err(&spi->dev,
- 			"setup - "
---- a/drivers/spi/spi_mpc83xx.c
-+++ b/drivers/spi/spi_mpc83xx.c
-@@ -447,9 +447,6 @@ static int mpc83xx_spi_setup(struct spi_
- 	}
- 	mpc83xx_spi = spi_master_get_devdata(spi->master);
- 
--	if (!spi->bits_per_word)
--		spi->bits_per_word = 8;
--
- 	hw_mode = cs->hw_mode; /* Save orginal settings */
- 	cs->hw_mode = mpc83xx_spi_read_reg(&mpc83xx_spi->base->mode);
- 	/* mask out bits we are going to set */
-@@ -471,9 +468,6 @@ static int mpc83xx_spi_setup(struct spi_
- 		return retval;
- 	}
- 
--	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u Hz\n",
--		__func__, spi->mode & (SPI_CPOL | SPI_CPHA),
--		spi->bits_per_word, spi->max_speed_hz);
- #if 0 /* Don't think this is needed */
- 	/* NOTE we _need_ to call chipselect() early, ideally with adapter
- 	 * setup, unless the hardware defaults cooperate to avoid confusion
---- a/drivers/spi/spi_s3c24xx.c
-+++ b/drivers/spi/spi_s3c24xx.c
-@@ -153,9 +153,6 @@ static int s3c24xx_spi_setup(struct spi_
- {
- 	int ret;
- 
--	if (!spi->bits_per_word)
--		spi->bits_per_word = 8;
--
- 	if (spi->mode & ~MODEBITS) {
- 		dev_dbg(&spi->dev, "setup: unsupported mode bits %x\n",
- 			spi->mode & ~MODEBITS);
-@@ -168,10 +165,6 @@ static int s3c24xx_spi_setup(struct spi_
- 		return ret;
- 	}
- 
--	dev_dbg(&spi->dev, "%s: mode %d, %u bpw, %d hz\n",
--		__func__, spi->mode, spi->bits_per_word,
--		spi->max_speed_hz);
--
- 	return 0;
- }
- 
---- a/drivers/spi/spi_txx9.c
-+++ b/drivers/spi/spi_txx9.c
-@@ -126,7 +126,7 @@ static int txx9spi_setup(struct spi_devi
- 			|| spi->max_speed_hz < c->min_speed_hz)
- 		return -EINVAL;
- 
--	bits_per_word = spi->bits_per_word ? : 8;
-+	bits_per_word = spi->bits_per_word;
- 	if (bits_per_word != 8 && bits_per_word != 16)
- 		return -EINVAL;
- 
---- a/drivers/spi/xilinx_spi.c
-+++ b/drivers/spi/xilinx_spi.c
-@@ -170,9 +170,6 @@ static int xilinx_spi_setup(struct spi_d
- 	xspi = spi_master_get_devdata(spi->master);
- 	bitbang = &xspi->bitbang;
- 
--	if (!spi->bits_per_word)
--		spi->bits_per_word = 8;
--
- 	if (spi->mode & ~MODEBITS) {
- 		dev_err(&spi->dev, "%s, unsupported mode bits %x\n",
- 			__func__, spi->mode & ~MODEBITS);
-@@ -183,9 +180,6 @@ static int xilinx_spi_setup(struct spi_d
- 	if (retval < 0)
- 		return retval;
- 
--	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
--		__func__, spi->mode & MODEBITS, spi->bits_per_word, 0);
--
- 	return 0;
- }
- 
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -523,30 +523,7 @@ static inline void spi_message_free(stru
- 	kfree(m);
- }
- 
--/**
-- * spi_setup - setup SPI mode and clock rate
-- * @spi: the device whose settings are being modified
-- * Context: can sleep, and no requests are queued to the device
-- *
-- * SPI protocol drivers may need to update the transfer mode if the
-- * device doesn't work with its default.  They may likewise need
-- * to update clock rates or word sizes from initial values.  This function
-- * changes those settings, and must be called from a context that can sleep.
-- * Except for SPI_CS_HIGH, which takes effect immediately, the changes take
-- * effect the next time the device is selected and data is transferred to
-- * or from it.  When this function returns, the spi device is deselected.
-- *
-- * Note that this call will fail if the protocol driver specifies an option
-- * that the underlying controller or its driver does not support.  For
-- * example, not all hardware supports wire transfers using nine bit words,
-- * LSB-first wire encoding, or active-high chipselects.
-- */
--static inline int
--spi_setup(struct spi_device *spi)
--{
--	return spi->master->setup(spi);
--}
--
-+extern int spi_setup(struct spi_device *spi);
- 
- /**
-  * spi_async - asynchronous SPI transfer
+R0lGODlhtQAPAKIAAMLCy0hHY/Dw8pSUpCkoSRoZPP///wAAACH5BAAAAAAALAAAAAC1AA8A
+AAP/aLrc/jDKSau9OOvNu/9gKF5BUQRCA5gpUw7PYBKwIpu1AZRFDq2FloCHggx4OaKwESi6
+TAHA4kZT8GY9xw7H2FYhSAY2O8U6rSzGzWcbw6hc4IzNTBuup5j7boaQF3gFUnBZgX8LBH06
+iXMPeDWEPolSJVJtdgqMdIlveS98KDKhmA1UKaICQEtoMC+qfHQyPkCUhbZnBqileUOCuXm6
+XXmvsg8rRcWLjEJXbMS8gIe/uAtyQb90wri6wWVL3NKfT5ZPNZ/ipNhotWHVvMkvdqLiYIdQ
+SyVR9Tcp8dDaYV7lc9BEAj0B99T8K1PknC+E1xSa88WoURtkWWS9GoLi/+AuAkLkkDOgSc8A
+gWOoWeMSiBoBatHOiBTzUEVFLpMyRYw2UUrOgRfbnByWxmG2XwRGXlpVieSMY8r68eJkjdY0
+NCcWrjgK1CbIoAqs6cjn0BILKgHg1Vwa9l0PQjjGJFSYNJpZQWphVDSEl4wrLBDbfi3DRoZS
+NGeaOrVET6xEWFHRqgUA7szPvnJXzr00ciA/VEAKy+1bJGedQXlM1GJTwtFCz3ZMOwCdE1U3
+walYWD0IB9dGng5unt0DcQZMdxHxwIzEx3hwlXJHYanxm+B0wU9dWwy06gb0naw+jrn0x8tx
+5Mw2i0+iflGs6ORzVFfRLmx9+lyinTg8or///wwABijggAQWaKADCQAAOw5B+w+az4MlXm+w
+ZTbTUgEfhCaYqWiDubEsMCGA7TmT6kDU4fnN/sshvG6ZdcdM4i4Fl/FhTs0OQ4jJXLWX3D4m
+KyAnPe0IAsNlsTH//7NQzxZL8vi0zbb9Obld5Zl6GzgyGnyFjAVXxvitfEhSf9QtY1LSPxNV
+ktIrV6w46GPr1xZ=
+------=_NextPart_000_0028_DF4D89D8.FDE85DDD--
+
+
+
+
+--===============0971091963028237708==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Stay on top of everything new and different, both inside and 
@@ -384,3 +245,15 @@ around Java (TM) technology - register by April 22, and save
 $200 on the JavaOne (SM) conference, June 2-5, 2009, San Francisco.
 300 plus technical and hands-on sessions. Register today. 
 Use priority code J9JMT32. http://p.sf.net/sfu/p
+--===============0971091963028237708==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0971091963028237708==--

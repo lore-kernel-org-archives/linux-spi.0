@@ -1,10 +1,9 @@
-From: "ii" <lixo-fyyYI70gGcU@public.gmane.org>
-Subject: [SPAM] ÂÖ®#Êñπ*‰Ωç#Êâì*ÈÄ†#È´ò*Áª©#Êïà*ÁöÑ#‰∏≠*Â±Ç#ÁÆ°*ÁêÜ#Âõ¢*Èòü
-Date: Wed, 22 Apr 2009 04:00:21 +0800
-Message-ID: <E1LwM9F-0003HY-JH@h25xhf1.ch3.sourceforge.com>
+From: Club Vacation Deals <hot-deals-u0uJHfCAc1Hf17m2raTrtZqQE7yCjDx5@public.gmane.org>
+Subject: [SPAM] Unique Riviera Nayarit Vacations
+Date: Tue, 21 Apr 2009 19:17:34 -0400
+Message-ID: <fed3cf2371827ccd8e1f631e4c2a6363@vallarta-paradise.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+Content-Type: multipart/mixed; boundary="===============2069402735535788095=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,167 +16,90 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+--===============2069402735535788095==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/html; charset="UTF-8"
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+<html>
+<body>
+<div align="center">
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="322">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<a href="http://www.vallarta-paradise.com/vill-0409-1209/maillist.php?promo=1&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_01.jpg" width="325" height="322" border="0"></a><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_02.jpg" width="325" height="322"></th>
+		</tr>
+	</tbody>
+</table>
 
-«Îø¥∏Ωº˛£¨»Á”–¥Ú»≈£¨«Î‘≠¡¬£¨–ª–ª
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="265">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_03.jpg" width="325" height="265"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_04.jpg" width="325" height="265"></th>
+		</tr>
+	</tbody>
+</table>
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="09ƒÍ3-4‘¬÷–≤„æ≠¿Ì◊€∫œπ‹¿Ìººƒ‹Ã·…˝—––ﬁ∞‡£®÷§ È∞‡ 3ÃÏ£©.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="09ƒÍ3-4‘¬÷–≤„æ≠¿Ì◊€∫œπ‹¿Ìººƒ‹Ã·…˝—––ﬁ∞‡£®÷§ È∞‡ 3ÃÏ£©.txt"
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="280">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<a href="http://www.vallarta-paradise.com/vill-0409-1209/maillist.php?promo=1&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://clubvacationdeals.com/resorts.php?hotel=paradise_v"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_05.jpg" width="325" height="280" border="0"></a><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_06.jpg" width="325" height="280"></th>
+		</tr>
+	</tbody>
+</table>
 
-DQoNCiAgICAgICAgICAgICAgINbQsuO+rcDt19u6z7ncwO28vMTczOHJ/dHQ0N6w4A0KDQqxsb6p
-CTIwMDnE6jPUwjEzLTE1yNUJICAgICAgIDTUwjI0LTI2yNUgICAgCQ0Kyc+6owkyMDA5xOo01MIx
-MC0xMsjVCSAgICAgICA11MIyOS0zMcjVCSAgIA0Kye7b2iAgICAyMDA5xOoz1MIyNy0yOcjVCSAg
-ICAgICA11MIxNS0xN8jVCSAgICANCg0KDQoNCiAgICAgICAgICAgICANCqmlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppQ0KxeDRtbbUz/Ojug0KxvPStbix19yhorj3sr/Dxb6twO2hotb3udyhorj3vLbW0LLj
-udzA7cjL1LGhotDCzOGwzrXEoaK009eo0rXIy7LF16rQzbW9udzA7bXEoaK9+NK7sr3P68zhuN+5
-3MDtvKjQp7XEoaK9+sn9tb2437LjudzA7dLUvLDG5Mv81KSxuLncwO3Iy9SxDQoNCtb3sOy1pc67
-OiDW2sjL0NC53MDt18nRr834ICAgye7b2srQ0ru2/sj9udzA7dfJ0a/T0M/euavLvg0KDQrF4NG1
-t9HTwzozNjAw1KovyMujqLD8uqyjusj9zOzW0LLNo6yy6LXjo6y9stLlo6y3osaxo6kNCg0KyM/W
-pLfR08OjutbQvLY2MDDUqi/Iyzu437y2ODAw1KovyMsoss6808jP1qS/vMrUtcTRp9Sx0Ou9u8TJ
-tMu30dPDo6yyu7LOvNPIz9akv7zK1LXE0afUsc7e0Ou9u8TJKQ0KsbjXojoNCjEuILeyss6808jP
-1qS1xNGn1LGjrNTaxeDRtb3hyviyzrzTv7zK1LrPuPHV39PJPDy5+rzK1rDStcjP1qSx6te8waq6
-z7vhPj6w5LeiPDzWsNK1vq3A7cjLKNbQsuO4ybK/udzA7be9z/IpDQq5+rzKufrE2tbQ06LOxLDm
-y6vWsNK118q48dakyumjrKOoufq8yrn6xNrIz9ako6/Iq8fyzajQ0KOvuc3W98jPv8mjr7nZt73N
-+MnPsunRr6O7DQoyo663srLOvNPIz9aktcTRp9Sx0OvM4b27sb7Iy8ntt93WpLrFwuu8sLTz0ru0
-58r9wuvV1caso7sNCjOjrr/Os8y94cr4uvMxNbj2uaTX98jVxNq9q9akyum/7LXdvMS4+NGn1LGj
-uw0KNKOuv8nJ6sfr1tC5+rn6vNLIy7LFzfjI67/isbiwuKGjDQoNCg0KsbggICAg16Kjug0K18nR
-r7Xnu7CjujA3NTUtMjYwNzU0MjkgIDI2MDc1MzY1ICAyNjk3NTI2NQ0KtKsgICAg1eajujA3NTUt
-NjEzNTEzOTYgIA0Kwaogz7UgyMujuiDF7dChveMNCg0KDQq/zrPMytW78SANCqHuIMirw+bRp8+w
-xvPStbncwO21xM+1zbO5/bPMo6zIw9bQuN+y47ncwO3Iy9SxzbPSu7nbxO6horTvs8m5ssq2o7sN
-CqHuINGnz7DU2sbz0rXE2rK/yOe6zrSmwO3B7LW8oaLPwsr0oaLG5Mv8sr/DxdauvOS1xNCtzay6
-z9f3udjPtaOstKbA7brDuaTX99PryMu8yrnYz7WjrNfutPPP3rbItdi3orvTuavLvrXE19u6z8q1
-waajuw0Koe4g0afPsMjnus6zyc6q0ru49tPF0OO1xMHstbzIy6OsyOe6zrj8usO1xLT4wezPwsr0
-zeqzybmk1/fEv7Hqo7sNCqHuIMjnus7M4bjfz8LK9LXExNzBpqOsvajJ6LjfvKjQp7XEudzA7c3F
-ttOjrMjDz8LK9NTauaTX99bQt6K707j8uN+1xLmk1/e7/SC8q9DUus25pNf3yMjH6aGjDQoNCsXg
-0bXM2LXjo7oNCqHuIM+1zbPQ1KO6xvPStbncwO3Kx9K7uPbPtc2zuaSzzKOs16LW2Nfbus/E3MGm
-tcS++brit6LVuaOs0vK2+NTaudzA7by8yvXJz9Ky16LW2M+1zbPQ1LXE0afPsLrNxeDRtaGjDQqh
-7iC4xLHk0NDOqqO6ttTG89K1wLTLtaOssrvE3LT4wLS53MDt0NDOqrXEuMSx5KOsysfDu9PQyM66
-ztLi0uW1xKGjsb7RtcG3vavWsNK1vq3A7b6twO21xLHYsbi53MDtvLzE3MnovMazydK7uPa49rXE
-xNzBprXjo6zKucv7w8fNqLn916XE3MGmteO2+LTvtb24xLHk0NDOqqGi16qx5LnbxO61xMS/tcSh
-ow0Koe4gyrW8+bLZ1/fQ1KO6udzA7by8xNzKx7avytbE3MGmoaLKtdW9xNzBpqOssrvE3NPD09rG
-89K1udzA7cq1vPm1xLe9t6jKx87e0Ke1xKGjsb60zrncwO28vMTc0bXBt77bvbnT2rncwO21xMq1
-vMqy2df3xNzBpszhuN+how0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCsXgING1IMzhILjZDQq1
-2tK71cKhognKssO0yse53MDtDQq12rb+1cKhognI57rOudzA7dDEzKwNCrXayP3VwqGiCbncwO21
-xMzYtePKx8qyw7QgDQq12svE1cKhognKssO00fm1xLncwO3Kx9fuysq6z8bz0rW1xLncwO0NCrXa
-zuXVwqGiCbncwO2hotfp1q/T68Hstby1xLnYz7UNCrXawfnVwqGiCbncwO29x8mrtcTX1M7SyM/W
-qg0KtdrG39XCoaIJwey1vMGmzOHJ/bXEvLzHyQ0Ktdqwy9XCoaIJudzA7bm1zajT67nYz7XQrbX3
-DQq12r7F1cKhogm437yo0KfNxbbTtcS9qMnoDQq12squ1cKhogm8pMD4udzA7bXEvLzHyQ0KDQq1
-2tK71cKhosqyw7TKx7ncwO0NCiAgICAgICAgudzA7bXEyrXWysrHyrLDtD8NCrXatv7Vwi4gyOe6
-zrncwO3QxMysDQogICAgICAgINH41LG5pMG8usO1xNDEzKzKx7ncwO21xLXa0rvSqs7xDQq12sj9
-1cKjrrncwO21xLv5sb7M2NDUDQogICAgICAgIMS/tcTQ1CAg09DQp9DUICAgy/vIy9DUICAgtuDR
-+dDUDQoNCrXay8TVwqGiyrLDtNH5tcS53MDtysfX7srKus/G89K1tcS53MDtDQogICAgICC53MDt
-tcS3vbeous28vMr1tuDW1rbg0fmjrMqyw7TR+bXEudzA7cSjyr2yxcrH1+7KyrrPxvPStbei1bm1
-xKO/DQogICAgICDWu9PQ1dK1vdfuysq6z87Sw8fG89K1t6LVubXEudzA7cSjyr2jrLLFxNyx3MPi
-udzA7bXEw6TEv9DUDQoNCrXazuXVwqGiudzA7aGi1+nWr6Giwey1vMj91d+1xM/gu6W52M+1us3S
-7M2sIA0KICAgICAgICC53MDt1d+hosHstbzV37W9tdfTprjD1/bExNCpysKjvw0KICAgICAgICC5
-3MDt1d+6zcHstbzV37W9tdfT0Mqyw7TH+LHwus3Bqs+1o78NCg0KtdrB+dXCoaK53MDtvcfJq7XE
-yM/Wqg0KICAgICAgICDSu6Gi1rDStb6twO21xL3HyavIz9aqIA0KICAgICAgICC2/qGi1rDStb6t
-wO21xL3Hyau31s72DQogICAgICAgIMj9oaKyu82ssuPD5sjL1LG1xLmk1/fW2NDEDQoNCrXaxt/V
-wqGiwey1vMGmzOHJ/bXEvLzHyQ0KICAgICAgICDSu6Giwey1vMiozf61xMC01LQNCiAgICAgICAg
-ICAgIMHstbzIqM3+tcSwy7j20NS48czY1fcNCiAgICAgICAgICAgILC4wP231s72o7rKssO00fm1
-xMHstbzKx9K7uPbTxdDjtcTB7LW8Pw0KICAgICAgICC2/qGiwey1vLe9yr0NCiAgICAgICAgyP2h
-osfpvrPB7LW80+vLxNbWwey1vLfnuPENCiAgICAgICAgICAgILj5vt2xu8HstbzV37XEvt/M5cfp
-v/a+9raosrvNrLXEwey1vLfnuPENCiAgICAgICAgICAgILjm1qrKvSAgzcbP+sq9ICCyztPryr0g
-IMrayKjKvSANCiAgICAgICAgsLjA/bfWzvajutXrttTQ7cj9tuDT67PJssXV4sG9uPbUsbmk06a4
-w9PDyrLDtNH5tcTB7LW8t723qKO/DQogICAgICAgIMvEoaLB7LW8tcTW99KquaTX98TayN0NCiAg
-ICAgICAgzuWhosjnus7F4NH4z8LK9A0KICAgICAgICAgICAgMaGixeDR+M/CyvTT0Mqyw7S6w7Sm
-DQogICAgICAgICAgICAyoaLF4NH4z8LK9LXEucvCxw0KICAgICAgICAgICAgM6GixeDR+M/CyvS1
-xLe9t6gNCiAgICAgICAgICAgIDShosXg0fjPwsr0tcTUrdTyDQogICAgICAgICAgICCwuMD9t9bO
-9qO6yOe6zsDtveLS8rLEyqm9zLXExeDR+NSt1PKjvw0KICAgICAgICDB+aGiytrIqLncwO0NCiAg
-ICAgICAgICAgICjSuykgzqrKssO00qrK2sioDQogICAgICAgICAgICAotv4pIMrayKi53MDttcTO
-88f4ysfKssO0DQogICAgICAgICAgICAoyP0pIMrayKi53MDttcTUrdTyDQogICAgICAgICAgICAo
-y8QpIMrayKi53MDttcS3vbeoIA0KDQq12rDL1cKhorncwO25tc2o0+u52M+10K219w0KICAgICAg
-ICDSu6GiyrLDtMrHubXNqCCjvw0KICAgICAgICC2/qGiubXNqLXEzNjQ1CANCiAgICAgICAgICAg
-IMurz/K3tMChyse5tc2otcS7+bShDQogICAgICAgICAgICCyu82szsS7r6Giw/HX5bXEubXNqNSt
-1PKyu82sDQogICAgICAgIMj9oaK53MDtubXNqLXE1tbA4Lyw0M7KvQ0KICAgICAgICAgICAgsLjA
-/bfWzvYgoaLM1sLbICDCvM/xt9bO9g0KICAgICAgICDLxKGiubXNqLXEsr3W6CANCiAgICAgICAg
-zuWhorK7zay5tc2ot+e48bXEudzA7dXft9bO9tPr06a21A0KICAgICAgICAgICAgt9bO9tDNyMu1
-xMzY1ffT67m1zai8vMfJDQogICAgICAgICAgICDWp8Xk0M3Iy7XEzNjV99PrubXNqLy8x8kNCiAg
-ICAgICAgICAgILHttO/QzcjLtcTM2NX30+u5tc2ovLzHyQ0KICAgICAgICAgICAgus2wqtDNyMu1
-xMzY1ffT67m1zai8vMfJDQogICAgICAgICAgICCwuMD9t9bO9qO6t9bO9rLcstmhosH1sbihosvv
-yKi1xLj20NTT67m1zai8vMfJDQogICAgICAgIMH5oaK5tc2otcS3vc/yDQogICAgICAgICAgICDW
-sNK1vq3A7cjL0+vJz7y2oaLNrLy2oaLPwsr0ubXNqLXEvLzHyQ0KICAgICAgICAgICAgMaGiubXN
-qLXE1K3U8g0KICAgICAgICAgICAgMqGiubXNqLXEt723qA0KICAgICAgICAgICAgM6GiubXNqLXE
-1c+wrQ0KICAgICAgICAgICAgICAgsLjA/czWwtujurbUyc+8trXEuaTX99PQsrvNrLXE0uK8+8Tj
-06a4w9T1w7Sw7KO/DQogICAgICAgICAgICAgICDJz7y2ttTE47XEsai45tPQt7S21NLivPsgxOPU
-9cO0sOyjvw0KICAgICAgICAgICAgICAgyOe6zqG4tKbA7c/CvLbUvby2z/LE47vjsaihuaO/DQog
-ICAgICAgICAgICAgICDI57rOobi0psDtsr/K9LXEuf3Kp9DQzqqhuaO/DQogICAgICAgICAgICAg
-ICDI57rOobi0psDtyc/LvrX3xcnX1Ly6sr/K9Lmk1/e1xMfpv/ahuaO/DQogICAgICAgICAgICAg
-ICDI57rOobjD5rbU09DE3MGmtauyu8z9u7C1xLK/yvShuaO/DQoNCrXavsXVwqGiuN+8qNCnzcW2
-07XEvajJ6A0KICAgICAgICDSu6GiyrLDtMrHzcW20w0KICAgICAgICAgICAgMaGiyM/Kts3FttOj
-qDErMT2jv6OpDQogICAgICAgICAgICAyoaLNxbbT0+vIuszltcTH+LHwDQogICAgICAgICAgICAz
-oaLNxbbT0NDOqsf6z98NCiAgICAgICAgICAgICAgIMzWwtujusfrt9bO9s3FttPT68i6zOXWrrzk
-1+6087XEx/ix8MrHyrLDtKO/DQogICAgICAgILb+oaK437yo0KfNxbbTtcTM2NX3DQogICAgICAg
-ICAgMaGiw/fIt7XExL+x6iCjqMS/seq008TEwO/AtKO/xvPStcS/seq6zbj2yMvEv7HqyOe6zs2z
-0rujv6OpDQogICAgICAgICAgICAyoaLP4Lul0MXIziAgICAgo6jQxcjOtcS7+bShysfKssO0o7/I
-57rOvajBoqO/o6kNCiAgICAgICAgICAgIDOhornY0MShorDv1vrDv7j2yMujqLTTxMTQqbe9w+bX
-xcrWssXKx9fu09DQp7XEo7+jqQ0KICAgICAgICAgICAgNKGiubXNqMG8usMgICAgIKOoyOe6zrLF
-xNzT0NCntcS5tc2oo7+jqQ0KICAgICAgICAgICAgNaGit9a5pNPrytrIqCAgIKOo1Nq+38zluaTX
-99bQyOe6zrLZ1/ejv6OpDQogICAgICAgICAgICA2oaK6z8DttcS8pMD4ICAgo6jDu9PQ1+O5u7XE
-zPW8/tT1w7Sw7KO/o6kNCiAgICAgICAgICAgIDehorrPwO2hos3qyca1xNbGtsijqNbGtsjEv8ew
-sru6z8Dt1PXDtLDso7+jqQ0KICAgICAgICAgICAgOKGiyNrHorXEzcW208b4t9UgKNPDyrLDtLe9
-t6jF4NH4wby6w7XEuaTX98b4t9WjvykNCiAgICAgICAgICAgICAgILC4wP231s72oaLM1sLbo7q0
-89HjtcS5ysrCuPjO0sPHyrLDtMb0yr6jvw0KICAgICAgICDI/aGiuN+8qNCnzcW207XEs8nUsQ0K
-ICAgICAgICAgICAgMaGiyOe6ztGh1PHNxbbTtcSzydSxDQogICAgICAgICAgICAyoaLNxbbTs8nU
-sbXEudjPtcjnus7QrbX3DQogICAgICAgICAgICAzoaLI57rOveK+9rPJ1LG1xLPlzbsNCiAgICAg
-ICAgICAgICAgILC4wP231s72oaLM1sLbo7rNxbbTtcSzydSxxNzBprK71+PTprjDyOe6zrSmwO0N
-CiAgICAgICAgy8ShorjfvKjQp83FttO9qMnotcTB97PMvLC917bODQogICAgICAgICAgICAxoaLN
-xbbTvajJ6LXEwfezzA0KICAgICAgICAgICAgMqGizcW2072oyei1xL3Xts4NCg0KtdrKrtXCoaK8
-pMD4udzA7Q0KICAgICAgICC1zdCnwsq/v7ncwO2jrLjf0KfCyr+/vKTA+A0KICAgICAgICDSu6Gi
-vKTA+LXEzvPH+A0KICAgICAgICC2/qGivKTA+LXEy8TUrdTyDQogICAgICAgICAgICC5q8a91K3U
-8qGiz7XNs9St1PKhosqxu/rUrdTyoaLH5c761K3U8g0KICAgICAgICDI/aGivKTA+LXEt723qA0K
-ICAgICAgICAgICAgMaGi0MXIzg0KICAgICAgICAgICAgICAgyM+/yS0gse3R7y3Jzcq2ICAgo6jI
-57rOxeDR+LbUuaTX97XEs8m+zbjQo7+jqQ0KICAgICAgICAgICAgMqGiCbPQtaPU8MjOICAgICAg
-ICjOqsqyw7TSqs6qz8LK9LPQtaPU8MjOKQ0KICAgICAgICAgICAgM6GiCbnY0MShorDv1vrNxbbT
-s8nUsaOouaTX99Pryfq77sjnus7QrbX3o7+jqQ0KICAgICAgICAgICAgNKGiCdC9y67T68n9x6gg
-ICAgIKOou/m0obu50qrT0LGj1c+jqQ0KICAgICAgICAgICAgNaGiCbmk1/fQy8ikICAgICAgIKOo
-yOe6zrLFxNyw0bmk1/e1sbPJysfSu9bW0MvIpKO/o6kNCiAgICAgICAgICAgIDahogm6z8DttcTW
-xrbIICAgICCjqLmrxr2hormr1f2hormrv6qjqQ0KICAgICAgICAgICAgN6GiCbmk1/fG+LfVICAg
-ICAgIKOoysfSu9bWyO27r7zBo6kNCiAgICAgICAgICAgIDihognG89K1xL+x6tPryrnD/CCjqNfu
-1tW1xL3ivva3vbC4o6kNCiAgICAgICAgy8ShorykwPi3vbeotcTX27rP1MvTww0KICAgICAgICAg
-ICAgsLjA/bfWzvahoszWwtujutbH1u2yqd7EtcS5ysrCDQoNCqmlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pQ0KICAgICAgICAgDQq9ssqmvenJ3KGqwO6479T2DQoNCiAgICDW2sjL0NC437y2xeDRtcqmoaLK
-tdW90M3F4NG116i80qO7x+W7qrTz0aehorGxvqm089GnzNjGuMXg0bW9ssqmo7vJ7tvaudzA7dfJ
-0a/QrbvhudzA7deovNKju83iyczNttfK0K274cXg0bXXqLzSo7vW0Ln6xvPStcGqus+74bnLzsqj
-u8/juNu54ruqudzA7dGn1Lq/zdf5vczK2qO7w8C5+kFJVEHIz9akufq8ytaw0rXF4NG1yqaju8W3
-1t5TS1C7+rm5uN+8trncwO25y87Ko7vG89K1vNLQrbvhzNjGuMXg0bW9ssqmo7u24MTqtNPKwsbz
-0rW437LjudzA7dPr18nRr7mk1/e+rdHpo6zU2rXCwqG8r83FoaLJ7rjfy9mhosPAufqhsE1PVEhF
-UlOhsaGi1trIy9DQudzA7dfJ0a+1yLTz0M28r83FuavLvrywudzA7bnLzsq5q8u+wPrIzsXg0bW+
-rcDtoaLQ0NX+19y84KGi06rP+tfcvOChosXg0bXX3LzgoaK4sdfcvq3A7bXI1rDOu6GjttTG89K1
-udzA7aGiv827p7f+zvGhosa3xca53MDtoaLG89K1zsS7r7XIvt/T0MG8usO1xMXg0bXT69fJ0a++
-rdHpo7uyu732vt/T0MnuuvG1xMDtwtvWqsq2o6y2+MfSvt+xuLfhuLu1xMq1vPmy2df3xNzBpqO7
-16LW2LbUxvPStbncwO3OyszitcS31s72us294r72oaK9ssfzyrXQp9DUus3KytPD0NShow0KDQrJ
-w7Okv86zzKO6obbWsNK1vq3A7cjL18q48cjP1qSht6GiobbG89K11tCy476twO3X27rPudzA7by8
-xNzF4NG1obehtrjfvLbD2Mrp1rDStbuvxeDRtaG3oaKhtsjnus6zyc6q08XQ49SxuaSht6Gioba5
-3MDtubXNqNPruaTX99Cttfe8vMfJobcNCg0KxeDRtczYyaujutLUu6W2r6Gix+m+sMq9xeDRtbz7
-s6SjrNei1tjK3NG1yMvUsbXEuNDO8rywss7T66OsxeDRtbfnuPHJ7sjrx7Oz9qGizPXA7cflzvqh
-or/OzMPG+LfVx+HLyaGiu+7UvqGiyrXVvdDUx7+jrM2ouf2499bWyrW8yrC4wP28sLncwO3Tzs+3
-tci3vcq9s+S31rX3tq+yztG1yMvUsbXExeDRtcjIx+mhow0KDQrF4NG1u/LXydGvtcTG89K1o7rW
-0Ln6tefQxaGix+C1utbQu6+8r83FoaLW0Mqv082hosmjt8bNqNG2oaKwwsHWsM3LuaGiz8PDxbq9
-v9WhosvV1t3I/dDHtefX06GiueO2q9LGtq+hosnfv9rEz8uzw+a326GiyP3R87v6teehosb0w/fQ
-x7O/oaLBqrDuv+y13aGiv8LE4b+ow8DE3LTvoaLW0NDFzu/StaGi0MXNs7niteehoszsu6q74bzG
-yqbKws7xy/mhosTP5tq157PYoaLAysT+zajQxaGiur28zrXn1LSholRDTLyvzcWhorqjxbfOwNSh
-oaK9rcHlxvuztaGi09Gw7rGjz9WhotbQtee8r83FoaK6o8TPwu3X1LTvoaLSvMqxtPq0q8O9oaK0
-tM6svK/NxaGi1eO9rb3w1t68r83FoaKzpMHBv8a8vKGiwarMqbyvzcWhorfJwPvG1tbQufqhor/G
-0fPK/cLroaK38Mm9uqPEybSo0qnStaGixM/Mq7yvzcWhosnxwfrG+7O1oaLW0Ln6yq/TzaGixP6y
-qNDCt+W158b3oaLN/rqjsbHR87Xnxvi8r83FoaK6zbzNu8bG0tbQ0qmhorrTsbHIyLXnoaLW0Lyv
-vK/XsM/koaLI/fbOucm33aGi1tDQxbyvzcWhoruqtdu5ybfdoaLDwLXEvNK156Gi1tC6o7yvzcWh
-orfJwPvG1rDrtbzM5aGi1tC5+rXn19PX3Lmry76hornjzve158GmoaLJz7qjxta2q7ei1bnS+NDQ
-oaK9qMno0vjQ0LijvajWp9DQoaLW0Ln6zfjNqKGisbG+qcrXtry7+rOhoaLO98PF19OhosW3xtXV
-1cP3tcihow0KDQoNCg0KDQoNCg==
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="282">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_07.jpg" width="325" height="282"><a href="http://www.vallarta-paradise.com/vill-0409-1209/maillist.php?promo=1&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://clubvacationdeals.com/resorts.php?hotel=velasvta"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_08.jpg" width="325" height="282" border="0"></a></th>
+		</tr>
+	</tbody>
+</table>
 
---=_NextPart_2rfkindysadvnqw3nerasdf
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="63">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<a href="http://www.vallarta-paradise.com/vill-0409-1209/maillist.php?promo=1&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_09.jpg" width="210" border="0" height="63"></a><a href="http://www.vallarta-paradise.com/vill-0409-1209/maillist.php?promo=1&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.vacationlivehelp.com/livehelp.php?department=1" target="_blank"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_10.jpg" width="233" border="0" height="63"></a><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_11.jpg" width="207" height="63"></
+ th>
+		</tr>
+	</tbody>
+</table>
+
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="31">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/vill-0409-1209/paradise_velas_12.jpg" width="650" height="31"></th>
+		</tr>
+	</tbody>
+</table>
+
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="31">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center" height="79">
+				This is an exclusive promotion by <a href="http://www.vallarta-paradise.com/vill-0409-1209/maillist.php?promo=1&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com">Club Vacation Deals</a><br>
+				Telephone in Mexico ¬† ¬† +52 (322) 224 0347<br>
+				Los Angeles, CA ¬† ¬† (310) 598 1844<br>
+				Nueva York, NY ¬† ¬† (212) 845 9362<br>
+				All reservations are subject to availability<br>
+				<a href="http://www.vallarta-paradise.com/vill-0409-1209/maillist.php?promo=1&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=subscribe" target="_blank">Click here to receive more promotions</a><br>
+				<a href="http://www.vallarta-paradise.com/vill-0409-1209/maillist.php?promo=1&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=unsubscribe" target="_blank">Click here to unsubscribe from our mailing list</a> 
+				<img src="http://www.vallarta-paradise.com/vill-0409-1209/image.php?promo=1&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+				</th>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
+
+
+--===============2069402735535788095==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -189,7 +111,7 @@ around Java (TM) technology - register by April 22, and save
 $200 on the JavaOne (SM) conference, June 2-5, 2009, San Francisco.
 300 plus technical and hands-on sessions. Register today. 
 Use priority code J9JMT32. http://p.sf.net/sfu/p
---=_NextPart_2rfkindysadvnqw3nerasdf
+--===============2069402735535788095==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -200,4 +122,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---=_NextPart_2rfkindysadvnqw3nerasdf--
+--===============2069402735535788095==--

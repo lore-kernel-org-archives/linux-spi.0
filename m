@@ -1,228 +1,396 @@
-From: German Vsevolodovich <germanvsevolodovich-YuisnD8UvSi3CdJRPK1N2g@public.gmane.org>
-Subject: [SPAM] Майские праздники по акции
-Date: Wed, 22 Apr 2009 20:05:05 +0400
-Message-ID: <0918997810.20090422200505@eto-reclama.net>
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: [PATCH v6] spi: Add PPC4xx SPI driver
+Date: Wed, 22 Apr 2009 13:00:39 -0700
+Message-ID: <200904221300.39747.david-b@pacbell.net>
+References: <1231411250-25380-1-git-send-email-sr@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8851896529978592862=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linuxppc-dev@ozlabs.org, spi-devel-general@lists.sourceforge.net
+To: Stefan Roese <sr@denx.de>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org>
+In-Reply-To: <1231411250-25380-1-git-send-email-sr@denx.de>
+Content-Disposition: inline
+List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
+List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
+List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8851896529978592862==
-Content-Type: multipart/related;
-	boundary="----=_NextPart_000_0014_F1D10096.B224CF89"
-
-------=_NextPart_000_0014_F1D10096.B224CF89
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBYSFRNTCAxLjAgVHJhbnNpdGlv
-bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL3hodG1sMS9EVEQveGh0bWwxLXRyYW5z
-aXRpb25hbC5kdGQiPg0KPGh0bWwgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0
-bWwiPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9
-InRleHQvaHRtbDsgY2hhcnNldD13aW5kb3dzLTEyNTEiIC8+DQo8dGl0bGU+VW50aXRsZWQg
-RG9jdW1lbnQ8L3RpdGxlPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHks
-dGQsdGggew0KCWZvbnQtZmFtaWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5z
-LXNlcmlmOw0KfQ0KLnN0eWxlMSB7DQoJY29sb3I6ICNGRkZGRkY7DQoJZm9udC1zaXplOiAy
-NHB4Ow0KCWZvbnQtd2VpZ2h0OiBib2xkOw0KfQ0KLnN0eWxlMiB7Y29sb3I6ICNGRjAwMDB9
-DQouc3R5bGUzIHsNCgljb2xvcjogI0ZGRkZGRjsNCglmb250LXdlaWdodDogYm9sZDsNCn0N
-Ci5zdHlsZTQgew0KCWNvbG9yOiAjRkZGRkZGOw0KCWZvbnQtc2l6ZTogMThweDsNCn0NCi5z
-dHlsZTUgew0KCWZvbnQtc2l6ZTogMjRweDsNCgljb2xvcjogI0ZGMDAwMDsNCn0NCi5zdHls
-ZTEwIHtmb250LXNpemU6IDE0cHh9DQouc3R5bGUxMSB7DQoJZm9udC1zaXplOiAxNXB4Ow0K
-CWNvbG9yOiAjMDA5OTY2Ow0KCWZvbnQtd2VpZ2h0OiBib2xkOw0KfQ0KLnN0eWxlMTMge2Nv
-bG9yOiAjMDA5OTY2fQ0KLnN0eWxlMTQgew0KCWZvbnQtc2l6ZTogMTVweDsNCglmb250LXdl
-aWdodDogYm9sZDsNCn0NCi5zdHlsZTE1IHtjb2xvcjogI0ZGRkZGRn0NCi5zdHlsZTE3IHsN
-Cgljb2xvcjogIzNFNkNCMjsNCglmb250LXdlaWdodDogYm9sZDsNCn0NCi5zdHlsZTE4IHsN
-Cglmb250LXNpemU6IDFweDsNCgljb2xvcjogI0ZGRkZGRjsNCn0NCi0tPg0KPC9zdHlsZT48
-L2hlYWQ+DQoNCjxib2R5Pg0KPGRpdiBhbGlnbj0iY2VudGVyIj4NCiAgPHRhYmxlIHdpZHRo
-PSI4MDAiIGJvcmRlcj0iMCI+DQogICAgPHRyPg0KICAgICAgPHRkPjx0YWJsZSB3aWR0aD0i
-Nzk4IiBib3JkZXI9IjAiPg0KICAgICAgICA8dHI+DQogICAgICAgICAgPHRkIGJnY29sb3I9
-IiMzRTZDQjIiPjxkaXYgYWxpZ249ImNlbnRlciI+PGltZyBzcmM9ImNpZDpncmlzdGxlLmdp
-ZiIgd2lkdGg9Ijc2IiBoZWlnaHQ9IjkwIiAvPjwvZGl2PjwvdGQ+DQogICAgICAgICAgPHRk
-IGJnY29sb3I9IiMzRTZDQjIiPjxkaXYgYWxpZ249InJpZ2h0Ij48c3BhbiBjbGFzcz0ic3R5
-bGUxNSI+0+rw4L/t4Cwg7C4gyui/4iDi8+suIDQwLfCz9/f/IMbu4vLt/yAxMzAvNTcmbmJz
-cDs8YnIgLz4NCiAgICAgICAgICAgIPLl6y46ICgwNDQpIDxzdHJvbmc+MjIzLTUzLTQ1PC9z
-dHJvbmc+Jm5ic3A7PGJyIC8+DQogICAgICAgICAgICD04OrxOiAoMDQ0KSA8c3Ryb25nPjU4
-NS01Ny04NDwvc3Ryb25nPiZuYnNwOzxiciAvPg0KICAgICAgICAgICAgZS1tYWlsOiBraWV2
-LXR1ckBtYWlsLnJ1Jm5ic3A7PGJyIC8+DQogICAgICAgICAgICBodHRwOi8vd3d3LnZpcHR1
-ci5jb20udWEmbmJzcDs8L3NwYW4+PC9kaXY+PC90ZD4NCiAgICAgICAgPC90cj4NCiAgICAg
-IDwvdGFibGU+DQogICAgICAgIDx0YWJsZSB3aWR0aD0iNzk1IiBib3JkZXI9IjAiPg0KICAg
-ICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZD48cCBhbGlnbj0iY2VudGVyIj48c3BhbiBj
-bGFzcz0ic3R5bGU1Ij5N4Olj6ujlIO9wYefk7ejq6CE8L3NwYW4+IDxiciAvPg0KICAgICAg
-ICAgICAgICDR7uHw4O3o5SDr8/f46PUg7/Du4/Dg7Owg4iDt4Pjl6SA8YSBocmVmPSJodHRw
-Oi8vd3d3LnZpcHR1ci5jb20udWEvIj7q7uvr5er26Ogg7/Py5fjl8fLi6OkhPC9hPjwvcD4N
-CiAgICAgICAgICAgIDxwIGFsaWduPSJjZW50ZXIiPjxzdHJvbmc+zODp8ero5SDv8ODn5O3o
-6ughICDy8/D7IOTu8O7m4P7yLCDgIPMg7eDxIOTl+OXi5f7yITwvc3Ryb25nPjwvcD48L3Rk
-Pg0KICAgICAgICAgIDwvdHI+DQogICAgICAgIDwvdGFibGU+PC90ZD4NCiAgICA8L3RyPg0K
-ICAgIDx0cj4NCiAgICAgIDx0ZCBiZ2NvbG9yPSIjRkY4MDAwIj48ZGl2IGFsaWduPSJjZW50
-ZXIiIGNsYXNzPSJzdHlsZTEiPsju8OTg7ej/PC9kaXY+PC90ZD4NCiAgICA8L3RyPg0KICAg
-IDx0cj4NCiAgICAgIDx0ZD48cCBjbGFzcz0ic3R5bGUyIj4mbmJzcDvI8fLu9+3o6uggzODo
-7SCWIM/l8vDgIJYg7/Px8vvt/yDC4OToINDg7CCWIMDq4OHgPC9wPg0KICAgICAgICA8cD4g
-Jm5ic3A7PGltZyBzcmM9ImNpZDpGdWxsZXIuZ2lmIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAi
-IC8+Jm5ic3A7PHNwYW4gY2xhc3M9InN0eWxlMTAiPjxzcGFuIGNsYXNzPSJzdHlsZTExIj7E
-4PL7IOfg5efk4Do8L3NwYW4+IDI5LjA0LjA5OyAwMi4wNS4wOSCXIDA5LjA1LjA5OyA2LjA1
-LjA5PC9zcGFuPjwvcD4NCiAgICAgICAgPHA+ICZuYnNwOzxpbWcgc3JjPSJjaWQ6RnVsbGVy
-LmdpZiIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiAvPiZuYnNwOzxzcGFuIGNsYXNzPSJzdHls
-ZTExIj7R8u7o7O7x8vwg8vPw4Do8L3NwYW4+PGJyIC8+DQogICAgICAgICAgJm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7PHNwYW4gY2xhc3M9InN0eWxlMTAiPjI5LjA0LjA5IJcgMDYuMDUu
-MDkglyAxMDMwICQ8L3NwYW4+PGJyIC8+DQogICAgICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7PHNwYW4gY2xhc3M9InN0eWxlMTAiPjAyLjA1LjA5IJcgMDkuMDUuMDkglyA4MzAk
-PC9zcGFuPjxiciAvPg0KICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7PHNwYW4gY2xh
-c3M9InN0eWxlMTAiPjA2LjA1LjA5IJcgMTMuMDUuMDkglyAxMDMwICQ8L3NwYW4+PC9wPjwv
-dGQ+DQogICAgPC90cj4NCiAgICA8dHI+DQogICAgICA8dGQgYmdjb2xvcj0iI0ZGODAwMCI+
-PGRpdiBhbGlnbj0iY2VudGVyIj48c3BhbiBjbGFzcz0ic3R5bGUxIj7S8/D26P8g7eAg7ODp
-8ero5SDv8ODn5O3o6ughPC9zcGFuPjxiciAvPg0KICAgICAgICAgIDxzdHJvbmc+yuDqIOLx
-5ePk4CCWIMLx5SDi6uv+9+Xt7iE8L3N0cm9uZz48L2Rpdj48L3RkPg0KICAgIDwvdHI+DQog
-ICAgPHRyPg0KICAgICAgPHRkIGJnY29sb3I9IiNGRjAwMDAiPjxkaXYgYWxpZ249ImNlbnRl
-ciIgY2xhc3M9InN0eWxlMyI+wu3o7ODt6OUhINfl7CDw4O38+OUg4fDu7fwgLCDy5ewg7ejm
-5SD25e37ITxiciAvPg0KICAgICAgz+7x7+X46PLlISDW5e37IO7h7e7i6//+8vH/IOrg5uT7
-6SDk5e38ITwvZGl2PjwvdGQ+DQogICAgPC90cj4NCiAgICA8dHI+DQogICAgICA8dGQ+PHA+
-Jm5ic3A7PHNwYW4gY2xhc3M9InN0eWxlMTEiPjxpbWcgc3JjPSJjaWQ6RnVsbGVyLmdpZiIg
-d2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiAvPiZuYnNwO8Tg8vsg4vvr5fLgOjwvc3Bhbj48c3Bh
-biBjbGFzcz0ic3R5bGUxMCI+IDI5LjA0LjA5LCAzMC4wNC4wOSwgMS4wNS4wOTwvc3Bhbj48
-L3A+DQogICAgICAgIDxwPiZuYnNwOzxzcGFuIGNsYXNzPSJzdHlsZTEzIj48aW1nIHNyYz0i
-Y2lkOkZ1bGxlci5naWYiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgLz4mbmJzcDs8c3BhbiBj
-bGFzcz0ic3R5bGUxNCI+0fLu6Ozu8fL8Ojwvc3Bhbj48L3NwYW4+PGJyIC8+DQogICAgICAg
-ICAgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7PHNwYW4gY2xhc3M9InN0eWxlMTAiPs7y5ev8
-IDMqIC0g7vIgNDUwICQ8L3NwYW4+PGJyIC8+DQogICAgICAgICAgJm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7PHNwYW4gY2xhc3M9InN0eWxlMTAiPs7y5ev8IDQqIC0g7vIgNTAwICQ8L3Nw
-YW4+PGJyIC8+DQogICAgICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7PHNwYW4gY2xh
-c3M9InN0eWxlMTAiPs7y5ev8IDUqIC0g7vIgNTUwICQ8L3NwYW4+PGJyIC8+DQogICAgICAm
-bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDs8c3BhbiBjbGFzcz0ic3R5bGUxMCI+PHNwYW4gY2xh
-c3M9InN0eWxlMiI+PHN0cm9uZz4qPC9zdHJvbmc+PC9zcGFuPiDx8u7o7O7x8vwg8+rg5+Dt
-4CDn4CD35evu4uXq4CDiIOTi8/Xs5fHy7e7sIO3u7OXw5S48L3NwYW4+PC9wPg0KICAgICAg
-ICA8dGFibGUgd2lkdGg9Ijc5NSIgYm9yZGVyPSIwIiBhbGlnbj0iY2VudGVyIj4NCiAgICAg
-ICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYmdjb2xvcj0iI0ZGMDAwMCI+PGRpdiBhbGln
-bj0iY2VudGVyIiBjbGFzcz0ic3R5bGU0Ij7C4Obt7iDuIPHq6OTq4PUhPGJyIC8+DQogICAg
-ICAgICAgICAgIMrg5uTu7PMgNezzIJYgMyUg8ero5OrgPGJyIC8+DQogICAgICAgICAgICDE
-6/8g4/Dz7+8g7vIgMTAg9+Xr7uLl6iCWIDEg9+Xr7uLl6iDh5fHv6+Dy7e4hPC9kaXY+PC90
-ZD4NCiAgICAgICAgICA8L3RyPg0KICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZD48
-cCBjbGFzcz0ic3R5bGUxMCI+Jm5ic3A7z+4g/fLo7CDv8O7j8ODs7ODsIOjk5fIg7eDh7vAg
-4/Dz7+8sIPfy7iDk4OXyIOLu5+zu5u3u8fL8IOLg+OjsIOrr6OXt8uDsIO3lIPLu6/zq7iAm
-bmJzcDvx/eru7e7s6PL8LCDt7iAmbmJzcDvoIO/u5PDz5ujy/PH/IPEg5PDz4+js6CDr/uHo
-8uXr/+zoIO3l4uXw7v/y7fv1IO/w6Orr/vfl7ejpITwvcD4NCiAgICAgICAgICAgICAgPHAg
-Y2xhc3M9InN0eWxlMTAiPiZuYnNwO8/l8OX35e38IO/w7uPw4OzsIO/u8fLu/+3t7iDu4e3u
-4uv/5fLx/y48YnIgLz4NCiAgICAgICAgICAgICAgICAmbmJzcDvB8O7t6PDz6fLlIPHl6ffg
-8SE8L3A+DQogICAgICAgICAgICA8cCBjbGFzcz0ic3R5bGUxMCI+Jm5ic3A7zvIg6O3k6OLo
-5PPg6/zt+/Ug7/Py5fjl8fLi5e3t6Oru4iDk7iDh7uv8+Oj1IOPw8+/vIC0g7+4g4vHl7PMg
-7Ojw8yDxIDxzcGFuIGNsYXNzPSJzdHlsZTE3Ij5WSVBUVVI8L3NwYW4+IDwvcD48L3RkPg0K
-ICAgICAgICAgIDwvdHI+DQogICAgICAgIDwvdGFibGU+PC90ZD4NCiAgICA8L3RyPg0KICA8
-L3RhYmxlPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7
-PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9w
-Pg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0K
-ICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8
-cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4m
-bmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJz
-cDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8
-L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+
-DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQog
-IDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxw
-PiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZu
-YnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNw
-OzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwv
-cD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4N
-CiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAg
-PHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+
-Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5i
-c3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7
-PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9w
-Pg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0K
-ICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8
-cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4m
-bmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJz
-cDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8
-L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+
-DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQog
-IDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxw
-PiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwIGNs
-YXNzPSJzdHlsZTE4Ij7x6/P34OntsyDx8vDu6ug68vwg6uIgaHIub2ZmaWNlQG1haWwucnUJ
-62FuZHJlX3BvdGFwb3ZAc2tvbGtvdm8ubmV0CS4gymFpa2hsQGFzdHUub3JnLnJ1CTEsNiDM
-4WFkZHNAYnVyby5ydQk8L3A+DQo8L2Rpdj4NCjwvYm9keT4NCjwvaHRtbD4NCg==
+On Thursday 08 January 2009, Stefan Roese wrote:
+> This adds a SPI driver for the SPI controller found in the IBM/AMCC
+> 4xx PowerPC's.
 
 
-------=_NextPart_000_0014_F1D10096.B224CF89
-Content-Type: image/gif;
-	name="Fuller.gif"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="Fuller.gif"
-Content-ID: <Fuller.gif>
+> +/*
+> + * The PPC4xx SPI controller has no FIFO so each sent/received byte will
+> + * generate an interrupt to the CPU. This can cause high CPU utilization.
+> + * This driver allows platforms to reduce the interrupt load on the CPU
+> + * during SPI transfers by setting max_speed_hz via the device tree.
 
-R0lGODlhCgAKAMQAAAAAAP///6rNu6jMuW2shmOremKqdqvOtanMsvn9+vL78werCQeqCRav
-GPD68PX89ZPfkZfflZzfm53fnJTfkf///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-ACH5BAEAABUALAAAAAAKAAoAAAU6YCA+0/SIqEMNA+WgCiQUhQApQRIdBMMQh0hCgjAsGo2F
-ASEhGpFKpo7nAwoDsVntllq1XqgAyYQKAQA7+uFGMD84HiTw65PyEQXmqpBqp6+gtUerDkyP
-nuHvQbfLUv+ZAWAqABVp8TKpnoVqMH6z1CjGdDSxyQLznLdnMyRIFbxtDH==
-------=_NextPart_000_0014_F1D10096.B224CF89
-Content-Type: image/gif;
-	name="gristle.gif"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="gristle.gif"
-Content-ID: <gristle.gif>
-
-R0lGODlhTABaALMAAGXMBT5sspgKDFR3rP7NMGaGmNCzVYmTjLOobX9LXWazU+S+QAAAAAAA
-AAAAAAAAACH5BAAAAAAALAAAAABMAFoAAAT/MMhJq7046827/2DoFUppDiJWHCyaggogz3Lx
-Vqudre1d0MDaTaOTtFgGRBEWBCpcQ9xhoqwgFlMmINaUPV+ssKsaOCypC2gn9ux6fblJgZy1
-HAh1zg8w2G+5NGcSgh1zUHlyBAYfP4KACEI4WwNfI4tyhIpqRISUT1yVcl6TehIGiJsFmlGi
-bxaApBYrCHSXGQgECKwTgJUkJkBnBwYLCGYUtJuJeLuDM19+XYfHGMmyxLojJ53PAdE0BjOd
-1cXHcwvF2kGhvG9uZq5EFOcE9auFbpESXOE0n29siJCZJ4ZRvm773NgooOMHOwrDxomAJQPS
-OhQU/b16OAiVMoNB/xg2+TdSGQlGRVZg2uAQFkknGTkOkmgFioEiPTJw8WYCWsaQzYxRyWNN
-pz4cP/15KcFQRFGVyLIZZccQ2MEuMlVIreaRQgk5Ja6KjcfyI7Kusii2GZuPpoeBREr+YviN
-rVs9d4OEe1h1XViFzTZkrKomQYKEGgM8chJ4R5MpZw63C5Tw5dHGrQBYjDUhwRnG+yzzwfzq
-D2ELhjdRbGhjNekKAcd5Lp0482XSOzOkpo3Q9ujXk80WmL2xl2rKwPeR6LT7wubLfrIGRuuN
-+AWg83onNyuhOW+ywbfrsS4JtCTpQYklCUNLPaIr6tHVQ6feWBj66bzFt88C/n5qKhBjz/+A
-9mAxj4AE5nJFggTepB+DEM53ChEGMLgAeRAtMF8kdzAI14MJOkhPgdSpEiKGyNRzVIUNBphg
-Hh0OSB2LAxqAIhWKcFZGgltZ0aKPBI4TY4GSXWCijjsSiBYuNabC4w4aEtgjRPfg8OItP1YQ
-ZYHc0cglBhV2NWQ9S2aZYpAZjFnlgWlgoGaZTVrApIxQJviRKlNO8CaWcQJJJ59/+ojWntWY
-iSOaaT5pATrcEeqcoabYSaGkVOap55WF9rmMppkGKgEu1DkqJ6Siuhmilm0mqiSg823i5ZoZ
-bNnqpZZeumqn9tQxB6YczJkrjtQl6amfDcpqT612nPogd0bwOmr/sRYGi4OxbeLJQalnfnlO
-fXcRS2YAoF7rrLep7qKmLsQw2+ytj3LKCrW4IGvrsNnOGpiv9F6A7aFfTmehuuvm+ymk7yoq
-LrvP9nvvuKoKDC7BUZioMEsM82tvY17KSyXC5ALslMMJHxtrxRFPPGnFasK6S5Qal7GghUJ5
-Q0uE5TTGJCreDbBlfAiuMiTPOzdWAKMVCGB0Kk3hQBcmSc/TtNAVJGB0keJtJ7UAVFcNnNEC
-eKz1DVd3HXXWAeQsNdlfd8c110VeTbXbFBw9gGFipz332nJ7w7Uae3eGd95lex1x335jDUXY
-h/9NteFVwx331I8zLsHUiPst+BBsU1D5bOSEDyC342VLLl7nYbedudqSdS661ZBPsLZkYTN+
-ttqSAy4e6Hi7kDvnuuct9eVREB672FO37nvfs6eNPNZuH3A03L8Xfljyyhdv+PDT4/025atr
-HTvsa0MRvgWv26252eijXbZh6pvvfgYRAAA7OTEEVnKzqckdtwQV7t8HgNQmpCUsJt8YAAcV
-omISDtvxe/GZtDhOQx150Jm+2jW3kzMMZVedDOOhNV77YcJpO/jCIKB/tX2RKDdkZ8CdKQ/Y
-m6T+WdolcLnlVpkDAbULeyw4uyV5DURpPlomCQLfczEycp1dEJpj8ZbqLxjOG14Vah8dxH8O
-7BAXr11v+eT63ulDgJSm+L7Zs32d/yr60rSfgIPfmiaeRAixJ0XI/ThrLXJLK1G+gZeBhthI
-P8nh8JTG9rP9+woKIyWSncRI1vKXcsfsoGOlPhrNM6KLrzWzlsFMIXV+GfV=
-------=_NextPart_000_0014_F1D10096.B224CF89--
+Note that an alternate strategy is to use polling instead of IRQs,
+at least when the data rate is high enough that the IRQ processing
+is also slowing down the data transfers.
 
 
+> +/* bits in mode register - bit 0 ist MSb */
+> +/* data latched on leading edge of clock, else trailing edge */
+> +#define SPI_PPC4XX_MODE_SCP	(0x80 >> 3)
+
+Or in short, SCP == CPHA.
+
+> +/* port enabled */
+> +#define SPI_PPC4XX_MODE_SPE	(0x80 >> 4)
+> +/* MSB first, else LSB first */
+> +#define SPI_PPC4XX_MODE_RD	(0x80 >> 5)
+> +/* clock invert - idle clock = 1, active clock = 0; else reversed */
+> +#define SPI_PPC4XX_MODE_CI	(0x80 >> 6)
+
+Or in short, CI == CPOL.
+
+> +/* loopback enable */
+> +#define SPI_PPC4XX_MODE_IL	(0x80 >> 7)
+> +/* bits in control register */
+> +/* starts a transfer when set */
+> +#define SPI_PPC4XX_CR_STR	(0x80 >> 7)
+> +/* bits in status register */
+> +/* port is busy with a transfer */
+> +#define SPI_PPC4XX_SR_BSY	(0x80 >> 6)
+> +/* RxD ready */
+> +#define SPI_PPC4XX_SR_RBR	(0x80 >> 7)
+> +
+> +/* the spi->mode bits understood by this driver: */
+> +#define MODEBITS	(SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST)
+> +
+> +/* clock settings (SCP and CI) for various SPI modes */
+> +#define SPI_CLK_MODE0	SPI_PPC4XX_MODE_SCP
+> +#define SPI_CLK_MODE1	0
+> +#define SPI_CLK_MODE2	SPI_PPC4XX_MODE_CI
+> +#define SPI_CLK_MODE3	(SPI_PPC4XX_MODE_SCP | SPI_PPC4XX_MODE_CI)
+
+Color me puzzled then.  Either the definitions of MODE0 and MODE1
+are swapped here ... or the comments above are wrong, and SCP should
+describe "falling" vs "rising" instead of "leading" vs "trailing".
 
 
---===============8851896529978592862==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> +static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+> +{
+> +	struct ppc4xx_spi *hw = spi_master_get_devdata(spi->master);
+> +	struct spi_ppc4xx_cs *cs = spi->controller_state;
+> +	int scr;
+> +	u8 cdm = 0;
+> +	u32 speed;
+> +	u8 bits_per_word;
+> +
+> +	bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
+> +	speed = (t) ? t->speed_hz : spi->max_speed_hz;
+> +
+> +	...
+> +
+> +	if (!speed || (speed > spi->max_speed_hz)) {
 
-------------------------------------------------------------------------------
-Stay on top of everything new and different, both inside and 
-around Java (TM) technology - register by April 22, and save
-$200 on the JavaOne (SM) conference, June 2-5, 2009, San Francisco.
-300 plus technical and hands-on sessions. Register today. 
-Use priority code J9JMT32. http://p.sf.net/sfu/p
---===============8851896529978592862==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+This is wrong.  Typical case is that t->speed_hz is zero,
+meaning "use spi->max_speed_hz" ... you treat that as an error.
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> +		dev_err(&spi->dev, "invalid speed_hz (%d)\n", speed);
+> +		return -EINVAL;
+> +	}
+> +
+> +	...
+> +}
+> +
+> +static int spi_ppc4xx_setup(struct spi_device *spi)
+> +{
+> +	int ret;
+> +	struct spi_ppc4xx_cs *cs = spi->controller_state;
+> +	int init = 0;
 
---===============8851896529978592862==--
+This "init" thing is still wrong.
+
+Consider:  board gets set up with one device.  Later,
+*WHILE BUSY TRANSFERRING DATA TO/FROM THAT DEVICE*
+some other device gets instantiated.  Then ...
+
+
+> +	if (cs == NULL) {
+> +		cs = kzalloc(sizeof *cs, GFP_KERNEL);
+> +		if (!cs)
+> +			return -ENOMEM;
+> +		spi->controller_state = cs;
+> +
+> +		/*
+> +		 * First time called, so let's init the SPI controller
+> +		 * at the end of this function
+> +		 */
+> +		init = 1;
+
+"init" becomes true here, although the controller has
+already been initialized.  If it needs to be set up,
+do it in probe() before registering the spi_master.
+
+
+> +	}
+> +
+> +	...
+> +
+> +	/*
+> +	 * New configuration (mode, speed etc) will be written to the
+> +	 * controller in spi_ppc4xx_setupxfer(). Only call
+> +	 * spi_ppc4xx_setupxfer() directly upon first initialization.
+> +	 */
+> +	if (init) {
+> +		ret = spi_ppc4xx_setupxfer(spi, NULL);
+
+... so blam, you clobber the settings currently being used for
+the active transfer.  So this would be a bug.
+
+If not ... this driver deserves a comment on exactly how
+unusual this driver is.  Specifically, that all spi_device
+children must be set up *in advance* so that standard calls
+like spi_new_device() don't work with it; and why.
+
+I don't think I see anything in this driver which would
+prevent that from working, though.  Sure you've got to
+have a list of chipselect GPIOs in advance, but that's
+distinct from being unable to use spi_new_device().
+
+
+> +	...
+> +}
+> +
+> +static void spi_ppc4xx_chipsel(struct spi_device *spi, int value)
+> +{
+> +	struct ppc4xx_spi *hw = spi_master_get_devdata(spi->master);
+> +	unsigned int cspol = spi->mode & SPI_CS_HIGH ? 1 : 0;
+> +	unsigned int cs = spi->chip_select;
+> +
+> +	if (!hw->num_gpios)
+> +		return;
+
+Hmm, num_gpios ... can never be zero, right?  You always
+set it up so that of_gpio_count() GPIOs can all be used
+as chipselects.  Looks like this check is not needed.
+
+> +
+> +	if (cs >= hw->num_gpios)
+> +		return;
+
+I guess I don't see why you have num_gpio instead of just
+using the chipselect count, either.  (Assuming that the
+of_gpio_count routine isn't counting *all* gpios, instead
+of just ones allocated to this controller, which would be
+a different issue.)
+
+
+> +
+> +	if (value != BITBANG_CS_INACTIVE && value != BITBANG_CS_ACTIVE)
+> +		return;
+
+Strange, what other values could be passed??
+
+
+> +
+> +	if (value == BITBANG_CS_INACTIVE)
+> +		cspol = !cspol;
+> +
+> +	gpio_set_value(hw->gpios[cs], cspol);
+> +}
+> +
+> +static irqreturn_t spi_ppc4xx_int(int irq, void *dev_id)
+> +{
+> +	struct ppc4xx_spi *hw;
+> +	u8 status;
+> +	u8 data;
+> +	unsigned int count;
+> +
+> +	hw = (struct ppc4xx_spi *)dev_id;
+> +
+> +	status = in_8(&hw->regs->sr);
+> +	if (!status)
+> +		return IRQ_NONE;
+> +
+> +	/* should never happen but check anyway */
+> +	if (status & SPI_PPC4XX_SR_BSY) {
+
+Maybe "if (unlikely(...)) {" then.
+
+
+> +		u8 lstatus;
+> +		int cnt = 0;
+> +
+> +		dev_dbg(hw->dev, "got interrupt but spi still busy?\n");
+
+But ... *does* this ever happen?  If not, I'd strike this
+code.  And if it does, I'd add a comment explaining what's
+known about this hardware bug.  Without this, the IRQ handler
+would look pretty tight.
+
+> +		do {
+> +			ndelay(10);
+> +			lstatus = in_8(&hw->regs->sr);
+> +		} while (++cnt < 100 && lstatus & SPI_PPC4XX_SR_BSY);
+> +
+> +		if (cnt >= 100) {
+> +			dev_err(hw->dev, "busywait: too many loops!\n");
+> +			complete(&hw->done);
+> +			return IRQ_HANDLED;
+> +		} else {
+> +			/* status is always 1 (RBR) here */
+> +			status = in_8(&hw->regs->sr);
+> +			dev_dbg(hw->dev, "loops %d status %x\n", cnt, status);
+> +		}
+> +	}
+> +
+> +	count = hw->count;
+> +	hw->count++;
+> +
+> +	if (status & SPI_PPC4XX_SR_RBR) {
+> +		/* Data Ready */
+
+Most SPI hardware I've seen has at most a weak distinction
+between "tx done" and "rx done" IRQs ... there's little
+point to separate IRQs, since shifting out the last TX bit
+is what shifts in the last RX bit.
+
+Unless this is unusual hardware you can probably just assume
+that there's RX data, and only read it if hw->rx is non-null.
+Or, if this is *not* set, report the odd behavior...
+
+
+> +		data = in_8(&hw->regs->rxd);
+> +		if (hw->rx)
+> +			hw->rx[count] = data;
+> +	}
+> +
+> +	count++;
+> +
+> +	if (count < hw->len) {
+> +		data = hw->tx ? hw->tx[count] : 0;
+> +		out_8(&hw->regs->txd, data);
+> +		out_8(&hw->regs->cr, SPI_PPC4XX_CR_STR);
+> +	} else {
+> +		complete(&hw->done);
+> +	}
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +		...
+> +
+
+> +static int __init spi_ppc4xx_of_probe(struct of_device *op,
+> +				      const struct of_device_id *match)
+> +{
+> +	struct ppc4xx_spi *hw;
+> +	struct spi_master *master;
+> +	struct spi_bitbang *bbp;
+> +	struct resource resource;
+> +	struct device_node *np = op->node;
+> +	struct device *dev = &op->dev;
+> +	struct device_node *opbnp;
+> +	int ret;
+> +	const unsigned int *clk;
+> +
+> +	master = spi_alloc_master(dev, sizeof *hw);
+> +	if (master == NULL)
+> +		return -ENOMEM;
+> +	dev_set_drvdata(dev, master);
+> +	hw = spi_master_get_devdata(master);
+> +	memset(hw, 0, sizeof(struct ppc4xx_spi));
+
+That memset is not required, it comes to you pre-zeroed.
+
+> +
+> +	hw->master = spi_master_get(master);
+> +	hw->dev = dev;
+> +
+> +	init_completion(&hw->done);
+> +
+> +	hw->num_gpios = of_gpio_count(np);
+
+Worth a comment what's going on there.  I'm assuming this
+of_gpio_count() thing returns a count of GPIOs somehow
+associated with this specific device tree node, rather than
+say all GPIOs known to the device tree...
+
+> +	if (hw->num_gpios) {
+> +		int i;
+> +
+> +		hw->gpios = kzalloc(sizeof(int) * hw->num_gpios,
+> +				    GFP_KERNEL);
+> +		if (!hw->gpios) {
+> +			ret = -ENOMEM;
+> +			goto free_master;
+> +		}
+> +
+> +		for (i = 0; i < hw->num_gpios; i++) {
+> +			int gpio = of_get_gpio(np, i);
+> +			if (gpio < 0) {
+> +				dev_err(dev, "Invalid gpio spec %d\n", i);
+> +				ret = gpio;
+> +				goto free_gpios;
+> +			}
+> +
+> +			ret = gpio_request(gpio, np->name);
+> +			if (ret < 0) {
+> +				dev_err(dev, "gpio %d already in use\n", i);
+> +				ret = gpio;
+> +				goto free_gpios;
+> +			}
+> +
+> +			gpio_direction_output(gpio, 0);
+> +			hw->gpios[i] = gpio;
+> +		}
+> +	}
+
+Else ... error, if there are no chipselects?
+
+I've got a patch pending to add a "no chipselect" spi->mode flag.
+If you expect to support that, please let me know.
+
+
+> +
+> +	/* Setup the state for the bitbang driver */
+> +	bbp = &hw->bitbang;
+> +	bbp->master = hw->master;
+> +	bbp->setup_transfer = spi_ppc4xx_setupxfer;
+> +	bbp->chipselect = spi_ppc4xx_chipsel;
+> +	bbp->txrx_bufs = spi_ppc4xx_txrx;
+> +	bbp->use_dma = 0;
+> +	bbp->master->setup = spi_ppc4xx_setup;
+> +	bbp->master->cleanup = spi_ppc4xx_cleanup;
+> +	/* only one SPI controller */
+> +	bbp->master->bus_num = 0;
+
+Bad assumption.  There could be GPIO-based adapters,
+of course.  And aren't these the cores which can be
+found on higher end Xilinx FPGAs?  And, accordingly,
+integrated with any number of additional controllers?
+
+If so, the restriction is just that this controller
+be bus #0.  If not ... the Kconfig should say more
+about *which* PPC4xx chips have this controller.
+(I suspect it's the latter.)
+
+
+> +	if (bbp->master->num_chipselect == 0) {
+
+You didn't set it, so of course it's still zeroed.
+
+
+> +		/* this many pins in al GPIO controllers */
+> +		bbp->master->num_chipselect = hw->num_gpios;
+
+So num_chipselect is alays num_gpios, and there's no point
+to having num_gpios since you could always use num_chipselect.
+
+
+> +	}
+> +
+> +	...
+> +}

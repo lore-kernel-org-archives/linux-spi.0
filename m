@@ -1,12 +1,11 @@
-From: "Susannah Bolden" <lily-zimPVJFJEBseIZ0/mPfg9Q@public.gmane.org>
-Subject: [SPAM] Take the step to your happy xxxlife
-	forward!
-Date: Fri, 24 Apr 2009 04:36:13 +0900
-Message-ID: <000301c9c44a$c307c4a0$c477bcdb@HVAC1jxhkg>
+From: "Annabel Parker" <master-1XJXrcXe1mCB+jHODAdFcQ@public.gmane.org>
+Subject: Read other people's SMS online
+Date: Thu, 23 Apr 2009 22:47:16 +0100
+Message-ID: <20090423224716.3070104@univarusa.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,7 +17,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Get life full of night adventures http://dndrfb.caemriviej.com/
+Are you interested in reading other people's sms? http://eb.freesmsrussia.com/
 
 
 ------------------------------------------------------------------------------

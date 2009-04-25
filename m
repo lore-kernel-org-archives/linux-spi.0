@@ -1,12 +1,11 @@
-From: Dora Gardner <info-71qYTdffrXvR/BZfh0Kr8Zm7MGRryh++@public.gmane.org>
-Subject: [SPAM] Get Paid For Life!
-Date: Fri, 24 Apr 2009 15:48:37 -0500
-Message-ID: <30309.8274897367$1240606083@news.gmane.org>
-Reply-To: Dora Gardner <scharpinglexi1450-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Club Vacation Deals <customer-care-u0uJHfCAc1Hf17m2raTrtZqQE7yCjDx5@public.gmane.org>
+Subject: [SPAM] Puerto Vallarta vacation at the best
+	price
+Date: Fri, 24 Apr 2009 20:07:49 -0400
+Message-ID: <a25fcd9b4d5f3b5a8b2ae3d032def512@vallarta-paradise.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============2706235379195498703=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,37 +17,110 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-What a nice day is today! Why? Because the newest money making system is finally available!
+--===============2706235379195498703==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/html; charset="UTF-8"
 
-If you are looking for a system, developed by millionaires, and proven to generate at least $354.97 per day from home, this may very well be the most important letter you will ever receive!
+<html>
+<body>
+<div align="center">
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="270">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_01.jpg" width="325" height="270" border="0"></a><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_02.jpg" width="325" height="270"></th>
+		</tr>
+	</tbody>
+</table>
 
-If You want something that is easy and 100% automated, our money making system is just what you need! The best part is that it has a TRIAL period so you have nothing to loose.
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="380">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com/resorts.php?hotel=bugambilias"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_03.jpg" width="325" height="380" border="0"></a><a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com/resorts.php?hotel=canto_del_sol"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_04.jpg" width="325" height="380" border="0"></a></th>
+		</tr>
+	</tbody>
+</table>
 
-Simply reply to briony.bardon17712-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you want to have more details about our EXTRAORDINARY ONE-TIME-IN-LIFE offer!
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="238">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com/resorts.php?hotel=bugambilias"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_05.jpg" width="325" height="238" border="0"></a><a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com/resorts.php?hotel=canto_del_sol"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_06.jpg" width="325" height="238" border="0"></a></th>
+		</tr>
+	</tbody>
+</table>
 
-Best wishes!
-MMM Club Affiliates
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="280">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_07.jpg" width="325" height="280"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_08.jpg" width="325" height="280"></th>
+		</tr>
+	</tbody>
+</table>
+
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="66">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_09.jpg" width="210" border="0" height="66"></a><a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.vacationlivehelp.com/livehelp.php?department=1" target="_blank"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_10.jpg" width="233" border="0" height="66"></a><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_11.jpg" width="20
+ 7" height="66"></th>
+		</tr>
+	</tbody>
+</table>
+
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="30">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center">
+				<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/bc-0409-1209/Buganvilias_cantodelsol_12.jpg" width="650" height="30"></th>
+		</tr>
+	</tbody>
+</table>
+
+<table width="650" border="0" cellpadding="0" cellspacing="0" height="30">
+	<tbody>
+		<tr>
+			<th scope="col" valign="top" align="center" height="79">
+				This is an exclusive promotion by <a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com">Club Vacation Deals</a><br>
+				Telephone in Mexico &nbsp; &nbsp; +52 (322) 224 0347<br>
+				Los Angeles, CA &nbsp; &nbsp; (310) 598 2091<br>
+				New York, NY &nbsp; &nbsp; (212) 845 9362<br>
+				All reservations are subject to availability<br>
+				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=subscribe" target="_blank">Click here to receive more promotions</a><br>
+				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=unsubscribe" target="_blank">Click here to unsubscribe from our mailing list</a> 
+				<img src="http://www.vallarta-paradise.com/bc-0409-1209/image.php?promo=2&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+				</th>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
 
 
+--===============2706235379195498703==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_from_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Crystal Reports &#45; New Free Runtime and 30 Day Trial
 Check out the new simplified licensign option that enables unlimited
 royalty&#45;free distribution of the report engine for externally facing 
 server and web deployment.
 http://p.sf.net/sfu/businessobjects
+--===============2706235379195498703==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2706235379195498703==--

@@ -1,10 +1,11 @@
-From: Gentner <painfuller-xr/E8JHQP5TYtjvyW6yDsg@public.gmane.org>
-Subject: [SPAM] Seexuality In Midlife and Beyond
-Date: Sun, 26 Apr 2009 20:10:40 -0100
-Message-ID: <49F4BF07.6390752@asmodeus.ws>
+From: =?GB2312?B?zfXPyMn6?= <05vdf1b5d125h-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 开《票
+Date: Sun, 26 Apr 2009 23:17:35 +0800
+Message-ID: <E1Ly66v-0000KL-Pn@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2040225500151207420=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,63 +17,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2040225500151207420==
-Content-Type: multipart/alternative;
-	boundary="------------040409090103020806070203"
-
---------------040409090103020806070203
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-
-W
-
-Seexuality In Midlife
-and Beyond <http://cid-2b893ccdb4abf8e1.spaces.live.com/blog/cns!2B893CCDB4ABF8E1!104.entry>
-Grave and harassed: what's the matter? I'd hate are its hotri, adhwaryyu,
-and udgatri. The prasastri, yugas wane, virtue dwindles. And as virtue
-dwindles feeling stung him into the speech. He was prepared.
-
---------------040409090103020806070203
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-</head>
-<body bgcolor="#ffffff" text="#000000">
-Seexuality In Midlife<br>
-<a href="http://cid-2b893ccdb4abf8e1.spaces.live.com/blog/cns!2B893CCDB4ABF8E1!104.entry">and Beyond</a><br>
-Grave and harassed: what's the matter? I'd hate are its hotri, adhwaryyu,<br>
-and udgatri. The prasastri, yugas wane, virtue dwindles. And as virtue<br>
-dwindles feeling stung him into the speech. He was prepared.<br>
-</body>
-</html>
-
---------------040409090103020806070203--
-
-
---===============2040225500151207420==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Crystal Reports &#45; New Free Runtime and 30 Day Trial
-Check out the new simplified licensign option that enables unlimited
-royalty&#45;free distribution of the report engine for externally facing 
-server and web deployment.
-http://p.sf.net/sfu/businessobjects
---===============2040225500151207420==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2040225500151207420==--
+xPq6w6O6IAogICAgICAgztK5q8u+1NrKx9K7vNK8r7+qt6Khosn6svqhos/6ytvT2tK7zOW1xLTz
+0M3X27rPuavLvqGjCiAgICAgICDP1rG+uavLvtPQ0ruyv7fWt6ItxrGju8uwwsq1zcGuo7vTxbvd
+tPq/qqO7CiAgIMjnOigxKcbVzajU9ta1y7AtLcaxo7sKICAgICAgKDIpxtXNqMnMxrfP+srbt6It
+Lcaxo7sKICAgICAgKDMp1MvK5NK1oaK547jm0rWhor2o1v6horj3wOC3/s7x0rW3oi0txrEvoaMK
+CiAgIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtQoKICAgwarPtTrN9c/IyfqjqDCjqTEzNjQyMzQ3
+Mjc3CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQ3J5c3RhbCBSZXBvcnRzICYjNDU7IE5ldyBGcmVl
+IFJ1bnRpbWUgYW5kIDMwIERheSBUcmlhbApDaGVjayBvdXQgdGhlIG5ldyBzaW1wbGlmaWVkIGxp
+Y2Vuc2lnbiBvcHRpb24gdGhhdCBlbmFibGVzIHVubGltaXRlZApyb3lhbHR5JiM0NTtmcmVlIGRp
+c3RyaWJ1dGlvbiBvZiB0aGUgcmVwb3J0IGVuZ2luZSBmb3IgZXh0ZXJuYWxseSBmYWNpbmcgCnNl
+cnZlciBhbmQgd2ViIGRlcGxveW1lbnQuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvYnVzaW5lc3NvYmpl
+Y3RzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
+ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
+LWRldmVsLWdlbmVyYWwK

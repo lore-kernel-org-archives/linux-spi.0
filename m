@@ -1,140 +1,82 @@
-From: "Solution Devis par MailandGo" <RET-XTC-DS5R-RC7VG-DD-LOGSA@R.Ems7.net>
-Subject: Votre comparateur : Solution-Devis
-Date: Tue, 28 Apr 2009 14:43:35 +0200
-Message-ID: <fd1187c445804cf0b84f9b3371741b23@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-RC7VG-DD-LOGSA@R.Ems7.net
+From: Florian Fainelli <florian@openwrt.org>
+Subject: Re: [spi-devel-general] [PATCH v2] spi: Add support for the OpenCores SPI controller.
+Date: Tue, 28 Apr 2009 15:41:20 +0200
+Message-ID: <200904281541.21238.florian@openwrt.org>
+References: <200904041227.54687.david-b@pacbell.net> <200904280458.23018.david-b@pacbell.net> <20090428122011.GB6325@avionic-design.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3323801539923042226=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: David Brownell <david-b@pacbell.net>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Thierry Reding <thierry.reding@avionic-design.de>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756860AbZD1Nlg@vger.kernel.org>
+In-Reply-To: <20090428122011.GB6325@avionic-design.de>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3323801539923042226==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Le Tuesday 28 April 2009 14:20:11 Thierry Reding, vous avez =C3=A9crit=C2=
+=A0:
+> * David Brownell wrote:
+> > On Tuesday 28 April 2009, Thierry Reding wrote:
+> > > This second version is pretty much a rewrite.
+> >
+> > That happens sometimes...
+> >
+> > > Some notes about the most
+> > > important changes:
+> > >
+> > > =C2=A0 * uses per-chip states to allow more slaves to use the con=
+troller
+> > > =C2=A0 =C2=A0 concurrently
+> > > =C2=A0 * rejects invalid device configurations during setup
+> > > =C2=A0 * rejects invalid per-message and per-transfer options
+> > > =C2=A0 * queues messages so that they can be processed one after =
+another
+> > > =C2=A0 =C2=A0 =C2=A0 - this also provides for a way to handle pow=
+er-management
+> > > =C2=A0 * omits the spioc.h (and with it the platform data structu=
+re):
+> > > =C2=A0 =C2=A0 =C2=A0 - uses the platform_device.id for the bus nu=
+mber
+> > > =C2=A0 =C2=A0 =C2=A0 - always uses 8 chipselects because that's t=
+he maximum that the
+> > > core supports
+> >
+> > All that sounds good.
+> >
+> > > I couldn't really find a way to implement per-transfer overrides =
+for
+> > > the word size because the controller simply has no concept of wor=
+d
+> > > sizes. Is it in such cases still necessary to hardwire the word s=
+ize to
+> > > 8 bits?
+> >
+> > Is this the http://www.opencores.org/?do=3Dproject&who=3Dspi core?
+>
+> Yes, it is.
+>
+> > Its summary says "Variable length of transfer word up to 32 bits";
+> > does that mean "configurable when core is synthesized" instead of
+> > truly "variable"?
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-RC7VG-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+This is indeed configured at synthesis time.
 
-
-
-
-
-
-
-<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
-" width=3D"600">
-    <tbody>
-        <tr>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/header_multi_01=2Egif" alt=3D"" border=3D"0"></a></=
-td>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/header_multi_02=2Egif" alt=3D"" border=3D"0"></a></=
-td>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/header_multi_03=2Egif" alt=3D"" border=3D"0"></a></=
-td>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/header_multi_04=2Egif" alt=3D"" border=3D"0"></a></=
-td>
-        </tr>
-        <tr>
-            <td colspan=3D"4"><a href=3D"http://nodes=2Ereactivpub=2Efr=
-/clic-493-12099-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9yb=
-XVsYWlyZXNfbmV3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJv=
-dj1lbWFpbGluZ19yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE=
-0NTY3&trackaff=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2E=
-net/solution-devis/kit_mailing/v8/middle=2Egif" alt=3D"" border=3D"0"><=
-/a></td>
-        </tr>
-    </tbody>
-</table>
-<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
-" width=3D"600">
-    <tbody>
-        <tr>
-            <td colspan=3D"3"><a href=3D"http://nodes=2Ereactivpub=2Efr=
-/clic-493-12099-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9yb=
-XVsYWlyZXNfbmV3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJv=
-dj1lbWFpbGluZ19yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE=
-0NTY3&trackaff=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2E=
-net/solution-devis/kit_mailing/v8/logo=2Egif" alt=3D"" border=3D"0"></a=
-></td>
-            <td><a href=3D"http://nodes=2Ereactivpub=2Efr/clic-493-1209=
-9-12068-url-aHR0cDovL3d3dy5zb2x1dGlvbi1kZXZpcy5jb20vZm9ybXVsYWlyZXNfbmV=
-3L3JhY2hhdC1kZS1jcmVkaXQvaW5kZXgucGhwP2NvZGU9bXBzNDYmcHJvdj1lbWFpbGluZ1=
-9yZWFjdGl2cHViJmlkX2NyZWE9VjgmcHJvdkVzaz1CQ0xOUVJTVVZXWDE0NTY3&trackaff=
-=3D&group=3D"><img src=3D"http://static=2Ead-mastering=2Enet/solution-d=
-evis/kit_mailing/v8/bord_droit=2Egif" alt=3D"" border=3D"0"></a></td>
-        </tr>
-    </tbody>
-</table>
-<p><br>
-<!-- pixel RAC--> <img src=3D"http://eskdom015=2Enetmastering2=2Enet/c/=
-a8FJS4PK87GF8FD1S" alt=3D"" border=3D"0"> <!-- pixel epargne--> <img sr=
-c=3D"http://eskdom019=2Enetmastering2=2Enet/c/aUDWUBH2G03QEYDTU" alt=3D=
-"" border=3D"0"> <!-- pixel sante--> <img src=3D"http://eskdom011=2Enet=
-mastering2=2Enet/c/aU6JBUKWN71ZAFQYC" alt=3D"" border=3D"0"> <!-- pixel=
- defisc--> <img src=3D"http://eskdom018=2Enetmastering2=2Enet/c/aG052Y5=
-MC9Y3UMQ3W" alt=3D"" border=3D"0"></p><img src=3D"http://nodes=2Ereacti=
-vpub=2Efr/mailing-493-12099-12068&group=3D" border=3D"0" height=3D"1" w=
-idth=3D"1"/><div align=3D"center"><font face=3D"arial" size=3D"1"><A hr=
-ef=3D"http://ems6=2Enet/u/?E=3DRET-XTC-DS5R-RC7VG-DD-LOGSA&EMail=3Dspi-=
-devel-general@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici<=
-/A> pour vous d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Ene=
-t )<BR></font></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RC7VG=
--DD-LOGSA-2" width=3D"1" height=3D"1">
-
-
-
---===============3323801539923042226==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Register Now & Save for Velocity, the Web Performance & Operations 
-Conference from O'Reilly Media. Velocity features a full day of 
-expert-led, hands-on workshops and two days of sessions from industry 
-leaders in dedicated Performance & Operations tracks. Use code vel09scf 
-and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
---===============3323801539923042226==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3323801539923042226==--
+>
+> That summary seems out-dated. The variable length of transfer word is
+> actually the maximum length of a single transfer and is 128 bits in t=
+he
+> latest version. So you get 4 registers, each 32 bits wide into which =
+you
+> program the data you want to transfer. Then you set the number of bit=
+s of
+> that transfer so the core knows which registers and what bits of thos=
+e
+> registers to shift out serially.
+--=20
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

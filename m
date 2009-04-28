@@ -1,78 +1,334 @@
-From: Thierry Reding <thierry.reding@avionic-design.de>
-Subject: Re: [spi-devel-general] [PATCH v2] spi: Add support for the
-	OpenCores SPI controller.
-Date: Tue, 28 Apr 2009 14:20:11 +0200
-Message-ID: <20090428122011.GB6325@avionic-design.de>
-References: <200904041227.54687.david-b@pacbell.net> <1240916464-4187-1-git-send-email-thierry.reding@avionic-design.de> <20090428111532.GA14422@avionic-design.de> <200904280458.23018.david-b@pacbell.net>
+From: Adolf Tarasovich <adolftarasovich-YuisnD8UvSgtpuhI9UR2gA@public.gmane.org>
+Subject: [SPAM] Категории и основное целевое назначение.
+Date: Tue, 28 Apr 2009 16:28:26 +0400
+Message-ID: <0002049840.20090428162826@eto-reclama.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1759230AbZD1MUb@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <200904280458.23018.david-b@pacbell.net>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============7517630824088936491=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-* David Brownell wrote:
-> On Tuesday 28 April 2009, Thierry Reding wrote:
-> > This second version is pretty much a rewrite.
->=20
-> That happens sometimes...
->=20
->=20
-> > Some notes about the most=20
-> > important changes:
-> >=20
-> > =C2=A0 * uses per-chip states to allow more slaves to use the contr=
-oller
-> > =C2=A0 =C2=A0 concurrently
-> > =C2=A0 * rejects invalid device configurations during setup
-> > =C2=A0 * rejects invalid per-message and per-transfer options
-> > =C2=A0 * queues messages so that they can be processed one after an=
-other
-> > =C2=A0 =C2=A0 =C2=A0 - this also provides for a way to handle power=
--management
-> > =C2=A0 * omits the spioc.h (and with it the platform data structure=
-):
-> > =C2=A0 =C2=A0 =C2=A0 - uses the platform_device.id for the bus numb=
-er
-> > =C2=A0 =C2=A0 =C2=A0 - always uses 8 chipselects because that's the=
- maximum that the core
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 supports
->=20
-> All that sounds good.
->=20
-> =20
-> > I couldn't really find a way to implement per-transfer overrides fo=
-r the
-> > word size because the controller simply has no concept of word size=
-s. Is it
-> > in such cases still necessary to hardwire the word size to 8 bits?
->=20
-> Is this the http://www.opencores.org/?do=3Dproject&who=3Dspi core?
+--===============7517630824088936491==
+Content-Type: multipart/related;
+	boundary="----=_NextPart_000_0022_62CA3185.B015A012"
 
-Yes, it is.
+------=_NextPart_000_0022_62CA3185.B015A012
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
-> Its summary says "Variable length of transfer word up to 32 bits";
-> does that mean "configurable when core is synthesized" instead of
-> truly "variable"?
+PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
+bmFsLy9FTiI+DQoNCjxodG1sPjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1U
+eXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjxzdHls
+ZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQouc3R5bGU3IHtjb2xvcjogIzNkNTczZH0NCi5z
+dHlsZTggew0KCWZvbnQtZmFtaWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5z
+LXNlcmlmOw0KCWZvbnQtc2l6ZTogMTBweDsNCn0NCi5zdHlsZTkge2ZvbnQtZmFtaWx5OiBW
+ZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmfQ0KLnN0eWxlMTMgew0KCWZv
+bnQtc2l6ZTogMTRweDsNCgljb2xvcjogIzAwNzczMzsNCglmb250LXdlaWdodDogYm9sZDsN
+Cn0NCi5zdHlsZTE5IHsNCglmb250LWZhbWlseTogIlRpbWVzIE5ldyBSb21hbiIsIFRpbWVz
+LCBzZXJpZjsNCgljb2xvcjogIzAwMDBGRjsNCn0NCi0tPg0KPC9zdHlsZT4NCjwvaGVhZD4N
+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQpwe2ZvbnQtZmFtaWx5OlRhaG9tYSwgQXJpYWw7
+IGZvbnQtc2l6ZTogMTJweDsgcGFkZGluZzoycHg7IH0NCmxpe2ZvbnQtZmFtaWx5OlRhaG9t
+YSwgQXJpYWw7IGZvbnQtc2l6ZTogMTJweDsgfQ0KVEQge1BBRERJTkc6MTBweDt9DQouc3R5
+bGUyIHtjb2xvcjogIzAxOTMzZX0NCi5zdHlsZTMge2ZvbnQtc2l6ZTogMTZweDsgY29sb3I6
+ICMwMDk5MDA7fQ0KLnN0eWxlMTAgew0KCWZvbnQtc2l6ZTogMTRweDsNCgljb2xvcjogIzY2
+NjY2NjsNCn0NCi5zdHlsZTEyIHtmb250LXNpemU6IDEzcHh9DQouc3R5bGUxNiB7Y29sb3I6
+ICMwMDAwRkZ9DQouc3R5bGUxNyB7DQoJY29sb3I6ICMwMDAwRkY7DQoJZm9udC1zdHlsZTog
+aXRhbGljOw0KCWZvbnQtZmFtaWx5OiAiVGltZXMgTmV3IFJvbWFuIiwgVGltZXMsIHNlcmlm
+Ow0KfQ0KLnN0eWxlMTggew0KCWZvbnQtc2l6ZTogMXB4Ow0KCWNvbG9yOiAjRjFGMUYxOw0K
+fQ0KPC9zdHlsZT4NCjxib2R5IGJnY29sb3I9IiNGMUYxRjEiIGxlZnRtYXJnaW49IjAiIG1h
+cmdpbmhlaWdodD0iMCIgbWFyZ2lud2lkdGg9IjAiIHRvcG1hcmdpbj0iMCI+DQo8dGFibGUg
+d2lkdGg9IjEwMCUiIGJvcmRlcj0iMCIgY2VsbHBhZGRpbmc9IjAiPg0KPHRyIGJvcmRlcmNv
+bG9yPSIjREREREREIiBiZ2NvbG9yPSIjRjFGMUYxIj4gDQogICAgPHRkIGNvbHNwYW49IjIi
+PiANCiAgICAgIDxwIGNsYXNzPSJzdHlsZTcgc3R5bGU4Ij7E7uHw++kg4uX35fAhIP3y7iBO
+aWtpdGE8L3A+DQogIDxwPjxzcGFuIGNsYXNzPSJzdHlsZTMiPjxzcGFuIGNsYXNzPSJzdHls
+ZTIiPjxpbWcgc3JjPSJjaWQ6dHVybmFib3V0cy5naWYiIHdpZHRoPSIxMCIgaGVpZ2h0PSIx
+MCIgLz4mbmJzcDvP7vHr5eTt6OUg6Ofs5e3l7ej/IOIg5+Dq7u3u5ODy5ev88fLi5SDuIOfl
+7OvlLCDx8vDu6PLl6/zx8uLlIOgg7uHu8O7y5SDu4frl6vLu4iDt5eTi6Obo7O7x8ug8L3Nw
+YW4+Ljwvc3Bhbj4gPGltZyBzcmM9ImNpZDp0dXJuYWJvdXRzLmdpZiIgd2lkdGg9IjEwIiBo
+ZWlnaHQ9IjEwIiAvPjxicj4NCiAgPC9wPg0KICA8cCBjbGFzcz0ic3R5bGU5Ij48c3BhbiBj
+bGFzcz0ic3R5bGUxMCI+MjAg7OD/Ljwvc3Bhbj48YnI+DQrjLiDK6OXiLCDh8+v84i4g2OXi
+9+Xt6u4sIDQsIO7y5ev8IKtD4O3q8i3P5fLl8OHz8OO7PC9wPg0KICA8cCBjbGFzcz0ic3R5
+bGU5Ij48aW1nIHNyYz0iY2lkOnByZWNpcGljZXMuZ2lmIiB3aWR0aD0iMjUwIiBoZWlnaHQ9
+IjIwIiAvPjwvcD48L3RkPg0KPC90cj4NCiAgPHRyIGJnY29sb3I9IjAwOTIzZCI+IA0KICAg
+IDx0ZCBoZWlnaHQ9IjEwIiBjb2xzcGFuPSIyIj4gPC90ZD4NCjwvdHI+DQo8dHI+DQogICAg
+PHRkIHdpZHRoPSIzNzciIHZhbGlnbj0idG9wIiBiZ2NvbG9yPSIjMDA3NzMzIj4gDQogICAg
+ICA8cD48Zm9udCBjb2xvcj0iI0ZGRkZGRiI+PHNwYW4gY2xhc3M9InN0eWxlOSBzdHlsZTEy
+Ij48Yj7R8m/o7O7x8vwg8/fgY/Lo/yDu5O1v4+4g8/dhY/Lt6OphPC9iPjxicj4NCiAgICAg
+ICAgPGI+PGZvbnQgY29sb3I9InllbGxvdyI+OTUwLjAwIOPw7S4gPC9mb250PjwvYj4g5+Ag
+7uTt7uPuIPP3YWPy7ehrYS48YnI+DQrE6/8g4vLu8O7j7iDoIPLw5fL85ePuIPP34PHy7ejq
+4CDx6ujk6uAglyA1JSDoIDclIPHu7vLi5fLx8uLl7e3uLjxicj4NCjwvc3Bhbj48L2ZvbnQ+
+ICAgICAgDQogICAgICA8cD48Zm9udCBjb2xvcj0iI0ZGRkZGRiI+PHNwYW4gY2xhc3M9InN0
+eWxlOSBzdHlsZTEyIj5CIGPyb+jsb2Py/CDi6uv+9+Xt+zog6O307vDs4Pbo7u3t7i3q7u3x
+8+v88uD26O7t7e7lIO7h8evz5uji4O3o5Swg/erx6uv+5+ji7fvpIA0KICAgICAgICDx4e7w
+7ejqIOzg8uXw6ODr7uIsIOHr7urt7vIsIPDz9+rgLCDq7vTlLeHw5enqLCDu4eXkIOIg8OXx
+8u7w4O3lIDwvc3Bhbj48L2ZvbnQ+ICAgICAgDQogICAgICA8cD48Zm9udCBjb2xvcj0iI0ZG
+RkZGRiI+0OXj6+Ds5e3yOiA5LjMwLTE3LjMwLiDP5fDl8PviIDEzLjMwLTE0LjMwLg0K0OXj
+6PHy8OD26P8g8SA5LjAwIOIg9e7r6+UuPC9mb250PjwvdGQ+DQogICAgPHRkIHdpZHRoPSI4
+NDkiIHJvd3NwYW49IjIiIGJnY29sb3I9IiNGMUYxRjEiPjxwIGNsYXNzPSJzdHlsZTkgc3R5
+bGUxMiI+PGltZyBzcmM9ImNpZDp0dXJuYWJvdXRzLmdpZiIgd2lkdGg9IjEwIiBoZWlnaHQ9
+IjEwIiAvPiZuYnNwOzxzcGFuIGNsYXNzPSJzdHlsZTEzIj7PcG/jcGHs7OA8L3NwYW4+PC9w
+Pg0KICAgICAgPHAgY2xhc3M9InN0eWxlOSBzdHlsZTEyIj48c3Ryb25nPjEuPC9zdHJvbmc+
+IMrg8OTo7eDr/O375SDo5+zl7eXt6P8g6iDn5ezl6/zt7uzzIOfg6u7t7uTg8uXr/PHy4vMg
+4iDx4v/n6CDx7iDi8fLz7+vl7ejl7CDiIPHo6/MgIMfg6u7t4CDT6vDg6O37IKvOIOLt5fHl
+7ejoIOjn7OXt5e3o6SDiIO3l6u7y7vD75SDn4Oru7e7k4PLl6/zt++Ug4Ory+yDT6vDg6O37
+IO7y7e7x6PLl6/zt7iDx7uTl6fHy4uj/IPHy8O7o8uXr/PHy4vO7IO7yIDE2LjA5LjIwMDjw
+LiC5NTA5LVZJPGJyPg0KICAgICAgICAtIM/u8P/k7uog7/Do7uHw5fLl7ej/IO/w4OLgIO3g
+IOfl7OXr/O375SDz9+Dx8uroIOPw4Obk4O3g7Ogg6CD+8Ojk6Pfl8ero7OggIOvo9uDs6C4g
+yOzz+eXx8uLl7e375SDv8ODi4CDt4CD38+bo5SDn5ezl6/zt++Ug8/fg8fLq6C4g0/Hy8ODt
+5e3o5SDv8O7h6+XsIOrg8eD++ej18f8g8OXj6PHy8OD26Ogg7/Dg4u7z8fLg7eDi6+ji4P75
+6PUg5O7q8+zl7fLu4iDt4CDn5ezr/i48YnI+DQogICAgICAgIC0gz+7w/+Tu6iDu9O7w7Ovl
+7ej/IO/w4OLgIO3gIOfl7OXr/O375SDz9+Dx8uroLjxicj4NCiAgICAgICAgLSDP7vD/5O7q
+IOL74e7w4CDn5ezl6/zt+/Ug8/fg8fLq7uIg5Ov/IPDg5+zl+eXt6P8g7uH65ery7uIg6Ofs
+5e3l7SE8YnI+DQogICAgICAgIC0gz/Du9uXk8/DgIO/w6OLg8ujn4Pbo6CDn5ezl6/zt+/Ug
+8/fg8fLq7uIg6CDv5fDl5OD36CDo9SDiIO/u8fLu/+3t7uUg7+7r/Ofu4uDt6OUuPGJyPg0K
+ICAgICAgICDN4CDu8e3u4uDt6Ogg6uDq7ukg5O7q8+zl7fLg9ujoIOjn4+7y7uLr/+Xy8f8g
+4+7x8+Tg8PHy4uXt7fvpIODq8iDt4CDv8ODi7iDx7uHx8uLl7e3u8fLoIO3gIOfl7OXr/O37
+6SDz9+Dx8u7qLCDl8evoIPDl+OXt6OUgIO4g4eXn7u/r4PLt7ukg7+Xw5eTg9+UgIOPw4Obk
+4O3g7CAg0+rw4Ojt+yAg4iAg9+Dx8u3z/iAg8e7h8fLi5e3t7vHy/CAg5+Xs5ev87fv1ICDz
+9+Dx8uru4iwgICDv8Ojt//L75SDu8OPg7eDs6CAg7OXx8u3u4+4gIPHg7O7z7/Dg4uvl7ej/
+IOIg8e7u8uLl8vHy4ujoIPEgxOXq8OXy7uwgyuDh6O3l8uAgzOjt6PHy8O7iINPq8ODo7fsg
+IO7yICAyNiAg5OXq4OHw/yAgMTk5MiAg4+7k4CAgJnF1b3Q7ziAg7/Do4uDy6Ofg9ujoIOfl
+7OXr/O379SDz9+Dx8uru4iZxdW90Oy48YnI+DQogICAgICAgIC0gzuH55fHy4uXt7e7lIO7h
+8fPm5OXt6OUg6CDu4fnl8fLi5e3t++Ug8evz+ODt6P8uIM/w6O3/8iDn4Oru7e7k4PLl6/zt
+++kg7+7w/+Tu6iEgzuH56Okg4Ovj7vDo8uwg6PUg7/Du4uXk5e3o/y4gze7i++Ug7/Du4evl
+7Psg5Ov/IMfg6uDn9+jq4CAox+Dx8vDu6fno6uApLiDQ5efz6/zy4PL7IO7h+eXx8uLl7e37
+9SDu4fHz5uTl7ejpIOgg8evz+ODt6Ok6IOrg6iDo9SDz9+Xx8vwg7eAg7/Dg6vLo6uU/PGJy
+Pg0KICAgICAgICAtIDE0IODv8OXr/yAyMDA54y4g4vHy8+/o6+gg4iDx6OvzIO3u8Oz7LCDq
+7vLu8PvlIPDl4u7r/vbo7u3t7iDs5e3//vIg8ODn8OX46PLl6/zt8/4g7/Du9uXk8/DzIOIg
+8fLw7ujy5ev88fLi5SCWIPfy7iDv8O7o8fXu5OjyIO3gIO/w4Ory6OrlPzxicj4NCiAgICAg
+ICAgPGJyPg0KICAgICAgICA8c3Ryb25nPjIuPC9zdHJvbmc+IMfl7OXr/O375SDv8ODi7u7y
+7e745e3o/yDiIPHu7vLi5fLx8uLo6CDxIO3u4vvsIOfg6u7t7uTg8uXr/PHy4u7sOjxicj4N
+CiAgICAgICAgLSDO4f/n4PLl6/zt++kg4vvh7vAg5+Xs5ev87fv1IPP34PHy6u7iIOTr/yDw
+4Ofs5fnl7ej/IO7h+uXq8u7iOzxicj4NCiAgICAgICAgLSDN7uLu5SDiIPPx8uDt7uLr5e3o
+6CDoIOjn7OXt5e3o6CD25evl4u7j7iDt4Oft4Pfl7ej/IOfl7OXr/O379SDz9+Dx8uru4js8
+YnI+DQogICAgICAgIC0gx+Dr7uMg5+Xs5ev87fv1IPP34PHy6u7iIOgg7/Dg4iDt4CDt6PUu
+IDxicj4NCiAgICAgICAgLSDP7vD/5O7qIPDg5/Dg4e7y6ugg8uX17ej35fHq7ukg5O7q8+zl
+7fLg9ujoIO3gIOfl7Ov+IO/uLe3u4u7s8zs8YnI+DQogICAgICAgIC0gzu/w5eTl6+Xt6OUg
+7eXo8e/u6/zn7uLg7ej/IOfl7OXr/O3u4+4g8/fg8fLq4Cwg7/Dl5O3g5+3g9+Xt7e7j7iDv
+7uQg5+Dx8vDu6erzOzxicj4NCiAgICAgICAgLSDP7uvt7uzu9+j/IOgg7+7w/+Tu6iDo5/r/
+8uj/ICji++rz7+ApIOfl7OXr/CDk6/8g7uH55fHy4uXt7fv1IO3z5uQ7PGJyPg0KICAgICAg
+ICAtIM3u4vvlIO/u6+3u7O736P8g7OXx8u379SDx7uLl8u7iIOgg7uHr4+7x4OTs6O3o8fLw
+4Pbo6SDv7iDw4PHv7vD/5uXt6P4g5+Xs6+XpOzxicj4NCiAgICAgICAgLSDP8O7k4ObgIOfl
+7OvoIJYg8u7r/OruIO/w6CDt4Ovo9+joIODi4O3x4Ds8YnI+DQogICAgICAgIC0gz/Do7OXt
+5e3o5SDq7u3q8/Dx7e7j7iDu8e3u4uDt6P8g5Ov/IO/w7uTg5ugg7/Dg4uAg7eAg4PDl7eTz
+LCDx8+/l8PTo9uj/IOgg/ez06PLl4ufo8eA7PGJyPg0KICAgICAgICAtIM/l8OXv8O7k4Obg
+IO/w4OLgIODw5e3k+yAo8fPv5fD06Pbo/ywg/ez06PLl4ufo8eApIJYg4u7n7O7m7e4g6+gg
+/fLuPzxicj4NCiAgICAgICAgLSDO8e3u4uDt6P8g5Ov/IO/w5eTu8fLg4uvl7ej/IOfl7Ovo
+IOHl5yDg8+r26O7t4Ds8YnI+DQogICAgICAgIC0g7e7i++kg7+7w/+Tu6iDv7uvz9+Xt6P8g
+6CDw5ePo8fLw4Pbo6CDv8ODiIO3gIOfl7Ov+IOIg8e7u8uLl8vHy4ujoIPEg5+Dq7u3u7Cwg
+6u7y7vD76SDi8fLz7+Dl8iDiIPHo6/MgMDIg7OD/IDIwMDkg4y47PGJyPg0KICAgICAgICAt
+IOru4+TgIOgg6uDqIO3z5u3uIOHz5OXyIO707vDs6//y/CDj7vHz5ODw8fLi5e3t++Ug4Ory
++yDt4CDn5ezr/i4gzO7s5e3yIO/l8OX17uTgIO/w4OLgIPHu4fHy4uXt7e7x8uggIO/w6CDn
+4Orr/vfl7ejoIOTu4+7i7vDgIOrz7+voLe/w7uTg5ugg6Ofs7eXtITxicj4NCiAgICAgIDwv
+cD4NCiAgICAgIDxwIGNsYXNzPSJzdHlsZTkgc3R5bGUxMiI+PHN0cm9uZz4zLjwvc3Ryb25n
+PiDA4fHu6/7y7e4g7e7i4P8g7/Du9uXk8/DgIO707vDs6+Xt6P8g8ODn8OX46PLl6/zt7ukg
+5O7q8+zl7fLg9ujoIO3gIPHy8O7o8uXr/PHy4u46PGJyPg0KICAgICAgICAtIM/u8evl5PHy
+4uj/IO7y7OXt+yDAz8cg6CDt7uL76SDv5fDl9+Xt/CDo8fXu5O379SDk4O3t+/Ug7eAg7/Du
+5ery6PDu4uDt6OU7PGJyPg0KICAgICAgICAtIMHz5OXyIOvoIPDg5/Dl+OXt6OUg7eAg8fLw
+7ujy5ev88fLi7iDoIPfy7iDl4+4g5+Ds5e3o8js8YnI+DQogICAgICAgIC0gze7i++kg7+7w
+/+Tu6iDv7uvz9+Xt6P8g6O307vDs4Pbo6CDuIOLu5+zu5u379SDi6OTg9SDn4PHy8O7p6ugg
+6CDu4/Dg7ej35e3o//Ug7eAg5+Xs5ev87e7sIPP34PHy6uU7PGJyPg0KICAgICAgICAtIMIg
+6uDq6PUg8evz9+D/9SDt5e7h9e7k6OzuIPDg5/Dl+OXt6OUg7eAg4vvv7uvt5e3o5SDv7uTj
+7vLu4ujy5ev87fv1IPDg4e7yLiDX8u4g8uDq7uUg7+7k4+7y7uLo8uXr/O375SDw4OHu8vs7
+PGJyPg0KICAgICAgICAtIM3u4vvpIO/u8P/k7uog8e7j6+Dx7uLg7ej/IO/w7uXq8u3u6SDk
+7urz7OXt8uD26Og7PGJyPg0KICAgICAgICAtIM3u4uD/IO/w7vbl5PPw4CDi++Tg9+gg8ODn
+8OX45e3o/yDt4CDi++/u6+3l7ejlIPHy8O7o8uXr/O379SDw4OHu8js8YnI+DQogICAgICAg
+IC0g0uXv5fD8IPDl+OXt6OUgwMPRIO3lIO7h/+fg8uXr/O3uITxicj4NCiAgICAgICAgPGJy
+Pg0KICAgICAgICA8c3Ryb25nPjQuPC9zdHJvbmc+IM3u4vvlIO/w4OLo6+Ag7iDv4OXi7uwg
+8/fg8fLo6CDt4CDw4Ofi6PLo5SDo7fTw4PHy8PPq8vPw+yDj7vDu5OA6PGJyPg0KICAgICAg
+ICAtIMjn7OXt5e3o5SDj8ODt6Pft7uPuIPDg5+zl8OAg7+Dl4u7j7iDz9+Dx8uj/IO3g8fLw
+7un56OrgOzxicj4NCiAgICAgICAgLSDH4O/w5fIg5O7v7uvt6PLl6/zt7uPuIO/w4OLgIOPu
+8O7kIPHq7ukg4uvg8fLoIO3gIO/w6OLr5ffl7ejlIOTl7eXjIOjt4uXx8u7w7uIg4iDv7vD/
+5OrlIO/g5eLu4+4g8/fg8fLo/zs8YnI+DQogICAgICAgIC0gyOfs5e3l7ej/IOogx+Dq7u3z
+INPq8ODo7fsgq84g8fLu6+j25SDT6vDg6O37IJYg4+7w7uQt4+Xw7ukgyujl4rsuPGJyPg0K
+ICAgICAgICA8YnI+DQogICAgICAgIDxzdHJvbmc+NS48L3N0cm9uZz4g0fLw7ujy5ev88fLi
+7iDoIO/l8OXk4PfgIOjt5uXt5fDt+/Ug8eXy5ekg6CDq7uzs8+3o6uD26Ok6PGJyPg0KICAg
+ICAgICAtIOLu5+zl+eXt6OUg5+Dx8vDu6fno6vMg5+Dy8ODyIO3gIPHy8O7o8uXr/PHy4u4g
+5O7v7uvt6PLl6/zt+/Ug8eXy5ek7PGJyPg0KICAgICAgICAtIO/w4OLuIOfg8fLw7un56Org
+IO3gIPHy8O7o8uXr/PHy4u4g8eXy5ek7PGJyPg0KICAgICAgICAtIO7y4uXy8fLi5e3t7vHy
+/CDj7vHz5ODw8fLi5e3t+/Ug7vDj4O3u4iDn4CDt4PDz+OXt6OUg8fDu6u7iIOL75OD36CDS
+0y48YnI+DQogICAgICAgIDxicj4NCiAgICAgICAgPHN0cm9uZz42Ljwvc3Ryb25nPiDI7+7y
+5ergIOgg7uH65ery+yDt5efg4uXw+OXt7e7j7iDx8vDu6PLl6/zx8uLgOjxicj4NCiAgICAg
+ICAgLSDu7/Dl5OXr5e3o5SCr7uH65ery4CDt5efg4uXw+OXt7e7j7iDx8vDu6PLl6/zx8uLg
+uzs8YnI+DQogICAgICAgIC0g7+7w/+Tu6iDu9O7w7Ovl7ej/IOjv7vLl9+3u4+4g5O7j7uLu
+8OAg7uH65ery4CDt5efg4uXw+OXt7e7j7iDx8vDu6PLl6/zx8uLgOzxicj4NCiAgICAgICAg
+LSDv5fDl9+Xt/CDv8OXk7OXy7uIg6O/u8uXq6CDv8Ogg7eXn4OLl8Pjl7e3u7CDx8vDu6PLl
+6/zx8uLlOzxicj4NCiAgICAgICAgLSDv8ODi4CDo7+7y5eru5OXw5uDy5ev/IO3gIPDg8e/u
+8P/m5e3o5SDo7+7y5fft++wg6Ozz+eXx8uLu7C48YnI+DQogICAgICAgIDxicj4NCiAgICAg
+ICAgPHN0cm9uZz43Ljwvc3Ryb25nPiDN7uLu4uLl5OXt6OU6IODw5e3k+yDxIOL76vPv7uw6
+IPP34PHy6OUg5+Dx8vDu6fno6uAg4iDu7+Xw4Pbo//Ug7+4g4PDl7eTlIPEg4vvq8+/u7C48
+YnI+DQogICAgICAgIDxicj4NCiAgICAgICAgPHN0cm9uZz44Ljwvc3Ryb25nPiDN7uL76SDv
+7vD/5O7qIO/w6O3/8uj/IOIg/erx7+vz4PLg9uj+IOfg6u7t9+Xt7fv1IPHy8O7o8uXr/PHy
+4u7sIO7h+uXq8u7iOjxicj4NCiAgICAgICAgLSDs5fXg7ejn7CDoIPPx6+7i6P8g7/Do7f/y
+6P8g4iD96vHv6/Pg8uD26P4g5+Dq7u335e3t+/Ug8fLw7ujy5ev88fLi7uwg7uH65ery7uI7
+PGJyPg0KICAgICAgICAtIO/u8P/k7uog8e7n++LgIOgg8ODh7vL7IO/w6OXs7vft7ukg6u7s
+6PHx6Og7PGJyPg0KICAgICAgICAtIPHw7uroIOgg5O7q8+zl7fLg9uj/LCDt5e7h9e7k6Ozg
+/yDk6/8g8ODh7vL7IOru7Ojx8ejoOzxicj4NCiAgICAgICAgLSDx4ujk5fLl6/zx8uLuIJYg
+6uDqIO7x7e7i4O3o5SDi4uXk5e3o/yDu4frl6vLu4iDiIP3q8e/r8+Dy4Pbo/i48YnI+DQog
+ICAgICAgIDxicj4NCiAgICAgICAgPHN0cm9uZz45Ljwvc3Ryb25nPiDA7eDr6Ocg7eDo4e7r
+5eUg8ujv6Pft+/Ug7vjo4e7qIO/w6CDn4Orr/vfl7ejoIOTl4uXr7u/l8PHq6PUg6u7t8vDg
+6vLu4i48YnI+DQogICAgICAgIC0gyuDqIO/w4OLo6/zt7iDw4PHv8OXk5evo8vwg9PPt6vbo
+6CDv8Ogg5+Dq6/735e3o6CDk5eLl6+7v5fDx6u7j7iDq7u3y8ODq8uAsIOTu4+7i7vDgIO3g
+IPPv8ODi6+Xt6OUg7/Du5ery7uwsIOTu4+7i7vDgIO3gIPPv8ODi6+Xt6OUg7eXk4ujm6Ozu
+8fL8/iwg5O7j7uLu8OAg7eAg6PHv7uvt5e3o5SD08+3q9ujpIOfg6uDn9+jq4CDoIOTu4+7i
+7vDgIO/u8PP35e3o/zs8YnI+DQogICAgICAgIC0gz+7x6+Xk8fLi6P8g7eXv8ODi6Ov87e7j
+7iDu7/Dl5OXr5e3o/yDx8/LoIO/w4OLu7vLt7vjl7ejpIOIg5O7j7uLu8OD1Ozxicj4NCiAg
+ICAgICAgLSDR8uDy8/Eg5+Dx8vDu6fno6uAg6CDn4Org5/fo6uAg4iDx7u7y4uXy8fLi6Ogg
+8SDv7vHr5eTt6OzoIOjn7OXt5e3o/yDn4Oru7e7k4PLl6/zx8uLgLjxicj4NCiAgICAgICAg
+PGJyPg0KICAgICAgICA8c3Ryb25nPjEwLjwvc3Ryb25nPiDK8u4g8uDq6OUg5+Dq4Of36Oog
+LCDo8e/u6+3o8uXr/CD08+3q9ujpIOfg6uDn9+jq4CDoIOjt4uXx8u7wLiDQ4PHv8OXk5evl
+7ejlIPTz7er26Okg6CDu8uLl8vHy4uXt7e7x8uguPGJyPg0KICAgICAgICA8YnI+DQogICAg
+ICAgIDxzdHJvbmc+MTEuPC9zdHJvbmc+IMrg6iDv8Ojn7eDy/CDv8ODi7iDx7uHx8uLl7e3u
+8fLoIO3gIPHg7O7i7uv87e4g7+7x8vDu5e3t++kg7uH65eryLjxicj4NCiAgICAgICAgPGJy
+Pg0KICAgICAgICA8c3Ryb25nPjEyLjwvc3Ryb25nPiDO4f/n4O3t7vHy/CDv7iDv8O7i5eTl
+7ej+IO7h+eXx8uLl7e379SDx6/P44O3o6SDoIOj1IPDo8eroLjxicj4NCiAgICAgICAgLSDN
+7uL75SDl5Ojt++Ug5+Dq7u3u5ODy5ev87fvlIO/w4OLo6+AgIO4g7+7w/+Tq5SDv8O7i5eTl
+7ej/IO7h+eXx8uLl7e379SDx6/P44O3o6Ts8YnI+DQogICAgICAgIC0gz/Dg6vLo6uAg7/Du
+4uXk5e3o/yDu4fnl8fLi5e3t+/Ug8evz+ODt6Okg6CDo9SDv8ODi7uLu5SDw5ePz6+jw7uLg
+7ejlOzxicj4NCiAgICAgICAgLSDP7vD/5O7qIO725e3q6CDw5efz6/zy4PLu4iDv8O7i5eTl
+7e379SDu4fnl8fLi5e3t+/Ug8evz+ODt6Ok7PGJyPg0KICAgICAgICAtIMry7iDs7ubl8iDu
+4ebg6+7i4PL8IPDl5/Pr/PLg8vsg7uH55fHy4uXt7fv1IPHr8/jg7ejpIOgg8/Li5fDm5OXt
+7fvpIO/w7vLu6u7rLjwvcD4NCiAgICAgIDxwIGNsYXNzPSJzdHlsZTkgc3R5bGUxMiI+PHN0
+cm9uZz4xMy48L3N0cm9uZz4gz+7x6+Xk7ejlIOjn7OXt5e3o/yDiIOfg6u7t7uTg8uXr/PHy
+4u4g7+4g8/Hu4uXw+OXt8fLi7uLg7ej+IPTo7eDt8e7i7i3q8OXk6PLt+/Ug7OX14O3o5+zu
+4iDu8fP55fHy4uvl7ej/IOjt4uXx8uj26Okg4iDx8vDu6PLl6/zx8uLuIObo6/z/Ojxicj4N
+CiAgICAgICAgLSDv8O7l6vLt4P8g5OXq6+Dw4Pbo/yDo6+gg5+Dv8OXyIO3gIPbl6+Xi++Ug
+7uHr6OPg9ujoIOgg6O3x8ujy8/L7IPHu4uzl8fLt7uPuIOjt4uXx8ujw7uLg7ej/Ozxicj4N
+CiAgICAgICAgLSDt7uL75SDy8OXh7uLg7ej/IOog5O7i5fDo8uXr/O3u7PMg8+/w4OLr5e3o
+/iDo7PP55fHy4u7sOzxicj4NCiAgICAgICAgLSDu4f/n4PLl6/zt7uUg8fLw4PXu4uDt6OUg
+6Ozz+eXx8uLl7e379SDw6PHq7uIg4iDU1NE7PGJyPg0KICAgICAgICAtIO3gIOrg6u7sIP3y
+4O/lIOzu5uXyIOH78vwg8e7n5ODtINTU0Ts8YnI+DQogICAgICAgIC0g7e7i++Ug8vDl4e7i
+4O3o/yDqIPTo7eDt8e7i7uzzIPHu8fLu/+3o/iDz7/Dg4ujy5ev/INTU0Ts8YnI+DQogICAg
+ICAgIC0g4u7n7eDj8ODm5OXt6OUg8+/w4OLo8uXr/yCWIOry7iDv6+Dy6PI7PGJyPg0KICAg
+ICAgICAtIOrg6iDk7uLl8Ojy5evoIOzu4/PyIOL78ugg6Ocg1NTRIOIgMjAwOSDj7uTzOzxi
+cj4NCiAgICAgICAgLSDx6PHy5ezgINTU0SCWINTOzSCWIO3u4vvpIPTo7eDt8e7i7i3q8OXk
+6PLt++kg7OX14O3o5+whPC9wPg0KICAgICAgPHAgY2xhc3M9InN0eWxlOSBzdHlsZTEyIj48
+c3BhbiBjbGFzcz0ic3R5bGUxMyI+PGltZyBzcmM9ImNpZDp0dXJuYWJvdXRzLmdpZiIgd2lk
+dGg9IjEwIiBoZWlnaHQ9IjEwIiAvPiZuYnNwO8HIM83F0S1Lzs3R08vc0sBI0iA8L3NwYW4+
+PGJyPg0KICAgICAgICA8c3BhbiBjbGFzcz0ic3R5bGUxNiI+xevl7eAg0fPq7ODt7uLgPC9z
+cGFuPiCWIOou/i7tIC4gLCDg5OLu6uDyLCDk6PDl6vLu8CD+8Ojk6Pfl8eru6SD06PDs+yCr
+3evo8iDK7u3x4Ovy6O3juywg7eD34Ov87ejqIN7w6OTo9+Xx6u7j7iDk5e/g8PLg7OXt8uAg
+0+rw4Ojt8eru6SDU6O3g7fHu4u4tyu7t8eDr8ujt4+7i7ukg4/Dz7+/7PC9wPg0KICAgIDxw
+IGNsYXNzPSJzdHlsZTkgc3R5bGUxMiI+PHNwYW4gY2xhc3M9InN0eWxlMTYiPtHo7Pfo+Ojt
+4CDS4PL8/+3gIM3o6u7r4OXi7eA8L3NwYW4+IJYg5+Ds5fHy6PLl6/wg7eD34Ov87ejq4CDz
+7/Dg4uvl7ej/IO3u8Ozg8uji7e7j7iDoIOjt9O7w7OD26O7t7e4t4O3g6+jy6Pfl8eru4+4g
+7uHl8e/l9+Xt6P8g5+Xs5ev87e7pIPDl9O7w7Psgw+7x8+Tg8PHy4uXt7e7j7iDq7uzo8uXy
+4CDT6vDg6O37IO/uIOfl7OXr/O377CDw5fHz8PHg7CDT6vDg6O37LjwvcD48L3RkPg0KPC90
+cj4NCiAgPHRyPiANCiAgICA8dGQgdmFsaWduPSJ0b3AiIGJnY29sb3I9IjAwOTIzZCI+PHAg
+Y2xhc3M9InN0eWxlMTcgc3R5bGUxOSI+UGxlYXNhbnQgeW91IGRheSE8L3A+PC90ZD4NCiAg
+PC90cj4NCjwvdGFibGU+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJz
+cDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8
+cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8
+L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4m
+bmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+
+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJz
+cDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8
+cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8
+L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4m
+bmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+
+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJz
+cDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8
+cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8
+L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4m
+bmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+
+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJz
+cDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8
+cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8
+L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4m
+bmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+
+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJz
+cDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8
+cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8
+L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4m
+bmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+
+DQo8cD4mbmJzcDs8L3A+DQo8cCBjbGFzcz0ic3R5bGU5IHN0eWxlMTgiPnNsdWNoeW5pZSBz
+dHJva2k64vbl4iDz9ez76/zt8+vx/y5hbHRlc3ByZXNzQG10dS1uZXQucnUJPGJyPg0KPC9w
+Pg0KPHAgY2xhc3M9InN0eWxlOSBzdHlsZTE4Ij7n4mFuZDY2MkB5YW5kZXgucnUJIP3y7ukg
+5Ojx6uXy+z8gyO3y5fDl8e3uLCDqYWtpQHRhbGkuc3BiLnJ1Ce/t7iDu8iDz4+sgPGJyPg0K
+PC9wPg0KPHAgY2xhc3M9InN0eWxlOSBzdHlsZTE4Ij4zZHNhbEBpdGNvbS5uZXQudWE8L3A+
+DQo8L2JvZHk+DQo8L2h0bWw+DQoNCg0K
 
-That summary seems out-dated. The variable length of transfer word is
-actually the maximum length of a single transfer and is 128 bits in the
-latest version. So you get 4 registers, each 32 bits wide into which yo=
-u
-program the data you want to transfer. Then you set the number of bits =
-of
-that transfer so the core knows which registers and what bits of those
-registers to shift out serially.
 
-I'm not sure whether this is supposed to be the same as the word size. =
-If it
-is it would mean that a single transfer can always only transfer one wo=
-rd.
-Which is kind of inefficient, I would think.
+------=_NextPart_000_0022_62CA3185.B015A012
+Content-Type: image/gif;
+	name="turnabouts.gif"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="turnabouts.gif"
+Content-ID: <turnabouts.gif>
 
-Thierry
+R0lGODlhCgAKAMQAAAAAAP///6rNu6jMuW2shmOremKqdqvOtanMsvn9+vL78werCQeqCRav
+GPD68PX89ZPfkZfflZzfm53fnJTfkf///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+ACH5BAEAABUALAAAAAAKAAoAAAU6YCA+0/SIqEMNA+WgCiQUhQApQRIdBMMQh0hCgjAsGo2F
+ASEhGpFKpo7nAwoDsVntllq1XqgAyYQKAQA7fFlkXGgqx+3YWuW2zSnigLYV/XJYSjbypAWB
+H2==
+------=_NextPart_000_0022_62CA3185.B015A012
+Content-Type: image/gif;
+	name="precipices.gif"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="precipices.gif"
+Content-ID: <precipices.gif>
+
+R0lGODlh+gAUALMAAGyaXv///6vFo5CzhkaANMvbxvP28drl1ubu5AAAAAAAAAAAAAAAAAAA
+AAAAAAAAACH5BAAAAAAALAAAAAD6ABQAAAT/MMhJq7046827/2AojmRpnmiqrmzrvmNxXDKy
+1RNeHvOt5z9RUMIzcIokJK2wbJqGzooSNCBYAb2AwHo10gg2LZcguFiZlSpAskVfqtwyERAn
+jrnrN94bONCtAxl+dRN/hBYEeWl4bnCJWYOAR2c5Y3I0hoFzhxZBW4ldfYCfmlKJdqCUFH9u
+qIqneomsElezBXehi6mvV6qIvWQTuJcUt6WFtZSkucnBGrOisr4VzXJ/f8cUVtTOyrC3YBZV
+cmoSdMef4dq542bO5Z9G5QY1BfHuaHRM4PKwpuFb8oCrF2ZRq2j5gp1DKAagv1jq2hnQp0dT
+O37R+KzT4E3gtl9e/xaKUXQgVSs1/m4pKnYpYA42D805+1epjMuM4r59vPlMHUtkxGj57DHv
+C7SPGyguUqSUGwZSQKEuFaYO40QwvgLyNIA0g0gicLLAXFkMabmv02Re6kgHC4aY+MrOBJt2
+FVaHAOBkW/fJ7UiglXD5DACtYS4KEgOowtjO17atTWMVbLg3MrdAJU+hHayWKhNDnOzsrdCW
+dFqpFRU7xKWR6p193maCG8aSUmYBBUqbXlv1MSxVFCHP1RWUR9G/QHCk27N5H47mhJ19rdmT
+s71pxr8p/70asyQeOEKJBC0JZAZ4M7t2FoqG3yhSuBPhbntpOuK6ngG71ilfc3ows5EBHf9N
+BnmFH3Lc8GDJewxG5B8XqrVn1ijDCSVFS/7xdtBXIrkkWH+CJRTUWK0cgFt+7K2SV1452cRf
+HyvmdVNmbGDIGVzI+AVWJWuY6MYZfqy43BhrTLjGADFGJyFnSrpzWWfzWDVBYvMshNuV710p
+AH1hWEYZQVEiJWVqV83AGI5n9ghcTCWN9mV40gUTJpNawtdkdKOF2SNFNEYhkzTdocbjOoZM
+luJUKNp1h5qAlrJVLNfkWJhpJsEE6EFtvEWbXrZUw8FizRjqylHAjKiBIzrmtoeTgeFXF08q
+dSKYR5w8CtExkVSYQyb3hXanLq9Z+siuvsYlrK6blAdjsUeIldxHecNBEUJiIEjrwRQ/Ndsa
+EQepAIW113brJxDbwkCdC3SUa+667LbrLgxVqLsDsu/Wa++9+D7lLAr25OvvvwAHLPDABBds
+QQQAOw1jRLRoCF7pob1Ax0X6NqeocIpyJwp1oeY6qqisvdWY4LYpAwkOaD32LgpUQSJ5xizb
+MVH7zdTspsWqd6439vuJQYdgqnacJN3Vj/RXdlDGSZwvUpnSYWbou5JZhj1qxtAVsRsJ3vQJ
+JA5dpgwC2MrkF0+nYzRJgSeNkKXb6nkDoehS+SV0eAZk1XLNLdXsv15TARu74T/hxgzwyJlR
+J+1+WBMiejOOZIhaZQVSkU0V1oGoxr57qv5AwGjPpxdD6/dUPznzHbJ9DQl17ewlOqm/wJOa
+7sd1r7K7uxv2M5zQJYGE32qFhRERaTrW/JMrEWmyHVoUOblY0scriHxDY1VyJAJIJV0OsaA0
+wpJ/FuX5a0l97WBTMWGVXPehlSvStwGdZPde+1XZp8WlSY4fv/0GOSo0kXGRHNvhcM/bBX0r
+TLQmjJGSI6==
+------=_NextPart_000_0022_62CA3185.B015A012--
+
+
+
+
+--===============7517630824088936491==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Register Now & Save for Velocity, the Web Performance & Operations 
+Conference from O'Reilly Media. Velocity features a full day of 
+expert-led, hands-on workshops and two days of sessions from industry 
+leaders in dedicated Performance & Operations tracks. Use code vel09scf 
+and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
+--===============7517630824088936491==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7517630824088936491==--

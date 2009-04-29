@@ -1,12 +1,11 @@
-From: "Hipnosis Chile,
-	Centro de Hipnosis y Terapias Afines" <hipnosischile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Â¿TIENE ALGUNA DE LAS SIGUIENTES ENFERMEDADES..?
-Date: Wed, 29 Apr 2009 01:09:07 -0400
-Message-ID: <1180662565-220094329597819@gmail.com>
+From: Photoweb par Central Marques <newsletter-YGge9CITkGIAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Vos tirages et frais de port pour 1€
+Date: 29 Apr 2009 08:26:23 -0000
+Message-ID: <20090429082623.4799.qmail@ks24820.kimsufi.com>
+Reply-To: Photoweb par Central Marques <newsletter-YGge9CITkGIAvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5300584251705814162=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,77 +17,101 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SI TIENE:
-Desorientaci=F3n Existencial, Baja Autoestima, Baja Energ=EDa, Trastornos A=
-limenticios, Depresi=F3n, Ansiedad, Angustia, Crisis de P=E1nico, Miedos, T=
-raumas, Fobias, Insomnio, Cefaleas, Alteraci=F3n del Sistema Nervioso, Dolo=
-res F=EDsicos, Adicciones, Estr=E9s, Baja Autoestima, Timidez, Inseguridad,=
- P=E1nico, Mejorar la Memoria y la Concentraci=F3n, Agresividad, Intoleranc=
-ia, Penas , Duelos (p=E9rdida de un Ser querido), Negatividad, Preparaci=F3=
-n para dar Ex=E1menes Acad=E9micos, Falta de Motivaci=F3n, Problemas de Par=
-eja, Celos Obsesivos, Quiere dejar de fumar y no puede, No puede hablar en =
-p=FAblico...
 
-...NOSOTROS LE PODEMOS AYUDAR
-
-PIDA UNA HORA DE EVALUACI=D3N*  DE SU ESTADO DE SALUD =A1=A1=A1GRATUITA!!!
-EL DIA Y HORA QUE SE LE D=C9 DEBE LLEVAR TODOS LOS DOCUMENTOS QUE TENGA (DI=
-AGN=D3STICOS - EXAMENES - MEDICAMENTOS)
-EN ESE MOMENTO SE LE HAR=C1 UN PROGRAMA DE SESIONES QUE PUEDE ACEPTAR O NO =
-ACEPTAR.
-ESTAMOS EN SEMINARIO 6 - PROVIDENCIA (Metro Baquedano - Edificio Tecnobit)
-
-*LA EVALUACI=D3N CONSISTE EN UN CHEQUEO QUE INTEGRA LOS TRES ELEMENTOS ESEN=
-CIALES DE UN SER HUMANO:
-BIOL=D3GICO: A TRAV=C9S DE LA MAGNETOTERAPIA (IMANES)
-PSICOL=D3GICO: A TRAV=C9S DE UNA INDUCCI=D3N SIMPLE (HIPNOSIS CONVERSACIONA=
-L)
-ENERG=C9TICO: A TRAV=C9S DE LA MEDICI=D3N DE SUS PUNTOS ENERG=C9TICOS.
-
-LAS TERAPIAS NATURALES QUE SE UTILIZAN EN LOS TRATAMIENTOS (SE UTILIZAN EN =
-CONJUNTO PARA UN MEJOR RESULTADO) SON:
-HIPNOTERAPIA - MAGNETOTERAPIA - REIKITERAPIA - LOGOTERAPIA - FITOTERAPIA - =
-AROMATERAPIA - RADIESTESIATERAPIA
-Se llaman Terapias Naturales a aquellas que son parte de la naturaleza o de=
-l hombre y por lo tanto no incluyen en sus tratamientos elementos qu=EDmico=
-s extra=F1os ni nosivos al ser humano.
-
-=BFQu=E9 tan Efectiva es la Hipnosis? La efectividad de la Hipnosis es comp=
-arativamente muy superior a la de otras herramientas relacionadas con la sa=
-lud mental. Para que te hagas una idea, revisa estos datos sobre la tasa de=
- recuperaci=F3n revelados en una investigaci=F3n de reportes de psicoterapi=
-a desarrollada por el Dr. Alfred Barrios, de la UCLA: =
-
-Psicoan=E1lisis, 38% de recuperaci=F3n despu=E9s de 600 sesiones. =
-
-Terapia Conductual, 72% de recuperaci=F3n despu=E9s de 22 sesiones. =
-
-Hipnosis, 93% de recuperaci=F3n despu=E9s de 6 sesiones. =
-
-(Datos publicados en Psychotherapy: Theory, Research and Practice)
-
-CUANDO LA HIPNOSIS EST=C1 EN COMBINACI=D3N CON 3 =F3 M=C1S TERAPIAS NATURAL=
-ES SU RESULTADO ES MUY SUPERIOR.
-
-ESTE A=D1O YA HAN SOLUCIONADO SUS PROBLEMAS (POR LOS QUE LLEGARON A HIPNOSI=
-S CHILE) M=C1S DE 50 PERSONAS. USTED TAMBI=C9N PUEDE HACERLO.
+--===============5300584251705814162==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_f2c6d415f53691e0380eaa8e565d918b"
 
 
-Centro de Hipnosis y Terapias Afines "Hipnosis Chile"
-Seminario 6 - Providencia - Fonos: 248 9112 - 278 1078
-horas-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org - www.hipnosischile.cl
-Remover: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org
+--_----------=_parties_f2c6d415f53691e0380eaa8e565d918b
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.ctrm7.com/miroir.php?bat=photoweb0409_ctrm
+
+Photoweb.fr
+
+le labo photo créatif
+Votre 1 ère commande
+
+20 tirages classiques + frais de port = 1 €
+
+TOUT COMPRIS !
+Inscrivez-vous
+
+plus d'infos sur http://www.ctrm7.com/linkserv.php?bat=photoweb0409_ctrm&nb=1410&n=9047704&c=commerce
+
+--------------------------------
+Cette offre photoweb vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm7.com/gestionserv.php?nb=1410&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_f2c6d415f53691e0380eaa8e565d918b
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
 
 
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Photoweb.fr
+le labo photo cr&eacute;atif</title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm7.com/miroir.php?bat=photoweb0409_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre photoweb vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#000000;font-size:24px'>
+<p style='display:inline;'> Photoweb.fr<br>
+<span style="font-size:16px">le labo photo cr&eacute;atif</span></p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#ff5a00;font-family:Arial;color:#FFFEFE;font-size:20px;'>
+<a href="http://ctrm7.com/linkserv.php?bat=photoweb0409_ctrm&nb=1410&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26site%3D4469%26type%3Db20%26bnb%3D20" style="font-size:20px;font-family:verdana;font-background:#FF5A00;text-decoration:none;color:white;"><b>Votre 1<sup>&egrave;re</sup> commande<br>
+20 tirages classiques + frais de port = 1 &euro;<br>
+TOUT COMPRIS !</b></a>
+</td></tr>
+<tr>
+<td align='center' style='padding:5px;font-family:Arial;color:#000000;font-size:24px;background-color:#FFFFFF;'>
+<a href="http://ctrm7.com/linkserv.php?bat=photoweb0409_ctrm&nb=1410&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26site%3D4469%26type%3Db20%26bnb%3D20" style="font-size:24px;font-family:verdana;font-background:white;text-decoration:none;color:blue;"><span style="color:blue"><u>Inscrivez-vous</u></span></a>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<a href="http://ctrm7.com/linkserv.php?bat=photoweb0409_ctrm&nb=1410&n=9047704&c=commerce" target="_blank">
+<img src="http://banniere.reussissonsensemble.fr/view.asp?ref=481959&site=4469&b=20" border="0" alt="Photoweb" width="400" height="400" /></a><br />
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.ctrm7.com/img.php?nb=1410&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
+<p>
+<a href='http://www.ctrm7.com/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm7.com/gestionserv.php?nb=1410&cat=commerce&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
 
----------------------------------------------------------------------------=
----
-Register Now & Save for Velocity, the Web Performance & Operations =
 
-Conference from O'Reilly Media. Velocity features a full day of =
+--_----------=_parties_f2c6d415f53691e0380eaa8e565d918b--
 
-expert-led, hands-on workshops and two days of sessions from industry =
+--===============5300584251705814162==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-leaders in dedicated Performance & Operations tracks. Use code vel09scf =
-
+------------------------------------------------------------------------------
+Register Now & Save for Velocity, the Web Performance & Operations 
+Conference from O'Reilly Media. Velocity features a full day of 
+expert-led, hands-on workshops and two days of sessions from industry 
+leaders in dedicated Performance & Operations tracks. Use code vel09scf 
 and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
+--===============5300584251705814162==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5300584251705814162==--

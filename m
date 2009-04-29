@@ -1,85 +1,143 @@
-From: Florian Fainelli <florian@openwrt.org>
-Subject: Re: [spi-devel-general] [PATCH v2] spi: Add support for the OpenCores SPI controller.
-Date: Wed, 29 Apr 2009 11:15:34 +0200
-Message-ID: <200904291115.34847.florian@openwrt.org>
-References: <200904041227.54687.david-b@pacbell.net> <200904281354.12192.david-b@pacbell.net> <20090429063104.GB7784@avionic-design.de>
+From: Dmitriy Bronislavovich <dmitriybronislavovich-5pIOBoVdFF1BDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] 5 столиц Европы
+Date: Wed, 29 Apr 2009 16:28:57 +0400
+Message-ID: <2790612219.20090429162857@0037800.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: David Brownell <david-b@pacbell.net>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Thierry Reding <thierry.reding@avionic-design.de>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755976AbZD2JPv@vger.kernel.org>
-In-Reply-To: <20090429063104.GB7784@avionic-design.de>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============5757149127240760436=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Le Wednesday 29 April 2009 08:31:04 Thierry Reding, vous avez =E9crit=A0=
-:
-> * David Brownell wrote:
-> > On Tuesday 28 April 2009, Florian Fainelli wrote:
-> > > > > Is this the http://www.opencores.org/?do=3Dproject&who=3Dspi =
-core?
-> > > >
-> > > > Yes, it is.
-> > > >
-> > > > > Its summary says "Variable length of transfer word up to 32 b=
-its";
-> > > > > does that mean "configurable when core is synthesized" instea=
-d of
-> > > > > truly "variable"?
-> > >
-> > > This is indeed configured at synthesis time.
-> >
-> > Now I'm confused again.  Thierry says (below) that the number of bi=
-ts
-> > can be set per-"transfer".
-> >
-> > Now, I can easily understand that a *maximum* would be configured
-> > at synthesis time ... if there's a 32-bit CPU or DMA engine, it'd
-> > make very limited sense to interact using 128-bit I/O words.
+--===============5757149127240760436==
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
-The maximum size of the FIFO is configured at synthesis time should hav=
-e made=20
-this clear before, sorry for the confusion.
+PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBYSFRNTCAxLjAgVHJhbnNpdGlv
+bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL3hodG1sMS9EVEQveGh0bWwxLXRyYW5z
+aXRpb25hbC5kdGQiPg0KPGh0bWwgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0
+bWwiPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9
+InRleHQvaHRtbDsgY2hhcnNldD13aW5kb3dzLTEyNTEiIC8+DQo8dGl0bGU+VW50aXRsZWQg
+RG9jdW1lbnQ8L3RpdGxlPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHks
+dGQsdGggew0KCWZvbnQtZmFtaWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5z
+LXNlcmlmOw0KfQ0KLnN0eWxlMSB7DQoJZm9udC1mYW1pbHk6ICJUaW1lcyBOZXcgUm9tYW4i
+LCBUaW1lcywgc2VyaWY7DQoJZm9udC1zdHlsZTogaXRhbGljOw0KfQ0KLnN0eWxlMiB7Zm9u
+dC1zaXplOiAyMHB4fQ0KLnN0eWxlMyB7Y29sb3I6ICNGRjAwMDB9DQouc3R5bGU2IHtjb2xv
+cjogIzAwNjZDQ30NCi5zdHlsZTcge2NvbG9yOiAjMDA2NkNDOyBmb250LXNpemU6IDIwcHg7
+IH0NCi5zdHlsZTgge2NvbG9yOiAjMDAwMEZGfQ0KYm9keSB7DQoJYmFja2dyb3VuZC1jb2xv
+cjogI0ZGRkZDQzsNCn0NCi5zdHlsZTkgew0KCWZvbnQtc2l6ZTogMThweDsNCgljb2xvcjog
+I0ZGMDAwMDsNCn0NCi5zdHlsZTEwIHtmb250LXNpemU6IDEzcHh9DQouc3R5bGUxMSB7Y29s
+b3I6ICNGRjAwMDA7IGZvbnQtc2l6ZTogMTNweDsgfQ0KLnN0eWxlMTIge2NvbG9yOiAjRkZG
+RkZGfQ0KLnN0eWxlMTMgew0KCWZvbnQtc2l6ZTogMXB4Ow0KCWNvbG9yOiAjRkZGRkNDOw0K
+fQ0KLS0+DQo8L3N0eWxlPjwvaGVhZD4NCg0KPGJvZHk+DQo8ZGl2IGFsaWduPSJjZW50ZXIi
+Pg0KICA8cCBjbGFzcz0ic3R5bGUxIj5Hb29kIGFmdGVybm9vbiEg/fLuINLo7PPwPC9wPg0K
+ICA8dGFibGUgd2lkdGg9Ijc1MCIgYm9yZGVyPSIxIiBib3JkZXJjb2xvcj0iIzAwMDAwMCI+
+DQogICAgPHRyPg0KICAgICAgPHRkPjx0YWJsZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBj
+ZWxsc3BhY2luZz0iNSIgYmdjb2xvcj0iI0ZGRkZGRiI+DQogICAgICAgIDx0cj4NCiAgICAg
+ICAgICA8dGQgYmdjb2xvcj0iI0ZGRkZGRiI+PHAgYWxpZ249ImNlbnRlciIgY2xhc3M9InN0
+eWxlMiI+PHNwYW4gY2xhc3M9InN0eWxlMyI+wu3o7GHt6OUhPC9zcGFuPiA8c3BhbiBjbGFz
+cz0ic3R5bGU2Ij7S83D26P8g4iDsYWUhPC9zcGFuPjwvcD4NCiAgICAgICAgICAgIDxwIGFs
+aWduPSJsZWZ0Ij48c3BhbiBjbGFzcz0ic3R5bGU4Ij7E4PL7IOL76+Xy4Do8L3NwYW4+IDAy
+LjA1LjsgMDMuMDUuOyAwNS4wNYU8L3A+DQogICAgICAgICAgICA8cCBhbGlnbj0ibGVmdCI+
+PHNwYW4gY2xhc3M9InN0eWxlOCI+0fLu6Ozu8fL8Ojwvc3Bhbj48YnIgLz4NCiAgICAgICAg
+ICAgICAgzvLl6/wgMyogLSDu8iA0NTAgJDxiciAvPg0KICAgICAgICAgICAgICDO8uXr/CA0
+KiAtIO7yIDUwMCAkPGJyIC8+DQogICAgICAgICAgICAgIM7y5ev8IDUqIC0g7vIgNTUwICQ8
+YnIgLz4NCiAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9InN0eWxlMTEiPio8L3NwYW4+PHNw
+YW4gY2xhc3M9InN0eWxlMTAiPiDx8u7o7O7x8vwg8+rg5+Dt4CDn4CD35evu4uXq4CDiIOTi
+8/Xs5fHy7e7sIO3u7OXw5S4gDQogICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAg
+IDxociAvPjwvcD4NCiAgICAgICAgICAgICAgPGRpdiBhbGlnbj0iY2VudGVyIiBjbGFzcz0i
+c3R5bGU3Ij7O8uT7eCDiINXu8OLg8ujoINLl7+Xw/CDBxcfi6Ofu4uD/ISAgICAgICAgICAg
+ICAgPC9kaXY+DQogICAgICAgICAgICAgIDxwIGFsaWduPSJsZWZ0Ij48c3BhbiBjbGFzcz0i
+c3R5bGU4Ij7E4PL7IOfg5efk4Do8L3NwYW4+IDA2LjA2LjA5IJYgMTIuMDkuMDkgPC9wPg0K
+ICAgICAgICAgICAgPHAgYWxpZ249ImxlZnQiPjxzcGFuIGNsYXNzPSJzdHlsZTgiPtHy7ujs
+7vHy/Do8L3NwYW4+PGJyIC8+DQogICAgICAgICAgICAgIM7y5ev8IDMqIC0g7vIgNDIwIIg8
+YnIgLz4NCiAgICAgICAgICAgICAgzvLl6/wgNCogLSDu8iA0NjAgiDxiciAvPg0KICAgICAg
+ICAgICAgICDO8uXr/CA1KiAtIO7yIDYwMCCIPGJyIC8+DQogICAgICAgICAgICAgIDxzcGFu
+IGNsYXNzPSJzdHlsZTExIj4qPC9zcGFuPiA8c3BhbiBjbGFzcz0ic3R5bGUxMCI+8fLu6Ozu
+8fL8IPPq4Ofg7eAg5+Ag9+Xr7uLl6uAg4iDk4vP17OXx8u3u7CDt7uzl8OUuPC9zcGFuPiAN
+CiAgICAgICAgICAgIDxociAvPjwvcD4NCiAgICAgICAgICAgICAgPGRpdiBhbGlnbj0iY2Vu
+dGVyIj48c3BhbiBjbGFzcz0ic3R5bGU3Ij7C8f8gxeLw7u/gIO3gIOvg5O7t6Dwvc3Bhbj48
+YnIgLz4NCiAgICAgICAgICAgICAgICA1IPHy7uvo9jxiciAvPg0KICAgICAgICAgICAgICA8
+L2Rpdj4NCiAgICAgICAgICAgICAgPHAgYWxpZ249ImxlZnQiPjxzcGFuIGNsYXNzPSJzdHls
+ZTgiPsTg8uAg5+Dl5+TgOjwvc3Bhbj4gMTYuMDYuMDkglyAyOC4wNi4wOTxiciAvPg0KICAg
+ICAgICAgICAgPC9wPg0KICAgICAgICAgICAgPHAgYWxpZ249ImxlZnQiPjxzcGFuIGNsYXNz
+PSJzdHlsZTgiPtHy7ujs7vHy/Do8L3NwYW4+ICA2MDAgiDxiciAvPg0KICAgICAgICAgICAg
+ICA8L3A+DQogICAgICAgICAgICA8cCBhbGlnbj0ibGVmdCI+PHNwYW4gY2xhc3M9InN0eWxl
+OCI+z/Du4/Dg7OzgIPLz8OA6PC9zcGFuPjxiciAvPg0KICAgICAgICAgICAgICA8ZW0+z/Dg
+4+AglyDP4PDo5iCXIMHw/vHx5ev8IJcgwOzx8uXw5ODsIJcgwuXt4CCWIMz+7fXl7TwvZW0+
+PC9wPg0KICAgICAgICAgICAgPHRhYmxlIHdpZHRoPSIxMDAlIiBib3JkZXI9IjEiIGFsaWdu
+PSJjZW50ZXIiIGJvcmRlcmNvbG9yPSIjRkYwMDAwIj4NCiAgICAgICAgICAgICAgPHRyPg0K
+ICAgICAgICAgICAgICAgIDx0ZD48cCBhbGlnbj0iY2VudGVyIj48c3BhbiBjbGFzcz0ic3R5
+bGU5Ij7C4Obt7iDuIPHq6OTq4PUhPC9zcGFuPjxiciAvPg0KICAgICAgICAgICAgICAgICAg
+yuDm5O7s8yA17PMgliAzJSDx6ujk6uA8YnIgLz4NCiAgICAgICAgICAgICAgICAgIMTr/yDj
+8PPv7yDu8iAxMCD35evu4uXqIJYgMSD35evu4uXqIOHl8e/r4PLt7iE8L3A+DQogICAgICAg
+ICAgICAgICAgICA8cCBhbGlnbj0iY2VudGVyIj7B7utl5SDv7uRw7uHtbzwvcD4NCiAgICAg
+ICAgICAgICAgICAgIDxwIGFsaWduPSJjZW50ZXIiPtLl6y/U4OrxOjxiciAvPg0KICAgICAg
+ICAgICAgICAgICAgKzM4IE8gNCA0IDUgOCA1IC0gNSA3IC0gOCA0IC8gMiAzIDcgliAxIDEg
+liA5MzwvcD4gICAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgICA8L3RyPg0K
+ICAgICAgICAgICAgPC90YWJsZT4gICAgICAgICAgICA8L3RkPg0KICAgICAgICA8L3RyPg0K
+ICAgICAgPC90YWJsZT4gICAgICA8L3RkPg0KICAgIDwvdHI+DQogIDwvdGFibGU+DQogIDxw
+PiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZu
+YnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNw
+OzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwv
+cD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4N
+CiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAg
+PHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+
+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5i
+c3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7
+PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9w
+Pg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0K
+ICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8
+cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4m
+bmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJz
+cDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8
+L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+
+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQog
+IDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxw
+PiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZu
+YnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNw
+OzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwv
+cD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4N
+CiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAg
+PHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+
+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5i
+c3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHAgYWxpZ249
+ImxlZnQiIGNsYXNzPSJzdHlsZTEzIj7x6/P34OntsyDx8vDu6ug65Oprb3JhbkBmcm9udC5y
+dSDRYW5kcmVqbkBwY3Blcy5lbGVrdHJhLnJ1CeT2YWs2QHlhbmRleC5ydQkg6iAzMzMtNDQ0
+LTBwckBkYXRhYXJ0LmNvbTwvcD4NCjwvZGl2Pg0KPC9ib2R5Pg0KPC9odG1sPg0K
 
->
-> I can't really comment on the synthesis because I'm not involved with=
- that
-> part. What I was saying that the core provides a field in the control
-> register which defines the number of bits to transfer from/to the
-> transmit/receive registers. The maximum number of bits that can be
-> specified in this way is 128.
 
-Yes, which matches the FIFO size configured in the IP at synthesis time=
-=2E
 
->
-> > Is there both a configurable maximum, *and* a word-size setting tha=
-t
-> > can be changed on the fly?  That's what I would expect; it's what
-> > most other designs do.  The only time I've seen fixed "you must use
-> > N-bit words" designs is on cost-eradicated 8-bit microcontrollers.
->
-> Perhaps that maximum number of bits that can be set through the contr=
-ol
-> register is what can be configured at synthesis time.
 
-Provided that your FIFO is 128-bits, you can of course ask the core to =
-do up=20
-to the FIFO-size transfers for instance provided that you do not exceed=
- the=20
-size of the FIFO. The later can obviously not be changed on-the-fly sin=
-ce=20
-physical resources of the FPGA for this should be reserved at synthesis=
- time.=20
-Of course, one could use partial reconfiguration to increase the size, =
-but=20
-that's slightly off-topic ;)
---=20
-Best regards, Florian Fainelli
-Email : florian@openwrt.org
-http://openwrt.org
--------------------------------
+--===============5757149127240760436==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Register Now & Save for Velocity, the Web Performance & Operations 
+Conference from O'Reilly Media. Velocity features a full day of 
+expert-led, hands-on workshops and two days of sessions from industry 
+leaders in dedicated Performance & Operations tracks. Use code vel09scf 
+and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
+--===============5757149127240760436==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5757149127240760436==--

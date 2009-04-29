@@ -1,10 +1,12 @@
-From: Dmitriy Bronislavovich <dmitriybronislavovich-5pIOBoVdFF1BDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] 5 столиц Европы
-Date: Wed, 29 Apr 2009 16:28:57 +0400
-Message-ID: <2790612219.20090429162857@0037800.com>
+From: dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
+Subject: [PATCH] Freescale STMP SPI driver
+Date: Wed, 29 Apr 2009 16:20:08 +0400
+Message-ID: <1241007608.20184.6.camel@hp.diimka.lan>
+Reply-To: dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5757149127240760436=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,112 +18,761 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5757149127240760436==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+Hello all,
 
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBYSFRNTCAxLjAgVHJhbnNpdGlv
-bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL3hodG1sMS9EVEQveGh0bWwxLXRyYW5z
-aXRpb25hbC5kdGQiPg0KPGh0bWwgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0
-bWwiPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9
-InRleHQvaHRtbDsgY2hhcnNldD13aW5kb3dzLTEyNTEiIC8+DQo8dGl0bGU+VW50aXRsZWQg
-RG9jdW1lbnQ8L3RpdGxlPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHks
-dGQsdGggew0KCWZvbnQtZmFtaWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5z
-LXNlcmlmOw0KfQ0KLnN0eWxlMSB7DQoJZm9udC1mYW1pbHk6ICJUaW1lcyBOZXcgUm9tYW4i
-LCBUaW1lcywgc2VyaWY7DQoJZm9udC1zdHlsZTogaXRhbGljOw0KfQ0KLnN0eWxlMiB7Zm9u
-dC1zaXplOiAyMHB4fQ0KLnN0eWxlMyB7Y29sb3I6ICNGRjAwMDB9DQouc3R5bGU2IHtjb2xv
-cjogIzAwNjZDQ30NCi5zdHlsZTcge2NvbG9yOiAjMDA2NkNDOyBmb250LXNpemU6IDIwcHg7
-IH0NCi5zdHlsZTgge2NvbG9yOiAjMDAwMEZGfQ0KYm9keSB7DQoJYmFja2dyb3VuZC1jb2xv
-cjogI0ZGRkZDQzsNCn0NCi5zdHlsZTkgew0KCWZvbnQtc2l6ZTogMThweDsNCgljb2xvcjog
-I0ZGMDAwMDsNCn0NCi5zdHlsZTEwIHtmb250LXNpemU6IDEzcHh9DQouc3R5bGUxMSB7Y29s
-b3I6ICNGRjAwMDA7IGZvbnQtc2l6ZTogMTNweDsgfQ0KLnN0eWxlMTIge2NvbG9yOiAjRkZG
-RkZGfQ0KLnN0eWxlMTMgew0KCWZvbnQtc2l6ZTogMXB4Ow0KCWNvbG9yOiAjRkZGRkNDOw0K
-fQ0KLS0+DQo8L3N0eWxlPjwvaGVhZD4NCg0KPGJvZHk+DQo8ZGl2IGFsaWduPSJjZW50ZXIi
-Pg0KICA8cCBjbGFzcz0ic3R5bGUxIj5Hb29kIGFmdGVybm9vbiEg/fLuINLo7PPwPC9wPg0K
-ICA8dGFibGUgd2lkdGg9Ijc1MCIgYm9yZGVyPSIxIiBib3JkZXJjb2xvcj0iIzAwMDAwMCI+
-DQogICAgPHRyPg0KICAgICAgPHRkPjx0YWJsZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBj
-ZWxsc3BhY2luZz0iNSIgYmdjb2xvcj0iI0ZGRkZGRiI+DQogICAgICAgIDx0cj4NCiAgICAg
-ICAgICA8dGQgYmdjb2xvcj0iI0ZGRkZGRiI+PHAgYWxpZ249ImNlbnRlciIgY2xhc3M9InN0
-eWxlMiI+PHNwYW4gY2xhc3M9InN0eWxlMyI+wu3o7GHt6OUhPC9zcGFuPiA8c3BhbiBjbGFz
-cz0ic3R5bGU2Ij7S83D26P8g4iDsYWUhPC9zcGFuPjwvcD4NCiAgICAgICAgICAgIDxwIGFs
-aWduPSJsZWZ0Ij48c3BhbiBjbGFzcz0ic3R5bGU4Ij7E4PL7IOL76+Xy4Do8L3NwYW4+IDAy
-LjA1LjsgMDMuMDUuOyAwNS4wNYU8L3A+DQogICAgICAgICAgICA8cCBhbGlnbj0ibGVmdCI+
-PHNwYW4gY2xhc3M9InN0eWxlOCI+0fLu6Ozu8fL8Ojwvc3Bhbj48YnIgLz4NCiAgICAgICAg
-ICAgICAgzvLl6/wgMyogLSDu8iA0NTAgJDxiciAvPg0KICAgICAgICAgICAgICDO8uXr/CA0
-KiAtIO7yIDUwMCAkPGJyIC8+DQogICAgICAgICAgICAgIM7y5ev8IDUqIC0g7vIgNTUwICQ8
-YnIgLz4NCiAgICAgICAgICAgICAgPHNwYW4gY2xhc3M9InN0eWxlMTEiPio8L3NwYW4+PHNw
-YW4gY2xhc3M9InN0eWxlMTAiPiDx8u7o7O7x8vwg8+rg5+Dt4CDn4CD35evu4uXq4CDiIOTi
-8/Xs5fHy7e7sIO3u7OXw5S4gDQogICAgICAgICAgICAgIDwvc3Bhbj4NCiAgICAgICAgICAg
-IDxociAvPjwvcD4NCiAgICAgICAgICAgICAgPGRpdiBhbGlnbj0iY2VudGVyIiBjbGFzcz0i
-c3R5bGU3Ij7O8uT7eCDiINXu8OLg8ujoINLl7+Xw/CDBxcfi6Ofu4uD/ISAgICAgICAgICAg
-ICAgPC9kaXY+DQogICAgICAgICAgICAgIDxwIGFsaWduPSJsZWZ0Ij48c3BhbiBjbGFzcz0i
-c3R5bGU4Ij7E4PL7IOfg5efk4Do8L3NwYW4+IDA2LjA2LjA5IJYgMTIuMDkuMDkgPC9wPg0K
-ICAgICAgICAgICAgPHAgYWxpZ249ImxlZnQiPjxzcGFuIGNsYXNzPSJzdHlsZTgiPtHy7ujs
-7vHy/Do8L3NwYW4+PGJyIC8+DQogICAgICAgICAgICAgIM7y5ev8IDMqIC0g7vIgNDIwIIg8
-YnIgLz4NCiAgICAgICAgICAgICAgzvLl6/wgNCogLSDu8iA0NjAgiDxiciAvPg0KICAgICAg
-ICAgICAgICDO8uXr/CA1KiAtIO7yIDYwMCCIPGJyIC8+DQogICAgICAgICAgICAgIDxzcGFu
-IGNsYXNzPSJzdHlsZTExIj4qPC9zcGFuPiA8c3BhbiBjbGFzcz0ic3R5bGUxMCI+8fLu6Ozu
-8fL8IPPq4Ofg7eAg5+Ag9+Xr7uLl6uAg4iDk4vP17OXx8u3u7CDt7uzl8OUuPC9zcGFuPiAN
-CiAgICAgICAgICAgIDxociAvPjwvcD4NCiAgICAgICAgICAgICAgPGRpdiBhbGlnbj0iY2Vu
-dGVyIj48c3BhbiBjbGFzcz0ic3R5bGU3Ij7C8f8gxeLw7u/gIO3gIOvg5O7t6Dwvc3Bhbj48
-YnIgLz4NCiAgICAgICAgICAgICAgICA1IPHy7uvo9jxiciAvPg0KICAgICAgICAgICAgICA8
-L2Rpdj4NCiAgICAgICAgICAgICAgPHAgYWxpZ249ImxlZnQiPjxzcGFuIGNsYXNzPSJzdHls
-ZTgiPsTg8uAg5+Dl5+TgOjwvc3Bhbj4gMTYuMDYuMDkglyAyOC4wNi4wOTxiciAvPg0KICAg
-ICAgICAgICAgPC9wPg0KICAgICAgICAgICAgPHAgYWxpZ249ImxlZnQiPjxzcGFuIGNsYXNz
-PSJzdHlsZTgiPtHy7ujs7vHy/Do8L3NwYW4+ICA2MDAgiDxiciAvPg0KICAgICAgICAgICAg
-ICA8L3A+DQogICAgICAgICAgICA8cCBhbGlnbj0ibGVmdCI+PHNwYW4gY2xhc3M9InN0eWxl
-OCI+z/Du4/Dg7OzgIPLz8OA6PC9zcGFuPjxiciAvPg0KICAgICAgICAgICAgICA8ZW0+z/Dg
-4+AglyDP4PDo5iCXIMHw/vHx5ev8IJcgwOzx8uXw5ODsIJcgwuXt4CCWIMz+7fXl7TwvZW0+
-PC9wPg0KICAgICAgICAgICAgPHRhYmxlIHdpZHRoPSIxMDAlIiBib3JkZXI9IjEiIGFsaWdu
-PSJjZW50ZXIiIGJvcmRlcmNvbG9yPSIjRkYwMDAwIj4NCiAgICAgICAgICAgICAgPHRyPg0K
-ICAgICAgICAgICAgICAgIDx0ZD48cCBhbGlnbj0iY2VudGVyIj48c3BhbiBjbGFzcz0ic3R5
-bGU5Ij7C4Obt7iDuIPHq6OTq4PUhPC9zcGFuPjxiciAvPg0KICAgICAgICAgICAgICAgICAg
-yuDm5O7s8yA17PMgliAzJSDx6ujk6uA8YnIgLz4NCiAgICAgICAgICAgICAgICAgIMTr/yDj
-8PPv7yDu8iAxMCD35evu4uXqIJYgMSD35evu4uXqIOHl8e/r4PLt7iE8L3A+DQogICAgICAg
-ICAgICAgICAgICA8cCBhbGlnbj0iY2VudGVyIj7B7utl5SDv7uRw7uHtbzwvcD4NCiAgICAg
-ICAgICAgICAgICAgIDxwIGFsaWduPSJjZW50ZXIiPtLl6y/U4OrxOjxiciAvPg0KICAgICAg
-ICAgICAgICAgICAgKzM4IE8gNCA0IDUgOCA1IC0gNSA3IC0gOCA0IC8gMiAzIDcgliAxIDEg
-liA5MzwvcD4gICAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgICA8L3RyPg0K
-ICAgICAgICAgICAgPC90YWJsZT4gICAgICAgICAgICA8L3RkPg0KICAgICAgICA8L3RyPg0K
-ICAgICAgPC90YWJsZT4gICAgICA8L3RkPg0KICAgIDwvdHI+DQogIDwvdGFibGU+DQogIDxw
-PiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZu
-YnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNw
-OzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwv
-cD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4N
-CiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAg
-PHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+
-Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5i
-c3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7
-PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9w
-Pg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0K
-ICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8
-cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4m
-bmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJz
-cDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8
-L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+
-DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQog
-IDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxw
-PiZuYnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZu
-YnNwOzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNw
-OzwvcD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwv
-cD4NCiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4N
-CiAgPHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAg
-PHA+Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+
-Jm5ic3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHA+Jm5i
-c3A7PC9wPg0KICA8cD4mbmJzcDs8L3A+DQogIDxwPiZuYnNwOzwvcD4NCiAgPHAgYWxpZ249
-ImxlZnQiIGNsYXNzPSJzdHlsZTEzIj7x6/P34OntsyDx8vDu6ug65Oprb3JhbkBmcm9udC5y
-dSDRYW5kcmVqbkBwY3Blcy5lbGVrdHJhLnJ1CeT2YWs2QHlhbmRleC5ydQkg6iAzMzMtNDQ0
-LTBwckBkYXRhYXJ0LmNvbTwvcD4NCjwvZGl2Pg0KPC9ib2R5Pg0KPC9odG1sPg0K
+This patch adds SPI bus driver for Freescale STMP 3xxx-based boards
+
+Signed-off-by: dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
+---
+ drivers/spi/Kconfig    |    6
+ drivers/spi/Makefile   |    1
+ drivers/spi/spi_stmp.c |  657 +++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi_stmp.h |   45 +++
+ 4 files changed, 709 insertions(+)
+
+Index: linux-2.6-arm/drivers/spi/Kconfig
+===================================================================
+--- linux-2.6-arm.orig/drivers/spi/Kconfig
++++ linux-2.6-arm/drivers/spi/Kconfig
+@@ -204,6 +204,12 @@ config SPI_SH_SCI
+ 	help
+ 	  SPI driver for SuperH SCI blocks.
+ 
++config SPI_STMP3XXX
++	tristate "Freescale STMP37xx/378x SPI/SSP controller"
++	depends on ARCH_STMP3XXX && SPI_MASTER
++	help
++	  SPI driver for Freescale STMP37xx/378x SoC SSP interface
++
+ config SPI_TXX9
+ 	tristate "Toshiba TXx9 SPI controller"
+ 	depends on GENERIC_GPIO && CPU_TX49XX
+Index: linux-2.6-arm/drivers/spi/Makefile
+===================================================================
+--- linux-2.6-arm.orig/drivers/spi/Makefile
++++ linux-2.6-arm/drivers/spi/Makefile
+@@ -30,6 +30,7 @@ obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24x
+ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
+ obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
+ obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
++obj-$(CONFIG_SPI_STMP3XXX)		+= spi_stmp.o
+ # 	... add above this line ...
+ 
+ # SPI protocol drivers (device/link on bus)
+Index: linux-2.6-arm/drivers/spi/spi_stmp.c
+===================================================================
+--- /dev/null
++++ linux-2.6-arm/drivers/spi/spi_stmp.c
+@@ -0,0 +1,657 @@
++/*
++ * Freescale STMP378X SPI master driver
++ *
++ * Author: dmitry pervushin <dimka-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
++ *
++ * Copyright 2008 Freescale Semiconductor, Inc. All Rights Reserved.
++ * Copyright 2008 Embedded Alley Solutions, Inc All Rights Reserved.
++ */
++
++/*
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
++#include <linux/err.h>
++#include <linux/clk.h>
++#include <linux/io.h>
++#include <linux/dma-mapping.h>
++
++#include <mach/stmp3xxx.h>
++#include <mach/dma.h>
++#include <mach/regs-ssp.h>
++#include <mach/regs-apbh.h>
++#include "spi_stmp.h"
++
++/* 0 means DMA mode(recommended, default), !0 - PIO mode */
++static int pio;
++static int debug;
++static int clock;
++
++/**
++ * stmp_spi_init_hw
++ *
++ * Initialize the SSP port
++ */
++static int stmp_spi_init_hw(struct stmp_spi *ss)
++{
++	int err = 0;
++	void *pins = ss->master_dev->platform_data;
++
++	err = stmp3xxx_request_pin_group(pins, dev_name(ss->master_dev));
++	if (err)
++		goto out;
++
++	ss->clk = clk_get(NULL, "ssp");
++	if (IS_ERR(ss->clk)) {
++		err = PTR_ERR(ss->clk);
++		goto out_free_pins;
++	}
++	clk_enable(ss->clk);
++
++	stmp3xxx_reset_block(ss->regs, 0);
++	stmp3xxx_dma_reset_channel(ss->dma);
++
++	return 0;
++
++out_free_pins:
++	stmp3xxx_release_pin_group(pins, dev_name(ss->master_dev));
++out:
++	return err;
++}
++
++static void stmp_spi_release_hw(struct stmp_spi *ss)
++{
++	void *pins = ss->master_dev->platform_data;
++
++	if (ss->clk && !IS_ERR(ss->clk)) {
++		clk_disable(ss->clk);
++		clk_put(ss->clk);
++	}
++	stmp3xxx_release_pin_group(pins, dev_name(ss->master_dev));
++}
++
++static int stmp_spi_setup_transfer(struct spi_device *spi,
++		struct spi_transfer *t)
++{
++	u8 bits_per_word;
++	u32 hz;
++	struct stmp_spi *ss /* = spi_master_get_devdata(spi->master) */;
++	u16 rate;
++
++	ss = spi_master_get_devdata(spi->master);
++
++	bits_per_word = spi->bits_per_word;
++	if (t && t->bits_per_word)
++		bits_per_word = t->bits_per_word;
++
++	/*
++	  Calculate speed:
++		- by default, use maximum speed from ssp clk
++		- if device overrides it, use it
++		- if transfer specifies other speed, use transfer's one
++	 */
++	hz = 1000 * ss->speed_khz / ss->divider;
++	if (spi->max_speed_hz)
++		hz = min(hz, spi->max_speed_hz);
++	if (t && t->speed_hz)
++		hz = min(hz, t->speed_hz);
++
++	if (hz == 0) {
++		dev_err(&spi->dev, "Cannot continue with zero clock\n");
++		return -EINVAL;
++	}
++
++	if (bits_per_word != 8) {
++		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
++			__func__, bits_per_word);
++		return -EINVAL;
++	}
++
++	dev_dbg(&spi->dev, "Requested clk rate = %uHz, max = %uHz/%d = %uHz\n",
++		hz, ss->speed_khz, ss->divider,
++		ss->speed_khz * 1000 / ss->divider);
++
++	if (ss->speed_khz * 1000 / ss->divider < hz) {
++		dev_err(&spi->dev, "%s, unsupported clock rate %uHz\n",
++			__func__, hz);
++		return -EINVAL;
++	}
++
++	rate = 1000 * ss->speed_khz/ss->divider/hz;
++
++	HW_SSP_TIMING_WR_NB(ss->regs,
++		BF_SSP_TIMING_CLOCK_DIVIDE(ss->divider) |
++		BF_SSP_TIMING_CLOCK_RATE(rate - 1));
++
++	HW_SSP_CTRL1_WR_NB(ss->regs,
++		BF_SSP_CTRL1_SSP_MODE(BV_SSP_CTRL1_SSP_MODE__SPI) |
++		BF_SSP_CTRL1_WORD_LENGTH(BV_SSP_CTRL1_WORD_LENGTH__EIGHT_BITS) |
++		((spi->mode & SPI_CPOL) ? BM_SSP_CTRL1_POLARITY : 0) |
++		((spi->mode & SPI_CPHA) ? BM_SSP_CTRL1_PHASE : 0) |
++		(pio ? 0 : BM_SSP_CTRL1_DMA_ENABLE));
++
++	HW_SSP_CMD0_SET(0x00);
++
++	return 0;
++}
++
++/* the spi->mode bits understood by this driver: */
++#define MODEBITS (SPI_CPOL | SPI_CPHA)
++static int stmp_spi_setup(struct spi_device *spi)
++{
++	struct stmp_spi *ss;
++
++	ss = spi_master_get_devdata(spi->master);
++	if (!spi->bits_per_word)
++		spi->bits_per_word = 8;
++	if (spi->mode & ~MODEBITS) {
++		dev_err(&spi->dev, "%s: unsupported mode bits %x\n",
++			__func__, spi->mode & ~MODEBITS);
++		return -EINVAL;
++	}
++	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w\n",
++		__func__, spi->mode & MODEBITS, spi->bits_per_word);
++	return stmp_spi_setup_transfer(spi, NULL);
++}
++
++static inline u32 stmp_spi_cs(unsigned cs)
++{
++	return  ((cs & 1) ? BM_SSP_CTRL0_WAIT_FOR_CMD : 0) |
++		((cs & 2) ? BM_SSP_CTRL0_WAIT_FOR_IRQ : 0);
++}
++
++static int stmp_spi_txrx_dma(struct stmp_spi *ss, int cs,
++		unsigned char *buf, dma_addr_t dma_buf, int len,
++		int *first, int *last, int write)
++{
++	u32 c0 = 0;
++	dma_addr_t spi_buf_dma = dma_buf;
++	int count, status = 0;
++	enum dma_data_direction dir = write ? DMA_TO_DEVICE : DMA_FROM_DEVICE;
++
++	c0 |= (*first ? BM_SSP_CTRL0_LOCK_CS : 0);
++	c0 |= (*last ? BM_SSP_CTRL0_IGNORE_CRC : 0);
++	c0 |= (write ? 0 : BM_SSP_CTRL0_READ);
++	c0 |= BM_SSP_CTRL0_DATA_XFER;
++
++	c0 |= stmp_spi_cs(cs);
++
++	c0 |= BF_SSP_CTRL0_XFER_COUNT(len);
++
++	if (!dma_buf)
++		spi_buf_dma = dma_map_single(ss->master_dev, buf, len, dir);
++
++	ss->d.command->cmd =
++		BF_APBH_CHn_CMD_XFER_COUNT(len) |
++		BF_APBH_CHn_CMD_CMDWORDS(1) |
++		BM_APBH_CHn_CMD_WAIT4ENDCMD |
++		BM_APBH_CHn_CMD_IRQONCMPLT  |
++		BF_APBH_CHn_CMD_COMMAND(
++			write ? BV_APBH_CHn_CMD_COMMAND__DMA_READ :
++				BV_APBH_CHn_CMD_COMMAND__DMA_WRITE);
++	ss->d.command->pio_words[0] = c0;
++	ss->d.command->buf_ptr = spi_buf_dma;
++
++	stmp3xxx_dma_reset_channel(ss->dma);
++	stmp3xxx_dma_clear_interrupt(ss->dma);
++	stmp3xxx_dma_enable_interrupt(ss->dma);
++	init_completion(&ss->done);
++	stmp3xxx_dma_go(ss->dma, &ss->d, 1);
++	wait_for_completion(&ss->done);
++	count = 10000;
++	while ((HW_SSP_CTRL0_RD() & BM_SSP_CTRL0_RUN) && count--)
++		continue;
++	if (count <= 0)
++		status = -ETIMEDOUT;
++
++	if (!dma_buf)
++		dma_unmap_single(ss->master_dev, spi_buf_dma, len, dir);
++
++	return status;
++}
++
++static inline void stmp_spi_enable(struct stmp_spi *ss)
++{
++	HW_SSP_CTRL0_SET_NB(ss->regs, BM_SSP_CTRL0_LOCK_CS);
++	HW_SSP_CTRL0_CLR_NB(ss->regs, BM_SSP_CTRL0_IGNORE_CRC);
++}
++
++static inline void stmp_spi_disable(struct stmp_spi *ss)
++{
++	HW_SSP_CTRL0_CLR_NB(ss->regs, BM_SSP_CTRL0_LOCK_CS);
++	HW_SSP_CTRL0_SET_NB(ss->regs, BM_SSP_CTRL0_IGNORE_CRC);
++}
++
++static int stmp_spi_txrx_pio(struct stmp_spi *ss, int cs,
++		unsigned char *buf, int len,
++		int *first, int *last, int write)
++{
++	int count;
++
++	if (*first) {
++		stmp_spi_enable(ss);
++		*first = 0;
++	}
++
++	HW_SSP_CTRL0_SET(stmp_spi_cs(cs));
++
++	while (len--) {
++		if (*last && len == 0) {
++			stmp_spi_disable(ss);
++			*last = 0;
++		}
++		HW_SSP_CTRL0_CLR_NB(ss->regs, BM_SSP_CTRL0_XFER_COUNT);
++		HW_SSP_CTRL0_SET_NB(ss->regs, 1); /* byte-by-byte */
++
++		if (write)
++			HW_SSP_CTRL0_CLR_NB(ss->regs, BM_SSP_CTRL0_READ);
++		else
++			HW_SSP_CTRL0_SET_NB(ss->regs, BM_SSP_CTRL0_READ);
++
++		/* Run! */
++		HW_SSP_CTRL0_SET_NB(ss->regs, BM_SSP_CTRL0_RUN);
++		count = 10000;
++		while (((HW_SSP_CTRL0_RD() & BM_SSP_CTRL0_RUN) == 0) && count--)
++			continue;
++		if (count <= 0)
++			break;
++
++		if (write)
++			HW_SSP_DATA_WR_NB(ss->regs, *buf);
++
++		/* Set TRANSFER */
++		HW_SSP_CTRL0_SET_NB(ss->regs, BM_SSP_CTRL0_DATA_XFER);
++
++		if (!write) {
++			count = 10000;
++			while (count-- &&
++				(HW_SSP_STATUS_RD_NB(ss->regs) &
++					BM_SSP_STATUS_FIFO_EMPTY))
++				continue;
++			if (count <= 0)
++				break;
++			*buf = (HW_SSP_DATA_RD_NB(ss->regs) & 0xFF);
++		}
++
++		count = 10000;
++		while ((HW_SSP_CTRL0_RD() & BM_SSP_CTRL0_RUN) && count--)
++			continue;
++		if (count <= 0)
++			break;
++
++		/* advance to the next byte */
++		buf++;
++	}
++	return len < 0 ? 0 : -ETIMEDOUT;
++}
++
++static int stmp_spi_handle_message(struct stmp_spi *ss, struct spi_message *m)
++{
++	int first, last;
++	struct spi_transfer *t, *tmp_t;
++	int status = 0;
++	int cs;
++
++	first = last = 0;
++
++	cs = m->spi->chip_select;
++
++	list_for_each_entry_safe(t, tmp_t, &m->transfers, transfer_list) {
++
++		stmp_spi_setup_transfer(m->spi, t);
++
++		if (&t->transfer_list == m->transfers.next)
++			first = !0;
++		if (&t->transfer_list == m->transfers.prev)
++			last = !0;
++		if (t->rx_buf && t->tx_buf) {
++			pr_debug("%s: cannot send and receive simultaneously\n",
++				__func__);
++			return -EINVAL;
++		}
++
++		/*
++		  REVISIT:
++		  here driver completely ignores setting of t->cs_change
++		 */
++		if (t->tx_buf) {
++			status = pio ?
++			   stmp_spi_txrx_pio(ss, cs, (void *)t->tx_buf,
++				   t->len, &first, &last, 1) :
++			   stmp_spi_txrx_dma(ss, cs, (void *)t->tx_buf,
++				   t->tx_dma, t->len, &first, &last, 1);
++			if (debug) {
++				if (t->len < 0x10)
++					print_hex_dump_bytes("Tx ",
++						DUMP_PREFIX_OFFSET,
++						t->tx_buf, t->len);
++				else
++					pr_debug("Tx: %d bytes\n", t->len);
++			}
++		}
++		if (t->rx_buf) {
++			status = pio ?
++			   stmp_spi_txrx_pio(ss, cs, t->rx_buf,
++				   t->len, &first, &last, 0) :
++			   stmp_spi_txrx_dma(ss, cs, t->rx_buf,
++				   t->rx_dma, t->len, &first, &last, 0);
++			if (debug) {
++				if (t->len < 0x10)
++					print_hex_dump_bytes("Rx ",
++						DUMP_PREFIX_OFFSET,
++						t->rx_buf, t->len);
++				else
++					pr_debug("Rx: %d bytes\n", t->len);
++			}
++		}
++
++		if (status)
++			break;
++
++		first = last = 0;
++
++	}
++	return status;
++}
++
++/**
++ * stmp_spi_handle - handle messages from the queue
++ */
++static void stmp_spi_handle(struct work_struct *w)
++{
++	struct stmp_spi *ss = container_of(w, struct stmp_spi, work);
++	unsigned long flags;
++	struct spi_message *m;
++
++	BUG_ON(w == NULL);
++
++	spin_lock_irqsave(&ss->lock, flags);
++	while (!list_empty(&ss->queue)) {
++		m = list_entry(ss->queue.next, struct spi_message, queue);
++		list_del_init(&m->queue);
++		spin_unlock_irqrestore(&ss->lock, flags);
++
++		m->status = stmp_spi_handle_message(ss, m);
++		if (m->complete)
++			m->complete(m->context);
++
++		spin_lock_irqsave(&ss->lock, flags);
++	}
++	spin_unlock_irqrestore(&ss->lock, flags);
++
++	return;
++}
++
++/**
++ * stmp_spi_transfer - perform message transfer.
++ * Called indirectly from spi_async, queues all the messages to
++ * spi_handle_message.
++ * @spi: spi device
++ * @m: message to be queued
++**/
++static int stmp_spi_transfer(struct spi_device *spi, struct spi_message *m)
++{
++	struct stmp_spi *ss = spi_master_get_devdata(spi->master);
++	unsigned long flags;
++
++	m->status = -EINPROGRESS;
++	spin_lock_irqsave(&ss->lock, flags);
++	list_add_tail(&m->queue, &ss->queue);
++	queue_work(ss->workqueue, &ss->work);
++	spin_unlock_irqrestore(&ss->lock, flags);
++	return 0;
++}
++
++static irqreturn_t stmp_spi_irq(int irq, void *dev_id)
++{
++	struct stmp_spi *ss = dev_id;
++
++	stmp3xxx_dma_clear_interrupt(ss->dma);
++	complete(&ss->done);
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t stmp_spi_irq_err(int irq, void *dev_id)
++{
++	struct stmp_spi *ss = dev_id;
++	u32 c1, st;
++
++	c1 = HW_SSP_CTRL1_RD_NB(ss->regs);
++	st = HW_SSP_STATUS_RD_NB(ss->regs);
++	printk(KERN_ERR"IRQ - ERROR!, status = 0x%08X, c1 = 0x%08X\n", st, c1);
++	HW_SSP_CTRL1_CLR_NB(ss->regs, c1 & 0xCCCC0000);
++
++	return IRQ_HANDLED;
++}
++
++static int __init stmp_spi_probe(struct platform_device *dev)
++{
++	int err = 0;
++	struct spi_master *master;
++	struct stmp_spi *ss;
++	struct resource *r;
++
++	/* Get resources(memory, IRQ) associated with the device */
++	master = spi_alloc_master(&dev->dev, sizeof(struct stmp_spi));
++
++	if (master == NULL) {
++		err = -ENOMEM;
++		goto out0;
++	}
++
++	ss = spi_master_get_devdata(master);
++	platform_set_drvdata(dev, master);
++
++	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
++	if (r == NULL) {
++		err = -ENODEV;
++		goto out_put_master;
++	}
++	ss->regs = ioremap(r->start, resource_size(r));
++	if (!ss->regs) {
++		err = -EINVAL;
++		goto out_put_master;
++	}
++
++	ss->master_dev = &dev->dev;
++	ss->id = dev->id;
++
++	INIT_WORK(&ss->work, stmp_spi_handle);
++	INIT_LIST_HEAD(&ss->queue);
++	spin_lock_init(&ss->lock);
++
++	ss->workqueue = create_singlethread_workqueue(dev_name(&dev->dev));
++	if (!ss->workqueue) {
++		err = -ENXIO;
++		goto out_put_master;
++	}
++	master->transfer = stmp_spi_transfer;
++	master->setup = stmp_spi_setup;
++
++
++	ss->irq = platform_get_irq(dev, 0);
++	if (ss->irq < 0) {
++		err = -ENXIO;
++		goto out_put_master;
++	}
++
++	r = platform_get_resource(dev, IORESOURCE_DMA, 0);
++	if (r == NULL) {
++		err = -ENODEV;
++		goto out_put_master;
++	}
++
++	ss->dma = r->start;
++	err = stmp3xxx_dma_request(ss->dma, &dev->dev, dev_name(&dev->dev));
++	if (err)
++		goto out_put_master;
++
++	err = stmp3xxx_dma_allocate_command(ss->dma, &ss->d);
++	if (err)
++		goto out_free_dma;
++
++	master->bus_num = dev->id;
++	master->num_chipselect = 1;
++
++	/* SPI controller initializations */
++	err = stmp_spi_init_hw(ss);
++	if (err) {
++		dev_dbg(&dev->dev, "cannot initialize hardware\n");
++		goto out_free_dma_desc;
++	}
++
++	if (clock) {
++		dev_info(&dev->dev, "clock rate forced to %d\n", clock);
++		clk_set_rate(ss->clk, clock);
++	}
++	ss->speed_khz = clk_get_rate(ss->clk);
++	ss->divider = 2;
++	dev_info(&dev->dev, "max possible speed %d = %ld/%d kHz\n",
++		ss->speed_khz, clk_get_rate(ss->clk), ss->divider);
++
++	/* Register for SPI interrupt */
++	err = request_irq(ss->irq, stmp_spi_irq, 0,
++			  dev_name(&dev->dev), ss);
++	if (err) {
++		dev_dbg(&dev->dev, "request_irq failed, %d\n", err);
++		goto out_release_hw;
++	}
++
++	/* ..and shared interrupt for all SSP controllers */
++	err = request_irq(IRQ_SSP_ERROR, stmp_spi_irq_err, IRQF_SHARED,
++			  dev_name(&dev->dev), ss);
++	if (err) {
++		dev_dbg(&dev->dev, "request_irq(error) failed, %d\n", err);
++		goto out_free_irq;
++	}
++
++	err = spi_register_master(master);
++	if (err) {
++		dev_dbg(&dev->dev, "cannot register spi master, %d\n", err);
++		goto out_free_irq_2;
++	}
++	dev_info(&dev->dev, "at (mapped) 0x%08X, irq=%d, bus %d, %s mode\n",
++			(u32)ss->regs, ss->irq, master->bus_num,
++			pio ? "PIO" : "DMA");
++	return 0;
++
++out_free_irq_2:
++	free_irq(IRQ_SSP_ERROR, ss);
++out_free_irq:
++	free_irq(ss->irq, ss);
++out_free_dma_desc:
++	stmp3xxx_dma_free_command(ss->dma, &ss->d);
++out_free_dma:
++	stmp3xxx_dma_release(ss->dma);
++out_release_hw:
++	stmp_spi_release_hw(ss);
++out_put_master:
++	spi_master_put(master);
++	if (ss->regs)
++		iounmap(ss->regs);
++	if (ss->workqueue)
++		destroy_workqueue(ss->workqueue);
++out0:
++	return err;
++}
++
++static int __devexit stmp_spi_remove(struct platform_device *dev)
++{
++	struct stmp_spi *ss;
++	struct spi_master *master;
++
++	master = platform_get_drvdata(dev);
++	if (master == NULL)
++		goto out0;
++	ss = spi_master_get_devdata(master);
++	if (ss == NULL)
++		goto out1;
++	free_irq(ss->irq, ss);
++	if (ss->workqueue)
++		destroy_workqueue(ss->workqueue);
++	if (ss->regs)
++		iounmap(ss->regs);
++	stmp3xxx_dma_free_command(ss->dma, &ss->d);
++	stmp3xxx_dma_release(ss->dma);
++	stmp_spi_release_hw(ss);
++	platform_set_drvdata(dev, NULL);
++out1:
++	spi_master_put(master);
++out0:
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int stmp_spi_suspend(struct platform_device *pdev, pm_message_t pmsg)
++{
++	struct stmp_spi *ss;
++	struct spi_master *master;
++
++	master = platform_get_drvdata(pdev);
++	ss = spi_master_get_devdata(master);
++
++	ss->saved_timings = HW_SSP_TIMING_RD_NB(ss->regs);
++	clk_disable(ss->clk);
++
++	return 0;
++}
++
++static int stmp_spi_resume(struct platform_device *pdev)
++{
++	struct stmp_spi *ss;
++	struct spi_master *master;
++
++	master = platform_get_drvdata(pdev);
++	ss = spi_master_get_devdata(master);
++
++	clk_enable(ss->clk);
++	HW_SSP_CTRL0_CLR_NB(ss->regs,
++		BM_SSP_CTRL0_SFTRST | BM_SSP_CTRL0_CLKGATE);
++	HW_SSP_TIMING_SET_NB(ss->regs, ss->saved_timings);
++
++	return 0;
++}
++
++#else
++#define stmp_spi_suspend NULL
++#define stmp_spi_resume  NULL
++#endif
++
++static struct platform_driver stmp_spi_driver = {
++	.probe	= stmp_spi_probe,
++	.remove	= __devexit_p(stmp_spi_remove),
++	.driver = {
++		.name = "stmp37xx_ssp",
++		.owner = THIS_MODULE,
++	},
++	.suspend = stmp_spi_suspend,
++	.resume  = stmp_spi_resume,
++};
++
++static int __init stmp_spi_init(void)
++{
++	return platform_driver_register(&stmp_spi_driver);
++}
++
++static void __exit stmp_spi_exit(void)
++{
++	platform_driver_unregister(&stmp_spi_driver);
++}
++
++module_init(stmp_spi_init);
++module_exit(stmp_spi_exit);
++module_param(pio, int, S_IRUGO);
++module_param(debug, int, 0644);
++module_param(clock, int, S_IRUGO);
++MODULE_AUTHOR("dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>");
++MODULE_DESCRIPTION("STMP3xxx SPI/SSP driver");
++MODULE_LICENSE("GPL");
+Index: linux-2.6-arm/drivers/spi/spi_stmp.h
+===================================================================
+--- /dev/null
++++ linux-2.6-arm/drivers/spi/spi_stmp.h
+@@ -0,0 +1,45 @@
++/*
++ * Freescale STMP378X SPI master driver
++ *
++ * Author: dmitry pervushin <dimka-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
++ *
++ * Copyright 2008 Freescale Semiconductor, Inc. All Rights Reserved.
++ * Copyright 2008 Embedded Alley Solutions, Inc All Rights Reserved.
++ */
++
++/*
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++#ifndef __SPI_STMP_H
++#define __SPI_STMP_H
++
++struct stmp_spi {
++	int		id;
++
++	void *  __iomem regs;	/* vaddr of the control registers */
++
++	u32		irq;
++	u32		dma;
++	struct stmp3xxx_dma_descriptor d;
++
++	u32		speed_khz;
++	u32		saved_timings;
++	u32		divider;
++
++	struct clk	*clk;
++	struct device	*master_dev;
++
++	struct work_struct work;
++	struct workqueue_struct *workqueue;
++	spinlock_t lock;
++	struct list_head queue;
++
++	struct completion done;
++};
++
++#endif /* __SPI_STMP_H */
 
 
-
-
---===============5757149127240760436==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Register Now & Save for Velocity, the Web Performance & Operations 
@@ -129,15 +780,3 @@ Conference from O'Reilly Media. Velocity features a full day of
 expert-led, hands-on workshops and two days of sessions from industry 
 leaders in dedicated Performance & Operations tracks. Use code vel09scf 
 and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
---===============5757149127240760436==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5757149127240760436==--

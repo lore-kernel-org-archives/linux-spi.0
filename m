@@ -1,54 +1,94 @@
-From: Thierry Reding <thierry.reding@avionic-design.de>
-Subject: Re: [spi-devel-general] [PATCH v2] spi: Add support for the
-	OpenCores SPI controller.
-Date: Wed, 29 Apr 2009 08:31:04 +0200
-Message-ID: <20090429063104.GB7784@avionic-design.de>
-References: <200904041227.54687.david-b@pacbell.net> <20090428122011.GB6325@avionic-design.de> <200904281541.21238.florian@openwrt.org> <200904281354.12192.david-b@pacbell.net>
+From: "Hipnosis Chile,
+	Centro de Hipnosis y Terapias Afines" <hipnosischile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] ¿TIENE ALGUNA DE LAS SIGUIENTES ENFERMEDADES..?
+Date: Wed, 29 Apr 2009 01:09:07 -0400
+Message-ID: <1180662565-220094329597819@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Florian Fainelli <florian@openwrt.org>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754013AbZD2GbZ@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <200904281354.12192.david-b@pacbell.net>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-* David Brownell wrote:
-> On Tuesday 28 April 2009, Florian Fainelli wrote:
-> > > > Is this the http://www.opencores.org/?do=project&who=spi core?
-> > >
-> > > Yes, it is.
-> > >
-> > > > Its summary says "Variable length of transfer word up to 32 bits";
-> > > > does that mean "configurable when core is synthesized" instead of
-> > > > truly "variable"?
-> > 
-> > This is indeed configured at synthesis time.
-> 
-> Now I'm confused again.  Thierry says (below) that the number of bits
-> can be set per-"transfer".
-> 
-> Now, I can easily understand that a *maximum* would be configured
-> at synthesis time ... if there's a 32-bit CPU or DMA engine, it'd
-> make very limited sense to interact using 128-bit I/O words.
+SI TIENE:
+Desorientaci=F3n Existencial, Baja Autoestima, Baja Energ=EDa, Trastornos A=
+limenticios, Depresi=F3n, Ansiedad, Angustia, Crisis de P=E1nico, Miedos, T=
+raumas, Fobias, Insomnio, Cefaleas, Alteraci=F3n del Sistema Nervioso, Dolo=
+res F=EDsicos, Adicciones, Estr=E9s, Baja Autoestima, Timidez, Inseguridad,=
+ P=E1nico, Mejorar la Memoria y la Concentraci=F3n, Agresividad, Intoleranc=
+ia, Penas , Duelos (p=E9rdida de un Ser querido), Negatividad, Preparaci=F3=
+n para dar Ex=E1menes Acad=E9micos, Falta de Motivaci=F3n, Problemas de Par=
+eja, Celos Obsesivos, Quiere dejar de fumar y no puede, No puede hablar en =
+p=FAblico...
 
-I can't really comment on the synthesis because I'm not involved with that
-part. What I was saying that the core provides a field in the control
-register which defines the number of bits to transfer from/to the
-transmit/receive registers. The maximum number of bits that can be specified
-in this way is 128.
+...NOSOTROS LE PODEMOS AYUDAR
 
-> Is there both a configurable maximum, *and* a word-size setting that
-> can be changed on the fly?  That's what I would expect; it's what
-> most other designs do.  The only time I've seen fixed "you must use
-> N-bit words" designs is on cost-eradicated 8-bit microcontrollers.
+PIDA UNA HORA DE EVALUACI=D3N*  DE SU ESTADO DE SALUD =A1=A1=A1GRATUITA!!!
+EL DIA Y HORA QUE SE LE D=C9 DEBE LLEVAR TODOS LOS DOCUMENTOS QUE TENGA (DI=
+AGN=D3STICOS - EXAMENES - MEDICAMENTOS)
+EN ESE MOMENTO SE LE HAR=C1 UN PROGRAMA DE SESIONES QUE PUEDE ACEPTAR O NO =
+ACEPTAR.
+ESTAMOS EN SEMINARIO 6 - PROVIDENCIA (Metro Baquedano - Edificio Tecnobit)
 
-Perhaps that maximum number of bits that can be set through the control
-register is what can be configured at synthesis time.
+*LA EVALUACI=D3N CONSISTE EN UN CHEQUEO QUE INTEGRA LOS TRES ELEMENTOS ESEN=
+CIALES DE UN SER HUMANO:
+BIOL=D3GICO: A TRAV=C9S DE LA MAGNETOTERAPIA (IMANES)
+PSICOL=D3GICO: A TRAV=C9S DE UNA INDUCCI=D3N SIMPLE (HIPNOSIS CONVERSACIONA=
+L)
+ENERG=C9TICO: A TRAV=C9S DE LA MEDICI=D3N DE SUS PUNTOS ENERG=C9TICOS.
 
-> - Dave
+LAS TERAPIAS NATURALES QUE SE UTILIZAN EN LOS TRATAMIENTOS (SE UTILIZAN EN =
+CONJUNTO PARA UN MEJOR RESULTADO) SON:
+HIPNOTERAPIA - MAGNETOTERAPIA - REIKITERAPIA - LOGOTERAPIA - FITOTERAPIA - =
+AROMATERAPIA - RADIESTESIATERAPIA
+Se llaman Terapias Naturales a aquellas que son parte de la naturaleza o de=
+l hombre y por lo tanto no incluyen en sus tratamientos elementos qu=EDmico=
+s extra=F1os ni nosivos al ser humano.
 
-Thierry
+=BFQu=E9 tan Efectiva es la Hipnosis? La efectividad de la Hipnosis es comp=
+arativamente muy superior a la de otras herramientas relacionadas con la sa=
+lud mental. Para que te hagas una idea, revisa estos datos sobre la tasa de=
+ recuperaci=F3n revelados en una investigaci=F3n de reportes de psicoterapi=
+a desarrollada por el Dr. Alfred Barrios, de la UCLA: =
+
+Psicoan=E1lisis, 38% de recuperaci=F3n despu=E9s de 600 sesiones. =
+
+Terapia Conductual, 72% de recuperaci=F3n despu=E9s de 22 sesiones. =
+
+Hipnosis, 93% de recuperaci=F3n despu=E9s de 6 sesiones. =
+
+(Datos publicados en Psychotherapy: Theory, Research and Practice)
+
+CUANDO LA HIPNOSIS EST=C1 EN COMBINACI=D3N CON 3 =F3 M=C1S TERAPIAS NATURAL=
+ES SU RESULTADO ES MUY SUPERIOR.
+
+ESTE A=D1O YA HAN SOLUCIONADO SUS PROBLEMAS (POR LOS QUE LLEGARON A HIPNOSI=
+S CHILE) M=C1S DE 50 PERSONAS. USTED TAMBI=C9N PUEDE HACERLO.
+
+
+Centro de Hipnosis y Terapias Afines "Hipnosis Chile"
+Seminario 6 - Providencia - Fonos: 248 9112 - 278 1078
+horas-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org - www.hipnosischile.cl
+Remover: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org
+
+
+
+---------------------------------------------------------------------------=
+---
+Register Now & Save for Velocity, the Web Performance & Operations =
+
+Conference from O'Reilly Media. Velocity features a full day of =
+
+expert-led, hands-on workshops and two days of sessions from industry =
+
+leaders in dedicated Performance & Operations tracks. Use code vel09scf =
+
+and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf

@@ -1,8 +1,8 @@
 From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH 2/9] spi_mpc83xx: Quieten down the
-	"Requested speed is too	low" message
-Date: Fri, 1 May 2009 03:48:23 +0400
-Message-ID: <20090430234823.GB7901@oksana.dev.rtsoft.ru>
+Subject: [PATCH 1/9] spi_mpc83xx: Handles other
+	Freescale processors
+Date: Fri, 1 May 2009 03:48:21 +0400
+Message-ID: <20090430234821.GA7901@oksana.dev.rtsoft.ru>
 References: <20090430234739.GA27709@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,57 +24,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-When a platform is running at high frequencies it's not always
-possible to scale-down a frequency to a requested value, and using
-mmc_spi driver this leads to the following printk flood during card
-polling:
+With this patch we'll able to select spi_mpc83xx driver on the MPC86xx
+platforms. Let the driver depend on FSL_SOC, so we don't have to worry
+about Kconfig anymore.
 
-  ...
-  mmc_spi spi32766.0: Requested speed is too low: 400000 Hz. Will use
-  520828 Hz instead.
-  mmc_spi spi32766.0: Requested speed is too low: 400000 Hz. Will use
-  520828 Hz instead.
-  ...
-
-Fix this by using WARN_ONCE(), it's better than the flood, and also
-better than turning dev_err() into dev_dbg(), since we actually want
-to warn that some things may not work correctly.
+Also remove the "experimental" dependency, the driver has been tested
+to work on a various hardware, and surely not experimental anymore.
 
 Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
 ---
- drivers/spi/spi_mpc83xx.c |   11 ++++++-----
- 1 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/spi/Kconfig |   14 ++++++--------
+ 1 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
-index f4573a9..08b49d2 100644
---- a/drivers/spi/spi_mpc83xx.c
-+++ b/drivers/spi/spi_mpc83xx.c
-@@ -14,6 +14,7 @@
- #include <linux/init.h>
- #include <linux/types.h>
- #include <linux/kernel.h>
-+#include <linux/bug.h>
- #include <linux/errno.h>
- #include <linux/err.h>
- #include <linux/completion.h>
-@@ -275,12 +276,12 @@ int mpc83xx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
- 	if ((mpc83xx_spi->spibrg / hz) > 64) {
- 		cs->hw_mode |= SPMODE_DIV16;
- 		pm = mpc83xx_spi->spibrg / (hz * 64);
--		if (pm > 16) {
--			dev_err(&spi->dev, "Requested speed is too "
--				"low: %d Hz. Will use %d Hz instead.\n",
--				hz, mpc83xx_spi->spibrg / 1024);
-+
-+		WARN_ONCE(pm > 16, "%s: Requested speed is too low: %d Hz. "
-+			  "Will use %d Hz instead.\n", dev_name(&spi->dev),
-+			  hz, mpc83xx_spi->spibrg / 1024);
-+		if (pm > 16)
- 			pm = 16;
--		}
- 	} else
- 		pm = mpc83xx_spi->spibrg / (hz * 4);
- 	if (pm)
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 83a185d..3c1845c 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -140,16 +140,14 @@ config SPI_MPC52xx_PSC
+ 	  Controller in master SPI mode.
+ 
+ config SPI_MPC83xx
+-	tristate "Freescale MPC83xx/QUICC Engine SPI controller"
+-	depends on (PPC_83xx || QUICC_ENGINE) && EXPERIMENTAL
++	tristate "Freescale MPC8xxx SPI controller"
++	depends on FSL_SOC
+ 	help
+-	  This enables using the Freescale MPC83xx and QUICC Engine SPI
+-	  controllers in master mode.
++	  This enables using the Freescale MPC8xxx SPI controllers in master
++	  mode.
+ 
+-	  Note, this driver uniquely supports the SPI controller on the MPC83xx
+-	  family of PowerPC processors, plus processors with QUICC Engine
+-	  technology. This driver uses a simple set of shift registers for data
+-	  (opposed to the CPM based descriptor model).
++	  This driver uses a simple set of shift registers for data (opposed
++	  to the CPM based descriptor model).
+ 
+ config SPI_OMAP_UWIRE
+ 	tristate "OMAP1 MicroWire"
 -- 
 1.6.2.2
 

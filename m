@@ -1,11 +1,10 @@
-From: Asencio <balked-sSL7m9ZtV73QT0dZR+AlfA@public.gmane.org>
-Subject: How to Spice Up Your Cunnilingus Routine -
-	Excitte and Make Your Girl Want it More Badly
-Date: Thu, 30 Apr 2009 08:04:45 -0100
-Message-ID: <49F96529.4562161@ciemat.com>
+From: "Payment Svcs" <noreply219-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] Urgent Notice
+Date: Thu, 30 Apr 2009 10:23:03 -0700
+Message-ID: <3fe8c8f7c41ec22874ba6c67001373b9@g2gm.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------27FD79303460B18D0021DE94"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5209454971048929787=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,213 +16,213 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---------------27FD79303460B18D0021DE94
-Content-Type: image/png
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
+--===============5209454971048929787==
+Content-Type: text/html;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-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
-2kUnAAAAAElFTkSuQmCC
 
---------------27FD79303460B18D0021DE94
+<html>
+<head>
+</head>
+
+<body text=3D#000000 bgColor=3D#004080 leftMargin=3D15 rightMargin=3D15>
+<center>
+<table style=3D"BORDER-COLLAPSE: collapse" borderColor=3D#111111 =
+cellSpacing=3D0=20
+cellPadding=3D0 width=3D760 border=3D0>
+  <tbody>
+  <tr>
+    <td vAlign=3Dtop align=3Dleft bgColor=3D#ffffff>
+      <p align=3Dcenter><br>
+      <table class=3DMsoNormalTable style=3D"WIDTH: 570pt" =
+cellSpacing=3D0=20
+      cellPadding=3D0 width=3D760 border=3D0>
+        <tbody>
+        <tr>
+          <td=20
+          style=3D"PADDING-RIGHT: 0in; PADDING-LEFT: 0in; PADDING-BOTTOM: =
+0in; PADDING-TOP: 0in"=20
+          vAlign=3Dtop>
+            <p class=3DMsoNormal style=3D"TEXT-ALIGN: center"=20
+            align=3Dcenter><strong><b><font face=3D"Times New Roman" =
+color=3Dnavy=20
+            size=3D4><span style=3D"FONT-SIZE: 13.5pt; COLOR: navy">The =
+following=20
+            message is for Homeowners who=20
+            are</span><u1:p></u1:p></font></b></strong><b><font =
+color=3Dnavy><span=20
+            style=3D"FONT-WEIGHT: bold; COLOR: =
+navy"><o:p></o:p></span></font></b></p>
+            <p class=3DMsoNormal style=3D"TEXT-ALIGN: center"=20
+            align=3Dcenter><strong><b><font face=3D"Times New Roman" =
+color=3Dnavy=20
+            size=3D4><span style=3D"FONT-SIZE: 13.5pt; COLOR: navy">UNABLE =
+to=20
+            refinance their homes or afford their current=20
+            =
+payments:</span></font></b></strong></p></td></tr></tbody></table></p>
+      <p class=3DMsoNormal><font face=3D"Times New Roman" size=3D3><span=20
+      style=3D"FONT-SIZE: 12pt"><o:p></o:p></span></font></p>
+      <p align=3Dcenter>
+      <table class=3DMsoNormalTable=20
+      style=3D"WIDTH: 570pt; BORDER-COLLAPSE: collapse" cellSpacing=3D0=20
+      cellPadding=3D0 width=3D760 border=3D0>
+        <tbody>
+        <tr>
+          <td=20
+          style=3D"PADDING-RIGHT: 0in; PADDING-LEFT: 0in; PADDING-BOTTOM: =
+0in; WIDTH: 570pt; PADDING-TOP: 0in"=20
+          vAlign=3Dtop width=3D760 border=3D"0">
+            <p class=3DMsoNormal dir=3Dltr style=3D"MARGIN-RIGHT: 0px"=20
+            align=3Dcenter><font face=3DArial color=3Dnavy =
+size=3D3><u1:p></u1:p><span=20
+            style=3D"FONT-SIZE: 12pt; COLOR: navy; FONT-FAMILY: =
+Arial">&nbsp;=20
+            Tired of being told no by the banks? Modify your existing loan =
+to=20
+            terms that you can afford to pay. Stop your foreclosure and =
+get a=20
+            clean slate.&nbsp;</span></font><font color=3Dblack><span=20
+            style=3D"COLOR: black"><o:p></o:p></span></font></p>
+            <p class=3DMsoNormal><font face=3D"Times New Roman" =
+color=3Dblack=20
+            size=3D3><span=20
+            style=3D"FONT-SIZE: 12pt; COLOR: =
+black"><o:p></o:p></span></font></p>
+            <ul style=3D"MARGIN-TOP: 0in" type=3Ddisc>
+              <li class=3DMsoNormal=20
+              style=3D"COLOR: navy; mso-list: l0 level1 lfo3"><font =
+face=3DArial=20
+              color=3Dnavy size=3D3><u1:p></u1:p><span=20
+              style=3D"FONT-SIZE: 12pt; FONT-FAMILY: Arial">H.E.L.P. NOW =
+program=20
+              <o:p></o:p></span></font>
+              <li class=3DMsoNormal=20
+              style=3D"COLOR: navy; mso-list: l0 level1 lfo3"><font =
+face=3DArial=20
+              color=3Dnavy size=3D3><span=20
+              style=3D"FONT-SIZE: 12pt; FONT-FAMILY: Arial">We negotiate =
+with your=20
+              lender on your behalf to obtain terms you can=20
+              afford.</span></font><font face=3DArial size=3D5><span=20
+              style=3D"FONT-SIZE: 16pt; FONT-FAMILY: Arial"> =
+</span></font><font=20
+              face=3DArial><span=20
+              style=3D"FONT-FAMILY: =
+Arial"><u1:p></u1:p><u1:p></u1:p><o:p></o:p></span></font>
+              <li class=3DMsoNormal=20
+              style=3D"COLOR: navy; mso-list: l0 level1 lfo3"><font =
+face=3DArial=20
+              color=3Dnavy size=3D3><span=20
+              style=3D"FONT-SIZE: 12pt; FONT-FAMILY: Arial">Typical =
+results=20
+              include: <strong><b><font face=3DArial><span=20
+              style=3D"FONT-FAMILY: Arial">Reduced mortgage=20
+              payment</span></font></b></strong>, Three to Twelve=20
+              <strong><b><font face=3DArial><span=20
+              style=3D"FONT-FAMILY: Arial">months without a mortgage=20
+              payment</span></font></b></strong>, reduced interest rate, =
+reduced=20
+              principle balance (loan balance) and fixed rate.=20
+              <o:p></o:p></span></font><u1:p></u1:p><u1:p></u1:p>
+              <li class=3DMsoNormal=20
+              style=3D"COLOR: navy; mso-list: l0 level1 lfo3"><font =
+face=3DArial=20
+              color=3Dnavy size=3D3><span=20
+              style=3D"FONT-SIZE: 12pt; FONT-FAMILY: Arial">We also offer =
+access=20
+              to our Real Estate attorney, credit repair program, CPA and =
+client=20
+              tracking system.<o:p></o:p></span></font>=20
+            </li></ul><u1:p></u1:p><u1:p></u1:p>
+            <p class=3DMsoNormal dir=3Dltr=20
+            style=3D"MARGIN-RIGHT: 0px; TEXT-ALIGN: center"=20
+            align=3Dcenter><strong><b><font face=3DArial color=3Dred =
+size=3D4><span=20
+            style=3D"FONT-SIZE: 14pt; COLOR: red; FONT-FAMILY: =
+Arial"><u1:p></u1:p>Don't=20
+            lose your home! Click <a =
+title=3Dblocked::mailto:helpnowprogram-KK0ffGbhmjU@public.gmane.org?cc=3Drealresults-KK0ffGbhmjU@public.gmane.org&amp=
+;subject=3DPLEASE%20SEND%20ME%20MORE%20INFORMATION%20%2D%20H%2EE%2EL%2EP%2E=
+%20NOW&amp;body=3DMy%20Name%3A%0D%0AMy%20Phone%3A%0D%0AMy%20E%2Dmail%20Addr=
+ess%3A%0D%0ABest%20Time%20To%20Contact%3A%0D%0A%0D%0A%0D%0AFeel%20Free%20To=
+%20Send%20Me%20Future%20Offers%20Via%20E%2Dmail%0D%0AMMSINC1420 =
+style=3D"COLOR: blue; TEXT-DECORATION: underline" =
+href=3D"mailto:helpnowprogram-KK0ffGbhmjU@public.gmane.org?cc=3Drealresults-KK0ffGbhmjU@public.gmane.org&amp;subject=
+=3DPLEASE%20SEND%20ME%20MORE%20INFORMATION%20%2D%20H%2EE%2EL%2EP%2E%20NOW&a=
+mp;body=3DMy%20Name%3A%0D%0AMy%20Phone%3A%0D%0AMy%20E%2Dmail%20Address%3A%0=
+D%0ABest%20Time%20To%20Contact%3A%0D%0A%0D%0A%0D%0AFeel%20Free%20To%20Send%=
+20Me%20Future%20Offers%20Via%20E%2Dmail%0D%0AMMSINC1420" =
+target=3D_self><font=20
+            color=3D#0000ff>&gt;&gt;Here&lt;&lt;&nbsp;</font></a>to learn =
+more. We=20
+            are here to H.E.L.P.=20
+            Now</span></font></b></strong><u1:p></u1:p><font =
+color=3Dblack><span=20
+            style=3D"COLOR: black"><o:p></o:p></span></font></p>
+            <p class=3DMsoNormal dir=3Dltr=20
+            style=3D"MARGIN-RIGHT: 0px; TEXT-ALIGN: center" =
+align=3Dcenter><font=20
+            face=3D"Times New Roman" color=3Dblack size=3D3><span=20
+            style=3D"FONT-SIZE: 12pt; COLOR: =
+black">&nbsp;</span></font><font=20
+            face=3D"Times New Roman" color=3Dblack size=3D3><span=20
+            style=3D"FONT-SIZE: 12pt; COLOR: =
+black">&nbsp;</span></font><font=20
+            face=3DArial color=3Dnavy><span=20
+            style=3D"COLOR: navy; FONT-FAMILY: Arial">It doesn't matter if =
+your=20
+            upside down or behind on payments. No credit required either. =
+Most=20
+            of our clients have a high LTV and/or damaged FICO scores. =
+Our=20
+            negotiation agents can see if you qualify to have your loan =
+rate or=20
+            amount or terms modified so you can stay in your home and =
+afford=20
+            your payments.</span></font></p></td></tr></tbody></table></p>
+      <p align=3Dcenter><font color=3Dblack size=3D2><span=20
+      style=3D"FONT-SIZE: 10pt; COLOR: black"></span></font>&nbsp;</p>
+      <p align=3Dcenter><font color=3Dblack size=3D2><span=20
+      style=3D"FONT-SIZE: 10pt; COLOR: black"></span></font>&nbsp;</p>
+      <p align=3Dcenter><font color=3Dblack size=3D2><span=20
+      style=3D"FONT-SIZE: 10pt; COLOR: black"></span></font>&nbsp;</p>
+      <p align=3Dcenter><font color=3Dblack size=3D2><span=20
+      style=3D"FONT-SIZE: 10pt; COLOR: black">If you received this e-mail =
+in error=20
+      or wish to stop receiving e-mail communications from H.E.L.P. , =
+please <a =
+title=3Dmailto:abigsby09-KK0ffGbhmjU@public.gmane.org?subject=3DSUPPRESS%20THIS%20ADDRESS&amp;bo=
+dy=3DDO%20NO%20ALTER%20ANY%20INFORMATION%20IN%20THIS%20EMAIL%20OR%20YOUR%20=
+E%2DMAIL%20ADDRESS%20WILL%20NOT%20BE%20DELETED%2E%20MAKE%20SURE%20YOU%20ARE=
+%20SENDING%20FROM%20THE%20ACCOUNT%20YOU%20RECEIVED%20THE%20MESSAGE%20SO%20W=
+E%20CAN%20HAVE%20THE%20CORRECT%20ADDRESS%20DELETED%2E style=3D"COLOR: =
+blue; TEXT-DECORATION: underline" =
+href=3D"mailto:abigsby09-KK0ffGbhmjU@public.gmane.org?subject=3DSUPPRESS%20THIS%20ADDRESS&amp;bo=
+dy=3DDO%20NO%20ALTER%20ANY%20INFORMATION%20IN%20THIS%20EMAIL%20OR%20YOUR%20=
+E%2DMAIL%20ADDRESS%20WILL%20NOT%20BE%20DELETED%2E%20MAKE%20SURE%20YOU%20ARE=
+%20SENDING%20FROM%20THE%20ACCOUNT%20YOU%20RECEIVED%20THE%20MESSAGE%20SO%20W=
+E%20CAN%20HAVE%20THE%20CORRECT%20ADDRESS%20DELETED%2E" =
+target=3D_self>Click=20
+      Here To Unsubscribe</a>. Please do not reply to this e- mail as we =
+are=20
+      unable to respond to messages sent to this address. We respect your=20
+      privacy. </span></font></p>
+      <p align=3Dcenter><font color=3Dblack size=3D2><span=20
+      style=3D"FONT-SIZE: 10pt; COLOR: black"></span></font><font=20
+      face=3DTahoma><span=20
+      style=3D"FONT-FAMILY: =
+Tahoma"><o:p></o:p></span></font>&nbsp;</p></td></tr></tbody></table></cent=
+er>
+</body>
+</html>
+
+
+
+
+
+--===============5209454971048929787==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -235,7 +234,7 @@ Conference from O'Reilly Media. Velocity features a full day of
 expert-led, hands-on workshops and two days of sessions from industry 
 leaders in dedicated Performance & Operations tracks. Use code vel09scf 
 and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
---------------27FD79303460B18D0021DE94
+--===============5209454971048929787==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -246,4 +245,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---------------27FD79303460B18D0021DE94--
+--===============5209454971048929787==--

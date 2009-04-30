@@ -1,47 +1,43 @@
-From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+From: Russell King - ARM Linux <linux@arm.linux.org.uk>
 Subject: Re: [RFC] generic iMX-spi driver
-Date: Thu, 30 Apr 2009 23:44:43 +0200 (CEST)
-Message-ID: <Pine.LNX.4.64.0904302343470.9542@axis700.grange>
+Date: Thu, 30 Apr 2009 22:49:50 +0100
+Message-ID: <20090430214950.GA18972@n2100.arm.linux.org.uk>
 References: <20090220144126.GA9203@pengutronix.de>
 	<200902201641.21168.hs4233@mail.mn-solutions.de>
 	<20090226103844.GB3058@pengutronix.de>
 	<20090226232639.GF5811@n2100.arm.linux.org.uk>
 	<20090227103840.GC3481@pengutronix.de>
 	<20090302205826.GG25699@n2100.arm.linux.org.uk>
+	<Pine.LNX.4.64.0904302343470.9542@axis700.grange>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Holger Schurig <hs4233-x6+DxXLjN1AJvtFkdXX2Hg4jNU5vUVPG@public.gmane.org>,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090302205826.GG25699-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Wolfram Sang <w.sang@pengutronix.de>,
+	Holger Schurig <hs4233@mail.mn-solutions.de>,
+	linux-arm-kernel@lists.arm.linux.org.uk,
+	spi-devel-general@lists.sourceforge.net
+To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk>
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64.0904302343470.9542@axis700.grange>
+List-Unsubscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=unsubscribe>
+List-Archive: <http://lists.arm.linux.org.uk/lurker/list/linux-arm-kernel.html>
+List-Post: <mailto:linux-arm-kernel@lists.arm.linux.org.uk>
+List-Help: <mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=help>
+List-Subscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.arm.linux.org.uk
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Thu, Apr 30, 2009 at 11:44:43PM +0200, Guennadi Liakhovetski wrote:
+> what's the state of this patch? Is a new revision planned soon to go in 
+> for 2.6.31?
 
-what's the state of this patch? Is a new revision planned soon to go in 
-for 2.6.31?
+No idea, as far as I can see after my last comments, it's dead.
 
-Thanks
-Guennadi
----
-Guennadi Liakhovetski, Ph.D.
-Freelance Open-Source Software Developer
-http://www.open-technology.de/
-
-------------------------------------------------------------------------------
-Register Now & Save for Velocity, the Web Performance & Operations 
-Conference from O'Reilly Media. Velocity features a full day of 
-expert-led, hands-on workshops and two days of sessions from industry 
-leaders in dedicated Performance & Operations tracks. Use code vel09scf 
-and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
+-------------------------------------------------------------------
+List admin: http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel
+FAQ:        http://www.arm.linux.org.uk/mailinglists/faq.php
+Etiquette:  http://www.arm.linux.org.uk/mailinglists/etiquette.php

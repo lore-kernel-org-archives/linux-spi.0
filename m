@@ -1,8 +1,8 @@
 From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Subject: [PATCH 1/9] spi_mpc83xx: Handles other
-	Freescale processors
-Date: Fri, 1 May 2009 03:48:21 +0400
-Message-ID: <20090430234821.GA7901@oksana.dev.rtsoft.ru>
+Subject: [PATCH 3/9] spi_mpc83xx: Add small delay after
+	asserting	chip-select line
+Date: Fri, 1 May 2009 03:48:24 +0400
+Message-ID: <20090430234824.GC7901@oksana.dev.rtsoft.ru>
 References: <20090430234739.GA27709@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,45 +24,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-With this patch we'll able to select spi_mpc83xx driver on the MPC86xx
-platforms. Let the driver depend on FSL_SOC, so we don't have to worry
-about Kconfig anymore.
+This is needed for some underlaying GPIO controllers that may be
+a bit slow, or if chip-select signal need some time to stabilize.
 
-Also remove the "experimental" dependency, the driver has been tested
-to work on a various hardware, and surely not experimental anymore.
+For what it's worth, we already have the similar delay for
+chip-select de-assertion case.
 
 Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
 ---
- drivers/spi/Kconfig |   14 ++++++--------
- 1 files changed, 6 insertions(+), 8 deletions(-)
+ drivers/spi/spi_mpc83xx.c |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 83a185d..3c1845c 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -140,16 +140,14 @@ config SPI_MPC52xx_PSC
- 	  Controller in master SPI mode.
+diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+index 08b49d2..d378d5e 100644
+--- a/drivers/spi/spi_mpc83xx.c
++++ b/drivers/spi/spi_mpc83xx.c
+@@ -383,8 +383,10 @@ static void mpc83xx_spi_work(struct work_struct *work)
+ 					break;
+ 			}
  
- config SPI_MPC83xx
--	tristate "Freescale MPC83xx/QUICC Engine SPI controller"
--	depends on (PPC_83xx || QUICC_ENGINE) && EXPERIMENTAL
-+	tristate "Freescale MPC8xxx SPI controller"
-+	depends on FSL_SOC
- 	help
--	  This enables using the Freescale MPC83xx and QUICC Engine SPI
--	  controllers in master mode.
-+	  This enables using the Freescale MPC8xxx SPI controllers in master
-+	  mode.
- 
--	  Note, this driver uniquely supports the SPI controller on the MPC83xx
--	  family of PowerPC processors, plus processors with QUICC Engine
--	  technology. This driver uses a simple set of shift registers for data
--	  (opposed to the CPM based descriptor model).
-+	  This driver uses a simple set of shift registers for data (opposed
-+	  to the CPM based descriptor model).
- 
- config SPI_OMAP_UWIRE
- 	tristate "OMAP1 MicroWire"
+-			if (cs_change)
++			if (cs_change) {
+ 				mpc83xx_spi_chipselect(spi, BITBANG_CS_ACTIVE);
++				ndelay(nsecs);
++			}
+ 			cs_change = t->cs_change;
+ 			if (t->len)
+ 				status = mpc83xx_spi_bufs(spi, t);
 -- 
 1.6.2.2
 

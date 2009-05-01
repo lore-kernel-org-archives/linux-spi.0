@@ -1,1189 +1,245 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [spi-devel-general] [PATCH 9/9] spi_mpc8xxx: s/83xx/8xxx/g
-Date: Fri, 1 May 2009 15:42:47 -0600
-Message-ID: <fa686aa40905011442y26ef3a50ub012e7cb2f680c91@mail.gmail.com>
-References: <20090430234739.GA27709@oksana.dev.rtsoft.ru> <20090430234833.GI7901@oksana.dev.rtsoft.ru>
+From: Ledsome <agrose-3WB423B9pww@public.gmane.org>
+Subject: [SPAM] The 4 Levels of Human Reality: Better
+	Relationships & Bridging Intimacy With Both SSexes!
+Date: Fri, 1 May 2009 22:27:31 +0000 (UTC)
+Message-ID: <49FB755C.2657749@ad-trackz.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Kumar Gala <galak@kernel.crashing.org>, linuxppc-dev@ozlabs.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Anton Vorontsov <avorontsov@ru.mvista.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1762716AbZEAVnW@vger.kernel.org>
-In-Reply-To: <20090430234833.GI7901@oksana.dev.rtsoft.ru>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="------------303AE2D0194DABB0566FEE23"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Sat, 02 May 2009 22:28:43 -0100
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Apr 30, 2009 at 5:48 PM, Anton Vorontsov
-<avorontsov@ru.mvista.com> wrote:
-> Since we renamed the file, we might want to rename the file
-> internals too.
->
-> Though we don't bother with changing platform driver name and
-> platform module alias. The stuff is legacy and hopefully we'll
-> remove it soon.
->
+--------------303AE2D0194DABB0566FEE23
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
-I'd say no personally.  Its a lot of churn for very little gain.  The
-filename change alone should be sufficient to clue people into what
-the driver is for.
+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
+QmCC
 
-g.
+--------------303AE2D0194DABB0566FEE23
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> Suggested-by: Kumar Gala <galak@kernel.crashing.org>
-> Signed-off-by: Anton Vorontsov <avorontsov@ru.mvista.com>
-> ---
-> =A0drivers/spi/Kconfig =A0 =A0 =A0 | =A0 =A02 +-
-> =A0drivers/spi/Makefile =A0 =A0 =A0| =A0 =A02 +-
-> =A0drivers/spi/spi_mpc8xxx.c | =A0396 ++++++++++++++++++++++---------=
--------------
-> =A03 files changed, 200 insertions(+), 200 deletions(-)
->
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 3c1845c..9e77bf1 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -139,7 +139,7 @@ config SPI_MPC52xx_PSC
-> =A0 =A0 =A0 =A0 =A0This enables using the Freescale MPC52xx Programma=
-ble Serial
-> =A0 =A0 =A0 =A0 =A0Controller in master SPI mode.
->
-> -config SPI_MPC83xx
-> +config SPI_MPC8xxx
-> =A0 =A0 =A0 =A0tristate "Freescale MPC8xxx SPI controller"
-> =A0 =A0 =A0 =A0depends on FSL_SOC
-> =A0 =A0 =A0 =A0help
-> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> index fdc7aa0..18ba6b4 100644
-> --- a/drivers/spi/Makefile
-> +++ b/drivers/spi/Makefile
-> @@ -24,7 +24,7 @@ obj-$(CONFIG_SPI_OMAP_UWIRE) =A0 =A0 =A0 =A0 =A0+=3D=
- omap_uwire.o
-> =A0obj-$(CONFIG_SPI_OMAP24XX) =A0 =A0 =A0 =A0 =A0 =A0 +=3D omap2_mcsp=
-i.o
-> =A0obj-$(CONFIG_SPI_ORION) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0+=3D orion_spi.o
-> =A0obj-$(CONFIG_SPI_MPC52xx_PSC) =A0 =A0 =A0 =A0 =A0+=3D mpc52xx_psc_=
-spi.o
-> -obj-$(CONFIG_SPI_MPC83xx) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D spi_mpc8xx=
-x.o
-> +obj-$(CONFIG_SPI_MPC8xxx) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D spi_mpc8xx=
-x.o
-> =A0obj-$(CONFIG_SPI_S3C24XX_GPIO) =A0 =A0 =A0 =A0 +=3D spi_s3c24xx_gp=
-io.o
-> =A0obj-$(CONFIG_SPI_S3C24XX) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D spi_s3c2=
-4xx.o
-> =A0obj-$(CONFIG_SPI_TXX9) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 +=3D spi_tx=
-x9.o
-> diff --git a/drivers/spi/spi_mpc8xxx.c b/drivers/spi/spi_mpc8xxx.c
-> index 4192ce4..15d9527 100644
-> --- a/drivers/spi/spi_mpc8xxx.c
-> +++ b/drivers/spi/spi_mpc8xxx.c
-> @@ -1,5 +1,5 @@
-> =A0/*
-> - * MPC83xx SPI controller driver.
-> + * MPC8xxx SPI controller driver.
-> =A0*
-> =A0* Maintainer: Kumar Gala
-> =A0*
-> @@ -37,7 +37,7 @@
-> =A0#include <asm/irq.h>
->
-> =A0/* SPI Controller registers */
-> -struct mpc83xx_spi_reg {
-> +struct mpc8xxx_spi_reg {
-> =A0 =A0 =A0 =A0u8 res1[0x20];
-> =A0 =A0 =A0 =A0__be32 mode;
-> =A0 =A0 =A0 =A0__be32 event;
-> @@ -76,16 +76,16 @@ struct mpc83xx_spi_reg {
-> =A0#define =A0 =A0 =A0 =A0SPIM_NF =A0 =A0 =A0 =A0 0x00000100 =A0 =A0 =
-=A0/* Not full */
->
-> =A0/* SPI Controller driver's private data. */
-> -struct mpc83xx_spi {
-> - =A0 =A0 =A0 struct mpc83xx_spi_reg __iomem *base;
-> +struct mpc8xxx_spi {
-> + =A0 =A0 =A0 struct mpc8xxx_spi_reg __iomem *base;
->
-> =A0 =A0 =A0 =A0/* rx & tx bufs from the spi_transfer */
-> =A0 =A0 =A0 =A0const void *tx;
-> =A0 =A0 =A0 =A0void *rx;
->
-> =A0 =A0 =A0 =A0/* functions to deal with different sized buffers */
-> - =A0 =A0 =A0 void (*get_rx) (u32 rx_data, struct mpc83xx_spi *);
-> - =A0 =A0 =A0 u32(*get_tx) (struct mpc83xx_spi *);
-> + =A0 =A0 =A0 void (*get_rx) (u32 rx_data, struct mpc8xxx_spi *);
-> + =A0 =A0 =A0 u32(*get_tx) (struct mpc8xxx_spi *);
->
-> =A0 =A0 =A0 =A0unsigned int count;
-> =A0 =A0 =A0 =A0unsigned int irq;
-> @@ -107,44 +107,44 @@ struct mpc83xx_spi {
-> =A0 =A0 =A0 =A0struct completion done;
-> =A0};
->
-> -struct spi_mpc83xx_cs {
-> +struct spi_mpc8xxx_cs {
-> =A0 =A0 =A0 =A0/* functions to deal with different sized buffers */
-> - =A0 =A0 =A0 void (*get_rx) (u32 rx_data, struct mpc83xx_spi *);
-> - =A0 =A0 =A0 u32 (*get_tx) (struct mpc83xx_spi *);
-> + =A0 =A0 =A0 void (*get_rx) (u32 rx_data, struct mpc8xxx_spi *);
-> + =A0 =A0 =A0 u32 (*get_tx) (struct mpc8xxx_spi *);
-> =A0 =A0 =A0 =A0u32 rx_shift; =A0 =A0 =A0 =A0 =A0 /* RX data reg shift=
- when in qe mode */
-> =A0 =A0 =A0 =A0u32 tx_shift; =A0 =A0 =A0 =A0 =A0 /* TX data reg shift=
- when in qe mode */
-> =A0 =A0 =A0 =A0u32 hw_mode; =A0 =A0 =A0 =A0 =A0 =A0/* Holds HW mode r=
-egister settings */
-> =A0};
->
-> -static inline void mpc83xx_spi_write_reg(__be32 __iomem *reg, u32 va=
-l)
-> +static inline void mpc8xxx_spi_write_reg(__be32 __iomem *reg, u32 va=
-l)
-> =A0{
-> =A0 =A0 =A0 =A0out_be32(reg, val);
-> =A0}
->
-> -static inline u32 mpc83xx_spi_read_reg(__be32 __iomem *reg)
-> +static inline u32 mpc8xxx_spi_read_reg(__be32 __iomem *reg)
-> =A0{
-> =A0 =A0 =A0 =A0return in_be32(reg);
-> =A0}
->
-> =A0#define MPC83XX_SPI_RX_BUF(type) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> =A0static =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- \
-> -void mpc83xx_spi_rx_buf_##type(u32 data, struct mpc83xx_spi *mpc83xx=
-_spi) \
-> +void mpc8xxx_spi_rx_buf_##type(u32 data, struct mpc8xxx_spi *mpc8xxx=
-_spi) \
-> =A0{ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0\
-> - =A0 =A0 =A0 type *rx =3D mpc83xx_spi->rx; =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> - =A0 =A0 =A0 *rx++ =3D (type)(data >> mpc83xx_spi->rx_shift); =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0\
-> - =A0 =A0 =A0 mpc83xx_spi->rx =3D rx; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> + =A0 =A0 =A0 type *rx =3D mpc8xxx_spi->rx; =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> + =A0 =A0 =A0 *rx++ =3D (type)(data >> mpc8xxx_spi->rx_shift); =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0\
-> + =A0 =A0 =A0 mpc8xxx_spi->rx =3D rx; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> =A0}
->
-> =A0#define MPC83XX_SPI_TX_BUF(type) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 \
-> =A0static =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> -u32 mpc83xx_spi_tx_buf_##type(struct mpc83xx_spi *mpc83xx_spi) \
-> +u32 mpc8xxx_spi_tx_buf_##type(struct mpc8xxx_spi *mpc8xxx_spi) \
-> =A0{ =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0\
-> =A0 =A0 =A0 =A0u32 data; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> - =A0 =A0 =A0 const type *tx =3D mpc83xx_spi->tx; =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 \
-> + =A0 =A0 =A0 const type *tx =3D mpc8xxx_spi->tx; =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 \
-> =A0 =A0 =A0 =A0if (!tx) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0\
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return 0; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> - =A0 =A0 =A0 data =3D *tx++ << mpc83xx_spi->tx_shift; =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0\
-> - =A0 =A0 =A0 mpc83xx_spi->tx =3D tx; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> + =A0 =A0 =A0 data =3D *tx++ << mpc8xxx_spi->tx_shift; =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0\
-> + =A0 =A0 =A0 mpc8xxx_spi->tx =3D tx; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 \
-> =A0 =A0 =A0 =A0return data; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0\
-> =A0}
->
-> @@ -155,12 +155,12 @@ MPC83XX_SPI_TX_BUF(u8)
-> =A0MPC83XX_SPI_TX_BUF(u16)
-> =A0MPC83XX_SPI_TX_BUF(u32)
->
-> -static void mpc83xx_spi_chipselect(struct spi_device *spi, int value=
-)
-> +static void mpc8xxx_spi_chipselect(struct spi_device *spi, int value=
-)
-> =A0{
-> - =A0 =A0 =A0 struct mpc83xx_spi *mpc83xx_spi =3D spi_master_get_devd=
-ata(spi->master);
-> + =A0 =A0 =A0 struct mpc8xxx_spi *mpc8xxx_spi =3D spi_master_get_devd=
-ata(spi->master);
-> =A0 =A0 =A0 =A0struct fsl_spi_platform_data *pdata =3D spi->dev.paren=
-t->platform_data;
-> =A0 =A0 =A0 =A0bool pol =3D spi->mode & SPI_CS_HIGH;
-> - =A0 =A0 =A0 struct spi_mpc83xx_cs =A0 *cs =3D spi->controller_state=
-;
-> + =A0 =A0 =A0 struct spi_mpc8xxx_cs =A0 *cs =3D spi->controller_state=
-;
->
-> =A0 =A0 =A0 =A0if (value =3D=3D BITBANG_CS_INACTIVE) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (pdata->cs_control)
-> @@ -168,16 +168,16 @@ static void mpc83xx_spi_chipselect(struct spi_d=
-evice *spi, int value)
-> =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0if (value =3D=3D BITBANG_CS_ACTIVE) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 u32 regval =3D mpc83xx_spi_read_reg(&mp=
-c83xx_spi->base->mode);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 u32 regval =3D mpc8xxx_spi_read_reg(&mp=
-c8xxx_spi->base->mode);
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi->rx_shift =3D cs->rx_shift;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi->tx_shift =3D cs->tx_shift;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi->get_rx =3D cs->get_rx;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi->get_tx =3D cs->get_tx;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi->rx_shift =3D cs->rx_shift;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi->tx_shift =3D cs->tx_shift;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi->get_rx =3D cs->get_rx;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi->get_tx =3D cs->get_tx;
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (cs->hw_mode !=3D regval) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0unsigned long flags;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 __be32 __iomem *mode =3D=
- &mpc83xx_spi->base->mode;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 __be32 __iomem *mode =3D=
- &mpc8xxx_spi->base->mode;
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0regval =3D cs->hw_mode=
-;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* Turn off IRQs local=
-ly to minimize time that
-> @@ -185,8 +185,8 @@ static void mpc83xx_spi_chipselect(struct spi_dev=
-ice *spi, int value)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 */
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0local_irq_save(flags);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* Turn off SPI unit p=
-rior changing mode */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi_write_reg(m=
-ode, regval & ~SPMODE_ENABLE);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi_write_reg(m=
-ode, regval);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi_write_reg(m=
-ode, regval & ~SPMODE_ENABLE);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi_write_reg(m=
-ode, regval);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0local_irq_restore(flag=
-s);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (pdata->cs_control)
-> @@ -195,15 +195,15 @@ static void mpc83xx_spi_chipselect(struct spi_d=
-evice *spi, int value)
-> =A0}
->
-> =A0static
-> -int mpc83xx_spi_setup_transfer(struct spi_device *spi, struct spi_tr=
-ansfer *t)
-> +int mpc8xxx_spi_setup_transfer(struct spi_device *spi, struct spi_tr=
-ansfer *t)
-> =A0{
-> - =A0 =A0 =A0 struct mpc83xx_spi *mpc83xx_spi;
-> + =A0 =A0 =A0 struct mpc8xxx_spi *mpc8xxx_spi;
-> =A0 =A0 =A0 =A0u32 regval;
-> =A0 =A0 =A0 =A0u8 bits_per_word, pm;
-> =A0 =A0 =A0 =A0u32 hz;
-> - =A0 =A0 =A0 struct spi_mpc83xx_cs =A0 *cs =3D spi->controller_state=
-;
-> + =A0 =A0 =A0 struct spi_mpc8xxx_cs =A0 *cs =3D spi->controller_state=
-;
->
-> - =A0 =A0 =A0 mpc83xx_spi =3D spi_master_get_devdata(spi->master);
-> + =A0 =A0 =A0 mpc8xxx_spi =3D spi_master_get_devdata(spi->master);
->
-> =A0 =A0 =A0 =A0if (t) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bits_per_word =3D t->bits_per_word;
-> @@ -228,26 +228,26 @@ int mpc83xx_spi_setup_transfer(struct spi_devic=
-e *spi, struct spi_transfer *t)
-> =A0 =A0 =A0 =A0cs->rx_shift =3D 0;
-> =A0 =A0 =A0 =A0cs->tx_shift =3D 0;
-> =A0 =A0 =A0 =A0if (bits_per_word <=3D 8) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_rx =3D mpc83xx_spi_rx_buf_u8;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_tx =3D mpc83xx_spi_tx_buf_u8;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mpc83xx_spi->qe_mode) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_rx =3D mpc8xxx_spi_rx_buf_u8;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_tx =3D mpc8xxx_spi_tx_buf_u8;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mpc8xxx_spi->qe_mode) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->rx_shift =3D 16;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->tx_shift =3D 24;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0} else if (bits_per_word <=3D 16) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_rx =3D mpc83xx_spi_rx_buf_u16;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_tx =3D mpc83xx_spi_tx_buf_u16;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mpc83xx_spi->qe_mode) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_rx =3D mpc8xxx_spi_rx_buf_u16;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_tx =3D mpc8xxx_spi_tx_buf_u16;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mpc8xxx_spi->qe_mode) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->rx_shift =3D 16;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->tx_shift =3D 16;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0} else if (bits_per_word <=3D 32) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_rx =3D mpc83xx_spi_rx_buf_u32;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_tx =3D mpc83xx_spi_tx_buf_u32;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_rx =3D mpc8xxx_spi_rx_buf_u32;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->get_tx =3D mpc8xxx_spi_tx_buf_u32;
-> =A0 =A0 =A0 =A0} else
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -EINVAL;
->
-> - =A0 =A0 =A0 if (mpc83xx_spi->qe_mode && spi->mode & SPI_LSB_FIRST) =
-{
-> + =A0 =A0 =A0 if (mpc8xxx_spi->qe_mode && spi->mode & SPI_LSB_FIRST) =
-{
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->tx_shift =3D 0;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (bits_per_word <=3D 8)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->rx_shift =3D 8;
-> @@ -255,10 +255,10 @@ int mpc83xx_spi_setup_transfer(struct spi_devic=
-e *spi, struct spi_transfer *t)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->rx_shift =3D 0;
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 mpc83xx_spi->rx_shift =3D cs->rx_shift;
-> - =A0 =A0 =A0 mpc83xx_spi->tx_shift =3D cs->tx_shift;
-> - =A0 =A0 =A0 mpc83xx_spi->get_rx =3D cs->get_rx;
-> - =A0 =A0 =A0 mpc83xx_spi->get_tx =3D cs->get_tx;
-> + =A0 =A0 =A0 mpc8xxx_spi->rx_shift =3D cs->rx_shift;
-> + =A0 =A0 =A0 mpc8xxx_spi->tx_shift =3D cs->tx_shift;
-> + =A0 =A0 =A0 mpc8xxx_spi->get_rx =3D cs->get_rx;
-> + =A0 =A0 =A0 mpc8xxx_spi->get_tx =3D cs->get_tx;
->
-> =A0 =A0 =A0 =A0if (bits_per_word =3D=3D 32)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bits_per_word =3D 0;
-> @@ -271,25 +271,25 @@ int mpc83xx_spi_setup_transfer(struct spi_devic=
-e *spi, struct spi_transfer *t)
->
-> =A0 =A0 =A0 =A0cs->hw_mode |=3D SPMODE_LEN(bits_per_word);
->
-> - =A0 =A0 =A0 if ((mpc83xx_spi->spibrg / hz) > 64) {
-> + =A0 =A0 =A0 if ((mpc8xxx_spi->spibrg / hz) > 64) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->hw_mode |=3D SPMODE_DIV16;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 pm =3D mpc83xx_spi->spibrg / (hz * 64);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pm =3D mpc8xxx_spi->spibrg / (hz * 64);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0WARN_ONCE(pm > 16, "%s: Requested spee=
-d is too low: %d Hz. "
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0"Will use %d Hz in=
-stead.\n", dev_name(&spi->dev),
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 hz, mpc83xx_spi->sp=
-ibrg / 1024);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 hz, mpc8xxx_spi->sp=
-ibrg / 1024);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (pm > 16)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0pm =3D 16;
-> =A0 =A0 =A0 =A0} else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 pm =3D mpc83xx_spi->spibrg / (hz * 4);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pm =3D mpc8xxx_spi->spibrg / (hz * 4);
-> =A0 =A0 =A0 =A0if (pm)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0pm--;
->
-> =A0 =A0 =A0 =A0cs->hw_mode |=3D SPMODE_PM(pm);
-> - =A0 =A0 =A0 regval =3D =A0mpc83xx_spi_read_reg(&mpc83xx_spi->base->=
-mode);
-> + =A0 =A0 =A0 regval =3D =A0mpc8xxx_spi_read_reg(&mpc8xxx_spi->base->=
-mode);
-> =A0 =A0 =A0 =A0if (cs->hw_mode !=3D regval) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0unsigned long flags;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 __be32 __iomem *mode =3D &mpc83xx_spi->=
-base->mode;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 __be32 __iomem *mode =3D &mpc8xxx_spi->=
-base->mode;
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0regval =3D cs->hw_mode;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* Turn off IRQs locally to minimize t=
-ime
-> @@ -297,22 +297,22 @@ int mpc83xx_spi_setup_transfer(struct spi_devic=
-e *spi, struct spi_transfer *t)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 */
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0local_irq_save(flags);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* Turn off SPI unit prior changing mo=
-de */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi_write_reg(mode, regval & ~S=
-PMODE_ENABLE);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi_write_reg(mode, regval);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi_write_reg(mode, regval & ~S=
-PMODE_ENABLE);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi_write_reg(mode, regval);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0local_irq_restore(flags);
-> =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
-> -static int mpc83xx_spi_bufs(struct spi_device *spi, struct spi_trans=
-fer *t)
-> +static int mpc8xxx_spi_bufs(struct spi_device *spi, struct spi_trans=
-fer *t)
-> =A0{
-> - =A0 =A0 =A0 struct mpc83xx_spi *mpc83xx_spi;
-> + =A0 =A0 =A0 struct mpc8xxx_spi *mpc8xxx_spi;
-> =A0 =A0 =A0 =A0u32 word, len, bits_per_word;
->
-> - =A0 =A0 =A0 mpc83xx_spi =3D spi_master_get_devdata(spi->master);
-> + =A0 =A0 =A0 mpc8xxx_spi =3D spi_master_get_devdata(spi->master);
->
-> - =A0 =A0 =A0 mpc83xx_spi->tx =3D t->tx_buf;
-> - =A0 =A0 =A0 mpc83xx_spi->rx =3D t->rx_buf;
-> + =A0 =A0 =A0 mpc8xxx_spi->tx =3D t->tx_buf;
-> + =A0 =A0 =A0 mpc8xxx_spi->rx =3D t->rx_buf;
-> =A0 =A0 =A0 =A0bits_per_word =3D spi->bits_per_word;
-> =A0 =A0 =A0 =A0if (t->bits_per_word)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bits_per_word =3D t->bits_per_word;
-> @@ -329,26 +329,26 @@ static int mpc83xx_spi_bufs(struct spi_device *=
-spi, struct spi_transfer *t)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -EINVAL;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0len /=3D 2;
-> =A0 =A0 =A0 =A0}
-> - =A0 =A0 =A0 mpc83xx_spi->count =3D len;
-> + =A0 =A0 =A0 mpc8xxx_spi->count =3D len;
->
-> - =A0 =A0 =A0 INIT_COMPLETION(mpc83xx_spi->done);
-> + =A0 =A0 =A0 INIT_COMPLETION(mpc8xxx_spi->done);
->
-> =A0 =A0 =A0 =A0/* enable rx ints */
-> - =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, SPIM_NE=
-);
-> + =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->mask, SPIM_NE=
-);
->
-> =A0 =A0 =A0 =A0/* transmit word */
-> - =A0 =A0 =A0 word =3D mpc83xx_spi->get_tx(mpc83xx_spi);
-> - =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->base->transmit, wor=
-d);
-> + =A0 =A0 =A0 word =3D mpc8xxx_spi->get_tx(mpc8xxx_spi);
-> + =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->transmit, wor=
-d);
->
-> - =A0 =A0 =A0 wait_for_completion(&mpc83xx_spi->done);
-> + =A0 =A0 =A0 wait_for_completion(&mpc8xxx_spi->done);
->
-> =A0 =A0 =A0 =A0/* disable rx ints */
-> - =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, 0);
-> + =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->mask, 0);
->
-> - =A0 =A0 =A0 return mpc83xx_spi->count;
-> + =A0 =A0 =A0 return mpc8xxx_spi->count;
-> =A0}
->
-> -static void mpc83xx_spi_do_one_msg(struct spi_message *m)
-> +static void mpc8xxx_spi_do_one_msg(struct spi_message *m)
-> =A0{
-> =A0 =A0 =A0 =A0struct spi_device *spi =3D m->spi;
-> =A0 =A0 =A0 =A0struct spi_transfer *t;
-> @@ -364,18 +364,18 @@ static void mpc83xx_spi_do_one_msg(struct spi_m=
-essage *m)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0status =3D -EINVAL;
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (cs_change)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =
-=3D mpc83xx_spi_setup_transfer(spi, t);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =
-=3D mpc8xxx_spi_setup_transfer(spi, t);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (status < 0)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0break;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (cs_change) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi_chipselect(=
-spi, BITBANG_CS_ACTIVE);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi_chipselect(=
-spi, BITBANG_CS_ACTIVE);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ndelay(nsecs);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs_change =3D t->cs_change;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (t->len)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =3D mpc83xx_spi_=
-bufs(spi, t);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =3D mpc8xxx_spi_=
-bufs(spi, t);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (status) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0status =3D -EMSGSIZE;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0break;
-> @@ -387,7 +387,7 @@ static void mpc83xx_spi_do_one_msg(struct spi_mes=
-sage *m)
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (cs_change) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ndelay(nsecs);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi_chipselect(=
-spi, BITBANG_CS_INACTIVE);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi_chipselect(=
-spi, BITBANG_CS_INACTIVE);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ndelay(nsecs);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0}
-> @@ -397,42 +397,42 @@ static void mpc83xx_spi_do_one_msg(struct spi_m=
-essage *m)
->
-> =A0 =A0 =A0 =A0if (status || !cs_change) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ndelay(nsecs);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi_chipselect(spi, BITBANG_CS_=
-INACTIVE);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi_chipselect(spi, BITBANG_CS_=
-INACTIVE);
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 mpc83xx_spi_setup_transfer(spi, NULL);
-> + =A0 =A0 =A0 mpc8xxx_spi_setup_transfer(spi, NULL);
-> =A0}
->
-> -static void mpc83xx_spi_work(struct work_struct *work)
-> +static void mpc8xxx_spi_work(struct work_struct *work)
-> =A0{
-> - =A0 =A0 =A0 struct mpc83xx_spi *mpc83xx_spi =3D container_of(work, =
-struct mpc83xx_spi,
-> + =A0 =A0 =A0 struct mpc8xxx_spi *mpc8xxx_spi =3D container_of(work, =
-struct mpc8xxx_spi,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 work);
->
-> - =A0 =A0 =A0 spin_lock_irq(&mpc83xx_spi->lock);
-> - =A0 =A0 =A0 while (!list_empty(&mpc83xx_spi->queue)) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct spi_message *m =3D container_of(=
-mpc83xx_spi->queue.next,
-> + =A0 =A0 =A0 spin_lock_irq(&mpc8xxx_spi->lock);
-> + =A0 =A0 =A0 while (!list_empty(&mpc8xxx_spi->queue)) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct spi_message *m =3D container_of(=
-mpc8xxx_spi->queue.next,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct spi_message, queue);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0list_del_init(&m->queue);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 spin_unlock_irq(&mpc83xx_spi->lock);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spin_unlock_irq(&mpc8xxx_spi->lock);
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi_do_one_msg(m);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi_do_one_msg(m);
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 spin_lock_irq(&mpc83xx_spi->lock);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spin_lock_irq(&mpc8xxx_spi->lock);
-> =A0 =A0 =A0 =A0}
-> - =A0 =A0 =A0 spin_unlock_irq(&mpc83xx_spi->lock);
-> + =A0 =A0 =A0 spin_unlock_irq(&mpc8xxx_spi->lock);
-> =A0}
->
-> =A0/* the spi->mode bits understood by this driver: */
-> =A0#define MODEBITS =A0 =A0 =A0 (SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| SPI_LSB_FIRST | SPI_=
-LOOP)
->
-> -static int mpc83xx_spi_setup(struct spi_device *spi)
-> +static int mpc8xxx_spi_setup(struct spi_device *spi)
-> =A0{
-> - =A0 =A0 =A0 struct mpc83xx_spi *mpc83xx_spi;
-> + =A0 =A0 =A0 struct mpc8xxx_spi *mpc8xxx_spi;
-> =A0 =A0 =A0 =A0int retval;
-> =A0 =A0 =A0 =A0u32 hw_mode;
-> - =A0 =A0 =A0 struct spi_mpc83xx_cs =A0 *cs =3D spi->controller_state=
-;
-> + =A0 =A0 =A0 struct spi_mpc8xxx_cs =A0 *cs =3D spi->controller_state=
-;
->
-> =A0 =A0 =A0 =A0if (spi->mode & ~MODEBITS) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_dbg(&spi->dev, "setup: unsupported=
- mode bits %x\n",
-> @@ -449,13 +449,13 @@ static int mpc83xx_spi_setup(struct spi_device =
-*spi)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -ENOMEM;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0spi->controller_state =3D cs;
-> =A0 =A0 =A0 =A0}
-> - =A0 =A0 =A0 mpc83xx_spi =3D spi_master_get_devdata(spi->master);
-> + =A0 =A0 =A0 mpc8xxx_spi =3D spi_master_get_devdata(spi->master);
->
-> =A0 =A0 =A0 =A0if (!spi->bits_per_word)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0spi->bits_per_word =3D 8;
->
-> =A0 =A0 =A0 =A0hw_mode =3D cs->hw_mode; /* Save orginal settings */
-> - =A0 =A0 =A0 cs->hw_mode =3D mpc83xx_spi_read_reg(&mpc83xx_spi->base=
-->mode);
-> + =A0 =A0 =A0 cs->hw_mode =3D mpc8xxx_spi_read_reg(&mpc8xxx_spi->base=
-->mode);
-> =A0 =A0 =A0 =A0/* mask out bits we are going to set */
-> =A0 =A0 =A0 =A0cs->hw_mode &=3D ~(SPMODE_CP_BEGIN_EDGECLK | SPMODE_CI=
-_INACTIVEHIGH
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | SPMODE_REV | SPMODE=
-_LOOP);
-> @@ -469,7 +469,7 @@ static int mpc83xx_spi_setup(struct spi_device *s=
-pi)
-> =A0 =A0 =A0 =A0if (spi->mode & SPI_LOOP)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->hw_mode |=3D SPMODE_LOOP;
->
-> - =A0 =A0 =A0 retval =3D mpc83xx_spi_setup_transfer(spi, NULL);
-> + =A0 =A0 =A0 retval =3D mpc8xxx_spi_setup_transfer(spi, NULL);
-> =A0 =A0 =A0 =A0if (retval < 0) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs->hw_mode =3D hw_mode; /* Restore se=
-ttings */
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return retval;
-> @@ -481,21 +481,21 @@ static int mpc83xx_spi_setup(struct spi_device =
-*spi)
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
-> -static irqreturn_t mpc83xx_spi_irq(s32 irq, void *context_data)
-> +static irqreturn_t mpc8xxx_spi_irq(s32 irq, void *context_data)
-> =A0{
-> - =A0 =A0 =A0 struct mpc83xx_spi *mpc83xx_spi =3D context_data;
-> + =A0 =A0 =A0 struct mpc8xxx_spi *mpc8xxx_spi =3D context_data;
-> =A0 =A0 =A0 =A0u32 event;
-> =A0 =A0 =A0 =A0irqreturn_t ret =3D IRQ_NONE;
->
-> =A0 =A0 =A0 =A0/* Get interrupt events(tx/rx) */
-> - =A0 =A0 =A0 event =3D mpc83xx_spi_read_reg(&mpc83xx_spi->base->even=
-t);
-> + =A0 =A0 =A0 event =3D mpc8xxx_spi_read_reg(&mpc8xxx_spi->base->even=
-t);
->
-> =A0 =A0 =A0 =A0/* We need handle RX first */
-> =A0 =A0 =A0 =A0if (event & SPIE_NE) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 u32 rx_data =3D mpc83xx_spi_read_reg(&m=
-pc83xx_spi->base->receive);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 u32 rx_data =3D mpc8xxx_spi_read_reg(&m=
-pc8xxx_spi->base->receive);
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mpc83xx_spi->rx)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi->get_rx(rx_=
-data, mpc83xx_spi);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mpc8xxx_spi->rx)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi->get_rx(rx_=
-data, mpc8xxx_spi);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D IRQ_HANDLED;
-> =A0 =A0 =A0 =A0}
-> @@ -503,56 +503,56 @@ static irqreturn_t mpc83xx_spi_irq(s32 irq, voi=
-d *context_data)
-> =A0 =A0 =A0 =A0if ((event & SPIE_NF) =3D=3D 0)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* spin until TX is done */
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0while (((event =3D
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mpc83xx_spi_read_reg=
-(&mpc83xx_spi->base->event)) &
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mpc8xxx_spi_read_reg=
-(&mpc8xxx_spi->base->event)) &
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0SPIE_NF) =3D=3D 0)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cpu_relax();
->
-> - =A0 =A0 =A0 mpc83xx_spi->count -=3D 1;
-> - =A0 =A0 =A0 if (mpc83xx_spi->count) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 u32 word =3D mpc83xx_spi->get_tx(mpc83x=
-x_spi);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->bas=
-e->transmit, word);
-> + =A0 =A0 =A0 mpc8xxx_spi->count -=3D 1;
-> + =A0 =A0 =A0 if (mpc8xxx_spi->count) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 u32 word =3D mpc8xxx_spi->get_tx(mpc8xx=
-x_spi);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->bas=
-e->transmit, word);
-> =A0 =A0 =A0 =A0} else {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 complete(&mpc83xx_spi->done);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 complete(&mpc8xxx_spi->done);
-> =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0/* Clear the events */
-> - =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->base->event, event)=
-;
-> + =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->event, event)=
-;
->
-> =A0 =A0 =A0 =A0return ret;
-> =A0}
-> -static int mpc83xx_spi_transfer(struct spi_device *spi,
-> +static int mpc8xxx_spi_transfer(struct spi_device *spi,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0struct=
- spi_message *m)
-> =A0{
-> - =A0 =A0 =A0 struct mpc83xx_spi *mpc83xx_spi =3D spi_master_get_devd=
-ata(spi->master);
-> + =A0 =A0 =A0 struct mpc8xxx_spi *mpc8xxx_spi =3D spi_master_get_devd=
-ata(spi->master);
-> =A0 =A0 =A0 =A0unsigned long flags;
->
-> =A0 =A0 =A0 =A0m->actual_length =3D 0;
-> =A0 =A0 =A0 =A0m->status =3D -EINPROGRESS;
->
-> - =A0 =A0 =A0 spin_lock_irqsave(&mpc83xx_spi->lock, flags);
-> - =A0 =A0 =A0 list_add_tail(&m->queue, &mpc83xx_spi->queue);
-> - =A0 =A0 =A0 queue_work(mpc83xx_spi->workqueue, &mpc83xx_spi->work);
-> - =A0 =A0 =A0 spin_unlock_irqrestore(&mpc83xx_spi->lock, flags);
-> + =A0 =A0 =A0 spin_lock_irqsave(&mpc8xxx_spi->lock, flags);
-> + =A0 =A0 =A0 list_add_tail(&m->queue, &mpc8xxx_spi->queue);
-> + =A0 =A0 =A0 queue_work(mpc8xxx_spi->workqueue, &mpc8xxx_spi->work);
-> + =A0 =A0 =A0 spin_unlock_irqrestore(&mpc8xxx_spi->lock, flags);
->
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
->
-> -static void mpc83xx_spi_cleanup(struct spi_device *spi)
-> +static void mpc8xxx_spi_cleanup(struct spi_device *spi)
-> =A0{
-> =A0 =A0 =A0 =A0kfree(spi->controller_state);
-> =A0}
->
-> =A0static struct spi_master * __devinit
-> -mpc83xx_spi_probe(struct device *dev, struct resource *mem, unsigned=
- int irq)
-> +mpc8xxx_spi_probe(struct device *dev, struct resource *mem, unsigned=
- int irq)
-> =A0{
-> =A0 =A0 =A0 =A0struct fsl_spi_platform_data *pdata =3D dev->platform_=
-data;
-> =A0 =A0 =A0 =A0struct spi_master *master;
-> - =A0 =A0 =A0 struct mpc83xx_spi *mpc83xx_spi;
-> + =A0 =A0 =A0 struct mpc8xxx_spi *mpc8xxx_spi;
-> =A0 =A0 =A0 =A0u32 regval;
-> =A0 =A0 =A0 =A0int ret =3D 0;
->
-> - =A0 =A0 =A0 master =3D spi_alloc_master(dev, sizeof(struct mpc83xx_=
-spi));
-> + =A0 =A0 =A0 master =3D spi_alloc_master(dev, sizeof(struct mpc8xxx_=
-spi));
-> =A0 =A0 =A0 =A0if (master =3D=3D NULL) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D -ENOMEM;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err;
-> @@ -560,36 +560,36 @@ mpc83xx_spi_probe(struct device *dev, struct re=
-source *mem, unsigned int irq)
->
-> =A0 =A0 =A0 =A0dev_set_drvdata(dev, master);
->
-> - =A0 =A0 =A0 master->setup =3D mpc83xx_spi_setup;
-> - =A0 =A0 =A0 master->transfer =3D mpc83xx_spi_transfer;
-> - =A0 =A0 =A0 master->cleanup =3D mpc83xx_spi_cleanup;
-> -
-> - =A0 =A0 =A0 mpc83xx_spi =3D spi_master_get_devdata(master);
-> - =A0 =A0 =A0 mpc83xx_spi->qe_mode =3D pdata->qe_mode;
-> - =A0 =A0 =A0 mpc83xx_spi->get_rx =3D mpc83xx_spi_rx_buf_u8;
-> - =A0 =A0 =A0 mpc83xx_spi->get_tx =3D mpc83xx_spi_tx_buf_u8;
-> - =A0 =A0 =A0 mpc83xx_spi->spibrg =3D pdata->sysclk;
-> -
-> - =A0 =A0 =A0 mpc83xx_spi->rx_shift =3D 0;
-> - =A0 =A0 =A0 mpc83xx_spi->tx_shift =3D 0;
-> - =A0 =A0 =A0 if (mpc83xx_spi->qe_mode) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi->rx_shift =3D 16;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc83xx_spi->tx_shift =3D 24;
-> + =A0 =A0 =A0 master->setup =3D mpc8xxx_spi_setup;
-> + =A0 =A0 =A0 master->transfer =3D mpc8xxx_spi_transfer;
-> + =A0 =A0 =A0 master->cleanup =3D mpc8xxx_spi_cleanup;
-> +
-> + =A0 =A0 =A0 mpc8xxx_spi =3D spi_master_get_devdata(master);
-> + =A0 =A0 =A0 mpc8xxx_spi->qe_mode =3D pdata->qe_mode;
-> + =A0 =A0 =A0 mpc8xxx_spi->get_rx =3D mpc8xxx_spi_rx_buf_u8;
-> + =A0 =A0 =A0 mpc8xxx_spi->get_tx =3D mpc8xxx_spi_tx_buf_u8;
-> + =A0 =A0 =A0 mpc8xxx_spi->spibrg =3D pdata->sysclk;
-> +
-> + =A0 =A0 =A0 mpc8xxx_spi->rx_shift =3D 0;
-> + =A0 =A0 =A0 mpc8xxx_spi->tx_shift =3D 0;
-> + =A0 =A0 =A0 if (mpc8xxx_spi->qe_mode) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi->rx_shift =3D 16;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mpc8xxx_spi->tx_shift =3D 24;
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 init_completion(&mpc83xx_spi->done);
-> + =A0 =A0 =A0 init_completion(&mpc8xxx_spi->done);
->
-> - =A0 =A0 =A0 mpc83xx_spi->base =3D ioremap(mem->start, mem->end - me=
-m->start + 1);
-> - =A0 =A0 =A0 if (mpc83xx_spi->base =3D=3D NULL) {
-> + =A0 =A0 =A0 mpc8xxx_spi->base =3D ioremap(mem->start, mem->end - me=
-m->start + 1);
-> + =A0 =A0 =A0 if (mpc8xxx_spi->base =3D=3D NULL) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D -ENOMEM;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto put_master;
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 mpc83xx_spi->irq =3D irq;
-> + =A0 =A0 =A0 mpc8xxx_spi->irq =3D irq;
->
-> =A0 =A0 =A0 =A0/* Register for SPI Interrupt */
-> - =A0 =A0 =A0 ret =3D request_irq(mpc83xx_spi->irq, mpc83xx_spi_irq,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 0, "mpc83xx_spi", m=
-pc83xx_spi);
-> + =A0 =A0 =A0 ret =3D request_irq(mpc8xxx_spi->irq, mpc8xxx_spi_irq,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 0, "mpc8xxx_spi", m=
-pc8xxx_spi);
->
-> =A0 =A0 =A0 =A0if (ret !=3D 0)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto unmap_io;
-> @@ -598,25 +598,25 @@ mpc83xx_spi_probe(struct device *dev, struct re=
-source *mem, unsigned int irq)
-> =A0 =A0 =A0 =A0master->num_chipselect =3D pdata->max_chipselect;
->
-> =A0 =A0 =A0 =A0/* SPI controller initializations */
-> - =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->base->mode, 0);
-> - =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->base->mask, 0);
-> - =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->base->command, 0);
-> - =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->base->event, 0xffff=
-ffff);
-> + =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->mode, 0);
-> + =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->mask, 0);
-> + =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->command, 0);
-> + =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->event, 0xffff=
-ffff);
->
-> =A0 =A0 =A0 =A0/* Enable SPI interface */
-> =A0 =A0 =A0 =A0regval =3D pdata->initial_spmode | SPMODE_INIT_VAL | S=
-PMODE_ENABLE;
-> =A0 =A0 =A0 =A0if (pdata->qe_mode)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0regval |=3D SPMODE_OP;
->
-> - =A0 =A0 =A0 mpc83xx_spi_write_reg(&mpc83xx_spi->base->mode, regval)=
-;
-> - =A0 =A0 =A0 spin_lock_init(&mpc83xx_spi->lock);
-> - =A0 =A0 =A0 init_completion(&mpc83xx_spi->done);
-> - =A0 =A0 =A0 INIT_WORK(&mpc83xx_spi->work, mpc83xx_spi_work);
-> - =A0 =A0 =A0 INIT_LIST_HEAD(&mpc83xx_spi->queue);
-> + =A0 =A0 =A0 mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->mode, regval)=
-;
-> + =A0 =A0 =A0 spin_lock_init(&mpc8xxx_spi->lock);
-> + =A0 =A0 =A0 init_completion(&mpc8xxx_spi->done);
-> + =A0 =A0 =A0 INIT_WORK(&mpc8xxx_spi->work, mpc8xxx_spi_work);
-> + =A0 =A0 =A0 INIT_LIST_HEAD(&mpc8xxx_spi->queue);
->
-> - =A0 =A0 =A0 mpc83xx_spi->workqueue =3D create_singlethread_workqueu=
-e(
-> + =A0 =A0 =A0 mpc8xxx_spi->workqueue =3D create_singlethread_workqueu=
-e(
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_name(master->dev.parent));
-> - =A0 =A0 =A0 if (mpc83xx_spi->workqueue =3D=3D NULL) {
-> + =A0 =A0 =A0 if (mpc8xxx_spi->workqueue =3D=3D NULL) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D -EBUSY;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto free_irq;
-> =A0 =A0 =A0 =A0}
-> @@ -626,57 +626,57 @@ mpc83xx_spi_probe(struct device *dev, struct re=
-source *mem, unsigned int irq)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto unreg_master;
->
-> =A0 =A0 =A0 =A0printk(KERN_INFO
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0"%s: MPC83xx SPI Controller driver at 0x=
-%p (irq =3D %d)\n",
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_name(dev), mpc83xx_spi->base, mpc83x=
-x_spi->irq);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0"%s: MPC8xxx SPI Controller driver at 0x=
-%p (irq =3D %d)\n",
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_name(dev), mpc8xxx_spi->base, mpc8xx=
-x_spi->irq);
->
-> =A0 =A0 =A0 =A0return master;
->
-> =A0unreg_master:
-> - =A0 =A0 =A0 destroy_workqueue(mpc83xx_spi->workqueue);
-> + =A0 =A0 =A0 destroy_workqueue(mpc8xxx_spi->workqueue);
-> =A0free_irq:
-> - =A0 =A0 =A0 free_irq(mpc83xx_spi->irq, mpc83xx_spi);
-> + =A0 =A0 =A0 free_irq(mpc8xxx_spi->irq, mpc8xxx_spi);
-> =A0unmap_io:
-> - =A0 =A0 =A0 iounmap(mpc83xx_spi->base);
-> + =A0 =A0 =A0 iounmap(mpc8xxx_spi->base);
-> =A0put_master:
-> =A0 =A0 =A0 =A0spi_master_put(master);
-> =A0err:
-> =A0 =A0 =A0 =A0return ERR_PTR(ret);
-> =A0}
->
-> -static int __devexit mpc83xx_spi_remove(struct device *dev)
-> +static int __devexit mpc8xxx_spi_remove(struct device *dev)
-> =A0{
-> - =A0 =A0 =A0 struct mpc83xx_spi *mpc83xx_spi;
-> + =A0 =A0 =A0 struct mpc8xxx_spi *mpc8xxx_spi;
-> =A0 =A0 =A0 =A0struct spi_master *master;
->
-> =A0 =A0 =A0 =A0master =3D dev_get_drvdata(dev);
-> - =A0 =A0 =A0 mpc83xx_spi =3D spi_master_get_devdata(master);
-> + =A0 =A0 =A0 mpc8xxx_spi =3D spi_master_get_devdata(master);
->
-> - =A0 =A0 =A0 flush_workqueue(mpc83xx_spi->workqueue);
-> - =A0 =A0 =A0 destroy_workqueue(mpc83xx_spi->workqueue);
-> + =A0 =A0 =A0 flush_workqueue(mpc8xxx_spi->workqueue);
-> + =A0 =A0 =A0 destroy_workqueue(mpc8xxx_spi->workqueue);
-> =A0 =A0 =A0 =A0spi_unregister_master(master);
->
-> - =A0 =A0 =A0 free_irq(mpc83xx_spi->irq, mpc83xx_spi);
-> - =A0 =A0 =A0 iounmap(mpc83xx_spi->base);
-> + =A0 =A0 =A0 free_irq(mpc8xxx_spi->irq, mpc8xxx_spi);
-> + =A0 =A0 =A0 iounmap(mpc8xxx_spi->base);
->
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
-> -struct mpc83xx_spi_probe_info {
-> +struct mpc8xxx_spi_probe_info {
-> =A0 =A0 =A0 =A0struct fsl_spi_platform_data pdata;
-> =A0 =A0 =A0 =A0int *gpios;
-> =A0 =A0 =A0 =A0bool *alow_flags;
-> =A0};
->
-> -static struct mpc83xx_spi_probe_info *
-> +static struct mpc8xxx_spi_probe_info *
-> =A0to_of_pinfo(struct fsl_spi_platform_data *pdata)
-> =A0{
-> - =A0 =A0 =A0 return container_of(pdata, struct mpc83xx_spi_probe_inf=
-o, pdata);
-> + =A0 =A0 =A0 return container_of(pdata, struct mpc8xxx_spi_probe_inf=
-o, pdata);
-> =A0}
->
-> -static void mpc83xx_spi_cs_control(struct spi_device *spi, bool on)
-> +static void mpc8xxx_spi_cs_control(struct spi_device *spi, bool on)
-> =A0{
-> =A0 =A0 =A0 =A0struct device *dev =3D spi->dev.parent;
-> - =A0 =A0 =A0 struct mpc83xx_spi_probe_info *pinfo =3D to_of_pinfo(de=
-v->platform_data);
-> + =A0 =A0 =A0 struct mpc8xxx_spi_probe_info *pinfo =3D to_of_pinfo(de=
-v->platform_data);
-> =A0 =A0 =A0 =A0u16 cs =3D spi->chip_select;
-> =A0 =A0 =A0 =A0int gpio =3D pinfo->gpios[cs];
-> =A0 =A0 =A0 =A0bool alow =3D pinfo->alow_flags[cs];
-> @@ -684,11 +684,11 @@ static void mpc83xx_spi_cs_control(struct spi_d=
-evice *spi, bool on)
-> =A0 =A0 =A0 =A0gpio_set_value(gpio, on ^ alow);
-> =A0}
->
-> -static int of_mpc83xx_spi_get_chipselects(struct device *dev)
-> +static int of_mpc8xxx_spi_get_chipselects(struct device *dev)
-> =A0{
-> =A0 =A0 =A0 =A0struct device_node *np =3D dev_archdata_get_node(&dev-=
->archdata);
-> =A0 =A0 =A0 =A0struct fsl_spi_platform_data *pdata =3D dev->platform_=
-data;
-> - =A0 =A0 =A0 struct mpc83xx_spi_probe_info *pinfo =3D to_of_pinfo(pd=
-ata);
-> + =A0 =A0 =A0 struct mpc8xxx_spi_probe_info *pinfo =3D to_of_pinfo(pd=
-ata);
-> =A0 =A0 =A0 =A0unsigned int ngpios;
-> =A0 =A0 =A0 =A0int i =3D 0;
-> =A0 =A0 =A0 =A0int ret;
-> @@ -744,7 +744,7 @@ static int of_mpc83xx_spi_get_chipselects(struct =
-device *dev)
-> =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0pdata->max_chipselect =3D ngpios;
-> - =A0 =A0 =A0 pdata->cs_control =3D mpc83xx_spi_cs_control;
-> + =A0 =A0 =A0 pdata->cs_control =3D mpc8xxx_spi_cs_control;
->
-> =A0 =A0 =A0 =A0return 0;
->
-> @@ -763,10 +763,10 @@ err_alloc_flags:
-> =A0 =A0 =A0 =A0return ret;
-> =A0}
->
-> -static int of_mpc83xx_spi_free_chipselects(struct device *dev)
-> +static int of_mpc8xxx_spi_free_chipselects(struct device *dev)
-> =A0{
-> =A0 =A0 =A0 =A0struct fsl_spi_platform_data *pdata =3D dev->platform_=
-data;
-> - =A0 =A0 =A0 struct mpc83xx_spi_probe_info *pinfo =3D to_of_pinfo(pd=
-ata);
-> + =A0 =A0 =A0 struct mpc8xxx_spi_probe_info *pinfo =3D to_of_pinfo(pd=
-ata);
-> =A0 =A0 =A0 =A0int i;
->
-> =A0 =A0 =A0 =A0if (!pinfo->gpios)
-> @@ -782,12 +782,12 @@ static int of_mpc83xx_spi_free_chipselects(stru=
-ct device *dev)
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
-> -static int __devinit of_mpc83xx_spi_probe(struct of_device *ofdev,
-> +static int __devinit of_mpc8xxx_spi_probe(struct of_device *ofdev,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0const struct of_device_id *ofid)
-> =A0{
-> =A0 =A0 =A0 =A0struct device *dev =3D &ofdev->dev;
-> =A0 =A0 =A0 =A0struct device_node *np =3D ofdev->node;
-> - =A0 =A0 =A0 struct mpc83xx_spi_probe_info *pinfo;
-> + =A0 =A0 =A0 struct mpc8xxx_spi_probe_info *pinfo;
-> =A0 =A0 =A0 =A0struct fsl_spi_platform_data *pdata;
-> =A0 =A0 =A0 =A0struct spi_master *master;
-> =A0 =A0 =A0 =A0struct resource mem;
-> @@ -819,7 +819,7 @@ static int __devinit of_mpc83xx_spi_probe(struct =
-of_device *ofdev,
-> =A0 =A0 =A0 =A0if (prop && !strcmp(prop, "cpu-qe"))
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0pdata->qe_mode =3D 1;
->
-> - =A0 =A0 =A0 ret =3D of_mpc83xx_spi_get_chipselects(dev);
-> + =A0 =A0 =A0 ret =3D of_mpc8xxx_spi_get_chipselects(dev);
-> =A0 =A0 =A0 =A0if (ret)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err;
->
-> @@ -833,7 +833,7 @@ static int __devinit of_mpc83xx_spi_probe(struct =
-of_device *ofdev,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err;
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 master =3D mpc83xx_spi_probe(dev, &mem, irq.start);
-> + =A0 =A0 =A0 master =3D mpc8xxx_spi_probe(dev, &mem, irq.start);
-> =A0 =A0 =A0 =A0if (IS_ERR(master)) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D PTR_ERR(master);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err;
-> @@ -844,34 +844,34 @@ static int __devinit of_mpc83xx_spi_probe(struc=
-t of_device *ofdev,
-> =A0 =A0 =A0 =A0return 0;
->
-> =A0err:
-> - =A0 =A0 =A0 of_mpc83xx_spi_free_chipselects(dev);
-> + =A0 =A0 =A0 of_mpc8xxx_spi_free_chipselects(dev);
-> =A0err_clk:
-> =A0 =A0 =A0 =A0kfree(pinfo);
-> =A0 =A0 =A0 =A0return ret;
-> =A0}
->
-> -static int __devexit of_mpc83xx_spi_remove(struct of_device *ofdev)
-> +static int __devexit of_mpc8xxx_spi_remove(struct of_device *ofdev)
-> =A0{
-> =A0 =A0 =A0 =A0int ret;
->
-> - =A0 =A0 =A0 ret =3D mpc83xx_spi_remove(&ofdev->dev);
-> + =A0 =A0 =A0 ret =3D mpc8xxx_spi_remove(&ofdev->dev);
-> =A0 =A0 =A0 =A0if (ret)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return ret;
-> - =A0 =A0 =A0 of_mpc83xx_spi_free_chipselects(&ofdev->dev);
-> + =A0 =A0 =A0 of_mpc8xxx_spi_free_chipselects(&ofdev->dev);
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
-> -static const struct of_device_id of_mpc83xx_spi_match[] =3D {
-> +static const struct of_device_id of_mpc8xxx_spi_match[] =3D {
-> =A0 =A0 =A0 =A0{ .compatible =3D "fsl,spi" },
-> =A0 =A0 =A0 =A0{},
-> =A0};
-> -MODULE_DEVICE_TABLE(of, of_mpc83xx_spi_match);
-> +MODULE_DEVICE_TABLE(of, of_mpc8xxx_spi_match);
->
-> -static struct of_platform_driver of_mpc83xx_spi_driver =3D {
-> - =A0 =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "mpc83xx_spi",
-> - =A0 =A0 =A0 .match_table =A0 =A0=3D of_mpc83xx_spi_match,
-> - =A0 =A0 =A0 .probe =A0 =A0 =A0 =A0 =A0=3D of_mpc83xx_spi_probe,
-> - =A0 =A0 =A0 .remove =A0 =A0 =A0 =A0 =3D __devexit_p(of_mpc83xx_spi_=
-remove),
-> +static struct of_platform_driver of_mpc8xxx_spi_driver =3D {
-> + =A0 =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "mpc8xxx_spi",
-> + =A0 =A0 =A0 .match_table =A0 =A0=3D of_mpc8xxx_spi_match,
-> + =A0 =A0 =A0 .probe =A0 =A0 =A0 =A0 =A0=3D of_mpc8xxx_spi_probe,
-> + =A0 =A0 =A0 .remove =A0 =A0 =A0 =A0 =3D __devexit_p(of_mpc8xxx_spi_=
-remove),
-> =A0};
->
-> =A0#ifdef CONFIG_MPC832x_RDB
-> @@ -882,7 +882,7 @@ static struct of_platform_driver of_mpc83xx_spi_d=
-river =3D {
-> =A0* tree can work with OpenFirmware driver. But for now we support o=
-ld trees
-> =A0* as well.
-> =A0*/
-> -static int __devinit plat_mpc83xx_spi_probe(struct platform_device *=
-pdev)
-> +static int __devinit plat_mpc8xxx_spi_probe(struct platform_device *=
-pdev)
-> =A0{
-> =A0 =A0 =A0 =A0struct resource *mem;
-> =A0 =A0 =A0 =A0unsigned int irq;
-> @@ -899,21 +899,21 @@ static int __devinit plat_mpc83xx_spi_probe(str=
-uct platform_device *pdev)
-> =A0 =A0 =A0 =A0if (!irq)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -EINVAL;
->
-> - =A0 =A0 =A0 master =3D mpc83xx_spi_probe(&pdev->dev, mem, irq);
-> + =A0 =A0 =A0 master =3D mpc8xxx_spi_probe(&pdev->dev, mem, irq);
-> =A0 =A0 =A0 =A0if (IS_ERR(master))
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return PTR_ERR(master);
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
-> -static int __devexit plat_mpc83xx_spi_remove(struct platform_device =
-*pdev)
-> +static int __devexit plat_mpc8xxx_spi_remove(struct platform_device =
-*pdev)
-> =A0{
-> - =A0 =A0 =A0 return mpc83xx_spi_remove(&pdev->dev);
-> + =A0 =A0 =A0 return mpc8xxx_spi_remove(&pdev->dev);
-> =A0}
->
-> =A0MODULE_ALIAS("platform:mpc83xx_spi");
-> -static struct platform_driver mpc83xx_spi_driver =3D {
-> - =A0 =A0 =A0 .probe =3D plat_mpc83xx_spi_probe,
-> - =A0 =A0 =A0 .remove =3D __exit_p(plat_mpc83xx_spi_remove),
-> +static struct platform_driver mpc8xxx_spi_driver =3D {
-> + =A0 =A0 =A0 .probe =3D plat_mpc8xxx_spi_probe,
-> + =A0 =A0 =A0 .remove =3D __exit_p(plat_mpc8xxx_spi_remove),
-> =A0 =A0 =A0 =A0.driver =3D {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.name =3D "mpc83xx_spi",
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.owner =3D THIS_MODULE,
-> @@ -924,35 +924,35 @@ static bool legacy_driver_failed;
->
-> =A0static void __init legacy_driver_register(void)
-> =A0{
-> - =A0 =A0 =A0 legacy_driver_failed =3D platform_driver_register(&mpc8=
-3xx_spi_driver);
-> + =A0 =A0 =A0 legacy_driver_failed =3D platform_driver_register(&mpc8=
-xxx_spi_driver);
-> =A0}
->
-> =A0static void __exit legacy_driver_unregister(void)
-> =A0{
-> =A0 =A0 =A0 =A0if (legacy_driver_failed)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return;
-> - =A0 =A0 =A0 platform_driver_unregister(&mpc83xx_spi_driver);
-> + =A0 =A0 =A0 platform_driver_unregister(&mpc8xxx_spi_driver);
-> =A0}
-> =A0#else
-> =A0static void __init legacy_driver_register(void) {}
-> =A0static void __exit legacy_driver_unregister(void) {}
-> =A0#endif /* CONFIG_MPC832x_RDB */
->
-> -static int __init mpc83xx_spi_init(void)
-> +static int __init mpc8xxx_spi_init(void)
-> =A0{
-> =A0 =A0 =A0 =A0legacy_driver_register();
-> - =A0 =A0 =A0 return of_register_platform_driver(&of_mpc83xx_spi_driv=
-er);
-> + =A0 =A0 =A0 return of_register_platform_driver(&of_mpc8xxx_spi_driv=
-er);
-> =A0}
->
-> -static void __exit mpc83xx_spi_exit(void)
-> +static void __exit mpc8xxx_spi_exit(void)
-> =A0{
-> - =A0 =A0 =A0 of_unregister_platform_driver(&of_mpc83xx_spi_driver);
-> + =A0 =A0 =A0 of_unregister_platform_driver(&of_mpc8xxx_spi_driver);
-> =A0 =A0 =A0 =A0legacy_driver_unregister();
-> =A0}
->
-> -module_init(mpc83xx_spi_init);
-> -module_exit(mpc83xx_spi_exit);
-> +module_init(mpc8xxx_spi_init);
-> +module_exit(mpc8xxx_spi_exit);
->
-> =A0MODULE_AUTHOR("Kumar Gala");
-> -MODULE_DESCRIPTION("Simple MPC83xx SPI Driver");
-> +MODULE_DESCRIPTION("Simple MPC8xxx SPI Driver");
-> =A0MODULE_LICENSE("GPL");
-> --
-> 1.6.2.2
->
-> ---------------------------------------------------------------------=
----------
-> Register Now & Save for Velocity, the Web Performance & Operations
-> Conference from O'Reilly Media. Velocity features a full day of
-> expert-led, hands-on workshops and two days of sessions from industry
-> leaders in dedicated Performance & Operations tracks. Use code vel09s=
-cf
-> and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
->
+------------------------------------------------------------------------------
+Register Now & Save for Velocity, the Web Performance & Operations 
+Conference from O'Reilly Media. Velocity features a full day of 
+expert-led, hands-on workshops and two days of sessions from industry 
+leaders in dedicated Performance & Operations tracks. Use code vel09scf 
+and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
+--------------303AE2D0194DABB0566FEE23
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-
---=20
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+--------------303AE2D0194DABB0566FEE23--

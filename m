@@ -1,12 +1,12 @@
-From: =?GB2312?B?wda+rcDt?= <5xgd35f1df3-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 票
-Date: Mon, 4 May 2009 07:08:51 +0800
-Message-ID: <E1M0kod-00081M-O5@3yr0jf1.ch3.sourceforge.com>
+From: Unknown <unknown@unknown.invalid>
+Subject: [SPAM] *** All hand made***
+Date: Mon, 4 May 2009 05:46:29 +0800
+Message-ID: <20090503215203.EEB1E324577@server.nittoku.co.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8265785167750342242=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: "spi-devel-general" <>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,19 +17,99 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ICDE47rDOiCxvrmry77S1LbgvNK5q8u+us/X99PFu920+r+qL7eiL8axCiAgIAogICAxo7rG1c2o
-yczGt8/6ytvXqNPDt6IvxrE7CiAgIDI61MvK5NK116jTw7eiL8axo6i5q8K3oaLE2rrTzbPSu7v1
-zu/Uy8rk16jTw7eiL8axo6kKICAgMzq547jm0rXXqNPDt6IvxrEKICAgNKO7vajW/tK116jTw7ei
-L8axCiAgIDU6xuTL/Lf+zvHStdeo08O3oi/GsXu24NbW0NDStdeo08O3oi/GsX0KICAgNqO7vsa1
-6raotu63oi/GsQogIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtaO6IAogICAgICAgICAgICAgICAg
-IMHWz8jJ+qO6MTM3OTgyNDE4NDgKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpSZWdpc3RlciBOb3cg
-JiBTYXZlIGZvciBWZWxvY2l0eSwgdGhlIFdlYiBQZXJmb3JtYW5jZSAmIE9wZXJhdGlvbnMgCkNv
-bmZlcmVuY2UgZnJvbSBPJ1JlaWxseSBNZWRpYS4gVmVsb2NpdHkgZmVhdHVyZXMgYSBmdWxsIGRh
-eSBvZiAKZXhwZXJ0LWxlZCwgaGFuZHMtb24gd29ya3Nob3BzIGFuZCB0d28gZGF5cyBvZiBzZXNz
-aW9ucyBmcm9tIGluZHVzdHJ5IApsZWFkZXJzIGluIGRlZGljYXRlZCBQZXJmb3JtYW5jZSAmIE9w
-ZXJhdGlvbnMgdHJhY2tzLiBVc2UgY29kZSB2ZWwwOXNjZiAKYW5kIFNhdmUgYW4gZXh0cmEgMTUl
-IGJlZm9yZSA1LzMuIGh0dHA6Ly9wLnNmLm5ldC9zZnUvdmVsb2NpdHljb25mCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
-aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
-Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+--===============8265785167750342242==
+Content-Type: text/html
+Content-Transfer-Encoding: base64
+
+PGh0bWwgeG1sbnM6dj0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTp2bWwiIHhtbG5zOm89InVy
+bjpzY2hlbWFzLW1pY3Jvc29mdC1jb206b2ZmaWNlOm9mZmljZSIgeG1sbnM9Imh0dHA6Ly93d3cu
+dzMub3JnL1RSL1JFQy1odG1sNDAiPg0KDQo8aGVhZD4NCjxtZXRhIG5hbWU9IkdFTkVSQVRPUiIg
+Y29udGVudD0iTWljcm9zb2Z0IEZyb250UGFnZSA1LjAiPg0KPG1ldGEgbmFtZT0iUHJvZ0lkIiBj
+b250ZW50PSJGcm9udFBhZ2UuRWRpdG9yLkRvY3VtZW50Ij4NCjxtZXRhIGh0dHAtZXF1aXY9IkNv
+bnRlbnQtVHlwZSIgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWJpZzUiPg0KPHRpdGxlPkRl
+YXIgU2lyPC90aXRsZT4NCjxzdHlsZT4NCjwhLS0NCnANCgl7bWFyZ2luLXJpZ2h0OjBjbTsNCglt
+YXJnaW4tbGVmdDowY207DQoJZm9udC1zaXplOjEyLjBwdDsNCglmb250LWZhbWlseTq3c7LTqfrF
+6TsNCgl9DQogcC5Nc29Ob3JtYWwNCgl7bXNvLXN0eWxlLXBhcmVudDoiIjsNCgltYXJnaW4tYm90
+dG9tOi4wMDAxcHQ7DQoJZm9udC1zaXplOjEyLjBwdDsNCglmb250LWZhbWlseToiVGltZXMgTmV3
+IFJvbWFuIjsNCgltYXJnaW4tbGVmdDowY207IG1hcmdpbi1yaWdodDowY207IG1hcmdpbi10b3A6
+MGNtfQ0KLS0+DQo8L3N0eWxlPg0KPC9oZWFkPg0KDQo8Ym9keT4NCg0KPHAgY2xhc3M9Ik1zb05v
+cm1hbCI+PGI+PHNwYW4gbGFuZz0iRU4tVVMiIHN0eWxlPSJmb250LXNpemU6IDE0LjBwdCI+RGVh
+ciBTaXIuPC9zcGFuPjwvYj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48Yj48c3BhbiBsYW5n
+PSJFTi1VUyIgc3R5bGU9ImZvbnQtc2l6ZTogMTQuMHB0Ij5TaW5jZSANCmFjY2VwdCBvcmRlciBy
+aWJib25zIHZpYSBlLW1haWwuIEkgZXhwcmVzcyBoZWFydGZlbHQgdG8gdGhhbmtzLjwvc3Bhbj48
+L2I+PC9wPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PGI+PHNwYW4gbGFuZz0iRU4tVVMiIHN0eWxl
+PSJmb250LXNpemU6IDE0LjBwdCI+QmVjYXVzZSwgDQpUaGUgb3JpZ2luYWwgZS1tYWlsIGFkZHJl
+c3MNCjxhIGhyZWY9Im1haWx0bzpsZXVoYW5kQGVidG5ldC5uZXQiIHN0eWxlPSJjb2xvcjogYmx1
+ZTsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IHRleHQtdW5kZXJsaW5lOiBzaW5nbGUiPg0K
+bGV1aGFuZEBlYnRuZXQubmV0PC9hPiBjb250YWN0PC9zcGFuPjwvYj48L3A+DQo8cCBjbGFzcz0i
+TXNvTm9ybWFsIj48Yj48c3BhbiBsYW5nPSJFTi1VUyIgc3R5bGU9ImZvbnQtc2l6ZTogMTQuMHB0
+Ij5UbyANCmNvbm5lY3Rpb24gYW5kIGRlbGl2ZXJ5IGhhZCBwcm9ibGVtcy48L3NwYW4+PC9iPjwv
+cD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxiPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0iZm9u
+dC1zaXplOiAxNC4wcHQiPkkgd2lsbCB0byANCmRvIGVuZGVkIHVzZSB0aGF0LiBXZSBoYWQgYXR0
+YWNoZWQgb3RoZXIgZS1tYWlsIGFkZHJlc3M8L3NwYW4+PC9iPjwvcD4NCjxwIGNsYXNzPSJNc29O
+b3JtYWwiPjxiPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0iZm9udC1zaXplOiAxNC4wcHQiPg0K
+PGEgaHJlZj0ibWFpbHRvOmxldS5yaWJib25zQG1zYS5oaW5ldC5uZXQiIHN0eWxlPSJjb2xvcjog
+Ymx1ZTsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IHRleHQtdW5kZXJsaW5lOiBzaW5nbGUi
+Pg0KbGV1LnJpYmJvbnNAbXNhLmhpbmV0Lm5ldDwvYT4gYW5kDQo8YSBocmVmPSJtYWlsdG86bGV1
+aGFuZEBtc2EuaGluZXQsbmV0IiBzdHlsZT0iY29sb3I6IGJsdWU7IHRleHQtZGVjb3JhdGlvbjog
+dW5kZXJsaW5lOyB0ZXh0LXVuZGVybGluZTogc2luZ2xlIj4NCmxldWhhbmRAbXNhLmhpbmV0LG5l
+dDwvYT4gYW5kPC9zcGFuPjwvYj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48Yj48c3BhbiBs
+YW5nPSJFTi1VUyIgc3R5bGU9ImZvbnQtc2l6ZTogMTQuMHB0Ij4NCjxhIGhyZWY9Im1haWx0bzps
+ZXVoYW5kQHNvLW5ldC5uZXQudHciIHN0eWxlPSJjb2xvcjogYmx1ZTsgdGV4dC1kZWNvcmF0aW9u
+OiB1bmRlcmxpbmU7IHRleHQtdW5kZXJsaW5lOiBzaW5nbGUiPg0KbGV1aGFuZEBzby1uZXQubmV0
+LnR3PC9hPiBhY2NlcHQgb3JkZXIgcmliYm9ucy48L3NwYW4+PC9iPjwvcD4NCjxwIGNsYXNzPSJN
+c29Ob3JtYWwiPjxiPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0iZm9udC1zaXplOiAxNC4wcHQi
+PkFsc28sIA0KQXR0YWNoZWQgbXkgd2Vic2l0ZQ0KPGEgaHJlZj0iaHR0cDovL3d3dy5yaWJib25z
+LmNvbS50dy8iIHN0eWxlPSJjb2xvcjogYmx1ZTsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7
+IHRleHQtdW5kZXJsaW5lOiBzaW5nbGUiPg0KaHR0cDovL3d3dy5yaWJib25zLmNvbS50dzwvYT4g
+dmlzaXQgdGhhdCBwbGVhc2UuPC9zcGFuPjwvYj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48
+Yj48c3BhbiBsYW5nPSJFTi1VUyIgc3R5bGU9ImZvbnQtc2l6ZTogMTQuMHB0Ij5JIGhvcGUgc28g
+DQpmb3JldmVyIHRvIGRvIHNlcnZpY2UgZm9yIHlvdSBhbmQgYXR0YWNoZWQgbmV3IG9yZGVyIGZv
+cm0uPC9zcGFuPjwvYj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48Yj48c3BhbiBsYW5nPSJF
+Ti1VUyIgc3R5bGU9ImZvbnQtc2l6ZTogMTQuMHB0Ij5UaGFuayB5b3UgDQp2ZXJ5IG11Y2ghPC9z
+cGFuPjwvYj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBsYW5nPSJFTi1VUyI+Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IDwv
+c3Bhbj48L3A+DQo8cD4NCiAgICA8aW1nIGhlaWdodD0iMjk2IiBzcmM9Imh0dHA6Ly93d3cucmli
+Ym9ucy5jb20udHcvUmliYm9ucy1BaXItZm9yY2UtMDcwMTI4LmpwZyIgd2lkdGg9IjQxMCIgYm9y
+ZGVyPSIwIj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBsYW5nPSJFTi1VUyI+PGZv
+bnQgc2l6ZT0iMyI+U2luY2VyZWx5LDxicj4NCkxldSdzIEhhbmRpY3JhZnQgQ28uPGJyPg0KUC5P
+LkJveCA1MjE8YnI+DQpOby4gMS0yIExhbmUgMjMgSGFuIFNoZW5nIEUuIFJvYWQ8YnI+DQpQYW4g
+Q2hpYW8gQ2l0eSwgVGFpcGVpLiBUYWl3YW48YnI+DQpQSDooODg2KTItMjI1OS0wMTUyJm5ic3A7
+IEZheDooODg2KTItMjI1Ny0yMTIyPGJyPg0KRS1tYWlsOg0KPGEgaHJlZj0ibWFpbHRvOmxldWhh
+bmRAc28tbmV0Lm5ldC50dyIgc3R5bGU9ImNvbG9yOiBibHVlOyB0ZXh0LWRlY29yYXRpb246IHVu
+ZGVybGluZTsgdGV4dC11bmRlcmxpbmU6IHNpbmdsZSI+DQpsZXVoYW5kQHNvLW5ldC5uZXQudHc8
+L2E+Jm5ic3A7DQo8YSBocmVmPSJtYWlsdG86bGV1LnJpYmJvbnNAbXNhLmhpbmV0Lm5ldCIgc3R5
+bGU9ImNvbG9yOiBibHVlOyB0ZXh0LWRlY29yYXRpb246IHVuZGVybGluZTsgdGV4dC11bmRlcmxp
+bmU6IHNpbmdsZSI+DQpsZXUucmliYm9uc0Btc2EuaGluZXQubmV0PC9hPjxicj4NCldlYnNpdGU6
+aHR0cC8vOiA8L2ZvbnQ+DQo8YSBocmVmPSJodHRwOi8vd3d3LnJpYmJvbnMuY29tLnR3IiBzdHls
+ZT0iY29sb3I6IGJsdWU7IHRleHQtZGVjb3JhdGlvbjogdW5kZXJsaW5lOyB0ZXh0LXVuZGVybGlu
+ZTogc2luZ2xlIj4NCjxmb250IHNpemU9IjMiPnd3dy5yaWJib25zLmNvbS50dzwvZm9udD48L2E+
+PC9zcGFuPjwvcD4NCjxwPjxiPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0iZm9udC1zaXplOiAx
+NC4wcHQiPiZuYnNwOzwvc3Bhbj48L2I+PC9wPg0KDQo8L2JvZHk+DQoNCjwvaHRtbD4NCg==
+
+
+--===============8265785167750342242==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Register Now & Save for Velocity, the Web Performance & Operations 
+Conference from O'Reilly Media. Velocity features a full day of 
+expert-led, hands-on workshops and two days of sessions from industry 
+leaders in dedicated Performance & Operations tracks. Use code vel09scf 
+and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf
+--===============8265785167750342242==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8265785167750342242==--

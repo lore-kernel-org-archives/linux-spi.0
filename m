@@ -1,85 +1,60 @@
-From: Anton Vorontsov <avorontsov@ru.mvista.com>
-Subject: Re: [PATCH 9/9] spi_mpc8xxx: s/83xx/8xxx/g
-Date: Tue, 5 May 2009 03:36:35 +0400
-Message-ID: <20090504233635.GA5892@oksana.dev.rtsoft.ru>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: Re: [PATCH 0/9] Some work for spi_mpc83xx
+	driver, spi-mmc support	for MPC8610HPCD
+Date: Tue, 5 May 2009 03:36:48 +0400
+Message-ID: <20090504233648.GA6973@oksana.dev.rtsoft.ru>
 References: <20090430234739.GA27709@oksana.dev.rtsoft.ru>
-	<20090430234833.GI7901@oksana.dev.rtsoft.ru>
-	<20090504135327.13cd42af.akpm@linux-foundation.org>
-Reply-To: avorontsov@ru.mvista.com
+	<20090504135504.a6a6afcf.akpm@linux-foundation.org>
+Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev@ozlabs.org, dbrownell@users.sourceforge.net,
-	linux-kernel@vger.kernel.org, spi-devel-general@lists.sourceforge.net
-To: Andrew Morton <akpm@linux-foundation.org>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org>
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20090504135327.13cd42af.akpm@linux-foundation.org>
-List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
-List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
-List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
+In-Reply-To: <20090504135504.a6a6afcf.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, May 04, 2009 at 01:53:27PM -0700, Andrew Morton wrote:
-> On Fri, 1 May 2009 03:48:33 +0400
-> Anton Vorontsov <avorontsov@ru.mvista.com> wrote:
+On Mon, May 04, 2009 at 01:55:04PM -0700, Andrew Morton wrote:
+> On Fri, 1 May 2009 03:47:39 +0400
+> Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org> wrote:
 > 
-> > Since we renamed the file, we might want to rename the file
-> > internals too.
+> > Here are few patches that are needed to support spi-mmc slot on
+> > MPC8610HPCD PowerPC boards:
 > > 
-> > Though we don't bother with changing platform driver name and
-> > platform module alias. The stuff is legacy and hopefully we'll
-> > remove it soon.
+> > [1/9] spi_mpc83xx: Handles other Freescale processors
+> > [2/9] spi_mpc83xx: Quieten down the "Requested speed is too low" message
+> > [3/9] spi_mpc83xx: Add small delay after asserting chip-select line
+> > [4/9] powerpc/86xx: Add MMC SPI support for MPC8610HPCD boards
 > > 
 > 
-> but but but
-> 
-> >
-> > -static struct of_platform_driver of_mpc83xx_spi_driver = {
-> > -	.name		= "mpc83xx_spi",
-> > -	.match_table	= of_mpc83xx_spi_match,
-> > -	.probe		= of_mpc83xx_spi_probe,
-> > -	.remove		= __devexit_p(of_mpc83xx_spi_remove),
-> > +static struct of_platform_driver of_mpc8xxx_spi_driver = {
-> > +	.name		= "mpc8xxx_spi",
-> > +	.match_table	= of_mpc8xxx_spi_match,
-> > +	.probe		= of_mpc8xxx_spi_probe,
-> > +	.remove		= __devexit_p(of_mpc8xxx_spi_remove),
-> >  };
-> 
-> It _did_ change the platform driver name, didn't it?
+> Some or all of these seem appropriate to 2.6.30 and perhaps even -stable?
 
-This is an OF platform driver, here it is safe to change
-the name. But I didn't change the pure platform driver,
-here:
+I'd say no, we don't need the fixes for MPC8323E-RDB boards
+(currently the only mainline user of that driver), and support
+for MPC8610HPCD boards is a new feature, so I think all these
+patches can wait for 2.6.31.
 
-| -static struct platform_driver mpc83xx_spi_driver = {
-| -       .probe = plat_mpc83xx_spi_probe,
-| -       .remove = __exit_p(plat_mpc83xx_spi_remove),
-| +static struct platform_driver mpc8xxx_spi_driver = {
-| +       .probe = plat_mpc8xxx_spi_probe,
-| +       .remove = __exit_p(plat_mpc8xxx_spi_remove),
-|         .driver = {
-|                 .name = "mpc83xx_spi",
-
-------------------^
-
-> This patch series had quite a lot of conflicts with the already-pending
-> 
-> spi-move-common-spi_setup-functionality-into-core.patch
-> spi-move-more-spi_setup-functionality-into-core.patch
-> 
-> which I beleive I successfully fixed up.
-
-Thanks a lot, I'll test it soon.
+Thanks,
 
 -- 
 Anton Vorontsov
-email: cbouatmailru@gmail.com
+email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 irc://irc.freenode.net/bd2
+
+------------------------------------------------------------------------------
+Register Now & Save for Velocity, the Web Performance & Operations 
+Conference from O'Reilly Media. Velocity features a full day of 
+expert-led, hands-on workshops and two days of sessions from industry 
+leaders in dedicated Performance & Operations tracks. Use code vel09scf 
+and Save an extra 15% before 5/3. http://p.sf.net/sfu/velocityconf

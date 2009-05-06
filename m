@@ -1,12 +1,11 @@
-From: Tansy Holdeman <sam704-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] UEFA Champions League Tickets
-Date: Tue, 5 May 2009 22:19:31 +0200
-Message-ID: <25579.4187462472$1241554870@news.gmane.org>
-Reply-To: Tansy Holdeman <malkaniaverill1681-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Ivan Leonidovich <ivanleonidovich-ZKXumFVAMWxBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Ваш голос – лицо компании
+Date: Wed, 06 May 2009 03:39:07 -2000
+Message-ID: <8973728541.20090506033907@0088800.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="windows-1251"
+Content-Transfer-Encoding: base64
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,37 +17,127 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-A brand new search engine for worldwide sports events discounted tickets has been recently established. 
-
-Our site is made for sports enthusiasts worldwide. The information presented in the site and especially the "search by location" feature makes the site something that all of us will add to our "Favorites". For the first time there is a website that allows users to perform a location-based search of future sports events. When users want to find events in any city worldwide, we provide them with the results for the city they searched and also information about events in nearby cities located up to 150 km from the city for which the search was made, even if the nearby city is located in a different country. For each and every event we provide directions how to get to the location and in most cases offer tickets or ask you to fill a lead form.
-
-You can also search for sports events by selecting a competitor. Fans of Manchester United or Roger Federer can find out where it is possible to see their favorite team or player in the coming months.
-
-For more information about our website, reply back to 18318thurrell.merideth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will send all the information.
-
-Regards,
-"World of Sport" Foundation
-
-
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
-------------------------------------------------------------------------------
-The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
-production scanning environment may not be a perfect world - but thanks to
-Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
-Series Scanner you'll get full speed at 300 dpi even with all image 
-processing features enabled. http://p.sf.net/sfu/kodak-com
+DQo+IDIxIOzg/y4NCj4g4y4gyuhl4iwg4fPr/OIuINhl4vdl7epvLCA0LCBv8mXr/CCrQ2Ht6vIt
+z2XyZXDh83Djuw0KDQoNCj4g3fT05ery6OLt++Ug7/Du5ODm6CDv7iDy5evl9O7t8zoNCj4gx+7r
+7vL75SDw7vHx++/oIPLl6+X07u3t7uPuIOzg8Orl8ujt4+Ag6OvoIOrg6iDz8e/l+O3uIO/w7uTg
+4uDy/CDv7iDy5evl9O7t8w0KDQoNCj4gwcjHzUXRLVTQRc3F0A0KICDI4uDt7uLgINLg8vz/7eAs
+IOTu6vLu8CDv5eTg4+7j6Pfl8ero9SDt4PPqLCDv8O705fHx7vAuIMXk6O3x8uLl7e376SDiINPq
+8ODo7eUg4ejn7eXxLfLw5e3l8CwgDQogIOfg+ejy6OL46Okg5O7q8u7w8erz/iDk6PHx5fDy4Pbo
+/iwg7+7x4v/55e3t8/4g7OXy7uTo6uDsIOgg8uX17e7r7uPo/+wg7/Du4uXk5e3o/y4gDQogIDEz
+Levl8u3o6SDx8uDmIO/w7uLl5OXt6P8g4iDT6vDg6O3lLCDQ7vHx6OgsIMzu6+Tg4ujoLCDD5fDs
+4O3o6CwgyPDr4O3k6OguIA0KDQo+INZl62XiYf8gYfPk6PJvcOj/OiAgDQogIPDz6u7i7uTo8uXr
+6CDoIOzl7eXk5uXw+yDu8uTl6+Ag7/Du5ODmLCDw4OHu8u3o6ugg7vLk5evgIO/w7uTg5iDoIOfg
+6vPv7uosIA0KICDs5e3l5Obl8Psg7+4g8ODh7vLlIPEg6uvo5e3y4OzoLCDs5e3l5Obl8Psg7+4g
+7/Du5ODm4OwsIPDg4e7y7ejq6CBjYWxsLWNlbnRlci4NCg0KPiDW5evoDQogIJUg7vHi7ujy/CD9
+9PTl6vLo4u375SDy5fXt6OroIO/w7uTg5iDv7iDy5evl9O7t8w0KICCVIO7y8ODh7vLg8vwg7/Do
+5ez7IOgg8uX17e7r7uPo6CDv8OXu5O7r5e3o/yDh4PD85fDgIPHl6vDl8uDw/yDoIOL79e7k4CDt
+4CDW5evl4u7j7iDK6+jl7fLgDQogIJUg7uLr4OTl8vwg7OXy7uTo6uDs6CAg/fT05ery6OLt+/Ug
+7/Du5ODmIOgg4uXk5e3o/yDv5fDl4+7i7vDu4iAg7+4g8uXr5fTu7fMNCiAglSDv8O7g7eDr6Ofo
+8O7i4PL8IOgg7eDs5fLo8vwg7+7i7uT7IOTr/yDn4u7t6uAg1uXr5eLu7PMgyuvo5e3y8yDiIPHr
+8/fg5SDv8O7k4OboIPLu4uDw7uINCiAglSDk4PL8IPDl9+Xi++Ug4Ovj7vDo8uz7IOgg8fbl7eDw
+6Ogg4vXu5uTl7ej/IOIg6u7t8uDq8iDxINbl6+Xi++wgyuvo5e3y7uwg7+4g8uXr5fTu7fMsIPEg
+9uXr/P4g7/Dl5+Xt8uD26Ogg5ezzIOru7Ozl8Pfl8eru4+4g7/Dl5Ovu5uXt6P8NCiAglSDv8O7w
+4OHu8uDy/CDq7u306+jq8u375SDx6PLz4Pbo6CDxIMrr6OXt8u7sDQogIJUg7vLw4OHu8uDy/CDy
+6O/7IOgg4ujk+yDi7ufw4Obl7ejpIO/uIPLl6+X07u3zDQogIJUg7+7n7eDq7uzo8vwg8SDu8e3u
+4u377Ogg7/Dg4ujr4OzoIPLl6+X07u3t7uPuIP3y6Orl8uAgDQoNCj4g0OXn8+v88uDy+w0KICCV
+IO7i6+Dk5e3o5SDv8Ojl7ODs6CDoIO3g4vvq4OzoIP309OXq8uji7e7j7iDu4fnl7ej/IO/uIPLl
+6+X07u3zDQogIJUg7/Do4uvl9+Xt6OUgyuvo5e3y7uIg4evg4+7k4PD/IO/w7vTl8fHo7u3g6/zt
+7ukg6CDv8ej17uvu4+j35fHq6CDj8ODs7vLt7ukg6u7s7PPt6Org9ujoIO/uIPLl6+X07u3zDQog
+IJUg8e3/8ujlIPHy8OXx8e7i+/Ug4eDw/OXw7uIg4iDv8O725fHx5SDv5fDi7uPuIOfi7u3q4CDK
+6+jl7fLzDQogIJUg8+zl7ejlIPDg4e7y4PL8IPEgq/Lw8+Tt++zouyDoIOru7fTr6Ory7fvs6CDK
+6+jl7fLg7Ogg7+4g8uXr5fTu7fMNCiAglSDz4uXr6Pfl7ejlICDw5efz6/zy4PLo4u379SDy5evl
+9O7t7fv1IOru7fLg6vLu4g0KIA0KPiDX4PHy/CAxLiDP7uTj7vLu4urgIOog7/Du4uXk5e3o/iDv
+5fDl4+7i7vDu4iDv7iDy5evl9O7t8w0KDQogIJUg0e/l9uj06OrgIPLl6+X07u3t7uPuIOru7fLg
+6vLgDQogIJUgz+735ezzIPLw8+Tt5eUg7/Du5ODi4PL8IO/uIPLl6+X07u3zPw0KICCVIMLg5u3u
+8fL8IP3s7vbo7u3g6/zt7uPuIOgg7/Ho9e7r7uPo9+Xx6u7j7iDt4PHy8O7/IOIg8uXr5fTu7e3u
+7CDq7u3y4Ory5Q0KICCVINLo7+j37fvlIO746OHq6CDoIOfg8vDz5O3l7ej/IOzl7eXk5uXw7uIg
+4iDv8O725fHx5SDy5evl9O7t7e7pIOru7Ozz7ejq4Pbo6CDxIMrr6OXt8u7sDQogIJUgzvHt7uLt
+++Ug6uD35fHy4uAg6CDh4Ofu4vvlIO3g4vvq6CDs5e3l5Obl8OAsIOLl5PP55ePuIPLl6+X07u3t
+8/4g6u7s7PPt6Org9uj+IPEgyuvo5e3y7uwNCiAglSDI4/DgIKvP8O7k4ObgIO/uIPLl6+X07u3z
+uw0KIA0KPiDX4PHy/CAyLiDP8O725fHxIO/w7uTg5ugg8u7i4PDgIO/uIPLl6+X07u3zDQo+IN3y
+4O8gMS4gz/Du8PviIPfl8OXnIPHl6vDl8uDw/yDoIO/w4OLo6+Ag5ePuIO/w5e7k7uvl7ej/Og0K
+DQogIJUgzOXy7uQgq9Dl6u7s5e3k4Pbo/7sNCiAglSDM5fLu5CCrz/Hl4uTu8OXq7uzl7eTg9uj/
+uw0KICCVIMzl8u7kIKvQ5fTw5ens6O3j4Lsg6OvoIOzl8u7kIKvd5+7v7uL7IPDl9+i7DQogIJUg
+zOXy7uQgq8/w5efz7Pbo/yDx4uXw+Oji+OXj7vH/IPTg6vLguw0KICCVIMzl8u7kIKvP8Ojl7CDh
+5ecg7/Do5ezu4rsNCiAglSDS5fXt7uvu4+j/IKvA7fjr4OMg7ejq7uPk4CDt5SDh++Lg5fIg4OHx
+7uv+8u377LsNCiAglSDQ5eDq9uj/IO3gIO7y6uDnIPHl6vDl8uDw/w0KICAgIM/w7uLl5OXt6OUg
+7eAg7vLw4OHu8urzIOL7+OXu7+jx4O3t+/Ug7/Do5ezu4iDoIPLl9e3u6+7j6OkuIMru8PDl6vbo
+/yDoIOru8/cuDQogICAgz/Du8ezu8vAg9PDg4+zl7fLu4iAg6CDv8Ojs5fDu4iDh6Oft5fEt9Ojr
+/OzgIKvK4Oog/fT05ery6OLt7iDv8O7k4OLg8vwg7+4g8uXr5fTu7fO7DQogDQo+IN3y4O8gMi4g
+wvv17uQg7eAg1uXr5eLu4+4gyuvo5e3y4CDoIO/w5efl7fLg9uj/IOru7Ozl8Pfl8eru4+4g7/Dl
+5Ovu5uXt6P8g7+4g8uXr5fTu7fMuDQoNCiAglSDO8e3u4u375SDv8ODi6OvgIO/w6OLl8vHy4uj/
+IOgg4vXu5uTl7ej/IOIg6u7t8uDq8g0KICCVIM7v8OXk5evl7ejlIPLo7+Agyuvo5e3y4CDoIOL7
+/+Lr5e3o5SDl4+4g7+7y8OXh7e7x8uXpLg0KICCVIM/w6OXs+yDv8OXn5e3y4Pbo6CDq7uzs5fD3
+5fHq7uPuIO/w5eTr7ubl7ej/ICDK6+jl7fLzLiDM7uTl6/wg7+7y8OXh6PLl6/zx6uj1IOzu8uji
+7uIgUy5BLkIuTy5OLkUuIKvX5fDi//fq6Lsg5Ov/IPD74fsgliDW5evl4u7j7iDK6+jl7fLgDQog
+IJUg0+/w4Obt5e3o5SCr3ezv4PLo/7sNCiAglSDP8Ojl7Psg4u7i6+X35e3o/yDK6+jl7fLgIOIg
+8ODn4+7i7vANCiAgLSDP8Ojl7CCr0Ojx8+XsIO7h8ODn+7sgKM/w7vHs7vLwIOLo5OXu9Ojr/Ozg
+KQ0KICAtIM/w6OXsIKvM5fLu5CDR7urw4PLguyAoz/Du4uXk5e3o5SDz7/Dg5u3l7ej/KQ0KICAt
+IM/w6OXsIKvK7u3j8PP97fLt7vHy/LsuIMjj8OAgq8rw6PLl8Ojg6/zt++Ug8evu4uC7DQogIC0g
+z/Do5ewgq9309OXq8iDP6OPs4Ovo7u3guyAoz/Du4uXk5e3o5SDz7/Dg5u3l7ej/KQ0KICCVINLg
+6vLo6uggLSDt4O/u7Ojt4Ovu9+roIOgg8eXh5Swg8eLu5ekg6u7s7+Dt6Ogg6CDv7uLu5Psg5+Lu
+7ergIOogyuvo5e3y8w0KICCVINLl9e3o6ugg7eDn7eD35e3o6SDi8fLw5ffoIO/uIPLl6+X07u3z
+INbl6+Xi7uzzIMrr6OXt8vMuIKvS4Ory6OrgIODr/PLl8O3g8uji7e7j7iDv8O7k4ujm5e3o/7su
+DQogICAgz/Du8ezu8vAg9PDg4+zl7fLu4iDh6Oft5fEt9Ojr/OzgIPEg7+7x6+Xk8/756OwgIODt
+4Ovo5+7sIPHo8vPg9ujoDQogIJUg0O7r5eLg/yDo4/DgIKvT7OXt6OUg8evz+ODy/LsNCiANCj4g
+3fLg7yAzLiDQ4OHu8uAg8SDi7ufw4Obl7ej/7Ogg6CDx7uzt5e3o/+zoIMrr6OXt8uANCg0KICCV
+IMjj8OAgq8Ti4CDv6+Xs5e3ouy4gx+Dv6PH8IO3gIOLo5OXu6uDs5fDzIPEg7+7x6+Xk8/756Owg
+4O3g6+jn7uwuDQogIJUgz/Do9+jt+yDi7ufw4Obl7ejpIOgg7uH56OUg7/Dg4ujr4CDu4fnl7ej/
+IOzl7eXk5uXw4CDiIO/w7vbl8fHlIOLu5/Dg5uXt6OkNCiAglSDS6O/7IOgg4ujk+yDi7ufw4Obl
+7ejpOg0KDQogIC0gq8z7IOTu4u7r/O37IO3g+OjsIO/u8fLg4vno6u7shbsNCiAgLSCrwuD46CDv
+7ufo9ujoIPHr6Pjq7uwg5O7w7uPoLi4uuw0KICAtIKvE4OLg6fLlIPLg6oUgxfHr6CDt4PEg9/Lu
+LfLuIOfg6O3y5fDl8fPl8iCWIOz7IPHg7OggwuDsIO/l8OXn4u7t6OyFuw0KICAtIKvP5fDl4+7i
+7vDo8uUg8SDs7ujsIO/u5Pfo7eXt7fvshbsNCiAgLSCrx+3g5fLlIOLg8SDx6u7r/OruPyEgyCDi
+8eUg7/Dl5Ovg4+D+8iDu5O3uIOgg8u4g5uUhuw0KICAtIKvE8+zg/iwg9/LuIOzl7f8g/fLuIO/u
+6uAg7eUg6O3y5fDl8fPl8oW7DQogIC0gq9Lu6/zq7iDh+/Hy8O4sIPHq4Obo8uUsIPHq7uv86u4g
+/fLuIPHy7ujyPyG7DQogIC0gq8/w6Pjr6PLlIO/w5eTr7ubl7ejlIO/uIPTg6vHzIChlLW1haWwp
+uw0KICAtICDoIPIu5C4gDQogICAgz/Du4uXk5e3o5SDt4CDu8vDg4e7y6vMg4vv45e3g5+Lg7e37
+9SDi7ufw4Obl7ejpLiAgwO3g6+jnIO746OHu6iDoICDq7vDw5er26P8uDQoNCiANCj4g3fLg7yA0
+LiDP8Ojl7Psg7/Du5ODmIO/uIPLl6+X07u3zLCDv7uTi7uT/+ejlIMrr6OXt8uAg6iDv8Ojt//Lo
+/iDw5fjl7ej/IO4g8e7y8PPk7ej35fHy4uUNCg0KICCVIM/w6OXsIKvH4OLl8Pjl7ejlIO3gIO7x
+7e7i5SDg6/zy5fDt4PLo4rsNCiAglSDP8Ojl7CCrx+Di5fD45e3o5SDxIPPx8vPv6uDs6LsNCiAg
+lSDP8Ojl7CCr0fPs7Ojw8/755eUg4u7n8ODm5e3o5bsNCiAglSDP8Ojl7CCrx+Di5fD45e3o5SDx
+IPDo8eru7LsNCiAglSDP8Ojl7CCr0fH76+rgIO3gIP3q8err/ufo4rsNCiAglSDP8Ojl7CCr0fH7
+6+rgIO3gIOrg7O/g7ej+IO/uIO/w7uTi6Obl7ej+IPHh+/Lguw0KIA0KPiDd8uDvIDUuIMfg4uXw
++OXt6OUg8ODn4+7i7vDgIO/uIPLl6+X07u3zDQoNCiAglSDU8ODn+yDt4CDv8O754O385SDxIMrr
+6OXt8u7sDQogIJUgz+7n6PLo4u3u5SDv8O7j8ODs7Ojw7uLg7ejlIMrr6OXt8uANCiAglSDM5fLu
+5PsgzcvPICDoIKv/6u7w7eD/IPLg6vLo6uC7ICDt4O/w4OLr5e3t4P8g7eAg7+7n6PLo4u3u5SAg
+5+Dv7uzo7eDt6OUgIOzl7eXk5uXw4Cwg5ePuIO/w5eTr7ubl7ej/IOgg5ePuIMru7O/g7ejoDQoN
+Cj4gzOXy7uT7IOgg9O7w7Psg8ODh7vL7ICjn4O/o8fwg7eAg4ujk5e7q4Ozl8PMg8SDv7vHr5eTz
+/vno7CDg7eDr6Ofu7CksIO/w7vHs7vLwIOgg4O3g6+jnIPP35eHt+/Ug4ujk5e706Ov87O7iLCAg
+DQogIPDg4e7y4CDz9+Dx8u3o6u7iIPEg7OXk6OAt7/Dl5+Xt8uD26OXpLCDw7uvl4vvlIOjj8Pss
+IOzu5+Pu4u7pIPjy8/DsLCDs7uTl6+jw7uLg7ejlIPLo7+j37fv1IOHo5+3l8S3x6PLz4Pbo6SAN
+CiAg8uXr5fTu7e3u6SDq7uzs8+3o6uD26OgsIO7y8ODh7vLq4CDt4OL76u7iIOIg7+Dw4PUg6CDs
+6O3oLePw8+/v4PUuDQoNCj4gS8DGxDDM0yDT10HRVM3IytMgz1DFxM7RVMDCy9/F0tHfOiANCiAg
+yu7s7+vl6vIg8/fl4e3uLezl8u7k6Pfl8ero9SDs4PLl8Ojg6+7iOw0KICDE6O/r7uwg7iDv7uL7
++OXt6Ogg6uLg6+j06Org9ujoIO/uIOTg7e3u6SDy5ezg8ujq5S4NCg0KPiBD8m/o7G/x8vwg8/fg
+8fLo/yBv5O1v4+4g73Bl5GPyYeLo8mXr/w0KICA4NTAuMDAg4/DtLiAtIOfgIO7k7e7j7iBj6/P4
+YfJl6/8NCiAgxOv/IOLy7vDu4+4g6CDy8OXy/OXj7iDz9+Dx8u3o6uAg8ero5OroIDUlIOggNyUg
+8e7u8uLl8vHy4uXt7e4uDQoNCiogwiDx8u7o7O7x8vwg4urr/vfl7fs6IOjt9O7w7OD26O7t7e4t
+6u7t8fPr/PLg9uju7e3u5SDu4fHr8+bo4uDt6OUsIPHh7vDt6Oog7ODy5fDo4Ovu4iwg6u705S3h
+8OXp6iwgDQogIO7h5eQg4iDw5fHy7vDg7eUsIO7h8fPm5OXt6OUg5O7q6+Dk7uIg6CDu4ezl7SDs
+7eXt6P/s6C4NCg0KKiDQ5ePr4Ozl7fI6IDkuMzAtMTcuMzAuIM/l8OXw++IgMTMuMzAtMTQuMzAu
+DQoqIFBFw8hDVNDA1sjfIPEgOS4wMCDiIPXu6+vlLg0KDQo+IFBFw8hD0tDA1sjfDQogINLl6y46
+ICszOCBPIDQgNCAyMzctOTAtMDUgLyAyMzMtNDYtNjkNCg0KPiBTdWNjZXNzZnVsIGJ1c2luZXNz
+IQ0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K
+DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoN
+Cg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K
+DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoN
+Cg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K
+DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoN
+Cg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K
+DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCnNsdWNoeW5pZSBz
+dHJva2k6IO0gYm9ldnNlcmdlaUBtYWlsLnJ14mFtaW5kZEByZ3MucnUJliDS7iDy7iD/IOPr/+bz
+LCDvYWdyb3NuYWJzaXRlQG5hcm9kLnJ1Ceog6CDt5SDv8O7q6/7t8+vx/yDo5yDn5ezr6C5hZGQx
+MDAwQHJhbWJsZXIucnUJCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGUgTkVXIEtPREFLIGk3MDAg
+U2VyaWVzIFNjYW5uZXJzIGRlbGl2ZXIgdW5kZXIgQU5ZIGNpcmN1bXN0YW5jZXMhIFlvdXIKcHJv
+ZHVjdGlvbiBzY2FubmluZyBlbnZpcm9ubWVudCBtYXkgbm90IGJlIGEgcGVyZmVjdCB3b3JsZCAt
+IGJ1dCB0aGFua3MgdG8KS29kYWssIHRoZXJlJ3MgYSBwZXJmZWN0IHNjYW5uZXIgdG8gZ2V0IHRo
+ZSBqb2IgZG9uZSEgV2l0aCB0aGUgTkVXIEtPREFLIGk3MDAKU2VyaWVzIFNjYW5uZXIgeW91J2xs
+IGdldCBmdWxsIHNwZWVkIGF0IDMwMCBkcGkgZXZlbiB3aXRoIGFsbCBpbWFnZSAKcHJvY2Vzc2lu
+ZyBmZWF0dXJlcyBlbmFibGVkLiBodHRwOi8vcC5zZi5uZXQvc2Z1L2tvZGFrLWNvbQpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

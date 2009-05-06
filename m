@@ -1,12 +1,12 @@
-From: "Impact Finances par MailandGo" <RET-XTC-DS5R-RS0MS-DD-LOGSA@R.Ems7.net>
-Subject: =?iso-8859-1?q?Votre_=E9tude_en_ligne?=
-Date: Wed, 06 May 2009 13:46:17 +0200
-Message-ID: <bba4974690224a3bbd5e134ad803358c@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-RS0MS-DD-LOGSA@R.Ems7.net
+From: Anne Shotts <bee-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] You Need to Read This Immediately
+Date: Wed, 6 May 2009 18:08:30 +0300
+Message-ID: <8021.93546337566$1241622027@news.gmane.org>
+Reply-To: Anne Shotts <jennifer.vandebogart1308-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8791821394557781865=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,56 +18,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8791821394557781865==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Do you want to have an access to a huge database of real, verified companies, looking to hire individuals willing to work at home?
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-RS0MS-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+Now you have that opportunity! Our database is constantly updated with the latest job offers. These are all legitimate, no-fee jobs from real employers that can be done from your home. Companies will often pay per hour! This is a great opportunity for those looking for a part time job or those looking to replace their full time job with a real company. You will be able to access 1000s of jobs such as 100% legitimate data entry jobs, writing, translating, sales, tutoring, assistants, transcription, processing, coding and more!
 
+Simply answer to this email saying that you are interested to join, and we will send you all further details about how to proceed. And it is all for free, no starting fees or funds needed. Reply to dominik.olvey15240-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if interested!
 
-<p>
-<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RS0MS-DD-LOGSA-9FR" target=
-=3D"_blank">
-<div style=3D"text-align: center">
-<img src=3D"http://nodes=2Ereactivpub=2Efr/uploads/visuels/1698/293/kit=
-s/3030=2Egif" border=3D"0" alt=3D"" width=3D"500" height=3D"500" />
-</div>
-</a>
-</p>
-<img src=3D"http://nodes=2Ereactivpub=2Efr/mailing-293-12099-13528&grou=
-p=3D" border=3D"0" alt=3D"" width=3D"1" height=3D"1" />
-<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
-/ems6=2Enet/u/?E=3DRET-XTC-DS5R-RS0MS-DD-LOGSA&EMail=3Dspi-devel-genera=
-l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
-s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
-t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RS0MS-DD-LOGSA-2"=
- width=3D"1" height=3D"1">
+Wishing you a good day,
+Online Jobs Marketing
 
 
 
---===============8791821394557781865==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to sign.out_me-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
 production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
---===============8791821394557781865==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============8791821394557781865==--

@@ -1,11 +1,12 @@
-From: "Aloys Tran" <q__yi-HvcQ+oevnRw@public.gmane.org>
-Subject: [SPAM] Buy medicine to prevent swine flu
-Date: Wed, 6 May 2009 10:13:26 +0100
-Message-ID: <002201c9ce22$87e2fde0$807f2139@Rezeption2rqvgiw>
+From: "Impact Finances par MailandGo" <RET-XTC-DS5R-RS0MS-DD-LOGSA@R.Ems7.net>
+Subject: =?iso-8859-1?q?Votre_=E9tude_en_ligne?=
+Date: Wed, 06 May 2009 13:46:17 +0200
+Message-ID: <bba4974690224a3bbd5e134ad803358c@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-RS0MS-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8791821394557781865=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,8 +18,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Are you worried about swine flu? buy medicine! http://hjue.syjcoquins.com/
+--===============8791821394557781865==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-RS0MS-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+
+
+<p>
+<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RS0MS-DD-LOGSA-9FR" target=
+=3D"_blank">
+<div style=3D"text-align: center">
+<img src=3D"http://nodes=2Ereactivpub=2Efr/uploads/visuels/1698/293/kit=
+s/3030=2Egif" border=3D"0" alt=3D"" width=3D"500" height=3D"500" />
+</div>
+</a>
+</p>
+<img src=3D"http://nodes=2Ereactivpub=2Efr/mailing-293-12099-13528&grou=
+p=3D" border=3D"0" alt=3D"" width=3D"1" height=3D"1" />
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-RS0MS-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RS0MS-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
+
+
+
+--===============8791821394557781865==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
@@ -26,3 +59,15 @@ production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
+--===============8791821394557781865==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8791821394557781865==--

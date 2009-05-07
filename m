@@ -1,9 +1,10 @@
-From: "MAGNETOTERAPIA" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] ULTIMO CURSO "APRENDA A SANAR CON IMANES"
-Date: Thu, 7 May 2009 10:49:23 -0400
-Message-ID: <1925372569-22009547144923283@gmail.com>
+From: Tataris Tiberi <backbreaking-qHH1N9cJ1xVBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Sexual Positions Women Enjoy the Maost
+Date: Thu, 07 May 2009 16:02:46 +0000
+Message-ID: <1dd9726d69aad9cd1f$KrsDyfgbC0oZ@liwanpo.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6879871794182422952=="
+Content-Type: multipart/mixed;
+	boundary="--------------j5hins4w-PADy4mZyxEDs8oVM12417118446827"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,174 +17,206 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6879871794182422952==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_192531125706715762144923283"
+----------------j5hins4w-PADy4mZyxEDs8oVM12417118446827
+Content-Type: image/png;
+ name="Tataris.png"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="Tataris.png"
 
-------=_NextPart_192531125706715762144923283
-Content-type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+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
+6R6Z/k+AAQBStIVYi93iWAAAAABJRU5ErkJggg==
 
-
-Estimad@:
-
-Ud=2E tiene la oportunidad de realizar el =FAltimo curso de este a=F1o de =
-magnetoterapia en 2 d=EDas (Martes 26 de Mayo y Martes 02 de Junio) y as=ED=
- poder auto-sanarse o sanar a otras personas con imanes=2E Son muchas las =
-personas que ya han seguido este curso y lo aplican con gran =E9xito san=E1=
-ndose de dolencias o sanando a otros de sus dolores=2E Al realizar este cu=
-rso podr=E1 tener un cupo asegurado, si desea, en el curso que realizaremo=
-s en conjunto con el mejor instituto de biomagnetismo y magnetoterapia de =
-Argentina obteniendo el t=EDtulo Internacional de T=E9cnico en Biomagn=E9t=
-ica (esta es la raz=F3n por la cu=E1l no se seguir=E1 dando este curso de =
-2 d=EDas)=2E
-
-Dado que es el =FAltimo curso hemos decidido agregar 2 temas adicionales a=
- la tem=E1tica vista y por ello puede ser que sea necesario un tercer d=ED=
-a (un d=EDa adicional) para ver todos los temas=2E Por lo tanto, quienes h=
-ayan realizado el curso anterior lo pueden repetir cancelando s=F3lo el 50=
-%, si no es el caso, puede optar a traer al curso a 2 amigos y cancelas ta=
-mbi=E9n el 50% (promociones no acumulables)
-
-=BFQuienes pueden hacer el curso=3F=20
-
-1=2E Mayores de 18 a=F1os=2E
-
-2=2E Todos los que desean ayudarse en sus dolencias y enfermedades (es una=
- terapia complementaria y no sustitutiva de la medicina tradicional)
-
-3=2E Los que desea ayudar a otros en sus procesos de sanaci=F3n=2E
-
-=BFQu=E9 beneficios tiene la Magnetoterapia (Terapia con Magnetos o Imanes=
-)=3F=20
-
-El Magnetismo influye sobre el organismo, sus tejidos, sus l=EDquidos (no =
-olvidar que somos mayoritariamente l=EDquidos), el sistema nervioso y gene=
-ra beneficios f=EDsicos, org=E1nicos y emocionales=2E Suaviza, deshincha, =
-quita el dolor y puede tambi=E9n regenerar tejidos, estimular =F3rganos, e=
-tc=2E
-
-Valores e Inscripci=F3n
-
-El valor del curso es de $80=2E000=2E- (vea formas de pago en http://www=2E=
-hipnosischile=2Ecl/magnetoterapia=2Ehtm=20
-
-Rogamos inscribirse prontamente en el curso dado que s=F3lo lo pueden real=
-izar 25 personas=2E Para inscribirse lo puede hacer en nuestro sitio Web h=
-ttp://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm , o al fono 2489112, al=
- e-mail info@hipnosischile=2Ecl o en Seminario 6 - Providencia
-
-=20
-
-
-
-------=_NextPart_192531125706715762144923283
-Content-Type: text/html; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
-1252">
-<title>MAGNETOTERAPIA</title>
-</head>
-
-<body>
-<P align=3Dleft>
-<font face=3D"Arial">Estimad@:</font></P>
-<P align=3Dleft>
-<font face=3D"Arial">Ud=2E tiene la oportunidad de realizar el =FAltimo cu=
-rso de este=20
-a=F1o de magnetoterapia en 2 d=EDas (Martes 26 de Mayo y Martes 02 de Juni=
-o) y as=ED=20
-poder auto-sanarse o sanar a otras personas con imanes=2E Son muchas las p=
-ersonas=20
-que ya han seguido este curso y lo aplican con gran =E9xito san=E1ndose de=
- dolencias=20
-o sanando a otros de sus dolores=2E Al realizar este curso podr=E1 tener u=
-n cupo=20
-asegurado, si desea, en el curso que realizaremos en conjunto con el mejor=
-=20
-instituto de biomagnetismo y magnetoterapia de Argentina obteniendo el t=ED=
-tulo=20
-Internacional de T=E9cnico en Biomagn=E9tica (esta es la raz=F3n por la cu=
-=E1l no se=20
-seguir=E1 dando este curso de 2 d=EDas)=2E</font></P>
-<P align=3Dleft>
-<font face=3D"Arial">Dado que es el =FAltimo curso hemos decidido agregar =
-2 temas=20
-adicionales a la tem=E1tica vista y por ello puede ser que sea necesario u=
-n tercer=20
-d=EDa (un d=EDa adicional) para ver todos los temas=2E Por lo tanto, quien=
-es hayan=20
-realizado el curso anterior lo pueden repetir cancelando s=F3lo el 50%, si=
- no es=20
-el caso, puede optar a traer al curso a 2 amigos y cancelas tambi=E9n el 5=
-0%=20
-(promociones no acumulables)</font></P>
-<P align=3Dleft>
-<b>
-<font face=3D"Arial">=BFQuienes pueden hacer el curso=3F </font></b></P>
-<P align=3Dleft style=3D"margin-top: 0; margin-bottom: 0">
-<font face=3D"Arial">1=2E Mayores de 18 a=F1os=2E</font></P>
-<P align=3Dleft style=3D"margin-top: 0; margin-bottom: 0">
-<font face=3D"Arial">2=2E Todos los que desean ayudarse en sus dolencias y=
-=20
-enfermedades (es una terapia complementaria y no sustitutiva de la medicin=
-a=20
-tradicional)</font></P>
-<P align=3Dleft style=3D"margin-top: 0; margin-bottom: 0">
-<font face=3D"Arial">3=2E Los que desea ayudar a otros en sus procesos de =
-sanaci=F3n=2E</font></P>
-<P align=3Dleft>
-<b>
-<font face=3D"Arial">=BFQu=E9 beneficios tiene la Magnetoterapia (Terapia =
-con Magnetos=20
-o Imanes)=3F </font></b></P>
-<P align=3Dleft>
-<font face=3D"Arial">El Magnetismo influye sobre el organismo, sus tejidos=
-, sus=20
-l=EDquidos (no olvidar que somos mayoritariamente l=EDquidos), el sistema =
-nervioso y=20
-genera beneficios f=EDsicos, org=E1nicos y emocionales=2E Suaviza, deshinc=
-ha, quita el=20
-dolor y puede tambi=E9n regenerar tejidos, estimular =F3rganos, etc=2E</fo=
-nt></P>
-<P align=3Dleft>
-<b><font face=3D"Arial">Valores e Inscripci=F3n</font></b></P>
-<P align=3Dleft>
-<font face=3D"Arial">El valor del curso es de $80=2E000=2E- (vea formas de=
- pago en
-<a href=3D"http://www=2Ehipnosischile=2Ecl/magnetoterapia=2Ehtm">
-http://www=2Ehipnosischile=2Ecl/magnetoterapia=2Ehtm</a> </font></P>
-<P align=3Dleft>
-<font face=3D"Arial">Rogamos inscribirse prontamente en el curso dado que =
-s=F3lo lo=20
-pueden realizar 25 personas=2E Para inscribirse lo puede hacer en nuestro =
-sitio=20
-Web <a href=3D"http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm">
-http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm</a> , o al fono 248911=
-2, al e-mail
-<a href=3D"mailto:info@hipnosischile=2Ecl">info@hipnosischile=2Ecl</a> o e=
-n=20
-Seminario 6 - Providencia</font></P>
-<P align=3Dleft>
-&nbsp;</P>
-<P align=3Dcenter>
-<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecl/MAGNETOTERAPIA/MA=
-GNETOTERAPIA=2Egif" width=3D"650" height=3D"800" usemap=3D"#FPMap0" alt=3D=
-"www=2Ehipnosischile=2Ecl"><map name=3D"FPMap0"></map></P>
-
-</body>
-
-</html>
-
-------=_NextPart_192531125706715762144923283--
-
-
-
---===============6879871794182422952==
+----------------j5hins4w-PADy4mZyxEDs8oVM12417118446827
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -195,7 +228,7 @@ production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
---===============6879871794182422952==
+----------------j5hins4w-PADy4mZyxEDs8oVM12417118446827
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -206,4 +239,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6879871794182422952==--
+----------------j5hins4w-PADy4mZyxEDs8oVM12417118446827--

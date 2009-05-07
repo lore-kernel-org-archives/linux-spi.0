@@ -1,14 +1,10 @@
-From: "=?iso-8859-1?B?R2FnbmV6IHVuZSBzZW1haW5lIGRlIHLqdmUgYXV4IE1hbGRpdmVz?="
-	<RET-XTC-DS5R-RUB1P-DD-LOGSA@R.Ems7.net>
-Subject: =?iso-8859-1?q?Gagnez_une_semaine_de_r=EAve_a?=
-	=?iso-8859-1?q?ux_Maldives?=
-Date: Thu, 07 May 2009 08:45:46 +0200
-Message-ID: <c38a731050f54d84a1b065ca49516261@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-RUB1P-DD-LOGSA@R.Ems7.net
+From: "MAGNETOTERAPIA" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] ULTIMO CURSO "APRENDA A SANAR CON IMANES"
+Date: Thu, 7 May 2009 10:49:23 -0400
+Message-ID: <1925372569-22009547144923283@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1335273909975716284=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============6879871794182422952=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,59 +16,174 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1335273909975716284==
-Content-type: text/html; charset=iso-8859-1
+--===============6879871794182422952==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_192531125706715762144923283"
+
+------=_NextPart_192531125706715762144923283
+Content-type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: quoted-printable
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-RUB1P-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
+Estimad@:
 
+Ud=2E tiene la oportunidad de realizar el =FAltimo curso de este a=F1o de =
+magnetoterapia en 2 d=EDas (Martes 26 de Mayo y Martes 02 de Junio) y as=ED=
+ poder auto-sanarse o sanar a otras personas con imanes=2E Son muchas las =
+personas que ya han seguido este curso y lo aplican con gran =E9xito san=E1=
+ndose de dolencias o sanando a otros de sus dolores=2E Al realizar este cu=
+rso podr=E1 tener un cupo asegurado, si desea, en el curso que realizaremo=
+s en conjunto con el mejor instituto de biomagnetismo y magnetoterapia de =
+Argentina obteniendo el t=EDtulo Internacional de T=E9cnico en Biomagn=E9t=
+ica (esta es la raz=F3n por la cu=E1l no se seguir=E1 dando este curso de =
+2 d=EDas)=2E
 
-<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
-" width=3D"500">
-  <tbody><tr>
-    <td><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RUB1P-DD-LOGSA-WRU=
-"><img src=3D"http://frpath=2Eclashdev=2Ecom/campimage/maldives/img1=2E=
-jpg" alt=3D"" border=3D"0"></a></td>
-  </tr>
-  <tr>
-    <td align=3D"center" bgcolor=3D"#e3cb8b" valign=3D"top" height=3D"2=
-50"><p> </p>
-      <p><font color=3D"#000000" size=3D"6" face=3D"Verdana, Geneva, sa=
-ns-serif">Gagnez une semaine <br>de r=EAve aux Maldives</font>
-        <br>
-      </p>
+Dado que es el =FAltimo curso hemos decidido agregar 2 temas adicionales a=
+ la tem=E1tica vista y por ello puede ser que sea necesario un tercer d=ED=
+a (un d=EDa adicional) para ver todos los temas=2E Por lo tanto, quienes h=
+ayan realizado el curso anterior lo pueden repetir cancelando s=F3lo el 50=
+%, si no es el caso, puede optar a traer al curso a 2 amigos y cancelas ta=
+mbi=E9n el 50% (promociones no acumulables)
 
-  <font color=3D"#000000" size=3D"3" face=3D"Verdana, Geneva, sans-seri=
-f">Remplissez le formulaire pour tenter votre chance</font><br><br>
+=BFQuienes pueden hacer el curso=3F=20
+
+1=2E Mayores de 18 a=F1os=2E
+
+2=2E Todos los que desean ayudarse en sus dolencias y enfermedades (es una=
+ terapia complementaria y no sustitutiva de la medicina tradicional)
+
+3=2E Los que desea ayudar a otros en sus procesos de sanaci=F3n=2E
+
+=BFQu=E9 beneficios tiene la Magnetoterapia (Terapia con Magnetos o Imanes=
+)=3F=20
+
+El Magnetismo influye sobre el organismo, sus tejidos, sus l=EDquidos (no =
+olvidar que somos mayoritariamente l=EDquidos), el sistema nervioso y gene=
+ra beneficios f=EDsicos, org=E1nicos y emocionales=2E Suaviza, deshincha, =
+quita el dolor y puede tambi=E9n regenerar tejidos, estimular =F3rganos, e=
+tc=2E
+
+Valores e Inscripci=F3n
+
+El valor del curso es de $80=2E000=2E- (vea formas de pago en http://www=2E=
+hipnosischile=2Ecl/magnetoterapia=2Ehtm=20
+
+Rogamos inscribirse prontamente en el curso dado que s=F3lo lo pueden real=
+izar 25 personas=2E Para inscribirse lo puede hacer en nuestro sitio Web h=
+ttp://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm , o al fono 2489112, al=
+ e-mail info@hipnosischile=2Ecl o en Seminario 6 - Providencia
+
 =20
-<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"500">
-  <tbody><tr>
-
-  </tr><tr>
-    <td align=3D"center"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R=
-UB1P-DD-LOGSA-WSV"><img src=3D"http://frpath=2Eclashdev=2Ecom/campimage=
-/maldives/img2=2Egif" alt=3D"" border=3D"0"></a></td>
-  </tr>
-</tbody></table>
-
-    </td>
-
-  </tr>
-</tbody></table><img src=3D"http://nodes=2Ereactivpub=2Efr/mailing-862-=
-12099-15265&group=3D" border=3D"0" height=3D"1" width=3D"1"/><div align=
-=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http://ems6=2Ene=
-t/u/?E=3DRET-XTC-DS5R-RUB1P-DD-LOGSA&EMail=3Dspi-devel-general@lists=2E=
-sourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vous d=E9sabo=
-nner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></font></div><I=
-MG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RUB1P-DD-LOGSA-2" width=3D"=
-1" height=3D"1">
 
 
 
---===============1335273909975716284==
+------=_NextPart_192531125706715762144923283
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
+1252">
+<title>MAGNETOTERAPIA</title>
+</head>
+
+<body>
+<P align=3Dleft>
+<font face=3D"Arial">Estimad@:</font></P>
+<P align=3Dleft>
+<font face=3D"Arial">Ud=2E tiene la oportunidad de realizar el =FAltimo cu=
+rso de este=20
+a=F1o de magnetoterapia en 2 d=EDas (Martes 26 de Mayo y Martes 02 de Juni=
+o) y as=ED=20
+poder auto-sanarse o sanar a otras personas con imanes=2E Son muchas las p=
+ersonas=20
+que ya han seguido este curso y lo aplican con gran =E9xito san=E1ndose de=
+ dolencias=20
+o sanando a otros de sus dolores=2E Al realizar este curso podr=E1 tener u=
+n cupo=20
+asegurado, si desea, en el curso que realizaremos en conjunto con el mejor=
+=20
+instituto de biomagnetismo y magnetoterapia de Argentina obteniendo el t=ED=
+tulo=20
+Internacional de T=E9cnico en Biomagn=E9tica (esta es la raz=F3n por la cu=
+=E1l no se=20
+seguir=E1 dando este curso de 2 d=EDas)=2E</font></P>
+<P align=3Dleft>
+<font face=3D"Arial">Dado que es el =FAltimo curso hemos decidido agregar =
+2 temas=20
+adicionales a la tem=E1tica vista y por ello puede ser que sea necesario u=
+n tercer=20
+d=EDa (un d=EDa adicional) para ver todos los temas=2E Por lo tanto, quien=
+es hayan=20
+realizado el curso anterior lo pueden repetir cancelando s=F3lo el 50%, si=
+ no es=20
+el caso, puede optar a traer al curso a 2 amigos y cancelas tambi=E9n el 5=
+0%=20
+(promociones no acumulables)</font></P>
+<P align=3Dleft>
+<b>
+<font face=3D"Arial">=BFQuienes pueden hacer el curso=3F </font></b></P>
+<P align=3Dleft style=3D"margin-top: 0; margin-bottom: 0">
+<font face=3D"Arial">1=2E Mayores de 18 a=F1os=2E</font></P>
+<P align=3Dleft style=3D"margin-top: 0; margin-bottom: 0">
+<font face=3D"Arial">2=2E Todos los que desean ayudarse en sus dolencias y=
+=20
+enfermedades (es una terapia complementaria y no sustitutiva de la medicin=
+a=20
+tradicional)</font></P>
+<P align=3Dleft style=3D"margin-top: 0; margin-bottom: 0">
+<font face=3D"Arial">3=2E Los que desea ayudar a otros en sus procesos de =
+sanaci=F3n=2E</font></P>
+<P align=3Dleft>
+<b>
+<font face=3D"Arial">=BFQu=E9 beneficios tiene la Magnetoterapia (Terapia =
+con Magnetos=20
+o Imanes)=3F </font></b></P>
+<P align=3Dleft>
+<font face=3D"Arial">El Magnetismo influye sobre el organismo, sus tejidos=
+, sus=20
+l=EDquidos (no olvidar que somos mayoritariamente l=EDquidos), el sistema =
+nervioso y=20
+genera beneficios f=EDsicos, org=E1nicos y emocionales=2E Suaviza, deshinc=
+ha, quita el=20
+dolor y puede tambi=E9n regenerar tejidos, estimular =F3rganos, etc=2E</fo=
+nt></P>
+<P align=3Dleft>
+<b><font face=3D"Arial">Valores e Inscripci=F3n</font></b></P>
+<P align=3Dleft>
+<font face=3D"Arial">El valor del curso es de $80=2E000=2E- (vea formas de=
+ pago en
+<a href=3D"http://www=2Ehipnosischile=2Ecl/magnetoterapia=2Ehtm">
+http://www=2Ehipnosischile=2Ecl/magnetoterapia=2Ehtm</a> </font></P>
+<P align=3Dleft>
+<font face=3D"Arial">Rogamos inscribirse prontamente en el curso dado que =
+s=F3lo lo=20
+pueden realizar 25 personas=2E Para inscribirse lo puede hacer en nuestro =
+sitio=20
+Web <a href=3D"http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm">
+http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm</a> , o al fono 248911=
+2, al e-mail
+<a href=3D"mailto:info@hipnosischile=2Ecl">info@hipnosischile=2Ecl</a> o e=
+n=20
+Seminario 6 - Providencia</font></P>
+<P align=3Dleft>
+&nbsp;</P>
+<P align=3Dcenter>
+<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecl/MAGNETOTERAPIA/MA=
+GNETOTERAPIA=2Egif" width=3D"650" height=3D"800" usemap=3D"#FPMap0" alt=3D=
+"www=2Ehipnosischile=2Ecl"><map name=3D"FPMap0"></map></P>
+
+</body>
+
+</html>
+
+------=_NextPart_192531125706715762144923283--
+
+
+
+--===============6879871794182422952==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -84,7 +195,7 @@ production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
---===============1335273909975716284==
+--===============6879871794182422952==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -95,4 +206,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1335273909975716284==--
+--===============6879871794182422952==--

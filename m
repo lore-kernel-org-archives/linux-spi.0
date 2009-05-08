@@ -1,20 +1,14 @@
-From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: pxa2xx_spi: fix for SPI_CS_HIGH
-Date: Fri, 08 May 2009 15:46:15 -0300
-Message-ID: <1241808375.10342.72.camel@brutus>
-References: <1241790769.10342.35.camel@brutus>
-	<200905080933.17128.david-b@pacbell.net>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Fwd: Re: pxa2xx_spi: fix for SPI_CS_HIGH
+Date: Fri, 8 May 2009 12:17:41 -0700
+Message-ID: <200905081217.42060.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>,
-	spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	openezx-devel <openezx-devel-ZwoEplunGu3n3BO9LpVK+9i2O/JbrIOy@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200905080933.17128.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,33 +19,65 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-RW0gU2V4LCAyMDA5LTA1LTA4IMOgcyAwOTozMyAtMDcwMCwgRGF2aWQgQnJvd25lbGwgZXNjcmV2
-ZXU6Cj4gVGhpcyBkb2Vzbid0IG5lZWQgdG8gbWVyZ2UgYmVmb3JlIDIuNi4zMSwgcmlnaHQ/Cj4g
-KFRoYXQgaXMsIGlzIGlzIHRydWUgdGhhdCBub3RoaW5nIGluIG1haW5saW5lIGlzCj4geWV0ICpy
-ZWx5aW5ncyogb24gQ1NfSElHSCB3b3JraW5nIHdpdGggdGhpcyBkcml2ZXI/KQoKMi42LjMxIGlz
-IG9rISA6KQoKPiBBc3N1bWluZyB0aGF0J3MgdHJ1ZSwgdGhpcyBwYXRjaCBuZWVkcyB0byBiZSB1
-cGRhdGVkIHRvCj4gYXBwbHkgcHJvcGVybHkgYWdhaW5zdCBtb2RlYml0cyBjaGFuZ2VzIGluIHRo
-ZSBNTSB0cmVlLgoKRG9uZS4gQXBwbGllcyBhZnRlcgpzcGktbW92ZS1tb3JlLXNwaV9zZXR1cC1m
-dW5jdGlvbmFsaXR5LWludG8tY29yZS5wYXRjaC4KCi0tCgpDb21taXQgYTdiYjM5MDliMzI5M2Q1
-MDMyMTFkN2Y2YWY4ZWQ2MmMxNjQ0YjY4NiBpbnRyb2R1Y2VzIGNoaXBzZWxlY3QKR1BJTywgYW5k
-IGNvbmZpZ3VyZXMgdGhlIENTIHBvbGFyaXR5IHVzaW5nIFNQSV9DU19ISUdIIHNwaS0+bW9kZSBm
-bGFnLgpBZGQgU1BJX0NTX0hJR0ggdG8gdGhlIGFsbG93ZWQgbW9kZXMuCgpTaWduZWQtb2ZmLWJ5
-OiBEYW5pZWwgUmliZWlybyA8ZHJ3eXJtQGdtYWlsLmNvbT4KCi0tLSBhL2RyaXZlcnMvc3BpL3B4
-YTJ4eF9zcGkuYworKysgYi9kcml2ZXJzL3NwaS9weGEyeHhfc3BpLmMKQEAgLTE0ODIsNyArMTQ4
-Miw3IEBACiAJZHJ2X2RhdGEtPnNzcCA9IHNzcDsKIAogCS8qIHRoZSBzcGktPm1vZGUgYml0cyB1
-bmRlcnN0b29kIGJ5IHRoaXMgZHJpdmVyOiAqLwotCW1hc3Rlci0+bW9kZV9iaXRzID0gU1BJX0NQ
-T0wgfCBTUElfQ1BIQTsKKwltYXN0ZXItPm1vZGVfYml0cyA9IFNQSV9DUE9MIHwgU1BJX0NQSEEg
-fCBTUElfQ1NfSElHSDsKIAogCW1hc3Rlci0+YnVzX251bSA9IHBkZXYtPmlkOwogCW1hc3Rlci0+
-bnVtX2NoaXBzZWxlY3QgPSBwbGF0Zm9ybV9pbmZvLT5udW1fY2hpcHNlbGVjdDsKCgotLSAKRGFu
-aWVsIFJpYmVpcm8KCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhlIE5FVyBLT0RBSyBpNzAwIFNl
-cmllcyBTY2FubmVycyBkZWxpdmVyIHVuZGVyIEFOWSBjaXJjdW1zdGFuY2VzISBZb3VyCnByb2R1
-Y3Rpb24gc2Nhbm5pbmcgZW52aXJvbm1lbnQgbWF5IG5vdCBiZSBhIHBlcmZlY3Qgd29ybGQgLSBi
-dXQgdGhhbmtzIHRvCktvZGFrLCB0aGVyZSdzIGEgcGVyZmVjdCBzY2FubmVyIHRvIGdldCB0aGUg
-am9iIGRvbmUhIFdpdGggdGhlIE5FVyBLT0RBSyBpNzAwClNlcmllcyBTY2FubmVyIHlvdSdsbCBn
-ZXQgZnVsbCBzcGVlZCBhdCAzMDAgZHBpIGV2ZW4gd2l0aCBhbGwgaW1hZ2UgCnByb2Nlc3Npbmcg
-ZmVhdHVyZXMgZW5hYmxlZC4gaHR0cDovL3Auc2YubmV0L3NmdS9rb2Rhay1jb20KX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwg
-bWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRw
-czovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJh
-bAo=
+
+----------  Forwarded Message  ----------
+
+Subject: Re: pxa2xx_spi: fix for SPI_CS_HIGH
+Date: Friday 08 May 2009
+From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+
+Em Sex, 2009-05-08 =E0s 09:33 -0700, David Brownell escreveu:
+> This doesn't need to merge before 2.6.31, right?
+> (That is, is is true that nothing in mainline is
+> yet *relyings* on CS_HIGH working with this driver?)
+
+2.6.31 is ok! :)
+
+> Assuming that's true, this patch needs to be updated to
+> apply properly against modebits changes in the MM tree.
+
+Done. Applies after
+spi-move-more-spi_setup-functionality-into-core.patch.
+
+--
+
+Commit a7bb3909b3293d503211d7f6af8ed62c1644b686 introduces chipselect
+GPIO, and configures the CS polarity using SPI_CS_HIGH spi->mode flag.
+Add SPI_CS_HIGH to the allowed modes.
+
+Signed-off-by: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+
+--- a/drivers/spi/pxa2xx_spi.c
++++ b/drivers/spi/pxa2xx_spi.c
+@@ -1482,7 +1482,7 @@
+ 	drv_data->ssp =3D ssp;
+ =
+
+ 	/* the spi->mode bits understood by this driver: */
+-	master->mode_bits =3D SPI_CPOL | SPI_CPHA;
++	master->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ =
+
+ 	master->bus_num =3D pdev->id;
+ 	master->num_chipselect =3D platform_info->num_chipselect;
+
+
+-- =
+
+Daniel Ribeiro
+
+
+-------------------------------------------------------
+
+---------------------------------------------------------------------------=
+---
+The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
+production scanning environment may not be a perfect world - but thanks to
+Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i7=
+00
+Series Scanner you'll get full speed at 300 dpi even with all image =
+
+processing features enabled. http://p.sf.net/sfu/kodak-com

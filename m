@@ -1,14 +1,13 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Fwd: Re: pxa2xx_spi: fix for SPI_CS_HIGH
-Date: Fri, 8 May 2009 12:17:41 -0700
-Message-ID: <200905081217.42060.david-b@pacbell.net>
+From: Brock Carbaugh <infoseleccion-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] You Need to Read This Immediately
+Date: Sat, 9 May 2009 00:10:30 +0200
+Message-ID: <13136.5991700024$1241820694@news.gmane.org>
+Reply-To: Brock Carbaugh <1069eva.perryman-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,65 +18,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Are you sick and tired of all the money-making scams on the web? If you're looking for the real deal when it comes to making money from home, then this may be the most important message you will ever read online!
 
-----------  Forwarded Message  ----------
+What if there was a system that you could use in the comfort of your own home and make more money than you ever could in your job, using just your computer and the Internet?
 
-Subject: Re: pxa2xx_spi: fix for SPI_CS_HIGH
-Date: Friday 08 May 2009
-From: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+What if it only took a couple of hours per day and was available worldwide? Sounds too good to be true? It isn't! You can even start working in just a few minutes from now. We are here to explain! Simply send us an aswer to komsthoeftamarantha1720-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you are interested in our promotion, so we can answer you back with further details.
 
-Em Sex, 2009-05-08 =E0s 09:33 -0700, David Brownell escreveu:
-> This doesn't need to merge before 2.6.31, right?
-> (That is, is is true that nothing in mainline is
-> yet *relyings* on CS_HIGH working with this driver?)
-
-2.6.31 is ok! :)
-
-> Assuming that's true, this patch needs to be updated to
-> apply properly against modebits changes in the MM tree.
-
-Done. Applies after
-spi-move-more-spi_setup-functionality-into-core.patch.
-
---
-
-Commit a7bb3909b3293d503211d7f6af8ed62c1644b686 introduces chipselect
-GPIO, and configures the CS polarity using SPI_CS_HIGH spi->mode flag.
-Add SPI_CS_HIGH to the allowed modes.
-
-Signed-off-by: Daniel Ribeiro <drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Best Regards,
+Legit Online Jobs
 
 
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -1482,7 +1482,7 @@
- 	drv_data->ssp =3D ssp;
- =
-
- 	/* the spi->mode bits understood by this driver: */
--	master->mode_bits =3D SPI_CPOL | SPI_CPHA;
-+	master->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- =
-
- 	master->bus_num =3D pdev->id;
- 	master->num_chipselect =3D platform_info->num_chipselect;
 
 
--- =
-
-Daniel Ribeiro
 
 
--------------------------------------------------------
 
----------------------------------------------------------------------------=
----
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
+------------------------------------------------------------------------------
 The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
 production scanning environment may not be a perfect world - but thanks to
-Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i7=
-00
-Series Scanner you'll get full speed at 300 dpi even with all image =
-
+Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
+Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com

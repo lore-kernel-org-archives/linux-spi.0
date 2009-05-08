@@ -1,46 +1,73 @@
-From: Daniel Ribeiro <drwyrm@gmail.com>
-Subject: pxa2xx_spi: prevent panic case setup() fails
-Date: Fri, 08 May 2009 11:11:44 -0300
-Message-ID: <1241791904.10342.44.camel@brutus>
+From: "=?iso-8859-1?B?TXV0dWVsbGUgc2FudOkgY29tcGFyYXRpZiBwYXIgTWFpbGFuZEdv?="
+	<RET-XTC-DS5R-RTVKP-DD-LOGSA@R.Ems7.net>
+Subject: Nous comparons les mutuelles pour vous,
+	2 mois offerts sur la meilleure
+Date: Fri, 08 May 2009 16:58:29 +0200
+Message-ID: <8b969640af3a4236a7acfccb14ad8120@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-RTVKP-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b@pacbell.net>, Ned Forrester <nforrester@whoi.edu>,
-	openezx-devel <openezx-devel@lists.openezx.org>,
-	linux-arm-kernel <linux-arm-kernel@lists.arm.linux.org.uk>,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>
-To: Eric Miao <eric.y.miao@gmail.com>
-Return-path: <openezx-devel-bounces@lists.openezx.org>
-List-Unsubscribe: <https://lists.openezx.org/mailman/listinfo/openezx-devel>,
-	<mailto:openezx-devel-request@lists.openezx.org?subject=unsubscribe>
-List-Archive: <http://lists.openezx.org/pipermail/openezx-devel>
-List-Post: <mailto:openezx-devel@lists.openezx.org>
-List-Help: <mailto:openezx-devel-request@lists.openezx.org?subject=help>
-List-Subscribe: <https://lists.openezx.org/mailman/listinfo/openezx-devel>,
-	<mailto:openezx-devel-request@lists.openezx.org?subject=subscribe>
-Sender: openezx-devel-bounces@lists.openezx.org
-Errors-To: openezx-devel-bounces@lists.openezx.org
+Content-Type: multipart/mixed; boundary="===============3075205416650575961=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-setup() may fail before ctldata is set, causing a kernel panic on
-cleanup().
+--===============3075205416650575961==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Daniel Ribeiro <drwyrm@gmail.com>
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-RTVKP-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
-diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-index 885194a..2801307 100644
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -1373,6 +1373,9 @@ static void cleanup(struct spi_device *spi)
- {
- 	struct chip_data *chip = spi_get_ctldata(spi);
- 
-+	if (!chip)
-+		return;
-+
- 	if (gpio_is_valid(chip->gpio_cs))
- 		gpio_free(chip->gpio_cs);
- 
 
--- 
-Daniel Ribeiro
+
+
+<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RTVKP-DD-LOGSA-WTY" target=
+=3D"_blank">
+<div style=3D"text-align: center">
+<img src=3D"http://nodes=2Ereactivpub=2Efr/aff-530-12099-14607" border=3D=
+"0" alt=3D"" width=3D"500" height=3D"500" />
+</div>
+</a>
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-RTVKP-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RTVKP-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
+
+
+
+--===============3075205416650575961==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
+production scanning environment may not be a perfect world - but thanks to
+Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
+Series Scanner you'll get full speed at 300 dpi even with all image 
+processing features enabled. http://p.sf.net/sfu/kodak-com
+--===============3075205416650575961==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3075205416650575961==--

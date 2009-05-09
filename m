@@ -1,12 +1,12 @@
-From: Allyn Cowper <alon2coo-YDxpq3io04c@public.gmane.org>
-Subject: [SPAM] You Need to Read This Immediately
-Date: Sat, 9 May 2009 00:52:37 -0300
-Message-ID: <9671.93040201$1241841241@news.gmane.org>
-Reply-To: Allyn Cowper <18043lansberg.racheal-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Mistergooddeal par MailandGo" <RET-XTC-DS5R-RYB6A-DD-LOGSA@R.Ems7.net>
+Subject: pour vous un cheque de 7500 euros
+Date: Sat, 09 May 2009 08:43:10 +0200
+Message-ID: <68ead62b8d844663be45e084e066d3a0@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-RYB6A-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8115541999568116988=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,37 +18,105 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-What if we could show you a real system you can use to put $500 - $1,500 per day into your account, working from the comfort of your home? Would you be interested?
+--===============8115541999568116988==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Online advertising has skyrocketed over the past few years. In 2008, companies spent close to $50 billion in online advertising. That figure is expected to increase substantially in 2009. What does this mean for you? - Money is going into your bank account a lot faster this year. And next year. And the year after. That's only IF you follow our methods!
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-RYB6A-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+<body>
 
-You see, companies worldwide are desperately searching for people just like you to type up their ads and post them online, and they'll pay you nicely in return. It's a win-win situation. They get more customers, you get paid! It's as simple as that. These companies have cash, LOTS of it, and they're eager to share it with you. It's time for you to get a piece of the pie!
+<DIV style=3D"background: #FFFFFF; font-family:Arial, Helvetica, sans-s=
+erif; color:#333333;">
+<table width=3D"556" border=3D"0" align=3D"center" cellpadding=3D"0" ce=
+llspacing=3D"0" id=3D"Tableau_01">
+=09<tr>
+=09=09<td width=3D"556" height=3D"101" colspan=3D"3"><a href=3D"http://=
+ems6=2Enet/r/?E=3DXTC-DS5R-RYB6A-DD-LOGSA-W18" target=3D"_blank"><img s=
+rc=3D"http://www=2Emistergooddeal=2Ecom/partage/images/newsletter/mail-=
+lancement_01=2Ejpg" alt=3D"" width=3D"556" height=3D"101" border=3D"0" =
+id=3D"mail_lancement_01" /></a></td>
+=09</tr>
+=09<tr>
+=09=09<td width=3D"556" height=3D"117" colspan=3D"3"><a href=3D"http://=
+ems6=2Enet/r/?E=3DXTC-DS5R-RYB6A-DD-LOGSA-W39" target=3D"_blank"><img s=
+rc=3D"http://www=2Emistergooddeal=2Ecom/partage/images/newsletter/mail-=
+lancement_02=2Ejpg" alt=3D"" name=3D"mail_lancement_02" width=3D"556" h=
+eight=3D"117" border=3D"0" id=3D"mail_lancement_02" /></a></td>
+=09</tr>
+=09<tr>
+=09=09<td width=3D"121" height=3D"29"><a href=3D"http://ems6=2Enet/r/?E=
+=3DXTC-DS5R-RYB6A-DD-LOGSA-W6I" target=3D"_blank"><img src=3D"http://ww=
+w=2Emistergooddeal=2Ecom/partage/images/newsletter/mail-lancement_03=2E=
+jpg" alt=3D"" name=3D"mail_lancement_03" width=3D"121" height=3D"29" bo=
+rder=3D"0" id=3D"mail_lancement_03" /></a></td>
+=09=09<td width=3D"217" height=3D"29" align=3D"center" background=3D"ht=
+tp://www=2Emistergooddeal=2Ecom/partage/images/newsletter/mail-lancemen=
+t_04=2Ejpg" style=3D"font-size:16px; font-family:Arial, Helvetica, sans=
+-serif; color:#009bd9; background:url(http://www=2Emistergooddeal=2Ecom=
+/partage/images/newsletter/mail-lancement_04=2Ejpg) no-repeat;"><strong=
+> </strong></td>
+=09=09<td width=3D"218" height=3D"29"><a href=3D"http://ems6=2Enet/r/?E=
+=3DXTC-DS5R-RYB6A-DD-LOGSA-W7E" target=3D"_blank"><img src=3D"http://ww=
+w=2Emistergooddeal=2Ecom/partage/images/newsletter/mail-lancement_05=2E=
+jpg" alt=3D"" name=3D"mail_lancement_05" width=3D"218" height=3D"29" bo=
+rder=3D"0" id=3D"mail_lancement_05" /></a></td>
+=09</tr>
+=09<tr>
+=09=09<td width=3D"556" height=3D"87" colspan=3D"3"><a href=3D"http://e=
+ms6=2Enet/r/?E=3DXTC-DS5R-RYB6A-DD-LOGSA-WBJ" target=3D"_blank"><img sr=
+c=3D"http://www=2Emistergooddeal=2Ecom/partage/images/newsletter/mail-l=
+ancement_06=2Ejpg" alt=3D"" name=3D"mail_lancement_06" width=3D"556" he=
+ight=3D"87" border=3D"0" id=3D"mail_lancement_06" /></a></td>
+=09</tr>
+=09<tr>
+=09=09<td width=3D"556" height=3D"74" colspan=3D"3"><a href=3D"http://e=
+ms6=2Enet/r/?E=3DXTC-DS5R-RYB6A-DD-LOGSA-M2K" target=3D"_blank"><img sr=
+c=3D"http://www=2Emistergooddeal=2Ecom/partage/images/newsletter/mail-l=
+ancement_07=2Ejpg" alt=3D"" width=3D"556" height=3D"74" border=3D"0" id=
+=3D"mail_lancement_07" /></a></td>
+=09</tr>
+</table>
+</DIV>
+<img src=3D"http://impfr=2Etradedoubler=2Ecom/imp/img/17952162/1627782"=
+ width=3D1 height=3D1 border=3D0><br><br><DIV align=3Dcenter><FONT face=
+=3DArial color=3D#000000 size=3D1>Cette publicit=E9 Mistergooddeal vous=
+ est envoy=E9e par Avent Media=2E <br>
+  Vos donn=E9es nominatives ou votre adresse email n'ont pas =E9t=E9 tr=
+ansmises =E0 l'annonceur=2E</FONT></DIV>
 
-Please, send us an email back to alleen.wolslegel1963-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you are interested to participate too, so we can proceed further - we will send you all required information that you need in order to join these programs.
-
-With respect,
-HR, Real Jobs At Home
-
-
-
-
-
+</body>
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-RYB6A-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-RYB6A-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
 
 
 
+--===============8115541999568116988==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
 production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
+--===============8115541999568116988==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8115541999568116988==--

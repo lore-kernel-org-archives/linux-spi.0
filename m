@@ -1,8 +1,8 @@
-From: Brock Carbaugh <infoseleccion-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Allyn Cowper <alon2coo-YDxpq3io04c@public.gmane.org>
 Subject: [SPAM] You Need to Read This Immediately
-Date: Sat, 9 May 2009 00:10:30 +0200
-Message-ID: <13136.5991700024$1241820694@news.gmane.org>
-Reply-To: Brock Carbaugh <1069eva.perryman-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Sat, 9 May 2009 00:52:37 -0300
+Message-ID: <9671.93040201$1241841241@news.gmane.org>
+Reply-To: Allyn Cowper <18043lansberg.racheal-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,14 +18,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Are you sick and tired of all the money-making scams on the web? If you're looking for the real deal when it comes to making money from home, then this may be the most important message you will ever read online!
+What if we could show you a real system you can use to put $500 - $1,500 per day into your account, working from the comfort of your home? Would you be interested?
 
-What if there was a system that you could use in the comfort of your own home and make more money than you ever could in your job, using just your computer and the Internet?
+Online advertising has skyrocketed over the past few years. In 2008, companies spent close to $50 billion in online advertising. That figure is expected to increase substantially in 2009. What does this mean for you? - Money is going into your bank account a lot faster this year. And next year. And the year after. That's only IF you follow our methods!
 
-What if it only took a couple of hours per day and was available worldwide? Sounds too good to be true? It isn't! You can even start working in just a few minutes from now. We are here to explain! Simply send us an aswer to komsthoeftamarantha1720-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you are interested in our promotion, so we can answer you back with further details.
+You see, companies worldwide are desperately searching for people just like you to type up their ads and post them online, and they'll pay you nicely in return. It's a win-win situation. They get more customers, you get paid! It's as simple as that. These companies have cash, LOTS of it, and they're eager to share it with you. It's time for you to get a piece of the pie!
 
-Best Regards,
-Legit Online Jobs
+Please, send us an email back to alleen.wolslegel1963-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org if you are interested to participate too, so we can proceed further - we will send you all required information that you need in order to join these programs.
+
+With respect,
+HR, Real Jobs At Home
 
 
 

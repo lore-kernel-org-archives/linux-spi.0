@@ -1,9 +1,11 @@
-From: "Cameron Pegler" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Re: Huge 78% discount by Dr's Pegler
-Date: Sun, 10 May 2009 11:24:41 +0000
-Message-ID: <E1M3797-00069F-0j@335xhf1.ch3.sourceforge.com>
+From: Furtick Robitaille <drabber-uHe1VIsCbfK9FHfhHBbuYA@public.gmane.org>
+Subject: How to Make a Woman Come && Crave You Each and
+	Every Night
+Date: Sun, 10 May 2009 12:56:56 +0000
+Message-ID: <4A0692A7-2035253@bashband.co.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4479024826205571315=="
+Content-Type: multipart/mixed;
+	boundary="-----0003290E56B500794FA18ECE0CB8FC743E2C0297365FDFC144"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,219 +18,208 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4479024826205571315==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+-------0003290E56B500794FA18ECE0CB8FC743E2C0297365FDFC144
+Content-Type: image/png;
+ name="Furtick.png"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="Furtick.png"
 
-<div style="text-align:center;font-family: Arial, Helvetica, sans-serif; font-size:10pt;color:black">
-If you are having trouble viewing this email with images, <a href="http://www.qapkefat.cn/?piwofe=4B8B41B8641BCA9067F8" target="_blank" style="color: #5183a8;">click here</a>.
-</div>
-<!DOCTYPE head PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<head><META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta content="NOINDEX,NOARCHIVE" name="ROBOTS">
-<meta content="text/html; CHARSET=utf-8" http-equiv="Content-Type">
-<title>News Alert</title>
-<meta name="description" content="">
-<meta name="keywords" content="">
-<link href="http://www.qapkefat.cn/?xedqced=4B8B41B8641BCA9067F8" title="HealthCentral News Articles" type="application/rss+xml" rel="alternate">
-</head><table cellpadding="0" cellspacing="0" border="0" width="100%">
-<tr>
-<td valign="top" align="center">
+iVBORw0KGgoAAAANSUhEUgAAAWcAAAF/CAMAAACi4/hJAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
+U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAADAUExURVWk2skcE7x1dJYtLWpbX+GhIuKP
+l9PQ0MLCozYQG9pVUvmmzpmZZtasX2NmnIrE5ruyuJ5lH6OlwOfj5Il8gPz7+/X19enIeZlmlPDE
+FO7brr+GIfDr6jouMcrhx+ba2szk8xwlUpuWmPzW56LDount8ezy9/Pk2ee4sVs/R9U7OdnY2aui
+piFoBP/MzJsDkmaZawAA//3o8vu82vn29zA+gvz47d7p2wAAZgAAmcwAAP8AAAAAAP///8zMzPXx
+8S3x/k4AACmKSURBVHja7J0JQ+K6FoDVqXJ1XFApziiowx1BBLwzjkMVk+b//6uXfWvaplA2X8LW
+NGmbfpyenJ4cwg6yUoKcKWf1QjUX3DqxN0gSnx0u1r55007gHDgHzoFz4Bw4B86Bc+AcOAfOgfOW
+cP4wE16tZURiOXOdUVMUObY1kyh1VvwoW8sLnNWSbGWU0xTn6eS01Hly1gE+auFs7/Rjfs6ZBlbn
+/FGds3t3yE8i6uJstYysdlL+sJbZDrJkChpvVE1KiOottc84SRxHSVxfVl7zHKdTSFrLozk5I1ue
+2RoXG4uUWwI9hJlv7VJOOZJqtTFxHMXJGX0UnEAZaCdn5wH8+kGbswvzRzabwxmVSbN1NWgVUB5n
+63JNEsdR3JyRF/UPb87uA3jaG8Y5uDF/ZPPVOH84OKMCeS7qcD/m5Fx4OivgjDK6fQ2cM7rP5Gz3
+I2vgjOw9fmhrK3O2z32ZnK0KOT0h45xkevqKnD8W5ow8tiq+T8m5ZFfI2X1R6pxzpWGLOOeYVKvl
+nNcOwRl9As5ozZw/fDijAsyr0M/byzl7O+QgqTijReR5gznPYz+Xt9phb3x4ckYLcV7Qfl4i5+r3
+gx8VODtt0CxJ1gMmJWe5/PvBZXIu8W8gp9um1F+gu3OQdQPu4JxT7sG5Vv/G4pw/ikymfH9dTn/u
+4WpEuV7Ocu9cIedl+uuK7jRq4Jzvf3a1vMwP/pHZV1XOqCrnuvzPi3MO4ylh3CpwDpwD58A5cA6c
+A+fAOXAOnAPnwDlwDpwD58B5Ic6tw8OeWI4ODw/vRObwsDtvmXWc8WGkH9HK0iYYG+C8wdku57uJ
+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
+rkJggg==
 
-<table cellpadding="0" cellspacing="0" border="0" style="width: 859px">
-<tr>
-<td colspan="3"><img alt="HEALTHCENTRAL News Alert" src="http://www.healthcentral.com/common/images/newsletter/hdr_breaking_news.jpg"></td>
-</tr>
-<tr>
-<td style="font-size:11px; font-family:Arial, Helvetica, sans-serif;" valign="top" align="right" colspan="3">
-5/9/2009</td>
-</tr>
-<tr>
-<td colspan="3"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="15" style="margin:0; padding:0;"></td>
-</tr>
-<tr>
-<td align="center" colspan="3"><img src="http://www.healthcentral.com/common/images/newsletter/division.png" height="14" width="620" style="margin:0; padding:0; border:none;"></td>
-</tr>
-
-<tr>
-<td valign="top" style="width: 553px">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
-<tr>
-<td align="left" valign="top">
-
-
-
-<a href="http://www.qapkefat.cn/?weyifyt=4B8B41B8641BCA9067F8">
-<img alt="" height="312" src="http://www.qapkefat.cn/10.gif" style="border-width: 0px" width="543"></a></td><td><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="8" height="1" style="padding:0; margin:0;"></td>
-</tr>
-<tr>
-<td colspan="2"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="24" style="padding:0; margin:0;"></td>
-</tr>
-</table>
-<table style="font-size:13px; font-family:Arial, Helvetica, sans-serif;" cellpadding="0" cellspacing="0" border="0" width="100%">
-<tr>
-<td style="font-size:13px; font-weight:bold; color:#037489; line-height:1.6em;" colspan="2">RELATED LINKS</td>
-</tr>
-<tr>
-<td>&#149;<img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="8" height="1" style="padding:0; margin:0;"></td><td><a href="http://www.qapkefat.cn/?jyekesqdo=4B8B41B8641BCA9067F8" style="color:#5d89ac; text-decoration:none;">
-	Vitamin supplements are our specialty. Best place to buy over the Internet.</a></td>
-</tr>
-<tr>
-
-<td>&#149;<img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="8" height="1" style="padding:0; margin:0;"></td><td><a href="http://www.qapkefat.cn/?cesqjmu=4B8B41B8641BCA9067F8" style="color:#5d89ac; text-decoration:none;">
-						Where to find vitamin and mineral supplements for available prices? On our site!</a></td>
-</tr>
-<tr>
-<td>&#149;<img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="8" height="1" style="padding:0; margin:0;"></td><td><a href="http://www.qapkefat.cn/?uwahjk=4B8B41B8641BCA9067F8" style="color:#5d89ac; text-decoration:none;">
-						Find anti-anxiety goods on -60% and pain relief packs from -40% to -80%!</a></td>
-</tr>
-<tr>
-<td>&#149;<img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="8" height="1" style="padding:0; margin:0;"></td><td><a href="http://www.qapkefat.cn/?ylysjni=4B8B41B8641BCA9067F8" style="color:#5d89ac; text-decoration:none;">
-						Happy life is disease-free life! All products you need online!</a></td>
-</tr>
-</table>
-</td><td>&nbsp;</td><td valign="top" width="300">
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr>
-<td align="center">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" height="8" style="height:8px; line-height:0px; margin:0; padding:0;">
-
-<tr>
-<td align="left" width="8" height="8" style="width:8px; height:8px;"><img src="http://www.healthcentral.com/common/images/newsletter/box_ftaf_top_left.gif" width="8" height="8" style="width:8px; height:8px; margin:0; padding:0;"></td><td>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" height="8" style="height:8px; line-height:0px; margin:0; padding:0;">
-<tr>
-<td style="background-color:#ccc; height:1px;" height="1"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="1" style="padding:0; margin:0;"></td>
-</tr>
-<tr>
-<td style="background-color:#fff; height:2px;" height="2"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="2" style="padding:0; margin:0;"></td>
-</tr>
-<tr>
-<td style="background-color:#e0eef4; height:5px;" height="5"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="5" style="padding:0; margin:0;"></td>
-</tr>
-</table>
-</td><td align="right" width="8" height="8" style="width:8px; height:8px;"><img src="http://www.healthcentral.com/common/images/newsletter/box_ftaf_top_right.gif" width="8" height="8" style="width:8px; height:8px; margin:0; padding:0;"></td>
-</tr>
-</table>
-</td>
-
-</tr>
-<tr>
-<td align="center">
-<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background:#fff;" align="center">
-<tr>
-<td width="1" style="width:1px; background-color:#ccc;"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="1" style="padding:0; margin:0;"></td><td width="2" style="width:2px; background-color:#fff;"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="2" height="1" style="padding:0; margin:0;"></td><td align="center" style="background-color:#e0eef4;">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
-<tr>
-<td width="15"></td><td align="left" style="color:#2b6796; font-family:Arial, Helvetica, sans-serif; font-size:17px;">Forward to a Friend</td>
-</tr>
-<tr>
-<td colspan="2" align="center"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="9" style="padding:0; margin:0;"></td>
-</tr>
-<tr>
-<td></td><td align="left">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
-
-<tr>
-<td align="left" valign="top"><img src="http://www.healthcentral.com/common/images/newsletter/ico_ftaf.gif" alt="" border="0"></td><td><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="8" height="1" style="padding:0; margin:0;"></td><td align="left" valign="top">Send this to someone you think should read this news!</td>
-</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td colspan="2" align="center"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="9" style="padding:0; margin:0;"></td>
-</tr>
-<tr>
-<td colspan="2" align="center"><a href="http://www.qapkefat.cn/?yvuoqdqo=4B8B41B8641BCA9067F8"><img style="border:none;" alt="forward" src="http://www.healthcentral.com/common/images/newsletter/btn_forward.png"></a></td>
-</tr>
-<tr>
-<td colspan="2" align="center"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="6" style="padding:0; margin:0;"></td>
-</tr>
-</table>
-
-</td><td width="2" style="width:2px; background-color:#fff;"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="2" height="1" style="padding:0; margin:0;"></td><td width="1" style="width:1px; background-color:#ccc;"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="1" style="padding:0; margin:0;"></td>
-</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td align="center">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" height="8" style="height:8px; line-height:0px; margin:0; padding:0;">
-<tr>
-<td align="left" width="8" height="8" style="width:8px; height:8px;"><img src="http://www.healthcentral.com/common/images/newsletter/box_ftaf_bottom_left.gif" width="8" height="8" style="width:8px; height:8px; margin:0; padding:0;"></td><td>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" height="8" style="height:8px; line-height:0px; margin:0; padding:0;">
-<tr>
-<td style="background-color:#e0eef4; height:5px" height="5"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="5" style="padding:0; margin:0;"></td>
-</tr>
-<tr>
-<td style="background-color:#fff; height:1px;" height="2"></td>
-</tr>
-
-<tr>
-<td style="background-color:#ccc; height:1px;" height="1"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="1" style="padding:0; margin:0;"></td>
-</tr>
-</table>
-</td><td align="right" width="8" style="width:8px; height:8px;"><img src="http://www.healthcentral.com/common/images/newsletter/box_ftaf_bottom_right.gif" width="8" height="8" style="width:8px; height:8px; margin:0; padding:0;"></td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td valign="top" style="width: 553px"><img src="http://www.healthcentral.com/common/images/newsletter/spacer.gif" width="1" height="30" style="padding:0; margin:0;">&nbsp;</td><td>
-	&nbsp;</td><td valign="top">&nbsp;</td>
-</tr>
-</table>
-</td>
-
-</tr>
-</table>
-
-<table border="0" cellpadding="0" cellspacing="0" style="width: 650px; font-family: Arial, Helvetica, sans-serif; background: #ffffff;">
-
-<tr>
-
-<td id="thcninfo" align="left" style="clear:both;font-size:8pt;color:#808080">
-
-<p>
-
-This email was sent to: <a href="mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank" style="color: #5183a8;">spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</a>.
-
-If this email was forwarded to you by another email recipient and you would like
-
-to subscribe, <a href="http://www.qapkefat.cn/?subscribe=94C618266738C1D139&mail=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank" style="color: #5183a8;">click here</a>.
-
-</p>
-
-<p>If you would like to forward this newsletter to a friend, <a href="http://www.qapkefat.cn/?xaoham=4B8B41B8641BCA9067F8" target="_blank" style="color: #5183a8;">click here</a></p>
-
-<p>
-
-If you'd like to unsubscribe, <a href="http://www.qapkefat.cn/?oqizyp=4B8B41B8641BCA9067F8&unsubscribe=1" target="_blank" style="color: #5183a8;">click here</a>.
-
-</p>
-
-<p>
-
-The HealthCentral Network, 2300 Wilson Boulevard #600 Arlington, VA 22201
-
-</p>
-
-<p>
-
-(c) 2009 The HealthCentral Network, Inc. All rights reserved. <a href="http://www.qapkefat.cn/?oqbjc=4B8B41B8641BCA9067F8" target="_blank" style="color: #5183a8;">Privacy Policy</a>.
-
-</p>
-
-</td>
-
-</tr>
-
-</table>
-
-
---===============4479024826205571315==
+-------0003290E56B500794FA18ECE0CB8FC743E2C0297365FDFC144
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -240,7 +231,7 @@ production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
---===============4479024826205571315==
+-------0003290E56B500794FA18ECE0CB8FC743E2C0297365FDFC144
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -251,4 +242,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============4479024826205571315==--
+-------0003290E56B500794FA18ECE0CB8FC743E2C0297365FDFC144--

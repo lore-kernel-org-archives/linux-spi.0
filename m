@@ -1,11 +1,12 @@
-From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
-Subject: [SPAM] 票据代理
-Date: Sun, 10 May 2009 03:56:19 +0800
-Message-ID: <E1M2sf1-0003fl-C8@235xhf1.ch3.sourceforge.com>
+From: Foster Whitten <kirank_bond-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Make Money Completing Surveys
+Date: Sun, 10 May 2009 11:20:04 +0200
+Message-ID: <13124.2313808345$1241947275@news.gmane.org>
+Reply-To: Foster Whitten <1994carbrey.huyard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,29 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHye7b2srQsqvKosq10rXT0M/e
-uavLvrXEo6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+
-o6mho87Sy77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvB
-y8O/1MLP+srbtu62yKGjCsO/1MLT0NK7sr+31lvU9ta1y7BdtefE1LeiQMaxNiW6zVvG1c2oXbei
-QMax1tbA4Mjnz8KjusnMxrfP+srbt6JAxrGjrLXnxNTUy8rkt6JAxrGjrAq547jmt6JAxrHX4sHe
-0rW3okDGsSy3/s7x0rW3okDGsbXIICi5+suwtdjLsKOpMS0yJdPFu920+r+qu/K6z9f3o6y148r9
-vc+1zaGju7m/yQrS1Lj5vt3L+df2yv3Bv7butsi1xLTz0KHAtMnMzNbTxbvdtcS148r9o6y5q8u+
-s8nBorbgxOrSu9axvOGz1tLUobCzz9DFobHOqtbQCtDE1/fOqrmry761xLrL0MTLvM/roaLAzrnM
-yvfBormry77Qzs/zo6yxvrmry77Wo9bYs9DFtcv508O++LbUysfV5saxo6G4/M+jzfsKxNy5u9PQ
-u/q74dPrufPLvrrP1/ejoQqhoaGhCiAgICDI57nzy77U2lu3okDGsV21xNXmzrG3vcPm09DIzrrO
-0snCx7vytaPQxKOsv8nJz834sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGj
-IAogICAgIAogICAgtMvQxc+is6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOiAKICAgIAqhoaGhytYg
-ILv6OjEzNTMwMDQ0MDYwCgogICAgLS0tLVFROzg1MjQ3MDcxMAoKoaGhocGqz7XIy6O61cXQob3j
-Csuz16MKICAgICAgyczs96OhIAogICAgIAqhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhICCh
-oaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhocnu29rK0LKryqLKtdK109DP3rmry74KCi0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQpUaGUgTkVXIEtPREFLIGk3MDAgU2VyaWVzIFNjYW5uZXJzIGRlbGl2ZXIg
-dW5kZXIgQU5ZIGNpcmN1bXN0YW5jZXMhIFlvdXIKcHJvZHVjdGlvbiBzY2FubmluZyBlbnZpcm9u
-bWVudCBtYXkgbm90IGJlIGEgcGVyZmVjdCB3b3JsZCAtIGJ1dCB0aGFua3MgdG8KS29kYWssIHRo
-ZXJlJ3MgYSBwZXJmZWN0IHNjYW5uZXIgdG8gZ2V0IHRoZSBqb2IgZG9uZSEgV2l0aCB0aGUgTkVX
-IEtPREFLIGk3MDAKU2VyaWVzIFNjYW5uZXIgeW91J2xsIGdldCBmdWxsIHNwZWVkIGF0IDMwMCBk
-cGkgZXZlbiB3aXRoIGFsbCBpbWFnZSAKcHJvY2Vzc2luZyBmZWF0dXJlcyBlbmFibGVkLiBodHRw
-Oi8vcC5zZi5uZXQvc2Z1L2tvZGFrLWNvbQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Are you used to think that all work at home opportunities on the Internet are just scam artists trying to steal your money. With your last bit of hope, you can try our offer, we are here to present to your attention today, and you will be glad you did! It may took a couple of days to really get the hang of the system, but then you will be up to $100 per day in earnings, and climbing!
+
+We are receiving hundreds of emails each day from our members, thanking us for providing such a great resource to actually earn a real income online.
+
+If you are interested in receiving more information about our work from home offers, and probably join with us, please send an email back to 1684bruntzniles-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will get in touch with you again.
+
+Thanks for your time!
+
+Legit Jobs Online
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
+------------------------------------------------------------------------------
+The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
+production scanning environment may not be a perfect world - but thanks to
+Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
+Series Scanner you'll get full speed at 300 dpi even with all image 
+processing features enabled. http://p.sf.net/sfu/kodak-com

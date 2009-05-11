@@ -1,12 +1,11 @@
-From: Bennie Blackburn <419dr_henryhilaryesq-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Discounted Sports Tickets Available
-Date: Mon, 11 May 2009 00:18:14 +0200
-Message-ID: <24727.0775413655$1241994065@news.gmane.org>
-Reply-To: Bennie Blackburn <ernest.steifle1588-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "HIPNOSIS CHILE" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] RECORDATORIO
+Date: Sun, 10 May 2009 23:44:33 -0400
+Message-ID: <2753938641-22009511134433356@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,39 +17,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+Te recordamos que este lunes 11 a las 19.30 hrs. ser=E1 la sesi=F3n de Rela=
+jaci=F3n Profunda para quienes sufren de estr=E9s, depresi=F3n, crisis, pen=
+as, cansancio=85
+Tiene una duraci=F3n de una hora y es en Seminario 6 =96 Providencia (Metro=
+ Baquedano =96 Edificio Tecnobit)
+Valor de la sesi=F3n $5.000.- Si llevas a dos personas, t=FA entras gratis. =
 
-Want to see sports events at your destination? So, get ready to see more sports events than ever before! Because it has never been easier to find and buy tickets to all available Sports Events worldwide! 
+Debes confirmar tu participaci=F3n respondiendo este e-mail o al fono 24891=
+12
 
-We have the largest database of Sports Events Tickets at discounted prices!
-
-Select the desired country, city and sport, and only search!
-
-Answer to us if interested, so we will send you our promotion! All you have to do is ask for information at 1015duddental-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-
-Regards,
-"World of Sport" Foundation
-
+Saluda atentamente, =
 
 
-
-
-
-
-
+Ana Mar=EDa Villarroel Altamirano
+Centro de Hipnosis y Terapias Afines "Hipnosis Chile"
+Seminario 6 - Providencia - Fonos: 248 9112 - 278 1078
+info-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org - www.hipnosischile.cl
+Remoci=F3n: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org =
 
 
 
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.out_from_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
 production scanning environment may not be a perfect world - but thanks to
-Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
-Series Scanner you'll get full speed at 300 dpi even with all image 
+Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i7=
+00
+Series Scanner you'll get full speed at 300 dpi even with all image =
+
 processing features enabled. http://p.sf.net/sfu/kodak-com

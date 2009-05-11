@@ -1,11 +1,11 @@
-From: Solution Devis <newsletter-PYqFkRXTYUkAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] [rachat de crédits] Comparez les meilleures offres pour baisser vos mensualités
-Date: 11 May 2009 08:18:04 -0000
-Message-ID: <20090511081804.32194.qmail@ks37557.kimsufi.com>
-Reply-To: Solution Devis <newsletter-PYqFkRXTYUkAvxtiuMwx3w@public.gmane.org>
+From: Foxx Alderete <metamerism-7TRR3r4wO3JBDgjK7y7TUQ@public.gmane.org>
+Subject: Christian sex -- Improve Christian sex Life
+Date: Mon, 11 May 2009 08:55:11 +0000
+Message-ID: <relocated.Cb@colorbox.cz>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6467156849231806724=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="---=_NextPart_401_7196_79DB13DE.44543112"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,97 +17,208 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+-----=_NextPart_401_7196_79DB13DE.44543112
+Content-Type: image/png;
+ name="Foxx.png"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="Foxx.png"
 
---===============6467156849231806724==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_0fb2d636a91817d5538b12077c957f8f"
+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
+YII=
 
-
---_----------=_parties_0fb2d636a91817d5538b12077c957f8f
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://www.ctrm4.com/miroir.php?bat=solutdevis0509_ctrm
-
-Rachat de crédits : La solution pour faire votre choix
-
-Faites une unique demande et comparez les meilleures offres
-(1) Vous remplissez 1 seul questionnaire.
-(2) Nous interrogeons jusqu'à 12 organismes à la fois.
-(3) Nous vous proposons uniquement les solutions de financements adaptées à votre projet et à votre situation financière.
-
-Faites-ici une demande de devis sans engagement
-
-plus d'infos sur http://www.ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit
-
---------------------------------
-Cette offre solution devis vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm4.com/gestionserv.php?nb=1420&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_0fb2d636a91817d5538b12077c957f8f
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>Rachat de cr&eacute;dits : La solution pour faire votre choix</title>
-</head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm4.com/miroir.php?bat=solutdevis0509_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre solution devis vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #e10081;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial Narrow;color:#a0a180;font-size:28px'>
-<p style='display:inline;'> Rachat de cr&eacute;dits : La solution pour faire votre choix</p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#e10081;font-family:Arial Narrow;color:#edede7;font-size:20px;'>
-<a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit" style="color:#edede7;font-size:20px;font-family:arial narrow;font-background:e10081;text-decoration:none;">
-Faites une unique demande et comparez les meilleures offres</a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:12px;background-color:#FFFFFF;'>
-(1) Vous remplissez <b>1 seul</b> questionnaire.<br /><br />
-(2) Nous interrogeons jusqu'&agrave; <b>12 organismes &agrave; la fois.</b><br /><br />
-(3) Nous vous proposons uniquement <b>les solutions de financements adapt&eacute;es</b> &agrave; votre projet et &agrave; votre situation financi&egrave;re.<br />
-<a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit" style="color:black;font-size:12px;font-family:arial;font-background:white;text-decoration:none;"> <div style='text-align:center'><u style='color:blue'>Faites-ici une demande de devis sans engagement</u></div></a>
-</td></tr>
-<tr><td align='' style='padding:5px;background-color:#FFFFFF;'>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
- <tr>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_01.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_02.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_03.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_04.gif" alt="solution devis" border="0"></a></td>
- </tr>
- <tr>
- <td colspan="4"><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/middle.gif" alt="solution devis" border="0"></a></td>
- </tr>
-</table>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
- <tr>
- <td colspan="3"><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/logo.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/bord_droit.gif" alt="solution devis" border="0"></a></td>
- </tr>
-</table>
-<p><br>
-<!-- pixel RAC--> <img src="http://eskdom015.netmastering2.net/c/a8FJS4PK87GF8FD1S" alt="solution devis" border="0"> <!-- pixel epargne--> <img src="http://eskdom019.netmastering2.net/c/aUDWUBH2G03QEYDTU" alt="solution devis" border="0"> <!-- pixel sante--> <img src="http://eskdom011.netmastering2.net/c/aU6JBUKWN71ZAFQYC" alt="solution devis" border="0"> <!-- pixel defisc--> <img src="http://eskdom018.netmastering2.net/c/aG052Y5MC9Y3UMQ3W" alt="solution devis" border="0"></p><img src="http://nodes.reactivpub.fr/mailing-493-12014-12068&group=" border="0" height="1" width="1"/>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.ctrm4.com/img.php?nb=1420&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
-<p>
-<a href='http://www.ctrm4.com/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm4.com/gestionserv.php?nb=1420&cat=credit&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
-
-
---_----------=_parties_0fb2d636a91817d5538b12077c957f8f--
-
---===============6467156849231806724==
+-----=_NextPart_401_7196_79DB13DE.44543112
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -119,7 +230,7 @@ production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
---===============6467156849231806724==
+-----=_NextPart_401_7196_79DB13DE.44543112
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,4 +241,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6467156849231806724==--
+-----=_NextPart_401_7196_79DB13DE.44543112--

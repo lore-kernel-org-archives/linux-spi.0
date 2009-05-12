@@ -1,15 +1,13 @@
-From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [RESEND][PATCH] SPI: Add SPI driver for most
-	known i.MX SoCs
-Date: Tue, 12 May 2009 14:31:51 +0200
-Message-ID: <20090512123151.GG29278@pengutronix.de>
+From: Stelmach Guinnip <sobered-qkVDgXjbXTafg5KWHKSrRg@public.gmane.org>
+Subject: How To sexually Attract Women,
+	Attraction && Seduction, 'The Game', PUA - Part Two Prequel
+Date: Tue, 12 May 2009 22:05:01 +0000
+Message-ID: <5ce4d2d15e1f40af778e5a9729-declaration@worldmails.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org, Wolfram Sang <wsa-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="------141BFE112A4DBCB724F2B979762122013330D59315848"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,807 +18,219 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--------141BFE112A4DBCB724F2B979762122013330D59315848
+Content-Type: image/png;
+ name="Stelmach.png"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="Stelmach.png"
 
-Hi all,
+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
+TkSuQmCC
 
-I got no comments the last time I sent this, here is an updated version
-which now also works on i.MX35. Any input on this?
-
-Sascha
-
-
-v2: Updated and tested on i.MX35
-
-While there already is a SPI driver for i.MX1 in the tree there are
-good reasons to replace it:
-
-- The inkernel driver implements a full blown SPI driver, but
-  the hardware can be fully supported using a bitbang driver.
-  This greatly reduces the size and complexity of the driver.
-- The inkernel driver only works on i.MX1 SoCs. Unfortunately
-  Freescale decided to randomly mix the register bits for each
-  new SoC, This is quite hard to handle with the current driver
-  since it has register accesses in many places.
-- The DMA API of the durrent driver is broken for arch-mx1 (as opposed
-  to arch-imx) and nobody cared to fix it yet.
-
-This driver has been tested on i.MX1/i.MX27/i.MX35 with an AT25 type
-EEPROM and on i.MX27/i.MX31 with a Freescale MC13783 PMIC.
-
-Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
- arch/arm/plat-mxc/include/mach/spi.h |   27 ++
- drivers/spi/Kconfig                  |    7 +-
- drivers/spi/Makefile                 |    2 +-
- drivers/spi/mxc_spi.c                |  685 ++++++++++++++++++++++++++++++++++
- 4 files changed, 717 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/plat-mxc/include/mach/spi.h
- create mode 100644 drivers/spi/mxc_spi.c
-
-diff --git a/arch/arm/plat-mxc/include/mach/spi.h b/arch/arm/plat-mxc/include/mach/spi.h
-new file mode 100644
-index 0000000..08be445
---- /dev/null
-+++ b/arch/arm/plat-mxc/include/mach/spi.h
-@@ -0,0 +1,27 @@
-+
-+#ifndef __MACH_SPI_H_
-+#define __MACH_SPI_H_
-+
-+/*
-+ * struct spi_imx_master - device.platform_data for SPI controller devices.
-+ * @chipselect: Array of chipselects for this master. Numbers >= 0 mean gpio
-+ *              pins, numbers < 0 mean internal CSPI chipselects according
-+ *              to MXC_SPI_CS(). Normally you want to use gpio based chip
-+ *              selects as the CSPI module tries to be intelligent about
-+ *              when to assert the chipselect: The CSPI module deasserts the
-+ *              chipselect once it runs out of input data. The other problem
-+ *              is that it is not possible to mix between high active and low
-+ *              active chipselects on one single bus using the internal
-+ *              chipselects. Unfortunately Freescale decided to put some
-+ *              chipselects on dedicated pins which are not usable as gpios,
-+ *              so we have to support the internal chipselects.
-+ * @num_chipselect: ARRAY_SIZE(chipselect)
-+ */
-+struct spi_imx_master {
-+	int	*chipselect;
-+	int	num_chipselect;
-+};
-+
-+#define MXC_SPI_CS(no)	((no) - 32)
-+
-+#endif /* __MACH_SPI_H_*/
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 7c61251..6bb8e12 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -117,10 +117,11 @@ config SPI_GPIO
- 	  speed with a custom version of this driver; see the source code.
- 
- config SPI_IMX
--	tristate "Freescale iMX SPI controller"
--	depends on ARCH_MX1 && EXPERIMENTAL
-+	tristate "Freescale iMX SPI controllers"
-+	depends on ARCH_MXC
-+	select SPI_BITBANG
- 	help
--	  This enables using the Freescale iMX SPI controller in master
-+	  This enables using the Freescale iMX SPI controllers in master
- 	  mode.
- 
- config SPI_LM70_LLP
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 5d04519..73b508b 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -17,7 +17,7 @@ obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
- obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.o
- obj-$(CONFIG_SPI_BUTTERFLY)		+= spi_butterfly.o
- obj-$(CONFIG_SPI_GPIO)			+= spi_gpio.o
--obj-$(CONFIG_SPI_IMX)			+= spi_imx.o
-+obj-$(CONFIG_SPI_IMX)			+= mxc_spi.o
- obj-$(CONFIG_SPI_LM70_LLP)		+= spi_lm70llp.o
- obj-$(CONFIG_SPI_PXA2XX)		+= pxa2xx_spi.o
- obj-$(CONFIG_SPI_OMAP_UWIRE)		+= omap_uwire.o
-diff --git a/drivers/spi/mxc_spi.c b/drivers/spi/mxc_spi.c
-new file mode 100644
-index 0000000..b144723
---- /dev/null
-+++ b/drivers/spi/mxc_spi.c
-@@ -0,0 +1,685 @@
-+/*
-+ * Copyright 2004-2007 Freescale Semiconductor, Inc. All Rights Reserved.
-+ * Copyright (C) 2008 Juergen Beisert
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version 2
-+ * of the License, or (at your option) any later version.
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the
-+ * Free Software Foundation
-+ * 51 Franklin Street, Fifth Floor
-+ * Boston, MA  02110-1301, USA.
-+ */
-+
-+#include <linux/clk.h>
-+#include <linux/completion.h>
-+#include <linux/delay.h>
-+#include <linux/err.h>
-+#include <linux/gpio.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/irq.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/spi_bitbang.h>
-+#include <linux/types.h>
-+
-+#include <mach/spi.h>
-+
-+#define DRIVER_NAME "spi_imx"
-+
-+#define MXC_CSPIRXDATA		0x00
-+#define MXC_CSPITXDATA		0x04
-+#define MXC_CSPICTRL		0x08
-+#define MXC_CSPIINT		0x0c
-+#define MXC_RESET		0x1c
-+
-+/* generic defines to abstract from the different register layouts */
-+#define MXC_INT_RR	(1 << 0) /* Receive data ready interrupt */
-+#define MXC_INT_TE	(1 << 1) /* Transmit FIFO empty interrupt */
-+
-+struct mxc_spi_config {
-+	unsigned int speed_hz;
-+	unsigned int bpw;
-+	unsigned int mode;
-+	int cs;
-+};
-+
-+struct mxc_spi_data {
-+	struct spi_bitbang bitbang;
-+
-+	struct completion xfer_done;
-+	void *base;
-+	int irq;
-+	struct clk *clk;
-+	unsigned long spi_clk;
-+	int *chipselect;
-+
-+	unsigned int count;
-+	void (*tx)(struct mxc_spi_data *);
-+	void (*rx)(struct mxc_spi_data *);
-+	void *rx_buf;
-+	const void *tx_buf;
-+	unsigned int txfifo; /* number of words pushed in tx FIFO */
-+
-+	/* SoC specific functions */
-+	void (*intctrl)(struct mxc_spi_data *, int);
-+	int (*config)(struct mxc_spi_data *, struct mxc_spi_config *);
-+	void (*trigger)(struct mxc_spi_data *);
-+	int (*rx_available)(struct mxc_spi_data *);
-+};
-+
-+#define MXC_SPI_BUF_RX(type)						\
-+static void mxc_spi_buf_rx_##type(struct mxc_spi_data *mxc_spi)		\
-+{									\
-+	unsigned int val = readl(mxc_spi->base + MXC_CSPIRXDATA);	\
-+									\
-+	if (mxc_spi->rx_buf) {						\
-+		*(type *)mxc_spi->rx_buf = val;				\
-+		mxc_spi->rx_buf += sizeof(type);			\
-+	}								\
-+}
-+
-+#define MXC_SPI_BUF_TX(type)						\
-+static void mxc_spi_buf_tx_##type(struct mxc_spi_data *mxc_spi)		\
-+{									\
-+	type val = 0;							\
-+									\
-+	if (mxc_spi->tx_buf) {						\
-+		val = *(type *)mxc_spi->tx_buf;				\
-+		mxc_spi->tx_buf += sizeof(type);			\
-+	}								\
-+									\
-+	mxc_spi->count -= sizeof(type);					\
-+									\
-+	writel(val, mxc_spi->base + MXC_CSPITXDATA);			\
-+}
-+
-+MXC_SPI_BUF_RX(u8)
-+MXC_SPI_BUF_TX(u8)
-+MXC_SPI_BUF_RX(u16)
-+MXC_SPI_BUF_TX(u16)
-+MXC_SPI_BUF_RX(u32)
-+MXC_SPI_BUF_TX(u32)
-+
-+/* First entry is reserved, second entry is valid only if SDHC_SPIEN is set
-+ * (which is currently not the case in this driver)
-+ */
-+static int mxc_clkdivs[] = {0, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192,
-+	256, 384, 512, 768, 1024};
-+
-+/* MX21, MX27 */
-+static unsigned int mxc_spi_clkdiv_1(unsigned int fin,
-+		unsigned int fspi)
-+{
-+	int i, max;
-+
-+	if (cpu_is_mx21())
-+		max = 18;
-+	else
-+		max = 16;
-+
-+	for (i = 2; i < max; i++)
-+		if (fspi * mxc_clkdivs[i] >= fin)
-+			return i;
-+
-+	return max;
-+}
-+
-+/* MX1, MX31, MX35 */
-+static unsigned int mxc_spi_clkdiv_2(unsigned int fin,
-+		unsigned int fspi)
-+{
-+	int i, div = 4;
-+
-+	for (i = 0; i < 7; i++) {
-+		if (fspi * div >= fin)
-+			return i;
-+		div <<= 1;
-+	}
-+
-+	return 7;
-+}
-+
-+#define MX31_INTREG_TEEN	(1 << 0)
-+#define MX31_INTREG_RREN	(1 << 3)
-+
-+#define MX31_CSPICTRL_ENABLE	(1 << 0)
-+#define MX31_CSPICTRL_MASTER	(1 << 1)
-+#define MX31_CSPICTRL_XCH	(1 << 2)
-+#define MX31_CSPICTRL_POL	(1 << 4)
-+#define MX31_CSPICTRL_PHA	(1 << 5)
-+#define MX31_CSPICTRL_SSCTL	(1 << 6)
-+#define MX31_CSPICTRL_SSPOL	(1 << 7)
-+#define MX31_CSPICTRL_BC_SHIFT	8
-+#define MX35_CSPICTRL_BL_SHIFT	20
-+#define MX31_CSPICTRL_CS_SHIFT	24
-+#define MX35_CSPICTRL_CS_SHIFT	12
-+#define MX31_CSPICTRL_DR_SHIFT	16
-+
-+#define MX31_CSPISTATUS		0x14
-+#define MX31_STATUS_RR		(1 << 3)
-+
-+/* These functions also work for the i.MX35, but be aware that
-+ * the i.MX35 has a slightly different register layout for bits
-+ * we do not use here.
-+ */
-+static void mx31_intctrl(struct mxc_spi_data *mxc_spi, int enable)
-+{
-+	unsigned int val = 0;
-+
-+	if (enable & MXC_INT_TE)
-+		val |= MX31_INTREG_TEEN;
-+	if (enable & MXC_INT_RR)
-+		val |= MX31_INTREG_RREN;
-+
-+	writel(val, mxc_spi->base + MXC_CSPIINT);
-+}
-+
-+static void mx31_trigger(struct mxc_spi_data *mxc_spi)
-+{
-+	unsigned int reg;
-+
-+	reg = readl(mxc_spi->base + MXC_CSPICTRL);
-+	reg |= MX31_CSPICTRL_XCH;
-+	writel(reg, mxc_spi->base + MXC_CSPICTRL);
-+}
-+
-+static int mx31_config(struct mxc_spi_data *mxc_spi,
-+		struct mxc_spi_config *config)
-+{
-+	unsigned int reg = MX31_CSPICTRL_ENABLE | MX31_CSPICTRL_MASTER;
-+
-+	reg |= mxc_spi_clkdiv_2(mxc_spi->spi_clk, config->speed_hz) <<
-+		MX31_CSPICTRL_DR_SHIFT;
-+
-+	if (cpu_is_mx31())
-+		reg |= (config->bpw - 1) << MX31_CSPICTRL_BC_SHIFT;
-+	else if (cpu_is_mx35()) {
-+		reg |= (config->bpw - 1) << MX35_CSPICTRL_BL_SHIFT;
-+		reg |= MX31_CSPICTRL_SSCTL;
-+	}
-+
-+	if (config->mode & SPI_CPHA)
-+		reg |= MX31_CSPICTRL_PHA;
-+	if (config->mode & SPI_CPOL)
-+		reg |= MX31_CSPICTRL_POL;
-+	if (config->mode & SPI_CS_HIGH)
-+		reg |= MX31_CSPICTRL_SSPOL;
-+	if (config->cs < 0) {
-+		if (cpu_is_mx31())
-+			reg |= (config->cs + 32) << MX31_CSPICTRL_CS_SHIFT;
-+		else if (cpu_is_mx35())
-+			reg |= (config->cs + 32) << MX35_CSPICTRL_CS_SHIFT;
-+	}
-+
-+	writel(reg, mxc_spi->base + MXC_CSPICTRL);
-+
-+	return 0;
-+}
-+
-+static int mx31_rx_available(struct mxc_spi_data *mxc_spi)
-+{
-+	return readl(mxc_spi->base + MX31_CSPISTATUS) & MX31_STATUS_RR;
-+}
-+
-+#define MX27_INTREG_RR		(1 << 4)
-+#define MX27_INTREG_TEEN	(1 << 9)
-+#define MX27_INTREG_RREN	(1 << 13)
-+
-+#define MX27_CSPICTRL_POL	(1 << 5)
-+#define MX27_CSPICTRL_PHA	(1 << 6)
-+#define MX27_CSPICTRL_SSPOL	(1 << 8)
-+#define MX27_CSPICTRL_XCH	(1 << 9)
-+#define MX27_CSPICTRL_ENABLE	(1 << 10)
-+#define MX27_CSPICTRL_MASTER	(1 << 11)
-+#define MX27_CSPICTRL_DR_SHIFT	14
-+#define MX27_CSPICTRL_CS_SHIFT	19
-+
-+static void mx27_intctrl(struct mxc_spi_data *mxc_spi, int enable)
-+{
-+	unsigned int val = 0;
-+
-+	if (enable & MXC_INT_TE)
-+		val |= MX27_INTREG_TEEN;
-+	if (enable & MXC_INT_RR)
-+		val |= MX27_INTREG_RREN;
-+
-+	writel(val, mxc_spi->base + MXC_CSPIINT);
-+}
-+
-+static void mx27_trigger(struct mxc_spi_data *mxc_spi)
-+{
-+	unsigned int reg;
-+
-+	reg = readl(mxc_spi->base + MXC_CSPICTRL);
-+	reg |= MX27_CSPICTRL_XCH;
-+	writel(reg, mxc_spi->base + MXC_CSPICTRL);
-+}
-+
-+static int mx27_config(struct mxc_spi_data *mxc_spi,
-+		struct mxc_spi_config *config)
-+{
-+	unsigned int reg = MX27_CSPICTRL_ENABLE | MX27_CSPICTRL_MASTER;
-+
-+	reg |= mxc_spi_clkdiv_1(mxc_spi->spi_clk, config->speed_hz) <<
-+		MX27_CSPICTRL_DR_SHIFT;
-+	reg |= config->bpw - 1;
-+
-+	if (config->mode & SPI_CPHA)
-+		reg |= MX27_CSPICTRL_PHA;
-+	if (config->mode & SPI_CPOL)
-+		reg |= MX27_CSPICTRL_POL;
-+	if (config->mode & SPI_CS_HIGH)
-+		reg |= MX27_CSPICTRL_SSPOL;
-+	if (config->cs < 0)
-+		reg |= (config->cs + 32) << MX27_CSPICTRL_CS_SHIFT;
-+
-+	writel(reg, mxc_spi->base + MXC_CSPICTRL);
-+
-+	return 0;
-+}
-+
-+static int mx27_rx_available(struct mxc_spi_data *mxc_spi)
-+{
-+	return readl(mxc_spi->base + MXC_CSPIINT) & MX27_INTREG_RR;
-+}
-+
-+#define MX1_INTREG_RR		(1 << 3)
-+#define MX1_INTREG_TEEN		(1 << 8)
-+#define MX1_INTREG_RREN		(1 << 11)
-+
-+#define MX1_CSPICTRL_POL	(1 << 4)
-+#define MX1_CSPICTRL_PHA	(1 << 5)
-+#define MX1_CSPICTRL_XCH	(1 << 8)
-+#define MX1_CSPICTRL_ENABLE	(1 << 9)
-+#define MX1_CSPICTRL_MASTER	(1 << 10)
-+#define MX1_CSPICTRL_DR_SHIFT	13
-+
-+static void mx1_intctrl(struct mxc_spi_data *mxc_spi, int enable)
-+{
-+	unsigned int val = 0;
-+
-+	if (enable & MXC_INT_TE)
-+		val |= MX1_INTREG_TEEN;
-+	if (enable & MXC_INT_RR)
-+		val |= MX1_INTREG_RREN;
-+
-+	writel(val, mxc_spi->base + MXC_CSPIINT);
-+}
-+
-+static void mx1_trigger(struct mxc_spi_data *mxc_spi)
-+{
-+	unsigned int reg;
-+
-+	reg = readl(mxc_spi->base + MXC_CSPICTRL);
-+	reg |= MX1_CSPICTRL_XCH;
-+	writel(reg, mxc_spi->base + MXC_CSPICTRL);
-+}
-+
-+static int mx1_config(struct mxc_spi_data *mxc_spi,
-+		struct mxc_spi_config *config)
-+{
-+	unsigned int reg = MX1_CSPICTRL_ENABLE | MX1_CSPICTRL_MASTER;
-+
-+	reg |= mxc_spi_clkdiv_2(mxc_spi->spi_clk, config->speed_hz) <<
-+		MX1_CSPICTRL_DR_SHIFT;
-+	reg |= config->bpw - 1;
-+
-+	if (config->mode & SPI_CPHA)
-+		reg |= MX1_CSPICTRL_PHA;
-+	if (config->mode & SPI_CPOL)
-+		reg |= MX1_CSPICTRL_POL;
-+
-+	writel(reg, mxc_spi->base + MXC_CSPICTRL);
-+
-+	return 0;
-+}
-+
-+static int mx1_rx_available(struct mxc_spi_data *mxc_spi)
-+{
-+	return readl(mxc_spi->base + MXC_CSPIINT) & MX1_INTREG_RR;
-+}
-+
-+static void mxc_spi_chipselect(struct spi_device *spi, int is_active)
-+{
-+	struct mxc_spi_data *mxc_spi = spi_master_get_devdata(spi->master);
-+	unsigned int cs = 0;
-+	int gpio = mxc_spi->chipselect[spi->chip_select];
-+	struct mxc_spi_config config;
-+
-+	if (spi->mode & SPI_CS_HIGH)
-+		cs = 1;
-+
-+	if (is_active == BITBANG_CS_INACTIVE) {
-+		if (gpio >= 0)
-+			gpio_set_value(gpio, !cs);
-+		return;
-+	}
-+
-+	config.bpw = spi->bits_per_word;
-+	config.speed_hz = spi->max_speed_hz;
-+	config.mode = spi->mode;
-+	config.cs = mxc_spi->chipselect[spi->chip_select];
-+
-+	mxc_spi->config(mxc_spi, &config);
-+
-+	/* Initialize the functions for transfer */
-+	if (config.bpw <= 8) {
-+		mxc_spi->rx = mxc_spi_buf_rx_u8;
-+		mxc_spi->tx = mxc_spi_buf_tx_u8;
-+	} else if (config.bpw <= 16) {
-+		mxc_spi->rx = mxc_spi_buf_rx_u16;
-+		mxc_spi->tx = mxc_spi_buf_tx_u16;
-+	} else if (config.bpw <= 32) {
-+		mxc_spi->rx = mxc_spi_buf_rx_u32;
-+		mxc_spi->tx = mxc_spi_buf_tx_u32;
-+	} else
-+		BUG();
-+
-+	if (gpio >= 0)
-+		gpio_set_value(gpio, cs);
-+
-+	return;
-+}
-+
-+static void mxc_spi_push(struct mxc_spi_data *mxc_spi)
-+{
-+	while (mxc_spi->txfifo < 8) {
-+		if (!mxc_spi->count)
-+			break;
-+		mxc_spi->tx(mxc_spi);
-+		mxc_spi->txfifo++;
-+	}
-+
-+	mxc_spi->trigger(mxc_spi);
-+}
-+
-+static irqreturn_t mxc_spi_isr(int irq, void *dev_id)
-+{
-+	struct mxc_spi_data *mxc_spi = dev_id;
-+
-+	while (mxc_spi->rx_available(mxc_spi)) {
-+		mxc_spi->rx(mxc_spi);
-+		mxc_spi->txfifo--;
-+	}
-+
-+	if (mxc_spi->count) {
-+		mxc_spi_push(mxc_spi);
-+		return IRQ_HANDLED;
-+	}
-+
-+	if (mxc_spi->txfifo) {
-+		/* No data left to push, but still waiting for rx data,
-+		 * enable receive data available interrupt.
-+		 */
-+		mxc_spi->intctrl(mxc_spi, MXC_INT_RR);
-+		return IRQ_HANDLED;
-+	}
-+
-+	mxc_spi->intctrl(mxc_spi, 0);
-+	complete(&mxc_spi->xfer_done);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int mxc_spi_setupxfer(struct spi_device *spi,
-+				 struct spi_transfer *t)
-+{
-+	struct mxc_spi_data *mxc_spi = spi_master_get_devdata(spi->master);
-+	struct mxc_spi_config config;
-+
-+	config.bpw = t ? t->bits_per_word : spi->bits_per_word;
-+	config.speed_hz  = t ? t->speed_hz : spi->max_speed_hz;
-+	config.mode = spi->mode;
-+
-+	mxc_spi->config(mxc_spi, &config);
-+
-+	return 0;
-+}
-+
-+static int mxc_spi_transfer(struct spi_device *spi,
-+				struct spi_transfer *transfer)
-+{
-+	struct mxc_spi_data *mxc_spi = spi_master_get_devdata(spi->master);
-+
-+	mxc_spi->tx_buf = transfer->tx_buf;
-+	mxc_spi->rx_buf = transfer->rx_buf;
-+	mxc_spi->count = transfer->len;
-+	mxc_spi->txfifo = 0;
-+
-+	init_completion(&mxc_spi->xfer_done);
-+
-+	mxc_spi_push(mxc_spi);
-+
-+	mxc_spi->intctrl(mxc_spi, MXC_INT_TE);
-+
-+	wait_for_completion(&mxc_spi->xfer_done);
-+
-+	return transfer->len;
-+}
-+
-+static int mxc_spi_setup(struct spi_device *spi)
-+{
-+	if (!spi->bits_per_word)
-+		spi->bits_per_word = 8;
-+
-+	pr_debug("%s: mode %d, %u bpw, %d hz\n", __func__,
-+		 spi->mode, spi->bits_per_word, spi->max_speed_hz);
-+
-+	mxc_spi_chipselect(spi, BITBANG_CS_INACTIVE);
-+
-+	return 0;
-+}
-+
-+static void mxc_spi_cleanup(struct spi_device *spi)
-+{
-+}
-+
-+static int __init mxc_spi_probe(struct platform_device *pdev)
-+{
-+	struct spi_imx_master *mxc_platform_info;
-+	struct spi_master *master;
-+	struct mxc_spi_data *mxc_spi;
-+	struct resource *res;
-+	int i, ret;
-+
-+	mxc_platform_info = (struct spi_imx_master *)pdev->dev.platform_data;
-+	if (!mxc_platform_info) {
-+		dev_err(&pdev->dev, "can't get the platform data\n");
-+		return -EINVAL;
-+	}
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(struct mxc_spi_data));
-+	if (!master)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, master);
-+
-+	master->bus_num = pdev->id;
-+	master->num_chipselect = mxc_platform_info->num_chipselect;
-+
-+	mxc_spi = spi_master_get_devdata(master);
-+	mxc_spi->bitbang.master = spi_master_get(master);
-+	mxc_spi->chipselect = mxc_platform_info->chipselect;
-+
-+	for (i = 0; i < master->num_chipselect; i++) {
-+		if (mxc_spi->chipselect[i] < 0)
-+			continue;
-+		ret = gpio_request(mxc_spi->chipselect[i], DRIVER_NAME);
-+		if (ret) {
-+			i--;
-+			while (i > 0)
-+				if (mxc_spi->chipselect[i] >= 0)
-+					gpio_free(mxc_spi->chipselect[i--]);
-+			dev_err(&pdev->dev, "can't get cs gpios");
-+			goto out_master_put;
-+		}
-+		gpio_direction_output(mxc_spi->chipselect[i], 1);
-+	}
-+
-+	mxc_spi->bitbang.chipselect = mxc_spi_chipselect;
-+	mxc_spi->bitbang.setup_transfer = mxc_spi_setupxfer;
-+	mxc_spi->bitbang.txrx_bufs = mxc_spi_transfer;
-+	mxc_spi->bitbang.master->setup = mxc_spi_setup;
-+	mxc_spi->bitbang.master->cleanup = mxc_spi_cleanup;
-+
-+	init_completion(&mxc_spi->xfer_done);
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		dev_err(&pdev->dev, "can't get platform resource\n");
-+		ret = -ENOMEM;
-+		goto out_gpio_free;
-+	}
-+
-+	if (!request_mem_region(res->start, resource_size(res), pdev->name)) {
-+		dev_err(&pdev->dev, "request_mem_region failed\n");
-+		ret = -EBUSY;
-+		goto out_gpio_free;
-+	}
-+
-+	mxc_spi->base = ioremap(res->start, resource_size(res));
-+	if (!mxc_spi->base) {
-+		ret = -EINVAL;
-+		goto out_release_mem;
-+	}
-+
-+	mxc_spi->irq = platform_get_irq(pdev, 0);
-+	if (!mxc_spi->irq) {
-+		ret = -EINVAL;
-+		goto out_iounmap;
-+	}
-+
-+	ret = request_irq(mxc_spi->irq, mxc_spi_isr, 0, DRIVER_NAME, mxc_spi);
-+	if (ret) {
-+		dev_err(&pdev->dev, "can't get irq%d: %d\n", mxc_spi->irq, ret);
-+		goto out_iounmap;
-+	}
-+
-+	if (cpu_is_mx31() || cpu_is_mx35()) {
-+		mxc_spi->intctrl = mx31_intctrl;
-+		mxc_spi->config = mx31_config;
-+		mxc_spi->trigger = mx31_trigger;
-+		mxc_spi->rx_available = mx31_rx_available;
-+	} else  if (cpu_is_mx27() || cpu_is_mx21()) {
-+		mxc_spi->intctrl = mx27_intctrl;
-+		mxc_spi->config = mx27_config;
-+		mxc_spi->trigger = mx27_trigger;
-+		mxc_spi->rx_available = mx27_rx_available;
-+	} else if (cpu_is_mx1()) {
-+		mxc_spi->intctrl = mx1_intctrl;
-+		mxc_spi->config = mx1_config;
-+		mxc_spi->trigger = mx1_trigger;
-+		mxc_spi->rx_available = mx1_rx_available;
-+	} else
-+		BUG();
-+
-+	mxc_spi->clk = clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(mxc_spi->clk)) {
-+		dev_err(&pdev->dev, "unable to get clock\n");
-+		ret = PTR_ERR(mxc_spi->clk);
-+		goto out_free_irq;
-+	}
-+
-+	clk_enable(mxc_spi->clk);
-+	mxc_spi->spi_clk = clk_get_rate(mxc_spi->clk);
-+
-+	if (!cpu_is_mx31() || !cpu_is_mx35())
-+		writel(1, mxc_spi->base + MXC_RESET);
-+
-+	mxc_spi->intctrl(mxc_spi, 0);
-+
-+	ret = spi_bitbang_start(&mxc_spi->bitbang);
-+	if (ret) {
-+		dev_err(&pdev->dev, "bitbang start failed with %d\n", ret);
-+		goto out_clk_put;
-+	}
-+
-+	dev_info(&pdev->dev, "probed\n");
-+
-+	return ret;
-+
-+out_clk_put:
-+	clk_disable(mxc_spi->clk);
-+	clk_put(mxc_spi->clk);
-+out_free_irq:
-+	free_irq(mxc_spi->irq, mxc_spi);
-+out_iounmap:
-+	iounmap(mxc_spi->base);
-+out_release_mem:
-+	release_mem_region(res->start, resource_size(res));
-+out_gpio_free:
-+	for (i = 0; i < master->num_chipselect; i++)
-+		if (mxc_spi->chipselect[i] >= 0)
-+			gpio_free(mxc_spi->chipselect[i]);
-+out_master_put:
-+	spi_master_put(master);
-+	kfree(master);
-+	platform_set_drvdata(pdev, NULL);
-+	return ret;
-+}
-+
-+static int __exit mxc_spi_remove(struct platform_device *pdev)
-+{
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	struct mxc_spi_data *mxc_spi = spi_master_get_devdata(master);
-+	int i;
-+
-+	spi_bitbang_stop(&mxc_spi->bitbang);
-+
-+	writel(0, mxc_spi->base + MXC_CSPICTRL);
-+	clk_disable(mxc_spi->clk);
-+	clk_put(mxc_spi->clk);
-+	free_irq(mxc_spi->irq, mxc_spi);
-+	iounmap(mxc_spi->base);
-+
-+	for (i = 0; i < master->num_chipselect; i++)
-+		if (mxc_spi->chipselect[i] >= 0)
-+			gpio_free(mxc_spi->chipselect[i]);
-+
-+	spi_master_put(master);
-+
-+	release_mem_region(res->start, resource_size(res));
-+
-+	platform_set_drvdata(pdev, NULL);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver mxc_spi_driver = {
-+	.driver = {
-+		   .name = DRIVER_NAME,
-+		   .owner = THIS_MODULE,
-+		   },
-+	.probe = mxc_spi_probe,
-+	.remove = __exit_p(mxc_spi_remove),
-+};
-+
-+static int __init mxc_spi_init(void)
-+{
-+	return platform_driver_register(&mxc_spi_driver);
-+}
-+
-+static void __exit mxc_spi_exit(void)
-+{
-+	platform_driver_unregister(&mxc_spi_driver);
-+}
-+
-+module_init(mxc_spi_init);
-+module_exit(mxc_spi_exit);
-+
-+MODULE_DESCRIPTION("SPI Master Controller driver");
-+MODULE_AUTHOR("Sascha Hauer, Pengutronix");
-+MODULE_LICENSE("GPL");
--- 
-1.6.2.1
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--------141BFE112A4DBCB724F2B979762122013330D59315848
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
@@ -828,3 +238,15 @@ production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
+--------141BFE112A4DBCB724F2B979762122013330D59315848
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--------141BFE112A4DBCB724F2B979762122013330D59315848--

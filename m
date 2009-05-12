@@ -1,10 +1,12 @@
-From: Sook Scolnik <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Waiting for you outdoors
-Date: Tue, 12 May 2009 14:26:44 +0300
-Message-ID: <E1M3q8H-0002uh-PE@335xhf1.ch3.sourceforge.com>
+From: "Extrafilm par MailandGo" <RET-XTC-DS5R-R6HKX-DD-LOGSA@R.Ems7.net>
+Subject: 5 agrandissements 20x30 offerts
+Date: Tue, 12 May 2009 14:09:09 +0200
+Message-ID: <e6244c56e8a54e8fbd222cf3f88ef2e1@R.Ems7.net>
+Reply-To: RET-XTC-DS5R-R6HKX-DD-LOGSA@R.Ems7.net
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0225061079360608357=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1243142222053429779=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,27 +18,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0225061079360608357==
-Content-Type: multipart/alternative;
-	boundary="=====================_16564070==.ALT"
+--===============1243142222053429779==
+Content-type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
---=====================_16564070==.ALT
-Content-Type: text/plain; charset="us-ascii"; format=flowed
-
-Because all men dream of a control over duration of a love making http://www.mubtamep.cn/
---=====================_16564070==.ALT
-Content-Type: text/html; charset="us-ascii"
-
-<html>
-<body>
-<center>Because all men dream of a control over duration of a love making</center>
-<i><a href="http://www.mubtamep.cn/" eudora="autourl">http://www.mubtamep.cn/</a></i></body>
-</html>
-
---=====================_16564070==.ALT--
+<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
+s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
+R-R6HKX-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
 
 
---===============0225061079360608357==
+
+<a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R6HKX-DD-LOGSA-5N8" target=
+=3D"_blank">
+<div style=3D"text-align: center">
+<img src=3D"http://impfr=2Etradedoubler=2Ecom/imp?type(img)g(17959468)a=
+(1627782)" border=3D"0" alt=3D"" />
+</div>
+</a>
+<div align=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http:/=
+/ems6=2Enet/u/?E=3DRET-XTC-DS5R-R6HKX-DD-LOGSA&EMail=3Dspi-devel-genera=
+l@lists=2Esourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vou=
+s d=E9sabonner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></fon=
+t></div><IMG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R6HKX-DD-LOGSA-2"=
+ width=3D"1" height=3D"1">
+
+
+
+--===============1243142222053429779==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -48,7 +56,7 @@ production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
---===============0225061079360608357==
+--===============1243142222053429779==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -59,4 +67,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0225061079360608357==--
+--===============1243142222053429779==--

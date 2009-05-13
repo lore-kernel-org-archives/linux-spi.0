@@ -1,12 +1,12 @@
-From: Denton Welty <agubrit-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] The Secret of eBay Money Makers!
-Date: Wed, 13 May 2009 17:06:36 +0200
-Message-ID: <27968.6915026561$1242227267@news.gmane.org>
-Reply-To: Denton Welty <19566carl.hassett-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "=?utf-8?B?QXNzdXJsYW5k?=" <service-clients-ok4vjHwRBfxWj0EZb7rXcA@public.gmane.org>
+Subject: [SPAM] Comparez les tarifs de 41 assureurs et
+	mutuelles
+Date: Wed, 13 May 2009 20:36:03 +0200
+Message-ID: <20090513-20360367-a68-0@s14.netnoe.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="--=D3F237490F2B4F52AD52_2779_ED33_3DC1"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,48 +18,192 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi!
+----=D3F237490F2B4F52AD52_2779_ED33_3DC1
+Content-Type: text/html;charset="utf-8"
+Content-Transfer-Encoding: Quoted-Printable
 
-We are a company making online promotions!
+<table border=3D0 cellpadding=3D0 cellspacing=3D0 width=3D100%><tr><td =
+align=3D"center"><font face=3D"Arial, Helvetica, sans-serif" size=3D"1"=
+ color=3D"#000000">Si vous ne parvenez pas &agrave; lire cet email, cli=
+quez sur ce lien :<br/><a href=3D"http://www.emailstrategie-s14.com/red=
+irect.asp?id_email=3Dc9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40562">=
+<font color=3D"#0000FF">http://www.emailstrategie-s14.com/fr/v.asp?id_m=
+essage=3D4be4bedf3c958dd86fb09e64086d4879&id_email=3Dc9d45ac9940a11fa49=
+44739a4f78f6af</font></a></font></td></tr></table><!DOCTYPE HTML PUBLIC=
+ "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Assurland -- Comparez les tarifs de 41 assureurs et mutuelles</T=
+ITLE>
+<META http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-as=
+cii">
+</HEAD>
+<BODY text=3D"#003366" link=3D"#333366">
+<DIV align=3D"center">
+<TABLE width=3D"750" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+<TR>
+<TD width=3D"750" valign=3D"top">
+<TABLE align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
+" width=3D"500">
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40563" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_logo.jpg=
+" alt=3D"" name=3D"logo" border=3D"0" id=3D"logo"></A></TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40564" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_titre.jp=
+g" alt=3D"" name=3D"titre" border=3D"0" id=3D"titre"></A></TD>
+</TR>
+<TR>
+<TD>
+<TABLE align=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+width=3D"500">
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40565" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_photo-fe=
+mme.jpg" alt=3D"" name=3D"photofemme" border=3D"0" id=3D"photofemme"></=
+A></TD>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40566" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_photo-ho=
+mme.jpg" alt=3D"" name=3D"photohomme" border=3D"0" id=3D"photohomme"></=
+A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE align=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+width=3D"500">
+<TR>
+<TD><A href=3D"#" target=3D"_blank"><img name=3D"leftbutt" src=3D"http:=
+//stor.starmail.fr/1187/www/img/ASSURLAND_050509_leftbutt.jpg" alt=3D""=
+ border=3D"0" height=3D"42" width=3D"78" id=3D"leftbutt"></A></TD>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40567" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_btn.jpg"=
+ alt=3D"" name=3D"btn" border=3D"0" id=3D"btn"></A></TD>
+<TD><A href=3D"#" target=3D"_blank"><img name=3D"sliceslice" src=3D"htt=
+p://stor.starmail.fr/1187/www/img/ASSURLAND_050509_sliceslice.jpg" alt=3D=
+"" border=3D"0" height=3D"42" width=3D"68" id=3D"sliceslice"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40568" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_texte.jp=
+g" alt=3D"" name=3D"texte" border=3D"0" id=3D"texte"></A></TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40569" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_comparez=
+.jpg" alt=3D"" name=3D"comparez" border=3D"0" id=3D"comparez"></A></TD>=
 
-Suddenly, we received the chance to promote an outstanding product - the Ebay Home Business Kit. Over 1 million people are enjoying their success using this system. Don't you want to try it and decide for yourself? The best part is that it has a Free Trial, so you don't pay for anything - you may just try it for absolutely free!
+</TR>
+<TR>
+<TD>
+<TABLE align=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+width=3D"500">
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40570" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_prevoyan=
+ce.jpg" alt=3D"" name=3D"prevoyance" border=3D"0" id=3D"prevoyance"></A=
+></TD>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40571" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_moto.jpg=
+" alt=3D"" name=3D"moto" border=3D"0" id=3D"moto"></A></TD>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40572" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_pret.jpg=
+" alt=3D"" name=3D"pret" border=3D"0" id=3D"pret"></A></TD>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40573" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_auto.jpg=
+" alt=3D"" name=3D"auto" border=3D"0" id=3D"auto"></A></TD>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40574" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_vie.jpg"=
+ alt=3D"" name=3D"vie" border=3D"0" id=3D"vie"></A></TD>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40575" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_habitati=
+on.jpg" alt=3D"" name=3D"habitation" border=3D"0" id=3D"habitation"></A=
+></TD>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40576" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/ASSURLAND_050509_sante.jp=
+g" alt=3D"" name=3D"sante" border=3D"0" id=3D"sante"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD colspan=3D"3">
+<DIV align=3D"center">
+<P class=3D"formulairecomments"><FONT size=3D"1" face=3D"Arial, Helveti=
+ca, sans-serif">&copy; CAPD&Eacute;CISION, Tous droits r&eacute;serv&ea=
+cute;s<BR>
+Conform&eacute;ment &agrave; l'article 34 de la loi Informatique et Lib=
+ert&eacute;<BR>
+du 6 janvier 1978, vous disposez d'un droit d'acc&egrave;s, de modifica=
+tion, de rectification et de suppression<BR>
+des donn&eacute;es vous concernant.&nbsp;&nbsp;&nbsp; D&eacute;claratio=
+n CNIL n&deg;1291376</FONT></P>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+</DIV>
+</BODY>
+</HTML>
+<br /><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"=
+100%">
+<tr><td align=3D"center"><font face=3D"Arial, Helvetica, sans-serif" si=
+ze=3D"1"
+color=3D"#000000">Vous recevez cet e-mail car vous =C3=AAtes
+r=C3=A9f=C3=A9renc=C3=A9 sur la base de donn=C3=A9es de l'un de nos
+partenaires.<br />
+Si vous souhaitez vous d=C3=A9sabonner, <font color=3D"#000000">
+<a href=3D"http://www.emailstrategie-s14.com/unsuscribe.asp?lang=3Dfran=
+cais&id_formulaire=3D32&email=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org=
+&id_message=3D1732">suivez ce lien</a></font></font></td>
+</tr></table><br /><img src=3D"http://www.emailstrategie-s14.com/fr/ima=
+ges/open.gif?id_message=3D1732&id_email=3D23970436"/>
 
-We will take you step-by-step through:
-- the basics of eBay
-- how to set up a sellers account
-- how to choose the right banking option
-- where to find products with huge returns
-- how to add and list items
-- secrets to getting the most out of your auctions
-- tips and advices from some of the most successful eBay sellers
-- so much more!
+----=D3F237490F2B4F52AD52_2779_ED33_3DC1
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-It's never been easier to start making money FAST. Don't wait, make money NOW! This is a LIMITED offer, we are giving you your own success Free Kit. All you have to do is reply to us if interested and we will send you our valuable Free Trial offer. Send us a reply to garrisonrettele11559-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org so we continue our conversation!
-
-P.S. Please, don't answer if you are not interested in our promotional offer. We are giving the Free Trials only to the interested people. Thanks for your time!
-
-Home Business Affiliates
-
-
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to sign.out_me-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
 production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
+----=D3F237490F2B4F52AD52_2779_ED33_3DC1
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+----=D3F237490F2B4F52AD52_2779_ED33_3DC1--

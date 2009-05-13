@@ -1,11 +1,10 @@
-From: Solution Devis <newsletter-PYqFkRXTYUkAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] [rachat de cr�dits] Comparez les meilleures offres pour baisser vos mensualit�s
-Date: 13 May 2009 09:31:21 -0000
-Message-ID: <20090513093121.21230.qmail@ks37557.kimsufi.com>
-Reply-To: Solution Devis <newsletter-PYqFkRXTYUkAvxtiuMwx3w@public.gmane.org>
+From: anton frolova <antonfrolova-7UKCsY3XYGnk1uMJSBkQmQ@public.gmane.org>
+Subject: [SPAM] Уроки лидеpcтва от мoнаxа, kотoрый прoдaл cвoй "феppари".
+Date: Wed, 13 May 2009 13:58:44 +0400
+Message-ID: <9151540457.20090513135844@r-sharma.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1711703252593478009=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============7234374820095526997=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,97 +16,150 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============7234374820095526997==
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
---===============1711703252593478009==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_644c02a39a0b298580aeba63e856c76a"
+PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBYSFRNTCAxLjAgVHJhbnNpdGlv
+bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL3hodG1sMS9EVEQveGh0bWwxLXRyYW5z
+aXRpb25hbC5kdGQiPg0KPGh0bWwgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0
+bWwiPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9
+InRleHQvaHRtbDsgY2hhcnNldD13aW5kb3dzLTEyNTEiIC8+DQo8dGl0bGU+PC90aXRsZT4N
+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQpib2R5LHRkLHRoIHsNCglmb250LWZh
+bWlseTogVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsNCn0NCi5zdHls
+ZTEgew0KCWZvbnQtc2l6ZTogMjBweDsNCgljb2xvcjogI0QyMDAwMDsNCn0NCi5zdHlsZTIg
+ew0KCWZvbnQtc2l6ZTogMjBweDsNCgljb2xvcjogIzAwOTk2NjsNCn0NCi5zdHlsZTMge2Zv
+bnQtc2l6ZTogMTJweH0NCi5zdHlsZTQgew0KCWZvbnQtc2l6ZTogMTRweDsNCgljb2xvcjog
+IzY2NjY2NjsNCn0NCi5zdHlsZTUgew0KCWZvbnQtc2l6ZTogMTRweDsNCglmb250LWZhbWls
+eTogIlRpbWVzIE5ldyBSb21hbiIsIFRpbWVzLCBzZXJpZjsNCglmb250LXN0eWxlOiBpdGFs
+aWM7DQoJZm9udC13ZWlnaHQ6IGJvbGQ7DQp9DQouc3R5bGU2IHtmb250LXNpemU6IDEzcHh9
+DQouc3R5bGU3IHsNCglmb250LXNpemU6IDE1cHg7DQoJY29sb3I6ICMwMDk5NjY7DQoJZm9u
+dC13ZWlnaHQ6IGJvbGQ7DQp9DQouc3R5bGU4IHsNCgljb2xvcjogIzk5MDAwMDsNCglmb250
+LXdlaWdodDogYm9sZDsNCn0NCi5zdHlsZTEwIHsNCglmb250LXNpemU6IDFweDsNCgljb2xv
+cjogI0ZGRkZGRjsNCn0NCi5zdHlsZTE4IHtmb250LXNpemU6IDFweH0NCi5zdHlsZTIwIHtm
+b250LXNpemU6IDFweDsgY29sb3I6ICNFNUU1RTU7IH0NCi5zdHlsZTIxIHtmb250LXNpemU6
+IDFweDsgY29sb3I6ICNGOEY4Rjg7IH0NCi5zdHlsZTIzIHtmb250LXNpemU6IDFweDsgY29s
+b3I6ICNFQUVBRUE7IH0NCi5zdHlsZTI0IHtmb250LXNpemU6IDExcHh9DQouc3R5bGUyNSB7
+Y29sb3I6ICNGRkZGRkZ9DQouc3R5bGUyNiB7Y29sb3I6ICNGNEY0RjR9DQotLT4NCjwvc3R5
+bGU+PC9oZWFkPg0KDQo8Ym9keT4NCjx0YWJsZSB3aWR0aD0iODAwIiBib3JkZXI9IjEiIGFs
+aWduPSJjZW50ZXIiPg0KICA8dHI+DQogICAgPHRkPjx0YWJsZSB3aWR0aD0iMTAwJSIgYm9y
+ZGVyPSIwIiBhbGlnbj0iY2VudGVyIiBjZWxsc3BhY2luZz0iMTAiPg0KICAgICAgPHRyPg0K
+DQogICAgICAgIDx0ZD48cCBjbGFzcz0ic3R5bGUxIj7Q7uHoPHNwYW4gY2xhc3M9InN0eWxl
+MTAiPi48L3NwYW4+7SDY4PDsPHNwYW4gY2xhc3M9InN0eWxlMTAiPi48L3NwYW4+4DwvcD4N
+Cg0KICAgICAgICAgIDxwIGNsYXNzPSJzdHlsZTIiPqtIZfRvcOxh6/zt7uUg6+jkPHNwYW4g
+Y2xhc3M9InN0eWxlMTAiPi48L3NwYW4+ZfDx8uLuuzwvcD4NCg0KICAgICAgICAgIDxwPjxz
+cGFuIGNsYXNzPSJzdHlsZTQiPjE5LTIwIENFSNLfwVDfIDLOzjkg4y48L3NwYW4+PGJyIC8+
+DQoNCiAgICAgICAgICA8c3BhbiBjbGFzcz0ic3R5bGUzIj7K6OXiPHNwYW4gY2xhc3M9InN0
+eWxlMTAiPpI8L3NwYW4+Y+ro6SDE4u7wPHNwYW4gY2xhc3M9InN0eWxlMTAiPpI8L3NwYW4+
+ZfYg8e/ucDxzcGFuIGNsYXNzPSJzdHlsZTEwIj6SPC9zcGFuPvLgICjjLjxzcGFuIGNsYXNz
+PSJzdHlsZTEwIj6SPC9zcGFuPiBL6GXiPHNwYW4gY2xhc3M9InN0eWxlMTAiPpI8L3NwYW4+
+LCDv6y4g0e/ucDxzcGFuIGNsYXNzPSJzdHlsZTEwIj6SPC9zcGFuPvLo4u3g/ywgMSk8L3Nw
+YW4+PC9wPjwvdGQ+DQoNCiAgICAgIDwvdHI+DQogICAgPC90YWJsZT4gICAgICA8L3RkPg0K
+ICA8L3RyPg0KICA8dHI+DQogICAgPHRkPjx0YWJsZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIw
+IiBhbGlnbj0iY2VudGVyIiBjZWxsc3BhY2luZz0iNSI+DQogICAgICA8dHI+DQogICAgICAg
+IDx0ZD48ZGl2IGFsaWduPSJjZW50ZXIiIGNsYXNzPSJzdHlsZTUiPsrzcGMg72/sb+Zl8iBC
+Yewg+GHjIOdhIPhh42/sIO9w6OHr6Ofo8vxj/yDqIObo5+3oLCDiIOpv8m9wb+kg4fPkZfIg
+4W/r/PhlIOzz5mVj8uJhLCBwYeLtb+JlY+j/LCDvb+vtb/L7IOggcGHkb2Py6C48L2Rpdj48
+L3RkPg0KICAgICAgPC90cj4NCg0KICAgIDwvdGFibGU+PC90ZD4NCiAgPC90cj4NCiAgPHRy
+Pg0KICAgIDx0ZD48dGFibGUgd2lkdGg9IjEwMCUiIGJvcmRlcj0iMCIgYWxpZ249ImNlbnRl
+ciIgY2VsbHNwYWNpbmc9IjEwIj4NCiAgICAgIDx0cj4NCiAgICAgICAgPHRkPjxwIGNsYXNz
+PSJzdHlsZTYiPsL7IG/y6nBvZfJlIOTr/yDx5eH/IOTl6fHy4uXt7fvlLCDs8+Tw++Ug7/Dg
+6vLo9+Xx6ujlIOft4O3o/ywg6u7y7vD75SDt4PP34PIgwuDxOjwvcD4NCiAgICAgICAgICA8
+cCBjbGFzcz0ic3R5bGU2Ij7Kb+3x8vDz6vLo4u3uIOz7Y+vo8vw8YnIgLz4NCiAgICAgICAg
+ICAgIMbo8vwgY2/j62Hx7e4g8eLu5ezzIO/w6Ofi4O3o/iDoIOTu4eji4PL88f8g4vvk4P75
+6PXx/yDw5efz6/zyYfLu4iDiIOHo5+3l8eUuPGJyIC8+DQoNCiAgICAgICAgICAgIE9j7uft
+4OLg8vwg8ejr8yDx4u7l4+4g8+zgIOgg5OXp8fLi7uLg8vwg7PPm5fHy4uXt7e48YnIgLz4N
+CiAgICAgICAgICAgIMHl8OX3/CDi8OXs/y0g7eD45SDx4Ozu5SDh7uv8+O7lIOTu8fLu/+3o
+5TxiciAvPg0KICAgICAgICAgICAgxO5wb+bo8vwg4ufg6Ozu7vLt7vjl7ej/7Ogg8SDk8PPj
+6OzoIOv+5Pzs6DxiciAvPg0KICAgICAgICAgICAg3fT05ery6OLtbyDz7/Dg4uv/8vwg8eLu
+6OzoIPLg6+Dt8uDs6CDoIO/u8uXt9ujg6+7sLjxiciAvPg0KICAgICAgICAgICAgz/Dl5OLu
+8Xjo+eDy/CDi++fu4vsg8fPk/OH7IOgg6PHv7uv85+7i4PL8IOLx5SDi7ufs7ubt7vHy6CDx
+IO/u6/zn7ukg5Ov/IPHl4f8uPGJyIC8+DQogICAgICAgICAgICDG6PL8IO3g8fLu//no7CDo
+IO/w7ubo4uDy/CDq4Obk++kg5OXt/Cwg6uDqIO/u8evl5O3o6TxiciAvPg0KDQogICAgICAg
+ICAgICDO8uLl8vHy4uXt7W8g7vLt7vHo8vzx/yDqIPHi7uXs8yDk5evzPGJyIC8+DQogICAg
+ICAgICAgICBC5/Bh+eji4PL8IPHi7v4g8fPk/OHzPGJyIC8+DQogICAgICAgICAgICDC+yDv
+7vHy6OPt6PLlIO/w7vHy8/4g7PPk8G9j8vw6IO3lIO/w6O3u8ejy/CDiIObl8PLi8yDx4u7o
+7CDk7vHy6Obl7ej/7CDt4O/u6+3l7e3z/iDw4OTu8fL8/iDm6Oft/C4gwuzl8fLuIP3y7uPu
+LCDk7uHo4uDp8uXx/CDz8e/l9e7iLCDw4OTz//H8IObo5+3oLjwvcD4NCiAgICAgICAgICA8
+cCBjbGFzcz0ic3R5bGU2Ij48YSBocmVmPSJ3d3cubmJjLnVhIj48YSBocmVmPSJodHRwOi8v
+d3d3LnNoYXJtYS5jb20udWEvIj5QT8HISCAg2CBBIFAgTSDAPC9hPiDi+/Hy8+/g5fIg8SDr
+5er26P/s6CDv7iDi8eXs8yDs6PDzIOTr/yBv8OPg7ejnYfbo6Swg5+Dt6Ozg/vno9fH/IPHu
+4uXw+OXt8fLi7uLg7ejl7CDr6OTl8O7iIOLuIOLx5fUg8/Du4u3/9SDm6Oft6CDoIOHo5+3l
+8eAuPC9wPg0KICAgICAgICAgIDxwIGNsYXNzPSJzdHlsZTYiPjxzcGFuIGNsYXNzPSJzdHls
+ZTciPkPST8jMT9HS3CDT10HR0sjfIE/EzU/DziDT10FD0s3IykE8L3NwYW4+PGJyIC8+DQoN
+CiAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJzdHlsZTgiPlZJUC3ByMvF0tsgLSAxMDAwIPMu
+5S48L3NwYW4+IC0g8fLu6+jq6CDi7ufr5SDx9uXt+yDiIO7j7vDu5uXt7e7sIFZJUC1jZery
+b/BlPC9wPg0KICAgICAgICAgIDx0YWJsZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIxIiBhbGln
+bj0iY2VudGVyIiBjZWxscGFkZGluZz0iMCI+DQogICAgICAgICAgICA8dHI+DQogICAgICAg
+ICAgICAgIDx0ZD48ZGl2IGFsaWduPSJjZW50ZXIiPjxzcGFuIGNsYXNzPSJzdHlsZTYiPjEg
+6uDy5ePu8Oj/IOvu5uA8YnIgLz4NCiAgICAgICAgICAgICAgICAyICDK4PLl4+5w6P88YnIg
+Lz4NCiAgICAgICAgICAgICAgICAzICDK4PLl4+5w6P88YnIgLz4NCg0KICAgICAgICAgICAg
+ICAgIDQgIMph8uXj7nDo/zwvc3Bhbj48L2Rpdj48L3RkPg0KICAgICAgICAgICAgICA8dGQ+
+PGRpdiBhbGlnbj0iY2VudGVyIj48c3BhbiBjbGFzcz0ic3R5bGU2Ij48c3BhbiBjbGFzcz0i
+c3R5bGUyNCI+KOz/4+ro5SDx6OTl7ej/LCDu4+7w7ubl7e3g/yDn7u3gLCDu8uTl6/zt++kg
+7/Du9e7kKTwvc3Bhbj48YnIgLz4NCiAgICAgICAgICAgICAgICDxIDEg7+4gNCDw/+Q8YnIg
+Lz4NCiAgICAgICAgICAgICAgICDxIDUg7+4gMTEg8P/kPGJyIC8+DQogICAgICAgICAgICAg
+ICAg8SAxMiDv7iAxOCDw/+Q8L3NwYW4+PC9kaXY+PC90ZD4NCiAgICAgICAgICAgICAgPHRk
+PjxkaXYgYWxpZ249ImNlbnRlciIgY2xhc3M9InN0eWxlNiI+MzAwIHku5S48YnIgLz4NCg0K
+MTUwIPMu5S48YnIgLz4NCjEyNSDzLuUuPGJyIC8+DQo3NSDzLuUuPC9kaXY+PC90ZD4NCiAg
+ICAgICAgICAgIDwvdHI+DQogICAgICAgICAgPC90YWJsZT4gICAgICAgICAgDQogICAgICAg
+ICAgPHAgY2xhc3M9InN0eWxlNiI+PHNwYW4gY2xhc3M9InN0eWxlNyI+wiDx8m/o7G/x8vwg
+4ejr5fLgIOL17uTo8jo8L3NwYW4+PGJyIC8+DQogICAgICAgICAgICDu4eXkIOjnIHBl8fJv
+8ODt4Cwg9+DpLCDq7vTlLCDx7uroIC0g7uHx6/Pm6OLg7ejlIO706Pbo4O3y4CAo7uTo7SDt
+4CAzIPHy7uvo6uApPGJyIC8+DQogICAgICAgICAgICDq7ejj4CDxIODi8u7j8OD07uw8YnIg
+Lz4NCg0KICAgICAgICAgICAg9O7y7uPw4PTo/zxiciAvPg0KICAgICAgICAgICAgwejn7eXx
+LfPm6O08YnIgLz4NCiAgICAgICAgICAgINHl8PLo9Ojq4PI8L3A+DQogICAgICAgICAgPHAg
+Y2xhc3M9InN0eWxlNiI+PHNwYW4gY2xhc3M9InN0eWxlNyI+ztJLQcdB0tzR3zwvc3Bhbj48
+YnIgLz4NCiAgICAgICAgICAgIMjn4ujt6PJlLCBl8evoIP3ybyDv6GP87G8g7/Do9+jt6Otv
+IELg7CDt5fPkb+Hx8uLgLjxiciAvPg0KICAgICAgICAgICAgQuD4IODkcOXxIOLn//Ig6Ocg
+7vLqcPvy+/Ug6GPyb/ft6Oru4jog4WHnIORh7e37eCDvcGXk73Do//Lo6Swg9G9w8+xv4iwg
+4mXhLWNh6fLu4iDoIPIuIO8uPGJyIC8+DQoNCiAgICAgICAgICAgINfyb+H7IG/y6uDn4PL8
+8f8gb/LvcGHi/PLlIGNvb+H55e3o5SDtYSD96y4gPGEgaHJlZj0ibWFpbHRvOlJvYmluLVNo
+YXJtYUBiay5ydSI+YeTw5fE8L2E+PC9wPg0KICAgICAgICAgIDxwIGNsYXNzPSJzdHlsZTYi
+PjxzcGFuIGNsYXNzPSJzdHlsZTciPlBFw8hD0tDA1sjfPC9zcGFuPjxiciAvPg0KICAgICAg
+ICAgICAgLS0tPGJyIC8+DQogICAgICAgICAgICArMzg8c3BhbiBjbGFzcz0ic3R5bGUyNSI+
+Ozwvc3Bhbj4oTzxzcGFuIGNsYXNzPSJzdHlsZTI1Ij47PC9zcGFuPjQ8c3BhbiBjbGFzcz0i
+c3R5bGUyNSI+Ozwvc3Bhbj40KSA8c3Ryb25nPjIyMzxzcGFuIGNsYXNzPSJzdHlsZTI1Ij5f
+PC9zcGFuPjUzPHNwYW4gY2xhc3M9InN0eWxlMjUiPl88L3NwYW4+NDUvMjM3PHNwYW4gY2xh
+c3M9InN0eWxlMjUiPl88L3NwYW4+OTA8c3BhbiBjbGFzcz0ic3R5bGUyNSI+Xzwvc3Bhbj4w
+NTwvc3Ryb25nPjxiciAvPg0KDQogICAgICAgICAgICDo6+gg7eAgPGEgaHJlZj0iaHR0cDov
+L3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L3NlbnR5
+YWJyL3NoYXJtYS5odG0iPvFh6fLlPC9hPjwvcD4NCiAgICAgICAgICA8L3RkPg0KICAgICAg
+PC90cj4NCiAgICA8L3RhYmxlPjwvdGQ+DQogIDwvdHI+DQo8L3RhYmxlPg0KPHA+Jm5ic3A7
+PC9wPg0KPHA+Jm5ic3A7PC9wPg0KDQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8
+cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8
+L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4m
+bmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+
+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJz
+cDs8L3A+DQoNCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
+CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
+OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
+PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
+cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCg0KPHA+
+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
+Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
+c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
+PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
+PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KDQo8cD4mbmJzcDs8L3A+DQo8
+cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8
+L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4m
+bmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+
+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJzcDs8L3A+DQo8cD4mbmJz
+cDs8L3A+DQo8cD4mbmJzcDs8L3A+DQoNCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
+CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
+OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
+PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
+cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
+YnNwOzwvcD4NCg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHAgY2xhc3M9InN0
+eWxlMTAiPpYgyOvoIPfy7ej/P+fy7CD98u7yIKvI7eTl5+jyuyDx8u7/6ywg8u7r/OruIOTl
+4vfu7erv7fPr7iwgliDx7u7h+ejryujk4P7yIOog7e7j4Owg9uLl8vvrPC9wPg0KPC9ib2R5
+Pg0KPC9odG1sPg0K
 
 
---_----------=_parties_644c02a39a0b298580aeba63e856c76a
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://www.ctrm4.com/miroir.php?bat=solutdevis0509_ctrm
-
-Rachat de cr�dits : La solution pour faire votre choix
-
-Faites une unique demande et comparez les meilleures offres
-(1) Vous remplissez 1 seul questionnaire.
-(2) Nous interrogeons jusqu'� 12 organismes � la fois.
-(3) Nous vous proposons uniquement les solutions de financements adapt�es � votre projet et � votre situation financi�re.
-
-Faites-ici une demande de devis sans engagement
-
-plus d'infos sur http://www.ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit
-
---------------------------------
-Cette offre solution devis vous est envoy�e par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm4.com/gestionserv.php?nb=1420&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_644c02a39a0b298580aeba63e856c76a
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
 
 
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>Rachat de cr&eacute;dits : La solution pour faire votre choix</title>
-</head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm4.com/miroir.php?bat=solutdevis0509_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre solution devis vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #e10081;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial Narrow;color:#a0a180;font-size:28px'>
-<p style='display:inline;'> Rachat de cr&eacute;dits : La solution pour faire votre choix</p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#e10081;font-family:Arial Narrow;color:#edede7;font-size:20px;'>
-<a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit" style="color:#edede7;font-size:20px;font-family:arial narrow;font-background:e10081;text-decoration:none;">
-Faites une unique demande et comparez les meilleures offres</a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:12px;background-color:#FFFFFF;'>
-(1) Vous remplissez <b>1 seul</b> questionnaire.<br /><br />
-(2) Nous interrogeons jusqu'&agrave; <b>12 organismes &agrave; la fois.</b><br /><br />
-(3) Nous vous proposons uniquement <b>les solutions de financements adapt&eacute;es</b> &agrave; votre projet et &agrave; votre situation financi&egrave;re.<br />
-<a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit" style="color:black;font-size:12px;font-family:arial;font-background:white;text-decoration:none;"> <div style='text-align:center'><u style='color:blue'>Faites-ici une demande de devis sans engagement</u></div></a>
-</td></tr>
-<tr><td align='' style='padding:5px;background-color:#FFFFFF;'>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
- <tr>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_01.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_02.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_03.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_04.gif" alt="solution devis" border="0"></a></td>
- </tr>
- <tr>
- <td colspan="4"><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/middle.gif" alt="solution devis" border="0"></a></td>
- </tr>
-</table>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
- <tr>
- <td colspan="3"><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/logo.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://ctrm4.com/linkserv.php?bat=solutdevis0509_ctrm&nb=1420&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/bord_droit.gif" alt="solution devis" border="0"></a></td>
- </tr>
-</table>
-<p><br>
-<!-- pixel RAC--> <img src="http://eskdom015.netmastering2.net/c/a8FJS4PK87GF8FD1S" alt="solution devis" border="0"> <!-- pixel epargne--> <img src="http://eskdom019.netmastering2.net/c/aUDWUBH2G03QEYDTU" alt="solution devis" border="0"> <!-- pixel sante--> <img src="http://eskdom011.netmastering2.net/c/aU6JBUKWN71ZAFQYC" alt="solution devis" border="0"> <!-- pixel defisc--> <img src="http://eskdom018.netmastering2.net/c/aG052Y5MC9Y3UMQ3W" alt="solution devis" border="0"></p><img src="http://nodes.reactivpub.fr/mailing-493-12014-12068&group=" border="0" height="1" width="1"/>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.ctrm4.com/img.php?nb=1420&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
-<p>
-<a href='http://www.ctrm4.com/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm4.com/gestionserv.php?nb=1420&cat=credit&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
-
-
---_----------=_parties_644c02a39a0b298580aeba63e856c76a--
-
---===============1711703252593478009==
+--===============7234374820095526997==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -119,7 +171,7 @@ production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
---===============1711703252593478009==
+--===============7234374820095526997==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,4 +182,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1711703252593478009==--
+--===============7234374820095526997==--

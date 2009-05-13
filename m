@@ -1,109 +1,103 @@
-From: "Hyperassur par MailandGo" <RET-XTC-DS5R-R7PVH-DD-LOGSA@R.Ems7.net>
-Subject: =?iso-8859-1?q?Plus_de_30_offres_compar=E9es?=
-Date: Wed, 13 May 2009 04:53:53 +0200
-Message-ID: <ccb666a04d534893b952e35d139c6765@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-R7PVH-DD-LOGSA@R.Ems7.net
+From: Rini van Zetten <rini@arvoo.nl>
+Subject: [PATCH][POWERPC] mpc83xx : allow SPI without cs.
+Date: Wed, 13 May 2009 09:50:09 +0200
+Message-ID: <4A0A7BB1.8070701@arvoo.nl>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7544436599749456681=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+To: galak@kernel.crashing.org, spi-devel-general@lists.sourceforge.net,
+	Linuxppc-dev@ozlabs.org
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org>
+List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
+List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
+List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7544436599749456681==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+This patch adds the possibility to have a spi device without a cs.
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-R7PVH-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+For example, the dts file should look something like this:
 
-<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
-" width=3D"500">
-  <tbody><tr>
-    <td style=3D"background-color: rgb(0, 51, 153); text-align: center;=
- vertical-align: middle;" width=3D"500" height=3D"96"><a style=3D"color=
-: rgb(255, 255, 255);" href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R7PVH-=
-DD-LOGSA-50P" target=3D"_blank"><img src=3D"http://www=2Ehyperassur=2Ec=
-om/static/cross1/cross1_01=2Ejpg" alt=3D"Hyperassur" align=3D"top" bord=
-er=3D"0" width=3D"500" height=3D"96"></a></td>
-  </tr>
-  <tr>
-    <td style=3D"background-color: rgb(0, 51, 153); text-align: center;=
- vertical-align: middle;" width=3D"500" height=3D"92"><a style=3D"color=
-: rgb(255, 255, 255);" href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R7PVH-=
-DD-LOGSA-51C" target=3D"_blank"><img src=3D"http://www=2Ehyperassur=2Ec=
-om/static/cross1/cross1_02=2Ejpg" alt=3D"Plus de 30 offres compar=E9es =
-en assurance auto, sant=E9, habitation=2E=2E=2E" align=3D"top" border=3D=
-"0" width=3D"500" height=3D"92"></a></td>
-  </tr>
-  <tr>
-    <td style=3D"background-color: rgb(0, 51, 153); text-align: center;=
- vertical-align: middle;" width=3D"500" height=3D"111"><a style=3D"colo=
-r: rgb(255, 255, 255);" href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R7PVH=
--DD-LOGSA-53Q" target=3D"_blank"><img src=3D"http://www=2Ehyperassur=2E=
-com/static/cross1/cross1_03=2Ejpg" alt=3D"Votre profil =E9volue dans le=
- temps et votre assureur n'est plus forc=E9ment le mieux adapt=E9 ou le=
- moins cher" align=3D"top" border=3D"0" width=3D"500" height=3D"111"></=
-a></td>
-  </tr>
-  <tr>
-    <td style=3D"background-color: rgb(0, 51, 153); text-align: center;=
- vertical-align: middle;" width=3D"500" height=3D"88"><a style=3D"color=
-: rgb(255, 255, 255);" href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R7PVH-=
-DD-LOGSA-56R" target=3D"_blank"><img src=3D"http://www=2Ehyperassur=2Ec=
-om/static/cross1/cross1_04=2Ejpg" alt=3D"Combien allez-vous =E9conomise=
-r sur vos assurances ?" align=3D"top" border=3D"0" width=3D"500" height=
-=3D"88"></a></td>
-  </tr>
-  <tr>
-    <td style=3D"background-color: rgb(0, 51, 153); text-align: center;=
- vertical-align: middle;" width=3D"500" height=3D"113"><a style=3D"colo=
-r: rgb(255, 255, 255);" href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R7PVH=
--DD-LOGSA-57S" target=3D"_blank"><img src=3D"http://www=2Ehyperassur=2E=
-com/static/cross1/cross1_05=2Egif" alt=3D"Comparez gratuitement" align=3D=
-"top" border=3D"0" width=3D"500" height=3D"113"></a></td>
-  </tr>
-</tbody></table><img src=3D"http://nodes=2Ereactivpub=2Efr/mailing-844-=
-12099-14535&group=3D" border=3D"0" height=3D"1" width=3D"1"/><div align=
-=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http://ems6=2Ene=
-t/u/?E=3DRET-XTC-DS5R-R7PVH-DD-LOGSA&EMail=3Dspi-devel-general@lists=2E=
-sourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vous d=E9sabo=
-nner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></font></div><I=
-MG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R7PVH-DD-LOGSA-2" width=3D"=
-1" height=3D"1">
+spi-controller {
+        gpios = <&pio1 1 0      /* cs0 */
+                 0              /* cs1, no GPIO */
+                 &pio2 2 0>;    /* cs2 */
 
 
 
---===============7544436599749456681==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Rini van Zetten <rini@arvoo.nl>
+---
+  drivers/spi/spi_mpc83xx.c |   44 +++++++++++++++++++++++---------------------
+  1 files changed, 23 insertions(+), 21 deletions(-)
 
-------------------------------------------------------------------------------
-The NEW KODAK i700 Series Scanners deliver under ANY circumstances! Your
-production scanning environment may not be a perfect world - but thanks to
-Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
-Series Scanner you'll get full speed at 300 dpi even with all image 
-processing features enabled. http://p.sf.net/sfu/kodak-com
---===============7544436599749456681==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/drivers/spi/spi_mpc83xx.c b/drivers/spi/spi_mpc83xx.c
+index f4573a9..d06027e 100644
+--- a/drivers/spi/spi_mpc83xx.c
++++ b/drivers/spi/spi_mpc83xx.c
+@@ -687,9 +687,10 @@ static void mpc83xx_spi_cs_control(struct spi_device *spi, bool on)
+  	struct mpc83xx_spi_probe_info *pinfo = to_of_pinfo(dev->platform_data);
+  	u16 cs = spi->chip_select;
+  	int gpio = pinfo->gpios[cs];
+-	bool alow = pinfo->alow_flags[cs];
+-
+-	gpio_set_value(gpio, on ^ alow);
++	if ( gpio != -EEXIST ) {
++		bool alow = pinfo->alow_flags[cs];
++		gpio_set_value(gpio, on ^ alow);
++	}
+  }
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+  static int of_mpc83xx_spi_get_chipselects(struct device *dev)
+@@ -728,27 +729,28 @@ static int of_mpc83xx_spi_get_chipselects(struct device *dev)
+  		enum of_gpio_flags flags;
 
---===============7544436599749456681==--
+  		gpio = of_get_gpio_flags(np, i, &flags);
+-		if (!gpio_is_valid(gpio)) {
++		if (gpio_is_valid(gpio)) {
++			ret = gpio_request(gpio, dev_name(dev));
++			if (ret) {
++				dev_err(dev, "can't request gpio #%d: %d\n", i, ret);
++				goto err_loop;
++			}
++			pinfo->gpios[i] = gpio;
++			pinfo->alow_flags[i] = flags & OF_GPIO_ACTIVE_LOW;
++
++			ret = gpio_direction_output(pinfo->gpios[i],
++					pinfo->alow_flags[i]);
++			if (ret) {
++				dev_err(dev, "can't set output direction for gpio "
++						"#%d: %d\n", i, ret);
++				goto err_loop;
++			}
++		} else if (gpio == -EEXIST) {
++			pinfo->gpios[i] = -EEXIST;
++		} else {
+  			dev_err(dev, "invalid gpio #%d: %d\n", i, gpio);
+  			goto err_loop;
+  		}
+-
+-		ret = gpio_request(gpio, dev_name(dev));
+-		if (ret) {
+-			dev_err(dev, "can't request gpio #%d: %d\n", i, ret);
+-			goto err_loop;
+-		}
+-
+-		pinfo->gpios[i] = gpio;
+-		pinfo->alow_flags[i] = flags & OF_GPIO_ACTIVE_LOW;
+-
+-		ret = gpio_direction_output(pinfo->gpios[i],
+-					    pinfo->alow_flags[i]);
+-		if (ret) {
+-			dev_err(dev, "can't set output direction for gpio "
+-				"#%d: %d\n", i, ret);
+-			goto err_loop;
+-		}
+  	}
+
+  	pdata->max_chipselect = ngpios;
+-- 

@@ -1,10 +1,11 @@
-From: impassion <denisalekseevich-ZKXumFVAMWxBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Корпоративный тренер
-Date: Thu, 14 May 2009 04:46:57 +0400
-Message-ID: <7758022151.20090514044657@0088800.com>
+From: "MAGNETOTERAPIA" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] ULTIMO CURSO "APRENDA A SANAR CON
+	IMANES" (QUEDAN SOLO 5 CUPOS)
+Date: Thu, 14 May 2009 00:15:11 -0400
+Message-ID: <2207944833-22009541441511797@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2741600865552355075=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============2296519983640541157=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,182 +17,180 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2741600865552355075==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+--===============2296519983640541157==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_2207918011014374141511798"
 
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9u
-YWwvL0VOIj4NCjxIVE1MIHhtbG5zOm8gPSAidXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTpv
-ZmZpY2U6b2ZmaWNlIj48SEVBRD4NCjxNRVRBIGh0dHAtZXF1aXY9Q29udGVudC1UeXBlIGNv
-bnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1rb2k4LXIiPg0KPE1FVEEgY29udGVudD0iTVNI
-VE1MIDYuMDAuMjkwMC4yOTc1IiBuYW1lPUdFTkVSQVRPUj4NCjxTVFlMRT4NCi5zdHlsZTEg
-ew0KCWZvbnQtc2l6ZTogMXB4Ow0KCWNvbG9yOiAjRkZGRkZGOw0KfQ0KPC9TVFlMRT4NCjwv
-SEVBRD4NCjxCT0RZIGJnQ29sb3I9I2ZmZmZmZj4NCjxESVY+PEZPTlQgZmFjZT1BcmlhbCBz
-aXplPTI+PC9GT05UPjxCUj48L0RJVj4NCjxESVY+PEZPTlQgc2l6ZT0yPg0KPERJViBhbGln
-bj1jZW50ZXI+DQo8VEFCTEUgY2xhc3M9TXNvTm9ybWFsVGFibGUgDQpzdHlsZT0iQk9SREVS
-LVJJR0hUOiBibGFjayAxLjVwdCBvdXRzZXQ7IEJPUkRFUi1UT1A6IGJsYWNrIDEuNXB0IG91
-dHNldDsgQkFDS0dST1VORDogIzY2Y2NmZjsgQk9SREVSLUxFRlQ6IGJsYWNrIDEuNXB0IG91
-dHNldDsgV0lEVEg6IDUyNXB0OyBCT1JERVItQk9UVE9NOiBibGFjayAxLjVwdCBvdXRzZXQ7
-IG1zby1jZWxsc3BhY2luZzogMS41cHQiIA0KY2VsbFBhZGRpbmc9MCB3aWR0aD03MDAgYm9y
-ZGVyPTE+DQogIDxUQk9EWT4NCiAgPFRSIHN0eWxlPSJtc28teWZ0aS1pcm93OiAwOyBtc28t
-eWZ0aS1maXJzdHJvdzogeWVzIj4NCiAgICA8VEQgDQogICAgc3R5bGU9IkJPUkRFUi1SSUdI
-VDogYmxhY2sgMXB0IGluc2V0OyBQQURESU5HLVJJR0hUOiAwLjc1cHQ7IEJPUkRFUi1UT1A6
-IGJsYWNrIDFwdCBpbnNldDsgUEFERElORy1MRUZUOiAwLjc1cHQ7IEJBQ0tHUk9VTkQ6ICNk
-ZGU5ZmY7IFBBRERJTkctQk9UVE9NOiAwLjc1cHQ7IEJPUkRFUi1MRUZUOiBibGFjayAxcHQg
-aW5zZXQ7IFBBRERJTkctVE9QOiAwLjc1cHQ7IEJPUkRFUi1CT1RUT006IGJsYWNrIDFwdCBp
-bnNldDsgbXNvLWJvcmRlci1hbHQ6IGluc2V0IGJsYWNrIC43NXB0Ij4NCiAgICAgIDxQIGNs
-YXNzPU1zb05vcm1hbCBzdHlsZT0iTUFSR0lOOiAwY20gMGNtIDBwdDsgVEVYVC1BTElHTjog
-Y2VudGVyIiANCiAgICAgIGFsaWduPWNlbnRlcj48Rk9OVCBmYWNlPUFyaWFsPjxCIA0KICAg
-ICAgc3R5bGU9Im1zby1iaWRpLWZvbnQtd2VpZ2h0OiBub3JtYWwiPjxTUEFOIA0KICAgICAg
-c3R5bGU9IkZPTlQtU0laRTogMjJwdDsgQ09MT1I6IG5hdnk7IG1zby1iaWRpLWZvbnQtc2l6
-ZTogMTIuMHB0Ij7ixdPQzMHUzsHRIA0KICAgICAg0NLF2sXO1MHDydE8L1NQQU4+PC9CPjxT
-UEFOIA0KICAgICAgc3R5bGU9IkZPTlQtU0laRTogMjJwdDsgQ09MT1I6IG5hdnk7IG1zby1i
-aWRpLWZvbnQtc2l6ZTogMTIuMHB0Ij4gDQogICAgICA8L1NQQU4+PFNQQU4gDQogICAgICBz
-dHlsZT0iRk9OVC1TSVpFOiAxNnB0OyBDT0xPUjogYmx1ZTsgbXNvLWJpZGktZm9udC1zaXpl
-OiAxMi4wcHQiPiZsYXF1bzv00sXOyc7HwSANCiAgICAgIMTM0SDU0sXOxdLP1yZyYXF1bzs8
-L1NQQU4+PFNQQU4gDQogICAgICBzdHlsZT0iRk9OVC1TSVpFOiAxNnB0OyBDT0xPUjogbmF2
-eTsgbXNvLWJpZGktZm9udC1zaXplOiAxMi4wcHQiPjxvOnA+PC9vOnA+PC9TUEFOPjwvRk9O
-VD48L1A+DQogICAgICA8UCBjbGFzcz1Nc29Ob3JtYWwgc3R5bGU9Ik1BUkdJTjogMGNtIDBj
-bSAwcHQ7IFRFWFQtQUxJR046IGNlbnRlciIgDQogICAgICBhbGlnbj1jZW50ZXI+PEIgc3R5
-bGU9Im1zby1iaWRpLWZvbnQtd2VpZ2h0OiBub3JtYWwiPjxGT05UIGZhY2U9QXJpYWwgDQog
-ICAgICBjb2xvcj0jZmYwMDAwPjxTUEFOIHN0eWxlPSJGT05ULVNJWkU6IDE0cHQ7IG1zby1i
-aWRpLWZvbnQtc2l6ZTogMTIuMHB0Ij4xOSANCiAgICAgIM3B0SZuYnNwOzIwMDkgx8/EwTwv
-U1BBTj48L0ZPTlQ+PC9CPjwvUD4NCiAgICAgIDxQIGNsYXNzPU1zb05vcm1hbCBzdHlsZT0i
-TUFSR0lOOiAwY20gMGNtIDBwdDsgVEVYVC1BTElHTjogY2VudGVyIiANCiAgICAgIGFsaWdu
-PWNlbnRlcj48QiBzdHlsZT0ibXNvLWJpZGktZm9udC13ZWlnaHQ6IG5vcm1hbCI+PEZPTlQg
-DQogICAgICBjb2xvcj0jZmYwMDAwPjxTUEFOIA0KICAgICAgc3R5bGU9IkZPTlQtU0laRTog
-MTRwdDsgbXNvLWJpZGktZm9udC1zaXplOiAxMi4wcHQiPjwvU1BBTj48bzpwPjwvbzpwPjwv
-Rk9OVD48L0I+PEZPTlQgDQogICAgICBmYWNlPUFyaWFsPiZuYnNwOzwvRk9OVD48L1A+PC9U
-RD48L1RSPg0KICA8VFIgc3R5bGU9Im1zby15ZnRpLWlyb3c6IDEiPg0KICAgIDxURCANCiAg
-ICBzdHlsZT0iQk9SREVSLVJJR0hUOiBibGFjayAxcHQgaW5zZXQ7IFBBRERJTkctUklHSFQ6
-IDAuNzVwdDsgQk9SREVSLVRPUDogYmxhY2sgMXB0IGluc2V0OyBQQURESU5HLUxFRlQ6IDAu
-NzVwdDsgQkFDS0dST1VORDogI2NhZGRmZjsgUEFERElORy1CT1RUT006IDAuNzVwdDsgQk9S
-REVSLUxFRlQ6IGJsYWNrIDFwdCBpbnNldDsgUEFERElORy1UT1A6IDAuNzVwdDsgQk9SREVS
-LUJPVFRPTTogYmxhY2sgMXB0IGluc2V0OyBtc28tYm9yZGVyLWFsdDogaW5zZXQgYmxhY2sg
-Ljc1cHQiPg0KICAgICAgPFAgY2xhc3M9TXNvTm9ybWFsIHN0eWxlPSJNQVJHSU46IDBjbSAw
-Y20gMHB0OyBURVhULUFMSUdOOiBjZW50ZXIiIA0KICAgICAgYWxpZ249Y2VudGVyPjxGT05U
-IGZhY2U9QXJpYWw+PFNUUk9ORz48U1BBTiANCiAgICAgIHN0eWxlPSJGT05ULVNJWkU6IDE4
-cHQ7IENPTE9SOiAjMDAwMDk3Ij7v4vX+5e7p5TwvU1BBTj4gDQogICAgICA8L1NUUk9ORz48
-U1RST05HPjxTUEFOIHN0eWxlPSJGT05ULVNJWkU6IDEzLjVwdCI+09fPyc3JINPJzMHNySAt
-PC9TUEFOPiANCiAgICAgIDwvU1RST05HPjxTVFJPTkc+PFNQQU4gDQogICAgICBzdHlsZT0i
-Rk9OVC1TSVpFOiAxOHB0OyBDT0xPUjogIzAwMDA5NyI+/Ovv7u/t6fE8L1NQQU4+IA0KICAg
-ICAgPC9TVFJPTkc+PFNUUk9ORz48U1BBTiBzdHlsZT0iRk9OVC1TSVpFOiAxMy41cHQiPtPS
-xcTT1Ncgy8/N0MHOyckgDQogICAgICD00sXOyc7Hz9fB0SDLz83Qwc7J0SAiPC9TUEFOPjwv
-U1RST05HPjxTVFJPTkc+PFNQQU4gDQogICAgICBzdHlsZT0iRk9OVC1TSVpFOiAxOHB0OyBD
-T0xPUjogcmVkIj7wxdLTz87BzCAtIA0KICAgICAg9MXIzs/Mz8fJyTwvU1BBTj48L1NUUk9O
-Rz48U1RST05HPjxTUEFOIHN0eWxlPSJGT05ULVNJWkU6IDEzLjVwdCI+IiANCiAgICAgINDS
-ycfMwdvBxdQg0NLJztHU2CDV3sHT1MnFPC9TUEFOPjwvU1RST05HPjwvRk9OVD48L1A+PC9U
-RD48L1RSPg0KICA8VFIgc3R5bGU9Im1zby15ZnRpLWlyb3c6IDIiPg0KICAgIDxURCANCiAg
-ICBzdHlsZT0iQk9SREVSLVJJR0hUOiBibGFjayAxcHQgaW5zZXQ7IFBBRERJTkctUklHSFQ6
-IDAuNzVwdDsgQk9SREVSLVRPUDogYmxhY2sgMXB0IGluc2V0OyBQQURESU5HLUxFRlQ6IDAu
-NzVwdDsgQkFDS0dST1VORDogI2RkZTlmZjsgUEFERElORy1CT1RUT006IDAuNzVwdDsgQk9S
-REVSLUxFRlQ6IGJsYWNrIDFwdCBpbnNldDsgUEFERElORy1UT1A6IDAuNzVwdDsgQk9SREVS
-LUJPVFRPTTogYmxhY2sgMXB0IGluc2V0OyBtc28tYm9yZGVyLWFsdDogaW5zZXQgYmxhY2sg
-Ljc1cHQiPg0KICAgICAgPFAgc3R5bGU9IlRFWFQtQUxJR046IGNlbnRlciIgYWxpZ249Y2Vu
-dGVyPjxGT05UIGZhY2U9QXJpYWw+PFNUUk9ORz48U1BBTiANCiAgICAgIHN0eWxlPSJGT05U
-LVNJWkU6IDI0cHQ7IENPTE9SOiAjMDAwMDk3Ij708uXu6e7nIOTs8SANCiAgICAgIPTy5e7l
-8u/3PC9TUEFOPjwvU1RST05HPjxvOnA+PC9vOnA+PC9GT05UPjwvUD4NCiAgICAgIDxQIHN0
-eWxlPSJURVhULUFMSUdOOiBjZW50ZXIiIGFsaWduPWNlbnRlcj48Rk9OVCBmYWNlPUFyaWFs
-PjxTVFJPTkc+PFNQQU4gDQogICAgICBzdHlsZT0iRk9OVC1TSVpFOiAxOHB0OyBDT0xPUjog
-cmVkIj4yNiAtIDI4IM3B0SZuYnNwOzIwMDkgDQogICAgICDHz8TBPC9TUEFOPjwvU1RST05H
-PjxTVFJPTkc+PFNQQU4gc3R5bGU9IkZPTlQtU0laRTogMThwdDsgQ09MT1I6IGJsdWUiPiAN
-CiAgICAgIDEtyiDNz8TVzNggPC9TUEFOPjwvU1RST05HPjxvOnA+PC9vOnA+PC9GT05UPjwv
-UD4NCiAgICAgIDxQIHN0eWxlPSJURVhULUFMSUdOOiBjZW50ZXIiIGFsaWduPWNlbnRlcj48
-Rk9OVCBmYWNlPUFyaWFsPjxTVFJPTkc+PFNQQU4gDQogICAgICBzdHlsZT0iRk9OVC1TSVpF
-OiAxOHB0OyBDT0xPUjogcmVkIj4xNi0xOCDJwM7RJm5ic3A7MjAwOSANCiAgICAgIMfPxME8
-L1NQQU4+PC9TVFJPTkc+PFNUUk9ORz48U1BBTiBzdHlsZT0iRk9OVC1TSVpFOiAxOHB0Ij4g
-PFNQQU4gDQogICAgICBzdHlsZT0iQ09MT1I6IGJsdWUiPjItyiANCs3PxNXM2DwvU1BBTj48
-L1NQQU4+PC9TVFJPTkc+PG86cD48L286cD48L0ZPTlQ+PC9QPg0KICAgICAgPFAgc3R5bGU9
-IlRFWFQtQUxJR046IGNlbnRlciIgYWxpZ249Y2VudGVyPjxGT05UIGZhY2U9QXJpYWw+PFNU
-Uk9ORz48U1BBTiANCiAgICAgIHN0eWxlPSJGT05ULVNJWkU6IDE4cHQ7IENPTE9SOiAjMDAw
-MDk3Ij7HLiANCiAgICAgIOvJxdc8L1NQQU4+PC9TVFJPTkc+PG86cD48L286cD48L0ZPTlQ+
-PC9QPjwvVEQ+PC9UUj4NCiAgPFRSIHN0eWxlPSJtc28teWZ0aS1pcm93OiAzIj4NCiAgICA8
-VEQgDQogICAgc3R5bGU9IkJPUkRFUi1SSUdIVDogYmxhY2sgMXB0IGluc2V0OyBQQURESU5H
-LVJJR0hUOiAwLjc1cHQ7IEJPUkRFUi1UT1A6IGJsYWNrIDFwdCBpbnNldDsgUEFERElORy1M
-RUZUOiAwLjc1cHQ7IEJBQ0tHUk9VTkQ6ICNjYWRkZmY7IFBBRERJTkctQk9UVE9NOiAwLjc1
-cHQ7IEJPUkRFUi1MRUZUOiBibGFjayAxcHQgaW5zZXQ7IFBBRERJTkctVE9QOiAwLjc1cHQ7
-IEJPUkRFUi1CT1RUT006IGJsYWNrIDFwdCBpbnNldDsgbXNvLWJvcmRlci1hbHQ6IGluc2V0
-IGJsYWNrIC43NXB0Ij4NCiAgICAgIDxQIGNsYXNzPU1zb05vcm1hbCBzdHlsZT0iTUFSR0lO
-OiAwY20gMGNtIDBwdCI+PEZPTlQgZmFjZT1BcmlhbD48U1BBTiANCiAgICAgIHN0eWxlPSJG
-T05ULVNJWkU6IDEzLjVwdDsgQ09MT1I6ICMwMDAwOTciPvDPIM/Lz87ewc7JySDV3sHT1M7J
-y8kgDQogICAgICDTzc/H1dQ6PC9TUEFOPjxCUj48QlI+PFNUUk9ORz4qIPDSz9fF09TJIMHO
-wczJ2iDQz9TSxcLOz9PUxcog1yANCiAgICAgIM/C1d7FzsnJPC9TVFJPTkc+PC9GT05UPjxC
-PjxCUj48Rk9OVCBmYWNlPUFyaWFsPjxTVFJPTkc+KiDz1MHXydTYIMPFzMkgySANCiAgICAg
-INrBxMHeySDPwtXexc7J0TwvU1RST05HPjxCUj48U1RST05HPiog8sHa18nU2CDT18/JIM7B
-19nLySDSwcLP1Nkg0yANCiAgICAgIMHVxMnUz9LJxco8L1NUUk9ORz48QlI+PFNUUk9ORz4q
-IPLB2tLBws/UwdTYIA0KICAgICAgwsnazsXTLdTSxc7Jzsc8L1NUUk9ORz48QlI+PFNUUk9O
-Rz4qIOTB18HU2CDPwtLB1M7VwCDT19Ha2Cwg09TJzdXMydLVwN3VwCANCiAgICAgIM/C1d7F
-zsnFPC9TVFJPTkc+PEJSPjxTVFJPTkc+KiDw0s/XxdPUySDPw8XOy9Ug3MbGxcvUydfOz9PU
-ySANCiAgICAgIM/C1d7FzsnRPC9TVFJPTkc+PEJSPjxTVFJPTkc+KiDz3MvPzs/NydTYIMLA
-xNbF1CDLz83Qwc7JySwg0NLP18/E0SANCiAgICAgIM/C1d7FzsnFINPPwtPU18XOztnNySDT
-yczBzck8L1NUUk9ORz48L0ZPTlQ+PC9CPjxvOnA+PC9vOnA+PC9QPjwvVEQ+PC9UUj4NCiAg
-PFRSIHN0eWxlPSJtc28teWZ0aS1pcm93OiA0Ij4NCiAgICA8VEQgDQogICAgc3R5bGU9IkJP
-UkRFUi1SSUdIVDogYmxhY2sgMXB0IGluc2V0OyBQQURESU5HLVJJR0hUOiAwLjc1cHQ7IEJP
-UkRFUi1UT1A6IGJsYWNrIDFwdCBpbnNldDsgUEFERElORy1MRUZUOiAwLjc1cHQ7IEJBQ0tH
-Uk9VTkQ6ICNjY2VjZmY7IFBBRERJTkctQk9UVE9NOiAwLjc1cHQ7IEJPUkRFUi1MRUZUOiBi
-bGFjayAxcHQgaW5zZXQ7IFBBRERJTkctVE9QOiAwLjc1cHQ7IEJPUkRFUi1CT1RUT006IGJs
-YWNrIDFwdCBpbnNldDsgbXNvLWJvcmRlci1hbHQ6IGluc2V0IGJsYWNrIC43NXB0Ij4NCiAg
-ICAgIDxQIGNsYXNzPU1zb05vcm1hbCBzdHlsZT0iTUFSR0lOOiAwY20gMGNtIDBwdDsgVEVY
-VC1BTElHTjogY2VudGVyIiANCiAgICAgIGFsaWduPWNlbnRlcj48Rk9OVCBmYWNlPUFyaWFs
-PjxTVFJPTkc+PFNQQU4gDQogICAgICBzdHlsZT0iRk9OVC1TSVpFOiAxOHB0OyBDT0xPUjog
-cmVkIj7308Ug08HN2cUg0NLBy9TJ3sXTy8kgLSDQ0snNxc7JzdnFIA0KICAgICAgzcXUz8TJ
-y8khPC9TUEFOPjwvU1RST05HPjxvOnA+PC9vOnA+PC9GT05UPjwvUD48L1REPjwvVFI+DQog
-IDxUUiBzdHlsZT0ibXNvLXlmdGktaXJvdzogNSI+DQogICAgPFREIA0KICAgIHN0eWxlPSJC
-T1JERVItUklHSFQ6IGJsYWNrIDFwdCBpbnNldDsgUEFERElORy1SSUdIVDogMC43NXB0OyBC
-T1JERVItVE9QOiBibGFjayAxcHQgaW5zZXQ7IFBBRERJTkctTEVGVDogMC43NXB0OyBCQUNL
-R1JPVU5EOiAjY2FkZGZmOyBQQURESU5HLUJPVFRPTTogMC43NXB0OyBCT1JERVItTEVGVDog
-YmxhY2sgMXB0IGluc2V0OyBQQURESU5HLVRPUDogMC43NXB0OyBCT1JERVItQk9UVE9NOiBi
-bGFjayAxcHQgaW5zZXQ7IG1zby1ib3JkZXItYWx0OiBpbnNldCBibGFjayAuNzVwdCI+DQog
-ICAgICA8UCBzdHlsZT0iVEVYVC1BTElHTjogY2VudGVyIiBhbGlnbj1jZW50ZXI+PEZPTlQg
-ZmFjZT1BcmlhbD48U1RST05HPjxTUEFOIA0KICAgICAgc3R5bGU9IkZPTlQtU0laRTogMTRw
-dDsgQ09MT1I6ICMwMDAwNmM7IG1zby1iaWRpLWZvbnQtc2l6ZTogMTguMHB0Ij7iz8zFxTwv
-U1BBTj48L1NUUk9ORz48U1RST05HPjxTUEFOIA0KICAgICAgc3R5bGU9IkZPTlQtU0laRTog
-MThwdDsgQ09MT1I6ICMwMDAwNmMiPiA4MDwvU1BBTj48L1NUUk9ORz48U1RST05HPjxTUEFO
-IA0KICAgICAgc3R5bGU9IkZPTlQtU0laRTogMTMuNXB0OyBDT0xPUjogIzAwMDA5NyI+INDP
-xMfP1M/XzMXOztnIIM7BzckgDQogICAgICDLz9LQz9LB1MnXztnIINTSxc7F0sEg1dPQxdvO
-zyDSwcLP1MHA1CDXINXL0sHJztPLycggDQogICAgICDLz83Qwc7J0cg8L1NQQU4+PC9TVFJP
-Tkc+PG86cD48L286cD48L0ZPTlQ+PC9QPjwvVEQ+PC9UUj4NCiAgPFRSIHN0eWxlPSJtc28t
-eWZ0aS1pcm93OiA2OyBtc28teWZ0aS1sYXN0cm93OiB5ZXMiPg0KICAgIDxURCANCiAgICBz
-dHlsZT0iQk9SREVSLVJJR0hUOiBibGFjayAxcHQgaW5zZXQ7IFBBRERJTkctUklHSFQ6IDAu
-NzVwdDsgQk9SREVSLVRPUDogYmxhY2sgMXB0IGluc2V0OyBQQURESU5HLUxFRlQ6IDAuNzVw
-dDsgQkFDS0dST1VORDogI2Q1ZTRmZjsgUEFERElORy1CT1RUT006IDAuNzVwdDsgQk9SREVS
-LUxFRlQ6IGJsYWNrIDFwdCBpbnNldDsgUEFERElORy1UT1A6IDAuNzVwdDsgQk9SREVSLUJP
-VFRPTTogYmxhY2sgMS41cHQgaW5zZXQ7IG1zby1ib3JkZXItYWx0OiBpbnNldCBibGFjayAu
-NzVwdDsgbXNvLWJvcmRlci1ib3R0b20tYWx0OiBpbnNldCBibGFjayAxLjVwdCI+DQogICAg
-ICA8UCBzdHlsZT0iVEVYVC1BTElHTjogY2VudGVyIiBhbGlnbj1jZW50ZXI+PEZPTlQgZmFj
-ZT1BcmlhbD48U1RST05HPjxTUEFOIA0KICAgICAgc3R5bGU9IkZPTlQtU0laRTogMThwdDsg
-Rk9OVC1GQU1JTFk6ICdDb3VyaWVyIE5ldyciPvDPxNLPws7B0SDJzsbP0s3Bw8nRIMkgDQog
-ICAgICDSxcfJ09TSwcPJ0SDQzyDUxcw6PC9TUEFOPjwvU1RST05HPjxvOnA+PC9vOnA+PC9G
-T05UPjwvUD4NCiAgICAgIDxQIHN0eWxlPSJURVhULUFMSUdOOiBjZW50ZXIiIGFsaWduPWNl
-bnRlcj48Rk9OVCBmYWNlPUFyaWFsPjxTVFJPTkc+PFNQQU4gDQogICAgICBzdHlsZT0iRk9O
-VC1TSVpFOiAxOHB0OyBGT05ULUZBTUlMWTogJ0NvdXJpZXIgTmV3JyI+OCgwNDQpNDkyLTcy
-LTYyLCg2MCk8L1NQQU4+PC9TVFJPTkc+PG86cD48L286cD48L0ZPTlQ+PC9QPjwvVEQ+PC9U
-Uj48L1RCT0RZPjwvVEFCTEU+PC9ESVY+PC9GT05UPjwvRElWPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHAgY2xhc3M9
-InN0eWxlMSI+6SDqICDl+eUg9+jx6+4g6CDi4evl8urzIOgsIO/u7O7w+eji+Ojx/Cwg7/Du
-4+vu8ujrLiDP7vLu7CD44vvw7fPrIO/z8fLz/iDv6fLy6PL8IPHu7+Xw7ej28ywg7u3y+ywg
-/yDv8O746+og5Oru4iDo8e/u6/zn7uI8L3A+DQo8L0JPRFk+DQo8L0hUTUw+DQo=
+------=_NextPart_2207918011014374141511798
+Content-type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+
+Estimad@:
+
+Ud=2E tiene la oportunidad de realizar el =FAltimo curso de este a=F1o de =
+magnetoterapia en 2 d=EDas (Martes 26 de Mayo y Martes 02 de Junio) y as=ED=
+ poder auto-sanarse o sanar a otras personas con imanes=2E Son muchas las =
+personas que ya han seguido este curso y lo aplican con gran =E9xito san=E1=
+ndose de dolencias o sanando a otros de sus dolores=2E Al realizar este cu=
+rso podr=E1 tener un cupo asegurado, si desea, en el curso que realizaremo=
+s en conjunto con el mejor instituto de biomagnetismo y magnetoterapia de =
+Argentina obteniendo el t=EDtulo Internacional de T=E9cnico en Biomagn=E9t=
+ica (esta es la raz=F3n por la cu=E1l no se seguir=E1 dando este curso de =
+2 d=EDas)=2E
+
+Dado que es el =FAltimo curso hemos decidido agregar 2 temas adicionales a=
+ la tem=E1tica vista y por ello puede ser que sea necesario un tercer d=ED=
+a (un d=EDa adicional) para ver todos los temas=2E Por lo tanto, quienes h=
+ayan realizado el curso anterior lo pueden repetir cancelando s=F3lo el 50=
+%, si no es el caso, puede optar a traer al curso a 2 amigos y cancelas ta=
+mbi=E9n el 50% (promociones no acumulables)
+
+=A1=A1=A1 HAY 20 INSCRITOS !!! Cupo m=E1ximo es de 25 alumnos
+
+=BFQuienes pueden hacer el curso=3F=20
+
+1=2E Mayores de 18 a=F1os=2E
+
+2=2E Todos los que desean ayudarse en sus dolencias y enfermedades (es una=
+ terapia complementaria y no sustitutiva de la medicina tradicional)
+
+3=2E Los que desea ayudar a otros en sus procesos de sanaci=F3n=2E
+
+=BFQu=E9 beneficios tiene la Magnetoterapia (Terapia con Magnetos o Imanes=
+)=3F=20
+
+El Magnetismo influye sobre el organismo, sus tejidos, sus l=EDquidos (no =
+olvidar que somos mayoritariamente l=EDquidos), el sistema nervioso y gene=
+ra beneficios f=EDsicos, org=E1nicos y emocionales=2E Suaviza, deshincha, =
+quita el dolor y puede tambi=E9n regenerar tejidos, estimular =F3rganos, e=
+tc=2E
+
+Valores e Inscripci=F3n
+
+El valor del curso es de $80=2E000=2E- (vea formas de pago en http://www=2E=
+hipnosischile=2Ecl/magnetoterapia=2Ehtm=20
+
+Rogamos inscribirse prontamente en el curso dado que s=F3lo lo pueden real=
+izar 25 personas          =2E Para inscribirse lo puede hacer en nuestro s=
+itio Web http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm , o al fono 2=
+489112, al e-mail info@hipnosischile=2Ecl o en Seminario 6 - Providencia
+
+=20
 
 
 
+------=_NextPart_2207918011014374141511798
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
---===============2741600865552355075==
+<html>
+
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
+1252">
+<title>MAGNETOTERAPIA</title>
+</head>
+
+<body>
+<P align=3Dleft>
+<font face=3D"Arial">Estimad@:</font></P>
+<P align=3Dleft>
+<font face=3D"Arial">Ud=2E tiene la oportunidad de realizar el =FAltimo cu=
+rso de este=20
+a=F1o de magnetoterapia en 2 d=EDas (Martes 26 de Mayo y Martes 02 de Juni=
+o) y as=ED=20
+poder auto-sanarse o sanar a otras personas con imanes=2E Son muchas las p=
+ersonas=20
+que ya han seguido este curso y lo aplican con gran =E9xito san=E1ndose de=
+ dolencias=20
+o sanando a otros de sus dolores=2E Al realizar este curso podr=E1 tener u=
+n cupo=20
+asegurado, si desea, en el curso que realizaremos en conjunto con el mejor=
+=20
+instituto de biomagnetismo y magnetoterapia de Argentina obteniendo el t=ED=
+tulo=20
+Internacional de T=E9cnico en Biomagn=E9tica (esta es la raz=F3n por la cu=
+=E1l no se=20
+seguir=E1 dando este curso de 2 d=EDas)=2E</font></P>
+<P align=3Dleft>
+<font face=3D"Arial">Dado que es el =FAltimo curso hemos decidido agregar =
+2 temas=20
+adicionales a la tem=E1tica vista y por ello puede ser que sea necesario u=
+n tercer=20
+d=EDa (un d=EDa adicional) para ver todos los temas=2E Por lo tanto, quien=
+es hayan=20
+realizado el curso anterior lo pueden repetir cancelando s=F3lo el 50%, si=
+ no es=20
+el caso, puede optar a traer al curso a 2 amigos y cancelas tambi=E9n el 5=
+0%=20
+(promociones no acumulables)</font></P>
+<P align=3Dleft><FONT color=3D#ff0000 face=3DArial><STRONG>=A1=A1=A1 HAY 2=
+0 INSCRITOS !!!=20
+Cupo m=E1ximo es de 25 alumnos</STRONG></FONT></P>
+<P align=3Dleft>
+<b>
+<font face=3D"Arial">=BFQuienes pueden hacer el curso=3F </font></b></P>
+<P align=3Dleft style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">
+<font face=3D"Arial">1=2E Mayores de 18 a=F1os=2E</font></P>
+<P align=3Dleft style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">
+<font face=3D"Arial">2=2E Todos los que desean ayudarse en sus dolencias y=
+=20
+enfermedades (es una terapia complementaria y no sustitutiva de la medicin=
+a=20
+tradicional)</font></P>
+<P align=3Dleft style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">
+<font face=3D"Arial">3=2E Los que desea ayudar a otros en sus procesos de =
+sanaci=F3n=2E</font></P>
+<P align=3Dleft>
+<b>
+<font face=3D"Arial">=BFQu=E9 beneficios tiene la Magnetoterapia (Terapia =
+con Magnetos=20
+o Imanes)=3F </font></b></P>
+<P align=3Dleft>
+<font face=3D"Arial">El Magnetismo influye sobre el organismo, sus tejidos=
+, sus=20
+l=EDquidos (no olvidar que somos mayoritariamente l=EDquidos), el sistema =
+nervioso y=20
+genera beneficios f=EDsicos, org=E1nicos y emocionales=2E Suaviza, deshinc=
+ha, quita el=20
+dolor y puede tambi=E9n regenerar tejidos, estimular =F3rganos, etc=2E</fo=
+nt></P>
+<P align=3Dleft>
+<b><font face=3D"Arial">Valores e Inscripci=F3n</font></b></P>
+<P align=3Dleft>
+<font face=3D"Arial">El valor del curso es de $80=2E000=2E- (vea formas de=
+ pago en
+<a href=3D"http://www=2Ehipnosischile=2Ecl/magnetoterapia=2Ehtm">
+http://www=2Ehipnosischile=2Ecl/magnetoterapia=2Ehtm</a> </font></P>
+<P align=3Dleft>
+<font face=3D"Arial">Rogamos=20
+inscribirse prontamente en el curso dado que <U><STRONG>s=F3lo lo pueden r=
+ealizar=20
+25 personas</STRONG></U>         =20
+   =2E Para inscribirse lo puede hacer en nuestro sitio=20
+Web <a href=3D"http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm">
+http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm</a> , o al fono 248911=
+2, al e-mail
+<A href=3D"mailto:info@hipnosischile=2Ecl">info@hipnosischile=2Ecl</a> o e=
+n=20
+Seminario 6 - Providencia</font></P>
+<P align=3Dleft>
+&nbsp;</P>
+<P align=3Dcenter>
+<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecl/MAGNETOTERAPIA/MA=
+GNETOTERAPIA=2Egif" width=3D"650" height=3D"800" usemap=3D"#FPMap0" alt=3D=
+"www=2Ehipnosischile=2Ecl"><map name=3D"FPMap0"></map></P>
+
+</body>
+
+</html>
+
+------=_NextPart_2207918011014374141511798--
+
+
+
+--===============2296519983640541157==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -203,7 +202,7 @@ production scanning environment may not be a perfect world - but thanks to
 Kodak, there's a perfect scanner to get the job done! With the NEW KODAK i700
 Series Scanner you'll get full speed at 300 dpi even with all image 
 processing features enabled. http://p.sf.net/sfu/kodak-com
---===============2741600865552355075==
+--===============2296519983640541157==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -214,4 +213,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2741600865552355075==--
+--===============2296519983640541157==--

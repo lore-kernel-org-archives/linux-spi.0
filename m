@@ -1,10 +1,11 @@
-From: Valeriy Vitalevich <valeriyvitalevich-yiLBjVYhhEpeoWH0uzbU5w@public.gmane.org>
-Subject: [SPAM] –ü—Ä–µ–æ–¥–æ–ª–µ–Ω–∏–µ –≤–æ–∑—Ä–∞–∂–µ–Ω–∏–π –∏ —Ä–∞–±–æ—Ç–∞ —Å –ø—Ä–µ–ø—è—Ç—Å—Ç–≤–∏—è–º–∏
-Date: Fri, 15 May 2009 09:41:45 +0400
-Message-ID: <5210235788.20090515094145@ua-au.net>
+From: Voyage Prive <informations-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org>
+Subject: Special France avec Belambra jusqu'a -50%
+Date: Fri, 15 May 2009 08:33:43 +0200 (CEST)
+Message-ID: <1006691824261.1102752198.1242369223901@enginex2.emv2.com>
+Reply-To: Voyage Prive <voyageprive-WkL/9FkmuN+ACwpp83mF1A@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7213273538756542785=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0944678723073562221=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,186 +17,401 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7213273538756542785==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+--===============0944678723073562221==
+Content-Type: multipart/alternative; boundary=11027521981006691824261
 
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
-bmFsLy9FTiI+DQoNCjxodG1sPjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1U
-eXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjxzdHls
-ZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQouc3R5bGUxIHsNCgljb2xvcjogIzAwMDA4ODsN
-Cglmb250LXNpemU6IDFweDsNCn0NCi5zdHlsZTYgew0KCWZvbnQtZmFtaWx5OiBWZXJkYW5h
-LCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOw0KCWZvbnQtd2VpZ2h0OiBib2xkOw0K
-CWZvbnQtc2l6ZTogMThweDsNCn0NCi5zdHlsZTcgew0KCWZvbnQtc2l6ZTogNHB4Ow0KCWNv
-bG9yOiAjRTVGMkZGOw0KfQ0KLS0+DQo8L3N0eWxlPg0KPC9oZWFkPg0KPHN0eWxlIHR5cGU9
-InRleHQvY3NzIj4NCnB7Zm9udC1mYW1pbHk6VGFob21hLCBBcmlhbDsgZm9udC1zaXplOiAx
-MnB4OyBwYWRkaW5nOjJweDsgfQ0KbGl7Zm9udC1mYW1pbHk6VGFob21hLCBBcmlhbDsgZm9u
-dC1zaXplOiAxMnB4OyB9DQp0ZCB7UEFERElORzoxMHB4OyB0ZXh0LWFsaWduOmxlZnQ7fQ0K
-LnN0eWxlNSB7DQoJY29sb3I6ICNGRkZGRkY7DQoJZm9udC13ZWlnaHQ6IGJvbGQ7DQoJZm9u
-dC1zdHlsZTogaXRhbGljOw0KfQ0KLnN0eWxlOCB7DQoJZm9udC1zaXplOiAxcHg7DQoJY29s
-b3I6ICNFNUYyRkY7DQp9DQouc3R5bGU5IHtmb250LWZhbWlseTogVmVyZGFuYSwgQXJpYWws
-IEhlbHZldGljYSwgc2Fucy1zZXJpZn0NCi5zdHlsZTExIHtjb2xvcjogI0U1RjJGRn0NCi5z
-dHlsZTEyIHsNCglmb250LXNpemU6IDEzcHg7DQoJZm9udC13ZWlnaHQ6IGJvbGQ7DQoJY29s
-b3I6ICM2NjY2NjY7DQp9DQouc3R5bGUxMyB7DQoJY29sb3I6ICMwMDAwRkY7DQoJZm9udC13
-ZWlnaHQ6IGJvbGQ7DQp9DQo8L3N0eWxlPg0KPGJvZHkgYmdjb2xvcj0iIzAwMDA4OCI+DQo8
-dGFibGUgd2lkdGg9IjEwMCUiIGJvcmRlcj0iMCIgY2VsbHBhZGRpbmc9IjAiIGNlbGxzcGFj
-aW5nPSIwIiBiZ2NvbG9yPSIjMDAwMDg4Ij4NCjx0ciBib3JkZXJjb2xvcj0iI0RERERERCIg
-Ymdjb2xvcj0iI2U1ZjJmZiI+IA0KPHRkIGNvbHNwYW49IjIiPiANCjxwIGNsYXNzPSJzdHls
-ZTYgc3R5bGU5Ij48Zm9udCBjb2xvcj0iI2NjMDAwMCIgPt309OXq8jwvZm9udD48c3BhbiBj
-bGFzcz0ic3R5bGU4Ij4uPC9zcGFuPjxmb250IGNvbG9yPSIjY2MwMDAwIiA+6OLt++Ug7/Bv
-5ODmPC9mb250PjxzcGFuIGNsYXNzPSJzdHlsZTgiPi48L3NwYW4+PGZvbnQgY29sb3I9IiNj
-YzAwMDAiID7oIO/uIPLl6+X07u3zOjxicj4NCiAgx+7r7vL75SBw7mPx++/oIPLl62X07u3t
-7uNvIOzg8Orl8ujt4+Ag6OvoIOrg6iDz8e/l+O3uIO/wb+Tg4uDy/CDv7iDy5evl9O7t8y48
-L2ZvbnQ+PC9wPg0KPHA+PHNwYW4gY2xhc3M9InN0eWxlOSI+PHNwYW4gY2xhc3M9InN0eWxl
-MTIiPjIxIE3A3y48L3NwYW4+PC9zcGFuPjxicj4NCiAgPGI+4y4gyujl4iwg4fPr/OIuINjl
-4vfl7eruLCA0PC9iPjwvcD4NCjxwPjxzcGFuIGNsYXNzPSJzdHlsZTI5IHN0eWxlOSI+KzM4
-PHNwYW4gY2xhc3M9InN0eWxlMTEiPjo8L3NwYW4+KDDX1yk8L3NwYW4+IDxzcGFuIGNsYXNz
-PSJzdHlsZTkiPjxzdHJvbmc+Msc3LTnOLc41LzLHxy3XNi02OTwvc3Ryb25nPjwvc3Bhbj48
-YnI+DQo8L3A+PC90ZD4NCjwvdHI+DQo8dHIgYmdjb2xvcj0iIzAwMDA4OCI+PHRkIGhlaWdo
-dD0iMTBweCIgY29sc3Bhbj0iMiIgc3R5bGU9InBhZGRpbmc6MHB4OyBtYXJnaW46MHB4OyI+
-PC90ZD48L3RyPg0KPHRyPg0KPHRkIGJnY29sb3I9IkYxRjFGMSI+PHAgY2xhc3M9InN0eWxl
-OSI+PHNwYW4gY2xhc3M9InN0eWxlMTMiPtLQxUjFUDwvc3Bhbj4gyOLg7e7i4CDS4PL8/+3g
-LCDk7ury7vAg7+Xk4OPu4+j35fHq6PUg7eDz6iwg7/Du9OXx8e7wLiDF5Ojt8fLi5e3t++kg
-4iDT6vDg6O3lLCDn4Pno8uji+OjpIOTu6vLu8PHq8/4g5Ojx8eXw8uD26P4sIO/u8eL/+eXt
-7fP+IOzl8u7k6Org7CDoIPLl9e3u6+7j6P/sIO/w7uLl5OXt6P8uIDEzLevl8u3o6SDx8uDm
-IO/w7uLl5OXt6P8g4iDT6vDg6O3lLCDQ7vHx6OgsIMzu6+Tg4ujoLCDD5fDs4O3o6CwgyPDr
-4O3k6OguIDwvcD4NCiAgPHAgY2xhc3M9InN0eWxlOSI+PHNwYW4gY2xhc3M9InN0eWxlMTMi
-Ptbl6+Xi4P8g4PPk6PLu8Oj/Ojwvc3Bhbj4gIC0g8PPq7uLu5Ojy5evoIOgg7OXt5eTm5fD7
-IO7y5OXr4CDv8O7k4OYsIPDg4e7y7ejq6CDu8uTl6+Ag7/Du5ODmIOgg5+Dq8+/u6iwg7OXt
-5eTm5fD7IO/uIPDg4e7y5SDxIOrr6OXt8uDs6Cwg7OXt5eTm5fD7IO/uIO/w7uTg5uDsLCDw
-4OHu8u3o6uggY2FsbC1jZW50ZXIuPC9wPg0KICA8cCBjbGFzcz0ic3R5bGU5Ij48c3BhbiBj
-bGFzcz0ic3R5bGUxMyI+1uXr6Do8L3NwYW4+PGJyPg0KICAgIJUg7vHi7ujy/CD99PTl6vLo
-4u375SDy5fXt6OroIO/w7uTg5iDv7iDy5evl9O7t8zxicj4NCiAgICCVIO7y8ODh7vLg8vwg
-7/Do5ez7IOgg8uX17e7r7uPo6CDv8OXu5O7r5e3o/yDh4PD85fDgIPHl6vDl8uDw/yDoIOL7
-9e7k4CDt4CDW5evl4u7j7iDK6+jl7fLgPGJyPg0KICAgIJUg7uLr4OTl8vwg7OXy7uTo6uDs
-6CAg/fT05ery6OLt+/Ug7/Du5ODmIOgg4uXk5e3o/yDv5fDl4+7i7vDu4iAg7+4g8uXr5fTu
-7fM8YnI+DQogICAglSDv8O7g7eDr6Ofo8O7i4PL8IOgg7eDs5fLo8vwg7+7i7uT7IOTr/yDn
-4u7t6uAg1uXr5eLu7PMgyuvo5e3y8yDiIPHr8/fg5SDv8O7k4OboIPLu4uDw7uI8YnI+DQog
-ICAglSDk4PL8IPDl9+Xi++Ug4Ovj7vDo8uz7IOgg8fbl7eDw6Ogg4vXu5uTl7ej/IOIg6u7t
-8uDq8iDxINbl6+Xi++wgyuvo5e3y7uwg7+4g8uXr5fTu7fMsIPEg9uXr/P4g7/Dl5+Xt8uD2
-6Ogg5ezzIOru7Ozl8Pfl8eru4+4g7/Dl5Ovu5uXt6P88YnI+DQogICAglSDv8O7w4OHu8uDy
-/CDq7u306+jq8u375SDx6PLz4Pbo6CDxIMrr6OXt8u7sPGJyPg0KICAgIJUg7vLw4OHu8uDy
-/CDy6O/7IOgg4ujk+yDi7ufw4Obl7ejpIO/uIPLl6+X07u3zPGJyPg0KICAgIJUg7+7n7eDq
-7uzo8vwg8SDu8e3u4u377Ogg7/Dg4ujr4OzoIPLl6+X07u3t7uPuIP3y6Orl8uAgPC9wPg0K
-ICA8cCBjbGFzcz0ic3R5bGU5Ij48c3BhbiBjbGFzcz0ic3R5bGUxMyI+0MXH08vc0sDS2zwv
-c3Bhbj48YnI+DQogICAglSDu4uvg5OXt6OUg7/Do5ezg7Ogg6CDt4OL76uDs6CD99PTl6vLo
-4u3u4+4g7uH55e3o/yDv7iDy5evl9O7t8zxicj4NCiAgICCVIO/w6OLr5ffl7ejlIMrr6OXt
-8u7iIOHr4OPu5ODw/yDv8O705fHx6O7t4Ov87e7pIOgg7/Ho9e7r7uPo9+Xx6ugg4/Dg7O7y
-7e7pIOru7Ozz7ejq4Pbo6CDv7iDy5evl9O7t8zxicj4NCiAgICCVIPHt//Lo5SDx8vDl8fHu
-4vv1IOHg8Pzl8O7iIOIg7/Du9uXx8eUg7+Xw4u7j7iDn4u7t6uAgyuvo5e3y8zxicj4NCiAg
-ICCVIPPs5e3o5SDw4OHu8uDy/CDxIKvy8PPk7fvs6Lsg6CDq7u306+jq8u377Oggyuvo5e3y
-4OzoIO/uIPLl6+X07u3zPGJyPg0KICAgIJUg8+Ll6+j35e3o5SAg8OXn8+v88uDy6OLt+/Ug
-8uXr5fTu7e379SDq7u3y4Ory7uI8YnI+DQogICAgPGJyPg0KICAgIDxzdHJvbmc+1+Dx8vwg
-MS48L3N0cm9uZz4gz+7k4+7y7uLq4CDqIO/w7uLl5OXt6P4g7+Xw5ePu4u7w7uIg7+4g8uXr
-5fTu7fM8L3A+DQogIDxwIGNsYXNzPSJzdHlsZTkiPpUg0e/l9uj06OrgIPLl6+X07u3t7uPu
-IOru7fLg6vLgPGJyPg0KICAgIJUgz+735ezzIPLw8+Tt5eUg7/Du5ODi4PL8IO/uIPLl6+X0
-7u3zPzxicj4NCiAgICCVIMLg5u3u8fL8IP3s7vbo7u3g6/zt7uPuIOgg7/Ho9e7r7uPo9+Xx
-6u7j7iDt4PHy8O7/IOIg8uXr5fTu7e3u7CDq7u3y4Ory5Txicj4NCiAgICCVINLo7+j37fvl
-IO746OHq6CDoIOfg8vDz5O3l7ej/IOzl7eXk5uXw7uIg4iDv8O725fHx5SDy5evl9O7t7e7p
-IOru7Ozz7ejq4Pbo6CDxIMrr6OXt8u7sPGJyPg0KICAgIJUgzvHt7uLt++Ug6uD35fHy4uAg
-6CDh4Ofu4vvlIO3g4vvq6CDs5e3l5Obl8OAsIOLl5PP55ePuIPLl6+X07u3t8/4g6u7s7PPt
-6Org9uj+IPEgyuvo5e3y7uw8YnI+DQogICAglSDI4/DgIKvP8O7k4ObgIO/uIPLl6+X07u3z
-uzxicj4NCiAgICA8YnI+DQogICAgPHN0cm9uZz7X4PHy/CAyLjwvc3Ryb25nPiDP8O725fHx
-IO/w7uTg5ugg8u7i4PDgIO/uIPLl6+X07u3zPGJyPg0KICAgIDxzdHJvbmc+3fLg7yAxLjwv
-c3Ryb25nPiDP8O7w++Ig9+Xw5ecg8eXq8OXy4PD/IOgg7/Dg4ujr4CDl4+4g7/Dl7uTu6+Xt
-6P86PC9wPg0KICA8cCBjbGFzcz0ic3R5bGU5Ij6VIMzl8u7kIKvQ5eru7OXt5OD26P+7PGJy
-Pg0KICAgIJUgzOXy7uQgq8/x5eLk7vDl6u7s5e3k4Pbo/7s8YnI+DQogICAglSDM5fLu5CCr
-0OX08OXp7Ojt4+C7IOjr6CDs5fLu5CCr3efu7+7i+yDw5ffouzxicj4NCiAgICCVIMzl8u7k
-IKvP8OXn8+z26P8g8eLl8Pjo4vjl4+7x/yD04Ory4Ls8YnI+DQogICAglSDM5fLu5CCrz/Do
-5ewg4eXnIO/w6OXs7uK7PGJyPg0KICAgIJUg0uX17e7r7uPo/yCrwO346+DjIO3o6u7j5OAg
-7eUg4fvi4OXyIODh8e7r/vLt++y7PGJyPg0KICAgIJUg0OXg6vbo/yDt4CDu8urg5yDx5erw
-5fLg8P88YnI+DQogICAgz/Du4uXk5e3o5SDt4CDu8vDg4e7y6vMg4vv45e7v6PHg7e379SDv
-8Ojl7O7iIOgg8uX17e7r7uPo6S4gyu7w8OXq9uj/IOgg6u7z9yDy8OXt5fDgLjxicj4NCiAg
-ICDP8O7x7O7y8CD08ODj7OXt8u7iICDoIO/w6Ozl8O7iIOHo5+3l8S306Ov87OAgq8rg6iD9
-9PTl6vLo4u3uIO/w7uTg4uDy/CDv7iDy5evl9O7t87s8YnI+DQogICAgPGJyPg0KICAgIDxz
-dHJvbmc+3fLg7yAyLjwvc3Ryb25nPiDC+/Xu5CDt4CDW5evl4u7j7iDK6+jl7fLgIOgg7/Dl
-5+Xt8uD26P8g6u7s7OXw9+Xx6u7j7iDv8OXk6+7m5e3o/yDv7iDy5evl9O7t8y48L3A+DQog
-IDxwIGNsYXNzPSJzdHlsZTkiPpUgzvHt7uLt++Ug7/Dg4ujr4CDv8Oji5fLx8uLo/yDoIOL1
-7ubk5e3o/yDiIOru7fLg6vI8YnI+DQogICAglSDO7/Dl5OXr5e3o5SDy6O/gIMrr6OXt8uAg
-6CDi+//i6+Xt6OUg5ePuIO/u8vDl4e3u8fLl6S48YnI+DQogICAglSDP8Ojl7Psg7/Dl5+Xt
-8uD26Ogg6u7s7OXw9+Xx6u7j7iDv8OXk6+7m5e3o/yAgyuvo5e3y8y4gzO7k5ev8IO/u8vDl
-4ejy5ev88ero9SDs7vLo4u7iIFMuQS5CLk8uTi5FLiCr1+Xw4v/36ui7IOTr/yDw++H7IJYg
-1uXr5eLu4+4gyuvo5e3y4Dxicj4NCiAgICCVINPv8ODm7eXt6OUgq93s7+Dy6P+7PGJyPg0K
-ICAgIJUgz/Do5ez7IOLu4uvl9+Xt6P8gyuvo5e3y4CDiIPDg5+Pu4u7wPGJyPg0KICAgIC0g
-z/Do5ewgq9Do8fPl7CDu4fDg5/u7ICjP8O7x7O7y8CDi6OTl7vTo6/zs4Ck8YnI+DQogICAg
-LSDP8Ojl7CCrzOXy7uQg0e7q8ODy4LsgKM/w7uLl5OXt6OUg8+/w4Obt5e3o/yk8YnI+DQog
-ICAgLSDP8Ojl7CCryu7t4/Dz/e3y7e7x8vy7LiDI4/DgIKvK8Ojy5fDo4Ov87fvlIPHr7uLg
-uzxicj4NCiAgICAtIM/w6OXsIKvd9PTl6vIgz+jj7ODr6O7t4LsgKM/w7uLl5OXt6OUg8+/w
-4Obt5e3o/yk8YnI+DQogICAglSDS4Ory6OroIC0g7eDv7uzo7eDr7vfq6CDoIPHl4eUsIPHi
-7uXpIOru7O/g7ejoIOgg7+7i7uT7IOfi7u3q4CDqIMrr6OXt8vM8YnI+DQogICAglSDS5fXt
-6OroIO3g5+3g9+Xt6Okg4vHy8OX36CDv7iDy5evl9O7t8yDW5evl4u7s8yDK6+jl7fLzLiCr
-0uDq8ujq4CDg6/zy5fDt4PLo4u3u4+4g7/Du5OLo5uXt6P+7Ljxicj4NCiAgICDP8O7x7O7y
-8CD08ODj7OXt8u7iIOHo5+3l8S306Ov87OAg8SDv7vHr5eTz/vno7CAg4O3g6+jn7uwg8ejy
-8+D26Ogg8vDl7eXw4Dxicj4NCiAgICCVINDu6+Xi4P8g6OPw4CCr0+zl7ejlIPHr8/jg8vy7
-PGJyPg0KICAgIDxicj4NCiAgICA8c3Ryb25nPt3y4O8gMy4gPC9zdHJvbmc+0ODh7vLgIPEg
-4u7n8ODm5e3o/+zoIOgg8e7s7eXt6P/s6CDK6+jl7fLgPC9wPg0KICA8cCBjbGFzcz0ic3R5
-bGU5Ij6VIMjj8OAgq8Ti4CDv6+Xs5e3ouy4gx+Dv6PH8IO3gIOLo5OXu6uDs5fDzIPEg7+7x
-6+Xk8/756Owg4O3g6+jn7uwg8vDl7eXw4C48YnI+DQogICAglSDP8Oj36O37IOLu5/Dg5uXt
-6Okg6CDu4fno5SDv8ODi6OvgIO7h+eXt6P8g7OXt5eTm5fDgIOIg7/Du9uXx8eUg4u7n8ODm
-5e3o6Txicj4NCiAgICCVINLo7/sg6CDi6OT7IOLu5/Dg5uXt6Ok6PC9wPg0KICA8cCBjbGFz
-cz0ic3R5bGU5Ij4tIKvM+yDk7uLu6/zt+yDt4Pjo7CDv7vHy4OL56Oru7IW7PGJyPg0KICAg
-IC0gq8Lg+Ogg7+7n6Pbo6CDx6+j46u7sIOTu8O7j6C4uLrs8YnI+DQogICAgLSCrxODi4Ony
-5SDy4OqFIMXx6+gg7eDxIPfy7i3y7iDn4Ojt8uXw5fHz5fIgliDs+yDx4OzoIMLg7CDv5fDl
-5+Lu7ejshbs8YnI+DQogICAgLSCrz+Xw5ePu4u7w6PLlIPEg7O7o7CDv7uT36O3l7e377IW7
-PGJyPg0KICAgIC0gq8ft4OXy5SDi4PEg8eru6/zq7j8hIMgg4vHlIO/w5eTr4OPg/vIg7uTt
-7iDoIPLuIOblIbs8YnI+DQogICAgLSCrxPPs4P4sIPfy7iDs5e3/IP3y7iDv7urgIO3lIOjt
-8uXw5fHz5fKFuzxicj4NCiAgICAtIKvS7uv86u4g4fvx8vDuLCDx6uDm6PLlLCDx6u7r/Oru
-IP3y7iDx8u7o8j8huzxicj4NCiAgICAtIKvP8Oj46+jy5SDv8OXk6+7m5e3o5SDv7iD04Orx
-8yAoZS1tYWlsKbs8YnI+DQogICAgLSAg6CDyLuQuIDxicj4NCiAgICDP8O7i5eTl7ejlIO3g
-IO7y8ODh7vLq8yDi+/jl7eDn4uDt7fv1IOLu5/Dg5uXt6OkuICDA7eDr6Ocg7vjo4e7qIOgg
-IOru8PDl6vbo/yDy8OXt5fDgLjxicj4NCiAgICA8YnI+DQogICAgPHN0cm9uZz7d8uDvIDQu
-PC9zdHJvbmc+IM/w6OXs+yDv8O7k4OYg7+4g8uXr5fTu7fMsIO/u5OLu5P/56OUgyuvo5e3y
-4CDqIO/w6O3/8uj+IPDl+OXt6P8g7iDx7vLw8+Tt6Pfl8fLi5TwvcD4NCiAgPHAgY2xhc3M9
-InN0eWxlOSI+lSDP8Ojl7CCrx+Di5fD45e3o5SDt4CDu8e3u4uUg4Ov88uXw7eDy6OK7PGJy
-Pg0KICAgIJUgz/Do5ewgq8fg4uXw+OXt6OUg8SDz8fLz7+rg7Oi7PGJyPg0KICAgIJUgz/Do
-5ewgq9Hz7Ozo8PP++eXlIOLu5/Dg5uXt6OW7PGJyPg0KICAgIJUgz/Do5ewgq8fg4uXw+OXt
-6OUg8SDw6PHq7uy7PGJyPg0KICAgIJUgz/Do5ewgq9Hx++vq4CDt4CD96vHq6/7n6OK7PGJy
-Pg0KICAgIJUgz/Do5ewgq9Hx++vq4CDt4CDq4Ozv4O3o/iDv7iDv8O7k4ujm5e3o/iDx4fvy
-4Ls8YnI+DQogICAgPGJyPg0KICAgIDxzdHJvbmc+3fLg7yA1Ljwvc3Ryb25nPiDH4OLl8Pjl
-7ejlIPDg5+Pu4u7w4CDv7iDy5evl9O7t8zwvcD4NCiAgPHAgY2xhc3M9InN0eWxlOSI+lSDU
-8ODn+yDt4CDv8O754O385SDxIMrr6OXt8u7sPGJyPg0KICAgIJUgz+7n6PLo4u3u5SDv8O7j
-8ODs7Ojw7uLg7ejlIMrr6OXt8uA8YnI+DQogICAglSDM5fLu5PsgzcvPICDoIKv/6u7w7eD/
-IPLg6vLo6uC7ICDt4O/w4OLr5e3t4P8g7eAg7+7n6PLo4u3u5SAg5+Dv7uzo7eDt6OUgIOzl
-7eXk5uXw4Cwg5ePuIO/w5eTr7ubl7ej/IOgg5ePuIMru7O/g7ejoPC9wPjwvdGQ+DQo8dGQg
-d2lkdGg9IjMxMCIgdmFsaWduPSJ0b3AiIGJnY29sb3I9IiM0MTM4YmUiPiANCjxwPjxmb250
-IGNvbG9yPSIjRkZGRkZGIj48Zm9udCBjb2xvcj0ieWVsbG93Ij48Yj7R8m/o7O7x8vwg8/fg
-Y/Lo/yDu5O1v4+4g8/dhY/Lt6OphPC9iPjwvZm9udD48YnI+DQo8YnI+DQqVIDxiPjg1MC4w
-MCDj8O0uPC9iPiDn4CDu5O3u4+4g73Bl5GPyYeLo8mXr/y48YnI+DQo8YnI+DQqVIMTr/yDi
-8u7w7uPuIOgg8vDl8vzl4+4g8/dhY/Lt6OphIPHq6OTq4CCXIDxicj4mbmJzcDsmbmJzcDs8
-Yj41JSDoIDclPC9iPiDx7u7y4uXy8fLi5e3t7i48YnI+PGJyPg0KlSDCIENUzsjMT9HS3CBC
-ysve10VI2zo8YnI+Jm5ic3A7Jm5ic3A76O307vDs4Pbo7u3t7i3q7u3x8+v88uD26O7t7e7l
-Jm5ic3A77uHx6/Pm6OLg7ejlLDxicj4mbmJzcDsmbmJzcDv96vHq6/7n6OLt++kgDQrx4e7w
-7ejqIOzg8uXw6ODr7uIsIOHr7urt7vIsPGJyPiZuYnNwOyZuYnNwO/Dz9+rgLCDq7vTlLeHw
-5enqLCDu4eXkIOIg8OXx8u7w4O3lLjwvZm9udD48L3A+DQo8aHI+DQo8cD48Zm9udCBjb2xv
-cj0iI0ZGRkZGRiI+PGZvbnQgY29sb3I9InllbGxvdyI+PGI+0MDRz87Q38TOyjogPC9iPjwv
-Zm9udD48YnI+DQo8YnI+DQqVIDxiPjkuMzA8L2I+LTxiPjE4LjAwPC9iPjxicj6VDQrP5fDl
-8PviIDxiPjEzLjMwPC9iPi08Yj4xNC4zMDwvYj48YnI+lQ0K0OXj6PHy8OD26P8g8SA8Yj45
-LjAwPC9iPiDiIPXu6+UuPC9wPg0KPGhyPg0KPHAgY2xhc3M9InN0eWxlNSI+0+Tg9+3u4+4g
-4ejn7eXx4CE8aHI+PC9wPjwvdGQ+DQo8L3RyPg0KPC90YWJsZT4NCjxwPiZuYnNwOzwvcD4N
-CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
-OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
-PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
-cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
-YnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
-CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
-OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
-PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
-cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
-YnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
-CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
-OzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxw
-PiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwv
-cD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZu
-YnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4N
-CjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNwOzwvcD4NCjxwPiZuYnNw
-OzwvcD4NCjxwIGNsYXNzPSJzdHlsZTEiPuTq8/4g6/vx6O3zLiDK8fLl7f8g7uHw+Ovk5evu
-IPHv8O7x6Ovy8f8sIO3u4uj3IPjo6zwvcD4NCjwvYm9keT4NCjwvaHRtbD4NCg0KDQoNCg==
+--11027521981006691824261
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
 
 
+Si le message ne s'affiche pas correctement, vous pouvez accÈder ‡ la version en ligne en suivant ce lien :
+http://news.voyageprive.com/HM?a=A9X7CkNFDwNqsJqU9uc17TzhtA
+
+Pour Ítre s˚r(e) de recevoir nos prochaines invitations, ajoutez l'adresse de Voyage PrivÈ "email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org" dans votre carnet d'adresses ou dans votre liste d'expÈditeurs autorisÈs.
+
+vous prÈsentent du vendredi 15 mai 10h00 au lundi 18 mai 23h55 l'ÈvËnement du mois 
 
 
---===============7213273538756542785==
+Saumur  -  Club Belambra Le Domaine du Golf -33%
+Au coeur d'un domaine naturel, prËs de Saumur, vous sÈjournerez dans le dernier Club Belambra.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=83451e7ef8755c2a8f464093c808f529&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=135
+
+Soustons plage  -  RÈsidence Belambra  Pignada -33%
+Proche d'un lac marin, cet espace naturel prÈservÈ des Landes est idÈal pour se reposer en famille.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=a4d41b834ea903526373a9a1ae2ac66e&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=135
+
+AlbÈ -  Club Belambra Les Cigognes -50%
+Entre Alsace et Vosges, une rÈsidence o˘ loisirs et dÈtente sont au rendez-vous.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=125c0e943c73bb8a0840ab524fdcbd08&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=135
+
+Guidel  -  Club Belambra Les Portes de l'OcÈan -31%
+Aux confins du FinistËre et du Morbihan, le Club de Guidel-Plages vous offre une vue magnifique.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=3bc3e78c17d35e74ecfae5e475d960d7&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=135
+
+Grasse  -  Club Belambra Le Clavary -31%
+A flan de montagne, loin de la foule du littoral, profitez du panorama unique du Club de Grasse.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=a1f0cf94512f963e5ed4edd9af70e2cc&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=135
+
+La Grande Motte  -  Club Belambra Le Ponant -31%
+Venez dÈcouvrir le littoral Camarguais dans cet agrÈable Club prËs d'un Ètang.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=4bbbe6cb5982b9110413c40f3cce680b&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b._AanY_mT2RN4T2PrTWdgXfJBLb/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=135
+
+
+Si vous ne souhaitez plus recevoir d'e-mail de notre part, cliquez-ici :
+http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17T_hsw
+
+--11027521981006691824261
+Content-Type: text/html; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Voyageprive.com - 1er site de ventes priv&eacute;es de voyages</title>
+</head>
+<body bgcolor="#ffffff">
+<center><font face="Verdana,Arial" size="1">
+<a target="_blank" href="http://news.voyageprive.com/HS?a=A9X7CkNFDwNqsJqU9uc17Urhjg">Si le message ne s'affiche pas correctement, vous pouvez acc&eacute;der &agrave; la version en ligne</a><br>
+Pour &ecirc;tre s&ucirc;r(e) de recevoir nos prochaines invitations, ajoutez l'adresse de Voyage Priv&eacute; "email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org"<br>
+dans votre carnet d'adresses ou dans votre liste d'exp&eacute;diteurs autoris&eacute;s.<br></font></center>
+<table width="640" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#312b2b">
+    <tr><td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17Uvhjw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/partners/header-1242317103.jpg" border="0" alt="Voyageprive.com - 1er site de ventes priv&eacute;es de voyages"></a></center></td></tr>
+
+    <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="15" border="0" alt=""></center></td></tr>
+    <tr>
+        <td style="font: normal 14px Arial, Verdana; color:#ffffff" align="center">
+            vous pr&eacute;sentent du vendredi 15 mai 10h00 au lundi 18 mai 23h55 l'&eacute;v&egrave;nement du mois 
+        </td>
+    </tr>
+       <tr>
+
+        <td>
+            <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="40" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td style="font: normal 12px Arial, Verdana; color:#ffffff" align="left">
+<!--texte d'intro-->
+Chers membres, <br />
+<br />
+Cet &eacute;t&eacute;, le r&ecirc;ve est en France!<br />
+Le N&deg;1 des Clubs de vacances en France vous invite &agrave; d&eacute;couvrir l'esprit Clubs en toute libert&eacute; dans les plus beaux endroits de France, <br />
+pour des s&eacute;jours sp&eacute;cialement con&ccedil;us pour les familles. <br />
+<br />
+Nous vous invitons &agrave; d&eacute;couvrir et &agrave; profiter de tarifs exceptionnels jusqu'&agrave; -50% de r&eacute;duction!<br />
+<br />
+L'Equipe Voyageprive.com
+<!--FIN texte d'intro-->
+                    </td>
+                </tr>
+                <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="40" border="0" alt=""></center></td></tr>
+            </table>
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+<table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>Saumur </strong> -  Club Belambra Le Domaine du Golf
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 33%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17UnhgQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/vf/voyage_4424.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Au coeur d'un domaine naturel, pr&egrave;s de Saumur, vous s&eacute;journerez dans le dernier Club Belambra.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17U7hgg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17U_hgw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>Soustons plage </strong> -  R&eacute;sidence Belambra Pignada
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 33%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17UzhhA"><img src="http://photos.voyage-prive.com/vpi/fr/front/vf/voyage_4425.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Proche d'un lac marin, cet espace naturel pr&eacute;serv&eacute; des Landes est id&eacute;al pour se reposer en famille.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17U3hhQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17ULhhg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>AlbÈ</strong> -  Club Belambra Les Cigognes
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 50%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17UPhhw"><img src="http://photos.voyage-prive.com/vpi/fr/front/vf/voyage_4426.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Entre Alsace et Vosges, une r&eacute;sidence o&ugrave; loisirs et d&eacute;tente sont au rendez-vous.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17UDhuA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17UHhuQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>Guidel </strong> -  Club Belambra Les Portes de l'Oc&eacute;an
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 31%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17Ubhug"><img src="http://photos.voyage-prive.com/vpi/fr/front/vf/voyage_4435.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Aux confins du Finist&egrave;re et du Morbihan, le Club de Guidel-Plages vous offre une vue magnifique.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17Ufhuw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17UThvA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>Grasse </strong> -  Club Belambra Le Clavary
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 31%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17UXhvQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/vf/voyage_4436.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                A flan de montagne, loin de la foule du littoral, profitez du panorama unique du Club de Grasse.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17Trhvg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17Tvhvw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>La Grande Motte </strong> -  Club Belambra Le Ponant
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 31%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17TjhsA"><img src="http://photos.voyage-prive.com/vpi/fr/front/vf/voyage_4437.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Venez d&eacute;couvrir le littoral Camarguais dans cet agr&eacute;able Club pr&egrave;s d'un &eacute;tang.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17TnhsQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17T7hsg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table>
+        </td>
+    </tr>
+ </TR>
+	
+    <tr><td><center>
+            <font face="Verdana,Arial" size="1" color="#808080">*Offres r&eacute;serv&eacute;es aux membres. R&eacute;duction maximum constat&eacute;e</font>
+            <br>
+          <br>
+            </center>
+    </td></tr>
+</table>
+<center><IMG title="" alt="" src="http://photos.voyage-prive.com/vpi/fr/front/uploaded/footer-1242315862.jpg" border="0"/></center></A></center>
+
+<center><font face="Verdana,Arial" size="1">Si vous ne souhaitez plus recevoir d'e-mail de la part de Voyage Prive, <a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJqU9uc17T_hsw">cliquez-ici</a></font></center>
+<img src="http://et.eulerian.net/view/vp-catalogue/8lL.QlYVeQ7BL6AqQORYmrzYRGGogMZRwsnlUcmU_g--/pix.gif?eemail=" border="0" width="1" height="1" NOSEND="1" /><img src="http://news.voyageprive.com/HO?AdX7CkNFDwNqsLCHXOP1cjymuAMxJFg.gif" border="0" alt="" width="1" height="1"></body>
+</html>
+
+
+--11027521981006691824261--
+
+
+
+--===============0944678723073562221==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -207,7 +423,7 @@ Check out the new simplified licensing option that enables
 unlimited royalty-free distribution of the report engine 
 for externally facing server and web deployment. 
 http://p.sf.net/sfu/businessobjects
---===============7213273538756542785==
+--===============0944678723073562221==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -218,4 +434,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7213273538756542785==--
+--===============0944678723073562221==--

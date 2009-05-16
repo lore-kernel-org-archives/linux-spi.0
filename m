@@ -1,14 +1,12 @@
-From: "Communication Officer OptIN Customer Base" <CleanPlusMail-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org>
-Subject: =?windows-1252?q?=5BSPAM=5D_Global_Leadership?=
-	=?windows-1252?q?_in_Handcare_-_Consumer=2C_Auto=2C_Professional_?=
-	=?windows-1252?q?=26_Industrial_Products_-_OTC_=3A_FLKI?=
-Date: Sat, 16 May 2009 01:18:21 +0200
-Message-ID: <408e5263b838487574aa5942001b8529@freesurf.fr>
-Reply-To: CleanPlusMail-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org
+From: Hopson Crabbs <voicer-u3n+hLylNj1eoWH0uzbU5w@public.gmane.org>
+Subject: Breast Orgasms Do rPoduce Multiple Orgasms -
+	The Secret That Will Make You Irresistible
+Date: Sat, 16 May 2009 03:12:07 +0000
+Message-ID: <moly_jwXm@684.jp>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0649830754104784686=="
-To: "Communications Officer OptIN Preferred Customers OptIN"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="--------25zcFYRen54In1ps6Yzwnc2kHOfO0mP9lST3DqLuN9HG"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,265 +18,208 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+----------25zcFYRen54In1ps6Yzwnc2kHOfO0mP9lST3DqLuN9HG
+Content-Type: image/png;
+ name="Hopson.png"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="Hopson.png"
 
---===============0649830754104784686==
-Content-Type: multipart/alternative; boundary="----=SPLITOR00A_001_921611765D"
+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
+16mi3QwrAAAAAElFTkSuQmCC
 
-This is a multi-part message in MIME format.
-
-------=SPLITOR00A_001_921611765D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-
- .headerTop { background-color:#ffffff; border-top:0px solid #000000; =
-border-bottom:0px=20
-solid #FFCC66; text-align:right; } .adminText { font-size:10px; =
-color:#FFFFCC;=20
-line-height:200%; font-family:verdana; text-decoration:none; } .headerBar =
-{=20
-background-color:#fcd200; border-top:0px solid #fcd200; border-bottom:0px =
-solid=20
-#333333; } .title { font-size:30px; font-weight:bold; color:#336600; =
-font-family:arial;=20
-line-height:110%; } .subTitle { font-size:11px; font-weight:normal; =
-color:#666666;=20
-font-style:italic; font-family:arial; } td { font-size:12px; =
-color:#000000;=20
-line-height:150%; font-family:trebuchet ms; } .footerRow { =
-background-color:#FFFFCC;=20
-border-top:10px solid #fcd200; } .footerText { font-size:10px; =
-color:#333333;=20
-line-height:100%; font-family:verdana; } a { color:#0063be; =
-color:#0063be;=20
-color:#0063be; }=20
-
-
-
-
-
-Clean Plus Hand Wipes=2E
-Non-abrasive economical hand cleansing wet wipes for frequent use. Ideal =
-for=20
-use in the industrial, farming, maintenance, and office sectors. Removes =
-all=20
-types of dirt, greasy stains, ink, fuel and odours from hands. Qualified =
-hypoallergenic=20
-and lipo-protective. Antibacterial properties. Perfect when soap and =
-water=20
-are not readily available=2E
-
-Clean Plus=AE wants to simplify you life, to make the cleaning process =
-quick=20
-and fun, to deliver nothing but the best=2E
-
-To learn more about Clean Plus=AE, click here=2E
-
-
-Also Try Other Clean Plus=AE Hand Care Products=2E
-Industry, automotive, maintenance, office.... Clean Plus=AE Hand Care =
-offers=20
-hand care products for every professional. Traditional granulated soaps, =
-super-cleaning=20
-hand wet wipes and liquids for people on the move and special creams to =
-protect=20
-and restore your skin=2E
-
-
-To learn more click here
-Capital Pro Marketing is a specialist in the promotion business. We do =
-not=20
-support Spam mails. This email was sent to you because we feel that =
-whether=20
-you are an investor, distributor, or consumer, you are able to benefit =
-from=20
-the above information pertaining to the corporate image building efforts =
-of=20
-our client, products promotion, and Customer Relationship Management =
-activities.=20
-If you feel that the information provided in this mail was not useful to =
-you=20
-and would like to have your name removed from our mailing list, kindly =
-follow=20
-the directions below. My CNN Now will ensure every effort to take your =
-name=20
-off immediately. We apologize for any inconvenience caused=2E
-
-T his message is sent in compliance of the new email Bill HR 1910.Under =
-Bill=20
-HR 1910 passed by the 106th US Congress on May 24, 1999,this message =
-cannot=20
-be considered Spam as long as we include the way to be removed.=20
-
-P er Section HR 1910, Please type "REMOVE ME PLEASE" in the subject line =
-and 
-send to capitalpronews-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org< /td> 
-
-
-------=SPLITOR00A_001_921611765D
-Content-Type: text/html;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<meta http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Dwindows-1252">
-</head>
-<body STYLE=3D"FONT-FAMILY: Tahoma"><p>
-<style>
- .headerTop { background-color:#ffffff; border-top:0px solid #000000; =
-border-bottom:0px solid #FFCC66; text-align:right; }  .adminText { =
-font-size:10px; color:#FFFFCC; line-height:200%; font-family:verdana; =
-text-decoration:none; }  .headerBar { background-color:#fcd200; =
-border-top:0px solid #fcd200; border-bottom:0px solid #333333; }  .title { =
-font-size:30px; font-weight:bold; color:#336600; font-family:arial; =
-line-height:110%; }  .subTitle { font-size:11px; font-weight:normal; =
-color:#666666; font-style:italic; font-family:arial; }  td { =
-font-size:12px; color:#000000; line-height:150%; font-family:trebuchet ms; =
-}  .footerRow { background-color:#FFFFCC; border-top:10px solid #fcd200; } =
- .footerText { font-size:10px; color:#333333; line-height:100%; =
-font-family:verdana; }  a { color:#0063be; color:#0063be; color:#0063be; } =
-</style>
-
-<table class=3DbackgroundTable cellSpacing=3D0 cellPadding=3D0 =
-width=3D"100%"=20
-bgColor=3D#0063be>
- =20
-  <tr>
-    <td vAlign=3Dtop align=3Dmiddle>
-      <table cellSpacing=3D0 cellPadding=3D0 width=3D542>
-       =20
-        <tr>
-          <td=20
-          style=3D"BORDER-TOP: #00aeef 0px solid; BORDER-BOTTOM: #333333 =
-0px solid; BACKGROUND-COLOR: #0063be"=20
-          width=3D540><img height=3D471=20
-            src=3D"http://www.capitalpronewsmarketing.com/handcare.jpg" =
-width=3D540>=20
-
-            <center></center></td></tr></table>
-      <table cellSpacing=3D0 cellPadding=3D20 width=3D540 bgColor=3D#ffffff>
-       =20
-        <tr>
-          <td vAlign=3Dtop bgColor=3D#ffffff>
-            <p=20
-            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
-FONT-FAMILY: arial; line-: 110%">Clean=20
-            Plus Hand Wipes.<br><span=20
-            style=3D"FONT-WEIGHT: normal; FONT-SIZE: 16px; COLOR: #333333; =
-FONT-FAMILY: arial; lin: 110%">Non-abrasive=20
-            economical hand cleansing wet wipes for frequent use. Ideal =
-for use=20
-            in the industrial, farming, maintenance, and office sectors. =
-Removes=20
-            all types of dirt, greasy stains, ink, fuel and odours from =
-hands.=20
-            Qualified hypoallergenic and lipo-protective. Antibacterial=20
-            properties. Perfect when soap and water are not readily=20
-            available.</span></p>
-            <p=20
-            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
-FONT-FAMILY: arial; line-: 110%"><span=20
-            style=3D"FONT-WEIGHT: normal; FONT-SIZE: 16px; COLOR: #333333; =
-FONT-FAMILY: arial; lin: 110%">Clean=20
-            Plus=AE wants to simplify you life, to make the cleaning =
-process quick=20
-            and fun, to deliver nothing but the best.</span></p>
-            <p=20
-            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
-FONT-FAMILY: arial; line-: 110%"><span=20
-            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 16px; COLOR: #333333; =
-FONT-FAMILY: arial; line-: 110%">To=20
-            learn more about Clean Plus=AE, click <a=20
-            =
-href=3D"http://www.google.com/search?q=3Dclean+plus&amp;ie=3Dutf-8&amp;oe=
-=3Dutf-8&amp;aq=3Dt&amp;rls=3Dorg.mozilla:en-US:official&amp;client=3Dfiref=
-ox-a">here</a>.</span></p></td></tr>
-        <tr>
-          <td vAlign=3Dtop bgColor=3D#ffffff>
-            <p=20
-            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
-FONT-FAMILY: arial; line-: 110%">Also=20
-            Try Other Clean Plus=AE Hand Care Products.<br><span=20
-            style=3D"FONT-WEIGHT: normal; FONT-SIZE: 16px; COLOR: #333333; =
-FONT-FAMILY: arial; lin: 110%">Industry,=20
-            automotive, maintenance, office.... Clean Plus=AE Hand Care =
-offers=20
-            hand care products for every professional. Traditional =
-granulated=20
-            soaps, super-cleaning hand wet wipes and liquids for people on =
-the=20
-            move and special creams to protect and restore your =
-skin.</span></p>
-            <p=20
-            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
-FONT-FAMILY: arial; line-: 110%"><img=20
-            height=3D79=20
-            =
-src=3D"http://capitalpronewsmarketing.com/handcare-products.jpg"=20
-            width=3D491></p></td></tr>
-        <tr>
-          <td style=3D"BORDER-TOP: #ffffff 10px solid; BACKGROUND-COLOR: =
-#ffffff"=20
-          vAlign=3Dtop>
-            <p=20
-            style=3D"FONT-SIZE: 10px; COLOR: #333333; LINE-HEIGHT: 100%; =
-FONT-FAMILY: verdana">To=20
-            learn more click <a=20
-            =
-href=3D"http://www.google.com/search?q=3Dclean+plus&amp;ie=3Dutf-8&amp;oe=
-=3Dutf-8&amp;aq=3Dt&amp;rls=3Dorg.mozilla:en-US:official&amp;client=3Dfiref=
-ox-a">here</a><br><br>Capital=20
-            Pro Marketing is a specialist in the promotion business. We do =
-not=20
-            support Spam mails. This email was sent to you because we feel =
-that=20
-            whether you are an investor, distributor, or consumer, you are =
-able=20
-            to benefit from the above information pertaining to the =
-corporate=20
-            image building efforts of our client, products promotion, and=20
-            Customer Relationship Management activities. If you feel that =
-the=20
-            information provided in this mail was not useful to you and =
-would=20
-            like to have your name removed from our mailing list, kindly =
-follow=20
-            the directions below. My CNN Now will ensure every effort to =
-take=20
-            your name off immediately. We apologize for any inconvenience=20
-            caused.</p>
-            <p=20
-            style=3D"FONT-SIZE: 10px; COLOR: #333333; LINE-HEIGHT: 100%; =
-FONT-FAMILY: verdana">T=20
-            his message is sent in compliance of the new email Bill HR=20
-            1910.Under Bill HR 1910 passed by the 106th US Congress on May =
-24,=20
-            1999,this message cannot be considered Spam as long as we =
-include=20
-            the way to be removed. </p>
-            <p=20
-            style=3D"FONT-SIZE: 10px; COLOR: #333333; LINE-HEIGHT: 100%; =
-FONT-FAMILY: verdana">P=20
-            er Section HR 1910, Please type "REMOVE ME PLEASE" in the =
-subject=20
-            line and send to <a=20
-            =
-href=3D"mailto:capitalpronews-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org">capitalpronews-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org</a></=
-p>&lt;=20
-            /td&gt; </td></tr></table></td></tr></table></p>
-</body>
-</html>
-
-
-------=SPLITOR00A_001_921611765D--
-
-
-
---===============0649830754104784686==
+----------25zcFYRen54In1ps6Yzwnc2kHOfO0mP9lST3DqLuN9HG
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -290,7 +231,7 @@ Check out the new simplified licensing option that enables
 unlimited royalty-free distribution of the report engine 
 for externally facing server and web deployment. 
 http://p.sf.net/sfu/businessobjects
---===============0649830754104784686==
+----------25zcFYRen54In1ps6Yzwnc2kHOfO0mP9lST3DqLuN9HG
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -301,4 +242,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0649830754104784686==--
+----------25zcFYRen54In1ps6Yzwnc2kHOfO0mP9lST3DqLuN9HG--

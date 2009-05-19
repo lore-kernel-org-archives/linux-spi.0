@@ -1,12 +1,11 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH] spi: driver for the Synopsys DesignWare
-	SPI controller
-Date: Tue, 19 May 2009 10:12:34 +0300
-Message-ID: <1242717154-11826-1-git-send-email-baruch@tkos.co.il>
+From: Conaway Bredow <bedlamize-w/o5vO4odUByDzI6CaY1VQ@public.gmane.org>
+Subject: [SPAM] 5 Ways to Turn Upp the Heat in Your Love
+	Relationship or Marriage
+Date: Tue, 19 May 2009 07:59:20 +0000
+Message-ID: <0285AA157F1BEDB20CDCDB844399E1084C5D8A@syspart.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="-----10D2F40E11549238200CEF04D91BFB05B2588F"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,790 +18,217 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+-------10D2F40E11549238200CEF04D91BFB05B2588F
+Content-Type: image/png;
+ name="Conaway.png"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="Conaway.png"
 
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
----
- drivers/spi/Kconfig            |    6 +
- drivers/spi/Makefile           |    1 +
- drivers/spi/designware_spi.c   |  719 ++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/designware.h |   10 +
- 4 files changed, 736 insertions(+), 0 deletions(-)
- create mode 100644 drivers/spi/designware_spi.c
- create mode 100644 include/linux/spi/designware.h
+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
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 83a185d..dca6dd1 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -116,6 +116,12 @@ config SPI_GPIO
- 	  GPIO operations, you should be able to leverage that for better
- 	  speed with a custom version of this driver; see the source code.
- 
-+config SPI_DESIGNWARE
-+	tristate "Synopsys DesignWare SPI controller"
-+	  depends on SPI_MASTER
-+	  help
-+	    SPI controller driver for the Synopsys DesignWare DW_apb_ssi.
-+
- config SPI_IMX
- 	tristate "Freescale iMX SPI controller"
- 	depends on ARCH_IMX && EXPERIMENTAL
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 5d04519..bf51c5a 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -17,6 +17,7 @@ obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
- obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.o
- obj-$(CONFIG_SPI_BUTTERFLY)		+= spi_butterfly.o
- obj-$(CONFIG_SPI_GPIO)			+= spi_gpio.o
-+obj-$(CONFIG_SPI_DESIGNWARE)		+= designware_spi.o
- obj-$(CONFIG_SPI_IMX)			+= spi_imx.o
- obj-$(CONFIG_SPI_LM70_LLP)		+= spi_lm70llp.o
- obj-$(CONFIG_SPI_PXA2XX)		+= pxa2xx_spi.o
-diff --git a/drivers/spi/designware_spi.c b/drivers/spi/designware_spi.c
-new file mode 100644
-index 0000000..8904204
---- /dev/null
-+++ b/drivers/spi/designware_spi.c
-@@ -0,0 +1,719 @@
-+/*
-+ * designware_spi.c
-+ *
-+ * Synopsys DesignWare AMBA SPI controller driver (master mode only)
-+ *
-+ * Author: Baruch Siach, Tk Open Systems
-+ *	baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org
-+ *
-+ * Base on the Xilinx SPI controller driver by MontaVista
-+ *
-+ * 2002-2007 (c) MontaVista Software, Inc.  This file is licensed under the
-+ * terms of the GNU General Public License version 2.  This program is licensed
-+ * "as is" without any warranty of any kind, whether express or implied.
-+ *
-+ * 2008, 2009 (c) Provigent Ltd.
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/platform_device.h>
-+#include <linux/io.h>
-+#include <linux/delay.h>
-+#include <linux/gpio.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/designware.h>
-+
-+#define DESIGNWARE_SPI_NAME "designware_spi"
-+
-+/* Register definitions as per "DesignWare DW_apb_ssi Databook", Capture 6. */
-+
-+#define DWSPI_CTRLR0        0x00
-+#define DWSPI_CTRLR1        0x04
-+#define DWSPI_SSIENR        0x08
-+#define DWSPI_MWCR          0x0C
-+#define DWSPI_SER           0x10
-+#define DWSPI_BAUDR         0x14
-+#define DWSPI_TXFTLR        0x18
-+#define DWSPI_RXFTLR        0x1C
-+#define DWSPI_TXFLR         0x20
-+#define DWSPI_RXFLR         0x24
-+#define DWSPI_SR            0x28
-+#define DWSPI_IMR           0x2C
-+#define DWSPI_ISR           0x30
-+#define DWSPI_RISR          0x34
-+#define DWSPI_TXOICR        0x38
-+#define DWSPI_RXOICR        0x3C
-+#define DWSPI_RXUICR        0x40
-+#define DWSPI_ICR           0x44
-+#define DWSPI_DMACR         0x4C
-+#define DWSPI_DMATDLR       0x50
-+#define DWSPI_DMARDLR       0x54
-+#define DWSPI_IDR           0x58
-+#define DWSPI_SSI_COMP_VERSION 0x5C
-+#define DWSPI_DR            0x60
-+
-+#define DWSPI_CTRLR0_DFS_MASK	0x000f
-+#define DWSPI_CTRLR0_SCPOL	0x0080
-+#define DWSPI_CTRLR0_SCPH	0x0040
-+#define DWSPI_CTRLR0_TMOD_MASK	0x0300
-+
-+#define DWSPI_SR_BUSY_MASK	0x01
-+#define DWSPI_SR_TFNF_MASK	0x02
-+#define DWSPI_SR_TFE_MASK	0x04
-+#define DWSPI_SR_RFNE_MASK	0x08
-+#define DWSPI_SR_RFF_MASK	0x10
-+
-+#define DWSPI_ISR_TXEIS_MASK	0x01
-+#define DWSPI_ISR_RXFIS_MASK	0x10
-+
-+#define DWSPI_IMR_TXEIM_MASK	0x01
-+#define DWSPI_IMR_RXFIM_MASK	0x10
-+
-+#define EMPTY_TX		2
-+
-+struct designware_spi {
-+	struct device *dev;
-+	struct workqueue_struct *workqueue;
-+	struct work_struct   work;
-+
-+	struct tasklet_struct pump_transfers;
-+
-+	struct mutex         lock; /* lock this struct except from queue */
-+	struct list_head     queue; /* spi_message queue */
-+	spinlock_t           qlock; /* lock the queue */
-+
-+	void __iomem	*regs;	/* virt. address of the control registers */
-+	unsigned int ssi_clk;	/* clock in Hz */
-+	unsigned int tx_fifo_depth; /* bytes in TX FIFO */
-+	unsigned int rx_fifo_depth; /* bytes in RX FIFO */
-+
-+	u32		irq;
-+
-+	u8 bits_per_word;	/* current data frame size */
-+	struct spi_transfer *tx_t; /* current tx transfer */
-+	struct spi_transfer *rx_t; /* current rx transfer */
-+	const u8 *tx_ptr;       /* current tx buffer */
-+	u8 *rx_ptr;             /* current rx buffer */
-+	int remaining_tx_bytes;	/* bytes left to tx in the current transfer */
-+	int remaining_rx_bytes;	/* bytes left to rx in the current transfer */
-+	int status;             /* status of the current spi_transfer */
-+
-+	struct completion done; /* signal the end of tx for current sequence */
-+
-+	struct spi_device *spi; /* current spi slave device */
-+	struct list_head *transfers_list; /* head of the current sequence */
-+	unsigned int tx_count, rx_count; /* bytes in the current sequence */
-+};
-+
-+static void dwspi_init_hw(struct designware_spi *dwspi)
-+{
-+	u16 ctrlr0;
-+
-+	/* Disable the SPI master */
-+	writel(0, dwspi->regs + DWSPI_SSIENR);
-+	/* Disable all the interrupts just in case */
-+	writel(0, dwspi->regs + DWSPI_IMR);
-+	/* Set TX empty IRQ threshold */
-+	writew(dwspi->tx_fifo_depth / 2, dwspi->regs + DWSPI_TXFTLR);
-+
-+    /* Set transmit & receive mode */
-+	ctrlr0 = readw(dwspi->regs + DWSPI_CTRLR0);
-+    ctrlr0 &= ~DWSPI_CTRLR0_TMOD_MASK;
-+	writew(ctrlr0, dwspi->regs + DWSPI_CTRLR0);
-+}
-+
-+static void dwspi_baudcfg(struct designware_spi *dwspi, u32 speed_hz)
-+{
-+	u16 div = (speed_hz) ? dwspi->ssi_clk/speed_hz : 0xffff;
-+
-+	writew(div, dwspi->regs + DWSPI_BAUDR);
-+}
-+
-+static void dwspi_enable(struct designware_spi *dwspi, int on)
-+{
-+	writel(on ? 1 : 0, dwspi->regs + DWSPI_SSIENR);
-+}
-+
-+static void designware_spi_chipselect(struct spi_device *spi, int on)
-+{
-+	struct designware_spi *dwspi = spi_master_get_devdata(spi->master);
-+	long gpio = (long) spi->controller_data;
-+	unsigned active = spi->mode & SPI_CS_HIGH;
-+
-+	/*
-+	 * Note, the SPI controller must have been enabled at this point, i.e.
-+	 * SSIENR == 1
-+	 */
-+
-+	if (on) {
-+		/* Turn the actual chip select on for GPIO chip selects */
-+		if (gpio >= 0)
-+			gpio_set_value(gpio, active);
-+		/* Activate slave on the SPI controller */
-+		writel(1 << spi->chip_select, dwspi->regs + DWSPI_SER);
-+	} else {
-+		/* Deselect the slave on the SPI bus */
-+		writel(0, dwspi->regs + DWSPI_SER);
-+		if (gpio >= 0)
-+			gpio_set_value(gpio, !active);
-+	}
-+}
-+
-+static int designware_spi_setup_transfer(struct spi_device *spi)
-+{
-+	struct designware_spi *dwspi = spi_master_get_devdata(spi->master);
-+	u16 ctrlr0 = readw(dwspi->regs + DWSPI_CTRLR0);
-+
-+	if (spi->bits_per_word < 4 || spi->bits_per_word > 16) {
-+		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
-+			__func__, spi->bits_per_word);
-+		return -EINVAL;
-+	} else {
-+		ctrlr0 &= ~DWSPI_CTRLR0_DFS_MASK;
-+		ctrlr0 |= spi->bits_per_word - 1;
-+
-+		dwspi->bits_per_word = spi->bits_per_word;
-+	}
-+
-+	/* Set the SPI clock phase and polarity */
-+	if (spi->mode & SPI_CPHA)
-+		ctrlr0 |= DWSPI_CTRLR0_SCPH;
-+	else
-+		ctrlr0 &= ~DWSPI_CTRLR0_SCPH;
-+	if (spi->mode & SPI_CPOL)
-+		ctrlr0 |= DWSPI_CTRLR0_SCPOL;
-+	else
-+		ctrlr0 &= ~DWSPI_CTRLR0_SCPOL;
-+
-+	writew(ctrlr0, dwspi->regs + DWSPI_CTRLR0);
-+
-+	/* set speed */
-+	dwspi_baudcfg(dwspi, spi->max_speed_hz);
-+
-+	return 0;
-+}
-+
-+static int designware_spi_setup(struct spi_device *spi)
-+{
-+	long gpio = (long) spi->controller_data;
-+	u8 modebits = SPI_CPOL | SPI_CPHA;
-+	int retval;
-+
-+	if (!spi->bits_per_word)
-+		spi->bits_per_word = 8;
-+
-+	if (gpio >= 0)
-+		modebits |= SPI_CS_HIGH;
-+
-+	if (spi->mode & ~modebits) {
-+		dev_err(&spi->dev, "%s, unsupported mode bits %x\n",
-+			__func__, spi->mode & ~modebits);
-+		return -EINVAL;
-+	}
-+
-+	if (spi->chip_select > spi->master->num_chipselect) {
-+		dev_err(&spi->dev,
-+				"setup: invalid chipselect %u (%u defined)\n",
-+				spi->chip_select, spi->master->num_chipselect);
-+		return -EINVAL;
-+	}
-+
-+	if (gpio >= 0 && (long) spi->controller_state == 0) {
-+		retval = gpio_request(gpio, dev_name(&spi->dev));
-+		if (retval)
-+			return retval;
-+		gpio_direction_output(gpio, !(spi->mode & SPI_CS_HIGH));
-+		spi->controller_state = (void *) 1;
-+	}
-+
-+	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
-+		__func__, spi->mode & modebits, spi->bits_per_word, 0);
-+
-+	return 0;
-+}
-+
-+static void designware_spi_do_tx(struct designware_spi *dwspi)
-+{
-+	u8 sr;
-+	int bytes_to_tx = dwspi->remaining_tx_bytes;
-+	u8 valid_bytes = readb(dwspi->regs + DWSPI_TXFLR) +
-+		readb(dwspi->regs + DWSPI_RXFLR);
-+	int tx_limit = min(dwspi->tx_fifo_depth - valid_bytes,
-+			dwspi->rx_fifo_depth - valid_bytes) - 2;
-+
-+	/* Fill the Tx FIFO with as many bytes as possible */
-+	sr = readb(dwspi->regs + DWSPI_SR);
-+	while ((sr & DWSPI_SR_TFNF_MASK) && dwspi->remaining_tx_bytes > 0) {
-+		if (dwspi->bits_per_word <= 8) {
-+			u8 dr = (dwspi->tx_ptr) ? *dwspi->tx_ptr++ : 0;
-+
-+			writeb(dr, dwspi->regs + DWSPI_DR);
-+			dwspi->remaining_tx_bytes--;
-+		} else {
-+			u16 dr = (dwspi->tx_ptr) ? *(u16 *) dwspi->tx_ptr : 0;
-+
-+			dwspi->tx_ptr += 2;
-+			writew(dr, dwspi->regs + DWSPI_DR);
-+			dwspi->remaining_tx_bytes -= 2;
-+		}
-+		if (--tx_limit <= 0)
-+			break;
-+		sr = readb(dwspi->regs + DWSPI_SR);
-+	}
-+
-+	dwspi->tx_count += bytes_to_tx - dwspi->remaining_tx_bytes;
-+}
-+
-+/* Return 1 when done, 0 otherwise
-+ * In the special case of nothing to tx return EMPTY_TX
-+ */
-+static int designware_spi_fill_tx_fifo(struct designware_spi *dwspi)
-+{
-+	unsigned cs_change = 0;
-+	int empty_tx = 1;
-+
-+	list_for_each_entry_from(dwspi->tx_t, dwspi->transfers_list,
-+		transfer_list) {
-+		if (cs_change)
-+			break;
-+
-+		if (dwspi->remaining_tx_bytes == 0) {
-+			/* Initialize new spi_transfer */
-+			dwspi->tx_ptr = dwspi->tx_t->tx_buf;
-+			dwspi->remaining_tx_bytes = dwspi->tx_t->len;
-+			dwspi->status = 0;
-+
-+			/* can't change speed or bits in the middle of a
-+			 * message. must disable the controller for this.
-+			 */
-+			if (dwspi->tx_t->speed_hz
-+					|| dwspi->tx_t->bits_per_word) {
-+				dwspi->status = -ENOPROTOOPT;
-+				break;
-+			}
-+
-+			if (!dwspi->tx_t->tx_buf && !dwspi->tx_t->rx_buf
-+					&& dwspi->tx_t->len) {
-+				dwspi->status = -EINVAL;
-+				break;
-+			}
-+		}
-+
-+		if (dwspi->remaining_tx_bytes > 0) {
-+			designware_spi_do_tx(dwspi);
-+			empty_tx = 0;
-+		}
-+
-+		/* Don't advance dwspi->tx_t, we'll get back to this
-+		 * spi_transfer later
-+		 */
-+		if (dwspi->remaining_tx_bytes > 0)
-+			return 0;
-+
-+		cs_change = dwspi->tx_t->cs_change;
-+	}
-+
-+	complete(&dwspi->done);
-+	if (empty_tx)
-+		return EMPTY_TX;
-+	else
-+		return 1;
-+}
-+
-+static void designware_spi_do_rx(struct designware_spi *dwspi)
-+{
-+	u8 sr;
-+	int bytes_to_rx = dwspi->remaining_rx_bytes;
-+
-+	sr = readb(dwspi->regs + DWSPI_SR);
-+
-+	if (sr & DWSPI_SR_RFF_MASK) {
-+		dev_err(dwspi->dev, "%s: RX FIFO overflow\n", __func__);
-+		dwspi->status = -EIO;
-+		return;
-+	}
-+
-+	/* Read as long as RX FIFO is not empty */
-+	while ((sr & DWSPI_SR_RFNE_MASK) != 0
-+			&& dwspi->remaining_rx_bytes > 0) {
-+		int rx_level = readl(dwspi->regs + DWSPI_RXFLR);
-+
-+		while (rx_level-- && dwspi->remaining_rx_bytes > 0) {
-+			if (dwspi->bits_per_word <= 8) {
-+				u8 data;
-+
-+				data = readb(dwspi->regs + DWSPI_DR);
-+				dwspi->remaining_rx_bytes--;
-+				if (dwspi->rx_ptr)
-+					*dwspi->rx_ptr++ = data;
-+			} else {
-+				u16 data;
-+
-+				data = readw(dwspi->regs + DWSPI_DR);
-+				dwspi->remaining_rx_bytes -= 2;
-+				if (dwspi->rx_ptr) {
-+					*(u16 *) dwspi->rx_ptr = data;
-+					dwspi->rx_ptr += 2;
-+				}
-+			}
-+		}
-+		sr = readb(dwspi->regs + DWSPI_SR);
-+	}
-+
-+	dwspi->rx_count += (bytes_to_rx - dwspi->remaining_rx_bytes);
-+}
-+
-+/* return 1 if cs_change is true, 0 otherwise */
-+static int designware_spi_read_rx_fifo(struct designware_spi *dwspi)
-+{
-+	unsigned cs_change = 0;
-+
-+	list_for_each_entry_from(dwspi->rx_t, dwspi->transfers_list,
-+			transfer_list) {
-+		if (cs_change)
-+			break;
-+
-+		if (dwspi->remaining_rx_bytes == 0) {
-+			dwspi->rx_ptr = dwspi->rx_t->rx_buf;
-+			dwspi->remaining_rx_bytes = dwspi->rx_t->len;
-+		}
-+
-+		designware_spi_do_rx(dwspi);
-+
-+		/* The rx buffer is filling up with more bytes. Don't advance
-+		 * dwspi->rx_t, as we have more bytes to read in this
-+		 * spi_transfer.
-+		 */
-+		if (dwspi->remaining_rx_bytes > 0)
-+			return 0;
-+
-+		cs_change = dwspi->rx_t->cs_change;
-+	}
-+
-+	return cs_change;
-+}
-+
-+/* interate through the list of spi_transfer elements.
-+ * stop at the end of the list or when t->cs_change is true.
-+ */
-+static void designware_spi_do_transfers(struct designware_spi *dwspi)
-+{
-+	int tx_done, cs_change = 0;
-+
-+	init_completion(&dwspi->done);
-+
-+	/* transfer kickoff */
-+	tx_done = designware_spi_fill_tx_fifo(dwspi);
-+	designware_spi_chipselect(dwspi->spi, 1);
-+
-+	if (!tx_done) {
-+		/* Enable the transmit empty interrupt, which we use to
-+		 * determine progress on the transmission in case we're
-+		 * not done yet.
-+		 */
-+		writeb(DWSPI_IMR_TXEIM_MASK, dwspi->regs + DWSPI_IMR);
-+
-+		/* wait for tx completion */
-+		wait_for_completion(&dwspi->done);
-+	} else {
-+		u8 sr;
-+		int timeout = 10;
-+
-+		if (tx_done == EMPTY_TX)
-+			goto no_rx;
-+
-+		/* make sure that the transfer is actually underway */
-+		sr = readb(dwspi->regs + DWSPI_SR);
-+		while (!(sr & (DWSPI_SR_BUSY_MASK | DWSPI_SR_RFNE_MASK))) {
-+			if (timeout-- < 0) {
-+				dev_err(dwspi->dev,
-+						"%s: transfer timed out\n",
-+						__func__);
-+				break;
-+			}
-+			udelay(10);
-+			sr = readb(dwspi->regs + DWSPI_SR);
-+		}
-+	}
-+
-+
-+	/* get remaining rx bytes */
-+	do {
-+		cs_change = designware_spi_read_rx_fifo(dwspi);
-+	} while (readb(dwspi->regs + DWSPI_SR) &
-+			(DWSPI_SR_BUSY_MASK | DWSPI_SR_RFNE_MASK));
-+
-+no_rx:
-+	/* transaction is done */
-+	designware_spi_chipselect(dwspi->spi, 0);
-+
-+	if (dwspi->status < 0)
-+		return;
-+
-+	if (!cs_change && (dwspi->remaining_rx_bytes > 0 ||
-+			dwspi->remaining_tx_bytes > 0)) {
-+		dev_err(dwspi->dev, "%s: remaining_rx_bytes = %d, "
-+				"remaining_tx_bytes = %d\n",
-+				__func__,  dwspi->remaining_rx_bytes,
-+				dwspi->remaining_tx_bytes);
-+		dwspi->status = -EIO;
-+		return;
-+	}
-+
-+	if (dwspi->rx_count != dwspi->tx_count) {
-+		dev_err(dwspi->dev, "%s: rx_count == %d, tx_count == %d\n",
-+				__func__, dwspi->rx_count, dwspi->tx_count);
-+		dwspi->status = -EIO;
-+		return;
-+	}
-+}
-+
-+static int designware_spi_transfer(struct spi_device *spi,
-+		struct spi_message *mesg)
-+{
-+	struct designware_spi *dwspi = spi_master_get_devdata(spi->master);
-+
-+	mesg->actual_length = 0;
-+	mesg->status = -EINPROGRESS;
-+
-+	/* we can't block here, so we use a spinlock
-+	 * here instead of the global mutex
-+	 */
-+	spin_lock(&dwspi->qlock);
-+	list_add_tail(&mesg->queue, &dwspi->queue);
-+	queue_work(dwspi->workqueue, &dwspi->work);
-+	spin_unlock(&dwspi->qlock);
-+
-+	return 0;
-+}
-+
-+static void designware_work(struct work_struct *work)
-+{
-+	struct designware_spi *dwspi = container_of(work,
-+			struct designware_spi, work);
-+
-+	mutex_lock(&dwspi->lock);
-+	spin_lock(&dwspi->qlock);
-+
-+	while (!list_empty(&dwspi->queue)) {
-+		struct spi_message *m;
-+
-+		m = container_of(dwspi->queue.next, struct spi_message, queue);
-+		list_del_init(&m->queue);
-+		spin_unlock(&dwspi->qlock);
-+
-+		dwspi->spi = m->spi;
-+		dwspi->tx_t = dwspi->rx_t =
-+			list_first_entry(&m->transfers, struct spi_transfer,
-+					transfer_list);
-+
-+		/*
-+		 * Interate through groups of spi_transfer structs
-+		 * that are separated by cs_change being true
-+		 */
-+		dwspi->transfers_list = &m->transfers;
-+		do {
-+			dwspi->remaining_tx_bytes =
-+				dwspi->remaining_rx_bytes = 0;
-+			dwspi->tx_count = dwspi->rx_count = 0;
-+			dwspi->status =
-+				designware_spi_setup_transfer(m->spi);
-+			dwspi_enable(dwspi, 1);
-+			designware_spi_do_transfers(dwspi);
-+			dwspi_enable(dwspi, 0);
-+			if (dwspi->status < 0)
-+				break;
-+			m->actual_length +=
-+				dwspi->tx_count; /* same as rx_count */
-+		} while (&dwspi->tx_t->transfer_list != &m->transfers);
-+
-+		m->status = dwspi->status;
-+		m->complete(m->context);
-+
-+		spin_lock(&dwspi->qlock);
-+	}
-+	spin_unlock(&dwspi->qlock);
-+	mutex_unlock(&dwspi->lock);
-+}
-+
-+static void designware_pump_transfers(unsigned long data)
-+{
-+	struct designware_spi *dwspi = (struct designware_spi *) data;
-+	long gpio = (long) dwspi->spi->controller_data;
-+
-+	designware_spi_read_rx_fifo(dwspi);
-+	if (gpio < 0 && (readb(dwspi->regs + DWSPI_SR) & DWSPI_SR_TFE_MASK)) {
-+		printk("%s: TX FIFO empty, transfer aborted\n", __func__);
-+		dwspi->status = -EIO;
-+		complete(&dwspi->done);
-+		return;
-+	}
-+	if (!designware_spi_fill_tx_fifo(dwspi))
-+		/* reenable the interrupt */
-+		writeb(DWSPI_IMR_TXEIM_MASK, dwspi->regs + DWSPI_IMR);
-+}
-+
-+static irqreturn_t designware_spi_irq(int irq, void *dev_id)
-+{
-+	struct designware_spi *dwspi = dev_id;
-+
-+	tasklet_hi_schedule(&dwspi->pump_transfers);
-+	/* disable the interrupt for now */
-+	writeb(0, dwspi->regs + DWSPI_IMR);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static void designware_spi_cleanup(struct spi_device *spi)
-+{
-+	long gpio = (long) spi->controller_data;
-+
-+	if (gpio >= 0) {
-+		gpio_free(gpio);
-+		spi->controller_state = (void *) 0;
-+	}
-+}
-+
-+static int __init designware_spi_probe(struct platform_device *dev)
-+{
-+	int ret = 0;
-+	struct spi_master *master;
-+	struct designware_spi *dwspi;
-+	struct designware_platform_data *pdata;
-+	struct resource *r;
-+
-+	pdata = dev->dev.platform_data;
-+	if (pdata == NULL) {
-+		dev_err(&dev->dev, "no device data specified\n");
-+		return -EINVAL;
-+	}
-+
-+	/* Get resources(memory, IRQ) associated with the device */
-+	master = spi_alloc_master(&dev->dev, sizeof(struct designware_spi));
-+	if (master == NULL)
-+		return -ENOMEM;
-+
-+	master->num_chipselect = pdata->num_chipselect;
-+	master->setup = designware_spi_setup;
-+	master->transfer = designware_spi_transfer;
-+	master->cleanup = designware_spi_cleanup;
-+	platform_set_drvdata(dev, master);
-+
-+	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (r == NULL) {
-+		ret = -ENODEV;
-+		goto put_master;
-+	}
-+
-+	dwspi = spi_master_get_devdata(master);
-+	dwspi->ssi_clk = pdata->ssi_clk;
-+	dwspi->tx_fifo_depth = pdata->tx_fifo_depth;
-+	dwspi->rx_fifo_depth = pdata->rx_fifo_depth;
-+	dwspi->dev = &dev->dev;
-+	spin_lock_init(&dwspi->qlock);
-+	mutex_init(&dwspi->lock);
-+	INIT_LIST_HEAD(&dwspi->queue);
-+	INIT_WORK(&dwspi->work, designware_work);
-+	dwspi->workqueue =
-+		create_singlethread_workqueue(dev_name(master->dev.parent));
-+	if (dwspi->workqueue == NULL) {
-+		ret = -EBUSY;
-+		goto put_master;
-+	}
-+	tasklet_init(&dwspi->pump_transfers, designware_pump_transfers,
-+			(unsigned long) dwspi);
-+
-+	if (!request_mem_region(r->start,
-+			r->end - r->start + 1, DESIGNWARE_SPI_NAME)) {
-+		ret = -ENXIO;
-+		goto destroy_wq;
-+	}
-+
-+	dwspi->regs = ioremap(r->start, r->end - r->start + 1);
-+	if (dwspi->regs == NULL) {
-+		ret = -ENOMEM;
-+		goto destroy_wq;
-+	}
-+
-+	dwspi->irq = platform_get_irq(dev, 0);
-+	if (dwspi->irq < 0) {
-+		ret = -ENXIO;
-+		goto unmap_io;
-+	}
-+
-+	/* SPI controller initializations */
-+	dwspi_init_hw(dwspi);
-+
-+	/* Register for SPI Interrupt */
-+	ret = request_irq(dwspi->irq, designware_spi_irq, 0,
-+			DESIGNWARE_SPI_NAME, dwspi);
-+	if (ret != 0)
-+		goto unmap_io;
-+
-+	ret = spi_register_master(master);
-+    if (ret < 0)
-+		goto free_irq;
-+
-+	dev_info(&dev->dev, "at 0x%08X mapped to 0x%08X, irq=%d\n",
-+			r->start, (u32)dwspi->regs, dwspi->irq);
-+
-+	return ret;
-+
-+free_irq:
-+	free_irq(dwspi->irq, dwspi);
-+unmap_io:
-+	iounmap(dwspi->regs);
-+destroy_wq:
-+	destroy_workqueue(dwspi->workqueue);
-+put_master:
-+	spi_master_put(master);
-+	return ret;
-+}
-+
-+static int __devexit designware_spi_remove(struct platform_device *dev)
-+{
-+	struct designware_spi *dwspi;
-+	struct spi_master *master;
-+
-+	master = platform_get_drvdata(dev);
-+	dwspi = spi_master_get_devdata(master);
-+
-+	free_irq(dwspi->irq, dwspi);
-+	iounmap(dwspi->regs);
-+	destroy_workqueue(dwspi->workqueue);
-+	tasklet_kill(&dwspi->pump_transfers);
-+	platform_set_drvdata(dev, 0);
-+	spi_master_put(master);
-+
-+	return 0;
-+}
-+
-+/* work with hotplug and coldplug */
-+MODULE_ALIAS("platform:" DESIGNWARE_SPI_NAME);
-+
-+static struct platform_driver designware_spi_driver = {
-+    .probe  = designware_spi_probe,
-+	.remove	= __devexit_p(designware_spi_remove),
-+	.driver = {
-+		.name = DESIGNWARE_SPI_NAME,
-+		.owner = THIS_MODULE,
-+	},
-+};
-+
-+static int __init designware_spi_init(void)
-+{
-+	return platform_driver_register(&designware_spi_driver);
-+}
-+module_init(designware_spi_init);
-+
-+static void __exit designware_spi_exit(void)
-+{
-+	platform_driver_unregister(&designware_spi_driver);
-+}
-+module_exit(designware_spi_exit);
-+
-+MODULE_AUTHOR("Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>");
-+MODULE_DESCRIPTION("Synopsys DesignWare SPI driver");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/spi/designware.h b/include/linux/spi/designware.h
-new file mode 100644
-index 0000000..26427cd
---- /dev/null
-+++ b/include/linux/spi/designware.h
-@@ -0,0 +1,10 @@
-+/*
-+ * designware.h - platform glue for the Synopsys DesignWare SPI controller
-+ */
-+
-+struct designware_platform_data {
-+	unsigned int	ssi_clk;	/* clock in Hz */
-+	unsigned int	tx_fifo_depth;	/* bytes in TX FIFO */
-+	unsigned int	rx_fifo_depth;	/* bytes in RX FIFO */
-+	u16		num_chipselect;	/* number of CSs */
-+};
--- 
-1.6.2.4
-
+-------10D2F40E11549238200CEF04D91BFB05B2588F
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Crystal Reports - New Free Runtime and 30 Day Trial
@@ -810,3 +236,15 @@ Check out the new simplified licensing option that enables
 unlimited royalty-free distribution of the report engine 
 for externally facing server and web deployment. 
 http://p.sf.net/sfu/businessobjects
+-------10D2F40E11549238200CEF04D91BFB05B2588F
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+-------10D2F40E11549238200CEF04D91BFB05B2588F--

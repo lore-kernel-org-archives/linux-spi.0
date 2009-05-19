@@ -1,12 +1,13 @@
-From: "Partners Finance par MailandGo" <RET-XTC-DS5R-R7CXD-DD-LOGSA@R.Ems7.net>
-Subject: Notre nouvelle proposition...
-Date: Tue, 19 May 2009 18:51:12 +0200
-Message-ID: <a7f68cbf9a0e41f88c6db82980f681ca@R.Ems7.net>
-Reply-To: RET-XTC-DS5R-R7CXD-DD-LOGSA@R.Ems7.net
+From: "=?utf-8?B?Q3JlZGlzc2ltYSAtIHRvdXQgc3Vy?=
+	=?utf-8?B?IGwndW5pdmVycyBkdSBjcmVkaXR=?=" <service-clients-iADE4Gjp4wnQT0dZR+AlfA@public.gmane.org>
+Subject: =?utf-8?q?Regroupez_tous_vos_credits_en_1_seu?=
+ =?utf-8?q?l_a_taux_fixe?=
+Date: Tue, 19 May 2009 23:58:50 +0200
+Message-ID: <20090519-23585020-8ac-0@s14.netnoe.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6167484145681922772=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="--=9ADBC111691D4AB4B391_4442_AC64_6F1D"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,107 +19,76 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6167484145681922772==
-Content-type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+----=9ADBC111691D4AB4B391_4442_AC64_6F1D
+Content-Type: text/html;charset="utf-8"
+Content-Transfer-Encoding: Quoted-Printable
 
-<div align=3D"center"><font face=3D"arial" size=3D"1">Si ce message ne =
-s'affiche pas correctement, <a href=3D"http://ems6=2Enet/a/?E=3DXTC-DS5=
-R-R7CXD-DD-LOGSA" target=3D"_blank">cliquez ici</a></font></div>
+<table border=3D0 cellpadding=3D0 cellspacing=3D0 width=3D100%><tr><td =
+align=3D"center"><font face=3D"Arial, Helvetica, sans-serif" size=3D"1"=
+ color=3D"#000000">Si vous ne parvenez pas &agrave; lire cet email, cli=
+quez sur ce lien :<br/><a href=3D"http://www.emailstrategie-s14.com/red=
+irect.asp?id_email=3Dc9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40682">=
+<font color=3D"#0000FF">http://www.emailstrategie-s14.com/fr/v.asp?id_m=
+essage=3D559646b46011d85202427cdcf61e4c23&id_email=3Dc9d45ac9940a11fa49=
+44739a4f78f6af</font></a></font></td></tr></table><!DOCTYPE HTML PUBLIC=
+ "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Credissima - tout sur l'univers du credit -- Regroupez tous vos =
+credits en 1 seul a taux fixe</TITLE>
+<META http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-as=
+cii">
+</HEAD>
+<BODY text=3D"#003366" link=3D"#333366">
+<DIV align=3D"center">
+<TABLE width=3D"750" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+<TR>
+<TD width=3D"750" valign=3D"top">
+<TABLE width=3D"100%" border=3D"0">
+<TR>
+<TD align=3D"center"><A href=3D"http://www.emailstrategie-s14.com/redir=
+ect.asp?id_email=3Dc9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40683" ta=
+rget=3D"_blank"><img src=3D"http://nodes.reactivpub.fr/scripts/aff.php?=
+params=3D486|11064|10193" border=3D"0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD colspan=3D"3">
+<DIV align=3D"center">
+<P class=3D"formulairecomments"><FONT size=3D"1" face=3D"Arial, Helveti=
+ca, sans-serif">&copy; CAPD&Eacute;CISION, Tous droits r&eacute;serv&ea=
+cute;s<BR>
+Conform&eacute;ment &agrave; l'article 34 de la loi Informatique et Lib=
+ert&eacute;<BR>
+du 6 janvier 1978, vous disposez d'un droit d'acc&egrave;s, de modifica=
+tion, de rectification et de suppression<BR>
+des donn&eacute;es vous concernant.&nbsp;&nbsp;&nbsp; D&eacute;claratio=
+n CNIL n&deg;1291376</FONT></P>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+</DIV>
+</BODY>
+</HTML>
+<br>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">=
 
+<tr><td align=3D"center">
+<FONT size=3D"1" face=3D"Arial, Helvetica, sans-serif"><BR>
+Vous recevez cet e-mail car vous etes r&#233;f&#233;renc&#233; sur la b=
+ase de donn&#233;es de notre partenaire Avent Media.<BR>
+Si vous souhaitez vous d&#233;sinscrire, merci d'utiliser, <a href=3D"h=
+ttp://www.emailstrategie-s14.com/unsuscribe.asp?lang=3Dfrancais&id_form=
+ulaire=3D32&email=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&id_message=3D=
+1742">le lien suivant.</a><FONT>
+</td></tr></table>
+<br><img src=3D"http://www.emailstrategie-s14.com/fr/images/open.gif?id=
+_message=3D1742&id_email=3D23970436"/>
 
-
-<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
-  <tbody><tr>
-    <td><div align=3D"center"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-D=
-S5R-R7CXD-DD-LOGSA-5BT"><img src=3D"http://nodes=2Ereactivpub=2Efr/uplo=
-ads/visuels/3014/443/kits/basset-1=2Egif" border=3D"0" width=3D"640" he=
-ight=3D"35"></a></div></td>
-  </tr>
-  <tr>
-    <td><div align=3D"center"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-D=
-S5R-R7CXD-DD-LOGSA-X24"><img src=3D"http://nodes=2Ereactivpub=2Efr/uplo=
-ads/visuels/3014/443/kits/basset-2=2Egif" border=3D"0" width=3D"640" he=
-ight=3D"250"></a></div></td>
-  </tr>
-  <tr>
-    <td><div align=3D"center"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-D=
-S5R-R7CXD-DD-LOGSA-XDU"><img src=3D"http://nodes=2Ereactivpub=2Efr/uplo=
-ads/visuels/3014/443/kits/basset-3=2Egif" border=3D"0" width=3D"640" he=
-ight=3D"200"></a></div></td>
-  </tr>
-  <tr>
-    <td><div align=3D"center"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-D=
-S5R-R7CXD-DD-LOGSA-XFV"><img src=3D"http://nodes=2Ereactivpub=2Efr/uplo=
-ads/visuels/3014/443/kits/basset-4=2Egif" border=3D"0" width=3D"640" he=
-ight=3D"120"></a></div></td>
-  </tr>
-  <tr>
-    <td>
-=09<div id=3D"mentions" align=3D"center">
-=09  <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"5=
-96">
-        <tbody><tr>
-          <td width=3D"596"><font size=3D"1" face=3D"Arial, Helvetica, =
-sans-serif"><strong>Aucun versement, de quelque  nature que ce soit ne =
-peut =EAtre exig=E9 d'un particulier, avant  l'obtention d'un ou de plu=
-sieurs pr=EAt(s) d'argent=2E</strong><br>
-              *  TEG r=E9visable=2E<br>
-              ** TEG fixe=2E <br>
-              (1)  Sous r=E9serve d'acceptation du dossier par Sygma Ba=
-nque et apr=E8s d=E9lai  de r=E9tractation en vigueur=2E Conditions en =
-vigueur au 01/01/2009=2E Le TEG  est calcul=E9 hors assurance facultati=
-ve=2E<br>
-              (2) Nombre de mensualit=E9s si aucun retirage n'est effec=
-tu=E9 et hors assurance du compte=2E <br>
-              (3)  Montant correspondant au remboursement des cr=E9dits=
- en cours, =E0 la  tr=E9sorerie mise =E0 disposition et au paiement des=
- frais de dossier, de  mandat et de notaire=2E <br>
-              (4) Le co=FBt total de  l'op=E9ration =E0 cr=E9dit compre=
-nd les frais de dossier de 1 500 ?, les  frais de mandat de 3 374 ?, le=
-s frais de notaire de 2 282 ? hors  assurance facultative=2E <br>
-              (5) La baisse de  mensualit=E9s doit s'appr=E9cier par ra=
-pport =E0 la dur=E9e restant =E0 courir  sur les pr=EAts objets du regr=
-oupement de cr=E9dit=2E <br>
-              Conform=E9ment  =E0 la loi =AB informatique et libert=E9 =
-=BB du 6 janvier 1978, vous disposerez  d'un droit d'acc=E8s, de rectif=
-ication, de suppression et d'opposition  sur les donn=E9es personnelles=
- vous concernant=2E Il vous suffit pour  l'exercer, de nous =E9crire =E0=
- l'adresse suivante : MB Finances, 16 rue  Victor Hugo - BP 70583 - 540=
-09 NANCY CEDEX=2E <br>
-              <br>
-              <strong>Partners Finances mandat=E9 par Sygma Banque=2E<b=
-r>
-              Sygma Banque - SA au capital de 158 637 884 ? - 66, rue d=
-es Archives 75003 Paris - SIREN 327 511 036 RCS Paris<br>
-            Partners Finances - SAS au capital de 1=2E000=2E000 ? - 16,=
- rue Victor Hugo  BP 70583 54009 Nancy Cedex - RCS Nancy N=B0B 404 681 =
-496 </strong></font> </td>
-        </tr>
-      </tbody></table>
-      <p align=3D"left"><strong><br>
-      </strong></p>
-=09</div>
-=09<div align=3D"center"><a href=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R=
-7CXD-DD-LOGSA-XAY"><img src=3D"http://nodes=2Ereactivpub=2Efr/uploads/v=
-isuels/3014/443/kits/basset-5=2Egif" border=3D"0" width=3D"640" height=3D=
-"104"></a></div></td>
-  </tr>
-</tbody></table>
-<img src=3D"http://nm=2Eeulerian=2Enet/view/partners-finances/9WEzt=2EN=
-g_QO_4I=2Elc2tpa__6gblgFUpa1Weqpf3XKjY-/pix=2Egif" border=3D"0" width=3D=
-"1" height=3D"1"><img src=3D"http://nodes=2Ereactivpub=2Efr/mailing-443=
--12099-14521&group=3D" border=3D"0" height=3D"1" width=3D"1"/><div alig=
-n=3D"center"><font face=3D"arial" size=3D"1"><A href=3D"http://ems6=2En=
-et/u/?E=3DRET-XTC-DS5R-R7CXD-DD-LOGSA&EMail=3Dspi-devel-general@lists=2E=
-sourceforge=2Enet" target=3D"_blank">Cliquez ici</A> pour vous d=E9sabo=
-nner ( spi-devel-general@lists=2Esourceforge=2Enet )<BR></font></div><I=
-MG SRC=3D"http://ems6=2Enet/r/?E=3DXTC-DS5R-R7CXD-DD-LOGSA-2" width=3D"=
-1" height=3D"1">
-
-
-
---===============6167484145681922772==
+----=9ADBC111691D4AB4B391_4442_AC64_6F1D
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,7 +100,7 @@ Check out the new simplified licensing option that enables
 unlimited royalty-free distribution of the report engine 
 for externally facing server and web deployment. 
 http://p.sf.net/sfu/businessobjects
---===============6167484145681922772==
+----=9ADBC111691D4AB4B391_4442_AC64_6F1D
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -141,4 +111,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6167484145681922772==--
+----=9ADBC111691D4AB4B391_4442_AC64_6F1D--

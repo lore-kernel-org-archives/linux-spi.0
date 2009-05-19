@@ -1,12 +1,11 @@
-From: Conaway Bredow <bedlamize-w/o5vO4odUByDzI6CaY1VQ@public.gmane.org>
-Subject: [SPAM] 5 Ways to Turn Upp the Heat in Your Love
-	Relationship or Marriage
-Date: Tue, 19 May 2009 07:59:20 +0000
-Message-ID: <0285AA157F1BEDB20CDCDB844399E1084C5D8A@syspart.ch>
+From: AFER- Epargne Actuelle <newsletter-kYZS1+sBsfoAvxtiuMwx3w@public.gmane.org>
+Subject: Securisez votre avenir avec l'assurance vie AFER
+Date: 19 May 2009 08:33:57 -0000
+Message-ID: <20090519083357.27908.qmail@ks35158.kimsufi.com>
+Reply-To: AFER- Epargne Actuelle <newsletter-kYZS1+sBsfoAvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="-----10D2F40E11549238200CEF04D91BFB05B2588F"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5090038480943061903=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,213 +17,146 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
--------10D2F40E11549238200CEF04D91BFB05B2588F
-Content-Type: image/png;
- name="Conaway.png"
-Content-Transfer-Encoding: base64
-Content-Disposition: inline;
- filename="Conaway.png"
 
-iVBORw0KGgoAAAANSUhEUgAAAWwAAAGtCAMAAAAF9b6aAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
-U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAADAUExURSFoBP7Lzbp0dFtpYN6dHdHU00yX
-08LCo9qdpxY6IdhWWPSuzJmZZp/P6WJlm6mysteqVJ1lIKijwuPj5f38+5mXmGaZZvb19OfGe7TA
-vPDEFPXk+Mzk84cODnSGfr2FItc7O/HetSEsX5s2NvLV3zZTQakLFbMqM8+AivDq556npO/x9Ojs
-7/P1+YeckPj4+Nzc3LhETKwWIJsDkplmmAAA/2m44vbu/AAAZgAAmcwAAP8AAAAAAP///8zMzPn6
-/u835WIAACrKSURBVHja7J0JQ+I6F4aByr3gqKAUkXEGxxlRERX006lL0v7/f/Vl37tB2byJQpd0
-SZ+evjlNDm0tUtP5eVQ2nefNPi+6fvl9L1vIdadaoqYoSsqmKG92VHT98vtetpDrTh62h+1he9ge
-toftYXvYHraH7WF72B62h+1he9getoftYf8nYH/qSZsjlqVT+jzXupFjXZ0Dy3Uv+Jk3l2Vk7EVf
-NmuhJLWYSS4YYwef1cE2t/y5OGyRuzjsz/Kw3ZtLskq6ItiJZTeJE/WnMe7EEyUZu1dXj5IkB2tS
-xLZzIDlOS/bhZGxJTCfLwE6h7SicYpnpsJPU0qtLRkrh05GmGWzWXpLMiyBrqhhs5w5csFP6INUD
-4dNWFllFn9RXFf1/MldL2pLncpaygLm5yFVCWUh355/jYMSUsfmUvaVsKbI2YtIq1Af5aV16KYb7
-mabnimUn7jOtL6lIWIZIpmV9pu7FLpJbVD4z6ohMy3bvoJTrZ4n+BmBbeqivbCrJBmAn5hY/lbmL
-wc6S5Kphm0DTqkgr73MB2J9Lw06KrJV/U5NyBa8RtvsaVWGnmsSuwU4xqfXCzixHjqpvH+ysiCin
-I/CZ6o18lvVGPh3eiJHt8oxEru2VRKW9kc9Ub+SziDeSPbtMRNRmLNu1Ibecpd0TrLOCrEpGcm+V
-Ddjlb2oyvZHPgrCTpWCn3uJ8JtsAu/wd5GcJ2E5fNc0rKnqoq7uDXDnsvMYEZ7tPblsDgm1bXzrs
-lPwCiCptG6kI9udngdu3JPtkZDbLmMtGqQ2mxVsh83S28la/pLD7uTjs3AZg171naru+CttlqgUa
-VMvCrqo9uyLYvqfGd4t52B62h+1he9getoftYXvYHraH7WF72B62h+1hbxb2Y7t9x8dH7Xa7xyfa
-7bHIi0ReZOVp60UkTxKJR+N2O+jMrN0+tGUqOEOBPb0L0HbHwd1U3WQH76wdjJqJPAallCgNcf4G
-Ycft9oiPj5WyNdH8Ic+LRF5k5WnrRSRPwH5ksMY9c7dNE2X+DHlcjyJjPJQgx2JuMFdgj5U1RxuG
-PZXFIYfHCd61250HnheJvMjK09aLSB6HjaGcDmM0GN8bu0WLDZssFZzB032Atoc2G98FinEQjnfD
-5vARQx9K2PJaTWbtSmEv8HAXVOIeHUNQ0IScPRd55zhvhPPOrbxI5JEFSR4NZcAnIcbjaCQw9joS
-Oyo8QynwiO35ju8BLz2OIzl3SMYI7EexZofA3uTDXR6FHQRIXdvtJpeGscyLRF5k5WnrRTRPyPyd
-sOO5vtfAtLD8GfKaGKmFHzMxDqaqRo2n1LKRtgeKigSblREp2kgYHnvoQybmSABkXoTz7nFeZOUl
-Ig8vSPOEzD+wK59vVqm6TsvOYNXgmIEU1UWTDu71E/LIYJ9KHUGK2dkw7ITvH1lHM+KGcEftluVF
-OC/BeZGVl4g8vOAdt3fpl1Am+jH2mLKXmMFSRz9vndPhlJz4R+OMkPOMitiUso4KOt007IAZILok
-SUV/z+qbqczDs8kC95GVl4g8vCDLY7ADCXus7RMd9/ARV3Sj+6IzZEXYtA7BmomKEzN7kLsO0LWy
-adh3rKRjJAvYhIeKKbK8COeR44+svETk0QWDRMrIWPGqTRg8DQvOkLoRuewlMU/mI4P9yHXkAW9p
-07CbtGD3+HrD4jyiF/Gjktcj1yLOi6y8e5FH5fxRwA5EtTg0YQfUKRziYbPYDHmvZR+WeeHgQo0Y
-bKEjHXwlbho2s9QOtgDsdozpRKzk3VHrCMiBGnkdkaeuh2FjF+GBS2jb2CWz1w4T9vwZsoaJUqsd
-9e4h4PP5xRZg/huHTTmN8HeEr7o5EUErj1zazYw8dT1Sk2LJHT5M0b3d2IDdGzal3A4LzSgFO1Fg
-05JhYx9uAWxqt+wGsUm8ACG9Sl7CrsjUPHU9Avue30GPTk1RVdV1VGbG2CUjbVNGelJGuI50yDIb
-h028rCY58RGt7+6Fv6TkJWXy6N3PA7l3Hg+p+Ttvvi1nLGdG4K4gx9bNw6NASxU9IH77xmETTo/E
-Z4towYfyjk/mJaXy+L57zXsu785mpQfz8HNmnOr1ZW/UuScz567bYrom8UfupTO4WdjY7ujdMa3/
-eo/SUmReUiovMozzUYXdG3bm8rI6LTLDcOr0m/fYlB5WR1C0c3y93dGibR42doroMVDPbjiWZZd5
-Sam8CDdmj2ZiwWHKbWCHKE/+DFW0Hyy3Zqw27sm1GVp8XQW0aJuHjaWWXmX0nuVRuVWWeUmpvEjc
-1lOJeTBqCd7AMSYKkD8juyEqbqstJri5caqgxV4UU5/Nw06EbxYRVdSadTS/rXgevUaon32q2yat
-5kacVlBshmrMo6m8EY0F9aa0a3aW2apIR/htzxbAxi3vpxz2UO/e0Ho3HHmnjjzmDONG5mFz6GjX
-7OGNDuMOvj/8UWyG4IQdyvFo2IyJq9NRGgCCu9jsPAhEV9LjtsAe8i6PiNZmah00VPvx8vJGGuyH
-gPdTTa02Au6Cj+dFZwhO90HxbrFAnInmtsC+571HEbuCh3reXL3+h471jDxxm0cMMxi6uuMeSdbd
-Q+EZbdnG1Xwckw7fjlYTDE9Jh+9p07qz7KnX3KZhJ06HzTXbhzJ42B62h+1he9getoftYXvYHraH
-7WF72B62h71jsPe3P31sfSoMe+st+9fWW7aH7WF72DsCG4ovMgLhjsJGBYdG2kLYuJCzwWQyGIQh
-3GXYED7cP6A0vb//8ePHdPtgowKFg8kZT5eXoWLmuwQbwhCxniHU0+n9D0T78HD7YMPZJcXMcU+Y
-RQCU6FBuGo+zaYNBraazYDP4/HXAJnY9nSLMCDRKf39sGWyYDM601P3ePYMurpEC3oGgRjAItDX6
-qVl4Vgh79uMBk8aY/6J/lJJEFhp9k5Fc2JbdsLEazVgGNryUoL+ffUes97pQLSEdY2ZuTquw5WAj
-sBN4j6SakKbpHwt2IcuuRYbdJDr8ZWRk0uWo97pdBLq7d3EGNRtmgCMOWv0YsJNkk5aNKsW/fxXU
-//zVj0A3E0BH1G8B27CbmrrjZSz7klgz+tvDNr33fe/iYpJYsPGm00A7r70aNYiaaiErhv3j/lAj
-/c8/hw7YyodjlrakwLZkhKnIUpZ92SUJmzWWkL2947PEtmxpB24Zsc4/ZlyTg7XAPmSc8TdKf/95
-cFl25L4+I2nabs3mF+lSlo0t+vsesW2ULo73IEwszTZlxKwsaxZsOb4uzT6kBk2MmoweJtJeRI1j
-mo2mKXSb1qHU1JGlNBsR7lLQCPXecTeEujkYF126Ztc2rNlSQNjY1AXbeRSmjKwKdtjd4wmhvjib
-cdi6n50nI9q1V9uEn50c/tXS4YNyc6Zdp8A0HzGRBbsCGUGifbFH/i4ujo+7lws3RC3BtFLNFkm7
-o7HNRjUfXUYsu5F+9vJ3kJfIoBFppNaXsyStZWQHbteTqeL5HZImn5zjsO7ZuGavsIl1dta96HYv
-B3Cnm1hJE9oD02usIdmwgSGE62vPDsPZF2jPJnhJ6whB7Wa96c4DmGgt2jsLu1jyPTUetoftYbtg
-/9r69HXiRj623rI/vo5le9gbgk38behhrwP29P7Hj+kD9mQh9LBXCRuiO/bDv6S39yGB22nZJFaE
-x7XAHYZ9j1tFTjBvRHyr4kaUQ4Hh5PLyDPdGDmY7DDs8/HuC+w1O/mLgfw+3Dzay5cllF5FuEdrd
-y0notO4dgD3DnWEnvAfh5O/D9sEOL7uYNfqn3ZHdswHk7WJ0KDedGqRjJbOPUnYjaP0epB+1VhHs
-+3+UhGz8B9w62F0MusVAd/e6Fxd7Lq6ZQToO1hYk3gEies5qTn5LwJ7+o6e/UClL4SCdKNt2ImE6
-UaJHgNUyTIeVcNKV6eKiizttjgdlgnTUrg9HHIYCW2OsB/RUAvshB/bilq0cTSRMJ9IieZLMo6El
-hFw8cM9Yl3aPXQzKBOkAZjMgO7CEdy5ZxapVqtlqujf6rgsF6eTZjoCNxlwGkwU72aPW3N2TfZFn
-SZkgHbOfOkXYeQ/wCmGHhxTyEVNtVwlzg3TybEeFrUQT2NEmjkMJiTlL0hfHxxe4g714kE5B2LSA
-tWSFsJMfR5phO80hL0gn73Dcmi1iNjJhwwuS9i4oasJaF7q8IJ1isFkFqdYgtRzWC9yu/5Wojw7l
-TU2ZIJ1isJlm20FJ2ZbdvVDS8cUvLNhG3ZgdpCOvuwKw7aqkUtiH0rTVW5oyQTqFYNfSYOd4sZfH
-xwI1St1BArUSFpARxW4st8XtZ9dWBDtU7DqBpjdRKEgnz3bcsGvFYIfdY55+HR9fDko3RBX1vcuH
-8ZRviMKu9hGuII37mRJBOnm249BsNQIs51AGe7+O6d/x2SA9Smdp2Oto9UPu3w8SopMkBVr9nEE6
-eYcjNHvBtpHLLo6Hal2GX6HzAPGGBY4jNUinIOzFW/3CwSDc5bgR3y3mYX9R2D75UAYvIx62h+1h
-rwA2e3gEeyRDuXiLLYONyx/Opr3evHe/pbDDWXg5ucRpkupw7wBsTHrWa/ZPTjonJ/2j/nDLYGOj
-nk0uzwhp9niG0Bk8shNBOr2TI5l+/z4abBfshDwpgBg1Me6zs253AHcT9vQE8f2NMOPGKEpbe+bB
-Eh2+WQtav0KUM2r6oYSX9JkuZ/QPsT5AtJUGrwVDGbIbAAsUrzzs5hFBjdv9cCcChv17mlTS4Zu1
-YE30QSmNxmZzKy3h5VmXPJfhXyIh/3YR6+OLS7hsKEM26yLFKw17jthiq34lQSNHR68Ydk81kUId
-vnZPAzBaW0V/gzwarXCu7j5SQhzIcHDW/ZdH6Bx0L44bxz1Y5nkjhUunws4tXlnY98SuX6lcvxIR
-QenBhF2gw9f8AGs6D3atZl6muITw7ADLxgHlfHBxcNE4Pj6+mJULZShaugzYdvFKwoYn1LCxav+m
-oH//fruDlmUX6fDNOENKD4T1k2AlMsb83T4+lNlFt3GBrPmAcKYdY43jfyEsGcpQrnSFilcWNob7
-LjmT1B9Y117+UxlSOyzVrh3Fsq1H29Qc1yqBjVBfYMoNZNLEqo+PD7qzUqEMxUuXJCWKtwhsJb2h
-z+M0gdkldHT4ukzfEVSgy0gx2NSUcQADAR0g1o0B9gjLPW+kWOmMCrJa2CMT9e+h7Bor1eGbp4oF
-vRFLRuDBsUwB/rpolA9lKFq6PG9kGRlJJowy5vzWRhLyw9m7nv9UBoe7Yvb9ZvjZKY//IIdy9YdS
-JqCP0UQnTKydFpOR/NK5/ez0p5OUc/16v0EbUW5Ttf4R5jdEpTyVQV/eLL5jwQJxA/QO8uDPH2bY
-eNjoLf8IjCK+eLGwhlKw0b1wk0pJ/6SXwLze9cJPZSgAu/ChwH//HOM/bNv9HlwglGER2KtqGwnD
-JJRNmdvW6geT2bx1gEA3WvNBmOzow112qT17MBg87EznQaSm83My+IiKp/O82edF1z8vsdcyJSy5
-6YqSq4S+W2zjMuKTD2X4mpa9Q7AhcplmKGU+J8rDrsiyw2Hc6XTu+vc7Dxv3qYYowdQ3ZWwB7OGw
-0zm5m3wB2APSz1c6SmCNmj08Qajv+tMdh4308OzsO01pgf2b1+xeM46Hnbtw12GH35UUbifsaW+O
-aQ8XeNzPdsE+29Nob6GMwISiRinj9wc7ARsRVnBfuhrHjCZWO8IhJxwkEj2li8FuNmMs2p1hPIR6
-8WingdbKnvq+A7Ux2hUFsgbYkz3Nss/CbNhqTuFwENlgsJiMxMQZucO8XbATd7eYPPya2c2S/TO1
-1cG+3Pu+J0177/vAgq31gTBTIl+R6ANJi1BgY7UlZQQLyAmy7c7LHbSusUKwEwfs2vplBEn2nkp7
-ZsJmxyFhi468SI11yIQtrtfFYJ+0+kejUf+2P8qCndbNZcPmL/JYUkUWsew9ARtzD1NgJ3Y4gwz4
-MjRbf0OJepwLwQ47/f5oGPRfDtywackiM2jO0Gwb9tLWvRjsPfa2DDdsPehMhc07yqxwkJq292hZ
-2I1+8BI0Rg0VtmnIUXoHrl2T5D4kZzWwwz3OmQA/S1yWbUk3he2SEdfbYJaFPRz2g36/3+n0s2AX
-riCVx1ysGTaUrybBKUzSZMR+DEAkYkcM2Jpy15aXkeHw7qVzd4vu2DvQ8orKw06STckIDFXWZ1Az
-HC1cVYENUmSkJuIPa2q8RbRkBYm9EeT2Ye8vHbbheIMUP7um+dlrb4iK5Ft3LmdL3kHWVnIHeTLE
-zVB3mPZCd5CreEfNYrBxox9l3Z0MtrLVL2wEL8cvf1AVGTR2+3adROZEV/XLqygseRxrgg2TYat1
-2+83+gcv812HnZ823RA1aw5jdL+OtGSQeNir/9EpToPpAHrYvnc9D7ZPPm7ka1q2h+1hpx0KhPCL
-wOYvb9hW2LhwE5jNe0dg40d5JLPZDG5pkA4q1oCmEO78HSREpNGRTKeTyTa+zQOGqHCzwYzhTuAO
-w4ZwNnggpO8nvR4Mtw02YS3SNNxl2OgS5aBJSpRHw/NexwVgp7xOOdJmZDfHcdhTFbZ81Ej6z6lS
-G/+qDmkoD3swRaTn816z2ez15vNmaMBeyLLVRnzRpVATzxtOjBdnZByK0OuB0G1ZPvcPBdNYVx7S
-UPqxRSEy6eYc/TXRALHmsLVfKuc9BENfQHQ8AHGQifIYfqM3OA/2dEBNe4JH0OjEhK39Ilb/PakF
-O6k0pKH0Ow+wdCDUBDhiPY9dsNMegpH6RATTsjUZqSXWuxxSDwUpNkY8wX8oobFpqFx5ifkraZD7
-vo4KQxpKwoYhItyjhj3HsOMZdFl24uIY6bDdCzk0W/SZFYFN+GLQvR76TLBlQ02zc37/b2l2hSEN
-ZWE3sT3zhGR7oHdCJoqMZDwEI0p7iINpU6pm15JCsLFJE86YNjbuiTtQx358SGIKStUhDWVhz+YC
-NzLveBAmLthpD8FwPgzLJSNO2DnXL7dsBHjeo6Sn+D+EmmZnPrMls4JcOqShdAU5i7GG4M881lgr
-DkmU9xCMXM12wS7k+qEKfHLfm2PS9xP6HSZFYIN82EmyXhkhtONmjHA3EWvbf9NlJO0hGKY3oj57
-ydDsWkk/GxKb7k16VLaRiUPDz3YomOWE2352FSENC9xBhrNBTNKgwCMwXA8PyfVxl4lihfixpfPJ
-nN909ZZ4PGjVIQ2LvTA5xJjD/FY/3WDWcruO/KUr7W+XXyu79e3ZMMQad4VqlSs8nHnYq231a9ZR
-pXIVx2gQ+ueNrLg9O5whzrRW8UE6a3g79WzQvApD/9v11cOGtBKHixRyO2D75ONGsu3Gy4iH7WFv
-Lewtjxv5KrDpK2Dg+Qz3pcLtfATG14GNQJ8PZoPz8+j8HG5j3Ih6+e00bBxsdH4+OcefK5xgibeS
-rN2yM6PkdgH27GqCbDq6uqp/Q6lev+LH8j+SsmGzfL4AnUTffH42bOsl9/oLShy1ymw2e5hC1lMD
-0togHcn1WH6rIK43pVQKOyT2TEAj0ngoYedbdhrsQpatxpOIcirdJh866ASBfphOp/c96KS2OOyi
-zyZfGjYSDwqa/OPxgQmbGTg19P9xoGjIYIsLgK7DP2I+u0LoKsrCajyJWtaafihUOGYDCnre683N
-oC0lhsUZPAJS35FiFMTx5I5KYSNjpmaNQFPs5wZsiojAYh8ONNLhGrCVD4etL1xzvUZAeWAGFzoO
-GpHGfXdxPDVha4+OcD1mH+T2BK8DdkTMuX7FiX/7djtQNVuDbYLNhq1Mi/XJtS5N29Rs/YEZ7EVu
-WDsw6HmMHxQVHw47D4kOmx1XsfcdFAooEQWpVQl7Vsf2LEh/+9ayNPt/QgYMiRCwNR3hJ0iRDxW2
-unDKMxwSBTaESDpwBGJziFAf4ifqdH5AB2xXYItjnvaqlNSAEmHntUot+/ybkW7FcqqMuCVCWnaU
-2LCVT6ScJF1GcmEjmybacRjThwWcDO+NJ6JkBrcsFlBiFGRVsPeF5+fQbFOHbRlRHRKp1VKuE1nF
-OmAbTgB9KwOSD2bRJ53Ow4P6XgYdNkh/O1fp6J0VabZu1ret0LJsl7WqMqJ6I5r39z/NjXHIiKbZ
-9gtKaAmHh9yiH8z+/4IykuuNFH1TyvKunxTr29vbb+eraRsRfKOMgjkPBd5jix4Ki15NH+S6olgj
-hLuFOaP/q2QFDVFalbhA3EgyfUjyfpa3M02s8LxOFORWeNjb2DYCvwRs0uSAX0OR/1Ig38RaTefB
-QsfhYbtg+/fU+PfU/IdkxKf1xY0kW2/ZydZbduJhe9getoftYXvYHraH7WF72CmwBz4VTFXAjn0q
-lKqB/f7m/4r8VQKbbKkf8D9PNeWvOssOWIQojPse6wphU8sWsKGnvWoZOUKcX1/RF+7vd+0LwlUd
-Bdpp5Vvcbhl5e319fYevxLbB+xs+fv6hf6WIsKNF6+Svpu4GwsI7VFeBKXnbatkX3xFtWvIYUFr8
-s4C10OMvZrJ0NzamnB3ybNc+ttyya9+RUb+9vkvYqnWbY/wbvguq0FQGkgflanicjr5ZG+KzKSZo
-7oZeInz+u5rBwTLDgHZZ343xzVs2sWtu2hj2G8MD+fHzKXX6XRvVTIvjVleTS/I5fDe6ZSvz5c7I
-dtS9ScuW5/RdLatjxeUsviLLrsXv1Kgh12wxxcfE4TMeit2/8SWliUPF1pTV3pUV1CXkdW/Mlzt/
-e3/X9yY1G33rlx+vK+SKciOSnfaVMa9qyz6+QPVj8993KSNvnLOoqDItWxaSmdu7rCCV1RSWlqWq
-Ai5NV+5c2bEm6WJSX1UurGzkfR2a7Yob4Qlb9sUreH9VKkjNSTA8C6dlW5WesFOXZSubsy1bNU91
-52/v+t6kZWua7bDsN6U+eCvLWzGjYrEk+RXk6xt2r/tQeCOqL8Krwvc3qSu6v2K5X9LqePa7qjNK
-TSfOAlQqVg4Wyp1Ly36T8ubQbKguZR7BltxBvh5AXbPX8FfIqArPJhmru/Oq/A4Sqpa9k39FZTld
-K9ZyB3mgtNwuDHsL+ZfLyDyG6iy7zX6d3E5rG/nv/KWdi23sPNhWG1+krFq+7xbbtW6xf48O6N/L
-Kfo7OPJ/rr9/40pgn0Cf8lM1oQz1DvQaUUBFwoos26Ncm2YPMey6sem6/xifgbfsnfNGoNOefVoF
-bNuyQe6ewTZhABUtszbLJvZMbthjwEtm6RbNx+NiKWMZENO8bP2T23HkOberfNjKyjzgXhbESh7Y
-Os0GOWYAtDGQssSy1wUouzrIWAxsl2UrfjZg32jIrccuPrUtvJRjEaCtL/5TtyNODxsX26Ubd5aC
-UZQLpBSXXDuAXEcx3SzYJs0mbX5CIhzFb0s8wG0sIG7HYv1U2G1+4MqS+FtZN07bQ6wsgJZHHzq0
-FyNtmNoy7e3xs+sSgBBGQ09V63VqKyMs1d+1HBA0gDwnOni6Pojd+zBXAGn1h1YUft63SbNTrTZ2
-wDZTOwbSJkHKcup2UmCLayClGG1jhXbKXtpsU+2C1cn6/GwdNrD8bQt2PU5XbckwczsuQ6W2D+Kc
-WliFnXZKgWYbYIl7iNVZNrr4HDbFtBZrIV0mnQRdP0UnhYy0JVSq1zHfLp1ug3Q3o61UkO3U6hyo
-y2xBBSn9bOO81wveV7o0Ls6ZztpW3vbjguVwneH6wm0/lVs2yPaP8vKLLLHYsousBvQll/W0B6tq
-zzbtsayt1VPaEdPG8z5lrqes6yXrmDbVNuLTGvzsgrpdxtbTdDsu2b64jL3XM+zbt2f/N9qzvW57
-zf5Sls3DRRxDMqYM7fysddO3l7XsacHtu5fPXnbh4UnTx434uJEvqSI+bmQLNTv7NzXDPNhF/YEi
-vkgRvybHHzmAC7adLAm7kt/UrNmyXW0bLC68WJvHEbQ2t3N+dhEfN8+vzb+HBIAGhep9K4BXQ+5W
-W9HJSJY/VcoLAIyh3QO5ipio3fOzgQzCVdu52wI2fPvraBttx6Avln+BSr8QJG3ZrYPFjBtfT+31
-W3Y9pyGS9x3maW58kNX2gcxaPrJH2RW17D59AIexTdLDCIBc/FSUFxCrjodxfNgAObrtvGToCd7U
-HaR2PVpqWEhRD7IMO5Cs+zbswHHsAGeiL7n4i9L+TorUiuPbR+AuclbZgZbyKgBQtZ8NoGpXwOzf
-AAXq/4Orx9S2D4AhQ3TDCiEWErltQFCjPwa7rrMmtMV84Y2AGJ+BPgb0GAdmh66rr92IrdLuWtT1
-16HZ2IaIX9AGWnciYH1+IN245c1tGKfaNuBAIa0kVc1GJ4FmtS27pijaljeC1z+M2w0sIkE8lv2d
-ev8kK7vdT8k3TQdtY302zcZBHFTbnn3xUzvNyjUJ1K5qYefaNQcfxY9W4760TXIKhMYGjDb6YpZd
-54fdJ/9k11LzgeKniPN8wMuLd98CI7zL4Hcg46SA2ncNlG564IANyB+3bJASPQQqkhFp2TUTNju3
-gMUVmd3pur4pTkKg1AKnWDQsyyZNRkA97EDUkQ7j07RcWjYkNPBDxER8CA/LUcudCRvXyaaMsPVj
-oMWnVB03Qt0BHmPqiM3Q/RFFB5Ghnr6MGogldkigon0HEGr1I5ULxPoRGIcdkH9VN0kGoDhMP1s4
-I5h1DE5lvKoe3mLC1jUbb1tuPzN6qGpvpK3ZlR5PF8dZmh1zAwxgP9Ydd+jysh81yyZ+dkCVpG0a
-H6D5Dj+b0A4w7UBeZG2r3NmW3WaWLTXbjh7C84Nq/ey6IhR1qdlAhJUqBU71aftBDFPvI4H600LF
-znRvRFmXwu4DVctVP5vSRq4IBCK+VolwBTLiFdj3CaZmk5hXpbIyaoHq7yCXbmZQVMPhjqg/4zT9
-bOpm25oNxMCqHECfSXTxe5NUbyRv/ZXGjcQpfXV5bSIwpW3EpK360+IOsgjsA/0mLEB/Ku0ifY1p
-fnbWce5gHyRg7p/u2LSVg24bDk+bf1Ja/Vj84QKmrWy7QBvJiuNGsuL28tqy49QYFKDFfjtunPPa
-FA9cdUIM/gfjEjEiReJT9Hn/zd71o82Ud+VxI4vqdpyl20vGb9Qztp03LNLmnbYvHzfyteJG0uIx
-TiuMISkb61FkW2nDovEq1jwfN/IfiBv5Qg/IKX7oheNGskMZSmv2ke6f7vAnLnHo1YQylI4bOQC7
-qgVWVxmMC/tcG/JGXlhTRj8Q7dO7Alub6rss+2Cr4kbi+BSw1md6AMEuwVbxBQS2cZwvIOW4N2vZ
-4gCCHYXttOzTtDaWFcSNxFp/hVu/pGXjl60A3q/E0pz8bzNsfiwNG/bBUR9qvwOWx12tZQOQAdu2
-7HfxshXaVtmkyOcA/+vaOKKfrNQbgza/Vub4/I3tYdWWPTJhn77QStQZg1Jte7aIRZKw3W0GxBt5
-3/su30ghvzHzpgF73KSfrPQ7iK7GjPbd2D2sBnZdMRpds2m/Rz+2Y1Aqt2z+2/E26wRry5gL3jnE
-2nyPEMy3Y/yylXdCm1v2CLQ7rMeYTAQJ4T5tk0/7Ds7ww+eBPTJHxjuBcMiatUeBe4jSPboA0NR9
-AMBoRnbSH8lLwpHqLRM287GJHGqWfQTjYT+I45MD/bkQYAXt2SC2nkWhTcu+aWzZ/GUr74plj8KX
-NrPsJkCW2qbScRKQz0uAFhnDuG2PYKWYimsDjn+3QTC1hzgLb7aPBuF5e4T2OOuDEXxpp3Dev/n1
-8fHLlBHRnv6iwz44ocpx8MaOVn22ScXt2SA24iTYczzEU1aEgiHNPo7f5MtWuGVP8RiFHQMkGx0K
-IRiSD2I6CgD62CO4fyaIJmMGO2jMJuPAHiKLBlfoxPQm6FqAHTAnexxYsoUwt/YRZpr2Lc3mWqx5
-I/WA1ow8gpP1cYu4k0r9bACA7EB3PGVFwY28kYtjVD/GjLjUbBI3Q5GHfH7UnpEPUovfqOy/h44R
-CK/G4HcfSNdmyADqQ7JZyLeOt98EUIddb/za/1DTL5T2f938+tUSmg1cfnaf96YrXoLKoErLBukx
-F0DJZ5ZdewVvr3oFyQ6bW3aPW/YwoB8YjAAMXhAnewRtA52NPq0IB6MJgTs1hihNyGY7dNBmpxdq
-Pbf1fWnUFPb+fmMffe23sv3swHhIjBF3Uq1ly2sHmDEXyled+dmvUL5sRVo2IT0g/8Fg8nvEY2/I
-PX0HBPAOfRwjSEZGSLc7rMs3SK6wbJhDotkJ1Wy09aDpsmwCvK7ISIPP/VBh2352v2/EsALlMWyb
-64MkfvZrH5qaTcYGbTDBQaPISRgROW2fQ/KBU3RueuDOHiGn6bd0Kppj5GucW0O8A+yOv5ABGA2a
-LsvWlPuXWkF+ZPvZWsD4quNG6o6fF7n7+mirX0B9UiP8UeO/BUlx/T6kn113+dk0XDC1v3JDln0E
-WIycaBe2jrG5ha2wlmUbfnacHTuyhudnL9ieHW8p7APt/Q6Ohqj0OJPNWHb9aDc7Dz747yrE+3jK
-9dSs4/nZ9vjBbsYifLgCnbOfubOCtpGy76rZ0T6xjwIdZau27MG/J/hvSL7/dYVh8EAKNk2X34a/
-Ih3oRwf8t5cf6u8C1b8X9puJoHnXbA3RHxqSMWUafVcCO38DUd7sqOj6UbKylLvpj2QdKRP2Esfh
-YXvYHraH7WF72LsNOyvWr0g6z5t9XnT98vtetpAyfUTrSN6yt1JG5q3G103XC61125qvBnbrqfHn
-66afi654uwLYIULdaPW8jGhp0kIGOKgc9u3PPy2v2a4L/uefsGrYP1Ovly8B++rjatFNN342Kof9
-80t7I/PFYWeg8bArTx62h+1he9ge9teEXawh6ufPr90QtURKR7NoQ9RuW/Zk//n56ZvmHV+TlDLm
-ZWTxdH5z3WjtX6u3wE83LZxSxjzsxVODcG48K60Y142sMa/Zi6ebG7zpq+uWmHN1fZsxtnWaTcLh
-ylg2IP9iXMkGi1j20w36ql8/4bag65vUiTox2Se86Ydr2byDM6apY0zoG8/XN2SVaePm+qaBt3G9
-33rCM1s3zze365MRwL/SYQMTduKGbY4BeyFHM+T1Ff56niXJ/k3aBDkjSfJMYE+u95W1EcnnxtQ9
-xoX+Fgk9kpYIS37j+QblXN8837Zurp9u0Pdza72wk9EKYWc/37SOdfjpBlnj7LmRPkGvgucrYrkS
-9v71Tetb4/pp5hxj5+MbWfAKjbXI6siUr/GJvLq+nuDvxpphAyIDQNgiG0Nz5OyIjlAZEeOKeDCB
-ARHNZuuRgVhRmcfSzVMyfb5FBL4hKukT9MTcfJsgg5SwW7eUZ8s5RrdProreFR8jAyJO/Ht/A7Al
-uYDhGWkSLUkHyjhIHLBptr4ePUVkMFIvisZz+O366ukJjTykTjD/o/V8jXhjU5xMzicTocrC/3CM
-UaJUhdj1oWPmC2wINjAQmRKscARJGmx9PWBuECh1XOMmuX1ObvazJpgAx1fJnOqActsSCVt3jD1b
-sK91zGu3bKzZI2bLabADBTYfDwzYeH4Q4WvDWE+HDUZSRwbPt0/7SCla+LpPn8DpWysiAoFck2/x
-t29xMrgh5oucvaljTJWRq/3YISM7ZtluGUlMGbEtW3H+nhDMyfUNrq0yJshNDVLeKWPGrPSK1X6u
-MaWCbBgV5AYtm7h+RWADBXYZzeb7AbaMoKO/7mFsT5kTLWTOV883rdub57rqyyDn7Qnjc42RlSbY
-yyOuHxpDrt/1zWRzli1vahRvRMChrkWONwLkTQ3gq4BEujSqfVveCLrgb4gB3mZOECT1p+fnJ+2p
-kldPz9dPrbQxstIVvpUhk+fKTc1GLLuKthFQ4A4S5N/f+M4DD3sbW/0AyFgQgMTD9t1iHraH7WF7
-2DsBG6Qdh37DmMYQZMMG+XUhWBA2yN8uWGQfG7HsoALYRd7RFSwCG+SvFxTZB9gS2FVYdhGLAgvC
-BiW2C1YEu2yHL4iiAN2B8yk2hgZADFB+dC5zgLIcyqFjbAZdjU6fy63xDwByCqDt0swAiDXJEgFb
-KJCbBXRaLSZbD02M2PpBpB4FUPbJd0szR6LcdLsj8t1mS6yyw1e25eutfryxSMmnn0hpurPalIBo
-63O3XakDkGhbkHuwxow1mGUDV4dEoq4L9HGtLEa55dZXXEFqrW9RwNqzR1YjP4etaiBIjGPUYAdC
-M+0+A56n7EuO0z+13tCEg2u2XVapDYGyTqDXlcB1aCBZN2xgNePxAVD7Eu2WQbGiy7KdHTTAPnql
-j5KvApSdA0uzjUyzMVdesfKi0Bd3bH1tsNXOA+Duvkr03i7LQqqFnTi6LUzYzkvMgK3vLnEd2iZg
-A5B1rdmarTRtp8M2UObBdnVbgCzYwME9R7O3QkaigF1sRAvFBRbxfkY6lDKCfAFWzamw8XzVz2br
-8mUDVbOlcontcj0W03IR2o4LgLmMevnx7QNlXNYfwKwVUXnWZNnruV1fulHVbDT3bSMe9hbABqBi
-IB7212j1u60eduPnk4ftSq0/T5X/nDp8+vkUTzxsPU3i23QrXBw2PoXoHPpkpKc/ZX6DU+JJOrdP
-f3wyUqPUo3T8M6LWmDxsD9vD9rA9bA/bw/awPWwP28P2sD1sD9vD9rA9bA/bw/awPWwP28P2sD1s
-D9vD9rA9bA/bw/awtwm2f5Hb+pK3bC8jHraH7WF72B62h+1he9getoftYXvYHraH7WF72B62h+1h
-e9getoftYXvYHraHXWX6vwADACCNwkCOLM2NAAAAAElFTkSuQmCC
+--===============5090038480943061903==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_89f1678151b7e54e90f62467f21cf932"
 
--------10D2F40E11549238200CEF04D91BFB05B2588F
+
+--_----------=_parties_89f1678151b7e54e90f62467f21cf932
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.ctrm5.com/miroir.php?bat=afer0509_ctrm
+
+Assurance Vie AFER/ Epargne Actuelle
+
+Jamais vous n'avez eu autant BESOIN de la SECURITE et de la SOLIDITE du Contrat Multisupport AFER, face à une croissance incertaine
+OFFRE EXCEPTIONNELLE : 30% de réduction sur les frais de versements
+
+Offre valable jusqu'au 01 juillet 2009
+
+Venez découvrir nos avantages
+
+plus d'infos sur http://www.ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance
+
+--------------------------------
+Cette offre Epargne Actuelle vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm5.com/gestionserv.php?nb=1511&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_89f1678151b7e54e90f62467f21cf932
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Assurance Vie AFER/ Epargne Actuelle
+ Jamais vous n'avez eu autant BESOIN de la SECURITE et de la SOLIDITE du Contrat Multisupport AFER, face &agrave; une croissance incertaine</title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm5.com/miroir.php?bat=afer0509_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Epargne Actuelle vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#0370D7;font-size:20px'>
+<p style='display:inline;'> <b>Assurance Vie AFER/ Epargne Actuelle</b><br>
+<span style='font-size:16px'><br>Jamais vous n'avez eu autant BESOIN de la SECURITE et de la SOLIDITE du Contrat Multisupport AFER, face &agrave; une croissance incertaine</p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#ff8d1b;font-family:Arial;color:#FFFFFF;font-size:18px;'>
+<a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" style="text-decoration:none;color:#FFFFFF;"><b>OFFRE EXCEPTIONNELLE : 30% de r&eacute;duction sur<br>les frais de versements</b><br>
+<span style="font-size:14px;">Offre valable jusqu'au 01 juillet 2009 </a>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:14px;background-color:#FFFFFF;'>
+<center><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" style="text-decoration:none;color:blue;font-size:20px"><u> Venez d&eacute;couvrir nos avantages</u></a>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<center>
+<table CELLSPACING=0 CELLpadding=0 style="width:650px; padding-top:20px; padding-bottom:20px; border: 1px solid #C0C0C0;padding:0px;">
+ <tr><tr>
+ <td>
+<br />
+<br />
+ <table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_01.jpg" width="500" height="269" border="0" alt="Epargne Actuelle le contrat multisupport Afer face a une croissance incertaine" /></a></td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td width="203"><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_05.jpg" width="203" height="125" border="0" alt="Assurance vie" /></a></td>
+ <td width="290" bgcolor="#FFFFCD" align="left"><font size="2" face="Arial, Helvetica, sans-serif" color="#000000"> <a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" style="text-decoration:none; color:#000000; font-size:12px;" target="_blank"><font color="#0370D7"><strong>Pendant
+ la crise financi&egrave;re, les &eacute;pargnants ne s'y sont pas
+ tromp&eacute;s : sur le dernier trimestre 2008, ils ont &eacute;t&eacute; 16,5%
+ de plus qu'en 2007 sur la m&ecirc;me p&eacute;riode, &agrave; ouvrir
+ un contrat AFER.
+<br>
+ Vous aussi,
+ profitez de :</strong></font><br />
+</a></font>
+ <img src="http://www.ad-di05.net/stockage/EpargneActuelle/emailing/images/jan09/puce.png" /><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" style="text-decoration:none; font-size:12px;" target="_blank"><font face="Arial, Helvetica, sans-serif" color="#0370D7"><strong> La r&eacute;f&eacute;rence de l'assurance-vie depuis 1976</strong></font></a><br />
+ <img src="http://www.ad-di05.net/stockage/EpargneActuelle/emailing/images/jan09/puce.png" /><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" style="text-decoration:none; font-size:12px;" target="_blank"><font face="Arial, Helvetica, sans-serif" color="#0370D7"> <strong>Tous les avantages fiscaux de l'assurance-vie</strong></font></a><br />
+ <img src="http://www.ad-di05.net/stockage/EpargneActuelle/emailing/images/jan09/puce.png" /><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" style="text-decoration:none; font-size:12px;" target="_blank"><font face="Arial, Helvetica, sans-serif" color="#0370D7"> <strong>Un service proche et personnalis&eacute; 6 jours/7 </strong></font></a> </td>
+ <td width="10"><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_07.jpg" alt="Epargne Actuelle" width="18" height="125" border="0" /></a></td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td width="407" bgcolor="#0370D7" align="center"><strong><font size="3" face="Arial, Helvetica, sans-serif"><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" target="_blank" style="text-decoration:none; color:#FFFFFF;">Recevez chez vous GRATUITEMENT<br />
+ et SANS ENGAGEMENT<br />
+ la documentation du contrat AFER </a></font></strong></td>
+ <td width="93"><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_12.jpg" width="183" height="77" border="0" alt="suivez ce lien" /></a></td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td bgcolor="#0370D7" align="center"><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" target="_blank" style="text-decoration:none;">
+ <font color="#FFFF9D" size="2" face="Arial, Helvetica, sans-serif">
+ Si vous &ecirc;tes d&eacute;j&agrave; adh&eacute;rent &agrave; l'AFER, merci de vous rapprocher de votre conseiller.
+ </font>
+ </a>
+ </td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><table width="500" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_14.jpg" width="500" height="137" border="0" alt="frais de versement reduits" /></a></td>
+ </tr>
+ </table></td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center" valign="middle">
+<td align="center">
+ <font color="#15487B" size="1" face="Arial, Helvetica, sans-serif"><a href="http://ctrm5.com/linkserv.php?bat=afer0509_ctrm&nb=1511&n=9047704&c=finance" target="_blank" style="text-decoration:none; color:#15487B;">EPARGNE ACTUELLE S.A. - D&eacute;l&eacute;gu&eacute; AFER - Soci&eacute;t&eacute; Anonyme au capital de 1 525 000 euros - courtage d'assurances.
+ Si&egrave;ge social : 31, rue Saint Augustin - CS 20224 - 75081 Paris Cedex 02 - 413 130 352 R.C.S. PARIS. N&deg; d'immatriculation ORIAS : 07002189 - www.orias.fr<br />
+ Photo © Guillaume Plisson</a></font></td>
+ </tr>
+</table><br />
+<br />
+</td>
+ </tr>
+</table>
+</center>
+<img src="http://impfr.tradedoubler.com/imp/imp/17977724/1634369" height="1" width="1">
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.ctrm5.com/img.php?nb=1511&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
+<p>
+<a href='http://www.ctrm5.com/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm5.com/gestionserv.php?nb=1511&cat=finance&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_89f1678151b7e54e90f62467f21cf932--
+
+--===============5090038480943061903==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -236,7 +168,7 @@ Check out the new simplified licensing option that enables
 unlimited royalty-free distribution of the report engine 
 for externally facing server and web deployment. 
 http://p.sf.net/sfu/businessobjects
--------10D2F40E11549238200CEF04D91BFB05B2588F
+--===============5090038480943061903==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -247,4 +179,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
--------10D2F40E11549238200CEF04D91BFB05B2588F--
+--===============5090038480943061903==--

@@ -1,10 +1,9 @@
-From: gfdtiyudfh-kpAhF17E4/s@public.gmane.org
-Subject: [SPAM] 唐・・作
-Date: Tue, 19 May 2009 09:02:23 +0800
-Message-ID: <E1M6DiH-00010E-Jf@335xhf1.ch3.sourceforge.com>
+From: "Kelly" <gekloppt1955-1boFjgTJjN154TAoqtyWWQ@public.gmane.org>
+Subject: [SPAM] Don't miss chance
+Date: Tue, 19 May 2009 04:37:54 +0000
+Message-ID: <200905188020.8f1dd8418bb8fe25ee47@[123.24.5.77]>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0540426324956517922=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,22 +16,106 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgo6jV4srH0ru34snG0uK1xNPKvP6jrMjn09C0
-8sjFx+vBwr3io6mhowogICAgxOO6w6OhztK5q8u+o6jJ7tvaytCyqdHzw7PS19PQz965q8u+o6nK
-x8Gsw8u0+sDtuavLvqOs1NrIq7n6uPe087PHytDJ6NPQt9a5q8u+oaMK0vLStc7xudjPtaOsvfjP
-7rbgz/rP7snZz9bT0Lbg0+DSu7K/t9Y8PMbVLc2oLcuwLcaxPj6/ydLU08W73bbUzeK0+r+qyOfP
-wqO6CrmkyczG89K1oaK79c7vz/rK26GiueO45qGit/7O8dK1oaK9qNb+sLLXsKGixNq606Ooufq8
-yqOp1MvK5KGit8++yc7v18q1yDw8t6ItxrE+PqGjCsrVt9Gx6te8o7o8PMbVLc2oLcuwLcaxPj4y
-JS0wLjglo6y/ydLUz8jR6dakuvO4tr/uo6EKICC0y9DFz6LU2sirufq3ts6nxNqzpMba09DQp6Os
-yOfQ67340ruyvceiycw6ICAKICAgICAgICAgICAgICAgICAgIMGqz7XIy6O6zMbQwsP3CiAgICAg
-ICAgICAgICAgICAgytYgILv6o7oxMzctMTM1Ni0zMTM1ICAgIKGhoaGhoaGhoaGhoaGhoaGhoaGh
-CiAgICAgICAgICAgICAgICAgIFEgICBROjM1NzE2MzA2NgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CkNyeXN0YWwgUmVwb3J0cyAtIE5ldyBGcmVlIFJ1bnRpbWUgYW5kIDMwIERheSBUcmlhbApDaGVj
-ayBvdXQgdGhlIG5ldyBzaW1wbGlmaWVkIGxpY2Vuc2luZyBvcHRpb24gdGhhdCBlbmFibGVzIAp1
-bmxpbWl0ZWQgcm95YWx0eS1mcmVlIGRpc3RyaWJ1dGlvbiBvZiB0aGUgcmVwb3J0IGVuZ2luZSAK
-Zm9yIGV4dGVybmFsbHkgZmFjaW5nIHNlcnZlciBhbmQgd2ViIGRlcGxveW1lbnQuIApodHRwOi8v
-cC5zZi5uZXQvc2Z1L2J1c2luZXNzb2JqZWN0cwpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRl
-dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9y
-Z2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+--===============0540426324956517922==
+Content-Type: text/html; charset = "iso-8859-1"
+Content-Transfer-Encoding: 7bit
+
+<html>
+<head>
+        <title>C+D News Bulletin</title>
+        <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+</head>
+<body>
+<div align="center">
+<font color="#666666" face="arial" size="1">If you cannot see this email, click <a ermid="028" ermimage="" href="http://www.savenitte.ru/" target="_new">
+	here</a> to view the web version<br />
+
+	</font>
+<table border="0" cellpadding="2" cellspacing="0" width="600">
+        <tr valign="top">
+                <td>
+                <p align="center">
+                <font face="Arial, Helvetica, sans-serif" size="2">
+				<a ermid="030" ermimage="" href="http://www.savenitte.ru/" target="_new"><img align="left" alt="Chemist+Druggist" border="0" src="http://s2.redeye-email.com:80/Store/StoreGraph/5450/959704/2.gif" /></a> </font>
+
+                </td>
+        </tr>
+        <tr valign="top">
+                <td bgcolor="#87ceeb" height="5" width="600">
+                <div align="right">
+                	<font color="#ffffff" face="verdana" size="2"><b>Monday, May
+					18, 2009</b></font>
+                </div>
+                </td>
+
+        </tr>
+        <tr valign="top">
+                <td bordercolor="#000000" width="480">
+                <p>
+                <strong><font color="#0066cc" face="Arial, Helvetica, sans-serif" size="2"><br />
+                </font>
+				<font color="#0066cc" face="Verdana, Arial, Helvetica, sans-serif" size="3">
+				Product news<br></font></strong> <br />
+                <font face="Arial, Helvetica, sans-serif" size="2">
+				<a href="http://www.savenitte.ru/" target="_new">
+				<img alt="View image online" height="356" src="http://www.savenitte.ru/10.gif" style="border-width: 0px" width="587"></a> </font>
+
+                </td>
+        </tr>
+        <tr valign="top">
+                <td bgcolor="#ffffff" width="600">
+                <div align="center">
+                <p>
+                <font face="verdana" size="1"><a ermid="053" ermimage="" href="http://www.savenitte.ru/" target="_new"><br />
+
+                Register for Emails</a> | <a ermignore="1" href="mailto:thawkins-+9udM12NssJBDgjK7y7TUQ@public.gmane.org">
+				Email the Editor</a> | <a class="style13" ermignore="1" href="mailto:dspruytenburg-fl0q2eJXCf1BDgjK7y7TUQ@public.gmane.org">
+				Advertising Enquiries</a></font><font face="arial" size="1"><br />
+                <br />
+                <font color="#666666">Chemist+Druggist is published by <a ermid="054" ermimage="" href="http://www.savenitte.ru/" target="_new">
+				CMPMedica</a> - Healthcare division of UBM<br />
+
+                Company number 370721. Registered office: Ludgate House, 245
+				Blackfriars Road, London SE1 9UY<br />
+                To change any of your C+D website account details <a ermid="055" ermimage="" href="http://www.savenitte.ru/" target="_new">
+				click here</a><br />
+                If you would prefer not to receive newsletter emails from
+				Chemist+Druggist please click <a ermid="056" ermimage="" href="http://www.savenitte.ru/" target="_new">
+				here</a></font><br />
+                </font>
+
+                </div>
+                </td>
+
+        </tr>
+</table>
+<br />
+</div>
+</body>
+</html>
+
+
+--===============0540426324956517922==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Crystal Reports - New Free Runtime and 30 Day Trial
+Check out the new simplified licensing option that enables 
+unlimited royalty-free distribution of the report engine 
+for externally facing server and web deployment. 
+http://p.sf.net/sfu/businessobjects
+--===============0540426324956517922==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0540426324956517922==--

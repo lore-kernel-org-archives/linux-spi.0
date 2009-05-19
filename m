@@ -1,10 +1,10 @@
-From: "HIPNOSIS CHILE" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] EVALUACION GRATUITA
-Date: Mon, 18 May 2009 10:54:04 -0400
-Message-ID: <1846338641-22009511814544984@usuario-1109edb>
+From: gfdtiyudfh-kpAhF17E4/s@public.gmane.org
+Subject: [SPAM] 唐・・作
+Date: Tue, 19 May 2009 09:02:23 +0800
+Message-ID: <E1M6DiH-00010E-Jf@335xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,71 +17,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SI TIENE:
-Desorientaci=F3n Existencial, Baja Autoestima, Baja Energ=EDa, Trastornos A=
-limenticios, Depresi=F3n, Ansiedad, Angustia, Crisis de P=E1nico, Miedos, T=
-raumas, Fobias, Insomnio, Cefaleas, Alteraci=F3n del Sistema Nervioso, Dolo=
-res F=EDsicos, Adicciones, Estr=E9s, Baja Autoestima, Timidez, Inseguridad,=
- P=E1nico, Mejorar la Memoria y la Concentraci=F3n, Agresividad, Intoleranc=
-ia, Penas , Duelos (p=E9rdida de un Ser querido), Negatividad, Preparaci=F3=
-n para dar Ex=E1menes Acad=E9micos, Falta de Motivaci=F3n, Problemas de Par=
-eja, Celos Obsesivos, Quiere dejar de fumar y no puede, No puede hablar en =
-p=FAblico...
-
-...NOSOTROS LE PODEMOS AYUDAR
-
-PIDA UNA HORA DE EVALUACI=D3N*  DE SU ESTADO DE SALUD =A1=A1=A1GRATUITA!!!
-EL DIA Y HORA QUE SE LE D=C9 DEBE LLEVAR TODOS LOS DOCUMENTOS QUE TENGA (DI=
-AGN=D3STICOS - EXAMENES - MEDICAMENTOS)
-EN ESE MOMENTO SE LE HAR=C1 UN PROGRAMA DE SESIONES QUE PUEDE ACEPTAR O NO =
-ACEPTAR.
-ESTAMOS EN SEMINARIO 6 - PROVIDENCIA (Metro Baquedano - Edificio Tecnobit)
-
-*LA EVALUACI=D3N CONSISTE EN UN CHEQUEO QUE INTEGRA LOS TRES ELEMENTOS ESEN=
-CIALES DE UN SER HUMANO:
-BIOL=D3GICO: A TRAV=C9S DE LA MAGNETOTERAPIA (IMANES)
-PSICOL=D3GICO: A TRAV=C9S DE UNA INDUCCI=D3N SIMPLE (HIPNOSIS CONVERSACIONA=
-L)
-ENERG=C9TICO: A TRAV=C9S DE LA MEDICI=D3N DE SUS PUNTOS ENERG=C9TICOS.
-
-LAS TERAPIAS NATURALES QUE SE UTILIZAN EN LOS TRATAMIENTOS (SE UTILIZAN EN =
-CONJUNTO PARA UN MEJOR RESULTADO) SON:
-HIPNOTERAPIA - MAGNETOTERAPIA - REIKITERAPIA - LOGOTERAPIA - FITOTERAPIA - =
-AROMATERAPIA - RADIESTESIATERAPIA
-Se llaman Terapias Naturales a aquellas que son parte de la naturaleza o de=
-l hombre y por lo tanto no incluyen en sus tratamientos elementos qu=EDmico=
-s extra=F1os ni nosivos al ser humano.
-
-=BFQu=E9 tan Efectiva es la Hipnosis? La efectividad de la Hipnosis es comp=
-arativamente muy superior a la de otras herramientas relacionadas con la sa=
-lud mental. Para que te hagas una idea, revisa estos datos sobre la tasa de=
- recuperaci=F3n revelados en una investigaci=F3n de reportes de psicoterapi=
-a desarrollada por el Dr. Alfred Barrios, de la UCLA:
-Psicoan=E1lisis, 38% de recuperaci=F3n despu=E9s de 600 sesiones.
-Terapia Conductual, 72% de recuperaci=F3n despu=E9s de 22 sesiones.
-Hipnosis, 93% de recuperaci=F3n despu=E9s de 6 sesiones.
-(Datos publicados en Psychotherapy: Theory, Research and Practice)
-
-CUANDO LA HIPNOSIS EST=C1 EN COMBINACI=D3N CON 3 =F3 M=C1S TERAPIAS NATURAL=
-ES SU RESULTADO ES MUY SUPERIOR.
-
-ESTE A=D1O YA HAN SOLUCIONADO SUS PROBLEMAS (POR LOS QUE LLEGARON A HIPNOSI=
-S CHILE) M=C1S DE 50 PERSONAS. USTED TAMBI=C9N PUEDE HACERLO.
-
-
-Centro de Hipnosis y Terapias Afines "Hipnosis Chile"
-Seminario 6 - Providencia - Fonos: 248 9112 - 278 1078
-horas-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org - www.hipnosischile.cl
-Remover: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org
-
-
----------------------------------------------------------------------------=
----
-Crystal Reports - New Free Runtime and 30 Day Trial
-Check out the new simplified licensing option that enables =
-
-unlimited royalty-free distribution of the report engine =
-
-for externally facing server and web deployment. =
-
-http://p.sf.net/sfu/businessobjects
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgo6jV4srH0ru34snG0uK1xNPKvP6jrMjn09C0
+8sjFx+vBwr3io6mhowogICAgxOO6w6OhztK5q8u+o6jJ7tvaytCyqdHzw7PS19PQz965q8u+o6nK
+x8Gsw8u0+sDtuavLvqOs1NrIq7n6uPe087PHytDJ6NPQt9a5q8u+oaMK0vLStc7xudjPtaOsvfjP
+7rbgz/rP7snZz9bT0Lbg0+DSu7K/t9Y8PMbVLc2oLcuwLcaxPj6/ydLU08W73bbUzeK0+r+qyOfP
+wqO6CrmkyczG89K1oaK79c7vz/rK26GiueO45qGit/7O8dK1oaK9qNb+sLLXsKGixNq606Ooufq8
+yqOp1MvK5KGit8++yc7v18q1yDw8t6ItxrE+PqGjCsrVt9Gx6te8o7o8PMbVLc2oLcuwLcaxPj4y
+JS0wLjglo6y/ydLUz8jR6dakuvO4tr/uo6EKICC0y9DFz6LU2sirufq3ts6nxNqzpMba09DQp6Os
+yOfQ67340ruyvceiycw6ICAKICAgICAgICAgICAgICAgICAgIMGqz7XIy6O6zMbQwsP3CiAgICAg
+ICAgICAgICAgICAgytYgILv6o7oxMzctMTM1Ni0zMTM1ICAgIKGhoaGhoaGhoaGhoaGhoaGhoaGh
+CiAgICAgICAgICAgICAgICAgIFEgICBROjM1NzE2MzA2NgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+CkNyeXN0YWwgUmVwb3J0cyAtIE5ldyBGcmVlIFJ1bnRpbWUgYW5kIDMwIERheSBUcmlhbApDaGVj
+ayBvdXQgdGhlIG5ldyBzaW1wbGlmaWVkIGxpY2Vuc2luZyBvcHRpb24gdGhhdCBlbmFibGVzIAp1
+bmxpbWl0ZWQgcm95YWx0eS1mcmVlIGRpc3RyaWJ1dGlvbiBvZiB0aGUgcmVwb3J0IGVuZ2luZSAK
+Zm9yIGV4dGVybmFsbHkgZmFjaW5nIHNlcnZlciBhbmQgd2ViIGRlcGxveW1lbnQuIApodHRwOi8v
+cC5zZi5uZXQvc2Z1L2J1c2luZXNzb2JqZWN0cwpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRl
+dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9y
+Z2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

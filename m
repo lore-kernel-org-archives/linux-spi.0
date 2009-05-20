@@ -1,14 +1,17 @@
-From: "=?utf-8?B?Q3JlZGlzc2ltYSAtIHRvdXQgc3Vy?=
-	=?utf-8?B?IGwndW5pdmVycyBkdSBjcmVkaXR=?=" <service-clients-iADE4Gjp4wnQT0dZR+AlfA@public.gmane.org>
-Subject: =?utf-8?q?Regroupez_tous_vos_credits_en_1_seu?=
- =?utf-8?q?l_a_taux_fixe?=
-Date: Tue, 19 May 2009 23:58:50 +0200
-Message-ID: <20090519-23585020-8ac-0@s14.netnoe.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] spi: fix m25p80 when the cs_change
+	hint is honored
+Date: Tue, 19 May 2009 21:34:14 -0700
+Message-ID: <200905192134.14316.david-b@pacbell.net>
+References: <1242731340-12160-1-git-send-email-baruch@tkos.co.il>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="--=9ADBC111691D4AB4B391_4442_AC64_6F1D"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1242731340-12160-1-git-send-email-baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,80 +22,98 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-----=9ADBC111691D4AB4B391_4442_AC64_6F1D
-Content-Type: text/html;charset="utf-8"
-Content-Transfer-Encoding: Quoted-Printable
+On Tuesday 19 May 2009, Baruch Siach wrote:
+> The m25p80 driver uses spi_write_then_read() and spi_write() (among others)
+> for interaction with the SPI controller. The only way to signal the end of SPI
+> transaction to the m25p80 chip according to its datasheet, is to deactivate
+> the chip select.  Currently, an SPI master driver that honors the cs_change
+> hint may not deactivate the chip select after the transaction when cs_change
+> == 0, leading to data corruption.
 
-<table border=3D0 cellpadding=3D0 cellspacing=3D0 width=3D100%><tr><td =
-align=3D"center"><font face=3D"Arial, Helvetica, sans-serif" size=3D"1"=
- color=3D"#000000">Si vous ne parvenez pas &agrave; lire cet email, cli=
-quez sur ce lien :<br/><a href=3D"http://www.emailstrategie-s14.com/red=
-irect.asp?id_email=3Dc9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40682">=
-<font color=3D"#0000FF">http://www.emailstrategie-s14.com/fr/v.asp?id_m=
-essage=3D559646b46011d85202427cdcf61e4c23&id_email=3Dc9d45ac9940a11fa49=
-44739a4f78f6af</font></a></font></td></tr></table><!DOCTYPE HTML PUBLIC=
- "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<TITLE>Credissima - tout sur l'univers du credit -- Regroupez tous vos =
-credits en 1 seul a taux fixe</TITLE>
-<META http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-as=
-cii">
-</HEAD>
-<BODY text=3D"#003366" link=3D"#333366">
-<DIV align=3D"center">
-<TABLE width=3D"750" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
-<TR>
-<TD width=3D"750" valign=3D"top">
-<TABLE width=3D"100%" border=3D"0">
-<TR>
-<TD align=3D"center"><A href=3D"http://www.emailstrategie-s14.com/redir=
-ect.asp?id_email=3Dc9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40683" ta=
-rget=3D"_blank"><img src=3D"http://nodes.reactivpub.fr/scripts/aff.php?=
-params=3D486|11064|10193" border=3D"0"></A></TD>
-</TR>
-</TABLE>
-</TD>
-</TR>
-<TR>
-<TD colspan=3D"3">
-<DIV align=3D"center">
-<P class=3D"formulairecomments"><FONT size=3D"1" face=3D"Arial, Helveti=
-ca, sans-serif">&copy; CAPD&Eacute;CISION, Tous droits r&eacute;serv&ea=
-cute;s<BR>
-Conform&eacute;ment &agrave; l'article 34 de la loi Informatique et Lib=
-ert&eacute;<BR>
-du 6 janvier 1978, vous disposez d'un droit d'acc&egrave;s, de modifica=
-tion, de rectification et de suppression<BR>
-des donn&eacute;es vous concernant.&nbsp;&nbsp;&nbsp; D&eacute;claratio=
-n CNIL n&deg;1291376</FONT></P>
-</DIV>
-</TD>
-</TR>
-</TABLE>
-</DIV>
-</BODY>
-</HTML>
-<br>
-<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">=
+NAK.  You mis-read the spec.  What controller driver were you using?
+That seems to be the source of the bug you're observing.  It's not
+terminating a spi_message correctly.
 
-<tr><td align=3D"center">
-<FONT size=3D"1" face=3D"Arial, Helvetica, sans-serif"><BR>
-Vous recevez cet e-mail car vous etes r&#233;f&#233;renc&#233; sur la b=
-ase de donn&#233;es de notre partenaire Avent Media.<BR>
-Si vous souhaitez vous d&#233;sinscrire, merci d'utiliser, <a href=3D"h=
-ttp://www.emailstrategie-s14.com/unsuscribe.asp?lang=3Dfrancais&id_form=
-ulaire=3D32&email=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&id_message=3D=
-1742">le lien suivant.</a><FONT>
-</td></tr></table>
-<br><img src=3D"http://www.emailstrategie-s14.com/fr/images/open.gif?id=
-_message=3D1742&id_email=3D23970436"/>
+Normal behavior of a spi_message is to keep the chipselect active
+during the entire message, then deactivate it after the last transfer.
+Setting the cs_change flag *changes* that behavior ... allowing either
+(a) brief mid-message deselection, usually to make a message hold a
+composite transaction, or else (b) hinting that immediate deselection
+isn't neccessary, as a possible performance tweak for some drivers.
 
-----=9ADBC111691D4AB4B391_4442_AC64_6F1D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Note that while (a) is mandatory -- drivers that can't do it must
+reject the messages using it -- (b) is optional.  When the next
+message goes to a different device, obviously the chip selection
+lines will need to change.
+
+See below for more details:
+
+
+> Other SPI devices may also be affected by 
+> this behaviour.
+> 
+> Fix this issue, and while at it, also make spi_read() do the same for
+> consistency.
+> 
+> Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+> ---
+>  drivers/spi/spi.c       |    1 +
+>  include/linux/spi/spi.h |    2 ++
+>  2 files changed, 3 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 8eba98c..fdcb2e5 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -690,6 +690,7 @@ int spi_write_then_read(struct spi_device *spi,
+>  	memcpy(local_buf, txbuf, n_tx);
+>  	x[0].tx_buf = local_buf;
+>  	x[1].rx_buf = local_buf + n_tx;
+> +	x[1].cs_change = 1;
+
+One does *NOT* want to keep the chip selected after the read.
+
+
+>  
+>  	/* do the i/o */
+>  	status = spi_sync(spi, &message);
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index a0faa18..f709712 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -609,6 +609,7 @@ spi_write(struct spi_device *spi, const u8 *buf, size_t len)
+>  	struct spi_transfer	t = {
+>  			.tx_buf		= buf,
+>  			.len		= len,
+> +			.cs_change	= 1,
+
+... or after the write ...
+
+>  		};
+>  	struct spi_message	m;
+>  
+> @@ -633,6 +634,7 @@ spi_read(struct spi_device *spi, u8 *buf, size_t len)
+>  	struct spi_transfer	t = {
+>  			.rx_buf		= buf,
+>  			.len		= len,
+> +			.cs_change	= 1,
+
+... or after this read.
+
+Those are all *completely normal* transactions.
+
+- Dave
+
+
+>  		};
+>  	struct spi_message	m;
+>  
+> -- 
+> 1.6.2.4
+> 
+> 
+
+
 
 ------------------------------------------------------------------------------
 Crystal Reports - New Free Runtime and 30 Day Trial
@@ -100,15 +121,3 @@ Check out the new simplified licensing option that enables
 unlimited royalty-free distribution of the report engine 
 for externally facing server and web deployment. 
 http://p.sf.net/sfu/businessobjects
-----=9ADBC111691D4AB4B391_4442_AC64_6F1D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-----=9ADBC111691D4AB4B391_4442_AC64_6F1D--

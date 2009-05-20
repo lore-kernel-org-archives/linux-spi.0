@@ -1,9 +1,11 @@
-From: "Paff David" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Funny. Britney pranked
-Date: Wed, 20 May 2009 19:35:51 +0000
-Message-ID: <200905205974.7b4c927@[190.33.133.242]>
+From: "Question =?ISO-8859-1?Q?Sant=E9?=" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: =?iso-8859-1?q?comment_ne_pas_subir_les_nouve?=
+	=?iso-8859-1?q?lles_taxes_des_couvertures_sant=E9_=3F_=E0_decouvri?=
+	=?iso-8859-1?q?r_ici?=
+Date: Thu, 21 May 2009 00:06:50 +0200 (CEST)
+Message-ID: <kjyqru.f75t7l@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7486157310598537601=="
+Content-Type: multipart/mixed; boundary="===============6499892411419432894=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,268 +18,120 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7486157310598537601==
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+--===============6499892411419432894==
+Content-Type: multipart/alternative;
+	boundary="=_6a32cdac3e0129e62e774b053d5eb51e"
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Pharmaceutical Executive Europe - E-News</title>
-<style type="text/css">
-<!--
-searchtext {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	color: #999999;
-}
-sumtext {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	line-height: 160%;
-}
-bluelinks {
-	color: #004b94;
-	text-decoration: none;
-}
-a:hover {
-	text-decoration: underline;
-}
-lineht {
-	line-height: 160%;
-}
-extndlnht {
-	line-height: 200%;
-}
-tableborder {
-	border: 10px solid #e5ebed;
-}
-ktuborder {
-	border: 1px solid #d6e5f2;
-}
-adborder {
-	border: thick solid #ffffff;
-}
-blkborder {
-	border: thin solid #000000;
-}
-mpborder {
-	border: 1px solid #f2f2f2;
-}
--->
-</style>
-</head>
-
-<body>
-<style type="text/css">
-<!--
-searchtext {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 10px;
-	color: #999999;
-}
-sumtext {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	line-height: 160%;
-}
-bluelinks {
-	color: #004b94;
-	text-decoration: none;
-}
-a:hover {
-	text-decoration: underline;
-}
-lineht {
-	line-height: 160%;
-}
-extndlnht {
-	line-height: 200%;
-}
-tableborder {
-	border: 10px solid #e5ebed;
-}
-ktuborder {
-	border: 1px solid #d6e5f2;
-}
-adborder {
-	border: thick solid #ffffff;
-}
-blkborder {
-	border: thin solid #000000;
-}
-mpborder {
-	border: 1px solid #f2f2f2;
-}
--->
-</style>
+--=_6a32cdac3e0129e62e774b053d5eb51e
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
-<table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
-  <tr>
-    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr align="left">
-          <td height="5" colspan="2"></td>
-        </tr>
-        <tr align="left">
-          <td><font size="1" color="#999999" face="Verdana, Arial, Helvetica, sans-serif">
-		  Pharmaceutical Executive Digest</font><font size="1" color="#999999" face="Verdana, Arial, Helvetica, sans-serif">:<br>
+--=_6a32cdac3e0129e62e774b053d5eb51e
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-          Having trouble viewing this e-mail? <span class="bluelinks"><a href="http://www.tymanety.ru/" target="_blank" class="bluelinks">
-		  Click here</a></span>. </font></td>
-          <td align="right"><font color="#999999" size="1" face="Verdana, Arial, Helvetica, sans-serif">
-		  You are subscribed as spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org <br>
-                <a href="http://www.tymanety.ru/" class="bluelinks">
-		  Unsubscribe from this list</a>.</font></td>
-        </tr>
-        <tr align="left">
-
-          <td height="5" colspan="2"></td>
-        </tr>
-    </table></td>
-  </tr>
-</table>
-<table width="700" border="0" align="center" cellpadding="5" cellspacing="0" class="tableborder">
-  <tr>
-    <td><table width="100%" border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
-
-          <tr>
-            <td width="50%"><a href="http://www.tymanety.ru/" target="_blank"><img src="http://www.advanstar.com/test/pee/PEE_enews/2009/images/PEE_newlogoblk.jpg" alt="Pharmaceutical Executive Europe  E-News" width="329" height="60" vspace="5" border="0"></a></td>
-            <td width="50%" valign="bottom">&nbsp;</td>
-          </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
-          <tr>
-
-            <td><table width="100%"  border="0" cellpadding="5" cellspacing="0" bgcolor="#c8e1f7">
-              <tr>
-                <td><div align="center"><font color="#004b94" size="1" face="Verdana, Arial, Helvetica, sans-serif"><a href="http://www.tymanety.ru/" target="_blank" class="bluelinks">
-					WEBSITE</a></font></div></td>
-              </tr>
-            </table></td>
-            <td width="2">&nbsp;</td>
-            <td><table width="100%"  border="0" cellpadding="5" cellspacing="0" bgcolor="#c8e1f7">
-              <tr>
-
-                <td><div align="center"><font color="#004b94" size="1" face="Verdana, Arial, Helvetica, sans-serif"><a href="http://www.tymanety.ru/" target="_blank" class="bluelinks">
-					DIGEST</a></font></div></td>
-              </tr>
-            </table></td>
-            <td width="2">&nbsp;</td>
-            <td><table width="100%"  border="0" cellpadding="5" cellspacing="0" bgcolor="#c8e1f7">
-              <tr>
-                <td><div align="center"><font color="#004b94" size="1" face="Verdana, Arial, Helvetica, sans-serif"><a href="http://www.tymanety.ru/" target="_blank" class="bluelinks">
-					EVENTS</a></font></div></td>
-              </tr>
-
-            </table></td>
-            <td width="2">&nbsp;</td>
-            <td><table width="100%"  border="0" cellpadding="5" cellspacing="0" bgcolor="#c8e1f7">
-              <tr>
-                <td><div align="center"><font color="#004b94" size="1" face="Verdana, Arial, Helvetica, sans-serif"><a href="http://www.tymanety.ru/" target="_blank" class="bluelinks">
-					ARCHIVE</a></font></div></td>
-              </tr>
-            </table></td>
-            <td width="2">&nbsp;</td>
-
-            <td><table width="100%"  border="0" cellpadding="5" cellspacing="0" bgcolor="#c8e1f7">
-              <tr>
-                <td><div align="center"><font color="#004b94" size="1" face="Verdana, Arial, Helvetica, sans-serif"><a href="http://www.tymanety.ru/" target="_blank" class="bluelinks">
-					SUBSCRIBE</a></font></div></td>
-              </tr>
-            </table></td>
-            <td width="2">&nbsp;</td>
-            <td><form action="http://www.tymanety.ru/" target="_blank" method="GET">
-                <table width="100%"  border="0" align="right" cellpadding="5" cellspacing="0" bgcolor="#c8e1f7">
-
-                  <tr>
-                    <td><input type="text" name="qgeneral" class="text-box" id="search-box" value="" onClick="this.value='';"/>
-                    </td>
-                    <td><input id="fsubmit" value="Search" type="image" src="http://www.advanstar.com/test/medical_economics/me_enews/template/images/search_icon.gif" align="middle" width="13" height="10">
-                        <input type="hidden"  name="searchtype" value="cbpxoezitpcmin" id="pmsmjncqrdsp"/></td>
-                  </tr>
-                </table>
-            </form></td>
-          </tr>
-
-        </table></td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-      </tr>
-      <tr>
-        <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
-          <tr>
-
-            <td width="73%" valign="top"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td><div align="right"><font color="#666666" size="1" face="Verdana, Arial, Helvetica, sans-serif">
-					MAY 20, 2009</font></div></td>
-              </tr>
-              <tr>
-
-                <td><table width="100%"  border="0" cellspacing="0" cellpadding="10">
-                  <tr>
-                    <td><font size="2" face="Arial, Helvetica, sans-serif"><b class="lineht">
-					In this week&#8217;s digital magazine</b></font><br>
-                        <a href="http://www.tymanety.ru/" target="_blank" class="bluelinks">
-                        <img alt="Having trouble viewing this image? Click here" height="350" src="http://www.tymanety.ru/10.gif" width="600" style="border-width: 0px"></a><br>
-					<span class="sumtext">
-					<a href="http://www.tymanety.ru/" class="bluelinks"></a> <strong><a href="http://www.tymanety.ru/" class="bluelinks">
-					More... </a></strong></span>                      </td>
-
-                  </tr>
-                </table></td>
-              </tr>
-
-            </table>
-			</td>
-          </tr>
-        </table></td>
-      </tr>
-    </table></td>
-  </tr>
-</table>
-<table width="700" border="0" align="center" cellpadding="10" cellspacing="0">
-  <tr>
-
-    <td><p><font size="1" face="Arial, Helvetica, sans-serif" color="#999999">
-	You are subscribed as spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org To unsubscribe from this list <a href="http://www.tymanety.ru/unsubscribe.aspx?user=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&confirm=7EEC08C558271C" class="bluelinks">
-	click here</a>.</font></p>
-      <p><font color="#999999" size="1" face="Arial, Helvetica, sans-serif">
-	  Advanstar Communications provides certain customer contact data (such as
-	  customers' names, addresses, phone numbers and e-mail addresses) to third
-	  parties who wish to promote relevant products, services and other
-	  opportunities which may be of interest to you. If you do not want
-	  Advanstar Communications to make your contact information available to
-	  third parties for marketing purposes, please contact us by emailing <a href="http://www.tymanety.ru/" class="bluelinks">
-	  magazines-RYTmsTj4/dsS+FvcfC7Uqw@public.gmane.org</a> or by mail at Advanstar Communications,
-	  Advanstar House, Park West, Sealand Road, Chester, CH1 4RN, UK. </font></p></td>
-
-  </tr>
-</table>
-</body>
-</html>
+<html><head>=0D</head><body><div align=3D"center"><font size=3D"2" face=3D"=
+Arial, Helvetica, sans-serif"><a href=3D"http://www.mutuelle-conseil.com/AA=
+02RG988T/10">Si vous ne pouvez pas consulter correctement ce message, rende=
+z-vous ici</a></font></div><br>
+<div align=3D"center"><font size=3D"3" face=3D"Arial, Helvetica, sans-serif=
+" color=3D"#FF6600"><strong>Est ce que votre sant=E9 est bien couverte ?<br=
+>Est ce que vous b=E9n=E9ficiez des meilleures garanties et tarifs ?<br>Com=
+parez ici et faites enfin de vraies economies !</strong></font><center>=0D<=
+table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=0D<tbody>=0D<tr>=0D=
+<td align=3D"center" style=3D"font-size: 10px; color: rgb(19, 35, 91); font=
+-family: arial;"><br /><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D<table c=
+ellspacing=3D"0" cellpadding=3D"0" border=3D"0">=0D<tbody>=0D<tr>=0D<td>=0D=
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=0D<tbody>=0D<tr>=
+=0D<td style=3D"font-size: 0px; line-height: 0px;"><img src=3D"http://www.v=
+tqrsed.info/hebergement_messages/17864/images/image_01.jpg" /><br /></td>=
+=0D<td style=3D"font-size: 0px; line-height: 0px;"><a target=3D"_blank" hre=
+f=3D"http://www.mutuelle-conseil.com/AA02RG988T/10"><img src=3D"http://www.=
+vtqrsed.info/hebergement_messages/17864/images/image_02.jpg" style=3D"borde=
+r: medium none ;" /></a><br /></td>=0D<td style=3D"font-size: 0px; line-hei=
+ght: 0px;"><img src=3D"http://www.vtqrsed.info/hebergement_messages/17864/i=
+mages/image_03.jpg" alt=3D"1er site comparateur d'assurance sant=E9 en fran=
+ce" /><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<t=
+d>=0D<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=0D<tbody>=0D<=
+tr>=0D<td style=3D"font-size: 0px; line-height: 0px;"><img src=3D"http://ww=
+w.vtqrsed.info/hebergement_messages/17864/images/image_04.jpg" alt=3D"Pr=E9=
+servez votre sant=E9, optimisez votre budget ! Votre mutuelle =E0 partir de=
+ 11,40 Euros" /><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=
+=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=
+=0D<tbody>=0D<tr>=0D<td style=3D"font-size: 0px; line-height: 0px;"><img sr=
+c=3D"http://www.vtqrsed.info/hebergement_messages/17864/images/image_05.jpg=
+" alt=3D"Comparez votre mutuelle sur " /><br /></td>=0D<td style=3D"font-si=
+ze: 0px; line-height: 0px;"><a target=3D"_blank" href=3D"http://www.mutuell=
+e-conseil.com/AA02RG988T/10"><img src=3D"http://www.vtqrsed.info/hebergemen=
+t_messages/17864/images/image_06.jpg" alt=3D"www.mutuelle-conseil.com" styl=
+e=3D"border: medium none ;" /></a><br /></td>=0D<td style=3D"font-size: 0px=
+; line-height: 0px;"><img src=3D"http://www.vtqrsed.info/hebergement_messag=
+es/17864/images/image_07.jpg" /><br /></td>=0D</tr>=0D</tbody>=0D</table>=
+=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0"=
+ border=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"font-size: 0px; line-height:=
+ 0px;"><img src=3D"http://www.vtqrsed.info/hebergement_messages/17864/image=
+s/image_08.jpg" /><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=
+=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=
+=0D<tbody>=0D<tr>=0D<td style=3D"font-size: 0px; line-height: 0px;"><img sr=
+c=3D"http://www.vtqrsed.info/hebergement_messages/17864/images/image_09.jpg=
+" /><br /></td>=0D<td style=3D"font-size: 11px; width: 209px; color: rgb(19=
+, 35, 91); font-family: arial; background-color: rgb(222, 231, 244); text-a=
+lign: left;">=95&nbsp;&nbsp;<strong>Site sp=E9cialiste</strong> enti=E8reme=
+nt<br />&nbsp;&nbsp;&nbsp;consacr=E9 =E0 l=92<strong>assurance sant=E9</str=
+ong> <table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=0D<tbody>=0D<=
+tr>=0D<td style=3D"line-height: 8px;"><br /></td>=0D</tr>=0D</tbody>=0D</ta=
+ble>=95&nbsp;&nbsp;<strong>200 garanties sant=E9</strong> compar=E9es<br />=
+&nbsp;&nbsp;&nbsp;en moins de 5 secondes ! <table cellspacing=3D"0" cellpad=
+ding=3D"0" border=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"line-height: 8px;"=
+><br /></td>=0D</tr>=0D</tbody>=0D</table>=95&nbsp;&nbsp;<strong>Aide en li=
+gne</strong> : fiches pratiques, forum, <br />&nbsp;&nbsp;&nbsp;expert en l=
+igne, conseillers et<br />&nbsp;&nbsp;&nbsp;assistance t=E9l=E9phonique </t=
+d>=0D<td style=3D"font-size: 0px; line-height: 0px;"><img src=3D"http://www=
+.vtqrsed.info/hebergement_messages/17864/images/image_11.jpg" /><br /></td>=
+=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table cells=
+pacing=3D"0" cellpadding=3D"0" border=3D"0">=0D<tbody>=0D<tr>=0D<td style=
+=3D"font-size: 0px; line-height: 0px;"><img src=3D"http://www.vtqrsed.info/=
+hebergement_messages/17864/images/image_12.jpg" /><br /></td>=0D<td style=
+=3D"font-size: 0px; line-height: 0px;"><a target=3D"_blank" href=3D"http://=
+www.mutuelle-conseil.com/AA02RG988T/10"><img src=3D"http://www.vtqrsed.info=
+/hebergement_messages/17864/images/image_13.jpg" alt=3D"Je compare" style=
+=3D"border: medium none ;" /></a><br /></td>=0D<td style=3D"font-size: 0px;=
+ line-height: 0px;"><img src=3D"http://www.vtqrsed.info/hebergement_message=
+s/17864/images/image_14.jpg" /><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D=
+</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" bo=
+rder=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"font-size: 0px; line-height: 0p=
+x;"><img src=3D"http://www.vtqrsed.info/hebergement_messages/17864/images/i=
+mage_15.jpg" /><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D=
+<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=0D<t=
+body>=0D<tr>=0D<td style=3D"font-size: 0px; width: 70px; line-height: 0px;"=
+>&nbsp;</td>=0D<td style=3D"font-size: 0px; line-height: 0px;"><br /></td>=
+=0D<td style=3D"font-size: 10px; color: rgb(19, 35, 91); font-family: arial=
+;">&nbsp;&nbsp;&nbsp;</td>=0D<td style=3D"font-size: 0px; line-height: 0px;=
+"><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D</tbody>=0D</=
+table></center><br /><br><div align=3D"center"><font size=3D"1" face=3D"Ari=
+al, Helvetica, sans-serif" color=3D"#999999">Conformement a la loi Informat=
+ique et Libertes, vous disposez d'un droit d'acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA50UVCMA3_854383/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ50UVCMA3_854383.png" /></body></html>
+--=_6a32cdac3e0129e62e774b053d5eb51e--
 
 
---===============7486157310598537601==
+
+--===============6499892411419432894==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 ------------------------------------------------------------------------------
-Crystal Reports - New Free Runtime and 30 Day Trial
-Check out the new simplified licensing option that enables 
-unlimited royalty-free distribution of the report engine 
-for externally facing server and web deployment. 
-http://p.sf.net/sfu/businessobjects
---===============7486157310598537601==
+Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT
+is a gathering of tech-side developers & brand creativity professionals. Meet
+the minds behind Google Creative Lab, Visual Complexity, Processing, & 
+iPhoneDevCamp asthey present alongside digital heavyweights like Barbarian
+Group, R/GA, & Big Spaceship. http://www.creativitycat.com 
+--===============6499892411419432894==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -288,4 +142,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7486157310598537601==--
+--===============6499892411419432894==--

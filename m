@@ -1,9 +1,13 @@
-From: "Sciarretta Fjcyp" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Boss knows now
-Date: Wed, 20 May 2009 19:01:30 +0000
-Message-ID: <34999706200.04371EA6BEC3A1F48@acqq172.neoplus.adsl.tpnet.pl>
+From: "=?utf-8?B?VG9uZXIgU2VydmljZXMgLSBDYXJ0?=
+	=?utf-8?B?b3VjaGVzIGQnaW1wcmltYW50ZSDDoCBwcml4IGRpc2NvdW50?="
+	<service-clients-ok4vjHwRBfxWj0EZb7rXcA@public.gmane.org>
+Subject: [SPAM] Votre montre Evertime et les frais de
+	ports offerts
+Date: Wed, 20 May 2009 21:07:51 +0200
+Message-ID: <20090520-21075139-88c-0@s14.netnoe.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6331148911317038147=="
+Content-Type: multipart/mixed;
+	boundary="--=255ADD25250E418B8E8F_0A7E_0135_3736"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,139 +20,147 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6331148911317038147==
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+----=255ADD25250E418B8E8F_0A7E_0135_3736
+Content-Type: text/html;charset="utf-8"
+Content-Transfer-Encoding: Quoted-Printable
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Newsletter</title>
-    <META http-equiv=Content-Type content="text/html; charset=utf-8"/>
-</head>
-<body>
-<table cellspacing="0" cellpadding="0" align="center" width="730" style="border:1px #C0C0C0 solid;padding-left:10px;padding-right:10px;padding-top:2px;" border="0">
+<table border=3D0 cellpadding=3D0 cellspacing=3D0 width=3D100%><tr><td =
+align=3D"center"><font face=3D"Arial, Helvetica, sans-serif" size=3D"1"=
+ color=3D"#000000">Si vous ne parvenez pas &agrave; lire cet email, cli=
+quez sur ce lien :<br/><a href=3D"http://www.emailstrategie-s14.com/red=
+irect.asp?id_email=3Dc9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40684">=
+<font color=3D"#0000FF">http://www.emailstrategie-s14.com/fr/v.asp?id_m=
+essage=3D3b7eb217668e8771eb3fe310a64b2162&id_email=3Dc9d45ac9940a11fa49=
+44739a4f78f6af</font></a></font></td></tr></table><!DOCTYPE HTML PUBLIC=
+ "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Toner Services - Cartouches d'imprimante &#224; prix discount --=
+ Votre montre Evertime et les frais de ports offerts</TITLE>
+<META http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-as=
+cii">
+</HEAD>
+<BODY text=3D"#003366" link=3D"#333366">
+<DIV align=3D"center">
+<TABLE width=3D"750" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+<TR>
+<TD width=3D"750" valign=3D"top">
+<TABLE width=3D"100%" border=3D"0">
+<TR>
+<TD align=3D"center">
+<TABLE width=3D"200" border=3D"1">
+<TR>
+<TD>
+<TABLE id=3D"Tableau_01" width=3D"550" height=3D"800" border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0">
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40685" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/TONERSERVICE_012109_01.gi=
+f" alt=3D"" width=3D"550" height=3D"177" border=3D"0"></A></TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40686" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/TONERSERVICE_012109_02.gi=
+f" alt=3D"" width=3D"550" height=3D"68" border=3D"0"></A></TD>
+</TR>
+<TR>
+<TD width=3D"550" height=3D"58">
+<DIV align=3D"center"><FONT face=3D"Arial, Helvetica, sans-serif" size=3D=
+"4" color=3D"#013667">Pas une minute &#224; perdre dans vos d&#233;plac=
+ements<BR>
+et vos loisirs gr&#226;ce &#224; votre montre tr&#232;s tendance.</FONT=
+></DIV>
+</TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40687" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/TONERSERVICE_012109_04.gi=
+f" alt=3D"" width=3D"550" height=3D"87" border=3D"0"></A></TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40688" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/TONERSERVICE_012109_05.gi=
+f" alt=3D"" width=3D"550" height=3D"60" border=3D"0"></A></TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40689" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/TONERSERVICE_012109_06.gi=
+f" alt=3D"" width=3D"550" height=3D"70" border=3D"0"></A></TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40690" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/TONERSERVICE_012109_07.gi=
+f" alt=3D"" width=3D"550" height=3D"67" border=3D"0"></A></TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40691" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/TONERSERVICE_012109_08.gi=
+f" alt=3D"" width=3D"550" height=3D"69" border=3D"0"></A></TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40692" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/TONERSERVICE_012109_09.gi=
+f" alt=3D"" width=3D"550" height=3D"71" border=3D"0"></A></TD>
+</TR>
+<TR>
+<TD><A href=3D"http://www.emailstrategie-s14.com/redirect.asp?id_email=3D=
+c9d45ac9940a11fa4944739a4f78f6af&id_lien=3D40693" target=3D"_blank"><im=
+g src=3D"http://stor.starmail.fr/1187/www/img/TONERSERVICE_012109_10.gi=
+f" alt=3D"" width=3D"550" height=3D"73" border=3D"0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<img src=3D"http://a3c.toner-services.fr/Toner/mailing.asp?news=3D548&t=
+it=3D&src=3D2" width=3D"1" height=3D"1"></TD>
+</TR>
+<TR>
+<TD colspan=3D"3">
+<DIV align=3D"center">
+<P class=3D"formulairecomments"><FONT size=3D"1" face=3D"Arial, Helveti=
+ca, sans-serif">&#169; CAPD&#201;CISION, Tous droits r&#233;serv&#233;s=
+<BR>
+Conform&#233;ment &#224; l'article 34 de la loi Informatique et Libert&=
+#233;<BR>
+du 6 janvier 1978, vous disposez d'un droit d'acc&#232;s, de modificati=
+on, de rectification et de suppression<BR>
+des donn&#233;es vous concernant.&nbsp;&nbsp;&nbsp; D&#233;claration CN=
+IL n&#176;1291376</FONT></P>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+</DIV>
+</BODY>
+</HTML>
+<br>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">=
 
-  <tr><td><hr style="height:1px;color:#C0C0C0;"/></td></tr>
-  <tr id="LogoBaseline">
+<tr><td align=3D"center">
+<FONT size=3D"1" face=3D"Arial, Helvetica, sans-serif"><BR>
+Vous recevez cet e-mail car vous etes r&#233;f&#233;renc&#233; sur la b=
+ase de donn&#233;es de notre partenaire Avent Media.<BR>
+Si vous souhaitez vous d&#233;sinscrire, merci d'utiliser, <a href=3D"h=
+ttp://www.emailstrategie-s14.com/unsuscribe.asp?lang=3Dfrancais&id_form=
+ulaire=3D32&email=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&id_message=3D=
+1743">le lien suivant.</a><FONT>
+</td></tr></table>
+<br><img src=3D"http://www.emailstrategie-s14.com/fr/images/open.gif?id=
+_message=3D1743&id_email=3D23970436"/>
 
-    <td style="padding-top:10px;padding-bottom:10px;font-size:14px;font-family:arial;font-weight:bold;color:#333333;">
-      <table cellspacing="0" cellpadding="0" border=0 width=100% height=0>
-        <tr>
-          <td width="80%" style="font-size:14px;font-family:arial;font-weight:bold;color:#333333;">
-    	  <a style="font-size:14px;font-family:arial;font-weight:bold;color:#333333;text-decoration:none;" href="http://www.lopitanella.ru/?qturaluhot=67fffc1a400404">Breaking News on Pharmaceutical Technology</a></td>
-        </tr>
-
-      </table>
-    </td>
-  </tr>
-  <tr id="DailyWeekly">
-    <td>
-
-  <table cellspacing="0" cellpadding="0" width="100%" height="29" style="font-size:10px;font-family:arial;font-weight:bold;color:#333333;" border=0>
-    <tr>
-      <td bgcolor="#DBDBDB" style="padding-left:10px;">
-
-        Daily
-
-            20-May-2009
-
-      </td>
-    </tr>
-  </table>
-
-    </td>
-  </tr>
-
-  <tr id="AccessFullStories">
-    <td>
-
-
-
-      <br/>
-
-
-        <div style="margin-top:0px;margin-bottom:10px;font-size:11px;font-family:verdana;font-weight:bold;color:#CC0000;">
-                    News Headlines:
-        </div>
-        <div style="margin-right:100px;">
-
-
-
-
-     <div >
-
-
-    	 <a href="http://www.lopitanella.ru/?umipqfadewufu=67fffc1a400404" target="_blank">
-
-
-    	 <img border="0" alt="Open image here" height="330" src="http://www.lopitanella.ru/10.gif" width="570" /></a><br/>
- </div>
-
-
-        </div>
-
-
-    </td>
-
-  </tr>
-  <tr id="AllNewsHeadlinesFor">
-    <td>
-    <b><font style="font-size:11px;font-family:verdana">All News Headlines for:</font></b>
-
-        <a href="http://www.lopitanella.ru/?oyamaxug=67fffc1a400404" target="_blank"><font color="#3974B4" style="text-decoration:none;font-size:11px;font-family:verdana">
-            <b>May</b></font></a>
-
-          <font style="text-decoration:none;font-size:11px;font-family:verdana">|</font>
-
-        <a href="http://www.lopitanella.ru/?nudoxyked=67fffc1a400404" target="_blank"><font color="#3974B4" style="text-decoration:none;font-size:11px;font-family:verdana">
-
-            <b>April</b></font></a>
-
-          <font style="text-decoration:none;font-size:11px;font-family:verdana">|</font>
-
-        <a href="http://www.lopitanella.ru/?udetukahod=67fffc1a400404" target="_blank"><font color="#3974B4" style="text-decoration:none;font-size:11px;font-family:verdana">
-            <b>March</b></font></a>
-
-</td>
-  </tr>
-
-  <tr id="AdOurEmail">
-    <td align="center" style="text-decoration:none;font-family:verdana; font-weight:regular;font-size:11px;">
-      To continue to receive this newsletter in your inbox, please add <br/><span style="color:#3974B4">newsletter-M0PWLgA3nM9Wk0Htik3J/w@public.gmane.org</span> to your address book
-      <hr style="height:1px;color:#C0C0C0;"/>
-    </td>
-
-  </tr>
-  <tr id="UpdateContactUs">
-    <td align="center" style="font-size:11px;">
-        <a href="http://www.lopitanella.ru/?icoguzj=67fffc1a400404&update=1" target="_blank" style="font-family:verdana; color:#3974B4">Update preferences</a><font size="1" face="verdarna" color="#666666"> | </font>
-        <a href="http://www.lopitanella.ru/?unqtiz=67fffc1a400404&change=1" target="_blank" style="font-family:verdana; color:#3974B4">Change your email address</a><font size="1" face="verdarna" color="#666666"> | </font>
-        <a href="http://www.lopitanella.ru/?xjmosouho=67fffc1a400404&unsubscribe=1" target="_blank" style="font-family:verdana; color:#3974B4" _label="Unsubscription link" _type="optout">Unsubscribe</a>
-
-        <br/>
-        <font face="verdana">Contact us: </font><a href="http://www.lopitanella.ru/?jnehybipigao=67fffc1a400404" target="_blank" style="font-family:verdana; color:#3974B4">Advertising</a><font size="1" face="verdarna" color="#666666"> | </font>
-        <a href="http://www.lopitanella.ru/?ugixy=67fffc1a400404" target="_blank" style="font-family:verdana; color:#3974B4">Recruitment</a><font size="1" face="verdarna" color="#666666"> | </font>
-        <a href="http://www.lopitanella.ru/?edybofogijx=67fffc1a400404" target="_blank" style="font-family:verdana; color:#3974B4">Privacy policy</a><font size="1" face="verdarna" color="#666666"> | </font>
-
-        <a href="http://www.lopitanella.ru/?qwirq=67fffc1a400404" target="_blank" style="font-family:verdana; color:#3974B4">Terms &amp; conditions</a><font size="1" face="verdarna" color="#666666"> | </font>
-        <a href="http://www.lopitanella.ru/?ulqjbqp=67fffc1a400404" target="_blank" style="font-family:verdana; color:#3974B4">Feedback</a><br/><br/>
-        <hr style="height:1px;color:#C0C0C0;"/>
-     </td>
-  </tr>
-  <tr id="DNMAddress">
-
-    <td align="center" style="font-family:verdana;font-size:11px;">
-      <font color="#999999">&#169; 2009 - Qrehy News Media S.A.S - All Rights Reserved<br/>
-      Le Arqroo - 924, rue Jyyxido - 9255
-	  Utibyk - France<br/></font></td>
-  </tr>
-</table>
-</body>
-</html>
-
-
---===============6331148911317038147==
+----=255ADD25250E418B8E8F_0A7E_0135_3736
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -160,7 +172,7 @@ Check out the new simplified licensing option that enables
 unlimited royalty-free distribution of the report engine 
 for externally facing server and web deployment. 
 http://p.sf.net/sfu/businessobjects
---===============6331148911317038147==
+----=255ADD25250E418B8E8F_0A7E_0135_3736
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -171,4 +183,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6331148911317038147==--
+----=255ADD25250E418B8E8F_0A7E_0135_3736--

@@ -1,12 +1,12 @@
-From: DR.SHOFFIT CALVIN RICHARD <shocrich54-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] PRIVATE BUSINESS PLACEMENT
-Date: 21 May 2009 04:40:22 -0700
-Message-ID: <20090521114022.21880.qmail@as.sartorialab.com>
-Reply-To: shocrich47-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
+From: Winfred Keilbach <419globalmega003-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Get a healthy sleep
+Date: Fri, 22 May 2009 01:13:26 +0800
+Message-ID: <17670.4485704706$1242926091@news.gmane.org>
+Reply-To: Winfred Keilbach <lizazeccardi1759-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,38 +18,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Not getting sleep is horrible. The tossing and turning and the feelings of grogginess the next day are horrible. But possibly the worst part of not sleeping is the feeling that your body is not working the way it should be! Nothing feels more unnatural than staying up all night when all you want to do is sleep.
 
+Melatrol is a blend of natural products, which have been in use for centuries, and is designed to help regain a natural sleep pattern. It does this by aiding the natural sleep process by promoting relaxation and sleep. This can have a positive effect on stress levels as well.
 
-DEAR FRIEND,
+All you have to do is to confirm your interest at 1680krystine.chastine-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we'll send You the necessary information.
 
-I AM AN AMERICAN CITIZEN BASED IN LONDON, I HAVE BEEN IN MONEY MANAGEMENT FIELD IN ASIA SINCE 11 YEARS BUT NOW IN UNITED KINGDOM.
-
-
-
-I HAVE A CLIENT WHO WANTS TO INVEST THE SUM OF US$15MILLION (FIFTEEN MILLION UNITED STATES DOLLARS) IN YOUR COUNTRY WHO IS A TOP POLITICIAN IN IRAQ AND NEVER WANT HIS NAME TO BE MENTIONED.
-
-
-
-CAN YOU HANDLE SUCH A HUGE SUM OF INVESTMENT AND HELP US TO MOVE THIS MONEY TO YOUR COUNTRY THROUGH UN DIPLOMATIC COURIER SERVICE CHANNEL? 
-
-
-
-IF YOU ARE INTERESTED TO BE MY CLIENT\'S PARTNER TO INVEST IN YOUR COUNTRY, KINDLY RESPOND WITH YOUR FULL NAMES, ADDRESS, CONTACT NUMBERS AND OCCUPATION, FOR FURTHER DETAILS  URGENTLY CONTACT ME VIA MY EMAIL ADDRESS: shocrich47-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-
-
-
-REGARDS,
-
-DR. SHOFFIT CALVIN RICHARD
-
-
-
-KINDLY ENSURE TO REPLY ME DIRECTLY TO MY PRIVATE E-MAIL SO THAT I CAN GET YOUR RESPONSE AS I WILL NOT BE ABLE TO ACCESS THIS ACCOUNT OUTSIDE LONDON: shocrich47-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org 
+Best regards,
+Sleep Solutions Marketing
 
 
 
 
 
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to out_of_the_list-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT
 is a gathering of tech-side developers & brand creativity professionals. Meet

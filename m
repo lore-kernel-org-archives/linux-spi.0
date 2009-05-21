@@ -1,7 +1,7 @@
 From: DR.SHOFFIT CALVIN RICHARD <shocrich54-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
 Subject: [SPAM] PRIVATE BUSINESS PLACEMENT
-Date: 21 May 2009 04:41:09 -0700
-Message-ID: <20090521114109.25940.qmail@as.sartorialab.com>
+Date: 21 May 2009 04:42:10 -0700
+Message-ID: <20090521114210.30218.qmail@as.sartorialab.com>
 Reply-To: shocrich47-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"

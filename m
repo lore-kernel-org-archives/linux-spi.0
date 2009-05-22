@@ -1,9 +1,11 @@
-From: "Demer Lorenza" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Did you feed cat?
-Date: Fri, 22 May 2009 15:19:20 +0000
-Message-ID: <200905224299.a82e8ae@[88.252.62.49]>
+From: CENTRAL BANK OF NIGERIA <daniellalade-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Re: In God We Trust/Payment
+Date: Fri, 22 May 2009 11:41:26 -0400
+Message-ID: <E1M7WsA-0005KJ-9O@sls013.qcp.hosting.com>
+Reply-To: danielalade-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6802806352133078373=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,70 +18,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6802806352133078373==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+ATTENTION: BENEFICIARY,
+  
+Be informed that all the fees you are supposed to pay before receiving your contract/inheritance fund have been waived off. Unless for your processing fee and we will transfer your contract/Inheritance fund to you immediately. 
+No other charges except the processing fee. 
+  
+Your PASSCODE is: 999-035-2655 (Fund Transfer confirmation same day). You have no other payment to make except the processing fee. Your Payment in addition with your accumulated interest will be transferred to your account through Electronic Telegraphic Transfer. You will receive your payment in two installments. The first installment of $3.7m (Three Million Seven Hundred Thousand Dollars) is ready for transfer now. Once you confirm receipt of the first instalment($3.7m) in your bank account, the second instalment will be processed and transferred to your bank account subsequently.
+  
+This is newly introduced system of payment by the Central Bank of Nigeria to avoid experiences of incessant fraud, illegal extortion of money from beneficiaries and to enhance transparency. 
+WHEN YOUR FUNDS ARE TRANSMITTED, THE MANAGEMENT WILL INFORM YOU, AND YOU WILL APPLY THE PASSCODE AS DIRECTED AND INSTANTLY, YOUR ACCOUNT WILL BE CREDITED AND YOU WILL MOVE TO YOUR BANK TO CONFIRM YOUR FUND. 
+  
+You will only apply for the passcode when you have paid your processing fee because for now, it is still invalid until your fund is transmitted. Here is the processing fee payment information below. 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-   <head>
-      <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-      <meta name="render-time" content="Fri, 22 May 2009 18:19:14 +0300" />
-      <title>
-                                        Daily Thought Newsletter
+Name: JOEL UZO
+Text Question: GOOD 
+Text Answer: OK 
+Country:45 Air port road Ikeja lagos/ Nigeria 
+Amount: $70.00 
 
-      </title>
-   </head>
-   <body>
+You have to go immediately and make the payment before your passcode will be activated and your fund transferred. You can try the guideline for instance: *With your digital phone dial our bank access code followed by, then enter your Account number followed by #, at a voice prompt enter your passcode and # and you will be credited. (This will be when your fund has been transmitted). 
+  
+Any other contact or payment you make apart from the processing fee to anybody or office is at your own risk. Then your email subject must have this code for security reasons "In God We Trust", any email that does not come with it as the subject is not from central bank and guard this code jealously. Be informed that so many unauthorized 
+individuals do parade themselves as our officials and impose bogus bills on our beneficiaries with their syndicates home and abroad. Take precautionary measure henceforth, you have been notified, and once we find out that you are one of the people that involve themselves with these unauthorized individuals, tarnishing the image of this great country we will immediately report you to the authorities (F.B.I) because 
+we are trying our best to restore the image of this great country.
 
-      <table border="0" cellpadding="0" cellspacing="0" style="width: 896px">
+Note:Payment is via Western Union or Money Gram and scan copy of payment confirmation slip sent to us.
 
-
-<tr><td align="center" style="font: normal 11px Verdana, sans-serif; color: #333;"><a href="http://www.stuchalkin.ru/?izihirq=1A82E8AE&nireqzoge=06518569595" style="text-decoration: none; color: #0099ff;">Click here</a> to view as a web page. </td></tr>
-
-         <tr><td align="center">
-        <table border="0" cellpadding="0" cellspacing="0" style="width: 608px; padding-bottom: 10px">
-        <tr>
-
-        <td align="left" style="width: 276px; font: normal 20px Georgia, sans-serif; color: #999; vertical-align: bottom; padding-bottom: 25px">May 22, 2009<br />
-		<br /><a href="http://www.stuchalkin.ru/?azomitago=1A82E8AE&jahoty=06518569595" target="_top">
-		<img border="0" alt="Click here to view image in browser" height="340" src="http://www.stuchalkin.ru/x.jpg" width="580" /></a></td>
-        </tr>
-
-        </table>
-</td></tr>
+Yours faithfully, 
+Dr. Daniel Alade
+Director(Accountant General of the Federation)
 
 
-<tr><td valign="top" style="border-right: 1px solid #e5e4e4; padding-right: 10px">
-        <table border="0" cellpadding="0" cellspacing="0" style="width: 570px">
 
-<tr><td align="center" style="font: normal 9px Verdana, sans-serif; color: #999; padding-top: 20px">
-
-<a href="http://www.stuchalkin.ru/?unsubscribe=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&c=55D4B86FCF&d=1" style="font: 9px Verdana, sans-serif; text-decoration: none; color: #0099ff">Unsubscribe</a>&nbsp;|&nbsp;
-<a href="http://www.stuchalkin.ru/?change=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&c=9AF6CBEF68F248&c=1" style="font: 9px Verdana, sans-serif; text-decoration: none; color: #0099ff">Change e-mail address</a>&nbsp;|&nbsp;
-<a href="http://www.stuchalkin.ru/?privacy=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&c=9C0D2449867A&p=1" style="font: 9px Verdana, sans-serif; text-decoration: none; color: #0099ff">Privacy Policy</a>&nbsp;|&nbsp;
-<a href="http://www.stuchalkin.ru/?wosjcu=9CE85D86C8E&sakjci=5885385485860" style="font: 9px Verdana, sans-serif; text-decoration: none; color: #0099ff">About Us</a><br /><br />
-Copyright &copy; 2009 Jcyyjy Inc. All rights reserved. Reproduction in whole or in part without permission is prohibited<br /><br />
-For further communication please contact: Afqis Magazine Customer Service<br />Consumer Affairs 3000 University Center Drive Tampa, FL 33612-6408</td></tr>
-
-        </table>
-
-</td>
-<!--RIGHT RAIL-->
-
-</tr>
-
-
-      </table>
-</body>
-</html>
-
-
---===============6802806352133078373==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT
@@ -87,15 +57,3 @@ is a gathering of tech-side developers & brand creativity professionals. Meet
 the minds behind Google Creative Lab, Visual Complexity, Processing, & 
 iPhoneDevCamp asthey present alongside digital heavyweights like Barbarian
 Group, R/GA, & Big Spaceship. http://www.creativitycat.com 
---===============6802806352133078373==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6802806352133078373==--

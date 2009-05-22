@@ -1,11 +1,10 @@
-From: "kio" <qingsisi78-Xb2Y1Dfb9CI@public.gmane.org >
-Subject: [SPAM] 涓撲笟绉樹功/鍔╃悊鍜岃鏀夸汉鍛樻妧鑳藉彂灞曞疄鎴樿缁冭惀
-Date: Fri, 22 May 2009 06:32:32 +0800
-Message-ID: <E1M7GqL-0007zl-A2@235xhf1.ch3.sourceforge.com>
-Reply-To: wesaaky-6VbI164tLz0@public.gmane.org
+From: "PMU par PleinTemps" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: On vous offre 30 euros pour en gagner des
+	millions
+Date: Fri, 22 May 2009 03:11:52 +0200 (CEST)
+Message-ID: <kk0u09.i7khvc@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+Content-Type: multipart/mixed; boundary="===============4708812318472735501=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,120 +17,111 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+--===============4708812318472735501==
+Content-Type: multipart/alternative;
+	boundary="=_31c5269f88c3bcda1225ee6cf159058a"
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+--=_31c5269f88c3bcda1225ee6cf159058a
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-请看附件,如有打扰,请原谅,谢谢
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="专业秘书助理，行政人员专业技能提升研修班.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="专业秘书助理，行政人员专业技能提升研修班.txt"
+--=_31c5269f88c3bcda1225ee6cf159058a
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-ICAgICAgICAgINeo0rXD2MrpL9b6wO26zdDQ1f7Iy9SxvLzE3Lei1bnKtdW90bXBt9OqDQoNCsqx
-vOS12LXjo7oNCsqxICAgvOSjujIwMDnE6jA11MIxNi0xN8jVICAgICAgICAgICAgICAgICC12LXj
-o7qxsb6pDQogICAgICAgICAyMDA5xOowNdTCMjMtMjTI1SAgICAgICAgICAgICAgICAgtdi146O6
-ye7b2g0KICAgICAgICAgMjAwOcTqMDbUwjEzLTE0yNUgICAgICAgICAgICAgICAgILXYteOjusnP
-uqMNCg0KqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlDQrW97DstaXOu6O6ye7b2tbayMvQ0LncwO3XydGv
-zfggIA0Kye7b2srQ0ru2/sj9udzA7dfJ0a/T0M/euavLvg0KDQrK2r/OttTP86O6xvPStdDQ1f7W
-+sDt0+vOxMPYz+C52MjL1LGjurDsuavK0tb3yM6hotDQ1f6yv76twO2horatysKzpMPYyumhotfc
-DQogICAgICAgICAgwO3D2MrpoaKyv8PFw9jK6aGi0NDV/tb6wO2hotDQ1f7W97ncoaLQ0NX+sr/D
-xc7E1rDIy9SxtcgNCrfRICAgINPDOiAyMDAw1KovyMujqLD8wKjXysHPt9Ghos7nss28sMnPz8LO
-57LoteO1yKOpDQrIz9akt9HTw6O61tC8tjYwMNSqL8jLO7jfvLY4MDDUqi/IyyiyzrzTyM/WpL+8
-ytS1xNGn1LHQ6727xMm0y7fR08OjrLK7ss6808jP1qQNCiAgICAgICAgICC/vMrUtcTRp9Sxzt7Q
-6727xMkpDQqxuNeiOg0KMS4gt7KyzrzTyM/WpLXE0afUsaOs1NrF4NG1veHK+LLOvNO/vMrUus+4
-8dXf08k8PLn6vMrWsNK1yM/WpLHq17zBqrrPu+E+PrDkt6INCiAgIDw81tC8ttaw0rXD2MrpILvy
-uN+8ttaw0rXD2MrpPj65+rzKufrE2tbQ06LOxLDmy6vWsNK118q48dakyumjrKOoufq8yrn6xNrI
-zw0KICAg1qSjr8irx/LNqNDQo6+5zdb3yM+/yaOvudm3vc34yc+y6dGvo7sNCjKjrreyss6808jP
-1qS1xNGn1LHQ68zhvbuxvsjLye233dakusXC67ywtPPSu7Tnyv3C69XVxqyjuw0KM6Ouv86zzL3h
-yvi68zE1uPa5pNf3yNXE2r2r1qTK6b/std28xLj40afUsaO7DQo0o66/ycnqx+vW0Ln6ufq80sjL
-ssXN+Mjrv+KxuLC4oaMNCg0K18nRr7Xnu7CjujA3NTUtMjYwNzUzNjUgIDI2MDc1NDI5IA0KtKsg
-ICAg1eajujA3NTUtNjEzNTEzOTYgIA0Kwaogz7UgyMujusHo0KG94yAgIMXt0KG94w0KDQqppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaUNCsT6yse38dP2tb3V4tH5x+m/9qO6DQoxLtTa0NDV/rmk1/fW0MO7
-09DK3LW9uf3Ptc2z0bXBt6Oszt63qLTT1b3C1NDUyKu3vc67vce2yMjP1qrQ0NX+udzA7bmk1/cN
-CjIu1NrL+bTTysK1xNDQ1f653MDtuaTX99bQuNC+9cixt6bA7cLb1qez1g0KMy640L71uaTX99bQ
-19zKx7G7tq/Q0MrCo6yyu8Tc1ve2r9XGztW5pNf3vdrX4A0KNC7Q0Mq5ttTN4r3nyee74bXEudzA
-7dawxNzKscO709C40L71tb3T0LrctuDKws7vtcShsLratrShsdKqzOG3wA0KNS7P67j4uavLvr3a
-yqG30dPDo6y1q8i0srvWqrTTus60ps/CytajrMjnus692sqhDQo2LrbU0NDV/rmk1/e1xLj3z+6x
-6te8srvH5bP+DQo3LtTauavLvrXE1rDOu7XYzruyu8Dtz+ujrNPruPeyv8PFubXNqLK7y7OzqQ0K
-OC7SqrjJtcTKwsfpzKu24KOsyee74dfK1LTSstPQuty24KOstauyu9aqyOe6zsD708PJ57vh18rU
-tA0KOS621NPayOe6zrncwO25q8u+tcTPtc2z0NTV+8zl0NDV/srCzvHQxNbQw7u11w0KMTAuz+vP
-tc2z0afPsKOszOG439DQ1f653MDtvLzE3KOstavDu9PQus/KyrXEtKvK2r6t0em/zrPMo6y/1dPQ
-wO3C29aqyrYNCg0Kob6/zrPMsbO+sKG/o7oNCiAgICDL5tfFxvPStbncwO3Lrsa9tcTSqsfzsru2
-z8zhyf2jrLbU0NDV/rncwO3Iy9SxtcTXqNK1y9jWytKqx/PUvcC01L2436GjIL6tDQqzo8z9tb3S
-u9CpxvPStbjfsuOxp9S5ytbPwrXE0NDV/rncwO3V37u51rvKx9K7uPahsLjfvLbH2tTTuaShsbXE
-vcfJq6Osvq2zo8LxzbcNCrSmwO3Su9Cpy/bL6bXEysLO8aOstau008O709DPtc2ztdjIq7e9zru0
-psDt0NDV/rncwO25pNf3o7sgzazKsdKy09Cyu8nZtcTQ0NX+DQq53MDtyMvKv7jQv66jrNfUvLrV
-+8zlw6a1w8zsu+i12LC1o6zItLK7tau1w7K7tb3Az7DloaLNrMrCtcS/z7aovLDIz82so6y7ubOj
-s6MNCtLyvNDU2rncwO2y47ywu/my47b4sbvNtsvfoaKxp9S5o6yyu9aqtcC4w8jnus7T0NCnwsq1
-2LSmwO3Q0NX+ysLO8aOstvjH0rjQvvXSsg0Kw7vT0Neow8W1xMXg0bXAtNT2vNPX1Ly6z+DTprXE
-16jStby8xNyhow0KICAgIM6qwcvKudDQ1f653MDtyMvUsdPQu/q74b/sy9m12Mirt73Ou8zhyf3X
-qNK1y67GvaOszNi12L+qt6LBy9XiuPa5pNf3t7ujrM/gDQrQxbj3zrvU2taw0NDV/rncwO25pNf3
-tcTIy8q/09DSu7j2yKu3vc67tcTIz9aqo6yyorTTtuC49r3HtsjM4cn919S8urXE16jStcuuxr2h
-ow0KDQqhvtGnz7DK1dLmob+jug0KICCh78zhuN+7+dDQ1f65pNf3xNzBpqOs1vCyvbPJzqq6z7jx
-tcTG89K1udzA7bLjDQogIKHv1cbO1dDQ1f653MDt1tC1xLj31ta8vMfJo6zM4cn90NDV/rfnz9W5
-3MDtvLzE3A0KICCh79TL08PXqNK1tcSy4sbAuaS+36Oswcu94tfUvLq1xNDQzqq357jxsqLVxs7V
-1eu21NDUtcS4xMnGt723qA0KICCh79Gnu+G/7MvZxdC2z8bky/zIy9DQzqq357jxsqLT69au09DQ
-p7m1zai1xLy8x8mjrMzhyf2w7MrC0KfCyg0KDQrK2r/Ot73KvTrW98zivbK94qGit9bX6czWwtuh
-orultq+9zNGnoaLBt8+wtcgNCg0Kv86zzMTayN2jug0KMaGiCcPYyukv1vrA7bXEvcfJq8jP1qoN
-Cj8Jw9jK6S/W+sDt1rDE3A0KPwmz9by2w9jK6S/W+sDto7rKws7x0NTOxNSxDQo/CdbQvLbD2Mrp
-L9b6wO2jusrCzvHQ1M7E1LGjq7io1vq53MDtDQo/CbjfvLbD2MrpL9b6wO2jurbAwaK53MDto6vK
-ws7xtKbA7Q0KPwnU9dH5x+XO+tfUvLq1xLjazrvWsNTwqESoRNGnu+Gx4NC0uNrOu8u1w/fK6Q0K
-PwnTxdDjw9jK6dPr0ruw48PYyum1xMTcwaay7tLsDQoNCjKhognO5dDHvLa1xMPYyukv1vrA7S/Q
-0NX+yMvUsQ0KPwnAz7DlL82sysLQxMS/1tDX+LHqz7WoRKhEyrLDtMrHzuXQx7y2w9jK6S/W+sDt
-L9DQ1f7Iy9SxDQo/CcHLveLE47XEyc/Lvg0KPwnX1M7StcTGt8XG0uLKtg0KPwm5pNf3vLSy+sa3
-o6zRp7vhz/rK29fUvLoNCj8J0ae74bncwO3E47XEyc/Lvg0KPwnQodPOz7ejusz9tq6+rcDttcS7
-sMHLwvCjvw0KDQozoaIJsOy5q8rStcQ1U7ncwO0NCj8JNVO1xLqt0uUNCj8J1PXR+df2usOw7Lmr
-ytK1xNX7wO25pNf3DQo/CdT10fnX9rrDsOy5q8rStcTV+7bZuaTX9w0KPwnU9dH51/a6w7DsuavK
-0rXEx+W94Lmk1/cNCj8J1PXR+df2usOw7LmrytK1xMflyai5pNf3DQoNCjShogkgIM7l0Me8tsPY
-yunW+sDtL9DQ1f7Iy9SxtcTXqNK1vLzE3A0KMSkJxOq2yC/UwrbIL9bctsjKsbzkse25pNf3vMa7
-rrncwO0NCj8JUERDQbmkvt/U2tbGtqi8xruuyrG1xMHpu+7KudPDDQo/CdT10fnX9sTqtsgv1MK2
-yC/W3LbIuaTX97zGu66jrMzhuanR+bHtDQo/CcjVs6O5pNf3tcS4+r34udzA7aO6zuW2qLHttcTK
-udPDDQo/Cbmk1/e8xruutcTSqsvYDQoNCjIpCcrCzvG5pNf3wuTKtbj6vfjXt9fZudzA7Q0KPwnK
-ws7xuaTX99PQxMTQqQ0KPwnRp7vhwdDKws7xx+W1pQ0KPwnI1bOjyrG85LncwO3Sqr73DQo/Ccqx
-vOS53MDttcSzo9PDuaS+3w0KPwnExNCpz9a0+ruvtcSw7LmryO28/sTj0qrK7MG3yrnTww0KDQoz
-KQnP7sS/0NS5pNf3tcTX6davudzA7Q0KPwnJs8XM0d3Bt6O61PXR+dfp1q/Su7Oh1tzE6sfsteS0
-87vhDQo/CdPDz+7Ev8rWsuG53MDtuaTX9w0KPwnWxtf3z+7Ev8rWsuG1xLe9t6gNCj8JsLjA/bfW
-z+0NCg0KNCkJzsS1tbncwO0NCj8JzsS1tbncwO2x6te8uea3tg0KPwnOxLW1t9bA4LXEuaTX97nm
-t7YNCj8JzsS1tbTmtKK1xLmk1/e55re2DQo/Cc7EtbWy6dTEtcS5pNf3uea3tg0KPwnOxLW1t9bX
-sLXEuaTX97nmt7YNCj8JzsS1tc/6u9m1xLmk1/e55re2DQo/Cc7EtbWxo8PctcS5pNf3uea3tg0K
-DQo1o6kg0ae74dPDzbyx7cu1u7ANCj8Jzbyx7bXE1/fTww0KPwmzybmmzbyx7bXEvLi49rnYvPzS
-qsvYDQo/Cc28se3A4NDNo6jK/b7dwODNvLHtus24xcTuwODNvLHto6kNCj8J1sbX99LUyv2+3c6q
-u/m0obXEzbyx7Q0KICAgICAgICBBL8i3tqjSqrHttO+1xNDFz6INCiAgICAgICAgQi/It7aosci9
-z8Dg0M3RodTxzbyx7cDg0M0NCj8JuMXE7sDgzbyx7cq+wP0NCg0KNaGiCcnMzvG5q87E0LTX9w0K
-MSkJyczO8bmrzsTQtNf3tcS4xcTuvLC5q87EtcTSqsvYDQoyKQm5q87E0LTX97XEvLzHyQ0KPwnH
-6bjQ1rjK/SANCj8JobC+3L74obG5q87EtcS48cq9DQo/Ccr3waLQzs/zo63OxNXCtcTV/cq9s8y2
-yA0KPwmw0c7VuavOxLXE1fvM5bfnuPENCj8J1Pa80730vLHQ1A0KPwnU9rzTv8nQxbbIDQo/Ccq5
-0NDOxLzyveANCj8JssnTw7v9vKu1xNPvtfcNCg0KMykJuavO8bywyczO8c7EyunQtNf3s6O8+7Kh
-wP0NCj8JuavOxL3hubmy47TO0PK6xbTtzvMNCj8Jyv3X1rXEyrnTw7TtzvMNCj8JvMbBv7WlzrvK
-udPDtO3O8w0KPwmx6rXjt/u6xcq508O07c7zDQo/CcP7s8a55re20+vS68P7tcTKudPDDQoNCjQp
-CbOj08O5q87E0LTX97ywuavOxLjxyr3SqsvYt7bA/Q0KPwnNqNaqDQo/CbGouOYNCj8Jx+vKvg0K
-PwnF+ri0DQo/Cbvh0um8zdKqDQo/CdH7x+vQxQ0KPwnX3L3hDQoNCr2yyqa96cnco7ogwdYgtvfF
-rsq/o6wNCiAgICDW+MP7yMvBptfK1LS53MDt16i80qGixeDRtdeovNKhow0KDQogICAguN+8tsXg
-0bXKpqOs07XT0MquxOrWsNK1xeDRtcq1zvG+rdHpo6zU+MjOv+e5+ryvzcXW0Ln6x/i1xNbQt73F
-4NG1DQrA7aGiufrE2sSztefX0zXHv8bz0rW6zcrAvec1MDDHv9au0ru1xMb7s7XWxtTsxvPStbXE
-yMvBptfK1LS437y2vq3A7aOsDQrU+M/IuvPOqsuztcLDwM2/yr+hotDcw6i159fToaLW0Ln6tefQ
-xaGi1tC5+s34zaihotbQufrBqs2ooaLP47jbtqvQ8c2/DQrBz7mry76hornjtqvKobmrwre9qMno
-uavLvrXIvLjKrrzSxvPStdf2uf3XydGvus3E2tG1oaMNCg0KICAgIMv5ytq/zrPMo7rS1Lyo0KfO
-qrW8z/K1xL+8usvWxrbIoaJUVFS9ssqmxeDRtaGiyMvBptfK1LS53MDtst/C1KGixL8NCrHqoaLX
-qNK1w9jK6S/W+sDtus3Q0NX+yMvUsby8xNy3otW5oaLJzM7xzsTK6dC01/ehorfHyMvBptfK1LTW
-97ncus3Iy8GmDQrXytS0xeDRtaGiuN+8qNCn1ve53NG1wbehotSxuaS9zNP9xeDRtdPrt6LVubzG
-u66hotSxuaTV0MS8oaLD5sy40+vV59GhvLwNCsfJoaLQvbPquKPA+9PrvbG98LncwO21yC4NCg0K
-ICAgILLOvNO5/cHWwM/KprG+v86zzLXE0afUscC019TT2qO6ueO2q9HF2bu7r9exxrehotbQ0MW2
-yLzZtOW+xrXqoaINCsuztcLLs83+tefG96Gi1tC5+s34zaihotbQufrBqs2ooaLFtbv50cehorar
-t+fI1bL6s8vTw7O1uavLvqGiv7W087yvzcWhog0Kv8m/2r/JwNahosa9sLKxo8/VoaK7+cPAtefX
-06Ooy9XW3aOp09DP3rmry76holRDTKGiz8PQwrXn19Ohorq90MK159fToaINCruqwei158b3oaLN
-8rrNtefG96GiuqO2+7XnxvehosPAtcS8r83FoaKw19TGtefG96GiuujWx7Xnxvehosa9sLKxo8/V
-oaINCsjLytmxo8/VoaK9qMno0vjQ0KGi1tC5+tL40NANCg==
+<html><head>=0D<meta http-equiv=3D"Content-Type" content=3D"text/html; char=
+set=3Diso-8859-1" />=0D<title>pmu</title>=0D</head><body><div align=3D"cent=
+er"><font size=3D"2" face=3D"Arial, Helvetica, sans-serif"><a href=3D"http:=
+//clk.tradedoubler.com/click?p=3D90057&a=3D1543484&g=3D17985490&url=3Dhttp:=
+//www.smartadserver.com/call/cliccommand/2266594/[td_random]?">Si vous ne p=
+ouvez pas consulter correctement ce message, suivez ce lien</a><br>
+<font size=3D"2" face=3D"verdana" color=3D"#2e6400"><strong>Vous avez d=E9j=
+=E0 gagn=E9* 30 euros sur vos premiers paris et peut-=EAtre plus avec notre=
+ offre sp=E9ciale</strong></font></div>=0D<table cellspacing=3D"0" cellpadd=
+ing=3D"0" border=3D"0" align=3D"center" width=3D"620">=0D<tbody>=0D<tr>=0D<=
+td width=3D"258">=0D<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0"=
+ width=3D"258">=0D<tbody><tr>=0D<td height=3D"62" valign=3D"bottom"><a href=
+=3D"http://clk.tradedoubler.com/click?p=3D90057&a=3D1543484&g=3D17985490&ur=
+l=3Dhttp://www.smartadserver.com/call/cliccommand/2266594/[td_random]?" tar=
+get=3D"_blank"><img hspace=3D"22" height=3D"42" border=3D"0" width=3D"90" s=
+rc=3D"http://hst.tradedoubler.com/file/90057/2009/images/logo.gif" alt=3D"p=
+mu.fr" /></a></td>=0D</tr>=0D<tr>=0D<td height=3D"380"><a href=3D"http://cl=
+k.tradedoubler.com/click?p=3D90057&a=3D1543484&g=3D17985490&url=3Dhttp://ww=
+w.smartadserver.com/call/cliccommand/2266594/[td_random]?" target=3D"_blank=
+"><img height=3D"380" border=3D"0" width=3D"258" src=3D"http://hst.tradedou=
+bler.com/file/90057/2009/images/cheval.jpg" alt=3D" " /></a></td>=0D</tr> <=
+/tbody></table>=0D</td>=0D<td width=3D"362" valign=3D"top">=0D<table cellsp=
+acing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"362">=0D<tbody><tr>=0D<=
+td><img height=3D"1" width=3D"38" src=3D"http://hst.tradedoubler.com/file/9=
+0057/2009/images/spacer.gif" alt=3D" " /></td>=0D<td width=3D"324">=0D<tabl=
+e cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"324">=0D<tbody>=
+<tr>=0D<td height=3D"136" valign=3D"bottom">=0D<a href=3D"http://clk.traded=
+oubler.com/click?p=3D90057&a=3D1543484&g=3D17985490&url=3Dhttp://www.smarta=
+dserver.com/call/cliccommand/2266594/[td_random]?" target=3D"_blank"><img h=
+eight=3D"98" border=3D"0" width=3D"289" src=3D"http://hst.tradedoubler.com/=
+file/90057/2009/images/grass.jpg" alt=3D"Gras Savoye - Grand Steeple-chase =
+de Paris" /></a>=0D</td>=0D</tr>=0D<tr>=0D<td height=3D"82"><font face=3D"A=
+rial, Helvetica, sans-serif" color=3D"#9ad389" size=3D"2" style=3D"font-siz=
+e: 13px;"><strong>Dimanche 24 mai 2009 - Hippodrome d=92Auteuil <br />=0D<b=
+r />=0D<font color=3D"#264f03">Profitez de cet =E9v=E9nement exceptionnel <=
+br />=0Dpour parier sur pmu.fr !</font></strong></font></td>=0D</tr> </tbod=
+y></table> </td>=0D</tr>=0D<tr>=0D<td colspan=3D"2"><a href=3D"http://clk.t=
+radedoubler.com/click?p=3D90057&a=3D1543484&g=3D17985490&url=3Dhttp://www.s=
+martadserver.com/call/cliccommand/2266594/[td_random]?" target=3D"_blank"><=
+img height=3D"224" border=3D"0" width=3D"362" src=3D"http://hst.tradedouble=
+r.com/file/90057/2009/images/30euros.jpg" alt=3D"Jusqu'=E0 30 euros offerts=
+ pour vos 1ers Paris" /></a></td>=0D</tr> </tbody></table>=0D</td>=0D</tr><=
+/tbody></table>=0D<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" a=
+lign=3D"center" width=3D"620">=0D<tbody><tr>=0D<td height=3D"32"><a href=3D=
+"http://clk.tradedoubler.com/click?p=3D90057&a=3D1543484&g=3D17985490&url=
+=3Dhttp://www.smartadserver.com/call/cliccommand/2266594/[td_random]?" targ=
+et=3D"_blank"><img height=3D"32" border=3D"0" width=3D"551" src=3D"http://h=
+st.tradedoubler.com/file/90057/2009/images/ovalvert_haut_all.jpg" alt=3D" "=
+ /></a></td>=0D</tr>=0D<tr>=0D<td height=3D"24" width=3D"480">=0D<table cel=
+lspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"620">=0D<tbody><tr>=
+=0D<td width=3D"101"><a href=3D"http://clk.tradedoubler.com/click?p=3D90057=
+&a=3D1543484&g=3D17985490&url=3Dhttp://www.smartadserver.com/call/cliccomma=
+nd/2266594/[td_random]?" target=3D"_blank"><img height=3D"24" border=3D"0" =
+width=3D"101" src=3D"http://hst.tradedoubler.com/file/90057/2009/images/ova=
+lvert_milieuGauche.jpg" alt=3D" " /></a></td>=0D<td bgcolor=3D"#264f03" ali=
+gn=3D"center" width=3D"288"><a href=3D"http://clk.tradedoubler.com/click?p=
+=3D90057&a=3D1543484&g=3D17985490&url=3Dhttp://www.smartadserver.com/call/c=
+liccommand/2266594/[td_random]?" style=3D"text-decoration: none;" target=3D=
+"_blank"><font face=3D"Arial, Helvetica, sans-serif" color=3D"#ffffff" size=
+=3D"2" style=3D"font-size: 12px;"><strong>1 million d=92euros minimum =E0 g=
+agner !</strong></font></a></td>=0D<td><a href=3D"http://clk.tradedoubler.c=
+om/click?p=3D90057&a=3D1543484&g=3D17985490&url=3Dhttp://www.smartadserver.=
+com/call/cliccommand/2266594/[td_random]?" target=3D"_blank"><img height=3D=
+"24" border=3D"0" width=3D"91" src=3D"http://hst.tradedoubler.com/file/9005=
+7/2009/images/ovalvert_milieuDroite.jpg" alt=3D" " /></a></td>=0D</tr>=0D<t=
+r>=0D<td colspan=3D"3"><a href=3D"http://clk.tradedoubler.com/click?p=3D900=
+57&a=3D1543484&g=3D17985490&url=3Dhttp://www.smartadserver.com/call/cliccom=
+mand/2266594/[td_random]?" target=3D"_blank"><img height=3D"29" border=3D"0=
+" width=3D"480" src=3D"http://hst.tradedoubler.com/file/90057/2009/images/o=
+valvert_bas.jpg" alt=3D" " /></a></td>=0D</tr>=0D</tbody></table>=0D</td></=
+tr>=0D<tr>=0D<td height=3D"71" valign=3D"bottom">=0D<table cellspacing=3D"0=
+" cellpadding=3D"0" border=3D"0" align=3D"center" width=3D"620">=0D<tbody><=
+tr>=0D<td align=3D"center" valign=3D"bottom"><font face=3D"Verdana, Arial, =
+Helvetica, sans-serif" color=3D"#000000" size=3D"2" style=3D"font-size: 12p=
+x;">* <a href=3D"http://clk.tradedoubler.com/click?p=3D90057&a=3D1543484&g=
+=3D17985490&url=3Dhttp://www.smartadserver.com/call/cliccommand/2266594/[td=
+_random]?" target=3D"_blank"><font color=3D"#000000">Voir conditions sur pm=
+u.fr</font></a></font> </td>=0D</tr>=0D</tbody></table>=0D</td>=0D</tr>=0D<=
+/tbody></table>=0D<img height=3D"1" border=3D"0" width=3D"1" src=3D"http://=
+impfr.tradedoubler.com/imp/img/17985490/1543484" /><br />=0D<table cellspac=
+ing=3D"0" cellpadding=3D"0" border=3D"0" align=3D"center" width=3D"620">=0D=
+</table>=0D<br><div align=3D"center"><font size=3D"1" face=3D"verdana" colo=
+r=3D"#66CC66">Conformement a la loi Informatique et Libertes, vous disposez=
+ d'un droit d'acces et de rectification.
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA50AZTAPX_854383/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ50AZTAPX_854383.png" /></body></html>
+--=_31c5269f88c3bcda1225ee6cf159058a--
 
---=_NextPart_2rfkindysadvnqw3nerasdf
+
+
+--===============4708812318472735501==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -143,7 +133,7 @@ is a gathering of tech-side developers & brand creativity professionals. Meet
 the minds behind Google Creative Lab, Visual Complexity, Processing, & 
 iPhoneDevCamp asthey present alongside digital heavyweights like Barbarian
 Group, R/GA, & Big Spaceship. http://www.creativitycat.com 
---=_NextPart_2rfkindysadvnqw3nerasdf
+--===============4708812318472735501==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -154,4 +144,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---=_NextPart_2rfkindysadvnqw3nerasdf--
+--===============4708812318472735501==--

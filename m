@@ -1,43 +1,145 @@
-From: =?GB2312?B?wfXPyMn6?= <kgfyuybnb-9Onoh4P/yGk@public.gmane.org >
-Subject: [SPAM] 公司领导函
-Date: Fri, 22 May 2009 12:06:01 +0800
-Message-ID: <E1M7Lwa-0005b6-KZ@3yr0jf1.ch3.sourceforge.com>
-Reply-To: kgfyuybnb-9Onoh4P/yGk@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] mpc52xx_psc_spi: Convert to cs_control callback
+Date: Thu, 21 May 2009 23:07:10 -0600
+Message-ID: <fa686aa40905212207r56e27c2k2536950f9280d80e@mail.gmail.com>
+References: <20090430223114.GA12571@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: linuxppc-dev@ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	spi-devel-general@lists.sourceforge.net
+To: Anton Vorontsov <avorontsov@ru.mvista.com>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org>
+In-Reply-To: <20090430223114.GA12571@oksana.dev.rtsoft.ru>
+List-Unsubscribe: <https://ozlabs.org/mailman/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=unsubscribe>
+List-Archive: <http://ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@ozlabs.org?subject=help>
+List-Subscribe: <https://ozlabs.org/mailman/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-VE86ssbO8bK/CiAgICAgICAKICAgICAgIMnu29rK0L3wt+XLsM7xtPrA7dPQz965q8u+s8nBotPa
-MTk5M8Tqo6wKICAgvq25/cqutuDE6rXEt6LVubK7ts/Xs7Tzo6zP1tTa1NrIq7n6tPPWu7PHytAK
-ICAgvvnJ6NPQt9a5q8u+o6zT68irufrJz7DZvNK5q8u+09DXxcPcx9DStc7xtcQKICAgwarPtaOs
-v8nTxbvdttTN4rT6v6rU9ta1y7C6zbqjudjU9ta1y7C3osaxo6wKICAgo6i5+suwL7XYy7CjqaOs
-tPq/qre2zqejusbVzajJzMa3z/rK26Gi1MvK5KGiCiAgILnjuOahorLN0vuhor2o1v6wstewoaK3
-/s7x18nRr7XIt6LGsaGjCiAgICAgICCxvrmry76zycGituDE6tK71rG84bPW0tShsLPP0MWhsdf3
-zqq5q8u+CiAgILrL0MTLvM/ro6zAzrnMyvfBormry77Qzs/zo6zV5tX91/a1vaGwscu0y7rPCiAg
-INf30ru0zqGisdizydPAvsPF89PRobG1xL6t06rA7cTuo6zO0su+v8nPyMzhCiAgILmpt6LGsaOs
-tci588u+u/K587OnytW1vcaxyM/WpLrz1Nm4tr/uo6wKICAgCiAgILTL0MXPorOkxtrT0NCnLL60
-x+uxo8H00tSx47yx08OjrAogICAgCiAgINejo7rJ+tLi0MvCoaGissbUtLnjvfijoQogICAKICAg
-warPtcjLo7rQoSAgwfUKCiAgILXnu7CjuiAgMTM5LTM3OC0zMjgtMjUsCgogICC159PKo7ogIHN6
-d2FueGluQDE2My5jb20KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpSZWdpc3RlciBOb3cgZm9yIENy
-ZWF0aXZpdHkgYW5kIFRlY2hub2xvZ3kgKENhVCksIEp1bmUgM3JkLCBOWUMuIENhVAppcyBhIGdh
-dGhlcmluZyBvZiB0ZWNoLXNpZGUgZGV2ZWxvcGVycyAmIGJyYW5kIGNyZWF0aXZpdHkgcHJvZmVz
-c2lvbmFscy4gTWVldAp0aGUgbWluZHMgYmVoaW5kIEdvb2dsZSBDcmVhdGl2ZSBMYWIsIFZpc3Vh
-bCBDb21wbGV4aXR5LCBQcm9jZXNzaW5nLCAmIAppUGhvbmVEZXZDYW1wIGFzdGhleSBwcmVzZW50
-IGFsb25nc2lkZSBkaWdpdGFsIGhlYXZ5d2VpZ2h0cyBsaWtlIEJhcmJhcmlhbgpHcm91cCwgUi9H
-QSwgJiBCaWcgU3BhY2VzaGlwLiBodHRwOi8vd3d3LmNyZWF0aXZpdHljYXQuY29tIApfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
-bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
-dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
-cmFsCg==
+On Thu, Apr 30, 2009 at 4:31 PM, Anton Vorontsov
+<avorontsov@ru.mvista.com> wrote:
+> mpc52xx_psc_spi driver is the last user of the legacy activate_cs
+> and deactivate_cs callbacks, so convert the driver to the cs_control
+> hook and remove the legacy callbacks from fsl_spi_platform_data
+> struct.
+>
+> Signed-off-by: Anton Vorontsov <avorontsov@ru.mvista.com>
+Acked-by: Grant Likely <grant.likely@secretlab.ca>
+
+David, will you pick this one up, or can I put it into Ben's powerpc
+-next tree (since it is a powerpc-only device driver).
+
+g.
+
+> ---
+> =A0drivers/spi/mpc52xx_psc_spi.c | =A0 22 +++++++++-------------
+> =A0include/linux/fsl_devices.h =A0 | =A0 =A04 ----
+> =A02 files changed, 9 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
+> index 68c77a9..e1901fd 100644
+> --- a/drivers/spi/mpc52xx_psc_spi.c
+> +++ b/drivers/spi/mpc52xx_psc_spi.c
+> @@ -13,6 +13,7 @@
+>
+> =A0#include <linux/module.h>
+> =A0#include <linux/init.h>
+> +#include <linux/types.h>
+> =A0#include <linux/errno.h>
+> =A0#include <linux/interrupt.h>
+> =A0#include <linux/of_platform.h>
+> @@ -30,8 +31,7 @@
+>
+> =A0struct mpc52xx_psc_spi {
+> =A0 =A0 =A0 =A0/* fsl_spi_platform data */
+> - =A0 =A0 =A0 void (*activate_cs)(u8, u8);
+> - =A0 =A0 =A0 void (*deactivate_cs)(u8, u8);
+> + =A0 =A0 =A0 void (*cs_control)(struct spi_device *spi, bool on);
+> =A0 =A0 =A0 =A0u32 sysclk;
+>
+> =A0 =A0 =A0 =A0/* driver internal data */
+> @@ -111,18 +111,16 @@ static void mpc52xx_psc_spi_activate_cs(struct spi_=
+device *spi)
+> =A0 =A0 =A0 =A0out_be16((u16 __iomem *)&psc->ccr, ccr);
+> =A0 =A0 =A0 =A0mps->bits_per_word =3D cs->bits_per_word;
+>
+> - =A0 =A0 =A0 if (mps->activate_cs)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->activate_cs(spi->chip_select,
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (spi->mode =
+& SPI_CS_HIGH) ? 1 : 0);
+> + =A0 =A0 =A0 if (mps->cs_control)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->cs_control(spi, (spi->mode & SPI_CS_HI=
+GH) ? 1 : 0);
+> =A0}
+>
+> =A0static void mpc52xx_psc_spi_deactivate_cs(struct spi_device *spi)
+> =A0{
+> =A0 =A0 =A0 =A0struct mpc52xx_psc_spi *mps =3D spi_master_get_devdata(spi=
+->master);
+>
+> - =A0 =A0 =A0 if (mps->deactivate_cs)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->deactivate_cs(spi->chip_select,
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (spi->mode =
+& SPI_CS_HIGH) ? 1 : 0);
+> + =A0 =A0 =A0 if (mps->cs_control)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->cs_control(spi, (spi->mode & SPI_CS_HI=
+GH) ? 0 : 1);
+> =A0}
+>
+> =A0#define MPC52xx_PSC_BUFSIZE (MPC52xx_PSC_RFNUM_MASK + 1)
+> @@ -388,15 +386,13 @@ static int __init mpc52xx_psc_spi_do_probe(struct d=
+evice *dev, u32 regaddr,
+> =A0 =A0 =A0 =A0mps->irq =3D irq;
+> =A0 =A0 =A0 =A0if (pdata =3D=3D NULL) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_warn(dev, "probe called without platfo=
+rm data, no "
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "(de)activa=
+te_cs function will be called\n");
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->activate_cs =3D NULL;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->deactivate_cs =3D NULL;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "cs_control=
+ function will be called\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->cs_control =3D NULL;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mps->sysclk =3D 0;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0master->bus_num =3D bus_num;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0master->num_chipselect =3D 255;
+> =A0 =A0 =A0 =A0} else {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->activate_cs =3D pdata->activate_cs;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->deactivate_cs =3D pdata->deactivate_cs;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps->cs_control =3D pdata->cs_control;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mps->sysclk =3D pdata->sysclk;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0master->bus_num =3D pdata->bus_num;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0master->num_chipselect =3D pdata->max_chip=
+select;
+> diff --git a/include/linux/fsl_devices.h b/include/linux/fsl_devices.h
+> index 244677c..43fc95d 100644
+> --- a/include/linux/fsl_devices.h
+> +++ b/include/linux/fsl_devices.h
+> @@ -79,10 +79,6 @@ struct fsl_spi_platform_data {
+> =A0 =A0 =A0 =A0u16 =A0 =A0 max_chipselect;
+> =A0 =A0 =A0 =A0void =A0 =A0(*cs_control)(struct spi_device *spi, bool on);
+> =A0 =A0 =A0 =A0u32 =A0 =A0 sysclk;
+> -
+> - =A0 =A0 =A0 /* Legacy hooks, used by mpc52xx_psc_spi driver. */
+> - =A0 =A0 =A0 void =A0 =A0(*activate_cs)(u8 cs, u8 polarity);
+> - =A0 =A0 =A0 void =A0 =A0(*deactivate_cs)(u8 cs, u8 polarity);
+> =A0};
+>
+> =A0struct mpc8xx_pcmcia_ops {
+> --
+> 1.6.2.2
+>
+
+
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

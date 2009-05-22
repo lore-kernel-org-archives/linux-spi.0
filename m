@@ -1,9 +1,11 @@
-From: Club Vacation Deals <customer-care-u0uJHfCAc1Hf17m2raTrtZqQE7yCjDx5@public.gmane.org>
-Subject: Sheraton Buganvilias Vallarta at the best price
-Date: Thu, 21 May 2009 21:38:13 -0400
-Message-ID: <cbcd65f7293fc774bdf2732663425055@www.vallarta-paradise.com>
+From: =?GB2312?B?wfXPyMn6?= <kgfyuybnb-9Onoh4P/yGk@public.gmane.org >
+Subject: [SPAM] 公司领导函
+Date: Fri, 22 May 2009 12:06:01 +0800
+Message-ID: <E1M7Lwa-0005b6-KZ@3yr0jf1.ch3.sourceforge.com>
+Reply-To: kgfyuybnb-9Onoh4P/yGk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4593533762011121783=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,119 +18,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4593533762011121783==
-Content-Transfer-Encoding: 8bit
-Content-Type: text/html; charset="UTF-8"
-
-<html>
-<body>
-<div align="center">
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="320">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://clubvacationdeals.com/resorts.php?hotel=buganvilias">
-					<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_01.jpg" width="327" height="320" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_02.jpg" width="323" height="320" border="0"></th>
-				</a>
-		</tr>
-	</tbody>
-</table>
-
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="240">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://clubvacationdeals.com/resorts.php?hotel=buganvilias">
-					<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_03.jpg" width="327" height="240" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_04.jpg" width="323" height="240" border="0"></th>
-				</a>
-		</tr>
-	</tbody>
-</table>
-
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="364">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://clubvacationdeals.com/resorts.php?hotel=buganvilias">
-					<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_05.jpg" width="327" height="364" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_06.jpg" width="323" height="364" border="0"></th>
-				</a>
-		</tr>
-	</tbody>
-</table>
-
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="278">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/bc-0409-1209/maillist.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://clubvacationdeals.com/resorts.php?hotel=buganvilias">
-					<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_07.jpg" width="327" height="278" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_08.jpg" width="323" height="278" border="0"></th>
-				</a>
-		</tr>
-	</tbody>
-</table>
-
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="79">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/buga-0509-1209/maillist.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_09.jpg" width="207" height="79" border="0"></a><a href="http://www.vallarta-paradise.com/buga-0509-1209/maillist.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.vacationlivehelp.com/livehelp.php?department=1" target="_blank"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_10.jpg" width="247" height="79" border="0"></a><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_11.jpg" width="196" height="79"
-  border="0"></th>
-		</tr>
-	</tbody>
-</table>
-
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="26">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/buga-0509-1209/Buganvilias-329_12.jpg" width="650" height="26" border="0"></th>
-		</tr>
-	</tbody>
-</table>
-
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="80">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center" height="80">
-				This is an exclusive promotion by <a href="http://www.vallarta-paradise.com/buga-0509-1209/maillist.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com">Club Vacation Deals</a><br>
-				Telephone in Mexico &nbsp; &nbsp; +52 (322) 224 0347<br>
-				Los Angeles, CA &nbsp; &nbsp; (310) 598 2091<br>
-				New York, NY &nbsp; &nbsp; (212) 845 9362<br>
-				All reservations are subject to availability<br>
-				<a href="http://www.vallarta-paradise.com/buga-0509-1209/maillist.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=subscribe" target="_blank">Click here to receive more promotions</a><br>
-				<a href="http://www.vallarta-paradise.com/buga-0509-1209/maillist.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=unsubscribe" target="_blank">Click here to unsubscribe from our mailing list</a> 
-				<img src="http://www.vallarta-paradise.com/buga-0509-1209/image.php?promo=4&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
-			</th>
-		</tr>
-	</tbody>
-</table>
-
-</div>
-</body>
-</html>
-
-
---===============4593533762011121783==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT
-is a gathering of tech-side developers & brand creativity professionals. Meet
-the minds behind Google Creative Lab, Visual Complexity, Processing, & 
-iPhoneDevCamp asthey present alongside digital heavyweights like Barbarian
-Group, R/GA, & Big Spaceship. http://www.creativitycat.com 
---===============4593533762011121783==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4593533762011121783==--
+VE86ssbO8bK/CiAgICAgICAKICAgICAgIMnu29rK0L3wt+XLsM7xtPrA7dPQz965q8u+s8nBotPa
+MTk5M8Tqo6wKICAgvq25/cqutuDE6rXEt6LVubK7ts/Xs7Tzo6zP1tTa1NrIq7n6tPPWu7PHytAK
+ICAgvvnJ6NPQt9a5q8u+o6zT68irufrJz7DZvNK5q8u+09DXxcPcx9DStc7xtcQKICAgwarPtaOs
+v8nTxbvdttTN4rT6v6rU9ta1y7C6zbqjudjU9ta1y7C3osaxo6wKICAgo6i5+suwL7XYy7CjqaOs
+tPq/qre2zqejusbVzajJzMa3z/rK26Gi1MvK5KGiCiAgILnjuOahorLN0vuhor2o1v6wstewoaK3
+/s7x18nRr7XIt6LGsaGjCiAgICAgICCxvrmry76zycGituDE6tK71rG84bPW0tShsLPP0MWhsdf3
+zqq5q8u+CiAgILrL0MTLvM/ro6zAzrnMyvfBormry77Qzs/zo6zV5tX91/a1vaGwscu0y7rPCiAg
+INf30ru0zqGisdizydPAvsPF89PRobG1xL6t06rA7cTuo6zO0su+v8nPyMzhCiAgILmpt6LGsaOs
+tci588u+u/K587OnytW1vcaxyM/WpLrz1Nm4tr/uo6wKICAgCiAgILTL0MXPorOkxtrT0NCnLL60
+x+uxo8H00tSx47yx08OjrAogICAgCiAgINejo7rJ+tLi0MvCoaGissbUtLnjvfijoQogICAKICAg
+warPtcjLo7rQoSAgwfUKCiAgILXnu7CjuiAgMTM5LTM3OC0zMjgtMjUsCgogICC159PKo7ogIHN6
+d2FueGluQDE2My5jb20KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpSZWdpc3RlciBOb3cgZm9yIENy
+ZWF0aXZpdHkgYW5kIFRlY2hub2xvZ3kgKENhVCksIEp1bmUgM3JkLCBOWUMuIENhVAppcyBhIGdh
+dGhlcmluZyBvZiB0ZWNoLXNpZGUgZGV2ZWxvcGVycyAmIGJyYW5kIGNyZWF0aXZpdHkgcHJvZmVz
+c2lvbmFscy4gTWVldAp0aGUgbWluZHMgYmVoaW5kIEdvb2dsZSBDcmVhdGl2ZSBMYWIsIFZpc3Vh
+bCBDb21wbGV4aXR5LCBQcm9jZXNzaW5nLCAmIAppUGhvbmVEZXZDYW1wIGFzdGhleSBwcmVzZW50
+IGFsb25nc2lkZSBkaWdpdGFsIGhlYXZ5d2VpZ2h0cyBsaWtlIEJhcmJhcmlhbgpHcm91cCwgUi9H
+QSwgJiBCaWcgU3BhY2VzaGlwLiBodHRwOi8vd3d3LmNyZWF0aXZpdHljYXQuY29tIApfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

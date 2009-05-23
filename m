@@ -1,9 +1,9 @@
-From: "Rumore Mei" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Hey, boy.
-Date: Sat, 23 May 2009 13:14:29 +0000
-Message-ID: <FCQLXZ49166.7AAA2D4@[117.200.34.64]>
+From: "Debreto Uwidjv" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Come earlier, please
+Date: Sat, 23 May 2009 17:02:47 +0000
+Message-ID: <198661158611514.UZDFOZNGWKPMOMZ@d130.z193-125-190.relcom.ru>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7640589426980851356=="
+Content-Type: multipart/mixed; boundary="===============3348873818245147172=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,98 +16,98 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7640589426980851356==
-Content-Type: text/html; charset="US-ASCII"
+--===============3348873818245147172==
+Content-Type: text/html; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-        <body bgcolor="#CCCCCC" style="margin:0px;">
-                <!-- wrapper divs that keep the layout centered -->
-                <div style="position:relative;background:#ccc;text-align:center;">
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<center><table width="600" cellpadding="0" cellspacing="0" border="0"> <tr>  <td width="100%" align="center">
+<font face="verdana" size="1" color="#444444"> To view this email as a web page, go
+<a href="http://www.cilrowsq.cn/?ahoisyidet=2fdaa129da22" > here.</a>
+	<br />
+	</font>  </td> </tr> </table> </center><html>
+<head>
+<title></title>
+</head><body bgcolor="#8596aa">
+<center>
+<table border=0 cellpadding=0 cellspacing=0 width="75%">
+  <tr>
+    <td style="padding-bottom: 5px;">
+    <div align=center>
+<table border=0 cellpadding=4 cellspacing=0 width=604 bgcolor="#ffffff">
+          <tr>
+            <td>
 
-                        <table align="center" width="650" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                        <td align="center">
-                        <p style="color:#4A4344; font-size:8pt; line-height:11pt; font-family: Arial, Helvetica, sans-serif;">If you are having trouble viewing this email with images, <a href="http://www.vacbohaq.cn/?evabacjnas=31a7ef6e7aaa2" style="color:#4A4344; font-size:8pt; line-height:11pt; font-family: Arial, Helvetica, sans-serif;">click here.</a></p></td>
+              <table border=0 cellpadding=0 cellspacing=0 width=741>
+                <tr>
+                  <td width="740">
+                    <table border=0 cellpadding=0 cellspacing=0 width="100%">
+                      <tr>
+                        <td width="47%" rowspan=2 valign=top bgcolor="#38557f" style="color: #FFFFFF; font-family: Arial, Helvetica, sans-serif; font-size: large">
+						<b>World Pharmacy news</b></td>
+                      </tr>
 
-                                </tr>
-                        </table>
+                      <tr>
+                        <td align=right bgcolor="#38557f" height=24 style="background-repeat: no-repeat; padding-right: 15px;">
+						<font face="Arial" size=2 color="#ffffff">May 23, 2009</font></td>
+                      </tr>
+                      </table>
+                  </td>
 
-                <!-- live area -->
-                <div style="text-align:left;position:relative;background:#fff;width:650px;margin:0px auto;">
+                </tr>
+                <tr>
+                  <td>
+                    <br />
+				  <a href="http://www.cilrowsq.cn/?sounqqvqpjniava=2fdaa129da22" target="_top">
+				  <img style="border-width: 0px" alt="To view image click here" height="330" src="http://www.cilrowsq.cn/c.jpg" width="555" /></a><br />
+				  <br />
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+      </table>
+</center>
 
-
-                <!-- table wraps the live area - fix for lotus notes -->
-                <table cellpadding="0" cellspacing="0" width="650" align="center" bgcolor="#FFFFFF">
+</body></html><table cellpadding="2" cellspacing="0" width="600" align="center">
                         <tr>
+                                    <td>
+                                    <font face="verdana" size="1" color="#000000">
 
-                                <td>
-                                        <!-- send to friend link & issue date-->
-                                        <table cellpadding="0" cellspacing="0" width="650">
-                                                <tr valign="bottom">
-                                                        <td width="35"></td>
-                                                        <td>
-                                                                <span style="font-size:36px;font-family:'helvetica','sans-serif';font-weight:bold;color:#999;">
-                                                                        <!-- change issue date here -->
+                                    This email was sent to:  <b>spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org<br />
+									</b><br>
+                                    <table cellpadding="2" cellspacing="0" width="450" ID="Table1" Border=0>
+                                                <tr>
+                                                            <td>
+                                                            <font face="verdana" size="1" color="#000000">
+                                                            This email was sent by: Yzofaqbu News & Dymjburql Report<br>
+                                                            4942 Jaduyl Dudjw St, NW Washington, DC 49425 USA
+                                                            </font>
 
-                                                                        <p align="center">5.23.09</p></span></td>
-                                                        <td width="35"></td>
+                                                            </td>
                                                 </tr>
-                                        </table>
-                                        <!-- the dots just below the STAF/facebook/twitter buttons -->
-                                        &nbsp;</td>
+                                    </table><br>We respect your right to privacy - <a href="http://www.cilrowsq.cn/?wqkehjdoahoz=2fdaa129da22"  style="color: #0000ff">view our policy</a>
+                                    </font>
+                                    </td>
 
                         </tr>
                         <tr>
-                                <td>
-                                        <!-- Top stories -->
-                                        <table cellpadding="0" cellspacing="0" width="580" style="margin-right:35px;margin-left:35px;">
-                                                <!-- a story starts here... -->
-                                                <tr><td>&nbsp;</td></tr>
-                        <tr style="vertical-align:top;">
+                                    <td align="center">
+                                    <font face="verdana" size="1" color="#000000">
+                                    <br>
+                                    <a href="http://www.cilrowsq.cn/?onuqlifj=2fdaa129da22" >Manage Subscriptions</a> |
+                                    <a href="http://www.cilrowsq.cn/?nqqfqheetodqos=2fdaa129da22" >Update Profile</a> |
+                                    <a href="http://www.cilrowsq.cn/?wahomegebq=2fdaa129da22&unsubscribe=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&a=5929899" >One-Click Unsubscribe</a>
+                                    </font>
 
-                                                        <td style="padding-right:10px;">
-                                                                <span style="font-size:x-large; line-height:16px;font-family:'verdana','sans-serif';font-weight:bold;color:#8dca37;">
-                                                                        TOP
-																PRODUCTS<br />
-                                                                </span><br />
-                                                                <!-- story photo; link to story on APL. image should be  175 px wide -->
-                                                        		<a href="http://www.vacbohaq.cn/?wyuyfy=31a7ef6e7aaa2" target="_blank">
-																<img alt="If you are unable to see image please click here" height="326" src="http://www.vacbohaq.cn/b.jpg" style="border-width: 0px" width="558" /></a><br />
-														</td>
-                                                </tr>
-                                                <!-- ...and a story ends here -->
-
-                                        </table>
-
+                                    </td>
                         </tr>
-
-                </table>
-
-                <table align="center" width="650" border="0" cellpadding="0" cellspacing="0">
-
-                        <tr>
-                <td align="center">
-<p style="color:#4A4344; font-size:8pt; line-height:11pt; font-family: Arial, Helvetica, sans-serif;">
-
-        At Lofagamq, we value your privacy. If you would like to be removed from future
-		Jhatqkj or other newsletter emails like this, please visit our email subscription center <a href="http://www.vacbohaq.cn/?nytoe=31a7ef6e7aaa2&mail=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&password=hadasffzbqvu" style="color:#4A4344; font-size:8pt; line-height:11pt; font-family: Arial, Helvetica, sans-serif;">here</a> to modify your email preferences.
-        <BR><BR>We recently updated our privacy policy. This policy is effective as of 10/30/07. To see the new policy <A href="http://www.vacbohaq.cn/?qivaxjpj=31a7ef6e7aaa2" style="color:#4A4344; font-size:8pt; line-height:11pt; font-family: Arial, Helvetica, sans-serif;">click here</A>.
-        <BR><BR>Elukapaagy Communications, LLC.<BR>© Copyright 2009 Mofiebeqlj Communications, LLC
-        </p></td>
-        </tr>
-</table>
-
-                </div>
+            </table>
+</body></html>
 
 
-                </div>
-</body>
-</html>
-
-
---===============7640589426980851356==
+--===============3348873818245147172==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -119,7 +119,7 @@ is a gathering of tech-side developers & brand creativity professionals. Meet
 the minds behind Google Creative Lab, Visual Complexity, Processing, & 
 iPhoneDevCamp asthey present alongside digital heavyweights like Barbarian
 Group, R/GA, & Big Spaceship. http://www.creativitycat.com 
---===============7640589426980851356==
+--===============3348873818245147172==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,4 +130,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7640589426980851356==--
+--===============3348873818245147172==--

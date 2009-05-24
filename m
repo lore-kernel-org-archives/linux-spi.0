@@ -1,11 +1,10 @@
-From: =?GB2312?B?zfXPyMn6?= <x56nfgf32jfj1-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 开+票
-Date: Sun, 24 May 2009 19:36:46 +0800
-Message-ID: <E1M8BzP-0004PZ-3z@335xhf1.ch3.sourceforge.com>
+From: "Swallows Torri" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Resend your number, plz
+Date: Sun, 24 May 2009 15:31:42 +0000
+Message-ID: <GQXJN59279.A764329@[190.87.138.206]>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8911940058474340920=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,20 +16,77 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ICAgCiAgxPq6w6O6IAogICAgICAgztK5q8u+1NrKx9K7vNK8r7+qt6Khosn6svqhos/6ytvT2tK7
-zOW1xLTz0M3X27rPuavLvqGjCiAgICAgICDP1rG+uavLvtPQ0ruyv7fWt6ItxrGju8uwwsq1zcGu
-o7vTxbvdtPq/qqO7CiAgIMjnOigxKcbVzajU9ta1y7AtLcaxo7sKICAgICAgKDIpxtXNqMnMxrfP
-+srbt6ItLcaxo7sKICAgICAgKDMp1MvK5NK1oaK547jm0rWhor2o1v6horj3wOC3/s7x0rW3oi0t
-xrEvoaMKCiAgIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtQoKICAgwarPtcjLOs31z8jJ+qOoMKOp
-MTM2NDIzNDcyNzcKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpSZWdpc3RlciBOb3cgZm9yIENyZWF0
-aXZpdHkgYW5kIFRlY2hub2xvZ3kgKENhVCksIEp1bmUgM3JkLCBOWUMuIENhVAppcyBhIGdhdGhl
-cmluZyBvZiB0ZWNoLXNpZGUgZGV2ZWxvcGVycyAmIGJyYW5kIGNyZWF0aXZpdHkgcHJvZmVzc2lv
-bmFscy4gTWVldAp0aGUgbWluZHMgYmVoaW5kIEdvb2dsZSBDcmVhdGl2ZSBMYWIsIFZpc3VhbCBD
-b21wbGV4aXR5LCBQcm9jZXNzaW5nLCAmIAppUGhvbmVEZXZDYW1wIGFzdGhleSBwcmVzZW50IGFs
-b25nc2lkZSBkaWdpdGFsIGhlYXZ5d2VpZ2h0cyBsaWtlIEJhcmJhcmlhbgpHcm91cCwgUi9HQSwg
-JiBCaWcgU3BhY2VzaGlwLiBodHRwOi8vd3d3LmNyZWF0aXZpdHljYXQuY29tIApfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBt
-YWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBz
-Oi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFs
-Cg==
+--===============8911940058474340920==
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>News for spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<div align="center">
+
+        <TABLE WIDTH=700 BORDER=0 CELLPADDING=0 CELLSPACING=0 align="center">
+ <TR>
+  <TD align="center"><font color="#808080" face="arial" size="1">
+  If you are having trouble viewing this email with images, <a href="http://www.xugsijaz.cn/?xqfjqjunj=4ae588aa76">
+  click here.</a></font><br />
+  <br />
+	 </td></tr></table>
+
+  <table height="395" width="663" border="0" cellpadding="0" cellspacing="0">
+
+    <tr>
+      <td bgcolor="#FFFFFF">
+        <a href="http://www.xugsijaz.cn/?jceljhjonepo=4ae588aa76">
+
+		<img alt="To open image click here" height="327" src="http://www.xugsijaz.cn/b.jpg" style="border-width: 0px" width="582" /></a></td>
+          </tr>
+
+
+  </table>
+
+   <table width="700" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr><td align="center" valign="top"><font size="1" style="font-family: Arial, sans-serif; font-size: 10px; line-height: 14px; color: #777777; text-decoration: none">
+	At Uwiaw, we value your privacy. If you would like to be removed
+	from future emails like this, please visit our email subscription center <a href="http://www.xugsijaz.cn/?uozosuzuk=4ae588aa76&unsubscribe=true" target="_blank">
+	<font size="1" style="font-family: Arial, sans-serif; font-size: 10px; line-height: 14px; text-decoration: none">
+	here</font></a> to modify your email preferences.<BR> Zjgiiziwu
+	Communications, LLC; Attn: Tanev Marketing<BR> Urujemys
+	Tjoci Qfeqzyz, Amazybe Iiudybjle, MD
+	26935</font>
+</td></tr></table>
+
+
+</div>
+</body>
+</html>
+
+
+--===============8911940058474340920==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT
+is a gathering of tech-side developers & brand creativity professionals. Meet
+the minds behind Google Creative Lab, Visual Complexity, Processing, & 
+iPhoneDevCamp asthey present alongside digital heavyweights like Barbarian
+Group, R/GA, & Big Spaceship. http://www.creativitycat.com 
+--===============8911940058474340920==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8911940058474340920==--

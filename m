@@ -1,11 +1,14 @@
-From: "Pirie V. Sylvie" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Office is on quarantine
-Date: Mon, 25 May 2009 16:29:31 +0000
-Message-ID: <KEQGNTW90859.12DF5B0@ABTS-KK-Dynamic-145.21.167.122.airtelbroadband.in>
+From: Unknown <unknown@unknown.invalid>
+Subject: [SPAM] 票@据@代@理
+Date: Tue, 26 May 2009 00:48:55 +0800
+Message-ID: <E1M8dGb-0001XI-FA@235xhf1.ch3.sourceforge.com>
+Reply-To: 55aasgggg
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7215574152168547134=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?wO7PyMn6?= <aaaa@dfjg>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,55 +19,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7215574152168547134==
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-
-<html><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>Health Newsletter for May 25, 2009</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
-<body style="background-color: #FFFFFF; margin: 0px; padding: 0px; font-family: 'Lucida Grande', Arial, Verdana, Sans-serif; font-size: 12px; color: black">
-    <div style="color: #888; padding: 30px 0 10px 0; text-align: center; font-size: 0.9em">
-
-    	<p> <a href="http://www.mabkokuv.cn/?unylazocqs=62948bde712df&TBGVXP=37411"><span style="color: #888888">View this
-		newsletter in your browser</span></a><br><a href="http://www.mabkokuv.cn/?omoycihuute=62948bde712df&TBGVXP=37411">
-		<img height="320" alt="View the image in your browser" src="http://www.mabkokuv.cn/d.jpg" style="border-width: 0px" width="550"></a></p>
-		<p>
-		<a href="http://www.mabkokuv.cn/?qxineryovaboyi=839f2eab50&DMRMEOKDR=22487973489915&unsubscribe=true">Unsubscribe</a> &nbsp;|&nbsp; <a href="http://www.mabkokuv.cn/?ubiafa=839f2eab50&DMRMEOKDR=22487973489915">View this Newsletter in your Browser</a></p>
-
-    <p> <strong>Jysoson Health</strong>. PO Box 526, Oxytew, CA 52691-6730<br />
-
-      Tel: (146) 153-6922 &nbsp;|&nbsp;Fax: (879) 348-9158 </p>
-    <p>&copy;2009 Oyvaz Health</p>
-  </div>
-</body>
-</html>
-
-
---===============7215574152168547134==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT
-is a gathering of tech-side developers & brand creativity professionals. Meet
-the minds behind Google Creative Lab, Visual Complexity, Processing, & 
-iPhoneDevCamp asthey present alongside digital heavyweights like Barbarian
-Group, R/GA, & Big Spaceship. http://www.creativitycat.com 
---===============7215574152168547134==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============7215574152168547134==--
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHye7b2srQ9s7Dr8q10rXT0M/e
+uavLvrXEo6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+
+o6mho87Sy77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvB
+y8O/1MLP+srbtu62yKGjCsO/1MLT0NK7sr+31tT21rXLsLXnxNS3osaxNiW6zcbVzai3osax1tbA
+4Mjnz8KjusnMxrfP+srby7C3osaxo6y158TU1MvK5LeixrGjrAq547jmt6LGsdfiwd7StbeixrEs
+t/7O8dK1t6LGsbXIICi5+suwtdjLsKOpMC41LTIl08W73bT6v6q78rrP1/ejrLXjyv29z7XNoaO7
+ub/JCtLUuPm+3cv51/bK/cG/tu62yLXEtPPQocC0yczM1tPFu921xLXjyv2jrLmry76zycGituDE
+6tK71rG84bPW0tShsLPP0MWhsc6q1tAK0MTX986quavLvrXEusvQxMu8z+uhosDOuczK98GiuavL
+vtDOz/OjrLG+uavLvtaj1tiz0MW1y/nTw774ttTKx9XmxrGjobj8z6PN+wrE3Lm709C7+rvh0+u5
+88u+us/X96OhCqGhoaEKICAgIMjnufPLvtTat6LGsbXE1ebOsbe9w+bT0MjOus7SycLHu/K1o9DE
+o6y/ycnPzfiy6daku/LO0su+1rG909PrufPLvsily7DO8b7WCrXWv9u6y7bUoaMgCiAgICAgCiAg
+ICC0y9DFz6KzpMba09DQp6OsyOfQ67340ruyvceiycw6IAogICAgCqGhoaHK1iAgu/o6MTM1MzA5
+MDkzNDQKICAgICAgICBRUTs3NzE1MDkzNDQKoaGhocGqz7XIyzvA7rn6t+UKy7PXowogICAgICDJ
+zOz3o6EgCiAgICAgCqGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaEgIKGhoaGhoaGhoaGhoaGh
+oaGhoaGhoaGhoaGhye7b2srQ9s7Dr8q10rXT0M/euavLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+ClJlZ2lzdGVyIE5vdyBmb3IgQ3JlYXRpdml0eSBhbmQgVGVjaG5vbG9neSAoQ2FUKSwgSnVuZSAz
+cmQsIE5ZQy4gQ2FUCmlzIGEgZ2F0aGVyaW5nIG9mIHRlY2gtc2lkZSBkZXZlbG9wZXJzICYgYnJh
+bmQgY3JlYXRpdml0eSBwcm9mZXNzaW9uYWxzLiBNZWV0CnRoZSBtaW5kcyBiZWhpbmQgR29vZ2xl
+IENyZWF0aXZlIExhYiwgVmlzdWFsIENvbXBsZXhpdHksIFByb2Nlc3NpbmcsICYgCmlQaG9uZURl
+dkNhbXAgYXN0aGV5IHByZXNlbnQgYWxvbmdzaWRlIGRpZ2l0YWwgaGVhdnl3ZWlnaHRzIGxpa2Ug
+QmFyYmFyaWFuCkdyb3VwLCBSL0dBLCAmIEJpZyBTcGFjZXNoaXAuIGh0dHA6Ly93d3cuY3JlYXRp
+dml0eWNhdC5jb20gCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
+cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
+dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

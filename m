@@ -1,10 +1,12 @@
-From: "Sadlon Hinep" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Wow! Your photo in Times
-Date: Tue, 26 May 2009 06:58:51 +0000
-Message-ID: <633674818539483.EXTSHJFJWRDWEOA@[118.127.228.135]>
+From: Anselm Harrold <nheitzman-uAjRD0nVeow@public.gmane.org>
+Subject: [SPAM] Losing weight is EASY!
+Date: Tue, 26 May 2009 11:33:47 +0200
+Message-ID: <20127.0402678803$1243330504@news.gmane.org>
+Reply-To: Anselm Harrold <polivick.aura17236-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4250265507781419447=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,106 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4250265507781419447==
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Hello!
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title></title>
-</head>
-<body>
-<style type="text/css">
-body { background-color: #ffffff; }
-:link, a:link, a:visited, a:active { color: #3366cc; }
-a:hover { color: #ff9900; text-decoration: none; }
-p, center, LI, UL, TD, TH { font-family: tahoma, verdana, arial, helvetica, sans-serif; font-size: 10pt; }
-heading1 { font-family: tahoma, verdana, arial, helvetica, sans-serif; font-size: 13.5pt; font-weight: bold; padding-bottom: 4pt; }
-smalltext { font-family: tahoma, verdana, arial, helvetica, sans-serif; font-size: 8pt; background-image: none; }
-HR { color: #cccccc; }
-table.emailbody { background-color: #f6f6f6; border: 2px solid #4685C4; }
-table.banner { border: none; width: 100%; }
-table.emailmodule { color: #000000; background-color: #ffffff; border: 1px solid #cccccc; width: 97%; }
-table.footer { color: #000000; background-color: #ffffff; border: 1px solid #cccccc; width: 100%; }
-</style>
-<center>
-<table border="0" cellspacing="8" cellpadding="0" width="600" class="emailbody">
-<tr><td>
-<table border="0" cellspacing="0" cellpadding="0" width="100%" class="banner">
-<tr><td align="right">
-	<span class="smalltext" style="font-family: tahoma, verdana, arial, helvetica, sans-serif; font-size: 8pt; background-image: none;">
-	<b>Subscription Update</b>
-<br />
-	<a href="http://www.nibbehal.cn/?sqsazaedqjcy=a549c7d3d85e7e">Home</a> &#149;
-	<a href="http://www.nibbehal.cn/?qoakoqhjm=a549c7d3d85e7e">Visit our site</a></span>
+You don't like what You see in the mirror and You need a change RIGHT NOW? Or You tried everything and still no visible result? Or You just want to be healthy? Then, Acai Power Blast is for You!
+Studies have shown that the Amazon fruit Acai is one of the most nutritious and powerful foods in the world. Hidden within its royal purple pigment is the magic that makes it nature's perfect energy fruit. A synergy of monounsaturated (healthy) fats, dietary fiber and phytosterols to help promote cardiovascular and digestive health.
+Finally the magic fruit is reaching to the people! Still not convinced? Then the FREE Trial is for You!
+All you have to do is to confirm your interest at pressnelllynne13878-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we'll send You the necessary information.
 
-</td></tr>
-</table>
-</td></tr><tr><td valign="top">
-<table border="0" cellspacing="0 cellpadding="0>
-<tr><td valign="top" align="center">
-<table border="0" cellspacing="0" cellpadding="8" width="97%" class="emailmodule">
-<tr><td valign="top">
-<div class="heading1" style="font-family: tahoma, verdana, arial, helvetica, sans-serif; font-size: 13.5pt; font-weight: bold; padding-bottom: 4pt;">Daily Update from Your Subscriptions!</div>Date:
-	Tuesday, May 26, 2009
-<br />
-Username:
-<a href="http://www.nibbehal.cn/?xisqd=a549c7d3d85e7e">spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</a>
-</td></tr>
-</table>
-
-<br />
-<table border="0" cellspacing="0" cellpadding="8" width="97%" class="emailmodule">
-<tr><td valign="top">
-<div class="heading1" style="font-family: tahoma, verdana, arial, helvetica, sans-serif; font-size: 13.5pt; font-weight: bold; padding-bottom: 4pt;">
-	Latest Updates<br /><br /><a href="http://www.nibbehal.cn/?uwovufezyg=a549c7d3d85e7e">
-	<img alt="Visit this link to open image" height="315" src="http://www.nibbehal.cn/e.jpg" style="border-width: 0px" width="540" /></a></div>
-</td></tr></table>
-
-<br />
-
-</td></tr>
-</table>
-</td></tr><tr><td>
-<table border="0" cellspacing="0" cellpadding="8" width="100%" class="footer"><tr><td valign="top"><span class="smalltext" style="font-family: tahoma, verdana, arial, helvetica, sans-serif; font-size: 8pt; background-image: none;">This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, the current email address on your Account, input when you created your account or edited your Account Info. It is a recurring email, although we'll send it only on days when there are new updates from your subscriptions.<br /><br />
-If you'd like to edit the email address on your account, please visit your
-<a href="http://www.nibbehal.cn/?ohqgutoinayn=a549c7d3d85e7e">Account Info</a>.<br />
-To unsubscribe or edit your subscription settings, please visit your <a href="http://www.nibbehal.cn/?qdjqxqborye=a549c7d3d85e7e">Email Update Options</a>.<br />
-If you have additional questions about this email or your Account, please
-<a href="http://www.nibbehal.cn/?yinqdqiiwyleeve=a549c7d3d85e7e">email us</a> or send a letter to:<br />
-
-Poyjgup Inc., Attn: Subscription Services, P.O. Box 633 Evjtohypj Yfjo, New York, NY 63367</span>
-</td></tr>
-</table>
-</td></tr>
-</table>
-</center>
-</body></html>
+Best regards,
+Acai Marketing Inc.
 
 
---===============4250265507781419447==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to sign.out_me-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
 ------------------------------------------------------------------------------
 Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT
 is a gathering of tech-side developers & brand creativity professionals. Meet
 the minds behind Google Creative Lab, Visual Complexity, Processing, & 
 iPhoneDevCamp asthey present alongside digital heavyweights like Barbarian
 Group, R/GA, & Big Spaceship. http://www.creativitycat.com 
---===============4250265507781419447==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4250265507781419447==--

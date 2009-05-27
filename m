@@ -1,8 +1,8 @@
-From: "Sgt.Patrick.Roger" <martins.legaccy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Sgt.Patrick.roger" <martins.legaccy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: [SPAM] Sgt Patrick.Roger
-Date: Tue, 26 May 2009 23:54:27 +0100
-Message-ID: <0924991b-39959-9eeb9960450926@emeka-429a41a60>
-Reply-To: "Sgt.Patrick.Roger" <sgt.patrick.roger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 27 May 2009 02:03:27 +0100
+Message-ID: <0995fc66-39960-ac760855164931@emeka-429a41a60>
+Reply-To: "Sgt.Patrick.roger" <sgt.patrick.roger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

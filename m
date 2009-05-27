@@ -1,12 +1,11 @@
-From: Bennie Sullivan <l33tfukka-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Solution for Your weight problem!!!
-Date: Wed, 27 May 2009 09:33:01 +0200
-Message-ID: <3649.98756344921$1243409040@news.gmane.org>
-Reply-To: Bennie Sullivan <tazelaar.arin1037-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mutuelle Conseil <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
+Subject: 15 mutuelles comparées. Les meilleures garanties au meilleur prix
+Date: 27 May 2009 08:20:59 -0000
+Message-ID: <20090527082059.9482.qmail@ks24820.kimsufi.com>
+Reply-To: Mutuelle Conseil <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============7298237376437087909=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,36 +17,98 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi!
 
-We all have heard about the magic fruit, discovered in the amazon forest. The Acai Berry with it's astonishing medical potential is finally reaching the public as Acai Power Blast - one of the finest products on the market. Strengthening Your heart and brain, removing the excessive fat, even reversing some of effects of aging, it's truly a Magic! 
-Two separate clinical studies demonstrated that some of the people who used the active ingredients in AcaiBurn Detox naturally ate less than people who were given a placebo. This has led researchers to believe that these ingredients could actually help people lower their appetite and thus naturally enhance their diet without putting any strain on the body.
-So you want to feel refreshed, lighter and healthy?
-Hurry up and try it! And don't worry - a FREE Trial is waiting for You, so you don't have to risk at all. Just send a request for more information at seekelldewey1052-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org!
-
-Best regards,
-Acai Marketing Inc.
+--===============7298237376437087909==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_56a80d355486bb5baa87ebc460d79b5b"
 
 
+--_----------=_parties_56a80d355486bb5baa87ebc460d79b5b
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.ctrm4.net/svi/miroir.php?bat=mutuelleconseil0509_ctrm
+
+mutuelle-conseil .com
+
+votre assurance santé, à partir de 11,40€ / mois
+[ Dentaire ] - [ Optique ] - [ Maladie ] - [ Maternité ] - [ Hospitalisation ]
+Mutuelle-conseil.com est un service gratuit, rapide et sur-mesure . 100% spécialiste de l'assurance santé
+
+Nous avons comparé pour vous 15 Mutuelles , et analysé 200 garanties santé
+
+plus d'infos sur http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0509_ctrm&nb=1438&n=9047704&c=pratique
+
+--------------------------------
+Cette offre Mutuelle Conseil vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm4.net/svi/gestionserv.php?nb=1438&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_56a80d355486bb5baa87ebc460d79b5b
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
 
 
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>mutuelle-conseil .com
+votre assurance sant&eacute;, &agrave; partir de 11,40&euro; / mois</title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm4.net/svi/miroir.php?bat=mutuelleconseil0509_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Mutuelle Conseil vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#000000;font-family:Arial;color:#FFFFFF;font-size:24px'>
+<p style='display:inline;'> mutuelle-conseil .com<br>
+votre assurance sant&eacute;, &agrave; partir de 11,40&euro; / mois</p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#ff0000;font-family:Arial;color:#FFFFFF;font-size:18px;'>
+[<b>Dentaire</b>] - [<b>Optique</b>] - [<b>Maladie</b>] - [<b>Maternit&eacute;</b>] - [<b>Hospitalisation</b>]
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:14px;background-color:#FFFFFF;'>
+<a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0509_ctrm&nb=1438&n=9047704&c=pratique" style="font-size:14px;font-family:arial;font-background:white;text-decoration:none;color:black"> <u>Mutuelle-conseil.com</u></a> est un service <b>gratuit, rapide et sur-mesure</b>.<br>100% sp&eacute;cialiste de l'assurance sant&eacute;
+<br>Nous avons compar&eacute; pour vous <b>15 Mutuelles</b>, et analys&eacute; <b>200 garanties sant&eacute;</b><br>
+<br>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0509_ctrm&nb=1438&n=9047704&c=pratique" target="_blank"><img src="http://servedby.advertising.com/site=766148/mnum=489743/bins=1" border="0"></a>
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.ctrm4.net/svi/img.php?nb=1438&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
+<p>
+<a href='http://www.ctrm4.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm4.net/svi/gestionserv.php?nb=1438&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
 
 
+--_----------=_parties_56a80d355486bb5baa87ebc460d79b5b--
 
+--===============7298237376437087909==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to sign.out_me-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT 
 is a gathering of tech-side developers & brand creativity professionals. Meet
 the minds behind Google Creative Lab, Visual Complexity, Processing, & 
 iPhoneDevCamp as they present alongside digital heavyweights like Barbarian 
 Group, R/GA, & Big Spaceship. http://p.sf.net/sfu/creativitycat-com 
+--===============7298237376437087909==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7298237376437087909==--

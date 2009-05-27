@@ -1,11 +1,12 @@
-From: =?GB2312?B?zfXQob3j?= <adpszd88-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 本司有税嘌代开，税点特优，可验证后付款
-Date: Wed, 27 May 2009 08:11:42 +0800
-Message-ID: <E1M96fD-0003K4-VS@335xhf1.ch3.sourceforge.com>
+From: Bennie Sullivan <l33tfukka-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Solution for Your weight problem!!!
+Date: Wed, 27 May 2009 09:33:01 +0200
+Message-ID: <3649.98756344921$1243409040@news.gmane.org>
+Reply-To: Bennie Sullivan <tazelaar.arin1037-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,27 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+KLOnvNIpvq3A7aGissbO8aO7CsT6usMhCiAgICCxvrmry77Kx7zStNPKwrbg1Kq7r6Gi
-vcm2qLbuy7C1xLTz0M28r83FuavLvqGjz9a85tPQtPrA7cbky/y5q8u+zerLsNK1zvGjrLzhs9bS
-1L/Nu6e3/s7x1sHJz6Giu6W73bulwPu1xNSt1PKju9LUs8/QxaGizsjN17XEvq3Tqtf3t+fJ7src
-uPe5q8u+KLOnvNIptcTSu9bC0MXIzrKis6TG2rrP1/ehowogICAg0ruhorG+uavLvs/yzeK0+r+q
-4NG3ts6n09CjuyjJzMa3z/rK26GiueO45qGivajW/rmks8yhorf+zvGhotfiwd6hotTLyuShorzT
-uaTOrNDeoa21yCkKICAgILb+oaKxvrmry77P8rnzuavLvsrVyKHLsMLKLLC0tPq/quDR19y98Lbu
-tcQxJdfz09LAtMrVyKEoyOe98LbutPO/ydTZ08W73SmhowogICAgyP0uILG+uavLvsv5v6rg0dXm
-yrXT0NCnLL/JtP2587mry74os6e80ikg0enWpLvyuf3VyrrzuLa/7qGjuavLvsq10NC55re2udzA
-7dPr0c+48bXEsaPD3NbGtsihowogICAg16Kjusjn09C08sjFLL60x+vBwr3iLNC70LshKL60x+ux
-o8H0warPtbrFwuujrNLUt8DQ6NKqKaGjCiAgICDI59PQ0OjSqru2063AtLXn18nRryEKICAgIMGq
-z7XIy6O6zfW1pCAo0rXO8b6twO0pILXnu7CjujEzNzE5MzE0ODEyCiAgICAgICAgy7PLzAogICAg
-yczs9yEKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINTDwqHKtdK109DP3rmry74K
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpSZWdpc3RlciBOb3cgZm9yIENyZWF0aXZpdHkgYW5kIFRl
-Y2hub2xvZ3kgKENhVCksIEp1bmUgM3JkLCBOWUMuIENhVCAKaXMgYSBnYXRoZXJpbmcgb2YgdGVj
-aC1zaWRlIGRldmVsb3BlcnMgJiBicmFuZCBjcmVhdGl2aXR5IHByb2Zlc3Npb25hbHMuIE1lZXQK
-dGhlIG1pbmRzIGJlaGluZCBHb29nbGUgQ3JlYXRpdmUgTGFiLCBWaXN1YWwgQ29tcGxleGl0eSwg
-UHJvY2Vzc2luZywgJiAKaVBob25lRGV2Q2FtcCBhcyB0aGV5IHByZXNlbnQgYWxvbmdzaWRlIGRp
-Z2l0YWwgaGVhdnl3ZWlnaHRzIGxpa2UgQmFyYmFyaWFuIApHcm91cCwgUi9HQSwgJiBCaWcgU3Bh
-Y2VzaGlwLiBodHRwOi8vcC5zZi5uZXQvc2Z1L2NyZWF0aXZpdHljYXQtY29tIApfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBt
-YWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBz
-Oi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFs
-Cg==
+Hi!
+
+We all have heard about the magic fruit, discovered in the amazon forest. The Acai Berry with it's astonishing medical potential is finally reaching the public as Acai Power Blast - one of the finest products on the market. Strengthening Your heart and brain, removing the excessive fat, even reversing some of effects of aging, it's truly a Magic! 
+Two separate clinical studies demonstrated that some of the people who used the active ingredients in AcaiBurn Detox naturally ate less than people who were given a placebo. This has led researchers to believe that these ingredients could actually help people lower their appetite and thus naturally enhance their diet without putting any strain on the body.
+So you want to feel refreshed, lighter and healthy?
+Hurry up and try it! And don't worry - a FREE Trial is waiting for You, so you don't have to risk at all. Just send a request for more information at seekelldewey1052-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org!
+
+Best regards,
+Acai Marketing Inc.
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------
+This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to sign.out_me-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
+
+This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
+ fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
+------------------------------------------------------------------
+		
+------------------------------------------------------------------------------
+Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT 
+is a gathering of tech-side developers & brand creativity professionals. Meet
+the minds behind Google Creative Lab, Visual Complexity, Processing, & 
+iPhoneDevCamp as they present alongside digital heavyweights like Barbarian 
+Group, R/GA, & Big Spaceship. http://p.sf.net/sfu/creativitycat-com 

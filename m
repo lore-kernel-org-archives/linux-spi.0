@@ -1,9 +1,9 @@
-From: "Tufo I. Barbar" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Change my address
-Date: Thu, 28 May 2009 11:21:43 +0000
-Message-ID: <NPIUU39449.4E2BF93@[83.103.222.103]>
+From: "Zenaida" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Creative freak online
+Date: Thu, 28 May 2009 15:05:11 +0000
+Message-ID: <575047869142856.KRUSGRPIXVUWZFR@anr246.neoplus.adsl.tpnet.pl>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1200547113960517579=="
+Content-Type: multipart/mixed; boundary="===============6976450403617299950=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,51 +16,129 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1200547113960517579==
-Content-Type: text/html; charset="us-ascii"
+--===============6976450403617299950==
+Content-Type: text/html; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Weekly newsletter</title>
+<style type="text/css" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+
+            .parent{
+                        text-align: left;
+                        width: 100%;
+                        cursor: pointer;
+                }
+
+                div.parent a{
+                color:#000000;
+                }
+                div.parent a:link{
+                        text-decoration:none;
+                }
+                div.parent a:visited{
+                        text-decoration:none;
+                }
+                div.parent a:hover{
+                        text-decoration:underline;
+                }
+                div.parent a:active{
+                        text-decoration:underline;
+                }
+                .deal{
+                        text-align: left;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-size: 10px;
+                        font-weight: normal;
+                }
+
+                .provider{
+                        font-weight: bold;
+                }
+
+      </style>
+<title>Newsletter</title>
+
+<meta name="description" content="Latest News">
+
 </head>
-<body bgcolor="#ffffff" link="#108896" vlink="#108896" alink="#108896" text="#666666">
-<table border="0" cellpadding="0" cellspacing="0" style="width: 595px">
-<tr>
-<td valign="top" width="484">
-<table border="0" cellpadding="8" cellspacing="0">
-<tr>
 
-<td valign="top">
-<table valign="top" border="0">
-<tr>
-<td valign="top" style="width: 455px">
-<a href="http://www.fogduqem.cn/?yi=894CC5C4E2BF9395BBB8">
-<font face="Arial, Helvetica" size="4"><b><center>View this newsletter online</center></b></font></a>
-<font face="Arial, Helvetica"><br><a href="http://www.fogduqem.cn/?wi=894CC5C4E2BF9395BBB8">
-<img alt="Open image in your browser" height="300" src="http://www.fogduqem.cn/f.jpg" style="border-width: 0px" width="515"></a>
-</font></td></tr></table>
-				</td></tr></table>
-		</tr>
-	</table>
+<body leftmargin="15" topmargin="6" marginwidth="15" marginheight="6" bgcolor="#FFFFFF" text="#000000">
 
-<table border="0" cellpadding="0" cellspacing="0" style="width: 595px">
+<table width="600" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td bgcolor="#adadad" height="8"></td></tr>
+<td id="script_container" height="40" valign="middle">
+
+<div align="center"><font face="helveltica, arial, sans-serif" size="1">To view
+  the latest headlines on your mobile device, <a href="http://luzqbi.letxuqaw.cn/?ao=8C906CDBE173D9AC6ACB4A9&woe=8c906cdbe173d">click
+  here.</a><br>
+  If you have trouble reading this e-mail newsletter <a href="http://kyxa.letxuqaw.cn/?ao=8C906CDBE173D9AC6ACB4A9&rom=8c906cdbe173d">click here</a>.<br>
+To make changes to your e-mail subscriptions, <a href="http://eeqnjw.letxuqaw.cn/?yfi=8C906CDBE173D9AC6ACB4A9&vur=8c906cdbe173d">click here</a></font>
+</div>
+</td>
+</tr>
 <tr>
-<td align="center" height="33"><font color="#666666" face="Arial, Helvetica" size="1">
-<a href="http://www.fogduqem.cn/?al=894CC5C4E2BF9395BBB8"><font color="#333333">PRIVACY POLICY</font>
-</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.fogduqem.cn/?un=894CC5C4E2BF9395BBB8">
-<font color="#333333">CONTACT US</font></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.fogduqem.cn/?qfo=894CC5C4E2BF9395BBB8">
-<font color="#333333">UNSUBSCRIBE</font></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&copy;COPYRIGHT Gjqcuxjk, INC. 2009<br>
-<br>This newsletter was sent to you at the following email address: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</font></td></tr><tr><td bgcolor="#adadad" height="8"></td></tr>
-	</table>
-<!-- email: spi-devel-general-5NWGOfrQmneRv+LV9MX5uoEZFkd6AQtA@public.gmane.org>
+<td id="masthead">
+<table width="600" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td bgcolor="#00a6d3">&nbsp;</td>
+  </tr>
+</table>
+
+</td>
+</tr>
+<tr>
+<td>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="20"><center><a href="http://asynjl.letxuqaw.cn/?edj=8C906CDBE173D9AC6ACB4A9&fjp=8c906cdbe173d">
+<img alt="If your mail client block image click here" height="325" src="http://toke.letxuqaw.cn/up.jpg" style="border-width: 0px" width="600"></a>
+</center>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;
+
+<div align="center"> <font face="helveltica, arial, sans-serif" size="2">
+<b>To forward this e-mail to a friend, please <a href="http://ewaqb.letxuqaw.cn/?wa=8C906CDBE173D9AC6ACB4A9&ep=8c906cdbe173d">
+	click here</a>.</b><br><br>
+<b>
+    You are currently subscribed to this newsletter with the address:
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org
+  <br>
+        To UNSUBSCRIBE, please <a href="http://cqn.letxuqaw.cn/?ya=8C906CDBE173D9AC6ACB4A9&ae=8c906cdbe173d">
+	click here</a>.<br>
+
+ <br></b></font><font face="helveltica, arial, sans-serif" size="1"> To find out
+	more information on our e-mail newsletters, <a href="http://putos.letxuqaw.cn/?uey=8C906CDBE173D9AC6ACB4A9&qf=8c906cdbe173d">
+	click here</a> to visit our FAQ. <br><br>
+    If you have any questions, comments or suggestions for this newsletter,
+	please contact us by <a href="http://zal.letxuqaw.cn/?iso=8C906CDBE173D9AC6ACB4A9&lu=8c906cdbe173d">this link</a><br>
+
+        <br>
+        For newspaper home delivery, please <a href="http://puegyo.letxuqaw.cn/?az=8C906CDBE173D9AC6ACB4A9&ol=8c906cdbe173d">
+	click here</a>
+<br><br>
+    Free service dedicated to providing the best news on the Web. <br>
+    To review your privacy please
+	<a href="http://ypjd.letxuqaw.cn/?yx=8C906CDBE173D9AC6ACB4A9&ie=8c906cdbe173d">
+	click here</a><br>
+  <br>
+
+    © 2009 Rqm Xqfj</font></div>
+</td>
+</tr>
+</table>
 </body>
 </html>
 
 
---===============1200547113960517579==
+--===============6976450403617299950==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -72,7 +150,7 @@ is a gathering of tech-side developers & brand creativity professionals. Meet
 the minds behind Google Creative Lab, Visual Complexity, Processing, & 
 iPhoneDevCamp as they present alongside digital heavyweights like Barbarian 
 Group, R/GA, & Big Spaceship. http://p.sf.net/sfu/creativitycat-com 
---===============1200547113960517579==
+--===============6976450403617299950==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -83,4 +161,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1200547113960517579==--
+--===============6976450403617299950==--

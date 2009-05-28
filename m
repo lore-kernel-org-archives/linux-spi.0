@@ -1,12 +1,10 @@
-From: Bennie Hatfield <vhperz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Re-establish your sleep cycle
-Date: Thu, 28 May 2009 19:38:33 +0900
-Message-ID: <34445.1759862297$1243507228@news.gmane.org>
-Reply-To: Bennie Hatfield <19277sarina.stickels-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Tufo I. Barbar" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Change my address
+Date: Thu, 28 May 2009 11:21:43 +0000
+Message-ID: <NPIUU39449.4E2BF93@[83.103.222.103]>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1200547113960517579=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,37 +16,71 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Our health, well-being and all round productivity is dependent on our food intake and our regular sleep. It is important that the nightly sleep is peaceful, relaxed and continuous for a minimum period of at least 7 hours.
+--===============1200547113960517579==
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-If a person cannot have sleep as described above his or her performance the next day will suffer, and they will not be in a mood or frame of mind conducive to anything productive. Most of us suffer from some sort of occasional sleeplessness from time to time. For some of us, it can be a problem.
+<html>
+<head>
+<title>Weekly newsletter</title>
+</head>
+<body bgcolor="#ffffff" link="#108896" vlink="#108896" alink="#108896" text="#666666">
+<table border="0" cellpadding="0" cellspacing="0" style="width: 595px">
+<tr>
+<td valign="top" width="484">
+<table border="0" cellpadding="8" cellspacing="0">
+<tr>
 
-Melatrol has combined quality natural ingredients to combat your insomnia on a long term basis. Melatonin will help you fall asleep instantly, whereas Valerian will take longer to take full effect, but it will aid your body to regulate your own sleeping patterns so instead of developing an addiction, like commonly happens with prescription drugs, you will actually need to use Melatrol less and less over time.
+<td valign="top">
+<table valign="top" border="0">
+<tr>
+<td valign="top" style="width: 455px">
+<a href="http://www.fogduqem.cn/?yi=894CC5C4E2BF9395BBB8">
+<font face="Arial, Helvetica" size="4"><b><center>View this newsletter online</center></b></font></a>
+<font face="Arial, Helvetica"><br><a href="http://www.fogduqem.cn/?wi=894CC5C4E2BF9395BBB8">
+<img alt="Open image in your browser" height="300" src="http://www.fogduqem.cn/f.jpg" style="border-width: 0px" width="515"></a>
+</font></td></tr></table>
+				</td></tr></table>
+		</tr>
+	</table>
 
-For more details and information, send us a request at 1067madisyndiomede-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org and we will get back to you shortly.
+<table border="0" cellpadding="0" cellspacing="0" style="width: 595px">
+<tr>
+<td bgcolor="#adadad" height="8"></td></tr>
+<tr>
+<td align="center" height="33"><font color="#666666" face="Arial, Helvetica" size="1">
+<a href="http://www.fogduqem.cn/?al=894CC5C4E2BF9395BBB8"><font color="#333333">PRIVACY POLICY</font>
+</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.fogduqem.cn/?un=894CC5C4E2BF9395BBB8">
+<font color="#333333">CONTACT US</font></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.fogduqem.cn/?qfo=894CC5C4E2BF9395BBB8">
+<font color="#333333">UNSUBSCRIBE</font></a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&copy;COPYRIGHT Gjqcuxjk, INC. 2009<br>
+<br>This newsletter was sent to you at the following email address: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</font></td></tr><tr><td bgcolor="#adadad" height="8"></td></tr>
+	</table>
+<!-- email: spi-devel-general-5NWGOfrQmneRv+LV9MX5uoEZFkd6AQtA@public.gmane.org>
+</body>
+</html>
 
-Best regards,
-Sleep Solutions Marketing
 
+--===============1200547113960517579==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------
-This email has been written and proved to be in compliance with the recently established can-spam act law in US. We are not provoking or forcing any person in any way to participate in our programs. To participate is your own decision and you carry the responsibility of taking further part in this promotion. Anyway, if you don't want to receive more good offers from us, you can simply Unsubscribe by sending us a notification email to get.me_out_now-/E1597aS9LQAvxtiuMwx3w@public.gmane.org with a mail-subject and text "Unsubscribe me", and we will get your email out of our list within 10 days.
-
-This message is STRICTLY CONFIDENTIAL and is solely for the individual or organisation to whom it is addressed. It may contain PRIVILEGED and CONFIDENTIAL information. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this communication and its contents is strictly prohibited. If you are not the intended recipient you should not read, copy, distribute, disclose or otherwise use the information in this email. Email may be susceptible to data corruption, interception and unauthorised amendment, and we do not accept liability for any such corruption, interception or amendment or the consequences thereof or your reliance on any information contained therein if you are not the intended recipient. If you are not interested in the of
- fered promotions, please just don't answer. If you think you have received this message and its contents in error, please delete it from your computer, or follow the unsubscribing procedure shown above.
-------------------------------------------------------------------
-		
 ------------------------------------------------------------------------------
 Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT 
 is a gathering of tech-side developers & brand creativity professionals. Meet
 the minds behind Google Creative Lab, Visual Complexity, Processing, & 
 iPhoneDevCamp as they present alongside digital heavyweights like Barbarian 
 Group, R/GA, & Big Spaceship. http://p.sf.net/sfu/creativitycat-com 
+--===============1200547113960517579==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1200547113960517579==--

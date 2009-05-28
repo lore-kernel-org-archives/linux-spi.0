@@ -1,10 +1,11 @@
-From: Efim Jakovlevich <efimjakovlevich-7UKCsY3XYGlWk0Htik3J/w@public.gmane.org>
-Subject: [SPAM] Kaк изучить конкуpентов и иx стратeгию
-Date: Thu, 28 May 2009 12:20:45 +0400
-Message-ID: <5003485458.20090528122045@r-sharma.com>
+From: Oney Banque Accord <newsletter-i6XDuV1wTYFeoWH0uzbU5w@public.gmane.org>
+Subject: Votre carte visa offerte
+Date: 28 May 2009 08:32:02 -0000
+Message-ID: <20090528083202.20303.qmail@ks35158.kimsufi.com>
+Reply-To: Oney Banque Accord <newsletter-i6XDuV1wTYFeoWH0uzbU5w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0694330037626155923=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============6497011839290862424=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,195 +17,129 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0694330037626155923==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
 
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
-bmFsLy9FTiI+DQoNCjxodG1sPjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1U
-eXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjxzdHls
-ZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQouc3R5bGUxOSB7DQoJZm9udC1mYW1pbHk6ICJU
-aW1lcyBOZXcgUm9tYW4iLCBUaW1lcywgc2VyaWY7DQoJY29sb3I6ICMwMDAwMDA7DQoJZm9u
-dC1zaXplOiAxM3B4Ow0KCWZvbnQtc3R5bGU6IGl0YWxpYzsNCn0NCi5zdHlsZTIzIHsNCglm
-b250LWZhbWlseTogVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsNCglm
-b250LXN0eWxlOiBpdGFsaWM7DQoJY29sb3I6ICNGRkZGRkY7DQp9DQouc3R5bGUyNCB7DQoJ
-Zm9udC1mYW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7DQoJ
-Zm9udC1zaXplOiAxcHg7DQoJY29sb3I6ICNGRkZGRkY7DQp9DQouc3R5bGUyNyB7DQoJZm9u
-dC1mYW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7DQoJZm9u
-dC1zaXplOiAxM3B4Ow0KfQ0KLS0+DQo8L3N0eWxlPg0KPC9oZWFkPg0KPHN0eWxlIHR5cGU9
-InRleHQvY3NzIj4NCnB7Zm9udC1mYW1pbHk6VGFob21hLCBBcmlhbDsgZm9udC1zaXplOiAx
-MnB4OyBwYWRkaW5nOjJweDsgfQ0KbGl7Zm9udC1mYW1pbHk6VGFob21hLCBBcmlhbDsgZm9u
-dC1zaXplOiAxMnB4OyB9DQp0ZCB7UEFERElORzoxMHB4OyB0ZXh0LWFsaWduOmxlZnQ7fQ0K
-LnN0eWxlMyB7DQoJZm9udC1zaXplOiAxODsNCglmb250LXdlaWdodDogYm9sZDsNCgljb2xv
-cjogIzk5MDAwMDsNCn0NCi5zdHlsZTE0IHtmb250LXNpemU6IDEzcHh9DQouc3R5bGUyNiB7
-DQoJZm9udC1mYW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
-DQoJZm9udC1zaXplOiAxM3B4Ow0KCWZvbnQtd2VpZ2h0OiBib2xkOw0KCWNvbG9yOiAjMzMz
-MzMzOw0KfQ0KLnN0eWxlMjggew0KCWNvbG9yOiAjMDA2NjAwOw0KCWZvbnQtd2VpZ2h0OiBi
-b2xkOw0KfQ0KLnN0eWxlMzAge2NvbG9yOiAjMzMzMzMzfQ0KLnN0eWxlMzEge2ZvbnQtZmFt
-aWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmfQ0KLnN0eWxlMzIg
-e2NvbG9yOiAjRkZGRkZGfQ0KLnN0eWxlMzMgew0KCWNvbG9yOiAjMDA2NjAwOw0KCWZvbnQt
-d2VpZ2h0OiBib2xkOw0KCWZvbnQtc2l6ZTogMTNweDsNCglmb250LWZhbWlseTogVmVyZGFu
-YSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsNCn0NCi5zdHlsZTM0IHsNCgljb2xv
-cjogIzMzMzMzMzsNCglmb250LXNpemU6IDEzcHg7DQoJZm9udC1mYW1pbHk6IFZlcmRhbmEs
-IEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7DQp9DQo8L3N0eWxlPg0KPGJvZHk+DQo8
-dGFibGUgd2lkdGg9IjExNTAiIGJvcmRlcj0iMCIgYWxpZ249ImNlbnRlciIgY2VsbHBhZGRp
-bmc9IjAiIGNlbGxzcGFjaW5nPSIwIiBiZ2NvbG9yPSIjMDAwMDg4Ij4NCjx0ciBib3JkZXJj
-b2xvcj0iI0RERERERCIgYmdjb2xvcj0iI2U1ZjJmZiI+IA0KPHRkIGNvbHNwYW49IjIiIGJn
-Y29sb3I9IiNGRkZGRkYiPiANCjxwIGNsYXNzPSJzdHlsZTE5Ij7E7uHw++kg5OXt/CEg/fLu
-IMX06Ow8L3A+DQo8cCBjbGFzcz0ic3R5bGUzIj7P8O725fHxIODt4Ovo5+Ag8Pvt6uAg4iDu
-7+Xw4Pbo7u3t7uwg7ODw6uXy6O3j5Txicj4NCjwvcD4NCjxwPjxiPjxzcGFuIGNsYXNzPSJz
-dHlsZTMxIj48c3BhbiBjbGFzcz0ic3R5bGUxNCI+PHNwYW4gY2xhc3M9InN0eWxlMzAiPjxz
-dHJvbmc+NCDo/u3/PC9zdHJvbmc+LCAyMDA5IOMuPC9zcGFuPjwvc3Bhbj48L3NwYW4+PC9i
-PjxzcGFuIGNsYXNzPSJzdHlsZTI3IHN0eWxlMTQgc3R5bGUzMCI+PGJyPg0KICAgIDxiPuMu
-IMro5eIsIOHz6/ziLiDY5eL35e3q7iA0LCDu8uXr/CCr0eDt6vItz+Xy5fDh8/DjuzwvYj48
-L3NwYW4+PC9wPg0KPHA+PHNwYW4gY2xhc3M9InN0eWxlMjYiPiszOCAwNDQgMsfHIDQ2IDY5
-LzIzNyA5ziDONTwvc3Bhbj48YnI+DQo8L3A+PC90ZD4NCjwvdHI+DQo8dHIgYmdjb2xvcj0i
-IzAwMDA4OCI+PHRkIGhlaWdodD0iMTBweCIgY29sc3Bhbj0iMiIgYmdjb2xvcj0iIzAwNjYw
-MCIgc3R5bGU9InBhZGRpbmc6MHB4OyBtYXJnaW46MHB4OyI+PC90ZD4NCjwvdHI+DQo8dHI+
-DQo8dGQgd2lkdGg9IjgwNiIgYmdjb2xvcj0iRjFGMUYxIj48cCBjbGFzcz0ic3R5bGUyNyI+
-ICZuYnNwOyZuYnNwOzxzcGFuIGNsYXNzPSJzdHlsZTMwIj7Q4Ofw4OHu8uDt7fvpIO/w7vbl
-8fEg4O3g6+jn4CDw++3q4CDu4eXx7+X35e0g8e7i8OXs5e3t++zoIP309OXq8uji7fvs6CAg
-6O3x8vDz7OXt8uDs6CDo5+zl8OXt6Okg6CDg7eDr6OfgICDw++3q4CAoztbPLCDk5fHq8Ojv
-8u7w+yDoICDv8O706OvoIPHl4+zl7fLu4iwg7/Du9uXx8SDx7uLl8Pjl7ej/IO/u6vPv6ugs
-IMDC0S3g7eDr6Ocg7+4g6vDo8uXw6P4g7ODw4+jt4Ov87e7pIO/w6OH76+gsIPLw5fXz8O7i
-7eXi++kg4O3g6+jnIPLu4uDw4CAo8/Hr8+PoKSwgU1RFUC3g7eDr6OcsIFNXT1Qt4O3g6+jn
-LCAg6uDw8vsgIO/u5+j26O7t6PDu4uDt6P8sIOzg8vDo9uAgwcrDKSDoIPTu8Ozg6+jn7uLg
-7e377Ogg5O7q8+zl7fLg7Ogg8/fl8uAg8OXn8+v88uDy7uIg4vvv7uvt5e3o/yDq4Obk7ukg
-5+Dk4PfoIOgg7/Du9uXk8/D7Ljxicj4NCiZuYnNwOyZuYnNwOzxzdHJvbmc+1uXr5eLg/yDg
-8+To8u7w6P86PC9zdHJvbmc+IOLx5Swg6vLuIOLx5fD85ecg5+Do7fLl8OXx7uLg7SDiIO/u
-7ejs4O3o6CDx7uTl8Obg7ej/IOzg8Orl8ujt4+7i7uPuIODt4Ovo5+Ag8Pvt6uAg6CDi7eXk
-8OXt6Ogg5ePuIOIg7vDj4O3o5+D26Ogg4iDi6OTlICDz7/Dg4uvl7ffl8eru4+4g7/Du9uXx
-8eAsIPIu5S4g5Ojw5ery7vDgIO/uIOzg8Orl8ujt4/MsIOTo8OXq8u7w4CDv7iDv8O7k4Obg
-7Cwg8e/l9ujg6+jx8vsg7+4g4O3g6+jn8yDw++3q4Cwg8e/l9ujg6+jx8vsg7+4g8eXj7OXt
-8ujw7uLg7ej+IOgg7+7n6Pbo7u3o8O7i4O3o/iwg7vLi5ffg/vno5SDn4CDw4Ofw4OHu8urz
-IOzg8Orl8ujt4+7i7ukg8fLw4PLl4+joIO3gIO7x7e7i5SDg7eDr6OfgIPD77ergLiDR5ezo
-7eDwIOLu7vDz5uDl8iDx7+X26ODr6PHy7uIg7+4g7ODw6uXy6O3j8yD99PTl6vLo4u377Ogg
-6O3x8vDz7OXt8uDs6CDg7eDr6OfgIPD77ergLjxicj4NCiZuYnNwOyZuYnNwO9Dl5/Pr/PLg
-8iwg6u7y7vD76SDC+yDv7uvz9+jy5SDv7vHr5SDu4fP35e3o/yAtIO/w7vTl8fHo7u3g6+jn
-7CAg4iDg7eDr6OflIPD77ergIOgg6PHv7uv85+7i4O3o6CD99PTl6vLo4u3u4+4g6O3x8vDz
-7OXt8uDw6P8g7ODw6uXy6O3jLezl7eXk5uXw4C48L3NwYW4+PC9wPg0KICA8cCBjbGFzcz0i
-c3R5bGUyNyI+PHNwYW4gY2xhc3M9InN0eWxlMjgiPsHIx83F0S3S0MVIxdAgPC9zcGFuPiA8
-c3BhbiBjbGFzcz0ic3R5bGUzMCI+liDX8+Pz7e7iIMjj7vD8IMji4O3u4uj3LCDx8uXv5e38
-IKvP8O705fHx6O7t4Ov87fvpIOzl7eXk5uXwIPPw7uLt/yDk6O/r7uzguyAoRGlwTWdtdC4o
-znBlbiBVbml2ZXJzaXR5LCBHcmVhdCBCcml0YWluKSDiIPHu7vLi5fLx8uLo6CDxIOri4Ovo
-9Ojq4Pbo7u3t++zoIPHy4O3k4PDy4OzoIMLl6+jq7uHw6PLg7ejoLCAxMS3r5fLt6Okg8/Hv
-5fjt++kg7u/78iDz7/Dg4uvl7ej/ICDq8PPv7fvs6CDh6Oft5fEt7/Du5ery4OzoLCDx4v/n
-4O3t++zoIPEg8e7n5ODt6OXsIOHo5+3l8e7iIOgg7uHl8e/l9+Xt6OXsIOj1IP309OXq8uji
-7e7x8ugsICDg4vLu8CDs7e7j6PUg8/Hv5fjt+/Ug6u7t8fPr/PLg9uju7e379SDv8O7l6vLu
-4iwg/fT05ery6OLt+/Ug8uX17e7r7uPo6SDz7/Dg4uvl7ej/IOgg7uHz9+D++ej1IOrz8PHu
-4i48L3NwYW4+PC9wPg0KICA8cCBjbGFzcz0ic3R5bGUzMyI+0e7k5fDmYe3o5SDvcG/jcGHs
-7Ps8L3A+DQogIDxwIGNsYXNzPSJzdHlsZTI3IHN0eWxlMzAiPiAgICA8c3BhbiBjbGFzcz0i
-c3R5bGUzNCI+PHN0cm9uZz4xLjwvc3Ryb25nPiDM5fLu5Ojq4CDv8O7i5eTl7ej/IODt4Ovo
-5+Ag8fP55fHy4vP++ej1IPHl4+zl7fLu4iDv7vLw5eHo8uXr5ekuPGJyPg0KICAgICAgPHN0
-cm9uZz4xLjE8L3N0cm9uZz4gzu/w5eTl6+Xt6OUg7vHt7uLt+/Ug9uXt7e7x8uXpIO/u8vDl
-4ejy5evl6SAoztbPKSDx5ePs5e3y7uIuPGJyPg0KICAgICAgPHN0cm9uZz4xLjI8L3N0cm9u
-Zz4gzu/w5eTl6+Xt6OUg8uXq8/no9SDk5fHq8Ojv8u7w7uIg8eXj7OXt8u7iLjxicj4NCiAg
-ICAgIDxzdHJvbmc+MS4zPC9zdHJvbmc+IM7v8OXk5evl7ejlIOjx8u7w6Pfl8eru4+4g5+3g
-9+Xt6P8g8eXj7OXt8u7iIOTr/yDq7uzv4O3o6C48YnI+DQogICAgICA8c3Ryb25nPjEuNDwv
-c3Ryb25nPiDO7/Dl5OXr5e3o5SD96u7t7uzo9+Xx6u7pIPbl7e3u8fLoIPHl4+zl7fLu4iDk
-6/8g6u7s7+Dt6OguPGJyPg0KICAgICAgPHN0cm9uZz4xLjU8L3N0cm9uZz4gzu/w5eTl6+Xt
-6OUg/eru7e7s6Pfl8eru6SD25e3t7vHy6CDv7urz7+Dy5evl6SDk6/8g6u7s7+Dt6OguPGJy
-Pg0KICAgICAgPHN0cm9uZz4yLjwvc3Ryb25nPiDM5fLu5Ojq4CDg7eDr6OfgIPD77e737fv1
-IPLl7eTl7fbo6SDoIPD77e737e7pIPHw5eT7Ljxicj4NCiAgICAgIDxzdHJvbmc+Mi4xPC9z
-dHJvbmc+IMDt4Ovo5yDw++3u9+379SDy5e3k5e326Okg6CDv8O7j7e7n7uIuPGJyPg0KICAg
-ICAgPHN0cm9uZz4yLjI8L3N0cm9uZz4gwO3g6+jnIO7x7e7i7fv1IODx7+Xq8u7iIOTg6/zt
-5ekg4u3l+O3l6SDx8OXk+y48YnI+DQogICAgICA8c3Ryb25nPjIuMzwvc3Ryb25nPiDA7eDr
-6Ocg7vHt7uLt+/Ug4PHv5ery7uIg4evo5u3l6SDi7eX47eXpIPHw5eT7Ljxicj4NCiAgICAg
-IDxzdHJvbmc+My48L3N0cm9uZz4gzOXy7uTo6uAg7/Du4uXk5e3o/yBTV09ULeDt4Ovo5+Au
-PGJyPg0KICAgICAgPHN0cm9uZz4zLjE8L3N0cm9uZz4gyOTl7fLo9Ojq4Pbo/yDx6Ov87fv1
-IOgg8evg4fv1IPHy7vDu7SDq7uzv4O3o6C48YnI+DQogICAgICA8c3Ryb25nPjMuMjwvc3Ry
-b25nPiDI5OXt8uj06Org9uj/IOLu5+zu5u3u8fLl6SDoIPPj8O7nIOTr/yDq7uzv4O3o6C48
-YnI+DQogICAgICA8c3Ryb25nPjMuMzwvc3Ryb25nPiDA7eDr6Ocg5ODt7fv1IOTr/yBTV09U
-LeDt4Ovo5+Ag6CD07vDs8+vo8O7i4O3o5SDi++Lu5O7iLjxicj4NCiAgICAgIDxzdHJvbmc+
-NC48L3N0cm9uZz4gzOXy7uTo6uAg4O3g6+jn4CDv7vDy9OXr/yDy7uLg8O7iICjz8evz4ykg
-6u7s7+Dt6OguPGJyPg0KICAgICAgPHN0cm9uZz40LjE8L3N0cm9uZz4gyuvg8fHo9Ojq4Pbo
-/yDv7vDy9OXr/yDy7uLg8O7iICjz8evz4ykuPGJyPg0KICAgICAgPHN0cm9uZz40LjI8L3N0
-cm9uZz4gzu/w5eTl6+Xt6OUg6PHy7vDo9+Xx6u7j7iDn7eD35e3o/yDj8PPv7yDy7uLg8O7i
-ICjz8evz4ykg6CDu8uTl6/zt+/Ug8u7i4PDu4iAo8/Hr8+MpICDv7vDy9OXr/yDk6/8g6u7s
-7+Dt6OguPGJyPg0KICAgICAgPHN0cm9uZz40LjM8L3N0cm9uZz4gz/Du4uXk5e3o5SDAwtEt
-4O3g6+jn4CDy7uLg8O7iIO/uIOrw6PLl8Oj+IOzg8OPo7eDr/O3u6SDv8Ojh++voLjxicj4N
-CiAgICAgIDxzdHJvbmc+NC40PC9zdHJvbmc+IM/w7uLl5OXt6OUg8vDl9fPw7uLt5eLu4+4g
-4O3g6+jn4CDy7uLg8O7iICjz8evz4ykg7+7w8vTl6/8uPC9zcGFuPjwvcD4NCiAgPHAgY2xh
-c3M9InN0eWxlMzQiPjxzdHJvbmc+NS48L3N0cm9uZz4gzOXy7uTo6uAg4O3g6+jn4CDv7vLw
-5eHt7vHy5ekg7+7y8OXh6PLl6+XpIPHl4+zl7fLu4iwg7/Du9uXx8eAg8e7i5fD45e3o/yDv
-7urz7+roIOgg4uvo//756PUg9ODq8u7w7uIuPGJyPg0KICAgICAgPHN0cm9uZz41LjE8L3N0
-cm9uZz4gz/Du4uXk5e3o5SDg7eDr6OfgIM7Wzywg7/Du9Ojr5eksIO/w7vbl8fHgIPHu4uXw
-+OXt6P8g7+7q8+/q6CDoIOLr6P/++ej1IPTg6vLu8O7iIOIg8eXj7OXt8uD1IOru7eX37fv1
-IO/u8vDl4ejy5evl6S48YnI+DQogICAgICA8c3Ryb25nPjUuMjwvc3Ryb25nPiDP8O7i5eTl
-7ejlIODt4Ovo5+Ag7vHt7uLt+/Ug9uXt7e7x8uXpICDn4Orz7+737fv1IPbl7fLw7uIgKM7W
-x9YpIO7w4+Dt6Ofg9ujpLCDv8O725fHx4CDv8Ojt//Lo/yDw5fjl7ej/IO4g7+7q8+/q5SDo
-IOLr6P/++ej1IO3gIO3l4+4g9ODq8u7w7uIuPGJyPg0KICAgICAgPHN0cm9uZz42Ljwvc3Ry
-b25nPiDM5fLu5Ojq4CDg7eDr6OfgIOru7erz8OXt9ujoIOgg8fLw4PLl4+jpIOru7erz8OXt
-8u7iLjxicj4NCiAgICAgIDxzdHJvbmc+Ny48L3N0cm9uZz4gzOXy7uTo6uAg4O3g6+jn4CDu
-8uvo9+jy5ev87e7j7iDv8OXo7PP55fHy4uAg6CDv7ufo9uju7ejw7uLg7ej/IPLu4uDw4CAo
-8/Hr8+PoKS48YnI+DQogICAgICA8c3Ryb25nPjcuMTwvc3Ryb25nPiDI5OXt8uj06Org9uj/
-IO7y6+j36PLl6/zt7uPuIO/w5ejs8/nl8fLi4C48YnI+DQogICAgICA8c3Ryb25nPjcuMjwv
-c3Ryb25nPiDU7vDs6PDu4uDt6OUg6uDw8iDv7ufo9uju7ejw7uLg7ej/Ljxicj4NCiAgICAg
-IDxzdHJvbmc+OC48L3N0cm9uZz4gzOXy7uTo6uAg4O3g6+jn4CDv8Oji6+Xq4PLl6/zt7vHy
-6CDo7eLl8fLo9ujpIOIg7eDv8ODi6+Xt6P8g4ejn7eXx4CDoIO7v8OXk5evl7ej/IPHu7vLt
-7vjl7ej/IO7h6+Dx8uXpIOTu9e7k7uIg6CDu4evg8fLl6SDi6+7m5e3o6S48YnI+DQogICAg
-ICA8c3Ryb25nPjguMTwvc3Ryb25nPiDU7vDs6PDu4uDt6OUg7ODy8Oj2IMHKwy48YnI+DQog
-ICAgICA8c3Ryb25nPjguMjwvc3Ryb25nPiDA7eDr6Ocg7ODy8Oj2IMHKwyDoIOL74e7wIPHy
-8ODy5ePo6SDiIO7y7e745e3o6CDj8PPv7yDy7uLg8O7iIOgg8eXj7OXt8u7iLjwvcD48L3Rk
-Pg0KPHRkIHdpZHRoPSIyOTQiIHZhbGlnbj0idG9wIiBiZ2NvbG9yPSIjMDA5OTAwIj4gDQo8
-cCBjbGFzcz0ic3R5bGUxNCI+PGZvbnQgY29sb3I9IiNGRkZGRkYiPjxzcGFuIGNsYXNzPSJz
-dHlsZTE0Ij48Zm9udCBjb2xvcj0ieWVsbG93Ij48Yj5D0k/IzE/R0twg09fAQ9LI3yBPxM1P
-wzAg09dBQ9LNyMpBOjwvYj48L2ZvbnQ+PGJyPg0KICAgICAgPGJyPg0KlSA8Yj43NTAuMDAg
-4/DtLjwvYj4g5+Ag7uTt7uPuIGPr8/hh8mXr/y48YnI+DQo8YnI+DQqVIMTr/yDi8u7w7uPu
-IOgg8vDl8vzl4+4g8/dhY/Lt6GthIPHq6OTq4CAtIDxicj4NCiZuYnNwOyZuYnNwOzxiPjUl
-IOggNyU8L2I+IPHu7vLi5fLx8uLl7e3uLjxicj4NCjxicj4NCpUgwiDx8u7o7O7x8vwg4urr
-/vfl7fs6PGJyPg0KJm5ic3A7Jm5ic3A76O307vDs4Pbo7u3t7i3q7u3x8+v88uD26O7t7e7l
-Jm5ic3A77uHx6/Pm6OLg7ejlLDxicj4NCiZuYnNwOyZuYnNwO/3q8err/ufo4u376SANCvHh
-7vDt6Oog7ODy5fDo4Ovu4iwg4evu6u3u8iw8YnI+DQombmJzcDsmbmJzcDvw8/fq4Cwg6u70
-5S3h8OXp6iwg7uHl5CDiIPDl8fLu8ODt5S48L3NwYW4+PC9mb250PjwvcD4NCjxocj4NCjxw
-IGNsYXNzPSJzdHlsZTMyIj48c3Ryb25nPlBFw8tBTUVIVDogPC9zdHJvbmc+OS4zMC0xNy4z
-MC4gz+Xw5fD74iAxMy4zMC0xNC4zMC48c3Ryb25nPjxicj4NCiAgUGXj6GPycGH26P8gPC9z
-dHJvbmc+8SA5LjAwIOIg9e7r6+UuPC9wPg0KPGhyIGFsaWduPSJjZW50ZXIiPg0KPHAgYWxp
-Z249ImxlZnQiIGNsYXNzPSJzdHlsZTE0Ij48c3BhbiBjbGFzcz0ic3R5bGUxNCI+PGZvbnQg
-Y29sb3I9IiNGRkZGRkYiPtLl7ODy6OrgIOLx5fbl6+4g7vXi4PL74uDl8iDx9OXw8yDw4Ofi
-6PLo/yDoIO/w7uTi6Obl7ej/IOHo5+3l8eAsIA0K4CDw4PH17uT7IOfgIPP34PHy6OUg7vLt
-7vH/8vH/IOog8e7x8uDi8yDi4Ovu4vv1ICjx8i41IMfTIO4g7eDr7uPu7uHr7ubl7ejoIA0K
-7/Do4fvr6CDv8OXk7/Do//Lo6bspLCDq7vLu8PvlIPHi/+fg7fsg8SDv7uTj7vLu4uru6Swg
-7vDj4O3o5+D26OXpIOgg8+/w4OLr5e3o5ewgDQrv8O7o5+Lu5PHy4uAuIMLx5ewg8/fg8fLt
-6Org7CDx5ezo7eDw4CDv8OXk7vHy4OLr/+Xy8f8g6u7s7+vl6vIg4fP14+Dr8uXw8ero9SAN
-CuTu6vPs5e3y7uI6IO7w6OPo7eDr+yDk7uPu4u7w4Cwg4Ory4CDoIPH35fLgLCDgIPLg6ubl
-IOru7+joIPHi6OTl8uXr/PHy4iANCu4g4+7x8+Tg8PHy4uXt7e7pIPDl4+jx8vDg9ujoIOgg
-7uEg8+/r4PLlIOXk6O3u4+4g7eDr7uPgLjwvZm9udD48Zm9udCBjb2xvcj0iI0ZGRkZGRiI+
-PC9mb250Pjwvc3Bhbj48L3A+DQo8aHIgYWxpZ249ImNlbnRlciI+DQo8cCBjbGFzcz0ic3R5
-bGUzMiI+U3VjY2VzcyBpbiBidXNpbmVzcyE8L3A+PC90ZD4NCjwvdHI+DQo8L3RhYmxlPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHAgY2xhc3M9InN0eWxlMjQiPvjr6CDklyDN8ywg6CDq8u4g7O3u6SDo7fLl
-P+fq4viWIMLw7f8g7/Du6+jr8f8g5O7m5Pwg7+7kIO3k8P74PC9wPg0KPC9ib2R5Pg0KPC9o
-dG1sPg0KDQoNCg0K
+--===============6497011839290862424==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_30dbcbfb1a97bef438ff85de838796b5"
 
 
+--_----------=_parties_30dbcbfb1a97bef438ff85de838796b5
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.ctrm5.net/svi/miroir.php?bat=oney0409_ctrm
+
+plus d'infos sur http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance
+
+--------------------------------
+Cette offre Oney vous est envoy�e par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm5.net/svi/gestionserv.php?nb=1561&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_30dbcbfb1a97bef438ff85de838796b5
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
 
 
---===============0694330037626155923==
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title></title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm5.net/svi/miroir.php?bat=oney0409_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Oney vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr><td align='' style='padding:5px;background-color:#FFFFFF;'>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/bandeau.gif" alt="Oney.fr" width="580" height="90" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td width="44"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/titre.gif" alt="Oney" width="44" height="88" border="0" /></a></td>
+ <td width="532"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank" style="text-decoration:none; font-family: Trebuchet Ms, Verdana, Arial, Helvetica, sans-serif; font-size:20px; color:#000000;"><strong>Avez-vous d&eacute;j&agrave; b&eacute;n&eacute;fici&eacute; GRATUITEMENT<br />
+ d'une carte Visa internationale ?</strong></a></td>
+ <td width="10"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/emailinCM_04.gif" alt="Oney" width="144" height="88" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td width="24"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/emailinCM_05.gif" alt="Oney" width="44" height="88" border="0" /></a></td>
+ <td width="336"><br />
+ <a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank" style="text-decoration:none; font-family: Trebuchet Ms, Verdana, Arial, Helvetica, sans-serif; font-size:20px; color:#000000;"><strong>D&eacute;couvrez la Carte Mauve Oney,<br />
+ et tous ses avantages :</strong></a></td>
+ <td width="220"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/decouvrez-CMO-etsesavantages-1.gif" alt="carte visa" width="220" height="88" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/decouvrez-CMO-etsesavantages-2.gif" alt="se faire plaisir" width="579" height="34" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/decouvrez-CMO-etsesavantages-3.gif" alt="carte visa internationale" width="579" height="66" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/decouvrez-CMO-etsesavantages-4.gif" alt="pas de changement de banque" width="579" height="30" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/decouvrez-CMO-etsesavantages-5.gif" alt="des mensualites a partir de 3%" width="579" height="48" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/decouvrez-CMO-etsesavantages-6.gif" alt="0&euro; d'interets pendant 2 mois" width="579" height="78" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/decouvrez-CMO-etsesavantages-7.gif" alt="assurance voyage et assistance" width="579" height="65" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/emailinCM_15.gif" alt="Oney" width="580" height="27" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td width="319"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/demandez-CMO-8.gif" alt="Oney" width="319" height="24" border="0" /></a></td>
+ <td width="217" bgcolor="#FF9900"><div align="center"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank" style="text-decoration:none; font-family: Trebuchet Ms, Verdana, Arial, Helvetica, sans-serif; font-size:14px; color:#FFFFFF;"><strong>Demandez la Carte Mauve Oney</strong></a></div></td>
+ <td width="44"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/emailinCM_18.gif" alt="Oney" width="41" height="24" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/emailinCM_19.gif" alt="Oney" width="580" height="125" border="0" /></a></td>
+ </tr>
+</table>
+<table width="580" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=oney0409_ctrm&nb=1561&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di05.net/stockage/oney/carte_mauve/emailing/images/03_09/footer.gif" alt="mentions legales" width="580" height="197" border="0" /></a></td>
+ </tr>
+</table>
+<img src="http://impfr.tradedoubler.com/imp/imp/17995054/1634369" height="1" width="1">
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.ctrm5.net/svi/img.php?nb=1561&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
+<p>
+<a href='http://www.ctrm5.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm5.net/svi/gestionserv.php?nb=1561&cat=finance&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_30dbcbfb1a97bef438ff85de838796b5--
+
+--===============6497011839290862424==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -216,7 +151,7 @@ is a gathering of tech-side developers & brand creativity professionals. Meet
 the minds behind Google Creative Lab, Visual Complexity, Processing, & 
 iPhoneDevCamp as they present alongside digital heavyweights like Barbarian 
 Group, R/GA, & Big Spaceship. http://p.sf.net/sfu/creativitycat-com 
---===============0694330037626155923==
+--===============6497011839290862424==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -227,4 +162,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0694330037626155923==--
+--===============6497011839290862424==--

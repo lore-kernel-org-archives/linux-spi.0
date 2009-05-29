@@ -1,10 +1,12 @@
-From: "CURSO DE IMANES (MAGNETOTERAPIA)" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] CURSO EN LA QUINTA REGIÃ“N EN UN SOLO DIA
-Date: Thu, 28 May 2009 12:56:30 -0400
-Message-ID: <1251444833-220095428165630348@gmail.com>
+From: Voyage Prive <email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org>
+Subject: =?iso-8859-15?q?Sp=E9cial_Canaries_jusqu=27a_?=
+	=?iso-8859-15?q?-60=25?=
+Date: Fri, 29 May 2009 06:41:48 +0200 (CEST)
+Message-ID: <1006691824261.1102817344.1243572108950@enginex2.emv2.com>
+Reply-To: Voyage Prive <voyageprive-WkL/9FkmuN+ACwpp83mF1A@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8563866998229079062=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============4171178085685763627=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,262 +18,408 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8563866998229079062==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_125141772852827150165630349"
+--===============4171178085685763627==
+Content-Type: multipart/alternative; boundary=11028173441006691824261
 
-------=_NextPart_125141772852827150165630349
-Content-type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
-
-
-Estimad@:
-
-Ud=2E tiene la oportunidad de realizar este curso de magnetoterapia en 1 d=
-=EDa en VI=D1A DEL MAR=2E El jueves 18 de junio el Terapeuta en Hipnosis (=
-Hipnoterapeuta), Imanes (Magnetoterapeuta) y Energ=EDa (Reikiterapeuta) Cl=
-audio Reyes D=EDaz, realizar=E1 un curso de Terapia con Imanes y Energ=EDa=
- Vibracionales de 10 a 14 hrs=2E y desde las 16 hrs=2E atender=E1 a quiene=
-s se inscriban en horas@hipnosischile=2Ecl  en Vi=F1a del Mar=2E M=E1s inf=
-ormaciones las puedes encontrar en http://www=2Ehipnosischile=2Ecl/magneto=
-terapia2=2Ehtm   y as=ED poder auto-sanarse o sanar a otras personas con i=
-manes=2E Son muchas las personas que ya han seguido este curso y lo aplica=
-n con gran =E9xito san=E1ndose de dolencias o sanando a otros de sus dolor=
-es=2E Al realizar este curso podr=E1 tener un cupo asegurado, si desea, en=
- el curso que realizaremos en conjunto con el mejor instituto de biomagnet=
-ismo y magnetoterapia de Argentina obteniendo el t=EDtulo Internacional de=
- T=E9cnico en Biomagn=E9tica (esta es la raz=F3n por la cu=E1l no se segui=
-r=E1 dando este curso de 1 d=EDa)=2E
-
-Dado que es el =FAltimo curso hemos decidido agregar 2 temas adicionales a=
- la tem=E1tica vista=2E Por lo tanto, quienes hayan realizado el curso ant=
-erior lo pueden repetir cancelando s=F3lo el 50%, si no es el caso, puede =
-optar a traer al curso a 2 amigos y cancelas tambi=E9n el 50% (promociones=
- no acumulables)
-
-Te ruego que lo puedas reenviar a tus contactos de la Regi=F3n porque hay =
-mucho inter=E9s en aprender el uso de los imanes y esta es una buena oport=
-unidad para que los interesados aprendan ac=E1 mismo sin la necesidad de i=
-r a Santiago=2E Espero que esto te sirva a ti tambi=E9n=2E Acu=E9rdate que=
- tambi=E9n atender=E1 a las personas que se inscriban previamente: Crisis =
-de P=E1nico, Depresiones, Angustias, Dolores Cr=F3nicos, Desorientaciones,=
- Problemas afectivos, etc=2E
-
-=BFQuienes pueden hacer el curso=3F=20
-
-1=2E Mayores de 18 a=F1os=2E
-
-2=2E Todos los que desean ayudarse en sus dolencias y enfermedades (es una=
- terapia complementaria y no sustitutiva de la medicina tradicional)
-
-3=2E Los que desea ayudar a otros en sus procesos de sanaci=F3n=2E
-
-=BFQu=E9 beneficios tiene la Magnetoterapia (Terapia con Magnetos o Imanes=
-)=3F=20
-
-El Magnetismo influye sobre el organismo, sus tejidos, sus l=EDquidos (no =
-olvidar que somos mayoritariamente l=EDquidos), el sistema nervioso y gene=
-ra beneficios f=EDsicos, org=E1nicos y emocionales=2E Suaviza, deshincha, =
-quita el dolor y puede tambi=E9n regenerar tejidos, estimular =F3rganos, e=
-tc=2E
-
-Valores e Inscripci=F3n
-
-El valor del curso es de $85=2E000=2E- (vea formas de pago en http://www=2E=
-hipnosischile=2Ecl/magnetoterapia=2Ehtm )
-
-Rogamos inscribirse prontamente en el curso dado que s=F3lo lo pueden real=
-izar 25 personas          =2E Para inscribirse lo puede hacer en nuestro s=
-itio Web http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm , o al fono 2=
-489112, al e-mail info@hipnosischile=2Ecl o en Seminario 6 - Providencia
-
-=20
-
-Vi=F1a del Mar, jueves 18 de junio de 10 a 14 hrs=2E
-
-Siguiendo las disposiciones legales actuales, los siguientes son los datos=
- de quienes realizan el presente env=EDo publicitario:
+--11028173441006691824261
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
 
 
+Si le message ne s'affiche pas correctement, vous pouvez accéder à la version en ligne en suivant ce lien :
+http://news.voyageprive.com/HM?a=A9X7CkNFDwNqsJuVcOfHGdfhPw
 
-Hipnosis Chile
+Pour être sûr(e) de recevoir nos prochaines invitations, ajoutez l'adresse de Voyage Privé "email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org" dans votre carnet d'adresses ou dans votre liste d'expéditeurs autorisés.
 
-Seminario 6 - Providencia
+vous présentent du vendredi 29 mai 9h00 au lundi 1er juin 23h55 l'évènement du mois 
 
-Fono: 2489112 - E-mail: info@hipnosischile=2Ecl - www=2Ehipnosischile=2Ecl=
-=20
 
-Remoci=F3n: remover@hipnosischile=2Ecl=20
+Chers membres,
 
-=20
+Sur les eaux de l'océan Atlantique,
+les îles Canaries offrent la magie d'un archipel unique au monde par sa diversité et sa richesse subtropicale ; tout un univers qui jouit d'un climat printanier qui dure toute l'année. 
 
-------=_NextPart_125141772852827150165630349
-Content-Type: text/html; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+El Hierro, La Palma, La Gomera, Ténérife, Grande Canarie, Fuerteventura et Lanzarote vous séduiront, 
+avec ces offres touristiques exceptionnelles !
 
-<html>
+L'Equipe Voyageprive.com
 
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
-1252">
-<title>MAGNETOTERAPIA</title>
+
+Vacances à Ténérife -  -30%
+Une vue magnifique sur l'océan Atlantique, vous apprécierez ce 5* sur la plage de Costa Adeje.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=6c530aae768250b8d9c3c908a13ee287&go=1e37651c3a1706496c2f32a2a549ef1b
+Accéder à la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=155
+
+Détente à Fuerteventura -  -52%
+Un hôtel 4* Sup au bord de la plage et des activités pour toute la famille !
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=cc8b6a16d74a2462a1be02e79a57fb95&go=1e37651c3a1706496c2f32a2a549ef1b
+Accéder à la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=155
+
+4* au sud de Ténérife -  -30%
+Découvrez un bel hôtel 4* et détendez-vous dans la station de Playa de Las Americas.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=4607f7fff0dce694258e1c637512aa9d&go=1e37651c3a1706496c2f32a2a549ef1b
+Accéder à la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=155
+
+Sur l'île de Lanzarote -  -45%
+Un appart'hôtel 4 étoiles, au calme, à seulement 500m de la plage... Idéal pour se détendre !
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=803ef56843860e4a48fc4cdb3065e8ce&go=1e37651c3a1706496c2f32a2a549ef1b
+Accéder à la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=155
+
+5* Luxe à Ténérife -  -60%
+Proche d'un golf et de la Playa del Duque, ce superbe hôtel abritera des vacances inoubliables.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=14da92f2bdaec7f2218042a5b6124570&go=1e37651c3a1706496c2f32a2a549ef1b
+Accéder à la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=155
+
+4* au nord de Ténérife -  -30%
+Face à la mer, le long de la promenade piétonne, le Valle Mar est au coeur d'une station animée.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=c4819d06b0ca810d38506453cfaae9d8&go=1e37651c3a1706496c2f32a2a549ef1b
+Accéder à la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b1yTtDASz3OJJfxEzDaYa7Lb3AaV/?eurl=http://www.voyage-prive.com/goto.php?go=96a0654d7f16980cd61905cd8f737ea4&to=e4ca75a245c522c610a4c23b21e4b9ac&datas=155
+
+
+Si vous ne souhaitez plus recevoir d'e-mail de notre part, cliquez-ici :
+http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdbhPg
+
+--11028173441006691824261
+Content-Type: text/html; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>Voyageprive.com - 1er site de ventes priv&eacute;es de voyages</title>
 </head>
+<body bgcolor="#ffffff">
+<center><font face="Verdana,Arial" size="1">
+<a target="_blank" href="http://news.voyageprive.com/HS?a=A9X7CkNFDwNqsJuVcOfHGe3hCQ">Si le message ne s'affiche pas correctement, vous pouvez acc&eacute;der &agrave; la version en ligne</a><br>
+Pour &ecirc;tre s&ucirc;r(e) de recevoir nos prochaines invitations, ajoutez l'adresse de Voyage Priv&eacute; "email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org"<br>
+dans votre carnet d'adresses ou dans votre liste d'exp&eacute;diteurs autoris&eacute;s.<br></font></center>
+<table width="640" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#312b2b">
+    <tr><td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGeLhCg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/partners/header-1243524603.jpg" width="640" height="80" border="0" alt="Voyageprive.com - 1er site de ventes priv&eacute;es de voyages"></a></center></td></tr>
 
-<body>
-<P align=3Dleft>
-<font face=3D"Arial">Estimad@:</font></P>
-<P align=3Dleft>
-<font face=3D"Arial">Ud=2E tiene la oportunidad de realizar este curso de =
-magnetoterapia en=20
-1 d=EDa en <font color=3D"#FF0000"><u><b>VI=D1A DEL MAR</b></u></font>=2E =
-El jueves 18=20
-de junio el Terapeuta en Hipnosis (Hipnoterapeuta), Imanes (Magnetoterapeu=
-ta) y=20
-Energ=EDa (Reikiterapeuta) Claudio Reyes D=EDaz, realizar=E1 un curso de T=
-erapia con=20
-Imanes y Energ=EDa Vibracionales de 10 a 14 hrs=2E y desde las 16 hrs=2E a=
-tender=E1 a=20
-quienes se inscriban en horas@hipnosischile=2Ecl&nbsp; en <i><b>Vi=F1a del=
- Mar</b></i>=2E=20
-M=E1s informaciones las puedes encontrar en
-<a href=3D"http://www=2Ehipnosischile=2Ecl/magnetoterapia2=2Ehtm">
-http://www=2Ehipnosischile=2Ecl/magnetoterapia2=2Ehtm</a>&nbsp;&nbsp; y as=
-=ED=20
-poder auto-sanarse o sanar a otras personas con imanes=2E Son muchas las p=
-ersonas=20
-que ya han seguido este curso y lo aplican con gran =E9xito san=E1ndose de=
- dolencias=20
-o sanando a otros de sus dolores=2E Al realizar este curso podr=E1 tener u=
-n cupo=20
-asegurado, si desea, en el curso que realizaremos en conjunto con el mejor=
-=20
-instituto de biomagnetismo y magnetoterapia de Argentina obteniendo el t=ED=
-tulo=20
-Internacional de T=E9cnico en Biomagn=E9tica (esta es la raz=F3n por la cu=
-=E1l no se=20
-seguir=E1 dando este curso de 1 d=EDa)=2E</font></P>
-<P align=3Dleft>
-<font face=3D"Arial">Dado que es el =FAltimo curso hemos decidido agregar =
-2 temas=20
-adicionales a la tem=E1tica vista=2E Por lo tanto, quienes hayan=20
-realizado el curso anterior lo pueden repetir cancelando s=F3lo el 50%, si=
- no es=20
-el caso, puede optar a traer al curso a 2 amigos y cancelas tambi=E9n el 5=
-0%=20
-(promociones no acumulables)</font></P>
-<P align=3Dleft>
-<font face=3D"Arial">Te ruego que lo puedas reenviar a tus contactos de la=
- Regi=F3n=20
-porque hay mucho inter=E9s en aprender el uso de los imanes y esta es una =
-buena=20
-oportunidad para que los interesados aprendan ac=E1 mismo sin la necesidad=
- de ir a=20
-Santiago=2E Espero que esto te sirva a ti tambi=E9n=2E Acu=E9rdate que tam=
-bi=E9n atender=E1=20
-a las personas que se inscriban previamente: Crisis de P=E1nico, Depresion=
-es,=20
-Angustias, Dolores Cr=F3nicos, Desorientaciones, Problemas afectivos, etc=2E=
-</font></P>
-<P align=3Dleft>
-<b>
-<font face=3D"Arial">=BFQuienes pueden hacer el curso=3F </font></b></P>
-<P align=3Dleft style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">
-<font face=3D"Arial">1=2E Mayores de 18 a=F1os=2E</font></P>
-<P align=3Dleft style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">
-<font face=3D"Arial">2=2E Todos los que desean ayudarse en sus dolencias y=
-=20
-enfermedades (es una terapia complementaria y no sustitutiva de la medicin=
-a=20
-tradicional)</font></P>
-<P align=3Dleft style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">
-<font face=3D"Arial">3=2E Los que desea ayudar a otros en sus procesos de =
-sanaci=F3n=2E</font></P>
-<P align=3Dleft>
-<b>
-<font face=3D"Arial">=BFQu=E9 beneficios tiene la Magnetoterapia (Terapia =
-con Magnetos=20
-o Imanes)=3F </font></b></P>
-<P align=3Dleft>
-<font face=3D"Arial">El Magnetismo influye sobre el organismo, sus tejidos=
-, sus=20
-l=EDquidos (no olvidar que somos mayoritariamente l=EDquidos), el sistema =
-nervioso y=20
-genera beneficios f=EDsicos, org=E1nicos y emocionales=2E Suaviza, deshinc=
-ha, quita el=20
-dolor y puede tambi=E9n regenerar tejidos, estimular =F3rganos, etc=2E</fo=
-nt></P>
-<P align=3Dleft>
-<b><font face=3D"Arial">Valores e Inscripci=F3n</font></b></P>
-<P align=3Dleft>
-<font face=3D"Arial">El valor del curso es de $85=2E000=2E- (vea formas de=
- pago en
-<a href=3D"http://www=2Ehipnosischile=2Ecl/magnetoterapia=2Ehtm">
-http://www=2Ehipnosischile=2Ecl/magnetoterapia=2Ehtm</a> )</font></P>
-<P align=3Dleft>
-<font face=3D"Arial">Rogamos=20
-inscribirse prontamente en el curso dado que <U><STRONG>s=F3lo lo pueden r=
-ealizar=20
-25 personas</STRONG></U>         =20
-   =2E Para inscribirse lo puede hacer en nuestro sitio=20
-Web <a href=3D"http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm">
-http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm</a> , o al fono 248911=
-2, al e-mail
-<A href=3D"mailto:info@hipnosischile=2Ecl">info@hipnosischile=2Ecl</a> o e=
-n=20
-Seminario 6 - Providencia</font></P>
-<P align=3Dcenter>
-&nbsp;</P>
-<P align=3Dcenter style=3D"margin-top: 0; margin-bottom: 0">
-<b><font face=3D"Arial" color=3D"#FF0000">Vi=F1a del Mar, jueves 18 de jun=
-io de 10 a=20
-14 hrs=2E</font></b></P>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
-<font face=3D"Arial" style=3D"font-size: 6pt" color=3D"#808080">Siguiendo =
-las=20
-disposiciones legales actuales, los siguientes son los datos de quienes re=
-alizan=20
-el presente env=EDo publicitario:</font></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
-<font face=3D"Arial" style=3D"font-size: 6pt" color=3D"#808080">
-<a href=3D"http://www=2Ehipnosischile=2Ecl/">
-<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecl/imagen/logonewpeq=
-uenomini=2Ejpg" width=3D"70" height=3D"52"></a></font></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><b>
-<font face=3D"Arial" size=3D"1" color=3D"#808080">Hipnosis Chile</font></b=
-></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
-<font face=3D"Arial" style=3D"font-size: 6pt" color=3D"#808080">Seminario =
-6 -=20
-Providencia</font></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
-<font face=3D"Arial" style=3D"font-size: 6pt"><font color=3D"#808080">Fono=
-: 2489112 -=20
-E-mail: </font><a href=3D"mailto:info@hipnosischile=2Ecl"><font color=3D"#=
-808080">
-info@hipnosischile=2Ecl</font></a><font color=3D"#808080"> - </font>
-<a href=3D"http://www=2Ehipnosischile=2Ecl"><font color=3D"#808080">www=2E=
-hipnosischile=2Ecl</font></a><font color=3D"#808080">
-</font></font></p>
-<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
-<font face=3D"Arial" style=3D"font-size: 6pt"><font color=3D"#808080">Remo=
-ci=F3n:
-</font><a href=3D"mailto:remover@hipnosischile=2Ecl"><font color=3D"#80808=
-0">
-remover@hipnosischile=2Ecl</font></a><font color=3D"#808080"> </font></fon=
-t></p>
+    <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="15" border="0" alt=""></center></td></tr>
+    <tr>
+        <td style="font: normal 14px Arial, Verdana; color:#ffffff" align="center">
+            vous pr&eacute;sentent du vendredi 29 mai 9h00 au lundi 1er juin 23h55 l'&eacute;v&egrave;nement du mois 
+        </td>
+    </tr>
+    <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="15" border="0" alt=""></center></td></tr>
+    <tr><td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGePhCw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/partners/headerphoto-1243524603.jpg" width="640" height="220" border="0" alt=""></a></center></td></tr>
+    <tr>
 
-<P align=3Dcenter style=3D"margin-top: 0; margin-bottom: 0">
-&nbsp;</P>
+        <td>
+            <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="40" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td style="font: normal 12px Arial, Verdana; color:#ffffff" align="left">
+<!--texte d'intro-->
+Chers membres,<br />
+<br />
+Sur les eaux de l'oc&eacute;an Atlantique, <br />
+les &icirc;les Canaries offrent la magie d'un archipel unique au monde par sa diversit&eacute; et sa richesse subtropicale ; tout un univers qui jouit d'un climat printanier qui dure toute l'ann&eacute;e. <br />
+<br />
+El Hierro, La Palma, La Gomera, T&eacute;n&eacute;rife, Grande Canarie, Fuerteventura et Lanzarote vous s&eacute;duiront, avec ces offres touristiques exceptionnelles !<br />
+<br />
+L'Equipe Voyageprive.com
+<!--FIN texte d'intro-->
+                    </td>
+                </tr>
+                <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="40" border="0" alt=""></center></td></tr>
+            </table>
+        </td>
 
-</body>
+    </tr>
+    <tr>
+        <td>
+<table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
 
-</html>
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>Vacances &agrave; T&eacute;n&eacute;rife</strong> - 
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 30%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGeDhDA"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.6909h.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
 
-------=_NextPart_125141772852827150165630349--
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Une vue magnifique sur l'oc&eacute;an Atlantique, vous appr&eacute;cierez ce 5* sur la plage de Costa Adeje.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGeHhDQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGebhDg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>D&eacute;tente &agrave; Fuerteventura</strong> - 
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 52%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGefhDw"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00003.6439h.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Un h&ocirc;tel 4* Sup au bord de la plage et des activit&eacute;s pour toute la famille !
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGeThAA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGeXhAQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>4* au sud de T&eacute;n&eacute;rife</strong> - 
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 30%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdrhAg"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.6907h.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                D&eacute;couvrez un bel h&ocirc;tel 4* et d&eacute;tendez-vous dans la station de Playa de Las Americas.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdvhAw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdjhBA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>Sur l'&icirc;le de Lanzarote</strong> - 
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 45%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdnhBQ"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.6912h.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Un appart'h&ocirc;tel 4 &eacute;toiles, au calme, &agrave; seulement 500m de la plage... Id&eacute;al pour se d&eacute;tendre !
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGd7hBg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGd_hBw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>5* Luxe &agrave; T&eacute;n&eacute;rife</strong> - 
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 60%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdzhOA"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00005.6911h.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Proche d'un golf et de la Playa del Duque, ce superbe h&ocirc;tel abritera des vacances inoubliables.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGd3hOQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdLhOg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table><table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombresup.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+                <tr>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerleft.gif" width="10" height="162" border="0" alt=""></center></td>
+                    <td bgcolor="#423c3c">
+
+                        <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td colspan="2">
+                                    <table width="540" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="10"bgcolor="#312b2b"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                            <td width="470" bgcolor="#312b2b" style="font: normal 14px Arial, Verdana; color:#ffffff" align="left">
+                                                <strong>4* au nord de T&eacute;n&eacute;rife</strong> - 
+                                            </td>
+                                            <td width="60" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="center">- 30%</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="188"><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdPhOw"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.6913h.jpg" width="188" height="132" border="0" alt=""></a></center></td>
+                                <td width="352" valign="bottom">
+
+                                    <table width="332" border="0" align="center" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td colspan="2" style="font: normal 13px Arial, Verdana; color:#ffffff" align="center" height="102">
+                                                Face &agrave; la mer, le long de la promenade pi&eacute;tonne, le Valle Mar est au coeur d'une station anim&eacute;e.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdDhPA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonba.gif" width="145" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+
+                                            <td><center><a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdHhPQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/boutonventes.gif"width="129" border="0" height="30" alt="Voir la Bande Annonce"></a></center></td>
+                                        </tr>
+                                        <tr><td colspan="2"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/cornerright.gif" width="10" height="162" border="0" alt=""></center></td>
+
+                </tr>
+                <tr><td colspan="3"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/ombreinf.gif" width="560" height="10" border="0" alt=""></center></td></tr>
+            </table>
+        </td>
+    </tr>
+    <tr><td><center>
+            <font face="Verdana,Arial" size="1" color="#808080">*Offres r&eacute;serv&eacute;es aux membres. R&eacute;duction maximum constat&eacute;e</font>
+            <br>
+    <br>
+            </center>
+    </td></tr>
+</table>
+<center><font face="Verdana,Arial" size="1">Si vous ne souhaitez plus recevoir d'e-mail de la part de Voyage Prive, <a target="_blank" href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJuVcOfHGdbhPg">cliquez-ici</a></font></center>
+<img src="http://et.eulerian.net/view/vp-catalogue/8lL.QlYVeQ7BL6AqQORYpRfDCS0G93QzbhwsJlUmNQ--/pix.gif?eemail=" border="0" width="1" height="1" NOSEND="1" /><img src="http://news.voyageprive.com/HO?AdX7CkNFDwNqsLCHXOP0c7qmuVKYJNs.gif" border="0" alt="" width="1" height="1"></body>
+</html>    
+
+--11028173441006691824261--
 
 
 
---===============8563866998229079062==
+--===============4171178085685763627==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -283,7 +431,7 @@ is a gathering of tech-side developers & brand creativity professionals. Meet
 the minds behind Google Creative Lab, Visual Complexity, Processing, & 
 iPhoneDevCamp as they present alongside digital heavyweights like Barbarian 
 Group, R/GA, & Big Spaceship. http://p.sf.net/sfu/creativitycat-com 
---===============8563866998229079062==
+--===============4171178085685763627==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -294,4 +442,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8563866998229079062==--
+--===============4171178085685763627==--

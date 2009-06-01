@@ -1,91 +1,65 @@
-From: Linus Walleij <linus.ml.walleij@gmail.com>
-Subject: Re: [spi-devel-general] [PATCH] ARM PL022 SSP/SPI driver v1
-Date: Mon, 1 Jun 2009 13:44:52 +0200
-Message-ID: <63386a3d0906010444v4dc5a782v741b65b85c3da95c@mail.gmail.com>
-References: <63386a3d0905271519x1afc6c4bo8d40315e2e387b63@mail.gmail.com>
-	<20090601041711.GE14148@tarshish>
+From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/1] ARM PL022 SSP/SPI driver v2
+Date: Mon, 1 Jun 2009 14:01:26 +0200
+Message-ID: <63386a3d0906010501l1de3cfeah74390cf8a3fac8bf@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Linus Walleij <linus.walleij@stericsson.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Alessandro Rubini <rubini-list@gnudd.com>, sachin.verma@st.com,
-	andrea.gallo@stericsson.com, STEricsson_nomadik_linux@list.st.com
-To: Baruch Siach <baruch@tkos.co.il>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk>
-In-Reply-To: <20090601041711.GE14148@tarshish>
-List-Unsubscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=unsubscribe>
-List-Archive: <http://lists.arm.linux.org.uk/lurker/list/linux-arm-kernel.html>
-List-Post: <mailto:linux-arm-kernel@lists.arm.linux.org.uk>
-List-Help: <mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=help>
-List-Subscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.arm.linux.org.uk
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk
+Cc: Alessandro Rubini <rubini-list-kaDoWcXyVrEAvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Thanks for your helpful review Baruch, I've fixed most things I think...
+ChangeLog v1->v2:
 
-2009/6/1 Baruch Siach <baruch@tkos.co.il>:
+* Moved #define comments together with the #define on one
+  line where possible. Sometimes I had to go from using tabs
+  to using a few spaces to do this, but it works out.
 
->> +/**
->> + * struct chip_data - To maintain runtime state of SSP for each client chip
->> + * @cr0: Value of control register CR0 of SSP
->> + * @cr1: Value of control register CR1 of SSP
->> + * @dmacr: Value of DMA control Register of SSP
->> + * @cpsr: Value of Clock prescale register
->> + * @n_bytes: how many bytes(power of 2) reqd for a given data width of client
->> + * @enable_dma: Whether to enable DMA or not
->> + * @write: function ptr to be used to write when doing xfer for this chip
->> + * @read: function ptr to be used to read when doing xfer for this chip
->> + * @cs_control: chip select callback provided by chip
->> + * @xfer_type: polling/interrupt/DMA
->> + *
->> + * Runtime state of the SSP controller, maintained per chip,
->> + * This would be set according to the current message that would be served
->> + */
->> +struct chip_data {
->> +     u16 cr0;
->> +     u16 cr1;
->> +     u16 dmacr;
->> +     u16 cpsr;
->> +     u8 n_bytes;
->> +     u8 enable_dma:1;
->> +     enum ssp_reading read;
->> +     enum ssp_writing write;
->> +     void (*cs_control) (u32 command);
->
-> Isn't there a way for the PL022 block itself to control the chip select?
+* Replaced FOO_STATE with STATE_FOO everywhere using regexp
+  s/\([A-Z]+\)_STATE/STATE_\1/g, same for CPSDVR, SCR MAX and
+  MIN defines, same with {READING|WRITING}_{U8|U16|U32|NULL}.
 
-Sadly no. Or rather, I think most SoC designers want to be free to
-implement that themselves any way they choose.
+* Align struct member with TAB.
 
-> In
-> case there isn't one, IMHO you should provide simple way to use the generic
-> GPIO API for chip select. See for example drivers/spi/atmel_spi.c, and my
-> DesignWare driver that you reviewed.
+* Return IRQ_NONE immediately in the interrupt handler when
+  there is no IRQ source bit set, removing a large chunk of
+  excess IRQ handling indentation.
 
-Yep I saw that, the problem is that the PL022 is synthesized in many many
-designs, and the ways of doing chip select does not have to be GPIO pins
-actually.
+* Added "(EXPERIMENTAL)" to the config description.
 
-For this particular chip I have a dummy chip driver that does not connect
-anywhere, it puts the chip into loopback mode so you can test the driver by
-bombing it with a few transactions. It uses  a NULL CS function so nothing
-really happens when the chip select callback is called on this chip.
+* Removed check for children PM status in suspend code. The
+  device model makes sure that any suspend() hooks in the
+  children are called and return OK anyway, so this was
+  entirely unnecessary.
 
-I can think of a few other strange ways of activating chip selects too, like
-writing I2C registers in some other off-mainchip subchip etc so I think
-I'd better leave this open and each platform can decide for itself how
-to implement it, generic GPIO being one way.
+* Remove __initdata tag from AMBA PrimeCell IDs, it could
+  potentially be referenced at runtime.
 
+* Forward-declare struct device in the pl022.h file instead
+  of including <device.h>.
+
+* Fix capitalization Tx Rx -> TX RX globally.
+
+* spi_set_ctldata(spi, NULL); in pl022_cleanup().
+
+Yours,
 Linus Walleij
 
--------------------------------------------------------------------
-List admin: http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel
-FAQ:        http://www.arm.linux.org.uk/mailinglists/faq.php
-Etiquette:  http://www.arm.linux.org.uk/mailinglists/etiquette.php
+------------------------------------------------------------------------------
+Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT 
+is a gathering of tech-side developers & brand creativity professionals. Meet
+the minds behind Google Creative Lab, Visual Complexity, Processing, & 
+iPhoneDevCamp as they present alongside digital heavyweights like Barbarian 
+Group, R/GA, & Big Spaceship. http://p.sf.net/sfu/creativitycat-com 

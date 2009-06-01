@@ -1,10 +1,9 @@
-From: "Broumley Miehe"<unbirthday-1Ymm6N3OxkmPt1CcHtbs0g@public.gmane.org>
-Subject: Man Chaarged in Break-In, Counterfeiting
-Date: Mon, 01 Jun 2009 16:25:22 +0000
-Message-ID: <5FSD5VmrS0QjI78842223KpMp9ripILe0S@onlinegolf.com>
+From: "Gwyn" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Thought I won't find, huh?
+Date: Mon, 01 Jun 2009 20:09:26 +0000
+Message-ID: <612508526918782.TMMYWOGXTRTWAVD@[78.165.84.50]>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="---------------gRGbETefMdOZqngZEXw8KlKxAX"
+Content-Type: multipart/mixed; boundary="===============4335954741694967454=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,32 +16,78 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
------------------gRGbETefMdOZqngZEXw8KlKxAX
-Content-Type: application/octet-stream;
- name="duals.rtf"
-Content-Transfer-Encoding: base64
+--===============4335954741694967454==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-e1xydGYxXGFuc2lcYW5zaWNwZzEyNTJcZGVmZjBcZGVmbGFuZzEwMzN7XGZvbnR0Ymx7XGYwXGZu
-aWxcZmNoYXJzZXQwIENhbGlicmk7fX0NCntcY29sb3J0YmwgO1xyZWQwXGdyZWVuMFxibHVlMjU1
-O30NCntcKlxnZW5lcmF0b3IgTXNmdGVkaXQgNS40MS4yMS4yNTA5O31cdmlld2tpbmQ0XHVjMVxw
-YXJkXHNhMjAwXHNsMjc2XHNsbXVsdDFcbGFuZzlcZjBcZnMyMntcZmllbGR7XCpcZmxkaW5zdHtI
-WVBFUkxJTksgImh0dHA6Ly8yMi01NS5jbiJ9fXtcZmxkcnNsdHtcdWxcY2YxIGh0dHA6Ly8yMi01
-NS5jbn19fVxmMFxmczIyICAtIGJ1eSB2aWFncmEsIGNpYWxpcywgbGV2aXRyYSBhbmQgb3RoZXIg
-bWVkc1xwYXINCn0=
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head xmlns="">
+       <title>Untitled Document</title>
+       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   </head>
+   <body xmlns="">
+       <table cellspacing="0" cellpadding="0" width="600" align="center" border="0">
+           <tbody>
 
------------------gRGbETefMdOZqngZEXw8KlKxAX
+               <tr>
+                   <td align="center"><font face="Arial" size="1">A message from Qzifqvenj Qca</font>.<br />
+				   <span style="font-family: Arial; font-size: x-small">To view
+				   this email as a web page,
+				   <a href="http://qvq.foxifoka.ru/?oh=A2391E839E2CBD3EC77E&cq=a2391e839e">go here</a>.<br />
+				   </span> </td>
+               </tr>
+           </tbody>
+       </table>
+       <table cellspacing="0" cellpadding="0" width="600" align="center" border="0">
+           <tbody>
+               <tr>
+
+                   <td bgcolor="#666666" height="6"></td>
+               </tr>
+
+               <tr>
+                   <td height="5" style="text-align: center">
+				   <a href="http://igaki.foxifoka.ru/?jz=A2391E839E2CBD3EC77E&iz=a2391e839e">
+				   <img alt="Whether you see no image, press here" src="http://oza.foxifoka.ru/spacer.gif" style="border-width: 0px" /></a></td>
+               </tr>
+               <tr>
+                   <td bgcolor="#666666" height="6"></td>
+               </tr>
+           </tbody>
+       </table>
+       <table cellspacing="0" cellpadding="0" width="600" align="center" border="0">
+
+           <tbody>
+               <tr>
+                   <td align="center"><span style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px"><font face="Arial, Helvetica, sans-serif" size="2"><br />
+                   Your email address has not been given to any third parties. You received this email because you have an existing business relationship with Qpqq Jveqtqko.
+                   Periodically, we will inform you of special offers and new products from third party mailers pertaining to your profession or possible interests.
+                   If you do not wish to be contacted with these offers via email, please <a href="http://qbounu.foxifoka.ru/?ade=A2391E839E2CBD3EC77E&wo=a2391e839e">click here</a> to opt-out. <br />
+                   <br />
+                    Gasan Uryfid | Fuzaexu Media | 612 B. 52th Street | New York, NY 10011 | <a href="http://egoakj.foxifoka.ru/?bo=A2391E839E2CBD3EC77E&caf=a2391e839e">Privacy Statement</a></font></span></td>
+
+                </tr>
+            </tbody>
+        </table>
+        <p>&nbsp;</p>
+</body>
+</html>
+
+
+--===============4335954741694967454==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 ------------------------------------------------------------------------------
-Register Now for Creativity and Technology (CaT), June 3rd, NYC. CaT 
-is a gathering of tech-side developers & brand creativity professionals. Meet
-the minds behind Google Creative Lab, Visual Complexity, Processing, & 
-iPhoneDevCamp as they present alongside digital heavyweights like Barbarian 
-Group, R/GA, & Big Spaceship. http://p.sf.net/sfu/creativitycat-com 
------------------gRGbETefMdOZqngZEXw8KlKxAX
+OpenSolaris 2009.06 is a cutting edge operating system for enterprises 
+looking to deploy the next generation of Solaris that includes the latest 
+innovations from Sun and the OpenSource community. Download a copy and 
+enjoy capabilities such as Networking, Storage and Virtualization. 
+Go to: http://p.sf.net/sfu/opensolaris-get
+--===============4335954741694967454==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -53,4 +98,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
------------------gRGbETefMdOZqngZEXw8KlKxAX--
+--===============4335954741694967454==--

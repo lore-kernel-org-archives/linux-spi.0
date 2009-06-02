@@ -1,10 +1,13 @@
-From: genadiy vetrov <genadiyvetrov-ZKXumFVAMWxBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Maркетинг услуг
-Date: Tue, 02 Jun 2009 09:04:03 +0400
-Message-ID: <8904509736.20090602090403@0088800.com>
+From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 1/3] Blackfin SPI: fix resources leakage
+Date: Tue,  2 Jun 2009 03:06:07 -0400
+Message-ID: <1243926369-29953-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3537245776834515234=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
+To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,138 +19,187 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3537245776834515234==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+From: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
 
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
-bmFsLy9FTiI+DQoNCjxodG1sPjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1U
-eXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjxzdHls
-ZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQouc3R5bGUxOSB7DQoJZm9udC1mYW1pbHk6ICJU
-aW1lcyBOZXcgUm9tYW4iLCBUaW1lcywgc2VyaWY7DQoJY29sb3I6ICMwMDAwMDA7DQoJZm9u
-dC1zaXplOiAxM3B4Ow0KCWZvbnQtc3R5bGU6IGl0YWxpYzsNCn0NCi5zdHlsZTI3IHsNCglm
-b250LWZhbWlseTogVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsNCglm
-b250LXNpemU6IDEzcHg7DQp9DQotLT4NCjwvc3R5bGU+DQo8L2hlYWQ+DQo8c3R5bGUgdHlw
-ZT0idGV4dC9jc3MiPg0KcHtmb250LWZhbWlseTpUYWhvbWEsIEFyaWFsOyBmb250LXNpemU6
-IDEycHg7IHBhZGRpbmc6MnB4OyB9DQpsaXtmb250LWZhbWlseTpUYWhvbWEsIEFyaWFsOyBm
-b250LXNpemU6IDEycHg7IH0NCnRkIHtQQURESU5HOjEwcHg7IHRleHQtYWxpZ246bGVmdDt9
-DQouc3R5bGUzIHsNCglmb250LXNpemU6IDE4Ow0KCWZvbnQtd2VpZ2h0OiBib2xkOw0KCWNv
-bG9yOiAjOTkwMDAwOw0KfQ0KLnN0eWxlMTQge2ZvbnQtc2l6ZTogMTNweH0NCi5zdHlsZTI2
-IHsNCglmb250LWZhbWlseTogVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJp
-ZjsNCglmb250LXNpemU6IDEzcHg7DQoJZm9udC13ZWlnaHQ6IGJvbGQ7DQoJY29sb3I6ICMz
-MzMzMzM7DQp9DQouc3R5bGUzMCB7Y29sb3I6ICMzMzMzMzN9DQouc3R5bGUzMSB7Zm9udC1m
-YW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWZ9DQouc3R5bGUz
-MiB7Y29sb3I6ICNGRkZGRkZ9DQo8L3N0eWxlPg0KPGJvZHk+DQo8dGFibGUgd2lkdGg9IjEx
-NTAiIGJvcmRlcj0iMCIgYWxpZ249ImNlbnRlciIgY2VsbHBhZGRpbmc9IjAiIGNlbGxzcGFj
-aW5nPSIwIiBiZ2NvbG9yPSIjMDAwMDg4Ij4NCjx0ciBib3JkZXJjb2xvcj0iI0RERERERCIg
-Ymdjb2xvcj0iI2U1ZjJmZiI+IA0KPHRkIGNvbHNwYW49IjIiIGJnY29sb3I9IiNGRkZGRkYi
-PiANCjxwIGNsYXNzPSJzdHlsZTE5Ij7E7uHw++kg5OXt/CEg/fLuIEJvcmlzPC9wPg0KPHAg
-Y2xhc3M9InN0eWxlMyI+zODw6uXy6O3jIPPx6/PjLCDP8O7k4OLg/yAg7eXn8Ojs7uUuLi46
-PC9wPg0KPHA+PGI+PHNwYW4gY2xhc3M9InN0eWxlMzEiPjxzcGFuIGNsYXNzPSJzdHlsZTE0
-Ij48c3BhbiBjbGFzcz0ic3R5bGUzMCI+PHN0cm9uZz4xMSDo/u3/PC9zdHJvbmc+LCAyMDA5
-IOMuPC9zcGFuPjwvc3Bhbj48L3NwYW4+PC9iPjxzcGFuIGNsYXNzPSJzdHlsZTI3IHN0eWxl
-MTQgc3R5bGUzMCI+PGJyPg0KICAgIDxiPuMuIMro5eIsIOHz6/ziLiDY5eL35e3q7iA0LCDu
-8uXr/CCr0eDt6vItz+Xy5fDh8/DjuzwvYj48L3NwYW4+PC9wPg0KPHA+PHNwYW4gY2xhc3M9
-InN0eWxlMjYiPivHOCAoTzQ0KSAyMzcgOU8gMDUvMsczINc2IDY5PC9zcGFuPjxicj4NCjwv
-cD48L3RkPg0KPC90cj4NCjx0ciBiZ2NvbG9yPSIjMDAwMDg4Ij48dGQgaGVpZ2h0PSIxMHB4
-IiBjb2xzcGFuPSIyIiBiZ2NvbG9yPSIjMDA2NjAwIiBzdHlsZT0icGFkZGluZzowcHg7IG1h
-cmdpbjowcHg7Ij48L3RkPg0KPC90cj4NCjx0cj4NCiAgPHRkIHdpZHRoPSI4MDYiIGJnY29s
-b3I9IkYxRjFGMSI+PHA+PHN0cm9uZz7WZetl4mH/IGHz5Ojyb3Do/zo8L3N0cm9uZz48YnI+
-DQogICAg7uHz9+Xt6OUg7/Dl5O3g5+3g9+Xt7iDk6/8g8e7y8PPk7ejq7uIg6u7v4O3o6Swg
-6u7y7vD75SDn4O3o7OD+8vH/IO/w7vTl8fHo7u3g6/zt7ukg7/Du5ODm5ekg8/Hr8+MuIM7t
-IOHz5OXyIO/u6+Xn5e0g8e7y8PPk7ejq4Owg/vDo5Oj35fHq6PUsIOru7fHg6/Lo7ePu4vv1
-LCDg8+To8u7w8ero9Swg8uXr5eru7Ozz7ejq4Pbo7u3t+/UsIPLz8Ojx8uj35fHq6PUsIPDo
-/evy5fDx6uj1LCDx8vDg9e7i+/UsIPLw4O3x7+7w8u3uLf3q8e/l5Oj26O7t7fv1IOgg5PDz
-4+j1IOru7O/g7ejpLCDx7vLw8+Tt6OroIOru8u7w+/Ug7/Dl6vDg8e3uIO/u7ejs4P7yLCD3
-8u4g7/Du5ODy/CDy7uLg8CDo6+gg8/Hr8+PzLCDq4Oog4+7i7vD/8iDiIM7k5fHx5SCr4e7r
-/Pjg/yDw4Oft6Pbguy48L3A+DQogICAgPHA+PHN0cm9uZz5Db+Tl8Obg7ejlIO9wb+NwYezs
-+zwvc3Ryb25nPjwvcD4NCiAgICA8cD48c3Ryb25nPtfg8fL8IDEuIM/w7uTg5uAg8/Hr8+Po
-LiDO8uvo9+jlIO7yIO/w7uTg5ugg8u7i4PDgLjwvc3Ryb25nPjxicj4NCiAgICAgIM/u7f/y
-6OUgq/Px6/Pj4LsuIM7x7e7i7fvlIO7y6+j36P8gq/Px6/Pj6Lsg6CCr8u7i4PDguzxicj4N
-CiAgICAgIM7x7e7i7fvlIPLo7/sg8/Hr8+MuICDN4CD38u4g7eXu4fXu5Ojs7iDu4fDg+eDy
-/CDi7ejs4O3o5SDiIO/l8OLz/iDu9+Xw5eT8IO/w6CDv8O7k4OblIPPx6/Pj6C48YnI+DQog
-ICAgICDR7+X26PTo6uAg7+7n6Pbo7u3o8O7i4O3o/yDz8evz4y4gNEYg4iDv8O7k4OblIPPx
-6/PjLjxicj4NCiAgICAgIM/w7uTz6vLo4u3u8fL8IOgg8OXn8+v88uDy6OLt7vHy/CDq4Oog
-5OLgIO/u6uDn4PLl6/8g/fT05ery6OLt7vHy6CDv8O7k4OboIPPx6/PjLjxicj4NCiAgICAg
-IM/w4Ory6Pfl8eru5SDn4OTg7ejlOiBTV09ULeDt4Ovo5yDv8O7k4OLg5ezu6SDz8evz4+gu
-PC9wPg0KICAgIDxwPjxzdHJvbmc+1+Dx8vwgMi4gzvHu4eXt7e7x8ugg7vDj4O3o5+D26Ogg
-7/Du5ODm6CDz8evz4y48L3N0cm9uZz48YnI+DQogICAgICDM5fLu5Psg8ODh7vL7IPEg6uvo
-5e3y8eru6SDh4Ofu6Tog8eXj7OXt8ujw7uLg7ejlIO/u8vDl4ejy5evl6S48YnI+DQogICAg
-ICDA7erl8uAgKO/w7vTo6/wpIOrr6OXt8uAg6CDg5ODv8uD26P8g6u7s7OXw9+Xx6u7j7iDv
-8OXk6+7m5e3o/y48YnI+DQogICAgICDR8vDg8uXj6Pfl8ero5SDq7u3q8/Dl7fLt++Ug7/Dl
-6Ozz+eXx8uLgIOru7O/g7ejoIOIg7/Du5ODm5SDz8evz4+g8YnI+DQogICAgICDO8e3u4u37
-5SDs5fLu5Psg7/Du5OLo5uXt6P8g8/Hr8+MuPGJyPg0KICAgICAgzO7n4+7i7ukg+PLz8Owg
-q83u4vvlIOzl8u7k+yDoIPLl9e3u6+7j6Ogg4iDv8O7k4ujm5e3o6CDz8evz47s8L3A+DQog
-ICAgPHA+PHN0cm9uZz7X4PHy/CAzLiDR8vDg8uXj6P8g7+Xw5ePu4u7w7uIg7iDv8O7k4Obl
-IPPx6/Pj6C48L3N0cm9uZz48L3A+DQogICAgPHA+PHN0cm9uZz7d8uDvIDEuPC9zdHJvbmc+
-PGJyPg0KICAgICAgwvHy8+/r5e3o5SDiIOru7fLg6vIg8SDK6+jl7fLu7CDv7iDy5evl9O7t
-8zxicj4NCiAgICAgIM/w7vD74iD35fDl5yDx5erw5fLg8P8uPGJyPg0KICAgICAgwvv17uQg
-7eAg9uXr5eLu4+4gyuvo5e3y4CDoIOTu4+7i7vDl7e3u8fL8IO4g4vHy8OX35Txicj4NCiAg
-ICAgINfy7iDk5evg8vwg4iDx6PLz4Pbo6CCrwvsg8eHw7vH88uUg7/Dl5Ovu5uXt6OUg7+4g
-9ODq8fMuIMz7IPHg7OggwuDsIO/l8OXn4u7t6Oy7PyDM5fLu5Ojq6CDoIPLg6vLo6ugg7eXt
-4OL/5/fo4u7j7iDt4O/u7Ojt4O3o/yDuIPHl4eUg6CDx4u7l6SDq7uzv4O3o6C48YnI+DQog
-ICAgICDP8O7i5eTl7ejlIPLw5e3o7ePgLjwvcD4NCiAgICA8cD48c3Ryb25nPt3y4O8gMi48
-L3N0cm9uZz48YnI+DQogICAgICDP8ODi6OvgIPPx8uDt7uLr5e3o/yDq7u3y4Ory4CDxIOrr
-6OXt8u7sIO/w6CDr6Pft7ukg4vHy8OX35S48YnI+DQogICAgICDU7vDs6PDu4uDt6OUg7+7y
-8OXh7e7x8ugg8yDq6+jl7fLgPGJyPg0KICAgICAgwu7v8O7x7fvlIPLl9e3o6ugg9O7w7Ojw
-7uLg7ej/IOgg4vv/4uvl7ej/IO/u8vDl4e3u8fLl6S48YnI+DQogICAgICDR6PHy5ezgIFNQ
-SU4g9O7w7Ojw7uLg7ej/IO/u8vDl4e3u8fLoLjxicj4NCiAgICAgIM/w7uLl5OXt6P8g8+/w
-4Obt5e3o6SDt4CDu8vDg4e7y6vMg4u7v8O7x7fv1IPLg6vLo6iDi+//i6+Xt6P8g7+7y8OXh
-7e7x8ug8L3A+DQogICAgPHA+PHN0cm9uZz7d8uDvIDMuIDwvc3Ryb25nPjxicj4NCiAgICAg
-IN309OXq8uji7eD/IODw4/Ps5e3y4Pbo/yDoIO/w5efl7fLg9uj/IPHi7uXj7iDv8OXk6+7m
-5e3o/zog6uDqIPPh5eTo8vwg6uvo5e3y4D88YnI+DQogICAgICDP7uLl5OXt6OUg4u4g4vDl
-7P8g7/Dl5+Xt8uD26Ogg8/Hr8+PoPGJyPg0KICAgICAg0+zl7ejlIO/w5efl7fLu4uDy/CDx
-4u7oIPPx6/Pj6CDiIOfg4ujx6Ozu8fLoIO7yIPLo7+Ag6uvo5e3y4C48YnI+DQogICAgICDP
-8ODq8uj35fHq7uUg5+Dk4O3o5Tog7/Dl5+Xt8uD26P8g8/Hr8+PoIO/u8vDl4ejy5ev+Ljwv
-cD4NCiAgICA8cD48c3Ryb25nPt3y4O8gNC48L3N0cm9uZz48YnI+DQogICAgICDQ4OHu8uAg
-8SDi7ufw4Obl7ej/7Ogg6CDx7uzt5e3o/+zoIOrr6OXt8uA8YnI+DQogICAgICDK7uPk4CDo
-IO/u9+Xs8yDq6+jl7fIg8e7s7eXi4OXy8f8/ICDX5ewg4evo5uUg6iDn4OLl8Pjl7ej+LCDy
-5ewg4e7r/PjlIPHu7O3l7ej/LiDP7vfl7PM/PGJyPg0KICAgICAg0fLg7eTg8PLt++Ug4u7n
-8ODm5e3o/yDq6+jl7fLgIOgg8e/u8e7h+yDw4OHu8vsg8SDt6OzoPGJyPg0KICAgICAg0ODh
-7vLgIPEg/ezu9uju7eDr/O377Ogg4u7n8ODm5e3o/+zoIOrr6OXt8uA8YnI+DQogICAgICDP
-8ODq8uj35fHq7uUg5+Dk4O3o5SCr0ODh7vLgIPEg4u7n8ODm5e3o/+zouy48L3A+DQogICAg
-PHA+PHN0cm9uZz7d8uDvIDUuPC9zdHJvbmc+PGJyPg0KICAgICAgx+Di5fD45e3o5SDv5fDl
-4+7i7vDu4iDuIO/w7uTg5uUg8/Hr8+Mgyuvo5e3y8zxicj4NCiAgICAgINPx6/Pj4CDu6uDn
-4O3gLiDX8u4g5ODr/PjlPyDP8O7j8ODs7OAg9O7w7Ojw7uLg7ej/IOvu/+v87e7x8uggyuvo
-5e3y4Dxicj4NCiAgICAgINLl9e3u6+7j6Ogg7+7i+/jl7ej/IOvu/+v87e7x8ugg6CDz5O7i
-6+Xy4u7w5e3t7vHy6C48YnI+DQogICAgx+Dq8OXv6+Xt6OUg6uvo5e3y7uIuIMzl8u7k+yDn
-4Orw5e/r5e3o/yDq6+jl7fLu4i48L3A+PC90ZD4NCiAgPHRkIHdpZHRoPSIyOTQiIHZhbGln
-bj0idG9wIiBiZ2NvbG9yPSIjMDA5OTAwIj4gDQo8cCBjbGFzcz0ic3R5bGUxNCI+PGZvbnQg
-Y29sb3I9IiNGRkZGRkYiPjxzcGFuIGNsYXNzPSJzdHlsZTE0Ij48Zm9udCBjb2xvcj0ieWVs
-bG93Ij48Yj5D0s7IzM7R0twg09dB0dLI3yBPxM3Ow84g09dBQ9LNyMpBPC9iPjwvZm9udD48
-YnI+DQogICAgICA8YnI+DQqVIDxiPjgwMC4wMCDj8O0uPC9iPiDn4CDu5O3u4+4gY+vz+GHy
-Zev/Ljxicj4NCjxicj4NCpUgxOv/IOLy7vDu4+4g6CDy8OXy/OXj7iDz92Fj8u3o6mEg8ero
-5OrgIC0gPGJyPg0KJm5ic3A7Jm5ic3A7PGI+NSUg6CA3JTwvYj4g8e7u8uLl8vHy4uXt7e4u
-PGJyPg0KPGJyPg0KlSDCIPHy7ujs7vHy/CDi6uv+9+Xt+zo8YnI+DQombmJzcDsmbmJzcDvo
-7fTu8Ozg9uju7e3uLeru7fHz6/zy4Pbo7u3t7uUmbmJzcDvu4fHr8+bo4uDt6OUsPGJyPg0K
-Jm5ic3A7Jm5ic3A7/erx6uv+5+ji7fvpIA0K8eHu8O3o6iDs4PLl8Ojg6+7iLCDh6+7q7e7y
-LDxicj4NCiZuYnNwOyZuYnNwO/Dz9+rgLCDq7vTlLeHw5enqLCDu4eXkIOIg8OXx8u7w4O3l
-Ljwvc3Bhbj48L2ZvbnQ+PC9wPg0KPGhyPg0KPHAgY2xhc3M9InN0eWxlMzIiPjxzdHJvbmc+
-0OXj6+Ds5e3yOiA8L3N0cm9uZz45LjMwLTE3LjMwLiDP5fDl8PviIDEzLjMwLTE0LjMwLjxz
-dHJvbmc+PGJyPg0KICBQZePoY/JwYfbo/yA8L3N0cm9uZz7xIDkuMDAg4iD17uvr5S48L3A+
-DQo8aHIgYWxpZ249ImNlbnRlciI+DQo8cCBhbGlnbj0ibGVmdCIgY2xhc3M9InN0eWxlMTQi
-PjxzcGFuIGNsYXNzPSJzdHlsZTE0Ij48Zm9udCBjb2xvcj0iI0ZGRkZGRiI+0uXs4PLo6uAg
-4vHl9uXr7iDu9eLg8vvi4OXyIPH05fDzIPDg5+Lo8uj/IOgg7/Du5OLo5uXt6P8g4ejn7eXx
-4CwgDQrgIPDg8fXu5Psg5+Ag8/fg8fLo5SDu8u3u8f/y8f8g6iDx7vHy4OLzIOLg6+7i+/Ug
-KPHyLjUgx9Mg7iDt4Ovu4+7u4evu5uXt6OggDQrv8Ojh++voIO/w5eTv8Oj/8ujpuyksIOru
-8u7w++Ug8eL/5+Dt+yDxIO/u5OPu8u7i6u7pLCDu8OPg7ejn4Pbo5ekg6CDz7/Dg4uvl7ejl
-7CANCu/w7ujn4u7k8fLi4C4gwvHl7CDz9+Dx8u3o6uDsIPHl7Ojt4PDgIO/w5eTu8fLg4uv/
-5fLx/yDq7uzv6+Xq8iDh8/Xj4Ovy5fDx6uj1IA0K5O7q8+zl7fLu4jog7vDo4+jt4Ov7IOTu
-4+7i7vDgLCDg6vLgIOgg8ffl8uAsIOAg8uDq5uUg6u7v6Ogg8eLo5OXy5ev88fLiIA0K7iDj
-7vHz5ODw8fLi5e3t7ukg8OXj6PHy8OD26Ogg6CDu4SDz7+vg8uUg5eTo7e7j7iDt4Ovu4+Au
-PC9mb250Pjxmb250IGNvbG9yPSIjRkZGRkZGIj48L2ZvbnQ+PC9zcGFuPjwvcD4NCjxociBh
-bGlnbj0iY2VudGVyIj4NCjxwIGNsYXNzPSJzdHlsZTMyIj7V7vDu+OXj7iDC4Owg5O3/ITwv
-cD48L3RkPg0KPC90cj4NCjwvdGFibGU+DQo8L2JvZHk+DQo8L2h0bWw+DQoNCg0KDQo=
+Re-order setup() a bit so we don't leak memory/dma/gpio resources upon
+errors.
 
+Signed-off-by: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
+Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi_bfin5xx.c |  101 +++++++++++++++++++++++++--------------------
+ 1 files changed, 56 insertions(+), 45 deletions(-)
 
+diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+index f014cc2..3277210 100644
+--- a/drivers/spi/spi_bfin5xx.c
++++ b/drivers/spi/spi_bfin5xx.c
+@@ -1005,15 +1005,15 @@ static u16 ssel[][MAX_SPI_SSEL] = {
+ /* first setup for new devices */
+ static int bfin_spi_setup(struct spi_device *spi)
+ {
+-	struct bfin5xx_spi_chip *chip_info = NULL;
+-	struct chip_data *chip;
++	struct bfin5xx_spi_chip *chip_info;
++	struct chip_data *chip = NULL;
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
+-	int ret;
++	int ret = -EINVAL;
+ 
+ 	/* Abort device setup if requested features are not supported */
+ 	if (spi->mode & ~(SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST)) {
+ 		dev_err(&spi->dev, "requested mode not fully supported\n");
+-		return -EINVAL;
++		goto error;
+ 	}
+ 
+ 	/* Zero (the default) here means 8 bits */
+@@ -1021,12 +1021,13 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		spi->bits_per_word = 8;
+ 
+ 	if (spi->bits_per_word != 8 && spi->bits_per_word != 16)
+-		return -EINVAL;
++		goto error;
+ 
+ 	/* Only alloc (or use chip_info) on first setup */
++	chip_info = NULL;
+ 	chip = spi_get_ctldata(spi);
+ 	if (chip == NULL) {
+-		chip = kzalloc(sizeof(struct chip_data), GFP_KERNEL);
++		chip = kzalloc(sizeof(*chip), GFP_KERNEL);
+ 		if (!chip)
+ 			return -ENOMEM;
+ 
+@@ -1045,7 +1046,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		if (chip_info->ctl_reg & (SPE|MSTR|CPOL|CPHA|LSBF|SIZE)) {
+ 			dev_err(&spi->dev, "do not set bits in ctl_reg "
+ 				"that the SPI framework manages\n");
+-			return -EINVAL;
++			goto error;
+ 		}
+ 
+ 		chip->enable_dma = chip_info->enable_dma != 0
+@@ -1069,26 +1070,6 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	chip->ctl_reg |= MSTR;
+ 
+ 	/*
+-	 * if any one SPI chip is registered and wants DMA, request the
+-	 * DMA channel for it
+-	 */
+-	if (chip->enable_dma && !drv_data->dma_requested) {
+-		/* register dma irq handler */
+-		if (request_dma(drv_data->dma_channel, "BFIN_SPI_DMA") < 0) {
+-			dev_dbg(&spi->dev,
+-				"Unable to request BlackFin SPI DMA channel\n");
+-			return -ENODEV;
+-		}
+-		if (set_dma_callback(drv_data->dma_channel,
+-		    bfin_spi_dma_irq_handler, drv_data) < 0) {
+-			dev_dbg(&spi->dev, "Unable to set dma callback\n");
+-			return -EPERM;
+-		}
+-		dma_disable_irq(drv_data->dma_channel);
+-		drv_data->dma_requested = 1;
+-	}
+-
+-	/*
+ 	 * Notice: for blackfin, the speed_hz is the value of register
+ 	 * SPI_BAUD, not the real baudrate
+ 	 */
+@@ -1096,16 +1077,6 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	chip->flag = 1 << (spi->chip_select);
+ 	chip->chip_select_num = spi->chip_select;
+ 
+-	if (chip->chip_select_num == 0) {
+-		ret = gpio_request(chip->cs_gpio, spi->modalias);
+-		if (ret) {
+-			if (drv_data->dma_requested)
+-				free_dma(drv_data->dma_channel);
+-			return ret;
+-		}
+-		gpio_direction_output(chip->cs_gpio, 1);
+-	}
+-
+ 	switch (chip->bits_per_word) {
+ 	case 8:
+ 		chip->n_bytes = 1;
+@@ -1132,9 +1103,37 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	default:
+ 		dev_err(&spi->dev, "%d bits_per_word is not supported\n",
+ 				chip->bits_per_word);
+-		if (chip_info)
+-			kfree(chip);
+-		return -ENODEV;
++		goto error;
++	}
++
++	/*
++	 * if any one SPI chip is registered and wants DMA, request the
++	 * DMA channel for it
++	 */
++	if (chip->enable_dma && !drv_data->dma_requested) {
++		/* register dma irq handler */
++		ret = request_dma(drv_data->dma_channel, "BFIN_SPI_DMA");
++		if (ret) {
++			dev_dbg(&spi->dev,
++				"Unable to request BlackFin SPI DMA channel\n");
++			goto error;
++		}
++		drv_data->dma_requested = 1;
++
++		ret = set_dma_callback(drv_data->dma_channel,
++			bfin_spi_dma_irq_handler, drv_data);
++		if (ret) {
++			dev_dbg(&spi->dev, "Unable to set dma callback\n");
++			goto error;
++		}
++		dma_disable_irq(drv_data->dma_channel);
++	}
++
++	if (chip->chip_select_num == 0) {
++		ret = gpio_request(chip->cs_gpio, spi->modalias);
++		if (ret)
++			goto error;
++		gpio_direction_output(chip->cs_gpio, 1);
+ 	}
+ 
+ 	dev_dbg(&spi->dev, "setup spi chip %s, width is %d, dma is %d\n",
+@@ -1145,14 +1144,26 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	spi_set_ctldata(spi, chip);
+ 
+ 	dev_dbg(&spi->dev, "chip select number is %d\n", chip->chip_select_num);
+-	if ((chip->chip_select_num > 0)
+-		&& (chip->chip_select_num <= spi->master->num_chipselect))
+-		peripheral_request(ssel[spi->master->bus_num]
+-			[chip->chip_select_num-1], spi->modalias);
++	if (chip->chip_select_num > 0 &&
++	    chip->chip_select_num <= spi->master->num_chipselect) {
++		ret = peripheral_request(ssel[spi->master->bus_num]
++		                         [chip->chip_select_num-1], spi->modalias);
++		if (ret)
++			goto error;
++	}
+ 
+ 	bfin_spi_cs_deactive(drv_data, chip);
++	ret = 0;
+ 
+-	return 0;
++ error:
++	if (ret) {
++		kfree(chip);
++		if (drv_data->dma_requested)
++			free_dma(drv_data->dma_channel);
++		drv_data->dma_requested = 0;
++	}
++
++	return ret;
+ }
+ 
+ /*
+-- 
+1.6.3.1
 
-
---===============3537245776834515234==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 OpenSolaris 2009.06 is a cutting edge operating system for enterprises 
@@ -155,15 +207,3 @@ looking to deploy the next generation of Solaris that includes the latest
 innovations from Sun and the OpenSource community. Download a copy and 
 enjoy capabilities such as Networking, Storage and Virtualization. 
 Go to: http://p.sf.net/sfu/opensolaris-get
---===============3537245776834515234==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3537245776834515234==--

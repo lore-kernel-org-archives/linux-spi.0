@@ -1,14 +1,14 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 2/3] Blackfin SPI: force sane state at
-	boot
-Date: Tue,  2 Jun 2009 03:06:08 -0400
-Message-ID: <1243926369-29953-2-git-send-email-vapier@gentoo.org>
+Subject: [PATCH 3/3] Blackfin SPI: work around anomaly
+	05000119
+Date: Tue,  2 Jun 2009 03:06:09 -0400
+Message-ID: <1243926369-29953-3-git-send-email-vapier@gentoo.org>
 References: <1243926369-29953-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org,
-	Wolfgang Muees <wolfgang.mues-3FOdemwfcUYPyMaTEpOvjQ@public.gmane.org>
+	Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -23,35 +23,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Wolfgang Muees <wolfgang.mues-3FOdemwfcUYPyMaTEpOvjQ@public.gmane.org>
+From: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-We should make sure the SPI controller is in a sane state in case the
-boot loader left it in a crappy state.  Such as DMA pending which causes
-interrupts to fire on us.
+Anomaly 05000119 states that the DMA_RUN bit with peripherals isn't
+reliable.  However, the way the driver is currently written (DMA IRQ
+callback), we don't need the polling in the first place, so drop it.
 
-Signed-off-by: Wolfgang Muees <wolfgang.mues-3FOdemwfcUYPyMaTEpOvjQ@public.gmane.org>
+Signed-off-by: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    6 ++++++
- 1 files changed, 6 insertions(+), 0 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 3277210..660343b 100644
+index 660343b..b658456 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -1345,6 +1345,12 @@ static int __init bfin_spi_probe(struct platform_device *pdev)
- 		goto out_error_queue_alloc;
- 	}
+@@ -539,10 +539,6 @@ static irqreturn_t bfin_spi_dma_irq_handler(int irq, void *dev_id)
  
-+	/* Reset SPI registers. If these registers were used by the boot loader,
-+	 * the sky may fall on your head if you enable the dma controller.
-+	 */
-+	write_CTRL(drv_data, 0x0400);
-+	write_FLAG(drv_data, 0xFF00);
-+
- 	/* Register with the SPI framework */
- 	platform_set_drvdata(pdev, drv_data);
- 	status = spi_register_master(master);
+ 	clear_dma_irqstat(drv_data->dma_channel);
+ 
+-	/* Wait for DMA to complete */
+-	while (get_dma_curr_irqstat(drv_data->dma_channel) & DMA_RUN)
+-		cpu_relax();
+-
+ 	/*
+ 	 * wait for the last transaction shifted out.  HRM states:
+ 	 * at this point there may still be data in the SPI DMA FIFO waiting
 -- 
 1.6.3.1
 

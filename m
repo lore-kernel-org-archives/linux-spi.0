@@ -1,11 +1,17 @@
-From: "Vera" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Details on future talk
-Date: Tue, 02 Jun 2009 21:57:58 +0000
-Message-ID: <091472968708403.IKDSWHZRMHCMSWL@[59.20.209.76]>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: Re: [PATCH] Freescale STMP spi driver
+Date: Wed, 3 Jun 2009 07:27:46 +0300
+Message-ID: <20090603042746.GB8721@tarshish>
+References: <1243971638.4011.16.camel@hp.diimka.lan>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2802194229480458926=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1243971638.4011.16.camel-GL0tbJR47UuzLY3athcO2A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,67 +22,101 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2802194229480458926==
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Hi dmitry,
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-<title>Wjjo Newsletter</title>
+On Tue, Jun 02, 2009 at 11:40:38PM +0400, dmitry pervushin wrote:
+> Hello David,
+> 
+> Here is the patch for SSP/SPI on STMP3xxx boards; could you please apply
+> it? Any comments are appreciated.
+> =========================================================================
+>
+> ...
+>
+> +/* the spi->mode bits understood by this driver: */
+> +#define MODEBITS (SPI_CPOL | SPI_CPHA)
+> +static int stmp_spi_setup(struct spi_device *spi)
+> +{
+> +	struct stmp_spi *ss;
+> +
+> +	ss = spi_master_get_devdata(spi->master);
+> +	if (!spi->bits_per_word)
+> +		spi->bits_per_word = 8;
+> +	if (spi->mode & ~MODEBITS) {
+> +		dev_err(&spi->dev, "%s: unsupported mode bits %x\n",
+> +			__func__, spi->mode & ~MODEBITS);
+> +		return -EINVAL;
+> +	}
+> +	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w\n",
+> +		__func__, spi->mode & MODEBITS, spi->bits_per_word);
+> +	return stmp_spi_setup_transfer(spi, NULL);
 
-</head>
+This might trash running SPI transfers. The setup() method must not touch 
+hardware registers.
 
-<body style="font-family:Verdana, Helvetica, sans-serif;font-size:12px;line-height:19px;" link="#FF5E3C">
-<table width="750" border="0" align="center">
-  <tr>
-        <td height="30" style="font-size:10px;" align="center">This message contains images. If you don't see images, <a href="http://are.qehmujid.cn/?jox=0F17B&iby=0f17b3f9db&lu=AYDMTFYQW" target="_blank">click here</a> to view</td>
+> ...
+>
+> Index: linux-2.6-arm/drivers/spi/spi_stmp.h
+> ===================================================================
+> --- /dev/null
+> +++ linux-2.6-arm/drivers/spi/spi_stmp.h
 
-  </tr>
-  <tr>
-    <td valign="top"><center>
-		<a href="http://iejc.qehmujid.cn/?rq=0F17B&upy=0f17b3f9db&nj=AYDMTFYQW">
-		<img alt="In case of no image, press here" src="http://pyci.qehmujid.cn/spacer.gif" border="0"></a><br><br>
-		</center>
-		</td>
-  </tr>
-    <tr>
+No need for a separate .h file here, IMO. The stmp_spi struct should go into 
+stmp_spi.c.
 
-                    <td align="center"><a style="text-decoration:none;color:#FF5E3C;" href="http://jdo.qehmujid.cn/?eby=0F17B&ug=0f17b3f9db&iuc=AYDMTFYQW" target="_blank">Subscribe</a> | <a style="text-decoration:none;color:#FF5E3C;" href="http://oore.qehmujid.cn/?yle=0F17B&ge=0f17b3f9db&my=AYDMTFYQW" target="_blank">Unsubscribe</a> | <a style="text-decoration:none;color:#FF5E3C;" href="http://jtaih.qehmujid.cn/?aw=0F17B&ozj=0f17b3f9db&uq=AYDMTFYQW" target="_blank">Change of Address</a></td>
-                  </tr>
-	<tr>
-                    <td align="center"><a style="text-decoration:none;color:#FF5E3C;" href="http://kqaq.qehmujid.cn/?weq=0F17B&djn=0f17b3f9db&rep=AYDMTFYQW" target="_blank">Feedback</a> | <a style="text-decoration:none;color:#FF5E3C;" href="http://ynjj.qehmujid.cn/?op=0F17B&uwa=0f17b3f9db&in=AYDMTFYQW" target="_blank">Privacy Policy</a> | <a style="text-decoration:none;color:#FF5E3C;" href="http://eboy.qehmujid.cn/?ro=0F17B&epo=0f17b3f9db&ifo=AYDMTFYQW" target="_blank">Terms of Use</a><br></td>
-                  </tr>
-		<tr>
+> @@ -0,0 +1,45 @@
+> +/*
+> + * Freescale STMP378X SPI master driver
+> + *
+> + * Author: dmitry pervushin <dimka-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
+> + *
+> + * Copyright 2008 Freescale Semiconductor, Inc. All Rights Reserved.
+> + * Copyright 2008 Embedded Alley Solutions, Inc All Rights Reserved.
+> + */
+> +
+> +/*
+> + * The code contained herein is licensed under the GNU General Public
+> + * License. You may obtain a copy of the GNU General Public License
+> + * Version 2 or later at the following locations:
+> + *
+> + * http://www.opensource.org/licenses/gpl-license.html
+> + * http://www.gnu.org/copyleft/gpl.html
+> + */
+> +#ifndef __SPI_STMP_H
+> +#define __SPI_STMP_H
+> +
+> +struct stmp_spi {
+> +	int		id;
+> +
+> +	void *  __iomem regs;	/* vaddr of the control registers */
+> +
+> +	u32		irq;
+> +	u32		dma;
+> +	struct stmp3xxx_dma_descriptor d;
+> +
+> +	u32		speed_khz;
+> +	u32		saved_timings;
+> +	u32		divider;
+> +
+> +	struct clk	*clk;
+> +	struct device	*master_dev;
+> +
+> +	struct work_struct work;
+> +	struct workqueue_struct *workqueue;
+> +	spinlock_t lock;
+> +	struct list_head queue;
+> +
+> +	struct completion done;
+> +};
+> +
+> +#endif /* __SPI_STMP_H */
 
-                    <td>
-					<p style="text-align: center; margin-left: 40px"><br>This
-					message was sent from Ybayzor to
-					<a href="mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
-					spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</a>.<br>You have been sent The Jcavuu because you have opted in to receive it.<br><br>Note:
-					It may take our system up to two business days to process
-					your unsubscribe request and during that time you may
-					receive one or two more newsletters. Thank you for reading.<br><br>
-					</p>
-					</td>
-                  </tr>
-		<tr>
-                    <td align="center">&copy; 2009 Wekizaqm Utemoh, LLC. All rights reserved<Br>0914 Uxiwjsicj Blvd., Oefjxegq,
-                      AY 47296</td>
-                  </tr>
+baruch
 
-        </table>
-
-</body>
-</html>
-
-
---===============2802194229480458926==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 ------------------------------------------------------------------------------
 OpenSolaris 2009.06 is a cutting edge operating system for enterprises 
@@ -84,15 +124,3 @@ looking to deploy the next generation of Solaris that includes the latest
 innovations from Sun and the OpenSource community. Download a copy and 
 enjoy capabilities such as Networking, Storage and Virtualization. 
 Go to: http://p.sf.net/sfu/opensolaris-get
---===============2802194229480458926==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2802194229480458926==--

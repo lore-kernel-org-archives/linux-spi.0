@@ -1,52 +1,56 @@
-From: Greg KH <gregkh@suse.de>
-Subject: Re: [spi-devel-general] [PATCH] spi: driver for the Synopsys
-	DesignWare SPI controller
-Date: Wed, 3 Jun 2009 14:13:13 -0700
-Message-ID: <20090603211312.GA5123@suse.de>
-References: <1243338914-7811-1-git-send-email-baruch@tkos.co.il> <63386a3d0905271416u4b2cee48k40c12e91e1796f83@mail.gmail.com> <20090531080434.GA16463@jasper.tkos.co.il> <63386a3d0905311227v5bb5c278r306e8ae429e77691@mail.gmail.com>
+From: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi_bfin5xx: flush() returns -1 when no
+ stop and clear stat was found
+Date: Thu, 04 Jun 2009 01:29:59 +0200
+Message-ID: <4A270777.3070003@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Baruch Siach <baruch@tkos.co.il>,
-	spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org
-To: Linus Walleij <linus.ml.walleij@gmail.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756314AbZFCVX3@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <63386a3d0905311227v5bb5c278r306e8ae429e77691@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, May 31, 2009 at 09:27:56PM +0200, Linus Walleij wrote:
-> 2009/5/31 Baruch Siach <baruch@tkos.co.il>:
->=20
-> >> > + =A0 =A0 =A0 r =3D platform_get_resource(dev, IORESOURCE_MEM, 0=
-);
-> >> > + =A0 =A0 =A0 if (r =3D=3D NULL) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -ENODEV;
-> >>
-> >> -ENOENT
-> >
-> > A quick search in the drivers tree showed no -ENOENT in this situat=
-ion. Of the
-> > 10 first results of grep -ENODEV is the most popular as follows:
-> [The other: 3x -EINVAL one -ENXIO]
->=20
-> Wowsers! And I felt -ENOENT was so intuitive, well if I'm going again=
-st
-> common practice, no good. So let's ask the maintainer of the platform=
- bus
-> what shall be returned in this situation:
->=20
-> Greg (or some other wise person from linux-kernel) what would you ret=
-urn if
-> platform_get_resource() returns NULL for an expected resource?
+in bfin_spi_pump_transfers()
 
-I really have no idea, sorry.
+        /* Setup the transfer state based on the type of transfer */
+        if (bfin_spi_flush(drv_data) == 0) {
+                dev_err(&drv_data->pdev->dev, "pump_transfers: flush failed\n");
+...
 
-Pick something :)
+But when limit is reached, bfin_spi_flush() returns -1.
 
-thanks,
+Signed-off-by: Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+index f014cc2..ada9b54 100644
+--- a/drivers/spi/spi_bfin5xx.c
++++ b/drivers/spi/spi_bfin5xx.c
+@@ -169,8 +169,10 @@ static int bfin_spi_flush(struct driver_data *drv_data)
+ 	unsigned long limit = loops_per_jiffy << 1;
+ 
+ 	/* wait for stop and clear stat */
+-	while (!(read_STAT(drv_data) & BIT_STAT_SPIF) && limit--)
++	while (!(read_STAT(drv_data) & BIT_STAT_SPIF) && limit) {
+ 		cpu_relax();
++		limit--;
++	}
+ 
+ 	write_STAT(drv_data, BIT_STAT_CLR);
+ 
 
-greg k-h
+------------------------------------------------------------------------------
+OpenSolaris 2009.06 is a cutting edge operating system for enterprises 
+looking to deploy the next generation of Solaris that includes the latest 
+innovations from Sun and the OpenSource community. Download a copy and 
+enjoy capabilities such as Networking, Storage and Virtualization. 
+Go to: http://p.sf.net/sfu/opensolaris-get

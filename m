@@ -1,17 +1,11 @@
-From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3] spi: driver for the Synopsys
-	DesignWare SPI controller
-Date: Thu, 4 Jun 2009 10:30:23 +0200
-Message-ID: <63386a3d0906040130h322028d3ocbd3e31719bac8c9@mail.gmail.com>
-References: <1244087418-10889-1-git-send-email-baruch@tkos.co.il>
+From: Costa Club Resort <customer-care-TDfo3lFbAybyUVZ+/PXJjkEOCMrvLtNR@public.gmane.org>
+Subject: Summer Vacations in Puerto Vallarta
+Date: Thu, 4 Jun 2009 09:45:50 -0400
+Message-ID: <8198e8ef8b7c1a99db2fb73ac31f0b6f@vallarta-paradise.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1841200145821292594=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1244087418-10889-1-git-send-email-baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,42 +16,116 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2009/6/4 Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>:
+--===============1841200145821292594==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/html; charset="UTF-8"
 
-> +static int __devexit designware_spi_remove(struct platform_device *dev)
-> +{
-> + =A0 =A0 =A0 struct designware_spi *dwspi;
-> + =A0 =A0 =A0 struct spi_master *master;
-> +
-> + =A0 =A0 =A0 master =3D platform_get_drvdata(dev);
-> + =A0 =A0 =A0 dwspi =3D spi_master_get_devdata(master);
-> +
-> + =A0 =A0 =A0 free_irq(dwspi->irq, dwspi);
-> + =A0 =A0 =A0 iounmap(dwspi->regs);
+<html>
+<body>
+	<div align="center">
+		<table border="0" cellpadding="0" cellspacing="0" width="650" height="141">
+			<tbody>
+				<tr>
+					<th scope="col" valign="top" align="center">
+						<a href="http://www.vallarta-paradise.com/cocb_en-0509-1209/maillist.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.costaclubresort.com"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_01.jpg" width="324" height="141" border="0"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_02.jpg" width="326" height="141" border="0"></a>
+					</th>
+				</tr>	
+			</tbody>
+		</table>
+		
+		<table border="0" cellpadding="0" cellspacing="0" width="650" height="242">	
+			<tbody>		
+				<tr>			
+					<th scope="col" valign="top" align="center">				
+						<a href="http://www.vallarta-paradise.com/cocb_en-0509-1209/maillist.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.costaclubresort.com"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_03.jpg" width="324" height="242" border="0"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_04.jpg" width="326" height="242" border="0"></a>
+					</th>		
+				</tr>
+			</tbody>
+		</table>
+		
+		<table border="0" cellpadding="0" cellspacing="0" width="650" height="395">
+			<tbody>
+				<tr>
+					<th scope="col" valign="top" align="center">
+						<a href="http://www.vallarta-paradise.com/cocb_en-0509-1209/maillist.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.costaclubresort.com"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_05.jpg" width="324" height="395" border="0"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_06.jpg" width="326" height="395" border="0"></a>
+					</th>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table border="0" cellpadding="0" cellspacing="0" width="650" height="195">
+			<tbody>
+				<tr>
+					<th scope="col" valign="top" align="center">
+						<a href="http://www.vallarta-paradise.com/cocb_en-0509-1209/maillist.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.costaclubresort.com"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_07.jpg" width="324" height="195" border="0"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_08.jpg" width="326" height="195" border="0"></a>
+					</th>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table border="0" cellpadding="0" cellspacing="0" width="650" height="67">
+			<tbody>
+				<tr>
+					<th scope="col" valign="top" align="center">
+						<a href="http://www.vallarta-paradise.com/cocb_en-0509-1209/maillist.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.costaclubresort.com"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_09.jpg" width="196" height="67" border="0"></a><a href="http://www.vallarta-paradise.com/cocb_en-0509-1209/maillist.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.vacationlivehelp.com/livehelp.php?department=4" target="_blank"><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_10.jpg" width="238" height="67" border="0"></a><img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_viveva
+ llarta_eng_11.jpg" width="216" height="67" border="0">
+					</th>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table border="0" cellpadding="0" cellspacing="0" width="650" height="62">
+			<tbody>
+				<tr>
+					<th scope="col" valign="top" align="center">
+						<img alt="Costa Club Resort" src="http://www.vallarta-paradise.com/cocb_en-0509-1209/costaclub_vivevallarta_eng_12.jpg" width="650" height="62" border="0">
+					</th>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table border="0" cellpadding="0" cellspacing="0" width="650" height="30">
+			<tbody>
+				<tr>
+					<th scope="col" valign="top" align="center" height="79">
+						This is an exclusive promotion from <a href="http://www.vallarta-paradise.com/cocb_en-0509-1209/maillist.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.costaclubresort.com">Costa Club Resort</a><br>
+						Telephone in Mexico &nbsp; &nbsp; +52 (322) 224 0347<br>
+						Los Angeles, CA &nbsp; &nbsp; (310) 598 2091<br>
+						New York, NY &nbsp; &nbsp; (212) 845 9362<br>
+						All reservations are subject to availability<br>
+						<a href="http://www.vallarta-paradise.com/cocb_en-0509-1209/maillist.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=subscribe" target="_blank">Click here to receive more promotions</a><br>
+						<a href="http://www.vallarta-paradise.com/cocb_en-0509-1209/maillist.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=unsubscribe" target="_blank">Click here to unsubscribe from our mailing list</a>
+						<img src="http://www.vallarta-paradise.com/cocb_en-0509-1209/image.php?promo=6&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+					</th>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
 
-release_mem_region()?
 
-> + =A0 =A0 =A0 destroy_workqueue(dwspi->workqueue);
-> + =A0 =A0 =A0 tasklet_kill(&dwspi->pump_transfers);
-> + =A0 =A0 =A0 platform_set_drvdata(dev, 0);
-> + =A0 =A0 =A0 spi_master_put(master);
-> +
-> + =A0 =A0 =A0 return 0;
-> +}
+--===============1841200145821292594==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-Then it's good :-)
-
-Linus
-
----------------------------------------------------------------------------=
----
-OpenSolaris 2009.06 is a cutting edge operating system for enterprises =
-
-looking to deploy the next generation of Solaris that includes the latest =
-
-innovations from Sun and the OpenSource community. Download a copy and =
-
-enjoy capabilities such as Networking, Storage and Virtualization. =
-
+------------------------------------------------------------------------------
+OpenSolaris 2009.06 is a cutting edge operating system for enterprises 
+looking to deploy the next generation of Solaris that includes the latest 
+innovations from Sun and the OpenSource community. Download a copy and 
+enjoy capabilities such as Networking, Storage and Virtualization. 
 Go to: http://p.sf.net/sfu/opensolaris-get
+--===============1841200145821292594==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1841200145821292594==--

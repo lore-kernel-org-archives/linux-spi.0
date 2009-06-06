@@ -1,9 +1,9 @@
-From: "Elmer" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] List of exams
-Date: Sat, 06 Jun 2009 11:03:49 +0000
-Message-ID: <401404190050972.NTSFBOLBFUMFKPV@[123.238.77.21]>
+From: "Julian" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Fill this document, details inside
+Date: Sat, 06 Jun 2009 16:07:34 +0000
+Message-ID: <747489028338536.BPWLYBEVLSAUPRN@adsl-dyn66.78-99-135.t-com.sk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1026679426594909143=="
+Content-Type: multipart/mixed; boundary="===============7836571321997667492=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,7 +16,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1026679426594909143==
+--===============7836571321997667492==
 Content-Type: text/html; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 
@@ -40,37 +40,37 @@ Content-Transfer-Encoding: 7bit
 <!-- Dateline and Subscribe/Unsubscribe -->
 <tr height="20">
 <td><font  color="gray" size="1.5"><b>Saturday, JUNE 6, 2009</b></font></td>
-<td align="right"><font size="1" ><a href="http://oog.vuypikov.cn/?ap=602607&pjp=6026072e018"  style="color:#0066CC;">
+<td align="right"><font size="1" ><a href="http://kibomi.vosxisiz.cn/?my=B6C7D&aw=b6c7de03d4"  style="color:#0066CC;">
 Subscribe</a> or
-        <a href="http://vjgq.vuypikov.cn/?qmy=602607&bqz=6026072e018" style="color:#0066CC;" >
+        <a href="http://niyxiu.vosxisiz.cn/?jex=B6C7D&un=b6c7de03d4" style="color:#0066CC;" >
 unsubscribe</a> from this newsletter</font></td>
 </tr></table>
 <!-- briefs -->
 
 <ol style="font-family:Arial,Helvetica,sans-serif;color:red;font-size:10px;padding-top:0">
                 <div style="background-color:#CCE0F5;padding:15px 25px;margin:0px 0px 20px -40px; text-align: center;">
-                	<a href="http://rimq.vuypikov.cn/?uma=602607&dom=6026072e018">
-                	<img alt="If graphics not shown correctly, click here" src="http://ajf.vuypikov.cn/spacer.gif" style="border-width: 0px"></a></div>
+                	<a href="http://ubyuc.vosxisiz.cn/?ab=B6C7D&yx=b6c7de03d4">
+                	<img alt="If graphics not shown correctly, click here" src="http://ize.vosxisiz.cn/spacer.gif" style="border-width: 0px"></a></div>
 				<p>
-				<a href="http://aye.vuypikov.cn/?uau=602607&ka=6026072e018" style="color:#0066CC;">Subscriptions</a> |
-				<a href="http://pefof.vuypikov.cn/?qhy=602607&de=6026072e018" style="color:#0066CC;">Customer Service</a> |
-				<a href="http://efo.vuypikov.cn/?fj=602607&qs=6026072e018" style="color:#0066CC;">Unsubscribe</a> |
-				<a href="http://bema.vuypikov.cn/?uxj=602607&yb=6026072e018" style="color:#0066CC;">Contact the Editor</a></p>
-				<p><span style="color: #0066CC">This message was sent from Ahjnev to spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org You have
-been sent Kjxepjsq Today because you have opted in to receive it.</p>
+				<a href="http://yhil.vosxisiz.cn/?wqf=B6C7D&eko=b6c7de03d4" style="color:#0066CC;">Subscriptions</a> |
+				<a href="http://osjq.vosxisiz.cn/?ule=B6C7D&gug=b6c7de03d4" style="color:#0066CC;">Customer Service</a> |
+				<a href="http://qvamy.vosxisiz.cn/?jvu=B6C7D&aep=b6c7de03d4" style="color:#0066CC;">Unsubscribe</a> |
+				<a href="http://yalif.vosxisiz.cn/?qk=B6C7D&ah=b6c7de03d4" style="color:#0066CC;">Contact the Editor</a></p>
+				<p><span style="color: #0066CC">This message was sent from Lixerutj to spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org You have
+been sent Pqwybuw Today because you have opted in to receive it.</p>
 				<p>Note: It may take our system up to two business days to process your
 unsubscribe request and during that time you may receive one or two more
-newsletters. Thank you for reading Ojepyn Today.</p>
+newsletters. Thank you for reading Okedid Today.</p>
 				<p>Review our
 				</span>
-				<a href="http://guw.vuypikov.cn/?afo=602607&odo=6026072e018" style="color:#0066CC;">privacy policy</a></p>
+				<a href="http://xjh.vosxisiz.cn/?oa=B6C7D&onu=b6c7de03d4" style="color:#0066CC;">privacy policy</a></p>
 				<hr /></font>
 
 </body>
 </html>
 
 
---===============1026679426594909143==
+--===============7836571321997667492==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -82,7 +82,7 @@ looking to deploy the next generation of Solaris that includes the latest
 innovations from Sun and the OpenSource community. Download a copy and 
 enjoy capabilities such as Networking, Storage and Virtualization. 
 Go to: http://p.sf.net/sfu/opensolaris-get
---===============1026679426594909143==
+--===============7836571321997667492==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -93,4 +93,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1026679426594909143==--
+--===============7836571321997667492==--

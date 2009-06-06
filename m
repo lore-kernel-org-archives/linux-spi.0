@@ -1,11 +1,9 @@
-From: =?GB2312?B?18nRrw==?= <fajfha-y8jxGgho/Gw@public.gmane.org>
-Subject: [SPAM] 涓撲笟绉樹功/鍔╃悊鍜岃鏀夸汉鍛樻妧鑳藉彂灞曞疄鎴樿缁冭惀
-Date: Sat, 6 Jun 2009 16:02:47 +0800
-Message-ID: <E1MCqrd-0005RD-PK@h25xhf1.ch3.sourceforge.com>
-Reply-To: ganai-C3kvzk5ERS8AvxtiuMwx3w@public.gmane.org
+From: "Elmer" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] List of exams
+Date: Sat, 06 Jun 2009 11:03:49 +0000
+Message-ID: <401404190050972.NTSFBOLBFUMFKPV@[123.238.77.21]>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+Content-Type: multipart/mixed; boundary="===============1026679426594909143=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,125 +16,61 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
+--===============1026679426594909143==
+Content-Type: text/html; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
 
-请收附件，如果 有打扰 ，请原谅，谢谢 !
+<html>
+<head>
+<title>Today - FRIDAY, JUNE 5, 2009</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body><font face="Arial,Helvetica,sans-serif" size="2">
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="3-专业秘书助理，行政人员专业技能提升研修班.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="3-专业秘书助理，行政人员专业技能提升研修班.txt"
 
-ICAgICAgICAgINeo0rXD2MrpL9b6wO26zdDQ1f7Iy9SxvLzE3Lei1bnKtdW90bXBt9OqDQoNCtb3
-sOy1pc67o7rJ7tva1trIy9DQudzA7dfJ0a/N+CAgDQogICAgICAgICAgye7b2srQ0ru2/sj9udzA
-7dfJ0a/T0M/euavLvg0KDQrKsSAgILzko7oyMDA5xOowNtTCMTMtMTTI1SAgICAgICAgICAgICAg
-ICAgtdi146O6yc+6ow0KICAgICAgICAgMjAwOcTqMDbUwjI3LTI4yNUgICAgICAgICAgICAgICAg
-ILXYteOjurGxvqkNCiAgICAgICAgIDIwMDnE6jA31MIxOC0xOcjVICAgICAgICAgICAgICAgICC1
-2LXjo7rJ7tvaDQoNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppQ0Kytq/zrbUz/Ojug0KICAgIMbz0rXQ
-0NX+1vrA7dPrzsTD2M/gudjIy9Sxo7qw7LmrytLW98jOoaLQ0NX+sr++rcDtoaK2rcrCs6TD2Mrp
-oaLX3L6twO0NCsPYyumhorK/w8XD2MrpoaLQ0NX+1vrA7aGi0NDV/tb3udyhotDQ1f6yv8PFzsTW
-sMjL1LG1yA0KDQq30SAgICDTwzoyMDAw1KovyMujqLD8wKjXysHPt9Ghos7nss28sMnPz8LO57Lo
-teO1yKOpDQrIz9akt9HTw6O61tC8tjYwMNSqL8jLO7jfvLY4MDDUqi/Iyw0KICAgICAgICAoss68
-08jP1qS/vMrUtcTRp9Sx0Ou9u8TJtMu30dPDo6yyu7LOvNPIz9akv7zK1LXE0afUsc7e0Ou9u8TJ
-KQ0KDQqxuNeiOg0KMS4gt7KyzrzTyM/WpLXE0afUsaOs1NrF4NG1veHK+LLOvNO/vMrUus+48dXf
-08k8PLn6vMrWsNK1yM/WpLHq17zBqrrPu+E+PrDkDQogICC3ojw81tC8ttaw0rXD2MrpILvyuN+8
-ttaw0rXD2MrpPj65+rzKufrE2tbQ06LOxLDmy6vWsNK118q48dakyumjrKOoufq8yrn6DQogICDE
-2sjP1qSjr8irx/LNqNDQo6+5zdb3yM+/yaOvudm3vc34yc+y6dGvo7sNCjKjrreyss6808jP1qS1
-xNGn1LHQ68zhvbuxvsjLye233dakusXC67ywtPPSu7Tnyv3C69XVxqyjuw0KM6Ouv86zzL3hyvi6
-8zE1uPa5pNf3yNXE2r2r1qTK6b/std28xLj40afUsaO7DQo0o66/ycnqx+vW0Ln6ufq80sjLssXN
-+Mjrv+KxuLC4oaMNCg0K18nRr7Xnu7CjujA3NTUtMjYwNzUzNjUgIDI2MDc1NDI5IA0KtKsgICAg
-1eajujA3NTUtNjEzNTEzOTYgIA0Kwaogz7UgyMujusHo0KG94yAgIMXt0KG94w0KDQqppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaUNCsT6yse38dP2tb3V4tH5x+m/9qO6DQoxLtTa0NDV/rmk1/fW0MO709DK
-3LW9uf3Ptc2z0bXBt6Oszt63qLTT1b3C1NDUyKu3vc67vce2yMjP1qrQ0NX+udzA7bmk1/cNCjIu
-1NrL+bTTysK1xNDQ1f653MDtuaTX99bQuNC+9cixt6bA7cLb1qez1g0KMy640L71uaTX99bQ19zK
-x7G7tq/Q0MrCo6yyu8Tc1ve2r9XGztW5pNf3vdrX4A0KNC7Q0Mq5ttTN4r3nyee74bXEudzA7daw
-xNzKscO709C40L71tb3T0LrctuDKws7vtcShsLratrShsdKqzOG3wA0KNS7P67j4uavLvr3ayqG3
-0dPDo6y1q8i0srvWqrTTus60ps/CytajrMjnus692sqhDQo2LrbU0NDV/rmk1/e1xLj3z+6x6te8
-srvH5bP+DQo3LtTauavLvrXE1rDOu7XYzruyu8Dtz+ujrNPruPeyv8PFubXNqLK7y7OzqQ0KOC7S
-qrjJtcTKwsfpzKu24KOsyee74dfK1LTSstPQuty24KOstauyu9aqyOe6zsD708PJ57vh18rUtA0K
-OS621NPayOe6zrncwO25q8u+tcTPtc2z0NTV+8zl0NDV/srCzvHQxNbQw7u11w0KMTAuz+vPtc2z
-0afPsKOszOG439DQ1f653MDtvLzE3KOstavDu9PQus/KyrXEtKvK2r6t0em/zrPMo6y/1dPQwO3C
-29aqyrYNCg0Kob6/zrPMsbO+sKG/o7oNCiAgICDL5tfFxvPStbncwO3Lrsa9tcTSqsfzsru2z8zh
-yf2jrLbU0NDV/rncwO3Iy9SxtcTXqNK1y9jWytKqx/PUvcC01L2436GjIA0Kvq2zo8z9tb3Su9Cp
-xvPStbjfsuOxp9S5ytbPwrXE0NDV/rncwO3V37u51rvKx9K7uPahsLjfvLbH2tTTuaShsbXEvcfJ
-q6Osvq0NCrOjwvHNt7SmwO3Su9Cpy/bL6bXEysLO8aOstau008O709DPtc2ztdjIq7e9zru0psDt
-0NDV/rncwO25pNf3o7vNrMqx0rLT0LK7DQrJ2bXE0NDV/rncwO3Iy8q/uNC/rqOs19S8utX7zOXD
-prXDzOy76LXYsLWjrMi0sru1q7XDsru1vcDPsOWhos2sysK1xL/Ptqi8sA0KyM/NrKOsu7mzo7Oj
-0vK80NTaudzA7bLjvLC7+bLjtvixu822y9+horGn1LmjrLK71qq1wLjDyOe6ztPQ0KfCyrXYtKbA
-7dDQ1f4NCsrCzvGjrLb4x9K40L710rLDu9PQ16jDxbXExeDRtcC01Pa809fUvLrP4NOmtcTXqNK1
-vLzE3KGjzqrBy8q50NDV/rncwO3Iy9SxDQrT0Lv6u+G/7MvZtdjIq7e9zrvM4cn916jStcuuxr2j
-rMzYtdi/qreiwcvV4rj2uaTX97e7o6zP4NDFuPfOu9Ta1rDQ0NX+udzA7Q0KuaTX97XEyMvKv9PQ
-0ru49sirt73Ou7XEyM/WqqOssqK007bguPa9x7bIzOHJ/dfUvLq1xNeo0rXLrsa9oaMNCg0Kob7R
-p8+wytXS5qG/o7oNCiAgoe/M4bjfu/nQ0NX+uaTX98TcwaajrNbwsr2zyc6qus+48bXExvPStbnc
-wO2y4w0KICCh79XGztXQ0NX+udzA7dbQtcS499bWvLzHyaOszOHJ/dDQ1f6358/VudzA7by8xNwN
-CiAgoe/Uy9PD16jStbXEsuLGwLmkvt+jrMHLveLX1Ly6tcTQ0M6qt+e48bKi1cbO1dXrttTQ1LXE
-uMTJxre9t6gNCiAgoe/Rp7vhv+zL2cXQts/G5Mv8yMvQ0M6qt+e48bKi0+vWrtPQ0Ke5tc2otcS8
-vMfJo6zM4cn9sOzKwtCnwsoNCg0Kytq/zrbUz/Ojusbz0rW21M3ivbvB97rNuN+8tr3TtP21xLnc
-wO3Iy8q/us23/s7xyMvUsaO6sPzAqLDsuavK0tb3yM6hotDQ1f6yvw0Kvq3A7aGitq3KwrOkw9jK
-6aGi19y+rcDtw9jK6aGi0NDV/tb6wO2hotDQ1f7W97ncoaLQ0NX+sr/Dxc7E1LGhorj3sr/Dxb6t
-wO21yA0KDQrK2r/Ot73KvTrW98zivbK94qGit9bX6czWwtuhorultq+9zNGnoaLBt8+wtcgNCg0K
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlDQq/zrPMxNrI3aO6DQoxoaIJw9jK6S/W+sDttcS9x8mryM/W
-qg0KPwnD2MrpL9b6wO3WsMTcDQo/CbP1vLbD2MrpL9b6wO2jusrCzvHQ1M7E1LENCj8J1tC8tsPY
-yukv1vrA7aO6ysLO8dDUzsTUsaOruKjW+rncwO0NCj8JuN+8tsPYyukv1vrA7aO6tsDBorncwO2j
-q8rCzvG0psDtDQo/CdT10fnH5c7619S8urXEuNrOu9aw1PCoRKhE0ae74bHg0LS42s67y7XD98rp
-DQo/CdPF0OPD2Mrp0+vSu7Djw9jK6bXExNzBprLu0uwNCg0KMqGiCc7l0Me8trXEw9jK6S/W+sDt
-L9DQ1f7Iy9SxDQo/CcDPsOUvzazKwtDExL/W0Nf4serPtahEqETKssO0ysfO5dDHvLbD2MrpL9b6
-wO0v0NDV/sjL1LENCj8Jwcu94sTjtcTJz8u+DQo/CdfUztK1xMa3xcbS4sq2DQo/Cbmk1/e8tLL6
-xrejrNGnu+HP+srb19S8ug0KPwnRp7vhudzA7cTjtcTJz8u+DQo/CdCh087Pt6O6zP22rr6twO21
-xLuwwcvC8KO/DQoNCjOhogmw7LmrytK1xDVTudzA7Q0KPwk1U7XEuq3S5Q0KPwnU9dH51/a6w7Ds
-uavK0rXE1fvA7bmk1/cNCj8J1PXR+df2usOw7LmrytK1xNX7ttm5pNf3DQo/CdT10fnX9rrDsOy5
-q8rStcTH5b3guaTX9w0KPwnU9dH51/a6w7DsuavK0rXEx+XJqLmk1/cNCg0KNKGiCSAgzuXQx7y2
-w9jK6db6wO0v0NDV/sjL1LG1xNeo0rW8vMTcDQoxKQnE6rbIL9TCtsgv1ty2yMqxvOSx7bmk1/e8
-xruuudzA7Q0KPwlQRENBuaS+39Ta1sa2qLzGu67KsbXEwem77sq508MNCj8J1PXR+df2xOq2yC/U
-wrbIL9bctsi5pNf3vMa7rqOszOG5qdH5se0NCj8JyNWzo7mk1/e1xLj6vfi53MDto7rO5baose21
-xMq508MNCj8JuaTX97zGu661xNKqy9gNCg0KMikJysLO8bmk1/fC5Mq1uPq9+Ne319m53MDtDQo/
-CcrCzvG5pNf309DExNCpDQo/CdGnu+HB0MrCzvHH5bWlDQo/CcjVs6PKsbzkudzA7dKqvvcNCj8J
-yrG85LncwO21xLOj08O5pL7fDQo/CcTE0KnP1rT6u6+1xLDsuavI7bz+xOPSqsrswbfKudPDDQoN
-CjMpCc/uxL/Q1Lmk1/e1xNfp1q+53MDtDQo/CcmzxczR3cG3o7rU9dH51+nWr9K7s6HW3MTqx+y1
-5LTzu+ENCj8J08PP7sS/ytay4bncwO25pNf3DQo/CdbG1/fP7sS/ytay4bXEt723qA0KPwmwuMD9
-t9bP7Q0KDQo0KQnOxLW1udzA7Q0KPwnOxLW1udzA7bHq17y55re2DQo/Cc7EtbW31sDgtcS5pNf3
-uea3tg0KPwnOxLW1tOa0orXEuaTX97nmt7YNCj8JzsS1tbLp1MS1xLmk1/e55re2DQo/Cc7EtbW3
-1tewtcS5pNf3uea3tg0KPwnOxLW1z/q72bXEuaTX97nmt7YNCj8JzsS1tbGjw9y1xLmk1/e55re2
-DQoNCjWjqSDRp7vh08PNvLHty7W7sA0KPwnNvLHttcTX99PDDQo/CbPJuabNvLHttcS8uLj2udi8
-/NKqy9gNCj8Jzbyx7cDg0M2jqMr9vt3A4M28se26zbjFxO7A4M28se2jqQ0KPwnWxtf30tTK/b7d
-zqq7+bShtcTNvLHtDQogICAgICAgIEEvyLe2qNKqse2077XE0MXPog0KICAgICAgICBCL8i3tqix
-yL3PwODQzdGh1PHNvLHtwODQzQ0KPwm4xcTuwODNvLHtyr7A/Q0KDQo1oaIJyczO8bmrzsTQtNf3
-DQoxKQnJzM7xuavOxNC01/e1xLjFxO68sLmrzsS1xNKqy9gNCjIpCbmrzsTQtNf3tcS8vMfJDQo/
-CcfpuNDWuMr9IA0KPwmhsL7cvvihsbmrzsS1xLjxyr0NCj8JyvfBotDOz/Ojrc7E1cK1xNX9yr2z
-zLbIDQo/CbDRztW5q87EtcTV+8zlt+e48Q0KPwnU9rzTvfS8sdDUDQo/CdT2vNO/ydDFtsgNCj8J
-yrnQ0M7EvPK94A0KPwmyydPDu/28q7XE0++19w0KDQozKQm5q87xvLDJzM7xzsTK6dC01/ezo7z7
-sqHA/Q0KPwm5q87EveG5ubLjtM7Q8rrFtO3O8w0KPwnK/dfWtcTKudPDtO3O8w0KPwm8xsG/taXO
-u8q508O07c7zDQo/CbHqteO3+7rFyrnTw7TtzvMNCj8Jw/uzxrnmt7bT69Lrw/u1xMq508MNCg0K
-NCkJs6PTw7mrzsTQtNf3vLC5q87EuPHKvdKqy9i3tsD9DQo/Cc2o1qoNCj8Jsai45g0KPwnH68q+
-DQo/CcX6uLQNCj8Ju+HS6bzN0qoNCj8J0fvH69DFDQo/CdfcveENCg0KqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlDQoNCr2yyqa96cnco7ogDQrB1rb3xa7Kv6Os1vjD+8jLwabXytS0udzA7deovNKhosXg
-0bXXqLzSoaMNCiAgICC437y2xeDRtcqmo6zTtdPQyq7E6taw0rXF4NG1yrXO8b6t0emjrNT4yM6/
-57n6vK/NxdbQufrH+LXE1tC3vcXg0bW+rcDtoaINCrn6xNrEs7Xn19M1x7/G89K1us3KwL3nNTAw
-x7/WrtK7tcTG+7O11sbU7Mbz0rW1xMjLwabXytS0uN+8tr6twO2jrNT4z8i6886qDQrLs7XCw8DN
-v8q/oaLQ3MOotefX06Gi1tC5+rXn0MWhotbQufrN+M2ooaLW0Ln6warNqKGiz+O427ar0PHNv8HP
-uavLvqGiueO2qw0KyqG5q8K3vajJ6Lmry761yLy4yq680sbz0rXX9rn918nRr7rNxNrRtaGjDQoN
-CiAgICDL+crav86zzKO60tS8qNCnzqq1vM/ytcS/vLrL1sa2yKGiVFRUvbLKpsXg0bWhosjLwabX
-ytS0udzA7bLfwtShosS/seqhog0K16jStcPYyukv1vrA7brN0NDV/sjL1LG8vMTct6LVuaGiyczO
-8c7EyunQtNf3oaK3x8jLwabXytS01ve53LrNyMvBptfK1LTF4NG1oaINCrjfvKjQp9b3udzRtcG3
-oaLUsbmkvczT/cXg0bXT67ei1bm8xruuoaLUsbmk1dDEvKGiw+bMuNPr1efRoby8x8mhotC9s+q4
-o8D7DQrT672xvfC53MDttcguDQoNCiAgICCyzrzTuf3B1sDPyqaxvr/Os8y1xNGn1LHAtNfU09qj
-urnjtqvRxdm7u6/Xsca3oaLW0NDFtsi82bTlvsa16qGiy7O1wsuzzf4NCrXnxvehotbQufrN+M2o
-oaLW0Ln6warNqKGixbW7+dHHoaK2q7fnyNWy+rPL08Oztbmry76hor+1tPO8r83FoaK/yb/av8nA
-1qGiDQrGvbCysaPP1aGiu/nDwLXn19OjqMvV1t2jqdPQz965q8u+oaJUQ0yhos/D0MK159fToaK6
-vdDCtefX06Giu6rB6LXnxvehog0KzfK6zbXnxvehorqjtvu158b3oaLDwLXEvK/NxaGisNfUxrXn
-xvehorro1se158b3oaLGvbCysaPP1aGiyMvK2bGjz9Whor2oyejS+NDQoaINCtbQufrS+NDQDQo=
+<!-- Title Bar -->
+<table width="99%" border="0" cellspacing="0" cellpadding="0" >
+<tr height="50">
+<td width="530" valign="bottom"><font face="arial" size="8" color="gray">Today</font></td>
+</tr><tr height="1">
+<td colspan="2" bgcolor="gray" width="1">
 
---=_NextPart_2rfkindysadvnqw3nerasdf
+&nbsp;</td></tr>
+
+<!-- Dateline and Subscribe/Unsubscribe -->
+<tr height="20">
+<td><font  color="gray" size="1.5"><b>Saturday, JUNE 6, 2009</b></font></td>
+<td align="right"><font size="1" ><a href="http://oog.vuypikov.cn/?ap=602607&pjp=6026072e018"  style="color:#0066CC;">
+Subscribe</a> or
+        <a href="http://vjgq.vuypikov.cn/?qmy=602607&bqz=6026072e018" style="color:#0066CC;" >
+unsubscribe</a> from this newsletter</font></td>
+</tr></table>
+<!-- briefs -->
+
+<ol style="font-family:Arial,Helvetica,sans-serif;color:red;font-size:10px;padding-top:0">
+                <div style="background-color:#CCE0F5;padding:15px 25px;margin:0px 0px 20px -40px; text-align: center;">
+                	<a href="http://rimq.vuypikov.cn/?uma=602607&dom=6026072e018">
+                	<img alt="If graphics not shown correctly, click here" src="http://ajf.vuypikov.cn/spacer.gif" style="border-width: 0px"></a></div>
+				<p>
+				<a href="http://aye.vuypikov.cn/?uau=602607&ka=6026072e018" style="color:#0066CC;">Subscriptions</a> |
+				<a href="http://pefof.vuypikov.cn/?qhy=602607&de=6026072e018" style="color:#0066CC;">Customer Service</a> |
+				<a href="http://efo.vuypikov.cn/?fj=602607&qs=6026072e018" style="color:#0066CC;">Unsubscribe</a> |
+				<a href="http://bema.vuypikov.cn/?uxj=602607&yb=6026072e018" style="color:#0066CC;">Contact the Editor</a></p>
+				<p><span style="color: #0066CC">This message was sent from Ahjnev to spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org You have
+been sent Kjxepjsq Today because you have opted in to receive it.</p>
+				<p>Note: It may take our system up to two business days to process your
+unsubscribe request and during that time you may receive one or two more
+newsletters. Thank you for reading Ojepyn Today.</p>
+				<p>Review our
+				</span>
+				<a href="http://guw.vuypikov.cn/?afo=602607&odo=6026072e018" style="color:#0066CC;">privacy policy</a></p>
+				<hr /></font>
+
+</body>
+</html>
+
+
+--===============1026679426594909143==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -148,7 +82,7 @@ looking to deploy the next generation of Solaris that includes the latest
 innovations from Sun and the OpenSource community. Download a copy and 
 enjoy capabilities such as Networking, Storage and Virtualization. 
 Go to: http://p.sf.net/sfu/opensolaris-get
---=_NextPart_2rfkindysadvnqw3nerasdf
+--===============1026679426594909143==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -159,4 +93,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---=_NextPart_2rfkindysadvnqw3nerasdf--
+--===============1026679426594909143==--

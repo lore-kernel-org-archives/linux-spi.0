@@ -1,10 +1,12 @@
-From: "Julian" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Fill this document, details inside
-Date: Sat, 06 Jun 2009 16:07:34 +0000
-Message-ID: <747489028338536.BPWLYBEVLSAUPRN@adsl-dyn66.78-99-135.t-com.sk>
+From: =?ISO-8859-1?Q?Bouygues_Immobilier?= <service-clients-wpnHtpvsUwg@public.gmane.org>
+Subject: =?iso-8859-1?q?Du_2_au_21_juin_faites_une_aff?=
+	=?iso-8859-1?q?aire_incroyable_et_devenez_proprietaire?=
+Date: Sun, 07 Jun 2009 06:25:00 +0200
+Message-ID: <MTg0OS44MDAzMDg3LjEwNjQzODAz@S10b244>
+Reply-To: =?ISO-8859-1?Q?Bouygues_Immobilier?= <service-clients-wpnHtpvsUwg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7836571321997667492=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============3973572031807139686=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,61 +18,117 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7836571321997667492==
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
+--===============3973572031807139686==
+Content-Type: text/html; Charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
 
-<html>
-<head>
-<title>Today - FRIDAY, JUNE 5, 2009</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-</head>
-<body><font face="Arial,Helvetica,sans-serif" size="2">
+<font face="Helvetica" size=2 Id=StyleFont2><div class="online_link">Si ce message ne s'affiche pas correctement, <a href='http://url.cdt7.com/id.asp?l=57145-8003087-10643803-1849-0&l=1849-10643803-9468-5f65310a'>visualisez la version en ligne</a>.</div></font><br>
+<HTML>
+<HEAD>
+<TITLE>Bouygues Immobilier -- Du 2 au 21 juin faites une affaire incroyable et devenez proprietaire</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<STYLE type="text/css">
+<!--
+.a.Desinscription1:link {color:#336;}
+.a.Desinscription1:visited  {color:#336;}
+.a.Desinscription1:hover {color:#336;}
+.a.Desinscription1:active {color:#336;}
+.Desinscription1
+{
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  color: #666666;
+}
+-->
+</STYLE>
+</HEAD>
+<BODY text="#003366" link="#333366">
+<DIV align="center">
+<TABLE width="750" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD width="750" valign="top">
+<TABLE width="100%" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD bgcolor="#C0C0C0">
+<TABLE id="Tableau_01" width="666" height="605" border="0" cellpadding="0" cellspacing="0" align="center">
+<TR>
+<TD colspan="4"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0"><IMG src="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_BI.jpg" width="666" height="101" border="0" alt="Bouygues Immobilier"></A></TD>
+</TR>
+<TR>
+<TD colspan="4"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0"><IMG src="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_AI.jpg" width="666" height="110" border="0" alt="Les AFFAIRES INVROYABLES Bouygues Immobilier"></A></TD>
+</TR>
+<TR>
+<TD colspan="4"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0"><IMG src="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_BI-04.jpg" width="666" height="64" border="0" alt="A saisir sans plus attendre !"></A></TD>
+</TR>
+<TR>
+<TD rowspan="3"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0"><IMG src="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_offre.jpg" width="289" height="151" border="0" alt="DU 2 AU 21 JUIN 2009 PROFITEZ DES VENTES FLASH EN COURS ! Exemple une maison &#224; 295 000&euro;* au lieu de 340 000&euro;"></A></TD>
+<TD colspan="2" rowspan="3"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0"><IMG src="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_puces.jpg" width="41" height="151" border="0" alt=""></A></TD>
+<TD><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0"><IMG src="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_vide.jpg" width="336" height="13" border="0" alt=""></A></TD>
+</TR>
+<TR>
+<TD height="53" background="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_arg1.jpg" valign="top" bgcolor="#FFFFFF"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0" style="text-decoration:none"><FONT face="Arial, Helvetica, sans-serif" size="2" color="#0062A1"><B>LOGEMENTS NEUFS A DES PRIX INCROYABLES</B></FONT><BR>
+<FONT face="Arial, Helvetica, sans-serif" size="3" color="#00000">Emm&#233;nagez rapidement partout en France !</FONT></A></TD>
+</TR>
+<TR>
+<TD height="85" background="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_arg2.jpg" valign="top" bgcolor="#FFFFFF"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0" style="text-decoration:none"><FONT face="Arial, Helvetica, sans-serif" size="2" color="#0062A1"><B>INVESTISSEZ AVEC LE DISPOSITIF SCELLIER**</B></FONT><BR>
+<FONT face="Arial, Helvetica, sans-serif" size="3" color="#00000">Jusqu'&#224; <B>8 333 euros***</B> <B>de r&#233;duction<BR>
+d'imp&#244;ts tous les ans pendant 9 ans !</B></FONT></A></TD>
+</TR>
+<TR>
+<TD colspan="4"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0"><IMG src="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_cliquez.jpg" width="666" height="43" border="0" alt="Je choisis mon appartement ou ma maison &gt;&gt;"></A></TD>
+</TR>
+<TR>
+<TD colspan="2"><A href="http://url.cdt7.com/id.asp?l=57144-8003087-10643803-1849-0"><IMG src="http://as00.estara.com/webcare/public/linkimage.php?ulbid=571079" border="0" alt="Click to Call"></A></TD>
+<TD colspan="2"><A href="http://url.cdt7.com/id.asp?l=57140-8003087-10643803-1849-0"><IMG src="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_amis.jpg" width="342" height="75" border="0" alt="Faites-en profiter vos amis"></A></TD>
+</TR>
+<TR>
+<TD colspan="4"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0"><IMG src="http://stor.cdt7.com/1187/www/img/BOUYGUES_020609_mai09_footer.jpg" width="666" height="26" border="0" alt="&#169; 2009 Bouygues Immobilier"></A></TD>
+</TR>
+<TR>
+<TD height="30" colspan="4" style="padding-left: 10px;" bgcolor="#C0C0C0"><A href="http://url.cdt7.com/id.asp?l=57143-8003087-10643803-1849-0" style="text-decoration:none"><FONT face="Arial, Helvetica, sans-serif" size="1" color="#000000">* Maison &#224; Boissise La Bertrand (77), (Lot N&#176; 01MI01), pour voir les mentions l&#233;gales cliquez ici</FONT></A><BR>
+<A href="http://url.cdt7.com/id.asp?l=57141-8003087-10643803-1849-0" style="text-decoration:none"><FONT face="Arial, Helvetica, sans-serif" size="1" color="#000000">** Cliquez ici pour conna&#238;tre toutes les conditions du Dispositif &#171;Scellier".</FONT></A><BR>
+<FONT face="Arial, Helvetica, sans-serif" size="1" color="#000000">*** Pour l'achat d'un logement neuf Bouygues Immobilier d'un montant maximum de 300 000&euro;</FONT></TD>
+</TR>
+<TR>
+<TD><IMG src="http://stor.cdt7.com/1187/www/img/spacer.gif" width="289" height="1" alt=""></TD>
+<TD><IMG src="http://stor.cdt7.com/1187/www/img/spacer.gif" width="35" height="1" alt=""></TD>
+<TD><IMG src="http://stor.cdt7.com/1187/www/img/spacer.gif" width="6" height="1" alt=""></TD>
+<TD><IMG src="http://stor.cdt7.com/1187/www/img/spacer.gif" width="336" height="1" alt=""></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD colspan="3">
+<DIV align="center">
+<P class="formulairecomments"><FONT size="1" face="Arial, Helvetica, sans-serif">&#169; CAPD&#201;CISION, Tous droits r&#233;serv&#233;s<BR>
+Conform&#233;ment &#224; l'article 34 de la loi Informatique et Libert&#233;<BR>
+du 6 janvier 1978, vous disposez d'un droit d'acc&#232;s, de modification, de rectification et de suppression<BR>
+des donn&#233;es vous concernant.&nbsp;&nbsp;&nbsp; D&#233;claration CNIL n&#176;1291376</FONT></P>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+</DIV>
+<TABLE width="750" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<TR>
+<TD align="center"><BR>
+<SPAN class="Desinscription1">Vous recevez cet e-mail car vous &#234;tes r&#233;f&#233;renc&#233; sur la base de donn&#233;es de notre partenaire CAP DECISION.<BR>
+Si vous souhaitez vous d&#233;sabonner, merci d'utiliser <A class='Desinscription1' href='http://url.cdt7.com/id.asp?l=57142-8003087-10643803-1849-0&id=10643803-1849-8003087-5f65310a&res=fr'>le lien suivant.</A></SPAN></TD>
+</TR>
+</TABLE>
+
+<img src='http://url.cdt7.com/op-8003087-10643803-1849-51803,24-0.gif' width=1 height=1 border=0 alt=''>
+</BODY>
+</HTML>
 
 
-<!-- Title Bar -->
-<table width="99%" border="0" cellspacing="0" cellpadding="0" >
-<tr height="50">
-<td width="530" valign="bottom"><font face="arial" size="8" color="gray">Today</font></td>
-</tr><tr height="1">
-<td colspan="2" bgcolor="gray" width="1">
-
-&nbsp;</td></tr>
-
-<!-- Dateline and Subscribe/Unsubscribe -->
-<tr height="20">
-<td><font  color="gray" size="1.5"><b>Saturday, JUNE 6, 2009</b></font></td>
-<td align="right"><font size="1" ><a href="http://kibomi.vosxisiz.cn/?my=B6C7D&aw=b6c7de03d4"  style="color:#0066CC;">
-Subscribe</a> or
-        <a href="http://niyxiu.vosxisiz.cn/?jex=B6C7D&un=b6c7de03d4" style="color:#0066CC;" >
-unsubscribe</a> from this newsletter</font></td>
-</tr></table>
-<!-- briefs -->
-
-<ol style="font-family:Arial,Helvetica,sans-serif;color:red;font-size:10px;padding-top:0">
-                <div style="background-color:#CCE0F5;padding:15px 25px;margin:0px 0px 20px -40px; text-align: center;">
-                	<a href="http://ubyuc.vosxisiz.cn/?ab=B6C7D&yx=b6c7de03d4">
-                	<img alt="If graphics not shown correctly, click here" src="http://ize.vosxisiz.cn/spacer.gif" style="border-width: 0px"></a></div>
-				<p>
-				<a href="http://yhil.vosxisiz.cn/?wqf=B6C7D&eko=b6c7de03d4" style="color:#0066CC;">Subscriptions</a> |
-				<a href="http://osjq.vosxisiz.cn/?ule=B6C7D&gug=b6c7de03d4" style="color:#0066CC;">Customer Service</a> |
-				<a href="http://qvamy.vosxisiz.cn/?jvu=B6C7D&aep=b6c7de03d4" style="color:#0066CC;">Unsubscribe</a> |
-				<a href="http://yalif.vosxisiz.cn/?qk=B6C7D&ah=b6c7de03d4" style="color:#0066CC;">Contact the Editor</a></p>
-				<p><span style="color: #0066CC">This message was sent from Lixerutj to spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org You have
-been sent Pqwybuw Today because you have opted in to receive it.</p>
-				<p>Note: It may take our system up to two business days to process your
-unsubscribe request and during that time you may receive one or two more
-newsletters. Thank you for reading Okedid Today.</p>
-				<p>Review our
-				</span>
-				<a href="http://xjh.vosxisiz.cn/?oa=B6C7D&onu=b6c7de03d4" style="color:#0066CC;">privacy policy</a></p>
-				<hr /></font>
-
-</body>
-</html>
 
 
---===============7836571321997667492==
+--===============3973572031807139686==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -82,7 +140,7 @@ looking to deploy the next generation of Solaris that includes the latest
 innovations from Sun and the OpenSource community. Download a copy and 
 enjoy capabilities such as Networking, Storage and Virtualization. 
 Go to: http://p.sf.net/sfu/opensolaris-get
---===============7836571321997667492==
+--===============3973572031807139686==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -93,4 +151,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7836571321997667492==--
+--===============3973572031807139686==--

@@ -1,11 +1,13 @@
-From: Solution Devis <newsletter-i6XDuV1wTYFeoWH0uzbU5w@public.gmane.org>
-Subject: [rachat de crédits] Comparez les meilleures offres pour baisser vos mensualités
-Date: 8 Jun 2009 09:30:53 -0000
-Message-ID: <20090608093053.10236.qmail@ks24820.kimsufi.com>
-Reply-To: Solution Devis <newsletter-i6XDuV1wTYFeoWH0uzbU5w@public.gmane.org>
+From: Sebastian Heutling <heutling-U9zb0o/1OQCELgA04lAiVw@public.gmane.org>
+Subject: [PATCH 1/1] spi: Fix "not ready" timeout after
+	write in at25
+Date: Mon, 08 Jun 2009 11:57:19 +0200
+Message-ID: <4A2CE07F.2060302@who-ing.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0862929907378369528=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,101 +19,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Under certain circumstances msleep(1) within the loop, which waits
+for the EEPROM to be finished, might take longer than the timeout.
+On the next loop the status register might return to be ready and 
+therefore the loop finishes. The following check now tests if
+a timeout occurred and if so returns an error although the device
+reported to be finished.
+This fix replaces testing the occurrence of the timeout by testing
+the "not ready" bit in the status register.
+The patch is against 2.6.29.2.
 
---===============0862929907378369528==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_dfed3baca1de4f099a72ba64139b0c51"
+Signed-off-by: Sebastian Heutling <heutling-U9zb0o/1OQCELgA04lAiVw@public.gmane.org>
 
+---
+  drivers/misc/eeprom/at25.c |    4 ++--
+  1 files changed, 2 insertions(+), 2 deletions(-)
 
---_----------=_parties_dfed3baca1de4f099a72ba64139b0c51
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
+index 290dbe9..ea83604 100644
+--- a/drivers/misc/eeprom/at25.c
++++ b/drivers/misc/eeprom/at25.c
+@@ -160,6 +160,7 @@ at25_ee_write(struct at25_data *at25, char *buf, 
+loff_t off, size_t count)
+  	bounce[0] = AT25_WRITE;
+  	mutex_lock(&at25->lock);
+  	do {
++		int	sr;
+  		unsigned long	timeout, retries;
+  		unsigned	segment;
+  		unsigned	offset = (unsigned) off;
+@@ -205,7 +206,6 @@ at25_ee_write(struct at25_data *at25, char *buf, 
+loff_t off, size_t count)
+  		timeout = jiffies + msecs_to_jiffies(EE_TIMEOUT);
+  		retries = 0;
+  		do {
+-			int	sr;
+   			sr = spi_w8r8(at25->spi, AT25_RDSR);
+  			if (sr < 0 || (sr & AT25_SR_nRDY)) {
+@@ -219,7 +219,7 @@ at25_ee_write(struct at25_data *at25, char *buf, 
+loff_t off, size_t count)
+  				break;
+  		} while (retries++ < 3 || time_before_eq(jiffies, timeout));
+  -		if (time_after(jiffies, timeout)) {
++		if ((sr < 0) || (sr & AT25_SR_nRDY)) {
+  			dev_err(&at25->spi->dev,
+  				"write %d bytes offset %d, "
+  				"timeout after %u msecs\n",
+-- 
+1.6.3.2
 
-Version "en ligne" de ce message: http://www.ctrm5.net/svi/miroir.php?bat=solutdevis0609_ctrm
-
-Rachat de crédits : La solution pour faire votre choix
-
-Faites une unique demande et comparez les meilleures offres
-(1) Vous remplissez 1 seul questionnaire.
-(2) Nous interrogeons jusqu'à 12 organismes à la fois.
-(3) Nous vous proposons uniquement les solutions de financements adaptées à votre projet et à votre situation financière.
-
-Faites-ici une demande de devis sans engagement
-
-plus d'infos sur http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit
-
---------------------------------
-Cette offre solution devis vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm5.net/svi/gestionserv.php?nb=1644&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_dfed3baca1de4f099a72ba64139b0c51
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>Rachat de cr&eacute;dits : La solution pour faire votre choix</title>
-</head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm5.net/svi/miroir.php?bat=solutdevis0609_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre solution devis vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #e10081;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial Narrow;color:#a0a180;font-size:28px'>
-<p style='display:inline;'> Rachat de cr&eacute;dits : La solution pour faire votre choix</p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#e10081;font-family:Arial Narrow;color:#edede7;font-size:20px;'>
-<a href="http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit" style="color:#edede7;font-size:20px;font-family:arial narrow;font-background:e10081;text-decoration:none;">
-Faites une unique demande et comparez les meilleures offres</a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:12px;background-color:#FFFFFF;'>
-(1) Vous remplissez <b>1 seul</b> questionnaire.<br /><br />
-(2) Nous interrogeons jusqu'&agrave; <b>12 organismes &agrave; la fois.</b><br /><br />
-(3) Nous vous proposons uniquement <b>les solutions de financements adapt&eacute;es</b> &agrave; votre projet et &agrave; votre situation financi&egrave;re.<br />
-<a href="http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit" style="color:black;font-size:12px;font-family:arial;font-background:white;text-decoration:none;"> <div style='text-align:center'><u style='color:blue'>Faites-ici une demande de devis sans engagement</u></div></a>
-</td></tr>
-<tr><td align='' style='padding:5px;background-color:#FFFFFF;'>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
- <tr>
- <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_01.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_02.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_03.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/header_multi_04.gif" alt="solution devis" border="0"></a></td>
- </tr>
- <tr>
- <td colspan="4"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/middle.gif" alt="solution devis" border="0"></a></td>
- </tr>
-</table>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
- <tr>
- <td colspan="3"><a href="http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/logo.gif" alt="solution devis" border="0"></a></td>
- <td><a href="http://www.ctrm5.net/svi/linkserv.php?bat=solutdevis0609_ctrm&nb=1644&n=9047704&c=credit"><img src="http://static.ad-mastering.net/solution-devis/kit_mailing/v8/bord_droit.gif" alt="solution devis" border="0"></a></td>
- </tr>
-</table>
-<p><br>
-<!-- pixel RAC--> <img src="http://eskdom015.netmastering2.net/c/a8FJS4PK87GF8FD1S" alt="solution devis" border="0"> <!-- pixel epargne--> <img src="http://eskdom019.netmastering2.net/c/aUDWUBH2G03QEYDTU" alt="solution devis" border="0"> <!-- pixel sante--> <img src="http://eskdom011.netmastering2.net/c/aU6JBUKWN71ZAFQYC" alt="solution devis" border="0"> <!-- pixel defisc--> <img src="http://eskdom018.netmastering2.net/c/aG052Y5MC9Y3UMQ3W" alt="solution devis" border="0"></p><img src="http://nodes.reactivpub.fr/mailing-493-12014-12068&group=" border="0" height="1" width="1"/>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.ctrm5.net/svi/img.php?nb=1644&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
-<p>
-<a href='http://www.ctrm5.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm5.net/svi/gestionserv.php?nb=1644&cat=credit&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
-
-
---_----------=_parties_dfed3baca1de4f099a72ba64139b0c51--
-
---===============0862929907378369528==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 OpenSolaris 2009.06 is a cutting edge operating system for enterprises 
@@ -119,15 +75,3 @@ looking to deploy the next generation of Solaris that includes the latest
 innovations from Sun and the OpenSource community. Download a copy and 
 enjoy capabilities such as Networking, Storage and Virtualization. 
 Go to: http://p.sf.net/sfu/opensolaris-get
---===============0862929907378369528==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0862929907378369528==--

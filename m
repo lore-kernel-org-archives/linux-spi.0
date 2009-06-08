@@ -1,13 +1,13 @@
-From: Sebastian Heutling <heutling-U9zb0o/1OQCELgA04lAiVw@public.gmane.org>
-Subject: [PATCH 1/1] spi: Fix "not ready" timeout after
-	write in at25
-Date: Mon, 08 Jun 2009 11:57:19 +0200
-Message-ID: <4A2CE07F.2060302@who-ing.de>
+From: Gilles Casse <list-34SiRylZz+CsTnJN9+BGXg@public.gmane.org>
+Subject: atmel_spi: truncated read data
+Date: Mon, 8 Jun 2009 14:49:59 +0200
+Message-ID: <31936.1244465399@gcasse.net>
+Reply-To: Gilles Casse <list-34SiRylZz+CsTnJN9+BGXg@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,54 +19,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Under certain circumstances msleep(1) within the loop, which waits
-for the EEPROM to be finished, might take longer than the timeout.
-On the next loop the status register might return to be ready and 
-therefore the loop finishes. The following check now tests if
-a timeout occurred and if so returns an error although the device
-reported to be finished.
-This fix replaces testing the occurrence of the timeout by testing
-the "not ready" bit in the status register.
-The patch is against 2.6.29.2.
+Hello,
 
-Signed-off-by: Sebastian Heutling <heutling-U9zb0o/1OQCELgA04lAiVw@public.gmane.org>
+I observe in atmel_spi that the read data are sometimes unexpectedly truncated (board similar to at91rm9200ek, Linux 2.6.28-9, SPI transfers at 8 bits, 6Mhz) .
 
----
-  drivers/misc/eeprom/at25.c |    4 ++--
-  1 files changed, 2 insertions(+), 2 deletions(-)
+Everything seems ok though: no SPI overrun, the DMA RCR, RNCR counters correctly reach 0.
+More details below.
 
-diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
-index 290dbe9..ea83604 100644
---- a/drivers/misc/eeprom/at25.c
-+++ b/drivers/misc/eeprom/at25.c
-@@ -160,6 +160,7 @@ at25_ee_write(struct at25_data *at25, char *buf, 
-loff_t off, size_t count)
-  	bounce[0] = AT25_WRITE;
-  	mutex_lock(&at25->lock);
-  	do {
-+		int	sr;
-  		unsigned long	timeout, retries;
-  		unsigned	segment;
-  		unsigned	offset = (unsigned) off;
-@@ -205,7 +206,6 @@ at25_ee_write(struct at25_data *at25, char *buf, 
-loff_t off, size_t count)
-  		timeout = jiffies + msecs_to_jiffies(EE_TIMEOUT);
-  		retries = 0;
-  		do {
--			int	sr;
-   			sr = spi_w8r8(at25->spi, AT25_RDSR);
-  			if (sr < 0 || (sr & AT25_SR_nRDY)) {
-@@ -219,7 +219,7 @@ at25_ee_write(struct at25_data *at25, char *buf, 
-loff_t off, size_t count)
-  				break;
-  		} while (retries++ < 3 || time_before_eq(jiffies, timeout));
-  -		if (time_after(jiffies, timeout)) {
-+		if ((sr < 0) || (sr & AT25_SR_nRDY)) {
-  			dev_err(&at25->spi->dev,
-  				"write %d bytes offset %d, "
-  				"timeout after %u msecs\n",
--- 
-1.6.3.2
+What could cause this? dma issue, cached memory?
+Any pointer would be greatly appreciated.
+
+Thank you,
+
+Gilles
+
+
+* read buffer truncated
+
+For the debug, the read buffer (rx_buf) is initialized at 0x5a (Z).
+After an incorrect read, the last bytes of the read buffer are still at 'Z':
+
+00000000  85 19 02 e0 ff 08 00 00 3e 63 97 5c 6c 03 00 00  ........>c.\l...
+00000010  de 03 00 00 ed 81 00 00 00 00 00 00 00 10 04 00  ................
+00000020  01 17 43 38 01 17 43 38 01 17 43 38 00 00 04 00  ..C8..C8..C8....
+00000030  bb 08 00 00 00 10 00 00 06 00 00 00 ff 5a 5a 5a  .............ZZZ
+00000040  5a 5a 5a 5a                                      ZZZZ
+
+
+* atmel_spi sequence
+
+For the debug, the access to the SPI/PDC registers have been traced (stored in an internal array).
+The spi message has two transfers: command (8 bytes written), read data (0x44 bytes expected).
+
+atmel_spi_transfer:
+PTCR = 0x202 (RXTDIS/TXTDIS)
+ RCR = 8
+RNCR = 0x44
+PTCR = 0x101 (RXTEN/TXTEN)
+
+atmel_spi_interrupt:
+ SR = 0x00010032
+IDR = 0x00000010
+RCR currently equals to 0x24
+RNCR = 0
+PTCR = 0x101 (RXTEN/TXTEN)
+
+atmel_spi_interrupt:
+ SR = 0x000100f2
+IDR = 0x00000050
+RCR and RNCR equal to 0
+PTCR = 0x202 (RXTDIS/TXTDIS)
+
+
 
 
 ------------------------------------------------------------------------------

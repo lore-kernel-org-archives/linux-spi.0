@@ -1,13 +1,17 @@
-From: Gilles Casse <list-34SiRylZz+CsTnJN9+BGXg@public.gmane.org>
-Subject: atmel_spi: truncated read data
-Date: Mon, 8 Jun 2009 14:49:59 +0200
-Message-ID: <31936.1244465399@gcasse.net>
-Reply-To: Gilles Casse <list-34SiRylZz+CsTnJN9+BGXg@public.gmane.org>
+From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/1] ARM PL022 SSP/SPI driver v3
+Date: Mon, 8 Jun 2009 16:35:07 +0200
+Message-ID: <63386a3d0906080735q6551c705of6ba3c4a5569c200@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Haavard Skinnemoen <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: STEricsson_nomadik_linux-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
+	Alessandro Rubini <rubini-list-kaDoWcXyVrEAvxtiuMwx3w@public.gmane.org>,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>, andrea.gallo-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,59 +23,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+Russell: SPI subsys maintainer is busy/unresponsive ftm.
+Are you convenient in pushing this in through the ARM tree,
+as it's a PrimeCell or shall I send it to -mm?
 
-I observe in atmel_spi that the read data are sometimes unexpectedly truncated (board similar to at91rm9200ek, Linux 2.6.28-9, SPI transfers at 8 bits, 6Mhz) .
+(I've had some reciprocal review on the spi-devel list.)
 
-Everything seems ok though: no SPI overrun, the DMA RCR, RNCR counters correctly reach 0.
-More details below.
+ChangeLog v2->v3:
 
-What could cause this? dma issue, cached memory?
-Any pointer would be greatly appreciated.
+* Removed unncessary #include <asm/irq.h>
 
-Thank you,
+* Fixed authors mail address in the MODULE_AUTHOR().
 
-Gilles
+* Use amba_request_region()/amba_release_region() instead
+  of calling request_mem_region() directly.
 
+* Trust the resource size with resource_size(&adev->res)
+  for ioremap.
 
-* read buffer truncated
-
-For the debug, the read buffer (rx_buf) is initialized at 0x5a (Z).
-After an incorrect read, the last bytes of the read buffer are still at 'Z':
-
-00000000  85 19 02 e0 ff 08 00 00 3e 63 97 5c 6c 03 00 00  ........>c.\l...
-00000010  de 03 00 00 ed 81 00 00 00 00 00 00 00 10 04 00  ................
-00000020  01 17 43 38 01 17 43 38 01 17 43 38 00 00 04 00  ..C8..C8..C8....
-00000030  bb 08 00 00 00 10 00 00 06 00 00 00 ff 5a 5a 5a  .............ZZZ
-00000040  5a 5a 5a 5a                                      ZZZZ
-
-
-* atmel_spi sequence
-
-For the debug, the access to the SPI/PDC registers have been traced (stored in an internal array).
-The spi message has two transfers: command (8 bytes written), read data (0x44 bytes expected).
-
-atmel_spi_transfer:
-PTCR = 0x202 (RXTDIS/TXTDIS)
- RCR = 8
-RNCR = 0x44
-PTCR = 0x101 (RXTEN/TXTEN)
-
-atmel_spi_interrupt:
- SR = 0x00010032
-IDR = 0x00000010
-RCR currently equals to 0x24
-RNCR = 0
-PTCR = 0x101 (RXTEN/TXTEN)
-
-atmel_spi_interrupt:
- SR = 0x000100f2
-IDR = 0x00000050
-RCR and RNCR equal to 0
-PTCR = 0x202 (RXTDIS/TXTDIS)
-
-
-
+Linus Walleij
 
 ------------------------------------------------------------------------------
 OpenSolaris 2009.06 is a cutting edge operating system for enterprises 

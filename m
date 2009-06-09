@@ -1,11 +1,17 @@
-From: Egor Tarasovich <egortarasovich-Dku6nP6V4PQiwNP6kQ4QtA@public.gmane.org>
-Subject: [SPAM] Рeформиpование корпоративного управления в рамках вступления в силу Закона Украины "Об акционерных обществах"
-Date: Tue, 09 Jun 2009 22:37:38 +0400
-Message-ID: <7263378613.20090609223738@sharma-kiev.com>
+From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Re: [PATCH 2/9] SPI: xilinx_spi: Added platform
+ driver and support for DS570
+Date: Tue, 9 Jun 2009 16:09:54 -0700
+Message-ID: <20090609160954.ae0bda8e.akpm@linux-foundation.org>
+References: <4A292043.70704@mocean-labs.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1285392034966118531=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Richard =?ISO-8859-1?Q?R=F6jfors?= <richard.rojfors.ext-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4A292043.70704-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,182 +22,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1285392034966118531==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+On Fri, 05 Jun 2009 15:40:19 +0200
+Richard R__jfors <richard.rojfors.ext-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org> wrote:
 
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
-bmFsLy9FTiI+DQoNCjxodG1sPjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1U
-eXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjxzdHls
-ZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQouc3R5bGUxOSB7DQoJZm9udC1mYW1pbHk6ICJU
-aW1lcyBOZXcgUm9tYW4iLCBUaW1lcywgc2VyaWY7DQoJY29sb3I6ICMwMDAwMDA7DQoJZm9u
-dC1zaXplOiAxM3B4Ow0KCWZvbnQtc3R5bGU6IGl0YWxpYzsNCn0NCi5zdHlsZTIzIHsNCglm
-b250LWZhbWlseTogVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsNCglm
-b250LXN0eWxlOiBpdGFsaWM7DQoJY29sb3I6ICNGRkZGRkY7DQp9DQouc3R5bGUyNCB7DQoJ
-Zm9udC1mYW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7DQoJ
-Zm9udC1zaXplOiAxcHg7DQoJY29sb3I6ICNGRkZGRkY7DQp9DQouc3R5bGUyNyB7DQoJZm9u
-dC1mYW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7DQoJZm9u
-dC1zaXplOiAxM3B4Ow0KfQ0KLS0+DQo8L3N0eWxlPg0KPC9oZWFkPg0KPHN0eWxlIHR5cGU9
-InRleHQvY3NzIj4NCnB7Zm9udC1mYW1pbHk6VGFob21hLCBBcmlhbDsgZm9udC1zaXplOiAx
-MnB4OyBwYWRkaW5nOjJweDsgfQ0KbGl7Zm9udC1mYW1pbHk6VGFob21hLCBBcmlhbDsgZm9u
-dC1zaXplOiAxMnB4OyB9DQp0ZCB7UEFERElORzoxMHB4OyB0ZXh0LWFsaWduOmxlZnQ7fQ0K
-LnN0eWxlMyB7DQoJZm9udC1zaXplOiAxODsNCglmb250LXdlaWdodDogYm9sZDsNCgljb2xv
-cjogIzk5MDAwMDsNCn0NCi5zdHlsZTE0IHtmb250LXNpemU6IDEzcHh9DQouc3R5bGUyNiB7
-DQoJZm9udC1mYW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7
-DQoJZm9udC1zaXplOiAxM3B4Ow0KCWZvbnQtd2VpZ2h0OiBib2xkOw0KCWNvbG9yOiAjMzMz
-MzMzOw0KfQ0KLnN0eWxlMzAge2NvbG9yOiAjMzMzMzMzfQ0KLnN0eWxlMzEge2ZvbnQtZmFt
-aWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmfQ0KLnN0eWxlMzIg
-e2NvbG9yOiAjRkZGRkZGfQ0KLnN0eWxlMzMgew0KCWZvbnQtc2l6ZTogMTRweDsNCgljb2xv
-cjogIzAwNjYwMDsNCglmb250LXdlaWdodDogYm9sZDsNCn0NCi5zdHlsZTM0IHsNCgljb2xv
-cjogIzAwNjYwMDsNCglmb250LXdlaWdodDogYm9sZDsNCn0NCi5zdHlsZTM1IHtjb2xvcjog
-IzAwNjZDQ30NCjwvc3R5bGU+DQo8Ym9keT4NCjx0YWJsZSB3aWR0aD0iMTE1MCIgYm9yZGVy
-PSIwIiBhbGlnbj0iY2VudGVyIiBjZWxscGFkZGluZz0iMCIgY2VsbHNwYWNpbmc9IjAiIGJn
-Y29sb3I9IiMwMDAwODgiPg0KPHRyIGJvcmRlcmNvbG9yPSIjREREREREIiBiZ2NvbG9yPSIj
-ZTVmMmZmIj4gDQo8dGQgY29sc3Bhbj0iMiIgYmdjb2xvcj0iI0ZGRkZGRiI+IA0KPHAgY2xh
-c3M9InN0eWxlMTkiPsfk8ODi8fLi8+khIP3y7iDN6Oro8uA8L3A+DQo8cCBjbGFzcz0ic3R5
-bGUzIj5QZfRvcOzocG/i4O3o5SDq7vDv7vDg8uji7e7j7iDz7/Dg4uvl7ej/IOIg8ODs6uD1
-IOLx8vPv6+Xt6P8g4iDx6OvzIMfg6u7t4CDT6vDg6O37ICLO4SDg6vbo7u3l8O379SDu4fnl
-8fLi4PUiPGJyPg0KPC9wPg0KPHA+PGI+PHNwYW4gY2xhc3M9InN0eWxlMzEiPjxzcGFuIGNs
-YXNzPSJzdHlsZTE0Ij48c3BhbiBjbGFzcz0ic3R5bGUzMCI+PHN0cm9uZz4xMSDo/u3/PC9z
-dHJvbmc+LCAyMDA5IOMuPC9zcGFuPjwvc3Bhbj48L3NwYW4+PC9iPjxzcGFuIGNsYXNzPSJz
-dHlsZTI3IHN0eWxlMTQgc3R5bGUzMCI+PGJyPg0KICAgIDxiPuMuIMro5eIsIOHz6/ziLiDY
-5eL35e3q7iA0LCDu8uXr/CCr0eDt6vItz+Xy5fDh8/DjuzwvYj48L3NwYW4+PC9wPg0KPHA+
-PHNwYW4gY2xhc3M9InN0eWxlMjYiPiszOCAozjQ0KSAyx8cgNDYgNjkvMjM3IDkwIM41PC9z
-cGFuPjxicj4NCjwvcD48L3RkPg0KPC90cj4NCjx0ciBiZ2NvbG9yPSIjMDAwMDg4Ij48dGQg
-aGVpZ2h0PSIxMHB4IiBjb2xzcGFuPSIyIiBiZ2NvbG9yPSIjMDA2NjAwIiBzdHlsZT0icGFk
-ZGluZzowcHg7IG1hcmdpbjowcHg7Ij48L3RkPg0KPC90cj4NCjx0cj4NCjx0ZCB3aWR0aD0i
-ODA2IiBiZ2NvbG9yPSJGMUYxRjEiPjxwIGNsYXNzPSJzdHlsZTMzIj5D7uRl8OZh7ejlIO9w
-b+NwYezs+zwvcD4NCiAgPHAgY2xhc3M9InN0eWxlMjcgc3R5bGUzMCI+PHN0cm9uZz4xLjwv
-c3Ryb25nPiDC8fLz7+jrIOIg8ejr8yDH4Oru7eAg0+rw4Ojt+yCrzuEg4Or26O7t5fDt+/Ug
-7uH55fHy4uD1uzo8YnI+DQogICAgMS4xLiDq6/735eL75SDk4PL7IJYg4O/w5ev8IDIwMDks
-IPHl7fL/4fD8IDIwMTA7IODv8OXr/CAyMDExPGJyPg0KICAgIDEuMi4gz+7n6Pbo/yDDytbB
-1NAsIOru7Ozl7fLg8OjoLCDw5eru7OXt5OD26OgsIPDu5/r/8e3l7ej/LjwvcD4NCiAgPHAg
-Y2xhc3M9InN0eWxlMjcgc3R5bGUzMCI+PHN0cm9uZz4yLjwvc3Ryb25nPiDN7uL76SDH4Oru
-7Tog7uH56OUg7+7r7ubl7ej/PGJyPg0KICAgIDIuMS4g7/Ph6+j37fvlIOgg7/Do4uDy7fvl
-IO7h+eXx8uLgPGJyPg0KICAgIDIuMi4g8vDl4e7i4O3o/yDqIPPx8uDi7e7s8yD07u3k8yDg
-6vbo7u3l8O3u4+4g7uH55fHy4uA6PGJyPg0KICAgIDIuMi4xLiDs6O3o7ODr/O376SDw4Ofs
-5fAg8/Hy4OLt7uPuIPTu7eTgPGJyPg0KICAgIDIuMi4yLiDx7+7x7uH7IPTu8Ozo8O7i4O3o
-/yDz8fLg4u3u4+4g9O7t5OA8YnI+DQogICAgMi4zLiD25e3t++Ug4fPs4OPoIODq9uju7eXw
-7e7j7iDu4fnl8fLi4Cwg4O3g6+jnIO/u6+7m5e3o6Swg6uDx4P756PXx/yDv8O7x8vv1IOgg
-7/Do4ujr5ePo8O7i4O3t+/Ug4Or26OksIOfg+ejy4CDv8ODiIPHu4fHy4uXt7ejq7uIg8ODn
-7fv1IOrr4PHx7uIg4Or26Ok8YnI+DQogICAgMi40LiDo5+zl7eXt6OUg9O7w7PMg8fP55fHy
-4u7i4O3o/yDg6vbo6SAo5OXs4PLl8Ojg6+jn4Pbo/yk6PGJyPg0KICAgIDIuNC4xLiDv7vHr
-5eTu4uDy5ev87e7x8vwg5OXp8fLi6Ok8YnI+DQogICAgMi40LjIuIP3y4O/7IPDl4+jx8vDg
-9ujoPGJyPg0KICAgIDIuNC4zLiDw7uv8IM3g9uju7eDr/O3u4+4gxOXv7ufo8uDw6P8g0+rw
-4Ojt+zxicj4NCiAgICAyLjUuIO/w4OLgIOgg7uH/5+Dt7e7x8ugg4Or26O7t5fDu4jxicj4N
-CiAgICAyLjYuIOL77+vg8uAg5Oji6OTl7eTu4jxicj4NCiAgICAyLjcuIO7j8ODt6Pfl7ej/
-LCDq4PHg/vno5fH/IPP34PHy7ejq7uIg4Or26O7t5fDt7uPuIO7h+eXx8uLgPC9wPg0KICA8
-cCBjbGFzcz0ic3R5bGUyNyBzdHlsZTMwIj48c3Ryb25nPjMuPC9zdHJvbmc+IMTl7ODy5fDo
-4Ovo5+D26P8gwOr26Ok6IO/u8P/k7uog5OXp8fLi6OksIPLg8Oj0+ywg8OXq7uzl7eTg9ujo
-LiDC+/Hy8+/r5e3o5SDv8OXk8fLg4ujy5f8gzeD26O7t4Ov87e7j7iDk5e/u5+jy4PDo/yDT
-6vDg6O37LjwvcD4NCiAgPHAgY2xhc3M9InN0eWxlMjcgc3R5bGUzMCI+PHN0cm9uZz40Ljwv
-c3Ryb25nPiDK7vDv7vDg8uji7e7lIPPv8ODi6+Xt6OU8YnI+DQogICAgNC4xICDu4fno5SDv
-7uvu5uXt6P88YnI+DQogICAgNC4yIO/w6O326O/7IOru8O/u8ODy6OLt7uPuIPPv8ODi6+Xt
-6P8sIOrg6iDo7fHy8PPs5e3yIPPv8ODi6+Xt6P8g6u7s7+Dt6OXpLCDl4vDu7+Xp8ero6SDu
-7/vyIOru8O/u8ODy6OLt7uPuIPPv8ODi6+Xt6P88YnI+DQogICAgNC4zLiDN4OHr/uTg8uXr
-/O376SDx7uLl8iwg7+7r7ubl7ej/IO4gzeDh6/7k4PLl6/zt7uwg8e7i5fLlPGJyPg0KICAg
-IDQuNCDq7vDv7vDg8uji7fvpIPHl6vDl8uDw/CCWIO3u4u7lIOTu6+bt7vHy7e7lIOvo9u4g
-4iDx7u7y4uXy8fLi6Ogg8SDH4Oru7e7sPGJyPg0KICAgIDQuNS4g0OXi6Ofo7u3t4P8g6u7s
-6PHx6P8sIO/u6+7m5e3o/yDuINDl4ujn6O7t7e7pIOru7Ojx8ejoPGJyPg0KICAgIDxicj4N
-CiAgICA8c3Ryb25nPjUuPC9zdHJvbmc+INLw5eHu4uDt6P8g6iDv7vD/5OrzIO/w7uLl5OXt
-6P8g7uH55ePuIPHu4fDg7ej/LCDn4Pno8uAg7/Dg4iDg6vbo7u3l8CDoIOru7O/g7ejpLCDi
-7u/w7vH7IPDl7vDj4O3o5+D26Ogg6CDr6Ori6OTg9ujoPGJyPg0KICAgIDUuMS4g7vfl8OXk
-7e7lLCDi7eXu9+Xw5eTt7uUg7uH55eUg8e7h8ODt6OUg4Or26O7t5fDu4jo8YnI+DQogICAg
-LSDi8OXs/yDv8O7i5eTl7ej/PGJyPg0KICAgIC0g6u7s7+Xy5e326P8g7uH55ePuIPHu4fDg
-7ej/PGJyPg0KICAgIC0g7/Dg4u4g7eAg8/fg8fLo5SDiIO7h+eXsIPHu4fDg7ejoIO/w5eTx
-8uDi6PLl6+XpIODq9uju7eXw7uI8YnI+DQogICAgLSDv7uTj7vLu4urgIOog7uH55ezzIPHu
-4fDg7ej+LCDv8O725eTz8OAg8e7n++LgLCCr6+jt6P8g4vDl7OXt6Ls8YnI+DQogICAgLSDv
-8O725eTz8O375SDi7u/w7vH7LCDv7vD/5O7qIOPu6+7x7uLg7ej/ICjiIPIu9y4g6vPs8+v/
-8uji7e7lIOPu6+7x7uLg7ejlLCDj7uvu8e7i4O3o5SDv7vHw5eTx8uLu7CDh/uvr5fLl7eXp
-KSDk7urz7OXt8uDr/O3u5SDu9O7w7Ovl7ejlPGJyPg0KICAgIDUuMi4gIO/u7f/y6OUg6CDu
-7/Dl5OXr5e3o5SCr5+3g9+jy5ev87e7j7iDv4Orl8uAg4Or26Om7LCCr6u7t8vDu6/zt7uPu
-IO/g6uXy4CDg6vbo6bs8YnI+DQogICAgNS4zLiDu4f/n4PLl6/zt++kg4vvq8+8g7uH55fHy
-4u7sIPDg5+zl+eXt7fv1IPbl7e379SDh8+zg4zxicj4NCiAgICA1LjQuICDv7u3/8ujlIOgg
-7u/w5eTl6+Xt6OUgq+ft4Pfo8uXr/O3u4+4g7/Dg4u7k5enx8uLo/7ssICCr7/Dg4u7k5enx
-8uLo/ywg7+4g7vLt7vjl7ej+IOog6u7y7vD77CDx8/nl8fLi8+XyIOfg6O3y5fDl8e7i4O3t
-7vHy/Ls8YnI+DQogICAgNS41LiDk7vHy8+8g6iDo7fTu8Ozg9ujoIO7hIO7h+eXx8uLlPGJy
-Pg0KICAgIDUuNi4g7/Du4uXw6uAg5OX/8uXr/O3u8fLoIODq9uju7eXw7fv1IO7h+eXx8uI8
-YnI+DQogICAgLSDv8O725eTz8OAsIO/w5eTz8ezu8vDl7e3g/yDH4Oru7e7sPGJyPg0KICAg
-IDUuNy4g8OXu8OPg7ejn4Pbo/yDoIOvo6uLo5OD26P88L3A+DQogIDxwIGNsYXNzPSJzdHls
-ZTI3IHN0eWxlMzAiPjxzdHJvbmc+Ni48L3N0cm9uZz4gz+7w/+Tu6iDk5enx8uLo6SDk6/8g
-8fP55fHy4vP++ej1IO7h+eXx8uI8YnI+DQogICAgNi4xIODr/PLl8O3g8uji4CCWIPDl7vDj
-4O3o5+D26P8g4iDOzs4gKOLu7/Du8fsg8OXu8OPg7ejn4Pbo6CCWIPHl6vbo/yA0KTxicj4N
-CiAgICA2LjIg/vDo5Oj35fHq6Okg4PHv5eryIPPi5evo9+Xt6P8g8/Hy4OLt7uPuIOrg7+jy
-4OvgIODq9uju7eXw7e7j7iDu4fnl8fLi4Dxicj4NCiAgICA2LjMgq+vo7ej/IOLw5ezl7ei7
-IOL74u7k+y48L3A+DQogIDxwIGNsYXNzPSJzdHlsZTI3IHN0eWxlMzAiPjxzcGFuIGNsYXNz
-PSJzdHlsZTMzIj7S8OXtZXA8L3NwYW4+PGJyPg0KICAgIDxzcGFuIGNsYXNzPSJzdHlsZTM1
-Ij7MLsAuIMDk4Ozu4vHq4P88L3NwYW4+ICAtICDn4Ozl8fLo8uXr/CDk6PDl6vLu8OAgIO7v
-5fDg9uju7e3u4+4g5OXv4PDy4Ozl7fLgIM3E0zxicj4NCiAgICA8c3BhbiBjbGFzcz0ic3R5
-bGUzNSI+3S7ILiDM6Ov++OruPC9zcGFuPiAtIMTo8OXq8u7wINTu7eTu4u7pIMHo8OboIKvP
-5fDx7+Xq8uji4Ls8YnI+DQogICAgPHNwYW4gY2xhc3M9InN0eWxlMzUiPsouxC4g2OXi9/Pq
-PC9zcGFuPiCWIMTo8OXq8u7wIM7OziCr1Ojt4O3x7uLg/yDq7uzv4O3o/yCrytPBuzxicj4N
-CiAgICA8c3BhbiBjbGFzcz0ic3R5bGUzNSI+zi7CLiAg0e7r5ODy7uI8L3NwYW4+IJYg7+Dw
-8u3l8CD+8Ojk6Pfl8eru6SDq7uzv4O3o6CDOzs4gq0xleGFydGlzuzxicj4NCiAgICA8c3Bh
-biBjbGFzcz0ic3R5bGUzNSI+zC7ALiDL6OHg7e7iPC9zcGFuPiAtIO3g9+Dr/O3o6iDu8uTl
-6+Ag8ODn4ujy6P8g5+Dq7u3u5ODy5ev88fLi4CDt4CDw++3q5SD25e3t+/Ug4fPs4OMgw+7x
-8+Tg8PHy4uXt7e7pIOru7Ojx8ejoIO/uIPbl7e377CDh8+zg4+DsIOgg9O7t5O7i7uzzIPD7
-7erzLjwvcD48L3RkPg0KPHRkIHdpZHRoPSIyOTQiIHZhbGlnbj0idG9wIiBiZ2NvbG9yPSIj
-MDA5OTAwIj4gDQo8cCBjbGFzcz0ic3R5bGUxNCI+PGZvbnQgY29sb3I9IiNGRkZGRkYiPjxz
-cGFuIGNsYXNzPSJzdHlsZTE0Ij48Zm9udCBjb2xvcj0ieWVsbG93Ij48Yj7R0k/IzM7R0twg
-09fAQ9LI3yDOxM1Pw84gz1BFxEPSwMLI0kXL3zo8L2I+PC9mb250Pjxicj4NCiAgICAgIDxi
-cj4NCpUgPGI+OTUwLjAwIOPw7S48L2I+IOfgIO7k7e7j7iAgY+vz+GHyZev/Ljxicj4NCjxi
-cj4NCpUgxOv/IOLy7vDu4+4g6CDy8OXy/OXj7iBj6/P4YfJl6/8g8ero5OrgIC0gPGJyPg0K
-Jm5ic3A7Jm5ic3A7PGI+NSUg6CA3JTwvYj4g8e7u8uLl8vHy4uXt7e4uPGJyPg0KPGJyPg0K
-lSDCIPHy7ujs7vHy/CDi6uv+9+Xt+zo8YnI+DQombmJzcDsmbmJzcDvo7fTu8Ozg9uju7e3u
-Leru7fHz6/zy4Pbo7u3t7uUmbmJzcDvu4fHr8+bo4uDt6OUsPGJyPg0KJm5ic3A7Jm5ic3A7
-/erx6uv+5+ji7fvpIA0K8eHu8O3o6iDs4PLl8Ojg6+7iLCDh6+7q7e7yLDxicj4NCiZuYnNw
-OyZuYnNwO/Dz9+rgLCDq7vTlLeHw5enqLCDu4eXkIOIg8OXx8u7w4O3lLjwvc3Bhbj48L2Zv
-bnQ+PC9wPg0KPGhyPg0KPHAgY2xhc3M9InN0eWxlMzIiPjxzdHJvbmc+UGXj62HsZe3yOiA8
-L3N0cm9uZz45LjMwLTE3LjMwLiDP5fDl8PviIDEzLjMwLTE0LjMwLjxzdHJvbmc+PGJyPg0K
-ICBQRcPIQ1TQwNbI3yA8L3N0cm9uZz7xIDkuMDAg4iD17uvr5S48L3A+DQo8aHIgYWxpZ249
-ImNlbnRlciI+DQo8cCBhbGlnbj0ibGVmdCIgY2xhc3M9InN0eWxlMzIiPjxmb250IGNvbG9y
-PSIjRkZGRkZGIj7S5ezg8ujq4CDi8eX25evuIO714uDy++Lg5fIg8fTl8PMg8ODn4ujy6P8g
-6CDv8O7k4ujm5e3o/yDh6Oft5fHgLCANCuAg8ODx9e7k+yDn4CDz9+Dx8ujlIO7y7e7x//Lx
-/yDqIPHu8fLg4vMg4uDr7uL79SAo8fIuNSDH0yDuIO3g6+7j7u7h6+7m5e3o6CANCu/w6OH7
-6+gg7/Dl5O/w6P/y6Om7KSwg6u7y7vD75SDx4v/n4O37IPEg7+7k4+7y7uLq7uksIO7w4+Dt
-6Ofg9ujl6SDoIPPv8ODi6+Xt6OXsIA0K7/Du6Ofi7uTx8uLgLiDC8eXsIPP34PHy7ejq4Owg
-8eXs6O3g8OAg7/Dl5O7x8uDi6//l8vH/IOru7O/r5eryIOHz9ePg6/Ll8PHq6PUgDQrk7urz
-7OXt8u7iOiDu8Ojj6O3g6/sg5O7j7uLu8OAsIODq8uAg6CDx9+Xy4Cwg4CDy4Orm5SDq7u/o
-6CDx4ujk5fLl6/zx8uIgDQruIOPu8fPk4PDx8uLl7e3u6SDw5ePo8fLw4Pbo6CDoIO7hIPPv
-6+Dy5SDl5Ojt7uPuIO3g6+7j4C48L2ZvbnQ+PC9wPg0KPGhyIGFsaWduPSJjZW50ZXIiPg0K
-PHAgY2xhc3M9InN0eWxlMzIiPlN1Y2Nlc3NmdWwgeW91IGRheSE8L3A+PC90ZD4NCjwvdHI+
-DQo8L3RhYmxlPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+
-Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9w
-Pg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5i
-c3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0K
-PHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHA+Jm5ic3A7
-PC9wPg0KPHA+Jm5ic3A7PC9wPg0KPHAgY2xhc3M9InN0eWxlMjQiPvDo8iwgliDC6PL++CDM
-7eUg7+7q5PbjIPPr++Ht8+vx/zosIPPs7uv//iwg7/Do5efm8fwg/y4gliDIIO/u8u7sLCDU
-wu7n6+Ug7SDr/CA8L3A+DQo8L2JvZHk+DQo8L2h0bWw+DQoNCg0KDQo=
+> This patch splits xilinx_spi into three parts, an OF and a platform
+> driver and generic part.
+> 
+> The generic part now also works on X86 and also supports the Xilinx
+> SPI IP DS570
 
+Unfortunately we already have two fairly significant
+drivers/spi/xilinx_spi.c patches queued in -mm:
+spi-move-more-spi_setup-functionality-into-core.patch and
+spi-move-common-spi_setup-functionality-into-core.patch.  Applying this
+patch on top of those makes rather a mess.
 
+Hopefully things will still be OK if I skip this patch.  You didn't
+identify the dependencies between those nine patchs.  Can you please
+explain that?
 
-
---===============1285392034966118531==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Crystal Reports - New Free Runtime and 30 Day Trial
@@ -199,15 +48,3 @@ Check out the new simplified licensing option that enables unlimited
 royalty-free distribution of the report engine for externally facing 
 server and web deployment.
 http://p.sf.net/sfu/businessobjects
---===============1285392034966118531==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1285392034966118531==--

@@ -1,10 +1,11 @@
-From: "Keturah" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Need my file back
-Date: Thu, 11 Jun 2009 23:17:30 +0000
-Message-ID: <XBPIYDFXJROXG.GGMKQBJTSKJEDSW2212452932@[91.135.29.66]>
+From: "Accept Our Congratulation !!!" <tonymark136-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Subject: Accept Our congratulation
+Date: Fri, 12 Jun 2009 00:30:01 +0200
+Message-ID: <20090528.UEFAJQREPYNDBUAM@googlemail.com>
+Reply-To: Attention !!! <cbn5-XRx0GT5w0Nh54TAoqtyWWQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0155885053974412483=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============8117196301964953425=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,84 +17,100 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0155885053974412483==
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+This message is in MIME format with multi-part. Since your mail reader does not
+understand this format, some or all of this message may not be legible.
 
-<html>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>
-</title>
-</head>
-<body bgcolor="#ececec" style="margin: 0; padding: 0; background-color:#ececec; font-family: Verdana, Arial, Helvetica, sans-serif;">
-<table align="center" width="670" cellpadding="0" cellspacing="0" style="font-family:Verdana, Arial, Helvetica, sans-serif; margin: 0 auto; padding: 0; background-color: #fff; border: 5px solid #003366;">
-<tr>
-<td align="center" style="margin: 0; padding: 0;">
-<p style="font-size:11px; margin:20px 0; padding: 0;">
-<a href="http://egjy.ciytulaq.cn/?lor=E095E&qxe=e095e23e5a">
-View as a Web page</a> </p></td>
+--===============8117196301964953425==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_631_3151_96877244.56203233"
 
-</tr>
-<tr>
-<td style="text-align: center"><a href="http://iwired.ciytulaq.cn/?va=E095E&elu=e095e23e5a">
-<img border="0" alt="Image blocked? CLick here to show it" src="http://vyybos.ciytulaq.cn/spacer.gif"></a><br></td>
-</tr>
-<tr>
+This message is in MIME format with multi-part. Since your mail reader does not
+understand this format, some or all of this message may not be legible.
 
-<td bgcolor="#f3962d" align="center" style="font-size:10px; text-align: center; padding:15px 10px 30px;">
-<p><font face="Verdana, Arial, Helvetica, sans-serif" size="1">© 1997-2009 <a href="http://ucyl.ciytulaq.cn/?gj=E095E&es=e095e23e5a">
-Typaed Ebjsaj &amp; Services.</a> Please read our <a href="http://mqrq.ciytulaq.cn/?or=E095E&xer=e095e23e5a">
-disclaimer.</a></font></p></td>
-</tr>
-</tr>
-</table>
+------=_NextPart_631_3151_96877244.56203233
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: base64
+
+QXR0ZW50aW9uOiBBVE0gQ2FyZCBCZW5lZmljaWFyeSwgDQoNCkkgd2lzaCB0byB1c2UgdGhpcyBt
+ZWRpdW0gdG8gaW5mb3JtIHlvdSB0aGF0IHlvdXIgTE9UVEVSWS9JTkhFUklUQU5DRSBQYXltZW50
+IG9mIDI3MCwwMDAuMDAgRXVyb3MgKFR3byBIdW5kcmVkIFNldmVudHkgdGhvdXNhbmQgRXVyb3Mp
+IGZyb20gRVVST1BFIEZJTkFOQ0UgQkFOSyBPRiBORVRIRVJMQU5EUyBoYXZlIGJlZW4gUkVMRUFT
+RUQgYW5kIEFQUFJPVkVEIGZvciBvbndhcmQgVHJhbnNmZXIgdG8geW91IHZpYSBhbiBBVE0gQ0FS
+RCB3aGljaCB5b3Ugd2lsbCB1c2UgdG8gd2l0aGRyYXcgYWxsIHRoZSAyNzAsMDAwLjAwIEV1cm9z
+IGluIGFueSBBVE0gU0VSVklDRSBNQUNISU5FIGluIGFueSBwYXJ0IG9mIHRoZSB3b3JsZCwgQnV0
+IHRoZSBtYXhpbXVtIHlvdSBjYW4gd2l0aGRyYXcgaW4gYSBkYXkgaXMgNSwwMDAuMDAgb25seS4N
+Cg0KV2UgaGF2ZSBtYW5kYXRlZCBGb3J0dW5hIGJhbmsgTmV0aGVybGFuZHMsIHRvIHNlbmQgeW91
+IHRoZSBBVE0gQ0FSRCBhbmQgUElOIE5VTUJFUiB3aGljaCB5b3Ugd2lsbCB1c2UgdG8gd2l0aGRy
+YXcgYWxsIHlvdXIgMjcwLDAwMC4wMCBFdXJvcyBpbiBhbnkgQVRNIFNFUlZJQ0UgTUFDSElORSBp
+biBhbnkgcGFydCBvZiB0aGUgd29ybGQsIGJ1dCB0aGUgbWF4aW11bSB5b3UgY2FuIHdpdGhkcmF3
+IGluIGEgZGF5IGlzIDUsMDAwLjAwIEV1cm9zIG9ubHkuIFlvdSBhcmUgdGhlcmVmb3JlIGFkdmlj
+ZSB0byBjb250YWN0IHRoZSBIZWFkIG9mIEFUTSBDQVJEIEFjY291bnQgRGVwYXJ0bWVudCBvZiBG
+b3J0dW5hIGJhbmsgTmV0aGVybGFuZHMuIA0KDQpDb250YWN0IFBlcnNvbjogUHJvZi5Ub255IE1h
+cmsNCkVtYWlsIGFkZHJlc3M6IHByb2YudG9ueW1hcmtAZ29vZ2xlbWFpbC5jb20NCg0KVGVsbCBQ
+cm9mLlRvbnkgTWFyaywgdGhhdCB5b3UgcmVjZWl2ZWQgYSBtZXNzYWdlIGZyb20gdGhlIEVVUk9Q
+RSBGSU5BTkNFIEJBTksgT0YgTkVUSEVSTEFORFMgSW5zdHJ1Y3RpbmcgaGltIHRvIHNlbmQgeW91
+IHRoZSBBVE0gQ0FSRCBhbmQgUElOIE5VTUJFUiBXaGljaCB5b3Ugd2lsbCB1c2UgdG8gd2l0aGRy
+YXcgeW91ciAyNzAsMDAwLjAwIEV1cm9zIGluIGFueSBBVE0gU0VSVklDRSBNQUNISU5FIGluIGFu
+eSBwYXJ0IG9mIHRoZSB3b3JsZCBhbHNvIHNlbmRzIGhpbSB5b3VyIGRpcmVjdCBwaG9uZSBOdW1i
+ZXIgYW5kIGNvbnRhY3QgYWRkcmVzcyB3aGVyZSB5b3Ugd2FudCBoaW0gdG8gc2VuZCB0aGUgQVRN
+IENBUkQgYW5kIFBJTiBOVU1CRVIgdG8geW91Lg0KDQpXZSBhcmUgdmVyeSBzb3JyeSBmb3IgdGhl
+IHBsaWdodCB5b3UgaGF2ZSBnb25lIHRocm91Z2ggaW4gdGhlIHBhc3QgWWVhcnMuIFRoYW5rcyBm
+b3IgYWRoZXJpbmcgdG8gdGhpcyBpbnN0cnVjdGlvbiBhbmQgb25jZSBhZ2FpbiBhY2NlcHQgb3Vy
+IENvbmdyYXR1bGF0aW9ucy4NCg0KQmVzdCBSZWdhcmRzDQpNci5EYXZpZCBMbG95ZA0KRm9yLkV1
+cm9wZSBGaW5hbmNlIEJhbmsgQXV0aG9yaXR5IE5M
+
+------=_NextPart_631_3151_96877244.56203233
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: base64
+
+PEhUTUw+PEhFQUQ+PHRpdGxlPkFjY2VwdCBPdXIgY29uZ3JhdHVsYXRpb248L3RpdGxlPg0KPE1F
+VEEgaHR0cC1lcXVpdj1Db250ZW50LVR5cGUgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWlz
+by04ODU5LTEiPg0KPE1FVEEgY29udGVudD0iRW1haWwgTWFya2V0ZXIgTWVzc2FnZSBFZGl0b3Ii
+IG5hbWU9R0VORVJBVE9SPg0KPFNUWUxFIHR5cGU9dGV4dC9jc3M+DQpib2R5LHRhYmxlLHRkLHRy
+LHAsaW5wdXQge2ZvbnQtZmFtaWx5OiBWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBTYW5zLVNl
+cmlmOyBmb250LXNpemU6IDExcHh9DQpociB7aGVpZ2h0OiAxcHh9DQo8L1NUWUxFPg0KPC9IRUFE
+Pg0KPEJPRFk+DQo8RElWPkF0dGVudGlvbjogQVRNIENhcmQgPFNQQU4gY2xhc3M9eXNob3J0Y3V0
+cyBpZD1sd18xMjQxNzMxNjIyXzA+QmVuZWZpY2lhcnk8L1NQQU4+LCA8QlI+PEJSPkkgd2lzaCB0
+byB1c2UgdGhpcyBtZWRpdW0gdG8gaW5mb3JtIHlvdSB0aGF0IHlvdXIgTE9UVEVSWS9JTkhFUklU
+QU5DRSBQYXltZW50IG9mIDI3MCwwMDAuMDAgRXVyb3MmbmJzcDsoVHdvIEh1bmRyZWQgU2V2ZW50
+eSB0aG91c2FuZCBFdXJvcykgZnJvbSBFVVJPUEUgRklOQU5DRSBCQU5LIE9GIE5FVEhFUkxBTkRT
+IGhhdmUgYmVlbiBSRUxFQVNFRCBhbmQgQVBQUk9WRUQgZm9yIG9ud2FyZCBUcmFuc2ZlciB0byB5
+b3UgdmlhIGFuIEFUTSBDQVJEIHdoaWNoIHlvdSB3aWxsIHVzZSB0byB3aXRoZHJhdyBhbGwgdGhl
+IDI3MCwwMDAuMDAgRXVyb3MmbmJzcDtpbiBhbnkgQVRNIFNFUlZJQ0UgTUFDSElORSBpbiBhbnkg
+PFNQQU4gY2xhc3M9eXNob3J0Y3V0cyBpZD1sd18xMjQxNzMxNjIyXzEgc3R5bGU9IkJBQ0tHUk9V
+TkQ6IG5vbmUgdHJhbnNwYXJlbnQgc2Nyb2xsIHJlcGVhdCAwJSAwJTsgQ1VSU09SOiBoYW5kOyBC
+T1JERVItQk9UVE9NOiBtZWRpdW0gbm9uZSI+cGFydCBvZiB0aGUgd29ybGQ8L1NQQU4+LCBCdXQg
+dGhlIG1heGltdW0geW91IGNhbiB3aXRoZHJhdyBpbiBhIGRheSBpcyA1LDAwMC4wMCBFdXJvcyZu
+YnNwO29ubHkuPEJSPjxCUj5XZSBoYXZlIG1hbmRhdGVkIEZvcnR1bmEgYmFuayA8U1BBTiBjbGFz
+cz15c2hvcnRjdXRzIGlkPWx3XzEyNDE3MzE2MjJfMiBzdHlsZT0iQ1VSU09SOiBoYW5kOyBCT1JE
+RVItQk9UVE9NOiAjMDA2NmNjIDFweCBkYXNoZWQiPk5ldGhlcmxhbmRzPC9TUEFOPiwgdG8gc2Vu
+ZCB5b3UgdGhlIEFUTSBDQVJEIGFuZCBQSU4gTlVNQkVSIHdoaWNoIHlvdSB3aWxsIHVzZSB0byB3
+aXRoZHJhdyBhbGwgeW91ciAyNzAsMDAwLjAwIEV1cm9zJm5ic3A7aW4gYW55IEFUTSBTRVJWSUNF
+IE1BQ0hJTkUgaW4gYW55IHBhcnQgb2YgdGhlIHdvcmxkLCBidXQgdGhlIG1heGltdW0geW91IGNh
+biB3aXRoZHJhdyBpbiBhIGRheSBpcyA1LDAwMC4wMCZuYnNwO0V1cm9zJm5ic3A7b25seS4gWW91
+IGFyZSB0aGVyZWZvcmUgYWR2aWNlIHRvIGNvbnRhY3QgdGhlIEhlYWQgb2YgQVRNIENBUkQgQWNj
+b3VudCBEZXBhcnRtZW50IG9mIEZvcnR1bmEgYmFuayBOZXRoZXJsYW5kcy4gPEJSPjxCUj5Db250
+YWN0IFBlcnNvbjogUHJvZi5Ub255IE1hcms8L0RJVj4NCjxESVY+RW1haWwgYWRkcmVzczogPEEg
+aHJlZj0iaHR0cDovL2RlLm1jMTEwNS5tYWlsLnlhaG9vLmNvbS9tYy9jb21wb3NlP3RvPXByb2Yu
+dG9ueW1hcmtAZ29vZ2xlbWFpbC5jb20iIHRhcmdldD1fYmxhbmsgcmVsPW5vZm9sbG93PnByb2Yu
+dG9ueW1hcmtAZ29vZ2xlbWFpbC5jb208L0E+PEJSPjxCUj5UZWxsIFByb2YuVG9ueSBNYXJrLCB0
+aGF0IHlvdSByZWNlaXZlZCBhIG1lc3NhZ2UgZnJvbSB0aGUgRVVST1BFIEZJTkFOQ0UgQkFOSyBP
+RiBORVRIRVJMQU5EUyBJbnN0cnVjdGluZyBoaW0gdG8gc2VuZCB5b3UgdGhlIEFUTSBDQVJEIGFu
+ZCBQSU4gTlVNQkVSIFdoaWNoIHlvdSB3aWxsIHVzZSB0byB3aXRoZHJhdyB5b3VyIDI3MCwwMDAu
+MDAgRXVyb3MmbmJzcDtpbiBhbnkgQVRNIFNFUlZJQ0UgTUFDSElORSBpbiBhbnkgcGFydCBvZiB0
+aGUgd29ybGQgYWxzbyBzZW5kcyBoaW0geW91ciBkaXJlY3QgcGhvbmUgTnVtYmVyIGFuZCBjb250
+YWN0IGFkZHJlc3Mgd2hlcmUgeW91IHdhbnQgaGltIHRvIHNlbmQgdGhlIEFUTSBDQVJEIGFuZCBQ
+SU4gTlVNQkVSIHRvIHlvdS48QlI+PEJSPldlIGFyZSB2ZXJ5IHNvcnJ5IGZvciB0aGUgcGxpZ2h0
+IHlvdSBoYXZlIGdvbmUgdGhyb3VnaCBpbiB0aGUgcGFzdCBZZWFycy4gVGhhbmtzIGZvciBhZGhl
+cmluZyB0byB0aGlzIGluc3RydWN0aW9uIGFuZCBvbmNlIGFnYWluIGFjY2VwdCBvdXIgQ29uZ3Jh
+dHVsYXRpb25zLjxCUj48QlI+QmVzdCBSZWdhcmRzPEJSPk1yLkRhdmlkIExsb3lkPC9ESVY+DQo8
+RElWPkZvci48U1BBTiBjbGFzcz15c2hvcnRjdXRzIGlkPWx3XzEyNDE3MzE2MjJfND5FdXJvcGU8
+L1NQQU4+IEZpbmFuY2UgQmFuayBBdXRob3JpdHkmbmJzcDtOTDwvRElWPjwvQk9EWT48L0hUTUw+
+
+------=_NextPart_631_3151_96877244.56203233--
 
 
-<br><br>
-
-<center>
-
-<table cellspacing="0" cellpadding="0" width="600" border="0">
-<tr><td style="padding-right:20px;padding-left:10px;padding-bottom:10px;padding-top:10px">
-
-
-
-
-
-
-
-<table cellspacing="0" cellpadding="0" width="600" border="0">
-  <tbody>
-    <tr>
-      <td valign="top" align="left" style="font-size:10px; line-height:18px; font-family:Arial, Helvetica, sans-serif; color:#666666;">
-        This email was delivered to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org on behalf of Asjvoc Pymulot &amp; Services. <br>
-
-        <a style="text-decoration: underline; font-size:10px; color:#666666; font-family:Arial, Helvetica, sans-serif;" href="http://tusjpa.ciytulaq.cn/?mo=E095E&ax=e095e23e5a">
-		Unsubscribe | Manage/update your email preferences?our email preferences?</a><br> Postal
-		address: 823 GM Uhonq Blvd, Ste. 80, Hatqfo, Odyco 80539</td>
-    <td><br></td>
-
-    </tr>
-  </tbody>
-</table>
-
-
-
-
-</td></tr>
-
-</table>
-
-</center>
-
-</body>
-</html>
-
-
---===============0155885053974412483==
+--===============8117196301964953425==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -105,7 +122,7 @@ Check out the new simplified licensing option that enables unlimited
 royalty-free distribution of the report engine for externally facing 
 server and web deployment.
 http://p.sf.net/sfu/businessobjects
---===============0155885053974412483==
+--===============8117196301964953425==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -116,4 +133,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0155885053974412483==--
+--===============8117196301964953425==--

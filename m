@@ -1,9 +1,9 @@
-From: Club Vacation Deals <hot-deals-u0uJHfCAc1Hf17m2raTrtZqQE7yCjDx5@public.gmane.org>
-Subject: Summer Vacations in Puerto Vallarta
-Date: Wed, 10 Jun 2009 14:50:54 -0400
-Message-ID: <5f049d7e188afaa9abcf2c027adc2472@vallarta-paradise.com>
+From: "Marget" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Will you go to conference?
+Date: Thu, 11 Jun 2009 06:24:06 +0000
+Message-ID: <FBBFYBCLVPYN.GVUYKWDENIMBNVT7754431760@[213.248.150.107]>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3570548277084802729=="
+Content-Type: multipart/mixed; boundary="===============2168276194274563023=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,96 +16,84 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3570548277084802729==
-Content-Transfer-Encoding: 8bit
-Content-Type: text/html; charset="UTF-8"
+--===============2168276194274563023==
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 
 <html>
-<body>
-	<div align="center">
-		<table border="0" cellpadding="0" cellspacing="0" width="650" height="152">
-			<tbody>
-				<tr>
-					<th scope="col" valign="top" align="center">
-						<a href="http://www.vallarta-paradise.com/deave-0609-1209/maillist.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_01.jpg" width="330" height="152" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_02.jpg" width="320" height="152" border="0"></a>
-					</th>
-				</tr>	
-			</tbody>
-		</table>
-		
-		<table border="0" cellpadding="0" cellspacing="0" width="650" height="311">	
-			<tbody>		
-				<tr>			
-					<th scope="col" valign="top" align="center">				
-						<a href="http://www.vallarta-paradise.com/deave-0609-1209/maillist.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_03.jpg" width="330" height="311" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_04.jpg" width="320" height="311" border="0"></a>
-					</th>		
-				</tr>
-			</tbody>
-		</table>
-		
-		<table border="0" cellpadding="0" cellspacing="0" width="650" height="251">
-			<tbody>
-				<tr>
-					<th scope="col" valign="top" align="center">
-						<a href="http://www.vallarta-paradise.com/deave-0609-1209/maillist.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_05.jpg" width="330" height="251" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_06.jpg" width="320" height="251" border="0"></a>
-					</th>
-				</tr>
-			</tbody>
-		</table>
-		
-		<table border="0" cellpadding="0" cellspacing="0" width="650" height="300">
-			<tbody>
-				<tr>
-					<th scope="col" valign="top" align="center">
-						<a href="http://www.vallarta-paradise.com/deave-0609-1209/maillist.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_07.jpg" width="330" height="300" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_08.jpg" width="320" height="300" border="0"></a>
-					</th>
-				</tr>
-			</tbody>
-		</table>
-		
-		<table border="0" cellpadding="0" cellspacing="0" width="650" height="76">
-			<tbody>
-				<tr>
-					<th scope="col" valign="top" align="center">
-						<a href="http://www.vallarta-paradise.com/deave-0609-1209/maillist.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_09.jpg" width="201" height="76" border="0"></a><a href="http://www.vallarta-paradise.com/deave-0609-1209/maillist.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.vacationlivehelp.com/livehelp.php?department=1" target="_blank"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_10.jpg" width="236" height="76" border="0"></a><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise
- _velas_marival_summer09_11.jpg" width="213" height="76" border="0">
-					</th>
-				</tr>
-			</tbody>
-		</table>
-		
-		<table border="0" cellpadding="0" cellspacing="0" width="650" height="42">
-			<tbody>
-				<tr>
-					<th scope="col" valign="top" align="center">
-						<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/deave-0609-1209/paradise_velas_marival_summer09_12.jpg" width="650" height="42" border="0">
-					</th>
-				</tr>
-			</tbody>
-		</table>
-		
-		<table border="0" cellpadding="0" cellspacing="0" width="650" height="30">
-			<tbody>
-				<tr>
-					<th scope="col" valign="top" align="center" height="79">
-						This is an exclusive promotion from <a href="http://www.vallarta-paradise.com/deave-0609-1209/maillist.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com">Club Vacation Deals</a><br>
-						Telephone in Mexico &nbsp; &nbsp; +52 (322) 224 0347<br>
-						Los Angeles, CA &nbsp; &nbsp; (310) 598 2091<br>
-						New York, NY &nbsp; &nbsp; (212) 845 9362<br>
-						All reservations are subject to availability<br>
-						<a href="http://www.vallarta-paradise.com/deave-0609-1209/maillist.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=subscribe" target="_blank">Click here to receive more promotions</a><br>
-						<a href="http://www.vallarta-paradise.com/deave-0609-1209/maillist.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=unsubscribe" target="_blank">Click here to unsubscribe from our mailing list</a>
-						<img src="http://www.vallarta-paradise.com/deave-0609-1209/image.php?promo=7&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
-					</th>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>
+</title>
+</head>
+<body bgcolor="#ececec" style="margin: 0; padding: 0; background-color:#ececec; font-family: Verdana, Arial, Helvetica, sans-serif;">
+<table align="center" width="670" cellpadding="0" cellspacing="0" style="font-family:Verdana, Arial, Helvetica, sans-serif; margin: 0 auto; padding: 0; background-color: #fff; border: 5px solid #003366;">
+<tr>
+<td align="center" style="margin: 0; padding: 0;">
+<p style="font-size:11px; margin:20px 0; padding: 0;">
+<a href="http://elur.yocjufax.cn/?via=3103E&ady=3103e116c9">
+View as a Web page</a> </p></td>
+
+</tr>
+<tr>
+<td style="text-align: center"><a href="http://jhj.yocjufax.cn/?evu=3103E&ku=3103e116c9">
+<img border="0" alt="Image blocked? CLick here to show it" src="http://onjdiu.yocjufax.cn/spacer.gif"></a><br></td>
+</tr>
+<tr>
+
+<td bgcolor="#f3962d" align="center" style="font-size:10px; text-align: center; padding:15px 10px 30px;">
+<p><font face="Verdana, Arial, Helvetica, sans-serif" size="1">© 1997-2009 <a href="http://xicasq.yocjufax.cn/?vjp=3103E&yp=3103e116c9">
+Ypugi Ajjn &amp; Services.</a> Please read our <a href="http://iyh.yocjufax.cn/?ve=3103E&yc=3103e116c9">
+disclaimer.</a></font></p></td>
+</tr>
+</tr>
+</table>
+
+
+<br><br>
+
+<center>
+
+<table cellspacing="0" cellpadding="0" width="600" border="0">
+<tr><td style="padding-right:20px;padding-left:10px;padding-bottom:10px;padding-top:10px">
+
+
+
+
+
+
+
+<table cellspacing="0" cellpadding="0" width="600" border="0">
+  <tbody>
+    <tr>
+      <td valign="top" align="left" style="font-size:10px; line-height:18px; font-family:Arial, Helvetica, sans-serif; color:#666666;">
+        This email was delivered to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org on behalf of Iqtqov Acifyb &amp; Services. <br>
+
+        <a style="text-decoration: underline; font-size:10px; color:#666666; font-family:Arial, Helvetica, sans-serif;" href="http://jkamoa.yocjufax.cn/?uny=3103E&iux=3103e116c9">
+		Unsubscribe | Manage/update your email preferences?our email preferences?</a><br> Postal
+		address: 522 UY Ajhyk Blvd, Ste. 20, Ujaw, Hjmog 20019</td>
+    <td><br></td>
+
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+</td></tr>
+
+</table>
+
+</center>
+
 </body>
 </html>
 
 
---===============3570548277084802729==
+--===============2168276194274563023==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -117,7 +105,7 @@ Check out the new simplified licensing option that enables unlimited
 royalty-free distribution of the report engine for externally facing 
 server and web deployment.
 http://p.sf.net/sfu/businessobjects
---===============3570548277084802729==
+--===============2168276194274563023==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -128,4 +116,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============3570548277084802729==--
+--===============2168276194274563023==--

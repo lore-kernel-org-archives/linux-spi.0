@@ -1,107 +1,80 @@
-From: Rini van Zetten <rini@arvoo.nl>
-Subject: [PATCH -mm][POWERPC] mpc8xxx : allow SPI without cs.
-Date: Fri, 12 Jun 2009 10:59:32 +0200
-Message-ID: <4A3218F4.20503@arvoo.nl>
-References: <4A30CA1F.4000702@arvoo.nl>
-	<7071E2AF-65ED-41C2-AFE7-06E9336619CB@kernel.crashing.org>
+From: "Torie" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Ridiculous Obama's video
+Date: Fri, 12 Jun 2009 10:21:01 +0000
+Message-ID: <TKNDJJSZEZGKY.VWCWQAQLEULWIER2363176438@mail.proset.cz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linuxppc-dev list <Linuxppc-dev@ozlabs.org>
-To: Kumar Gala <galak@kernel.crashing.org>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <7071E2AF-65ED-41C2-AFE7-06E9336619CB@kernel.crashing.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: multipart/mixed; boundary="===============5466557699644498987=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds the possibility to have a spi device without a cs.
+--===============5466557699644498987==
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 
-For example, the dts file should look something like this:
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<center>
+<table width="600" cellpadding="0" cellspacing="0" border="0"> <tr>  <td width="100%" align="center">
+	<font face="verdana" size="1" color="#444444">To view this email as a web
+	page, go
+<a href="http://gqqkjm.feqhasit.cn/?jn=C6825&uw=c68255bf2f" >
+	here.</a> <br><br>  </font>  </td> </tr> </table> </center><head>
 
-spi-controller {
-        gpios = <&pio1 1 0      /* cs0 */
-                 0              /* cs1, no GPIO */
-                 &pio2 2 0>;    /* cs2 */
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head><body bgcolor="#F1F0ED" text="#333333">
+
+<a name="NLTop"></a><table width="590" border="0" cellspacing="0" cellpadding="0" align="center" class="Tahoma11"><tr>
+	<td bgcolor="#FFFFFF" style="text-align: center"><a href="http://dyzy.feqhasit.cn/?od=C6825&yqz=c68255bf2f">
+	<img src="http://umykyj.feqhasit.cn/spacer.gif" border="0" alt="Click here if no image"></a><br><br><table width="100%" border="0" cellspacing="2" cellpadding="0" bgcolor="#006666"><tr><td><img src="http://image.bnpmedia-email.com/f906da17-8.gif" width="8" height="8"></td></tr></table></td></tr></table>
+<center>
+
+<table width="600"><font face="verdana" size="1">
+<tr><td><font face="verdana" size="1">This e-mail was sent to you on behalf Aihu.</td></tr>
+<tr><td> </td></tr>
+
+<tr><td><font face="verdana" size="1"><a href="http://natjy.feqhasit.cn/?tjw=C6825&iw=c68255bf2f">
+	Update your profile/e-mail address</a></td></tr>
+<tr><td><font face="verdana" size="1"><a href="http://rqehy.feqhasit.cn/?qga=C6825&miy=c68255bf2f">
+	One-Click Unsubscribe</a></td></tr>
+<tr><td> </td></tr>
+<tr><td><font face="verdana" size="1"><a href="http://yfi.feqhasit.cn/?og=C6825&eme=c68255bf2f">
+	View our Privacy Policy</a></td></tr>
+</table>
+</center>
+
+</body></html>
 
 
+--===============5466557699644498987==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Signed-off-by: Rini van Zetten <rini@arvoo.nl>
----
-Changes :
-	patch against 2.6.30-rc8-mm1
+------------------------------------------------------------------------------
+Crystal Reports - New Free Runtime and 30 Day Trial
+Check out the new simplified licensing option that enables unlimited
+royalty-free distribution of the report engine for externally facing 
+server and web deployment.
+http://p.sf.net/sfu/businessobjects
+--===============5466557699644498987==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
---- drivers/spi/spi_mpc8xxx.c.org	2009-06-12 10:45:21.000000000 +0200
-+++ drivers/spi/spi_mpc8xxx.c	2009-06-12 10:54:48.000000000 +0200
-@@ -666,9 +666,10 @@ static void mpc8xxx_spi_cs_control(struc
-  	struct mpc8xxx_spi_probe_info *pinfo = to_of_pinfo(dev->platform_data);
-  	u16 cs = spi->chip_select;
-  	int gpio = pinfo->gpios[cs];
--	bool alow = pinfo->alow_flags[cs];
--
--	gpio_set_value(gpio, on ^ alow);
-+	if (gpio != -EEXIST) {
-+		bool alow = pinfo->alow_flags[cs];
-+		gpio_set_value(gpio, on ^ alow);
-+	}
-  }
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-  static int of_mpc8xxx_spi_get_chipselects(struct device *dev)
-@@ -707,27 +708,29 @@ static int of_mpc8xxx_spi_get_chipselect
-  		enum of_gpio_flags flags;
-
-  		gpio = of_get_gpio_flags(np, i, &flags);
--		if (!gpio_is_valid(gpio)) {
-+		if (gpio_is_valid(gpio)) {
-+			ret = gpio_request(gpio, dev_name(dev));
-+			if (ret) {
-+				dev_err(dev, "can't request gpio #%d: %d\n", i, ret);
-+				goto err_loop;
-+			}
-+
-+			pinfo->gpios[i] = gpio;
-+			pinfo->alow_flags[i] = flags & OF_GPIO_ACTIVE_LOW;
-+
-+			ret = gpio_direction_output(pinfo->gpios[i],
-+					pinfo->alow_flags[i]);
-+			if (ret) {
-+				dev_err(dev, "can't set output direction for gpio "
-+						"#%d: %d\n", i, ret);
-+				goto err_loop;
-+			}
-+		} else if (gpio == -EEXIST) {
-+			pinfo->gpios[i] = -EEXIST;
-+		} else {
-  			dev_err(dev, "invalid gpio #%d: %d\n", i, gpio);
-  			goto err_loop;
-  		}
--
--		ret = gpio_request(gpio, dev_name(dev));
--		if (ret) {
--			dev_err(dev, "can't request gpio #%d: %d\n", i, ret);
--			goto err_loop;
--		}
--
--		pinfo->gpios[i] = gpio;
--		pinfo->alow_flags[i] = flags & OF_GPIO_ACTIVE_LOW;
--
--		ret = gpio_direction_output(pinfo->gpios[i],
--					    pinfo->alow_flags[i]);
--		if (ret) {
--			dev_err(dev, "can't set output direction for gpio "
--				"#%d: %d\n", i, ret);
--			goto err_loop;
--		}
-  	}
-
-  	pdata->max_chipselect = ngpios;
---
+--===============5466557699644498987==--

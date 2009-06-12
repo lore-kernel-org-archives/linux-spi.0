@@ -1,80 +1,75 @@
-From: "Torie" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Ridiculous Obama's video
-Date: Fri, 12 Jun 2009 10:21:01 +0000
-Message-ID: <TKNDJJSZEZGKY.VWCWQAQLEULWIER2363176438@mail.proset.cz>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5466557699644498987=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Aaro Koskinen <aaro.koskinen@nokia.com>
+Subject: [PATCH] OMAP: McSPI: Fix RX DMA transfer path
+Date: Fri, 12 Jun 2009 15:31:50 +0300
+Message-ID: <1244809910-4014-1-git-send-email-aaro.koskinen@nokia.com>
+Cc: linux-omap@vger.kernel.org,
+	Eero Nurkkala <ext-eero.nurkkala@nokia.com>
+To: dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <>
+References: <>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5466557699644498987==
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+From: Eero Nurkkala <ext-eero.nurkkala@nokia.com>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<center>
-<table width="600" cellpadding="0" cellspacing="0" border="0"> <tr>  <td width="100%" align="center">
-	<font face="verdana" size="1" color="#444444">To view this email as a web
-	page, go
-<a href="http://gqqkjm.feqhasit.cn/?jn=C6825&uw=c68255bf2f" >
-	here.</a> <br><br>  </font>  </td> </tr> </table> </center><head>
+When data is read through DMA, the last element must be read separately
+through the RX register. It cannot be transferred by the DMA. For further
+details see e.g. OMAP3430 TRM.
 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-</head><body bgcolor="#F1F0ED" text="#333333">
+Without the fix the driver causes extra clocks to be clocked to the
+bus after DMA RX operations. This can cause interesting behaviour with
+some devices.
 
-<a name="NLTop"></a><table width="590" border="0" cellspacing="0" cellpadding="0" align="center" class="Tahoma11"><tr>
-	<td bgcolor="#FFFFFF" style="text-align: center"><a href="http://dyzy.feqhasit.cn/?od=C6825&yqz=c68255bf2f">
-	<img src="http://umykyj.feqhasit.cn/spacer.gif" border="0" alt="Click here if no image"></a><br><br><table width="100%" border="0" cellspacing="2" cellpadding="0" bgcolor="#006666"><tr><td><img src="http://image.bnpmedia-email.com/f906da17-8.gif" width="8" height="8"></td></tr></table></td></tr></table>
-<center>
+Reported-by: Juuso Oikarinen <juuso.oikarinen@nokia.com>
+Signed-off-by: Juuso Oikarinen <juuso.oikarinen@nokia.com>
+Signed-off-by: Eero Nurkkala <ext-eero.nurkkala@nokia.com>
+[aaro.koskinen@nokia.com: Simplified the patch while keeping the idea.]
+Signed-off-by: Aaro Koskinen <aaro.koskinen@nokia.com>
+---
+ drivers/spi/omap2_mcspi.c |   21 ++++++++++++++++++++-
+ 1 files changed, 20 insertions(+), 1 deletions(-)
 
-<table width="600"><font face="verdana" size="1">
-<tr><td><font face="verdana" size="1">This e-mail was sent to you on behalf Aihu.</td></tr>
-<tr><td> </td></tr>
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index d6d0c5d..0f640b0 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -269,7 +269,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 
+ 	if (rx != NULL) {
+ 		omap_set_dma_transfer_params(mcspi_dma->dma_rx_channel,
+-				data_type, element_count, 1,
++				data_type, element_count - 1, 1,
+ 				OMAP_DMA_SYNC_ELEMENT,
+ 				mcspi_dma->dma_rx_sync_dev, 1);
+ 
+@@ -300,6 +300,25 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 	if (rx != NULL) {
+ 		wait_for_completion(&mcspi_dma->dma_rx_completion);
+ 		dma_unmap_single(NULL, xfer->rx_dma, count, DMA_FROM_DEVICE);
++		omap2_mcspi_set_enable(spi, 0);
++		if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0) &
++			OMAP2_MCSPI_CHSTAT_RXS)) {
++			u32 w;
++
++			w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
++			if (word_len <= 8)
++				((u8 *)xfer->rx_buf)[element_count - 1] = w;
++			else if (word_len <= 16)
++				((u16 *)xfer->rx_buf)[element_count - 1] = w;
++			else /* word_len <= 32 */
++				((u32 *)xfer->rx_buf)[element_count - 1] = w;
++		} else {
++			dev_err(&spi->dev, "DMA RX last word empty");
++			count -= (word_len <= 8)  ? 1 :
++				 (word_len <= 16) ? 2 :
++			       /* word_len <= 32 */ 4;
++		}
++		omap2_mcspi_set_enable(spi, 1);
+ 	}
+ 	return count;
+ }
+-- 
+1.5.4.3
 
-<tr><td><font face="verdana" size="1"><a href="http://natjy.feqhasit.cn/?tjw=C6825&iw=c68255bf2f">
-	Update your profile/e-mail address</a></td></tr>
-<tr><td><font face="verdana" size="1"><a href="http://rqehy.feqhasit.cn/?qga=C6825&miy=c68255bf2f">
-	One-Click Unsubscribe</a></td></tr>
-<tr><td> </td></tr>
-<tr><td><font face="verdana" size="1"><a href="http://yfi.feqhasit.cn/?og=C6825&eme=c68255bf2f">
-	View our Privacy Policy</a></td></tr>
-</table>
-</center>
-
-</body></html>
-
-
---===============5466557699644498987==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Crystal Reports - New Free Runtime and 30 Day Trial
-Check out the new simplified licensing option that enables unlimited
-royalty-free distribution of the report engine for externally facing 
-server and web deployment.
-http://p.sf.net/sfu/businessobjects
---===============5466557699644498987==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5466557699644498987==--

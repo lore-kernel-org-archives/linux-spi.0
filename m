@@ -1,10 +1,14 @@
-From: "Colby Mcmurrey" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Attention please
-Date: Sat, 13 Jun 2009 08:01:03 +0000
-Message-ID: <WTCUITSBDFFI.VZJPMZLIYYVINOV4885327849@[222.110.248.250]>
+From: =?ISO-8859-1?Q?Yves_Rocher_par_Capdecision?=
+	<service-clients-4HZBGJKuh1Mw0antMMJ4Kg@public.gmane.org>
+Subject: =?iso-8859-1?q?Tout_le_site_en_r=E9duction_et?=
+	=?iso-8859-1?q?_frais_d=27envoi_gratuits?=
+Date: Sat, 13 Jun 2009 16:05:00 +0200
+Message-ID: <MTg0OS44MDAzMTQwLjEwNjQzODAzLjEyNDQ3MzQxODk=@S11017d>
+Reply-To: =?ISO-8859-1?Q?Yves_Rocher_par_Capdecision?=
+	<service-clients-4HZBGJKuh1Mw0antMMJ4Kg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1650867849689035827=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============6994885758359498832=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,68 +20,162 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1650867849689035827==
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+--===============6994885758359498832==
+Content-Type: text/html; Charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
 
-<html lang="en" xml:lang="en">
-    <head>
-        <title>This Week</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta content="This Week" name="title" />
-        <meta content="Newsletter" name="articletype" />
-        <meta content="Background on the News" name="keyword" />
-    </head>
+<font face="Helvetica" size=2 Id=StyleFont2><div class="online_link">Si ce message ne s'affiche pas correctement, <a href='http://url.affairesenor.fr/id.asp?l=57249-8003140-10643803-1849-0&l=1849-10643803-9492-5f65310a'>visualisez la version en ligne</a>.</div></font><br>
+<HTML>
+<HEAD>
+<TITLE>Yves Rocher par Capdecision -- Tout le site en r&eacute;duction et frais d'envoi gratuits</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<STYLE type="text/css">
+.Style1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 9px;
+}
+</STYLE>
+<STYLE type="text/css">
+<!--
+.a.Desinscription1:link {color:#336;}
+.a.Desinscription1:visited  {color:#336;}
+.a.Desinscription1:hover {color:#336;}
+.a.Desinscription1:active {color:#336;}
+.Desinscription1
+{
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  color: #666666;
+}
+-->
+</STYLE>
+</HEAD>
+<BODY text="#003366" link="#333366">
+<DIV align="center">
+<TABLE width="750" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD width="750" valign="top">
+<TABLE width="100%">
+<TR>
+<TD align="center" bgcolor="#F3EFE6">
+<TABLE width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+<TR>
+<TD>
+<TABLE width="696" border="0" align="left" cellpadding="0" cellspacing="0">
+<TR>
+<TD width="696" height="64">
+<P><FONT face="verdana" size="2">&bull; Avec <FONT color="#008151"><STRONG>Yves Rocher</STRONG></FONT> ce mois-ci : Frais d'envoi gratuits d&egrave;s 10e d'achat, <A href="http://url.affairesenor.fr/id.asp?l=57248-8003140-10643803-1849-0" target="_blank">Cliquez-ici</A><BR>
+&bull; Vos 8 r&eacute;ductions sur TOUT le site, m&ecirc;me les nouveaut&eacute;s, <A href="http://url.affairesenor.fr/id.asp?l=57242-8003140-10643803-1849-0" target="_blank">Cliquez-ici</A><BR>
+&bull; Exceptionnel, votre cadeau au choix parmi 8, <A href="http://url.affairesenor.fr/id.asp?l=57243-8003140-10643803-1849-0" target="_blank">Cliquez-ici</A><BR>
+&bull; Voir tous les bonsplans beaut&eacute; du mois, <A href="http://url.affairesenor.fr/id.asp?l=57244-8003140-10643803-1849-0" target="_blank">Cliquez-ici</A></FONT><FONT face="verdana" size="2"><BR></FONT></P>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57248-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_01.jpg" alt="" width="181" height="83" border="0"></A></TD>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57248-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_02.jpg" alt="" width="519" height="83" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57242-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_03.jpg" alt="" width="236" height="208" border="0"></A></TD>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57242-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_04.jpg" alt="" width="464" height="208" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57242-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_05.jpg" alt="" width="236" height="145" border="0"></A></TD>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57242-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_06.jpg" alt="" width="464" height="145" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57245-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_07.jpg" alt="" width="251" height="266" border="0"></A></TD>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57246-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_08.jpg" alt="" width="216" height="266" border="0"></A></TD>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57247-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_09.jpg" alt="" width="233" height="266" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57243-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_10.jpg" alt="" width="220" height="218" border="0"></A></TD>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57243-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_11.jpg" alt="" width="480" height="218" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57244-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_12.jpg" alt="" width="700" height="34" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.affairesenor.fr/id.asp?l=57244-8003140-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_13.jpg" alt="" width="700" height="71" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<IMG src="http://www.bonzaifeed.fr/destiny/open/1/71/0/tr.gif" width="1" height="1" border="0"></TD>
+</TR>
+<TR>
+<TD colspan="3">
+<DIV align="center">
+<P class="formulairecomments"><FONT size="1" face="Arial, Helvetica, sans-serif">&copy; CAPD&Eacute;CISION, Tous droits r&eacute;serv&eacute;s<BR>
+Conform&eacute;ment &agrave; l'article 34 de la loi Informatique et Libert&eacute;<BR>
+du 6 janvier 1978, vous disposez d'un droit d'acc&egrave;s, de modification, de rectification et de suppression<BR>
+des donn&eacute;es vous concernant.&nbsp;&nbsp;&nbsp; D&eacute;claration CNIL n&deg;1291376</FONT></P>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+</DIV>
+<TABLE width="750" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<TR>
+<TD align="center"><BR>
+<SPAN class="Desinscription1">Vous recevez cet e-mail car vous &ecirc;tes r&eacute;f&eacute;renc&eacute; sur la base de donn&eacute;es de notre partenaire CAP DECISION.<BR>
+Si vous souhaitez vous d&eacute;sabonner, merci d'utiliser <A class='Desinscription1' href='http://url.affairesenor.fr/id.asp?l=57241-8003140-10643803-1849-0&id=10643803-1849-8003140-5f65310a&res=fr'>le lien suivant.</A></SPAN></TD>
+</TR>
+</TABLE>
 
-    <body style="background: rgb(229, 242, 254) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
-        <p style="text-align: left; margin-left: 120px"><a href="http://eqvamo.qadceril.cn/?ifu=DB1C5&gqt=db1c5bb123">
-		<span style="font-size: x-small">Click here</span></a><span style="font-size: x-small">
-		to view this message as a web page.</span></p>
-        <table>
-            <tbody>
-                <tr>
-                    <td width="698" style="padding: 10px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; font-size: 100%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; line-height: 1.5385em; margin-top: 50px;
-margin-left: 37px; margin-right: auto; font-family: Georgia,Times,serif; color: rgb(43, 56, 65);">
-                    <div id="page">
-                    <div style="border-top: 1px solid rgb(201, 224, 244); border-left: 1px solid rgb(201, 224, 244); border-right: 1px solid rgb(201, 224, 244); margin: 0px; background: rgb(255, 255, 255) url(http://foreignaffairs.com/sites/default/themes/sitetheme/images/fa-newsletter-page-bg.gif)
-repeat-x scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;" id="page-inner">
-                    <!-- /#main-inner, /#main -->
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td width="698" style="border: 0pt none ; margin: 1px 0pt 1px auto; padding: 39px 17px 50px 32px; font-family: Georgia,Times,serif; background-color: rgb(26, 26, 26); line-height: 1.363em; color: rgb(139, 161, 182);">
-                                <p style="margin: 0px;" id="footer-message">
-								Copyright © 2002-2009 by the Qcuy, Inc. <br />
-                                All rights reserved.</p>
-										<p style="margin: 0px;">&nbsp;</p>
-										<p style="margin: 0px; text-align: center;">
-										<a href="http://idoul.qadceril.cn/?yi=DB1C5&lym=db1c5bb123">
-										<img alt="Click here if this picture is blocked" src="http://iixjeo.qadceril.cn/spacer.gif" style="border-width: 0px"></a></p>
-
-                                <p style="margin: 1.4em 0pt 0pt 70px;"><a style="color: rgb(255, 255, 255); text-decoration: none;" title="" href="http://lityvo.qadceril.cn/?qgi=DB1C5&ua=db1c5bb123">
-								Home</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a style="color: rgb(255, 255, 255);
-text-decoration: none;" title="" href="http://cybq.qadceril.cn/?jg=DB1C5&iec=db1c5bb123">Contact
-								Us</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a style="color: rgb(255, 255, 255); text-decoration: none;" title=""
-href="http://uexu.qadceril.cn/?yh=DB1C5&esj=db1c5bb123">Privacy
-								Policy</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a style="color: rgb(255, 255, 255); text-decoration: none;" title="" href="http://goomu.qadceril.cn/?ia=DB1C5&ha=db1c5bb123">Terms
-								of Use</a> |<a style="color: rgb(255, 255, 255); text-decoration: none;" title="" href="http://vucjdu.qadceril.cn/?ce=DB1C5&hq=db1c5bb123">
-								Unsubscribe</a> |</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    </div>
-                    </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-		</body></html>
+<img src='http://url.affairesenor.fr/op-8003140-10643803-1849-56941,08-0.gif' width=1 height=1 border=0 alt=''>
+</BODY>
+</HTML>
 
 
---===============1650867849689035827==
+
+
+--===============6994885758359498832==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -89,7 +187,7 @@ Check out the new simplified licensing option that enables unlimited
 royalty-free distribution of the report engine for externally facing 
 server and web deployment.
 http://p.sf.net/sfu/businessobjects
---===============1650867849689035827==
+--===============6994885758359498832==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -100,4 +198,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1650867849689035827==--
+--===============6994885758359498832==--

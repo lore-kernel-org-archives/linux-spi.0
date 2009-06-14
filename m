@@ -1,11 +1,13 @@
-From: David Phild <newsletter-msAlHI2cm5w@public.gmane.org>
-Subject: Je vous offre votre voyance personnalisée 2009
-Date: 14 Jun 2009 09:08:40 -0000
-Message-ID: <20090614090840.6264.qmail@ks363375.kimsufi.com>
-Reply-To: David Phild <newsletter-msAlHI2cm5w@public.gmane.org>
+From: =?ISO-8859-1?Q?Captain_Cooks_Casino?= <service-clients-H5PVNQ+r41PNTsJVu1xUkg@public.gmane.org>
+Subject: =?iso-8859-1?q?Exclusif_500_euros_a_votre_por?=
+	=?iso-8859-1?q?tee?=
+Date: Sun, 14 Jun 2009 19:00:00 +0200
+Message-ID: <MTg0OS44MDAzMTQ0LjEwNjQzODAzLjEyNDQ3Njk2NjU=@S10f452>
+Reply-To: =?ISO-8859-1?Q?Captain_Cooks_Casino?=
+	<service-clients-H5PVNQ+r41PNTsJVu1xUkg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3595654014957692657=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============3503023860757122824=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,92 +19,90 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============3595654014957692657==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_bf81520e1aa8f05e8e500ff5d0d64c52"
-
-
---_----------=_parties_bf81520e1aa8f05e8e500ff5d0d64c52
-Content-Type: text/plain; charset="iso-8859-1"
+--===============3503023860757122824==
+Content-Type: text/html; Charset="ISO-8859-1"
 Content-Transfer-Encoding: 8bit
 
-Version "en ligne" de ce message: http://www.tmrv.com/svi/miroir.php?bat=phild0609_ctrm
+<font face="Helvetica" size=2 Id=StyleFont2><div class="online_link">Si ce message ne s'affiche pas correctement, <a href='http://url.contactenor.fr/id.asp?l=57286-8003144-10643803-1849-0&l=1849-10643803-9496-5f65310a'>visualisez la version en ligne</a>.</div></font><br>
+<HTML>
+<HEAD>
+<TITLE>Captain Cooks Casino -- Exclusif 500 euros a votre portee</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<STYLE type="text/css">
+<!--
+.a.Desinscription1:link {color:#336;}
+.a.Desinscription1:visited  {color:#336;}
+.a.Desinscription1:hover {color:#336;}
+.a.Desinscription1:active {color:#336;}
+.Desinscription1
+{
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  color: #666666;
+}
+-->
+</STYLE>
+</HEAD>
+<BODY text="#003366" link="#333366">
+<DIV align="center">
+<TABLE width="750" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD width="750" valign="top">
+<TABLE id="Table_01" width="650" height="650" border="0" cellpadding="0" cellspacing="0" style="border:solid 1px #4c180a" align="center">
+<TR>
+<TD rowspan="3"><A href="http://url.contactenor.fr/id.asp?l=57284-8003144-10643803-1849-0" target="_blank"><IMG src="http://www.rewards-affiliates.eu/email/ccc/ccc_650x650_190109_cash/images/ccc_650x650_190109_cash-fr-eur_01.jpg" width="162" height="650" border="0" alt=""></A></TD>
+<TD><A href="http://url.contactenor.fr/id.asp?l=57284-8003144-10643803-1849-0" target="_blank"><IMG src="http://www.rewards-affiliates.eu/email/ccc/ccc_650x650_190109_cash/images/ccc_650x650_190109_cash-fr-eur_02.jpg" width="319" height="147" border="0" alt=""></A></TD>
+<TD rowspan="3"><A href="http://url.contactenor.fr/id.asp?l=57284-8003144-10643803-1849-0" target="_blank"><IMG src="http://www.rewards-affiliates.eu/email/ccc/ccc_650x650_190109_cash/images/ccc_650x650_190109_cash-fr-eur_03.jpg" width="169" height="650" border="0" alt=""></A></TD>
+</TR>
+<TR>
+<TD><A href="http://url.contactenor.fr/id.asp?l=57284-8003144-10643803-1849-0" target="_blank"><IMG src="http://www.rewards-affiliates.eu/email/ccc/ccc_650x650_190109_cash/images/ccc_650x650_190109_cash-fr-eur_04.gif" width="319" height="117" border="0" alt=""></A></TD>
+</TR>
+<TR>
+<TD><A href="http://url.contactenor.fr/id.asp?l=57284-8003144-10643803-1849-0" target="_blank"><IMG src="http://www.rewards-affiliates.eu/email/ccc/ccc_650x650_190109_cash/images/ccc_650x650_190109_cash-fr-eur_05.jpg" width="319" height="386" border="0" alt=""></A></TD>
+</TR>
+</TABLE>
+<TABLE width="652" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FF9933" style="border:solid 1px #c57728">
+<TR>
+<TD style="padding:15px;">
+<P>Nous avons le plaisir de vous offrir ce bonus en argent &#224; utiliser pour jouer sur notre casino&nbsp;: aucune entourloupe, aucun engagement, aucun d&#233;p&#244;t requis. Rien de mieux, que de pouvoir essayer sans avoir &#224; acheter.</P>
+<P>Le <A href="http://url.contactenor.fr/id.asp?l=57284-8003144-10643803-1849-0" style="color:eee" target="_blank"><STRONG>Casino Captain Cooks</STRONG></A> est en ligne depuis 1999 et est l&#8217;un des casinos les plus anciens et securis&#180;s qu&#8217;ils existent sur le Web. Avec un service d&#8217;assistance francophone &#224; votre &#233;coute 24 heures sur 24 &#8211; 7 jours sur 7, et des retraits faciles et rapides, Captain Cooks est
+l&#8217;endroit id&#233;al o&#249; jouer.</P>
+<P>Ne perdez pas de temps, profitez tout de suite de votre bonus argent gratuit et amusez-vous bien&nbsp;!!</P>
+<P>Bonne chance!!</P>
+<P>Guillaume Pelletier, Directeur VIP Captain Cooks Casino</P>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD colspan="3">
+<DIV align="center">
+<P class="formulairecomments"><FONT size="1" face="Arial, Helvetica, sans-serif">&#169; CAPD&#201;CISION, Tous droits r&#233;serv&#233;s<BR>
+Conform&#233;ment &#224; l'article 34 de la loi Informatique et Libert&#233;<BR>
+du 6 janvier 1978, vous disposez d'un droit d'acc&#232;s, de modification, de rectification et de suppression<BR>
+des donn&#233;es vous concernant.&nbsp;&nbsp;&nbsp; D&#233;claration CNIL n&#176;1291376</FONT></P>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+</DIV>
+<TABLE width="750" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<TR>
+<TD align="center"><BR>
+<SPAN class="Desinscription1">Vous recevez cet e-mail car vous &#234;tes r&#233;f&#233;renc&#233; sur la base de donn&#233;es de notre partenaire CAP DECISION.<BR>
+Si vous souhaitez vous d&#233;sabonner, merci d'utiliser <A class='Desinscription1' href='http://url.contactenor.fr/id.asp?l=57285-8003144-10643803-1849-0&id=10643803-1849-8003144-5f65310a&res=fr'>le lien suivant.</A></SPAN></TD>
+</TR>
+</TABLE>
 
-Vous avez des problèmes affectifs, financiers et autres...
-Je vous offre votre voyance Gratuite et Personnalisée 2009
-DAVID PHILD
-Voyant expert en télépathie
-
-Auteur de 42 livres à succès
-
-Créateur de l'académie des sciences divinatoires
-Pour recevoir votre voyance GRATUITE, c'est ici >>>
-
-plus d'infos sur http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement
-
---------------------------------
-Cette offre David Phild vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.tmrv.com/svi/gestionserv.php?nb=1671&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_bf81520e1aa8f05e8e500ff5d0d64c52
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
+<img src='http://url.contactenor.fr/op-8003144-10643803-1849-3972,234-0.gif' width=1 height=1 border=0 alt=''>
+</BODY>
+</HTML>
 
 
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>Vous avez des probl&egrave;mes affectifs, financiers et autres...</title>
-</head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.tmrv.com/svi/miroir.php?bat=phild0609_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre David Phild vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;font-family:Arial;color:#042F64;font-size:20px'>
-<p style='display:inline;'> <a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement&leroiurl=http%3A%2F%2Fhome.edt02.net%2Femc%2Fmembership%2Fmstac.php%3Fc%3D100609-84779-96438-193-282019" style="text-decoration:none;color:#042F64;">Vous avez des probl&egrave;mes affectifs, financiers et autres...</a></p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#C03AA0;font-family:Arial;color:#FFFFFF;font-size:24px;'>
-<a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement&leroiurl=http%3A%2F%2Fhome.edt02.net%2Femc%2Fmembership%2Fmstac.php%3Fc%3D100609-84779-96438-193-282019" style="text-decoration:none;color:#FFFFFF;">Je vous offre votre voyance Gratuite et Personnalis&eacute;e 2009</a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;'>
-<div style='text-align:center;font-size:26px'><b><u><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement&leroiurl=http%3A%2F%2Fhome.edt02.net%2Femc%2Fmembership%2Fmstac.php%3Fc%3D100609-84779-96438-193-282019" style="text-decoration:none;color:#000000;">DAVID PHILD</a></u></b></div>
-<br>
-<li>Voyant expert en t&eacute;l&eacute;pathie
-<li>Auteur de 42 livres &agrave; succ&egrave;s
-<li>Cr&eacute;ateur de l'acad&eacute;mie des sciences divinatoires
-<br><br>
-<p align=center><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement&leroiurl=http%3A%2F%2Fhome.edt02.net%2Femc%2Fmembership%2Fmstac.php%3Fc%3D100609-84779-96438-193-282019">Pour recevoir votre voyance GRATUITE, c'est ici >>></a></p>
-</td></tr>
-<tr><td align='center' style='padding:5px;'>
-<table id="emailing" width="500" border="0" cellpadding="0" cellspacing="0">
- <tr><td><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement" target="_blank"><img src="http://home.edt02.net/noprotect//100609/C194470/kit4_david_phild_0905_01.gif" width="500" height="77" border="0" alt="David Phild vous offre votre Voyance Gratuite"></a></td></tr>
- <tr><td><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement" target="_blank"><img src="http://home.edt02.net/noprotect//100609/C194465/kit4_david_phild_0905_02.jpg" width="500" height="71" border="0" alt="D&eacute;couvez ce l'avenir vous r&eacute;serve"></a></td></tr>
- <tr><td><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement" target="_blank"><img src="http://home.edt02.net/noprotect//100609/C194466/kit4_david_phild_0905_03.jpg" width="500" height="76" border="0" alt="David Phild"></a></td></tr>
- <tr><td><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement" target="_blank"><img src="http://home.edt02.net/noprotect//100609/C194469/kit4_david_phild_0905_04.gif" width="500" height="86" border="0" alt="David Phild"></a></td></tr>
- <tr><td><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement" target="_blank"><img src="http://home.edt02.net/noprotect//100609/C194464/kit4_david_phild_0905_05.gif" width="500" height="72" border="0" alt="David Phild"></a></td></tr>
- <tr><td><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement" target="_blank"><img src="http://home.edt02.net/noprotect//100609/C194468/kit4_david_phild_0905_06.gif" width="500" height="80" border="0" alt="David Phild"></a></td></tr>
- <tr><td><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement" target="_blank"><img src="http://home.edt02.net/noprotect//100609/C194471/kit4_david_phild_0905_07.jpg" width="500" height="73" border="0" alt="David Phild"></a></td></tr>
- <tr><td><a href="http://www.tmrv.com/svi/linkserv.php?bat=phild0609_ctrm&nb=1671&n=9047704&c=divertissement" target="_blank"><img src="http://home.edt02.net/noprotect//100609/C194467/kit4_david_phild_0905_08.gif" width="500" height="86" border="0" alt="David Phild"></a></td></tr>
-</table>
-<img src='http://home.edt02.net/emc/membership/mstao.php?c=100609-86601-96438-339-283987&edt_rnd=[timestamp]' width="0" height="0" border="0" alt="David Phild" />
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.tmrv.com/svi/img.php?nb=1671&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
-<p>
-<a href='http://www.tmrv.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.tmrv.com/svi/gestionserv.php?nb=1671&cat=divertissement&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
 
 
---_----------=_parties_bf81520e1aa8f05e8e500ff5d0d64c52--
-
---===============3595654014957692657==
+--===============3503023860757122824==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,7 +114,7 @@ Check out the new simplified licensing option that enables unlimited
 royalty-free distribution of the report engine for externally facing 
 server and web deployment.
 http://p.sf.net/sfu/businessobjects
---===============3595654014957692657==
+--===============3503023860757122824==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -125,4 +125,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============3595654014957692657==--
+--===============3503023860757122824==--

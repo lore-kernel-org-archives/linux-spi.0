@@ -1,10 +1,14 @@
-From: "Mistergooddeal par PleinTemps" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: 3 bons plans ET 2 jours pour en profiter
-Date: Sun, 14 Jun 2009 03:58:52 +0200 (CEST)
-Message-ID: <kl7hib.jipmct@front.ta271.com>
+From: "Communication Officer OptIN Customer Base" <CleanPlusMail-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org>
+Subject: =?windows-1252?q?=5BSPAM=5D_Global_Leadership?=
+	=?windows-1252?q?_in_Handcare_-_Consumer=2C_Auto=2C_Professional_?=
+	=?windows-1252?q?=26_Industrial_Products_-_OTC_=3A_FLKI?=
+Date: Sun, 14 Jun 2009 06:16:23 +0200
+Message-ID: <5fdfec06f697fe4f9cc16d28001b02ca@freesurf.fr>
+Reply-To: CleanPlusMail-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1149378452828927568=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============4272241525090372462=="
+To: "Communications Officer OptIN Preferred Customers OptIN"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,174 +20,266 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1149378452828927568==
+This is a multi-part message in MIME format.
+
+--===============4272241525090372462==
 Content-Type: multipart/alternative;
-	boundary="=_e9a917a96d287becf0aa02bf3b2cd53c"
+	boundary="----=SPLITOR00A_001_-2014678562D"
 
---=_e9a917a96d287becf0aa02bf3b2cd53c
-Content-Type: text/plain; charset="ISO-8859-1"
+This is a multi-part message in MIME format.
+
+------=SPLITOR00A_001_-2014678562D
+Content-Type: text/plain;
+	charset="windows-1252"
 Content-Transfer-Encoding: quoted-printable
 
+ .headerTop { background-color:#ffffff; border-top:0px solid #000000; =
+border-bottom:0px=20
+solid #FFCC66; text-align:right; } .adminText { font-size:10px; =
+color:#FFFFCC;=20
+line-height:200%; font-family:verdana; text-decoration:none; } .headerBar =
+{=20
+background-color:#fcd200; border-top:0px solid #fcd200; border-bottom:0px =
+solid=20
+#333333; } .title { font-size:30px; font-weight:bold; color:#336600; =
+font-family:arial;=20
+line-height:110%; } .subTitle { font-size:11px; font-weight:normal; =
+color:#666666;=20
+font-style:italic; font-family:arial; } td { font-size:12px; =
+color:#000000;=20
+line-height:150%; font-family:trebuchet ms; } .footerRow { =
+background-color:#FFFFCC;=20
+border-top:10px solid #fcd200; } .footerText { font-size:10px; =
+color:#333333;=20
+line-height:100%; font-family:verdana; } a { color:#0063be; =
+color:#0063be;=20
+color:#0063be; }=20
 
---=_e9a917a96d287becf0aa02bf3b2cd53c
-Content-Type: text/html; charset="ISO-8859-1"
+
+
+
+
+Clean Plus Hand Wipes=2E
+Non-abrasive economical hand cleansing wet wipes for frequent use. Ideal =
+for=20
+use in the industrial, farming, maintenance, and office sectors. Removes =
+all=20
+types of dirt, greasy stains, ink, fuel and odours from hands. Qualified =
+hypoallergenic=20
+and lipo-protective. Antibacterial properties. Perfect when soap and =
+water=20
+are not readily available=2E
+
+Clean Plus=AE wants to simplify you life, to make the cleaning process =
+quick=20
+and fun, to deliver nothing but the best=2E
+
+To learn more about Clean Plus=AE, click here=2E
+
+
+Also Try Other Clean Plus=AE Hand Care Products=2E
+Industry, automotive, maintenance, office.... Clean Plus=AE Hand Care =
+offers=20
+hand care products for every professional. Traditional granulated soaps, =
+super-cleaning=20
+hand wet wipes and liquids for people on the move and special creams to =
+protect=20
+and restore your skin=2E
+
+
+To learn more click here
+Capital Pro Marketing is a specialist in the promotion business. We do =
+not=20
+support Spam mails. This email was sent to you because we feel that =
+whether=20
+you are an investor, distributor, or consumer, you are able to benefit =
+from=20
+the above information pertaining to the corporate image building efforts =
+of=20
+our client, products promotion, and Customer Relationship Management =
+activities.=20
+If you feel that the information provided in this mail was not useful to =
+you=20
+and would like to have your name removed from our mailing list, kindly =
+follow=20
+the directions below. My CNN Now will ensure every effort to take your =
+name=20
+off immediately. We apologize for any inconvenience caused=2E
+
+T his message is sent in compliance of the new email Bill HR 1910.Under =
+Bill=20
+HR 1910 passed by the 106th US Congress on May 24, 1999,this message =
+cannot=20
+be considered Spam as long as we include the way to be removed.=20
+
+P er Section HR 1910, Please type "REMOVE ME PLEASE" in the subject line =
+and 
+send to capitalpronews-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org< /td> 
+
+
+------=SPLITOR00A_001_-2014678562D
+Content-Type: text/html;
+	charset="windows-1252"
 Content-Transfer-Encoding: quoted-printable
 
-<html>=0D<head>=0D</head>=0D<body><div align=3D"center"><font size=3D"2" fa=
-ce=3D"Arial, Helvetica, sans-serif"><a href=3D"http://front.ta271.com/php/e=
-mailing/view_mail.php?CODE=3D50HR2F8D_2318133&HASH=3De04a449cbb310a540a4acd=
-e3c023c606">Si vous ne pouvez pas consulter correctement ce message, suivez=
- ce lien</a></font></div>=0D<div style=3D"BACKGROUND: #ffffff; COLOR: #3333=
-33; FONT-FAMILY: Arial, Helvetica, sans-serif">=0D<table cellspacing=3D"0" =
-cellpadding=3D"0" width=3D"650" align=3D"center" border=3D"0">=0D<tbody>=0D=
-<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" width=3D"650" bord=
-er=3D"0">=0D<tbody>=0D<tr>=0D<td colspan=3D"3"><a href=3D"http://clk.traded=
-oubler.com/click?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.miste=
-rgooddeal.com/V2_aide_info.asp?aide=3Dbons-plans-promos&cplib=3Dtrade_maili=
-ng_3pdts_affId_[TD_AFFILIATE_ID]"><img height=3D"43" alt=3D"Votre client ma=
-il a bloqu=E9 l'affichage des images. Faites un clic droit, puis 'Afficher =
-les images'. Vous pouvez =E9galement ajouter Mistergooddeal =E0 votre liste=
- de contacts, pour ne plus avoir =E0 r=E9p=E9ter cette op=E9ration =E0 l'av=
-enir." src=3D"http://www.mistergooddeal.com/partage/images/newsletter/heade=
-r_news_bonsplans_01.gif" width=3D"650" border=3D"0" /></a></td>=0D</tr>=0D<=
-tr>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=3D15434=
-84&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_aide_info.asp?aide=
-=3Dbons-plans-promos&cplib=3Dtrade_mailing_3pdts_affId_[TD_AFFILIATE_ID]"><=
-img height=3D"23" src=3D"http://www.mistergooddeal.com/partage/images/newsl=
-etter/header_news_bonsplans_02.gif" width=3D"409" border=3D"0" /></a></td>=
-=0D<td align=3D"right" width=3D"229" background=3D"http://www.mistergooddea=
-l.com/partage/images/newsletter/header_news_bonsplans_03.gif" />=0D<td><img=
- src=3D"http://www.mistergooddeal.com/partage/images/newsletter/header_news=
-_2009_04.gif" border=3D"0" /></td>=0D</tr>=0D<tr>=0D<td colspan=3D"3"><a hr=
-ef=3D"http://clk.tradedoubler.com/click?p=3D105837&a=3D1543484&g=3D18025354=
-&url=3Dhttp://www.mistergooddeal.com/V2_aide_info.asp?aide=3Dbons-plans-pro=
-mos&cplib=3Dtrade_mailing_3pdts_affId_[TD_AFFILIATE_ID]"><img height=3D"38"=
- src=3D"http://www.mistergooddeal.com/partage/images/newsletter/header_news=
-_bonsplans_05.gif" width=3D"650" border=3D"0" /></a></td>=0D</tr>=0D</tbody=
->=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellp=
-adding=3D"0" width=3D"650" border=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"PA=
-DDING-LEFT: 5px" valign=3D"bottom" align=3D"left"><a href=3D"http://clk.tra=
-dedoubler.com/click?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.mi=
-stergooddeal.com/V2_categorie.asp?id1=3D126&num=3D1&cplib=3Dtrade_mailing_3=
-pdts_affId_[TD_AFFILIATE_ID]"><img style=3D"MARGIN-LEFT: 5px" alt=3D"Electr=
-omenager" src=3D"http://www.mistergooddeal.com/partage/images/newsletter/ne=
-ws08_btn_electro.gif" border=3D"0" /></a><a href=3D"http://clk.tradedoubler=
-.com/click?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.mistergoodd=
-eal.com/V2_categorie.asp?id1=3D2155&num=3D2&cplib=3Dtrade_mailing_3pdts_aff=
-Id_[TD_AFFILIATE_ID]"><img style=3D"MARGIN-LEFT: 5px" alt=3D"Petit electro"=
- src=3D"http://www.mistergooddeal.com/partage/images/newsletter/news08_btn_=
-pelectro.gif" border=3D"0" /></a><a href=3D"http://clk.tradedoubler.com/cli=
-ck?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/=
-V2_categorie.asp?id1=3D2472&num=3D3&cplib=3Dtrade_mailing_3pdts_affId_[TD_A=
-FFILIATE_ID]"><img style=3D"MARGIN-LEFT: 5px" alt=3D"Mobilier Literie" src=
-=3D"http://www.mistergooddeal.com/partage/images/newsletter/news08_btn_mobi=
-lier.gif" border=3D"0" /></a><a href=3D"http://clk.tradedoubler.com/click?p=
-=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_c=
-ategorie.asp?id1=3D170&num=3D5&cplib=3Dtrade_mailing_3pdts_affId_[TD_AFFILI=
-ATE_ID]"><img style=3D"MARGIN-LEFT: 5px" alt=3D"Image & Son" src=3D"http://=
-www.mistergooddeal.com/partage/images/newsletter/news08_btn_image.gif" bord=
-er=3D"0" /></a><a href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=3D=
-1543484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_categorie.asp?i=
-d1=3D175&num=3D10&cplib=3Dtrade_mailing_3pdts_affId_[TD_AFFILIATE_ID]"><img=
- style=3D"MARGIN-LEFT: 5px" alt=3D"Informatique & Multimedia" src=3D"http:/=
-/www.mistergooddeal.com/partage/images/newsletter/news08_btn_info.gif" bord=
-er=3D"0" /></a><a href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=3D=
-1543484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_categorie.asp?i=
-d1=3D345&num=3D16&cplib=3Dtrade_mailing_3pdts_affId_[TD_AFFILIATE_ID]"><img=
- style=3D"MARGIN-LEFT: 5px" alt=3D"Loisirs Plaisir" src=3D"http://www.miste=
-rgooddeal.com/partage/images/newsletter/news08_btn_loisirs.gif" border=3D"0=
-" /></a><a href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=3D1543484=
-&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_categorie.asp?id1=3D58=
-12&num=3D20&cplib=3Dtrade_mailing_3pdts_affId_[TD_AFFILIATE_ID]"><img style=
-=3D"MARGIN-LEFT: 5px" alt=3D"Bebe" src=3D"http://www.mistergooddeal.com/par=
-tage/images/newsletter/news08_btn_bebe.gif" border=3D"0" /></a><a href=3D"h=
-ttp://clk.tradedoubler.com/click?p=3D105837&a=3D1543484&g=3D18025354&url=3D=
-http://www.linvitedesmarques.com/v2/v2_home.asp?num=3D1&cplib=3Dtrade_maili=
-ng_3pdts_affId_[TD_AFFILIATE_ID]"><img style=3D"MARGIN-LEFT: 5px" alt=3D"Mo=
-de" src=3D"http://www.mistergooddeal.com/partage/images/newsletter/news08_b=
-tn_mode.gif" border=3D"0" /></a><a href=3D"http://clk.tradedoubler.com/clic=
-k?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V=
-2_aide_info.asp?aide=3Dbons-plans-promos&cplib=3Dtrade_mailing_3pdts_affId_=
-[TD_AFFILIATE_ID]"><img style=3D"MARGIN-LEFT: 5px" alt=3D"Bons plans" src=
-=3D"http://www.mistergooddeal.com/partage/images/newsletter/news08_btn_bons=
-plans.gif" border=3D"0" /></a></td>=0D</tr>=0D<tr>=0D<td valign=3D"middle" =
-align=3D"center" background=3D"http://www.mistergooddeal.com/partage/images=
-/newsletter/news08_bar.gif" height=3D"29"><span style=3D"FONT-SIZE: 11px; C=
-OLOR: #999999; FONT-FAMILY: Arial, Helvetica, sans-serif"><a style=3D"COLOR=
-: #006699" href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=3D1543484=
-&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_catalogue.asp?cplib=3D=
-trade_mailing_3pdts_affId_[TD_AFFILIATE_ID]">Notre catalogue</a> | <a style=
-=3D"COLOR: #006699" href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=
-=3D1543484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_boutique.asp=
-?sp=3Dvisio_electro&cplib=3Dtrade_mailing_3pdts_affId_[TD_AFFILIATE_ID]">No=
-s produits en vid=E9o</a> | <a style=3D"COLOR: #006699" href=3D"http://clk.=
-tradedoubler.com/click?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www=
-.mistergooddeal.com/V2_aide_info.asp?aide=3Dai_guide-achat&cplib=3Dtrade_ma=
-iling_3pdts_affId_[TD_AFFILIATE_ID]">Nos guides d'achat</a> | <a style=3D"C=
-OLOR: #006699" href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=3D154=
-3484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_presse-magazine.as=
-p?codemailing=3DCA165&xtor=3DADC-6&num=3D24">Magazines</a> | <a style=3D"CO=
-LOR: #006699" href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=3D1543=
-484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_vacances_frameset.a=
-sp?num=3D25">Voyages</a> | <a style=3D"COLOR: #006699" href=3D"http://clk.t=
-radedoubler.com/click?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.=
-mistergooddeal.com/V2_voiture_frameset.asp?num=3D26">Voitures</a> | <a styl=
-e=3D"COLOR: #006699" href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=
-=3D1543484&g=3D18025354&url=3Dhttp://ventesevenementielles.linvitedesmarque=
-s.com/v2/v2_priv_home.asp?cplib=3Dtrade_mailing_3pdts_affId_[TD_AFFILIATE_I=
-D]">Nos ventes priv=E9es</a></span></td>=0D</tr>=0D</tbody>=0D</table>=0D</=
-td>=0D</tr>=0D<tr>=0D<td style=3D"PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PA=
-DDING-BOTTOM: 10px; PADDING-TOP: 10px" valign=3D"middle" align=3D"center">=
-=0D<table id=3D"Tableau_01" height=3D"519" cellspacing=3D"0" cellpadding=3D=
-"0" width=3D"631" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http://cl=
-k.tradedoubler.com/click?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://w=
-ww.mistergooddeal.com/V2_produit.asp?productid=3D1741EY970001EY97&cplib=3Dt=
-rade_mailing_3pdts_affId_[TD_AFFILIATE_ID]"><img height=3D"361" alt=3D"48he=
-ures promo" src=3D"http://www.mistergooddeal.com/partage/images/newsletter/=
-kit_3produits_juin09_01.jpg" width=3D"630" border=3D"0" /></a></td>=0D</tr>=
-=0D<tr>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=3D105837&a=3D1=
-543484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V2_produit.asp?prod=
-uctid=3D154821650001K949&cplib=3Dtrade_mailing_3pdts_affId_[TD_AFFILIATE_ID=
-]"><img height=3D"241" alt=3D"48heures promo" src=3D"http://www.mistergoodd=
-eal.com/partage/images/newsletter/kit_3produits_juin09_02.jpg" width=3D"630=
-" border=3D"0" /></a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://clk.trade=
-doubler.com/click?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.mist=
-ergooddeal.com/V2_produit.asp?productid=3D204214861944X180&cplib=3Dtrade_ma=
-iling_3pdts_affId_[TD_AFFILIATE_ID]"><img height=3D"248" alt=3D"48heures pr=
-omo" src=3D"http://www.mistergooddeal.com/partage/images/newsletter/kit_3pr=
-oduits_juin09_03.jpg" width=3D"630" border=3D"0" /></a></td>=0D</tr>=0D</tb=
-ody>=0D</table>=0D</td>=0D</tr>=0D</tbody>=0D</table><span style=3D"PADDING=
--RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 10px; PADDING-TOP: 10px"></=
-span><span style=3D"PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: =
-10px; PADDING-TOP: 10px"></span>=0D<table cellspacing=3D"0" cellpadding=3D"=
-0" width=3D"650" align=3D"center" border=3D"0">=0D<tbody>=0D<tr>=0D<td styl=
-e=3D"PADDING-TOP: 0px" valign=3D"top" align=3D"center" height=3D"134">=0D<t=
-able cellspacing=3D"0" cellpadding=3D"0" width=3D"630" border=3D"0">=0D<tbo=
-dy>=0D<tr>=0D<td height=3D"116"><a href=3D"http://clk.tradedoubler.com/clic=
-k?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.mistergooddeal.com/V=
-2_aide_info.asp?aide=3Dai_confiance&cplib=3Dtrade_mailing_3pdts_affId_[TD_A=
-FFILIATE_ID]"><img height=3D"116" src=3D"http://www.mistergooddeal.com/part=
-age/images/newsletter/news_footer_reassu2-1.jpg" width=3D"630" border=3D"0"=
- /></a></td>=0D</tr>=0D</tbody>=0D</table><a href=3D"http://clk.tradedouble=
-r.com/click?p=3D105837&a=3D1543484&g=3D18025354&url=3Dhttp://www.mistergood=
-deal.com/V2_aide_info.asp?aide=3Dpopgom&cplib=3Dtrade_mailing_3pdts_affId_[=
-TD_AFFILIATE_ID]"></a>=0D</td>=0D</tr>=0D</tbody>=0D</table></tr /></table =
-/>=0D<p>&nbsp;</p>=0D</div><img height=3D"1" src=3D"http://impfr.tradedoubl=
-er.com/imp/img/18025354/1543484" width=3D"1" border=3D"0" /><br /><br />=0D=
-<div align=3D"center"><font face=3D"Arial" color=3D"#000000" size=3D"1">Cet=
-te publicit=E9 Mistergooddeal vous est envoy=E9e par Plein Temps. <br />Vos=
- donn=E9es nominatives ou votre adresse email n'ont pas =E9t=E9 transmises =
-=E0 l'annonceur.</font></div>=0D<br><br><br><div align=3D"center"><font siz=
-e=3D"1" face=3D"verdana">Conformement a la loi Informatique et Libertes, vo=
-us disposez d'un droit d'acces et de rectification.
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
-AA50HR2F8D_2318133/877">ici</a></font></div><img src=3D"http://front.ta271.=
-com/ZZ50HR2F8D_2318133.png" /></body></html>
---=_e9a917a96d287becf0aa02bf3b2cd53c--
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dwindows-1252">
+</head>
+<body STYLE=3D"FONT-FAMILY: Tahoma"><p>
+<style>
+ .headerTop { background-color:#ffffff; border-top:0px solid #000000; =
+border-bottom:0px solid #FFCC66; text-align:right; }  .adminText { =
+font-size:10px; color:#FFFFCC; line-height:200%; font-family:verdana; =
+text-decoration:none; }  .headerBar { background-color:#fcd200; =
+border-top:0px solid #fcd200; border-bottom:0px solid #333333; }  .title { =
+font-size:30px; font-weight:bold; color:#336600; font-family:arial; =
+line-height:110%; }  .subTitle { font-size:11px; font-weight:normal; =
+color:#666666; font-style:italic; font-family:arial; }  td { =
+font-size:12px; color:#000000; line-height:150%; font-family:trebuchet ms; =
+}  .footerRow { background-color:#FFFFCC; border-top:10px solid #fcd200; } =
+ .footerText { font-size:10px; color:#333333; line-height:100%; =
+font-family:verdana; }  a { color:#0063be; color:#0063be; color:#0063be; } =
+</style>
+
+<table class=3DbackgroundTable cellSpacing=3D0 cellPadding=3D0 =
+width=3D"100%"=20
+bgColor=3D#0063be>
+ =20
+  <tr>
+    <td vAlign=3Dtop align=3Dmiddle>
+      <table cellSpacing=3D0 cellPadding=3D0 width=3D542>
+       =20
+        <tr>
+          <td=20
+          style=3D"BORDER-TOP: #00aeef 0px solid; BORDER-BOTTOM: #333333 =
+0px solid; BACKGROUND-COLOR: #0063be"=20
+          width=3D540><img height=3D471=20
+            src=3D"http://www.capitalpronewsmarketing.com/handcare.jpg" =
+width=3D540>=20
+
+            <center></center></td></tr></table>
+      <table cellSpacing=3D0 cellPadding=3D20 width=3D540 bgColor=3D#ffffff>
+       =20
+        <tr>
+          <td vAlign=3Dtop bgColor=3D#ffffff>
+            <p=20
+            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
+FONT-FAMILY: arial; line-: 110%">Clean=20
+            Plus Hand Wipes.<br><span=20
+            style=3D"FONT-WEIGHT: normal; FONT-SIZE: 16px; COLOR: #333333; =
+FONT-FAMILY: arial; lin: 110%">Non-abrasive=20
+            economical hand cleansing wet wipes for frequent use. Ideal =
+for use=20
+            in the industrial, farming, maintenance, and office sectors. =
+Removes=20
+            all types of dirt, greasy stains, ink, fuel and odours from =
+hands.=20
+            Qualified hypoallergenic and lipo-protective. Antibacterial=20
+            properties. Perfect when soap and water are not readily=20
+            available.</span></p>
+            <p=20
+            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
+FONT-FAMILY: arial; line-: 110%"><span=20
+            style=3D"FONT-WEIGHT: normal; FONT-SIZE: 16px; COLOR: #333333; =
+FONT-FAMILY: arial; lin: 110%">Clean=20
+            Plus=AE wants to simplify you life, to make the cleaning =
+process quick=20
+            and fun, to deliver nothing but the best.</span></p>
+            <p=20
+            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
+FONT-FAMILY: arial; line-: 110%"><span=20
+            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 16px; COLOR: #333333; =
+FONT-FAMILY: arial; line-: 110%">To=20
+            learn more about Clean Plus=AE, click <a=20
+            =
+href=3D"http://www.google.com/search?q=3Dclean+plus&amp;ie=3Dutf-8&amp;oe=
+=3Dutf-8&amp;aq=3Dt&amp;rls=3Dorg.mozilla:en-US:official&amp;client=3Dfiref=
+ox-a">here</a>.</span></p></td></tr>
+        <tr>
+          <td vAlign=3Dtop bgColor=3D#ffffff>
+            <p=20
+            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
+FONT-FAMILY: arial; line-: 110%">Also=20
+            Try Other Clean Plus=AE Hand Care Products.<br><span=20
+            style=3D"FONT-WEIGHT: normal; FONT-SIZE: 16px; COLOR: #333333; =
+FONT-FAMILY: arial; lin: 110%">Industry,=20
+            automotive, maintenance, office.... Clean Plus=AE Hand Care =
+offers=20
+            hand care products for every professional. Traditional =
+granulated=20
+            soaps, super-cleaning hand wet wipes and liquids for people on =
+the=20
+            move and special creams to protect and restore your =
+skin.</span></p>
+            <p=20
+            style=3D"FONT-WEIGHT: bold; FONT-SIZE: 30px; COLOR: #0063be; =
+FONT-FAMILY: arial; line-: 110%"><img=20
+            height=3D79=20
+            =
+src=3D"http://capitalpronewsmarketing.com/handcare-products.jpg"=20
+            width=3D491></p></td></tr>
+        <tr>
+          <td style=3D"BORDER-TOP: #ffffff 10px solid; BACKGROUND-COLOR: =
+#ffffff"=20
+          vAlign=3Dtop>
+            <p=20
+            style=3D"FONT-SIZE: 10px; COLOR: #333333; LINE-HEIGHT: 100%; =
+FONT-FAMILY: verdana">To=20
+            learn more click <a=20
+            =
+href=3D"http://www.google.com/search?q=3Dclean+plus&amp;ie=3Dutf-8&amp;oe=
+=3Dutf-8&amp;aq=3Dt&amp;rls=3Dorg.mozilla:en-US:official&amp;client=3Dfiref=
+ox-a">here</a><br><br>Capital=20
+            Pro Marketing is a specialist in the promotion business. We do =
+not=20
+            support Spam mails. This email was sent to you because we feel =
+that=20
+            whether you are an investor, distributor, or consumer, you are =
+able=20
+            to benefit from the above information pertaining to the =
+corporate=20
+            image building efforts of our client, products promotion, and=20
+            Customer Relationship Management activities. If you feel that =
+the=20
+            information provided in this mail was not useful to you and =
+would=20
+            like to have your name removed from our mailing list, kindly =
+follow=20
+            the directions below. My CNN Now will ensure every effort to =
+take=20
+            your name off immediately. We apologize for any inconvenience=20
+            caused.</p>
+            <p=20
+            style=3D"FONT-SIZE: 10px; COLOR: #333333; LINE-HEIGHT: 100%; =
+FONT-FAMILY: verdana">T=20
+            his message is sent in compliance of the new email Bill HR=20
+            1910.Under Bill HR 1910 passed by the 106th US Congress on May =
+24,=20
+            1999,this message cannot be considered Spam as long as we =
+include=20
+            the way to be removed. </p>
+            <p=20
+            style=3D"FONT-SIZE: 10px; COLOR: #333333; LINE-HEIGHT: 100%; =
+FONT-FAMILY: verdana">P=20
+            er Section HR 1910, Please type "REMOVE ME PLEASE" in the =
+subject=20
+            line and send to <a=20
+            =
+href=3D"mailto:capitalpronews-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org">capitalpronews-3sKltW3hOZpWj0EZb7rXcA@public.gmane.org</a></=
+p>&lt;=20
+            /td&gt; </td></tr></table></td></tr></table></p>
+</body>
+</html>
+
+
+------=SPLITOR00A_001_-2014678562D--
 
 
 
---===============1149378452828927568==
+--===============4272241525090372462==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -195,7 +291,7 @@ Check out the new simplified licensing option that enables unlimited
 royalty-free distribution of the report engine for externally facing 
 server and web deployment.
 http://p.sf.net/sfu/businessobjects
---===============1149378452828927568==
+--===============4272241525090372462==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -206,4 +302,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1149378452828927568==--
+--===============4272241525090372462==--

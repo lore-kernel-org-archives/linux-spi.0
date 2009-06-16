@@ -1,10 +1,9 @@
-From: "Christian Omyixq" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Lady kicks dog in anger, sent to jail
-Date: Tue, 16 Jun 2009 12:31:51 +05-30
-Message-ID: <HETFJWJOCEYBWA.KCULZWESOGIQZYC0966206408@broadcaster.lakecumberland.com>
-Reply-To: noreply-x6eK/O+t3sfnHLiBEiXH4tBPR1lH4CV8@public.gmane.org
+From: "Maulden Carli" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Full list of invited ones
+Date: Tue, 16 Jun 2009 16:17:35 +0000
+Message-ID: <PXDRGK42145.3D0FBC6@customer-148-235-72-242.uninet.net.mx>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8541056454994370559=="
+Content-Type: multipart/mixed; boundary="===============3139255679496919763=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,122 +16,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8541056454994370559==
-Content-type: text/html; charset="UTF-8"
+--===============3139255679496919763==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-  <meta http-equiv="content-type"
- content="text/html; charset=UTF-8">
-  <title>Mjufqzegos</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Lqsq Union of U.S., Inc.</title>
 </head>
-<body>
-<table align="center" border="0" cellpadding="0"
- cellspacing="0" style="width: 597px">
-  <tbody>
-    <tr>
-      <td style="text-align: center">
-	  <span style="color: #999900; font-family: Arial, Helvetica, sans-serif; font-size: x-small">
-	  Having trouble viewing this email? </span><a href="http://www.aiajsexo.cn/boterjn.asp?aevj=42c35d5812&urjmalot=ovin">
-	  <span style="color: #999900; font-family: Arial, Helvetica, sans-serif; font-size: x-small">
-	  Click here</span></a><br></td>
 
-    </tr>
+  <BODY leftmargin="0" marginheight="0" marginwidth="0" topmargin="0">
+ <table border="0" cellpadding="0" cellspacing="0" width="104%"> <tr> <td align="center" bgcolor="#C74D41" valign="top">
+	 <table border="0" cellpadding="0" cellspacing="0" style="width: 606px"> <tr>
+		 <td align="left" style="font-family:Arial, Helvetica, sans-serif; font-size:small; color:#333333; padding-left:2px;" valign="bottom">
+		 <span style="color: #FFFFFF">Can't view this e-mail?</span>
+		 <A HREF="http://pxd.jivdusir.cn/?ir=9E2A46553D0FBC6AC6F0D0">
+		 <span style="color: #FFFFFF">Click here</span></A><span style="color: #FFFFFF">.
+		 </span> </td> </tr> <tr> <td>&nbsp;</td> </tr> <tr> <td align="center" bgcolor="#FFFFFF">
+		 		<br />
+		 <A HREF="http://hkiz.jivdusir.cn/?igy=9E2A46553D0FBC6AC6F0D0">
+		 <img border="0" alt="Click here to view picture" src="http://hkiz.jivdusir.cn/underline.gif" /></a><br />
+				 </td> </tr> <tr>
+		 <td align="left" bgcolor="#C74D41" style="padding:10px; font-family: Arial, Helvetica, sans-serif; color:#000000; font-size:11px;">This e-mail was sent to you by
+			 Mquu.<BR />
+ If you would like to share this e-mail with a friend, please
+ <A HREF="http://pxd.jivdusir.cn/?qha=9E2A46553D0FBC6AC6F0D0" STYLE="font-family: Arial, Helvetica, sans-serif;">
+ <span style="font-family: Arial, Helvetica, sans-serif;">click here</span></A>. <BR />
+ <BR />
 
-    <tr>
-      <td style="text-align: center">
-      <br><a href="http://www.aiajsexo.cn/dqmj.asp?jive=42c35d5812&zorujzin=ojotoqki" target="_blank">
-	  <img alt="Click here to open as a web page" src="http://images.aiajsexo.cn/spacer.gif" style="border-width: 0px"></a><br><br><br>
-      <table border="0" cellpadding="0" cellspacing="0"
- width="538">
-        <tbody>
-          <tr>
-            <td> <font
- style="font-family: Arial,Helvetica,sans-serif; font-size: 13px; color: rgb(102, 102, 102);"><a
- href="http://www.aiajsexo.cn/yrevj.asp?dutetqs=42c35d5812&oaculyef=medakjq" target="_blank"
- style="text-decoration: none;"><font
- style="color: rgb(153, 153, 0); text-decoration: none;">Home</font></a>
-			| <a href="http://www.aiajsexo.cn/gopulom.asp?fyhuxukuf=42c35d5812&nakjrj=ofjbik"
- target="_blank" style="text-decoration: none;"><font
- style="color: rgb(153, 153, 0); text-decoration: none;">Activities</font></a>
+Please note: This e-mail was sent from an automated address that cannot reply to incoming e-mail, including customer service inquiries. For faster service, simply choose the appropriate
+<A HREF="http://hkiz.jivdusir.cn/?js=9E2A46553D0FBC6AC6F0D0"><font style="font-size:11px; font-family: Arial, Helvetica, sans-serif;">
+<u>help topic</u></font></A>.<BR />
+<BR />
+To manage your newsletter subscriptions, please <A HREF="http://hkiz.jivdusir.cn/?iw=9E2A46553D0FBC6AC6F0D0">
+<font style="font-size:11px; font-family: Arial, Helvetica, sans-serif;"><u>click here</u></font></A>.
+ <BR />
 
-			| <a href="http://www.aiajsexo.cn/oroqvy.asp?aacq=42c35d5812&esee=yfiuelafo"
- target="_blank" style="text-decoration: none;"><font
- style="color: rgb(153, 153, 0); text-decoration: none;">Vacations</font></a>
-			| <a href="http://www.aiajsexo.cn/umik.asp?ekis=42c35d5812&atjv=ubukoha"
- target="_blank" style="text-decoration: none;"><font
- style="color: rgb(153, 153, 0); text-decoration: none;">Expert Advice</font></a>
-			|
-			<a href="http://www.aiajsexo.cn/opiwyy.asp?ogjkq=42c35d5812&unoun=ulyhejjxuc"
- target="_blank" style="text-decoration: none;">
-			<font
- style="color: rgb(153, 153, 0); text-decoration: none;">Toys &amp; Gifts </font></a>
-			| <a
- href="http://www.aiajsexo.cn/qbiobia.asp?meto=42c35d5812&unyqowa=ahunyp" target="_blank"
- style="text-decoration: none;"><font
- style="color: rgb(153, 153, 0); text-decoration: none;">Video</font></a>
+ <BR />
+ Copyright © 2001-2009, Japujygi Union of U.S., Inc.</td> </tr> </table></td> </tr> </table>   <BR />
+<BR />
+<BR />
+</BODY>
 
-			| <a href="http://www.aiajsexo.cn/asagozuvqz.asp?yacuk=42c35d5812&qutao=aqdqme"
- target="_blank" style="text-decoration: none;"><font
- style="color: rgb(153, 153, 0); text-decoration: none;">Columns</font></a></font>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      </td>
-
-    </tr>
-<!-- END Footer --><!-- BEGIN unsubscribe disclaimer -->
-
-    <tr>
-      <td style="height: 42px"> <br>
-      <font
- style="font-family: Arial,Helvetica,sans-serif; color: rgb(119, 119, 119); font-size: 12px;"
- color="#777777" face="Arial, Helvetica, sans-serif"
- size="1">You
-are receiving this e-mail because you signed to receive the
-	  Amjo newsletter. If you feel you have received this e-mail
-in error or would like to <a href="http://www.aiajsexo.cn/edqop.asp?vefefugig=42c35d5812&tavucqnib=oapexyh"
- style="text-decoration: none;"><font
- style="font-family: Arial,Helvetica,sans-serif; color: rgb(100, 165, 184); font-size: 12px;"
- color="#6498b8" face="Arial, Helvetica, sans-serif"
- size="1">unsubscribe, click here</font></a>. </font><br>
-      </td>
-    </tr>
-<!-- END unsubscribe disclaimer --><!-- BEGIN Footer Disclaimer -->
-    <tr>
-      <td> <br>
-      <font
- style="font-family: Arial,Helvetica,sans-serif; color: rgb(119, 119, 119); font-size: 12px;"
- color="#777777" face="Arial, Helvetica, sans-serif"
- size="1"> Oluko takes <a
- href="http://www.aiajsexo.cn/nusa.asp?zipyaw=42c35d5812&cegqfauhjx=rqexypam" target="_blank"
- style="text-decoration: none;"><font
- style="font-family: Arial,Helvetica,sans-serif; color: rgb(100, 152, 184); font-size: 12px;"
- color="#6498b8" face="Arial, Helvetica, sans-serif"
- size="1">privacy</font></a> very seriously and
-will never share your e-mail address with third parties without your
-permission. Click <a href="http://www.aiajsexo.cn/jrjhj.asp?uvinedu=42c35d5812&jteuuzes=xegqjwun"
- target="_blank" style="text-decoration: none;"><font
- style="font-family: Arial,Helvetica,sans-serif; color: rgb(100, 152, 184); font-size: 12px;"
- color="#6498b8" face="Arial, Helvetica, sans-serif"
- size="1">here</font></a> to read our <a
- href="http://www.aiajsexo.cn/oqko.asp?ieecoxy=42c35d5812&odaomevywa=zyrquy" target="_blank"
- style="text-decoration: none;"><font
- style="font-family: Arial,Helvetica,sans-serif; color: rgb(100, 152, 184); font-size: 12px;"
- color="#6498b8" face="Arial, Helvetica, sans-serif"
- size="1">privacy policy</font></a>. If you have
-any questions about your subscription.<br><br>&copy; 2009 Jxujnqjku LLC. </font> </td>
-    </tr>
-<!-- End Footer Disclaimer -->
-  </tbody>
-</table>
-</body>
-</html>
+</HTML>
 
 
---===============8541056454994370559==
+--===============3139255679496919763==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -144,7 +76,7 @@ Check out the new simplified licensing option that enables unlimited
 royalty-free distribution of the report engine for externally facing 
 server and web deployment.
 http://p.sf.net/sfu/businessobjects
---===============8541056454994370559==
+--===============3139255679496919763==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -155,4 +87,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8541056454994370559==--
+--===============3139255679496919763==--

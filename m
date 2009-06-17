@@ -1,12 +1,13 @@
-From: "458-3mpuAFsUhUg@public.gmane.org" <458-3mpuAFsUhUg@public.gmane.org>
-Subject: [SPAM] 宀椾綅鍒嗘瀽銆佺哗鏁堣�冩牳涓庤柂閰璁￠珮绾х爺淇彮
-Date: Fri, 3 Jan 2003 17:00:24 +0800
-Message-ID: <E1MGrX0-0002JS-9b@235xhf1.ch3.sourceforge.com>
-Reply-To: 458-3mpuAFsUhUg@public.gmane.org
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: i.MX SPI driver
+Date: Wed, 17 Jun 2009 12:40:18 +0200
+Message-ID: <1245235220-23816-1-git-send-email-s.hauer@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,145 +19,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+Hi David,
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+The new i.MX SPI driver has been posted twice on the list, I received no
+objections from anyone, so please consider pulling the following branch
 
-请看附件，如果有打扰，请原谅，谢谢！
+Thanks,
+  Sascha
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="7-岗位分析、绩效考核与薪酬设计高级研修班.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="7-岗位分析、绩效考核与薪酬设计高级研修班.txt"
 
-ICAgICAgICAguNrOu7fWzvahoryo0Ke/vLrL0+vQvbPqyei8xrjfvLbR0NDesOANCg0K1vew7LWl
-zrujusnu29rW2sjL0NC53MDt18nRr834ICANCiAgICAgICAgICDJ7tvaytDSu7b+yP253MDt18nR
-r9PQz965q8u+DQoNCsqxvOS12LXjo7rJz7qjNtTCMjMtMjXI1SAgICDJ7tvaN9TCMS0zyNWhoQ0K
-DQrRp8+wt9HTw6O6MzgwMNSqL8jLo6i6rMXg0bW30aGivcyyxLfRoaLO57LNt9GhorLoteO30bXI
-o6kNCiAgDQrIz9akt9HTw6O6NTAw1KovyMsgo6iyu7LOvNPIz9akv7zK1LXE0afUsc7e0Ou9u8TJ
-o6kNCiAgDQrWpMrpy7XD96O6DQoxLiC3ss+jzfuyzrzTyM/WpLXE0afUsaOs1NrF4NG1veHK+LLO
-vNO/vMrUus+48dXfo6yw5LeiKLn6vMrWsNK1yM/WpLHqDQogICDXvMGqus+74Sk8PMjLwabXytS0
-udzA7cqmPj65+rzKufrE2sur1rDStbjx1qTK6aOso6i5+rzKufrE2sjP1qSjr8irDQogICDH8s2o
-0NCjr7nN1vfIz7/Jo6/N+MnPsunRr6OpDQoyo663srLOvNPIz9aktcTRp9Sx0OvM4b27sb7Iy8nt
-t93WpLrFwuu8sLTz0ru058r9wuvV1caso6Ezo66/zrPMveHK+LrzDQogICAxMMzsxNq9q9akyum/
-7LzEuPjRp9SxDQogIA0Kv86zzLbUz/Ojutfcvq3A7aGiuLHX3L6twO2horj3sr/DxdfcvOChosjL
-wabXytS0vq3A7aGixuTL+7j3sr/Dxb6twO0gDQoNCtfJ0a+157uwo7owNzU1LTI2MDc1MzY1ICAy
-NjA3NTQyOSANCrSrICAgINXmo7owNzU1LTYxMzUxMzk2ICANCsGqIM+1IMjLo7rB6NChveMgICDF
-7dChveMNCg0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCr/Os8yxs76wo7oNCqGhoaG63LbgxvPS
-tba8vq3A+rvy1f3U2r6twPrV4tH5tcTP1s/zo7rTxdDj1LG5pLK7ucvO0sPHtcTN7MH0o6z05si7
-tvjIpaO7DQrHscGm1LG5pLK7ucvO0sPHtcTG2rT9o6zHxMi71LbIpaO7yfXWwdbYtePF4NH4tcTU
-sbmko6zSsrK7ucvO0sPHtcTW2M3Qo6wNCsj2yta2+Milo6zB9Lj4xvPStc7evqG1xLDDxNW6zcy+
-z6Kho7j8yMPG89K1sNnLvLK7tcPG5L3itcTKxyzLxrr119zKx7jD198NCrXEw7vT0Nffo6yyu7jD
-19+1xMi019/By6O7xr23srXEw7vT0Nffo6zTxdDjtcTItNffwcuho9Payscs0rLX3MTczP21vUhS
-udwNCsDtyMvUsdK7senT1tK7senO3sTOtcS46NKlo7rO0sTDyrLDtMC0wfTXocTjo7/O0rXE1LG5
-pKOhDQoNCqGh1Nq/7MvZtuCx5NPrs+TC+r661fm1xMnnu+HA7yzI57rOzvzS/aGivKTA+KGivbHA
-+KGit6LVubrNwfTXodPF0OPUsbmktcQNCsPmwdnXxb7etPPM9NW9oaPG5NbQ1+652Lz8tcTS8svY
-vs3Kx8bz0rW1xLjazru31s72oaK8qNCnv7y6y9Pr0L2z6szlz7Whow0KDQq/zrPMzNjJq6O6DQqh
-oaGhv86zzLTTufrE2sbz0rXL+cPmwdm1xMq1vMrOyszis/a3oqOszai5/bj31ta15NDNsLjA/bXE
-vbK94rrNt9bO9izS1LywDQrEo8Tiz9bKtbu3vrO1xLLZ1/fR3cG3LMirw+bM4cn9xvPStcjLwabX
-ytS0udzA7dXfz7XNs9DUveK+9s7KzOK1xMTcwaa6zcq1DQrKqbLZ1/fLrsa9oaMNCg0KqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlDQq/zrPMtPO42Q0KtdrSu7K/t9ajutfp1q+83Lm5yei8xqGiuaTX97fW
-zvYNCg0KtdrSu7Wl1Kqjusbz0rXX6davyei8xrXEuq3S5dPrxNrI3Q0KMaGi1+nWr8novMa1xLqt
-0uWhoaGhoaGhoaGhDQoyoaLI57rOus/A7cnovMbG89K1tcTX6davvNy5uaO/DQozoaLX6davvNy5
-udbQ1+nWr9a4u9PPtc2zoaLQxc+iubXNqM34wue6zcjLvMq52M+1o6zI57rOyLfBotPrxr264qO/
-DQo0oaLX6davvNy5ucnovMbE2sjdDQqhoaHuILC4wP2jusSz1qrD+8bz0rXX6davvNy5ubywuabE
-3LfWzvYNCg0Ktdq2/rWl1Kqhodfp1q/J6LzG1K3U8tPrt723qCANCjGhotfp1q+83Lm5yei8xrXE
-zuW089St1PKhoaGhoaEyoaLX6davvNy5udbQ1rDE3LK/w8W1xMnovMYNCjOhotb30qrStc7xwfez
-zLywudzA7cH3s8y1xMq1z9a6zdbY0qqxo9XPIA0KNKGi1+nWr7zcubm3vbC40M6zydPrt723qA0K
-oaGh7qGhsLjA/aO6xLO5ybfd1sa5q8u+1fvM5dfp1q+83Lm5yei8xs+41PKzys/WDQoNCrXayP21
-pdSqoaEguNrOu7mk1/e31s72zqrKssO0o7+jqLaozru8sNf308OjqQ0KMaGiuaTX97fWzvbU2tfp
-1q+53MDt1tC1xLaozrvVvcLUvLC5pNf3t9bO9rbUuPe8tsjL1LG1xNLi0uUNCjKhormk1/e31s72
-1NrIy8Gm18rUtLncwO3W0LXEtqjOuw0KM6GiuaTX97fWzvbI57rOsNHO1brDx9DI67XjDQo0oaK5
-pNf3t9bO9sjnus7X9rrDx7DG2rv5tKG5pNf30+vXvLG4DQo1oaK5pNf3t9bO9tTauPfP7sjLwabX
-ytS0udzA7bvutq/W0LXE1/fTww0KoaGh7iCwuMD9o7rEs8b7s7XX6dewxvPStbmk1/e31s72zcbQ
-0LzNyrUNCg0KtdrLxLWl1Kqhobjazru5pNf3t9bO9srHyrLDtKOouMXK9rywxNrI3aOpDQoxoaK5
-pNf3t9bO9rqs0uW8sMTayN24xcr2DQoyoaK5pNf3t9bO9re9t6jI/bj2suO0zrywuaTX97fWzvaz
-ybn7DQozoaK5pNf3t9bO9rXE1+nWr9DOyr3I/bj2suPD5rXE1PDIztb3zOUNCg0KtdrO5bWl1Kqh
-objazru5pNf3t9bO9tT1w7TX9qO/o6jB97PM0+u3vbeoo6kNCjGhormk1/e31s72wfezzLmk1/e3
-1s7219zM5cH3s8zKtcqpwfezzCANCjKhormk1/e31s72yrXKqbXEvLi49tSt1PINCqGhIKHMINfc
-zOXUrdTyoaGhoaGhoaGhoaGhocwgsr/DxaGiuNrOu8nowaLUrdTyDQqhoSChzCC5pNf31rDU8LXE
-u6631tSt1PKhoaHMILmk1/fLtcP3yumhormk1/fB97PMtcSx4NC01K3U8g0KoaEgocwguNrOu8jO
-1rDXyrjxo6i5pNf3uea3tqOptcSx4NC01K3U8iANCjOhotawzrvLtcP3yum1xMPo0LQNCqGhIKHM
-ILK/w8UvuNrOu8no1sPT67aouNq2qLHgoaLWsNTww+jK9qGiyM7WsNfKuPHD6Mr2DQqhoSChzCCy
-v8PFL7jazrvJ6NbD0+u2qLjatqix4A0KoaEgocwguNrOu9aw1PC7rrfWoaLWsNTww+jK9rywyM7W
-sNfKuPHD6Mr21rDOu8u1w/fK6SANCjShotawzrvD+7PGL9awzvHT69awvLbM5c+11rDOu8P7s8bM
-5c+11rDO8bXIvLbM5c+11rC8tszlz7UgDQo1oaK83Lm5zbzT67mk1/fB97PM1+nWr7zcubnNvLmk
-1/fB97PMIA0KNqGiuaTX97fWzvazybn7vLDTptPDDQqhoaHuILC4wP3R0MzWo7q498Dg0M242s67
-uaTX98u1w/fK6bHg0LS3tsD9uPHKvQ0KoaGhoaGhoaGhoaGhoaGhoaGhoaGhoQ0Ktdq2/rK/t9aj
-uryo0Ke/vLrLDQoNCrXa0ru1pdSqo7q8qNCnudzA7dTaxvPStbncwO3W0LXEtdjOu7rN1/fTww0K
-MaGivKjQp7ncwO3NxravyMvBptfK1LS53MDttcTSu8zlu6+hoTKhoryo0Ke53MDttcTV3NGnDQoz
-oaLMqcLeuenEybXEudzA7bmk1/fWuMTPoaGhoaGhoaGhoaGhNKGivKjQp7ncwO21xLj5sb7Ev7XE
-DQo1oaK8qNCnudzA7bXEtdjOu6GhoaGhoaGhoaGhoaGhoaGhoaGhNqGixvPStcjLwabXytS0vNvW
-tcG0DQoNCrXatv61pdSqo7q007yo0Ke/vLrLtb28qNCnudzA7Q0KMaGiyOe6zsDtveKhsLyo0Keh
-sbjFxO6hoaGhoaGhoaGhoaEgMqGivKjQp7XEtqjS5Q0KM6Gis6O8+7yo0Kex7cq+t6ihoaGhoaGh
-oaGhoaGhoaGhoaEgNKGix7HU2ryo0KfS8svYzbwNCjWhoryo0Ke53MDt0+u8qNCnv7y6y7XEx/ix
-8NPrwarPtaGhIDahoryo0Ke53MDt0a27t828DQoNCrXayP21pdSqo7rEv7HqudzA7aGiudi8/NK1
-vKjWuLHqoaLGvbrivMe31r+oDQoxoaLEv7HqudzA7bao0uWhoszY1fehorrDtKahor/gxNWhorOj
-vPvOysziDQoyoaLEv7HqudzA7dbQtcTEv7Hq09C2wMzY0uLS5aGiU01BUlTUrdTyDQozoaK52Lz8
-vKjQp9a4seq1xLqs0uUNCjShornYvPy8qNCn1rix6szlz7XT67SrzbO8qNCnv7y6y7XEx/ix8A0K
-NaGivajBornYvPy8qNCn1rix6szlz7W1xNSt1PKhotLi0uWhore9t6ihorK91ugNCjahosqyw7TK
-x8a9uuK8x7fWv6gNCjehosa9uuK8xrfWv6i1xLrL0MTE2rqtoaK5psTcoaK7+bG+v/K83A0KOKGi
-sLjA/aO6xLO9qNb+uavLvsa9uuK8x7fWv6i1xMvEuPbOs7bIDQo5oaLS/cjrxr264rzHt9a/qLXE
-1MvX98H3s8wNCqGhoe4gsLjA/aO61vHX07yvzcW1xMa9uuK8x7fWv6gNCg0KtdrLxLWl1Kqjuryo
-0Ke/vLrLwfezzNPrt723qA0KMaGivKjQp7+8usu1xLTzwfezzKGhoaGhoaGhoaEyoaK8qNCnv7y6
-y7TzwfezzLXEzuW49rK91ugNCjOhorj31ta/vLrLt73KvdPFyLG147XEsci9z6GhNKGiMzYwtsi/
-vLrLDQo1oaK8qNCnv7y6y7XE0KHB97PMoaGhoaGhoaGhoQ0KNqGiyMvBpr6twO3T67fHyMvBpr6t
-wO3U2ryo0Ke/vLrL1tC1xLfWuaTT67rP1/cNCjehorOj08O1xLyo0Ke/vMbAt723qKGhoaGhoSA4
-oaK8x8K8udi8/MrCvP61xFNUQVK3qA0KDQq12s7ltaXUqqO6vKjQp7iotbzT67e0wKENCjGhor+8
-usu94bn7srvTps2jwfTU2ta9w+bJz6GhMqGivKjQp7iotby1xDS49rK91ugNCjOhosjnus69+NDQ
-vKjQp7e0wKGhoaGhoaGhoaGhNKGiobDF+sbAobG1xLXa0ru49r3wtePX06O6urqxpNStwO0NCjWh
-oryo0Ke/vMbA1tCzo7z7tcTKrrTzzvPH+A0KoaGh7iCwuMD9zL3M1qO6vLjW1rK7zazG89K1vKjQ
-p7ncwO255raoDQqhoaGhoaGhoaGhoaGhoaGhoaEgDQq12sj9sr+31qO60L2z6snovMYNCg0KtdrS
-u7Wl1KqjutC9s+q1xNb30qq94bm5us3X99PDDQoxoaLQvbPqtcTW99KqveG5uaGhIDKhorv5sb65
-pNfKoaEgM6GivKjQp7mk18qhoSA0oaK9scD4uaTXyg0KNaGiuKPA+6GhoaGhoaGhoaGhoSA2oaK9
-8sz5oaGhoaGhIDehotC9s+q1xNb30qrX99PDDQo4oaLVvcLUxL+x6sq1z9a1xLmkvt8gOaGizvzS
-/cjLssWhorGjwfTIy7LFo6zU9se/vrrV+cGmoaExMKGivKTA+NSxuaQNCg0Ktdq2/rWl1Kqjutaw
-zrvGwLnADQoxoaLLxNbW1rDOu8bAucC3vbeovenJ3A0KMqGi0vLL2LXj1rW3qLXE06bTww0KoaEg
-ocwgxsC5wNLyy9i1xNGh1PGhoaGhoaGhoSChzCDGwLnA0vLL2Mio1ti1xMnovMYNCqGhIKHMIMbA
-ucDS8svYtci8trXEtqjS5aGhoaEgocwgxsC5wNLyy9i1yLy2t9bWtbXEyei2qA0KoaEgocwg1rDO
-u8bAucDK1rLhtcTJ6LzGoaGhoSChzCDGwLnAyMvUsbXE0aHU8Q0KM6Gi1rDOu8bAucC1xLC4wP29
-6cncDQo0oaLWsM67xsC5wLXEwbfPsA0KDQq12sj9taXUqqO6u/mxvrmk18q94bm5DQoxoaK7+bG+
-uaTXyrXIvLa1xMi3tqgNCjKhorv5sb65pNfKtci8ttbQ1+6437mk18qhotfutc25pNfKoaK3+b/t
-us3W2LX+t/m2yLXEvMbL47e9t6gNCjOhorv5sb65pNfKveG5ucnovMa1xLC4wP3T68G3z7ANCjSh
-osjnus6008/W09C5pNfKz/K7+bG+uaTXytequ68NCjWhormk18q94bm5tffV+8qxtcS+38zlyrXK
-qQ0KNqGi0L2z6rXEytCzobX3sum6zdOm08MNCg0KtdrLxLWl1Kqjurv5sb65pNfK0+u8qNCnuaTX
-ytfpus/Eo8q9tcTJ6LzGDQoxoaK7+bG+uaTXytPrvKjQp7mk18rX6brPo7uhoTKhorv5sb65pNfK
-0+u8qNCnuaTXyrXEserXvKO7DQozoaK9scD4uaTXyrXEyei8xg0KocwguN+53MjL1LG9scD4uaTX
-ysnovMYgocwgsr/Dxb6twO29scD4uaTXysnovMYgocwg1LG5pL2xwPi5pNfKyei8xg0KNKGiuN+5
-3MjL1LG1xMTq0L3J6LzGoaGhoaGhoaE1oaLEs7yvzcW5q8u+0L2z6r3hubnJ6LzGtcSwuMD9DQo2
-oaLIy7mks8mxvs22yOvT67L6s/a1xLfWzvahoTehotC9s+rX3Lbu1KTL47XE1vfSqtSt1PINCjih
-otC9s+rX3Lbu1KTL47XEyP3W1re9t6ihoaGhOaGi0L2z6tfctu7UpMvjtcSwuMD9DQoNCrXazuW1
-pdSqo7q498DgsrvNrMjL1LG1xNC9s+q94bm5DQoxoaLP+srbyMvUsbXE0L2z6r3hubmhoaGhDQoy
-oaK+rcDtyMvUsbXE0L2z6r3hubkNCjOhosn6svrX99K1oaK/zbunt/7O8cjL1LG1xNC9s+q94bm5
-DQo0oaKy+sa30dC3oqOouaSzzLy8yvWjqcjL1LG1xNC9s+q94bm5DQo1oaK437LjudzA7cjL1LG1
-xLOkxtq8pMD40+vUsbmks9a5ybzGu66jqEVTT1CjqQ0Koe4gsLjA/dHQzNajury41tayu82sxvPS
-tbXE0L2z6rncwO3WxrbIDQoNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppQ0KDQrXqLzSvPK96aO6wqbA
-z8qmDQogICAgzuS6urTz0ae+rbzD0afLtsq/o6zW0Ln6yMvD8bTz0ae53MDt0aeyqcq/o6zKtdW9
-0M3Iy8Gm18rUtNeovNKho7GxvqkNCrTz0aehosflu6q089Gnye7b2tHQvr/J+tS6oaLW0LTzudzA
-7dHQvr/Uur/N1/m9zMraoaPU+NTaVENMtefX06GiyKjWx7yvzcWhog0KvNK80sDWtefG97WjyM7I
-y8Gm18rUtL6twO2hotfcvOC1yNawzrssx9fX1Nb3s9bKtcqptuC80sbz0rXE2rK/tcTIy8Gm18rU
-tA0KvLDG89K1zsS7r8+1zbO1xL2oyeijrL7f09C34bi7tcTF4NG1vLDXydGvuKi1vL6t0emho8ra
-v86357jxvKTH6aGi1dzA7aGi09ANCsHPoaLT0LXAo6y21NGn1LG+39PQutzHv7XEuNDIvsGmus3G
-9Lei0NSju8rav87E2sjd16LW2NPrxvPStc/W17S94brPo6zKtdPDDQrQ1KGistnX99DUx7+jrMnu
-ytzG89K1vLDRp9SxtcS6w8bAoaMNCg0KvdPK3MKmwM/Kprf+zvG1xL/Nu6fT0KO6DQq549bdsb7M
-76Giy6e/tbXnxvehorG+zO+3oravu/qhosT+sqi087rs06XKtdK1oaJUQ0yhorGmsLK8r83FoaLM
-q9StzfjNqKGiDQq547artefQxaGiu6rI87yvzcXRqbuoxqG+xrmry76hosPAtcTJzNPDv9W198no
-sbihosTPt73A7r31vMehotbQyb3Rxb7TwNahog0Ky7O1wrHMufDUsKGi1tDQxaOou6rEz6OpvK/N
-xaGiw8C5+sj8yfq5q8u+oaLDwNTes7yhornj1t3SvdKpuavLvqGiDQq547art6LVudL40NChosjV
-waK158zdoaKwrsbVyfq1yKGjDQo=
+The following changes since commit 65795efbd380a832ae508b04dba8f8e53f0b84d9:
+  Linus Torvalds (1):
+        Merge branch 'next-i2c' of git://aeryn.fluff.org.uk/bjdooks/linux
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+are available in the git repository at:
+
+  git://git.pengutronix.de/git/sha/linux-2.6.git for-david
+
+Sascha Hauer (2):
+      remove i.MX SPI driver
+      SPI: Add SPI driver for most known i.MX SoCs
+
+ arch/arm/plat-mxc/include/mach/spi.h |   27 +
+ drivers/spi/Kconfig                  |    7 +-
+ drivers/spi/Makefile                 |    2 +-
+ drivers/spi/mxc_spi.c                |  685 +++++++++++++
+ drivers/spi/spi_imx.c                | 1779 ----------------------------------
+ 5 files changed, 717 insertions(+), 1783 deletions(-)
+ create mode 100644 arch/arm/plat-mxc/include/mach/spi.h
+ create mode 100644 drivers/spi/mxc_spi.c
+ delete mode 100644 drivers/spi/spi_imx.c
+
+
 
 ------------------------------------------------------------------------------
 Crystal Reports - New Free Runtime and 30 Day Trial
@@ -164,15 +58,3 @@ Check out the new simplified licensing option that enables unlimited
 royalty-free distribution of the report engine for externally facing 
 server and web deployment.
 http://p.sf.net/sfu/businessobjects
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--

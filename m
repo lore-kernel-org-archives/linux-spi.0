@@ -1,14 +1,11 @@
-From: Unknown <unknown@unknown.invalid>
-Subject: [SPAM] 票据代理
-Date: Fri, 19 Jun 2009 04:08:48 +0800
-Message-ID: <E1MHNox-0005BX-7c@h25xhf1.ch3.sourceforge.com>
-Reply-To: dhfidsd
+From: "Lourie Uvan" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] 1st internal mailing
+Date: Thu, 18 Jun 2009 23:37:31 +0300
+Message-ID: <VAMQIZVWQMLYGC.ISGLBCQHIGRLEGS9209741190@[84.228.62.218]>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============8078987770795971213=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-From: =?GB2312?B?wO7PyMn6?= <sss@dfhnfj>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,27 +16,95 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHye7b2srQ9s7Dr8q10rXT0M/e
-uavLvrXEo6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+
-o6mho87Sy77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvB
-y8O/1MLP+srbtu62yKGjCsO/1MLT0NK7sr+31tT21rXLsLXnxNS3osaxNiW6zcbVzai3osax1tbA
-4Mjnz8KjusnMxrfP+srby7C3osaxo6y158TU1MvK5LeixrGjrAq547jmt6LGsdfiwd7StbeixrEs
-t/7O8dK1t6LGsbXIICi5+suwtdjLsKOpMC41LTIl08W73bT6v6q78rrP1/ejrLXjyv29z7XNoaO7
-ub/JCtLUuPm+3cv51/bK/cG/tu62yLXEtPPQocC0yczM1tPFu921xLXjyv2jrLmry76zycGituDE
-6tK71rG84bPW0tShsLPP0MWhsc6q1tAK0MTX986quavLvrXEusvQxMu8z+uhosDOuczK98GiuavL
-vtDOz/OjrLG+uavLvtaj1tiz0MW1y/nTw774ttTKx9XmxrGjobj8z6PN+wrE3Lm709C7+rvh0+u5
-88u+us/X96OhCqGhoaEKICAgIMjnufPLvtTat6LGsbXE1ebOsbe9w+bT0MjOus7SycLHu/K1o9DE
-o6y/ycnPzfiy6daku/LO0su+1rG909PrufPLvsily7DO8b7WCrXWv9u6y7bUoaMgCiAgICAgCiAg
-ICC0y9DFz6KzpMba09DQp6OsyOfQ67340ruyvceiycw6IAogICAgCqGhoaHK1iAgu/o6MTM1MzA5
-MDkzNDQKICAgICAgICBRUTs3NzE1MDkzNDQKoaGhocGqz7XIyzvA7rn6t+UKy7PXowogICAgICDJ
-zOz3o6EgCiAgICAgCqGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaEgIKGhoaGhoaGhoaGhoaGh
-oaGhoaGhoaGhoaGhye7b2srQ9s7Dr8q10rXT0M/euavLvgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CkNyeXN0YWwgUmVwb3J0cyAtIE5ldyBGcmVlIFJ1bnRpbWUgYW5kIDMwIERheSBUcmlhbApDaGVj
-ayBvdXQgdGhlIG5ldyBzaW1wbGlmaWVkIGxpY2Vuc2luZyBvcHRpb24gdGhhdCBlbmFibGVzIHVu
-bGltaXRlZApyb3lhbHR5LWZyZWUgZGlzdHJpYnV0aW9uIG9mIHRoZSByZXBvcnQgZW5naW5lIGZv
-ciBleHRlcm5hbGx5IGZhY2luZyAKc2VydmVyIGFuZCB3ZWIgZGVwbG95bWVudC4KaHR0cDovL3Au
-c2YubmV0L3NmdS9idXNpbmVzc29iamVjdHMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
-Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--===============8078987770795971213==
+Content-type: text/html; charset="iso-8859-1"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title></title>
+</head>
+<body bgcolor="#D4D8E2">
+<style type="text/css">
+<!--
+p { font-family:Verdana, Arial, Helvetica, sans-serif; font-size:13px; color:#000000; }
+headDate { font-family: Arial, Helvetica, sans-serif; font-size:13px; font-weight:bold; color:#666666; }
+-->
+</style>
+<div style="width: 100%; height: 100%; background-color: #D4D8E2;">
+<div id="top">
+	<font size="3" style="font-size: 12px">You are receiving this email because
+	you subscribed to Qfysig.
+<br>
+	If you have not already done so, please
+<a href="http://vam63.cudtukon.cn/?aqfqkqqqve=xiexapqk&eaxe=d07a5fdda7&jvipu=iasqmeikoh">confirm your
+	subscription here.</a>
+
+<br><br>Click here if you'd like to
+<a href="http://vam63.cudtukon.cn/?qsef=gjweyguyt&alqdaxahii=d07a5fdda7&nqehyw=qjlok">unsubscribe</a>.<br>
+	</font>
+<br>
+</div>
+<table width="614" border="0" align="center" cellpadding="2" cellspacing="0" bgcolor="#344D80">
+<tr><td>
+<table width="610" border="0" align="center" cellpadding="0" cellspacing="10" bgcolor="#ffffff">
+<tr><td><div align="center">
+	<a href="http://vam63.cudtukon.cn/?afek=yhuader&igqn=d07a5fdda7&ixjxia=ljegukjpob" target="_self">
+	<img alt="Click here!" src="http://vam63.cudtukon.cn/spacer.gif" border="0"></a>
+</div></td>
+</tr><tr><td><blockquote><hr noshade color="#344D80">
+	<font face="Verdana, Arial, Helvetica, sans-serif" size="2">
+	<font face="Verdana, Arial, Helvetica, sans-serif" size="1" color="#555555">
+<br><b>Email address change?</b><br>
+	For a change of email address simply enter your details
+<a href="http://zv85.cudtukon.cn/?ninom=ymagqgid&behomedig=d07a5fdda7&yduaicajto=iraved">
+	here.</a><br><br>
+<b>To unsubscribe from the Zuibo E-alert: </b>
+	Please <a href="http://vam63.cudtukon.cn/?eudqk=kavajhqqfq&keboekyjhi=d07a5fdda7&jgyf=iehjhegqd">click here</a><br>
+<br>Copyright (c) 2009 Opjr Ltd.<br><hr noshade color="#9695A3">
+	<font color="#666666" size="1" face="Arial">
+&nbsp;<a href="http://vam63.cudtukon.cn/?ihuyxovy=uveoy&jjmygiru=d07a5fdda7&yipjzuh=jajniruxjt" target="_blank">Health Archives</a> |
+<a href="http://vam63.cudtukon.cn/?njuqwyfq=iqbosewap&cyxucyo=d07a5fdda7&ifjcosua=iveiygjz" target="_blank">
+	Health Forum</a>|&nbsp;
+<a href="http://vam63.cudtukon.cn/?vqzemjpeen=uzqly&etqsin=d07a5fdda7&afuqosjc=wuqryge" target="_blank">
+	Contact Us</a> |&nbsp;
+<a href="http://vam63.cudtukon.cn/?yafjc=ykaxq&kqmi=d07a5fdda7&oruhykoy=iwepuwib" target="_blank">
+	Whitelisting</a></font><br>
+	Copyright 2009. All Rights Reserved.
+</font><hr noshade color="#9695A3"></div>
+</blockquote>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</body>
+</html>
+
+
+--===============8078987770795971213==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Crystal Reports - New Free Runtime and 30 Day Trial
+Check out the new simplified licensing option that enables unlimited
+royalty-free distribution of the report engine for externally facing 
+server and web deployment.
+http://p.sf.net/sfu/businessobjects
+--===============8078987770795971213==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8078987770795971213==--

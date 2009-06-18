@@ -1,118 +1,107 @@
-From: Rini van Zetten <rini@arvoo.nl>
-Subject: [PATCH -mm][POWERPC] mpc8xxx : allow SPI without cs.
-Date: Thu, 18 Jun 2009 08:19:44 +0200
-Message-ID: <4A39DC80.7030906@arvoo.nl>
+From: Andrea Paterniani <a.paterniani@swapp-eng.it>
+Subject: Re: i.MX SPI driver
+Date: Thu, 18 Jun 2009 08:46:23 +0200
+Message-ID: <4A39E2BF.8060104@swapp-eng.it>
+References: <1245235220-23816-1-git-send-email-s.hauer@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Kumar Gala <galak@kernel.crashing.org>,
+Cc: David Brownell <david-b@pacbell.net>,
+	linux-arm-kernel@lists.arm.linux.org.uk,
 	spi-devel-general@lists.sourceforge.net,
-	linuxppc-dev list <Linuxppc-dev@ozlabs.org>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+	VISCOUNT - Zinato Carlo <c.zinato@viscount.it>,
+	VISCOUNT - Larcher Alessandro <a.larcher@viscount.it>,
+	VISCOUNT - Gabrielli Sandro <s.gabrielli@viscount.it>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk>
+In-Reply-To: <1245235220-23816-1-git-send-email-s.hauer@pengutronix.de>
+List-Unsubscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=unsubscribe>
+List-Archive: <http://lists.arm.linux.org.uk/lurker/list/linux-arm-kernel.html>
+List-Post: <mailto:linux-arm-kernel@lists.arm.linux.org.uk>
+List-Help: <mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=help>
+List-Subscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.arm.linux.org.uk
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds the possibility to have a spi device without a cs.
+Hi Sascha,
 
-For example, the dts file should look something like this:
+Sorry for late replay!
+The current driver support DMA transfers.
+Surely for our design this feature is mandatory since we need to sustain 
+heavy SPI traffic.
+I suggest to not remove the driver even if it only supports iMX1 device 
+and not the entire family.
+Is it possible to have both current and new drivers?
 
-spi-controller {
-        gpios = <&pio1 1 0      /* cs0 */
-                 0              /* cs1, no GPIO */
-                 &pio2 2 0>;    /* cs2 */
+Regards,
+Andrea
 
 
-
-Signed-off-by: Rini van Zetten <rini@arvoo.nl>
----
-Changes :
-	patch against 2.6.30-rc8-mm1
-
---- drivers/spi/spi_mpc8xxx.c.org	2009-06-12 10:45:21.000000000 +0200
-+++ drivers/spi/spi_mpc8xxx.c	2009-06-12 10:54:48.000000000 +0200
-@@ -666,9 +666,10 @@ static void mpc8xxx_spi_cs_control(struc
-  	struct mpc8xxx_spi_probe_info *pinfo = to_of_pinfo(dev->platform_data);
-  	u16 cs = spi->chip_select;
-  	int gpio = pinfo->gpios[cs];
--	bool alow = pinfo->alow_flags[cs];
--
--	gpio_set_value(gpio, on ^ alow);
-+	if (gpio != -EEXIST) {
-+		bool alow = pinfo->alow_flags[cs];
-+		gpio_set_value(gpio, on ^ alow);
-+	}
-  }
-
-  static int of_mpc8xxx_spi_get_chipselects(struct device *dev)
-@@ -707,27 +708,29 @@ static int of_mpc8xxx_spi_get_chipselect
-  		enum of_gpio_flags flags;
-
-  		gpio = of_get_gpio_flags(np, i, &flags);
--		if (!gpio_is_valid(gpio)) {
-+		if (gpio_is_valid(gpio)) {
-+			ret = gpio_request(gpio, dev_name(dev));
-+			if (ret) {
-+				dev_err(dev, "can't request gpio #%d: %d\n", i, ret);
-+				goto err_loop;
-+			}
-+
-+			pinfo->gpios[i] = gpio;
-+			pinfo->alow_flags[i] = flags & OF_GPIO_ACTIVE_LOW;
-+
-+			ret = gpio_direction_output(pinfo->gpios[i],
-+					pinfo->alow_flags[i]);
-+			if (ret) {
-+				dev_err(dev, "can't set output direction for gpio "
-+						"#%d: %d\n", i, ret);
-+				goto err_loop;
-+			}
-+		} else if (gpio == -EEXIST) {
-+			pinfo->gpios[i] = -EEXIST;
-+		} else {
-  			dev_err(dev, "invalid gpio #%d: %d\n", i, gpio);
-  			goto err_loop;
-  		}
--
--		ret = gpio_request(gpio, dev_name(dev));
--		if (ret) {
--			dev_err(dev, "can't request gpio #%d: %d\n", i, ret);
--			goto err_loop;
--		}
--
--		pinfo->gpios[i] = gpio;
--		pinfo->alow_flags[i] = flags & OF_GPIO_ACTIVE_LOW;
--
--		ret = gpio_direction_output(pinfo->gpios[i],
--					    pinfo->alow_flags[i]);
--		if (ret) {
--			dev_err(dev, "can't set output direction for gpio "
--				"#%d: %d\n", i, ret);
--			goto err_loop;
--		}
-  	}
-
-  	pdata->max_chipselect = ngpios;
---
-
+Sascha Hauer ha scritto:
+> Hi David,
+>
+> The new i.MX SPI driver has been posted twice on the list, I received no
+> objections from anyone, so please consider pulling the following branch
+>
+> Thanks,
+>   Sascha
+>
+>
+> The following changes since commit 65795efbd380a832ae508b04dba8f8e53f0b84d9:
+>   Linus Torvalds (1):
+>         Merge branch 'next-i2c' of git://aeryn.fluff.org.uk/bjdooks/linux
+>
+> are available in the git repository at:
+>
+>   git://git.pengutronix.de/git/sha/linux-2.6.git for-david
+>
+> Sascha Hauer (2):
+>       remove i.MX SPI driver
+>       SPI: Add SPI driver for most known i.MX SoCs
+>
+>  arch/arm/plat-mxc/include/mach/spi.h |   27 +
+>  drivers/spi/Kconfig                  |    7 +-
+>  drivers/spi/Makefile                 |    2 +-
+>  drivers/spi/mxc_spi.c                |  685 +++++++++++++
+>  drivers/spi/spi_imx.c                | 1779 ----------------------------------
+>  5 files changed, 717 insertions(+), 1783 deletions(-)
+>  create mode 100644 arch/arm/plat-mxc/include/mach/spi.h
+>  create mode 100644 drivers/spi/mxc_spi.c
+>  delete mode 100644 drivers/spi/spi_imx.c
+>
+>
+>
+> -------------------------------------------------------------------
+> List admin: http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel
+> FAQ:        http://www.arm.linux.org.uk/mailinglists/faq.php
+> Etiquette:  http://www.arm.linux.org.uk/mailinglists/etiquette.php
+>
+>   
 
 -- 
-Rini van Zetten
-Senior Software Engineer
 
--------------------------
-ARVOO Engineering B.V.
-Tasveld 13
-3417 XS Montfoort
-The Netherlands
 
-E-mail : <mailto:rini@arvoo.com> Rini van Zetten
+ 
 
-Web : www.arvoo.com
+------------------------------------------------------------------------
+
+*Ing. Andrea Paterniani*
+
+*SWAPP* - Studio Professionale
+Via degli Abeti, 312 - 61100 Pesaro
+Tel 0721 24256
+Fax 178 220 8730
+ 
+a.paterniani@swapp-eng.it
+www.swapp-eng.it 
+<mailto:%0d%0aa.paterniani@swapp-eng.it%0d%0awww.swapp-eng.it>
+
+------------------------------------------------------------------------
+
+-------------------------------------------------------------------
+List admin: http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel
+FAQ:        http://www.arm.linux.org.uk/mailinglists/faq.php
+Etiquette:  http://www.arm.linux.org.uk/mailinglists/etiquette.php

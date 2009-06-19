@@ -1,21 +1,21 @@
 From: Anton Vorontsov <avorontsov@ru.mvista.com>
-Subject: Re: [PATCH -mm][POWERPC] mpc8xxx : allow SPI without cs.
-Date: Fri, 19 Jun 2009 17:25:01 +0400
-Message-ID: <20090619132501.GA10886@oksana.dev.rtsoft.ru>
+Subject: Re: [PATCH -mm v3][POWERPC] mpc8xxx : allow SPI without cs.
+Date: Fri, 19 Jun 2009 17:45:58 +0400
+Message-ID: <20090619134558.GA18872@oksana.dev.rtsoft.ru>
 References: <4A39DC80.7030906@arvoo.nl>
 	<20090618130955.GA1369@oksana.dev.rtsoft.ru>
 	<EEB9B7B7-5456-4AE9-8BB9-96DA04320697@kernel.crashing.org>
-	<c384c5ea0906190445u130a4fedv14c22c7f9abdb9d8@mail.gmail.com>
+	<4A3B3D90.5030100@arvoo.nl>
 Reply-To: avorontsov@ru.mvista.com
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general@lists.sourceforge.net, Rini van Zetten <rini@arvoo.nl>,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
 	linuxppc-dev list <Linuxppc-dev@ozlabs.org>
-To: Leon Woestenberg <leon.woestenberg@gmail.com>
+To: Rini van Zetten <rini@arvoo.nl>
 Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
 Content-Disposition: inline
-In-Reply-To: <c384c5ea0906190445u130a4fedv14c22c7f9abdb9d8@mail.gmail.com>
+In-Reply-To: <4A3B3D90.5030100@arvoo.nl>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
 	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
@@ -27,55 +27,49 @@ Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gRnJpLCBKdW4gMTksIDIwMDkgYXQgMDE6NDU6NDZQTSArMDIwMCwgTGVvbiBXb2VzdGVuYmVy
-ZyB3cm90ZToKPiBIZWxsbywKPiAKPiBPbiBUaHUsIEp1biAxOCwgMjAwOSBhdCA0OjA0IFBNLCBL
-dW1hciBHYWxhPGdhbGFrQGtlcm5lbC5jcmFzaGluZy5vcmc+IHdyb3RlOgo+ID4gT24gSnVuIDE4
-LCAyMDA5LCBhdCA4OjA5IEFNLCBBbnRvbiBWb3JvbnRzb3Ygd3JvdGU6Cj4gPj4gT24gVGh1LCBK
-dW4gMTgsIDIwMDkgYXQgMDg6MTk6NDRBTSArMDIwMCwgUmluaSB2YW4gWmV0dGVuIHdyb3RlOgo+
-ID4+Pgo+ID4+PiBUaGlzIHBhdGNoIGFkZHMgdGhlIHBvc3NpYmlsaXR5IHRvIGhhdmUgYSBzcGkg
-ZGV2aWNlIHdpdGhvdXQgYSBjcy4KPiA+Pj4KPiA+IFRoYXQgaXMgYSBnb29kIHF1ZXN0aW9uLiDC
-oFdoYXQgSFcgaXMgdGhpcyBmb3IgKEkgZG9uJ3QgdGhpbmsgaXRzIGZvciBlU1BJCj4gPiBidXQg
-SSBjb3VsZCBiZSB3cm9uZykuCj4gPgo+IFdlIG5lZWQgU1BJIHdpdGhvdXQgQ1MgdG9vIG9uIG91
-ciBNUEM4MzEzRSBkZXNpZ24uCgpXZSBkbyBzdXBwb3J0IFNQSSB3aXRob3V0IENTLCBidXQgb25s
-eSBmb3Igb25lIHNsYXZlIGRldmljZS4gSWYKdGhlcmUgaXMgbm8gQ1MsIHRlY2huaWNhbGx5IHlv
-dSBjYW4gYWRkcmVzcyBvbmx5IG9uZSBkZXZpY2Ugb24gYQpTUEkgYnVzLgoKQW5kIGFwcGFyZW50
-bHkgUmluaSdzIGNhc2UgaXMgbm90IGZvciBhZGRyZXNzaW5nIG11bHRpcGxlIGNoaXBzCncvbyBD
-UyBsaW5lcywgaXQncyBqdXN0IHNvbWUgY2hpcC1zZWxlY3RzIG5lZWQgcXVpcmtzLgoKPiBJbiBv
-dXIgY2FzZSBoYXZpbmcgYSBDUyBsaW5lIHRvIGVhY2ggc2xhdmUgKDE4IG9mIHRoZW0pIGlzIHRv
-bwo+IGV4cGVuc2l2ZSBhbmQgd2UgdXNlIGEgY2hpcCBzZWxlY3Qgd2hpY2ggcGlnZ3kgYmFja3Mg
-b24gYW5vdGhlcgo+IHNpZ25hbC4KPiBPbmNlIHRoZSBzbGF2ZSBpcyBzZWxlY3RlZCwgU1BJIGlz
-IHVzZWQgdG8gc2VuZCBsYXJnZSBhbW91bnRzIG9mIGRhdGEuCgpDYW4geW91IGRlc2NyaWJlIGl0
-IGEgbGl0dGxlIGJpdCBtb3JlPyBIYXZlIHlvdSBwYXRjaGVkIHRoZSBTUEkKZHJpdmVyIHRvIHdv
-cmsgd2l0aCB5b3VyIHNldHVwPwoKSWYgeW91IGNhbiBhZGRyZXNzIDE4IHNsYXZlcyB3L28gY2hp
-cC1zZWxlY3QgbGluZSwgSSBxdWVzcwp5b3UgaGF2ZSBhIENTIGRlbXV4aW5nIGJyaWRnZSBzb21l
-d2hlcmUsIGkuZS4KCnNwaS1jb250cm9sbGVyIHsKCS8qCgkgKiBubyBjaGlwLXNlbGVjdHMgZnJv
-bSB0aGUgY29udHJvbGxlciwgaXQgY2FuIG9ubHkgdGFsayB0bwoJICogb25lIGRldmljZTogdGhl
-IGNzIGRlbXV4aW5nIGJyaWRnZSwgaXQgaXMgYWx3YXlzIHNlbGVjdGVkLgoJICovCglzcGktY3Mt
-ZGVtdXhpbmctYnJpZGdlIHsKCQkvKgoJCSAqIGtub3dzIGhvdyB0byBtYW5hZ2UgY2hpcC1zZWxl
-Y3RzIChvciBkZW11eAoJCSAqIG9uZSBjaGlwIHNlbGVjdCBsaW5lIGZvciBzZXZlcmFsIHNsYXZl
-cykKCQkgKi8KCQlzcGktc2xhdmUgewoJCQlyZWcgPSA8MD47CgkJfTsKCQkuLi4KCQlzcGktc2xh
-dmUgewoJCQlyZWcgPSA8MTc+OwoJCX07Cgl9Owp9OwoKU3VyZWx5IHdlIGNhbiBoaWRlIHRoZSBi
-cmlkZ2UgaW50byB0aGUgU1BJIGNvbnRyb2xsZXIgZHJpdmVyLApidXQgSSB0aGluayBpdCB3b3Vs
-ZCBiZSBiZW5lZmljaWFsIHRvICJmYWN0b3Itb3V0IiBpdCB0byBhCnN0YW5kLWFsb25lIGVudGl0
-eSwgc28gdGhhdCBvdGhlciBTUEkgY29udHJvbGxlcnMgY291bGQgd29yawp3aXRoIHRoaXMgc2V0
-dXAgd2l0aG91dCBhbnkgbW9kaWZpY2F0aW9ucyAob2ggYW5kIGJ0dywgd2UgY291bGQKYWxzbyBj
-cmVhdGUgYSBicmlkZ2UgY2FsbGVkICJncGlvLWNoaXBzZWxlY3RzLWJyaWRnZSIsIGFuZApmYWN0
-b3Igb3V0IGFsbCBHUElPIHN0dWZmIGZyb20gdGhlIGRyaXZlcnMpLgoKVGhlcmUgYXJlIHR3byBv
-cHRpb25zIG9mIGhvdyB3ZSBjYW4gZmFjdG9yIG91dCBjaGlwLXNlbGVjdAptYWNoaW5lcy4uLiB0
-aGUgYmFkIGFuZCB0aGUgdWdseS4gOi0pIE5vLCB0aGUgZmlyc3Qgb25lIGlzIGJhZCwKYnV0IHRo
-ZSBzZWNvbmQgc2hvdWxkIGJlIE9LLgoKMS4gV2UgY2FuIGNyZWF0ZSBmdWxsLWZsZWRnZWQgU1BJ
-IG1hc3RlciBicmlkZ2UgZHJpdmVycywgdGhlCiAgIGRyaXZlcnMgd2lsbCBqdXN0IHBhc3MtdGhy
-b3VnaCBhbGwgU1BJIElPLCBidXQgd2lsbCBtYW5hZ2UKICAgY2hpcC1zZWxlY3RzLiBUaGUgYmFk
-IHBhcnQgaXMgdGhhdCB0aGVzZSBkcml2ZXJzIGNvdWxkIGRlZ3JhZGUKICAgcGVyZm9ybWFuY2Ug
-c2luY2UgdGhleSdsbCBoYXZlIHRvIG1hbmFnZSBTUEkgSU8sIHdoaWNoIGlzCiAgIHVubmVlZGVk
-IGZvciB0aGUgcHVyZSBDUyBtYWNoaW5lcy4KCjIuIEFub3RoZXIgb3B0aW9uICh3aGljaCBJIGxp
-a2UgbW9yZSksIGlzIHRvIGNyZWF0ZSAiU1BJIGNoaXAtCiAgIHNlbGVjdCBtYWNoaW5lIGRyaXZl
-ciBmcmFtZXdvcmsiLCBzbyB3ZSBjb3VsZCAoZmluYWxseSkKICAgc2VwYXJhdGUgdHdvIFNQSSBl
-bnRpdGllczogU1BJIElPIGFuZCBTUEkgY2hpcC1zZWxlY3QgbWFjaGluZS4KICAgQ1MgbWFjaGlu
-ZXMgb2YgZGlmZmVyZW50IGZsYXZvdXJzOiBHUElPLCBidWlsdC1pbiwgYW5kCiAgIGJvYXJkLXNw
-ZWNpZmljICghKSB3aXRoIGEgbG90IG9mIGRlbXV4aW5nIG1hZ2ljLgoKKDEpIGNhbiBiZSBpbXBs
-ZW1lbnRlZCB0cml2aWFsbHksIHdoaWxlICgyKSBpcyBhIGxvdCBvZiB3b3JrLgoKLS0gCkFudG9u
-IFZvcm9udHNvdgplbWFpbDogY2JvdWF0bWFpbHJ1QGdtYWlsLmNvbQppcmM6Ly9pcmMuZnJlZW5v
-ZGUubmV0L2JkMgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpMaW51eHBwYy1kZXYgbWFpbGluZyBsaXN0CkxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3Jn
-Cmh0dHBzOi8vbGlzdHMub3psYWJzLm9yZy9saXN0aW5mby9saW51eHBwYy1kZXY=
+On Fri, Jun 19, 2009 at 09:26:08AM +0200, Rini van Zetten wrote:
+> This patch adds the possibility to have a spi device without a cs.
+>
+> For example, the dts file should look something like this:
+>
+> spi-controller {
+>        gpios = <&pio1 1 0      /* cs0 */
+>                 0              /* cs1, no GPIO */
+>                 &pio2 2 0>;    /* cs2 */
+>
+> Signed-off-by: Rini van Zetten <rini@arvoo.nl>
+> ---
+> Changes :
+> 	patch against 2.6.30-rc8-mm1
+> 	style updates
+> 	compiler warning fix
+> comment :
+> 	This feature is needed on our home made board to program an onboard fpga.
+> 	The fpga needs some special pin toggling to put it in programming mode.
+> 	That's why we want to skip the usual gpio cs and do the pin toggling
+> 	in our driver
+
+Cool, thanks for the explanation. You may want to put it
+into the commit message.
+
+[...]
+> +			ret = gpio_direction_output(pinfo->gpios[i],
+> +					pinfo->alow_flags[i]);
+> +			if (ret) {
+> +				dev_err(dev, "can't set output direction for"
+> +							"gpio #%d: %d\n",
+> +							i, ret);
+
+There is no space between 'for' and 'gpio' words.
+(also the whole dev_err() may fit into two lines, no need to
+split it into three lines).
+
+Otherwise looks great. On the next resend feel free to add my
+Acked-by: Anton Vorontsov <avorontsov@ru.mvista.com>
+
+Thanks,
+
+-- 
+Anton Vorontsov
+email: cbouatmailru@gmail.com
+irc://irc.freenode.net/bd2

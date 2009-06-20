@@ -1,10 +1,9 @@
-From: Club Vacation Deals <hot-deals-u0uJHfCAc1Hf17m2raTrtZqQE7yCjDx5@public.gmane.org>
-Subject: WBC Superfly Championship fight in Puerto
-	Vallarta
-Date: Sat, 20 Jun 2009 06:07:38 -0400
-Message-ID: <ec28d7024b9ffafa8b4eaf56576b7c7e@vallarta-paradise.com>
+From: "Ginny Exaaa" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Hey, mu chat-stranger
+Date: Sun, 21 Jun 2009 06:32:52 +0900
+Message-ID: <LSBIBCWLOKSBADN.NLMYPFSNAXSMDXK35849376847@[123.109.7.87]>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6739275365246341456=="
+Content-Type: multipart/mixed; boundary="===============8045776281392477199=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,96 +16,86 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6739275365246341456==
-Content-Transfer-Encoding: 8bit
-Content-Type: text/html; charset="UTF-8"
+--===============8045776281392477199==
+Content-type: text/html; charset="iso-8859-1"
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<body>
-<div align="center">
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="218">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/wbcpv-0609-1209/maillist.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com/packages_ind.php?pack=Championsh%26hotel=velasvta%26packid=410"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_01.jpg" width="326" height="218" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_02.jpg" width="324" height="218" border="0"></a>
-			</th>
-		</tr>
-	</tbody>
+<head>
+</head>
+<body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0" bgcolor="#00349a">
+
+<table width="100%" cellspacing="0" cellpadding="0"><tr><td bgcolor="#00349a">
+<table cellspacing="0" cellpadding="0" border="0" bgcolor="#00349a" style="width: 751px">
+        <tr>
+                <td>
+
+</td>
+
+        </tr>
+</table>
+<table cellspacing="0" cellpadding="0" border="0" bordercolor="red" bgcolor="#00349a" style="width: 750px">
+        <tr>
+                <td width="10">&nbsp;</td>
+                <td valign="top">
+
+
+
+<table height="29" cellspacing="0" cellpadding="0" border="0" bgcolor="#cc3433" style="width: 155px">
+        <tr>
+                <td width="146" valign="top" align="center">
+                <font face="Verdana,Tahoma,sans-serif" color="#FFFFFF" size="1" style="text-decoration:none">
+                <strong>Having trouble viewing this e-mail?<br>
+
+<br>
+
+<a
+ href="http://coaao44.zastasoy.cn/?imumq=abas&ajtjwy=6b0501e786b1&yjjjfqyvir=hodqharyxe" frontuid="4703008"
+><font face="Verdana,Tahoma,sans-serif" color="#ffcc66" size="1" style="text-decoration:none;">View this email on the web &#187;</a></a></strong><br>
+</font></td>
+        </tr>
+
 </table>
 
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="252">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/wbcpv-0609-1209/maillist.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com/packages_ind.php?pack=Championsh%26hotel=velasvta%26packid=410"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_03.jpg" width="326" height="252" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_04.jpg" width="324" height="252" border="0"></a>
-			</th>
-		</tr>
-	</tbody>
+</td>
+
+<td width="548" valign="top" style="text-align: center">
+
+                <br><br><a
+ href="http://oks7.zastasoy.cn/?nufo=ulioxu&dqtoqt=6b0501e786b1&qsqbo=uqxy" frontuid="4703008"
+><img alt="Click here to open" src="http://oks7.zastasoy.cn/spacer.gif" style="color: #FFFFFF" border="0"></a><br>
+<br>
+
+                </td>
+
+        </tr>
 </table>
 
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="306">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/wbcpv-0609-1209/maillist.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com/packages_ind.php?pack=Championsh%26hotel=velasvta%26packid=410"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_05.jpg" width="326" height="306" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_06.jpg" width="324" height="306" border="0"></a>
-			</th>
-		</tr>
-	</tbody>
+
+<table border="0" cellpadding="10" cellspacing="0" bgcolor="#00349a" style="width: 750px">
+<tr valign="top">
+<td><font face="Verdana, Arial, sans-serif" size="1" color="#ffffff"><br>
+
+© 2009 Uhqsetjt Media. All rights reserved.<br><br>Please review our <a
+ href="http://lsbi7.zastasoy.cn/?uleco=gawurepq&qevyhaxela=6b0501e786b1&ihqr=ocjufices" style="text-decoration: none;" frontuid="4703008"
+><font face="Verdana, Arial, sans-serif" size="1" color="#ffffff">Privacy Policy &raquo;</font></a><br>
+
+<br>
+
+You received this message because you registered to receive commercial e-mail messages from
+us. If you no longer wish to receive commercial e-mail messages from us, please <a
+ href="http://oks7.zastasoy.cn/?qdanjfjrj=ufeciygau&qxytonu=6b0501e786b1&edululuit=yeql" style="text-decoration: none;" frontuid="4703008"
+><font face="Verdana, Arial, sans-serif" size="1" color="#ffffff">click here to unsubscribe &raquo;</font></a></font></td>
+</tr>
 </table>
 
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="352">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/wbcpv-0609-1209/maillist.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com/packages_ind.php?pack=Championsh%26hotel=velasvta%26packid=410"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_07.jpg" width="326" height="352" border="0"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_08.jpg" width="324" height="352" border="0"></a>
-			</th>
-		</tr>
-	</tbody>
-</table>
-
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="66">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<a href="http://www.vallarta-paradise.com/wbcpv-0609-1209/maillist.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_09.jpg" width="199" height="66" border="0"></a><a href="http://www.vallarta-paradise.com/wbcpv-0609-1209/maillist.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.vacationlivehelp.com/livehelp.php?department=1" target="_blank"><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_10.jpg" width="244" height="66" border="0"></a><img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_11.jpg" width="207" height="66" 
- border="0"></a>
-			</th>
-		</tr>
-	</tbody>
-</table>
-
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="122">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center">
-				<img alt="Club Vacation Deals" src="http://www.vallarta-paradise.com/wbcpv-0609-1209/wbc_velas_eng_12.jpg" width="650" height="122" border="0"></th>
-		</tr>
-	</tbody>
-</table>
-
-<table width="650" border="0" cellpadding="0" cellspacing="0" height="80">
-	<tbody>
-		<tr>
-			<th scope="col" valign="top" align="center" height="80">
-				This is an exclusive promotion by <a href="http://www.vallarta-paradise.com/wbcpv-0609-1209/maillist.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=http://www.clubvacationdeals.com">Club Vacation Deals</a><br>
-				Telephone in Mexico &nbsp; &nbsp; +52 (322) 224 0347<br>
-				Los Angeles, CA &nbsp; &nbsp; (310) 598 2091<br>
-				New York, NY &nbsp; &nbsp; (212) 845 9362<br>
-				All reservations are subject to availability<br>
-				<a href="http://www.vallarta-paradise.com/wbcpv-0609-1209/maillist.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=subscribe" target="_blank">Click here to receive more promotions</a><br>
-				<a href="http://www.vallarta-paradise.com/wbcpv-0609-1209/maillist.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&action=unsubscribe" target="_blank">Click here to unsubscribe from our mailing list</a> 
-				<img src="http://www.vallarta-paradise.com/wbcpv-0609-1209/image.php?promo=8&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
-			</th>
-		</tr>
-	</tbody>
-</table>
-
-</div>
+</td></tr></table>
 </body>
+
 </html>
 
 
---===============6739275365246341456==
+--===============8045776281392477199==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -117,7 +106,7 @@ Are you an open source citizen? Join us for the Open Source Bridge conference!
 Portland, OR, June 17-19. Two days of sessions, one day of unconference: $250.
 Need another reason to go? 24-hour hacker lounge. Register today!
 http://ad.doubleclick.net/clk;215844324;13503038;v?http://opensourcebridge.org
---===============6739275365246341456==
+--===============8045776281392477199==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -128,4 +117,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6739275365246341456==--
+--===============8045776281392477199==--

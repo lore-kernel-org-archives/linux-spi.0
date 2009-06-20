@@ -1,11 +1,14 @@
-From: "Cary Wqcaqf" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Newsletter/June-vol.1
-Date: Fri, 19 Jun 2009 21:46:19 +0200
-Message-ID: <TBOJCZSCIWPMDXL.ABIPAYPNRRHZLGN66658125887@static-82-131-253-67.dunaweb.hu>
+From: =?ISO-8859-1?Q?Nespresso?= <service-clients-wpnHtpvsUwg@public.gmane.org>
+Subject: =?iso-8859-1?q?Invitation_pour_un_voyage_de_l?=
+	=?iso-8859-1?q?uxe_avec_Nespresso_Citiz?=
+Date: Sat, 20 Jun 2009 07:05:00 +0200
+Message-ID: <MTg0OS44MDAzMjAzLjEwNjQzODAzLjEyNDUzOTkwMjU=@S7d6e6>
+Reply-To: =?ISO-8859-1?Q?Nespresso?= <service-clients-wpnHtpvsUwg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7111654029934055886=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============9042857857290829269=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-OLQPsDUTOHWsTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,69 +19,133 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7111654029934055886==
-Content-type: text/html; charset="utf-8"
+--===============9042857857290829269==
+Content-Type: text/html; Charset="ISO-8859-1"
+Content-Transfer-Encoding: 8bit
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head>
-<title></title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<!-- CSS fake-out for Hotmail -->
-<style type="text/css">
+<font face="Helvetica" size=2 Id=StyleFont2><div class="online_link">Si ce message ne s'affiche pas correctement, <a href='http://url.cdt7.com/id.asp?l=57390-8003203-10643803-1849-0&l=1849-10643803-9523-5f65310a'>visualisez la version en ligne</a>.</div></font><br>
+<HTML>
+<HEAD>
+<TITLE>Nespresso -- Invitation pour un voyage de luxe avec Nespresso Citiz</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<STYLE type="text/css">
 <!--
+.a.Desinscription1:link {color:#336;}
+.a.Desinscription1:visited  {color:#336;}
+.a.Desinscription1:hover {color:#336;}
+.a.Desinscription1:active {color:#336;}
+.Desinscription1
+{
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  color: #666666;
 }
---></style>
-<!-- End hotmail fake-out -->
-</head>
-<body style="margin: 0px; padding: 0px">
-<!-- Leave CSS Rules inside body tag for webmail readers -->
-<style type="text/css">
-<!--
-table.main {width:100%; border:none; margin: 10px 0px 0px; padding: 0px 0px 0px;}
- .section {font-size: 16px; color:#3852A4; font-weight:bold; padding-top:5px;}
- .head {font-size:12px; font-family: arial; font-weight:bold; padding:0px 0px 5px;}
- .title {font-size:10px; font-weight: bold; padding:0px 0px 5px; border-bottom:1px solid #000000;}
- .blktitle {font-size: 12px; color: #000000; font-weight:bold; padding:0px 0px 5px;}
- .morelink {font-size: 10px; color: #000000; font-weight:bold; padding:0px 0px 15px;}
---></style>
+-->
+</STYLE>
+</HEAD>
+<BODY text="#003366" link="#333366">
+<DIV align="center">
+<TABLE width="750" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD width="750" valign="top">
+<TABLE align="center" border="0" cellpadding="10" cellspacing="5" bgcolor="#000000">
+<TR>
+<TD valign="top">
+<TABLE width="498" align="center" border="0" cellpadding="0" cellspacing="0">
+<TR>
+<TD>
+<TABLE height="46" border="0" cellpadding="0" cellspacing="0">
+<TR>
+<TD><A href="http://url.cdt7.com/id.asp?l=57387-8003203-10643803-1849-0&ID=328237&A=1&L=148172&C=7225&P=12536&T=E&URL=http://www.ibase.fr/track/pClick.asp?IdOp=13990%26IdLien=46150%26email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank"><IMG src="http://mm.cache.coltfrance.com/Nespresso_Citiz/img/mail/acqui/header_g.gif" width="160" height="46" border="0"></A></TD>
+<TD><A href="http://url.cdt7.com/id.asp?l=57387-8003203-10643803-1849-0&ID=328237&A=1&L=148172&C=7225&P=12536&T=E&URL=http://www.ibase.fr/track/pClick.asp?IdOp=13990%26IdLien=46150%26email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank"><IMG src="http://mm.cache.coltfrance.com/Nespresso_Citiz/img/mail/acqui/header_d.gif" width="335" height="46" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="498" height="326" border="0" cellpadding="0" cellspacing="0">
+<TR>
+<TD>
+<TABLE width="200" height="326" border="0" cellpadding="0" cellspacing="0">
+<TR>
+<TD height="158"><A href="http://url.cdt7.com/id.asp?l=57387-8003203-10643803-1849-0&ID=328237&A=1&L=148172&C=7225&P=12536&T=E&URL=http://www.ibase.fr/track/pClick.asp?IdOp=13990%26IdLien=46150%26email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank" style="text-decoration:none;"><FONT face="Verdana, Arial, Helvetica, sans-serif" color="#C7A570" size="2">Bonjour,<BR>
+<BR>
+Dans quelle ville souhaiteriez-<BR>
+vous d&#233;guster votre caf&#233;<BR>
+<I>Nespresso&nbsp;</I>?<BR>
+<BR></FONT><FONT face="Verdana, Arial, Helvetica, sans-serif" color="#FFFFFF" size="2">R&#233;pondez aux questions et envolez-vous pour</FONT> <FONT face="Verdana, Arial, Helvetica, sans-serif" color="#C7A570" size="2">New York</FONT><FONT color="#FFFFFF">,</FONT> <FONT face="Verdana, Arial, Helvetica, sans-serif" color="#C7A570" size="2">Londres</FONT> <FONT color="#FFFFFF">ou</FONT> <FONT face="Verdana, Arial, Helvetica, sans-serif" color="#C7A570" size="2">Tokyo*&nbsp;</FONT><FONT color=
+"#FFFFFF">!</FONT></A></TD>
+</TR>
+<TR>
+<TD>
+<TABLE height="38" border="0" cellpadding="0" cellspacing="0">
+<TR>
+<TD width="47"><IMG src="http://mm.cache.coltfrance.com/Nespresso_Citiz/img/px.gif" width="47" height="38" border="0"></TD>
+<TD width="108"><A href="http://url.cdt7.com/id.asp?l=57387-8003203-10643803-1849-0&ID=328237&A=1&L=148172&C=7225&P=12536&T=E&URL=http://www.ibase.fr/track/pClick.asp?IdOp=13990%26IdLien=46150%26email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank"><IMG src="http://mm.cache.coltfrance.com/Nespresso_Citiz/img/mail/acqui/btn.gif" width="108" height="38" border="0"></A></TD>
+<TD width="45"><IMG src="http://mm.cache.coltfrance.com/Nespresso_Citiz/img/px.gif" width="45" height="38" border="0"></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD height="130"><A href="http://url.cdt7.com/id.asp?l=57387-8003203-10643803-1849-0&ID=328237&A=1&L=148172&C=7225&P=12536&T=E&URL=http://www.ibase.fr/track/pClick.asp?IdOp=13990%26IdLien=46150%26email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank" style="text-decoration:none"><FONT face="Verdana, Arial, Helvetica, sans-serif" color="#FFFFFF" size="3"><STRONG>&#192; GAGNER*:</STRONG></FONT><BR>
+<BR>
+<FONT face="Verdana, Arial, Helvetica, sans-serif" color="#C7A570" size="2">- Un</FONT> <FONT face="Verdana, Arial, Helvetica, sans-serif" color="#FFFFFF" size="2">voyage de luxe</FONT> <FONT face="Verdana, Arial, Helvetica, sans-serif" color="#C7A570" size="2">dans<BR>
+chacune des villes suivantes&nbsp;:<BR></FONT> <FONT face="Verdana, Arial, Helvetica, sans-serif" color="#FFFFFF" size="2"><STRONG>New York, Londres ou<BR>
+Tokyo</STRONG><BR>
+<BR></FONT><FONT color="#C7A570">- 30</FONT> <FONT face="Verdana, Arial, Helvetica, sans-serif" color="#FFFFFF" size="2">machines <I>Nespresso</I> Citiz</FONT></A></TD>
+</TR>
+</TABLE>
+</TD>
+<TD><A href="http://url.cdt7.com/id.asp?l=57387-8003203-10643803-1849-0&ID=328237&A=1&L=148172&C=7225&P=12536&T=E&URL=http://www.ibase.fr/track/pClick.asp?IdOp=13990%26IdLien=46150%26email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank"><IMG src="http://mm.cache.coltfrance.com/Nespresso_Citiz/img/mail/acqui/ny.gif" width="102" height="326" border="0"></A></TD>
+<TD><A href="http://url.cdt7.com/id.asp?l=57387-8003203-10643803-1849-0&ID=328237&A=1&L=148172&C=7225&P=12536&T=E&URL=http://www.ibase.fr/track/pClick.asp?IdOp=13990%26IdLien=46150%26email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank"><IMG src="http://mm.cache.coltfrance.com/Nespresso_Citiz/img/mail/acqui/londres.gif" width="93" height="326" border="0"></A></TD>
+<TD><A href="http://url.cdt7.com/id.asp?l=57387-8003203-10643803-1849-0&ID=328237&A=1&L=148172&C=7225&P=12536&T=E&URL=http://www.ibase.fr/track/pClick.asp?IdOp=13990%26IdLien=46150%26email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank"><IMG src="http://mm.cache.coltfrance.com/Nespresso_Citiz/img/mail/acqui/tokyo.gif" width="103" height="326" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD height="150" valign="middle"><FONT face="Verdana" style="font-size:9px;color:#493c27;">* Consulter le <A href="http://url.cdt7.com/id.asp?l=57389-8003203-10643803-1849-0" target="_blank" style="color:#493c27;">r&#232;glement</A><BR>
+<BR>
+Jeu gratuit sans obligation d'achat. Les logos ou les marques repr&#233;sent&#233;s sont la propri&#233;t&#233; de leurs titulaires respectifs. Tous droits r&#233;serv&#233;s.<BR>
+<BR>
+<BR></FONT></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<IMG src="http://www.ibase.fr/track/pHit.asp?IdOp=13990&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" border="0" width="1" height="1" nosend="1"></TD>
+</TR>
+<TR>
+<TD colspan="3">
+<DIV align="center">
+<P class="formulairecomments"><FONT size="1" face="Arial, Helvetica, sans-serif">&#169; CAPD&#201;CISION, Tous droits r&#233;serv&#233;s<BR>
+Conform&#233;ment &#224; l'article 34 de la loi Informatique et Libert&#233;<BR>
+du 6 janvier 1978, vous disposez d'un droit d'acc&#232;s, de modification, de rectification et de suppression<BR>
+des donn&#233;es vous concernant.&nbsp;&nbsp;&nbsp; D&#233;claration CNIL n&#176;1291376</FONT></P>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+</DIV>
+<TABLE width="750" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<TR>
+<TD align="center"><BR>
+<SPAN class="Desinscription1">Vous recevez cet e-mail car vous &#234;tes r&#233;f&#233;renc&#233; sur la base de donn&#233;es de notre partenaire CAP DECISION.<BR>
+Si vous souhaitez vous d&#233;sabonner, merci d'utiliser <A class='Desinscription1' href='http://url.cdt7.com/id.asp?l=57388-8003203-10643803-1849-0&id=10643803-1849-8003203-5f65310a&res=fr'>le lien suivant.</A></SPAN></TD>
+</TR>
+</TABLE>
 
-<div id="falseBody" style="font: 10px Arial; margin: 0px; padding: 10px 0px; color: #000000; text-align: center; background: #E4E4E4">
-&nbsp;<table width="700px" style="text-align:right; margin: 0px auto;"><tr><td align="left">
-<a href="http://jiyxd78.yorxazuw.cn/?iioaseaf=tesqnei&yjnqbqvj=b1851fb15d972&rokuefi=avud" style="text-decoration:none;">Forward to Friend&nbsp;</a></td>
-<td align="right"><strong>Having trouble reading this e-mail?</strong> <a href="http://tbojc96.yorxazuw.cn/?okjree=yvjo&afjxyymura=b1851fb15d972&isyegaefq=obuagqdo">View it online</a>.</td>
-</tr></table>
-<table width="700px" border="0" cellpadding="0" cellspacing="0" style="text-align: left; margin: 0px auto; background: #FFF;">
-<tr><td valign="top">
-<table  width="700px"cellpadding="0" cellspacing="3" class="main">
-<tr><td bgcolor="#FF0000">&nbsp;</td></tr>
-	</table>
-<table align="center" width="600" style="font-size: 11px; border-top: 5px dotted #FBF9; margin-top: 10px; padding: 10px 10px 0px;"><tr><td id="xlink" align="center">
-	<a href="http://tbojc96.yorxazuw.cn/?kulawupe=epuma&gujnizyo=b1851fb15d972&mygefyfqxa=uumovq" style="text-decoration:none;">
-	<img alt="Click here!" src="http://tbojc96.yorxazuw.cn/spacer.gif" border="0"></a><br>
-<br>
-<a href="http://ciwp48.yorxazuw.cn/?qdakq=isyzaw&kolohjkq=b1851fb15d972&isygisoriu=isipir">Feedback</a> | <a href="http://tbojc96.yorxazuw.cn/?picu=ilqmjsuqs&rqdoveer=b1851fb15d972&ikovuzj=acyresjop">Media Kit</a> | <a href="http://tbojc96.yorxazuw.cn/?aagqu=dejmihjmav&zoaahj=b1851fb15d972&igicow=qbyed">Forward to a Friend</a></td></tr></table>
-<table width="700" border="0" cellpadding="0" cellspacing="0" style="text-align: left; margin: 0px auto;"><tr>
-<td height="32" colspan="2" style="font-size: 10px; color: #FFF;  padding: 3px 5px" bgcolor="#333333">
-&copy; 2009 Kqxekyk, Inc. All rights reserved.<br><br>
-<p style="font-size:10px;"><span style="color: #E9EAEB">To unsubscribe from this e-newsletter,
-</span>
-<a href="http://tbojc96.yorxazuw.cn/?awahjdjkiz=xoxonynj&cjniq=b1851fb15d972&osoby=urjbibybue" style="color: #E9EAEB">click here</a>.<br style="color: #E9EAEB">
-<span style="color: #E9EAEB">To unsubscribe from all Jrqokin e-mail communications,
-</span>
-<a href="http://tbojc96.yorxazuw.cn/?vyyxyd=cudjhaqr&epyf=b1851fb15d972&icjwitajj=oejrjwahav" style="color: #E9EAEB">click
-here</a>.<br style="color: #E9EAEB" />
-<span style="color: #E9EAEB">To edit your user profile, </span>
-<a href="http://tbojc96.yorxazuw.cn/?qpqbqve=jtoroxyuv&nyaekamano=b1851fb15d972&sixinysat=meimiz" style="color: #E9EAEB">visit Your Profile</a>.<br style="color: #E9EAEB" />
-<span style="color: #E9EAEB">If a friend forwarded this e-newsletter and you&#39;d like to subscribe directly,
-</span>
-<a href="http://tbojc96.yorxazuw.cn/?zycimjrjfo=jxoiae&oparjwy=b1851fb15d972&gqwjd=qcqwaeqdap" style="color: #E9EAEB">click
-here</a>.</p>
-</td></tr></table>
-</td></tr></table>
-</div></body></html>
+<img src='http://url.cdt7.com/op-8003203-10643803-1849-34631,65-0.gif' width=5 height=1 border=0 alt=''/>
+</BODY>
+</HTML>
 
 
---===============7111654029934055886==
+
+
+--===============9042857857290829269==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -89,7 +156,7 @@ Are you an open source citizen? Join us for the Open Source Bridge conference!
 Portland, OR, June 17-19. Two days of sessions, one day of unconference: $250.
 Need another reason to go? 24-hour hacker lounge. Register today!
 http://ad.doubleclick.net/clk;215844324;13503038;v?http://opensourcebridge.org
---===============7111654029934055886==
+--===============9042857857290829269==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -100,4 +167,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7111654029934055886==--
+--===============9042857857290829269==--

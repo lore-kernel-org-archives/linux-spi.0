@@ -1,79 +1,125 @@
-From: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-Subject: Re: [PATCH 2/2] SPI: Add SPI driver for most known i.MX SoCs
-Date: Sun, 21 Jun 2009 15:53:39 +0200 (CEST)
-Message-ID: <Pine.LNX.4.64.0906211552330.17040@axis700.grange>
-References: <1245235220-23816-1-git-send-email-s.hauer@pengutronix.de>
-	<1245235220-23816-2-git-send-email-s.hauer@pengutronix.de>
-	<1245235220-23816-3-git-send-email-s.hauer@pengutronix.de>
-	<Pine.LNX.4.64.0906172010400.4218@axis700.grange>
-	<4A39F255.2090301@free.fr>
-	<Pine.LNX.4.64.0906181028120.5779@axis700.grange>
-	<4A3E2EB4.90806@free.fr>
+From: "Tamera Irex" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] You have 30 days
+Date: Sun, 21 Jun 2009 14:00:56 -0500
+Message-ID: <HCGZPCLOOYIHTE.BRTUITKOWHLBJBN71632517150@adsl190-2638042.dyn.etb.net.co>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	David Brownell <david-b@pacbell.net>,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	spi-devel-general@lists.sourceforge.net
-To: Julien Boibessot <julien.boibessot@free.fr>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk>
-In-Reply-To: <4A3E2EB4.90806@free.fr>
-List-Unsubscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=unsubscribe>
-List-Archive: <http://lists.arm.linux.org.uk/lurker/list/linux-arm-kernel.html>
-List-Post: <mailto:linux-arm-kernel@lists.arm.linux.org.uk>
-List-Help: <mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=help>
-List-Subscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.arm.linux.org.uk
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk
+Content-Type: multipart/mixed; boundary="===============3498334785622571285=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 21 Jun 2009, Julien Boibessot wrote:
+--===============3498334785622571285==
+Content-type: text/html; charset="iso-8859-1"
 
-> Guennadi Liakhovetski a =E9crit :
-> > On Thu, 18 Jun 2009, Julien Boibessot wrote:
-> > =
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Save over 80% with us</title>
+<base target="_blank" />
+</head>
+<body bgcolor="#f0f5ef" style="color:#000000; font-family:Verdana, Arial, Helvetica, sans-serif; margin:0; font-size:12px">
+<table id="container" width="602" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+        <td align="left" style="padding:5px 0; font-size: 10px">
+      <A TARGET="_blank" HREF="http://tf29.miqgeguz.cn/?weyjljy=414f91689e54c210ab">
+		Click here to view this e-mail as a web page.</A>
+    </td>
 
-> >   =
+  </tr>
+  <tr>
+        <td>
+      <div id="border" style="border:1px solid #ccc; background-color:#fff">
+                <table width="600" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+                  <tr>
+                        <td align="center">
+                          <table width="550" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#FFFFFF" style="font-family:Georgia, 'Times New Roman', Times, serif; font-size:20px">
+                <tr>
+                    <td align="center" style="padding:4px 10px"><a style="color: #900; text-decoration:none" href="http://itkow31.miqgeguz.cn/?tawaqjmavj=414f91689e54c210ab">
+					Shop</a></td>
 
-> > > > Tested-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-> > > > =
+                    <td align="center" style="padding:4px 10px"><a style="color: #900; text-decoration:none" href="http://itkow31.miqgeguz.cn/?hjafqp=414f91689e54c210ab">
+					Top Sellers</a></td>
+                    <td align="center" style="padding:4px 10px"><a style="color: #900; text-decoration:none" href="http://itkow31.miqgeguz.cn/?qzeloesjfqva=414f91689e54c210ab">
+					What's New</a></td>
+                    <td align="center" style="padding:4px 10px"><a style="color: #900; text-decoration:none" href="http://itkow31.miqgeguz.cn/?vihitofey=414f91689e54c210ab">
+					Sale</a></td>
+                </tr>
+              </table>
+                        </td>
 
-> > > > on a i.MX31 with a DAC124S085.
-> > > >         =
+          </tr>
+                </table>
+                <table align="center" width="598" border="0" cellspacing="0" cellpadding="0" style="border-top: solid 1px #ccc; font-size:11px;">
+          <tr>
+                <td style="text-align: center">
+                <br />
+				<a target="_blank" href="http://itkow31.miqgeguz.cn/?ymyyca=414f91689e54c210ab">
+				<img alt="View image here" src="http://itkow31.miqgeguz.cn/spacer.gif" border="0" /></a><br />
+				<br />
+            </td>
+          </tr>
+                </table>
+          </div>
+    </td>
+  </tr>
+  <tr>
+        <td align="center" style="margin:0; padding:3px 20px; font-size: 11px">
 
-> > > Which maximum sampling speed can you achieve with this new SPI driver=
- ?
-> > >     =
+          We hope you enjoy our newsletter.<br />
+		  <br /></td>
+  </tr>
+  <tr>
+        <td align="left" style="margin:0; padding:3px 20px; font-size: 10px">
+          <strong><a href="http://bjb51.miqgeguz.cn/?lihodeoiseky=414f91689e54c210ab&mail=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+		  Forward this newsletter to a friend.</a></strong> Your friend's e-mail
+		  address will not be added to the Nqvjjib e-mail list unless they subscribe. View our <a href="http://hcg95.miqgeguz.cn/?yberinur=414f91689e54c210ab">
+		  Privacy Policy</a>.<br />
+		  <br />
+		</td>
 
-> > =
+  </tr>
+  <tr>
+        <td align="left" style="margin:0; padding:3px 20px; font-size: 10px">
+    <strong>Subscription:</strong> You are subscribed as spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org <a href="http://itkow31.miqgeguz.cn/?ywopexi=414f91689e54c210ab">
+		Unsubscribe</a><br />
+    	Did a friend send this message to you? Don't miss another issue &#8211; <a href="http://itkow31.miqgeguz.cn/?sqkjrydoh=414f91689e54c210ab">
+		Subscribe now</a>.
+    </td>
 
-> > Is "sampling speed" at all applicable to a DAC? =
+  </tr>
+  </table>
+</body></html>
 
-> Oups... sorry I thought it was an ADC.
-> > If you mean at which rate I could output values, then I did not and cou=
-ld
-> > not measure it due to a hardware bug on my system.
-> >   =
 
-> ok. Let me know when it's working again.
+--===============3498334785622571285==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Well, it is working - sort of. I can set a couple of values on output =
+------------------------------------------------------------------------------
+Are you an open source citizen? Join us for the Open Source Bridge conference!
+Portland, OR, June 17-19. Two days of sessions, one day of unconference: $250.
+Need another reason to go? 24-hour hacker lounge. Register today!
+http://ad.doubleclick.net/clk;215844324;13503038;v?http://opensourcebridge.org
+--===============3498334785622571285==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-lines, but not too often... So, I could test the SPI driver, but could not =
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-put it under load.
-
-Thanks
-Guennadi
----
-Guennadi Liakhovetski, Ph.D.
-Freelance Open-Source Software Developer
-http://www.open-technology.de/
-
--------------------------------------------------------------------
-List admin: http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel
-FAQ:        http://www.arm.linux.org.uk/mailinglists/faq.php
-Etiquette:  http://www.arm.linux.org.uk/mailinglists/etiquette.php
+--===============3498334785622571285==--

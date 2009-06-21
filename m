@@ -1,63 +1,79 @@
-From: Julien Boibessot <julien.boibessot-GANU6spQydw@public.gmane.org>
-Subject: Re: SPI: Add SPI driver for most known i.MX SoCs
-Date: Sun, 21 Jun 2009 15:10:21 +0200
-Message-ID: <4A3E313D.8020008@free.fr>
-References: <20090504214307.GN15603@pengutronix.de> <4A24DF22.4040601@free.fr>
-	<20090602172259.GB32355@pengutronix.de>
+From: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+Subject: Re: [PATCH 2/2] SPI: Add SPI driver for most known i.MX SoCs
+Date: Sun, 21 Jun 2009 15:53:39 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.0906211552330.17040@axis700.grange>
+References: <1245235220-23816-1-git-send-email-s.hauer@pengutronix.de>
+	<1245235220-23816-2-git-send-email-s.hauer@pengutronix.de>
+	<1245235220-23816-3-git-send-email-s.hauer@pengutronix.de>
+	<Pine.LNX.4.64.0906172010400.4218@axis700.grange>
+	<4A39F255.2090301@free.fr>
+	<Pine.LNX.4.64.0906181028120.5779@axis700.grange>
+	<4A3E2EB4.90806@free.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090602172259.GB32355-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	David Brownell <david-b@pacbell.net>,
+	linux-arm-kernel@lists.arm.linux.org.uk,
+	spi-devel-general@lists.sourceforge.net
+To: Julien Boibessot <julien.boibessot@free.fr>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk>
+In-Reply-To: <4A3E2EB4.90806@free.fr>
+List-Unsubscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=unsubscribe>
+List-Archive: <http://lists.arm.linux.org.uk/lurker/list/linux-arm-kernel.html>
+List-Post: <mailto:linux-arm-kernel@lists.arm.linux.org.uk>
+List-Help: <mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=help>
+List-Subscribe: <http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.arm.linux.org.uk?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.arm.linux.org.uk
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.arm.linux.org.uk
 List-Id: linux-spi.vger.kernel.org
 
-Hi Sascha,
+On Sun, 21 Jun 2009, Julien Boibessot wrote:
 
-Sascha Hauer a =E9crit :
-> On Tue, Jun 02, 2009 at 10:13:22AM +0200, Julien Boibessot wrote:
->   =
+> Guennadi Liakhovetski a =E9crit :
+> > On Thu, 18 Jun 2009, Julien Boibessot wrote:
+> > =
 
->> I don't know yet if it's related to bitbang but I would say that your  =
+> >   =
 
->> driver is 2x slowier that current inkernel one.
->>     =
+> > > > Tested-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+> > > > =
 
->
-> Have you checked that the driver gets the baudrate correct? If it is
-> maybe my driver produces more interrupts than the in kernel driver.
-> Maybe you could produce a defined workload with both drivers and compare
-> the outputs of /proc/interrupts afterwards.
->   =
+> > > > on a i.MX31 with a DAC124S085.
+> > > >         =
 
-Clock seems ok. The problem is the "setup" time between 2 transfers.
-We use an ADC (MAX1027) from which we try to get the data as fast as =
+> > > Which maximum sampling speed can you achieve with this new SPI driver=
+ ?
+> > >     =
 
-possible (successive SPI read transfers of 16 bytes) and the time =
+> > =
 
-between 2 transfers was quite doubled when switching to your new driver.
+> > Is "sampling speed" at all applicable to a DAC? =
 
-I will try to spend more time to check that after the summer holidays ;-).
+> Oups... sorry I thought it was an ADC.
+> > If you mean at which rate I could output values, then I did not and cou=
+ld
+> > not measure it due to a hardware bug on my system.
+> >   =
 
-Regards,
-Julien
+> ok. Let me know when it's working again.
 
----------------------------------------------------------------------------=
+Well, it is working - sort of. I can set a couple of values on output =
+
+lines, but not too often... So, I could test the SPI driver, but could not =
+
+put it under load.
+
+Thanks
+Guennadi
 ---
-Are you an open source citizen? Join us for the Open Source Bridge conferen=
-ce!
-Portland, OR, June 17-19. Two days of sessions, one day of unconference: $2=
-50.
-Need another reason to go? 24-hour hacker lounge. Register today!
-http://ad.doubleclick.net/clk;215844324;13503038;v?http://opensourcebridge.=
-org
+Guennadi Liakhovetski, Ph.D.
+Freelance Open-Source Software Developer
+http://www.open-technology.de/
+
+-------------------------------------------------------------------
+List admin: http://lists.arm.linux.org.uk/mailman/listinfo/linux-arm-kernel
+FAQ:        http://www.arm.linux.org.uk/mailinglists/faq.php
+Etiquette:  http://www.arm.linux.org.uk/mailinglists/etiquette.php

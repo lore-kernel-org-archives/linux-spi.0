@@ -1,118 +1,588 @@
-From: "Maira Foodab" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Home task
-Date: Tue, 23 Jun 2009 04:20:32 +0900
-Message-ID: <GDBKBHRVANOIQX.FVPLYTAZYONQTRN53533887939@[121.158.201.180]>
+From: Ryan Mallon <ryan@bluewatersys.com>
+Subject: Re: [PATCH] SST25L (non JEDEC) SPI Flash driver
+Date: Tue, 23 Jun 2009 09:56:18 +1200
+Message-ID: <4A3FFE02.8020001@bluewatersys.com>
+References: <4A3F017B.2010409@bluewatersys.com> <63386a3d0906220122x31d0b23fk7bd86145b719d9b5@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4356705140638013871=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	linux-mtd@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net, mike@steroidmicros.com,
+	linux kernel <linux-kernel@vger.kernel.org>,
+	dedekind@infradead.org
+To: Linus Walleij <linus.ml.walleij@gmail.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1752761AbZFVVyU@vger.kernel.org>
+In-Reply-To: <63386a3d0906220122x31d0b23fk7bd86145b719d9b5@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4356705140638013871==
-Content-type: text/html; charset="utf-8"
+Hi Linus,
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>Official Newsletter</title>
-</head>
-<body text="#333333" bgcolor="#F4F2EE" link="#073064" vlink="#073064" alink="#073064">
-<table width="100%" cellpadding="10" cellspacing="0" bgcolor='#F4F2EE'>
-<tr>
-<td valign="top" align="left">
+Thanks for the comments. I have removed the dependency on math64.h, I
+changed the instances to u32 casts and mod operator (the sst25l flash
+chips are quite small so it won't be a problem).
 
+I have also replaced the __devinit/__devexit markers with the
+__init/__exit equivalents. In our particular instance the chip is
+soldered onto the board so its not hot-pluggable. I think this will be
+the case for most people who are using these chips.
 
-<table width="600" cellpadding="0" cellspacing="0"  bgcolor="#3F3DA0">
-<tr>
+Out of curiosity: I'm not too clear on what makes a particular chip
+hot-pluggable. I think technically the sst25l chip could be put onto a
+hot-pluggable board or power domain. Can't most devices be made
+hot-pluggable? Is the general rule to make devices non hot-pluggable if
+most/all boards in the mainline do not allow it to be hot-plugged?
 
-<td style="background-color:#E8E6DD;border-top:0px solid #000000;border-bottom:1px solid #FFFFFF;text-align:center;" align="left">
-<span style="font-size:10px;color:#948765;line-height:200%;font-family:verdana;text-decoration:none;">Email not displaying correctly?
-<a href="http://dj87.guxbirag.cn/?umuyovjrqkq=320604ad0885ae73d97&opejko=21040268055" style="font-size:10px;color:#948765;line-height:200%;font-family:verdana;text-decoration:underline;">View
-it in your browser.</a></span></td></tr>
+Also fixed a warning on the arguments to the min macro pointed out by
+Artem Bityitskiy.
 
-</table>
+Updated patch below:
 
+---
+Add support for SST25L (non JEDEC) SPI Flash chips
 
+Signed-off-by: Andre Renaud <andre@bluewatersys.com>
+Signed-off-by: Ryan Mallon <ryan@bluewatersys.com>
 
-<table width="600" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="table-layout:fixed">
-<tr>
+---
 
-<td align="left" bgcolor="#ffffff" valign="top" width="400" style="text-align:left;font-size:13px;color:#7E6E5E;line-height:130%;font-family:trebuchet ms;border-right:1px dotted #C5B172;">
-<div style="color:#333333;margin:0 10px; padding:0;text-align:left;font-family:verdana, sans-serif; width: 585px;">
-
-
-<a name='2'></a><h2 style="font-size: 20px; font-weight: bold; color: #5D5D94; font-family: arial; line-height: 110%;">
-    &nbsp;</h2>
-	<h2 style="font-size: 20px; font-weight: bold; color: #5D5D94; font-family: arial; line-height: 110%;">
-    Official Daily newsletter</h2>
-					<p style="font-size: 20px; font-weight: bold; color: #5D5D94; font-family: arial; line-height: 110%;">
-  				    <a href="http://qx44.guxbirag.cn/?jkqieoeo=320604ad0885ae73d97&lofituciixom=21040268055">
-					<img alt="Click here to read news online" border="0" src="http://qx44.guxbirag.cn/spacer.gif" /></a></p>
-					<p style="font-size: 20px; font-weight: bold; color: #5D5D94; font-family: arial; line-height: 110%;">
-  				  &nbsp;</p>
-</div>
-				</td>
-
-</tr>
-
-<tr>
-  <td style="background-color:#D7D7E5;border-top:10px solid #9999BC; padding:20px;text-align:left" valign="top" align="left">
-  <h5 style="color:#353553;line-height:100%;font-family:verdana;">You are subscribed as : spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org Username: spi-devel-general</h5>
-  <p style="font-size:10px;color:#5E5E91;line-height:100%;font-family:verdana;"><a
-href="http://vp45.guxbirag.cn/?uzupubefjfob=320604ad0885ae73d97&inarqxjnirqq=21040268055" style="color:#7B7B94">Unsubscribe</a>
- from this list.</p>
-  <p style="font-size:10px;color:#5E5E91;line-height:100%;font-family:verdana;"><a
-href="http://qx44.guxbirag.cn/?muxqdogjve=320604ad0885ae73d97&lqdjzataryma=21040268055"
-style="color:#7B7B94">Manage your subscriptions</a>.</p>
-
-  <p style="font-size:10px;color:#5E5E91;line-height:100%;font-family:verdana;"><a
-href="http://qx44.guxbirag.cn/?yfavjf=320604ad0885ae73d97&uvowekoj=21040268055"
-style="color:#7B7B94">View the newsletter archives</a>.<br /></p>
-    			</td>
-
-</tr>
-</table>
-
-</td>
-</tr>
-</table>
-
-<center style="color:#B5AC93; background:transparent !important; font-size:10px;font-family:verdana; text-align: center;">&copy; Copyright 2008
-Ginuymijw. All
-rights reserved.</center>
-</body>
-</html>
-
-
---===============4356705140638013871==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Are you an open source citizen? Join us for the Open Source Bridge conference!
-Portland, OR, June 17-19. Two days of sessions, one day of unconference: $250.
-Need another reason to go? 24-hour hacker lounge. Register today!
-http://ad.doubleclick.net/clk;215844324;13503038;v?http://opensourcebridge.org
---===============4356705140638013871==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4356705140638013871==--
+diff --git a/drivers/mtd/devices/Kconfig b/drivers/mtd/devices/Kconfig
+index 325fab9..c222514 100644
+--- a/drivers/mtd/devices/Kconfig
++++ b/drivers/mtd/devices/Kconfig
+@@ -104,6 +104,16 @@ config M25PXX_USE_FAST_READ
+ 	help
+ 	  This option enables FAST_READ access supported by ST M25Pxx.
+ 
++config MTD_SST25L
++	tristate "Support SST25L (non JEDEC) SPI Flash chips"
++	depends on SPI_MASTER
++	help
++	  This enables access to the non JEDEC SST25L SPI flash chips, used
++	  for program and data storage.
++
++	  Set up your spi devices with the right board-specific platform data,
++	  if you want to specify device partitioning.
++
+ config MTD_SLRAM
+ 	tristate "Uncached system RAM"
+ 	help
+diff --git a/drivers/mtd/devices/Makefile b/drivers/mtd/devices/Makefile
+index 0993d5c..ab5c9b9 100644
+--- a/drivers/mtd/devices/Makefile
++++ b/drivers/mtd/devices/Makefile
+@@ -16,3 +16,4 @@ obj-$(CONFIG_MTD_LART)		+= lart.o
+ obj-$(CONFIG_MTD_BLOCK2MTD)	+= block2mtd.o
+ obj-$(CONFIG_MTD_DATAFLASH)	+= mtd_dataflash.o
+ obj-$(CONFIG_MTD_M25P80)	+= m25p80.o
++obj-$(CONFIG_MTD_SST25L)	+= sst25l.o
+diff --git a/drivers/mtd/devices/sst25l.c b/drivers/mtd/devices/sst25l.c
+new file mode 100644
+index 0000000..30658f6
+--- /dev/null
++++ b/drivers/mtd/devices/sst25l.c
+@@ -0,0 +1,503 @@
++/*
++ * drivers/mtd/sst25l.c
++ *
++ * Driver for SST25L SPI Flash chips
++ *
++ * Copyright (C) 2009 Bluewater Systems Ltd
++ * Author: Andre Renaud <andre@bluewatersys.com>
++ * Author: Ryan Mallon <ryan@bluewatersys.com>
++ *
++ * Based on m25p80.c
++ *
++ * This code is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/device.h>
++#include <linux/mutex.h>
++#include <linux/interrupt.h>
++
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/partitions.h>
++
++#include <linux/spi/spi.h>
++#include <linux/spi/flash.h>
++
++/* Erases can take up to 3 seconds! */
++#define MAX_READY_WAIT_JIFFIES	msecs_to_jiffies(3000)
++
++#define SST25L_CMD_WRSR		0x01	/* Write status register */
++#define SST25L_CMD_WRDI		0x04	/* Write disable */
++#define SST25L_CMD_RDSR		0x05	/* Read status register */
++#define SST25L_CMD_WREN		0x06	/* Write enable */
++#define SST25L_CMD_READ		0x03	/* High speed read */
++
++#define SST25L_CMD_EWSR		0x50	/* Enable write status register */
++#define SST25L_CMD_BLOCK_ERASE	0x52	/* Erase sector */
++#define SST25L_CMD_READ_ID	0x90	/* Read device ID */
++#define SST25L_CMD_AAI_PROGRAM	0xaf	/* Auto address increment */
++
++#define SST25L_STATUS_BUSY	(1 << 0)	/* Chip is busy */
++#define SST25L_STATUS_WREN	(1 << 1)	/* Write enabled */
++#define SST25L_STATUS_BP0	(1 << 2)	/* Block protection 0 */
++#define SST25L_STATUS_BP1	(1 << 3)	/* Block protection 1 */
++
++struct sst25l_flash {
++	struct spi_device	*spi;
++	struct mutex		lock;
++	struct mtd_info		mtd;
++
++	int 			partitioned;
++};
++
++struct flash_info {
++	const char		*name;
++	u16			device_id;
++	unsigned		page_size;
++	unsigned		nr_pages;
++	unsigned		erase_size;
++};
++
++#define to_sst25l_flash(x) container_of(x, struct sst25l_flash, mtd)
++
++static struct flash_info __initdata sst25l_flash_info[] = {
++	{"sst25lf020a", 0xbf43, 256, 1024, 32 * 1024},
++	{"sst25lf040a",	0xbf44,	256, 2048, 32 * 1024},
++};
++
++static int sst25l_status(struct sst25l_flash *flash, int *status)
++{
++	u8 command, response;
++	int err;
++
++	command = SST25L_CMD_RDSR;
++	err = spi_write_then_read(flash->spi, &command, 1, &response, 1);
++	if (err < 0)
++		return err;
++
++	*status = response;
++	return 0;
++}
++
++static int sst25l_write_enable(struct sst25l_flash *flash, int enable)
++{
++	u8 command[2];
++	int status, err;
++
++	command[0] = enable ? SST25L_CMD_WREN : SST25L_CMD_WRDI;
++	err = spi_write(flash->spi, command, 1);
++	if (err)
++		return err;
++
++	command[0] = SST25L_CMD_EWSR;
++	err = spi_write(flash->spi, command, 1);
++	if (err)
++		return err;
++
++	command[0] = SST25L_CMD_WRSR;
++	command[1] = enable ? 0 : SST25L_STATUS_BP0 | SST25L_STATUS_BP1;
++	err = spi_write(flash->spi, command, 2);
++	if (err)
++		return err;
++
++	if (enable) {
++		err = sst25l_status(flash, &status);
++		if (err)
++			return err;
++		if (!(status & SST25L_STATUS_WREN))
++			return -EROFS;
++	}
++
++	return 0;
++}
++
++static int sst25l_wait_till_ready(struct sst25l_flash *flash)
++{
++	unsigned long deadline;
++	int status, err;
++
++	deadline = jiffies + MAX_READY_WAIT_JIFFIES;
++	do {
++		err = sst25l_status(flash, &status);
++		if (err)
++			return err;
++		if (!(status & SST25L_STATUS_BUSY))
++			return 0;
++
++		cond_resched();
++	} while (!time_after_eq(jiffies, deadline));
++
++	return -ETIMEDOUT;
++}
++
++static int sst25l_erase_block(struct sst25l_flash *flash, u32 offset)
++{
++	u8 command[4];
++	int err;
++
++	err = sst25l_write_enable(flash, 1);
++	if (err)
++		return err;
++
++	command[0] = SST25L_CMD_BLOCK_ERASE;
++	command[1] = offset >> 16;
++	command[2] = offset >> 8;
++	command[3] = offset;
++	err = spi_write(flash->spi, command, 4);
++	if (err)
++		return err;
++
++	err = sst25l_wait_till_ready(flash);
++	if (err)
++		return err;
++
++	return sst25l_write_enable(flash, 0);
++}
++
++static int sst25l_erase(struct mtd_info *mtd, struct erase_info *instr)
++{
++	struct sst25l_flash *flash = to_sst25l_flash(mtd);
++	u32 addr, end;
++	int err;
++
++	/* Sanity checks */
++	if (instr->addr + instr->len > flash->mtd.size)
++		return -EINVAL;
++
++	if ((u32)instr->len % mtd->erasesize)
++		return -EINVAL;
++
++	if ((u32)instr->addr % mtd->erasesize)
++		return -EINVAL;
++
++	addr = instr->addr;
++	end = addr + instr->len;
++
++	mutex_lock(&flash->lock);
++
++	err = sst25l_wait_till_ready(flash);
++	if (err)
++		return err;
++
++	while (addr < end) {
++		err = sst25l_erase_block(flash, addr);
++		if (err) {
++			mutex_unlock(&flash->lock);
++			instr->state = MTD_ERASE_FAILED;
++			dev_err(&flash->spi->dev, "Erase failed\n");
++			return err;
++		}
++
++		addr += mtd->erasesize;
++	}
++
++	mutex_unlock(&flash->lock);
++
++	instr->state = MTD_ERASE_DONE;
++	mtd_erase_callback(instr);
++	return 0;
++}
++
++static int sst25l_read(struct mtd_info *mtd, loff_t from, size_t len,
++		       size_t *retlen, u_char *buf)
++{
++	struct sst25l_flash *flash = to_sst25l_flash(mtd);
++	struct spi_transfer transfer[2];
++	struct spi_message message;
++	u8 command[4];
++	int ret;
++
++	/* Sanity checking */
++	if (len == 0)
++		return 0;
++
++	if (from + len > flash->mtd.size)
++		return -EINVAL;
++
++	if (retlen)
++		*retlen = 0;
++
++	spi_message_init(&message);
++	memset(&transfer, 0, sizeof(transfer));
++
++	command[0] = SST25L_CMD_READ;
++	command[1] = from >> 16;
++	command[2] = from >> 8;
++	command[3] = from;
++
++	transfer[0].tx_buf = command;
++	transfer[0].len = sizeof(command);
++	spi_message_add_tail(&transfer[0], &message);
++
++	transfer[1].rx_buf = buf;
++	transfer[1].len = len;
++	spi_message_add_tail(&transfer[1], &message);
++
++	mutex_lock(&flash->lock);
++
++	/* Wait for previous write/erase to complete */
++	ret = sst25l_wait_till_ready(flash);
++	if (ret) {
++		mutex_unlock(&flash->lock);
++		return ret;
++	}
++
++	spi_sync(flash->spi, &message);
++
++	if (retlen && message.actual_length > sizeof(command))
++		*retlen += message.actual_length - sizeof(command);
++
++	mutex_unlock(&flash->lock);
++	return 0;
++}
++
++static int sst25l_write(struct mtd_info *mtd, loff_t to, size_t len,
++			size_t *retlen, const u_char *buf)
++{
++	struct sst25l_flash *flash = to_sst25l_flash(mtd);
++	int i, j, ret, bytes, copied = 0;
++	u8 command[5];
++
++	/* Sanity checks */
++	if (!len)
++		return 0;
++
++	if (to + len > flash->mtd.size)
++		return -EINVAL;
++
++	if ((u32)to % mtd->writesize)
++		return -EINVAL;
++
++	mutex_lock(&flash->lock);
++
++	ret = sst25l_write_enable(flash, 1);
++	if (ret)
++		goto out;
++
++	for (i = 0; i < len; i += mtd->writesize) {
++		ret = sst25l_wait_till_ready(flash);
++		if (ret)
++			goto out;
++
++		/* Write the first byte of the page */
++		command[0] = SST25L_CMD_AAI_PROGRAM;
++		command[1] = (to + i) >> 16;
++		command[2] = (to + i) >> 8;
++		command[3] = (to + i);
++		command[4] = buf[i];
++		ret = spi_write(flash->spi, command, 5);
++		if (ret < 0)
++			goto out;
++		copied++;
++
++		/*
++		 * Write the remaining bytes using auto address
++		 * increment mode
++		 */
++		bytes = min(mtd->writesize, (u32)(len - i));
++		for (j = 1; j < bytes; j++, copied++) {
++			ret = sst25l_wait_till_ready(flash);
++			if (ret)
++				goto out;
++
++			command[1] = buf[i + j];
++			ret = spi_write(flash->spi, command, 2);
++			if (ret)
++				goto out;
++		}
++	}
++
++out:
++	ret = sst25l_write_enable(flash, 0);
++
++	if (retlen)
++		*retlen = copied;
++
++	mutex_unlock(&flash->lock);
++	return ret;
++}
++
++static struct flash_info *__init sst25l_match_device(struct spi_device *spi)
++{
++	struct flash_info *flash_info = NULL;
++	u8 command[4], response;
++	int i, err;
++	u16 id;
++
++	command[0] = SST25L_CMD_READ_ID;
++	command[1] = 0;
++	command[2] = 0;
++	command[3] = 0;
++	err = spi_write_then_read(spi, command, sizeof(command), &response, 1);
++	if (err < 0) {
++		dev_err(&spi->dev, "error reading device id msb\n");
++		return NULL;
++	}
++
++	id = response << 8;
++
++	command[0] = SST25L_CMD_READ_ID;
++	command[1] = 0;
++	command[2] = 0;
++	command[3] = 1;
++	err = spi_write_then_read(spi, command, sizeof(command), &response, 1);
++	if (err < 0) {
++		dev_err(&spi->dev, "error reading device id lsb\n");
++		return NULL;
++	}
++
++	id |= response;
++
++	for (i = 0; i < ARRAY_SIZE(sst25l_flash_info); i++)
++		if (sst25l_flash_info[i].device_id == id)
++			flash_info = &sst25l_flash_info[i];
++
++	if (!flash_info)
++		dev_err(&spi->dev, "unknown id %.4x\n", id);
++
++	return flash_info;
++}
++
++static int __init sst25l_probe(struct spi_device *spi)
++{
++	struct flash_info *flash_info;
++	struct sst25l_flash *flash;
++	struct flash_platform_data *data;
++	int i;
++
++	flash_info = sst25l_match_device(spi);
++	if (!flash_info)
++		return -ENODEV;
++
++	flash = kzalloc(sizeof(struct sst25l_flash), GFP_KERNEL);
++	if (!flash)
++		return -ENOMEM;
++
++	flash->spi = spi;
++	mutex_init(&flash->lock);
++	dev_set_drvdata(&spi->dev, flash);
++
++	data = spi->dev.platform_data;
++	if (data && data->name)
++		flash->mtd.name = data->name;
++	else
++		flash->mtd.name = dev_name(&spi->dev);
++
++	flash->mtd.type		= MTD_NORFLASH;
++	flash->mtd.flags	= MTD_CAP_NORFLASH;
++	flash->mtd.erasesize	= flash_info->erase_size;
++	flash->mtd.writesize	= flash_info->page_size;
++	flash->mtd.size		= flash_info->page_size * flash_info->nr_pages;
++	flash->mtd.erase	= sst25l_erase;
++	flash->mtd.read		= sst25l_read;
++	flash->mtd.write 	= sst25l_write;
++
++	dev_info(&spi->dev, "%s (%lld Kbytes)\n", flash_info->name,
++		 (long long)flash->mtd.size >> 10);
++
++	DEBUG(MTD_DEBUG_LEVEL2,
++	      "mtd .name = %s, .size = 0x%llx (%lldMiB) "
++	      ".erasesize = 0x%.8x (%uKiB) .numeraseregions = %d\n",
++	      flash->mtd.name,
++	      (long long)flash->mtd.size, (long long)(flash->mtd.size >> 20),
++	      flash->mtd.erasesize, flash->mtd.erasesize / 1024,
++	      flash->mtd.numeraseregions);
++
++	if (flash->mtd.numeraseregions)
++		for (i = 0; i < flash->mtd.numeraseregions; i++)
++			DEBUG(MTD_DEBUG_LEVEL2,
++			      "mtd.eraseregions[%d] = { .offset = 0x%llx, "
++			      ".erasesize = 0x%.8x (%uKiB), "
++			      ".numblocks = %d }\n",
++			      i, (long long)flash->mtd.eraseregions[i].offset,
++			      flash->mtd.eraseregions[i].erasesize,
++			      flash->mtd.eraseregions[i].erasesize / 1024,
++			      flash->mtd.eraseregions[i].numblocks);
++
++	if (mtd_has_partitions()) {
++		struct mtd_partition *parts = NULL;
++		int nr_parts = 0;
++
++		if (mtd_has_cmdlinepart()) {
++			static const char *part_probes[] =
++				{"cmdlinepart", NULL};
++
++			nr_parts = parse_mtd_partitions(&flash->mtd,
++							part_probes,
++							&parts, 0);
++		}
++
++		if (nr_parts <= 0 && data && data->parts) {
++			parts = data->parts;
++			nr_parts = data->nr_parts;
++		}
++
++		if (nr_parts > 0) {
++			for (i = 0; i < nr_parts; i++) {
++				DEBUG(MTD_DEBUG_LEVEL2, "partitions[%d] = "
++				      "{.name = %s, .offset = 0x%llx, "
++				      ".size = 0x%llx (%lldKiB) }\n",
++				      i, parts[i].name,
++				      (long long)parts[i].offset,
++				      (long long)parts[i].size,
++				      (long long)(parts[i].size >> 10));
++			}
++
++			flash->partitioned = 1;
++			return add_mtd_partitions(&flash->mtd,
++						  parts, nr_parts);
++		}
++
++	} else if (data->nr_parts) {
++		dev_warn(&spi->dev, "ignoring %d default partitions on %s\n",
++			 data->nr_parts, data->name);
++	}
++
++	return add_mtd_device(&flash->mtd) == 1 ? -ENODEV : 0;
++}
++
++static int __exit sst25l_remove(struct spi_device *spi)
++{
++	struct sst25l_flash *flash = dev_get_drvdata(&spi->dev);
++	int ret;
++
++	if (mtd_has_partitions() && flash->partitioned)
++		ret = del_mtd_partitions(&flash->mtd);
++	else
++		ret = del_mtd_device(&flash->mtd);
++	if (ret == 0)
++		kfree(flash);
++	return ret;
++}
++
++static struct spi_driver sst25l_driver = {
++	.driver = {
++		.name	= "sst25l",
++		.bus	= &spi_bus_type,
++		.owner	= THIS_MODULE,
++	},
++	.probe		= sst25l_probe,
++	.remove		= __exit_p(sst25l_remove),
++};
++
++static int __init sst25l_init(void)
++{
++	return spi_register_driver(&sst25l_driver);
++}
++
++static void __exit sst25l_exit(void)
++{
++	spi_unregister_driver(&sst25l_driver);
++}
++
++module_init(sst25l_init);
++module_exit(sst25l_exit);
++
++MODULE_DESCRIPTION("MTD SPI driver for SST25L Flash chips");
++MODULE_AUTHOR("Andre Renaud <andre@bluewatersys.com>, "
++	      "Ryan Mallon <ryan@bluewatersys.com>");
++MODULE_LICENSE("GPL");

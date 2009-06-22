@@ -1,620 +1,265 @@
-From: Linus Walleij <linus.ml.walleij@gmail.com>
-Subject: Re: [PATCH] SST25L (non JEDEC) SPI Flash driver
-Date: Mon, 22 Jun 2009 10:22:52 +0200
-Message-ID: <63386a3d0906220122x31d0b23fk7bd86145b719d9b5@mail.gmail.com>
-References: <4A3F017B.2010409@bluewatersys.com>
+From: Keltravo <newsletter-msAlHI2cm5w@public.gmane.org>
+Subject: Devis travaux gratuit : des artisans près de chez vous à votre service
+Date: 22 Jun 2009 08:33:46 -0000
+Message-ID: <20090622083346.30158.qmail@ks35158.kimsufi.com>
+Reply-To: Keltravo <newsletter-msAlHI2cm5w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	linux-mtd@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net, mike@steroidmicros.com,
-	linux kernel <linux-kernel@vger.kernel.org>
-To: Ryan Mallon <ryan@bluewatersys.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755656AbZFVIXB@vger.kernel.org>
-In-Reply-To: <4A3F017B.2010409@bluewatersys.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============4326955913927368335=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2009/6/22 Ryan Mallon <ryan@bluewatersys.com>:
 
-> Add support for the non JEDEC SST25L SPI Flash devices.
->
-> Signed-off-by: Andre Renaud <andre@bluewatersys.com>
-> Signed-off-by: Ryan Mallon <ryan@bluewatersys.com>
-> ---
->
-> diff --git a/drivers/mtd/devices/Kconfig b/drivers/mtd/devices/Kconfig
-> index 325fab9..c222514 100644
-> --- a/drivers/mtd/devices/Kconfig
-> +++ b/drivers/mtd/devices/Kconfig
-> @@ -104,6 +104,16 @@ config M25PXX_USE_FAST_READ
->        help
->          This option enables FAST_READ access supported by ST M25Pxx.
->
-> +config MTD_SST25L
-> +       tristate "Support SST25L (non JEDEC) SPI Flash chips"
-> +       depends on SPI_MASTER
-> +       help
-> +         This enables access to the non JEDEC SST25L SPI flash chips, used
-> +         for program and data storage.
-> +
-> +         Set up your spi devices with the right board-specific platform data,
-> +         if you want to specify device partitioning.
-> +
->  config MTD_SLRAM
->        tristate "Uncached system RAM"
->        help
-> diff --git a/drivers/mtd/devices/Makefile b/drivers/mtd/devices/Makefile
-> index 0993d5c..ab5c9b9 100644
-> --- a/drivers/mtd/devices/Makefile
-> +++ b/drivers/mtd/devices/Makefile
-> @@ -16,3 +16,4 @@ obj-$(CONFIG_MTD_LART)                += lart.o
->  obj-$(CONFIG_MTD_BLOCK2MTD)    += block2mtd.o
->  obj-$(CONFIG_MTD_DATAFLASH)    += mtd_dataflash.o
->  obj-$(CONFIG_MTD_M25P80)       += m25p80.o
-> +obj-$(CONFIG_MTD_SST25L)       += sst25l.o
-> diff --git a/drivers/mtd/devices/sst25l.c b/drivers/mtd/devices/sst25l.c
-> new file mode 100644
-> index 0000000..8e62479
-> --- /dev/null
-> +++ b/drivers/mtd/devices/sst25l.c
-> @@ -0,0 +1,508 @@
-> +/*
-> + * drivers/mtd/sst25l.c
-> + *
-> + * Driver for SST25L SPI Flash chips
-> + *
-> + * Copyright (C) 2009 Bluewater Systems Ltd
-> + * Author: Andre Renaud <andre@bluewatersys.com>
-> + * Author: Ryan Mallon <ryan@bluewatersys.com>
-> + *
-> + * Based on m25p80.c
-> + *
-> + * This code is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + *
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/module.h>
-> +#include <linux/device.h>
-> +#include <linux/mutex.h>
-> +#include <linux/math64.h>
+--===============4326955913927368335==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_9a4dcbcc7fea6170c330811eb7e4c5b7"
 
-I'm always suspicious about drivers doing maths, so I
-think this can be removed, see below...
 
-> +#include <linux/interrupt.h>
-> +
-> +#include <linux/mtd/mtd.h>
-> +#include <linux/mtd/partitions.h>
-> +
-> +#include <linux/spi/spi.h>
-> +#include <linux/spi/flash.h>
-> +
-> +/* Erases can take up to 3 seconds! */
-> +#define MAX_READY_WAIT_JIFFIES msecs_to_jiffies(3000)
-> +
-> +#define SST25L_CMD_WRSR                0x01    /* Write status register */
-> +#define SST25L_CMD_WRDI                0x04    /* Write disable */
-> +#define SST25L_CMD_RDSR                0x05    /* Read status register */
-> +#define SST25L_CMD_WREN                0x06    /* Write enable */
-> +#define SST25L_CMD_READ                0x03    /* High speed read */
-> +
-> +#define SST25L_CMD_EWSR                0x50    /* Enable write status register */
-> +#define SST25L_CMD_BLOCK_ERASE 0x52    /* Erase sector */
-> +#define SST25L_CMD_READ_ID     0x90    /* Read device ID */
-> +#define SST25L_CMD_AAI_PROGRAM 0xaf    /* Auto address increment */
-> +
-> +#define SST25L_STATUS_BUSY     (1 << 0)        /* Chip is busy */
-> +#define SST25L_STATUS_WREN     (1 << 1)        /* Write enabled */
-> +#define SST25L_STATUS_BP0      (1 << 2)        /* Block protection 0 */
-> +#define SST25L_STATUS_BP1      (1 << 3)        /* Block protection 1 */
-> +
-> +struct sst25l_flash {
-> +       struct spi_device       *spi;
-> +       struct mutex            lock;
-> +       struct mtd_info         mtd;
-> +
-> +       int                     partitioned;
-> +};
-> +
-> +struct flash_info {
-> +       const char              *name;
-> +       u16                     device_id;
-> +       unsigned                page_size;
-> +       unsigned                nr_pages;
-> +       unsigned                erase_size;
-> +};
-> +
-> +#define to_sst25l_flash(x) container_of(x, struct sst25l_flash, mtd)
-> +
-> +static struct flash_info __devinitdata sst25l_flash_info[] = {
+--_----------=_parties_9a4dcbcc7fea6170c330811eb7e4c5b7
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-__devinitdata or __initdata?
-Check the definitions from include/linux/init.h. If it's hot-pluggable
-then it's fine!
+Version "en ligne" de ce message: http://www.tmrv.com/svi/miroir.php?bat=keltravo0609_ctrm
 
-> +       {"sst25lf020a", 0xbf43, 256, 1024, 32 * 1024},
-> +       {"sst25lf040a", 0xbf44, 256, 2048, 32 * 1024},
-> +};
-> +
-> +static int sst25l_status(struct sst25l_flash *flash, int *status)
-> +{
-> +       u8 command, response;
-> +       int err;
-> +
-> +       command = SST25L_CMD_RDSR;
-> +       err = spi_write_then_read(flash->spi, &command, 1, &response, 1);
-> +       if (err < 0)
-> +               return err;
-> +
-> +       *status = response;
-> +       return 0;
-> +}
-> +
-> +static int sst25l_write_enable(struct sst25l_flash *flash, int enable)
-> +{
-> +       u8 command[2];
-> +       int status, err;
-> +
-> +       command[0] = enable ? SST25L_CMD_WREN : SST25L_CMD_WRDI;
-> +       err = spi_write(flash->spi, command, 1);
-> +       if (err)
-> +               return err;
-> +
-> +       command[0] = SST25L_CMD_EWSR;
-> +       err = spi_write(flash->spi, command, 1);
-> +       if (err)
-> +               return err;
-> +
-> +       command[0] = SST25L_CMD_WRSR;
-> +       command[1] = enable ? 0 : SST25L_STATUS_BP0 | SST25L_STATUS_BP1;
-> +       err = spi_write(flash->spi, command, 2);
-> +       if (err)
-> +               return err;
-> +
-> +       if (enable) {
-> +               err = sst25l_status(flash, &status);
-> +               if (err)
-> +                       return err;
-> +               if (!(status & SST25L_STATUS_WREN))
-> +                       return -EROFS;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int sst25l_wait_till_ready(struct sst25l_flash *flash)
-> +{
-> +       unsigned long deadline;
-> +       int status, err;
-> +
-> +       deadline = jiffies + MAX_READY_WAIT_JIFFIES;
-> +       do {
-> +               err = sst25l_status(flash, &status);
-> +               if (err)
-> +                       return err;
-> +               if (!(status & SST25L_STATUS_BUSY))
-> +                       return 0;
-> +
-> +               cond_resched();
-> +       } while (!time_after_eq(jiffies, deadline));
-> +
-> +       return -ETIMEDOUT;
-> +}
-> +
-> +static int sst25l_erase_block(struct sst25l_flash *flash, u32 offset)
-> +{
-> +       u8 command[4];
-> +       int err;
-> +
-> +       err = sst25l_write_enable(flash, 1);
-> +       if (err)
-> +               return err;
-> +
-> +       command[0] = SST25L_CMD_BLOCK_ERASE;
-> +       command[1] = offset >> 16;
-> +       command[2] = offset >> 8;
-> +       command[3] = offset;
-> +       err = spi_write(flash->spi, command, 4);
-> +       if (err)
-> +               return err;
-> +
-> +       err = sst25l_wait_till_ready(flash);
-> +       if (err)
-> +               return err;
-> +
-> +       return sst25l_write_enable(flash, 0);
-> +}
-> +
-> +static int sst25l_erase(struct mtd_info *mtd, struct erase_info *instr)
-> +{
-> +       struct sst25l_flash *flash = to_sst25l_flash(mtd);
-> +       u32 addr, end, rem;
-> +       int err;
-> +
-> +       /* Sanity checks */
-> +       if (instr->addr + instr->len > flash->mtd.size)
-> +               return -EINVAL;
-> +
-> +       div_u64_rem(instr->len, mtd->erasesize, &rem);
+Newsletter Keltravo Juin 2009
 
-if ((instr->len & 0xFFFFFFFFU) % mtd->erasesize)
-  return -EINVAL;
+des artisans à votre service
 
-> +       if (rem)
-> +               return -EINVAL;
-> +
-> +       div_u64_rem(instr->addr, mtd->erasesize, &rem);
+3 devis gratuits et immediats
+Madame, Monsieur,
+Avec les premiers rayons de soleil de ce mois de mai, les envies de travaux surgissent ! Profitez-en et contactez dans votre région les artisans disponibles pour effectuer vos travaux de construction ou de rénovation !
 
-Same thing again.
+Qu’il s’agisse d’un plombier -chauffagiste ou non-, un électricien , un maçon , un poseur de fenêtres , un alarmiste , un spécialiste de la clim ou du parquet ..., obtenez en quelques minutes votre devis gratuit pour visualiser rapidement vos délais de travaux !
+Rafraîchir tout ou partie de sa maison , son appartement , rénover une pièce ou l’ensemble nécessite une vraie consultation, profiter du formulaire spécifique préparé en cliquant ici !
 
-> +       if (rem)
-> +               return -EINVAL;
-> +
-> +       addr = instr->addr;
-> +       end = addr + instr->len;
-> +
-> +       mutex_lock(&flash->lock);
-> +
-> +       err = sst25l_wait_till_ready(flash);
-> +       if (err)
-> +               return err;
-> +
-> +       while (addr < end) {
-> +               err = sst25l_erase_block(flash, addr);
-> +               if (err) {
-> +                       mutex_unlock(&flash->lock);
-> +                       instr->state = MTD_ERASE_FAILED;
-> +                       dev_err(&flash->spi->dev, "Erase failed\n");
-> +                       return err;
-> +               }
-> +
-> +               addr += mtd->erasesize;
-> +       }
-> +
-> +       mutex_unlock(&flash->lock);
-> +
-> +       instr->state = MTD_ERASE_DONE;
-> +       mtd_erase_callback(instr);
-> +       return 0;
-> +}
-> +
-> +static int sst25l_read(struct mtd_info *mtd, loff_t from, size_t len,
-> +                      size_t *retlen, u_char *buf)
-> +{
-> +       struct sst25l_flash *flash = to_sst25l_flash(mtd);
-> +       struct spi_transfer transfer[2];
-> +       struct spi_message message;
-> +       u8 command[4];
-> +       int ret;
-> +
-> +       /* Sanity checking */
-> +       if (len == 0)
-> +               return 0;
-> +
-> +       if (from + len > flash->mtd.size)
-> +               return -EINVAL;
-> +
-> +       if (retlen)
-> +               *retlen = 0;
-> +
-> +       spi_message_init(&message);
-> +       memset(&transfer, 0, sizeof(transfer));
-> +
-> +       command[0] = SST25L_CMD_READ;
-> +       command[1] = from >> 16;
-> +       command[2] = from >> 8;
-> +       command[3] = from;
-> +
-> +       transfer[0].tx_buf = command;
-> +       transfer[0].len = sizeof(command);
-> +       spi_message_add_tail(&transfer[0], &message);
-> +
-> +       transfer[1].rx_buf = buf;
-> +       transfer[1].len = len;
-> +       spi_message_add_tail(&transfer[1], &message);
-> +
-> +       mutex_lock(&flash->lock);
-> +
-> +       /* Wait for previous write/erase to complete */
-> +       ret = sst25l_wait_till_ready(flash);
-> +       if (ret) {
-> +               mutex_unlock(&flash->lock);
-> +               return ret;
-> +       }
-> +
-> +       spi_sync(flash->spi, &message);
-> +
-> +       if (retlen && message.actual_length > sizeof(command))
-> +               *retlen += message.actual_length - sizeof(command);
-> +
-> +       mutex_unlock(&flash->lock);
-> +       return 0;
-> +}
-> +
-> +static int sst25l_write(struct mtd_info *mtd, loff_t to, size_t len,
-> +                       size_t *retlen, const u_char *buf)
-> +{
-> +       struct sst25l_flash *flash = to_sst25l_flash(mtd);
-> +       int i, j, ret, bytes, copied = 0;
-> +       u8 command[5];
-> +       u32 rem;
-> +
-> +       /* Sanity checks */
-> +       if (!len)
-> +               return 0;
-> +
-> +       if (to + len > flash->mtd.size)
-> +               return -EINVAL;
-> +
-> +       div_u64_rem(to, mtd->writesize, &rem);
+Posez en 3 minutes votre projet et interrogez plusieurs prestataires sélectionnés pour recevoir gratuitement vos devis comparatifs .
 
-I see. But do you really want to do that with maths?
-Can't you just do some simple arithmetics since mtd->writesize is
-u32 anything in the higher 32 bits can be ignored (it will be
-divisible with any u32 value anyway!), so
+plus d'infos sur http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique
 
-/* Need to be evenly divisible by writesize */
-if ((to & 0xFFFFFFFFU) % mtd->writesize)
-    return -EINVAL;
+--------------------------------
+Cette offre keltravo vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.tmrv.com/svi/gestionserv.php?nb=1714&numuser=9047704&code=HWeuIQdw&src=50
 
-does this work?
+--_----------=_parties_9a4dcbcc7fea6170c330811eb7e4c5b7
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
 
-> +       if (rem)
-> +               return -EINVAL;
-> +
-> +       mutex_lock(&flash->lock);
-> +
-> +       ret = sst25l_write_enable(flash, 1);
-> +       if (ret)
-> +               goto out;
-> +
-> +       for (i = 0; i < len; i += mtd->writesize) {
-> +               ret = sst25l_wait_till_ready(flash);
-> +               if (ret)
-> +                       goto out;
-> +
-> +               /* Write the first byte of the page */
-> +               command[0] = SST25L_CMD_AAI_PROGRAM;
-> +               command[1] = (to + i) >> 16;
-> +               command[2] = (to + i) >> 8;
-> +               command[3] = (to + i);
-> +               command[4] = buf[i];
-> +               ret = spi_write(flash->spi, command, 5);
-> +               if (ret < 0)
-> +                       goto out;
-> +               copied++;
-> +
-> +               /*
-> +                * Write the remaining bytes using auto address
-> +                * increment mode
-> +                */
-> +               bytes = min(mtd->writesize, len - i);
-> +               for (j = 1; j < bytes; j++, copied++) {
-> +                       ret = sst25l_wait_till_ready(flash);
-> +                       if (ret)
-> +                               goto out;
-> +
-> +                       command[1] = buf[i + j];
-> +                       ret = spi_write(flash->spi, command, 2);
-> +                       if (ret)
-> +                               goto out;
-> +               }
-> +       }
-> +
-> +out:
-> +       ret = sst25l_write_enable(flash, 0);
-> +
-> +       if (retlen)
-> +               *retlen = copied;
-> +
-> +       mutex_unlock(&flash->lock);
-> +       return ret;
-> +}
-> +
-> +static struct flash_info *__devinit sst25l_match_device(struct spi_device *spi)
 
-Or is it __init really? NB: this will save (very little) memory on your system.
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Newsletter Keltravo Juin 2009
+des artisans &agrave; votre service
+3 devis gratuits et immediats </title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.tmrv.com/svi/miroir.php?bat=keltravo0609_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre keltravo vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial Narrow;color:#000000;font-size:24px'>
+<a style='text-decoration:none;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique' target='_blank'>
+<img id=INNER_LOGO_ANNONCEUR align=absmiddle src='http://www.keltravo.com/templates/keltravo/images/logo_keltravo.gif' style='float:left;border:0px;margin-right:20px'>
+</a>
+<p style='display:inline;'> <a href="http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique" style="text-decoration:none;color:#000000;">Newsletter Keltravo <font color=blue>Juin 2009</font><br>
+des artisans &agrave; votre service<br>
+<b>3 devis gratuits et immediats </b></a></p>
+</td></tr>
+<tr><td align='left' style='margin:3px;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#070707;font-size:12px;'>
+Madame, Monsieur,<br>
+<br>
+Avec les premiers rayons de soleil de ce mois de mai, les envies de travaux surgissent ! Profitez-en et contactez dans votre r&eacute;gion les artisans disponibles pour effectuer vos travaux de construction ou de r&eacute;novation !<br>
+<br>Qu'il s'agisse d'un <b>plombier</b> -chauffagiste ou non-, un <b>&eacute;lectricien</b>, un <b>ma&ccedil;on</b>, un <b>poseur de fen&ecirc;tres</b>, un <b>alarmiste</b>, un sp&eacute;cialiste de la <b>clim</b> ou du <b>parquet</b>..., obtenez en <a href="http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique">quelques minutes</a> votre <b>devis gratuit</b> pour visualiser rapidement vos d&eacute;lais de travaux !<br>
+<br>
+Rafra&icirc;chir tout ou partie de sa <b>maison</b>, son <b>appartement</b>, <b>r&eacute;nover une pi&egrave;ce</b> ou l'ensemble n&eacute;cessite une vraie consultation, profiter du formulaire sp&eacute;cifique pr&eacute;par&eacute; en <a href="http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique">cliquant ici </a>!<br>
+<br>
+<div style='font-weight:bold;text-align:center;border:1px solid black;background-color:#e8ffa1;padding:2px;'>
+Posez en 3 minutes votre projet et interrogez plusieurs prestataires s&eacute;lectionn&eacute;s pour <a href="http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique">recevoir gratuitement vos devis comparatifs</a>.
+</div>
 
-> +{
-> +       struct flash_info *flash_info = NULL;
-> +       u8 command[4], response;
-> +       int i, err;
-> +       u16 id;
-> +
-> +       command[0] = SST25L_CMD_READ_ID;
-> +       command[1] = 0;
-> +       command[2] = 0;
-> +       command[3] = 0;
-> +       err = spi_write_then_read(spi, command, sizeof(command), &response, 1);
-> +       if (err < 0) {
-> +               dev_err(&spi->dev, "error reading device id msb\n");
-> +               return NULL;
-> +       }
-> +
-> +       id = response << 8;
-> +
-> +       command[0] = SST25L_CMD_READ_ID;
-> +       command[1] = 0;
-> +       command[2] = 0;
-> +       command[3] = 1;
-> +       err = spi_write_then_read(spi, command, sizeof(command), &response, 1);
-> +       if (err < 0) {
-> +               dev_err(&spi->dev, "error reading device id lsb\n");
-> +               return NULL;
-> +       }
-> +
-> +       id |= response;
-> +
-> +       for (i = 0; i < ARRAY_SIZE(sst25l_flash_info); i++)
-> +               if (sst25l_flash_info[i].device_id == id)
-> +                       flash_info = &sst25l_flash_info[i];
-> +
-> +       if (!flash_info)
-> +               dev_err(&spi->dev, "unknown id %.4x\n", id);
-> +
-> +       return flash_info;
-> +}
-> +
-> +static int __devinit sst25l_probe(struct spi_device *spi)
+</td></tr>
+<tr><td align='' style='padding:5px;background-color:#FFFFFF;'>
+<table><tr><td style='color:#000000;font-family:arial;font-size:11px;'>
+<div style='border:dashed 3px red;padding:3px;height:200px;text-align:left;font-family:arial;'>
+Comme les mois pr&eacute;cedents, voici le <u style='color:blue'>calendrier</u> qui devrait vous permettre de trouver votre artisan.<br>
+<b>Anticiper au mieux vos futurs travaux</b> n&eacute;cessite toujours de s'y prendre &agrave; l'avance afin de <b>comparer les devis</b>, <b>choisir le bon prestataire</b>, pr&eacute;voir d'<b>eventuels d&eacute;lais</b> et bien entendu tenir compte de la dur&eacute;e d'ex&eacute;cution des travaux.<br><br>
 
-Or __init?
+ <div style='border-top:1px solid black;border-bottom:1px solid black;margin-left:5px;margin-right:5px;font-weight:bold;font-size:16px;float:left;text-align:center;width:170px;background-color:#C0C0C0;color:#FFFFFF'>
+ Mai 2009
+ </div>
+ <div style='border-top:1px solid black;border-bottom:1px solid black;margin-left:5px;margin-right:5px;font-weight:bold;font-size:16px;float:left;text-align:center;width:170px;background-color:#C0C0C0;color:#FFFFFF'>
+ Juin 2009
+ </div>
+ <div style='border-top:1px solid black;border-bottom:1px solid black;margin-left:5px;margin-right:5px;font-weight:bold;font-size:16px;float:left;text-align:center;width:170px;background-color:#C0C0C0;color:#FFFFFF'>
+ Juillet 2009
+ </div>
+<div style='clear:both;'></div>
 
-> +{
-> +       struct flash_info *flash_info;
-> +       struct sst25l_flash *flash;
-> +       struct flash_platform_data *data;
-> +       int i;
-> +
-> +       flash_info = sst25l_match_device(spi);
-> +       if (!flash_info)
-> +               return -ENODEV;
-> +
-> +       flash = kzalloc(sizeof(struct sst25l_flash), GFP_KERNEL);
-> +       if (!flash)
-> +               return -ENOMEM;
-> +
-> +       flash->spi = spi;
-> +       mutex_init(&flash->lock);
-> +       dev_set_drvdata(&spi->dev, flash);
-> +
-> +       data = spi->dev.platform_data;
-> +       if (data && data->name)
-> +               flash->mtd.name = data->name;
-> +       else
-> +               flash->mtd.name = dev_name(&spi->dev);
-> +
-> +       flash->mtd.type         = MTD_NORFLASH;
-> +       flash->mtd.flags        = MTD_CAP_NORFLASH;
-> +       flash->mtd.erasesize    = flash_info->erase_size;
-> +       flash->mtd.writesize    = flash_info->page_size;
-> +       flash->mtd.size         = flash_info->page_size * flash_info->nr_pages;
-> +       flash->mtd.erase        = sst25l_erase;
-> +       flash->mtd.read         = sst25l_read;
-> +       flash->mtd.write        = sst25l_write;
-> +
-> +       dev_info(&spi->dev, "%s (%lld Kbytes)\n", flash_info->name,
-> +                (long long)flash->mtd.size >> 10);
-> +
-> +       DEBUG(MTD_DEBUG_LEVEL2,
-> +             "mtd .name = %s, .size = 0x%llx (%lldMiB) "
-> +             ".erasesize = 0x%.8x (%uKiB) .numeraseregions = %d\n",
-> +             flash->mtd.name,
-> +             (long long)flash->mtd.size, (long long)(flash->mtd.size >> 20),
-> +             flash->mtd.erasesize, flash->mtd.erasesize / 1024,
-> +             flash->mtd.numeraseregions);
-> +
-> +       if (flash->mtd.numeraseregions)
-> +               for (i = 0; i < flash->mtd.numeraseregions; i++)
-> +                       DEBUG(MTD_DEBUG_LEVEL2,
-> +                             "mtd.eraseregions[%d] = { .offset = 0x%llx, "
-> +                             ".erasesize = 0x%.8x (%uKiB), "
-> +                             ".numblocks = %d }\n",
-> +                             i, (long long)flash->mtd.eraseregions[i].offset,
-> +                             flash->mtd.eraseregions[i].erasesize,
-> +                             flash->mtd.eraseregions[i].erasesize / 1024,
-> +                             flash->mtd.eraseregions[i].numblocks);
-> +
-> +       if (mtd_has_partitions()) {
-> +               struct mtd_partition *parts = NULL;
-> +               int nr_parts = 0;
-> +
-> +               if (mtd_has_cmdlinepart()) {
-> +                       static const char *part_probes[] =
-> +                               {"cmdlinepart", NULL};
-> +
-> +                       nr_parts = parse_mtd_partitions(&flash->mtd,
-> +                                                       part_probes,
-> +                                                       &parts, 0);
-> +               }
-> +
-> +               if (nr_parts <= 0 && data && data->parts) {
-> +                       parts = data->parts;
-> +                       nr_parts = data->nr_parts;
-> +               }
-> +
-> +               if (nr_parts > 0) {
-> +                       for (i = 0; i < nr_parts; i++) {
-> +                               DEBUG(MTD_DEBUG_LEVEL2, "partitions[%d] = "
-> +                                     "{.name = %s, .offset = 0x%llx, "
-> +                                     ".size = 0x%llx (%lldKiB) }\n",
-> +                                     i, parts[i].name,
-> +                                     (long long)parts[i].offset,
-> +                                     (long long)parts[i].size,
-> +                                     (long long)(parts[i].size >> 10));
-> +                       }
-> +
-> +                       flash->partitioned = 1;
-> +                       return add_mtd_partitions(&flash->mtd,
-> +                                                 parts, nr_parts);
-> +               }
-> +
-> +       } else if (data->nr_parts) {
-> +               dev_warn(&spi->dev, "ignoring %d default partitions on %s\n",
-> +                        data->nr_parts, data->name);
-> +       }
-> +
-> +       return add_mtd_device(&flash->mtd) == 1 ? -ENODEV : 0;
-> +}
-> +
-> +static int __devexit sst25l_remove(struct spi_device *spi)
+<div style='margin-left:5px;margin-right:5px;font-size:11px;float:left;text-align:left;width:170px;'>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=230&catB=232 target=#>Fen&ecirc;tres</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=90&catB=91 target=#>R&eacute;novation compl&egrave;te</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=190&catB=191 target=#>Alarme</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=180&catB=182 target=#>Climatisation</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=1&catB=3 target=#>Ma&ccedil;onnerie</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=90&catB=91 target=#>Cuisine</a>
+</div>
+<div style='margin-left:5px;margin-right:5px;font-size:11px;float:left;text-align:left;width:170px;'>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=1&catB=3 target=#>Ma&ccedil;onnerie</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=150&catB=151 target=#>Chauffage inversable</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=110&catB=121 target=#>V&eacute;randa</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=70&catB=81 target=#>Toiture</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=1&catB=12 target=#>Ravalement</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=110&catB=113 target=#>Piscines</a>
+</div>
 
-Or __exit?
+<div style='margin-left:5px;margin-right:5px;font-size:11px;float:left;text-align:left;width:170px;'>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=210&catB=211 target=#>Electricit&eacute;</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=210&catB=211 target=#>Plomberie</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=100&catB=101 target=#>Salle de bains</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=110&catB=121 target=#>V&eacute;randa</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=70&catB=81 target=#>Toiture</a>
+<li><a href=http://www.des-travaux.com/professionnels-batiment-et-maison/index.asp?catA=1&catB=12 target=#>Ravalement</a>
+</div>
 
-> +{
-> +       struct sst25l_flash *flash = dev_get_drvdata(&spi->dev);
-> +       int ret;
-> +
-> +       if (mtd_has_partitions() && flash->partitioned)
-> +               ret = del_mtd_partitions(&flash->mtd);
-> +       else
-> +               ret = del_mtd_device(&flash->mtd);
-> +       if (ret == 0)
-> +               kfree(flash);
-> +       return ret;
-> +}
-> +
-> +static struct spi_driver sst25l_driver = {
-> +       .driver = {
-> +               .name   = "sst25l",
-> +               .bus    = &spi_bus_type,
-> +               .owner  = THIS_MODULE,
-> +       },
-> +       .probe          = sst25l_probe,
-> +       .remove         = __devexit_p(sst25l_remove),
+</div>
+<br>
+<div style='clear:both;'></div>
 
-Or __exit_p()?
 
-> +};
-> +
-> +static int __init sst25l_init(void)
-> +{
-> +       return spi_register_driver(&sst25l_driver);
-> +}
-> +
-> +static void __exit sst25l_exit(void)
-> +{
-> +       spi_unregister_driver(&sst25l_driver);
-> +}
-> +
-> +module_init(sst25l_init);
-> +module_exit(sst25l_exit);
-> +
-> +MODULE_DESCRIPTION("MTD SPI driver for SST25L Flash chips");
-> +MODULE_AUTHOR("Andre Renaud <andre@bluewatersys.com>, "
-> +             "Ryan Mallon <ryan@bluewatersys.com>");
-> +MODULE_LICENSE("GPL");
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
->
 
-Yours,
-Linus Walleij
+
+<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fwww.des-travaux.com%2Fprofessionnels-batiment-et-maison%2Findex.asp%3FcatA%3D230%26catB%3D232' target='_blank'>
+ <div style='border:solid 2px red;padding:3px;height:120px;text-align:left;'>
+<b style='font-size:13px;'> > Fen&ecirc;tres & portes</b><br>
+ <img width=100 height=60 border=0 style='margin:5px;float:left;' width=100 height=60 src=http://newsletter.abonim.com/img/kt2.jpg>
+C'est la p&eacute;riode pour s'isoler encore plus ! L'isolation thermique et phonique, en verre ou en bois, n&eacute;cessite les conseils de sp&eacute;cialistes de la menuiserie int&eacute;rieure ou ext&eacute;rieure. La r&eacute;novation ou le changement de vos portes ou fen&ecirc;tres est un &eacute;l&eacute;ment essentiel du confort de votre habitat. Bois, aluminium, double ou simple vitrage, standard ou sur mesure, faites votre choix en comparant styles, prix et prestations.
+<br><br><u style='color:blue;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
+ </div>
+</a>
+<br>
+<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fwww.des-travaux.com%2Fprofessionnels-batiment-et-maison%2Findex.asp%3FcatA%3D90%26catB%3D91' target='_blank'>
+<div style='border:solid 2px pink;padding:3px;height:120px;text-align:left;'>
+<b style='font-size:13px;'> > R&eacute;novation compl&egrave;te d'appartements, de pavillons...</b><br>
+<img width=100 height=60 border=0 style='margin:5px;float:left;' width=100 height=60 src=http://newsletter.abonim.com/img/kt7.jpg>
+Agrandir votre maison, obtenir une pi&egrave;ce suppl&eacute;mentaire ... On ne confie pas les travaux de sa maison au premier venu. R&eacute;novation, nouvel agencement des espaces, nouveaux mat&eacute;riaux…, seuls de vrais professionnels qualifi&eacute;s sauront comprendre vos demandes et combler vos attentes. Encore faut-il les d&eacute;nicher…
+<br><br><u style='color:blue;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
+</div>
+</a>
+<br>
+<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fwww.des-travaux.com%2Fprofessionnels-batiment-et-maison%2Findex.asp%3FcatA%3D90%26catB%3D91' target='_blank'>
+ <div style='border:solid 2px yellow;padding:3px;height:120px;text-align:left;'>
+<b style='font-size:13px;'> > Cuisine</b><br>
+ <img width=100 height=60 border=0 style='margin:5px;float:left;' width=100 height=60 src=http://newsletter.abonim.com/img/kt3.jpg>
+R&eacute;novation ou nouvelle installation ? Au cœur de la vie de la maison, la cuisine ne doit rien laisser au hasard. N'h&eacute;sitez pas &agrave; interroger plusieurs sp&eacute;cialistes : avec les nouveaux plans 3D, vous pourrez visualiser l'installation de votre choix et choisir en toute connaissance.
+<br><br><u style='color:blue;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
+ </div>
+
+</a>
+<br>
+
+<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fwww.des-travaux.com%2Fprofessionnels-batiment-et-maison%2Findex.asp%3FcatA%3D110%26catB%3D113' target='_blank'>
+<div style='border:solid 2px red;padding:3px;height:120px;text-align:left;'>
+<b style='font-size:13px;'> Une Piscine pour cet &eacute;t&eacute; ?</b><br>
+<img width=100 height=60 border=0 style='margin:5px;float:left;' width=100 height=60 src=http://newsletter.abonim.com/img/kt4.jpg>
+Apr&egrave;s le salon de d&eacute;cembre de la Piscine, profitez de la possibilit&eacute; de comparer les offres des plus grands fabricants en France pour pr&eacute;parer votre futur projet de cet &eacute;t&eacute; ! Coque, polyester, pr&ecirc;te &agrave; plonger, « en dur » ? C'est le bon moment pour &eacute;valuer votre projet pour 2008 de piscine. De nombreux sp&eacute;cialistes r&eacute;pondront &agrave; toutes vos questions en fonction certes de votre budget mais surtout de vos envies et contraintes !
+<br><br><u style='color:blue;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
+</div>
+</a>
+<br>
+<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fwww.des-travaux.com%2Fprofessionnels-batiment-et-maison%2Findex.asp%3FcatA%3D1%26catB%3D3' target='_blank'>
+ <div style='border:solid 2px brown;padding:3px;height:120px;text-align:left;'>
+<b style='font-size:13px;'> > Ma&ccedil;onnerie </b><br>
+ <img width=100 height=60 border=0 style='margin:5px;float:left;' width=100 height=60 src=http://newsletter.abonim.com/img/kt9.jpg>
+Un muret &agrave; r&eacute;aliser, une ouverture &agrave; faire, une cloison &agrave; abattre, une pi&egrave;ce &agrave; agrandir, etc. agrandir une pi&egrave;ce, isoler des murs pour b&eacute;n&eacute;ficier des nouveaux avantages li&eacute;s aux &eacute;conomies d'&eacute;nergie. Interroger plusieurs sp&eacute;cialistes en construction, am&eacute;nagement, pour r&eacute;aliser vos projets en gros ou second oeuvre.
+<br><br><u style='color:blue;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
+ </div>
+</a>
+<br>
+
+<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fwww.des-travaux.com%2Fprofessionnels-batiment-et-maison%2Findex.asp%3FcatA%3D150%26catB%3D151' target='_blank'>
+<div style='border:solid 2px blue;padding:3px;height:120px;text-align:left;'>
+<b style='font-size:13px;'> > Chauffage Nouvelle G&eacute;n&eacute;ration</b><br>
+ <img width=100 height=60 border=0 style='margin:5px;float:left;' width=100 height=60 src=http://newsletter.abonim.com/img/kt1.jpg>
+Avec des &eacute;conomies d'imp&ocirc;ts en plus, d'avantages de confort, plus d'&eacute;conomies, rapidit&eacute; de pose, choix de mod&egrave;les : les nouvelle g&eacute;n&eacute;ration de chauffage combinent de nombreux avantages et peuvent m&ecirc;me vous assurer le froid en &eacute;t&eacute;. Vous allez changer d'avis sur le chauffage !
+<br><br><u style='color:blue;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
+</div>
+</a>
+<br>
+<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fwww.des-travaux.com%2Fprofessionnels-batiment-et-maison%2Findex.asp%3FcatA%3D210%26catB%3D211' target='_blank'>
+ <div style='border:solid 2px orange;padding:3px;height:120px;text-align:left;'>
+<b style='font-size:13px;'> > Electricit&eacute; - Plomberie</b><br>
+ <img width=100 height=60 border=0 style='margin:5px;float:left;' width=100 height=60 src=http://newsletter.abonim.com/img/kt8.jpg>
+Qu'il s'agisse d'am&eacute;lioration ou d'une installation compl&egrave;te, en courant faible ou fort, d'une pi&egrave;ce ou de l'ensemble de votre appartement ou maison, vous ne laisserez jamais un artisan non certifi&eacute; intervenir sur votre quotidien. Pr&eacute;senter votre besoin en s&eacute;lectionnant la cat&eacute;gorie la plus appropri&eacute;e et recevez gratuitement votre devis en fonction des professionnels contact&eacute;s.
+<br><br><u style='color:blue;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
+ </div>
+</a>
+<br>
+
+
+<br>
+ <a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique' target='_blank'>
+ <div style='border:solid 2px black;background-color:peachpuff;padding:3px;text-align:center;'>
+Nous r&eacute;f&eacute;ren&ccedil;ons 80.000 artisans, installateurs, fabricants, sur tous les m&eacute;tiers et sur toute la France. Faites comme 645.000 personnes en 2007, testez et approuvez nos services comparatifs.<br>
+Vous avez un autre besoin ? D&eacute;couvrez nos 250 autres rubriques, <u style='color:blue;'>cliquant ici </u>
+</div>
+</a>
+<br>
+<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.tmrv.com/svi/linkserv.php?bat=keltravo0609_ctrm&nb=1714&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fwww.des-travaux.com%2Fprofessionnels-batiment-et-maison%2Findex.asp%3Fartisan%3Dformulaire' target='_blank'>
+ <div style='border:solid 2px red;padding:3px;height:150px;text-align:left;'>
+<b style='font-size:13px;'> Artisans , vous souhaitez recevoir de nouvelles demandes de projet</b><br>
+ <img border=0 style='margin:5px;float:left;' width=200 height=36 src=http://www.keltravo.com/images/banners/KTO_artisans200x36.gif>
+Artisans, entreprises du b&acirc;timent et professionnels de l'habitat, recevez chaque jour de nouveaux projets.<br>
+Keltravo.com a pour objectif de devenir votre partenaire commercial en vous apportant aussi longtemps que vous le souhaitez de nouvelles et qualifi&eacute;es demandes de devis et projets. Chaque projet &eacute;tant valid&eacute; par nos soins, il ne sera envoy&eacute; que si vos m&eacute;tiers correspondent ainsi que votre couverture g&eacute;ographique.<br>
+Apr&egrave;s une inscription gratuite, nous vous proposons de recevoir rapidement les projets que nous s&eacute;lectionnons pour vous et de d&eacute;butez vos futurs chantiers
+<br><br><u style='color:blue;float:right;'>Inscrivez-vous ici, c'est gratuit</u>
+ </div>
+
+</a>
+
+<br>
+</td></tr></table>
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.tmrv.com/svi/img.php?nb=1714&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
+<p>
+<a href='http://www.tmrv.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.tmrv.com/svi/gestionserv.php?nb=1714&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_9a4dcbcc7fea6170c330811eb7e4c5b7--
+
+--===============4326955913927368335==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Are you an open source citizen? Join us for the Open Source Bridge conference!
+Portland, OR, June 17-19. Two days of sessions, one day of unconference: $250.
+Need another reason to go? 24-hour hacker lounge. Register today!
+http://ad.doubleclick.net/clk;215844324;13503038;v?http://opensourcebridge.org
+--===============4326955913927368335==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4326955913927368335==--

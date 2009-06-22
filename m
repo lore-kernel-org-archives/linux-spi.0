@@ -1,12 +1,9 @@
-From: UK PHONE SHOP <Sales-WWC1qm4+ip8b60fQSNAUb1pr/1R2p/CL@public.gmane.org>
-Subject: BUY YOUR APPLE, IPHONE, BLACKBERRY,
-	AND OTHER PHONES AT AMAZING PRICES.
-Date: 22 Jun 2009 17:21:20 -0000
-Message-ID: <20090622172120.31187.qmail@ns36220.ovh.net>
-Reply-To: ukphoneshop0009gmail.com-TicCU4Ubj9BJq9fFQhofsg@public.gmane.org
+From: "Paris Xepay" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: Activate new log-pass
+Date: Mon, 22 Jun 2009 20:28:54 +0200
+Message-ID: <SICWZVFPORBI.WXGJHHHZZGXPUXF9048569003@icm10-orange.orange.sk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7822447514341516100=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,284 +16,103 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-Dear Prospective Customer,
-
-
-
-
-
-We are selling all brand and latest electronics such as mobile phones, pda, laptop, notebook, ipods, digital camera, gps, plasma television, games at affordable and competitive prices.
-
-
-
-Our products are brand new ( mobiles are unlocked ) with complete accessories and it comes with 18 months international warranty and 8 months return policy.
-
-
-
-WE CAN HELP YOU ESTABLISH YOUR OWN BUSINESS
-
-
-
-
-
-For further Enquiry and Order Placement, Contact us as below :
-
-
-
-Below is our Price List: 
-
-
-
-PHONES:
-
-
-
-NOKIA 5800 MUSIC XPRESS ..................$300 USD
-
-NOKIA N82 TITANIUM WHITE (UNLOCKED).......$250 USD
-
-NOKIA E90 COMMUNICATOR (UNLOCKED).........$450 USD
-
-NOKIA N96 (UNLOCKED)......................$350 USD
-
-NOKIA N95 8GB (UNLOCKED)..................$320 USD
-
-NOKIA E61i (UNLOCKED).....................$300 USD
-
-NOKIA 8800 Sapphire Arte (UNLOCKED).......$400USD
-
-NOKIA 8800 Sapphire Arte Triband 3G Unlocked Phone, Sapphire .......$470 USD
-
-NOKIA 6210 Navigator (UNLOCKED)...........$200 USD
-
-NOKIA N81 8GB (UNLOCKED)..................$300 USD
-
-NOKIA 7900 Prism (UNLOCKED)...............$250 USD
-
-NOKIA N76 (UNLOCKED)......................$200 USD
-
-
-
-
-
-APPLE IPHONE 3G 16GB.................$250 USD
-
-APPLE IPHONE 3G 8GB..................$200 USD
-
-
-
-MOTOROLA MING A1800 (UNLOCKED).......$500 USD
-
-MOTOROLA Z9 (UNLOCKED)...............$410 USD
-
-MOTOROLA Z6W (UNLOCKED)..............$150 USD
-
-MOTOROLA SIKEKICK SLIDE (UNLOCKED)...$170 USD
-
-MOTOROLA KRZR K3 (UNLOCKED)..........$250 USD
-
-MOTOROLA Q9H (UNLOCKED)..............$300 USD
-
-MOTOROLA v3i gold edition (UNLOCKED)................$200 USD
-
-MOTORLA Q (UNLOCKED)................................$220 USD 
-
-MOTOROLA MPX300 (UNLOCKED)..........................$115 USD
-
-
-
-SAMSUNG TOCCO.......................................$400 USD 
-
-SAMSUNG F110 (ULOCKED)..............................$350 USD
-
-SAMSUNG F480 (UNLOCKED).............................$400 USD
-
-SAMSUNG G810 (UNLOCKED).............................$500 USD
-
-SAMSUNG F700 (UNLOCKED).............................$450 USD
-
-SAMSUNG G600 (UNLOCKED).............................$300 USD
-
-SAMSUNG Z710 (UNLOCKED).............................$280 USD
-
-SAMSUNG M8000 (UNLOCKED)............................$250 USD 
-
-SAMSUNG sgh-i830 (UNLOCKED).........................$150 USD
-
-SAMSUNG G810 (UNLOCKED).............................$200 USD
-
-SAMSUNG ARMANI (UNLOCKED)...........................$300 USD
-
-SAMSUNG F700 (UNLOCKED).............................$400 USD
-
-SAMSUNG P960 (UNLOCKED).............................$450 USD
-
-SAMSUNG U900 SOUL (UNLOCKED)........................$550 USD
-
-SAMSUNG Giorgio Armani P520 (unlocked)..............$350 USD
-
-Samsung Omnia i900 (16GB)...........................$500 USD
-
-
-
-SONY ERICSSON C702 (UNLOCKED).......................$420 USD
-
-SONY ERICSSON W760 (UNLOCKED).......................$400 USD
-
-SONY ERICSSON W960 (UNLOCKED).......................$400 USD
-
-SONY ERICSSON XPERIA XI (UNLOCKED)..................$350 USD
-
-SONY ERICSSON T303 (UNLOCKED).......................$420 USD
-
-SONY ERICSSON G900 (UNLOCKED).......................$300 USD
-
-SONY ERICSSON P1 (UNLOCKED).........................$410 USD
-
-
-
-
-
-BLACKBERRY PEARL 8220........................$410 USD
-
-RIM BLACKBERRY STORM 9500....................$300 USD
-
-BLACKBERRY PEARL 8220........................$350 USD
-
-BLACKBERRY 8320 CURVE (UNLOCKED).............$250 USD
-
-BLACKBERRY 8707V (UNLOCKED)..................$340 USD
-
-BLACKBERRY PEARL 8120 (UNLOCKED).............$311 USD
-
-BLACKBERRY 7730 (UNLOCKED)...................$200 USD
-
-BLACKBERRY 7100X (UNLOCKED)..................$210 USD
-
-BLACKBERRY 8700C (UNLOCKED)..................$200 USD
-
-
-
-
-
-HTC ADVANTAGE X7510 (UNLOCKED)......................$500 USD
-
-HTC P3470 (UNLOCKED)................................$300 USD
-
-HTC S630 (UNLOCKED).................................$250 USD
-
-HTC SHIFT (UNLOCKED)................................$700 USD
-
-HTC TYTN (UNLOCKED).................................$410 USD
-
-HTC S710 (UNLOCKED).................................$230 USD
-
-HTC P3300 (UNLOCKED)................................$340 USD
-
-HCT TOUCH DIAMOND...................................$300 USD
-
-
-
-CAMERAS: 
-
-
-
-Brand New Nikon D700.......650USD
-
-Brand New Nikon D40........320USD
-
-Brand New Nikon D40x.......399USD
-
-Brand New Nikon D60........400USD
-
-Brand New Nikon D80........450USD
-
-Brand New Nikon D90........510USD
-
-Brand New Nikon D200.......350USD
-
-Brand New Nikon D300.......700USD
-
-Brand New Nikon D3.........800USD
-
-
-
-Brand New Canon 1000D........ .650USD
-
-Brand New Canon XH A1..........800USD
-
-Brand New Canon 40D............490USD
-
-Brand New Canon 400D...........400USD
-
-Brand New Canon 450D...........500USD
-
-
-
-DIGITAL CAMERA
-
-CANON EOS-1D Mark II-N 8 Megapixel Digital...............$750 USD
-
-Canon EOS-5D Digital , 12.8 .............................$700 USD  
-
-Canon XH A1 1.67MP 3CCD Camcorder with 20x Optical Zoom..$700 USD
-
-Canon XL2 3CCD MiniDV Camcorder w/20x Optical Zoom.......$800 USD
-
-Canon XL1 Digital Camcorder Kit..........................$600 USD
-
-Canon EOS 1D Mark II N 8.2MP Digital SLR Camera..........$750 USD
-
-Canon Camera Kit 1234B002................................$300 USD
-
-Canon EOS 30D Digital SLR Camera & Canon.................$500 USD
-
-
-
-MINIMUM ORDER IS 2 UNITS
-
-
-
-And the shipping cost $50 to any destination
-
-
-
-We sell in bulk purchase also below is our bulk purchase ordee..
-
-
-
-BUY 5 UNITS GET 1 FREE
-
-BUY 10 UNITS GET 2 FREE AND 1 SIDEKICK LX
-
-
-
-
-
-Tel:+447031937508
-
-
-
-Raymond Scout
-
-
-
-ukphoneshop0009-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org 
-
- 
-
-UNITED KINGDOM
-
-
-
-
-
-
+--===============7822447514341516100==
+Content-type: text/html; charset="utf-8"
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Official Newsletter</title>
+</head>
+<body text="#333333" bgcolor="#F4F2EE" link="#073064" vlink="#073064" alink="#073064">
+<table width="100%" cellpadding="10" cellspacing="0" bgcolor='#F4F2EE'>
+<tr>
+<td valign="top" align="left">
+
+
+<table width="600" cellpadding="0" cellspacing="0"  bgcolor="#3F3DA0">
+<tr>
+
+<td style="background-color:#E8E6DD;border-top:0px solid #000000;border-bottom:1px solid #FFFFFF;text-align:center;" align="left">
+<span style="font-size:10px;color:#948765;line-height:200%;font-family:verdana;text-decoration:none;">Email not displaying correctly?
+<a href="http://fbp85.duslexut.cn/?asygjzjk=b51dfd398a15&ogyigjlu=7318982556" style="font-size:10px;color:#948765;line-height:200%;font-family:verdana;text-decoration:underline;">View
+it in your browser.</a></span></td></tr>
+
+</table>
+
+
+
+<table width="600" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="table-layout:fixed">
+<tr>
+
+<td align="left" bgcolor="#ffffff" valign="top" width="400" style="text-align:left;font-size:13px;color:#7E6E5E;line-height:130%;font-family:trebuchet ms;border-right:1px dotted #C5B172;">
+<div style="color:#333333;margin:0 10px; padding:0;text-align:left;font-family:verdana, sans-serif; width: 585px;">
+
+
+<a name='2'></a><h2 style="font-size: 20px; font-weight: bold; color: #5D5D94; font-family: arial; line-height: 110%;">
+    &nbsp;</h2>
+	<h2 style="font-size: 20px; font-weight: bold; color: #5D5D94; font-family: arial; line-height: 110%;">
+    Official Daily newsletter</h2>
+					<p style="font-size: 20px; font-weight: bold; color: #5D5D94; font-family: arial; line-height: 110%;">
+  				    <a href="http://i48.duslexut.cn/?ehjpecoqdjo=b51dfd398a15&xajzekqruwi=7318982556">
+					<img alt="Click here to read news online" border="0" src="http://i48.duslexut.cn/spacer.gif" /></a></p>
+					<p style="font-size: 20px; font-weight: bold; color: #5D5D94; font-family: arial; line-height: 110%;">
+  				  &nbsp;</p>
+</div>
+				</td>
+
+</tr>
+
+<tr>
+  <td style="background-color:#D7D7E5;border-top:10px solid #9999BC; padding:20px;text-align:left" valign="top" align="left">
+  <h5 style="color:#353553;line-height:100%;font-family:verdana;">You are subscribed as : spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org Username: spi-devel-general</h5>
+  <p style="font-size:10px;color:#5E5E91;line-height:100%;font-family:verdana;"><a
+href="http://xgjhh31.duslexut.cn/?pqlokjxq=b51dfd398a15&bumifuly=7318982556" style="color:#7B7B94">Unsubscribe</a>
+ from this list.</p>
+  <p style="font-size:10px;color:#5E5E91;line-height:100%;font-family:verdana;"><a
+href="http://i48.duslexut.cn/?gqdqkjnyp=b51dfd398a15&kjowogocqify=7318982556"
+style="color:#7B7B94">Manage your subscriptions</a>.</p>
+
+  <p style="font-size:10px;color:#5E5E91;line-height:100%;font-family:verdana;"><a
+href="http://i48.duslexut.cn/?zirouuzqzic=b51dfd398a15&qwubyhirj=7318982556"
+style="color:#7B7B94">View the newsletter archives</a>.<br /></p>
+    			</td>
+
+</tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+<center style="color:#B5AC93; background:transparent !important; font-size:10px;font-family:verdana; text-align: center;">&copy; Copyright 2008
+Oydyivu. All
+rights reserved.</center>
+</body>
+</html>
+
+
+--===============7822447514341516100==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Are you an open source citizen? Join us for the Open Source Bridge conference!
 Portland, OR, June 17-19. Two days of sessions, one day of unconference: $250.
 Need another reason to go? 24-hour hacker lounge. Register today!
 http://ad.doubleclick.net/clk;215844324;13503038;v?http://opensourcebridge.org
+--===============7822447514341516100==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7822447514341516100==--

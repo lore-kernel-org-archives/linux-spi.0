@@ -1,40 +1,57 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.30] spi: new spi->mode bits
-Date: Tue, 23 Jun 2009 12:44:41 -0700
-Message-ID: <200906231244.41499.david-b@pacbell.net>
-References: <200906231207.37879.david-b@pacbell.net>
-	<20090623121555.065876b2.akpm@linux-foundation.org>
+From: Ryan Mallon <ryan@bluewatersys.com>
+Subject: Re: [PATCH] SST25L (non JEDEC) SPI Flash driver
+Date: Wed, 24 Jun 2009 08:48:15 +1200
+Message-ID: <4A413F8F.6030500@bluewatersys.com>
+References: <4A3F017B.2010409@bluewatersys.com>	 <63386a3d0906220122x31d0b23fk7bd86145b719d9b5@mail.gmail.com>	 <4A3FFE02.8020001@bluewatersys.com> <63386a3d0906230004m66360f4fhbdc80c8e552a01d0@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, s-paulraj-l0cyMroinI0@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090623121555.065876b2.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	linux-mtd@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net, mike@steroidmicros.com,
+	linux kernel <linux-kernel@vger.kernel.org>,
+	dedekind@infradead.org
+To: Linus Walleij <linus.ml.walleij@gmail.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1751955AbZFWUqa@vger.kernel.org>
+In-Reply-To: <63386a3d0906230004m66360f4fhbdc80c8e552a01d0@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 23 June 2009, Andrew Morton wrote:
-> On Tue, 23 Jun 2009 12:07:37 -0700
-> David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+Linus Walleij wrote:
+> 2009/6/22 Ryan Mallon <ryan@bluewatersys.com>:
 > 
-> > Subject: [patch 2.6.30] spi: new spi->mode bits
+>> Out of curiosity: I'm not too clear on what makes a particular chip
+>> hot-pluggable. I think technically the sst25l chip could be put onto a
+>> hot-pluggable board or power domain. Can't most devices be made
+>> hot-pluggable? Is the general rule to make devices non hot-pluggable if
+>> most/all boards in the mainline do not allow it to be hot-plugged?
 > 
-> 2.6.31, I assume.
+> I haven't seen any rule about it, but nominally the drivers support the
+> configurations found in the kernel tree, so if some board physically
+> existing and soon-to-run linux hotplugs chips like this, then have it
+> __dev{init|exit} else __{init|exit} IMHO.
 > 
-> It's a bit late for 2.6.31 really, but this looks harmless enough.
+> Of course you can design for all plausible use cases but it will pile up
+> indefinitely. Personally I try to not design software for a hardware until it
+> exists, and I like the IETF catch-phrase "rough consensus and running
+> code" and this sort of fits that :-)
 
-Yeah, 2.6.31 would be good ... I thought I'd sent this before,
-evidently not.
+Okay, thanks. Thats basically the conclusion we came to as well: if
+someone else wants to hotplug this chip in the future they can post a
+patch for it.
 
+BTW, most of my other patches go via the ARM list, which uses the patch
+system. Whats the procedure for most other lists, do patches just get
+collected by the subsection maintainer when they are okay?
 
+~Ryan
 
-------------------------------------------------------------------------------
+-- 
+Bluewater Systems Ltd - ARM Technology Solution Centre
+
+       Ryan Mallon                              Unit 5, Amuri Park
+       Phone: +64 3 3779127                     404 Barbadoes St
+       Fax:   +64 3 3779135                     PO Box 13 889
+       Email: ryan@bluewatersys.com             Christchurch, 8013
+       Web:   http://www.bluewatersys.com       New Zealand
+       Freecall Australia  1800 148 751         USA 1800 261 2934

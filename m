@@ -1,14 +1,18 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch] spi: add spi_master flag word
-Date: Tue, 23 Jun 2009 12:09:08 -0700
-Message-ID: <200906231209.08291.david-b@pacbell.net>
+Subject: Re: [RESEND][PATCH] SPI: xilinx_spi: Added
+	platform driver and support for DS570
+Date: Tue, 23 Jun 2009 12:37:54 -0700
+Message-ID: <200906231237.54278.david-b@pacbell.net>
+References: <4A366622.2050606@mocean-labs.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Richard =?iso-8859-1?q?R=F6jfors?= <richard.rojfors.ext-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4A366622.2050606-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,67 +24,112 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+On Monday 15 June 2009, Richard R=F6jfors wrote:
+> This patch splits xilinx_spi into three parts, an OF and a platform
+> driver and generic part.
+> =
 
-Add a new spi_master.flags word listing constraints relevant
-to that controller.  Define the first constraint bit:  a half
-duplex restriction.  Include that constraint in the OMAP1
-MicroWire controller driver.
+> The generic part now also works on X86 and also supports the Xilinx
+> SPI IP DS570
 
-Have the mmc_spi host be the first customer of this flag.
-Its coding relies heavily on full duplex transfers, so it must
-fail when the underlying controller driver won't perform them.
+Your Kconfig still mentions only DS464.
 
-(The spi_write_then_read routine could use it too:  use the
-temporarily-withdrawn full-duplex speedup unless this flag is
-set, in which case the existing code applies.  Similarly, any
-spi_master implementing only SPI_3WIRE should set the flag.)
+Is there any reason the platform driver shouldn't also build on x86?
+Surely *any* system should be able to talk to an FPGA which exports
+this register interface?
 
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+> =
+
+> Signed-off-by: Richard R=F6jfors <richard.rojfors.ext-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
+
+I'll second Andrew's comments.  Also, for my review, it'd be
+better to split OF bits out from the rest ... but maybe that's
+not practical given the previous xilinx_spi code.  At least
+future patches will have a more-sane structure to build on.
+
+
+> +config SPI_XILINX_OF
+> +	tristate "Xilinx SPI controller OF device"
+> +	depends on SPI_XILINX && XILINX_VIRTEX
+> +	help
+> +	  This exposes the SPI controller IP from the Xilinx EDK.
+
+If it's IP, then why is it dependent on VIRTEX?  Surely
+the same IP should work on Spartan etc.  I'd think just
+depending on something like OF should suffice.
+
+
+> +
+> +	  See the "OPB Serial Peripheral Interface (SPI) (v1.00e)"
+> +	  Product Specification document (DS464) for hardware details.
+> +
+> +config SPI_XILINX_PLTFM
+> +	tristate "Xilinx SPI controller platform device"
+> +	depends on SPI_XILINX
+
+This should go first in the Kconfig, so that you don't goof up
+the dependency display ... the OF bits depend on it.
+
+
+> --- linux-2.6.30-rc7-spi/drivers/spi/xilinx_spi_of.c	(revision 0)
+> +++ linux-2.6.30-rc7-spi/drivers/spi/xilinx_spi_of.c	(revision 912)
+> @@ -0,0 +1,123 @@
+> 	...
+
+> +
+> +/* work with hotplug and coldplug */
+> +MODULE_ALIAS("platform:" XILINX_SPI_NAME);
+
+This is clearly inappropriate for a file with an OpenFirmware driver.
+For that matter, it's not needed with platform devices any more either;
+so take it out of your platform driver code too.
+
+
+> --- linux-2.6.30-rc7-spi/include/linux/spi/xilinx_spi.h	(revision 0)
+> +++ linux-2.6.30-rc7-spi/include/linux/spi/xilinx_spi.h	(revision 912)
+> @@ -0,0 +1,19 @@
+> +#ifndef __LINUX_SPI_XILINX_SPI_H
+> +#define __LINUX_SPI_XILINX_SPI_H
+> +
+> +#define XILINX_SPI_MODEL_DS464 0
+> +#define XILINX_SPI_MODEL_DS570 1
+> +
+> +/* SPI Controller IP */
+> +struct xspi_platform_data {
+> +	s16 bus_num;
+
+Not needed on the platform_bus; pdev->id suffices.
+This is specific to the OF glue, yes?
+
+
+> +	u16 num_chipselect;
+> +	u8 model;
+> +	u8 bits_per_word;
+
+Synthesis data that's not explicitly visible in
+the IP registers, I guess.
+
+
+> +	/* devices to add to the bus when the host is up */
+> +	struct spi_board_info *devices;
+> +	u8 num_devices;
+
+This is duplicating functionality in the SPI core code.
+That's not really the way to fly.  That may also be
+specific to the OF glue.
+
+
+> +};
+> +
+> +#endif /* __LINUX_SPI_XILINX_SPI_H */
+> +
+> =
+
+> =
+
+
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/mmc/host/mmc_spi.c |    6 ++++++
- drivers/spi/omap_uwire.c   |    2 ++
- include/linux/spi/spi.h    |    4 ++++
- 3 files changed, 12 insertions(+)
-
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -1313,6 +1313,12 @@ static int mmc_spi_probe(struct spi_devi
- 	struct mmc_spi_host	*host;
- 	int			status;
- 
-+	/* We rely on full duplex transfers, mostly to reduce
-+	 * per-transfer overheads (by making fewer transfers).
-+	 */
-+	if (spi->master->flags & SPI_MASTER_HALF_DUPLEX)
-+		return -EINVAL;
-+
- 	/* MMC and SD specs only seem to care that sampling is on the
- 	 * rising edge ... meaning SPI modes 0 or 3.  So either SPI mode
- 	 * should be legit.  We'll use mode 0 since the steady state is 0,
---- a/drivers/spi/omap_uwire.c
-+++ b/drivers/spi/omap_uwire.c
-@@ -514,6 +514,8 @@ static int __init uwire_probe(struct pla
- 	/* the spi->mode bits understood by this driver: */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 
-+	master->flags = SPI_MASTER_HALF_DUPLEX;
-+
- 	master->bus_num = 2;	/* "official" */
- 	master->num_chipselect = 4;
- 	master->setup = uwire_setup;
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -250,6 +250,10 @@ struct spi_master {
- 	/* spi_device.mode flags understood by this controller driver */
- 	u16			mode_bits;
- 
-+	/* other constraints relevant to this driver */
-+	u16			flags;
-+#define SPI_MASTER_HALF_DUPLEX	BIT(0)		/* can't do full duplex */
-+
- 	/* Setup mode and clock, etc (spi driver may call many times).
- 	 *
- 	 * IMPORTANT:  this may be called when transfers to another
-
-------------------------------------------------------------------------------

@@ -1,92 +1,41 @@
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [RESEND][PATCH] SPI: xilinx_spi: Added platform driver and
-	support for DS570
-Date: Mon, 22 Jun 2009 22:04:19 -0700
-Message-ID: <20090622220419.a60dbe71.akpm@linux-foundation.org>
-References: <4A366622.2050606@mocean-labs.com>
+From: Linus Walleij <linus.ml.walleij@gmail.com>
+Subject: Re: [PATCH] SST25L (non JEDEC) SPI Flash driver
+Date: Tue, 23 Jun 2009 09:04:57 +0200
+Message-ID: <63386a3d0906230004m66360f4fhbdc80c8e552a01d0@mail.gmail.com>
+References: <4A3F017B.2010409@bluewatersys.com>
+	 <63386a3d0906220122x31d0b23fk7bd86145b719d9b5@mail.gmail.com>
+	 <4A3FFE02.8020001@bluewatersys.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: dbrownell@users.sourceforge.net,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linuxppc-dev@ozlabs.org, spi-devel-general@lists.sourceforge.net,
-	Andrei Konovalov <akonovalov@ru.mvista.com>, John@bilbo.ozlabs.org,
-	Linn <john.linn@xilinx.com>
-To: Richard =?ISO-8859-1?Q?R=F6jfors?= <richard.rojfors.ext@mocean-labs.com>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <4A366622.2050606@mocean-labs.com>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	linux-mtd@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net, mike@steroidmicros.com,
+	linux kernel <linux-kernel@vger.kernel.org>,
+	dedekind@infradead.org
+To: Ryan Mallon <ryan@bluewatersys.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754629AbZFWHFJ@vger.kernel.org>
+In-Reply-To: <4A3FFE02.8020001@bluewatersys.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+2009/6/22 Ryan Mallon <ryan@bluewatersys.com>:
 
-This appears to be a ppc thing, so let's cc that list.  Let's also cc
-the driver's author and other contributors.  Please cc these people on
-future versions of the patch also.
+> Out of curiosity: I'm not too clear on what makes a particular chip
+> hot-pluggable. I think technically the sst25l chip could be put onto a
+> hot-pluggable board or power domain. Can't most devices be made
+> hot-pluggable? Is the general rule to make devices non hot-pluggable if
+> most/all boards in the mainline do not allow it to be hot-plugged?
 
-On Mon, 15 Jun 2009 17:17:54 +0200 Richard R__jfors <richard.rojfors.ext@mocean-labs.com> wrote:
+I haven't seen any rule about it, but nominally the drivers support the
+configurations found in the kernel tree, so if some board physically
+existing and soon-to-run linux hotplugs chips like this, then have it
+__dev{init|exit} else __{init|exit} IMHO.
 
-> This patch splits xilinx_spi into three parts, an OF and a platform
-> driver and generic part.
-> 
-> The generic part now also works on X86 and also supports the Xilinx
-> SPI IP DS570
-> 
->
-> ...
->
-> +#ifndef CONFIG_PPC
-> +#define in_8(addr) ioread8(addr)
-> +#define in_be16(addr) ioread16(addr)
-> +#define in_be32(addr) ioread32(addr)
-> +
-> +#define out_8(addr, b) iowrite8(b, addr)
-> +#define out_be16(addr, w) iowrite16(w, addr)
-> +#define out_be32(addr, l) iowrite32(l, addr)
-> +#endif
+Of course you can design for all plausible use cases but it will pile up
+indefinitely. Personally I try to not design software for a hardware until it
+exists, and I like the IETF catch-phrase "rough consensus and running
+code" and this sort of fits that :-)
 
-Why do we need these?
-
-> +#define XSPI_WRITE8(xspi, offs, val) \
-> +	do { \
-> +		if (xspi->model == XILINX_SPI_MODEL_DS464) \
-> +			out_8(xspi->regs + offs, (val) & 0xff); \
-> +		else \
-> +			XSPI_WRITE32(xspi, offs, val); \
-> +	} while (0)
-> +
-> +#define XSPI_WRITE16(xspi, offs, val) \
-> +	do { \
-> +		if (xspi->model == XILINX_SPI_MODEL_DS464) \
-> +			out_be16(xspi->regs + offs, (val) & 0xffff); \
-> +		else \
-> +			XSPI_WRITE32(xspi, offs, val); \
-> +	} while (0)
-> +
-> +#define XSPI_WRITE32(xspi, offs, val) \
-> +	out_be32(xspi->regs + offs, val)
-> +
-> +#define XSPI_READ8(xspi, offs) \
-> +	(xspi->model == XILINX_SPI_MODEL_DS464) ? \
-> +		in_8(xspi->regs + offs) : XSPI_READ32(xspi, offs)
-> +
-> +#define XSPI_READ16(xspi, offs) \
-> +	(xspi->model == XILINX_SPI_MODEL_DS464) ? \
-> +	in_be16(xspi->regs + offs) : XSPI_READ32(xspi, offs)
-> +
-> +#define XSPI_READ32(xspi, offs) \
-> +	in_be32(xspi->regs + offs)
-
-I'm seeing no reason why these had to be implemented as macros. 
-They're ugly, add considerable code bloat and, because they evaluate
-their args multiple times they will fail if passed as expression with
-side-effects.
-
-I suggest that they be reimplemented as lower-case, uninlined C functions.
+Yours,
+Linus Walleij

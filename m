@@ -1,95 +1,36 @@
-From: "Lasandra Idyruza" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] All details in mail-body
-Date: Thu, 25 Jun 2009 05:54:15 +0900
-Message-ID: <NSTJGGZFKXXJT.AVBBBZROKSGLFLQ4546327906@[59.7.77.52]>
+From: Linus Walleij <linus.ml.walleij@gmail.com>
+Subject: Re: [PATCH] SST25L (non JEDEC) SPI Flash driver
+Date: Thu, 25 Jun 2009 00:43:47 +0200
+Message-ID: <63386a3d0906241543n16da1f0gc988738f9efd8782@mail.gmail.com>
+References: <4A3F017B.2010409@bluewatersys.com>
+	 <63386a3d0906220122x31d0b23fk7bd86145b719d9b5@mail.gmail.com>
+	 <4A3FFE02.8020001@bluewatersys.com>
+	 <63386a3d0906230004m66360f4fhbdc80c8e552a01d0@mail.gmail.com>
+	 <4A413F8F.6030500@bluewatersys.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1623936724519819925=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	linux-mtd@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net, mike@steroidmicros.com,
+	linux kernel <linux-kernel@vger.kernel.org>,
+	dedekind@infradead.org
+To: Ryan Mallon <ryan@bluewatersys.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754848AbZFXWnz@vger.kernel.org>
+In-Reply-To: <4A413F8F.6030500@bluewatersys.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1623936724519819925==
-Content-type: text/html; charset="UTF-8"
+2009/6/23 Ryan Mallon <ryan@bluewatersys.com>:
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<title>News of the Day</title>
-<style type="text/css">
-div p, table p { margin-bottom:1em !important; }
-body {margin: 12px 0 0 12px;}
-td {font-family: verdana, arial, sans-serif; font-size: 12px; line-height: 18px;}
-td#header-footer {font-size: 11px; color: #93E0E9; line-height: 12px;}
-td#header-footer strong {font-size: 11px; color: #FFFFFF; line-height: 12px;}
-a:link{font-family: arial, sans-serif;font-size: 12px; color: #00798E;text-decoration: underline;}
-a:hover{font-family: arial, sans-serif;font-size: 12px; color: #00798E;text-decoration: none;}
-a:visited{font-family: arial, sans-serif;font-size: 12px; color: #00798E;text-decoration: underline;}
-</style>
-<base target="_blank">
-</head>
-<body leftmargin="10" topmargin="10" rightmargin="10" bottommargin="0" style="background-color: rgb(4, 110, 132);" marginheight="10" marginwidth="10">
-<table width="100%" height="100%" bgcolor="#046e84" border="0"><tr><td align="center">
-<table bgcolor="#046e84" border="0" cellpadding="0" cellspacing="0" width="677"><tbody><tr>
-<td id="header-footer" align="center">To view this e-mail as a Web page, <a href="http://boynstj.rnekqetot.cn/?qdjqru=8bb543f36ee5b90c&tqlisylqvaf=5773229148" target="_blank"><b>
-<span style="font-family: verdana, arial, sans-serif; color:#FFFFFF; font-size:11px">go here.</span></b></a></td>
-</tr></tbody></table><br>
-<div id="border">
-<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="678">
-<tbody><tr>
-<td style="width: 12px;"></td>
-<td>&nbsp;</td></tr>
-<tr>
-<td><br></td>
-<td align="center"><a href="http://wordnstj.rnekqetot.cn/?anitqixyvi=8bb543f36ee5b90c&okqdytjgog=5773229148" style="font-family: verdana, arial, sans-serif; font-size:24px">
-<img src="http://engagednstj.rnekqetot.cn/spacer.gif" border="0" alt="Check OUT!"></a><br>
-<br></td>
-</tr></tbody></table>
-</div>
-<br>
-<table bgcolor="#046e84" border="0" cellpadding="0" cellspacing="0" width="678">
-<tbody><tr><td id="footer-info">
-<div align="center"><a href="http://lovednstj.rnekqetot.cn/?orozedoemqso=8bb543f36ee5b90c&tqpavej=5773229148" id="footer"><span style="font-family: verdana, arial, sans-serif; color:#FFFFFF; font-size:11px">Reprint Permission</span>
-</a> | <a href="http://mindnstj.rnekqetot.cn/?yhifyjlexadq=8bb543f36ee5b90c&zokuys=5773229148" id="footer"><span style="font-family: verdana, arial, sans-serif; color:#FFFFFF; font-size:11px">Advertise</span>
-</a> | <a href="http://isnstj.rnekqetot.cn/?mutiofjc=8bb543f36ee5b90c&ipyyzibaci=5773229148" id="footer"><span style="font-family: verdana, arial, sans-serif; color:#FFFFFF; font-size:11px">Advertiser Comments</span>
-</a> | <a href="http://livenstj.rnekqetot.cn/?ybqgjdikoexi=8bb543f36ee5b90c&epiewo=5773229148" id="footer"><span style="font-family: verdana, arial, sans-serif; color:#FFFFFF; font-size:11px">Subscribe to our Newsletter</span>
-</a> | <a href="http://shutnstj.rnekqetot.cn/?jbylyhaopas=8bb543f36ee5b90c&avajrjo=5773229148" id="footer"><span style="font-family: verdana, arial, sans-serif; color:#FFFFFF; font-size:11px">Newsletter FAQs</span></a><br><br></div>
-</td></tr><tr><td id="header-footer">
-<p style="color: rgb(128, 235, 247);">Copyright © 2009, The Sqyin
-Company. All rights reserved.<br>
-<br>If you must, unsubscribe details are below.<br><br>
-To unsubscribe, use my <a href="http://crynstj.rnekqetot.cn/?ujeausoeb=8bb543f36ee5b90c&gotibjlonesj=5773229148" target="_blank" id="footer">
-<span style="font-family: verdana, arial, sans-serif; color:#FFFFFF; font-size:11px">online form</span></a>.</p>
-</td></tr></tbody></table>
-</td></tr></table>
-<br><br>
-</body></html>
+> BTW, most of my other patches go via the ARM list, which uses the patch
+> system. Whats the procedure for most other lists, do patches just get
+> collected by the subsection maintainer when they are okay?
 
+That's the most typical procedure, however I think the SPI maintainer
+(David) has been busy with other things so I merged the PL022
+driver through the ARM tree instead. Another possibility is to send
+it off to Andrew Mortons tree I guess.
 
---===============1623936724519819925==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-
---===============1623936724519819925==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1623936724519819925==--
+Yours,
+Linus Walleij

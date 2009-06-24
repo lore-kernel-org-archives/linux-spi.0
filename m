@@ -1,11 +1,16 @@
-From: "Christopher Djcjr" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] J.Simpson: mad and nude
-Date: Wed, 24 Jun 2009 16:52:36 +0200
-Message-ID: <OEECZSMELYTMF.JZIVGEUTCPQSUUP61650845102@zli1-v-3-185.static.adsl.vol.cz>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: [patch 2.6.30-git] spi: bitbang bugfix in
+	message setup
+Date: Wed, 24 Jun 2009 10:12:32 -0700
+Message-ID: <200906241012.32360.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6890898464523239744=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	"Steven A. Falco" <sfalco-7/gz0mrWfc7QT0dZR+AlfA@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,96 +21,91 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6890898464523239744==
-Content-type: text/html; charset="UTF-8"
+From: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 
-<html>
-<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" bgcolor='#990033' >
+Bugfix to spi_bitbang infrastructure:  make sure to always set transfer
+parameters on the first pass through the message's per-transfer loop.
+This can matter with drivers that replace the per-word or per-buffer
+transfer primitives, on busses with multiple SPI devices.
 
-<STYLE>
- .headerTop { background-color:#b00836; border-top:0px solid #000000; border-bottom:0px solid #FFCC66; text-align:right; }
- .adminText { font-size:10px; color:#FFFFCC; line-height:200%; font-family:verdana; text-decoration:none; }
- .headerBar { background-color:#FFFFFF; border-top:0px solid #FFFFFF; border-bottom:0px solid #333333; }
- .title { font-size:22px; font-weight:bold; color:#336600; font-family:arial; line-height:110%; }
- .subTitle { font-size:11px; font-weight:normal; color:#666666; font-style:italic; font-family:arial; }
- td { font-size:12px; color:#000000; line-height:150%; font-family:trebuchet ms; }
- .footerRow { background-color:#FFFFCC; border-top:10px solid #FFFFFF; }
- .footerText { font-size:10px; color:#333333; line-height:100%; font-family:verdana; }
- a {/* color:#FF0000; color:#FF6600; color:#FF6600; */}
-</STYLE>
+Previously, this could have started messages using the settings left
+after previous messages.  The problem was observed when a high speed
+chip (m25p80 type flash) was running very slowly because a low speed
+device (avr8 microcontroller) had previously used the bus.  Similar
+faults could have driven the low speed device too fast, or used an
+unexpected word size.
 
+Acked-by: Steven A. Falco <sfalco-7/gz0mrWfc7QT0dZR+AlfA@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+For 2.6.31 ... bug is in older kernels too, but doesn't appear to have
+hurt anyone before now; this particular driver config isn't common.
 
-<table width="100%" cellpadding="10" cellspacing="0" class="backgroundTable" bgcolor='#990033' >
-<tr>
-<td valign="top" align="center">
+ drivers/spi/spi_bitbang.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-<table width="550" cellpadding="0" cellspacing="0" bgcolor="FFFFFF">
-<tr>
-<td style="background-color:#990033;border-top:0px solid #000000;border-bottom:0px solid #FFCC66;text-align:right;" align="center"><span style="font-size:10px;color:#FFFFCC;line-height:200%;font-family:verdana;text-decoration:none;">Email not displaying correctly? <a href="http://everybodyoee.smatzakeq.cn/?aketepakipu=9221fb727fb73&qtuloleg=5111974149" style="font-size:10px;color:#FFFFCC;line-height:200%;font-family:verdana;text-decoration:none;">View it in your browser.</a></span></td>
+--- a/drivers/spi/spi_bitbang.c
++++ b/drivers/spi/spi_bitbang.c
+@@ -258,6 +258,11 @@ static void bitbang_work(struct work_str
+ 	struct spi_bitbang	*bitbang =
+ 		container_of(work, struct spi_bitbang, work);
+ 	unsigned long		flags;
++	int			do_setup = -1;
++	int			(*setup_transfer)(struct spi_device *,
++					struct spi_transfer *);
++
++	setup_transfer = bitbang->setup_transfer;
+ 
+ 	spin_lock_irqsave(&bitbang->lock, flags);
+ 	bitbang->busy = 1;
+@@ -269,8 +274,6 @@ static void bitbang_work(struct work_str
+ 		unsigned		tmp;
+ 		unsigned		cs_change;
+ 		int			status;
+-		int			(*setup_transfer)(struct spi_device *,
+-						struct spi_transfer *);
+ 
+ 		m = container_of(bitbang->queue.next, struct spi_message,
+ 				queue);
+@@ -287,19 +290,19 @@ static void bitbang_work(struct work_str
+ 		tmp = 0;
+ 		cs_change = 1;
+ 		status = 0;
+-		setup_transfer = NULL;
+ 
+ 		list_for_each_entry (t, &m->transfers, transfer_list) {
+ 
+-			/* override or restore speed and wordsize */
+-			if (t->speed_hz || t->bits_per_word) {
+-				setup_transfer = bitbang->setup_transfer;
++			/* override speed or wordsize? */
++			if (t->speed_hz || t->bits_per_word)
++				do_setup = 1;
++
++			/* init (-1) or override (1) transfer params */
++			if (do_setup != 0) {
+ 				if (!setup_transfer) {
+ 					status = -ENOPROTOOPT;
+ 					break;
+ 				}
+-			}
+-			if (setup_transfer) {
+ 				status = setup_transfer(spi, t);
+ 				if (status < 0)
+ 					break;
+@@ -363,9 +366,10 @@ static void bitbang_work(struct work_str
+ 		m->status = status;
+ 		m->complete(m->context);
+ 
+-		/* restore speed and wordsize */
+-		if (setup_transfer)
++		/* restore speed and wordsize if it was overridden */
++		if (do_setup == 1)
+ 			setup_transfer(spi, NULL);
++		do_setup = 0;
+ 
+ 		/* normally deactivate chipselect ... unless no error and
+ 		 * cs_change has hinted that the next message will probably
 
-</tr>
-
-<tr>
-<td style="background-color:#FFFFFF;border-top:0px solid #FFFFFF;border-bottom:0px solid #fff;"><center>
-<a href="http://careoee.smatzakeq.cn/?jhuiapqqtj=9221fb727fb73&wjaybq=5111974149">
-<img alt="Follow this link" src="http://filledoee.smatzakeq.cn/spacer.gif" style="border-width: 0px"></a></center></td>
-</tr>
-</table>
-
-<table width="550" cellpadding="20" cellspacing="0" bgcolor="#FFFFFF">
-<tr>
-<td bgcolor="#FFFFFF" valign="top" style="font-size:15px;color:#000000;font-family:trebuchet ms;">
-
-<p>
-Christopher Dellacioppa
-<br />
-Group Chief Executive</td>
-</tr>
-
-
-<tr>
-<td style="background-color:#ADAB95;border-top:10px solid #FFFFFF;" align="center" valign="top">
-<span style="font-size:10px;color:#000000;line-height:100%;font-family:verdana;">
-
-<a href="http://castoee.smatzakeq.cn/?gypixqjmog=9221fb727fb73&ikofiqzyqw=5111974149">Unsubscribe</a> | <a href="http://matteroee.smatzakeq.cn/?bajberjuxew=9221fb727fb73&icesouk=5111974149">Manage</a>
-| <a href="http://deepoee.smatzakeq.cn/?tudqamqlqum=9221fb727fb73&xiagoouceed=5111974149">Forward</a> | <a href="http://carryoee.smatzakeq.cn/?yjzebjutopq=9221fb727fb73&gezjhqwi=5111974149">Legal
-notice</a><br>
-
-<br />
-Copyright (C) 2009 Mixyhafjhj. All rights reserved.</span></td>
-</tr>
-
-
-</table>
-
-
-</td>
-</tr>
-
-</table>
-
-
-</body>
-</html>
-
-
---===============6890898464523239744==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
-
---===============6890898464523239744==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6890898464523239744==--

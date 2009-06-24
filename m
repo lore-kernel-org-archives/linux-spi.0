@@ -1,13 +1,22 @@
-From: Mark Bishop <mark-Wri040CV1BU@public.gmane.org>
-Subject: Incoming SPI data using spidev (reads only two
-	bytes)
-Date: Tue, 23 Jun 2009 18:10:18 -0400
-Message-ID: <20090623181018.c2hiqtjlwgcw44ok@www.bish.net>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH 0/2] spi: add driver for SPI
+	controller of Intel Moorestown platform
+Date: Tue, 23 Jun 2009 19:09:54 -0700
+Message-ID: <200906231909.54345.david-b@pacbell.net>
+References: <20090615173845.59f3437b@feng-desktop>
+	<20090615101815.GB21428@tarshish>
+	<EADF0A36011179459010BDF5142A457501C9D987BD@pdsmsx502.ccr.corp.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	"alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org" <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
+To: "Tang, Feng" <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+ Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <EADF0A36011179459010BDF5142A457501C9D987BD-Uz4Je35TzWuiAffOGbnezLfspsVTdybXVpNB7YpNyf8@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,17 +28,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-I am sending 15 bytes on the spi bus and when I go to read the spifd  
-using ioctl I am only getting two bytes back.  I am loading up the  
-spi_ioc_transfer struct for the receive parameters.
+On Monday 15 June 2009, Tang, Feng wrote:
+> >>
+> >> User can use "dw_apb_ssi_db.pdf" from Synopsys as HW datasheet
+> >
+> >Wow. This is a big surprise for me. I was working on a driver of the Synopsys
+> >Designware SPI controller myself during the last year. I posted my work on
+> >this list and got reviews from Linus Walleij. No word from David Brownell yet.
+> >I'll look into your work and see whether we can merge the drivers.
+> 
+> Good idea, we can work together to make the driver better.
+> 
+> Regarding the driver name, it is implemented as a PCI device driver, also it has
+> some Moorestown specific stuff like DMA operation, DMA part of the driver only
+> works with the DMA controller on Moorestown, that's why I used such a name.
+> Anyway, we can discuss more about it.
 
-I'll put together an email with some code snippets tomorrow, but was  
-wondering if anyone knew of something to look for off the top of their  
-heads.
+Then the way to structure it is the classic "bus glue plus core".
 
-Ironically, when I do a transmit and then a receive it works (using  
-SPI_IOC_MESSAGE(2)).  Just a receive fails.
+Core would be a "designware_spi" (or, "dw_spi" by analogy to the
+"dw_dmac" DMA driver).  It would either expose private calls to
+bus glue -- PCI or APB, I guess -- or would be a platform_bus thing
+with the PCI glue creating a platform_bus child of a PCI node.
 
+- Dave
 
 
 ------------------------------------------------------------------------------

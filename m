@@ -1,159 +1,111 @@
-From: =?ISO-8859-15?Q?Richard_R=F6jfors?=
-	<richard.rojfors.ext@mocean-labs.com>
-Subject: Re: [RESEND][PATCH] SPI: xilinx_spi: Added platform driver and support
- for DS570
-Date: Wed, 24 Jun 2009 10:09:40 +0200
-Message-ID: <4A41DF44.4060705@mocean-labs.com>
-References: <4A366622.2050606@mocean-labs.com> <200906231237.54278.david-b@pacbell.net>
+From: "Christopher Djcjr" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] J.Simpson: mad and nude
+Date: Wed, 24 Jun 2009 16:52:36 +0200
+Message-ID: <OEECZSMELYTMF.JZIVGEUTCPQSUUP61650845102@zli1-v-3-185.static.adsl.vol.cz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1752375AbZFXIJ5@vger.kernel.org>
-In-Reply-To: <200906231237.54278.david-b@pacbell.net>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============6890898464523239744=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 09-06-23 21.37, David Brownell wrote:
-> On Monday 15 June 2009, Richard R=F6jfors wrote:
->> This patch splits xilinx_spi into three parts, an OF and a platform
->> driver and generic part.
->>
->> The generic part now also works on X86 and also supports the Xilinx
->> SPI IP DS570
->=20
-> Your Kconfig still mentions only DS464.
+--===============6890898464523239744==
+Content-type: text/html; charset="UTF-8"
 
-Correct, will update.
+<html>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" bgcolor='#990033' >
 
-
-> Is there any reason the platform driver shouldn't also build on x86?
-> Surely *any* system should be able to talk to an FPGA which exports
-> this register interface?
-
-The platform _builds_ on X86, previously the driver only built on PPC.
-
-That's one of my updates.
+<STYLE>
+ .headerTop { background-color:#b00836; border-top:0px solid #000000; border-bottom:0px solid #FFCC66; text-align:right; }
+ .adminText { font-size:10px; color:#FFFFCC; line-height:200%; font-family:verdana; text-decoration:none; }
+ .headerBar { background-color:#FFFFFF; border-top:0px solid #FFFFFF; border-bottom:0px solid #333333; }
+ .title { font-size:22px; font-weight:bold; color:#336600; font-family:arial; line-height:110%; }
+ .subTitle { font-size:11px; font-weight:normal; color:#666666; font-style:italic; font-family:arial; }
+ td { font-size:12px; color:#000000; line-height:150%; font-family:trebuchet ms; }
+ .footerRow { background-color:#FFFFCC; border-top:10px solid #FFFFFF; }
+ .footerText { font-size:10px; color:#333333; line-height:100%; font-family:verdana; }
+ a {/* color:#FF0000; color:#FF6600; color:#FF6600; */}
+</STYLE>
 
 
->> Signed-off-by: Richard R=F6jfors <richard.rojfors.ext@mocean-labs.co=
-m>
->=20
-> I'll second Andrew's comments.  Also, for my review, it'd be
-> better to split OF bits out from the rest ... but maybe that's
-> not practical given the previous xilinx_spi code.  At least
-> future patches will have a more-sane structure to build on.
+<table width="100%" cellpadding="10" cellspacing="0" class="backgroundTable" bgcolor='#990033' >
+<tr>
+<td valign="top" align="center">
 
-Ah I will generate three patches in the future. (generic, platform, of)=
-=2E
+<table width="550" cellpadding="0" cellspacing="0" bgcolor="FFFFFF">
+<tr>
+<td style="background-color:#990033;border-top:0px solid #000000;border-bottom:0px solid #FFCC66;text-align:right;" align="center"><span style="font-size:10px;color:#FFFFCC;line-height:200%;font-family:verdana;text-decoration:none;">Email not displaying correctly? <a href="http://everybodyoee.smatzakeq.cn/?aketepakipu=9221fb727fb73&qtuloleg=5111974149" style="font-size:10px;color:#FFFFCC;line-height:200%;font-family:verdana;text-decoration:none;">View it in your browser.</a></span></td>
 
+</tr>
 
->> +config SPI_XILINX_OF
->> +	tristate "Xilinx SPI controller OF device"
->> +	depends on SPI_XILINX && XILINX_VIRTEX
->> +	help
->> +	  This exposes the SPI controller IP from the Xilinx EDK.
->=20
-> If it's IP, then why is it dependent on VIRTEX?  Surely
-> the same IP should work on Spartan etc.  I'd think just
-> depending on something like OF should suffice.
+<tr>
+<td style="background-color:#FFFFFF;border-top:0px solid #FFFFFF;border-bottom:0px solid #fff;"><center>
+<a href="http://careoee.smatzakeq.cn/?jhuiapqqtj=9221fb727fb73&wjaybq=5111974149">
+<img alt="Follow this link" src="http://filledoee.smatzakeq.cn/spacer.gif" style="border-width: 0px"></a></center></td>
+</tr>
+</table>
 
-Actually I left the OF part with the same dependencies as the whole
-driver had before.
+<table width="550" cellpadding="20" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td bgcolor="#FFFFFF" valign="top" style="font-size:15px;color:#000000;font-family:trebuchet ms;">
 
-We run the IP on a spartan, so you are completely right :)
-
-Will update to OF-something.
+<p>
+Christopher Dellacioppa
+<br />
+Group Chief Executive</td>
+</tr>
 
 
->> +
->> +	  See the "OPB Serial Peripheral Interface (SPI) (v1.00e)"
->> +	  Product Specification document (DS464) for hardware details.
->> +
->> +config SPI_XILINX_PLTFM
->> +	tristate "Xilinx SPI controller platform device"
->> +	depends on SPI_XILINX
->=20
-> This should go first in the Kconfig, so that you don't goof up
-> the dependency display ... the OF bits depend on it.
+<tr>
+<td style="background-color:#ADAB95;border-top:10px solid #FFFFFF;" align="center" valign="top">
+<span style="font-size:10px;color:#000000;line-height:100%;font-family:verdana;">
 
-The OF parts only depend on SPI_XILINX, not SPI_XILINX_PLTFM. But
-I can change the order anyway(?)
+<a href="http://castoee.smatzakeq.cn/?gypixqjmog=9221fb727fb73&ikofiqzyqw=5111974149">Unsubscribe</a> | <a href="http://matteroee.smatzakeq.cn/?bajberjuxew=9221fb727fb73&icesouk=5111974149">Manage</a>
+| <a href="http://deepoee.smatzakeq.cn/?tudqamqlqum=9221fb727fb73&xiagoouceed=5111974149">Forward</a> | <a href="http://carryoee.smatzakeq.cn/?yjzebjutopq=9221fb727fb73&gezjhqwi=5111974149">Legal
+notice</a><br>
+
+<br />
+Copyright (C) 2009 Mixyhafjhj. All rights reserved.</span></td>
+</tr>
 
 
->> --- linux-2.6.30-rc7-spi/drivers/spi/xilinx_spi_of.c	(revision 0)
->> +++ linux-2.6.30-rc7-spi/drivers/spi/xilinx_spi_of.c	(revision 912)
->> @@ -0,0 +1,123 @@
->> 	...
->=20
->> +
->> +/* work with hotplug and coldplug */
->> +MODULE_ALIAS("platform:" XILINX_SPI_NAME);
->=20
-> This is clearly inappropriate for a file with an OpenFirmware driver.
-> For that matter, it's not needed with platform devices any more eithe=
-r;
-> so take it out of your platform driver code too.
-
-Oops, my mistake, will remove it.
+</table>
 
 
->> --- linux-2.6.30-rc7-spi/include/linux/spi/xilinx_spi.h	(revision 0)
->> +++ linux-2.6.30-rc7-spi/include/linux/spi/xilinx_spi.h	(revision 91=
-2)
->> @@ -0,0 +1,19 @@
->> +#ifndef __LINUX_SPI_XILINX_SPI_H
->> +#define __LINUX_SPI_XILINX_SPI_H
->> +
->> +#define XILINX_SPI_MODEL_DS464 0
->> +#define XILINX_SPI_MODEL_DS570 1
->> +
->> +/* SPI Controller IP */
->> +struct xspi_platform_data {
->> +	s16 bus_num;
->=20
-> Not needed on the platform_bus; pdev->id suffices.
-> This is specific to the OF glue, yes?
+</td>
+</tr>
 
-Good point, it can be removed, and pdev->id used instead.
+</table>
 
 
->> +	u16 num_chipselect;
->> +	u8 model;
->> +	u8 bits_per_word;
->=20
-> Synthesis data that's not explicitly visible in
-> the IP registers, I guess.
-
-Exactly, its built into the IP and can not be read.
+</body>
+</html>
 
 
->> +	/* devices to add to the bus when the host is up */
->> +	struct spi_board_info *devices;
->> +	u8 num_devices;
->=20
-> This is duplicating functionality in the SPI core code.
-> That's not really the way to fly.
+--===============6890898464523239744==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-I have discussed the same problem in the I2C list.
+------------------------------------------------------------------------------
 
-We have a PCIe device which is a MFD (multifunction device).
+--===============6890898464523239744==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Several MFD devices could be connected to a standard PC ->
-we don't know the bus numbers in advance, and there could be
-several PCIe devices connected. Which mean the we can not use
-spi_register_board_info.
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-We can not call spi_add_device from the MFD because when it's
-probed the drivers for the SPI bus might not be available.
-
-So the solution in the I2C case was to add this into the driver
-and if this tend to be a generic problem some generic solution might
-be implemented.
-
-So I would like to have the same thing in here.
-
---Richard
+--===============6890898464523239744==--

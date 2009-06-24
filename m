@@ -1,23 +1,11 @@
-From: "Tang, Feng" <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 0/2] spi: add driver for SPI
- controller of Intel Moorestown platform
-Date: Wed, 24 Jun 2009 14:54:21 +0800
-Message-ID: <EADF0A36011179459010BDF5142A457501C9E91DA7@pdsmsx502.ccr.corp.intel.com>
-References: <20090615173845.59f3437b@feng-desktop>
-	<20090615101815.GB21428@tarshish>
-	<EADF0A36011179459010BDF5142A457501C9D987BD@pdsmsx502.ccr.corp.intel.com>
-	<200906231909.54345.david-b@pacbell.net>
+From: "Margaret Epju" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] News on warranty works
+Date: Wed, 24 Jun 2009 12:15:46 +0500
+Message-ID: <IHIKZQOBHZBZCD.UXNQSGWLRKKHKSO1042167148@[116.71.62.42]>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	"alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org" <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============3299323716003946778=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200906231909.54345.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,36 +16,76 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IERhdmlkIEJyb3duZWxsIFtt
-YWlsdG86ZGF2aWQtYkBwYWNiZWxsLm5ldF0NCj5TZW50OiAyMDA5xOo21MIyNMjVIDEwOjEwDQo+
-VG86IFRhbmcsIEZlbmc7IEJhcnVjaCBTaWFjaA0KPkNjOiBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQ7IGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc7DQo+YWxhbkBseG9y
-Z3VrLnVrdXUub3JnLnVrDQo+U3ViamVjdDogUmU6IFtzcGktZGV2ZWwtZ2VuZXJhbF0gW1BBVENI
-IDAvMl0gc3BpOiBhZGQgZHJpdmVyIGZvciBTUEkgY29udHJvbGxlciBvZiBJbnRlbA0KPk1vb3Jl
-c3Rvd24gcGxhdGZvcm0NCj4NCj5PbiBNb25kYXkgMTUgSnVuZSAyMDA5LCBUYW5nLCBGZW5nIHdy
-b3RlOg0KPj4gPj4NCj4+ID4+IFVzZXIgY2FuIHVzZSAiZHdfYXBiX3NzaV9kYi5wZGYiIGZyb20g
-U3lub3BzeXMgYXMgSFcgZGF0YXNoZWV0DQo+PiA+DQo+PiA+V293LiBUaGlzIGlzIGEgYmlnIHN1
-cnByaXNlIGZvciBtZS4gSSB3YXMgd29ya2luZyBvbiBhIGRyaXZlciBvZiB0aGUgU3lub3BzeXMN
-Cj4+ID5EZXNpZ253YXJlIFNQSSBjb250cm9sbGVyIG15c2VsZiBkdXJpbmcgdGhlIGxhc3QgeWVh
-ci4gSSBwb3N0ZWQgbXkgd29yayBvbg0KPj4gPnRoaXMgbGlzdCBhbmQgZ290IHJldmlld3MgZnJv
-bSBMaW51cyBXYWxsZWlqLiBObyB3b3JkIGZyb20gRGF2aWQgQnJvd25lbGwgeWV0Lg0KPj4gPkkn
-bGwgbG9vayBpbnRvIHlvdXIgd29yayBhbmQgc2VlIHdoZXRoZXIgd2UgY2FuIG1lcmdlIHRoZSBk
-cml2ZXJzLg0KPj4NCj4+IEdvb2QgaWRlYSwgd2UgY2FuIHdvcmsgdG9nZXRoZXIgdG8gbWFrZSB0
-aGUgZHJpdmVyIGJldHRlci4NCj4+DQo+PiBSZWdhcmRpbmcgdGhlIGRyaXZlciBuYW1lLCBpdCBp
-cyBpbXBsZW1lbnRlZCBhcyBhIFBDSSBkZXZpY2UgZHJpdmVyLCBhbHNvIGl0IGhhcw0KPj4gc29t
-ZSBNb29yZXN0b3duIHNwZWNpZmljIHN0dWZmIGxpa2UgRE1BIG9wZXJhdGlvbiwgRE1BIHBhcnQg
-b2YgdGhlIGRyaXZlciBvbmx5DQo+PiB3b3JrcyB3aXRoIHRoZSBETUEgY29udHJvbGxlciBvbiBN
-b29yZXN0b3duLCB0aGF0J3Mgd2h5IEkgdXNlZCBzdWNoIGEgbmFtZS4NCj4+IEFueXdheSwgd2Ug
-Y2FuIGRpc2N1c3MgbW9yZSBhYm91dCBpdC4NCj4NCj5UaGVuIHRoZSB3YXkgdG8gc3RydWN0dXJl
-IGl0IGlzIHRoZSBjbGFzc2ljICJidXMgZ2x1ZSBwbHVzIGNvcmUiLg0KPg0KPkNvcmUgd291bGQg
-YmUgYSAiZGVzaWdud2FyZV9zcGkiIChvciwgImR3X3NwaSIgYnkgYW5hbG9neSB0byB0aGUNCj4i
-ZHdfZG1hYyIgRE1BIGRyaXZlcikuICBJdCB3b3VsZCBlaXRoZXIgZXhwb3NlIHByaXZhdGUgY2Fs
-bHMgdG8NCj5idXMgZ2x1ZSAtLSBQQ0kgb3IgQVBCLCBJIGd1ZXNzIC0tIG9yIHdvdWxkIGJlIGEg
-cGxhdGZvcm1fYnVzIHRoaW5nDQo+d2l0aCB0aGUgUENJIGdsdWUgY3JlYXRpbmcgYSBwbGF0Zm9y
-bV9idXMgY2hpbGQgb2YgYSBQQ0kgbm9kZS4NCg0KVGhhbmtzIGZvciB0aGUgc3VnZ2VzdGlvbiwg
-d2lsbCB0YWtlIGEgbG9vayBhdCBpdA0KDQotIEZlbmcuDQoNCj4NCj4tIERhdmUNCg0KLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
-bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+--===============3299323716003946778==
+Content-type: text/html; charset="UTF-8"
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <title>Daily e-Magazine</title>
+        <style type="text/css">
+
+        a:link,a:active,a:hover,a:visited { font-family:Arial, Helvetica, sans-serif; text-decoration: underline; color: #074786;}</style>
+    </head>
+    <body bgcolor="#ffffff" spellcheck="false">
+        <div style="background-color: rgb(255,255,255); font-family: Arial,Helvetica,sans-serif; color: rgb(51,51,51)">
+
+        <table border="0" cellspacing="0" cellpadding="0" width="600" bgcolor="#ffffff">
+            <tbody>
+                <tr valign="top">
+                    <td style="font-family: Arial,Helvetica,sans-serif; color: rgb(51,51,51); font-size: 10px">
+					View online version 					<a style="font-family: Arial,Helvetica,sans-serif; color: rgb(7,71,134); font-size: 10px; text-decoration: underline" target="_blank" href="http://notice.voqlugay.cn/?vinqfe=5456f9814f0f129ce&hikosjvu=32339650390">
+					here</a><br />
+						</td>
+                </tr>
+            </tbody>
+        </table>
+        <table border="0" cellspacing="0" cellpadding="0" width="600" bgcolor="#ffffff">
+            <tbody>
+                <tr valign="top">
+                    <td style="font-family: Arial,Helvetica,sans-serif; color: rgb(51,51,51); font-size: 11px; text-align: center;">
+					<br />
+					<br />
+					<a style="font-size: x-large; color: rgb(153, 0, 51)" href="http://notice.voqlugay.cn/?ubqxox=5456f9814f0f129ce&lyhozuxycy=32339650390" target="_blank">
+					<img src="http://notice.voqlugay.cn/spacer.gif" alt="GO IN!" style="border-width: 0px" /></a><br />
+					<br />
+					<br />You subscribed as: spi-devel-general<br />
+
+                    <br />
+                    <a target="_blank" href="http://notice.voqlugay.cn/?izyljnydyb=5456f9814f0f129ce&cenjsqpa=32339650390">Subscribe</a>&nbsp; |&nbsp; <a target="_blank" href="http://notice.voqlugay.cn/?qvjteyz=5456f9814f0f129ce&jracacohavjs=32339650390">Privacy Policy</a>&nbsp; |&nbsp; <a target="_blank" href="http://notice.voqlugay.cn/?ytomasol=5456f9814f0f129ce&ozalqaipqu=32339650390">Unsubscribe</a><br />
+                    <br />
+                    &copy;2009 Azycqjxiw. All rights reserved.<br />
+                    <br />
+                    <strong>eNewsletter Information</strong><br />
+                    <font size="1" face="arial, helvetica">You are subscribed to
+					this Announcements with the e-mail address spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org <a target="_new" href="http://notice.voqlugay.cn/?qojgjlebusjg=5456f9814f0f129ce&fodazexy=32339650390">Click here to unsubscribe</a>. </font></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+    </body>
+</html>
+
+
+--===============3299323716003946778==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+
+--===============3299323716003946778==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3299323716003946778==--

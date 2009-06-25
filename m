@@ -1,89 +1,82 @@
 From: Ryan Mallon <ryan@bluewatersys.com>
-Subject: Re: [spi-devel-general] [PATCH] SST25L (non JEDEC) SPI Flash driver
-Date: Thu, 25 Jun 2009 14:52:58 +1200
-Message-ID: <4A42E68A.3020702@bluewatersys.com>
-References: <4A3F017B.2010409@bluewatersys.com> <BD79186B4FD85F4B8E60E381CAEE1909019BE1CE@mi8nycmail19.Mi8.com> <4A42DB93.8020503@bluewatersys.com> <BD79186B4FD85F4B8E60E381CAEE1909019BE1D5@mi8nycmail19.Mi8.com>
+Subject: Re: [PATCH] SST25L (non JEDEC) SPI Flash driver
+Date: Thu, 25 Jun 2009 15:07:17 +1200
+Message-ID: <4A42E9E5.60802@bluewatersys.com>
+References: <4A42BDF3.10901@bluewatersys.com> <20090624194005.2f9574ce.akpm@linux-foundation.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	linux-mtd@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net, mike@steroidmicros.com,
+Cc: Linus Walleij <linus.ml.walleij@gmail.com>,
 	linux kernel <linux-kernel@vger.kernel.org>,
-	Linus Walleij <linus.ml.walleij@gmail.com>,
-	akpm@linux-foundation.org
-To: H Hartley Sweeten <hartleys@visionengravers.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756107AbZFYCus@vger.kernel.org>
-In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE1909019BE1D5@mi8nycmail19.Mi8.com>
+	spi-devel-general@lists.sourceforge.net,
+	David Woodhouse <dwmw2@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1757544AbZFYDFF@vger.kernel.org>
+In-Reply-To: <20090624194005.2f9574ce.akpm@linux-foundation.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-H Hartley Sweeten wrote:
-> On Wednesday, June 24, 2009 7:06 PM, Ryan Mallon wrote:
->> H Hartley Sweeten wrote:
->>> On Sunday, June 21, 2009 8:59 PM, Ryan Mallon wrote:
+Andrew Morton wrote:
+> On Thu, 25 Jun 2009 11:59:47 +1200 Ryan Mallon <ryan@bluewatersys.com> wrote:
+>
+>   
+>> Add support for the non JEDEC SST25L SPI Flash devices.
+>>
+>> Signed-off-by: Andre Renaud <andre@bluewatersys.com>
+>> Signed-off-by: Ryan Mallon <ryan@bluewatersys.com>
+>> Acked-by: Linus Walleij <linus.walleij@stericsson.com>
+>>     
+>
+> It looks OK to my inexperienced eye.
+>
+>   
+Cool, thanks for picking this up. The patch below fixes the two issues
+you pointed out. It will apply on top of
+mtd-sst25l-non-jedec-spi-flash-driver-update.patch
 
-> I think you could still support the block erase and chip erase internal
-> to the driver for performance.  Maybe something like the following?
-> 
-> static int sst25l_erase(struct mtd_info *mtd, struct erase_info *instr)
-> {
-...
-> 	if (instr->len == mtd->size) {
-> 		err = __sst25l_erase(flash, addr, SST25L_CMD_CHIP_ERASE);
-> 		if (err) {
-> 			mutex_unlock(&flash->lock);
-> 			instr->state = MTD_ERASE_FAILED;
-> 			dev_err(&flash->spi->dev, "Erase failed\n");
-> 			return err;
-> 		}
-> 	} else {
-> 		while (addr < end) {
-> 			u32 erasesize;
-> 
-> 			if (addr % block || addr + block > end) {
-> 				erasesize = sector;
-> 				err = __sst25l_erase(flash, addr,
-> 						SST25L_CMD_SECTOR_ERASE);
-> 			} else {
-> 				erasesize = block;
-> 				err = __sst25l_erase(flash, addr,
-> 						SST25L_CMD_BLOCK_ERASE);
-> 			}
-> 			if (err) {
-> 				mutex_unlock(&flash->lock);
-> 				instr->state = MTD_ERASE_FAILED;
-> 				dev_err(&flash->spi->dev, "Erase failed\n");
-> 				return err;
-> 			}
-> 
-> 			addr += erasesize;
-> 		}
-> 	}
+----
+Fix two issues in the SSTL25 driver:
+- Replace min() plus u32 cast with min_t
+- Fix memory leak on failed add_mtd_device
 
-> 
-> You would need to add sector_size and block_size to the ss25l_flash
-> and flash_info structs and modify flash_info as appropriate.  Then copy
-> those over during the probe and use sector_size for mtd.erasesize.
-> 
-> That way we get the 4K erase size but still get the performance increase
-> for block and chip erase.
+Signed-off-by: Ryan Mallon <ryan@bluewatersys.com>
+----
 
-We discussed this, but it adds additional complexity to what is
-otherwise quite a simple driver. The 4K sector erase will work in all
-cases, and the speed difference shouldn't be a massive problem. I would
-venture a guess that most people using the chips have reasonably
-non-volatile storage on them, and don't get erased very often. We use
-ours for the Bootloader and boot environment.
-
-~Ryan
-
--- 
-Bluewater Systems Ltd - ARM Technology Solution Centre
-
-       Ryan Mallon                              Unit 5, Amuri Park
-       Phone: +64 3 3779127                     404 Barbadoes St
-       Fax:   +64 3 3779135                     PO Box 13 889
-       Email: ryan@bluewatersys.com             Christchurch, 8013
-       Web:   http://www.bluewatersys.com       New Zealand
-       Freecall Australia  1800 148 751         USA 1800 261 2934
+diff --git a/drivers/mtd/devices/sst25l.c b/drivers/mtd/devices/sst25l.c
+index 777fadf..d235067 100644
+--- a/drivers/mtd/devices/sst25l.c
++++ b/drivers/mtd/devices/sst25l.c
+@@ -298,7 +298,7 @@ static int sst25l_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 		 * Write the remaining bytes using auto address
+ 		 * increment mode
+ 		 */
+-		bytes = min(mtd->writesize, (u32)(len - i));
++		bytes = min_t(u32, mtd->writesize, len - i);
+ 		for (j = 1; j < bytes; j++, copied++) {
+ 			ret = sst25l_wait_till_ready(flash);
+ 			if (ret)
+@@ -367,7 +367,7 @@ static int __init sst25l_probe(struct spi_device *spi)
+ 	struct flash_info *flash_info;
+ 	struct sst25l_flash *flash;
+ 	struct flash_platform_data *data;
+-	int i;
++	int ret, i;
+ 
+ 	flash_info = sst25l_match_device(spi);
+ 	if (!flash_info)
+@@ -457,7 +457,14 @@ static int __init sst25l_probe(struct spi_device *spi)
+ 			 data->nr_parts, data->name);
+ 	}
+ 
+-	return add_mtd_device(&flash->mtd) == 1 ? -ENODEV : 0;
++	ret = add_mtd_device(&flash->mtd);
++	if (ret == 1) {
++		kfree(flash);
++		dev_set_drvdata(&spi->dev, NULL);
++		return -ENODEV;
++	}
++	
++	return 0;
+ }
+ 
+ static int __exit sst25l_remove(struct spi_device *spi)

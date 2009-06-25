@@ -1,45 +1,63 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH] [drivers] [SPI] SPI_GPIO: add support for controllers with missing MISO pin
-Date: Thu, 25 Jun 2009 08:36:52 -0700
-Message-ID: <200906250836.53027.david-b@pacbell.net>
-References: <E4D3F24EA6C9E54F817833EAE0D912AC0228288531@bssrvexch01.BS.local> <200906231155.15339.david-b@pacbell.net> <000401c9f58e$c1369230$43a3b690$%szyprowski@samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "'LKML'" <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net, kyungmin.park@samsung.com
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1758255AbZFYPhg@vger.kernel.org>
-In-Reply-To: <000401c9f58e$c1369230$43a3b690$%szyprowski@samsung.com>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+From: Abuse DOLIST.NET <abuse-NS8fx+J0s0esTnJN9+BGXg@public.gmane.org>
+Subject: Liste rouge
+Date: Thu, 25 Jun 2009 19:18:00
+Message-ID: <0.1.0.70E.1C9F5B8F3C2BF06.0@pm57-203.emm20.net>
+Content-Type: multipart/mixed; boundary="===============7497196923211788669=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 25 June 2009, Marek Szyprowski wrote:
-> > Thing is, this raises two related issues: =A0(a) there's the
-> > analagous input-only case where MOSI isn't used, e.g. for
-> > some kinds of sensor; and (b) there's also "real 3-wire SPI"
-> > (spi->mode & SPI_3WIRE) where interactions are limited to
-> > half duplex and one pin switches roles between MOSI and MISO.
-> >=20
-> > Clearly this "output-only" case is a subset of SPI_3WIRE (the
-> > MOMI/SISO pin can't switch direction) so one more change I
-> > want to see is requiring that spi->mode flag be set in all
-> > SPI devices registered when this mode is used.
+--===============7497196923211788669==
+Content-Type: text/html; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
 
-Don't forget that change ...
+<html><head></head><body>
+<p><font face="Helvetica" size=2 Id=StyleFont2>Bonjour,</p>
+<p><font face="Helvetica" size=2 Id=StyleFont2>Vous avez demand&eacute; &agrave; inscrire votre adresse e-mail spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org sur la liste rouge Dolist.net, d&eacute;claration  CNIL n&deg;1276260.</p>
+<p><font face="Helvetica" size=2 Id=StyleFont2>Vous ne recevrez plus <b>aucune information</b> provenant de <b>tous les clients et annonceurs</b> de Dolist.net, m&ecirc;me s'il s'agit d'une information sollicit&eacute;e.</p>
+<p><font face="Helvetica" size=2 Id=StyleFont2>Pour valider votre inscription et ne plus recevoir aucun message de la part de nos clients et annonceurs, cliquez sur le lien ci-dessous.<br>
+<font face="Helvetica" size=2 Id=StyleFont2><a href="http://cgi.emm04.net/unsub_bl_done.asp?l=c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0LEExMDhGRTQ4&res=fr">http://cgi.emm04.net/unsub_bl_done.asp?l=c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0LEExMDhGRTQ4&res=fr</a><br>
+<font face="Helvetica" size=2 Id=StyleFont2>Dans le cas contraire, merci de ne pas tenir compte de ce message.</p>
+<p><font face="Helvetica" size=2 Id=StyleFont2>Dolist.net s'engage &agrave; d&eacute;sinscrire de fa&ccedil;on valide cette adresse e-mail de toutes les bases de contacts de nos clients/annonceurs.</p>
+<p><font face="Helvetica" size=2 Id=StyleFont2>--------------------------------------------------</p>
+<p><font face="Helvetica" size=2 Id=StyleFont2>Dolist.net est une plate forme d'e-mailing professionnelle, notre m&eacute;tier est de router les campagnes d'e-mail marketing de nos clients.</p>
+<p><font face="Helvetica" size=2 Id=StyleFont2>A aucun moment nous ne r&eacute;cup&eacute;rons, par quelque biais que ce soit, ni ne vendons, des adresses e-mails. Nous routons uniquement des messages sur les fichiers d'adresses fournis par nos clients.</p>
+<p><font face="Helvetica" size=2 Id=StyleFont2>Dolist ne saurait &ecirc;tre tenu pour responsable des m&eacute;thodes de collecte de donn&eacute;es employ&eacute;es par l'ensemble de ses clients et si vous pensez que l'un de nos clients ne respecte pas l'ensemble des obligations l&eacute;gales et r&eacute;glementaires applicables en la mati&egrave;re, merci de nous le faire savoir : &eacute;crivez &agrave; <a href="mailto:abuse-NS8fx+J0s0esTnJN9+BGXg@public.gmane.org">abuse-NS8fx+J0s0esTnJN9+BGXg@public.gmane.org</a> en transf&eacute;rant l'int&eacute;gralit&eacute; du message original que vous avez re&ccedil;u.</p>
+<font color="#888888">--<br>
+DOLIST E-mail Marketing Services<br>
+_________________________________________<br><br>
+DOLIST.NET, Internet E-mail List Server Technology<br>
+DOLIST information at : www.dolist.net<br>
+</body></html>
 
-=20
-> > If you have time, it would be good to generalize this patch
-> > to cover all of those 3-wire modes ... accept all half
-> > duplex calls, use gpio_direction_*() to switch direction.
-> >
-> > If not -- e.g. nothing to test that with! -- then I can
-> > understand, but please make your changes with that model
-> > in mind, and leave an appropriate FIXME in place.
->=20
-> I'm sorry, but I have only a hw board with missing MISO pin so I won'=
-t
-> be able to properly check/debug any other configurations.
 
-OK, then just stick to what you can test, and comment the issue.
+
+--===============7497196923211788669==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+
+--===============7497196923211788669==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7497196923211788669==--

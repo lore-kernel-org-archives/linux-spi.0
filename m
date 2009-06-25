@@ -1,82 +1,35 @@
-From: Ryan Mallon <ryan@bluewatersys.com>
+From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] SST25L (non JEDEC) SPI Flash driver
-Date: Thu, 25 Jun 2009 15:07:17 +1200
-Message-ID: <4A42E9E5.60802@bluewatersys.com>
-References: <4A42BDF3.10901@bluewatersys.com> <20090624194005.2f9574ce.akpm@linux-foundation.org>
+Date: Thu, 25 Jun 2009 09:49:43 +0200
+Message-ID: <63386a3d0906250049j2a2ebf08ka7e4d10b0c4f4a0d@mail.gmail.com>
+References: <4A3F017B.2010409@bluewatersys.com>
+	<BD79186B4FD85F4B8E60E381CAEE1909019BE1CE@mi8nycmail19.Mi8.com>
+	<4A42DB93.8020503@bluewatersys.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.ml.walleij@gmail.com>,
-	linux kernel <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net,
-	David Woodhouse <dwmw2@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1757544AbZFYDFF@vger.kernel.org>
-In-Reply-To: <20090624194005.2f9574ce.akpm@linux-foundation.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: linux kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
+To: Ryan Mallon <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4A42DB93.8020503-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Andrew Morton wrote:
-> On Thu, 25 Jun 2009 11:59:47 +1200 Ryan Mallon <ryan@bluewatersys.com> wrote:
->
->   
->> Add support for the non JEDEC SST25L SPI Flash devices.
->>
->> Signed-off-by: Andre Renaud <andre@bluewatersys.com>
->> Signed-off-by: Ryan Mallon <ryan@bluewatersys.com>
->> Acked-by: Linus Walleij <linus.walleij@stericsson.com>
->>     
->
-> It looks OK to my inexperienced eye.
->
->   
-Cool, thanks for picking this up. The patch below fixes the two issues
-you pointed out. It will apply on top of
-mtd-sst25l-non-jedec-spi-flash-driver-update.patch
+2009/6/25 Ryan Mallon <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>:
 
-----
-Fix two issues in the SSTL25 driver:
-- Replace min() plus u32 cast with min_t
-- Fix memory leak on failed add_mtd_device
+> Linus, is this still okay by you?
 
-Signed-off-by: Ryan Mallon <ryan@bluewatersys.com>
-----
+I'm a novice in MTD, sorry. But AFAICT yes.
 
-diff --git a/drivers/mtd/devices/sst25l.c b/drivers/mtd/devices/sst25l.c
-index 777fadf..d235067 100644
---- a/drivers/mtd/devices/sst25l.c
-+++ b/drivers/mtd/devices/sst25l.c
-@@ -298,7 +298,7 @@ static int sst25l_write(struct mtd_info *mtd, loff_t to, size_t len,
- 		 * Write the remaining bytes using auto address
- 		 * increment mode
- 		 */
--		bytes = min(mtd->writesize, (u32)(len - i));
-+		bytes = min_t(u32, mtd->writesize, len - i);
- 		for (j = 1; j < bytes; j++, copied++) {
- 			ret = sst25l_wait_till_ready(flash);
- 			if (ret)
-@@ -367,7 +367,7 @@ static int __init sst25l_probe(struct spi_device *spi)
- 	struct flash_info *flash_info;
- 	struct sst25l_flash *flash;
- 	struct flash_platform_data *data;
--	int i;
-+	int ret, i;
- 
- 	flash_info = sst25l_match_device(spi);
- 	if (!flash_info)
-@@ -457,7 +457,14 @@ static int __init sst25l_probe(struct spi_device *spi)
- 			 data->nr_parts, data->name);
- 	}
- 
--	return add_mtd_device(&flash->mtd) == 1 ? -ENODEV : 0;
-+	ret = add_mtd_device(&flash->mtd);
-+	if (ret == 1) {
-+		kfree(flash);
-+		dev_set_drvdata(&spi->dev, NULL);
-+		return -ENODEV;
-+	}
-+	
-+	return 0;
- }
- 
- static int __exit sst25l_remove(struct spi_device *spi)
+Linus Walleij
+
+------------------------------------------------------------------------------

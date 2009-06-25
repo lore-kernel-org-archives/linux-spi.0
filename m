@@ -1,135 +1,89 @@
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] SST25L (non JEDEC) SPI Flash driver
-Date: Wed, 24 Jun 2009 19:40:05 -0700
-Message-ID: <20090624194005.2f9574ce.akpm@linux-foundation.org>
-References: <4A42BDF3.10901@bluewatersys.com>
+From: Ryan Mallon <ryan@bluewatersys.com>
+Subject: Re: [spi-devel-general] [PATCH] SST25L (non JEDEC) SPI Flash driver
+Date: Thu, 25 Jun 2009 14:52:58 +1200
+Message-ID: <4A42E68A.3020702@bluewatersys.com>
+References: <4A3F017B.2010409@bluewatersys.com> <BD79186B4FD85F4B8E60E381CAEE1909019BE1CE@mi8nycmail19.Mi8.com> <4A42DB93.8020503@bluewatersys.com> <BD79186B4FD85F4B8E60E381CAEE1909019BE1D5@mi8nycmail19.Mi8.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.ml.walleij@gmail.com>,
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	linux-mtd@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net, mike@steroidmicros.com,
 	linux kernel <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net,
-	David Woodhouse <dwmw2@infradead.org>
-To: Ryan Mallon <ryan@bluewatersys.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753995AbZFYClD@vger.kernel.org>
-In-Reply-To: <4A42BDF3.10901@bluewatersys.com>
+	Linus Walleij <linus.ml.walleij@gmail.com>,
+	akpm@linux-foundation.org
+To: H Hartley Sweeten <hartleys@visionengravers.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756107AbZFYCus@vger.kernel.org>
+In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE1909019BE1D5@mi8nycmail19.Mi8.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 25 Jun 2009 11:59:47 +1200 Ryan Mallon <ryan@bluewatersys.com> wrote:
+H Hartley Sweeten wrote:
+> On Wednesday, June 24, 2009 7:06 PM, Ryan Mallon wrote:
+>> H Hartley Sweeten wrote:
+>>> On Sunday, June 21, 2009 8:59 PM, Ryan Mallon wrote:
 
-> Add support for the non JEDEC SST25L SPI Flash devices.
+> I think you could still support the block erase and chip erase internal
+> to the driver for performance.  Maybe something like the following?
 > 
-> Signed-off-by: Andre Renaud <andre@bluewatersys.com>
-> Signed-off-by: Ryan Mallon <ryan@bluewatersys.com>
-> Acked-by: Linus Walleij <linus.walleij@stericsson.com>
+> static int sst25l_erase(struct mtd_info *mtd, struct erase_info *instr)
+> {
+...
+> 	if (instr->len == mtd->size) {
+> 		err = __sst25l_erase(flash, addr, SST25L_CMD_CHIP_ERASE);
+> 		if (err) {
+> 			mutex_unlock(&flash->lock);
+> 			instr->state = MTD_ERASE_FAILED;
+> 			dev_err(&flash->spi->dev, "Erase failed\n");
+> 			return err;
+> 		}
+> 	} else {
+> 		while (addr < end) {
+> 			u32 erasesize;
+> 
+> 			if (addr % block || addr + block > end) {
+> 				erasesize = sector;
+> 				err = __sst25l_erase(flash, addr,
+> 						SST25L_CMD_SECTOR_ERASE);
+> 			} else {
+> 				erasesize = block;
+> 				err = __sst25l_erase(flash, addr,
+> 						SST25L_CMD_BLOCK_ERASE);
+> 			}
+> 			if (err) {
+> 				mutex_unlock(&flash->lock);
+> 				instr->state = MTD_ERASE_FAILED;
+> 				dev_err(&flash->spi->dev, "Erase failed\n");
+> 				return err;
+> 			}
+> 
+> 			addr += erasesize;
+> 		}
+> 	}
 
-It looks OK to my inexperienced eye.
+> 
+> You would need to add sector_size and block_size to the ss25l_flash
+> and flash_info structs and modify flash_info as appropriate.  Then copy
+> those over during the probe and use sector_size for mtd.erasesize.
+> 
+> That way we get the 4K erase size but still get the performance increase
+> for block and chip erase.
 
-> ...
->
-> +		bytes = min(mtd->writesize, (u32)(len - i));
+We discussed this, but it adds additional complexity to what is
+otherwise quite a simple driver. The 4K sector erase will work in all
+cases, and the speed difference shouldn't be a massive problem. I would
+venture a guess that most people using the chips have reasonably
+non-volatile storage on them, and don't get erased very often. We use
+ours for the Bootloader and boot environment.
 
-The conventional way of suppressing the warning is min_t().
+~Ryan
 
-> +static int __init sst25l_probe(struct spi_device *spi)
-> +{
-> +	struct flash_info *flash_info;
-> +	struct sst25l_flash *flash;
-> +	struct flash_platform_data *data;
-> +	int i;
-> +
-> +	flash_info = sst25l_match_device(spi);
-> +	if (!flash_info)
-> +		return -ENODEV;
-> +
-> +	flash = kzalloc(sizeof(struct sst25l_flash), GFP_KERNEL);
-> +	if (!flash)
-> +		return -ENOMEM;
-> +
-> +	flash->spi = spi;
-> +	mutex_init(&flash->lock);
-> +	dev_set_drvdata(&spi->dev, flash);
-> +
-> +	data = spi->dev.platform_data;
-> +	if (data && data->name)
-> +		flash->mtd.name = data->name;
-> +	else
-> +		flash->mtd.name = dev_name(&spi->dev);
-> +
-> +	flash->mtd.type		= MTD_NORFLASH;
-> +	flash->mtd.flags	= MTD_CAP_NORFLASH;
-> +	flash->mtd.erasesize	= flash_info->erase_size;
-> +	flash->mtd.writesize	= flash_info->page_size;
-> +	flash->mtd.size		= flash_info->page_size * flash_info->nr_pages;
-> +	flash->mtd.erase	= sst25l_erase;
-> +	flash->mtd.read		= sst25l_read;
-> +	flash->mtd.write 	= sst25l_write;
-> +
-> +	dev_info(&spi->dev, "%s (%lld Kbytes)\n", flash_info->name,
-> +		 (long long)flash->mtd.size >> 10);
-> +
-> +	DEBUG(MTD_DEBUG_LEVEL2,
-> +	      "mtd .name = %s, .size = 0x%llx (%lldMiB) "
-> +	      ".erasesize = 0x%.8x (%uKiB) .numeraseregions = %d\n",
-> +	      flash->mtd.name,
-> +	      (long long)flash->mtd.size, (long long)(flash->mtd.size >> 20),
-> +	      flash->mtd.erasesize, flash->mtd.erasesize / 1024,
-> +	      flash->mtd.numeraseregions);
-> +
-> +	if (flash->mtd.numeraseregions)
-> +		for (i = 0; i < flash->mtd.numeraseregions; i++)
-> +			DEBUG(MTD_DEBUG_LEVEL2,
-> +			      "mtd.eraseregions[%d] = { .offset = 0x%llx, "
-> +			      ".erasesize = 0x%.8x (%uKiB), "
-> +			      ".numblocks = %d }\n",
-> +			      i, (long long)flash->mtd.eraseregions[i].offset,
-> +			      flash->mtd.eraseregions[i].erasesize,
-> +			      flash->mtd.eraseregions[i].erasesize / 1024,
-> +			      flash->mtd.eraseregions[i].numblocks);
-> +
-> +	if (mtd_has_partitions()) {
-> +		struct mtd_partition *parts = NULL;
-> +		int nr_parts = 0;
-> +
-> +		if (mtd_has_cmdlinepart()) {
-> +			static const char *part_probes[] =
-> +				{"cmdlinepart", NULL};
-> +
-> +			nr_parts = parse_mtd_partitions(&flash->mtd,
-> +							part_probes,
-> +							&parts, 0);
-> +		}
-> +
-> +		if (nr_parts <= 0 && data && data->parts) {
-> +			parts = data->parts;
-> +			nr_parts = data->nr_parts;
-> +		}
-> +
-> +		if (nr_parts > 0) {
-> +			for (i = 0; i < nr_parts; i++) {
-> +				DEBUG(MTD_DEBUG_LEVEL2, "partitions[%d] = "
-> +				      "{.name = %s, .offset = 0x%llx, "
-> +				      ".size = 0x%llx (%lldKiB) }\n",
-> +				      i, parts[i].name,
-> +				      (long long)parts[i].offset,
-> +				      (long long)parts[i].size,
-> +				      (long long)(parts[i].size >> 10));
-> +			}
-> +
-> +			flash->partitioned = 1;
-> +			return add_mtd_partitions(&flash->mtd,
-> +						  parts, nr_parts);
-> +		}
-> +
-> +	} else if (data->nr_parts) {
-> +		dev_warn(&spi->dev, "ignoring %d default partitions on %s\n",
-> +			 data->nr_parts, data->name);
-> +	}
-> +
-> +	return add_mtd_device(&flash->mtd) == 1 ? -ENODEV : 0;
+-- 
+Bluewater Systems Ltd - ARM Technology Solution Centre
 
-If this returns -ENODEV, did we leak the memory at *flash?
-
-> +}
-> +
+       Ryan Mallon                              Unit 5, Amuri Park
+       Phone: +64 3 3779127                     404 Barbadoes St
+       Fax:   +64 3 3779135                     PO Box 13 889
+       Email: ryan@bluewatersys.com             Christchurch, 8013
+       Web:   http://www.bluewatersys.com       New Zealand
+       Freecall Australia  1800 148 751         USA 1800 261 2934

@@ -1,11 +1,16 @@
-From: Abuse DOLIST.NET <abuse-NS8fx+J0s0esTnJN9+BGXg@public.gmane.org>
-Subject: Liste rouge
-Date: Thu, 25 Jun 2009 19:18:00
-Message-ID: <0.1.0.70E.1C9F5B8F3C2BF06.0@pm57-203.emm20.net>
-Content-Type: multipart/mixed; boundary="===============7497196923211788669=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?ISO-8859-1?Q?Yves_Rocher_par_Capdecision?=
+	<service-clients-ok4vjHwRBfxWj0EZb7rXcA@public.gmane.org>
+Subject: =?iso-8859-1?q?Tout_le_site_en_r=E9duction_et?=
+	=?iso-8859-1?q?_frais_d=27envoi_gratuits?=
+Date: Fri, 26 Jun 2009 02:15:00 +0200
+Message-ID: <MTg0OS44MDAzMjUyLjEwNjQzODAzLjEyNDU4NTc2MDI=@Secc1f>
+Reply-To: =?ISO-8859-1?Q?Yves_Rocher_par_Capdecision?=
+	<service-clients-ok4vjHwRBfxWj0EZb7rXcA@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============2712328532782302131=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-OLQPsDUTOHWsTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,32 +21,162 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7497196923211788669==
-Content-Type: text/html; charset=iso-8859-1
+--===============2712328532782302131==
+Content-Type: text/html; Charset="ISO-8859-1"
 Content-Transfer-Encoding: 8bit
 
-<html><head></head><body>
-<p><font face="Helvetica" size=2 Id=StyleFont2>Bonjour,</p>
-<p><font face="Helvetica" size=2 Id=StyleFont2>Vous avez demand&eacute; &agrave; inscrire votre adresse e-mail spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org sur la liste rouge Dolist.net, d&eacute;claration  CNIL n&deg;1276260.</p>
-<p><font face="Helvetica" size=2 Id=StyleFont2>Vous ne recevrez plus <b>aucune information</b> provenant de <b>tous les clients et annonceurs</b> de Dolist.net, m&ecirc;me s'il s'agit d'une information sollicit&eacute;e.</p>
-<p><font face="Helvetica" size=2 Id=StyleFont2>Pour valider votre inscription et ne plus recevoir aucun message de la part de nos clients et annonceurs, cliquez sur le lien ci-dessous.<br>
-<font face="Helvetica" size=2 Id=StyleFont2><a href="http://cgi.emm04.net/unsub_bl_done.asp?l=c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0LEExMDhGRTQ4&res=fr">http://cgi.emm04.net/unsub_bl_done.asp?l=c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0LEExMDhGRTQ4&res=fr</a><br>
-<font face="Helvetica" size=2 Id=StyleFont2>Dans le cas contraire, merci de ne pas tenir compte de ce message.</p>
-<p><font face="Helvetica" size=2 Id=StyleFont2>Dolist.net s'engage &agrave; d&eacute;sinscrire de fa&ccedil;on valide cette adresse e-mail de toutes les bases de contacts de nos clients/annonceurs.</p>
-<p><font face="Helvetica" size=2 Id=StyleFont2>--------------------------------------------------</p>
-<p><font face="Helvetica" size=2 Id=StyleFont2>Dolist.net est une plate forme d'e-mailing professionnelle, notre m&eacute;tier est de router les campagnes d'e-mail marketing de nos clients.</p>
-<p><font face="Helvetica" size=2 Id=StyleFont2>A aucun moment nous ne r&eacute;cup&eacute;rons, par quelque biais que ce soit, ni ne vendons, des adresses e-mails. Nous routons uniquement des messages sur les fichiers d'adresses fournis par nos clients.</p>
-<p><font face="Helvetica" size=2 Id=StyleFont2>Dolist ne saurait &ecirc;tre tenu pour responsable des m&eacute;thodes de collecte de donn&eacute;es employ&eacute;es par l'ensemble de ses clients et si vous pensez que l'un de nos clients ne respecte pas l'ensemble des obligations l&eacute;gales et r&eacute;glementaires applicables en la mati&egrave;re, merci de nous le faire savoir : &eacute;crivez &agrave; <a href="mailto:abuse-NS8fx+J0s0esTnJN9+BGXg@public.gmane.org">abuse-NS8fx+J0s0esTnJN9+BGXg@public.gmane.org</a> en transf&eacute;rant l'int&eacute;gralit&eacute; du message original que vous avez re&ccedil;u.</p>
-<font color="#888888">--<br>
-DOLIST E-mail Marketing Services<br>
-_________________________________________<br><br>
-DOLIST.NET, Internet E-mail List Server Technology<br>
-DOLIST information at : www.dolist.net<br>
-</body></html>
+<font face="Helvetica" size=2 Id=StyleFont2><div class="online_link">Si ce message ne s'affiche pas correctement, <a href='http://url.starmail.fr/id.asp?l=57481-8003252-10643803-1849-0&l=1849-10643803-9547-5f65310a'>visualisez la version en ligne</a>.</div></font><br>
+<HTML>
+<HEAD>
+<TITLE>Yves Rocher par Capdecision -- Tout le site en r&eacute;duction et frais d'envoi gratuits</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<STYLE type="text/css">
+.Style1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 9px;
+}
+</STYLE>
+<STYLE type="text/css">
+<!--
+.a.Desinscription1:link {color:#336;}
+.a.Desinscription1:visited  {color:#336;}
+.a.Desinscription1:hover {color:#336;}
+.a.Desinscription1:active {color:#336;}
+.Desinscription1
+{
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  color: #666666;
+}
+-->
+</STYLE>
+</HEAD>
+<BODY text="#003366" link="#333366">
+<DIV align="center">
+<TABLE width="750" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD width="750" valign="top">
+<TABLE width="100%">
+<TR>
+<TD align="center" bgcolor="#F3EFE6">
+<TABLE width="700" border="0" align="center" cellpadding="0" cellspacing="0">
+<TR>
+<TD>
+<TABLE width="696" border="0" align="left" cellpadding="0" cellspacing="0">
+<TR>
+<TD width="696" height="64">
+<P><FONT face="verdana" size="2">&bull; Avec <FONT color="#008151"><STRONG>Yves Rocher</STRONG></FONT> ce mois-ci : Frais d'envoi gratuits d&egrave;s 10e d'achat, <A href="http://url.starmail.fr/id.asp?l=57480-8003252-10643803-1849-0" target="_blank">Cliquez-ici</A><BR>
+&bull; Vos 8 r&eacute;ductions sur TOUT le site, m&ecirc;me les nouveaut&eacute;s, <A href="http://url.starmail.fr/id.asp?l=57474-8003252-10643803-1849-0" target="_blank">Cliquez-ici</A><BR>
+&bull; Exceptionnel, votre cadeau au choix parmi 8, <A href="http://url.starmail.fr/id.asp?l=57475-8003252-10643803-1849-0" target="_blank">Cliquez-ici</A><BR>
+&bull; Voir tous les bonsplans beaut&eacute; du mois, <A href="http://url.starmail.fr/id.asp?l=57476-8003252-10643803-1849-0" target="_blank">Cliquez-ici</A></FONT><FONT face="verdana" size="2"><BR></FONT></P>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.starmail.fr/id.asp?l=57480-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_01.jpg" alt="" width="181" height="83" border="0"></A></TD>
+<TD><A href="http://url.starmail.fr/id.asp?l=57480-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_02.jpg" alt="" width="519" height="83" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.starmail.fr/id.asp?l=57474-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_03.jpg" alt="" width="236" height="208" border="0"></A></TD>
+<TD><A href="http://url.starmail.fr/id.asp?l=57474-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_04.jpg" alt="" width="464" height="208" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.starmail.fr/id.asp?l=57474-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_05.jpg" alt="" width="236" height="145" border="0"></A></TD>
+<TD><A href="http://url.starmail.fr/id.asp?l=57474-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_06.jpg" alt="" width="464" height="145" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.starmail.fr/id.asp?l=57477-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_07.jpg" alt="" width="251" height="266" border="0"></A></TD>
+<TD><A href="http://url.starmail.fr/id.asp?l=57478-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_08.jpg" alt="" width="216" height="266" border="0"></A></TD>
+<TD><A href="http://url.starmail.fr/id.asp?l=57479-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_09.jpg" alt="" width="233" height="266" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.starmail.fr/id.asp?l=57475-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_10.jpg" alt="" width="220" height="218" border="0"></A></TD>
+<TD><A href="http://url.starmail.fr/id.asp?l=57475-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_11.jpg" alt="" width="480" height="218" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.starmail.fr/id.asp?l=57476-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_12.jpg" alt="" width="700" height="34" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+<TABLE width="700" border="0" cellspacing="0" cellpadding="0">
+<TR>
+<TD><A href="http://url.starmail.fr/id.asp?l=57476-8003252-10643803-1849-0" target="_blank"><IMG src="http://static.bonzaidev.com/yvesrocher/news0906/images/NL_pros0609_1_13.jpg" alt="" width="700" height="71" border="0"></A></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<IMG src="http://www.bonzaifeed.fr/destiny/open/1/71/0/tr.gif" width="1" height="1" border="0"></TD>
+</TR>
+<TR>
+<TD colspan="3">
+<DIV align="center">
+<P class="formulairecomments"><FONT size="1" face="Arial, Helvetica, sans-serif">&copy; CAPD&Eacute;CISION, Tous droits r&eacute;serv&eacute;s<BR>
+Conform&eacute;ment &agrave; l'article 34 de la loi Informatique et Libert&eacute;<BR>
+du 6 janvier 1978, vous disposez d'un droit d'acc&egrave;s, de modification, de rectification et de suppression<BR>
+des donn&eacute;es vous concernant.&nbsp;&nbsp;&nbsp; D&eacute;claration CNIL n&deg;1291376</FONT></P>
+</DIV>
+</TD>
+</TR>
+</TABLE>
+</DIV>
+<TABLE width="750" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<TR>
+<TD align="center"><BR>
+<SPAN class="Desinscription1">Vous recevez cet e-mail car vous &ecirc;tes r&eacute;f&eacute;renc&eacute; sur la base de donn&eacute;es de notre partenaire CAP DECISION.<BR>
+Si vous souhaitez vous d&eacute;sabonner, merci d'utiliser <A class='Desinscription1' href='http://url.starmail.fr/id.asp?l=57473-8003252-10643803-1849-0&id=10643803-1849-8003252-5f65310a&res=fr'>le lien suivant.</A></SPAN></TD>
+</TR>
+</TABLE>
+
+<img src='http://url.starmail.fr/op-8003252-10643803-1849-62152,75-0.gif' width=5 height=1 border=0 alt=''/>
+</BODY>
+</HTML>
 
 
 
---===============7497196923211788669==
+
+--===============2712328532782302131==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -49,7 +184,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============7497196923211788669==
+--===============2712328532782302131==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -60,4 +195,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7497196923211788669==--
+--===============2712328532782302131==--

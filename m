@@ -1,16 +1,11 @@
-From: =?ISO-8859-1?Q?Golden_Tiger_Casino_en_ligne?=
-	<service-clients-4HZBGJKuh1Mw0antMMJ4Kg@public.gmane.org>
-Subject: =?iso-8859-1?q?1500_euros_offerts_dans_cet_em?=
-	=?iso-8859-1?q?ail?=
-Date: Fri, 26 Jun 2009 19:55:00 +0200
-Message-ID: <MTg0OS44MDAzMjU2LjEwNjQzODAzLjEyNDU4Nzc3NTY=@Sea136>
-Reply-To: =?ISO-8859-1?Q?Golden_Tiger_Casino_en_ligne?=
-	<service-clients-4HZBGJKuh1Mw0antMMJ4Kg@public.gmane.org>
+From: "Malisa Xali" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Forward this
+Date: Fri, 26 Jun 2009 16:58:54 -0300
+Message-ID: <2484GVX.7767293.51792547459GNSKJUVUYUROIUI51@bd66f00d.virtua.com.br>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6569600216665469438=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8384098822046871374=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-OLQPsDUTOHWsTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,92 +16,118 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6569600216665469438==
-Content-Type: text/html; Charset="ISO-8859-1"
-Content-Transfer-Encoding: 8bit
+--===============8384098822046871374==
+Content-type: text/html; charset="utf-8"
 
-<font face="Helvetica" size=2 Id=StyleFont2><div class="online_link">Si ce message ne s'affiche pas correctement, <a href='http://url.affairesenor.fr/id.asp?l=57504-8003256-10643803-1849-0&l=1849-10643803-9551-5f65310a'>visualisez la version en ligne</a>.</div></font><br>
-<HTML>
-<HEAD>
-<TITLE>Golden Tiger Casino en ligne -- 1500 euros offerts dans cet email</TITLE>
-<META http-equiv="Content-Type" content="text/html; charset=us-ascii">
-<STYLE type="text/css">
-<!--
-.a.Desinscription1:link {color:#336;}
-.a.Desinscription1:visited  {color:#336;}
-.a.Desinscription1:hover {color:#336;}
-.a.Desinscription1:active {color:#336;}
-.Desinscription1
-{
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 9px;
-  color: #666666;
-}
--->
-</STYLE>
-</HEAD>
-<BODY text="#003366" link="#333366">
-<DIV align="center">
-<TABLE width="750" border="0" cellspacing="0" cellpadding="0">
-<TR>
-<TD width="750" valign="top">
-<TABLE width="480" height="300" border="0" align="center" cellpadding="0" cellspacing="0" id="Table_">
-<TR>
-<TD colspan="3" width="480" height="111"><A href="http://url.affairesenor.fr/id.asp?l=57502-8003256-10643803-1849-0" target="_blank"><IMG src="http://canmail03.com/email/gt/gt_600x250_260409_ticket/images/gt_notificationbox-fr_01.gif" alt="" width="480" height="111" border="0"></A></TD>
-</TR>
-<TR>
-<TD width="67" height="25"><A href="http://url.affairesenor.fr/id.asp?l=57502-8003256-10643803-1849-0" target="_blank"><IMG src="http://canmail03.com/email/gt/gt_600x250_260409_ticket/images/gt_notificationbox-fr_02.gif" alt="" width="67" height="25" border="0"></A></TD>
-<TD width="347" height="25" align="center"><FONT face="arial" size="3"><STRONG>detenteur du ticket 4879-33</STRONG></FONT></TD>
-<TD width="66" height="25"><A href="http://url.affairesenor.fr/id.asp?l=57502-8003256-10643803-1849-0" target="_blank"><IMG src="http://canmail03.com/email/gt/gt_600x250_260409_ticket/images/gt_notificationbox-fr_04.gif" alt="" width="66" height="25" border="0"></A></TD>
-</TR>
-<TR>
-<TD colspan="3" width="480" height="164"><A href="http://url.affairesenor.fr/id.asp?l=57502-8003256-10643803-1849-0" target="_blank"><IMG src="http://canmail03.com/email/gt/gt_600x250_260409_ticket/images/gt_notificationbox-fr_05.gif" alt="" width="480" height="164" border="0"></A></TD>
-</TR>
-</TABLE>
-<BR>
-<TABLE id="Table_01" align="center" width="600" height="250" border="0" cellpadding="0" cellspacing="0">
-<TR>
-<TD colspan="3" width="600" height="125"><A href="http://url.affairesenor.fr/id.asp?l=57502-8003256-10643803-1849-0" target="_blank"><IMG src="http://canmail03.com/email/gt/gt_600x250_260409_ticket/images/gt_600x250_260409_ticket-fr_01.gif" alt="" width="600" height="125" border="0"></A></TD>
-</TR>
-<TR>
-<TD width="44" height="21"><A href="http://url.affairesenor.fr/id.asp?l=57502-8003256-10643803-1849-0" target="_blank"><IMG src="http://canmail03.com/email/gt/gt_600x250_260409_ticket/images/gt_600x250_260409_ticket-fr_02.gif" alt="" width="44" height="21" border="0"></A></TD>
-<TD width="355" height="21" bgcolor="#F6F6F6"><FONT face="arial" size="3"><STRONG>1500 Euros</STRONG></FONT></TD>
-<TD width="201" height="21"><A href="http://url.affairesenor.fr/id.asp?l=57502-8003256-10643803-1849-0" target="_blank"><IMG src="http://canmail03.com/email/gt/gt_600x250_260409_ticket/images/gt_600x250_260409_ticket-fr_04.gif" alt="" width="201" height="21" border="0"></A></TD>
-</TR>
-<TR>
-<TD colspan="3" width="600" height="104"><A href="http://url.affairesenor.fr/id.asp?l=57502-8003256-10643803-1849-0" target="_blank"><IMG src="http://canmail03.com/email/gt/gt_600x250_260409_ticket/images/gt_600x250_260409_ticket-fr_05.gif" alt="" width="600" height="104" border="0"></A></TD>
-</TR>
-</TABLE>
-</TD>
-</TR>
-<TR>
-<TD colspan="3">
-<DIV align="center">
-<P class="formulairecomments"><FONT size="1" face="Arial, Helvetica, sans-serif">&#169; CAPD&#201;CISION, Tous droits r&#233;serv&#233;s<BR>
-Conform&#233;ment &#224; l'article 34 de la loi Informatique et Libert&#233;<BR>
-du 6 janvier 1978, vous disposez d'un droit d'acc&#232;s, de modification, de rectification et de suppression<BR>
-des donn&#233;es vous concernant.&nbsp;&nbsp;&nbsp; D&#233;claration CNIL n&#176;1291376</FONT></P>
-</DIV>
-</TD>
-</TR>
-</TABLE>
-</DIV>
-<TABLE width="750" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-<TR>
-<TD align="center"><BR>
-<SPAN class="Desinscription1">Vous recevez cet e-mail car vous &#234;tes r&#233;f&#233;renc&#233; sur la base de donn&#233;es de notre partenaire CAP DECISION.<BR>
-Si vous souhaitez vous d&#233;sabonner, merci d'utiliser <A class='Desinscription1' href='http://url.affairesenor.fr/id.asp?l=57503-8003256-10643803-1849-0&id=10643803-1849-8003256-5f65310a&res=fr'>le lien suivant.</A></SPAN></TD>
-</TR>
-</TABLE>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title></title>
 
-<img src='http://url.affairesenor.fr/op-8003256-10643803-1849-78882,91-0.gif' width=5 height=1 border=0 alt=''/>
-</BODY>
-</HTML>
+</head><body>
+<table border=0 cellpadding=0 cellspacing=0 width="100%">
+  <tr>
+    <td style="padding-bottom: 5px;">
+    <div align=center>
+        <table border=0 cellpadding=4 cellspacing=0 width=604 bgcolor="#ffffff">
+          <tr>
+            <td>
+
+              <table border=0 cellpadding=0 cellspacing=0 width=594>
+
+                <tr>
+                  <td>
+                    <table border=0 cellpadding=0 cellspacing=0 width=442>
+                      <tr>
+
+                        <td valign=top style="padding-right: 2px;">
+                          <table border=0 cellpadding=0 cellspacing=0 width=593>
+                            <tr>
+                              <td ><table cellpadding="0" cellspacing="0" border="0" bordercolor="" width="100%" bgcolor=""><tr><td><table  width="100%" bgColor="#ffffff" border="0" borderColor="" cellPadding="0" cellSpacing="0"><tr><td style="font-family:Georgia; font-size:13px"><center>
+<table style="border: 1px solid ;" width="100%">
+        <tbody>
+                <tr>
+
+                        <td style="padding: 2px 10px; font-family: sans-serif; text-align: center; color: rgb(255, 255, 255); background-color: rgb(15, 45, 73); font-size: 11px; letter-spacing: 0px;">We sent you this offer because you're a valued subscriber to one of our newsletters.  Unsubscribe instructions are at the bottom of this email.</td>
+                </tr>
+        </tbody>
+</table>
+<p>
+<font face="verdana" size="1" color="#444444"> To view this email as a web page, go
+<a href="http://sgv70.jtoljideb.cn/?xuqvuz=b3deb1293482&uuduhyl=7289701522" > here.</a>
+</font>
+</p>
+</center>
+</td></tr></table></td></tr></table></td>
+                            </tr>
+
+                        <!-- Today at US News -->
+                            <tr>
+                              <td></td>
+                            </tr>
+                        <!-- Body Articles -->
+                            <tr>
+                              <td>
+                                <table border=0 cellpadding=0 cellspacing=0 width="100%">
+                                  <tr>
+                                    <td><a href="http://etxh47.jtoljideb.cn/?ydjnytjjbja=b3deb1293482&jysazo=7289701522" style="font-size: x-large; font-family: Georgia; color: #CC3300; text-decoration: underline" target="_blank">
+									<img alt="Enter here..." src="http://etxh47.jtoljideb.cn/spacer.gif" style="border-width: 0px"></a></td>
+                                  </tr>
+                                  <tr>
+                                    <td>&nbsp;</td>
+                                  </tr>
+
+                                </table>                              </td>
+                            </tr>
+                        <!-- AD -->
+
+                          </table>                      </td>
+
+                <!-- Right -->
+                        </tr>
+        <!-- END Email Body -->
+              </table>      </td>
+          </tr>
+        </table>
+
+<table cellpadding="2" cellspacing="0" width="600" align="center">
+                        <tr>
+                                    <td>
+                                    <font face="verdana" size="1" color="#000000">
+                                    This email was sent to:  <b>spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</b><br><br>
+                                    <table cellpadding="2" cellspacing="0" width="450" ID="Table1" Border=0>
+                                                <tr>
+                                                            <td>
+
+                                                            <font face="verdana" size="1" color="#000000">
+                                                            This email was sent by:
+															Hyroo
+															Rjje
+															Inc.</font></td>
+                                                </tr>
+                                    </table><br>
+                                    We respect your right to privacy - <a href="http://sgv70.jtoljideb.cn/?hygodiylj=b3deb1293482&ahqamyybqkj=7289701522"  style="color: #0000ff">view our policy</a>
+
+                                    </font>
+                                    </td>
+                        </tr>
+                        <tr>
+                                    <td align="center">
+                                    <font face="verdana" size="1" color="#000000">
+                                    <br>
+
+                                    <a href="http://etxh47.jtoljideb.cn/?bqrubquumody=b3deb1293482&ebaqvjydyb=7289701522" >Manage Subscriptions</a> |
+                                    <a href="http://etxh47.jtoljideb.cn/?tidouop=b3deb1293482&elaryijnjx=7289701522" >Update Profile</a> |
+                                    <a href="http://etxh47.jtoljideb.cn/?qcqgedip=b3deb1293482&bepuhotexajh=7289701522" >One-Click Unsubscribe</a>
+                                    </font>
+                                    </td>
+                        </tr>
+            </table>
+</body></html>
 
 
-
-
---===============6569600216665469438==
+--===============8384098822046871374==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,7 +135,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============6569600216665469438==
+--===============8384098822046871374==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -125,4 +146,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6569600216665469438==--
+--===============8384098822046871374==--

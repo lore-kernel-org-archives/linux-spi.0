@@ -1,10 +1,12 @@
-From: Arkadiy Martinovich <arkadiymartinovich-Dku6nP6V4PR95WBC0hcdIw@public.gmane.org>
-Subject: [SPAM] –£—á–∏—Å—å —Ç–∞–∫, —Å–ª–æ–≤–Ω–æ —Ç—ã –µ—â–µ –Ω–µ –¥–æ—Å—Ç–∏–≥ —Å–≤–æ–µ–π —Ü–µ–ª–∏
-Date: Fri, 26 Jun 2009 07:56:17 +0400
-Message-ID: <5930316286.20090626075617@sharma-kiev.net>
+From: Voyage Prive <email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org>
+Subject: =?iso-8859-15?q?Nouvelles_offres_jusqu=27=E0_?=
+ =?iso-8859-15?q?-67=25_=3A_Croisi=E8res=2C_Turquie=2C_Barcelone?=
+Date: Fri, 26 Jun 2009 06:35:57 +0200 (CEST)
+Message-ID: <1006691824261.1102960397.1245990957947@enginex1.emv2.com>
+Reply-To: Voyage Prive <voyageprive-WkL/9FkmuN+ACwpp83mF1A@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6503422555640442453=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1287322009144302020=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,192 +18,840 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6503422555640442453==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+--===============1287322009144302020==
+Content-Type: multipart/alternative; boundary=11029603971006691824261
 
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBYSFRNTCAxLjAgVHJhbnNpdGlv
-bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL3hodG1sMS9EVEQveGh0bWwxLXRyYW5z
-aXRpb25hbC5kdGQiPg0KPGh0bWwgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0
-bWwiPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9
-InRleHQvaHRtbDsgY2hhcnNldD13aW5kb3dzLTEyNTEiIC8+DQo8dGl0bGU+PC90aXRsZT4N
-CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQpib2R5LHRkLHRoIHsNCglmb250LWZh
-bWlseTogVGltZXMgTmV3IFJvbWFuLCBUaW1lcywgc2VyaWY7DQp9DQouc3R5bGUxIHtjb2xv
-cjogIzk5MDAwMH0NCmJvZHkgew0KCWJhY2tncm91bmQtY29sb3I6ICNGRkZGQ0M7DQp9DQou
-c3R5bGUyIHtmb250LXNpemU6IDE3cHh9DQouc3R5bGUzIHtmb250LXNpemU6IDIycHh9DQou
-c3R5bGU0IHtmb250LXNpemU6IDE5cHh9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9k
-eT4NCjx0YWJsZSB3aWR0aD0iODAwIiBib3JkZXI9IjEiIGFsaWduPSJjZW50ZXIiIGNlbGxz
-cGFjaW5nPSIwIj4NCiAgPHRyPg0KICAgIDx0ZCB3aWR0aD0iNjIwNCIgY2xhc3M9InN0eWxl
-MiI+PGRpdiBhbGlnbj0iY2VudGVyIiBjbGFzcz0ic3R5bGUzIj48c3BhbiBjbGFzcz0ic3R5
-bGUxIj7Py8DNIJYgw9BB1MjKICDMxdAwz1DI31TIySAgIO/uIOHo5+3l8SDu4fDg52/iYe3o
-/jxiciAvPg0KICAgIM3AICDI3svcIDIwMDkuPC9kaXY+PC90ZD4NCiAgPC90cj4NCiAgPHRy
-IGJnY29sb3I9IiNGRkZGRkYiPg0KICAgIDx0ZD48dGFibGUgd2lkdGg9IjEwMCUiIGJvcmRl
-cj0iMCIgY2VsbHNwYWNpbmc9IjUiPg0KICAgICAgPHRyPg0KICAgICAgICA8dGQgd2lkdGg9
-IjEwMCI+PGRpdiBhbGlnbj0iY2VudGVyIiBjbGFzcz0ic3R5bGU0Ij48YSBocmVmPSJodHRw
-Oi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvaWp1
-bF8yMDA5L21hcmtldGluZ191c2x1Z19wcm9kYXZheWFfX25lenJpbW9lXy5odG0iIHRpdGxl
-PSLM4PDq5fLo7eMg8/Hr8+MsIM/w7uTg4uD/oCDt5efw6Ozu5S4uLjogIj4yIOj+6/88L2E+
-PC9kaXY+PC90ZD4NCiAgICAgICAgPHRkIHdpZHRoPSI5OCUiPjxhIGhyZWY9Imh0dHA6Ly93
-d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9panVsXzIw
-MDkvbWFya2V0aW5nX3VzbHVnX3Byb2RhdmF5YV9fbmV6cmltb2VfLmh0bSIgdGl0bGU9Iszg
-8Orl8ujt4yDz8evz4ywgz/Du5ODi4P+gIO3l5/Do7O7lLi4uOiAiIGNsYXNzPSJzdHlsZTQi
-PszgcOpl8ujt4yDz8evz4ywgz/Bv5ODi4P+g7WXncOjs7uUuLi46PC9hPjwvdGQ+DQogICAg
-ICA8L3RyPg0KICAgIDwvdGFibGU+PC90ZD4NCiAgPC90cj4NCiAgPHRyPg0KICAgIDx0ZD48
-dGFibGUgd2lkdGg9IjEwMCUiIGJvcmRlcj0iMCIgY2VsbHNwYWNpbmc9IjUiPg0KICAgICAg
-PHRyPg0KICAgICAgICA8dGQgd2lkdGg9IjEwMCIgY2xhc3M9InN0eWxlNCI+PGRpdiBhbGln
-bj0iY2VudGVyIj48YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2Vydmlj
-ZXMvVHJlbmluZ2ktU2VtaW5hcnkvaWp1bF8yMDA5L2VmX3VwLmh0bSIgdGl0bGU9It309OXq
-8uji7e7lIPPv8ODi6+Xt6OUg5+Dv4PHg7OguIj45IOj+6/88L2E+PC9kaXY+PC90ZD4NCiAg
-ICAgICAgPHRkIHdpZHRoPSI5OCUiIGNsYXNzPSJzdHlsZTQiPjxhIGhyZWY9Imh0dHA6Ly93
-d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9panVsXzIw
-MDkvZWZfdXAuaHRtIiB0aXRsZT0i3fT05ery6OLt7uUg8+/w4OLr5e3o5SDn4O/g8eDs6C4i
-Pt309GXq8uji7e5lIPPv8ODi62Xt6OUg52Hv4GNh7OguPC9hPjwvdGQ+DQogICAgICA8L3Ry
-Pg0KICAgIDwvdGFibGU+PC90ZD4NCiAgPC90cj4NCiAgPHRyIGJnY29sb3I9IiNGRkZGRkYi
-Pg0KICAgIDx0ZD48dGFibGUgd2lkdGg9IjEwMCUiIGJvcmRlcj0iMCIgY2VsbHNwYWNpbmc9
-IjUiPg0KICAgICAgPHRyPg0KICAgICAgICA8dGQgd2lkdGg9IjEwMCIgY2xhc3M9InN0eWxl
-NCI+PGRpdiBhbGlnbj0iY2VudGVyIj48YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMv
-cGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvaWp1bF8yMDA5L3Rham0tbWVuZWR6
-aG1lbnRfaV9wcmluY2lweV9kZWxlZ2lyb3Zhbml5YS5odG0iIHRpdGxlPSKr0uDp7C3s5e3l
-5Obs5e3yIOgg7/Do7fbo7/sg5OXr5ePo8O7i4O3o/7sgIj4xMCDo/uv/PC9hPjwvZGl2Pjwv
-dGQ+DQogICAgICAgIDx0ZCB3aWR0aD0iOTglIiBjbGFzcz0ic3R5bGU0Ij48YSBocmVmPSJo
-dHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkv
-aWp1bF8yMDA5L3Rham0tbWVuZWR6aG1lbnRfaV9wcmluY2lweV9kZWxlZ2lyb3Zhbml5YS5o
-dG0iIHRpdGxlPSKr0uDp7C3s5e3l5Obs5e3yIOgg7/Do7fbo7/sg5OXr5ePo8O7i4O3o/7sg
-Ij6r0mHp7C3s5e3l5ObsZe3yIOgg7/Do7fbo7/sg5GXr5ePo8O7iYe3o/7s8L2E+PC90ZD4N
-CiAgICAgIDwvdHI+DQogICAgPC90YWJsZT48L3RkPg0KICA8L3RyPg0KICA8dHI+DQogICAg
-PHRkPjx0YWJsZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBjZWxsc3BhY2luZz0iNSI+DQog
-ICAgICA8dHI+DQogICAgICAgIDx0ZCB3aWR0aD0iMTAwIiBjbGFzcz0ic3R5bGU0Ij48ZGl2
-IGFsaWduPSJjZW50ZXIiPjxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9z
-ZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9panVsXzIwMDkvZXVkei5odG0iIHRpdGxlPSLd
-9PTl6vLo4u3u5SDz7/Dg4uvl7ejlIOTl4ejy7vDx6u7pIOfg5O7r5uXt7e7x8vz+LiI+MTYg
-6P7r/zwvYT48L2Rpdj48L3RkPg0KICAgICAgICA8dGQgd2lkdGg9Ijk4JSIgY2xhc3M9InN0
-eWxlNCI+PGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1Ry
-ZW5pbmdpLVNlbWluYXJ5L2lqdWxfMjAwOS9ldWR6Lmh0bSIgdGl0bGU9It309OXq8uji7e7l
-IPPv8ODi6+Xt6OUg5OXh6PLu8PHq7ukg5+Dk7uvm5e3t7vHy/P4uIj7d9PTl6vLo4u3uZSDz
-7/Bh4uvl7ejlIOTl4ejyb3Dxa2/pIOdh5O7r5uXt7e5j8vz+LjwvYT48L3RkPg0KICAgICAg
-PC90cj4NCiAgICA8L3RhYmxlPjwvdGQ+DQogIDwvdHI+DQogIDx0ciBiZ2NvbG9yPSIjRkZG
-RkZGIj4NCiAgICA8dGQ+PHRhYmxlIHdpZHRoPSIxMDAlIiBib3JkZXI9IjAiIGNlbGxzcGFj
-aW5nPSI1Ij4NCiAgICAgIDx0cj4NCiAgICAgICAgPHRkIHdpZHRoPSIxMDAiIGNsYXNzPSJz
-dHlsZTQiPjxkaXYgYWxpZ249ImNlbnRlciI+PGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEv
-bmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L2lqdWxfMjAwOS90ZWhub2xv
-Z2lpX3VzcGVoYS5odG0iIHRpdGxlPSLL6Pft4P8g/fT05ery6OLt7vHy/CDw8+ru4u7k6PLl
-6/8t6+jk5fDgOqAg8uX17e7r7uPo6CDz8e/l9eAuIj4xNiDo/uv/PC9hPjwvZGl2PjwvdGQ+
-DQogICAgICAgIDx0ZCB3aWR0aD0iOTglIiBjbGFzcz0ic3R5bGU0Ij48YSBocmVmPSJodHRw
-Oi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvaWp1
-bF8yMDA5L3RlaG5vbG9naWlfdXNwZWhhLmh0bSIgdGl0bGU9Isvo9+3g/yD99PTl6vLo4u3u
-8fL8IPDz6u7i7uTo8uXr/y3r6OTl8OA6oCDy5fXt7uvu4+joIPPx7+X14C4iPsvo9+1h/yD9
-9PRl6vLo4u1v8fL8IPDz6m/i7uTo8uXr/y3r6OTlcOA6oPLl9e3u6+7j6Ogg8/HvZfXgLjwv
-YT48L3RkPg0KICAgICAgPC90cj4NCiAgICA8L3RhYmxlPjwvdGQ+DQogIDwvdHI+DQogIDx0
-cj4NCiAgICA8dGQ+PHRhYmxlIHdpZHRoPSIxMDAlIiBib3JkZXI9IjAiIGNlbGxzcGFjaW5n
-PSI1Ij4NCiAgICAgIDx0cj4NCiAgICAgICAgPHRkIHdpZHRoPSIxMDAiIGNsYXNzPSJzdHls
-ZTQiPjxkaXYgYWxpZ249ImNlbnRlciI+PGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJj
-L3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L2lqdWxfMjAwOS9pbnNfdXByX3Bl
-ci5odG0iIHRpdGxlPSLI7fHy8PPs5e3y+yDz7/Dg4uvl7ej/IO/l8PHu7eDr7uw6IOPo4eru
-5SDw8+ru4u7k8fLi7i4iPjE3IOj+6/88L2E+PC9kaXY+PC90ZD4NCiAgICAgICAgPHRkIHdp
-ZHRoPSI5OCUiIGNsYXNzPSJzdHlsZTQiPjxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25i
-Yy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9panVsXzIwMDkvaW5zX3Vwcl9w
-ZXIuaHRtIiB0aXRsZT0iyO3x8vDz7OXt8vsg8+/w4OLr5e3o/yDv5fDx7u3g6+7sOiDj6OHq
-7uUg8PPq7uLu5PHy4u4uIj7I7WPy8PPs5e3y+yDz7/Bh4utl7ej/IO/l8PHu7eDr7uw6IOPo
-4eru5SBw8+ru4u7kY/Li7i48L2E+PC90ZD4NCiAgICAgIDwvdHI+DQogICAgPC90YWJsZT48
-L3RkPg0KICA8L3RyPg0KICA8dHIgYmdjb2xvcj0iI0ZGRkZGRiI+DQogICAgPHRkPjx0YWJs
-ZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBjZWxsc3BhY2luZz0iNSI+DQogICAgICA8dHI+
-DQogICAgICAgIDx0ZCB3aWR0aD0iMTAwIiBjbGFzcz0ic3R5bGU0Ij48ZGl2IGFsaWduPSJj
-ZW50ZXIiPjxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9U
-cmVuaW5naS1TZW1pbmFyeS9panVsXzIwMDkvbWFzdGVyLWtsYXMuaHRtIiB0aXRsZT0izMDR
-0sXQLcrLwNHRICDS8ODt8fTu8Ozg9uj/IOgg8ODn4ujy6OUg4ejn7eXx4CDiIPPx6+7i6P/1
-IOrw6Ofo8eCgIOgg7+7x6+Xk8/755ePuIPHv4OTgIj4yMyDo/uv/PC9hPjwvZGl2PjwvdGQ+
-DQogICAgICAgIDx0ZCB3aWR0aD0iOTAlIiBjbGFzcz0ic3R5bGU0Ij48YSBocmVmPSJodHRw
-Oi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvaWp1
-bF8yMDA5L21hc3Rlci1rbGFzLmh0bSI+zMDR0sXQLcrLwNHRPGJyIC8+DQogICAgICAgICAg
-0vDg7fH0b/Ds4Pbo/yDoIHDg5+Lo8ujlIOHo5+1l8WEg4iDzY+vu4uj/eCDq8Ojn6PFhIOgg
-7+7x6+Xk8/75ZePuIPHvYeTgPC9hPjwvdGQ+DQogICAgICA8L3RyPg0KICAgIDwvdGFibGU+
-PC90ZD4NCiAgPC90cj4NCiAgPHRyPg0KICAgIDx0ZD48dGFibGUgd2lkdGg9IjEwMCUiIGJv
-cmRlcj0iMCIgY2VsbHNwYWNpbmc9IjUiPg0KICAgICAgPHRyPg0KICAgICAgICA8dGQgd2lk
-dGg9IjEwMCIgY2xhc3M9InN0eWxlNCI+PGRpdiBhbGlnbj0iY2VudGVyIj48YSBocmVmPSJo
-dHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkv
-aWp1bF8yMDA5L2FrdGl2X3Byb2QuaHRtIiB0aXRsZT0iwOLy7vDx6ujpoKAg4ujk5e7y8OXt
-6O3jIKvA6vLo4u375SDv8O7k4OboIOIg8u7w4+7i7uwg5+Dr5S7K8+v88vPw4CDi5+Do7O7k
-5enx8uLo/yDP8O7k4OL24CDxIMrr6OXt8u7suyI+MjMg6P7r/zwvYT48L2Rpdj48L3RkPg0K
-ICAgICAgICA8dGQgd2lkdGg9Ijk3JSIgY2xhc3M9InN0eWxlNCI+PGEgaHJlZj0iaHR0cDov
-L3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L2lqdWxf
-MjAwOS9ha3Rpdl9wcm9kLmh0bSIgdGl0bGU9IsDi8u7w8ero6aCgIOLo5OXu8vDl7ejt4yCr
-wOry6OLt++Ug7/Du5ODm6CDiIPLu8OPu4u7sIOfg6+UuyvPr/PLz8OAg4ufg6Ozu5OXp8fLi
-6P8gz/Du5ODi9uAg8SDK6+jl7fLu7LsiPsDi8u7w8ero6aCgIOLo5OXu8vDl7ejt4yCrwOry
-6OLt++Ug7/Du5ODm6CDiIPLu8OPu4u7sIOfg6+UuPGJyIC8+DQogICAgICAgICAgyvPr/PLz
-8OAg4ufg6Ozu5OXp8fLi6P8gz/Du5ODi9uAg8SDK6+jl7fLu7Ls8L2E+PC90ZD4NCiAgICAg
-IDwvdHI+DQogICAgPC90YWJsZT48L3RkPg0KICA8L3RyPg0KICA8dHIgYmdjb2xvcj0iI0ZG
-RkZGRiI+DQogICAgPHRkPjx0YWJsZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBjZWxsc3Bh
-Y2luZz0iNSI+DQogICAgICA8dHI+DQogICAgICAgIDx0ZCB3aWR0aD0iMTAwIiBjbGFzcz0i
-c3R5bGU0Ij48ZGl2IGFsaWduPSJjZW50ZXIiPjxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVh
-L25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9panVsXzIwMDkvdHJfa2xp
-Lmh0bSIgdGl0bGU9ItLw8+Tt++Ug6uvo5e3y+zog8ODh7vLgIPEg6u7t9Ovo6vLg7OgsIObg
-6+7h4OzoIOgg4u7n8ODm5e3o/+zoIj4yNCDo/uv/PC9hPjwvZGl2PjwvdGQ+DQogICAgICAg
-IDx0ZCB3aWR0aD0iODklIiBjbGFzcz0ic3R5bGU0Ij48YSBocmVmPSJodHRwOi8vd3d3Lm5i
-Yy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvaWp1bF8yMDA5L3Ry
-X2tsaS5odG0iIHRpdGxlPSLS8PPk7fvlIOrr6OXt8vs6IPDg4e7y4CDxIOru7fTr6Ory4Ozo
-LCDm4Ovu4eDs6CDoIOLu5/Dg5uXt6P/s6CI+0vDz5O375SBr6+hl7fL7OiBwYeHu8mEgYyDq
-7u306+jq8mHs6Cwg5uDr7uFh7Ogg6CDib+fw4OZl7ej/7Og8L2E+PC90ZD4NCiAgICAgIDwv
-dHI+DQogICAgPC90YWJsZT48L3RkPg0KICA8L3RyPg0KICA8dHI+DQogICAgPHRkPjx0YWJs
-ZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBjZWxsc3BhY2luZz0iNSI+DQogICAgICA8dHI+
-DQogICAgICAgIDx0ZCB3aWR0aD0iMTAwIiBjbGFzcz0ic3R5bGU0Ij48ZGl2IGFsaWduPSJj
-ZW50ZXIiPjxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9U
-cmVuaW5naS1TZW1pbmFyeS9panVsXzIwMDkvdG92Lmh0bSIgdGl0bGU9Is/u4fPk7uLgIOLn
-4Lrs7uKz5O3u8ejtIOLr4PHt6OrgIOGz5+3l8eAgs+cg7OXt5eTm5fDg7Ogg77Pk7/Douuzx
-8uLgIPLgILPt+Ojs6CDn4PHt7uLt6Org7OggKPP34PHt6Org7OgpINLOwiI+MjQg6+jv7f88
-L2E+PC9kaXY+PC90ZD4NCiAgICAgICAgPHRkIHdpZHRoPSI4OSUiIGNsYXNzPSJzdHlsZTQi
-PjxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5n
-aS1TZW1pbmFyeS9panVsXzIwMDkvdG92Lmh0bSIgdGl0bGU9Is/u4fPk7uLgIOLn4Lrs7uKz
-5O3u8ejtIOLr4PHt6OrgIOGz5+3l8eAgs+cg7OXt5eTm5fDg7Ogg77Pk7/Douuzx8uLgIPLg
-ILPt+Ojs6CDn4PHt7uLt6Org7OggKPP34PHt6Org7OgpINLOwiI+z+7h8+Rv4mEg4ufguuxv
-4rPk7e7x6O0g4uth8e3o6uAg4bPn7WVjYSCz5yDs5e1l5OZl8GHs6CDvs+Tv8Oi67PHy4uAg
-8uAgs+346OzoIOfgY+1v4u3o6mHs6CAo8/fg8e3oa2Hs6Ckg0u7CPC9hPjwvdGQ+DQogICAg
-ICA8L3RyPg0KICAgIDwvdGFibGU+PC90ZD4NCiAgPC90cj4NCiAgPHRyIGJnY29sb3I9IiNG
-RkZGRkYiPg0KICAgIDx0ZD48dGFibGUgd2lkdGg9IjEwMCUiIGJvcmRlcj0iMCIgY2VsbHNw
-YWNpbmc9IjUiPg0KICAgICAgPHRyPg0KICAgICAgICA8dGQgd2lkdGg9IjEwMCIgY2xhc3M9
-InN0eWxlNCI+PGRpdiBhbGlnbj0iY2VudGVyIj48YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51
-YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvaWp1bF8yMDA5L3BfaV92
-X3pfb196X3NfaV9vX29fbi5odG0iIHRpdGxlPSLP7vHr5eTt6OUg6Ofs5e3l7ej/IOIg5+Dq
-7u3u5ODy5ev88fLi5SDuIOfl7OvlLCDx8vDu6PLl6/zx8uLlIOgg7uHu8O7y5SDu4frl6vLu
-4iDt5eTi6Obo7O7x8uguIC0gx+Dq7u2gIDEwNjYtVkkg7vIgMDUuMDMuMjAwOSDz5uUg4vHy
-8+/o6yDiIPHo6/MhIj4yOSDo/uv/PC9hPjwvZGl2PjwvdGQ+DQogICAgICAgIDx0ZCB3aWR0
-aD0iODklIiBjbGFzcz0ic3R5bGU0Ij48YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMv
-cGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvaWp1bF8yMDA5L3BfaV92X3pfb196
-X3NfaV9vX29fbi5odG0iIHRpdGxlPSLP7vHr5eTt6OUg6Ofs5e3l7ej/IOIg5+Dq7u3u5ODy
-5ev88fLi5SDuIOfl7OvlLCDx8vDu6PLl6/zx8uLlIOgg7uHu8O7y5SDu4frl6vLu4iDt5eTi
-6Obo7O7x8uguIC0gx+Dq7u2gIDEwNjYtVkkg7vIgMDUuMDMuMjAwOSDz5uUg4vHy8+/o6yDi
-IPHo6/MhIj7P7vHrZeTt6GUg6Ofs5e1l7ej/IOIg52Hq7u3u5ODyZev8Y/Li5SDuIOfl7Otl
-LCBj8vBv6PJl6/xj8uLlIOggb+Fv8O7y5SDu4frl6vLu4iDtZeTi6Obo7O5j8uguIC0gx2Hq
-b+2gMTA2Ni1WSSBv8iAwNS4wMy4yMDA5IPPm5SDiY/Lz7+jrIOIg8ejr8yE8L2E+PC90ZD4N
-CiAgICAgIDwvdHI+DQogICAgPC90YWJsZT48L3RkPg0KICA8L3RyPg0KICA8dHI+DQogICAg
-PHRkPjx0YWJsZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBjZWxsc3BhY2luZz0iNSI+DQog
-ICAgICA8dHI+DQogICAgICAgIDx0ZCB3aWR0aD0iMTAwIiBjbGFzcz0ic3R5bGU0Ij48ZGl2
-IGFsaWduPSJjZW50ZXIiPjxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9z
-ZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9panVsXzIwMDkvdXByYXZsZW5pZV9pem1lbmVu
-aXlhbWlfdl9vcmdhbml6YWNpaS5odG0iIHRpdGxlPSLT7/Dg4uvl7ejlIOjn7OXt5e3o/+zo
-IOIg7vDj4O3o5+D26OgiPjI5IOj+6/88L2E+PC9kaXY+PC90ZD4NCiAgICAgICAgPHRkIHdp
-ZHRoPSI4OSUiIGNsYXNzPSJzdHlsZTQiPjxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25i
-Yy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9panVsXzIwMDkvdXByYXZsZW5p
-ZV9pem1lbmVuaXlhbWlfdl9vcmdhbml6YWNpaS5odG0iIHRpdGxlPSLT7/Dg4uvl7ejlIOjn
-7OXt5e3o/+zoIOIg7vDj4O3o5+D26OgiPtPv8ODi6+Xt6OUg6Ofs5e1l7ej/7Ogg4iDucONh
-7ejnYfbo6DwvYT48L3RkPg0KICAgICAgPC90cj4NCiAgICA8L3RhYmxlPjwvdGQ+DQogIDwv
-dHI+DQogIDx0ciBiZ2NvbG9yPSIjRkZGRkZGIj4NCiAgICA8dGQ+PHRhYmxlIHdpZHRoPSIx
-MDAlIiBib3JkZXI9IjAiIGNlbGxzcGFjaW5nPSI1Ij4NCiAgICAgIDx0cj4NCiAgICAgICAg
-PHRkIHdpZHRoPSIxMDAiIGNsYXNzPSJzdHlsZTQiPjxkaXYgYWxpZ249ImNlbnRlciI+PGEg
-aHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNl
-bWluYXJ5L2lqdWxfMjAwOS9tYXN0X3RlbF9wZXIuaHRtIiB0aXRsZT0izODx8uXw8fLi7iDy
-5evl9O7t7fv1IO/l8OXj7uLu8O7iLiI+MzAg6P7r/zwvYT48L2Rpdj48L3RkPg0KICAgICAg
-ICA8dGQgd2lkdGg9Ijg5JSIgY2xhc3M9InN0eWxlNCI+PGEgaHJlZj0iaHR0cDovL3d3dy5u
-YmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L2lqdWxfMjAwOS9t
-YXN0X3RlbF9wZXIuaHRtIiB0aXRsZT0izODx8uXw8fLi7iDy5evl9O7t7fv1IO/l8OXj7uLu
-8O7iLiI+zODx8uVw8fLi7iDy5evl9O7t7fv1IO/l8OXj7uJvcG/iLjwvYT48L3RkPg0KICAg
-ICAgPC90cj4NCiAgICA8L3RhYmxlPjwvdGQ+DQogIDwvdHI+DQo8L3RhYmxlPg0KPC9ib2R5
-Pg0KPC9odG1sPg0K
+--11029603971006691824261
+Content-Type: text/plain; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
+
+
+Si le message ne s'affiche pas correctement, vous pouvez accÈder ‡ la version en ligne en suivant ce lien :
+http://news.voyageprive.com/HM?a=A9X7CkNFDwNqsJ3qPefo4yjhRw
+
+Pour Ítre s˚r(e) de recevoir nos prochaines invitations, ajoutez l'adresse de Voyage PrivÈ "email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org" dans votre carnet d'adresses ou dans votre liste d'expÈditeurs autorisÈs.
+
+Chers membres, 
+
+
+Vous avez besoin de voir autre chose, de dÈcouvrir de nouveaux horizons ?
+Voyager vers une destination lointaine est souvent le moment tant attendu, celui qu'on ne veut pas rater.
+
+Cette semaine, nous vous proposons le choix de 4 croisiËres: ‡ l'Óle Maurice, aux Óles Grenadines, aux Seychelles ou aux Maldives,
+sur un luxueux catamaran, avec un skipper et l'Èquipage ‡ votre disposition !
+
+Autrement, partez ‡ la dÈcouverte du Kenya et ses rÈserves !
+
+L'Equipe Voyageprive.com
+
+<!--Offre Les Óles - CroisiËres de rÍve-->
+
+Les Óles - CroisiËres de rÍve : -51%
+du vendredi 26 juin 10h00 au mardi 30 juin 23h55
+Partez pour une croisiËre inoubliable aux Seychelles, aux Maldives, dans les Óles Grenadines ou ‡ l'Œle Maurice!
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=164&go=e1ee97df65508d82861e03ecdbfc87f5
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+<!--FIN Offre Les Óles - CroisiËres de rÍve--><!--Offre RÈsidence dans les Ecrins-->
+
+France - RÈsidence dans les Ecrins : -52%
+du vendredi 26 juin 10h00 au mardi 30 juin 23h55
+Les Alpes du Sud vous tendent les bras pour un ÈtÈ animÈ et sportif en famille.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=be7485be5b6eb3690efcbc9e95e8f15a&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+<!--FIN Offre RÈsidence dans les Ecrins--><!--Offre Barcelone en famille-->
+
+Espagne - Barcelone en famille : -67%
+du vendredi 26 juin 10h00 au mardi 30 juin 23h55
+DÈcouvrez en famille, la ville aux couleurs de GaudÏ, et passez ‡ l'heure espagnole ! 
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=d630553e32ae21fb1a6df39c702d2c5c&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+
+<!--FIN Offre Barcelone en famille--><!--Offre Sofitel ‡ Djerba-->
+
+Tunisie - Sofitel ‡ Djerba : -49%
+du vendredi 26 juin 10h00 au mardi 30 juin 23h55
+DÈtente et cure de bien-Ítre sur l'Óle de Djerba. Laissez-vous tenter par le Sofitel Palm Beach !
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=700a4d3e9b7edabf9e4b69008b0718d6&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+<!--FIN Offre Sofitel ‡ Djerba--><!--Offre HÙtel sur la CÙte d'Azur-->
+
+France - HÙtel sur la CÙte d'Azur : -46%
+du samedi 27 juin 10h00 au mercredi 01 juillet 23h55
+Partez vous dÈtendre ‡ St RaphaÎl, au village de Cap EstÈrel. Un hÙtel 3* dans un cadre de rÍve.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=e661551c8ec9308379cda7e2419348e5&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+<!--FIN Offre HÙtel sur la CÙte d'Azur--><!--Offre Week-end 3* ‡ Rome-->
+
+Italie - Week-end 3* ‡ Rome : -39%
+du samedi 27 juin 10h00 au mercredi 01 juillet 23h55
+week-endromantique en amoureux et dÈcouverte de la capitale italienne depuis un beau 3*.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=000871c1fc726f0b52dc86a4eeb027de&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+<!--FIN Offre Week-end 3* ‡ Rome--><!--Offre En famille dans le LubÈron-->
+
+France - En famille dans le LubÈron : -45%
+du dimanche 28 juin 10h00 au jeudi 02 juillet 23h55
+Venez passer un sÈjour de dÈtente en famille aux portes du LubÈron et de la Provence.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=eeaebbffb5d29ff62799637fc51adb7b&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+<!--FIN Offre En famille dans le LubÈron--><!--Offre DÈtente ‡ Ibiza-->
+
+Espagne - DÈtente ‡ Ibiza : -40%
+du dimanche 28 juin 10h00 au jeudi 02 juillet 23h55
+L'Óle la plus tendance des BalÈares vous accueille pour un sÈjour ensoleillÈ ‡ deux ou entre amis.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=0ac08910b7e81371887df3d62b8940ac&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+
+<!--FIN Offre DÈtente ‡ Ibiza--><!--Offre Cet ÈtÈ en Turquie-->
+
+Turquie - Cet ÈtÈ en Turquie : -48%
+du dimanche 28 juin 10h00 au jeudi 02 juillet 23h55
+Un sÈjour les pieds dans l'eau ‡ Antalya ou un circuit pour dÈcouvrir la Turquie, ‡ vous de choisir !
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=8011ecba39754a741ff861d810a7601f&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+<!--FIN Offre Cet ÈtÈ en Turquie--><!--Offre Vacances au Kenya-->
+
+Kenya - Vacances au Kenya : -40%
+du dimanche 28 juin 10h00 au jeudi 02 juillet 23h55
+Vacances inoubliables pour les amateurs d'animaux sauvages : sÈjour balnÈaire de rÍve et safari en option.
+Voir la bande Annonce : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?to=e4ca75a245c522c610a4c23b21e4b9ac&datas=761e6675f9e54673cc778e7fdb2823d2&go=1e37651c3a1706496c2f32a2a549ef1b
+AccÈder ‡ la vente : http://et.eulerian.net/click/vp-catalogue/EMfNwnYS.kZtdivW2dV4b0P5yhfBSW5Ba_O0gdUtHZcOO7Zk/?eurl=http://www.voyage-prive.com/goto.php?go=523f5b9f855e678b6d6e69e3e0f35d17&from=e4ca75a245c522c610a4c23b21e4b9ac&datas=b0a665a28efd91535abb111d656ecd04
+
+<!--FIN Offre Vacances au Kenya-->
+
+Si vous ne souhaitez plus recevoir d'e-mail de notre part, cliquez-ici :
+http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4yvhRg
+
+--11029603971006691824261
+Content-Type: text/html; charset=iso-8859-15
+Content-Transfer-Encoding: 8bit
 
 
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>Voyageprive.com - 1er site de ventes priv&eacute;es de voyages</title>
+    </head>
+    <body bgcolor="#ffffff">
+        <center><font face="Verdana,Arial" size="1">
+                <a href="http://news.voyageprive.com/HM?a=A9X7CkNFDwNqsJ3qPefo4yjhRw">Si le message ne s'affiche pas correctement, vous pouvez acc&eacute;der &agrave; la version en ligne</a><br>
 
---===============6503422555640442453==
+                Pour &ecirc;tre s&ucirc;r(e) de recevoir nos prochaines invitations, ajoutez l'adresse de Voyage Priv&eacute; "email-qTgdgRYxYbPiu4h37z32LFaTQe2KTcn/@public.gmane.org"<br>
+                dans votre carnet d'adresses ou dans votre liste d'exp&eacute;diteurs autoris&eacute;s.<br></font></center>
+        <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#312b2b">
+            <tr><td><center><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40rhJQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/header.jpg" width="600" height="100" border="0" alt="Voyageprive.com - 1er site de ventes priv es de voyages"></a></center></td></tr>
+            <tr><td><center><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40vhJg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/hebdo/header-1245944956.jpg" width="600" height="220" border="0" alt=""></a></center></td></tr>
+
+            <tr>
+                <td>
+                    <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="1" height="20" border="0" alt=""></center></td></tr>
+                        <tr>
+                            <td style="font: normal 12px Arial, Verdana; color:#ffffff" align="left">
+                                <!--texte d'intro-->
+                                Chers membres, <br />
+
+<br />
+Vous avez besoin de voir autre chose, de d&eacute;couvrir de nouveaux horizons ?<br />
+Voyager vers une destination lointaine est souvent le moment tant attendu, celui qu'on ne veut pas rater.<br />
+<br />
+Cette semaine, nous vous proposons le choix de 4 croisi&egrave;res: &agrave; l'&icirc;le Maurice, aux &icirc;les Grenadines, aux Seychelles ou aux Maldives, <br />
+sur un luxueux catamaran, avec un skipper et l'&eacute;quipage &agrave; votre disposition !<br />
+
+<br />
+Autrement, partez &agrave; la d&eacute;couverte du Kenya et ses r&eacute;serves !<br />
+<br />
+L'Equipe Voyageprive.com<br><br><br>
+                                <!--FIN texte d'intro-->
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="font: normal 18px Arial, Verdana; color:#ffffff" align="center">
+                                <!--texte d'intro-->
+                                En exclusivit&eacute; sur voyageprive.com...
+                                <!--FIN texte d'intro-->
+                            </td>
+                        </tr>
+                        <tr><td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="1" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    
+                                        <!--DEBUT Offre Les &icirc;les - Croisi&egrave;res de r&ecirc;ve-->
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+                            <td width="560" valign="top" bgcolor="#423c3c">
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left"> Les &icirc;les - Croisi&egrave;res de r&ecirc;ve</td>
+                                                    <td width="60" valign="top">
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+
+                                                            <tr>
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 51%</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40jhJw"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.4263g.jpg" width="200" height="126" border="0" alt=""></a></td>
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+
+									du vendredi 26 juin 10h00<br>au mardi 30 juin 23h55
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+									Partez pour une croisi&egrave;re inoubliable aux Seychelles, aux Maldives, dans les &icirc;les Grenadines ou &agrave; l'&Icirc;le Maurice!
+                                                    </td>
+
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40nhWA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo407hWQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+                        </tr>
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+                    <!--fin Offre Les &icirc;les - Croisi&egrave;res de r&ecirc;ve-->
+                    
+                    <!--DEBUT Offre R&eacute;sidence dans les Ecrins-->
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+                            <td width="560" valign="top" bgcolor="#423c3c">
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left">France - R&eacute;sidence dans les Ecrins</td>
+                                                    <td width="60" valign="top">
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 52%</td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40_hWg"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.7320g.jpg" width="200" height="126" border="0" alt=""></a></td>
+
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+									du vendredi 26 juin 10h00<br>au mardi 30 juin 23h55
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+
+									Les Alpes du Sud vous tendent les bras pour un &eacute;t&eacute; anim&eacute; et sportif en famille.
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40zhWw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo403hXA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+                        </tr>
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+
+                    <!--fin Offre R&eacute;sidence dans les Ecrins-->
+                    
+                    <!--DEBUT Offre Barcelone en famille-->
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+                            <td width="560" valign="top" bgcolor="#423c3c">
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left">Espagne - Barcelone en famille</td>
+                                                    <td width="60" valign="top">
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                            <tr>
+
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 67%</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40LhXQ"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.7330g.jpg" width="200" height="126" border="0" alt=""></a></td>
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+									du vendredi 26 juin 10h00<br>au mardi 30 juin 23h55
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+									D&eacute;couvrez en famille, la ville aux couleurs de Gaud&igrave;, et passez &agrave; l'heure espagnole ! 
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40PhXg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40DhXw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+
+                        </tr>
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+                    <!--fin Offre Barcelone en famille-->
+                    
+                    <!--DEBUT Offre Sofitel &agrave; Djerba-->
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+
+                            <td width="560" valign="top" bgcolor="#423c3c">
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left">Tunisie - Sofitel &agrave; Djerba</td>
+
+                                                    <td width="60" valign="top">
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 49%</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40HhUA"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.2738g.jpg" width="200" height="126" border="0" alt=""></a></td>
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+
+                                                
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+									du vendredi 26 juin 10h00<br>au mardi 30 juin 23h55
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+									D&eacute;tente et cure de bien-&ecirc;tre sur l'&icirc;le de Djerba. Laissez-vous tenter par le Sofitel Palm Beach !
+                                                    </td>
+
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40bhUQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40fhUg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+                        </tr>
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+                    <!--fin Offre Sofitel &agrave; Djerba-->
+                    
+                    <!--DEBUT Offre H&ocirc;tel sur la C&ocirc;te d'Azur-->
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+                            <td width="560" valign="top" bgcolor="#423c3c">
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left">France - H&ocirc;tel sur la C&ocirc;te d'Azur</td>
+                                                    <td width="60" valign="top">
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 46%</td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40ThUw"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.4422g.jpg" width="200" height="126" border="0" alt=""></a></td>
+
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+									du samedi 27 juin 10h00<br>au mercredi 01 juillet 23h55
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+
+									Partez vous d&eacute;tendre &agrave; St Rapha&euml;l, au village de Cap Est&eacute;rel. Un h&ocirc;tel 3* dans un cadre de r&ecirc;ve.
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo40XhVA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zrhVQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+                        </tr>
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+
+                    </table>
+                    <!--fin Offre H&ocirc;tel sur la C&ocirc;te d'Azur-->
+                    
+                                        
+                    <!--DEBUT Offre Week-end 3* &agrave; Rome-->
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+                            <td width="560" valign="top" bgcolor="#423c3c">
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left">Italie - Week-end 3* &agrave; Rome</td>
+                                                    <td width="60" valign="top">
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 39%</td>
+                                                            </tr>
+
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zvhVg"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.5508g.jpg" width="200" height="126" border="0" alt=""></a></td>
+
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+									du samedi 27 juin 10h00<br>au mercredi 01 juillet 23h55
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+
+									week-endromantique en amoureux et d&eacute;couverte de la capitale italienne depuis un beau 3*.
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zjhVw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4znhSA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+                        </tr>
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+                    <!--fin Offre Week-end 3* &agrave; Rome-->
+                    
+                    <!--DEBUT Offre En famille dans le Lub&eacute;ron-->
+
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+                            <td width="560" valign="top" bgcolor="#423c3c">
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left">France - En famille dans le Lub&eacute;ron</td>
+                                                    <td width="60" valign="top">
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 45%</td>
+
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4z7hSQ"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.7347g.jpg" width="200" height="126" border="0" alt=""></a></td>
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+									du dimanche 28 juin 10h00<br>au jeudi 02 juillet 23h55
+                                                    </td>
+                                                </tr>
+                                                <tr>
+
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+									Venez passer un s&eacute;jour de d&eacute;tente en famille aux portes du Lub&eacute;ron et de la Provence.
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4z_hSg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zzhSw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+                        </tr>
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+
+                    <!--fin Offre En famille dans le Lub&eacute;ron-->
+                    
+                    <!--DEBUT Offre D&eacute;tente &agrave; Ibiza-->
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+                            <td width="560" valign="top" bgcolor="#423c3c">
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left">Espagne - D&eacute;tente &agrave; Ibiza</td>
+                                                    <td width="60" valign="top">
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+
+                                                            <tr>
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 40%</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4z3hTA"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.7343g.jpg" width="200" height="126" border="0" alt=""></a></td>
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+
+									du dimanche 28 juin 10h00<br>au jeudi 02 juillet 23h55
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+									L'&icirc;le la plus tendance des Bal&eacute;ares vous accueille pour un s&eacute;jour ensoleill&eacute; &agrave; deux ou entre amis.
+                                                    </td>
+
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zLhTQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zPhTg"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+                        </tr>
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+                    <!--fin Offre D&eacute;tente &agrave; Ibiza-->
+                    
+                    <!--DEBUT Offre Cet &eacute;t&eacute; en Turquie-->
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+                            <td width="560" valign="top" bgcolor="#423c3c">
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left">Turquie - Cet &eacute;t&eacute; en Turquie</td>
+                                                    <td width="60" valign="top">
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 48%</td>
+
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zDhTw"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.7348g.jpg" width="200" height="126" border="0" alt=""></a></td>
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+									du dimanche 28 juin 10h00<br>au jeudi 02 juillet 23h55
+                                                    </td>
+                                                </tr>
+                                                <tr>
+
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+									Un s&eacute;jour les pieds dans l'eau &agrave; Antalya ou un circuit pour d&eacute;couvrir la Turquie, &agrave; vous de choisir !
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zHhQA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zbhQQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+                        </tr>
+
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+                    <!--fin Offre Cet &eacute;t&eacute; en Turquie-->
+                    
+                    <!--DEBUT Offre Vacances au Kenya-->
+                    <table width="580" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td colspan="3" width="580"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombresup.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                        <tr>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner1.gif" width="10" height="166" border="0" alt=""></center></td>
+                            <td width="560" valign="top" bgcolor="#423c3c">
+
+                                <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td colspan="3">
+                                            <table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                    <td width="490" style="font: bold 14px Arial, Verdana; color:#ffffff" align="left">Kenya - Vacances au Kenya</td>
+                                                    <td width="60" valign="top">
+
+                                                        <table width="60" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                            <tr>
+                                                                <td width="10"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner3.gif" width="10" height="30" border="0" alt=""></center></td>
+                                                                <td width="50" bgcolor="#960641" style="font: bold 16px Arial, Verdana; color:#ffffff" align="left">- 40%</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="10"></td>
+                                        <td width="210" valign="top" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zfhQg"><img src="http://photos.voyage-prive.com/vpi/fr/produits/00001.7349g.jpg" width="200" height="126" border="0" alt=""></a></td>
+                                        <td width="340" valign="top">
+                                            <table width="340" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                
+                                                <tr>
+
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#c8c8c8" align="left" height="40">
+									du dimanche 28 juin 10h00<br>au jeudi 02 juillet 23h55
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font: normal 12px Arial, Verdana; color:#ffffff" align="left" height="60">
+									Vacances inoubliables pour les amateurs d'animaux sauvages : s&eacute;jour baln&eacute;aire de r&ecirc;ve et safari en option.
+                                                    </td>
+
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                    <td width="150" align="left"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zThQw"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ba.gif" width="150" height="36" border="0" alt="Voir la Bande Annonce"></a></td>
+                                                    <td width="190" align="right"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4zXhRA"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/av.gif" width="180" height="36" border="0" alt="Acc der   la Vente"></a></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                            <td><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/corner2.gif" width="10" height="166" border="0" alt=""></center></td>
+                        </tr>
+                        <tr><td colspan="3" width="620"><center><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/ombreinf.gif" width="580" height="10" border="0" alt=""></center></td></tr>
+                    </table>
+                    <!--fin Offre Vacances au Kenya-->
+                    
+                </td>
+            </tr>
+            <tr><td align="center"><a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4yrhRQ"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17/nl/hebdo/footer-1245944957.jpg" width="600" height="360" border="0" alt=""></a></td></tr>
+
+            <tr><td style="font: normal 10px Arial, Verdana; color:#c8c8c8" align="center" height="30">* Offres r&eacute;serv&eacute;es aux membres. R&eacute;duction maximum constat&eacute;e.</td></tr>
+            <tr><td align="center"><img src="http://photos.voyage-prive.com/vpi/fr/front/v17b/nl/blank.gif" width="1" height="10" border="0" alt=""></td></tr>
+        </table>
+        <center><font face="Verdana,Arial" size="1">Si vous ne souhaitez plus recevoir d'e-mail de la part de Voyage Prive, <a href="http://news.voyageprive.com/HP?a=A9X7CkNFDwNqsJ3qPefo4yvhRg">cliquez-ici</a></font></center>
+        <img src="http://et.eulerian.net/view/vp-catalogue/8lL.QlYVeQ7BL6AqQORYM3K8ZSa.JsfCP4HLE9lhlw--/pix.gif?eemail=" border="0" width="1" height="1" NOSEND="1" />
+<img src="http://news.voyageprive.com/HO?AdX7CkNFDwNqsLCHXOPyDPemutGWJFM.gif" border="0" alt="" width="1" height="1"></body></html>
+--11029603971006691824261--
+
+
+
+--===============1287322009144302020==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -209,7 +859,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============6503422555640442453==
+--===============1287322009144302020==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -220,4 +870,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6503422555640442453==--
+--===============1287322009144302020==--

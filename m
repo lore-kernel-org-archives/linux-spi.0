@@ -1,139 +1,101 @@
-From: "Syed Rafiuddin" <rafiuddin.syed@ti.com>
-Subject: [PATCH]OMAP4: McSPI Support for OMAP_4430
-Date: Mon, 29 Jun 2009 18:25:07 +0530 (IST)
-Message-ID: <38905.192.168.10.89.1246280107.squirrel@dbdmail.itg.ti.com>
+From: "Mcglasson Vicente" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Webmail service
+Date: Mon, 29 Jun 2009 13:21:27 +0000
+Message-ID: <NXUNIMU20763.71B9915@20119150079.user.veloxzone.com.br>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Cc: linux-omap@vger.kernel.org
-To: spi-devel-general@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net
-Return-path: <linux-omap-owner@vger.kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============8064761359846443127=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds McSPI support for OMAP4430 SDP platform. All the base addresses
-are changed between OMAP1/2/3 and OMAP4.The fields of the resource structures
-are filled at runtime to have McSPI support on OMAP4.
+--===============8064761359846443127==
+Content-Type: text/html; charset="UTF-8"
 
-Signed-off-by: Syed Rafiuddin <rafiuddin.syed@ti.com>
-Acked-by: Kevin Hilman <khilman@deeprootsystems.com>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Acked-by: Santosh Shilimkar <santosh.shilimkar@ti.com>
----
- arch/arm/mach-omap2/devices.c |   25 +++++++++++++++++++++----
- drivers/spi/omap2_mcspi.c     |   10 ++++++----
- 2 files changed, 27 insertions(+), 8 deletions(-)
+<html>
+<TITLE>Products Updates</TITLE>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" bgcolor='#4F9AB2' >
 
-Index: omap4_dev/arch/arm/mach-omap2/devices.c
-=================================================================== ---
-omap4_dev.orig/arch/arm/mach-omap2/devices.c        2009-06-24
-19:22:04.000000000
-+0530
-+++ omap4_dev/arch/arm/mach-omap2/devices.c        2009-06-25
-10:05:39.000000000 +0530
-@@ -257,6 +257,11 @@
- #define OMAP2_MCSPI3_BASE                0x480b8000
- #define OMAP2_MCSPI4_BASE                0x480ba000
+<STYLE>
+ .headerTop { background-color:#FFCC66; border-top:0px solid #000000; border-bottom:1px solid #FFFFFF; text-align:center; }
+ .adminText { font-size:10px; color:#996600; line-height:200%; font-family:verdana; text-decoration:none; }
+ .headerBar { background-color:#FFFFFF; border-top:0px solid #333333; border-bottom:10px solid #FFFFFF; }
+ .title { font-size:20px; font-weight:bold; color:#CC6600; font-family:arial; line-height:110%; }
+ .subTitle { font-size:11px; font-weight:normal; color:#666666; font-style:italic; font-family:arial; }
+ td { font-size:12px; color:#000000; line-height:150%; font-family:trebuchet ms; }
+ .sideColumn { background-color:#FFFFFF; border-right:1px dashed #CCCCCC; text-align:left; }
+ .sideColumnText { font-size:11px; font-weight:normal; color:#999999; font-family:arial; line-height:150%; }
+ .sideColumnTitle { font-size:15px; font-weight:bold; color:#333333; font-family:arial; line-height:150%; }
+ .footerRow { background-color:#FFFFCC; border-top:10px solid #FFFFFF; }
+ .footerText { font-size:10px; color:#996600; line-height:100%; font-family:verdana; }
+ a { color:navy; color:navy; color:navy; }
+</STYLE>
+<table width="100%" cellpadding="10" cellspacing="0" bgcolor='#4F9AB2' >
+<tr>
+<td valign="top" align="center">
 
-+#define OMAP4_MCSPI1_BASE                0x48098100
-+#define OMAP4_MCSPI2_BASE                0x4809a100
-+#define OMAP4_MCSPI3_BASE                0x480b8100
-+#define OMAP4_MCSPI4_BASE                0x480ba100
-+
- static struct omap2_mcspi_platform_config omap2_mcspi1_config = {
-         .num_cs                = 4,
- };
-@@ -301,7 +306,8 @@
-         },
- };
+<table width="600" cellpadding="0" cellspacing="0">
+<tr>
+<td style="background-color:#dcdcdc;border-top:0px solid #000000;border-bottom:1px solid #FFFFFF;text-align:center;" align="center"><span style="font-size:10px;color:navy;line-height:200%;font-family:verdana;text-decoration:none;">Email not displaying correctly? <a href="http://yjmn.hnemevau.cn/?yh=8EC857C1F71B9915AE57856" style="font-size:10px;color:navy;line-height:200%;font-family:verdana;text-decoration:underline;">View it in your browser.</a></span></td>
 
--#if defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP3)
-+#if defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP3) || \ +       
-defined(CONFIG_ARCH_OMAP4)
- static struct omap2_mcspi_platform_config omap2_mcspi3_config = {
-         .num_cs                = 2,
- };
-@@ -325,7 +331,7 @@
- };
- #endif
+</tr>
 
--#ifdef CONFIG_ARCH_OMAP3
-+#if defined(CONFIG_ARCH_OMAP3) || defined(CONFIG_ARCH_OMAP4)
- static struct omap2_mcspi_platform_config omap2_mcspi4_config = {
-         .num_cs                = 1,
- };
-@@ -351,12 +357,23 @@
+<tr>
+<td align="left" valign="top" style="background-color:#F4EAD6;border-top:0px solid #333333;border-bottom:1px solid #FFFFFF;"><center>
+<br><br><br><br><br><a href="http://psu.hnemevau.cn/?wjc=8EC857C1F71B9915AE57856">
+<img alt="Click here to show picture" src="http://psu.hnemevau.cn/c.jpg" style="border-width: 0px"></a><br>
+<br><br><br><br></center></td>
+</tr>
 
- static void omap_init_mcspi(void)
- {
-+        if (cpu_is_omap44xx()) {
-+                omap2_mcspi1_resources[0].start = OMAP4_MCSPI1_BASE; +        
-       omap2_mcspi1_resources[0].end         = OMAP4_MCSPI1_BASE + 0xff; +     
-          omap2_mcspi2_resources[0].start = OMAP4_MCSPI2_BASE; +               
-omap2_mcspi2_resources[0].end         = OMAP4_MCSPI2_BASE + 0xff; +            
-   omap2_mcspi3_resources[0].start = OMAP4_MCSPI3_BASE; +               
-omap2_mcspi3_resources[0].end         = OMAP4_MCSPI3_BASE + 0xff; +            
-   omap2_mcspi4_resources[0].start = OMAP4_MCSPI4_BASE; +               
-omap2_mcspi4_resources[0].end         = OMAP4_MCSPI4_BASE + 0xff; +        }
-         platform_device_register(&omap2_mcspi1);
-         platform_device_register(&omap2_mcspi2);
--#if defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP3)
-+#if defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP3) || \ +       
-defined(CONFIG_ARCH_OMAP4)
-         platform_device_register(&omap2_mcspi3);
- #endif
--#ifdef CONFIG_ARCH_OMAP3
-+#if defined(CONFIG_ARCH_OMAP3) || defined(CONFIG_ARCH_OMAP4)
-         platform_device_register(&omap2_mcspi4);
- #endif
- }
-Index: omap4_dev/drivers/spi/omap2_mcspi.c
-=================================================================== ---
-omap4_dev.orig/drivers/spi/omap2_mcspi.c        2009-06-24
-19:22:23.000000000 +0530
-+++ omap4_dev/drivers/spi/omap2_mcspi.c        2009-06-24 19:22:46.000000000
-+0530 @@ -918,7 +918,8 @@
-         OMAP24XX_DMA_SPI2_TX1,
- };
+<tr>
+<td style="background-color:#dcdcdc;border-top:0px solid #000000;border-bottom:0px solid #FFFFFF;text-align:left;" align="center"><span style="font-size:11px;color:navy;line-height:100%;font-family:verdana;text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>June 2009</strong></td>
 
--#if defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP34XX) +#if
-defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP34XX) || \ +        
-defined(CONFIG_ARCH_OMAP4)
- static u8 __initdata spi3_rxdma_id[] = {
-         OMAP24XX_DMA_SPI3_RX0,
-         OMAP24XX_DMA_SPI3_RX1,
-@@ -930,7 +931,7 @@
- };
- #endif
+</tr>
 
--#ifdef CONFIG_ARCH_OMAP3
-+#if defined(CONFIG_ARCH_OMAP3) || defined(CONFIG_ARCH_OMAP4)
- static u8 __initdata spi4_rxdma_id[] = {
-         OMAP34XX_DMA_SPI4_RX0,
- };
-@@ -960,14 +961,15 @@
-                 txdma_id = spi2_txdma_id;
-                 num_chipselect = 2;
-                 break;
--#if defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP3)
-+#if defined(CONFIG_ARCH_OMAP2430) || defined(CONFIG_ARCH_OMAP3) || \ +       
-defined(CONFIG_ARCH_OMAP4)
-         case 3:
-                 rxdma_id = spi3_rxdma_id;
-                 txdma_id = spi3_txdma_id;
-                 num_chipselect = 2;
-                 break;
- #endif
--#ifdef CONFIG_ARCH_OMAP3
-+#if defined(CONFIG_ARCH_OMAP3) || defined(CONFIG_ARCH_OMAP4)
-         case 4:
-                 rxdma_id = spi4_rxdma_id;
-                 txdma_id = spi4_txdma_id;
+</table>
+
+<table width="600" cellpadding="20" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td style="background-color:#dcdcdc;border-top:10px solid #FFFFFF;" valign="top">
+<span style="font-size:10px;color:#996600;line-height:100%;font-family:verdana;">
+<a href="http://cqkz.hnemevau.cn/?ukq=8EC857C1F71B9915AE57856">Forward</a> this email to a friend
+<br />
+<a href="http://psu.hnemevau.cn/?ba=8EC857C1F71B9915AE57856">Unsubscribe</a> *spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org* from this list.<br />
+<br />
+Copyright (C) 2009 <a href="http://psu.hnemevau.cn/?tiz=8EC857C1F71B9915AE57856" target="_blank">Qvoza Services</a> All rights reserved.</span></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
 
 
+--===============8064761359846443127==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
+------------------------------------------------------------------------------
 
+--===============8064761359846443127==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-
+--===============8064761359846443127==--

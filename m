@@ -1,9 +1,10 @@
-From: "Mcglasson Vicente" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Webmail service
-Date: Mon, 29 Jun 2009 13:21:27 +0000
-Message-ID: <NXUNIMU20763.71B9915@20119150079.user.veloxzone.com.br>
+From: "EnchereCents" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: =?iso-8859-1?q?Ipod=2CLCD=2CPS3_d=E8s_20_euro?=
+	=?iso-8859-1?q?s?=
+Date: Mon, 29 Jun 2009 16:42:31 +0200 (CEST)
+Message-ID: <km08ut.kymi4y@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8064761359846443127=="
+Content-Type: multipart/mixed; boundary="===============8354779794986925731=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,70 +17,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8064761359846443127==
-Content-Type: text/html; charset="UTF-8"
+--===============8354779794986925731==
+Content-Type: multipart/alternative;
+	boundary="=_e809850922f8202bbc1a3eeec453f7cd"
 
-<html>
-<TITLE>Products Updates</TITLE>
-<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" bgcolor='#4F9AB2' >
-
-<STYLE>
- .headerTop { background-color:#FFCC66; border-top:0px solid #000000; border-bottom:1px solid #FFFFFF; text-align:center; }
- .adminText { font-size:10px; color:#996600; line-height:200%; font-family:verdana; text-decoration:none; }
- .headerBar { background-color:#FFFFFF; border-top:0px solid #333333; border-bottom:10px solid #FFFFFF; }
- .title { font-size:20px; font-weight:bold; color:#CC6600; font-family:arial; line-height:110%; }
- .subTitle { font-size:11px; font-weight:normal; color:#666666; font-style:italic; font-family:arial; }
- td { font-size:12px; color:#000000; line-height:150%; font-family:trebuchet ms; }
- .sideColumn { background-color:#FFFFFF; border-right:1px dashed #CCCCCC; text-align:left; }
- .sideColumnText { font-size:11px; font-weight:normal; color:#999999; font-family:arial; line-height:150%; }
- .sideColumnTitle { font-size:15px; font-weight:bold; color:#333333; font-family:arial; line-height:150%; }
- .footerRow { background-color:#FFFFCC; border-top:10px solid #FFFFFF; }
- .footerText { font-size:10px; color:#996600; line-height:100%; font-family:verdana; }
- a { color:navy; color:navy; color:navy; }
-</STYLE>
-<table width="100%" cellpadding="10" cellspacing="0" bgcolor='#4F9AB2' >
-<tr>
-<td valign="top" align="center">
-
-<table width="600" cellpadding="0" cellspacing="0">
-<tr>
-<td style="background-color:#dcdcdc;border-top:0px solid #000000;border-bottom:1px solid #FFFFFF;text-align:center;" align="center"><span style="font-size:10px;color:navy;line-height:200%;font-family:verdana;text-decoration:none;">Email not displaying correctly? <a href="http://yjmn.hnemevau.cn/?yh=8EC857C1F71B9915AE57856" style="font-size:10px;color:navy;line-height:200%;font-family:verdana;text-decoration:underline;">View it in your browser.</a></span></td>
-
-</tr>
-
-<tr>
-<td align="left" valign="top" style="background-color:#F4EAD6;border-top:0px solid #333333;border-bottom:1px solid #FFFFFF;"><center>
-<br><br><br><br><br><a href="http://psu.hnemevau.cn/?wjc=8EC857C1F71B9915AE57856">
-<img alt="Click here to show picture" src="http://psu.hnemevau.cn/c.jpg" style="border-width: 0px"></a><br>
-<br><br><br><br></center></td>
-</tr>
-
-<tr>
-<td style="background-color:#dcdcdc;border-top:0px solid #000000;border-bottom:0px solid #FFFFFF;text-align:left;" align="center"><span style="font-size:11px;color:navy;line-height:100%;font-family:verdana;text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>June 2009</strong></td>
-
-</tr>
-
-</table>
-
-<table width="600" cellpadding="20" cellspacing="0" bgcolor="#FFFFFF">
-<tr>
-<td style="background-color:#dcdcdc;border-top:10px solid #FFFFFF;" valign="top">
-<span style="font-size:10px;color:#996600;line-height:100%;font-family:verdana;">
-<a href="http://cqkz.hnemevau.cn/?ukq=8EC857C1F71B9915AE57856">Forward</a> this email to a friend
-<br />
-<a href="http://psu.hnemevau.cn/?ba=8EC857C1F71B9915AE57856">Unsubscribe</a> *spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org* from this list.<br />
-<br />
-Copyright (C) 2009 <a href="http://psu.hnemevau.cn/?tiz=8EC857C1F71B9915AE57856" target="_blank">Qvoza Services</a> All rights reserved.</span></td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
-</body>
-</html>
+--=_e809850922f8202bbc1a3eeec453f7cd
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
---===============8064761359846443127==
+--=_e809850922f8202bbc1a3eeec453f7cd
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html xmlns=3D"http://www.=
+w3.org/1999/xhtml">=0D<head><title>Document sans nom</title>=0D<meta http-e=
+quiv=3DContent-Type content=3D"text/html; charset=3Diso-8859-1">=0D</head>=
+=0D<body><div align=3D"center"><font size=3D"2" face=3D"arial"><a href=3D"h=
+ttp://cdirecte.r7g.com/php/emailing/view_mail.php?CODE=3D07YVJEJN_268449&HA=
+SH=3De04a449cbb310a540a4acde3c023c606">Si vous ne pouvez pas consulter corr=
+ectement ce message, suivez ce lien</a></font></div><br>=0D<table cellspaci=
+ng=3D"0" cellpadding=3D"0" width=3D"200" align=3D"center" border=3D"0">=0D<=
+tbody>=0D<tr>=0D<td style=3D"TEXT-ALIGN: center">&nbsp;</td>=0D</tr>=0D<tr>=
+=0D<td style=3D"TEXT-ALIGN: center"><a href=3D"http://www.encheresprice.com=
+/" target=3D"_blank"><img src=3D"http://www.uploadgratuit.com/uploads/newsl=
+etterdujourencheresprice.gif" /></a></td>=0D</tr>=0D<tr>=0D<td style=3D"TEX=
+T-ALIGN: center">&nbsp;</td>=0D</tr>=0D</tbody>=0D</table><br />=0D<br><br>=
+<br><div align=3D"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-s=
+erif" color=3D"#999999">
+Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
+acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://cdirecte.r7g.com=
+/AA07YVJEJN_268449/877">ici</a></font></div><img src=3D"http://cdirecte.r7g=
+.com/ZZ07YVJEJN_268449.png" /></body></html>
+--=_e809850922f8202bbc1a3eeec453f7cd--
+
+
+
+--===============8354779794986925731==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -87,7 +63,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============8064761359846443127==
+--===============8354779794986925731==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -98,4 +74,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8064761359846443127==--
+--===============8354779794986925731==--

@@ -1,8 +1,7 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch/rfc 2/2] spi: spi_gpio impements
-	TX-only/RX-only
-Date: Thu, 2 Jul 2009 16:36:14 -0700
-Message-ID: <200907021636.14343.david-b@pacbell.net>
+Subject: [patch/rfc 1/2] spi: support TX-only/RX-only
+Date: Thu, 2 Jul 2009 16:32:53 -0700
+Message-ID: <200907021632.53938.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -20,193 +19,149 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+From: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 
-There are some boards that cut corners on the SPI standard and omit one
-of the two data wires (MOSI or MISO) when connecting simple chips which
-don't need them.  This is distinct from SPI_3WIRE, which also has just
-one data line but uses that for bidirectional transfers.
+Support two new half-duplex SPI implementation restrictions, for links
+that talk to TX-only or RX-only devices.  (Existing half-duplex flavors
+support both transfer directions, just not at the same time.)
 
-One example of such board is a NCP ARM S3C6410 based machine.
+Move spi_async() into the spi.c core, and stop inlining it.  Then make
+that function perform error checks and reject messages that demand more
+than the underlying controller can support.
 
-This patch adds support for such non-standard configuration in GPIO-based
-SPI controller.  It has been tested in configuration without MISO pin.
+Based on a patch from Marek Szyprowski which did this only for the
+bitbanged GPIO driver.
 
-[ dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org: split SPI core bits, compile fix, use
-gpio_is_valid instead of designated GPIO literals, make sure half-duplex
-flag is set too; add comment about those HDX modes; error checks ]
-
-Reviewed-by: Kyungmin Park <kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Cc: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- drivers/spi/spi_gpio.c       |   64 ++++++++++++++++++++++++++++++-----------
- include/linux/spi/spi_gpio.h |   10 +++---
- 2 files changed, 54 insertions(+), 20 deletions(-)
+Marek, please test these two to make sure they still work on
+your hardware.  If they do, I'll send them on...
 
---- a/drivers/spi/spi_gpio.c
-+++ b/drivers/spi/spi_gpio.c
-@@ -109,12 +109,16 @@ static inline void setsck(const struct s
- 
- static inline void setmosi(const struct spi_device *spi, int is_on)
- {
--	gpio_set_value(SPI_MOSI_GPIO, is_on);
-+	if (gpio_is_valid(SPI_MOSI_GPIO))
-+		gpio_set_value(SPI_MOSI_GPIO, is_on);
+ drivers/spi/spi.c       |   57 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h |   39 ++-----------------------------
+ 2 files changed, 60 insertions(+), 36 deletions(-)
+
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -639,6 +639,63 @@ int spi_setup(struct spi_device *spi)
  }
+ EXPORT_SYMBOL_GPL(spi_setup);
  
- static inline int getmiso(const struct spi_device *spi)
- {
--	return !!gpio_get_value(SPI_MISO_GPIO);
-+	if (gpio_is_valid(SPI_MISO_GPIO))
-+		return !!gpio_get_value(SPI_MISO_GPIO);
-+	else
-+		return 0;
- }
- 
- #undef pdata
-@@ -228,24 +232,44 @@ static int __init spi_gpio_alloc(unsigne
- 			value = gpio_direction_input(pin);
- 		else
- 			value = gpio_direction_output(pin, 0);
-+		if (value)
-+			gpio_free(pin);
- 	}
- 	return value;
- }
- 
- static int __init
--spi_gpio_request(struct spi_gpio_platform_data *pdata, const char *label)
-+spi_gpio_request(struct spi_gpio_platform_data *pdata,
-+		const char *label, u16 *res_flags)
- {
- 	int value;
- 
- 	/* NOTE:  SPI_*_GPIO symbols may reference "pdata" */
- 
--	value = spi_gpio_alloc(SPI_MOSI_GPIO, label, false);
--	if (value)
--		goto done;
-+	/*
-+	 * This supports some half-duplex signal-minimized flavors of
-+	 * SPI, omitting MOSI (for RX only) or MISO (for TX only).
-+	 *
-+	 * REVISIT it could also be made to support SPI_3WIRE, which
-+	 * also uses one data pin ... for both directions, switching
-+	 * from output to input as needed for each spi_transfer.
++/**
++ * spi_async - asynchronous SPI transfer
++ * @spi: device with which data will be exchanged
++ * @message: describes the data transfers, including completion callback
++ * Context: any (irqs may be blocked, etc)
++ *
++ * This call may be used in_irq and other contexts which can't sleep,
++ * as well as from task contexts which can sleep.
++ *
++ * The completion callback is invoked in a context which can't sleep.
++ * Before that invocation, the value of message->status is undefined.
++ * When the callback is issued, message->status holds either zero (to
++ * indicate complete success) or a negative error code.  After that
++ * callback returns, the driver which issued the transfer request may
++ * deallocate the associated memory; it's no longer in use by any SPI
++ * core or controller driver code.
++ *
++ * Note that although all messages to a spi_device are handled in
++ * FIFO order, messages may go to different devices in other orders.
++ * Some device might be higher priority, or have various "hard" access
++ * time requirements, for example.
++ *
++ * On detection of any fault during the transfer, processing of
++ * the entire message is aborted, and the device is deselected.
++ * Until returning from the associated message completion callback,
++ * no other spi_message queued to that device will be processed.
++ * (This rule applies equally to all the synchronous transfer calls,
++ * which are wrappers around this core asynchronous primitive.)
++ */
++int spi_async(struct spi_device *spi, struct spi_message *message)
++{
++	struct spi_master *master = spi->master;
++
++	/* Half-duplex links include original MicroWire, and ones with
++	 * only one data pin like SPI_3WIRE (switches direction) or
++	 * where the MOSI or MISO signal is missing.
 +	 */
-+	if (gpio_is_valid(SPI_MOSI_GPIO)) {
-+		value = spi_gpio_alloc(SPI_MOSI_GPIO, label, false);
-+		if (value)
-+			goto done;
-+	} else {
-+		if (!gpio_is_valid(SPI_MISO_GPIO))
-+			return -ENODEV;
-+		*res_flags |= SPI_MASTER_HALF_DUPLEX | SPI_MASTER_NO_TX;
++	if ((master->flags & SPI_MASTER_HALF_DUPLEX)
++			|| (spi->mode & SPI_3WIRE)) {
++		struct spi_transfer *xfer;
++		unsigned flags = master->flags;
++
++		list_for_each_entry(xfer, &message->transfers, transfer_list) {
++			if (xfer->rx_buf && xfer->tx_buf)
++				return -EINVAL;
++			if ((flags & SPI_MASTER_NO_TX) && xfer->tx_buf)
++				return -EINVAL;
++			if ((flags & SPI_MASTER_NO_RX) && xfer->rx_buf)
++				return -EINVAL;
++		}
 +	}
++
++	message->spi = spi;
++	return master->transfer(spi, message);
++}
++EXPORT_SYMBOL_GPL(spi_async);
++
  
--	value = spi_gpio_alloc(SPI_MISO_GPIO, label, true);
--	if (value)
--		goto free_mosi;
-+	if (gpio_is_valid(SPI_MISO_GPIO)) {
-+		value = spi_gpio_alloc(SPI_MISO_GPIO, label, true);
-+		if (value)
-+			goto free_mosi;
-+	} else
-+		*res_flags |= SPI_MASTER_HALF_DUPLEX | SPI_MASTER_NO_RX;
+ /*-------------------------------------------------------------------------*/
  
- 	value = spi_gpio_alloc(SPI_SCK_GPIO, label, false);
- 	if (value)
-@@ -254,9 +278,11 @@ spi_gpio_request(struct spi_gpio_platfor
- 	goto done;
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -253,6 +253,8 @@ struct spi_master {
+ 	/* other constraints relevant to this driver */
+ 	u16			flags;
+ #define SPI_MASTER_HALF_DUPLEX	BIT(0)		/* can't do full duplex */
++#define SPI_MASTER_NO_RX	BIT(1)		/* can't do buffer read */
++#define SPI_MASTER_NO_TX	BIT(2)		/* can't do buffer write */
  
- free_miso:
--	gpio_free(SPI_MISO_GPIO);
-+	if (gpio_is_valid(SPI_MISO_GPIO))
-+		gpio_free(SPI_MISO_GPIO);
- free_mosi:
--	gpio_free(SPI_MOSI_GPIO);
-+	if (gpio_is_valid(SPI_MOSI_GPIO))
-+		gpio_free(SPI_MOSI_GPIO);
- done:
- 	return value;
+ 	/* Setup mode and clock, etc (spi driver may call many times).
+ 	 *
+@@ -533,42 +535,7 @@ static inline void spi_message_free(stru
  }
-@@ -267,6 +293,7 @@ static int __init spi_gpio_probe(struct 
- 	struct spi_master		*master;
- 	struct spi_gpio			*spi_gpio;
- 	struct spi_gpio_platform_data	*pdata;
-+	u16				master_flags = 0;
  
- 	pdata = pdev->dev.platform_data;
- #ifdef GENERIC_BITBANG
-@@ -274,7 +301,7 @@ static int __init spi_gpio_probe(struct 
- 		return -ENODEV;
- #endif
+ extern int spi_setup(struct spi_device *spi);
+-
+-/**
+- * spi_async - asynchronous SPI transfer
+- * @spi: device with which data will be exchanged
+- * @message: describes the data transfers, including completion callback
+- * Context: any (irqs may be blocked, etc)
+- *
+- * This call may be used in_irq and other contexts which can't sleep,
+- * as well as from task contexts which can sleep.
+- *
+- * The completion callback is invoked in a context which can't sleep.
+- * Before that invocation, the value of message->status is undefined.
+- * When the callback is issued, message->status holds either zero (to
+- * indicate complete success) or a negative error code.  After that
+- * callback returns, the driver which issued the transfer request may
+- * deallocate the associated memory; it's no longer in use by any SPI
+- * core or controller driver code.
+- *
+- * Note that although all messages to a spi_device are handled in
+- * FIFO order, messages may go to different devices in other orders.
+- * Some device might be higher priority, or have various "hard" access
+- * time requirements, for example.
+- *
+- * On detection of any fault during the transfer, processing of
+- * the entire message is aborted, and the device is deselected.
+- * Until returning from the associated message completion callback,
+- * no other spi_message queued to that device will be processed.
+- * (This rule applies equally to all the synchronous transfer calls,
+- * which are wrappers around this core asynchronous primitive.)
+- */
+-static inline int
+-spi_async(struct spi_device *spi, struct spi_message *message)
+-{
+-	message->spi = spi;
+-	return spi->master->transfer(spi, message);
+-}
++extern int spi_async(struct spi_device *spi, struct spi_message *message);
  
--	status = spi_gpio_request(pdata, dev_name(&pdev->dev));
-+	status = spi_gpio_request(pdata, dev_name(&pdev->dev), &master_flags);
- 	if (status < 0)
- 		return status;
+ /*---------------------------------------------------------------------------*/
  
-@@ -290,6 +317,7 @@ static int __init spi_gpio_probe(struct 
- 	if (pdata)
- 		spi_gpio->pdata = *pdata;
- 
-+	master->flags = master_flags;
- 	master->bus_num = pdev->id;
- 	master->num_chipselect = SPI_N_CHIPSEL;
- 	master->setup = spi_gpio_setup;
-@@ -308,8 +336,10 @@ static int __init spi_gpio_probe(struct 
- 	if (status < 0) {
- 		spi_master_put(spi_gpio->bitbang.master);
- gpio_free:
--		gpio_free(SPI_MISO_GPIO);
--		gpio_free(SPI_MOSI_GPIO);
-+		if (gpio_is_valid(SPI_MISO_GPIO))
-+			gpio_free(SPI_MISO_GPIO);
-+		if (gpio_is_valid(SPI_MOSI_GPIO))
-+			gpio_free(SPI_MOSI_GPIO);
- 		gpio_free(SPI_SCK_GPIO);
- 		spi_master_put(master);
- 	}
-@@ -332,8 +362,10 @@ static int __exit spi_gpio_remove(struct
- 
- 	platform_set_drvdata(pdev, NULL);
- 
--	gpio_free(SPI_MISO_GPIO);
--	gpio_free(SPI_MOSI_GPIO);
-+	if (gpio_is_valid(SPI_MISO_GPIO))
-+		gpio_free(SPI_MISO_GPIO);
-+	if (gpio_is_valid(SPI_MOSI_GPIO))
-+		gpio_free(SPI_MOSI_GPIO);
- 	gpio_free(SPI_SCK_GPIO);
- 
- 	return status;
---- a/include/linux/spi/spi_gpio.h
-+++ b/include/linux/spi/spi_gpio.h
-@@ -38,8 +38,10 @@
- /**
-  * struct spi_gpio_platform_data - parameter for bitbanged SPI master
-  * @sck: number of the GPIO used for clock output
-- * @mosi: number of the GPIO used for Master Output, Slave In (MOSI) data
-- * @miso: number of the GPIO used for Master Input, Slave Output (MISO) data
-+ * @mosi: Number of the GPIO used for Master Output, Slave In (MOSI) data.
-+ *	If master output is unavailable, an invalid GPIO number like -EINVAL.
-+ * @miso: Number of the GPIO used for Master Input, Slave Output (MISO) data.
-+ *	If master input is unavailable, an invalid GPIO number like -EINVAL.
-  * @num_chipselect: how many slaves to allow
-  *
-  * All GPIO signals used with the SPI bus managed through this driver
-@@ -57,8 +59,8 @@
-  */
- struct spi_gpio_platform_data {
- 	unsigned	sck;
--	unsigned	mosi;
--	unsigned	miso;
-+	int		mosi;
-+	int		miso;
- 
- 	u16		num_chipselect;
- };
 
 ------------------------------------------------------------------------------

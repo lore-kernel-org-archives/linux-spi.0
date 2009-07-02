@@ -1,12 +1,13 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch/rfc 1/2] spi: support TX-only/RX-only
-Date: Thu, 2 Jul 2009 16:32:53 -0700
-Message-ID: <200907021632.53938.david-b@pacbell.net>
+Subject: [patch 2/2] spi: omap2_mcspi use BIT(n)
+Date: Thu, 2 Jul 2009 16:30:23 -0700
+Message-ID: <200907021630.23641.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Jouni Hogander <jouni.hogander-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,149 +20,85 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Author: Jouni Hogander <jouni.hogander-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
 
-Support two new half-duplex SPI implementation restrictions, for links
-that talk to TX-only or RX-only devices.  (Existing half-duplex flavors
-support both transfer directions, just not at the same time.)
+Convert bit shifted values into BIT format
 
-Move spi_async() into the spi.c core, and stop inlining it.  Then make
-that function perform error checks and reject messages that demand more
-than the underlying controller can support.
-
-Based on a patch from Marek Szyprowski which did this only for the
-bitbanged GPIO driver.
-
-Cc: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Jouni Hogander <jouni.hogander-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
-Marek, please test these two to make sure they still work on
-your hardware.  If they do, I'll send them on...
+ drivers/spi/omap2_mcspi.c |   50 ++++++++++++++++++++++----------------------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
- drivers/spi/spi.c       |   57 ++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |   39 ++-----------------------------
- 2 files changed, 60 insertions(+), 36 deletions(-)
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -59,40 +59,40 @@
+ 
+ /* per-register bitmasks: */
+ 
+-#define OMAP2_MCSPI_SYSCONFIG_SMARTIDLE	(2 << 3)
+-#define OMAP2_MCSPI_SYSCONFIG_ENAWAKEUP	(1 << 2)
+-#define OMAP2_MCSPI_SYSCONFIG_AUTOIDLE	(1 << 0)
+-#define OMAP2_MCSPI_SYSCONFIG_SOFTRESET	(1 << 1)
++#define OMAP2_MCSPI_SYSCONFIG_SMARTIDLE	BIT(4)
++#define OMAP2_MCSPI_SYSCONFIG_ENAWAKEUP	BIT(2)
++#define OMAP2_MCSPI_SYSCONFIG_AUTOIDLE	BIT(0)
++#define OMAP2_MCSPI_SYSCONFIG_SOFTRESET	BIT(1)
+ 
+-#define OMAP2_MCSPI_SYSSTATUS_RESETDONE	(1 << 0)
++#define OMAP2_MCSPI_SYSSTATUS_RESETDONE	BIT(0)
+ 
+-#define OMAP2_MCSPI_MODULCTRL_SINGLE	(1 << 0)
+-#define OMAP2_MCSPI_MODULCTRL_MS	(1 << 2)
+-#define OMAP2_MCSPI_MODULCTRL_STEST	(1 << 3)
++#define OMAP2_MCSPI_MODULCTRL_SINGLE	BIT(0)
++#define OMAP2_MCSPI_MODULCTRL_MS	BIT(2)
++#define OMAP2_MCSPI_MODULCTRL_STEST	BIT(3)
+ 
+-#define OMAP2_MCSPI_CHCONF_PHA		(1 << 0)
+-#define OMAP2_MCSPI_CHCONF_POL		(1 << 1)
++#define OMAP2_MCSPI_CHCONF_PHA		BIT(0)
++#define OMAP2_MCSPI_CHCONF_POL		BIT(1)
+ #define OMAP2_MCSPI_CHCONF_CLKD_MASK	(0x0f << 2)
+-#define OMAP2_MCSPI_CHCONF_EPOL		(1 << 6)
++#define OMAP2_MCSPI_CHCONF_EPOL		BIT(6)
+ #define OMAP2_MCSPI_CHCONF_WL_MASK	(0x1f << 7)
+-#define OMAP2_MCSPI_CHCONF_TRM_RX_ONLY	(0x01 << 12)
+-#define OMAP2_MCSPI_CHCONF_TRM_TX_ONLY	(0x02 << 12)
++#define OMAP2_MCSPI_CHCONF_TRM_RX_ONLY	BIT(12)
++#define OMAP2_MCSPI_CHCONF_TRM_TX_ONLY	BIT(13)
+ #define OMAP2_MCSPI_CHCONF_TRM_MASK	(0x03 << 12)
+-#define OMAP2_MCSPI_CHCONF_DMAW		(1 << 14)
+-#define OMAP2_MCSPI_CHCONF_DMAR		(1 << 15)
+-#define OMAP2_MCSPI_CHCONF_DPE0		(1 << 16)
+-#define OMAP2_MCSPI_CHCONF_DPE1		(1 << 17)
+-#define OMAP2_MCSPI_CHCONF_IS		(1 << 18)
+-#define OMAP2_MCSPI_CHCONF_TURBO	(1 << 19)
+-#define OMAP2_MCSPI_CHCONF_FORCE	(1 << 20)
++#define OMAP2_MCSPI_CHCONF_DMAW		BIT(14)
++#define OMAP2_MCSPI_CHCONF_DMAR		BIT(15)
++#define OMAP2_MCSPI_CHCONF_DPE0		BIT(16)
++#define OMAP2_MCSPI_CHCONF_DPE1		BIT(17)
++#define OMAP2_MCSPI_CHCONF_IS		BIT(18)
++#define OMAP2_MCSPI_CHCONF_TURBO	BIT(19)
++#define OMAP2_MCSPI_CHCONF_FORCE	BIT(20)
+ 
+-#define OMAP2_MCSPI_CHSTAT_RXS		(1 << 0)
+-#define OMAP2_MCSPI_CHSTAT_TXS		(1 << 1)
+-#define OMAP2_MCSPI_CHSTAT_EOT		(1 << 2)
++#define OMAP2_MCSPI_CHSTAT_RXS		BIT(0)
++#define OMAP2_MCSPI_CHSTAT_TXS		BIT(1)
++#define OMAP2_MCSPI_CHSTAT_EOT		BIT(2)
+ 
+-#define OMAP2_MCSPI_CHCTRL_EN		(1 << 0)
++#define OMAP2_MCSPI_CHCTRL_EN		BIT(0)
+ 
+-#define OMAP2_MCSPI_WAKEUPENABLE_WKEN	(1 << 0)
++#define OMAP2_MCSPI_WAKEUPENABLE_WKEN	BIT(0)
+ 
+ /* We have 2 DMA channels per CS, one for RX and one for TX */
+ struct omap2_mcspi_dma {
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -639,6 +639,63 @@ int spi_setup(struct spi_device *spi)
- }
- EXPORT_SYMBOL_GPL(spi_setup);
- 
-+/**
-+ * spi_async - asynchronous SPI transfer
-+ * @spi: device with which data will be exchanged
-+ * @message: describes the data transfers, including completion callback
-+ * Context: any (irqs may be blocked, etc)
-+ *
-+ * This call may be used in_irq and other contexts which can't sleep,
-+ * as well as from task contexts which can sleep.
-+ *
-+ * The completion callback is invoked in a context which can't sleep.
-+ * Before that invocation, the value of message->status is undefined.
-+ * When the callback is issued, message->status holds either zero (to
-+ * indicate complete success) or a negative error code.  After that
-+ * callback returns, the driver which issued the transfer request may
-+ * deallocate the associated memory; it's no longer in use by any SPI
-+ * core or controller driver code.
-+ *
-+ * Note that although all messages to a spi_device are handled in
-+ * FIFO order, messages may go to different devices in other orders.
-+ * Some device might be higher priority, or have various "hard" access
-+ * time requirements, for example.
-+ *
-+ * On detection of any fault during the transfer, processing of
-+ * the entire message is aborted, and the device is deselected.
-+ * Until returning from the associated message completion callback,
-+ * no other spi_message queued to that device will be processed.
-+ * (This rule applies equally to all the synchronous transfer calls,
-+ * which are wrappers around this core asynchronous primitive.)
-+ */
-+int spi_async(struct spi_device *spi, struct spi_message *message)
-+{
-+	struct spi_master *master = spi->master;
-+
-+	/* Half-duplex links include original MicroWire, and ones with
-+	 * only one data pin like SPI_3WIRE (switches direction) or
-+	 * where the MOSI or MISO signal is missing.
-+	 */
-+	if ((master->flags & SPI_MASTER_HALF_DUPLEX)
-+			|| (spi->mode & SPI_3WIRE)) {
-+		struct spi_transfer *xfer;
-+		unsigned flags = master->flags;
-+
-+		list_for_each_entry(xfer, &message->transfers, transfer_list) {
-+			if (xfer->rx_buf && xfer->tx_buf)
-+				return -EINVAL;
-+			if ((flags & SPI_MASTER_NO_TX) && xfer->tx_buf)
-+				return -EINVAL;
-+			if ((flags & SPI_MASTER_NO_RX) && xfer->rx_buf)
-+				return -EINVAL;
-+		}
-+	}
-+
-+	message->spi = spi;
-+	return master->transfer(spi, message);
-+}
-+EXPORT_SYMBOL_GPL(spi_async);
-+
- 
- /*-------------------------------------------------------------------------*/
- 
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -253,6 +253,8 @@ struct spi_master {
- 	/* other constraints relevant to this driver */
- 	u16			flags;
- #define SPI_MASTER_HALF_DUPLEX	BIT(0)		/* can't do full duplex */
-+#define SPI_MASTER_NO_RX	BIT(1)		/* can't do buffer read */
-+#define SPI_MASTER_NO_TX	BIT(2)		/* can't do buffer write */
- 
- 	/* Setup mode and clock, etc (spi driver may call many times).
- 	 *
-@@ -533,42 +535,7 @@ static inline void spi_message_free(stru
- }
- 
- extern int spi_setup(struct spi_device *spi);
--
--/**
-- * spi_async - asynchronous SPI transfer
-- * @spi: device with which data will be exchanged
-- * @message: describes the data transfers, including completion callback
-- * Context: any (irqs may be blocked, etc)
-- *
-- * This call may be used in_irq and other contexts which can't sleep,
-- * as well as from task contexts which can sleep.
-- *
-- * The completion callback is invoked in a context which can't sleep.
-- * Before that invocation, the value of message->status is undefined.
-- * When the callback is issued, message->status holds either zero (to
-- * indicate complete success) or a negative error code.  After that
-- * callback returns, the driver which issued the transfer request may
-- * deallocate the associated memory; it's no longer in use by any SPI
-- * core or controller driver code.
-- *
-- * Note that although all messages to a spi_device are handled in
-- * FIFO order, messages may go to different devices in other orders.
-- * Some device might be higher priority, or have various "hard" access
-- * time requirements, for example.
-- *
-- * On detection of any fault during the transfer, processing of
-- * the entire message is aborted, and the device is deselected.
-- * Until returning from the associated message completion callback,
-- * no other spi_message queued to that device will be processed.
-- * (This rule applies equally to all the synchronous transfer calls,
-- * which are wrappers around this core asynchronous primitive.)
-- */
--static inline int
--spi_async(struct spi_device *spi, struct spi_message *message)
--{
--	message->spi = spi;
--	return spi->master->transfer(spi, message);
--}
-+extern int spi_async(struct spi_device *spi, struct spi_message *message);
- 
- /*---------------------------------------------------------------------------*/
- 
 
 ------------------------------------------------------------------------------

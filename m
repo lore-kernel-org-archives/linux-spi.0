@@ -1,15 +1,16 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: s3c24xx SPI without Bitbang interface?
-Date: Thu, 2 Jul 2009 18:43:22 -0700
-Message-ID: <200907021843.22688.david-b@pacbell.net>
-References: <1b68c6790906291827i1f7bce49q520e9950ba623e9d@mail.gmail.com>
+Subject: Re: [PATCH] This adds support for SPI slave
+	controller drivers
+Date: Thu, 2 Jul 2009 18:45:46 -0700
+Message-ID: <200907021845.46422.david-b@pacbell.net>
+References: <1244828653.3513.16.camel@ubuntu-vmware>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1b68c6790906291827i1f7bce49q520e9950ba623e9d-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1244828653.3513.16.camel@ubuntu-vmware>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,32 +22,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 29 June 2009, jassi brar wrote:
-> Hello,
->   I see drivers/spi/spi_s3c24xx.c uses bitbang i/f eventhough 24xx has a
-> dedicated SPI controller. Wasn't bitbang is supposed to be for SOCs which
-> don't have a SPI controller.
+On Friday 12 June 2009, Ken Mills wrote:
+> Signed-off-by: Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> ---
+> =A0drivers/spi/spi.c =A0 =A0 =A0 | =A0368 +++++++++++++++++++++++++++++++=
++++++++++++-----
+> =A0include/linux/spi/spi.h | =A0100 ++++++++++++-
+> =A02 files changed, 427 insertions(+), 41 deletions(-)
 
-Yes and no.  The framework is a bit more general than that;
-have a look at the spi_bitbang.c code.  The lowest level
-has various options for per-word I/O, with bitbanging as
-the default; but you can use hardware shift registers too,
-if you like.  And some folk *do* like.
+Comments from anyone?
 
-It turns out to be handy to get a driver working quickly,
-when "have it working yesterday" is more important than
-just "have it working really fast".
+I'm going to stick this into my review queue, but it
+may sit there for a while yet while I catch up...
 
 
->  I was wondering why cudn't we make it work without the Bitbang abstraction?
-> Any potential issues that I am failing to fathom?
-> And, s3c24xx.c doesn't make use of DMA. Any particular reason against it?
 
-I don't know those s3c parts, but I'd presume the main
-reasons boil down to nobody spending time to create a
-speedy DMA-centric driver.
-
-- Dave
-
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---

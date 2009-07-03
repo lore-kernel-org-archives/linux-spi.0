@@ -1,49 +1,37 @@
 From: David Brownell <david-b@pacbell.net>
-Subject: Re: [RESEND][PATCH 0/2] McSPI Slave and DMA ,FIFO support
-Date: Thu, 2 Jul 2009 17:05:17 -0700
-Message-ID: <200907021705.18048.david-b@pacbell.net>
-References: <42120.10.24.255.18.1245765231.squirrel@dbdmail.itg.ti.com>
+Subject: Re: [RESEND][PATCH 2/2] McSPI Slave and DMA,FIFO support
+Date: Thu, 2 Jul 2009 17:22:02 -0700
+Message-ID: <200907021722.02459.david-b@pacbell.net>
+References: <42150.10.24.255.18.1245765248.squirrel@dbdmail.itg.ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-omap@vger.kernel.org, spi-devel-general@lists.sourceforge.net
+Cc: spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
 To: "Hemanth V" <hemanthv@ti.com>
 Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <42120.10.24.255.18.1245765231.squirrel@dbdmail.itg.ti.com>
+In-Reply-To: <42150.10.24.255.18.1245765248.squirrel@dbdmail.itg.ti.com>
 Content-Disposition: inline
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Tuesday 23 June 2009, Hemanth V wrote:
-> This series of 2 patches adds support for McSPI slave
-> and DMA,FIFO. It incorporates review comments from
-> Kevin Hilman and Tony Lindgren
+> This patch adds support for McSPI slave and FIFO. DMA and FIFO
+> could be enabled together for better throughput.
 > 
-> 
-> PATCH[1/2]: Changes to arch specific files
-> PATCH[2/2]: omap2_mcspi.c file changes
+> This has a dependency on patch
+> [RESEND][PATCH 1/2] McSPI Slave and DMA,FIFO support
 
-Needs some changes yet:
+... in this case I'd think they would better be part of
+a single patch.
 
-  - Split out slave support as a separate patch.
-    That's not really supported by the interface yet.
+However, anything related to SPI slave support should
+be separated entirely from FIFO support.
 
-  - You sent the two patches with the same $SUBJECT;
-    which indicates they are the *SAME* patch ...
-    either make it be one patch, or change $SUBJECT
-    (perhaps to match what you used above).
+Ditto anything adding more SPI_DEBUG support.
 
-The stuff in #1 should have Tony's ack.
-
-
-> 
->  arch/arm/mach-omap2/devices.c           |    5
->  arch/arm/plat-omap/include/mach/mcspi.h |   16 +
->  drivers/spi/omap2_mcspi.c               |  353
-> ++++++++++++++++++++++++++++++++++++++++------
-> 
-> 
-> 
+Oh, and use the BIT(n) syntax not (1 << n) in the new
+constants you define... the patch making this driver
+use that style finally went upstream.
 
 

@@ -1,65 +1,64 @@
-From: "Shilimkar, Santosh" <santosh.shilimkar@ti.com>
-Subject: RE: [PATCH]OMAP4: McSPI Support for OMAP_4430
-Date: Fri, 3 Jul 2009 10:21:52 +0530
-Message-ID: <EAF47CD23C76F840A9E7FCE10091EFAB02B55019A3@dbde02.ent.ti.com>
-References: <38905.192.168.10.89.1246280107.squirrel@dbdmail.itg.ti.com>
- <200907021727.12048.david-b@pacbell.net>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [spi-devel-general] [PATCH v4] powerpc/5200: Add mpc5200-spi
+	(non-PSC) device driver
+Date: Fri, 3 Jul 2009 01:01:24 -0600
+Message-ID: <fa686aa40907030001r731d3d29h3873803d588cdf15@mail.gmail.com>
+References: <20090618025030.12363.69402.stgit@localhost.localdomain>
+	<20090618065814.GA12942@pengutronix.de> <fa686aa40906180635g45724119x99cd4d1e4ede59f9@mail.gmail.com>
+	<20090618142610.GC10629@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-To: David Brownell <david-b@pacbell.net>,
-	"Syed, Rafiuddin" <rafiuddin.syed@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <200907021727.12048.david-b@pacbell.net>
-Content-Language: en-US
-Sender: linux-omap-owner@vger.kernel.org
+Cc: linuxppc-dev@ozlabs.org,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, jonsmirl@gmail.com
+To: Wolfram Sang <w.sang@pengutronix.de>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756409AbZGCHBu@vger.kernel.org>
+In-Reply-To: <20090618142610.GC10629@pengutronix.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> -----Original Message-----
-> From: linux-omap-owner@vger.kernel.org=20
-> [mailto:linux-omap-owner@vger.kernel.org] On Behalf Of David Brownell
-> Sent: Friday, July 03, 2009 5:57 AM
-> To: Syed, Rafiuddin
-> Cc: spi-devel-general@lists.sourceforge.net;=20
-> linux-omap@vger.kernel.org
-> Subject: Re: [PATCH]OMAP4: McSPI Support for OMAP_4430
->=20
-> On Monday 29 June 2009, Syed Rafiuddin wrote:
-> > This patch adds McSPI support for OMAP4430 SDP platform.=20
-> All the base addresses
-> > are changed between OMAP1/2/3 and OMAP4.The fields of the=20
-> resource structures
-> > are filled at runtime to have McSPI support on OMAP4.
-> >=20
-> > Signed-off-by: Syed Rafiuddin <rafiuddin.syed@ti.com>
-> > Acked-by: Kevin Hilman <khilman@deeprootsystems.com>
-> > Acked-by: Tony Lindgren <tony@atomide.com>
-> > Acked-by: Santosh Shilimkar <santosh.shilimkar@ti.com>
->=20
-> I'd add my ack if this patch weren't mangled.  :)
->=20
-> > ---
-> > =A0arch/arm/mach-omap2/devices.c | =A0 25 +++++++++++++++++++++----
->=20
-> Since *most* of this is arch/arm stuff, I think this patch
-> should go to mainine through Tony.  That's the best way to
-> make sure it doesn't cause conflicts with other patches he
-> sends.
+On Thu, Jun 18, 2009 at 8:26 AM, Wolfram Sang<w.sang@pengutronix.de> wr=
+ote:
+>> There used to be a sysfs interface for dumping these, but it was an
+>> ugly misuse. =A0I'd like to leave these in. =A0I still have the sysf=
+s bits
+>> in a private patch and I'm going to rework them for debugfs.
+>
+> Okay. Maybe a comment stating the future use will be nice.
 
-Tony suggested that this patch can be sent through SPI mailing list.
-Refer this thread.
-http://www.mail-archive.com/linux-omap@vger.kernel.org/msg14011.html=20
->=20
-> > =A0drivers/spi/omap2_mcspi.c =A0 =A0 | =A0 10 ++++++----
-> > =A02 files changed, 27 insertions(+), 8 deletions(-)
->=20
-> None of this seemed particularly controversial.
->=20
---
-To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+okay
+
+>> > But I wonder more about the usage of the SS pin and if this chipse=
+l is needed
+>> > at all (sadly I cannot test as I don't have any board with SPI con=
+nected to
+>> > that device). You define the SS-pin as output, but do not set the =
+SSOE-bit.
+>> > More, you use the MODF-feature, so the SS-pin should be defined as=
+ input?
+>> > According to Table 17.3 in the PM, you have that pin defined as ge=
+neric purpose
+>> > output.
+>>
+>> That's right. =A0The SS handling by the SPI device is completely
+>> useless, so this driver uses it as a GPIO and asserts it manually.
+>
+> That definately needs a comment :D (perhaps with some more details if=
+ you know them).
+>
+>> The MODF irq is probably irrelevant, but I'd like to leave it in for
+>> completeness.
+>
+> But it won't work if the pin is set to output, no?
+
+yes
+
+> Are you sure there are no side-effects?
+
+I'm sure.
+
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

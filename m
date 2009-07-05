@@ -1,9 +1,9 @@
-From: "Conseil Defiscalisation" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: C'est le moment de devenir proprietaire
-Date: Sun,  5 Jul 2009 13:28:57 +0200 (CEST)
-Message-ID: <kmb3w8.ll2qfi@front.ta271.com>
+From: "Mearing Stanton" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Arranging time by voting
+Date: Sun, 05 Jul 2009 14:17:09 +0000
+Message-ID: <NSREQMI25321.C795F56@[189.2.106.146]>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7419322722006175663=="
+Content-Type: multipart/mixed; boundary="===============7051794013433781276=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,41 +16,73 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7419322722006175663==
-Content-Type: multipart/alternative;
-	boundary="=_4a8f4caacb26b739f1021e4d6d1e02d3"
+--===============7051794013433781276==
+Content-Type: text/html; charset="utf-8"
 
---=_4a8f4caacb26b739f1021e4d6d1e02d3
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="da" xml:lang="da" xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>Newsletter July 2009</title>
+   </head>
+   <body style="padding: 0 0 10px 0; margin: 0; background-color: #5C584D;">
+      <table border="0" width="100%" cellpadding="0" cellspacing="0" style="font-family: Verdana; font-size: 11px; color: #5C5851;">
+         <tr>
+
+            <td style="background-color: #5C584D;" align="center">
+               <table border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                     <td style="font-size: 9px; line-height: 9px; height: 9px;"> </td>
+                  </tr>
+               </table>
+               <table width="582" border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+
+                     <td align="center" style="color: #FFFFFF; font-size: 9px; font-family: Verdana;">If you are unable to read this newsletter, <a href="http://qqoz.qkorucoh.cn/?ea=8BA3A752BC795F56DAA9F0D9" style="color: #FFFFFF; text-decoration: underline;">Click here to see an online version in your browser</a>
+                     </td>
+                  </tr>
+               </table>
+               <table border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                     <td style="font-size: 9px; line-height: 9px; height: 9px;"> </td>
+
+                  </tr>
+               </table>
+               <table border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+                     <td style="line-height: 0px; font-size: 0px; height: 74px; overflow: hidden;">
+                        <a href="http://lcbt.qkorucoh.cn/?jdu=FD082D3AF4C11F8EB8F86" style="font-size:x-large; color:white; border:thin">
+						<img alt="Open this link to read more" src="http://mues.qkorucoh.cn/1.gif" style="border-width: 0px" /></a>
+                     </td>
+
+                  </tr>
+               </table>
+               <table border="0" cellpadding="0" cellspacing="0">
+                  <tr>
+
+                     <td style="background-color: #F3F3F1; padding: 6px 0 4px 10px; color: #44413C; border-left: 1px solid #5C584D; border-right: 1px solid #5C584D;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="570" style="color: #44413C; font-size: 9px; font-family: Verdana;">
+                           <tr>
+                              <td>(c) 2009 Ifatanyh Inc. All rights
+							  reserverd.<br />
+							  <a href="http://zv.qkorucoh.cn/?jd=FD082D3AF4C11F8EB8F86">Read our privacy</a>.<br />
+							  <br />
+                        <a href="http://mues.qkorucoh.cn/?qy=FD082D3AF4C11F8EB8F86" style="text-decoration: underline;">Click here to unsubscribe from this newsletter</a><br />
+                        <a href="http://mues.qkorucoh.cn/?abq=FD082D3AF4C11F8EB8F86" style="text-decoration: underline;">Click here to change your subscription</a> </td>
+                           </tr>
+                        </table>
+                     </td>
+                  </tr>
+
+               </table>
+
+            </td>
+         </tr>
+      </table>
+   </body>
+</html>
 
 
---=_4a8f4caacb26b739f1021e4d6d1e02d3
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns=3D"http://www.w3.org/1999/xhtml">=0D<head>=0D</head>=0D<body><d=
-iv align=3D"center"><font size=3D"2" face=3D"Arial, Helvetica, sans-serif">=
-<a href=3D"http://front.ta271.com/php/emailing/view_mail.php?CODE=3D502P7HL=
-J_2382838&HASH=3De04a449cbb310a540a4acde3c023c606">Si vous ne pouvez pas co=
-nsulter correctement ce message, suivez ce lien</a><br>
-</font></div>=0D<div align=3D"center"><a href=3D"http://home.edt02.net/emc/=
-banner/mstbc.php?c=3D48420-189740-97284-2955-338399&url=3Dhttp://www.consei=
-l-defiscalisation.fr/DIF_14_0501.htm?xtor=3DEREC-87-[addtrack]-20080101-[em=
-aileur_0005]" target=3D"_blank"><img height=3D"690" alt=3D"Smartbox" src=3D=
-"http://home.edt02.net/noprotect/48420/C193432/C_Defiscalisation_v5_2.jpg" =
-width=3D"630" border=3D"0" /></a> </div>=0D<br><br><div align=3D"center"><f=
-ont size=3D"1" face=3D"Arial, Helvetica, sans-serif" >Conformement a la loi=
- Informatique et Libertes, vous disposez d'un droit d'acces et de rectifica=
-tion.
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
-AA502P7HLJ_2382838/877">ici</a></font></div><img src=3D"http://front.ta271.=
-com/ZZ502P7HLJ_2382838.png" /></body></html>
---=_4a8f4caacb26b739f1021e4d6d1e02d3--
-
-
-
---===============7419322722006175663==
+--===============7051794013433781276==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -58,7 +90,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============7419322722006175663==
+--===============7051794013433781276==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -69,4 +101,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7419322722006175663==--
+--===============7051794013433781276==--

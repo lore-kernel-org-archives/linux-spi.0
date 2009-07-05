@@ -1,9 +1,8 @@
-From: "Mearing Stanton" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Arranging time by voting
-Date: Sun, 05 Jul 2009 14:17:09 +0000
-Message-ID: <NSREQMI25321.C795F56@[189.2.106.146]>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7051794013433781276=="
+From: ecapdecision-QX3Y0Jin3rF1kmy1ehCEWQ@public.gmane.org
+Subject: Réponse à votre demande
+Date: 5 Jul 2009 20:22:47 -0000
+Message-ID: <17785.1742635996$1246823924@news.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1859405255235045633=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,73 +15,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7051794013433781276==
-Content-Type: text/html; charset="utf-8"
+--===============1859405255235045633==
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="da" xml:lang="da" xmlns="http://www.w3.org/1999/xhtml">
-   <head>
-      <title>Newsletter July 2009</title>
-   </head>
-   <body style="padding: 0 0 10px 0; margin: 0; background-color: #5C584D;">
-      <table border="0" width="100%" cellpadding="0" cellspacing="0" style="font-family: Verdana; font-size: 11px; color: #5C5851;">
-         <tr>
+Nous vous remercions pour votre message. 
 
-            <td style="background-color: #5C584D;" align="center">
-               <table border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                     <td style="font-size: 9px; line-height: 9px; height: 9px;"> </td>
-                  </tr>
-               </table>
-               <table width="582" border="0" cellpadding="0" cellspacing="0">
-                  <tr>
+Si vous ne souhaitez plus bénéficier des offres transmises par Capdecision, merci d'utiliser la procédure ci-dessous pour désinscrire votre adresse email de nos services*:
 
-                     <td align="center" style="color: #FFFFFF; font-size: 9px; font-family: Verdana;">If you are unable to read this newsletter, <a href="http://qqoz.qkorucoh.cn/?ea=8BA3A752BC795F56DAA9F0D9" style="color: #FFFFFF; text-decoration: underline;">Click here to see an online version in your browser</a>
-                     </td>
-                  </tr>
-               </table>
-               <table border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                     <td style="font-size: 9px; line-height: 9px; height: 9px;"> </td>
+1/ Cliquez ici (ou copiez/collez l'adresse suivante dans votre barre de navigation) http://www.capdecision.fr/stop/index.php  
+2/ Indiquez votre adresse e-mail dans le champ prévu à cet effet 
+3/ Vous pouvez, si vous le souhaitez, préciser le motif de votre désinscription
 
-                  </tr>
-               </table>
-               <table border="0" cellpadding="0" cellspacing="0">
-                  <tr>
-                     <td style="line-height: 0px; font-size: 0px; height: 74px; overflow: hidden;">
-                        <a href="http://lcbt.qkorucoh.cn/?jdu=FD082D3AF4C11F8EB8F86" style="font-size:x-large; color:white; border:thin">
-						<img alt="Open this link to read more" src="http://mues.qkorucoh.cn/1.gif" style="border-width: 0px" /></a>
-                     </td>
+* Votre demande sera traitée dans les 72 heures (il est possible que vous receviez encore des messages pendant cette période)   
 
-                  </tr>
-               </table>
-               <table border="0" cellpadding="0" cellspacing="0">
-                  <tr>
+Bien cordialement,   
+L'équipe de Capdécision Service Relation Clients
 
-                     <td style="background-color: #F3F3F1; padding: 6px 0 4px 10px; color: #44413C; border-left: 1px solid #5C584D; border-right: 1px solid #5C584D;">
-                        <table border="0" cellpadding="0" cellspacing="0" width="570" style="color: #44413C; font-size: 9px; font-family: Verdana;">
-                           <tr>
-                              <td>(c) 2009 Ifatanyh Inc. All rights
-							  reserverd.<br />
-							  <a href="http://zv.qkorucoh.cn/?jd=FD082D3AF4C11F8EB8F86">Read our privacy</a>.<br />
-							  <br />
-                        <a href="http://mues.qkorucoh.cn/?qy=FD082D3AF4C11F8EB8F86" style="text-decoration: underline;">Click here to unsubscribe from this newsletter</a><br />
-                        <a href="http://mues.qkorucoh.cn/?abq=FD082D3AF4C11F8EB8F86" style="text-decoration: underline;">Click here to change your subscription</a> </td>
-                           </tr>
-                        </table>
-                     </td>
-                  </tr>
+Il est inutile de répondre à cet email, votre message ne pourra être traité. 
+Vous trouverez ci-dessous une copie du message que vous nous avez adressé.
 
-               </table>
+Received: (qmail 17954 invoked by uid 508); 5 Jul 2009 20:22:47 -0000
+Delivered-To: capdecision.fr-admindolist-QX3Y0Jin3rF1kmy1ehCEWQ@public.gmane.org
+Received: (qmail 17951 invoked by uid 509); 5 Jul 2009 20:22:47 -0000
+Received: from 130.117.57.201 by ns364098.ovh.net (envelope-from <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, uid 508) with qmail-scanner-2.01st 
+ (clamdscan: 0.88.2/1517. spamassassin: 3.1.0. perlscan: 2.01st.  
+ Clear:RC:0(130.117.57.201):SA:0(1.3/6.0):. 
+ Processed in 2.239337 secs); 05 Jul 2009 20:22:47 -0000
+X-Spam-Status: No, hits=1.3 required=6.0
+X-Spam-Level: +
+Received: from unknown (HELO pm57-201.emm20.net) (130.117.57.201)
+  by ns364098.ovh.net with SMTP; 5 Jul 2009 20:22:45 -0000
+Date: Sun, 5 Jul 2009 21:57:00
+Subject: Raison désabonnement liste leti4
+From:  <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Propriétaire liste leti4 <admindolist-QX3Y0Jin3rF1kmy1ehCEWQ@public.gmane.org>
+Message-ID: <0.0.0.0.1C9FDAACF2603D4.0-IShiNfB7WolAsRlVvNo9J6xOck334EZe@public.gmane.org>
 
-            </td>
-         </tr>
-      </table>
-   </body>
-</html>
+Bonjour,
+
+Le contact spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org souhaite se désabonner de la liste "leti4".
+
+Suggestions
+-----------
+Stop mail de danni-uXZ41zQLoH0@public.gmane.org
 
 
---===============7051794013433781276==
+
+
+--===============1859405255235045633==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -90,7 +69,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============7051794013433781276==
+--===============1859405255235045633==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -101,4 +80,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7051794013433781276==--
+--===============1859405255235045633==--

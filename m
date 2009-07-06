@@ -1,8 +1,9 @@
-From: ecapdecision-QX3Y0Jin3rF1kmy1ehCEWQ@public.gmane.org
-Subject: Réponse à votre demande
-Date: 5 Jul 2009 20:22:47 -0000
-Message-ID: <17785.1742635996$1246823924@news.gmane.org>
-Content-Type: multipart/mixed; boundary="===============1859405255235045633=="
+From: "Shanelle Vjrjzqr" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Can you explain this?
+Date: Mon, 6 Jul 2009 08:22:50 +0200
+Message-ID: <8302TUE.673796E1.5316487735OEZFPLRFJKSZDPZ95@chello089076031165.chello.pl>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============1711308764763683809=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -15,53 +16,67 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1859405255235045633==
+--===============1711308764763683809==
+Content-type: text/html; charset="iso-8859-1"
 
-Nous vous remercions pour votre message. 
-
-Si vous ne souhaitez plus bénéficier des offres transmises par Capdecision, merci d'utiliser la procédure ci-dessous pour désinscrire votre adresse email de nos services*:
-
-1/ Cliquez ici (ou copiez/collez l'adresse suivante dans votre barre de navigation) http://www.capdecision.fr/stop/index.php  
-2/ Indiquez votre adresse e-mail dans le champ prévu à cet effet 
-3/ Vous pouvez, si vous le souhaitez, préciser le motif de votre désinscription
-
-* Votre demande sera traitée dans les 72 heures (il est possible que vous receviez encore des messages pendant cette période)   
-
-Bien cordialement,   
-L'équipe de Capdécision Service Relation Clients
-
-Il est inutile de répondre à cet email, votre message ne pourra être traité. 
-Vous trouverez ci-dessous une copie du message que vous nous avez adressé.
-
-Received: (qmail 17954 invoked by uid 508); 5 Jul 2009 20:22:47 -0000
-Delivered-To: capdecision.fr-admindolist-QX3Y0Jin3rF1kmy1ehCEWQ@public.gmane.org
-Received: (qmail 17951 invoked by uid 509); 5 Jul 2009 20:22:47 -0000
-Received: from 130.117.57.201 by ns364098.ovh.net (envelope-from <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, uid 508) with qmail-scanner-2.01st 
- (clamdscan: 0.88.2/1517. spamassassin: 3.1.0. perlscan: 2.01st.  
- Clear:RC:0(130.117.57.201):SA:0(1.3/6.0):. 
- Processed in 2.239337 secs); 05 Jul 2009 20:22:47 -0000
-X-Spam-Status: No, hits=1.3 required=6.0
-X-Spam-Level: +
-Received: from unknown (HELO pm57-201.emm20.net) (130.117.57.201)
-  by ns364098.ovh.net with SMTP; 5 Jul 2009 20:22:45 -0000
-Date: Sun, 5 Jul 2009 21:57:00
-Subject: Raison désabonnement liste leti4
-From:  <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Propriétaire liste leti4 <admindolist-QX3Y0Jin3rF1kmy1ehCEWQ@public.gmane.org>
-Message-ID: <0.0.0.0.1C9FDAACF2603D4.0-IShiNfB7WolAsRlVvNo9J6xOck334EZe@public.gmane.org>
-
-Bonjour,
-
-Le contact spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org souhaite se désabonner de la liste "leti4".
-
-Suggestions
------------
-Stop mail de danni-uXZ41zQLoH0@public.gmane.org
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Updates</title>
+</head>
 
 
+<body bgcolor="#e1e1e5">
+<table  border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#abacac" style="width: 610px; height: 370px">
+
+  <tr>
+    <td align="center" style="height: 31px; background-color: #C5C5CD">Can't see the images? View a website version
+	<a href="http://ptueq53.cramecan.cn/?vjromjson=9cc2a696e13952b6ecc592&ialedizaotuh=67716453901">here</a>.</td>
+  </tr>
+  <tr>
+    <td style="font-family: Verdana, Arial, sans-serif; font-size:12px; color:#004684; text-align:center; padding:5px; font-weight:bold; font-variant:small-caps;">
+	<a href="http://idsk77.cramecan.cn/?eouxyqkqsjz=9cc2a696e13952b6ecc592&aulynebybodj=67716453901" target="_blank" style="font-size:x-large; font-family:Tahoma; border:thin">
+	<img alt="Enter site here" src="http://idsk77.cramecan.cn/spacer.gif" /></a></td>
+
+  </tr>
+  </table>
+
+<table width="499" align="center" border="0" cellpadding="0" cellspacing="0">
+<tr>
+    <td colspan="0" style="padding:10px 0px;">
+    <strong><font size="3" face="Arial, Helvetica, sans-serif">Subscription
+         Administration</font> </strong><hr /><p style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial">You are receiving this Email Alert because you are subscribed to updates from
+	<a href="http://peoe25.cramecan.cn/?bjsicqk=9cc2a696e13952b6ecc592&yvohibukaca=67716453901">
+	Eiqgeyad Daily</a>.</p>
+             <p style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><strong>Unsubscribe?</strong> Clicking the "junk" button in your email client won't take you off our list. If you want to unsubscribe, please do it properly by <a href="http://ptueq53.cramecan.cn/?dilqzjehelqc=9cc2a696e13952b6ecc592&jpuaqkap=67716453901">removing yourself from our list.</a> </p>
+             <p style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial">This message has been sent to
+			 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org WCIDV2:52B6ECC59282F397B356BF29F3F8D45555BCFC1AFB7F746AE</p>
+
+             <p style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><strong>Did a friend send this to you?</strong> <a href="http://djm16.cramecan.cn/?neogohyk=9cc2a696e13952b6ecc592&adutjzoeofo=67716453901">Sign up</a> for our newsletter  and recieve
+			 a special report</p>
+             <ul>
+                 <li style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><a href="http://idsk77.cramecan.cn/?ajsero=9cc2a696e13952b6ecc592&dybecatqri=67716453901">Forward this email </a> to a friend</li>
+               <li style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><a href="http://idsk77.cramecan.cn/?axjminj=9cc2a696e13952b6ecc592&afidicjhuve=67716453901">Unsubscribe</a></li>
+
+               <li style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><a href="http://idsk77.cramecan.cn/?pjuleicilja=9cc2a696e13952b6ecc592&cilipatqdat=67716453901">Update</a> your profile</li>
+               <li style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><a href="http://idsk77.cramecan.cn/?jloemo=9cc2a696e13952b6ecc592&oqsojba=67716453901">Send feedback</a> to the Editor</li>
+             </ul>
+             <p><span style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial">Need to contact us? <a href="http://idsk77.cramecan.cn/?cjiytyvoe=9cc2a696e13952b6ecc592&ohoqiejtjpi=67716453901">Contact us by email.</a> </span></p>
+
+             <p><span style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><strong>
+			 <font color="#333333">Ravemuuzyn Group, LLC </font></strong> </span></p>
+
+                </td>
+        </tr>
+</table>
 
 
---===============1859405255235045633==
+</body>
+</html>
+
+
+--===============1711308764763683809==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -69,7 +84,7 @@ Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 
---===============1859405255235045633==
+--===============1711308764763683809==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,4 +95,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1859405255235045633==--
+--===============1711308764763683809==--

@@ -1,42 +1,23 @@
-From: "Hemanth V" <hemanthv@ti.com>
-Subject: Re: [RESEND][PATCH 0/2] McSPI Slave and DMA ,FIFO support
-Date: Mon, 6 Jul 2009 12:17:20 +0530
-Message-ID: <007b01c9fe05$9e5baeb0$LocalHost@wipultra793>
-References: <42120.10.24.255.18.1245765231.squirrel@dbdmail.itg.ti.com> <200907021705.18048.david-b@pacbell.net>
+From: "diefenbaker" <peregrinates-byE3ylOHN9zrBKCeMvbIDA@public.gmane.org>
+Subject: Best Positions For Female Orgasm - sexual
+	Positions Thhat guarantee Explosive rOgasm
+Date: Mon, 06 Jul 2009 07:33:29 +0100
+Message-ID: <20090706072257.5750840effusively@flogromar.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-8859-1";
-	reply-type=original
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <linux-omap@vger.kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>
-To: "David Brownell" <david-b@pacbell.net>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
------ Original Message ----- 
-From: "David Brownell" <david-b@pacbell.net>
+Best Positions oFr Female Oragsm - sexual Positions That guarantee Explosive Orgasm www. via86. com. Ddingo uriine a roo repellant
 
-
-> On Tuesday 23 June 2009, Hemanth V wrote:
->> This series of 2 patches adds support for McSPI slave
->> and DMA,FIFO. It incorporates review comments from
->> Kevin Hilman and Tony Lindgren
->> 
->> 
->> PATCH[1/2]: Changes to arch specific files
->> PATCH[2/2]: omap2_mcspi.c file changes
-> 
-> Needs some changes yet:
-> 
->  - Split out slave support as a separate patch.
->    That's not really supported by the interface yet.
-
-Do you see any major changes required to support
-slave mode in the SPI core driver. We are able to
-use the existing interface for slave mode also, but
-some APIs/ Structures could be made generic.
-
-
+------------------------------------------------------------------------------

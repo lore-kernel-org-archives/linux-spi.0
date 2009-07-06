@@ -1,98 +1,42 @@
-From: "Shanelle Vjrjzqr" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Can you explain this?
-Date: Mon, 6 Jul 2009 08:22:50 +0200
-Message-ID: <8302TUE.673796E1.5316487735OEZFPLRFJKSZDPZ95@chello089076031165.chello.pl>
+From: "Hemanth V" <hemanthv@ti.com>
+Subject: Re: [RESEND][PATCH 0/2] McSPI Slave and DMA ,FIFO support
+Date: Mon, 6 Jul 2009 12:17:20 +0530
+Message-ID: <007b01c9fe05$9e5baeb0$LocalHost@wipultra793>
+References: <42120.10.24.255.18.1245765231.squirrel@dbdmail.itg.ti.com> <200907021705.18048.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1711308764763683809=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+Cc: <linux-omap@vger.kernel.org>,
+	<spi-devel-general@lists.sourceforge.net>
+To: "David Brownell" <david-b@pacbell.net>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1711308764763683809==
-Content-type: text/html; charset="iso-8859-1"
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Updates</title>
-</head>
+----- Original Message ----- 
+From: "David Brownell" <david-b@pacbell.net>
 
 
-<body bgcolor="#e1e1e5">
-<table  border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#abacac" style="width: 610px; height: 370px">
+> On Tuesday 23 June 2009, Hemanth V wrote:
+>> This series of 2 patches adds support for McSPI slave
+>> and DMA,FIFO. It incorporates review comments from
+>> Kevin Hilman and Tony Lindgren
+>> 
+>> 
+>> PATCH[1/2]: Changes to arch specific files
+>> PATCH[2/2]: omap2_mcspi.c file changes
+> 
+> Needs some changes yet:
+> 
+>  - Split out slave support as a separate patch.
+>    That's not really supported by the interface yet.
 
-  <tr>
-    <td align="center" style="height: 31px; background-color: #C5C5CD">Can't see the images? View a website version
-	<a href="http://ptueq53.cramecan.cn/?vjromjson=9cc2a696e13952b6ecc592&ialedizaotuh=67716453901">here</a>.</td>
-  </tr>
-  <tr>
-    <td style="font-family: Verdana, Arial, sans-serif; font-size:12px; color:#004684; text-align:center; padding:5px; font-weight:bold; font-variant:small-caps;">
-	<a href="http://idsk77.cramecan.cn/?eouxyqkqsjz=9cc2a696e13952b6ecc592&aulynebybodj=67716453901" target="_blank" style="font-size:x-large; font-family:Tahoma; border:thin">
-	<img alt="Enter site here" src="http://idsk77.cramecan.cn/spacer.gif" /></a></td>
-
-  </tr>
-  </table>
-
-<table width="499" align="center" border="0" cellpadding="0" cellspacing="0">
-<tr>
-    <td colspan="0" style="padding:10px 0px;">
-    <strong><font size="3" face="Arial, Helvetica, sans-serif">Subscription
-         Administration</font> </strong><hr /><p style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial">You are receiving this Email Alert because you are subscribed to updates from
-	<a href="http://peoe25.cramecan.cn/?bjsicqk=9cc2a696e13952b6ecc592&yvohibukaca=67716453901">
-	Eiqgeyad Daily</a>.</p>
-             <p style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><strong>Unsubscribe?</strong> Clicking the "junk" button in your email client won't take you off our list. If you want to unsubscribe, please do it properly by <a href="http://ptueq53.cramecan.cn/?dilqzjehelqc=9cc2a696e13952b6ecc592&jpuaqkap=67716453901">removing yourself from our list.</a> </p>
-             <p style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial">This message has been sent to
-			 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org WCIDV2:52B6ECC59282F397B356BF29F3F8D45555BCFC1AFB7F746AE</p>
-
-             <p style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><strong>Did a friend send this to you?</strong> <a href="http://djm16.cramecan.cn/?neogohyk=9cc2a696e13952b6ecc592&adutjzoeofo=67716453901">Sign up</a> for our newsletter  and recieve
-			 a special report</p>
-             <ul>
-                 <li style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><a href="http://idsk77.cramecan.cn/?ajsero=9cc2a696e13952b6ecc592&dybecatqri=67716453901">Forward this email </a> to a friend</li>
-               <li style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><a href="http://idsk77.cramecan.cn/?axjminj=9cc2a696e13952b6ecc592&afidicjhuve=67716453901">Unsubscribe</a></li>
-
-               <li style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><a href="http://idsk77.cramecan.cn/?pjuleicilja=9cc2a696e13952b6ecc592&cilipatqdat=67716453901">Update</a> your profile</li>
-               <li style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><a href="http://idsk77.cramecan.cn/?jloemo=9cc2a696e13952b6ecc592&oqsojba=67716453901">Send feedback</a> to the Editor</li>
-             </ul>
-             <p><span style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial">Need to contact us? <a href="http://idsk77.cramecan.cn/?cjiytyvoe=9cc2a696e13952b6ecc592&ohoqiejtjpi=67716453901">Contact us by email.</a> </span></p>
-
-             <p><span style="FONT-SIZE: 8.5pt; FONT-FAMILY: Arial"><strong>
-			 <font color="#333333">Ravemuuzyn Group, LLC </font></strong> </span></p>
-
-                </td>
-        </tr>
-</table>
+Do you see any major changes required to support
+slave mode in the SPI core driver. We are able to
+use the existing interface for slave mode also, but
+some APIs/ Structures could be made generic.
 
 
-</body>
-</html>
-
-
---===============1711308764763683809==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-
---===============1711308764763683809==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1711308764763683809==--

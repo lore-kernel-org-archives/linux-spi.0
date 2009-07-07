@@ -1,10 +1,10 @@
-From: gfdtiyudfh-kpAhF17E4/s@public.gmane.org
-Subject: [SPAM] 唐・・作
-Date: Wed, 8 Jul 2009 01:09:52 +0800
-Message-ID: <E1MOE9l-0003Kn-Fz@h25xhf1.ch3.sourceforge.com>
+From: "HIPNOSIS CHILE" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] PSICOLOGIA PARA TERAPEUTAS
+Date: Tue, 7 Jul 2009 11:20:41 -0400
+Message-ID: <365462551-22009727152040999@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,23 +17,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6wyEgo6jV4srH0ru34snG0uK1xNPKvP6jrMjn09C0
-8sjFx+vBwr3io6mhowogICAgxOO6w6OhztK5q8u+o6jJ7tvaytCyqdHzw7PS19PQz965q8u+o6nK
-x8Gsw8u0+sDtuavLvqOs1NrIq7n6uPe087PHytDJ6NPQt9a5q8u+oaMK0vLStc7xudjPtaOsvfjP
-7rbgz/rP7snZz9bT0Lbg0+DSu7K/t9Y8PMbVLc2oLcuwLcaxPj6/ydLU08W73bbUzeK0+r+qyOfP
-wqO6CrmkyczG89K1oaK79c7vz/rK26GiueO45qGit/7O8dK1oaK9qNb+sLLXsKGixNq606Ooufq8
-yqOp1MvK5KGit8++yc7v18q1yDw8t6ItxrE+PqGjCsrVt9Gx6te8o7o8PMbVLc2oLcuwLcaxPj4y
-JS0wLjglo6y/ydLUz8jR6dakuvO4tr/uo6EKICC0y9DFz6LU2sirufq3ts6nxNqzpMba09DQp6Os
-yOfQ67340ruyvceiycw6ICAKICAgICAgICAgICAgICAgICAgIMGqz7XIy6O6zMbQwsP3CiAgICAg
-ICAgICAgICAgICAgytYgILv6o7oxMzctMTM1Ni0zMTM1ICAgIKGhoaGhoaGhoaGhoaGhoaGhoaGh
-CiAgICAgICAgICAgICAgICAgIFEgICBROjM1NzE2MzA2NgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CkVudGVyIHRoZSBCbGFja0JlcnJ5IERldmVsb3BlciBDaGFsbGVuZ2UgIApUaGlzIGlzIHlvdXIg
-Y2hhbmNlIHRvIHdpbiB1cCB0byAkMTAwLDAwMCBpbiBwcml6ZXMhIEZvciBhIGxpbWl0ZWQgdGlt
-ZSwgCnZlbmRvcnMgc3VibWl0dGluZyBuZXcgYXBwbGljYXRpb25zIHRvIEJsYWNrQmVycnkgQXBw
-IFdvcmxkKFRNKSB3aWxsIGhhdmUgCnRoZSBvcHBvcnR1bml0eSB0byBlbnRlciB0aGUgQmxhY2tC
-ZXJyeSBEZXZlbG9wZXIgQ2hhbGxlbmdlLiBTZWUgZnVsbCBwcml6ZSAKZGV0YWlscyBhdDogaHR0
-cDovL3Auc2YubmV0L3NmdS9ibGFja2JlcnJ5Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+VI=D1A DEL MAR
+S=E1bado 11 de Julio - 10 a 14 hrs.
+1 ORIENTE 1274 (ENTRE 13 Y 14 NORTE. AL LADO DEL MALL)
+
+REIKI =96 ACUPUNTURA =96 FLORES DE BACH =96 AROMATERAPIA - MUSICOTERAPIA =
+=96 SONOTERAPIA - CUENCOS DE CUARZO - CUENCOS TIBETANOS - BIOMAGNETISMO =96=
+ MAGNETOTERAPIA MASAJES =96 YOGA =96 TERAPIAS HOL=CDSTICAS =96 REFLEXOLOGIA=
+ - MAGNIFIED HEALING =96 GEMOTERAPIA =96 DIGITOPUNTURA
+
+TEMARIO =
+
+LA PRIMERA ENTREVISTA CON EL PACIENTE. TIPOS DE ENTREVISTAS
+ENFERMEDADES PSICOL=D3GICAS
+LOS TRASTORNOS DE LA CONDUCTA =
+
+LA PERSONALIDAD Y LOS TRASTORNOS DE LA PERSONALIDAD =
+
+LOS TEST, USO Y DESUSO. TEST PR=C1CTICOS Y BREVES
+SENSACI=D3N =96 PERCEPCI=D3N =96 CONCIENCIA =
+
+USO DE LA PSICOLOG=CDA EN LOS TRATAMIENTOS DE TERAPIAS COMPLEMENTARIAS =
+
+
+INSCRIPCIONES:
+http://www.hipnosischile.cl/inscripciones.htm =
+
+Tel=E9fono: (56-2)  278 1078   -   Celular: (09) 9675 6898 =
+
+
+VALOR: $45.000
+(SI TRAES 2 AMIGOS TU TIENES UN 50% DE DESCUENTO)
+
+Formas de Pago: =
+
+Efectivo $45.000.-
+Transferencia Bancaria(15% de descuento) $38.250.- Solicite N=B0 de cuenta =
+a hipnosischile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org =
+
+2 Cheques de $25.000.- c/u, al d=EDa y 30 d=EDas
+Lugar del Curso: 1 ORIENTE 1274 (ENTRE 13 Y 14 NORTE. AL LADO DEL MALL)
+
+
+CENTRO DE HIPNOSIS Y TERAPIA AFINES
+HIPNOSIS CHILE
+Seminario 6 - Providencia - Fono: 2781078
+www.hipnosischile.cl - info-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org
+Remover: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org =
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
+Enter the BlackBerry Developer Challenge  =
+
+This is your chance to win up to $100,000 in prizes! For a limited time, =
+
+vendors submitting new applications to BlackBerry App World(TM) will have =
+
+the opportunity to enter the BlackBerry Developer Challenge. See full prize =
+
+details at: http://p.sf.net/sfu/blackberry

@@ -1,60 +1,40 @@
-From: David Brownell <david-b@pacbell.net>
+From: Jaswinder Singh Rajput <jaswinder@kernel.org>
 Subject: Re: [PATCH 29/44] includecheck fix: drivers/spi, amba-pl022.c
-Date: Wed, 8 Jul 2009 10:39:44 -0700
-Message-ID: <200907081039.44665.david-b@pacbell.net>
-References: <1247063308.4382.12.camel@ht.satnam> <1247067147.4382.80.camel@ht.satnam>
+Date: Wed, 08 Jul 2009 23:12:47 +0530
+Message-ID: <1247074967.4382.115.camel@ht.satnam>
+References: <1247063308.4382.12.camel@ht.satnam>
+	 <1247067147.4382.80.camel@ht.satnam>
+	 <63386a3d0907081028s4a36fccen9cea9a316e2ef4c6@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
+Cc: dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net,
 	Sam Ravnborg <sam@ravnborg.org>,
-	LKML <linux-kernel@vger.kernel.org>
-To: Jaswinder Singh Rajput <jaswinder@kernel.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756777AbZGHRjw@vger.kernel.org>
-In-Reply-To: <1247067147.4382.80.camel@ht.satnam>
-Content-Disposition: inline
+	LKML <linux-kernel@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+To: Linus Walleij <linus.ml.walleij@gmail.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756332AbZGHRoh@vger.kernel.org>
+In-Reply-To: <63386a3d0907081028s4a36fccen9cea9a316e2ef4c6@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 08 July 2009, Jaswinder Singh Rajput wrote:
+On Wed, 2009-07-08 at 19:28 +0200, Linus Walleij wrote:
+> 2009/7/8 Jaswinder Singh Rajput <jaswinder@kernel.org>:
 > 
-> fix the following 'make includecheck' warnings:
+> > fix the following 'make includecheck' warnings:
+> >
+> >  drivers/spi/amba-pl022.c: linux/delay.h is included more than once.
+> >  drivers/spi/amba-pl022.c: linux/errno.h is included more than once.
 > 
->   drivers/spi/amba-pl022.c: linux/delay.h is included more than once.
->   drivers/spi/amba-pl022.c: linux/errno.h is included more than once.
+> Acked-by: Linus Walleij <linus.walleij@stericsson.com>
 > 
-> Signed-off-by: Jaswinder Singh Rajput <jaswinderrajput@gmail.com>
+> David are you merging this?
+> 
 
-Acked-by: David Brownell <dbrownell@users.sourceforge.net>
+This is a big patchset, So better me or Sam will send this to Linus
+after collecting some more ACKs.
 
-
-> ---
->  drivers/spi/amba-pl022.c |    2 --
->  1 files changed, 0 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-> index da76797..c0f950a 100644
-> --- a/drivers/spi/amba-pl022.c
-> +++ b/drivers/spi/amba-pl022.c
-> @@ -38,14 +38,12 @@
->  #include <linux/interrupt.h>
->  #include <linux/spi/spi.h>
->  #include <linux/workqueue.h>
-> -#include <linux/errno.h>
->  #include <linux/delay.h>
->  #include <linux/clk.h>
->  #include <linux/err.h>
->  #include <linux/amba/bus.h>
->  #include <linux/amba/pl022.h>
->  #include <linux/io.h>
-> -#include <linux/delay.h>
->  
->  /*
->   * This macro is used to define some register default values.
-> -- 
-> 1.6.0.6
-> 
-> 
-> 
-> 
+Thanks,
+--
+JSR

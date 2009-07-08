@@ -1,10 +1,10 @@
-From: "Mortgage Services" <noreply9671-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Homeowner Update
-Date: Wed, 8 Jul 2009 02:21:05 -0700
-Message-ID: <5b57cdcefe0ff22fb773b622001f18c9@gmail.com>
+From: "Jen Fysyguz" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Everybody read this!
+Date: Wed, 8 Jul 2009 19:35:35 +0900
+Message-ID: <4429XNL.74774648B.8299232837XMFKLHTECZWAKNI7972@[61.105.220.31]>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5227697617151789741=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============2403110285496765725=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,205 +16,109 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5227697617151789741==
-Content-Type: text/html;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+--===============2403110285496765725==
+Content-type: text/html; charset="utf-8"
 
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 </head>
+<body bgcolor="#efefef" font-size="10px" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" style="background-color:#efefef;color:#000000;font-size:12px;line-height:14px;font-family:Verdana, Arial, Helvetica, sans-serif;" >
+<style>
+body {  background-color: #efefef; }
+body,td { color: #000000; font-size: 12px; line-height: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; }
+p { font-size: 12px; margin-top : 5px; margin-bottom : 10px; line-height: 15px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #333; }
+p.subHeader { font-size: 11px; color: #fff; margin-top: 5px; margin-bottom: 5px; margin-right: 5px;}
+p.subHeader a { color: #fff; }
+a { text-decoration: underline; color: #0e3b56; }
+a:hover { text-decoration: none; }
+sideDate { color: #333; font-size: 12px; font-weight: bold; padding-bottom:5px; margin-bottom: 10px; }
+sideTitle { color: #0e3b56; font-size: 13px; font-weight: normal; padding-bottom:5px; margin-bottom: 10px; text-align: center; }
+repeaterTitle { color: #0e3b56; font-size: 16px; font-weight: normal; padding-top:7px; padding-bottom:7px; margin-bottom: 20px; border-bottom: 2px solid #728596; background-color: #728596; text-align: center;}
+footerText, .footerText a { color: #0e3b56; font-size: 11px; }
+topNote { font-size: 11px; color: #333333; padding: 10px 0 8px 0; }
+topNote a { color: #2255A9; }
+tocLink { border-top: 1px dotted #999; padding: 5px 0px; margin: 2px 0px;}
+tocLink a, .sideText , .sideText a{ font-size: 11px; color: #0e3b56; text-decoration: none;}
+tocLink a:hover,.sideText a:hover { text-decoration: underline;}
+imgBorder { border-style: none; }
+</style>
 
-<body text=3D#000000 bgColor=3D#000080>
-<center>&nbsp;</center>
-<center>
-<table style=3D"WIDTH: 765px; HEIGHT: 26px" height=3D0% cellSpacing=3D1 =
-cellPadding=3D1=20
-width=3D765 bgColor=3D#000000 border=3D3>
-  <tbody>
-  <tr>
-    <td>
-      <p align=3Dcenter><font color=3D#ffffff><font size=3D6><font=20
-      face=3D"Trebuchet MS"><strong>Calling&nbsp;All=20
-      Distressed&nbsp;Homeowners</strong><font=20
-      =
-color=3D#000000>&nbsp;</font></font></font></font></p></td></tr></tbody></t=
-able></center>
-<center>
-<table style=3D"BORDER-COLLAPSE: collapse" borderColor=3D#111111 =
-cellSpacing=3D0=20
-cellPadding=3D0 width=3D760 border=3D0>
-  <tbody>
-  <tr>
-    <td vAlign=3Dtop align=3Dleft bgColor=3D#ffffff><br>
-      <blockquote dir=3Dltr style=3D"MARGIN-RIGHT: 0px">
-        <p><strong><font face=3DArial>Why waste thousands in attorney fees =
-when=20
-        you can do it yourself for under $40?<font color=3D#ffffff>=20
-        </font></font></strong></p>
-        <p><font face=3DArial color=3D#000000>Many lenders have started =
-contacting=20
-        homeowners who are behind on their mortgages to offer temporary =
-relief=20
-        programs. It is important to note that most lender initiated=20
-        modification programs are completely one sided and seldom address=20
-        fundamental problems. Distressed homeowners require substantial=20
-        revisions that can only be achieved through consistent and =
-hardcore=20
-        negotiations. Dr. Mod can help you through this process.</font></p>
-        <p><font face=3DArial><strong><a style=3D"COLOR: blue; =
-TEXT-DECORATION: underline" =
-href=3D"mailto:drmod-KK0ffGbhmjU@public.gmane.org?bcc=3Dcreativeresponse-KK0ffGbhmjU@public.gmane.org&amp;subject=3DP=
-lease%20Send%20Me%20More%20Info%20%2D%20Dr%20Mod&amp;body=3DName%3A%0D%0APh=
-one%3A%0D%0ABest%20time%20to%20contact%3A%0D%0AHave%20you%20tried%20refinan=
-cing%20before%3A%0D%0AIf%20so%2C%20What%20was%20the%20outcome%3F%3A%0D%0A%0=
-D%0APlease%20send%20me%20more%20info%20via%20email%2E" =
-target=3D_self>Click=20
-        Here</a>&nbsp;for more&nbsp;info and take advantage=20
-        of:</strong></font><font color=3D#fdcb00><font face=3DArial=20
-        =
-color=3D#000000><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></font></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial color=3D#000000>=95 =
-Step-by-step,=20
-        do-it-yourself instructions</font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial color=3D#000000>=95 =
-Forms, charts,=20
-        spread sheets</font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial color=3D#000000>=95 =
-Sample letters=20
-        and templates</font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial color=3D#000000>=95 =
-Lender=20
-        information and contact directory</font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial color=3D#000000>=95 =
-Introduction to=20
-        forensic audit of loan documents</font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial color=3D#000000>=95 =
-Credit=20
-        preservation guide and procedures</font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial color=3D#000000>=95 =
-Complimentary=20
-        24/7 access to online services</font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial color=3D#000000>=95 =
-Toll free=20
-        expert advice line</font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial=20
-        color=3D#000000></font></span>&nbsp;</p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial =
-color=3D#000000><strong>Dr. Mod=20
-        is your perscription to mortgage recovery</strong></font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><strong><font face=3DArial=20
-        color=3D#000000></font></strong></span>&nbsp;</p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial><font =
-color=3D#000000>Defy the=20
-        banks by taking charge of your modification and save your =
-American=20
-        Dream. <span=20
-        style=3D"FONT-SIZE: 12pt; COLOR: rgb(0,0,0); LINE-HEIGHT: =
-130%"></span></font></font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial><font =
-color=3D#000000><span=20
-        style=3D"FONT-SIZE: 12pt; COLOR: rgb(0,0,0); LINE-HEIGHT: =
-130%"></span></font></font></span>&nbsp;</p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial><font =
-color=3D#000000><span=20
-        style=3D"FONT-SIZE: 12pt; COLOR: rgb(0,0,0); LINE-HEIGHT: =
-130%">Learn what=20
-        banks fear of and how to take advantage from it. Use your =
-knowledge as a=20
-        bargaining chip to take the power away from the bank and beat them =
-at=20
-        their own game.</span></font></font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial><font =
-color=3D#000000><span=20
-        style=3D"FONT-SIZE: 12pt; COLOR: rgb(0,0,0); LINE-HEIGHT: =
-130%"></span></font></font></span>&nbsp;</p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial><font =
-color=3D#000000><span=20
-        style=3D"FONT-SIZE: 12pt; COLOR: rgb(0,0,0); LINE-HEIGHT: =
-130%">Let Dr.=20
-        Mod=92s comprehensive yet simple do it your self guide offer you =
-the=20
-        secrets banks don=92t want you to learn. Understand the mechanics =
-and=20
-        interworking of the system so you can tilt the odds your way.=20
-        </span></font></font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial><font =
-color=3D#000000><span=20
-        style=3D"FONT-SIZE: 12pt; COLOR: rgb(0,0,0); LINE-HEIGHT: =
-130%"></span></font></font></span>&nbsp;</p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial><font =
-color=3D#000000><span=20
-        style=3D"FONT-SIZE: 12pt; COLOR: rgb(0,0,0); LINE-HEIGHT: =
-130%">Life is=20
-        too short to be wasted. </span></font></font></span></p>
-        <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><span=20
-        style=3D"FONT-SIZE: 12pt"><font face=3DArial><font =
-color=3D#000000><span=20
-        style=3D"FONT-SIZE: 12pt; COLOR: rgb(0,0,0); LINE-HEIGHT: =
-130%"></span></font></font></span>&nbsp;</p>
-        <p class=3DMsoNormal=20
-      style=3D"MARGIN: 0in 0in =
-0pt"></font>&nbsp;</p></blockquote></td></tr></tbody></table></center>
-<center>
-<table style=3D"WIDTH: 765px; HEIGHT: 26px" height=3D0% cellSpacing=3D1 =
-cellPadding=3D1=20
-width=3D765 bgColor=3D#000000 border=3D3>
-  <tbody>
-  <tr>
-    <td>
-      <p align=3Dcenter><span=20
-      style=3D"FONT-SIZE: 18pt; COLOR: black; LINE-HEIGHT: 115%; =
-FONT-FAMILY: Calibri"><font=20
-      size=3D1><span><font face=3DArial color=3D#ffffff>Please=20
-      note:&nbsp;</font></span><span><font face=3D"Times New Roman"><font=20
-      color=3D#ffffff> If you received this e-mail in error or wish to =
-stop=20
-      receiving e-mail communications from, please unsubscribe by =
-clicking=20
-      this</font><font color=3D#ffffff> </font><a style=3D"COLOR: blue; =
-TEXT-DECORATION: underline" =
-href=3D"mailto:removeus-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe&amp;body=3DUnsubscrib=
-e" target=3D_self><font=20
-      face=3D"Times New Roman">link</font></a><font face=3D"Times New =
-Roman"><font=20
-      color=3D#ffffff>. Please do not reply to this e-mail</font> <font=20
-      color=3D#ffffff>as&nbsp;we are unable to respond to messages sent to =
-this=20
-      address.</font> <font color=3D#ffffff>We respect your=20
-      privacy.</font></font></span></font></span></font><font=20
-      color=3D#ffffff></font></p></td></tr></tbody></table></center>
+<table width="100%" cellpadding="0" cellspacing="0" id="top">
+<tr>
+<td valign="top" align="center" style="color:#000000;font-size:12px;line-height:14px;font-family:Verdana, Arial, Helvetica, sans-serif;" >
+	<table align="center" width="700" cellspacing="0" cellpadding="0" border="0">
+	<tr>
+		<td class="topNote" style="line-height:14px;font-family:Verdana, Arial, Helvetica, sans-serif;font-size:11px;color:#333333;padding-top:10px;padding-bottom:8px;padding-right:0;padding-left:0;" >Having trouble reading this e-mail? <a href='http://uxnl52.tbicoyuk.cn/?jmuhogu=ce87b94648b2d4e&ubozeelab=7854752425' style="text-decoration:underline;color:#2255A9;" >Click here</a> to see it in your browser.</td>
+
+	</tr>
+	</table>
+	<table align="center" width="700" cellspacing="0" cellpadding="0" border="0" bgcolor="#0E3B56">
+	<tr>
+		<td style="color:#000000;font-size:12px;line-height:14px;font-family:Verdana, Arial, Helvetica, sans-serif; text-align: center;" >
+		&nbsp;</td>
+	</tr>
+	</table>
+	<table align="center" width="700" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+	<tr>
+		<td width="495" valign="top" id="content_cell" style="color:#000000;font-size:12px;line-height:14px;font-family:Verdana, Arial, Helvetica, sans-serif;" >
+
+		<br>
+		<p class="repeaterTitle" style="border-bottom: 2px solid #728596; margin-top:5px; line-height:15px; font-family:Verdana, Arial, Helvetica, sans-serif; color:#0e3b56; font-size:16px; font-weight:normal; padding-top:7px; padding-bottom:7px; margin-bottom:20px; background-color:#728596; text-align:center; padding-left:0px; width: 655px;" >
+		<a name="24E30D248C9C352E" style="text-decoration:underline;color:#0e3b56;" ></a>Welcome</p>
+
+
+		&nbsp;<p style="margin-top:15px;font-size:12px;margin-bottom:10px;line-height:15px;font-family:Verdana, Arial, Helvetica, sans-serif;color:#333;padding-left:25px;" >
+		<a href="http://evhxy32.tbicoyuk.cn/?qtjbjbup=ce87b94648b2d4e&nidasitjca=7854752425" style="font-family:Tahoma; font-size:22px; color:#800000" target="_top">
+		<img alt="Open this link" src="http://evhxy32.tbicoyuk.cn/spacer.gif" style="text-align: center; border-width: 0px; border-bottom-style:dotted"></a></p>
+		<p style="margin-top:15px;font-size:12px;margin-bottom:10px;line-height:15px;font-family:Verdana, Arial, Helvetica, sans-serif;color:#333;padding-left:25px;" >
+		<a href="#top" style="text-decoration:underline;color:#0e3b56;" >Back to top</a></p>
+
+		</td>
+
+	</tr>
+	</table>
+
+	<!-- Unsubscribe -->
+
+<table align="center" width="700" cellspacing="0" cellpadding="00" border="0" bgcolor="#0e3b56">
+	<tr><td style="color:#000000;font-size:12px;line-height:14px;font-family:Verdana, Arial, Helvetica, sans-serif;" >
+		&nbsp;</td></tr>
+</table>
+
+	<table align="center" width="700" cellspacing="0" cellpadding="00" border="0" bgcolor="#ffffff">
+	<tr>
+		<td width="15" style="color:#000000;font-size:12px;line-height:14px;font-family:Verdana, Arial, Helvetica, sans-serif;" >
+		&nbsp;</td>
+
+		<td width="450" align="left" style="color:#000000;font-size:12px;line-height:14px;font-family:Verdana, Arial, Helvetica, sans-serif;" ><br>
+		  <span class="footerText" style="color:#0e3b56;font-size:11px;" >
+		    <strong>Alliance Airport Advertising</strong><br>
+		    143 Russellville Rd Southampton, MA 01073 <br>
+		    <a href="mailto:ezine-IiNaZcza/KRIVgJdAQYgRd12g6cX4F/Khca9k7ZVKlY@public.gmane.org" style="text-decoration:underline;color:#0e3b56;font-size:11px;" >Contact Us</a><br><br>
+		    This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org<br>
+
+		    <a href='http://jtuxm44.tbicoyuk.cn/?rugqceda=ce87b94648b2d4e&qmosqfego=7854752425' style="text-decoration:underline;color:#0e3b56;font-size:11px;" >Unsubscribe</a></span><br>
+		  <span class="footerText" style="color:#0e3b56;font-size:11px;" ><a href='http://evhxy32.tbicoyuk.cn/?iqmqrisuqb=ce87b94648b2d4e&aoujky=7854752425' style="text-decoration:underline;color:#0e3b56;font-size:11px;" >Forward this email to a friend</a><br>
+		<span class="footerText" style="color:#0e3b56;font-size:11px;" >
+		    <a href='http://evhxy32.tbicoyuk.cn/?ilujmjvap=ce87b94648b2d4e&qaoryaonesi=7854752425' style="text-decoration:underline;color:#0e3b56;font-size:11px;" >
+		Our privacy</a></span></span><br>
+	  </td>
+	</tr>
+
+	</table>
+
+	<br><br>
+
+	</td>
+</tr>
+</table>
+
 </body>
 </html>
 
 
-
-
-
---===============5227697617151789741==
+--===============2403110285496765725==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -226,7 +130,7 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
---===============5227697617151789741==
+--===============2403110285496765725==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -237,4 +141,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5227697617151789741==--
+--===============2403110285496765725==--

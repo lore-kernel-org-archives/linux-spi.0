@@ -1,40 +1,27 @@
-From: Jaswinder Singh Rajput <jaswinder@kernel.org>
-Subject: Re: [PATCH 29/44] includecheck fix: drivers/spi, amba-pl022.c
-Date: Wed, 08 Jul 2009 23:12:47 +0530
-Message-ID: <1247074967.4382.115.camel@ht.satnam>
-References: <1247063308.4382.12.camel@ht.satnam>
-	 <1247067147.4382.80.camel@ht.satnam>
-	 <63386a3d0907081028s4a36fccen9cea9a316e2ef4c6@mail.gmail.com>
+From: "Brittle Amancio" <kenogenesis-nLMGx2QE8Zw@public.gmane.org>
+Subject: Twhe Female Orgassm - 3 Steps to Success
+Date: Wed, 08 Jul 2009 18:36:45 -0000
+Message-ID: <44E46F291E8EF00306CEAF@tteo.es>
 Mime-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net,
-	Sam Ravnborg <sam@ravnborg.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-To: Linus Walleij <linus.ml.walleij@gmail.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756332AbZGHRoh@vger.kernel.org>
-In-Reply-To: <63386a3d0907081028s4a36fccen9cea9a316e2ef4c6@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 2009-07-08 at 19:28 +0200, Linus Walleij wrote:
-> 2009/7/8 Jaswinder Singh Rajput <jaswinder@kernel.org>:
-> 
-> > fix the following 'make includecheck' warnings:
-> >
-> >  drivers/spi/amba-pl022.c: linux/delay.h is included more than once.
-> >  drivers/spi/amba-pl022.c: linux/errno.h is included more than once.
-> 
-> Acked-by: Linus Walleij <linus.walleij@stericsson.com>
-> 
-> David are you merging this?
-> 
+The Female Ojgrasm - 3 Steps to Success www. ba43. com. Lqiuor Store Thieves Enntering From Above
 
-This is a big patchset, So better me or Sam will send this to Linus
-after collecting some more ACKs.
-
-Thanks,
---
-JSR
+------------------------------------------------------------------------------
+Enter the BlackBerry Developer Challenge  
+This is your chance to win up to $100,000 in prizes! For a limited time, 
+vendors submitting new applications to BlackBerry App World(TM) will have
+the opportunity to enter the BlackBerry Developer Challenge. See full prize  
+details at: http://p.sf.net/sfu/Challenge

@@ -1,10 +1,12 @@
-From: "Blanca Gagioh" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Breathtaking
-Date: Thu, 9 Jul 2009 18:23:09 +05-30
-Message-ID: <7886JBM.795391E88.0647946204IWABGCQQTCNMFTU319@[124.125.176.244]>
+From: La Boutique Web du Timbre par Central Marques <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
+Subject: [SPAM] Achetez vos timbres en ligne et faites
+	vous livrer
+Date: 9 Jul 2009 13:01:24 -0000
+Message-ID: <20090709130124.14233.qmail@ks300646.kimsufi.com>
+Reply-To: La Boutique Web du Timbre par Central Marques <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2228606056870952822=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5639209143040347479=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,119 +18,128 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2228606056870952822==
-Content-type: text/html; charset="utf-8"
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<title>Sexual Health Newsletter.</title>
+--===============5639209143040347479==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_6745e1c8646b7adb299dca79a0242ef4"
+
+
+--_----------=_parties_6745e1c8646b7adb299dca79a0242ef4
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.ctrm3.net/svi/miroir.php?bat=laposte0709_ctrm
+
+Une offre pour tous!
+
+Vous êtes pressés ? La Boutique Web du Timbre vous fait gagner du temps
+
+La Boutique Web du Timbre de la Poste va vous permettre de gagner du temps :
+
+Pour les particuliers ou les professionnels , la Boutique Web du Timbre c'est une offre complète de produits d'affranchissement et une facture automatiquement jointe à votre commande qui est livrée à l'adresse de votre choix .
+
+Profitez également de notre module de calcul des tarifs pour trouver la solution la plus adaptée à vos besoins.
+
+Trouvez le produit qu'il vous faut:
+
+Les roulettes de Marianne : Très pratiques ces roulettes existent en différents tarifs pour répondre à vos besoins d'affranchissement et un dévidoir est offert à partir de 500 timbres d'une même référence achetés ...
+
+Nouveau! Mon TimbraMoi est un timbre-poste à part entière qui permet l'affranchissement, même utilisé seul.
+
+Entièrement personnalisé, il est imprimé avec la photo de votre choix en son centre. Il est disponible en 3 valeurs ...
+
+Les Prêt-à-Poster : Ces enveloppes déjà timbrées sont parfaites pour gagner du temps sur des envois en nombre ...
+
+La lettre MAX : Ces enveloppes pré-affranchies sont dédiées à l'envoi suivi de petits objets et documents jusqu'à 1kg ...
+
+Les Postexport : Ces enveloppes vous permettent d'envoyer vos documents dans le monde entier. Il existe également des enveloppes Postexport suivies pour garder un oeil sur l'acheminement de votre courrier, ainsi que des boîtes pour tous vos envois volumineux ...
+
+plus d'infos sur http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique
+
+--------------------------------
+Cette offre La Poste vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm3.net/svi/gestionserv.php?nb=1808&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_6745e1c8646b7adb299dca79a0242ef4
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title></title>
 </head>
-<body>
-<style type="text/css">
-
-</style>
-<!-- BLACK BORDER AROUND ENTIRE MESSAGE -->
-<table border="0" cellpadding="1" cellspacing="0" bgcolor="#93C4C9" align="center" style="width: 580px">
-<tr><td>
-
-
-<!-- BEGIN WRAPPED CONTENT -->
-<table cellpadding="8" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width: 580px">
- <tr>
-  <td valign="top">
-<table border="0" width="100%" cellpadding="8" cellspacing="0" align="center" bgcolor="#ffffff">
-    <!--BEGIN TOP INTRO AND INTERNAL NAV-->
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm3.net/svi/miroir.php?bat=laposte0709_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre La Poste vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
 <tr>
-
-<td>
-<div style="font-size: 9px; margin: 0 0 20px 0; font-family: Verdana, Trebuchet MS, sans-serif;">
-	If you are having problems viewing images in this e-mail, <a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://xjbmu60.mtijoxal.cn/?qypefyhql=e607cb91e8810a7cf7b40&hoelic=93047760955">
-	click here</a> to view it in your web browser.</div>
-</td>
-</tr>
+<td align='center' style='display:block;padding:5px;background-color:#cddae0;font-family:Comic Sans MS;color:#00539b;font-size:20px'>
+<a style='text-decoration:none;' href='http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique' target='_blank'>
+<img id=INNER_LOGO_ANNONCEUR align=absmiddle src='http://timbres.laposte.fr/images/logo_boutique.jpg' style='float:left;border:0px;margin-right:20px'>
+</a>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#eeeeee;font-family:Arial;color:#5a76c0;font-size:18px;'>
+Une offre pour tous!<br>
+Vous &ecirc;tes press&eacute;s ? La Boutique Web du Timbre vous fait gagner du temps
+</td></tr>
 <tr>
-<td>
-<div style="color: #005C96; font-weight: bold; font-size: 17px; margin-bottom: 10px; font-family: Palatino, Times New Roman, serif;">
-	July 2009: Daily Newsletter</div>
-
-<br />
-</td>
-</tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:14px;background-color:#eeeeee;'>
+<hr>
+<br><u style="color:blue"><a href="http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique">La Boutique Web du Timbre</a></u> de la Poste va vous permettre de gagner du temps :
+<br>Pour les <b>particuliers</b> ou les <b>professionnels</b>, <u style="color:blue"><a href="http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique">la Boutique Web du Timbre</a></u> c'est une offre compl&egrave;te de <b>produits d'affranchissement</b> et une facture automatiquement jointe &agrave; votre commande qui est <b>livr&eacute;e &agrave; l'adresse de votre choix</b>.<br>
+<br>Profitez &eacute;galement de notre module de calcul des tarifs pour trouver la solution la plus adapt&eacute;e &agrave; vos besoins.<br>
+<br>Trouvez le produit qu'il vous faut:
+<hr>
+<table width=630 >
 <tr>
-<td width="80%" valign="top" style="border-top: 1px dashed #ccc; border-right: 1px dashed #ccc; margin: 0 5px 0 0; padding: 5px 15px 0px 8px;">
-<a name="infocus"></a>
-<div style="float: right; width: 540px;">
-	<div style="padding: 10px 0 10px 0; width: 545px; text-align: center;">
-		<a href="http://bql94.mtijoxal.cn/?jvyzjbazeko=e607cb91e8810a7cf7b40&sorjmyqtqkyx=93047760955" title="Goto website">
-		<img src="http://bql94.mtijoxal.cn/spacer.gif" alt="Click here to enable blocked image" title="Sneed Collard" border="0" /></a><br />
-		<br /><b><a href="http://hamxi00.mtijoxal.cn/?qpqkqhqk=e607cb91e8810a7cf7b40&ezqxofiie=93047760955" style="color: #E96B10">Goto website &gt;</a></b></div>
-</div>
+<td width=130 style='padding-left:8px;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique" style="text-decoration:none;color:#000000;"> <img src="http://banniere.reussissonsensemble.fr/view.asp?ref=481959&site=4439&b=42" border="0" alt="La Boutique Web du Timbre" width="120" height="600"> </a>
+</td>
+<td width=450 style='padding:8px;float:left;font-size:15px;'>
+ <table width=440 >
+ <tr><td style='background-color:white;padding:5px;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D481959%26site%3D4439%26type%3Db62%26bnb%3D62%26diurl%3Dhttp%3A%2F%2Fad.fr.doubleclick.net%2Fclk%253B186991885%253B24645246%253Bb%3Fhttp%3A%2F%2Ftimbres.laposte.fr%2Fdetailarticle.jgi%3FidCarac%3D%26idGamme%3D040%26idArbo%3D010%26page%3D3%26index%3D1%26idArticle%3D1105491%26prov%3D366" target="_blank" border=0 style='text-decoration:none;color:black'><img width=102 height=72 border=0 style='float:left' src='http://timbres.laposte.fr/html/images/picto_roulette.gif'> <b>Les roulettes de Marianne</b> : Tr&egrave;s pratiques ces roulettes existent en diff&eacute;rents tarifs pour r&eacute;pondre &agrave; vos besoins d'affranchisse
+ ment et un d&eacute;vidoir est offert &agrave; partir de 500 timbres d'une m&ecirc;me r&eacute;f&eacute;rence achet&eacute;s <u style='color:blue'>...</u></a></td></tr>
+ <tr><td height=20> </td></tr>
+
+ <tr><td style='background-color:white;padding:5px;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D481959%26site%3D4439%26type%3Db62%26bnb%3D62" target="_blank" border=0 style='text-decoration:none;color:black'><img style='float:left' src="http://banniere.reussissonsensemble.fr/view.asp?ref=481959&site=5140&b=15" border="0" alt="Mon Timbre a Moi" width="120" height="60"/>
+ <b style="color:red">Nouveau!</b> <b>Mon TimbraMoi</b> est un timbre-poste &agrave; part enti&egrave;re qui permet l'affranchissement, m&ecirc;me utilis&eacute; seul.<br>
+Enti&egrave;rement personnalis&eacute;, il est <b>imprim&eacute; avec la photo de votre choix</b> en son centre. Il est disponible en 3 valeurs <u style='color:blue'>...</u> </a></td></tr>
+ <tr><td height=20> </td></tr>
+
+ <tr><td style='background-color:white;padding:5px;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fsite%3D4439%26ref%3D481959%26type%3Dtext%26tnb%3D2%26subid%3D%26diurl%3Dhttp%3A%2F%2Fad.fr.doubleclick.net%2Fclk%253B186991885%253B24645246%253Bb%3Fhttp%3A%2F%2Ftimbres.laposte.fr%2Frayon%2Fprets-a-poster-utilitaires%2F%3Fprov%3D366" target="_blank" border=0 style='text-decoration:none;color:black'><img width=102 height=51 border=0 style='float:left' src='http://timbres.laposte.fr/html/images/picto_pap.gif'> <b>Les Pr&ecirc;t-&agrave;-Poster</b> : Ces enveloppes d&eacute;j&agrave; timbr&eacute;es sont parfaites pour gagner du temps sur des envois en nombre <u style='color:blue'>...</u> </a></td></tr>
+ <tr><td height=20></td></tr>
+
+ <tr><td style='background-color:white;padding:5px;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D481959%26site%3D4439%26type%3Db62%26bnb%3D62%26diurl%3Dhttp%3A%2F%2Fad.fr.doubleclick.net%2Fclk%253B186991885%253B24645246%253Bb%3Fhttp%3A%2F%2Ftimbres.laposte.fr%2Fdetailarticle.jgi%3FidCarac%3D%26idGamme%3D044%26idArbo%3D011%26page%3D1%26index%3D4%26idArticle%3D14029%26prov%3D366" target="_blank" border=0 style='text-decoration:none;color:black'><img border=0 style='float:left' src='http://www.ctrm3.net/img/bat/lettremax.jpg'> <b>La lettre MAX</b> : Ces enveloppes pr&eacute;-affranchies sont d&eacute;di&eacute;es &agrave; l'envoi suivi de petits objets et documents jusqu'&agrave; 1kg <u style='color:blue'>...</u></a></td></
+ tr>
+ <tr><td height=20></td></tr>
+ <tr><td style='background-color:white;padding:5px;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=laposte0709_ctrm&nb=1808&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D481959%26site%3D4439%26type%3Db62%26bnb%3D62%26diurl%3Dhttp%3A%2F%2Fad.fr.doubleclick.net%2Fclk%253B186991885%253B24645246%253Bb%3Fhttp%3A%2F%2Ftimbres.laposte.fr%2Fdetailarticle.jgi%3FidCarac%3D%26idGamme%3D045%26idArbo%3D011%26page%3D1%26index%3D1%26idArticle%3D12126%26prov%3D366" target="_blank" border=0 style='text-decoration:none;color:black'><img width=102 height=72 border=0 style='float:left' src='http://timbres.laposte.fr/html/images/picto_postexport.gif'> <b>Les Postexport</b> : Ces enveloppes vous permettent d'envoyer vos documents dans le monde entier. Il existe &eacute;galement des enveloppes Postexport suivies po
+ ur garder un oeil sur l'acheminement de votre courrier, ainsi que des bo&icirc;tes pour tous vos envois volumineux <u style='color:blue'>...</u></a></td></tr>
+ </table>
 
 </td>
-</tr>
-<tr>
-<td>
-
-<div style="display:block; clear:both; margin: 15px 0 0 0; padding: 5px 15px 0px 0; border-top: 1px dashed #ccc; ">
-
-<h3 style="font-size:12px; line-height: 14px; color: #005C96; margin-bottom:0;">
-To read past issues:</h3>
-<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #666; margin:0px 5px 0 0px; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
-Go to
-<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?qgjowecitqu=e607cb91e8810a7cf7b40&tynowawout=93047760955">
-our website</a></p>
-
-<h3 style="font-size:12px; line-height: 14px; color: #005C96; margin-bottom:0;">
-If the links on this page aren't working:</h3>
-<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
-Go
-<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?uzyybo=e607cb91e8810a7cf7b40&uypyeytadif=93047760955">
-here</a> and scroll down to &quot;How to manage your subscription options.&quot; Login and
-you'll be taken to the sign-up page where you can change your settings so you'll
-receive future newsletters in plain text format with visible links.</p>
-<h3 style="font-size:12px; line-height: 14px; color: #005C96; margin-bottom:0;">
-Subscribe to other e-newsletters:</h3>
-<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
-Stay informed! You're welcome to subscribe to free e-mail newsletters from our
-<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?oresjsyfjfu=e607cb91e8810a7cf7b40&pemeubqyty=93047760955" target="_blank">
-sister websites</a></p>
-
-<h3 style="font-size:12px; line-height: 14px; color: #005C96; margin-bottom:0;"><a style="text-decoration: none; font-weight: bold; color: #005C96; outline: none;" href="http://bql94.mtijoxal.cn/?wqojvobexq=e607cb91e8810a7cf7b40&azuekafape=93047760955">
-To contact us</a>:</h3>
-<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
-Send your questions, comments, or suggestions
-<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?gqhakececydi=e607cb91e8810a7cf7b40&ihqqsurut=93047760955">
-here</a></p>
-</div>
-<div style="display:block; clear:both; margin: 15px 0 0 0; padding: 5px 0 0 0; border-top: 1px dashed #ccc;">
-<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;"><a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?qhalurymqcjy=e607cb91e8810a7cf7b40&uraiyc=93047760955">
-Tell a friend</a> about this Daily Newsletter.</p>
-<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
-If you received this message from a friend, you can sign up for this
-<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?rqwofikid=e607cb91e8810a7cf7b40&jvizeqag=93047760955">
-Newsletter</a>.</p>
-
-<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
-This message was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org Visit <a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?yyhiyrulad=e607cb91e8810a7cf7b40&rjuinebqyu=93047760955">
-your User Login page</a> to modify your email communication preferences or
-update your personal profile. To stop receiving ALL email from us, <a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?nqqnyujypap=e607cb91e8810a7cf7b40&epyxoki=93047760955">
-click to remove yourself from our lists</a>.</p>
-</div>
-</td>
-</tr>
-</table>
+</tr></table>
 </td></tr>
 </table>
-</td>
-</tr>
-</table>
-</body>
+<br><br>
+<img src="http://www.ctrm3.net/svi/img.php?nb=1808&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
+<p>
+<a href='http://www.ctrm3.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm3.net/svi/gestionserv.php?nb=1808&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
 </html>
 
 
---===============2228606056870952822==
+--_----------=_parties_6745e1c8646b7adb299dca79a0242ef4--
+
+--===============5639209143040347479==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -140,7 +151,7 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
---===============2228606056870952822==
+--===============5639209143040347479==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -151,4 +162,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2228606056870952822==--
+--===============5639209143040347479==--

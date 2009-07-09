@@ -1,50 +1,47 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: Questions in spi_mpc83xx.c
-Date: Thu, 9 Jul 2009 21:38:55 +0300
-Message-ID: <20090709183855.GS16245@tarshish>
-References: <20090709141648.ws3ak25ewwogwsc0@www.bish.net>
+From: Linus Walleij <linus.ml.walleij@gmail.com>
+Subject: Re: [PATCH 29/44] includecheck fix: drivers/spi, amba-pl022.c
+Date: Thu, 9 Jul 2009 23:17:41 +0200
+Message-ID: <63386a3d0907091417u2014ad2ax645015e4cbbaa50c@mail.gmail.com>
+References: <1247063308.4382.12.camel@ht.satnam>
+	 <1247067147.4382.80.camel@ht.satnam>
+	 <63386a3d0907081028s4a36fccen9cea9a316e2ef4c6@mail.gmail.com>
+	 <1247074967.4382.115.camel@ht.satnam>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: Mark Bishop <mark-Wri040CV1BU@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20090709141648.ws3ak25ewwogwsc0-2+Z7l/WXEz7k1uMJSBkQmQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net,
+	Sam Ravnborg <sam@ravnborg.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+To: Jaswinder Singh Rajput <jaswinder@kernel.org>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756609AbZGIVRx@vger.kernel.org>
+In-Reply-To: <1247074967.4382.115.camel@ht.satnam>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+2009/7/8 Jaswinder Singh Rajput <jaswinder@kernel.org>:
+> On Wed, 2009-07-08 at 19:28 +0200, Linus Walleij wrote:
+>> 2009/7/8 Jaswinder Singh Rajput <jaswinder@kernel.org>:
+>>
+>> > fix the following 'make includecheck' warnings:
+>> >
+>> > =A0drivers/spi/amba-pl022.c: linux/delay.h is included more than o=
+nce.
+>> > =A0drivers/spi/amba-pl022.c: linux/errno.h is included more than o=
+nce.
+>>
+>> Acked-by: Linus Walleij <linus.walleij@stericsson.com>
+>>
+>> David are you merging this?
+>
+> This is a big patchset, So better me or Sam will send this to Linus
+> after collecting some more ACKs.
 
-On Thu, Jul 09, 2009 at 02:16:48PM -0400, Mark Bishop wrote:
-> I haven't seen this before - the '##' in the function name.  This is ANCII C?
+Not me I hope (damned I knew this would happen sooner or later).
+return -ELINWAL
 
-Of course. See pp. 90-91 in "The C Programming Language" second edition.
+Having this name is very convenient, people review my drivers like
+crazy.
 
-> 
-> #define MPC83XX_SPI_TX_BUF(type)				\
-> u32 mpc83xx_spi_tx_buf_##type(struct mpc83xx_spi *mpc83xx_spi)	\
-> {								\
-> 	u32 data;						\
-> ....
-
-baruch
-
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
-
-------------------------------------------------------------------------------
-Enter the BlackBerry Developer Challenge  
-This is your chance to win up to $100,000 in prizes! For a limited time, 
-vendors submitting new applications to BlackBerry App World(TM) will have
-the opportunity to enter the BlackBerry Developer Challenge. See full prize  
-details at: http://p.sf.net/sfu/Challenge
+Linus Walleij

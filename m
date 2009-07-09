@@ -1,13 +1,16 @@
 From: Mark Bishop <mark@bish.net>
-Subject: Questions in spi_mpc83xx.c
-Date: Thu, 09 Jul 2009 14:16:48 -0400
-Message-ID: <20090709141648.ws3ak25ewwogwsc0@www.bish.net>
+Subject: Re: [spi-devel-general] Questions in spi_mpc83xx.c
+Date: Thu, 09 Jul 2009 15:29:37 -0400
+Message-ID: <20090709152937.gbyjbk8n4wc4wkg4@www.bish.net>
+References: <20090709141648.ws3ak25ewwogwsc0@www.bish.net>
+	<20090709183855.GS16245@tarshish>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"; DelSp="Yes"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev@ozlabs.org
-To: spi-devel-general@lists.sourceforge.net
+Cc: spi-devel-general@lists.sourceforge.net, linuxppc-dev@ozlabs.org
+To: Baruch Siach <baruch@tkos.co.il>
 Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <20090709183855.GS16245@tarshish>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
 	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
@@ -20,28 +23,17 @@ Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-I haven't seen this before - the '##' in the function name.  This is ANCII C?
+Quoting Baruch Siach <baruch@tkos.co.il>:
 
-#define MPC83XX_SPI_TX_BUF(type)				\
-u32 mpc83xx_spi_tx_buf_##type(struct mpc83xx_spi *mpc83xx_spi)	\
-{								\
-	u32 data;						\
-....
+> Hi Mark,
+>
+> On Thu, Jul 09, 2009 at 02:16:48PM -0400, Mark Bishop wrote:
+>> I haven't seen this before - the '##' in the function name.  This  
+>> is ANCII C?
+>
+> Of course. See pp. 90-91 in "The C Programming Language" second edition.
+>
+>>
 
 
-Also, I have a SPI chip here that will drive MISO high when it is  
-ready to accept more data.  It acts like a hardware handshake.  I was  
-thinking about making changes to the controller source (spi_mpc83xx.c,  
-in my case) to support this.
-
-This is the only SPI chip contained on this system so I am not worried  
-about affecting other SPI devices hooked to the controller.
-
-What are people's opinion on this as far as right place to implement,  
-and I could use a push as to where in the controller to make mods if  
-appropriate.
-
-And if it isn't obvious already I am still learning a bit as to how  
-the SPI sub-system is organized.   I have taken apart the  
-documentation in the kernel Documentation/spi directory and am reading  
-all the code in drivers/spi.
+Wow, thanks.  I missed that little nugget of info.

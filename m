@@ -1,9 +1,11 @@
-From: "Stary Windy" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Can you come visit me?
-Date: Fri, 10 Jul 2009 15:39:17 +0000
-Message-ID: <OEOSP76349.0E02D3C@[211.50.126.70]>
+From: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] SPI driver for LMS283GF05 LCD
+Date: Sat, 11 Jul 2009 00:33:15 +0200
+Message-ID: <200907110033.15530.marek.vasut@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3017816248845370300=="
+Content-Type: Multipart/Mixed;
+  boundary="Boundary-00=_rG8VK3AK2BXXD/q"
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,128 +18,379 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3017816248845370300==
-Content-Type: text/html; charset="UTF-8"
+--Boundary-00=_rG8VK3AK2BXXD/q
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+Hi,
+the included patch adds SPI on/off procedures for the LCD. S-O-B is in the 
+patch. Please consider applying. Thanks.
 
-<head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>Important</title>
-</head>
+--Boundary-00=_rG8VK3AK2BXXD/q
+Content-Type: text/x-patch; charset="UTF-8";
+	name="0001-Samsung-LMS283GF05-LCD-SPI-support.patch"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="0001-Samsung-LMS283GF05-LCD-SPI-support.patch"
 
-<body>
-    <div link="#002865" alink="#002865" vlink="#002865" text="#333333"><center><font color="#000000" face="ARIAL" size="1">If you are unable to see the message below, <a href="http://7849d.pkahuzis.cn/?ul=928B9B00E02D3C47849D&?ai=51575700901827245258" target="_blank">click here to view</a>.</font><font color="#808080" face="ARIAL" size="2"><br>
-</font></center>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="730">
+=46rom 1aba3015a91655cad8f5a09a15afa2b92bcf1fe9 Mon Sep 17 00:00:00 2001
+=46rom: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Fri, 10 Jul 2009 15:31:02 +0200
+Subject: [PATCH] Samsung LMS283GF05 LCD SPI support
 
-                <tbody>
-                <tr>
-                    <td style="padding-top: 2px; padding-bottom: 2px;" bgcolor="#002865">
-                    <table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="726">
+This patch adds support for the SPI part of LMS283GF05 LCD. The LCD uses
+SPI for initialization and powerdown sequences. No further defails are
+specified in the datasheet about the initialization/powerdown sequence,
+just the magic numbers that have to be sent over SPI bus. This LCD can
+be found in the Aeronix Zipit Z2 handheld.
 
-                            <tbody><tr>
+Signed-off-by: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+=2D--
+ drivers/spi/Kconfig            |    7 +
+ drivers/spi/Makefile           |    1 +
+ drivers/spi/lms283gf05.c       |  256 ++++++++++++++++++++++++++++++++++++=
+++++
+ include/linux/spi/lms283gf05.h |   29 +++++
+ 4 files changed, 293 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/spi/lms283gf05.c
+ create mode 100644 include/linux/spi/lms283gf05.h
 
-                                <td style="padding: 0px 5px 0px 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous; width: 415px; font-family: Arial,Helvetica,sans-serif; font-size: 12px;" valign="top">
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 2c733c2..8451ee1 100644
+=2D-- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -246,6 +246,13 @@ config SPI_SPIDEV
+ 	  Note that this application programming interface is EXPERIMENTAL
+ 	  and hence SUBJECT TO CHANGE WITHOUT NOTICE while it stabilizes.
+=20
++config SPI_LMS283GF05
++	tristate "Samsung LMS283GF05 LCD"
++	depends on SYSFS
++	help
++	  SPI driver for Samsung LMS283GF05. This provides basic support
++	  for powering the LCD up/down through a sysfs interface.
++
+ config SPI_TLE62X0
+ 	tristate "Infineon TLE62X0 (for power switching)"
+ 	depends on SYSFS
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 3de408d..35025ad 100644
+=2D-- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -35,6 +35,7 @@ obj-$(CONFIG_SPI_SH_SCI)		+=3D spi_sh_sci.o
+=20
+ # SPI protocol drivers (device/link on bus)
+ obj-$(CONFIG_SPI_SPIDEV)	+=3D spidev.o
++obj-$(CONFIG_SPI_LMS283GF05)	+=3D lms283gf05.o
+ obj-$(CONFIG_SPI_TLE62X0)	+=3D tle62x0.o
+ # 	... add above this line ...
+=20
+diff --git a/drivers/spi/lms283gf05.c b/drivers/spi/lms283gf05.c
+new file mode 100644
+index 0000000..260e3fb
+=2D-- /dev/null
++++ b/drivers/spi/lms283gf05.c
+@@ -0,0 +1,256 @@
++/*
++ * lms283gf05.c -- support for Samsung LMS283GF05 LCD
++ *
++ * Copyright (c) 2009 Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include <linux/device.h>
++#include <linux/kernel.h>
++#include <linux/delay.h>
++#include <linux/gpio.h>
++
++#include <linux/spi/spi.h>
++#include <linux/spi/lms283gf05.h>
++
++struct lms283gf05_state {
++	struct spi_device	*us;
++	struct mutex		lock;
++	struct lms283gf05_pdata	*pdata;
++};
++
++struct lms283gf05_seq {
++	unsigned char		reg;
++	unsigned short		value;
++	unsigned char		delay;
++};
++
++/* Magic sequences supplied by manufacturer, for details refer to datashee=
+t */
++static struct lms283gf05_seq disp_initseq[] =3D {
++	/* REG, VALUE, DELAY */
++	{ 0x07, 0x0000, 0 },
++	{ 0x13, 0x0000, 10 },
++
++	{ 0x11, 0x3004, 0 },
++	{ 0x14, 0x200F, 0 },
++	{ 0x10, 0x1a20, 0 },
++	{ 0x13, 0x0040, 50 },
++
++	{ 0x13, 0x0060, 0 },
++	{ 0x13, 0x0070, 200 },
++
++	{ 0x01, 0x0127, 0 },
++	{ 0x02,	0x0700, 0 },
++	{ 0x03, 0x1030, 0 },
++	{ 0x08, 0x0208, 0 },
++	{ 0x0B, 0x0620, 0 },
++	{ 0x0C, 0x0110, 0 },
++	{ 0x30, 0x0120, 0 },
++	{ 0x31, 0x0127, 0 },
++	{ 0x32, 0x0000, 0 },
++	{ 0x33, 0x0503, 0 },
++	{ 0x34, 0x0727, 0 },
++	{ 0x35, 0x0124, 0 },
++	{ 0x36, 0x0706, 0 },
++	{ 0x37, 0x0701, 0 },
++	{ 0x38, 0x0F00, 0 },
++	{ 0x39, 0x0F00, 0 },
++	{ 0x40, 0x0000, 0 },
++	{ 0x41, 0x0000, 0 },
++	{ 0x42, 0x013f, 0 },
++	{ 0x43, 0x0000, 0 },
++	{ 0x44, 0x013f, 0 },
++	{ 0x45, 0x0000, 0 },
++	{ 0x46, 0xef00, 0 },
++	{ 0x47, 0x013f, 0 },
++	{ 0x48, 0x0000, 0 },
++	{ 0x07, 0x0015, 30 },
++
++	{ 0x07, 0x0017, 0 },
++
++	{ 0x20, 0x0000, 0 },
++	{ 0x21, 0x0000, 0 },
++	{ 0x22, 0x0000, 0 }
++};
++
++static struct lms283gf05_seq disp_pdwnseq[] =3D {
++	{ 0x07, 0x0016, 30 },
++
++	{ 0x07, 0x0004, 0 },
++	{ 0x10, 0x0220, 20 },
++
++	{ 0x13, 0x0060, 50 },
++
++	{ 0x13, 0x0040, 50 },
++
++	{ 0x13, 0x0000, 0 },
++	{ 0x10, 0x0000, 0 }
++};
++
++
++static ssize_t lms283gf05_power_set(struct device *dev,
++		struct device_attribute *attr,
++		const char *buf, size_t len);
++
++static void lms283gf05_reset(unsigned long gpio, bool inverted)
++{
++	gpio_set_value(gpio, !inverted);
++	mdelay(100);
++	gpio_set_value(gpio, inverted);
++	mdelay(20);
++	gpio_set_value(gpio, !inverted);
++	mdelay(20);
++}
++
++static void lms283gf05_toggle(struct lms283gf05_state *st,
++			struct lms283gf05_seq *seq, int sz)
++{
++	char buf[3];
++	int i;
++
++	for (i =3D 0; i < sz; i++) {
++		buf[0] =3D 0x74;
++		buf[1] =3D 0x00;
++		buf[2] =3D seq[i].reg;
++		spi_write(st->us, buf, 3);
++
++		buf[0] =3D 0x76;
++		buf[1] =3D seq[i].value >> 8;
++		buf[2] =3D seq[i].value & 0xff;
++		spi_write(st->us, buf, 3);
++
++		mdelay(seq[i].delay);
++	}
++}
++
++static DEVICE_ATTR(enable, S_IWUSR, NULL, lms283gf05_power_set);
++
++static ssize_t lms283gf05_power_set(struct device *dev,
++		struct device_attribute *attr,
++		const char *buf, size_t len)
++{
++	struct lms283gf05_state *st =3D dev_get_drvdata(dev);
++	unsigned long val;
++	int ret;
++
++	if (attr !=3D &dev_attr_enable)
++		return -EINVAL;
++
++	ret =3D strict_strtoul(buf, 0, &val);
++	if (ret)
++		return -EINVAL;
++
++	dev_dbg(dev, "LCD power: %i\n", !!val);
++
++	mutex_lock(&st->lock);
++
++	if (val) {
++		if (st->pdata)
++			lms283gf05_reset(st->pdata->reset_gpio,
++					st->pdata->reset_inverted);
++		lms283gf05_toggle(st, disp_initseq, ARRAY_SIZE(disp_initseq));
++	} else {
++		lms283gf05_toggle(st, disp_pdwnseq, ARRAY_SIZE(disp_pdwnseq));
++		if (st->pdata)
++			gpio_set_value(st->pdata->reset_gpio,
++					st->pdata->reset_inverted);
++	}
++
++	mutex_unlock(&st->lock);
++
++	return len;
++}
++
++
++static int __devinit lms283gf05_probe(struct spi_device *spi)
++{
++	struct lms283gf05_state *st;
++	struct lms283gf05_pdata *pdata =3D spi->dev.platform_data;
++	int ret =3D 0;
++
++	if (pdata !=3D NULL) {
++		ret =3D gpio_request(pdata->reset_gpio, "LMS285GF05 RESET");
++		if (ret)
++			return ret;
++
++		ret =3D gpio_direction_output(pdata->reset_gpio, 0);
++		if (ret)
++			goto err;
++	}
++
++	st =3D kzalloc(sizeof(struct lms283gf05_state), GFP_KERNEL);
++	if (st =3D=3D NULL) {
++		dev_err(&spi->dev, "No memory for device state\n");
++		ret =3D -ENOMEM;
++		goto err;
++	}
++
++	st->us =3D spi;
++	st->pdata =3D pdata;
++	mutex_init(&st->lock);
++
++	ret =3D device_create_file(&spi->dev, &dev_attr_enable);
++	if (ret) {
++		dev_err(&spi->dev, "Cannot create power attribute\n");
++		goto err2;
++	}
++
++	spi_set_drvdata(spi, st);
++
++	/* kick in the LCD */
++	if (pdata)
++		lms283gf05_reset(pdata->reset_gpio, pdata->reset_inverted);
++	lms283gf05_toggle(st, disp_initseq, ARRAY_SIZE(disp_initseq));
++
++	return 0;
++
++err2:
++	kfree(st);
++err:
++	if (pdata !=3D NULL)
++		gpio_free(pdata->reset_gpio);
++	return ret;
++}
++
++static int __devexit lms283gf05_remove(struct spi_device *spi)
++{
++	struct 	lms283gf05_state *st =3D spi_get_drvdata(spi);
++
++	device_remove_file(&spi->dev, &dev_attr_enable);
++
++	kfree(st);
++
++	if (st->pdata !=3D NULL)
++		gpio_free(st->pdata->reset_gpio);
++
++	return 0;
++}
++
++static struct spi_driver lms283gf05_driver =3D {
++	.driver =3D {
++		.name	=3D "lms283gf05",
++		.owner	=3D THIS_MODULE,
++	},
++	.probe		=3D lms283gf05_probe,
++	.remove		=3D __devexit_p(lms283gf05_remove),
++};
++
++static __init int lms283gf05_init(void)
++{
++	return spi_register_driver(&lms283gf05_driver);
++}
++
++static __exit void lms283gf05_exit(void)
++{
++	spi_unregister_driver(&lms283gf05_driver);
++}
++
++module_init(lms283gf05_init);
++module_exit(lms283gf05_exit);
++
++MODULE_AUTHOR("Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>");
++MODULE_DESCRIPTION("LCD283GF05 LCD");
++MODULE_LICENSE("GPL v2");
+diff --git a/include/linux/spi/lms283gf05.h b/include/linux/spi/lms283gf05.h
+new file mode 100644
+index 0000000..02e7228
+=2D-- /dev/null
++++ b/include/linux/spi/lms283gf05.h
+@@ -0,0 +1,29 @@
++/*
++ * lms283gf05.h - Platform glue and init/powerdown sequence definitions
++ * 		  for Samsung LMS283GF05 LCD
++ *
++ * Copyright (C) 2009 Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  U=
+SA
++*/
++
++#ifndef _INCLUDE_LINUX_SPI_LMS283GF05_H_
++#define _INCLUDE_LINUX_SPI_LMS283GF05_H_
++
++struct lms283gf05_pdata {
++	unsigned long	reset_gpio;
++	bool		reset_inverted;
++};
++
++#endif /* _INCLUDE_LINUX_SPI_LMS283GF05_H_ */
+=2D-=20
+1.6.3.3
 
-                                <table border="0" cellpadding="0" cellspacing="0" style="width: 722px">
 
-                                        <tbody><tr>
-                                            <td>
-                                            <table border="0" cellpadding="0" cellspacing="0">
-
-                                                    <tbody><tr>
-                                                        <td bgcolor="#ffc547" width="7"></td>
-                                                        <td style="padding: 3px 0px 3px 10px; font-family: Arial,Helvetica,sans-serif; color: rgb(255, 255, 255); font-size: 16px;" bgcolor="#002865" width="300"><b>In The News</b></td>
-
-                                                    </tr>
-
-                                            </tbody></table>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 3px 0px 10px 5px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; text-align: center;" bgcolor="#ffffff">
-											<a href="http://7e582.pkahuzis.cn/?qwq=928B9B00E02D3C47849D&?ze=51575700901827245258">
-											<img alt="Click here to unblock image or view it online" src="http://7e582.pkahuzis.cn/rss.jpg" style="border-width: 0px" /></a></td>
-                                        </tr>
-
-                                </tbody></table>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
-
-                                        <tbody>
-                                        <tr>
-                                            <td style="padding: 3px;" align="center" bgcolor="#ffffff" valign="top">
-                                            <table align="center" border="0" cellpadding="3" cellspacing="0">
-
-                                                    <tbody><tr>
-
-                                                        <td colspan="2" align="center" bgcolor="#ffffff"><font face="arial" size="1"> <a href="http://9b4403.pkahuzis.cn/?eqf=928B9B00E02D3C47849D&?zoi=51575700901827245258" target="_blank">ADVERTISING OPPORTUNITIES</a> | <a href="http://7e582.pkahuzis.cn/?uv=928B9B00E02D3C47849D&?qv=51575700901827245258" target="_blank">ABOUT US</a> | <a href="http://7e582.pkahuzis.cn/?op=928B9B00E02D3C47849D&?qp=51575700901827245258" target="_blank">CONTACT US</a> | <a href="http://7e582.pkahuzis.cn/?rjh=928B9B00E02D3C47849D&?tj=51575700901827245258" target="_blank">MOBILE</a></font></td>
-
-                                                    </tr>
-
-                                            </tbody></table>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding: 2px; font-family: Arial,Helvetica,sans-serif; font-size: 10px;" align="center" bgcolor="#ffffff">
-											Did someone forward you this edition? To get your own copy and stay on top of the latest news every weekday, <a href="http://7e582.pkahuzis.cn/?un=928B9B00E02D3C47849D&?ufa=51575700901827245258" target="_blank">Click Here</a></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td align="center">
-
-                                            <table border="0" cellpadding="10" cellspacing="0" width="720">
-
-                                                    <tbody><tr>
-                                                        <td style="font-family: Arial,Helvetica,sans-serif; font-size: 10px; color: rgb(153, 153, 153);" align="center">You are currently subscribed to the newsletter as
-														<font color="blue">
-														<a href="http://7e582.pkahuzis.cn/?ely=928B9B00E02D3C47849D&?hee=51575700901827245258" target="_blank">
-														<span class="wmi-mailto">
-														spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</span></a></font><br>
-
-To update your email address or newsletter preferences, <span><a href="http://7e582.pkahuzis.cn/?ap=928B9B00E02D3C47849D&?wod=51575700901827245258" target="_blank">click here</a></span>. <br>
-
-                                                        To unsubscribe, <a href="http://7e582.pkahuzis.cn/?ys=928B9B00E02D3C47849D&?ob=51575700901827245258" target="_blank">click here</a>.<br>
-
-                                                        Copyright 2009 -
-														<a href="http://7e582.pkahuzis.cn/?ob=928B9B00E02D3C47849D&?li=51575700901827245258" target="_blank">
-														Zeecizooig Media, Inc</a>
-														<br />
-														<br />
-
-                                                        <a href="http://928b9.pkahuzis.cn/?hel=928B9B00E02D3C47849D&?oki=51575700901827245258" target="_blank">Terms Of Use</a> and <a href="http://7e582.pkahuzis.cn/?ub=928B9B00E02D3C47849D&?yz=51575700901827245258" target="_blank">Privacy Policy</a></td>
-
-                                                    </tr>
-
-
-                                            </tbody></table>
-                                            </td>
-                                        </tr>
-
-                                </tbody></table>
-                                </td>
-
-                            </tr>
-
-                    </tbody></table>
-                    </td>
-                </tr>
-
-        </tbody></table>
-    </div>
-</body>
-
-</html>
-
-
---===============3017816248845370300==
+--Boundary-00=_rG8VK3AK2BXXD/q
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -149,7 +402,7 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
---===============3017816248845370300==
+--Boundary-00=_rG8VK3AK2BXXD/q
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -160,4 +413,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============3017816248845370300==--
+--Boundary-00=_rG8VK3AK2BXXD/q--

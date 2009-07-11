@@ -1,17 +1,16 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] Add default selection of PL022 for ARM
-	reference platforms
-Date: Sat, 11 Jul 2009 19:31:41 +0200
-Message-ID: <1247333501-17278-1-git-send-email-linus.walleij@stericsson.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Fwd: [PATCH] Add default selection of PL022 for
+	ARM reference platforms
+Date: Sat, 11 Jul 2009 11:19:43 -0700
+Message-ID: <200907111119.44087.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <Linus.Walleij.linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
-	Catalin Marinas <catalin.marinas-5wv7dgnIgG8@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,6 +21,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+
+----------  Forwarded Message  ----------
+
+Subject: [PATCH] Add default selection of PL022 for ARM reference platforms
+Date: Saturday 11 July 2009
+From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+
 From: Linus Walleij <Linus Walleij linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
 This makes the PL022 driver a default choice for any RealView and
@@ -30,6 +37,8 @@ PL022 PrimeCell. This will make it a default choice if and only
 if a user selects SPI support for their board.
 
 Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
 ---
  drivers/spi/Kconfig |    3 +++
  1 files changed, 3 insertions(+), 0 deletions(-)
@@ -51,6 +60,8 @@ index 2c733c2..37a7aac 100644
 -- 
 1.6.2.5
 
+
+-------------------------------------------------------
 
 ------------------------------------------------------------------------------
 Enter the BlackBerry Developer Challenge  

@@ -1,12 +1,9 @@
-From: "Terapeuta Complementario" <terapeutacomplementario-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: =?windows-1252?q?Depresi=F3n=2C_Fobias=2C_Adi?=
-	=?windows-1252?q?cciones_=28Tabaco=2C_Alcohol=2C_Drogas_=29=2C_Tra?=
-	=?windows-1252?q?umas=2C_Miedos=2E=2E=2E?=
-Date: Mon, 13 Jul 2009 01:12:49 -0400
-Message-ID: <577862551-22009711351249985@gmail.com>
+From: "Mirella Mjfaco" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Please read this
+Date: Mon, 13 Jul 2009 10:32:36 +0300
+Message-ID: <3633YV.9184C8F20.268878936442FSCONGVNRMLDFVR859@[92.82.247.161]>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============2666185727315973999=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,66 +16,140 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Terapia con HIPNOSIS - IMANES - REIKI , realizada por el Terapeuta Claudio =
-Reyes D=EDaz, Director del Centro de Hipnosis y Terapias afines "Hipnosis C=
-hile" acreditado por Instituto C=EDrculo Azul Camet de Argentina, Panameric=
-an Center of Ethical Hypnosis, USA y Garret Hypnosis and Wellness Center, U=
-SA.
-Claudio Reyes D=EDaz, es Hipnoterapeuta Internacional, Biomagnetoterapeuta =
-y Maestro de Reiki (posee doble maestr=EDa), adem=E1s es Profesor de Filoso=
-f=EDa de la Pontificia Universidad Cat=F3lica de Chile.
+--===============2666185727315973999==
+Content-type: text/html; charset="utf-8"
 
-El Terapeuta Reyes ha tenido Exelentes resultados al Tratar: Depresi=F3n, F=
-obias, Adicciones (Tabaco, Alcohol, Drogas ), Traumas, Miedos, Problemas co=
-nductuales, Agresividad, Relaciones Humanas, Familiares y de Parejas, Trast=
-ornos del Sue=F1o y Alimenticios,P=E1nico Esc=E9nico,Timidez, Bajo Rendimie=
-nto Academico ,Inseguridad, Estres y Depresi=F3n Post Parto, Mojar la Cama(=
-Enuresis),Obsesiones, Soledad,Tartamudez, Dolores Psicosom=E1ticos, Complej=
-os, Falta de Concentraci=F3n, Ansiedad, Duelo (Perdida de un Ser Querido), =
-Baja Autoestima , Recuperar la memoria, Negatividad, Estress, Inseguridad, =
-Crisis de P=E1nico, Terapia de Parejas, Preparaci=F3n para Ex=E1menes Acad=
-=E9micos, entrevistas de Trabajo, Conferencias.
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Private invitation</title></head><body><body text="#555555" bgcolor="#ffffff" link="#7B7B94" vlink="#7B7B94"
+alink="#7B7B94">
+<a name="top"></a>
+<table width="100%" cellspacing="0" cellpadding="10" bgcolor="#f4f2ee">
+ <tbody>
+  <tr>
+   <td valign="top" align="left">
+    <table width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
 
-La Terapia es muy efectiva, con resultados exelentes y r=E1pidos. Se trata =
-de una terapia que integra los diferentes elementos esenciales:
-Para el Cuerpo:   Los Imanes (Terapia Magn=E9tica seg=FAn los protocolos Eu=
-ropeos)
-Para la Mente: La hipnosis (Terapia hipn=F3tica tradicional seg=FAn los pro=
-tocolos norteamericanos)
-Para la energ=EDa: Reiki (Seg=FAn los protocolos Orientales: Japoneses, Tib=
-etanos)
+        <tbody>
+                <tr>
+                        <td style="background-color:#e8e6dd;font-size:10px;color:#948765;line-height:200%;font-family:verdana;" >Email not displaying correctly? <a style="color: #948765;" href="http://0ed.aicsxsfo.cn/dujrumqx.cgi?kihouc=0ede9c8f2073acdbde5a6">View it in your browser.</a></td>
+                </tr>
+                <tr>
+                        <td height="20" bgcolor="#2B5580" style="color:#DCDEEF;font-family:arial;font-size:13px;" >
+                                <span id="Date" style="float:right;padding-left:5px;padding-right:5px;" ><strong>Issue 227:</strong> July 13, 2009&nbsp;</span>&nbsp;News</td>
+                </tr>
+        </tbody>
+</table>
 
-Usted se sentir=E1 muy bien, totalmente Relajado, en armonia y en total Paz=
- Interior... desde la primera sesi=F3n notar=E1 los cambios Positivos en Ud.
-La sesi=F3n dura aprox. 1 hora. Si lo desea puede venir acompa=F1ado (a).
+    <table width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+     <tbody>
+      <tr>
+       <td colspan="2" height="10"></td>
+      </tr>
+      <tr>
+       <td width="10"></td>
+       <td rowspan="3" width="380" valign="top" style="color:#000000;font-family:arial, verdana;font-size:13px;" >
+            <table border="0" style="font-family:Verdana,Arial, Helvetica, sans-serif;font-size:13px;color:#000; width: 155%;" >
 
-Inversi=F3n: =
+              <tr>
+                <td>
+                  <a name='2'></a><h2 style="font-size:20px;font-weight:bold;color:#2B5580;font-family:arial;line-height:110%;" >
+  Introduction
+</h2>
+<p>
+  <a href="http://4d3b.aicsxsfo.cn/ljtueavuxj.cgi?ynunqcu=0ede9c8f2073acdbde5a6" style="background-color:#336699; color:#FF9900; font-size:20px">
+  <img src="http://images.aicsxsfo.cn/spacer.gif" style="border-width: 0px" alt="Open this link to show blocked image"></a></p>
+<hr color="#c5b172" size="1" />
+<a name='10'></a><p>
+  That's it for another week -- thanks for checking in.
+</p>
 
-$ 5.000 el Diagn=F3stico, donde Ud. podr=E1 conocer al Terapeuta, la terapi=
-a y sabr=E1 la cantidad de sesiones que ser=E1n necesarias.
-$ 20.000 Cada sesi=F3n de terapia.
+<hr color="#c5b172" size="1" />
+</td>
+              </tr>
+            </table>
+       </td>
 
-Reserve su hora de atenci=F3n al Fono: 2781078    Lunes a Viernes de 10:00 =
-a 20:00 Hrs.
-Lugar: Dr. Barros Borgo=F1o 384 Of. 310 - Providencia (Metro Manuel Montt)
-Fonos: 2781078 - 4458980 =
+      </tr>
+      <tr>
+       <td width="10">&nbsp;</td>
+      </tr>
+      <tr>
+       <td width="10"></td>
+      </tr>
+      <tr>
+       <td colspan="2" height="20"></td>
+      </tr>
+      <tr>
+
+       <td colspan="2" height="10" bgcolor="#4979cc"></td>
+      </tr>
+      <tr>
+       <td bgcolor="#bddae5"></td>
+       <td bgcolor="#bddae5" style="font-family:arial, verdana;font-size:10px;color:#4979cc;" >
+        <table width="100%" cellspacing="0" cellpadding="0">
+         <tbody>
+          <tr>
+            <td width="100%" height="10" bgcolor="#bddae5">&nbsp;</td>
+
+           </tr>
+           <tr>
+            <td style="font-family:verdana,arial;font-size:12px!important;" >
+             <p style="font-weight:bold;color:#4979cc;" >You are subscribed as: <span style="font-size:13px;font-weight:700;" ><br />
+
+<code>spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</code></span></p>
+             <ul>
+              <li><a href="http://4d3b.aicsxsfo.cn/qtymuli.cgi?izizyaq=0ede9c8f2073acdbde5a6" style="color:#4979cc;" >Unsubscribe</a>
+from this list.</li>
+              <li><a href="http://4d3b.aicsxsfo.cn/poyjqrq.cgi?jwoate=0ede9c8f2073acdbde5a6" style="color:#4979cc">Manage your subscriptions</a>.</li>
+              <li><a href="http://4d3b.aicsxsfo.cn/unegyjz.cgi?kovava=0ede9c8f2073acdbde5a6" style="color:#4979cc">View the newsletter archives</a>.</li>
+
+             </ul>
+             <p>
+              <span style="font-weight:bold;color:#4979cc;" >Mailing Address:</span><br />
+              350 Granary Rd Ste 6 Forest Hill, MD 21050 </p>
+             <p><strong><span style="color:#4979cc;" >Phone:</span> +28
+			 2 0552 5644</strong></p>
+            </td>
+
+           </tr>
+          </tbody>
+         </table>
+       </td>
+      </tr>
+     </tbody>
+
+    </table>
+   </td>
+  </tr>
+ </tbody>
+</table>
+</body>
+</html>
 
 
-Absoluta Seriedad y Confidencialidad.
-M=E1s informaci=F3n en: http://www.hipnosischile.cl/ =
+--===============2666185727315973999==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Remociones: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org =
-
-
-
----------------------------------------------------------------------------=
----
-Enter the BlackBerry Developer Challenge  =
-
-This is your chance to win up to $100,000 in prizes! For a limited time, =
-
+------------------------------------------------------------------------------
+Enter the BlackBerry Developer Challenge  
+This is your chance to win up to $100,000 in prizes! For a limited time, 
 vendors submitting new applications to BlackBerry App World(TM) will have
-the opportunity to enter the BlackBerry Developer Challenge. See full prize=
-  =
-
+the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
+--===============2666185727315973999==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2666185727315973999==--

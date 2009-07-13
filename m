@@ -1,9 +1,9 @@
-From: "Mirella Mjfaco" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Please read this
-Date: Mon, 13 Jul 2009 10:32:36 +0300
-Message-ID: <3633YV.9184C8F20.268878936442FSCONGVNRMLDFVR859@[92.82.247.161]>
+From: "Carey Mego" <0rosiv_1991-mXL1l3RoOVzRwrGw3wgiHA@public.gmane.org>
+Subject: [SPAM] Your bank details compromised
+Date: Mon, 13 Jul 2009 13:09:54 +0000
+Message-ID: <77ID8T938386.YCMUWCFQTDHTSFC.397DE@acer-kxw6rbeu2s>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2666185727315973999=="
+Content-Type: multipart/mixed; boundary="===============1762773016412596058=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,120 +16,108 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2666185727315973999==
-Content-type: text/html; charset="utf-8"
+--===============1762773016412596058==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>Private invitation</title></head><body><body text="#555555" bgcolor="#ffffff" link="#7B7B94" vlink="#7B7B94"
-alink="#7B7B94">
-<a name="top"></a>
-<table width="100%" cellspacing="0" cellpadding="10" bgcolor="#f4f2ee">
- <tbody>
-  <tr>
-   <td valign="top" align="left">
-    <table width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Stuff We Love - 3. Wednesday</title>
 
-        <tbody>
-                <tr>
-                        <td style="background-color:#e8e6dd;font-size:10px;color:#948765;line-height:200%;font-family:verdana;" >Email not displaying correctly? <a style="color: #948765;" href="http://0ed.aicsxsfo.cn/dujrumqx.cgi?kihouc=0ede9c8f2073acdbde5a6">View it in your browser.</a></td>
-                </tr>
-                <tr>
-                        <td height="20" bgcolor="#2B5580" style="color:#DCDEEF;font-family:arial;font-size:13px;" >
-                                <span id="Date" style="float:right;padding-left:5px;padding-right:5px;" ><strong>Issue 227:</strong> July 13, 2009&nbsp;</span>&nbsp;News</td>
-                </tr>
-        </tbody>
-</table>
+</head>
+<body bgcolor="#FFFFFF" marginheight="5" marginwidth="0" leftmargin="0" topmargin="5" link="0079be" alink="0079be" vlink="0079be" text="#000000">
 
-    <table width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
-     <tbody>
-      <tr>
-       <td colspan="2" height="10"></td>
-      </tr>
-      <tr>
-       <td width="10"></td>
-       <td rowspan="3" width="380" valign="top" style="color:#000000;font-family:arial, verdana;font-size:13px;" >
-            <table border="0" style="font-family:Verdana,Arial, Helvetica, sans-serif;font-size:13px;color:#000; width: 155%;" >
 
-              <tr>
+<table cellpadding=0 cellspacing=0 border=0>
+<tr>
+<td>&nbsp;</td>
+<td>
+<table cellpadding="1" cellspacing="0" border="0" bgcolor="#989898">
+
+        <tr>
                 <td>
-                  <a name='2'></a><h2 style="font-size:20px;font-weight:bold;color:#2B5580;font-family:arial;line-height:110%;" >
-  Introduction
-</h2>
-<p>
-  <a href="http://4d3b.aicsxsfo.cn/ljtueavuxj.cgi?ynunqcu=0ede9c8f2073acdbde5a6" style="background-color:#336699; color:#FF9900; font-size:20px">
-  <img src="http://images.aicsxsfo.cn/spacer.gif" style="border-width: 0px" alt="Open this link to show blocked image"></a></p>
-<hr color="#c5b172" size="1" />
-<a name='10'></a><p>
-  That's it for another week -- thanks for checking in.
-</p>
+                        <table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" width="623">
 
-<hr color="#c5b172" size="1" />
-</td>
-              </tr>
-            </table>
-       </td>
 
-      </tr>
-      <tr>
-       <td width="10">&nbsp;</td>
-      </tr>
-      <tr>
-       <td width="10"></td>
-      </tr>
-      <tr>
-       <td colspan="2" height="20"></td>
-      </tr>
-      <tr>
+                                <!-- above swoosh text -->
+                                <tr><td colspan=2>
+                                        <table border=0 width=100% cellpadding=0 cellspacing=0>
+                                        <!-- spacer row -->
+                                        <tr>
+                                                <td width=10 height=2>&nbsp;</td>
+                                                <td width=100%></td>
+                                        </tr>
 
-       <td colspan="2" height="10" bgcolor="#4979cc"></td>
-      </tr>
-      <tr>
-       <td bgcolor="#bddae5"></td>
-       <td bgcolor="#bddae5" style="font-family:arial, verdana;font-size:10px;color:#4979cc;" >
-        <table width="100%" cellspacing="0" cellpadding="0">
-         <tbody>
-          <tr>
-            <td width="100%" height="10" bgcolor="#bddae5">&nbsp;</td>
+                                        <tr>
 
-           </tr>
-           <tr>
-            <td style="font-family:verdana,arial;font-size:12px!important;" >
-             <p style="font-weight:bold;color:#4979cc;" >You are subscribed as: <span style="font-size:13px;font-weight:700;" ><br />
+                                                <td></td>
+                                                <td width="100%">
+                                                        <font face="Arial,Arial,Helvetica,sans-serif" color="#6E361F" size="1"><font face="Arial,Arial,Helvetica,sans-serif" size="1" color="#0079BE"><div align="right">
 
-<code>spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</code></span></p>
-             <ul>
-              <li><a href="http://4d3b.aicsxsfo.cn/qtymuli.cgi?izizyaq=0ede9c8f2073acdbde5a6" style="color:#4979cc;" >Unsubscribe</a>
-from this list.</li>
-              <li><a href="http://4d3b.aicsxsfo.cn/poyjqrq.cgi?jwoate=0ede9c8f2073acdbde5a6" style="color:#4979cc">Manage your subscriptions</a>.</li>
-              <li><a href="http://4d3b.aicsxsfo.cn/unegyjz.cgi?kovava=0ede9c8f2073acdbde5a6" style="color:#4979cc">View the newsletter archives</a>.</li>
+<a href="http://fc1059.aixflhmo.cn/ihaumom.sfgz?simufybid=3354y82RMm90x467H10L4&aeybauzi=07858538MS" style="text-decoration:none;">Send to a Friend</a> | <a href="http://2c06c2.aixflhmo.cn/iquruo.xo?xedyca=8179706v2t001V7656245&ikuuafe=l58Z1f755T" style="text-decoration:none;">Web Edition</a>
+ | <a href="http://78bb93.aixflhmo.cn/begiuveb.dz?guuuwy=W0eBt97R7D3670y4LL921&canuasyz=ZawbE6hP13" style="text-decoration:none;">Help</a> | <a href="http://66751.aixflhmo.cn/duqoizeduu.jf?sivokyoabu=1o0v772R21W2346cy658663a&dixys=1YA2K80s70" style="text-decoration:none;">Unsubscribe &nbsp;</a></div></font></font>
 
-             </ul>
-             <p>
-              <span style="font-weight:bold;color:#4979cc;" >Mailing Address:</span><br />
-              350 Granary Rd Ste 6 Forest Hill, MD 21050 </p>
-             <p><strong><span style="color:#4979cc;" >Phone:</span> +28
-			 2 0552 5644</strong></p>
-            </td>
+                                                </td>
+                                        </tr>
+                                        </table>
+                                </td></tr>
 
-           </tr>
-          </tbody>
-         </table>
-       </td>
-      </tr>
-     </tbody>
+                                <tr>
+                                        <td width="10">&nbsp;</td>
+                                        <td valign="top" width="443">
 
-    </table>
-   </td>
-  </tr>
- </tbody>
+
+                                        <p align="center" style="width: 609px">
+                                        &nbsp;</p>
+										<p align="center" style="width: 609px">
+                                        &nbsp;</p>
+										<p align="center" style="width: 609px">
+                                        <a href="http://a63.aixflhmo.cn/yjojyougal.ofd?umode=Zg1E627f3ni486SkV46F2243v&zeorutu=E9011XJ088"><img src="http://images.aixflhmo.cn/spacer.gif" border="0" alt="Stuff We love with 80% discount! Click here for more"></a></p>
+										<hr style="width: 610px">
+										<p align="center" style="width: 609px">
+                                        <br>
+
+                         				</p>
+
+                                        </td>
+
+                                </tr>
+
+                                <tr>
+                                <td width="10">&nbsp;</td>
+
+                                <td><font face="Arial, Helvetica, sans-serif" size="1">
+                                <font face="Arial,Arial,Helvetica,sans-serif" size="1" color="#000000"><b><a href='http://257f04.aixflhmo.cn/qynasy.mk?syyate=K5B6x5014K468N18o2819v3&efojariae=75t375Qr78' style="text-decoration:none;">Manage Your Subscriptions</a></b><br/>
+You are subscribed as spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org<br/>
+Please add FROM to your address book or safe list to ensure regular inbox delivery. <a href="http://8151.aixflhmo.cn/ydamodox.czx?ienasahol=f69K3J09c58Bf4kkMe87K3&rowaw=5958x3L016" style="text-decoration:none;">Need a hand?</a><br/><br/>
+To unsubscribe from this newsletter, please <a href='http://3225.aixflhmo.cn/xiniyi.jea?ruquzu=899F916PM9zl63X990593T&yurukyive=85o296H988' style="text-decoration:none;">click here</a>.</font></font></td>
+                                </tr>
+
+                                <tr><td colspan=2>
+                                 <p></p>
+                                 <center>
+                                 <font face="Arial, Helvetica, sans-serif" size="1">
+                                 <font face="Arial,Arial,Helvetica,sans-serif"><a href="http://64fc2.aixflhmo.cn/qazemope.up?odusugooyw=c6N91718W3n70989m08T3UH2&itosoogugo=8Pec437A87">Privacy Policy</a> | <a href="http://be1a.aixflhmo.cn/evebufy.mme?ezadyi=D575123582X2099411e4000&osylyha=Ea51WFAmhH">Email Help</a><br>
+								 © Bagocol Inc., 2009. All Rights Reserved.
+
+                                 </font>
+                                 <br />
+                                 </td></tr>
+                        </table>
+                  </td>
+         </tr>
+
+        </table>
+
+
+</td></tr>
 </table>
 </body>
 </html>
 
 
---===============2666185727315973999==
+--===============1762773016412596058==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -141,7 +129,7 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
---===============2666185727315973999==
+--===============1762773016412596058==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -152,4 +140,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2666185727315973999==--
+--===============1762773016412596058==--

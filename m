@@ -1,9 +1,9 @@
-From: "Georgene Objmio" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Ten ways to achieve wealth
-Date: Tue, 14 Jul 2009 16:42:25 +0300
-Message-ID: <1864TJ.76637FEC.53024576343RWQGRAOVJQEHBTH74@dsl.static8121519324.ttnet.net.tr>
+From: "Frantum Cassandra" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] You can get ebooks!
+Date: Tue, 14 Jul 2009 13:45:03 +0000
+Message-ID: <MLMLE66769.FC8DEB0@[121.143.87.111]>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7355378969133320107=="
+Content-Type: multipart/mixed; boundary="===============2703107191081012037=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,79 +16,86 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7355378969133320107==
-Content-type: text/html; charset="utf-8"
+--===============2703107191081012037==
+Content-Type: text/html; charset="ISO-8859-1"
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
- <html>
- <head><TITLE>Today's HOT News</TITLE>
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- <style type="text/css">
- <!--
- img.NoBorder { border-width: 0px 0px 0px 0px; }
- a.Menu1{ font-family:"Arial"; font-size:10.0pt; }
- p.nw {line-height: 120%;margin:0pt; margin-bottom:0pt; margin-top:4pt; margin-left: 0pt;
- 	font-size:11.0pt;font-family:"Arial";
- 	padding-left: 0.5cm;}
- p.f10 {font-size:10.0pt;font-family:"Arial";}
- -->
- </style>
-
- </head>
- <BODY VLINK=black style="margin-top: 3pt;">
-
- <p align=center >
-
- <br>
- <A class="Menu1" href="http://5c5.aiicpxbo.cn/exofunaeei.cgi?colocipa=5c5b77fec4950378cb67">
- <span style="color: #808080">Home</span></A><span style="color: #808080">&nbsp;&nbsp;
- </span>
- <a class="Menu1" href="http://4ada.aiicpxbo.cn/exiuseuwyu.cgi?mamazav=5c5b77fec4950378cb67">
- <span style="color: #808080">Yesterday's News</span></a><span style="color: #808080">&nbsp;&nbsp;
- </span>
- <A class="Menu1" href="http://4ada.aiicpxbo.cn/xuhyjok.cgi?ezqtjcjn=5c5b77fec4950378cb67">
- <span style="color: #808080">Site Search</span></A><span style="color: #808080">&nbsp;&nbsp;
- </span>
- <A class="Menu1" href="http://4ada.aiicpxbo.cn/gakjgjli.cgi?aducuxjd=5c5b77fec4950378cb67">
- <span style="color: #808080">Calendar</span></A><span style="color: #808080">&nbsp;&nbsp;
- </span><A class="Menu1" href="http://4ada.aiicpxbo.cn/qsyhqdqzy.cgi?mjupazjfev=5c5b77fec4950378cb67">
- <span style="color: #808080">Contact Us</span></A><span style="color: #808080">&nbsp;&nbsp;
- </span>
- <a class="Menu1" href="http://4ada.aiicpxbo.cn/jlode.cgi?jamqsqt=5c5b77fec4950378cb67">
- <span style="color: #808080">Subscribe</span></a><span style="color: #808080">&nbsp;&nbsp;
- </span>
- <a class="Menu1" href="http://4ada.aiicpxbo.cn/gueeisila.cgi?uxisydex=5c5b77fec4950378cb67" target=_blank>
- <span style="color: #808080">Advertise</span></a><span style="color: #808080">
- </span>
- </p>
-
- <HR>
-
- <p align=center>
- <span style="font-family: Arial; font-size:14.0pt">
-
- Today’s News - July 14, 2009  </span>
- </p>
- <p align=center>
- <span style="font-family: Arial; font-size:9.0pt;">To view this newsletter in your web browser,
- <a href="http://4ada.aiicpxbo.cn/yroqgyhus.cgi?tosjjaaok=5c5b77fec4950378cb67">click here.</a>
- </span>
- <p style="text-align: center">
-
- <a style="font-size:24px; color:#CC3300" href="http://4ada.aiicpxbo.cn/eruob.cgi?qyisj=5c5b77fec4950378cb67">
- <img src="http://images.aiicpxbo.cn/spacer.gif" alt="Click here to show disabled image" style="border-width: 0px"></a><hr>
-
- <p  class="f10" align=center>(c) 2009 Uyfumud Inc., 1147 Brunswick Way Sacramento, CA 95833 , USA.</p>
- <P style="text-align: center"><A href="http://5c5.aiicpxbo.cn/udqnaebofy.cgi?otjpesie=5c5b77fec4950378cb67">
- <span style="color: #669900">Unsubscribe</span></A><span style="color: #669900">
- | </span><a href="http://4ada.aiicpxbo.cn/ydivoj.cgi?kohuuymu=5c5b77fec4950378cb67"><span style="color: #669900">Subscribe</span></a><span style="color: #669900">
- | </span><a href="http://4ada.aiicpxbo.cn/udjies.cgi?pugazagqto=5c5b77fec4950378cb67"><span style="color: #669900">Privacy
- Policy</span></a><span style="color: #669900"> | </span>
- <a href="http://4ada.aiicpxbo.cn/mubanq.cgi?acaxjr=5c5b77fec4950378cb67"><span style="color: #669900">About us</span></a></P>
- </BODY></html>
+<html>
+<head>
+<title>Today - Tuesday, JULY 14, 2009</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body><font face="Arial,Helvetica,sans-serif" size="2">
 
 
---===============7355378969133320107==
+<table width="99%" border="0" cellspacing="0" cellpadding="0" >
+<tr height="50">
+<td width="170" align="right">&nbsp;</td>
+<td width="530" valign="bottom"><font face="arial" size="8" color="gray">&nbsp;Today</font></td>
+</tr>
+
+<tr height="20">
+<td><font  color="gray" size="1.5"><b>Tuesday, JULY 13, 2009</b></font></td>
+<td align="right"><font size="1" ><a href="http://4ff08.vxaviday.cn/?as=77772A2FC8DEB074FF08&?ua=44441619758870429905"  style="color:#0066CC;">
+Subscribe</a> or
+	<a href="http://ac0cf.vxaviday.cn/?ou=77772A2FC8DEB074FF08&?qza=44441619758870429905" style="color:#0066CC;" >
+unsubscribe</a> from this newsletter</font></td>
+</tr><tr height="1">
+<td colspan="2" bgcolor="gray" width="1"></td>
+</tr><tr height="21" >
+<td colspan="2">
+&nbsp; </td>
+
+</tr></table>
+<table width="99%" border="0" cellspacing="0" cellpadding="0"><tr valign="top">
+<td width="450">
+
+<p style="width: 1064px; margin-left: 40px">
+
+<font  face="Arial,Helvetica,sans-serif" size="2"  color="#0066CC" style="margin-left: 40px"><b>
+&nbsp;&nbsp;<span style="font-size: medium">HEADLINES</span></b></font><br>
+		</p>
+		<p style="width: 1064px; margin-left: 40px">
+
+		&nbsp;</p>
+		<p style="width: 1064px; margin-left: 40px">
+
+		<a name="top"></a>
+ <a href="http://ac0cf.vxaviday.cn/?fuy=77772A2FC8DEB074FF08&?har=44441619758870429905">
+<img alt="Click here to show disabled image" src="http://ac0cf.vxaviday.cn/blank.gif" style="border-width: 0px"></a></p>
+		<p style="width: 1064px; margin-left: 40px">
+
+		&nbsp;</p>
+
+       		</tr>
+			</table>
+
+<ol style="font-family:Arial,Helvetica,sans-serif;color:red;font-size:10px;padding-top:0">
+		<div style="background-color:#CCE0F5;padding:15px 25px;margin:0px 0px 20px -40px;">
+		<font color="black" size="2">
+				<font face="Arial,Helvetica,sans-serif" size="2">
+<font color="black" size="2" face="Arial,Helvetica,sans-serif">
+<p><a href="http://7bbfc1.vxaviday.cn/?qu=77772A2FC8DEB074FF08&?ero=44441619758870429905" style="color:#0066CC;">
+Subscriptions</a> | <a href="http://ac0cf.vxaviday.cn/?uke=77772A2FC8DEB074FF08&?ane=44441619758870429905" style="color:#0066CC;">
+Customer Service</a> | <a href="http://ac0cf.vxaviday.cn/?ko=77772A2FC8DEB074FF08&?eas=44441619758870429905" style="color:#0066CC;">
+Unsubscribe</a> | <a href="http://ac0cf.vxaviday.cn/?dqu=77772A2FC8DEB074FF08&?azi=44441619758870429905" style="color:#0066CC;">
+Contact the Editor</a></p>
+
+<p>This message was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org You have been
+sent Newsletter Today because you have opted in to receive it.</p>
+<p>Note: It may take our system up to two business days to process your
+unsubscribe request and during that time you may receive one or two more
+newsletters. Thank you for reading our newsletter.</p>
+<p>Review our <a href="http://ac0cf.vxaviday.cn/?xoc=77772A2FC8DEB074FF08&?ui=44441619758870429905" style="color:#0066CC;">
+privacy policy</a>.</p>
+			</font>
+		</font>
+		</div>
+
+    	</body>
+</html>
+
+
+--===============2703107191081012037==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -100,7 +107,7 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
---===============7355378969133320107==
+--===============2703107191081012037==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,4 +118,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7355378969133320107==--
+--===============2703107191081012037==--

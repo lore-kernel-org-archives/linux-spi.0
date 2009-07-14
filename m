@@ -1,9 +1,9 @@
-From: "Jesus Ubjn" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Payment for services rendered
-Date: Tue, 14 Jul 2009 14:41:49 +05-30
-Message-ID: <7817QXY.4268AF8A59.2005468772CAQSWBHPYPAVTFR2169@[117.196.17.151]>
+From: "Georgene Objmio" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Ten ways to achieve wealth
+Date: Tue, 14 Jul 2009 16:42:25 +0300
+Message-ID: <1864TJ.76637FEC.53024576343RWQGRAOVJQEHBTH74@dsl.static8121519324.ttnet.net.tr>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8489523479354646203=="
+Content-Type: multipart/mixed; boundary="===============7355378969133320107=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,7 +16,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8489523479354646203==
+--===============7355378969133320107==
 Content-type: text/html; charset="utf-8"
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -40,24 +40,24 @@ Content-type: text/html; charset="utf-8"
  <p align=center >
 
  <br>
- <A class="Menu1" href="http://8aef5.aiwgsmzo.cn/qrupopqozq.cgi?anjcay=8aef5faf8a59030186bdcb4">
+ <A class="Menu1" href="http://5c5.aiicpxbo.cn/exofunaeei.cgi?colocipa=5c5b77fec4950378cb67">
  <span style="color: #808080">Home</span></A><span style="color: #808080">&nbsp;&nbsp;
  </span>
- <a class="Menu1" href="http://10a.aiwgsmzo.cn/qvogq.cgi?jsikiwaqiu=8aef5faf8a59030186bdcb4">
+ <a class="Menu1" href="http://4ada.aiicpxbo.cn/exiuseuwyu.cgi?mamazav=5c5b77fec4950378cb67">
  <span style="color: #808080">Yesterday's News</span></a><span style="color: #808080">&nbsp;&nbsp;
  </span>
- <A class="Menu1" href="http://10a.aiwgsmzo.cn/esabaloyyg.cgi?jamew=8aef5faf8a59030186bdcb4">
+ <A class="Menu1" href="http://4ada.aiicpxbo.cn/xuhyjok.cgi?ezqtjcjn=5c5b77fec4950378cb67">
  <span style="color: #808080">Site Search</span></A><span style="color: #808080">&nbsp;&nbsp;
  </span>
- <A class="Menu1" href="http://10a.aiwgsmzo.cn/iwuroca.cgi?qkjugol=8aef5faf8a59030186bdcb4">
+ <A class="Menu1" href="http://4ada.aiicpxbo.cn/gakjgjli.cgi?aducuxjd=5c5b77fec4950378cb67">
  <span style="color: #808080">Calendar</span></A><span style="color: #808080">&nbsp;&nbsp;
- </span><A class="Menu1" href="http://10a.aiwgsmzo.cn/lewoipatu.cgi?awaveqwuwu=8aef5faf8a59030186bdcb4">
+ </span><A class="Menu1" href="http://4ada.aiicpxbo.cn/qsyhqdqzy.cgi?mjupazjfev=5c5b77fec4950378cb67">
  <span style="color: #808080">Contact Us</span></A><span style="color: #808080">&nbsp;&nbsp;
  </span>
- <a class="Menu1" href="http://10a.aiwgsmzo.cn/unudukqza.cgi?ygjtuqsoye=8aef5faf8a59030186bdcb4">
+ <a class="Menu1" href="http://4ada.aiicpxbo.cn/jlode.cgi?jamqsqt=5c5b77fec4950378cb67">
  <span style="color: #808080">Subscribe</span></a><span style="color: #808080">&nbsp;&nbsp;
  </span>
- <a class="Menu1" href="http://10a.aiwgsmzo.cn/tivemefu.cgi?oleva=8aef5faf8a59030186bdcb4" target=_blank>
+ <a class="Menu1" href="http://4ada.aiicpxbo.cn/gueeisila.cgi?uxisydex=5c5b77fec4950378cb67" target=_blank>
  <span style="color: #808080">Advertise</span></a><span style="color: #808080">
  </span>
  </p>
@@ -71,24 +71,24 @@ Content-type: text/html; charset="utf-8"
  </p>
  <p align=center>
  <span style="font-family: Arial; font-size:9.0pt;">To view this newsletter in your web browser,
- <a href="http://10a.aiwgsmzo.cn/uhoomi.cgi?ecepiyo=8aef5faf8a59030186bdcb4">click here.</a>
+ <a href="http://4ada.aiicpxbo.cn/yroqgyhus.cgi?tosjjaaok=5c5b77fec4950378cb67">click here.</a>
  </span>
  <p style="text-align: center">
 
- <a style="font-size:24px; color:#CC3300" href="http://10a.aiwgsmzo.cn/yakigq.cgi?padyha=8aef5faf8a59030186bdcb4">
- <img src="http://images.aiwgsmzo.cn/spacer.gif" alt="Click here to show disabled image" style="border-width: 0px"></a><hr>
+ <a style="font-size:24px; color:#CC3300" href="http://4ada.aiicpxbo.cn/eruob.cgi?qyisj=5c5b77fec4950378cb67">
+ <img src="http://images.aiicpxbo.cn/spacer.gif" alt="Click here to show disabled image" style="border-width: 0px"></a><hr>
 
- <p  class="f10" align=center>(c) 2009 Evyget Inc., 281 Old Clay St Se Marietta, GA 30060 , USA.</p>
- <P style="text-align: center"><A href="http://8aef5.aiwgsmzo.cn/emjaeamqre.cgi?iwqwyvywj=8aef5faf8a59030186bdcb4">
+ <p  class="f10" align=center>(c) 2009 Uyfumud Inc., 1147 Brunswick Way Sacramento, CA 95833 , USA.</p>
+ <P style="text-align: center"><A href="http://5c5.aiicpxbo.cn/udqnaebofy.cgi?otjpesie=5c5b77fec4950378cb67">
  <span style="color: #669900">Unsubscribe</span></A><span style="color: #669900">
- | </span><a href="http://10a.aiwgsmzo.cn/mauni.cgi?kakqxizqsu=8aef5faf8a59030186bdcb4"><span style="color: #669900">Subscribe</span></a><span style="color: #669900">
- | </span><a href="http://10a.aiwgsmzo.cn/ytakakqlu.cgi?eomquguuhi=8aef5faf8a59030186bdcb4"><span style="color: #669900">Privacy
+ | </span><a href="http://4ada.aiicpxbo.cn/ydivoj.cgi?kohuuymu=5c5b77fec4950378cb67"><span style="color: #669900">Subscribe</span></a><span style="color: #669900">
+ | </span><a href="http://4ada.aiicpxbo.cn/udjies.cgi?pugazagqto=5c5b77fec4950378cb67"><span style="color: #669900">Privacy
  Policy</span></a><span style="color: #669900"> | </span>
- <a href="http://10a.aiwgsmzo.cn/dilolqx.cgi?wjxukjvul=8aef5faf8a59030186bdcb4"><span style="color: #669900">About us</span></a></P>
+ <a href="http://4ada.aiicpxbo.cn/mubanq.cgi?acaxjr=5c5b77fec4950378cb67"><span style="color: #669900">About us</span></a></P>
  </BODY></html>
 
 
---===============8489523479354646203==
+--===============7355378969133320107==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -100,7 +100,7 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
---===============8489523479354646203==
+--===============7355378969133320107==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,4 +111,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8489523479354646203==--
+--===============7355378969133320107==--

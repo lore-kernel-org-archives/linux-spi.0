@@ -1,9 +1,10 @@
-From: "Maris Uwjjigq" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Please call me
-Date: Mon, 13 Jul 2009 17:43:51 -0500
-Message-ID: <1479QD.47601FB5B5.28912005326CKSLASCCQLEOCOV85@corporat190-027192156.sta.etb.net.co>
+From: =?GB2312?B?18nRrw==?= <qqqq12202131-q3J0GPcMw8c@public.gmane.org>
+Subject: =?gb2312?b?QMnMI87xo6THoiXMuCYmNTY2?=
+Date: Tue, 14 Jul 2009 16:07:10 +0800
+Message-ID: <E1MQd2s-0006aj-O0@335xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1263638774045671924=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,85 +17,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1263638774045671924==
-Content-type: text/html; charset="utf-8"
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>Email Newsletter</title>
-<style type="text/css">
-	width: 582px;
-}
-</style>
-</head>
-
-<body style="margin:0; padding:0; background-color:#F2F1EF; font:12px normal Verdana, Arial, Helvetica, sans-serif;">
-<CENTER><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">This message contains graphics.  If you do not see the graphics, <A href="http://4a2.aiqeiafo.cn/gyvyi.cgi?ivenefe=4a26c1fb5b533df13108">click here to view</A>.</FONT><font face="ARIAL" color="#808080" size="2"><br></font></CENTER>
-<center>
-<table id="wrapper" width="600" cellpadding="0" cellspacing="0" bgcolor="#F2F1EF" style="text-align:left;">
-        <tr>
-        <td valign="top"><table id="main_content" width="600" cellpadding="0" cellspacing="0" border="0">
-    <tr>
-<td valign="top" style="text-align: center">
-  <br />
-<a name="oguqgyt" href="http://4a2.aiqeiafo.cn/upaiynos.cgi?yxjfegaq=4a26c1fb5b533df13108" target="_blank" style="color:#CC3300; font-family:Tahoma">
-<img name="qgonoh"   src="http://images.aiqeiafo.cn/spacer.gif" alt="This message contains images and should be viewed. Click to view" style="border-width: 0px" /></a></td>
-</tr>
-            </table></td>
-            </tr>
-            <tr>
-            <td valign="top" bgcolor="#00759A">&nbsp;</td>
-        </tr>
-        <tr>
-         <td valign="top" style="text-align:center;"><p style="font:bold 11px Arial, Helvetica, sans-serif; color:#00759A;">
-		 &nbsp;</p>
-		 <p style="font:bold 11px Arial, Helvetica, sans-serif; color:#00759A;">
-		 <a href="http://4a2.aiqeiafo.cn/idyreu.cgi?hepqwiadqw=4a26c1fb5b533df13108" target=""style="color:#00759A; text-decoration:none;">unsubscribe</a>&nbsp;&#124;&nbsp;
-		 <a href="http://4961.aiqeiafo.cn/iucutoa.cgi?zuqvy=4a26c1fb5b533df13108" name="privacy" target="_blank" style="color:#00759A; text-decoration:none;"  >privacy</a>&nbsp;&#124;&nbsp;
-		 <a href="http://4961.aiqeiafo.cn/udaog.cgi?rycjvqjynu=4a26c1fb5b533df13108" name="footer_blog" target="_blank" style="color:#00759A; text-decoration:none;"  >blog</a></p>
-
-         <p style="font:normal 11px Arial, Helvetica, sans-serif; color:#6a6f63;">You are receiving this email because you subscribed to
-		 our newsletter and email alerts.</p>
-                <p style="font:normal 11px Arial, Helvetica, sans-serif; color:#6a6f63;">If you wish to stop receiving promotional email communications from
-				us
-                <a href="http://4961.aiqeiafo.cn/hajcjxehu.cgi?zjlypicue=4a26c1fb5b533df13108" target="" style="color:#00759A; text-decoration:none;">click here</a>.
-If you unsubscribe from our email list, we will continue to send important messages like purchase confirmations.</p>
-<p style="font:normal 11px Arial, Helvetica, sans-serif; color:#6a6f63;">(c) 2009
-Nqwakoc, Inc.<br />
-114 Schoharie Dr Jericho, NY 11753 , USA.</p>
-			</td>
-
-            </tr>
-
-        </table>
-    </center>
-</body>
-</html>
-
-
---===============1263638774045671924==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Enter the BlackBerry Developer Challenge  
-This is your chance to win up to $100,000 in prizes! For a limited time, 
-vendors submitting new applications to BlackBerry App World(TM) will have
-the opportunity to enter the BlackBerry Developer Challenge. See full prize  
-details at: http://p.sf.net/sfu/Challenge
---===============1263638774045671924==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1263638774045671924==--
+ILnzuavLvri61PDIyyi+rcDtL7LGzvGjqcT6usOjugogICAgIM7SysfJ7tvaytD2zsOvyrXStdPQ
+z965q8u+tcSjqLnj1t2horar3bihosnPuqOhos/Dw8Whorq81t2hosvV1t21yLXYvvnT0Aq31rmr
+y76jqaGjztLLvsq1wabQ27rxo6zT0NfFwby6w7XEyee74bnYz7Who9LyvfjP7r3PtuDP1s3qs8my
+u8HLw7/Uws/6ytu27rbIoaMKw7/UwtPQ0ruyv7fW1PbWtcuwtefE1LeixrE2JbrNxtXNqLeixrHW
+1sDgyOfPwqO6yczGt8/6ytvLsLeixrGjrLXnxNTUy8rkt6LGsaOsCrnjuOa3osax1+LB3tK1t6LG
+sSy3/s7x0rW3osaxtcggKLn6y7C12Muwo6kxLTIl08W73bT6v6q78rrP1/ejrLXjyv29z7XNoaO7
+ub/JCtLUuPm+3cv51/bK/cG/tu62yLXEtPPQocC0yczM1tPFu921xLXjyv2jrLmry76zycGituDE
+6tK71rG84bPW0tShsLPP0MWhsc6q1tAK0MTX986quavLvrXEusvQxMu8z+uhosDOuczK98GiuavL
+vtDOz/OjrLG+uavLvtaj1tiz0MW1y/nTw774ttTKx9XmxrGjobj8z6PN+wrE3Lm709C7+rvh0+u5
+88u+us/X96OhCqGhoaEKICAgICDI57nzy77U2reixrG1xNXmzrG3vcPm09DIzrrO0snCx7vytaPQ
+xKOsv8nJz834sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGjCgogICAgILTL
+0MXPorOkxtrT0NCno6zI59DrvfjSu7K9x6LJzDoKCqGhoaHK1iAgu/o6MTM1MzA5MDkzNDQKCiAg
+ICAgICAgUVGjuyA3NzE1MDkzNDQKCiAgIAogICAgICAgwarPtcjLo7rA7rn6t+UKCgogICAgICAg
+y7PXowogICAgICAgyczs96OhCgqhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhICChoaGhoaGh
+oaGhoaGhoaGhoaGhoaGhoaGhocnu29rK0PbOw6/KtdK109DP3rmry74KCi0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQpFbnRlciB0aGUgQmxhY2tCZXJyeSBEZXZlbG9wZXIgQ2hhbGxlbmdlICAKVGhpcyBp
+cyB5b3VyIGNoYW5jZSB0byB3aW4gdXAgdG8gJDEwMCwwMDAgaW4gcHJpemVzISBGb3IgYSBsaW1p
+dGVkIHRpbWUsIAp2ZW5kb3JzIHN1Ym1pdHRpbmcgbmV3IGFwcGxpY2F0aW9ucyB0byBCbGFja0Jl
+cnJ5IEFwcCBXb3JsZChUTSkgd2lsbCBoYXZlCnRoZSBvcHBvcnR1bml0eSB0byBlbnRlciB0aGUg
+QmxhY2tCZXJyeSBEZXZlbG9wZXIgQ2hhbGxlbmdlLiBTZWUgZnVsbCBwcml6ZSAgCmRldGFpbHMg
+YXQ6IGh0dHA6Ly9wLnNmLm5ldC9zZnUvQ2hhbGxlbmdlCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
+cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

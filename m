@@ -1,10 +1,9 @@
-From: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>
-Subject: speed_hz vs max_speed_hz
-Date: Wed, 15 Jul 2009 13:22:07 +0200
-Message-ID: <4A5DBBDF.2050901@weinigel.se>
+From: "Question =?ISO-8859-1?Q?Sant=E9?=" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: =?iso-8859-1?q?Etes-vous_bien_rembours=E9_=3F?=
+Date: Wed, 15 Jul 2009 15:10:52 +0200 (CEST)
+Message-ID: <kmtra4.rkxnus@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============3632763800783356993=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,60 +16,71 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi all,
+--===============3632763800783356993==
+Content-Type: multipart/alternative;
+	boundary="=_e519d86bdf0e7ec299b134bc672fdbb6"
 
-I'm a bit confused about speed_hz and max_speed_hz.  How are they 
-supposed to be used?
+--=_e519d86bdf0e7ec299b134bc672fdbb6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-For example, on one board I have this:
 
-static struct spi_board_info my_spi_board_info[] = {
-         {
-                 .mode           = 0,
-                 .modalias       = "spidev",
-                 .bus_num        = 0,
-                 .irq            = IRQ_EINT00,
-                 .max_speed_hz   = 4000000,
-                 .chip_select    = S3C24A0_GP19,
-         }
-};
+--=_e519d86bdf0e7ec299b134bc672fdbb6
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-I have a chip connected to this bus that I know can run at 25MHz.  So 
-what I would expect the above max_speed_hz to mean is that due to 
-limitations of the SPI controller and the layout of the SPI wires on the 
-board, even though the chip can run much faster, the maximum speed of 
-this specific board is only 4MHz.
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html>=0D<head><title>Unti=
+tled Document</title>=0D</head>=0D<body><div align=3D"center"><font size=3D=
+"2" face=3D"Arial, Helvetica, sans-serif">Si vous ne pouvez pas consulter c=
+orrectement ce message, <a href=3D"http://www.sante-repere.fr/AA51YU89HY">r=
+endez-vous ici</a></font></div><meta http-equiv=3D"Content-Type" content=3D=
+"text/html; charset=3Dutf-8" />=0D<div align=3D"center">=0D<table height=3D=
+"599" cellspacing=3D"0" cellpadding=3D"0" width=3D"580" border=3D"0">=0D<tb=
+ody>=0D<tr>=0D<td colspan=3D"3" height=3D"182"><a href=3D"http://www.sante-=
+repere.fr/AA51YU89HY"><img height=3D"182" src=3D"http://www07.r7g.com/6269/=
+te/730/header.jpg" width=3D"580" border=3D"0" /></a></td>=0D</tr>=0D<tr>=0D=
+<td style=3D"PADDING-LEFT: 60px" background=3D"http://www07.r7g.com/6269/te=
+/730/bg_contenu.jpg" bgcolor=3D"#e1f2fa" colspan=3D"3" height=3D"242"><stro=
+ng><font style=3D"FONT-SIZE: 28px" face=3D"verdana" color=3D"#65b8e4" size=
+=3D"5"><img src=3D"http://www07.r7g.com/6269/te/730/puce.jpg" />Sante Reper=
+e</font></strong> <br /><font style=3D"FONT-SIZE: 23px" face=3D"verdana" co=
+lor=3D"#666666" size=3D"4">le <strong>1er</strong> comparateur <strong>100 =
+% Mutuelle</strong><br /><strong>GRATUIT, FACILE</strong> et <strong>RAPIDE=
+</strong></font><br /><br /><font style=3D"FONT-SIZE: 23px" face=3D"verdana=
+" color=3D"#666666" size=3D"4"><strong><font style=3D"FONT-SIZE: 28px" face=
+=3D"verdana" color=3D"#65b8e4" size=3D"5"><img src=3D"http://www07.r7g.com/=
+6269/te/730/puce.jpg" /></font></strong>Offre de Bienvenue<br /><br /><stro=
+ng><font style=3D"FONT-SIZE: 28px" face=3D"verdana" color=3D"#65b8e4" size=
+=3D"5"><img src=3D"http://www07.r7g.com/6269/te/730/puce.jpg" /></font></st=
+rong>Plus de <strong>100 garanties</strong> comparees !</font><br /></td>=
+=0D</tr>=0D<tr>=0D<td colspan=3D"3"><a href=3D"http://www.sante-repere.fr/A=
+A51YU89HY"><img height=3D"74" src=3D"http://www07.r7g.com/6269/te/730/compa=
+rezvite.jpg" width=3D"580" border=3D"0" /></a></td>=0D</tr>=0D<tr>=0D<td wi=
+dth=3D"40"><a href=3D"http://www.sante-repere.fr/AA51YU89HY"><img height=3D=
+"101" src=3D"http://www07.r7g.com/6269/te/730/jeunes.jpg" width=3D"194" ali=
+gn=3D"top" border=3D"0" /></a></td>=0D<td><a href=3D"http://www.sante-reper=
+e.fr/AA51YU89HY"><img height=3D"101" src=3D"http://www07.r7g.com/6269/te/73=
+0/familles.jpg" width=3D"190" align=3D"top" border=3D"0" /></a></td>=0D<td =
+width=3D"50"><a href=3D"http://www.sante-repere.fr/AA51YU89HY"><img height=
+=3D"101" src=3D"http://www07.r7g.com/6269/te/730/seniors.jpg" width=3D"196"=
+ align=3D"top" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D</table>* : <e=
+m>Garantie hospitaliere pour les 20-35 ans.</em> </div>=0D<br><div align=3D=
+"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#9=
+99999">Conformement a la loi Informatique et Libertes, vous disposez d'un d=
+roit d'acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA508KL68M_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ508KL68M_475197.png" /></body></html>
+--=_e519d86bdf0e7ec299b134bc672fdbb6--
 
-The driver I have right now sets spi_device->max_speed_hz to 25MHz 
-because it "knows" that the chip can run that fast, so it will actually 
-drive the chip much faster than the board supports.  Am I right in 
-thinking that the driver is misbehaving and ought to set 
-spi_transfer->speed_hz instead?
 
-Also, what should the spi_setup do when passed a too high "max_speed"? 
-If the SPI controller is only capable of 10MHz, what should spi_setup do 
-if spi_device->max_speed_hz is 25MHz?  Should it return -EINVAL, 
-silently change max_speed_hz to 10MHz, or set max_speed_hz to 25MHz and 
-limit it to 10MHz when the transfer function is called?
 
-I'd vote for changing max_speed_hz to 10MHz, since that would give the 
-IMHO sanest ioctl interface, so that SPI_IOC_WR_MAX_SPEED_HZ call with a 
-too high speed and a subsequent SPI_IOC_RD_MAX_SPEED_HZ would return the 
-actual maximum speed.  In that case the debug printout in the write 
-ioctl ought to be changed to:
-
-     dev_dbg(&spi->dev, "%d Hz (max)\n", spi->max_speed_hz);
-
-so that it shows the actual speed that was set.  Returning -EINVAL would 
-also be a sane choice but slightly less useful.
-
-No matter what, the ioctl should be documented as dangerous since it can 
-set a clock which is faster than specified in the spi_board_info.
-
-Or have I misunderstood everything? :-)
-
-   /Christer
-
+--===============3632763800783356993==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Enter the BlackBerry Developer Challenge  
@@ -78,3 +88,15 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
+--===============3632763800783356993==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3632763800783356993==--

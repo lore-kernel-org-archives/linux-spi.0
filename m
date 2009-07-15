@@ -1,12 +1,13 @@
-From: Keltravo <newsletter-UspK5lnLoYFBDgjK7y7TUQ@public.gmane.org>
-Subject: Devis travaux gratuit : des artisans près de chez vous à votre service
-Date: 15 Jul 2009 08:34:13 -0000
-Message-ID: <20090715083413.1975.qmail@ks300646.kimsufi.com>
-Reply-To: Keltravo <newsletter-UspK5lnLoYFBDgjK7y7TUQ@public.gmane.org>
+From: =?gb2312?B?wt7Qwr78?= <luoxinjun-nwSgK2znq4hv1O+Z8WTAqQ@public.gmane.org>
+Subject: at91sam9260ek spi slave driver
+Date: Wed, 15 Jul 2009 17:55:31 +0800
+Message-ID: <F8B9F9646F7A4844A4668B9D9257D96612D7B76A96@SEREXCHMB2-C.combacn.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2319229403866842935=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1346344747182805241=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Language: zh-CN
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,165 +18,116 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============2319229403866842935==
+--===============1346344747182805241==
+Content-Language: zh-CN
 Content-Type: multipart/alternative;
-	boundary="_----------=_parties_abfe1ebc6f40d4710a6a6757d86d8e5e"
+	boundary="_000_F8B9F9646F7A4844A4668B9D9257D96612D7B76A96SEREXCHMB2Cco_"
 
+--_000_F8B9F9646F7A4844A4668B9D9257D96612D7B76A96SEREXCHMB2Cco_
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 
---_----------=_parties_abfe1ebc6f40d4710a6a6757d86d8e5e
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+SGVsbG8gYWxsLA0KICAgICBSZWNlbnRseSwgSSBuZWVkIHRvIGRlc2lnbiB0aGUgYXRtZWwgc3Bp
+IHNsYXZlIG1vZGUgZHJpdmVyIGluIGxpbnV4IGtlcm5lbCAyLjYuMjUsIGJlY2F1c2UgSSBuZWVk
+IHRvIHVzZSB0aGUgc3BpIHNsYXZlIG1vZGUgZnVuY3Rpb24gaW4gYXQ5MXNhbTkyNjBlay4gQnV0
+IHRoZSBsaW51eCBzcGkgZHJpdmVyIG9ubHkgc3VwcG9ydCBtYXN0ZXIgbW9kZSBhbmQgZG9lc24n
+dCBzdXBwb3J0IHNsYXZlIG1vZGUuIFNvIEkgdHJpZWQgbXkgYmVzdCB0byBkZXNpZ24gdGhlIHNw
+aSBzbGF2ZSBkcml2ZXIgaW4gbGludXggMi42LjI1IGZvciB3ZWVrcywgbW9zdCBvZiB0aGUgd29y
+ayBpcyB0byBtb2RpZnkgdG8gc3BpIG1hdGVyIGRyaXZlciBjb2RlIHRvIHN1cHBvcnQgc2xhdmUg
+bW9kZSwgdW5mb3J0dW5hdGVseSBpdCBkb2Vzbid0IHdvcmssIGNvdWxkIGFueWJvZHkgZ2l2ZSBt
+ZSBzb21lIGFkdmljZSBvbiBob3cgdG8gZGVzaWduIHRoZSBzcGkgc2xhdmUgbW9kZSBkcml2ZXIg
+aW4gbGludXggMi42LjI1IG9yIGdpdmUgbWUNCnNvbWUgZGVtbyBjb2RlID8NCg0KICAgVGhhbmtz
+Lg0KDQogICBzaW5jZXJlbHksDQogICBFdmFuIExlZQ0KICAgMjAwOS0wNy0xNQ0KDQpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXw0KKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKg0Ksb7Tyrz+sPy6rLGjw9zQxc+i
+o6yyosrct6jCybGju6Show0KyOe5+8T6srvKx9a4tqjK1bz+yMujrL371rm4tNbGoaLJoreioaLQ
+ucK2oaK78tXfwPvTw7G+08q8/rXEyM66zsTayN2how0KyOe5+8T6tO3K1cHLsb7Tyrz+o6zH68Tj
+waK8tMm+s/3Tyrz+vLDG5M+1zbPW0LXEy/nT0LG4t92jrLKizai5/dPKvP63vcq9zajWqreivP7I
+y6GjDQrNqLn9u6XBqs34vfjQ0M2o0MWjrLK7xNyxo9ak0MXPorywyrGhorCyyKu6zc7esu607bXY
+tKu076GisqLH0sPiytyyoba+tcS5pbv3oaPS8rTLo6y3orz+yMuyu7bU0MW8/rXEzvO3orPQtaPI
+zrrO1PDIzqGjDQoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqDQoNCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioNClRoaXMgZS1tYWlsIGlzIGNvbmZp
+ZGVudGlhbC4gSXQgbWF5IGFsc28gYmUgbGVnYWxseSBwcml2aWxlZ2VkLg0KSWYgeW91IGFyZSBu
+b3QgdGhlIGFkZHJlc3NlZSB5b3UgbWF5IG5vdCBjb3B5LCBmb3J3YXJkLCBkaXNjbG9zZSBvciB1
+c2UgYW55IHBhcnQgb2YgaXQuIElmIHlvdSBoYXZlIHJlY2VpdmVkIHRoaXMgbWVzc2FnZSBpbiBl
+cnJvciwgcGxlYXNlIGRlbGV0ZSBpdCBhbmQgYWxsIGNvcGllcyBmcm9tIHlvdXIgc3lzdGVtIGFu
+ZCBub3RpZnkgdGhlIHNlbmRlciBpbW1lZGlhdGVseSBieSByZXR1cm4gZS1tYWlsLg0KSW50ZXJu
+ZXQgY29tbXVuaWNhdGlvbnMgY2Fubm90IGJlIGd1YXJhbnRlZWQgdG8gYmUgdGltZWx5LCBzZWN1
+cmUsIGVycm9yIG9yIHZpcnVzLWZyZWUuIFRoZSBzZW5kZXIgZG9lcyBub3QgYWNjZXB0IGxpYWJp
+bGl0eSBmb3IgYW55IGVycm9ycyBvciBvbWlzc2lvbnMuDQoqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqDQo=
 
-Version "en ligne" de ce message: http://www.solgate.com/svi/miroir.php?bat=keltravo0709_ctrm
+--_000_F8B9F9646F7A4844A4668B9D9257D96612D7B76A96SEREXCHMB2Cco_
+Content-Type: text/html; charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
 
-Newsletter Keltravo Juillet 2009
-
-des artisans à votre service
-
-3 devis gratuits et immediats
-
-Vous avez besoin d'un professionnel dans le batiment
-1 Je sélectionne la rubrique la plus adaptée à nos projets
-
-2 Je décris de manière précise mon projet de travaux
-
-3 Je recois les devis des entreprises sélectionnées
-
-plus d'infos sur http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique
-
---------------------------------
-Cette offre keltravo vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.solgate.com/svi/gestionserv.php?nb=1809&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_abfe1ebc6f40d4710a6a6757d86d8e5e
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>Newsletter Keltravo Juillet 2009
-des artisans &agrave; votre service
-3 devis gratuits et immediats </title>
+<html dir=3D"ltr">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dgb2312">
+<style title=3D"owaParaStyle">P {
+	MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px
+}
+</style>
 </head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.solgate.com/svi/miroir.php?bat=keltravo0709_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre keltravo vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial Narrow;color:#000000;font-size:24px'>
-<a style='text-decoration:none;' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique' target='_blank'>
-<img id=INNER_LOGO_ANNONCEUR align=absmiddle src='http://www.keltravo.com/templates/keltravo/images/logo_keltravo.gif' style='float:left;border:0px;margin-right:20px'>
-</a>
-<p style='display:inline;'> Newsletter Keltravo <font color=blue>Juillet 2009</font><br>
-des artisans &agrave; votre service<br>
-<b>3 devis gratuits et immediats </b></p>
-</td></tr>
-<tr><td align='left' style='margin:3px;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#070707;font-size:12px;'>
-<div style='font-weight:bold;border:1px solid black;background-color:#e8ffa1;padding:2px;'>
-<table cellpadding=5 cellspacing=5 style='font-family:arial black;font-size:13px;'><tr><td colspan=3>Vous avez besoin d'un professionnel dans le batiment</td></tr>
-<tr>
-<td style='color:blue' width=220><span style='font-size:36px;float:left'>1</span><b>Je s&eacute;lectionne</b><br>la rubrique la plus adapt&eacute;e &agrave; nos projets</td>
-<td style='color:red' width=220><span style='font-size:36px;float:left'>2</span><b>Je d&eacute;cris</b><br>de mani&egrave;re pr&eacute;cise mon projet de travaux</td>
-<td style='color:green' width=220><span style='font-size:36px;float:left'>3</span><b>Je recois</b> les devis<br>des entreprises s&eacute;lectionn&eacute;es</td>
-</tr>
-</table>
-</div>
-
-</td></tr>
-<tr><td align='' style='padding:5px;background-color:#FFFFFF;'>
-<table><tr><td style='color:#000000;font-family:arial;font-size:11px;'>
-
-<table align=center><tr><td style='border:solid 2px red;padding:3px;height:70px;width:200px;text-align:left;'>
-<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fcentralmarques.keltravo.com%2Fcentralmarques%2Fdemande_devis.php%3FcatA%3D230%26catB%3D232' target='_blank'>
- <img width=100 height=60 border=0 style='margin:5px;' width=100 height=60 src=http://newsletter.abonim.com/img/kt2.jpg>
-<br><b style='font-size:13px;'> Fen&ecirc;tres & portes</b><br>
-<br><br><u style='color:blue;font-size:11px;font-weight:bold;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
-
-</a>
-
-</td><td style='border:solid 2px orange;padding:3px;height:70px;width:200px;text-align:left;'>
-
-<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fcentralmarques.keltravo.com%2Fcentralmarques%2Fdemande_devis.php%3FcatA%3D210%26catB%3D211' target='_blank'>
- <img width=100 height=60 border=0 style='margin:5px;' width=100 height=60 src=http://newsletter.abonim.com/img/kt8.jpg>
-<br><b style='font-size:13px;'> Electricit&eacute; - Plomberie</b><br>
-<br><br><u style='color:blue;font-size:11px;font-weight:bold;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
-</a>
-</td><td style='border:solid 2px blue;padding:3px;height:70px;width:200px;text-align:left;'>
-<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fcentralmarques.keltravo.com%2Fcentralmarques%2Fdemande_devis.php%3FcatA%3D150%26catB%3D151' target='_blank'>
-<img width=100 height=60 border=0 style='margin:5px;' width=100 height=60 src=http://newsletter.abonim.com/img/kt1.jpg>
-<br><b style='font-size:13px;'> Chauffage Nouvelle G&eacute;n&eacute;ration</b>
-<br><br><u style='color:blue;font-size:11px;font-weight:bold;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
-</a>
-</td></tr>
-<tr><td style='border:solid 2px yellow;padding:3px;height:70px;width:200px;text-align:left;'>
-
-<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fcentralmarques.keltravo.com%2Fcentralmarques%2Fdemande_devis.php%3FcatA%3D90%26catB%3D91' target='_blank'>
- <img width=100 height=60 border=0 style='margin:5px;' width=100 height=60 src=http://newsletter.abonim.com/img/kt3.jpg>
-<br><b style='font-size:13px;'> Cuisine</b><br>
-<br><br><u style='color:blue;font-size:11px;font-weight:bold;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
-</a>
-</td><td style='border:solid 2px brown;padding:3px;height:70px;width:200px;text-align:left;'>
-
-<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fcentralmarques.keltravo.com%2Fcentralmarques%2Fdemande_devis.php%3FcatA%3D1%26catB%3D3' target='_blank'>
- <img width=100 height=60 border=0 style='margin:5px;' width=100 height=60 src=http://newsletter.abonim.com/img/kt9.jpg>
-<br><b style='font-size:13px;'> Ma&ccedil;onnerie </b><br>
-<br><br><u style='color:blue;font-size:11px;font-weight:bold;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
-</a>
-</td><td style='border:solid 2px pink;padding:3px;height:70px;width:200px;text-align:left;'>
-<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fcentralmarques.keltravo.com%2Fcentralmarques%2Fdemande_devis.php%3FcatA%3D90%26catB%3D91' target='_blank'>
-<img width=100 height=60 border=0 style='margin:5px;' width=100 height=60 src=http://newsletter.abonim.com/img/kt7.jpg>
-<br><b style='font-size:13px;'> R&eacute;novation compl&egrave;te d'appartements, de pavillons...</b>
-<br><u style='color:blue;font-size:11px;font-weight:bold;'>Cliquez ici pour obtenir gratuitement plusieurs devis comparatifs</u>
-</a>
-</td></tr>
-
-<tr><td colspan=3 align=center style='border:solid 2px purple;padding:3px;height:70px;text-align:center;background-color:#e8ffa1'>
-<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fcentralmarques.keltravo.com%2Fcentralmarques%2F' target='_blank'>
-<b style='font-size:15px;'><u>Decouvrez toutes les rubriques sur notre site<br>et faites votre demande gratuite de devis</b>
-</a>
-</td></tr>
-</table>
-
+<body ocsi=3D"x">
+<font face=3D"Tahoma" color=3D"#000000" size=3D"2">
+<div dir=3D"ltr">Hello all,</div>
+<div dir=3D"ltr"><font face=3D"tahoma">&nbsp;&nbsp;&nbsp; </font>&nbsp;Rece=
+ntly, I need to design&nbsp;the atmel&nbsp;spi slave mode&nbsp;driver in li=
+nux kernel&nbsp;2.6.25, because I need to use the spi slave mode function i=
+n at91sam9260ek. But the linux spi driver only support master mode and does=
+n't
+ support slave mode. So I tried my best to design the spi slave driver in l=
+inux 2.6.25 for weeks, most of the work is to modify to spi mater driver co=
+de to support slave mode, unfortunately it doesn't work,&nbsp;could anybody=
+ give me some advice on how to design
+ the spi slave mode driver in linux 2.6.25 or give me<br>
+some demo code ?<br>
+&nbsp;</div>
+<div dir=3D"ltr">&nbsp;&nbsp; Thanks.<br>
+&nbsp;</div>
+<div dir=3D"ltr">&nbsp;&nbsp; sincerely,<br>
+&nbsp;&nbsp; Evan Lee<br>
+&nbsp;&nbsp; 2009-07-15</font></div>
 <br>
- <a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fcentralmarques.keltravo.com%2Fcentralmarques%2F' target='_blank'>
- <div style='border:solid 2px black;background-color:peachpuff;padding:3px;text-align:center;'>
-Nous r&eacute;f&eacute;ren&ccedil;ons 80.000 artisans, installateurs, fabricants, sur tous les m&eacute;tiers et sur toute la France. Faites comme 645.000 personnes en 2007, testez et approuvez nos services comparatifs.<br>
-Vous avez un autre besoin ? D&eacute;couvrez nos 250 autres rubriques, <u style='color:blue;font-size:11px;font-weight:bold;'>cliquant ici </u>
-</div>
-</a>
+<hr>
+<font face=3D"Arial" color=3D"Black" size=3D"1">***************************=
+****************************************<br>
+=B1=BE=D3=CA=BC=FE=B0=FC=BA=AC=B1=A3=C3=DC=D0=C5=CF=A2=A3=AC=B2=A2=CA=DC=B7=
+=A8=C2=C9=B1=A3=BB=A4=A1=A3<br>
+=C8=E7=B9=FB=C4=FA=B2=BB=CA=C7=D6=B8=B6=A8=CA=D5=BC=FE=C8=CB=A3=AC=BD=FB=D6=
+=B9=B8=B4=D6=C6=A1=A2=C9=A2=B7=A2=A1=A2=D0=B9=C2=B6=A1=A2=BB=F2=D5=DF=C0=FB=
+=D3=C3=B1=BE=D3=CA=BC=FE=B5=C4=C8=CE=BA=CE=C4=DA=C8=DD=A1=A3<br>
+=C8=E7=B9=FB=C4=FA=B4=ED=CA=D5=C1=CB=B1=BE=D3=CA=BC=FE=A3=AC=C7=EB=C4=E3=C1=
+=A2=BC=B4=C9=BE=B3=FD=D3=CA=BC=FE=BC=B0=C6=E4=CF=B5=CD=B3=D6=D0=B5=C4=CB=F9=
+=D3=D0=B1=B8=B7=DD=A3=AC=B2=A2=CD=A8=B9=FD=D3=CA=BC=FE=B7=BD=CA=BD=CD=A8=D6=
+=AA=B7=A2=BC=FE=C8=CB=A1=A3<br>
+=CD=A8=B9=FD=BB=A5=C1=AA=CD=F8=BD=F8=D0=D0=CD=A8=D0=C5=A3=AC=B2=BB=C4=DC=B1=
+=A3=D6=A4=D0=C5=CF=A2=BC=B0=CA=B1=A1=A2=B0=B2=C8=AB=BA=CD=CE=DE=B2=EE=B4=ED=
+=B5=D8=B4=AB=B4=EF=A1=A2=B2=A2=C7=D2=C3=E2=CA=DC=B2=A1=B6=BE=B5=C4=B9=A5=BB=
+=F7=A1=A3=D2=F2=B4=CB=A3=AC=B7=A2=BC=FE=C8=CB=B2=BB=B6=D4=D0=C5=BC=FE=B5=C4=
+=CE=F3=B7=A2=B3=D0=B5=A3=C8=CE=BA=CE=D4=F0=C8=CE=A1=A3<br>
+*******************************************************************<br>
 <br>
-<a style='text-decoration:none;cursor:hand;font-family:inherit;color:black;' href='http://www.solgate.com/svi/linkserv.php?bat=keltravo0709_ctrm&nb=1809&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fcentralmarques.keltravo.com%2Fcentralmarques%2Fdemande_devis.php%3Fartisan%3Dformulaire' target='_blank'>
- <div style='border:solid 2px red;padding:3px;height:150px;text-align:left;'>
-<br><b style='font-size:13px;'> Artisans , vous souhaitez recevoir de nouvelles demandes de projet</b><br>
- <img border=0 style='margin:5px;' width=200 height=36 src=http://www.keltravo.com/images/banners/KTO_artisans200x36.gif>
-Artisans, entreprises du b&acirc;timent et professionnels de l'habitat, recevez chaque jour de nouveaux projets.<br>
-Keltravo.com a pour objectif de devenir votre partenaire commercial en vous apportant aussi longtemps que vous le souhaitez de nouvelles et qualifi&eacute;es demandes de devis et projets. Chaque projet &eacute;tant valid&eacute; par nos soins, il ne sera envoy&eacute; que si vos m&eacute;tiers correspondent ainsi que votre couverture g&eacute;ographique.<br>
-Apr&egrave;s une inscription gratuite, nous vous proposons de recevoir rapidement les projets que nous s&eacute;lectionnons pour vous et de d&eacute;butez vos futurs chantiers
-<br><br><u style='color:blue;float:right;'>Inscrivez-vous ici, c'est gratuit</u>
- </div>
-
-</a>
-
-<br>
-</td></tr></table>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.solgate.com/svi/img.php?nb=1809&numuser=9047704&code=HWeuIQdw&src=50" width=1 height=1>
-<p>
-<a href='http://www.solgate.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.solgate.com/svi/gestionserv.php?nb=1809&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
+*******************************************************************<br>
+This e-mail is confidential. It may also be legally privileged.<br>
+If you are not the addressee you may not copy, forward, disclose or use any=
+ part of it. If you have received this message in error, please delete it a=
+nd all copies from your system and notify the sender immediately by return =
+e-mail.<br>
+Internet communications cannot be guaranteed to be timely, secure, error or=
+ virus-free. The sender does not accept liability for any errors or omissio=
+ns.<br>
+*******************************************************************<br>
+</font>
+</body>
 </html>
 
+--_000_F8B9F9646F7A4844A4668B9D9257D96612D7B76A96SEREXCHMB2Cco_--
 
---_----------=_parties_abfe1ebc6f40d4710a6a6757d86d8e5e--
 
---===============2319229403866842935==
+--===============1346344747182805241==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -187,7 +139,7 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
---===============2319229403866842935==
+--===============1346344747182805241==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -198,4 +150,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2319229403866842935==--
+--===============1346344747182805241==--

@@ -1,19 +1,12 @@
-From: "Mills, Ken K" <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] This adds support for SPI slave
- controller drivers
-Date: Wed, 15 Jul 2009 09:24:52 -0700
-Message-ID: <60BEFF3FBD4C6047B0F13F205CAFA383035C45463A@azsmsx501.amr.corp.intel.com>
-References: <1243914698.22129.4.camel@ubuntu-vmware>
-	<63386a3d0906121312x31e3ff5dy75d64c56c08fffb0@mail.gmail.com>
-	<63386a3d0907071258t695fdbaerd8485c58f27dcd00@mail.gmail.com>
+From: "3 suisses par Plein Temps" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: =?iso-8859-1?q?2=E8me_demarque_jusqu=27a_-80?=
+	=?iso-8859-1?q?=25!?=
+Date: Wed, 15 Jul 2009 19:45:44 +0200 (CEST)
+Message-ID: <kmu405.fz1poa@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, spi mailing list
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============7127519338858534640=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <63386a3d0907071258t695fdbaerd8485c58f27dcd00-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,933 +17,234 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-I took a look at your comments and I think adding a Kconfig option for SPI_SLAVE is the way to go. Especially since there are very few devices (as far as I know) that need this interface. I will also look at making SPI_MASTER optional. However, that may not be as usefull since so much of SPI_MASTER is needed for slave. As far as spliting up the files, I think that's David's call. I'll do what he wants. However, there is a lot of overlap between slave and master and it may not be to easy. I'll look at that furthur before I send out the revised patch.
+--===============7127519338858534640==
+Content-Type: multipart/alternative;
+	boundary="=_a3208964b0e12e4e0212b629d63e2308"
 
------Original Message-----
-From: Linus Walleij [mailto:linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org]
-Sent: Tuesday, July 07, 2009 12:59 PM
-To: Mills, Ken K; spi mailing list
-Subject: Fwd: [spi-devel-general] [PATCH] This adds support for SPI slave controller drivers
-
----------- Forwarded message ----------
-From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: 2009/6/12
-Subject: Re: [spi-devel-general] [PATCH] This adds support for SPI
-slave controller drivers
-To: Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Kopia: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, spi mailing
-list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+--=_a3208964b0e12e4e0212b629d63e2308
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
-2009/6/2 Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>:
+--=_a3208964b0e12e4e0212b629d63e2308
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-> This patch adds a new API to support slave SPI controller drivers.
-
-That's very interesting!
-
-> Signed-off-by: Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/spi/spi.c       |  368
-
-Can you include a Kconfig alteration so that there is also
-config SPI_SLAVE and make it possible to have either MASTER,
-SLAVE or BOTH devices? So that we get three classes of SPI
-drivers in the Kconfig?
-
-I also wonder how hard it would be to modify spi.c so that it
-only conditionally compiles in MASTER and/or SLAVE, such
-that it is possible to compile in only MASTER code if you only
-use the SPI subsystem as master and only SLAVE code if
-you only use the SPI subsystem as slave. So splitting the
-code in two sets - one with the master functions withing a
-#ifdef CONFIG_SPI_MASTER and one set inside
-#ifdef CONFIG_SPI_SLAVE and then follow the pattern from
-(See rule 2 from Documentation/SubmittingPatches)
-
-The primary reason is that embedded folks worry a lot about
-system footprint (bloat) and would probably like to have it that
-way.
-
-Some people will probably argue that in that case it is better
-to split the implementation in two files so spi.{c|h} is split into
-spi-master.{c|h} and spi-slave.{c|h} you get the picture. Do these
-two things share enough stuff to warrant being in the same
-file (and I think #fidef:ed) or should it be splitted up?
-
-> ++++++++++++++++++++++++++++++++++++++++++-----
->  include/linux/spi/spi.h |  100 ++++++++++++-
->  2 files changed, 427 insertions(+), 41 deletions(-)
->
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 8eba98c..504f0ae 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -26,19 +26,34 @@
->  #include <linux/spi/spi.h>
->
->
-> -/* SPI bustype and spi_master class are registered after board init
-> code
-> - * provides the SPI device tables, ensuring that both are present by
-> the
-> - * time controller driver registration causes spi_devices to
-> "enumerate".
-> - */
-> +/* SPI bustype, spi_master and spi_slave class are registered after
-> board
-> +* init code provides the SPI device tables, ensuring that both are
-> present
-> +* by the time controller driver registration causes spi_devices
-> +* to "enumerate".
-> +*/
-> +
-> +/* SPI Slave Support is added for new spi slave devices: It uses common
-> APIs,
-> +* apart from few new APIs and a spi_slave structure.
-> +*/
-> +
->  static void spidev_release(struct device *dev)
->  {
->        struct spi_device       *spi = to_spi_device(dev);
->
-> -       /* spi masters may cleanup for released devices */
-> -       if (spi->master->cleanup)
-> -               spi->master->cleanup(spi);
-> +       if (spi->master) {
-> +               /* spi masters may cleanup for released devices */
-> +               if (spi->master->cleanup)
-> +                       spi->master->cleanup(spi);
-> +
-> +               spi_master_put(spi->master);
-> +       } else {
-
-Is it really mutually exclusive like that?
-
-I think terminating the if() clause and then
-if (spi->slave) { is better but that's just me.
-
-> +               /* spi slave controller */
-> +               if (spi->slave->cleanup)
-> +                       spi->slave->cleanup(spi);
-> +
-> +               spi_slave_put(spi->slave);
-> +       }
->
-> -       spi_master_put(spi->master);
->        kfree(dev);
->  }
->
-> @@ -46,7 +61,6 @@ static ssize_t
->  modalias_show(struct device *dev, struct device_attribute *a, char
-> *buf)
->  {
->        const struct spi_device *spi = to_spi_device(dev);
-> -
->        return sprintf(buf, "%s\n", spi->modalias);
->  }
->
-> @@ -62,14 +76,12 @@ static struct device_attribute spi_dev_attrs[] = {
->  static int spi_match_device(struct device *dev, struct device_driver
-> *drv)
->  {
->        const struct spi_device *spi = to_spi_device(dev);
-> -
->        return strcmp(spi->modalias, drv->name) == 0;
->  }
->
->  static int spi_uevent(struct device *dev, struct kobj_uevent_env *env)
->  {
->        const struct spi_device         *spi = to_spi_device(dev);
-> -
->        add_uevent_var(env, "MODALIAS=%s", spi->modalias);
->        return 0;
->  }
-> @@ -153,10 +165,13 @@ int spi_register_driver(struct spi_driver *sdrv)
->        sdrv->driver.bus = &spi_bus_type;
->        if (sdrv->probe)
->                sdrv->driver.probe = spi_drv_probe;
-> +
->        if (sdrv->remove)
->                sdrv->driver.remove = spi_drv_remove;
-> +
->        if (sdrv->shutdown)
->                sdrv->driver.shutdown = spi_drv_shutdown;
-> +
->        return driver_register(&sdrv->driver);
->  }
->  EXPORT_SYMBOL_GPL(spi_register_driver);
-> @@ -197,28 +212,70 @@ static DEFINE_MUTEX(board_lock);
->  */
->  struct spi_device *spi_alloc_device(struct spi_master *master)
-
-As a consequence this should be renamed spi_alloc_master_device()
-
->  {
-> -       struct spi_device       *spi;
-> +       struct spi_device       *spi_m_dev;
-
-You even rename the local variables like this to reflect that
-it's a master function now...
-
->        struct device           *dev = master->dev.parent;
->
->        if (!spi_master_get(master))
->                return NULL;
->
-> -       spi = kzalloc(sizeof *spi, GFP_KERNEL);
-> -       if (!spi) {
-> +       spi_m_dev = kzalloc(sizeof *spi_m_dev, GFP_KERNEL);
-> +       if (!spi_m_dev) {
->                dev_err(dev, "cannot alloc spi_device\n");
->                spi_master_put(master);
->                return NULL;
->        }
->
-> -       spi->master = master;
-> -       spi->dev.parent = dev;
-> -       spi->dev.bus = &spi_bus_type;
-> -       spi->dev.release = spidev_release;
-> -       device_initialize(&spi->dev);
-> -       return spi;
-> +       spi_m_dev->master = master;
-> +       spi_m_dev->slave = NULL;
-> +       spi_m_dev->dev.parent = dev;
-> +       spi_m_dev->dev.bus = &spi_bus_type;
-> +       spi_m_dev->dev.release = spidev_release;
-> +       device_initialize(&spi_m_dev->dev);
-> +       return spi_m_dev;
->  }
->  EXPORT_SYMBOL_GPL(spi_alloc_device);
->
-> +/*
-
-Open with two stars to get kerneldoc /**
-
-> +* spi_alloc_slave_device - Allocate a new SPI device
-> +* @slave: Controller to which device is connected
-> +* Context: can sleep
-> +*
-> +* Allows a driver to allocate and initialize a spi_device without
-> +* registering it immediately.  This allows a driver to directly
-> +* fill the spi_device with device parameters before calling
-> +* spi_add_slave_device() on it.
-> +*
-> +* Caller is responsible to call spi_add_slave_device() on the returned
-> +* spi_device structure to add it to the SPI slave.  If the caller
-> +* needs to discard the spi_device without adding it, then it should
-> +* call spi_dev_slave_put() on it.
-> +* Returns a pointer to the new device, or NULL.
-> +*/
-> +struct spi_device *spi_alloc_slave_device(struct spi_slave *slave)
-> +{
-> +       struct spi_device       *spi_s;
-> +       struct device           *dev = slave->dev.parent;
-> +
-> +       if (!spi_slave_get(slave))
-> +               return NULL;
-> +
-> +       spi_s = kzalloc(sizeof *spi_s, GFP_KERNEL);
-> +       if (!spi_s) {
-> +               dev_err(dev, "cannot alloc spi_slave_device\n");
-> +               spi_slave_put(slave);
-> +               return NULL;
-> +       }
-> +
-> +       spi_s->slave = slave;
-> +       spi_s->master = NULL;
-> +       spi_s->dev.parent = dev;
-> +       spi_s->dev.bus = &spi_bus_type;
-> +       spi_s->dev.release = spidev_release;
-> +       device_initialize(&spi_s->dev);
-> +       return spi_s;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_alloc_slave_device);
-> +
->  /**
->  * spi_add_device - Add spi_device allocated with spi_alloc_device
->  * @spi: spi_device to register
-> @@ -231,21 +288,29 @@ EXPORT_SYMBOL_GPL(spi_alloc_device);
->  int spi_add_device(struct spi_device *spi)
->  {
->        static DEFINE_MUTEX(spi_add_lock);
-> -       struct device *dev = spi->master->dev.parent;
->        int status;
-> -
-> -       /* Chipselects are numbered 0..max; validate. */
-> -       if (spi->chip_select >= spi->master->num_chipselect) {
-> -               dev_err(dev, "cs%d >= max %d\n",
-> -                       spi->chip_select,
-> -                       spi->master->num_chipselect);
-> -               return -EINVAL;
-> -       }
-> -
-> +       struct device *dev;
-> +
-> +       if (spi->master) {
-> +               /* Master Controller */
-> +               dev = spi->master->dev.parent;
-> +               /* Chipselects are numbered 0..max; validate. */
-> +               if (spi->chip_select >= spi->master->num_chipselect) {
-> +                       dev_err(dev, "cs%d >= max %d\n",
-> +                               spi->chip_select,
-> +                               spi->master->num_chipselect);
-> +                       return -EINVAL;
-> +               }
->        /* Set the bus ID string */
->        dev_set_name(&spi->dev, "%s.%u", dev_name(&spi->master->dev),
->                        spi->chip_select);
-> -
-> +       } else {
-
-I prefer if (spi->slave) {
-
-> +               /* Slave Controller */
-> +               dev = spi->slave->dev.parent;
-> +               /* Set the bus ID string */
-> +               dev_set_name(&spi->dev, "%s.%u", dev_name(&spi->slave->dev),
-> +                               spi->chip_select);
-> +       }
->
->        /* We need to make sure there's no other device with this
->         * chipselect **BEFORE** we call setup(), else we'll trash
-> @@ -265,7 +330,11 @@ int spi_add_device(struct spi_device *spi)
->         * normally rely on the device being setup.  Devices
->         * using SPI_CS_HIGH can't coexist well otherwise...
->         */
-> -       status = spi->master->setup(spi);
-> +       if (spi->master)
-> +               status = spi->master->setup(spi);
-> +       else
-> +               status = spi->slave->setup(spi);        /* Slave Controller */
-> +
->        if (status < 0) {
->                dev_err(dev, "can't %s %s, status %d\n",
->                                "setup", dev_name(&spi->dev), status);
-> @@ -286,6 +355,7 @@ done:
->  }
->  EXPORT_SYMBOL_GPL(spi_add_device);
->
-> +
->  /**
->  * spi_new_device - instantiate one new SPI device
->  * @master: Controller to which device is connected
-> @@ -317,6 +387,8 @@ struct spi_device *spi_new_device(struct spi_master
-> *master,
->        if (!proxy)
->                return NULL;
->
-> +
-> +
->        WARN_ON(strlen(chip->modalias) >= sizeof(proxy->modalias));
->
->        proxy->chip_select = chip->chip_select;
-> @@ -339,6 +411,54 @@ struct spi_device *spi_new_device(struct spi_master
-> *master,
->  EXPORT_SYMBOL_GPL(spi_new_device);
->
->  /**
-> +* spi_slave_new_device - instantiate one new SPI device
-> +* @slave: Controller to which device is connected
-> +* @chip: Describes the SPI device
-> +* Context: can sleep
-> +*
-> +* On typical mainboards, this is purely internal; and it's not needed
-> +* after board init creates the hard-wired devices.  Some development
-> +* platforms may not be able to use spi_register_board_info though, and
-> +* this is exported so that for example a USB or parport based adapter
-> +* driver could add devices (which it would learn about out-of-band).
-> +*
-> +* Returns the new device, or NULL.
-> +*/
-> +struct spi_device *spi_slave_new_device(struct spi_slave *slave,
-> +                                 struct spi_board_info *chip)
-> +{
-> +       struct spi_device       *proxy_slave;
-> +       int                     status;
-> +
-> +       proxy_slave = spi_alloc_slave_device(slave);
-> +
-> +       if (!proxy_slave)
-> +               return NULL;
-> +
-> +       WARN_ON(strlen(chip->modalias) >= sizeof(proxy_slave->modalias));
-> +
-> +       proxy_slave->chip_select = chip->chip_select;
-> +       proxy_slave->max_speed_hz = chip->max_speed_hz;
-> +       proxy_slave->mode = chip->mode;
-> +       proxy_slave->irq = chip->irq;
-> +       strlcpy(proxy_slave->modalias, chip->modalias,
-> +                                       sizeof(proxy_slave->modalias));
-> +       proxy_slave->dev.platform_data = (void *) chip->platform_data;
-> +       proxy_slave->controller_data = chip->controller_data;
-> +       proxy_slave->controller_state = NULL;
-> +
-> +       status = spi_add_device(proxy_slave);
-> +       if (status < 0) {
-> +               spi_dev_put(proxy_slave);
-> +               return NULL;
-> +       }
-> +
-> +       return proxy_slave;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_slave_new_device);
-> +
-> +
-> +/**
->  * spi_register_board_info - register SPI devices for a given board
->  * @info: array of chip descriptors
->  * @n: how many descriptors are provided
-> @@ -365,6 +485,7 @@ spi_register_board_info(struct spi_board_info const
-> *info, unsigned n)
-
-Rename to spi_register_master_board_info() or similar?
-
->        bi = kmalloc(sizeof(*bi) + n * sizeof *info, GFP_KERNEL);
->        if (!bi)
->                return -ENOMEM;
-> +
->        bi->n_board_info = n;
->        memcpy(bi->board_info, info, n * sizeof *info);
->
-> @@ -374,6 +495,7 @@ spi_register_board_info(struct spi_board_info const
-> *info, unsigned n)
->        return 0;
->  }
->
-> +
->  /* FIXME someone should add support for a __setup("spi", ...) that
->  * creates board info from kernel command lines
->  */
-> @@ -399,6 +521,28 @@ static void scan_boardinfo(struct spi_master
-> *master)
-
-Rename to scan_master_boardinfo() or similar?
-
->        mutex_unlock(&board_lock);
->  }
->
-> +static void spi_slave_scan_boardinfo(struct spi_slave *slave)
-> +{
-> +       struct boardinfo        *bi;
-> +
-> +       mutex_lock(&board_lock);
-> +       list_for_each_entry(bi, &board_list, list) {
-> +               struct spi_board_info   *chip = bi->board_info;
-> +               unsigned                n;
-> +
-> +               for (n = bi->n_board_info; n > 0; n--, chip++) {
-> +                       if (chip->bus_num != slave->bus_num)
-> +                               continue;
-> +                       /* NOTE: this relies on spi_new_device to
-> +                        * issue diagnostics when given bogus inputs
-> +                        */
-> +                       (void) spi_slave_new_device(slave, chip);
-> +
-> +               }
-> +       }
-> +       mutex_unlock(&board_lock);
-> +}
-> +
->  /*-------------------------------------------------------------------------*/
->
->  static void spi_master_release(struct device *dev)
-> @@ -415,6 +559,19 @@ static struct class spi_master_class = {
->        .dev_release    = spi_master_release,
->  };
->
-> +static void spi_slave_release(struct device *dev)
-> +{
-> +       struct spi_slave *slave;
-> +
-> +       slave = container_of(dev, struct spi_slave, dev);
-> +       kfree(slave);
-> +}
-> +
-> +static struct class spi_slave_class = {
-> +       .name           = "spi_slave",
-> +       .owner          = THIS_MODULE,
-> +       .dev_release    = spi_slave_release,
-> +};
->
->  /**
->  * spi_alloc_master - allocate SPI master controller
-> @@ -456,6 +613,47 @@ struct spi_master *spi_alloc_master(struct device
-> *dev, unsigned size)
->  EXPORT_SYMBOL_GPL(spi_alloc_master);
->
->  /**
-> +* spi_alloc_slave - allocate SPI slave controller
-> +* @dev: the controller, possibly using the platform_bus
-> +* @size: how much zeroed driver-private data to allocate; the pointer
-> to this
-> +*      memory is in the driver_data field of the returned device,
-> +*      accessible with spi_slave_get_devdata().
-> +* Context: can sleep
-> +*
-> +* This call is used only by SPI master controller drivers, which are
-> the
-> +* only ones directly touching chip registers.  It's how they allocate
-> +* an spi_master structure, prior to calling spi_register_slave().
-> +*
-> +* This must be called from context that can sleep.  It returns the SPI
-> +* master structure on success, else NULL.
-> +*
-> +* The caller is responsible for assigning the bus number and
-> initializing
-> +* the master's methods before calling spi_register_slave(); and (after
-> errors
-> +* adding the device) calling spi_slave_put() to prevent a memory leak.
-> +*/
-> +struct spi_slave *spi_alloc_slave(struct device *dev, unsigned size)
-> +{
-> +       struct spi_slave        *slave;
-> +
-> +       if (!dev)
-> +               return NULL;
-> +
-> +       slave = kzalloc(size + sizeof *slave, GFP_KERNEL);
-> +       if (!slave)
-> +               return NULL;
-> +
-> +       device_initialize(&slave->dev);
-> +       slave->dev.class = &spi_slave_class;
-> +       slave->dev.parent = get_device(dev);
-> +       spi_slave_set_devdata(slave, &slave[1]);
-> +
-> +       return slave;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_alloc_slave);
-> +
-> +
-> +
-> +/**
->  * spi_register_master - register SPI master controller
->  * @master: initialized master, originally from spi_alloc_master()
->  * Context: can sleep
-> @@ -507,7 +705,8 @@ int spi_register_master(struct spi_master *master)
->        status = device_add(&master->dev);
->        if (status < 0)
->                goto done;
-> -       dev_dbg(dev, "registered master %s%s\n", dev_name(&master->dev),
-> +
-> +       dev_dbg(dev, "spi_register_master() : %s%s\n", dev_name(&master->dev),
->                        dynamic ? " (dynamic)" : "");
->
->        /* populate children from any spi device tables */
-> @@ -518,6 +717,69 @@ done:
->  }
->  EXPORT_SYMBOL_GPL(spi_register_master);
->
-> +/**
-> +* spi_register_slave - register SPI slave controller
-> +* @master: initialized master, originally from spi_alloc_slave()
-> +* Context: can sleep
-> +*
-> +* SPI slave controllers connect to their drivers using some non-SPI
-> bus,
-> +* such as the platform bus.  The final stage of probe() in that code
-> +* includes calling spi_register_slave() to hook up to this SPI bus
-> glue.
-> +*
-> +* SPI controllers use board specific (often SOC specific) bus numbers,
-> +* and board-specific addressing for SPI devices combines those numbers
-> +* with chip select numbers.  Since SPI does not directly support
-> dynamic
-> +* device identification, boards need configuration tables telling which
-> +* chip is at which address.
-> +*
-> +* This must be called from context that can sleep.  It returns zero on
-> +* success, else a negative error code (dropping the slave's refcount).
-> +* After a successful return, the caller is responsible for calling
-> +* spi_unregister_slave().
-> +*/
-> +int spi_register_slave(struct spi_slave *slave)
-> +{
-> +       static atomic_t         dyn_bus_id = ATOMIC_INIT((1<<15) - 1);
-> +       struct device           *dev = slave->dev.parent;
-> +       int                     status = -ENODEV;
-> +       int                     dynamic = 0;
-> +
-> +       if (!dev)
-> +               return -ENODEV;
-> +
-> +       /* even if it's just one always-selected device, there must
-> +        * be at least one chipselect
-> +        */
-> +       if (slave->num_chipselect == 0)
-> +               return -EINVAL;
-> +
-> +       /* convention:  dynamically assigned bus IDs count down from the max
-> */
-> +       if (slave->bus_num < 0) {
-> +               /* FIXME switch to an IDR based scheme, something like
-> +                * I2C now uses, so we can't run out of "dynamic" IDs
-> +                */
-> +               slave->bus_num = atomic_dec_return(&dyn_bus_id);
-> +               dynamic = 1;
-> +       }
-> +
-> +       /* register the device, then userspace will see it.
-> +        * registration fails if the bus ID is in use.
-> +        */
-> +       dev_set_name(&slave->dev, "spi%u", slave->bus_num);
-> +       status = device_add(&slave->dev);
-> +       if (status < 0)
-> +               goto done;
-> +
-> +       dev_dbg(dev, "registered slave %s%s\n", dev_name(&slave->dev),
-> +                       dynamic ? " (dynamic)" : "");
-> +
-> +       /* populate children from any spi device tables */
-> +       spi_slave_scan_boardinfo(slave);
-> +       status = 0;
-> +done:
-> +       return status;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_register_slave);
->
->  static int __unregister(struct device *dev, void *master_dev)
-
-Rename this __unregister_master() then?
-
->  {
-> @@ -547,6 +809,27 @@ void spi_unregister_master(struct spi_master
-> *master)
->  }
->  EXPORT_SYMBOL_GPL(spi_unregister_master);
->
-> +/**
-> +* spi_unregister_slave - unregister SPI slave controller
-> +* @master: the slave being unregistered
-> +* Context: can sleep
-> +*
-> +* This call is used only by SPI slave controller drivers, which are the
-> +* only ones directly touching chip registers.
-> +*
-> +* This must be called from context that can sleep.
-> +*/
-> +void spi_unregister_slave(struct spi_slave *slave)
-> +{
-> +       int dummy;
-> +
-> +       dummy = device_for_each_child(slave->dev.parent, &slave->dev,
-> +                                       __unregister);
-> +       device_unregister(&slave->dev);
-> +}
-> +EXPORT_SYMBOL_GPL(spi_unregister_slave);
-> +
-> +
->  static int __spi_master_match(struct device *dev, void *data)
->  {
->        struct spi_master *m;
-> @@ -626,6 +909,18 @@ int spi_sync(struct spi_device *spi, struct
-> spi_message *message)
->  }
->  EXPORT_SYMBOL_GPL(spi_sync);
->
-> +/* spi_transfer_async - Wraper function to allow spi_async to expose to
-> +* user protocol drivers for modem handshaking
-
-What is that comment about "modem handshaking" supposed
-to mean? I'm way confused by that... SPI can be used for
-anything, not just modems.
-
-> +*/
-> +
-> +int spi_transfer_async(struct spi_device *spi, struct spi_message
-> *message)
-> +{
-> +       int status;
-> +       status = spi_async(spi, message);
-> +       return status;
-> +}
-> +EXPORT_SYMBOL_GPL(spi_transfer_async);
-> +
-
-Is this some slave-specific function or what is it?
-Is it part of the SPI slave support patchset or can it be
-handled separately?
+<html>=0D<head>=0D</head>=0D<body><div align=3D"center"><font size=3D"2" fa=
+ce=3D"verdana"><a href=3D"http://cdirecte.r7g.com/php/emailing/view_mail.ph=
+p?CODE=3D07VZ488F_475197&HASH=3De04a449cbb310a540a4acde3c023c606">Si vous n=
+e pouvez pas consulter correctement ce message, suivez ce lien</a></font></=
+div>=0D<table cellspacing=3D"0" cellpadding=3D"0" width=3D"550" align=3D"ce=
+nter" border=3D"0">=0D<tbody>=0D<tr>=0D<td align=3D"center"><font face=3D"A=
+rial, Helvetica, sans-serif" color=3D"#c53599" size=3D"5">LES SOLDES, 2=E8m=
+e d=E9marque, jusqu'=E0 -80%* !<br /></font><font face=3D"Arial, Helvetica,=
+ sans-serif" color=3D"#999999" size=3D"1"><a href=3D"http://clk.tradedouble=
+r.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://hst.tradedouble=
+r.com/file/25700/kitmail_2emedemarque_soldesete2009/s27s.html"><font face=
+=3D"Arial, Helvetica, sans-serif" color=3D"#999999" size=3D"1"></font></a><=
+/font><br /><font face=3D"Arial, Helvetica, sans-serif" color=3D"#999999" s=
+ize=3D"1"></font></td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cel=
+lpadding=3D"0" width=3D"550" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=
+=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&ur=
+l=3Dhttp://www.3suisses.fr/" target=3D"_blank"><img height=3D"33" src=3D"ht=
+tp://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete2009/s27=
+simg02.gif" width=3D"188" border=3D"0" /></a></td>=0D<td width=3D"9" bgcolo=
+r=3D"#ffffff" height=3D"33" />=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr=
+>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" width=3D"550" =
+border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http://clk.tradedoubler.com=
+/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/Fron=
+tOfficePortail/catalogue_fra/femme.html" target=3D"_blank"><img height=3D"3=
+9" src=3D"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_solde=
+sete2009/s27simg05.gif" width=3D"39" border=3D"0" /></a></td>=0D<td><a href=
+=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&ur=
+l=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra/lingerie-beaute=
+.html" target=3D"_blank"><img height=3D"39" src=3D"http://hst.tradedoubler.=
+com/file/25700/kitmail_2emedemarque_soldesete2009/s27simg06.gif" width=3D"4=
+2" border=3D"0" /></a></td>=0D<td><a href=3D"http://clk.tradedoubler.com/cl=
+ick?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/FrontOf=
+ficePortail/catalogue_fra/homme.html" target=3D"_blank"><img height=3D"39" =
+src=3D"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldeset=
+e2009/s27simg07.gif" width=3D"41" border=3D"0" /></a></td>=0D<td><a href=3D=
+"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=
+=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra/enfant.html" tar=
+get=3D"_blank"><img height=3D"39" src=3D"http://hst.tradedoubler.com/file/2=
+5700/kitmail_2emedemarque_soldesete2009/s27simg08.gif" width=3D"39" border=
+=3D"0" /></a></td>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=3D2=
+5700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/FrontOfficePorta=
+il/catalogue_fra/boutique-chaussures.html" target=3D"_blank"><img height=3D=
+"39" src=3D"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_sol=
+desete2009/s27simg09.gif" width=3D"50" border=3D"0" /></a></td>=0D<td><a hr=
+ef=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&=
+url=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra/sport.html" t=
+arget=3D"_blank"><img height=3D"39" src=3D"http://hst.tradedoubler.com/file=
+/25700/kitmail_2emedemarque_soldesete2009/s27simg10.gif" width=3D"37" borde=
+r=3D"0" /></a></td>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=3D=
+25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/FrontOfficePort=
+ail/catalogue_fra/meubles-decoration.html" target=3D"_blank"><img height=3D=
+"39" src=3D"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_sol=
+desete2009/s27simg11.gif" width=3D"49" border=3D"0" /></a></td>=0D<td><a hr=
+ef=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&=
+url=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra/literie.html"=
+ target=3D"_blank"><img height=3D"39" src=3D"http://hst.tradedoubler.com/fi=
+le/25700/kitmail_2emedemarque_soldesete2009/s27simg12.gif" width=3D"39" bor=
+der=3D"0" /></a></td>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=
+=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/FrontOfficeP=
+ortail/catalogue_fra/linge-de-maison.html" target=3D"_blank"><img height=3D=
+"39" src=3D"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_sol=
+desete2009/s27simg13.gif" width=3D"44" border=3D"0" /></a></td>=0D<td><a hr=
+ef=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&=
+url=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra/electro-menag=
+er.html" target=3D"_blank"><img height=3D"39" src=3D"http://hst.tradedouble=
+r.com/file/25700/kitmail_2emedemarque_soldesete2009/s27simg14.gif" width=3D=
+"40" border=3D"0" /></a></td>=0D<td><a href=3D"http://clk.tradedoubler.com/=
+click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/Front=
+OfficePortail/catalogue_fra/image-son.html" target=3D"_blank"><img height=
+=3D"39" src=3D"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_=
+soldesete2009/s27simg15.gif" width=3D"41" border=3D"0" /></a></td>=0D<td><a=
+ href=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D166923=
+82&url=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra/micro-tele=
+phonie.html" target=3D"_blank"><img height=3D"39" src=3D"http://hst.tradedo=
+ubler.com/file/25700/kitmail_2emedemarque_soldesete2009/s27simg16.gif" widt=
+h=3D"46" border=3D"0" /></a></td>=0D<td><a href=3D"http://clk.tradedoubler.=
+com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/s=
+oldes.html" target=3D"_blank"><img height=3D"39" src=3D"http://hst.tradedou=
+bler.com/file/25700/kitmail_2emedemarque_soldesete2009/s27simg17.gif" width=
+=3D"43" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</=
+tr>=0D<tr>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=3D25700&a=
+=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/soldes.html" target=3D=
+"_blank"><img height=3D"182" src=3D"http://hst.tradedoubler.com/file/25700/=
+kitmail_2emedemarque_soldesete2009/s27simg18.gif" width=3D"550" border=3D"0=
+" /></a></td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=
+=3D"0" width=3D"550" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http:/=
+/clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp:/=
+/www.3suisses.fr/soldes.html" target=3D"_blank"><img height=3D"98" src=3D"h=
+ttp://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete2009/s2=
+7simg19.jpg" width=3D"248" border=3D"0" /></a></td>=0D<td><a href=3D"http:/=
+/clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp:/=
+/www.3suisses.fr/soldes.html" target=3D"_blank"><img height=3D"98" src=3D"h=
+ttp://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete2009/s2=
+7simg20.gif" width=3D"302" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D</=
+table>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=
+=3D"0" width=3D"550" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http:/=
+/clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp:/=
+/www.3suisses.fr/soldes.html" target=3D"_blank"><img height=3D"159" src=3D"=
+http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete2009/s=
+27simg21.jpg" width=3D"248" border=3D"0" /></a></td>=0D<td><a href=3D"http:=
+//clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp:=
+//www.3suisses.fr/soldes.html" target=3D"_blank"><img height=3D"159" src=3D=
+"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete2009/=
+s27simg22.gif" width=3D"302" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D=
+</table>=0D</td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://clk.tradedoubler.co=
+m/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/sol=
+des.html" target=3D"_blank"><img height=3D"237" src=3D"http://hst.tradedoub=
+ler.com/file/25700/kitmail_2emedemarque_soldesete2009/s27simg23.jpg" width=
+=3D"550" border=3D"0" /></a></td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacin=
+g=3D"0" cellpadding=3D"0" width=3D"550" border=3D"0">=0D<tbody>=0D<tr>=0D<t=
+d><a href=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16=
+692382&url=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra/femme/=
+soldes-bonnes-affaires/toutes-les-bonnes-affaires.html" target=3D"_blank"><=
+img height=3D"37" src=3D"http://hst.tradedoubler.com/file/25700/kitmail_2em=
+edemarque_soldesete2009/s27simg24.gif" width=3D"273" border=3D"0" /></a></t=
+d>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627=
+&g=3D16692382&url=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra=
+/linge-de-maison/soldes-bonnes-affaires/toutes-les-bonnes-affaires.html" ta=
+rget=3D"_blank"><img height=3D"37" src=3D"http://hst.tradedoubler.com/file/=
+25700/kitmail_2emedemarque_soldesete2009/s27simg25.gif" width=3D"276" borde=
+r=3D"0" /></a></td>=0D<td><img height=3D"37" src=3D"http://hst.tradedoubler=
+.com/file/25700/kitmail_2emedemarque_soldesete2009/s27simg26.gif" width=3D"=
+1" border=3D"0" /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr=
+>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" width=3D"550" border=
+=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http://clk.tradedoubler.com/click=
+?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/FrontOffic=
+ePortail/catalogue_fra/homme/soldes-bonnes-affaires/toutes-les-bonnes-affai=
+res.html" target=3D"_blank"><img height=3D"24" src=3D"http://hst.tradedoubl=
+er.com/file/25700/kitmail_2emedemarque_soldesete2009/s27simg27.gif" width=
+=3D"273" border=3D"0" /></a></td>=0D<td><a href=3D"http://clk.tradedoubler.=
+com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/F=
+rontOfficePortail/catalogue_fra/literie/soldes-bonnes-affaires/toutes-les-b=
+onnes-affaires.html" target=3D"_blank"><img height=3D"24" src=3D"http://hst=
+.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete2009/s27simg28.g=
+if" width=3D"277" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D</table>=0D=
+</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" wi=
+dth=3D"550" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http://clk.trad=
+edoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www.3sui=
+sses.fr/FrontOfficePortail/catalogue_fra/enfant/soldes-bonnes-affaires/tout=
+es-les-bonnes-affaires.html" target=3D"_blank"><img height=3D"24" src=3D"ht=
+tp://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete2009/s27=
+simg29.gif" width=3D"273" border=3D"0" /></a></td>=0D<td><a href=3D"http://=
+clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://=
+www.3suisses.fr/FrontOfficePortail/catalogue_fra/meubles-decoration/soldes-=
+bonnes-affaires/toutes-les-bonnes-affaires.html" target=3D"_blank"><img hei=
+ght=3D"24" src=3D"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarq=
+ue_soldesete2009/s27simg30.gif" width=3D"277" border=3D"0" /></a></td>=0D</=
+tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacin=
+g=3D"0" cellpadding=3D"0" width=3D"550" border=3D"0">=0D<tbody>=0D<tr>=0D<t=
+d><a href=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16=
+692382&url=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra/linger=
+ie-beaute/soldes-bonnes-affaires/toutes-les-bonnes-affaires.html" target=3D=
+"_blank"><img height=3D"25" src=3D"http://hst.tradedoubler.com/file/25700/k=
+itmail_2emedemarque_soldesete2009/s27simg31.gif" width=3D"273" border=3D"0"=
+ /></a></td>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=3D25700&a=
+=3D1300627&g=3D16692382&url=3Dhttp://www.3suisses.fr/FrontOfficePortail/cat=
+alogue_fra/electro-menager/soldes-bonnes-affaires/petit-electromenager/tout=
+es-les-soldes-bonnes-affaires.html" target=3D"_blank"><img height=3D"25" sr=
+c=3D"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete2=
+009/s27simg32.gif" width=3D"277" border=3D"0" /></a></td>=0D</tr>=0D</tbody=
+>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"550" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"=
+http://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3D=
+http://www.3suisses.fr/FrontOfficePortail/catalogue_fra/boutique-chaussures=
+/soldes-bonnes-affaires/toutes-les-bonnes-affaires.html" target=3D"_blank">=
+<img height=3D"25" src=3D"http://hst.tradedoubler.com/file/25700/kitmail_2e=
+medemarque_soldesete2009/s27simg33.gif" width=3D"273" border=3D"0" /></a></=
+td>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=3D25700&a=3D130062=
+7&g=3D16692382&url=3Dhttp://www.3suisses.fr/FrontOfficePortail/catalogue_fr=
+a/electro-menager/soldes-bonnes-affaires/gros-electromenager/toutes-les-sol=
+des-bonnes-affaires.html" target=3D"_blank"><img height=3D"25" src=3D"http:=
+//hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete2009/s27sim=
+g34.gif" width=3D"277" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D</tabl=
+e>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"=
+0" width=3D"550" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http://clk=
+.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dhttp://www=
+.3suisses.fr/FrontOfficePortail/catalogue_fra/sport/soldes-bonnes-affaires/=
+toutes-les-bonnes-affaires.html" target=3D"_blank"><img height=3D"26" src=
+=3D"http://hst.tradedoubler.com/file/25700/kitmail_2emedemarque_soldesete20=
+09/s27simg35.gif" width=3D"273" border=3D"0" /></a></td>=0D<td><a href=3D"h=
+ttp://clk.tradedoubler.com/click?p=3D25700&a=3D1300627&g=3D16692382&url=3Dh=
+ttp://www.3suisses.fr/FrontOfficePortail/catalogue_fra/image-son/soldes-bon=
+nes-affaires-nouveautes/soldes-bonnes-affaires/toutes-les-soldes-bonnes-aff=
+aires.html" target=3D"_blank"><img height=3D"26" src=3D"http://hst.tradedou=
+bler.com/file/25700/kitmail_2emedemarque_soldesete2009/s27simg36.gif" width=
+=3D"277" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D<=
+/tr>=0D<tr>=0D<td><img height=3D"33" src=3D"http://hst.tradedoubler.com/fil=
+e/25700/kitmail_2emedemarque_soldesete2009/s27simg37.gif" width=3D"550" bor=
+der=3D"0" /></td>=0D</tr>=0D<tr />=0D<tr>=0D<td width=3D"550">=0D<table cel=
+lspacing=3D"0" cellpadding=3D"0" width=3D"548" border=3D"0">=0D<tbody>=0D<t=
+r>=0D<td width=3D"5" />=0D<td>=0D<p><font face=3D"Arial, Helvetica, sans-se=
+rif" color=3D"#999999" size=3D"1">* SOLDES du 24 juin au 28 juillet dans la=
+ limite des stocks disponibles et sous r=E9serve de disponibilit=E9 des pro=
+duits choisis..</font></p>=0D<p><font face=3D"Arial, Helvetica, sans-serif"=
+ color=3D"#999999" size=3D"1"></font></p>=0D</td>=0D<td width=3D"5" />=0D</=
+tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D</tbody>=0D</table><img height=
+=3D"1" src=3D"http://impfr.tradedoubler.com/imp/img/16692382/1300627" width=
+=3D"1" border=3D"0" /><br /><br />=0D<div align=3D"center"><font face=3D"Ar=
+ial" color=3D"#000000" size=3D"1">Cette publicit=E9 3 Suisses vous est envo=
+y=E9e par Plein Temps. <br />Vos donn=E9es nominatives ou votre adresse ema=
+il n'ont pas =E9t=E9 transmises =E0 3 Suisses.</font></div>=0D<br><br><div =
+align=3D"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif">
+Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
+acces et de rectification. Si vous voulez vous desinscrire, cliquez <a href=
+=3D"http://cdirecte.r7g.com/AA07VZ488F_475197/877">ici</a></font></div><img=
+ src=3D"http://cdirecte.r7g.com/ZZ07VZ488F_475197.png" /></body></html>
+--=_a3208964b0e12e4e0212b629d63e2308--
 
 
->  /* portable code must never pass more than 32 bytes */
->  #define        SPI_BUFSIZ      max(32,SMP_CACHE_BYTES)
->
-> @@ -724,6 +1019,12 @@ static int __init spi_init(void)
->        status = class_register(&spi_master_class);
->        if (status < 0)
->                goto err2;
-> +
-> +       status = class_register(&spi_slave_class);
-> +
-> +       if (status < 0)
-> +               goto err2;
-> +
 
-I would register each of these conditionally.
-
->        return 0;
->
->  err2:
-> @@ -743,4 +1044,3 @@ err0:
->  * include needing to have boardinfo data structures be much more
-> public.
->  */
->  postcore_initcall(spi_init);
-> -
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index a0faa18..5845bb1 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -22,15 +22,18 @@
->  #include <linux/device.h>
->
->  /*
-> - * INTERFACES between SPI master-side drivers and SPI infrastructure.
-> - * (There's no SPI slave support for Linux yet...)
-> + * INTERFACES between SPI Master/Slave side drivers and
-> + * SPI infrastructure.
-
-Cool now we have slave support!
-
-> + * SPI Slave Support added : It uses few new APIs and
-> + * a new spi_slave struct
-
-Please remove this. No ChangeLogs in the kernel files.
-See
-
->  */
->  extern struct bus_type spi_bus_type;
->
->  /**
->  * struct spi_device - Master side proxy for an SPI slave device
->  * @dev: Driver model representation of the device.
-> - * @master: SPI controller used with the device.
-> + * @master: SPI Master controller used with the device.
-> + * @slave: SPI Slave Controller used with the device
->  * @max_speed_hz: Maximum clock rate to be used with this chip
->  *     (on this board); may be changed by the device's driver.
->  *     The spi_transfer.speed_hz can override this for each transfer.
-> @@ -67,6 +70,7 @@ extern struct bus_type spi_bus_type;
->  struct spi_device {
->        struct device           dev;
->        struct spi_master       *master;
-> +       struct spi_slave        *slave;
-
-I would certainly consider
-#ifdef CONFIG_SPI_MASTER
-       struct spi_master       *master;
-#endif
-#ifdef CONFIG_SPI_SLAVE
-      struct spi_slave        *slave;
-#endif
-
->        u32                     max_speed_hz;
->        u8                      chip_select;
-
-There are a lot of things in this struct that I think is only
-applicable to masters. A slave driver is not in the position
-of dictating its max speed, chip select etc and it should then
-be moved to the spi_master struct, should have been earlier
-perhaps but it is really a prerequisite for slave support
-I think.
-
->        u8                      mode;
-> @@ -140,7 +144,6 @@ static inline void *spi_get_drvdata(struct
-> spi_device *spi)
->  struct spi_message;
->
->
-> -
->  /**
->  * struct spi_driver - Host side "protocol" driver
->  * @probe: Binds this driver to the spi device.  Drivers can verify
-> @@ -279,16 +282,56 @@ struct spi_master {
->        void                    (*cleanup)(struct spi_device *spi);
->  };
->
-> +/**
-> + * struct spi_slave - interface to SPI Slave Controller
-> + * @dev: device interface to this driver
-> + * @bus_num: board-specific (and often SOC-specific) identifier for a
-> + *     given SPI controller.
-> + * @num_chipselect: chipselects are used to distinguish individual
-> + *     SPI slaves, and are numbered from zero to num_chipselects.
-> + *     each slave has a chipselect signal, but it's common that not
-> + *     every chipselect is connected to a slave.
-> + * @setup: updates the device mode and clocking records used by a
-> + *     device's SPI controller; protocol code may call this.  This
-> + *     must fail if an unrecognized or unsupported mode is requested.
-> + *     It's always safe to call this unless transfers are pending on
-> + *     the device whose settings are being modified.
-> + * @transfer: adds a message to the controller's transfer queue.
-> + * @cleanup: frees controller-specific state
-> + */
-> +struct spi_slave {
-> +       struct device   dev;
-> +       s16                     bus_num;
-> +       u16                     num_chipselect;
-> +
-> +       int                     (*setup)(struct spi_device *spi);
-> +
-> +       int                     (*transfer)(struct spi_device *spi,
-> +                                               struct spi_message *mesg);
-
-Is this name really apropriate for a slave, shouldn't it be
-named (*receive) rather than (*transfer)?
-
-> +
-> +       void                    (*cleanup)(struct spi_device *spi);
-> +};
-> +
->  static inline void *spi_master_get_devdata(struct spi_master *master)
->  {
->        return dev_get_drvdata(&master->dev);
->  }
->
-> +static inline void *spi_slave_get_devdata(struct spi_slave *slave)
-> +{
-> +       return dev_get_drvdata(&slave->dev);
-> +}
-> +
->  static inline void spi_master_set_devdata(struct spi_master *master,
-> void *data)
->  {
->        dev_set_drvdata(&master->dev, data);
->  }
->
-> +static inline void spi_slave_set_devdata(struct spi_slave *slave, void
-> *data)
-> +{
-> +       dev_set_drvdata(&slave->dev, data);
-> +}
-> +
->  static inline struct spi_master *spi_master_get(struct spi_master
-> *master)
->  {
->        if (!master || !get_device(&master->dev))
-> @@ -296,20 +339,42 @@ static inline struct spi_master
-> *spi_master_get(struct spi_master *master)
->        return master;
->  }
->
-> +static inline struct spi_slave *spi_slave_get(struct spi_slave *slave)
-> +{
-> +       if (!slave || !get_device(&slave->dev))
-> +               return NULL;
-> +       return slave;
-> +}
-> +
->  static inline void spi_master_put(struct spi_master *master)
->  {
->        if (master)
->                put_device(&master->dev);
->  }
->
-> +static inline void spi_slave_put(struct spi_slave *slave)
-> +{
-> +       if (slave)
-> +               put_device(&slave->dev);
-> +}
-> +
->
->  /* the spi driver core manages memory for the spi_master classdev */
->  extern struct spi_master *
->  spi_alloc_master(struct device *host, unsigned size);
->
-> +extern struct spi_slave *
-> +spi_alloc_slave(struct device *host, unsigned size);
-> +
-> +
->  extern int spi_register_master(struct spi_master *master);
-> +
-> +extern int spi_register_slave(struct spi_slave *slave);
-> +
->  extern void spi_unregister_master(struct spi_master *master);
->
-> +extern void spi_unregister_slave(struct spi_slave *slave);
-> +
->  extern struct spi_master *spi_busnum_to_master(u16 busnum);
->
->  /*---------------------------------------------------------------------------*/
-> @@ -544,10 +609,12 @@ static inline void spi_message_free(struct
-> spi_message *m)
->  static inline int
->  spi_setup(struct spi_device *spi)
->  {
-> -       return spi->master->setup(spi);
-> +       if (spi->master)
-> +               return spi->master->setup(spi);
-> +       else
-
-if (spi->slave)
-
-> +               return spi->slave->setup(spi);
->  }
->
-> -
->  /**
->  * spi_async - asynchronous SPI transfer
->  * @spi: device with which data will be exchanged
-> @@ -581,7 +648,10 @@ static inline int
->  spi_async(struct spi_device *spi, struct spi_message *message)
->  {
->        message->spi = spi;
-> -       return spi->master->transfer(spi, message);
-> +       if (spi->master)
-> +               return spi->master->transfer(spi, message);     /* Master */
-> +       else
-> +               return spi->slave->transfer(spi, message);      /* Slave */
-
-rename spi->slave->receive()
-
->  }
->
->  /*---------------------------------------------------------------------------*/
-> @@ -593,6 +663,11 @@ spi_async(struct spi_device *spi, struct
-> spi_message *message)
->
->  extern int spi_sync(struct spi_device *spi, struct spi_message
-> *message);
->
-> +/* spi_transfer_async() exposes spi_async() functionality */
-> +extern int spi_transfer_async(struct spi_device *spi,
-> +                             struct spi_message *message);
-> +
-> +
->  /**
->  * spi_write - SPI synchronous write
->  * @spi: device to which data will be written
-> @@ -801,12 +876,23 @@ spi_register_board_info(struct spi_board_info
-> const *info, unsigned n)
->  extern struct spi_device *
->  spi_alloc_device(struct spi_master *master);
->
-> +extern struct spi_device *
-> +spi_alloc_slave_device(struct spi_slave *slave);
-> +
->  extern int
->  spi_add_device(struct spi_device *spi);
->
-> +extern int
-> +spi_add_slave_device(struct spi_device *spi);
-> +
-> +
->  extern struct spi_device *
->  spi_new_device(struct spi_master *, struct spi_board_info *);
->
-> +extern struct spi_device *
-> +spi_slave_new_device(struct spi_slave *, struct spi_board_info *);
-> +
-> +
->  static inline void
->  spi_unregister_device(struct spi_device *spi)
->  {
-> --
-> 1.5.4.3
->
-
-Hope this helps,
-Linus Walleij
+--===============7127519338858534640==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Enter the BlackBerry Developer Challenge  
@@ -958,3 +252,15 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
+--===============7127519338858534640==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7127519338858534640==--

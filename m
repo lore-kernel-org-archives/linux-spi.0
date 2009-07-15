@@ -1,9 +1,10 @@
-From: "PROTECCION ENERGETICA" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] SI TE RELACIONAS CON PERSONAS...
-Date: Tue, 14 Jul 2009 21:51:28 -0400
-Message-ID: <2028496-2200973151512830@AnaMaria1>
+From: Christer Weinigel <christer-rKHMIqA5R6gwFerOooGFRg@public.gmane.org>
+Subject: speed_hz vs max_speed_hz
+Date: Wed, 15 Jul 2009 13:22:07 +0200
+Message-ID: <4A5DBBDF.2050901@weinigel.se>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4443136709975759509=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,83 +17,60 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4443136709975759509==
-Content-type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi all,
 
+I'm a bit confused about speed_hz and max_speed_hz.  How are they 
+supposed to be used?
 
-TALLER "PROTECCI=D3N ENERG=C9TICA"
-S=E1bado 18 de julio de 09:30 a 11:30 hrs=2E
+For example, on one board I have this:
 
-EN ESTE TALLER MEDIREMOS LOS CAMPOS ENERG=C9TICOS DE CADA PERSONA
-TALLER PARA TODAS LAS PERSONAS QUE TRABAJAN CON PERSONAS
+static struct spi_board_info my_spi_board_info[] = {
+         {
+                 .mode           = 0,
+                 .modalias       = "spidev",
+                 .bus_num        = 0,
+                 .irq            = IRQ_EINT00,
+                 .max_speed_hz   = 4000000,
+                 .chip_select    = S3C24A0_GP19,
+         }
+};
 
-=BFHA SENTIDO ALGUNO DE ESTOS S=CDNTOMAS=2E=2E?
-Me siento agotado, sin energ=EDa
-Hay personas que me agotan y otras que me levantan el =E1nimo
-Trabajo con personas negativas
-Trabajo con personas enfermas
-A veces estoy con =E1nimo y otras veces no tengo ganas ni de levantarme
-Siento que donde vivo o trabajo hay malas vibraciones energ=E9ticas
+I have a chip connected to this bus that I know can run at 25MHz.  So 
+what I would expect the above max_speed_hz to mean is that due to 
+limitations of the SPI controller and the layout of the SPI wires on the 
+board, even though the chip can run much faster, the maximum speed of 
+this specific board is only 4MHz.
 
-Basta que haya una de las situaciones anteriores en su vida para que debe
-realizar este taller, porque quiere decir que tiene problemas con su energ=
-=EDa
-vital=2E
-La energ=EDa puede perderse o contaminarse y es muy importante aprender a
-protegerse para que no suceda, dado que si eso es as=ED termino enferm=E1n=
-dome
-emocional o f=EDsicamente=2E
+The driver I have right now sets spi_device->max_speed_hz to 25MHz 
+because it "knows" that the chip can run that fast, so it will actually 
+drive the chip much faster than the board supports.  Am I right in 
+thinking that the driver is misbehaving and ought to set 
+spi_transfer->speed_hz instead?
 
-TALLER ESPECIAL PARA:
-PROFESIONALES DEL =C1REA DE LA SALUD
-TERAPEUTAS NATURALES
-PROFESORES
-VENDEDORES
-Y TODO AQUEL QUE TENGA QUE VER CON EL TRABAJO CON PERSONAS
+Also, what should the spi_setup do when passed a too high "max_speed"? 
+If the SPI controller is only capable of 10MHz, what should spi_setup do 
+if spi_device->max_speed_hz is 25MHz?  Should it return -EINVAL, 
+silently change max_speed_hz to 10MHz, or set max_speed_hz to 25MHz and 
+limit it to 10MHz when the transfer function is called?
 
-Primera Parte: Teor=EDa=2E
-=BFQu=E9 es la energ=EDa?
-=BFC=F3mo se Mide?
-=BFC=F3mo Se Pierde y Contamina?
+I'd vote for changing max_speed_hz to 10MHz, since that would give the 
+IMHO sanest ioctl interface, so that SPI_IOC_WR_MAX_SPEED_HZ call with a 
+too high speed and a subsequent SPI_IOC_RD_MAX_SPEED_HZ would return the 
+actual maximum speed.  In that case the debug printout in the write 
+ioctl ought to be changed to:
 
-Segunda Parte: Pr=E1ctica=2E
-Medici=F3n Energ=E9tica
-Desarrollo de la Energ=EDa
-Protecci=F3n Energ=E9tica
-Trabajando con Energ=EDa
+     dev_dbg(&spi->dev, "%d Hz (max)\n", spi->max_speed_hz);
 
-Al t=E9rmino del taller cada alumno se le volver=E1 a medir la energ=EDa p=
-ara ver
-el resultado concreto del mismo=2E
+so that it shows the actual speed that was set.  Returning -EINVAL would 
+also be a sane choice but slightly less useful.
 
-INSCRIPCIONES: http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm
-o al Tel=E9fono: 2781078 - Celular: 09/9675 6898
-VALOR: $50=2E000
-(SI TRAES 2 AMIGOS TU TIENES UN 50% DE DESCUENTO)
+No matter what, the ioctl should be documented as dangerous since it can 
+set a clock which is faster than specified in the spi_board_info.
 
-Formas de Pago:
-Efectivo $50=2E000=2E-
-Transferencia Bancaria (10% de descuento) $45=2E000=2E- Solicite N=B0 de c=
-uenta a
-hipnosischile@gmail=2Ecom
-2 Cheques de $30=2E000=2E- c/u, al d=EDa, 30 d=EDas
+Or have I misunderstood everything? :-)
 
+   /Christer
 
-Siguiendo las disposiciones legales actuales, los siguientes son los datos=
-
-de quienes realizan el presente env=EDo publicitario:
-Hipnosis Chile - Fono: 02/ 2781078 o al celular (09) 9675 6898 - E-mail:
-info@hipnosischile=2Ecl - www=2Ehipnosischile=2Ecl - Remoci=F3n:
-remover@hipnosischile=2Ecl
-
-
-
---===============4443136709975759509==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Enter the BlackBerry Developer Challenge  
@@ -100,15 +78,3 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
---===============4443136709975759509==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4443136709975759509==--

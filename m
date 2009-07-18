@@ -1,18 +1,17 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 1/2] spi: omap2_mcspi supports wake
-	events
-Date: Fri, 17 Jul 2009 18:29:00 -0700
-Message-ID: <200907171829.00996.david-b@pacbell.net>
-References: <200907021629.33372.david-b@pacbell.net>
-	<20090717160835.66ed106e.akpm@linux-foundation.org>
+Subject: Re: [patch 2.6.31-rc1] eeprom/at25: bugfix "not
+	ready" timeout after write
+Date: Fri, 17 Jul 2009 19:23:14 -0700
+Message-ID: <200907171923.14794.david-b@pacbell.net>
+References: <200907031836.28475.david-b@pacbell.net>
+	<20090717173546.11f55599.akpm@linux-foundation.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	jouni.hogander-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, heutling-U9zb0o/1OQCELgA04lAiVw@public.gmane.org
 To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090717160835.66ed106e.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+In-Reply-To: <20090717173546.11f55599.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,36 +24,68 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On Friday 17 July 2009, Andrew Morton wrote:
-> On Thu, 2 Jul 2009 16:29:33 -0700
-> David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> 
-> > Author: Jouni Hogander <jouni.hogander-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-> 
-> Please use From: here.
+> Seems OK.
+> =
 
-Sorry, I thought I'd fixed those.
+> The code's a bit nonsensical though:
+> =
+
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0/* Wait for non-busy stat=
+us */
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0timeout =3D jiffies + mse=
+cs_to_jiffies(EE_TIMEOUT);
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0retries =3D 0;
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0do {
+> =
+
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0s=
+r =3D spi_w8r8(at25->spi, AT25_RDSR);
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0i=
+f (sr < 0 || (sr & AT25_SR_nRDY)) {
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0dev_dbg(&at25->spi->dev,
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0"rdsr --> %d (%02x)\n", sr,=
+ sr);
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0/* at HZ=3D100, this is sloooow */
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0msleep(1);
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0continue;
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0i=
+f (!(sr & AT25_SR_nRDY))
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0break;
+> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0} while (retries++ < 3 ||=
+ time_before_eq(jiffies, timeout));
+> =
+
+> EE_TIMEOUT is 25 msecs and `retries' is 3 msecs. =A0So the
+> time_before_eq() will never trigger unless there's a tremendous amount
+> of CPU load or something. =A0It seems a bit ripe for some rationalisation.
+
+The retries check is to make sure it *does* retry a few times
+even in the face of load.  Once that limit is met, *then* the
+EE_TIMOUT limit will apply.
+
+Keep in mind also that wih HZ=3D100 (a common setting) the loops are
+"sloooow" -- 10+ msec each.  The goal is to cope with a bunch of odd
+behaviors and still come out sane.
 
 
-> > Currently mcspi wake-ups are not enabled. This might cause case where
-> > OMAP is not waking up on mcspi events.
-> > 
-> > Signed-off-by: Jouni Hogander <jouni.hogander-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-> > Signed-off-by: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
-> > Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-> 
-> For disposition of these I'm thinking
-> 
-> spi-omap2_mcspi-supports-wake-events.patch	-> 2.6.31
-> spi-omap2_mcspi-use-bitn.patch			-> 2.6.32
-> spi-omap2_mcspi-rxdma-bugfix.patch		-> 2.6.31
-> 
-> ?
 
-Sounds OK.
 
-------------------------------------------------------------------------------
-Enter the BlackBerry Developer Challenge  
-This is your chance to win up to $100,000 in prizes! For a limited time, 
+
+---------------------------------------------------------------------------=
+---
+Enter the BlackBerry Developer Challenge  =
+
+This is your chance to win up to $100,000 in prizes! For a limited time, =
+
 vendors submitting new applications to BlackBerry App World(TM) will have
-the opportunity to enter the BlackBerry Developer Challenge. See full prize  
+the opportunity to enter the BlackBerry Developer Challenge. See full prize=
+  =
+
 details at: http://p.sf.net/sfu/Challenge

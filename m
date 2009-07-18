@@ -1,18 +1,17 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.31-rc1] eeprom/at25: bugfix "not
-	ready" timeout after write
-Date: Fri, 17 Jul 2009 19:23:14 -0700
-Message-ID: <200907171923.14794.david-b@pacbell.net>
-References: <200907031836.28475.david-b@pacbell.net>
-	<20090717173546.11f55599.akpm@linux-foundation.org>
+From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: at91sam9260ek spi slave driver
+Date: Sat, 18 Jul 2009 11:44:58 +0200
+Message-ID: <63386a3d0907180244x1abb24a0k9971f7413f27a5d4@mail.gmail.com>
+References: <AQHKBTJjB2LL+dLhVkiLr410ZsPWww==>
+	<F8B9F9646F7A4844A4668B9D9257D96612D7B76A96@SEREXCHMB2-C.combacn.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, heutling-U9zb0o/1OQCELgA04lAiVw@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: =?GB2312?B?wt7Qwr78?= <luoxinjun-nwSgK2znq4hv1O+Z8WTAqQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090717173546.11f55599.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <F8B9F9646F7A4844A4668B9D9257D96612D7B76A96-XsYjrPo5AoweG2Bxt55ws+v9X19jmndG@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,69 +22,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 17 July 2009, Andrew Morton wrote:
-> Seems OK.
-> =
-
-> The code's a bit nonsensical though:
-> =
-
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0/* Wait for non-busy stat=
-us */
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0timeout =3D jiffies + mse=
-cs_to_jiffies(EE_TIMEOUT);
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0retries =3D 0;
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0do {
-> =
-
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0s=
-r =3D spi_w8r8(at25->spi, AT25_RDSR);
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0i=
-f (sr < 0 || (sr & AT25_SR_nRDY)) {
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0dev_dbg(&at25->spi->dev,
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0"rdsr --> %d (%02x)\n", sr,=
- sr);
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0/* at HZ=3D100, this is sloooow */
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0msleep(1);
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0continue;
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0i=
-f (!(sr & AT25_SR_nRDY))
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0break;
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0} while (retries++ < 3 ||=
- time_before_eq(jiffies, timeout));
-> =
-
-> EE_TIMEOUT is 25 msecs and `retries' is 3 msecs. =A0So the
-> time_before_eq() will never trigger unless there's a tremendous amount
-> of CPU load or something. =A0It seems a bit ripe for some rationalisation.
-
-The retries check is to make sure it *does* retry a few times
-even in the face of load.  Once that limit is met, *then* the
-EE_TIMOUT limit will apply.
-
-Keep in mind also that wih HZ=3D100 (a common setting) the loops are
-"sloooow" -- 10+ msec each.  The goal is to cope with a bunch of odd
-behaviors and still come out sane.
-
-
-
-
-
----------------------------------------------------------------------------=
----
-Enter the BlackBerry Developer Challenge  =
-
-This is your chance to win up to $100,000 in prizes! For a limited time, =
-
-vendors submitting new applications to BlackBerry App World(TM) will have
-the opportunity to enter the BlackBerry Developer Challenge. See full prize=
-  =
-
-details at: http://p.sf.net/sfu/Challenge
+PiAwMDkvNy8xNSDC3tDCvvwgPGx1b3hpbmp1bkBjb21iYS5jb20uY24+Ogo+Cj4gQnV0IHRoZSBs
+aW51eCBzcGkgZHJpdmVyIG9ubHkgc3VwcG9ydCBtYXN0ZXIgbW9kZSBhbmQgZG9lc24ndAo+IHN1
+cHBvcnQgc2xhdmUgbW9kZS4gU28gSSB0cmllZCBteSBiZXN0IHRvIGRlc2lnbiB0aGUgc3BpIHNs
+YXZlIGRyaXZlciBpbgo+IGxpbnV4IDIuNi4yNSBmb3Igd2Vla3MsIG1vc3Qgb2YgdGhlIHdvcmsg
+aXMgdG8gbW9kaWZ5IHRvIHNwaSBtYXRlciBkcml2ZXIKPiBjb2RlIHRvIHN1cHBvcnQgc2xhdmUg
+bW9kZSwgdW5mb3J0dW5hdGVseSBpdCBkb2Vzbid0IHdvcmssIGNvdWxkIGFueWJvZHkKPiBnaXZl
+IG1lIHNvbWUgYWR2aWNlIG9uIGhvdyB0byBkZXNpZ24gdGhlIHNwaSBzbGF2ZSBtb2RlIGRyaXZl
+ciBpbiBsaW51eAo+IDIuNi4yNSBvciBnaXZlIG1lCj4gc29tZSBkZW1vIGNvZGUgPwoKSWYgeW91
+IHNlYXJjaCB0aGUgYXJjaGl2ZXMgZm9yIHRoaXMgbWFpbGluZyBsaXN0IGZvciB0aGUgcmVjZW50
+IG1vbnRoIG9yIHNvCnlvdSBjYW4gc2VlIHRoYXQgS2VuIE1pbGxzIGZyb20gSW50ZWwgaGFzIGEg
+d29ya2luZyBwYXRjaCBmb3IgdGhpcywgd2UgYXJlCmRpc2N1c3NpbmcgdGhlIGRldGFpbHMgYnV0
+IHBsZWFzZSBqb2luIHRoYXQgZWZmb3J0LgoKTGludXMgV2FsbGVpagoKLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tCkVudGVyIHRoZSBCbGFja0JlcnJ5IERldmVsb3BlciBDaGFsbGVuZ2UgIApUaGlzIGlz
+IHlvdXIgY2hhbmNlIHRvIHdpbiB1cCB0byAkMTAwLDAwMCBpbiBwcml6ZXMhIEZvciBhIGxpbWl0
+ZWQgdGltZSwgCnZlbmRvcnMgc3VibWl0dGluZyBuZXcgYXBwbGljYXRpb25zIHRvIEJsYWNrQmVy
+cnkgQXBwIFdvcmxkKFRNKSB3aWxsIGhhdmUKdGhlIG9wcG9ydHVuaXR5IHRvIGVudGVyIHRoZSBC
+bGFja0JlcnJ5IERldmVsb3BlciBDaGFsbGVuZ2UuIFNlZSBmdWxsIHByaXplICAKZGV0YWlscyBh
+dDogaHR0cDovL3Auc2YubmV0L3NmdS9DaGFsbGVuZ2UKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

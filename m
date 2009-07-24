@@ -1,66 +1,36 @@
-From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-Subject: Re: [PATCH 2/2] SPI: Add SPI driver for most
-	known i.MX SoCs
-Date: Fri, 24 Jul 2009 12:07:40 +0200 (CEST)
-Message-ID: <Pine.LNX.4.64.0907241207110.4501@axis700.grange>
-References: <1245235220-23816-1-git-send-email-s.hauer@pengutronix.de>
-	<1245235220-23816-2-git-send-email-s.hauer@pengutronix.de>
-	<1245235220-23816-3-git-send-email-s.hauer@pengutronix.de>
-	<Pine.LNX.4.64.0906172010400.4218@axis700.grange>
+From: "Syed Rafiuddin" <rafiuddin.syed@ti.com>
+Subject: Re: [PATCH]OMAP4: McSPI Support for OMAP4430
+Date: Fri, 24 Jul 2009 16:34:13 +0530 (IST)
+Message-ID: <54767.192.168.10.89.1248433453.squirrel@dbdmail.itg.ti.com>
+References: <58614.192.168.10.89.1248270867.squirrel@dbdmail.itg.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <Pine.LNX.4.64.0906172010400.4218-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, linux-arm-kernel@lists.arm.linux.org.uk
+To: david-b@pacbell.net
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <58614.192.168.10.89.1248270867.squirrel@dbdmail.itg.ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 17 Jun 2009, Guennadi Liakhovetski wrote:
+David,
 
-> On Wed, 17 Jun 2009, Sascha Hauer wrote:
-> 
-> > v2: Updated and tested on i.MX35
-> > 
-> > While there already is a SPI driver for i.MX1 in the tree there are
-> > good reasons to replace it:
-> > 
-> > - The inkernel driver implements a full blown SPI driver, but
-> >   the hardware can be fully supported using a bitbang driver.
-> >   This greatly reduces the size and complexity of the driver.
-> > - The inkernel driver only works on i.MX1 SoCs. Unfortunately
-> >   Freescale decided to randomly mix the register bits for each
-> >   new SoC, This is quite hard to handle with the current driver
-> >   since it has register accesses in many places.
-> > - The DMA API of the durrent driver is broken for arch-mx1 (as opposed
-> >   to arch-imx) and nobody cared to fix it yet.
-> > 
-> > This driver has been tested on i.MX1/i.MX27/i.MX35 with an AT25 type
-> > EEPROM and on i.MX27/i.MX31 with a Freescale MC13783 PMIC.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> 
-> Tested-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-> 
-> on a i.MX31 with a DAC124S085.
+> This patch adds McSPI support for OMAP4430 SDP platform. All the base addresses
+> are changed between OMAP1/2/3 and OMAP4.The fields of the resource structures
+> are filled at runtime to have McSPI support on OMAP4.
+>
+> Signed-off-by: Syed Rafiuddin <rafiuddin.syed@ti.com>
+> Acked-by: Kevin Hilman <khilman@deeprootsystems.com>
+> Acked-by: Tony Lindgren <tony@atomide.com>
+> Acked-by: David Brownell <david-b@pacbell.net>
+> Acked-by: Santosh Shilimkar <santosh.shilimkar@ti.com>
+> ---
 
-David - when are you planning to push this to next?
+Haven't seen any comment on my patch, but didn't see it in git either.
+Is there anything that I need to resolve? Else can this patch get merged.
 
-Thanks
-Guennadi
----
-Guennadi Liakhovetski, Ph.D.
-Freelance Open-Source Software Developer
-http://www.open-technology.de/
+Regards,
+Syed Rafiuddin
 
-------------------------------------------------------------------------------
+

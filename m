@@ -1,11 +1,10 @@
-From: Aramis par Central Marques <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
-Subject: [SPAM] Votre nouvelle voiture neuve 35% moins chère
-Date: 28 Jul 2009 08:18:09 -0000
-Message-ID: <20090728081809.27071.qmail@ks300646.kimsufi.com>
-Reply-To: Aramis par Central Marques <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
+From: "Marylee Kqbjarif" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Manonna's pregnant
+Date: Tue, 28 Jul 2009 08:54:02 +0000
+Message-ID: <6269LKD.27259C50A.70999329063TAKWCZGDKHKIGGE489@dsl88-246-34772.ttnet.net.tr>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5786980511200646450=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============6166999862748058920=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,147 +16,169 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============6166999862748058920==
+Content-type: text/html; charset="utf-8"
 
---===============5786980511200646450==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_278821539e4ddf802ba7f58a50d2f57e"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-
---_----------=_parties_278821539e4ddf802ba7f58a50d2f57e
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://www.centralmarque.com/svi/miroir.php?bat=aramis0709_ctrm
-
-ARAM I S
-
-Distributeurs d'Automobiles
-Prix incroyable sur une sélection de véhicules disponibles en quantitée limitée
-
-Valable jusqu'au 28 juillet , faites vite !
-Devis gratuit en 2 minutes
-
-Reprise de votre véhicule d'occasion possible
-
-Garanties constructeur
-
-Garantie des équipements
-
-Garantie des délais de livraison
-
-Votre agence près de chez vous !
-
-Profitez-en dès maintenant
-
-plus d'infos sur http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile
-
---------------------------------
-Cette offre Aramis vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.centralmarque.com/svi/gestionserv.php?nb=1925&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_278821539e4ddf802ba7f58a50d2f57e
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>ARAMIS
-Distributeurs d'Automobiles</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The Daily TOP News</title>
+    <style type="text/css">
+    	a
+			{
+			text-decoration:none;
+			}
+		a:hover
+			{
+			text-decoration:underline;
+			}
+    </style>
 </head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.centralmarque.com/svi/miroir.php?bat=aramis0709_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre Aramis vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#042F64;font-size:28px'>
-<p style='display:inline;'> <b><span style="color:1A5589">ARAM<span style="color:39b0C2">I</span>S<br>
-<span style="color:39b0C2;font-size:18">Distributeurs d'Automobiles</b></p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#91D1DB;font-family:Arial;color:#FFFFFF;font-size:24px;'>
-<a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile" style="text-decoration:none;color:#FFFFFF;"><b>Prix incroyable</b> sur une s&eacute;lection de <b>v&eacute;hicules disponibles</b> en quantit&eacute;e limit&eacute;e</br>
-Valable jusqu'au <b>28 juillet</b>, faites vite !</a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#245B91;font-size:18px;background-color:#FFFFFF;'>
-<li> Devis gratuit en 2 minutes<br>
-<li> Reprise de votre v&eacute;hicule d'occasion possible<br>
-<li> Garanties constructeur<br>
-<li> Garantie des &eacute;quipements<br>
-<li> Garantie des d&eacute;lais de livraison<br>
-<li> Votre agence pr&egrave;s de chez vous !<br>
-<center><a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile" style="text-decoration:none;color:#245B91;"><u>Profitez-en d&egrave;s maintenant</u></a></center>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<img src="http://ad.zanox.com/ppv/?12868683C1760857915" align="bottom" width="1" height="1" border="0" hspace="1"><body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table id="Tableau_01" width="500" height="821" border="0" cellpadding="0" cellspacing="0">
- <tr>
- <td colspan="5">
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_01.jpg" width="500" height="72" alt="Aramis" border="0"></a></td>
- </tr>
- <tr>
- <td colspan="5">
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2FMeilleuresOffres.php%3Ftrack%3Dbonaf"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_02.jpg" width="500" height="346" alt="Aramis" border="0"></a></td>
- </tr>
- <tr>
- <td>
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2Fcitroen-c3-14-hdi-70-airdream_dev115326d1-09cc3.html"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_03.jpg" width="127" height="122" alt="Aramis" border="0"></a></td>
- <td colspan="2">
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2Fpeugeot-407-sw-20-hdi-16v-136ch-fap_dev115241d10-09p407.html"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_04.jpg" width="123" height="122" alt="Aramis" border="0"></a></td>
- <td>
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2Fhyundai-i30-16-crdi-115_dev116384d1-09hi30.html"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_05.jpg" width="124" height="122" alt="Aramis" border="0"></a></td>
- <td>
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2Falfa-romeo-147-19-jtd-120_dev1552192d7-08a147.html"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_06.jpg" width="126" height="122" alt="Aramis" border="0"></a></td>
- </tr>
- <tr>
- <td>
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2Fpeugeot-407-20-hdi-16v-140ch-fap_dev115237d2-09p407.html"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_07.jpg" width="127" height="122" alt="Aramis" border="0"></a></td>
- <td colspan="2">
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2Frenault-laguna3-estateiii20dci180fap_dev119245d2-09rlag.html"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_08.jpg" width="123" height="122" alt="Aramis" border="0"></a></td>
- <td>
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2Fpeugeot-partner-tepee-tepee-16-hdi-90ch_dev112066d3-09ppar.html"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_09.jpg" width="124" height="122" alt="Aramis" border="0"></a></td>
- <td>
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2Fchevrolet-captiva-20vcdi127_dev116013d1-09ccap.html"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_10.jpg" width="126" height="122" alt="Aramis" border="0"></a></td>
- </tr>
- <tr>
- <td colspan="2">
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2FAgences.php%3Ftrack%3Dbonaf"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_11.jpg" width="145" height="136" alt="Aramis" border="0"></a></td>
- <td colspan="3">
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F12868683C1760857915%26ULP%3Dhttp%3A%2F%2Fwww.aramisauto.com%2F%3Ftrack%3Dbonaf+"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_12.jpg" width="355" height="136" alt="Aramis" border="0"></a></td>
- </tr>
- <tr>
- <td colspan="5">
- <a href="http://www.centralmarque.com/svi/linkserv.php?bat=aramis0709_ctrm&nb=1925&n=9047704&c=automobile"><img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/mailing_aramis_13.jpg" width="500" height="22" alt="Aramis" border="0"></a></td>
- </tr>
- <tr>
- <td>
- <img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/spacer.gif" width="127" height="1" alt="Aramis"></td>
- <td>
- <img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/spacer.gif" width="18" height="1" alt="Aramis"></td>
- <td>
- <img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/spacer.gif" width="105" height="1" alt="Aramis"></td>
- <td>
- <img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/spacer.gif" width="124" height="1" alt="Aramis"></td>
- <td>
- <img src="http://www.aramisauto.com/images/banners/bonaf/mail/images/spacer.gif" width="126" height="1" alt="Aramis"></td>
- </tr>
-</table>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.centralmarque.com/svi/img_nb_1925_numuser_yyynumuseryyy.jpg" width=1 height=1>
-<p>
-<a href='http://www.centralmarque.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.centralmarque.com/svi/gestionserv.php?nb=1925&cat=automobile&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
+
+<body style="margin:0; padding:0;">
+
+	<table align="center" bgcolor="#565656" cellpadding="0" cellspacing="0" width="660">
+
+    	<tr>
+        	<td>
+                <table align="center" bgcolor="#565656" cellpadding="0" cellspacing="0" width="620">
+                    <tr>
+                        <td>
+                            <table align="center" bgcolor="#ffffff" cellpadding="0" cellspacing="0" width="620">
+                                <tr bgcolor="#565656" height="45">
+
+                                    <td align="center"><span style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><strong>Are you having trouble viewing this email? If so, <a
+ href="http://8d087.xxacequq.cn/?hqiabege=58c7af7498fc8038c49e74f2&yezjg=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#ffffff; text-decoration:underline;" frontuid="67927"
+>click here</a> to see it in a web browser.</strong></span></td>
+
+                                </tr>
+                                <tr>
+                                	<td>
+
+                                        <table align="center" bgcolor="#6f1200" cellpadding="0" cellspacing="0" width="620">
+                                            <tr height="5"><td></td><td></td><td></td><td></td></tr>
+                                            <tr height="14">
+                                                <td width="12"></td>
+                                                <td><span style="color:#ffffff; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><strong><a
+ href="http://84b0.xxacequq.cn/?idiyvqcqqg=58c7af7498fc8038c49e74f2&lyyooroja=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#ffffff;" frontuid="67930"
+>HOME</a></strong>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<strong><a
+ href="http://84b0.xxacequq.cn/?zygigq=58c7af7498fc8038c49e74f2&jmaroxalo=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#ffffff;" frontuid="67931"
+>PHARMACY BLOGS</a></strong>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<strong><a
+ href="http://84b0.xxacequq.cn/?jlasaliw=58c7af7498fc8038c49e74f2&yrjrj=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#ffffff;" frontuid="67932"
+>PHARMACY REVIEW</a></strong>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<strong><a
+ href="http://84b0.xxacequq.cn/?dekiy=58c7af7498fc8038c49e74f2&nyxytuni=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#ffffff;" frontuid="67933"
+>STORE</a></strong></span></td>
+
+                                                <td align="right"><span style="color:#bcbec0; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><strong><a
+ href="http://84b0.xxacequq.cn/?yguboi=58c7af7498fc8038c49e74f2&ypypo=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#bcbec0;" frontuid="67934"
+>RSS</a></strong>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<strong><a
+ href="http://84b0.xxacequq.cn/?zymet=58c7af7498fc8038c49e74f2&diqxosipqc=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#bcbec0;" frontuid="67935"
+>Mobile</a></strong></span></td>
+                                                <td width="12"></td>
+                                            </tr>
+                                            <tr height="5"><td></td><td></td><td></td><td></td></tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td>
+                            <table align="center" bgcolor="#ffffff" cellpadding="0" cellspacing="0" width="620">
+                                                                <tr height="25"><td></td><td></td></tr>
+                                <tr>
+                                    <td width="12"></td>
+                                    <td valign="top" width="408">
+                                        <table align="left" bgcolor="#ffffff" cellpadding="0" cellspacing="0" style="width: 600px">
+                                            <tr height="35">
+
+                                                <td valign="top"><span style="background-color:#ffffff; color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:14px; padding-right:10px;"><strong>JULY 28, 2009</strong></span></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+												<a
+ href="http://84b0.xxacequq.cn/?wyzedojzu=58c7af7498fc8038c49e74f2&weybamipa=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#b10021;" frontuid="67906"
+><span style="font-family:Georgia, Times New Roman, serif; font-size:23px;">
+												Hot NEWS of the DAY</span></a></td>
+                                            </tr>
+                                            <tr height="13"><td></td></tr>
+                                            <tr>
+
+                                                <td><a
+                                                href="http://84b0.xxacequq.cn/?iouvipevjr=58c7af7498fc8038c49e74f2&uuzaxi=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc"
+                                                style="text-decoration:underline; font-size:large">
+												<img alt="( CLICK HERE TO SHOW IMAGE )" src="http://84b0.xxacequq.cn/spacer.gif" style="border-width: 0px" /></a></td>
+
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                </tr>
+                                <tr height="25"><td></td><td></td></tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                    	<td>
+
+                            <table align="center" bgcolor="#ffffff" cellpadding="0" cellspacing="0" width="620">
+                                <tr>
+                                    <td width="12"></td>
+                                    <td><span style="color:#b10021; font-family:Arial, Helvetica, sans-serif; font-size:11px;"><a
+ href="http://59da.xxacequq.cn/?emoojcje=58c7af7498fc8038c49e74f2&awijcu=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#b10021;" frontuid="67904"
+>UNSUBSCRIBE</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+ href="http://84b0.xxacequq.cn/?ywqcaki=58c7af7498fc8038c49e74f2&ypqybinjrq=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#b10021;" frontuid="67945"
+>UPDATE YOUR PROFILE</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+ href="http://84b0.xxacequq.cn/?jygahjv=58c7af7498fc8038c49e74f2&tinyepiat=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#b10021;" frontuid="67905"
+>MORE EMAIL NEWSLETTERS</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a
+ href="http://84b0.xxacequq.cn/?beboqpidjb=58c7af7498fc8038c49e74f2&otjhq=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#b10021;" frontuid="67916"
+>PRIVACY POLICY</a></span></td>
+
+                                </tr>
+
+                                <tr height="8"><td></td><td></td></tr>
+                                <tr>
+                                	<td width="12"></td>
+                                    <td><span style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:10px; line-height:11px;">Was this email forwarded to you? If so, <a
+ href="http://84b0.xxacequq.cn/?edydjedqr=58c7af7498fc8038c49e74f2&ysyam=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#000000; font-size:10px; text-decoration:underline;" frontuid="67946"
+>sign up</a> to start receiving your own copy.</span></td>
+                                </tr>
+
+                                <tr height="8"><td></td><td></td></tr>
+                                <tr>
+
+                                    <td width="12"></td>
+                                    <td><span style="color:#000000; font-family:Arial, Helvetica, sans-serif; font-size:9px; line-height:11px;"><strong>ABOUT THIS MAILING LIST<br />You have received this message because you subscribed to the "Daily Stat" email newsletter.<br />
+									If at any point you wish to remove yourself
+									from this list, change your email address,
+									or sign up for other email newsletters and
+									alerts, please visit
+									<a
+ href="http://84b0.xxacequq.cn/?cqodou=58c7af7498fc8038c49e74f2&fuefo=357469426597501573684291&hrctpw=rosjjefhuzpantbdwrksixnc" style="color:#000000; font-size:9px;" frontuid="67947"
+>Email Newsletter Preference Center</a>.</strong></span></td>
+                                </tr>
+                                <tr height="8"><td></td><td></td></tr>
+
+                            </table>
+                        </td>
+
+                    </tr>
+                    </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
 </html>
 
 
---_----------=_parties_278821539e4ddf802ba7f58a50d2f57e--
-
---===============5786980511200646450==
+--===============6166999862748058920==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -168,7 +189,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============5786980511200646450==
+--===============6166999862748058920==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -179,4 +200,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5786980511200646450==--
+--===============6166999862748058920==--

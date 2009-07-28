@@ -1,7 +1,7 @@
 From: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
-Subject: [patch 3/6] spi_s3c24xx; Fix transfer setup code
-Date: Tue, 28 Jul 2009 21:51:40 +0100
-Message-ID: <20090728205239.275031472@fluff.org>
+Subject: [patch 4/6] spi_s3c24xx: fix header includes
+Date: Tue, 28 Jul 2009 21:51:41 +0100
+Message-ID: <20090728205239.431689026@fluff.org>
 References: <20090728205137.613851078@fluff.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -9,7 +9,7 @@ Content-Transfer-Encoding: 7bit
 Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline; filename=spi-fix-bitperword.patch
+Content-Disposition: inline; filename=spi-fix-includes.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,32 +20,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Since the changes to the bitbang driver, there is the possibility we
-will be called with either the speed_hz or bpw values zero. We take
-these to mean that the default values (8 bits per word, or maximum
-bus speed).
+The driver includes <asm/io.h> where it should be including <linux/io.h>
+and also includes <mach/hardware.h> and <asm/dma.h> without using anything
+from these.
 
-Signed-off-by: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
-
+Signed-off-by; Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
 ---
+ drivers/spi/spi_s3c24xx.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 Index: b/drivers/spi/spi_s3c24xx.c
 ===================================================================
---- a/drivers/spi/spi_s3c24xx.c	2009-07-27 18:55:16.000000000 +0100
-+++ b/drivers/spi/spi_s3c24xx.c	2009-07-27 18:56:08.000000000 +0100
-@@ -116,6 +116,12 @@ static int s3c24xx_spi_setupxfer(struct 
- 	bpw = t ? t->bits_per_word : spi->bits_per_word;
- 	hz  = t ? t->speed_hz : spi->max_speed_hz;
+--- a/drivers/spi/spi_s3c24xx.c	2009-07-28 15:19:28.000000000 +0100
++++ b/drivers/spi/spi_s3c24xx.c	2009-07-28 15:20:16.000000000 +0100
+@@ -20,14 +20,11 @@
+ #include <linux/clk.h>
+ #include <linux/platform_device.h>
+ #include <linux/gpio.h>
++#include <linux/io.h>
  
-+	if (!bpw)
-+		bpw = 8;
-+
-+	if (!hz)
-+		hz = spi->max_speed_hz;
-+
- 	if (bpw != 8) {
- 		dev_err(&spi->dev, "invalid bits-per-word (%d)\n", bpw);
- 		return -EINVAL;
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+ 
+-#include <asm/io.h>
+-#include <asm/dma.h>
+-#include <mach/hardware.h>
+-
+ #include <plat/regs-spi.h>
+ #include <mach/spi.h>
+ 
 
 -- 
 

@@ -1,7 +1,8 @@
 From: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
-Subject: [patch 4/6] spi_s3c24xx: fix header includes
-Date: Tue, 28 Jul 2009 21:51:41 +0100
-Message-ID: <20090728205239.431689026@fluff.org>
+Subject: [patch 1/6] spi: fix spelling of automatically
+	in documentation
+Date: Tue, 28 Jul 2009 21:51:38 +0100
+Message-ID: <20090728205238.638384287@fluff.org>
 References: <20090728205137.613851078@fluff.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -9,7 +10,7 @@ Content-Transfer-Encoding: 7bit
 Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline; filename=spi-fix-includes.patch
+Content-Disposition: inline; filename=spi-fix-spello1.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,35 +21,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The driver includes <asm/io.h> where it should be including <linux/io.h>
-and also includes <mach/hardware.h> and <asm/dma.h> without using anything
-from these.
+Fix spelling of automatically in Documentation/spi/spi-summary.
 
-Signed-off-by; Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
+Signed-off-by: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
+
 ---
- drivers/spi/spi_s3c24xx.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ Documentation/spi/spi-summary |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: b/drivers/spi/spi_s3c24xx.c
+Index: b/Documentation/spi/spi-summary
 ===================================================================
---- a/drivers/spi/spi_s3c24xx.c	2009-07-28 15:19:28.000000000 +0100
-+++ b/drivers/spi/spi_s3c24xx.c	2009-07-28 15:20:16.000000000 +0100
-@@ -20,14 +20,11 @@
- #include <linux/clk.h>
- #include <linux/platform_device.h>
- #include <linux/gpio.h>
-+#include <linux/io.h>
+--- a/Documentation/spi/spi-summary	2009-07-09 15:07:37.000000000 +0100
++++ b/Documentation/spi/spi-summary	2009-07-09 15:09:41.000000000 +0100
+@@ -350,7 +350,7 @@ SPI protocol drivers somewhat resemble p
+ 		.resume		= CHIP_resume,
+ 	};
  
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
- 
--#include <asm/io.h>
--#include <asm/dma.h>
--#include <mach/hardware.h>
--
- #include <plat/regs-spi.h>
- #include <mach/spi.h>
- 
+-The driver core will autmatically attempt to bind this driver to any SPI
++The driver core will automatically attempt to bind this driver to any SPI
+ device whose board_info gave a modalias of "CHIP".  Your probe() code
+ might look like this unless you're creating a device which is managing
+ a bus (appearing under /sys/class/spi_master).
 
 -- 
 

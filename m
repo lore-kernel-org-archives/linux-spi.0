@@ -1,8 +1,7 @@
 From: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
-Subject: [patch 2/6] spi_s3c24xx: fix clock rate
-	calculation
-Date: Tue, 28 Jul 2009 21:51:39 +0100
-Message-ID: <20090728205238.814309505@fluff.org>
+Subject: [patch 3/6] spi_s3c24xx; Fix transfer setup code
+Date: Tue, 28 Jul 2009 21:51:40 +0100
+Message-ID: <20090728205239.275031472@fluff.org>
 References: <20090728205137.613851078@fluff.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -10,7 +9,7 @@ Content-Transfer-Encoding: 7bit
 Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline; filename=spi-fix-buad-generation.patch
+Content-Disposition: inline; filename=spi-fix-bitperword.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,59 +20,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently the clock rate calculation may round as pleased, which
-means that it is possible that we will round down and end up with
-a faster clock rate than intended.
-
-Change the calculation to use DIV_ROUND_UP() to ensure that we
-end up with a clock rate either the same as or lower than the
-user requested one.
+Since the changes to the bitbang driver, there is the possibility we
+will be called with either the speed_hz or bpw values zero. We take
+these to mean that the default values (8 bits per word, or maximum
+bus speed).
 
 Signed-off-by: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
 
 ---
- drivers/spi/spi_s3c24xx.c |   17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
 
 Index: b/drivers/spi/spi_s3c24xx.c
 ===================================================================
---- a/drivers/spi/spi_s3c24xx.c	2009-07-14 13:56:07.000000000 +0100
-+++ b/drivers/spi/spi_s3c24xx.c	2009-07-14 14:08:45.000000000 +0100
-@@ -111,6 +111,7 @@ static int s3c24xx_spi_setupxfer(struct 
- 	unsigned int bpw;
- 	unsigned int hz;
- 	unsigned int div;
-+	unsigned long clk;
- 
+--- a/drivers/spi/spi_s3c24xx.c	2009-07-27 18:55:16.000000000 +0100
++++ b/drivers/spi/spi_s3c24xx.c	2009-07-27 18:56:08.000000000 +0100
+@@ -116,6 +116,12 @@ static int s3c24xx_spi_setupxfer(struct 
  	bpw = t ? t->bits_per_word : spi->bits_per_word;
  	hz  = t ? t->speed_hz : spi->max_speed_hz;
-@@ -120,20 +121,16 @@ static int s3c24xx_spi_setupxfer(struct 
+ 
++	if (!bpw)
++		bpw = 8;
++
++	if (!hz)
++		hz = spi->max_speed_hz;
++
+ 	if (bpw != 8) {
+ 		dev_err(&spi->dev, "invalid bits-per-word (%d)\n", bpw);
  		return -EINVAL;
- 	}
- 
--	div = clk_get_rate(hw->clk) / hz;
--
--	/* is clk = pclk / (2 * (pre+1)), or is it
--	 *    clk = (pclk * 2) / ( pre + 1) */
--
--	div /= 2;
--
--	if (div > 0)
--		div -= 1;
-+	clk = clk_get_rate(hw->clk);
-+	div = DIV_ROUND_UP(clk, hz * 2) - 1;
- 
- 	if (div > 255)
- 		div = 255;
- 
--	dev_dbg(&spi->dev, "setting pre-scaler to %d (hz %d)\n", div, hz);
-+	dev_dbg(&spi->dev, "setting pre-scaler to %d (wanted %d, got %ld)\n",
-+		div, hz, clk / (2 * (div + 1)));
-+
-+
- 	writeb(div, hw->regs + S3C2410_SPPRE);
- 
- 	spin_lock(&hw->bitbang.lock);
 
 -- 
 

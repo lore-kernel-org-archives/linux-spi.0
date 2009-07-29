@@ -1,10 +1,12 @@
-From: "Isabella Awepjfq" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Jackson's killer found
-Date: Wed, 29 Jul 2009 01:03:30 +0000
-Message-ID: <1888IR.42010502.18700164114378STFRXPMJEGPZAOD15@148-pra-1.acn.waw.pl>
+From: Epargne Actuelle - Delegue AFER <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
+Subject: L'assurance vie AFER : une epargne sure et
+	solide
+Date: 29 Jul 2009 08:18:04 -0000
+Message-ID: <20090729081804.11530.qmail@ks300646.kimsufi.com>
+Reply-To: Epargne Actuelle - Delegue AFER <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3744692315079675351=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0965584189028134587=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,129 +18,147 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3744692315079675351==
-Content-type: text/html; charset="utf-8"
 
-<html>
-<head>
+--===============0965584189028134587==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_192c7298c7284587a4e67941d3bb2d09"
+
+
+--_----------=_parties_192c7298c7284587a4e67941d3bb2d09
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.www.centralmarques.com/svi/miroir.php?bat=afer0709_ctrm
+
+Assurance Vie AFER/ Epargne Actuelle
+
+Jamais vous n'avez eu autant BESOIN de la SECURITE et de la SOLIDITE du contrat Multisupport AFER, face à une croissance incertaine
+OFFRE EXCEPTIONNELLE : 30% de réduction sur les frais de versements
+
+Offre valable jusqu'au 31 décembre 2009
+Venez découvrir nos avantages
+
+plus d'infos sur http://www.www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance
+
+--------------------------------
+Cette offre Epargne Actuelle vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.www.centralmarques.com/svi/gestionserv.php?nb=1932&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_192c7298c7284587a4e67941d3bb2d09
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Assurance Vie AFER/ Epargne Actuelle
+Jamais vous n'avez eu autant BESOIN de la SECURITE et de la SOLIDITE du contrat Multisupport AFER, face &agrave; une croissance incertaine</title>
 </head>
-<body>
-<TABLE cellSpacing=0 cellPadding=0 width=548 align=center border=0>
-<TBODY>
-<TR>
-<TD>
-<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#ffffff border=0>
-<TBODY>
-<TR>
-<TD vAlign=top>
-<TABLE cellSpacing=5 cellPadding=0 width="100%" border=0>
-<TBODY>
-
-<TR>
-<TD align=left><FONT face=Arial color=#cc0000 size=4>
-<P align=left><A title=Subscribe href="http://64a.gxifagov.cn/?jzopix=15a550502d2ec002b712&ilipqkjra=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Subscribe</FONT></A> <FONT face=Arial color=#666666 size=1>-</FONT> <A title=Unsubscribe
-href="http://8bb.gxifagov.cn/?xjjvysof=15a550502d2ec002b712&hqfuginqcy=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Unsubscribe</FONT></A> <FONT face=Arial color=#666666 size=1>-</FONT> <A title="Update Details"
-href="http://8bb.gxifagov.cn/?izuvqfqdi=15a550502d2ec002b712&okuxjbeb=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Update Details</FONT></A> <FONT face=Arial color=#666666 size=1>-</FONT> <A title=Privacy
-href="http://8bb.gxifagov.cn/?inqfoziboy=15a550502d2ec002b712&ovydimyra=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Privacy</FONT></A> <FONT face=Arial color=#666666 size=1>-</FONT> <FONT face=Arial color=#666666 size=1><A title="Contact
-Us" href="http://8bb.gxifagov.cn/?jhikogjc=15a550502d2ec002b712&uragqxehu=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Contact Us</FONT></A></FONT>&nbsp;<FONT face=Arial size=1><FONT color=#666666>- <FONT color=#666666><A title="Send To
-Friend" href="http://8bb.gxifagov.cn/?ofjmytq=15a550502d2ec002b712&jgoxev=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT color=#666666>Forward to a Friend</FONT></A></FONT><FONT color=#666666> </FONT>-</FONT>&nbsp;<FONT color=#666666><FONT color=#666666><A
-title="View Email Online link" href="http://8bb.gxifagov.cn/?ynalaqljfj=15a550502d2ec002b712&eydogakq=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT color=#666666>Read this Email Online
-
-</FONT></A></FONT></FONT></FONT></P></FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR>
-<TR>
-<TD bg_highlight="true">
-<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
-<TBODY>
-<TR style="BORDER-RIGHT: medium none; BORDER-TOP: medium none; BORDER-LEFT: medium none; BORDER-BOTTOM: medium none">
-<TD title="" style="BORDER-RIGHT: medium none; BORDER-TOP: medium none; BORDER-LEFT: medium none; CURSOR: default; BORDER-BOTTOM: medium none" vAlign=top align=middle bgColor=#ffffff height=20 bg_highlight="true">
-<A name=Paragraph_1></A>
-<TABLE cellSpacing=0 cellPadding=0 width=548 border=0>
-<TBODY>
-<TR>
-<TD>
-<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#ffffff>
-<TBODY>
-
-<TR>
-<TD>
-<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#ffffff border=0>
-<TBODY>
-<TR>
-<TD vAlign=top align=left height=20>
-<DIV><SPAN>
-<P align=left><FONT color=#666666><FONT face=Arial><FONT size=2>
-<TABLE style="FONT-SIZE: 2px; COLOR: #666666; FONT-FAMILY: Arial" cellSpacing=0 cellPadding=2 width="100%" bgColor=#ffffff border=0>
-<TBODY>
-<TR>
-<TD vAlign=bottom>&nbsp;<FONT size=2>Hello spi-devel-general,<BR><BR></FONT>
-<P align=left><FONT color=#666666><FONT face=Arial><FONT size=2>In this issue:&nbsp;<BR><BR></FONT><FONT size=2><A title="Save 80% and free delivery" href="http://8bb.gxifagov.cn/?ywuzake=15a550502d2ec002b712&elyhe=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT
-size=2>Save 80% plus free delivery - last days</FONT></A></FONT><FONT size=2>
-(conditions apply)<BR><A title="" href="#Paragraph_2">80% off&nbsp;latest releases
-and top titles</A><BR></FONT></FONT></FONT><FONT color=#666666><FONT
-face=Arial><BR></FONT></FONT><BR></P></TD>
-
-	</TR></TBODY></TABLE></FONT></FONT></FONT></P></SPAN></DIV></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
-<DIV style="WIDTH: 1px; HEIGHT: 20px">&nbsp;</DIV><A name=Paragraph_2></A>
-<TABLE cellSpacing=0 cellPadding=0 width=548 border=0>
-<TBODY>
-<TR>
-<TD align=left>
-<TABLE cellSpacing=2 cellPadding=0 width="100%" bgColor=#ffffff>
-<TBODY>
-<TR>
-<TD align=left><FONT face=Arial color=#cc0000 size=4>80% off&nbsp;latest releases
-and&nbsp;top titles&nbsp;</FONT></TD></TR></TBODY></TABLE></TD></TR>
-<TR>
-<TD>
-<TABLE cellSpacing=1 cellPadding=0 width="100%" bgColor=#ffffff>
-<TBODY>
-
-<TR>
-<TD>
-<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#ffffff border=0>
-<TBODY>
-<TR>
-<TD vAlign=top align=left height=20>
-<DIV><SPAN>
-<P>
-<TABLE style="FONT-SIZE: 13px; COLOR: rgb(0,0,0); FONT-FAMILY: Times New Roman" cellSpacing=0 cellPadding=2 width="100%" bgColor=#ffffff border=0>
-<TBODY>
-<TR>
-<TD style="text-align: center"><br><br><a href="http://8bb.gxifagov.cn/?yfalqouafq=15a550502d2ec002b712&golebqj=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr" target="_blank">
-<img alt="-= Click here to show image =-" src="http://8bb.gxifagov.cn/spacer.gif" style="border-width: 0px"></a><br></TD></TR></TBODY></TABLE></P>
-	</SPAN></DIV></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
-						</TD></TR>
-<TR>
-<TD>
-<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#999999 border=0>
-<TBODY>
-<TR>
-<TD>
-<TABLE cellSpacing=1 cellPadding=0 width="100%" bgColor=#ffffff border=0>
-<TBODY>
-<TR>
-<TD align=left><FONT color=#666666><FONT face=Arial size=1>
-<P align=left>&nbsp;</P>
-<P align=left>Your privacy is important to us. Read our <FONT face=Arial size=1><FONT face=Arial size=1><A title="Lonely Planet Privacy Policy"
-href="http://a0952.gxifagov.cn/?uekjxehe=15a550502d2ec002b712&iuxqwq=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank>privacy policy</A></FONT></FONT><FONT face=Arial size=1>&nbsp; to find out what we do and don't do with your personal details. If you no longer wish to hear
-from us please click <A title="Contact Us" href="http://8bb.gxifagov.cn/?gyxibat=15a550502d2ec002b712&eyzqxeagob=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank>here</A> </FONT></P>
-
-<P align=left><FONT face=Arial color=#666666 size=1>Copyright 2009
-Axaduib Company.</FONT></P>
-<P align=left><A title=Subscribe href="http://15a.gxifagov.cn/?duzjto=15a550502d2ec002b712&qmulowjpe=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Subscribe</FONT></A> <FONT face=Arial color=#666666 size=1>-</FONT> <A title=Unsubscribe
-href="http://8bb.gxifagov.cn/?yagetiy=15a550502d2ec002b712&izoqxqg=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Unsubscribe</FONT></A> <FONT face=Arial color=#666666 size=1>-</FONT> <A title="Update Details"
-href="http://8bb.gxifagov.cn/?ywqzeveago=15a550502d2ec002b712&zjmqcypi=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Update Details</FONT></A> <FONT face=Arial color=#666666 size=1>-</FONT> <A title=Privacy
-href="http://8bb.gxifagov.cn/?egekiekaxu=15a550502d2ec002b712&tuwoopiib=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Privacy</FONT></A> <FONT face=Arial color=#666666 size=1>-</FONT> <FONT face=Arial color=#666666 size=1><A title="Contact
-Us" href="http://8bb.gxifagov.cn/?oduqwqg=15a550502d2ec002b712&qrjvewi=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT face=Arial color=#666666 size=1>Contact Us</FONT></A></FONT>&nbsp;<FONT face=Arial size=1><FONT color=#666666>- <FONT color=#666666><A title="Send To
-Friend" href="http://8bb.gxifagov.cn/?xaopote=15a550502d2ec002b712&dqqrjlyzi=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT color=#666666>Forward to a Friend</FONT></A></FONT><FONT color=#666666> </FONT>-</FONT>&nbsp;<FONT color=#666666><FONT color=#666666><A
-title="View Email Online link" href="http://8bb.gxifagov.cn/?daukqpy=15a550502d2ec002b712&azigjiyn=13633030181870016411&juvwstf=xpmjegpzaodgdpfkgr"  target=_blank><FONT color=#666666>Read this Email Online
-
-</FONT></A></FONT></FONT></FONT></P></FONT></FONT></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
-
-</body></html>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.www.centralmarques.com/svi/miroir.php?bat=afer0709_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Epargne Actuelle vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#0370D7;font-size:20px'>
+<p style='display:inline;'> <b>Assurance Vie AFER/ Epargne Actuelle</b><br>
+<span style='font-size:16px'><br>Jamais vous n'avez eu autant BESOIN de la SECURITE et de la SOLIDITE<br>du contrat Multisupport AFER, face &agrave; une croissance incertaine</p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#0370d7;font-family:Arial;color:#FFFFFF;font-size:18px;'>
+<a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" style="text-decoration:none;color:#FFFFFF;"><b>OFFRE EXCEPTIONNELLE : 30% de r&eacute;duction sur<br>les frais de versements</b><br>
+<span style="font-size:14px;">Offre valable jusqu'au 31 d&eacute;cembre 2009 </a>
+</td></tr>
+<tr>
+<td align='center' style='padding:5px;font-family:Arial;color:#000000;font-size:20px;background-color:#FFFFFF;'>
+<a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" style="text-decoration:none;color:blue;"><u>Venez d&eacute;couvrir nos avantages</u></a>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<table CELLSPACING=0 CELLpadding=0 style="width:650px; padding-top:20px; padding-bottom:20px; border: 1px solid #C0C0C0;padding:0px;">
+ <tr>
+ <td>
+<br />
+<br />
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di01.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_01.jpg" width="500" height="269" border="0" alt="Epargne Actuelle le contrat multisupport Afer face a une croissance incertaine" /></a></td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td width="203"><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di01.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_05.jpg" width="203" height="125" border="0" alt="Assurance vie" /></a></td>
+ <td width="290" bgcolor="#FFFFCD" align="left"><font size="2" face="Arial, Helvetica, sans-serif" color="#000000"> <a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" style="text-decoration:none; color:#000000; font-size:12px;" target="_blank"><font color="#0370D7"><strong>Pendant
+ la crise financi&egrave;re, les &eacute;pargnants ne s'y sont pas
+ tromp&eacute;s : sur le dernier trimestre 2008, ils ont &eacute;t&eacute; 16,5%
+ de plus qu'en 2007 sur la m&ecirc;me p&eacute;riode, &agrave; ouvrir
+ un contrat AFER.
+<br>
+ Vous aussi,
+ profitez de :</strong></font><br />
+</a></font>
+ <img src="http://www.ad-di01.net/stockage/EpargneActuelle/emailing/images/jan09/puce.png" /><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" style="text-decoration:none; font-size:12px;" target="_blank"><font face="Arial, Helvetica, sans-serif" color="#0370D7"><strong> La r&eacute;f&eacute;rence de l'assurance-vie depuis 1976</strong></font></a><br />
+ <img src="http://www.ad-di01.net/stockage/EpargneActuelle/emailing/images/jan09/puce.png" /><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" style="text-decoration:none; font-size:12px;" target="_blank"><font face="Arial, Helvetica, sans-serif" color="#0370D7"> <strong>Tous les avantages fiscaux de l'assurance-vie</strong></font></a><br />
+ <img src="http://www.ad-di01.net/stockage/EpargneActuelle/emailing/images/jan09/puce.png" /><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" style="text-decoration:none; font-size:12px;" target="_blank"><font face="Arial, Helvetica, sans-serif" color="#0370D7"> <strong>Un service proche et personnalis&eacute; 6 jours/7 </strong></font></a> </td>
+ <td width="10"><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di01.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_07.jpg" alt="Epargne Actuelle" width="18" height="125" border="0" /></a></td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td width="407" bgcolor="#0370D7" align="center"><strong><font size="3" face="Arial, Helvetica, sans-serif"><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" target="_blank" style="text-decoration:none; color:#FFFFFF;">Recevez chez vous GRATUITEMENT<br />
+ et SANS ENGAGEMENT<br />
+ la documentation du contrat AFER </a></font></strong></td>
+ <td width="93"><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di01.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_12.jpg" width="183" height="77" border="0" alt="suivez ce lien" /></a></td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td bgcolor="#0370D7" align="center"><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" target="_blank" style="text-decoration:none;">
+ <font color="#FFFF9D" size="2" face="Arial, Helvetica, sans-serif">
+ Si vous &ecirc;tes d&eacute;j&agrave; adh&eacute;rent &agrave; l'AFER, merci de vous rapprocher de votre conseiller.
+ </font>
+ </a>
+ </td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center">
+ <tr>
+ <td>
+ <table width="500" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" target="_blank"><img src="http://www.ad-di01.net/stockage/EpargneActuelle/emailing/images/jan09/img_phare_14.jpg" width="500" height="137" border="0" alt="frais de versement reduits" /></a></td>
+ </tr>
+ </table>
+ </td>
+ </tr>
+</table>
+<table width="500" border="0" cellspacing="0" cellpadding="0" align="center" valign="middle">
+<tr>
+<td align="center">
+ <font color="#15487B" size="1" face="Arial, Helvetica, sans-serif"><a href="http://www.centralmarques.com/svi/linkserv.php?bat=afer0709_ctrm&nb=1932&n=9047704&c=finance" target="_blank" style="text-decoration:none; color:#15487B;">EPARGNE ACTUELLE S.A. - D&eacute;l&eacute;gu&eacute; AFER - Soci&eacute;t&eacute; Anonyme au capital de 1 525 000 euros - courtage d'assurances.
+ Si&egrave;ge social : 31, rue Saint Augustin - CS 20224 - 75081 Paris Cedex 02 - 413 130 352 R.C.S. PARIS. N&deg; d'immatriculation ORIAS : 07002189 - www.orias.fr<br />
+ Photo © Guillaume Plisson</a></font></td>
+ </tr>
+</table><br />
+<br />
+</td>
+ </tr>
+</table>
+</center>
+<img src="http://impfr.tradedoubler.com/imp/imp/17663372/1634369" height="1" width="1">
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.www.centralmarques.com/svi/img_nb_1932_numuser_yyynumuseryyy.jpg" width=1 height=1>
+<p>
+<a href='http://www.www.centralmarques.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.www.centralmarques.com/svi/gestionserv.php?nb=1932&cat=finance&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
 
 
---===============3744692315079675351==
+--_----------=_parties_192c7298c7284587a4e67941d3bb2d09--
+
+--===============0965584189028134587==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -149,7 +169,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============3744692315079675351==
+--===============0965584189028134587==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -160,4 +180,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============3744692315079675351==--
+--===============0965584189028134587==--

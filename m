@@ -1,13 +1,11 @@
-From: "=?utf-8?Q?maya=5fhalim=30=31=40yahoo=2eco=2eth_=28via_Flickr=29?="
-	<mayahalim94-Qt13gs6zZMY@public.gmane.org>
-Subject: =?utf-8?q?=5BFlickr=5D_maya=5Fhalim01=40yahoo?=
-	=?utf-8?q?=2Eco=2Eth_wants_you_to_see_a_photo?=
-Date: 29 Jul 2009 13:18:49 +0000
-Message-ID: <E1MW93o-0003vm-Ez@335xhf1.ch3.sourceforge.com>
-Reply-To: mayahalim94-Qt13gs6zZMY@public.gmane.org
+From: Telelangue par Central Marques <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
+Subject: Soldes d'été : L'anglais vous va si bien !
+Date: 29 Jul 2009 13:44:34 -0000
+Message-ID: <20090729134434.22797.qmail@ks24820.kimsufi.com>
+Reply-To: Telelangue par Central Marques <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8223723485301506332=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0067939758293574659=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,177 +17,161 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8223723485301506332==
-Content-type: multipart/alternative;
-	boundary="__flickr_489853664__"
 
---__flickr_489853664__
-Content-type: text/plain; charset="utf-8"
-
-As salam aleikum , 
-
-I am Mrs. Maya Halim from South Africa, married to Alhaji
-Azim Halim   who was until his death an exporter of
-antiquities based  in Cote d'ivoire, we were married for
-eleven years without a child. He died after a brief illness
-that lasted for only two weeks. Before his death we were
-both faithful Muslims. 
-
-Since his death I decided not to remarry or get a child
-outside my matrimonial home which the holly Quaran is
-against. When my late husband was alive he deposited the sum
-of ($5.8 Million U.S. Dollars) in one of the security
-company here in Abidjan capital of Cote d'ivoire. 
-Recently my doctor confirmed to me that I have serious
-sickness which is cancer problem. The one that disturbs me
-most is my stroke sickness. 
-
-Haven known my condition I decided to donate this money to
-an Islamic institution or individual that will utilize this
-money the way I am going to instruct herein. I want a muslim
-that will use this money for orphanage homes, hospitals,
-mosque, schools, and propagation of the word of the mighty
-Allah and to endeavour that the house of almighty Allah is
-maintained. The holly Quaran made us to understand that
-Blessed is the hand that gives.
+--===============0067939758293574659==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_bf197a7ba0a405afef28e9584d5c24b5"
 
 
-I took this decision because I donâ€™t have any child that
-will inherit this money and my husband relatives are not
-Muslims and I donâ€™t want my husbandâ€™s effort to be used
-by unbelievers. I donâ€™t want a situation whereby this
-money will be used in an unGodly way. This is why I am
-taking this decision. 
+--_----------=_parties_bf197a7ba0a405afef28e9584d5c24b5
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-I am not afraid of death hence I know where I am going. I
-know that I am going to be in the bosom of the almighty
-Allah. 
-As stated in the holly Quaran (Surah xxxvi Yasin) Thou
-wariest only him who followeth the reminder and feareth the
-beneficent in secret to him bear
-tiding of forgives and a rich reward. 
+Version "en ligne" de ce message: http://www.www.centralmarques.com/svi/miroir.php?bat=telelang0709_ctrm
 
-I donâ€™t need any telephone communication in this regard
-because of my health hence the presence of my husbandâ€™s
-relatives around me always. 
-I donâ€™t want them to know about this development. With
-almighty Allah all things are possible. 
+Apprendre l'anglais avec TELELANGUE Pour vous, vos enfants ou votre métier
+98 % de réussite résultats garantis par contrat*
 
-As soon as I receive your reply I will direct you on how
-this vission will be realised. I want you and the Islamic
-institution to always pray for me because the almighty Allah
-is my shepherd. 
-My happiness is that I lived a life of a worthy Muslim.
-Whoever that wants to serve the almighty Allah must serve
-him in spirit and truth. 
-Please always be prayerful all through your life. Any delay
-in your reply will give me room to sourcing another Islamic
-institution or a good muslim for this same purpose.
+plus d'infos sur http://www.www.centralmarques.com/svi/linkserv.php?bat=telelang0709_ctrm&nb=1915&n=9047704&c=pratique
 
-Please assure me that you will act accordingly as I Stated
-herein. 
+--------------------------------
+Cette offre Telelangue vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.www.centralmarques.com/svi/gestionserv.php?nb=1915&numuser=9047704&code=HWeuIQdw&src=50
 
-Your Sister in IsIamic 
-Maya Halim.
+--_----------=_parties_bf197a7ba0a405afef28e9584d5c24b5
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
 
-A Late Given Rose
-http://www.flickr.com/photos/kuzeytac/3341605323/
 
-(By the way, if the photostream link doesn't work, try
-copying and pasting it from this email into your browser's
-address bar.)
-
---__flickr_489853664__
-Content-type: text/html; charset="utf-8"
-
-<html>
-<head>
-    <title>[Flickr] maya_halim01-/E1597aS9LTQJDZefrY4RA@public.gmane.org wants you to see a photo</title>
-    <style type="text/css">
-        
-        a:link { color: #0063DC; text-decoration: underline; }
-        a:visited { color: #2E67C7; text-decoration: underline; }
-        a:hover { color: #FFFFFF; text-decoration: none; background: #0063DC; }
-        a:active { color: #FFFFFF; text-decoration: none; background: #0259C4; }
-        
-    </style>
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Apprendre l'anglais avec TELELANGUEPour vous, vos enfants ou votre m&eacute;tier</title>
 </head>
-<body style="background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; color: #000;">
-                
-<table width="545" border="0" cellpadding="1" cellspacing="0"><tr><td bgcolor="#efefef">
-<table border="0" cellpadding="0" cellspacing="0"><tr><td style="padding:10px 20px 20px 20px;font-size:12px" bgcolor="#f9f9f9">
-      
-         <p style="text-align:right">
-                 <a href="http://www.flickr.com/"><img src="http://l.yimg.com/g/images/flickr_logo_small_email.gif" width="67" height="20" border="0" ></a>
-         </p>
-
-         <p>
-         As salam aleikum , <br />
-<br />
-I am Mrs. Maya Halim from South Africa, married to Alhaji Azim Halim   who was until his death an exporter of antiquities based  in Cote d'ivoire, we were married for eleven years without a child. He died after a brief illness that lasted for only two weeks. Before his death we were both faithful Muslims. <br />
-<br />
-Since his death I decided not to remarry or get a child outside my matrimonial home which the holly Quaran is against. When my late husband was alive he deposited the sum of ($5.8 Million U.S. Dollars) in one of the security company here in Abidjan capital of Cote d'ivoire. <br />
-Recently my doctor confirmed to me that I have serious sickness which is cancer problem. The one that disturbs me most is my stroke sickness. <br />
-<br />
-Haven known my condition I decided to donate this money to an Islamic institution or individual that will utilize this money the way I am going to instruct herein. I want a muslim that will use this money for orphanage homes, hospitals, mosque, schools, and propagation of the word of the mighty Allah and to endeavour that the house of almighty Allah is maintained. The holly Quaran made us to understand that Blessed is the hand that gives.<br />
-<br />
-<br />
-I took this decision because I donâ€™t have any child that will inherit this money and my husband relatives are not Muslims and I donâ€™t want my husbandâ€™s effort to be used by unbelievers. I donâ€™t want a situation whereby this money will be used in an unGodly way. This is why I am taking this decision. <br />
-<br />
-I am not afraid of death hence I know where I am going. I know that I am going to be in the bosom of the almighty Allah. <br />
-As stated in the holly Quaran (Surah xxxvi Yasin) Thou wariest only him who followeth the reminder and feareth the beneficent in secret to him bear<br />
-tiding of forgives and a rich reward. <br />
-<br />
-I donâ€™t need any telephone communication in this regard because of my health hence the presence of my husbandâ€™s relatives around me always. <br />
-I donâ€™t want them to know about this development. With almighty Allah all things are possible. <br />
-<br />
-As soon as I receive your reply I will direct you on how this vission will be realised. I want you and the Islamic institution to always pray for me because the almighty Allah is my shepherd. <br />
-My happiness is that I lived a life of a worthy Muslim. Whoever that wants to serve the almighty Allah must serve him in spirit and truth. <br />
-Please always be prayerful all through your life. Any delay in your reply will give me room to sourcing another Islamic institution or a good muslim for this same purpose.<br />
-<br />
-Please assure me that you will act accordingly as I Stated herein. <br />
-<br />
-Your Sister in IsIamic <br />
-Maya Halim.
-         </p>
-         	<h4>A Late Given Rose</h4>
-			<a href="http://www.flickr.com/photos/kuzeytac/3341605323/"><img border="0"  src="http://farm4.static.flickr.com/3552/3341605323_4ed626a455.jpg" width="500" height="376" alt="" /></a><br />
-		<p style="color:#666;font-size:11px">
-		        by <a href="http://www.flickr.com/photos/kuzeytac/" style="color:#666">Kuzeytac (OUT, till
-20.08.09-see profile)</a></!!><br />
-		        <span class="license"><span class="ccIcn ccIcnSmall"><a href="http://creativecommons.org/licenses/by-nc-nd/2.0/deed.en"><img src="http://l.yimg.com/g/images/spaceout.gif" border="0" alt="Attribution" title="Attribution" class="f-sprite fs-cc_icon_attribution_small"><img src="http://l.yimg.com/g/images/spaceout.gif" border="0" alt="Noncommercial" title="Noncommercial" class="f-sprite fs-cc_icon_noncomm_small"><img src="http://l.yimg.com/g/images/spaceout.gif" border="0" alt="No Derivative Works" title="No Derivative Works" class="f-sprite fs-cc_icon_noderivs_small"></a></span>
-<a href="http://creativecommons.org/licenses/by-nc-nd/2.0/deed.en" style="color:#666">Some rights reserved.</a></span>
-                       
-		</p>
-		<p>
-		    Just follow this link to see the photo:<br />
-		    <a href="http://www.flickr.com/photos/kuzeytac/3341605323/">http://www.flickr.com/photos/kuzeytac/3341605323/</a>
-		</p>
-		
-		<p>
-		        (If the link doesn't work, try copying and pasting it from this email into your browser's address bar.)
-		</p>
-		
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.www.centralmarques.com/svi/miroir.php?bat=telelang0709_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Telelangue vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#042F64;font-size:28px'>
+<p style='display:inline;'> <a href="http://www.centralmarques.com/svi/linkserv.php?bat=telelang0709_ctrm&nb=1915&n=9047704&c=pratique" style="text-decoration:none;color:#042F64;">Apprendre l'anglais avec TELELANGUE<br>Pour vous, vos enfants ou votre m&eacute;tier</a></p>
 </td></tr>
-<tr><td bgcolor="#f2f2f2" style="border-top:1px solid #fff;color:#666">
-        
-        <p style="margin:20px;font-size:11px"><b>Flickr</b> is almost certainly the best photo management and sharing application in the world. If you'd like to see what I use it for you can check out <a href="http://www.flickr.com/people/40046802@N06/">my profile</a> page or browse <a href="http://www.flickr.com/photos/40046802@N06/">my photostream</a>.</p>
-
-</td></tr>          
-</td></tr></table>        
-</td></tr></table>        
-        
-
-</body>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#7798ba;font-family:Verdana;color:#FFFFFF;font-size:24px;'>
+<a href="http://www.centralmarques.com/svi/linkserv.php?bat=telelang0709_ctrm&nb=1915&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;"><b>98 % de r&eacute;ussite</b><br>r&eacute;sultats garantis par contrat*<br></a>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<table width="590" border="0" cellspacing="0" cellpadding="0"> <tr> <td><img src="http://img-cdn.mediaplex.com/0/12048/82575/top.gif" height="5" /></td> </tr><tr> <td align="center" background="http://img-cdn.mediaplex.com/0/12048/82575/middle.gif" style="background:url(http://img-cdn.mediaplex.com/0/12048/82575/middle.gif) repeat-y center;"><table border="0" cellspacing="0" cellpadding="0" width="580" style="border:#d4d4d4 solid 1px">
+<tr>
+<td height="70" align="right"><img src="http://img-cdn.mediaplex.com/0/12048/82575/telelangue.gif" alt="Telelangue " width="284" height="45" /></td>
+</tr>
+<tr>
+<td><table width="200" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="100" align="center" bgcolor="#7798ba"><table border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td><h1 align="center" style="margin:0"><font face="Verdana, Geneva, sans-serif" size="+3" color="#FFFFFF">L'anglais vous va si bien !</font></h1></td>
+</tr>
+<tr>
+<td><p align="center" style="margin:0"><font size="+2" face="Verdana, Geneva, sans-serif" color="#ffffff">Soldes 2009 GO !</font></p></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td><img src="http://img-cdn.mediaplex.com/0/12048/82575/solde.gif" alt="Solde" /></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td><table width="580" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="295" valign="top"><img src="http://img-cdn.mediaplex.com/0/12048/82575/LearningEnglish.jpg" width="290" alt="Soldes " /></td>
+<td valign="top"><table width="280" border="0" align="center" cellpadding="3" cellspacing="2">
+<tr>
+<td><p align="center" style="margin:0"><span style="margin:0; text-align: center;"><font face="Verdana, Geneva, sans-serif" size="3">Pratiquez <strong><font size="4
+" color="#c44545">l'anglais intensif</font></strong>,<br />
+o&ugrave; que vous soyez</font></span></p></td>
+</tr>
+<tr>
+<td nowrap="nowrap"><p align="right" style="margin:0">&nbsp;</p></td>
+</tr>
+<tr>
+<td bgcolor="#c44545"><p align="center" style="margin:5px"><font face="Verdana, Geneva, sans-serif" size="4
+" color="#FFFFFF"><strong>Exclusivit&eacute; –20%</strong><br />
+sur notre stage one2one</font></p></td>
+</tr>
+<tr>
+<td><h3 align="center" style="margin:5px; font-size: x-large;">&nbsp;</h3>
+<h3 align="center" style="margin:5px; font-size: x-large;">Remise Exceptionnelle</h3>
+<p align="center" class="noir" style="margin:5px; font-size: large;">Code Promo: SOLDES</p>
+<h3 align="center" style="margin:5px"><font size="3" face="Verdana, Geneva, sans-serif"><a href="http://www.centralmarques.com/svi/linkserv.php?bat=telelang0709_ctrm&nb=1915&n=9047704&c=pratique">Profitez-en</a></font></h3>
+<p align="center" style="margin:5px">&nbsp;</p></td>
+</tr>
+<tr>
+<td><p align="right" style="margin:0; text-align: center; font-size: x-large;" class="noir"><font face="Verdana, Geneva, sans-serif" size="2">Par semaine :</font></p>
+<p align="right" style="margin:0; text-align: center; font-size: xx-large;" class="noir"><font face="Verdana, Geneva, sans-serif" size="3
+"><strong>2 cours par t&eacute;l&eacute;phone<br />
++ cours illimit&eacute;s via internet</strong></font></p></td>
+</tr>
+<tr>
+<td><p align="right" style="margin:0; text-align: center;"><span style="text-align: left"><font face="Verdana, Geneva, sans-serif" size="2">Option :</font><font face="Verdana, Geneva, sans-serif" size="2"></font></span><font face="Verdana, Geneva, sans-serif" size="2"><br />
+<strong><font color="#c44545" class="noir">218 sp&eacute;cialisations&nbsp;m&eacute;tiers </font></strong></font></p></td>
+</tr>
+<tr>
+<td><p style="text-align: center"><font face="Verdana, Geneva, sans-serif" size="2"><span style="margin:0; text-align: center;"><font face="Verdana, Geneva, sans-serif" size="2">Pr&eacute;parez vos examens :</font><font face="Verdana, Geneva, sans-serif" size="2"><br />
+<strong><font color="#c44545" class="noir">TOEIC®, BULATS®, TOEFL, etc.</font></strong></font></span></font></p></td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td><table width="580" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td><img src="http://img-cdn.mediaplex.com/0/12048/82575/98_reussite.gif" width="580" height="23" /></td>
+</tr>
+<tr>
+<td align="center" bgcolor="#7798ba"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="170" align="right"><img src="http://img-cdn.mediaplex.com/0/12048/82575/tampon.gif" alt="7 jours d'essai gratuit sans engagement " height="94" /></td>
+<td><table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td><h2 align="center" style="margin:0"><font face="Verdana, Geneva, sans-serif" size="+2" color="#FFFFFF">98% de r&eacute;ussite</font></h2></td>
+</tr>
+<tr>
+<td><p align="center" style="margin:0"><font size="+2" face="Verdana, Geneva, sans-serif" color="#ffffff">r&eacute;sultats garantis par contrat*</font></p></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+</table>
+<p align="center" style="margin:2px"><font face="Arial, Helvetica, sans-serif" size="1">* La garantie de r&eacute;sultat s'applique au stage "one2one"<br />
+dans la mesure o&ugrave; le stagiaire respecte le rythme pr&eacute;vu en d&eacute;but de formation.</font></p></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td><img src="http://img-cdn.mediaplex.com/0/12048/82575/bottom.gif" height="5" /></td>
+</tr>
+</table>
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.www.centralmarques.com/svi/img_nb_1915_numuser_yyynumuseryyy.jpg" width=1 height=1>
+<p>
+<a href='http://www.www.centralmarques.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.www.centralmarques.com/svi/gestionserv.php?nb=1915&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
 </html>
 
---__flickr_489853664__--
 
+--_----------=_parties_bf197a7ba0a405afef28e9584d5c24b5--
 
-
-
-
---===============8223723485301506332==
+--===============0067939758293574659==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -200,7 +182,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============8223723485301506332==
+--===============0067939758293574659==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -211,4 +193,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8223723485301506332==--
+--===============0067939758293574659==--

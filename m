@@ -1,11 +1,11 @@
-From: "la Telesurveillance par SECURITAS" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: Faites confiance au leader europeen pour
-	proteger votre foyer
-Date: Sun,  2 Aug 2009 10:55:42 +0200 (CEST)
-Message-ID: <knqrgu.hmetuf@front.ta271.com>
+From: Solution Devis <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
+Subject: [SPAM] [rachat de crédits] Les meilleurs offres pour baisser vos mensualités
+Date: 2 Aug 2009 07:33:04 -0000
+Message-ID: <20090802073304.24771.qmail@ks357949.kimsufi.com>
+Reply-To: Solution Devis <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8518001483689879080=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============9083088643246541724=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,75 +17,102 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8518001483689879080==
+
+--===============9083088643246541724==
 Content-Type: multipart/alternative;
-	boundary="=_0070ec837e5adba53da4bf5a048cc6ab"
-
---=_0070ec837e5adba53da4bf5a048cc6ab
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	boundary="_----------=_parties_d03670ae986e6289fda795190a55da45"
 
 
---=_0070ec837e5adba53da4bf5a048cc6ab
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+--_----------=_parties_d03670ae986e6289fda795190a55da45
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
-w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html xmlns=3D"http://www.=
-w3.org/1999/xhtml">=0D<head><title>Documento sin t=EDtulo</title>=0D<meta h=
-ttp-equiv=3DContent-Type content=3D"text/html; charset=3DUTF-8">=0D</head>=
-=0D<body>=0D<table cellspacing=3D"0" cellpadding=3D"0" width=3D"200" align=
-=3D"center" border=3D"0">=0D<tbody>=0D<tr>=0D<td align=3D"right"><font face=
-=3D"Verdana, Arial, Helvetica, sans-serif" size=3D"1"><a href=3D"http://bas=
-eco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D18=
-9984&C=3D5505&P=3D8077&T=3DE&URL">Si vous ne pouvez pas voir correctement c=
-e message, cliquez ici</a></font></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http=
-://baseco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&=
-L=3D189984&C=3D5505&P=3D8077&T=3DE&URL"><img height=3D"100" src=3D"http://w=
-ww.securitasdirect.fr/landingpage/mailing/entete1.gif" width=3D"500" border=
-=3D"0" /></a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.w=
-eborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D189984&C=3D5505&=
-P=3D8077&T=3DE&URL"><img height=3D"100" src=3D"http://www.securitasdirect.f=
-r/landingpage/mailing/entete2.gif" width=3D"500" border=3D"0" /></a></td>=
-=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" width=
-=3D"200" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http://baseco.solu=
-tion.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D189984&C=
-=3D5505&P=3D8077&T=3DE&URL"><img height=3D"100" src=3D"http://www.securitas=
-direct.fr/landingpage/mailing/entete3.jpg" width=3D"330" border=3D"0" /></a=
-></td>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/perform=
-ance.fcgi?ID=3D310703&A=3D1&L=3D189984&C=3D5505&P=3D8077&T=3DE&URL"><img he=
-ight=3D"100" src=3D"http://www.securitasdirect.fr/landingpage/mailing/entet=
-e4.jpg" width=3D"170" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D</table=
->=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0=
-" width=3D"200" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http://base=
-co.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D189=
-984&C=3D5505&P=3D8077&T=3DE&URL"><img height=3D"120" src=3D"http://www.secu=
-ritasdirect.fr/landingpage/mailing/entete5.jpg" width=3D"330" border=3D"0" =
-/></a></td>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/pe=
-rformance.fcgi?ID=3D310703&A=3D1&L=3D189984&C=3D5505&P=3D8077&T=3DE&URL"><i=
-mg height=3D"120" src=3D"http://www.securitasdirect.fr/landingpage/mailing/=
-entete6.jpg" width=3D"170" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D</=
-table>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table cellspacing=3D"0" cellpadding=
-=3D"0" width=3D"200" border=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http:/=
-/baseco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=
-=3D189984&C=3D5505&P=3D8077&T=3DE&URL"><img height=3D"80" src=3D"http://www=
-.securitasdirect.fr/landingpage/mailing/entete7.jpg" width=3D"330" border=
-=3D"0" /></a></td>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcgi=
--bin/performance.fcgi?ID=3D310703&A=3D1&L=3D189984&C=3D5505&P=3D8077&T=3DE&=
-URL"><img height=3D"80" src=3D"http://www.securitasdirect.fr/landingpage/ma=
-iling/entete8.gif" width=3D"170" border=3D"0" /></a></td>=0D</tr>=0D</tbody=
->=0D</table>=0D</td>=0D</tr>=0D</tbody>=0D</table>=0D<br><br><div align=3D"=
-center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" >Conformemen=
-t a la loi Informatique et Libertes, vous disposez d'un droit d'acces et de=
- rectification.
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
-AA50JEDUFM_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
-om/ZZ50JEDUFM_475197.png" /></body></html>
---=_0070ec837e5adba53da4bf5a048cc6ab--
+Version "en ligne" de ce message: http://www.ctrm4.net/svi/miroir.php?bat=solutdevis0809_ctrm
+
+Trouver la meilleure offre de rachat de crédits !
+Demande d'étude personnalisée | Pourquoi regrouper vos crédits ?
+Diminuer les mensualités de vos crédits
+
+Simplifier la gestion de vos finances avec un crédit unique
+
+Bénéficier d'un nouveau taux
+
+Financer un nouveau projet
+
+Epargner de nouveau
+
+Gagner du pouvoir d'achat
+Faites une simulation personnalisée
+
+plus d'infos sur http://www.ctrm4.net/svi/linkserv.php?bat=solutdevis0809_ctrm&nb=2040&n=9047704&c=credit
+
+--------------------------------
+Cette offre solution devis vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm4.net/svi/gestionserv.php?nb=2040&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_d03670ae986e6289fda795190a55da45
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
 
 
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Trouver la meilleure offre de rachat de cr&eacute;dits !</title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm4.net/svi/miroir.php?bat=solutdevis0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre solution devis vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #e10081;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial Narrow;color:#a0a180;font-size:28px'>
+<p style='display:inline;'> <a href="http://www.ctrm4.net/svi/linkserv.php?bat=solutdevis0809_ctrm&nb=2040&n=9047704&c=credit" style="text-decoration:none;color:#a0a180;"><b>Trouver la meilleure offre de rachat de cr&eacute;dits !</b></a></p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#e10081;font-family:Arial Narrow;color:#edede7;font-size:20px;'>
+<a href="http://www.ctrm4.net/svi/linkserv.php?bat=solutdevis0809_ctrm&nb=2040&n=9047704&c=credit" style="text-decoration:none;color:#edede7;"><b>Demande d'&eacute;tude personnalis&eacute;e | Pourquoi regrouper vos cr&eacute;dits ?</b></a>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#FFFFFF;'>
+<ul><li> Diminuer <b>les mensualit&eacute;s de vos cr&eacute;dits</b><br>
+<li> Simplifier la gestion de vos finances avec un <b>cr&eacute;dit unique</b><br>
+<li> B&eacute;n&eacute;ficier <b>d'un nouveau taux</b><br>
+<li> Financer <b>un nouveau projet</b><br>
+<li> Epargner <b>de nouveau</b><br>
+<li> Gagner <b>du pouvoir d'achat</b><br></ul>
+<a href="http://www.ctrm4.net/svi/linkserv.php?bat=solutdevis0809_ctrm&nb=2040&n=9047704&c=credit" style="text-decoration:none;color:blue;"><center><b><u>Faites une simulation personnalis&eacute;e</u></b></center></a>
+</td></tr>
+<tr><td align='' style='padding:5px;background-color:#FFFFFF;'>
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="726">
+ <tbody>
+ <tr>
+ <td colspan="2"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=solutdevis0809_ctrm&nb=2040&n=9047704&c=credit"><img alt="solution devis" src="http://static.ad-mastering.net/solution-devis/kit_mailing/v9/header.gif" border="0"></a></td>
+ </tr>
+ <tr>
+ <td><a href="http://www.ctrm4.net/svi/linkserv.php?bat=solutdevis0809_ctrm&nb=2040&n=9047704&c=credit"><img alt="solution devis" src="http://static.ad-mastering.net/solution-devis/kit_mailing/v9/texte.gif" border="0"></a></td>
+ <td><a href="http://www.ctrm4.net/svi/linkserv.php?bat=solutdevis0809_ctrm&nb=2040&n=9047704&c=credit"><img alt="solution devis" src="http://static.ad-mastering.net/solution-devis/kit_mailing/v9/anim.gif" border="0"></a></td>
+ </tr>
+ <tr>
+ <td colspan="2"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=solutdevis0809_ctrm&nb=2040&n=9047704&c=credit"><img alt="solution devis" src="http://static.ad-mastering.net/solution-devis/kit_mailing/v9/middle.gif" border="0"></a></td>
+<br>
+ </tr>
+ </tbody>
+</table>
+<p><img src="http://eskdom015.netmastering2.net/c/aNYRII76L0TUMTVS2" alt="solution devis" border="0" width="1" height="1"></p><img src="http://nodes.reactivpub.fr/mailing-493-12014-16955&group=" border="0" height="1" width="1"/>
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.ctrm4.net/svi/img_nb_2040_numuser_yyynumuseryyy.jpg" width=1 height=1>
+<p>
+<a href='http://www.ctrm4.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm4.net/svi/gestionserv.php?nb=2040&cat=credit&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
 
---===============8518001483689879080==
+
+--_----------=_parties_d03670ae986e6289fda795190a55da45--
+
+--===============9083088643246541724==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -96,7 +123,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============8518001483689879080==
+--===============9083088643246541724==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -107,4 +134,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8518001483689879080==--
+--===============9083088643246541724==--

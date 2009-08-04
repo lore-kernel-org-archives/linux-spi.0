@@ -1,13 +1,11 @@
-From: "=?iso-8859-9?B?QWJjIFJlbnQgQSBDYXIgLUFOVEFMWUEgLyBU3FJL3VlF?="
-	<abcrentacarantalya-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] ABC RENT A CAR-OTO
-	KIRALAMA-AUTUVERMIETUNG
-Date: Tue, 30 Jun 2009 06:46:02 +0300
-Message-ID: <56cb21ebb1edf67806d8933e1fbedba4@gmail.com>
-Reply-To: abcrentacarantalya-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: "votre Mutuelle Conseil" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: =?iso-8859-1?q?Pour_garantir_votre_sant=E9_?=
+	=?iso-8859-1?q?=2C_faites_confiance_au_leader_national?=
+Date: Tue,  4 Aug 2009 14:18:43 +0200 (CEST)
+Message-ID: <knuq77.w088q4@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5915554871049892300=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0706452605532004520=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,145 +17,177 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+--===============0706452605532004520==
+Content-Type: multipart/alternative;
+	boundary="=_475fe461b2da7eddc1df42cf63189c54"
 
---===============5915554871049892300==
-Content-Type: multipart/alternative; boundary="----=SPLITOR00A_001_227390062D"
-
-This is a multi-part message in MIME format.
-
-------=SPLITOR00A_001_227390062D
-Content-Type: text/plain;
-	charset="iso-8859-9"
+--=_475fe461b2da7eddc1df42cf63189c54
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-         SAYIN YETK=DDL=DD      =20
-                     ( DEAR MR. AND MRS )
-        Antalya ve Akdeniz b=F6lgesinde son model full kaskolu ve yeni =
-model benzinli ve diasel   otomobillerimizle g=FCnl=FCk haftal=FDk ayl=FDk =
-ve uzun    d=F6nem ara=E7 kiralama yapmaktay=FDz=2E
-   -- We are giving for rent in Antalya and mediterreneam region,for =
-daily,weekly and monthly.Our carsa re last model andeither with diasel or =
-benzine
-   1-    Hava alanlar=FDn da arac=FDn=FDz=FD teslim al=FDp tekrar hava =
-alanlar=FDn da b=FDrakabilirsiniz
-           -- You can take your car in Airport and also leave in Airport
-       2-     Arac=FD istedi=F0iniz otelde teslim al=FDp ayn=FD otelde =
-iade edebilirsiniz=2E
-           --You can have your can in your hotel and leave there
-       3-     Ara=E7lar=FDm=FDz free (s=FDn=FDrs=FDz) kilometre dir=2E
-         --Our carsa ne with with free kilometers( no limit)
-       4-     Arac=FD teslim al=FDrken kredi kart=FD bilgileriniz =
-kesinlikle istenmez. Ancak kiralama =FCcretini kredi kart=FDyla =
-=F6deyebilirsiniz=2E
-        --We don t ask your credit card information,but you can use your =
-credit card for renting
-   5- Arac=FD teslim ederken herhangi  ekstra s=FCrpriz bir =F6demeyle =
-kesinlikle  kar=FE=FDla=FEmazs=FDn=FDz=2E
-   --When you are leaving your car,we do not ask you for any other charges
-http:// www.rent-abc.com
-Tel &amp;Faks : 0090 242 241 98 22
-Mobil:.......... 0090 532 247 4999
-Email: ..........abcrentacarantalya@
-web.de
-Msn:............ abcrentacarantalya-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-Voip tel:.......abcrentacarantalya
-Skype:.........=2E
-abcrentacarantalya
-  =20
-We are sorry for disturbing
-=20
-Bu mesaj sadece tan=FDt=FDm ama=E7l=FD olarak 1 defaya mahsus =
-g=F6nderilmi=FEtir=2E
-Bizden bir daha mail almak istemiyorsan=FDz  abcrentacar-S0/GAf8tV78@public.gmane.org  adresine =
-bo=FE bir mail g=F6nderiniz=2E
-Konu il ilgilenmiyorsan=FDz verdi=F0imiz rahats=FDzl=FDktan dolay=FD =
-=F6z=FCr dileriz. 
 
-
-------=SPLITOR00A_001_227390062D
-Content-Type: text/html;
-	charset="iso-8859-9"
+--=_475fe461b2da7eddc1df42cf63189c54
+Content-Type: text/html; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<SPAN class=3DApple-style-span =
-style=3D"WORD-SPACING: 0px; FONT: 16px 'Times New Roman'; TEXT-TRANSFORM: =
-none; COLOR: rgb(0,0,0); TEXT-INDENT: 0px; WHITE-SPACE: normal; =
-LETTER-SPACING: normal; BORDER-COLLAPSE: separate; orphans: 2; widows: 2; =
-webkit-border-horizontal-spacing: 0px; webkit-border-vertical-spacing: =
-0px; webkit-text-decorations-in-effect: none; webkit-text-size-adjust: =
-auto; webkit-text-stroke-width: 0px"><SPAN class=3DApple-style-span =
-style=3D"FONT-SIZE: 13px; FONT-FAMILY: arial; BORDER-COLLAPSE: =
-collapse"><SPAN class=3DApple-converted-space>&nbsp;</SPAN><STRONG><FONT =
-size=3D4>SAYIN YETK=DDL=DD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;&nbsp; ( DEAR MR. AND MRS =
-)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Antalya ve Akdeniz =
-b=F6lgesinde son model full kaskolu ve yeni model benzinli ve =
-diasel&nbsp;&nbsp; otomobillerimizle g=FCnl=FCk haftal=FDk ayl=FDk ve =
-uzun&nbsp;&nbsp;&nbsp; d=F6nem ara=E7 kiralama =
-yapmaktay=FDz.<BR>&nbsp;&nbsp; -- We are giving for rent in Antalya and =
-mediterreneam region,for daily,weekly and monthly.Our carsa re last model =
-andeither with diasel or benzine<BR>&nbsp;&nbsp; 1-&nbsp;&nbsp;&nbsp; Hava =
-alanlar=FDn da arac=FDn=FDz=FD teslim al=FDp tekrar hava alanlar=FDn da =
-b=FDrakabilirsiniz<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; -- You can take your car in Airport and also leave in =
-Airport<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2-&nbsp;&nbsp;&nbsp;&nbsp; =
-Arac=FD istedi=F0iniz otelde teslim al=FDp ayn=FD otelde iade =
-edebilirsiniz.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; --You can have your can in your hotel and leave =
-there<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3-&nbsp;&nbsp;&nbsp;&nbsp; =
-Ara=E7lar=FDm=FDz free (s=FDn=FDrs=FDz) kilometre =
-dir.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --Our carsa ne =
-with with free kilometers( no =
-limit)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4-&nbsp;&nbsp;&nbsp;&nbsp; =
-Arac=FD teslim al=FDrken kredi kart=FD bilgileriniz kesinlikle istenmez. =
-Ancak kiralama =FCcretini kredi kart=FDyla =
-=F6deyebilirsiniz.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --We don =
-t ask your credit card information,but you can use your credit card for =
-renting<BR>&nbsp;&nbsp; 5- Arac=FD teslim ederken herhangi&nbsp; ekstra =
-s=FCrpriz bir =F6demeyle kesinlikle&nbsp; =
-kar=FE=FDla=FEmazs=FDn=FDz.<BR>&nbsp;&nbsp; --When you are leaving your =
-car,we do not ask you for any other charges<BR>http://<SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN></FONT></STRONG><A =
-style=3D"COLOR: rgb(42,93,176)" href=3D"http://www.rent-abc.com/" =
-target=3D_blank><STRONG><FONT =
-size=3D4>www.rent-abc.com</FONT></STRONG></A><BR><STRONG><FONT =
-size=3D4>Tel &amp;Faks : 0090 242 241 98 22<BR>Mobil:.......... 0090 532 =
-247 4999<BR>Email:<SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN></FONT></STRONG><A =
-style=3D"COLOR: rgb(42,93,176)" =
-href=3D"mailto:..........abcrentacarantalya-S0/GAf8tV78@public.gmane.org" =
-target=3D_blank><STRONG><FONT =
-size=3D4>..........abcrentacarantalya@<WBR>web.de</FONT></STRONG></A><BR><S=
-TRONG><FONT size=3D4>Msn:............<SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN></FONT></STRONG><A =
-style=3D"COLOR: rgb(42,93,176)" =
-href=3D"mailto:abcrentacarantalya-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org" =
-target=3D_blank><STRONG><FONT =
-size=3D4>abcrentacarantalya-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org</FONT></STRONG></A><BR><STRONG><FON=
-T size=3D4>Voip =
-tel:.......abcrentacarantalya<BR>Skype:..........<WBR>abcrentacarantalya<BR=
->&nbsp;&nbsp;<SPAN class=3DApple-converted-space>&nbsp;</SPAN><BR>We are =
-sorry for disturbing<BR>&nbsp;<BR>Bu mesaj sadece tan=FDt=FDm ama=E7l=FD =
-olarak 1 defaya mahsus g=F6nderilmi=FEtir.<BR>Bizden bir daha mail almak =
-istemiyorsan=FDz&nbsp;<SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN></FONT></STRONG><A =
-style=3D"COLOR: rgb(42,93,176)" href=3D"mailto:abcrentacar-S0/GAf8tV78@public.gmane.org" =
-target=3D_blank><STRONG><FONT =
-size=3D4>abcrentacar-S0/GAf8tV78@public.gmane.org</FONT></STRONG></A><STRONG><FONT =
-size=3D4>&nbsp; adresine bo=FE bir mail g=F6nderiniz.<BR>Konu il =
-ilgilenmiyorsan=FDz verdi=F0imiz rahats=FDzl=FDktan dolay=FD =F6z=FCr =
-dileriz.</FONT></STRONG></SPAN></SPAN> 
+<html>=0D<head>=0D</head>=0D<body><center>=0D<table cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"731" border=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"FO=
+NT-SIZE: 14px; VERTICAL-ALIGN: middle; COLOR: #53656c; FONT-FAMILY: verdana=
+; HEIGHT: 30px; TEXT-ALIGN: center" valign=3D"middle"><a href=3D"http://www=
+.mutuelle-conseil.com/AA02RG988T/16">Si vous ne parvenez pas a lire cet e-m=
+ail cliquez ici</a></td>=0D</tr>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px; LINE=
+-HEIGHT: 0px"><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16" tar=
+get=3D"_blank"><img src=3D"http://www.vtrack-gamma.com/hebergement_messages=
+/20473/klarte_1.gif" border=3D"0" /></a><br /></td>=0D</tr>=0D<tr>=0D<td st=
+yle=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px"><a><img src=3D"http://www.vtrack-g=
+amma.com/hebergement_messages/20473/klarte_2.gif" border=3D"0" /></a><br />=
+</td>=0D</tr>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px">=0D<t=
+able cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"F=
+ONT-SIZE: 0px; LINE-HEIGHT: 0px"><a><img src=3D"http://www.vtrack-gamma.com=
+/hebergement_messages/20473/klarte_3_1.gif" border=3D"0" /></a><br /></td>=
+=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px"><a href=3D"http://www.mut=
+uelle-conseil.com/AA02RG988T/16" target=3D"_blank"><img src=3D"http://www.v=
+track-gamma.com/hebergement_messages/20473/anime_bouton.gif" border=3D"0" /=
+></a><br /></td>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px"><a><img s=
+rc=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/klarte_3_2.gif=
+" border=3D"0" /></a><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</=
+tr>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top">=
+<a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/klart=
+e_4.gif" border=3D"0" /></a><br /></td>=0D</tr>=0D<tr>=0D<td valign=3D"top"=
+>=0D<table height=3D"50" cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=
+=0D<tbody>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=
+=3D"top"><a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20=
+473/left_1.gif" border=3D"0" /></a><br /></td>=0D<td>=0D<table height=3D"36=
+" cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=0D<tbody>=0D<tr>=0D<td =
+style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top"><a><img src=3D"ht=
+tp://www.vtrack-gamma.com/hebergement_messages/20473/sc_coin.gif" border=3D=
+"0" /></a><br /></td>=0D<td style=3D"FONT-WEIGHT: bold; FONT-SIZE: 11px; CO=
+LOR: #009699; FONT-FAMILY: Arial; TEXT-ALIGN: left" valign=3D"middle" width=
+=3D"86" height=3D"19"><a style=3D"FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR=
+: #009699; FONT-FAMILY: Arial; TEXT-DECORATION: none">Soins courant</a><br =
+/></td>=0D</tr>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" col=
+span=3D"2"><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16" target=
+=3D"_blank"><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20=
+473/sc_bas.gif" border=3D"0" /></a><br /></td>=0D</tr>=0D</tbody>=0D</table=
+>=0D</td>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top"><=
+a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/middle=
+_1.gif" border=3D"0" /></a><br /></td>=0D<td>=0D<table cellspacing=3D"0" ce=
+llpadding=3D"0" border=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"FONT-SIZE: 0p=
+x; LINE-HEIGHT: 0px" valign=3D"top"><a><img src=3D"http://www.vtrack-gamma.=
+com/hebergement_messages/20473/dentaire_coin.gif" border=3D"0" /></a><br />=
+</td>=0D<td style=3D"FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #009ee0; FO=
+NT-FAMILY: Arial; TEXT-ALIGN: left" valign=3D"middle" width=3D"86" height=
+=3D"19"><a style=3D"FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #009ee0; FON=
+T-FAMILY: Arial; TEXT-DECORATION: none">&nbsp;&nbsp;&nbsp;&nbsp;Dentaire</a=
+><br /></td>=0D</tr>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px=
+" valign=3D"top" colspan=3D"2"><a href=3D"http://www.mutuelle-conseil.com/A=
+A02RG988T/16" target=3D"_blank"><img src=3D"http://www.vtrack-gamma.com/heb=
+ergement_messages/20473/dentaire_bas.gif" border=3D"0" /></a><br /></td>=0D=
+</tr>=0D</tbody>=0D</table>=0D</td>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEI=
+GHT: 0px" valign=3D"top"><a><img src=3D"http://www.vtrack-gamma.com/heberge=
+ment_messages/20473/middle_2.gif" border=3D"0" /></a><br /></td>=0D<td>=0D<=
+table cellspacing=3D"0" cellpadding=3D"0" border=3D"0">=0D<tbody>=0D<tr>=0D=
+<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top"><a><img src=
+=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/optique_coin.gif=
+" border=3D"0" /></a><br /></td>=0D<td style=3D"FONT-WEIGHT: bold; FONT-SIZ=
+E: 11px; COLOR: #f18e21; FONT-FAMILY: Arial; TEXT-ALIGN: left" valign=3D"mi=
+ddle" width=3D"85" height=3D"19"><a style=3D"FONT-WEIGHT: bold; FONT-SIZE: =
+11px; COLOR: #f18e21; FONT-FAMILY: Arial; TEXT-DECORATION: none">&nbsp;&nbs=
+p;&nbsp;&nbsp;Optique</a><br /></td>=0D</tr>=0D<tr>=0D<td style=3D"FONT-SIZ=
+E: 0px; LINE-HEIGHT: 0px" valign=3D"top" colspan=3D"2"><a href=3D"http://ww=
+w.mutuelle-conseil.com/AA02RG988T/16" target=3D"_blank"><img src=3D"http://=
+www.vtrack-gamma.com/hebergement_messages/20473/optique_bas.gif" border=3D"=
+0" /></a><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D<td style=3D"F=
+ONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top"><a><img src=3D"http://www.v=
+track-gamma.com/hebergement_messages/20473/middle_3.gif" border=3D"0" /></a=
+><br /></td>=0D<td>=0D<table cellspacing=3D"0" cellpadding=3D"0" border=3D"=
+0" valign=3D"top">=0D<tbody>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEI=
+GHT: 0px" valign=3D"top"><a><img src=3D"http://www.vtrack-gamma.com/heberge=
+ment_messages/20473/hospitalisation_coin.gif" border=3D"0" /></a><br /></td=
+>=0D<td style=3D"FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #ae0917; FONT-F=
+AMILY: Arial; TEXT-ALIGN: left" valign=3D"middle" width=3D"86" height=3D"19=
+"><a style=3D"FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #ae0917; FONT-FAMI=
+LY: Arial; TEXT-DECORATION: none">Hospitalisation</a><br /></td>=0D</tr>=0D=
+<tr>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" colspan=3D"2"><a href=
+=3D"http://www.mutuelle-conseil.com/AA02RG988T/16" target=3D"_blank"><img s=
+rc=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/hospitalisatio=
+n_bas.gif" border=3D"0" /></a><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D<=
+/td>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top"><a><im=
+g src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/right_1.gif=
+" border=3D"0" /></a><br /></td>=0D</tr>=0D<tr>=0D<td style=3D"FONT-SIZE: 0=
+px; LINE-HEIGHT: 0px" valign=3D"top" colspan=3D"13"><a><img height=3D"9" sr=
+c=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/klarte_7.gif" w=
+idth=3D"731" border=3D"0" /></a><br /></td>=0D</tr>=0D<tr>=0D<td colspan=3D=
+"13">=0D<table cellspacing=3D"0" cellpadding=3D"0" valign=3D"top">=0D<tbody=
+>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top"><a=
+><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/left_2_=
+1.gif" border=3D"0" /></a><br /></td>=0D<td style=3D"BORDER-RIGHT: 1px; BOR=
+DER-TOP: 1px; BORDER-LEFT: 1px; BORDER-BOTTOM: 1px; BACKGROUND-COLOR: #0096=
+99" valign=3D"top" width=3D"107" height=3D"34">=0D<table cellspacing=3D"0" =
+cellpadding=3D"0" width=3D"107">=0D<tbody>=0D<tr>=0D<td style=3D"FONT-SIZE:=
+ 0px; LINE-HEIGHT: 0px" valign=3D"top" align=3D"left" width=3D"15"><a><img =
+src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/fleche_vert.g=
+if" border=3D"0" /></a><br /></td>=0D<td style=3D"FONT-SIZE: 10px; COLOR: #=
+fff; FONT-FAMILY: Arial; TEXT-ALIGN: left" align=3D"left">jusqu'a</td>=0D</=
+tr>=0D<tr>=0D<td />=0D<td style=3D"FONT-WEIGHT: bold; FONT-SIZE: 23px; COLO=
+R: #fff; FONT-FAMILY: Arial">370%</td>=0D</tr>=0D</tbody>=0D</table>=0D</td=
+>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top"><a><img s=
+rc=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/middle_2_1.gif=
+" border=3D"0" /></a><br /></td>=0D<td style=3D"BACKGROUND-COLOR: #009ddf" =
+valign=3D"top" width=3D"106" height=3D"34">=0D<table cellspacing=3D"0" cell=
+padding=3D"0" width=3D"106">=0D<tbody>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px=
+; LINE-HEIGHT: 0px" valign=3D"top" align=3D"left" width=3D"15"><a><img src=
+=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/fleche_blue.gif"=
+ border=3D"0" /></a><br /></td>=0D<td style=3D"FONT-SIZE: 10px; COLOR: #fff=
+; FONT-FAMILY: Arial; TEXT-ALIGN: left" align=3D"left">jusqu'a</td>=0D</tr>=
+=0D<tr>=0D<td />=0D<td style=3D"FONT-WEIGHT: bold; FONT-SIZE: 23px; COLOR: =
+#fff; FONT-FAMILY: Arial">470%</td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=
+=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top"><a><img sr=
+c=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/middle_2_2.gif"=
+ border=3D"0" /></a><br /></td>=0D<td style=3D"BACKGROUND-COLOR: #f08d20" v=
+align=3D"top" width=3D"106" height=3D"36">=0D<table cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"106">=0D<tbody>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px;=
+ LINE-HEIGHT: 0px" valign=3D"top" width=3D"14"><a><img src=3D"http://www.vt=
+rack-gamma.com/hebergement_messages/20473/fleche_orange.gif" border=3D"0" /=
+></a><br /></td>=0D<td style=3D"FONT-SIZE: 10px; COLOR: #fff; PADDING-TOP: =
+2px; FONT-FAMILY: Arial; TEXT-ALIGN: left" valign=3D"top" align=3D"left">ju=
+squ'a </td>=0D<td style=3D"FONT-WEIGHT: bold; FONT-SIZE: 23px; COLOR: #fff;=
+ FONT-FAMILY: Arial" rowspan=3D"2">&nbsp;</td>=0D</tr>=0D<tr>=0D<td />=0D<t=
+d><span style=3D"FONT-WEIGHT: bold; FONT-SIZE: 23px; COLOR: #fff; FONT-FAMI=
+LY: Arial">554<span class=3D"Style2">euros</span></span></td>=0D</tr>=0D<tr=
+>=0D<td style=3D"FONT-SIZE: 10px; COLOR: #fff; FONT-FAMILY: Arial" valign=
+=3D"top" colspan=3D"3">de remboursement/an</td>=0D</tr>=0D</tbody>=0D</tabl=
+e>=0D</td>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top">=
+<a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/middl=
+e_2_3.gif" border=3D"0" /></a><br /></td>=0D<td style=3D"BACKGROUND-COLOR: =
+#bb091a" valign=3D"top" width=3D"106" height=3D"34">=0D<table cellspacing=
+=3D"0" cellpadding=3D"0" width=3D"106">=0D<tbody>=0D<tr>=0D<td style=3D"FON=
+T-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top" align=3D"left" width=3D"15"><=
+a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/fleche=
+_rouge.gif" border=3D"0" /></a><br /></td>=0D<td style=3D"FONT-SIZE: 10px; =
+COLOR: #fff; FONT-FAMILY: Arial; TEXT-ALIGN: left" align=3D"left">jusqu'a</=
+td>=0D</tr>=0D<tr>=0D<td />=0D<td style=3D"FONT-WEIGHT: bold; FONT-SIZE: 23=
+px; COLOR: #fff; FONT-FAMILY: Arial">250%</td>=0D</tr>=0D</tbody>=0D</table=
+>=0D</td>=0D<td style=3D"FONT-SIZE: 0px; LINE-HEIGHT: 0px" valign=3D"top"><=
+a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/right_=
+2_1.gif" border=3D"0" /></a><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</t=
+d>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td style=3D"FONT=
+-SIZE: 0px; LINE-HEIGHT: 0px" height=3D"23"><img src=3D"http://www.vtrack-g=
+amma.com/hebergement_messages/20473/klarte_51.gif" border=3D"0" /></td>=0D<=
+/tr>=0D<tr>=0D<td style=3D"FONT-SIZE: 10px; COLOR: #737173; FONT-FAMILY: Ar=
+ial" align=3D"right">*garantie hospitaliere 20 - 25 ans</td>=0D</tr>=0D<tr>=
+=0D<td style=3D"FONT-SIZE: 9px; VERTICAL-ALIGN: middle; COLOR: #53656c; FON=
+T-FAMILY: verdana; HEIGHT: 30px; TEXT-ALIGN: center" valign=3D"middle"><br =
+/><br /><br />Vous ne souhaitez plus recevoir cette Newsletter, cliquez <a =
+style=3D"FONT-SIZE: 9px; COLOR: #53656c; FONT-FAMILY: verdana" href=3D"http=
+://cdirecte.r7g.com/AA07GUREUN_165093/877">ici</a></td>=0D</tr>=0D</tbody>=
+=0D</table></center><img src=3D"http://cdirecte.r7g.com/ZZ07GUREUN_165093.p=
+ng" /></body></html>
+--=_475fe461b2da7eddc1df42cf63189c54--
 
 
-------=SPLITOR00A_001_227390062D--
 
-
-
-
---===============5915554871049892300==
+--===============0706452605532004520==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -168,7 +198,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============5915554871049892300==
+--===============0706452605532004520==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -179,4 +209,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5915554871049892300==--
+--===============0706452605532004520==--

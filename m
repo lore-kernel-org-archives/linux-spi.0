@@ -1,8 +1,8 @@
 From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/3 v2] spi: add PCI interface driver
- for Designware SPI core
-Date: Tue, 4 Aug 2009 17:03:47 +0800
-Message-ID: <20090804170347.15fefd1e@feng-desktop>
+Subject: [PATCH 3/3 v2] spi: DMA support for Designware
+ core on Moorestown platform
+Date: Tue, 4 Aug 2009 17:05:31 +0800
+Message-ID: <20090804170531.643fde8a@feng-desktop>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,224 +19,280 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->From 9c76570795a653a80126b88d427542cfe834f670 Mon Sep 17 00:00:00 2001
+>From cd273fb923083650d27f6d3e710a2bec22b8f8c2 Mon Sep 17 00:00:00 2001
 From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Date: Tue, 4 Aug 2009 16:31:53 +0800
-Subject: [PATCH 2/3] spi: add PCI interface driver for Designware SPI core
+Date: Tue, 4 Aug 2009 16:42:31 +0800
+Subject: [PATCH 3/3] spi: DMA support for Designware core on Moorestown platform
 
-This add the PCI interface driver for DW SPI core, it has
-been tested on Intel Moorestown platform
+Designware core can work with multiple DMA controllers for DMA
+operation, and this patch supports it to cowork with the Designware
+DMA controller used on Intel Moorestown platform
 
 Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/Kconfig      |    4 +
- drivers/spi/Makefile     |    1 +
- drivers/spi/dw_spi_pci.c |  169 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 174 insertions(+), 0 deletions(-)
- create mode 100644 drivers/spi/dw_spi_pci.c
+ drivers/spi/Kconfig        |    4 +
+ drivers/spi/dw_spi.c       |  173 +++++++++++++++++++++++++++++++++++++++++++-
+ include/linux/spi/dw_spi.h |    6 ++
+ 3 files changed, 179 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 80b1017..906bca4 100644
+index 906bca4..e3f98d9 100644
 --- a/drivers/spi/Kconfig
 +++ b/drivers/spi/Kconfig
 @@ -233,6 +233,10 @@ config SPI_DESIGNWARE
  	help
  	  general driver for SPI controller core from DesignWare
  
-+config SPI_DW_PCI
-+	tristate "PCI interface driver for DW SPI core"
-+	depends on SPI_DESIGNWARE && PCI
++config SPI_DW_MRST_DMA
++	bool "DMA support for DW SPI controller on Intel Moorestown platform"
++	depends on SPI_DESGINWARE && MRST_DMA
 +
- #
- # Add new SPI master controllers in alphabetical order above this line
- #
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index f3f36e0..3a49fac 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -32,6 +32,7 @@ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
- obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
- obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
- obj-$(CONFIG_SPI_DESIGNWARE)		+= dw_spi.o
-+obj-$(CONFIG_SPI_DW_PCI)		+= dw_spi_pci.o
- # 	... add above this line ...
+ config SPI_DW_PCI
+ 	tristate "PCI interface driver for DW SPI core"
+ 	depends on SPI_DESIGNWARE && PCI
+diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
+index 261c27c..aed7e57 100644
+--- a/drivers/spi/dw_spi.c
++++ b/drivers/spi/dw_spi.c
+@@ -29,6 +29,10 @@
+ #include <linux/debugfs.h>
+ #endif
  
- # SPI protocol drivers (device/link on bus)
-diff --git a/drivers/spi/dw_spi_pci.c b/drivers/spi/dw_spi_pci.c
-new file mode 100644
-index 0000000..24809c9
---- /dev/null
-+++ b/drivers/spi/dw_spi_pci.c
-@@ -0,0 +1,169 @@
-+/*
-+ * mrst_spi_pci.c - PCI interface driver for DW SPI Core
-+ *
-+ * Copyright (c) 2009, Intel Corporation.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along
-+ * with this program; if not, write to the Free Software Foundation,
-+ * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
-+ */
-+
-+#include <linux/interrupt.h>
-+#include <linux/pci.h>
-+#include <linux/spi/dw_spi.h>
-+#include <linux/spi/spi.h>
-+
-+#define DRIVER_NAME "dw_spi_pci"
-+
-+struct dw_spi_pci {
-+	struct pci_dev		*pdev;
-+	struct dw_spi		dws;
-+};
-+
-+static int __devinit spi_pci_probe(struct pci_dev *pdev,
-+	const struct pci_device_id *ent)
-+{
-+	struct dw_spi_pci *dwpci;
-+	struct dw_spi *dws;
-+	int pci_bar = 0;
-+	int ret;
-+
-+	printk(KERN_INFO "DW: found PCI SPI controller(ID: %04x:%04x)\n",
-+		pdev->vendor, pdev->device);
-+
-+	ret = pci_enable_device(pdev);
-+	if (ret)
-+		return ret;
-+
-+	dwpci = kzalloc(sizeof(struct dw_spi_pci), GFP_KERNEL);
-+	if (!dwpci) {
-+		ret = -ENOMEM;
-+		goto err_disable;
-+	}
-+
-+	dwpci->pdev = pdev;
-+	dws = &dwpci->dws;
-+
-+	/* Get basic io resource and map it */
-+	dws->paddr = pci_resource_start(pdev, pci_bar);
-+	dws->iolen = pci_resource_len(pdev, pci_bar);
-+
-+	ret = pci_request_region(pdev, pci_bar, dev_name(&pdev->dev));
-+	if (ret)
-+		goto err_kfree;
-+
-+	dws->regs = ioremap_nocache((unsigned long)dws->paddr,
-+				pci_resource_len(pdev, pci_bar));
-+	if (!dws->regs) {
-+		ret = -ENOMEM;
-+		goto err_release_reg;
-+	}
-+
-+	dws->parent_dev = &pdev->dev;
-+	dws->bus_num = 0;
-+	dws->num_cs = 4;
-+	dws->max_freq = 25000000;	/* for Moorestwon */
-+	dws->irq = pdev->irq;
-+
-+	ret = dw_spi_add_host(dws);
-+	if (ret)
-+		goto err_unmap;
-+
-+	/* PCI hook and SPI hook use the same drv data */
-+	pci_set_drvdata(pdev, dwpci);
-+	return 0;
-+
-+err_unmap:
-+	iounmap(dws->regs);
-+err_release_reg:
-+	pci_release_region(pdev, pci_bar);
-+err_kfree:
-+	kfree(dwpci);
-+err_disable:
-+	pci_disable_device(pdev);
-+	return ret;
-+}
-+
-+static void __devexit spi_pci_remove(struct pci_dev *pdev)
-+{
-+	struct dw_spi_pci *dwpci = pci_get_drvdata(pdev);
-+
-+	pci_set_drvdata(pdev, NULL);
-+	iounmap(dwpci->dws.regs);
-+	pci_release_region(pdev, 0);
-+	kfree(dwpci);
-+	pci_disable_device(pdev);
-+}
-+
-+#ifdef CONFIG_PM
-+static int spi_suspend(struct pci_dev *pdev, pm_message_t state)
-+{
-+	struct dw_spi_pci *dwpci = pci_get_drvdata(pdev);
-+	int ret;
-+
-+	ret = dw_spi_suspend_host(&dwpci->dws);
-+	if (ret)
-+		return ret;
-+	pci_save_state(pdev);
-+	pci_disable_device(pdev);
-+	pci_set_power_state(pdev, pci_choose_state(pdev, state));
-+	return ret;
-+}
-+
-+static int spi_resume(struct pci_dev *pdev)
-+{
-+	struct dw_spi_pci *dwpci = pci_get_drvdata(pdev);
-+	int ret;
-+
-+	pci_set_power_state(pdev, PCI_D0);
-+	pci_restore_state(pdev);
-+	ret = pci_enable_device(pdev);
-+	if (ret)
-+		return ret;
-+	return dw_spi_resume_host(&dwpci->dws);
-+}
-+#else
-+#define mrst_spi_suspend	NULL
-+#define mrst_spi_resume		NULL
++#ifdef CONFIG_SPI_MRST_DMA
++#include <linux/lnw_dma.h>
 +#endif
 +
-+static const struct pci_device_id pci_ids[] __devinitdata = {
-+	/* Intel Moorestown platform SPI controller 0 */
-+	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0800) },
-+	{},
-+};
-+
-+static struct pci_driver dw_spi_driver = {
-+	.name =		DRIVER_NAME,
-+	.id_table =	pci_ids,
-+	.probe =	spi_pci_probe,
-+	.remove =	__devexit_p(spi_pci_remove),
-+	.suspend =	spi_suspend,
-+	.resume	=	spi_resume,
-+};
-+
-+static int __init mrst_spi_init(void)
+ #define START_STATE	((void *)0)
+ #define RUNNING_STATE	((void *)1)
+ #define DONE_STATE	((void *)2)
+@@ -62,6 +66,168 @@ struct chip_data {
+ 	void (*cs_control)(u32 command);
+ };
+ 
++#ifdef CONFIG_SPI_MRST_DMA
++static void dw_spi_dma_init(struct dw_spi *dws)
 +{
-+	return pci_register_driver(&dw_spi_driver);
++	struct lnw_dma_slave *rxs, *txs;
++	dma_cap_mask_t mask;
++
++	dws->txchan = NULL;
++	dws->rxchan = NULL;
++
++	/* 1. Init rx channel */
++	rxs = &dws->dmas_rx;
++
++	rxs->dirn = DMA_FROM_DEVICE;
++	rxs->hs_mode = LNW_DMA_HW_HS;
++	rxs->cfg_mode = LNW_DMA_PER_TO_MEM;
++	rxs->src_width = LNW_DMA_WIDTH_16BIT;
++	rxs->dst_width = LNW_DMA_WIDTH_32BIT;
++	rxs->src_msize = LNW_DMA_MSIZE_16;
++	rxs->dst_msize = LNW_DMA_MSIZE_16;
++
++	dma_cap_zero(mask);
++	dma_cap_set(DMA_MEMCPY, mask);
++	dma_cap_set(DMA_SLAVE, mask);
++
++	dws->rxchan = dma_request_channel(mask, NULL, NULL);
++	if (!dws->rxchan)
++		goto err_exit;
++	dws->rxchan->private = rxs;
++
++	/* 2. Init tx channel */
++	txs = &dws->dmas_tx;
++
++	txs->dirn = DMA_TO_DEVICE;
++	txs->hs_mode = LNW_DMA_HW_HS;
++	txs->cfg_mode = LNW_DMA_MEM_TO_PER;
++	txs->src_width = LNW_DMA_WIDTH_32BIT;
++	txs->dst_width = LNW_DMA_WIDTH_16BIT;
++	txs->src_msize = LNW_DMA_MSIZE_16;
++	txs->dst_msize = LNW_DMA_MSIZE_16;
++
++	dma_cap_set(DMA_SLAVE, mask);
++	dma_cap_set(DMA_MEMCPY, mask);
++
++	dws->txchan = dma_request_channel(mask, NULL, NULL);
++	if (!dws->txchan)
++		goto free_rxchan;
++	dws->txchan->private = txs;
++
++	/* Set the dma done bit to 1 */
++	dws->dma_inited = 1;
++	dws->txdma_done = 1;
++	dws->rxdma_done = 1;
++
++	dws->tx_param = ((u64)(unsigned long)dws << 32)
++				| (unsigned long)(&dws->txdma_done);
++	dws->rx_param = ((u64)(unsigned long)dws << 32)
++				| (unsigned long)(&dws->rxdma_done);
++	return;
++
++free_rxchan:
++	dma_release_channel(dws->rxchan);
++err_exit:
++	return;
 +}
 +
-+static void __exit mrst_spi_exit(void)
++static void dw_spi_dma_exit(struct dw_spi *dws)
 +{
-+	pci_unregister_driver(&dw_spi_driver);
++	dma_release_channel(dws->txchan);
++	dma_release_channel(dws->rxchan);
 +}
 +
-+module_init(mrst_spi_init);
-+module_exit(mrst_spi_exit);
 +
-+MODULE_AUTHOR("Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>");
-+MODULE_DESCRIPTION("PCI interface driver for DW SPI Core");
-+MODULE_LICENSE("GPL v2");
++static inline void unmap_dma_buffers(struct dw_spi *dws);
++static void transfer_complete(struct dw_spi *dws);
++
++static void dw_spi_dma_done(void *arg)
++{
++	u64 *param = arg;
++	struct dw_spi *dws;
++	int *done;
++
++	dws = (struct dw_spi *)(unsigned long)(*param >> 32);
++	done = (int *)(unsigned long)(*param & 0xffffffff);
++
++	*done = 1;
++	/* wait till both tx/rx channels are done */
++	if (!dws->txdma_done || !dws->rxdma_done)
++		return;
++
++	transfer_complete(dws);
++}
++
++static void dma_transfer(struct dw_spi *dws, int cs_change)
++{
++	struct dma_async_tx_descriptor *txdesc = NULL, *rxdesc = NULL;
++	struct dma_chan *txchan, *rxchan;
++	enum dma_ctrl_flags flag;
++	u16 dma_ctrl = 0;
++
++	/* 1. setup DMA related registers */
++	if (cs_change) {
++		spi_enable_chip(dws, 0);
++		dw_writew(dws, dmardlr, 0xf);
++		dw_writew(dws, dmatdlr, 0x10);
++		if (dws->tx_dma)
++			dma_ctrl |= 0x2;
++		if (dws->rx_dma)
++			dma_ctrl |= 0x1;
++		dw_writew(dws, dmacr, dma_ctrl);
++		spi_enable_chip(dws, 1);
++	}
++
++	if (dws->tx_dma)
++		dws->txdma_done = 0;
++	if (dws->rx_dma)
++		dws->rxdma_done = 0;
++
++	/* 2. start the TX dma transfer */
++	txchan = dws->txchan;
++	rxchan = dws->rxchan;
++
++	flag = DMA_PREP_INTERRUPT | DMA_CTRL_ACK;
++	if (dws->tx_dma) {
++		txdesc = txchan->device->device_prep_dma_memcpy(txchan,
++				dws->dma_addr, dws->tx_dma,
++				dws->len, flag);
++		txdesc->callback = dw_spi_dma_done;
++		txdesc->callback_param = &dws->tx_param;
++	}
++
++	/* 3. start the RX dma transfer */
++	if (dws->rx_dma) {
++		rxdesc = rxchan->device->device_prep_dma_memcpy(rxchan,
++				dws->rx_dma, dws->dma_addr,
++				dws->len, flag);
++		rxdesc->callback = dw_spi_dma_done;
++		rxdesc->callback_param = &dws->rx_param;
++	}
++
++	/* rx must be started before tx due to spi instinct */
++	if (rxdesc)
++		rxdesc->tx_submit(rxdesc);
++	if (txdesc)
++		txdesc->tx_submit(txdesc);
++}
++#else
++static inline void dw_spi_dma_init(struct dw_spi *dws)
++{
++	return;
++}
++
++static inline void dw_spi_dma_exit(struct dw_spi *dws)
++{
++	return;
++}
++
++static void dma_transfer(struct dw_spi *dws, int cs_change)
++{
++	return;
++}
++#endif /* CONFIG_SPI_MRST_DMA */
++
+ #ifdef CONFIG_DEBUG_FS
+ static int spi_show_regs_open(struct inode *inode, struct file *file)
+ {
+@@ -413,10 +579,6 @@ static void poll_transfer(struct dw_spi *dws)
+ 	transfer_complete(dws);
+ }
+ 
+-static void dma_transfer(struct dw_spi *dws, int cs_change)
+-{
+-}
+-
+ static void pump_transfers(unsigned long data)
+ {
+ 	struct dw_spi *dws = (struct dw_spi *)data;
+@@ -853,6 +1015,7 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
+ 	master->transfer = dw_spi_transfer;
+ 
+ 	dws->dma_inited = 0;
++	dw_spi_dma_init(dws);
+ 
+ 	/* Basic HW init */
+ 	spi_hw_init(dws);
+@@ -881,6 +1044,7 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
+ 
+ err_queue_alloc:
+ 	destroy_queue(dws);
++	dw_spi_dma_exit(dws);
+ err_diable_hw:
+ 	spi_enable_chip(dws, 0);
+ 	free_irq(dws->irq, dws);
+@@ -904,6 +1068,7 @@ void __devexit dw_spi_remove_host(struct dw_spi *dws)
+ 		dev_err(&dws->master->dev, "dw_spi_remove: workqueue will not "
+ 			"complete, message memory not freed\n");
+ 
++	dw_spi_dma_exit(dws);
+ 	spi_enable_chip(dws, 0);
+ 	/* Disable clk */
+ 	spi_set_clk(dws, 0);
+diff --git a/include/linux/spi/dw_spi.h b/include/linux/spi/dw_spi.h
+index 51b3e77..4881a18 100644
+--- a/include/linux/spi/dw_spi.h
++++ b/include/linux/spi/dw_spi.h
+@@ -1,6 +1,7 @@
+ #ifndef DW_SPI_HEADER_H
+ #define DW_SPI_HEADER_H
+ #include <linux/io.h>
++#include <linux/lnw_dma.h>
+ 
+ /* Bit fields in CTRLR0 */
+ #define SPI_DFS_OFFSET			0
+@@ -141,6 +142,11 @@ struct dw_spi {
+ 	struct device		*dma_dev;
+ 	dma_addr_t		dma_addr;
+ 
++#ifdef CONFIG_SPI_MRST_DMA
++	struct lnw_dma_slave	dmas_tx;
++	struct lnw_dma_slave	dmas_rx;
++#endif
++
+ 	/* Bus interface info */
+ 	void			*priv;
+ #ifdef CONFIG_DEBUG_FS
 -- 
 1.5.6.3
 

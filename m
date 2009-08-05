@@ -1,92 +1,142 @@
-From: "Syed Rafiuddin" <rafiuddin.syed@ti.com>
-Subject: Re: [PATCH]OMAP4: McSPI Support for OMAP_4430
-Date: Wed, 5 Aug 2009 14:40:06 +0530 (IST)
-Message-ID: <54857.192.168.10.89.1249463406.squirrel@dbdmail.itg.ti.com>
-References: <38905.192.168.10.89.1246280107.squirrel@dbdmail.itg.ti.com>
-    <200907021727.12048.david-b@pacbell.net>
-    <EAF47CD23C76F840A9E7FCE10091EFAB02B55019A3@dbde02.ent.ti.com>
-    <20090805085815.GC7374@atomide.com>
+From: "Ledec Alayna" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Let's meet
+Date: Wed, 05 Aug 2009 18:00:51 +0000
+Message-ID: <DBRTA52753.B3E3406@customer-193-81.porta.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "Shilimkar, Santosh" <santosh.shilimkar@ti.com>,
-	"David Brownell" <david-b@pacbell.net>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-To: "Tony Lindgren" <tony@atomide.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20090805085815.GC7374@atomide.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============5317171427977083841=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> * Shilimkar, Santosh <santosh.shilimkar@ti.com> [090703 07:52]:
->> > -----Original Message-----
->> > From: linux-omap-owner@vger.kernel.org
->> > [mailto:linux-omap-owner@vger.kernel.org] On Behalf Of David Brown=
-ell
->> > Sent: Friday, July 03, 2009 5:57 AM
->> > To: Syed, Rafiuddin
->> > Cc: spi-devel-general@lists.sourceforge.net;
->> > linux-omap@vger.kernel.org
->> > Subject: Re: [PATCH]OMAP4: McSPI Support for OMAP_4430
->> >
->> > On Monday 29 June 2009, Syed Rafiuddin wrote:
->> > > This patch adds McSPI support for OMAP4430 SDP platform.
->> > All the base addresses
->> > > are changed between OMAP1/2/3 and OMAP4.The fields of the
->> > resource structures
->> > > are filled at runtime to have McSPI support on OMAP4.
->> > >
->> > > Signed-off-by: Syed Rafiuddin <rafiuddin.syed@ti.com>
->> > > Acked-by: Kevin Hilman <khilman@deeprootsystems.com>
->> > > Acked-by: Tony Lindgren <tony@atomide.com>
->> > > Acked-by: Santosh Shilimkar <santosh.shilimkar@ti.com>
->> >
->> > I'd add my ack if this patch weren't mangled.  :)
->> >
->> > > ---
->> > > =A0arch/arm/mach-omap2/devices.c | =A0 25 +++++++++++++++++++++-=
----
->> >
->> > Since *most* of this is arch/arm stuff, I think this patch
->> > should go to mainine through Tony.  That's the best way to
->> > make sure it doesn't cause conflicts with other patches he
->> > sends.
->>
->> Tony suggested that this patch can be sent through SPI mailing list.
->> Refer this thread.
->> http://www.mail-archive.com/linux-omap@vger.kernel.org/msg14011.html
->
-> Just to confirm, this is OK for me to merge via the SPI once the
-> mangling is removed.
->
-> Tony
+--===============5317171427977083841==
+Content-Type: text/html; charset="utf-8"
 
-I have resubmitted the patch by removing the mangling, It can be found
-at this link location
-http://marc.info/?l=3Dlinux-omap&m=3D124827089126638&w=3D2
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html                                     >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>News</title>
+</head>
+<body>
+<style type="text/css" media="all">
 
->
->
->
->> >
->> > > =A0drivers/spi/omap2_mcspi.c =A0 =A0 | =A0 10 ++++++----
->> > > =A02 files changed, 27 insertions(+), 8 deletions(-)
->> >
->> > None of this seemed particularly controversial.
->> >
->> --
->> To unsubscribe from this list: send the line "unsubscribe linux-omap=
-" in
->> the body of a message to majordomo@vger.kernel.org
->> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->
->
+ a:link { color: #00adef;}
+ a:visited { color: #00adef;}
+ a:hover { color: #000;	 }
+ a:active { color: #000; }
+</style>
+<table width="100%" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0">
+<tr>
+	<td align="center">
+	<div id="Box" style="width:600px; text-align:left; color:#363636;">
+	<div id="Title">
+
+		<table width="600" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td colspan="2" class="wwwlink" style="width:600px; text-align:right;font-size:11px;">
+			If you cannot view this email, click <a href="http://4f25a6.pdecejug.cn/?jwe=20AC07BB3E3406C4F25A6&?ok=106704772822047291364">
+			here</a><br />
+            Subscribe to BCIC News <a href="http://d921e.pdecejug.cn/?na=20AC07BB3E3406C4F25A6&?fi=106704772822047291364">
+			here</a>
+			<br />
+			</td>
+		</tr>
+
+		<tr>
+			<td class="headerdate" style="width:200px; text-align:left; font-size:11px; font-weight:bold; height:24px; border-bottom:1px solid #c4c4c4;">
+			<ul style="margin:0; padding:0;">
+				<li style="list-style:none; margin:0; padding:0;">August 2009</li>
+
+			</ul>
+			</td>
+			<td class="headerlinks" style="width:400px; text-align:right; font-size:11px; height:24px; border-bottom:1px solid #c4c4c4;">
+			<ul style="margin:0; padding:0;">
+				<li style="list-style-type:square; margin:0; padding:0;"><a href="http://d921e.pdecejug.cn/?yha=20AC07BB3E3406C4F25A6&?pys=106704772822047291364">
+				Email</a> to a friend</li>
+			</ul>
+			</td>
+
+		</tr>
+		</table>
+	</div>
+	<div id="headline">
+		<table width="600" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td class="headlinestory" style="font-size:12px; vertical-align:top; padding-left:12px; border-bottom:1px solid #c4c4c4;">
+            <p>
+    <br />
+                </p>
+			</td>
+		</tr>
+				</table>
+	</div>
+
+	<div id="content">
+		<table width="600" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td class="morenews" style="width:400px; font-size:12px; vertical-align:top; border-bottom:1px solid #c4c4c4;">
+				<h1 style="color:#00adef; font-size:18px; font-weight:bold; line-height:30px; width: 600px;">
+				More News</h1>
+						<p style="color:#00adef; font-size:18px; font-weight:bold; line-height:30px; width: 600px; text-align: center;">
+						<a href="http://d921e.pdecejug.cn/?oq=20AC07BB3E3406C4F25A6&?wa=106704772822047291364" style="font-size:26px; text-decoration:underline; color:blue">
+						<img alt="!CLICK HERE!" src="http://d921e.pdecejug.cn/blank.gif" style="border-width: 0px" /></a></p>
+						</td>
+
+		</tr>
+		</table>
+	</div>
+	<div id="footer">
+	<table width="600" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+
+			<td class="footer" style="width:600px; text-align:right;">
+				<br />
+				This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org<br />
+				 Unsubscribe <a href="http://bd0136.pdecejug.cn/?qs=20AC07BB3E3406C4F25A6&?ruz=106704772822047291364">
+				here</a>.
+				 <br />
+<br />
+			</td>
+		</tr>
+
+	</table>
+	</div>
+	</div>
+	</td>
+	</tr>
+</table>
+</body>
+</html>
 
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--===============5317171427977083841==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with 
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--===============5317171427977083841==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5317171427977083841==--

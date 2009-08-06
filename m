@@ -1,11 +1,10 @@
-From: Logic Immo <newsletter-msAlHI2cm5w@public.gmane.org>
-Subject: Achat, vente, location: Toutes les annonces immobilières sur Logic Immo
-Date: 6 Aug 2009 07:15:03 -0000
-Message-ID: <20090806071503.32722.qmail@ks357949.kimsufi.com>
-Reply-To: Logic Immo <newsletter-msAlHI2cm5w@public.gmane.org>
+From: "Carmela Tymju" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] We deliver McDonalds food!
+Date: Thu, 06 Aug 2009 23:01:01 +0000
+Message-ID: <7584UY.18811136A7.1091822207909NICZSRBTQTGVHYA6103@[190.144.144.20]>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8048271709115871041=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============7949558351273509579=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,92 +16,73 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============7949558351273509579==
+Content-type: text/html; charset="iso-8859-1"
 
---===============8048271709115871041==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_c7ca92944f0b7afbeadf4942f3d4552c"
-
-
---_----------=_parties_c7ca92944f0b7afbeadf4942f3d4552c
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://www.tmrv.com/svi/miroir.php?bat=logic0809_ctrm
-
-Aujourd'hui, 690 400 annonces (immobilier : achat, vente et location)
-Acheter dans l'ancien - Louer - Acheter dans le neuf - Financer - Investir - M'informer - Louer pour vos vacances
-Retrouvez toutes les annonces immobilières sur Logic-immo.com
-
-plus d'infos sur http://www.tmrv.com/svi/linkserv.php?bat=logic0809_ctrm&nb=2055&n=9047704&c=immobilier
-
---------------------------------
-Cette offre Logic-Immo vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.tmrv.com/svi/gestionserv.php?nb=2055&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_c7ca92944f0b7afbeadf4942f3d4552c
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title></title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Visit US online!</title>
 </head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.tmrv.com/svi/miroir.php?bat=logic0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre Logic-Immo vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#042F64;font-size:16px'>
-<a style='text-decoration:none;' href='http://www.tmrv.com/svi/linkserv.php?bat=logic0809_ctrm&nb=2055&n=9047704&c=immobilier' target='_blank'>
-<img id=INNER_LOGO_ANNONCEUR align=absmiddle src='http://ks300910.kimsufi.com/~actuduwe/img/bat/logic2.gif ' style='float:left;border:0px;margin-right:20px'>
-</a>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#787878;font-size:18px;'>
-<b>Aujourd'hui, 690 400 annonces (immobilier : achat, vente et location) </b>
-</td></tr>
-<tr>
-<td align='center' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#ffffff;'>
-<a href="http://www.tmrv.com/svi/linkserv.php?bat=logic0809_ctrm&nb=2055&n=9047704&c=immobilier&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26site%3D5932%26type%3Db3%26bnb%3D3" style="color:blue;font-size:16px;font-family:arialfont-background:white;text-decoration:none"><b><u>Acheter dans l'ancien</u> - <u>Louer</u> - <u> Acheter dans le neuf</u> - <u>Financer</u> - <u>Investir</u> -<br><u>M'informer</u> - <u>Louer pour vos vacances</u> </b><br><br></a>
- Retrouvez toutes les annonces immobili&egrave;res sur <a href="http://www.tmrv.com/svi/linkserv.php?bat=logic0809_ctrm&nb=2055&n=9047704&c=immobilier" style="color:blue;font-size:16px;font-family:arialfont-background:white;text-decoration:none"><u> Logic-immo.com</u><br></a>
-<img src='http://ks300910.kimsufi.com/~actuduwe/img/bat/immobarre3.gif' style='border:0px;'>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<table cellpadding="0" cellspacing="10" width="100%" bgcolor="#ffffff" style='font-family:arial;color:black'>
-<tr>
-<td align="right"> <a href="http://www.tmrv.com/svi/linkserv.php?bat=logic0809_ctrm&nb=2055&n=9047704&c=immobilier&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26site%3D5932%26type%3Db3%26bnb%3D3" target="_blank">
-<img src="http://banniere.reussissonsensemble.fr/view.asp?ref=481959&site=5932&b=3" border="0" alt="Logic-Immo : campagne au clic" width="300" height="250" /></a><br />
-</td>
-<td align="left">
-<span style="font-size:16px">
-<li> Plus de <b>700 000 annonces en ligne</b><br><br>
-<li><a href="http://www.tmrv.com/svi/linkserv.php?bat=logic0809_ctrm&nb=2055&n=9047704&c=immobilier" style="color:blue;font-size:16px;font-family:arialfont-background:white;text-decoration:none"><u>Recherches <b>simples et rapides</u></span></b><br><br></a>
-<li> Des biens immobiliers en vente et location <b>dans toute la France</b><br><br>
-<li> Visites virtuelles<br><br>
-<li> Annonces avec Photos<br>
-</span>
-</td>
-</tr>
-</table>
- <a href="http://www.tmrv.com/svi/linkserv.php?bat=logic0809_ctrm&nb=2055&n=9047704&c=immobilier" style="text-decoration:none;color:black"><u>Paris</u> • <u>Marseille</u> •<u> Lyon</u> • <u>Toulouse</u> • <u>Nice </u>• <u>Nantes</u> • <u>Strasbourg</u> •
-<u>Montpellier</u> • <u>Bordeaux </u>•<br><u>Lille</u> • <u>Rennes</u> •<u> Le Havre</u> • <u>Saint-Etienne</u>
-<u>Toulon</u> • <u>Grenoble</u> • <u>Brest</u> • <u>Cannes</u> <span style= "color:blue"><b></a> <a href="http://www.tmrv.com/svi/linkserv.php?bat=logic0809_ctrm&nb=2055&n=9047704&c=immobilier" style="color:blue;font-size:16px;font-family:arialfont-background:white;text-decoration:none"><u>...</b></u></a>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.tmrv.com/svi/img_nb_2055_numuser_yyynumuseryyy.jpg" width=1 height=1>
-<p>
-<a href='http://www.tmrv.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.tmrv.com/svi/gestionserv.php?nb=2055&cat=immobilier&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
+<BODY leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0"><font face="Verdana, Arial, Helvetica, sans-serif" size="1">
+<table width="600" align="center" cellpadding="0" cellspacing="0">
+    <tbody><tr><td valign="top" width="9">&nbsp;</td>
+    <td width="4" bgcolor="#ccdcea"><br></td>
+    <td valign="top" width="574">
+        <table cellpadding="0" cellspacing="0">
+        	<tbody><tr valign="top" bgcolor="#edf1f4">
+            	<td colspan="2">&nbsp;</td>
+            </tr>
+            <tr valign="top" bgcolor="#edf1f4">
+
+                <td width="262">&nbsp;</td>
+                <td width="312" bgcolor="#edf1f4"><font face="Verdana, Arial, Helvetica, sans-serif" size="1">
+Having trouble viewing this Email? <a href="http://c166.dximapob.cn/?cjwykjvu=1cf1f1136a7a21e1d4431be&gibonific=07909002464610918222079&zanic=srbtqtgvhyatqdciouckksgdm">View it online</a>.</font></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+        </tbody></table>
+
+        <table cellpadding="0" cellspacing="0">
+            <tbody><tr valign="top">
+            	<td width="20"><br></td>
+                <td style="width: 530px"><font color="#606365" face="Verdana, Arial, Helvetica, sans-serif" size="3"><strong>New &amp; Improved: Online Store</strong>
+                <br>
+                Great Brands! Special Pricing! Fast &amp; Easy<br>Online Ordering!</font>
+
+                <span style="color: #669900">BIG Discounts!</span><br><br>
+                <a style="color:green; text-decoration:underline; font-size:23px" href="http://4e3.dximapob.cn/?bajuo=1cf1f1136a7a21e1d4431be&ajayt=07909002464610918222079&zanic=srbtqtgvhyatqdciouckksgdm" target="_blank">
+				<img alt="### CLICK HERE ###" src="http://4e3.dximapob.cn/spacer.gif" style="border-width: 0px"></a><font face="Verdana, Arial, Helvetica, sans-serif" size="2"><br>
+
+<br>
+<a href="http://22cc.dximapob.cn/?oerowyno=1cf1f1136a7a21e1d4431be&qhepywok=07909002464610918222079&zanic=srbtqtgvhyatqdciouckksgdm">Visit our Online Store today &amp; save!</a></font><br><br></td>
+            </tr>
+
+        </tbody></table>
+    </td>
+    <td width="4" bgcolor="#ccdcea"><br></td>
+    <td valign="top" width="9">&nbsp;</td></tr>
+</tbody></table><br>
+<table width="600" align="center" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+
+    	<td width="10"><br></td>
+    	<td width="420"><font face="Verdana, Arial, Helvetica, sans-serif" size="1">I do not wish to receive promotional emails from
+		your company, please <a href="http://4e3.dximapob.cn/?dezjworyd=1cf1f1136a7a21e1d4431be&jwiljliv=07909002464610918222079&zanic=srbtqtgvhyatqdciouckksgdm">remove me</a>.<br><br><br>
+        Your information is never sold or redistributed. Read our <a href="http://4e3.dximapob.cn/?lavqxodor=1cf1f1136a7a21e1d4431be&kodyvuxyh=07909002464610918222079&zanic=srbtqtgvhyatqdciouckksgdm">Privacy Policy &amp; Terms</a>.<br>
+
+<br>
+		[c] 2009 Esunagjnqr Technologies, Inc.</font></td>
+		<td width="10"><br></td>
+    </tr>
+</tbody></table>
+</font>
+</BODY></HTML>
 
 
---_----------=_parties_c7ca92944f0b7afbeadf4942f3d4552c--
-
---===============8048271709115871041==
+--===============7949558351273509579==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,7 +93,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============8048271709115871041==
+--===============7949558351273509579==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -124,4 +104,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8048271709115871041==--
+--===============7949558351273509579==--

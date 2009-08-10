@@ -1,13 +1,10 @@
-From: "=?iso-8859-9?B?Q0FHTEEgSEFUSVBPR0xVLS0tLUFiYyBSZW50IEEgQ2FyIC0tLS0tQQ==?=
-	=?iso-8859-9?B?TlRBTFlBIC0tLyAtLS0tVNxSS91ZRQ==?=" <abcrentacar-S0/GAf8tV78@public.gmane.org>
-Subject: [SPAM] You can take your car in Airport and
-	also leave in Airport
-Date: Tue, 14 Jul 2009 10:50:49 +0300
-Message-ID: <f95290e92c8ad353456dbb180dbf1c8d@web.de>
-Reply-To: info-NzD3B+35nE5Wk0Htik3J/w@public.gmane.org
+From: "Russell Jdejhi" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Rating of your photos
+Date: Mon, 10 Aug 2009 05:19:25 +0000
+Message-ID: <8792QC.59923E2E.252707306224ELDKPGIXKKAMAQR43@static.kpn.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0329243254099864445=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============6823382652204379578=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,189 +16,109 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+--===============6823382652204379578==
+Content-type: text/html; charset="UTF-8"
 
---===============0329243254099864445==
-Content-Type: multipart/alternative; boundary="----=SPLITOR00A_001_323427718D"
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-This is a multi-part message in MIME format.
+<title>Professionals Connection Newsletter</title>
+</head><body><CENTER><FONT SIZE="1" COLOR="#000000" FACE="ARIAL">If you are unable to see the message below, <A href="http://2c401.ztedecod.cn/?nyjniw=1a1873e2e6484b1b60b347e2&abehqxuhus=160542919425270730622491&dkpgixk=amaqrdkjvevha">click here to view</A>.</FONT><font face="ARIAL" color="#808080" size="2"><br></font></CENTER>
+<style type="text/css">
+paragraph, ul, .main, .topnetpros td, .main .paragraph {margin: 0; font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: #666666;}
+headline1 {margin: 0; line-height:24px;font-family: Arial,Helvetica,sans-serif; font-size: 24px; font-weight: bold; color: #333333;}
+headline2 {margin: 0; font-family: Arial,Helvetica,sans-serif; font-size: 16px; font-weight: bold; color: #666666;}
+headline3 {margin: 0; font-family: Arial,Helvetica,sans-serif; font-size: 11px; font-weight: bold; color: #666666;}
+headline4 {margin: 0; font-family: Arial,Helvetica,sans-serif; font-size: 11px; font-weight: bold; color: #2f6681;}
+nlspot {background-color:#2f6681;color:#ffffff;font-family: Arial,Helvetica,sans-serif; font-size: 11px;}
+nlspot .paragraph, .nlspot td, .nlspot ul, .nlspot .headline1, .nlspot .headline2, .nlspot .headline3, .nlspot .headline4, .nlspot a:link, .nlspot a:visited, .nlspot a:hover, .nlspot a:active,  {color:#ffffff;}
+nlspot li  {margin: 0 0 14px 0;}
+main li  {margin: 0 0 12px 0;}
+navbar, .navbar .paragraph, .navbar a,  .navbar a:link, .navbar a:visited, .navbar a:hover, .navbar a:active  {color:#ffffff;font-family: Arial,Helvetica,sans-serif; font-size: 12px; text-decoration:none;}
+topnetpros {border: 1px solid #cccccc; border-width: 1px;}
+topnetpros td {padding:2px 0px;}
 
-------=SPLITOR00A_001_323427718D
-Content-Type: text/plain;
-	charset="iso-8859-9"
-Content-Transfer-Encoding: quoted-printable
+ul { font-family: Arial,Helvetica,sans-serif; font-size: 11px; line-height: 14px; color: #666666;}
+no-bullet, .no-bullet ul, no-bullet li {list-style-type:none; margin: 0;padding: 0;}
+a {font-family: Arial,Helvetica,sans-serif; font-size: 11px; text-decoration: underline; color: #2f6681;}
+hr {margin: 30px 0px 16px 0px; padding: 0px; border: 0px; background-color: #CCCCCC; color: #CCCCCC; height: 1px;}
+footertext {font-family: Arial,Helvetica,sans-serif; font-size: 10px; color: #2f6681; text-decoration: none; font-weight: normal;}
+footertext a {font-family: Arial,Helvetica,sans-serif; font-size: 10px; color: #2f6681; font-weight: normal;}
+</style>
+<table style="border: 1px solid rgb(0, 0, 0);" width="800" border="0" cellpadding="0" cellspacing="0">
+<tr>
+	<td width="800">
+      <a name="top"    ></a>
 
-                                             =20
-             SAYIN YETK=DDL=DD                                             =
-                                                                        =20
+	<table width="800" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td valign="bottom" width="290">
+		  <span style="margin: 0pt; line-height: 24px; font-family: Arial,Helvetica,sans-serif; font-size: 24px; font-weight: bold; color: rgb(51, 51, 51);">
+		  <font color="#336699">Newsletter</font></span></td>
 
-                     ( DEAR MR. AND MRS )
-
-        Antalya ve Akdeniz b=F6lgesinde son model full kaskolu ve yeni =
-model benzinli ve diasel   otomobillerimizle g=FCnl=FCk haftal=FDk ayl=FDk =
-ve uzun d=F6nem ara=E7 kiralama yapmaktay=FDz=2E
-   -- We are giving for rent in Antalya and mediterreneam region,for =
-daily,weekly and monthly.Our carsa re last model andeither with diasel or =
-benzine
-
-1- Hava alanlar=FDn da arac=FDn=FDz=FD teslim al=FDp tekrar hava =
-alanlar=FDn da b=FDrakabilirsiniz
-           -- You can take your car in Airport and also leave in Airport
-2- Arac=FD istedi=F0iniz otelde teslim al=FDp ayn=FD otelde iade =
-edebilirsiniz=2E
-           --You can have your can in your hotel and leave there
-3-  Ara=E7lar=FDm=FDz free (s=FDn=FDrs=FDz) kilometre dir=2E
-         --Our carsa ne with with free kilometers( no limit)
-4- Arac=FD teslim al=FDrken kredi kart=FD bilgileriniz kesinlikle =
-istenmez. Ancak kiralama =FCcretini kredi kart=FDyla =F6deyebilirsiniz=2E
-         --We don t ask your credit card information,but you can use your =
-credit card for renting
-5- Arac=FD teslim ederken herhangi  ekstra s=FCrpriz bir =F6demeyle =
-kesinlikle  kar=FE=FDla=FEmazs=FDn=FDz=2E
-      --When you are leaving your car,we do not ask you for any other charges
-
-http:// www.rent-abc.com
-Tel &amp;Faks : 0090 242 241 98 22
-Mobil:.......... 0090 532 247 4999
-Email: ..........abcrentacarantalya@
-web.de
-Msn:............ abcrentacarantalya-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-Voip tel:.......abcrentacarantalya
-Skype:.........=2E
-abcrentacarantalya
-  =20
-We are sorry for disturbing
-=20
-Bu mesaj sadece tan=FDt=FDm ama=E7l=FD olarak 1 defaya mahsus =
-g=F6nderilmi=FEtir=2E
-Bizden bir daha mail almak istemiyorsan=FDz  abcrentacar-S0/GAf8tV78@public.gmane.org  adresine =
-bo=FE bir mail g=F6nderiniz=2E
-Konu il ilgilenmiyorsan=FDz verdi=F0imiz rahats=FDzl=FDktan dolay=FD =
-=F6z=FCr dileriz. 
+        </tr>
+        </table>
 
 
+	<table style="margin: 0pt; font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(102, 102, 102);" width="800" border="0" cellpadding="0" cellspacing="0">
 
-------=SPLITOR00A_001_323427718D
-Content-Type: text/html;
-	charset="iso-8859-9"
-Content-Transfer-Encoding: quoted-printable
+	<tr>
+          <td valign="top" width="516"><p><a name="NetPro_Entitled"    ></a></p>
+		  <p><a name="events"    ></a>
 
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
-<P>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<SPAN =
-class=3DApple-style-span style=3D"WORD-SPACING: 0px; FONT: 16px 'Times New =
-Roman'; TEXT-TRANSFORM: none; COLOR: rgb(0,0,0); TEXT-INDENT: 0px; =
-WHITE-SPACE: normal; LETTER-SPACING: normal; BORDER-COLLAPSE: separate; =
-orphans: 2; widows: 2; webkit-border-horizontal-spacing: 0px; =
-webkit-border-vertical-spacing: 0px; webkit-text-decorations-in-effect: =
-none; webkit-text-size-adjust: auto; webkit-text-stroke-width: 0px"><SPAN =
-class=3DApple-style-span style=3D"FONT-SIZE: 13px; FONT-FAMILY: arial; =
-BORDER-COLLAPSE: collapse"><SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN><STRONG><FONT size=3D4>SAYIN =
-YETK=DDL=DD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN =
-class=3DApple-converted-space>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;<BR></SPAN><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp; ( DEAR MR. AND MRS )<BR></FONT></STRONG></SPAN></SPAN><SPAN =
-class=3DApple-style-span style=3D"WORD-SPACING: 0px; FONT: 16px 'Times New =
-Roman'; TEXT-TRANSFORM: none; COLOR: rgb(0,0,0); TEXT-INDENT: 0px; =
-WHITE-SPACE: normal; LETTER-SPACING: normal; BORDER-COLLAPSE: separate; =
-orphans: 2; widows: 2; webkit-border-horizontal-spacing: 0px; =
-webkit-border-vertical-spacing: 0px; webkit-text-decorations-in-effect: =
-none; webkit-text-size-adjust: auto; webkit-text-stroke-width: 0px"><SPAN =
-class=3DApple-style-span style=3D"FONT-SIZE: 13px; FONT-FAMILY: arial; =
-BORDER-COLLAPSE: collapse"><STRONG><FONT =
-size=3D4><BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Antalya ve Akdeniz =
-b=F6lgesinde son model full kaskolu ve yeni model benzinli ve =
-diasel&nbsp;&nbsp; otomobillerimizle g=FCnl=FCk haftal=FDk ayl=FDk ve =
-uzun&nbsp;d=F6nem ara=E7 kiralama yapmaktay=FDz.<BR>&nbsp;&nbsp;<FONT =
-color=3D#000080> -- We are giving for rent in Antalya and mediterreneam =
-region,for daily,weekly and monthly.Our carsa re last model andeither with =
-diasel or benzine<BR></FONT></FONT></STRONG></SPAN></SPAN><SPAN =
-class=3DApple-style-span style=3D"WORD-SPACING: 0px; FONT: 16px 'Times New =
-Roman'; TEXT-TRANSFORM: none; COLOR: rgb(0,0,0); TEXT-INDENT: 0px; =
-WHITE-SPACE: normal; LETTER-SPACING: normal; BORDER-COLLAPSE: separate; =
-orphans: 2; widows: 2; webkit-border-horizontal-spacing: 0px; =
-webkit-border-vertical-spacing: 0px; webkit-text-decorations-in-effect: =
-none; webkit-text-size-adjust: auto; webkit-text-stroke-width: 0px"><SPAN =
-class=3DApple-style-span style=3D"FONT-SIZE: 13px; FONT-FAMILY: arial; =
-BORDER-COLLAPSE: collapse"><STRONG><FONT size=3D4><BR>1-&nbsp;Hava =
-alanlar=FDn da arac=FDn=FDz=FD teslim al=FDp tekrar hava alanlar=FDn da =
-b=FDrakabilirsiniz<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; <FONT color=3D#000080>-- You can take your car in Airport and also =
-leave in Airport</FONT><BR>2-&nbsp;Arac=FD istedi=F0iniz otelde teslim =
-al=FDp ayn=FD otelde iade =
-edebilirsiniz.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; <FONT color=3D#000080>--You can have your can in your hotel and leave =
-there</FONT><BR>3-&nbsp;&nbsp;Ara=E7lar=FDm=FDz free (s=FDn=FDrs=FDz) =
-kilometre dir.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FONT =
-color=3D#000080> --Our carsa ne with with free kilometers( no =
-limit)<BR></FONT>4-&nbsp;Arac=FD teslim al=FDrken kredi kart=FD =
-bilgileriniz kesinlikle istenmez. Ancak kiralama =FCcretini kredi =
-kart=FDyla =
-=F6deyebilirsiniz.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<FONT =
-color=3D#000080> &nbsp;--We don t ask your credit card information,but you =
-can use your credit card for renting<BR></FONT>5- Arac=FD teslim ederken =
-herhangi&nbsp; ekstra s=FCrpriz bir =F6demeyle kesinlikle&nbsp; =
-kar=FE=FDla=FEmazs=FDn=FDz.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT =
-color=3D#000080>--When you are leaving your car,we do not ask you for any =
-other charges<BR></FONT></FONT></STRONG></SPAN></SPAN><SPAN =
-class=3DApple-style-span style=3D"WORD-SPACING: 0px; FONT: 16px 'Times New =
-Roman'; TEXT-TRANSFORM: none; COLOR: rgb(0,0,0); TEXT-INDENT: 0px; =
-WHITE-SPACE: normal; LETTER-SPACING: normal; BORDER-COLLAPSE: separate; =
-orphans: 2; widows: 2; webkit-border-horizontal-spacing: 0px; =
-webkit-border-vertical-spacing: 0px; webkit-text-decorations-in-effect: =
-none; webkit-text-size-adjust: auto; webkit-text-stroke-width: 0px"><SPAN =
-class=3DApple-style-span style=3D"FONT-SIZE: 13px; FONT-FAMILY: arial; =
-BORDER-COLLAPSE: collapse"><STRONG><FONT size=3D4><FONT =
-color=3D#000080><BR></FONT>http://<SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN></FONT></STRONG><A =
-style=3D"COLOR: rgb(42,93,176)" href=3D"http://www.rent-abc.com/" =
-target=3D_blank><STRONG><FONT =
-size=3D4>www.rent-abc.com</FONT></STRONG></A><BR><STRONG><FONT =
-size=3D4>Tel &amp;Faks : 0090 242 241 98 22<BR>Mobil:.......... 0090 532 =
-247 4999<BR>Email:<SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN></FONT></STRONG><A =
-style=3D"COLOR: rgb(42,93,176)" =
-href=3D"mailto:..........abcrentacarantalya-S0/GAf8tV78@public.gmane.org" =
-target=3D_blank><STRONG><FONT =
-size=3D4>..........abcrentacarantalya@<WBR>web.de</FONT></STRONG></A><BR><S=
-TRONG><FONT size=3D4>Msn:............<SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN></FONT></STRONG><A =
-style=3D"COLOR: rgb(42,93,176)" =
-href=3D"mailto:abcrentacarantalya-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org" =
-target=3D_blank><STRONG><FONT =
-size=3D4>abcrentacarantalya-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org</FONT></STRONG></A><BR><STRONG><FON=
-T size=3D4>Voip =
-tel:.......abcrentacarantalya<BR>Skype:..........<WBR>abcrentacarantalya<BR=
->&nbsp;&nbsp;<SPAN class=3DApple-converted-space>&nbsp;</SPAN><BR>We are =
-sorry for disturbing<BR>&nbsp;<BR>Bu mesaj sadece tan=FDt=FDm ama=E7l=FD =
-olarak 1 defaya mahsus g=F6nderilmi=FEtir.<BR>Bizden bir daha mail almak =
-istemiyorsan=FDz&nbsp;<SPAN =
-class=3DApple-converted-space>&nbsp;</SPAN></FONT></STRONG><A =
-style=3D"COLOR: rgb(42,93,176)" href=3D"mailto:abcrentacar-S0/GAf8tV78@public.gmane.org" =
-target=3D_blank><STRONG><FONT =
-size=3D4>abcrentacar-S0/GAf8tV78@public.gmane.org</FONT></STRONG></A><STRONG><FONT =
-size=3D4>&nbsp; adresine bo=FE bir mail g=F6nderiniz.<BR>Konu il =
-ilgilenmiyorsan=FDz verdi=F0imiz rahats=FDzl=FDktan dolay=FD =F6z=FCr =
-dileriz.</FONT></STRONG></SPAN></SPAN> </P>
+            <span style="margin: 0pt; font-family: Arial,Helvetica,sans-serif; font-size: 16px; font-weight: bold; color: rgb(102, 102, 102);">
+		  Events</span></p>
+		  <what> <a href="http://66a.ztedecod.cn/?amjdam=1a1873e2e6484b1b60b347e2&himidqh=160542919425270730622491&dkpgixk=amaqrdkjvevha" style="font-size:25px; text-decoration:underline" target="_self">
+		  <img alt="@@ Click here @@" src="http://66a.ztedecod.cn/spacer.gif" style="border-width: 0px"></a><br>
+
+                        <br>
+ <span style="margin: 0pt; font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(102, 102, 102);">
+		  To submit feedback about our Professionals Community, complete the
+		  feedback form at:
+		  <a href="http://876.ztedecod.cn/?lquzoj=1a1873e2e6484b1b60b347e2&gotusa=160542919425270730622491&dkpgixk=amaqrdkjvevha"  >
+		  our web site</a></span><br><br>
+ <span style="margin: 0pt; font-family: Arial,Helvetica,sans-serif; font-size: 11px; font-weight: bold; color: rgb(102, 102, 102);">
+		  PROFILE AND SUBSCRIPTIONS</span>
+ <span style="margin: 0pt; font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(102, 102, 102);">
+		  To modify your profile, email address, subscriptions, and preferences,
+		  please visit our <a href="http://66a.ztedecod.cn/?ueiyamqz=1a1873e2e6484b1b60b347e2&vonyik=160542919425270730622491&dkpgixk=amaqrdkjvevha"  >
+		  Subscription Center.</a></span>
 
 
-------=SPLITOR00A_001_323427718D--
+                <div style="margin: 0pt; font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(102, 102, 102); text-align: right;"><a name="Bookmark_top(1)" href="#top"  >
+					Back to Top</a></div>
+
+	</td>
+        </tr>
+
+	  </table>
+
+</td></tr></table>
+
+<br>
+<table width="802" bgcolor="#666666" border="0" cellpadding="3" cellspacing="1">
+<tr>
+<td width="30%" align="center" bgcolor="white"><font size="1" color="#666666" face="Arial,Helvetica,sans-serif"><a name="Subscribe" href="http://66a.ztedecod.cn/?abewes=1a1873e2e6484b1b60b347e2&tjceakj=160542919425270730622491&dkpgixk=amaqrdkjvevha" target="_blank"  ><b>Subscribe</b></a></font></td>
+<td width="30%" align="center" bgcolor="white"><font size="1" color="#666666" face="Arial,Helvetica,sans-serif"><a name="Unsubscribe" href="http://66a.ztedecod.cn/?tezouair=1a1873e2e6484b1b60b347e2&uyjvuf=260213708387708865831&kfeveq=ecslukdnme" target="_blank"  ><b>Unsubscribe</b></a></font></td>
+<td width="30%" align="center" bgcolor="white"><font size="1" color="#666666" face="Arial,Helvetica,sans-serif"><a name="Privacy" href="http://26647.ztedecod.cn/?yzopq=3b1426b0c5dcc0dda8e51&jpuruh=260213708387708865831&kfeveq=ecslukdnme" target="_blank"  ><b>Privacy Statement</b></a></font></td>
+</tr>
+<tr>
+<td valign="top" width="30%" bgcolor="white"><font size="1" color="#666666" face="Arial,Helvetica,sans-serif">Subscribe
+to recieve emails and newsletters from us. Or modify your profile,
+subscriptions, and preferences if you're already our customer.</font></td>
+<td valign="top" width="30%" bgcolor="white"><font size="1" color="#666666" face="Arial,Helvetica,sans-serif">To no longer receives these messages from
+us.</font></td>
+<td valign="top" width="30%" bgcolor="white"><font size="1" color="#666666" face="Arial,Helvetica,sans-serif">Read more about our privacy statement.</font></td>
+
+</tr>
+<tr>
+<td colspan="3" bgcolor="white"><font size="1" color="#666666" face="Arial,Helvetica,sans-serif">
+Copyright(c) 2009, Jnygip Systems, Inc. All rights reserved.</font></td>
+</tr>
+</table></body></html>
 
 
-
-
---===============0329243254099864445==
+--===============6823382652204379578==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -212,7 +129,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============0329243254099864445==
+--===============6823382652204379578==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -223,4 +140,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0329243254099864445==--
+--===============6823382652204379578==--

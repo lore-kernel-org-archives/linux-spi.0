@@ -1,13 +1,10 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] U300 SSP/SPI board setup and test
-Date: Mon, 10 Aug 2009 16:27:13 +0200
-Message-ID: <1249914433-6315-1-git-send-email-linus.walleij@stericsson.com>
+From: SSC Srl <ssc-8B08IYU92cHXhuE9TQ4jql6hYfS7NtTn@public.gmane.org>
+Subject: [SPAM] SSC – I PRESTITI PERSONALI RENDONO BENE …
+Date: Mon, 10 Aug 2009 17:33:17 +0200
+Message-ID: <20090810161734.8440.1417895576.swift@192.168.5.5>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1252195355441402055=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,538 +16,139 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This adds a U300 board configuration for the PL022 SSP/SPI
-PrimeCell driver recently merged to the 2.6.31-rc series.
-Further it adds a dummy loopback SPI chip that can be used
-for testing the SPI functionality on a running system using
-the loopback mode of PL022.
+This is a message in multipart MIME format.  Your mail client should not
+be displaying this. Consider upgrading your mail client to view this
+message correctly.
+--===============1252195355441402055==
+Content-Type: multipart/alternative;
+	boundary="_=_swift-19384744154a803dbdc4c2d2.47764161_=_"
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-----
-This requires the previously posted padmux enhancements to
-be applied first.
----
- arch/arm/mach-u300/Kconfig        |   12 ++
- arch/arm/mach-u300/Makefile       |    2 +
- arch/arm/mach-u300/core.c         |    6 +
- arch/arm/mach-u300/dummyspichip.c |  290 +++++++++++++++++++++++++++++++++++++
- arch/arm/mach-u300/spi.c          |  124 ++++++++++++++++
- arch/arm/mach-u300/spi.h          |    8 +
- 6 files changed, 442 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/mach-u300/dummyspichip.c
- create mode 100644 arch/arm/mach-u300/spi.c
- create mode 100644 arch/arm/mach-u300/spi.h
+This is a message in multipart MIME format.  Your mail client should not
+be displaying this. Consider upgrading your mail client to view this
+message correctly.
+--_=_swift-19384744154a803dbdc4c2d2.47764161_=_
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/arm/mach-u300/Kconfig b/arch/arm/mach-u300/Kconfig
-index 337b9aa..801b21e 100644
---- a/arch/arm/mach-u300/Kconfig
-+++ b/arch/arm/mach-u300/Kconfig
-@@ -81,6 +81,18 @@ config MACH_U300_SEMI_IS_SHARED
- 		Memory Interface) from both from access and application
- 		side.
- 
-+config MACH_U300_SPIDUMMY
-+	bool "SSP/SPI dummy chip"
-+	select SPI
-+	select SPI_MASTER
-+	select SPI_PL022
-+	help
-+		This creates a small kernel module that creates a dummy
-+		SPI device to be used for loopback tests. Regularly used
-+		to test reference designs. If you're not testing SPI,
-+		you don't need it. Selecting this will activate the
-+		SPI framework and ARM PL022 support.
-+
- comment "All the settings below must match the bootloader's settings"
- 
- config MACH_U300_ACCESS_MEM_SIZE
-diff --git a/arch/arm/mach-u300/Makefile b/arch/arm/mach-u300/Makefile
-index 24950e0..4941f89 100644
---- a/arch/arm/mach-u300/Makefile
-+++ b/arch/arm/mach-u300/Makefile
-@@ -9,3 +9,5 @@ obj-		:=
- 
- obj-$(CONFIG_ARCH_U300)	          += u300.o
- obj-$(CONFIG_MMC)                 += mmc.o
-+obj-$(CONFIG_SPI_PL022)           += spi.o
-+obj-$(CONFIG_MACH_U300_SPIDUMMY)  += dummyspichip.o
-diff --git a/arch/arm/mach-u300/core.c b/arch/arm/mach-u300/core.c
-index 7936085..30811ff 100644
---- a/arch/arm/mach-u300/core.c
-+++ b/arch/arm/mach-u300/core.c
-@@ -32,6 +32,7 @@
- 
- #include "clock.h"
- #include "mmc.h"
-+#include "spi.h"
- 
- /*
-  * Static I/O mappings that are needed for booting the U300 platforms. The
-@@ -611,6 +612,8 @@ void __init u300_init_devices(void)
- 	/* Wait for the PLL208 to lock if not locked in yet */
- 	while (!(readw(U300_SYSCON_VBASE + U300_SYSCON_CSR) &
- 		 U300_SYSCON_CSR_PLL208_LOCK_IND));
-+	/* Initialize SPI device with some board specifics */
-+	spi_init(&pl022_device);
- 
- 	/* Register the AMBA devices in the AMBA bus abstraction layer */
- 	u300_clock_primecells();
-@@ -622,6 +625,9 @@ void __init u300_init_devices(void)
- 
- 	u300_assign_physmem();
- 
-+	/* Register subdevices on the SPI bus */
-+	spi_register_board_devices();
-+
- 	/* Register the platform devices */
- 	platform_add_devices(platform_devs, ARRAY_SIZE(platform_devs));
- 
-diff --git a/arch/arm/mach-u300/dummyspichip.c b/arch/arm/mach-u300/dummyspichip.c
-new file mode 100644
-index 0000000..962f9de
---- /dev/null
-+++ b/arch/arm/mach-u300/dummyspichip.c
-@@ -0,0 +1,290 @@
-+/*
-+ * arch/arm/mach-u300/dummyspichip.c
-+ *
-+ * Copyright (C) 2007-2009 ST-Ericsson AB
-+ * License terms: GNU General Public License (GPL) version 2
-+ * This is a dummy loopback SPI "chip" used for testing SPI.
-+ * Author: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-+ */
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/sysfs.h>
-+#include <linux/mutex.h>
-+#include <linux/spi/spi.h>
-+#include <linux/dma-mapping.h>
-+/*
-+ * WARNING! Do not include this pl022-specific controller header
-+ * for any generic driver. It is only done in this dummy chip
-+ * because we alter the chip configuration in order to test some
-+ * different settings on the loopback device. Normal chip configs
-+ * shall be STATIC and not altered by the driver!
-+ */
-+#include <linux/amba/pl022.h>
-+
-+struct dummy {
-+	struct device *dev;
-+	struct mutex lock;
-+};
-+
-+#define DMA_TEST_SIZE 2048
-+
-+/* When we cat /sys/bus/spi/devices/spi0.0/looptest this will be triggered */
-+static ssize_t dummy_looptest(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct spi_device *spi = to_spi_device(dev);
-+	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
-+
-+	/*
-+	 * WARNING! Do not dereference the chip-specific data in any normal
-+	 * driver for a chip. It is usually STATIC and shall not be read
-+	 * or written to. Your chip driver should NOT depend on fields in this
-+	 * struct, this is just used here to alter the behaviour of the chip
-+	 * in order to perform tests.
-+	 */
-+	struct pl022_config_chip *chip_info = spi->controller_data;
-+	int status;
-+	u8 txbuf[14] = {0xDE, 0xAD, 0xBE, 0xEF, 0x2B, 0xAD,
-+			0xCA, 0xFE, 0xBA, 0xBE, 0xB1, 0x05,
-+			0xF0, 0x0D};
-+	u8 rxbuf[14];
-+	u8 *bigtxbuf_virtual;
-+	u8 *bigrxbuf_virtual;
-+
-+	if (mutex_lock_interruptible(&p_dummy->lock))
-+		return -ERESTARTSYS;
-+
-+	bigtxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
-+	if (bigtxbuf_virtual == NULL) {
-+		status = -ENOMEM;
-+		goto out;
-+	}
-+	bigrxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
-+
-+	/* Fill TXBUF with some happy pattern */
-+	memset(bigtxbuf_virtual, 0xAA, DMA_TEST_SIZE);
-+
-+	/*
-+	 * Force chip to 8 bit mode
-+	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
-+	 */
-+	chip_info->data_size = SSP_DATA_BITS_8;
-+	/* You should NOT DO THIS EITHER */
-+	spi->master->setup(spi);
-+
-+	/* Now run the tests for 8bit mode */
-+	pr_info("Simple test 1: write 0xAA byte, read back garbage byte "
-+		"in 8bit mode\n");
-+	status = spi_w8r8(spi, 0xAA);
-+	if (status < 0)
-+		pr_warning("Siple test 1: FAILURE: spi_write_then_read "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 1: SUCCESS!\n");
-+
-+	pr_info("Simple test 2: write 8 bytes, read back 8 bytes garbage "
-+		"in 8bit mode (full FIFO)\n");
-+	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
-+	if (status < 0)
-+		pr_warning("Simple test 2: FAILURE: spi_write_then_read() "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 2: SUCCESS!\n");
-+
-+	pr_info("Simple test 3: write 14 bytes, read back 14 bytes garbage "
-+		"in 8bit mode (see if we overflow FIFO)\n");
-+	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
-+	if (status < 0)
-+		pr_warning("Simple test 3: FAILURE: failed with status %d "
-+			   "(probably FIFO overrun)\n", status);
-+	else
-+		pr_info("Simple test 3: SUCCESS!\n");
-+
-+	pr_info("Simple test 4: write 8 bytes with spi_write(), read 8 "
-+		"bytes garbage with spi_read() in 8bit mode\n");
-+	status = spi_write(spi, &txbuf[0], 8);
-+	if (status < 0)
-+		pr_warning("Simple test 4 step 1: FAILURE: spi_write() "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 4 step 1: SUCCESS!\n");
-+	status = spi_read(spi, &rxbuf[0], 8);
-+	if (status < 0)
-+		pr_warning("Simple test 4 step 2: FAILURE: spi_read() "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 4 step 2: SUCCESS!\n");
-+
-+	pr_info("Simple test 5: write 14 bytes with spi_write(), read "
-+		"14 bytes garbage with spi_read() in 8bit mode\n");
-+	status = spi_write(spi, &txbuf[0], 14);
-+	if (status < 0)
-+		pr_warning("Simple test 5 step 1: FAILURE: spi_write() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 5 step 1: SUCCESS!\n");
-+	status = spi_read(spi, &rxbuf[0], 14);
-+	if (status < 0)
-+		pr_warning("Simple test 5 step 2: FAILURE: spi_read() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 5: SUCCESS!\n");
-+
-+	pr_info("Simple test 6: write %d bytes with spi_write(), "
-+		"read %d bytes garbage with spi_read() in 8bit mode\n",
-+		DMA_TEST_SIZE, DMA_TEST_SIZE);
-+	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
-+	if (status < 0)
-+		pr_warning("Simple test 6 step 1: FAILURE: spi_write() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 6 step 1: SUCCESS!\n");
-+	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
-+	if (status < 0)
-+		pr_warning("Simple test 6 step 2: FAILURE: spi_read() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 6: SUCCESS!\n");
-+
-+
-+	/*
-+	 * Force chip to 16 bit mode
-+	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
-+	 */
-+	chip_info->data_size = SSP_DATA_BITS_16;
-+	/* You should NOT DO THIS EITHER */
-+	spi->master->setup(spi);
-+
-+	pr_info("Simple test 7: write 0xAA byte, read back garbage byte "
-+		"in 16bit bus mode\n");
-+	status = spi_w8r8(spi, 0xAA);
-+	if (status == -EIO)
-+		pr_info("Simple test 7: SUCCESS! (expected failure with "
-+			"status EIO)\n");
-+	else if (status < 0)
-+		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
-+			   "succeeded but it was expected to fail!\n");
-+
-+	pr_info("Simple test 8: write 8 bytes, read back 8 bytes garbage "
-+		"in 16bit mode (full FIFO)\n");
-+	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
-+	if (status < 0)
-+		pr_warning("Simple test 8: FAILURE: spi_write_then_read() "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 8: SUCCESS!\n");
-+
-+	pr_info("Simple test 9: write 14 bytes, read back 14 bytes garbage "
-+		"in 16bit mode (see if we overflow FIFO)\n");
-+	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
-+	if (status < 0)
-+		pr_warning("Simple test 9: FAILURE: failed with status %d "
-+			   "(probably FIFO overrun)\n", status);
-+	else
-+		pr_info("Simple test 9: SUCCESS!\n");
-+
-+	pr_info("Simple test 10: write %d bytes with spi_write(), "
-+	       "read %d bytes garbage with spi_read() in 16bit mode\n",
-+	       DMA_TEST_SIZE, DMA_TEST_SIZE);
-+	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
-+	if (status < 0)
-+		pr_warning("Simple test 10 step 1: FAILURE: spi_write() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 10 step 1: SUCCESS!\n");
-+
-+	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
-+	if (status < 0)
-+		pr_warning("Simple test 10 step 2: FAILURE: spi_read() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 10: SUCCESS!\n");
-+
-+	status = sprintf(buf, "loop test complete\n");
-+	kfree(bigrxbuf_virtual);
-+	kfree(bigtxbuf_virtual);
-+ out:
-+	mutex_unlock(&p_dummy->lock);
-+	return status;
-+}
-+
-+static DEVICE_ATTR(looptest, S_IRUGO, dummy_looptest, NULL);
-+
-+static int __devinit pl022_dummy_probe(struct spi_device *spi)
-+{
-+	struct dummy *p_dummy;
-+	int status;
-+
-+	dev_info(&spi->dev, "probing dummy SPI device\n");
-+
-+	p_dummy = kzalloc(sizeof *p_dummy, GFP_KERNEL);
-+	if (!p_dummy)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(&spi->dev, p_dummy);
-+	mutex_init(&p_dummy->lock);
-+
-+	/* sysfs hook */
-+	status = device_create_file(&spi->dev, &dev_attr_looptest);
-+	if (status) {
-+		dev_dbg(&spi->dev, "device_create_file looptest failure.\n");
-+		goto out_dev_create_looptest_failed;
-+	}
-+
-+	return 0;
-+
-+out_dev_create_looptest_failed:
-+	dev_set_drvdata(&spi->dev, NULL);
-+	kfree(p_dummy);
-+	return status;
-+}
-+
-+static int __devexit pl022_dummy_remove(struct spi_device *spi)
-+{
-+	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
-+
-+	dev_info(&spi->dev, "removing dummy SPI device\n");
-+	device_remove_file(&spi->dev, &dev_attr_looptest);
-+	dev_set_drvdata(&spi->dev, NULL);
-+	kfree(p_dummy);
-+
-+	return 0;
-+}
-+
-+static struct spi_driver pl022_dummy_driver = {
-+	.driver = {
-+		.name	= "spi-dummy",
-+		.owner	= THIS_MODULE,
-+	},
-+	.probe	= pl022_dummy_probe,
-+	.remove	= __devexit_p(pl022_dummy_remove),
-+};
-+
-+static int __init pl022_init_dummy(void)
-+{
-+	return spi_register_driver(&pl022_dummy_driver);
-+}
-+
-+static void __exit pl022_exit_dummy(void)
-+{
-+	spi_unregister_driver(&pl022_dummy_driver);
-+}
-+
-+module_init(pl022_init_dummy);
-+module_exit(pl022_exit_dummy);
-+
-+MODULE_AUTHOR("Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>");
-+MODULE_DESCRIPTION("PL022 SSP/SPI DUMMY Linux driver");
-+MODULE_LICENSE("GPL");
-diff --git a/arch/arm/mach-u300/spi.c b/arch/arm/mach-u300/spi.c
-new file mode 100644
-index 0000000..59456a3
---- /dev/null
-+++ b/arch/arm/mach-u300/spi.c
-@@ -0,0 +1,124 @@
-+/*
-+ * arch/arm/mach-u300/spi.c
-+ *
-+ * Copyright (C) 2009 ST-Ericsson AB
-+ * License terms: GNU General Public License (GPL) version 2
-+ *
-+ * Author: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-+ */
-+#include <linux/device.h>
-+#include <linux/amba/bus.h>
-+#include <linux/spi/spi.h>
-+#include <linux/amba/pl022.h>
-+#include <linux/err.h>
-+#include "padmux.h"
-+
-+/*
-+ * The following is for the actual devices on the SSP/SPI bus
-+ */
-+#ifdef CONFIG_MACH_U300_SPIDUMMY
-+static void select_dummy_chip(u32 chipselect)
-+{
-+	pr_debug("CORE: %s called with CS=0x%x (%s)\n",
-+		 __func__,
-+		 chipselect,
-+		 chipselect ? "unselect chip" : "select chip");
-+	/*
-+	 * Here you would write the chip select value to the GPIO pins if
-+	 * this was a real chip (but this is a loopback dummy).
-+	 */
-+}
-+
-+struct pl022_config_chip dummy_chip_info = {
-+	/* Nominally this is LOOPBACK_DISABLED, but this is our dummy chip! */
-+	.lbm = LOOPBACK_ENABLED,
-+	/*
-+	 * available POLLING_TRANSFER and INTERRUPT_TRANSFER,
-+	 * DMA_TRANSFER does not work
-+	 */
-+	.com_mode = INTERRUPT_TRANSFER,
-+	.iface = SSP_INTERFACE_MOTOROLA_SPI,
-+	/* We can only act as master but SSP_SLAVE is possible in theory */
-+	.hierarchy = SSP_MASTER,
-+	/* 0 = drive TX even as slave, 1 = do not drive TX as slave */
-+	.slave_tx_disable = 0,
-+	/* LSB first */
-+	.endian_tx = SSP_TX_LSB,
-+	.endian_rx = SSP_RX_LSB,
-+	.data_size = SSP_DATA_BITS_8, /* used to be 12 in some default */
-+	.rx_lev_trig = SSP_RX_1_OR_MORE_ELEM,
-+	.tx_lev_trig = SSP_TX_1_OR_MORE_EMPTY_LOC,
-+	.clk_phase = SSP_CLK_FALLING_EDGE,
-+	.clk_pol = SSP_CLK_POL_IDLE_LOW,
-+	.ctrl_len = SSP_BITS_12,
-+	.wait_state = SSP_MWIRE_WAIT_ZERO,
-+	.duplex = SSP_MICROWIRE_CHANNEL_FULL_DUPLEX,
-+	/*
-+	 * This is where you insert a call to a function to enable CS
-+	 * (usually GPIO) for a certain chip.
-+	 */
-+	.cs_control = select_dummy_chip,
-+};
-+#endif
-+
-+static struct spi_board_info u300_spi_devices[] = {
-+#ifdef CONFIG_MACH_U300_SPIDUMMY
-+	{
-+		/* A dummy chip used for loopback tests */
-+		.modalias       = "spi-dummy",
-+		/* Really dummy, pass in additional chip config here */
-+		.platform_data  = NULL,
-+		/* This defines how the controller shall handle the device */
-+		.controller_data = &dummy_chip_info,
-+		/* .irq - no external IRQ routed from this device */
-+		.max_speed_hz   = 1000000,
-+		.bus_num        = 0, /* Only one bus on this chip */
-+		.chip_select    = 0,
-+		/* Means SPI_CS_HIGH, change if e.g low CS */
-+		.mode           = 0,
-+	},
-+#endif
-+};
-+
-+static struct pl022_ssp_controller ssp_platform_data = {
-+	/* If you have several SPI buses this varies, we have only bus 0 */
-+	.bus_id = 0,
-+	/* Set this to 1 when we think we got DMA working */
-+	.enable_dma = 0,
-+	/*
-+	 * On the APP CPU GPIO 4, 5 and 6 are connected as generic
-+	 * chip selects for SPI. (Same on U330, U335 and U365.)
-+	 * TODO: make sure the GPIO driver can select these properly
-+	 * and do padmuxing accordingly too.
-+	 */
-+	.num_chipselect = 3,
-+};
-+
-+
-+void spi_init(struct amba_device *adev)
-+{
-+	struct pmx *pmx;
-+
-+	adev->dev.platform_data = &ssp_platform_data;
-+	/*
-+	 * Setup padmuxing for SPI. Since this must always be
-+	 * compiled into the kernel, pmx is never released.
-+	 */
-+	pmx = pmx_get(&adev->dev, U300_APP_PMX_SPI_SETTING);
-+
-+	if (IS_ERR(pmx))
-+		dev_warn(&adev->dev, "Could not get padmux handle\n");
-+	else {
-+		int ret;
-+
-+		ret = pmx_activate(&adev->dev, pmx);
-+		if (IS_ERR_VALUE(ret))
-+			dev_warn(&adev->dev, "Could not activate padmuxing\n");
-+	}
-+
-+}
-+void spi_register_board_devices(void)
-+{
-+	/* Register any SPI devices */
-+	spi_register_board_info(u300_spi_devices, ARRAY_SIZE(u300_spi_devices));
-+}
-diff --git a/arch/arm/mach-u300/spi.h b/arch/arm/mach-u300/spi.h
-new file mode 100644
-index 0000000..84b1622
---- /dev/null
-+++ b/arch/arm/mach-u300/spi.h
-@@ -0,0 +1,8 @@
-+#ifndef SPI_H
-+#define SPI_H
-+#include <linux/amba/bus.h>
-+
-+void spi_init(struct amba_device *adev);
-+void spi_register_board_devices(void);
-+
-+#endif
--- 
-1.6.2.1
+<head>
+       =20
+    </head>
+    <body>
+        <p>&nbsp;</p>
+        <div style=3D"line-height: 150%"><b>Gentile Operatore.</b></div>
+        <div style=3D"line-height: 150%"><b>I Prestiti Personali rendono =
+bene e noi ne eroghiamo molti &hellip; con grande soddisfazione per clien=
+ti e Collaboratori. Cosa non facile in questi tempi. </b></div>
+        <div style=3D"line-height: 150%"><b><u><span style=3D"font-size: =
+14pt; color: #3366ff; line-height: 150%"><a href=3D"http://www.sscsoluzio=
+ni25.it/news/newsletter/newsletter_029_ato.asp"><span style=3D"color: #33=
+66ff">Leggi alcuni dettagli.</span></a></span></u></b></div>
+        <div style=3D"line-height: 150%"><b>Restiamo a Sua disposizione p=
+er eventuali altre informazioni.</b></div>
+        <div style=3D"line-height: 150%"><b>RingraziandoLa per l&rsquo;at=
+tenzione, gradisca cordiali saluti. </b></div>
+        <div><b>&nbsp;</b></div>
+        <div><b>SSC Srl</b></div>
+        <div><b>Servizio assistenza Collaboratori</b></div>
+        <div style=3D"line-height: 150%">&nbsp;</div>
+        <div style=3D"line-height: 150%" align=3D"center"><b><span style=3D=
+"color: red">N.B. Per consultare la &ldquo;Sezione riservata a Collaborat=
+ori e Segnalatori&rdquo; del ns. Sito</span></b></div>
+        <div style=3D"line-height: 150%" align=3D"center"><b><span style=3D=
+"color: red">&egrave; necessario avvalersi della&nbsp;seguente password d=
+i prova valida 15 giorni</span></b></div>
+        <div style=3D"line-height: 150%" align=3D"center"><b><span style=3D=
+"color: blue">Nome:&nbsp;</span></b><b><span style=3D"font-size: 14pt; co=
+lor: blue; line-height: 150%; letter-spacing: 1pt">abfde</span></b><b><sp=
+an style=3D"color: blue">&nbsp;-&nbsp;Password: </span></b><b><span style=
+=3D"font-size: 14pt; color: blue; line-height: 150%; letter-spacing: 1pt"=
+>423456</span></b></div>
+        <div style=3D"line-height: 150%" align=3D"center"><b><span style=3D=
+"color: red">Una volta entrati&nbsp;nella &ldquo;Sezione riservata a Coll=
+aboratori e Segnalatori&rdquo;, cliccare su</span></b></div>
+        <div style=3D"line-height: 150%" align=3D"center"><b><span style=3D=
+"color: blue">&ldquo;Potenziali Collaboratori e Segnalatori&rdquo;.</span=
+></b></div>
+        <div style=3D"line-height: 150%" align=3D"center"><b><span style=3D=
+"color: red">Qui pu&ograve; consultare Informazioni, Condizioni e Paramet=
+ri di prodotti e servizi finanziari.</span></b></div>
+        <div style=3D"line-height: 150%" align=3D"center"><b>&nbsp;</b></=
+div>
+        <div style=3D"line-height: 150%" align=3D"center"><b><u><span sty=
+le=3D"font-size: 14pt; color: #666699; line-height: 150%"><a href=3D"http=
+://www.sscsoluzioni25.it/"><font color=3D"#800080">www.sscsoluzioni25.it<=
+/font></a></span></u></b></div>
+        <div style=3D"line-height: 150%" align=3D"center">&nbsp;</div>
+        <div align=3D"center">&nbsp;</div>
+        <div align=3D"center"><b><span style=3D"color: red">Attenzione</s=
+pan></b></div>
+        <div align=3D"center"><b><span style=3D"color: red">Per non ricev=
+ere altre ns. informazioni del genere sopra indicato</span></b></div>
+        <div align=3D"center"><b>&nbsp;</b></div>
+        <div align=3D"center"><b><span style=3D"font-size: 14pt; color: #=
+3366ff"><a href=3D"mailto:rimuovi-8B08IYU92cHXhuE9TQ4jql6hYfS7NtTn@public.gmane.org?subject=3DCancellazio=
+ne%20indirizzo%20e-mail&body=3DSpett.%20SSC%0D%0ANon%20essendo%20(neanche=
+%20in%20futuro)%2C%20interessato%20alla%20Vs.%20offerta%2C%20Vi%20prego%2=
+0di%20cancellare%20il%20mio%20indirizzo%20dalla%20Vs.%20rubrica.%0D%0A%0D=
+%0ADistinti%20Saluti"><span style=3D"color: #3366ff">&egrave; sufficiente=
+ Cliccare qu&igrave;</span></a></span></b></div>
+        <div align=3D"center"><b>&nbsp;</b></div>
+        <div align=3D"center"><b><span style=3D"color: red">In tal caso i=
+l suo indirizzo verr&agrave; immediatamente derubricato</span></b></div>
+        <div style=3D"line-height: 150%">&nbsp;</div>
+        <div>&nbsp;</div>
+        <div>SSC Srl</div>
+        <div>Viale Italia, 120</div>
+        <div>31015 Conegliano (TV)</div>
+        <div>&nbsp;</div>
+        <div>Tel: 0438.450.534 (10 linee) &ndash; Fax: 0438.455.128 (24 h=
+)</div>
+        <div>&nbsp;</div>
+        <div><a href=3D"http://www.sscsoluzioni25.it/"><font color=3D"#80=
+0080">www.sscsoluzioni25.it</font></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e-mail: <a href=3D"mailto:info@sscsoluzi=
+oni25.it?subject=3DRichiesta%20Informazioni">info-8B08IYU92cHXhuE9TQ4jql6hYfS7NtTn@public.gmane.org</a> &=
+nbsp;</div>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <div><i><span style=3D"color: teal">Questo messaggio di posta ele=
+ttronica contiene informazioni di carattere confidenziale rivolte esclusi=
+vamente al destinatario sopraindicato. E' vietato l'uso, la diffusione, d=
+istribuzione o riproduzione da parte di ogni altra persona. Nel caso aves=
+te ricevuto questo messaggio di posta elettronica per errore, siete prega=
+ti di segnalarlo immediatamente al mittente e distruggere quanto ricevuto=
+ (compresi file allegati) senza farne copia. Qualsivoglia utilizzo non au=
+torizzato del contenuto di questo messaggio costituisce violazione dell'o=
+bbligo di non prendere cognizione della corrispondenza tra altri soggetti=
+, salvo pi&ugrave; grave illecito, ed espone il responsabile alle relativ=
+e conseguenze.</span></i></div>
+    <br><img src=3D"http://mail.sscfinanza.it/lt/t_go.php?i=3D42&e=3DOTY4=
+Mjgy&l=3Dopen" width=3D"1" height=3D"1" border=3D"0"></body>
+--_=_swift-19384744154a803dbdc4c2d2.47764161_=_--
 
+
+
+--===============1252195355441402055==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--===============1252195355441402055==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1252195355441402055==--

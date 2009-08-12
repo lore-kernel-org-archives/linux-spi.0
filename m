@@ -1,12 +1,11 @@
-From: Assu 2000 <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
-Subject: [SPAM] Trouvez le contrat d'assurance auto qui
-	vous convient
-Date: 12 Aug 2009 07:15:13 -0000
-Message-ID: <20090812071513.26913.qmail@ks357949.kimsufi.com>
-Reply-To: Assu 2000 <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
+From: "regime Dukan par Plein Temps" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: Calculez votre juste poids gratuitement et
+	profitez de la promotion soleil
+Date: Wed, 12 Aug 2009 12:07:16 +0200 (CEST)
+Message-ID: <ko9dg4.cjqtww@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1465687477575434257=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============7979296501295721071=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,92 +17,64 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============1465687477575434257==
+--===============7979296501295721071==
 Content-Type: multipart/alternative;
-	boundary="_----------=_parties_55150a636e6be3c9738419b06267c1b9"
+	boundary="=_9273623670fa98a4bddc790a48981ce8"
+
+--=_9273623670fa98a4bddc790a48981ce8
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
---_----------=_parties_55150a636e6be3c9738419b06267c1b9
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+--=_9273623670fa98a4bddc790a48981ce8
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Version "en ligne" de ce message: http://www.centralmarque.com/svi/miroir.php?bat=assu2000_0809_ctrm
-
-Assu 2000
-Trouvez le contrat d'assurance auto qui vous convient
-4 formules d'assurance :
-
-L'économique
-
-L'essentielle
-
-L'optimale
-
-Le meilleur rapport protection / prix
-
-Tous profils acceptés:
-
-Jeunes permis, bons conducteurs, Malussés, résiliés pour non paiement, Suspension ou annulation de permis, Alcoolémie...
-
-Demandez votre devis d'assurance voiture personnalisé
-
-plus d'infos sur http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique
-
---------------------------------
-Cette offre Assu2000 vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.centralmarque.com/svi/gestionserv.php?nb=2059&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_55150a636e6be3c9738419b06267c1b9
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>Assu 2000</title>
-</head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.centralmarque.com/svi/miroir.php?bat=assu2000_0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre Assu2000 vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Times New Roman;color:#042F64;font-size:36px'>
-<p style='display:inline;'> <a href="http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique" style="text-decoration:none;color:#042F64;">Assu 2000</a></p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#5cbdbc;font-family:Times New Roman;color:#FFFFFF;font-size:24px;'>
-<a href="http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;"><b>Trouvez le contrat d'assurance auto qui vous convient</b></a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Times New Roman;color:#000000;font-size:18px;background-color:#FFFFFF;'>
-<b>4 formules d'assurance :</b>
-<ul> <li> L'&eacute;conomique<br>
-<li> L'essentielle<br>
-<li> L'optimale<br>
-<li> Le meilleur rapport protection / prix<br></ul>
-<b>Tous profils accept&eacute;s:</b><br>
-Jeunes permis, bons conducteurs, Maluss&eacute;s, r&eacute;sili&eacute;s pour non paiement, Suspension ou annulation de permis, Alcool&eacute;mie...<br><br>
-<center><u><a href="http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique" style="text-decoration:none;color:blue;"><b><u>Demandez votre devis d'assurance voiture personnalis&eacute;</u></b></a></center>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<a href="http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique" target="_blank">
-<img src="http://banniere.reussissonsensemble.fr/view.asp?ref=481959&site=6255&b=11" border="0" alt="Assu2000" width="500" height="500" /></a><br />
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.centralmarque.com/svi/img_nb_2059_numuser_yyynumuseryyy.jpg" width=1 height=1>
-<p>
-<a href='http://www.centralmarque.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.centralmarque.com/svi/gestionserv.php?nb=2059&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
+<html>=0D<head>=0D</head>=0D<body topmargin=3D"0"><div align=3D"center"><fo=
+nt size=3D"2" face=3D"Arial, Helvetica, sans-serif"><a href=3D"http://front=
+.ta271.com/php/emailing/view_mail.php?CODE=3D503RAR62_475197&HASH=3De04a449=
+cbb310a540a4acde3c023c606">Si vous ne pouvez pas consulter correctement ce =
+message, suivez ce lien</a><br>
+</font></div>=0D<table width=3D"100%">=0D<tbody>=0D<tr>=0D<td>=0D<table cel=
+lspacing=3D"0" cellpadding=3D"0" width=3D"620" align=3D"center" border=3D"0=
+">=0D<tbody>=0D<tr>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcg=
+i-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D205062&C=3D5374&P=3D8077&T=3DE=
+&URL"><img title=3D"Regime Dukan. Le 1er site de coaching minceur personnal=
+is=E9" height=3D"86" alt=3D"Regime Dukan. Le 1er site de coaching minceur p=
+ersonnalis=E9" src=3D"http://media.regimedukan.com/mailing/200908_bac_Balan=
+ce/part1_01.jpg" width=3D"620" border=3D"0" /></a></td>=0D</tr>=0D<tr>=0D<t=
+d><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/performance.fcgi?I=
+D=3D310703&A=3D1&L=3D205062&C=3D5374&P=3D8077&T=3DE&URL"><img title=3D"Grat=
+uit. En 2 clics calculez votre juste poids. Cliquez-ici. D=E9couvrez le 1er=
+ site de coaching minceur personnalis=E9 de Pierre Dukan et b=E9n=E9ficiez =
+de 25% de r=E9duction avec le code promotion SOLEIL jusqu'au 31 ao=FBt 2009=
+" height=3D"340" alt=3D"Gratuit. En 2 clics calculez votre juste poids. Cli=
+quez-ici. D=E9couvrez le 1er site de coaching minceur personnalis=E9 de Pie=
+rre Dukan et b=E9n=E9ficiez de 25% de r=E9duction avec le code promotion SO=
+LEIL jusqu'au 31 ao=FBt 2009" src=3D"http://media.regimedukan.com/mailing/2=
+00908_bac_Balance/part2_02.jpg" width=3D"620" border=3D"0" /></a></td>=0D</=
+tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/per=
+formance.fcgi?ID=3D310703&A=3D1&L=3D205062&C=3D5374&P=3D8077&T=3DE&URL"><im=
+g title=3D"Pierre Dukan, expert en nutrition. D=E9j=E0 2 millions d'utilisa=
+teurs lui ont fait confiance pour maigrir. Pourquoi pas vous ?" height=3D"1=
+86" alt=3D"Pierre Dukan, expert en nutrition. D=E9j=E0 2 millions d'utilisa=
+teurs lui ont fait confiance pour maigrir. Pourquoi pas vous ?" src=3D"http=
+://media.regimedukan.com/mailing/200908_bac_Balance/part3_03.jpg" width=3D"=
+620" border=3D"0" /></a></td>=0D</tr>=0D<tr>=0D<td valign=3D"middle" align=
+=3D"center" width=3D"100%"><font face=3D"Arial, Helvetica, sans-serif" colo=
+r=3D"#176562" size=3D"1">Copyright =A9 2009 R=E9gime Dukan</font></td>=0D</=
+tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D</tbody>=0D</table><!-- B&C -->=
+=0D<br><br><div align=3D"center"><font size=3D"1" face=3D"Arial, Helvetica,=
+ sans-serif" color=3D"#339999">Conformement a la loi Informatique et Libert=
+es, vous disposez d'un droit d'acces et de rectification.
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA503RAR62_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ503RAR62_475197.png" /></body></html>
+--=_9273623670fa98a4bddc790a48981ce8--
 
 
---_----------=_parties_55150a636e6be3c9738419b06267c1b9--
 
---===============1465687477575434257==
+--===============7979296501295721071==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,7 +85,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============1465687477575434257==
+--===============7979296501295721071==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -125,4 +96,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1465687477575434257==--
+--===============7979296501295721071==--

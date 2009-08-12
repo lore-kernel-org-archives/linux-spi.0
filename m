@@ -1,10 +1,12 @@
-From: "Marshman Jutta" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] msg me =)
-Date: Tue, 11 Aug 2009 16:25:23 +0000
-Message-ID: <NUVSR84738.BC814B7@18970165178.user.veloxzone.com.br>
+From: Assu 2000 <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
+Subject: [SPAM] Trouvez le contrat d'assurance auto qui
+	vous convient
+Date: 12 Aug 2009 07:15:13 -0000
+Message-ID: <20090812071513.26913.qmail@ks357949.kimsufi.com>
+Reply-To: Assu 2000 <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5988018210963241418=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1465687477575434257=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,43 +18,92 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5988018210963241418==
-Content-Type: text/html; charset="utf-8"
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta content="en-us" http-equiv="Content-Language" />
-<title>ATTENTION!</title>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-</head><body><p><span style="font-family: Tahoma">
-<span style="font-size: small; color: #6600CC">No picture below? Open </span>
-<a href="http://6c48c.hvatuyot.cn/?ewa=8CDBAD2BC814B766C48C&?tim=58876817750274438357">
-<span style="font-size: small; color: #6600CC">this link</span></a><span style="font-size: small; color: #6600CC">
-to view it online</span></span></p>
+--===============1465687477575434257==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_55150a636e6be3c9738419b06267c1b9"
+
+
+--_----------=_parties_55150a636e6be3c9738419b06267c1b9
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.centralmarque.com/svi/miroir.php?bat=assu2000_0809_ctrm
+
+Assu 2000
+Trouvez le contrat d'assurance auto qui vous convient
+4 formules d'assurance :
+
+L'économique
+
+L'essentielle
+
+L'optimale
+
+Le meilleur rapport protection / prix
+
+Tous profils acceptés:
+
+Jeunes permis, bons conducteurs, Malussés, résiliés pour non paiement, Suspension ou annulation de permis, Alcoolémie...
+
+Demandez votre devis d'assurance voiture personnalisé
+
+plus d'infos sur http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique
+
+--------------------------------
+Cette offre Assu2000 vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.centralmarque.com/svi/gestionserv.php?nb=2059&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_55150a636e6be3c9738419b06267c1b9
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Assu 2000</title>
+</head>
+<body><center>
 <p>
-<a href="http://b5479.hvatuyot.cn/?utu=8CDBAD2BC814B766C48C&?dq=58876817750274438357">
-<img src="http://b5479.hvatuyot.cn/blank.gif" /></a></p>
-<p style="font-family: Tahoma; font-size: small; color: #336699">
-<a href="http://f299c.hvatuyot.cn/?umj=8CDBAD2BC814B766C48C&?yx=58876817750274438357">
-Latest Pharmacy news here. Summer 60-80% discounts.</a></p>
-<p style="font-family: Tahoma; font-size: x-small; color: #336699; width: 525px">
-<span style="color: #808080">You received this email because you have an existing business relationship with
-Top RX News Media. Periodically, we will inform you of special discounts,
-products and other offers that we believe you will find helpful for you.<br />
-<br />
-To STOP receiving promotional e-mails please </span><a href="http://b5479.hvatuyot.cn/?zu=8CDBAD2BC814B766C48C&?azi=58876817750274438357">
-<span style="color: #808080">click
-here</span></a> <span style="color: #808080">to opt-out.</span></p>
-<p style="font-family: Tahoma; font-size: x-small; color: #336699; width: 525px">
-(c) 2007-2009 Yoquw Inc. All rights reserved</p>
-
-</body>
-
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.centralmarque.com/svi/miroir.php?bat=assu2000_0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Assu2000 vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Times New Roman;color:#042F64;font-size:36px'>
+<p style='display:inline;'> <a href="http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique" style="text-decoration:none;color:#042F64;">Assu 2000</a></p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#5cbdbc;font-family:Times New Roman;color:#FFFFFF;font-size:24px;'>
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;"><b>Trouvez le contrat d'assurance auto qui vous convient</b></a>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Times New Roman;color:#000000;font-size:18px;background-color:#FFFFFF;'>
+<b>4 formules d'assurance :</b>
+<ul> <li> L'&eacute;conomique<br>
+<li> L'essentielle<br>
+<li> L'optimale<br>
+<li> Le meilleur rapport protection / prix<br></ul>
+<b>Tous profils accept&eacute;s:</b><br>
+Jeunes permis, bons conducteurs, Maluss&eacute;s, r&eacute;sili&eacute;s pour non paiement, Suspension ou annulation de permis, Alcool&eacute;mie...<br><br>
+<center><u><a href="http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique" style="text-decoration:none;color:blue;"><b><u>Demandez votre devis d'assurance voiture personnalis&eacute;</u></b></a></center>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=assu2000_0809_ctrm&nb=2059&n=9047704&c=pratique" target="_blank">
+<img src="http://banniere.reussissonsensemble.fr/view.asp?ref=481959&site=6255&b=11" border="0" alt="Assu2000" width="500" height="500" /></a><br />
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.centralmarque.com/svi/img_nb_2059_numuser_yyynumuseryyy.jpg" width=1 height=1>
+<p>
+<a href='http://www.centralmarque.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.centralmarque.com/svi/gestionserv.php?nb=2059&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
 </html>
 
 
---===============5988018210963241418==
+--_----------=_parties_55150a636e6be3c9738419b06267c1b9--
+
+--===============1465687477575434257==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -63,7 +114,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============5988018210963241418==
+--===============1465687477575434257==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -74,4 +125,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5988018210963241418==--
+--===============1465687477575434257==--

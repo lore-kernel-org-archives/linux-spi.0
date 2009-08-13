@@ -1,16 +1,12 @@
-From: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
-Subject: [patch 6/7] spi_s3c24xx: use dev_pm_ops
-Date: Thu, 13 Aug 2009 11:06:08 +0100
-Message-ID: <20090813100639.146131879@fluff.org>
-References: <20090813100602.545180197@fluff.org>
+From: "Claire AZUR" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: =?iso-8859-1?q?Preparez_votre_rentr=E9e_mutue?=
+	=?iso-8859-1?q?lle_=E0_prix_cass=E9s_!?=
+Date: Thu, 13 Aug 2009 12:45:34 +0200 (CEST)
+Message-ID: <kob9vw.zcnog7@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
- dbrownell-Rn4VEauK+AKRv+LV9MX5uv+2+P5yyue3@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0208599110397132700=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline; filename=spi-use-pmops.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,77 +17,86 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Change the spi_s3c24xx driver to use dev_pm_ops to avoid the
-following warning during probe:
+--===============0208599110397132700==
+Content-Type: multipart/alternative;
+	boundary="=_7ef094ee73d6bb68d079a480944cbe30"
 
-Platform driver 's3c2410-spi' needs updating - please use dev_pm_ops
+--=_7ef094ee73d6bb68d079a480944cbe30
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
 
----
- drivers/spi/spi_s3c24xx.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+--=_7ef094ee73d6bb68d079a480944cbe30
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Index: b/drivers/spi/spi_s3c24xx.c
-===================================================================
---- a/drivers/spi/spi_s3c24xx.c	2009-07-28 15:20:16.000000000 +0100
-+++ b/drivers/spi/spi_s3c24xx.c	2009-07-28 15:20:22.000000000 +0100
-@@ -418,9 +418,9 @@ static int __exit s3c24xx_spi_remove(str
- 
- #ifdef CONFIG_PM
- 
--static int s3c24xx_spi_suspend(struct platform_device *pdev, pm_message_t msg)
-+static int s3c24xx_spi_suspend(struct device *dev)
- {
--	struct s3c24xx_spi *hw = platform_get_drvdata(pdev);
-+	struct s3c24xx_spi *hw = platform_get_drvdata(to_platform_device(dev));
- 
- 	if (hw->pdata && hw->pdata->gpio_setup)
- 		hw->pdata->gpio_setup(hw->pdata, 0);
-@@ -429,27 +429,31 @@ static int s3c24xx_spi_suspend(struct pl
- 	return 0;
- }
- 
--static int s3c24xx_spi_resume(struct platform_device *pdev)
-+static int s3c24xx_spi_resume(struct device *dev)
- {
--	struct s3c24xx_spi *hw = platform_get_drvdata(pdev);
-+	struct s3c24xx_spi *hw = platform_get_drvdata(to_platform_device(dev));
- 
- 	s3c24xx_spi_initialsetup(hw);
- 	return 0;
- }
- 
-+static struct dev_pm_ops s3c24xx_spi_pmops = {
-+	.suspend	= s3c24xx_spi_suspend,
-+	.resume		= s3c24xx_spi_resume,
-+};
-+
-+#define S3C24XX_SPI_PMOPS &s3c24xx_spi_pmops
- #else
--#define s3c24xx_spi_suspend NULL
--#define s3c24xx_spi_resume  NULL
--#endif
-+#define S3C24XX_SPI_PMOPS NULL
-+#endif /* CONFIG_PM */
- 
- MODULE_ALIAS("platform:s3c2410-spi");
- static struct platform_driver s3c24xx_spi_driver = {
- 	.remove		= __exit_p(s3c24xx_spi_remove),
--	.suspend	= s3c24xx_spi_suspend,
--	.resume		= s3c24xx_spi_resume,
- 	.driver		= {
- 		.name	= "s3c2410-spi",
- 		.owner	= THIS_MODULE,
-+		.pm	= S3C24XX_SPI_PMOPS,
- 	},
- };
- 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html>=0D<head><title>Unti=
+tled Document</title>=0D</head>=0D<body><div align=3D"center"><font size=3D=
+"2" face=3D"Arial, Helvetica, sans-serif">Si vous ne pouvez pas consulter c=
+orrectement ce message, <a href=3D"http://www.sante-repere.fr/AA51YU89HY">r=
+endez-vous ici</a></font></div><meta http-equiv=3D"Content-Type" content=3D=
+"text/html; charset=3Dutf-8" />=0D<div align=3D"center">=0D<table height=3D=
+"599" cellspacing=3D"0" cellpadding=3D"0" width=3D"580" border=3D"0">=0D<tb=
+ody>=0D<tr>=0D<td colspan=3D"3" height=3D"182"><a href=3D"http://www.sante-=
+repere.fr/AA51YU89HY"><img height=3D"182" src=3D"http://www07.r7g.com/6269/=
+te/730/header.jpg" width=3D"580" border=3D"0" /></a></td>=0D</tr>=0D<tr>=0D=
+<td style=3D"PADDING-LEFT: 60px" background=3D"http://www07.r7g.com/6269/te=
+/730/bg_contenu.jpg" bgcolor=3D"#e1f2fa" colspan=3D"3" height=3D"242"><stro=
+ng><font style=3D"FONT-SIZE: 28px" face=3D"verdana" color=3D"#65b8e4" size=
+=3D"5"><img src=3D"http://www07.r7g.com/6269/te/730/puce.jpg" />Sante Reper=
+e</font></strong> <br /><font style=3D"FONT-SIZE: 23px" face=3D"verdana" co=
+lor=3D"#666666" size=3D"4">le <strong>1er</strong> comparateur <strong>100 =
+% Mutuelle</strong><br /><strong>GRATUIT, FACILE</strong> et <strong>RAPIDE=
+</strong></font><br /><br /><font style=3D"FONT-SIZE: 23px" face=3D"verdana=
+" color=3D"#666666" size=3D"4"><strong><font style=3D"FONT-SIZE: 28px" face=
+=3D"verdana" color=3D"#65b8e4" size=3D"5"><img src=3D"http://www07.r7g.com/=
+6269/te/730/puce.jpg" /></font></strong>Offre de Bienvenue<br /><br /><stro=
+ng><font style=3D"FONT-SIZE: 28px" face=3D"verdana" color=3D"#65b8e4" size=
+=3D"5"><img src=3D"http://www07.r7g.com/6269/te/730/puce.jpg" /></font></st=
+rong>Plus de <strong>100 garanties</strong> comparees !</font><br /></td>=
+=0D</tr>=0D<tr>=0D<td colspan=3D"3"><a href=3D"http://www.sante-repere.fr/A=
+A51YU89HY"><img height=3D"74" src=3D"http://www07.r7g.com/6269/te/730/compa=
+rezvite.jpg" width=3D"580" border=3D"0" /></a></td>=0D</tr>=0D<tr>=0D<td wi=
+dth=3D"40"><a href=3D"http://www.sante-repere.fr/AA51YU89HY"><img height=3D=
+"101" src=3D"http://www07.r7g.com/6269/te/730/jeunes.jpg" width=3D"194" ali=
+gn=3D"top" border=3D"0" /></a></td>=0D<td><a href=3D"http://www.sante-reper=
+e.fr/AA51YU89HY"><img height=3D"101" src=3D"http://www07.r7g.com/6269/te/73=
+0/familles.jpg" width=3D"190" align=3D"top" border=3D"0" /></a></td>=0D<td =
+width=3D"50"><a href=3D"http://www.sante-repere.fr/AA51YU89HY"><img height=
+=3D"101" src=3D"http://www07.r7g.com/6269/te/730/seniors.jpg" width=3D"196"=
+ align=3D"top" border=3D"0" /></a></td>=0D</tr>=0D</tbody>=0D</table>* : <e=
+m>Garantie hospitaliere pour les 20-35 ans.</em> </div>=0D<br><div align=3D=
+"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#9=
+99999">Conformement a la loi Informatique et Libertes, vous disposez d'un d=
+roit d'acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA50ATUZUA_956739/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ50ATUZUA_956739.png" /></body></html>
+--=_7ef094ee73d6bb68d079a480944cbe30--
 
--- 
+
+
+--===============0208599110397132700==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--===============0208599110397132700==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0208599110397132700==--

@@ -1,10 +1,13 @@
-From: "Beidler Jake" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Copy and Paste
-Date: Wed, 12 Aug 2009 11:56:57 +0000
-Message-ID: <NOJRSH64673.26D34AA@[200.136.225.42]>
+From: Jaswinder Singh Rajput <jaswinder-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] SPI: includecheck fix:
+	drivers/spi/amba-pl022.c
+Date: Thu, 13 Aug 2009 12:52:51 +0530
+Message-ID: <1250148171.6116.2.camel@ht.satnam>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6015356576984491919=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,62 +19,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6015356576984491919==
-Content-Type: text/html; charset="utf-8"
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta content="en-us" http-equiv="Content-Language" />
-<title>ATTENTION!</title>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-</head><body><p><span style="font-family: Tahoma">
-<span style="font-size: small; color: #6600CC">No picture below? Open </span>
-<a href="http://27b31.cmanolaj.cn/?orq=885AB49626D34AA327B319&?ygq=5536726313823662147205">
-<span style="font-size: small; color: #6600CC">this link</span></a><span style="font-size: small; color: #6600CC">
-to view it online</span></span></p>
-<p>
-<a href="http://cf356.cmanolaj.cn/?us=885AB49626D34AA327B319&?lom=5536726313823662147205">
-<img src="http://cf356.cmanolaj.cn/blank.gif" /></a></p>
-<p style="font-family: Tahoma; font-size: small; color: #336699">
-<a href="http://6aca4d.cmanolaj.cn/?ywj=885AB49626D34AA327B319&?an=5536726313823662147205">
-Latest Pharmacy news here. Summer 60-80% discounts.</a></p>
-<p style="font-family: Tahoma; font-size: x-small; color: #336699; width: 525px">
-<span style="color: #808080">You received this email because you have an existing business relationship with
-Top RX News Media. Periodically, we will inform you of special discounts,
-products and other offers that we believe you will find helpful for you.<br />
-<br />
-To STOP receiving promotional e-mails please </span><a href="http://cf356.cmanolaj.cn/?yh=885AB49626D34AA327B319&?typ=5536726313823662147205">
-<span style="color: #808080">click
-here</span></a> <span style="color: #808080">to opt-out.</span></p>
-<p style="font-family: Tahoma; font-size: x-small; color: #336699; width: 525px">
-(c) 2007-2009 Ripu Inc. All rights reserved</p>
+fix the following 'make includecheck' warnings:
 
-</body>
+  drivers/spi/amba-pl022.c: linux/delay.h is included more than once.
+  drivers/spi/amba-pl022.c: linux/errno.h is included more than once.
 
-</html>
+Signed-off-by: Jaswinder Singh Rajput <jaswinderrajput-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/amba-pl022.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+index da76797..c0f950a 100644
+--- a/drivers/spi/amba-pl022.c
++++ b/drivers/spi/amba-pl022.c
+@@ -38,14 +38,12 @@
+ #include <linux/interrupt.h>
+ #include <linux/spi/spi.h>
+ #include <linux/workqueue.h>
+-#include <linux/errno.h>
+ #include <linux/delay.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/amba/bus.h>
+ #include <linux/amba/pl022.h>
+ #include <linux/io.h>
+-#include <linux/delay.h>
+ 
+ /*
+  * This macro is used to define some register default values.
+-- 
+1.6.0.6
 
 
---===============6015356576984491919==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============6015356576984491919==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6015356576984491919==--

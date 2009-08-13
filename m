@@ -1,7 +1,7 @@
 From: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
-Subject: [patch 3/7] spi_s3c24xx; Fix transfer setup code
-Date: Thu, 13 Aug 2009 11:06:05 +0100
-Message-ID: <20090813100638.583297488@fluff.org>
+Subject: [patch 6/7] spi_s3c24xx: use dev_pm_ops
+Date: Thu, 13 Aug 2009 11:06:08 +0100
+Message-ID: <20090813100639.146131879@fluff.org>
 References: <20090813100602.545180197@fluff.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -10,7 +10,7 @@ Cc: akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
  dbrownell-Rn4VEauK+AKRv+LV9MX5uv+2+P5yyue3@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline; filename=spi-fix-bitperword.patch
+Content-Disposition: inline; filename=spi-use-pmops.patch
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,32 +21,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Since the changes to the bitbang driver, there is the possibility we
-will be called with either the speed_hz or bpw values zero. We take
-these to mean that the default values (8 bits per word, or maximum
-bus speed).
+Change the spi_s3c24xx driver to use dev_pm_ops to avoid the
+following warning during probe:
+
+Platform driver 's3c2410-spi' needs updating - please use dev_pm_ops
 
 Signed-off-by: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
 
 ---
+ drivers/spi/spi_s3c24xx.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
 Index: b/drivers/spi/spi_s3c24xx.c
 ===================================================================
---- a/drivers/spi/spi_s3c24xx.c	2009-07-27 18:55:16.000000000 +0100
-+++ b/drivers/spi/spi_s3c24xx.c	2009-07-27 18:56:08.000000000 +0100
-@@ -116,6 +116,12 @@ static int s3c24xx_spi_setupxfer(struct 
- 	bpw = t ? t->bits_per_word : spi->bits_per_word;
- 	hz  = t ? t->speed_hz : spi->max_speed_hz;
+--- a/drivers/spi/spi_s3c24xx.c	2009-07-28 15:20:16.000000000 +0100
++++ b/drivers/spi/spi_s3c24xx.c	2009-07-28 15:20:22.000000000 +0100
+@@ -418,9 +418,9 @@ static int __exit s3c24xx_spi_remove(str
  
-+	if (!bpw)
-+		bpw = 8;
+ #ifdef CONFIG_PM
+ 
+-static int s3c24xx_spi_suspend(struct platform_device *pdev, pm_message_t msg)
++static int s3c24xx_spi_suspend(struct device *dev)
+ {
+-	struct s3c24xx_spi *hw = platform_get_drvdata(pdev);
++	struct s3c24xx_spi *hw = platform_get_drvdata(to_platform_device(dev));
+ 
+ 	if (hw->pdata && hw->pdata->gpio_setup)
+ 		hw->pdata->gpio_setup(hw->pdata, 0);
+@@ -429,27 +429,31 @@ static int s3c24xx_spi_suspend(struct pl
+ 	return 0;
+ }
+ 
+-static int s3c24xx_spi_resume(struct platform_device *pdev)
++static int s3c24xx_spi_resume(struct device *dev)
+ {
+-	struct s3c24xx_spi *hw = platform_get_drvdata(pdev);
++	struct s3c24xx_spi *hw = platform_get_drvdata(to_platform_device(dev));
+ 
+ 	s3c24xx_spi_initialsetup(hw);
+ 	return 0;
+ }
+ 
++static struct dev_pm_ops s3c24xx_spi_pmops = {
++	.suspend	= s3c24xx_spi_suspend,
++	.resume		= s3c24xx_spi_resume,
++};
 +
-+	if (!hz)
-+		hz = spi->max_speed_hz;
-+
- 	if (bpw != 8) {
- 		dev_err(&spi->dev, "invalid bits-per-word (%d)\n", bpw);
- 		return -EINVAL;
++#define S3C24XX_SPI_PMOPS &s3c24xx_spi_pmops
+ #else
+-#define s3c24xx_spi_suspend NULL
+-#define s3c24xx_spi_resume  NULL
+-#endif
++#define S3C24XX_SPI_PMOPS NULL
++#endif /* CONFIG_PM */
+ 
+ MODULE_ALIAS("platform:s3c2410-spi");
+ static struct platform_driver s3c24xx_spi_driver = {
+ 	.remove		= __exit_p(s3c24xx_spi_remove),
+-	.suspend	= s3c24xx_spi_suspend,
+-	.resume		= s3c24xx_spi_resume,
+ 	.driver		= {
+ 		.name	= "s3c2410-spi",
+ 		.owner	= THIS_MODULE,
++		.pm	= S3C24XX_SPI_PMOPS,
+ 	},
+ };
+ 
 
 -- 
 

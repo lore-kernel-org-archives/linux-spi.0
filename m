@@ -1,36 +1,40 @@
-From: Ben Dooks <ben@simtec.co.uk>
-Subject: Re: [patch 0/7] SPI fixes for documentation and spi_s3c24xx driver
-Date: Fri, 14 Aug 2009 15:06:36 +0100
-Message-ID: <4A856F6C.5080802@simtec.co.uk>
-References: <20090813100602.545180197@fluff.org> <20090813142455.2489ce67.akpm@linux-foundation.org>
+From: Anton Vorontsov <avorontsov@ru.mvista.com>
+Subject: [PATCH 0/8] spi_mpc8xxx: Add support for DMA transfers
+Date: Sat, 15 Aug 2009 02:24:53 +0400
+Message-ID: <20090814222453.GA9568@oksana.dev.rtsoft.ru>
+Reply-To: avorontsov@ru.mvista.com
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org
-To: Andrew Morton <akpm@linux-foundation.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756834AbZHNOGp@vger.kernel.org>
-In-Reply-To: <20090813142455.2489ce67.akpm@linux-foundation.org>
-Sender: linux-kernel-owner@vger.kernel.org
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org
+To: David Brownell <dbrownell@users.sourceforge.net>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+Content-Disposition: inline
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-Andrew Morton wrote:
-> On Thu, 13 Aug 2009 11:06:02 +0100
-> Ben Dooks <ben@simtec.co.uk> wrote:
-> 
->> Fix spello in the SPI documentation and fix the behaviour and bugs
->> in the spi_s3c24xx driver. 
->>
-> 
-> Do you think that any of these are needed in 2.6.31, or earlier?
+Hi all,
 
-The following would be useful to get in:
-	spi_s3c24xx-fix-clock-rate-calculation.patch
-	spi_s3c24xx-fix-transfer-setup-code.patch
+Here are some patches that add DMA support for spi_mpc8xxx driver,
+which means that we now support QE BD mode and SPI on CPM1 and CPM2
+chips.
 
-The rest can wait.
+QE BD mode and CPM2 SPI support were tested on real hardware, CPM1
+was only compile tested (though I belive it will work :-).
+
+Thanks,
 
 -- 
-Ben Dooks, Software Engineer, Simtec Electronics
-
-http://www.simtec.co.uk/
+Anton Vorontsov
+email: cbouatmailru@gmail.com
+irc://irc.freenode.net/bd2

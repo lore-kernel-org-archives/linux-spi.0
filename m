@@ -1,10 +1,11 @@
-From: Bingman <coralroot-r/3sOUzwNBcAvxtiuMwx3w@public.gmane.org>
-Subject: ntly distu
-Date: Sun, 16 Aug 2009 19:26:37 +0200
-Message-ID: <FC40884A.6070408@vivcaisey.co.uk>
+From: "Citroën" par Central Marques <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
+Subject: Réservez votre essai CITROËN dès aujourd'hui
+Date: 17 Aug 2009 07:13:52 -0000
+Message-ID: <20090817071352.10307.qmail@ks357949.kimsufi.com>
+Reply-To: Citroën par Central Marques <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------030409080807020206070408"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============3319481146037521539=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,316 +17,128 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------030409080807020206070408
-Content-Type: text/plain; charset=;iso-8859-3; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Le of the world, and from whom Edgar Poe could only wrest its secrets.
-But our attention was to be attracted, our surprise, even our alarm, was
-evoked soon by phenomena still more strange than the mysterious earth
-form upon which the mist-curtain had been raised so suddenly. I have
-said that the speed of the _Paracuta_ was gradually increasing; now it
-was excessive, that of the current remaining inferior to it. Now, of a
-sudden, the grapnel that had belonged to the _Halbrane_, and was in the
-bow of the boat, flew out of its socket as though drawn by an
-irresistible power, and the rope that held it was strained to breaking
-point. It seemed to tow us, as it grazed the surface of the water
-towards the shore. "What's the matter?" cried William Guy. "Cut away,
-boatswain, cut away!" shouted West, "or we shall be dragged against the
-rocks." Hurliguerly hurried to the bow of the _Paracuta_ to cut away the
-rope. Of a sudden the knife he held was snatched out of his hand, the
-rope broke, and the grapnel, like a projectile, shot off in the
-direction of the sphinx. At the same moment, all the articles on board
-the boat that were made of iron or steel--cooking utensils, arms,
-Endicott's stove, our knives, which were torn from out pockets--took
-flight after a similar fashion in the same direction, while the boat,
-quickening its course, brought up against the beach. What was happening?
-In order to explain these inexplicable things, were we not obliged to
-acknowledge that we had come into the region of those wonders which I
-attributed to the hallucinations of Arthur Pym? No! These were physical
-facts which we had just witnessed, and not imaginary phenomenal! We had,
-however, no time for reflection, and immediately upon our landing, our
-attention was turned in another direction by the sight of a boat lying
-wrecked upon the sand. "The _Halbrane's_ boat!" cried Hurliguerly. It
-was indeed the boat which Hearne had stolen, and it was simply smashed
-to pieces; in a word, only the fo
+--===============3319481146037521539==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_5c477ddca72b6254356d98a3bbf39bd9"
 
---------------030409080807020206070408
-Content-Type: image/jpeg;
- name="incendiarism.jpg"
-Content-Transfer-Encoding: base64
-Content-Disposition: inline;
- filename="incendiarism.jpg"
 
-/9j/4AAQSkZJRgABAQEBLAEsAAD/2wBDADIiJSwlHzIsKSw4NTI7S31RS0VFS5ltc1p9tZ++u7Kf
-r6zI4f/zyNT/16yv+v/9////////wfD/////////////2wBDATU4OEtCS5NRUZP/zq/O////////
-////////////////////////////////////////////////////////////wAARCAE+AWwDASIA
-AhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQA
-AAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3
-ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWm
-p6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEA
-AwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSEx
-BhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElK
-U1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3
-uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDR+Yeh
-pMnPORT6KAGk8feAow3979KUjNJsHbimAYb+9+lAB7t+lGD2Y0AH+9+lAwwcnk9KQBv736UuDzg0
-gDYGCKAFw3979KMN/e/SjDf3v0o2+pNAhCCOr/pSA8/ez9BTgi+lC9PxoAQE5OAfxoAYgc4pw6n6
-0L90fSgBu0bhnJ+tOAA6Cg/eH0pvmL2OfpzQA+imbmPRD+JxR857qP1/wpAObp+IpaYVOOXP4AUb
-P9pvzpgPopmz/ab86Nn+0350gH00dPxpNrf32/ECgBx0Kn6jFADqRgNp+lJuYdU/I0NIu05OOO/F
-MBdg7ZH0ow397P1FKDnpS0ANJYDkflTSePvH8RUlI3T8aAG4J6P+lKAc8tn8KNqntQFxnBPSgAw3
-979KMN/e/SjDf3v0ow3qKADDf3v0ow3979KMN6ijDeo/KgBAGyfm/Slw3979KQKSPvGl2Dvk0AIS
-R/H+lJn6n8KAp9hTtg7kmgBpY+wp20nqxpHAA4FOoAQKB2p1JRQAN90/SsbV/wDj7H+4P61st90/
-SsbV/wDj7H+4P60Aa+HHRgfqKNxHVD+HNDyCMDPemi4Q9aLMV0O8xe5x9eKdSOyohZj8oHNIqo6h
-gowwzkcUhjh0paZsx0Zh+P8AjRtb++fxAoAcOp+tC/dH0poVsn5/0oCtgfP+lMB1LTNp7u34YoCq
-wzksP96kA4sF6kD600OMcAt9BSqqjooB9hTXmjiQtI4AzjPvQAoLknCgfU0BSQMufwGKjkn8uNpB
-G5XG4kjbj8+f0qSNw6Kyg4YAjNMA2LkZGfrzT6bySO1GD3NAC0bh60bR6UYxQAhOR+Ip1MPU/UU+
-gApkjbUJFO60FQykHpUvVaAiAOeueadPKyWxdFyf5e9R+Wc4DipZIz9nZEPO0/jWVNS1NNLoRJZP
-JRjGWZsdPfv7U5ZN28cqy9QaiSGaOHCsAxxkenHOPenooRXOx9x5JPJNaq4SS6DyqbscBvY4NG0j
-o5/ECoZyjxvtVdxTJ3DB6cUoWRikgZiuwcA4JPrzxRcXLoTZcdgfocUhfjkMPwoiYPGrAkg9zTbe
-bz4ElAK7u340yHoSBlboQfoaWkKq33lB+opuxQM8r9DQA+imBTjIdsfgaNrf3/0oAfRTNrf3/wBK
-Nrf3z+AFADl6fiaWmBMjlm/Ojy07rn680wAOuANwJ9BzRuJ6Ifx4py/dFGRSAY27HOB7Cn0jfMMC
-nUwE6UUtJSAG+6fpWNq//H2P9wf1rZb7p+lY2r/8fY/3B/M0wNh0Ei4P51Ctrh8s2VHbFOuCwiyO
-ORUUU7BgDyDTV7aEu19SS7VWt2DA8cjA7020KPEV2BcBQWXvx6+tSXMixRMzDOeAPWiN0eAEjC7R
-kEHH61HU2V+QbZf8eifj/M0twzq0RVsAuARToxE8RKAbHGOBjNNeONtqlsbMYAbp6UdAuuZsJFkM
-2Vzs24wDjmljIltwUZhuBAJ6ihlUkEuQQMA7uop0YVIgFwFA9aBN6FMTvNbwwkkSu+yQdDgdefpj
-86WK43WkO47XkJwFwvQn8qsFIYne4+VWI5fPFKqRiFRsCoOQGHSmQUY3eR0Em54lldSMb+3H170t
-vE0seUTaFut+0jGAKuyNCY1D7XUngAbs49hURukSEGJC37zywuNvNABLamWSQl12su3lclfXB7VO
-oWKEDPyovU+gFQTzPGjYKh1XcVVS368Y6d6c7NJYM2Blos4HutAC/aot65YgEEglSAccmgXUbbdm
-5yxIXAxux1xnFQrbtJbRlyCwhIQYxjIxzT/szbbYhgrxLg5GR0waAIridpo0Cjb+/Ebhuc/4iri8
-KFA6DHAwPyqNbVAoDZJEnmZ9WqQCOFWbhFJ3MSe5oADnJ47il5PpSAhhuXkHBBFIZ41m8osA23dz
-TAfz7U2QMY2x6dqfRSeoFIOMVJMXazOw445+lPYQbucZ74p0irJCwJAXB59KzjCxpfVMiimWO2Ul
-i3AULjBzjpT4ZWljcsACrFeKWGJI0+X5twGT1zxSJCIhIVIJYkjPAHtVq4NxdwkkiLMrruCDLfLk
-CnMELj5gr44wRnFRSowViqtvkUBgBkE9PwpZCY7ZI9oLkBVHXnFAW2sTRRiJFRc4HrVWKOWKyMBQ
-ltrKGUjGTn8e9WIl8pFj5IHGaitZjJZJLKwzglj9D/8AWpkPchtFZZYAMLhCHXYR27/j+dNWe4DT
-REnECuSxGd/93PpV2OaOUgI2SRkAgjilKoyMdoYMMHA+8KBFSKSZ7qMB1ANuG2kHHX6/rT4LmSS3
-85xGinhck+uP8al8uJmQD5XVOAGwwX/CgW0YhWIA7UOV55BzmgBLe4855EIGUI5HQ5FTVHHCsbuy
-liz43EnPSnNJGmdzquOuTigBy9PxNLSAcfjSGRFOGdQfc0wFwKKhtJzcRmTGATwNpGOvfv8AhU2R
-60gFopM+go59hTAWkJA60Y9SaAAO1ACMRtP0rH1f/j7H+4P61st90/SsbV/+Psf7g/rQBskBgQRk
-GmJAkbZAOe2e1Vr+4khZFXKqRncPWoBeuBw5J96aTsIv3CkwSYUHIPBplt5ixZcHaANoxzjHt/8A
-rokuCtoJthyw6elOWY+UjNG2WwOMc5qOpqr8o21Oy2Ab5dgJYEdOTTX2gySqwyVDYI68cdanRwxI
-GQy9Qe1I7xBjuKkgc55xQF/ebsRyPmEEKN7gBRjoSP6VIkarEI9uUxg+9KXRW+YjJ5FAZRFvyNoG
-c+1MlvQoxF3MVm2d0T5c+qjpx75H5U6AyfY7cGMtktuYruK9ccVbeVFh8wn5MA5AznPSjzVEYdyF
-z75oJKKQSxMspXpK5C9yCPbOOlS29s7xZm+VvP8ANGB1/Op/tMZ27DvLEgKvXI69aha7by8xphzN
-5WHPQ/hQBM1vE8jsynLYDDJwfqKkBVI8nCqo/ACqtxK6pIFdi8a5bYAoB7Zzk/lU8ZMtqhcbi8Yy
-OmcigBonyBIY3Ee0tu46dfWklu1jWNgpYSIzjt0GaiW2LlABJEgRlIZsk5GPXt/kUrWTsihpQWSM
-ooAwORigBY7iUyW+8IFmUnAHTAyOaS5kWaZIUHmBW3SKpHbsc8dTTrYQosQD7n27VJJ5wBnGf6VY
-CKpJCgE9cCgDORHEscUsbNFE7ZGNwwR8v17/AEqVIglwkggYRmLaFxkg57/hVw9T9RTqACmupZGA
-OCRTqKAKBjl/55mnvC62km5tpPOPXHarW9aZKYxAxc/Lg/Wh7Gqm7oiiKm3A81o9u0tk9sf1p8Tl
-vMGSyD7rEdfWiOKGSFQgBHB98474qTBCN85ORwSAcUkKTWo2WQx5Zl+Recg80pljG3LAEjcM+lNk
-jaQxhyNi8t7n/CkkytyHyEGzG4jIznoaBJJkwIIBByDVYWpjgMKyDy8EfMvIB9/xqSz/AOPaPr07
-/Wo7SQnT1klYnAJJPJwCaaJas7DYbZ1khLD/AFSkZ35HTHAxUP2aRHnyD5caMYsdiw7VciuFcouG
-UuuV3dxThNGyBldTuB284zigRSjUC5haVmTdbryXI5yOP/rUsErCyWWWSRmkO0YOMc//AFquCRWc
-R5G8puK9eKftG3btGPTFAFW0ldpp0JyEK4yc9R61GUaS6vEVFJZVGScbcrV4Kq/dUD6CmPJHEyhi
-FZzge9AFa2hxdSKxLCIIq5Jx0qOKGRooFaMiRJdzsw9Ce/er4YA4LDJPAJqOG5jmZlTPDFemc47/
-AEoAjtoJIrWKPKhlb5u+Rk1Z6VHczC3gaUjOO2cZp6OrjKMGHqKAHUUUUAFFFFACN90/SsbV/wDj
-7H+4P61st90/SsbV/wDj7H+4P60wNkqrDDAEehqMW0IbcI1z9KdIGK/L27VBls45z6UgJpwzQuq4
-yQe3XioY0njgwp5OMA87Rjnr/LpT7nzBbHaRux83070tuzNApDI5wB/9Y9aXU0WkRYwEDttkLHk7
-sEn8qgkJ3THlN6DAxy3Bqe3kMsCuwAJz0+tDTASFFGSBzzjFHQE2m9CMt5ewBQr7AMkfdHp+dSwo
-qQqq8rjv3ollWFWZvwHrQG/ch1BOVyB36UCbbRTiil8yO3dT5cLlw+Oo7c/jzToI7iO0gQLjBbeM
-4PU4qZrlfsySoAxkIVVJ7nt/Oljm3W6yrlwe5wvemQV1tZYisgOXEjMB97hh35Hp61Jb2pEX745b
-zfN9OfehbwyukaKFZnZSTyBgZ/GonmlePaX2n7T5RKccUAXGjiLmR0TI43EUrsUiZiCSq5x61UuV
-LGSJYySqYVipcnOeh7VahVlto1PDBAPXBxQBXS6yokMsZ+QsYwOemcZz1/zio7ieUwoCwxNExwBj
-GFz7/SrAg3uhmKuVUgBVwOeD3p6W8SAALnA2/Mc8enNAFPylH2J2DMmw7s5Yfd4GKvrgKMDC44GM
-Y/ClHAwKKAGnqfqKfTD1P4U6gBaTrxS0hOAT6UARmNuxBptwi/ZWBBbGTn3pGnJPHApzzKtvvcZ7
-Y9ahTUtDRc10MtmDQ4kUBQFG4jGeKW0/480+h/makjkR4geFGBkHgCgLGY2KBdrDnHeqQSe68xsz
-tGGfzFAxwpX+tHn/ALxUCH5kDdcH6UrQkqVVyAV2kHmlKsqqu0SIBgg9aNQ92w8NnGQQfQ1XSCPy
-tkUjeWeCoIIwakt0ZIUWT7wFU7MFLBZTHG2xWYE/eGM0yHoyeG18p4z+7xGMZCkE8Y9ai+xusly3
-3lKN5a+5649PSpILppHiVwD5i5+VSMHGe/40sd8riM+U48zO3GDnHWgRCkCpPE00Xy+QFJ25wwx1
-x0470kA8uwR2Rmd2w24ngZ6/pVwTxtGsgLFW6EKT+eOlNW4DXIjXBQx792ffFAEdkW86cfwArtxn
-HTnGajkie6ln+QFceWhY4wepP51bSeOQgK4JIyPegyhbhYiCNykg+uO1AFOESSM7zwM5cIAHGBkd
-foM81PDHNEZgFQ73Z1YnjnpQlyGuvKBwu4qOPvEDJ+mKcLj9+kTIVL5xkg4x64oAJbZZ4tsuN5AB
-cDn14qeqX2qVo4JV2hJZQu3byBk98+3pTIXc2SzSbpWkbByThRn0H0oAv0tVLONkmnO3ajbduEKD
-pzwat0AFFFFACN90/SsbV/8Aj7H+4P61st90/SsbV/8Aj7H+4P60wNlmC9etIHH0pkyMQGXkjqKh
-G8nAU596ylJplJJosSoJImXOMg85xTIohEnytliBljz0FNnjcWjKHwQMn3HpRbndAAshLAAYYfd4
-/CqKS93cfFG0UOwFTgfKSP51G0L5lJVWMigfQ4xUlq7SW6M5yxzk/jTXmYNKFVcRAE578Zp6WBX5
-mI8G6PGSXCbM568VJCpSJVJyQB3polLyKqAfMm/mnQP5sKvjGR0oVhS5raleO0aOcEsDAjF0XPQn
-29ucUsdmVghTzOYiT0yDnPanRyyzx+bEYwhPyhlOSOh5z9e1KkwMczA42SFfnORnimQMNoiKMPht
-5bcTjk8YGMfzqS1gjhjKJg4ck8dD7VVlnMsiIwHyTx4IBGcg9j/k0u5pS++UYWZwEZd24Y44Hpnp
-QBfGec0L90fSo7Yn7Om6MRHHKDoKkX7o+lMA/iH0paT+IfSo7idbeFpGGdvbPWkBLRTEfcgPBJ9O
-lOyfSmA09T9RTqb3P4U7B9aBBRSYNGTtJ7ikMY0Ck8HHtSXCj7MyhcgKfw96riVick81K87ral1G
-WHGfT3qUkjRJ3QtsziD5x8gAxnuMe3+fWktCPsgGRlQc89OTThMywxs65Z9oGD1Jp4cP5gIww4IP
-0poJddCG6ndAwjG0AA7iOv0qSSVllAAXZtzuOcZ+tOkjR4/JJwCBwDzj/IpSrKQY8Af3SMCjULq2
-wqnKg8c+hyKjSeGQAI6nd0HTNOt4zFCiMckd6q2qzRafnP3VY7GTkEZx+tMh76FmOBI2UqXwowAW
-OBUcVoIzb4c4h3dR1zTbeaZmhDB2V1yxIAxxnPHamxXkjiH90p87djDdMUCCO1miSNQ+5UUgqGK8
-5zn3+hpkFlKq7WwMwNHnPcsTVqOfzIUlSN2VvTHH61Gl0HuOGHk+Tvzj3xQA2C3dXhLqf3akZL57
-Y4FS3MLShGjIEsbZUnp7ilS4R2RcMC4yuRjNE0pR440xvkJwSOAByaAIUs8CH5yCgbew6ksOTmnw
-2YjeJiwJiBA2rjPGOaHkeLZ5pBDShVKZHX1zmkkuikyKNjBpNhAJyP8AP/1qAGLaxecnzrhHJVAT
-kd8dfp2q4AEAVQFHQAcVn28jLebAcK88u4euAKktgwmXGyXO4tLtIPtz079BQBcoopaAEopaKAGt
-901j6v8A8fY/3B/WthvumsfV/wDj7H+4P60wNSaUowUccZponI6nNPmh80DBww71CLWQn5mAFZPm
-voWrWJXaOS3Zm+6Ac57GiKNVhGzI3AHd3PFNuIY1tWXBwOQRzzio4WYwYhRVYbQWGOeP51XqUleO
-hYji8qIorHGPlJHSmywmQAErnaAWxzTLMnEindw55bmn3DOrRFWwC4BFPoLVSsDRZUBQvyjAJ7DF
-PiQRxqq9B60ydtqM+WGOAAepp8SssahzlscmjqJ35SGO3eKPy45cRg5A2fMB6Zz/AEpRaxlXBYtm
-UyZB+61Mtx9otxO7yKzEn5XIAwemOnakFxiKbfwfPMa7eM9O9MgeyQQMrMpZndRknJ3c4PNSeYqA
-lsDLkcc5P4d6obnkn2Al1SeMgBt2ODnn/IFTR27bnYxtu852U7tvBx/OgC4hDDIzg+oI/nVCCWWa
-O3dXdpC/z4+6F5z7f54q5ArpEqyPvdeC3rSQLHAiQq/I6Atz60AVBJPJpzzb2aRwcBR0Gcf480lx
-bGZpDbx/KYwBxty27OeevHerwCQhFG1F6AdOfSo3vIl3/eIQ4YheFOcUAS/P5ucr5e3p3zmnc+tQ
-XkvlW5AYKznYCTgAnvmq32l4ra4VZBI0ZGxyd2QT+uKALzFQQpYbm6Ank4p1Z8wQXsJadmjBIJLY
-CnHr71djdXJVSx2gc9QcjjnvQBJSDOePWjHuaQDrg80wI2t4yxwSD6UrxHyGSPgkH8ajyc0s/mNZ
-ttOCBz7ipKjdtDUtnWNcsMqytt7cDmnorB55GUgMBgDk8Co1kZYIgr8llXkcjipUkJaVGxlcc9M5
-FCsXLm1uMnKPG+1V3FMncMHpxT8ExxuXkPyj7v8APFDSRs7IyFtuM/Lkc05lQlWztbGFI4OKBX0s
-Fu7SQIzdSOahiuxJHE7IUWRsKcg8+n6VYijWJFRc4HrVW3s9kMSysxMbbsA8ZzxTRD30LCwRI4ZY
-1BHTA6UxLWOMwldw8rO0Z9etVI43g0pnUOsuDnrkDP6cU64uXgaRYn3gRhgTzg7sfyoESLYhBGFY
-NsUjDrkcnOR6H3pIbExjDOCDEYzgepJz+tP894pXjlw+2LzMqMdOopi3pwrMoYMhY7c/LgZoAfBa
-mNoydnyLjIzk8YqSaEyPG6vseMkg4yOeoxULTybYGeNCsjJggnjNLdXZgDlSjbSMrzntQA9oGk2m
-STJWQONq4Ax2oS0iQKPmKo25VLcA5qQk7iAcY9vc0u0YyzN+eP5UAJtjQ7ggByTnGOT15pRJnoCf
-oM03ManIUZ+lOEgJ6UALuOeRge5p1BpvQ47dqAHUUhIHU0Z9AaYCN901j6v/AMfY/wBwf1rYbO08
-Vj6v/wAfY/3B/WgDUmmMZVfXvTftIx1qWWJZVww6dCKhFkgbJZiPSoadylYdJcILYuRkH5ceppUl
-UwqcMBgcbT+nrSzJi2dUUEbTwajg8xYcsDjAAxjcBj/OO9GpSS5SVfLdXAHB+8MY60kkSEICSoXG
-0Zx0pkXyvO7FscHcwwTgemKjY5kmk3DAQFNw6jHancai77lhlTcu8/dORk/rT1OVBzUBCvIkjMEc
-oOCKfbsZIUYgLnsBQS1oRlLVZCpZVJYMU8zAz9M1Kqxqr/IFBYltw4J9aq20sYttk7Dzdx3oR8xb
-PHHftQhlEc+1CxNwRzzheOcd6ZBNLcBBH5ZVg0gjODnFNN2ikqGDMZGX5vlAx15qFbaV5y5GF8xG
-BbA4APYVPHbsvmYkADSM/wB3JH50ATISyhiF55+U5H51TjPlCFMwz7pOo5Y8k7vw/wAmrcMawxiN
-M7V4GaassKPtyoZjg4HBP19etAFOKOVoLaPy33JJuctxjk+vXrUiW8kqXEb/ACRvMTkjkjIPFWTP
-EJQvmLknb17+lUzdTl9yjAM/lgHgY9Pr70AWzArTiZmckchSflHGOBTzGjOWKgsV2knuPSlXO0bs
-Z9qdQA3AUYUAc9qdSN0/EUtMApOnXilqjIZ2kI2E80ITZcbZnkjNNlUSREMQFIPPp71UEFw3OAuf
-U81LLEy2TKZOeT9fak0rDhdsetvGIxg5PDBs9x0pyxlDK+4MzjuMDgUy2IaEKrMGAXOeccUtu7Pa
-qzHJIPP40lY0lfUSUHaxMZDleGTrnHtSAbrlDKo+aIZyOM55FP8AOJmeMJnbjoRk5FPdkCjzCoB7
-NQF2tCOzJNtHnnjH61FFctJMDj9zIxVDjuP8eatFBsKDKgjHy8Y+lV3s0EKrF8rIQVJJ6g9SKaIb
-u7k0c0crYjcMeelMlgjngdF2gNgEqB2OaiS2kW3+z7UICsBIT65x/PmoXjcJFsjdGSFg5xjPy8c9
-+aBF0QRKWIT7w2nJJ49KRbZFABLMoXaAx4xVIblOA8gxa+ZjefvetSrK0tzEHlKKYA5AOMmgCQw2
-6OoZ2LRgMoJ6AHinvaxNvDbtrncy54JrNaeXb5pYiTyBz/wPFXLybmVVZlZEznftHOcY9f8AIoAs
-ry5PsP5mmznDCiBi8aM3JMakn86eXB5xQBDsc9Fx9akWM5BJ+tO3Um71NADzk9+KRhx1psD+ZCGx
-jNPb7poABjHApaQcAUtMBrfdNY+r/wDH2P8AcH9a2G+6ax9X/wCPsf7g/rQBrSOUIHbFIJqcwYjD
-KGHscUzZGDkqw9j0pAE83lwGRVJPQe3vSxuXhDMrDgH1z9MUS/PA4jK/dI9e1Nt0kji+bJ4GEz04
-56/ypdS1blJIpBLGHXIB9aJCirufbj1NR2waO3CuhygOQOc9TxUV3G7xNJyRgbVI5Wi+g1Fc1uhZ
-baAxfGB3PalUgopHTHFQXEbujElSFU5UetS24Ihj3YztH8qd9RNe7cRrmNWILH5TgkKSAfrjHene
-YArM2AFOOuarWrtDbiJ45DIpI+6cHJ656Y5oSOdY5gg2lpy3JwSvtQQOmuRmMRNyZVRgRzg/Wk+1
-clUVv9aylmBYDA9v0FMWzczGR2CgyI+MljwDUqxIm8ea3zuXIU4PP05oAmhYPGrhlfPO5RgGqkJa
-IRR28jSKHwylMYXJzk+v+cVZjARAkcZCjoOmKcN5A5UfrQBUit5TDBFINpik3lic55PT86kNsgVg
-8hGZfNBGBg1PsyRuJP44pwUDooH0FADFYBQBvb3NLuY9F/M/4UhmiCsxkXC9cHOKja8iVirbw20s
-AVIyB9foaAJTvPdR+GaMP/e/Sq5vVaGNkjZpJT8qA+h9atDOBkAHvg0ANw3979KNrf3/ANKbO7xx
-M6BTtBJBqtY3zXUzIyBcLnIPuKALeH/vKfwxTWUuhVlBBz0P+NQf2gg8/eu0RNtHOdx5/wAKkW6U
-OI3R0cjcFIzkfhQA5FSNNgVk9SBz+YojVUiZI34wcdDtoS5hdtokXdnGDwc/Q1I6gg5AP1FFh3ZF
-KsjRspVXyuBjgg/jTbrIstr8vgdu/Gam2AdCw+how/ZgfwxSaGp2sOBB5BBB7iqcUsv2j7MrZ8ts
-s7c7l9PryPyq1uZeqn8OahWGFRGqfJ5bbl9fcc0ybjo7qOQKRuCucKzDAJp0dxDKcJKjH0zzVeOz
-EZjUbCqPuy2c+vbikS3kjtbZABuSUM2D2yaALgJYHK8ZI9c00wRmUSFcsF2+2KoiJxPmRG8rz5C3
-GRyOD/8AX7VK7riJNh2bCQ0mfXpxQBYLRmbySo3bN3TtmnkDepwM+tULDzDPGzhs+QRk/wC9V9hx
-x2oAb/E/+7/jURkAGeT1/SpRyW/3f8agZMLK3qp/lQNWGNcSiITeWvl4BIzzTnY+bsJyhIJPp7VH
-EjNDGHfcmAduKsAYB46nJzQNaD7f/U/if5088kCkUny/fNKAfWgkdSZHrRgfWlpgNY/KeDWPq/8A
-x9j/AHB/WthvumsfV/8Aj7H+4P60AbVJS0UgGlQeqg++KTYOxYfjT6iknjiYK7YJ/Sgdrjtrdn/M
-UfP6qfwxTqr/AGom6eBYyzKM5z24/wAaBEw388rQN+BytQpeRG3aYkgKcMCOQaQXYXyvMRkEn3Tn
-Pp19KAJ8P/eA/CjYT1dvw4qO7nNvGpVN7MwUDOOTUZvA8UMkWMPKqMD29aALHlr3Gfqc0pKxrklV
-X34FVIHe9WVt5RASqbcg/U/pVdnM+lSSyqDIDt345IyD/WgDSjkSTOxgwHcc1H5zGYwxplkGWLHA
-HTHb/OKW1/49ov8AcX+QqCGKWC6mcJvjlO4EEAg/n7mgBklzcK9sHQRF5MEcHIyPy61au1VrWXcA
-cISM+uKgNrNMYWmmAkRi3C9OnH6VOYN4IkkdweCM4H6UAZpyLCzcgtErkuuM55//AF1dnmEvmRwp
-5mYm+denQ8e/OKmUQ26ZRVQH+6OtKsyM20E5PTIxmgdmULa0nt0SdOZOjRNxkZ7GrNlNLcGSRuI8
-4QYwakaViSI03BTgknHNPLOVBVQCeoJ6UBZkdz5rxSRxxg7lwCW9ar29lJaTB48SArhgTjH0qwZ2
-EbnaNyED25qRPMz84XHtQNxaKH2aVYZ3aFXaZ8mPP3Rz39eakt1kW7KqJWhC9Zf4T7Vblfy4y2M4
-7Uiyr5asejHH4k0Cs9ypp/8Ax9Xn/XT+pp2qyPHbKUdlO8DKnHY1aLxo+Cyqx9TgmmXMCXMQVy2A
-d3ymgVivPcNBEzq7kj+CRP6//XqQXifZmlYHchAdO4OcUXME00DRB0O7HJBHeoNQtZMu9uMiTiRA
-Op65/wA/1oAtvcxRvtkbYT03DAP408Mrr8rBhx0Oaqah/wAfdn/10/qKi2g6tMPLD/KDgnHpQBoe
-WnYY+hxRs9Gb+dUrmZ4XgVWeJXYht5BIHHc5qWK5b7YYCRINuQyj7v1oAnAclsMODjp7UuH9VqG6
-QtDIygb42Drn1AH/ANeoZZPtDSOhPlxwkjt8xH+FAWLg34/hpcP6r+VUoUL+QVDqhjPmsTjOQKWz
-YyTqHY4jBEfbeOmfyAoAtbSoYk9R6Y9aYBkY4qGwKnT40JALBhjPuai+xjpvI+tA0kywzqg5ZQB7
-1E14o4RS59e1ItpGD1yfYVYjgA+6oX3NIfuoW1aRoS0owS3T0qbNAAVcClpkic0YpaKAGsPlP0rH
-1f8A4+x/uD+tbLfdP0rG1f8A4+x/uD+tMDaopOfWjPrxSAbLIIYy7dug9TVaKPcrPLy79fYUhb7T
-Nu/5Zpwo9T606W5ihYLKSC3TjpS3NPhQ60fgwsfmTofUVEEkj1OWUxsUZAAV59P8KSRjHIsqjJX9
-RV1WDqGU5BGRQhTVtTNNjLLbys2FlkcOFzx/nk1LcRy3ccMfllACGcnt9PzNXWbajNjOOcVE0wVI
-zjhsCmTZsS6jeXydgztlVjz2FQyWB+1rLG4VN4Zk9x6frVppCGZVXJC7v/rVHJORHGygfNyfYd6L
-jUWxq2SoJFSR1jk6rxx9KmEUSwiLavl9lPTrmmsWeR0DEAJjj1NQsxlhTH3lUv8AiP8AJpXGo3LK
-lVbYMDA4AHQUyScRGMFchupz0pIiGlkkzxwAfw/+vQ4DSxA8gq39KfQElfUSWRhcRqp4zhvx/wD1
-U07WnlDIz4IwO3Sl8gp5YB3EPkn8P/1U/wAuQSuysoDEdRntSKulsJJ0h+Xb844/A0s2GeNRywYH
-6CnNEHVQ5Jwc5HFKkap90c+p5NBN0QP5QZsSsh3cgHv9KkV8Qr52csDnimm7twpcPlQeWCkgfXAp
-Xuo0lWPlmcbl2jORTsJyGoq7JAQfKyMUsP8ArTs3eXjv60q3UJDktt2HDBuCKFuoyUB3Lv8Au7hj
-d/nNKw+YJ2D225TkEjH5io5PkkCdmkDL+fNTLPE/mAMD5f38jp/nFA8uRUfKsM5U570WBSsMfP2o
-4QN8gyCfc07y1aP7rR4zwDj+VOeLc+8MytjHFKAwQhm3H1xinYG9NCO23tGjtISCOQRU1MgQpCqt
-1Ap9CFLVgQDjIzjmongjMhkwVkPBZTg1LmkPSgkgltTK8LNKSYm3DIHPTjjHpQtu0NyZIdojf/WL
-7+oqzRQA1fvP/vf0FNSGNIzGqAI3UetOX7z/AO9/QU6gCvNKkSpDtBDYXb/s9KVtitCFjG8ZCA8b
-RjmmXSkmIhMkOOR1p3ly/uXJVnTOcnHUVOpolGyYsAjIbbEiFWIOAOopk8+JFVdu0OA5OPyqSON0
-U4ZctIWI68elOaJHIJGCrbuPWnqK8UyBw0aPK6h13ZALHpnpjpVuoEaB5RtJLN8w+9g+47UQztOi
-yKqrGxwCzcnn0/8Ar0IUmmT0UUUyQooooARvun6Vjav/AMfY/wBwf1rZb7p+lY2r/wDH2P8AcH9a
-YG1VS9mwPJXqfvH0FTTS+VEWxk9APU1nfNI+M5ZjyfU1EnY1pxvqy7AqsAF+6Kpa0MTRn/Z/rWjA
-gjQKPx96q6pbvOYjGM4yDTREndklxHiFHHZQDTbGUKxhPQ8r/UVcYAptPIxisiUNDNtzgqcqaT0d
-zSPvR5TWxnNVIlMitH/zzUqPqTx/KrEEomiDjjPUehp6jjI4zTtchOxFbHzA0v8AeI/Qf/rpkUZJ
-kRh8qgoPxP8A+qrIUAYFQT3KwyJGY3LOcKeME/5NFg5tx1srKhMnDscmiKLYztnIY8D0FQSX4iuC
-kkZCLgMwOcEjP+NTRSM13cRk/Km3A+oyadhOQ6OFUjMeCVz3pPtESoD5inPAwc5Pt69apTedbymE
-SbluDhSxJKf5BpZYhb3FqQjG3QY6ZwT3P4kf0oE22SzX6R7xtIkQfdbjOcf40Xl1JHYxyxkKz7e2
-cZGajntWvrhn5RVXapPc9enpzUgtZJYYYp9gSPGQpOWwOKBEAlBkvDOHlVGIAycDr+VWtOBW0j3S
-b8+hzj2pqNBazSnexaQ7m9B1/wAasRRRxgmJQobnjoaBtNbmPCV/s2VWl25bheOen41YVJWvbXK+
-WRFjgZC9fWtLaFHygDJHQU6gRjz28rNKrqWnLBgw6MvoP89qnuibtIY4kIbIYnH3B/k/pWjRQBk3
-ccn9oPFEQBcAZA/U/oaZKkhuRZEfujJvXHYH0+gz+Oa2KZ5aFxIVBdcgN3FAFGZnS4nZnldcfI0f
-ROvXHpRDdS+e0Us8QUICGYcHge4q1JaI/mbXePzfvbcc1FHZm2naSHaVK42kkY6d+fSgCSS68kxq
-67jISBsOfT1+tSRTxyOyK3zryVIIIqpcwu8tuUiKbX+YqBx05/z6UsasupE3BO7biIjgMO/4/wCf
-SgC/SEcUmR60p6UALRSfhRmgBF+8/wDvf0FQXrsiRbSw3Sqp29SOanX7z/739BTZYlmChs/KwYEH
-HNAFS6eVYVELSq7SBcv75qG5u3fzNjshWIblBxtbcAavmFG2b2ZiGDKC3cUyS2ti8skmBuAD5bA7
-f4CgB9zIYrd3XJbooHqTgVnurQxyW8IciVAVypBLDG7A9x/hV3/RghlLhghzuLlsenc1K0ipNHGc
-7nyBx6cmgCJXeS5iMTP5WCWBXAHHGDj+tMs7d4okDRRhh1YnJ6/570qXbOkMgiHlyvtHzc9+2Pb1
-q1QAtFJkdufpRk+n50wFopMH1/KjaPr9aAEYjaee1Y+r/wDH2P8AcH9a2G+6fpWPq/8Ax9j/AHB/
-WgC7dxytLuCllAwuO3rxVVWaJ8jAb0Na1BAIwQDUON9TSNSysUFvCPvJ+VRXkgudhSQoV9elX2tY
-W/gA/wB04qFrBD912H1waNR3gyRbiMqo8wE45PTNV70JJHvVlJX0NDac/wDC6n6gj/Go2sJh0Cn6
-NRqCUU7piWM/lzbWPyvwfY+taYOABg1mfYJucBf++q0YgywoHOWAwfenEVS17odn2NUr0M9zbbEd
-vLfLYB46HrV4UtUZlRbfzJbkyp8koXGcZ6foaLK0Nt5m59+4jHHpVukXp+JpARtDG7qzKCUOV9ul
-SL90fSgdT9aF+6PpTAP4h9KKO9JuFIDMvYvLnJx8rcirWnyl4yjHlen0pLx45Iiu9dw5FUoZDFKG
-H41GzOlfvIW6o2COPxoqib70j/Omm+fPCitHpuc8U5OyNCis/wC3P/dFL9tf+6KLMm5oUi9PxNUh
-e+qflT1vUPXIosx3LVDfdP0qJbiNujj8ak3Bh160gFHU0EA9R05o7k0tACYpMYp1I3T8RQAnPrRk
-+lOooAYp5fjv/QU7PsaRfvP/AL39BS0AQXS5gLjIaL51PuKrAeWbaVz8kjF5GPTcRx/9arjzwqWV
-nAIHzD0pWmjRgm7nGQqgk4/CgClcRNdPM0G1gYwpIPBbcD/KrABnuoZQrosYJ+YYJJ4xTxcx+akR
-LB3GRkEevr9KZJdhYJZVTcIn2EE4z/nNAEVvZGKOJgQk65BOMgjPeruB6VVkuGEkkbSLDsUENtyW
-yOSPYVaU5UHIbI6joaAFooooAKKKKAEb7p+lY2r/APH2P9wf1rZb7p+lY2r/APH2P9wf1pgaU1yk
-BUPkBu4pUuYnHyutU9T5MX0P9KYY4YYxvXc5GcUaWFc1Awpc1kSsY1DRsQp6bTjmj7VcxMQ2cr1B
-HSnysLo16WstdRf+JFNPGpDvHj6GjlYXL/TP1oUcAmqP9or/AM8zR/aK/wBw0WY7mhSZHrWcdR9I
-/wAzTTfTNwqgfTmjlYrmnkU0uqDkgD3NZL3MzZBcj6cUNBMShILb8YP1o5QuaD3kS/x5+lQPqA/h
-TP1qBbVz1KgbS2c5HH0qSO2jYxjcx8zdgjjGPanZBdjXvJX7gD2qOXzQxEhbPoTU7JGkAwgbcmSx
-YDB/z2pl3Iss25X3A9BzxTQhXtGWQRgncTjJGFqF42jxuBBIzg1NJcK0/mrH82c/MeOlCTSMpDIZ
-PlKg9TzUyjzI0p1ORjIXGxojwJCBu9OabMoWVlXoDimspVsEYNJyTzyaxbdrM64wV+ZFqGOJot7B
-j8wGB9KSSONIVYbizZwfoaFt5h0OPoaDbSnrg/jW69TherIKWpDbyj+D9aaUdeqkfhVXJG05WZeh
-I+hptLQBMtzIv8WfrUq3nPKflVSlpWQ7l9bqNu+PrUodWHBBrLpRx0pcoXNXIoyPWs0TSD+I/jUi
-3Ug64NLlY7l1Ry/1/oKWqYuz3QU77WP7tKzC43y5HubxVwA6qMtn+72ppTyrxFDOqrAF3KuScH6G
-pPtY/u0G64+7RZhcje38+5DEvt8r5ZGGCG3fhTUtp3sZY32iSSTccn6en0qQ3TdlAppnkPejlYXL
-EiPIGVpcIy4K4HHrg04SRxqEBACjAFUi7HqxpKfKFy9HMsjkDPTNSEgdTVS05kb/AHf61bAA6Ck1
-YEGfQGjn2FLSEgdaBiMDtPPasfV/+Psf7g/rWwxG0/SsfV/+Psf7g/rQBavuJYWIO0dT6dKrH52L
-O20k9RWo3X8BUMiQk/Oik/TmhOzuJq6M6YjAAkLVdRoZ0RCx3zgBzkZBX/GmG1t3+6Sv4/40xtPP
-8MgP1FW5JiSsShEvCWJOGmI444C8fyqFbZHRZAWVCjMQTk8GkFrcRn5D06bWxSCK6TaAG4zjBzjP
-Wj5gSzwoyLJyFSJOB1OTSiwXewMnCvgn0GMg1Fi7znDZxj8KQx3J3ZVvn+970fMCVbWPzAjPh9gO
-0nHJ7f8A1qbZ5S+x0AyDg8YpBHdsS2WBbqd2M0LYyHqVFF/MCWKSOIQbyvO8ScZPtmo/tKq8Migl
-o1ClT0796kWxH8Tk/QVIttCnJXPuxpXQ7Mq+exLbAxLKVO5txxSrFcMFADALnGTjGetW/Mij4XA9
-lFODSN92Fv8AgXFLmCxVSyb+JgPpzUq2kQ65b6mpxFM33mVB7DNKLVD99nb6nFK7HYqTusJCxKoP
-rioDNK38R/CtTyIQANijn060m+CNWIKAKcHA6GoabNo1IxWxl+XI2TsY/hRHG0jhVGTWq86IrHBO
-1gpwO5x/jTFnAb/VFcOEJ44J6fzFLlK9v5CbZ/8Anmv/AH1Rtn/55r/31TvtS+Ztxxu25z3+lJJc
-NxsU7fMCbvxwas5xuZR1gb8CDSGUD7yuv1WpknDuVVW4JGexI7Ukc5LsjhQVXJ2tnH19KAIt0Mnd
-TTTbRnpkfQ1Ovlz4LQkEjI3L/Wg2qfws6f7poAqNan+FvzphgkH8P5VcMMy/dkVvZhimkyr96Fse
-oINPmYrIpEEHBGKSrvmxt8rcH0YYoMUbdAPwquYVinRVk2w7MR9aYbZx0INPmQWZFRUhgkH8P60n
-lP8A3TRdCGUtO8p/7ppRE/8AdNF0Aylp4hc9gPxpwtz3YUXQ7EVFWBAo65NPCoOgFLmQWGWgPmE4
-/hq1z7CmR9T9Kkqb3KEx6k0AAdqWigBG+6fpWNq//H2P9wf1rZb7p+lY2r/8fY/3B/WgDUf+lKiq
-gBxljQRk49R/SmxttbLD/wCtSQEjAH76g5qJoynKscGpXKEjLEVGXADDqOxoAZl/an+XIRy4FKCF
-fn0p3zHB2nFAEZSRBnIYUoIIyKlYbOR0qLA3HHSgBgd2LbI8hTjOQKXEx7Io/E0kb7IpT/00/oKd
-FM8kijBKMPTigBRA7DLTHH+yMU4W0S8sCx9WOakQAbgPX+lUhv8As0CEllZFbAHIAK9Mc9CaALi+
-WgYLtUKcHHGP85oEsbBSrhgxwCDnJxn+lVZI8b2ERbcyEE+mV4Oee3+NWERwSxIUs25gOR0xjP4A
-0AMLs5A3EBptq+wXr+ZU/n+FQvcyqcnny8qwHcnOP5D86sRoQIy2MgEsBz8x6n+f50/KgkgAE9fe
-gCo0EqnYgLeXh1J7njj9D+dP+yE7VONpX5/c8/4n8qnMlIXP+TQA1LdhEqMwJDBycdTnJpxhU7vm
-+9IH/LH+FNMg7laPM9/0oABbqJNwYY3bsYHX60G3BIxIQofft985o8z3/SjzPf8ASgAFuRN5m8d+
-QuCc+ppPKlJJfYf3ZTqfm9zSiQditODn/JoAjhBjkJ8sxRhPmHv7frTS7rJIwc4EyrtPTBx/jU4k
-pSysPmAPegCBbo+ZhgApcoBtOeuOvQ1LbSNLFuddp3EfkaPLQvvywOc9SATToYzGpXdkbiRx6nNA
-DmUMMMAR6EVGbWI9F2n/AGTipaKAK5t3H3Zj/wACGaaVnU9Eb8cVaqGclVJVdxHYd+lAEW6UdYSf
-cEU5G3oGxjkiore5FxnCOu3qT0zT7f8A491+rfzpASAEjIFG1vT9aR5PLhDd8cUhnRIlY556DuaL
-iuOIIxnFCjdnnFBYMFKnIJ4NKhxn60xi7F7/AKmkOPLOOmKhZjlvKUsgPzAdz6CpQweLcudpHGRQ
-Nqw6PqfpUlRx9T9KeSB1NAhaKTPoDRz7CmAN90/SsbV/+Psf7g/rWwwO081j6v8A8fY/3B/M0Aar
-dfwFA4OcZz1FPKK3UU3yvRiP1pAIAnXdx6GkCh3G3kA8mlKP/st+lG5x1U/hzRcVgmXo3boaTayr
-wTgdqXzcfe/UYpA4H3GGPQnNACsWdfQU1BhSfU0pYH7zAj0FIWB7igZEIzJFKAePM5x+FSRrsIJD
-MQMDJAApd6jgFaXcT03H6ChaBYkQkZLDqc0bgoAUAAcADtUe1z/Dj6mlEbHqwH0FADjJTDIAeSM0
-4RrznJ+ppyABRgAcdqAI8s3QMfrxShHPdR+tSfxD6UetADBEO7Mf0o2IGA2g/Xmn0h++KYAeBxxz
-2p1I3T8RS0AFFFFIBp5Xnmm7FIztHXtxTu1C/dpgNMQ7Fh+OaQow7qfrxUg9PShvun6UgIvmX+Fh
-9OaBIM9RmpqQgEYIyPegBoc0okppjXsCPoaQxkdG/MUAShhUE0oV8FW+uOKXa4/hz9DRuI6hh+FA
-EQni6bgPalt/+Pdfq386f5i9CV+ho3LjAwB7UgHAZQAjII6U2SPzNoIGM80bh2b9aNw7v+tMLDn7
-Z9aFIGckDnvTAwPQ5/Wl+Y9Eb+X86AHKURQFHA6ACgsSCMdaNjn+6P1pRF6sT9OKABOSfpTwAOgp
-FRV6Dn1p1ABSUtJQAN90/SsbV/8Aj7H+4P61st90/SsbV/8Aj7H+4P60wNqiiikAUUUUAJ3FBAPU
-A0HqKWgBoUZPA/KgKNo4H5Uo6n60i/dH0pgKOOlLSUtIApo6fiaWkXpTAAMk0AAqKUdT9aF+6PpQ
-AmMEY9KUd6P4h9KQ8HNAC0h++KWggHrQAhYY60bhQQMdO9LgUAJuFG4UuKMUAJ/DQvSlPSkXpQAp
-H50hOVP0p1NYcE0gHUUmfWloAQ0N0/EUUjHimAp6UDgUnuadSAKTavoPypaKAE2r6D8qAAOgFLRQ
-Ag6fjS0i9PxNLTAKKKKQBRRRQAUlLSUADfdP0rG1f/j7H+4P61st90/SsbV/+Psf7g/rTA2qKKKQ
-BRRRQAh6iijuKWgBB1P1oX7o+lA6n60L90fSmAtJRRSAO9A6fjQO/wBaBTAB1P1oX7o+lA6n60in
-5R9KAF/iH0pD0NGeRR1NIBRS0gpaAEbp+IpaRun4ilpgFFFFIBD0pF6Up6Ui9KYDqRvun6UtI33T
-9KACk2inUUgG7RQQAPxp1I3T8RQAUtFFABRRRQAUUUUAIvT8TS0i9PxNLTAKKKKQBRRRQAUlLSUA
-DfdP0rG1f/j7H+4P61snoaxtX/4+1/3B/M0wNqiikJxQAUUAUd6AA9RRmijApAIO9Kv3R9KQDrQA
-NooAXIoyKMCigBM89OtAzilpAcD86YAByaFHAoB60m7amfQZoAcfvD6UVnS6qiMQkbMRkfMcVWfV
-Lhvu7U+g/wAaANqmPLGn35EX6nFc+88sn35GP1NMpAbr31sMZmB+gJph1O2z95j+FYtFAG1/adt6
-v+VH9p23q/5Vi0UAbov7VuBMPxBFSxTROPkkQ/Q1ztFAHT0jfdP0rnEmlj+5Iyj0Bqwmp3CjBKv/
-ALw/woA3KKzI9XX/AJaREe6nNaSncoYdCM0ALSN0/EUtI3T8RTAWiiikAUUUUAFFFFACL0/E0tIv
-T8TS0wCiiikAUUVXurtLYDerEnpigCxRWTJq7n/VxqvuTmqz31y/WUgf7PFAG65AQknAx3rG1V1e
-6BVgwCgcHPrVNmLHLEk+9FAH/9k=
+--_----------=_parties_5c477ddca72b6254356d98a3bbf39bd9
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
---------------030409080807020206070408
+Version "en ligne" de ce message: http://www.ctrm3.net/svi/miroir.php?bat=citroen0809_ctrm
+
+Citroën
+La Technologie Citroën à prix Gagnant
+>>>Réservez un essai dès maintenant
+
+plus d'infos sur http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce
+
+--------------------------------
+Cette offre Citroen vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm3.net/svi/gestionserv.php?nb=2072&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_5c477ddca72b6254356d98a3bbf39bd9
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Citroën</title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm3.net/svi/miroir.php?bat=citroen0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Citroen vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#D11F31;font-size:24px'>
+<p style='display:inline;'> <a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce" style="text-decoration:none;color:#D11F31;"><b>Citroën</b></a></p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#88c0d6;font-family:Verdana;color:#FFFFFF;font-size:24px;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce" style="text-decoration:none;color:#FFFFFF;"><b>La Technologie Citroën &agrave; prix Gagnant</b></a>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:20px;background-color:#FFFFFF;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce" style="text-decoration:none;color:blue;"><center><u>>>>R&eacute;servez un essai d&egrave;s maintenant </u></center><br></a>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<img src="http://ad.zanox.com/ppv/?13017001C1358637356" align="bottom" width="1" height="1" border="0" hspace="1"><html>
+ <table border=0 cellpadding=0 cellspacing=0 width=500 align=center>
+ <tr>
+ <td width=111>
+ <table border=0 cellpadding=0 cellspacing=0>
+ <tr>
+ <td width=111 height=72><a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13017001C1358637356%26ULP%3Dhttp%3A%2F%2Fwww.citroen.fr">
+ <img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/logo.gif" alt="Citroen.fr" border=0 /></a></td>
+ </tr>
+ <tr>
+ <td width=111 height=32><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/BLOCK1.gif" alt="Citroen" width="111" height="32" border=0 /></td>
+ </tr>
+ <tr>
+ <td width=111 height=80><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/BLOCK2.gif" alt="Citroen" width="111" height="80" border=0 /></td>
+ </tr>
+ <tr>
+ <td width=111 height=72><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/BLOCK3.gif" alt="Citroen" width="111" height="72" border=0 /></td>
+ </tr>
+ <tr>
+ <td width=111 height=54><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/BLOCK4.gif" alt="Citroen" width="111" height="54" border=0 /></td>
+ </tr>
+ <tr>
+ <td width=111 height=61><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/BLOCK5.gif" alt="Citroen" width="111" height="61" border=0 /></td>
+ </tr>
+ <tr>
+ <td width=111 height=300><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/BLOCK6.gif" alt="Citroen" width="111" height="300" border=0 /></td>
+ </tr>
+ </table>
+ </td>
+ <td width=389>
+ <table border=0 cellpadding=0 cellspacing=0>
+ <tr>
+ <td width=389 height=72><a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/technologie.gif" alt="La technologie citroen &agrave; prix gagnant" width="389" height="72" border=0 /></a></td>
+ </tr>
+ <tr>
+ <td width=389 height=32><a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/prix_gagnant.gif" alt="La technologie citroen &agrave; prix gagnant" width="389" height="32" border=0 /></a></td>
+ </tr>
+ <tr>
+ <td width=389 height=79><a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/vehicules1.gif" alt="Citroen Nemo Combi, Citroen Berlingo, Citroen Xsara Picasso" width="389" height="79" border=0 /></a></td>
+ </tr>
+ <tr>
+ <td width=389 height=73><a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/vehicules2.gif" alt="Citroen Nemo Combi, Citroen Berlingo, Citroen Xsara Picasso" width="389" height="73" border=0 /></a></td>
+ </tr>
+ <tr>
+ <td width=389 height=78><a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/avantage_client.gif" alt="Citroen Nemo Combi, Citroen Berlingo, Citroen Xsara Picasso" width="389" height="78" border=0 /></a></td>
+ </tr>
+ <tr>
+ <td width=389 height=46><a href="http://www.ctrm3.net/svi/linkserv.php?bat=citroen0809_ctrm&nb=2072&n=9047704&c=commerce"><img src="http://www.zanox-affiliate.de/ppv/images/programs/3238/Aout09/Emailing1/essai.gif" alt="Demande d'essai" width="389" height="46" border=0 /></a></td>
+ </tr><tr>
+ <td width=389 height=291 bgcolor="#5CA6C5"><div style="font-family:Arial, sans-serif; font-size:8px; text-align:justify; color:#ffffff; position:relative; margin-right:20px; margin-left:20px;">(1) Avantage client compos&eacute; d'une prime reprise de 1 300 &euro; ajout&eacute;s &agrave; la valeur de reprise de votre ancien v&eacute;hicule de moins de 8 ans, d'une puissance r&eacute;elle inf&eacute;rieure ou &eacute;gale &agrave; celle du v&eacute;hicule neuf achet&eacute;, ou d'une reprise forfaitaire de 1300 &euro; dans les autres cas, et d'une Prime &agrave; la casse Citroën de 1 000 &euro; pour la reprise de votre v&eacute;hicule &acirc;g&eacute; de 8 &agrave; 10 ans et du bonus &eacute;cologique de 700 &euro;. (2) Avantage client compos&eacute; d'une prime reprise de 2 250 &euro; ajou
+ t&eacute;s &agrave; la valeur de reprise de votre ancien v&eacute;hicule de moins de 8 ans, d'une puissance r&eacute;elle inf&eacute;rieure ou &eacute;gale &agrave; celle du v&eacute;hicule neuf achet&eacute;, ou d'une reprise forfaitaire de 2 250 &euro; dans les autres cas, d'une Prime &agrave; la casse Citroën de 1000 &euro; pour la reprise de votre v&eacute;hicule &acirc;g&eacute; de 8 &agrave; 10 ans et de 750 &euro; d'avantage &eacute;quipement par rapport &agrave; un Citroën Berlingo HDi 92 Multispace &eacute;quip&eacute; des options Modutop &agrave; 750 &euro;, Pack clim/CD &agrave; 1 200 &euro;, Projecteurs antibrouillard &agrave; 150 &euro;, r&eacute;gulateur-limiteur de vitesse &agrave; 250 &euro; et du Pack Enfants &agrave; 200 &euro;. (3) Avantage client compos&eacute; d'une 
+ prime reprise de 4 800 &euro; ajout&eacute;s &agrave; la valeur de reprise de votre ancien v&eacute;hicule de moins de 8 ans, d'une puissance r&eacute;elle inf&eacute;rieure ou &eacute;gale &agrave; celle du v&eacute;hicule neuf achet&eacute;, ou d'une reprise forfaitaire de 4 800 &euro; dans les autres cas, d'une Prime &agrave; la casse Citroën de 1 000 &euro; pour la reprise de votre v&eacute;hicule &acirc;g&eacute; de 8 &agrave; 10 ans, et du bonus &eacute;cologique de 200 &euro;. (1)(2)(3) La valeur de reprise est calcul&eacute;e en fonction du cours de l'ArgusTM du jour de la reprise, applicable &agrave; la version du v&eacute;hicule repris, ou le cas &eacute;ch&eacute;ant &agrave; la moyenne du cours des versions les plus proches de celui-ci, ledit cours ou ladite moyenne &eacute;t
+ ant ajust&eacute; en fonction du kilom&eacute;trage, des &eacute;ventuels frais de remise en &eacute;tat standard et d&eacute;duction faite d'un abattement de 15% pour frais et charges professionnels. Offres r&eacute;serv&eacute;es aux particuliers, non cumulables, valables du 01/07/09 au 31/08/09, pour l'achat de Citroën Nemo Combi HDi 70 BV5 Airdream Confort avec option climatisation, Citroën Berlingo HDi 92 Collection ou Citroën Xsara Picasso HDi 92 Airdream neufs dans le r&eacute;seau participant. Mod&egrave;les pr&eacute;sent&eacute;s : Citroën Nemo Combi HDi 70 BV5 Airdream Confort avec options climatisation, barres de toit longitudinales et peinture m&eacute;tallis&eacute;e, Citroën Berlingo HDi 92 Collection avec option peinture m&eacute;tallis&eacute;e, Citroën Xsara Picasso HDi
+  92 Airdream avec option peinture m&eacute;tallis&eacute;e. Consommations mixtes (en l/100 km) et &eacute;missions de CO2 (en g/km) (normes CEE 99-100) de Nemo Combi HDi 70 BV5 Airdream Confort : 4,5 et 119; Berlingo HDi 92 Collection : 5,7 et 150; Xsara Picasso HDi 92 Airdream: 5,0 et 130.</div></td>
+ </tr>
+ </table>
+ </td>
+ </tr>
+ </table>
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.ctrm3.net/svi/img_nb_2072_numuser_yyynumuseryyy.jpg" width=1 height=1>
+<p>
+<a href='http://www.ctrm3.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm3.net/svi/gestionserv.php?nb=2072&cat=commerce&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_5c477ddca72b6254356d98a3bbf39bd9--
+
+--===============3319481146037521539==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -336,7 +149,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---------------030409080807020206070408
+--===============3319481146037521539==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -347,4 +160,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---------------030409080807020206070408--
+--===============3319481146037521539==--

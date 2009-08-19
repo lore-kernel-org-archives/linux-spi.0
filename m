@@ -1,11 +1,11 @@
-From: "Kierra" <Shop3-53acrOsAFPM2I1EUKF0j463CU4Ph5ZDs@public.gmane.org>
-Subject: [SPAM] Discount Shoes for You
-Date: Wed, 19 Aug 2009 15:30:56 -0100
-Message-ID: <C590ED0C.EDCEDBAB@Mail.ServicetoYou.info>
+From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
+Subject: [SPAM] 商@务#咨￥询%
+Date: Thu, 20 Aug 2009 02:21:58 +0800
+Message-ID: <E1MdpnS-0008HL-If@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "Webmaster" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,30 +17,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org:
-
-Discount Sneakers: Save 51% on name brand sport shoes to you. 
-
-We assure you reliable quality, best price and fast shipping.
-
-We also sell name brand Handbags, Fashion Shoes, Sport Clothes
-and other famous brands including Nike, Converse, Adidas, Puma,
-Kappa, Prada, Gucci, Louis Vuitton and UGG Australia etc.
-
-Let us know if you have any needs.
-
-
-Brand  Support
-Brand-bQl7P/9HDLayghMhhtcxew@public.gmane.org
-
-Other discount name brand products:
-T-shirts, Jeans, Hats, Wallets, Belts, Sunglasses,
-Wig, Wrist-watches, and other series of products.
-
-
-
-------------------------------------------------------------------------------
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
-trial. Simplify your report design, integration and deployment - and focus on 
-what you do best, core application coding. Discover what's new with 
-Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHye7b2srQsqvKosq10rXT0M/e
+uavLvrXEo6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+
+o6mho87Sy77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvB
+y8O/1MLP+srbtu62yKGjCsO/1MLT0NK7sr+31lvU9ta1y7BdtefE1LeiQMaxNiW6zVvG1c2oXbei
+QMax1tbA4Mjnz8KjusnMxrfP+srbt6JAxrGjrLXnxNTUy8rkt6JAxrGjrAq547jmt6JAxrHX4sHe
+0rW3okDGsSy3/s7x0rW3okDGsbXIICi5+suwtdjLsKOpMS0yJdPFu920+r+qu/K6z9f3o6y148r9
+vc+1zaGju7m/yQrS1Lj5vt3L+df2yv3Bv7butsi1xLTz0KHAtMnMzNbTxbvdtcS148r9o6y5q8u+
+s8nBorbgxOrSu9axvOGz1tLUobCzz9DFobHOqtbQCtDE1/fOqrmry761xLrL0MTLvM/roaLAzrnM
+yvfBormry77Qzs/zo6yxvrmry77Wo9bYs9DFtcv508O++LbUysfV5saxo6G4/M+jzfsKxNy5u9PQ
+u/q74dPrufPLvrrP1/ejoQqhoaGhCiAgICDI57nzy77U2lu3okDGsV21xNXmzrG3vcPm09DIzrrO
+0snCx7vytaPQxKOsv8nJz834sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGj
+IAogICAgIAogICAgtMvQxc+is6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOiAKICAgIAqhoaGhytYg
+ILv6OjEzNTMwMDQ0MDYwCgogICAgLS0tLVFROzg1MjQ3MDcxMAoKoaGhocGqz7XIy6O61cXQob3j
+Csuz16MKICAgICAgyczs96OhIAogICAgIAqhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhICCh
+oaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhocnu29rK0LKryqLKtdK109DP3rmry74KCgotLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0KTGV0IENyeXN0YWwgUmVwb3J0cyBoYW5kbGUgdGhlIHJlcG9ydGluZyAt
+IEZyZWUgQ3J5c3RhbCBSZXBvcnRzIDIwMDggMzAtRGF5IAp0cmlhbC4gU2ltcGxpZnkgeW91ciBy
+ZXBvcnQgZGVzaWduLCBpbnRlZ3JhdGlvbiBhbmQgZGVwbG95bWVudCAtIGFuZCBmb2N1cyBvbiAK
+d2hhdCB5b3UgZG8gYmVzdCwgY29yZSBhcHBsaWNhdGlvbiBjb2RpbmcuIERpc2NvdmVyIHdoYXQn
+cyBuZXcgd2l0aCAKQ3J5c3RhbCBSZXBvcnRzIG5vdy4gIGh0dHA6Ly9wLnNmLm5ldC9zZnUvYm9i
+ai1qdWx5Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNw
+aS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8v
+c3BpLWRldmVsLWdlbmVyYWwK

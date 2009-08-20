@@ -1,9 +1,9 @@
-From: "Amaguiz par Plein Temps" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: mille kilometres d'assurance auto offerts
-Date: Thu, 20 Aug 2009 19:06:25 +0200 (CEST)
-Message-ID: <kooq6m.jg9svv@front.ta271.com>
+From: Sidwell Clinkscales <literalism-xCKwSGZHW1Lby3iVrkZq2A@public.gmane.org>
+Subject: N, and an audience--and that
+Date: Fri, 21 Aug 2009 00:08:22 +0200
+Message-ID: <9FC78D4A.9080404@peterhart.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6613752165908441659=="
+Content-Type: multipart/mixed; boundary="------------080802060701050305090803"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,134 +16,182 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6613752165908441659==
-Content-Type: multipart/alternative;
-	boundary="=_290d446f776b0f46c7788f6c70c49956"
+This is a multi-part message in MIME format.
+--------------080802060701050305090803
+Content-Type: text/plain; charset=ISO-8859-9; format=flowed
+Content-Transfer-Encoding: 7bit
 
---=_290d446f776b0f46c7788f6c70c49956
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+L she was close. She aimed right for us. Often they do that and try to
+see how close they can come without touching; sometimes the wheel bites
+off a sweep, and then the pilot sticks his head out and laughs, and
+thinks he's mighty smart. Well, here she comes, and we said she was
+going to try and shave us; but she didn't seem to be sheering off a bit.
+She was a big one, and she was coming in a hurry, too, looking like a
+black cloud with rows of glow-worms around it; but all of a sudden she
+bulged out, big and scary, with a long row of wide-open furnace doors
+shining like red-hot te
 
+--------------080802060701050305090803
+Content-Type: image/jpeg;
+ name="scleroma.jpg"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="scleroma.jpg"
 
---=_290d446f776b0f46c7788f6c70c49956
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"=0D"http://ww=
-w.w3.org/TR/html4/loose.dtd">=0D<html>=0D<head>=0D<meta http-equiv=3D"Conte=
-nt-Type" content=3D"text/html; charset=3Diso-8859-1">=0D<title>emailing ama=
-guiz</title>=0D</head>=0D<body>=0D<CENTER><a href=3D"http://clk.tradedouble=
-r.com/click?p=3D76161&a=3D1543484&g=3D18076670&url=3Dhttp://amaguiz.solutio=
-n.weborama.fr/fcgi-bin/performance.fcgi?ID=3D357581&A=3D1&L=3D186782&C=3D52=
-50&P=3D10968&T=3DE&URL=3Dhttp%3A//www2.amaguiz.com/mkg/tradedoubler/0003/KM=
--SV/PAYD.html"><font color=3D"#6c6c6c" size=3D"1" face=3D"Arial, Helvetica,=
- sans-serif">Pour visualiser ce message au format HTML vous devez suivre ce=
- lien.</font></a>=0D</CENTER>=0D<table border=3D"0" align=3D"center" cellpa=
-dding=3D"0" cellspacing=3D"0">=0D<tr>=0D<td colspan=3D"3" bgcolor=3D"#DDF3A=
-F"><a href=3D"http://clk.tradedoubler.com/click?p=3D76161&a=3D1543484&g=3D1=
-8076670&url=3Dhttp://amaguiz.solution.weborama.fr/fcgi-bin/performance.fcgi=
-?ID=3D357581&A=3D1&L=3D186782&C=3D5250&P=3D10968&T=3DE&URL=3Dhttp%3A%2F%2Fw=
-ww2.amaguiz.com%2Fmkg%2Ftradedoubler%2F0003%2FKM-SV%2FHP.html"><img src=3D"=
-http://www.assurance-amaguiz.com/mkg/tradedoubler/0003/KM-SV/images/logo_am=
-aguiz.gif" alt=3D"Assurance auto : amaguiz.com" width=3D"435" height=3D"153=
-" border=3D"0"></A></td>=0D<td colspan=3D"2" bgcolor=3D"#72A610"><a href=3D=
-"http://clk.tradedoubler.com/click?p=3D76161&a=3D1543484&g=3D18076670&url=
-=3Dhttp://amaguiz.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D35758=
-1&A=3D1&L=3D186782&C=3D5250&P=3D10968&T=3DE&URL=3Dhttp%3A%2F%2Fwww2.amaguiz=
-.com%2Fmkg%2Ftradedoubler%2F0003%2FKM-SV%2FHP.html"><img src=3D"http://www.=
-assurance-amaguiz.com/mkg/tradedoubler/0003/KM-SV/images/offre_exclu_0831.g=
-if" alt=3D"OFFRE EXCLUSIVE" width=3D"191" height=3D"153" border=3D"0"></A><=
-/td>=0D</tr>=0D<tr>=0D<td width=3D"46" rowspan=3D"5" valign=3D"bottom" bgco=
-lor=3D"#DDF3AF"><img src=3D"http://www.assurance-amaguiz.com/mkg/tradedoubl=
-er/0003/KM-SV/images/bordure_gauche.gif" alt=3D"assurance" width=3D"46" hei=
-ght=3D"319"></td>=0D<td width=3D"149" valign=3D"top" bgcolor=3D"#DDF3AF"><i=
-mg src=3D"http://www.assurance-amaguiz.com/mkg/tradedoubler/0003/KM-SV/imag=
-es/haut_encart.gif" alt=3D"assurance auto" width=3D"149" height=3D"24"></td=
->=0D<td width=3D"240" rowspan=3D"5" valign=3D"bottom"><table border=3D"0" a=
-lign=3D"center" cellpadding=3D"0" cellspacing=3D"0">=0D<tr>=0D<td bgcolor=
-=3D"#DDF3AF"><a href=3D"http://clk.tradedoubler.com/click?p=3D76161&a=3D154=
-3484&g=3D18076670&url=3Dhttp://amaguiz.solution.weborama.fr/fcgi-bin/perfor=
-mance.fcgi?ID=3D357581&A=3D1&L=3D186782&C=3D5250&P=3D10968&T=3DE&URL=3Dhttp=
-%3A%2F%2Fwww2.amaguiz.com%2Fmkg%2Ftradedoubler%2F0003%2FKM-SV%2FPAYD.html">=
-<img src=3D"http://www.assurance-amaguiz.com/mkg/tradedoubler/0003/KM-SV/im=
-ages/panneau_payd.gif" alt=3D"Assurance auto au kilom&egrave;tre" width=3D"=
-240" height=3D"75" border=3D"0"></a></td>=0D</tr>=0D<tr>=0D<td bgcolor=3D"#=
-DDF3AF"><a href=3D"http://clk.tradedoubler.com/click?p=3D76161&a=3D1543484&=
-g=3D18076670&url=3Dhttp://amaguiz.solution.weborama.fr/fcgi-bin/performance=
-.fcgi?ID=3D357581&A=3D1&L=3D186782&C=3D5250&P=3D10968&T=3DE&URL=3Dhttp%3A%2=
-F%2Fwww2.amaguiz.com%2Fmkg%2Ftradedoubler%2F0003%2FKM-SV%2FCLASSIQUE.html">=
-<img src=3D"http://www.assurance-amaguiz.com/mkg/tradedoubler/0003/KM-SV/im=
-ages/panneau_classique.gif" alt=3D"Assurance auto classique" width=3D"240" =
-height=3D"70" border=3D"0"></a></td>=0D</tr>=0D<tr>=0D<td bgcolor=3D"#DDF3A=
-F"><img src=3D"http://www.assurance-amaguiz.com/mkg/tradedoubler/0003/KM-SV=
-/images/pied_panneau.gif" alt=3D"2 formules d'assurance..." width=3D"240" h=
-eight=3D"174"></td>=0D</tr>=0D</table></td>=0D<td width=3D"149" valign=3D"t=
-op" bgcolor=3D"#DDF3AF"><img src=3D"http://www.assurance-amaguiz.com/mkg/tr=
-adedoubler/0003/KM-SV/images/haut_encart.gif" alt=3D"assurance auto" width=
-=3D"149" height=3D"24"></td>=0D<td width=3D"42" rowspan=3D"5" valign=3D"bot=
-tom" bgcolor=3D"#DDF3AF"><img src=3D"http://www.assurance-amaguiz.com/mkg/t=
-radedoubler/0003/KM-SV/images/bordure_droite.gif" alt=3D"assurance voiture"=
- width=3D"42" height=3D"319"></td>=0D</tr>=0D<tr>=0D<td height=3D"113" alig=
-n=3D"center" valign=3D"middle" bgcolor=3D"#f4f4f4">=0D<strong><font color=
-=3D"#282d36" size=3D"2" face=3D"Arial, Helvetica, sans-serif">=0D&Agrave; p=
-artir de 0,01&euro;/km<br>et 9,90&euro;/mois*.</font><br>=0D<font size=3D"1=
-" face=3D"Arial, Helvetica, sans-serif" color=3D"#f4f4f4">-----</font><br>=
-=0D<font size=3D"3" face=3D"Arial, Helvetica, sans-serif" color=3D"#e7440f"=
->=0DOffert : 1000 km<br>d'assurance !</strong>=0D</font>=0D<br>=0D<font siz=
-e=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#6C6C6C">Code : <str=
-ong>KM03TD</strong></font>=0D</td>=0D<td height=3D"113" align=3D"center" va=
-lign=3D"middle" bgcolor=3D"#f4f4f4">=0D<strong><font color=3D"#282d36" size=
-=3D"2" face=3D"Arial, Helvetica, sans-serif">=0DJusqu'&agrave; -35% sur vot=
-re<br>budget assurance !</font><br>=0D<font size=3D"1" face=3D"Arial, Helve=
-tica, sans-serif" color=3D"#f4f4f4">-----</font><br>=0D<font size=3D"3" fac=
-e=3D"Arial, Helvetica, sans-serif" color=3D"#e7440f">=0D1 option gratuite :=
-<br>service voiturier</strong>=0D</font>=0D<br>=0D<font size=3D"1" face=3D"=
-Arial, Helvetica, sans-serif" color=3D"#6c6c6c">Code : <strong>SV03TD</stro=
-ng></font>=0D</td>=0D</tr>=0D<tr>=0D<td valign=3D"top" bgcolor=3D"#DDF3AF">=
-<img src=3D"http://www.assurance-amaguiz.com/mkg/tradedoubler/0003/KM-SV/im=
-ages/bas_encart.gif" alt=3D"assurance km" width=3D"149" height=3D"27"></td>=
-=0D<td valign=3D"top" bgcolor=3D"#DDF3AF"><img src=3D"http://www.assurance-=
-amaguiz.com/mkg/tradedoubler/0003/KM-SV/images/bas_encart.gif" alt=3D"assur=
-ance classique" width=3D"149" height=3D"27"></td>=0D</tr>=0D<tr>=0D<td vali=
-gn=3D"top" bgcolor=3D"#ee781e"><a href=3D"http://clk.tradedoubler.com/click=
-?p=3D76161&a=3D1543484&g=3D18076670&url=3Dhttp://amaguiz.solution.weborama.=
-fr/fcgi-bin/performance.fcgi?ID=3D357581&A=3D1&L=3D186782&C=3D5250&P=3D1096=
-8&T=3DE&URL=3Dhttp%3A//www2.amaguiz.com/mkg/tradedoubler/0003/KM-SV/PAYD.ht=
-ml"><img src=3D"http://www.assurance-amaguiz.com/mkg/tradedoubler/0003/KM-S=
-V/images/bouton_payd.gif" alt=3D"je fais mon devis PAY AS YOU DRIVE" width=
-=3D"149" height=3D"40" border=3D"0"></a></td>=0D<td valign=3D"top" bgcolor=
-=3D"#ee781e"><a href=3D"http://clk.tradedoubler.com/click?p=3D76161&a=3D154=
-3484&g=3D18076670&url=3Dhttp://amaguiz.solution.weborama.fr/fcgi-bin/perfor=
-mance.fcgi?ID=3D357581&A=3D1&L=3D186782&C=3D5250&P=3D10968&T=3DE&URL=3Dhttp=
-%3A%2F%2Fwww2.amaguiz.com%2Fmkg%2Ftradedoubler%2F0003%2FKM-SV%2FCLASSIQUE.h=
-tml"><img src=3D"http://www.assurance-amaguiz.com/mkg/tradedoubler/0003/KM-=
-SV/images/bouton_classique.gif" alt=3D"je fais mon devis AUTO CLASSIQUE" wi=
-dth=3D"149" height=3D"40" border=3D"0"></a></td>=0D</tr>=0D<tr>=0D<td valig=
-n=3D"top" bgcolor=3D"#DDF3AF"><img src=3D"http://www.assurance-amaguiz.com/=
-mkg/tradedoubler/0003/KM-SV/images/bas_bouton_payd.gif" alt=3D"DEVIS assura=
-nce auto au km" width=3D"149" height=3D"115"></td>=0D<td valign=3D"top" bgc=
-olor=3D"#DDF3AF"><img src=3D"http://www.assurance-amaguiz.com/mkg/tradedoub=
-ler/0003/KM-SV/images/bas_bouton_classique.gif" alt=3D"DEVIS assurance auto=
- classique" width=3D"149" height=3D"115"></td>=0D</tr>=0D<tr>=0D<td colspan=
-=3D"5" bgcolor=3D"#006750"><img src=3D"http://www.assurance-amaguiz.com/mkg=
-/tradedoubler/0003/KM-SV/images/footer_groupama.gif" alt=3D"une soci&eacute=
-;t&eacute; de Groupama" width=3D"626" height=3D"23"></td>=0D</tr>=0D</table=
->=0D<table width=3D"626" border=3D"0" align=3D"center" cellpadding=3D"0" ce=
-llspacing=3D"0">=0D<tr>=0D<td height=3D"18" valign=3D"bottom"><font color=
-=3D"#6c6c6c" size=3D"1" face=3D"Arial, Helvetica, sans-serif">* voir condit=
-ions sur amaguiz.com</font></td>=0D</tr>=0D<img src=3D"http://impfr.tradedo=
-ubler.com/imp/img/18109594/1543484" width=3D1 height=3D1 border=3D0><br>=0D=
-</table>=0D<br><br><div align=3D"center"><font size=3D"1" face=3D"Arial, He=
-lvetica, sans-serif" color=3D"#999999">Conformement a la loi Informatique e=
-t Libertes, vous disposez d'un droit d'acces et de rectification.<br>
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
-AA50TB9KMT_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
-om/ZZ50TB9KMT_475197.png" /></body>=0D</html>
---=_290d446f776b0f46c7788f6c70c49956--
-
-
-
---===============6613752165908441659==
+/9j/4AAQSkZJRgABAQEBLAEsAAD/2wBDADIiJSwlHzIsKSw4NTI7S31RS0VFS5ltc1p9tZ++u7Kf
+r6zI4f/zyNT/16yv+v/9////////wfD/////////////2wBDATU4OEtCS5NRUZP/zq/O////////
+////////////////////////////////////////////////////////////wAARCAEeAUIDASIA
+AhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQA
+AAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3
+ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWm
+p6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEA
+AwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSEx
+BhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElK
+U1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3
+uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDSoooo
+AQ0tJRTAWkpaSkAtJS0lMYfhRRmigAoooNAC0UUUhBSd6Wk70ALRQOtIcDk8CgBcZopm8/wj8TTS
+SepNS5IdiXFFRUu7Hcj8aXOOxIaBzTA/404EHoefSqUkxWDvS0nelpiCiikPIoAKWkoFAxaKSloE
+JS0lLQAlLSUtABRRRQAUUUUAUJNUSORkMbEqSOtFZl1/x9Tf75/nRQB0VFFFACd6KDS0wCkopR0p
+AFJ3pciimFwooyKTIoC4UGjj1pSKACiiikAUnelpO9AAzBR0yTUZOTk8mkLZJPrSZrFyuWkLmikz
+SFgKm4xxNJmmdz9KCcgcj6UrjsOzRuI703PFMZqLhYtowdc9+hp1Q2wPlknualreLutTN7i0UUVQ
+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
+H1N/vn+dFAH/2Q==
+--------------080802060701050305090803
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -154,7 +202,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============6613752165908441659==
+--------------080802060701050305090803
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -165,4 +213,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6613752165908441659==--
+--------------080802060701050305090803--

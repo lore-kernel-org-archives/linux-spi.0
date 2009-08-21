@@ -1,11 +1,11 @@
-From: "Quartier Mutuelles" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: =?iso-8859-1?q?les_bons_plans_qualit=E9_et_pr?=
-	=?iso-8859-1?q?ix=2C_=E0_voir_tout_de_suite=2E=2E=2E?=
-Date: Fri, 21 Aug 2009 09:22:32 +0200 (CEST)
-Message-ID: <kopttj.yy2yrj@front.ta271.com>
+From: Fleurance Nature <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
+Subject: Vos produits à partir de 5€
+Date: 21 Aug 2009 07:14:59 -0000
+Message-ID: <20090821071459.1100.qmail@ks357949.kimsufi.com>
+Reply-To: Fleurance Nature <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4992435521278922384=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1937228494033277370=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,126 +17,182 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4992435521278922384==
+
+--===============1937228494033277370==
 Content-Type: multipart/alternative;
-	boundary="=_524d1f1bf208ff619013c94fc64f47eb"
-
---=_524d1f1bf208ff619013c94fc64f47eb
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	boundary="_----------=_parties_3be0b1fef165bc656c852125a14f3485"
 
 
---=_524d1f1bf208ff619013c94fc64f47eb
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+--_----------=_parties_3be0b1fef165bc656c852125a14f3485
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-<html>=0D<head>=0D</head>=0D<body style=3D"BACKGROUND-COLOR: #ffffff"><cent=
-er>=0D<table width=3D"792" align=3D"center" style=3D"BACKGROUND-COLOR: #fff=
-fff" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<=
-td align=3D"center" style=3D"FONT-FAMILY: arial; COLOR: #13235b; FONT-SIZE:=
- 10px"><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16">Si vous n'=
-arrivez pas =E0 voir ce mail, cliquez ici</a><br /><br /></td>=0D</tr>=0D</=
-tbody>=0D</table>=0D<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0"=
->=0D<tbody>=0D<tr>=0D<td>=0D<table border=3D"0" cellspacing=3D"0" cellpaddi=
-ng=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"=
-><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16"><img alt=3D"imag=
-e_01.jpg" src=3D"http://back.ta271.com/ftp/6269/e/image_01.jpg" border=3D"0=
-" hspace=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td>=0D<td =
-style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a href=3D"http://www.mutuelle-c=
-onseil.com/AA02RG988T/16"><img style=3D"BORDER-BOTTOM: medium none; BORDER-=
-LEFT: medium none; BORDER-TOP: medium none; BORDER-RIGHT: medium none" alt=
-=3D"image_02.jpg" src=3D"http://back.ta271.com/ftp/6269/e/image_02.jpg" bor=
-der=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td=
->=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a href=3D"http://www.mu=
-tuelle-conseil.com/AA02RG988T/16"><img alt=3D"image_03.jpg" src=3D"http://b=
-ack.ta271.com/ftp/6269/e/image_03.jpg" border=3D"0" hspace=3D"0" complete=
-=3D"true" complete=3D"true" /></a><br /></td>=0D</tr>=0D</tbody>=0D</table>=
-=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table border=3D"0" cellspacing=3D"0" cell=
-padding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE:=
- 0px"><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16"><img alt=3D=
-"image_04.jpg" src=3D"http://back.ta271.com/ftp/6269/e/image_04.jpg" border=
-=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td>=
-=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table borde=
-r=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td style=
-=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a href=3D"http://www.mutuelle-consei=
-l.com/AA02RG988T/16"><img alt=3D"image_05.jpg" src=3D"http://back.ta271.com=
-/ftp/6269/e/image_05.jpg" border=3D"0" hspace=3D"0" complete=3D"true" compl=
-ete=3D"true" /></a><br /></td>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE: =
-0px"><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16"><img style=
-=3D"BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER-TOP: mediu=
-m none; BORDER-RIGHT: medium none" alt=3D"image_06.jpg" src=3D"http://back.=
-ta271.com/ftp/6269/e/image_06.jpg" border=3D"0" hspace=3D"0" complete=3D"tr=
-ue" complete=3D"true" /></a><br /></td>=0D<td style=3D"LINE-HEIGHT: 0px; FO=
-NT-SIZE: 0px"><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16"><im=
-g alt=3D"image_07.jpg" src=3D"http://back.ta271.com/ftp/6269/e/image_07.jpg=
-" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></a><br /=
-></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table=
- border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td v=
-align=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px" rowspan=3D"2"><a h=
-ref=3D"http://www.mutuelle-conseil.com/AA02RG988T/16"><img alt=3D"image_08.=
-jpg" src=3D"http://back.ta271.com/ftp/6269/e/image_08.jpg" border=3D"0" hsp=
-ace=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td>=0D<td valig=
-n=3D"top" style=3D"TEXT-ALIGN: left; BACKGROUND-COLOR: #ffffff; WIDTH: 177p=
-x; FONT-FAMILY: arial; HEIGHT: 110px; COLOR: #13235b; FONT-SIZE: 11px">=95&=
-nbsp;&nbsp;<strong>R=E9sultats imm=E9diats : </strong>=0D<table border=3D"0=
-" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"LINE=
--HEIGHT: 2px; FONT-SIZE: 2px">&nbsp;<br /></td>=0D</tr>=0D</tbody>=0D</tabl=
-e>&nbsp;&nbsp;&nbsp;200 r=E9ponses en ligne =E0 <table border=3D"0" cellspa=
-cing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"LINE-HEIGHT: =
-2px; FONT-SIZE: 2px">&nbsp;<br /></td>=0D</tr>=0D</tbody>=0D</table>&nbsp;&=
-nbsp;&nbsp;consulter librement <table border=3D"0" cellspacing=3D"0" cellpa=
-dding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 2px; FONT-SIZE: 2=
-px">&nbsp;<br /></td>=0D</tr>=0D</tbody>=0D</table>=95&nbsp;&nbsp;<strong>P=
-lus qu=92un site web,</strong> un <table border=3D"0" cellspacing=3D"0" cel=
-lpadding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 2px; FONT-SIZE=
-: 2px">&nbsp;<br /></td>=0D</tr>=0D</tbody>=0D</table>&nbsp;&nbsp;&nbsp;v=
-=E9ritable outil pour comparer <table border=3D"0" cellspacing=3D"0" cellpa=
-dding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 2px; FONT-SIZE: 2=
-px">&nbsp;<br /></td>=0D</tr>=0D</tbody>=0D</table>&nbsp;&nbsp;&nbsp;et sim=
-uler simplement <table border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D=
-<tbody>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 2px; FONT-SIZE: 2px">&nbsp;<br /=
-></td>=0D</tr>=0D</tbody>=0D</table>=95&nbsp;&nbsp;<strong>Jusqu=92=E0 300%=
- rembours=E9</strong> </td>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: 0px;=
- FONT-SIZE: 0px" rowspan=3D"2"><a href=3D"http://www.mutuelle-conseil.com/A=
-A02RG988T/16"><img alt=3D"image_10.jpg" src=3D"http://back.ta271.com/ftp/62=
-69/e/image_10.jpg" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"=
-true" /></a><br /><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16"=
-><img style=3D"BORDER-BOTTOM: medium none; BORDER-LEFT: medium none; BORDER=
--TOP: medium none; BORDER-RIGHT: medium none" alt=3D"image_12.jpg" src=3D"h=
-ttp://back.ta271.com/ftp/6269/e/image_12.jpg" border=3D"0" hspace=3D"0" com=
-plete=3D"true" complete=3D"true" /></a><br /></td>=0D<td valign=3D"top" sty=
-le=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px" rowspan=3D"2"><a href=3D"http://www=
-.mutuelle-conseil.com/AA02RG988T/16"><img alt=3D"image_11.jpg" src=3D"http:=
-//back.ta271.com/ftp/6269/e/image_11.jpg" border=3D"0" hspace=3D"0" complet=
-e=3D"true" complete=3D"true" /></a><br /></td>=0D</tr>=0D<tr>=0D<td valign=
-=3D"bottom" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a href=3D"http://ww=
-w.mutuelle-conseil.com/AA02RG988T/16"><img alt=3D"image_13.jpg" src=3D"http=
-://back.ta271.com/ftp/6269/e/image_13.jpg" border=3D"0" hspace=3D"0" comple=
-te=3D"true" complete=3D"true" /></a><br /></td>=0D</tr>=0D</tbody>=0D</tabl=
-e>=0D</td>=0D</tr>=0D<tr>=0D<td>=0D<table border=3D"0" cellspacing=3D"0" ce=
-llpadding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZ=
-E: 0px"><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16"><img alt=
-=3D"image_14.jpg" src=3D"http://back.ta271.com/ftp/6269/e/image_14.jpg" bor=
-der=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td=
->=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td height=3D"102"=
->=0D<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<t=
-r>=0D<td height=3D"44" align=3D"right" style=3D"LINE-HEIGHT: 0px; WIDTH: 26=
-5px; FONT-SIZE: 0px"><img alt=3D"image_17.jpg" src=3D"http://back.ta271.com=
-/ftp/6269/e/image_17.jpg" border=3D"0" hspace=3D"0" complete=3D"true" compl=
-ete=3D"true" /><br /></td>=0D<td style=3D"WIDTH: 230px; FONT-FAMILY: arial;=
- COLOR: #13235b; FONT-SIZE: 10px; TEXT-DECORATION: none">&nbsp;Si vous souh=
-aitez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/AA50E8WCR=
-Y_165093/877">ici</a>&nbsp;&nbsp;</td>=0D<td align=3D"left" style=3D"LINE-H=
-EIGHT: 0px; WIDTH: 297px; FONT-SIZE: 0px"><img alt=3D"image_19.jpg" src=3D"=
-http://back.ta271.com/ftp/6269/e/image_19.jpg" border=3D"0" hspace=3D"0" co=
-mplete=3D"true" complete=3D"true" /><br /></td>=0D</tr>=0D</tbody>=0D</tabl=
-e>=0D</td>=0D</tr>=0D</tbody>=0D</table></center><img src=3D"http://front.t=
-a271.com/ZZ50E8WCRY_165093.png" /></body></html>
---=_524d1f1bf208ff619013c94fc64f47eb--
+Version "en ligne" de ce message: http://www.www.centralmarques.com/svi/miroir.php?bat=fleurance0809_ctrm
+
+COSMETIQUE BIO
+Vos produits à partir de 5€ !
+Réalisez jusqu'à 70% d'économie
+
+Votre cadeau cosmétique BIO : Le soin anti-âge GRATUIT
+
+Envoi en colissimo GRATUIT à partir de 20 € d'achat
+
+plus d'infos sur http://www.www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce
+
+--------------------------------
+Cette offre Fleurance Nature vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.www.centralmarques.com/svi/gestionserv.php?nb=2080&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_3be0b1fef165bc656c852125a14f3485
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
 
 
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>COSMETIQUE BIO</title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.www.centralmarques.com/svi/miroir.php?bat=fleurance0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Fleurance Nature vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#226C37;font-size:24px'>
+<a style='text-decoration:none;' href='http://www.www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce' target='_blank'>
+<img id=INNER_LOGO_ANNONCEUR align=absmiddle src='http://ks300910.kimsufi.com/~actuduwe/img/bat/logofleurance.jpg ' style='float:left;border:0px;margin-right:20px'>
+</a>
+<p style='display:inline;'> <b>COSMETIQUE BIO</b></p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#BD1539;font-size:24px;'>
+<a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" style="text-decoration:none;color:#BD1539;"><b>Vos produits &agrave; partir de 5&euro; !</b></a>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:20px;background-color:#FFFFFF;'>
+<center><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" style="text-decoration:none;color:#226c37;"><b>R&eacute;alisez jusqu'&agrave; 70% d'&eacute;conomie</b></a></center><br>
+<li> Votre cadeau cosm&eacute;tique BIO : Le soin anti-&acirc;ge GRATUIT
+<li> Envoi en colissimo GRATUIT &agrave; partir de 20 &euro; d'achat
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td align="center"><table border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td align="center" valign="top" style="font-family:Arial;font-size:10px;color:#003f77" width="714" height="20">Si cet email ne s'affiche pas correctement, vous pouvez le visualiser <a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" style="font-family:Arial;font-size:10px;color:#003f77" target="_blank"><u>gr&acirc;ce &agrave; ce lien</u></a>.</td>
+ </tr>
+ <tr>
+ <td><table border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_02.jpg" width="42" height="1180" border="0"></td>
+ <td><table border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_03.jpg" width="670" height="128" border="0"></a></td>
+ </tr>
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_05.jpg" width="670" height="100" border="0"></a></td>
+ </tr>
+ <tr>
+ <td><table border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><table border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_06.jpg" width="10" height="676" border="0"></td>
+ <td><table border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_07.jpg" width="147" height="221" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_08.jpg" width="153" height="221" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_09.jpg" width="149" height="221" border="0"></a></td>
+ </tr>
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_14.jpg" width="147" height="224" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_15.jpg" width="153" height="224" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_16.jpg" width="149" height="224" border="0"></a></td>
+ </tr>
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_17.jpg" width="147" height="231" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_18.jpg" width="153" height="231" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_19.jpg" width="149" height="231" border="0"></a></td>
+ </tr>
+ </table></td>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_10.jpg" width="8" height="676" border="0"></td>
+ </tr>
+ </table> </td>
+ <td><table border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_09.jpg" width="203" height="171" border="0"></a></td>
+ </tr>
+ <tr>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_12.jpg" width="203" height="50" border="0"></td>
+ </tr>
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_13.jpg" width="203" height="322" border="0"></a></td>
+ </tr>
+ <tr>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNat_20.jpg" width="203" height="133" border="0"></td>
+ </tr>
+ </table> </td>
+ </tr>
+ </table> </td>
+ </tr>
+ <tr>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_49.jpg" width="670" height="16" border="0"></td>
+ </tr>
+ <tr>
+ <td><table border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_50.jpg" width="229" height="27" border="0"></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_51.jpg" width="207" height="27" border="0"></a></td>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_52.jpg" width="234" height="27" border="0"></td>
+ </tr>
+ </table></td>
+ </tr>
+ <tr>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_53.jpg" width="670" height="16" border="0"></td>
+ </tr>
+ <tr>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_54.jpg" width="670" height="35" border="0" usemap="#0.1_Map"></td>
+ </tr>
+ <tr>
+ <td><table border="0" cellspacing="0" cellpadding="0">
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_55.jpg" width="144" height="153" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_56.jpg" width="130" height="153" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_57.jpg" width="130" height="153" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_58.jpg" width="112" height="153" border="0"></a></td>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_59.jpg" width="154" height="153" border="0"></a></td>
+ </tr>
+ </table> </td>
+ </tr>
+ <tr>
+ <td><a href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/decouvrir.jpg" width="670" height="30" border="0"></a></td>
+ </tr>
+ </table> </td>
+ <td><img src="http://mm.cache.coltfrance.com/FleuranceNature_CRM/img/Mailing/LIVRAISON2/FleuranceNature_04.jpg" width="38" height="1180" border="0"></td>
+ </tr>
+ </table> </td>
+ </tr>
+ </table>
+ </td>
+ </tr>
+</table>
 
---===============4992435521278922384==
+<map name="0.1_Map"><area shape="rect" coords="200,5,464,30" href="http://www.centralmarques.com/svi/linkserv.php?bat=fleurance0809_ctrm&nb=2080&n=9047704&c=commerce" target="_blank"></map>
+<img src="http://tracking.publicidees.com/link.php?promoid=24824&progid=288&partid=16774" height="1" width="1">
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.www.centralmarques.com/svi/img_nb_2080_numuser_yyynumuseryyy.jpg" width=1 height=1>
+<p>
+<a href='http://www.www.centralmarques.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.www.centralmarques.com/svi/gestionserv.php?nb=2080&cat=commerce&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_3be0b1fef165bc656c852125a14f3485--
+
+--===============1937228494033277370==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -147,7 +203,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============4992435521278922384==
+--===============1937228494033277370==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -158,4 +214,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============4992435521278922384==--
+--===============1937228494033277370==--

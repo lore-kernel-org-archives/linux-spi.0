@@ -1,11 +1,10 @@
-From: Play the game <newsletter-msAlHI2cm5w@public.gmane.org>
-Subject: Remportez au moins 3 cadeaux Multimedia !
-Date: 22 Aug 2009 07:32:16 -0000
-Message-ID: <20090822073216.27396.qmail@ks357949.kimsufi.com>
-Reply-To: Play the game <newsletter-msAlHI2cm5w@public.gmane.org>
+From: "Horacio Ymihjre" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] E-diploma after 1 year!
+Date: Sat, 22 Aug 2009 12:52:10 +0000
+Message-ID: <5718YRY.117532A.601859827509PAHNYPJOZPFGKHI500@dsl88-250-61683.ttnet.net.tr>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7917475514059469242=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============4887117036157619680=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,77 +16,82 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============4887117036157619680==
+Content-type: text/html; charset="UTF-8"
 
---===============7917475514059469242==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_b67303364bb673f6666106bae377f7d5"
-
-
---_----------=_parties_b67303364bb673f6666106bae377f7d5
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://www.tmrv.com/svi/miroir.php?bat=play0809_ctrm
-
-plus d'infos sur http://www.tmrv.com/svi/linkserv.php?bat=play0809_ctrm&nb=2076&n=9047704&c=commerce
-
---------------------------------
-Cette offre Play the Game vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.tmrv.com/svi/gestionserv.php?nb=2076&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_b67303364bb673f6666106bae377f7d5
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><HTML xmlns="http://www.w3.org/1999/xhtml"><head>
 <title></title>
-</head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.tmrv.com/svi/miroir.php?bat=play0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre Play the Game vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
- <tr>
- <td><a href="http://www.tmrv.com/svi/linkserv.php?bat=play0809_ctrm&nb=2076&n=9047704&c=commerce" style="text-decoration:none;"><img border=0 src="http://newsletter.ptg.be/images/kit_96_fr_01.gif" width="600" height="66" alt="Play the Game"></a></td>
- </tr>
- <tr>
- <td><a href="http://www.tmrv.com/svi/linkserv.php?bat=play0809_ctrm&nb=2076&n=9047704&c=commerce" style="text-decoration:none;"><img border=0 src="http://newsletter.ptg.be/images/kit_96_fr_03.jpg" width="599" height="225" alt="Play the Game"></a></td>
- </tr>
- <tr>
- <td bgcolor="#FFFFFF"><table width="600" border="0" cellspacing="0" cellpadding="10">
- <tr>
- <td><a href="http://www.tmrv.com/svi/linkserv.php?bat=play0809_ctrm&nb=2076&n=9047704&c=commerce" style="text-decoration:none;color:#000000;"><font face="Trebuchet MS, verdana, Helvetica, sans-serif" size="+2">
- <p>Chaque semaine, minimum 3 cadeaux Multimedia &agrave; remporter ! </p>
- <p><font size="+1">1 Pack Sony, 1 GPS Garmin, 1 TV Daewoo, 1 Cam&eacute;scope Sony, 1 Samsung DVD Recorder, 1 Imprimante Brother laser couleur, 1 Home Cinema, 1 Mini chaine, 1 Mini portable, 1 iPhone 3G s, 1 Nikon Kit D60, des Webcams, des Claviers, des Volants, des Souris, des Casques audio, des Syst&egrave;mes d'enceintes compactes 5.1.</font> </p></a>
- <p><a href="http://www.tmrv.com/svi/linkserv.php?bat=play0809_ctrm&nb=2076&n=9047704&c=commerce" style="text-decoration:none;color:#000000;">Faites le plein de cadeaux High Tech ! <font color="#000000">PARTICIPER</font></a></p></font></td>
- </tr>
- </table></td>
- </tr>
- <tr>
- <td>
-<a href="http://www.tmrv.com/svi/linkserv.php?bat=play0809_ctrm&nb=2076&n=9047704&c=commerce" style="text-decoration:none;"><img src="http://www.ptg.be/track/display_img.php?id=2196&timestamp=%timestamp%" alt="Play the Game" width="600" height="138" border="0" /></a></td>
- </tr>
-</table>
-<img src="http://action.metaffiliation.com/suivi.php?taff=S42AE14788A151" width="1" height="1" border="0">
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.tmrv.com/svi/img_nb_2076_numuser_yyynumuseryyy.jpg" width=1 height=1>
-<p>
-<a href='http://www.tmrv.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.tmrv.com/svi/gestionserv.php?nb=2076&cat=commerce&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<style type="text/css">.body {
+	PADDING-RIGHT: 2pt; DISPLAY: block; PADDING-LEFT: 2pt; FONT-SIZE: 10pt; PADDING-BOTTOM: 2pt; MARGIN: 2pt; TEXT-INDENT: 0px; LINE-HEIGHT: 13pt; PADDING-TOP: 2pt; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-ALIGN: left
+}
+headline {
+	FONT-WEIGHT: bold; FONT-SIZE: 16px; LINE-HEIGHT: 24pt; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+subhead {
+	PADDING-RIGHT: 2pt; PADDING-LEFT: 2pt; FONT-WEIGHT: bold; FONT-SIZE: 12px; PADDING-BOTTOM: 2pt; MARGIN: 2pt; LINE-HEIGHT: 13pt; PADDING-TOP: 2pt; FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+	FONT-WEIGHT: bold; FONT-SIZE: 24px; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-ALIGN: center
+}
+</style>
+</head><body>
+					<div align="center">
+					<table cellpadding="0" style="font-size:11px;text-decoration:none; color:#333333; letter-spacing:0.8px;FONT-FAMILY: Verdana"><tr>
+					<td>
+					&nbsp;</td></tr>
+					<tr><td>
+
+					<a href="http://8df3.hjunedus.cn/?bovabemi=aeaf0232a8a11d9ed3b90f&bylukyc=6969012165601859827509&pahnyp=ozpfgkhiknac" style="color:#333333;">Click here&nbsp;to view it in your browser</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+					<a href="http://8df3.hjunedus.cn/?nikep=aeaf0232a8a11d9ed3b90f&uycqsotupu=6969012165601859827509&pahnyp=ozpfgkhiknac" style="color:#333333;">Click here
+					&nbsp;to Unsubscribe.</a>
+					</td>
+					</tr></table><br></div>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+
+<table align="center" style="border: medium none ; align="center" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+<tr style="font-family: Arial;" align="middle">
+<td style="border: medium none ;" id="mainhaed"><span style="color: rgb(255, 0, 0); font-size: 18pt; font-weight: bold;">Before starting this newsletter .....</span>
+<br>&nbsp;&nbsp;&nbsp; <span style="font-size: 14pt; font-weight: normal;">can I ask you to tell your friends about it, and get them to sign up? Thank you</span></td></tr>
+<tr style="font-family: Arial;">
+<td style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; font-style: normal; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; letter-spacing: 0pt; color: rgb(0, 0, 0); font-weight: normal; word-spacing: 0pt; text-decoration: none; text-align: center;" class="body" height="46">
+<img alt="" src="http://8df3.hjunedus.cn/spacer.gif" /><br />
+<br />
+<b><a href="http://8416b.hjunedus.cn/?xedaiq=aeaf0232a8a11d9ed3b90f&qfuoxqvufy=6969012165601859827509&pahnyp=ozpfgkhiknac"><span style="font-size: large; color: #336699">
+&lt;&lt;&lt; Enter online shop &gt;&gt;&gt;</span></a></b><br />
+<br></td></tr></tbody></table>				<div class='unsub' align='center'>
+	<table>
 
 
---_----------=_parties_b67303364bb673f6666106bae377f7d5--
 
---===============7917475514059469242==
+		<tr align='center'>
+			<td>
+				<font style='font-size:9px; text-decoration:none; color:GrayText; font-family: verdana'>
+
+				This mailing system may only be used for sending permission based email.
+				<br>
+
+				If you did not give permission to receive emails from this sender, <a href='http://8df3.hjunedus.cn/?rihqb=aeaf0232a8a11d9ed3b90f&bqpucyjqu=6969012165601859827509&pahnyp=ozpfgkhiknac' target='new' style='color:GrayText;font-family: verdana;font-size:9px'>please notify us</a>.
+				<br>
+				<br>
+				This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+
+				| <a   style='color:GrayText;font-family: verdana;font-size:9px; font-weight: bold;' href='http://8df3.hjunedus.cn/?ulanydy=aeaf0232a8a11d9ed3b90f&fymauxu=6969012165601859827509&pahnyp=ozpfgkhiknac'>Print / PDF version</a>
+								 | Read our <a href='http://8df3.hjunedus.cn/?jljdir=aeaf0232a8a11d9ed3b90f&zjwevjdqe=6969012165601859827509&pahnyp=ozpfgkhiknac' target='new' style='color:GrayText;font-family: verdana;font-size:9px'>Privacy Policy</a>.
+				<br>
+
+				</font>
+
+			</td>
+		</tr>
+
+
+
+				</table>
+</div>
+</body></HTML>
+
+
+--===============4887117036157619680==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -98,7 +102,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============7917475514059469242==
+--===============4887117036157619680==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -109,4 +113,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7917475514059469242==--
+--===============4887117036157619680==--

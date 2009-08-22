@@ -1,10 +1,9 @@
-From: Inzunza <cyclops-0IwNfSLkYUNWk0Htik3J/w@public.gmane.org>
-Subject: Are no cases on record in which this operation
-	has been performe
-Date: Sat, 22 Aug 2009 08:57:14 +0800
-Message-ID: <58418F4A.4060404@telmastaal.com>
+From: "PMU par Plein Temps" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: Profitez de 30 euros offerts pour en gagner plus
+Date: Sat, 22 Aug 2009 04:14:24 +0200 (CEST)
+Message-ID: <kora80.wc113m@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------070206060301020306020303"
+Content-Type: multipart/mixed; boundary="===============5639834588818147943=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,201 +16,120 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------070206060301020306020303
-Content-Type: text/plain; charset=ISO-8859-11; format=flowed
-Content-Transfer-Encoding: 7bit
+--===============5639834588818147943==
+Content-Type: multipart/alternative;
+	boundary="=_fc3062822abfcebb417cf94c1513d916"
 
-In the neuter singular. The difference of unus from alius, say the
-London commentators, like that of a humming-top from a peg-top, consists
-of the _'um_. N.B. Tu es unus alius, is not good Latin for "You're
-another," a phrase more elegantly expressed by "Tu quoque."
-[Illustration: TU QUOQUE.] There are some adjectives that remind us of
-lawyer's clerks, and, by courtesy, of linen-drapers' apprentices. These
-may be termed _articled_ adjectives; being declined with the articles
-hic, haec, hoc, after the third declension of substantives-- as tristis,
-sad, melior, better, felix, happy. It is not very easy to conceive any
-thing in whic
+--=_fc3062822abfcebb417cf94c1513d916
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
---------------070206060301020306020303
-Content-Type: image/jpeg;
- name="attainments.jpg"
-Content-Transfer-Encoding: base64
-Content-Disposition: inline;
- filename="attainments.jpg"
 
-/9j/4AAQSkZJRgABAQEBLAEsAAD/2wBDADIiJSwlHzIsKSw4NTI7S31RS0VFS5ltc1p9tZ++u7Kf
-r6zI4f/zyNT/16yv+v/9////////wfD/////////////2wBDATU4OEtCS5NRUZP/zq/O////////
-////////////////////////////////////////////////////////////wAARCAFDAVQDASIA
-AhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQA
-AAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3
-ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWm
-p6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEA
-AwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSEx
-BhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElK
-U1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3
-uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDSoNFG
-eKBhRSUuKADNJS4ooASloooATBP0paWigBtLmg0UAGaO9GKMUAB6UUhpc0AFHeijvQAtJRRQAHpR
-miigAzRS0hoAKM0UtACZozS0UAJmjNLRQAmaKKKADuaM0h4owT7UALn0pMZpMD1Jox6GgBw6UZpB
-S4oACeKM0HpS0AJRR3xRQBj6v/x9L/uD+Zoo1j/j6X/cH8zRQI2MUdqWkPSgYCigUtACUUUUrAFF
-FHNOwBRR+X50UAFFBozSsAUd6KO9AAelHag9KB0pgGKSnUnegAzQKMUmKAFNFJS5oAKKM0UAFH4U
-ZozQAUUZozQAUYozRmgBaQmkpQO9ACD9aXFFLQAmKBRQKAEIytKDkZoHSkXv9aAFPSgnsOtDHApA
-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
-FFAH/9k=
---------------070206060301020306020303
+--=_fc3062822abfcebb417cf94c1513d916
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<table width=3D"10" border=3D"0" align=3D"center">=0D<tr>=0D<td>&nbsp;</td>=
+=0D<td>&nbsp;</td>=0D<td>&nbsp;</td>=0D</tr>=0D<tr>=0D<td>&nbsp;</td>=0D<td=
+><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www=
+.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html xmlns=3D"http://www=
+.w3.org/1999/xhtml" lang=3D"fr" xml:lang=3D"fr">=0D<head>=0D<meta http-equi=
+v=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-1" />=0D<title>=
+PMU.fr Notre offre de bienvenue, rien que pour vous...</title>=0D<meta name=
+=3D"keywords" content=3D"" />=0D<meta name=3D"description" content=3D"" />=
+=0D</head>=0D<body><div align=3D"center"><font size=3D"2" face=3D"Arial, He=
+lvetica, sans-serif"><a href=3D"http://clk.tradedoubler.com/click?p=3D90057=
+&a=3D1543484&g=3D18103986&url=3Dhttp://www.smartadserver.com/call/cliccomma=
+nd/2275366/[td_random]?">Si vous ne pouvez pas consulter correctement ce me=
+ssage, suivez ce lien</a><br>
+<font size=3D"2" face=3D"verdana" color=3D"#2e6400"><strong>Vous avez d=E9j=
+=E0 gagn=E9* 30 euros sur vos premiers paris et peut-=EAtre plus avec notre=
+ offre sp=E9ciale</strong></font></div>=0D<table width=3D"590" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" style=3D"margin:0 auto;" summary=3D"">=
+=0D<tr>=0D<td colspan=3D"4"><img src=3D"http://hst.tradedoubler.com/file/90=
+057/2009/img/emailroue_01.jpg" border=3D"0" alt=3D"PMU.fr Notre offre de bi=
+envenue, rien que pour vous..." /></td>=0D</tr>=0D<tr>=0D<td colspan=3D"4">=
+<a href=3D"http://clk.tradedoubler.com/click?p=3D90057&a=3D1543484&g=3D1810=
+3986&url=3Dhttp://www.smartadserver.com/call/cliccommand/2275366/[td_random=
+]?" target=3D"_blank" title=3D"Vite, j'en profite"><img src=3D"http://hst.t=
+radedoubler.com/file/90057/2009/img/emailroue_02a.jpg" border=3D"0" alt=3D"=
+Jusqu'=E0 30&#128;* offerts sur vos premiers paris. Vite, j'en profite" /><=
+/a></tr><tr>=0D<td colspan=3D"4">=0D<a href=3D"http://clk.tradedoubler.com/=
+click?p=3D90057&a=3D1543484&g=3D18103986&url=3Dhttp://www.smartadserver.com=
+/call/cliccommand/2275366/[td_random]?" target=3D"_blank" title=3D"Vite, j'=
+en profite"> <img src=3D"http://hst.tradedoubler.com/file/90057/2009/img/em=
+ailroue_02b.jpg" border=3D"0" alt=3D"Jusqu'&agrave; 30&euro;* offerts sur v=
+os premiers paris. Vite, j'en profite" /><br />=0D</a></td>=0D</tr>=0D<tr>=
+=0D<td colspan=3D"4"><img src=3D"http://hst.tradedoubler.com/file/90057/200=
+9/img/emailroue_03.png" border=3D"0" alt=3D"1 490 301&#128;** sont gagn=E9s=
+ chaque jour !" /></td>=0D</tr>=0D<tr>=0D<td width=3D"19"><img src=3D"http:=
+//hst.tradedoubler.com/file/90057/2009/img/emailroue_04.png" border=3D"0" a=
+lt=3D"" /></td>=0D<td width=3D"549" colspan=3D"2" style=3D"font:12px Verdan=
+a, Arial, Helvetica, sans-serif; color:#272727;">=0D<p style=3D"font:bold 1=
+5px Verdana, Arial, Helvetica, sans-serif; color:#d10023; text-align:center=
+; margin:0 0 10px 30px;">Vous h&eacute;sitez encore &agrave; vous lancer ?<=
+/p>	<p style=3D"margin:0 0 10px 30px;"><img src=3D"http://hst.tradedoubler.=
+com/file/90057/2009/img/emailroue_07.png" alt=3D"Les paris 7 jours sur 7" s=
+tyle=3D"vertical-align:middle;" />=0D<span style=3D"font:bold 12px Verdana,=
+ Arial, Helvetica, sans-serif; color:#d10023;">Les paris 7 jours sur 7</spa=
+n><br />=0D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pariez en direct de chez vou=
+s, 24h/24, 7j/7</p>	<p style=3D"margin:0 0 10px 30px;"><img src=3D"http://h=
+st.tradedoubler.com/file/90057/2009/img/emailroue_07.png" alt=3D"Pas de dro=
+it d'entr&eacute;e" style=3D"vertical-align:middle;" />=0D<span style=3D"fo=
+nt:bold 12px Verdana, Arial, Helvetica, sans-serif; color:#d10023;">Pas de =
+droit d'entr&eacute;e</span><br />=0D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L'=
+ouverture de votre compte est enti&egrave;rement gratuite.</p>	<p style=3D"=
+margin:0 0 10px 30px;"><img src=3D"http://hst.tradedoubler.com/file/90057/2=
+009/img/emailroue_07.png" alt=3D"Votre compte automatiquement cr&eacute;dit=
+&eacute;" style=3D"vertical-align:middle;" />=0D<span style=3D"font:bold 12=
+px Verdana, Arial, Helvetica, sans-serif; color:#d10023;">Votre compte auto=
+matiquement cr&eacute;dit&eacute;</span><br />=0D&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;Vos gains sont vers&eacute;s sur votre compte PMU.</p>	<p style=
+=3D"margin:0 0 0 30px;"><img src=3D"http://hst.tradedoubler.com/file/90057/=
+2009/img/emailroue_07.png" alt=3D"Vos gains facilement disponibles" style=
+=3D"vertical-align:middle;" />=0D<span style=3D"font:bold 12px Verdana, Ari=
+al, Helvetica, sans-serif; color:#d10023;">Vos gains facilement disponibles=
+</span><br />=0D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vous pouvez en disposer=
+ comme vous le souhaitez en demandant<br />=0D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;un retrait par ch&egrave;que ou par virement sur votre compte bancai=
+re ou postal.</p>=0D</td>=0D<td width=3D"22"><img src=3D"http://hst.tradedo=
+ubler.com/file/90057/2009/img/emailroue_05.png" border=3D"0" alt=3D"" /></t=
+d>=0D</tr>=0D<tr>=0D<td colspan=3D"4"><a href=3D"http://clk.tradedoubler.co=
+m/click?p=3D90057&a=3D1543484&g=3D18103986&url=3Dhttp://www.smartadserver.c=
+om/call/cliccommand/2275366/[td_random]?" target=3D"_blank" title=3D"Clique=
+z ici"><img src=3D"http://hst.tradedoubler.com/file/90057/2009/img/emailrou=
+e_06.png" border=3D"0" alt=3D"Cliquez ici" /></a></td>=0D</tr>=0D<tr>=0D<td=
+ width=3D"19"></td>=0D<td valign=3D"top" style=3D"font:11px Arial, Helvetic=
+a, sans-serif; color:#848484; padding:10px 10px 0 0;">* Voir conditions sur=
+ pmu.fr. Offre valable une seule fois par personne (m&ecirc;me nom, m&ecirc=
+;me pr&eacute;nom, m&ecirc;me adresse postale, m&ecirc;me adresse e-mail) n=
+'&eacute;tant pas d&eacute;j&agrave; titulaire d'un compte PMU, pour l'ouve=
+rture d'un compte sur pmu.fr confirm&eacute;e par renvoi du dossier complet=
+ de confirmation d'ouverture de compte. Les comptes remplissant 1 &agrave; =
+3 conditions seront ensuite cr&eacute;dit&eacute;s de 10&euro;, pour chaque=
+ condition respect&eacute;e, sous 10 jours environ apr&egrave;s la date de =
+fin de chaque p&eacute;riode de l'offre. Offre non cumulable avec toute off=
+re d'ouverture de compte. ** Moyenne constat&eacute;e en octobre 08<br /></=
+td>=0D<td valign=3D"top" style=3D"font:11px Arial, Helvetica, sans-serif; c=
+olor:#848484; padding:10px 0 0 0;"><a href=3D"http://clk.tradedoubler.com/c=
+lick?p=3D90057&a=3D1543484&g=3D18103986&url=3Dhttp://www.pmu.fr" target=3D"=
+_blank" title=3D"www.pmu.fr" style=3D"font:bold 11px Verdana, Arial, Helvet=
+ica, sans-serif; color:#848484; text-decoration:none;">www.pmu.fr</a></td>=
+=0D<td width=3D"22"></td>=0D</tr>=0D<img src=3D"http://impfr.tradedoubler.c=
+om/imp/img/18103986/1543484" width=3D1 height=3D1 border=3D0><br>=0D</table=
+>=0D<br><br><div align=3D"center"><font size=3D"1" face=3D"Arial, Helvetica=
+, sans-serif" color=3D"#999999">Conformement a la loi Informatique et Liber=
+tes, vous disposez d'un droit d'acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA509TD9QW_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ509TD9QW_475197.png" /></body>=0D</html>=0D&nbsp;</td>=0D<td>&nbsp;</t=
+d>=0D</tr>=0D<tr>=0D<td>&nbsp;</td>=0D<td>&nbsp;</td>=0D<td>&nbsp;</td>=0D<=
+/tr>=0D</table>
+--=_fc3062822abfcebb417cf94c1513d916--
+
+
+
+--===============5639834588818147943==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -222,7 +140,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---------------070206060301020306020303
+--===============5639834588818147943==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -233,4 +151,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---------------070206060301020306020303--
+--===============5639834588818147943==--

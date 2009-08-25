@@ -1,11 +1,10 @@
-From: Mes recettes minceur par Central Marques <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
-Subject: Recevez gratuitement votre guide minceur
-Date: 25 Aug 2009 07:12:51 -0000
-Message-ID: <20090825071251.29834.qmail@ks357949.kimsufi.com>
-Reply-To: Mes recettes minceur par Central Marques <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
+From: "Karleen Icqyko" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] My home-mailbox
+Date: Tue, 25 Aug 2009 09:30:06 +0000
+Message-ID: <1805UU.3419DCBA24.46564321942UYUMHGNVSOOAMJR89@Rys.altobox.cz>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7087356202976391887=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8144002963168294351=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,75 +16,323 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============8144002963168294351==
+Content-type: text/html; charset="UTF-8"
 
---===============7087356202976391887==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_cca1494a7f53107f8d0c32f2ce0054f5"
-
-
---_----------=_parties_cca1494a7f53107f8d0c32f2ce0054f5
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://www.ctrm3.net/svi/miroir.php?bat=recettesminceur0809_ctrm
-
-Mes Recettes Minceur
-Besoin d'astuces minceur ?
-14 pages de recettes allégées et menus minceur !
-Recevez gratuitement votre guide minceur !
-Profitez-en dès maintenant
-
-plus d'infos sur http://www.ctrm3.net/svi/linkserv.php?bat=recettesminceur0809_ctrm&nb=2047&n=9047704&c=pratique
-
---------------------------------
-Cette offre Mes recettes minceur vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm3.net/svi/gestionserv.php?nb=2047&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_cca1494a7f53107f8d0c32f2ce0054f5
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>Mes Recettes Minceur</title>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Ijgag Webletter</title>
 </head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm3.net/svi/miroir.php?bat=recettesminceur0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre Mes recettes minceur vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#000000;font-size:24px'>
-<p style='display:inline;'> Mes Recettes Minceur</p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#d0ba7b;font-family:Verdana;color:#FFFFFF;font-size:24px;'>
-<a href="http://www.ctrm3.net/svi/linkserv.php?bat=recettesminceur0809_ctrm&nb=2047&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;"><b>Besoin d'astuces minceur ?</b></a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:18px;background-color:#FFFFFF;'>
-14 pages de recettes all&eacute;g&eacute;es et menus minceur !<br>
-Recevez <b>gratuitement</b> votre guide minceur !<br><br>
-<center><a href="http://www.ctrm3.net/svi/linkserv.php?bat=recettesminceur0809_ctrm&nb=2047&n=9047704&c=pratique" style="text-decoration:none;color:blue;"><u>Profitez-en d&egrave;s maintenant</u></a></center>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<a href="http://www.ctrm3.net/svi/linkserv.php?bat=recettesminceur0809_ctrm&nb=2047&n=9047704&c=pratique" target="_blank">
-<img src="http://banniere.reussissonsensemble.fr/view.asp?ref=481959&site=6256&b=2" border="0" alt="Mes recettes minceur" width="500" height="500" /></a><br />
-</td></tr>
+<body>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#891212">
+  <tr>
+    <td align="center"><img src="spacer.gif" width="1" height="10" /></td>
+  </tr>
+  <tr>
+    <td align="center"><font face="Tahoma" size="1" color="#FFFFFF"> Having
+	trouble viewing images? <a style="color:#FFFFFF" href="http://0cc.ksahecel.cn/?waehjjk=0cc4ddcba2447a9a7542&giyqfyve=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj"><b>
+	Click here</b></a> to view as a webpage.</font></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="spacer.gif" width="1" height="10" /></td>
+  </tr>
+  <tr>
+    <td align="center"><table width="677" cellpadding="0" cellspacing="0" border="0">
+
+        <tr>
+          <td bgcolor="#FFFFFF"><table width="677" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td><table width="677" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td width="15">&nbsp;</td>
+
+                      <td width="146" align="left"><font face="Tahoma" style="font-size:10px"><a href="http://2123.ksahecel.cn/?womagy=0cc4ddcba2447a9a7542&wyfqkymjz=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+					  Visit us online</a></font></td>
+                      <td width="193" align="left"><font face="Tahoma" style="font-size:10px"><a href="http://2123.ksahecel.cn/?kolyfqwog=0cc4ddcba2447a9a7542&juseh=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+					  Read Today’s News</a></font></td>
+                      <td width="220" align="left">
+					  <font face="Tahoma" style="font-size:10px" color="#0000FF">
+					  <a href="http://2123.ksahecel.cn/?nuhjqaso=0cc4ddcba2447a9a7542&pucydylqro=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+					  Membership</a>: <a href="http://2123.ksahecel.cn/?ucybexqqp=0cc4ddcba2447a9a7542&sqgqam=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+					  Join</a> / <a href="http://2123.ksahecel.cn/?lanozyu=0cc4ddcba2447a9a7542&yainorofo=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+					  Renew</a></font></td>
+                      <td width="103" align="left"><font face="Tahoma" style="font-size:10px"><a href="http://2123.ksahecel.cn/?ybqjguqev=0cc4ddcba2447a9a7542&oosasapq=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+					  Send to a Friend</a></font></td>
+
+                    </tr>
+                  </table></td>
+              </tr>
+              <tr>
+                <td align="center"><table width="650" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+
+                      <td bgcolor="#E0E0E0">&nbsp;</td>
+                    </tr>
+                  </table></td>
+              </tr>
+              <tr>
+                <td align="center"><table width="650" cellpadding="0" cellspacing="0" border="0">
+
+                    <tr>
+                      <td width="324" valign="bottom"><table width="324" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td align="left"><font face="Arial, Helvetica, sans-serif" style="font-size:43px;" color="#B00707">
+							WEBLETTER</font></td>
+                          </tr>
+                          <tr>
+                            <td><img src="spacer.gif" width="1" height="5" /></td>
+                          </tr>
+
+                          <tr>
+                            <td align="left"><font face="Tahoma" style="font-size:14px"><em>
+							Your weekly newsletter</em></font></td>
+                          </tr>
+                        </table></td>
+                      <td width="354" valign="bottom"><table width="324" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td align="right"><font face="Tahoma" style="font-size:12px;">
+							Volume 14, issue 34 | <b><font color="#3DA4E3">
+							August 25, 2009</font></b></font></td>
+                          </tr>
+                        </table></td>
+                    </tr>
+
+                  </table></td>
+              </tr>
+              <tr>
+                <td align="center">
+				<img src="spacer.gif" width="1" height="10" /></td>
+              </tr>
+              <tr>
+                <td><table width="677" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td width="15">&nbsp;</td>
+
+                      <td width="351" valign="top" align="left">
+					  <table cellpadding="0" cellspacing="0" border="0" style="width: 655px">
+                          <tr>
+                            <td align="left">
+							<font face="Tahoma" style="font-size:23px;"><b>
+							<a href="http://2123.ksahecel.cn/?uutjhaci=0cc4ddcba2447a9a7542&unumobajl=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+							Work takes too much time and nerves?</a></b></font></td>
+                          </tr>
+                          <tr>
+                            <td style="height: 10px">
+							<img src="spacer.gif" width="1" height="10" /></td>
+                          </tr>
+                          <tr>
+
+                            <td align="left">
+							<font face="Tahoma" style="font-size:14px;">
+							<img alt="" src="http://2123.ksahecel.cn/spacer.gif"><br>
+							If you reached elder age, <a href="http://48eae.ksahecel.cn/?wysegjhqde=0cc4ddcba2447a9a7542&beedunjla=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+							these little-know tips</a> can help you boost your
+							virility and self-esteem. Plus, check out our
+							<a href="http://2123.ksahecel.cn/?orokqvemen=0cc4ddcba2447a9a7542&qneduvy=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">Male Improvement Guide</a>
+							- it&#39;s a must-read to help you recover your male
+							strength now. <a href="http://2123.ksahecel.cn/?taahupebin=0cc4ddcba2447a9a7542&pepofoaaa=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">Click
+							here to continue &gt;&gt;</a></font></td>
+                          </tr>
+                          <tr>
+                            <td align="left">
+							<img src="spacer.gif" width="1" height="10" /></td>
+
+                          </tr>
+                          <tr>
+                            <td align="left">&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td align="left">
+							<img src="spacer.gif" width="1" height="10" style="display:block;" /></td>
+                          </tr>
+                          <tr>
+                            <td align="left"><table width="335" cellpadding="0" cellspacing="0" border="0">
+
+                                <tr>
+                                  <td width="15" valign="center"></td>
+                                  <td width="320">
+								  <font face="Tahoma" style="font-size:12px;">
+								  <b>Man-Related:</b>
+								  <a href="http://2123.ksahecel.cn/?fizjpah=0cc4ddcba2447a9a7542&ivapyrqq=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+								  Ask the Urinologist: Whose Odds are Better?</a></font></td>
+                                </tr>
+                              </table></td>
+                          </tr>
+                          <tr>
+
+                            <td align="left">
+							<img src="spacer.gif" width="1" height="15" /></td>
+                          </tr>
+                          <tr>
+                             <td><img src="spacer.gif" width="1" height="10" /></td>
+                          </tr>
+                          <tr>
+
+                            <td align="left"><table width="335" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                  <td><table width="335" cellpadding="0" cellspacing="0" border="0">
+                                      <tr>
+                                        <td width="1" bgcolor="#891212">
+										<img src="spacer.gif" width="1" height="1" style="display:block;" /></td>
+                                        <td><table width="333" cellpadding="0" cellspacing="0" border="0">
+                                            <tr>
+                                              <td height="21" bgcolor="#891212"><table width="333" cellpadding="0" cellspacing="0" border="0">
+                                                  <tr>
+
+                                                    <td width="15">&nbsp;</td>
+                                                    <td width="318"><font face="Arial, Helvetica, sans-serif" style="font-size:12px;" color="#FFFFFF"><b>
+													GROUP OF THE WEEK</b></font></td>
+                                                  </tr>
+                                                </table></td>
+                                            </tr>
+                                            <tr>
+                                              <td><table width="333" cellpadding="0" cellspacing="0" border="0">
+                                                  <tr>
+
+                                                    <td align="center"><table width="314" cellpadding="0" cellspacing="0" border="0">
+                                                        <tr>
+                                                          <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                          <td width="214" valign="top">
+														  <table cellpadding="0" cellspacing="0" border="0" style="width: 305px">
+                                                              <tr>
+                                                                <td align="left">
+																<font face="Tahoma" style="font-size:15px;">
+																<a href="http://2123.ksahecel.cn/?nyxyrqe=0cc4ddcba2447a9a7542&inubjpqr=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+																<b>U.S.A Machos</b></a></font></td>
+
+                                                              </tr>
+                                                              <tr>
+                                                                <td>
+																<img src="spacer.gif" width="1" height="5" /></td>
+                                                              </tr>
+                                                              <tr>
+                                                                <td align="left">
+																<font face="Tahoma" style="font-size:13px;">
+																Get ready for
+																love season!
+																<a href="http://2123.ksahecel.cn/?icyytjke=0cc4ddcba2447a9a7542&jgutefyd=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+																Join other
+																pro-lovers</a>
+																to swap stories,
+																share seducing
+																ideas and just
+																talk your
+																success. C&#39;mon,
+																the open season
+																awaits!
+																<a href="http://2123.ksahecel.cn/?izucquc=0cc4ddcba2447a9a7542&akanaaki=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
+																Join our
+																community &gt;&gt;</a></font></td>
+
+                                                              </tr>
+                                                              <tr>
+                                                                <td>
+																<img src="spacer.gif" width="1" height="10" /></td>
+                                                              </tr>
+                                                            </table></td>
+                                                        </tr>
+                                                      </table></td>
+                                                  </tr>
+                                                </table></td>
+
+                                            </tr>
+                                          </table></td>
+                                        <td width="1" bgcolor="#891212">
+										<img src="spacer.gif" width="1" height="1" style="display:block;" /></td>
+                                      </tr>
+                                    </table></td>
+                                </tr>
+                                <tr>
+                                  <td width="335" bgcolor="#891212">
+								  <img src="spacer.gif" width="335" height="1" style="display:block;" /></td>
+                                </tr>
+
+                              </table></td>
+                          </tr>
+                          <tr>
+                            <td align="left">
+							<img src="dottedLine.gif" width="307" height="2" /></td>
+                          </tr>
+                          <tr>
+                             <td><img src="spacer.gif" width="1" height="10" /></td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                  </table></td>
+              </tr>
+              <tr>
+                <td bgcolor="#E0E0E0">
+				<img src="greyLine.gif" width="650" height="1" style="display:block;" /></td>
+              </tr>
+              <tr>
+
+                <td><img src="spacer.gif" width="1" height="5" /></td>
+              </tr>
+
+            </table></td>
+        </tr>
+        </table></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="spacer.gif" width="1" height="10" /></td>
+
+  </tr>
+  <tr>
+    <td align="center"><table width="620" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="left"><font face="Tahoma" style="font-size:10px;" color="#FFFFFF"><b>
+		  Manage My E–mail Subscriptions</b><br />
+            <br />
+            You are receiving this message because you are subscribed to the
+		  Ypugidevahejsos Webletter. If you would like to cancel your
+		  subscription, please <a href="http://0cc.ksahecel.cn/?jbepuez=0cc4ddcba2447a9a7542&eifavafjl=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
+		  click here</a>. We welcome <a href="http://2123.ksahecel.cn/?jtikqco=0cc4ddcba2447a9a7542&ypaozapau=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
+		  your feedback</a> about the newsletter, but please use our <a href="http://2123.ksahecel.cn/?uwekixuly=0cc4ddcba2447a9a7542&oeryim=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
+		  contact</a> link if you have questions about your membership.<br />
+
+            <br />
+            If you would prefer to stop receiving <b>all e–mail</b> from us,
+		  please <a href="http://2123.ksahecel.cn/?xuvupjrjk=0cc4ddcba2447a9a7542&wegjhuhudj=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
+		  click here</a>.<br />
+            <br />
+            If you would like to manage all of your e–newsletter subscriptions,
+		  visit the <a href="http://2123.ksahecel.cn/?ylqdq=0cc4ddcba2447a9a7542&sjwyokysjh=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
+		  e-mail updates</a> page on our Web site.<br />
+
+            <br />
+            Oatoroluj is a nonprofit, nonpartisan membership
+		  organization that helps people 50+ have independence, choice, and
+		  control in ways that are beneficial and affordable to them and to
+		  society as whole.<br />
+            <br />
+
+            Offers are subject to change, and may have limited availability or
+		  restrictions, so please contact the provider directly to get more
+		  details.<br />
+            <br />
+            <b>Privacy Statement</b><br />
+            We are committed to protecting your privacy. See our <a href="http://0cc.ksahecel.cn/?befodjdo=0cc4ddcba2447a9a7542&arjbabjpq=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
+		  privacy policy</a> for additional information.
+            <p align="center">Exykqfjtiqcq
+			<a href="http://0cc.ksahecel.cn/?xazqgy=0cc4ddcba2447a9a7542&hitqa=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
+			(c) 1995–2009</a>, All rights reserved.</p>
+            </font></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="spacer.gif" width="1" height="10" /></td>
+  </tr>
+
 </table>
-<br><br>
-<img src="http://www.ctrm3.net/svi/img_nb_2047_numuser_yyynumuseryyy.jpg" width=1 height=1>
-<p>
-<a href='http://www.ctrm3.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm3.net/svi/gestionserv.php?nb=2047&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
+</body>
 </html>
 
 
---_----------=_parties_cca1494a7f53107f8d0c32f2ce0054f5--
-
---===============7087356202976391887==
+--===============8144002963168294351==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -96,7 +343,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============7087356202976391887==
+--===============8144002963168294351==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -107,4 +354,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7087356202976391887==--
+--===============8144002963168294351==--

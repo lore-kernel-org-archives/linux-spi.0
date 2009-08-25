@@ -1,9 +1,9 @@
-From: "Karleen Icqyko" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] My home-mailbox
-Date: Tue, 25 Aug 2009 09:30:06 +0000
-Message-ID: <1805UU.3419DCBA24.46564321942UYUMHGNVSOOAMJR89@Rys.altobox.cz>
+From: "CURSO DE IMANES" <hipnosischile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] APRENDA A SANAR CON IMANES
+Date: Tue, 25 Aug 2009 10:42:14 -0400
+Message-ID: <294244831-220098225144214750@usuario-1109edb>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8144002963168294351=="
+Content-Type: multipart/mixed; boundary="===============7779718792643122868=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,323 +16,161 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8144002963168294351==
-Content-type: text/html; charset="UTF-8"
+--===============7779718792643122868==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_29421772812519119144214750"
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Ijgag Webletter</title>
-</head>
-<body>
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#891212">
-  <tr>
-    <td align="center"><img src="spacer.gif" width="1" height="10" /></td>
-  </tr>
-  <tr>
-    <td align="center"><font face="Tahoma" size="1" color="#FFFFFF"> Having
-	trouble viewing images? <a style="color:#FFFFFF" href="http://0cc.ksahecel.cn/?waehjjk=0cc4ddcba2447a9a7542&giyqfyve=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj"><b>
-	Click here</b></a> to view as a webpage.</font></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="spacer.gif" width="1" height="10" /></td>
-  </tr>
-  <tr>
-    <td align="center"><table width="677" cellpadding="0" cellspacing="0" border="0">
+------=_NextPart_29421772812519119144214750
+Content-type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
-        <tr>
-          <td bgcolor="#FFFFFF"><table width="677" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td><table width="677" cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                      <td width="15">&nbsp;</td>
+=0A=0A=0A=0A=0A=0A=0A=0A
+=0AEstimad@:
+=0A
+=0AUd=2E tiene la oportunidad de realizar este curso de magnetoterapia en =
+=0A2 d=EDas en SANTIAGO: El Mi=E9rcoles 26 =0Ade agosto de 19 a 21 hrs=2E =
+y Mi=E9rcoles 02 de septiembre de 19 a 21 hrs=2E=2E
+=0A
+=0ALa clase la dar=E1 el Terapeuta en Hipnosis (Hipnoterapeuta), Imanes (M=
+agnetoterapeuta) y =0AEnerg=EDa (Reikiterapeuta) Claudio Reyes D=EDaz=2E R=
+ealizar=E1 el curso de Terapia con =0AImanes y Energ=EDa Vibracionales en =
+=0A=09=09=09=09Dr=2E Barros Borgo=F1o 384 - =0A=09=09=09=09=09Providencia =
+(Metro Manuel Montt) Fonos: 2781078 - 4458980=2E =0AM=E1s informaciones la=
+s puedes encontrar en=0Ahttp://www=2Ehipnosischile=2Ecl/magnetoterapia3=2E=
+htm   y as=ED =0Apoder auto-sanarse o sanar a otras personas con imanes=2E=
+ Son muchas las personas =0Aque ya han seguido este curso y lo aplican con=
+ gran =E9xito san=E1ndose de dolencias =0Ao sanando a otros de sus dolores=
+=2E=20
+=0A
+=0A=0A=BFQuienes pueden hacer el curso=3F=20
+=0A
+=0A1=2E Mayores de 18 a=F1os=2E
+=0A
+=0A2=2E Todos los que desean ayudarse en sus dolencias y =0Aenfermedades (=
+es una terapia complementaria y no sustitutiva de la medicina =0Atradicion=
+al)
+=0A
+=0A3=2E Los que desea ayudar a otros en sus procesos de sanaci=F3n=2E
+=0A
+=0A=0A=BFQu=E9 beneficios tiene la Magnetoterapia (Terapia con Magnetos =0A=
+o Imanes)=3F=20
+=0A
+=0AEl Magnetismo influye sobre el organismo, sus tejidos, sus =0Al=EDquido=
+s (no olvidar que somos mayoritariamente l=EDquidos), el sistema nervioso =
+y =0Agenera beneficios f=EDsicos, org=E1nicos y emocionales=2E Suaviza, de=
+shincha, quita el =0Adolor y puede tambi=E9n regenerar tejidos, estimular =
+=F3rganos, etc=2E
+=0A
+=0AValores e Inscripci=F3n
+=0A
+=0AEl valor del curso es de $85=2E000=2E-=20
+=0A
+=0A(por pago adelantado, vea otras formas de pago en=0Ahttp://www=2Ehipnos=
+ischile=2Ecl/magnetoterapia3=2Ehtm)
+=0A
+=0ARogamos =0Ainscribirse prontamente en el curso dado que s=F3lo lo puede=
+n =0Arealizar 10 personas          =0A   =2E Para inscribirse lo puede hac=
+er en nuestro sitio =0AWeb =0Ahttp://www=2Ehipnosischile=2Ecl/inscripcione=
+s=2Ehtm , o al fono 02/  2781078 =0Ao al celular (09) 9675 6898, al e-mail=
+=0Ainfo@hipnosischile=2Ecl=20
+=0A
+=0A=20
+=0A
+=0A=0A=0A
+=0A
+=0AHipnosis Chile
+=0A
+=0ASiguiendo las =0Adisposiciones legales actuales, los siguientes son los=
+ datos de quienes realizan =0Ael presente env=EDo publicitario:
+=0A
+=0AFono: 02/ =0A2781078 o al celular (09) 9675 6898 - =0AE-mail: =0Ainfo@h=
+ipnosischile=2Ecl - =0Awww=2Ehipnosischile=2Ecl=0A
+=0A
+=0ARemoci=F3n:=0A=0Aremover@hipnosischile=2Ecl=20
+=0A=0A
+=0A=20
+=0A=0A=0A=0A=0A
+------=_NextPart_29421772812519119144214750
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
-                      <td width="146" align="left"><font face="Tahoma" style="font-size:10px"><a href="http://2123.ksahecel.cn/?womagy=0cc4ddcba2447a9a7542&wyfqkymjz=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-					  Visit us online</a></font></td>
-                      <td width="193" align="left"><font face="Tahoma" style="font-size:10px"><a href="http://2123.ksahecel.cn/?kolyfqwog=0cc4ddcba2447a9a7542&juseh=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-					  Read Today’s News</a></font></td>
-                      <td width="220" align="left">
-					  <font face="Tahoma" style="font-size:10px" color="#0000FF">
-					  <a href="http://2123.ksahecel.cn/?nuhjqaso=0cc4ddcba2447a9a7542&pucydylqro=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-					  Membership</a>: <a href="http://2123.ksahecel.cn/?ucybexqqp=0cc4ddcba2447a9a7542&sqgqam=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-					  Join</a> / <a href="http://2123.ksahecel.cn/?lanozyu=0cc4ddcba2447a9a7542&yainorofo=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-					  Renew</a></font></td>
-                      <td width="103" align="left"><font face="Tahoma" style="font-size:10px"><a href="http://2123.ksahecel.cn/?ybqjguqev=0cc4ddcba2447a9a7542&oosasapq=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-					  Send to a Friend</a></font></td>
-
-                    </tr>
-                  </table></td>
-              </tr>
-              <tr>
-                <td align="center"><table width="650" cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-
-                      <td bgcolor="#E0E0E0">&nbsp;</td>
-                    </tr>
-                  </table></td>
-              </tr>
-              <tr>
-                <td align="center"><table width="650" cellpadding="0" cellspacing="0" border="0">
-
-                    <tr>
-                      <td width="324" valign="bottom"><table width="324" cellpadding="0" cellspacing="0" border="0">
-                          <tr>
-                            <td align="left"><font face="Arial, Helvetica, sans-serif" style="font-size:43px;" color="#B00707">
-							WEBLETTER</font></td>
-                          </tr>
-                          <tr>
-                            <td><img src="spacer.gif" width="1" height="5" /></td>
-                          </tr>
-
-                          <tr>
-                            <td align="left"><font face="Tahoma" style="font-size:14px"><em>
-							Your weekly newsletter</em></font></td>
-                          </tr>
-                        </table></td>
-                      <td width="354" valign="bottom"><table width="324" cellpadding="0" cellspacing="0" border="0">
-                          <tr>
-                            <td align="right"><font face="Tahoma" style="font-size:12px;">
-							Volume 14, issue 34 | <b><font color="#3DA4E3">
-							August 25, 2009</font></b></font></td>
-                          </tr>
-                        </table></td>
-                    </tr>
-
-                  </table></td>
-              </tr>
-              <tr>
-                <td align="center">
-				<img src="spacer.gif" width="1" height="10" /></td>
-              </tr>
-              <tr>
-                <td><table width="677" cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                      <td width="15">&nbsp;</td>
-
-                      <td width="351" valign="top" align="left">
-					  <table cellpadding="0" cellspacing="0" border="0" style="width: 655px">
-                          <tr>
-                            <td align="left">
-							<font face="Tahoma" style="font-size:23px;"><b>
-							<a href="http://2123.ksahecel.cn/?uutjhaci=0cc4ddcba2447a9a7542&unumobajl=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-							Work takes too much time and nerves?</a></b></font></td>
-                          </tr>
-                          <tr>
-                            <td style="height: 10px">
-							<img src="spacer.gif" width="1" height="10" /></td>
-                          </tr>
-                          <tr>
-
-                            <td align="left">
-							<font face="Tahoma" style="font-size:14px;">
-							<img alt="" src="http://2123.ksahecel.cn/spacer.gif"><br>
-							If you reached elder age, <a href="http://48eae.ksahecel.cn/?wysegjhqde=0cc4ddcba2447a9a7542&beedunjla=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-							these little-know tips</a> can help you boost your
-							virility and self-esteem. Plus, check out our
-							<a href="http://2123.ksahecel.cn/?orokqvemen=0cc4ddcba2447a9a7542&qneduvy=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">Male Improvement Guide</a>
-							- it&#39;s a must-read to help you recover your male
-							strength now. <a href="http://2123.ksahecel.cn/?taahupebin=0cc4ddcba2447a9a7542&pepofoaaa=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">Click
-							here to continue &gt;&gt;</a></font></td>
-                          </tr>
-                          <tr>
-                            <td align="left">
-							<img src="spacer.gif" width="1" height="10" /></td>
-
-                          </tr>
-                          <tr>
-                            <td align="left">&nbsp;</td>
-                          </tr>
-                          <tr>
-                            <td align="left">
-							<img src="spacer.gif" width="1" height="10" style="display:block;" /></td>
-                          </tr>
-                          <tr>
-                            <td align="left"><table width="335" cellpadding="0" cellspacing="0" border="0">
-
-                                <tr>
-                                  <td width="15" valign="center"></td>
-                                  <td width="320">
-								  <font face="Tahoma" style="font-size:12px;">
-								  <b>Man-Related:</b>
-								  <a href="http://2123.ksahecel.cn/?fizjpah=0cc4ddcba2447a9a7542&ivapyrqq=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-								  Ask the Urinologist: Whose Odds are Better?</a></font></td>
-                                </tr>
-                              </table></td>
-                          </tr>
-                          <tr>
-
-                            <td align="left">
-							<img src="spacer.gif" width="1" height="15" /></td>
-                          </tr>
-                          <tr>
-                             <td><img src="spacer.gif" width="1" height="10" /></td>
-                          </tr>
-                          <tr>
-
-                            <td align="left"><table width="335" cellpadding="0" cellspacing="0" border="0">
-                                <tr>
-                                  <td><table width="335" cellpadding="0" cellspacing="0" border="0">
-                                      <tr>
-                                        <td width="1" bgcolor="#891212">
-										<img src="spacer.gif" width="1" height="1" style="display:block;" /></td>
-                                        <td><table width="333" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                              <td height="21" bgcolor="#891212"><table width="333" cellpadding="0" cellspacing="0" border="0">
-                                                  <tr>
-
-                                                    <td width="15">&nbsp;</td>
-                                                    <td width="318"><font face="Arial, Helvetica, sans-serif" style="font-size:12px;" color="#FFFFFF"><b>
-													GROUP OF THE WEEK</b></font></td>
-                                                  </tr>
-                                                </table></td>
-                                            </tr>
-                                            <tr>
-                                              <td><table width="333" cellpadding="0" cellspacing="0" border="0">
-                                                  <tr>
-
-                                                    <td align="center"><table width="314" cellpadding="0" cellspacing="0" border="0">
-                                                        <tr>
-                                                          <td>&nbsp;</td>
-                                                        </tr>
-                                                        <tr>
-                                                          <td width="214" valign="top">
-														  <table cellpadding="0" cellspacing="0" border="0" style="width: 305px">
-                                                              <tr>
-                                                                <td align="left">
-																<font face="Tahoma" style="font-size:15px;">
-																<a href="http://2123.ksahecel.cn/?nyxyrqe=0cc4ddcba2447a9a7542&inubjpqr=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-																<b>U.S.A Machos</b></a></font></td>
-
-                                                              </tr>
-                                                              <tr>
-                                                                <td>
-																<img src="spacer.gif" width="1" height="5" /></td>
-                                                              </tr>
-                                                              <tr>
-                                                                <td align="left">
-																<font face="Tahoma" style="font-size:13px;">
-																Get ready for
-																love season!
-																<a href="http://2123.ksahecel.cn/?icyytjke=0cc4ddcba2447a9a7542&jgutefyd=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-																Join other
-																pro-lovers</a>
-																to swap stories,
-																share seducing
-																ideas and just
-																talk your
-																success. C&#39;mon,
-																the open season
-																awaits!
-																<a href="http://2123.ksahecel.cn/?izucquc=0cc4ddcba2447a9a7542&akanaaki=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj">
-																Join our
-																community &gt;&gt;</a></font></td>
-
-                                                              </tr>
-                                                              <tr>
-                                                                <td>
-																<img src="spacer.gif" width="1" height="10" /></td>
-                                                              </tr>
-                                                            </table></td>
-                                                        </tr>
-                                                      </table></td>
-                                                  </tr>
-                                                </table></td>
-
-                                            </tr>
-                                          </table></td>
-                                        <td width="1" bgcolor="#891212">
-										<img src="spacer.gif" width="1" height="1" style="display:block;" /></td>
-                                      </tr>
-                                    </table></td>
-                                </tr>
-                                <tr>
-                                  <td width="335" bgcolor="#891212">
-								  <img src="spacer.gif" width="335" height="1" style="display:block;" /></td>
-                                </tr>
-
-                              </table></td>
-                          </tr>
-                          <tr>
-                            <td align="left">
-							<img src="dottedLine.gif" width="307" height="2" /></td>
-                          </tr>
-                          <tr>
-                             <td><img src="spacer.gif" width="1" height="10" /></td>
-                          </tr>
-                        </table></td>
-                    </tr>
-                  </table></td>
-              </tr>
-              <tr>
-                <td bgcolor="#E0E0E0">
-				<img src="greyLine.gif" width="650" height="1" style="display:block;" /></td>
-              </tr>
-              <tr>
-
-                <td><img src="spacer.gif" width="1" height="5" /></td>
-              </tr>
-
-            </table></td>
-        </tr>
-        </table></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="spacer.gif" width="1" height="10" /></td>
-
-  </tr>
-  <tr>
-    <td align="center"><table width="620" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td align="left"><font face="Tahoma" style="font-size:10px;" color="#FFFFFF"><b>
-		  Manage My E–mail Subscriptions</b><br />
-            <br />
-            You are receiving this message because you are subscribed to the
-		  Ypugidevahejsos Webletter. If you would like to cancel your
-		  subscription, please <a href="http://0cc.ksahecel.cn/?jbepuez=0cc4ddcba2447a9a7542&eifavafjl=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
-		  click here</a>. We welcome <a href="http://2123.ksahecel.cn/?jtikqco=0cc4ddcba2447a9a7542&ypaozapau=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
-		  your feedback</a> about the newsletter, but please use our <a href="http://2123.ksahecel.cn/?uwekixuly=0cc4ddcba2447a9a7542&oeryim=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
-		  contact</a> link if you have questions about your membership.<br />
-
-            <br />
-            If you would prefer to stop receiving <b>all e–mail</b> from us,
-		  please <a href="http://2123.ksahecel.cn/?xuvupjrjk=0cc4ddcba2447a9a7542&wegjhuhudj=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
-		  click here</a>.<br />
-            <br />
-            If you would like to manage all of your e–newsletter subscriptions,
-		  visit the <a href="http://2123.ksahecel.cn/?ylqdq=0cc4ddcba2447a9a7542&sjwyokysjh=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
-		  e-mail updates</a> page on our Web site.<br />
-
-            <br />
-            Oatoroluj is a nonprofit, nonpartisan membership
-		  organization that helps people 50+ have independence, choice, and
-		  control in ways that are beneficial and affordable to them and to
-		  society as whole.<br />
-            <br />
-
-            Offers are subject to change, and may have limited availability or
-		  restrictions, so please contact the provider directly to get more
-		  details.<br />
-            <br />
-            <b>Privacy Statement</b><br />
-            We are committed to protecting your privacy. See our <a href="http://0cc.ksahecel.cn/?befodjdo=0cc4ddcba2447a9a7542&arjbabjpq=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
-		  privacy policy</a> for additional information.
-            <p align="center">Exykqfjtiqcq
-			<a href="http://0cc.ksahecel.cn/?xazqgy=0cc4ddcba2447a9a7542&hitqa=07728876612246564321&mfguyumhgn=sooamjrfwzhtyhjbwkikj" style="color:#FFFFFF;">
-			(c) 1995–2009</a>, All rights reserved.</p>
-            </font></td>
-        </tr>
-      </table></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="spacer.gif" width="1" height="10" /></td>
-  </tr>
-
-</table>
-</body>
-</html>
+<html>=0A=0A<head>=0A<meta http-equiv=3D"Content-Type" content=3D"text/htm=
+l; charset=3Dwindows-1252">=0A<title>MAGNETOTERAPIA</title>=0A</head>=0A=0A=
+<body>=0A<P align=3Dleft>=0A<font face=3D"Arial">Estimad@:</font></P>=0A<P=
+ align=3Dleft>=0A<font face=3D"Arial">Ud=2E tiene la oportunidad de realiz=
+ar este curso de magnetoterapia en =0A2 d=EDas en <u><font color=3D"#ff000=
+0"><b>SANTIAGO</b></font></u>: El Mi=E9rcoles 26 =0Ade agosto de 19 a 21 h=
+rs=2E y Mi=E9rcoles 02 de septiembre de 19 a 21 hrs=2E=2E</font></P>=0A<P =
+align=3Dleft>=0A<font face=3D"Arial">La clase la dar=E1 el Terapeuta en Hi=
+pnosis (Hipnoterapeuta), Imanes (Magnetoterapeuta) y =0AEnerg=EDa (Reikite=
+rapeuta) Claudio Reyes D=EDaz=2E Realizar=E1 el curso de Terapia con =0AIm=
+anes y Energ=EDa Vibracionales en </font><font color=3D"#000000">=0A=09=09=
+=09=09<b><font face=3D"Arial">Dr=2E Barros Borgo=F1o 384 - =0A=09=09=09=09=
+=09Providencia (Metro Manuel Montt) Fonos: 2781078 - 4458980</font></b></f=
+ont><font face=3D"Arial">=2E =0AM=E1s informaciones las puedes encontrar e=
+n=0A<a href=3D"http://www=2Ehipnosischile=2Ecl/magnetoterapia3=2Ehtm">http=
+://www=2Ehipnosischile=2Ecl/magnetoterapia3=2Ehtm</a>&nbsp;&nbsp; y as=ED =
+=0Apoder auto-sanarse o sanar a otras personas con imanes=2E Son muchas la=
+s personas =0Aque ya han seguido este curso y lo aplican con gran =E9xito =
+san=E1ndose de dolencias =0Ao sanando a otros de sus dolores=2E </font></P=
+>=0A<P align=3Dleft>=0A<b>=0A<font face=3D"Arial">=BFQuienes pueden hacer =
+el curso=3F </font></b></P>=0A<P align=3Dleft style=3D"MARGIN-TOP: 0px; MA=
+RGIN-BOTTOM: 0px">=0A<font face=3D"Arial">1=2E Mayores de 18 a=F1os=2E</fo=
+nt></P>=0A<P align=3Dleft style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">=0A=
+<font face=3D"Arial">2=2E Todos los que desean ayudarse en sus dolencias y=
+ =0Aenfermedades (es una terapia complementaria y no sustitutiva de la med=
+icina =0Atradicional)</font></P>=0A<P align=3Dleft style=3D"MARGIN-TOP: 0p=
+x; MARGIN-BOTTOM: 0px">=0A<font face=3D"Arial">3=2E Los que desea ayudar a=
+ otros en sus procesos de sanaci=F3n=2E</font></P>=0A<P align=3Dleft>=0A<b=
+>=0A<font face=3D"Arial">=BFQu=E9 beneficios tiene la Magnetoterapia (Tera=
+pia con Magnetos =0Ao Imanes)=3F </font></b></P>=0A<P align=3Dleft>=0A<fon=
+t face=3D"Arial">El Magnetismo influye sobre el organismo, sus tejidos, su=
+s =0Al=EDquidos (no olvidar que somos mayoritariamente l=EDquidos), el sis=
+tema nervioso y =0Agenera beneficios f=EDsicos, org=E1nicos y emocionales=2E=
+ Suaviza, deshincha, quita el =0Adolor y puede tambi=E9n regenerar tejidos=
+, estimular =F3rganos, etc=2E</font></P>=0A<P align=3Dleft>=0A<b><font fac=
+e=3D"Arial">Valores e Inscripci=F3n</font></b></P>=0A<P align=3Dleft style=
+=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">=0A<font face=3D"Arial">El valor =
+del curso es de $85=2E000=2E- </font></P>=0A<P align=3Dleft style=3D"MARGI=
+N-TOP: 0px; MARGIN-BOTTOM: 0px">=0A<font size=3D"2" face=3D"Arial">(por pa=
+go adelantado, vea otras formas de pago en=0A<a href=3D"http://www=2Ehipno=
+sischile=2Ecl/magnetoterapia3=2Ehtm">http://www=2Ehipnosischile=2Ecl/magne=
+toterapia3=2Ehtm</a>)</font></P>=0A<P align=3Dleft>=0A<font face=3D"Arial"=
+>Rogamos =0Ainscribirse prontamente en el curso dado que <U><STRONG>s=F3lo=
+ lo pueden =0Arealizar&nbsp;10 personas</STRONG></U>          =0A   =2E Pa=
+ra inscribirse lo puede hacer en nuestro sitio =0AWeb <a href=3D"http://ww=
+w=2Ehipnosischile=2Ecl/inscripciones=2Ehtm">=0Ahttp://www=2Ehipnosischile=2E=
+cl/inscripciones=2Ehtm</a> , o al fono 02/&nbsp; 2781078 =0Ao al celular (=
+09) 9675 6898, al e-mail=0A<A href=3D"mailto:info@hipnosischile=2Ecl">info=
+@hipnosischile=2Ecl</A> </font></P>=0A<P align=3Dcenter>=0A&nbsp;</P>=0A<p=
+ align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">=0A<font f=
+ace=3D"Arial" style=3D"FONT-SIZE: 6pt" color=3D"#808080">=0A<a href=3D"htt=
+p://www=2Ehipnosischile=2Ecl/">=0A<img border=3D"0" src=3D"http://www=2Ehi=
+pnosischile=2Ecl/imagen/logonewpequenomini=2Ejpg" width=3D"70" height=3D"5=
+2"></a></font></p>=0A<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-=
+BOTTOM: 0px"><b>=0A<font face=3D"Arial" size=3D"1" color=3D"#808080">Hipno=
+sis Chile</font></b></p>=0A<p align=3D"center" style=3D"MARGIN-TOP: 0px; M=
+ARGIN-BOTTOM: 0px">=0A<font face=3D"Arial" style=3D"FONT-SIZE: 6pt" color=3D=
+"#808080">Siguiendo las =0Adisposiciones legales actuales, los siguientes =
+son los datos de quienes realizan =0Ael presente env=EDo publicitario:</fo=
+nt></p>=0A<p align=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px=
+">=0A<font face=3D"Arial" style=3D"FONT-SIZE: 6pt"><font color=3D"#808080"=
+>Fono: 02/ =0A2781078 o al celular (09) 9675 6898 - =0AE-mail: </font><A h=
+ref=3D"mailto:info@hipnosischile=2Ecl"><font color=3D"#808080">=0Ainfo@hip=
+nosischile=2Ecl</font></A><font color=3D"#808080"> - </font>=0A<a href=3D"=
+http://www=2Ehipnosischile=2Ecl"><font color=3D"#808080">www=2Ehipnosischi=
+le=2Ecl</font></a><font color=3D"#808080">=0A</font></font></p>=0A<p align=
+=3D"center" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">=0A<font face=3D=
+"Arial" style=3D"FONT-SIZE: 6pt"><font color=3D"#808080">Remoci=F3n:=0A</f=
+ont><A href=3D"mailto:remover@hipnosischile=2Ecl"><font color=3D"#808080">=
+=0Aremover@hipnosischile=2Ecl</font></A><font color=3D"#808080"> </font></=
+font></p>=0A=0A<P align=3Dcenter style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: =
+0px">=0A&nbsp;</P>=0A=0A</body>=0A=0A</html>=0A
+------=_NextPart_29421772812519119144214750--
 
 
---===============8144002963168294351==
+
+--===============7779718792643122868==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -343,7 +181,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============8144002963168294351==
+--===============7779718792643122868==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -354,4 +192,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8144002963168294351==--
+--===============7779718792643122868==--

@@ -1,11 +1,11 @@
-From: "dsads" <xiaohupo-Yt94fFD2GMA@public.gmane.org>
-Subject: [SPAM] 鏈�涓撲笟鐨勪腑灞傜粡鐞嗙患鍚堢鐞嗘妧鑳芥彁鍗囩爺淇彮
-Date: Sun, 23 Aug 2009 14:44:56 +0800
-Message-ID: <E1Mf6pI-0000Xu-7B@235xhf1.ch3.sourceforge.com>
+From: Mes recettes minceur par Central Marques <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
+Subject: Recevez gratuitement votre guide minceur
+Date: 25 Aug 2009 07:12:51 -0000
+Message-ID: <20090825071251.29834.qmail@ks357949.kimsufi.com>
+Reply-To: Mes recettes minceur par Central Marques <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============7087356202976391887=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,159 +17,75 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+--===============7087356202976391887==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_cca1494a7f53107f8d0c32f2ce0054f5"
 
-清看 附件，如果有打扰，清原谅，谢谢！
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="最专业的中层经理综合管理技能提升研修班.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="最专业的中层经理综合管理技能提升研修班.txt"
+--_----------=_parties_cca1494a7f53107f8d0c32f2ce0054f5
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-DQoNCiAgICAgICAgICAgICAgINbQsuO+rcDt19u6z7ncwO28vMTczOHJ/dHQ0N6w4A0KDQqxsb6p
-CTIwMDnE6jjUwjctOcjVDQrJz7qjCTIwMDnE6jnUwjQtNsjVICAgICAgICAgICAgIA0Kye7b2iAg
-ICAyMDA5xOo41MIyMS0yM8jVDQoNCg0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCsXg0bW21M/z
-o7oNCsbz0rW4sdfcoaK497K/w8W+rcDtoaLW97ncoaK497y21tCy47ncwO3Iy9SxoaLQwszhsM61
-xKGitNPXqNK1yMuyxdeq0M21vbncwO0NCrXEoaK9+NK7sr3P68zhuN+53MDtvKjQp7XEoaK9+sn9
-tb2437LjudzA7dLUvLDG5Mv81KSxuLncwO3Iy9SxDQoNCtb3sOy1pc67OiDW2sjL0NC53MDt18nR
-r834ICAgDQoNCsXg0bW30dPDOjM2MDDUqi/Iy6OosPy6rKO6yP3M7NbQss2jrLLoteOjrL2y0uWj
-rLeixrGjqQ0KDQqxuCAgICDXoqO6DQrXydGvtee7sKO6MDc1NS0yNjA3NTM2NSAgMTM3Mjg3MTk5
-NDgNCrSrICAgINXmo7owNzU1LTYxMzUxMzk2ICANCsGqIM+1IMjLo7ogwejQob3jDQoNCg0Kv86z
-zMrVu/EgDQqh7iDIq8Pm0afPsMbz0rW53MDttcTPtc2zuf2zzKOsyMPW0LjfsuO53MDtyMvUsc2z
-0ru528TuoaK077PJubLKtqO7DQqh7iDRp8+w1NrG89K1xNqyv8jnus60psDtwey1vKGiz8LK9KGi
-xuTL/LK/w8XWrrzktcTQrc2sus/X97nYz7WjrLSmwO26w7mk1/cNCiAgINPryMu8yrnYz7WjrNfu
-tPPP3rbItdi3orvTuavLvrXE19u6z8q1waajuw0Koe4g0afPsMjnus6zyc6q0ru49tPF0OO1xMHs
-tbzIy6OsyOe6zrj8usO1xLT4wezPwsr0zeqzybmk1/fEv7Hqo7sNCqHuIMjnus7M4bjfz8LK9LXE
-xNzBpqOsvajJ6LjfvKjQp7XEudzA7c3FttOjrMjDz8LK9NTauaTX99bQt6K707j8uN+1xLmk1/e7
-/Q0KICAgvKvQ1LrNuaTX98jIx+mhow0KDQrF4NG1zNi146O6DQqh7iDPtc2z0NSjusbz0rW53MDt
-ysfSu7j2z7XNs7mks8yjrNei1tjX27rPxNzBprXEvvm64rei1bmjrNLytvjU2rncwO28vMr1yc8N
-CiAgICAgICAgICAg0rLXotbYz7XNs9DUtcTRp8+wus3F4NG1oaMNCqHuILjEseTQ0M6qo7q21Mbz
-0rXAtMu1o6yyu8TctPjAtLncwO3Q0M6qtcS4xLHko6zKx8O709DIzrrO0uLS5bXEoaOxvtG1wbe9
-qw0KICAgICAgICAgICDWsNK1vq3A7b6twO21xLHYsbi53MDtvLzE3MnovMazydK7uPa49rXExNzB
-prXjo6zKucv7w8fNqLn916XE3MGmDQogICAgICAgICAgILXjtvi077W9uMSx5NDQzqqhoteqseS5
-28TutcTEv7XEoaMNCqHuIMq1vPmy2df30NSjurncwO28vMTcyse2r8rWxNzBpqGiyrXVvcTcwaaj
-rLK7xNzTw9PaxvPStbncwO3Ktbz5tcS3vbeoysfO3g0KICAgICAgICAgICDQp7XEoaOxvrTOudzA
-7by8xNzRtcG3vtu9udPaudzA7bXEyrW8yrLZ1/fE3MGmzOG436GjDQoNCqmlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppQ0KxeAg0bUgzOEguNkNCrXa0rvVwqGiCcqyw7TKx7ncwO0NCrXatv7VwqGiCcjnus65
-3MDt0MTMrA0KtdrI/dXCoaIJudzA7bXEzNi148rHyrLDtCANCrXay8TVwqGiCcqyw7TR+bXEudzA
-7crH1+7KyrrPxvPStbXEudzA7Q0KtdrO5dXCoaIJudzA7aGi1+nWr9Prwey1vLXEudjPtQ0KtdrB
-+dXCoaIJudzA7b3Hyau1xNfUztLIz9aqDQq12sbf1cKhognB7LW8wabM4cn9tcS8vMfJDQq12rDL
-1cKhogm53MDtubXNqNPrudjPtdCttfcNCrXavsXVwqGiCbjfvKjQp83FttO1xL2oyegNCrXayq7V
-wqGiCbykwPi53MDttcS8vMfJDQoNCrXa0rvVwqGiyrLDtMrHudzA7Q0KICAgICAgICC53MDttcTK
-tdbKysfKssO0Pw0Ktdq2/tXCLiDI57rOudzA7dDEzKwNCiAgICAgICAg0fjUsbmkwby6w7XE0MTM
-rMrHudzA7bXEtdrSu9KqzvENCrXayP3VwqOuudzA7bXEu/mxvszY0NQNCiAgICAgICAgxL+1xNDU
-ICDT0NCn0NQgICDL+8jL0NQgICC24NH50NQNCg0KtdrLxNXCoaLKssO00fm1xLncwO3Kx9fuysq6
-z8bz0rW1xLncwO0NCiAgICAgILncwO21xLe9t6i6zby8yvW24NbWtuDR+aOsyrLDtNH5tcS53MDt
-xKPKvbLFysfX7srKus/G89K1t6LVubXEo78NCiAgICAgINa709DV0rW91+7KyrrPztLDx8bz0rW3
-otW5tcS53MDtxKPKvaOsssXE3LHcw+K53MDttcTDpMS/0NQNCg0KtdrO5dXCoaK53MDtoaLX6dav
-oaLB7LW8yP3V37XEz+C7pbnYz7W6zdLszawgDQogICAgICAgILncwO3V36Giwey1vNXftb2119Om
-uMPX9sTE0KnKwqO/DQogICAgICAgILncwO3V37rNwey1vNXftb2119PQyrLDtMf4sfC6zcGqz7Wj
-vw0KDQq12sH51cKhorncwO29x8mrtcTIz9aqDQogICAgICAgINK7oaLWsNK1vq3A7bXEvcfJq8jP
-1qogDQogICAgICAgILb+oaLWsNK1vq3A7bXEvcfJq7fWzvYNCiAgICAgICAgyP2horK7zayy48Pm
-yMvUsbXEuaTX99bY0MQNCg0KtdrG39XCoaLB7LW8wabM4cn9tcS8vMfJDQogICAgICAgINK7oaLB
-7LW8yKjN/rXEwLTUtA0KICAgICAgICAgICAgwey1vMiozf61xLDLuPbQ1LjxzNjV9w0KICAgICAg
-ICAgICAgsLjA/bfWzvajusqyw7TR+bXEwey1vMrH0ru49tPF0OO1xMHstbw/DQogICAgICAgILb+
-oaLB7LW8t73KvQ0KICAgICAgICDI/aGix+m+s8HstbzT68vE1tbB7LW8t+e48Q0KICAgICAgICAg
-ICAguPm+3bG7wey1vNXftcS+38zlx+m/9r72tqiyu82stcTB7LW8t+e48Q0KICAgICAgICAgICAg
-uObWqsq9ICDNxs/6yr0gILLO0+vKvSAgytrIqMq9IA0KICAgICAgICCwuMD9t9bO9qO61eu21NDt
-yP224NPrs8myxdXiwb249tSxuaTTprjD08PKssO00fm1xMHstby3vbeoo78NCiAgICAgICAgy8Sh
-osHstby1xNb30qq5pNf3xNrI3Q0KICAgICAgICDO5aGiyOe6zsXg0fjPwsr0DQogICAgICAgICAg
-ICAxoaLF4NH4z8LK9NPQyrLDtLrDtKYNCiAgICAgICAgICAgIDKhosXg0fjPwsr0tcS5y8LHDQog
-ICAgICAgICAgICAzoaLF4NH4z8LK9LXEt723qA0KICAgICAgICAgICAgNKGixeDR+M/CyvS1xNSt
-1PINCiAgICAgICAgICAgILC4wP231s72o7rI57rOwO294tLyssTKqb3MtcTF4NH41K3U8qO/DQog
-ICAgICAgIMH5oaLK2sioudzA7Q0KICAgICAgICAgICAgKNK7KSDOqsqyw7TSqsrayKgNCiAgICAg
-ICAgICAgICi2/ikgytrIqLncwO21xM7zx/jKx8qyw7QNCiAgICAgICAgICAgICjI/SkgytrIqLnc
-wO21xNSt1PINCiAgICAgICAgICAgICjLxCkgytrIqLncwO21xLe9t6ggDQoNCrXasMvVwqGiudzA
-7bm1zajT67nYz7XQrbX3DQogICAgICAgINK7oaLKssO0yse5tc2oIKO/DQogICAgICAgILb+oaK5
-tc2otcTM2NDUIA0KICAgICAgICAgICAgy6vP8re0wKHKx7m1zai1xLv5tKENCiAgICAgICAgICAg
-ILK7zazOxLuvoaLD8dfltcS5tc2o1K3U8rK7zawNCiAgICAgICAgyP2horncwO25tc2otcTW1sDg
-vLDQzsq9DQogICAgICAgICAgICCwuMD9t9bO9iChoszWwtsgIMK8z/G31s72DQogICAgICAgIMvE
-oaK5tc2otcSyvdboIA0KICAgICAgICDO5aGisrvNrLm1zai357jxtcS53MDt1d+31s720+vTprbU
-DQogICAgICAgICAgICC31s720M3Iy7XEzNjV99PrubXNqLy8x8kNCiAgICAgICAgICAgINanxeTQ
-zcjLtcTM2NX30+u5tc2ovLzHyQ0KICAgICAgICAgICAgse2079DNyMu1xMzY1ffT67m1zai8vMfJ
-DQogICAgICAgICAgICC6zbCq0M3Iy7XEzNjV99PrubXNqLy8x8kNCiAgICAgICAgICAgILC4wP23
-1s72o7q31s72styy2aGiwfWxuKGiy+/IqLXEuPbQ1NPrubXNqLy8x8kNCiAgICAgICAgwfmhorm1
-zai1xLe9z/INCiAgICAgICAgICAgINaw0rW+rcDtyMvT68nPvLahos2svLahos/CyvS5tc2otcS8
-vMfJDQogICAgICAgICAgICAxoaK5tc2otcTUrdTyDQogICAgICAgICAgICAyoaK5tc2otcS3vbeo
-DQogICAgICAgICAgICAzoaK5tc2otcTVz7CtDQogICAgICAgICAgICAgICCwuMD9zNbC26O6ttTJ
-z7y2tcS5pNf309Cyu82stcTS4rz7xOPTprjD1PXDtLDso78NCiAgICAgICAgICAgICAgIMnPvLa2
-1MTjtcSxqLjm09C3tLbU0uK8+yDE49T1w7Sw7KO/DQogICAgICAgICAgICAgICDI57rOobi0psDt
-z8K8ttS9vLbP8sTju+OxqKG5o78NCiAgICAgICAgICAgICAgIMjnus6huLSmwO2yv8r0tcS5/cqn
-0NDOqqG5o78NCiAgICAgICAgICAgICAgIMjnus6huLSmwO3Jz8u+tffFydfUvLqyv8r0uaTX97XE
-x+m/9qG5o78NCiAgICAgICAgICAgICAgIMjnus6huMPmttTT0MTcwaa1q7K7zP27sLXEsr/K9KG5
-o78NCg0Ktdq+xdXCoaK437yo0KfNxbbTtcS9qMnoDQogICAgICAgINK7oaLKssO0ysfNxbbTDQog
-ICAgICAgICAgICAxoaLIz8q2zcW206OoMSsxPaO/o6kNCiAgICAgICAgICAgIDKhos3FttPT68i6
-zOW1xMf4sfANCiAgICAgICAgICAgIDOhos3FttPQ0M6qx/rP3w0KICAgICAgICAgICAgICAgzNbC
-26O6x+u31s72zcW209PryLrM5dauvOTX7rTztcTH+LHwysfKssO0o78NCiAgICAgICAgtv6horjf
-vKjQp83FttO1xMzY1fcNCiAgICAgICAgICAxoaLD98i3tcTEv7HqIKOoxL+x6rTTxMTA78C0o7/G
-89K1xL+x6rrNuPbIy8S/serI57rOzbPSu6O/o6kNCiAgICAgICAgICAgIDKhos/gu6XQxcjOICAg
-ICCjqNDFyM61xLv5tKHKx8qyw7Sjv8jnus69qMGio7+jqQ0KICAgICAgICAgICAgM6GiudjQxKGi
-sO/W+sO/uPbIy6OotNPExNCpt73D5tfFytayxcrH1+7T0NCntcSjv6OpDQogICAgICAgICAgICA0
-oaK5tc2owby6wyAgICAgo6jI57rOssXE3NPQ0Ke1xLm1zaijv6OpDQogICAgICAgICAgICA1oaK3
-1rmk0+vK2sioICAgo6jU2r7fzOW5pNf31tDI57rOstnX96O/o6kNCiAgICAgICAgICAgIDahorrP
-wO21xLykwPggICCjqMO709DX47m7tcTM9bz+1PXDtLDso7+jqQ0KICAgICAgICAgICAgN6Gius/A
-7aGizerJxrXE1sa2yKOo1sa2yMS/x7Cyu7rPwO3U9cO0sOyjv6OpDQogICAgICAgICAgICA4oaLI
-2seitcTNxbbTxvi31SAo08PKssO0t723qMXg0fjBvLrDtcS5pNf3xvi31aO/KQ0KICAgICAgICAg
-ICAgICAgsLjA/bfWzvahoszWwtujurTz0eO1xLnKysK4+M7Sw8fKssO0xvTKvqO/DQogICAgICAg
-IMj9oaK437yo0KfNxbbTtcSzydSxDQogICAgICAgICAgICAxoaLI57rO0aHU8c3FttO1xLPJ1LEN
-CiAgICAgICAgICAgIDKhos3FttOzydSxtcS52M+1yOe6ztCttfcNCiAgICAgICAgICAgIDOhosjn
-us694r72s8nUsbXEs+XNuw0KICAgICAgICAgICAgICAgsLjA/bfWzvahoszWwtujus3FttO1xLPJ
-1LHE3MGmsrvX49OmuMPI57rOtKbA7Q0KICAgICAgICDLxKGiuN+8qNCnzcW2072oyei1xMH3s8y8
-sL3Xts4NCiAgICAgICAgICAgIDGhos3FttO9qMnotcTB97PMDQogICAgICAgICAgICAyoaLNxbbT
-vajJ6LXEvde2zg0KDQq12squ1cKhorykwPi53MDtDQogICAgICAgILXN0KfCyr+/udzA7aOsuN/Q
-p8LKv7+8pMD4DQogICAgICAgINK7oaK8pMD4tcTO88f4DQogICAgICAgILb+oaK8pMD4tcTLxNSt
-1PINCiAgICAgICAgICAgILmrxr3UrdTyoaLPtc2z1K3U8qGiyrG7+tSt1PKhosflzvrUrdTyDQog
-ICAgICAgIMj9oaK8pMD4tcS3vbeoDQogICAgICAgICAgICAxoaLQxcjODQogICAgICAgICAgICAg
-ICDIz7/JLSCx7dHvLcnNyrYgICCjqMjnus7F4NH4ttS5pNf3tcSzyb7NuNCjv6OpDQogICAgICAg
-ICAgICAyoaIJs9C1o9TwyM4gICAgICAgKM6qyrLDtNKqzqrPwsr0s9C1o9TwyM4pDQogICAgICAg
-ICAgICAzoaIJudjQxKGisO/W+s3FttOzydSxo6i5pNf30+vJ+rvuyOe6ztCttfejv6OpDQogICAg
-ICAgICAgICA0oaIJ0L3LrtPryf3HqCAgICAgo6i7+bShu7nSqtPQsaPVz6OpDQogICAgICAgICAg
-ICA1oaIJuaTX99DLyKQgICAgICAgo6jI57rOssXE3LDRuaTX97Wxs8nKx9K71tbQy8iko7+jqQ0K
-ICAgICAgICAgICAgNqGiCbrPwO21xNbGtsggICAgIKOouavGvaGiuavV/aGiuau/qqOpDQogICAg
-ICAgICAgICA3oaIJuaTX98b4t9UgICAgICAgo6jKx9K71tbI7buvvMGjqQ0KICAgICAgICAgICAg
-OKGiCcbz0rXEv7Hq0+vKucP8IKOo1+7W1bXEveK+9re9sLijqQ0KICAgICAgICDLxKGivKTA+Le9
-t6i1xNfbus/Uy9PDDQogICAgICAgICAgICCwuMD9t9bO9qGizNbC26O61sfW7bKp3sS1xLnKysIN
-Cg0KqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlDQogICAgICAgICANCr2yyqa96cncoarA7rjv1PYNCg0K
-ICAgINbayMvQ0LjfvLbF4NG1yqahosq11b3QzcXg0bXXqLzSo7vH5buqtPPRp6GisbG+qbTz0afM
-2Ma4xeDRtb2yyqaju8nu29q53A0KwO3XydGv0K274bncwO3XqLzSo7vN4snMzbbXytCtu+HF4NG1
-16i80qO71tC5+sbz0rXBqrrPu+G5y87Ko7vP47jbueK7qrncwO3Rpw0K1Lq/zdf5vczK2qO7w8C5
-+kFJVEHIz9akufq8ytaw0rXF4NG1yqaju8W31t5TS1C7+rm5uN+8trncwO25y87Ko7vG89K1vNLQ
-rbvhDQrM2Ma4xeDRtb2yyqaju7bgxOq008rCxvPStbjfsuO53MDt0+vXydGvuaTX976t0emjrNTa
-tcLCobyvzcWhosnuuN/L2aGiw8C5+g0KobBNT1RIRVJTobGhotbayMvQ0LncwO3XydGvtci089DN
-vK/Nxbmry768sLncwO25y87KuavLvsD6yM7F4NG1vq3A7aGi0NDV/tfcDQq84KGi06rP+tfcvOCh
-osXg0bXX3LzgoaK4sdfcvq3A7bXI1rDOu6GjttTG89K1udzA7aGiv827p7f+zvGhosa3xca53MDt
-oaLG89K1DQrOxLuvtci+39PQwby6w7XExeDRtdPr18nRr76t0emju7K7vfa+39PQye668bXEwO3C
-29aqyrajrLb4x9K+37G4t+G4u7XEyrW8+bLZDQrX98Tcwaaju9ei1ti21Mbz0rW53MDtzsrM4rXE
-t9bO9rrNveK+9qGivbLH88q10KfQ1LrNysrTw9DUoaMNCg0KycOzpL/Os8yjuqG21rDStb6twO3I
-y9fKuPHIz9akobehoqG2xvPStdbQsuO+rcDt19u6z7ncwO28vMTcxeDRtaG3DQogICAgICAgICAg
-oba437y2w9jK6daw0rW7r8Xg0bWht6GiobbI57rOs8nOqtPF0OPUsbmkobehog0KICAgICAgICAg
-IKG2udzA7bm1zajT67mk1/fQrbX3vLzHyaG3DQoNCiAgICDF4NG1zNjJq6O60tS7pbavoaLH6b6w
-yr3F4NG1vPuzpKOs16LW2Mrc0bXIy9SxtcS40M7yvLCyztPro6zF4NG1t+e48cnuyOsNCsezs/ah
-osz1wO3H5c76oaK/zszDxvi31cfhy8mhorvu1L6hosq11b3Q1Me/o6zNqLn9uPfW1sq1vMqwuMD9
-vLC53MDt087Pt7XIt70NCsq9s+S31rX3tq+yztG1yMvUsbXExeDRtcjIx+mhow0KDQogICAgxeDR
-tbvy18nRr7XExvPStaO61tC5+rXn0MWhosfgtbrW0LuvvK/NxaGi1tDKr9PNoaLJo7fGzajRtqGi
-sMLB1rDNy7mhos/DDQrDxbq9v9WhosvV1t3I/dDHtefX06GiueO2q9LGtq+hosnfv9rEz8uzw+a3
-26GiyP3R87v6teehosb0w/fQx7O/oaLBqrDuv+y13aGiDQq/wsThv6jDwMTctO+hotbQ0MXO79K1
-oaLQxc2zueK156GizOy7qrvhvMbKpsrCzvHL+aGixM/m2rXns9ihosDKxP7NqNDFoaK6vbzODQq1
-59S0oaJUQ0y8r83FoaK6o8W3zsDUoaGiva3B5cb7s7WhotPRsO6xo8/VoaLW0LXnvK/NxaGiuqPE
-z8Lt19S076Gi0rzKsbT6tKvDvaGiDQq0tM6svK/NxaGi1eO9rb3w1t68r83FoaKzpMHBv8a8vKGi
-warMqbyvzcWhorfJwPvG1tbQufqhor/G0fPK/cLroaK38Mm9uqPEybSoDQrSqdK1oaLEz8yrvK/N
-xaGiyfHB+sb7s7WhotbQufrKr9PNoaLE/rKo0MK35bXnxvehos3+uqOxsdHztefG+LyvzcWhorrN
-vM27xsbSDQrW0NKpoaK607GxyMi156Gi1tC8r7yv17DP5KGiyP32zrnJt92hotbQ0MW8r83FoaK7
-qrXbucm33aGiw8C1xLzSteehotbQuqO8r83FoaINCrfJwPvG1rDrtbzM5aGi1tC5+rXn19PX3Lmr
-y76hornjzve158GmoaLJz7qjxta2q7ei1bnS+NDQoaK9qMno0vjQ0LijvajWp9DQoaINCtbQufrN
-+M2ooaKxsb6pyte2vLv6s6Ghos73w8XX06GixbfG1dXVw/e1yKGjDQoNCg0KDQoNCg0K
+Version "en ligne" de ce message: http://www.ctrm3.net/svi/miroir.php?bat=recettesminceur0809_ctrm
 
---=_NextPart_2rfkindysadvnqw3nerasdf
+Mes Recettes Minceur
+Besoin d'astuces minceur ?
+14 pages de recettes all間閑s et menus minceur !
+Recevez gratuitement votre guide minceur !
+Profitez-en d鑣 maintenant
+
+plus d'infos sur http://www.ctrm3.net/svi/linkserv.php?bat=recettesminceur0809_ctrm&nb=2047&n=9047704&c=pratique
+
+--------------------------------
+Cette offre Mes recettes minceur vous est envoy閑 par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm3.net/svi/gestionserv.php?nb=2047&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_cca1494a7f53107f8d0c32f2ce0054f5
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Mes Recettes Minceur</title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm3.net/svi/miroir.php?bat=recettesminceur0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Mes recettes minceur vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#000000;font-size:24px'>
+<p style='display:inline;'> Mes Recettes Minceur</p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#d0ba7b;font-family:Verdana;color:#FFFFFF;font-size:24px;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=recettesminceur0809_ctrm&nb=2047&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;"><b>Besoin d'astuces minceur ?</b></a>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:18px;background-color:#FFFFFF;'>
+14 pages de recettes all&eacute;g&eacute;es et menus minceur !<br>
+Recevez <b>gratuitement</b> votre guide minceur !<br><br>
+<center><a href="http://www.ctrm3.net/svi/linkserv.php?bat=recettesminceur0809_ctrm&nb=2047&n=9047704&c=pratique" style="text-decoration:none;color:blue;"><u>Profitez-en d&egrave;s maintenant</u></a></center>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<a href="http://www.ctrm3.net/svi/linkserv.php?bat=recettesminceur0809_ctrm&nb=2047&n=9047704&c=pratique" target="_blank">
+<img src="http://banniere.reussissonsensemble.fr/view.asp?ref=481959&site=6256&b=2" border="0" alt="Mes recettes minceur" width="500" height="500" /></a><br />
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.ctrm3.net/svi/img_nb_2047_numuser_yyynumuseryyy.jpg" width=1 height=1>
+<p>
+<a href='http://www.ctrm3.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm3.net/svi/gestionserv.php?nb=2047&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_cca1494a7f53107f8d0c32f2ce0054f5--
+
+--===============7087356202976391887==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -180,7 +96,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---=_NextPart_2rfkindysadvnqw3nerasdf
+--===============7087356202976391887==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -191,4 +107,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---=_NextPart_2rfkindysadvnqw3nerasdf--
+--===============7087356202976391887==--

@@ -1,10 +1,10 @@
-From: Mutuelle Conseil <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
-Subject: 15 mutuelles comparées. Les meilleurs garanties au meilleur prix
-Date: 26 Aug 2009 08:16:06 -0000
-Message-ID: <20090826081606.29254.qmail@ks24820.kimsufi.com>
-Reply-To: Mutuelle Conseil <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
+From: Meetic par Central Marques <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
+Subject: Trouvez la personnes faites pour vous
+Date: 26 Aug 2009 07:12:52 -0000
+Message-ID: <20090826071252.24075.qmail@ks357949.kimsufi.com>
+Reply-To: Meetic par Central Marques <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8034464320871740830=="
+Content-Type: multipart/mixed; boundary="===============7256858171797503975=="
 To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,250 +18,115 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
---===============8034464320871740830==
+--===============7256858171797503975==
 Content-Type: multipart/alternative;
-	boundary="_----------=_parties_14e7f8881052c96dca178e481ba32307"
+	boundary="_----------=_parties_c7111a21c52b21310b6c6475a05b9873"
 
 
---_----------=_parties_14e7f8881052c96dca178e481ba32307
+--_----------=_parties_c7111a21c52b21310b6c6475a05b9873
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
 
-Version "en ligne" de ce message: http://www.ctrm4.net/svi/miroir.php?bat=mutuelleconseil0809_ctrm
+Version "en ligne" de ce message: http://www.ctrm4.net/svi/miroir.php?bat=meetic0809_ctrm
 
-mutuelle-conseil.com
+Meetic - 3 jours gratuits
+Chaque jour, 397 belles histoires** commencent sur Meetic
 
-votre assurance santé, à partir de 5,42€* / mois
-[ Dentaire ] - [ Optique ] - [ Maladie ] - [ Maternité ] - [ Hospitalisation ]
-C'est Rapide, pratique et 100% efficace >>> Venez comparer vos offres santé en 30 secondes seulement
-
-plus d'infos sur http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique
+plus d'infos sur http://www.ctrm4.net/svi/linkserv.php?bat=meetic0809_ctrm&nb=2061&n=9047704&c=rencontres
 
 --------------------------------
-Cette offre Mutuelle Conseil vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm4.net/svi/gestionserv.php?nb=2075&numuser=9047704&code=HWeuIQdw&src=50
+Cette offre Meetic vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm4.net/svi/gestionserv.php?nb=2061&numuser=9047704&code=HWeuIQdw&src=50
 
---_----------=_parties_14e7f8881052c96dca178e481ba32307
+--_----------=_parties_c7111a21c52b21310b6c6475a05b9873
 Content-Type: text/html; charset="iso-8859-1" 
 Content-Transfer-Encoding: 8bit
 
 
  <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
 <head> 
-<title>mutuelle-conseil.com
-votre assurance sant&eacute;, &agrave; partir de 5,42&euro;* / mois</title>
+<title>Meetic - 3 jours gratuits</title>
 </head>
 <body><center>
 <p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm4.net/svi/miroir.php?bat=mutuelleconseil0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre Mutuelle Conseil vous est propos&eacute;e par CentralMarques<br><br>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm4.net/svi/miroir.php?bat=meetic0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre Meetic vous est propos&eacute;e par CentralMarques<br><br>
 </p>
 <table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
 <tr>
-<td align='center' style='display:block;padding:5px;background-color:#000000;font-family:Arial;color:#FFFFFF;font-size:24px'>
-<p style='display:inline;'> <a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;">mutuelle-conseil.com<br>
-votre assurance sant&eacute;, &agrave; partir de 5,42&euro;* / mois</a></p>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#000000;font-size:36px'>
+<p style='display:inline;'> <a href="http://www.ctrm4.net/svi/linkserv.php?bat=meetic0809_ctrm&nb=2061&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;">Meetic - 3 jours gratuits</a></p>
 </td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#086bde;font-family:Arial;color:#FFFFFF;font-size:18px;'>
-<a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;">[<b>Dentaire</b>] - [<b>Optique</b>] - [<b>Maladie</b>] - [<b>Maternit&eacute;</b>] - [<b>Hospitalisation</b>]</a>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#FF00BC;font-size:18px;'>
+<a href="http://www.ctrm4.net/svi/linkserv.php?bat=meetic0809_ctrm&nb=2061&n=9047704&c=rencontres" style="text-decoration:none;color:#FF00BC;">Chaque jour, 397 belles histoires** commencent sur Meetic</a>
 </td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<table width="542" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" align="center">
 <tr>
-<td align='center' style='padding:5px;font-family:Arial;color:#000000;font-size:24px;background-color:#FFFFFF;'>
-<b>C'est Rapide, pratique et 100% efficace<br></b><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" style="text-decoration:none;color:blue;font-size:18px;">>>><u><b>Venez comparer vos offres sant&eacute; en 30 secondes seulement</b></u></a>
-</td></tr>
-<tr><td align='center' style='padding:5px;'>
-<table cellSpacing=0 cellPadding=0 width=731 border=0>
- <tr><td style="FONT-SIZE: 11px; VERTICAL-ALIGN: middle; COLOR: #53656c; FONT-FAMILY: verdana; HEIGHT: 30px; TEXT-ALIGN: center"vAlign=center> </td></tr>
- <tr><td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/klarte_1_10aug.gif" border=0></a><BR></td></tr>
- <tr><td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/klarte_2_10aug.gif" border=0></a><BR></td></tr>
-
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px">
- <table cellSpacing=0 cellPadding=0>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG
- src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/klarte_3_1_10aug.gif" border=0></a><BR></td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique"
- target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/anime_bouton_10aug.gif"
- border=0></a><BR></td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG
- src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/klarte_3_2_10aug.gif"
- border=0>&sup2;</a><BR></td>
- </tr>
- </table>
- </td>
- </tr>
-
-
- <tr><td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/klarte_4_10aug.gif" border=0></a><BR></td></tr>
- <tr>
- <td vAlign=top>
- <table height=50 cellSpacing=0 cellPadding=0 border=0>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/left_1_10aug.gif" border=0></a><BR></td>
- <td>
- <table height=36 cellSpacing=0 cellPadding=0 border=0>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/sc_coin_10aug.gif" border=0></a><BR></td>
- <td style="FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #009699; FONT-FAMILY: Arial; TEXT-ALIGN: left"vAlign=center width=86 height=19><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" style="FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #009699; FONT-FAMILY: Arial; TEXT-DECORATION: none">Soins courant</a><BR></td>
- </tr>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" colSpan=2><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/sc_bas_10aug.gif" border=0></a><BR></td></tr></table></td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/middle_1_10aug.gif" border=0></a><BR></td>
- <td>
- <table cellSpacing=0 cellPadding=0 border=0>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/dentaire_coin_10aug.gif"border=0></a><BR></td>
- <td style="FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #009ee0; FONT-FAMILY: Arial; TEXT-ALIGN: left" vAlign=center width=86 height=19><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" style="FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #009ee0; FONT-FAMILY: Arial; TEXT-DECORATION: none"> Dentaire</a><BR></td>
- </tr>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top colSpan=2><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/dentaire_bas_10aug.gif" border=0></a><BR></td>
- </tr>
- </table>
- </td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/middle_2_10aug.gif" border=0></a><BR></td>
-
- <td>
- <table cellSpacing=0 cellPadding=0 border=0>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/optique_coin_10aug.gif" border=0></a><BR></td>
- <td style="FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #f18e21; FONT-FAMILY: Arial; TEXT-ALIGN: left" vAlign=center width=85 height=19><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" style="FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #f18e21; FONT-FAMILY: Arial; TEXT-DECORATION: none"> Optique</a><BR></td>
- </tr>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top colSpan=2><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/optique_bas_10aug.gif" border=0></a><BR></td>
- </tr>
- </table>
- </td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/middle_3_10aug.gif" border=0></a><BR></td>
- <td>
- <table cellSpacing=0 cellPadding=0 border=0 valign="top">
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/hospitalisation_coin_10aug.gif" border=0></a><BR></td>
- <td style="FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #ae0917; FONT-FAMILY: Arial; TEXT-ALIGN: left" vAlign=center width=86 height=19><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" style="FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #ae0917; FONT-FAMILY: Arial; TEXT-DECORATION: none">Hospitalisation</a><BR></td>
- </tr>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" colSpan=2><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/hospitalisation_bas_10aug.gif" border=0></a><BR></td>
- </tr>
- </table>
- </td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/right_1_10aug.gif" border=0></a><BR></td>
- </tr>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top
- colSpan=13><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG height=9 src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/klarte_7_10aug.gif"
- width=731 border=0></a><BR></td></tr>
- <tr>
- <td colSpan=13>
- <table cellSpacing=0 cellPadding=0 valign="top">
-
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"
- vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/left_2_1_10aug.gif"
- border=0></a><BR></td>
- <td
- style="border-RIGHT: 1px; border-TOP: 1px; border-LEFT: 1px; border-BOTTOM: 1px; BACKGROUND-COLOR: #009699"
- vAlign=top width=107 height=34>
- <table cellSpacing=0 cellPadding=0 width=107>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top
- align=left width=15><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG
- src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/fleche_vert_10aug.gif"
- border=0></a><BR></td>
- <td
- style="FONT-SIZE: 10px; COLOR: #fff; FONT-FAMILY: Arial; TEXT-ALIGN: left"
- align=left>jusqu'&agrave;</td></tr>
- <tr>
- <td> </td>
- <td
- style="FONT-WEIGHT: bold; FONT-SIZE: 23px; COLOR: #fff; FONT-FAMILY: Arial">370%</td></tr></table></td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"
- vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/middle_2_1_10aug.gif"
- border=0></a><BR></td>
- <td style="BACKGROUND-COLOR: #009ddf" vAlign=top width=106
- height=34>
- <table cellSpacing=0 cellPadding=0 width=106>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top
- align=left width=15><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG
- src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/fleche_blue_10aug.gif"
- border=0></a><BR></td>
- <td
- style="FONT-SIZE: 10px; COLOR: #fff; FONT-FAMILY: Arial; TEXT-ALIGN: left"
- align=left>jusqu'&agrave;</td></tr>
- <tr>
- <td> </td>
- <td
- style="FONT-WEIGHT: bold; FONT-SIZE: 23px; COLOR: #fff; FONT-FAMILY: Arial">470%</td></tr></table></td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"
- vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/middle_2_2_10aug.gif"
- border=0></a><BR></td>
- <td style="BACKGROUND-COLOR: #f08d20" vAlign=top width=106
- height=36>
- <table cellSpacing=0 cellPadding=0 width=106>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top
- width=14><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG
- src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/fleche_orange_10aug.gif"
- border=0></a><BR></td>
- <td
- style="FONT-SIZE: 10px; COLOR: #fff; padding-TOP: 2px; FONT-FAMILY: Arial; TEXT-ALIGN: left"
- vAlign=top align=left>jusqu'&agrave;</td>
- <td
- style="FONT-WEIGHT: bold; FONT-SIZE: 23px; COLOR: #fff; FONT-FAMILY: Arial"
- rowSpan=2>554&euro;</td></tr>
- <tr>
- <td> </td>
- <td> </td></tr>
- <tr>
- <td
- style="FONT-SIZE: 10px; COLOR: #fff; FONT-FAMILY: Arial"
- vAlign=top colSpan=3>de
- remboursement/an</td></tr></table></td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"
- vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/middle_2_3_10aug.gif"
- border=0></a><BR></td>
- <td style="BACKGROUND-COLOR: #bb091a" vAlign=top width=106
- height=34>
- <table cellSpacing=0 cellPadding=0 width=106>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" vAlign=top
- align=left width=15><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG
- src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/fleche_rouge_10aug.gif"
- border=0></a><BR></td>
- <td
- style="FONT-SIZE: 10px; COLOR: #fff; FONT-FAMILY: Arial; TEXT-ALIGN: left"
- align=left>jusqu'&agrave;</td></tr>
- <tr>
- <td> </td>
- <td
- style="FONT-WEIGHT: bold; FONT-SIZE: 23px; COLOR: #fff; FONT-FAMILY: Arial">250%</td></tr></table></td>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px"
- vAlign=top><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mutuelleconseil0809_ctrm&nb=2075&n=9047704&c=pratique" target=_blank><IMG src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/right_2_1_10aug.gif"
- border=0></a><BR></td></tr></table></td></tr></table></td></tr>
- <tr>
- <td style="FONT-SIZE: 0px; LINE-HEIGHT: 0px" height=23><IMG
- src="http://bannerfarm.ace.advertising.com/bannerfarm/135994/klarte_51_10aug.gif" border=0></td></tr>
- <tr>
- <td style="FONT-SIZE: 10px; COLOR: #737173; FONT-FAMILY: Arial"
- align=right>*garantie hospitali&egrave;re 20-25
- ans </td></tr>
- <tr>
- <td style="FONT-SIZE: 11px; VERTICAL-ALIGN: middle; COLOR: #53656c; FONT-FAMILY: verdana; HEIGHT: 30px; TEXT-ALIGN: center"
- vAlign=center> </td></tr></table>
+<td width="542" height="108"></td>
+</tr>
+<tr>
+<td width="542" align="center"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=meetic0809_ctrm&nb=2061&n=9047704&c=rencontres" style="text-decoration: none" target="_blank"><font face="Arial" size="4" color="#ea1c98"><b>C&eacute;libataires&nbsp;?<br /><font color="#333333">B&eacute;n&eacute;ficiez de 3 jours gratuits pour d&eacute;couvrir tout meetic</font></b></font></a></td>
+</tr>
+<tr>
+<td width="542" height="11"></td>
+</tr>
+</table>
+<table width="542" height="341" border="0" cellpadding="0" cellspacing="0" align="center">
+<tr>
+<td width="542" height="61" colspan="3"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=meetic0809_ctrm&nb=2061&n=9047704&c=rencontres" target="_blank"><img src="http://static.meetic.com/img/fr/affiliation/mail_3days_200904/mail_top.jpg" width="542" height="61" alt="Meetic" border="0"/></a></td>
+</tr>
+<tr>
+<td width="142" height="51"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=meetic0809_ctrm&nb=2061&n=9047704&c=rencontres" target="_blank"><img src="http://static.meetic.com/img/fr/affiliation/mail_3days_200904/mail_middle_left.jpg" width="142" height="51" alt="Meetic" border="0"/></a></td>
+<td width="269" height="51" align="center"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=meetic0809_ctrm&nb=2061&n=9047704&c=rencontres" style="text-decoration: none" target="_blank"><font face="Arial" size="3" color="#333333"><b>Chaque jour, <font color="#ea1c98">397</font> belles histoires**<br />commencent sur Meetic</b></font></a></td>
+<td width="131" height="51"><img src="http://static.meetic.com/img/fr/affiliation/mail_3days_200904/mail_middle_right.jpg" width="131" height="51" alt="Meetic" border="0"/></td>
+</tr>
+<tr>
+<td width="542" height="229" colspan="3"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=meetic0809_ctrm&nb=2061&n=9047704&c=rencontres" target="_blank"><img src="http://static.meetic.com/img/fr/affiliation/mail_3days_200904/mail_body_mosaic.jpg" width="542" height="229" alt="Meetic" border="0"/></a></td>
+</tr>
+</table>
+<table width="542" height="81" border="0" cellpadding="0" cellspacing="0" align="center">
+<tr>
+<td width="115" height="81"><img src="http://static.meetic.com/img/fr/affiliation/mail_3days_200904/mail_left_button.jpg" width="115" height="81" alt="Meetic" border="0"/></td>
+<td width="323" height="81"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=meetic0809_ctrm&nb=2061&n=9047704&c=rencontres" target="_blank"><img src="http://static.meetic.com/img/fr/affiliation/mail_3days_200904/mail_button.jpg" width="323" height="81" alt="Meetic" border="0"/></a></td>
+<td width="104" height="81"><img src="http://static.meetic.com/img/fr/affiliation/mail_3days_200904/mail_right_button.jpg" width="104" height="81" alt="Meetic" border="0"/></td>
+</tr>
+</table>
+<table width="542" height="16" border="0" cellpadding="0" cellspacing="0" align="center">
+<tr>
+<td width="1" height="15" bgcolor="#dddbe8"></td>
+<td width="142" height="15"><img src="http://static.meetic.com/img/fr/affiliation/mail_3days_200904/mail_bottom_left.jpg" width="142" height="16" alt="Meetic" border="0"/></td>
+<td width="267" height="15" bgcolor="#e8e7ec"><font face="arial" size="1" color="#000000">**Source Ipsos: f&eacute;vrier 2009. Plus de d&eacute;tails sur le site.</font></td>
+<td width="131" height="15"><img src="http://static.meetic.com/img/fr/affiliation/mail_3days_200904/mail_bottom_right.jpg" width="131" height="16" alt="Meetic" border="0"/></td>
+<td width="1" height="15" bgcolor="#dddbe8"></td>
+</tr>
+<tr>
+<td width="542" height="1" bgcolor="#dddbe8" colspan="5"></td>
+</tr>
+</table>
+<table width="542" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" align="center">
+<tr>
+<td width="542" height="10" colspan="2"></td>
+</tr>
+<tr>
+<td width="4"></td>
+<td width="538" align="left"><font face="arial" size="1" color="#c0c5c9">* Jusqu'au xx/xx/xxxx et valable uniquement pour toute nouvelle inscription.<br />** Premi&egrave;re part d'audience europ&eacute;enne avec 22,57% en octobre 2006 (source Nielsen/Netratings)<br />et 8,484 millions de visiteurs uniques en septembre 2006 (source Comscore).</font></td>
+</tr>
+</table>
 </td></tr>
 </table>
 <br><br>
-<img src="http://www.ctrm4.net/svi/img_nb_2075_numuser_yyynumuseryyy.jpg" width=1 height=1>
+<img src="http://www.ctrm4.net/svi/img_nb_2061_numuser_yyynumuseryyy.jpg" width=1 height=1>
 <p>
-<a href='http://www.ctrm4.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm4.net/svi/gestionserv.php?nb=2075&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+<a href='http://www.ctrm4.net/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.ctrm4.net/svi/gestionserv.php?nb=2061&cat=rencontres&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
 </p>
 </center></body>
 </html>
 
 
---_----------=_parties_14e7f8881052c96dca178e481ba32307--
+--_----------=_parties_c7111a21c52b21310b6c6475a05b9873--
 
---===============8034464320871740830==
+--===============7256858171797503975==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -272,7 +137,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============8034464320871740830==
+--===============7256858171797503975==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -283,4 +148,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8034464320871740830==--
+--===============7256858171797503975==--

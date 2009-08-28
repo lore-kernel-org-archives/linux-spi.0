@@ -1,1040 +1,752 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.31-rc7] spi: davinci spi driver
-Date: Thu, 27 Aug 2009 18:58:48 -0700
-Message-ID: <200908271858.48850.david-b@pacbell.net>
+Subject: [patch 2.6.31-rc7] spi: Freescale STMP driver
+Date: Thu, 27 Aug 2009 18:47:42 -0700
+Message-ID: <200908271847.43226.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        DaVinci <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Cc: dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.omap.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] Freescale STMP spi driver, revised
+From: dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
+Date: Wed, 03 Jun 2009 20:15:46 +0400
 
-The patch adds a SPI driver for DaVinci series SOC's.
+Add SPI driver for Freescale STMP 3xxx-based boards
 
-[dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org: fixes and cleanup]
+[dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org: cleanup sequence, spi_unregister_master]
 
-Signed-off-by: Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>
+Signed-off-by: dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
 Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- arch/arm/mach-davinci/include/mach/spi.h |   45 +
- drivers/spi/Kconfig                      |    7 
- drivers/spi/Makefile                     |    1 
- drivers/spi/davinci_spi.c                |  757 +++++++++++++++++++++++++++++
- drivers/spi/davinci_spi.h                |  163 ++++++
- 5 files changed, 973 insertions(+)
+ drivers/spi/Kconfig    |    6 
+ drivers/spi/Makefile   |    1 
+ drivers/spi/spi_stmp.c |  679 +++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 686 insertions(+)
 
---- /dev/null
-+++ b/arch/arm/mach-davinci/include/mach/spi.h
-@@ -0,0 +1,45 @@
-+/*
-+ * Copyright 2009 Texas Instruments.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ */
-+
-+#ifndef __ARCH_ARM_DAVINCI_SPI_H
-+#define __ARCH_ARM_DAVINCI_SPI_H
-+
-+#define SPI_INTERN_CS	0xFF
-+
-+enum {
-+	SPI_VERSION_1, /* For DM355/DM365/DM6467*/
-+	SPI_VERSION_2, /* For DA8xx */
-+};
-+
-+struct davinci_spi_platform_data {
-+	u8	version;
-+	u16	num_chipselect;
-+	u32	wdelay;
-+	u32	odd_parity;
-+	u32	parity_enable;
-+	u32	wait_enable;
-+	u32	timer_disable;
-+	u32	clk_internal;
-+	u32	cs_hold;
-+	u32	intr_level;
-+	u32	poll_mode;
-+	u8	c2tdelay;
-+	u8	t2cdelay;
-+};
-+
-+#endif	/* __ARCH_ARM_DAVINCI_SPI_H */
 --- a/drivers/spi/Kconfig
 +++ b/drivers/spi/Kconfig
-@@ -77,6 +77,13 @@ config SPI_AU1550
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called au1550_spi.
- 
-+config SPI_DAVINCI
-+	tristate "SPI controller driver for DaVinci/DA8xx SoC's"
-+	depends on SPI_MASTER && ARCH_DAVINCI
-+	select SPI_BITBANG
-+	help
-+	  SPI master controller for DaVinci and DA8xx SPI modules.
-+
- config SPI_BITBANG
- 	tristate "Utilities for Bitbanging SPI masters"
+@@ -222,6 +222,12 @@ config SPI_SH_SCI
  	help
+ 	  SPI driver for SuperH SCI blocks.
+ 
++config SPI_STMP3XXX
++	tristate "Freescale STMP37xx/378x SPI/SSP controller"
++	depends on ARCH_STMP3XXX && SPI_MASTER
++	help
++	  SPI driver for Freescale STMP37xx/378x SoC SSP interface
++
+ config SPI_TXX9
+ 	tristate "Toshiba TXx9 SPI controller"
+ 	depends on GENERIC_GPIO && CPU_TX49XX
 --- a/drivers/spi/Makefile
 +++ b/drivers/spi/Makefile
-@@ -16,6 +16,7 @@ obj-$(CONFIG_SPI_BFIN)			+= spi_bfin5xx.
- obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
- obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.o
- obj-$(CONFIG_SPI_BUTTERFLY)		+= spi_butterfly.o
-+obj-$(CONFIG_SPI_DAVINCI)		+= davinci_spi.o
- obj-$(CONFIG_SPI_GPIO)			+= spi_gpio.o
- obj-$(CONFIG_SPI_IMX)			+= mxc_spi.o
- obj-$(CONFIG_SPI_LM70_LLP)		+= spi_lm70llp.o
+@@ -32,6 +32,7 @@ obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24x
+ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
+ obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
+ obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
++obj-$(CONFIG_SPI_STMP3XXX)		+= spi_stmp.o
+ # 	... add above this line ...
+ 
+ # SPI protocol drivers (device/link on bus)
 --- /dev/null
-+++ b/drivers/spi/davinci_spi.c
-@@ -0,0 +1,757 @@
++++ b/drivers/spi/spi_stmp.c
+@@ -0,0 +1,679 @@
 +/*
-+ * Copyright (C) 2009 Texas Instruments.
++ * Freescale STMP378X SPI master driver
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ * Author: dmitry pervushin <dimka-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ * Copyright 2008 Freescale Semiconductor, Inc. All Rights Reserved.
++ * Copyright 2008 Embedded Alley Solutions, Inc All Rights Reserved.
 + */
 +
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/gpio.h>
++/*
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
 +#include <linux/module.h>
-+#include <linux/delay.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
 +#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
 +#include <linux/err.h>
 +#include <linux/clk.h>
++#include <linux/io.h>
++#include <linux/dma-mapping.h>
++#include <linux/delay.h>
 +
-+#include <linux/spi/spi.h>
-+#include <linux/spi/spi_bitbang.h>
++#include <mach/platform.h>
++#include <mach/stmp3xxx.h>
++#include <mach/dma.h>
++#include <mach/regs-ssp.h>
++#include <mach/regs-apbh.h>
 +
-+#include <mach/spi.h>
 +
-+#include "davinci_spi.h"
++/* 0 means DMA mode(recommended, default), !0 - PIO mode */
++static int pio;
++static int clock;
 +
++/* default timeout for busy waits is 2 seconds */
++#define STMP_SPI_TIMEOUT	(2 * HZ)
 +
-+static void davinci_spi_rx_buf_u8(u32 data, struct davinci_spi *davinci_spi)
-+{
-+	u8 *rx = davinci_spi->rx;
++struct stmp_spi {
++	int		id;
 +
-+	*rx++ = (u8)data;
-+	davinci_spi->rx = rx;
-+}
++	void *  __iomem regs;	/* vaddr of the control registers */
 +
-+static void davinci_spi_rx_buf_u16(u32 data, struct davinci_spi *davinci_spi)
-+{
-+	u16 *rx = davinci_spi->rx;
++	int		irq, err_irq;
++	u32		dma;
++	struct stmp3xxx_dma_descriptor d;
 +
-+	*rx++ = (u16)data;
-+	davinci_spi->rx = rx;
-+}
++	u32		speed_khz;
++	u32		saved_timings;
++	u32		divider;
 +
-+static u32 davinci_spi_tx_buf_u8(struct davinci_spi *davinci_spi)
-+{
-+	u32 data;
-+	const u8 *tx = davinci_spi->tx;
++	struct clk	*clk;
++	struct device	*master_dev;
 +
-+	data = *tx++;
-+	davinci_spi->tx = tx;
-+	return data;
-+}
++	struct work_struct work;
++	struct workqueue_struct *workqueue;
 +
-+static u32 davinci_spi_tx_buf_u16(struct davinci_spi *davinci_spi)
-+{
-+	u32 data;
-+	const u16 *tx = davinci_spi->tx;
++	/* lock protects queue access */
++	spinlock_t lock;
++	struct list_head queue;
 +
-+	data = *tx++;
-+	davinci_spi->tx = tx;
-+	return data;
-+}
++	struct completion done;
++};
 +
-+static inline void set_io_bits(void __iomem *addr, u32 bits)
-+{
-+	u32 v = ioread32(addr);
++#define busy_wait(cond)							\
++	({								\
++	unsigned long end_jiffies = jiffies + STMP_SPI_TIMEOUT;		\
++	bool succeeded = false;						\
++	do {								\
++		if (cond) {						\
++			succeeded = true;				\
++			break;						\
++		}							\
++		cpu_relax();						\
++	} while (time_before(end_jiffies, jiffies));			\
++	succeeded;							\
++	})
 +
-+	v |= bits;
-+	iowrite32(v, addr);
-+}
-+
-+static inline void clear_io_bits(void __iomem *addr, u32 bits)
-+{
-+	u32 v = ioread32(addr);
-+
-+	v &= ~bits;
-+	iowrite32(v, addr);
-+}
-+
-+static inline void set_fmt_bits(void __iomem *addr, u32 bits, int cs_num)
-+{
-+	set_io_bits(addr + SPIFMT0 + (0x4 * cs_num), bits);
-+}
-+
-+static inline void clear_fmt_bits(void __iomem *addr, u32 bits, int cs_num)
-+{
-+	clear_io_bits(addr + SPIFMT0 + (0x4 * cs_num), bits);
-+}
-+
-+/*
-+ * Interface to control the chip select signal
++/**
++ * stmp_spi_init_hw
++ * Initialize the SSP port
 + */
-+static void davinci_spi_chipselect(struct spi_device *spi, int value)
++static int stmp_spi_init_hw(struct stmp_spi *ss)
 +{
-+	struct davinci_spi *davinci_spi;
-+	struct davinci_spi_platform_data *pdata;
-+	u32 data1_reg_val = 0;
++	int err = 0;
++	void *pins = ss->master_dev->platform_data;
 +
-+	davinci_spi = spi_master_get_devdata(spi->master);
-+	pdata = davinci_spi->pdata;
++	err = stmp3xxx_request_pin_group(pins, dev_name(ss->master_dev));
++	if (err)
++		goto out;
 +
-+	/*
-+	 * Board specific chip select logic decides the polarity and cs
-+	 * line for the controller
-+	 */
-+	if (value == BITBANG_CS_INACTIVE) {
-+		set_io_bits(davinci_spi->base + SPIDEF, CS_DEFAULT);
-+
-+		data1_reg_val |= CS_DEFAULT << SPIDAT1_CSNR_SHIFT;
-+		iowrite32(data1_reg_val, davinci_spi->base + SPIDAT1);
-+
-+		while ((ioread32(davinci_spi->base + SPIBUF)
-+					& SPIBUF_RXEMPTY_MASK) == 0)
-+			cpu_relax();
++	ss->clk = clk_get(NULL, "ssp");
++	if (IS_ERR(ss->clk)) {
++		err = PTR_ERR(ss->clk);
++		goto out_free_pins;
 +	}
++	clk_enable(ss->clk);
++
++	stmp3xxx_reset_block(ss->regs, false);
++	stmp3xxx_dma_reset_channel(ss->dma);
++
++	return 0;
++
++out_free_pins:
++	stmp3xxx_release_pin_group(pins, dev_name(ss->master_dev));
++out:
++	return err;
 +}
 +
-+/*
-+ * davinci_spi_setup_transfer - This functions will determine transfer method
-+ * @spi: spi device on which data transfer to be done
-+ * @t: spi transfer in which transfer info is filled
-+ *
-+ * This function determines data transfer method (8/16/32 bit transfer).
-+ * It will also set the SPI Clock Control register according to
-+ * SPI slave device freq.
-+ */
-+static int davinci_spi_setup_transfer(struct spi_device *spi,
++static void stmp_spi_release_hw(struct stmp_spi *ss)
++{
++	void *pins = ss->master_dev->platform_data;
++
++	if (ss->clk && !IS_ERR(ss->clk)) {
++		clk_disable(ss->clk);
++		clk_put(ss->clk);
++	}
++	stmp3xxx_release_pin_group(pins, dev_name(ss->master_dev));
++}
++
++static int stmp_spi_setup_transfer(struct spi_device *spi,
 +		struct spi_transfer *t)
 +{
++	u8 bits_per_word;
++	u32 hz;
++	struct stmp_spi *ss = spi_master_get_devdata(spi->master);
++	u16 rate;
 +
-+	struct davinci_spi *davinci_spi;
-+	struct davinci_spi_platform_data *pdata;
-+	u8 bits_per_word = 0;
-+	u32 hz = 0, prescale;
-+
-+	davinci_spi = spi_master_get_devdata(spi->master);
-+	pdata = davinci_spi->pdata;
-+
-+	if (t) {
++	bits_per_word = spi->bits_per_word;
++	if (t && t->bits_per_word)
 +		bits_per_word = t->bits_per_word;
-+		hz = t->speed_hz;
-+	}
-+
-+	/* if bits_per_word is not set then set it default */
-+	if (!bits_per_word)
-+		bits_per_word = spi->bits_per_word;
 +
 +	/*
-+	 * Assign function pointer to appropriate transfer method
-+	 * 8bit, 16bit or 32bit transfer
++	 * Calculate speed:
++	 *	- by default, use maximum speed from ssp clk
++	 *	- if device overrides it, use it
++	 *	- if transfer specifies other speed, use transfer's one
 +	 */
-+	if (bits_per_word <= 8 && bits_per_word >= 2) {
-+		davinci_spi->get_rx = davinci_spi_rx_buf_u8;
-+		davinci_spi->get_tx = davinci_spi_tx_buf_u8;
-+		davinci_spi->slave[spi->chip_select].bytes_per_word = 1;
-+	} else if (bits_per_word <= 16 && bits_per_word >= 2) {
-+		davinci_spi->get_rx = davinci_spi_rx_buf_u16;
-+		davinci_spi->get_tx = davinci_spi_tx_buf_u16;
-+		davinci_spi->slave[spi->chip_select].bytes_per_word = 2;
-+	} else
++	hz = 1000 * ss->speed_khz / ss->divider;
++	if (spi->max_speed_hz)
++		hz = min(hz, spi->max_speed_hz);
++	if (t && t->speed_hz)
++		hz = min(hz, t->speed_hz);
++
++	if (hz == 0) {
++		dev_err(&spi->dev, "Cannot continue with zero clock\n");
 +		return -EINVAL;
++	}
 +
-+	if (!hz)
-+		hz = spi->max_speed_hz;
-+
-+	clear_fmt_bits(davinci_spi->base, SPIFMT_CHARLEN_MASK,
-+			spi->chip_select);
-+	set_fmt_bits(davinci_spi->base, bits_per_word & 0x1f,
-+			spi->chip_select);
-+
-+	prescale = ((clk_get_rate(davinci_spi->clk) / hz) - 1) & 0xff;
-+
-+	clear_fmt_bits(davinci_spi->base, 0x0000ff00, spi->chip_select);
-+	set_fmt_bits(davinci_spi->base, prescale << 8, spi->chip_select);
-+
-+	return 0;
-+}
-+
-+/*
-+ * davinci_spi_setup - This functions will set default transfer method
-+ * @spi: spi device on which data transfer to be done
-+ *
-+ * This functions sets the default transfer method.
-+ */
-+
-+static int davinci_spi_setup(struct spi_device *spi)
-+{
-+	int retval;
-+	struct davinci_spi *davinci_spi;
-+
-+	davinci_spi = spi_master_get_devdata(spi->master);
-+
-+	/*
-+	 * SPI in DaVinci and DA8xx operate between
-+	 * 600 KHz and 50 MHz
-+	 */
-+	if (spi->max_speed_hz < 600000 || spi->max_speed_hz > 50000000)
++	if (bits_per_word != 8) {
++		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
++			__func__, bits_per_word);
 +		return -EINVAL;
-+
-+	/*
-+	 * Set up SPIFMTn register, unique to this chipselect.
-+	 *
-+	 * NOTE: we could do all of these with one write.  Also, some
-+	 * of the "version 2" features are found in chips that don't
-+	 * support all of them...
-+	 */
-+	if (spi->mode & SPI_LSB_FIRST)
-+		set_fmt_bits(davinci_spi->base, SPIFMT_SHIFTDIR_MASK,
-+				spi->chip_select);
-+	else
-+		clear_fmt_bits(davinci_spi->base, SPIFMT_SHIFTDIR_MASK,
-+				spi->chip_select);
-+
-+	if (spi->mode & SPI_CPOL)
-+		set_fmt_bits(davinci_spi->base, SPIFMT_POLARITY_MASK,
-+				spi->chip_select);
-+	else
-+		clear_fmt_bits(davinci_spi->base, SPIFMT_POLARITY_MASK,
-+				spi->chip_select);
-+
-+	if (!(spi->mode & SPI_CPHA))
-+		set_fmt_bits(davinci_spi->base, SPIFMT_PHASE_MASK,
-+				spi->chip_select);
-+	else
-+		clear_fmt_bits(davinci_spi->base, SPIFMT_PHASE_MASK,
-+				spi->chip_select);
-+
-+	/*
-+	 * Version 1 hardware supports two basic SPI modes:
-+	 *  - Standard SPI mode uses 4 pins, with chipselect
-+	 *  - 3 pin SPI is a 4 pin variant without CS (SPI_NO_CS)
-+	 *	(distinct from SPI_3WIRE, with just one data wire;
-+	 *	or similar variants without MOSI or without MISO)
-+	 *
-+	 * Version 2 hardware supports an optional handshaking signal,
-+	 * so it can support two more modes:
-+	 *  - 5 pin SPI variant is standard SPI plus SPI_READY
-+	 *  - 4 pin with enable is (SPI_READY | SPI_NO_CS)
-+	 */
-+
-+	if (davinci_spi->version == SPI_VERSION_2) {
-+		clear_fmt_bits(davinci_spi->base, SPIFMT_WDELAY_MASK,
-+				spi->chip_select);
-+		set_fmt_bits(davinci_spi->base,
-+				(davinci_spi->pdata->wdelay
-+						<< SPIFMT_WDELAY_SHIFT)
-+					& SPIFMT_WDELAY_MASK,
-+				spi->chip_select);
-+
-+		if (davinci_spi->pdata->odd_parity)
-+			set_fmt_bits(davinci_spi->base,
-+					SPIFMT_ODD_PARITY_MASK,
-+					spi->chip_select);
-+		else
-+			clear_fmt_bits(davinci_spi->base,
-+					SPIFMT_ODD_PARITY_MASK,
-+					spi->chip_select);
-+
-+		if (davinci_spi->pdata->parity_enable)
-+			set_fmt_bits(davinci_spi->base,
-+					SPIFMT_PARITYENA_MASK,
-+					spi->chip_select);
-+		else
-+			clear_fmt_bits(davinci_spi->base,
-+					SPIFMT_PARITYENA_MASK,
-+					spi->chip_select);
-+
-+		if (davinci_spi->pdata->wait_enable)
-+			set_fmt_bits(davinci_spi->base,
-+					SPIFMT_WAITENA_MASK,
-+					spi->chip_select);
-+		else
-+			clear_fmt_bits(davinci_spi->base,
-+					SPIFMT_WAITENA_MASK,
-+					spi->chip_select);
-+
-+		if (davinci_spi->pdata->timer_disable)
-+			set_fmt_bits(davinci_spi->base,
-+					SPIFMT_DISTIMER_MASK,
-+					spi->chip_select);
-+		else
-+			clear_fmt_bits(davinci_spi->base,
-+					SPIFMT_DISTIMER_MASK,
-+					spi->chip_select);
 +	}
 +
-+	retval = davinci_spi_setup_transfer(spi, NULL);
++	dev_dbg(&spi->dev, "Requested clk rate = %uHz, max = %uHz/%d = %uHz\n",
++		hz, ss->speed_khz, ss->divider,
++		ss->speed_khz * 1000 / ss->divider);
 +
-+	return retval;
-+}
++	if (ss->speed_khz * 1000 / ss->divider < hz) {
++		dev_err(&spi->dev, "%s, unsupported clock rate %uHz\n",
++			__func__, hz);
++		return -EINVAL;
++	}
 +
-+static int davinci_spi_bufs_prep(struct spi_device *spi,
-+				 struct davinci_spi *davinci_spi)
-+{
-+	int op_mode = 0;
++	rate = 1000 * ss->speed_khz/ss->divider/hz;
 +
-+	/*
-+	 * REVISIT  unless devices disagree about SPI_LOOP or
-+	 * SPI_READY (SPI_NO_CS only allows one device!), this
-+	 * should not need to be done before each message...
-+	 * optimize for both flags staying cleared.
-+	 */
++	writel(BF(ss->divider, SSP_TIMING_CLOCK_DIVIDE)		|
++	       BF(rate - 1, SSP_TIMING_CLOCK_RATE),
++	       HW_SSP_TIMING + ss->regs);
 +
-+	op_mode = SPIPC0_DIFUN_MASK
-+		| SPIPC0_DOFUN_MASK
-+		| SPIPC0_CLKFUN_MASK;
-+	if (!(spi->mode & SPI_NO_CS))
-+		op_mode |= 1 << spi->chip_select;
-+	if (spi->mode & SPI_READY)
-+		op_mode |= SPIPC0_SPIENA_MASK;
-+
-+	iowrite32(op_mode, davinci_spi->base + SPIPC0);
-+
-+	if (spi->mode & SPI_LOOP)
-+		set_io_bits(davinci_spi->base + SPIGCR1,
-+				SPIGCR1_LOOPBACK_MASK);
-+	else
-+		clear_io_bits(davinci_spi->base + SPIGCR1,
-+				SPIGCR1_LOOPBACK_MASK);
++	writel(BF(1 /* mode SPI */, SSP_CTRL1_SSP_MODE)		|
++	       BF(4 /* 8 bits   */, SSP_CTRL1_WORD_LENGTH)	|
++	       ((spi->mode & SPI_CPOL) ? BM_SSP_CTRL1_POLARITY : 0) |
++	       ((spi->mode & SPI_CPHA) ? BM_SSP_CTRL1_PHASE : 0) |
++	       (pio ? 0 : BM_SSP_CTRL1_DMA_ENABLE),
++	       ss->regs + HW_SSP_CTRL1);
 +
 +	return 0;
 +}
 +
-+static int davinci_spi_check_error(struct davinci_spi *davinci_spi,
-+				   int int_status)
++static int stmp_spi_setup(struct spi_device *spi)
 +{
-+	struct device *sdev = davinci_spi->bitbang.master->dev.parent;
-+
-+	if (int_status & SPIFLG_TIMEOUT_MASK) {
-+		dev_dbg(sdev, "SPI Time-out Error\n");
-+		return -ETIMEDOUT;
++	/* spi_setup() does basic checks,
++	 * stmp_spi_setup_transfer() does more later
++	 */
++	if (spi->bits_per_word != 8) {
++		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
++			__func__, spi->bits_per_word);
++		return -EINVAL;
 +	}
-+	if (int_status & SPIFLG_DESYNC_MASK) {
-+		dev_dbg(sdev, "SPI Desynchronization Error\n");
-+		return -EIO;
-+	}
-+	if (int_status & SPIFLG_BITERR_MASK) {
-+		dev_dbg(sdev, "SPI Bit error\n");
-+		return -EIO;
-+	}
-+
-+	if (davinci_spi->version == SPI_VERSION_2) {
-+		if (int_status & SPIFLG_DLEN_ERR_MASK) {
-+			dev_dbg(sdev, "SPI Data Length Error\n");
-+			return -EIO;
-+		}
-+		if (int_status & SPIFLG_PARERR_MASK) {
-+			dev_dbg(sdev, "SPI Parity Error\n");
-+			return -EIO;
-+		}
-+		if (int_status & SPIFLG_OVRRUN_MASK) {
-+			dev_dbg(sdev, "SPI Data Overrun error\n");
-+			return -EIO;
-+		}
-+		if (int_status & SPIFLG_TX_INTR_MASK) {
-+			dev_dbg(sdev, "SPI TX intr bit set\n");
-+			return -EIO;
-+		}
-+		if (int_status & SPIFLG_BUF_INIT_ACTIVE_MASK) {
-+			dev_dbg(sdev, "SPI Buffer Init Active\n");
-+			return -EBUSY;
-+		}
-+	}
-+
 +	return 0;
 +}
 +
-+/*
-+ * davinci_spi_bufs - functions which will handle transfer data
-+ * @spi: spi device on which data transfer to be done
-+ * @t: spi transfer in which transfer info is filled
-+ *
-+ * This function will put data to be transferred into data register
-+ * of SPI controller and then wait untill the completion will be marked
-+ * by the IRQ Handler.
-+ */
-+static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
++static inline u32 stmp_spi_cs(unsigned cs)
 +{
-+	struct davinci_spi *davinci_spi;
-+	int int_status, count, ret;
-+	u8 conv, tmp;
-+	u32 tx_data, data1_reg_val;
-+	u32 buf_val, flg_val;
-+	struct davinci_spi_platform_data *pdata;
++	return  ((cs & 1) ? BM_SSP_CTRL0_WAIT_FOR_CMD : 0) |
++		((cs & 2) ? BM_SSP_CTRL0_WAIT_FOR_IRQ : 0);
++}
 +
-+	davinci_spi = spi_master_get_devdata(spi->master);
-+	pdata = davinci_spi->pdata;
++static int stmp_spi_txrx_dma(struct stmp_spi *ss, int cs,
++		unsigned char *buf, dma_addr_t dma_buf, int len,
++		int first, int last, bool write)
++{
++	u32 c0 = 0;
++	dma_addr_t spi_buf_dma = dma_buf;
++	int status = 0;
++	enum dma_data_direction dir = write ? DMA_TO_DEVICE : DMA_FROM_DEVICE;
 +
-+	davinci_spi->tx = t->tx_buf;
-+	davinci_spi->rx = t->rx_buf;
++	c0 |= (first ? BM_SSP_CTRL0_LOCK_CS : 0);
++	c0 |= (last ? BM_SSP_CTRL0_IGNORE_CRC : 0);
++	c0 |= (write ? 0 : BM_SSP_CTRL0_READ);
++	c0 |= BM_SSP_CTRL0_DATA_XFER;
 +
-+	/* convert len to words bbased on bits_per_word */
-+	conv = davinci_spi->slave[spi->chip_select].bytes_per_word;
-+	davinci_spi->count = t->len / conv;
++	c0 |= stmp_spi_cs(cs);
 +
-+	INIT_COMPLETION(davinci_spi->done);
++	c0 |= BF(len, SSP_CTRL0_XFER_COUNT);
 +
-+	ret = davinci_spi_bufs_prep(spi, davinci_spi);
-+	if (ret)
-+		return ret;
++	if (!dma_buf)
++		spi_buf_dma = dma_map_single(ss->master_dev, buf, len, dir);
 +
-+	/* Enable SPI */
-+	set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_SPIENA_MASK);
++	ss->d.command->cmd =
++		BF(len, APBH_CHn_CMD_XFER_COUNT)	|
++		BF(1, APBH_CHn_CMD_CMDWORDS)		|
++		BM_APBH_CHn_CMD_WAIT4ENDCMD		|
++		BM_APBH_CHn_CMD_IRQONCMPLT		|
++		BF(write ? BV_APBH_CHn_CMD_COMMAND__DMA_READ :
++			   BV_APBH_CHn_CMD_COMMAND__DMA_WRITE,
++		   APBH_CHn_CMD_COMMAND);
++	ss->d.command->pio_words[0] = c0;
++	ss->d.command->buf_ptr = spi_buf_dma;
 +
-+	iowrite32(0 | (pdata->c2tdelay << SPI_C2TDELAY_SHIFT) |
-+			(pdata->t2cdelay << SPI_T2CDELAY_SHIFT),
-+			davinci_spi->base + SPIDELAY);
++	stmp3xxx_dma_reset_channel(ss->dma);
++	stmp3xxx_dma_clear_interrupt(ss->dma);
++	stmp3xxx_dma_enable_interrupt(ss->dma);
++	init_completion(&ss->done);
++	stmp3xxx_dma_go(ss->dma, &ss->d, 1);
++	wait_for_completion(&ss->done);
 +
-+	count = davinci_spi->count;
-+	data1_reg_val = pdata->cs_hold << SPIDAT1_CSHOLD_SHIFT;
-+	tmp = ~(0x1 << spi->chip_select);
++	if (!busy_wait(readl(ss->regs + HW_SSP_CTRL0) & BM_SSP_CTRL0_RUN))
++		status = ETIMEDOUT;
 +
-+	clear_io_bits(davinci_spi->base + SPIDEF, ~tmp);
++	if (!dma_buf)
++		dma_unmap_single(ss->master_dev, spi_buf_dma, len, dir);
 +
-+	data1_reg_val |= tmp << SPIDAT1_CSNR_SHIFT;
++	return status;
++}
 +
-+	while ((ioread32(davinci_spi->base + SPIBUF)
-+				& SPIBUF_RXEMPTY_MASK) == 0)
-+		cpu_relax();
++static inline void stmp_spi_enable(struct stmp_spi *ss)
++{
++	stmp3xxx_setl(BM_SSP_CTRL0_LOCK_CS, ss->regs + HW_SSP_CTRL0);
++	stmp3xxx_clearl(BM_SSP_CTRL0_IGNORE_CRC, ss->regs + HW_SSP_CTRL0);
++}
 +
-+	/* Determine the command to execute READ or WRITE */
-+	if (t->tx_buf) {
-+		clear_io_bits(davinci_spi->base + SPIINT, SPIINT_MASKALL);
++static inline void stmp_spi_disable(struct stmp_spi *ss)
++{
++	stmp3xxx_clearl(BM_SSP_CTRL0_LOCK_CS, ss->regs + HW_SSP_CTRL0);
++	stmp3xxx_setl(BM_SSP_CTRL0_IGNORE_CRC, ss->regs + HW_SSP_CTRL0);
++}
 +
-+		while (1) {
-+			tx_data = davinci_spi->get_tx(davinci_spi);
++static int stmp_spi_txrx_pio(struct stmp_spi *ss, int cs,
++		unsigned char *buf, int len,
++		bool first, bool last, bool write)
++{
++	if (first)
++		stmp_spi_enable(ss);
 +
-+			data1_reg_val &= ~(0xFFFF);
-+			data1_reg_val |= (0xFFFF & tx_data);
++	stmp3xxx_setl(stmp_spi_cs(cs), ss->regs + HW_SSP_CTRL0);
 +
-+			buf_val = ioread32(davinci_spi->base + SPIBUF);
-+			if ((buf_val & SPIBUF_TXFULL_MASK) == 0) {
-+				iowrite32(data1_reg_val,
-+						davinci_spi->base + SPIDAT1);
++	while (len--) {
++		if (last && len <= 0)
++			stmp_spi_disable(ss);
 +
-+				count--;
-+			}
-+			while (ioread32(davinci_spi->base + SPIBUF)
-+					& SPIBUF_RXEMPTY_MASK)
-+				cpu_relax();
++		stmp3xxx_clearl(BM_SSP_CTRL0_XFER_COUNT,
++				ss->regs + HW_SSP_CTRL0);
++		stmp3xxx_setl(1, ss->regs + HW_SSP_CTRL0);
 +
-+			/* getting the returned byte */
-+			if (t->rx_buf) {
-+				buf_val = ioread32(davinci_spi->base + SPIBUF);
-+				davinci_spi->get_rx(buf_val, davinci_spi);
-+			}
-+			if (count <= 0)
++		if (write)
++			stmp3xxx_clearl(BM_SSP_CTRL0_READ,
++					ss->regs + HW_SSP_CTRL0);
++		else
++			stmp3xxx_setl(BM_SSP_CTRL0_READ,
++					ss->regs + HW_SSP_CTRL0);
++
++		/* Run! */
++		stmp3xxx_setl(BM_SSP_CTRL0_RUN, ss->regs + HW_SSP_CTRL0);
++
++		if (!busy_wait(readl(ss->regs + HW_SSP_CTRL0) &
++				BM_SSP_CTRL0_RUN))
++			break;
++
++		if (write)
++			writel(*buf, ss->regs + HW_SSP_DATA);
++
++		/* Set TRANSFER */
++		stmp3xxx_setl(BM_SSP_CTRL0_DATA_XFER, ss->regs + HW_SSP_CTRL0);
++
++		if (!write) {
++			if (busy_wait((readl(ss->regs + HW_SSP_STATUS) &
++					BM_SSP_STATUS_FIFO_EMPTY)))
 +				break;
++			*buf = readl(ss->regs + HW_SSP_DATA) & 0xFF;
 +		}
-+	} else {
-+		if (pdata->poll_mode) {
-+			while (1) {
-+				/* keeps the serial clock going */
-+				if ((ioread32(davinci_spi->base + SPIBUF)
-+						& SPIBUF_TXFULL_MASK) == 0)
-+					iowrite32(data1_reg_val,
-+						davinci_spi->base + SPIDAT1);
 +
-+				while (ioread32(davinci_spi->base + SPIBUF) &
-+						SPIBUF_RXEMPTY_MASK)
-+					cpu_relax();
++		if (!busy_wait(readl(ss->regs + HW_SSP_CTRL0) &
++					BM_SSP_CTRL0_RUN))
++			break;
 +
-+				flg_val = ioread32(davinci_spi->base + SPIFLG);
-+				buf_val = ioread32(davinci_spi->base + SPIBUF);
-+
-+				davinci_spi->get_rx(buf_val, davinci_spi);
-+
-+				count--;
-+				if (count <= 0)
-+					break;
-+			}
-+		} else {	/* Receive in Interrupt mode */
-+			int i;
-+
-+			for (i = 0; i < davinci_spi->count; i++) {
-+				set_io_bits(davinci_spi->base + SPIINT,
-+						SPIINT_BITERR_INTR
-+						| SPIINT_OVRRUN_INTR
-+						| SPIINT_RX_INTR);
-+
-+				iowrite32(data1_reg_val,
-+						davinci_spi->base + SPIDAT1);
-+
-+				while (ioread32(davinci_spi->base + SPIINT) &
-+						SPIINT_RX_INTR)
-+					cpu_relax();
-+			}
-+			iowrite32((data1_reg_val & 0x0ffcffff),
-+					davinci_spi->base + SPIDAT1);
-+		}
++		/* advance to the next byte */
++		buf++;
 +	}
 +
-+	/*
-+	 * Check for bit error, desync error,parity error,timeout error and
-+	 * receive overflow errors
-+	 */
-+	int_status = ioread32(davinci_spi->base + SPIFLG);
-+
-+	ret = davinci_spi_check_error(davinci_spi, int_status);
-+	if (ret != 0)
-+		return ret;
-+
-+	/* SPI Framework maintains the count only in bytes so convert back */
-+	davinci_spi->count *= conv;
-+
-+	return t->len;
++	return len < 0 ? 0 : -ETIMEDOUT;
 +}
 +
-+/*
-+ * davinci_spi_irq - probe function for SPI Master Controller
-+ * @irq: IRQ number for this SPI Master
-+ * @context_data: structure for SPI Master controller davinci_spi
-+ *
-+ * ISR will determine that interrupt arrives either for READ or WRITE command.
-+ * According to command it will do the appropriate action. It will check
-+ * transfer length and if it is not zero then dispatch transfer command again.
-+ * If transfer length is zero then it will indicate the COMPLETION so that
-+ * davinci_spi_bufs function can go ahead.
-+ */
-+static irqreturn_t davinci_spi_irq(s32 irq, void *context_data)
++static int stmp_spi_handle_message(struct stmp_spi *ss, struct spi_message *m)
 +{
-+	struct davinci_spi *davinci_spi = context_data;
-+	u32 int_status, rx_data = 0;
-+	irqreturn_t ret = IRQ_NONE;
++	bool first, last;
++	struct spi_transfer *t, *tmp_t;
++	int status = 0;
++	int cs;
 +
-+	int_status = ioread32(davinci_spi->base + SPIFLG);
-+	while ((int_status & SPIFLG_MASK) != 0) {
-+		ret = IRQ_HANDLED;
++	cs = m->spi->chip_select;
 +
-+		if (likely(int_status & SPIFLG_RX_INTR_MASK)) {
-+			rx_data = ioread32(davinci_spi->base + SPIBUF);
-+			davinci_spi->get_rx(rx_data, davinci_spi);
++	list_for_each_entry_safe(t, tmp_t, &m->transfers, transfer_list) {
 +
-+			/* Disable Receive Interrupt */
-+			iowrite32(~SPIINT_RX_INTR,
-+					davinci_spi->base + SPIINT);
-+		} else
-+			(void)davinci_spi_check_error(davinci_spi, int_status);
++		first = (&t->transfer_list == m->transfers.next);
++		last = (&t->transfer_list == m->transfers.prev);
 +
-+		int_status = ioread32(davinci_spi->base + SPIFLG);
++		if (first || t->speed_hz || t->bits_per_word)
++			stmp_spi_setup_transfer(m->spi, t);
++
++		/* reject "not last" transfers which request to change cs */
++		if (t->cs_change && !last) {
++			dev_err(&m->spi->dev,
++				"Message with t->cs_change has been skipped\n");
++			continue;
++		}
++
++		if (t->tx_buf) {
++			status = pio ?
++			   stmp_spi_txrx_pio(ss, cs, (void *)t->tx_buf,
++				   t->len, first, last, true) :
++			   stmp_spi_txrx_dma(ss, cs, (void *)t->tx_buf,
++				   t->tx_dma, t->len, first, last, true);
++#ifdef DEBUG
++			if (t->len < 0x10)
++				print_hex_dump_bytes("Tx ",
++					DUMP_PREFIX_OFFSET,
++					t->tx_buf, t->len);
++			else
++				pr_debug("Tx: %d bytes\n", t->len);
++#endif
++		}
++		if (t->rx_buf) {
++			status = pio ?
++			   stmp_spi_txrx_pio(ss, cs, t->rx_buf,
++				   t->len, first, last, false) :
++			   stmp_spi_txrx_dma(ss, cs, t->rx_buf,
++				   t->rx_dma, t->len, first, last, false);
++#ifdef DEBUG
++			if (t->len < 0x10)
++				print_hex_dump_bytes("Rx ",
++					DUMP_PREFIX_OFFSET,
++					t->rx_buf, t->len);
++			else
++				pr_debug("Rx: %d bytes\n", t->len);
++#endif
++		}
++
++		if (t->delay_usecs)
++			udelay(t->delay_usecs);
++
++		if (status)
++			break;
++
 +	}
-+
-+	return ret;
++	return status;
 +}
 +
-+/*
-+ * davinci_spi_probe - probe function for SPI Master Controller
-+ * @pdev: platform_device structure which contains plateform specific data
-+ *
-+ * According to Linux Device Model this function will be invoked by Linux
-+ * with plateform_device struct which contains the device specific info.
-+ * This function will map the SPI controller's memory, register IRQ,
-+ * Reset SPI controller and setting its registers to default value.
-+ * It will invoke spi_bitbang_start to create work queue so that client driver
-+ * can register transfer method to work queue.
++/**
++ * stmp_spi_handle - handle messages from the queue
 + */
-+static int davinci_spi_probe(struct platform_device *pdev)
++static void stmp_spi_handle(struct work_struct *w)
 +{
++	struct stmp_spi *ss = container_of(w, struct stmp_spi, work);
++	unsigned long flags;
++	struct spi_message *m;
++
++	spin_lock_irqsave(&ss->lock, flags);
++	while (!list_empty(&ss->queue)) {
++		m = list_entry(ss->queue.next, struct spi_message, queue);
++		list_del_init(&m->queue);
++		spin_unlock_irqrestore(&ss->lock, flags);
++
++		m->status = stmp_spi_handle_message(ss, m);
++		m->complete(m->context);
++
++		spin_lock_irqsave(&ss->lock, flags);
++	}
++	spin_unlock_irqrestore(&ss->lock, flags);
++
++	return;
++}
++
++/**
++ * stmp_spi_transfer - perform message transfer.
++ * Called indirectly from spi_async, queues all the messages to
++ * spi_handle_message.
++ * @spi: spi device
++ * @m: message to be queued
++ */
++static int stmp_spi_transfer(struct spi_device *spi, struct spi_message *m)
++{
++	struct stmp_spi *ss = spi_master_get_devdata(spi->master);
++	unsigned long flags;
++
++	m->status = -EINPROGRESS;
++	spin_lock_irqsave(&ss->lock, flags);
++	list_add_tail(&m->queue, &ss->queue);
++	queue_work(ss->workqueue, &ss->work);
++	spin_unlock_irqrestore(&ss->lock, flags);
++	return 0;
++}
++
++static irqreturn_t stmp_spi_irq(int irq, void *dev_id)
++{
++	struct stmp_spi *ss = dev_id;
++
++	stmp3xxx_dma_clear_interrupt(ss->dma);
++	complete(&ss->done);
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t stmp_spi_irq_err(int irq, void *dev_id)
++{
++	struct stmp_spi *ss = dev_id;
++	u32 c1, st;
++
++	c1 = readl(ss->regs + HW_SSP_CTRL1);
++	st = readl(ss->regs + HW_SSP_STATUS);
++	dev_err(ss->master_dev, "%s: status = 0x%08X, c1 = 0x%08X\n",
++		__func__, st, c1);
++	stmp3xxx_clearl(c1 & 0xCCCC0000, ss->regs + HW_SSP_CTRL1);
++
++	return IRQ_HANDLED;
++}
++
++static int __devinit stmp_spi_probe(struct platform_device *dev)
++{
++	int err = 0;
 +	struct spi_master *master;
-+	struct davinci_spi *davinci_spi;
-+	struct davinci_spi_platform_data *pdata;
-+	struct resource *r, *mem;
-+	int ret = 0;
++	struct stmp_spi *ss;
++	struct resource *r;
 +
-+	pdata = pdev->dev.platform_data;
-+	if (pdata == NULL) {
-+		ret = -ENODEV;
-+		goto err;
-+	}
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(struct davinci_spi));
++	master = spi_alloc_master(&dev->dev, sizeof(struct stmp_spi));
 +	if (master == NULL) {
-+		ret = -ENOMEM;
-+		goto err;
++		err = -ENOMEM;
++		goto out0;
 +	}
++	master->flags = SPI_MASTER_HALF_DUPLEX;
 +
-+	dev_set_drvdata(&pdev->dev, master);
++	ss = spi_master_get_devdata(master);
++	platform_set_drvdata(dev, master);
 +
-+	davinci_spi = spi_master_get_devdata(master);
-+	if (davinci_spi == NULL) {
-+		ret = -ENOENT;
-+		goto free_master;
-+	}
-+
-+	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	/* Get resources(memory, IRQ) associated with the device */
++	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
 +	if (r == NULL) {
-+		ret = -ENOENT;
-+		goto free_master;
++		err = -ENODEV;
++		goto out_put_master;
++	}
++	ss->regs = ioremap(r->start, resource_size(r));
++	if (!ss->regs) {
++		err = -EINVAL;
++		goto out_put_master;
 +	}
 +
-+	davinci_spi->pbase = r->start;
-+	davinci_spi->region_size = resource_size(r);
-+	davinci_spi->pdata = pdata;
++	ss->master_dev = &dev->dev;
++	ss->id = dev->id;
 +
-+	mem = request_mem_region(r->start, davinci_spi->region_size,
-+					pdev->name);
-+	if (mem == NULL) {
-+		ret = -EBUSY;
-+		goto free_master;
++	INIT_WORK(&ss->work, stmp_spi_handle);
++	INIT_LIST_HEAD(&ss->queue);
++	spin_lock_init(&ss->lock);
++
++	ss->workqueue = create_singlethread_workqueue(dev_name(&dev->dev));
++	if (!ss->workqueue) {
++		err = -ENXIO;
++		goto out_put_master;
++	}
++	master->transfer = stmp_spi_transfer;
++	master->setup = stmp_spi_setup;
++
++	/* the spi->mode bits understood by this driver: */
++	master->mode_bits = SPI_CPOL | SPI_CPHA;
++
++	ss->irq = platform_get_irq(dev, 0);
++	if (ss->irq < 0) {
++		err = ss->irq;
++		goto out_put_master;
++	}
++	ss->err_irq = platform_get_irq(dev, 1);
++	if (ss->err_irq < 0) {
++		err = ss->err_irq;
++		goto out_put_master;
 +	}
 +
-+	davinci_spi->base = (struct davinci_spi_reg __iomem *)
-+			ioremap(r->start, davinci_spi->region_size);
-+	if (davinci_spi->base == NULL) {
-+		ret = -ENOMEM;
-+		goto release_region;
++	r = platform_get_resource(dev, IORESOURCE_DMA, 0);
++	if (r == NULL) {
++		err = -ENODEV;
++		goto out_put_master;
 +	}
 +
-+	davinci_spi->irq = platform_get_irq(pdev, 0);
-+	if (davinci_spi->irq <= 0) {
-+		ret = -EINVAL;
-+		goto unmap_io;
++	ss->dma = r->start;
++	err = stmp3xxx_dma_request(ss->dma, &dev->dev, dev_name(&dev->dev));
++	if (err)
++		goto out_put_master;
++
++	err = stmp3xxx_dma_allocate_command(ss->dma, &ss->d);
++	if (err)
++		goto out_free_dma;
++
++	master->bus_num = dev->id;
++	master->num_chipselect = 1;
++
++	/* SPI controller initializations */
++	err = stmp_spi_init_hw(ss);
++	if (err) {
++		dev_dbg(&dev->dev, "cannot initialize hardware\n");
++		goto out_free_dma_desc;
 +	}
 +
-+	ret = request_irq(davinci_spi->irq, davinci_spi_irq, IRQF_DISABLED,
-+			  dev_name(&pdev->dev), davinci_spi);
-+	if (ret != 0) {
-+		ret = -EAGAIN;
-+		goto unmap_io;
++	if (clock) {
++		dev_info(&dev->dev, "clock rate forced to %d\n", clock);
++		clk_set_rate(ss->clk, clock);
++	}
++	ss->speed_khz = clk_get_rate(ss->clk);
++	ss->divider = 2;
++	dev_info(&dev->dev, "max possible speed %d = %ld/%d kHz\n",
++		ss->speed_khz, clk_get_rate(ss->clk), ss->divider);
++
++	/* Register for SPI interrupt */
++	err = request_irq(ss->irq, stmp_spi_irq, 0,
++			  dev_name(&dev->dev), ss);
++	if (err) {
++		dev_dbg(&dev->dev, "request_irq failed, %d\n", err);
++		goto out_release_hw;
 +	}
 +
-+	davinci_spi->bitbang.master = spi_master_get(master);
-+	if (davinci_spi->bitbang.master == NULL) {
-+		ret = -ENODEV;
-+		goto err1;
++	/* ..and shared interrupt for all SSP controllers */
++	err = request_irq(ss->err_irq, stmp_spi_irq_err, IRQF_SHARED,
++			  dev_name(&dev->dev), ss);
++	if (err) {
++		dev_dbg(&dev->dev, "request_irq(error) failed, %d\n", err);
++		goto out_free_irq;
 +	}
 +
-+	davinci_spi->clk = clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(davinci_spi->clk)) {
-+		ret = -ENODEV;
-+		goto put_master;
++	err = spi_register_master(master);
++	if (err) {
++		dev_dbg(&dev->dev, "cannot register spi master, %d\n", err);
++		goto out_free_irq_2;
 +	}
-+	clk_enable(davinci_spi->clk);
++	dev_info(&dev->dev, "at (mapped) 0x%08X, irq=%d, bus %d, %s mode\n",
++			(u32)ss->regs, ss->irq, master->bus_num,
++			pio ? "PIO" : "DMA");
++	return 0;
 +
-+
-+	master->bus_num = pdev->id;
-+	master->num_chipselect = pdata->num_chipselect;
-+	master->setup = davinci_spi_setup;
-+
-+	davinci_spi->bitbang.chipselect = davinci_spi_chipselect;
-+	davinci_spi->bitbang.setup_transfer = davinci_spi_setup_transfer;
-+	davinci_spi->bitbang.txrx_bufs = davinci_spi_bufs_pio;
-+
-+	davinci_spi->bitbang.flags = SPI_NO_CS | SPI_LSB_FIRST | SPI_LOOP;
-+	if (davinci_spi->version == SPI_VERSION_2)
-+		davinci_spi->bitbang.flags |= SPI_READY;
-+
-+	davinci_spi->version = pdata->version;
-+	davinci_spi->get_rx = davinci_spi_rx_buf_u8;
-+	davinci_spi->get_tx = davinci_spi_tx_buf_u8;
-+
-+	init_completion(&davinci_spi->done);
-+
-+	/* Reset In/OUT SPI module */
-+	iowrite32(0, davinci_spi->base + SPIGCR0);
-+	udelay(100);
-+	iowrite32(1, davinci_spi->base + SPIGCR0);
-+
-+	/* Clock internal */
-+	if (davinci_spi->pdata->clk_internal)
-+		set_io_bits(davinci_spi->base + SPIGCR1,
-+				SPIGCR1_CLKMOD_MASK);
-+	else
-+		clear_io_bits(davinci_spi->base + SPIGCR1,
-+				SPIGCR1_CLKMOD_MASK);
-+
-+	/* master mode default */
-+	set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_MASTER_MASK);
-+
-+	if (davinci_spi->pdata->intr_level)
-+		iowrite32(SPI_INTLVL_1, davinci_spi->base + SPILVL);
-+	else
-+		iowrite32(SPI_INTLVL_0, davinci_spi->base + SPILVL);
-+
-+	ret = spi_bitbang_start(&davinci_spi->bitbang);
-+	if (ret != 0)
-+		goto free_clk;
-+
-+	dev_info(&pdev->dev, "Controller at 0x%p (irq = %d) \n",
-+		davinci_spi->base, davinci_spi->irq);
-+
-+	return ret;
-+
-+free_clk:
-+	clk_disable(davinci_spi->clk);
-+	clk_put(davinci_spi->clk);
-+put_master:
++out_free_irq_2:
++	free_irq(ss->err_irq, ss);
++out_free_irq:
++	free_irq(ss->irq, ss);
++out_free_dma_desc:
++	stmp3xxx_dma_free_command(ss->dma, &ss->d);
++out_free_dma:
++	stmp3xxx_dma_release(ss->dma);
++out_release_hw:
++	stmp_spi_release_hw(ss);
++out_put_master:
++	if (ss->workqueue)
++		destroy_workqueue(ss->workqueue);
++	if (ss->regs)
++		iounmap(ss->regs);
++	platform_set_drvdata(dev, NULL);
 +	spi_master_put(master);
-+err1:
-+	free_irq(davinci_spi->irq, davinci_spi);
-+unmap_io:
-+	iounmap(davinci_spi->base);
-+release_region:
-+	release_mem_region(davinci_spi->pbase, davinci_spi->region_size);
-+free_master:
-+	kfree(master);
-+err:
-+	return ret;
++out0:
++	return err;
 +}
 +
-+/*
-+ * davinci_spi_remove - remove function for SPI Master Controller
-+ * @pdev: platform_device structure which contains plateform specific data
-+ *
-+ * This function will do the reverse action of davinci_spi_probe function
-+ * It will free the IRQ and SPI controller's memory region.
-+ * It will also call spi_bitbang_stop to destroy the work queue which was
-+ * created by spi_bitbang_start.
-+ */
-+static int __exit davinci_spi_remove(struct platform_device *pdev)
++static int __devexit stmp_spi_remove(struct platform_device *dev)
 +{
-+	struct davinci_spi *davinci_spi;
++	struct stmp_spi *ss;
 +	struct spi_master *master;
 +
-+	master = dev_get_drvdata(&pdev->dev);
-+	davinci_spi = spi_master_get_devdata(master);
++	master = platform_get_drvdata(dev);
++	if (master == NULL)
++		goto out0;
++	ss = spi_master_get_devdata(master);
 +
-+	spi_bitbang_stop(&davinci_spi->bitbang);
++	spi_unregister_master(master);
 +
-+	clk_disable(davinci_spi->clk);
-+	clk_put(davinci_spi->clk);
++	free_irq(ss->err_irq, ss);
++	free_irq(ss->irq, ss);
++	stmp3xxx_dma_free_command(ss->dma, &ss->d);
++	stmp3xxx_dma_release(ss->dma);
++	stmp_spi_release_hw(ss);
++	destroy_workqueue(ss->workqueue);
++	iounmap(ss->regs);
 +	spi_master_put(master);
-+	free_irq(davinci_spi->irq, davinci_spi);
-+	iounmap(davinci_spi->base);
-+	release_mem_region(davinci_spi->pbase, davinci_spi->region_size);
++	platform_set_drvdata(dev, NULL);
++out0:
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int stmp_spi_suspend(struct platform_device *pdev, pm_message_t pmsg)
++{
++	struct stmp_spi *ss;
++	struct spi_master *master;
++
++	master = platform_get_drvdata(pdev);
++	ss = spi_master_get_devdata(master);
++
++	ss->saved_timings = readl(HW_SSP_TIMING + ss->regs);
++	clk_disable(ss->clk);
 +
 +	return 0;
 +}
 +
-+static struct platform_driver davinci_spi_driver = {
-+	.driver.name = "spi_davinci",
-+	.remove = __exit_p(davinci_spi_remove),
++static int stmp_spi_resume(struct platform_device *pdev)
++{
++	struct stmp_spi *ss;
++	struct spi_master *master;
++
++	master = platform_get_drvdata(pdev);
++	ss = spi_master_get_devdata(master);
++
++	clk_enable(ss->clk);
++	stmp3xxx_reset_block(ss->regs, false);
++	writel(ss->saved_timings, ss->regs + HW_SSP_TIMING);
++
++	return 0;
++}
++
++#else
++#define stmp_spi_suspend NULL
++#define stmp_spi_resume  NULL
++#endif
++
++static struct platform_driver stmp_spi_driver = {
++	.probe	= stmp_spi_probe,
++	.remove	= __devexit_p(stmp_spi_remove),
++	.driver = {
++		.name = "stmp3xxx_ssp",
++		.owner = THIS_MODULE,
++	},
++	.suspend = stmp_spi_suspend,
++	.resume  = stmp_spi_resume,
 +};
 +
-+static int __init davinci_spi_init(void)
++static int __init stmp_spi_init(void)
 +{
-+	return platform_driver_probe(&davinci_spi_driver, davinci_spi_probe);
++	return platform_driver_register(&stmp_spi_driver);
 +}
 +
-+static void __exit davinci_spi_exit(void)
++static void __exit stmp_spi_exit(void)
 +{
-+	platform_driver_unregister(&davinci_spi_driver);
++	platform_driver_unregister(&stmp_spi_driver);
 +}
 +
-+module_init(davinci_spi_init);
-+module_exit(davinci_spi_exit);
-+
-+MODULE_DESCRIPTION("TI DaVinci SPI Master Controller Driver");
++module_init(stmp_spi_init);
++module_exit(stmp_spi_exit);
++module_param(pio, int, S_IRUGO);
++module_param(clock, int, S_IRUGO);
++MODULE_AUTHOR("dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>");
++MODULE_DESCRIPTION("STMP3xxx SPI/SSP driver");
 +MODULE_LICENSE("GPL");
---- /dev/null
-+++ b/drivers/spi/davinci_spi.h
-@@ -0,0 +1,163 @@
-+/*
-+ * Copyright (C) 2009 Texas Instruments.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-+ */
-+
-+#ifndef __DAVINCI_SPI_H
-+#define __DAVINCI_SPI_H
-+
-+#define SPI_MAX_CHIPSELECT	2
-+
-+#define CS_DEFAULT	0xFF
-+#define SCS0_SELECT	0x01
-+#define SCS1_SELECT	0x02
-+#define SCS2_SELECT	0x04
-+#define SCS3_SELECT	0x08
-+#define SCS4_SELECT	0x10
-+#define SCS5_SELECT	0x20
-+#define SCS6_SELECT	0x40
-+#define SCS7_SELECT	0x80
-+
-+#define SPIFMT_PHASE_MASK	BIT(16)
-+#define SPIFMT_POLARITY_MASK	BIT(17)
-+#define SPIFMT_DISTIMER_MASK	BIT(18)
-+#define SPIFMT_SHIFTDIR_MASK	BIT(20)
-+#define SPIFMT_WAITENA_MASK	BIT(21)
-+#define SPIFMT_PARITYENA_MASK	BIT(22)
-+#define SPIFMT_ODD_PARITY_MASK	BIT(23)
-+#define SPIFMT_WDELAY_MASK	0x3f000000u
-+#define SPIFMT_WDELAY_SHIFT	24
-+#define SPIFMT_CHARLEN_MASK	0x0000001Fu
-+
-+/* SPIGCR1 */
-+#define SPIGCR1_SPIENA_MASK	0x01000000u
-+
-+/* SPIPC0 */
-+#define SPIPC0_DIFUN_MASK	BIT(11)		/* MISO */
-+#define SPIPC0_DOFUN_MASK	BIT(10)		/* MOSI */
-+#define SPIPC0_CLKFUN_MASK	BIT(9)		/* CLK */
-+#define SPIPC0_SPIENA_MASK	BIT(8)		/* nREADY */
-+#define SPIPC0_EN1FUN_MASK	BIT(1)
-+#define SPIPC0_EN0FUN_MASK	BIT(0)
-+
-+#define SPIINT_MASKALL		0x0101035F
-+#define SPI_INTLVL_1		0x000001FFu
-+#define SPI_INTLVL_0		0x00000000u
-+
-+/* SPIDAT1 */
-+#define SPIDAT1_CSHOLD_MASK	BIT(28)
-+#define SPIDAT1_CSHOLD_SHIFT	28
-+#define SPIDAT1_CSNR_MASK	(BIT(17 | BIT(16))
-+#define SPIDAT1_CSNR_SHIFT	16
-+#define SPIDAT1_DFSEL_MASK	(BIT(24 | BIT(25))
-+#define SPIGCR1_CLKMOD_MASK	BIT(1)
-+#define SPIGCR1_MASTER_MASK     BIT(0)
-+#define SPIGCR1_LOOPBACK_MASK	BIT(16)
-+
-+/* SPIBUF */
-+#define SPIBUF_TXFULL_MASK	BIT(29)
-+#define SPIBUF_RXEMPTY_MASK	BIT(31)
-+
-+/* Error Masks */
-+#define SPIFLG_DLEN_ERR_MASK		BIT(0)
-+#define SPIFLG_TIMEOUT_MASK		BIT(1)
-+#define SPIFLG_PARERR_MASK		BIT(2)
-+#define SPIFLG_DESYNC_MASK		BIT(3)
-+#define SPIFLG_BITERR_MASK		BIT(4)
-+#define SPIFLG_OVRRUN_MASK		BIT(6)
-+#define SPIFLG_RX_INTR_MASK		BIT(8)
-+#define SPIFLG_TX_INTR_MASK		BIT(9)
-+#define SPIFLG_BUF_INIT_ACTIVE_MASK	BIT(24)
-+#define SPIFLG_MASK			(SPIFLG_DLEN_ERR_MASK \
-+				| SPIFLG_TIMEOUT_MASK | SPIFLG_PARERR_MASK \
-+				| SPIFLG_DESYNC_MASK | SPIFLG_BITERR_MASK \
-+				| SPIFLG_OVRRUN_MASK | SPIFLG_RX_INTR_MASK \
-+				| SPIFLG_TX_INTR_MASK \
-+				| SPIFLG_BUF_INIT_ACTIVE_MASK)
-+
-+#define SPIINT_DLEN_ERR_INTR	BIT(0)
-+#define SPIINT_TIMEOUT_INTR	BIT(1)
-+#define SPIINT_PARERR_INTR	BIT(2)
-+#define SPIINT_DESYNC_INTR	BIT(3)
-+#define SPIINT_BITERR_INTR	BIT(4)
-+#define SPIINT_OVRRUN_INTR	BIT(6)
-+#define SPIINT_RX_INTR		BIT(8)
-+#define SPIINT_TX_INTR		BIT(9)
-+#define SPIINT_DMA_REQ_EN	BIT(16)
-+#define SPIINT_ENABLE_HIGHZ	BIT(24)
-+
-+#define SPI_T2CDELAY_SHIFT	16
-+#define SPI_C2TDELAY_SHIFT	24
-+
-+/* SPI Controller registers */
-+#define SPIGCR0		0x00
-+#define SPIGCR1		0x04
-+#define SPIINT		0x08
-+#define SPILVL		0x0c
-+#define SPIFLG		0x10
-+#define SPIPC0		0x14
-+#define SPIPC1		0x18
-+#define SPIPC2		0x1c
-+#define SPIPC3		0x20
-+#define SPIPC4		0x24
-+#define SPIPC5		0x28
-+#define SPIPC6		0x2c
-+#define SPIPC7		0x30
-+#define SPIPC8		0x34
-+#define SPIDAT0		0x38
-+#define SPIDAT1		0x3c
-+#define SPIBUF		0x40
-+#define SPIEMU		0x44
-+#define SPIDELAY	0x48
-+#define SPIDEF		0x4c
-+#define SPIFMT0		0x50
-+#define SPIFMT1		0x54
-+#define SPIFMT2		0x58
-+#define SPIFMT3		0x5c
-+#define TGINTVEC0	0x60
-+#define TGINTVEC1	0x64
-+
-+struct davinci_spi_slave {
-+	u32	cmd_to_write;
-+	u32	clk_ctrl_to_write;
-+	u32	bytes_per_word;
-+	u8	active_cs;
-+};
-+
-+/* SPI Controller driver's private data. */
-+struct davinci_spi {
-+	struct spi_bitbang	bitbang;
-+	struct clk		*clk;
-+
-+	u8			version;
-+	resource_size_t		pbase;
-+	void __iomem		*base;
-+	size_t			region_size;
-+	u32			irq;
-+	struct completion	done;
-+
-+	const void		*tx;
-+	void			*rx;
-+	int			count;
-+	struct			davinci_spi_platform_data *pdata;
-+
-+	void			(*get_rx)(u32 rx_data, struct davinci_spi *);
-+	u32			(*get_tx)(struct davinci_spi *);
-+
-+	struct davinci_spi_slave slave[SPI_MAX_CHIPSELECT];
-+};
-+
-+#endif /* __DAVINCI_SPI_H */
+
+
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with 
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july

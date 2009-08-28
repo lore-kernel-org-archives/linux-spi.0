@@ -1,164 +1,42 @@
-From: "Tranquillité" "Santé" <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
-Subject: [SPAM] Votre complémentaire santé à seulement 15€40 par mois
-Date: 28 Aug 2009 07:12:54 -0000
-Message-ID: <20090828071254.7794.qmail@ks357949.kimsufi.com>
-Reply-To: Tranquillité Santé <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
+From: Sergei Shtylyov <sshtylyov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: Re: [patch 2.6.31-rc7] spi: davinci spi driver
+Date: Fri, 28 Aug 2009 13:01:34 +0400
+Message-ID: <4A979CEE.1040500@ru.mvista.com>
+References: <200908271858.48850.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1193606126436652659=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+        DaVinci <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <200908271858.48850.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.omap.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello.
 
---===============1193606126436652659==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_d25df15a3b0b2349b1f6a5b3ea90c025"
+David Brownell wrote:
 
+> From: Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>
+>
+> The patch adds a SPI driver for DaVinci series SOC's.
+>
+> [dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org: fixes and cleanup]
+>
+> Signed-off-by: Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>
+> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+>   
 
---_----------=_parties_d25df15a3b0b2349b1f6a5b3ea90c025
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+  This patch lacks MV people's signoffs (and MV copyright on the driver).
 
-Version "en ligne" de ce message: http://www.centralmarque.com/svi/miroir.php?bat=tranquillite0809_ctrm
-
-Tranquillité Santé
-
-La garantie d'un grand groupe
-Votre mutuelle à partir de 15,40€* (1) par mois seulement !
-
-NOUVEAU: Le chèque-santé
-
-Une aide financière peut-être accordée lors de la souscription d'un contrat de couverture santé. Renseignez-vous au 0 805 110 110
-Les + Tranquillité Santé :
-
-Assistance 24h/24 gratuite
-
-Remboursements sous 48h
-
-Aucune avance de frais (2)
-
-Alerte remboursement (3) par sms ou email
-
-Résiliataion gratuite de votre ancienne mutuelle
-
-Consultation de votre compte et de vos remboursements sur internet
->>> Votre devis GRATUIT et IMMEDIAT
-
-plus d'infos sur http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique
-
---------------------------------
-Cette offre tranquillite sante vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.centralmarque.com/svi/gestionserv.php?nb=2048&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_d25df15a3b0b2349b1f6a5b3ea90c025
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
-<head> 
-<title>Tranquillit&eacute; Sant&eacute;
-La garantie d'un grand groupe</title>
-</head>
-<body><center>
-<p>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.centralmarque.com/svi/miroir.php?bat=tranquillite0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-Cette offre tranquillite sante vous est propos&eacute;e par CentralMarques<br><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#02509d;font-size:24px'>
-<p style='display:inline;'> <a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique" style="text-decoration:none;color:#02509d;"><b>Tranquillit&eacute; Sant&eacute;</b><br>
-<span style="font-size:18px">La garantie d'un grand groupe</span></a></p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#2369b1;font-family:Arial;color:#FFFFFF;font-size:24px;'>
-<a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;"><b>Votre mutuelle &agrave; partir de 15,40&euro;*<sup>(1)</sup> par mois seulement !</b></a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#FFFFFF;'>
-<ul><li> <b>NOUVEAU: Le ch&egrave;que-sant&eacute;</b><br>
-Une aide financi&egrave;re peut-&ecirc;tre accord&eacute;e lors de la souscription d'un contrat de couverture sant&eacute;. <span style="color:#ffcc3e"><b>Renseignez-vous au 0 805 110 110</b></span><br><br>
-<b>Les + Tranquillit&eacute; Sant&eacute;</b>:
-<li> Assistance <span style="color:#ffcc3e"><b>24h/24 gratuite</b></span><br>
-<li> Remboursements <span style="color:#ffcc3e"><b>sous 48h</b></span><br>
-<li> <span style="color:#ffcc3e"><b>Aucune</b></span> avance de frais<sup>(2)</sup>
-<li> <span style="color:#ffcc3e"><b>Alerte remboursement</b> <sup>(3)</sup></span> par sms ou email<br>
-<li> <span style="color:#ffcc3e"><b>R&eacute;siliataion gratuite</b></span> de votre ancienne mutuelle<br>
-<li> Consultation de votre compte et de vos remboursements <span style="color:#ffcc3e"><b>sur internet</b></span></ul>
-<center><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique" style="text-decoration:none;color:blue;">>>><u><b>Votre devis GRATUIT et IMMEDIAT</b></u></a></center>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="650">
- <tr>
- <td colspan="2"><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Tranquillite sante:Stop aux complementaires trop cheres" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-01.jpg" border="0" width="650" height="376"></a></td>
- </tr>
- <tr>
- <td><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Votre mutuelle a partir de 15,40 euros" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-02.jpg" border="0" width="378" height="310"></a></td>
- <td><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Obtenez un devis gratuit" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-03.jpg" border="0" width="272" height="310"></a></td>
- </tr>
- <tr>
- <td colspan="2"><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Tranquillite sante: un maximum de garanties a petits prix" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-04.jpg" border="0" width="650" height="218"></a></td>
- </tr>
- <tr>
- <td colspan="2"><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Tranquillite sante: un maximum de garanties a petits prix" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-05.jpg" border="0" width="650" height="100"></a></td>
- </tr>
- <tr>
- <td colspan="2" width="650">
- <div style="padding-top: 20px;">
- <p style="font-size: 12px; color: rgb(153, 153, 153);" align="center"><span style="font-size: 12px; color: rgb(153, 153, 153);">Pour toute r&eacute;clamation concernant ce message, merci de nous transferez cet email <a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique&leroiurl=mailto%3Aabuse%40net-mastering.com" style="font-size: 12px; color: rgb(153, 153, 153);">en cliquant ici</a></span></p>
- <p style="font-size: 12px; color: rgb(153, 153, 153);">Vous disposez d'un droit d'acc&egrave;s, de rectification, de modification et de suppression des donn&eacute;es qui vous concernent (article 34 de la Loi Informatique et Libert&eacute;). Pour l'exercer, envoyez-nous un courrier &agrave; l'adresse suivante Tranquillit&eacute; Sant&eacute; - Service Marketing - 51/55 rue Hoche - 94200 Ivry s/Seine Garanties collectives souscrites aupr&egrave;s de la Swisslife Pr&eacute;voyance et Sant&eacute;. SA au capital de ? 150 000 000 - RCS 322 215 021 - Entreprise r&eacute;gie par le code des assurances.</p>
- <p style="font-size: 12px; color: rgb(153, 153, 153);">Tranquillit&eacute; sant&eacute; 51-55 rue Hoche 94767 Ivry-sur-Seine cedex - S.A.S. de courtage d'assurances au capital de 600.000 ?. RCS Cr&eacute;teil 395 325 053. Garantie financi&egrave;re et responsabilit&eacute; civile professionnelle conformes &agrave; la loi - Immatriculation ORIAS 07 002 941 www.orias.fr - Exerce sous le contr&ocirc;le de l'ACAM. Garanties collectives souscrites aupr&egrave;s de SwissLife Pr&eacute;voyance et sant&eacute; S.A. au capital de ? 150.000.000 - RCS Paris B 322 215 021 Entreprise r&eacute;gie par le code des assurances. Conform&eacute;ment &agrave; la loi informatique et libert&eacute;s n&deg;78-17 du 6 janvier 1978, vous pouvez sur simple demande, refuser que vos coordonn&eacute;es soient transmi
- ses &agrave; des fins de communication commerciale.<br>
- (1) Cotisation pour un adulte de 18 ans, option TM. Selon d&eacute;partement.<br>
- (2)Dans la limite des garanties souscrites.<br>
- (3) Avec l'option Confort.</p>
- </div>
- </td>
- </tr>
- </tbody>
-</table>
-<p><img alt="tranquillite sante" src="http://eskdom028.netmastering2.net/c/aVRV8M1XZ3CXEWV03" border="0" width="1" height="1"></p><img src="http://nodes.reactivpub.fr/mailing-208-12014-16926&group=" border="0" height="1" width="1"/>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.centralmarque.com/svi/img_nb_2048_numuser_yyynumuseryyy.jpg" width=1 height=1>
-<p>
-<a href='http://www.centralmarque.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.centralmarque.com/svi/gestionserv.php?nb=2048&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
-</p>
-</center></body>
-</html>
-
-
---_----------=_parties_d25df15a3b0b2349b1f6a5b3ea90c025--
-
---===============1193606126436652659==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
-trial. Simplify your report design, integration and deployment - and focus on 
-what you do best, core application coding. Discover what's new with 
-Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============1193606126436652659==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1193606126436652659==--
+WBR, Sergei

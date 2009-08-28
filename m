@@ -1,16 +1,16 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: Question: Can transfer speed change mid
-	message
-Date: Thu, 27 Aug 2009 19:26:16 -0700
-Message-ID: <200908271926.16740.david-b@pacbell.net>
-References: <BD79186B4FD85F4B8E60E381CAEE190901BEA097@mi8nycmail19.Mi8.com>
+Subject: [patch 2.6.31-rc7 2/3] spi: McSPI saves CHCONFx
+	too
+Date: Thu, 27 Aug 2009 20:21:11 -0700
+Message-ID: <200908272021.12070.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "H Hartley Sweeten" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Cc: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
+	Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE190901BEA097-KURmP/Qoe8Pmp66j18f85VaTQe2KTcn/@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -22,36 +22,90 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 17 August 2009, H Hartley Sweeten wrote:
-> Hello David,
-> 
-> I'm getting ready to post a SPI master driver for the EP93xx ARM processor.
-> Before I do I have a question.
-> 
-> My driver uses a work queue to process the struct spi_message's for the
-> devices.  It pulls each message out of the queue and then process all the
-> struct spi_transfer's for the message.  At the start of the message the
-> appropriate clock rate, SPI mode and bits/word are setup.  Then the device
-> is chip selected followed by actually sending/receiving the data for the
-> transfer.
+From: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
 
-Sounds right.
+Previous restore was lazy and only restored CHxCONF when it was needed by a
+specific chip select. This could cause occasional errors on an SPI bus where
+multiple chip selects are in use.
 
+Signed-off-by: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/omap2_mcspi.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-> My question is, if a message is composed of multiple transfers, is it possible
-> for the speed to change mid message?
-
-Yes; spi_transfer.speed_hz can override the default
-setting in spi_device.
-
-
-> If it is, does this need to be handled? 
-
-Either handle it or reject transfers which try using
-that mechanism before queueing them up.
-
-- Dave
-
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -134,6 +134,7 @@ struct omap2_mcspi_cs {
+ 	void __iomem		*base;
+ 	unsigned long		phys;
+ 	int			word_len;
++	struct list_head	node;
+ 	/* Context save and restore shadow register */
+ 	u32			chconf0;
+ };
+@@ -145,6 +146,7 @@ struct omap2_mcspi_regs {
+ 	u32 sysconfig;
+ 	u32 modulctrl;
+ 	u32 wakeupenable;
++	struct list_head cs;
+ };
+ 
+ static struct omap2_mcspi_regs omap2_mcspi_ctx[OMAP2_MCSPI_MAX_CTRL];
+@@ -255,6 +257,7 @@ static void omap2_mcspi_set_master_mode(
+ static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
+ {
+ 	struct spi_master *spi_cntrl;
++	struct omap2_mcspi_cs *cs;
+ 	spi_cntrl = mcspi->master;
+ 
+ 	/* McSPI: context restore */
+@@ -266,6 +269,10 @@ static void omap2_mcspi_restore_ctx(stru
+ 
+ 	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_WAKEUPENABLE,
+ 			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].wakeupenable);
++
++	list_for_each_entry(cs, &omap2_mcspi_ctx[spi_cntrl->bus_num - 1].cs,
++			node)
++		__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+ }
+ static void omap2_mcspi_disable_clocks(struct omap2_mcspi *mcspi)
+ {
+@@ -714,6 +721,9 @@ static int omap2_mcspi_setup(struct spi_
+ 		cs->phys = mcspi->phys + spi->chip_select * 0x14;
+ 		cs->chconf0 = 0;
+ 		spi->controller_state = cs;
++		/* Link this to context save list */
++		list_add_tail(&cs->node,
++			&omap2_mcspi_ctx[mcspi->master->bus_num - 1].cs);
+ 	}
+ 
+ 	if (mcspi_dma->dma_rx_channel == -1
+@@ -736,10 +746,15 @@ static void omap2_mcspi_cleanup(struct s
+ {
+ 	struct omap2_mcspi	*mcspi;
+ 	struct omap2_mcspi_dma	*mcspi_dma;
++	struct omap2_mcspi_cs	*cs;
+ 
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+ 
++	/* Unlink controller state from context save list */
++	cs = spi->controller_state;
++	list_del(&cs->node);
++
+ 	kfree(spi->controller_state);
+ 
+ 	if (mcspi_dma->dma_rx_channel != -1) {
+@@ -1104,6 +1119,7 @@ static int __init omap2_mcspi_probe(stru
+ 
+ 	spin_lock_init(&mcspi->lock);
+ 	INIT_LIST_HEAD(&mcspi->msg_queue);
++	INIT_LIST_HEAD(&omap2_mcspi_ctx[master->bus_num - 1].cs);
+ 
+ 	mcspi->ick = clk_get(&pdev->dev, "ick");
+ 	if (IS_ERR(mcspi->ick)) {
 
 
 ------------------------------------------------------------------------------

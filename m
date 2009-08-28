@@ -1,15 +1,12 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: [patch 2.6.31-rc7] spi: handle TX-only/RX-only
-Date: Thu, 27 Aug 2009 23:52:15 -0700
-Message-ID: <200908272352.15586.david-b@pacbell.net>
+From: "Tranquillité" "Santé" <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
+Subject: [SPAM] Votre complémentaire santé à seulement 15€40 par mois
+Date: 28 Aug 2009 07:12:54 -0000
+Message-ID: <20090828071254.7794.qmail@ks357949.kimsufi.com>
+Reply-To: Tranquillité Santé <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1193606126436652659=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,153 +17,148 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 
-Support two new half-duplex SPI implementation restrictions, for links
-that talk to TX-only or RX-only devices.  (Existing half-duplex flavors
-support both transfer directions, just not at the same time.)
+--===============1193606126436652659==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_d25df15a3b0b2349b1f6a5b3ea90c025"
 
-Move spi_async() into the spi.c core, and stop inlining it.  Then make
-that function perform error checks and reject messages that demand more
-than the underlying controller can support.
 
-Based on a patch from Marek Szyprowski which did this only for the
-bitbanged GPIO driver.
+--_----------=_parties_d25df15a3b0b2349b1f6a5b3ea90c025
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-Cc: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/spi/spi.c       |   59 ++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |   39 ++----------------------------
- 2 files changed, 62 insertions(+), 36 deletions(-)
+Version "en ligne" de ce message: http://www.centralmarque.com/svi/miroir.php?bat=tranquillite0809_ctrm
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -639,6 +639,65 @@ int spi_setup(struct spi_device *spi)
- }
- EXPORT_SYMBOL_GPL(spi_setup);
- 
-+/**
-+ * spi_async - asynchronous SPI transfer
-+ * @spi: device with which data will be exchanged
-+ * @message: describes the data transfers, including completion callback
-+ * Context: any (irqs may be blocked, etc)
-+ *
-+ * This call may be used in_irq and other contexts which can't sleep,
-+ * as well as from task contexts which can sleep.
-+ *
-+ * The completion callback is invoked in a context which can't sleep.
-+ * Before that invocation, the value of message->status is undefined.
-+ * When the callback is issued, message->status holds either zero (to
-+ * indicate complete success) or a negative error code.  After that
-+ * callback returns, the driver which issued the transfer request may
-+ * deallocate the associated memory; it's no longer in use by any SPI
-+ * core or controller driver code.
-+ *
-+ * Note that although all messages to a spi_device are handled in
-+ * FIFO order, messages may go to different devices in other orders.
-+ * Some device might be higher priority, or have various "hard" access
-+ * time requirements, for example.
-+ *
-+ * On detection of any fault during the transfer, processing of
-+ * the entire message is aborted, and the device is deselected.
-+ * Until returning from the associated message completion callback,
-+ * no other spi_message queued to that device will be processed.
-+ * (This rule applies equally to all the synchronous transfer calls,
-+ * which are wrappers around this core asynchronous primitive.)
-+ */
-+int spi_async(struct spi_device *spi, struct spi_message *message)
-+{
-+	struct spi_master *master = spi->master;
-+
-+	/* Half-duplex links include original MicroWire, and ones with
-+	 * only one data pin like SPI_3WIRE (switches direction) or where
-+	 * either MOSI or MISO is missing.  They can also be caused by
-+	 * software limitations.
-+	 */
-+	if ((master->flags & SPI_MASTER_HALF_DUPLEX)
-+			|| (spi->mode & SPI_3WIRE)) {
-+		struct spi_transfer *xfer;
-+		unsigned flags = master->flags;
-+
-+		list_for_each_entry(xfer, &message->transfers, transfer_list) {
-+			if (xfer->rx_buf && xfer->tx_buf)
-+				return -EINVAL;
-+			if ((flags & SPI_MASTER_NO_TX) && xfer->tx_buf)
-+				return -EINVAL;
-+			if ((flags & SPI_MASTER_NO_RX) && xfer->rx_buf)
-+				return -EINVAL;
-+		}
-+	}
-+
-+	message->spi = spi;
-+	message->status = -EINPROGRESS;
-+	return master->transfer(spi, message);
-+}
-+EXPORT_SYMBOL_GPL(spi_async);
-+
- 
- /*-------------------------------------------------------------------------*/
- 
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -253,6 +253,8 @@ struct spi_master {
- 	/* other constraints relevant to this driver */
- 	u16			flags;
- #define SPI_MASTER_HALF_DUPLEX	BIT(0)		/* can't do full duplex */
-+#define SPI_MASTER_NO_RX	BIT(1)		/* can't do buffer read */
-+#define SPI_MASTER_NO_TX	BIT(2)		/* can't do buffer write */
- 
- 	/* Setup mode and clock, etc (spi driver may call many times).
- 	 *
-@@ -533,42 +535,7 @@ static inline void spi_message_free(stru
- }
- 
- extern int spi_setup(struct spi_device *spi);
--
--/**
-- * spi_async - asynchronous SPI transfer
-- * @spi: device with which data will be exchanged
-- * @message: describes the data transfers, including completion callback
-- * Context: any (irqs may be blocked, etc)
-- *
-- * This call may be used in_irq and other contexts which can't sleep,
-- * as well as from task contexts which can sleep.
-- *
-- * The completion callback is invoked in a context which can't sleep.
-- * Before that invocation, the value of message->status is undefined.
-- * When the callback is issued, message->status holds either zero (to
-- * indicate complete success) or a negative error code.  After that
-- * callback returns, the driver which issued the transfer request may
-- * deallocate the associated memory; it's no longer in use by any SPI
-- * core or controller driver code.
-- *
-- * Note that although all messages to a spi_device are handled in
-- * FIFO order, messages may go to different devices in other orders.
-- * Some device might be higher priority, or have various "hard" access
-- * time requirements, for example.
-- *
-- * On detection of any fault during the transfer, processing of
-- * the entire message is aborted, and the device is deselected.
-- * Until returning from the associated message completion callback,
-- * no other spi_message queued to that device will be processed.
-- * (This rule applies equally to all the synchronous transfer calls,
-- * which are wrappers around this core asynchronous primitive.)
-- */
--static inline int
--spi_async(struct spi_device *spi, struct spi_message *message)
--{
--	message->spi = spi;
--	return spi->master->transfer(spi, message);
--}
-+extern int spi_async(struct spi_device *spi, struct spi_message *message);
- 
- /*---------------------------------------------------------------------------*/
- 
+Tranquillité Santé
 
+La garantie d'un grand groupe
+Votre mutuelle à partir de 15,40€* (1) par mois seulement !
+
+NOUVEAU: Le chèque-santé
+
+Une aide financière peut-être accordée lors de la souscription d'un contrat de couverture santé. Renseignez-vous au 0 805 110 110
+Les + Tranquillité Santé :
+
+Assistance 24h/24 gratuite
+
+Remboursements sous 48h
+
+Aucune avance de frais (2)
+
+Alerte remboursement (3) par sms ou email
+
+Résiliataion gratuite de votre ancienne mutuelle
+
+Consultation de votre compte et de vos remboursements sur internet
+>>> Votre devis GRATUIT et IMMEDIAT
+
+plus d'infos sur http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique
+
+--------------------------------
+Cette offre tranquillite sante vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.centralmarque.com/svi/gestionserv.php?nb=2048&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_d25df15a3b0b2349b1f6a5b3ea90c025
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html html="http://www.w3.org/TR/html4/loose.dtd">
+<head> 
+<title>Tranquillit&eacute; Sant&eacute;
+La garantie d'un grand groupe</title>
+</head>
+<body><center>
+<p>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.centralmarque.com/svi/miroir.php?bat=tranquillite0809_ctrm' target='_blank'>Voir les images de ce message</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+Cette offre tranquillite sante vous est propos&eacute;e par CentralMarques<br><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:650px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#02509d;font-size:24px'>
+<p style='display:inline;'> <a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique" style="text-decoration:none;color:#02509d;"><b>Tranquillit&eacute; Sant&eacute;</b><br>
+<span style="font-size:18px">La garantie d'un grand groupe</span></a></p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#2369b1;font-family:Arial;color:#FFFFFF;font-size:24px;'>
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;"><b>Votre mutuelle &agrave; partir de 15,40&euro;*<sup>(1)</sup> par mois seulement !</b></a>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#FFFFFF;'>
+<ul><li> <b>NOUVEAU: Le ch&egrave;que-sant&eacute;</b><br>
+Une aide financi&egrave;re peut-&ecirc;tre accord&eacute;e lors de la souscription d'un contrat de couverture sant&eacute;. <span style="color:#ffcc3e"><b>Renseignez-vous au 0 805 110 110</b></span><br><br>
+<b>Les + Tranquillit&eacute; Sant&eacute;</b>:
+<li> Assistance <span style="color:#ffcc3e"><b>24h/24 gratuite</b></span><br>
+<li> Remboursements <span style="color:#ffcc3e"><b>sous 48h</b></span><br>
+<li> <span style="color:#ffcc3e"><b>Aucune</b></span> avance de frais<sup>(2)</sup>
+<li> <span style="color:#ffcc3e"><b>Alerte remboursement</b> <sup>(3)</sup></span> par sms ou email<br>
+<li> <span style="color:#ffcc3e"><b>R&eacute;siliataion gratuite</b></span> de votre ancienne mutuelle<br>
+<li> Consultation de votre compte et de vos remboursements <span style="color:#ffcc3e"><b>sur internet</b></span></ul>
+<center><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique" style="text-decoration:none;color:blue;">>>><u><b>Votre devis GRATUIT et IMMEDIAT</b></u></a></center>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="650">
+ <tr>
+ <td colspan="2"><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Tranquillite sante:Stop aux complementaires trop cheres" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-01.jpg" border="0" width="650" height="376"></a></td>
+ </tr>
+ <tr>
+ <td><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Votre mutuelle a partir de 15,40 euros" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-02.jpg" border="0" width="378" height="310"></a></td>
+ <td><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Obtenez un devis gratuit" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-03.jpg" border="0" width="272" height="310"></a></td>
+ </tr>
+ <tr>
+ <td colspan="2"><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Tranquillite sante: un maximum de garanties a petits prix" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-04.jpg" border="0" width="650" height="218"></a></td>
+ </tr>
+ <tr>
+ <td colspan="2"><a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique"><img alt="Tranquillite sante: un maximum de garanties a petits prix" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-05.jpg" border="0" width="650" height="100"></a></td>
+ </tr>
+ <tr>
+ <td colspan="2" width="650">
+ <div style="padding-top: 20px;">
+ <p style="font-size: 12px; color: rgb(153, 153, 153);" align="center"><span style="font-size: 12px; color: rgb(153, 153, 153);">Pour toute r&eacute;clamation concernant ce message, merci de nous transferez cet email <a href="http://www.centralmarque.com/svi/linkserv.php?bat=tranquillite0809_ctrm&nb=2048&n=9047704&c=pratique&leroiurl=mailto%3Aabuse%40net-mastering.com" style="font-size: 12px; color: rgb(153, 153, 153);">en cliquant ici</a></span></p>
+ <p style="font-size: 12px; color: rgb(153, 153, 153);">Vous disposez d'un droit d'acc&egrave;s, de rectification, de modification et de suppression des donn&eacute;es qui vous concernent (article 34 de la Loi Informatique et Libert&eacute;). Pour l'exercer, envoyez-nous un courrier &agrave; l'adresse suivante Tranquillit&eacute; Sant&eacute; - Service Marketing - 51/55 rue Hoche - 94200 Ivry s/Seine Garanties collectives souscrites aupr&egrave;s de la Swisslife Pr&eacute;voyance et Sant&eacute;. SA au capital de ? 150 000 000 - RCS 322 215 021 - Entreprise r&eacute;gie par le code des assurances.</p>
+ <p style="font-size: 12px; color: rgb(153, 153, 153);">Tranquillit&eacute; sant&eacute; 51-55 rue Hoche 94767 Ivry-sur-Seine cedex - S.A.S. de courtage d'assurances au capital de 600.000 ?. RCS Cr&eacute;teil 395 325 053. Garantie financi&egrave;re et responsabilit&eacute; civile professionnelle conformes &agrave; la loi - Immatriculation ORIAS 07 002 941 www.orias.fr - Exerce sous le contr&ocirc;le de l'ACAM. Garanties collectives souscrites aupr&egrave;s de SwissLife Pr&eacute;voyance et sant&eacute; S.A. au capital de ? 150.000.000 - RCS Paris B 322 215 021 Entreprise r&eacute;gie par le code des assurances. Conform&eacute;ment &agrave; la loi informatique et libert&eacute;s n&deg;78-17 du 6 janvier 1978, vous pouvez sur simple demande, refuser que vos coordonn&eacute;es soient transmi
+ ses &agrave; des fins de communication commerciale.<br>
+ (1) Cotisation pour un adulte de 18 ans, option TM. Selon d&eacute;partement.<br>
+ (2)Dans la limite des garanties souscrites.<br>
+ (3) Avec l'option Confort.</p>
+ </div>
+ </td>
+ </tr>
+ </tbody>
+</table>
+<p><img alt="tranquillite sante" src="http://eskdom028.netmastering2.net/c/aVRV8M1XZ3CXEWV03" border="0" width="1" height="1"></p><img src="http://nodes.reactivpub.fr/mailing-208-12014-16926&group=" border="0" height="1" width="1"/>
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.centralmarque.com/svi/img_nb_2048_numuser_yyynumuseryyy.jpg" width=1 height=1>
+<p>
+<a href='http://www.centralmarque.com/svi/quisommesnous.php'>Qui sommes-nous ?</a> - <a href="http://www.centralmarque.com/svi/gestionserv.php?nb=2048&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">Ne plus recevoir d'offres sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_d25df15a3b0b2349b1f6a5b3ea90c025--
+
+--===============1193606126436652659==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--===============1193606126436652659==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1193606126436652659==--

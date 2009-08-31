@@ -1,9 +1,10 @@
-From: Valorie <alone-KonuEkwWeLCUD3B3dst8wQ@public.gmane.org>
-Subject: [SPAM] [strong]
-Date: Sun, 30 Aug 2009 17:32:32 -0300
-Message-ID: <4A9AE14C.1030907@galehouse.com>
+From: Mabo Sali <mabosali1-Qt13gs6zZMY@public.gmane.org>
+Subject: With due respect,
+Date: 30 Aug 2009 22:59:01 -0700
+Message-ID: <E1Mhzv7-0000ip-QV@h25xhf1.ch3.sourceforge.com>
+Reply-To: mabosali1-Qt13gs6zZMY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------010605040407060403020704"
+Content-Type: multipart/mixed; boundary="===============5036071808087350872=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,224 +17,158 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------010605040407060403020704
-Content-Type: text/plain; charset=ISO-8859-2; format=flowed
-Content-Transfer-Encoding: 7bit
+--===============5036071808087350872==
+Content-Type: multipart/alternative;
+	boundary="YCalInvites=E8YYdbbFA0noqSSRyVO1251698336-1"
 
- in his time? Dost thou know it? _Count._ Perhaps so. _Don Rodrigo._
-This fire which I carry in mine eyes, knowest thou that this is his
-blood? Dost thou know it? _Count._ What matters it to me? _Don Rodrigo._
-Four paces hence I shall cause thee to know it. _Count._ Presumptuous
-youth! _Don Rodrigo._ Speak without exciting thyself. I am young, it is
-true; but in souls nobly born valor does not depend upon age [_lit._
-wait for the number of years]. _Count._ To measure thyself with me! Who
-[_or_, what] has rendered thee so presumptuous--thou, whom men have
-never seen with a sword [_lit._ arms] in thine hand? _Don Rodrigo._ Men
-like me do not cause themselves to be known at a second trial, and they
-wish [to perform] masterly strokes for their first attempt. _Count._
-Dost thou know well who I am? _Don Rodrigo._ Yes! Any other man except
-myself, at the mere mention of thy name, might tremble with terror. The
-laurels with which I see thine head so covered seem to bear written
-[upon them] the prediction of my fall. I attack, like a rash man, an arm
-always victorious; but by courage I shall overcome you [_lit._ I shall
-have too much strength in possessing sufficient courage]. To him who
-avenges his father nothing is impossible. Thine arm is unconquered, but
-not invincible. _Count._ This noble courage which appears in the
-language you hold has shown itself each day by your eyes; and, believing
-that I saw in you the honor of Castile, my soul with pleasure was
-destining for you my daughter. I know thy passion, and I am d
+--YCalInvites=E8YYdbbFA0noqSSRyVO1251698336-1
+Content-type: text/plain; charset=windows-1252;
+Content-Transfer-Encoding: 8bit 
 
---------------010605040407060403020704
-Content-Type: image/jpeg;
- name="drawls.jpg"
-Content-Transfer-Encoding: base64
-Content-Disposition: inline;
- filename="drawls.jpg"
+Invitation&nbsp;: "With due respect,".
 
-/9j/4AAQSkZJRgABAQEBLAEsAAD/2wBDADIiJSwlHzIsKSw4NTI7S31RS0VFS5ltc1p9tZ++
-u7Kfr6zI4f/zyNT/16yv+v/9////////wfD/////////////2wBDATU4OEtCS5NRUZP/zq/O
-////////////////////////////////////////////////////////////////////wAAR
-CAE3AWcDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
-AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
-FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
-h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
-5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
-AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
-NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
-hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
-5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDRx70YFLRTEJj0ozyKWkPagBaTuKWk7igA
-HSlFIOlLQMKKKOKBBRRRQAUUUUAFFFFACdxS0neloAKTuKWk70AL1ooFFAwoo70UCCkPQ0tI
-elAC0nelpO5oAWiiigApB0paQdMnpQAtFMMoHQfnTRI3+RRcZIeooPQ0A7lBPrQehoELgelF
-FFABRRRQMKQ9DS0h6GgBaKKKBCN900VW1IkWTkHB4/nRSYy1RRSZ5piFpD1FHNBHI70AAOOK
-M89KBR3oAATjpS5wPekzgZphagGx2fWjNRl6TfTsTcl3U4HNQb6UNRYLk1FMD08dKRVwoooo
-ATuaWk7mloAKTuaWk7mgBaKKKBhRRRQIKQ9KWkPSgBaTuaWk7mgBaKKKACmtny2xS59KRmwc
-CgZEsTHrwKesKgckmlyTSZpAPAAAA7UHODxUUblrnaPugfrUp6GgAz7UZpaKYgoowKTn60AL
-SHoaXNIehoAWiiigZV1P/jxf8P50Uan/AMeL/h/OikBZ5+lLSD1paYgNIeMUo9aQ9RQAo6Un
-elo/iFAyKRwDj0qFnpsjHeR703OeKtIxbHb6N3OKbzg0Yz7UxDt/NLv5pnNGDQBKH5qRJMVW
-75Apwak0NMugggEd6Kgt3ySp71Nj0qXoap3DvS0mcE5paQBSdzS0DqaACiikLqO/NJtIYtFN
-8wdgaTefYUudDsx9BFRlz6mkLfX86XOg5SbBpO5NQGQr0JqZW3AH1GaIzuDVg5pcUUVZIVDM
-+xzn0zU1QyqGfnsQaTGtyHLyTOjPtVQCccHJpkZZ4yu8swchG9vWnGEPcyM6ZGFwalUYwBxj
-oBQNdwtwRIuVxhSD9c1Oehpked4zTz900CYtFFFMQUUUUAFIRwaWkPQ0AGfWlopMelAFbU/+
-PF/w/nRSan/x4v8Ah/OikMt0UUUwA0npR060mc4wKBDqTvRgnvSY5oAguIi3zp+IqtmtEDFM
-kgSTn7p9RVKXchxuUs0uadJA8fOMj1FRZIqyGrD80ZpuaM0CH7qaTTc0dTgd6AJ7bmYe1XKi
-t4vLTJ+8f0qWs27s2irITuaMfnQOppaQw59aY0mT8v50SNhQPWo81nKWti0hxyepzRSZozWd
-yhaSkzTN2QCfXtSuFh5NNJpDnPams1JsdhGOTgd6uKNqhe4FVrWPc+9ug6VZ7mtaa6kzfQWi
-iitTMKgmljSQhnAOOmanqtPbLJLvKk59KTGrdSN7qIfdJb6CmfaXJ/dxn8akCwIQAAWJIAHJ
-yOtAniAX7yruKMxGNhHrS1K90LZZ2nVpWwOflq2ehqsJyiRvsGJJQik91PQ1ZPQ00S3cWiii
-mIKKKKACkPQ0tIehoAWiiigCrqf/AB4v+H86KNT/AOPF/wAP50UhlrNNGTTqRelMQACg9RS0
-h6igBaTuKXIpM89KAAf1paQZ9O9RTytE0TcbC+1vx6GgCamPCj8kYPqKhe6xdeV91QVUnGSW
-Pb6YqfzED7C4DehOCaLhYrPasPu4aojBJn7jVoUVXMyeVFJLSRvvYUe9WYoEi5HzN6mpKKTb
-Y1FIKKKKQxO9LSd6WgZFN1X6VHmpZxlM+hqDNc89JGkdh2c+1Jnn3xSfjRkVFyhc8g5o7YNJ
-mmlqQCs1NVTK4UfiaaNzsFUcmrscYiTA6nqauMbibsOACqFHQUd6Wk710WMRaO9FHemAVUln
-a2umZ2JidMqD0DDt+NW6jJidtj7SVIOG9e1A0VFgkV7TqH+dnbb0JHf+VTNbZURYzG7l5STy
-T1/nT5Ljarsq7lRsMc4/z1qSSRY0ZmzhfaloPlZXNs/kxx+YD5cgZSR2HQGpxvwd+3221WWS
-SUzKrDedpQA8D15qZWxIyHdu25wTkYpXKcGiaik/CjIqiBaKKKBBSHoaWg9DQAUUUUAVdT/4
-8X/D+dFGp/8AHjJ+H86KQy1SKeKOT7UL0piDmgjpS5pDnigBaTvRj3owM0AA/rTZo1miaNuj
-DFOH9aSRikbMF3EDpQNakH2TEcah8lZfNZj/ABVFdx3DRyqDI+5gV24wBxx68e341Pas7wKz
-jPB5B5PNPik8wMcFdrFcE5pXG4tXKUsrwpcOZCsol+VSeo4xx9M1aWdmu5IRFlUxlg3qPSlm
-tknzv3YPXBp3lKHldWKvIACfTAxmgQ5JEckKwJHUdx9RTqpJHOtzb7vMIUMGYkEdPz6jvVzn
-60wF6UUmfwpaBCdzS0nc0tAAOeDVSVDG3t2NW6QgNkMMionHmKi7FHdRuqdrX+6aZ9lbuRWP
-IzTmREWpUjeU4UcetWEtUGCxJ9qnAAGAAB7VcafcTn2GRRLEvHJ7mnHpS0h6VqlZGd7i0d6K
-TPNMQtFJzRQAZ5qpDvjunVsSMWGT04weatFgoLHgAZJqEOkazPHEy4TdkqVBx2qXqXGVkwMD
-sssZACu+7dntxU4B3sdxIOMDHSoLebztjeaCWGdqL046E8/0qOdH8/yfMby7j3OVxyQPrTsD
-k2WHWMM+44MmM5OOlKEVXJyS+3HJ5xVWERq1wJwow5GG/uY4x7VHa71liabI3QlQW9d2cflQ
-K7NAYOcHOOOKWsxhmINtyr3e5e24Vasyz+a2SI9wCoTkqQOadxFjAo5+tHNGfwoELmkPQ0tI
-RxQAtFJn1paAKup/8eL/AIfzoo1P/jxf8P50UhlrNNXpTqaOBQIdSHtRzRjpTAM0d6Wk70AA
-/rSnJHBwfWkHSloAr2sDwrlsbsY2/j1Jp8COhcOB8zFsg5HNS0UrFubd7la6YPaF8EHsDwRz
-UsxkDptxs53ZGfpT2VXGGUMPekKkBdhxt9SSDRYaktgUlkz/ACOQfoaXNMiV0V95GS5YAHOA
-ak7UIl76CUY9KMUcimIM80tIDzRigBaTvRzRznpQAtFQmVmnaOIL8gG4t79KVJSZRG/yvs3F
-RyOuM5oAk6fSlHSq89ztRl2ujMjFCQOSBUQnkwiom+X7OGBJ5Jz/AJNAF2kJqKB97SK3mblI
-zvx6dsVKelAg5o6E0ySUIyIMl3ztA7461VuZbgSQpCyFyzZUHjgA4J//AFUDLbyKmNxxuIAz
-6npTLh2jhJX75+VRxyx6VniTz7hpER/9dGSuORgHNX3iad0MgAjU52HnPHf/ACaQFQyvgxM3
-miOVWLDksmc/oasGJ5pZWDOI2jKAOMcn2/KpLl1t4WmCKWUADtxnpUMrzBp0LBlEBbKrjB5o
-AljBgRFlmXCLjAGMgClaWEiKX72X2IwHc8f0quoIsukSl4T05Z/l/D+tRrayL9l8oExsVkcH
-+EjqaALElyitN5kWfJAyeDnPSptzOSskWMDIJwRUPlSedcsUUiQDaCeDgYp0UTrM742RlMbd
-2cnPWgCcqpwCoO05GR0pAiiQyAYZhg+9OopiEGcUuaB0FFACY9KCeDmlxSE8HNAC0mPSlxRz
-QBU1P/jxf8P50Uup/wDHjJ+H86KQy1ijpRRTEFIeopaQ9RQAtJ3paaRk/eI+lACilpoT/ab8
-6Nn+0350DHUU3aR0c/iM0fOP7p/SgB1FN3jvlfrTqBAelA6Uh6Uo6UDAUUCigBMcmjmjuaWg
-BM+tAPNLSY5oAiMTLO0kRX5wNwb26U0QOZvMaT5jFsJAxg5zmgTFrpo1TIUc545zT3crOke3
-hs859BSuiuVkAsc7C7qCqlSVXlsjGSc1MLeIFT8xIQR9ew+lOnYxws6gEgVGHZpnjjl35jyD
-xwc+1DdgUW1clUIvyLtU9cd6U+9V41PnQjZtKKS34irJoTFJWK11Gz3FuQjOq7s4OOw71IsI
-LxuwAMedqp0Gf8+1S45FHegQKqqSVULuOTgdaWiimIiuoTPbvGpALY5P1p4jQIUCKEOQVAwK
-dTdwHHU+goGEcUcYxGir9BinU3LHouPqaMMerY+goEKeooPQ0hTp8zfnQU4PzN+dADqKbtPZ
-2/SlAYHkgj6UAKOgopB0paACmvTqa9ADqKKKAKup/wDHi/4fzoo1P/jxf8P50UhlqiiimIKQ
-9RS0h6igBaTvS5pM89KAAdKWkGcdKOfSgYtIGDDKkEexqC6ckiBD8zdT6CmAC2lUrxG3yt7H
-saVylHQt03YO2VPt/hUGo5FjJjqMfzFRLK1tDbSFi0bgBgx6Ejr/ADpklzLDqMj1H+FKDkZB
-yKiN1CspjL/MvXg4H1NSFQ3Pf1FACilpuGH+0PfrQGBOAefQ9aAF7mlpO9KKBBSd6Wk7mgCv
-JE73WQQo28MPr/OpJI3aZHUrhM4B9xUh6ilpWL52IQxYnd8pXG3Hf1pFTaS2SzHuadRTsTcR
-VVRhQB9KD0paQ9KAA9RR3NDEDBJxSZYngY+v+FADqbuz90Z9+1GwfxEt9ajnuooAS5OR2Az+
-FAEm0n7zE+w4FIWSNfmKqPypyliPnAB9Ac1QtS73d0dy/K+Nzc4GT0oAs/bYPN8svhvcEUol
-eSeWJAqmPby3OcjPTiqi26XMt2rNv+7tf3wfSprGKeN5XuPvOVGcjnFICFLud7GS43KCrYC7
-eO3+NTwTGRYy03LAZXZ+lRx2LLYvbl13O2cjoOn+FWIlliREJQqoA75wKAKsF3O9o85aL5D0
-K4z075/pV2GVZolkXowqmmmqLVo3wXJyrgdKtws/lL5q7GHBGRg+4pgP2ijke9LRQITcPpSP
-TsZppXimA6iiikBV1P8A48X/AA/nRRqf/Hi/4fzopDLVGaTk+1LTEJzQR0paQ9qAFpO9LSZ5
-oAB0pssgijLnt0HqacDVWRvOn/6Zx9Pc0myoq7FgQgF35kfkmiXZJGQrh1PGQalZM28hPUqc
-flWbpKlzMuf4R+dKxfNqX4ttzbGOXkj5W5/I0yWx81UQyt5adFx/X6VHFJ5VwCeFb5W/pV+m
-tUTONmU4E8i+m3D5ZTlWJHJ7j9f0pNNl3iaMEssbfKSc8dh+lWiVZjGwzxnBHBFEcaxLtjQK
-M5wKCSG3uvMnkiZQpViFP97B/nVj5XB6MAceuDVKS2dI5JFAMqymWPHcccVWW4kMf7klPOnb
-n0zjj9f0oA1dpB+U59jRux94EfqKg89orgQyAtvGUbAGSOx/yKetxGXKFwjjqrcEUwJQQwyC
-CPajuaQqCckAn1xSbcHgsPxz/OgBx6ilpmDkfP8ApS7W/v8A6UAOopu093b9KNi+mfrzQIN4
-7Zb6UHceuFHtyaXcu7bkZx0zzQaBgFVef1NQ3NytvEJcbw2AMHr1rO1VpFlWMyMyldxB6Zya
-ndRd2lvDEc8LuYDIXAxz70gFuLoNLNG3mqqLgKo5J/vZ9KZdqraZAsIcqXG0Ec96tmCWRpRL
-NmN+gUYOPTP+c1OAFGAMD0FACk89KhS1hV3fZlmYsd3PepqQdKYhegwOlFFBOKAEPag9DRkc
-UEjBoGLRSZHrS0CDApOfrS0UAGaQ9DS0hHBoAWikz60tAFXU/wDjxf8AD+dFGp/8eL/h/Oik
-MtUUmc9KMetMQZoOcilpCeRQAY/GjvRzSHjknAAyTQBFcy+XFhT87cD296q2qlpeCQq9aZPJ
-5khb14HsKmgnijjAyc9+KzvdnSouMNNy995CPUYrO0dGRptwIxgc1aW5jI4cZ7ZqGwluGaQT
-cjs3vVmDTW4l9GFfd/C3X61PaS+ZAMn5l+U0twnmxMvft9ao2cpiuAGOAflYfyqdmafFD0L0
-zbJEkPTkH+f9KjiYxRSbuuN/5/8A16nkiWRNrdKjmjZpEwPl6N9M5pkxaasx6yHcEYc7c8U1
-7eKWJkAUAnOV7N60k7BHSTsMg/l/9amKTBFIP4iob8TxTuHLdXQ2S2lluonkZAkRzx3/AMOg
-pkYB1efIBHlj/wBlq2rMJQjcnZnPvSo6SZZe3yk0E2ZDfXBt7fen3iwA9v8AOKUC5jeIEiUH
-iToMe4/WpJYVmjKPyp/OoxHcB4h5y7U+8dvLD9fSmISzuDdRb2UKQxGB9BSPcSreJbhU+cZB
-OenP+FMsoZraEo0YY7ieG9hSvFM19HceWMIuMbvr/jQA5J5bnzTBtVEO1SRncf6du1V57me3
-uYRI24hOVTox5A/pU8VtLbpKkTrsfJUnqn6c9qfHaBZY5Wld3RduT36/40gIYLiGK2M7uXeQ
-/OQOc+n4VcYnZwo3ccE/1qJrOBpVl2bWU5+XjJpVnWRGKfw+tAWbBIQJmmkIZyNvThR6Uquu
-CIlyAOMcCo5GLQwkjcWYEj14qZA+47iBx90dqCrWWpGu+V3WRsBccLxmp6ijBE0pwcEjH5VI
-eASxwB1oQpC5pBmqk+oRxAhVZjt3LxgHmnwSGYRuWdycEhBhR+P/ANf8KYiaSSOIZkcL9TTh
-jGR3rIt/MOnTbIt5LEFs8gYGa0bTyjbIIGygGPfPfNAEx6ig9DQR05NBHB5NAhaTApce9Jz7
-UAHPrRn1oz60tABSHoaXFIc4PegBaMelFFAFXU/+PGT8P5iijU/+PF/w/nRSGWqTmlxSZ9KY
-gx60E8ijHrQcDFABn2psieZGyEkbhjIp2fajnPYUDK32IH/lofypPsK/89D+VWh9aPxqbIrn
-l3KTWB/hdT9RiomtJ05Az7qa0ufUGl57ijlQ1UkZa3M0Zw3Psw5qCWQSSltu3PUVssqSDDKG
-HoRVaWwjbJQlD6dRSaZcZx7EtrL5sCseSOG+tTVSs4JoJyGX5GHUHjNXcVSMpJX0GuiuCHGR
-xUcsReRGzwvUetSlQ3DAMp6gis21uJY9PkmLl9jYCt+H+NAJtFy4bYVkH8PH5j/9VRkeSjRj
-qyjH16GpUmjkh8x8KOjBv4T6GnvEHdWOcoeKVioyS0Y5VCqFHQDFV0mZkQD5pGH4D61ONwZt
-3Ttiq0cbQojqvzAfOvrTCNupNNK0ajaoZjzj2FPLEoCgBz0zUOGllZ1baANoyOtIsnkQlSCS
-rbR7+lFw5dNNyRZWDOsgA2jdkelRxyhnUuzDd0AHH0pY9ro65Jdxy2OKArv5auuAh6+uKQ9E
-WKphCLaORBlguCPUVaCncx3de3pUL3FvAoBcAAgcAnFN6kqVhRGzQxAHaVwTke1KxitwXlfr
-xubvTFn+0TNHE2I1GWcEc56AfrVPbLLZ3SSMZPKb5Wb26/p/OgTk2XJ7xYLhY2XK8bmH8Oen
-+fSqm43FrcSmcoryYG/0HIH69vSn21mZbJ/OzvkOQT1GOn9fwq1FbxpbpCwEgXnkd80CKUsV
-zN5kaSeYmACcALnPQfSr0KSJHGrOqhABhRnOPc/4VL7Dj2o4oAZDFHAmyJSBnPXvT+2BgCij
-n2FABz60HOOtHpzQenWgA5oz7UfiKOfSgAyKXFJRjHSi4hefrSE8Gjmg4INMBaTmijPrQBV1
-M/6C/wCH86KXU/8Ajxf8P50UhlnHrRn0ox60tMQmPWj0paQ9RQAtI3SlpG6UMZlJeXDsFUgk
-+1TmW4XO5wSBnCiq1sfKiaT+I/KtCCRXLBTnuSetVbmehDdiT+0JFOGCsKlTUkP3kK/Sq9qo
-mM0J2hpBlT7g5qeSGF8yqAVldVjxwB6/1osh3ZbjuIpfusDUn0NY8ltJHlgvygnBBz0NOguZ
-1ztJcKMkHnily9h3NfOOvFJj0qrFfxvgNlD79KtAgjIP5UgEYblIPT2OKqPZFbSWGFgVc5Ab
-qDkd/wAKufr9KOKBmbqStB5uxf3c+M89GBzVy7WVo90BIkQ5H+0PSpSA2QwDAjkGnZ5pAU0v
-hNMBEv7oLukdh92lW+R0MuxxECAWOP5U62tBBbvCzbw5POMcEYqBUmhs3tzGXfBVSvQ59/xP
-5UwLaXEUkxiQ5YKG6cY4/wAaje9gTfkn5G2njvz/AIVUs4ntLkGbIDx8HGcdOKhmidoZpQjb
-ZJsrxzj5v8aQGn9qQSrG6uhf7pYcH2pl5ctA8Krj942CTzjp/jTJIpY7yOVwZ0xgYGNh9cf5
-/lT7u3eaWBoyv7tiTuP0pgVzOxkuY2lLIYjtDLjJx24+v/16YizvpsQRA8WcsoPzEZq8LdTI
-8kpDs67cDgAegqRUEaBUUKo6CkBVt7aWOV5EIjWTkqwyVP8AnNWYY0hQJGMAD8/en49aM88c
-0wDHrRkUfU/lUUlzHHxnn0FAEv401nVByQPrVKS7duF+UVCSWOSST701EVy692g+7k1Gbxv4
-VAqrS1XKhXJvtUh7ij7TJ6ioaKLIVycXUg9DVi3lMucjGMf1qjVqy/j/AA/rSaQ0y2KKBRUj
-CkI4NLQaAE5+tLmk5+tHBoAq6mP9Bf8AD+dFGp/8eL/h/OikMt0UUUxBSHqKWkPUUALSN92l
-pH+7Qxmctk4UKWUgHIoa0lYYMox6VbCmQ9cKKd5MX+19c0JsTSZnGynQ7kYZHQg4NMKXEWzK
-tiM5XuBWkyMn3WyvvSbyOq/lT5mFilHeAyxNKvClicd91SxOrRNs2AC3II4zu/nUkiwyffTn
-1xUD2QYFonz7GndBYZLaFWZY2LlCoORjr070xJZYGIBIx2NOMlxCu1ht5HO0dunPep3uIZo5
-CV27VO0HqSf/AK9MQsOoc4lGPcVcV0kG5SD7is26gSNFeNWAPHzdQcd6YUaKOOVXwH6djxSs
-ug7mvzn1ozWdFfuuBINw9R1q3HdxSD72D6Gps0BNikP3qUY7fpSEc9fzoGDtsQsegGar2c8k
-xbdjA70t6223Iz944pLFNsG7+8c1PWxqklBtlnmjGOppMeppeBVGQZHag5NMeaOPqwFVpL7+
-4ufc0/QC2cAc/rVeW8RThfmP6VULyzNtyWJ7CmMpRsN1p8vcm5LJcyScZwPaoqKUAk4AyaoQ
-lLUyWrnBY7R+tWEgjTtk+ppOSHYpqjN90E1ItvIewH1NXACegNLtb2FTzMdip9lb+8KX7K39
-4VZ5zj3pdnv+lLmYWRUNs/Yg1Naxsm/cOpH9al2H1/SlTuPei7Cw8UUlLQAUUUUAFFFFAFTU
-/wDjxf8AD+dFLqf/AB4v+H86KQy1RRSZ9KYhaQnkUY9aPSgAz7UMMrj/AD2paRjx/n2oGRow
-bao4qR14ABA+tRbRu56HkU4xkkZ5AoEBO3KsR0poAJGeh5odOdq4yadKuFUjtxSGO3gcADFN
-eIE5UbX/AJ01SAuGXI9RUpwVyOopgQjDrhh9Qary2SNzGdvt1FWjgtuHcVDDGxhV0cgkkYPI
-6mkm0BSlgmjXDZKDng5AqaCeLNuGyoj3A55zkVZLsn+sXA/vLyKY9tFKNw4J7rVc3cViOOJG
-i8xgPmicnA6EHqKr/Z3KB1GVOcepx7VI1tNEdyfMB6f4Ui3DoAjblKk428Yz2xVegiNXkjAA
-ZlyM4qVb2Ze4P1FSR3CNLCCQEVAGyO4BojjilWNmALFGJVRjJHTgUXXUdna5DPcNPjIAxUiX
-jIgUKMAYqAgGQ7FJHpU9r/qJjg5G3oOetZxSbbNamkYxA3sp6YFRNPK3Vz+HFWI4o2COwAYl
-sBv4/wDClcpHGAduGhHygclvWr0MSJrZhKU3DggbjxyaXyEQJ5jEFmI46DBweadLdgu21Mje
-GUn1AxTAk0wGc4BPJ4609QJjMsUo+VdqscbeT0qqkbP91SatJaovLnd/KpA4+7EhfH93oKnm
-tsOxDHad3P4Cpd0UXyjGfQck1IIZH/1jBR6L1/Oh/Lt0JACqOppNtjsMxK/pGvvyaLc5RSST
-yev402Cf7QWZUIQcBiep+lLb/wCrX6n+tICRpVEipnP09aBOrTGMZPuPWnbAX34G7GM0iod7
-McZPAx6UtRah/H+P9KJH2ANnnpj1o/j/AB/pSlELhz94DA56UykJG+9SxPXjHpTl6t9R/KkE
-Y3lwTkjBAPB96VfvN9R/KgGOyKWikx6UyRaKTmg9CaAFooooAq6n/wAeL/h/OijU/wDjxf8A
-D+dFIZZx60tJzS4piEz6UHtzS0h6igBcUjdKWk7igZHzjGwkfSkwf7r49KlHSloAiDhOi7fq
-KcJAw5wRTxSFVbqAaQDOAMNyOx/xoKZH3sil8v8AusR7HmmFcfejB9wM0xCIOp7dBUay+Vao
-c92/Hk1NnI4xj2phgBhVepUk5pDHRys7lG+8BkcY/nTjbo/zLlG/2aSEbW+ZmyegakmkMSrJ
-n5QWDD88frRp0Er9RCs0f3l3j1Xr+VMJil4YDPowwRUkdzny1kXDtkNjoDnFSlYphnCuAcZo
-GUpLNMEpkHHSqipuVjkDaM81qG1A/wBW7oPTORWbOhhldM59/XvUttO5tSSknFhHG7gspxjq
-c4ojR2Yqjc+xp0VvNKvyg7ffirENrLEchAW9d1EZNKw6qjdtvUiFnIeSyj8alFoDjfIzY4H0
-qby5z/zzX8STThbMfvzMf90Yq+ZnPZEQWGEfwj3PWnBnf/Vxkj1bgVMkMUeCFGfU9aIpRI8i
-gEbG259eKQxgts8yuW9hwKnACjAAAHYUUUAFRSnHJ9akLAVA6I77mBb0BPAoAjVx92FC30GB
-TokaNFBxkEningk8KCR7dKUIT1bHsKAELHucfSm5B9W/WpAihhxn680+gCHn+435UYP9w/lU
-p7UHkGgCLHqh/wC+adGQcgEHmpKKAEx6Uc0tFMQZpGHBpaQ5waADn60uaM0UAVdT/wCPF/w/
-nRSan/x4v+H86KQy3RRRTEFIeopaQ9RQAtJ3FLSdxQADpS0g6UtACCloooAKKKKAGsinnGD6
-imYYds/TrUtJjuKBkYbOQefUGnAIU2FQV9DSnDDDCmFSOhyPekANAD5rRn53wRnoCOn61B9l
-kBKDOFXeD6tjH9P1qcPggHj2NPElAFaK5d3AzxKQUz2GTn9B+tORw126FA7B+Cf4RgVOQj8s
-oJxjNIYkLbslTu3598Y/lQA1rgJIFKYG7bnP9KBJIsyqzA7gSygfdpDaqWzv437+nfOetOih
-MbE+buycnIGTQBHBM0jIzFgJBkAgYP0PX86LmSQGbY+0RoGGB1PP+FSJCiFfnYhOFBIwtP2o
-uflzkAHPcD60AVZkeSaRSDyQFIXoOO/bmrMaMjykkbXbcPyA/pSmSmF+evP60ASFwKY0nr09
-6QKx/wBke/WnKgU9Mn1NADPmboD9TxThGP4vm/l+VPpMUALSDpRg+tAz60AB+8KM+lGOetLR
-cBCOmaD0NL6UHpQAUUUUCCiiimAUh6GlpD0NAC0mPSlooAqan/x4v+H86KXU/wDjxf8AD+dF
-IZapM56CjGetLTATn1o5yM0tJn0oELSdxQcg5zRjmgAHSlpABRgUALRSY+tHPrQAtFJn1FLQ
-AUUUUAJ1zmjHHB4o70uKAG4J44I96Tyx2JH06U7v+FKKBkZRx6H9KTLD+Fh9Of5VLSdzSsBH
-5nv+lHme/wClS0HoaLARbiegY/gaArn+HH1NS0UWAYI/7zE+w4p2Ao+UYpaQ9KYC0nc0tJ3N
-AhaKKKWoBQKKQGiwAfvilpp+8KXHuaYAe1KehpCBxQQMGgBaKTFGD60ALRSc+lLmgApD0NLS
-HoaAFooooAq6n/x4v+H86KNT/wCPF/w/nRSGWs0nNGMdKWmIKKrTX8EIPzb29F5qjNqsrcRK
-EHqeTQBrHoaY08SffkReO5rAknllJ8yRm9s8flTKBm8L22/57LS/bbb/AJ7LWBRSA6JJ4n+5
-IjfQ1JXM0+OeWL7kjL7A0COjoxWRFqsq8SqHHqODV2G/gmwN2xj2bj9aYFnn60uaKOtABRn1
-pMelGfWgYd6B60Y5paACk7mlpO5oELQehooPQ0AFFFFABSHpS0h6UALSdzS5pOc+lAC0nNLi
-igBMUDpUc1zFCD5kgB/ujrVCXVu0MePdqBmnjLA0jyIn33VfqcVgy3lxLw0hx6DioScnJ60g
-N83luD/rl4PrSG9tsH98tYNFAHQrdQN0mT/vqpQcjI6VzNKjuhyjMp9jincDpaMZrEi1K4j4
-JDj/AGhV6HVIX4fMZ9+RQBcoJ4NCsGUMpBB6EUHoaAFopMY6UZ9aAK2p/wDHi/4fzoo1P/jx
-f8P50UgG3WoxwMUUF3HUdAKy57yecne5Cn+FeBRRQBDRRRQAUUUUAFFFFABRRRQAUUUUATQX
-k8BGxyVH8LcitO21KKXCuCj/AJg0UUAXaKKKYhMc8UZx1oooAUHPSk7miigBaD0NFFABRRRQ
-Amc9KDRRQAtJ3NFFAyC5u47YDfkseigdazJ9SnkyEPlr6L1/OiikBUJycnrRRRQAUUUUAFFF
-FABRRRQAUUUUAOilkhbdGxU+1aMOqjbtmQ5/vL/hRRQBoo6yIHQ5U8g06iimBU1L/jxc/T+d
-FFFID//Z
---------------010605040407060403020704
+
+Par votre hôte Mabo Sali:
+
+
+     Date:		lundi 31 août 2009
+
+     Heure:		5h 00 - 6h 00 (GMT+00:00)
+     Rue:		With due respect, I am Barrister Sali the personal resident Attorney here in Burkina Faso to Dr. Eric Morgan, from United States of America, who died along with his wife and only daughter in event of terrorist attack on 11th September 2001 world trade centre. My client was having an abandon sum of Thirty Million Five Hundred thousand united state dollars ($30.5m USD) with African Development Bank Burkina Faso. I am proposing to transfer this money into your account as a deal, if interested reply to barr.s.maboa-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org,) thanks, barr. Sali Mabo
+
+Viendrez-vous ? Répondre à cette invitation, à:
+
+     http://calendar.yahoo.com/mabosali1?v=126&a1=0&iid=Zx%40hsu3bcJuz%40GZIVhhRhEd%40LxUXAA2G&igid=FxAnoqxbbOp3aH5MZxhHYT3%40c9NT%40difyxdMpx%40%40
+    
+Copyright © 2009 Tous droits réservés.
+ www.yahoo.fr
+
+Données personnelles:
+ http://privacy.yahoo.com/privacy/us
+
+Conditions d'utilisation:
+ http://docs.yahoo.com/info/terms/
+
+--YCalInvites=E8YYdbbFA0noqSSRyVO1251698336-1
+Content-type: text/html; charset=windows-1252;
+Content-Transfer-Encoding: 8bit
+
+
+
+
+                    
+
+<html>
+
+<style type="text/css">
+    a {color:#0066CC;text-decoration:none;}
+    body {text-align:center; font-family:Arial;}
+    .propertyname{text-align:right; font-size:10px; font-size:13px; color:7A8180; width:100px; vertical-align:top;white-space:nowrap;}
+    .propertyvalue{text-align:left; font-size:13px; vertical-align:top;}
+    .divider{width:10px; }
+    #invite_main {background-color:#4D94DB; width:525px; padding:0 0 10px 0;}
+    #invite_main_info {background-color:white; margin: 0px 10px 0px 10px;clear:both; zoom:1; width:505px; overflow-x:auto;}
+    .header_images {height:55px; margin-left:10px; margin-right:10px;zoom:1}
+    #header_yahoo_image {margin-top:13px; float:left; width:274px; height:28px; text-align:left;}
+    #header_second_image {margin-top:10px; float:right; width:53px; height:35px;}
+    #invite_main {background-color:#4D94DB; width:525px; padding:0 0 10px 0;margin-bottom:10px}
+    #copyright_footer {font-size:10px;}
+    #tip_footer {font-size:10px;}
+    #main_table{padding:0; border-spacing:0; margin: 15px 10px 10px 10px;}
+    #guests_div{overflow-y:auto; height:40px;}
+    .item_list { width:400px;}
+    .event_time { width:70px; text-align:right;}
+    .event_title { width:100px; text-align:left;}
+    .task_title { width:100px; text-align:left;}
+    .event_title_daily { width:250px; text-align:left;}
+    .add_link { width:300px; text-align:left;}
+    .task_header_priority{ width:100px; text-align:left;}
+    .task_header_date{ width:100px; text-align:right;}
+    .task_priority{ width:10px; text-align:center;}
+    .task_date{ width:75px; text-align:right;}
+    .nowrap {white-space:nowrap;}  
+    .new {font-size:8px; text-transform:uppercase; color:#FF6600;}
+    .clear_line{font-size:8px}
+</style>
+
+<body>
+<center>
+<div id="invite_main">
+	<div class="header_images"> 
+		<div id="header_yahoo_image"><img src="http://l.yimg.com/a/i/fr/pim/cal/email/ma_2.gif" border=0 alt=""/></div>
+		<div id="header_second_image"><img src="http://us.i1.yimg.com/us.yimg.com/i/us/pim/cal/email/gr/cal_em_invite_1.gif" border=0 alt=""/></div>
+	</div>
+	<div id="invite_main_info">
+		<table id="main_table" cellpadding=0>
+
+                            <tr><td class="propertyname">Vous êtes invité ::</td>
+                <td class="divider">&nbsp;</td>
+                <td class="propertyvalue">With due respect,</td></tr>
+            
+                                                <tr><td class="propertyname">Par votre hôte:</td>
+                    <td class="divider">&nbsp;</td>
+                    <td class="propertyvalue">Mabo Sali</td></tr>
+                                
+                <tr><td colspan=3 class="clear_line">&nbsp;</td></tr>              
+
+			    	
+             
+              
+            
+
+                <tr><td class="propertyname">Date:</td>
+    <td class="divider">&nbsp;</td> 
+			<td class="propertyvalue">lundi 31 août 2009
+		    	</td>
+	</tr>
+
+
+    <tr><td class="propertyname">Heure:</td>
+    <td class="divider">&nbsp;</td> 
+			<td class="propertyvalue">5h 00 - 6h 00
+				&nbsp;(GMT+00:00)
+				</td>
+	</tr>
+
+
+	
+    <tr><td class="propertyname">Rue:</td>
+    <td class="divider">&nbsp;</td> 
+    <td class="propertyvalue">With due respect, I am Barrister Sali the personal resident Attorney here in Burkina Faso to Dr. Eric Morgan, from United States of America, who died along with his wife and only daughter in event of terrorist attack on 11th September 2001 world trade centre. My client was having an abandon sum of Thirty Million Five Hundred thousand united state dollars ($30.5m USD) with African Development Bank Burkina Faso. I am proposing to transfer this money into your account as a deal, if interested reply to barr.s.maboa-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org,) thanks, barr. Sali Mabo
+				</td>
+	</tr>
+
+
+
+
+
+            
+            <tr><td colspan=3 class="clear_line">&nbsp;</td></tr>
+            
+			                                     <tr><td class="propertyname">Viendrez-vous ?</td>
+                     <td class="divider">&nbsp;</td>
+                     <td class="propertyvalue"><b><a href="http://calendar.yahoo.com/mabosali1?v=126&a1=0&iid=Zx%40hsu3bcJuz%40GZIVhhRhEd%40LxUXAA2G&igid=FxAnoqxbbOp3aH5MZxhHYT3%40c9NT%40difyxdMpx%40%40">Répondre à cette invitation</a></b></td></tr>
+	                                                
+            						
+		</table>
+	</div>
+</div>
+
+<span id="copyright_footer">
+    Copyright © 2009
+&nbsp;<a target=_blank href="http://www.yahoo.fr">Yahoo!</a>&nbsp;Tous droits réservés. |
+<a target=_blank href="http://fr.docs.yahoo.com/info/utos.html">Conditions d'utilisation</a> | <a target=_blank href="http://privacy.yahoo.com/privacy/fr/">Données personnelles</a>  
+
+</span>
+</center>
+
+</body>
+</html>
+
+--YCalInvites=E8YYdbbFA0noqSSRyVO1251698336-1--
+
+
+--===============5036071808087350872==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -244,7 +179,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---------------010605040407060403020704
+--===============5036071808087350872==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -255,4 +190,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---------------010605040407060403020704--
+--===============5036071808087350872==--

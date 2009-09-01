@@ -1,11 +1,9 @@
-From: "458-3mpuAFsUhUg@public.gmane.org" <458-3mpuAFsUhUg@public.gmane.org>
-Subject: [SPAM] 楂樼骇鏂囩銆侀珮绾ц鏀垮姪鐞嗚亴涓氬寲璁粌
-Date: Tue, 1 Sep 2009 18:52:14 +0800
-Message-ID: <E1MiQyO-0004up-Et@3yr0jf1.ch3.sourceforge.com>
-Reply-To: 458-3mpuAFsUhUg@public.gmane.org
+From: "MASAJE RAPIDO" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] APRENDA A SOLO $20.000
+Date: Tue, 1 Sep 2009 11:15:17 -0400
+Message-ID: <1172675674-22009921151517355@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+Content-Type: multipart/mixed; boundary="===============1324786364329139688=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,144 +16,280 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+--===============1324786364329139688==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_11726112505816865151517355"
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+------=_NextPart_11726112505816865151517355
+Content-type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
 
-请看附件，如果有打扰，请原谅，谢谢！
+=09 =09=09
+=09=09=09 =09=09=09
+=09=09=09CURSO
+=09=09=09=09=09
+"MASAJE =09=09=09=09R=C1PIDO"
+=09=09=09=09
+=09=09=09=09 =09=09=09=09 =09=09=09=09  Mi=E9rcoles 02 de Septiembre 2009
+=09=09=09
+=20
+=09=09=09=09
+=09=09=09=0919 a 21 =09=09=09=09hrs=2E
+=09=09=09=09
+=09=09=09=09
+=09=09=09=09 =09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09Este Curso de masaje r=E1pido, =09=09=09=09=09=09=09=
+=09es dictado para que cualquier persona lo pueda =09=09=09=09=09=09=09=09=
+aprender y as=ED utilizarlo en su casa para =09=09=09=09=09=09=09=09benefi=
+cio de los suyos=2E No se requiere de una =09=09=09=09=09=09=09=09silla en=
+ especial, para no incurrir en gastos =09=09=09=09=09=09=09=09innecesarios=
+=2E Se les entregara una herramienta =09=09=09=09=09=09=09=09para dar solu=
+ciones al menor costo y utilizando =09=09=09=09=09=09=09=09elementos caser=
+os=2E
+=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09        Este se =09=09=09=09=09=09=09=09realizar=E1=
+ en 2 horas=2E El m=EDnimo para =09=09=09=09=09=09=09=09conformar el curso=
+ es de 10 personas, esto para =09=09=09=09=09=09=09=09poder interactuar en=
+tre las distintos =09=09=09=09=09=09=09=09asistentes, realizando masajes u=
+nos a otros, e =09=09=09=09=09=09=09=09ir midiendo la intensidad=2E
+=09=09=09=09 =09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09El sistema del curso es =09=09=09=09=09=09=09=09pr=
+=E1ctico con un m=EDnimo de teor=EDa, entreg=E1ndose =09=09=09=09=09=09=09=
+=09un apunte sobre los puntos a tratar y los =09=09=09=09=09=09=09=09tiemp=
+os a considerar para cada zona y el total =09=09=09=09=09=09=09=09en la se=
+si=F3n completa=2E=20
+=09=09=09=09 =09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09     =09=09=09=09=09=09=09=09        =09=09=09=09=09=
+=09=09=09 Al comienzo se explicara la ambientaci=F3n que deber=E1 =09=09=09=
+=09=09=09=09=09haber en el lugar, para hacer m=E1s relajante aun la =09=09=
+=09=09=09=09=09=09sesi=F3n=2E=20
+=09=09=09=09 =09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09El curso lo dar=E1 el =09=09=09=09=09=09=09=09tera=
+peuta Felipe Contreras, Hipnoterapeuta, =09=09=09=09=09=09=09=09Reikista y=
+ Terapeuta en Masajes=2E
+=09=09=09=09=20
+LUGAR: Dr=2E Barros Borgo=F1o 384 - Providencia (Metro Manuel Montt)
+=09=09=09=09=09=09=09=09
+=20
+=09=09=09=09=09=09=09=09
+VALOR: $20=2E000
+=09=09=09=09
+=09=09=09=09=20
+=09=09=09=09=09=09=09=09 =09=09=09 =09=09 =09=09 =09 =09=09=09=09=09=09=09=
+=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09=09=09=09=09=09 =09=09=09=09=09=09=09=09=09=09=09=09=
+=09 =09=09=09=09=09=09=09=09=09=09=09=09=09INSCRIPCIONES: =09=09=09=09=09=09=
+=09=09=09=09=09=09=09 =09=09=09=09=09=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09=09=09=09=09=09 =09=09=09=09=09=09=09=09=09=09=09=09=
+=09 =09=09=09=09=09=09=09=09=09=09=09=09=09http://www=2Ehipnosischile=2Ecl=
+/inscripciones=2Ehtm=20
+=09=09=09=09=09=09=09=09=09=09=09=09=09
+=09=09=09=09=09=09=09=09=09=09=09=09=09Tel=E9fono:  (56-2)  278 =09=09=09=09=
+=09=09=09=09=09=09=09=09=09=091078   -   Celular: (09) =09=09=09=09=09=09=09=
+=09=09=09=09=09=09=099675 6898
+=09=09=09=09=09=09=09=09
+=20
+=09=09=09=09=09=09=09=09=20
+=20
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="09年8月行政文秘.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="09年8月行政文秘.txt"
 
-ICAgICAgICAgICAgICAgILjfvLbOxMPYoaK437y20NDV/tb6wO3WsNK1u6/RtcG3DQoNCtb3sOy1
-pc67o7rJ7tva1trIy9DQudzA7dfJ0a/N+CAgDQrJ7tvaytDSu7b+yP253MDt18nRr9PQz965q8u+
-DQoNCr+qv87KsbzkOiAgICAgICAgDQoyMDA5xOowONTCMjktMzDI1SAgIMnu29q98LDZus+0877G
-teoNCjIwMDnE6jA51MIxOC0xOcjVICAgsbG+qcjws8m0877GteoNCjIwMDnE6jA51MIyNi0yN8jV
-ICAgyc+6o8G8sLK0877GteoNCg0KsbggICAg16Kjug0K18nRr7Xnu7CjujA3NTUtMjYwNzUzNjUg
-ICAyNjA3NTQyOSANCrSrICAgINXmo7owNzU1LTYxMzUxMzk2ICANCsGqIM+1IMjLo7rB6NChveMg
-IMXt0KG94w0KIA0KqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlDQoNCiAgICDI57rO17zIt6Gi0bjL2cHs
-u+HJz7y2tcTV5sq10uLNvCA/DQogICAgyOe6ztCt1vrB7LW8tKbA7dK70KnSycTRzsrM4iA/DQog
-ICAgyOe6zrPJzqrB7LW8tcTX87Dy09Kx2yA/DQogICAgzai5/bG+tM7F4NG1ztLDx7vhuPjE477F
-tPO3vc/yoaLKrs7l1ta94r72t723qA0KDQogICAgttS437y21vrA7brNw9jK6cC0y7WjrMO709DK
-3LW916jStc+1zbPRtcG3o6y9q87et6i009W9wtTQ1Mirt73Ou73HtsjIzw0K1qrD2Mrp0+vW+sDt
-tcS5pNf3o7vU2sv5tNPKwrXEuaTX99bQuNC+9cixt6bA7cLb1qez1qO7uaTX99bQ19zKx7G7tq/Q
-0MrCo6wNCrK7xNzW97av1cbO1bmk1/e92tfgo7vP686qwey1vNf3tcS4/LbgoaK4/LrDyLTDu9PQ
-usO1xLe9t6ihosu8wreju8/ruPy6w7XEDQrWtNDQwey1vLXE1f6y36OsyLTX3MrHtcOyu7W91qez
-1qO7z+u4+Lmry7692sqht9HTw6OstavItLK71qq007rOtKbPwsrWo6zP6w0KuPy6w7XYtKbA7brD
-uau5srnYz7WjqNX+uK65q7nYo6mjrMi019zKx7K7tcPSqsHsLS0tLdbuyOfS1MnPtcTOyszio6y2
-vMrHw78NCrj21vrA7cPYyum5pNf3yMvUscv5w+a21NPrwKe787XEo6zI57rOsNHO1dX9yLe3vc/y
-tNO2+NG4y9nM4cn919TJ7daw0rXL2NH4o6wNCrPJwcvO0sPHsdjQ68PmttTT673ivva1xL/OzOKh
-ow0KDQrF4NG1ttTP86O6DQogICAguPe8ttb6wO26zcPYyumjutfcssOjqNfcvq3A7aOpw9jK6aGi
-sr/DxcPYyumhorDsuavK0tb3yM6hotDQ1f6yv76twO2jqA0K1vrA7aGi1ve53KGizsTWsMjL1LG1
-yCkNCg0KxeDRtbfR08OjujIwMDDUqi/IyyAgo6jXysHPt9GjrNbQss230aOssui147fRo6y6z9Ow
-tcijrKOpDQoNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppQ0KDQqh8iC/zrPMytW78aO6DQqh+iAg1cbO
-1bjfvLbQ0NX+1vrA7cPYyum1xNaw0rW8vMTcDQqh+iAgycbT2rSmwO25pNf31tC497y2ubXNqMTR
-teOjrMzhyf3X1Mnt1rDStcTcwaYNCqH6ICDVxs7V0+vJz8u+ubXNqLXEvLzHyaOss8nOqsHstbyy
-u7/Ju/LIsbXE1/Ow8tPSsdsNCqH6ICDI57rOtey2qNTaobDPwsr0obHD5sewtcTB7LW8tdjOuw0K
-ofogIMfJw+60psDtobDI4rzQ4smhsbXEuaTX96OszOXP1rj2yMu5pNf3xNzBpg0KofogIMjnus7A
-+9PDz7XNs7XEwO3C29aqyrajrMq1z9bU2rmk1/fW0LXE06bTww0KofogINXGztXV/s7xuau52LXE
-u/mxvry8x8kNCqH6ICDIw9fUvLqzyc6q0ru49rjf0Ke5tc2o1d+jrMzlz9bWsLOhvNvWtQ0Kofog
-ILfWz+3L+8jLuN/Qp7mk1/e+rdHpo6zKtc/W19TO0tPQ0Ke1xMqxvOS53MDtDQqh+iAgyrXP1s/W
-tPrOxMPYuaTX97rNtbWwuLncwO25pNf3tcS55re2z8690w0KofogINGnz7DVxs7Vuea3trXEyczO
-8dC01/e8vMfJo6zM4bjfuavOxNC01/fLrsa9DQqh+iAg0afPsNXGztW74dLptcTX6davy7zCt7yw
-uN/Qp8LKtcTX6davt723qKGjDQqh+iAg1cbO1bv5sb61xMnMzvG77ravwPHSx6OsyrnE+srK06bI
-1bOjyczO8bOhus+1xMDx0sfSqsfzDQqh+iAg1cbO1b7G0ee8vMfJzeqzycnMzvHR58frxL+1xKOs
-yrXP1tb3sfbLq9OutcS6w77Ww+YNCqH6ICDBy73ivdO0/b/Nu6e1xMDx0sfPuL3ao6zIw8T6tcTD
-v9K7zru/zcjLsfbWwcjnuekNCg0KqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlDQoNCqHyIMXg0bXM4bjZ
-o7oNCtK7oaLG89K10NDV/tb6wO3D2Mrp1rDStczY0NTT68vY1srSqsfzDQogICAgofMgINb6wO3D
-2MrptcTWsNK1vNvWtbrN1/fTww0KICAgICAgICCh+iAgsLjA/aO61vrA7cPYyum42s67tcTGwLzb
-DQogICAgofMgINb6wO3D2MrpyMvUsbXE1rDU8NPr1vfSqrmk1/fE2sjdIA0KICAgICAgICCh+iAg
-sLjA/aO61vrA7cPYyunIy9SxtcTWsM67y7XD98rp0fmw5SANCiAgICCh8yAg1vrA7cPYyum1xNaw
-0rW3otW5uea7rg0KICAgIKHzICDW+sDtw9jK6cjL1LG1xNfUztK9x8mrtqjOuw0KICAgIKHzICDT
-xdDj1vrA7cPYyunIy9SxtcTKpMjOy9jWyg0KICAgICAgICCh+iAgsLjA/bfWzvajuiANCg0Ktv6h
-osjLvMq5tc2o0+u5pNf30K2197y8x8kNCiAgICCh8yAgubXNqLbU09rW+sDtw9jK6bXE0uLS5Q0K
-ICAgIKHzICCzo9PDubXNqLe9yr3WrrHIvc8NCiAgICCh8yAguN+8ttb6wO3D2MrpyMvUsbXEubXN
-qLy8x8kNCiAgICAgICAgofogILC4wP2jusjnus7M/bauwM+w5bXEobDDu9PQy7Wz9sC0tcTS4su8
-obGjvyANCiAgICCh8yAgyOe6zsjDwey1vLnOxL/P4L+0oaK78bXD0MXIzqO/DQogICAgofMgIMjn
-us7T68TjtcTJz8u+0K2197b4sruw77W5w6ajvw0KICAgIKHzICDI57rO0+u499bWyc/Lvs/gtKaj
-vw0KICAgIKHzICDOyszio7rO0rXEyc+8trX319/By9T1w7Sw7KO/DQogICAgICAgIKH6ICCwuMD9
-o7rB7LW8yMPO0sTRzqrH6aOsztK4w9T1w7Sw7KO/DQogICAgICAgIKH6ICCwuMD9o7rI57rO0+vN
-rMrCu/LPwry2z+C0pqO/DQogICAgICAgIKH6ICCwuMD9o7rT0MjL1NrE48Pmx7Cxp9S5xOO1xMHs
-tby4w9T1w7Sw7KO/DQogICAgofMgIMzWwtujusjnus63orvT19TJ7dPFysbG8LrD0K2199f308Oj
-vw0KyOe6zrPJzqrJz8u+tcPBptb6ytYNCiAgICCh8yAg08XQ48PYyum1xLrL0MS+utX5waYNCiAg
-ICCh8yAg1qq8utaqscujurfWzvbJz8u+tcS5pNf3zNi14w0KICAgIKHzICDI57rOttS0/bK7zazQ
-1LjxwODQzbXEyc/Lvg0KICAgIKHzICDVvtTaz8K8trXEzrvWw8nPy7y/vMnPvLa1xMrCDQogICAg
-ofMgINPryc+8ts/gtKbXotLiysLP7g0Ktee7sMDx0scNCiAgICCh8yAgvdPM/bXnu7C1xLv5sb7U
-rdTyDQogICAgofMgIL3TzP2157uwtcS8uM/u16LS4iANCqHzICCyprTytee7sLXEvLi089KqteMN
-Cg0KyP2hosqxvOS53MDtvLC5pNf3zbOz77y8x8kNCiAgICCh8yAgyrG85LncwO21xM7zx/gNCiAg
-ICCh8yAgyrG85LncwO21xNSt1PINCqHMxL+x6rncwO3T6zgwLzIwt6jU8g0Kocy7uryxx+HW2LXE
-08XPyLncwO0NCqHMuPbIy8qxvOTT68Hstby5pNf3yrG85LzGu67T67CyxcUNCiAgICCh8yAgyrG8
-5LncwO3QocfPw8UNCqHzICCx9r/NvdO0/dPrtee7sLSmwO0NCqHzICDJz7y2tcTKsbzkudzA7dPr
-sLLFxQ0KICAgIKHzICDX1M7Sx+nQ97/Y1sbT69G5waa53MDtDQoNCsvEoaK74c7x1+nWr9PrudzA
-7Q0KICAgIKHzICC74c7xt9bA4KOt1+nWr8u8wrcNCiAgICCh8yAg1+nWr73Xts6jurvhx7DXvLG4
-oaK74dbQ0K3W+qGiu+G689X7wO0NCiAgICCh8yAg1+nWr7e9t6gNCiAgICCh8yAgwP274bXE1+nW
-rw0KICAgIKHzICC089DNu+HS6aGi1bm74bXE1+nWrw0KICAgIKHzICDI57rOtaPIzrvh0unW97PW
-yMsNCiAgICCh8yAgyOe6zrWxusO74dLpw9jK6aO/DQogICAgofMgIMirvrCwuMD9o7rEs7mry77E
-6rbItPPQzcfsteS77ravst+7rsq8xKkNCiAgICAgICAgofogILC4wP2jurTz0M274dLpvLC77rav
-st+7rrC4DQqh8yAgyOe6zrHcw+LP3dPau+HS6cOmwrXWrtbQo78NCg0KzuWhos7EvP7XysHPudzA
-7dPr1MvTww0KICAgIKHzICDOxLW1t9bA4LHq17wNCiAgICCh8yAgtbWwuLncwO21xNSt1PINCiAg
-ICCh8yAgzsS1tbXEy/fS/Q0KICAgIKHzICC159fTzsS1tbXEsaMNCiAgICCh8yAg06HVwrXEudzA
-7Q0KICAgICAgICCh+iAgsLjA/bfWzvajug0KICAgIKHzICDR0MzWo7rI57rOwPvTw7W1sLjOqrmr
-y77Stc7xt/7O8aO/DQoNCsH5oaLQxc+itbWwuLncwO0NCiAgICCh8yAg0MXPorncwO27+bG+wfez
-zA0KICAgIKHzICDQxc+itcTK1byv1fvA7Q0KICAgIKHzICDQxc+itcS0q7XdDQogICAgofMgINDF
-z6K1xLSitObT67Gjw9wNCiAgICCh8yAgsaPD3NLiyrbT67Gjw9y55tTyDQqh8yAgw9jK6bXEu/mx
-vtaw0rW1wLXCDQoNCsbfoaK5q87E0LTX99PrtKbA7cq1zvENCiAgICCh8yAguavOxLfWwOANCiAg
-ICCh8yAguavOxLXEveG5uQ0KICAgIKHzICDW+sDtw9jK6c7E19bWp7PW06a077W9tcTSqsfzDQog
-ICAgofMgILmrzsTQtNf3uebU8rrN06bTw7y8x8kNCiAgICCh8yAgyv3X1rXE1f3It8q508MNCiAg
-ICCh8yAgu/nK/bTKus3Q8sr9tMq1xNX9yLfUy9PDDQogICAgofMgIMSjuv20yrrNxKPMrLTKtcTV
-/ci3yrnTww0KICAgIKHzICC5q87EzsTW1tTauaTX99bQtcTX99PDDQogICAgofMgIM/pzvazo9PD
-zsTW1rXE0LTX97y8x8kNCiAgICAgICAgzajWqg0KICAgICAgICDH68q+DQogICAgICAgILGouOYN
-CiAgICAgICAguaTX99fcveENCiAgICAgICAguaTX97zGu66jqNbcoaLUwqGixOqjqQ0KICAgICAg
-ICDK9tawsai45g0KICAgIKHzICDHydPDzbyx7aOsyMPX3L3hsai45rj8vt3Ltbf+waYNCiAgICCh
-8yAgU01BUlTUrdTy0+tTV09Ut723qA0KICAgIKHzICDI3dLXu+zP/bXEuavOxM7E1tYNCiAgICAg
-ICAgDQq+xaGiyczO8cDx0sfT69aw0rXQzs/zy9zU7A0KMaGisNHO1bXa0rvToc/zo6zL3NTsuPbI
-y9aws6HQzs/zDQogICAgICAgIKHzICDXxdewtcRUT1DUrdTyDQogICAgICAgIKHzICChsL7cvvih
-sNfF17Cw3LHKoaqhqtfF17DO88f4DQqh8yAg08PBvLrDtcTSx8yso6zM5c/WuPbIy8b41soNCqHz
-ICC3otDNoaK7r9exoaLVvqGiwaKhotffoaLX+A0KICAgICAgICCh8yAgx6G1sbXE1qvM5dPv0dQg
-yMPX1Ly6s8nOqtK7uPbT0MvY0fi1xMjLDQoyoaIgu/mxvsnnvbvA8dLHDQogICAgICAgIKHzICC8
-+8PmvenJ3LXEwPHSxw0KICAgICAgICCh8yAgzsq68rXEwPHSxw0KICAgICAgICCh8yAgw/vGrLXE
-yrnTww0KICAgICAgICCh8yAgyNWzo8nMzvG77rav1tC1xMDx0se55re2DQogICAgICAgIKHzICDT
-67mk1/fT0LnYtcTOxMzlu+62r9bQtcTA8dLHuea3tg0KM6GiIMnMzvHR58frwPHSxw0KICAgICAg
-ICCh8yAgteOyy7y8x8mhqqGqyOe6zrPUtcO9ob+1DQogICAgICAgIKHzICC+xtHnvLzHyaGqoarI
-57rOtfe92sb4t9UNCiAgICAgICAgofMgINbQoaLO97LN08OyzcDx0scNCiAgICAgICAgofMgILLN
-0vvA8dLHvfu8yQ0KDQoNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppQ0KDQq9ssqmvPK96aO61cXS687E
-xa7Kvw0KICAgIM73sLK9u82otPPRp7ncwO3Rp9S6o6i5pMnMudzA7aOpJrDE1t648cHWzf7WzrTz
-0aejqMrQs6HTqs/6o6lNQkHLtsq/O9T4sbsNCsra0+jDwLn6UFBUufq8ytaw0rXF4NG1yqbIz9ak
-oaLP47jbufq8yrncwO3Rp9S6xvPStbjfvLbXydGvucvOytfKuPHIz9ako7vU+LvxDQrJ7tvavdyz
-9sbz0rXXydGvucvOyteovNKzxrrFo7u24MTqtaPIzr/nufrG89K1IMPAufpBc2hlcqGiILeoufpU
-cmlzyv3C67/GvLy1yA0KxvPStbjfvLa+rcDtoaMNCg0KICAgINT4uKi1vNfJ0a+1xMbz0rXT0NOi
-ufpTVEnXydGvudzA7bv6ubmhos/juNu/tcH6yrXStbnJt925q8u+oaLDwLn6yP3BoryvzcWhog0K
-w8C5+kFTSEVSu/q5ubXItPPQzbyvzcW5q8u+oaLJ7tva1dDJzM7vwfehosnu29pMWUS437/GvLy5
-ybfduavLvqGiycLO98P3tcC7r7mkDQqyxMHPucm33bmry76horijvajB+syp1v3U7NPQz965q8u+
-oaK547art/DJvcLesLK98Mr01sbU7NPQz965q8u+oaK547art/DJvdDC1LQNCszVtMm5ybfdvK/N
-xaGiy9XW3czYwPbLubXn1LS7+rm5oaLEz76pyc/UqrrsxL680r7fuavLvqGjDQoNCiAgICDW972y
-v86zzKO6oba437y20NDV/s7Ew9jWsNK1u6/RtcG3obehoqG2udzA7bm1zajS1cr1us252M+10K21
-96G3oaKhts3iw7PKtQ0K1b2y2df3vLzHyaG3oaKhtrmrzsTQtNf3obehoqG2tPO/zbunv6q3orf+
-zvHT67ncwO2ht6Gioba74dLpvKjQp7ncwO2ht6GiobbJzM7xDQrA8dLH0+vR58frvLzHyaG3oaMN
-Cg0KICAgINfJ0a/F4NG1uf21xMbz0rXT0KO61tC98MHrxM+3sr/ax6bQv7/zoaLC3rCyvK/NxaGi
-zNjA9su5sLK3wLmry76hotDCzqy087nJDQq33byvzcW5q8u+oaLQwtS0zNW0ybyvzcWhorfwzNW8
-r83FoaLO4NbdwarNqLmry76hosTP0828r83FoaLL1dbduuy2ubyvzcWhotSq0uINCrzSvt/WxtTs
-uavLvqGisbG+qbar0fTIyMTcvK/NxaGiu6rI87yvzcWhosD7tO/Ds9LXoaK73cHpzajNqNG2uavL
-vqGixM/Uwcr9vt3NqA0K0MW5q8u+oaK4u8q/v7Whorq9vM67+rm5oaK80ri7uLvHxbyvzcWhos/D
-w8W/qreix/i12LL6uavLvqGi1dDJzNbD0rWhos73sLLA+7GmDQrJ+sysvK/NxaGiycLO98zsyMvT
-0Lv6ucm33bmry76horXCsaa5+rzKoaK608TPtefBpqGiuKPW3brsutO67MS+vNK+36GixP6yqMzA
-xLcNCta4yeixuLmry76hosPAufrI/cGivK/NxaGiQUNFu/q5uaGisbG+qbar0fTMq9H0xNzCr77f
-s6ehor+tsqm84MDtuavLvqGiIM/juNvQ7A0KuuvS49ewys7J6LzGuavLvqGiuqPBwdOyxczWxtTs
-uavLvqGiuePW3c6wzNq8r83FoaLUwcypvK/NxaGiv7XHxcrp1Lqhornax8ew/NewDQrWxsa309DP
-3rmry76hotDxyNW98Mr01sbGt9PQz965q8u+oaKxsb6p0ce2vLnJt925q8u+oaLJ7tvatefQxbfW
-uavLvrXIoaM=
 
---=_NextPart_2rfkindysadvnqw3nerasdf
+CENTRO DE HIPNOSIS Y TERAPIA AFINES
+
+HIPNOSIS CHILE
+
+Seminario 6 - Providencia - Fono: 2781078
+
+www=2Ehipnosischile=2Ecl - info@hipnosischile=2Ecl
+
+Remover: remover@hipnosischile=2Ecl=20
+
+=20
+
+=20
+
+------=_NextPart_11726112505816865151517355
+Content-Type: text/html; charset=windows-1252
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+
+<head>
+<meta http-equiv=3D"Content-Language" content=3D"es-cl">
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
+1252">
+<title>TALLER</title>
+</head>
+
+<body>
+
+<div align=3D"center">
+=09<table border=3D"0" width=3D"54%" cellspacing=3D"9" cellpadding=3D"7">
+=09=09<tr>
+=09=09=09<td width=3D"637" valign=3D"top">
+=09=09=09<p style=3D"LINE-HEIGHT: 100%; MARGIN-TOP: 10px; MARGIN-BOTTOM: 1=
+0px; WORD-SPACING: 10px" align=3D"center">
+=09=09=09<b><font face=3D"Arial, Helvetica, sans-serif" size=3D"5">CURSO</=
+font></b></p>
+=09=09=09=09=09<p style=3D"LINE-HEIGHT: 150%; MARGIN-TOP: 10px; MARGIN-BOT=
+TOM: 10px; WORD-SPACING: 10px"=20
+      align=3D"center">
+
+              <b><font face=3D"Arial, Helvetica, sans-serif" size=3D"6">"M=
+ASAJE=20
+=09=09=09=09R=C1PIDO"</font></b></p>
+=09=09=09=09<p style=3D"LINE-HEIGHT: 100%; MARGIN-TOP: 0px; MARGIN-BOTTOM:=
+ 0px" align=3D"center">
+=09=09=09=09<b>
+=09=09=09=09<font face=3D"Arial, Helvetica, sans-serif" size=3D"4" color=3D=
+"#ff0000">
+=09=09=09=09  Mi=E9rcoles 02 de Septiembre 2009</font></b></p>
+=09=09=09<p style=3D"LINE-HEIGHT: 100%; MARGIN-TOP: 0px; MARGIN-BOTTOM: 0p=
+x" align=3D"center">&nbsp;</p>
+=09=09=09=09<p style=3D"LINE-HEIGHT: 100%; MARGIN-TOP: 0px; MARGIN-BOTTOM:=
+ 0px" align=3D"center">
+=09=09=09=09<b><font face=3D"Arial, Helvetica, sans-serif" size=3D"4">19 a=
+ 21=20
+=09=09=09=09hrs=2E</font></b></p>
+=09=09=09=09<p align=3D"center">
+=09=09=09=09<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecl/image=
+n/MASAJE/menu=5Fbg=2Ejpg" width=3D"180" height=3D"195" align=3D"left"></p>=
+
+=09=09=09=09<div align=3D"center">
+=09=09=09=09=09=09=09=09<p align=3D"justify" style=3D"LINE-HEIGHT: 100%">
+=09=09=09=09=09=09=09=09<font face=3D"Arial">Este Curso de masaje r=E1pido=
+,=20
+=09=09=09=09=09=09=09=09es dictado para que cualquier persona lo pueda=20
+=09=09=09=09=09=09=09=09aprender y as=ED utilizarlo en su casa para=20
+=09=09=09=09=09=09=09=09beneficio de los suyos=2E No se requiere de una=20=
+
+=09=09=09=09=09=09=09=09silla en especial, para no incurrir en gastos=20
+=09=09=09=09=09=09=09=09innecesarios=2E Se les entregara una herramienta=20=
+
+=09=09=09=09=09=09=09=09para dar soluciones al menor costo y utilizando=20=
+
+=09=09=09=09=09=09=09=09elementos caseros=2E<br>
+=09=09=09=09=09=09=09=09<br>
+=09=09=09=09=09=09=09=09        Este se=20
+=09=09=09=09=09=09=09=09realizar=E1 en 2 horas=2E El m=EDnimo para=20
+=09=09=09=09=09=09=09=09conformar el curso es de 10 personas, esto para=20=
+
+=09=09=09=09=09=09=09=09poder interactuar entre las distintos=20
+=09=09=09=09=09=09=09=09asistentes, realizando masajes unos a otros, e=20
+=09=09=09=09=09=09=09=09ir midiendo la intensidad=2E</font></p></div>
+=09=09=09=09<div align=3D"center">
+=09=09=09=09=09=09=09=09<p align=3D"justify" style=3D"LINE-HEIGHT: 100%">
+=09=09=09=09=09=09=09=09<font face=3D"Arial">El sistema del curso es=20
+=09=09=09=09=09=09=09=09pr=E1ctico con un m=EDnimo de teor=EDa, entreg=E1n=
+dose=20
+=09=09=09=09=09=09=09=09un apunte sobre los puntos a tratar y los=20
+=09=09=09=09=09=09=09=09tiempos a considerar para cada zona y el total=20
+=09=09=09=09=09=09=09=09en la sesi=F3n completa=2E </font></p></div>
+=09=09=09=09<div align=3D"center">
+=09=09=09=09=09=09=09=09<p align=3D"justify" style=3D"LINE-HEIGHT: 100%">
+=09=09=09=09=09=09=09=09<font face=3D"Arial">    =20
+=09=09=09=09=09=09=09=09       =20
+=09=09=09=09=09=09=09=09 Al comienzo se explicara la ambientaci=F3n que de=
+ber=E1=20
+=09=09=09=09=09=09=09=09haber en el lugar, para hacer m=E1s relajante aun =
+la=20
+=09=09=09=09=09=09=09=09sesi=F3n=2E </font></p></div>
+=09=09=09=09<div align=3D"center">
+=09=09=09=09=09=09=09=09<p align=3D"justify" style=3D"LINE-HEIGHT: 100%">
+=09=09=09=09=09=09=09=09<font face=3D"Arial">El curso lo dar=E1 el=20
+=09=09=09=09=09=09=09=09terapeuta Felipe Contreras, Hipnoterapeuta,=20
+=09=09=09=09=09=09=09=09Reikista y Terapeuta en Masajes=2E</font></p></div=
+>
+=09=09=09=09<div align=3D"center">
+<p align=3D"left" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">
+<font face=3D"Arial">
+<b>LUGAR: Dr=2E Barros Borgo=F1o 384</b> - <b>Providencia <font size=3D"2"=
+>(Metro=20
+Manuel Montt)</font></b></font></p>
+=09=09=09=09=09=09=09=09<p align=3D"left" style=3D"MARGIN-TOP: 0px; MARGIN=
+-BOTTOM: 0px">
+&nbsp;</p>
+=09=09=09=09=09=09=09=09<p align=3D"left" style=3D"MARGIN-TOP: 0px; MARGIN=
+-BOTTOM: 0px">
+<font face=3D"Arial"><b>VALOR: $20=2E000</b></font></p>
+=09=09=09=09<p align=3D"left" style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px=
+">
+=09=09=09=09&nbsp;</p>
+=09=09=09=09=09=09=09=09</div>
+
+=09=09=09</td>
+=09=09</tr>
+=09=09</table>
+=09</div>
+<div align=3D"center">
+=09=09=09=09=09=09=09=09=09=09=09=09=09<p style=3D"MARGIN: 0cm 0cm 0pt" al=
+ign=3D"center">
+=09=09=09=09=09=09=09=09=09=09=09=09=09<b>
+=09=09=09=09=09=09=09=09=09=09=09=09=09<span style=3D"FONT-FAMILY: 'Arial'=
+; COLOR: red">
+=09=09=09=09=09=09=09=09=09=09=09=09=09<font size=3D"4">INSCRIPCIONES:=20
+=09=09=09=09=09=09=09=09=09=09=09=09=09</font> </span></b>
+=09=09=09=09=09=09=09=09=09=09=09=09=09</p>
+=09=09=09=09=09=09=09=09=09=09=09=09=09<p style=3D"MARGIN: 0cm 0cm 0pt" al=
+ign=3D"center">
+=09=09=09=09=09=09=09=09=09=09=09=09=09<font face=3D"Arial" size=3D"4"><b>=
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09<a style=3D"COLOR: blue; TEXT-DECOR=
+ATION: underline" href=3D"http://www=2Ehipnosischile=2Ecl/inscripciones=2E=
+htm">
+=09=09=09=09=09=09=09=09=09=09=09=09=09http://www=2Ehipnosischile=2Ecl/ins=
+cripciones=2Ehtm</a> </b></font></p>
+=09=09=09=09=09=09=09=09=09=09=09=09=09<p style=3D"LINE-HEIGHT: 100%; MARG=
+IN-TOP: 0px; MARGIN-BOTTOM: 0px">
+=09=09=09=09=09=09=09=09=09=09=09=09=09<b><font face=3D"Arial">Tel=E9fono:=
+&nbsp; (56-2)&nbsp; 278=20
+=09=09=09=09=09=09=09=09=09=09=09=09=09=091078&nbsp;&nbsp; -&nbsp;&nbsp; C=
+elular: (09)=20
+=09=09=09=09=09=09=09=09=09=09=09=09=09=099675 6898</font></b></p>
+=09=09=09=09=09=09=09=09<p align=3D"left" style=3D"LINE-HEIGHT: 100%; MARG=
+IN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</p>
+=09=09=09=09=09=09=09=09</div>
+
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3D"center">
+&nbsp;</p>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3D"center">
+<font face=3D"Arial">
+<img src=3D"http://www=2Ehipnosischile=2Ecl/ENFERMEDADES/logo=2Epng" borde=
+r=3D"0"></font></p>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3D"center"><b>
+<font face=3D"Arial" color=3D"#1f4923" size=3D"1">CENTRO DE HIPNOSIS Y TER=
+APIA AFINES</font></b></p>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3D"center">
+<font face=3D"Arial" color=3D"#1f4923"><i><b>HIPNOSIS CHILE</b></i></font>=
+</p>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3D"center"><b>
+<font face=3D"Arial" color=3D"#1f4923" size=3D"1">Seminario 6 - Providenci=
+a - Fono: 2781078</font></b></p>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3D"center"><b>
+<font face=3D"Arial" color=3D"#1f4923" size=3D"1">
+<a href=3D"http://www=2Ehipnosischile=2Ecl">www=2Ehipnosischile=2Ecl</a> -=
+
+<A href=3D"mailto:info@hipnosischile=2Ecl">info@hipnosischile=2Ecl</A></fo=
+nt></b></p>
+<p style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3D"center"><b>
+<font face=3D"Arial" style=3D"FONT-SIZE: 6pt">Remover:
+<A href=3D"mailto:remover@hipnosischile=2Ecl">remover@hipnosischile=2Ecl</=
+A> </font>
+</b></p>
+<p align=3D"center">&nbsp;</p>
+
+<p align=3D"center">&nbsp;</p>
+
+</body>
+
+</html>
+
+------=_NextPart_11726112505816865151517355--
+
+
+
+--===============1324786364329139688==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -166,7 +300,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---=_NextPart_2rfkindysadvnqw3nerasdf
+--===============1324786364329139688==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -177,4 +311,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---=_NextPart_2rfkindysadvnqw3nerasdf--
+--===============1324786364329139688==--

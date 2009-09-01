@@ -1,234 +1,1058 @@
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/2] add ad714x input driver for
-	button/scrollwhell/slider/touchpad
-Date: Tue, 1 Sep 2009 15:30:31 -0400
-Message-ID: <8bd0f97a0909011230r50cb532ep46db64d65cbb49e5@mail.gmail.com>
-References: <1251777330-16994-1-git-send-email-21cnbao@gmail.com>
-	<1251777330-16994-2-git-send-email-21cnbao@gmail.com>
-	<1251777330-16994-3-git-send-email-21cnbao@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dtor-JGs/UdohzUI@public.gmane.org, dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <1251777330-16994-3-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
-List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
-List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
-Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+From: s-paulraj-l0cyMroinI0@public.gmane.org
+Subject: [PATCH] SPI: DaVinci SPI Driver
+Date: Tue,  1 Sep 2009 15:51:08 -0400
+Message-ID: <1251834668-32246-1-git-send-email-s-paulraj@ti.com>
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org, david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org,
+        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.omap.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCBBdWcgMzEsIDIwMDkgYXQgMjM6NTUsIEJhcnJ5IFNvbmcgd3JvdGU6Cj4gYWQ3MTQy
-L2FkNzE0NyBhcmUgUHJvZ3JhbW1hYmxlIENvbnRyb2xsZXJzIGZvciBDYXBhY2l0YW5jZSBUb3Vj
-aCBTZW5zb3JzLgo+IFRoZSBjaGlwcyBkb24ndCByZXN0cmljdCB0aGUgc3BlY2lmaWMgdXNhZ2Us
-IGFuZCBpdCBjYW4gYmUgdXNlZCBhcyBidXR0b24vCj4gc2xpZGVyL3Njcm9sbHdoZWVsL3RvdWNo
-cGFkIGV0Yy4gZGVwZW5kaW5nIG9uIHRoZSBoYXJkd2FyZSBjb25uZWN0aW9uLgo+IE9uZSBzcGVj
-aWFsIHRhcmdldCBib2FyZCBjYW4gaW5jbHVkZSBvbmUgb3Igc2V2ZXJhbCB0aGVzZSBjb21wb25l
-bnRzLgo+Cj4gVGhlIGRyaXZlciBpcyBpbmRlcGVuZGVudCBvZiBzcGVjaWFsIGJvYXJkcy4gSXQg
-Z2V0cyB0aGUgY29tcG9uZW50cwo+IGxheW91dCBpbmZvcm1hdGlvbiBmcm9tIHRoZSBwbGF0Zm9y
-bV9kYXRhLCByZWdpc3RlcnMgcmVsYXRlZCBkZXZpY2VzLAo+IGZ1bGxmaWxscyB0aGUgYWxnb3Jp
-dGhtcyBhbmQgc3RhdGUgbWFjaGluZXMgZm9yIHRoZXNlIGNvbXBvbmVudHMgYW5kCj4gcmVwb3J0
-IHJlbGF0ZWQgaW5wdXQgZXZlbnRzIHRvIHVwIGxldmVsLgoKc2VlbXMgeW91IGRpZG50IGFkZHJl
-c3MgYWxsIHRoZSBjb21tZW50cyBpIHBvc3RlZCBhZnRlciB5b3VyIGZpcnN0IGNvbW1pdCAuLi4K
-CnBsZWFzZSBhZGQgdGhpcyBsaW5lIGJlZm9yZSB0aGUgI2luY2x1ZGUnczoKI2RlZmluZSBwcl9m
-bXQoZm10KSAiYWQ3MTR4OiAiIGZtdAp0aGlzIHdpbGwgZml4IGFsbCBvZiB5b3VyIGRldl8qKCkg
-b3V0cHV0IHNvIHRoYXQgaXQgaXMgcHJvcGVybHkgcHJlZml4ZWQKCj4gKyNkZWZpbmUgQUQ3MTR4
-X1NQSV9BRERSIMKgIMKgIMKgIMKgMHgxQwo+ICsjZGVmaW5lIEFENzE0eF9TUElfQUREUl9TSEZU
-IMKgIDExCj4gKyNkZWZpbmUgQUQ3MTR4X1NQSV9SRUFEIMKgIMKgIMKgIMKgMQo+ICsjZGVmaW5l
-IEFENzE0eF9TUElfUkVBRF9TSEZUIMKgIDEwCj4gKwo+ICsjZGVmaW5lIEFENzE0WF9QV1JfQ1RS
-TCDCoCDCoCDCoCDCoCDCoCAweDAKPiArI2RlZmluZSBBRDcxNHhfU1RHX0NBTF9FTl9SRUcgwqAg
-wqAgMHgxCj4gKyNkZWZpbmUgQUQ3MTRYX0FNQl9DT01QX0NUUkwwX1JFRyAweDIKPiArI2RlZmlu
-ZSBBRDcxNHhfUEFSVElEX1JFRyDCoCDCoCDCoCDCoCAweDE3Cj4gKyNkZWZpbmUgQUQ3MTQ3X1BB
-UlRJRCDCoCDCoCDCoCDCoCDCoCDCoCAweDE0NzAKPiArI2RlZmluZSBBRDcxNDJfUEFSVElEIMKg
-IMKgIMKgIMKgIMKgIMKgIDB4RTYyMAo+ICsjZGVmaW5lIEFENzE0eF9TVEFHRUNGR19SRUcgwqAg
-wqAgwqAgMHg4MAo+ICsjZGVmaW5lIEFENzE0eF9TWVNDRkdfUkVHIMKgIMKgIMKgIMKgIDB4MAoK
-eW91ciBBRDcxNFggYW5kIEFENzE0eCBuZWVkcyB0byBiZSBjb25zaXN0ZW50Cgo+ICtzdHJ1Y3Qg
-YWQ3MTR4X2J1dHRvbl9kcnYgewo+ICsgwqAgwqAgwqAgYWQ3MTR4X2RldmljZV9zdGF0ZSBzdGF0
-ZTsKPiArIMKgIMKgIMKgIC8qIFVubGlrZSBzbGlkZXIvd2hlZWwvdG91Y2hwYWQsIGFsbCBidXR0
-b25zIHBvaW50IHRvCj4gKyDCoCDCoCDCoCDCoCogc2FtZSBpbnB1dF9kZXYgaW5zdGFuY2UgKi8K
-CmVpdGhlciBwdXQgdGhlIGNvbW1lbnQgb24gb25lIGxpbmUgYW5kIGRvOgovKiBmb29vICovCm9y
-IHVzZSBwcm9wZXIgY29tbWVudCBzdHlsZSB3aGVyZSB0aGUgbGFzdCAqLyBpcyBvbiBhIGxpbmUg
-YnkgaXRzZWxmCi8qCiAqIGZvbwogKi8KdGhpcyBhcHBsaWVzIHRvIG1hbnkgY29tbWVudHMgaW4g
-dGhpcyBmaWxlCgo+ICtzdHJ1Y3QgYWQ3MTR4X2NoaXAgewo+ICsgwqAgwqAgwqAgdW5zaWduZWQg
-c2hvcnQgaF9zdGF0ZTsKPiArIMKgIMKgIMKgIHVuc2lnbmVkIHNob3J0IGxfc3RhdGU7Cj4gKyDC
-oCDCoCDCoCB1bnNpZ25lZCBzaG9ydCBjX3N0YXRlOwo+ICsgwqAgwqAgwqAgdW5zaWduZWQgc2hv
-cnQgYWRjX3JlZ1tTVEFHRV9OVU1dOwo+ICsgwqAgwqAgwqAgdW5zaWduZWQgc2hvcnQgYW1iX3Jl
-Z1tTVEFHRV9OVU1dOwo+ICsgwqAgwqAgwqAgdW5zaWduZWQgc2hvcnQgc2Vuc29yX3ZhbFtTVEFH
-RV9OVU1dOwo+ICsKPiArIMKgIMKgIMKgIHN0cnVjdCBhZDcxNHhfcGxhdGZvcm1fZGF0YSAqaHc7
-Cj4gKyDCoCDCoCDCoCBzdHJ1Y3QgYWQ3MTR4X2RyaXZlcl9kYXRhICpzdzsKPiArCj4gKyDCoCDC
-oCDCoCBidXNfZGV2aWNlICpidXM7Cj4gKyDCoCDCoCDCoCBpbnQgKCpyZWFkKSAoYnVzX2Rldmlj
-ZSAqLCB1bnNpZ25lZCBzaG9ydCwgdW5zaWduZWQgc2hvcnQgKik7Cj4gKyDCoCDCoCDCoCBpbnQg
-KCp3cml0ZSkgKGJ1c19kZXZpY2UgKiwgdW5zaWduZWQgc2hvcnQsIHVuc2lnbmVkIHNob3J0KTsK
-CnVzaW5nIGZ1bmN0aW9uIHBvaW50ZXJzIGlzIHB1cmUgb3ZlcmhlYWQgaW4geW91ciBjdXJyZW50
-CmltcGxlbWVudGF0aW9uLiAgY3JlYXRlIGEgYWQ3MTR4X3JlYWQgbWFjcm8gdGhhdCBleHBhbmRz
-IHRvIGVpdGhlciB0aGUKc3BpIG9yIHRoZSBpMmMgdmVyc2lvbiBkZXBlbmRpbmcgb24gd2hpY2gg
-aXMgZW5hYmxlZC4KCj4gK3N0YXRpYyB2b2lkIHN0YWdlX3VzZV9jb21faW50KHN0cnVjdCBhZDcx
-NHhfY2hpcCAqYWQ3MTR4LCBpbnQgc3RhcnRfc3RhZ2UsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCBpbnQgZW5kX3N0YWdlKQo+ICt7CgphbGwgZnVuY3MgaW4gaGVyZSByZWFsbHkgc2hvdWxkIGhh
-dmUgYWQ3MTR4XyBzeW1ib2wgcHJlZml4ZXMuICBpZiBpCnNhdyBhIGNyYXNoIGFuZCBpdCBqdXN0
-IHNhaWQgInN0YWdlX3h4eCIsIGl0IGlzbnQgaW1tZWRpYXRlbHkgb2J2aW91cwp3aGVyZSB0aGlz
-IHN5bWJvbCBpcyBjb21pbmcgZnJvbS4KCj4gK3N0YXRpYyBpbnQgc3RhZ2VfY2FsX2hpZ2hlc3Rf
-c3RhZ2Uoc3RydWN0IGFkNzE0eF9jaGlwICphZDcxNHgsIGludCBzdGFydF9zdGFnZSwKPiArIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIGludCBlbmRfc3RhZ2UpCj4gK3sKPiArIMKgIMKgIMKgIGludCBt
-YXhfcmVzID0gMDsKPiArIMKgIMKgIMKgIGludCBtYXhfaWR4ID0gMDsKPiArIMKgIMKgIMKgIGlu
-dCBpOwo+ICsKPiArIMKgIMKgIMKgIGZvciAoaSA9IHN0YXJ0X3N0YWdlOyBpIDw9IGVuZF9zdGFn
-ZTsgaSsrKSB7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBpZiAoYWQ3MTR4LT5zZW5zb3JfdmFs
-W2ldID4gbWF4X3Jlcykgewo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgbWF4
-X3JlcyA9IGFkNzE0eC0+c2Vuc29yX3ZhbFtpXTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIG1heF9pZHggPSBpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgfQo+ICsgwqAg
-wqAgwqAgfQoKc2hvdWxkIHRoZSBsb29wIGxpbWl0IHJlYWxseSBiZSAiPD0iIGFuZCBub3QgIjwi
-ID8gIHNlZW1zIHRvIGJlIHRoaXMKd2F5IHRocm91Z2hvdXQsIHNvIG1heWJlIHRoZSBsb2dpYyBp
-cyBjb3JyZWN0IC4uLgoKPiArc3RhdGljIGludCBzdGFnZV9jYWxfYWJzX3BvcyhzdHJ1Y3QgYWQ3
-MTR4X2NoaXAgKmFkNzE0eCwgaW50IHN0YXJ0X3N0YWdlLAo+ICsgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgaW50IGVuZF9zdGFnZSwgaW50IGhpZ2hlc3Rfc3RhZ2UsIGludCBtYXhfY29vcmQpCj4gK3sK
-PiArIMKgIMKgIMKgIGludCBhX3BhcmFtLCBiX3BhcmFtOwo+ICsKPiArIMKgIMKgIMKgIGlmICho
-aWdoZXN0X3N0YWdlID09IHN0YXJ0X3N0YWdlKSB7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBh
-X3BhcmFtID0gYWQ3MTR4LT5zZW5zb3JfdmFsW3N0YXJ0X3N0YWdlICsgMV07Cj4gKyDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCBiX3BhcmFtID0gYWQ3MTR4LT5zZW5zb3JfdmFsW3N0YXJ0X3N0YWdlXSAr
-Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBhZDcxNHgtPnNlbnNvcl92YWxb
-c3RhcnRfc3RhZ2UgKyAxXTsKPiArIMKgIMKgIMKgIH0gZWxzZSBpZiAoaGlnaGVzdF9zdGFnZSA9
-PSBlbmRfc3RhZ2UpIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGFfcGFyYW0gPSBhZDcxNHgt
-PnNlbnNvcl92YWxbZW5kX3N0YWdlXSAqCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCAoZW5kX3N0YWdlIC0gc3RhcnRfc3RhZ2UpICsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIGFkNzE0eC0+c2Vuc29yX3ZhbFtlbmRfc3RhZ2UgLSAxXSAqCj4gKyDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCAoZW5kX3N0YWdlIC0gc3RhcnRfc3RhZ2UgLSAx
-KTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJfcGFyYW0gPSBhZDcxNHgtPnNlbnNvcl92YWxb
-ZW5kX3N0YWdlXSArCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBhZDcxNHgt
-PnNlbnNvcl92YWxbZW5kX3N0YWdlIC0gMV07Cj4gKyDCoCDCoCDCoCB9IGVsc2Ugewo+ICsgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgYV9wYXJhbSA9IGFkNzE0eC0+c2Vuc29yX3ZhbFtoaWdoZXN0X3N0
-YWdlXSAqCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCAoaGlnaGVzdF9zdGFn
-ZSAtIHN0YXJ0X3N0YWdlKSArCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBh
-ZDcxNHgtPnNlbnNvcl92YWxbaGlnaGVzdF9zdGFnZSAtIDFdICoKPiArIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIChoaWdoZXN0X3N0YWdlIC0gc3RhcnRfc3RhZ2UgLSAxKSArCj4g
-KyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBhZDcxNHgtPnNlbnNvcl92YWxbaGln
-aGVzdF9zdGFnZSArIDFdICoKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgICho
-aWdoZXN0X3N0YWdlIC0gc3RhcnRfc3RhZ2UgKyAxKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IGJfcGFyYW0gPSBhZDcxNHgtPnNlbnNvcl92YWxbaGlnaGVzdF9zdGFnZV0gKwo+ICsgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgYWQ3MTR4LT5zZW5zb3JfdmFsW2hpZ2hlc3Rfc3Rh
-Z2UgLSAxXSArCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBhZDcxNHgtPnNl
-bnNvcl92YWxbaGlnaGVzdF9zdGFnZSArIDFdOwo+ICsgwqAgwqAgwqAgfQo+ICsKPiArIMKgIMKg
-IMKgIHJldHVybiAobWF4X2Nvb3JkIC8gKGVuZF9zdGFnZSAtIHN0YXJ0X3N0YWdlKSkgKiBhX3Bh
-cmFtIC8gYl9wYXJhbTsKPiArfQoKZG8gdGhlIGxvY2FsIHZhcnMgcmVhbGx5IG5lZWQgIl9zdGFn
-ZSIgc3VmZml4ID8gIGlmIHlvdSB0cmltbWVkIHRoYXQsCmkgaW1hZ2luZSBpdCdkIG1ha2UgdGhl
-IGNvZGUgYSBiaXQgZWFzaWVyIHRvIGRpZ2VzdC4KCj4gKy8qIE9uZSBidXR0b24gY2FuIGNvbm5l
-Y3QgdG8gbXVsdGkgcG9zdGl2ZSBhbmQgbmVnYXRpdmUgb2YgQ0RDcwo+ICsgKiBNdWx0aS1idXR0
-b25zIGNhbiBjb25uZWN0IHRvIHNhbWUgcG9zdGl2ZS9uZWdhdGl2ZSBvZiBvbmUgQ0RDCgpwbGVh
-c2UgcnVuIGEgc3BlbGwgY2hlY2tlciBvbiB5b3VyIGNvbW1lbnRzIC4uLgpwb3N0aXZlIC0+IHBv
-c2l0aXZlCgo+ICtzdGF0aWMgaW50IGFkNzE0eF9od19kZXRlY3Qoc3RydWN0IGFkNzE0eF9jaGlw
-ICphZDcxNHgpCgpzaG91bGQgYmUgX19kZXZpbml0Cgo+ICsgwqAgwqAgwqAgZGVmYXVsdDoKPiAr
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIGRldl9lcnIoJmFkNzE0eC0+YnVzLT5kZXYsICJGYWlsIHRv
-IGRldGVjdCBBRDcxNHggY2FwdG91Y2gsXAo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgcmVhZCBJRCBpcyAlMDR4XG4iLCBkYXRhKTsKCmxpbmUgY29udGlu
-dWF0aW9uIGluIHN0cmluZ3MgcHJvZHVjZXMgYXdmdWwgb3V0cHV0Cgo+ICtzdGF0aWMgaW50IGFk
-NzE0eF9od19pbml0KHN0cnVjdCBhZDcxNHhfY2hpcCAqYWQ3MTR4KQo+IC4uLgo+ICsgICAgICAg
-cmV0dXJuIDA7Cj4gLi4uCj4gKyAgICAgICBhZDcxNHhfaHdfaW5pdChhZDcxNHgpOwoKY29uc2lk
-ZXJpbmcgeW91IGFsd2F5cyByZXR1cm4gMCBhbmQgeW91IG5ldmVyIGNoZWNrIHRoZSByZXR1cm4s
-IHRoaXMKc2hvdWxkIGJlIGEgdm9pZCBmdW5jdGlvbgoKYW5kIGFkNzE0eF9od19pbml0IHNob3Vs
-ZCBiZSBfX2RldmluaXQKCj4gKyDCoCDCoCDCoCBkcnZfZGF0YSA9IGt6YWxsb2Moc2l6ZW9mKHN0
-cnVjdCBhZDcxNHhfZHJpdmVyX2RhdGEpLCBHRlBfS0VSTkVMKTsKCnNpemVvZigqZHJ2X2RhdGEp
-IC4uLiBhcHBsaWVzIHRvIGV2ZXJ5IGFsbG9jIGluIHRoaXMgZHJpdmVyCgo+ICsgaW5wdXRbYWxs
-b2NfaWR4LTFdLT5pZC5idXN0eXBlID0gQlVTX0kyQzsKCnlvdSBzZXQgYnVzdHlwZSB0byBJMkMg
-aW4gY29tbW9uIGNvZGUgZXZlbiB0aG91Z2ggdGhpcyB3aWxsIGJlCmV4ZWN1dGVkIGZvciBib3Ro
-IFNQSSBhbmQgSTJDIGludGVyZmFjZXMKCj4gKyDCoCDCoCDCoCBpZiAoYWQ3MTR4LT5idXMtPmly
-cSA+IDApIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHJldCA9IHJlcXVlc3RfdGhyZWFkZWRf
-aXJxKGFkNzE0eC0+YnVzLT5pcnEsIGFkNzE0eF9pbnRlcnJ1cHQsCj4gKyDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBhZDcxNHhfaW50ZXJydXB0X3RocmVhZCwg
-SVJRRl9UUklHR0VSX0ZBTExJTkcsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCAiYWQ3MTR4X2NhcHRvdWNoIiwgYWQ3MTR4KTsKPiArIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIGlmIChyZXQpIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IGRldl9lcnIoJmFkNzE0eC0+YnVzLT5kZXYsICJDYW4ndCBhbGxvY2F0ZSBpcnEgJWRcbiIsCj4g
-KyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCBhZDcxNHgtPmJ1cy0+aXJxKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IGdvdG8gZmFpbF9pcnE7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB9Cj4gKyDCoCDCoCDCoCB9
-IGVsc2UKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGRldl93YXJuKCZhZDcxNHgtPmJ1cy0+ZGV2
-LCAiSVJRIG5vdCBjb25maWd1cmVkIVxuIik7Cj4gKwo+ICsgICAgICAgcmV0dXJuIDA7CgpzaW5j
-ZSB0aGUgZHJpdmVyIHJlcXVpcmVzIGFuIElSUSBpbiBvcmRlciB0byB3b3JrLCB0aGlzIHNob3Vs
-ZCBlcnJvcgpvdXQgcmF0aGVyIHRoYW4gd2FybiBhbmQgcmV0dXJuIHN1Y2Nlc3MKCmFsc28sIHdv
-dWxkbnQgaXQgbWFrZSBtb3JlIHNlbnNlIHRvIHJlcXVlc3QgdGhlIElSUSBmaXJzdCBhbmQgdGhl
-bgpmYWlsIHJhdGhlciB0aGFuIGRvaW5nIGFsbCB0aGUgbWVtb3J5L2lucHV0IGFsbG9jYXRpb24g
-b25seSB0byBmaW5kCm91dCB0aGUgSVJRIGlzIGFscmVhZHkgdGFrZW4gPwoKPiAraW50IGFkNzE0
-eF9zcGlfcmVhZChzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCB1bnNpZ25lZCBzaG9ydCByZWcsCj4g
-KyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB1bnNpZ25lZCBzaG9ydCAqZGF0YSkKCnlvdSdyZSBtaXNz
-aW5nICJzdGF0aWMiIGhlcmUgYW5kIGluIGEgZmV3IG90aGVyIGZ1bmN0aW9ucwoKPiArewo+ICsg
-wqAgwqAgwqAgaW50IHJldDsKPiArIMKgIMKgIMKgIHVuc2lnbmVkIHNob3J0IHR4WzJdOwo+ICsg
-wqAgwqAgwqAgdW5zaWduZWQgc2hvcnQgcnhbMl07Cj4gKyDCoCDCoCDCoCBzdHJ1Y3Qgc3BpX3Ry
-YW5zZmVyIHQgPSB7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCAudHhfYnVmID0gdHgsCj4gKyDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCAucnhfYnVmID0gcngsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCAubGVuID0gNCwKPiArIMKgIMKgIMKgIH07Cj4gKyDCoCDCoCDCoCBzdHJ1Y3Qgc3BpX21lc3Nh
-Z2UgbTsKPiArCj4gKyDCoCDCoCDCoCB0eFswXSA9IChBRDcxNHhfU1BJX0FERFIgPDwgQUQ3MTR4
-X1NQSV9BRERSX1NIRlQpIHwKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIChBRDcxNHhfU1BJX1JF
-QUQgPDwgQUQ3MTR4X1NQSV9SRUFEX1NIRlQpIHwgcmVnOwo+ICsKPiArIMKgIMKgIMKgIHNwaV9t
-ZXNzYWdlX2luaXQoJm0pOwo+ICsgwqAgwqAgwqAgc3BpX21lc3NhZ2VfYWRkX3RhaWwoJnQsICZt
-KTsKPiArIMKgIMKgIMKgIHJldCA9IHNwaV9zeW5jKHNwaSwgJm0pOwoKY2FudCB5b3UgdXNlIHNw
-aV93cml0ZV90aGVuX3JlYWQoKSA/ICBkb250IGxldCB0aGUgdTgqIHByb3RvdHlwZSBzY2FyZQp5
-b3UsIGl0IHNob3VsZCB3b3JrIHdpdGggd3JpdGluZyAxNmJpdHMgYW5kIHRoZW4gcmVhZGluZyAx
-NmJpdHMuCgo+ICtpbnQgYWQ3MTR4X3NwaV93cml0ZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCB1
-bnNpZ25lZCBzaG9ydCByZWcsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB1bnNpZ25lZCBzaG9y
-dCBkYXRhKQo+ICt7Cj4gKyDCoCDCoCDCoCBpbnQgcmV0ID0gMDsKPiArIMKgIMKgIMKgIHVuc2ln
-bmVkIHNob3J0IHR4WzJdOwo+ICsgwqAgwqAgwqAgc3RydWN0IHNwaV90cmFuc2ZlciB0ID0gewo+
-ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgLnR4X2J1ZiA9IHR4LAo+ICsgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgLmxlbiA9IDQsCj4gKyDCoCDCoCDCoCB9Owo+ICsgwqAgwqAgwqAgc3RydWN0IHNwaV9t
-ZXNzYWdlIG07Cj4gKwo+ICsgwqAgwqAgwqAgdHhbMF0gPSAoQUQ3MTR4X1NQSV9BRERSIDw8IEFE
-NzE0eF9TUElfQUREUl9TSEZUKSB8IHJlZzsKPiArIMKgIMKgIMKgIHR4WzFdID0gZGF0YTsKPiAr
-Cj4gKyDCoCDCoCDCoCBzcGlfbWVzc2FnZV9pbml0KCZtKTsKPiArIMKgIMKgIMKgIHNwaV9tZXNz
-YWdlX2FkZF90YWlsKCZ0LCAmbSk7Cj4gKwo+ICsgwqAgwqAgwqAgcmV0ID0gc3BpX3N5bmMoc3Bp
-LCAmbSk7Cj4gKyDCoCDCoCDCoCBpZiAocmV0IDwgMCkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IGRldl9lcnIoJnNwaS0+ZGV2LCAiU1BJIHdyaXRlIGVycm9yXG4iKTsKPiArCj4gKyDCoCDCoCDC
-oCByZXR1cm4gcmV0Owo+ICt9CgpzZWVtcyBsaWtlIHNwaV93cml0ZSgpIHdvdWxkIGJlIGJldHRl
-cgoKPiArc3RhdGljIGludCBfX2RldmV4aXQgYWQ3MTR4X2kyY19yZW1vdmUoc3RydWN0IGkyY19j
-bGllbnQgKmNsaWVudCkKPiArewo+ICsgICAgICAgc3RydWN0IGFkNzE0eF9jaGlwICpjaGlwID0g
-aTJjX2dldF9jbGllbnRkYXRhKGNsaWVudCk7Cj4gKyAgICAgICBhZDcxNHhfcmVtb3ZlKGNoaXAp
-Owo+ICsKPiArICAgICAgIHJldHVybiAwOwo+ICt9CgpyZXR1cm4gYWQ3MTR4X3JlbW92ZShjaGlw
-KTsKCm9mIGNvdXJzZSwgaWYgeW91IHNpbXBseSBjcmVhdGVkIGEgbWFjcm8gImFkNzE0eF9nZXRf
-Y2hpcGRhdGEiIGFuZCBoYWQKaXQgZXZhbHVhdGUgdG8gZWl0aGVyIHRoZSBzcGkgb3IgaTJjIHZl
-cnNpb24gZGVwZW5kaW5nIG9uIHRoZQppbnRlcmZhY2UgZW5hYmxlZCwgdGhpcyBmdW5jdGlvbiBj
-b3VsZCBiZSBpbiBjb21tb24gY29kZSByYXRoZXIgdGhhbgpkdXBsaWNhdGluZyBpdCBmb3IgdGhl
-IHR3byBpbnRlcmZhY2VzCgpzYW1lIGdvZXMgZm9yIHRoZSBtb2R1bGUgaW5pdC9leGl0IGZ1bmN0
-aW9ucwoKPiArc3RhdGljIHN0cnVjdCBzcGlfZHJpdmVyIGFkNzE0eF9zcGlfZHJpdmVyID0gewo+
-ICsgwqAgwqAgwqAgLmRyaXZlciA9IHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIC5uYW1lIMKg
-ID0gImFkNzE0eF9jYXB0b3VjaCIsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCAuYnVzIMKgIMKg
-PSAmc3BpX2J1c190eXBlLAo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgLm93bmVyIMKgPSBUSElT
-X01PRFVMRSwKPiArIMKgIMKgIMKgIH0sCgppJ20gcHJldHR5IHN1cmUgeW91IGRvbnQgbmVlZCB0
-byBzZXQgLmJ1cyB5b3Vyc2VsZgoKPiArIMKgIMKgIMKgIC5wcm9iZSDCoCDCoCDCoCDCoCDCoD0g
-YWQ3MTR4X3NwaV9wcm9iZSwKPiArIMKgIMKgIMKgIC5yZW1vdmUgwqAgwqAgwqAgwqAgPSBfX2Rl
-dmV4aXRfcChhZDcxNHhfc3BpX3JlbW92ZSksCj4gKyDCoCDCoCDCoCAuc3VzcGVuZCDCoCDCoCDC
-oCDCoD0gYWQ3MTR4X3N1c3BlbmQsCj4gKyDCoCDCoCDCoCAucmVzdW1lIMKgIMKgIMKgIMKgID0g
-YWQ3MTR4X3Jlc3VtZSwKCnRoZXJlIGlzIGEgbmV3IHBvd2VyIG1hbmFnZW1lbnQgb3B0cyBzdHJ1
-Y3QgaW4gMi42LjMxIHRoYXQgc2hvdWxkIGJlIHVzZWQKCj4gK3N0YXRpYyBpbnQgX19pbml0IGFk
-NzE0eF9pbml0KHZvaWQpCj4gK3sKPiArIMKgIMKgIMKgIGludCByZXQ7Cj4gKwo+ICsgwqAgwqAg
-wqAgcmV0ID0gc3BpX3JlZ2lzdGVyX2RyaXZlcigmYWQ3MTR4X3NwaV9kcml2ZXIpOwo+ICsgwqAg
-wqAgwqAgaWYgKHJldCAhPSAwKSB7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBwcmludGsoS0VS
-Tl9FUlIgIkZhaWxlZCB0byByZWdpc3RlciBhZDcxNHggU1BJIGRyaXZlcjogJWRcbiIsCj4gKyDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZXQpOwo+ICsgwqAg
-wqAgwqAgfQo+ICsKPiArIMKgIMKgIMKgIHJldHVybiByZXQ7Cgpwcl9lcnIoKSwgbm8gbmVlZCBm
-b3IgdGhlIGJyYWNlcywgYW5kIG5vIG5lZWQgdG8gb3V0cHV0IHRoZSByZXQgdmFsdWUuCiB0aGlz
-IGlzIHRoZSBtb2R1bGUgaW5pdCBmdW5jdGlvbiB3aGljaCBtZWFucyB0aGF0IGVycm9yIHdpbGwg
-YmUKcGFzc2VkIGJhY2sgdXAgdG8gdXNlcnNwYWNlIGFuZCBpdCBjYW4gaGFuZGxlIGRpc3BsYXlp
-bmcgaXQuICBpbiB0aGF0CmNhc2UsIGl0IG1pZ2h0IGFzIHdlbGwgcmVhZDoKewogICAgcmV0dXJu
-IHNwaV9yZWdpc3Rlcl9kcml2ZXIoJmFkNzE0eF9zcGlfZHJpdmVyKTsKfQoKPiArIMKgIMKgIMKg
-IHU4IHR4WzRdOwo+ICsKPiArIMKgIMKgIMKgIC8qIERvIHJhdyBJMkMsIG5vdCBzbWJ1cyBjb21w
-YXRpYmxlICovCj4gKyDCoCDCoCDCoCB0eFswXSA9IChyZWcgJiAweEZGMDApID4+IDg7Cj4gKyDC
-oCDCoCDCoCB0eFsxXSA9IChyZWcgJiAweDAwRkYpOwo+ICsgwqAgwqAgwqAgdHhbMl0gPSAoZGF0
-YSAmIDB4RkYwMCkgPj4gODsKPiArIMKgIMKgIMKgIHR4WzNdID0gZGF0YSAmIDB4MDBGRjsKCnRo
-ZSBtYXNrcyBhcmUgcHJldHR5IHVzZWxlc3MgKGFuZCBpIHdvdWxkbnQgYmUgc3VycHJpc2VkIGlm
-IGdjYyBkb2VzbnQKb3B0aW1pemUgYWxsIG9mIHRoZW0gYXdheSkgc2luY2UgeW91J3JlIGFscmVh
-ZHkgbG9hZGluZyBpbnRvIGEgdTgKdHhbNF0gPSB7CiAgICByZWcgPj4gOCwKICAgIHJlZywKICAg
-IGRhdGEgPj4gOCwKICAgIGRhdGEsCn07Cgo+ICsgwqAgwqAgwqAgdTggdHhbMl07Cj4gKwo+ICsg
-wqAgwqAgwqAgLyogRG8gcmF3IEkyQywgbm90IHNtYnVzIGNvbXBhdGlibGUgKi8KPiArIMKgIMKg
-IMKgIHR4WzBdID0gKHJlZyAmIDB4RkYwMCkgPj4gODsKPiArIMKgIMKgIMKgIHR4WzFdID0gKHJl
-ZyAmIDB4MDBGRik7CgpzYW1lIGhlcmUKCj4gKyDCoCDCoCDCoCAqZGF0YSA9IHJ4WzBdOwo+ICsg
-wqAgwqAgwqAgKmRhdGEgPSAoKmRhdGEgPDwgOCkgfCByeFsxXTsKCmVybSwgdGhpcyBpcyBmdW5r
-eS4gIHdoeSBjYW50IHlvdSBkbyBpdCB3aXRoIG9uZSBhc3NpZ25tZW50ID8KCj4gK01PRFVMRV9E
-RVNDUklQVElPTigiYWQ3MTR4IGNhcHRvdWNoIGRyaXZlciIpOwoKcGxlYXNlIHVzZSBhIGRlc2Ny
-aXB0aW9uIGxpa2UgeW91IGRpZCBpbiB0aGUgS2NvbmZpZwotbWlrZQpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpVY2xpbnV4LWRpc3QtZGV2ZWwgbWFpbGlu
-ZyBsaXN0ClVjbGludXgtZGlzdC1kZXZlbEBibGFja2Zpbi51Y2xpbnV4Lm9yZwpodHRwczovL2Js
-YWNrZmluLnVjbGludXgub3JnL21haWxtYW4vbGlzdGluZm8vdWNsaW51eC1kaXN0LWRldmVs
+From: Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>
+
+The patch adds a SPI driver for the DaVinci series of SOCs
+
+[dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org: fixes and cleanup]
+
+Signed-off-by: Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>
+Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Signed-off-by: Mark A. Greer <mgreer-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Philby John <pjohn-k0rHJ+Hhz/SB+jHODAdFcQ@public.gmane.org>
+---
+This patch was tested on the DaVinci DM355/DM365 and DM6467.
+Separate patches have been sent to the DaVinci GIT kernel to enable SPI
+in DM355/DM365/DM6467 through board specific code.
+ arch/arm/mach-davinci/include/mach/spi.h |   45 ++
+ drivers/spi/Kconfig                      |    7 +
+ drivers/spi/Makefile                     |    1 +
+ drivers/spi/davinci_spi.c                |  757 ++++++++++++++++++++++++++++++
+ drivers/spi/davinci_spi.h                |  163 +++++++
+ 5 files changed, 973 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/mach-davinci/include/mach/spi.h
+ create mode 100644 drivers/spi/davinci_spi.c
+ create mode 100644 drivers/spi/davinci_spi.h
+
+diff --git a/arch/arm/mach-davinci/include/mach/spi.h b/arch/arm/mach-davinci/include/mach/spi.h
+new file mode 100644
+index 0000000..590393c
+--- /dev/null
++++ b/arch/arm/mach-davinci/include/mach/spi.h
+@@ -0,0 +1,45 @@
++/*
++ * Copyright 2009 Texas Instruments.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#ifndef __ARCH_ARM_DAVINCI_SPI_H
++#define __ARCH_ARM_DAVINCI_SPI_H
++
++#define SPI_INTERN_CS	0xFF
++
++enum {
++	SPI_VERSION_1,	/* For DM355/DM365/DM6467 */
++	SPI_VERSION_2,	/* For DA8xx */
++};
++
++struct davinci_spi_platform_data {
++	u8	version;
++	u8	num_chipselect;
++	u8	wdelay;
++	u8	odd_parity;
++	u8	parity_enable;
++	u8	wait_enable;
++	u8	timer_disable;
++	u8	clk_internal;
++	u8	cs_hold;
++	u8	intr_level;
++	u8	poll_mode;
++	u8	c2tdelay;
++	u8	t2cdelay;
++};
++
++#endif	/* __ARCH_ARM_DAVINCI_SPI_H */
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index cd3acfe..7f795c1 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -77,6 +77,13 @@ config SPI_AU1550
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called au1550_spi.
+ 
++config SPI_DAVINCI
++	tristate "SPI controller driver for DaVinci/DA8xx SoC's"
++	depends on SPI_MASTER && ARCH_DAVINCI
++	select SPI_BITBANG
++	help
++	  SPI master controller for DaVinci and DA8xx SPI modules.
++
+ config SPI_BITBANG
+ 	tristate "Utilities for Bitbanging SPI masters"
+ 	help
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index fbfc5f2..25b94fc 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -32,6 +32,7 @@ obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24xx.o
+ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
+ obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
+ obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
++obj-$(CONFIG_SPI_DAVINCI)		+= davinci_spi.o
+ # 	... add above this line ...
+ 
+ # SPI protocol drivers (device/link on bus)
+diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
+new file mode 100644
+index 0000000..0d93732
+--- /dev/null
++++ b/drivers/spi/davinci_spi.c
+@@ -0,0 +1,757 @@
++/*
++ * Copyright (C) 2009 Texas Instruments.
++ * Copyright (C) 2008 MontaVista Software, Inc. <source-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/gpio.h>
++#include <linux/module.h>
++#include <linux/delay.h>
++#include <linux/platform_device.h>
++#include <linux/err.h>
++#include <linux/clk.h>
++
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_bitbang.h>
++
++#include <mach/spi.h>
++
++#include "davinci_spi.h"
++
++static void davinci_spi_rx_buf_u8(u32 data, struct davinci_spi *davinci_spi)
++{
++	u8 *rx = davinci_spi->rx;
++
++	*rx++ = (u8)data;
++	davinci_spi->rx = rx;
++}
++
++static void davinci_spi_rx_buf_u16(u32 data, struct davinci_spi *davinci_spi)
++{
++	u16 *rx = davinci_spi->rx;
++
++	*rx++ = (u16)data;
++	davinci_spi->rx = rx;
++}
++
++static u32 davinci_spi_tx_buf_u8(struct davinci_spi *davinci_spi)
++{
++	u32 data;
++	const u8 *tx = davinci_spi->tx;
++
++	data = *tx++;
++	davinci_spi->tx = tx;
++	return data;
++}
++
++static u32 davinci_spi_tx_buf_u16(struct davinci_spi *davinci_spi)
++{
++	u32 data;
++	const u16 *tx = davinci_spi->tx;
++
++	data = *tx++;
++	davinci_spi->tx = tx;
++	return data;
++}
++
++static inline void set_io_bits(void __iomem *addr, u32 bits)
++{
++	u32 v = ioread32(addr);
++
++	v |= bits;
++	iowrite32(v, addr);
++}
++
++static inline void clear_io_bits(void __iomem *addr, u32 bits)
++{
++	u32 v = ioread32(addr);
++
++	v &= ~bits;
++	iowrite32(v, addr);
++}
++
++static inline void set_fmt_bits(void __iomem *addr, u32 bits, int cs_num)
++{
++	set_io_bits(addr + SPIFMT0 + (0x4 * cs_num), bits);
++}
++
++static inline void clear_fmt_bits(void __iomem *addr, u32 bits, int cs_num)
++{
++	clear_io_bits(addr + SPIFMT0 + (0x4 * cs_num), bits);
++}
++
++/*
++ * Interface to control the chip select signal
++ */
++static void davinci_spi_chipselect(struct spi_device *spi, int value)
++{
++	struct davinci_spi *davinci_spi;
++	struct davinci_spi_platform_data *pdata;
++	u32 data1_reg_val = 0;
++
++	davinci_spi = spi_master_get_devdata(spi->master);
++	pdata = davinci_spi->pdata;
++
++	/*
++	 * Board specific chip select logic decides the polarity and cs
++	 * line for the controller
++	 */
++	if (value == BITBANG_CS_INACTIVE) {
++		set_io_bits(davinci_spi->base + SPIDEF, CS_DEFAULT);
++
++		data1_reg_val |= CS_DEFAULT << SPIDAT1_CSNR_SHIFT;
++		iowrite32(data1_reg_val, davinci_spi->base + SPIDAT1);
++
++		while ((ioread32(davinci_spi->base + SPIBUF)
++					& SPIBUF_RXEMPTY_MASK) == 0)
++			cpu_relax();
++	}
++}
++
++/*
++ * davinci_spi_setup_transfer - This functions will determine transfer method
++ * @spi: spi device on which data transfer to be done
++ * @t: spi transfer in which transfer info is filled
++ *
++ * This function determines data transfer method (8/16 bit transfer).
++ * It will also set the SPI Clock Control register according to
++ * SPI slave device freq.
++ */
++static int davinci_spi_setup_transfer(struct spi_device *spi,
++		struct spi_transfer *t)
++{
++
++	struct davinci_spi *davinci_spi;
++	struct davinci_spi_platform_data *pdata;
++	u8 bits_per_word = 0;
++	u32 hz = 0, prescale;
++
++	davinci_spi = spi_master_get_devdata(spi->master);
++	pdata = davinci_spi->pdata;
++
++	if (t) {
++		bits_per_word = t->bits_per_word;
++		hz = t->speed_hz;
++	}
++
++	/* if bits_per_word is not set then set it default */
++	if (!bits_per_word)
++		bits_per_word = spi->bits_per_word;
++
++	/*
++	 * Assign function pointer to appropriate transfer method
++	 * 8bit or 16bit transfer
++	 */
++	if (bits_per_word <= 8 && bits_per_word >= 2) {
++		davinci_spi->get_rx = davinci_spi_rx_buf_u8;
++		davinci_spi->get_tx = davinci_spi_tx_buf_u8;
++		davinci_spi->slave[spi->chip_select].bytes_per_word = 1;
++	} else if (bits_per_word <= 16 && bits_per_word >= 2) {
++		davinci_spi->get_rx = davinci_spi_rx_buf_u16;
++		davinci_spi->get_tx = davinci_spi_tx_buf_u16;
++		davinci_spi->slave[spi->chip_select].bytes_per_word = 2;
++	} else
++		return -EINVAL;
++
++	if (!hz)
++		hz = spi->max_speed_hz;
++
++	clear_fmt_bits(davinci_spi->base, SPIFMT_CHARLEN_MASK,
++			spi->chip_select);
++	set_fmt_bits(davinci_spi->base, bits_per_word & 0x1f,
++			spi->chip_select);
++
++	prescale = ((clk_get_rate(davinci_spi->clk) / hz) - 1) & 0xff;
++
++	clear_fmt_bits(davinci_spi->base, 0x0000ff00, spi->chip_select);
++	set_fmt_bits(davinci_spi->base, prescale << 8, spi->chip_select);
++
++	return 0;
++}
++
++/*
++ * davinci_spi_setup - This functions will set default transfer method
++ * @spi: spi device on which data transfer to be done
++ *
++ * This functions sets the default transfer method.
++ */
++
++static int davinci_spi_setup(struct spi_device *spi)
++{
++	int retval;
++	struct davinci_spi *davinci_spi;
++
++	davinci_spi = spi_master_get_devdata(spi->master);
++
++	/*
++	 * SPI in DaVinci and DA8xx operate between
++	 * 600 KHz and 50 MHz
++	 */
++	if (spi->max_speed_hz < 600000 || spi->max_speed_hz > 50000000)
++		return -EINVAL;
++
++	/*
++	 * Set up SPIFMTn register, unique to this chipselect.
++	 *
++	 * NOTE: we could do all of these with one write.  Also, some
++	 * of the "version 2" features are found in chips that don't
++	 * support all of them...
++	 */
++	if (spi->mode & SPI_LSB_FIRST)
++		set_fmt_bits(davinci_spi->base, SPIFMT_SHIFTDIR_MASK,
++				spi->chip_select);
++	else
++		clear_fmt_bits(davinci_spi->base, SPIFMT_SHIFTDIR_MASK,
++				spi->chip_select);
++
++	if (spi->mode & SPI_CPOL)
++		set_fmt_bits(davinci_spi->base, SPIFMT_POLARITY_MASK,
++				spi->chip_select);
++	else
++		clear_fmt_bits(davinci_spi->base, SPIFMT_POLARITY_MASK,
++				spi->chip_select);
++
++	if (!(spi->mode & SPI_CPHA))
++		set_fmt_bits(davinci_spi->base, SPIFMT_PHASE_MASK,
++				spi->chip_select);
++	else
++		clear_fmt_bits(davinci_spi->base, SPIFMT_PHASE_MASK,
++				spi->chip_select);
++
++	/*
++	 * Version 1 hardware supports two basic SPI modes:
++	 *  - Standard SPI mode uses 4 pins, with chipselect
++	 *  - 3 pin SPI is a 4 pin variant without CS (SPI_NO_CS)
++	 *	(distinct from SPI_3WIRE, with just one data wire;
++	 *	or similar variants without MOSI or without MISO)
++	 *
++	 * Version 2 hardware supports an optional handshaking signal,
++	 * so it can support two more modes:
++	 *  - 5 pin SPI variant is standard SPI plus SPI_READY
++	 *  - 4 pin with enable is (SPI_READY | SPI_NO_CS)
++	 */
++
++	if (davinci_spi->version == SPI_VERSION_2) {
++		clear_fmt_bits(davinci_spi->base, SPIFMT_WDELAY_MASK,
++				spi->chip_select);
++		set_fmt_bits(davinci_spi->base,
++				(davinci_spi->pdata->wdelay
++						<< SPIFMT_WDELAY_SHIFT)
++					& SPIFMT_WDELAY_MASK,
++				spi->chip_select);
++
++		if (davinci_spi->pdata->odd_parity)
++			set_fmt_bits(davinci_spi->base,
++					SPIFMT_ODD_PARITY_MASK,
++					spi->chip_select);
++		else
++			clear_fmt_bits(davinci_spi->base,
++					SPIFMT_ODD_PARITY_MASK,
++					spi->chip_select);
++
++		if (davinci_spi->pdata->parity_enable)
++			set_fmt_bits(davinci_spi->base,
++					SPIFMT_PARITYENA_MASK,
++					spi->chip_select);
++		else
++			clear_fmt_bits(davinci_spi->base,
++					SPIFMT_PARITYENA_MASK,
++					spi->chip_select);
++
++		if (davinci_spi->pdata->wait_enable)
++			set_fmt_bits(davinci_spi->base,
++					SPIFMT_WAITENA_MASK,
++					spi->chip_select);
++		else
++			clear_fmt_bits(davinci_spi->base,
++					SPIFMT_WAITENA_MASK,
++					spi->chip_select);
++
++		if (davinci_spi->pdata->timer_disable)
++			set_fmt_bits(davinci_spi->base,
++					SPIFMT_DISTIMER_MASK,
++					spi->chip_select);
++		else
++			clear_fmt_bits(davinci_spi->base,
++					SPIFMT_DISTIMER_MASK,
++					spi->chip_select);
++	}
++
++	retval = davinci_spi_setup_transfer(spi, NULL);
++
++	return retval;
++}
++
++static int davinci_spi_bufs_prep(struct spi_device *spi,
++				 struct davinci_spi *davinci_spi)
++{
++	int op_mode = 0;
++
++	/*
++	 * REVISIT  unless devices disagree about SPI_LOOP or
++	 * SPI_READY (SPI_NO_CS only allows one device!), this
++	 * should not need to be done before each message...
++	 * optimize for both flags staying cleared.
++	 */
++
++	op_mode = SPIPC0_DIFUN_MASK
++		| SPIPC0_DOFUN_MASK
++		| SPIPC0_CLKFUN_MASK;
++	if (!(spi->mode & SPI_NO_CS))
++		op_mode |= 1 << spi->chip_select;
++	if (spi->mode & SPI_READY)
++		op_mode |= SPIPC0_SPIENA_MASK;
++
++	iowrite32(op_mode, davinci_spi->base + SPIPC0);
++
++	if (spi->mode & SPI_LOOP)
++		set_io_bits(davinci_spi->base + SPIGCR1,
++				SPIGCR1_LOOPBACK_MASK);
++	else
++		clear_io_bits(davinci_spi->base + SPIGCR1,
++				SPIGCR1_LOOPBACK_MASK);
++
++	return 0;
++}
++
++static int davinci_spi_check_error(struct davinci_spi *davinci_spi,
++				   int int_status)
++{
++	struct device *sdev = davinci_spi->bitbang.master->dev.parent;
++
++	if (int_status & SPIFLG_TIMEOUT_MASK) {
++		dev_dbg(sdev, "SPI Time-out Error\n");
++		return -ETIMEDOUT;
++	}
++	if (int_status & SPIFLG_DESYNC_MASK) {
++		dev_dbg(sdev, "SPI Desynchronization Error\n");
++		return -EIO;
++	}
++	if (int_status & SPIFLG_BITERR_MASK) {
++		dev_dbg(sdev, "SPI Bit error\n");
++		return -EIO;
++	}
++
++	if (davinci_spi->version == SPI_VERSION_2) {
++		if (int_status & SPIFLG_DLEN_ERR_MASK) {
++			dev_dbg(sdev, "SPI Data Length Error\n");
++			return -EIO;
++		}
++		if (int_status & SPIFLG_PARERR_MASK) {
++			dev_dbg(sdev, "SPI Parity Error\n");
++			return -EIO;
++		}
++		if (int_status & SPIFLG_OVRRUN_MASK) {
++			dev_dbg(sdev, "SPI Data Overrun error\n");
++			return -EIO;
++		}
++		if (int_status & SPIFLG_TX_INTR_MASK) {
++			dev_dbg(sdev, "SPI TX intr bit set\n");
++			return -EIO;
++		}
++		if (int_status & SPIFLG_BUF_INIT_ACTIVE_MASK) {
++			dev_dbg(sdev, "SPI Buffer Init Active\n");
++			return -EBUSY;
++		}
++	}
++
++	return 0;
++}
++
++/*
++ * davinci_spi_bufs - functions which will handle transfer data
++ * @spi: spi device on which data transfer to be done
++ * @t: spi transfer in which transfer info is filled
++ *
++ * This function will put data to be transferred into data register
++ * of SPI controller and then wait untill the completion will be marked
++ * by the IRQ Handler.
++ */
++static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct davinci_spi *davinci_spi;
++	int int_status, count, ret;
++	u8 conv, tmp;
++	u32 tx_data, data1_reg_val;
++	u32 buf_val, flg_val;
++	struct davinci_spi_platform_data *pdata;
++
++	davinci_spi = spi_master_get_devdata(spi->master);
++	pdata = davinci_spi->pdata;
++
++	davinci_spi->tx = t->tx_buf;
++	davinci_spi->rx = t->rx_buf;
++
++	/* convert len to words bbased on bits_per_word */
++	conv = davinci_spi->slave[spi->chip_select].bytes_per_word;
++	davinci_spi->count = t->len / conv;
++
++	INIT_COMPLETION(davinci_spi->done);
++
++	ret = davinci_spi_bufs_prep(spi, davinci_spi);
++	if (ret)
++		return ret;
++
++	/* Enable SPI */
++	set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_SPIENA_MASK);
++
++	iowrite32(0 | (pdata->c2tdelay << SPI_C2TDELAY_SHIFT) |
++			(pdata->t2cdelay << SPI_T2CDELAY_SHIFT),
++			davinci_spi->base + SPIDELAY);
++
++	count = davinci_spi->count;
++	data1_reg_val = pdata->cs_hold << SPIDAT1_CSHOLD_SHIFT;
++	tmp = ~(0x1 << spi->chip_select);
++
++	clear_io_bits(davinci_spi->base + SPIDEF, ~tmp);
++
++	data1_reg_val |= tmp << SPIDAT1_CSNR_SHIFT;
++
++	while ((ioread32(davinci_spi->base + SPIBUF)
++				& SPIBUF_RXEMPTY_MASK) == 0)
++		cpu_relax();
++
++	/* Determine the command to execute READ or WRITE */
++	if (t->tx_buf) {
++		clear_io_bits(davinci_spi->base + SPIINT, SPIINT_MASKALL);
++
++		while (1) {
++			tx_data = davinci_spi->get_tx(davinci_spi);
++
++			data1_reg_val &= ~(0xFFFF);
++			data1_reg_val |= (0xFFFF & tx_data);
++
++			buf_val = ioread32(davinci_spi->base + SPIBUF);
++			if ((buf_val & SPIBUF_TXFULL_MASK) == 0) {
++				iowrite32(data1_reg_val,
++						davinci_spi->base + SPIDAT1);
++
++				count--;
++			}
++			while (ioread32(davinci_spi->base + SPIBUF)
++					& SPIBUF_RXEMPTY_MASK)
++				cpu_relax();
++
++			/* getting the returned byte */
++			if (t->rx_buf) {
++				buf_val = ioread32(davinci_spi->base + SPIBUF);
++				davinci_spi->get_rx(buf_val, davinci_spi);
++			}
++			if (count <= 0)
++				break;
++		}
++	} else {
++		if (pdata->poll_mode) {
++			while (1) {
++				/* keeps the serial clock going */
++				if ((ioread32(davinci_spi->base + SPIBUF)
++						& SPIBUF_TXFULL_MASK) == 0)
++					iowrite32(data1_reg_val,
++						davinci_spi->base + SPIDAT1);
++
++				while (ioread32(davinci_spi->base + SPIBUF) &
++						SPIBUF_RXEMPTY_MASK)
++					cpu_relax();
++
++				flg_val = ioread32(davinci_spi->base + SPIFLG);
++				buf_val = ioread32(davinci_spi->base + SPIBUF);
++
++				davinci_spi->get_rx(buf_val, davinci_spi);
++
++				count--;
++				if (count <= 0)
++					break;
++			}
++		} else {	/* Receive in Interrupt mode */
++			int i;
++
++			for (i = 0; i < davinci_spi->count; i++) {
++				set_io_bits(davinci_spi->base + SPIINT,
++						SPIINT_BITERR_INTR
++						| SPIINT_OVRRUN_INTR
++						| SPIINT_RX_INTR);
++
++				iowrite32(data1_reg_val,
++						davinci_spi->base + SPIDAT1);
++
++				while (ioread32(davinci_spi->base + SPIINT) &
++						SPIINT_RX_INTR)
++					cpu_relax();
++			}
++			iowrite32((data1_reg_val & 0x0ffcffff),
++					davinci_spi->base + SPIDAT1);
++		}
++	}
++
++	/*
++	 * Check for bit error, desync error,parity error,timeout error and
++	 * receive overflow errors
++	 */
++	int_status = ioread32(davinci_spi->base + SPIFLG);
++
++	ret = davinci_spi_check_error(davinci_spi, int_status);
++	if (ret != 0)
++		return ret;
++
++	/* SPI Framework maintains the count only in bytes so convert back */
++	davinci_spi->count *= conv;
++
++	return t->len;
++}
++
++/*
++ * davinci_spi_irq - probe function for SPI Master Controller
++ * @irq: IRQ number for this SPI Master
++ * @context_data: structure for SPI Master controller davinci_spi
++ *
++ * ISR will determine that interrupt arrives either for READ or WRITE command.
++ * According to command it will do the appropriate action. It will check
++ * transfer length and if it is not zero then dispatch transfer command again.
++ * If transfer length is zero then it will indicate the COMPLETION so that
++ * davinci_spi_bufs function can go ahead.
++ */
++static irqreturn_t davinci_spi_irq(s32 irq, void *context_data)
++{
++	struct davinci_spi *davinci_spi = context_data;
++	u32 int_status, rx_data = 0;
++	irqreturn_t ret = IRQ_NONE;
++
++	int_status = ioread32(davinci_spi->base + SPIFLG);
++	while ((int_status & SPIFLG_MASK) != 0) {
++		ret = IRQ_HANDLED;
++
++		if (likely(int_status & SPIFLG_RX_INTR_MASK)) {
++			rx_data = ioread32(davinci_spi->base + SPIBUF);
++			davinci_spi->get_rx(rx_data, davinci_spi);
++
++			/* Disable Receive Interrupt */
++			iowrite32(~SPIINT_RX_INTR,
++					davinci_spi->base + SPIINT);
++		} else
++			(void)davinci_spi_check_error(davinci_spi, int_status);
++
++		int_status = ioread32(davinci_spi->base + SPIFLG);
++	}
++
++	return ret;
++}
++
++/*
++ * davinci_spi_probe - probe function for SPI Master Controller
++ * @pdev: platform_device structure which contains plateform specific data
++ *
++ * According to Linux Device Model this function will be invoked by Linux
++ * with plateform_device struct which contains the device specific info.
++ * This function will map the SPI controller's memory, register IRQ,
++ * Reset SPI controller and setting its registers to default value.
++ * It will invoke spi_bitbang_start to create work queue so that client driver
++ * can register transfer method to work queue.
++ */
++static int davinci_spi_probe(struct platform_device *pdev)
++{
++	struct spi_master *master;
++	struct davinci_spi *davinci_spi;
++	struct davinci_spi_platform_data *pdata;
++	struct resource *r, *mem;
++	int ret = 0;
++
++	pdata = pdev->dev.platform_data;
++	if (pdata == NULL) {
++		ret = -ENODEV;
++		goto err;
++	}
++
++	master = spi_alloc_master(&pdev->dev, sizeof(struct davinci_spi));
++	if (master == NULL) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	dev_set_drvdata(&pdev->dev, master);
++
++	davinci_spi = spi_master_get_devdata(master);
++	if (davinci_spi == NULL) {
++		ret = -ENOENT;
++		goto free_master;
++	}
++
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (r == NULL) {
++		ret = -ENOENT;
++		goto free_master;
++	}
++
++	davinci_spi->pbase = r->start;
++	davinci_spi->region_size = resource_size(r);
++	davinci_spi->pdata = pdata;
++
++	mem = request_mem_region(r->start, davinci_spi->region_size,
++					pdev->name);
++	if (mem == NULL) {
++		ret = -EBUSY;
++		goto free_master;
++	}
++
++	davinci_spi->base = (struct davinci_spi_reg __iomem *)
++			ioremap(r->start, davinci_spi->region_size);
++	if (davinci_spi->base == NULL) {
++		ret = -ENOMEM;
++		goto release_region;
++	}
++
++	davinci_spi->irq = platform_get_irq(pdev, 0);
++	if (davinci_spi->irq <= 0) {
++		ret = -EINVAL;
++		goto unmap_io;
++	}
++
++	ret = request_irq(davinci_spi->irq, davinci_spi_irq, IRQF_DISABLED,
++			  dev_name(&pdev->dev), davinci_spi);
++	if (ret != 0) {
++		ret = -EAGAIN;
++		goto unmap_io;
++	}
++
++	davinci_spi->bitbang.master = spi_master_get(master);
++	if (davinci_spi->bitbang.master == NULL) {
++		ret = -ENODEV;
++		goto err1;
++	}
++
++	davinci_spi->clk = clk_get(&pdev->dev, NULL);
++	if (IS_ERR(davinci_spi->clk)) {
++		ret = -ENODEV;
++		goto put_master;
++	}
++	clk_enable(davinci_spi->clk);
++
++
++	master->bus_num = pdev->id;
++	master->num_chipselect = pdata->num_chipselect;
++	master->setup = davinci_spi_setup;
++
++	davinci_spi->bitbang.chipselect = davinci_spi_chipselect;
++	davinci_spi->bitbang.setup_transfer = davinci_spi_setup_transfer;
++	davinci_spi->bitbang.txrx_bufs = davinci_spi_bufs_pio;
++
++	davinci_spi->bitbang.flags = SPI_NO_CS | SPI_LSB_FIRST | SPI_LOOP;
++	if (davinci_spi->version == SPI_VERSION_2)
++		davinci_spi->bitbang.flags |= SPI_READY;
++
++	davinci_spi->version = pdata->version;
++	davinci_spi->get_rx = davinci_spi_rx_buf_u8;
++	davinci_spi->get_tx = davinci_spi_tx_buf_u8;
++
++	init_completion(&davinci_spi->done);
++
++	/* Reset In/OUT SPI module */
++	iowrite32(0, davinci_spi->base + SPIGCR0);
++	udelay(100);
++	iowrite32(1, davinci_spi->base + SPIGCR0);
++
++	/* Clock internal */
++	if (davinci_spi->pdata->clk_internal)
++		set_io_bits(davinci_spi->base + SPIGCR1,
++				SPIGCR1_CLKMOD_MASK);
++	else
++		clear_io_bits(davinci_spi->base + SPIGCR1,
++				SPIGCR1_CLKMOD_MASK);
++
++	/* master mode default */
++	set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_MASTER_MASK);
++
++	if (davinci_spi->pdata->intr_level)
++		iowrite32(SPI_INTLVL_1, davinci_spi->base + SPILVL);
++	else
++		iowrite32(SPI_INTLVL_0, davinci_spi->base + SPILVL);
++
++	ret = spi_bitbang_start(&davinci_spi->bitbang);
++	if (ret != 0)
++		goto free_clk;
++
++	dev_info(&pdev->dev, "Controller at 0x%p (irq = %d) \n",
++		davinci_spi->base, davinci_spi->irq);
++
++	return ret;
++
++free_clk:
++	clk_disable(davinci_spi->clk);
++	clk_put(davinci_spi->clk);
++put_master:
++	spi_master_put(master);
++err1:
++	free_irq(davinci_spi->irq, davinci_spi);
++unmap_io:
++	iounmap(davinci_spi->base);
++release_region:
++	release_mem_region(davinci_spi->pbase, davinci_spi->region_size);
++free_master:
++	kfree(master);
++err:
++	return ret;
++}
++
++/*
++ * davinci_spi_remove - remove function for SPI Master Controller
++ * @pdev: platform_device structure which contains plateform specific data
++ *
++ * This function will do the reverse action of davinci_spi_probe function
++ * It will free the IRQ and SPI controller's memory region.
++ * It will also call spi_bitbang_stop to destroy the work queue which was
++ * created by spi_bitbang_start.
++ */
++static int __exit davinci_spi_remove(struct platform_device *pdev)
++{
++	struct davinci_spi *davinci_spi;
++	struct spi_master *master;
++
++	master = dev_get_drvdata(&pdev->dev);
++	davinci_spi = spi_master_get_devdata(master);
++
++	spi_bitbang_stop(&davinci_spi->bitbang);
++
++	clk_disable(davinci_spi->clk);
++	clk_put(davinci_spi->clk);
++	spi_master_put(master);
++	free_irq(davinci_spi->irq, davinci_spi);
++	iounmap(davinci_spi->base);
++	release_mem_region(davinci_spi->pbase, davinci_spi->region_size);
++
++	return 0;
++}
++
++static struct platform_driver davinci_spi_driver = {
++	.driver.name = "spi_davinci",
++	.remove = __exit_p(davinci_spi_remove),
++};
++
++static int __init davinci_spi_init(void)
++{
++	return platform_driver_probe(&davinci_spi_driver, davinci_spi_probe);
++}
++
++static void __exit davinci_spi_exit(void)
++{
++	platform_driver_unregister(&davinci_spi_driver);
++}
++
++module_init(davinci_spi_init);
++module_exit(davinci_spi_exit);
++
++MODULE_DESCRIPTION("TI DaVinci SPI Master Controller Driver");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/spi/davinci_spi.h b/drivers/spi/davinci_spi.h
+new file mode 100644
+index 0000000..b6a314b
+--- /dev/null
++++ b/drivers/spi/davinci_spi.h
+@@ -0,0 +1,163 @@
++/*
++ * Copyright (C) 2009 Texas Instruments.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef __DAVINCI_SPI_H
++#define __DAVINCI_SPI_H
++
++#define SPI_MAX_CHIPSELECT	2
++
++#define CS_DEFAULT	0xFF
++#define SCS0_SELECT	0x01
++#define SCS1_SELECT	0x02
++#define SCS2_SELECT	0x04
++#define SCS3_SELECT	0x08
++#define SCS4_SELECT	0x10
++#define SCS5_SELECT	0x20
++#define SCS6_SELECT	0x40
++#define SCS7_SELECT	0x80
++
++#define SPIFMT_PHASE_MASK	BIT(16)
++#define SPIFMT_POLARITY_MASK	BIT(17)
++#define SPIFMT_DISTIMER_MASK	BIT(18)
++#define SPIFMT_SHIFTDIR_MASK	BIT(20)
++#define SPIFMT_WAITENA_MASK	BIT(21)
++#define SPIFMT_PARITYENA_MASK	BIT(22)
++#define SPIFMT_ODD_PARITY_MASK	BIT(23)
++#define SPIFMT_WDELAY_MASK	0x3f000000u
++#define SPIFMT_WDELAY_SHIFT	24
++#define SPIFMT_CHARLEN_MASK	0x0000001Fu
++
++/* SPIGCR1 */
++#define SPIGCR1_SPIENA_MASK	0x01000000u
++
++/* SPIPC0 */
++#define SPIPC0_DIFUN_MASK	BIT(11)		/* MISO */
++#define SPIPC0_DOFUN_MASK	BIT(10)		/* MOSI */
++#define SPIPC0_CLKFUN_MASK	BIT(9)		/* CLK */
++#define SPIPC0_SPIENA_MASK	BIT(8)		/* nREADY */
++#define SPIPC0_EN1FUN_MASK	BIT(1)
++#define SPIPC0_EN0FUN_MASK	BIT(0)
++
++#define SPIINT_MASKALL		0x0101035F
++#define SPI_INTLVL_1		0x000001FFu
++#define SPI_INTLVL_0		0x00000000u
++
++/* SPIDAT1 */
++#define SPIDAT1_CSHOLD_MASK	BIT(28)
++#define SPIDAT1_CSHOLD_SHIFT	28
++#define SPIDAT1_CSNR_MASK	(BIT(17 | BIT(16))
++#define SPIDAT1_CSNR_SHIFT	16
++#define SPIDAT1_DFSEL_MASK	(BIT(24 | BIT(25))
++#define SPIGCR1_CLKMOD_MASK	BIT(1)
++#define SPIGCR1_MASTER_MASK     BIT(0)
++#define SPIGCR1_LOOPBACK_MASK	BIT(16)
++
++/* SPIBUF */
++#define SPIBUF_TXFULL_MASK	BIT(29)
++#define SPIBUF_RXEMPTY_MASK	BIT(31)
++
++/* Error Masks */
++#define SPIFLG_DLEN_ERR_MASK		BIT(0)
++#define SPIFLG_TIMEOUT_MASK		BIT(1)
++#define SPIFLG_PARERR_MASK		BIT(2)
++#define SPIFLG_DESYNC_MASK		BIT(3)
++#define SPIFLG_BITERR_MASK		BIT(4)
++#define SPIFLG_OVRRUN_MASK		BIT(6)
++#define SPIFLG_RX_INTR_MASK		BIT(8)
++#define SPIFLG_TX_INTR_MASK		BIT(9)
++#define SPIFLG_BUF_INIT_ACTIVE_MASK	BIT(24)
++#define SPIFLG_MASK			(SPIFLG_DLEN_ERR_MASK \
++				| SPIFLG_TIMEOUT_MASK | SPIFLG_PARERR_MASK \
++				| SPIFLG_DESYNC_MASK | SPIFLG_BITERR_MASK \
++				| SPIFLG_OVRRUN_MASK | SPIFLG_RX_INTR_MASK \
++				| SPIFLG_TX_INTR_MASK \
++				| SPIFLG_BUF_INIT_ACTIVE_MASK)
++
++#define SPIINT_DLEN_ERR_INTR	BIT(0)
++#define SPIINT_TIMEOUT_INTR	BIT(1)
++#define SPIINT_PARERR_INTR	BIT(2)
++#define SPIINT_DESYNC_INTR	BIT(3)
++#define SPIINT_BITERR_INTR	BIT(4)
++#define SPIINT_OVRRUN_INTR	BIT(6)
++#define SPIINT_RX_INTR		BIT(8)
++#define SPIINT_TX_INTR		BIT(9)
++#define SPIINT_DMA_REQ_EN	BIT(16)
++#define SPIINT_ENABLE_HIGHZ	BIT(24)
++
++#define SPI_T2CDELAY_SHIFT	16
++#define SPI_C2TDELAY_SHIFT	24
++
++/* SPI Controller registers */
++#define SPIGCR0		0x00
++#define SPIGCR1		0x04
++#define SPIINT		0x08
++#define SPILVL		0x0c
++#define SPIFLG		0x10
++#define SPIPC0		0x14
++#define SPIPC1		0x18
++#define SPIPC2		0x1c
++#define SPIPC3		0x20
++#define SPIPC4		0x24
++#define SPIPC5		0x28
++#define SPIPC6		0x2c
++#define SPIPC7		0x30
++#define SPIPC8		0x34
++#define SPIDAT0		0x38
++#define SPIDAT1		0x3c
++#define SPIBUF		0x40
++#define SPIEMU		0x44
++#define SPIDELAY	0x48
++#define SPIDEF		0x4c
++#define SPIFMT0		0x50
++#define SPIFMT1		0x54
++#define SPIFMT2		0x58
++#define SPIFMT3		0x5c
++#define TGINTVEC0	0x60
++#define TGINTVEC1	0x64
++
++struct davinci_spi_slave {
++	u32	cmd_to_write;
++	u32	clk_ctrl_to_write;
++	u32	bytes_per_word;
++	u8	active_cs;
++};
++
++/* SPI Controller driver's private data. */
++struct davinci_spi {
++	struct spi_bitbang	bitbang;
++	struct clk		*clk;
++
++	u8			version;
++	resource_size_t		pbase;
++	void __iomem		*base;
++	size_t			region_size;
++	u32			irq;
++	struct completion	done;
++
++	const void		*tx;
++	void			*rx;
++	int			count;
++	struct			davinci_spi_platform_data *pdata;
++
++	void			(*get_rx)(u32 rx_data, struct davinci_spi *);
++	u32			(*get_tx)(struct davinci_spi *);
++
++	struct davinci_spi_slave slave[SPI_MAX_CHIPSELECT];
++};
++
++#endif /* __DAVINCI_SPI_H */
+-- 
+1.6.0.4

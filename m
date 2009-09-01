@@ -1,17 +1,12 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [patch 2.6.31-rc7 2/3] spi: McSPI saves
-	CHCONFx too
-Date: Tue, 1 Sep 2009 13:57:26 -0700
-Message-ID: <20090901135726.96173f7e.akpm@linux-foundation.org>
-References: <200908272021.12070.david-b@pacbell.net>
+From: Linney <dominating-cmi1dCDkUD8@public.gmane.org>
+Subject: Absolutely necessary to have cheap lumber,
+	coal and iron. Bu
+Date: Tue, 01 Sep 2009 17:27:01 -0430
+Message-ID: <4A9D97B4.2030202@see-mi.nl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: multipart/mixed; boundary="------------040207060905010209090708"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200908272021.12070.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,45 +17,234 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 27 Aug 2009 20:21:11 -0700
-David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+This is a multi-part message in MIME format.
+--------------040207060905010209090708
+Content-Type: text/plain; charset=ISO-8859-11; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> From: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-> 
-> Previous restore was lazy and only restored CHxCONF when it was needed by a
-> specific chip select. This could cause occasional errors on an SPI bus where
-> multiple chip selects are in use.
-> 
-> Signed-off-by: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-> Signed-off-by: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
-> Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-> ---
->  drivers/spi/omap2_mcspi.c |   16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> --- a/drivers/spi/omap2_mcspi.c
-> +++ b/drivers/spi/omap2_mcspi.c
-> @@ -134,6 +134,7 @@ struct omap2_mcspi_cs {
->  	void __iomem		*base;
->  	unsigned long		phys;
->  	int			word_len;
-> +	struct list_head	node;
->  	/* Context save and restore shadow register */
->  	u32			chconf0;
->  };
-> @@ -145,6 +146,7 @@ struct omap2_mcspi_regs {
->  	u32 sysconfig;
->  	u32 modulctrl;
->  	u32 wakeupenable;
-> +	struct list_head cs;
->  };
+Tion by 1920 will amount to 580,000 tons, or more than a billion pounds.
+The principal lead-producing states are Missouri, Idaho, Utah, and
+Colorado. In Missouri it is probable that the present rate of increase
+could be kept up for at least fifty years. The other states could keep
+up the present production for many years but could not greatly increase
+it without exhausting the supply. As with most mineral resources in the
+United States, it is only the richest ores that are now drawn upon
+(except where lead is a by-product extracted with some other ore). If
+prices would advance, so as to make the low-grade ores profitable, the
+amount of our resources would be greatly increased. There is little
+waste in the mining or smelting of lead ores, and the slag, the waste,
+is always ready to be used again. In the refining and concentrating of
+lead the loss often amounts to as much as fifteen per cent. or twenty
+per cent. The best way to prevent final loss is to store all refuse
+until such time as the reworking becomes profitable. Improvement in
+methods has been great in the last fifteen years but more economical
+methods everywhere will be one of the necessities of the future. We can
+see that the lead resources of the United States are not large and that
+when our own supply is exhausted we can not turn to the rest of the
+world. The waste in mining is not large, and most of it can not be
+avoided at present prices; so that for the conservation, which we see is
+so important, we must turn to the uses of lead. The most necessary of
+these is for lead pi
 
-Which locking protects these new lists?
+--------------040207060905010209090708
+Content-Type: image/jpeg;
+ name="propellants.jpg"
+Content-Transfer-Encoding: base64
+Content-Disposition: inline;
+ filename="propellants.jpg"
 
-
+/9j/4AAQSkZJRgABAQEBLAEsAAD/2wBDADIiJSwlHzIsKSw4NTI7S31RS0VFS5ltc1p9tZ++
+u7Kfr6zI4f/zyNT/16yv+v/9////////wfD/////////////2wBDATU4OEtCS5NRUZP/zq/O
+////////////////////////////////////////////////////////////////////wAAR
+CAExAUcDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
+AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
+FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
+h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
+5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
+AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
+NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
+hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
+5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDSyR1/SlopMdxQAtFFFABRRRQAUUUUAFFF
+FABRRRQAUDpRRQAYpuSTgU6mr1agAAOOtKAQeuaB0FHegBaKKKADvRRRQAUUUhOMUAI3UU7v
+TSwJGDS5GetIYtFFFMQUHpRQaACiiigAooooAO1A6UHpQOlABRRRQAUUUUAVdT/48JPw/mKK
+NT/48JPw/mKKALVFFFAAfWjNFIOpHpQAtFFFABRRRQAUUUUAFFFFABRRRQAU0cE8U6igBBnH
+TtRznmgdB9KWkAUUUUwCiiigApD94UtIfvCgBG6iggHihvvCnd6BjNnoaUgljg06kB5IpiG4
+b2o+b0p9IaAEy/oKUluMCl70d6QCKT3paQdTS0AB6Ug6Up6UDpQAUUUUAFFFFAFXU/8Ajwk/
+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
+--------------040207060905010209090708
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--------------040207060905010209090708
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--------------040207060905010209090708--

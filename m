@@ -1,17 +1,18 @@
 From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.31-rc7] spi: Freescale STMP
-	driver
-Date: Wed, 2 Sep 2009 08:47:18 -0700
-Message-ID: <200909020847.18907.david-b@pacbell.net>
-References: <200908271847.43226.david-b@pacbell.net>
-	<20090901135112.58f50b30.akpm@linux-foundation.org>
+Subject: Re: [patch 2.6.31-rc7 2/3] spi: McSPI saves
+	CHCONFx too
+Date: Wed, 2 Sep 2009 08:53:16 -0700
+Message-ID: <200909020853.17212.david-b@pacbell.net>
+References: <200908272021.12070.david-b@pacbell.net>
+	<20090901135726.96173f7e.akpm@linux-foundation.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
 To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090901135112.58f50b30.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+In-Reply-To: <20090901135726.96173f7e.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -24,56 +25,49 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On Tuesday 01 September 2009, Andrew Morton wrote:
-> > +#define busy_wait(cond)=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0({=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0unsigned long end_jiffies =3D jiffies + STMP_SPI_TIMEOU=
-T;=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0bool succeeded =3D false;=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0do {=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if (cond) {=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0succeed=
-ed =3D true;=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0break;=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0cpu_relax();=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0} while (time_before(end_jiffies, jiffies));=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0succeeded;=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0\
-> > +=A0=A0=A0=A0=A0})
-> =
+> On Thu, 27 Aug 2009 20:21:11 -0700
+> David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> 
+> > From: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+> > 
+> > Previous restore was lazy and only restored CHxCONF when it was needed by a
+> > specific chip select. This could cause occasional errors on an SPI bus where
+> > multiple chip selects are in use.
+> > 
+> > Signed-off-by: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+> > Signed-off-by: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
+> > Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+> > ---
+> >  drivers/spi/omap2_mcspi.c |   16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> > 
+> > --- a/drivers/spi/omap2_mcspi.c
+> > +++ b/drivers/spi/omap2_mcspi.c
+> > @@ -134,6 +134,7 @@ struct omap2_mcspi_cs {
+> >  	void __iomem		*base;
+> >  	unsigned long		phys;
+> >  	int			word_len;
+> > +	struct list_head	node;
+> >  	/* Context save and restore shadow register */
+> >  	u32			chconf0;
+> >  };
+> > @@ -145,6 +146,7 @@ struct omap2_mcspi_regs {
+> >  	u32 sysconfig;
+> >  	u32 modulctrl;
+> >  	u32 wakeupenable;
+> > +	struct list_head cs;
+> >  };
+> 
+> Which locking protects these new lists?
 
-> Oh dear.
-
-Bothered me a bit too, but ... compared to <linux/wait.h> and
-all the wait_event_*() macros, I couldn't object much.  :)
+One's the head, one's the instance ... the list is used in
+activation and deactivation paths, so the same locks which
+already protect those paths.
 
 
----------------------------------------------------------------------------=
----
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day =
 
-trial. Simplify your report design, integration and deployment - and focus =
-on =
-
-what you do best, core application coding. Discover what's new with =
-
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july

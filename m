@@ -1,18 +1,19 @@
 From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [patch 2.6.31-rc7] spi: Freescale STMP
-	driver
-Date: Wed, 2 Sep 2009 09:42:39 -0700
-Message-ID: <20090902094239.d9d91680.akpm@linux-foundation.org>
-References: <200908271847.43226.david-b@pacbell.net>
-	<20090901135112.58f50b30.akpm@linux-foundation.org>
-	<200909020847.18907.david-b@pacbell.net>
+Subject: Re: [patch 2.6.31-rc7 2/3] spi: McSPI saves
+	CHCONFx too
+Date: Wed, 2 Sep 2009 09:53:47 -0700
+Message-ID: <20090902095347.a6d82e95.akpm@linux-foundation.org>
+References: <200908272021.12070.david-b@pacbell.net>
+	<20090901135726.96173f7e.akpm@linux-foundation.org>
+	<200909020853.17212.david-b@pacbell.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org
+Cc: khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
 To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <200909020847.18907.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+In-Reply-To: <200909020853.17212.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,34 +24,62 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 2 Sep 2009 08:47:18 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+On Wed, 2 Sep 2009 08:53:16 -0700 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
 
 > On Tuesday 01 September 2009, Andrew Morton wrote:
-> > > +#define busy_wait(cond)____________________________________________________________________________________________________________\
-> > > +__________({____________________________________________________________________________________________________________________________\
-> > > +__________unsigned long end_jiffies = jiffies + STMP_SPI_TIMEOUT;__________________\
-> > > +__________bool succeeded = false;__________________________________________________________________________________\
-> > > +__________do {________________________________________________________________________________________________________________________\
-> > > +__________________________if (cond) {__________________________________________________________________________________________\
-> > > +__________________________________________succeeded = true;______________________________________________________________\
-> > > +__________________________________________break;____________________________________________________________________________________\
-> > > +__________________________}______________________________________________________________________________________________________________\
-> > > +__________________________cpu_relax();________________________________________________________________________________________\
-> > > +__________} while (time_before(end_jiffies, jiffies));________________________________________\
-> > > +__________succeeded;____________________________________________________________________________________________________________\
-> > > +__________})
-
-(^^ your email client turns 0x09's into 0xa0's)
-
-
-> > Oh dear.
+> > On Thu, 27 Aug 2009 20:21:11 -0700
+> > David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+> > 
+> > > From: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+> > > 
+> > > Previous restore was lazy and only restored CHxCONF when it was needed by a
+> > > specific chip select. This could cause occasional errors on an SPI bus where
+> > > multiple chip selects are in use.
+> > > 
+> > > Signed-off-by: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+> > > Signed-off-by: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
+> > > Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+> > > ---
+> > >  drivers/spi/omap2_mcspi.c |   16 ++++++++++++++++
+> > >  1 file changed, 16 insertions(+)
+> > > 
+> > > --- a/drivers/spi/omap2_mcspi.c
+> > > +++ b/drivers/spi/omap2_mcspi.c
+> > > @@ -134,6 +134,7 @@ struct omap2_mcspi_cs {
+> > >  	void __iomem		*base;
+> > >  	unsigned long		phys;
+> > >  	int			word_len;
+> > > +	struct list_head	node;
+> > >  	/* Context save and restore shadow register */
+> > >  	u32			chconf0;
+> > >  };
+> > > @@ -145,6 +146,7 @@ struct omap2_mcspi_regs {
+> > >  	u32 sysconfig;
+> > >  	u32 modulctrl;
+> > >  	u32 wakeupenable;
+> > > +	struct list_head cs;
+> > >  };
+> > 
+> > Which locking protects these new lists?
 > 
-> Bothered me a bit too, but ... compared to <linux/wait.h> and
-> all the wait_event_*() macros, I couldn't object much.  :)
+> One's the head, one's the instance ... the list is used in
+> activation and deactivation paths, so the same locks which
+> already protect those paths.
+> 
 
-The use of a macro is a minor issue.
+Which locks are those?
 
-The "oh dear" issue is that this driver does so much busy-waiting.
+<looks for 10 seconds>
+
+omap2_mcspi_work() calls omap2_mcspi_enable_clocks() under mcspi->lock
+
+omap2_mcspi_setup() calls omap2_mcspi_enable_clocks() not under mcspi->lock
+
+The locking here is insufficiently clear and possibly buggy.
+
+Please revisit.  If it's missing, add it.  If it's unneeded, document
+it.  If it's actually present and correct, document it.
+
 
 ------------------------------------------------------------------------------
 Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 

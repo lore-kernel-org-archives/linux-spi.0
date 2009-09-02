@@ -1,19 +1,20 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [patch 2.6.31-rc7 2/3] spi: McSPI saves
-	CHCONFx too
-Date: Wed, 2 Sep 2009 08:53:16 -0700
-Message-ID: <200909020853.17212.david-b@pacbell.net>
-References: <200908272021.12070.david-b@pacbell.net>
-	<20090901135726.96173f7e.akpm@linux-foundation.org>
+From: dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
+Subject: Re: [patch 2.6.31-rc7] spi: Freescale STMP
+	driver
+Date: Wed, 02 Sep 2009 19:56:04 +0400
+Message-ID: <1251906964.30703.3.camel@hp>
+References: <200908271847.43226.david-b@pacbell.net>
+	<20090901135112.58f50b30.akpm@linux-foundation.org>
+	<200909020847.18907.david-b@pacbell.net>
+Reply-To: dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090901135726.96173f7e.akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200909020847.18907.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,45 +25,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 01 September 2009, Andrew Morton wrote:
-> On Thu, 27 Aug 2009 20:21:11 -0700
-> David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+On Wed, 2009-09-02 at 08:47 -0700, David Brownell wrote:
+> On Tuesday 01 September 2009, Andrew Morton wrote:
+> > > +#define busy_wait(cond)                                                      \
+> > > +     ({                                                              \
+> > > +     unsigned long end_jiffies = jiffies + STMP_SPI_TIMEOUT;         \
+> > > +     bool succeeded = false;                                         \
+> > > +     do {                                                            \
+> > > +             if (cond) {                                             \
+> > > +                     succeeded = true;                               \
+> > > +                     break;                                          \
+> > > +             }                                                       \
+> > > +             cpu_relax();                                            \
+> > > +     } while (time_before(end_jiffies, jiffies));                    \
+> > > +     succeeded;                                                      \
+> > > +     })
+> > 
+> > Oh dear.
 > 
-> > From: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-> > 
-> > Previous restore was lazy and only restored CHxCONF when it was needed by a
-> > specific chip select. This could cause occasional errors on an SPI bus where
-> > multiple chip selects are in use.
-> > 
-> > Signed-off-by: Tero Kristo <tero.kristo-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-> > Signed-off-by: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
-> > Signed-off-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-> > ---
-> >  drivers/spi/omap2_mcspi.c |   16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> > 
-> > --- a/drivers/spi/omap2_mcspi.c
-> > +++ b/drivers/spi/omap2_mcspi.c
-> > @@ -134,6 +134,7 @@ struct omap2_mcspi_cs {
-> >  	void __iomem		*base;
-> >  	unsigned long		phys;
-> >  	int			word_len;
-> > +	struct list_head	node;
-> >  	/* Context save and restore shadow register */
-> >  	u32			chconf0;
-> >  };
-> > @@ -145,6 +146,7 @@ struct omap2_mcspi_regs {
-> >  	u32 sysconfig;
-> >  	u32 modulctrl;
-> >  	u32 wakeupenable;
-> > +	struct list_head cs;
-> >  };
-> 
-> Which locking protects these new lists?
-
-One's the head, one's the instance ... the list is used in
-activation and deactivation paths, so the same locks which
-already protect those paths.
+> Bothered me a bit too, but ... compared to <linux/wait.h> and
+> all the wait_event_*() macros, I couldn't object much.  :)
+Yes, you've found the root of this ugly stuff :)
 
 
 

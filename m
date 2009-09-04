@@ -1,25 +1,58 @@
-From: Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 2/2] spi_txx9: Fix bit rate calculation
-Date: Fri, 4 Sep 2009 17:32:27 +0100
-Message-ID: <20090904163227.GB6699@linux-mips.org>
-References: <1251986341-16938-2-git-send-email-anemo@mba.ocn.ne.jp>
+From: Anton Vorontsov <avorontsov@ru.mvista.com>
+Subject: Re: [PATCH v2 0/8] spi_mpc8xxx: Add support for DMA transfers
+Date: Fri, 4 Sep 2009 20:37:27 +0400
+Message-ID: <20090904163727.GA27358@oksana.dev.rtsoft.ru>
+References: <20090818220304.GA23640@oksana.dev.rtsoft.ru>
+	<200908272141.59796.david-b@pacbell.net>
+Reply-To: avorontsov@ru.mvista.com
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-mips@linux-mips.org, spi-devel-general@lists.sourceforge.net,
-	david-b@pacbell.net
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Return-path: <linux-mips-bounce@linux-mips.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Greg Kroah-Hartman <gregkh@suse.de>, linux-kernel@vger.kernel.org,
+	David Brownell <david-b@pacbell.net>, linuxppc-dev@ozlabs.org,
+	spi-devel-general@lists.sourceforge.net,
+	Andrew Morton <akpm@linux-foundation.org>
+To: Kumar Gala <galak@kernel.crashing.org>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
 Content-Disposition: inline
-In-Reply-To: <1251986341-16938-2-git-send-email-anemo@mba.ocn.ne.jp>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
+In-Reply-To: <200908272141.59796.david-b@pacbell.net>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 03, 2009 at 10:59:01PM +0900, Atsushi Nemoto wrote:
+On Thu, Aug 27, 2009 at 09:41:59PM -0700, David Brownell wrote:
+> On Tuesday 18 August 2009, Anton Vorontsov wrote:
+> 
+> > - Fix build issues in fsl_qe_udc;
+> > - Some minor cosmetic changes in "Add support for QE DMA mode and
+> >   CPM1/CPM2 chips" patch.
+> 
+> Hmm ... the first four of these are pure PPC stuff and thus
+> not appropriate to send as SPI patches; but the second four
+> depend on them.
+> 
+> So I'll just say
+> 
+>   Acked-by: David Brownell <dbrownell@users.sourceforge.net>
+> 
+> and ask you to merge via the PPC tree.  (And hope that you
+> verified these are bisectable...)
 
-Atsushi's patches should probably be merged together.  I can take care of
-that if the SPI bit is acked by a maintainer.
+Thanks David.
+
+Kumar, can you please merge the SPI part of this patch set?
 
 Thanks,
 
-  Ralf
+-- 
+Anton Vorontsov
+email: cbouatmailru@gmail.com
+irc://irc.freenode.net/bd2

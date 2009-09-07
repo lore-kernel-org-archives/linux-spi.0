@@ -1,11 +1,11 @@
-From: Rachat de credits <newsletter-UspK5lnLoYFBDgjK7y7TUQ@public.gmane.org>
-Subject: Comment diminuer ses mensualites
-Date: 7 Sep 2009 07:11:27 -0000
-Message-ID: <20090907071127.32496.qmail@ks357949.kimsufi.com>
-Reply-To: Rachat de credits <newsletter-UspK5lnLoYFBDgjK7y7TUQ@public.gmane.org>
+From: "Shane Qykuikqr" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Trip delayed
+Date: Mon, 7 Sep 2009 14:37:43 +0300
+Message-ID: <3704RS.3195CC56.0246141635ROAEVSNJUDDBBYH6565@zeynep>
+Reply-To: Shane Omjqyn <kref-5URONGGNgjI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2836992188433308517=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============5328747806394568901=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,74 +17,141 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============5328747806394568901==
+Content-type: text/html; charset="UTF-8"
 
---===============2836992188433308517==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_ab55630c3672179005ce59aeaa116a78"
-
-
---_----------=_parties_ab55630c3672179005ce59aeaa116a78
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://www.solgate.com/svi/miroir.php?bat=solutdevis0909_ctrm
-
-solution-devis.com
-
-Le rachat de crédits est une solution pour retrouver une sérénité financière.
-Il a pour simple principe: d'englober dans un seul crédit la totalité des crédits en cours, quels que soit leur nature, leur durée ou leur taux.
-
-Avant de regrouper vos crédits, il faut bien comparer les différentes offres de regroupement de crédits sans se précipiter. Il faut aussi vérifier les frais de dossier ainsi que les durées de remboursement proposées. Une fois le coût total obtenu vous pourrez ensuite comparer facilement les différentes offres de rachat de crédits.
-
-plus d'infos sur http://www.solgate.com/svi/linkserv.php?bat=solutdevis0909_ctrm&nb=2210&n=9047704&c=credit
-
---------------------------------
-Cette offre solution devis vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.solgate.com/svi/gestionserv.php?nb=2210&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_ab55630c3672179005ce59aeaa116a78
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
-<head> 
-<title>solution-devis.com</title>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+<title>Love Experts</title>
+<style>
+a:link { color:#336699; text-decoration:none;}
+a:visited { color:#336699; text-decoration:none; }
+a:hover { color:#336699; text-decoration:underline; }
+img { border: 0px none; }
+p { margin: 0em 0em 1em 0em }
+</style>
 </head>
-<body><center>
-<p>
-<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.solgate.com/svi/miroir.php?bat=solutdevis0909_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#dd0b88;font-size:24px'>
-<p style='display:inline;'> <b><a href="http://www.solgate.com/svi/linkserv.php?bat=solutdevis0909_ctrm&nb=2210&n=9047704&c=credit" style="text-decoration:none;color:#dd0b88;">solution-devis.com</a></b></p>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#FFFFFF;'>
-<table><tr><td style="text-align:center;border:solid 1px black;padding: 5px;background-color:#a9aa8c;color:white;width:650px;">
-<a href="http://www.solgate.com/svi/linkserv.php?bat=solutdevis0909_ctrm&nb=2210&n=9047704&c=credit" style="text-decoration:none;color:#ffffff;">
-Le rachat de cr&eacute;dits est une solution pour retrouver une s&eacute;r&eacute;nit&eacute; financi&egrave;re.<br>
-<b>Il a pour simple principe:</b> d'englober dans un seul cr&eacute;dit la totalit&eacute; des cr&eacute;dits en cours, quels que soit leur nature, leur dur&eacute;e ou leur taux.<br>
-Avant de regrouper vos cr&eacute;dits, il faut bien <b>comparer les diff&eacute;rentes offres de regroupement de cr&eacute;dits</b> sans se pr&eacute;cipiter. Il faut aussi v&eacute;rifier les frais de dossier ainsi que les dur&eacute;es de remboursement propos&eacute;es.<br>Une fois le co&ucirc;t total obtenu vous pourrez ensuite comparer facilement les diff&eacute;rentes offres de rachat de cr&eacute;dits.</a>
-</td></tr></table>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<a href="http://www.solgate.com/svi/linkserv.php?bat=solutdevis0909_ctrm&nb=2210&n=9047704&c=credit" style="text-decoration:none;"><img src='http://ks300910.kimsufi.com/~actuduwe/img/bat/solutdevis.jpg' style='border:0px;'></a>
-</td></tr>
+<body text="#000000" link="#336699" vlink="#336699" alink="#336699" topmargin="2">
+<!-- oas ad begin-->
+
+<table width="728" cellpadding="0" cellspacing="2" border="0" style="font-size:9.0pt; font-family:verdana, arial, helvetica, sans-serif;line-height:12pt;clear:left">
+  <tr>
+    <td align="center"><!---- START ANCHORS ---->
+
+      <!---- END ANCHORS ---->
+
+      <!---- START HEADER ---->
+      <table width="728" height="101" cellspacing="1" cellpadding="1" border="0" bgcolor="#B6B6B6" align="left" style="clear:left">
+  <tr>
+    <td bgcolor="#FFFFFF" align="left">
+	<table width="100%" cellspacing="0" cellpadding="0" border="0" style="font-size:8.6pt; font-family:verdana, arial, helvetica, sans-serif;line-height:11pt;clear:left; height: 78px;" align="left">
+        <tr>
+          <td width="480" align="left">
+		  	<table cellpadding="0" cellspacing="0" border="0" style="clear:left">
+              <tr>
+
+                <td align="left"><span style="font-size:8.6pt; font-family:verdana, arial, helvetica, sans-serif;line-height:11pt">   <a href="http://6997e.wtupodih.cn/?aylufjp=3bb36cc562147a272a68f&xyyrig=167247733102461416359&oaevsnju=dbbyhzqo"> <font style="color:#336699">
+				About</font></a>  <font
+style="color:#f47b2f">|</font>  <a href="http://8b699.wtupodih.cn/?udylety=3bb36cc562147a272a68f&nywetaolik=167247733102461416359&oaevsnju=dbbyhzqo"> <font style="color:#336699">
+				Blog</font></a>  <font style="color:#f47b2f">|</font>  <a href="http://8b699.wtupodih.cn/?jpqbi=3bb36cc562147a272a68f&dyvysa=167247733102461416359&oaevsnju=dbbyhzqo">
+<font style="color:#336699">Forums</font></a>  <font style="color:#f47b2f">|</font>  <a href="http://8b699.wtupodih.cn/?kqdejjmyc=3bb36cc562147a272a68f&nahogemq=167247733102461416359&oaevsnju=dbbyhzqo"> <font style="color:#336699">
+				Search Topics</font></a>  <font style="color:#f47b2f">|</font>  <a
+href="http://8b699.wtupodih.cn/?yveeoepah=3bb36cc562147a272a68f&ijmecug=167247733102461416359&oaevsnju=dbbyhzqo"> <font style="color:#336699">
+				Ratings &amp; Stats</font></a>  <font style="color:#f47b2f">|</font>  <font style="color:#336699"><A TARGET="_blank"
+HREF="http://8b699.wtupodih.cn/?cinijt=3bb36cc562147a272a68f&eedoxjfui=167247733102461416359&oaevsnju=dbbyhzqo">
+				View Online</A></font></span></td>
+
+              </tr>
+            </table>
+		  				  <br><span style="color: #336699">
+							<font style="font-weight:bold; font-style: normal; font-variant: normal; font-size: 31px; line-height: normal; font-family: helvetica, verdana, arial, sans-serif;">
+              			    Love</font></span><font style="font:31px helvetica, verdana, arial, sans-serif;font-weight:bold;color:#000000"><a href="http://8b699.wtupodih.cn/?xekyhet=3bb36cc562147a272a68f&deixqhu=167247733102461416359&oaevsnju=dbbyhzqo" style="text-decoration:none">
+							Experts</a></font></td>
+        </tr>
+
+      </table></td>
+  </tr>
 </table>
-<br><br>
-<img src="http://www.solgate.com/svi/img_nb_2210_numuser_yyynumuseryyy.jpg" width=1 height=1 alt=''>
-<p>
-Ce message est envoy&eacute; par central marques - <a href="http://www.solgate.com/svi/gestionserv.php?nb=2210&cat=credit&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
-</p>
-</center></body>
-</html>
+
+      <!---- END HEADER ---->
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+<table width="728" cellpadding="5" cellspacing="1" border="0" bgcolor="#B6B6B6" style="font-size:9.0pt; font-family:verdana, arial, helvetica, sans-serif;line-height:12pt" align="left">
+
+        <tr>
+          <td width="100%" bgcolor="#FFFFFF" align="left" valign="top">
+			<!--START AD SKYSCRAPER-->
+<!--END AD SKYSCRAPER-->
+
+			<!-- START CONTENT -->
+            <span style="font-size:9.0pt; font-family:verdana, arial, helvetica, sans-serif;line-height:12pt">
+            <!--START Experts Columns-->
 
 
---_----------=_parties_ab55630c3672179005ce59aeaa116a78--
+<a name="3634884"></a>
+<table cellpadding="0" cellspacing="0" border="0" style="font:1.0em verdana, arial, helvetica, sans-serif; width: 680px;">
+  <tr>
+	<td valign="top">
+	<font style="font-size:1.20em;font-weight:bold;line-height:1.1em">Your mind
+	wants more of her. But your body says: &quot;Hey, I&#39;m tired!&quot;</font><br>
+	</td>
+  </tr>
+</table>
+<!--content_start-->
 
---===============2836992188433308517==
+<P>
+<img src="http://8b699.wtupodih.cn/spacer.gif"></P>
+					<P>Bad situation anyway. To avoid it you need to strengthen
+					your masculinity with the help of our special supplements.
+					Best discounts and free pilules this week only!<br><br>Your
+					personal discount code is: EAC04E86518C-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</P>
+
+<p> <font style="font-weight:bold;color:#f47b2f"> &raquo;</font>
+<a href="http://4057.wtupodih.cn/?ezqdoketq=3bb36cc562147a272a68f&uzyfaimy=167247733102461416359&oaevsnju=dbbyhzqo" target="new" style="color:#336699">Print this article</a>&nbsp;&nbsp;<font style="font-weight:bold;color:#f47b2f"> &raquo;</font>
+
+<a href="http://8b699.wtupodih.cn/?vuybe=3bb36cc562147a272a68f&dqtjune=6805916867471639957433&frbytb=txihhibopkxwc" target="new" style="color:#336699">E-mail a colleague</a>&nbsp;&nbsp;<font style="font-weight:bold;color:#f47b2f"> &raquo;</font>
+<a href="http://a5e42.wtupodih.cn/?luriys=ad19e2adab6c2a5ff9b765&emyzaragof=6805916867471639957433&frbytb=txihhibopkxwc" target="new" style="color:#336699">Post a comment</a>
+            <span style="font-size:9.0pt; font-family:verdana, arial, helvetica, sans-serif;line-height:12pt">
+<font style="font-weight:bold;color:#f47b2f"> &nbsp;&nbsp; &raquo;
+<a href="http://a5e42.wtupodih.cn/?qtegy=ad19e2adab6c2a5ff9b765&qmyvelay=6805916867471639957433&frbytb=txihhibopkxwc" target="new">Visit us</a></font></span></p>
+
+            </span>
+		</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr>
+    <td align="left"><!---- START FOOTER ---->
+      <table width="728" cellpadding="4" cellspacing="1" border="0" bgcolor="#B6B6B6" align="left" style="clear:left">
+  <tr>
+
+    <td align="center" bgcolor="#F1F6FA"><span style="font-size:8.6pt; font-family:verdana, arial, helvetica, sans-serif;line-height:9.0pt"> <font style="font-size:0.9em;color:#777777"> <a href="http://a5e42.wtupodih.cn/?odyasywqk=ad19e2adab6c2a5ff9b765&mqqvypacjf=6805916867471639957433&frbytb=txihhibopkxwc"><font
+style="color:#336699">Send us Feedback</font></a> | <a href="http://a5e42.wtupodih.cn/?deyzehir=ad19e2adab6c2a5ff9b765&qeconiocq=6805916867471639957433&frbytb=txihhibopkxwc"><font style="color:#336699">Technical Questions or Bug Reports</font></a> | <a
+href="http://a5e42.wtupodih.cn/?tatylo=ad19e2adab6c2a5ff9b765&itetulyb=6805916867471639957433&frbytb=txihhibopkxwc"><font style="color:#336699">Legal Notices, Licensing, Reprints & Permissions</font></a> | <a href="http://a5e42.wtupodih.cn/?igimynjhq=ad19e2adab6c2a5ff9b765&qtepuh=6805916867471639957433&frbytb=txihhibopkxwc"><font
+style="color:#336699">Privacy Policy</font></a>
+      <p>Otojuwjt Interactive Marketing LLC. 2009 All rights reserved.</p>
+
+      <p><a href="http://ad19.wtupodih.cn/?efiqpo=ad19e2adab6c2a5ff9b765&iucjqcjv=6805916867471639957433&frbytb=txihhibopkxwc"><font style="color:#336699">How to Advertise</font></a> | <a href="http://a5e42.wtupodih.cn/?wamqcqzuv=ad19e2adab6c2a5ff9b765&xanjp=6805916867471639957433&frbytb=txihhibopkxwc"><font style="color:#336699">Contact Us</font></a> |
+
+<a href="http://a5e42.wtupodih.cn/?jdupqvjap=ad19e2adab6c2a5ff9b765&yeomaw=6805916867471639957433&frbytb=txihhibopkxwc"><font style="color:#336699">Subscribe to Newsletters</font></a></p>
+    <a
+href="http://a5e42.wtupodih.cn/?qroniruiz=ad19e2adab6c2a5ff9b765&quhozqh=6805916867471639957433&frbytb=txihhibopkxwc"><font
+style="color:#336699">Click here to update your profile or unsubscribe.</font></a> </font> </span> </td>
+  </tr>
+</table>
+
+      <!---- END FOOTER ---->
+    </td>
+  </tr>
+</table>
+</body></html>
+
+
+--===============5328747806394568901==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -95,7 +162,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============2836992188433308517==
+--===============5328747806394568901==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -106,4 +173,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2836992188433308517==--
+--===============5328747806394568901==--

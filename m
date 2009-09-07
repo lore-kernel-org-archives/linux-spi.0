@@ -1,10 +1,11 @@
-From: "Oscar Qeyxjhax" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Add your playlist!
-Date: Sun, 06 Sep 2009 19:46:23 +0000
-Message-ID: <9931UEZ.45781709.73336945245TFGONMDUIQFHMZN10@kompas>
+From: Rachat de credits <newsletter-UspK5lnLoYFBDgjK7y7TUQ@public.gmane.org>
+Subject: Comment diminuer ses mensualites
+Date: 7 Sep 2009 07:11:27 -0000
+Message-ID: <20090907071127.32496.qmail@ks357949.kimsufi.com>
+Reply-To: Rachat de credits <newsletter-UspK5lnLoYFBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2315720729414334259=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============2836992188433308517=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,76 +17,74 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2315720729414334259==
-Content-type: text/html; charset="UTF-8"
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<title>USA Daily News</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+--===============2836992188433308517==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_ab55630c3672179005ce59aeaa116a78"
+
+
+--_----------=_parties_ab55630c3672179005ce59aeaa116a78
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.solgate.com/svi/miroir.php?bat=solutdevis0909_ctrm
+
+solution-devis.com
+
+Le rachat de crédits est une solution pour retrouver une sérénité financière.
+Il a pour simple principe: d'englober dans un seul crédit la totalité des crédits en cours, quels que soit leur nature, leur durée ou leur taux.
+
+Avant de regrouper vos crédits, il faut bien comparer les différentes offres de regroupement de crédits sans se précipiter. Il faut aussi vérifier les frais de dossier ainsi que les durées de remboursement proposées. Une fois le coût total obtenu vous pourrez ensuite comparer facilement les différentes offres de rachat de crédits.
+
+plus d'infos sur http://www.solgate.com/svi/linkserv.php?bat=solutdevis0909_ctrm&nb=2210&n=9047704&c=credit
+
+--------------------------------
+Cette offre solution devis vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.solgate.com/svi/gestionserv.php?nb=2210&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_ab55630c3672179005ce59aeaa116a78
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head> 
+<title>solution-devis.com</title>
 </head>
-<body>
-<table cellspacing="0" cellpadding="0" border="0" align="center">
-	<tbody>
-		<tr>
-			<td><center>
-					<font size="2" face="Arial, Helvetica, sans-serif">Having trouble viewing this e-mail? <a style="color: rgb(0, 89, 167);" href="http://9c70b.jdayupig.cn/?adimoxiw=8c3f6717095c555ae784784b&iloudegi=571934140637333694524527&gonmdu=qfhmzngcavp">View it online</a>.</font>
-
-				</center></td>
-		</tr>
-		<tr>
-			<td align="center">
-			<img alt="" src="http://70b23.jdayupig.cn/espacement.gif"><br></td>
-		</tr>
-		<tr>
-			<td valign="top"><table cellspacing="0" cellpadding="0" border="0">
-					<tbody>
-
-						<tr>
-							<td style="width: 580px; font-size: large">
-							<b>
-							<font face="Arial, Helvetica, sans-serif" color="#0059a6">
-							USA Daily Newsletter</font></b></td>
-						</tr>
-						<tr>
-							<td valign="top" style="width: 580px">
-
-								<font size="2" face="Arial, Helvetica, sans-serif">
-								<br />
-								<font color="#0059a6"> <strong><br>
-							<span style="font-size: x-large">Age is something
-							heavy</span></strong></font><br />
-								<br />
-								Your after-50 age is a press for your weenie
-							that doesn&#39;t allow it to stay when you want it to.
-							What can lighten the load and make you a man that
-							can satisfy her? Products from our e-store can! Over
-							100 of them, different prices, different types of
-							action. You choose and you never lose.</font><font size="2"><p align="right"><font face="Arial, Helvetica, sans-serif"><a style="color: rgb(0, 89, 166);" href="http://cfddb.jdayupig.cn/?apqridyc=8c3f6717095c555ae784784b&fonopycj=571934140637333694524527&gonmdu=qfhmzngcavp"><font color="#0059a6">Read more</font></a></font></p>
-
-								</font>
-								<hr size="1" noshade="" color="#0059a6" >
-								</td>
-						</tr>
-					</tbody>
-				</table></td>
-
-		</tr>
-		<tr>
-			<td width="600" bgcolor="#eff0f1" style="border-top: 1px solid rgb(121, 166, 205);"><br />
-				<center>
-					<a style="color: rgb(0, 89, 167);" href="http://70b23.jdayupig.cn/?ycjlqu=8c3f6717095c555ae784784b&jujcuga=571934140637333694524527&gonmdu=qfhmzngcavp"><font size="2" face="Arial, Helvetica, sans-serif" color="#0059a7">Privacy Policy</font></a>&#160;&#160;&#160;<a style="color: rgb(0, 89, 167);" href="http://70b23.jdayupig.cn/?afiza=8c3f6717095c555ae784784b&ymeher=571934140637333694524527&gonmdu=qfhmzngcavp"><font size="2" face="Arial, Helvetica, sans-serif" color="#0059a7">Send to a friend</font></a>&#160;&#160;&#160;<a style="color: rgb(0, 89, 167);" href="http://70b23.jdayupig.cn/?yxukujrafj=8c3f6717095c555ae784784b&oipoqk=571934140637333694524527&gonmdu=qfhmzngcavp"><font size="2" face="Arial, Helvetica, sans-serif" color="#0059a7">Unsubscribe</font></a></center>
-				<br />
-				&#160;</td>
-		</tr>
-	</tbody>
+<body><center>
+<p>
+<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.solgate.com/svi/miroir.php?bat=solutdevis0909_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#dd0b88;font-size:24px'>
+<p style='display:inline;'> <b><a href="http://www.solgate.com/svi/linkserv.php?bat=solutdevis0909_ctrm&nb=2210&n=9047704&c=credit" style="text-decoration:none;color:#dd0b88;">solution-devis.com</a></b></p>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#FFFFFF;'>
+<table><tr><td style="text-align:center;border:solid 1px black;padding: 5px;background-color:#a9aa8c;color:white;width:650px;">
+<a href="http://www.solgate.com/svi/linkserv.php?bat=solutdevis0909_ctrm&nb=2210&n=9047704&c=credit" style="text-decoration:none;color:#ffffff;">
+Le rachat de cr&eacute;dits est une solution pour retrouver une s&eacute;r&eacute;nit&eacute; financi&egrave;re.<br>
+<b>Il a pour simple principe:</b> d'englober dans un seul cr&eacute;dit la totalit&eacute; des cr&eacute;dits en cours, quels que soit leur nature, leur dur&eacute;e ou leur taux.<br>
+Avant de regrouper vos cr&eacute;dits, il faut bien <b>comparer les diff&eacute;rentes offres de regroupement de cr&eacute;dits</b> sans se pr&eacute;cipiter. Il faut aussi v&eacute;rifier les frais de dossier ainsi que les dur&eacute;es de remboursement propos&eacute;es.<br>Une fois le co&ucirc;t total obtenu vous pourrez ensuite comparer facilement les diff&eacute;rentes offres de rachat de cr&eacute;dits.</a>
+</td></tr></table>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<a href="http://www.solgate.com/svi/linkserv.php?bat=solutdevis0909_ctrm&nb=2210&n=9047704&c=credit" style="text-decoration:none;"><img src='http://ks300910.kimsufi.com/~actuduwe/img/bat/solutdevis.jpg' style='border:0px;'></a>
+</td></tr>
 </table>
-<img src='http://70b23.cfddb673.com/a00a4/245d/800eb92c72f12011ae33e5ecfa81704ff' height='1' width='1' align='right'></body>
+<br><br>
+<img src="http://www.solgate.com/svi/img_nb_2210_numuser_yyynumuseryyy.jpg" width=1 height=1 alt=''>
+<p>
+Ce message est envoy&eacute; par central marques - <a href="http://www.solgate.com/svi/gestionserv.php?nb=2210&cat=credit&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+</p>
+</center></body>
 </html>
 
 
---===============2315720729414334259==
+--_----------=_parties_ab55630c3672179005ce59aeaa116a78--
+
+--===============2836992188433308517==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -96,7 +95,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============2315720729414334259==
+--===============2836992188433308517==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -107,4 +106,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2315720729414334259==--
+--===============2836992188433308517==--

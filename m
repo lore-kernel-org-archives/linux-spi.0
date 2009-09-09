@@ -1,11 +1,10 @@
-From: Tranquillite Sante <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
-Subject: Stop aux mutuelles trop cheres
-Date: 9 Sep 2009 08:20:47 -0000
-Message-ID: <20090909082047.5168.qmail@ks359756.kimsufi.com>
-Reply-To: Tranquillite Sante <newsletter-+PfSmd74VtpeoWH0uzbU5w@public.gmane.org>
+From: "Snapfish par Plein Temps" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: Recevez 40 tirages photos gratuits
+Date: Wed,  9 Sep 2009 18:44:35 +0200 (CEST)
+Message-ID: <kppqic.1ht15q@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4058101388713196253=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============4586992667921040520=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,127 +16,92 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============4058101388713196253==
+--===============4586992667921040520==
 Content-Type: multipart/alternative;
-	boundary="_----------=_parties_f47b60fce1c8e08a0cb4fce02a5404c0"
+	boundary="=_b84757d3b17dc89b942e22740525e2da"
+
+--=_b84757d3b17dc89b942e22740525e2da
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
---_----------=_parties_f47b60fce1c8e08a0cb4fce02a5404c0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+--=_b84757d3b17dc89b942e22740525e2da
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Version "en ligne" de ce message: http://www.ctrm3.net/svi/miroir.php?bat=tranquillite0909_ctrm
-
-Tranquillité Santé
-
-La garantie d'un grand groupe
-Votre mutuelle à partir de 15,40€* (1) par mois seulement
-NOUVEAU: Le chèque-santé
-
-Une aide financière peut-être accordée lors de la souscription d'un contrat de couverture santé.
-Les + Tranquillité Santé :
-
-Assistance 24h/24
-
-Remboursements sous 48h
-
-Aucune avance de frais (2)
-
-Alerte remboursement (3) par sms ou email
-
-Résiliataion sans frais de votre ancienne mutuelle
-
-Consultation de votre compte et de vos remboursements sur internet
->>> Je demande un devis IMMEDIAT
-
-plus d'infos sur http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique
-
---------------------------------
-Cette offre tranquillite sante vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm3.net/svi/gestionserv.php?nb=2221&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_f47b60fce1c8e08a0cb4fce02a5404c0
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
-<head> 
-<title>Tranquillit&eacute; Sant&eacute;
-La garantie d'un grand groupe</title>
-</head>
-<body><center>
-<p>
-<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm3.net/svi/miroir.php?bat=tranquillite0909_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#02509d;font-size:18px'>
-<p style='display:inline;'> <a href="http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique" style="text-decoration:none;color:#02509d;"><b>Tranquillit&eacute; Sant&eacute;</b><br>
-<span style="font-size:16px">La garantie d'un grand groupe</span></a></p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#2369b1;font-family:Arial;color:#FFFFFF;font-size:18px;'>
-<a href="http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique" style="text-decoration:none;color:#FFFFFF;"><b>Votre mutuelle &agrave; partir de 15,40&euro;*<sup>(1)</sup> par mois seulement</b></a>
-</td></tr>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:12px;background-color:#FFFFFF;'>
-<ul><li> <b>NOUVEAU: Le ch&egrave;que-sant&eacute;</b><br>
-Une aide financi&egrave;re peut-&ecirc;tre accord&eacute;e lors de la souscription d'un contrat de couverture sant&eacute;. <span style="color:#ffcc3e"></b></span><br><br>
-<b>Les + Tranquillit&eacute; Sant&eacute;</b>:
-<li> Assistance <b>24h/24</b><br>
-<li> Remboursements <b>sous 48h</b><br>
-<li> <b>Aucune</b> avance de frais<sup>(2)</sup>
-<li> <b>Alerte remboursement</b> <sup>(3)</sup> par sms ou email<br>
-<li> <b>R&eacute;siliataion sans frais</b> de votre ancienne mutuelle<br>
-<li> Consultation de votre compte et de vos remboursements <b>sur internet</b></ul>
-<center><a href="http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique" style="text-decoration:none;color:blue;">>>><u><b>Je demande un devis IMMEDIAT</b></u></a><br></center>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="650">
- <tr>
- <td colspan="2"><a href="http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique"><img alt="Tranquillite sante:Stop aux complementaires trop cheres" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-01.jpg" border="0" width="650" height="376"></a></td>
- </tr>
- <tr>
- <td><a href="http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique"><img alt="Votre mutuelle a partir de 15,40 euros" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-02.jpg" border="0" width="378" height="310"></a></td>
- <td><a href="http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique"><img alt="Obtenez un devis gratuit" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-03.jpg" border="0" width="272" height="310"></a></td>
- </tr>
- <tr>
- <td colspan="2"><a href="http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique"><img alt="Tranquillite sante: un maximum de garanties a petits prix" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-04.jpg" border="0" width="650" height="218"></a></td>
- </tr>
- <tr>
- <td colspan="2"><a href="http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique"><img alt="Tranquillite sante: un maximum de garanties a petits prix" src="http://static.ad-mastering.net/Tranq_Sante/crea12/TS-05.jpg" border="0" width="650" height="100"></a></td>
- </tr>
- <tr>
- <td colspan="2" width="650">
- <div style="padding-top: 20px;">
- <p style="font-size: 12px; color: rgb(153, 153, 153);" align="center"><span style="font-size: 12px; color: rgb(153, 153, 153);">Pour toute r&eacute;clamation concernant ce message, merci de nous transferez cet email <a href="http://www.ctrm3.net/svi/linkserv.php?bat=tranquillite0909_ctrm&nb=2221&n=9047704&c=pratique&leroiurl=mailto%3Aabuse%40net-mastering.com" style="font-size: 12px; color: rgb(153, 153, 153);">en cliquant ici</a></span></p>
- <p style="font-size: 12px; color: rgb(153, 153, 153);">Vous disposez d'un droit d'acc&egrave;s, de rectification, de modification et de suppression des donn&eacute;es qui vous concernent (article 34 de la Loi Informatique et Libert&eacute;). Pour l'exercer, envoyez-nous un courrier &agrave; l'adresse suivante Tranquillit&eacute; Sant&eacute; - Service Marketing - 51/55 rue Hoche - 94200 Ivry s/Seine Garanties collectives souscrites aupr&egrave;s de la Swisslife Pr&eacute;voyance et Sant&eacute;. SA au capital de ? 150 000 000 - RCS 322 215 021 - Entreprise r&eacute;gie par le code des assurances.</p>
- <p style="font-size: 12px; color: rgb(153, 153, 153);">Tranquillit&eacute; sant&eacute; 51-55 rue Hoche 94767 Ivry-sur-Seine cedex - S.A.S. de courtage d'assurances au capital de 600.000 ?. RCS Cr&eacute;teil 395 325 053. Garantie financi&egrave;re et responsabilit&eacute; civile professionnelle conformes &agrave; la loi - Immatriculation ORIAS 07 002 941 www.orias.fr - Exerce sous le contr&ocirc;le de l'ACAM. Garanties collectives souscrites aupr&egrave;s de SwissLife Pr&eacute;voyance et sant&eacute; S.A. au capital de ? 150.000.000 - RCS Paris B 322 215 021 Entreprise r&eacute;gie par le code des assurances. Conform&eacute;ment &agrave; la loi informatique et libert&eacute;s n&deg;78-17 du 6 janvier 1978, vous pouvez sur simple demande, refuser que vos coordonn&eacute;es soient transmi
- ses &agrave; des fins de communication commerciale.<br>
- (1) Cotisation pour un adulte de 18 ans, option TM. Selon d&eacute;partement.<br>
- (2)Dans la limite des garanties souscrites.<br>
- (3) Avec l'option Confort.</p>
- </div>
- </td>
- </tr>
- </tbody>
-</table>
-<p><img alt="tranquillite sante" src="http://eskdom028.netmastering2.net/c/aVRV8M1XZ3CXEWV03" border="0" width="1" height="1"></p><img src="http://nodes.reactivpub.fr/mailing-208-12014-16926&group=" border="0" height="1" width="1"/>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.ctrm3.net/svi/img_nb_2221_numuser_yyynumuseryyy.jpg" width=1 height=1 alt=''>
-<p>
-Ce message est envoy&eacute; par central marques - <a href="http://www.ctrm3.net/svi/gestionserv.php?nb=2221&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
-</p>
-</center></body>
-</html>
+<html>=0D<head><title>Snapfish by HP vous offre 40 tirages gratuits pour vo=
+s photos</title>=0D<meta http-equiv=3DContent-Type content=3D"text/html; ch=
+arset=3Diso-8859-1">=0D</head>=0D<body bgcolor=3D"#ffffff" leftmargin=3D"0"=
+ topmargin=3D"0" marginwidth=3D"0" marginheight=3D"0">=0D<div align=3D"cent=
+er">=0D<table id=3D"Tableau_01" cellspacing=3D"0" cellpadding=3D"0" width=
+=3D"500" border=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"FONT-SIZE: 10px; COL=
+OR: #999999; PADDING-TOP: 5px; FONT-FAMILY: Arial, Helvetica, sans-serif" a=
+lign=3D"center" colspan=3D"2">Si vous n'arrivez pas =E0 lire cet email, <a =
+style=3D"COLOR: #999999" href=3D"http://www.snapfish.fr/fr_base_co_20" targ=
+et=3D"_blank">cliquez ici</a>.</td>=0D</tr>=0D<tr>=0D<td colspan=3D"2"><img=
+ height=3D"78" src=3D"http://edm.snapfish-france.com/09/header.gif" width=
+=3D"500" /></td>=0D</tr>=0D<tr>=0D<td colspan=3D"2" height=3D"190"><a href=
+=3D"http://www.snapfish.fr/fr_base_co_20" target=3D"_blank"><img height=3D"=
+190" alt=3D"Recevez 40 tirages gratuits" src=3D"http://edm.snapfish-france.=
+com/09/summer_banner3.jpg" width=3D"500" border=3D"0" /></a></td>=0D</tr>=
+=0D<tr>=0D<td valign=3D"top" width=3D"194"><a href=3D"http://www.snapfish.f=
+r/fr_base_co_20" target=3D"_blank"><img height=3D"152" src=3D"http://edm.sn=
+apfish-france.com/09/summer_prints3.jpg" width=3D"194" border=3D"0" /></a><=
+br /><a href=3D"http://www.snapfish.fr/fr_base_co_20" target=3D"_blank"><im=
+g alt=3D"Vos photos sur Snapfish : Stockage gratuit illimit=E9, Partage en =
+ligne gratuit, 40 tirages 10x15 gratuits" src=3D"http://edm.snapfish-france=
+.com/09/txt_blue2.gif" border=3D"0" /></a></td>=0D<td style=3D"PADDING-RIGH=
+T: 15px; PADDING-LEFT: 5px; FONT-SIZE: 11px; COLOR: #000000; FONT-FAMILY: V=
+erdana,Arial,Helvetica,sans-serif" valign=3D"top" width=3D"306">Bonjour,<br=
+ /><br />Snapfish by HP vous offre<strong> 40 tirages 10x15 GRATUITS </stro=
+ng>pour faire d=E9velopper vos photos.<br /><br />Snapfish est le service l=
+e plus utilis=E9 au monde pour stocker en illimit=E9, partager et commander=
+ des tirages photo =E0 seulement 0,09 =80 l'unit=E9, sans minimum de comman=
+de.<br /><br /><img height=3D"31" alt=3D"Pour profiter de cette offre, il s=
+uffit de :" src=3D"http://edm.snapfish-france.com/09/sub_title.gif" width=
+=3D"208" border=3D"0" /><br /><br />=0D<table style=3D"FONT-SIZE: 11px; COL=
+OR: #000000; FONT-FAMILY: Verdana,Arial,Helvetica,sans-serif" cellspacing=
+=3D"0" cellpadding=3D"0" width=3D"291">=0D<tbody>=0D<tr>=0D<td width=3D"31"=
+><img alt=3D"1" src=3D"http://edm.snapfish-france.com/09/1.gif" border=3D"0=
+" /></td>=0D<td>Cr=E9er un compte sur Snapfish =E0 l=92aide du bouton ci-de=
+ssous.</td>=0D</tr>=0D<tr>=0D<td colspan=3D"2"><img height=3D"10" src=3D"ht=
+tp://edm.snapfish-france.com/09/spacer.gif" width=3D"1" border=3D"0" /></td=
+>=0D</tr>=0D<tr>=0D<td><img alt=3D"2" src=3D"http://edm.snapfish-france.com=
+/09/2.gif" border=3D"0" /></td>=0D<td>T=E9l=E9charger vos photos pour voir =
+appara=EEtre votre cr=E9dit de <strong>40 tirages 10x15 gratuits</strong>.<=
+/td>=0D</tr>=0D<tr>=0D<td colspan=3D"2"><img height=3D"10" src=3D"http://ed=
+m.snapfish-france.com/09/spacer.gif" width=3D"1" border=3D"0" /></td>=0D</t=
+r>=0D<tr>=0D<td><img alt=3D"3" src=3D"http://edm.snapfish-france.com/09/3.g=
+if" border=3D"0" /></td>=0D<td>Vos tirages seront trait=E9s en 24h et livr=
+=E9s directement =E0 votre domicile.</td>=0D</tr>=0D</tbody>=0D</table><br =
+/><a href=3D"http://www.snapfish.fr/fr_base_co_20" target=3D"_blank"><img a=
+lt=3D"Cr=E9er un compte" src=3D"http://edm.snapfish-france.com/09/bt_regist=
+er.gif" border=3D"0" /></a><br /><br />NB : D=E9p=EAchez-vous d=92en profit=
+er, l=92offre est valable jusqu=92au 30 ao=FBt 2009 seulement. </td>=0D</tr=
+>=0D<tr>=0D<td valign=3D"top" width=3D"500" colspan=3D"2">&nbsp;</td>=0D</t=
+r>=0D<tr>=0D<td style=3D"FONT-WEIGHT: bold; FONT-SIZE: 10px; PADDING-BOTTOM=
+: 4px; COLOR: #ffffff; PADDING-TOP: 4px; FONT-FAMILY: Verdana, Arial, Helve=
+tica, sans-serif; TEXT-ALIGN: center" valign=3D"top" width=3D"500" bgcolor=
+=3D"#009bc2" colspan=3D"2" height=3D"21">Le meilleur de la photo online - 7=
+5 millions d'utilisateurs dans le monde</td>=0D</tr>=0D<tr>=0D<td style=3D"=
+FONT-SIZE: 10px; PADDING-BOTTOM: 10px; COLOR: #999999; PADDING-TOP: 10px; F=
+ONT-FAMILY: Arial, Helvetica, sans-serif" valign=3D"top" width=3D"500" cols=
+pan=3D"2">Offre r=E9serv=E9e aux nouveaux clients en France m=E9tropolitain=
+e et Monaco, valable une seule fois sur le format 10x15, hors frais de port=
+, jusqu=92au 30/08/09 inclus. Les tirages sont cr=E9dit=E9s sur le compte a=
+u t=E9l=E9chargement de la premi=E8re photo, puis valables 60 jours.</td>=
+=0D</tr>=0D</tbody>=0D</table>=0D</div><!-- End ImageReady Slices -->=0D<br=
+><br><div align=3D"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-=
+serif" >Conformement a la loi Informatique et Libertes, vous disposez d'un =
+droit d'acces et de rectification.
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA5093HM6E_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ5093HM6E_475197.png" /></body></html>
+--=_b84757d3b17dc89b942e22740525e2da--
 
 
---_----------=_parties_f47b60fce1c8e08a0cb4fce02a5404c0--
 
---===============4058101388713196253==
+--===============4586992667921040520==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -148,7 +112,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============4058101388713196253==
+--===============4586992667921040520==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -159,4 +123,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============4058101388713196253==--
+--===============4586992667921040520==--

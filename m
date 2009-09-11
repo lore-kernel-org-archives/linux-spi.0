@@ -1,10 +1,10 @@
-From: "=?ISO-8859-1?Q?Rentr=E9e?= Mutuelles" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: Pour vous,
-	les meilleures garanties aux plus bas prix
-Date: Fri, 11 Sep 2009 02:17:53 +0200 (CEST)
-Message-ID: <kps65o.fhnu6r@front.ta271.com>
+From: "Jenise Exymecec" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: Design's ready, sir! :)
+Date: Thu, 10 Sep 2009 21:46:50 -0300
+Message-ID: <4041DH.40917277B.4105834326IICRPEUAGXFIKPY189@anderson>
+Reply-To: Jenise Ojmi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5752717972747512015=="
+Content-Type: multipart/mixed; boundary="===============1752116317378423367=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,191 +17,126 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5752717972747512015==
-Content-Type: multipart/alternative;
-	boundary="=_153e83399b6b37dae8510d2b22658493"
+--===============1752116317378423367==
+Content-type: text/html; charset="iso-8859-1"
 
---=_153e83399b6b37dae8510d2b22658493
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-
---=_153e83399b6b37dae8510d2b22658493
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>=0D<head>=0D</head>=0D<body><center>=0D<table width=3D"731" border=3D=
-"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td valign=3D"m=
-iddle" style=3D"TEXT-ALIGN: center; FONT-FAMILY: verdana; HEIGHT: 30px; COL=
-OR: #53656c; FONT-SIZE: 14px; VERTICAL-ALIGN: middle"><a href=3D"http://www=
-.mutuelle-conseil.com/AA02RG988T/16">Si vous ne parvenez pas a lire cet e-m=
-ail cliquez ici</a></td>=0D</tr>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 0px; FO=
-NT-SIZE: 0px"><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16" tar=
-get=3D"_blank"><img src=3D"http://www.vtrack-gamma.com/hebergement_messages=
-/20473/klarte_1.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a=
-><br /></td>=0D</tr>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px=
-"><a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/kla=
-rte_2.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><br /></t=
-d>=0D</tr>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px">=0D<tabl=
-e cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"LINE=
--HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamma.com/he=
-bergement_messages/20473/klarte_3_1.gif" border=3D"0" complete=3D"true" com=
-plete=3D"true" /></a><br /></td>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE=
-: 0px"><a href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16" target=3D"=
-_blank"><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/=
-anime_bouton.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><b=
-r /></td>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D"h=
-ttp://www.vtrack-gamma.com/hebergement_messages/20473/klarte_3_2.gif" borde=
-r=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td>=0D</tr>=0D</t=
-body>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td valign=3D"top" style=3D"LINE-=
-HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamma.com/heb=
-ergement_messages/20473/klarte_4.gif" border=3D"0" complete=3D"true" comple=
-te=3D"true" /></a><br /></td>=0D</tr>=0D<tr>=0D<td valign=3D"top">=0D<table=
- height=3D"50" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=
-=0D<tr>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a>=
-<img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/left_1.g=
-if" border=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td>=0D<t=
-d>=0D<table height=3D"36" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=
-=0D<tbody>=0D<tr>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE=
-: 0px"><a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/2047=
-3/sc_coin.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><br /=
-></td>=0D<td width=3D"86" height=3D"19" valign=3D"middle" style=3D"TEXT-ALI=
-GN: left; FONT-FAMILY: Arial; COLOR: #009699; FONT-SIZE: 11px; FONT-WEIGHT:=
- bold"><a style=3D"FONT-FAMILY: Arial; COLOR: #009699; FONT-SIZE: 11px; FON=
-T-WEIGHT: bold; TEXT-DECORATION: none">Soins courant</a><br /></td>=0D</tr>=
-=0D<tr>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px" colspan=3D"2"><a h=
-ref=3D"http://www.mutuelle-conseil.com/AA02RG988T/16" target=3D"_blank"><im=
-g src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/sc_bas.gif"=
- border=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td>=0D</tr>=
-=0D</tbody>=0D</table>=0D</td>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: 0=
-px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamma.com/hebergement_=
-messages/20473/middle_1.gif" border=3D"0" complete=3D"true" complete=3D"tru=
-e" /></a><br /></td>=0D<td>=0D<table border=3D"0" cellspacing=3D"0" cellpad=
-ding=3D"0">=0D<tbody>=0D<tr>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: 0px=
-; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamma.com/hebergement_me=
-ssages/20473/dentaire_coin.gif" border=3D"0" complete=3D"true" complete=3D"=
-true" /></a><br /></td>=0D<td width=3D"86" height=3D"19" valign=3D"middle" =
-style=3D"TEXT-ALIGN: left; FONT-FAMILY: Arial; COLOR: #009ee0; FONT-SIZE: 1=
-1px; FONT-WEIGHT: bold"><a style=3D"FONT-FAMILY: Arial; COLOR: #009ee0; FON=
-T-SIZE: 11px; FONT-WEIGHT: bold; TEXT-DECORATION: none">&nbsp;&nbsp;&nbsp;&=
-nbsp;Dentaire</a><br /></td>=0D</tr>=0D<tr>=0D<td valign=3D"top" style=3D"L=
-INE-HEIGHT: 0px; FONT-SIZE: 0px" colspan=3D"2"><a href=3D"http://www.mutuel=
-le-conseil.com/AA02RG988T/16" target=3D"_blank"><img src=3D"http://www.vtra=
-ck-gamma.com/hebergement_messages/20473/dentaire_bas.gif" border=3D"0" comp=
-lete=3D"true" complete=3D"true" /></a><br /></td>=0D</tr>=0D</tbody>=0D</ta=
-ble>=0D</td>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px=
-"><a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/mid=
-dle_2.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><br /></t=
-d>=0D<td>=0D<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbo=
-dy>=0D<tr>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px">=
-<a><img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/optiq=
-ue_coin.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><br /><=
-/td>=0D<td width=3D"85" height=3D"19" valign=3D"middle" style=3D"TEXT-ALIGN=
-: left; FONT-FAMILY: Arial; COLOR: #f18e21; FONT-SIZE: 11px; FONT-WEIGHT: b=
-old"><a style=3D"FONT-FAMILY: Arial; COLOR: #f18e21; FONT-SIZE: 11px; FONT-=
-WEIGHT: bold; TEXT-DECORATION: none">&nbsp;&nbsp;&nbsp;&nbsp;Optique</a><br=
- /></td>=0D</tr>=0D<tr>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: 0px; FON=
-T-SIZE: 0px" colspan=3D"2"><a href=3D"http://www.mutuelle-conseil.com/AA02R=
-G988T/16" target=3D"_blank"><img src=3D"http://www.vtrack-gamma.com/heberge=
-ment_messages/20473/optique_bas.gif" border=3D"0" complete=3D"true" complet=
-e=3D"true" /></a><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D<td va=
-lign=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D"http=
-://www.vtrack-gamma.com/hebergement_messages/20473/middle_3.gif" border=3D"=
-0" complete=3D"true" complete=3D"true" /></a><br /></td>=0D<td>=0D<table bo=
-rder=3D"0" cellspacing=3D"0" cellpadding=3D"0" valign=3D"top">=0D<tbody>=0D=
-<tr>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a><im=
-g src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/hospitalisa=
-tion_coin.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><br /=
-></td>=0D<td width=3D"86" height=3D"19" valign=3D"middle" style=3D"TEXT-ALI=
-GN: left; FONT-FAMILY: Arial; COLOR: #ae0917; FONT-SIZE: 11px; FONT-WEIGHT:=
- bold"><a style=3D"FONT-FAMILY: Arial; COLOR: #ae0917; FONT-SIZE: 11px; FON=
-T-WEIGHT: bold; TEXT-DECORATION: none">Hospitalisation</a><br /></td>=0D</t=
-r>=0D<tr>=0D<td style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px" colspan=3D"2"><a=
- href=3D"http://www.mutuelle-conseil.com/AA02RG988T/16" target=3D"_blank"><=
-img src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/hospitali=
-sation_bas.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><br =
-/></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D<td valign=3D"top" style=3D=
-"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamma.c=
-om/hebergement_messages/20473/right_1.gif" border=3D"0" complete=3D"true" c=
-omplete=3D"true" /></a><br /></td>=0D</tr>=0D<tr>=0D<td valign=3D"top" styl=
-e=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px" colspan=3D"13"><a><img width=3D"731"=
- height=3D"9" src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473=
-/klarte_7.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><br /=
-></td>=0D</tr>=0D<tr>=0D<td colspan=3D"13">=0D<table cellspacing=3D"0" cell=
-padding=3D"0" valign=3D"top">=0D<tbody>=0D<tr>=0D<td valign=3D"top" style=
-=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamm=
-a.com/hebergement_messages/20473/left_2_1.gif" border=3D"0" complete=3D"tru=
-e" complete=3D"true" /></a><br /></td>=0D<td width=3D"107" height=3D"34" va=
-lign=3D"top" style=3D"BORDER-BOTTOM: 1px; BORDER-LEFT: 1px; BACKGROUND-COLO=
-R: #009699; BORDER-TOP: 1px; BORDER-RIGHT: 1px">=0D<table width=3D"107" cel=
-lspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"15" align=
-=3D"left" valign=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a><img=
- src=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/fleche_vert.=
-gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td>=0D<=
-td align=3D"left" style=3D"TEXT-ALIGN: left; FONT-FAMILY: Arial; COLOR: #ff=
-f; FONT-SIZE: 10px">jusqu'a</td>=0D</tr>=0D<tr>=0D<td />=0D<td style=3D"FON=
-T-FAMILY: Arial; COLOR: #fff; FONT-SIZE: 23px; FONT-WEIGHT: bold">370%</td>=
-=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D<td valign=3D"top" style=3D"LINE-H=
-EIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamma.com/hebe=
-rgement_messages/20473/middle_2_1.gif" border=3D"0" complete=3D"true" compl=
-ete=3D"true" /></a><br /></td>=0D<td width=3D"106" height=3D"34" valign=3D"=
-top" style=3D"BACKGROUND-COLOR: #009ddf">=0D<table width=3D"106" cellspacin=
-g=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"15" align=3D"lef=
-t" valign=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D=
-"http://www.vtrack-gamma.com/hebergement_messages/20473/fleche_blue.gif" bo=
-rder=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td>=0D<td alig=
-n=3D"left" style=3D"TEXT-ALIGN: left; FONT-FAMILY: Arial; COLOR: #fff; FONT=
--SIZE: 10px">jusqu'a</td>=0D</tr>=0D<tr>=0D<td />=0D<td style=3D"FONT-FAMIL=
-Y: Arial; COLOR: #fff; FONT-SIZE: 23px; FONT-WEIGHT: bold">470%</td>=0D</tr=
->=0D</tbody>=0D</table>=0D</td>=0D<td valign=3D"top" style=3D"LINE-HEIGHT: =
-0px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamma.com/hebergement=
-_messages/20473/middle_2_2.gif" border=3D"0" complete=3D"true" complete=3D"=
-true" /></a><br /></td>=0D<td width=3D"106" height=3D"36" valign=3D"top" st=
-yle=3D"BACKGROUND-COLOR: #f08d20">=0D<table width=3D"106" cellspacing=3D"0"=
- cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"14" valign=3D"top" styl=
-e=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gam=
-ma.com/hebergement_messages/20473/fleche_orange.gif" border=3D"0" complete=
-=3D"true" complete=3D"true" /></a><br /></td>=0D<td align=3D"left" valign=
-=3D"top" style=3D"TEXT-ALIGN: left; FONT-FAMILY: Arial; COLOR: #fff; FONT-S=
-IZE: 10px; PADDING-TOP: 2px">jusqu'a </td>=0D<td style=3D"FONT-FAMILY: Aria=
-l; COLOR: #fff; FONT-SIZE: 23px; FONT-WEIGHT: bold" rowspan=3D"2">&nbsp;</t=
-d>=0D</tr>=0D<tr>=0D<td />=0D<td><span style=3D"FONT-FAMILY: Arial; COLOR: =
-#fff; FONT-SIZE: 23px; FONT-WEIGHT: bold">554<span class=3D"Style2">euros</=
-span></span></td>=0D</tr>=0D<tr>=0D<td valign=3D"top" style=3D"FONT-FAMILY:=
- Arial; COLOR: #fff; FONT-SIZE: 10px" colspan=3D"3">de remboursement/an</td=
->=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D<td valign=3D"top" style=3D"LINE-=
-HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamma.com/heb=
-ergement_messages/20473/middle_2_3.gif" border=3D"0" complete=3D"true" comp=
-lete=3D"true" /></a><br /></td>=0D<td width=3D"106" height=3D"34" valign=3D=
-"top" style=3D"BACKGROUND-COLOR: #bb091a">=0D<table width=3D"106" cellspaci=
-ng=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"15" align=3D"le=
-ft" valign=3D"top" style=3D"LINE-HEIGHT: 0px; FONT-SIZE: 0px"><a><img src=
-=3D"http://www.vtrack-gamma.com/hebergement_messages/20473/fleche_rouge.gif=
-" border=3D"0" complete=3D"true" complete=3D"true" /></a><br /></td>=0D<td =
-align=3D"left" style=3D"TEXT-ALIGN: left; FONT-FAMILY: Arial; COLOR: #fff; =
-FONT-SIZE: 10px">jusqu'a</td>=0D</tr>=0D<tr>=0D<td />=0D<td style=3D"FONT-F=
-AMILY: Arial; COLOR: #fff; FONT-SIZE: 23px; FONT-WEIGHT: bold">250%</td>=0D=
-</tr>=0D</tbody>=0D</table>=0D</td>=0D<td valign=3D"top" style=3D"LINE-HEIG=
-HT: 0px; FONT-SIZE: 0px"><a><img src=3D"http://www.vtrack-gamma.com/heberge=
-ment_messages/20473/right_2_1.gif" border=3D"0" complete=3D"true" complete=
-=3D"true" /></a><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=
-=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td height=3D"23" style=3D"=
-LINE-HEIGHT: 0px; FONT-SIZE: 0px"><img src=3D"http://www.vtrack-gamma.com/h=
-ebergement_messages/20473/klarte_51.gif" border=3D"0" complete=3D"true" com=
-plete=3D"true" /></td>=0D</tr>=0D<tr>=0D<td align=3D"right" style=3D"FONT-F=
-AMILY: Arial; COLOR: #737173; FONT-SIZE: 10px">*garantie hospitaliere 20 - =
-25 ans</td>=0D</tr>=0D<tr>=0D<td valign=3D"middle" style=3D"TEXT-ALIGN: cen=
-ter; FONT-FAMILY: verdana; HEIGHT: 30px; COLOR: #53656c; FONT-SIZE: 9px; VE=
-RTICAL-ALIGN: middle"><br /><br /><br />Vous ne souhaitez plus recevoir cet=
-te Newsletter, cliquez <a style=3D"FONT-FAMILY: verdana; COLOR: #53656c; FO=
-NT-SIZE: 9px" href=3D"http://front.ta271.com/AA503F9W92/877">ici</a></td>=
-=0D</tr>=0D</tbody>=0D</table></center><img src=3D"http://front.ta271.com/Z=
-Z508VWUXE_165093.png" /></body></html>
---=_153e83399b6b37dae8510d2b22658493--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>People Play!</title>
+<style type="text/css">
+	width: 570px;
+}
+</style>
+</head>
+<body>
 
 
+<span style="font-size: 7.5pt; color: rgb(102, 102, 102); font-family: Arial;">
+If you are having trouble viewing this email <a title="http://0f91e.qmoxiciv.cn/?tepiku=1145b7277b06208d67539&jsuves=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank" href="http://f78b.qmoxiciv.cn/?cemul=1145b7277b06208d67539&utjcovapo=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+click here</a>.</span><table width="570" border="0" cellpadding="0" cellspacing="0" id="header">
+  <tbody>
+    <tr>
+      <td width="216" bgcolor="#63b42f">&nbsp;</td>
+      <td width="354" height="56" valign="top" bgcolor="#6EC43A">
 
---===============5752717972747512015==
+	  <table width="354" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="28" colspan="2">&nbsp;</td>
+          </tr>
+
+          <tr>
+            <td height="16" valign="bottom" style="font:20px Arial;color:#fff;text-transform:uppercase;">
+			Thursday, Sep 10</td>
+            <td width="115" valign="bottom"><a href="http://f78b.qmoxiciv.cn/?zqisa=1145b7277b06208d67539&xaysaboea=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" style="color:#2d7800;text-decoration:none;font:bold 11px Arial;">
+			forward to a friend</a></td>
+          </tr>
+
+        </table>
+		</td>
+    </tr>
+
+  </tbody>
+
+</table>
+<table width="570" border="0" cellspacing="0" cellpadding="0" id="body">
+  <tr>
+    <td width="387">
+		<table border="0" align="left" cellpadding="0" cellspacing="0" id="leftColumn" style="border-bottom:1px solid #ccc; width: 555px;">
+        <tr>
+          <td height="10"></td>
+        </tr>
+        <tr>
+          <td align="left" valign="middle" ><span>
+          <a style="font:bold 25px Arial;color:#000;text-decoration:none;" href="http://f78b.qmoxiciv.cn/?ofyqqw=1145b7277b06208d67539&njkjxy=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+		  What can make a man more self-reliant than previous victories?</a>
+          </span></td>
+
+        </tr>
+        <tr>
+          <td height="5" valign="top">
+		  <img src="http://f78b.qmoxiciv.cn/spacer.gif" /></td>
+        </tr>
+        <tr>
+          <td align="left" valign="top" style="font:13px Arial;color:#000;" id="description">
+          What victories can be more important than amorous ones? Finally, what
+		  facilitates amorous victories better than our Special Products for
+		  Men? Nothing copes with this task better!<br />
+		  <br />
+		  <b><a href="http://e4e.qmoxiciv.cn/?ihaumyk=1145b7277b06208d67539&nqwjb=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Buy the best solution now</a></b></td>
+
+        </tr>
+        <tr>
+          <td height="10" valign="top"></td>
+        </tr>
+        <tr>
+          <td height="10" valign="top" style="font:13px Arial;color:#000;">&nbsp;</td>
+
+        </tr>
+        </table>
+	</td>
+
+  </tr>
+
+</table>
+<table width="570" border="0" cellspacing="0" cellpadding="0" id="footer">
+  <tr>
+    <td height="40" align="center" valign="bottom" style="text-align:center;"><a href="http://f78b.qmoxiciv.cn/?vacepepef=1145b7277b06208d67539&lanyme=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" style="font:bold 10px Arial;color:#666;text-decoration:none;">
+	UNSUBSCRIBE</a> · <a href="http://f78b.qmoxiciv.cn/?axoxjresur=1145b7277b06208d67539&ydywi=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" style="font:bold 10px Arial;color:#666;text-decoration:none;">
+	PRIVACY POLICY</a> · <a href="http://f78b.qmoxiciv.cn/?jvosj=1145b7277b06208d67539&caljho=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" style="font:bold 10px Arial;color:#666;text-decoration:none;">
+	EMAIL OPT-OUTS</a><br />
+
+      <span style="font:10px Arial;color:#666;text-decoration:none;">Copyright ©
+	2009 Time Inc. All rights reserved. Reproduction in whole or in part without
+	permission is prohibited.</span></td>
+  </tr>
+
+</table>
+<table cellspacing="0" cellpadding="0" border="0" id="footer">
+  <tbody><tr>
+	<td valign="top" height="10" align="left" style="color: rgb(102, 102, 102); font-family: Arial; font-style: normal; font-variant: normal; font-weight: normal; font-size: 10px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none;">
+	&nbsp;</td>
+  </tr>
+  <tr>
+
+	<td valign="top" height="40" align="left" style="color: rgb(102, 102, 102); font-family: Arial; font-style: normal; font-variant: normal; font-weight: normal; font-size: 10px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none;">
+	  If you have any questions about your PEOPLE magazine subscription, please
+	  contact Subscriber Services.<br/>
+	  You may also mail inquiries to: <br/>
+	  <br/>
+	  PEOPLE Customer Service<br/>
+	  ATTENTION: PEOPLE Consumer Affairs<br/>
+	  3000 University Center Drive<br/>
+
+	  Tampa, FL 33612-6408</td>
+  </tr>
+</tbody></table>
+</body>
+</html>
+
+
+--===============1752116317378423367==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -212,7 +147,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============5752717972747512015==
+--===============1752116317378423367==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -223,4 +158,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5752717972747512015==--
+--===============1752116317378423367==--

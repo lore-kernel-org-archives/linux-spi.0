@@ -1,10 +1,10 @@
-From: "Jenise Exymecec" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: Design's ready, sir! :)
-Date: Thu, 10 Sep 2009 21:46:50 -0300
-Message-ID: <4041DH.40917277B.4105834326IICRPEUAGXFIKPY189@anderson>
-Reply-To: Jenise Ojmi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: "Windy Piuhuibi" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] People arise!
+Date: Fri, 11 Sep 2009 20:22:49 +0300
+Message-ID: <7339PV.701765F36.2605748570668DIKZKGNZOCZFBGO1416@Mani>
+Reply-To: Windy Ujxom <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1752116317378423367=="
+Content-Type: multipart/mixed; boundary="===============4272547463339286399=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,126 +17,152 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1752116317378423367==
-Content-type: text/html; charset="iso-8859-1"
+--===============4272547463339286399==
+Content-type: text/html; charset="utf-8"
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>People Play!</title>
-<style type="text/css">
-	width: 570px;
-}
-</style>
-</head>
-<body>
+<html><HEAD><TITLE>NEWS</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8" />
+<STYLE type=text/css>
+            <!--
+            body,td,th {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 12px;
+                font-weight: normal;
+            }
+            -->
+        </STYLE>
+</HEAD>
+<BODY style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: #fff; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px">
+<TABLE cellSpacing=0 cellPadding=0 width=644 align=center border=0>
+<TBODY>
+
+<TR>
+<TD bgColor=#f5f5f5 height=15><SPAN style="FONT-WEIGHT: bold">spi-devel-general</SPAN>, this is your NEWS update for
+Friday, 11 September 2009</TD></TR>
+<TR>
+<TD height=14></TD></TR>
+<TR>
+<TD vAlign=top width=316>
+<TABLE cellSpacing=0 cellPadding=0 width=316 border=0>
+<TBODY>
+<TR>
+<TD vAlign=top>
+<TABLE cellSpacing=0 cellPadding=0 width=316 border=0>
+
+<TBODY>
+<TR>
+<TD style="FONT-WEIGHT: 700; FONT-SIZE: 15px; TEXT-INDENT: 8px" height=21>Personalise your newsletter </TD></TR>
+<TR>
+<TD style="BORDER-TOP: #e58f00 3px solid" vAlign=top bgColor=#ffe3a7>
+<DIV style="MARGIN: 8px">
+<P>You can choose - and change - the sort of news you get in this newsletter. </P>
+<P><STRONG><A style="COLOR: #094f95; TEXT-DECORATION: none" href="http://3e5.qwumekul.cn/?akoiyt=09cab65f3694a08b7e8c0ba&reqabub=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Customise your newsletter now </A></STRONG></P></DIV></TD></TR></TBODY></TABLE></TD></TR>
+<TR>
+<TD height=10>&nbsp;</TD></TR>
+<TR>
+<TD><!-- most pop -->
+<TABLE cellSpacing=0 cellPadding=0 width=316 border=0>
+<TBODY>
+
+<TR>
+<TD style="FONT-WEIGHT: 700; FONT-SIZE: 15px; TEXT-INDENT: 8px; BORDER-BOTTOM: #ae0b0e 3px solid" height=21>Most popular </TD></TR><!-- start most popular stories list -->
+<TR>
+<TD><!-- start most popular stories list -->
+<OL>
+<LI style="PADDING-LEFT: 5px"><A style="COLOR: #094f95; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?teyme=09cab65f3694a08b7e8c0ba&xekagqme=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Secret's out: why women really have sex</A>
+<LI style="PADDING-LEFT: 5px">
+<A style="COLOR: #094f95; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?ybirigexjs=09cab65f3694a08b7e8c0ba&siwuz=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+Solid gun for having fun</A>
+<LI style="PADDING-LEFT: 5px">
+<A style="COLOR: #094f95; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?oleluawj=09cab65f3694a08b7e8c0ba&ljsql=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+For love extreme</A>
+<LI style="PADDING-LEFT: 5px">
+<A style="COLOR: #094f95; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?ilecaheki=09cab65f3694a08b7e8c0ba&hopoyz=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+Be the artist of love!</A>
+<LI style="PADDING-LEFT: 5px">
+<A style="COLOR: #094f95; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?ymunyinil=09cab65f3694a08b7e8c0ba&azuwq=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+Bull power in lovemaking</A>
+<LI style="PADDING-LEFT: 5px">
+<A style="COLOR: #094f95; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?edykole=09cab65f3694a08b7e8c0ba&qdycjpq=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+Amaze the girls around</A>
+
+<LI style="PADDING-LEFT: 5px">
+<A style="COLOR: #094f95; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?euqwoney=09cab65f3694a08b7e8c0ba&jnupa=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+Learn how to be really inside her</A>
+</OL><!-- end most popular stories list -->
+<A style="FONT-WEIGHT: 700; MARGIN-LEFT: 15px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?cuqlikex=09cab65f3694a08b7e8c0ba&wynozyb=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">More Most Popular</A> </TD></TR>
+<!-- end most popular stories list --></TBODY></TABLE><!-- end most pop--></TD></TR>
+					</TBODY></TABLE></TD>
+
+			</TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=644 align=center border=0>
+<TBODY>
+<TR>
+<TD>
+<TABLE cellSpacing=0 cellPadding=0 width=644 border=0>
+<TBODY>
+<TR>
+<TD align=left><hr style="color: #AE0B0E; height: 3px" /></TD></TR>
+					</TBODY></TABLE></TD></TR>
+<TR>
+
+<TD vAlign=top width=316>
+<TABLE cellSpacing=0 cellPadding=0 border=0 style="width: 640px">
+<TBODY>
+<TR>
+<TD height=30><br><A style="FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?oqmano=09cab65f3694a08b7e8c0ba&ruxukebe=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Secret's out:
+If nights with girls end up with frustration caused by unstable and faint male
+strength</A>... </TD></TR>
+<TR>
+<TD style="PADDING-LEFT: 7px" vAlign=top><br>You only need to <a href="http://4feb.qwumekul.cn/?zqzjwuyemy=09cab65f3694a08b7e8c0ba&emuygjrybo=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">click on our e-store&#39;s site</a>. We promise you
+that 15 minutes after you try our male &quot;galvanizers&quot; everything will be OK in
+the sphere that bothers you and your girlfriend so much. Unstoppable,
+unreachable and lasting power. <span style="color: #3A4789; font-weight: bold">
+Super solution!</span><br>
+<img src="http://4feb.qwumekul.cn/spacer.gif" /></TD></TR>
+<TR>
+<TD height=5></TD></TR></TBODY></TABLE></TD>
+			</TR>
+		</TBODY>
+	</TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=644 align=center border=0>
+<TBODY>
+<TR><!-- footer -->
+<TD vAlign=center align=middle width=644 bgColor=#f5f4f4 colSpan=3 height=45>Do not reply to this email, as this email address is not monitored.<BR>To unsubscribe from the news newsletter <A href="http://433.qwumekul.cn/?tabqmes=09cab65f3694a08b7e8c0ba&oljau=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">click here</A> </TD></TR>
+
+<TR>
+<TD colSpan=3 height=20></TD></TR>
+<TR>
+<TD style="BORDER-TOP: #999 1px dotted; BORDER-BOTTOM: #999 1px dotted" bgColor=#eeeeee colSpan=3>
+<TABLE cellSpacing=0 cellPadding=4 border=0>
+<TBODY>
+<TR vAlign=center>
+<TD>&nbsp;</TD>
+<TD><A style="FONT-WEIGHT: bold; COLOR: #1b73a4; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?yxyay=09cab65f3694a08b7e8c0ba&xqoce=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Mobiles/PDAs</A> </TD>
+<TD width=10>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD><A style="FONT-WEIGHT: bold; COLOR: #1b73a4; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?ahqducee=09cab65f3694a08b7e8c0ba&qsjnuqmqb=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Email Newsletter</A> </TD>
+<TD width=10>&nbsp;</TD>
+
+<TD>&nbsp;</TD>
+<TD><A style="FONT-WEIGHT: bold; COLOR: #1b73a4; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?nikixime=09cab65f3694a08b7e8c0ba&gewoto=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">RSS Feeds</A> </TD>
+<TD width=10>&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD><A style="FONT-WEIGHT: bold; COLOR: #1b73a4; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?oleewuvqmo=09cab65f3694a08b7e8c0ba&yzqryl=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Video</A> </TD></TR></TBODY></TABLE></TD></TR>
+<TR>
+<TD height=20></TD></TR>
+<TR>
+<TD style="FONT-SIZE: 11px" align=middle colSpan=3><STRONG>Site Sections:</STRONG> <A style="FONT-SIZE: 11px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?qrucyb=09cab65f3694a08b7e8c0ba&ibjrer=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">News</A> | <A style="FONT-SIZE: 11px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?haimjd=09cab65f3694a08b7e8c0ba&wonepqhj=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Business</A> | <A style="FONT-SIZE: 11px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?ziudozuriw=09cab65f3694a08b7e8c0ba&qwapi=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Money
+</A> | <A style="FONT-SIZE: 11px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?djvqbouzaw=09cab65f3694a08b7e8c0ba&umiverec=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Entertainment</A> | <A style="FONT-SIZE: 11px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?xusowyrq=09cab65f3694a08b7e8c0ba&jwihjjr=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Travel</A> | <A style="FONT-SIZE: 11px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?cijfezog=09cab65f3694a08b7e8c0ba&ugepiynaga=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Technology
+</A> | <A style="FONT-SIZE: 11px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?sqlowe=09cab65f3694a08b7e8c0ba&ybynypaady=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Blogs</A> | <A style="FONT-SIZE: 11px; COLOR: #094f95; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?unyuwe=09cab65f3694a08b7e8c0ba&urenurij=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Video</A> </TD></TR>
+
+<TR>
+<TD style="FONT-SIZE: 11px" vAlign=center align=middle width=644 colSpan=3 height=60><A style="COLOR: #3a4789; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?fjvoeho=09cab65f3694a08b7e8c0ba&uxesqry=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Terms &amp; Conditions</A> | <A style="COLOR: #3a4789; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?acudybyc=09cab65f3694a08b7e8c0ba&ienas=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Privacy Policy</A> | <A style="COLOR: #3a4789; TEXT-DECORATION: none" href="http://4feb.qwumekul.cn/?zjbigex=09cab65f3694a08b7e8c0ba&yritadime=06867439246260574857066&gdikzkgnzo=zfbgou&meqafx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
+Accessibility</A><BR>Copyright 2009 News Limited. All times AEDT (GMT +11).</TD></TR></TBODY></TABLE><!-- end footer --></BODY></html>
 
 
-<span style="font-size: 7.5pt; color: rgb(102, 102, 102); font-family: Arial;">
-If you are having trouble viewing this email <a title="http://0f91e.qmoxiciv.cn/?tepiku=1145b7277b06208d67539&jsuves=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" target="_blank" href="http://f78b.qmoxiciv.cn/?cemul=1145b7277b06208d67539&utjcovapo=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
-click here</a>.</span><table width="570" border="0" cellpadding="0" cellspacing="0" id="header">
-  <tbody>
-    <tr>
-      <td width="216" bgcolor="#63b42f">&nbsp;</td>
-      <td width="354" height="56" valign="top" bgcolor="#6EC43A">
-
-	  <table width="354" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td height="28" colspan="2">&nbsp;</td>
-          </tr>
-
-          <tr>
-            <td height="16" valign="bottom" style="font:20px Arial;color:#fff;text-transform:uppercase;">
-			Thursday, Sep 10</td>
-            <td width="115" valign="bottom"><a href="http://f78b.qmoxiciv.cn/?zqisa=1145b7277b06208d67539&xaysaboea=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" style="color:#2d7800;text-decoration:none;font:bold 11px Arial;">
-			forward to a friend</a></td>
-          </tr>
-
-        </table>
-		</td>
-    </tr>
-
-  </tbody>
-
-</table>
-<table width="570" border="0" cellspacing="0" cellpadding="0" id="body">
-  <tr>
-    <td width="387">
-		<table border="0" align="left" cellpadding="0" cellspacing="0" id="leftColumn" style="border-bottom:1px solid #ccc; width: 555px;">
-        <tr>
-          <td height="10"></td>
-        </tr>
-        <tr>
-          <td align="left" valign="middle" ><span>
-          <a style="font:bold 25px Arial;color:#000;text-decoration:none;" href="http://f78b.qmoxiciv.cn/?ofyqqw=1145b7277b06208d67539&njkjxy=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
-		  What can make a man more self-reliant than previous victories?</a>
-          </span></td>
-
-        </tr>
-        <tr>
-          <td height="5" valign="top">
-		  <img src="http://f78b.qmoxiciv.cn/spacer.gif" /></td>
-        </tr>
-        <tr>
-          <td align="left" valign="top" style="font:13px Arial;color:#000;" id="description">
-          What victories can be more important than amorous ones? Finally, what
-		  facilitates amorous victories better than our Special Products for
-		  Men? Nothing copes with this task better!<br />
-		  <br />
-		  <b><a href="http://e4e.qmoxiciv.cn/?ihaumyk=1145b7277b06208d67539&nqwjb=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Buy the best solution now</a></b></td>
-
-        </tr>
-        <tr>
-          <td height="10" valign="top"></td>
-        </tr>
-        <tr>
-          <td height="10" valign="top" style="font:13px Arial;color:#000;">&nbsp;</td>
-
-        </tr>
-        </table>
-	</td>
-
-  </tr>
-
-</table>
-<table width="570" border="0" cellspacing="0" cellpadding="0" id="footer">
-  <tr>
-    <td height="40" align="center" valign="bottom" style="text-align:center;"><a href="http://f78b.qmoxiciv.cn/?vacepepef=1145b7277b06208d67539&lanyme=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" style="font:bold 10px Arial;color:#666;text-decoration:none;">
-	UNSUBSCRIBE</a> · <a href="http://f78b.qmoxiciv.cn/?axoxjresur=1145b7277b06208d67539&ydywi=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" style="font:bold 10px Arial;color:#666;text-decoration:none;">
-	PRIVACY POLICY</a> · <a href="http://f78b.qmoxiciv.cn/?jvosj=1145b7277b06208d67539&caljho=012364144704105834326&iicrp=uagxfikp&kdvxxazodx=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" style="font:bold 10px Arial;color:#666;text-decoration:none;">
-	EMAIL OPT-OUTS</a><br />
-
-      <span style="font:10px Arial;color:#666;text-decoration:none;">Copyright ©
-	2009 Time Inc. All rights reserved. Reproduction in whole or in part without
-	permission is prohibited.</span></td>
-  </tr>
-
-</table>
-<table cellspacing="0" cellpadding="0" border="0" id="footer">
-  <tbody><tr>
-	<td valign="top" height="10" align="left" style="color: rgb(102, 102, 102); font-family: Arial; font-style: normal; font-variant: normal; font-weight: normal; font-size: 10px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none;">
-	&nbsp;</td>
-  </tr>
-  <tr>
-
-	<td valign="top" height="40" align="left" style="color: rgb(102, 102, 102); font-family: Arial; font-style: normal; font-variant: normal; font-weight: normal; font-size: 10px; line-height: normal; font-size-adjust: none; font-stretch: normal; -x-system-font: none;">
-	  If you have any questions about your PEOPLE magazine subscription, please
-	  contact Subscriber Services.<br/>
-	  You may also mail inquiries to: <br/>
-	  <br/>
-	  PEOPLE Customer Service<br/>
-	  ATTENTION: PEOPLE Consumer Affairs<br/>
-	  3000 University Center Drive<br/>
-
-	  Tampa, FL 33612-6408</td>
-  </tr>
-</tbody></table>
-</body>
-</html>
-
-
---===============1752116317378423367==
+--===============4272547463339286399==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -147,7 +173,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============1752116317378423367==
+--===============4272547463339286399==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -158,4 +184,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1752116317378423367==--
+--===============4272547463339286399==--

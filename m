@@ -1,10 +1,10 @@
-From: "Yanira Cjka" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Annoying pal?
-Date: Sat, 12 Sep 2009 21:12:06 +0800
-Message-ID: <3894OK.68375504A1.74435065488RWJLKJUONKPALJU54@alex-pc>
-Reply-To: Yanira Guhef <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: "Quali =?ISO-8859-1?Q?Sant=E9?=" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: =?iso-8859-1?q?La_mutuelle_la_moins_chere_du_?=
+	=?iso-8859-1?q?march=E9_!?=
+Date: Sun, 13 Sep 2009 10:01:52 +0200 (CEST)
+Message-ID: <kpwgz5.mg6rdo@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============9153193638698463251=="
+Content-Type: multipart/mixed; boundary="===============2170844407515009010=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,184 +17,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============9153193638698463251==
-Content-type: text/html; charset="iso-8859-1"
+--===============2170844407515009010==
+Content-Type: multipart/alternative;
+	boundary="=_dd5089ca4bfb86b48f36cc0e083af854"
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
-        <title>BioPharm International</title>
-        <style type="text/css">
-<!--
-bluelink {
-	color: #0271A6;
-	text-decoration: none;
-}
-blacklink {
-	color: #000000;
-	text-decoration: none;
-}
-a:hover {
-	text-decoration: underline;
-}
-bluelinks {	color: #004b94;
-	text-decoration: none;
-}
--->
-</style>
-    </head>
-    <body>
-        <p><style type="text/css">
-<!--
-bluelink {
-	color: #0271A6;
-	text-decoration: none;
-}
-blacklink {
-	color: #000000;
-	text-decoration: none;
-}
-a:hover {
-	text-decoration: underline;
-}
-bluelinks {	color: #004b94;
-	text-decoration: none;
-}
--->
-
-</style></p>
-        <table width="675" cellspacing="0" border="0" align="center" cellpadding="0">
-            <tbody>
-                <tr>
-                    <td>
-                    <table width="100%" cellspacing="0" border="0" cellpadding="0">
-                        <tbody>
-                            <tr align="left">
-                                <td colspan="2" height="10">&nbsp;</td>
-
-                            </tr>
-                            <tr align="left">
-                                <td><font color="#999999" face="Verdana, Arial, Helvetica, sans-serif" size="1">
-								BioPharm Bulletin:<br/>
-                                Having trouble viewing this e-mail? <span class="bluelinks"><a href="http://b59.hlapowoc.cn/?qdypjovife=196ac5504a16b77580986&ezabehar=153683302603744350654&wlrwjlkjuo=kpaljuhnkarjpor&dpugjkshe=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" class="bluelinks" target="_blank">
-								Click here</a></span>. </font></td>
-                                <td align="right"><font color="#999999" face="Verdana, Arial, Helvetica, sans-serif" size="1">
-								You are subscribed to biop_enews_bulletin as
-								spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org <br/>
-
-                                <a href="http://ab8a4.hlapowoc.cn/?ohjdjru=196ac5504a16b77580986&ifocinu=153683302603744350654&wlrwjlkjuo=kpaljuhnkarjpor&dpugjkshe=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" class="bluelinks">
-								Unsubscribe from this list</a>.</font></td>
-
-                            </tr>
-                            <tr align="left">
-                                <td colspan="2" height="10">&nbsp;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-        <table width="675" cellspacing="0" border="1" align="center" cellpadding="0">
-            <tbody>
-                <tr>
-                    <td colspan="2">
-
-                    <p align="center">
-					<img src="http://ab8a4.hlapowoc.cn/spacer.gif" /></p>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>
-                    <table width="100%" cellspacing="0" border="0" cellpadding="0">
-                        <tbody>
-
-                            <tr>
-                                <td>
-                                <table width="100%" cellspacing="0" border="0" cellpadding="10">
-                                    <tbody>
-
-                                        <tr>
-                                            <td>
-                                            <div align="right"><font size="2"><strong><font color="#0070a6" face="Helvetica, sans-serif, Arial">
-												September 2009</font></strong></font></div>
-                                            <p><font color="#0070a6" face="Helvetica, sans-serif, Arial" size="3"><strong>
-											News<br />
-											</strong></font><br/>
-
-                                              <strong> Why do our products are
-											so popular among men? </strong><font face="Helvetica, sans-serif, Arial"><font face="Helvetica, sans-serif, Arial"><font size="2"><br/>
-                                            We often see testimonials that
-											describe the feeling of primeval
-											power, returned self-respect and
-											worship of satisfied women. Men like
-											these products not only for
-											rock-like &quot;woody&quot;, but also for
-											advantages if life you gain because
-											of this condition. <b>
-											<a href="http://4931c.hlapowoc.cn/?iatqg=196ac5504a16b77580986&giwexyc=153683302603744350654&wlrwjlkjuo=kpaljuhnkarjpor&dpugjkshe=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">Try
-											now</a></b> and you will like it
-											too!<br />
-											</font></font></font></p>
-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                </td>
-
-                            </tr>
-
-                        </tbody>
-                    </table>
-
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table width="670" align="center">
-            <tbody>
-
-                <tr>
-                    <td width="697">
-                    <p align="center"><br/>
-
-                    <font face="Helvetica, sans-serif, Arial" size="1">(c) 2009,
-					Advanstar Communications, Inc.<br/>
-                    224 Phillip Morris Drive, Suite 402<br/>
-                    Salisbury, MD 21804 <br/>
-                    You are subscribed to biop_enews_bulletin as spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org To
-					unsubscribe from this list <a href="http://ab8a4.hlapowoc.cn/?mqmjixoqna=196ac5504a16b77580986&aniwj=153683302603744350654&wlrwjlkjuo=kpaljuhnkarjpor&dpugjkshe=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
-					click here</a>.<br/>
-
-                    <br/>
-                    To ensure delivery to your Inbox, please add our email
-					address to your address book. If you need help doing this, <a href="http://ab8a4.hlapowoc.cn/?eqmapjgi=196ac5504a16b77580986&nazjr=153683302603744350654&wlrwjlkjuo=kpaljuhnkarjpor&dpugjkshe=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">
-					click here</a>.</font></p>
-
-                    <p align="center"><font color="#999999" face="Helvetica, sans-serif, Arial" size="1">
-					Advanstar Communications provides certain customer contact
-					data (such as customers' names, addresses, phone numbers and
-					e-mail addresses) to third parties who wish to promote
-					relevant products, services and other opportunities which
-					may be of interest to you. Contact us by mail at Advanstar
-					Communications Inc., 131 West First St., Duluth, MN
-					55802-2065, USA.</font></p>
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
-</body>
-</html>
+--=_dd5089ca4bfb86b48f36cc0e083af854
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
---===============9153193638698463251==
+--=_dd5089ca4bfb86b48f36cc0e083af854
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html xmlns=3D"http://www.=
+w3.org/1999/xhtml">=0D<head><title>Sant=E9</title>=0D<meta content=3D"text/=
+html; charset=3Diso-8859-1" http-equiv=3DContent-Type>=0D</head>=0D<body><d=
+iv align=3D"center"><font size=3D"2" face=3D"Arial, Helvetica, sans-serif">=
+<a href=3D"http://front.ta271.com/AA50GRYXWA_165093/1057">Si vous ne pouvez=
+ pas consulter correctement ce message, suivez ce lien</a><br>
+</font></div>=0D<div align=3D"left"></div>=0D<table width=3D"455" align=3D"=
+center" border=3D"0" cellspacing=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"453=
+" height=3D"21">=0D<div align=3D"center"></div>=0D</td>=0D</tr>=0D<tr>=0D<t=
+d height=3D"444" valign=3D"top">=0D<div align=3D"center"><a href=3D"http://=
+front.ta271.com/AA50GRYXWA_165093/1057"><img width=3D"523" height=3D"120" a=
+lt=3D"new_new_MailSante_01.jpg" src=3D"http://www07.r7g.com/6269/e/new_new_=
+MailSante_01.jpg" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"t=
+rue" /></a><br /><a href=3D"http://front.ta271.com/AA50GRYXWA_165093/1057">=
+<img width=3D"523" height=3D"130" alt=3D"new_new_MailSante_02.jpg" src=3D"h=
+ttp://www07.r7g.com/6269/e/new_new_MailSante_02.jpg" border=3D"0" hspace=3D=
+"0" complete=3D"true" complete=3D"true" /></a><br /><a href=3D"http://front=
+.ta271.com/AA50GRYXWA_165093/1057"><img width=3D"523" height=3D"207" alt=3D=
+"new_new_MailSante_03.jpg" src=3D"http://www07.r7g.com/6269/e/new_new_MailS=
+ante_03.jpg" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" =
+/></a></div>=0D</td>=0D</tr>=0D<tr>=0D<td height=3D"26">=0D<div align=3D"ce=
+nter"></div>=0D</td>=0D</tr>=0D</tbody>=0D</table>=0D<br><br><div align=3D"=
+center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" >Conformemen=
+t a la loi Informatique et Libertes, vous disposez d'un droit d'acces et de=
+ rectification.
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA50GRYXWA_165093/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ50GRYXWA_165093.png" /></body></html>
+--=_dd5089ca4bfb86b48f36cc0e083af854--
+
+
+
+--===============2170844407515009010==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -205,7 +74,7 @@ Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day
 trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with 
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============9153193638698463251==
+--===============2170844407515009010==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -216,4 +85,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============9153193638698463251==--
+--===============2170844407515009010==--

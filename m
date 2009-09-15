@@ -1,9 +1,10 @@
-From: received-81vKRdcrlKFg9hUCZPvPmw@public.gmane.org <received-81vKRdcrlKFg9hUCZPvPmw@public.gmane.org>
-Subject: [SPAM] You have just received a virtual
-	postcard from a friend !
-Date: Sat, 12 Sep 2009 07:36:55 +0100 (BST)
-Message-ID: <20090912063655.0D8F12155EAB@mail.daysout.co.uk>
-Content-Type: multipart/mixed; boundary="===============8549568696104510863=="
+From: "UNIBET" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: profitez de 50 euros offerts pour faire vos
+	paris
+Date: Tue, 15 Sep 2009 11:55:45 +0200 (CEST)
+Message-ID: <kq0bkw.2wbipr@front.ta271.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0270523773960276727=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,51 +17,89 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8549568696104510863==
-Content-Type: text/html
+--===============0270523773960276727==
+Content-Type: multipart/alternative;
+	boundary="=_72e550c8ea2cb068b91fd3ad25488784"
+
+--=_72e550c8ea2cb068b91fd3ad25488784
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
-<TITLE>postcards.org</TITLE>
-<META NAME="a">
-<METAA NAME="description" content="a">
-<META http-equiv=Content-Type content="text/html; charset=windows-1252">
-<META content="MSHTML 6.00.2800.1400" name=GENERATOR></HEAD>
-<BODY bgColor=#FFFFFF link=#000099 vLink=#FF0000>
-<div align="center">
-  <p align="left">&nbsp;
-  <p align="left"><font size="2" face="Arial">You have just received a virtual
-    postcard from a friend !</font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <p align="left"><font size="2" face="Arial">You can pick up your postcard at
-    the following web address:</font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <p align="left"><font size="2" face="Arial"><A
-href="http://www.promoluz.pt/shared/.../postcard.scr"
-target=_blank>Click here to pick up your postcard</A></font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <p align="left"><font size="2" face="Arial">If you can't click on the web address
-    above, you can also<br>
-    visit 1001 Postcards at http://www.postcards.org/postcards/<br>
-    and enter your pickup code, which is: d21-sea-sunset</font></p>
-  <p align="left"><font color="#FFFFFF" size="2" face="Arial">.</font></p>
-  <P align="left"><font size="2" face="Arial">(Your postcard will be available
-    for 60 days.)</font></P>
-    </div>
-</BODY></HTML>
+--=_72e550c8ea2cb068b91fd3ad25488784
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html xmlns=3D"http://www.=
+w3.org/1999/xhtml">=0D<head><title>unibet</title>=0D<meta content=3D"text/h=
+tml; charset=3Dutf-8" http-equiv=3DContent-Type>=0D<style type=3Dtext/css> =
+<!--=0Dbody {=0Dmargin: 0px;=0D}=0D-->=0D</style>=0D</head>=0D<body><div al=
+ign=3D"center"><font size=3D"2" face=3D"Arial, Helvetica, sans-serif"><a hr=
+ef=3D"https://fr.unibet.com/register/register.do?cmpid=3D22239&lang=3Dfr&af=
+fid=3D3571&netwid=3D32"_blank">Si vous ne pouvez pas consulter correctement=
+ ce message, suivez ce lien</a><br>
+</font></div>=0D<div align=3D"center">=0D<table width=3D"600" border=3D"0" =
+cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td><a title=3D"Il =
+n'y a pas de grands matchs sans les joueurs" href=3D"https://fr.unibet.com/=
+register/register.do?cmpid=3D22239&lang=3Dfr&affid=3D3571&netwid=3D32"><img=
+ width=3D"600" height=3D"144" alt=3D"Il n'y a pas de grands matchs sans les=
+ joueurs" src=3D"http://ads.leadium.com/leadium/unibet/juvbor/header1.jpg" =
+border=3D"0" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td><a title=3D=
+"Mercredi 15 septembre : Juventus de Turin vs Bordeaux" href=3D"https://fr.=
+unibet.com/register/register.do?cmpid=3D22239&lang=3Dfr&affid=3D3571&netwid=
+=3D32"><img width=3D"600" height=3D"157" alt=3D"Mercredi 15 septembre : Juv=
+entus de Turin vs Bordeaux" src=3D"http://ads.leadium.com/leadium/unibet/ju=
+vbor/header2.jpg" border=3D"0" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=
+=0D<td><a title=3D"Pariez sur La Juventus ou sur Bordeaux" href=3D"https://=
+fr.unibet.com/register/register.do?cmpid=3D22239&lang=3Dfr&affid=3D3571&net=
+wid=3D32"><img width=3D"600" height=3D"73" alt=3D"Pariez sur La Juventus ou=
+ sur Bordeaux" src=3D"http://ads.leadium.com/leadium/unibet/juvbor/boutons.=
+gif" border=3D"0" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td><a tit=
+le=3D"Les autres affiches du week end :" href=3D"https://fr.unibet.com/regi=
+ster/register.do?cmpid=3D22239&lang=3Dfr&affid=3D3571&netwid=3D32"><img wid=
+th=3D"600" height=3D"86" alt=3D"Les autres affiches du week end :" src=3D"h=
+ttp://ads.leadium.com/leadium/unibet/juvbor/footer1.jpg" border=3D"0" compl=
+ete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td><a title=3D"Mercredi 15 Septe=
+mbre : Marseille vs Milan AC - Jeudi 16 Septembre : Lyon vs Fiorentina" hre=
+f=3D"https://fr.unibet.com/register/register.do?cmpid=3D22239&lang=3Dfr&aff=
+id=3D3571&netwid=3D32"><img width=3D"600" height=3D"158" alt=3D"Mercredi 15=
+ Septembre : Marseille vs Milan AC - Jeudi 16 Septembre : Lyon vs Fiorentin=
+a" src=3D"http://ads.leadium.com/leadium/unibet/juvbor/footer2.jpg" border=
+=3D"0" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td><a title=3D"Parie=
+z maintenant" href=3D"https://fr.unibet.com/register/register.do?cmpid=3D22=
+239&lang=3Dfr&affid=3D3571&netwid=3D32"><img width=3D"600" height=3D"116" a=
+lt=3D"Pariez maintenant" src=3D"http://ads.leadium.com/leadium/unibet/juvbo=
+r/footer3.jpg" border=3D"0" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D=
+<td><a href=3D"https://fr.unibet.com/register/register.do?cmpid=3D22239&lan=
+g=3Dfr&affid=3D3571&netwid=3D32"><img width=3D"600" height=3D"137" src=3D"h=
+ttp://ads.leadium.com/leadium/unibet/juvbor/footer4.jpg" border=3D"0" compl=
+ete=3D"true" /></a></td>=0D</tr>=0D</tbody>=0D</table><img width=3D"1" heig=
+ht=3D"1" src=3D"http://www.leadium.com/banner.php?banid=3D3900&campid=3D357=
+1;492&show=3Dfalse&siteid=3D1700" border=3D"0" complete=3D"true" />=0D</div=
+>=0D<br><br><div align=3D"center"><font size=3D"1" face=3D"Arial, Helvetica=
+, sans-serif" color=3D"#999999">Conformement a la loi Informatique et Liber=
+tes, vous disposez d'un droit d'acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA50JXU346_104243/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ50JXU346_104243.png" /></body></html>
+--=_72e550c8ea2cb068b91fd3ad25488784--
 
 
---===============8549568696104510863==
+
+--===============0270523773960276727==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 ------------------------------------------------------------------------------
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
-trial. Simplify your report design, integration and deployment - and focus on 
-what you do best, core application coding. Discover what's new with 
-Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============8549568696104510863==
+Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
+http://p.sf.net/sfu/devconf
+--===============0270523773960276727==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -71,4 +110,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8549568696104510863==--
+--===============0270523773960276727==--

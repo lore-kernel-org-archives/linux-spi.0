@@ -1,11 +1,11 @@
-From: Jeu Assurland <newsletter-95V9+DVbUV+sTnJN9+BGXg@public.gmane.org>
-Subject: Une Citroen C1 a remporter
-Date: 16 Sep 2009 08:13:44 -0000
-Message-ID: <20090916081344.6453.qmail@ks355605.kimsufi.com>
-Reply-To: Jeu Assurland <newsletter-95V9+DVbUV+sTnJN9+BGXg@public.gmane.org>
+From: "Esprit Phyto" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: Promotions Anniversaire : profitez de la baisse
+	des prix sur toute notre gamme
+Date: Wed, 16 Sep 2009 11:20:59 +0200 (CEST)
+Message-ID: <kq24my.ylwaz1@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0358626363819394364=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8229050336014753106=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,123 +17,101 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============0358626363819394364==
+--===============8229050336014753106==
 Content-Type: multipart/alternative;
-	boundary="_----------=_parties_41213a2c3f75e60e5ab3e96be7057462"
+	boundary="=_30e72d4c2f4aedade9b24c1c1bd9a926"
+
+--=_30e72d4c2f4aedade9b24c1c1bd9a926
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
---_----------=_parties_41213a2c3f75e60e5ab3e96be7057462
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+--=_30e72d4c2f4aedade9b24c1c1bd9a926
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Version "en ligne" de ce message: http://www.makine.net/svi/miroir.php?bat=assurland_jeu0909_ctrm
-
-assur land.com
-Comparez le tarif de votre assurance auto, vous gagnerez peut-être cette Citroen C1
-
-plus d'infos sur http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique
-
---------------------------------
-Cette offre Assurland vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.makine.net/svi/gestionserv.php?nb=2278&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_41213a2c3f75e60e5ab3e96be7057462
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
-<head> 
-<title> assurland.com</title>
-</head>
-<body><center>
-<p>
-<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.makine.net/svi/miroir.php?bat=assurland_jeu0909_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#a60019;font-size:24px'>
-<p style='display:inline;'> <b>assur</b>land.com<br></p>
-</td></tr>
-<tr><td align='center' style='margin:3px;padding:5px;background-color:#ffffff;font-family:Verdana;color:#000000;font-size:12px;'>
-<b>Comparez le tarif de votre assurance auto, vous gagnerez peut-&ecirc;tre cette Citroen C1</b>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<!-- BEGIN PARTNER PROGRAM - DO NOT CHANGE THE PARAMETERS OF THE HYPERLINK -->
-<table border="0" cellpadding="0" cellspacing="0" width="800">
-<tbody><tr>
-<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 800px; height: 61px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/titre.gif" alt="participez au grand jeu concours assurland" /></a></td>
-</tr>
-<tr>
-<td><table border="0" cellpadding="0" cellspacing="0" width="800">
-<tbody><tr>
-<td width="39"><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 39px; height: 414px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/gauche.gif" alt="participez au grand jeu concours assurland" /></a></td>
-<td><table border="0" cellpadding="0" cellspacing="0" width="402"><tbody><tr><td width="402"><table border="0" cellpadding="0" cellspacing="0">
-<tbody><tr>
-<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 402px; height: 54px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/haut.gif" alt="participez au grand jeu concours assurland" /></a></td>
-</tr>
-<tr>
-<td style="font-family: Arial,Helvetica,sans-serif; font-size: 23px; color: rgb(183, 0, 0);" align="center" height="99"><span style="color: rgb(51, 51, 51);">Comparez les tarifs d'assurances auto</span><br />
-<span style="color: rgb(51, 51, 51);">sur</span> <span style="font-weight: bold;">assur</span>land.com<span style="color: rgb(51, 51, 51);"></span><br /><span style="color: rgb(51, 51, 51);">
-et vous participerez</span><span style="color: rgb(51, 51, 51);">&nbsp;au tirage au sort !</span></td>
-</tr>
-<tr>
-<td><table border="0" cellpadding="0" cellspacing="0" width="402">
-<tbody><tr>
-<td width="241"><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 241px; height: 186px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/gagnez.gif" alt="Gagnez une cito&euml;n C1 ou 10 iPod shuffle" /></a></td>
-<td width="161"><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 161px; height: 186px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/ipod1.jpg" alt="participez au grand jeu concours assurland" /></a></td>
-</tr>
-<tr>
-<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 241px; height: 75px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/jouez.gif" alt="JOUEZ" /></a></td>
-<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 161px; height: 75px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/ipod2.jpg" alt="participez au grand jeu concours assurland" /></a></td>
-</tr>
-</tbody></table></td>
-</tr>
-</tbody></table></td>
-</tr>
-</tbody></table></td>
-<td width="359"><table border="0" cellpadding="0" cellspacing="0" width="359">
-<tbody><tr>
-<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 359px; height: 87px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/formulaire.gif" alt="1 formulaire rempli = 1 chance de gagner" /></a></td>
-</tr>
-<tr>
-<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 359px; height: 252px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/c1.jpg" alt="participez au grand jeu concours assurland" /></a></td>
-</tr>
-<tr>
-<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 359px; height: 75px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/gratuit.gif" alt="Gratuit" /></a></td>
-</tr>
-</tbody></table></td>
-</tr>
-</tbody></table></td>
-</tr>
-<tr>
-<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 800px; height: 55px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/bas.gif" alt="avec assurland.com le comparateur d'assurance et aramis distributeur d'automobiles" /></a></td>
-</tr>
-<tr>
-<td style="font-family: Arial,Helvetica,sans-serif; font-size: 14px; color: rgb(183, 0, 0);" align="center" height="30">Jeu gratuit sans obligation d'achat -&nbsp;<a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique" style="color: rgb(183, 0, 0);">En savoir plus</a></td>
-</tr>
-</tbody></table>
-<!-- END PARTNER PROGRAM -->
+<html>=0D<head>=0D</head>=0D<body><div align=3D"center"><font size=3D"2" fa=
+ce=3D"Arial, Helvetica, sans-serif"><a href=3D"http://front.ta271.com/php/e=
+mailing/view_mail.php?CODE=3D50EJ6NNH_475197&HASH=3De04a449cbb310a540a4acde=
+3c023c606">Si vous ne pouvez pas consulter correctement ce message, suivez =
+ce lien</a><br>
+</font></div><img width=3D"1" height=3D"1" align=3D"bottom" src=3D"http://a=
+d.zanox.com/ppv/?13060357C851678062" border=3D"0" hspace=3D"1" complete=3D"=
+true" complete=3D"true" /><style></style> <div id=3D"ephyto01"><!-- Save fo=
+r Web Slices (NL_26_02_09_B.psd) -->=0D<table width=3D"790" align=3D"center=
+" id=3D"Tableau_01" style=3D"BORDER-BOTTOM: #cccccc 0px solid; BORDER-LEFT:=
+ #cccccc 0px solid; BORDER-TOP: #cccccc 0px solid; BORDER-RIGHT: #cccccc 0p=
+x solid" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=
+=0D<td width=3D"800" height=3D"304"><a href=3D"http://ad.zanox.com/ppc/?130=
+60357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/gamme.php?id_gamme=3D62=
+"><img width=3D"800" height=3D"304" alt=3D"-20 % G=E9lules EspritPhyto" src=
+=3D"http://clients.quamediagroup.com/esprit/images/news_anniversaire2_top.j=
+pg" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D=
+<tr>=0D<td height=3D"48" valign=3D"top"><img width=3D"800" height=3D"32" sr=
+c=3D"http://clients.quamediagroup.com/esprit/images/news_bande.jpg" complet=
+e=3D"true" complete=3D"true" /> <table width=3D"100%" align=3D"center" bord=
+er=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr align=3D"cent=
+er" valign=3D"middle">=0D<td height=3D"62"><a href=3D"http://ad.zanox.com/p=
+pc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/gamme.php?id_gam=
+me=3D36"><img width=3D"800" height=3D"180" alt=3D"SOKOJA EN BAISSE" src=3D"=
+http://clients.quamediagroup.com/esprit/images/feuilles_bas.jpg" border=3D"=
+0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D<tr align=3D"c=
+enter" valign=3D"middle">=0D<td height=3D"274">=0D<table width=3D"90%" bord=
+er=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td colspa=
+n=3D"3" />=0D</tr>=0D<tr>=0D<td>=0D<div align=3D"right"><img width=3D"215" =
+height=3D"540" src=3D"http://clients.quamediagroup.com/esprit/images/bande_=
+1.jpg" border=3D"0" complete=3D"true" usemap=3D"#Map" complete=3D"true" /><=
+/div>=0D</td>=0D<td>=0D<div align=3D"center"><img width=3D"215" height=3D"5=
+40" src=3D"http://clients.quamediagroup.com/esprit/images/bande_2.jpg" bord=
+er=3D"0" complete=3D"true" usemap=3D"#Map2" complete=3D"true" /></div>=0D</=
+td>=0D<td>=0D<div align=3D"left"><img width=3D"215" height=3D"540" src=3D"h=
+ttp://clients.quamediagroup.com/esprit/images/bande_3.jpg" border=3D"0" com=
+plete=3D"true" usemap=3D"#Map3" complete=3D"true" /></div>=0D</td>=0D</tr>=
+=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr=
+>=0D<tr>=0D<td height=3D"325">=0D<table width=3D"100%" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr align=3D"center" valign=3D"to=
+p">=0D<td width=3D"33%" height=3D"339"><a href=3D"http://ad.zanox.com/ppc/?=
+13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/nouveautes.php"><img=
+ width=3D"279" height=3D"339" src=3D"http://clients.quamediagroup.com/espri=
+t/images/news_news_but.jpg" border=3D"0" complete=3D"true" complete=3D"true=
+" /></a></td>=0D<td width=3D"33%"><a href=3D"http://ad.zanox.com/ppc/?13060=
+357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/authentification.php?parr=
+ainage"><img width=3D"244" height=3D"339" src=3D"http://clients.quamediagro=
+up.com/esprit/images/news_parrain_but.jpg" border=3D"0" complete=3D"true" c=
+omplete=3D"true" /></a></td>=0D<td width=3D"33%"><a href=3D"http://ad.zanox=
+.com/ppc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/services/a=
+cheter_en_toute_securite.php"><img width=3D"277" height=3D"339" src=3D"http=
+://clients.quamediagroup.com/esprit/images/news_securite_but.jpg" border=3D=
+"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D</tbody>=0D</=
+table>=0D</td>=0D</tr>=0D</tbody>=0D</table><!-- End ImageReady Slices --><=
+map name=3D"Map"><area href=3D"http://ad.zanox.com/ppc/?13060357C851678062&=
+ULP=3Dhttp://www.espritphyto.com/fr/fiche.php?id_produit=3D480" shape=3D"re=
+ct" coords=3D"6,78,214,312" alt=3D"TRANSIT MAX" /><area href=3D"http://ad.z=
+anox.com/ppc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/fiche.=
+php?id_produit=3D224" shape=3D"rect" coords=3D"11,331,211,526" alt=3D"ARGIL=
+E NATURLAND" /></map><map name=3D"Map2"><area href=3D"http://ad.zanox.com/p=
+pc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/fiche.php?id_pro=
+duit=3D414" shape=3D"rect" coords=3D"6,92,210,355" alt=3D"VITASIL 1 Litre" =
+/><area href=3D"http://ad.zanox.com/ppc/?13060357C851678062&ULP=3Dhttp://ww=
+w.espritphyto.com/fr/fiche.php?id_produit=3D384" shape=3D"rect" coords=3D"5=
+,366,209,534" alt=3D"CAT'S CLAW" /></map><map name=3D"Map3"><area href=3D"h=
+ttp://ad.zanox.com/ppc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com=
+/fr/fiche.php?id_produit=3D550" shape=3D"rect" coords=3D"10,112,203,293" al=
+t=3D"EXPERT BRONZAGE" /><area href=3D"http://ad.zanox.com/ppc/?13060357C851=
+678062&ULP=3Dhttp://www.espritphyto.com/fr/fiche.php?id_produit=3D318" shap=
+e=3D"rect" coords=3D"11,325,193,536" alt=3D"PLANTE SYSTEM SOLAIRES" /></map=
+>=0D</div><!-- FIN du code HTML zanox-affiliate -->=0D<br><br><div align=3D=
+"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#9=
+99999">Conformement a la loi Informatique et Libertes, vous disposez d'un d=
+roit d'acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA50EJ6NNH_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ50EJ6NNH_475197.png" /></body></html>
+--=_30e72d4c2f4aedade9b24c1c1bd9a926--
 
 
 
-
-
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.makine.net/svi/img_nb_2278_numuser_yyynumuseryyy.jpg" width=1 height=1 alt=''>
-<p>
-Ce message est envoy&eacute; par central marques - <a href="http://www.makine.net/svi/gestionserv.php?nb=2278&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
-</p>
-</center></body>
-</html>
-
-
---_----------=_parties_41213a2c3f75e60e5ab3e96be7057462--
-
---===============0358626363819394364==
+--===============8229050336014753106==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -145,7 +123,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
 http://p.sf.net/sfu/devconf
---===============0358626363819394364==
+--===============8229050336014753106==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -156,4 +134,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0358626363819394364==--
+--===============8229050336014753106==--

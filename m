@@ -1,10 +1,11 @@
-From: SSC Srl <ssc-8B08IYU92cFMojO53TKqOl6hYfS7NtTn@public.gmane.org>
-Subject: [SPAM] FINANZA PER Lâ€™IMPRESA, LA FAMIGLIA E LA PERSONA
-Date: Tue, 15 Sep 2009 17:57:36 +0200
-Message-ID: <20090915202522.21775.2013221118.swift@192.168.5.5>
+From: Jeu Assurland <newsletter-95V9+DVbUV+sTnJN9+BGXg@public.gmane.org>
+Subject: Une Citroen C1 a remporter
+Date: 16 Sep 2009 08:13:44 -0000
+Message-ID: <20090916081344.6453.qmail@ks355605.kimsufi.com>
+Reply-To: Jeu Assurland <newsletter-95V9+DVbUV+sTnJN9+BGXg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5385184151590243854=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0358626363819394364=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,98 +17,123 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a message in multipart MIME format.  Your mail client should not
-be displaying this. Consider upgrading your mail client to view this
-message correctly.
---===============5385184151590243854==
+
+--===============0358626363819394364==
 Content-Type: multipart/alternative;
-	boundary="_=_swift-1647634024aafb970d6b9a4.86902822_=_"
-Content-Transfer-Encoding: 7bit
-
-This is a message in multipart MIME format.  Your mail client should not
-be displaying this. Consider upgrading your mail client to view this
-message correctly.
---_=_swift-1647634024aafb970d6b9a4.86902822_=_
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<head>
-       =20
-    </head>
-    <body>
-        <p>&nbsp;</p>
-        <div style=3D"line-height: 150%"><b>Buongiorno da SSC. </b></div>
-        <div style=3D"line-height: 150%"><b>(Informazione rivolta ad azie=
-nde e persone private potenzialmente interessate).</b></div>
-        <div style=3D"line-height: 150%"><b>Pu&ograve; essere importantis=
-simo sapere che le migliori Banche e Merchant Bank dell&rsquo;area Euro, =
-tramite la ns. Societ&agrave;, attualmente offrono ad aziende, famiglie e=
- privati, in tutto il territorio nazionale, i loro prodotti e servizi fin=
-anziari per tutte le necessit&agrave; a condizioni veramente interessanti=
-. Peccato non approfittarne.</b></div>
-        <div style=3D"line-height: 150%"><b><u><span style=3D"font-size: =
-13pt; color: #3366ff; line-height: 150%"><a href=3D"http://www.sscsoluzio=
-ni27.it/newsletter/newsletter002/newsletter_036_cli.asp"><span style=3D"c=
-olor: #3366ff">Legga alcuni dettagli.</span></a></span></u></b></div>
-        <div style=3D"line-height: 150%"><b>RingraziandoLa per l&rsquo;at=
-tenzione, gradisca cordiali saluti. </b></div>
-        <div><b>&nbsp;</b></div>
-        <div><b>SSC Srl</b></div>
-        <div><b>Servizio assistenza Clienti</b></div>
-        <div style=3D"line-height: 150%">&nbsp;</div>
-        <div style=3D"line-height: 150%">&nbsp;</div>
-        <div align=3D"center">&nbsp;</div>
-        <div align=3D"center"><b><span style=3D"color: red">Attenzione</s=
-pan></b></div>
-        <div align=3D"center"><b><span style=3D"color: red">Per non ricev=
-ere altre ns. informazioni del genere sopra indicato</span></b></div>
-        <div align=3D"center"><b>&nbsp;</b></div>
-        <div align=3D"center"><b><span style=3D"font-size: 14pt; color: #=
-3366ff"><a href=3D"mailto:rimuovi-8B08IYU92cFMojO53TKqOl6hYfS7NtTn@public.gmane.org?subject=3DCancellazio=
-ne%20indirizzo%20e-mail&Body=3DSpett.%20SSC%0ANon%20essendo%20(neanche%20=
-in%20futuro),%20interessato%20alla%20Vs.%20offerta,%20Vi%20prego%20di%20c=
-ancellare%20il%20mio%20indirizzo%20dalla%20Vs.%20rubrica.%0A%0ADistinti%2=
-0saluti"><span style=3D"color: #3366ff">&egrave; sufficiente Cliccare qu&=
-igrave;</span></a></span></b></div>
-        <div align=3D"center"><b>&nbsp;</b></div>
-        <div align=3D"center"><b><span style=3D"color: red">In tal caso i=
-l suo indirizzo verr&agrave; immediatamente derubricato</span></b></div>
-        <div style=3D"line-height: 150%" align=3D"center">&nbsp;</div>
-        <div style=3D"line-height: 150%">&nbsp;</div>
-        <div>SSC Srl</div>
-        <div>Viale Italia, 120</div>
-        <div>31015 Conegliano (TV)</div>
-        <div>&nbsp;</div>
-        <div>Tel: 0438.450.534 (10 linee) &ndash; Fax: 0438.455.128 (24 h=
-)</div>
-        <div>&nbsp;</div>
-        <div><a href=3D"http://www.sscsoluzioni27.it/">www.sscsoluzioni27=
-.it</a><span>&nbsp;&nbsp; </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp;&nbsp; e-mail: <a href=3D"mailto:info@sscsoluzioni27.=
-it?subject=3DRichiesta%20informazioni">info-8B08IYU92cFMojO53TKqOl6hYfS7NtTn@public.gmane.org</a></div>
-        <div>&nbsp;</div>
-        <div>&nbsp;</div>
-        <div><i><span style=3D"color: teal">Questo messaggio di posta ele=
-ttronica contiene informazioni di carattere confidenziale rivolte esclusi=
-vamente al destinatario sopraindicato. E' vietato l'uso, la diffusione, d=
-istribuzione o riproduzione da parte di ogni altra persona. Nel caso aves=
-te ricevuto questo messaggio di posta elettronica per errore, siete prega=
-ti di segnalarlo immediatamente al mittente e distruggere quanto ricevuto=
- (compresi file allegati) senza farne copia. Qualsivoglia utilizzo non au=
-torizzato del contenuto di questo messaggio costituisce violazione dell'o=
-bbligo di non prendere cognizione della corrispondenza tra altri soggetti=
-, salvo pi&ugrave; grave illecito, ed espone il responsabile alle relativ=
-e conseguenze.</span></i></div>
-        <div>&nbsp;</div>
-        <div style=3D"line-height: 150%">&nbsp;</div>
-        <div style=3D"line-height: 150%">&nbsp;</div>
-    <br><img src=3D"http://mail.sscfinanza.it/lt/t_go.php?i=3D80&e=3DMTgw=
-NTg0Mg=3D=3D&l=3Dopen" width=3D"1" height=3D"1" border=3D"0"></body>
---_=_swift-1647634024aafb970d6b9a4.86902822_=_--
+	boundary="_----------=_parties_41213a2c3f75e60e5ab3e96be7057462"
 
 
+--_----------=_parties_41213a2c3f75e60e5ab3e96be7057462
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
---===============5385184151590243854==
+Version "en ligne" de ce message: http://www.makine.net/svi/miroir.php?bat=assurland_jeu0909_ctrm
+
+assur land.com
+Comparez le tarif de votre assurance auto, vous gagnerez peut-être cette Citroen C1
+
+plus d'infos sur http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique
+
+--------------------------------
+Cette offre Assurland vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.makine.net/svi/gestionserv.php?nb=2278&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_41213a2c3f75e60e5ab3e96be7057462
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head> 
+<title> assurland.com</title>
+</head>
+<body><center>
+<p>
+<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.makine.net/svi/miroir.php?bat=assurland_jeu0909_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#a60019;font-size:24px'>
+<p style='display:inline;'> <b>assur</b>land.com<br></p>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#ffffff;font-family:Verdana;color:#000000;font-size:12px;'>
+<b>Comparez le tarif de votre assurance auto, vous gagnerez peut-&ecirc;tre cette Citroen C1</b>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<!-- BEGIN PARTNER PROGRAM - DO NOT CHANGE THE PARAMETERS OF THE HYPERLINK -->
+<table border="0" cellpadding="0" cellspacing="0" width="800">
+<tbody><tr>
+<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 800px; height: 61px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/titre.gif" alt="participez au grand jeu concours assurland" /></a></td>
+</tr>
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="800">
+<tbody><tr>
+<td width="39"><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 39px; height: 414px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/gauche.gif" alt="participez au grand jeu concours assurland" /></a></td>
+<td><table border="0" cellpadding="0" cellspacing="0" width="402"><tbody><tr><td width="402"><table border="0" cellpadding="0" cellspacing="0">
+<tbody><tr>
+<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 402px; height: 54px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/haut.gif" alt="participez au grand jeu concours assurland" /></a></td>
+</tr>
+<tr>
+<td style="font-family: Arial,Helvetica,sans-serif; font-size: 23px; color: rgb(183, 0, 0);" align="center" height="99"><span style="color: rgb(51, 51, 51);">Comparez les tarifs d'assurances auto</span><br />
+<span style="color: rgb(51, 51, 51);">sur</span> <span style="font-weight: bold;">assur</span>land.com<span style="color: rgb(51, 51, 51);"></span><br /><span style="color: rgb(51, 51, 51);">
+et vous participerez</span><span style="color: rgb(51, 51, 51);">&nbsp;au tirage au sort !</span></td>
+</tr>
+<tr>
+<td><table border="0" cellpadding="0" cellspacing="0" width="402">
+<tbody><tr>
+<td width="241"><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 241px; height: 186px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/gagnez.gif" alt="Gagnez une cito&euml;n C1 ou 10 iPod shuffle" /></a></td>
+<td width="161"><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 161px; height: 186px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/ipod1.jpg" alt="participez au grand jeu concours assurland" /></a></td>
+</tr>
+<tr>
+<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 241px; height: 75px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/jouez.gif" alt="JOUEZ" /></a></td>
+<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 161px; height: 75px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/ipod2.jpg" alt="participez au grand jeu concours assurland" /></a></td>
+</tr>
+</tbody></table></td>
+</tr>
+</tbody></table></td>
+</tr>
+</tbody></table></td>
+<td width="359"><table border="0" cellpadding="0" cellspacing="0" width="359">
+<tbody><tr>
+<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 359px; height: 87px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/formulaire.gif" alt="1 formulaire rempli = 1 chance de gagner" /></a></td>
+</tr>
+<tr>
+<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 359px; height: 252px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/c1.jpg" alt="participez au grand jeu concours assurland" /></a></td>
+</tr>
+<tr>
+<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 359px; height: 75px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/gratuit.gif" alt="Gratuit" /></a></td>
+</tr>
+</tbody></table></td>
+</tr>
+</tbody></table></td>
+</tr>
+<tr>
+<td><a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique"><img style="border: 0px solid; width: 800px; height: 55px;" src="http://affilinet.azuria.net/banniere/assurland/mailing_concours/bas.gif" alt="avec assurland.com le comparateur d'assurance et aramis distributeur d'automobiles" /></a></td>
+</tr>
+<tr>
+<td style="font-family: Arial,Helvetica,sans-serif; font-size: 14px; color: rgb(183, 0, 0);" align="center" height="30">Jeu gratuit sans obligation d'achat -&nbsp;<a href="http://www.makine.net/svi/linkserv.php?bat=assurland_jeu0909_ctrm&nb=2278&n=9047704&c=pratique" style="color: rgb(183, 0, 0);">En savoir plus</a></td>
+</tr>
+</tbody></table>
+<!-- END PARTNER PROGRAM -->
+
+
+
+
+
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.makine.net/svi/img_nb_2278_numuser_yyynumuseryyy.jpg" width=1 height=1 alt=''>
+<p>
+Ce message est envoy&eacute; par central marques - <a href="http://www.makine.net/svi/gestionserv.php?nb=2278&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_41213a2c3f75e60e5ab3e96be7057462--
+
+--===============0358626363819394364==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -119,7 +145,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
 http://p.sf.net/sfu/devconf
---===============5385184151590243854==
+--===============0358626363819394364==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,4 +156,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5385184151590243854==--
+--===============0358626363819394364==--

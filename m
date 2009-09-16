@@ -1,85 +1,142 @@
-From: "Guide Credit" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: =?iso-8859-1?q?Pour_votre_rentr=E9e_profitez_?=
-	=?iso-8859-1?q?de_conseils_et_astuces_Gratuits?=
-Date: Wed, 16 Sep 2009 18:37:15 +0200 (CEST)
-Message-ID: <kq2ou2.1iy7yj@front.ta271.com>
+From: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [spi-devel-general] [PATCH] mpc52xx_psc_spi: enlarge clock range
+Date: Wed, 16 Sep 2009 22:48:53 +0200
+Message-ID: <20090916204853.GA21627@pengutronix.de>
+References: <4AB0C706.5020601@toptica.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5409360898747616817=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5354306600070936183=="
+Cc: spi-devel-general@lists.sourceforge.net,
+	David Brownell <dbrownell@users.sourceforge.net>, linuxppc-dev@ozlabs.org
+To: Dragos Carp <dragos.carp@toptica.com>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <4AB0C706.5020601@toptica.com>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5409360898747616817==
-Content-Type: multipart/alternative;
-	boundary="=_53b75f4c5099e6434d83719c80906cc7"
 
---=_53b75f4c5099e6434d83719c80906cc7
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-
---=_53b75f4c5099e6434d83719c80906cc7
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>=0D<head>=0D</head>=0D<body>=0D<div align=3D"center"><font face=3D"ve=
-rdana" size=3D"2">Si vous n'arrivez pas =E0 lire ce message correctement, <=
-a href=3D"http://front.ta271.com/r.php?i=3D509VH8Q7_475197_1&l=3Dhttp%3A%2F=
-%2Fwww.power-mta.info%2Fformulaires%2Faffich_form.php%3Fserial%3DDEJOLo2r">=
-cliquez ici</a><br /></font></div>=0D<table width=3D"404" align=3D"center" =
-border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody style=3D"FONT-FA=
-MILY: Arial,Helvetica,sans-serif; FONT-SIZE: 12px">=0D<tr>=0D<td width=3D"6=
-00" valign=3D"top"><a href=3D"http://front.ta271.com/r.php?i=3D509VH8Q7_475=
-197_1&l=3Dhttp%3A%2F%2Fwww.power-mta.info%2Fformulaires%2Faffich_form.php%3=
-Fserial%3DDEJOLo2r"><img width=3D"550" height=3D"191" src=3D"http://www.pow=
-er-mta.info/hebergement_messages/11003/image/GCp1b_09_01.jpg" border=3D"0" =
-complete=3D"true" complete=3D"true" /></a><a href=3D"http://front.ta271.com=
-/r.php?i=3D509VH8Q7_475197_1&l=3Dhttp%3A%2F%2Fwww.power-mta.info%2Fformulai=
-res%2Faffich_form.php%3Fserial%3DDEJOLo2r"><img width=3D"550" height=3D"209=
-" src=3D"http://www.power-mta.info/hebergement_messages/11003/image/GCp1b_0=
-9_02.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D<t=
-d width=3D"5" valign=3D"top">=0D<p align=3D"left"><font face=3D"Arial, Helv=
-etica, sans-serif"><br /><br /><br /><br /><font size=3D"1"><br /></font></=
-font><br />&nbsp;</p>=0D</td>=0D</tr>=0D</tbody>=0D</table>=0D<br><br><div =
-align=3D"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" >Co=
-nformement a la loi Informatique et Libertes, vous disposez d'un droit d'ac=
-ces et de rectification.
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
-AA509VH8Q7_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
-om/ZZ509VH8Q7_475197.png" /></body></html>
---=_53b75f4c5099e6434d83719c80906cc7--
-
-
-
---===============5409360898747616817==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--===============5354306600070936183==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="cNdxnHkX5QqsyA0e"
 Content-Disposition: inline
 
-------------------------------------------------------------------------------
-Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
-http://p.sf.net/sfu/devconf
---===============5409360898747616817==
+
+--cNdxnHkX5QqsyA0e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+adding powerpc-list and Grant to cc.
+
+On Wed, Sep 16, 2009 at 01:07:50PM +0200, Dragos Carp wrote:
+> allow spi clock values bellow 78kbps down to ca. 300bps
+
+Looks like your patch converts the driver from mpc5200 to mpc5200b? If this=
+ is
+really all which is needed, it should support both versions, I think.
+
+Regards,
+
+   Wolfram
+
+>=20
+> Signed-off-by: Dragos Carp <dragos.carp@toptica.com>
+> ---
+>  mpc52xx_psc_spi.c |   26 +++++++++++++-------------
+>  1 file changed, 13 insertions(+), 13 deletions(-)
+>=20
+
+> diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
+> index 1b74d5c..b15882a 100644
+> --- a/drivers/spi/mpc52xx_psc_spi.c
+> +++ b/drivers/spi/mpc52xx_psc_spi.c
+> @@ -78,7 +78,8 @@ static void mpc52xx_psc_spi_activate_cs(struct spi_devi=
+ce *spi)
+>  	struct mpc52xx_psc_spi *mps =3D spi_master_get_devdata(spi->master);
+>  	struct mpc52xx_psc __iomem *psc =3D mps->psc;
+>  	u32 sicr;
+> -	u16 ccr;
+> +	u32 ccr;
+> +	u32 bitclkdiv;
+> =20
+>  	sicr =3D in_be32(&psc->sicr);
+> =20
+> @@ -98,17 +99,16 @@ static void mpc52xx_psc_spi_activate_cs(struct spi_de=
+vice *spi)
+>  		sicr &=3D ~0x10000000;
+>  	out_be32(&psc->sicr, sicr);
+> =20
+> -	/* Set clock frequency and bits per word
+> -	 * Because psc->ccr is defined as 16bit register instead of 32bit
+> -	 * just set the lower byte of BitClkDiv
+> -	 */
+> -	ccr =3D in_be16((u16 __iomem *)&psc->ccr);
+> -	ccr &=3D 0xFF00;
+> -	if (cs->speed_hz)
+> -		ccr |=3D (MCLK / cs->speed_hz - 1) & 0xFF;
+> -	else /* by default SPI Clk 1MHz */
+> -		ccr |=3D (MCLK / 1000000 - 1) & 0xFF;
+> -	out_be16((u16 __iomem *)&psc->ccr, ccr);
+> +	/* Set clock frequency */
+> +	bitclkdiv =3D MCLK / (cs->speed_hz ? cs->speed_hz : 1000000) - 1;
+> +	bitclkdiv &=3D 0xFFFF;
+> +	bitclkdiv |=3D (bitclkdiv & 0xFF) << 16;	/* byte swapped */
+> +	bitclkdiv &=3D 0x00FFFF00;
+> +	ccr =3D in_be32(&psc->ccr);
+> +	ccr &=3D 0xFF0000FF;
+> +	ccr |=3D bitclkdiv;
+> +	out_be32(&psc->ccr, ccr);
+> +=09
+>  	mps->bits_per_word =3D cs->bits_per_word;
+> =20
+>  	if (mps->cs_control)
+> @@ -333,7 +333,7 @@ static int mpc52xx_psc_spi_port_config(int psc_id, st=
+ruct mpc52xx_psc_spi *mps)
+>  	/* Configure 8bit codec mode as a SPI master and use EOF flags */
+>  	/* SICR_SIM_CODEC8|SICR_GENCLK|SICR_SPI|SICR_MSTR|SICR_USEEOF */
+>  	out_be32(&psc->sicr, 0x0180C800);
+> -	out_be16((u16 __iomem *)&psc->ccr, 0x070F); /* default SPI Clk 1MHz */
+> +	out_be32(&psc->ccr, 0x07130000); /* default SPI Clk 1MHz */
+> =20
+>  	/* Set 2ms DTL delay */
+>  	out_8(&psc->ctur, 0x00);
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--cNdxnHkX5QqsyA0e
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iEYEARECAAYFAkqxTzUACgkQD27XaX1/VRt7IQCgrX/gKFuw7O0k/FPZ5Y/hoLZf
+hhkAoMtR8i8gRVKrQ2fuXVc7eB8tXnUN
+=O5YP
+-----END PGP SIGNATURE-----
+
+--cNdxnHkX5QqsyA0e--
+
+--===============5354306600070936183==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 _______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5409360898747616817==--
+Linuxppc-dev mailing list
+Linuxppc-dev@lists.ozlabs.org
+https://lists.ozlabs.org/listinfo/linuxppc-dev
+--===============5354306600070936183==--

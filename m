@@ -1,11 +1,11 @@
-From: "Esprit Phyto" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: Promotions Anniversaire : profitez de la baisse
-	des prix sur toute notre gamme
-Date: Wed, 16 Sep 2009 11:20:59 +0200 (CEST)
-Message-ID: <kq24my.ylwaz1@front.ta271.com>
+From: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH] mpc52xx_psc_spi: enlarge clock range
+Date: Wed, 16 Sep 2009 13:07:50 +0200
+Message-ID: <4AB0C706.5020601@toptica.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8229050336014753106=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="------------060603010800070304030800"
+To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,101 +17,78 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8229050336014753106==
-Content-Type: multipart/alternative;
-	boundary="=_30e72d4c2f4aedade9b24c1c1bd9a926"
+--------------060603010800070304030800
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Disposition: inline
 
---=_30e72d4c2f4aedade9b24c1c1bd9a926
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+allow spi clock values bellow 78kbps down to ca. 300bps
 
-
---=_30e72d4c2f4aedade9b24c1c1bd9a926
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>=0D<head>=0D</head>=0D<body><div align=3D"center"><font size=3D"2" fa=
-ce=3D"Arial, Helvetica, sans-serif"><a href=3D"http://front.ta271.com/php/e=
-mailing/view_mail.php?CODE=3D50EJ6NNH_475197&HASH=3De04a449cbb310a540a4acde=
-3c023c606">Si vous ne pouvez pas consulter correctement ce message, suivez =
-ce lien</a><br>
-</font></div><img width=3D"1" height=3D"1" align=3D"bottom" src=3D"http://a=
-d.zanox.com/ppv/?13060357C851678062" border=3D"0" hspace=3D"1" complete=3D"=
-true" complete=3D"true" /><style></style> <div id=3D"ephyto01"><!-- Save fo=
-r Web Slices (NL_26_02_09_B.psd) -->=0D<table width=3D"790" align=3D"center=
-" id=3D"Tableau_01" style=3D"BORDER-BOTTOM: #cccccc 0px solid; BORDER-LEFT:=
- #cccccc 0px solid; BORDER-TOP: #cccccc 0px solid; BORDER-RIGHT: #cccccc 0p=
-x solid" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=
-=0D<td width=3D"800" height=3D"304"><a href=3D"http://ad.zanox.com/ppc/?130=
-60357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/gamme.php?id_gamme=3D62=
-"><img width=3D"800" height=3D"304" alt=3D"-20 % G=E9lules EspritPhyto" src=
-=3D"http://clients.quamediagroup.com/esprit/images/news_anniversaire2_top.j=
-pg" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D=
-<tr>=0D<td height=3D"48" valign=3D"top"><img width=3D"800" height=3D"32" sr=
-c=3D"http://clients.quamediagroup.com/esprit/images/news_bande.jpg" complet=
-e=3D"true" complete=3D"true" /> <table width=3D"100%" align=3D"center" bord=
-er=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr align=3D"cent=
-er" valign=3D"middle">=0D<td height=3D"62"><a href=3D"http://ad.zanox.com/p=
-pc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/gamme.php?id_gam=
-me=3D36"><img width=3D"800" height=3D"180" alt=3D"SOKOJA EN BAISSE" src=3D"=
-http://clients.quamediagroup.com/esprit/images/feuilles_bas.jpg" border=3D"=
-0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D<tr align=3D"c=
-enter" valign=3D"middle">=0D<td height=3D"274">=0D<table width=3D"90%" bord=
-er=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td colspa=
-n=3D"3" />=0D</tr>=0D<tr>=0D<td>=0D<div align=3D"right"><img width=3D"215" =
-height=3D"540" src=3D"http://clients.quamediagroup.com/esprit/images/bande_=
-1.jpg" border=3D"0" complete=3D"true" usemap=3D"#Map" complete=3D"true" /><=
-/div>=0D</td>=0D<td>=0D<div align=3D"center"><img width=3D"215" height=3D"5=
-40" src=3D"http://clients.quamediagroup.com/esprit/images/bande_2.jpg" bord=
-er=3D"0" complete=3D"true" usemap=3D"#Map2" complete=3D"true" /></div>=0D</=
-td>=0D<td>=0D<div align=3D"left"><img width=3D"215" height=3D"540" src=3D"h=
-ttp://clients.quamediagroup.com/esprit/images/bande_3.jpg" border=3D"0" com=
-plete=3D"true" usemap=3D"#Map3" complete=3D"true" /></div>=0D</td>=0D</tr>=
-=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr=
->=0D<tr>=0D<td height=3D"325">=0D<table width=3D"100%" border=3D"0" cellspa=
-cing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr align=3D"center" valign=3D"to=
-p">=0D<td width=3D"33%" height=3D"339"><a href=3D"http://ad.zanox.com/ppc/?=
-13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/nouveautes.php"><img=
- width=3D"279" height=3D"339" src=3D"http://clients.quamediagroup.com/espri=
-t/images/news_news_but.jpg" border=3D"0" complete=3D"true" complete=3D"true=
-" /></a></td>=0D<td width=3D"33%"><a href=3D"http://ad.zanox.com/ppc/?13060=
-357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/authentification.php?parr=
-ainage"><img width=3D"244" height=3D"339" src=3D"http://clients.quamediagro=
-up.com/esprit/images/news_parrain_but.jpg" border=3D"0" complete=3D"true" c=
-omplete=3D"true" /></a></td>=0D<td width=3D"33%"><a href=3D"http://ad.zanox=
-.com/ppc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/services/a=
-cheter_en_toute_securite.php"><img width=3D"277" height=3D"339" src=3D"http=
-://clients.quamediagroup.com/esprit/images/news_securite_but.jpg" border=3D=
-"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D</tbody>=0D</=
-table>=0D</td>=0D</tr>=0D</tbody>=0D</table><!-- End ImageReady Slices --><=
-map name=3D"Map"><area href=3D"http://ad.zanox.com/ppc/?13060357C851678062&=
-ULP=3Dhttp://www.espritphyto.com/fr/fiche.php?id_produit=3D480" shape=3D"re=
-ct" coords=3D"6,78,214,312" alt=3D"TRANSIT MAX" /><area href=3D"http://ad.z=
-anox.com/ppc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/fiche.=
-php?id_produit=3D224" shape=3D"rect" coords=3D"11,331,211,526" alt=3D"ARGIL=
-E NATURLAND" /></map><map name=3D"Map2"><area href=3D"http://ad.zanox.com/p=
-pc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com/fr/fiche.php?id_pro=
-duit=3D414" shape=3D"rect" coords=3D"6,92,210,355" alt=3D"VITASIL 1 Litre" =
-/><area href=3D"http://ad.zanox.com/ppc/?13060357C851678062&ULP=3Dhttp://ww=
-w.espritphyto.com/fr/fiche.php?id_produit=3D384" shape=3D"rect" coords=3D"5=
-,366,209,534" alt=3D"CAT'S CLAW" /></map><map name=3D"Map3"><area href=3D"h=
-ttp://ad.zanox.com/ppc/?13060357C851678062&ULP=3Dhttp://www.espritphyto.com=
-/fr/fiche.php?id_produit=3D550" shape=3D"rect" coords=3D"10,112,203,293" al=
-t=3D"EXPERT BRONZAGE" /><area href=3D"http://ad.zanox.com/ppc/?13060357C851=
-678062&ULP=3Dhttp://www.espritphyto.com/fr/fiche.php?id_produit=3D318" shap=
-e=3D"rect" coords=3D"11,325,193,536" alt=3D"PLANTE SYSTEM SOLAIRES" /></map=
->=0D</div><!-- FIN du code HTML zanox-affiliate -->=0D<br><br><div align=3D=
-"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#9=
-99999">Conformement a la loi Informatique et Libertes, vous disposez d'un d=
-roit d'acces et de rectification.<br>
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
-AA50EJ6NNH_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
-om/ZZ50EJ6NNH_475197.png" /></body></html>
---=_30e72d4c2f4aedade9b24c1c1bd9a926--
+Signed-off-by: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
+---
+ mpc52xx_psc_spi.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
 
+--------------060603010800070304030800
+Content-Type: text/plain;
+	name="mpc52xx_psc_spi.patch"
+Content-Disposition: attachment;
+	filename="mpc52xx_psc_spi.patch"
 
---===============8229050336014753106==
+diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
+index 1b74d5c..b15882a 100644
+--- a/drivers/spi/mpc52xx_psc_spi.c
++++ b/drivers/spi/mpc52xx_psc_spi.c
+@@ -78,7 +78,8 @@ static void mpc52xx_psc_spi_activate_cs(struct spi_device *spi)
+ 	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(spi->master);
+ 	struct mpc52xx_psc __iomem *psc = mps->psc;
+ 	u32 sicr;
+-	u16 ccr;
++	u32 ccr;
++	u32 bitclkdiv;
+ 
+ 	sicr = in_be32(&psc->sicr);
+ 
+@@ -98,17 +99,16 @@ static void mpc52xx_psc_spi_activate_cs(struct spi_device *spi)
+ 		sicr &= ~0x10000000;
+ 	out_be32(&psc->sicr, sicr);
+ 
+-	/* Set clock frequency and bits per word
+-	 * Because psc->ccr is defined as 16bit register instead of 32bit
+-	 * just set the lower byte of BitClkDiv
+-	 */
+-	ccr = in_be16((u16 __iomem *)&psc->ccr);
+-	ccr &= 0xFF00;
+-	if (cs->speed_hz)
+-		ccr |= (MCLK / cs->speed_hz - 1) & 0xFF;
+-	else /* by default SPI Clk 1MHz */
+-		ccr |= (MCLK / 1000000 - 1) & 0xFF;
+-	out_be16((u16 __iomem *)&psc->ccr, ccr);
++	/* Set clock frequency */
++	bitclkdiv = MCLK / (cs->speed_hz ? cs->speed_hz : 1000000) - 1;
++	bitclkdiv &= 0xFFFF;
++	bitclkdiv |= (bitclkdiv & 0xFF) << 16;	/* byte swapped */
++	bitclkdiv &= 0x00FFFF00;
++	ccr = in_be32(&psc->ccr);
++	ccr &= 0xFF0000FF;
++	ccr |= bitclkdiv;
++	out_be32(&psc->ccr, ccr);
++	
+ 	mps->bits_per_word = cs->bits_per_word;
+ 
+ 	if (mps->cs_control)
+@@ -333,7 +333,7 @@ static int mpc52xx_psc_spi_port_config(int psc_id, struct mpc52xx_psc_spi *mps)
+ 	/* Configure 8bit codec mode as a SPI master and use EOF flags */
+ 	/* SICR_SIM_CODEC8|SICR_GENCLK|SICR_SPI|SICR_MSTR|SICR_USEEOF */
+ 	out_be32(&psc->sicr, 0x0180C800);
+-	out_be16((u16 __iomem *)&psc->ccr, 0x070F); /* default SPI Clk 1MHz */
++	out_be32(&psc->ccr, 0x07130000); /* default SPI Clk 1MHz */
+ 
+ 	/* Set 2ms DTL delay */
+ 	out_8(&psc->ctur, 0x00);
+
+--------------060603010800070304030800
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -123,7 +100,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
 http://p.sf.net/sfu/devconf
---===============8229050336014753106==
+--------------060603010800070304030800
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -134,4 +111,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8229050336014753106==--
+--------------060603010800070304030800--

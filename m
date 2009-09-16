@@ -1,11 +1,11 @@
-From: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH] mpc52xx_psc_spi: enlarge clock range
-Date: Wed, 16 Sep 2009 13:07:50 +0200
-Message-ID: <4AB0C706.5020601@toptica.com>
+From: © VIAGRA ® Official Site <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: Dear spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+	72% 0FF on Pfizer !
+Date: Wed, 16 Sep 2009 12:47:58 +0000
+Message-ID: <E1MntvS-0006fy-Pi@h25xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------060603010800070304030800"
-To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============4496796550367150410=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,78 +17,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---------------060603010800070304030800
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Disposition: inline
+--===============4496796550367150410==
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
 
-allow spi clock values bellow 78kbps down to ca. 300bps
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+      <title>
+		News
+      </title>
+   </head>
+   <body>
 
-Signed-off-by: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
----
- mpc52xx_psc_spi.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+      <table border="0" cellpadding="0" cellspacing="0" style="width: 896px">
 
 
---------------060603010800070304030800
-Content-Type: text/plain;
-	name="mpc52xx_psc_spi.patch"
-Content-Disposition: attachment;
-	filename="mpc52xx_psc_spi.patch"
+<tr><td align="center" style="font: normal 11px Verdana, sans-serif; color: #333;"><a href="http://www.gwitusah.cn" style="text-decoration: none; color: #0099ff;">Click here</a> to view as a web page. </td></tr>
 
-diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
-index 1b74d5c..b15882a 100644
---- a/drivers/spi/mpc52xx_psc_spi.c
-+++ b/drivers/spi/mpc52xx_psc_spi.c
-@@ -78,7 +78,8 @@ static void mpc52xx_psc_spi_activate_cs(struct spi_device *spi)
- 	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(spi->master);
- 	struct mpc52xx_psc __iomem *psc = mps->psc;
- 	u32 sicr;
--	u16 ccr;
-+	u32 ccr;
-+	u32 bitclkdiv;
- 
- 	sicr = in_be32(&psc->sicr);
- 
-@@ -98,17 +99,16 @@ static void mpc52xx_psc_spi_activate_cs(struct spi_device *spi)
- 		sicr &= ~0x10000000;
- 	out_be32(&psc->sicr, sicr);
- 
--	/* Set clock frequency and bits per word
--	 * Because psc->ccr is defined as 16bit register instead of 32bit
--	 * just set the lower byte of BitClkDiv
--	 */
--	ccr = in_be16((u16 __iomem *)&psc->ccr);
--	ccr &= 0xFF00;
--	if (cs->speed_hz)
--		ccr |= (MCLK / cs->speed_hz - 1) & 0xFF;
--	else /* by default SPI Clk 1MHz */
--		ccr |= (MCLK / 1000000 - 1) & 0xFF;
--	out_be16((u16 __iomem *)&psc->ccr, ccr);
-+	/* Set clock frequency */
-+	bitclkdiv = MCLK / (cs->speed_hz ? cs->speed_hz : 1000000) - 1;
-+	bitclkdiv &= 0xFFFF;
-+	bitclkdiv |= (bitclkdiv & 0xFF) << 16;	/* byte swapped */
-+	bitclkdiv &= 0x00FFFF00;
-+	ccr = in_be32(&psc->ccr);
-+	ccr &= 0xFF0000FF;
-+	ccr |= bitclkdiv;
-+	out_be32(&psc->ccr, ccr);
-+	
- 	mps->bits_per_word = cs->bits_per_word;
- 
- 	if (mps->cs_control)
-@@ -333,7 +333,7 @@ static int mpc52xx_psc_spi_port_config(int psc_id, struct mpc52xx_psc_spi *mps)
- 	/* Configure 8bit codec mode as a SPI master and use EOF flags */
- 	/* SICR_SIM_CODEC8|SICR_GENCLK|SICR_SPI|SICR_MSTR|SICR_USEEOF */
- 	out_be32(&psc->sicr, 0x0180C800);
--	out_be16((u16 __iomem *)&psc->ccr, 0x070F); /* default SPI Clk 1MHz */
-+	out_be32(&psc->ccr, 0x07130000); /* default SPI Clk 1MHz */
- 
- 	/* Set 2ms DTL delay */
- 	out_8(&psc->ctur, 0x00);
+         <tr><td align="center">
+        	 <br />
+			 <a href="http://www.gwitusah.cn">
+			 <img alt="View image in browser now" width="618" height="326" src="http://www.gwitusah.cn/1.gif" style="border-width: 0px" /></a></td></tr>
 
---------------060603010800070304030800
+
+<tr><td valign="top" style="border-right: 1px solid #e5e4e4; padding-right: 10px">
+        <table border="0" cellpadding="0" cellspacing="0" style="width: 884px">
+
+<tr><td align="center" style="font: normal 9px Verdana, sans-serif; color: #999; padding-top: 20px">
+
+<a href="http://www.gwitusah.cn" style="font: 9px Verdana, sans-serif; text-decoration: none; color: #0099ff">Unsubscribe</a> | 
+<a href="http://www.gwitusah.cn" style="font: 9px Verdana, sans-serif; text-decoration: none; color: #0099ff">Change e-mail address</a> | 
+<a href="http://www.gwitusah.cn" style="font: 9px Verdana, sans-serif; text-decoration: none; color: #0099ff">Privacy Policy</a> | 
+<a href="http://www.gwitusah.cn" style="font: 9px Verdana, sans-serif; text-decoration: none; color: #0099ff">About Us</a><br /><br />
+Copyright © 2009 jpahz Inc. All rights reserved.<br />
+					  </td></tr>
+
+        </table>
+
+</td>
+</tr>
+      </table>
+</body>
+</html>
+
+
+
+
+--===============4496796550367150410==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -100,7 +78,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
 http://p.sf.net/sfu/devconf
---------------060603010800070304030800
+--===============4496796550367150410==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,4 +89,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---------------060603010800070304030800--
+--===============4496796550367150410==--

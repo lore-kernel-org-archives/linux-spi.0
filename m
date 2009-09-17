@@ -1,44 +1,127 @@
 From: Mike Frysinger <vapier@gentoo.org>
-Subject: [PATCH 2/5] Blackfin SPI: work around anomaly 05000119
-Date: Thu, 17 Sep 2009 19:47:50 -0400
-Message-ID: <1253231273-16423-2-git-send-email-vapier@gentoo.org>
+Subject: [PATCH 5/5] Blackfin SPI: clean up error handling in client setup
+Date: Thu, 17 Sep 2009 19:47:53 -0400
+Message-ID: <1253231273-16423-5-git-send-email-vapier@gentoo.org>
 References: <1253231273-16423-1-git-send-email-vapier@gentoo.org>
 Cc: linux-kernel@vger.kernel.org,
-	uclinux-dist-devel@blackfin.uclinux.org,
-	Sonic Zhang <sonic.zhang@analog.com>
+	uclinux-dist-devel@blackfin.uclinux.org, Yi Li <yi.li@analog.com>
 To: spi-devel-general@lists.sourceforge.net,
 	David Brownell <dbrownell@users.sourceforge.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754221AbZIQXry@vger.kernel.org>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754391AbZIQXsE@vger.kernel.org>
 In-Reply-To: <1253231273-16423-1-git-send-email-vapier@gentoo.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Sonic Zhang <sonic.zhang@analog.com>
+From: Yi Li <yi.li@analog.com>
 
-Anomaly 05000119 states that the DMA_RUN bit with peripherals isn't
-reliable.  However, the way the driver is currently written (DMA IRQ
-callback), we don't need the polling in the first place, so drop it.
+Make sure we don't leak peripheral/gpio resources when an error occurs
+during setup, and make sure we don't call kfree() twice on the same
+object.  Also add/fix some error messages in the process.
 
-Signed-off-by: Sonic Zhang <sonic.zhang@analog.com>
+Signed-off-by: Yi Li <yi.li@analog.com>
 Signed-off-by: Mike Frysinger <vapier@gentoo.org>
 ---
- drivers/spi/spi_bfin5xx.c |    4 ----
- 1 files changed, 0 insertions(+), 4 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   33 ++++++++++++++++++++++++++-------
+ 1 files changed, 26 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 8ec4969..5591bce 100644
+index a8fc922..0dcc2ca 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -539,10 +539,6 @@ static irqreturn_t bfin_spi_dma_irq_handler(int irq, void *dev_id)
+@@ -1118,8 +1118,10 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	chip = spi_get_ctldata(spi);
+ 	if (chip == NULL) {
+ 		chip = kzalloc(sizeof(*chip), GFP_KERNEL);
+-		if (!chip)
++		if (!chip) {
++			dev_err(&spi->dev, "cannot allocate chip data\n");
+ 			return -ENOMEM;
++		}
  
- 	clear_dma_irqstat(drv_data->dma_channel);
+ 		chip->enable_dma = 0;
+ 		chip_info = spi->controller_data;
+@@ -1210,7 +1212,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		/* register dma irq handler */
+ 		ret = request_dma(drv_data->dma_channel, "BFIN_SPI_DMA");
+ 		if (ret) {
+-			dev_dbg(&spi->dev,
++			dev_err(&spi->dev,
+ 				"Unable to request BlackFin SPI DMA channel\n");
+ 			goto error;
+ 		}
+@@ -1219,7 +1221,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		ret = set_dma_callback(drv_data->dma_channel,
+ 			bfin_spi_dma_irq_handler, drv_data);
+ 		if (ret) {
+-			dev_dbg(&spi->dev, "Unable to set dma callback\n");
++			dev_err(&spi->dev, "Unable to set dma callback\n");
+ 			goto error;
+ 		}
+ 		dma_disable_irq(drv_data->dma_channel);
+@@ -1229,7 +1231,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		ret = request_irq(drv_data->spi_irq, bfin_spi_pio_irq_handler,
+ 			IRQF_DISABLED, "BFIN_SPI", drv_data);
+ 		if (ret) {
+-			printk(KERN_NOTICE "Unable to register spi IRQ\n");
++			dev_err(&spi->dev, "Unable to register spi IRQ\n");
+ 			goto error;
+ 		}
+ 		drv_data->irq_requested = 1;
+@@ -1239,8 +1241,10 @@ static int bfin_spi_setup(struct spi_device *spi)
  
--	/* Wait for DMA to complete */
--	while (get_dma_curr_irqstat(drv_data->dma_channel) & DMA_RUN)
--		cpu_relax();
--
- 	/*
- 	 * wait for the last transaction shifted out.  HRM states:
- 	 * at this point there may still be data in the SPI DMA FIFO waiting
+ 	if (chip->chip_select_num == 0) {
+ 		ret = gpio_request(chip->cs_gpio, spi->modalias);
+-		if (ret)
++		if (ret) {
++			dev_err(&spi->dev, "gpio_request() error\n");
+ 			goto error;
++		}
+ 		gpio_direction_output(chip->cs_gpio, 1);
+ 	}
+ 
+@@ -1256,8 +1260,10 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	    chip->chip_select_num <= spi->master->num_chipselect) {
+ 		ret = peripheral_request(ssel[spi->master->bus_num]
+ 		                         [chip->chip_select_num-1], spi->modalias);
+-		if (ret)
++		if (ret) {
++			dev_err(&spi->dev, "peripheral_request() error\n");
+ 			goto error;
++		}
+ 	}
+ 
+ 	bfin_spi_cs_deactive(drv_data, chip);
+@@ -1265,10 +1271,21 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 
+  error:
+ 	if (ret) {
+-		kfree(chip);
+ 		if (drv_data->dma_requested)
+ 			free_dma(drv_data->dma_channel);
+ 		drv_data->dma_requested = 0;
++
++		if ((chip->chip_select_num > 0)
++			&& (chip->chip_select_num <= spi->master->num_chipselect))
++			peripheral_free(ssel[spi->master->bus_num]
++						[chip->chip_select_num-1]);
++
++		if (chip->chip_select_num == 0)
++			gpio_free(chip->cs_gpio);
++
++		kfree(chip);
++		/* prevent free 'chip' twice */
++		spi_set_ctldata(spi, NULL);
+ 	}
+ 
+ 	return ret;
+@@ -1294,6 +1311,8 @@ static void bfin_spi_cleanup(struct spi_device *spi)
+ 		gpio_free(chip->cs_gpio);
+ 
+ 	kfree(chip);
++	/* prevent free 'chip' twice */
++	spi_set_ctldata(spi, NULL);
+ }
+ 
+ static inline int bfin_spi_init_queue(struct driver_data *drv_data)
 -- 
 1.6.5.rc1

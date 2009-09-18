@@ -1,64 +1,54 @@
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 2/2 v2] mmc_spi: lock the SPI bus when accessing the
- card
-Date: Fri, 18 Sep 2009 14:30:54 -0700
-Message-ID: <20090918143054.a6cf31f7.akpm@linux-foundation.org>
-References: <BD79186B4FD85F4B8E60E381CAEE190901D41E4C@mi8nycmail19.Mi8.com>
-	<1253235134-25571-1-git-send-email-vapier@gentoo.org>
+From: "H Hartley Sweeten" <hartleys@visionengravers.com>
+Subject: RE: [spi-devel-general] [PATCH 1/2] spi: new SPI bus lock/unlockfunctions
+Date: Fri, 18 Sep 2009 19:00:13 -0400
+Message-ID: <BD79186B4FD85F4B8E60E381CAEE190901D41FB1@mi8nycmail19.Mi8.com>
+References: <1253224997-7422-1-git-send-email-vapier@gentoo.org> <BD79186B4FD85F4B8E60E381CAEE190901D41E44@mi8nycmail19.Mi8.com> <8bd0f97a0909171553s1b7ee725x728bbca2f49511a9@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
-	yi.li@analog.com
-To: Mike Frysinger <vapier@gentoo.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1757490AbZIRVcn@vger.kernel.org>
-In-Reply-To: <1253235134-25571-1-git-send-email-vapier@gentoo.org>
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <spi-devel-general@lists.sourceforge.net>,
+	"David Brownell" <dbrownell@users.sourceforge.net>,
+	"Yi Li" <yi.li@analog.com>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	<linux-kernel@vger.kernel.org>
+To: "Mike Frysinger" <vapier.adi@gmail.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1758737AbZIRXAO@vger.kernel.org>
+Content-class: urn:content-classes:message
+In-Reply-To: <8bd0f97a0909171553s1b7ee725x728bbca2f49511a9@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 17 Sep 2009 20:52:14 -0400
-Mike Frysinger <vapier@gentoo.org> wrote:
-
-> From: Yi Li <yi.li@analog.com>
-> 
-> The MMC/SPI spec does not play well with typical SPI design -- it often
-> needs to send out a command in one message, read a response, then do some
-> other arbitrary step.  Since we can't let another SPI client use the bus
-> during this time, use the new SPI lock/unlock functions to provide the
-> required exclusivity.
-> 
-> Signed-off-by: Yi Li <yi.li@analog.com>
-> Signed-off-by: Mike Frysinger <vapier@gentoo.org>
-> ---
-> v2
-> 	- drop now unused maybe_count_child as pointed out by H Hartley Sweeten
-> 
->  drivers/mmc/host/mmc_spi.c |   41 ++---------------------------------------
->  1 files changed, 2 insertions(+), 39 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-> index a461017..c3563a7 100644
-> --- a/drivers/mmc/host/mmc_spi.c
-> +++ b/drivers/mmc/host/mmc_spi.c
-> @@ -1084,6 +1084,7 @@ static void mmc_spi_request(struct mmc_host *mmc, struct mmc_request *mrq)
->  #endif
->  
->  	/* issue command; then optionally data and stop */
-> +	spi_lock_bus(host->spi);
->  	status = mmc_spi_command_send(host, mrq, mrq->cmd, mrq->data != NULL);
->  	if (status == 0 && mrq->data) {
->  		mmc_spi_data_do(host, mrq->cmd, mrq->data, mrq->data->blksz);
-> @@ -1092,7 +1093,7 @@ static void mmc_spi_request(struct mmc_host *mmc, struct mmc_request *mrq)
->  		else
->  			mmc_cs_off(host);
->  	}
-> -
-> +	spi_unlock_bus(host->spi);
->  	mmc_request_done(host->mmc, mrq);
-
-I can't find any code anywhere which puts a non-zero value into
-spi_master.[un]lock_bus so in my tree at least, neither of these
-patches do anything.
-
-This makes it all a bit hard to understand and review.
+T24gVGh1cnNkYXksIFNlcHRlbWJlciAxNywgMjAwOSAzOjU0IFBNLCBNaWtlIEZyeXNpbmdlciB3
+cm90ZToNCj4+IEkgYXNzdW1lIHRoZSBzcGkgbWFzdGVyIGRyaXZlciBtdXN0IHN1cHBseSB0aGUg
+e2xvY2svdW5sb2NrfV9idXMgbWV0aG9kcw0KPj4gdG8gcHJvcGVybHkgc3VwcG9ydCB0aGUgbG9j
+a2luZy4NCj4NCj4gY3VycmVudGx5LCB5ZXMuICBhIGNvbW1vbiBzb2x1dGlvbiB3b3VsZCBiZSBu
+aWNlLiAgaWRlYXMvcGF0Y2hlcyB3ZWxjb21lIDspLg0KPg0KPj7CoEJ1dCwgYnkgcmV0dXJuaW5n
+IDAgd2hlbiB0aGUgbWV0aG9kcw0KPj4gYXJlIG5vdCBzdXBwbGllZCB5b3UgYXJlIGJhc2ljYWxs
+eSBzYXlpbmcgYWxsIHRoZSBjdXJyZW50IG1hc3RlciBkcml2ZXJzDQo+PiBpbiBtYWlubGluZSBz
+dXBwb3J0IGJ1cyBsb2NraW5nLiDCoEkgdGhpbmsgdGhpcyBpcyByZWFsbHkgb25seSAidHJ1ZSIg
+aWYNCj4+IHNwaS0+bWFzdGVyLT5udW1fY2hpcHNlbGVjdCA9PSAxLg0KPg0KPiByaWdodCwgYnV0
+IHRoYXQgaXMgbm8gZGlmZmVyZW50IGZyb20gd2hhdCB3ZSBoYXZlIHRvZGF5LiAgdGhlcmUgaXMg
+bm8NCj4gd2F5IGZvciBhIGNsaWVudCB0byBndWFyYW50ZWUgZXhjbHVzaXZlIGFjY2Vzcywgc28g
+eW91IGNhbnQgd3JpdGUgY29kZQ0KPiBhc3N1bWluZyBpdCBpbiB0aGUgZmlyc3QgcGxhY2UuICB0
+aGUgb25seSBjb25zdW1lciB0aHVzIGZhciAobW1jX3NwaSkNCj4gYWN0dWFsbHkgZXJyb3JzIG91
+dCBpZiBzdWNoIGNvbmRpdGlvbnMgZXhpc3QuDQo+DQo+IGluIG90aGVyIHdvcmRzLCB3ZSBhcmVu
+dCBicmVha2luZyBhbnl0aGluZy4NCg0KQWN0dWFsbHkgeW91IGFyZSBicmVha2luZyB0aGUgbW1j
+X3NwaSBkcml2ZXIuDQoNCkJ5IHJldHVybmluZyAwIHdoZW4gdGhlIG1ldGhvZHMgYXJlIG5vdCBz
+dXBwbGllZCB5b3UgYXJlIHNheWluZyB0aGF0IHRoZQ0KbWFzdGVyIGRyaXZlciBzdXBwb3J0cyBh
+bmQgbG9ja2VkIHRoZSBidXMuICBBdCBhIG1pbmltdW0sIEkgdGhpbmsgc3BpX2xvY2tfYnVzKCkN
+CnNob3VsZCByZXR1cm4gYW4gZXJyb3IgY29kZSBpZiBsb2NraW5nIGlzIG5vdCBzdXBwb3J0ZWQu
+DQoNCkFsc28sIGFzIEFuZHJldyBNb3J0b24gcG9pbnRlZCBvdXQsIGNhbGxpbmcgc3BpX3VubG9j
+a19idXMoKSB3aXRob3V0IGhhdmluZw0KYSB2YWxpZCBsb2NrIGJ5IGNhbGxpbmcgc3BpX2xvY2tf
+YnVzKCkgaXMgYSBidWcuDQoNCkluIGFkZGl0aW9uIHlvdXIgcGF0Y2ggdG8gbW1jX3NwaSBzaG91
+bGQgY2hlY2sgdGhlIHJldHVybiBjb2RlIGZyb20NCnNwaV9sb2NrX2J1cygpLiAgSWYgdGhlIGRy
+aXZlciAicmVxdWlyZXMiIHRoYXQgdGhlIGJ1cyBiZSBsb2NrZWQgaXQgc2hvdWxkDQp0cmlnZ2Vy
+IGFuIGVycm9yIHBhdGggaWYgaXQgY2Fubm90IGJlIGxvY2tlZC4NCg0KPj4gQWxzbywgZG8geW91
+IGhhdmUgYSBtYXN0ZXIgZHJpdmVyIHRoYXQgZG9lcyBoYXZlIHRoZSB7bG9jay91bmxvY2t9X2J1
+cw0KPj4gbWV0aG9kcz8gwqBJIHdvdWxkIGxpa2UgdG8gc2VlIGhvdyB5b3UgaGFuZGxlZCBpdC4N
+Cj4NCj4gaHR0cDovL2dpdC5rZXJuZWwub3JnLz9wPWxpbnV4L2tlcm5lbC9naXQvdmFwaWVyL2Js
+YWNrZmluLmdpdDthPWNvbW1pdGRpZmY7aD1jYzU0ZmE4ZWQ2M2UxMWEwMDAwMzFiYzY1MGQ0MWQ1
+N2I0NDE4MDNkDQoNCk9peS4uLiBUaGUgbG9jay91bmxvY2sgZnVuY3Rpb25zIGFyZSBzaW1wbGUg
+ZW5vdWdoIGJ1dCB0aGUgY2hhbmdlIG5lZWRlZA0KdG8gYmZpbl9zcGlfcHVtcF9tZXNzYWdlcygp
+IGlzIGEgYml0IGNvbXBsaWNhdGVkLg0KDQpXaGF0IGhhcHBlbnMgdG8gbmV4dF9tc2cgaWYgaXQg
+aXMgZm9yIG90aGVyIGRldmljZXMgb24gdGhlIGJ1cz8NCg0KUmVnYXJkcywNCkhhcnRsZXkNCg==

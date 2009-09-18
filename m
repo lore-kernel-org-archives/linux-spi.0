@@ -1,106 +1,144 @@
-From: Mike Frysinger <vapier@gentoo.org>
-Subject: [PATCH 2/2 v2] mmc_spi: lock the SPI bus when accessing the card
-Date: Thu, 17 Sep 2009 20:52:14 -0400
-Message-ID: <1253235134-25571-1-git-send-email-vapier@gentoo.org>
-References: <BD79186B4FD85F4B8E60E381CAEE190901D41E4C@mi8nycmail19.Mi8.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, Yi Li <yi.li@analog.com>
-To: spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753621AbZIRAwS@vger.kernel.org>
-In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE190901D41E4C@mi8nycmail19.Mi8.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Mutuelle Mcd <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
+Subject: Etre mieux rembourse pour seulement 14 euros
+Date: 18 Sep 2009 08:15:17 -0000
+Message-ID: <20090918081517.22693.qmail@ks355605.kimsufi.com>
+Reply-To: Mutuelle Mcd <newsletter-D4peTPJRHzReoWH0uzbU5w@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============4693078175265748234=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Yi Li <yi.li@analog.com>
 
-The MMC/SPI spec does not play well with typical SPI design -- it often
-needs to send out a command in one message, read a response, then do some
-other arbitrary step.  Since we can't let another SPI client use the bus
-during this time, use the new SPI lock/unlock functions to provide the
-required exclusivity.
+--===============4693078175265748234==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_d9052c2500e846602950249c3033abe8"
 
-Signed-off-by: Yi Li <yi.li@analog.com>
-Signed-off-by: Mike Frysinger <vapier@gentoo.org>
----
-v2
-	- drop now unused maybe_count_child as pointed out by H Hartley Sweeten
 
- drivers/mmc/host/mmc_spi.c |   41 ++---------------------------------------
- 1 files changed, 2 insertions(+), 39 deletions(-)
+--_----------=_parties_d9052c2500e846602950249c3033abe8
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index a461017..c3563a7 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -1084,6 +1084,7 @@ static void mmc_spi_request(struct mmc_host *mmc, struct mmc_request *mrq)
- #endif
- 
- 	/* issue command; then optionally data and stop */
-+	spi_lock_bus(host->spi);
- 	status = mmc_spi_command_send(host, mrq, mrq->cmd, mrq->data != NULL);
- 	if (status == 0 && mrq->data) {
- 		mmc_spi_data_do(host, mrq->cmd, mrq->data, mrq->data->blksz);
-@@ -1092,7 +1093,7 @@ static void mmc_spi_request(struct mmc_host *mmc, struct mmc_request *mrq)
- 		else
- 			mmc_cs_off(host);
- 	}
--
-+	spi_unlock_bus(host->spi);
- 	mmc_request_done(host->mmc, mrq);
- }
- 
-@@ -1294,18 +1295,6 @@ struct count_children {
- 	struct bus_type	*bus;
- };
- 
--static int maybe_count_child(struct device *dev, void *c)
--{
--	struct count_children *ccp = c;
--
--	if (dev->bus == ccp->bus) {
--		if (ccp->n)
--			return -EBUSY;
--		ccp->n++;
--	}
--	return 0;
--}
--
- static int mmc_spi_probe(struct spi_device *spi)
- {
- 	void			*ones;
-@@ -1337,32 +1326,6 @@ static int mmc_spi_probe(struct spi_device *spi)
- 		return status;
- 	}
- 
--	/* We can use the bus safely iff nobody else will interfere with us.
--	 * Most commands consist of one SPI message to issue a command, then
--	 * several more to collect its response, then possibly more for data
--	 * transfer.  Clocking access to other devices during that period will
--	 * corrupt the command execution.
--	 *
--	 * Until we have software primitives which guarantee non-interference,
--	 * we'll aim for a hardware-level guarantee.
--	 *
--	 * REVISIT we can't guarantee another device won't be added later...
--	 */
--	if (spi->master->num_chipselect > 1) {
--		struct count_children cc;
--
--		cc.n = 0;
--		cc.bus = spi->dev.bus;
--		status = device_for_each_child(spi->dev.parent, &cc,
--				maybe_count_child);
--		if (status < 0) {
--			dev_err(&spi->dev, "can't share SPI bus\n");
--			return status;
--		}
--
--		dev_warn(&spi->dev, "ASSUMING SPI bus stays unshared!\n");
--	}
--
- 	/* We need a supply of ones to transmit.  This is the only time
- 	 * the CPU touches these, so cache coherency isn't a concern.
- 	 *
--- 
-1.6.5.rc1
+Version "en ligne" de ce message: http://www.ctrm4.net/svi/miroir.php?bat=mcd0909_ctrm
+
+Avec Mutuelle MCD
+
+Votre couverture santé à partir de 14€/mois *
+
+pour une famille de trois personnes
+
+ET
+
+Jusqu'à 2 mois offerts **
+Des tarifs adaptés à tous les besoins
+
+Un accès aux soins même pour les petits budget
+
+Des services pratiques d'assistance et d'information
+
+Je demande mon devis
+
+plus d'infos sur http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique
+
+--------------------------------
+Cette offre Mutuelle MCD vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.ctrm4.net/svi/gestionserv.php?nb=2279&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_d9052c2500e846602950249c3033abe8
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head> 
+<title></title>
+</head>
+<body><center>
+<p>
+<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.ctrm4.net/svi/miroir.php?bat=mcd0909_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:12px;background-color:#FFFFFF;'>
+<a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" style="text-decoration:none;color:#000000;"><center>
+<font style="font-size:24px">Avec Mutuelle MCD<br>
+Votre couverture sant&eacute; &agrave; partir de 14&euro;/mois<sup>*</sup></fonT><br>
+pour une famille de trois personnes<br>
+<font style="font-size:24px">ET<br>
+Jusqu'&agrave; 2 mois offerts<sup>**</sup></font>
+</center>
+<li>Des tarifs adapt&eacute;s &agrave; tous les besoins</li>
+<li>Un acc&egrave;s aux soins m&ecirc;me pour les petits budget</li>
+<li>Des services pratiques d'assistance et d'information</li>
+<center><u><font color=blue style="font-size:20px">Je demande mon devis</font></u></center></a>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+ <tr>
+ <td colspan="4"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r1_c1.jpg" width="600" height="133" border="0" alt="D&eacute;courvrez la mutuelle qui d&eacute;fend le droit aux soins pour tous" /></a></td>
+ </tr>
+ <tr>
+ <td><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r2_c1.jpg" width="207" height="165" border="0" alt="Mutuelle MCD" /></a></td>
+ <td><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r2_c2.jpg" width="168" height="165" border="0" alt="Votre couverture sant&eacute; &agrave; partir 14 euros par mois* (pour une famille de 3 personnes)" /></a></td>
+ <td><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r2_c3.jpg" width="52" height="165" border="0" alt="et" /></a></td>
+ <td><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r2_c4.jpg" width="173" height="165" border="0" alt="Jusqu'a 2 mois offerts**" /></a></td>
+ </tr>
+ <tr>
+ <td><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r3_c1.jpg" width="207" height="138" border="0" alt="Mutuelle MCD" /></a></td>
+ <td><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r3_c2.gif" width="168" height="138" border="0" alt="Demandez votre devis gratuit" /></a></td>
+ <td colspan="2"><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r3_c3.jpg" width="225" height="138" border="0" alt="Mutuelle MCD" /></a></td>
+ </tr>
+ <tr>
+ <td colspan="3" style="font-family:sans-serif;font-size:8px;">
+ <div align="justify">*Option Vous AOAO pour deux personnes de 25 ans et un enfant de 5 ans. Tarif en vigueur jusqu'au 31/12/2009<br />
+ ** 1 mois de cotisation pour toute adh&eacute;sion d'une personne, 2 mois de cotisation pour l'adh&eacute;sion de 2 personnes ou plus sur le m&ecirc;me contrat sant&eacute; Mcd. Offre r&eacute;serv&eacute;e aux particuliers pour toute adh&eacute;sion jusqu'au 31/01/2010 et non cumulable avec toute autre op&eacute;ration commerciale en cours.<br />
+ Mutuelle Mcd - Si&egrave;ge national - 44, rue Copernic - BP 7716 - 75762 Paris Cedex 16 - Mutuelle soumise aux dispositions du livre II du Code de la Mutualit&eacute; - Registre national des mutuelles N&deg; 775688658 - Document non contractuel </div></td>
+ <td><a href="http://www.ctrm4.net/svi/linkserv.php?bat=mcd0909_ctrm&nb=2279&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r4_c4.jpg" width="173" height="64" border="0" alt="Mutuelle Mcd" /></a></td>
+ </tr>
+</table>
+<img src="http://www.ctrm4.net/imgregie/2279/mcd0909_ctrm.gif" height="1" width="1">
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.ctrm4.net/svi/img_nb_2279_numuser_yyynumuseryyy.jpg" width=1 height=1 alt=''>
+<p>
+Ce message est envoy&eacute; par central marques - <a href="http://www.ctrm4.net/svi/gestionserv.php?nb=2279&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_d9052c2500e846602950249c3033abe8--
+
+--===============4693078175265748234==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
+http://p.sf.net/sfu/devconf
+--===============4693078175265748234==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4693078175265748234==--

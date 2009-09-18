@@ -1,57 +1,110 @@
-From: Jan Weitzel <J.Weitzel-guT5V/WYfQezQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] MAX7301 GPIO fix portconfig
-Date: Fri, 18 Sep 2009 14:56:21 +0200
-Message-ID: <20090918125620.GA29417@lws-weitzel>
-Reply-To: Jan Weitzel <J.Weitzel-guT5V/WYfQezQB+pC5nmwQ@public.gmane.org>
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 1/2] spi: new SPI bus lock/unlock functions
+Date: Fri, 18 Sep 2009 14:29:11 -0700
+Message-ID: <20090918142911.2d0c4408.akpm@linux-foundation.org>
+References: <1253224997-7422-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: jbe-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general@lists.sourceforge.net,
+	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
+	yi.li@analog.com, cooloney@kernel.org
+To: Mike Frysinger <vapier@gentoo.org>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755103AbZIRVa0@vger.kernel.org>
+In-Reply-To: <1253224997-7422-1-git-send-email-vapier@gentoo.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Fix wrong setting of portconfig register. 
-mask size is 2bits, so shift must be twice offset
-direction input value is 2
+On Thu, 17 Sep 2009 18:03:16 -0400
+Mike Frysinger <vapier@gentoo.org> wrote:
 
-Signed-off-by: Jan Weitzel <J.Weitzel-guT5V/WYfQezQB+pC5nmwQ@public.gmane.org>
----
-Index: linux-2.6.28/drivers/gpio/max7301.c
-===================================================================
---- linux-2.6.28.orig/drivers/gpio/max7301.c
-+++ linux-2.6.28/drivers/gpio/max7301.c
-@@ -123,7 +123,7 @@ static int max7301_direction_input(struc
- 
- 	/* Standard GPIO API doesn't support pull-ups, has to be extended.
- 	 * Hard-coding no pollup for now. */
--	*config = (*config & ~(3 << (offset & 3))) | (1 << (offset & 3));
-+	*config = (*config & ~(3 << (2*(offset & 3)))) | (2 << (2*(offset & 3)));
- 
- 	ret = max7301_write(ts->spi, 0x08 + (offset >> 2), *config);
- 
-@@ -157,7 +157,7 @@ static int max7301_direction_output(stru
- 
- 	mutex_lock(&ts->lock);
- 
--	*config = (*config & ~(3 << (offset & 3))) | (1 << (offset & 3));
-+	*config = (*config & ~(3 << (2*(offset & 3)))) | (1 << (2*(offset & 3)));
- 
- 	ret = __max7301_set(ts, offset, value);
- 
+> From: Yi Li <yi.li@analog.com>
+> 
+> For some MMC cards over SPI bus, it needs to lock the SPI bus for its own
+> use.  The SPI transfer must not be interrupted by other SPI devices that
+> share the SPI bus with SPI MMC card.
+> 
+> This patch introduces 2 APIs for SPI bus locking operation.
+> 
+> Signed-off-by: Yi Li <yi.li@analog.com>
+> Signed-off-by: Bryan Wu <cooloney@kernel.org>
+> Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+> ---
+> Andrew: we've posted these in the past with no response.  could you pick
+>         them up please ?
+> 
+>  drivers/spi/spi.c       |   48 +++++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/spi/spi.h |    7 ++++++
+>  2 files changed, 55 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 70845cc..b82b8ad 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -653,6 +653,54 @@ static void spi_complete(void *arg)
+>  }
+>  
+>  /**
+> + * spi_lock_bus - lock SPI bus for exclusive access
+> + * @spi: device which want to lock the bus
+> + * Context: any
+> + *
+> + * Once the caller owns exclusive access to the SPI bus,
+> + * only messages for this device will be transferred.
+> + * Messages for other devices are queued but not transferred until
+> + * the bus owner unlock the bus.
+> + *
+> + * The caller may call spi_lock_bus() before spi_sync() or spi_async().
+> + * So this call may be used in irq and other contexts which can't sleep,
+> + * as well as from task contexts which can sleep.
 
-------------------------------------------------------------------------------
-Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
-http://p.sf.net/sfu/devconf
+Hence spi_lock_bus() basically has to use a spinning lock?
+
+So code which has called spi_lock_bus() cannot sleep until it calls
+spi_unlock_bus()?
+
+That's worth mentioning in the description.
+
+> + * It returns zero on success, else a negative error code.
+> + */
+> +int spi_lock_bus(struct spi_device *spi)
+> +{
+> +	if (spi->master->lock_bus)
+> +		return spi->master->lock_bus(spi);
+> +	else
+> +		return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(spi_lock_bus);
+> +
+> +/**
+> + * spi_unlock_bus - unlock SPI bus
+> + * @spi: device which want to unlock the bus
+> + * Context: any
+> + *
+> + * The caller has called spi_lock_bus() to lock the bus. It calls
+> + * spi_unlock_bus() to release the bus so messages for other devices
+> + * can be transferred.
+> + *
+> + * If the caller did not call spi_lock_bus() before, spi_unlock_bus()
+> + * should have no effect.
+
+That's crazy.
+
+Calling spi_unlock_bus() without having earlier called spi_lock_bus()
+is a bug, and the kernel's response should be to go BUG(), not to
+silently ignore the bug.  Especially as the implementation will need to
+add extra code to silently ignore the bug!
+
+Perhaps the comment wasn't well thought-out.  I cannot tell because I
+cannot see any implementations of ->lock_bus() anywhere.
+
+> + * It returns zero on success, else a negative error code.
+> + */
+> +int spi_unlock_bus(struct spi_device *spi)
+> +{
+> +	if (spi->master->unlock_bus)
+> +		return spi->master->unlock_bus(spi);
+> +	else
+> +		return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(spi_unlock_bus);

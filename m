@@ -1,54 +1,64 @@
-From: "H Hartley Sweeten" <hartleys@visionengravers.com>
-Subject: RE: [spi-devel-general] [PATCH 1/2] spi: new SPI bus lock/unlockfunctions
-Date: Fri, 18 Sep 2009 19:00:13 -0400
-Message-ID: <BD79186B4FD85F4B8E60E381CAEE190901D41FB1@mi8nycmail19.Mi8.com>
-References: <1253224997-7422-1-git-send-email-vapier@gentoo.org> <BD79186B4FD85F4B8E60E381CAEE190901D41E44@mi8nycmail19.Mi8.com> <8bd0f97a0909171553s1b7ee725x728bbca2f49511a9@mail.gmail.com>
+From: "=?gb2312?B?aGFvMjAwOHJpemkzOQ==?=" <hao2008rizi39-WVlzvzqoTvw@public.gmane.org>
+Subject: [SPAM] 要（fa piao）请联系我，电话：（ 134-1012-0100 ）万生
+Date: Sat, 19 Sep 2009 08:25:18 +0800 (CST)
+Message-ID: <4AB424EE.000200.32689@cnapp62>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <spi-devel-general@lists.sourceforge.net>,
-	"David Brownell" <dbrownell@users.sourceforge.net>,
-	"Yi Li" <yi.li@analog.com>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	<linux-kernel@vger.kernel.org>
-To: "Mike Frysinger" <vapier.adi@gmail.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1758737AbZIRXAO@vger.kernel.org>
-Content-class: urn:content-classes:message
-In-Reply-To: <8bd0f97a0909171553s1b7ee725x728bbca2f49511a9@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============5315774440825859705=="
+To: 01_jiaju-9Onoh4P/yGk@public.gmane.org, jwc-gRAXe49v4PLM1kAEIRd3EQ@public.gmane.org, zhengdexiu-0GSiYjBpcig@public.gmane.org, mqh528-9Onoh4P/yGk@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	zhanghaiming0613-KN7UnAbNpbg@public.gmane.org, zhgxlzxsh-9Onoh4P/yGk@public.gmane.org, cidedu-KN7UnAbNpbg@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1cnNkYXksIFNlcHRlbWJlciAxNywgMjAwOSAzOjU0IFBNLCBNaWtlIEZyeXNpbmdlciB3
-cm90ZToNCj4+IEkgYXNzdW1lIHRoZSBzcGkgbWFzdGVyIGRyaXZlciBtdXN0IHN1cHBseSB0aGUg
-e2xvY2svdW5sb2NrfV9idXMgbWV0aG9kcw0KPj4gdG8gcHJvcGVybHkgc3VwcG9ydCB0aGUgbG9j
-a2luZy4NCj4NCj4gY3VycmVudGx5LCB5ZXMuICBhIGNvbW1vbiBzb2x1dGlvbiB3b3VsZCBiZSBu
-aWNlLiAgaWRlYXMvcGF0Y2hlcyB3ZWxjb21lIDspLg0KPg0KPj7CoEJ1dCwgYnkgcmV0dXJuaW5n
-IDAgd2hlbiB0aGUgbWV0aG9kcw0KPj4gYXJlIG5vdCBzdXBwbGllZCB5b3UgYXJlIGJhc2ljYWxs
-eSBzYXlpbmcgYWxsIHRoZSBjdXJyZW50IG1hc3RlciBkcml2ZXJzDQo+PiBpbiBtYWlubGluZSBz
-dXBwb3J0IGJ1cyBsb2NraW5nLiDCoEkgdGhpbmsgdGhpcyBpcyByZWFsbHkgb25seSAidHJ1ZSIg
-aWYNCj4+IHNwaS0+bWFzdGVyLT5udW1fY2hpcHNlbGVjdCA9PSAxLg0KPg0KPiByaWdodCwgYnV0
-IHRoYXQgaXMgbm8gZGlmZmVyZW50IGZyb20gd2hhdCB3ZSBoYXZlIHRvZGF5LiAgdGhlcmUgaXMg
-bm8NCj4gd2F5IGZvciBhIGNsaWVudCB0byBndWFyYW50ZWUgZXhjbHVzaXZlIGFjY2Vzcywgc28g
-eW91IGNhbnQgd3JpdGUgY29kZQ0KPiBhc3N1bWluZyBpdCBpbiB0aGUgZmlyc3QgcGxhY2UuICB0
-aGUgb25seSBjb25zdW1lciB0aHVzIGZhciAobW1jX3NwaSkNCj4gYWN0dWFsbHkgZXJyb3JzIG91
-dCBpZiBzdWNoIGNvbmRpdGlvbnMgZXhpc3QuDQo+DQo+IGluIG90aGVyIHdvcmRzLCB3ZSBhcmVu
-dCBicmVha2luZyBhbnl0aGluZy4NCg0KQWN0dWFsbHkgeW91IGFyZSBicmVha2luZyB0aGUgbW1j
-X3NwaSBkcml2ZXIuDQoNCkJ5IHJldHVybmluZyAwIHdoZW4gdGhlIG1ldGhvZHMgYXJlIG5vdCBz
-dXBwbGllZCB5b3UgYXJlIHNheWluZyB0aGF0IHRoZQ0KbWFzdGVyIGRyaXZlciBzdXBwb3J0cyBh
-bmQgbG9ja2VkIHRoZSBidXMuICBBdCBhIG1pbmltdW0sIEkgdGhpbmsgc3BpX2xvY2tfYnVzKCkN
-CnNob3VsZCByZXR1cm4gYW4gZXJyb3IgY29kZSBpZiBsb2NraW5nIGlzIG5vdCBzdXBwb3J0ZWQu
-DQoNCkFsc28sIGFzIEFuZHJldyBNb3J0b24gcG9pbnRlZCBvdXQsIGNhbGxpbmcgc3BpX3VubG9j
-a19idXMoKSB3aXRob3V0IGhhdmluZw0KYSB2YWxpZCBsb2NrIGJ5IGNhbGxpbmcgc3BpX2xvY2tf
-YnVzKCkgaXMgYSBidWcuDQoNCkluIGFkZGl0aW9uIHlvdXIgcGF0Y2ggdG8gbW1jX3NwaSBzaG91
-bGQgY2hlY2sgdGhlIHJldHVybiBjb2RlIGZyb20NCnNwaV9sb2NrX2J1cygpLiAgSWYgdGhlIGRy
-aXZlciAicmVxdWlyZXMiIHRoYXQgdGhlIGJ1cyBiZSBsb2NrZWQgaXQgc2hvdWxkDQp0cmlnZ2Vy
-IGFuIGVycm9yIHBhdGggaWYgaXQgY2Fubm90IGJlIGxvY2tlZC4NCg0KPj4gQWxzbywgZG8geW91
-IGhhdmUgYSBtYXN0ZXIgZHJpdmVyIHRoYXQgZG9lcyBoYXZlIHRoZSB7bG9jay91bmxvY2t9X2J1
-cw0KPj4gbWV0aG9kcz8gwqBJIHdvdWxkIGxpa2UgdG8gc2VlIGhvdyB5b3UgaGFuZGxlZCBpdC4N
-Cj4NCj4gaHR0cDovL2dpdC5rZXJuZWwub3JnLz9wPWxpbnV4L2tlcm5lbC9naXQvdmFwaWVyL2Js
-YWNrZmluLmdpdDthPWNvbW1pdGRpZmY7aD1jYzU0ZmE4ZWQ2M2UxMWEwMDAwMzFiYzY1MGQ0MWQ1
-N2I0NDE4MDNkDQoNCk9peS4uLiBUaGUgbG9jay91bmxvY2sgZnVuY3Rpb25zIGFyZSBzaW1wbGUg
-ZW5vdWdoIGJ1dCB0aGUgY2hhbmdlIG5lZWRlZA0KdG8gYmZpbl9zcGlfcHVtcF9tZXNzYWdlcygp
-IGlzIGEgYml0IGNvbXBsaWNhdGVkLg0KDQpXaGF0IGhhcHBlbnMgdG8gbmV4dF9tc2cgaWYgaXQg
-aXMgZm9yIG90aGVyIGRldmljZXMgb24gdGhlIGJ1cz8NCg0KUmVnYXJkcywNCkhhcnRsZXkNCg==
+
+--===============5315774440825859705==
+Content-Type: Multipart/Alternative;
+	boundary="Boundary-=_GbuNyNazpVcqjeaEJQTnRtTFFyfo"
+
+
+--Boundary-=_GbuNyNazpVcqjeaEJQTnRtTFFyfo
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+
+x+u/tNb3zOIgIA0KDQo=
+--Boundary-=_GbuNyNazpVcqjeaEJQTnRtTFFyfo
+Content-Type: text/html; charset="gb2312"
+Content-Transfer-Encoding: base64
+
+x+u/tNb3zOIgIDxicj48IS0tIHVybGZpbGVzIC0tPjxicj48YnI+PCEtLSBmb290ZXIgLS0+
+PGJyPg0KDQo=
+--Boundary-=_GbuNyNazpVcqjeaEJQTnRtTFFyfo--
+
+
+--===============5315774440825859705==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
+http://p.sf.net/sfu/devconf
+--===============5315774440825859705==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5315774440825859705==--

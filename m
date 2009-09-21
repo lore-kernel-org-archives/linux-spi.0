@@ -1,156 +1,117 @@
-From: "Pat Ujjin" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Attention all MySpace users
-Date: Sun, 20 Sep 2009 18:37:20 -0300
-Message-ID: <8108JTL.870078A760.85565811769689RGBXULXQRUXSIBN9881@jorgecasa>
-Reply-To: Pat Faol <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: Li Yi <yi.li@analog.com>
+Subject: Re: [PATCH 1/2] spi: new SPI bus lock/unlock functions
+Date: Mon, 21 Sep 2009 14:33:00 +0800
+Message-ID: <1253514780.3925.36.camel@adam-desktop>
+References: <1253224997-7422-1-git-send-email-vapier@gentoo.org>
+	 <20090918142911.2d0c4408.akpm@linux-foundation.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3543161077343278415=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Cc: Mike Frysinger <vapier@gentoo.org>,
+	spi-devel-general@lists.sourceforge.net,
+	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
+	cooloney@kernel.org
+To: Andrew Morton <akpm@linux-foundation.org>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1752456AbZIUG3A@vger.kernel.org>
+In-Reply-To: <20090918142911.2d0c4408.akpm@linux-foundation.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3543161077343278415==
-Content-type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+On Fri, 2009-09-18 at 14:29 -0700, Andrew Morton wrote:
+> On Thu, 17 Sep 2009 18:03:16 -0400
+> Mike Frysinger <vapier@gentoo.org> wrote:
+> 
+> > From: Yi Li <yi.li@analog.com>
+> > 
+> > For some MMC cards over SPI bus, it needs to lock the SPI bus for its own
+> > use.  The SPI transfer must not be interrupted by other SPI devices that
+> > share the SPI bus with SPI MMC card.
+> > 
+> > This patch introduces 2 APIs for SPI bus locking operation.
+> > 
+> > Signed-off-by: Yi Li <yi.li@analog.com>
+> > Signed-off-by: Bryan Wu <cooloney@kernel.org>
+> > Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+> > ---
+> > Andrew: we've posted these in the past with no response.  could you pick
+> >         them up please ?
+> > 
+> >  drivers/spi/spi.c       |   48 +++++++++++++++++++++++++++++++++++++++++++++++
+> >  include/linux/spi/spi.h |    7 ++++++
+> >  2 files changed, 55 insertions(+), 0 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> > index 70845cc..b82b8ad 100644
+> > --- a/drivers/spi/spi.c
+> > +++ b/drivers/spi/spi.c
+> > @@ -653,6 +653,54 @@ static void spi_complete(void *arg)
+> >  }
+> >  
+> >  /**
+> > + * spi_lock_bus - lock SPI bus for exclusive access
+> > + * @spi: device which want to lock the bus
+> > + * Context: any
+> > + *
+> > + * Once the caller owns exclusive access to the SPI bus,
+> > + * only messages for this device will be transferred.
+> > + * Messages for other devices are queued but not transferred until
+> > + * the bus owner unlock the bus.
+> > + *
+> > + * The caller may call spi_lock_bus() before spi_sync() or spi_async().
+> > + * So this call may be used in irq and other contexts which can't sleep,
+> > + * as well as from task contexts which can sleep.
+> 
+> Hence spi_lock_bus() basically has to use a spinning lock?
+> 
+> So code which has called spi_lock_bus() cannot sleep until it calls
+> spi_unlock_bus()?
+> 
+> That's worth mentioning in the description.
+> 
+Code called spi_lock_bus() _can_ sleep. This is mentioned in the
+comments.
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>MoreNews</title>
-</head>
-<body><table align="center" style="width:768px;margin:0
-auto;border:1px #000000 dotted;font-family:Ariel, sans-serif;"
-cellpadding="0" cellspacing="0" width="768">
-    <tr>
-      <td id="title" colspan="2" style="border-bottom:1px
-        <span style="padding:10px 0 0
-20px;font-size:30px;font-weight:bold;">
-		<span
-style="color:#e12300;text-decoration:none;">MEN&#39;S</span>HEALTH<br><br>
-		<img src="http://b7bd.jloqigeq.cn/spacer.gif"></span></td>
-    </tr>
-    <tr>
-      <td valign="top" id="left_column"
-style="width:710px; border-right:1px dotted #000000;">
-        &nbsp;<p style="margin:0 0;padding:5px 10px;border-top:1px
-dotted #000000;border-bottom:1px dotted #000000;">
-          <span style="padding:5px 0 0
-0;float:right;font-size:12px;">September 20, 2009</span><br style="clear:both;" />
-        </p>
-        <p style="margin:0 0;padding:10px
-10px;font-size:12px;font-weight:bold;letter-spacing:2px;">THIS
-WEEK IN THE BLOGOSPHERE</p>
+> > + * It returns zero on success, else a negative error code.
+> > + */
+> > +int spi_lock_bus(struct spi_device *spi)
+> > +{
+> > +	if (spi->master->lock_bus)
+> > +		return spi->master->lock_bus(spi);
+> > +	else
+> > +		return 0;
+> > +}
+> > +EXPORT_SYMBOL_GPL(spi_lock_bus);
+> > +
+> > +/**
+> > + * spi_unlock_bus - unlock SPI bus
+> > + * @spi: device which want to unlock the bus
+> > + * Context: any
+> > + *
+> > + * The caller has called spi_lock_bus() to lock the bus. It calls
+> > + * spi_unlock_bus() to release the bus so messages for other devices
+> > + * can be transferred.
+> > + *
+> > + * If the caller did not call spi_lock_bus() before, spi_unlock_bus()
+> > + * should have no effect.
+> 
+> That's crazy.
+> 
+> Calling spi_unlock_bus() without having earlier called spi_lock_bus()
+> is a bug, and the kernel's response should be to go BUG(), not to
+> silently ignore the bug.  Especially as the implementation will need to
+> add extra code to silently ignore the bug!
+> 
+I will change the patch to fix this. Thanks.
 
-    <p style="margin:0 0;padding:0 10px 0
-10px;fong-weight:normal;font-size:24px;font-family:Ariel,
-sans-serif;color:#e12300;text-decoration:none;">
-	<a
-href="http://78b7.jloqigeq.cn/?xuwyrymyw=c5c7dd78a760de98a8e13ba&qvzprgbxul=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&pqqcyiixjs=73748845644088556581176"
-style="color:#e12300;text-decoration:none;">How often can you satisfy your girl?
-	Twice a night? Is it a limit for you?</a></p>
+> Perhaps the comment wasn't well thought-out.  I cannot tell because I
+> cannot see any implementations of ->lock_bus() anywhere.
+> 
+The implementation for blackfin spi master is in
+drivers/spi/spi_bfin5xx.c:
+http://git.kernel.org/?p=linux/kernel/git/vapier/blackfin.git;a=commitdiff;h=cc54fa8ed63e11a000031bc650d41d57b441803d
 
-    <p style="margin:0 0;padding:0
-10px;font-size:12px;line-height:18px;"><em><span style="font-size: medium">No!<br>
-	</span>With our male boluses even the fifth &quot;act&quot; won&#39;t exhaust your desire.
-	Note that only today the price on our products is lowered by 40%. When
-	desire isn&#39;t pricy, it is time to <b><a href="http://adf9a.jloqigeq.cn/?asqicoif=c5c7dd78a760de98a8e13ba&qvzprgbxul=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&iwufog=73748845644088556581176">order it</a></b>! </em>&mdash;The
-Editors
-	<a
-href="http://adf9a.jloqigeq.cn/?opiryp=c5c7dd78a760de98a8e13ba&qvzprgbxul=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&suogi=73748845644088556581176"
-style="font-size:10px;text-decoration:none;color:#999999;">[READ
-MORE]</a></p>
-		<p style="margin:0 0;padding:0
-10px;font-size:12px;line-height:18px;">&nbsp;</p>
-		<p style="margin:0 0;padding:0
-10px;font-size:12px;line-height:18px;">&nbsp;</p>
+As you mentioned, if a spi device calls spi_unlock_bus() without calling
+spi_lock_bus() before, it should be returned an error. This will be
+fixed in next version of the patch.
 
-      </td>
-      <td id="right_column" valign="top" style="width:384px;"
-width="384">
-          &nbsp;<p style="margin:0 0;padding:10px
-10px;font-size:12px;font-weight:bold;letter-spacing:2px;">MOST
-POPULAR</p>
-
-    <p style="margin:0 0;padding:0
-10px;font-size:12px;line-height:18px;">
-
-      <sub><span
-style="color:#e12300;text-decoration:none;font-weight:bold;font-size:16px;line-height:12px;">*</span></sub>
-	  <a
-href="http://adf9a.jloqigeq.cn/?tepybqba=c5c7dd78a760de98a8e13ba&qvzprgbxul=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&qkirjr=73748845644088556581176"
-style="color:#000000;font-size:12px;font-weight:normal;text-decoration:none;line-height:16px;">
-	  So firm she&#39;ll feel pain</a><br />
-
-      <sub
-style="color:#e12300;text-decoration:none;font-weight:bold;font-size:16px;line-height:12px;">*</sub>
-	  <a
-href="http://adf9a.jloqigeq.cn/?foxuv=c5c7dd78a760de98a8e13ba&qvzprgbxul=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&wjsqfju=73748845644088556581176"
-style="color:#000000;font-size:12px;font-weight:normal;text-decoration:none;line-height:16px;">
-	  So intense, she&#39;ll moan</a><br />
-
-      <sub
-style="color:#e12300;text-decoration:none;font-weight:bold;font-size:16px;line-height:12px;">*</sub>
-	  <a
-href="http://adf9a.jloqigeq.cn/?ixejewev=c5c7dd78a760de98a8e13ba&qvzprgbxul=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&kedevouy=73748845644088556581176"
-style="color:#000000;font-size:12px;font-weight:normal;text-decoration:none;line-height:16px;">
-	  So rock-like, she&#39;ll come</a><br />
-
-      <sub
-style="color:#e12300;text-decoration:none;font-weight:bold;font-size:16px;line-height:12px;">*</sub>
-	  <a
-href="http://adf9a.jloqigeq.cn/?hjveizoma=c5c7dd78a760de98a8e13ba&qvzprgbxul=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&sihjyaxqm=73748845644088556581176"
-style="color:#000000;font-size:12px;font-weight:normal;text-decoration:none;line-height:16px;">
-	  Drill her fine tonight</a><br />
-
-    </p>
-
-
-      </td>
-    </tr>
-    <tr>
-      <td id="legal_language" colspan="2">
-        <p style="margin:0 0;padding:10px
-20px;font-size:10px;color:#aaaaaa;text-align:center;">Hi. Thanks for signing up for Mother Jones' Drumbeat newsletter. Wait, that was your cat? Smart cat! If you don't want to get Drumbeat, or to make changes to your subscription, <A href="http://adf9a.jloqigeq.cn/?axofqfoy=c5c7dd78a760de98a8e13ba&qvzprgbxul=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&nehudut=73748845644088556581176">click here</A>. And lock up the cat.
-        <br />
-        <span
-style="font-weight:bold;color:#000000;">MOTHERJONES</span>
-
-<span style="color:#000000;">Mother Jones 222 Sutter Street,
-Suite 600, San Francisco, CA 94108</span>
-        </p>
-      </td>
-    </tr>
-    </table></body></html>
-
-
---===============3543161077343278415==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
-http://p.sf.net/sfu/devconf
---===============3543161077343278415==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3543161077343278415==--
+-Yi

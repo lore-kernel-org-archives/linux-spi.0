@@ -1,83 +1,131 @@
-From: Mike Frysinger <vapier.adi@gmail.com>
-Subject: Re: [PATCH 1/2] spi: new SPI bus lock/unlock functions
-Date: Mon, 21 Sep 2009 09:36:25 -0400
-Message-ID: <8bd0f97a0909210636h655ba305sfef099b0f20a8176@mail.gmail.com>
-References: <1253224997-7422-1-git-send-email-vapier@gentoo.org>
-	<20090918142911.2d0c4408.akpm@linux-foundation.org> <1253514780.3925.36.camel@adam-desktop>
+From: SSC Srl <ssc-8B08IYU92cELGlpGEUzJnl6hYfS7NtTn@public.gmane.org>
+Subject: [SPAM] PRESTITI PERSONALI FIDUCIARI A
+	CONDIZIONI ANCORA MIGLIORI
+Date: Mon, 21 Sep 2009 17:34:42 +0200
+Message-ID: <20090921165355.941.1868160091.swift@192.168.5.5>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	spi-devel-general@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
-	cooloney@kernel.org
-To: Li Yi <yi.li@analog.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756192AbZIUODm@vger.kernel.org>
-In-Reply-To: <1253514780.3925.36.camel@adam-desktop>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============8336489194276892905=="
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Sep 21, 2009 at 02:33, Li Yi wrote:
-> On Fri, 2009-09-18 at 14:29 -0700, Andrew Morton wrote:
->> On Thu, 17 Sep 2009 18:03:16 -0400
->> Mike Frysinger <vapier@gentoo.org> wrote:
->>
->> > From: Yi Li <yi.li@analog.com>
->> >
->> > For some MMC cards over SPI bus, it needs to lock the SPI bus for =
-its own
->> > use. =C2=A0The SPI transfer must not be interrupted by other SPI d=
-evices that
->> > share the SPI bus with SPI MMC card.
->> >
->> > This patch introduces 2 APIs for SPI bus locking operation.
->> >
->> > Signed-off-by: Yi Li <yi.li@analog.com>
->> > Signed-off-by: Bryan Wu <cooloney@kernel.org>
->> > Signed-off-by: Mike Frysinger <vapier@gentoo.org>
->> > ---
->> > Andrew: we've posted these in the past with no response. =C2=A0cou=
-ld you pick
->> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 them up please ?
->> >
->> > =C2=A0drivers/spi/spi.c =C2=A0 =C2=A0 =C2=A0 | =C2=A0 48 +++++++++=
-++++++++++++++++++++++++++++++++++++++
->> > =C2=A0include/linux/spi/spi.h | =C2=A0 =C2=A07 ++++++
->> > =C2=A02 files changed, 55 insertions(+), 0 deletions(-)
->> >
->> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
->> > index 70845cc..b82b8ad 100644
->> > --- a/drivers/spi/spi.c
->> > +++ b/drivers/spi/spi.c
->> > @@ -653,6 +653,54 @@ static void spi_complete(void *arg)
->> > =C2=A0}
->> >
->> > =C2=A0/**
->> > + * spi_lock_bus - lock SPI bus for exclusive access
->> > + * @spi: device which want to lock the bus
->> > + * Context: any
->> > + *
->> > + * Once the caller owns exclusive access to the SPI bus,
->> > + * only messages for this device will be transferred.
->> > + * Messages for other devices are queued but not transferred unti=
-l
->> > + * the bus owner unlock the bus.
->> > + *
->> > + * The caller may call spi_lock_bus() before spi_sync() or spi_as=
-ync().
->> > + * So this call may be used in irq and other contexts which can't=
- sleep,
->> > + * as well as from task contexts which can sleep.
->>
->> Hence spi_lock_bus() basically has to use a spinning lock?
->>
->> So code which has called spi_lock_bus() cannot sleep until it calls
->> spi_unlock_bus()?
->>
->> That's worth mentioning in the description.
->>
-> Code called spi_lock_bus() _can_ sleep. This is mentioned in the
-> comments.
+This is a message in multipart MIME format.  Your mail client should not
+be displaying this. Consider upgrading your mail client to view this
+message correctly.
+--===============8336489194276892905==
+Content-Type: multipart/alternative;
+	boundary="_=_swift-17010884554ab79d127e7f24.94398457_=_"
+Content-Transfer-Encoding: 7bit
 
-should add might_sleep() to the common spi_lock_bus() function then.
--mike
+This is a message in multipart MIME format.  Your mail client should not
+be displaying this. Consider upgrading your mail client to view this
+message correctly.
+--_=_swift-17010884554ab79d127e7f24.94398457_=_
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<head>
+       =20
+    </head>
+    <body>
+        <p>&nbsp;</p>
+        <div style=3D"line-height: 150%"><b><u>Salve. Ecco una notizia ch=
+e pu&ograve; interessare molti. Importante leggere attentamente tutto. </=
+u></b></div>
+        <div style=3D"line-height: 150%"><b>&nbsp;</b></div>
+        <div style=3D"line-height: 150%"><b>Ora &egrave; possibile elargi=
+re &ldquo;Prestiti Fiduciari&rdquo;, personali e famigliari, a tutti, a c=
+ondizioni ancora migliori. </b></div>
+        <div style=3D"line-height: 150%"><b><u><span style=3D"font-size: =
+13pt; color: #3366ff; line-height: 150%"><a href=3D"http://www.sscsoluzio=
+ni23.it/newsletter/newsletter002/newsletter_035_cli.asp"><span style=3D"c=
+olor: #3366ff">Legga alcuni dettagli.</span></a></span></u></b></div>
+        <div style=3D"line-height: 150%"><b>RingraziandoLa per l&rsquo;at=
+tenzione, gradisca cordiali saluti. </b></div>
+        <div><b>&nbsp;</b></div>
+        <div><b>SSC Srl</b></div>
+        <div><b>Servizio assistenza Clienti</b></div>
+        <div style=3D"line-height: 150%">&nbsp;</div>
+        <div style=3D"line-height: 150%">&nbsp;</div>
+        <div align=3D"center">&nbsp;</div>
+        <div align=3D"center"><b><span style=3D"color: red">Attenzione</s=
+pan></b></div>
+        <div align=3D"center"><b><span style=3D"color: red">Per non ricev=
+ere altre ns. informazioni del genere sopra indicato</span></b></div>
+        <div align=3D"center"><b>&nbsp;</b></div>
+        <div align=3D"center"><b><span style=3D"font-size: 14pt; color: #=
+3366ff"><a href=3D"mailto:rimuovi-8B08IYU92cELGlpGEUzJnl6hYfS7NtTn@public.gmane.org?subject=3DCancellazio=
+ne%20indirizzo%20e-mail&Body=3DSpett.%20SSC%0ANon%20essendo%20(neanche%20=
+in%20futuro),%20interessato%20alla%20Vs.%20offerta,%20Vi%20prego%20di%20c=
+ancellare%20il%20mio%20indirizzo%20dalla%20Vs.%20rubrica.%0A%0ADistinti%2=
+0saluti"><span style=3D"color: #3366ff">&egrave; sufficiente Cliccare qu&=
+igrave;</span></a></span></b></div>
+        <div align=3D"center"><b>&nbsp;</b></div>
+        <div align=3D"center"><b><span style=3D"color: red">In tal caso i=
+l suo indirizzo verr&agrave; immediatamente derubricato</span></b></div>
+        <div style=3D"line-height: 150%" align=3D"center">&nbsp;</div>
+        <div style=3D"line-height: 150%">&nbsp;</div>
+        <div>SSC Srl</div>
+        <div>Viale Italia, 120</div>
+        <div>31015 Conegliano (TV)</div>
+        <div>&nbsp;</div>
+        <div>Tel: 0438.450.534 (10 linee) &ndash; Fax: 0438.455.128 (24 h=
+)</div>
+        <div>&nbsp;</div>
+        <div><a href=3D"http://www.sscsoluzioni23.it/">www.sscsoluzioni23=
+.it</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; e-mail: <a href=3D"mailto:info-8B08IYU92cELGlpGEUzJnl6hYfS7NtTn@public.gmane.org?subject=3DRichie=
+sta%20informazioni">info-8B08IYU92cELGlpGEUzJnl6hYfS7NtTn@public.gmane.org</a></div>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <div><i><span style=3D"color: teal">Questo messaggio di posta ele=
+ttronica contiene informazioni di carattere confidenziale rivolte esclusi=
+vamente al destinatario sopraindicato. E' vietato l'uso, la diffusione, d=
+istribuzione o riproduzione da parte di ogni altra persona. Nel caso aves=
+te ricevuto questo messaggio di posta elettronica per errore, siete prega=
+ti di segnalarlo immediatamente al mittente e distruggere quanto ricevuto=
+ (compresi file allegati) senza farne copia. Qualsivoglia utilizzo non au=
+torizzato del contenuto di questo messaggio costituisce violazione dell'o=
+bbligo di non prendere cognizione della corrispondenza tra altri soggetti=
+, salvo pi&ugrave; grave illecito, ed espone il responsabile alle relativ=
+e conseguenze.</span></i></div>
+        <div>&nbsp;</div>
+        <div style=3D"line-height: 150%">&nbsp;</div>
+    <br><img src=3D"http://mail.sscfinanza.it/lt/t_go.php?i=3D94&e=3DMjE0=
+MjQ0NA=3D=3D&l=3Dopen" width=3D"1" height=3D"1" border=3D"0"></body>
+--_=_swift-17010884554ab79d127e7f24.94398457_=_--
+
+
+
+--===============8336489194276892905==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
+http://p.sf.net/sfu/devconf
+--===============8336489194276892905==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8336489194276892905==--

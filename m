@@ -1,117 +1,101 @@
 From: Li Yi <yi.li@analog.com>
-Subject: Re: [PATCH 1/2] spi: new SPI bus lock/unlock functions
-Date: Mon, 21 Sep 2009 14:33:00 +0800
-Message-ID: <1253514780.3925.36.camel@adam-desktop>
+Subject: RE: [spi-devel-general] [PATCH 1/2] spi: new SPI bus
+ lock/unlockfunctions
+Date: Mon, 21 Sep 2009 16:08:36 +0800
+Message-ID: <1253520516.3925.143.camel@adam-desktop>
 References: <1253224997-7422-1-git-send-email-vapier@gentoo.org>
-	 <20090918142911.2d0c4408.akpm@linux-foundation.org>
+	 <BD79186B4FD85F4B8E60E381CAEE190901D41E44@mi8nycmail19.Mi8.com>
+	 <8bd0f97a0909171553s1b7ee725x728bbca2f49511a9@mail.gmail.com>
+	 <BD79186B4FD85F4B8E60E381CAEE190901D41FB1@mi8nycmail19.Mi8.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Cc: Mike Frysinger <vapier@gentoo.org>,
+Cc: Mike Frysinger <vapier.adi@gmail.com>,
 	spi-devel-general@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
-	cooloney@kernel.org
-To: Andrew Morton <akpm@linux-foundation.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1752456AbZIUG3A@vger.kernel.org>
-In-Reply-To: <20090918142911.2d0c4408.akpm@linux-foundation.org>
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+To: H Hartley Sweeten <hartleys@visionengravers.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753940AbZIUIEe@vger.kernel.org>
+In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE190901D41FB1@mi8nycmail19.Mi8.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2009-09-18 at 14:29 -0700, Andrew Morton wrote:
-> On Thu, 17 Sep 2009 18:03:16 -0400
-> Mike Frysinger <vapier@gentoo.org> wrote:
+On Fri, 2009-09-18 at 19:00 -0400, H Hartley Sweeten wrote:
+> On Thursday, September 17, 2009 3:54 PM, Mike Frysinger wrote:
+> >> I assume the spi master driver must supply the {lock/unlock}_bus methods
+> >> to properly support the locking.
+> >
+> > currently, yes.  a common solution would be nice.  ideas/patches welcome ;).
+> >
+> >> But, by returning 0 when the methods
+> >> are not supplied you are basically saying all the current master drivers
+> >> in mainline support bus locking.  I think this is really only "true" if
+> >> spi->master->num_chipselect == 1.
+> >
+> > right, but that is no different from what we have today.  there is no
+> > way for a client to guarantee exclusive access, so you cant write code
+> > assuming it in the first place.  the only consumer thus far (mmc_spi)
+> > actually errors out if such conditions exist.
+> >
+> > in other words, we arent breaking anything.
 > 
-> > From: Yi Li <yi.li@analog.com>
-> > 
-> > For some MMC cards over SPI bus, it needs to lock the SPI bus for its own
-> > use.  The SPI transfer must not be interrupted by other SPI devices that
-> > share the SPI bus with SPI MMC card.
-> > 
-> > This patch introduces 2 APIs for SPI bus locking operation.
-> > 
-> > Signed-off-by: Yi Li <yi.li@analog.com>
-> > Signed-off-by: Bryan Wu <cooloney@kernel.org>
-> > Signed-off-by: Mike Frysinger <vapier@gentoo.org>
-> > ---
-> > Andrew: we've posted these in the past with no response.  could you pick
-> >         them up please ?
-> > 
-> >  drivers/spi/spi.c       |   48 +++++++++++++++++++++++++++++++++++++++++++++++
-> >  include/linux/spi/spi.h |    7 ++++++
-> >  2 files changed, 55 insertions(+), 0 deletions(-)
-> > 
-> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> > index 70845cc..b82b8ad 100644
-> > --- a/drivers/spi/spi.c
-> > +++ b/drivers/spi/spi.c
-> > @@ -653,6 +653,54 @@ static void spi_complete(void *arg)
-> >  }
-> >  
-> >  /**
-> > + * spi_lock_bus - lock SPI bus for exclusive access
-> > + * @spi: device which want to lock the bus
-> > + * Context: any
-> > + *
-> > + * Once the caller owns exclusive access to the SPI bus,
-> > + * only messages for this device will be transferred.
-> > + * Messages for other devices are queued but not transferred until
-> > + * the bus owner unlock the bus.
-> > + *
-> > + * The caller may call spi_lock_bus() before spi_sync() or spi_async().
-> > + * So this call may be used in irq and other contexts which can't sleep,
-> > + * as well as from task contexts which can sleep.
+> Actually you are breaking the mmc_spi driver.
 > 
-> Hence spi_lock_bus() basically has to use a spinning lock?
+> By returning 0 when the methods are not supplied you are saying that the
+> master driver supports and locked the bus.  At a minimum, I think spi_lock_bus()
+> should return an error code if locking is not supported.
 > 
-> So code which has called spi_lock_bus() cannot sleep until it calls
-> spi_unlock_bus()?
-> 
-> That's worth mentioning in the description.
-> 
-Code called spi_lock_bus() _can_ sleep. This is mentioned in the
-comments.
+Thanks for the feedback.
 
-> > + * It returns zero on success, else a negative error code.
-> > + */
-> > +int spi_lock_bus(struct spi_device *spi)
-> > +{
-> > +	if (spi->master->lock_bus)
-> > +		return spi->master->lock_bus(spi);
-> > +	else
-> > +		return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(spi_lock_bus);
-> > +
-> > +/**
-> > + * spi_unlock_bus - unlock SPI bus
-> > + * @spi: device which want to unlock the bus
-> > + * Context: any
-> > + *
-> > + * The caller has called spi_lock_bus() to lock the bus. It calls
-> > + * spi_unlock_bus() to release the bus so messages for other devices
-> > + * can be transferred.
-> > + *
-> > + * If the caller did not call spi_lock_bus() before, spi_unlock_bus()
-> > + * should have no effect.
-> 
-> That's crazy.
-> 
-> Calling spi_unlock_bus() without having earlier called spi_lock_bus()
-> is a bug, and the kernel's response should be to go BUG(), not to
-> silently ignore the bug.  Especially as the implementation will need to
-> add extra code to silently ignore the bug!
-> 
-I will change the patch to fix this. Thanks.
+The original thought of returning '0' was trying not to break mmc_spi
+driver on system without spi_lock_bus() implementation.
+What do you think of a check in mmc_spi_probe() like this?
 
-> Perhaps the comment wasn't well thought-out.  I cannot tell because I
-> cannot see any implementations of ->lock_bus() anywhere.
+if (spi->master->num_chipselect > 1 && !spi->master->lock_bus) {
+	struct count_children cc;
+
+	cc.n = 0;
+	cc.bus = spi->dev.bus;
+	status = device_for_each_child(spi->dev.parent, &cc,
+		maybe_count_child);
+	if (status < 0) {
+		dev_err(&spi->dev, "can't share SPI bus\n");
+		return status;
+	}
+
+	dev_warn(&spi->dev, "ASSUMING SPI bus stays unshared!\n");
+}
+
+And spi_lock_bus() still returns 0 if not implemented.
+
+> Also, as Andrew Morton pointed out, calling spi_unlock_bus() without having
+> a valid lock by calling spi_lock_bus() is a bug.
 > 
-The implementation for blackfin spi master is in
-drivers/spi/spi_bfin5xx.c:
-http://git.kernel.org/?p=linux/kernel/git/vapier/blackfin.git;a=commitdiff;h=cc54fa8ed63e11a000031bc650d41d57b441803d
+Will be fixed.
 
-As you mentioned, if a spi device calls spi_unlock_bus() without calling
-spi_lock_bus() before, it should be returned an error. This will be
-fixed in next version of the patch.
+> In addition your patch to mmc_spi should check the return code from
+> spi_lock_bus().  If the driver "requires" that the bus be locked it should
+> trigger an error path if it cannot be locked.
+> 
+Will add code to check the return code. 
+> >> Also, do you have a master driver that does have the {lock/unlock}_bus
+> >> methods?  I would like to see how you handled it.
+> >
+> > http://git.kernel.org/?p=linux/kernel/git/vapier/blackfin.git;a=commitdiff;h=cc54fa8ed63e11a000031bc650d41d57b441803d
+> 
+> Oiy... The lock/unlock functions are simple enough but the change needed
+> to bfin_spi_pump_messages() is a bit complicated.
+> 
+In spi_bf5xx.c, if a spi device (e.g, whose chip select number is "3")
+locks the bus, the global status "locked" is set to "3" - indicates the
+spi bus is locked.
 
+> What happens to next_msg if it is for other devices on the bus?
+> 
+This spi message will be left in the queue until the spi bus is
+unlocked. The messages for the spi device holding the lock will be
+selected and transferred firstly. 
+
+Regards,
 -Yi

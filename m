@@ -1,9 +1,11 @@
-From: =?GB2312?B?zfW+rcDt?= <jrtherter-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 銆姲l/票》
-Date: Fri, 25 Sep 2009 07:56:02 +0800
-Message-ID: <E1MqyAW-0002iU-CJ@3yr0jf1.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============4497189698699816294=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: watterson148 <watterson148-9Onoh4P/yGk@public.gmane.org>
+Subject: =?gbk?b?obvP7qG6xL8=?=
+Date: Fri, 25 Sep 2009 13:55:27 +0800 (CST)
+Message-ID: <5180572.267521253858127129.JavaMail.coremail@bj163app94.163.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============5443971199321431613=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	spidey <spidey-9Onoh4P/yGk@public.gmane.org>, spideyman93 <spideyman93-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -15,20 +17,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4497189698699816294==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
+--===============5443971199321431613==
+Content-Type: multipart/alternative;
+	boundary="----=_Part_71443_8065989.1253858127129"
+
+------=_Part_71443_8065989.1253858127129
+Content-Type: text/plain; charset=gbk
+Content-Transfer-Encoding: base64
+
+ICAgICAKIKHhxPq6wzoKICAgICCh7s7SuavLvtPQ1PbWtcuwLMbVzajU9ta1y7AsIMnMxrfP+srb
+LCC7+ravs7XP+srbLCAguaTStSy547jmLCDUy8rkLCC9qNb+LLf+zvG1yLXI0NDStSjGsSm0+r+q
+ofYgICAgICAKILXjyv3Txbvdo6zR6dakuvO4tr/uoaMKICAgICDWo9bYs9DFtTqxvrmry77L+dPD
+t6LGsb75zqq1pc671NrLsM7xyerB7CEKICAgICAgICAgob0gILXnu7A6MTM1LTI4ODYtMTAwNLr6
+yfoKoaGhoaGhoaGhoaGhoaGhoQo=
+------=_Part_71443_8065989.1253858127129
+Content-Type: text/html; charset=gbk
+Content-Transfer-Encoding: base64
+
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IDxCUj4mbmJzcDuh4cT6usM6PEJSPiZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyCh7s7SuavLvtPQ1PbWtcuwLMbVzajU9ta1y7AsIMnMxrfP+srbLCC7+rav
+s7XP+srbLCZuYnNwOyC5pNK1LLnjuOYsINTLyuQsIL2o1v4st/7O8bXItcjQ0NK1KMaxKbT6v6qh
+9iZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyA8QlI+Jm5ic3A7tePK/dPFu92jrNHp1qS6
+87i2v+6hozxCUj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsg1qPW2LPQxbU6sb65q8u+y/nTw7ei
+xrG++c6qtaXOu9Tay7DO8cnqwewhPEJSPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyChvSZuYnNwOyC157uwOjEzNS0yODg2LTEwMDS6+sn6PEJSPqGhoaGh
+oaGhoaGhoaGhoaE8QlI+PGJyPjxicj48c3BhbiB0aXRsZT0ibmV0ZWFzZWZvb3RlciIvPjxoci8+
+CjxhIGhyZWY9Imh0dHA6Ly9uZXdzLjE2My5jb20vbWFkZWluY2hpbmEvaW5kZXguaHRtbD9mcm9t
+PW1haWxmb290ZXIiPiLW0Ln61sbU7CIsvbLK9tbQufo2MMTqzfnKwjwvYT4KPC9zcGFuPg==
+------=_Part_71443_8065989.1253858127129--
 
 
-   你好：
 
-       我司现有（.地税）等《發/票》可做帐/进项/抵扣。点数优惠。
-
-   如需来电详谈电话.15817302760.王经理.如打扰到您，请见谅谢谢
-
-
---===============4497189698699816294==
+--===============5443971199321431613==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -40,7 +60,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
 http://p.sf.net/sfu/devconf
---===============4497189698699816294==
+--===============5443971199321431613==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -51,4 +71,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============4497189698699816294==--
+--===============5443971199321431613==--

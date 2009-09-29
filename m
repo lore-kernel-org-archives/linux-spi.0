@@ -1,237 +1,54 @@
-From: =?ISO-8859-1?Q?Richard_R=F6jfors?=
- <richard.rojfors@mocean-labs.com>
-Subject: Re: [PATCH v4] xilinx_spi: Splitted into generic, of and platform
-	driver, added support for DS570
-Date: Tue, 29 Sep 2009 08:34:42 +0200
-Message-ID: <4AC1AA82.3040406@mocean-labs.com>
-References: <4AC0C699.2070506@mocean-labs.com>
-	<8741a4f8-b490-4754-a674-71ea2ee1385a@SG2EHSMHS011.ehs.local>
+From: Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] atmel_spi: fix dma addr calculation
+ for len > BUFFER_SIZE
+Date: Tue, 29 Sep 2009 08:57:51 +0200
+Message-ID: <20090929085751.3cc1fa3c@hskinnemoen-d830>
+References: <1254029187.7587.146.camel@ben-desktop>
+	<20090928091259.27485716@hskinnemoen-d830>
+	<1254185759.7587.180.camel@ben-desktop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net,
-	Andrew Morton <akpm@linux-foundation.org>,
-	dbrownell@users.sourceforge.net, linuxppc-dev@ozlabs.org
-To: John Linn <John.Linn@xilinx.com>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <8741a4f8-b490-4754-a674-71ea2ee1385a@SG2EHSMHS011.ehs.local>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	kernel <kernel-o2ulR9ObcgE/ohRxsw7f2g@public.gmane.org>,
+	Kernel list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Linux,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Ben Nizette <bn-pV1zxKMKwgg3AZtZ2NlBNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1254185759.7587.180.camel@ben-desktop>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 9/28/09 5:41 PM, John Linn wrote:
->> -----Original Message-----
->> From: Richard R=F6jfors [mailto:richard.rojfors@mocean-labs.com]
->> Sent: Monday, September 28, 2009 8:22 AM
->> To: spi-devel-general@lists.sourceforge.net
->> Cc: linuxppc-dev@ozlabs.org; dbrownell@users.sourceforge.net; Andrew Mor=
-ton; John Linn
->> Subject: [PATCH v4] xilinx_spi: Splitted into generic, of and platform d=
-river, added support for
->> DS570
->>
->> This patch splits xilinx_spi into three parts, an OF and a platform
->> driver and generic part.
->>
->> The generic part now also works on X86, it supports accessing the IP
->> booth big and little endian. There is also support for 16 and 32 bit
->> SPI for the Xilinx SPI IP DS570
->>
->> Signed-off-by: Richard R=F6jfors <richard.rojfors@mocean-labs.com>
->> ---
->> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
->> index 2c733c2..ecabc12 100644
->> --- a/drivers/spi/Kconfig
->> +++ b/drivers/spi/Kconfig
->> @@ -218,8 +218,8 @@ config SPI_TXX9
->>  	  SPI driver for Toshiba TXx9 MIPS SoCs
->>
-> =
+Ben Nizette <bn-pV1zxKMKwgg3AZtZ2NlBNQ@public.gmane.org> wrote:
+> From: Ben Nizette <bn-pV1zxKMKwgg3AZtZ2NlBNQ@public.gmane.org>
+> Subject: [PATCH] atmel_spi: make "len" variable name less ambiguous in dma addr calculation
+> 
+> "[PATCH] atmel_spi: fix dma addr calculation for len > BUFFER_SIZE"
+> fixed a bug where the "len" variable in atmel_spi_next_xfer_data() was
+> taken to be the total number of bytes remaining in the transfer but it
+> actually represents the number of bytes which will be sent this dma
+> chunk.  While the 2 will be the same if there is less than 1 chunk to go
+> (or if we aren't using a scratch buffer and therefore aren't breaking
+> the transfers in to chunks), they won't be the same in general.
+> 
+> s/len/next_len to reflect the true nature and usage of this variable.
+> 
+> Signed-off-by: Ben Nizette <bn-pV1zxKMKwgg3AZtZ2NlBNQ@public.gmane.org>
 
-> <snip>
-> =
+Excellent, thanks.
 
->>
->> -struct xilinx_spi {
->> -	/* bitbang has to be first */
->> -	struct spi_bitbang bitbang;
->> -	struct completion done;
->> +/* to follow are some functions that does little of big endian read and
->> + * write depending on the config of the device.
->> + */
->> +static inline void xspi_write8(struct xilinx_spi *xspi, u32 offs, u8 va=
-l)
->> +{
->> +	iowrite8(val, xspi->regs + offs + ((xspi->big_endian) ? 3 : 0));
->> +}
->>
->> -	void __iomem	*regs;	/* virt. address of the control registers */
->> +static inline void xspi_write16(struct xilinx_spi *xspi, u32 offs, u16 =
-val)
->> +{
->> +	if (xspi->big_endian)
->> +		iowrite16be(val, xspi->regs + offs + 2);
->> +	else
->> +		iowrite16(val, xspi->regs + offs);
->> +}
-> =
+Acked-by: Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-> =
-
-> Hi Richard,
-
-Hi John,
-
-Thanks for the quick feedback.
-
-> If you're worried about efficiency (the reason for 16 and 32 bit xfers), =
-why wouldn't you do the big-endian vs little endian I/O decision at compile=
- time rather than run time?
-
-I'm afraid we can't do it compile time, if we want to be flexible. As
-example;
-The IP is big endian, in our case the PCI interface flips the byte
-order. But the PCI interface might be setup differently ->would be
-accessed big endian even on a little endian machine.
-
-We could use callbacks set up during probe, instead of having the
-if-sentence. But I don't think the callback solution could be slower (if
-talking performance), since the compiler can't inline them, the current
-functions could be inlined if the compiler feels like it.
-
-
-> The big_endian variable is not a constant boolean, I don't know if that c=
-ould help so that the compiler optimizes this check away?  Or maybe it is a=
-lready and I'm just missing that?
-> =
-
->>
->> -	u32		irq;
->> +static inline void xspi_write32(struct xilinx_spi *xspi, u32 offs, u32 =
-val)
->> +{
->> +	if (xspi->big_endian)
->> +		iowrite32be(val, xspi->regs + offs);
->> +	else
->> +		iowrite32(val, xspi->regs + offs);
->> +}
->>
->> -	u32		speed_hz; /* SCK has a fixed frequency of speed_hz Hz */
->> +static inline u8 xspi_read8(struct xilinx_spi *xspi, u32 offs)
->> +{
->> +	return ioread8(xspi->regs + offs + ((xspi->big_endian) ? 3 : 0));
->> +}
->>
->> -	u8 *rx_ptr;		/* pointer in the Tx buffer */
->> -	const u8 *tx_ptr;	/* pointer in the Rx buffer */
->> -	int remaining_bytes;	/* the number of bytes left to transfer */
->> -};
-> =
-
-> <snip>
-> =
-
->> -
->>  /* This driver supports single master mode only. Hence Tx FIFO Empty
->>   * is the only interrupt we care about.
->>   * Receive FIFO Overrun, Transmit FIFO Underrun, Mode Fault, and Slave =
-Mode
->> @@ -237,32 +298,50 @@ static irqreturn_t xilinx_spi_irq(int irq, void *d=
-ev_id)
->>  	u32 ipif_isr;
->>
->>  	/* Get the IPIF interrupts, and clear them immediately */
->> -	ipif_isr =3D in_be32(xspi->regs + XIPIF_V123B_IISR_OFFSET);
->> -	out_be32(xspi->regs + XIPIF_V123B_IISR_OFFSET, ipif_isr);
->> +	ipif_isr =3D xspi_read32(xspi, XIPIF_V123B_IISR_OFFSET);
->> +	xspi_write32(xspi, XIPIF_V123B_IISR_OFFSET, ipif_isr);
->>
->>  	if (ipif_isr & XSPI_INTR_TX_EMPTY) {	/* Transmission completed */
->>  		u16 cr;
->>  		u8 sr;
->> +		u8 rsize;
->> +		if (xspi->bits_per_word =3D=3D 8)
->> +			rsize =3D 1;
->> +		else if (xspi->bits_per_word =3D=3D 16)
->> +			rsize =3D 2;
->> +		else
->> +			rsize =3D 4;
->>
->>  		/* A transmit has just completed. Process received data and
->>  		 * check for more data to transmit. Always inhibit the
->>  		 * transmitter while the Isr refills the transmit register/FIFO,
->>  		 * or make sure it is stopped if we're done.
->>  		 */
->> -		cr =3D in_be16(xspi->regs + XSPI_CR_OFFSET);
->> -		out_be16(xspi->regs + XSPI_CR_OFFSET,
->> -			 cr | XSPI_CR_TRANS_INHIBIT);
->> +		cr =3D xspi_read16(xspi, XSPI_CR_OFFSET);
->> +		xspi_write16(xspi, XSPI_CR_OFFSET, cr | XSPI_CR_TRANS_INHIBIT);
->>
->>  		/* Read out all the data from the Rx FIFO */
->> -		sr =3D in_8(xspi->regs + XSPI_SR_OFFSET);
->> +		sr =3D xspi_read8(xspi, XSPI_SR_OFFSET);
->>  		while ((sr & XSPI_SR_RX_EMPTY_MASK) =3D=3D 0) {
->> -			u8 data;
->> +			u32 data;
->> +			if (rsize =3D=3D 1)
->> +				data =3D xspi_read8(xspi, XSPI_RXD_OFFSET);
->> +			else if (rsize =3D=3D 2)
->> +				data =3D xspi_read16(xspi, XSPI_RXD_OFFSET);
->> +			else
->> +				data =3D xspi_read32(xspi, XSPI_RXD_OFFSET);
->>
->> -			data =3D in_8(xspi->regs + XSPI_RXD_OFFSET);
->>  			if (xspi->rx_ptr) {
->> -				*xspi->rx_ptr++ =3D data;
->> +				if (rsize =3D=3D 1)
->> +					*xspi->rx_ptr =3D data & 0xff;
->> +				else if (rsize =3D=3D 2)
->> +					*(u16 *)(xspi->rx_ptr) =3D data & 0xffff;
->> +				else
->> +					*((u32 *)(xspi->rx_ptr)) =3D data;
->> +				xspi->rx_ptr +=3D rsize;
-> =
-
-> Maybe I'm out of line here...
-> =
-
-> I'm wondering if this is going to be any more efficient that just using 8=
- bit accesses
-
-We can not do 8 bit accesses if the IP is set up to do 16/32bit SPI,
-then the TX/RX registers are as wide as the bit setup.
-
-We could do 32 bit reads from the registers, then we waste some cycles
-on the PLB bus, but have slightly simpler code.
-
-> as it seems like the amount of run-time decisions being made is quite a f=
-ew.  I guess it depends on how many bytes are being transferred as with big=
- transfers maybe it will pay off.
-> =
-
-> In my opinion, which isn't worth much many times :), sometimes the flexib=
-ility with soft logic, like this is a pain for testability and increases co=
-mplexity. If there's reasonable performance gains then maybe it's a good tr=
-adeoff.  =
-
-> =
-
-> Do you know how much performance gain there is or is expected as maybe yo=
-u've seen the pay off already?
-
-I haven't done any measurements, and we are basically only controlling
-GPIO so performance is not an issue for us. I just didn't want do make
-it slower. I think you have more experience here. Do you think it's
-better to just do 32bit reads to make the code simple? If so I will
-update the code.
-
-Thanks
---Richard
+------------------------------------------------------------------------------
+Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
+http://p.sf.net/sfu/devconf

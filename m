@@ -1,115 +1,59 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
-	<u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 7/7 RFC] spi-imx: strip down chipselect function to only drive the chipselect
-Date: Wed, 30 Sep 2009 21:43:34 +0200
-Message-ID: <1254339814-21506-7-git-send-email-u.kleine-koenig@pengutronix.de>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH 6/7] spi-imx: initialize complete config
+	struct
+Date: Wed, 30 Sep 2009 21:43:33 +0200
+Message-ID: <1254339814-21506-6-git-send-email-u.kleine-koenig@pengutronix.de>
 References: <20090930194211.GB1881@pengutronix.de>
- <1254339814-21506-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1254339814-21506-2-git-send-email-u.kleine-koenig@pengutronix.de>
- <1254339814-21506-3-git-send-email-u.kleine-koenig@pengutronix.de>
- <1254339814-21506-4-git-send-email-u.kleine-koenig@pengutronix.de>
- <1254339814-21506-5-git-send-email-u.kleine-koenig@pengutronix.de>
- <1254339814-21506-6-git-send-email-u.kleine-koenig@pengutronix.de>
+	<1254339814-21506-1-git-send-email-u.kleine-koenig@pengutronix.de>
+	<1254339814-21506-2-git-send-email-u.kleine-koenig@pengutronix.de>
+	<1254339814-21506-3-git-send-email-u.kleine-koenig@pengutronix.de>
+	<1254339814-21506-4-git-send-email-u.kleine-koenig@pengutronix.de>
+	<1254339814-21506-5-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-kernel@vger.kernel.org,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755280AbZI3ToV@vger.kernel.org>
-In-Reply-To: <1254339814-21506-6-git-send-email-u.kleine-koenig@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1254339814-21506-5-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-spi_imx_chipselect() made things that should be (and mostly are) done b=
-y
-spi_imx_setupxfer.  Only setting the tx and rx functions was missing.
-
-Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: David Brownell <dbrownell@users.sourceforge.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
----
- drivers/spi/spi_imx.c |   50 ++++++++++++++++-------------------------=
--------
- 1 files changed, 17 insertions(+), 33 deletions(-)
-
-diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
-index 2fec117..89c22ef 100644
---- a/drivers/spi/spi_imx.c
-+++ b/drivers/spi/spi_imx.c
-@@ -354,43 +354,14 @@ static int mx1_rx_available(struct spi_imx_data *=
-spi_imx)
- static void spi_imx_chipselect(struct spi_device *spi, int is_active)
- {
- 	struct spi_imx_data *spi_imx =3D spi_master_get_devdata(spi->master);
--	unsigned int cs =3D 0;
- 	int gpio =3D spi_imx->chipselect[spi->chip_select];
--	struct spi_imx_config config;
--
--	if (spi->mode & SPI_CS_HIGH)
--		cs =3D 1;
-+	int active =3D is_active !=3D BITBANG_CS_INACTIVE;
-+	int dev_is_lowactive =3D !(spi->mode & SPI_CS_HIGH);
-=20
--	if (is_active =3D=3D BITBANG_CS_INACTIVE) {
--		if (gpio >=3D 0)
--			gpio_set_value(gpio, !cs);
-+	if (gpio < 0)
- 		return;
--	}
--
--	config.bpw =3D spi->bits_per_word;
--	config.speed_hz =3D spi->max_speed_hz;
--	config.mode =3D spi->mode;
--	config.cs =3D spi_imx->chipselect[spi->chip_select];
--
--	spi_imx->config(spi_imx, &config);
--
--	/* Initialize the functions for transfer */
--	if (config.bpw <=3D 8) {
--		spi_imx->rx =3D spi_imx_buf_rx_u8;
--		spi_imx->tx =3D spi_imx_buf_tx_u8;
--	} else if (config.bpw <=3D 16) {
--		spi_imx->rx =3D spi_imx_buf_rx_u16;
--		spi_imx->tx =3D spi_imx_buf_tx_u16;
--	} else if (config.bpw <=3D 32) {
--		spi_imx->rx =3D spi_imx_buf_rx_u32;
--		spi_imx->tx =3D spi_imx_buf_tx_u32;
--	} else
--		BUG();
--
--	if (gpio >=3D 0)
--		gpio_set_value(gpio, cs);
-=20
--	return;
-+	gpio_set_value(gpio, dev_is_lowactive ^ active);
- }
-=20
- static void spi_imx_push(struct spi_imx_data *spi_imx)
-@@ -451,6 +422,19 @@ static int spi_imx_setupxfer(struct spi_device *sp=
-i,
- 	if (!config.speed_hz)
- 		config.speed_hz =3D spi->max_speed_hz;
-=20
-+	/* Initialize the functions for transfer */
-+	if (config.bpw <=3D 8) {
-+		spi_imx->rx =3D spi_imx_buf_rx_u8;
-+		spi_imx->tx =3D spi_imx_buf_tx_u8;
-+	} else if (config.bpw <=3D 16) {
-+		spi_imx->rx =3D spi_imx_buf_rx_u16;
-+		spi_imx->tx =3D spi_imx_buf_tx_u16;
-+	} else if (config.bpw <=3D 32) {
-+		spi_imx->rx =3D spi_imx_buf_rx_u32;
-+		spi_imx->tx =3D spi_imx_buf_tx_u32;
-+	} else
-+		BUG();
-+
- 	spi_imx->config(spi_imx, &config);
-=20
- 	return 0;
---=20
-1.6.4.3
+T3RoZXJ3aXNlIHRoZSBjb25maWcgZnVuY3Rpb24gdXNlcyByYW5kb20gZGF0YSBmcm9tIHRoZSBz
+dGFjay4KVGhpcyBkaWRuJ3Qgc3RpY2sgb3V0IGJlY2F1c2UgY29uZmlnIGlzIGNhbGxlZCBvbmNl
+IG1vcmUgaW4gdGhlCmNoaXBzZWxlY3QgZnVuY3Rpb24gd2l0aCBjb3JyZWN0IHBhcmFtZXRlcnMu
+CgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1
+dHJvbml4LmRlPgpBY2tlZC1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRl
+PgpDYzogRGF2aWQgQnJvd25lbGwgPGRicm93bmVsbEB1c2Vycy5zb3VyY2Vmb3JnZS5uZXQ+CkNj
+OiBBbmRyZXcgTW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnPgpDYzogR3Vlbm5hZGkg
+TGlha2hvdmV0c2tpIDxnLmxpYWtob3ZldHNraUBnbXguZGU+Ci0tLQogZHJpdmVycy9zcGkvc3Bp
+X2lteC5jIHwgICAgMSArCiAxIGZpbGVzIGNoYW5nZWQsIDEgaW5zZXJ0aW9ucygrKSwgMCBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGlfaW14LmMgYi9kcml2ZXJzL3Nw
+aS9zcGlfaW14LmMKaW5kZXggYjZhODE0OS4uMmZlYzExNyAxMDA2NDQKLS0tIGEvZHJpdmVycy9z
+cGkvc3BpX2lteC5jCisrKyBiL2RyaXZlcnMvc3BpL3NwaV9pbXguYwpAQCAtNDQyLDYgKzQ0Miw3
+IEBAIHN0YXRpYyBpbnQgc3BpX2lteF9zZXR1cHhmZXIoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwK
+IAljb25maWcuYnB3ID0gdCA/IHQtPmJpdHNfcGVyX3dvcmQgOiBzcGktPmJpdHNfcGVyX3dvcmQ7
+CiAJY29uZmlnLnNwZWVkX2h6ICA9IHQgPyB0LT5zcGVlZF9oeiA6IHNwaS0+bWF4X3NwZWVkX2h6
+OwogCWNvbmZpZy5tb2RlID0gc3BpLT5tb2RlOworCWNvbmZpZy5jcyA9IHNwaV9pbXgtPmNoaXBz
+ZWxlY3Rbc3BpLT5jaGlwX3NlbGVjdF07CiAKIAlpZiAoIWNvbmZpZy5zcGVlZF9oeikKIAkJY29u
+ZmlnLnNwZWVkX2h6ID0gc3BpLT5tYXhfc3BlZWRfaHo7Ci0tIAoxLjYuNC4zCgoKLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCkNvbWUgYnVpbGQgd2l0aCB1cyEgVGhlIEJsYWNrQmVycnkmcmVnOyBEZXZl
+bG9wZXIgQ29uZmVyZW5jZSBpbiBTRiwgQ0EKaXMgdGhlIG9ubHkgZGV2ZWxvcGVyIGV2ZW50IHlv
+dSBuZWVkIHRvIGF0dGVuZCB0aGlzIHllYXIuIEp1bXBzdGFydCB5b3VyCmRldmVsb3Bpbmcgc2tp
+bGxzLCB0YWtlIEJsYWNrQmVycnkgbW9iaWxlIGFwcGxpY2F0aW9ucyB0byBtYXJrZXQgYW5kIHN0
+YXkgCmFoZWFkIG9mIHRoZSBjdXJ2ZS4gSm9pbiB1cyBmcm9tIE5vdmVtYmVyIDkmIzQ1OzEyLCAy
+MDA5LiBSZWdpc3RlciBub3cmIzMzOwpodHRwOi8vcC5zZi5uZXQvc2Z1L2RldmNvbmYKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
+YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
+dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
+ZXJhbAo=

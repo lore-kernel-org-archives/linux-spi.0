@@ -1,53 +1,51 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
 	<u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 0/7] Updates for spi-imx
-Date: Wed, 30 Sep 2009 21:42:11 +0200
-Message-ID: <20090930194211.GB1881@pengutronix.de>
+Subject: [PATCH 5/7] spi-imx: no need to assert bits_per_word being initialized
+Date: Wed, 30 Sep 2009 21:43:32 +0200
+Message-ID: <1254339814-21506-5-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <20090930194211.GB1881@pengutronix.de>
+ <1254339814-21506-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1254339814-21506-2-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1254339814-21506-3-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1254339814-21506-4-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+Cc: linux-kernel@vger.kernel.org,
+	David Brownell <dbrownell@users.sourceforge.net>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
+	Guennadi Liakhovetski <g.liakhovetski@gmx.de>
 To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755215AbZI3TnH@vger.kernel.org>
-Content-Disposition: inline
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755266AbZI3ToL@vger.kernel.org>
+In-Reply-To: <1254339814-21506-4-git-send-email-u.kleine-koenig@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+spi_imx_setup() is only called by spi_setup().  The latter does the
+initialization already.
 
-as a followup to this mail I'll send some updates for the spi-imx
-driver for review.
+Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+---
+ drivers/spi/spi_imx.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
 
-Overall diffstat and shortlog can be found below.
-
-You can find the patches based on current Linus' master at
-
-  git://git.pengutronix.de/git/ukl/linux-2.6.git spi-imx
-
-Sascha Hauer (3):
-      spi-imx: update state correctly
-      spi-imx: Fix initial chipselect settings
-      spi-imx: setup mode_bits we can handle
-
-Uwe Kleine-K=F6nig (4):
-      spi-imx: rename source file to spi_imx.c
-      spi-imx: no need to assert bits_per_word being initialized
-      spi-imx: initialize complete config struct
-      [RFC] spi-imx: strip down chipselect function to only drive the c=
-hipselect
-
- drivers/spi/Makefile                 |    2 +-
- drivers/spi/{mxc_spi.c =3D> spi_imx.c} |  383 +++++++++++++++++-------=
-----------
- 2 files changed, 190 insertions(+), 195 deletions(-)
- rename drivers/spi/{mxc_spi.c =3D> spi_imx.c} (55%)
+diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
+index 84dd4f3..b6a8149 100644
+--- a/drivers/spi/spi_imx.c
++++ b/drivers/spi/spi_imx.c
+@@ -481,9 +481,6 @@ static int spi_imx_setup(struct spi_device *spi)
+ 	struct spi_imx_data *spi_imx =3D spi_master_get_devdata(spi->master);
+ 	int gpio =3D spi_imx->chipselect[spi->chip_select];
+=20
+-	if (!spi->bits_per_word)
+-		spi->bits_per_word =3D 8;
+-
+ 	pr_debug("%s: mode %d, %u bpw, %d hz\n", __func__,
+ 		 spi->mode, spi->bits_per_word, spi->max_speed_hz);
+=20
 --=20
-Pengutronix e.K.                              | Uwe Kleine-K=F6nig     =
-       |
-Industrial Linux Solutions                    | http://www.pengutronix.=
-de/  |
+1.6.4.3

@@ -1,55 +1,29 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 4/7] spi-imx: setup mode_bits we can
-	handle
-Date: Wed, 30 Sep 2009 21:43:31 +0200
-Message-ID: <1254339814-21506-4-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 0/7] Updates for spi-imx
+Date: Wed, 30 Sep 2009 16:52:41 -0700
+Message-ID: <20090930165241.ecb2a83e.akpm@linux-foundation.org>
 References: <20090930194211.GB1881@pengutronix.de>
-	<1254339814-21506-1-git-send-email-u.kleine-koenig@pengutronix.de>
-	<1254339814-21506-2-git-send-email-u.kleine-koenig@pengutronix.de>
-	<1254339814-21506-3-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1254339814-21506-3-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	dbrownell@users.sourceforge.net, s.hauer@pengutronix.de,
+	g.liakhovetski@gmx.de, linux-kernel@vger.kernel.org
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig@pengutronix.de>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755049AbZI3XxW@vger.kernel.org>
+In-Reply-To: <20090930194211.GB1881@pengutronix.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgoKU2lnbmVkLW9mZi1i
-eTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgpTaWduZWQtb2ZmLWJ5OiBV
-d2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgpDYzogRGF2
-aWQgQnJvd25lbGwgPGRicm93bmVsbEB1c2Vycy5zb3VyY2Vmb3JnZS5uZXQ+CkNjOiBBbmRyZXcg
-TW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnPgpDYzogR3Vlbm5hZGkgTGlha2hvdmV0
-c2tpIDxnLmxpYWtob3ZldHNraUBnbXguZGU+Ci0tLQogZHJpdmVycy9zcGkvc3BpX2lteC5jIHwg
-ICAgMSArCiAxIGZpbGVzIGNoYW5nZWQsIDEgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkK
-CmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGlfaW14LmMgYi9kcml2ZXJzL3NwaS9zcGlfaW14
-LmMKaW5kZXggYjkxYTVhOC4uODRkZDRmMyAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpX2lt
-eC5jCisrKyBiL2RyaXZlcnMvc3BpL3NwaV9pbXguYwpAQCAtNTQ1LDYgKzU0NSw3IEBAIHN0YXRp
-YyBpbnQgX19pbml0IHNwaV9pbXhfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikK
-IAlzcGlfaW14LT5iaXRiYW5nLnR4cnhfYnVmcyA9IHNwaV9pbXhfdHJhbnNmZXI7CiAJc3BpX2lt
-eC0+Yml0YmFuZy5tYXN0ZXItPnNldHVwID0gc3BpX2lteF9zZXR1cDsKIAlzcGlfaW14LT5iaXRi
-YW5nLm1hc3Rlci0+Y2xlYW51cCA9IHNwaV9pbXhfY2xlYW51cDsKKwlzcGlfaW14LT5iaXRiYW5n
-Lm1hc3Rlci0+bW9kZV9iaXRzID0gU1BJX0NQT0wgfCBTUElfQ1BIQSB8IFNQSV9DU19ISUdIOwog
-CiAJaW5pdF9jb21wbGV0aW9uKCZzcGlfaW14LT54ZmVyX2RvbmUpOwogCi0tIAoxLjYuNC4zCgoK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tCkNvbWUgYnVpbGQgd2l0aCB1cyEgVGhlIEJsYWNrQmVycnkm
-cmVnOyBEZXZlbG9wZXIgQ29uZmVyZW5jZSBpbiBTRiwgQ0EKaXMgdGhlIG9ubHkgZGV2ZWxvcGVy
-IGV2ZW50IHlvdSBuZWVkIHRvIGF0dGVuZCB0aGlzIHllYXIuIEp1bXBzdGFydCB5b3VyCmRldmVs
-b3Bpbmcgc2tpbGxzLCB0YWtlIEJsYWNrQmVycnkgbW9iaWxlIGFwcGxpY2F0aW9ucyB0byBtYXJr
-ZXQgYW5kIHN0YXkgCmFoZWFkIG9mIHRoZSBjdXJ2ZS4gSm9pbiB1cyBmcm9tIE5vdmVtYmVyIDkm
-IzQ1OzEyLCAyMDA5LiBSZWdpc3RlciBub3cmIzMzOwpodHRwOi8vcC5zZi5uZXQvc2Z1L2RldmNv
-bmYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
-dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
-ZGV2ZWwtZ2VuZXJhbAo=
+On Wed, 30 Sep 2009 21:42:11 +0200
+Uwe Kleine-K__nig <u.kleine-koenig@pengutronix.de> wrote:
+
+> as a followup to this mail I'll send some updates for the spi-imx
+> driver for review.
+
+Several of these patches were unchangelogged but afaict they all fix
+bugs and hence should be in 2.6.32, yes?
+
+Renaming the entire source file after -rc1 was probably a bit naughty,
+but we'll survive.

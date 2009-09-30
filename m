@@ -1,16 +1,12 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [PATCH 1/3 v2] [RESEND]spi: controller
- driver for Designware SPI core
-Date: Tue, 29 Sep 2009 15:16:58 -0700
-Message-ID: <20090929151658.702e2c63.akpm@linux-foundation.org>
-References: <20090921164729.3e45744d@feng-desktop>
+From: "Voitures.com" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: =?iso-8859-1?q?Votre_voiture_financ=E9e_et_li?=
+	=?iso-8859-1?q?vr=E9e_en_48h_-_devis_immediat?=
+Date: Wed, 30 Sep 2009 21:26:27 +0200 (CEST)
+Message-ID: <kqsu03.es054c@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============6816377462085204807=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20090921164729.3e45744d@feng-desktop>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,161 +17,111 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 21 Sep 2009 16:47:29 +0800
-Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+--===============6816377462085204807==
+Content-Type: multipart/alternative;
+	boundary="=_1a76a160c3be8c0f3ef30d9fba5951b8"
 
-> >From 5d87c87105aba522468cabb6fe206a4515dc85e8 Mon Sep 17 00:00:00 2001
-> From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> Date: Tue, 4 Aug 2009 16:23:47 +0800
-> Subject: [PATCH 1/3] spi: controller driver for Designware SPI core
-> 
-> Driver for the Designware SPI core, it supports multipul interfaces
-> like PCI/APB etc. User can use "dw_apb_ssi_db.pdf" from Synopsys as
-> HW datasheet.
-
-It appears that your email client replaced all the tabs with spaces - I
-cannot apply these patches.
+--=_1a76a160c3be8c0f3ef30d9fba5951b8
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
+--=_1a76a160c3be8c0f3ef30d9fba5951b8
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>=0D<head><title>Voitures.com</title>=0D<meta content=3D"text/html; ch=
+arset=3DISO-8859-1" http-equiv=3DContent-Type>=0D</head>=0D<body topmargin=
+=3D"0" leftmargin=3D"0" bgcolor=3D"#ffffff" marginwidth=3D"0" marginheight=
+=3D"0"><div align=3D"center"><font size=3D"2" face=3D"verdana"><a href=3D"h=
+ttp://www.voitures.com/online/fr/homepage.php?utm_campaign=3DSEPT&utm_mediu=
+m=3Demail-echg&utm_source=3DC-DIRECT3009&utm_content=3Demail&utm_term=3Donl=
+ine/fr/homepage.php?utm_campaign=3DSEPT&utm_medium=3Demail-echg&utm_source=
+=3DC-DIRECT3009&utm_content=3Demail&utm_term=3D" target=3D"_blank">Si vous =
+ne pouvez pas consulter correctement ce message, suivez ce lien</a></font><=
+/div>
+<center>=0D<table width=3D"500" height=3D"500" id=3D"Tableau_01" border=3D"=
+0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td colspan=3D"5=
+"><a href=3D"http://www.voitures.com/online/fr/homepage.php?utm_campaign=3D=
+SEPT&utm_medium=3Demail-echg&utm_source=3DC-DIRECT3009&utm_content=3Demail&=
+utm_term=3Donline/fr/homepage.php?utm_campaign=3DSEPT&utm_medium=3Demail-ec=
+hg&utm_source=3DC-DIRECT3009&utm_content=3Demail&utm_term=3D" target=3D"_bl=
+ank"><img width=3D"500" height=3D"91" alt=3D"new_mailing_Vcom_sept09_V2_01.=
+gif" src=3D"http://www07.r7g.com/6269/e/new_mailing_Vcom_sept09_V2_01.gif" =
+border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></a></td>=
+=0D</tr>=0D<tr>=0D<td colspan=3D"5"><a href=3D"http://www.voitures.com/onli=
+ne/fr/homepage.php?utm_campaign=3DSEPT&utm_medium=3Demail-echg&utm_source=
+=3DC-DIRECT3009&utm_content=3Demail&utm_term=3Donline/fr/homepage.php?utm_c=
+ampaign=3DSEPT&utm_medium=3Demail-echg&utm_source=3DC-DIRECT3009&utm_conten=
+t=3Demail&utm_term=3D" target=3D"_blank"><img width=3D"500" height=3D"73" a=
+lt=3D"new_mailing_Vcom_sept09_V2_02.gif" src=3D"http://www07.r7g.com/6269/e=
+/new_mailing_Vcom_sept09_V2_02.gif" border=3D"0" hspace=3D"0" complete=3D"t=
+rue" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td colspan=3D"5"><a hr=
+ef=3D"http://www.voitures.com/online/fr/homepage.php?utm_campaign=3DSEPT&ut=
+m_medium=3Demail-echg&utm_source=3DC-DIRECT3009&utm_content=3Demail&utm_ter=
+m=3Donline/fr/homepage.php?utm_campaign=3DSEPT&utm_medium=3Demail-echg&utm_=
+source=3DC-DIRECT3009&utm_content=3Demail&utm_term=3D" target=3D"_blank"><i=
+mg width=3D"500" height=3D"218" alt=3D"new_mailing_Vcom_sept09_V2_03.gif" s=
+rc=3D"http://www07.r7g.com/6269/e/new_mailing_Vcom_sept09_V2_03.gif" border=
+=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=
+=0D<tr>=0D<td colspan=3D"5"><a href=3D"http://www.voitures.com/online/fr/ho=
+mepage.php?utm_campaign=3DSEPT&utm_medium=3Demail-echg&utm_source=3DC-DIREC=
+T3009&utm_content=3Demail&utm_term=3Donline/fr/homepage.php?utm_campaign=3D=
+SEPT&utm_medium=3Demail-echg&utm_source=3DC-DIRECT3009&utm_content=3Demail&=
+utm_term=3D" target=3D"_blank"><img width=3D"500" height=3D"61" alt=3D"new_=
+mailing_Vcom_sept09_V2_04.gif" src=3D"http://www07.r7g.com/6269/e/new_maili=
+ng_Vcom_sept09_V2_04.gif" border=3D"0" hspace=3D"0" complete=3D"true" compl=
+ete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://www.voiture=
+s.com/online/fr/homepage.php?utm_campaign=3DSEPT&utm_medium=3Demail-echg&ut=
+m_source=3DC-DIRECT3009&utm_content=3Demail&utm_term=3Donline/fr/homepage.p=
+hp?utm_campaign=3DSEPT&utm_medium=3Demail-echg&utm_source=3DC-DIRECT3009&ut=
+m_content=3Demail&utm_term=3D" target=3D"_blank"><img width=3D"101" height=
+=3D"57" alt=3D"new_mailing_Vcom_sept09_V2_05.gif" src=3D"http://www07.r7g.c=
+om/6269/e/new_mailing_Vcom_sept09_V2_05.gif" border=3D"0" hspace=3D"0" comp=
+lete=3D"true" complete=3D"true" /></a></td>=0D<td><a href=3D"http://www.voi=
+tures.com/online/fr/homepage.php?utm_campaign=3DSEPT&utm_medium=3Demail-ech=
+g&utm_source=3DC-DIRECT3009&utm_content=3Demail&utm_term=3Donline/fr/homepa=
+ge.php?utm_campaign=3DSEPT&utm_medium=3Demail-echg&utm_source=3DC-DIRECT300=
+9&utm_content=3Demail&utm_term=3D" target=3D"_blank"><img width=3D"99" heig=
+ht=3D"57" alt=3D"new_mailing_Vcom_sept09_V2_06.gif" src=3D"http://www07.r7g=
+.com/6269/e/new_mailing_Vcom_sept09_V2_06.gif" border=3D"0" hspace=3D"0" co=
+mplete=3D"true" complete=3D"true" /></a></td>=0D<td><a href=3D"http://www.v=
+oitures.com/online/fr/homepage.php?utm_campaign=3DSEPT&utm_medium=3Demail-e=
+chg&utm_source=3DC-DIRECT3009&utm_content=3Demail&utm_term=3Donline/fr/home=
+page.php?utm_campaign=3DSEPT&utm_medium=3Demail-echg&utm_source=3DC-DIRECT3=
+009&utm_content=3Demail&utm_term=3D" target=3D"_blank"><img width=3D"99" he=
+ight=3D"57" alt=3D"new_mailing_Vcom_sept09_V2_07.gif" src=3D"http://www07.r=
+7g.com/6269/e/new_mailing_Vcom_sept09_V2_07.gif" border=3D"0" hspace=3D"0" =
+complete=3D"true" complete=3D"true" /></a></td>=0D<td><a href=3D"http://www=
+.voitures.com/online/fr/homepage.php?utm_campaign=3DSEPT&utm_medium=3Demail=
+-echg&utm_source=3DC-DIRECT3009&utm_content=3Demail&utm_term=3Donline/fr/ho=
+mepage.php?utm_campaign=3DSEPT&utm_medium=3Demail-echg&utm_source=3DC-DIREC=
+T3009&utm_content=3Demail&utm_term=3D" target=3D"_blank"><img width=3D"99" =
+height=3D"57" alt=3D"new_mailing_Vcom_sept09_V2_08.gif" src=3D"http://www07=
+.r7g.com/6269/e/new_mailing_Vcom_sept09_V2_08.gif" border=3D"0" hspace=3D"0=
+" complete=3D"true" complete=3D"true" /></a></td>=0D<td><a href=3D"http://w=
+ww.voitures.com/online/fr/homepage.php?utm_campaign=3DSEPT&utm_medium=3Dema=
+il-echg&utm_source=3DC-DIRECT3009&utm_content=3Demail&utm_term=3D" target=
+=3D"_blank"><img width=3D"102" height=3D"57" alt=3D"new_mailing_Vcom_sept09=
+_V2_09.gif" src=3D"http://www07.r7g.com/6269/e/new_mailing_Vcom_sept09_V2_0=
+9.gif" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></a>=
+</td>=0D</tr>=0D</tbody>=0D</table></center><br><br><br><div align=3D"cente=
+r"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#999999"=
 >
-> ...
->
-> +#define SPI_REGS_BUFSIZE       1024
-> +static ssize_t  spi_show_regs(struct file *file, char __user *user_buf,
-> +                               size_t count, loff_t *ppos)
-> +{
-> +       struct dw_spi *dws;
-> +       char *buf;
-> +       u32 len = 0;
-> +       ssize_t ret;
-> +
-> +       dws = (struct dw_spi *)file->private_data;
+Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
+acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://cdirecte.r7g.com=
+/AA07364FXC_268449/877">ici</a></font></div><img src=3D"http://cdirecte.r7g=
+.com/ZZ07364FXC_268449.png" /></body></html>
+--=_1a76a160c3be8c0f3ef30d9fba5951b8--
 
-Unneeded and undesirable cast of void*.
 
-> +       buf = kzalloc(SPI_REGS_BUFSIZE, GFP_KERNEL);
-> +       if (!buf)
-> +               return 0;
-> +
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "MRST SPI0 registers:\n");
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "=================================\n");
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "CTRL0: \t\t0x%08x\n", dw_readl(dws, ctrl0));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "CTRL1: \t\t0x%08x\n", dw_readl(dws, ctrl1));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "SSIENR: \t0x%08x\n", dw_readl(dws, ssienr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "SER: \t\t0x%08x\n", dw_readl(dws, ser));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "BAUDR: \t\t0x%08x\n", dw_readl(dws, baudr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "TXFTLR: \t0x%08x\n", dw_readl(dws, txfltr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "RXFTLR: \t0x%08x\n", dw_readl(dws, rxfltr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "TXFLR: \t\t0x%08x\n", dw_readl(dws, txflr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "RXFLR: \t\t0x%08x\n", dw_readl(dws, rxflr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "SR: \t\t0x%08x\n", dw_readl(dws, sr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "IMR: \t\t0x%08x\n", dw_readl(dws, imr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "ISR: \t\t0x%08x\n", dw_readl(dws, isr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "DMACR: \t\t0x%08x\n", dw_readl(dws, dmacr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "DMATDLR: \t0x%08x\n", dw_readl(dws, dmatdlr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "DMARDLR: \t0x%08x\n", dw_readl(dws, dmardlr));
-> +       len += snprintf(buf + len, SPI_REGS_BUFSIZE - len,
-> +                       "=================================\n");
-> +
-> +       ret =  simple_read_from_buffer(user_buf, count, ppos, buf, len);
-> +       kfree(buf);
-> +       return ret;
-> +}
-> +
->
-> ...
->
-> +static int flush(struct dw_spi *dws)
-> +{
-> +       unsigned long limit = loops_per_jiffy << 1;
-> +
-> +       while (dw_readw(dws, sr) & SR_RF_NOT_EMPT) {
-> +               limit = loops_per_jiffy << 1;
-> +               while ((dw_readw(dws, sr) & SR_BUSY) && limit--)
-> +                       ;
-> +               dw_readw(dws, dr);
-> +       }
-> +       return limit;
-> +}
 
-The duration of this timeout will have little relation to jiffies or
-anything like that.  It'll mainly be dependent upon bus latencies.  You
-may find that the upper bound to this delay is very large indeed.
-
-If you really did intend to set some upper bound on the polling period,
-it'd be better to do
-
-	unsigned long end = jiffies + usecs_to_jiffies(1000);
-
-	while (time_before(jiffies, end)) {
-		...
-	}
-
-or something along those lines.
-
->
-> ...
->
-> +static int u16_reader(struct dw_spi *dws)
-> +{
-> +       u16 temp;
-> +
-> +       while ((dw_readw(dws, sr) & SR_RF_NOT_EMPT)
-> +               && (dws->rx < dws->rx_end)) {
-> +               temp = dw_readw(dws, dr);
-> +               *(u16 *)(dws->rx) = temp;
-> +               dws->rx += 2;
-> +       }
-> +
-> +       while (dw_readw(dws, sr) & SR_BUSY)
-> +               ;
-
-The code does this a lot.
-
-It's a bit of a worry - if the hardware is misbehaving or gets
-hot-unplugged or powered off or such, the kernel will silently lock up.
-
-Better practice would be to pull this into a separate function and to
-at least emit a printk from that function when the hardware has locked
-up.  Even better, handle that error and recover.
-
-> +       return dws->rx == dws->rx_end;
-> +}
-> +
->
-> ...
->
-> +static inline void unmap_dma_buffers(struct dw_spi *dws)
-> +{
-> +       if (!dws->dma_mapped)
-> +               return;
-> +       dws->dma_mapped = 0;
-> +}
-
-One would think that a function called unmap_dma_buffers() would unmap
-dma buffers.  But this doesn't do that.
-
->
-> ...
->
-
+--===============6816377462085204807==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
@@ -183,3 +129,15 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
 http://p.sf.net/sfu/devconf
+--===============6816377462085204807==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============6816377462085204807==--

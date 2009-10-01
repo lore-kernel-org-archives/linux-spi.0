@@ -1,10 +1,11 @@
-From: <infos-et/A+qVMfwXB4UjyGYa2PA@public.gmane.org>
-Subject: Proposition commercial
-Date: Thu, 01 Oct 2009 10:28:36 +0200
-Message-ID: <503b6fa820f1fcce688e8d68197fb7b8@deviscontact.com>
+From: Rencontres sur internet <newsletter-95V9+DVbUV+sTnJN9+BGXg@public.gmane.org>
+Subject: pour une nuit ou pour la vie
+Date: 1 Oct 2009 10:37:17 -0000
+Message-ID: <20091001103717.31465.qmail@ks24820.kimsufi.com>
+Reply-To: Rencontres sur internet <newsletter-95V9+DVbUV+sTnJN9+BGXg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7057200653462405639=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============2348344934404461461=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,532 +17,399 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
 
---===============7057200653462405639==
-Content-Type: multipart/alternative; boundary="----=MailPart0000_0010_5DB5C686"
-
-This is a multi-part message in MIME format.
-
-------=MailPart0000_0010_5DB5C686
-Content-Type: text/plain;
-	charset="windows-1258"
-Content-Transfer-Encoding: quoted-printable
-
-=20
+--===============2348344934404461461==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_26e584a25c8308c54b1ef8893badcc2b"
 
 
+--_----------=_parties_26e584a25c8308c54b1ef8893badcc2b
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://newsletter.makine.net/svi/miroir.php?bat=easyflirt1009_ctrm
+
+Service de rencontres Toute France et tous les ages
+Je découvre les profils de ma region
+
+magereve , 44 ans
+
+séduisante, sportive, volontiers rêveuse, je cherche l'autre moitié de moi-même.
+
+France > Centre > 37 Indre et Loire > Tours
+
+soy9191 , 29 ans
+
+black rencontre amical voir plus
+
+France > Ile de France > 91 Essonne > Villebon sur yvette
+
+Mirko6777 , 42 ans
+
+Un homme pret à s' investir dans toutes sortes de relations, tout est bon
+
+France > Ile de France > 77 Seine et Marne > Serris
+
+tendreminette , 27 ans
+
+je recherche de la tendresse et de l'amour .
+
+France > Bretagne > 35 Ille et Vilaine > Janze
+
+nesthal , 34 ans
+
+JE NE SERAI ME DECRIRE JE NE SUIS PAS EN ACCORD AVEC MOI MEME ONT DIT QUE LA GENTILLESSE EST LE TRAIE DE CARACTERE DES GENS PAS BEAU DONC JE SUIS GENTIL
+
+France > Ile de France > 94 Val de Marne > Le plessis trevise
+
+charlyangelove , 36 ans
+
+difficile de ce décrire,mais le mieux est pour vous faire une idée est que l'on fasse connaissance.
+
+France > Auvergne > 03 Allier > Paray sous briailles
+
+mimillulu , 41 ans
+
+séparée et libérée
+
+France > Ile de France > 93 Seine St Denis > Montreuil
+
+dragonreiki , 37 ans
+
+je cherche une relation serieuse et pure le droit aimer avec un grand a dans la passion et la tendresse ce que beaucoup ne save plus faire d etre attentif et passioné et tres dur pour certain qui prefere facilement faire du mal on ne joue pas avec l amour et les sentiments on aime mes on a pas le droit de mentir dessus l amour et un dont qui ce trouve dans notre coeur et qui et si bon et si passionnant .
+
+France > Pays de la Loire > 49 Maine et Loire > Saumur
+
+
+gaelle1581 , 27 ans
+
+j'aime bien les rencontres alors si ca vous tentes je suis connectée
+
+France > Ile de France > 75 Paris > Paris 15
+
+
+jflrally , 44 ans
+
+divorce depuis 6 ans il srai peut etre temps de refaire sa vie avec une femme douce et caline
+
+France > Nord Pas de Calais > 59 Nord > Marcq en baroeul
+
+
+sdiey , 35 ans
+
+coucou tout le monde Ben écoute je suis sympas mais c'est pas à moi de le dire. Je suis sur ce site pour tout simplement rencontrer mon homme mais ma foi ce n'est pas toujours facile. Mais j'espère toujours n'ai je pas raison?
+
+France > Rhône Alpes > 74 Haute Savoie > Fillinges
+
+NicoH75 , 18 ans
+
+Je suis chatain clair, yeux bleux. Contacte moi ;)
+
+France > Ile de France > 75 Paris > Paris 01
+
+kiwivert , 41 ans
+
+La vie est un long fleuve pas toujours tranquille et lors de certains détours, il y a des surprises. Alors, si quelqu'un pouvait m'aider à vivre de bons moments à deux en harmonie, le ciel serait encore plus étoilé.
+
+France > Midi Pyrénées > 81 Tarn > Castres
+
+
+pierrev4 , 38 ans
+
+bonjour a toutes déja lié une amitié voir si le courant passe bien. laisser allé les choses tout simplement
+
+n ésiter pas a me parler
+
+France > Rhône Alpes > 42 Loire > St etienne
+
+dolphin76190 , 36 ans
+
+suis a la recherche de personne sympa et peut etre le grand amour
+
+France > Normandie (Haute) > 76 Seine Maritime > Yvetot
+
+denis1_66 , 38 ans
+
+j'aime profiter de la vie et je souhaite faire des rencontres ou le dialogue est primordial
+
+France > Pays de la Loire > 49 Maine et Loire > Angers
+
+
+plus d'infos sur http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres
+
+--------------------------------
+Cette offre easyflirt vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://newsletter.makine.net/svi/gestionserv.php?nb=2403&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_26e584a25c8308c54b1ef8893badcc2b
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head> 
+<title>Service de rencontres Toute France et tous les ages</title>
+</head>
+<body><center>
+<p>
+<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://newsletter.makine.net/svi/miroir.php?bat=easyflirt1009_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#042F64;font-size:24px'>
+<p style='display:inline;'> <a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres" style="text-decoration:none;color:#042F64;"><u style='color:blue'>Service de rencontres</u><br>Toute France et tous les ages<br></a></p>
+</td></tr>
+<tr><td align='right' style='margin:3px;padding:5px;background-color:#FFFFFF;font-family:Comic Sans MS;color:#0000FF;font-size:14px;'>
+<a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres" style="color:#0000FF;">Je d&eacute;couvre les profils de ma region</a>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:10px;background-color:#FFFFFF;'>
+<table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/e07a535cc0103091be63b50634731423.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8509186">magereve</a></b>, 44 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8509186" style="text-decoration:none;color:black;">s&eacute;duisante, sportive, volontiers r&ecirc;veuse, je cherche l'autre moiti&eacute; de moi-m&ecirc;me.</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8509186" style="text-decoration:none;color:black;font-weight:bold;">France > Centre > 37 Indre et Loire > Tours</a></td>
+ </tr>
+ </table>
 
 
 
-Tous les professionnels qui ont relev=E9 le d=E9fi de la r=E9ussite avec =
-succ=E8s restent convaincus que toute entreprise, peu importe sa taille, =
-se doit de se donner les m=EAmes moyens modernes pour se d=E9velopper=2E
-N=92h=E9sitez plus, faites confiance =E0 Devis Contact.=20
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/472aa0b71fa18828b178f54ab10ea87a.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8592328">soy9191</a></b>, 29 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8592328" style="text-decoration:none;color:black;">black rencontre amical voir plus</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8592328" style="text-decoration:none;color:black;font-weight:bold;">France > Ile de France > 91 Essonne > Villebon sur yvette</a></td>
+ </tr>
+ </table>
 
 
 
-
-
-Nous avons le plaisir de vous informer que nos sp=E9cialistes sont =E0  =
-votre disposition,  pour r=E9aliser gratuitement vos campagnes de =
-prospection aupr=E8s de nouveaux fournisseurs ou prestataires de services=2E
-
-Nous avons coutume de dire que =AB le temps c=92est de l=92argent =BB alors !
-
-Ne perdez plus votre temps =E0 prospecter, confier plut=F4t cette t=E2che =
-difficile =E0 nos sp=E9cialistes, sans aucun engagement de votre part=2E
-
-Faites comme beaucoup d=92entreprises qui nous font d=E9j=E0 confiance=2E
- Rejoignez nous=2E
-=20
-
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/bc016690d527766930d35b0fbe7b9a19.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8599134">Mirko6777</a></b>, 42 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8599134" style="text-decoration:none;color:black;">Un homme pret &agrave; s' investir dans toutes sortes de relations, tout est bon</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8599134" style="text-decoration:none;color:black;font-weight:bold;">France > Ile de France > 77 Seine et Marne > Serris</a></td>
+ </tr>
+ </table>
 
 
 
-
- N=92h=E9sitez pas =E0 nous contacter=2E
- Contact:infos-et/A+qVMfwXB4UjyGYa2PA@public.gmane.org
- Tel : 01.75.49.46.69
- http://www.deviscontact.com
-
-
-
-
-
-Avis aux chefs d=92entreprise.=20
-=20
-
-
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/7c59bb3646b66477786618e94d287af6.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8484048">tendreminette</a></b>, 27 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8484048" style="text-decoration:none;color:black;">je recherche de la tendresse et de l'amour .</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8484048" style="text-decoration:none;color:black;font-weight:bold;">France > Bretagne > 35 Ille et Vilaine > Janze</a></td>
+ </tr>
+ </table>
 
 
 
-Pour supprimer votre nom de notre liste d'abonn=E9s,  cliquez ici
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/4e2396f1f203fc24cee6f216bdd2435c.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8579191">nesthal</a></b>, 34 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8579191" style="text-decoration:none;color:black;">JE NE SERAI ME DECRIRE JE NE SUIS PAS EN ACCORD AVEC MOI MEME ONT DIT QUE LA GENTILLESSE EST LE TRAIE DE CARACTERE DES GENS PAS BEAU DONC JE SUIS GENTIL</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8579191" style="text-decoration:none;color:black;font-weight:bold;">France > Ile de France > 94 Val de Marne > Le plessis trevise</a></td>
+ </tr>
+ </table>
 
-------=MailPart0000_0010_5DB5C686
-Content-Type: text/html;
-	charset="windows-1258"
-Content-Transfer-Encoding: quoted-printable
 
-<html><title>Proposition commercial</title><meta =
-HTTP-EQUIV=3D"Content-Type" Content=3D"text-html; =
-charset=3Dwindows-1258"><META content=3D"MSHTML 6.00.2900.2769" =
-name=3DGENERATOR><body><DIV><SPAN style=3D"Z-INDEX: 1; POSITION: absolute; =
-WIDTH: 522px; HEIGHT: 118px; TOP: 382px; LEFT: 23px; mso-ignore: =
-vglayout">=20
-<TABLE cellSpacing=3D0 cellPadding=3D0>
-<TBODY>
-<TR>
-<TD style=3D"VERTICAL-ALIGN: top" height=3D118 width=3D522>
-<DIV style=3D"PADDING-BOTTOM: 2.85pt; PADDING-LEFT: 2.85pt; PADDING-RIGHT: =
-2.85pt; PADDING-TOP: 2.85pt" class=3Dshape v:shape=3D"_x0000_s1036">
-<P style=3D"mso-pagination: none" class=3DMsoBodyText3><A =
-href=3D"http://www.deviscontact.com/"><SPAN style=3D"LINE-HEIGHT: 120%; =
-FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; TEXT-DECORATION: none; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-text-underline: none; language: fr; mso-ansi-language: fr" =
-lang=3Dfr>Tous</SPAN></A><SPAN style=3D"LINE-HEIGHT: 120%; FONT-FAMILY: =
-Arial; FONT-SIZE: 12pt; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr> </SPAN><A href=3D"http://www.contactdevis.com/"><SPAN =
-style=3D"LINE-HEIGHT: 120%; FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: =
-12pt; TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>les professionnels qui ont relev=E9 le =
-d=E9fi de la r=E9ussite avec succ=E8s restent convaincus que toute =
-entreprise, peu importe sa taille, se doit de se donner les m=EAmes moyens =
-modernes pour se d=E9velopper.</SPAN></A><SPAN style=3D"LINE-HEIGHT: 120%; =
-FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr><?xml:namespace prefix =3D o ns =3D =
-"urn:schemas-microsoft-com:office:office" /><o:p></o:p></SPAN></P>
-<P style=3D"TEXT-ALIGN: center; mso-pagination: none" =
-class=3DMsoBodyText3><A href=3D"http://www.contactdevis.com/"><SPAN =
-style=3D"LINE-HEIGHT: 120%; FONT-FAMILY: Arial; FONT-SIZE: 12pt; =
-FONT-WEIGHT: bold; TEXT-DECORATION: underline; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: single; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>N=92h=E9sitez plus, faites confiance =E0 =
-Devis Contact.</SPAN></A><SPAN style=3D"LINE-HEIGHT: 120%; FONT-FAMILY: =
-Arial; FONT-SIZE: 12pt; FONT-WEIGHT: bold; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr> =
-<o:p></o:p></SPAN></P></DIV></TD></TR></TBODY></TABLE></SPAN><SPAN =
-style=3D"Z-INDEX: 2; POSITION: absolute; WIDTH: 522px; HEIGHT: 242px; TOP: =
-121px; LEFT: 23px; mso-ignore: vglayout">
-<TABLE cellSpacing=3D0 cellPadding=3D0>
-<TBODY>
-<TR>
-<TD style=3D"VERTICAL-ALIGN: top" height=3D242 width=3D522>
-<DIV style=3D"PADDING-BOTTOM: 2.85pt; PADDING-LEFT: 2.85pt; PADDING-RIGHT: =
-2.85pt; PADDING-TOP: 2.85pt" class=3Dshape v:shape=3D"_x0000_s1037">
-<P style=3D"mso-pagination: none; tab-stops: 5.2187in" =
-class=3DMsoNormal><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; =
-TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>Nous</SPAN></A><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr> </SPAN><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; =
-TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>avons</SPAN></A><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr> </SPAN><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; =
-TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>le plaisir de vous informer que nos =
-sp=E9cialistes sont =E0<SPAN style=3D"mso-spacerun: yes">&nbsp; =
-</SPAN>votre</SPAN></A><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-language: fr; mso-ansi-language: fr" lang=3Dfr> </SPAN><A =
-href=3D"http://www.deviscontact.com/"><SPAN style=3D"FONT-FAMILY: Arial; =
-COLOR: black; FONT-SIZE: 12pt; TEXT-DECORATION: none; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-text-underline: none; language: fr; mso-ansi-language: fr" =
-lang=3Dfr>disposition</SPAN></A><SPAN style=3D"FONT-FAMILY: Arial; =
-FONT-SIZE: 12pt; mso-default-font-family: Arial; mso-ascii-font-family: =
-Arial; mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-language: fr; mso-ansi-language: fr" lang=3Dfr>,<SPAN =
-style=3D"mso-spacerun: yes">&nbsp; </SPAN></SPAN><A =
-href=3D"http://www.deviscontact.com/"><SPAN style=3D"FONT-FAMILY: Arial; =
-COLOR: black; FONT-SIZE: 12pt; TEXT-DECORATION: none; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-text-underline: none; language: fr; mso-ansi-language: fr" lang=3Dfr>pour =
-r=E9aliser</SPAN></A><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-language: fr; mso-ansi-language: fr" lang=3Dfr> </SPAN><A =
-href=3D"http://www.contactdevis.com/utilisation.php"><SPAN =
-style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; FONT-WEIGHT: =
-bold; TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>gratuitement</SPAN></A><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr> </SPAN><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; =
-TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>vos campagnes de prospection aupr=E8s de =
-nouveaux fournisseurs ou prestataires de services.</SPAN></A><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr><o:p></o:p></SPAN></P>
-<P style=3D"mso-pagination: widow-orphan" class=3DMsoNormal><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr><o:p></o:p></SPAN></P>
-<P style=3D"mso-pagination: widow-orphan" class=3DMsoNormal><A =
-href=3D"http://www.deviscontact.com/"><SPAN style=3D"FONT-FAMILY: Arial; =
-COLOR: black; FONT-SIZE: 12pt; TEXT-DECORATION: none; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-text-underline: none; language: fr; mso-ansi-language: fr" lang=3Dfr>Nous =
-avons coutume de dire que =AB </SPAN><SPAN style=3D"FONT-FAMILY: Arial; =
-COLOR: black; FONT-SIZE: 12pt; FONT-WEIGHT: bold; TEXT-DECORATION: none; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-text-underline: none; language: fr; mso-ansi-language: fr" lang=3Dfr>le =
-temps c=92est de l=92argent </SPAN><SPAN style=3D"FONT-FAMILY: Arial; =
-COLOR: black; FONT-SIZE: 12pt; TEXT-DECORATION: none; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-text-underline: none; language: fr; mso-ansi-language: fr" lang=3Dfr>=BB =
-alors </SPAN><SPAN style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: =
-12pt; FONT-WEIGHT: bold; TEXT-DECORATION: none; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>!</SPAN></A><SPAN style=3D"FONT-FAMILY: =
-Arial; FONT-SIZE: 12pt; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr><o:p></o:p></SPAN></P>
-<P style=3D"mso-pagination: widow-orphan" class=3DMsoNormal><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr><o:p></o:p></SPAN></P>
-<P style=3D"TEXT-ALIGN: center; mso-pagination: widow-orphan" =
-class=3DMsoNormal><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; FONT-WEIGHT: =
-bold; TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>Ne perdez plus votre temps =E0 =
-prospecter, confier plut=F4t cette t=E2che difficile =E0 nos =
-sp=E9cialistes, sans aucun engagement de votre part.</SPAN></A><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; FONT-WEIGHT: bold; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-language: fr; mso-ansi-language: fr" lang=3Dfr><o:p></o:p></SPAN></P>
-<P style=3D"mso-pagination: widow-orphan" class=3DMsoNormal><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr><o:p></o:p></SPAN></P>
-<P style=3D"TEXT-ALIGN: center; mso-pagination: widow-orphan" =
-class=3DMsoNormal><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; =
-TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>Faites</SPAN></A><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr> </SPAN><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; =
-TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>comme</SPAN></A><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr> </SPAN><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: Arial; COLOR: black; FONT-SIZE: 12pt; =
-TEXT-DECORATION: none; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: none; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>beaucoup d=92entreprises qui nous font =
-d=E9j=E0 confiance.</SPAN></A><SPAN style=3D"FONT-FAMILY: Arial; =
-FONT-SIZE: 12pt; mso-default-font-family: Arial; mso-ascii-font-family: =
-Arial; mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-language: fr; mso-ansi-language: fr" lang=3Dfr><o:p></o:p></SPAN></P>
-<P style=3D"TEXT-ALIGN: center; mso-pagination: widow-orphan" =
-class=3DMsoNormal><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: Arial; FONT-SIZE: 12pt; TEXT-DECORATION: none; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-text-underline: none; language: fr; mso-ansi-language: fr" lang=3Dfr><SPAN =
-style=3D"mso-spacerun: yes">&nbsp;</SPAN></SPAN></A><A =
-href=3D"http://www.deviscontact.com/"><SPAN style=3D"FONT-FAMILY: Arial; =
-COLOR: black; FONT-SIZE: 12pt; TEXT-DECORATION: underline; =
-mso-default-font-family: Arial; mso-ascii-font-family: Arial; =
-mso-latin-font-family: Arial; mso-greek-font-family: Arial; =
-mso-cyrillic-font-family: Arial; mso-armenian-font-family: Arial; =
-mso-hebrew-font-family: Arial; mso-arabic-font-family: Arial; =
-mso-currency-font-family: Arial; mso-latinext-font-family: Arial; =
-text-underline: single; language: fr; mso-ansi-language: fr" =
-lang=3Dfr>Rejoignez nous</SPAN></A><SPAN style=3D"FONT-FAMILY: Arial; =
-FONT-SIZE: 12pt; TEXT-DECORATION: underline; mso-default-font-family: =
-Arial; mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; text-underline: single; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>.</SPAN><SPAN style=3D"FONT-FAMILY: =
-Arial; FONT-SIZE: 12pt; mso-default-font-family: Arial; =
-mso-ascii-font-family: Arial; mso-latin-font-family: Arial; =
-mso-greek-font-family: Arial; mso-cyrillic-font-family: Arial; =
-mso-armenian-font-family: Arial; mso-hebrew-font-family: Arial; =
-mso-arabic-font-family: Arial; mso-currency-font-family: Arial; =
-mso-latinext-font-family: Arial; language: fr; mso-ansi-language: fr" =
-lang=3Dfr><o:p></o:p></SPAN></P>
-<P style=3D"mso-pagination: widow-orphan" class=3DMsoNormal><SPAN =
-style=3D"FONT-FAMILY: 'Trebuchet MS'; FONT-SIZE: 9.199pt; =
-mso-default-font-family: 'Trebuchet MS'; mso-ascii-font-family: 'Trebuchet =
-MS'; mso-latin-font-family: 'Trebuchet MS'; mso-greek-font-family: =
-'Trebuchet MS'; mso-cyrillic-font-family: 'Trebuchet MS'; =
-mso-latinext-font-family: 'Trebuchet MS'; language: fr; mso-ansi-language: =
-fr" =
-lang=3Dfr>&nbsp;<o:p></o:p></SPAN></P></DIV></TD></TR></TBODY></TABLE></SPA=
-N><SPAN style=3D"Z-INDEX: 3; POSITION: absolute; WIDTH: 197px; HEIGHT: =
-80px; TOP: 609px; LEFT: 23px; mso-ignore: vglayout">
-<TABLE cellSpacing=3D0 cellPadding=3D0>
-<TBODY>
-<TR>
-<TD style=3D"VERTICAL-ALIGN: top" height=3D80 width=3D197>
-<DIV style=3D"PADDING-BOTTOM: 2.85pt; PADDING-LEFT: 2.85pt; PADDING-RIGHT: =
-2.85pt; PADDING-TOP: 2.85pt" class=3Dshape v:shape=3D"_x0000_s1038">
-<P style=3D"mso-pagination: none" class=3DMsoAccentText><SPAN =
-style=3D"language: fr; mso-ansi-language: fr" lang=3Dfr><SPAN =
-style=3D"mso-spacerun: yes">&nbsp;</SPAN></SPAN><SPAN =
-style=3D"FONT-FAMILY: 'Trebuchet MS'; TEXT-DECORATION: underline; =
-text-underline: single; language: fr; mso-ansi-language: fr" =
-lang=3Dfr>N=92h=E9sitez pas =E0 nous contacter.</SPAN><SPAN =
-style=3D"language: fr; mso-ansi-language: fr" =
-lang=3Dfr><o:p></o:p></SPAN></P>
-<P style=3D"mso-pagination: none" class=3DMsoAccentText><SPAN =
-style=3D"language: fr; mso-ansi-language: fr" lang=3Dfr><SPAN =
-style=3D"mso-spacerun: yes">&nbsp;</SPAN></SPAN><SPAN =
-style=3D"FONT-FAMILY: 'Trebuchet MS'; FONT-WEIGHT: normal; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>Contact:</SPAN><SPAN =
-style=3D"FONT-FAMILY: 'Trebuchet MS'; COLOR: #0033cc; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>infos-et/A+qVMfwXB4UjyGYa2PA@public.gmane.org<o:p></o:p></SPAN></P>
-<P style=3D"mso-pagination: none" class=3DMsoAccentText><SPAN =
-style=3D"FONT-FAMILY: 'Trebuchet MS'; COLOR: #0033cc; language: fr; =
-mso-ansi-language: fr" lang=3Dfr><SPAN style=3D"mso-spacerun: =
-yes">&nbsp;</SPAN></SPAN><SPAN style=3D"FONT-FAMILY: 'Trebuchet MS'; =
-FONT-WEIGHT: normal; language: fr; mso-ansi-language: fr" lang=3Dfr>Tel : =
-</SPAN><SPAN style=3D"FONT-FAMILY: 'Trebuchet MS'; COLOR: #0033cc; =
-language: fr; mso-ansi-language: fr" =
-lang=3Dfr>01.75.49.46.69<o:p></o:p></SPAN></P>
-<P style=3D"mso-pagination: none" class=3DMsoAccentText><SPAN =
-style=3D"FONT-FAMILY: 'Trebuchet MS'; COLOR: #0033cc; language: fr; =
-mso-ansi-language: fr" lang=3Dfr><SPAN style=3D"mso-spacerun: =
-yes">&nbsp;</SPAN></SPAN><A href=3D"http://www.deviscontact.com/"><SPAN =
-style=3D"FONT-FAMILY: 'Trebuchet MS'; FONT-WEIGHT: normal; =
-TEXT-DECORATION: underline; text-underline: single; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>http://</SPAN><SPAN style=3D"FONT-FAMILY: =
-'Trebuchet MS'; TEXT-DECORATION: underline; text-underline: single; =
-language: fr; mso-ansi-language: fr" =
-lang=3Dfr>www.deviscontact.com</SPAN></A><SPAN style=3D"FONT-FAMILY: =
-'Trebuchet MS'; COLOR: #0033cc; language: fr; mso-ansi-language: fr" =
-lang=3Dfr><o:p></o:p></SPAN></P></DIV></TD></TR></TBODY></TABLE></SPAN><SPA=
-N style=3D"Z-INDEX: 4; POSITION: absolute; WIDTH: 431px; HEIGHT: 60px; =
-TOP: 522px; LEFT: 60px; mso-ignore: vglayout"><MAP =
-name=3DMicrosoftOfficeMap0><AREA href=3D"http://contactdevis.com/" =
-shape=3DRect coords=3D"0, 0, 431, 60"></MAP><IMG border=3D0 =
-src=3D"file:///C:/Users/yalda/AppData/Local/Temp/msohtmlclip1/01/clip_image=
-001.gif" width=3D431 height=3D60 useMap=3D#MicrosoftOfficeMap0 =
-v:shapes=3D"_x0000_s1039 _x0000_s1040 _x0000_s1041 =
-_x0000_s1042"></SPAN><SPAN style=3D"Z-INDEX: 6; POSITION: absolute; WIDTH: =
-522px; HEIGHT: 39px; TOP: 30px; LEFT: 19px; mso-ignore: vglayout">
-<TABLE cellSpacing=3D0 cellPadding=3D0>
-<TBODY>
-<TR>
-<TD style=3D"VERTICAL-ALIGN: top" height=3D39 vAlign=3Dbottom width=3D522>
-<DIV style=3D"PADDING-BOTTOM: 2.85pt; PADDING-LEFT: 2.85pt; PADDING-RIGHT: =
-2.85pt; PADDING-TOP: 26.4pt" class=3Dshape v:shape=3D"_x0000_s1044">
-<P style=3D"TEXT-ALIGN: center; mso-pagination: none" class=3DMsoTitle3><A =
-href=3D"http://www.deviscontact.com/"><SPAN style=3D"FONT-FAMILY: =
-'Trebuchet MS'; FONT-WEIGHT: bold; TEXT-DECORATION: underline; =
-text-underline: single; language: fr; mso-ansi-language: fr" =
-lang=3Dfr>Avis aux chefs d=92entreprise.</SPAN></A><SPAN =
-style=3D"FONT-FAMILY: 'Trebuchet MS'; FONT-WEIGHT: bold; language: fr; =
-mso-ansi-language: fr" lang=3Dfr><o:p></o:p></SPAN></P><IMG =
-src=3D"file:///C:/Users/yalda/AppData/Local/Temp/msohtmlclip1/01/clip_image=
-003.gif" width=3D543 height=3D3 =
-v:shapes=3D"_x0000_s1046"></DIV></TD></TR></TBODY></TABLE></SPAN><SPAN =
-style=3D"Z-INDEX: 7; POSITION: absolute; WIDTH: 314px; HEIGHT: 27px; TOP: =
-609px; LEFT: 234px; mso-ignore: vglayout"><IMG alt=3D"Zone de Texte: Plus =
-d'infos sur nos services&#13;" =
-src=3D"file:///C:/Users/yalda/AppData/Local/Temp/msohtmlclip1/01/clip_image=
-002.gif" width=3D314 height=3D27 v:shapes=3D"_x0000_s1045"></SPAN><SPAN =
-style=3D"Z-INDEX: 8; POSITION: absolute; WIDTH: 543px; HEIGHT: 3px; TOP: =
-101px; LEFT: 21px; mso-ignore: vglayout"></SPAN> </DIV>
-<DIV><SPAN style=3D"Z-INDEX: 5; POSITION: absolute; WIDTH: 289px; HEIGHT: =
-212px; TOP: 682px; LEFT: 314px; mso-ignore: vglayout">=20
-<TABLE cellSpacing=3D0 cellPadding=3D0>
-<TBODY>
-<TR>
-<TD style=3D"VERTICAL-ALIGN: top" height=3D35 width=3D314>
-<DIV style=3D"PADDING-BOTTOM: 2.88pt; PADDING-LEFT: 2.88pt; PADDING-RIGHT: =
-2.88pt; PADDING-TOP: 2.88pt" class=3Dshape v:shape=3D"_x0000_s1043">
-<P style=3D"mso-pagination: none" class=3DMsoAccentText2><SPAN =
-style=3D"FONT-FAMILY: 'Trebuchet MS'; COLOR: #cccccc; language: fr; =
-mso-ansi-language: fr" lang=3Dfr>Pour supprimer votre nom de notre liste =
-d'abonn=E9s,<SPAN style=3D"mso-spacerun: yes">&nbsp; </SPAN></SPAN><A =
-href=3D"mailto:contact-et/A+qVMfwXB4UjyGYa2PA@public.gmane.org?subject=3DNe%20plus%20recevoir%20de=
-%20messages."><SPAN style=3D"LINE-HEIGHT: 128%; FONT-FAMILY: 'Trebuchet =
-MS'; COLOR: #cccccc; FONT-SIZE: 8.5pt; TEXT-DECORATION: underline; =
-text-underline: single; language: fr; mso-ansi-language: fr" =
-lang=3Dfr>cliquez ici</SPAN></A><SPAN style=3D"FONT-FAMILY: 'Trebuchet =
-MS'; COLOR: #cccccc; language: fr; mso-ansi-language: fr" =
-lang=3Dfr><o:p></o:p></SPAN></P></DIV></TD></TR></TBODY></TABLE></SPAN></DI=
-V></body></html>
 
-------=MailPart0000_0010_5DB5C686--
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/4d6ee62a297727a75e79ccda993c9e1d.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8590584">charlyangelove</a></b>, 36 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8590584" style="text-decoration:none;color:black;">difficile de ce d&eacute;crire,mais le mieux est pour vous faire une id&eacute;e est que l'on fasse connaissance.</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8590584" style="text-decoration:none;color:black;font-weight:bold;">France > Auvergne > 03 Allier > Paray sous briailles</a></td>
+ </tr>
+ </table>
+<table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/de66341e22b17d2789efcdb81481d84d.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8511577">mimillulu</a></b>, 41 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8511577" style="text-decoration:none;color:black;">s&eacute;par&eacute;e et lib&eacute;r&eacute;e</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8511577" style="text-decoration:none;color:black;font-weight:bold;">France > Ile de France > 93 Seine St Denis > Montreuil</a></td>
+ </tr>
+ </table>
+
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/ee740a174618f27837d6c15b96e59549.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8587964">dragonreiki</a></b>, 37 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8587964" style="text-decoration:none;color:black;">je cherche une relation serieuse et pure le droit aimer avec un grand a dans la passion et la tendresse ce que beaucoup ne save plus faire d etre attentif et passion&eacute; et tres dur pour certain qui prefere facilement faire du mal on ne joue pas avec l amour et les sentiments on aime mes on a pas le droit de mentir dessus l amour et un dont qui ce trouve dans notre coeur et qui et si bon et si passionnant .</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8587964" style="text-decoration:none;color:black;font-weight:bold;">France > Pays de la Loire > 49 Maine et Loire > Saumur</a></td>
+ </tr>
+ </table>
+
+
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/6ea2b978cbf2c255933569b08bdf1f1b.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8521298">gaelle1581</a></b>, 27 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8521298" style="text-decoration:none;color:black;">j'aime bien les rencontres alors si ca vous tentes je suis connect&eacute;e</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8521298" style="text-decoration:none;color:black;font-weight:bold;">France > Ile de France > 75 Paris > Paris 15</a></td>
+ </tr>
+ </table>
+
+
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/66ba267c0a385662cdf575240fb01849.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8562429">jflrally</a></b>, 44 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8562429" style="text-decoration:none;color:black;">divorce depuis 6 ans il srai peut etre temps de refaire sa vie avec une femme douce et caline</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8562429" style="text-decoration:none;color:black;font-weight:bold;">France > Nord Pas de Calais > 59 Nord > Marcq en baroeul</a></td>
+ </tr>
+ </table>
+
+
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/eab756e878c90203bfe427ae7c55b6ad.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8563252">sdiey</a></b>, 35 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8563252" style="text-decoration:none;color:black;">coucou tout le monde Ben &eacute;coute je suis sympas mais c'est pas &agrave; moi de le dire. Je suis sur ce site pour tout simplement rencontrer mon homme mais ma foi ce n'est pas toujours facile. Mais j'esp&egrave;re toujours n'ai je pas raison?</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8563252" style="text-decoration:none;color:black;font-weight:bold;">France > Rh&ocirc;ne Alpes > 74 Haute Savoie > Fillinges</a></td>
+ </tr>
+ </table>
+
+
+
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/431f3d9c4f34b8f56eebde6f51c900ad.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8595973">NicoH75</a></b>, 18 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8595973" style="text-decoration:none;color:black;">Je suis chatain clair, yeux bleux. Contacte moi;)</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8595973" style="text-decoration:none;color:black;font-weight:bold;">France > Ile de France > 75 Paris > Paris 01</a></td>
+ </tr>
+ </table>
+
+
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/735a482f4e6293e83bec3d6c20067acb.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8495378">kiwivert</a></b>, 41 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8495378" style="text-decoration:none;color:black;">La vie est un long fleuve pas toujours tranquille et lors de certains d&eacute;tours, il y a des surprises. Alors, si quelqu'un pouvait m'aider &agrave; vivre de bons moments &agrave; deux en harmonie, le ciel serait encore plus &eacute;toil&eacute;.</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8495378" style="text-decoration:none;color:black;font-weight:bold;">France > Midi Pyr&eacute;n&eacute;es > 81 Tarn > Castres</a></td>
+ </tr>
+ </table>
+
+
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/a0b64c62b29a1054ee07e5091befb3cb.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8595579">pierrev4</a></b>, 38 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8595579" style="text-decoration:none;color:black;">bonjour a toutes d&eacute;ja li&eacute; une amiti&eacute; voir si le courant passe bien. laisser all&eacute; les choses tout simplement
+n &eacute;siter pas a me parler </a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8595579" style="text-decoration:none;color:black;font-weight:bold;">France > Rh&ocirc;ne Alpes > 42 Loire > St etienne</a></td>
+ </tr>
+ </table>
+
+
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/dc8828095b024d6973be3c218cd9f8f4.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8605497">dolphin76190</a></b>, 36 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8605497" style="text-decoration:none;color:black;">suis a la recherche de personne sympa et peut etre le grand amour</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8605497" style="text-decoration:none;color:black;font-weight:bold;">France > Normandie (Haute) > 76 Seine Maritime > Yvetot</a></td>
+ </tr>
+ </table>
+
+
+
+ <table width="100%" border="0" cellpadding="3" cellspacing="0" style="border-bottom:1px solid #000000;font-family:arial;font-size:11px;">
+ <tr>
+ <td width="55" rowspan="3"><img src="http://ks300910.kimsufi.com/~actuduwe/img/easy/5919b61dc9e84a0ba398896588596a84.jpg" width="55" height="55" border="1"></td>
+ <td><b><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8575878">denis1_66</a></b>, 38 ans</td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8575878" style="text-decoration:none;color:black;">j'aime profiter de la vie et je souhaite faire des rencontres ou le dialogue est primordial</a></td>
+ </tr>
+ <tr>
+ <td><a href="http://newsletter.makine.net/svi/linkserv.php?bat=easyflirt1009_ctrm&nb=2403&n=9047704&c=rencontres&leroiurl=http%3A%2F%2Fcentralmarques.easyrencontre.com%2Fu_page.php%3Fid%3D8575878" style="text-decoration:none;color:black;font-weight:bold;">France > Pays de la Loire > 49 Maine et Loire > Angers</a></td>
+ </tr>
+ </table>
 
 
 
 
---===============7057200653462405639==
+
+</td></tr>
+</table>
+<br><br>
+<img src="http://newsletter.makine.net/svi/img_nb_2403_numuser_yyynumuseryyy.jpg" width=1 height=1 alt=''>
+<p>
+Ce message est envoy&eacute; par central marques - <a href="http://newsletter.makine.net/svi/gestionserv.php?nb=2403&cat=rencontres&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_26e584a25c8308c54b1ef8893badcc2b--
+
+--===============2348344934404461461==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -553,7 +421,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
 http://p.sf.net/sfu/devconf
---===============7057200653462405639==
+--===============2348344934404461461==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -564,4 +432,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7057200653462405639==--
+--===============2348344934404461461==--

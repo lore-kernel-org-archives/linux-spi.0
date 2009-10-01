@@ -1,13 +1,19 @@
-From: "Charles" <Justfor-befeyRTPGHYZkeh+DiBWRCcNLX7Ozgzk@public.gmane.org>
-Subject: [SPAM] Save 75% on brand Shoes and Handbags
-Date: Thu, 01 Oct 2009 08:02:30 +0200
-Message-ID: <F9398E8B.44855215@justforshopping.cn>
-Reply-To: Charles <Justfor-befeyRTPGHYZkeh+DiBWRCcNLX7Ozgzk@public.gmane.org>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH 26/34] move spidev_remove to
+	.devexit.text
+Date: Thu,  1 Oct 2009 10:28:30 +0200
+Message-ID: <1254385718-14254-26-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <20091001082607.GA2181@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20091001082607.GA2181-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,29 +24,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SAVE 35-75% on name brand sport shoes to you. 
-
-We assure you high quality, best price and speedy delivery.
-
-We also sell name brand Fashion Shoes, Handbags, Sport Clothes
-and other famous brands including Nike, Converse, Adidas, Puma,
-Kappa, Prada, Gucci, Louis Vuitton and UGG boots etc.
-
-Looking forward to have your inquiries.
-
-
-Contact:
-Brands-v5uRveHXTjff5EUfJh7HPzKzEDxYleXD@public.gmane.org
-
-Other discount name brand products: 
-T-shirts, Jeans, Hats, Wallets, Belts, Sunglasses,
-Wig, Wrist-watches etc.
-
-
-
-------------------------------------------------------------------------------
-Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
-http://p.sf.net/sfu/devconf
+VGhlIGZ1bmN0aW9uIHNwaWRldl9yZW1vdmUgaXMgdXNlZCBvbmx5IHdyYXBwZWQgYnkgX19kZXZl
+eGl0X3Agc28gZGVmaW5lCml0IHVzaW5nIF9fZGV2ZXhpdC4KClNpZ25lZC1vZmYtYnk6IFV3ZSBL
+bGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+CkFja2VkLWJ5OiBT
+YW0gUmF2bmJvcmcgPHNhbUByYXZuYm9yZy5vcmc+CkNjOiBEYXZpZCBCcm93bmVsbCA8ZGJyb3du
+ZWxsQHVzZXJzLnNvdXJjZWZvcmdlLm5ldD4KQ2M6IEFuZHJldyBNb3J0b24gPGFrcG1AbGludXgt
+Zm91bmRhdGlvbi5vcmc+CkNjOiBXb2xmZ2FuZyBPY2tlciA8d2VvQHJlY2Nvd2FyZS5kZT4KQ2M6
+IEdyZWcgS3JvYWgtSGFydG1hbiA8Z3JlZ2toQHN1c2UuZGU+CkNjOiBzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKQ2M6IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcK
+LS0tCiBkcml2ZXJzL3NwaS9zcGlkZXYuYyB8ICAgIDIgKy0KIDEgZmlsZXMgY2hhbmdlZCwgMSBp
+bnNlcnRpb25zKCspLCAxIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3Nw
+aWRldi5jIGIvZHJpdmVycy9zcGkvc3BpZGV2LmMKaW5kZXggZjkyMWJkMS4uMzM3OWFiOSAxMDA2
+NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpZGV2LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpZGV2LmMK
+QEAgLTYxMCw3ICs2MTAsNyBAQCBzdGF0aWMgaW50IHNwaWRldl9wcm9iZShzdHJ1Y3Qgc3BpX2Rl
+dmljZSAqc3BpKQogCXJldHVybiBzdGF0dXM7CiB9CiAKLXN0YXRpYyBpbnQgc3BpZGV2X3JlbW92
+ZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQorc3RhdGljIGludCBfX2RldmV4aXQgc3BpZGV2X3Jl
+bW92ZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQogewogCXN0cnVjdCBzcGlkZXZfZGF0YQkqc3Bp
+ZGV2ID0gc3BpX2dldF9kcnZkYXRhKHNwaSk7CiAKLS0gCjEuNi40LjMKCgotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KQ29tZSBidWlsZCB3aXRoIHVzISBUaGUgQmxhY2tCZXJyeSZyZWc7IERldmVsb3Bl
+ciBDb25mZXJlbmNlIGluIFNGLCBDQQppcyB0aGUgb25seSBkZXZlbG9wZXIgZXZlbnQgeW91IG5l
+ZWQgdG8gYXR0ZW5kIHRoaXMgeWVhci4gSnVtcHN0YXJ0IHlvdXIKZGV2ZWxvcGluZyBza2lsbHMs
+IHRha2UgQmxhY2tCZXJyeSBtb2JpbGUgYXBwbGljYXRpb25zIHRvIG1hcmtldCBhbmQgc3RheSAK
+YWhlYWQgb2YgdGhlIGN1cnZlLiBKb2luIHVzIGZyb20gTm92ZW1iZXIgOSYjNDU7MTIsIDIwMDku
+IFJlZ2lzdGVyIG5vdyYjMzM7Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvZGV2Y29uZgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBt
+YWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBz
+Oi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFs
+Cg==

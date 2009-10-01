@@ -1,29 +1,46 @@
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 0/7] Updates for spi-imx
-Date: Wed, 30 Sep 2009 16:52:41 -0700
-Message-ID: <20090930165241.ecb2a83e.akpm@linux-foundation.org>
-References: <20090930194211.GB1881@pengutronix.de>
+From: "Customer Support" <Web1-Wl86dKvO/Q8jz1dnIQx3QQ@public.gmane.org>
+Subject: [SPAM] Discount famous Brand Sneakers & Handbags
+Date: Thu, 01 Oct 2009 12:20:40 +0900
+Message-ID: <65CB244F.339B0DD0@webonlineshop.cn>
+Reply-To: Customer Support <Web1-Wl86dKvO/Q8jz1dnIQx3QQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net, s.hauer@pengutronix.de,
-	g.liakhovetski@gmx.de, linux-kernel@vger.kernel.org
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig@pengutronix.de>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755049AbZI3XxW@vger.kernel.org>
-In-Reply-To: <20090930194211.GB1881@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 30 Sep 2009 21:42:11 +0200
-Uwe Kleine-K__nig <u.kleine-koenig@pengutronix.de> wrote:
+SAVE 35-75% on name brand sport shoes to you. 
 
-> as a followup to this mail I'll send some updates for the spi-imx
-> driver for review.
+We assure you high quality, best price and speedy delivery.
 
-Several of these patches were unchangelogged but afaict they all fix
-bugs and hence should be in 2.6.32, yes?
+We also sell name brand Fashion Shoes, Handbags, Sport Clothes
+and other famous brands including Nike, Converse, Adidas, Puma,
+Kappa, Prada, Gucci, Louis Vuitton and UGG boots etc.
 
-Renaming the entire source file after -rc1 was probably a bit naughty,
-but we'll survive.
+Looking forward to have your inquiries.
+
+
+Contact:
+Brands-v5uRveHXTjff5EUfJh7HPzKzEDxYleXD@public.gmane.org
+
+Other discount name brand products: 
+T-shirts, Jeans, Hats, Wallets, Belts, Sunglasses,
+Wig, Wrist-watches etc.
+
+
+
+------------------------------------------------------------------------------
+Come build with us! The BlackBerry&reg; Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
+http://p.sf.net/sfu/devconf

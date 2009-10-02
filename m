@@ -1,9 +1,10 @@
-From: Grupo Anjos APH <marketing-SDFCDX/d7bUdD2XV/xE1PF8n826c+h2f@public.gmane.org>
-Subject: [SPAM] APH TATICO com Medicos da SWAT de Dallas
-Date: Fri, 2 Oct 2009 12:05:26 GMT
-Message-ID: <E1MtguQ-0004Sh-NF@235xhf1.ch3.sourceforge.com>
+From: "MCD mutuelle" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: la mutuelle qui defend le droit aux soins pour
+	tous et offre 2 mois gratuits
+Date: Fri,  2 Oct 2009 17:02:32 +0200 (CEST)
+Message-ID: <kqw745.fw93ml@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6080044188044571261=="
+Content-Type: multipart/mixed; boundary="===============3169426199766901716=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,392 +17,150 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6080044188044571261==
+--===============3169426199766901716==
+Content-Type: multipart/alternative;
+	boundary="=_b541f6de5580219260cbece84ff52d35"
+
+--=_b541f6de5580219260cbece84ff52d35
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset="iso-8859-1"
-Content-Disposition: inline
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE>Os primeiros minutos s=E3o definitivos</TITLE>
-<META name=3DGENERATOR content=3D"MSHTML 8.00.6001.18702">
-<META name=3DProgId content=3DFrontPage.Editor.Document>
-<META content=3D"text/html; charset=3Dwindows-1252" http-equiv=3DConten=
-t-Type></HEAD>
-<BODY bgColor=3D#000000>
-<TABLE style=3D"BORDER-COLLAPSE: collapse" id=3DAutoNumber1 border=3D0 =
-cellSpacing=3D0 
-borderColor=3D#111111 cellPadding=3D0 width=3D"80%" height=3D78>
-  <TBODY>
-  <TR>
-    <TD height=3D19 width=3D"4%">&nbsp;</TD>
-    <TD height=3D19 width=3D"67%" colSpan=3D3><IMG border=3D0 
-      
-src=3D"http://www.prehospitalar.com.br/B1.jpg" width=3D750 height=3D354=
-></TD>
-    <TD height=3D19 width=3D"29%">&nbsp;</TD></TR>
-  <TR>
-    <TD height=3D19 width=3D"4%">&nbsp;</TD>
-    <TD bgColor=3D#ffffff height=3D19 width=3D"1%">&nbsp;</TD>
-    <TD bgColor=3D#ffffff height=3D19 width=3D"64%">
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT color=3D#3=
-33333 size=3D2 
-      face=3DArial><STRONG>Os primeiros minutos s=E3o definitivos, apre=
-nda a salvar 
-      vidas</STRONG></FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Djustify>=
-<FONT size=3D2 
-      face=3DArial>Est=E3o abertas as inscri=E7=F5es para o curso 
-      de<STRONG>&nbsp;</STRONG><B>Atendimento Pr=E9-Hospitalar T=E1tico=
- </B>que ir=E1 
-      acontecer no m=EAs de Dezembro/2009: Classificado por muitos coor=
-denadores 
-      do SAMU por todo Brasil como o curso mais esperado do ano.</FONT>=
-</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Djustify>=
-&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Curs=
-o:</SPAN><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">&nbsp; Atendimento =
-
-      Pr=E9-Hospitalar T=E1tico =96 <B><SPAN style=3D"COLOR: red">Bel=E9=
-m - 
-      PA</SPAN></B></SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Data=
- do 
-      curso:</SPAN><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">=
- 04, 05 e 
-      06 de Dezembro 2009 - no SAMU em Bel=E9m-PA</SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Djustify>=
-&nbsp;</P>
-      <P style=3D"MARGIN: 0px 0cm" align=3Djustify><FONT color=3D#cc330=
-0><FONT size=3D2 
-      face=3DArial>O curso de Atendimento Pr=E9-Hospitalar T=E1tico con=
-tar=E1 em seu 
-      corpo de instrutores </FONT><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif; FONT-SIZE: 9pt">com a pre=
-sen=E7a do 
-      M=E9dico T=E1tico &nbsp;<B>Dr.</B> <B>Alexander Eastman MD</B> -&=
-nbsp; da 
-      Divis=E3o de Opera=E7=F5es Especiais <B>(S.W.A.T.)</B> do Departa=
-mento de 
-      Pol=EDcia de Dallas / Texas / EUA; </SPAN></FONT><FONT 
-      style=3D"FONT-SIZE: 9pt" color=3D#cc3300 face=3DArial,sans-serif>=
-Entre outros 
-      instrutores da Sociedade Brasileira de Emerg=EAncias M=E9dicas.</=
-FONT></P>
-      <P style=3D"MARGIN: 0px 0cm" align=3Djustify>&nbsp;</P>
-      <P style=3D"MARGIN: 0px 0cm" align=3Djustify><FONT style=3D"FONT-=
-SIZE: 9pt" 
-      face=3DArial,sans-serif><B>Dr. Alexander Eastman MD:</B> M=E9dico=
- Cirurgi=E3o do 
-      Trauma, Professor do Hospital Memorial de Parkland, e respons=E1v=
-el pela 
-      implanta=E7=E3o do Servi=E7o M=E9dico T=E1tico da Dallas SWAT, du=
-rante sua carreira 
-      o Dr. Alexander Eastman se destacou por diversas vezes dentre ela=
-s, 
-      recentemente salvou seu pr=F3prio comandante que sofreu um Trauma=
- por Arma 
-      de Fogo em regi=E3o jugular. No link abaixo pode ser encontrado d=
-iversas 
-      mat=E9rias sobre a longa carreira do Dr. Alexander Eastman MD</FO=
-NT></P>
-      <P style=3D"MARGIN: 0px 0cm" align=3Djustify><FONT style=3D"FONT-=
-SIZE: 9pt" 
-      color=3D#cc3300 face=3DArial,sans-serif><A 
-      href=3D"http://www.zoominfo.com/people/Eastman_Alex_88649463.aspx=
-">http://www.zoominfo.com/people/Eastman_Alex_88649463.aspx</A></FONT></=
-P>
-      <P 
-      style=3D"TEXT-ALIGN: justify; MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px=
-">&nbsp;</P>
-      <P style=3D"TEXT-ALIGN: justify; MARGIN-TOP: 0px; MARGIN-BOTTOM: =
-0px"><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif"><FONT size=3D2>O Grupo An=
-jos A.P.H. e 
-      a Sociedade Brasileira de Emerg=EAncias M=E9dicas =96 SBEM, desen=
-volveram o 
-      curso de A.P.H. T=E1tico, com a finalidade de preparar equipes de=
- 
-      atendimento pr=E9-hospitalar para enfrentar qualquer tipo de situ=
-a=E7=E3o. Com o 
-      crescente =EDndice de viol=EAncia e marginalidade torna-se, a cad=
-a dia que 
-      passa, mais dif=EDcil atender ocorr=EAncias cotidianas, pois nos =
-deparamos com 
-      conflitos e guerrilhas urbanas, onde muitas vezes somos expostos =
-a riscos 
-      que nem imaginamos, tais riscos s=E3o eminentes n=E3o pelo fato d=
-e lidar com 
-      situa=E7=F5es de conflito e sim pela falta de treinamento </FONT>=
-</SPAN><FONT 
-      size=3D2><SPAN style=3D"FONT-FAMILY: Arial,sans-serif">espec=EDfi=
-co, em v=E1rios 
-      pa=EDses as equipes m=E9dicas de emerg=EAncias est=E3o se especia=
-lizando para 
-      lidar com essas situa=E7=F5es. </SPAN></FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT size=3D2><=
-B><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif">Alguns exemplos do cotidi=
-ano 
-      :</SPAN></B></FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif"><FONT size=3D2>Pessoas al=
-teradas pelo 
-      uso de entorpecentes;</FONT></SPAN><FONT size=3D2 face=3DArial,sa=
-ns-serif> 
-      </FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif"><FONT size=3D2>Pessoas ag=
-itadas 
-      amea=E7ando voc=EA e a equipe;</FONT></SPAN><FONT size=3D2 
-      face=3DArial,sans-serif> </FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif"><FONT size=3D2>Pessoas po=
-rtando arma 
-      de fogo ou arma branca;</FONT></SPAN><FONT size=3D2 face=3DArial,=
-sans-serif> 
-      </FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif"><FONT size=3D2>Situa=E7=F5=
-es envolvendo 
-      ref=E9ns;</FONT></SPAN><FONT size=3D2 face=3DArial,sans-serif> </=
-FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif"><FONT size=3D2>Tentativas=
- de 
-      suic=EDdio;</FONT></SPAN><FONT size=3D2 face=3DArial,sans-serif> =
-</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif"><FONT size=3D2>Pessoas ag=
-itadas dentro 
-      de ve=EDculos que ameacem a voc=EA e sua equipe;</FONT></SPAN><FO=
-NT size=3D2 
-      face=3DArial,sans-serif> </FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif"><FONT size=3D2>Atender v=ED=
-timas em 
-      situa=E7=F5es de conflitos e de guerrilhas;</FONT></SPAN><FONT si=
-ze=3D2 
-      face=3DArial,sans-serif> </FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif"><FONT size=3D2>Dentre out=
-ros 
-      fatores.</FONT></SPAN><FONT size=3D2 face=3DArial,sans-serif> </F=
-ONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Dcenter><=
-FONT 
-      color=3D#ff0000 size=3D2 face=3DArial,sans-serif>Durante o curso =
-ser=E3o abordadas 
-      as mais recentes t=E9cnicas, bem como a utiliza=E7=E3o de novos e=
-quipamentos e 
-      materiais empregados no atendimento pr=E9-hospitalar t=E1tico, as=
-sim como 
-      bandagem t=E1tica (israelense), Cat tourniquet, Celox dentre muit=
-os outros 
-      materiais</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Dcenter>&=
-nbsp;</P></TD>
-    <TD bgColor=3D#ffffff height=3D19 width=3D"2%">&nbsp;</TD>
-    <TD height=3D19 width=3D"29%">&nbsp;</TD></TR>
-  <TR>
-    <TD height=3D18 width=3D"4%"></TD>
-    <TD height=3D18 width=3D"67%" colSpan=3D3><IMG border=3D0 
-      
-src=3D"http://www.prehospitalar.com.br/b222.jpg" width=3D750 height=3D3=
-50></TD>
-    <TD height=3D18 width=3D"29%"></TD></TR>
-  <TR>
-    <TD height=3D19 width=3D"4%">&nbsp;</TD>
-    <TD bgColor=3D#ffffff height=3D19 width=3D"1%">&nbsp;</TD>
-    <TD bgColor=3D#ffffff height=3D19 width=3D"64%">
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Djustify>=
-&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Djustify>=
-<FONT size=3D2 
-      face=3DArial>Para muitas pessoas o desafio de lidar com uma situa=
-=E7=E3o de 
-      urg=EAncia =E9 muito grande, para muitos de n=F3s tornar-se um he=
-r=F3i =E9 uma 
-      op=E7=E3o, mas para quem =E9 um profissional de sa=FAde =E9 uma o=
-briga=E7=E3o, pois em 
-      seu trabalho as pessoas confiam&nbsp;em sua habilidade de reconhe=
-cer 
-      e&nbsp;lidar com situa=E7=F5es potencialmente fatais&nbsp;por ess=
-e 
-      motivo&nbsp;o curso de Atendimento Pr=E9-Hospitalar T=E1tico =E9 =
-um curso 
-      voltado para profissionais da =E1rea da sa=FAde, policiais, bombe=
-iros, agentes 
-      de seguran=E7a e outros que lidam com a vida todos os dias, 
-      visando&nbsp;atualizar e&nbsp;aperfei=E7oar os profissionais para=
-&nbsp;que 
-      estejam preparados para atender quais quer tipos de ocorr=EAncia&=
-nbsp;no 
-      =E2mbito pr=E9 e intra hospitalar. Ao final do curso os participa=
-ntes estar=E3o 
-      aptos a identificar, conceituar e aplicar t=E9cnicas de Atendimen=
-to 
-      Pr=E9-Hospitalar T=E1tico desde um simples curativo at=E9 mesmo u=
-ma imobiliza=E7=E3o 
-      adequada da coluna cervical bem como a reanima=E7=E3o de v=EDtima=
-s.</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l>&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><U><FONT 
-      size=3D2><SPAN style=3D"FONT-FAMILY: Arial; FONT-WEIGHT: 700">Aba=
-ixo maiores 
-      informa=E7=F5es:</SPAN></FONT></U></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Djustify>=
-&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Curs=
-o:</SPAN><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">&nbsp; Atendimento =
-
-      Pr=E9-Hospitalar T=E1tico =96 <B><SPAN style=3D"COLOR: red">Bel=E9=
-m - 
-      PA</SPAN></B></SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Data=
- do 
-      curso:</SPAN><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">=
- 
-      </SPAN><FONT size=3D2><SPAN style=3D"FONT-FAMILY: Arial">04, 05 e=
- 06 de 
-      Dezembro de 2009 </SPAN></FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Carg=
-a 
-      hor=E1ria:</SPAN><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10=
-pt">&nbsp;30 
-      hrs de curso</SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Loca=
-l:</SPAN><I><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt"> </SPAN></I><EM><SP=
-AN 
-      style=3D"FONT-STYLE: normal; FONT-FAMILY: Arial; COLOR: black; FO=
-NT-SIZE: 10pt">SAMU 
-      Bel=E9m - PA</SPAN></EM></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><EM><SPAN 
-      style=3D"FONT-STYLE: normal; FONT-FAMILY: Arial; COLOR: maroon; F=
-ONT-SIZE: 10pt">Endere=E7o</SPAN><SPAN 
-      style=3D"FONT-STYLE: normal; FONT-FAMILY: Arial; COLOR: #993300; =
-FONT-SIZE: 10pt">:</SPAN><SPAN 
-      style=3D"FONT-STYLE: normal; FONT-FAMILY: Arial; COLOR: black; FO=
-NT-SIZE: 10pt"> 
-      </SPAN></EM><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 9pt">Tr=
-avessa 
-      Castelo Branco, 124 =96 F=E1tima =96 Bel=E9m - PA</SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Hor=E1=
-rio:</SPAN><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt"> 8:00 =E1s 18:00 hr=
-s (carga 
-      hor=E1ria total de 30 hrs de curso)</SPAN></P>
-      <P style=3D"MARGIN: 0px 0cm">&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><B><U><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">Forma de 
-      Investimento</SPAN><FONT size=3D2 face=3DArial>:</FONT></U></B></=
-P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l>&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>Investimento: R$ 900,00 desconto para pagam=
-ento =E1 vista 
-      via dep=F3sito banc=E1rio, consulte-nos;</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>ou Parcelado em 6x sem juros;</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>ou Parcelado em at=E9 18 vezes no cart=E3o;=
-</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>ou Parcelado cheque.</FONT></P>
-      <P class=3DMsoNormal><B><FONT size=3D2 face=3DArial><U>O curso of=
-erece</U>: 
-      </FONT></B></P>
-      <P style=3D"TEXT-ALIGN: justify; MARGIN-TOP: 0px; MARGIN-BOTTOM: =
-0px" 
-      class=3DMsoNormal><SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif; FONT-SIZE: 9pt">D</SPAN><=
-SPAN 
-      style=3D"FONT-FAMILY: Arial,sans-serif; COLOR: black; FONT-SIZE: =
-9pt">ois 
-      Certificados para o curso, um pela&nbsp; Sociedade Brasileira de =
-
-      Emerg=EAncias M=E9dicas e outro pelo Grupo Anjos Atendimento Pr=E9=
--Hospitalar, 
-      todos os participantes do curso receber=E3o credenciamento junto =
-a Sociedade 
-      Brasileira de Emerg=EAncias M=E9dicas, recebendo assim no primeir=
-o dia de aula 
-      suas credenciais.</SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      color=3D#ffffff size=3D2 face=3DArial>+</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>Fa=E7a sua inscri=E7=E3o em nosso site:</FO=
-NT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial><A 
-      href=3D"http://www.prehospitalar.com.br/tatico.htm"><FONT 
-      color=3D#0000ff>http://www.prehospitalar.com.br/tatico.htm</FONT>=
-</A></FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l>&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT size=3D2 
-      face=3DArial><STRONG>Contato 11-3446-0162</STRONG></FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT size=3D2 
-      face=3DArial><STRONG>e-mail:</STRONG><FONT color=3D#0000ff> </FON=
-T><A 
-      href=3D"mailto:atendimento-SDFCDX/d7bUdD2XV/xE1PF8n826c+h2f@public.gmane.org"><FONT 
-      color=3D#0000ff>atendimento-SDFCDX/d7bUdD2XV/xE1PF8n826c+h2f@public.gmane.org</FONT></A></FONT=
-></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT size=3D2 
-      face=3DArial>Atenciosamente.</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT color=3D#f=
-fffff size=3D2 
-      face=3DArial>+</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT size=3D2 
-      face=3D"Arial, Helvetica, sans-serif"><STRONG><FONT color=3D#0040=
-00>Grupo 
-      Anjos Atendimento Pr=E9-Hospitalar</FONT></STRONG><BR><FONT size=3D=
-1>Sociedade 
-      Brasileira de Emerg=EAncias M=E9dicas</FONT></FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" align=3Dcenter><=
-IMG border=3D0 
-      
-src=3D"http://www.prehospitalar.com.br/rodape.jpg" width=3D577 
-    height=3D127></P></TD>
-    <TD bgColor=3D#ffffff height=3D19 width=3D"2%">&nbsp;</TD>
-    <TD height=3D19 width=3D"29%">&nbsp;</TD></TR></TBODY></TABLE></BOD=
-Y></HTML>
 
 
---===============6080044188044571261==
+--=_b541f6de5580219260cbece84ff52d35
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>=0D<head><title>D=E9couvrez la mutuelle qui d=E9fend le droit aux soi=
+ns pour tous - 2 mois gratuits</title>=0D<meta content=3D"text/html; charse=
+t=3Dutf-8" http-equiv=3DContent-Type>=0D<style type=3Dtext/css> td img {dis=
+play: block;}.Style2 {	font-family: Verdana, Arial, Helvetica, sans-serif;=
+=0Dfont-size: 10px;=0D}=0D.Style3 {color: #d73b1e}=0D.Style5 {color: #33333=
+3}=0D</style>=0D</head>=0D<body bgcolor=3D"#ffffff">=0D<p align=3D"center">=
+<span class=3D"Style2"><span class=3D"Style5">Si cet email ne s'affiche pas=
+ correctement, vous pouvez le visualiser</span>&nbsp;<a class=3D"Style3" hr=
+ef=3D"http://tracking.publicidees.com/clic.php?promoid=3D7550&progid=3D448&=
+partid=3D14015&url=3Dhttp%3A%2F%2Fqua.eulerian.net%2Fdynclick%2Fmutuelle-mc=
+d/?etf-name=3DMutuelleMcd_affiliation_Publicidees_Sant%C3%A9&etf-prdref=3DP=
+RDREF&eurl=3Dhttp://www.mutuelle-mcd.fr/devis.php?origine=3D5" target=3D"_b=
+lank">grace a ce lien</a></span></p>=0D<table width=3D"600" align=3D"center=
+" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td =
+colspan=3D"4"><a href=3D"http://tracking.publicidees.com/clic.php?promoid=
+=3D7550&progid=3D448&partid=3D14015&url=3Dhttp%3A%2F%2Fqua.eulerian.net%2Fd=
+ynclick%2Fmutuelle-mcd/?etf-name=3DMutuelleMcd_affiliation_Publicidees_Sant=
+%C3%A9&etf-prdref=3DPRDREF&eurl=3Dhttp://www.mutuelle-mcd.fr/devis.php?orig=
+ine=3D5" target=3D"_blank"><img width=3D"600" height=3D"133" alt=3D"D=E9cou=
+rvrez la mutuelle qui d=E9fend le droit aux soins pour tous" src=3D"http://=
+ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septem=
+bre_2_r1_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a></t=
+d>=0D</tr>=0D<tr>=0D<td><a href=3D"http://tracking.publicidees.com/clic.php=
+?promoid=3D7550&progid=3D448&partid=3D14015&url=3Dhttp%3A%2F%2Fqua.eulerian=
+.net%2Fdynclick%2Fmutuelle-mcd/?etf-name=3DMutuelleMcd_affiliation_Publicid=
+ees_Sant%C3%A9&etf-prdref=3DPRDREF&eurl=3Dhttp://www.mutuelle-mcd.fr/devis.=
+php?origine=3D5" target=3D"_blank"><img width=3D"207" height=3D"165" src=3D=
+"http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_01090=
+9/septembre_2_r2_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true" /=
+></a></td>=0D<td><a href=3D"http://tracking.publicidees.com/clic.php?promoi=
+d=3D7550&progid=3D448&partid=3D14015&url=3Dhttp%3A%2F%2Fqua.eulerian.net%2F=
+dynclick%2Fmutuelle-mcd/?etf-name=3DMutuelleMcd_affiliation_Publicidees_San=
+t%C3%A9&etf-prdref=3DPRDREF&eurl=3Dhttp://www.mutuelle-mcd.fr/devis.php?ori=
+gine=3D5" target=3D"_blank"><img width=3D"168" height=3D"165" alt=3D"Votre =
+couverture sant=E9 =E0 partir 14 euros par mois* (pour une famille de 3 per=
+sonnes)" src=3D"http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sant=
+e/kitmail_010909/septembre_2_r2_c2.jpg" border=3D"0" complete=3D"true" comp=
+lete=3D"true" /></a></td>=0D<td><a href=3D"http://tracking.publicidees.com/=
+clic.php?promoid=3D7550&progid=3D448&partid=3D14015&url=3Dhttp%3A%2F%2Fqua.=
+eulerian.net%2Fdynclick%2Fmutuelle-mcd/?etf-name=3DMutuelleMcd_affiliation_=
+Publicidees_Sant%C3%A9&etf-prdref=3DPRDREF&eurl=3Dhttp://www.mutuelle-mcd.f=
+r/devis.php?origine=3D5" target=3D"_blank"><img width=3D"52" height=3D"165"=
+ alt=3D"et" src=3D"http://ad.publicidees.com/promos/mails/img/mutuelleMCD/S=
+ante/kitmail_010909/septembre_2_r2_c3.jpg" border=3D"0" complete=3D"true" c=
+omplete=3D"true" /></a></td>=0D<td><a href=3D"http://tracking.publicidees.c=
+om/clic.php?promoid=3D7550&progid=3D448&partid=3D14015&url=3Dhttp%3A%2F%2Fq=
+ua.eulerian.net%2Fdynclick%2Fmutuelle-mcd/?etf-name=3DMutuelleMcd_affiliati=
+on_Publicidees_Sant%C3%A9&etf-prdref=3DPRDREF&eurl=3Dhttp://www.mutuelle-mc=
+d.fr/devis.php?origine=3D5" target=3D"_blank"><img width=3D"173" height=3D"=
+165" alt=3D"Jusqu'a 2 mois offerts**" src=3D"http://ad.publicidees.com/prom=
+os/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r2_c4.jpg" border=
+=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td=
+><a href=3D"http://tracking.publicidees.com/clic.php?promoid=3D7550&progid=
+=3D448&partid=3D14015&url=3Dhttp%3A%2F%2Fqua.eulerian.net%2Fdynclick%2Fmutu=
+elle-mcd/?etf-name=3DMutuelleMcd_affiliation_Publicidees_Sant%C3%A9&etf-prd=
+ref=3DPRDREF&eurl=3Dhttp://www.mutuelle-mcd.fr/devis.php?origine=3D5" targe=
+t=3D"_blank"><img width=3D"207" height=3D"138" src=3D"http://ad.publicidees=
+.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r3_c1.jp=
+g" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D<td><a hr=
+ef=3D"http://tracking.publicidees.com/clic.php?promoid=3D7550&progid=3D448&=
+partid=3D14015&url=3Dhttp%3A%2F%2Fqua.eulerian.net%2Fdynclick%2Fmutuelle-mc=
+d/?etf-name=3DMutuelleMcd_affiliation_Publicidees_Sant%C3%A9&etf-prdref=3DP=
+RDREF&eurl=3Dhttp://www.mutuelle-mcd.fr/devis.php?origine=3D5" target=3D"_b=
+lank"><img width=3D"168" height=3D"138" alt=3D"Demandez votre devis gratuit=
+" src=3D"http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitma=
+il_010909/septembre_2_r3_c2.gif" border=3D"0" complete=3D"true" complete=3D=
+"true" /></a></td>=0D<td colspan=3D"2"><a href=3D"http://tracking.publicide=
+es.com/clic.php?promoid=3D7550&progid=3D448&partid=3D14015&url=3Dhttp%3A%2F=
+%2Fqua.eulerian.net%2Fdynclick%2Fmutuelle-mcd/?etf-name=3DMutuelleMcd_affil=
+iation_Publicidees_Sant%C3%A9&etf-prdref=3DPRDREF&eurl=3Dhttp://www.mutuell=
+e-mcd.fr/devis.php?origine=3D5" target=3D"_blank"><img width=3D"225" height=
+=3D"38" alt=3D"Des TARIFS adapt=E9s =E0 tous les besoins" src=3D"http://ad.=
+publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre=
+_2_r3_c3_01.jpg" border=3D"0" complete=3D"true" complete=3D"true" /><img wi=
+dth=3D"225" height=3D"36" alt=3D"Un ACCES aux soins m=EAme pour les petits =
+budgets" src=3D"http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sant=
+e/kitmail_010909/septembre_2_r3_c3_02.jpg" border=3D"0" complete=3D"true" c=
+omplete=3D"true" /><img width=3D"225" height=3D"64" alt=3D"Des SERVICES pra=
+tiques d'assistance et d'information" src=3D"http://ad.publicidees.com/prom=
+os/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r3_c3_03.jpg" bor=
+der=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D</tbody=
+>=0D</table>=0D<p align=3D"center"><a href=3D"http://tracking.publicidees.c=
+om/clic.php?promoid=3D7550&progid=3D448&partid=3D14015&url=3Dhttp%3A%2F%2Fq=
+ua.eulerian.net%2Fclick%2Fmutuelle-mcd/9WEzt.Ng_QO_4I.lc2tpa3_7DKGG8TTXuuvt=
+J39.Vto-/" target=3D"_blank"><img width=3D"83" height=3D"67" alt=3D"Rappel =
+imm=E9diat gratuit" src=3D"http://ad.publicidees.com/promos/mails/img/mutue=
+lleMCD/Sante/kitmail_020709/webcallback_g.jpg" border=3D"0" complete=3D"tru=
+e" complete=3D"true" /></a><a href=3D"http://tracking.publicidees.com/clic.=
+php?promoid=3D7550&progid=3D448&partid=3D14015&url=3Dhttp%3A%2F%2Fqua.euler=
+ian.net%2Fclick%2Fmutuelle-mcd/9WEzt.Ng_QO_4I.lc2tpa3_7DKGG8TTXuuvtJ39.Vto-=
+/" target=3D"_blank"><img width=3D"367" height=3D"67" alt=3D"Nos Charg=E9s =
+de Client=E8le sont =E0 votre =E9coute du lundi au samedi" src=3D"http://ad=
+.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_020709/webcallb=
+ack_dr.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><a href=
+=3D"http://tracking.publicidees.com/clic.php?promoid=3D7550&progid=3D448&pa=
+rtid=3D14015&url=3Dhttp%3A%2F%2Fqua.eulerian.net%2Fdynclick%2Fmutuelle-mcd/=
+?etf-name=3DMutuelleMcd_affiliation_Publicidees_Sant%C3%A9&etf-prdref=3DPRD=
+REF&eurl=3Dhttp://www.mutuelle-mcd.fr/devis.php?origine=3D5" target=3D"_bla=
+nk"><img width=3D"150" height=3D"64" alt=3D"Mutuelle Mcd - La sant=E9, on d=
+oit tous y acc=E9der" src=3D"http://ad.publicidees.com/promos/mails/img/mut=
+uelleMCD/Sante/kitmail_010909/MutuelleMcd.jpg" border=3D"0" complete=3D"tru=
+e" complete=3D"true" /></a></p>=0D<table width=3D"600" align=3D"center" bor=
+der=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td colsp=
+an=3D"4"><a class=3D"Style5" style=3D"TEXT-DECORATION: none" href=3D"http:/=
+/tracking.publicidees.com/clic.php?promoid=3D7550&progid=3D448&partid=3D140=
+15&url=3Dhttp%3A%2F%2Fqua.eulerian.net%2Fdynclick%2Fmutuelle-mcd/?etf-name=
+=3DMutuelleMcd_affiliation_Publicidees_Sant%E9&etf-prdref=3DPRDREF&eurl=3Dh=
+ttp://www.mutuelle-mcd.fr/devis.php?origine=3D5" target=3D"_blank"><span st=
+yle=3D"FONT-FAMILY: sans-serif; FONT-SIZE: 8px">*Option Vous AOAO pour deux=
+ personnes de 25 ans et un enfant de 5 ans. Tarif en vigueur jusqu'au 31/12=
+/2009<br />** 1 mois de cotisation pour toute adh=E9sion d'une personne, 2 =
+mois de cotisation pour l'adh=E9sion de 2 personnes ou plus sur le m=EAme c=
+ontrat sant=E9 Mcd. Offre r=E9serv=E9e aux particuliers pour toute adh=E9si=
+on jusqu'au 31/01/2010 et non cumulable avec toute autre op=E9ration commer=
+ciale en cours.<br />Mutuelle Mcd - Si=E8ge national - 44, rue Copernic - B=
+P 7716 - 75762 Paris Cedex 16 - Mutuelle soumise aux dispositions du livre =
+II du Code de la Mutualit=E9 - Registre national des mutuelles N=B0 7756886=
+58 - Document non contractuel </span></a></td>=0D</tr>=0D</tbody>=0D</table=
+>=0D<p align=3D"center">&nbsp;</p><img width=3D"1" height=3D"1" src=3D"http=
+://tracking.publicidees.com/link.php?promoid=3D7550&progid=3D448&partid=3D1=
+4015" /> <br><br><div align=3D"center"><font size=3D"1" face=3D"Arial, Helv=
+etica, sans-serif" >Conformement a la loi Informatique et Libertes, vous di=
+sposez d'un droit d'acces et de rectification.
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
+AA50RD2HDK_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
+om/ZZ50RD2HDK_475197.png" /></body></html>
+--=_b541f6de5580219260cbece84ff52d35--
+
+
+
+--===============3169426199766901716==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -413,7 +172,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
 http://p.sf.net/sfu/devconf
---===============6080044188044571261==
+--===============3169426199766901716==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -424,4 +183,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6080044188044571261==--
+--===============3169426199766901716==--

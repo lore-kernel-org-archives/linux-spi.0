@@ -1,11 +1,13 @@
-From: "Ladawn Uqlekev" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Webster dictionary canceled!
-Date: Mon, 5 Oct 2009 19:15:05 -0300
-Message-ID: <8597AZA.8041D4A5.2960665682DRLSBJERRPOMERA704@aline>
-Reply-To: Ladawn Wjrea <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: La Boutique Web du Timbre sur CentralMarques
+	<newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
+Subject: [SPAM] Vos timbres livrés chez vous
+Date: 6 Oct 2009 08:24:38 -0000
+Message-ID: <20091006082438.24802.qmail@ks366005.kimsufi.com>
+Reply-To: La Boutique Web du Timbre sur CentralMarques
+	<newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5906317707436686132=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0019251269179091534=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,231 +19,97 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5906317707436686132==
-Content-type: text/html; charset="ISO-8859-1"
+
+--===============0019251269179091534==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_1deb68580d337c93a1e5de26bad18f01"
+
+
+--_----------=_parties_1deb68580d337c93a1e5de26bad18f01
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type"
- content="text/html; charset=iso-8859-1">
-<title>CGS Newsletter: October 2009.</title>
-<style type="text/css">
-<!--
-NewsletterTitle {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-        font-style: normal;
-        letter-spacing: 0pt;
-}
-td {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
-}
-a {
-        color: #C10100;
-        text-decoration: none;
-}
-thread_details {
-        font-size: 11px;
-        color: #898989;
-}
-thread_details a {e
-        font-size: 12px;
-        color: #000000;
-        font-weight: bold;
-}
-thread_details a:visited {
-        font-size: 12px;
-        color: #a863a8;
-        font-weight: bold;
-}
-thread_details a:hover {
-        font-size: 12px;
-        color: #f26522;
-        font-weight: bold;
-}
-a:visited {
-        color: #a863a8;
-        text-decoration: none;
-}
-a:hover {
-        color: #f26522;
-        text-decoration: none;
-}
-a.top, a.top:visited {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 9px;
-        text-decoration: none;
-        color: #000000;
-}
-port_text {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 11px;
-        color: #000000;
-}
-port_title {
-        font-size: 14px;
-        font-weight: bold;
-}
-port_expert {
-        font-size: 11px;
-        font-weight: bold;
-        color: #898989;
-}
-port_cgsname {
-        font-size: 12px;
-}
-highlights {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 11px;
-        font-weight: bold;
-        color: #898989;
-}
-redirect, .redirect a, .redirect a:visited {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 11px;
-        color: #999999;
-        text-decoration: none;
-}
-redirect a:hover {
-        color: #f26522;
-        text-decoration: none;
-}
-unsub {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 11px;
-        color: #666666;
-        text-decoration: none;
-}
-unsub a, .unsub a:visited {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 11px;
-        color: #C10100;
-        text-decoration: none;
-}
-unsub a:hover {
-        color: #f26522;
-        text-decoration: none;
-}
-adtext {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 11px;
-        color: #545454;
-        line-height: 15px;
-}
-highlights td {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 11px;
-        font-weight: normal;
-        color: #000000;
-        padding-top: 0px;
-}
-highlights td a {
-        font-size: 12px;
-        color: #C10100;
-        font-weight: bold;
-        text-decoration: none;
-}
-highlights td a:visited {
-        font-size: 12px;
-        color: #a863a8;
-        font-weight: bold;
-        text-decoration: none;
-}
-highlights td a:hover {
-        font-size: 12px;
-        color: #f26522;
-        font-weight: bold;
-        text-decoration: none;
-}
--->
-</style>
+Version "en ligne" de ce message: http://www.centralmarque.com/svi/miroir.php?bat=laposte1009_ctrm
+
+Une offre pour tous!
+
+Vous êtes pressés ? La Boutique Web du Timbre vous fait gagner du temps
+
+plus d'infos sur http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique
+
+--------------------------------
+Cette offre La Poste vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.centralmarque.com/svi/gestionserv.php?nb=2405&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_1deb68580d337c93a1e5de26bad18f01
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head> 
+<title></title>
 </head>
-<body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
-<table align="center" border="0" cellpadding="0" cellspacing="0"
- width="642">
- <tbody>
+<body><center>
+<p>
+<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.centralmarque.com/svi/miroir.php?bat=laposte1009_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#cddae0;font-family:Comic Sans MS;color:#00539b;font-size:20px'>
+<a style='text-decoration:none;' href='http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique' target='_blank'>
+<img id=INNER_LOGO_ANNONCEUR align=middle src='http://timbres.laposte.fr/images/logo_boutique.jpg' style='float:left;border:0px;margin-right:20px' alt=''>
+</a>
+</td></tr>
+<tr><td align='center' style='margin:3px;padding:5px;background-color:#eeeeee;font-family:Arial;color:#5a76c0;font-size:18px;'>
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique" style="text-decoration:none;color:#5a76c0;">Une offre pour tous!<br>
+Vous &ecirc;tes press&eacute;s ? La Boutique Web du Timbre vous fait gagner du temps </a>
+</td></tr>
+<tr><td align='' style='padding:5px;background-color:#FFFFFF;'>
+<hr>
+<br><font style="font-family:arial"><a href="http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26subid%3DCTRM%26site%3D4439%26type%3Db31%26bnb%3D31" style="color:blue;font-family:arial;font-background:white;text-decoration:none;"><u>La Boutique Web du Timbre</u></a> de la Poste va vous permettre de gagner du temps :
+<br>Pour les <b>particuliers</b> ou les <b>professionnels</b>, <a href="http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26subid%3DCTRM%26site%3D4439%26type%3Db31%26bnb%3D31" style="color:blue;font-family:arial;font-background:white;text-decoration:none"><u>la Boutique Web du Timbre</u></a> c'est une offre compl&egrave;te de <b>produits d'affranchissement</b> et une facture automatiquement jointe &agrave; votre commande qui est <b>livr&eacute;e &agrave; l'adresse de votre choix</b>.<br>
+<br>Profitez &eacute;galement de notre module de calcul des tarifs pour trouver la solution la plus adapt&eacute;e &agrave; vos besoins.<br>
+<br>Trouvez le produit qu'il vous faut: </font>
+<hr>
+ <table >
+ <tr><td style='background-color:white;padding:5px;font-family:arial' width=50% valign=top >
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26subid%3DCTRM%26site%3D4439%26type%3Db62%26bnb%3D62%26diurl%3Dhttp%3A%2F%2Fad.fr.doubleclick.net%2Fclk%253B186991885%253B24645246%253Bb%3Fhttp%3A%2F%2Ftimbres.laposte.fr%2Fdetailarticle.jgi%3FidCarac%3D%26idGamme%3D040%26idArbo%3D010%26page%3D3%26index%3D1%26idArticle%3D1105491%26prov%3D366" target="_blank" border=0 style='text-decoration:none;color:black'><img width=102 height=72 border=0 style='float:left' src='http://timbres.laposte.fr/html/images/picto_roulette.gif'> <b>Les roulettes de Marianne</b> : Tr&egrave;s pratiques ces roulettes existent en diff&eacute;rents tarifs pour r&eacute;pondre &agrave; vos
+  besoins d'affranchissement et un d&eacute;vidoir est offert &agrave; partir de 500 timbres d'une m&ecirc;me r&eacute;f&eacute;rence achet&eacute;s <u style='color:blue'>...</u></a></td>
+<td width="30px">&nbsp;</td><td style='background-color:white;padding:5px;font-family:arial' width=50% valign=top >
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26subid%3DCTRM%26site%3D4439%26type%3Db62%26bnb%3D62" target="_blank" border=0 style='text-decoration:none;color:black'><img style='float:left' src="http://ks300910.kimsufi.com/~actuduwe/img/bat/laposte.gif" border="0" alt="Mon Timbre a Moi" width="120" height="60"/>
+ <b style="color:red">Nouveau!</b> <b>Mon TimbraMoi</b> est un timbre-poste &agrave; part enti&egrave;re qui permet l'affranchissement, m&ecirc;me utilis&eacute; seul.<br>
+Enti&egrave;rement personnalis&eacute;, il est <b>imprim&eacute; avec la photo de votre choix</b> en son centre. Il est disponible en 3 valeurs <u style='color:blue'>...</u> </a>
+</td></tr>
+ <tr><td height=10 colspan=3 > </td></tr>
+
+ <tr><td style='background-color:white;padding:5px;font-family:arial' width=50% valign=top >
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fsite%3D4439%26ref%3D401577%26subid%3DCTRM%26type%3Dtext%26tnb%3D2%26diurl%3Dhttp%3A%2F%2Fad.fr.doubleclick.net%2Fclk%253B186991885%253B24645246%253Bb%3Fhttp%3A%2F%2Ftimbres.laposte.fr%2Frayon%2Fprets-a-poster-utilitaires%2F%3Fprov%3D366" target="_blank" border=0 style='text-decoration:none;color:black'><img width=102 height=51 border=0 style='float:left' src='http://timbres.laposte.fr/html/images/picto_pap.gif'> <b>Les Pr&ecirc;t-&agrave;-Poster</b> : Ces enveloppes d&eacute;j&agrave; timbr&eacute;es sont parfaites pour gagner du temps sur des envois en nombre <u style='color:blue'>...</u> </a></td>
+<td width="30px">&nbsp;</td>
+<td style='background-color:white;padding:5px;font-family:arial' width=50% valign=top >
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26subid%3DCTRM%26site%3D4439%26type%3Db62%26bnb%3D62%26diurl%3Dhttp%3A%2F%2Fad.fr.doubleclick.net%2Fclk%253B186991885%253B24645246%253Bb%3Fhttp%3A%2F%2Ftimbres.laposte.fr%2Fdetailarticle.jgi%3FidCarac%3D%26idGamme%3D044%26idArbo%3D011%26page%3D1%26index%3D4%26idArticle%3D14029%26prov%3D366" target="_blank" border=0 style='text-decoration:none;color:black'><img border=0 style='float:left' src='http://www.centralmarque.com/img/bat/lettremax.jpg'> <b>La lettre MAX</b> : Ces enveloppes pr&eacute;-affranchies sont d&eacute;di&eacute;es &agrave; l'envoi suivi de petits objets et documents jusqu'&agrave; 1kg <u style=
+ 'color:blue'>...</u></a></td>
+ </tr>
+ <tr><td height=10 colspan=3 > </td></tr>
  <tr>
- <td class="redirect" align="center"
- height="20" valign="middle">
- <a
- href="http://90b7f.fijuhej.cn/?dedqhe=90f0c5d4a523fa09a8ae372a&sbjerrp=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&jrexakir=609073836312960665682416"
- target="_blank">Newsletter :: Click here if you are experiencing difficulties
- viewing this email</a></td>
-
-    </tr>
- <tr>
-      <td align="left" valign="top"><table border="0" cellpadding="0" cellspacing="0" width="100%">
-  <tbody>
-  <tr>
-  <td bgcolor="#000000">&nbsp;</td>
-            </tr>
-  <tr>
-
-  <td style="padding-top: 5px;"><table border="0" cellpadding="0" cellspacing="0"
- width="651">
-   <tbody>
-   <tr>
-                      <td>&nbsp;</td>
-
-                    </tr>
-   <tr>
-   <td align="left" valign="top"><table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-    <tr>
-    <td style="padding:5px 10px 10px 10px; font-size:12px"><br>
-	<a
-	href="http://b052.fijuhej.cn/?kiteviek=90f0c5d4a523fa09a8ae372a&sbjerrp=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&uwimebj=609073836312960665682416"
-	style="text-decoration:underline; font-size:22px; font-family:Georgia; color:#5043F3" target="_blank">
-	<img alt="Graphics don't display in a proper way? Click to view it" src="http://b052.fijuhej.cn/top.gif" border="0"></a><br>
-	<br></td>
-              </tr>
-
-       </tbody>
-      </table></td>
-          </tr>
-
-     </tbody>
-    </table></td>
-            </tr>
-   </tbody>
-  </table></td>
-    </tr>
- <tr>
-  <td style="background-repeat: no-repeat;"
- align="right"
- height="50" valign="top"><table border="0" cellpadding="0" cellspacing="0" width="400">
-
-   <tbody>
-   <tr>
-    <td class="unsub" style="padding: 10px 20px 0px 0px;"
- align="right">You have received this email because you are registered with
-	CGSociety<br>
-    <a
- href="http://a9872.fijuhej.cn/?qhyoejgoq=90f0c5d4a523fa09a8ae372a&sbjerrp=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&obqfuyfyxi=609073836312960665682416"
- target="_blank">Subscribe</a> | <a
- href="http://b052.fijuhej.cn/?yaimamumiq=90f0c5d4a523fa09a8ae372a&sbjerrp=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&raqsi=609073836312960665682416"
- target="_blank">Unsubscribe </a>|<a
- href="http://b052.fijuhej.cn/?pabysao=90f0c5d4a523fa09a8ae372a&sbjerrp=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&avocqku=609073836312960665682416"
- target="_blank"> Contact Us </a><br><br>We can be contacted at:<br>1130 17th
-	Street, NW<br>Washington, DC 20036<br><br>This message was
-	sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, username spi-devel-general.<br><br>Please do not respond to this
-	message. </td>
-            </tr>
-
-   </tbody>
-  </table></td>
-    </tr>
- </tbody>
+<td style='background-color:white;padding:5px;font-family:arial' colspan=3 width=50% valign=top >
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=laposte1009_ctrm&nb=2405&n=9047704&c=pratique&leroiurl=http%3A%2F%2Fclic.reussissonsensemble.fr%2Fclick.asp%3Fref%3D401577%26subid%3DCTRM%26site%3D4439%26type%3Db62%26bnb%3D62%26diurl%3Dhttp%3A%2F%2Fad.fr.doubleclick.net%2Fclk%253B186991885%253B24645246%253Bb%3Fhttp%3A%2F%2Ftimbres.laposte.fr%2Fdetailarticle.jgi%3FidCarac%3D%26idGamme%3D045%26idArbo%3D011%26page%3D1%26index%3D1%26idArticle%3D12126%26prov%3D366" target="_blank" border=0 style='text-decoration:none;color:black'><img width=102 height=72 border=0 style='float:left' src='http://timbres.laposte.fr/html/images/picto_postexport.gif'> <b>Les Postexport</b> : Ces enveloppes vous permettent d'envoyer vos documents dans le monde entier. Il existe &eacute;galement des enveloppe
+ s Postexport suivies pour garder un oeil sur l'acheminement de votre courrier, ainsi que des bo&icirc;tes pour tous vos envois volumineux <u style='color:blue'>...</u></a></td></tr>
+ </table>
+</td></tr>
 </table>
-</body>
+<br><br>
+<img src="http://www.centralmarque.com/svi/img_nb_2405_numuser_yyynumuseryyy.jpg" width=1 height=1 alt=''>
+<p>
+Ce message est envoy&eacute; par central marques - <a href="http://www.centralmarque.com/svi/gestionserv.php?nb=2405&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+</p>
+</center></body>
 </html>
 
 
---===============5906317707436686132==
+--_----------=_parties_1deb68580d337c93a1e5de26bad18f01--
+
+--===============0019251269179091534==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -253,7 +121,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9&#45;12, 2009. Register now&#33;
 http://p.sf.net/sfu/devconf
---===============5906317707436686132==
+--===============0019251269179091534==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -264,4 +132,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5906317707436686132==--
+--===============0019251269179091534==--

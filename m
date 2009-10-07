@@ -1,13 +1,12 @@
-From: =?Windows-1251?B?wfP1IONh6yDy5XDz?= <kristinarebrova-JGs/UdohzUI@public.gmane.org>
-Subject: =?windows-1251?b?W1NQQU1dIELx5SDtb+Jv5SDiIEjE?=
-	=?windows-1251?b?0SwgSMTUyywg7/Do4fvr6CDoIPHu9vHy8OD14PU=?=
-Date: Wed, 07 Oct 2009 06:30:10 +0400
-Message-ID: <369163889.20091006442518@mx.cylon-hosting.cn>
-Reply-To: =?Windows-1251?B?wfP1IONh6yDy5XDz?= <kristinarebrova-JGs/UdohzUI@public.gmane.org>
+From: Produits gratuits par CentralMarques <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
+Subject: Livraison speciale pour vous
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Date: 7 Oct 2009 08:24:47 -0000
+Message-ID: <20091007082447.26114.qmail@ks366005.kimsufi.com>
+Reply-To: Produits gratuits par CentralMarques <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8055603647231472956=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============8048284964365052911=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,90 +18,313 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8055603647231472956==
-Content-Type: text/html; charset=windows-1251
+
+--===============8048284964365052911==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_e6aeff6fa5bcc0ecb3fe9fed33b1b455"
+
+
+--_----------=_parties_e6aeff6fa5bcc0ecb3fe9fed33b1b455
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: 8bit
 
-<HTML>
+Version "en ligne" de ce message: http://www.www.centralmarques.com/svi/miroir.php?bat=vista1009_ctrm
+
+Ecrire ici le titre
+Accroche de l'offre
+
+Offre exceptionnelle
+
+Recevez 250 Cartes de visite + 1 Porte-cartes + 1 Porte-clйs
+
+Fйlicitations spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+
+vous avez йtй sйlectionnй(e)
+
+pour recevoir :
+
+&nbsp;
+250 Cartes de visite
+
++1 Porte-cartes
+
++1 Porte-clйs
+
+= TOUT GRATUIT
+
+&nbsp;&nbsp;
+
+
+&bull;
+
+Impression couleur sur papier de qualitй 215g/mІ
+
+&bull;
+Conception facile et rapide en quelques clics
+
+&bull;
+
+Choisissez parmi 42 modиles de cartes de visite
+
+&bull;
+
+BONUS ! 1 Porte-cartes + 1 porte-clйs GRATUITS
+
+&nbsp;
+
+&nbsp;
+
+Dйpкchez-vous spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org avant que cette offre n'expire
+
+
+Prix affichйs TTC. Les frais de port, les options de produits
+
+et photo/logo tйlйchargйs ne sont pas compris
+
+а moins de n'кtre explicitement inclus dans l'offre.
+
+Offre non valide sur des commandes dйjа passйes.
+
+Pour plus de dйtails, consultez notre site web.
+&nbsp;
+
+&nbsp;
+
+
+plus d'infos sur http://www.www.centralmarques.com/svi/linkserv.php?bat=vista1009_ctrm&nb=2435&n=9047704&c=culture
+
+--------------------------------
+Cette offre vistaprint vous est envoyйe par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.www.centralmarques.com/svi/gestionserv.php?nb=2435&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_e6aeff6fa5bcc0ecb3fe9fed33b1b455
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+
 <head>
-<meta http-equiv="content-type" content="text/html;charset=windows-1251">
+
+<title>Offre exceptionnelle</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
 </head>
-<BODY text=#000000 bgColor=#ffffff>
-<font face="Times New Roman"><TABLE cellSpacing=0 cellPadding=10 align=center border=0><TR bgColor="#230c80">
-<TD></TD>
-<TD align=left><FONT face=Verdana size=4><B></B></FONT>
-<P><font face=Verdana color=white><font size="4"><b>ВСЕ НОВОЕ в НДС, НДФЛ, ПРИБЫЛИ И СОЦСТРАХАХ </font><br><br><font size=3>Новые правила наличного денежного обращения,<br>получения разрешения на трудоустройство иностранцев,<br>дополнительное регулирование при работе с ЧП «единщиками». <br><br><font size="3">Отчетность за 9 месяцев.</font>
-<font face=Verdana color=white>
+
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<center>
+
+<table width="500" border="0" align="center" cellpadding="0" cellspacing="0">
+
+  <tr bgcolor="#FFFFFF">
+
+    <td width="500" height="40" align="center" valign="middle" background="http://img.mediaplex.com/0/8992/64819/whitetop500.gif"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21716777220&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank"><font color="#0D0E0C" face="Geneva, Arial, Helvetica, sans-serif" style="font-size:16px;"><strong>Recevez  250 Cartes de visite + 1 Porte-cartes + 1 Porte-cl&eacute;s</strong></font></a></td>
+
+  </tr>
+
+
+
+  <tr>
+
+    <td width="500" align="center" valign="middle"><table width="500" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+
+  <tr>
+
+    <td height="70" align="center" valign="middle" bgcolor="#5B92C8"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21733554436&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank" style="text-decoration: none;"><font color="#FFFFCC" face="Arial, Helvetica, sans-serif" style="font-size:26px; text-decoration: none; "><strong>F&eacute;licitations spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, <br />
+
+</strong></font></a></td>
+
+  </tr>
+
+  <tr>
+
+    <td height="70" align="center" valign="middle" bgcolor="#000066">
+
+
+
+		  <table width="500" border="0" cellspacing="0" cellpadding="0">
+
+  <tr>
+
+    <td width="158" align="center" valign="middle" bgcolor="#F4CA1E"><font color="#000200" face="Verdana, Arial, Helvetica, sans-serif" style="font-size:15px;" ><strong>vous avez &eacute;t&eacute; s&eacute;lectionn&eacute;(e) <br />
+
+      pour recevoir :</strong></font></td>
+
+        <td width="16" rowspan="2" align="left" valign="middle">&nbsp;</td>
+
+
+
+    <td width="326" height="120" rowspan="2" align="left" valign="middle"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21733554436&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank" style="text-decoration: none;"><font color="#F4CA1E" face="Verdana, Arial, Helvetica, sans-serif" style="font-size:22px;" ><strong>250 <font color="#FFFFCC">Cartes de visite</font><br />
+
+        +1 <font color="#FFFFCC">Porte-cartes</font><br />
+
+              +1 <font color="#FFFFCC">Porte-cl&eacute;s</font><br />
+
+        <font style="font-size: 22px; ">= TOUT  GRATUIT</font></strong></font></a></td>
+
+  </tr>
+
+
+
+  <tr>
+
+    <td align="right" valign="bottom" bgcolor="#060000"><img src="http://img.mediaplex.com/0/8992/64819/arrowdown_yel.gif" alt="V" width="35" height="36" />&nbsp;&nbsp;</td>
+
+  </tr>
+
+</table></td>
+
+  </tr>
+
+  <tr>
+
+    <td width="500" align="center" valign="middle" bgcolor="#ED008C"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21767108868&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank"><img src="http://img.mediaplex.com/0/8992/64819/VistamilesBL_FBCHKC_FR.jpg" alt="250 Cartes de visite et 1 porte-cartes + 1 Porte-clefs" border="0" /></a></td>
+
+  </tr>
+
+  <tr>
+
+
+
+    <td align="center" valign="middle" bgcolor="#CBE8FA"><table width="361" border="0" align="center" cellpadding="0" cellspacing="0">
+
+<tr>
+
+                <td width="15" height="20" align="center" valign="bottom"><font color="#D62D66" face="Verdana, Geneva, sans-serif" style="font-size: 14px; line-height: 16px;">&bull;</font></td>
+
+          <td height="20" align="left" valign="bottom"><font color="#0D0E0C" face="Verdana, Geneva, sans-serif" style="font-size: 13px;">Impression couleur sur    papier de qualit&eacute; 215g/m&sup2; </font></td>
+
+          </tr>
+
+              <tr>
+
+                <td width="15" height="15" align="center" valign="bottom"><font color="#D62D66" face="Verdana, Geneva, sans-serif" style="font-size: 14px; line-height: 16px;">&bull;</font></td>
+
+
+
+                <td height="20" align="left" valign="bottom"><font color="#0D0E0C" face="Verdana, Geneva, sans-serif" style="font-size: 13px;">Conception facile et rapide en quelques clics</font></td>
+
+          </tr>
+
+              <tr>
+
+                <td width="15" height="15" align="center" valign="bottom"><font color="#D62D66" face="Verdana, Geneva, sans-serif" style="font-size: 14px; line-height: 16px;">&bull;</font></td>
+
+                <td height="20" align="left" valign="bottom"><font color="#0D0E0C" face="Verdana, Geneva, sans-serif" style="font-size: 13px;">Choisissez parmi 42 mod&egrave;les de cartes de visite</font></td>
+
+          </tr>
+
+              <tr>
+
+
+
+                <td width="15" height="15" align="center" valign="bottom"><font color="#D62D66" face="Verdana, Geneva, sans-serif" style="font-size: 14px; line-height: 16px;">&bull;</font></td>
+
+                <td height="20" align="left" valign="bottom"><font color="#0D0E0C" face="Verdana, Geneva, sans-serif" style="font-size: 13px;"><b><font color="#D62D66">BONUS !</font> </b>1 Porte-cartes + 1 porte-cl&eacute;s GRATUITS</font></td>
+
+              </tr>
+
+              <tr>
+
+                <td height="15" align="center" valign="bottom">&nbsp;</td>
+
+                <td height="20" align="left" valign="bottom">&nbsp;</td>
+
+              </tr>  
+
+          </table></td>
+
+
+
+  </tr>
+
+
+
+</table></td>
+
+  </tr>
+
+  <tr>
+
+    <td width="500" height="45" align="center" valign="middle" background="http://img.mediaplex.com/0/8992/64819/whitebot500.gif" bgcolor="#FFFFFF"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21783886084&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank"><font color="#0D0E0C" face="Geneva, Arial, Helvetica, sans-serif" style="font-size:16px;"><strong> D&eacute;p&ecirc;chez-vous spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org avant que cette offre n'expire</strong></font></a></td>
+
+  </tr>
+
+</table>
+
+
+
+<table width="500" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" bgcolor="#FFFFFF">
+
+  <tr>
+
+    <td width="496"><table align="center" width="496" border="0" cellspacing="0" cellpadding="0">
+
+      <tr align="center">
+
+        <td width="496" height="85"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+          <tr>
+
+                <td width="260" align="right" valign="middle"><img src="http://img.mediaplex.com/0/8992/64819/Logo-horizontal.gif" width="243" height="51" hspace="6" /></td>
+
+            <td width="226" align="left" style="font-size:9px; color:#666666; font-family:Arial, Helvetica, sans-serif;">Prix affich&eacute;s TTC. Les frais de port, les options de produits 
+
+              et photo/logo t&eacute;l&eacute;charg&eacute;s ne sont pas compris 
+
+              &agrave; moins de n'&ecirc;tre explicitement inclus dans l'offre. 
+
+              Offre non valide sur des commandes d&eacute;j&agrave; pass&eacute;es. 
+
+              Pour plus de d&eacute;tails, consultez notre site web.</td>
+
+
+
+            <td width="10" align="left">&nbsp;</td>
+
+          </tr>
+
+        </table></td>
+
+      </tr>
+
+      <tr>
+
+        <td height="20" align="center" valign="middle"><hr align="center" width="480" size="1" noshade>
+
+          &nbsp;<img src="http://img.mediaplex.com/0/8992/64819/footer.gif" alt="Merci" width="400" height="106" border="0" /></td>
+
+      </tr>
+
+    </table><img src="http://altfarm.mediaplex.com/ad/tr/8992-50553-14036-14" border="0"></td>
+
+
+
+  </tr>
+
+</table>
+
+<p>
+
+Ce message est envoy&eacute; par central marques - <a href="http://www.www.centralmarques.com/svi/gestionserv.php?nb=2435&cat=culture&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+
 </p>
-<br>
-</b></font></font><font size="2" face=Verdana color=white><b>Семинар<font color="#aaaaaa"> • </font>8 октября<font color="#aaaaaa"> • </font>2009 г.<br>
-г. Kиев<font color="#aaaaaa"> • </font>ул. Шелковичная, 12<font color="#aaaaaa"> </font></b></font><b><font size="4" color="#aaaaaa"> </font></b></P>
-</TD></TR>
-<TR>
-<TD bgColor=#230c80>&nbsp;</TD>
-<td align=left><br>
-<h5 style="margin-top: 7px; margin-bottom: 7px; BORDER-BOTTOM: #ff0000 1px solid"><font size="2" face=Verdana color="#ff0000">ПPОГPАММА</font></h5>
-<ol>
-<li><font size="2" face="Verdana"><b>ВСЕ про «СТАРЫЕ» НАЛОГОВЫЕ НАКЛАДНЫЕ: </b>почему нужно сейчас (срочно) «вынуть из тумбочки», сложности после введения ЕДИНОГО ГОСУДАРСТВЕННОГО РЕЕСТРА налоговых накладных. Как правильно (с минимальными потерями) отразить их в Декларации (10,8,16,уточненка). Проект нового распоряжения Кабмина «щодо адміністрування ПДВ». Как при проведении «старых накладных» не попасть под проверку. Новая практика проверок с учетом «совокупности факторов»- как не попрощаться с налоговым кредитом навсегда.</font>
-<li><font size="2" face="Verdana"><b>ПОДАЧА ДЕКЛАРАЦИИ: «НЕВИЗНАННЯ», «ДО ВІДОМА», ….</b> Где заканчиваются законне действия налоговой. Варианты обжалования или «подождать». Практика обжалувания решения про аннулирование Свидетельства НДС. </font>
-<li><font size="2" face="Verdana"><b>5, 1 ПРИЛОЖЕНИЕ К ДЕКЛАРАЦИИ:</b> нюансы отражения ошибок, «законных» корректировок (п.4.5….)- специфика сверки (компьютерного сопоставления) данных между контрагентами, которую необходимо учитывать при заполнении декларации.</font>
-<li><font size="2" face="Verdana"><b>ЗАПОЛНЕНИЕ НАЛОГОВЫХ НАКЛАДНЫХ:</b> новые «придирки», появившиеся на проверках в 2009 г. Покупка\продажа услуг нерезидентам- на что необходимо обратить внимание(новая практика на проверках). Новый порядок выписки нн экспедиторами с 1.09.09. Лишение нн «доказовості»- почему не получится так просто, как хочет ГНАУ. Что делать с нн, подписанными при помощи факсимиле.</font>
-<li><font size="2" face="Verdana"><b>ОПЕРАЦИЯ «МИНИМИЗАТОР»</b> - на что обратить внимание, чтобы не проверяли каждый год, не шли до 7 колена по «ланцюгам». НАЛОГОВЫЕ ЯМЫ.</font>
-<li><font size="2" face="Verdana"><b>25,26 строчка: </b>нюансы проставления «0» по «просьбе» инспектора. </font>
-<li><font size="2" face="Verdana"><b>СУДЕБНАЯ ПРАКТИКА ПО ВОЗМЕЩЕНИЮ НДС</b>, СПАСЕНИЮ «СТАРЫХ» нн, СПАСЕНИЮ нк ПРИ ПРИБЛИЖЕНИИ СРОКА ИСКОВОЙ ДАВНОСТИ. Правила, при соблюдении которых можно пользоваться НК во время ведения судебного разбирательства. Разная позиция ВСУ, ВАСУ и ВХСУ по поводу «нікчемності правочинів». Аргументы процессуального права. Доказывание по материальному праву- какие первичные документы необходимо собирать. Как заставить ГНАУ доказать правомерность принятых решений во время судебного процесса, вместо доказывания своей правоты.</font>
-<li><font size="2" face="Verdana"><b>ПРОКУРОРСКОЕ РЕАГИРОВАНИЕ КАК СПОСОБ борьбы с беспределом контроллирующих органов.</b>Новые правила обжалования постановления об открытии(не открытии) уголовного дела с июня 2009. Обращение в прокуратуру: обязанность принимать заявления.</font>
-<li><font size="2" face="Verdana"><b>НОВЫЙ ПОРЯДОК С СЕНТЯБРЯ ОПРЕДЕЛЕНИЯ ТАМОЖЕННОЙ СТОИМОСТИ. </b>Работа с нерезидентами- новые требования по налоговым накладным и подаче деклараций.</font>
-<li><font size="2" face="Verdana"><b>ИЗМЕНЕНИЕ в ЗАКОН об НДС с 1.09.09 (1.10.09):</b> Уплата НДС по услугам при транзите, можно ли пользоваться хорошими письмами ГНАУ (как не нести в дальнейшем ответственность, если позиция поменяется). Суцільна неподільна- почему нужно очень аккуратно подойти к составлению договоров, тобы не потерять право на 0%. П.6.5- «эксклюзивная коллекция» разъяснений по п.6.5 д), г) судебная практика по наличию соответствующих кодов в Справке статистики, нове проблемы при продаже услуг не на таможенной территории Украины. 20% у посередника- как выписывать нн на оставшуюся часть перевозки.</font>
-<li><font size="2" face="Verdana"><b>Летние изменения в порядок учета НАЛИЧНОГО ДЕНЕЖНОГО ОБРАЩЕНИЯ:</b> новые требования к оформлению первичной документации, практика «ноу-хау» на проверках налички. Лишение «доказовості» документов, приложенных к авансовому отчету. Новые требования к пакету документов, выдаваемых частным предпринимателем.</font>
-<li><font size="2" face="Verdana"><b>НОВОЕ в ПОЛУЧЕНИЕ РАЗРЕШЕНИЯ НА ТРУДОУСТРОЙСТВО ИНОСТРАНЦЕВ по-новому с мая 2009.</b> Как получить разрешение в «аховой» ситуации. Новые штрафы.</font>
-<li><font size="2" face="Verdana"><b>НОВОЕ В ЗАРПЛАТЕ И КАДРАХ с 2009 г.</b> На что нужно обратить внимание при сокращении персонала, сокращении рабочего времени или зарплаты. Дополнительные первичные документы, которые нужно оформлять при ВЫПЛАТЕ ПРЕМИЙ. ЗАРПЛАТА КАК ПРОЦЕНТ- можно, с небольшими оговорками. Правильное оформление МАТЕРИАЛЬНОЙ ПОМОЩИ. МЕДИЦИНСКОЕ СТРАХОВАНИЕ И ЛЕЧЕНИЕ. ПИТАНИЕ РАБОТНИКОВ-нюансы начисления НДС, как правильно организовать питание. Как правильно оформить возвратную финансовую помощь: позика, позичка, или договор на «возвратную матпомощь». Решения Конституционного СУДА о признании неконституционными некоторых норм- последствия для налогоплательщиков.
-<li><font size="2" face="Verdana"><b>ТРУДОУСТРОЙСТВО ИНВАЛИДОВ - внесены изменения в действующие правила. </b>Ответственность при незаконном применении НСЛ- где заканчивается ответственность предприятия.</font>
-<li><font size="2" face="Verdana"><b>РАБОТА С ЧАСТНЫМИ ПРЕДПРИНИМАТЕЛЯМИ: </b>новые требования к пакету первичных документов, обзор ОБЗОРНЫХ писем ГНАУ- последствия для предприятий, сотрудничающих с ЧП. Учредитель\Директор\ЧП- что об этом «думает» Кабмин. Новая позиция по посредничеству частных предпринимателей.</font>
-<li><font size="2" face="Verdana"><b>КУРСОВЫЕ РАЗНИЦЫ </b>- последние «измышления» и законодательные нормы. Новая практика проверки выплаты ДИВИДЕНДОВ, как создать «достаточный» пакет документов для отнесения на ВР мобильных телефонов, легкового автотранспорта, такси менеджеров. ОБЫЧНЫЕ ЦЕНЫ и ПРОДАЖА НИЖЕ СЕБЕСТОИМОСТИ- «достаточный пакет документов» по материалам судебной практики. Новая позиция  Минфина в отношении оформления первичных документов.
-</font>
-</ol>
 
-<h5 style="margin-top: 7px; margin-bottom: 7px; BORDER-BOTTOM: #ff0000 1px solid"><font face=Verdana size=2><font face=Verdana color=000000><font size="2"><font face=Verdana size=2><font face=Verdana size=2><b><br>
-</b><font size="2" face=Verdana color="#ff0000">ДОКЛАДЧИКИ</font></font></font></font></font></font></h5>
-<p style="margin-top: 7px; margin-bottom: 7px;"><font size="2" face="Verdana"><b>Вельбицкая Ирина Игоревна  </b>— аудитор, автор публикаций в прессе, книги «Единый налог для юридических и физических лиц».
+</center>
 
-</font>
-<p style="margin-top: 7px; margin-bottom: 7px;"><font size="2" face="Verdana"><b>Криворучко Андрей Иванович  </b>— юрист, имеющий большой опыт споров (судов) с контролирующими органами на стороне налогоплательщиков.
+<img src="http://action.metaffiliation.com/suivi.php?taff=S3C8E4FD4D2174" width="1" height="1" border="0"></body>
 
-</font>
-<h5 style="margin-top: 7px; margin-bottom: 7px; BORDER-BOTTOM: #ff0000 1px solid"><font face=Verdana size=2><font face=Verdana color=000000><font size="2"><font face=Verdana size=2><font face=Verdana size=2><br>
-<font size="2" face=Verdana color="#ff0000">СТOИМOСТЬ</font></font></font></font></font></font></h5>
-<ul>
-<li><font size="2" color="#3a17b9" face="Verdana"><b>700.00 гpн.</b> — </font><font size="2" face="Verdana">зa oднoгo учacтникa, (бeз HДC, eдиный нaлoг</font><font size="2" color="black" face="Verdana, Arial, Helvetica, sans-serif">), </font><font size="2" face="Verdana">при оплате за двух участников — <b>1180.00 грн.</b></font>
-<li><font size="2" face="Verdana"><b>B cтoимoсть вxодит:</b> информационно-консультационное обслуживание на семинаре, сборник материалов, кофе-брейк, ланч, обсуждение докладов и обмен мнениями с лектором. </font>
-</ul>
-<h5 style="margin-top: 7px; margin-bottom: 7px; BORDER-BOTTOM: #ff0000 1px solid"><font face=Verdana size=2><font face=Verdana color=000000><font size="2"><font face=Verdana size=2><font face=Verdana size=2><font size="2" face=Verdana color="#ff0000">PЕГЛАМЕНТ</font></font></font></font></font></font></h5>
-<ul>
-<li><font size="2" face="Verdana">Регистрация с <b>9:30 </b>по <b>10:00  </b></b></font>
-<li><font size="2" face="Verdana">Начало в <b>10:00 </b></font>
-<li><font size="2" face="Verdana">Окончание<b>17:00 </b></font>
-</ul>
-<h5 style="margin-top: 7px; margin-bottom: 7px; BORDER-BOTTOM: #ff0000 1px solid"><font face=Verdana size=2><font face=Verdana color=000000><font size="2"><font face=Verdana size=2><font face=Verdana size=2><br>
-<font size="2" face=Verdana color="#ff0000">PEГИСТРАЦИЯ</font></font></font></font></font></font></h5>
-<ul>
-<li><font face=Verdana size=2><b>Тeл.: (044) 331-64-14, 592-75-64</b></font>
-<li><font face=Verdana size=2>Kaждый учacтник пoлучaeт бухгaлтеpский кoмплeкт — oригинaлы докумeнтoв: дoгoвоp, aкт, opигинaл cчeтa, кoпии cвидeтeльств.</font>
-</ul>
-</td>
-</TR>
-<TR>
-<TD bgColor=#230c80></TD>
-<TD bgColor=#230c80>
-<P align=center><FONT face=Verdana size=2><FONT size="1" color=white><B>Проcим пpинять нaши извинeния, еcли вы получaeте нaши рaссылки, нo нe желaeте иx получaть. <br>
-</B></FONT></FONT><font face=Verdana size=2><font size="1" color=white><b>Пo вoпpосу oтпиcки oтправте нaм пуcтое письмo пo aдpесу: <a href="mailto:jngbcfnmcz-cmBhpYW9OiY@public.gmane.org?subject=nds">отписaться</a></b></font></font></P>
-<br><br><font face="Tahoma" size="-7">компания скидка стоимость учеба Киев регламент регламент кофепауза учеба отель лучшее договор телефон регистрация Киев окончание скидка выбор регистрация участник решение предложение выбор целевой успех регламент</font></TD></TR></TABLE></font>
-</BODY>
-</HTML>
+</html>
 
 
+--_----------=_parties_e6aeff6fa5bcc0ecb3fe9fed33b1b455--
 
-
---===============8055603647231472956==
+--===============8048284964365052911==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,7 +336,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============8055603647231472956==
+--===============8048284964365052911==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -125,4 +347,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8055603647231472956==--
+--===============8048284964365052911==--

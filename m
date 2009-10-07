@@ -1,12 +1,10 @@
-From: Produits gratuits par CentralMarques <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
-Subject: Livraison speciale pour vous
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Date: 7 Oct 2009 08:24:47 -0000
-Message-ID: <20091007082447.26114.qmail@ks366005.kimsufi.com>
-Reply-To: Produits gratuits par CentralMarques <newsletter-f+hNetFMsXqrNlWlSYbQU9BPR1lH4CV8@public.gmane.org>
+From: "Inez Reinholdt" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] So, will you come?
+Date: Wed, 07 Oct 2009 18:53:00 +0000
+Message-ID: <S2T440P28IW83588.ZMLFUKSCTQ.59DB6F26C3C9@crina>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8048284964365052911=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============5615890916597181796=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,313 +16,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============8048284964365052911==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_e6aeff6fa5bcc0ecb3fe9fed33b1b455"
-
-
---_----------=_parties_e6aeff6fa5bcc0ecb3fe9fed33b1b455
-Content-Type: text/plain; charset="iso-8859-1"
+--===============5615890916597181796==
 Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://www.www.centralmarques.com/svi/miroir.php?bat=vista1009_ctrm
-
-Ecrire ici le titre
-Accroche de l'offre
-
-Offre exceptionnelle
-
-Recevez 250 Cartes de visite + 1 Porte-cartes + 1 Porte-clés
-
-Félicitations spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-
-vous avez été sélectionné(e)
-
-pour recevoir :
-
-&nbsp;
-250 Cartes de visite
-
-+1 Porte-cartes
-
-+1 Porte-clés
-
-= TOUT GRATUIT
-
-&nbsp;&nbsp;
-
-
-&bull;
-
-Impression couleur sur papier de qualité 215g/m²
-
-&bull;
-Conception facile et rapide en quelques clics
-
-&bull;
-
-Choisissez parmi 42 modèles de cartes de visite
-
-&bull;
-
-BONUS ! 1 Porte-cartes + 1 porte-clés GRATUITS
-
-&nbsp;
-
-&nbsp;
-
-Dépêchez-vous spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org avant que cette offre n'expire
-
-
-Prix affichés TTC. Les frais de port, les options de produits
-
-et photo/logo téléchargés ne sont pas compris
-
-à moins de n'être explicitement inclus dans l'offre.
-
-Offre non valide sur des commandes déjà passées.
-
-Pour plus de détails, consultez notre site web.
-&nbsp;
-
-&nbsp;
-
-
-plus d'infos sur http://www.www.centralmarques.com/svi/linkserv.php?bat=vista1009_ctrm&nb=2435&n=9047704&c=culture
-
---------------------------------
-Cette offre vistaprint vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.www.centralmarques.com/svi/gestionserv.php?nb=2435&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_e6aeff6fa5bcc0ecb3fe9fed33b1b455
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html>
-
-<head>
-
-<title>Offre exceptionnelle</title>
-
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-
-</head>
-
-<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-
-<center>
-
-<table width="500" border="0" align="center" cellpadding="0" cellspacing="0">
-
-  <tr bgcolor="#FFFFFF">
-
-    <td width="500" height="40" align="center" valign="middle" background="http://img.mediaplex.com/0/8992/64819/whitetop500.gif"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21716777220&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank"><font color="#0D0E0C" face="Geneva, Arial, Helvetica, sans-serif" style="font-size:16px;"><strong>Recevez  250 Cartes de visite + 1 Porte-cartes + 1 Porte-cl&eacute;s</strong></font></a></td>
-
-  </tr>
-
-
-
-  <tr>
-
-    <td width="500" align="center" valign="middle"><table width="500" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
-
-  <tr>
-
-    <td height="70" align="center" valign="middle" bgcolor="#5B92C8"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21733554436&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank" style="text-decoration: none;"><font color="#FFFFCC" face="Arial, Helvetica, sans-serif" style="font-size:26px; text-decoration: none; "><strong>F&eacute;licitations spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, <br />
-
-</strong></font></a></td>
-
-  </tr>
-
-  <tr>
-
-    <td height="70" align="center" valign="middle" bgcolor="#000066">
-
-
-
-		  <table width="500" border="0" cellspacing="0" cellpadding="0">
-
-  <tr>
-
-    <td width="158" align="center" valign="middle" bgcolor="#F4CA1E"><font color="#000200" face="Verdana, Arial, Helvetica, sans-serif" style="font-size:15px;" ><strong>vous avez &eacute;t&eacute; s&eacute;lectionn&eacute;(e) <br />
-
-      pour recevoir :</strong></font></td>
-
-        <td width="16" rowspan="2" align="left" valign="middle">&nbsp;</td>
-
-
-
-    <td width="326" height="120" rowspan="2" align="left" valign="middle"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21733554436&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank" style="text-decoration: none;"><font color="#F4CA1E" face="Verdana, Arial, Helvetica, sans-serif" style="font-size:22px;" ><strong>250 <font color="#FFFFCC">Cartes de visite</font><br />
-
-        +1 <font color="#FFFFCC">Porte-cartes</font><br />
-
-              +1 <font color="#FFFFCC">Porte-cl&eacute;s</font><br />
-
-        <font style="font-size: 22px; ">= TOUT  GRATUIT</font></strong></font></a></td>
-
-  </tr>
-
-
-
-  <tr>
-
-    <td align="right" valign="bottom" bgcolor="#060000"><img src="http://img.mediaplex.com/0/8992/64819/arrowdown_yel.gif" alt="V" width="35" height="36" />&nbsp;&nbsp;</td>
-
-  </tr>
-
-</table></td>
-
-  </tr>
-
-  <tr>
-
-    <td width="500" align="center" valign="middle" bgcolor="#ED008C"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21767108868&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank"><img src="http://img.mediaplex.com/0/8992/64819/VistamilesBL_FBCHKC_FR.jpg" alt="250 Cartes de visite et 1 porte-cartes + 1 Porte-clefs" border="0" /></a></td>
-
-  </tr>
-
-  <tr>
-
-
-
-    <td align="center" valign="middle" bgcolor="#CBE8FA"><table width="361" border="0" align="center" cellpadding="0" cellspacing="0">
-
-<tr>
-
-                <td width="15" height="20" align="center" valign="bottom"><font color="#D62D66" face="Verdana, Geneva, sans-serif" style="font-size: 14px; line-height: 16px;">&bull;</font></td>
-
-          <td height="20" align="left" valign="bottom"><font color="#0D0E0C" face="Verdana, Geneva, sans-serif" style="font-size: 13px;">Impression couleur sur    papier de qualit&eacute; 215g/m&sup2; </font></td>
-
-          </tr>
-
-              <tr>
-
-                <td width="15" height="15" align="center" valign="bottom"><font color="#D62D66" face="Verdana, Geneva, sans-serif" style="font-size: 14px; line-height: 16px;">&bull;</font></td>
-
-
-
-                <td height="20" align="left" valign="bottom"><font color="#0D0E0C" face="Verdana, Geneva, sans-serif" style="font-size: 13px;">Conception facile et rapide en quelques clics</font></td>
-
-          </tr>
-
-              <tr>
-
-                <td width="15" height="15" align="center" valign="bottom"><font color="#D62D66" face="Verdana, Geneva, sans-serif" style="font-size: 14px; line-height: 16px;">&bull;</font></td>
-
-                <td height="20" align="left" valign="bottom"><font color="#0D0E0C" face="Verdana, Geneva, sans-serif" style="font-size: 13px;">Choisissez parmi 42 mod&egrave;les de cartes de visite</font></td>
-
-          </tr>
-
-              <tr>
-
-
-
-                <td width="15" height="15" align="center" valign="bottom"><font color="#D62D66" face="Verdana, Geneva, sans-serif" style="font-size: 14px; line-height: 16px;">&bull;</font></td>
-
-                <td height="20" align="left" valign="bottom"><font color="#0D0E0C" face="Verdana, Geneva, sans-serif" style="font-size: 13px;"><b><font color="#D62D66">BONUS !</font> </b>1 Porte-cartes + 1 porte-cl&eacute;s GRATUITS</font></td>
-
-              </tr>
-
-              <tr>
-
-                <td height="15" align="center" valign="bottom">&nbsp;</td>
-
-                <td height="20" align="left" valign="bottom">&nbsp;</td>
-
-              </tr>  
-
-          </table></td>
-
-
-
-  </tr>
-
-
-
-</table></td>
-
-  </tr>
-
-  <tr>
-
-    <td width="500" height="45" align="center" valign="middle" background="http://img.mediaplex.com/0/8992/64819/whitebot500.gif" bgcolor="#FFFFFF"><a href="http://action.metaffiliation.com/suivi.php?mclic=S3C8E4FD4D21783886084&urlrv=http%3A%2F%2Faltfarm.mediaplex.com%2Fad%2Fck%2F8992-50553-14036-14&urlv=fed8b6d9c420f877777917cbce85ba66" target="_blank"><font color="#0D0E0C" face="Geneva, Arial, Helvetica, sans-serif" style="font-size:16px;"><strong> D&eacute;p&ecirc;chez-vous spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org avant que cette offre n'expire</strong></font></a></td>
-
-  </tr>
-
-</table>
-
-
-
-<table width="500" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF" bgcolor="#FFFFFF">
-
-  <tr>
-
-    <td width="496"><table align="center" width="496" border="0" cellspacing="0" cellpadding="0">
-
-      <tr align="center">
-
-        <td width="496" height="85"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-
-          <tr>
-
-                <td width="260" align="right" valign="middle"><img src="http://img.mediaplex.com/0/8992/64819/Logo-horizontal.gif" width="243" height="51" hspace="6" /></td>
-
-            <td width="226" align="left" style="font-size:9px; color:#666666; font-family:Arial, Helvetica, sans-serif;">Prix affich&eacute;s TTC. Les frais de port, les options de produits 
-
-              et photo/logo t&eacute;l&eacute;charg&eacute;s ne sont pas compris 
-
-              &agrave; moins de n'&ecirc;tre explicitement inclus dans l'offre. 
-
-              Offre non valide sur des commandes d&eacute;j&agrave; pass&eacute;es. 
-
-              Pour plus de d&eacute;tails, consultez notre site web.</td>
-
-
-
-            <td width="10" align="left">&nbsp;</td>
-
-          </tr>
-
-        </table></td>
-
-      </tr>
-
-      <tr>
-
-        <td height="20" align="center" valign="middle"><hr align="center" width="480" size="1" noshade>
-
-          &nbsp;<img src="http://img.mediaplex.com/0/8992/64819/footer.gif" alt="Merci" width="400" height="106" border="0" /></td>
-
-      </tr>
-
-    </table><img src="http://altfarm.mediaplex.com/ad/tr/8992-50553-14036-14" border="0"></td>
-
-
-
-  </tr>
-
-</table>
-
-<p>
-
-Ce message est envoy&eacute; par central marques - <a href="http://www.www.centralmarques.com/svi/gestionserv.php?nb=2435&cat=culture&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
-
+Content-Type: text/html; charset="UTF-8"
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<body bgcolor="white" link="#333399" vlink="999999">
+
+<style type="text/css">
+<!--
+  #newsletterBody {
+    margin: 0;
+    width: 591px;
+    font-family: arial,helvetica,geneva,san sarif;
+    font-size: 1em;
+    color: blue;
+  }
+    #newsletterBody a.feature {color:#c60;font-size: 1.4em;font-weight: bold;}
+      #newsletterBody p.featureText {font-size: .9em;margin: 0;}
+
+//-->
+</style>
+
+
+<div id="newsletterBody">
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0"><tr valign="top"><td><font size="2"  face="Arial, Helvetica, sans-serif">
+<h1 class="headline_title">eNewsletter</h1>
+	<br>Wednesday, October 7, 2009<br><br><a href="http://d5d70.xusujum.cn/?dyholyuky=zc871j61lD4i2ks5OF6T92&ogeie=30754436619881391608">
+	<img alt="Mail has blocked remote images in this message. To show images click here" src="http://82028b.xusujum.cn/IEf0WN9566060084.gif" style="border-width: 0px"></a><br><br></td></tr></table><table>
+<tr><td>
+<hr />
+<h4 style="margin-bottom:0;color:#000;font-size:.85em;">ABOUT THIS NEWSLETTER</h4>
+<p style="color:#000;font-size:.75em;">
+* You are subscribed as First Name: spi-devel-general; E-mail: spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org<br>
+<br>
+* To advertise in this e-mail, contact
+<a href="http://ffa9.xusujum.cn/?yqoyteh=075ElT73b046730930s5B7&aduqyixy=12836389583913360903917">Online Sales Director</a><br>
+<br>
+* <a href="http://f88.xusujum.cn/?ojyhuqehy=h797437917x2048W544ot&zusewyet=40410445288763792763">Click here</a> to subscribe to the Austin American-Statesman.<br>
+
+<br>
+This news, information and advertising message is brought to you by the Austin American-Statesman,
+305 S. Congress Avenue, Austin TX 78704.  If you wish to remove your e-mail address from
+our distribution list for future mailings, please <a href="http://eca99.xusujum.cn/?oylocyzol=89PMY6wx9g175708858l9578&ijyqysie=532863748409099024880585">click here</a>.
+<br><br>
+Copyright 2001-2009 Cox Texas Newspapers, L.P. All Rights Reserved.<br>
+<br>
+<a href="http://7511.xusujum.cn/?uvojucy=2838J7jq2Vd1891r9h5t59Kd3&iimesari=20401550677567069450407">Privacy Policy</a> | <a href="http://b0478f.xusujum.cn/?xixih=217N0448729q07ss40240827&uoxuut=236747702328403833937">Visitor Agreement</a><br>
 </p>
 
-</center>
+</td></tr>
+</table>
 
-<img src="http://action.metaffiliation.com/suivi.php?taff=S3C8E4FD4D2174" width="1" height="1" border="0"></body>
-
+</div>
+</body>
 </html>
 
 
---_----------=_parties_e6aeff6fa5bcc0ecb3fe9fed33b1b455--
-
---===============8048284964365052911==
+--===============5615890916597181796==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -336,7 +87,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============8048284964365052911==
+--===============5615890916597181796==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -347,4 +98,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8048284964365052911==--
+--===============5615890916597181796==--

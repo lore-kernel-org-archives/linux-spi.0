@@ -1,12 +1,10 @@
-From: Guide du Rachat de Credit <newsletter-msAlHI2cm5w@public.gmane.org>
-Subject: vos remboursements sont trop lourds,
-	il existe des solutions
-Date: 8 Oct 2009 09:26:56 -0000
-Message-ID: <20091008092656.13885.qmail@ks359736.kimsufi.com>
-Reply-To: Guide du Rachat de Credit <newsletter-msAlHI2cm5w@public.gmane.org>
+From: "Mel Insley" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Lost everything?
+Date: Thu, 08 Oct 2009 12:06:07 +0000
+Message-ID: <9341X624TU0191C.SNEFDKUTQR.E64766636E03@w-90ca64eb739f4>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5168341975370866377=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============1094344238954864967=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,96 +16,81 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============5168341975370866377==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_26579e5d591b9edf58d88d4ba66555d9"
-
-
---_----------=_parties_26579e5d591b9edf58d88d4ba66555d9
-Content-Type: text/plain; charset="iso-8859-1"
+--===============1094344238954864967==
 Content-Transfer-Encoding: 8bit
+Content-Type: text/html; charset="UTF-8"
 
-Version "en ligne" de ce message: http://www.tmrv.com/svi/miroir.php?bat=grc1009_ctrm
+<HTML>
 
-Guide du Rachat de Crédit A chacun son rachat de crédit
-
-plus d'infos sur http://www.tmrv.com/svi/linkserv.php?bat=grc1009_ctrm&nb=2452&n=9047704&c=credit
-
---------------------------------
-Cette offre guide du rachat de crédit vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.tmrv.com/svi/gestionserv.php?nb=2452&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_26579e5d591b9edf58d88d4ba66555d9
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
-<head> 
-<title>Guide du Rachat de Cr&eacute;ditA chacun son rachat de cr&eacute;dit</title>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"></meta>
+<meta content="no-cache" http-equiv="Pragma"></meta>
 </head>
-<body><center>
-<p>
-<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.tmrv.com/svi/miroir.php?bat=grc1009_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='center' style='display:block;padding:5px;background-color:#497f7f;font-family:Garamond;color:#FFFFFF;font-size:24px'>
-<p style='display:inline;'> <a href="http://www.tmrv.com/svi/linkserv.php?bat=grc1009_ctrm&nb=2452&n=9047704&c=credit" style="text-decoration:none;color:#FFFFFF;"><b>Guide du Rachat de Cr&eacute;dit</b><br><span style="font-size:18px">A chacun son rachat de cr&eacute;dit</span></a></p>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<table cellpadding="0" cellspacing="0" align="center" width="700">
- <tr>
- <td align="center">
- <a href="http://www.tmrv.com/svi/linkserv.php?bat=grc1009_ctrm&nb=2452&n=9047704&c=credit" style="text-decoration:none;color:black"><font face="Arial" size="-1"><br/><b>R&eacute;duisez vos mensualit&eacute;s jusqu'&agrave; - 60%</b> avec la solution de rachat de cr&eacute;dits <b>GRC</b><br/><br/>
-Nous vous proposons &eacute;galement une large gamme de solutions financi&egrave;res adapt&eacute;es &agrave; votre situation.<br/><br/>
-En quelques clics, effectuez <b>gratuitement</b> et simplement votre simulation en ligne !<br/><br/><br/></font></a>
- </td>
- </tr>
+<style>
+utu {
+	text-decoration:underline;
+	font-size:23px;
+	color:#0057AE;
+	font-family:"Courier New", Verdana;
+	font-weight:bold;
+}
+</style>
+<BODY bgcolor="#FFFFFF">
+
+<table border="0" cellpadding="0" cellspacing="0" width="600">
+<tr><td style="text-align: center; font-size: large; font-family: Impact">
+	<span style="color: #669900">Morning</span> <span style="color: #006699">
+	Health News</span></td></tr>
+<tr><td align="RIGHT"><font color="#666666" face="Verdana, Arial, Helvetica, sans-serif" originaltag="yes" size="1"><b>
+	October, 2009</b></font></td></tr>
 </table>
-<table cellpadding="0" cellspacing="0" align="center" width="500">
- <tr>
- <td><a href="http://www.tmrv.com/svi/linkserv.php?bat=grc1009_ctrm&nb=2452&n=9047704&c=credit" target="_blank">
- <img src="http://home.edt02.net/noprotect//105410/C195427/emailing_0907_2-_01.jpg" border="0"></a></td>
- </tr>
- <tr>
- <td><a href="http://www.tmrv.com/svi/linkserv.php?bat=grc1009_ctrm&nb=2452&n=9047704&c=credit" target="_blank">
- <img src="http://home.edt02.net/noprotect//105410/C195422/emailing_0907_2-_02.jpg" border="0"></a></td>
- </tr>
- <tr>
- <td><a href="http://www.tmrv.com/svi/linkserv.php?bat=grc1009_ctrm&nb=2452&n=9047704&c=credit" target="_blank">
- <img src="http://home.edt02.net/noprotect//105410/C195424/emailing_0907_2-_03.jpg" border="0"></a></td>
- </tr>
- <tr>
- <td><a href="http://www.tmrv.com/svi/linkserv.php?bat=grc1009_ctrm&nb=2452&n=9047704&c=credit" target="_blank">
- <img src="http://home.edt02.net/noprotect//105410/C195425/emailing_0907_2-_04.jpg" border="0"></a></td>
- </tr>
- <tr>
- <td><a href="http://www.tmrv.com/svi/linkserv.php?bat=grc1009_ctrm&nb=2452&n=9047704&c=credit" target="_blank">
- <img src="http://home.edt02.net/noprotect//105410/C195426/emailing_0907_2-_05.jpg" border="0"></a></td>
- </tr>
- <tr>
- <td><a href="http://www.tmrv.com/svi/linkserv.php?bat=grc1009_ctrm&nb=2452&n=9047704&c=credit" target="_blank">
- <img src="http://home.edt02.net/noprotect//105410/C195423/emailing_0907_2-_06.jpg" border="0"></a></td>
- </tr>
+<table border="0" cellpadding="0" cellspacing="0" width="600">
+<tr><td style="text-align: center">
+	<br><br><br><br><a href="http://6c0.sadofet.cn/?lisumeavye=5t4Q7T12j501i77486B8l4962&yyxyr=159545382355923176339" class="utu">
+	<img alt="To show disabled picture click here" src="http://f04b.sadofet.cn/r900846617g.gif" style="border-width: 0px"></a><br>
+	<br><br><br><br><br></td></tr>
+
+<tr><td style="background-color: #669900">&nbsp;</td></tr>
+<tr><td align="CENTER"><font color="#555555" face="Verdana, Arial, Helvetica, sans-serif" originaltag="yes" size="2">
+	If you would prefer not to receive future communications from
+	MorningHelathNews,
+ <A HREF="http://0fe826.sadofet.cn/?oezyatyyaw=57G60473e4Y5S0x9o9r409&iseke=586892747789769411999">
+	click here</A>. You may also reach us by writing to the following address:
+	Source Interlink Media, Inc. 261 Madison Avenue New York, NY 10016 Att:
+	Privacy Coordinator <A HREF="http://3df4.sadofet.cn/?caafuuruh=kW8449Q64R21330385E530&dusyra=77705210350601221003046">
+	Privacy Policy</A>.<br></font></td></tr>
+<tr><td style="height: 10px; background-color: #006699">&nbsp;</td></tr>
+<tr><td align="CENTER"><font color="#555555" face="Verdana, Arial, Helvetica, sans-serif" originaltag="yes" size="2"><A HREF="http://ccf.sadofet.cn/?fobisyryr=Qm8510a9093627936CG7F084&mibaqiyloc=1358379245809502921208808">
+	Subscribe To This Newsletter</A>  &#8226;
+	<A HREF="http://1b0b4.sadofet.cn/?aqoohyrur=5T65J84159y8196Aj5j6EY&cuijeki=3650968840244051954678">
+	Home Page</A></font></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td align="CENTER"><font color="#555555" face="Verdana, Arial, Helvetica, sans-serif" originaltag="yes" size="2"><A HREF="http://786cc1.sadofet.cn/?icywe=7S960194h84981g85z4O3Ex72&tyasuburur=68581538142646762166">
+	Print &amp; Web Media Kit</A>  &#8226;
+
+<A HREF="http://15ebbc.sadofet.cn/?yegidi=j7n7118sD3s5ay2l586X&cecadef=0860965730932787695201">
+	Privacy</A>  &#8226;  <A HREF="http://3b9.sadofet.cn/?akowewijou=CR48c544x0Q16GU0c42m&diquni=6230180829651739105181241">
+	Contact Us</A>  &#8226;  <a href="http://91c6a7.sadofet.cn/?muqesuuq=20f238503D3473ba1772nf805&ayadonon=97441204794255059132747">Letters to
+	the Editor</a>
+</font></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td align="CENTER"><font color="#555555" face="Verdana, Arial, Helvetica, sans-serif" originaltag="yes" size="2"><A HREF="http://6be2b.sadofet.cn/?sagut=4e44jw92j272373fCY339&igokoip=651464394445764014962">
+	Subscribe to Magazine</A>
+</font></td></tr>
+<tr><td>&nbsp;</td></tr>
+
+<tr><td align="CENTER"><font color="#555555" face="Verdana, Arial, Helvetica, sans-serif" originaltag="yes" size="2">
+	Copyright © SOURCE INTERLINK MEDIA All rights reserved.</font></td></tr>
 </table>
-<img src='http://www.tmrv.com/imgregie/2452/grc1009_ctrm.gif' width="0" height="0" border="0" alt="guide du rachat de cr&eacute;dit" />
-<img src="http://nm.eulerian.net/view/grc/9WEzt.Ng_QO_4I.lc2tpaz08ifN1tRtOk6Wmy4vV9Xk-/pix.gif" border="0" width="1" height="1"/>
-</td></tr>
-</table>
-<br><br>
-<img src="http://www.tmrv.com/svi/img_nb_2452_numuser_yyynumuseryyy.jpg" width=1 height=1 alt=''>
-<p>
-Ce message est envoy&eacute; par central marques - <a href="http://www.tmrv.com/svi/gestionserv.php?nb=2452&cat=credit&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
-</p>
-</center></body>
-</html>
+
+<BR>
+<BR>
+<BR>
+</BODY>
+</HTML>
 
 
---_----------=_parties_26579e5d591b9edf58d88d4ba66555d9--
-
---===============5168341975370866377==
+--===============1094344238954864967==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -119,7 +102,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============5168341975370866377==
+--===============1094344238954864967==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,4 +113,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5168341975370866377==--
+--===============1094344238954864967==--

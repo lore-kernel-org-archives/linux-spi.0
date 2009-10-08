@@ -1,127 +1,457 @@
-From: "Le Mois pour Moi par Plein Temps" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: =?iso-8859-1?q?Pret_personnel_=E0_3=2C5_pourc?=
-	=?iso-8859-1?q?ent_pour_tous_vos_projets?=
-Date: Thu,  8 Oct 2009 06:25:00 +0200 (CEST)
-Message-ID: <kr6hlj.y0hy0t@front.ta271.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3631699298231877411=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Thomas Chou <thomas@wytron.com.tw>
+Subject: [PATCH] spi: New driver for Altera SPI
+Date: Thu,  8 Oct 2009 14:03:58 +0800
+Message-ID: <1254981838-20584-1-git-send-email-thomas@wytron.com.tw>
+Cc: Nios2 development list <nios2-dev@sopc.et.ntust.edu.tw>,
+	linux-kernel@vger.kernel.org, Thomas Chou <thomas@wytron.com.tw>
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1753738AbZJHGDs@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3631699298231877411==
-Content-Type: multipart/alternative;
-	boundary="=_d2f1baf95fd6361cd752ffa0ab09bdcf"
+This patch adds a new SPI driver to support the Altera SOPC Builder
+SPI component. It uses the bitbanging library.
 
---=_d2f1baf95fd6361cd752ffa0ab09bdcf
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Thomas Chou <thomas@wytron.com.tw>
+---
+ drivers/spi/Kconfig      |    7 +
+ drivers/spi/Makefile     |    1 +
+ drivers/spi/spi_altera.c |  397 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 405 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/spi/spi_altera.c
 
-
---=_d2f1baf95fd6361cd752ffa0ab09bdcf
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html><head>=0D</head><body>=0D<p align=3D"center"><font face=3D"Arial, Hel=
-vetica, sans-serif" color=3D"#999999" size=3D"2">Si vous ne voyez pas cet e=
-mail, <a href=3D"http://clk.tradedoubler.com/click?p=3D23770&a=3D1543484&g=
-=3D17693592&url=3Dhttp://www.moispourmoi.fr/?utm_source=3Daffiliation&utm_m=
-edium=3Daddvise&utm_campaign=3Dmoispourmoi" style=3D"text-decoration: none;=
-"><font color=3D"#d4002b"><strong>cliquez ici</strong></font></a></font></p=
->=0D<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" align=3D"center=
-" width=3D"600">=0D<tbody>=0D<tr>=0D<td><a href=3D"http://clk.tradedoubler.=
-com/click?p=3D23770&a=3D1543484&g=3D17693592&url=3Dhttp://www.moispourmoi.f=
-r/?utm_source=3Daffiliation&utm_medium=3Daddvise&utm_campaign=3Dmoispourmoi=
-"><img height=3D"136" border=3D"0" width=3D"600" complete=3D"true" src=3D"h=
-ttp://crea.mediatis.fr/emailing/39/img/mpm_02.gif" alt=3D"Le mois pour mois=
- m=E9diatis" /></a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://clk.tradedo=
-ubler.com/click?p=3D23770&a=3D1543484&g=3D17693592&url=3Dhttp://www.moispou=
-rmoi.fr/?utm_source=3Daffiliation&utm_medium=3Daddvise&utm_campaign=3Dmoisp=
-ourmoi"><img height=3D"173" border=3D"0" width=3D"600" complete=3D"true" sr=
-c=3D"http://crea.mediatis.fr/emailing/39/img/mpm_03.gif" alt=3D"TEG fixe et=
- garanti de 3,5%" /></a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://clk.tr=
-adedoubler.com/click?p=3D23770&a=3D1543484&g=3D17693592&url=3Dhttp://www.mo=
-ispourmoi.fr/?utm_source=3Daffiliation&utm_medium=3Daddvise&utm_campaign=3D=
-moispourmoi"><img height=3D"190" border=3D"0" width=3D"600" complete=3D"tru=
-e" src=3D"http://crea.mediatis.fr/emailing/39/img/mpm_04.gif" alt=3D"TEG fi=
-xe et garanti de 3,5%" /></a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://c=
-lk.tradedoubler.com/click?p=3D23770&a=3D1543484&g=3D17693592&url=3Dhttp://w=
-ww.moispourmoi.fr/?utm_source=3Daffiliation&utm_medium=3Daddvise&utm_campai=
-gn=3Dmoispourmoi"><img height=3D"81" border=3D"0" width=3D"600" complete=3D=
-"true" src=3D"http://crea.mediatis.fr/emailing/39/img/mpm_05.gif" alt=3D"Ve=
-nez d=E9couvrir le mois pour moi !" /></a></td>=0D</tr>=0D<tr>=0D<td><a hre=
-f=3D"http://clk.tradedoubler.com/click?p=3D23770&a=3D1543484&g=3D17693592&u=
-rl=3Dhttp://www.moispourmoi.fr/?utm_source=3Daffiliation&utm_medium=3Daddvi=
-se&utm_campaign=3Dmoispourmoi"><img height=3D"112" border=3D"0" width=3D"60=
-0" complete=3D"true" src=3D"http://crea.mediatis.fr/emailing/39/img/mpm_06.=
-gif" alt=3D"Pr=EAt personnel classique(1) de 3 000 =E0 21 500 =80 remboursa=
-ble sur une dur=E9e de 12 =E0 24 mois au teg fixe de 3,5% hors assurance fa=
-cultative. Des frais de dossier de 76 =80 s=B4appliquent pour tout financem=
-ent d=B4une dur=E9e sup=E9rieure =E0 12 mois. Exemple : Pour un achat d=B4u=
-ne valeur de 3 000 =80, payez en 24 mensualit=E9s de 129,53 =80 au teg fixe=
- de 3,5% pour un co=FBt total de l'op=E9ration =E0 cr=E9dit de 3 184,72 =80=
- frais de dossier de 76 =80 inclus (hors assurance facultative)." /></a></t=
-d>=0D</tr>=0D<tr>=0D<td><a href=3D"http://clk.tradedoubler.com/click?p=3D23=
-770&a=3D1543484&g=3D17693592&url=3Dhttp://www.moispourmoi.fr/?utm_source=3D=
-affiliation&utm_medium=3Daddvise&utm_campaign=3Dmoispourmoi"><img height=3D=
-"87" border=3D"0" width=3D"600" complete=3D"true" src=3D"http://crea.mediat=
-is.fr/emailing/39/img/mpm_07.gif" alt=3D"(1) Sous r=E9serve d'acceptation d=
-e votre dossier par m=E9diatis et apr=E8s expiration du d=E9lai l=E9gal de =
-r=E9tractation en vigueur suivant la signature de l'offre pr=E9alable de cr=
-=E9dit. L'accord d=E9finitif n'interviendra qu'apr=E8s examen de vos justif=
-icatifs. Conditions en vigueur au 01/10/2009. Offre valable jusqu=92au 31 O=
-ctobre 2009. M=E9diatis S.A. au capital de 39 370 100 =80 - Siren 612 002 4=
-77 RCS PARIS =96 66, rue des archives =96 75003 Paris" /></a></td>=0D</tr>=
-=0D</tbody>=0D</table>=0D<p align=3D"center"><font face=3D"Arial, Helvetica=
-, sans-serif" color=3D"#999999" size=3D"2">Si vous ne voyez pas cet email, =
-<a href=3D"http://clk.tradedoubler.com/click?p=3D23770&a=3D1543484&g=3D1769=
-3592&url=3Dhttp://www.moispourmoi.fr/?utm_source=3Daffiliation&utm_medium=
-=3Daddvise&utm_campaign=3Dmoispourmoi"><font color=3D"#d4002b"><strong>cliq=
-uez ici</strong></font></a></font></p><img height=3D"1" border=3D"0" width=
-=3D"1" complete=3D"true" src=3D"http://impfr.tradedoubler.com/imp/img/17693=
-592/1543484" /><br /><br />=0D<div align=3D"center"><font face=3D"Arial" co=
-lor=3D"#000000" size=3D"1">Cette publicit=E9 M=E9diatis vous est envoy=E9e =
-par Plein Temps<br />Vos donn=E9es nominatives ou votre adresse email n'ont=
- pas =E9t=E9 transmises =E0 M=E9diatis.</font></div>=0D<br><br><div align=
-=3D"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" >Conform=
-ement a la loi Informatique et Libertes, vous disposez d'un droit d'acces e=
-t de rectification.
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta271.com/=
-AA50DPKFWF_475197/877">ici</a></font></div><img src=3D"http://front.ta271.c=
-om/ZZ50DPKFWF_475197.png" /></body></html>
---=_d2f1baf95fd6361cd752ffa0ab09bdcf--
-
-
-
---===============3631699298231877411==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Come build with us! The BlackBerry(R) Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9 - 12, 2009. Register now!
-http://p.sf.net/sfu/devconference
---===============3631699298231877411==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3631699298231877411==--
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 4b6f7cb..64f1148 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -53,6 +53,13 @@ if SPI_MASTER
+ 
+ comment "SPI Master Controller Drivers"
+ 
++config SPI_ALTERA
++	tristate "Altera SPI Controller"
++	depends on EMBEDDED
++	select SPI_BITBANG
++	help
++	  This is the driver for the Altera SPI Controller.
++
+ config SPI_ATMEL
+ 	tristate "Atmel SPI Controller"
+ 	depends on (ARCH_AT91 || AVR32)
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 21a1182..f5f43f1 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -11,6 +11,7 @@ endif
+ obj-$(CONFIG_SPI_MASTER)		+= spi.o
+ 
+ # SPI master controller drivers (bus)
++obj-$(CONFIG_SPI_ALTERA)		+= spi_altera.o
+ obj-$(CONFIG_SPI_ATMEL)			+= atmel_spi.o
+ obj-$(CONFIG_SPI_BFIN)			+= spi_bfin5xx.o
+ obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
+diff --git a/drivers/spi/spi_altera.c b/drivers/spi/spi_altera.c
+new file mode 100644
+index 0000000..337dc95
+--- /dev/null
++++ b/drivers/spi/spi_altera.c
+@@ -0,0 +1,397 @@
++/*
++ * Altera SPI driver
++ *
++ * Copyright (C) 2008 Thomas Chou <thomas@wytron.com.tw>
++ *
++ * Based on spi_s3c24xx.c, which is:
++ * Copyright (c) 2006 Ben Dooks
++ * Copyright (c) 2006 Simtec Electronics
++ *	Ben Dooks <ben@simtec.co.uk>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include <linux/init.h>
++#include <linux/spinlock.h>
++#include <linux/workqueue.h>
++#include <linux/interrupt.h>
++#include <linux/delay.h>
++#include <linux/errno.h>
++#include <linux/err.h>
++#include <linux/clk.h>
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_bitbang.h>
++#include <linux/io.h>
++
++#define DRV_NAME "spi_altera"
++
++#define ALTERA_SPI_RXDATA	0
++#define ALTERA_SPI_TXDATA	4
++#define ALTERA_SPI_STATUS	8
++#define ALTERA_SPI_CONTROL	12
++#define ALTERA_SPI_SLAVE_SEL	20
++
++#define ALTERA_SPI_STATUS_ROE_MSK	(0x8)
++#define ALTERA_SPI_STATUS_TOE_MSK	(0x10)
++#define ALTERA_SPI_STATUS_TMT_MSK	(0x20)
++#define ALTERA_SPI_STATUS_TRDY_MSK	(0x40)
++#define ALTERA_SPI_STATUS_RRDY_MSK	(0x80)
++#define ALTERA_SPI_STATUS_E_MSK		(0x100)
++
++#define ALTERA_SPI_CONTROL_IROE_MSK	(0x8)
++#define ALTERA_SPI_CONTROL_ITOE_MSK	(0x10)
++#define ALTERA_SPI_CONTROL_ITRDY_MSK	(0x40)
++#define ALTERA_SPI_CONTROL_IRRDY_MSK	(0x80)
++#define ALTERA_SPI_CONTROL_IE_MSK	(0x100)
++#define ALTERA_SPI_CONTROL_SSO_MSK	(0x400)
++
++struct altera_spi {
++	/* bitbang has to be first */
++	struct spi_bitbang bitbang;
++	struct completion done;
++
++	unsigned long base;
++	int irq;
++	int len;
++	int count;
++	int bytes_per_word;
++	unsigned long imr;
++
++	/* data buffers */
++	const unsigned char *tx;
++	unsigned char *rx;
++
++	struct resource *ioarea;
++	struct spi_master *master;
++	struct spi_device *curdev;
++	struct device *dev;
++};
++
++static inline struct altera_spi *to_hw(struct spi_device *sdev)
++{
++	return spi_master_get_devdata(sdev->master);
++}
++
++static void altera_spi_chipsel(struct spi_device *spi, int value)
++{
++	struct altera_spi *hw = to_hw(spi);
++
++	if (spi->mode & SPI_CS_HIGH) {
++		switch (value) {
++		case BITBANG_CS_INACTIVE:
++			writel(1 << spi->chip_select,
++			       hw->base + ALTERA_SPI_SLAVE_SEL);
++			hw->imr |= ALTERA_SPI_CONTROL_SSO_MSK;
++			writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
++			break;
++
++		case BITBANG_CS_ACTIVE:
++			hw->imr &= ~ALTERA_SPI_CONTROL_SSO_MSK;
++			writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
++			writel(0, hw->base + ALTERA_SPI_SLAVE_SEL);
++			break;
++		}
++	} else {
++		switch (value) {
++		case BITBANG_CS_INACTIVE:
++			hw->imr &= ~ALTERA_SPI_CONTROL_SSO_MSK;
++			writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
++			break;
++
++		case BITBANG_CS_ACTIVE:
++			writel(1 << spi->chip_select,
++			       hw->base + ALTERA_SPI_SLAVE_SEL);
++			hw->imr |= ALTERA_SPI_CONTROL_SSO_MSK;
++			writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
++			break;
++		}
++	}
++}
++
++static int altera_spi_setupxfer(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct altera_spi *hw = to_hw(spi);
++
++	spin_lock(&hw->bitbang.lock);
++	if (!hw->bitbang.busy) {
++		hw->bitbang.chipselect(spi, BITBANG_CS_INACTIVE);
++		/* need to ndelay for 0.5 clocktick ? */
++	}
++	spin_unlock(&hw->bitbang.lock);
++
++	return 0;
++}
++
++/* the spi->mode bits understood by this driver: */
++#define MODEBITS (SPI_CPOL | SPI_CPHA | SPI_CS_HIGH)
++
++static int altera_spi_setup(struct spi_device *spi)
++{
++	int ret;
++
++	if (!spi->bits_per_word)
++		spi->bits_per_word = 8;
++
++	if (spi->mode & ~MODEBITS) {
++		dev_dbg(&spi->dev, "setup: unsupported mode bits %x\n",
++			spi->mode & ~MODEBITS);
++		return -EINVAL;
++	}
++
++	ret = altera_spi_setupxfer(spi, NULL);
++	if (ret < 0) {
++		dev_err(&spi->dev, "setupxfer returned %d\n", ret);
++		return ret;
++	}
++
++	dev_dbg(&spi->dev, "%s: mode %d, %u bpw, %d hz\n",
++		__func__, spi->mode, spi->bits_per_word, spi->max_speed_hz);
++
++	return 0;
++}
++
++static inline unsigned int hw_txbyte(struct altera_spi *hw, int count)
++{
++	if (hw->tx) {
++		switch (hw->bytes_per_word) {
++		case 1:
++			return hw->tx[count];
++		case 2:
++			return (hw->tx[count * 2]
++				| (hw->tx[count * 2 + 1] << 8));
++		}
++	}
++
++	return 0;
++}
++
++static int altera_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct altera_spi *hw = to_hw(spi);
++
++	dev_dbg(&spi->dev, "txrx: tx %p, rx %p, len %d\n",
++		t->tx_buf, t->rx_buf, t->len);
++
++	hw->tx = t->tx_buf;
++	hw->rx = t->rx_buf;
++	hw->count = 0;
++	hw->bytes_per_word = (t->bits_per_word ? : spi->bits_per_word) / 8;
++	hw->len = t->len / hw->bytes_per_word;
++
++	init_completion(&hw->done);
++
++	/* send the first byte */
++	writel(hw_txbyte(hw, 0), hw->base + ALTERA_SPI_TXDATA);
++
++	wait_for_completion(&hw->done);
++
++	return hw->count * hw->bytes_per_word;
++}
++
++static irqreturn_t altera_spi_irq(int irq, void *dev)
++{
++	struct altera_spi *hw = dev;
++	unsigned int spsta = readl(hw->base + ALTERA_SPI_STATUS);
++	unsigned int count = hw->count;
++	unsigned int rxd;
++
++	if (spsta & ALTERA_SPI_STATUS_ROE_MSK) {
++		dev_dbg(hw->dev, "data-collision\n");
++		complete(&hw->done);
++		goto irq_done;
++	}
++
++	if (!(spsta & ALTERA_SPI_STATUS_TRDY_MSK)) {
++		dev_dbg(hw->dev, "spi not ready for tx?\n");
++		complete(&hw->done);
++		goto irq_done;
++	}
++
++	hw->count++;
++
++	rxd = readl(hw->base + ALTERA_SPI_RXDATA);
++	if (hw->rx) {
++		switch (hw->bytes_per_word) {
++		case 1:
++			hw->rx[count] = rxd;
++			break;
++		case 2:
++			hw->rx[count * 2] = rxd;
++			hw->rx[count * 2 + 1] = rxd >> 8;
++			break;
++		}
++	}
++
++	count++;
++
++	if (count < hw->len)
++		writel(hw_txbyte(hw, count), hw->base + ALTERA_SPI_TXDATA);
++	else
++		complete(&hw->done);
++
++irq_done:
++	return IRQ_HANDLED;
++}
++
++static int __init altera_spi_probe(struct platform_device *pdev)
++{
++	struct altera_spi *hw;
++	struct spi_master *master;
++	struct resource *res;
++	int err = 0;
++
++	master = spi_alloc_master(&pdev->dev, sizeof(struct altera_spi));
++	if (master == NULL) {
++		dev_err(&pdev->dev, "No memory for spi_master\n");
++		err = -ENOMEM;
++		goto err_nomem;
++	}
++
++	hw = spi_master_get_devdata(master);
++	memset(hw, 0, sizeof(struct altera_spi));
++
++	hw->master = spi_master_get(master);
++	hw->dev = &pdev->dev;
++
++	platform_set_drvdata(pdev, hw);
++	init_completion(&hw->done);
++
++	/* setup the master state. */
++
++	master->bus_num = pdev->id;
++	master->num_chipselect = 16;
++
++	/* setup the state for the bitbang driver */
++
++	hw->bitbang.master = hw->master;
++	hw->bitbang.setup_transfer = altera_spi_setupxfer;
++	hw->bitbang.chipselect = altera_spi_chipsel;
++	hw->bitbang.txrx_bufs = altera_spi_txrx;
++	hw->bitbang.master->setup = altera_spi_setup;
++
++	dev_dbg(hw->dev, "bitbang at %p\n", &hw->bitbang);
++
++	/* find and map our resources */
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (res == NULL) {
++		dev_err(&pdev->dev, "Cannot get IORESOURCE_MEM\n");
++		err = -ENOENT;
++		goto err_no_iores;
++	}
++
++	hw->ioarea = request_mem_region(res->start, (res->end - res->start) + 1,
++					pdev->name);
++
++	if (hw->ioarea == NULL) {
++		dev_err(&pdev->dev, "Cannot reserve region\n");
++		err = -ENXIO;
++		goto err_no_iores;
++	}
++
++	hw->base =
++	    (unsigned long)ioremap(res->start, (res->end - res->start) + 1);
++	if (hw->base == 0) {
++		dev_err(&pdev->dev, "Cannot map IO\n");
++		err = -ENXIO;
++		goto err_no_iomap;
++	}
++
++	hw->irq = platform_get_irq(pdev, 0);
++	if (hw->irq < 0) {
++		dev_err(&pdev->dev, "No IRQ specified\n");
++		err = -ENOENT;
++		goto err_no_irq;
++	}
++
++	/* program defaults into the registers */
++	hw->imr = 0;		/* disable spi interrupts */
++	writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
++	writel(0, hw->base + ALTERA_SPI_STATUS);	/* clear status reg */
++	if (readl(hw->base + ALTERA_SPI_STATUS) & ALTERA_SPI_STATUS_RRDY_MSK)
++		readl(hw->base + ALTERA_SPI_RXDATA);	/* flush rxdata */
++
++	err = request_irq(hw->irq, altera_spi_irq, 0, pdev->name, hw);
++	if (err) {
++		dev_err(&pdev->dev, "Cannot claim IRQ\n");
++		goto err_no_irq;
++	}
++
++	/* enable receive interrupt */
++	hw->imr |= ALTERA_SPI_CONTROL_IRRDY_MSK;
++	writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
++
++	/* register our spi controller */
++
++	err = spi_bitbang_start(&hw->bitbang);
++	if (err) {
++		dev_err(&pdev->dev, "Failed to register SPI master\n");
++		goto err_register;
++	}
++
++	return 0;
++
++err_register:
++	free_irq(hw->irq, hw);
++err_no_irq:
++	iounmap((void *)hw->base);
++err_no_iomap:
++	release_resource(hw->ioarea);
++	kfree(hw->ioarea);
++err_no_iores:
++	spi_master_put(hw->master);;
++err_nomem:
++	return err;
++}
++
++static int __exit altera_spi_remove(struct platform_device *dev)
++{
++	struct altera_spi *hw = platform_get_drvdata(dev);
++
++	/* disable spi interrupts */
++	hw->imr = 0;
++	writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
++
++	platform_set_drvdata(dev, NULL);
++
++	spi_unregister_master(hw->master);
++
++	free_irq(hw->irq, hw);
++	iounmap((void *)hw->base);
++
++	release_resource(hw->ioarea);
++	kfree(hw->ioarea);
++
++	spi_master_put(hw->master);
++	return 0;
++}
++
++static struct platform_driver altera_spidrv = {
++	.remove = __exit_p(altera_spi_remove),
++	.driver = {
++		.name = DRV_NAME,
++		.owner = THIS_MODULE,
++		.pm = NULL,
++	},
++};
++
++static int __init altera_spi_init(void)
++{
++	return platform_driver_probe(&altera_spidrv, altera_spi_probe);
++}
++
++static void __exit altera_spi_exit(void)
++{
++	platform_driver_unregister(&altera_spidrv);
++}
++
++module_init(altera_spi_init);
++module_exit(altera_spi_exit);
++
++MODULE_DESCRIPTION("Altera SPI driver");
++MODULE_AUTHOR("Thomas Chou <thomas@wytron.com.tw>");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS("platform:" DRV_NAME);
+-- 
+1.6.2.5

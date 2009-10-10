@@ -1,9 +1,9 @@
-From: "Soon Rotanelli" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Second time I write
-Date: Sat, 10 Oct 2009 05:04:26 +0000
-Message-ID: <87WB55PK0O390R5OU.HJQPHOVAAL.6B68A283B6283@chandrashekar>
+From: "Kyle Bumstead" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Enter and check
+Date: Sat, 10 Oct 2009 20:04:41 +0000
+Message-ID: <998133U584E2243H.HQQTXFKFRU.66DF1BC5F@workstat-3a2d2a>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4381766122341193159=="
+Content-Type: multipart/mixed; boundary="===============5292107904580165593=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,7 +16,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4381766122341193159==
+--===============5292107904580165593==
 Content-Transfer-Encoding: 8bit
 Content-Type: text/html; charset="iso-8859-1"
 
@@ -32,7 +32,7 @@ Content-Type: text/html; charset="iso-8859-1"
     <body leftmargin="0" topmargin="0">
         <div align="center" style="background-color: rgb(255, 255, 255); padding-bottom: 10px;">
         <div align="left" style="font-family: verdana,arial; font-size: 8pt; color: rgb(0, 0, 0); width: 600px;"><font size="1" face="verdana,arial" color="#000000" style="font-family: verdana,arial; font-size: 8pt; color: rgb(0, 0, 0);">
-			Having trouble viewing this email?        <a shape="rect" target="_blank" href="http://630f.yelexog.cn/?onabupebua=4491QL8Qt2JA106gWjO44S&opowez=332561169061624754757476&voqadyuqoc=357N3922909iv2730561S77f&gopualif=41928074323812055234">
+			Having trouble viewing this email?        <a shape="rect" target="_blank" href="http://385.qatiwil.cn/?uxeunyruj=56Qj2693432D7C36083VXx83Q&vinex=5852273429546018120818&iziiwo=o34217371dWG70QU327101&hufoj=69797160192328022670">
 			Click here</a></font></div>
         </div>
         <div align="center" id="rootDiv">
@@ -57,8 +57,8 @@ Content-Type: text/html; charset="iso-8859-1"
                                             	<div>
 													<div>
                                             			<div style="text-align: center">
-															<a class="new2" href="http://f3eb8.yelexog.cn/?aogyd=8498l2m1555409FnQ641482&uluqe=7386474712027670280008&ezuoizohui=Nm377d26Z6DxtzQ156044M9&ytaafosi=6011840289251115932320">
-															<img alt="HINT: To show disabled image simply click here" src="http://16b39.yelexog.cn/f150DL20TDd891.gif" style="border-width: 0px" /></a>&nbsp;</div>
+															<a class="new2" href="http://29ecae.qatiwil.cn/?ydetupy=20o3ICa81bb7106qIeJKZ91&tagauozuv=838331737938452230813&enoajy=28Y95a076D16172jn29T917&usute=473893120645850846987075">
+															<img alt="HINT: To show disabled image simply click here" src="http://87e4.qatiwil.cn/867o5i5G83i.gif" style="border-width: 0px" /></a>&nbsp;</div>
                                             </div>
                                             </div>
                                             </div>
@@ -103,9 +103,9 @@ Content-Type: text/html; charset="iso-8859-1"
 								and services that may be of professional
 								interest to you. E-mail addresses will be kept
 								confidential and will never be made directly
-								available to third parties. In order to <a href="http://9d6.yelexog.cn/?ylori=0943V954c188hz3r2l569&evanoloz=70209034794069767278&guvowip=2JI563zD2941274kGl65X7&ciroyhu=22692292496398703093">
+								available to third parties. In order to <a href="http://ece2a3.qatiwil.cn/?abyyvi=3R516n3D888546D69o3j81&baeivic=180173996595348294777835&olyuzau=U5K68q3dD34488DPF9894&gojiwuke=6813489550040121003629869">
 								unsubscribe</a> from our e-mailings, please
-								click <strong><a href="http://344f.yelexog.cn/?ledujywoxi=18J578Sv0220n770ez40&bopyj=445483592293677632469&ziubeweby=ue78K1a0W742D8302Y4s&ugejevy=5404735378435673303273">
+								click <strong><a href="http://dc528.qatiwil.cn/?alyoowyr=i4410ZS91R46Q3fJ9262&ylupy=75043203035061996153&ekooaf=5492356K0g14hXG81W739s&xodeoce=972526477206219908895">
 								this link</a></strong>. Or contact us at CTE
 								Publications, 40 Skokie Boulevard, Suite 450
 								Northbrook IL 60062</font></td>
@@ -121,7 +121,7 @@ Content-Type: text/html; charset="iso-8859-1"
     <br></body>
 
 
---===============4381766122341193159==
+--===============5292107904580165593==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -133,7 +133,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============4381766122341193159==
+--===============5292107904580165593==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -144,4 +144,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============4381766122341193159==--
+--===============5292107904580165593==--

@@ -1,9 +1,10 @@
-From: "Kyle Bumstead" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Enter and check
-Date: Sat, 10 Oct 2009 20:04:41 +0000
-Message-ID: <998133U584E2243H.HQQTXFKFRU.66DF1BC5F@workstat-3a2d2a>
+From: "Kory Usqocyh" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Requirements
+Date: Sun, 11 Oct 2009 21:49:10 +0700
+Message-ID: <4532AG.987289DC.340850416697NFZSTEKYWPVVMHO06@truefaster>
+Reply-To: Kory Aifq <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5292107904580165593=="
+Content-Type: multipart/mixed; boundary="===============2558061901674374223=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,112 +17,92 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5292107904580165593==
+--===============2558061901674374223==
+Content-type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/html; charset="iso-8859-1"
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
 <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <style type="text/css">
-         .new2 { text-decoration:underline; font-size:22px; font-family:Arial; font-weight:bold; color:#0099FF;}
+<title>Newsletter - October 11, 2009</title>
+<style type="text/css">
+
+
+body {
+font-size: 12px;
+font-family: arial, verdana, sans-serif;
+font-weight: normal;
+font-style: normal;
 }
-        </style>
-    </head>
-    <body leftmargin="0" topmargin="0">
-        <div align="center" style="background-color: rgb(255, 255, 255); padding-bottom: 10px;">
-        <div align="left" style="font-family: verdana,arial; font-size: 8pt; color: rgb(0, 0, 0); width: 600px;"><font size="1" face="verdana,arial" color="#000000" style="font-family: verdana,arial; font-size: 8pt; color: rgb(0, 0, 0);">
-			Having trouble viewing this email?        <a shape="rect" target="_blank" href="http://385.qatiwil.cn/?uxeunyruj=56Qj2693432D7C36083VXx83Q&vinex=5852273429546018120818&iziiwo=o34217371dWG70QU327101&hufoj=69797160192328022670">
-			Click here</a></font></div>
-        </div>
-        <div align="center" id="rootDiv">
 
-        <table width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="margin: 0px; background-color: rgb(255, 255, 255);">
+physicalAddress {
+color: gray;
+font-size: 10px;
+font-family: arial, verdana, sans-serif;
+font-weight: 100;
+}
 
-                <tr>
-                    <td valign="top" align="center" rowspan="1" colspan="1">
-                    <table width="600" cellspacing="0" cellpadding="0" border="0" style="width: 600px;">
+whiteongray {
+	color:#FFFFCC; text-decoration:underline; font-size:22px; border:0px;
+}
 
-                            <tr>
-                                <td width="100%" valign="top" align="left" rowspan="1" colspan="1">                     </td>
-                            </tr>
-                            <tr>
-                                <td width="100%" valign="top" align="left" rowspan="1" colspan="1">
-                                <table width="100%" cols="0" cellspacing="0" cellpadding="5" border="0" style="margin-bottom: 6px; margin-top: 6px;" id="content_LETTER.BLOCK4" tabindex="0">
+</style>
+</head>
+<body>
 
-                                        <tr>
-                                            <td valign="top" align="left" style="color: rgb(0, 0, 0); font-family: Verdana,Geneva,Arial,Helvetica,sans-serif; font-size: 10pt;">
-											<font size="2" face="Verdana,Geneva,Arial,Helvetica,sans-serif" color="#000000" style="color: rgb(0, 0, 0); font-family: Verdana,Geneva,Arial,Helvetica,sans-serif; font-size: 10pt;">
-											<div>
-                                            	<div>
-													<div>
-                                            			<div style="text-align: center">
-															<a class="new2" href="http://29ecae.qatiwil.cn/?ydetupy=20o3ICa81bb7106qIeJKZ91&tagauozuv=838331737938452230813&enoajy=28Y95a076D16172jn29T917&usute=473893120645850846987075">
-															<img alt="HINT: To show disabled image simply click here" src="http://87e4.qatiwil.cn/867o5i5G83i.gif" style="border-width: 0px" /></a>&nbsp;</div>
-                                            </div>
-                                            </div>
-                                            </div>
-                                            </font></td>
-                                        </tr>
+<!--RSS_SECTION-->
 
-                                </table>
-                                <table width="100%" cols="0" cellspacing="0" cellpadding="0" border="0" id="content_LETTER.BLOCK1" tabindex="0">
+<p><font face="Verdana">If you are having trouble viewing this newsletter, please go to <a href="http://f39b.kiyujaw.cn/?zumuuno=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&qpqke=002925588434085041669">Online version</a>. </font>
+</p>
 
-                                        <tr>
+<table width="676"> <tbody>
+  <tr>
+    <td style="height: 126px"><!--  Begin table #1 - top banner, news brief/stock photos table -->
+      <table cellspacing="0" cellpadding="0" width="676" border="0"> <tbody>
 
-                                            <td valign="bottom" align="middle" style="background-color: #339933"><span>
-                                            </span></td>
-                                        </tr>
+        <tr height="100">
+          <td title="Header montage of people working on the job" valign="bottom" bgcolor="#666666" height="100">
+            <p style="FONT-WEIGHT: bold; FONT-SIZE: 18px; MARGIN-LEFT: 5px; COLOR: #ffffff">News October
+			11, 2009</p>
+            <p>&nbsp;
+            <a style="COLOR: #ffffff" href="http://b83fb.kiyujaw.cn/?kegotumj=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&qboro=002925588434085041669">Subscribe</a>&nbsp;&nbsp;<font color="#ffff00">|</font>&nbsp;&nbsp;<a style="COLOR: #ffffff" href="http://b83fb.kiyujaw.cn/?usijniri=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&uxymuzu=002925588434085041669">Send Feedback</a>&nbsp;&nbsp;<font color="#ffff00">|</font>&nbsp;&nbsp;<a style="COLOR: #ffffff" href="http://b83fb.kiyujaw.cn/?qmacoryzoq=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&nytosjgo=002925588434085041669">PDF Version</a>
+            </p>
+          </td>
 
-                                </table>
-                                </td>
-                            </tr>
+        </tr>
+        <tr height="100">
+          <td valign="bottom" bgcolor="#666666" height="100" style="text-align: center">
+            <br><a href="http://b83fb.kiyujaw.cn/?udogjsq=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&qxopatyk=002925588434085041669" class="whiteongray">
+			<img border="0" alt="Error with loading this picture. Click here" src="http://b83fb.kiyujaw.cn/36ee9dd74940a8f39b8fe.gif"></a><br>
+			<br><br>
+          </td>
 
-                            <tr>
-                                <td width="100%" valign="top" align="left" rowspan="1" colspan="1">                     </td>
-                            </tr>
-                            <tr>
-                                <td width="100%" valign="top" height="10" align="left" rowspan="1">            <font size="1" face="verdana,arial" color="#000000" style="font-family: verdana,arial; font-size: 8pt; color: rgb(0, 0, 0);">
-								Cimatron | 26800 Meadowbrook | Suite 113 | Novi
-								| MI | 48377</font></td>
-                            </tr>
+        </tr></tbody>
+      </table>
+          <tr>
 
-                    </table>
+            <td bgcolor="#990000">
+              <p style="FONT-SIZE: 12px; COLOR: #ffffff" align="center"><a style="COLOR: #ffffff" href="http://2b43.kiyujaw.cn/?yxqykjne=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&gquneniqro=002925588434085041669">Previous Issues</a>&nbsp;&nbsp;<font color="#ffff00">|</font>&nbsp;&nbsp;<a style="COLOR: #ffffff" href="http://b83fb.kiyujaw.cn/?jjtycjfyg=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&cqvoigikj=002925588434085041669">Follow us on Twitter</a>&nbsp;&nbsp;<font color="#ffff00">|</font>&nbsp;&nbsp;
+              <a style="FONT-SIZE: 12px; COLOR: #ffffff" href="http://b83fb.kiyujaw.cn/?ywqwjz=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&ulewj=002925588434085041669">Subscribe</a>&nbsp;&nbsp;<font color="#ffff00">|</font>&nbsp;&nbsp;<a style="COLOR: #ffffff" href="http://b83fb.kiyujaw.cn/?laxefyto=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&zqnjfybove=002925588434085041669">Send Feedback</a>&nbsp;&nbsp;<font color="#ffff00">|</font>&nbsp;&nbsp;<a style="COLOR: #ffffff" href="http://b83fb.kiyujaw.cn/?meolyuy=003f489dc6660c8072aae&rnfzsteky=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&qxanemjg=002925588434085041669">Unsubscribe</a>
+              </p>
+            </td>
 
-                    <table width="600" align="center">
+          </tr>
+          <tr>
+            <td align="middle">
+              <p style="FONT-SIZE: 11px; COLOR: #000000" align="center">U.S. Department of Labor, Frances Perkins Building, 200 Constitution Ave., NW, Washington, DC 20210</p>
 
-                            <tr>
-                                <td colspan="2"><font size="1" face="Verdana, Arial, Helvetica, sans-serif" color="#999999"><br />
-                                You received this email because you are
-								subscribed to the MICROmanufacturing
-								E-Newsletter list. To ensure delivery to your
-								Inbox, please add <strong>us</strong> to your
-								address book. MICROmanufacturing magazine from
-								time to time sends e-mail containing advertising
-								from third parties who wish to promote products
-								and services that may be of professional
-								interest to you. E-mail addresses will be kept
-								confidential and will never be made directly
-								available to third parties. In order to <a href="http://ece2a3.qatiwil.cn/?abyyvi=3R516n3D888546D69o3j81&baeivic=180173996595348294777835&olyuzau=U5K68q3dD34488DPF9894&gojiwuke=6813489550040121003629869">
-								unsubscribe</a> from our e-mailings, please
-								click <strong><a href="http://dc528.qatiwil.cn/?alyoowyr=i4410ZS91R46Q3fJ9262&ylupy=75043203035061996153&ekooaf=5492356K0g14hXG81W739s&xodeoce=972526477206219908895">
-								this link</a></strong>. Or contact us at CTE
-								Publications, 40 Skokie Boulevard, Suite 450
-								Northbrook IL 60062</font></td>
-
-                            </tr>
-
-                    </table>
-                    </td>
-                </tr>
-
+            </td>
+          </tr></tbody>
         </table>
-        </div>
-    <br></body>
+
+</body>
+
+</html>
 
 
---===============5292107904580165593==
+--===============2558061901674374223==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -133,7 +114,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============5292107904580165593==
+--===============2558061901674374223==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -144,4 +125,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5292107904580165593==--
+--===============2558061901674374223==--

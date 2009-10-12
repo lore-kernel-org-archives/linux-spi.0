@@ -1,135 +1,164 @@
-From: Anton Vorontsov <avorontsov@ru.mvista.com>
-Subject: [PATCH 2/8] powerpc/qe&cpm2: Avoid redefinitions in CPM2 and QE
-	headers
-Date: Mon, 12 Oct 2009 20:49:16 +0400
-Message-ID: <20091012164916.GB4578@oksana.dev.rtsoft.ru>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: [PATCH 7/8] spi_mpc8xxx: Turn qe_mode into flags
+Date: Mon, 12 Oct 2009 20:49:25 +0400
+Message-ID: <20091012164925.GG4578@oksana.dev.rtsoft.ru>
 References: <20091012164841.GA32214@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
-	spi-devel-general@lists.sourceforge.net,
-	Andrew Morton <akpm@linux-foundation.org>
-To: Kumar Gala <galak@kernel.crashing.org>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20091012164841.GA32214@oksana.dev.rtsoft.ru>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+In-Reply-To: <20091012164841.GA32214-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-struct mcc defined in both immap_qe.h and immap_cpm2.h, so they will
-conflic when included in a single file. The mcc struct is easy to deal
-with, since it isn't used in any driver (yet), so let's just rename QE
-version to qe_mcc.
+Soon there will be more flags introduced in subsequent patches, so
+let's turn qe_mode into flags.
 
-The ucb_ctlr is a bit trickier, since it is used by fsl_qe_udc driver,
-and the driver supports both CPM and QE UDCs, plus the QE version is
-used to form a bigger immap struct.
+Also introduce mpc8xxx_spi_strmode() and print current SPI mode.
 
-I don't want to touch too much of USB code in this series, so for now
-let's just copy most generic version into the common cpm.h header,
-later we'll create cpm_usb.h where we'll place common USB structs that
-are used by QE/CPM UDC and QE Host drivers (FHCI).
-
-And as for the structs in qe.h and cpm2.h, just prefix them with qe_
-and cpm_.
-
-Signed-off-by: Anton Vorontsov <avorontsov@ru.mvista.com>
+Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- arch/powerpc/include/asm/cpm.h        |   22 ++++++++++++++++++++++
- arch/powerpc/include/asm/immap_cpm2.h |    2 +-
- arch/powerpc/include/asm/immap_qe.h   |    8 ++++----
- 3 files changed, 27 insertions(+), 5 deletions(-)
+ drivers/spi/spi_mpc8xxx.c   |   30 +++++++++++++++++++-----------
+ include/linux/fsl_devices.h |    2 +-
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/cpm.h b/arch/powerpc/include/asm/cpm.h
-index 24d79e3..b5f1534 100644
---- a/arch/powerpc/include/asm/cpm.h
-+++ b/arch/powerpc/include/asm/cpm.h
-@@ -5,6 +5,28 @@
- #include <linux/types.h>
- #include <linux/of.h>
+diff --git a/drivers/spi/spi_mpc8xxx.c b/drivers/spi/spi_mpc8xxx.c
+index 4b119ea..80374df 100644
+--- a/drivers/spi/spi_mpc8xxx.c
++++ b/drivers/spi/spi_mpc8xxx.c
+@@ -96,7 +96,8 @@ struct mpc8xxx_spi {
+ 	u32 rx_shift;		/* RX data reg shift when in qe mode */
+ 	u32 tx_shift;		/* TX data reg shift when in qe mode */
  
-+/*
-+ * USB Controller pram common to QE and CPM.
-+ */
-+struct usb_ctlr {
-+	u8	usb_usmod;
-+	u8	usb_usadr;
-+	u8	usb_uscom;
-+	u8	res1[1];
-+	__be16	usb_usep[4];
-+	u8	res2[4];
-+	__be16	usb_usber;
-+	u8	res3[2];
-+	__be16	usb_usbmr;
-+	u8	res4[1];
-+	u8	usb_usbs;
-+	/* Fields down below are QE-only */
-+	__be16	usb_ussft;
-+	u8	res5[2];
-+	__be16	usb_usfrn;
-+	u8	res6[0x22];
-+} __attribute__ ((packed));
+-	bool qe_mode;
++	unsigned int flags;
++#define SPI_QE_CPU_MODE		(1 << 0) /* QE CPU ("PIO") mode */
+ 
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
+@@ -235,14 +236,14 @@ int mpc8xxx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 	if (bits_per_word <= 8) {
+ 		cs->get_rx = mpc8xxx_spi_rx_buf_u8;
+ 		cs->get_tx = mpc8xxx_spi_tx_buf_u8;
+-		if (mpc8xxx_spi->qe_mode) {
++		if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
+ 			cs->rx_shift = 16;
+ 			cs->tx_shift = 24;
+ 		}
+ 	} else if (bits_per_word <= 16) {
+ 		cs->get_rx = mpc8xxx_spi_rx_buf_u16;
+ 		cs->get_tx = mpc8xxx_spi_tx_buf_u16;
+-		if (mpc8xxx_spi->qe_mode) {
++		if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
+ 			cs->rx_shift = 16;
+ 			cs->tx_shift = 16;
+ 		}
+@@ -252,7 +253,8 @@ int mpc8xxx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 	} else
+ 		return -EINVAL;
+ 
+-	if (mpc8xxx_spi->qe_mode && spi->mode & SPI_LSB_FIRST) {
++	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE &&
++			spi->mode & SPI_LSB_FIRST) {
+ 		cs->tx_shift = 0;
+ 		if (bits_per_word <= 8)
+ 			cs->rx_shift = 8;
+@@ -518,6 +520,13 @@ static void mpc8xxx_spi_cleanup(struct spi_device *spi)
+ 	kfree(spi->controller_state);
+ }
+ 
++static const char *mpc8xxx_spi_strmode(unsigned int flags)
++{
++	if (flags & SPI_QE_CPU_MODE)
++		return "QE CPU";
++	return "CPU";
++}
 +
- /* Opcodes common to CPM1 and CPM2
- */
- #define CPM_CR_INIT_TRX		((ushort)0x0000)
-diff --git a/arch/powerpc/include/asm/immap_cpm2.h b/arch/powerpc/include/asm/immap_cpm2.h
-index d4f069b..7c64fda 100644
---- a/arch/powerpc/include/asm/immap_cpm2.h
-+++ b/arch/powerpc/include/asm/immap_cpm2.h
-@@ -549,7 +549,7 @@ typedef struct comm_proc {
+ static struct spi_master * __devinit
+ mpc8xxx_spi_probe(struct device *dev, struct resource *mem, unsigned int irq)
+ {
+@@ -544,14 +553,14 @@ mpc8xxx_spi_probe(struct device *dev, struct resource *mem, unsigned int irq)
+ 	master->cleanup = mpc8xxx_spi_cleanup;
  
- /* USB Controller.
- */
--typedef struct usb_ctlr {
-+typedef struct cpm_usb_ctlr {
- 	u8	usb_usmod;
- 	u8	usb_usadr;
- 	u8	usb_uscom;
-diff --git a/arch/powerpc/include/asm/immap_qe.h b/arch/powerpc/include/asm/immap_qe.h
-index c346d0b..4e10f50 100644
---- a/arch/powerpc/include/asm/immap_qe.h
-+++ b/arch/powerpc/include/asm/immap_qe.h
-@@ -210,7 +210,7 @@ struct sir {
- } __attribute__ ((packed));
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+-	mpc8xxx_spi->qe_mode = pdata->qe_mode;
+ 	mpc8xxx_spi->get_rx = mpc8xxx_spi_rx_buf_u8;
+ 	mpc8xxx_spi->get_tx = mpc8xxx_spi_tx_buf_u8;
++	mpc8xxx_spi->flags = pdata->flags;
+ 	mpc8xxx_spi->spibrg = pdata->sysclk;
  
- /* USB Controller */
--struct usb_ctlr {
-+struct qe_usb_ctlr {
- 	u8	usb_usmod;
- 	u8	usb_usadr;
- 	u8	usb_uscom;
-@@ -229,7 +229,7 @@ struct usb_ctlr {
- } __attribute__ ((packed));
+ 	mpc8xxx_spi->rx_shift = 0;
+ 	mpc8xxx_spi->tx_shift = 0;
+-	if (mpc8xxx_spi->qe_mode) {
++	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
+ 		mpc8xxx_spi->rx_shift = 16;
+ 		mpc8xxx_spi->tx_shift = 24;
+ 	}
+@@ -584,7 +593,7 @@ mpc8xxx_spi_probe(struct device *dev, struct resource *mem, unsigned int irq)
  
- /* MCC */
--struct mcc {
-+struct qe_mcc {
- 	__be32	mcce;		/* MCC event register */
- 	__be32	mccm;		/* MCC mask register */
- 	__be32	mccf;		/* MCC configuration register */
-@@ -431,9 +431,9 @@ struct qe_immap {
- 	struct qe_mux		qmx;		/* QE Multiplexer */
- 	struct qe_timers	qet;		/* QE Timers */
- 	struct spi		spi[0x2];	/* spi */
--	struct mcc		mcc;		/* mcc */
-+	struct qe_mcc		mcc;		/* mcc */
- 	struct qe_brg		brg;		/* brg */
--	struct usb_ctlr		usb;		/* USB */
-+	struct qe_usb_ctlr	usb;		/* USB */
- 	struct si1		si1;		/* SI */
- 	u8			res11[0x800];
- 	struct sir		sir;		/* SI Routing Tables */
+ 	/* Enable SPI interface */
+ 	regval = pdata->initial_spmode | SPMODE_INIT_VAL | SPMODE_ENABLE;
+-	if (pdata->qe_mode)
++	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
+ 		regval |= SPMODE_OP;
+ 
+ 	mpc8xxx_spi_write_reg(&mpc8xxx_spi->base->mode, regval);
+@@ -604,9 +613,8 @@ mpc8xxx_spi_probe(struct device *dev, struct resource *mem, unsigned int irq)
+ 	if (ret < 0)
+ 		goto unreg_master;
+ 
+-	printk(KERN_INFO
+-	       "%s: MPC8xxx SPI Controller driver at 0x%p (irq = %d)\n",
+-	       dev_name(dev), mpc8xxx_spi->base, mpc8xxx_spi->irq);
++	dev_info(dev, "at 0x%p (irq = %d), %s mode\n", mpc8xxx_spi->base,
++		 mpc8xxx_spi->irq, mpc8xxx_spi_strmode(mpc8xxx_spi->flags));
+ 
+ 	return master;
+ 
+@@ -797,7 +805,7 @@ static int __devinit of_mpc8xxx_spi_probe(struct of_device *ofdev,
+ 
+ 	prop = of_get_property(np, "mode", NULL);
+ 	if (prop && !strcmp(prop, "cpu-qe"))
+-		pdata->qe_mode = 1;
++		pdata->flags = SPI_QE_CPU_MODE;
+ 
+ 	ret = of_mpc8xxx_spi_get_chipselects(dev);
+ 	if (ret)
+diff --git a/include/linux/fsl_devices.h b/include/linux/fsl_devices.h
+index 43fc95d..39fd946 100644
+--- a/include/linux/fsl_devices.h
++++ b/include/linux/fsl_devices.h
+@@ -74,7 +74,7 @@ struct spi_device;
+ struct fsl_spi_platform_data {
+ 	u32 	initial_spmode;	/* initial SPMODE value */
+ 	s16	bus_num;
+-	bool	qe_mode;
++	unsigned int flags;
+ 	/* board specific information */
+ 	u16	max_chipselect;
+ 	void	(*cs_control)(struct spi_device *spi, bool on);
 -- 
 1.6.3.3
+
+
+------------------------------------------------------------------------------
+Come build with us! The BlackBerry(R) Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9 - 12, 2009. Register now!
+http://p.sf.net/sfu/devconference

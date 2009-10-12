@@ -1,148 +1,139 @@
-From: Anton Vorontsov <avorontsov@ru.mvista.com>
-Subject: [PATCH 1/8] powerpc/cpm: Remove SPI defines and spi structs
-Date: Mon, 12 Oct 2009 20:49:13 +0400
-Message-ID: <20091012164913.GA4578@oksana.dev.rtsoft.ru>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: [PATCH 6/8] spi_mpc8xxx: Factor out SPI mode
+ change steps into a call
+Date: Mon, 12 Oct 2009 20:49:24 +0400
+Message-ID: <20091012164924.GF4578@oksana.dev.rtsoft.ru>
 References: <20091012164841.GA32214@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
-	spi-devel-general@lists.sourceforge.net,
-	Andrew Morton <akpm@linux-foundation.org>
-To: Kumar Gala <galak@kernel.crashing.org>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20091012164841.GA32214@oksana.dev.rtsoft.ru>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+In-Reply-To: <20091012164841.GA32214-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-When cpm2.h included into spi_mpc8xxx driver, the SPI defines
-in the header conflict with defines in the driver.
+We'll add more steps soon, so get rid of the duplication.
 
-We don't need them in the header file, so remove them. Plus
-remove "struct spi", we'll use a better version in the driver.
-
-Signed-off-by: Anton Vorontsov <avorontsov@ru.mvista.com>
+Signed-off-by: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Acked-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 ---
- arch/powerpc/include/asm/cpm1.h |   45 ---------------------------------------
- arch/powerpc/include/asm/cpm2.h |   39 ---------------------------------
- 2 files changed, 0 insertions(+), 84 deletions(-)
+ drivers/spi/spi_mpc8xxx.c |   56 +++++++++++++++++++-------------------------
+ 1 files changed, 24 insertions(+), 32 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/cpm1.h b/arch/powerpc/include/asm/cpm1.h
-index 7685ffd..81b0119 100644
---- a/arch/powerpc/include/asm/cpm1.h
-+++ b/arch/powerpc/include/asm/cpm1.h
-@@ -478,51 +478,6 @@ typedef struct iic {
- 	char	res2[2];	/* Reserved */
- } iic_t;
+diff --git a/drivers/spi/spi_mpc8xxx.c b/drivers/spi/spi_mpc8xxx.c
+index 518671b..4b119ea 100644
+--- a/drivers/spi/spi_mpc8xxx.c
++++ b/drivers/spi/spi_mpc8xxx.c
+@@ -155,6 +155,26 @@ MPC83XX_SPI_TX_BUF(u8)
+ MPC83XX_SPI_TX_BUF(u16)
+ MPC83XX_SPI_TX_BUF(u32)
  
--/* SPI parameter RAM.
--*/
--typedef struct spi {
--	ushort	spi_rbase;	/* Rx Buffer descriptor base address */
--	ushort	spi_tbase;	/* Tx Buffer descriptor base address */
--	u_char	spi_rfcr;	/* Rx function code */
--	u_char	spi_tfcr;	/* Tx function code */
--	ushort	spi_mrblr;	/* Max receive buffer length */
--	uint	spi_rstate;	/* Internal */
--	uint	spi_rdp;	/* Internal */
--	ushort	spi_rbptr;	/* Internal */
--	ushort	spi_rbc;	/* Internal */
--	uint	spi_rxtmp;	/* Internal */
--	uint	spi_tstate;	/* Internal */
--	uint	spi_tdp;	/* Internal */
--	ushort	spi_tbptr;	/* Internal */
--	ushort	spi_tbc;	/* Internal */
--	uint	spi_txtmp;	/* Internal */
--	uint	spi_res;
--	ushort	spi_rpbase;	/* Relocation pointer */
--	ushort	spi_res2;
--} spi_t;
--
--/* SPI Mode register.
--*/
--#define SPMODE_LOOP	((ushort)0x4000)	/* Loopback */
--#define SPMODE_CI	((ushort)0x2000)	/* Clock Invert */
--#define SPMODE_CP	((ushort)0x1000)	/* Clock Phase */
--#define SPMODE_DIV16	((ushort)0x0800)	/* BRG/16 mode */
--#define SPMODE_REV	((ushort)0x0400)	/* Reversed Data */
--#define SPMODE_MSTR	((ushort)0x0200)	/* SPI Master */
--#define SPMODE_EN	((ushort)0x0100)	/* Enable */
--#define SPMODE_LENMSK	((ushort)0x00f0)	/* character length */
--#define SPMODE_LEN4	((ushort)0x0030)	/*  4 bits per char */
--#define SPMODE_LEN8	((ushort)0x0070)	/*  8 bits per char */
--#define SPMODE_LEN16	((ushort)0x00f0)	/* 16 bits per char */
--#define SPMODE_PMMSK	((ushort)0x000f)	/* prescale modulus */
--
--/* SPIE fields */
--#define SPIE_MME	0x20
--#define SPIE_TXE	0x10
--#define SPIE_BSY	0x04
--#define SPIE_TXB	0x02
--#define SPIE_RXB	0x01
--
- /*
-  * RISC Controller Configuration Register definitons
-  */
-diff --git a/arch/powerpc/include/asm/cpm2.h b/arch/powerpc/include/asm/cpm2.h
-index 990ff19..236cfa3 100644
---- a/arch/powerpc/include/asm/cpm2.h
-+++ b/arch/powerpc/include/asm/cpm2.h
-@@ -654,45 +654,6 @@ typedef struct iic {
- 	uint	iic_txtmp;	/* Internal */
- } iic_t;
++static void mpc8xxx_spi_change_mode(struct spi_device *spi)
++{
++	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
++	struct spi_mpc8xxx_cs *cs = spi->controller_state;
++	__be32 __iomem *mode = &mspi->base->mode;
++	unsigned long flags;
++
++	if (cs->hw_mode == mpc8xxx_spi_read_reg(mode))
++		return;
++
++	/* Turn off IRQs locally to minimize time that SPI is disabled. */
++	local_irq_save(flags);
++
++	/* Turn off SPI unit prior changing mode */
++	mpc8xxx_spi_write_reg(mode, cs->hw_mode & ~SPMODE_ENABLE);
++	mpc8xxx_spi_write_reg(mode, cs->hw_mode);
++
++	local_irq_restore(flags);
++}
++
+ static void mpc8xxx_spi_chipselect(struct spi_device *spi, int value)
+ {
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
+@@ -168,27 +188,13 @@ static void mpc8xxx_spi_chipselect(struct spi_device *spi, int value)
+ 	}
  
--/* SPI parameter RAM.
--*/
--typedef struct spi {
--	ushort	spi_rbase;	/* Rx Buffer descriptor base address */
--	ushort	spi_tbase;	/* Tx Buffer descriptor base address */
--	u_char	spi_rfcr;	/* Rx function code */
--	u_char	spi_tfcr;	/* Tx function code */
--	ushort	spi_mrblr;	/* Max receive buffer length */
--	uint	spi_rstate;	/* Internal */
--	uint	spi_rdp;	/* Internal */
--	ushort	spi_rbptr;	/* Internal */
--	ushort	spi_rbc;	/* Internal */
--	uint	spi_rxtmp;	/* Internal */
--	uint	spi_tstate;	/* Internal */
--	uint	spi_tdp;	/* Internal */
--	ushort	spi_tbptr;	/* Internal */
--	ushort	spi_tbc;	/* Internal */
--	uint	spi_txtmp;	/* Internal */
--	uint	spi_res;	/* Tx temp. */
--	uint	spi_res1[4];	/* SDMA temp. */
--} spi_t;
+ 	if (value == BITBANG_CS_ACTIVE) {
+-		u32 regval = mpc8xxx_spi_read_reg(&mpc8xxx_spi->base->mode);
 -
--/* SPI Mode register.
--*/
--#define SPMODE_LOOP	((ushort)0x4000)	/* Loopback */
--#define SPMODE_CI	((ushort)0x2000)	/* Clock Invert */
--#define SPMODE_CP	((ushort)0x1000)	/* Clock Phase */
--#define SPMODE_DIV16	((ushort)0x0800)	/* BRG/16 mode */
--#define SPMODE_REV	((ushort)0x0400)	/* Reversed Data */
--#define SPMODE_MSTR	((ushort)0x0200)	/* SPI Master */
--#define SPMODE_EN	((ushort)0x0100)	/* Enable */
--#define SPMODE_LENMSK	((ushort)0x00f0)	/* character length */
--#define SPMODE_PMMSK	((ushort)0x000f)	/* prescale modulus */
+ 		mpc8xxx_spi->rx_shift = cs->rx_shift;
+ 		mpc8xxx_spi->tx_shift = cs->tx_shift;
+ 		mpc8xxx_spi->get_rx = cs->get_rx;
+ 		mpc8xxx_spi->get_tx = cs->get_tx;
+ 
+-		if (cs->hw_mode != regval) {
+-			unsigned long flags;
+-			__be32 __iomem *mode = &mpc8xxx_spi->base->mode;
 -
--#define SPMODE_LEN(x)	((((x)-1)&0xF)<<4)
--#define SPMODE_PM(x)	((x) &0xF)
+-			regval = cs->hw_mode;
+-			/* Turn off IRQs locally to minimize time that
+-			 * SPI is disabled
+-			 */
+-			local_irq_save(flags);
+-			/* Turn off SPI unit prior changing mode */
+-			mpc8xxx_spi_write_reg(mode, regval & ~SPMODE_ENABLE);
+-			mpc8xxx_spi_write_reg(mode, regval);
+-			local_irq_restore(flags);
+-		}
++		mpc8xxx_spi_change_mode(spi);
++
+ 		if (pdata->cs_control)
+ 			pdata->cs_control(spi, pol);
+ 	}
+@@ -198,7 +204,6 @@ static
+ int mpc8xxx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ {
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+-	u32 regval;
+ 	u8 bits_per_word, pm;
+ 	u32 hz;
+ 	struct spi_mpc8xxx_cs	*cs = spi->controller_state;
+@@ -286,21 +291,8 @@ int mpc8xxx_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 		pm--;
+ 
+ 	cs->hw_mode |= SPMODE_PM(pm);
+-	regval =  mpc8xxx_spi_read_reg(&mpc8xxx_spi->base->mode);
+-	if (cs->hw_mode != regval) {
+-		unsigned long flags;
+-		__be32 __iomem *mode = &mpc8xxx_spi->base->mode;
 -
--#define SPI_EB		((u_char)0x10)		/* big endian byte order */
--
- /* IDMA parameter RAM
- */
- typedef struct idma {
+-		regval = cs->hw_mode;
+-		/* Turn off IRQs locally to minimize time
+-		 * that SPI is disabled
+-		 */
+-		local_irq_save(flags);
+-		/* Turn off SPI unit prior changing mode */
+-		mpc8xxx_spi_write_reg(mode, regval & ~SPMODE_ENABLE);
+-		mpc8xxx_spi_write_reg(mode, regval);
+-		local_irq_restore(flags);
+-	}
++
++	mpc8xxx_spi_change_mode(spi);
+ 	return 0;
+ }
+ 
 -- 
 1.6.3.3
+
+
+------------------------------------------------------------------------------
+Come build with us! The BlackBerry(R) Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9 - 12, 2009. Register now!
+http://p.sf.net/sfu/devconference

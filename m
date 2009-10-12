@@ -1,14 +1,11 @@
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/3 v3][RFC] spi: DMA support for
- Designware core on Moorestown platform
-Date: Mon, 12 Oct 2009 14:19:54 +0800
-Message-ID: <20091012141954.79fdf7e7@feng-desktop>
+From: La GMF par CentralMarques <newsletter-CM0u9L6SuHU@public.gmane.org>
+Subject: Assurance automobile, habitation, famille
+Date: 12 Oct 2009 08:34:30 -0000
+Message-ID: <20091012083430.7053.qmail@ks366005.kimsufi.com>
+Reply-To: La GMF par CentralMarques <newsletter-CM0u9L6SuHU@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, Andrew Morton
-	<akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, spi-devel-list
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============5274771497464024131=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,280 +17,127 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->From 347b16b69df7d75cc5ab7060a7c5311e2856b932 Mon Sep 17 00:00:00 2001
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Date: Tue, 4 Aug 2009 16:42:31 +0800
-Subject: [PATCH 3/3] spi: DMA support for Designware core on Moorestown platform
 
-Designware core can work with multiple DMA controllers for DMA
-operation, and this patch supports it to cowork with the Designware
-DMA controller used on Intel Moorestown platform
+--===============5274771497464024131==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_61b05fbfe73ca589e5ca0417d01a4580"
 
-Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/Kconfig        |    4 +
- drivers/spi/dw_spi.c       |  171 ++++++++++++++++++++++++++++++++++++++++++-
- include/linux/spi/dw_spi.h |    6 ++
- 3 files changed, 177 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index bd39e80..8132272 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -250,6 +250,10 @@ config SPI_DESIGNWARE
- 	help
- 	  general driver for SPI controller core from DesignWare
- 
-+config SPI_DW_MRST_DMA
-+	bool "DMA support for DW SPI controller on Intel Moorestown platform"
-+	depends on SPI_DESGINWARE && MRST_DMA
-+
- config SPI_DW_PCI
- 	tristate "PCI interface driver for DW SPI core"
- 	depends on SPI_DESIGNWARE && PCI
-diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index 3fd90a6..e9d3db4 100644
---- a/drivers/spi/dw_spi.c
-+++ b/drivers/spi/dw_spi.c
-@@ -29,6 +29,10 @@
- #include <linux/debugfs.h>
- #endif
- 
-+#ifdef CONFIG_SPI_MRST_DMA
-+#include <linux/lnw_dma.h>
-+#endif
-+
- #define START_STATE	((void *)0)
- #define RUNNING_STATE	((void *)1)
- #define DONE_STATE	((void *)2)
-@@ -62,6 +66,166 @@ struct chip_data {
- 	void (*cs_control)(u32 command);
- };
- 
-+#ifdef CONFIG_SPI_MRST_DMA
-+static void dw_spi_dma_init(struct dw_spi *dws)
-+{
-+	struct lnw_dma_slave *rxs, *txs;
-+	dma_cap_mask_t mask;
-+
-+	dws->txchan = NULL;
-+	dws->rxchan = NULL;
-+
-+	/* 1. Init rx channel */
-+	rxs = &dws->dmas_rx;
-+
-+	rxs->dirn = DMA_FROM_DEVICE;
-+	rxs->hs_mode = LNW_DMA_HW_HS;
-+	rxs->cfg_mode = LNW_DMA_PER_TO_MEM;
-+	rxs->src_width = LNW_DMA_WIDTH_16BIT;
-+	rxs->dst_width = LNW_DMA_WIDTH_32BIT;
-+	rxs->src_msize = LNW_DMA_MSIZE_16;
-+	rxs->dst_msize = LNW_DMA_MSIZE_16;
-+
-+	dma_cap_zero(mask);
-+	dma_cap_set(DMA_MEMCPY, mask);
-+	dma_cap_set(DMA_SLAVE, mask);
-+
-+	dws->rxchan = dma_request_channel(mask, NULL, NULL);
-+	if (!dws->rxchan)
-+		goto err_exit;
-+	dws->rxchan->private = rxs;
-+
-+	/* 2. Init tx channel */
-+	txs = &dws->dmas_tx;
-+
-+	txs->dirn = DMA_TO_DEVICE;
-+	txs->hs_mode = LNW_DMA_HW_HS;
-+	txs->cfg_mode = LNW_DMA_MEM_TO_PER;
-+	txs->src_width = LNW_DMA_WIDTH_32BIT;
-+	txs->dst_width = LNW_DMA_WIDTH_16BIT;
-+	txs->src_msize = LNW_DMA_MSIZE_16;
-+	txs->dst_msize = LNW_DMA_MSIZE_16;
-+
-+	dma_cap_set(DMA_SLAVE, mask);
-+	dma_cap_set(DMA_MEMCPY, mask);
-+
-+	dws->txchan = dma_request_channel(mask, NULL, NULL);
-+	if (!dws->txchan)
-+		goto free_rxchan;
-+	dws->txchan->private = txs;
-+
-+	/* Set the dma done bit to 1 */
-+	dws->dma_inited = 1;
-+	dws->txdma_done = 1;
-+	dws->rxdma_done = 1;
-+
-+	dws->tx_param = ((u64)(unsigned long)dws << 32)
-+				| (unsigned long)(&dws->txdma_done);
-+	dws->rx_param = ((u64)(unsigned long)dws << 32)
-+				| (unsigned long)(&dws->rxdma_done);
-+	return;
-+
-+free_rxchan:
-+	dma_release_channel(dws->rxchan);
-+err_exit:
-+	return;
-+}
-+
-+static void dw_spi_dma_exit(struct dw_spi *dws)
-+{
-+	dma_release_channel(dws->txchan);
-+	dma_release_channel(dws->rxchan);
-+}
-+
-+static void transfer_complete(struct dw_spi *dws);
-+
-+static void dw_spi_dma_done(void *arg)
-+{
-+	u64 *param = arg;
-+	struct dw_spi *dws;
-+	int *done;
-+
-+	dws = (struct dw_spi *)(unsigned long)(*param >> 32);
-+	done = (int *)(unsigned long)(*param & 0xffffffff);
-+
-+	*done = 1;
-+	/* wait till both tx/rx channels are done */
-+	if (!dws->txdma_done || !dws->rxdma_done)
-+		return;
-+
-+	transfer_complete(dws);
-+}
-+
-+static void dma_transfer(struct dw_spi *dws, int cs_change)
-+{
-+	struct dma_async_tx_descriptor *txdesc = NULL, *rxdesc = NULL;
-+	struct dma_chan *txchan, *rxchan;
-+	enum dma_ctrl_flags flag;
-+	u16 dma_ctrl = 0;
-+
-+	/* 1. setup DMA related registers */
-+	if (cs_change) {
-+		spi_enable_chip(dws, 0);
-+		dw_writew(dws, dmardlr, 0xf);
-+		dw_writew(dws, dmatdlr, 0x10);
-+		if (dws->tx_dma)
-+			dma_ctrl |= 0x2;
-+		if (dws->rx_dma)
-+			dma_ctrl |= 0x1;
-+		dw_writew(dws, dmacr, dma_ctrl);
-+		spi_enable_chip(dws, 1);
-+	}
-+
-+	if (dws->tx_dma)
-+		dws->txdma_done = 0;
-+	if (dws->rx_dma)
-+		dws->rxdma_done = 0;
-+
-+	/* 2. start the TX dma transfer */
-+	txchan = dws->txchan;
-+	rxchan = dws->rxchan;
-+
-+	flag = DMA_PREP_INTERRUPT | DMA_CTRL_ACK;
-+	if (dws->tx_dma) {
-+		txdesc = txchan->device->device_prep_dma_memcpy(txchan,
-+				dws->dma_addr, dws->tx_dma,
-+				dws->len, flag);
-+		txdesc->callback = dw_spi_dma_done;
-+		txdesc->callback_param = &dws->tx_param;
-+	}
-+
-+	/* 3. start the RX dma transfer */
-+	if (dws->rx_dma) {
-+		rxdesc = rxchan->device->device_prep_dma_memcpy(rxchan,
-+				dws->rx_dma, dws->dma_addr,
-+				dws->len, flag);
-+		rxdesc->callback = dw_spi_dma_done;
-+		rxdesc->callback_param = &dws->rx_param;
-+	}
-+
-+	/* rx must be started before tx due to spi instinct */
-+	if (rxdesc)
-+		rxdesc->tx_submit(rxdesc);
-+	if (txdesc)
-+		txdesc->tx_submit(txdesc);
-+}
-+#else
-+static inline void dw_spi_dma_init(struct dw_spi *dws)
-+{
-+	return;
-+}
-+
-+static inline void dw_spi_dma_exit(struct dw_spi *dws)
-+{
-+	return;
-+}
-+
-+static void dma_transfer(struct dw_spi *dws, int cs_change)
-+{
-+	return;
-+}
-+#endif /* CONFIG_SPI_MRST_DMA */
-+
- #ifdef CONFIG_DEBUG_FS
- static int spi_show_regs_open(struct inode *inode, struct file *file)
- {
-@@ -413,10 +577,6 @@ static void poll_transfer(struct dw_spi *dws)
- 	transfer_complete(dws);
- }
- 
--static void dma_transfer(struct dw_spi *dws, int cs_change)
--{
--}
--
- static void pump_transfers(unsigned long data)
- {
- 	struct dw_spi *dws = (struct dw_spi *)data;
-@@ -853,6 +1013,7 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
- 	master->transfer = dw_spi_transfer;
- 
- 	dws->dma_inited = 0;
-+	dw_spi_dma_init(dws);
- 
- 	/* Basic HW init */
- 	spi_hw_init(dws);
-@@ -881,6 +1042,7 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
- 
- err_queue_alloc:
- 	destroy_queue(dws);
-+	dw_spi_dma_exit(dws);
- err_diable_hw:
- 	spi_enable_chip(dws, 0);
- 	free_irq(dws->irq, dws);
-@@ -904,6 +1066,7 @@ void __devexit dw_spi_remove_host(struct dw_spi *dws)
- 		dev_err(&dws->master->dev, "dw_spi_remove: workqueue will not "
- 			"complete, message memory not freed\n");
- 
-+	dw_spi_dma_exit(dws);
- 	spi_enable_chip(dws, 0);
- 	/* Disable clk */
- 	spi_set_clk(dws, 0);
-diff --git a/include/linux/spi/dw_spi.h b/include/linux/spi/dw_spi.h
-index 51b3e77..4881a18 100644
---- a/include/linux/spi/dw_spi.h
-+++ b/include/linux/spi/dw_spi.h
-@@ -1,6 +1,7 @@
- #ifndef DW_SPI_HEADER_H
- #define DW_SPI_HEADER_H
- #include <linux/io.h>
-+#include <linux/lnw_dma.h>
- 
- /* Bit fields in CTRLR0 */
- #define SPI_DFS_OFFSET			0
-@@ -141,6 +142,11 @@ struct dw_spi {
- 	struct device		*dma_dev;
- 	dma_addr_t		dma_addr;
- 
-+#ifdef CONFIG_SPI_MRST_DMA
-+	struct lnw_dma_slave	dmas_tx;
-+	struct lnw_dma_slave	dmas_rx;
-+#endif
-+
- 	/* Bus interface info */
- 	void			*priv;
- #ifdef CONFIG_DEBUG_FS
--- 
-1.6.0.4
+--_----------=_parties_61b05fbfe73ca589e5ca0417d01a4580
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://newsletter.ueuz.com/svi/miroir.php?bat=gmf1009_ctrm
+
+La GMF: une solution d'assurance pour chaque besoin
+
+3 offres GMF pour vous facilliter l'assurance au quotidien:
+
+plus d'infos sur http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture
+
+--------------------------------
+Cette offre GMF vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://newsletter.ueuz.com/svi/gestionserv.php?nb=2439&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_61b05fbfe73ca589e5ca0417d01a4580
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head> 
+<title>La GMF: une solution d'assurance pour chaque besoin</title>
+</head>
+<body><center>
+<p>
+<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://newsletter.ueuz.com/svi/miroir.php?bat=gmf1009_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#AE0000;font-size:20px'>
+<p style='display:inline;'> <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture" style="text-decoration:none;color:#AE0000;"><b>La GMF: une solution d'assurance pour chaque besoin</b></a></p>
+</td></tr>
+<tr>
+<td align='center' style='padding:5px;font-family:Arial;color:#000000;font-size:14px;background-color:#FFFFFF;'>
+<a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture" style="text-decoration:none;color:#000000;"><b>3 offres GMF pour vous facilliter l'assurance au quotidien:</b></a>
+</td></tr>
+<tr><td align='left' style='padding:5px;background-color:#FFFFFF;'>
+<table border=0 cellpadding=10 cellspaccing=0>
+ <tr >
+ <td valign=center style="border-bottom:1px solid black;">
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture"><img src="http://ad.zanox.com/ppv/?13333829C1719936316" align="bottom" width="120" height="90" border="0" hspace="1" alt="EXO_120x90_m4.gif"></a>
+ </td>
+ <td style="font-family:arial;font-size:11px" valign=top style="border-bottom:1px solid black;">
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture" style="text-decoration:none;color:black;font-size:12px"><b style="font-size:14px;color:black"><u>AUTO PASS</b></u> l'assurance auto sur mesure et pas ch&egrave;re&nbsp;</a><sup><a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture">+ d'infos</a></sup><br>
+
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture" style="text-decoration:none;color:black">
+ Les points forts:<br>
+ <b>Plus d'&eacute;conomies</b> : des r&eacute;ductions pour les bons conducteurs et les petits rouleurs<br>
+ <b>Plus d'&eacute;cologie</b> : des tarifs sp&eacute;cifiques adapt&eacute;s pour r&eacute;compenser votre comportement citoyen </br>
+ <b>Plus de protection</b> : des garanties innovantes comme « Capital Garanti / Capital Garanti+ » ou la « Panne »</br>
+ </a>
+<br>
+ <div style="background-color:#FFEE00;border:1px solid #000000;font-size:12px;">
+<center>
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture" style="text-decoration:none;color:black;">
+ <font color=red > <b>Offre sp&eacute;ciale: </b></font>
+<br>Du 1er Octobre au 30 novembre 2009<br>
+ Pour tout nouveau contrat AUTO
+ <font color=red><b>2 MOIS</b> d'assurance <b>OFFERTS</b><sup>*</sup></font>
+</a>
+</center>
+ </div>
+<br>>>> <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture">Je demande un devis personnalis&eacute; et sans engagement</a>
+ </td>
+ </tr>
+
+ <tr>
+ <td valign=center style="border-bottom:1px solid black;">
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593809C1364285880T"><img src="http://ad.zanox.com/ppv/?13333837C1272595429" align="bottom" width="120" height="90" border="0" hspace="1" alt="Famille 120x90"></a>
+ </td>
+ <td style="font-family:arial;font-size:12px" valign=top style="border-bottom:1px solid black;">
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593809C1364285880T" style="text-decoration:none;color:black"><b style="font-size:14px"><u>ACCIDENTS ET FAMILLE</b></u>&nbsp;<i><font color=red>A partir de 5,50&euro;/mois</i></font>&nbsp;</a><sup><a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593809C1364285880T">+ d'infos</a></sup><br>
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593809C1364285880T" style="text-decoration:none;color:black">
+ La protection indispensable pour assurer vos proches contre les accidents de la vie priv&eacute;e, de la circulation et lors de la pratique de tous les sports, sans surprime.<br>
+ "Accidents et famille" c'est: un seul contrat pour toute la famille, un prix unique et ce, quel que soit le nombre de personnes assur&eacute;es, une assurance r&eacute;solument avantageuse au quotidien.<br>
+ >>></a> <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593809C1364285880T">Je demande un devis personnalis&eacute; et sans engagement</a>
+ </td>
+ </tr>
+
+ <tr>
+ <td valign=center>
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593815C843980040T"><img src="http://ad.zanox.com/ppv/?13333843C1018378306" align="bottom" width="120" height="90" border="0" hspace="1" alt="Habitation_120x90"></a>
+ </td>
+ <td style="font-family:arial;font-size:12px" valign=top
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593815C843980040T" style="text-decoration:none;color:black"><b style="font-size:14px"><u>ASSURANCE HABITATION</b></u>&nbsp;<br><i><font color=red>Une intervention dans les plus bref delais</i></font>&nbsp;</a><sup><a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593815C843980040T">+ d'infos</a></sup><br>
+ <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593815C843980040T" style="text-decoration:none;color:black">L'assurance habitation Domultis pour prot&eacute;ger vos biens et votre famille.<br>
+ Service inclus dans votre contrat habitation <sup>(1)</sup>
+ En cas de fuite d'eau accidentelle sur vos installations <sup>(2)</sup> n&eacute;cessitant une intervention urgente, l'assistance GMF vous enverra, sur simple appel, un plombier dans les plus brefs d&eacute;lais et prendra en charge ses frais de d&eacute;placement ainsi que la premi&egrave;re heure de main d'œuvre &agrave; concurrence de 250 &euro;. C'est bon &agrave; savoir !<br>
+ >>></a> <a href="http://newsletter.ueuz.com/svi/linkserv.php?bat=gmf1009_ctrm&nb=2439&n=9047704&c=culture&leroiurl=http%3A%2F%2Fad.zanox.com%2Fppc%2F%3F13593815C843980040T">Je demande un devis personnalis&eacute; et sans engagement</a>
+ </td>
+ </tr>
+</table>
+<font style="font-family:arial;font-size:10px">
+(1) Contrat habitation Domultis, Installio ou Amphi pour une r&eacute;sidence principale ou une r&eacute;sidence secondaire en m&eacute;tropole.
+(2) Survenant sur des installations privatives, situ&eacute;es &agrave; l'int&eacute;rieur des b&acirc;timents assur&eacute;s et suivant les conditions de garanties figurant dans votre convention d'assistance &agrave; domicile.
+</td></tr>
+</table>
+<br><br>
+<img src="http://newsletter.ueuz.com/svi/img_nb_2439_numuser_9047704_code_HWeuIQdw_src_50.jpg" width=1 height=1 alt=''>
+<p>
+Ce message est envoy&eacute; par central marques - <a href="http://newsletter.ueuz.com/svi/gestionserv.php?nb=2439&cat=culture&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_61b05fbfe73ca589e5ca0417d01a4580--
+
+--===============5274771497464024131==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Come build with us! The BlackBerry(R) Developer Conference in SF, CA
@@ -301,3 +145,15 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
+--===============5274771497464024131==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5274771497464024131==--

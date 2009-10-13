@@ -1,11 +1,11 @@
-From: Mutuelle MCD <newsletter-XnNBbOCIN4bQT0dZR+AlfA@public.gmane.org>
-Subject: Etre mieux rembourse pour seulement 14 euros
-Date: 13 Oct 2009 08:55:27 -0000
-Message-ID: <20091013085527.17484.qmail@ks366005.kimsufi.com>
-Reply-To: Mutuelle MCD <newsletter-XnNBbOCIN4bQT0dZR+AlfA@public.gmane.org>
+From: "Lorinda Ucubyguu" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Identity protection
+Date: Tue, 13 Oct 2009 15:59:00 +0200
+Message-ID: <2185PZR.835463C9C.34817149828XUSYRMASKHZWTFL4017@rb>
+Reply-To: Lorinda Hoipu <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7230423108482310000=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0105268940270451697=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,108 +17,168 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============0105268940270451697==
+Content-type: text/html; charset="UTF-8"
 
---===============7230423108482310000==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_0707fd34581c08168fad8fc14a555056"
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html><head>
+         <title>Your Newsletter</title>
+         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><style type="text/css">
+         a { text-decoration:none;}
+         a:hover { text-decoration:underline; }
+         .Trebuchet24Brown { font-family:"Trebuchet MS", Tahoma, Arial, verdana; color:#336600; font-size:24px; }
+         .Trebuchet24Brown a { color:#336600; }
+         .Trebuchet14Brown { font-family:"Trebuchet MS", Tahoma, Arial, verdana; color:#336600; font-size:15px; font-weight:600; }
+         .Trebuchet14Brown a { color:#336600; }
+         .u01 {border-bottom:2px solid #999999;}
+         .u02 {border-bottom:1px solid #999999;}
+         .Trebuchet12Grey { font-family:"Trebuchet MS", Tahoma, Arial, verdana; color:#858585; font-size:12px; }
+         .Trebuchet12Grey a { color:#858585; }
+         .Trebuchet11Brown { font-family:"Trebuchet MS", Tahoma, Arial, verdana; color:#8b7967; font-size:11px; }
+         .Trebuchet11Brown a { color:#8b7967; }
+         .Tahoma11White { font-family:Tahoma, "Trebuchet MS", Arial, verdana; color:#FFFFFF; font-size:11px;}
+         .Tahoma11White a { color:#FFFFFF; }
+         </style>
+
+     </head><body>
+         <br />
+
+         <table align="center" border="0" cellpadding="15" cellspacing="0" width="705">
+             <tbody>
+                 <tr>
+                     <td>
+                     <table border="0" cellspacing="0" width="100%">
+                         <tbody>
+                             <tr>
+                                 <td style="padding-bottom: 10px; background-color: #336600;">
+								 &nbsp;</td>
+                             </tr>
+
+                             <tr>
+                                 <td>
+                                 <div align="center">
+                                 	<br><a class="Trebuchet24Brown" style="text-decoration:underline; color:#2424FF" href='http://e0e6.zediwus.cn/?jjmjku=c9fbdb63c9c567d2b27f&fvgxusyrma=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&adufu=76968742757334817149' target="new"><img alt="Where is the image? Click to view it" src="http://3d4ec.zediwus.cn/fa70b64feb37c701c9e0.gif" style="border-width: 0px"></a><br><br>
+                                 </div>
+                                 <table border="0" cellpadding="0" cellspacing="5" width="100%">
+                                     <tbody>
+                                         <tr>
+
+                                             <td class="Tahoma11White" style="padding: 0pt 0pt 0pt 10px;" align="left" bgcolor="#333399"><span style="font-family: Trebuchet MS; font-size: 10pt; color: #ffffff;"></span><span style="font-family: Trebuchet MS; font-size: 10pt; color: #ffffff;"></span><span style="font-family: Trebuchet MS; font-size: 10pt; color: #ffffff;"><span style="font-weight: bold; font-family: Trebuchet MS; font-size: 10pt;">
+											 Edible Austin</span></span><span style="font-family: Trebuchet MS; font-size: 10pt;">,
+											 1415 Newning Ave., Austin, TX&nbsp;
+											 78704 </span></td>
+
+                                         </tr>
+                                     </tbody>
+                                 </table>
+                                 </td>
+                             </tr>
+                         </tbody>
+                     </table>
+                     </td>
+                 </tr>
+
+             </tbody>
+         </table>
+     <div class='unsub' align='center'>
+	<table border="0">
+		<tr><td>
+			<table border='0' align='center' cellpadding='0' cellspacing='0' style="border: 1px solid #999999; border-left-style: none; border-right-style: none; font-size: 10px; font-family: verdana">
+				<tr height="2px"><td></td></tr>
+
+				<tr>
+					<td>
+
+						<table border="0">
+						<tr style="height:13px">
+
+												<!-- subscribe to this newsletter -->
+						<td style='width: 1px' bgcolor='#808080'>
+						</td>
+						<td style='width: 5px'>
+						</td>
+
+						<td nowrap>
+							<a href='http://6b9a4.zediwus.cn/?unofedaq=c9fbdb63c9c567d2b27f&fvgxusyrma=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&hjderoh=76968742757334817149' style="color: GrayText; text-decoration:none;"><font style="font-size:12px; font-family: verdana; text-decoration:none; color:GrayText; vertical-align:text-top;">
+							subscribe</font></a>
+						</td>
+												<td style='width: 5px'>
+						</td>
+						<td style='width: 1px' bgcolor='#808080'>
+						</td>
+						<td style='width: 5px'>
+
+						</td>
+						<td nowrap>
+						<!-- Unsubscribe from newsletter -->
+							<a style="text-decoration:none;" href='http://3d4ec.zediwus.cn/?ezuurufi=c9fbdb63c9c567d2b27f&fvgxusyrma=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&noram=76968742757334817149'><font style="font-size:12px; font-family: verdana; text-decoration:none; color:GrayText; vertical-align:text-top;">
+						unsubscribe</font></a>
+						</td>
+
+												<!-- forward to friend -->
+						<td style='width: 5px'>
+						</td>
+
+						<td style='width: 1px' bgcolor='#808080'>
+						</td>
+						<td style='width: 5px'>
+						</td>
+						<td nowrap>
+							<a style="text-decoration:none;" href='http://3d4ec.zediwus.cn/?ioecqaqxjm=c9fbdb63c9c567d2b27f&fvgxusyrma=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&omixauj=76968742757334817149'><font style="font-size:12px; font-family: verdana; text-decoration:none; color:GrayText; vertical-align:text-top;">
+							forward</font></a>
+						</td>
+
+												<td style='width: 5px'>
+
+						</td>
+						<td style='width: 1px' bgcolor='#808080'>
+						</td>
+						<td style='width: 5px'>
+						</td>
+						<td nowrap>
+							<a style="text-decoration:none;" href='http://3d4ec.zediwus.cn/?bjlamjmute=c9fbdb63c9c567d2b27f&fvgxusyrma=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&uwexusaihj=76968742757334817149'><font style="font-size:12px; font-family: verdana; text-decoration:none; color:GrayText; vertical-align:text-top;">
+							update profile</font></a>
+						</td>
+
+												</tr>
+
+					</table>
+					</td>
+				</tr>
+			</table>
+		</td></tr>
+		<tr align='center'>
+			<td>
+				<font style='font-size:9px; text-decoration:none; color:GrayText; font-family: verdana'>
+
+				<br>
+
+				This mailing system may only be used for sending permission
+				based email.
+				<br>
+				If you did not give permission to receive emails from this
+				sender, <a href='http://3d4ec.zediwus.cn/?ojnjwuzq=c9fbdb63c9c567d2b27f&fvgxusyrma=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&jnode=76968742757334817149' target='new' style='color:GrayText;font-family: verdana;font-size:9px'>
+				please notify us</a>.
+				<br>
+				<br>
+				This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org | <a  style='color:GrayText;font-family: verdana;font-size:9px; font-weight: bold;' href='http://3d4ec.zediwus.cn/?jvisokjoy=c9fbdb63c9c567d2b27f&fvgxusyrma=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&yogebupiu=76968742757334817149'>
+				Print / PDF version</a>
+
+								 | Read our <a href='http://3d4ec.zediwus.cn/?etqmjruo=c9fbdb63c9c567d2b27f&fvgxusyrma=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&zjxeorqnq=76968742757334817149' target='new' style='color:GrayText;font-family: verdana;font-size:9px'>
+				Privacy Policy</a>.
+				<br>
 
 
---_----------=_parties_0707fd34581c08168fad8fc14a555056
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://newsletter.b-wave.com/svi/miroir.php?bat=mcd1009_ctrm
-
-Avec Mutuelle MCD
-
-Votre couverture santé à partir de 14€/mois *
-
-pour une famille de trois personnes
-
-ET
-
-Jusqu'à 2 mois offerts **
-Des tarifs adaptés à tous les besoins
-
-Un accès aux soins même pour les petits budget
-
-Des services pratiques d'assistance et d'information
-
-Je demande mon devis
-
-plus d'infos sur http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique
-
---------------------------------
-Cette offre Mutuelle MCD vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://newsletter.b-wave.com/svi/gestionserv.php?nb=2437&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_0707fd34581c08168fad8fc14a555056
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
+								</font>
+			</td>
+		</tr>
+	</table>
+</div>
+</body></html>
 
 
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
-<head> 
-<title></title>
-</head>
-<body><center>
-<p>
-<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://newsletter.b-wave.com/svi/miroir.php?bat=mcd1009_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-</p>
-<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:12px;background-color:#FFFFFF;'>
-<a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" style="text-decoration:none;color:#000000;"><center>
-<font style="font-size:24px">Avec Mutuelle MCD<br>
-Votre couverture sant&eacute; &agrave; partir de 14&euro;/mois<sup>*</sup></fonT><br>
-pour une famille de trois personnes<br>
-<font style="font-size:24px">ET<br>
-Jusqu'&agrave; 2 mois offerts<sup>**</sup></font>
-</center>
-<li>Des tarifs adapt&eacute;s &agrave; tous les besoins</li>
-<li>Un acc&egrave;s aux soins m&ecirc;me pour les petits budget</li>
-<li>Des services pratiques d'assistance et d'information</li>
-<center><u><font color=blue style="font-size:20px">Je demande mon devis</font></u></center></a>
-</td></tr>
-<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
-<table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
- <tr>
- <td colspan="4"><a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r1_c1.jpg" width="600" height="133" border="0" alt="D&eacute;courvrez la mutuelle qui d&eacute;fend le droit aux soins pour tous" /></a></td>
- </tr>
- <tr>
- <td><a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r2_c1.jpg" width="207" height="165" border="0" alt="Mutuelle MCD" /></a></td>
- <td><a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r2_c2.jpg" width="168" height="165" border="0" alt="Votre couverture sant&eacute; &agrave; partir 14 euros par mois* (pour une famille de 3 personnes)" /></a></td>
- <td><a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r2_c3.jpg" width="52" height="165" border="0" alt="et" /></a></td>
- <td><a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r2_c4.jpg" width="173" height="165" border="0" alt="Jusqu'a 2 mois offerts**" /></a></td>
- </tr>
- <tr>
- <td><a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r3_c1.jpg" width="207" height="138" border="0" alt="Mutuelle MCD" /></a></td>
- <td><a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r3_c2.gif" width="168" height="138" border="0" alt="Demandez votre devis gratuit" /></a></td>
- <td colspan="2"><a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r3_c3.jpg" width="225" height="138" border="0" alt="Mutuelle MCD" /></a></td>
- </tr>
- <tr>
- <td colspan="3" style="font-family:sans-serif;font-size:8px;">
- <div align="justify">*Option Vous AOAO pour deux personnes de 25 ans et un enfant de 5 ans. Tarif en vigueur jusqu'au 31/12/2009<br />
- ** 1 mois de cotisation pour toute adh&eacute;sion d'une personne, 2 mois de cotisation pour l'adh&eacute;sion de 2 personnes ou plus sur le m&ecirc;me contrat sant&eacute; Mcd. Offre r&eacute;serv&eacute;e aux particuliers pour toute adh&eacute;sion jusqu'au 31/01/2010 et non cumulable avec toute autre op&eacute;ration commerciale en cours.<br />
- Mutuelle Mcd - Si&egrave;ge national - 44, rue Copernic - BP 7716 - 75762 Paris Cedex 16 - Mutuelle soumise aux dispositions du livre II du Code de la Mutualit&eacute; - Registre national des mutuelles N&deg; 775688658 - Document non contractuel </div></td>
- <td><a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=mcd1009_ctrm&nb=2437&n=9047704&c=pratique" target="_blank"><img src="http://ad.publicidees.com/promos/mails/img/mutuelleMCD/Sante/kitmail_010909/septembre_2_r4_c4.jpg" width="173" height="64" border="0" alt="Mutuelle Mcd" /></a></td>
- </tr>
-</table>
-<img src="http://newsletter.b-wave.com/imgregie/2437/mcd1009_ctrm.gif" height="1" width="1">
-</td></tr>
-</table>
-<br><br>
-<img src="http://newsletter.b-wave.com/svi/img_nb_2437_numuser_9047704_code_HWeuIQdw_src_50.jpg" width=1 height=1 alt=''>
-<p>
-Ce message est envoy&eacute; par central marques - <a href="http://newsletter.b-wave.com/svi/gestionserv.php?nb=2437&cat=pratique&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
-</p>
-</center></body>
-</html>
-
-
---_----------=_parties_0707fd34581c08168fad8fc14a555056--
-
---===============7230423108482310000==
+--===============0105268940270451697==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,7 +190,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============7230423108482310000==
+--===============0105268940270451697==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -141,4 +201,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7230423108482310000==--
+--===============0105268940270451697==--

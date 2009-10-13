@@ -1,12 +1,10 @@
-From: "Ana Maria Villarroel Altamirano" <remocionesrdwebs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] CONTROLE SU PESO
-Date: Tue, 13 Oct 2009 09:48:59 -0300
-Message-ID: <258531275020-2200910213124859320@AnaMaria1>
-Reply-To: Ana Maria Villarroel Altamirano <hipnosischile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "easyJet par Plein Temps" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: Jouez et gagnez des billets d'avion avec easyJet
+Date: Tue, 13 Oct 2009 17:08:08 +0200 (CEST)
+Message-ID: <krgkph.jj8lp0@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2219561183817513408=="
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============3365000126378586011=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,512 +16,115 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2219561183817513408==
+--===============3365000126378586011==
 Content-Type: multipart/alternative;
-	boundary="----=_NextPart_258531772741320878124859320"
+	boundary="=_ae046e456b876e3b6579e78ad68c86be"
 
-------=_NextPart_258531772741320878124859320
-Content-type: text/plain; charset=US-ASCII
+--=_ae046e456b876e3b6579e78ad68c86be
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-=09 =09=09
-=09=09=09 =09=09=09
-=09=09=09
-=09=09=09 =09=09=09
-=09=09=09Estimad@  :=20
-=09=09=09
-=09=09=09Quisiera invitarle a este miercoles 14 de octubre =09=09=09de 19 =
-a 21 hrs=2E al Seminario - Terapia para controlar su peso=2E Si es =09=09=09=
-de las personas que ha intentado bajar de peso, pero no lo ha =09=09=09log=
-rado, la HIPNOSIS puede ser su solucion=2E
-=09=09=09
-=09=09=09Si no es su caso, puede conocer a alguien que si =09=09=09puede t=
-ener problema con su peso, ruego reenviarle este e-mail=2E
-=09=09=09
-=20
-=09=09=09
-=09=09=09Saludos,
-=09=09=09
-=20
-=09=09=09
-=09=09=09Ana Maria Villarroel Altamirano
-=09=09=09
-=09=09=09Hipnosis Chile
-=09=09=09
-=20
-=09=09=09 =09=09=09 =09=09=09
-=09=09=09 =09=09=09"CONTROLE su PESO"
-=09=09=09 =09=09=09
-=09=09=09Fecha y Horario
-=09=09=09
-=09=09=09Miercoles 14 de Octubre de 19 a 21 hrs=2E
-=09=09=09
-=09=09=09 =09=09=09 =09=09=09Facilitadora: Teresa Arellano Osorio=20
-=09=09=09 =09=09=09
-=20
-=09=09=09
-=09=09=09
-=09=09=09
-=20
-=09=09=09 =09=09=09 =09=09=09
-=09=09=09HA INTENTADO HACER DIETAS=2E=2E=3F
-=09=09=09
-COMER =09=09=09MENOS=2E=2E=3F
-=09=09=09
-IR AL =09=09=09GIMNASIO=2E=2E=3F
-=09=09=09
-=20
-=09=09=09 =09=09=09 =09=09=09
-=09=09=09POR QUE CREE QUE NO LE RESULTA=2E=2E=3F
-=09=09=09 =09=09=09 =09=09=09
-=20
-=09=09=09
-En los =09=09=09casos de sobrepeso, el 99% se debe a malos habitos en las =
-comidas; =09=09=09el 1% a problemas endocrinos=2E Muchas personas con un l=
-igero =09=09=09sobrepeso se someten a dietas intensas y ayunos absurdos qu=
-e hacen =09=09=09que la persona se presente demacrada, dando la sensacion =
-de =09=09=09cansancio y envejecimiento=2E Ademas estas dietas producen una=
- =09=09=09reaccion compensatoria del organismo, que aumentara la absorcion=
- de =09=09=09alimentos que se ingerira posteriormente=2E=20
-=09=09=09
-=20
-=09=09=09
-Con el =09=09=09metodo de hipnosis se llega a un estado de relajacion que =
-permite el =09=09=09acceso al subconsciente, donde esta radicado el habito=
- y se efectua =09=09=09una programacion-sin esfuerzo alguno, mas bien con =
-agrado- que =09=09=09permite cambiar el habito de alimentacion, logrando a=
-lcanzar-sin =09=09=09dieta alguna- el peso ideal=2E Esto se efectua en for=
-ma grupal y la =09=09=09sesion no dura mas alla de una hora y media=2E=20
-=09=09=09
-=20
-=09=09=09
-Durante =09=09=09la programacion la persona permanece consiente en todo mo=
-mento para =09=09=09poder efectuar el "trabajo mental" que permite obtener=
- el logro =09=09=09deseado=2E Solo se necesita el deseo de lograr el peso =
-y la talla =09=09=09ideal=2E El como hacerlo se entrega a traves de la hip=
-nosis=2E=20
-=09=09=09
-=20
-=09=09=09
-La sesion =09=09=09se efectua en forma grupal y tiene un valor de $65=2E00=
-0=2E- (valor =09=09=09contado, se puede dar 2 cheques de $35=2E000=2E- c/u=
-)=20
-=09=09=09 =09=09=09 =09=09=09
-Si desea =09=09=09sesion individual el valor es de $150=2E000 (se puede =09=
-=09=09documentar hasta con 3 cheques de $55=2E000=2E- c/u)
-=09=09=09 =09=09=09 =09=09=09
-=20
-=09=09=09
-El valor =09=09=09considera:
-=09=09=09 =09=09=09=09
-=09=09=09=09
-=09=09=09=09Apuntes =09=09=09=09
-=09=09=09=09
-=09=09=09=09Imanes =09=09=09=09 =09=09=09=09(la Imanpuntura es un tratamie=
-nto eficaz que apoya el proceso =09=09=09=09hipnotico) =09=09=09=09
-=09=09=09=09
-=09=09=09=09 =09=09=09=09CD de =09=09=09=09Apoyo a la Terapia para ser uti=
-lizado en forma personal en =09=09=09=09su casa =09=09=09=09
-=09=09=09=09
-=09=09=09=09 =09=09=09=09Apoyo =09=09=09=09Permanente por telefono, e-mail=
- o personalmente=2E =09=09=09 =09=09=09 =09=09=09
-=20
-=09=09=09
-=09=09=09INSCRIPCIONES:=20
-=09=09=09
-=09=09=09 =09=09=09http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm =20=
 
-=09=09=09
-Telefono: =09=09=09(56-2) 278 1078 - 445 8980 - Celular: (09) 9675 6898=20=
-
-=09=09=09
-=20
-=09=09=09
-Cupos: 10 personas=20
-=09=09=09
-Inversion: $ 65=2E000=20
-=09=09=09
-=20
-=09=09=09
-Lugar: Dr=2E Barros Borgono =09=09=09384 - Providencia=20
-=09=09=09 =09=09=09 =09=09=09
-=09=09=09Estacionamiento en los alrededores o en 11 de Septiembre frente a=
- =09=09=09Dr=2E Barros Borgono=2E=20
-=09=09=09
-=20
-=09=09=09 =09=09=09 =09=09=09
-=09=09=09Ademas se puede realizar los talleres, cursos y =09=09=09diplomad=
-os en regiones y fuera del pais, rogamos consultar las =09=09=09condicione=
-s=2E
-=09=09=09
-=20
-=09=09=09 =09=09=09
-=09=09=09 =09=09=09Remociones: Enviar un =09=09=09e-mail a =09=09=09 =09=09=
-=09 =09=09=09 =09=09=09 =09=09=09remocionesrdwebs@gmail=2Ecom =09=09=09col=
-ocando Remover en el Asunto =09=09 =09=20
-------=_NextPart_258531772741320878124859320
-Content-Type: text/html; charset=US-ASCII
+--=_ae046e456b876e3b6579e78ad68c86be
+Content-Type: text/html; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-<html>
-
-<head>
-<meta http-equiv=3D"Content-Language" content=3D"es-cl">
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
-1252">
-<title>CONTROL DE PESO</title>
-</head>
-
-<body bgcolor=3D"#000000" topmargin=3D"0" leftmargin=3D"0" rightmargin=3D"=
-0" bottommargin=3D"0">
-
-<div align=3D"center">
-=09<table border=3D"5" width=3D"66%" id=3D"table1" bgcolor=3D"#EDEEE9" cel=
-lspacing=3D"0" cellpadding=3D"10" bordercolor=3D"#435712">
-=09=09<tr>
-=09=09=09<td>
-=09=09=09<p style=3D"margin-top: 0; margin-bottom: 0">
-=09=09=09<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecl/LOGO=2Eg=
-if" width=3D"975" height=3D"245"></p>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-varia=
-nt: normal; font-weight: normal; letter-spacing: normal; line-height: norm=
-al; orphans: 2; text-align: auto; text-indent: 0px; text-transform: none; =
-white-space: normal; widows: 2; word-spacing: 0px; -webkit-border-horizont=
-al-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decora=
-tions-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke=
--width: 0px">
-=09=09=09<p align=3D"center" style=3D"text-align: justify; margin: 0 0cm">=
-
-=09=09=09<font face=3D"Arial">Estimad@  : </font></p>
-=09=09=09<p align=3D"center" style=3D"text-align: justify; margin: 0 0cm">=
-
-=09=09=09<font face=3D"Arial">Quisiera invitarle a este miercoles 14 de oc=
-tubre=20
-=09=09=09de 19 a 21 hrs=2E al Seminario - Terapia para controlar su peso=2E=
- Si es=20
-=09=09=09de las personas que ha intentado bajar de peso, pero no lo ha=20
-=09=09=09logrado, la HIPNOSIS puede ser su solucion=2E</font></p>
-=09=09=09<p align=3D"center" style=3D"text-align: justify; margin: 0 0cm">=
-
-=09=09=09<font face=3D"Arial">Si no es su caso, puede conocer a alguien qu=
-e si=20
-=09=09=09puede tener problema con su peso, ruego reenviarle este e-mail=2E=
-</font></p>
-=09=09=09<p align=3D"center" style=3D"text-align: justify; margin: 0 0cm">=
-&nbsp;</p>
-=09=09=09<p align=3D"center" style=3D"text-align: justify; margin: 0 0cm">=
-
-=09=09=09<font face=3D"Arial">Saludos,</font></p>
-=09=09=09<p align=3D"center" style=3D"text-align: justify; margin: 0 0cm">=
-&nbsp;</p>
-=09=09=09<p align=3D"center" style=3D"text-align: justify; margin: 0 0cm">=
-
-=09=09=09<font face=3D"Arial">Ana Maria Villarroel Altamirano</font></p>
-=09=09=09<p align=3D"center" style=3D"text-align: justify; margin: 0 0cm">=
-
-=09=09=09<font face=3D"Arial">Hipnosis Chile</font></p>
-=09=09=09<p align=3D"center" style=3D"text-align: justify; margin: 0 0cm">=
-&nbsp;</p>
-=09=09=09</span>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium=
-; font-style: normal; font-variant: normal; font-weight: normal; letter-sp=
-acing: normal; line-height: normal; orphans: 2; text-align: auto; text-ind=
-ent: 0px; text-transform: none; white-space: normal; widows: 2; word-spaci=
-ng: 0px; -webkit-border-horizontal-spacing: 0px; -webkit-border-vertical-s=
-pacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-a=
-djust: auto; -webkit-text-stroke-width: 0px; ">
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm"><=
-b>
-=09=09=09<span style=3D"font-family: Arial, sans-serif; "><font size=3D"5"=
->
-=09=09=09&quot;CONTROLE su PESO&quot;</font></span></b></p>
-=09=09=09<span class=3D"Apple-style-span" style=3D"-webkit-border-horizont=
-al-spacing: 3px; -webkit-border-vertical-spacing: 3px; ">
-=09=09=09<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
-=09=09=09<font face=3D"Arial" size=3D"4"><b>Fecha y Horario</b></font></p>=
-
-=09=09=09<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><b>=
-
-=09=09=09<font face=3D"Arial">Miercoles 14 de Octubre de 19 a 21 hrs=2E</f=
-ont></b></p>
-=09=09=09<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
-=09=09=09<font face=3D"Arial">
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-varia=
-nt: normal; font-weight: 700; letter-spacing: normal; line-height: normal;=
- orphans: 2; text-align: auto; text-indent: 0px; text-transform: none; whi=
-te-space: normal; widows: 2; word-spacing: 0px; -webkit-border-horizontal-=
-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decoratio=
-ns-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-wi=
-dth: 0px">
-=09=09=09Facilitadora: Teresa Arellano Osorio </span></font></p>
-=09=09=09</span>
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm">&=
-nbsp;</p>
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm">
-=09=09=09<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecl/imagen/p=
-eso=2Ejpg" width=3D"192" height=3D"91"></p>
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm">&=
-nbsp;</p>
-=09=09=09</span>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-varia=
-nt: normal; font-weight: 700; letter-spacing: normal; line-height: normal;=
- orphans: 2; text-align: auto; text-indent: 0px; text-transform: none; whi=
-te-space: normal; widows: 2; word-spacing: 0px; -webkit-border-horizontal-=
-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decoratio=
-ns-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-wi=
-dth: 0px">
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm">
-=09=09=09<font face=3D"Arial">HA INTENTADO HACER DIETAS=2E=2E=3F</p>
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm">C=
-OMER=20
-=09=09=09MENOS=2E=2E=3F</p>
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm">I=
-R AL=20
-=09=09=09GIMNASIO=2E=2E=3F</p>
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm">&=
-nbsp;</p>
-=09=09=09</font></span><font face=3D"Arial">
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; font-style: normal; font-variant: normal; font-weight: 700; letter-spa=
-cing: normal; line-height: normal; orphans: 2; text-align: auto; text-inde=
-nt: 0px; text-transform: none; white-space: normal; widows: 2; word-spacin=
-g: 0px; -webkit-border-horizontal-spacing: 0px; -webkit-border-vertical-sp=
-acing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-ad=
-just: auto; -webkit-text-stroke-width: 0px">
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm">
-=09=09=09<font color=3D"#FF0000" size=3D"5">POR QUE CREE QUE NO LE RESULTA=
-=2E=2E=3F</font></p>
-=09=09=09</span>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-varia=
-nt: normal; font-weight: 700; letter-spacing: normal; line-height: normal;=
- orphans: 2; text-align: auto; text-indent: 0px; text-transform: none; whi=
-te-space: normal; widows: 2; word-spacing: 0px; -webkit-border-horizontal-=
-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decoratio=
-ns-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-wi=
-dth: 0px">
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm">&=
-nbsp;</p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">En=
- los=20
-=09=09=09casos de sobrepeso, el 99% se debe a malos habitos en las comidas=
-;=20
-=09=09=09el 1% a problemas endocrinos=2E Muchas personas con un ligero=20
-=09=09=09sobrepeso se someten a dietas intensas y ayunos absurdos que hace=
-n=20
-=09=09=09que la persona se presente demacrada, dando la sensacion de=20
-=09=09=09cansancio y envejecimiento=2E Ademas estas dietas producen una=20=
-
-=09=09=09reaccion compensatoria del organismo, que aumentara la absorcion =
-de=20
-=09=09=09alimentos que se ingerira posteriormente=2E </p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">&n=
-bsp;</p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">Co=
-n el=20
-=09=09=09metodo de hipnosis se llega a un estado de relajacion que permite=
- el=20
-=09=09=09acceso al subconsciente, donde esta radicado el habito y se efect=
-ua=20
-=09=09=09una programacion-sin esfuerzo alguno, mas bien con agrado- que=20=
-
-=09=09=09permite cambiar el habito de alimentacion, logrando alcanzar-sin=20=
-
-=09=09=09dieta alguna- el peso ideal=2E Esto se efectua en forma grupal y =
-la=20
-=09=09=09sesion no dura mas alla de una hora y media=2E </p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">&n=
-bsp;</p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">Du=
-rante=20
-=09=09=09la programacion la persona permanece consiente en todo momento pa=
-ra=20
-=09=09=09poder efectuar el &quot;trabajo mental&quot; que permite obtener =
-el logro=20
-=09=09=09deseado=2E Solo se necesita el deseo de lograr el peso y la talla=
-=20
-=09=09=09ideal=2E El como hacerlo se entrega a traves de la hipnosis=2E </=
-p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">&n=
-bsp;</p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">La=
- sesion=20
-=09=09=09se efectua en forma grupal y tiene un valor de $65=2E000=2E- (val=
-or=20
-=09=09=09contado, se puede dar 2 cheques de $35=2E000=2E- c/u) </p>
-=09=09=09</span>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-we=
-ight: 700; letter-spacing: normal; line-height: normal; orphans: 2; text-a=
-lign: auto; text-indent: 0px; text-transform: none; white-space: normal; w=
-idows: 2; word-spacing: 0px; -webkit-border-horizontal-spacing: 0px; -webk=
-it-border-vertical-spacing: 0px; -webkit-text-decorations-in-effect: none;=
- -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px">
-=09=09=09<p align=3D"right" style=3D"margin-top: 0; margin-bottom: 0">Si d=
-esea=20
-=09=09=09sesion <u>individual</u> el valor es de $150=2E000 (se puede=20
-=09=09=09documentar hasta con 3 cheques de $55=2E000=2E- c/u)</p>
-=09=09=09</span>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-varia=
-nt: normal; font-weight: 700; letter-spacing: normal; line-height: normal;=
- orphans: 2; text-align: auto; text-indent: 0px; text-transform: none; whi=
-te-space: normal; widows: 2; word-spacing: 0px; -webkit-border-horizontal-=
-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decoratio=
-ns-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-wi=
-dth: 0px">
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">&n=
-bsp;</p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">El=
- valor=20
-=09=09=09considera:</p>
-=09=09=09<ul>
-=09=09=09=09<li>
-=09=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0"=
->
-=09=09=09=09Apuntes</li>
-=09=09=09=09<li>
-=09=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0"=
->
-=09=09=09=09Imanes </span>
-=09=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: sep=
-arate; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-va=
-riant: normal; letter-spacing: normal; line-height: normal; orphans: 2; te=
-xt-align: auto; text-indent: 0px; text-transform: none; white-space: norma=
-l; widows: 2; word-spacing: 0px; -webkit-border-horizontal-spacing: 0px; -=
-webkit-border-vertical-spacing: 0px; -webkit-text-decorations-in-effect: n=
-one; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px">
-=09=09=09=09(la Imanpuntura es un tratamiento eficaz que apoya el proceso=20=
-
-=09=09=09=09hipnotico)</span></li>
-=09=09=09=09<li>
-=09=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0"=
->
-=09=09=09=09<span class=3D"Apple-style-span">
-=09=09=09=09<span style=3D"font-size: medium; letter-spacing: normal"><b>C=
-D de=20
-=09=09=09=09Apoyo </b>a la Terapia para ser utilizado en forma personal en=
-=20
-=09=09=09=09su casa</span></span></li>
-=09=09=09=09<li>
-=09=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0"=
->
-=09=09=09=09<span class=3D"Apple-style-span">
-=09=09=09=09<span style=3D"font-size: medium; letter-spacing: normal"><b>A=
-poyo=20
-=09=09=09=09Permanente</b> por telefono, e-mail o personalmente=2E</span><=
-/span></li>
-=09=09=09</ul>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-varia=
-nt: normal; font-weight: 700; letter-spacing: normal; line-height: normal;=
- orphans: 2; text-align: auto; text-indent: 0px; text-transform: none; whi=
-te-space: normal; widows: 2; word-spacing: 0px; -webkit-border-horizontal-=
-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decoratio=
-ns-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-wi=
-dth: 0px">
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">&n=
-bsp;</p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">
-=09=09=09INSCRIPCIONES: </p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">
-=09=09=09<a href=3D"http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm">
-=09=09=09http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm</a>&nbsp; </p=
->
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">Te=
-lefono:=20
-=09=09=09(56-2) 278 1078 - 445 8980 - Celular: (09) 9675 6898 </p>
-=09=09=09<p align=3D"justify" style=3D"margin-top: 0; margin-bottom: 0">&n=
-bsp;</p>
-=09=09=09<p style=3D"margin-top: 0; margin-bottom: 0">Cupos: 10 personas <=
-/p>
-=09=09=09<p style=3D"margin-top: 0; margin-bottom: 0">Inversion: $ 65=2E00=
-0 </p>
-=09=09=09<p style=3D"margin-top: 0; margin-bottom: 0">&nbsp;</p>
-=09=09=09<p style=3D"margin-top: 0; margin-bottom: 0">Lugar: Dr=2E Barros =
-Borgono=20
-=09=09=09384 - Providencia </p>
-=09=09=09</span>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; letter-=
-spacing: normal; line-height: normal; orphans: 2; text-align: auto; text-i=
-ndent: 0px; text-transform: none; white-space: normal; widows: 2; word-spa=
-cing: 0px; -webkit-border-horizontal-spacing: 0px; -webkit-border-vertical=
--spacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size=
--adjust: auto; -webkit-text-stroke-width: 0px">
-=09=09=09<p style=3D"margin-top: 0; margin-bottom: 0"><font size=3D"1">
-=09=09=09Estacionamiento en los alrededores o en 11 de Septiembre frente a=
-=20
-=09=09=09Dr=2E Barros Borgono=2E </font></p>
-=09=09=09<p style=3D"margin-top: 0; margin-bottom: 0">&nbsp;</p>
-=09=09=09</span>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-we=
-ight: 700; letter-spacing: normal; line-height: normal; orphans: 2; text-a=
-lign: auto; text-indent: 0px; text-transform: none; white-space: normal; w=
-idows: 2; word-spacing: 0px; -webkit-border-horizontal-spacing: 0px; -webk=
-it-border-vertical-spacing: 0px; -webkit-text-decorations-in-effect: none;=
- -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px">
-=09=09=09<p style=3D"margin-top: 0; margin-bottom: 0" align=3D"center">
-=09=09=09<font size=3D"2">Ademas se puede realizar los talleres, cursos y=20=
-
-=09=09=09diplomados en regiones y fuera del pais, rogamos consultar las=20=
-
-=09=09=09condiciones=2E</font></p>
-=09=09=09<p style=3D"margin-top: 0; margin-bottom: 0" align=3D"center">&nb=
-sp;</p>
-=09=09=09</span>
-=09=09=09<p align=3D"center" style=3D"text-align: center; margin: 0 0cm"><=
-/font>
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: #808080; font-style: normal; font-variant: normal; letter-spaci=
-ng: normal; line-height: normal; orphans: 2; text-align: auto; text-indent=
-: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing:=
- 0px; -webkit-border-horizontal-spacing: 0px; -webkit-border-vertical-spac=
-ing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-adju=
-st: auto; -webkit-text-stroke-width: 0px">
-=09=09=09<font face=3D"Arial" style=3D"font-size: 6pt">Remociones: Enviar =
-un=20
-=09=09=09e-mail a </font></span>
-=09=09=09<span class=3D"Apple-style-span" style=3D"font-family: Arial; tex=
-t-align: right; white-space: nowrap">
-=09=09=09<span class=3D"Apple-style-span" style=3D"border-collapse: separa=
-te; color: rgb(0, 0, 0); font-family: Times New Roman; font-style: normal;=
- font-variant: normal; letter-spacing: normal; line-height: normal; orphan=
-s: 2; text-align: auto; text-indent: 0px; text-transform: none; white-spac=
-e: normal; widows: 2; word-spacing: 0px; -webkit-border-horizontal-spacing=
-: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decorations-in-e=
-ffect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0p=
-x">
-=09=09=09<a href=3D"mailto:remocionesrdwebs@gmail=2Ecom">
-=09=09=09<font style=3D"font-size: 6pt" color=3D"#808080">
-=09=09=09remocionesrdwebs@gmail=2Ecom</font></a></span><span class=3D"Appl=
-e-style-span" style=3D"border-collapse: separate; font-family: Times New R=
-oman; font-style: normal; font-variant: normal; letter-spacing: normal; li=
-ne-height: normal; orphans: 2; text-align: auto; text-indent: 0px; text-tr=
-ansform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-=
-border-horizontal-spacing: 0px; -webkit-border-vertical-spacing: 0px; -web=
-kit-text-decorations-in-effect: none; -webkit-text-size-adjust: auto; -web=
-kit-text-stroke-width: 0px"><font style=3D"font-size: 6pt" color=3D"#80808=
-0">=20
-=09=09=09colocando Remover en el Asunto</font></span></span></td>
-=09=09</tr>
-=09</table>
-</div>
-
-</body>
-
-</html>
-
-------=_NextPart_258531772741320878124859320--
+<html>=0D<head><title>easyJet Europe</title>=0D<meta content=3D"text/html; =
+charset=3Diso-8859-1" http-equiv=3DContent-Type>=0D</head>=0D<body topmargi=
+n=3D"0" rightmargin=3D"0" bottommargin=3D"0" leftmargin=3D"0" link=3D"#0000=
+00" alink=3D"#000000" vlink=3D"#000000" marginheight=3D"0" marginwidth=3D"0=
+">=0D<table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"=
+>=0D<tbody>=0D<tr>=0D<td align=3D"center" valign=3D"top" style=3D"FONT-SIZE=
+: 0px">=0D<table width=3D"471" height=3D"696" border=3D"0" cellspacing=3D"0=
+" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"471" height=3D"23" ali=
+gn=3D"center" style=3D"FONT-SIZE: 11px" colspan=3D"3"><a style=3D"TEXT-DECO=
+RATION: none" href=3D"http://ad.doubleclick.net/clk;217762831;41939910;m" t=
+arget=3D"_blank"><font face=3D"Verdana" style=3D"COLOR: #ec5f00; FONT-SIZE:=
+ 11px">easyJet en f=EAte&nbsp;!</font></a></td>=0D</tr>=0D<tr>=0D<td width=
+=3D"471" height=3D"24" align=3D"center" valign=3D"top" style=3D"FONT-SIZE: =
+9px" colspan=3D"3"><font face=3D"Verdana" style=3D"COLOR: #8f8f8f; FONT-SIZ=
+E: 9px">Si cet email ne s'affiche pas correctement, vous pouvez le visualis=
+er <a style=3D"COLOR: #8f8f8f" href=3D"http://ad.doubleclick.net/clk;217762=
+831;41939910;m" target=3D"_blank"><u>gr=E2ce =E0 ce lien</u></a>.</font></t=
+d>=0D</tr>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px">=0D<table border=3D"0" cel=
+lspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td style=3D"FONT-SIZE=
+: 0px">=0D<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody=
+>=0D<tr>=0D<td width=3D"165" height=3D"59" style=3D"FONT-SIZE: 0px"><img wi=
+dth=3D"165" height=3D"1" src=3D"http://mm.cache.coltfrance.com/Easyjet_Euro=
+pe/img/px.gif" border=3D"0" complete=3D"true" complete=3D"true" /></td>=0D<=
+td width=3D"306" height=3D"59" style=3D"FONT-SIZE: 0px"><a style=3D"TEXT-DE=
+CORATION: none" href=3D"http://ad.doubleclick.net/clk;217762831;41939910;m"=
+ target=3D"_blank"></a><a style=3D"TEXT-DECORATION: none" href=3D"http://ad=
+.doubleclick.net/clk;217762831;41939910;m" target=3D"_blank"><img width=3D"=
+306" height=3D"59" src=3D"http://mm.cache.coltfrance.com/Easyjet_Europe/img=
+/mail/acqui/header_d_fr.jpg" border=3D"0" complete=3D"true" complete=3D"tru=
+e" /></a></a /></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=
+=0D<td style=3D"FONT-SIZE: 0px">=0D<table border=3D"0" cellspacing=3D"0" ce=
+llpadding=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"22" height=3D"54" style=3D=
+"FONT-SIZE: 0px"><img width=3D"22" height=3D"1" src=3D"http://mm.cache.colt=
+france.com/Easyjet_Europe/img/px.gif" border=3D"0" complete=3D"true" comple=
+te=3D"true" /></td>=0D<td width=3D"449" height=3D"54" style=3D"FONT-SIZE: 1=
+1px"><a style=3D"TEXT-DECORATION: none" href=3D"http://ad.doubleclick.net/c=
+lk;217762831;41939910;m" target=3D"_blank"><font face=3D"Verdana" style=3D"=
+COLOR: #ec5f00; FONT-SIZE: 11px">En ce moment, easyJet est en f=EAte et <st=
+rong>vous offre 40 billets d'avion</strong><br />pour partir =E0 la d=E9cou=
+verte de l'Europe...<br /></font></a><a style=3D"TEXT-DECORATION: none" hre=
+f=3D"http://ad.doubleclick.net/clk;217762831;41939910;m" target=3D"_blank">=
+<font face=3D"Verdana" style=3D"COLOR: #ec5f00; FONT-SIZE: 11px">Et en plus=
+, 1 week-end pour 2 dans un palace parisien</font></a></td>=0D</tr>=0D</tbo=
+dy>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td style=3D"FONT-SIZE: 0px">=0D<ta=
+ble border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<t=
+d width=3D"347" height=3D"395" style=3D"FONT-SIZE: 0px"><a style=3D"TEXT-DE=
+CORATION: none" href=3D"http://ad.doubleclick.net/clk;217762831;41939910;m"=
+ target=3D"_blank"><img width=3D"347" height=3D"395" src=3D"http://mm.cache=
+.coltfrance.com/Easyjet_Europe/img/mail/acqui/machine.gif" border=3D"0" com=
+plete=3D"true" complete=3D"true" /></a></td>=0D<td style=3D"FONT-SIZE: 0px"=
+>=0D<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<t=
+r>=0D<td width=3D"124" height=3D"190" style=3D"FONT-SIZE: 0px" colspan=3D"2=
+"><img width=3D"124" height=3D"190" src=3D"http://mm.cache.coltfrance.com/E=
+asyjet_Europe/img/mail/acqui/Manivelle.gif" border=3D"0" complete=3D"true" =
+complete=3D"true" /></td>=0D</tr>=0D<tr>=0D<td width=3D"99" height=3D"31" s=
+tyle=3D"FONT-SIZE: 0px"><a style=3D"TEXT-DECORATION: none" href=3D"http://a=
+d.doubleclick.net/clk;217762831;41939910;m" target=3D"_blank"><img width=3D=
+"99" height=3D"31" src=3D"http://mm.cache.coltfrance.com/Easyjet_Europe/img=
+/mail/acqui/btn_fr.gif" border=3D"0" complete=3D"true" complete=3D"true" />=
+</a></td>=0D<td width=3D"25" height=3D"31" style=3D"FONT-SIZE: 0px"><img wi=
+dth=3D"25" height=3D"31" src=3D"http://mm.cache.coltfrance.com/Easyjet_Euro=
+pe/img/mail/acqui/btn_d.gif" border=3D"0" complete=3D"true" complete=3D"tru=
+e" /></td>=0D</tr>=0D<tr>=0D<td width=3D"124" height=3D"174" style=3D"FONT-=
+SIZE: 0px" colspan=3D"2"><img width=3D"124" height=3D"174" src=3D"http://mm=
+.cache.coltfrance.com/Easyjet_Europe/img/mail/acqui/btn_b.jpg" border=3D"0"=
+ complete=3D"true" complete=3D"true" /></td>=0D</tr>=0D</tbody>=0D</table>=
+=0D</td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td style=
+=3D"FONT-SIZE: 0px">=0D<table border=3D"0" cellspacing=3D"0" cellpadding=3D=
+"0">=0D<tbody>=0D<tr>=0D<td height=3D"10" style=3D"FONT-SIZE: 0px"><img wid=
+th=3D"1" height=3D"10" src=3D"http://mm.cache.coltfrance.com/Easyjet_Europe=
+/img/px.gif" border=3D"0" complete=3D"true" complete=3D"true" /></td>=0D</t=
+r>=0D<tr>=0D<td width=3D"471" height=3D"131" align=3D"center" valign=3D"top=
+" style=3D"FONT-SIZE: 9px"><font face=3D"Verdana" style=3D"COLOR: #8f8f8f; =
+FONT-SIZE: 9px">*Consultez le <a style=3D"COLOR: #8f8f8f; TEXT-DECORATION: =
+none" href=3D"http://mm.eulerian.net/click/easyjet/8lL.QlYVeQ7BL6AqQORYWsK6=
+csbwG74LusMwMoTcNg--/?eurl=3Dhttp%3A%2F%2Fwww%2Eattrapetonbillet%2Ecom%2Fpo=
+pup%2Freglement%2Easp" target=3D"_blank"><u>r=E8glement du jeu</u></a>.<br =
+/><br />Jeu gratuit sans obligation d'achat. Photos non contractuelles.<br =
+/>Conform=E9ment =E0 la loi &quot;&nbsp;informatique et libert=E9s&nbsp;&qu=
+ot; du 6 janvier 1978, vous pouvez =E0 tout moment demander =E0 acc=E9der, =
+faire rectifier ou supprimer les informations personnelles vous concernant =
+ou vous opposer =E0 leur traitement.<br /><br />Si vous ne souhaitez plus r=
+ecevoir d'emails de la part de cet annonceur,<br />ou vous d=E9sinscrire, s=
+uives ce <a style=3D"COLOR: #8f8f8f; TEXT-DECORATION: none" href=3D"http://=
+front.ta271.com/AA50Y2C6M9_475197/877" target=3D"_blank"><u>lien</u></a>.</=
+font></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D</tbody>=0D</tab=
+le>=0D</td>=0D</tr>=0D</tbody>=0D</table><img width=3D"1" height=3D"1" src=
+=3D"http://mm.eulerian.net/view/easyjet/DEQwyRwgEDJm_8YpRfhyAOILJaKw9x67zmj=
+AWUGb/pix.gif" border=3D"0" complete=3D"true" complete=3D"true" /> </td>=0D=
+</tr>=0D</tbody>=0D</table>=0D<img src=3D"http://front.ta271.com/ZZ50Y2C6M9=
+_475197.png" /></body></html>
+--=_ae046e456b876e3b6579e78ad68c86be--
 
 
 
---===============2219561183817513408==
+--===============3365000126378586011==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -535,7 +136,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============2219561183817513408==
+--===============3365000126378586011==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -546,4 +147,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2219561183817513408==--
+--===============3365000126378586011==--

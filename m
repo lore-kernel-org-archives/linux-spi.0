@@ -1,17 +1,21 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [PATCH 0/3 v3] spi: controller driver for
- Designware SPI core and PCI interface
-Date: Mon, 12 Oct 2009 15:25:53 -0700
-Message-ID: <20091012152553.c95d8055.akpm@linux-foundation.org>
-References: <20091012141716.1179d496@feng-desktop>
+From: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
+Subject: Re: [PATCH] drivers/misc: add driver for
+ TexasInstruments DAC7512
+Date: Tue, 13 Oct 2009 02:02:46 +0200
+Message-ID: <20091013000245.GE28832@buzzloop.caiaq.de>
+References: <1254945665-28053-1-git-send-email-daniel@caiaq.de>
+	<BD79186B4FD85F4B8E60E381CAEE190901DB7EF3@mi8nycmail19.Mi8.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20091012141716.1179d496@feng-desktop>
+Content-Disposition: inline
+In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE190901DB7EF3-KURmP/Qoe8Pmp66j18f85VaTQe2KTcn/@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,26 +26,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 12 Oct 2009 14:17:16 +0800
-Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
-
-> This patch series adds driver for Designware SPI core + PCI interface, and
-> they are generated against kernel 2.6.32-rc4
+On Mon, Oct 12, 2009 at 12:31:46PM -0400, H Hartley Sweeten wrote:
+> On Wednesday, October 07, 2009 1:01 PM, Daniel Mack wrote:
+> > This is actually too trivial to publish, but to export the function of
+> > that chip to the userspace, a module like this is needed.
+> > 
+> > Signed-off-by: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
+> > Cc: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+> > Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+> > Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> > ---
 > 
-> 0001: driver for the DW SPI core
-> 0002: driver for PCI interface
-> 0003: add DMA support
+> [snip]
 > 
-> This driver has been verified on Intel Moorestown platform, with Maxim's
-> Max3110 UART device and Option's 3G modem GTM501L, both PIO and DMA works
-> fine, and these 2 slave devcies can work simultaneously.
+> > +static ssize_t dac7512_store_val(struct device *dev,
+> > +				 struct device_attribute *attr,
+> > +				 const char *buf, size_t count)
+> > +{
+> > +	struct spi_device *spi = to_spi_device(dev);
+> > +	unsigned char tmp[2];
+> > +	unsigned long val;
+> > +
+> > +	if (strict_strtoul(buf, 10, &val) < 0)
+> > +		return -EINVAL;
+> > +
+> > +	tmp[0] = val >> 8;
+> > +	tmp[1] = val & 0xff;
+> > +	spi_write(spi, tmp, sizeof(tmp));
+> > +	return count;
+> > +}
+> > +
+> > +static DEVICE_ATTR(value, S_IWUSR | S_IRUGO,
+> > +		   NULL, dac7512_store_val);
 > 
-> 0003 is RFC only, as it has dependency over DMA controller driver's acceptance
-> to mainline.
+> You have declared the "value" device attribute with mode S_IWUSR | S_IRUGO
+> but have not provided a show callback.
 
-What is "DMA controller driver"?  Some other patch?  What is the status
-of that patch and where is it?
+That's true, and acutally on purpose. I would have needed a private data
+structure to allocate which I didn't do because I didn't need that. The
+approach is purely write-only, especially beacuse the hardware also does
+not provide a way to read back the current value.
 
+Daniel
 
 ------------------------------------------------------------------------------
 Come build with us! The BlackBerry(R) Developer Conference in SF, CA

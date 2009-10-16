@@ -1,12 +1,11 @@
-From: "wer33gv" <xi4aohuizi9264-k+cT0dCbe1g@public.gmane.org>
-Subject: [SPAM] w‰∏≠Â±ÇÁªèÁêÜÁªºÂêàÁÆ°ÁêÜÊäÄËÉΩÊèêÂçáÁ†î‰øÆÁè≠r
-Date: Fri, 16 Oct 2009 21:04:23 +0800
-Message-ID: <E1MymWt-0001Tk-BZ@235xhf1.ch3.sourceforge.com>
-Reply-To: xiaohu4izi9264-k+cT0dCbe1g@public.gmane.org
+From: Des solutions simples <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
+Subject: [SPAM] pour reduire vos mensualites
+Date: 16 Oct 2009 13:35:27 -0000
+Message-ID: <20091016133527.22308.qmail@ks24820.kimsufi.com>
+Reply-To: Des solutions simples <newsletter-f+hNetFMsXqvMGH9MYJ1GwC/G2K4zDHf@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============8282222368570059147=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,148 +17,94 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-dXl0CgogICAgICAgICAgICAgICDW0LLjvq3A7dfbus+53MDtvLzE3Mzhyf3R0NDesOAKCrGxvqkg
-ICAgMjAwOcTqMTHUwjEzLTE1yNUKyc+6oyAgICAyMDA5xOoxMNTCMzAtMTHUwjHI1SAgICAgICAx
-MtTCMTEtMTPI1SAgICAgCsnu29ogICAgMjAwOcTqMTDUwjE2LTE4yNUgICAgICAgICAgMTHUwjI3
-LTI5yNUKCgoKqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlCsXg0bW21M/zo7oKxvPStbix19yhorj3sr/D
-xb6twO2hotb3udyhorj3vLbW0LLjudzA7cjL1LGhotDCzOGwzrXEoaK009eo0rXIy7LF16rQzbW9
-udzA7bXEoaK9+NK7sr0Kz+vM4bjfudzA7byo0Ke1xKGivfrJ/bW9uN+y47ncwO3S1LywxuTL/NSk
-sbi53MDtyMvUsQoK1vew7LWlzrs6INbayMvQ0LncwO3XydGvzfggICAgd3d3LjEyNnB4LmNvbSAK
-CsXg0bW30dPDOjM2MDDUqi/Iy6OosPy6rKO6yP3M7NbQss2jrLLoteOjrL2y0uWjrLeixrGjqQoK
-sbggICAg16KjugrXydGvtee7sKO6MDc1NS0yNjA3NTQyOSAgMjYwNzUzNjUgIDI2OTc1MjY1CrSr
-ICAgINXmo7owNzU1LTYxMzUxMzk2ICAKwaogz7UgyMujuiDB6NChveMKCgq/zrPMytW78SAKoe4g
-yKvD5tGnz7DG89K1udzA7bXEz7XNs7n9s8yjrMjD1tC437LjudzA7cjL1LHNs9K7udvE7qGitO+z
-ybmyyrajuwqh7iDRp8+w1NrG89K1xNqyv8jnus60psDtwey1vKGiz8LK9KGixuTL/LK/w8XWrrzk
-tcTQrc2sus/X97nYz7WjrLSmwO26w7mk1/fT68jLvMq52M+1o6zX7rTzz962yLXYt6K707mry761
-xNfbus/KtcGmo7sKoe4g0afPsMjnus6zyc6q0ru49tPF0OO1xMHstbzIy6OsyOe6zrj8usO1xLT4
-wezPwsr0zeqzybmk1/fEv7Hqo7sKoe4gyOe6zszhuN/Pwsr0tcTE3MGmo6y9qMnouN+8qNCntcS5
-3MDtzcW206OsyMPPwsr01Nq5pNf31tC3orvTuPy437XEuaTX97v9ILyr0NS6zbmk1/cKyMjH6aGj
-CgrF4NG1zNi146O6CqHuIM+1zbPQ1KO6xvPStbncwO3Kx9K7uPbPtc2zuaSzzKOs16LW2Nfbus/E
-3MGmtcS++brit6LVuaOs0vK2+NTaudzA7by8yvXJz9Ky16LW2M+1zbMK0NS1xNGnz7C6zcXg0bWh
-owqh7iC4xLHk0NDOqqO6ttTG89K1wLTLtaOssrvE3LT4wLS53MDt0NDOqrXEuMSx5KOsysfDu9PQ
-yM66ztLi0uW1xKGjsb7RtcG3vavWsNK1vq3A7b6tCsDttcSx2LG4udzA7by8xNzJ6LzGs8nSu7j2
-uPa1xMTcwaa146OsyrnL+8PHzai5/delxNzBprXjtvi077W9uMSx5NDQzqqhoteqseS528TutcTE
-v7XEoaMKoe4gyrW8+bLZ1/fQ1KO6udzA7by8xNzKx7avytbE3MGmoaLKtdW9xNzBpqOssrvE3NPD
-09rG89K1udzA7cq1vPm1xLe9t6jKx87e0Ke1xKGjsb60zgq53MDtvLzE3NG1wbe+272509q53MDt
-tcTKtbzKstnX98TcwabM4bjfoaMKCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppQrF4CDRtSDM4SC42Qq1
-2tK71cKhognKssO0yse53MDtCrXatv7VwqGiCcjnus653MDt0MTMrAq12sj91cKhogm53MDttcTM
-2LXjysfKssO0IAq12svE1cKhognKssO00fm1xLncwO3Kx9fuysq6z8bz0rW1xLncwO0KtdrO5dXC
-oaIJudzA7aGi1+nWr9Prwey1vLXEudjPtQq12sH51cKhogm53MDtvcfJq7XE19TO0sjP1qoKtdrG
-39XCoaIJwey1vMGmzOHJ/bXEvLzHyQq12rDL1cKhogm53MDtubXNqNPrudjPtdCttfcKtdq+xdXC
-oaIJuN+8qNCnzcW207XEvajJ6Aq12squ1cKhogm8pMD4udzA7bXEvLzHyQoKtdrSu9XCoaLKssO0
-yse53MDtCiAgICAgICAgudzA7bXEyrXWysrHyrLDtD8Ktdq2/tXCLiDI57rOudzA7dDEzKwKICAg
-ICAgICDR+NSxuaTBvLrDtcTQxMysyse53MDttcS12tK70qrO8Qq12sj91cKjrrncwO21xLv5sb7M
-2NDUCiAgICAgICAgxL+1xNDUICDT0NCn0NQgICDL+8jL0NQgICC24NH50NQKCrXay8TVwqGiyrLD
-tNH5tcS53MDtysfX7srKus/G89K1tcS53MDtCiAgICAgILncwO21xLe9t6i6zby8yvW24NbWtuDR
-+aOsyrLDtNH5tcS53MDtxKPKvbLFysfX7srKus/G89K1t6LVubXEo78KICAgICAg1rvT0NXStb3X
-7srKus/O0sPHxvPStbei1bm1xLncwO3Eo8q9o6yyxcTcsdzD4rncwO21xMOkxL/Q1AoKtdrO5dXC
-oaK53MDtoaLX6davoaLB7LW8yP3V37XEz+C7pbnYz7W6zdLszawgCiAgICAgICAgudzA7dXfoaLB
-7LW81d+1vbXX06a4w9f2xMTQqcrCo78KICAgICAgICC53MDt1d+6zcHstbzV37W9tdfT0Mqyw7TH
-+LHwus3Bqs+1o78KCrXawfnVwqGiudzA7b3Hyau1xMjP1qoKICAgICAgICDSu6Gi1rDStb6twO21
-xL3HyavIz9aqIAogICAgICAgILb+oaLWsNK1vq3A7bXEvcfJq7fWzvYKICAgICAgICDI/aGisrvN
-rLLjw+bIy9SxtcS5pNf31tjQxAoKtdrG39XCoaLB7LW8wabM4cn9tcS8vMfJCiAgICAgICAg0ruh
-osHstbzIqM3+tcTAtNS0CiAgICAgICAgICAgIMHstbzIqM3+tcSwy7j20NS48czY1fcKICAgICAg
-ICAgICAgsLjA/bfWzvajusqyw7TR+bXEwey1vMrH0ru49tPF0OO1xMHstbw/CiAgICAgICAgtv6h
-osHstby3vcq9CiAgICAgICAgyP2hosfpvrPB7LW80+vLxNbWwey1vLfnuPEKICAgICAgICAgICAg
-uPm+3bG7wey1vNXftcS+38zlx+m/9r72tqiyu82stcTB7LW8t+e48QogICAgICAgICAgICC45taq
-yr0gIM3Gz/rKvSAgss7T68q9ICDK2sioyr0gCiAgICAgICAgsLjA/bfWzvajutXrttTQ7cj9tuDT
-67PJssXV4sG9uPbUsbmk06a4w9PDyrLDtNH5tcTB7LW8t723qKO/CiAgICAgICAgy8ShosHstby1
-xNb30qq5pNf3xNrI3QogICAgICAgIM7loaLI57rOxeDR+M/CyvQKICAgICAgICAgICAgMaGixeDR
-+M/CyvTT0Mqyw7S6w7SmCiAgICAgICAgICAgIDKhosXg0fjPwsr0tcS5y8LHCiAgICAgICAgICAg
-IDOhosXg0fjPwsr0tcS3vbeoCiAgICAgICAgICAgIDShosXg0fjPwsr0tcTUrdTyCiAgICAgICAg
-ICAgILC4wP231s72o7rI57rOwO294tLyssTKqb3MtcTF4NH41K3U8qO/CiAgICAgICAgwfmhosra
-yKi53MDtCiAgICAgICAgICAgICjSuykgzqrKssO00qrK2sioCiAgICAgICAgICAgICi2/ikgytrI
-qLncwO21xM7zx/jKx8qyw7QKICAgICAgICAgICAgKMj9KSDK2sioudzA7bXE1K3U8gogICAgICAg
-ICAgICAoy8QpIMrayKi53MDttcS3vbeoIAoKtdqwy9XCoaK53MDtubXNqNPrudjPtdCttfcKICAg
-ICAgICDSu6GiyrLDtMrHubXNqCCjvwogICAgICAgILb+oaK5tc2otcTM2NDUIAogICAgICAgICAg
-ICDLq8/yt7TAocrHubXNqLXEu/m0oQogICAgICAgICAgICCyu82szsS7r6Giw/HX5bXEubXNqNSt
-1PKyu82sCiAgICAgICAgyP2horncwO25tc2otcTW1sDgvLDQzsq9CiAgICAgICAgICAgILC4wP23
-1s72IKGizNbC2yAgwrzP8bfWzvYKICAgICAgICDLxKGiubXNqLXEsr3W6CAKICAgICAgICDO5aGi
-srvNrLm1zai357jxtcS53MDt1d+31s720+vTprbUCiAgICAgICAgICAgILfWzvbQzcjLtcTM2NX3
-0+u5tc2ovLzHyQogICAgICAgICAgICDWp8Xk0M3Iy7XEzNjV99PrubXNqLy8x8kKICAgICAgICAg
-ICAgse2079DNyMu1xMzY1ffT67m1zai8vMfJCiAgICAgICAgICAgILrNsKrQzcjLtcTM2NX30+u5
-tc2ovLzHyQogICAgICAgICAgICCwuMD9t9bO9qO6t9bO9rLcstmhosH1sbihosvvyKi1xLj20NTT
-67m1zai8vMfJCiAgICAgICAgwfmhorm1zai1xLe9z/IKICAgICAgICAgICAg1rDStb6twO3Iy9Pr
-yc+8tqGizay8tqGiz8LK9Lm1zai1xLy8x8kKICAgICAgICAgICAgMaGiubXNqLXE1K3U8gogICAg
-ICAgICAgICAyoaK5tc2otcS3vbeoCiAgICAgICAgICAgIDOhorm1zai1xNXPsK0KICAgICAgICAg
-ICAgICAgsLjA/czWwtujurbUyc+8trXEuaTX99PQsrvNrLXE0uK8+8Tj06a4w9T1w7Sw7KO/CiAg
-ICAgICAgICAgICAgIMnPvLa21MTjtcSxqLjm09C3tLbU0uK8+yDE49T1w7Sw7KO/CiAgICAgICAg
-ICAgICAgIMjnus6huLSmwO3Pwry21L28ts/yxOO747GoobmjvwogICAgICAgICAgICAgICDI57rO
-obi0psDtsr/K9LXEuf3Kp9DQzqqhuaO/CiAgICAgICAgICAgICAgIMjnus6huLSmwO3Jz8u+tffF
-ydfUvLqyv8r0uaTX97XEx+m/9qG5o78KICAgICAgICAgICAgICAgyOe6zqG4w+a21NPQxNzBprWr
-srvM/buwtcSyv8r0obmjvwoKtdq+xdXCoaK437yo0KfNxbbTtcS9qMnoCiAgICAgICAg0ruhosqy
-w7TKx83FttMKICAgICAgICAgICAgMaGiyM/Kts3FttOjqDErMT2jv6OpCiAgICAgICAgICAgIDKh
-os3FttPT68i6zOW1xMf4sfAKICAgICAgICAgICAgM6GizcW209DQzqrH+s/fCiAgICAgICAgICAg
-ICAgIMzWwtujusfrt9bO9s3FttPT68i6zOXWrrzk1+6087XEx/ix8MrHyrLDtKO/CiAgICAgICAg
-tv6horjfvKjQp83FttO1xMzY1fcKICAgICAgICAgIDGhosP3yLe1xMS/seogo6jEv7HqtNPExMDv
-wLSjv8bz0rXEv7Hqus249sjLxL+x6sjnus7Ns9K7o7+jqQogICAgICAgICAgICAyoaLP4Lul0MXI
-ziAgICAgo6jQxcjOtcS7+bShysfKssO0o7/I57rOvajBoqO/o6kKICAgICAgICAgICAgM6GiudjQ
-xKGisO/W+sO/uPbIy6OotNPExNCpt73D5tfFytayxcrH1+7T0NCntcSjv6OpCiAgICAgICAgICAg
-IDShorm1zajBvLrDICAgICCjqMjnus6yxcTc09DQp7XEubXNqKO/o6kKICAgICAgICAgICAgNaGi
-t9a5pNPrytrIqCAgIKOo1Nq+38zluaTX99bQyOe6zrLZ1/ejv6OpCiAgICAgICAgICAgIDahorrP
-wO21xLykwPggICCjqMO709DX47m7tcTM9bz+1PXDtLDso7+jqQogICAgICAgICAgICA3oaK6z8Dt
-oaLN6snGtcTWxrbIo6jWxrbIxL/HsLK7us/A7dT1w7Sw7KO/o6kKICAgICAgICAgICAgOKGiyNrH
-orXEzcW208b4t9UgKNPDyrLDtLe9t6jF4NH4wby6w7XEuaTX98b4t9WjvykKICAgICAgICAgICAg
-ICAgsLjA/bfWzvahoszWwtujurTz0eO1xLnKysK4+M7Sw8fKssO0xvTKvqO/CiAgICAgICAgyP2h
-orjfvKjQp83FttO1xLPJ1LEKICAgICAgICAgICAgMaGiyOe6ztGh1PHNxbbTtcSzydSxCiAgICAg
-ICAgICAgIDKhos3FttOzydSxtcS52M+1yOe6ztCttfcKICAgICAgICAgICAgM6GiyOe6zr3ivvaz
-ydSxtcSz5c27CiAgICAgICAgICAgICAgILC4wP231s72oaLM1sLbo7rNxbbTtcSzydSxxNzBprK7
-1+PTprjDyOe6zrSmwO0KICAgICAgICDLxKGiuN+8qNCnzcW2072oyei1xMH3s8y8sL3Xts4KICAg
-ICAgICAgICAgMaGizcW2072oyei1xMH3s8wKICAgICAgICAgICAgMqGizcW2072oyei1xL3Xts4K
-CrXayq7VwqGivKTA+LncwO0KICAgICAgICC1zdCnwsq/v7ncwO2jrLjf0KfCyr+/vKTA+AogICAg
-ICAgINK7oaK8pMD4tcTO88f4CiAgICAgICAgtv6horykwPi1xMvE1K3U8gogICAgICAgICAgICC5
-q8a91K3U8qGiz7XNs9St1PKhosqxu/rUrdTyoaLH5c761K3U8gogICAgICAgIMj9oaK8pMD4tcS3
-vbeoCiAgICAgICAgICAgIDGhotDFyM4KICAgICAgICAgICAgICAgyM+/yS0gse3R7y3Jzcq2ICAg
-o6jI57rOxeDR+LbUuaTX97XEs8m+zbjQo7+jqQogICAgICAgICAgICAyoaIJs9C1o9TwyM4gICAg
-ICAgKM6qyrLDtNKqzqrPwsr0s9C1o9TwyM4pCiAgICAgICAgICAgIDOhogm52NDEoaKw79b6zcW2
-07PJ1LGjqLmk1/fT68n6u+7I57rO0K2196O/o6kKICAgICAgICAgICAgNKGiCdC9y67T68n9x6gg
-ICAgIKOou/m0obu50qrT0LGj1c+jqQogICAgICAgICAgICA1oaIJuaTX99DLyKQgICAgICAgo6jI
-57rOssXE3LDRuaTX97Wxs8nKx9K71tbQy8iko7+jqQogICAgICAgICAgICA2oaIJus/A7bXE1sa2
-yCAgICAgo6i5q8a9oaK5q9X9oaK5q7+qo6kKICAgICAgICAgICAgN6GiCbmk1/fG+LfVICAgICAg
-IKOoysfSu9bWyO27r7zBo6kKICAgICAgICAgICAgOKGiCcbz0rXEv7Hq0+vKucP8IKOo1+7W1bXE
-veK+9re9sLijqQogICAgICAgIMvEoaK8pMD4t723qLXE19u6z9TL08MKICAgICAgICAgICAgsLjA
-/bfWzvahoszWwtujutbH1u2yqd7EtcS5ysrCCgqppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUKICAgICAg
-ICAgCr2yyqa96cncoarA7rjv1PYKCiAgICDW2sjL0NC437y2xeDRtcqmoaLKtdW90M3F4NG116i8
-0qO7x+W7qrTz0aehorGxvqm089GnzNjGuMXg0bW9ssqmo7vJ7tvaudzA7dfJ0a/QrbvhCrncwO3X
-qLzSo7vN4snMzbbXytCtu+HF4NG116i80qO71tC5+sbz0rXBqrrPu+G5y87Ko7vP47jbueK7qrnc
-wO3Rp9S6v83X+b3Mytqju8PAufpBSVRBCsjP1qS5+rzK1rDStcXg0bXKpqO7xbfW3lNLULv6ubm4
-37y2udzA7bnLzsqju8bz0rW80tCtu+HM2Ma4xeDRtb2yyqaju7bgxOq008rCxvPStbjfsuMKudzA
-7dPr18nRr7mk1/e+rdHpo6zU2rXCwqG8r83FoaLJ7rjfy9mhosPAufqhsE1PVEhFUlOhsaGi1trI
-y9DQudzA7dfJ0a+1yLTz0M28r83FuavLvgq8sLncwO25y87KuavLvsD6yM7F4NG1vq3A7aGi0NDV
-/tfcvOChotOqz/rX3LzgoaLF4NG119y84KGiuLHX3L6twO21yNawzruho7bUxvPStbncwO2hogq/
-zbunt/7O8aGixrfFxrncwO2hosbz0rXOxLuvtci+39PQwby6w7XExeDRtdPr18nRr76t0emju7K7
-vfa+39PQye668bXEwO3C29aqyrajrLb4x9IKvt+xuLfhuLu1xMq1vPmy2df3xNzBpqO716LW2LbU
-xvPStbncwO3OyszitcS31s72us294r72oaK9ssfzyrXQp9DUus3KytPD0NShowoKycOzpL/Os8yj
-uqG21rDStb6twO3Iy9fKuPHIz9akobehoqG2xvPStdbQsuO+rcDt19u6z7ncwO28vMTcxeDRtaG3
-oba437y2w9jK6daw0rW7r8XgCtG1obehoqG2yOe6zrPJzqrTxdDj1LG5pKG3oaKhtrncwO25tc2o
-0+u5pNf30K2197y8x8mhtwoKxeDRtczYyaujutLUu6W2r6Gix+m+sMq9xeDRtbz7s6SjrNei1tjK
-3NG1yMvUsbXEuNDO8rywss7T66OsxeDRtbfnuPHJ7sjrx7Oz9qGizPXA7cflzvoKoaK/zszDxvi3
-1cfhy8mhorvu1L6hosq11b3Q1Me/o6zNqLn9uPfW1sq1vMqwuMD9vLC53MDt087Pt7XIt73KvbPk
-t9a197avss7RtcjL1LG1xMXg0bUKyMjH6aGjCgrF4NG1u/LXydGvtcTG89K1o7rW0Ln6tefQxaGi
-x+C1utbQu6+8r83FoaLW0Mqv082hosmjt8bNqNG2oaKwwsHWsM3LuaGiz8PDxbq9v9WhosvV1t3I
-/QrQx7Xn19OhornjtqvSxravoaLJ37/axM/Ls8Pmt9uhosj90fO7+rXnoaLG9MP30Mezv6Giwaqw
-7r/std2hor/CxOG/qMPAxNy076Gi1tDQxc7v0rWhogrQxc2zueK156GizOy7qrvhvMbKpsrCzvHL
-+aGixM/m2rXns9ihosDKxP7NqNDFoaK6vbzOtefUtKGiVENMvK/NxaGiuqPFt87A1KGhor2tweXG
-+7O1oaIK09Gw7rGjz9WhotbQtee8r83FoaK6o8TPwu3X1LTvoaLSvMqxtPq0q8O9oaK0tM6svK/N
-xaGi1eO9rb3w1t68r83FoaKzpMHBv8a8vKGiwarMqbyvzcWhogq3ycD7xtbW0Ln6oaK/xtHzyv3C
-66Git/DJvbqjxMm0qNKp0rWhosTPzKu8r83FoaLJ8cH6xvuztaGi1tC5+sqv082hosT+sqjQwrfl
-tefG96Gizf66owqxsdHztefG+LyvzcWhorrNvM27xsbS1tDSqaGiutOxscjIteehotbQvK+8r9ew
-z+Shosj99s65ybfdoaLW0NDFvK/NxaGiu6q127nJt92hosPAtcS80gq156Gi1tC6o7yvzcWhorfJ
-wPvG1rDrtbzM5aGi1tC5+rXn19PX3Lmry76hornjzve158GmoaLJz7qjxta2q7ei1bnS+NDQoaK9
-qMno0vjQ0LijvajWpwrQ0KGi1tC5+s34zaihorGxvqnK17a8u/qzoaGizvfDxdfToaLFt8bV1dXD
-97XIoaMKCrG4ICAgINeio7oK18nRr7Xnu7CjujA3NTUtMjYwNzU0MjkgIDI2MDc1MzY1ICAyNjk3
-NTI2NQq0qyAgICDV5qO6MDc1NS02MTM1MTM5NiAgCsGqIM+1IMjLo7ogwejQob3jCgoKCgotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KQ29tZSBidWlsZCB3aXRoIHVzISBUaGUgQmxhY2tCZXJyeShSKSBE
-ZXZlbG9wZXIgQ29uZmVyZW5jZSBpbiBTRiwgQ0EKaXMgdGhlIG9ubHkgZGV2ZWxvcGVyIGV2ZW50
-IHlvdSBuZWVkIHRvIGF0dGVuZCB0aGlzIHllYXIuIEp1bXBzdGFydCB5b3VyCmRldmVsb3Bpbmcg
-c2tpbGxzLCB0YWtlIEJsYWNrQmVycnkgbW9iaWxlIGFwcGxpY2F0aW9ucyB0byBtYXJrZXQgYW5k
-IHN0YXkgCmFoZWFkIG9mIHRoZSBjdXJ2ZS4gSm9pbiB1cyBmcm9tIE5vdmVtYmVyIDkgLSAxMiwg
-MjAwOS4gUmVnaXN0ZXIgbm93IQpodHRwOi8vcC5zZi5uZXQvc2Z1L2RldmNvbmZlcmVuY2UKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
-bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
-dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
-Z2VuZXJhbAo=
+
+--===============8282222368570059147==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_6e5fd8dd7296979349b43f95f94df165"
+
+
+--_----------=_parties_6e5fd8dd7296979349b43f95f94df165
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+
+Version "en ligne" de ce message: http://www.centralmarque.com/svi/miroir.php?bat=solutdevis1009_ctrm
+
+solution-devis.com
+
+Le rachat de crÈdits est une solution pour retrouver une sÈrÈnitÈ financiËre.
+Il a pour simple principe: d'englober dans un seul crÈdit la totalitÈ des crÈdits en cours, quels que soit leur nature, leur durÈe ou leur taux.
+
+Avant de regrouper vos crÈdits, il faut bien comparer les diffÈrentes offres de regroupement de crÈdits sans se prÈcipiter. Il faut aussi vÈrifier les frais de dossier ainsi que les durÈes de remboursement proposÈes. Une fois le co˚t total obtenu vous pourrez ensuite comparer facilement les diffÈrentes offres de rachat de crÈdits.
+
+plus d'infos sur http://www.centralmarque.com/svi/linkserv.php?bat=solutdevis1009_ctrm&nb=2453&n=9047704&c=credit
+
+--------------------------------
+Cette offre solution devis vous est envoyÈe par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://www.centralmarque.com/svi/gestionserv.php?nb=2453&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_6e5fd8dd7296979349b43f95f94df165
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
+
+
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head> 
+<title>solution-devis.com</title>
+</head>
+<body><center>
+<p>
+<a style='font-family:inherit;background-color:inherit;color:inherit;' href='http://www.centralmarque.com/svi/miroir.php?bat=solutdevis1009_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+</p>
+<table CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#dd0b88;font-size:24px'>
+<p style='display:inline;'> <b><a href="http://www.centralmarque.com/svi/linkserv.php?bat=solutdevis1009_ctrm&nb=2453&n=9047704&c=credit" style="text-decoration:none;color:#dd0b88;">solution-devis.com</a></b></p>
+</td></tr>
+<tr>
+<td align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#FFFFFF;'>
+<table><tr><td style="text-align:center;border:solid 1px black;padding: 5px;background-color:#a9aa8c;color:white;width:650px;">
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=solutdevis1009_ctrm&nb=2453&n=9047704&c=credit" style="text-decoration:none;color:#ffffff;">
+Le rachat de cr&eacute;dits est une solution pour retrouver une s&eacute;r&eacute;nit&eacute; financi&egrave;re.<br>
+<b>Il a pour simple principe:</b> d'englober dans un seul cr&eacute;dit la totalit&eacute; des cr&eacute;dits en cours, quels que soit leur nature, leur dur&eacute;e ou leur taux.<br>
+Avant de regrouper vos cr&eacute;dits, il faut bien <b>comparer les diff&eacute;rentes offres de regroupement de cr&eacute;dits</b> sans se pr&eacute;cipiter. Il faut aussi v&eacute;rifier les frais de dossier ainsi que les dur&eacute;es de remboursement propos&eacute;es.<br>Une fois le co&ucirc;t total obtenu vous pourrez ensuite comparer facilement les diff&eacute;rentes offres de rachat de cr&eacute;dits.</a>
+</td></tr></table>
+</td></tr>
+<tr><td align='center' style='padding:5px;background-color:#FFFFFF;'>
+<a href="http://www.centralmarque.com/svi/linkserv.php?bat=solutdevis1009_ctrm&nb=2453&n=9047704&c=credit" style="text-decoration:none;"><img src='http://ks300910.kimsufi.com/~actuduwe/img/bat/solutdevis.jpg' style='border:0px;'></a>
+</td></tr>
+</table>
+<br><br>
+<img src="http://www.centralmarque.com/svi/img_nb_2453_numuser_9047704_code_HWeuIQdw_src_50.jpg" width=1 height=1 alt=''>
+<p>
+Ce message est envoy&eacute; par central marques - <a href="http://www.centralmarque.com/svi/gestionserv.php?nb=2453&cat=credit&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+</p>
+</center></body>
+</html>
+
+
+--_----------=_parties_6e5fd8dd7296979349b43f95f94df165--
+
+--===============8282222368570059147==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Come build with us! The BlackBerry(R) Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9 - 12, 2009. Register now!
+http://p.sf.net/sfu/devconference
+--===============8282222368570059147==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8282222368570059147==--

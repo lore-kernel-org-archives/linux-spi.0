@@ -1,12 +1,14 @@
-From: "ii" <lixo-fyyYI70gGcU@public.gmane.org>
-Subject: [SPAM] 浼佷笟瑁佸憳椋庨櫓瑙勯伩鍙奌R瑙勭珷
-Date: Sat, 17 Oct 2009 03:33:15 +0800
-Message-ID: <E1MysYj-0005g9-Hl@235xhf1.ch3.sourceforge.com>
+From: Sebastian Andrzej Siewior <sebastian-E0PNVn5OA6ohrxcnuTQ+TQ@public.gmane.org>
+Subject: [RFC] SPI transfer with (count % bpw >> 3) != 0
+Date: Fri, 16 Oct 2009 22:37:08 +0200
+Message-ID: <20091016203708.GB9552@Chamillionaire.breakpoint.cc>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,150 +19,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+Just stumbled over this one: for instance bpw = 16 and len = 1.
+I've found a few possible results:
+- no transfer at all and return 0 (spi_gpio)
+- no transfer at all and return with -EINVAL (spi_mpc8xxx)
+- transfer two bytes and overwrite one probably unallocated byte in the
+  read case. Return 1 (amba-pl022)
+- write until an exception stops it (orion_spi)
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Variant three and four is obviously wrong and should be fixed. However
+I'm torn between variant one and two as the correct way to deal with
+this. This problem is not just an in-kernel thing but also exposed to
+user space via spidev. The man page for read() and write() says that the
+function might return less than the number of requested bytes if more
+data is not available. In this case there is more data available but
+due to an programming error (?) we don't get anything. From that angle
+-EINVAL sounds good.
+David?
 
-清看 附件，如果有打扰，清原谅，谢谢！
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="企业裁员风险规避及HR规章.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="企业裁员风险规避及HR规章.txt"
-
-ICAgICAgICDG89K1ssPUsbfnz9W55rHcvLBIUrnm1cLWxrbIoaLUsbmkytay4der0LS8vMfJDQoN
-CiANCsqxvOS12LXjo7ogMjAwOcTqOdTCMTktMjDI1SAgICAgICC549bdDQoNCsrVt9Gx6te8o7qj
-pDIwMDAgL8jLo6i6rMrav8630aGi18rBz7fRoaK74c7xt9GhosG9zOzW0LLNvLC/zrzksui146Op
-DQoNCtb3sOy1pc67OiDW2sjL0NC53MDt18nRr834ICAgd3d3LjEyNnB4LmNvbQ0KDQoNCrG4ICAg
-INeio7oNCtfJ0a+157uwo7owNzU1LTI2MDc1NDI5ICAyNjA3NTM2NSAgMjY5NzUyNjUgIDAyMS02
-NDg1NDg3NyANCrSrICAgINXmo7owNzU1LTYxMzUxMzk2ICANCsGqIM+1IMjLo7ogwejQob3jICAN
-Cg0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaUNCg0Kob7F4NG1ttTP86G/o7rX3L6twO2horix19y+
-rcDtoaLTqs/619y84KGiytCzodfcvOChosjL18rX3LzgoaLP+srb19y84KGixeDRtQ0KICAgICAg
-ICAgICAgICC+rcDttcjG89K106rP+tbQuN+y47ncwO3Iy9Sxo6y9qNLpxvPStdfpvai437LjzcW2
-07yvzOWxqMP7ss674aOsDQogICAgICAgICAgICAgINLUsePT2tG4y9nQzrPJubLKtqOssqKxo9ak
-0MXPorXE09DQp7SrtO/T67bUs8ahow0KDQq/zrPMsbO+sKO6DQogICAgyKvH8r3wyNq6o9ClwLTK
-xtDXw82jrNL9t6K499DQuPfStbfXt9e197jatffQvaGissPUsb3iuc2hraGtIA0KICAgILWrysej
-rLX3uNq199C9oaKyw9SxveK5zbXEzPW8/ryws8zQ8rfHs6PRz7jxo6yy2df3srvJ99Tyu+G4+NPD
-yMu1pc67tPjAtA0Kvt6087XEvq28w8Xis6XT67i6w+bTsM/so6zJ9dbBwazL+Le006ahraGtDQog
-ICAgu/nT2rX3uNq199C9oaKyw9SxveK5zbb40v23orXEwM22r9X50umjrNPDyMu1pc67tcSw3Mvf
-wsq437TvOTAlo6HU9dH509DQpw0Ktfe42rX30L2horLD1LG94rnNo6zS0bPJzqq547TzSFLIy8q/
-us3G89K1uN+y49DE1tDE0dHUtcTNtKOhDQogICAgwe3N4qG2wM22r7rPzay3qKG3uea2qKO6xvPS
-tdTa1sa2qKGi0N64xNPQudi55tXC1sa2yMqxo6zTprWxvq3WsLmktPqx7bTzDQq74bvy1d/Iq8zl
-1rC5pMzWwtujrNPruaS74bvy1d/WsLmktPqx7ca9tcjQrcnMyLe2qKGjtavKxzkwJdLUyc+1xMbz
-0rXWwb3xyNQNCsO709DS4sq2tb3V4tK7teO1xNbY0qrQ1KOsu/LV37j5sb6yu7autcPI57rOstnX
-96OhINbGtqizzNDysru6z7eoo6y55tXC1sa2yA0Kvauzyc6q0ru1/rfP1r2joQ0KICAgINK7zNfN
-6snGtcS55tXC1sa2yKOssru1q7/J0tS55rHcyMvOqrXYx9a3uMDNtq/V37XEus+3qMio0uajrLb4
-x9K/ydLU09DQpw0K1KS3wMDNtq/V39fqt6jCyb/V19OhotfqudzA7cKptrSjobWryse++LTzsr+3
-1sbz0rW1xLnm1cLWxrbIx6HHoc/gt7SjrLK7tavUpA0Kt8Cyu9fjo6y3tLb4x9bIqNPQ0+CjrMn1
-1sGzyc6qxvPStbHnsrW527Xjsru5pdfUxsa1xNPQwaa3tNako6ENCg0Kv86zzMTayN2jug0K0ruh
-orX3uNq199C9o6i0qbLlM7j20tTJz7XEsLjA/aOpDQoxoaIJtffQvaGitfe42sr009rG89K1tcTX
-1Nb3vva2qMiowvCjvw0KMqGiCdTayrLDtMfpv/bPwrX30L2horX3uNqyxcvjus+3qKO/DQozoaIJ
-x7/Wxs7e0L3Q3bzZoaLNo9C9wfTWsKGitP242rrPt6jC8KO/DQo0oaIJ0L2z6rHYyLvL5tfFuNrO
-u7XEseS7r7b4seS7r8Lwo78NCjWhognOpbeovbXQvaGitfe42rXEt+fP1bywsrm+yLe9yr3T0MTE
-0Kmjvw0KNqGiCcjnus7NqLn9wM22r7rPzay1xNS8tqi55rHctfe42qGitffQvbXEt6jCybfnz9Wj
-vw0KN6GiCdSxuaTNrNLitffV+7jazru686OsxvPStdOmuMPT69SxuaSw7MDtyrLDtMrW0PijrLLF
-sdzD4reowsm358/Vo78NCjihogm199X7uNrOu8Tct/HU2MP3o7rK1bW9sb7NqNaquvM1zOzE2rK7
-u9i4tLXEo6zK086qzazS4qO/DQo5oaIJus/NrNS8tqi1xLjazrvS0b6tt6LJ+rHku6+jrMfSy6u3
-vdLRwsTQ0NK7ts7Ksbzko6zAzbav1d/E3Lfx0qrH87C0us/NrA0KICAgICAgICDUvLaotcS42s67
-1rTQ0KO/DQrHv9bGtfe42rX30L2jrMDNtq/V38Tct/HM4bP2veKz/cDNtq+6z82so6yyotKqx/PG
-89K11qe4tr6tvMOyubOlo78NCg0Ktv6horLD1LG94rnN0+u+rbzDsrmzpaOotKmy5TO49tLUyc+1
-xLC4wP2jqQ0KMaGiCbrPt6i94rP9wM22r7rPzay1xMDt08nT0MTE0KmjrLfHt6i94rP9tcTA7dPJ
-09DExNCpo78NCjKhognI57rOu6+94rfHt6i94rP9wM22r7rPzazL+bT4wLS1xNanuLYysba+rbzD
-srmzpbXE1PDIzqO/DQozoaIJyOe6zrHcw+LTw8jLsr/Dxb6twO3Jw9fUtMfNy9SxuaTL+bL6yfq1
-xLfnz9Wjvw0KNKGiCbW9tdfTycjLwabXytS0sr+7ucrH08nTw8jLsr/DxaOsz/LUsbmkt6Kz9r3i
-uc3NqNaqo78NCjWhognAzbavus/NrLXEzt7Qp7j408PIy7Wlzru0+MC0xMTQqcD7sdejrLjDyOe6
-zsHpu+7Uy9PDo78NCjahognAzbav1d/M4bP2v9rNt7TH1rCjrNPWvty9u8rpw+axqLjmo6zT0Mqy
-w7S358/Vo78NCjehognAzbav1d/A+9PD0rXT4MqxvOTU2sbky/vX6davvObWsKOs08PIy7WlzrvE
-3Lfx1/ez9r3iuc20psDto78NCjihognTw8jLtaXOu7nK0uKyu7j4wM22r9XfsLLFxbmk1/ejrLj4
-wM22r9XfobC3xbzZobGjrLrPt6jC8KO/DQo5oaIJyrLDtMfpv/bPwqOs08PIy7Wlzru/ydLUveK5
-zaGwyP3G2qGxxa7WsLmko78NCjEwoaIJxvPStdPrwM22r9Xf0K3JzL3is/3Azbavus/NrLKiyunD
-5tS8tqi+rbzDsrmzpbXEyv227qO7tavAzbav1d/Kwrrzt7S72qOsDQogICAgICAgINKqx/PG89K1
-1qe4tr6tvMOyubOltcSy7rbusr+31qOstb2118utu+HKpMvfo78NCjExoaIJttTT2qGwyP3G2ri+
-xa6hormkycvUsbmkobHE3Lfx0K3JzL3is/2jrMbkstnX97y8x8nT0MTE0Kmjvw0KMTKhognI57rO
-zdfJxrSmwO3OpbzNzqW55s7KzOLUsbmko7/Tw8jLsr/Dxb6twO3Tptei0uK1xMjVs6POyszi09DE
-xNCpo78NCjEzoaIJyOe6zsrp0LShtrTHzcvNqNaqyumhty+htrSmt9bNqNaqyumht6Os0tSxo9ak
-us+3qLSmt9ahorTHzcvUsbmkoaMNCjE0oaIJyOe6zrzGy+OhtsDNtq+6z82st6iht8n60KfHsLrz
-tcS+rbzDsrmzpcTqz96jvw0KMTWhognA69aws8zQ8tPQxMTQqby8x8mjrLzIxNyxo9XP08PIy7Wl
-zrvA+9Lm09ayu7Slt7i3qMLJo78NCg0KyP2hosDNtq+6z82st6jV5r/Vtdi0+KOotKmy5TO49tLU
-yc+1xLC4wP2jqQ0KMS4JxvPStdfU0NDE4raotcTAzbavus/NrMrHt/HQ6NKqtb3AzbavvtaxuLC4
-o6yyu7G4sLjKx7fx07DP7Mbkt6jCydCnwaajvw0KMi4J1NrQo9Gnyfq1vcbz0rW08rmko6zLq7e9
-yse38b2owaKhorTm1NrAzbavudjPtaO/DQozLgnT67Tvtb23qLaozcvQ3cTqweS1xMDNtq/V38ep
-tqnAzbavus/NrKOsyse38crcwM22r7eotcS199X7o78NCjQuCbmry76hosbz0rW437LjyOe6zsep
-tqnAzbavus/NrKOsuPq2rcrCu+G7ucrHyc+8ttb3udyyv8PFo78NCjUuCcDNtq/V38Dr1rAyxOq6
-89TZtM7I69awtcSjrMbz0rXE3Lfx0+vG5NS8tqjK1NPDxtqjvw0KNi4JytTTw8bavOSjrNLUobCy
-u8qkyM65pNf3o6y+rbX3uNq78sXg0bW688jUsrvKpMjOobHOqtPJveKz/cDNtq+6z82so6wNCiAg
-ICAgICAgyse38dDo0qrWp7i2vq28w7K5s6Wjvw0KNy4JobDNrLmkzayz6qGxyOe6zsDtveK8sLLZ
-1/e8vMfJ09DExNCpo78NCjguCcjnus7UvLaosru3+7rPwrzTw8z1vP61xLe2zqejrNLUsaPWpMrU
-08PG2rzktMfNy9SxuaTDu9PQyM66zrfnz9Wjvw0KOS4JyOe6ztS8tqjRz9bYzqW3tLnm1cLWxrbI
-tcS3ts6no6zS1LGj1qS0x83LzsrM4tSxuaTDu9PQyM66zrfnz9Wjvw0KMTAuCcjnus7UvLao1ti0
-88vwyqe1xLe2zqejrNLUsaPWpLTHzcu5/cqn1LG5pMO709DIzrrOt+fP1aO/DQoxMS4J0tShsNHP
-1tjOpbzNobG0x83LwM22r9Xfo6zU2tDCt6jPwtDo0qrWp7i2vq28w7K5s6WjrM6qyrLDtKO/DQox
-Mi4JvrrStc/e1sa1xKGwvq28w7K5s6WhsbjDyOe6ztS8tqijrKGwzqXUvL3wobG4w8jnus7UvLao
-o78NCjEzLgnAzc7xxcnHsre9yr2jrMTct/HU2tLstdi9ycTJyee74bGjz9Wjvw0KMTQuCbvpvNm+
-v7651NrKssO0yrG68rCyxcWjrMbz0rXE3Lfx19TQ0Mu1wcvL46O/DQoxNS4J0r3BxsbavOS1xLmk
-18q4o8D7tP3T9sjnus7Wp7i2o78NCjE2LgnS8rXayP3Iy8fWyKi2+Leiyfq5pMnLysK5yqOoyOe9
-u82oysK5yrW81sK1xLmkycujqaOsyOe6zr3ntqjU8MjOvLC0psDto78NCg0Ky8ShokhSuebVwtbG
-tsihotSxuaTK1rLh16vQtLy8x8mjqLSpsuUzuPbS1MnPtcSwuMD9o6kNCjEuCbnm1cLWxrbIoaLU
-sbmkytay4bXEwODQzaGi0NTWyryw1NrG89K1udzA7dbQtcTW2NKq1/fTww0KMi4JuebVwtbGtsih
-otSxuaTK1rLhsPy6rMTE0KnE2sjdvLCzo7z7tcSyu7rPt6i55raoo6zWxrao1LG5pMrWsuG1xNSt
-1PK6zbe9t6gNCjMuCdDCwM22r7rPzay3qM/C1sa2qNSxuaTK1rLhoaK55tXC1sa2yLXEt6i2qMPx
-1vezzNDyoaK5q8q+s8zQ8sq1zvGy2df3vLzHyQ0KNC4Jt8e5+tPQxvPStcjnus7X6b2oobDWsLmk
-tPqx7bTzu+GhsaO/DQo1Lgm55tXC1sa2yMTct/G55raottTUsbmkvfjQ0L6tvMO0prejo78NCjYu
-Ccjnus7UpLfAuebVwtbGtsjOpbe0t6jCybeouea1xLnmtqjL+bT4wLS1xLfnz9Wjvw0KNy4J1LG5
-pMrWsuHU2tTL08PW0LXEvvfHz6Os09DExNCpudi8/LXjsdjQ68nmvLCjrNPQxMTQqbTtzvOx2NDr
-sdzD4iANCjguCdDCwM22r7rPzay3qM/C1dDGuLnjuOahotSxuaTI69awtce8x7HttcTJ6LzG0qrH
-87yw1/fTww0KOS4J0MLAzbavus/NrLeoz8K1xMDNtq+6z82sudzA7dbGtsjWxrap0qq14yANCjEw
-LgnQwsDNtq+6z82st6jPwrXEsqG82aGiuaTJy6GiobDLxMbaobHUsbmkudzA7dbGtsjWxrap0qq1
-4yANCjExLgnQwsDNtq+6z82st6jPwrXEvNOw4LncwO2horzTsOC358/Vv9jWxtbGtsjWxrap0qq1
-4w0KMTIuCdDCwM22r7rPzay3qM/CtcS9sbPN1sa2yNbGtqnSqrXjIA0KDQrO5aGi19u6z6GiuLTU
-06Givq215LC4wP231s72DQoxoaLK1NPDxtq0x83L1LG5pLC4wP0NCjKhor6tvMOyubOlvMbL4w0K
-M6GiuaTXyqGivNOw4LfRsLjA/Q0KNKGi1ebKtbDssLi5/bPMt9bP7dPryrXVvby8x8m148bADQoN
-CqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppQ0KIA0KvbLKpr3pydyjuiANCiAgICDW09PA6abAz8qmLM7S
-ufrW+MP7wM22r7eo0+vUsbmkudjPtbncwO3XqLzSo6zXysnuwM22r9bZssPUsaGiuN+8tr2yyqaj
-rA0KvObIzjogye7b2s3iyczNttfKxvPStdCtu+E7ILnj1t3Iy8Gm18rUtLncwO3QrbvhoaK549bd
-wM22r9Gnu+G1yDIwtuC49rv6ubkNCszY0fu9ssqmoaPW08DPyqbT2jIwMDTE6r+qyrzU2sirufq4
-97XY0bK9sqG2wM22r7eoobehoqG2wM22r7rPzay3qKG3z+C52L/ODQqzzKOsytzS5sbz0rW07zEw
-MDAwtuC80qOs1ebKtbC4wP29zNGno6y9q7/d1O+1xMDNtq/V/rLft6i55sjcyOvKtbzKudzA7bWx
-DQrW0KO70afUsbLO0+vM1sLboaK7pbavo6y/zrPMyfq2r9PQyKSjrMnuyOvHs7P2o6zIw9Gn1LHR
-uMvZ0afS1NbC08Oho8nuyty54w0KtPPG89K1udzA7dXfoaLIy8Gm18rUtLTT0rXV37XEusPGwKO7
-1tq24NGn1LG++bHtyr6hsLXa0ru0zsz9tb3I57TLyrXTw6Gi09ANCtCnoaK+q7LKtcTAzbavt6i/
-zrPMo6GhsQ0KDQogICAg1tPAz8qmtuDE6rWjyM7G89K1t6jCybnLzsqjrNeow8W008rCwM22r9X5
-0unL38vPvLDAzbavt6jCydHQvr+5pNf3o6y21A0K09rG89K1udzA7bn9s8zW0LXEwM22r9PDuaS3
-58/V09DJ7r/MtcTBy73io6zU+MnzxdDT67T6wO2498DgwM22r77At9ewuLz+ubINCjEwMDDT4Lz+
-o6iw/MCouPbIy6GixvPStaOpo6zJ5rywsbG+qaGizOy98qGi1eO9raGiva3L1aGiyc+6o6GiueO2
-q6GiuePO96GiDQrJvbaroaLLxLSooaLW2MfsoaK6/sTPoaK6/rGxoaK4o72ooaK6o8TPoaLBycTP
-oaLUxsTPoaK9rc73tci12KOsttS497XYwM22rw0Ktdi3vbeouebT0L3Pye61xMHLveKjrLbUwM22
-r7eo09C63MnutcTA7cLb0dC+v7rNt+G4u7XEyrXVvb6t0emjrM/IuvPU2qG2yMsNCsGm18rUtKG3
-oaKhtsTPt722vMrQsaiht7XI16jStdTT1r6hosO9zOW3orHtwM22r7nYz7XA4M7E1cIyMLbgseCh
-o77Nu6rOqryvDQrM5bTH1rDKwrz+o6y908rctuC80sO9zOWyybfDo7vTydPaudu147bAzNijrM/I
-uvOxuzIxQ061yLj3tPPN+MLntKvDvbTzwb/XqtTYoaMNCg0KICAgINbTwM/KptT4zqrS1M/Cv827
-p8zhuam3/s7xOiDW0Mz6vK/NxaGiye7b2rv6s6GhorrPyfq0tNW5oaLQwsrAvee12LL6oaINCrPH
-xvS12LL6oaLW0Lqjtdiy+qGit73UsrXYsvqhotbpva284MDtoaLW6b2tzbbXyqGiyP3QwrXYsvqh
-otH4yfrMw9Kp0rWhornjDQrO972oyejS+NDQoaLRztK1vK/NxaGiuePW3bfE1q+8r83FoaLO1rb7
-wurBrMv4oaK7xtXxwfrBubLooaK547fnwqG/xry8oaLVuQ0K0qvV1cP3oaK549bdtefQxaGiufrR
-ts2o0MW5ybfdoaKwrsqptcK5ybfdoaLS5rqjwbjTzbyvzcWhor3wtKi5+rzKw7PS16Giy8kNCs/D
-wOTG+KGizfq088n6zu+/xry8oaLW0NS2zu/B96GiyNXqzdSwwdahosW3yrHBprf+17ChorTzuszK
-2cu+wazL+KGisNu07rn7DQqyzdL7wazL+KGi1+680cWu1ve9x8PAyN2houL5yKvGpL7foaK6483+
-vK/NxaGiueO3otL40NChotbQyb27qsypoaK358nxvK/NxaGiDQrLyc/CtefG96Giv6W34ca1xteh
-otDCxM+3vbyvzcWhosTPuqPP1rT6ufq8ysbz0rW8r83FoaLM7LS00KzStaGi0t3Iqrn6vMq08w0K
-vsa16qGiwPa34b/YucmhosLeys+8r83FoaLqu8zsu6/Rp8bz0rW8r83FoaLNqNPDzsS+37yvzcWh
-or/t0ba8vMr1t/7O8aGiueMNCtKpvK/NxaGiyNXLybmk0rWhoszswaay5rO1oaLA9tDCvK/NxaGi
-wPu6o7yvzcWhorDX1MbQxMDt0r3UuqGivfDKpcu5ufq8yryvDQrNxaGiuePW3bXnytPMqKGi6snD
-+re/tdiy+qGitqvWpdK9wcbPtc2zKNbQufoptcjHp9PgvNLG89K1DQoNCi0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tDQoNCg==
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Sebastian
 
 ------------------------------------------------------------------------------
 Come build with us! The BlackBerry(R) Developer Conference in SF, CA
@@ -168,15 +45,3 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--

@@ -1,9 +1,11 @@
-From: "Leon Eagleson" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Bored?
-Date: Fri, 16 Oct 2009 17:05:14 +0800
-Message-ID: <B75M516O92977313.FBKGTWZOCL.F910824349E@nec-e600>
+From: "wer33gv" <xi4aohuizi9264-k+cT0dCbe1g@public.gmane.org>
+Subject: [SPAM] w中层经理综合管理技能提升研修班r
+Date: Fri, 16 Oct 2009 21:04:23 +0800
+Message-ID: <E1MymWt-0001Tk-BZ@235xhf1.ch3.sourceforge.com>
+Reply-To: xiaohu4izi9264-k+cT0dCbe1g@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5777165937797397944=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,218 +18,148 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5777165937797397944==
-Content-Type: text/html; charset="iso-8859-1"
-
-<HTML><HEAD>
-<TITLE>Natural Health Newsletter</TITLE>
-<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
-<META content="Microsoft FrontPage 12.0" name=GENERATOR>
-<style>
-<!--
-h2
-	{margin-bottom:.0001pt;
-	page-break-after:avoid;
-	punctuation-wrap:simple;
-	text-autospace:none;
-	font-size:12.0pt;
-	font-family:"Times New Roman";
-	font-weight:normal; margin-left:0in; margin-right:0in; margin-top:0in}
-span.MsoHyperlink
-	{color:black;
-	text-decoration:underline;
-	text-underline:single;}
-div.Section1
-	{page:Section1;}
-MainBody {
-	font-size:19px;
-	font-family:"Times New Roman";
-	font-weight:normal;
-	color:#3399FF;
-	text-decoration:underline;
-}
--->
-</style>
-<style type="text/css">
-style12 {font-size: 11pt; font-family: Arial, sans-serif; }
--->
-</style>
-</HEAD>
-<BODY
-style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px">
-<div align="center">
-  <center>
-<TABLE id=body cellSpacing=8 cellPadding=0 width=660 border=0 style="border-collapse: collapse" bordercolor="#111111">
-  <TBODY>
-  <TR>
-
-    <TD>
-      <TABLE cellSpacing=0 cellPadding=0 width="100%" align=center
-      bgColor=#ffffff border=0>
-        <TBODY>
-        <TR>
-          <TD width=20 bgColor=#ffffff>
-			<p style="margin-top: 0; margin-bottom: 0">
-			&nbsp;</TD>
-          <TD style="BORDER-TOP: #aaa 1px solid">
-			<p style="margin-top: 0; margin-bottom: 0"><FONT
-            style="FONT-SIZE: 2px">&nbsp;</FONT> </TD>
-
-          <TD width=20 bgColor=#ffffff>
-			<p style="margin-top: 0; margin-bottom: 0">
-			&nbsp;</TD></TR></TBODY></TABLE>
-      <TABLE cellSpacing=0 cellPadding=0 width="100%" align=center
-      bgColor=#ffffff border=0>
-        <TBODY>
-        <TR>
-          <TD bgColor=#aaaaaa>
-			<p style="margin-top: 0; margin-bottom: 0">&nbsp;</TD>
-
-          <TD>
-
-            <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height="32">
-              <tr>
-                <td width="64%" height="49">
-                  <p align="center" style="margin-top: 0; margin-bottom: 0"><b>
-					<font face="Geneva, Arial, Helvetica, san-serif" color="#358AAB" style="font-size: 17pt">
-					Natural Health Newsletter</font></b><p align="center" style="margin-top: 0; margin-bottom: 0">
-                  <b><font face="Arial" color="#358AAB">Your Guide to Health and
-				  Wellness</font></b></td>
-              </tr>
-              </table>
-            <TABLE id=page cellSpacing=0 cellPadding=0 width="100%"
-            bgColor=#ffffff border=0>
-              <TBODY>
-              <TR>
-                <TD align=middle>&nbsp;</TD></TR>
-              <TR>
-                <TD
-                style="BORDER-TOP: 1px solid #aaa; BORDER-BOTTOM: 1px solid #aaa"
-                bgColor=#fff394>
-                  <TABLE class=title cellSpacing=0 cellPadding=4 width="100%"
-                  border=0>
-                    <TBODY>
-
-                    <TR>
-                      <TD style="background-repeat: repeat-y; bgColor=#fff394">
-                        <p align="left" style="margin-top: 0; margin-bottom: 0">
-                        <font style="font-weight: 700" face="Verdana" size="2">
-						10/16/09 issue: </font> <font face="Lucida Sans Unicode,Lucida Grande,sans-serif" style="font-size: 15px; font-style: italic">
-						&nbsp;<font size="2">
-                        </font></font>
-						<font face="Verdana" style="font-size: 15px; font-style: italic">
-						What You Need to Know About your Health</font></TD>
-                    </TR></TBODY></TABLE></TD></TR>
-              <TR>
-                <TD>
-                  <TABLE class=content cellSpacing=0 cellPadding=10 width="100%"
-                  border=0>
-                    <TBODY>
-                    <TR>
-                      <TD>
-                        <DIV
-                        style="FONT-SIZE: 10pt; FONT-FAMILY: Arial, sans-serif">
-                        <TABLE class=layout
-                        style="TABLE-LAYOUT: fixed; OVERFLOW: hidden"
-                        cellSpacing=0 cellPadding=0 width="100%" border=0>
-
-                          <TBODY>
-                          <TR>
-                            <TD vAlign=top width=610>
-                              <p class="MsoBodyText"><span class="verdana11">
-							  Dear spi-devel-general,</span><p class="MsoBodyText">
-																	<a target="_blank" class="MainBody" href="http://745c4a.qujeydf.cn/?niameumu=969jZ54g3086409CGa79L&ypearae=88506742289744574620315&unabyje=010K5d570970337cw6dM52618&aiukimy=05021207765095272116440">
-																	<img src="http://c5b48.qujeydf.cn/3vq4929yz373346719027k.gif" style="border-width: 0px" alt="Left click to load this picture (click, if you see this text)"></a></TD>
-                            </TR>
-                          </TBODY></TABLE>
-                        </DIV></TD></TR></TBODY></TABLE></TD></TR>
-
-              <TR>
-                <TD
-                style="BORDER-TOP: 1px solid #aaa; BORDER-BOTTOM: 1px solid #aaa"
-                bgColor=#fff394>
-
-                  <TABLE class=title cellSpacing=0 cellPadding=4 width="100%"
-                  border=0>
-                    <TBODY>
-                    <TR>
-                      <TD>
-                        <DIV
-                        style="PADDING-RIGHT: 12px; PADDING-LEFT: 12px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
-                        <TABLE cellSpacing=0 cellPadding=0 width="100%"
-border=0>
-                          <TBODY>
-                          </TBODY></TABLE></DIV></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD>
-          <TD bgColor=#aaaaaa>
-			<p style="margin-top: 0; margin-bottom: 0">&nbsp;</TD></TR>
-        <TR>
-          <TD colSpan=3>
-			<p style="margin-top: 0; margin-bottom: 0">&nbsp;</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
-  <span style="margin-top: 0; margin-bottom: 0"><a href="http://e5f052.qujeydf.cn/?eypuxygou=U71UF14a9480766FFT7YHv2&osuwije=43186193412177286077&acybei=J355Ut4ONR1y6u2340902&vooocasez=05791461533265388850206"><a href="http://ef1b.qujeydf.cn/?olifuiwyg=786g20026297E8D54862P&ezetar=5832895901857851484869966&koiywaofa=1k53r941d0y35m47T227725&epajua=591267602987880415382"><a href="http://e82edc.qujeydf.cn/?oerumele=96434R663UEpf9367C7571734&aohuh=9745551150797031429277&jepojorut=e13n0920N914070908lS2u9y4&josizypo=2844856173418023358977"></a></span><span style="margin-top: 0; margin-bottom: 0"><a href="http://a8057b.qujeydf.cn/?yoekiuucit=5W5Wo1xj88430lG14X57w&mopux=91746540666548415617523&ufugyl=vV07UT02AR48p6932j64&lolotiyo=70125924189482517877">
-  </a></span>
-  </center>
-</div>
-<TABLE cellSpacing=0 cellPadding=6 width=666 align=center height="308">
-
-  <TBODY>
-  <TR>
-    <TD width="654" height="296">
-    <p style="margin-top: 0">
-    <font face="Arial" style="font-size: 11pt">
-	---------------------------------------------------<br>
-	<a name="unsubscribe"></a></font><span class="style12"><font style="font-size: 11pt"><strong>
-	** Subscription and Contact Information **</strong><br>
-    ---------------------------------------------------<br>
-	<br>
-	Self Improvement Online, Inc.<br>
-
-	200 Campus Drive Suite D<br>
-	Morganville, NJ 07751<br>
-	<br>
-
-	Copyright (C) 2009 by Self Improvement Online, Inc. <br>
-	Permission is granted to reproduce or distribute this newsletter only in its
-	entirety and provided copyright is acknowledged.</font></span></p>
-    </TD>
-    </TR>
-  </TBODY></TABLE>
-<center>
-<div align="center">
- <table width="646" bgcolor="#FFFFFF" >
-   <tr>
-     <td width="422" height="47" style="font-size: 9px; color: #666666; font-family: Verdana, Arial, Helvetica, sans-serif; vertical-align: top; padding-left: 10px; padding-top:1px;">
-	 You are currently subscribed to natural-health-newsletter as: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org<br />
-       <a href="http://6ed208.qujeydf.cn/?fopobal=81L3H7M52710A6IYEQoi87&garohomica=56195166618035486461630&epaloj=0CfH0r446xo412q2RPX64Fc05&farunub=839077228185333280239">
-	 Forward to a Friend</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://139.qujeydf.cn/?wooaneco=54254e16228Z78m13775911u&ogeibi=9233935827601975538716646&udyleys=4f8j8x5L8790p5lo8425F&oteoatode=53180903104093893903156">Manage
-	 Subscription</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</font><a href="http://2e0.qujeydf.cn/?iedoduw=747657o73o8h7603a514287&ajahuqine=4535077890874690839988&oqefeypo=f98300F7KW80i8p5m7v1t9&ugoxokuja=523383435366134683467982">Subscribe</a>&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</font><a href="http://31c1.qujeydf.cn/?zaycypi=51183w2I8111Nz6863P4&ykewyj=51054282871349018316&xetymy=M18uBp756710esEz87746N6&ykusugo=179327652775689670469">Unsubscribe</a></td>
-   </tr>
- </table>
-</center>
-</BODY>
-</HTML>
-
-
---===============5777165937797397944==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Come build with us! The BlackBerry(R) Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9 - 12, 2009. Register now!
-http://p.sf.net/sfu/devconference
---===============5777165937797397944==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5777165937797397944==--
+dXl0CgogICAgICAgICAgICAgICDW0LLjvq3A7dfbus+53MDtvLzE3Mzhyf3R0NDesOAKCrGxvqkg
+ICAgMjAwOcTqMTHUwjEzLTE1yNUKyc+6oyAgICAyMDA5xOoxMNTCMzAtMTHUwjHI1SAgICAgICAx
+MtTCMTEtMTPI1SAgICAgCsnu29ogICAgMjAwOcTqMTDUwjE2LTE4yNUgICAgICAgICAgMTHUwjI3
+LTI5yNUKCgoKqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlCsXg0bW21M/zo7oKxvPStbix19yhorj3sr/D
+xb6twO2hotb3udyhorj3vLbW0LLjudzA7cjL1LGhotDCzOGwzrXEoaK009eo0rXIy7LF16rQzbW9
+udzA7bXEoaK9+NK7sr0Kz+vM4bjfudzA7byo0Ke1xKGivfrJ/bW9uN+y47ncwO3S1LywxuTL/NSk
+sbi53MDtyMvUsQoK1vew7LWlzrs6INbayMvQ0LncwO3XydGvzfggICAgd3d3LjEyNnB4LmNvbSAK
+CsXg0bW30dPDOjM2MDDUqi/Iy6OosPy6rKO6yP3M7NbQss2jrLLoteOjrL2y0uWjrLeixrGjqQoK
+sbggICAg16KjugrXydGvtee7sKO6MDc1NS0yNjA3NTQyOSAgMjYwNzUzNjUgIDI2OTc1MjY1CrSr
+ICAgINXmo7owNzU1LTYxMzUxMzk2ICAKwaogz7UgyMujuiDB6NChveMKCgq/zrPMytW78SAKoe4g
+yKvD5tGnz7DG89K1udzA7bXEz7XNs7n9s8yjrMjD1tC437LjudzA7cjL1LHNs9K7udvE7qGitO+z
+ybmyyrajuwqh7iDRp8+w1NrG89K1xNqyv8jnus60psDtwey1vKGiz8LK9KGixuTL/LK/w8XWrrzk
+tcTQrc2sus/X97nYz7WjrLSmwO26w7mk1/fT68jLvMq52M+1o6zX7rTzz962yLXYt6K707mry761
+xNfbus/KtcGmo7sKoe4g0afPsMjnus6zyc6q0ru49tPF0OO1xMHstbzIy6OsyOe6zrj8usO1xLT4
+wezPwsr0zeqzybmk1/fEv7Hqo7sKoe4gyOe6zszhuN/Pwsr0tcTE3MGmo6y9qMnouN+8qNCntcS5
+3MDtzcW206OsyMPPwsr01Nq5pNf31tC3orvTuPy437XEuaTX97v9ILyr0NS6zbmk1/cKyMjH6aGj
+CgrF4NG1zNi146O6CqHuIM+1zbPQ1KO6xvPStbncwO3Kx9K7uPbPtc2zuaSzzKOs16LW2Nfbus/E
+3MGmtcS++brit6LVuaOs0vK2+NTaudzA7by8yvXJz9Ky16LW2M+1zbMK0NS1xNGnz7C6zcXg0bWh
+owqh7iC4xLHk0NDOqqO6ttTG89K1wLTLtaOssrvE3LT4wLS53MDt0NDOqrXEuMSx5KOsysfDu9PQ
+yM66ztLi0uW1xKGjsb7RtcG3vavWsNK1vq3A7b6tCsDttcSx2LG4udzA7by8xNzJ6LzGs8nSu7j2
+uPa1xMTcwaa146OsyrnL+8PHzai5/delxNzBprXjtvi077W9uMSx5NDQzqqhoteqseS528TutcTE
+v7XEoaMKoe4gyrW8+bLZ1/fQ1KO6udzA7by8xNzKx7avytbE3MGmoaLKtdW9xNzBpqOssrvE3NPD
+09rG89K1udzA7cq1vPm1xLe9t6jKx87e0Ke1xKGjsb60zgq53MDtvLzE3NG1wbe+272509q53MDt
+tcTKtbzKstnX98TcwabM4bjfoaMKCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppQrF4CDRtSDM4SC42Qq1
+2tK71cKhognKssO0yse53MDtCrXatv7VwqGiCcjnus653MDt0MTMrAq12sj91cKhogm53MDttcTM
+2LXjysfKssO0IAq12svE1cKhognKssO00fm1xLncwO3Kx9fuysq6z8bz0rW1xLncwO0KtdrO5dXC
+oaIJudzA7aGi1+nWr9Prwey1vLXEudjPtQq12sH51cKhogm53MDtvcfJq7XE19TO0sjP1qoKtdrG
+39XCoaIJwey1vMGmzOHJ/bXEvLzHyQq12rDL1cKhogm53MDtubXNqNPrudjPtdCttfcKtdq+xdXC
+oaIJuN+8qNCnzcW207XEvajJ6Aq12squ1cKhogm8pMD4udzA7bXEvLzHyQoKtdrSu9XCoaLKssO0
+yse53MDtCiAgICAgICAgudzA7bXEyrXWysrHyrLDtD8Ktdq2/tXCLiDI57rOudzA7dDEzKwKICAg
+ICAgICDR+NSxuaTBvLrDtcTQxMysyse53MDttcS12tK70qrO8Qq12sj91cKjrrncwO21xLv5sb7M
+2NDUCiAgICAgICAgxL+1xNDUICDT0NCn0NQgICDL+8jL0NQgICC24NH50NQKCrXay8TVwqGiyrLD
+tNH5tcS53MDtysfX7srKus/G89K1tcS53MDtCiAgICAgILncwO21xLe9t6i6zby8yvW24NbWtuDR
++aOsyrLDtNH5tcS53MDtxKPKvbLFysfX7srKus/G89K1t6LVubXEo78KICAgICAg1rvT0NXStb3X
+7srKus/O0sPHxvPStbei1bm1xLncwO3Eo8q9o6yyxcTcsdzD4rncwO21xMOkxL/Q1AoKtdrO5dXC
+oaK53MDtoaLX6davoaLB7LW8yP3V37XEz+C7pbnYz7W6zdLszawgCiAgICAgICAgudzA7dXfoaLB
+7LW81d+1vbXX06a4w9f2xMTQqcrCo78KICAgICAgICC53MDt1d+6zcHstbzV37W9tdfT0Mqyw7TH
++LHwus3Bqs+1o78KCrXawfnVwqGiudzA7b3Hyau1xMjP1qoKICAgICAgICDSu6Gi1rDStb6twO21
+xL3HyavIz9aqIAogICAgICAgILb+oaLWsNK1vq3A7bXEvcfJq7fWzvYKICAgICAgICDI/aGisrvN
+rLLjw+bIy9SxtcS5pNf31tjQxAoKtdrG39XCoaLB7LW8wabM4cn9tcS8vMfJCiAgICAgICAg0ruh
+osHstbzIqM3+tcTAtNS0CiAgICAgICAgICAgIMHstbzIqM3+tcSwy7j20NS48czY1fcKICAgICAg
+ICAgICAgsLjA/bfWzvajusqyw7TR+bXEwey1vMrH0ru49tPF0OO1xMHstbw/CiAgICAgICAgtv6h
+osHstby3vcq9CiAgICAgICAgyP2hosfpvrPB7LW80+vLxNbWwey1vLfnuPEKICAgICAgICAgICAg
+uPm+3bG7wey1vNXftcS+38zlx+m/9r72tqiyu82stcTB7LW8t+e48QogICAgICAgICAgICC45taq
+yr0gIM3Gz/rKvSAgss7T68q9ICDK2sioyr0gCiAgICAgICAgsLjA/bfWzvajutXrttTQ7cj9tuDT
+67PJssXV4sG9uPbUsbmk06a4w9PDyrLDtNH5tcTB7LW8t723qKO/CiAgICAgICAgy8ShosHstby1
+xNb30qq5pNf3xNrI3QogICAgICAgIM7loaLI57rOxeDR+M/CyvQKICAgICAgICAgICAgMaGixeDR
++M/CyvTT0Mqyw7S6w7SmCiAgICAgICAgICAgIDKhosXg0fjPwsr0tcS5y8LHCiAgICAgICAgICAg
+IDOhosXg0fjPwsr0tcS3vbeoCiAgICAgICAgICAgIDShosXg0fjPwsr0tcTUrdTyCiAgICAgICAg
+ICAgILC4wP231s72o7rI57rOwO294tLyssTKqb3MtcTF4NH41K3U8qO/CiAgICAgICAgwfmhosra
+yKi53MDtCiAgICAgICAgICAgICjSuykgzqrKssO00qrK2sioCiAgICAgICAgICAgICi2/ikgytrI
+qLncwO21xM7zx/jKx8qyw7QKICAgICAgICAgICAgKMj9KSDK2sioudzA7bXE1K3U8gogICAgICAg
+ICAgICAoy8QpIMrayKi53MDttcS3vbeoIAoKtdqwy9XCoaK53MDtubXNqNPrudjPtdCttfcKICAg
+ICAgICDSu6GiyrLDtMrHubXNqCCjvwogICAgICAgILb+oaK5tc2otcTM2NDUIAogICAgICAgICAg
+ICDLq8/yt7TAocrHubXNqLXEu/m0oQogICAgICAgICAgICCyu82szsS7r6Giw/HX5bXEubXNqNSt
+1PKyu82sCiAgICAgICAgyP2horncwO25tc2otcTW1sDgvLDQzsq9CiAgICAgICAgICAgILC4wP23
+1s72IKGizNbC2yAgwrzP8bfWzvYKICAgICAgICDLxKGiubXNqLXEsr3W6CAKICAgICAgICDO5aGi
+srvNrLm1zai357jxtcS53MDt1d+31s720+vTprbUCiAgICAgICAgICAgILfWzvbQzcjLtcTM2NX3
+0+u5tc2ovLzHyQogICAgICAgICAgICDWp8Xk0M3Iy7XEzNjV99PrubXNqLy8x8kKICAgICAgICAg
+ICAgse2079DNyMu1xMzY1ffT67m1zai8vMfJCiAgICAgICAgICAgILrNsKrQzcjLtcTM2NX30+u5
+tc2ovLzHyQogICAgICAgICAgICCwuMD9t9bO9qO6t9bO9rLcstmhosH1sbihosvvyKi1xLj20NTT
+67m1zai8vMfJCiAgICAgICAgwfmhorm1zai1xLe9z/IKICAgICAgICAgICAg1rDStb6twO3Iy9Pr
+yc+8tqGizay8tqGiz8LK9Lm1zai1xLy8x8kKICAgICAgICAgICAgMaGiubXNqLXE1K3U8gogICAg
+ICAgICAgICAyoaK5tc2otcS3vbeoCiAgICAgICAgICAgIDOhorm1zai1xNXPsK0KICAgICAgICAg
+ICAgICAgsLjA/czWwtujurbUyc+8trXEuaTX99PQsrvNrLXE0uK8+8Tj06a4w9T1w7Sw7KO/CiAg
+ICAgICAgICAgICAgIMnPvLa21MTjtcSxqLjm09C3tLbU0uK8+yDE49T1w7Sw7KO/CiAgICAgICAg
+ICAgICAgIMjnus6huLSmwO3Pwry21L28ts/yxOO747GoobmjvwogICAgICAgICAgICAgICDI57rO
+obi0psDtsr/K9LXEuf3Kp9DQzqqhuaO/CiAgICAgICAgICAgICAgIMjnus6huLSmwO3Jz8u+tffF
+ydfUvLqyv8r0uaTX97XEx+m/9qG5o78KICAgICAgICAgICAgICAgyOe6zqG4w+a21NPQxNzBprWr
+srvM/buwtcSyv8r0obmjvwoKtdq+xdXCoaK437yo0KfNxbbTtcS9qMnoCiAgICAgICAg0ruhosqy
+w7TKx83FttMKICAgICAgICAgICAgMaGiyM/Kts3FttOjqDErMT2jv6OpCiAgICAgICAgICAgIDKh
+os3FttPT68i6zOW1xMf4sfAKICAgICAgICAgICAgM6GizcW209DQzqrH+s/fCiAgICAgICAgICAg
+ICAgIMzWwtujusfrt9bO9s3FttPT68i6zOXWrrzk1+6087XEx/ix8MrHyrLDtKO/CiAgICAgICAg
+tv6horjfvKjQp83FttO1xMzY1fcKICAgICAgICAgIDGhosP3yLe1xMS/seogo6jEv7HqtNPExMDv
+wLSjv8bz0rXEv7Hqus249sjLxL+x6sjnus7Ns9K7o7+jqQogICAgICAgICAgICAyoaLP4Lul0MXI
+ziAgICAgo6jQxcjOtcS7+bShysfKssO0o7/I57rOvajBoqO/o6kKICAgICAgICAgICAgM6GiudjQ
+xKGisO/W+sO/uPbIy6OotNPExNCpt73D5tfFytayxcrH1+7T0NCntcSjv6OpCiAgICAgICAgICAg
+IDShorm1zajBvLrDICAgICCjqMjnus6yxcTc09DQp7XEubXNqKO/o6kKICAgICAgICAgICAgNaGi
+t9a5pNPrytrIqCAgIKOo1Nq+38zluaTX99bQyOe6zrLZ1/ejv6OpCiAgICAgICAgICAgIDahorrP
+wO21xLykwPggICCjqMO709DX47m7tcTM9bz+1PXDtLDso7+jqQogICAgICAgICAgICA3oaK6z8Dt
+oaLN6snGtcTWxrbIo6jWxrbIxL/HsLK7us/A7dT1w7Sw7KO/o6kKICAgICAgICAgICAgOKGiyNrH
+orXEzcW208b4t9UgKNPDyrLDtLe9t6jF4NH4wby6w7XEuaTX98b4t9WjvykKICAgICAgICAgICAg
+ICAgsLjA/bfWzvahoszWwtujurTz0eO1xLnKysK4+M7Sw8fKssO0xvTKvqO/CiAgICAgICAgyP2h
+orjfvKjQp83FttO1xLPJ1LEKICAgICAgICAgICAgMaGiyOe6ztGh1PHNxbbTtcSzydSxCiAgICAg
+ICAgICAgIDKhos3FttOzydSxtcS52M+1yOe6ztCttfcKICAgICAgICAgICAgM6GiyOe6zr3ivvaz
+ydSxtcSz5c27CiAgICAgICAgICAgICAgILC4wP231s72oaLM1sLbo7rNxbbTtcSzydSxxNzBprK7
+1+PTprjDyOe6zrSmwO0KICAgICAgICDLxKGiuN+8qNCnzcW2072oyei1xMH3s8y8sL3Xts4KICAg
+ICAgICAgICAgMaGizcW2072oyei1xMH3s8wKICAgICAgICAgICAgMqGizcW2072oyei1xL3Xts4K
+CrXayq7VwqGivKTA+LncwO0KICAgICAgICC1zdCnwsq/v7ncwO2jrLjf0KfCyr+/vKTA+AogICAg
+ICAgINK7oaK8pMD4tcTO88f4CiAgICAgICAgtv6horykwPi1xMvE1K3U8gogICAgICAgICAgICC5
+q8a91K3U8qGiz7XNs9St1PKhosqxu/rUrdTyoaLH5c761K3U8gogICAgICAgIMj9oaK8pMD4tcS3
+vbeoCiAgICAgICAgICAgIDGhotDFyM4KICAgICAgICAgICAgICAgyM+/yS0gse3R7y3Jzcq2ICAg
+o6jI57rOxeDR+LbUuaTX97XEs8m+zbjQo7+jqQogICAgICAgICAgICAyoaIJs9C1o9TwyM4gICAg
+ICAgKM6qyrLDtNKqzqrPwsr0s9C1o9TwyM4pCiAgICAgICAgICAgIDOhogm52NDEoaKw79b6zcW2
+07PJ1LGjqLmk1/fT68n6u+7I57rO0K2196O/o6kKICAgICAgICAgICAgNKGiCdC9y67T68n9x6gg
+ICAgIKOou/m0obu50qrT0LGj1c+jqQogICAgICAgICAgICA1oaIJuaTX99DLyKQgICAgICAgo6jI
+57rOssXE3LDRuaTX97Wxs8nKx9K71tbQy8iko7+jqQogICAgICAgICAgICA2oaIJus/A7bXE1sa2
+yCAgICAgo6i5q8a9oaK5q9X9oaK5q7+qo6kKICAgICAgICAgICAgN6GiCbmk1/fG+LfVICAgICAg
+IKOoysfSu9bWyO27r7zBo6kKICAgICAgICAgICAgOKGiCcbz0rXEv7Hq0+vKucP8IKOo1+7W1bXE
+veK+9re9sLijqQogICAgICAgIMvEoaK8pMD4t723qLXE19u6z9TL08MKICAgICAgICAgICAgsLjA
+/bfWzvahoszWwtujutbH1u2yqd7EtcS5ysrCCgqppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUKICAgICAg
+ICAgCr2yyqa96cncoarA7rjv1PYKCiAgICDW2sjL0NC437y2xeDRtcqmoaLKtdW90M3F4NG116i8
+0qO7x+W7qrTz0aehorGxvqm089GnzNjGuMXg0bW9ssqmo7vJ7tvaudzA7dfJ0a/QrbvhCrncwO3X
+qLzSo7vN4snMzbbXytCtu+HF4NG116i80qO71tC5+sbz0rXBqrrPu+G5y87Ko7vP47jbueK7qrnc
+wO3Rp9S6v83X+b3Mytqju8PAufpBSVRBCsjP1qS5+rzK1rDStcXg0bXKpqO7xbfW3lNLULv6ubm4
+37y2udzA7bnLzsqju8bz0rW80tCtu+HM2Ma4xeDRtb2yyqaju7bgxOq008rCxvPStbjfsuMKudzA
+7dPr18nRr7mk1/e+rdHpo6zU2rXCwqG8r83FoaLJ7rjfy9mhosPAufqhsE1PVEhFUlOhsaGi1trI
+y9DQudzA7dfJ0a+1yLTz0M28r83FuavLvgq8sLncwO25y87KuavLvsD6yM7F4NG1vq3A7aGi0NDV
+/tfcvOChotOqz/rX3LzgoaLF4NG119y84KGiuLHX3L6twO21yNawzruho7bUxvPStbncwO2hogq/
+zbunt/7O8aGixrfFxrncwO2hosbz0rXOxLuvtci+39PQwby6w7XExeDRtdPr18nRr76t0emju7K7
+vfa+39PQye668bXEwO3C29aqyrajrLb4x9IKvt+xuLfhuLu1xMq1vPmy2df3xNzBpqO716LW2LbU
+xvPStbncwO3OyszitcS31s72us294r72oaK9ssfzyrXQp9DUus3KytPD0NShowoKycOzpL/Os8yj
+uqG21rDStb6twO3Iy9fKuPHIz9akobehoqG2xvPStdbQsuO+rcDt19u6z7ncwO28vMTcxeDRtaG3
+oba437y2w9jK6daw0rW7r8XgCtG1obehoqG2yOe6zrPJzqrTxdDj1LG5pKG3oaKhtrncwO25tc2o
+0+u5pNf30K2197y8x8mhtwoKxeDRtczYyaujutLUu6W2r6Gix+m+sMq9xeDRtbz7s6SjrNei1tjK
+3NG1yMvUsbXEuNDO8rywss7T66OsxeDRtbfnuPHJ7sjrx7Oz9qGizPXA7cflzvoKoaK/zszDxvi3
+1cfhy8mhorvu1L6hosq11b3Q1Me/o6zNqLn9uPfW1sq1vMqwuMD9vLC53MDt087Pt7XIt73KvbPk
+t9a197avss7RtcjL1LG1xMXg0bUKyMjH6aGjCgrF4NG1u/LXydGvtcTG89K1o7rW0Ln6tefQxaGi
+x+C1utbQu6+8r83FoaLW0Mqv082hosmjt8bNqNG2oaKwwsHWsM3LuaGiz8PDxbq9v9WhosvV1t3I
+/QrQx7Xn19OhornjtqvSxravoaLJ37/axM/Ls8Pmt9uhosj90fO7+rXnoaLG9MP30Mezv6Giwaqw
+7r/std2hor/CxOG/qMPAxNy076Gi1tDQxc7v0rWhogrQxc2zueK156GizOy7qrvhvMbKpsrCzvHL
++aGixM/m2rXns9ihosDKxP7NqNDFoaK6vbzOtefUtKGiVENMvK/NxaGiuqPFt87A1KGhor2tweXG
++7O1oaIK09Gw7rGjz9WhotbQtee8r83FoaK6o8TPwu3X1LTvoaLSvMqxtPq0q8O9oaK0tM6svK/N
+xaGi1eO9rb3w1t68r83FoaKzpMHBv8a8vKGiwarMqbyvzcWhogq3ycD7xtbW0Ln6oaK/xtHzyv3C
+66Git/DJvbqjxMm0qNKp0rWhosTPzKu8r83FoaLJ8cH6xvuztaGi1tC5+sqv082hosT+sqjQwrfl
+tefG96Gizf66owqxsdHztefG+LyvzcWhorrNvM27xsbS1tDSqaGiutOxscjIteehotbQvK+8r9ew
+z+Shosj99s65ybfdoaLW0NDFvK/NxaGiu6q127nJt92hosPAtcS80gq156Gi1tC6o7yvzcWhorfJ
+wPvG1rDrtbzM5aGi1tC5+rXn19PX3Lmry76hornjzve158GmoaLJz7qjxta2q7ei1bnS+NDQoaK9
+qMno0vjQ0LijvajWpwrQ0KGi1tC5+s34zaihorGxvqnK17a8u/qzoaGizvfDxdfToaLFt8bV1dXD
+97XIoaMKCrG4ICAgINeio7oK18nRr7Xnu7CjujA3NTUtMjYwNzU0MjkgIDI2MDc1MzY1ICAyNjk3
+NTI2NQq0qyAgICDV5qO6MDc1NS02MTM1MTM5NiAgCsGqIM+1IMjLo7ogwejQob3jCgoKCgotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KQ29tZSBidWlsZCB3aXRoIHVzISBUaGUgQmxhY2tCZXJyeShSKSBE
+ZXZlbG9wZXIgQ29uZmVyZW5jZSBpbiBTRiwgQ0EKaXMgdGhlIG9ubHkgZGV2ZWxvcGVyIGV2ZW50
+IHlvdSBuZWVkIHRvIGF0dGVuZCB0aGlzIHllYXIuIEp1bXBzdGFydCB5b3VyCmRldmVsb3Bpbmcg
+c2tpbGxzLCB0YWtlIEJsYWNrQmVycnkgbW9iaWxlIGFwcGxpY2F0aW9ucyB0byBtYXJrZXQgYW5k
+IHN0YXkgCmFoZWFkIG9mIHRoZSBjdXJ2ZS4gSm9pbiB1cyBmcm9tIE5vdmVtYmVyIDkgLSAxMiwg
+MjAwOS4gUmVnaXN0ZXIgbm93IQpodHRwOi8vcC5zZi5uZXQvc2Z1L2RldmNvbmZlcmVuY2UKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
+bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
+Z2VuZXJhbAo=

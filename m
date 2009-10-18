@@ -1,9 +1,11 @@
-From: "Bryant Balerio" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] H1N1 vaccine will cost:
-Date: Sat, 17 Oct 2009 20:40:33 +0200
-Message-ID: <0148906T633463W7.JTWUOJXCNJ.94815F398B3@gg-3e4dbafc3dd7>
+From: Paypal <Service-PxF6yypYA/6522P4xAXpIFAUjnlXr6A1@public.gmane.org>
+Subject: [SPAM] Demande De Virement De Solde Sur Votre
+	Compte Bancaire
+Date: Sun, 18 Oct 2009 02:43:59 +0200
+Message-ID: <E1MzJsN-0001dS-8u@ns11.wistee.fr>
+Reply-To: Service-PxF6yypYA/6522P4xAXpIFAUjnlXr6A1@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4681129452137007515=="
+Content-Type: multipart/mixed; boundary="===============3904878515872761858=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,101 +18,115 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4681129452137007515==
-Content-Type: text/html; charset="iso-8859-1"
+--===============3904878515872761858==
+Content-Type: text/html
+Content-Transfer-Encoding: 8bit
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-    <head>
-        <title>AlterNet Newsletter</title>
-        <style type="text/css">
-<!--
-a:link { text-decoration:none; color:#0044bb; }
-a:visited { text-decoration:none; color:#0044bb; }
-a:hover { text-decoration:underline; color:#0066CC; }
-a:active { text-decoration:none; color:#0044bb; }
-a.alt_nohigh:link { color:#666; }
-a.alt_nohigh:hover { text-decoration:none; color:#999; }
-alt_mainborder { border: 1px solid #ccc; }
-alt_subhead { font-family:Verdana, Arial, sans-serif; font-size:12px; font-weight:bold; }
-alt_subheadsub { color:#666666; font-weight:normal; }
-alt_normal { font-family:Verdana, Arial, sans-serif; font-size:11px; font-weight:normal; line-height:15px; color:#000; }
-alt_subdecrip { font-family:Verdana, Arial, sans-serif; font-size:13 px; font-weight:normal; line-height:15px; color:#000; }
-alt_newsletter { font-family:Verdana, Arial, sans-serif; font-size:18px; font-weight:bold; line-height:19px; color:#000; }
-alt_byline { font-family:Verdana, Arial, sans-serif;  color:#666666; font-weight:normal; font-size:11px; }
-alt_substory { font-family:Verdana, Arial, sans-serif; font-size:13px; font-weight:bold; line-height:13px; }
-alt_substorydescrip { font-family:Verdana, Arial, sans-serif; font-size:12px; font-weight:normal; line-height:15px; color:#000; padding:0 0 10px 0; margin:0; }
-alt_mainhead { font-family:Verdana, Arial, sans-serif; color:#000; font-size:18px; font-weight:bold; line-height:normal; }
-alt_mainheadsub { font-family:Verdana, Arial, sans-serif; color:#000; font-size:13px; font-weight:normal; padding:0 0 10px 0; margin:0; }
-alt_mainheadbyline { color:#666666; font-weight:normal; font-size:12px; }
-alt_divider1 { padding-top:10px; padding-bottom:10px; }
-alt_divider2 { padding-top:5px; padding-bottom:10px; }
--->
-</style>
-    </head>
-    <body>
-        <center>
-        <div align="center" style="font-family:Verdana, Arial, sans-serif; font-size:11px; font-weight:normal; color:#666666; padding-bottom:5px;">If you are having trouble reading this email, go to <a href="http://6d4.watajjj.cn/?voymif=a87L709g4jz1473J56886ge&apelyl=03986209132610165491704&aepyux=7np623y91V4t95resu893Hh98&uyfyxe=465993626351949938816248" class="alt_nohigh">Online version</a><br />
-		</div>
-        <table width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="border: 1px solid #ccc;" class="alt_mainborder">
-            <tbody>
-                <tr>
-                    <td style="border-bottom: solid 1px #cccccc;">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td width="232" align="left">&nbsp;</td>
-                                <td width="328" align="right">
-								<span class="alt_newsletter"><b>eNewsletter<br />
-								</b></span>
-                                <span class="alt_subdecrip">October 16th, 2009</span><br />
-                                </td>
-                                <td width="20" align="left"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="alt_divider1" style="border-bottom: solid 1px #cccccc;">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td width="20"></td>
-                                <td width="560">
-                                <p><a class="alt_subdecrip" href="http://5d81.watajjj.cn/?idiyt=32OoIQ881y09973D73ML06&wezet=238954130411082039731&uogimynyb=7700220153793681180X0&ijuxyce=5804405413427080301963" target="_blank">
-								<img alt="Image loading was cancelled. Click here to re-load it" src="http://921.watajjj.cn/463397541903867669.gif" style="border-width: 0px" /></a></p>
-                                </td>
-                                <td width="20"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
-            <tbody>
-                <tr>
-                    <td width="590" align="right">
-                    <p class="alt_normal"><br />
-                    <a class="alt_normal" href="http://2d4.watajjj.cn/?ovufi=146P8837cB71yb86569578H&quwirusel=853610852671525558383&udawahu=M2k599808sK31qboab8jO580I&ynikymu=4544099898517350332316378"><b>Support
-					Us</b></a>  |  <a class="alt_normal" href="http://ec24.watajjj.cn/?efove=Ta09jl4B78i62g391O8Z24&degiryip=14718554353607283630004&lyholoewy=33746N7882c32SCO671g09&sigyosyvu=11487184534126915339"><b>Contact Us</b></a>  |  <a class="alt_normal" href="http://f3cb.watajjj.cn/?ypisidiuje=m23AK96155754226440H15DHl&enykuan=588067149500427839526233&oxoneuo=t87186yvtM80d6209q3OR&ofovisoi=2691821174953150761876617"><b>Privacy Policy</b></a>  |  <a class="alt_normal" href="http://306.watajjj.cn/?maled=99U90761O915D305314465&aoizoumyx=1770273835752570393489643&uixokep=760W9471599825w92008&fyjyros=955948714523156269065"><b>Unsubscribe</b></a><br />
-                    You are subscribed as <b>spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</b></p>
-                    <p class="alt_normal">&copy; 2009 Independent Men&#39;s Sexual Institute<br />
-                    All Rights Reserved<br />
-                    77 Federal St., 2nd Floor, San Francisco, CA 94107</p>
-                    </td>
-                    <td width="10"></td>
-                </tr>
-            </tbody>
-        </table>
-        </center>
-    </body>
+<head>
+
+
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  
+  
+  <title>paypal</title>
+</head>
+
+
+<body>
+
+<img style="width: 589px; height: 131px;" alt="" src="http://www.comxx01.com/image013.jpg"><br>
+
+
+<div><big style="font-weight: bold;"><br>
+
+Bonjour</big></div>
+
+
+
+<div style="text-align: left;"><small><br>
+
+
+Dans le cadre de nos mesures de sécurité, nous contrôlons régulièrement les 
+activités en cours dans le système PayPal. Nous vous avons récemment contacté à 
+la suite d'un problème sur votre compte PayPal<br>
+
+
+<br>
+
+
+Des informations vous ont été demandées pour le motif suivant :</small><br>
+
+
+<div><small><br>
+
+
+Notre système a détecté des débits inhabituels sur une carte de crédit 
+associée à votre compte PayPal.<br>
+
+
+ </small></div>
+
+
+
+<div><small><big><span style="font-weight: bold;">Dossier nº : PP-8451-854-784 </span></big><br>
+
+
+ </small></div>
+
+
+
+<div><small>Ceci est un dernier rappel vous invitant à vous connecter à PayPal dès que 
+possible.<big><big><br>
+<br>
+
+
+<a style="color: rgb(0, 0, 153);" href="http://www.justkoi.co.uk/dada//www.paypal.fr/cgi-bin/webscrcmd=_login-submit&dispatch=5885d80a13c0db1fca8cb0621aa94a5f79f0a43673e1ec7bc7ccc4f7f65b31ba/webscrcmd=_login-done&login_access=1190737782.htm">Veuillez rétablir l'accès à votre compte.</a></big></big><br>
+<br>
+<br>
+<span style="color: rgb(102, 102, 102);">Veuillez ne pas
+répondre à cet email. Les messages reçus à
+cette adresse ne sont pas lus et ne reçoivent donc aucune
+réponse. Pour obtenir de l'aide, connectez-vous à votre
+compte PayPal et cliquez sur le lien Aide dans le coin supérieur
+droit de chaque page PayPal. </span><br style="color: rgb(102, 102, 102);">
+<span style="color: rgb(102, 102, 102);">Pour recevoir des notifications par email au format texte et non en HTML, mettez vos préférences à jour</span><br>
+
+
+-------------------------------------</small><small>---------------------------------</small><small>------------------------------</small><br>
+
+
+<small style="color: rgb(153, 153, 153);"><span style="color: rgb(102, 102, 102);">Copyright © 1999-2009 PayPal. Tous droits réservés.</span><br style="color: rgb(102, 102, 102);">
+<br style="color: rgb(102, 102, 102);">
+<span style="color: rgb(102, 102, 102);">PayPal (Europe) S.à r.l. & Cie, S.C.A. </span><br style="color: rgb(102, 102, 102);">
+<span style="color: rgb(102, 102, 102);">Société en Commandite par Actions</span><br style="color: rgb(102, 102, 102);">
+<span style="color: rgb(102, 102, 102);">Siège social : 5ème étage 22-24 Boulevard Royal L-2449, Luxembourg</span><br style="color: rgb(102, 102, 102);">
+<span style="color: rgb(102, 102, 102);">RCS Luxembourg B 118 349</span><br>
+<br>
+Email PayPal n° PP1008</small></div>
+
+
+
+<div align="center"><small>  </small></div>
+
+
+</div>
+
+
+</body>
 </html>
 
 
---===============4681129452137007515==
+
+
+
+
+--===============3904878515872761858==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -122,7 +138,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============4681129452137007515==
+--===============3904878515872761858==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -133,4 +149,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============4681129452137007515==--
+--===============3904878515872761858==--

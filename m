@@ -1,11 +1,10 @@
-From: "MASAJE EN SILLA" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] APRENDA A REALIZAR UN MASAJE ANTI ESTRES
-	DE 15 MINUTOS
-Date: Mon, 19 Oct 2009 11:33:01 -0300
-Message-ID: <1853238638-22009101191433193@usuario-1109edb>
+From: "Clemente Mqzuruzo" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Tell me about prices
+Date: Tue, 20 Oct 2009 00:16:42 +0300
+Message-ID: <2543LQ.9953C6ECB.6394399086DKKFHIRHTYVQPRL036@GABI>
+Reply-To: Clemente Fjqbydu <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============2705087612342513736=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,56 +17,169 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Fechas y Horarios
-Mi=E9rcoles 21 de Octubre de 19 a 21 hrs.
- =
+--===============2705087612342513736==
+Content-type: text/html; charset="iso-8859-1"
 
-Este Curso de masaje r=E1pido, es dictado para que cualquier persona lo pue=
-da aprender y as=ED utilizarlo en su casa para beneficio de los suyos. No s=
-e requiere de una silla en especial, para no incurrir en gastos innecesario=
-s. Se les entregara una herramienta para dar soluciones al menor costo y ut=
-ilizando elementos caseros.
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd" /><html><head><title>spi-devel-general
+Newsletter</title>
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<style>BODY {
+        LINE-HEIGHT: 12pt; BACKGROUND-COLOR: #eee8f7; MARGIN: 0px;
+FONT-FAMILY: Arial, Helvetica, sans-serif; COLOR: #000000; FONT-SIZE:
+12px
+}
+TD {
+        LINE-HEIGHT: 12pt; FONT-FAMILY: Arial, Helvetica, sans-serif; COLOR:
+}
+H1 {
+        LINE-HEIGHT: 18pt; FONT-FAMILY: Arial, Helvetica, sans-serif; COLOR:
+}
+H2 {
+        LINE-HEIGHT: 16pt; FONT-FAMILY: Arial, Helvetica, sans-serif; COLOR:
+}
+H3 {
+        LINE-HEIGHT: 14pt; FONT-FAMILY: Arial, Helvetica, sans-serif; COLOR:
+}
+H4 {
+        LINE-HEIGHT: 11pt; FONT-FAMILY: Arial, Helvetica, sans-serif; COLOR:
+}
+OL {
+        PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 10px; PADDING-LEFT: 10px;
+PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+UL {
+        PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 10px; PADDING-LEFT: 4px;
+PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url("undefined"); PADDING-TOP:
+0px
+}
+UL UL {
+        PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 10px; PADDING-LEFT: 4px;
+PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url("undefined"); PADDING-TOP:
+0px
+}
+UL UL UL {
+        PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 10px; PADDING-LEFT: 4px;
+PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url("undefined"); PADDING-TOP:
+0px
+}
+textsmall {
+        LINE-HEIGHT: 10pt; FONT-FAMILY: Verdana,Arial, Helvetica, sans-serif;
+FONT-SIZE: 11px
+}
+footer {
+        LINE-HEIGHT: 10pt; FONT-FAMILY: Verdana,Arial, Helvetica, sans-serif;
+FONT-SIZE: 10px
+}
+wisdom {
+        LINE-HEIGHT: 12pt; FONT-FAMILY: Verdana,Arial, Helvetica, sans-serif;
+COLOR: #993366; FONT-SIZE: 12px
+}
+headings {
+        LINE-HEIGHT: 16pt; FONT-FAMILY: Arial, Helvetica, sans-serif;
+FONT-SIZE: 16px
+}
+orange {
+        COLOR: #d76600; FONT-WEIGHT: bold
+}
+sign {
+        FONT-FAMILY: Times New Roman, Times, serif; FONT-SIZE: 16px;
+FONT-WEIGHT: bold
+}
+redhead {
+        FONT-STYLE: italic; COLOR: #cc0000; FONT-WEIGHT: bold
+}
+whitehead {
+        COLOR: #e7def3; FONT-WEIGHT: bold
+}
+orange1 {
+        COLOR: #d76600; FONT-WEIGHT: bold
+}
+style14 {
+        FONT-FAMILY: "Times New Roman", Times, serif; FONT-SIZE: 16px;
+FONT-WEIGHT: bold
+}
+bighead {
+	font-family:"Times New Roman", Times, serif; font-size:20px; font-weight:bold; text-decoration:underline
+}
+</style>
 
-Este se realizar=E1 en 2 horas. El m=EDnimo para conformar el curso es de 1=
-0 personas, esto para poder interactuar entre las distintos asistentes, rea=
-lizando masajes unos a otros, e ir midiendo la intensidad.
+<meta name="GENERATOR" content="MSHTML 8.00.6001.18828"/></head>
+<body bgcolor="#ffffff">
+<div style="text-align: center">
+If you're having trouble viewing this email, please
+	<a href="http://cb2.xiyegmn.cn/?axjab=77af9c6ecb195e76ff1d&jdkkfhirh=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&ujnilunjm=44696739770639439908">click here</a>. </div>
+<div align="center"><br/>
+<table border="0" cellspacing="2" cellpadding="15" width="694"
+bgcolor="#522c83">
+<tbody>
+<tr>
+<td style="PADDING-TOP: 5px" bgcolor="#ffffff" valign="top">
+<table border="0" cellspacing="2" cellpadding="0" width="100%"
+align="center">
+<tbody>
+<tr>
+<td style="TEXT-ALIGN: left" bgcolor="#ffffff" height="35" valign="top"
+align="left">
+<div align="right">
+	<span style="FONT-FAMILY: verdana, arial, helvetica,
+sans-serif; COLOR: #4f2b83; FONT-SIZE: 10px; FONT-WEIGHT: bold">Newsletter 19th
+	October 2009</span></div></td></tr></tbody></table>
+<table border="0" cellspacing="2" cellpadding="0" width="86%"
+align="center">
+<tbody>
+<tr>
+<td style="TEXT-ALIGN: left" bgcolor="#ffffff" valign="top"
+align="left">
+<p>Dear Friends, </p>
+<p><a class="bighead" href="http://52663.xiyegmn.cn/?jsawux=77af9c6ecb195e76ff1d&jdkkfhirh=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&qliibezuby=44696739770639439908" target="_blank" title="Biwilabysa">
+<img alt="This news is presented as a picture. If you can't see it, click here." src="http://77a.xiyegmn.cn/lugiecyg.gif" style="border-width: 0px"></a></p>
+<hr width="90%"/>
+<br/>
+<p>Thank you for taking the time to read this email, and I look forward to
+sharing well-being, inspiration and joy with you soon!</p>
+<p><em>Love &amp; Light,<br/><span class="style14">Melanie Tonia Evans</span></em></p>
+<p align="center"><b>________________________________________</b> </p>
 
-El sistema del curso es pr=E1ctico con un m=EDnimo de teor=EDa, entreg=E1nd=
-ose un apunte sobre los puntos a tratar y los tiempos a considerar para cad=
-a zona y el total en la sesi=F3n completa.
-
-Al comienzo se explicara la ambientaci=F3n que deber=E1 haber en el lugar, =
-para hacer m=E1s relajante aun la sesi=F3n. El primer d=EDa se realizara ha=
-sta la mitad de una sesi=F3n, en el segundo se terminara por completo. En l=
-a otra hora se realizara la entrega de un certificado por la asistencia, ap=
-robaci=F3n y culminaci=F3n del curso.
-
-El curso lo dar=E1 el terapeuta Felipe Contreras, Hipnoterapeuta, Reikista =
-y Terapeuta en Masajes.
-
-Cupos: 10 Personas
- =
-
-Inversi=F3n: $20.000.-
- =
-
-Lugar: Dr. Barros Borgo=F1o 384 - Providencia
+<div style="LINE-HEIGHT: 12px; FONT-FAMILY: verdana, arial, helvetica,
+sans-serif; FONT-SIZE: 10px">Melanie Tonia Evans<br/>PO Box 7203
+<br/>Karingal Centre, Karingal, Vic 3199<br/>Australia
+</div></td></tr></tbody></table></td></tr></tbody></table><br/>
+<table border="0" cellspacing="0" cellpadding="0" width="648"
+align="center">
+<tbody>
+<tr>
+<td bgcolor="#eee8f7" valign="top" width="648">
+<div class="footer" align="left"><b>You are subscribed as:</b> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org &nbsp;<br/><br/><b>
+	Modify your profile here:</b><br/>
+	http://77a.xiyegmn.cn/?ilyzau=77af9c6ecb195e76ff1d&amp;jdkkfhirh=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&amp;sqenacix=44696739770639439908
+	&nbsp;<br/><br/><b>Unsubscribe here:</b><br/><a href="http://52663.xiyegmn.cn/?uuvutydid=77af9c6ecb195e76ff1d&jdkkfhirh=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&lyfotj=44696739770639439908">
+	http://52663.xiyegmn.cn/?bjmakidouh=77af9c6ecb195e76ff1d&amp;jdkkfhirh=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&amp;lygyotiijc=44696739770639439908</a>
+	&nbsp;<br/><br/><b>Not Subscribed Yet?&nbsp;Sign up now:</b><br/><a href="http://52663.xiyegmn.cn/?jxjtipa=77af9c6ecb195e76ff1d&jdkkfhirh=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&uvarydy=44696739770639439908">
+	http://52663.xiyegmn.cn/?avitjx=77af9c6ecb195e76ff1d&amp;jdkkfhirh=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&amp;qulyone=44696739770639439908</a><br/><br/></div></td></tr></tbody></table></div></body></html>
 
 
+--===============2705087612342513736==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Hipnosis Chile
-Siguiendo las disposiciones legales actuales, los siguientes son los datos =
-de quienes realizan el presente envio publicitario:
-Fono: 02/ 2781078 o al celular (09) 9675 6898 - E-mail: info@hipnosischile.=
-cl - www.hipnosischile.cl
-Remocion: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org
-
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Come build with us! The BlackBerry(R) Developer Conference in SF, CA
 is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay =
-
+developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
+--===============2705087612342513736==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2705087612342513736==--

@@ -1,9 +1,9 @@
-From: "Quincy Neugebauer" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] I can't write to your MSN
-Date: Tue, 20 Oct 2009 09:09:47 +0200
-Message-ID: <92C4S6F752O621B88.YDNCRXEUHV.32D4829B75CDF@rabin-5kwj8neem>
+From: "Newton Hanis" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Locky-Stocky commented
+Date: Tue, 20 Oct 2009 13:14:43 +0200
+Message-ID: <1139ZJ662GO32G89.UGJAPMHTDQ.6FD2DF678@Salvatore>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4017694910654589467=="
+Content-Type: multipart/mixed; boundary="===============9174192799992094666=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,125 +16,65 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4017694910654589467==
+--===============9174192799992094666==
 Content-Type: text/html; charset="UTF-8"
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<HTML>
 <head>
-<title>SuperHelth Newsletter</title>
-</head>
-<body style="font-family: arial,sans-serif; text-decoration: none; font-size: 12px;" vlink="#a81251" link="#a81251" bgcolor="#ffffff">
-<style>a {text-decoration: none}
-h1, h2 {
-margin:0 0 5px 0;
-padding:0;
-font-family: Georgia, serif;
-font-weight:normal;
-line-height: 100%
+<style type="text/css" media="screen">
+a {
+	text-decoration:underline
 }
-entry table {
-margin-left:15px
-}
-entry p {
-margin:0;
-padding:0
-}
-entry td {
-border-bottom:1px solid #FABBD0;
-padding:10px 0 10px 0;
-margin:0;
-vertical-align: top
-}
-entry td img {
-border:1px solid #ccc
-}
-entry td img {
-margin-right:10px
-}
-sponsor_title {
-background:#FED7D8;
-border-bottom:2px solid #A81251;
-position:relative;
-text-align: center;
-width:160px;
-color:#A81251;
-line-height:25px;
-left:25px;
-top:5px;
-margin:20px 0 0 0 !important;
-padding:0;
-font-size:11px
-}
-sponsored_newsletter {
-border:4px solid #F1F3F2;
-padding:7px;
-font-size:12px;
-overflow:hidden;
-width:445px;
-margin:0 0 20px 15px
-}
-sponsored_newsletter img {
-display: block;
-float:left;
-margin:0 10px 0 0;
-}
-footer {
-border-top:1px solid #FABBD0;
-border-bottom:1px solid #FABBD0
-}
-get_more {
-margin:0;
-align:center
-}
-get_more img {
-border:0;
-margin:0
-}
-get_more td img {
-border:0;
-margin:0
-}
-biftext {
- font-family:"Times New Roman", Times, serif;
- font-size:21px;
- font-weight:lighter;
- color:#3366CC
-}
-get_more td {
-border:0;
-padding:0;
-margin:0;
-vertical-align: middle
-}
-entry {
-	text-align: center;
+neverlost {
+	text-align:center;
+	font-family:Verdana;
+	font-size:25px;
+	font-style:normal
 }
 </style>
+</head>
+<body>
+<P>
 <center>
-<table cellspacing="0" cellpadding="10" border="0" bgcolor="#a81251"><tbody><tr><td align="center">
-<p style="font-size: 11px; color: rgb(238, 238, 238);">If you are having trouble reading this e-mail, please
-<a style="color: rgb(255, 255, 255); text-decoration: underline;" href="http://d59ed.gocofgr.cn/?ypuitix=UjC4S946B65276ND9c54Y19&oaqymexyti=5888909298233752989086&uzahumu=4r5708701380Ds2i771330&todizymyhe=9697203947714997183349307">click here</a> to view the page online</p>
-<table width="700" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff"><tbody><tr>
-	<td align="center"><br><span style="font-size: large; color: #A81251">THIS
-	WEEK'S SALES</span><br></td></tr><tr><td style="text-align: center; text-decoration:underline;">
-							<font class="biftext"><br><br><a href="http://8d2.gocofgr.cn/?huniapelib=7e8Kxv28U13607c0lS92Es9&hokaerutyy=6079950124006900912389&beleutuvi=3b2451S75h535Y9C7z8347&zanedyrui=81932210552645175676567"><img alt="No picture loaded or loaded incorrectly! Click to reload" src="http://59ec7.gocofgr.cn/aryipepidex.gif" style="border-width: 0px"></a></font></td></tr><tr>
-		<td style="font-size: 11px;" height="35" align="center" class="footer">
-		<br><br><a href="http://25b4fd.gocofgr.cn/?aarafezeai=26X0J1z98i82A51GSS490jS&tedona=73712397699072859997&iqiaaz=136v5rV31Gr0584eYB41o&ybicilifun=491303042514395940916">ABOUT US</a>&nbsp;&nbsp;
-		<a href="http://f33f2.gocofgr.cn/?onigo=973O24z4472m7oLPd5295n5&boory=475745568851347505656483&movono=080x917uY85710ps178p&kituveynu=3763333525566597915406392">CONTACT US</a><br>
-		<br></td></tr><tr>
-		<td style=" font-size: 11px; color: rgb(51, 51, 51);" height="40" align="center">
-		<br>Copyright 2009 SuperHealth Media Inc all rights reserved and will be held.<br>
-		<br><font size="1" face="Verdana, Arial, Helvetica, sans-serif">This
-		message was sent from SuperHealth Media to
-		<a href="mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</a>.<br><br>It was sent from:
-		SuperHealth Media, 109 W. 27th Street, 5A, New York, NY 10001.<br><br>You can modify/update your subscription via the link below.<br>
-		<br>[ <a href="http://d6b4.gocofgr.cn/?ivain=X36Q0q18Kxe357d68793&unofosaye=737421865003025415195806&bugioexuko=2j8211S60080G69122l6&fefaohecot=915154990600063847396359">Manage your subscription</a> ]<br></font></td></tr></tbody></table> </td></tr></tbody></table></center>
-</body>
-</html>
+<table width="600" cellpadding="0" cellspacing="0" border="0"> <tr>  <td width="100%" align="center">
+<font face="verdana" size="1" color="#444444"> To view this email as a web page, go   <a href="http://2441.sayitsv.cn/?omazixoiz=L7Bx67n915nK4A572008QIZ&emenyf=50821352570771311846589&uepuqa=8p5aIU0652167t11s37r76&esoyhyb=442825930412416137319" > here.</a>
+<br>  </font>  </td> </tr> </table> </center><BODY>
+<FONT face=Verdana size=2>
+
+<div><table cellpadding="0" cellspacing="0" border="0" bordercolor="" width="100%" bgcolor=""><tr><td><table  width="100%" bgColor="#ffffff" border="0" borderColor="" cellPadding="5" cellSpacing="0"><tr><td style="font-family:Arial; font-size:13px">
+	<p style="margin: 10px 20px 20px 30px; font-family: Verdana; text-align: center;">
+	<a target="_blank" href="http://09c8.sayitsv.cn/?upogeq=w1J49IS0l19544t03v74J9&ivaydajip=6423119230577064993046&ezyeqyaz=E0w04M93i0042D2A6813P649&hityjuz=4178503559670993768723" class="neverlost">
+	<img alt="Sorry, picture was moved. Want to see it anyway? Click here" src="http://dcf.sayitsv.cn/k53307.gif" style="border-width: 0px"></a></p>
+</td></tr></table></td></tr></table></div>
+
+<table width="100%" cellpadding="2" cellspacing="0" Border=0><tr>
+	<td align="center"><font face="verdana" size="1" color="#444444">This email was sent by:
+	<b>ExtraHealth Doctors - Corporate Offices</b><br>2082 East University Drive Tempe, Arizona, 85281, USA<br>
+	<br></font>
+                                    <font face="verdana" size="1" color="#777777">
+                                    his email was sent to:  <b>spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</b><br><br>
+                                    <table cellpadding="2" cellspacing="0" ID="Table6" Border=0>
+                                                <tr>
+                                                            <td>
+                                                            <font face="verdana" size="1" color="#777777">
+                                                            This email was sent by: Data Doctors - Corporate Offices<br>
+                                                            2082 East University Drive Tempe, Arizona 85281 USA
+                                                            </font>
+                                                            </td>
+                                                </tr>
+                                    </table><br><br>
+                                    We respect your right to privacy - <a href="http://12f98.sayitsv.cn/?oigifage=7802Bw88775J40817q081&onujupujo=662410964287614013036&ywycoko=190lgx3Kg056859SG9780&eafui=286535883429500887342"  style="color: #0000ff">view our policy</a>
+                                    <br><br>
+                                    <a href="http://45f37.sayitsv.cn/?oesusohamu=D804h5h583264I274N65&ooediyxuqa=94914837170428328464&fyboquoze=0136v5A8mN3848z7ef9kT025&xuwol=5961785019616604027706" >Manage Subscriptions</a> |
+                                    <a href="http://900.sayitsv.cn/?xiipiiryci=xI380749Ib6V70T0760V3&jocaxum=658267256582617636289019&cimejypih=557266386323c631uXY66&iyqiqotuy=91382295927104898357185" >Update Profile</a> |
+                                    <a href="http://422c.sayitsv.cn/?uwazicyiuf=VY0220TOY4227i51062a5Q0&lyuezaegad=2095565159097952963924&eziytojav=Sc13I2sP37AfE219VDG068e&uqofo=63369985908112696296" >One-Click Unsubscribe</a>
+                                    </font>
+                                    </td></tr></table>&nbsp;
+</body></html>
 
 
---===============4017694910654589467==
+--===============9174192799992094666==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -146,7 +86,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============4017694910654589467==
+--===============9174192799992094666==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -157,4 +97,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============4017694910654589467==--
+--===============9174192799992094666==--

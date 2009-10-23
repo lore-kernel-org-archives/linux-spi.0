@@ -1,74 +1,64 @@
-From: Florian Fainelli <ffainelli@freebox.fr>
-Subject: Re: [PATCH] fix spidev compilation when VERBOSE is defined
-Date: Fri, 23 Oct 2009 09:51:22 +0200
-Message-ID: <200910230951.22725.ffainelli@freebox.fr>
-References: <200910061759.17327.ffainelli@freebox.fr>
+From: Wolfram Sang <w.sang@pengutronix.de>
+Subject: [PATCH] spi/mpc52xx: check for invalid PSC usage
+Date: Fri, 23 Oct 2009 13:25:57 +0200
+Message-ID: <1256297157-28246-1-git-send-email-w.sang@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: dbrownell@users.sourceforge.net, Maxime Bizon <mbizon@freebox.fr>,
-	linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@ozlabs.org, David Brownell <dbrownell@users.sourceforge.net>
 To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1751607AbZJWHvX@vger.kernel.org>
-In-Reply-To: <200910061759.17327.ffainelli@freebox.fr>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-David,
+Add checks to allow only PSCs capable of SPI.
+Also turn printk to dev_err while we are here.
 
-Ping ?
+Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+---
 
-On Tuesday 06 October 2009 17:59:16 Florian Fainelli wrote:
-> (please CC me as I am not subscribed to spi-devel-general).
->
-> When VERBOSE is defined in the spidev module, the compilation
-> will throw an error on 'spi' not being defined:
->
-> CC [M]  drivers/spi/spidev.o
-> drivers/spi/spidev.c: In function 'spidev_message':
-> drivers/spi/spidev.c:266: error: 'spi' undeclared (first use in this
-> function) drivers/spi/spidev.c:266: error: (Each undeclared identifier is
-> reported only once drivers/spi/spidev.c:266: error: for each function it
-> appears in.)
->
-> instead of using spi-> we should actually use spidev->spi.
-> This patch fixes the build failure.
->
-> CC: David Brownell <dbrownell@users.sourceforge.net>
-> CC: Maxime Bizon <mbizon@freebox.fr>
-> Signed-off-by: Florian Fainelli <ffainelli@freebox.fr>
-> --
-> diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-> index 5d869c4..c80c31b 100644
-> --- a/drivers/spi/spidev.c
-> +++ b/drivers/spi/spidev.c
-> @@ -262,15 +262,15 @@ static int spidev_message(struct spidev_data *spidev,
->  		k_tmp->delay_usecs = u_tmp->delay_usecs;
->  		k_tmp->speed_hz = u_tmp->speed_hz;
->  #ifdef VERBOSE
-> -		dev_dbg(&spi->dev,
-> +		dev_dbg(&spidev->spi->dev,
->  			"  xfer len %zd %s%s%s%dbits %u usec %uHz\n",
->  			u_tmp->len,
->  			u_tmp->rx_buf ? "rx " : "",
->  			u_tmp->tx_buf ? "tx " : "",
->  			u_tmp->cs_change ? "cs " : "",
-> -			u_tmp->bits_per_word ? : spi->bits_per_word,
-> +			u_tmp->bits_per_word ? : spidev->spi->bits_per_word,
->  			u_tmp->delay_usecs,
-> -			u_tmp->speed_hz ? : spi->max_speed_hz);
-> +			u_tmp->speed_hz ? : spidev->spi->max_speed_hz);
->  #endif
->  		spi_message_add_tail(k_tmp, &msg);
->  	}
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
+Grant, if the patch is OK, maybe it can also go via your tree?
 
+ drivers/spi/mpc52xx_psc_spi.c |    9 ++++-----
+ 1 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
+index 1b74d5c..1d11a6d 100644
+--- a/drivers/spi/mpc52xx_psc_spi.c
++++ b/drivers/spi/mpc52xx_psc_spi.c
+@@ -467,19 +467,18 @@ static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
+ 
+ 	regaddr_p = of_get_address(op->node, 0, &size64, NULL);
+ 	if (!regaddr_p) {
+-		printk(KERN_ERR "Invalid PSC address\n");
++		dev_err(&op->dev, "Invalid PSC address\n");
+ 		return -EINVAL;
+ 	}
+ 	regaddr64 = of_translate_address(op->node, regaddr_p);
+ 
+-	/* get PSC id (1..6, used by port_config) */
++	/* get PSC id (only 1,2,3,6 can do SPI) */
+ 	if (op->dev.platform_data == NULL) {
+ 		const u32 *psc_nump;
+ 
+ 		psc_nump = of_get_property(op->node, "cell-index", NULL);
+-		if (!psc_nump || *psc_nump > 5) {
+-			printk(KERN_ERR "mpc52xx_psc_spi: Device node %s has invalid "
+-					"cell-index property\n", op->node->full_name);
++		if (!psc_nump || (*psc_nump > 2 && *psc_nump != 5)) {
++			dev_err(&op->dev, "PSC can't do SPI\n");
+ 			return -EINVAL;
+ 		}
+ 		id = *psc_nump + 1;
 -- 
-Florian
+1.6.3.3

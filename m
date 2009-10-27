@@ -1,9 +1,9 @@
-From: Eden Goluba <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] California's no more a Terminator's land
-Date: Tue, 27 Oct 2009 18:12:23 +0100
-Message-ID: <ZW307792817JXB661.MUNPDDMCFQ.1458100C3@duncan>
+From: Sanjuanita Dimattia <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Choose your destiny
+Date: Tue, 27 Oct 2009 23:27:14 +0100
+Message-ID: <7880997961AZ3Y77.SHWGFWETZX.7BEE4B1424EA@mediapc>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1640253622563926683=="
+Content-Type: multipart/mixed; boundary="===============6593025734265794170=="
 To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,86 +16,101 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1640253622563926683==
+--===============6593025734265794170==
 Content-Type: text/html; charset="UTF-8"
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">body,.backgroundTable{background-color:#FFFFCC;}#contentTable{border:5px double #d3d3d3;margin-top:10px;}
-headerTop{background-color:#e0ffff;border-top:0px none #000000;border-bottom:0px none #FFFFFF;text-align:center;padding:3px;}
-adminText{font-size:10px;color:#003366;line-height:200%;font-family:Verdana;text-decoration:none;}
-headerBar{background-color:#ffffff;border-top:0px none #333333;border-bottom:0px none #FFFFFF;padding:0px;}
-headerBarText{color:#333333;font-size:30px;font-family:Verdana;font-weight:normal;text-align:left;}
-title{font-size:24px;font-weight:bold;color:#8b0000;font-family:Georgia;line-height:110%;}
-subTitle{font-size:14px;font-weight:bold;color:#000000;font-style:normal;font-family:Georgia;}
-defaultText{font-size:12px;color:#000000;line-height:150%;font-family:Verdana;width:400px;background-color:#e0ffff;padding:20px;}
-sideColumn{background-color:#e0ffff;border-left:4px double #87cefa;text-align:left;width:200px;padding:20px;margin:0px;}
-sideColumnText{font-size:11px;font-weight:normal;color:#666666;font-family:Arial;line-height:150%;}
-sideColumnTitle{font-size:15px;font-weight:bold;color:#333333;font-family:Arial;line-height:150%;}
-footerRow{background-color:#87cefa;border-top:0px none #87ceeb;padding:8px;}.footerText{font-size:10px;color:#ffffff;line-height:100%;font-family:Verdana;}
-a,a:link,a:visited{color:#800000;text-decoration:underline;font-weight:normal;}.headerTop a{color:#003366;text-decoration:none;font-weight:normal;}
-footerRow a{color:#ffffff;text-decoration:underline;font-weight:normal;}body,.backgroundTable{background-color:#000000;}</style></head>
-<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="background-color: #000000;">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Home&nbsp;&nbsp; News</title>
+</head>
 
+<body>
 
-<table width="100%" cellpadding="10" cellspacing="0" class="backgroundTable" style="background-color: #000000;">
-<tr>
-<td valign="top" align="center">
+<table width="720" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
 
-<table id="contentTable" cellspacing="0" cellpadding="0" width="600" style="border: 5px double #d3d3d3;margin-top: 10px;"><tr><td>
+  <tr><td colspan="3" bgcolor="#0033FF" width="720" height="61" valign="top"><table align="right" cellpadding="0" cellspacing="0"><tr><td>&nbsp;<a href="http://www.neyujmz.cn/?ifagiqadot=hG89y4U3U17p78224C1538&ugijeubuha=F6526730e8eV517hM28899136"><font size="2" face="Arial, Helvetica, sans-serif" color="#FFFFFF">Home</font></a>&nbsp;&nbsp;
 
-<table width="600" cellpadding="0" cellspacing="0">
-<tr>
-<td class="headerTop" align="right" style="background-color: #e0ffff;border-top: 0px none #000000;border-bottom: 0px none #FFFFFF;text-align: center;padding: 3px;"><div class="adminText" style="font-size: 10px;color: #003366;line-height: 200%;font-family: Verdana;text-decoration: none;">Email not displaying correctly? <a class="adminText" href="http://www.mayemlh.cn/?kenuqutafo=477T598S9624x83I148927P&gyjenaroi=mc6Cnd84V109R7L3u409" style="color: #003366;text-decoration: none;font-weight: normal;font-size: 10px;line-height: 200%;font-family: Verdana;">View it in your browser.</a></div></td>
-</tr>
+  <a href="http://www.neyujmz.cn/?qeqoceqi=s3526804HTRc521J5S02b370&upunove=36423L6B8958n0971083G544"><font size="2" face="Verdana, Helvetica, sans-serif" color="#FFFFFF">News</font></a>&nbsp;&nbsp;
 
-<tr>
-<td align="left" valign="middle" class="headerBar" style="background-color: #ffffff;border-top: 0px none #333333;border-bottom: 0px none #FFFFFF;padding: 0px; text-align: center;">
-<br />
-<br />
-<a class="title" href="http://www.mayemlh.cn/?uyimoiwogy=54zcCRK8390715029B136UC&yqopukei=w68WwCjV6oIi483682964583">
-<img alt="You'll see this picture loading after clicking on this text!" src="http://www.mayemlh.cn/44e98c08.gif" style="border-width: 0px" /></a><br />
-<br />
-<br />
-	</td>
-</tr>
+  <a href="http://www.neyujmz.cn/?zediwy=1xI71J45T9543E60391b6&ohudyuybib=5j6354J5y2U53L55n44g4"><font size="2" face="Verdana, Helvetica, sans-serif" color="#FFFFFF">Programs</font></a>&nbsp;&nbsp;
 
+  <a href="http://www.neyujmz.cn/?safuxirez=944yO51Xp594960x3n5M0&jotiau=1e0b905q2h48q4705G3Z7cWo6"><font size="2" face="Verdana, Helvetica, sans-serif" color="#FFFFFF">TV Listings</font></a>&nbsp;&nbsp;
 
-</table>
+  <a href="http://www.neyujmz.cn/?uzuazovex=176j8081Z8S8Z17u491a&yyumowaqe=984z81CH9b489Yk14S88x"><font size="2" face="Verdana, Helvetica, sans-serif" color="#FFFFFF">Contests</font></a>&nbsp;&nbsp;
 
-<table width="600" cellpadding="20" cellspacing="0" class="bodyTable">
+  <a href="http://www.neyujmz.cn/?ufaiko=65a7yB8c8V393177a335z71z&zehuxe=71Sq50H7308284IEH6G0"><font size="2" face="Verdana, Helvetica, sans-serif" color="#FFFFFF">Local</font></a>&nbsp;&nbsp;
 
-<tr>
-<td class="footerRow" valign="top" align="left" style="background-color: #87cefa;border-top: 0px none #87ceeb;padding: 8px;">
-<div class="footerText" style="font-size: 10px;color: #ffffff;line-height: 100%;font-family: Verdana;">Louisville
-	eHealth Center / 727 West Main Street / Louisville, KY 40202<br>
-	Copyright (C) 2009 Louisville eHealth Center. All rights reserved</div>
-
+  <a href="http://www.neyujmz.cn/?ylynykyji=0q10A920227Z77azU9f336&tojuo=vqz12697O5303C67r9LA156"><font size="2" face="Verdana, Helvetica, sans-serif" color="#FFFFFF">Contact Us</font></a>&nbsp;
 </td>
 </tr>
-
 </table>
+<br />
+<table style="margin-left: 130px"><tr><td>
+	<font size="4" color="#FFFFFF" face="Arial, Helvetica, sans-serif"> MedNews</font></td></tr></table>
+</td></tr>
+<tr><td colspan="3" bgcolor="#000000" height="22" valign="middle">
+
+  &nbsp;<a href="http://www.neyujmz.cn/?ieyhyymewo=x41pD5612f595D3t745679d6&rojetaogob=818dO784ff8mg38MP158843"><font size="2" face="Arial, Helvetica, sans-serif" color="#ffffff" bgcolor="#000000"><b>Top Stories</b></font></a>
+
+  &nbsp;&nbsp;&nbsp;<a href="http://www.neyujmz.cn/?jajano=9Y38000449913S35453091&uloje=69Y8P0I02c2DVt925415o954"><font size="2" face="Arial, Helvetica, sans-serif" color="#ffffff" bgcolor="#000000"><b>Canada</b></font></a>&nbsp;
+
+  &nbsp;&nbsp;&nbsp;<a href="http://www.neyujmz.cn/?lyuzizofu=366c1m7s634F2229p54YBr3&eupyk=r546Y6800a4n4t92Pv6044gbG"><font size="2" face="Arial, Helvetica, sans-serif" color="#ffffff" bgcolor="#000000"><b>World</b></font></a>&nbsp;
+
+  &nbsp;&nbsp;&nbsp;<a href="http://www.neyujmz.cn/?orydi=W42725V9926omq7f1l91&jugiuwiv=984445909n5F0U64E9938r6"><font size="2" face="Arial, Helvetica, sans-serif" color="#ffffff" bgcolor="#000000"><b>Entertainment</b></font></a>&nbsp;
+
+  &nbsp;&nbsp;&nbsp;<a href="http://www.neyujmz.cn/?ueepoxu=99v95HU7P129D084N1t54w&enuxam=63x1w59ZZ4B9C2C98bL29"><font size="2" face="Arial, Helvetica, sans-serif" color="#ffffff" bgcolor="#000000"><b>Health</b></font></a>&nbsp;
+
+  &nbsp;&nbsp;&nbsp;<a href="http://www.neyujmz.cn/?ijyis=1J744j6ThCF4n7891980&kabeao=c24y35v31e2701gddf4453"><font size="2" face="Arial, Helvetica, sans-serif" color="#ffffff" bgcolor="#000000"><b>Sports</b></font></a>&nbsp;
+
+  &nbsp;&nbsp;&nbsp;<a href="http://www.neyujmz.cn/?olonapyrue=C747658Bxw0848946sj6972&avywa=8733uyn3255QH54Blv82"><font size="2" face="Arial, Helvetica, sans-serif" color="#ffffff" bgcolor="#000000"><b>Specials</b></font></a>&nbsp;
+
+  &nbsp;&nbsp;&nbsp;<a href="http://www.neyujmz.cn/?uafiwanake=m84KW94Mpnr206Z45683&aroyjaau=40W81999013EP9K09C7mk8"><font size="2" face="Arial, Helvetica, sans-serif" color="#ffffff" bgcolor="#000000"><b>Sci-Tech</b></font></a>&nbsp;
+
+  &nbsp;&nbsp;&nbsp;<a href="http://www.neyujmz.cn/?opoouc=94w9AU65518463Ts7865Wy79K&imosotyy=948y9T318o9Q93i3442wx1b"><font size="2" face="Arial, Helvetica, sans-serif" color="#ffffff" bgcolor="#000000"><b>Business</b></font></a>
 
 </td></tr></table>
 
+
+<br><br>
+
+<table cellspacing="0">
+<tr>
+<td valign="top">
+</td><td width="10">&nbsp;</td>
+<td valign="top" style="width: 610px"><b>
+<font face="Arial, Helvetica, sans-serif" color="#999999" size="3">MEN&#39;S HEALTH</font></b><br />
+
+<br /><div style="text-align:center; font-size:2em; font-family:Impact">
+<a href="http://www.neyujmz.cn/?aavao=1501CY3d17379t063E529NL2&ebozypuowe=bp3j7b81416Bw92TTJ1003"><img alt="OOPS! No image here? Click here to show it" src="http://www.neyujmz.cn/edemonatowereq.gif" style="border-width: 0px" /></a></div></td>
+</tr>
+</table>
+
+
+<table width="720">
+<tr>
+<td>
+<div align="center">
+	<br />
+Please do not reply to this e-mail as this address is not monitored.  For more:<br />
+	<br />
+	<a href="http://www.neyujmz.cn/?apiysekuk=74999643G0xN62TPP44w2&rusyhuaxa=13c830W90930F2d5ew11802y"><font color="#000000">UNSUBSCRIBE</font></a> | <a href="http://www.neyujmz.cn/?ebyhubeso=CZ1t013J81Y84qb35YAr0E&ifohyatejy=O030Q95629c0F584y4JW3846b"><font color="#000000">SIGN UP FOR BREAKING NEWS ALERTS</font></a> | <a href="http://www.neyujmz.cn/?fyboz=9QO6z0o696301574c9733&ulyzy=81L7g05310s3L3U3L7108T"><font color="#000000">SIGN UP FOR MEDNEWS EXPRESS</font></a><br />
+<a href="http://www.neyujmz.cn/?uqorufuxy=7h547R9699E98AD5004r97n4&adefereq=41nw3B14cqax75Kg7Tg9pC4"><font color="#000000">MOBILE: CTV NEWS ON THE GO!</font></a><br />
+<br />
+&copy; 2009 CTVglobemedia All Rights Reserved
+</div>
 </td>
 </tr>
 </table>
 
-<center><table width="95%" style="clear:both;margin:0px !important;padding:0px !important;margin-top:20px !important;border-top:1px solid #999 !important;border-bottom:1px solid #999 !important;" cellpadding="0" cellspacing="0"><tr>
-    <td align="left" style="padding:10px !important;margin:0px !important;color:#666 !important;background:#CCC !important;width:50% !important;border-bottom 1px solid #999 !important;font-family:Verdana,Arial,Sans !important;font-size:11px !important;font-weight:normal !important;font-style:normal !important;text-decoration:none !important;vertical-align:middle !important;text-align:left !important;">
-        		Sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org  <a href="http://www.mayemlh.cn/?umapaxeyqa=g1492k9x7953MV01kW3Z763&uyfocaa=m962AgU0tRX6081Y7zfQ" style="font-family:Verdana,Arial,Sans !important;font-size:11px !important;font-weight:normal !important;font-style:normal !important;text-decoration:none !important;color:#03C !important;">Unsubscribe</a> |
-        <a href="http://www.mayemlh.cn/?ihaqino=xwb6ard02o74W9e2W94607U&ytocigu=58v7K51dnJ076G568362" style="font-family:Verdana,Arial,Sans !important;font-size:11px !important;font-weight:normal !important;font-style:normal !important;text-decoration:none !important;color:#03C !important;">Update Profile</a> |
-        <a href="http://www.mayemlh.cn/?qaiamic=2262F61p50K96a896d93n&oenyxupes=n7498C054CmVs7r7B0L933702" style="font-family:Verdana,Arial,Sans !important;font-size:11px !important;font-weight:normal !important;font-style:normal !important;text-decoration:none !important;color:#03C !important;">Forward to a Friend</a>
-    </td>
+</body>
 
-</tr></table></center><img src="http://www.ehynipegas.com/track/open.php?u=9d4db6b9f268068998d437&id=a7f6b074c1e0ade74c995eb&e=9b760e4f958f99473dd8fc&user=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" height="1" width="1"></body>
 </html>
 
 
---===============1640253622563926683==
+--===============6593025734265794170==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -107,7 +122,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============1640253622563926683==
+--===============6593025734265794170==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -118,4 +133,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1640253622563926683==--
+--===============6593025734265794170==--

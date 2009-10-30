@@ -1,143 +1,154 @@
-From: Noondiet <newsletter-XnNBbOCIN4bQT0dZR+AlfA@public.gmane.org>
-Subject: mon régime minceur personnalisé
-Date: Fri, 30 Oct 2009 09:49:40 +0000 (UTC)
-Message-ID: <20091031095429.16077.qmail@ks365990.kimsufi.com>
-Reply-To: Noondiet <newsletter-XnNBbOCIN4bQT0dZR+AlfA@public.gmane.org>
+From: Wolfram Sang <w.sang@pengutronix.de>
+Subject: [PATCH] mpc52xx-psc-spi: refactor probe and remove to make use of
+	of_register_spi_devices()
+Date: Fri, 30 Oct 2009 20:44:12 +0100
+Message-ID: <1256931852-13255-1-git-send-email-w.sang@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0658711108229084082=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: 31 Oct 2009 09:54:29 -0000
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: =?utf-8?q?K=C3=A1ri=20Dav=C3=AD=C3=B0sson?= <kari.davidsson@marel.com>,
+	linuxppc-dev@ozlabs.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============0658711108229084082==
-Content-Type: multipart/alternative;
-	boundary="_----------=_parties_ea785af38150610f058a899b827419ac"
-
-
---_----------=_parties_ea785af38150610f058a899b827419ac
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-
-Version "en ligne" de ce message: http://newsletter.b-wave.com/svi/miroir.php?bat=noondiet1009_ctrm
-
-Noondiet votre régime plaisir
-SPECIAL OFFRE DE LANCEMENT: -40% *
-Maigrir avec Noondiet
-
-Le programme minceur élaboré sur mesure selon votre profil
-
-Des menus simple et variés
-
-Des recettes faciles
-
-Des listes de courses
-
-Je défini gratuitement mon programme minceur
-
-plus d'infos sur http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture
-
---------------------------------
-Cette offre vous est envoyée par CentralMarques
-Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://newsletter.b-wave.com/svi/gestionserv.php?nb=2583&numuser=9047704&code=HWeuIQdw&src=50
-
---_----------=_parties_ea785af38150610f058a899b827419ac
-Content-Type: text/html; charset="iso-8859-1" 
-Content-Transfer-Encoding: 8bit
-
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
-<head> 
-<title>Noondiet votre régime plaisir</title>
-</head>
-<body><center>
-<p id='lienhaut'>
-<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://newsletter.b-wave.com/svi/miroir.php?bat=noondiet1009_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
-</p>
-<table id='ID_BORDURE' CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
-<tr>
-<td id='ID_TITRE' align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#83D33D;font-size:24px'>
-<p id='INNER_TITRE' style='display:inline;'> <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" style="text-decoration:none;color:#83D33D;">Noondiet votre régime plaisir</a></p>
-</td></tr>
-<tr><td id='ID_SSTITRE' align='center' style='margin:3px;padding:5px;background-color:#FF0000;font-family:Arial Black;color:#FFFFFF;font-size:24px;'>
-<a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" style="text-decoration:none;color:#FFFFFF;">SPECIAL OFFRE DE LANCEMENT: -40%<sup>*</sup></a>
-</td></tr>
-<tr>
-<td id='ID_DETAIL' align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:12px;background-color:#FFFFFF;'>
-<a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" style="text-decoration:none;color:#000000;"><b>Maigrir avec Noondiet</b><br>
-Le programme minceur élaboré sur mesure selon votre profil<br>
-<li>Des menus simple et variés
-<li>Des recettes faciles
-<li>Des listes de courses</a>
-<center><u style="color:blue;font-size:18px">Je défini gratuitement mon programme minceur</u></center>
-</td></tr>
-<tr><td id='ID_VISUEL' align='center' style='padding:5px;background-color:#FFFFFF;'>
-<table WIDTH="500" border="0" CELLpadding="0" CELLSPACING="0" ALIGN="CENTER">
- <tr>
- <td>
- <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197425/500x600_emailing_noondiet_0.jpg" WIDTH="500" HEIGHT="108" ALT="" border="0" /></a></td>
- </tr>
- <tr>
- <td>
- <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197423/500x600_emailing_noondie-02.jpg" WIDTH="500" HEIGHT="114" ALT="" border="0" /></a></td>
- </tr>
- <tr>
- <td>
- <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197426/500x600_emailing_noondie-03.jpg" WIDTH="500" HEIGHT="123" ALT="" border="0" /></a></td>
- </tr>
- <tr>
- <td>
- <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197422/500x600_emailing_noondie-04.jpg" WIDTH="500" HEIGHT="114" ALT="" border="0" /></a></td>
- </tr>
- <tr>
- <td>
- <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197424/500x600_emailing_noondie-05.jpg" WIDTH="500" HEIGHT="141" ALT="" border="0" /></a></td>
- </tr>
-</table>
-<img src='http://newsletter.b-wave.com/imgregie/2583/noondiet1009_ctrm.gif' width="0" height="0" border="0" ALT="" border="0" />
-</td></tr>
-</table>
-<br><br>
-<img src="http://newsletter.b-wave.com/svi/img_nb_2583_numuser_9047704_code_HWeuIQdw_src_50.jpg" width=1 height=1 alt=''>
-<p id='lienbas'>
-Ce message est envoyé par central marques - <a href="http://newsletter.b-wave.com/svi/gestionserv.php?nb=2583&cat=culture&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
-</p>
-</center></body>
-</html>
-
-
---_----------=_parties_ea785af38150610f058a899b827419ac--
-
---===============0658711108229084082==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Come build with us! The BlackBerry(R) Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9 - 12, 2009. Register now!
-http://p.sf.net/sfu/devconference
---===============0658711108229084082==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0658711108229084082==--
+VGhpcyBkcml2ZXIgaGFzIGEgZ2VuZXJpYyBwYXJ0IGZvciB0aGUgcHJvYmUvcmVtb3ZlIHJvdXRp
+bmVzIHdoaWNoIHByb2JhYmx5CnVzZWQgdG8gYmUgY2FsbGVkIGZyb20gYSBwbGF0Zm9ybSBkcml2
+ZXIgYW5kIGFuIG9mX3BsYXRmb3JtIGRyaXZlci4gTWVhbndoaWxlLAp0aGUgZHJpdmVyIGlzIG9m
+X3BsYXRmb3JtIG9ubHksIHNvIHRoZXJlIGlzIG5vIG5lZWQgZm9yIHRoZSBnZW5lcmljIHBhcnQK
+YW55bW9yZS4gVW5pZnlpbmcgcHJvYmUvcmVtb3ZlIGZpbmFsbHkgZW5hYmxlcyB1cyB0byBjYWxs
+Cm9mX3JlZ2lzdGVyX3NwaV9kZXZpY2VzKCksIHNvIHNwaS1kZXZpY2Ugbm9kZXMgZnJvbSB0aGUg
+ZGV2aWNlIHRyZWUgd2lsbCBiZQpwYXJzZWQuIFRoaXMgd2FzIGFsc28gbWVudGlvbmVkIGJ5Ogpo
+dHRwOi8vbGlzdHMub3psYWJzLm9yZy9waXBlcm1haWwvbGludXhwcGMtZGV2LzIwMDktSnVuZS8w
+NzMyNzMuaHRtbAoKT24gdGhlIHdheSwgc29tZSBwYXR0ZXJucyBoYXZlIGJlZW4gY2hhbmdlZCB0
+byBjdXJyZW50IGJlc3QgcHJhY3RpY2VzIChsaWtlCnVzaW5nICchcHRyJyBhbmQgJ3N0cnVjdCBy
+ZXNvdXJjZScpLiBBbHNvLCBhbiBvbGRlciwgeWV0IHVuY29tbWVudGVkLCBwYXRjaApmcm9tIG1l
+IGhhcyBiZWVuIGluY29ycG9yYXRlZCB0byBpbXByb3ZlIHRoZSBjaGVja3MgaWYgdGhlIHNlbGVj
+dGVkIFBTQyBpcwp2YWxpZDoKCmh0dHA6Ly9wYXRjaHdvcmsub3psYWJzLm9yZy9wYXRjaC8zNjc4
+MC8KClNpZ25lZC1vZmYtYnk6IFdvbGZyYW0gU2FuZyA8dy5zYW5nQHBlbmd1dHJvbml4LmRlPgpD
+YzogS8OhcmkgRGF2w63DsHNzb24gPGthcmkuZGF2aWRzc29uQG1hcmVsLmNvbT4KQ2M6IEdyYW50
+IExpa2VseSA8Z3JhbnQubGlrZWx5QHNlY3JldGxhYi5jYT4KLS0tCiBkcml2ZXJzL3NwaS9tcGM1
+Mnh4X3BzY19zcGkuYyB8ICAxMTAgKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQogMSBmaWxlcyBjaGFuZ2VkLCA1MiBpbnNlcnRpb25zKCspLCA1OCBkZWxldGlvbnMoLSkK
+CmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9tcGM1Mnh4X3BzY19zcGkuYyBiL2RyaXZlcnMvc3Bp
+L21wYzUyeHhfcHNjX3NwaS5jCmluZGV4IDFiNzRkNWMuLjNmYThjNzggMTAwNjQ0Ci0tLSBhL2Ry
+aXZlcnMvc3BpL21wYzUyeHhfcHNjX3NwaS5jCisrKyBiL2RyaXZlcnMvc3BpL21wYzUyeHhfcHNj
+X3NwaS5jCkBAIC0xNyw2ICsxNyw3IEBACiAjaW5jbHVkZSA8bGludXgvZXJybm8uaD4KICNpbmNs
+dWRlIDxsaW51eC9pbnRlcnJ1cHQuaD4KICNpbmNsdWRlIDxsaW51eC9vZl9wbGF0Zm9ybS5oPgor
+I2luY2x1ZGUgPGxpbnV4L29mX3NwaS5oPgogI2luY2x1ZGUgPGxpbnV4L3dvcmtxdWV1ZS5oPgog
+I2luY2x1ZGUgPGxpbnV4L2NvbXBsZXRpb24uaD4KICNpbmNsdWRlIDxsaW51eC9pby5oPgpAQCAt
+MjcsNiArMjgsNyBAQAogI2luY2x1ZGUgPGFzbS9tcGM1Mnh4Lmg+CiAjaW5jbHVkZSA8YXNtL21w
+YzUyeHhfcHNjLmg+CiAKKyNkZWZpbmUgRFJJVkVSX05BTUUgIm1wYzUyeHgtcHNjLXNwaSIKICNk
+ZWZpbmUgTUNMSyAyMDAwMDAwMCAvKiBQU0MgcG9ydCBNQ2xrIGluIGh6ICovCiAKIHN0cnVjdCBt
+cGM1Mnh4X3BzY19zcGkgewpAQCAtMzU4LDMyICszNjAsNTQgQEAgc3RhdGljIGlycXJldHVybl90
+IG1wYzUyeHhfcHNjX3NwaV9pc3IoaW50IGlycSwgdm9pZCAqZGV2X2lkKQogCXJldHVybiBJUlFf
+Tk9ORTsKIH0KIAotLyogYnVzX251bSBpcyB1c2VkIG9ubHkgZm9yIHRoZSBjYXNlIGRldi0+cGxh
+dGZvcm1fZGF0YSA9PSBOVUxMICovCi1zdGF0aWMgaW50IF9faW5pdCBtcGM1Mnh4X3BzY19zcGlf
+ZG9fcHJvYmUoc3RydWN0IGRldmljZSAqZGV2LCB1MzIgcmVnYWRkciwKLQkJCQl1MzIgc2l6ZSwg
+dW5zaWduZWQgaW50IGlycSwgczE2IGJ1c19udW0pCitzdGF0aWMgaW50IF9faW5pdCBtcGM1Mnh4
+X3BzY19zcGlfb2ZfcHJvYmUoc3RydWN0IG9mX2RldmljZSAqb3AsCisJY29uc3Qgc3RydWN0IG9m
+X2RldmljZV9pZCAqbWF0Y2gpCiB7Ci0Jc3RydWN0IGZzbF9zcGlfcGxhdGZvcm1fZGF0YSAqcGRh
+dGEgPSBkZXYtPnBsYXRmb3JtX2RhdGE7CisJc3RydWN0IGZzbF9zcGlfcGxhdGZvcm1fZGF0YSAq
+cGRhdGEgPSBvcC0+ZGV2LnBsYXRmb3JtX2RhdGE7CiAJc3RydWN0IG1wYzUyeHhfcHNjX3NwaSAq
+bXBzOwogCXN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXI7CisJc3RydWN0IHJlc291cmNlIG1lbTsK
+KwlzMTYgaWQgPSAtMTsKIAlpbnQgcmV0OwogCi0JbWFzdGVyID0gc3BpX2FsbG9jX21hc3Rlcihk
+ZXYsIHNpemVvZiAqbXBzKTsKLQlpZiAobWFzdGVyID09IE5VTEwpCisJLyogZ2V0IFBTQyBpZCAo
+b25seSAxLDIsMyw2IGNhbiBkbyBTUEkpICovCisJaWYgKCFwZGF0YSkgeworCQljb25zdCB1MzIg
+KnBzY19udW1wOworCisJCXBzY19udW1wID0gb2ZfZ2V0X3Byb3BlcnR5KG9wLT5ub2RlLCAiY2Vs
+bC1pbmRleCIsIE5VTEwpOworCQlpZiAoIXBzY19udW1wIHx8ICgqcHNjX251bXAgPiAyICYmICpw
+c2NfbnVtcCAhPSA1KSkgeworCQkJZGV2X2Vycigmb3AtPmRldiwgIlBTQyBjYW4ndCBkbyBTUElc
+biIpOworCQkJcmV0dXJuIC1FSU5WQUw7CisJCX0KKwkJaWQgPSAqcHNjX251bXAgKyAxOworCX0K
+KworCXJldCA9IG9mX2FkZHJlc3NfdG9fcmVzb3VyY2Uob3AtPm5vZGUsIDAsICZtZW0pOworCWlm
+IChyZXQpCisJCXJldHVybiByZXQ7CisKKwltYXN0ZXIgPSBzcGlfYWxsb2NfbWFzdGVyKCZvcC0+
+ZGV2LCBzaXplb2YgKm1wcyk7CisJaWYgKCFtYXN0ZXIpCiAJCXJldHVybiAtRU5PTUVNOwogCi0J
+ZGV2X3NldF9kcnZkYXRhKGRldiwgbWFzdGVyKTsKKwlpZiAoIXJlcXVlc3RfbWVtX3JlZ2lvbiht
+ZW0uc3RhcnQsIHJlc291cmNlX3NpemUoJm1lbSksIERSSVZFUl9OQU1FKSkgeworCQlyZXQgPSAt
+RU5PTUVNOworCQlnb3RvIGZyZWVfbWFzdGVyOworCX0KKworCWRldl9zZXRfZHJ2ZGF0YSgmb3At
+PmRldiwgbWFzdGVyKTsKIAltcHMgPSBzcGlfbWFzdGVyX2dldF9kZXZkYXRhKG1hc3Rlcik7CiAK
+IAkvKiB0aGUgc3BpLT5tb2RlIGJpdHMgdW5kZXJzdG9vZCBieSB0aGlzIGRyaXZlcjogKi8KIAlt
+YXN0ZXItPm1vZGVfYml0cyA9IFNQSV9DUE9MIHwgU1BJX0NQSEEgfCBTUElfQ1NfSElHSCB8IFNQ
+SV9MU0JfRklSU1Q7CiAKLQltcHMtPmlycSA9IGlycTsKLQlpZiAocGRhdGEgPT0gTlVMTCkgewot
+CQlkZXZfd2FybihkZXYsICJwcm9iZSBjYWxsZWQgd2l0aG91dCBwbGF0Zm9ybSBkYXRhLCBubyAi
+CisJbXBzLT5pcnEgPSBpcnFfb2ZfcGFyc2VfYW5kX21hcChvcC0+bm9kZSwgMCk7CisJaWYgKCFw
+ZGF0YSkgeworCQlkZXZfaW5mbygmb3AtPmRldiwgInByb2JlIGNhbGxlZCB3aXRob3V0IHBsYXRm
+b3JtIGRhdGEsIG5vICIKIAkJCQkiY3NfY29udHJvbCBmdW5jdGlvbiB3aWxsIGJlIGNhbGxlZFxu
+Iik7CiAJCW1wcy0+Y3NfY29udHJvbCA9IE5VTEw7CiAJCW1wcy0+c3lzY2xrID0gMDsKLQkJbWFz
+dGVyLT5idXNfbnVtID0gYnVzX251bTsKKwkJbWFzdGVyLT5idXNfbnVtID0gaWQ7CiAJCW1hc3Rl
+ci0+bnVtX2NoaXBzZWxlY3QgPSAyNTU7CiAJfSBlbHNlIHsKIAkJbXBzLT5jc19jb250cm9sID0g
+cGRhdGEtPmNzX2NvbnRyb2w7CkBAIC0zOTUsMTkgKzQxOSwxOCBAQCBzdGF0aWMgaW50IF9faW5p
+dCBtcGM1Mnh4X3BzY19zcGlfZG9fcHJvYmUoc3RydWN0IGRldmljZSAqZGV2LCB1MzIgcmVnYWRk
+ciwKIAltYXN0ZXItPnRyYW5zZmVyID0gbXBjNTJ4eF9wc2Nfc3BpX3RyYW5zZmVyOwogCW1hc3Rl
+ci0+Y2xlYW51cCA9IG1wYzUyeHhfcHNjX3NwaV9jbGVhbnVwOwogCi0JbXBzLT5wc2MgPSBpb3Jl
+bWFwKHJlZ2FkZHIsIHNpemUpOworCW1wcy0+cHNjID0gaW9yZW1hcChtZW0uc3RhcnQsIHJlc291
+cmNlX3NpemUoJm1lbSkpOwogCWlmICghbXBzLT5wc2MpIHsKLQkJZGV2X2VycihkZXYsICJjb3Vs
+ZCBub3QgaW9yZW1hcCBJL08gcG9ydCByYW5nZVxuIik7CisJCWRldl9lcnIoJm9wLT5kZXYsICJj
+b3VsZCBub3QgaW9yZW1hcCBJL08gcG9ydCByYW5nZVxuIik7CiAJCXJldCA9IC1FRkFVTFQ7Ci0J
+CWdvdG8gZnJlZV9tYXN0ZXI7CisJCWdvdG8gZnJlZV91bm1hcDsKIAl9CiAJLyogT24gdGhlIDUy
+MDAsIGZpZm8gcmVncyBhcmUgaW1tZWRpYXRlbHkgYWphY2VudCB0byB0aGUgcHNjIHJlZ3MgKi8K
+IAltcHMtPmZpZm8gPSAoKHZvaWQgX19pb21lbSAqKW1wcy0+cHNjKSArIHNpemVvZihzdHJ1Y3Qg
+bXBjNTJ4eF9wc2MpOwogCi0JcmV0ID0gcmVxdWVzdF9pcnEobXBzLT5pcnEsIG1wYzUyeHhfcHNj
+X3NwaV9pc3IsIDAsICJtcGM1Mnh4LXBzYy1zcGkiLAotCQkJCW1wcyk7CisJcmV0ID0gcmVxdWVz
+dF9pcnEobXBzLT5pcnEsIG1wYzUyeHhfcHNjX3NwaV9pc3IsIDAsIERSSVZFUl9OQU1FLCBtcHMp
+OwogCWlmIChyZXQpCi0JCWdvdG8gZnJlZV9tYXN0ZXI7CisJCWdvdG8gZnJlZV91bm1hcDsKIAog
+CXJldCA9IG1wYzUyeHhfcHNjX3NwaV9wb3J0X2NvbmZpZyhtYXN0ZXItPmJ1c19udW0sIG1wcyk7
+CiAJaWYgKHJldCA8IDApCkBAIC00MjksMjQgKzQ1MiwyOSBAQCBzdGF0aWMgaW50IF9faW5pdCBt
+cGM1Mnh4X3BzY19zcGlfZG9fcHJvYmUoc3RydWN0IGRldmljZSAqZGV2LCB1MzIgcmVnYWRkciwK
+IAlpZiAocmV0IDwgMCkKIAkJZ290byB1bnJlZ19tYXN0ZXI7CiAKKwlvZl9yZWdpc3Rlcl9zcGlf
+ZGV2aWNlcyhtYXN0ZXIsIG9wLT5ub2RlKTsKKwogCXJldHVybiByZXQ7CiAKIHVucmVnX21hc3Rl
+cjoKIAlkZXN0cm95X3dvcmtxdWV1ZShtcHMtPndvcmtxdWV1ZSk7CiBmcmVlX2lycToKIAlmcmVl
+X2lycShtcHMtPmlycSwgbXBzKTsKLWZyZWVfbWFzdGVyOgorZnJlZV91bm1hcDoKIAlpZiAobXBz
+LT5wc2MpCiAJCWlvdW5tYXAobXBzLT5wc2MpOworCXJlbGVhc2VfbWVtX3JlZ2lvbihtZW0uc3Rh
+cnQsIHJlc291cmNlX3NpemUoJm1lbSkpOworZnJlZV9tYXN0ZXI6CiAJc3BpX21hc3Rlcl9wdXQo
+bWFzdGVyKTsKIAogCXJldHVybiByZXQ7CiB9CiAKLXN0YXRpYyBpbnQgX19leGl0IG1wYzUyeHhf
+cHNjX3NwaV9kb19yZW1vdmUoc3RydWN0IGRldmljZSAqZGV2KQorc3RhdGljIGludCBfX2V4aXQg
+bXBjNTJ4eF9wc2Nfc3BpX29mX3JlbW92ZShzdHJ1Y3Qgb2ZfZGV2aWNlICpvcCkKIHsKLQlzdHJ1
+Y3Qgc3BpX21hc3RlciAqbWFzdGVyID0gZGV2X2dldF9kcnZkYXRhKGRldik7CisJc3RydWN0IHNw
+aV9tYXN0ZXIgKm1hc3RlciA9IGRldl9nZXRfZHJ2ZGF0YSgmb3AtPmRldik7CiAJc3RydWN0IG1w
+YzUyeHhfcHNjX3NwaSAqbXBzID0gc3BpX21hc3Rlcl9nZXRfZGV2ZGF0YShtYXN0ZXIpOworCXN0
+cnVjdCByZXNvdXJjZSBtZW07CiAKIAlmbHVzaF93b3JrcXVldWUobXBzLT53b3JrcXVldWUpOwog
+CWRlc3Ryb3lfd29ya3F1ZXVlKG1wcy0+d29ya3F1ZXVlKTsKQEAgLTQ1NCw0NiArNDgyLDEyIEBA
+IHN0YXRpYyBpbnQgX19leGl0IG1wYzUyeHhfcHNjX3NwaV9kb19yZW1vdmUoc3RydWN0IGRldmlj
+ZSAqZGV2KQogCWZyZWVfaXJxKG1wcy0+aXJxLCBtcHMpOwogCWlmIChtcHMtPnBzYykKIAkJaW91
+bm1hcChtcHMtPnBzYyk7CisJaWYgKG9mX2FkZHJlc3NfdG9fcmVzb3VyY2Uob3AtPm5vZGUsIDAs
+ICZtZW0pID09IDApCisJCXJlbGVhc2VfbWVtX3JlZ2lvbihtZW0uc3RhcnQsIHJlc291cmNlX3Np
+emUoJm1lbSkpOwogCiAJcmV0dXJuIDA7CiB9CiAKLXN0YXRpYyBpbnQgX19pbml0IG1wYzUyeHhf
+cHNjX3NwaV9vZl9wcm9iZShzdHJ1Y3Qgb2ZfZGV2aWNlICpvcCwKLQljb25zdCBzdHJ1Y3Qgb2Zf
+ZGV2aWNlX2lkICptYXRjaCkKLXsKLQljb25zdCB1MzIgKnJlZ2FkZHJfcDsKLQl1NjQgcmVnYWRk
+cjY0LCBzaXplNjQ7Ci0JczE2IGlkID0gLTE7Ci0KLQlyZWdhZGRyX3AgPSBvZl9nZXRfYWRkcmVz
+cyhvcC0+bm9kZSwgMCwgJnNpemU2NCwgTlVMTCk7Ci0JaWYgKCFyZWdhZGRyX3ApIHsKLQkJcHJp
+bnRrKEtFUk5fRVJSICJJbnZhbGlkIFBTQyBhZGRyZXNzXG4iKTsKLQkJcmV0dXJuIC1FSU5WQUw7
+Ci0JfQotCXJlZ2FkZHI2NCA9IG9mX3RyYW5zbGF0ZV9hZGRyZXNzKG9wLT5ub2RlLCByZWdhZGRy
+X3ApOwotCi0JLyogZ2V0IFBTQyBpZCAoMS4uNiwgdXNlZCBieSBwb3J0X2NvbmZpZykgKi8KLQlp
+ZiAob3AtPmRldi5wbGF0Zm9ybV9kYXRhID09IE5VTEwpIHsKLQkJY29uc3QgdTMyICpwc2NfbnVt
+cDsKLQotCQlwc2NfbnVtcCA9IG9mX2dldF9wcm9wZXJ0eShvcC0+bm9kZSwgImNlbGwtaW5kZXgi
+LCBOVUxMKTsKLQkJaWYgKCFwc2NfbnVtcCB8fCAqcHNjX251bXAgPiA1KSB7Ci0JCQlwcmludGso
+S0VSTl9FUlIgIm1wYzUyeHhfcHNjX3NwaTogRGV2aWNlIG5vZGUgJXMgaGFzIGludmFsaWQgIgot
+CQkJCQkiY2VsbC1pbmRleCBwcm9wZXJ0eVxuIiwgb3AtPm5vZGUtPmZ1bGxfbmFtZSk7Ci0JCQly
+ZXR1cm4gLUVJTlZBTDsKLQkJfQotCQlpZCA9ICpwc2NfbnVtcCArIDE7Ci0JfQotCi0JcmV0dXJu
+IG1wYzUyeHhfcHNjX3NwaV9kb19wcm9iZSgmb3AtPmRldiwgKHUzMilyZWdhZGRyNjQsICh1MzIp
+c2l6ZTY0LAotCQkJCQlpcnFfb2ZfcGFyc2VfYW5kX21hcChvcC0+bm9kZSwgMCksIGlkKTsKLX0K
+LQotc3RhdGljIGludCBfX2V4aXQgbXBjNTJ4eF9wc2Nfc3BpX29mX3JlbW92ZShzdHJ1Y3Qgb2Zf
+ZGV2aWNlICpvcCkKLXsKLQlyZXR1cm4gbXBjNTJ4eF9wc2Nfc3BpX2RvX3JlbW92ZSgmb3AtPmRl
+dik7Ci19Ci0KIHN0YXRpYyBzdHJ1Y3Qgb2ZfZGV2aWNlX2lkIG1wYzUyeHhfcHNjX3NwaV9vZl9t
+YXRjaFtdID0gewogCXsgLmNvbXBhdGlibGUgPSAiZnNsLG1wYzUyMDAtcHNjLXNwaSIsIH0sCiAJ
+eyAuY29tcGF0aWJsZSA9ICJtcGM1MjAwLXBzYy1zcGkiLCB9LCAvKiBvbGQgKi8KQEAgLTUwNCwx
+MiArNDk4LDEyIEBAIE1PRFVMRV9ERVZJQ0VfVEFCTEUob2YsIG1wYzUyeHhfcHNjX3NwaV9vZl9t
+YXRjaCk7CiAKIHN0YXRpYyBzdHJ1Y3Qgb2ZfcGxhdGZvcm1fZHJpdmVyIG1wYzUyeHhfcHNjX3Nw
+aV9vZl9kcml2ZXIgPSB7CiAJLm93bmVyID0gVEhJU19NT0RVTEUsCi0JLm5hbWUgPSAibXBjNTJ4
+eC1wc2Mtc3BpIiwKKwkubmFtZSA9IERSSVZFUl9OQU1FLAogCS5tYXRjaF90YWJsZSA9IG1wYzUy
+eHhfcHNjX3NwaV9vZl9tYXRjaCwKIAkucHJvYmUgPSBtcGM1Mnh4X3BzY19zcGlfb2ZfcHJvYmUs
+CiAJLnJlbW92ZSA9IF9fZXhpdF9wKG1wYzUyeHhfcHNjX3NwaV9vZl9yZW1vdmUpLAogCS5kcml2
+ZXIgPSB7Ci0JCS5uYW1lID0gIm1wYzUyeHgtcHNjLXNwaSIsCisJCS5uYW1lID0gRFJJVkVSX05B
+TUUsCiAJCS5vd25lciA9IFRISVNfTU9EVUxFLAogCX0sCiB9OwotLSAKMS42LjMuMwoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXhwcGMtZGV2IG1h
+aWxpbmcgbGlzdApMaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZwpodHRwczovL2xpc3RzLm96
+bGFicy5vcmcvbGlzdGluZm8vbGludXhwcGMtZGV2

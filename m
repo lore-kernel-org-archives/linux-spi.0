@@ -1,11 +1,13 @@
-From: "Neta Vranek" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Jesus from Mexican suburbs
-Date: Fri, 30 Oct 2009 09:24:05 +0100
-Message-ID: <51531da1.9ce779f1.85e1.9110aad6@mx.sourceforge.net>
+From: Noondiet <newsletter-XnNBbOCIN4bQT0dZR+AlfA@public.gmane.org>
+Subject: mon régime minceur personnalisé
+Date: Fri, 30 Oct 2009 09:49:40 +0000 (UTC)
+Message-ID: <20091031095429.16077.qmail@ks365990.kimsufi.com>
+Reply-To: Noondiet <newsletter-XnNBbOCIN4bQT0dZR+AlfA@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8256792276046504503=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0658711108229084082=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: 31 Oct 2009 09:54:29 -0000
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,54 +19,105 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
-This is a multi-part message in MIME format.
-
---===============8256792276046504503==
+--===============0658711108229084082==
 Content-Type: multipart/alternative;
-	boundary="=====003_DragongFgJKbPUTSPx_====="
+	boundary="_----------=_parties_ea785af38150610f058a899b827419ac"
 
 
-This is a multi-part message in MIME format.
+--_----------=_parties_ea785af38150610f058a899b827419ac
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
---=====003_DragongFgJKbPUTSPx_=====
-Content-Type: text/plain;
-	charset="windows-1251"
-Content-Transfer-Encoding: 7bit
+Version "en ligne" de ce message: http://newsletter.b-wave.com/svi/miroir.php?bat=noondiet1009_ctrm
 
-Hello spi-devel-general,
+Noondiet votre régime plaisir
+SPECIAL OFFRE DE LANCEMENT: -40% *
+Maigrir avec Noondiet
 
+Le programme minceur élaboré sur mesure selon votre profil
 
+Des menus simple et variés
 
-Best regards,
+Des recettes faciles
 
-Neta Vranek
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Des listes de courses
 
---=====003_DragongFgJKbPUTSPx_=====
-Content-Type: text/html;
-	charset="windows-1251"
-Content-Transfer-Encoding: base64
+Je défini gratuitement mon programme minceur
 
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgaHR0cC1lcXVpdj1Db250ZW50LVR5cGUgY29udGVu
-dD0idGV4dC9odG1sOyBjaGFyc2V0PXdpbmRvd3MtMTI1MSI+DQo8TUVUQSBjb250ZW50PSJNU0hU
-TUwgNi4wMC42MDAwLjE2ODUwIiBuYW1lPUdFTkVSQVRPUj48L0hFQUQ+DQo8Qk9EWT48Rk9OVCBm
-YWNlPUFyaWFsIHNpemU9Mj4NCjxESVY+SGVsbG8mbmJzcDtzcGktZGV2ZWwtZ2VuZXJhbCw8L0RJ
-Vj4NCjxESVY+Jm5ic3A7PC9ESVY+DQo8RElWPjxBIGhyZWY9Imh0dHA6Ly93d3cucHV4dXRkci5j
-bi8/ZW1xd2FlPWUzMzNkNDQ2NTY4MDA5MCZvbXF4ZWdpdD1lMzMzZDQ0NjU2ODAwOTAmaXB5eHls
-b2c9ZTMzM2Q0NDY1NjgwMDkwIj4NCjxJTUcgYWx0PSJDbGljayBoZXJlIiBoc3BhY2U9MCBzcmM9
-Imh0dHA6Ly93d3cucHV4dXRkci5jbi80YzdiMzliZTE1MTUzMWRhMWE5Y2U3NzlmMWU4LmdpZj91
-Znl0eT1lMzMzZDQ0NjU2ODAwOTAmYXNxc2lscWQ9ZTMzM2Q0NDY1NjgwMDkwJmhlc2pxZT1lMzMz
-ZDQ0NjU2ODAwOTAiDQphbGlnbj1iYXNlbGluZSBib3JkZXI9MD48L0E+PC9ESVY+DQo8RElWPiZu
-YnNwOzwvRElWPg0KPERJVj5CZXN0Jm5ic3A7cmVnYXJkcywmbmJzcDs8L0RJVj4NCjxESVY+Jm5i
-c3A7Jm5ic3A7PC9ESVY+DQo8RElWPk5ldGEgVnJhbmVrPC9ESVY+DQo8RElWPnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldDwvRElWPg0KPC9GT05UPjwvQk9EWT48L0hUTUw+
+plus d'infos sur http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture
+
+--------------------------------
+Cette offre vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://newsletter.b-wave.com/svi/gestionserv.php?nb=2583&numuser=9047704&code=HWeuIQdw&src=50
+
+--_----------=_parties_ea785af38150610f058a899b827419ac
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
 
 
---=====003_DragongFgJKbPUTSPx_=====--
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head> 
+<title>Noondiet votre régime plaisir</title>
+</head>
+<body><center>
+<p id='lienhaut'>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://newsletter.b-wave.com/svi/miroir.php?bat=noondiet1009_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+</p>
+<table id='ID_BORDURE' CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 1px solid #C0C0C0;padding:0px;'>
+<tr>
+<td id='ID_TITRE' align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Arial;color:#83D33D;font-size:24px'>
+<p id='INNER_TITRE' style='display:inline;'> <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" style="text-decoration:none;color:#83D33D;">Noondiet votre régime plaisir</a></p>
+</td></tr>
+<tr><td id='ID_SSTITRE' align='center' style='margin:3px;padding:5px;background-color:#FF0000;font-family:Arial Black;color:#FFFFFF;font-size:24px;'>
+<a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" style="text-decoration:none;color:#FFFFFF;">SPECIAL OFFRE DE LANCEMENT: -40%<sup>*</sup></a>
+</td></tr>
+<tr>
+<td id='ID_DETAIL' align='left' style='padding:5px;font-family:Arial;color:#000000;font-size:12px;background-color:#FFFFFF;'>
+<a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" style="text-decoration:none;color:#000000;"><b>Maigrir avec Noondiet</b><br>
+Le programme minceur élaboré sur mesure selon votre profil<br>
+<li>Des menus simple et variés
+<li>Des recettes faciles
+<li>Des listes de courses</a>
+<center><u style="color:blue;font-size:18px">Je défini gratuitement mon programme minceur</u></center>
+</td></tr>
+<tr><td id='ID_VISUEL' align='center' style='padding:5px;background-color:#FFFFFF;'>
+<table WIDTH="500" border="0" CELLpadding="0" CELLSPACING="0" ALIGN="CENTER">
+ <tr>
+ <td>
+ <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197425/500x600_emailing_noondiet_0.jpg" WIDTH="500" HEIGHT="108" ALT="" border="0" /></a></td>
+ </tr>
+ <tr>
+ <td>
+ <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197423/500x600_emailing_noondie-02.jpg" WIDTH="500" HEIGHT="114" ALT="" border="0" /></a></td>
+ </tr>
+ <tr>
+ <td>
+ <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197426/500x600_emailing_noondie-03.jpg" WIDTH="500" HEIGHT="123" ALT="" border="0" /></a></td>
+ </tr>
+ <tr>
+ <td>
+ <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197422/500x600_emailing_noondie-04.jpg" WIDTH="500" HEIGHT="114" ALT="" border="0" /></a></td>
+ </tr>
+ <tr>
+ <td>
+ <a href="http://newsletter.b-wave.com/svi/linkserv.php?bat=noondiet1009_ctrm&nb=2583&n=9047704&c=culture" TARGET="_BLANK"><IMG SRC="http://home.edt02.net/noprotect//115420/C197424/500x600_emailing_noondie-05.jpg" WIDTH="500" HEIGHT="141" ALT="" border="0" /></a></td>
+ </tr>
+</table>
+<img src='http://newsletter.b-wave.com/imgregie/2583/noondiet1009_ctrm.gif' width="0" height="0" border="0" ALT="" border="0" />
+</td></tr>
+</table>
+<br><br>
+<img src="http://newsletter.b-wave.com/svi/img_nb_2583_numuser_9047704_code_HWeuIQdw_src_50.jpg" width=1 height=1 alt=''>
+<p id='lienbas'>
+Ce message est envoyé par central marques - <a href="http://newsletter.b-wave.com/svi/gestionserv.php?nb=2583&cat=culture&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+</p>
+</center></body>
+</html>
 
 
---===============8256792276046504503==
+--_----------=_parties_ea785af38150610f058a899b827419ac--
+
+--===============0658711108229084082==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -76,7 +129,7 @@ is the only developer event you need to attend this year. Jumpstart your
 developing skills, take BlackBerry mobile applications to market and stay 
 ahead of the curve. Join us from November 9 - 12, 2009. Register now!
 http://p.sf.net/sfu/devconference
---===============8256792276046504503==
+--===============0658711108229084082==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -87,4 +140,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8256792276046504503==--
+--===============0658711108229084082==--

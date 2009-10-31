@@ -1,100 +1,184 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [PATCH] mpc52xx-psc-spi: refactor probe and remove to make use
-	of of_register_spi_devices()
-Date: Sat, 31 Oct 2009 10:03:56 +0100
-Message-ID: <20091031090356.GA4722@pengutronix.de>
-References: <1256931852-13255-1-git-send-email-w.sang@pengutronix.de>
-	<20091031163259.5c651773.sfr@canb.auug.org.au>
+From: "ii" <lixo-fyyYI70gGcU@public.gmane.org>
+Subject: [SPAM] 楂樼骇鏂囩銆侀珮绾ц鏀垮姪鐞嗚亴涓氬寲璁粌
+Date: Sun, 1 Nov 2009 04:30:16 +0800
+Message-ID: <E1N4Kaw-00080b-7G@335xhf1.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8258220967048845384=="
-Cc: =?iso-8859-15?Q?K=E1ri_Dav=ED=F0sson?= <kari.davidsson@marel.com>,
-	spi-devel-general@lists.sourceforge.net, linuxppc-dev@ozlabs.org
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <20091031163259.5c651773.sfr@canb.auug.org.au>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: multipart/mixed;
+	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a multi-part message in MIME format
 
---===============8258220967048845384==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="huq684BweRXVnRxX"
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+清看 附件，如果有打扰，清原谅，谢谢！
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: application/octet-stream;
+        name="高级文秘、高级行政助理职业化训练.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+        filename="高级文秘、高级行政助理职业化训练.txt"
+
+ICAgICAgICAgICAgICAgILjfvLbOxMPYoaK437y20NDV/tb6wO3WsNK1u6/RtcG3DQoNCg0KICAg
+ICAgICAgICAgDQq/qr/OyrG85DogMjAwOcTqMTHUwjIxLTIyyNUgICAgIMnu29q98LDZus8gDQog
+ICAgICAgICAgMjAwOcTqMDEw1MIyNC0yNcjVICAgILGxvqnI8LPJIA0KICAgICAgICAgIDIwMDnE
+6jEx1MI3LTjI1SAgICAgIMnPuqPBvLCyDQoNCg0KxeDRtbfR08OjujIwMDDUqi/IyyAgo6jXysHP
+t9GjrNbQss230aOssui147fRo6y6z9OwtcijrKOpDQoNCtb3sOy1pc67OiDW2sjL0NC53MDt18nR
+r834ICAgd3d3LjEyNnB4LmNvbQ0KDQoNCsjIz9/XydGvo7o0MDA4MTE4ODkwDQrXydGvtee7sKO6
+MDc1NS0yNjA3NTQyOSAgMjYwNzUzNjUgIDI2OTc1MjY1ICAwMjEtNjQ4NTQ4NzcgDQq0qyAgICDV
+5qO6MDc1NS02MTM1MTM5NiAgDQrBqiDPtSDIy6O6IMHo0KG94yAgIA0KDQogDQqppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaUNCg0KICAgIMjnus7XvMi3oaLRuMvZwey74cnPvLa1xNXmyrXS4s28ID8NCiAg
+ICDI57rO0K3W+sHstby0psDt0rvQqdLJxNHOysziID8NCiAgICDI57rOs8nOqsHstby1xNfzsPLT
+0rHbID8NCiAgICDNqLn9sb60zsXg0bXO0sPHu+G4+MTjvsW087e9z/KhosquzuXW1r3ivva3vbeo
+DQoNCiAgICC21LjfvLbW+sDtus3D2MrpwLTLtaOsw7vT0Mrctb3XqNK1z7XNs9G1wbejrL2rzt63
+qLTT1b3C1NDUyKu3vc67vce2yMjPDQrWqsPYyunT69b6wO21xLmk1/eju9Tay/m008rCtcS5pNf3
+1tC40L71yLG3psDtwtvWp7PWo7u5pNf31tDX3MrHsbu2r9DQysKjrA0KsrvE3Nb3tq/Vxs7VuaTX
+973a1+Cju8/rzqrB7LW81/e1xLj8tuChorj8usPItMO709C6w7XEt723qKGiy7zCt6O7z+u4/LrD
+tcQNCta00NDB7LW8tcTV/rLfo6zItNfcyse1w7K7tb3Wp7PWo7vP67j4uavLvr3ayqG30dPDo6y1
+q8i0srvWqrTTus60ps/CytajrM/rDQq4/LrDtdi0psDtusO5q7myudjPtaOo1f64rrmrudijqaOs
+yLTX3MrHsru1w9KqwewtLS0t1u7I59LUyc+1xM7KzOKjrLa8ysfDvw0KuPbW+sDtw9jK6bmk1/fI
+y9Sxy/nD5rbU0+vAp7vztcSjrMjnus6w0c7V1f3It7e9z/K007b40bjL2czhyf3X1Mnt1rDStcvY
+0fijrA0Ks8nBy87Sw8ex2NDrw+a21NPrveK+9rXEv87M4qGjDQoNCsXg0bW21M/zo7oNCiAgICC4
+97y21vrA7brNw9jK6aO619yyw6Oo19y+rcDto6nD2MrpoaKyv8PFw9jK6aGisOy5q8rS1vfIzqGi
+0NDV/rK/vq3A7aOoDQrW+sDtoaLW97ncoaLOxNawyMvUsbXIKQ0KDQqppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaUNCg0KofIgv86zzMrVu/Gjug0KICAgofogINXGztW437y20NDV/tb6wO3D2MrptcTWsNK1
+vLzE3A0KICAgofogIMnG09q0psDtuaTX99bQuPe8trm1zajE0bXjo6zM4cn919TJ7daw0rXE3MGm
+DQogICCh+iAg1cbO1dPryc/Lvrm1zai1xLy8x8mjrLPJzqrB7LW8sru/ybvyyLG1xNfzsPLT0rHb
+DQogICCh+iAgyOe6zrXstqjU2qGwz8LK9KGxw+bHsLXEwey1vLXYzrsNCiAgIKH6ICDHycPutKbA
+7aGwyOK80OLJobG1xLmk1/ejrMzlz9a49sjLuaTX98TcwaYNCiAgIKH6ICDI57rOwPvTw8+1zbO1
+xMDtwtvWqsq2o6zKtc/W1Nq5pNf31tC1xNOm08MNCiAgIKH6ICDVxs7V1f7O8bmrudi1xLv5sb68
+vMfJDQogICCh+iAgyMPX1Ly6s8nOqtK7uPa439CnubXNqNXfo6zM5c/W1rCzobzb1rUNCiAgIKH6
+ICC31s/ty/vIy7jf0Ke5pNf3vq3R6aOsyrXP1tfUztLT0NCntcTKsbzkudzA7Q0KICAgofogIMq1
+z9bP1rT6zsTD2Lmk1/e6zbW1sLi53MDtuaTX97XEuea3ts/OvdMNCiAgIKH6ICDRp8+w1cbO1bnm
+t7a1xMnMzvHQtNf3vLzHyaOszOG437mrzsTQtNf3y67GvQ0KICAgofogINGnz7DVxs7Vu+HS6bXE
+1+nWr8u8wre8sLjf0KfCyrXE1+nWr7e9t6ihow0KICAgofogINXGztW7+bG+tcTJzM7xu+62r8Dx
+0sejrMq5xPrKytOmyNWzo8nMzvGzobrPtcTA8dLH0qrH8w0KICAgofogINXGztW+xtHnvLzHyc3q
+s8nJzM7x0efH68S/tcSjrMq1z9bW97H2y6vTrrXEusO+1sPmDQogICCh+iAgwcu94r3TtP2/zbun
+tcTA8dLHz7i92qOsyMPE+rXEw7/Su867v83Iy7H21sHI57npDQoNCqmlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppQ0KDQqh8iDF4NG1zOG42aO6DQrSu6GixvPStdDQ1f7W+sDtw9jK6daw0rXM2NDU0+vL2NbK
+0qrH8w0KICAgIKHzICDW+sDtw9jK6bXE1rDStbzb1rW6zdf308MNCiAgICAgICAgofogILC4wP2j
+utb6wO3D2MrpuNrOu7XExsC82w0KICAgIKHzICDW+sDtw9jK6cjL1LG1xNaw1PDT69b30qq5pNf3
+xNrI3SANCiAgICAgICAgofogILC4wP2jutb6wO3D2MrpyMvUsbXE1rDOu8u1w/fK6dH5sOUgDQog
+ICAgofMgINb6wO3D2MrptcTWsNK1t6LVubnmu64NCiAgICCh8yAg1vrA7cPYyunIy9SxtcTX1M7S
+vcfJq7aozrsNCiAgICCh8yAg08XQ49b6wO3D2MrpyMvUsbXEyqTIzsvY1soNCiAgICAgICAgofog
+ILC4wP231s72o7ogDQoNCrb+oaLIy7zKubXNqNPruaTX99Cttfe8vMfJDQogICAgofMgILm1zai2
+1NPa1vrA7cPYyum1xNLi0uUNCiAgICCh8yAgs6PTw7m1zai3vcq91q6xyL3PDQogICAgofMgILjf
+vLbW+sDtw9jK6cjL1LG1xLm1zai8vMfJDQogICAgICAgIKH6ICCwuMD9o7rI57rOzP22rsDPsOW1
+xKGww7vT0Mu1s/bAtLXE0uLLvKGxo78gDQogICAgofMgIMjnus7Iw8Hstby5zsS/z+C/tKGiu/G1
+w9DFyM6jvw0KICAgIKHzICDI57rO0+vE47XEyc/LvtCttfe2+LK7sO+1ucOmo78NCiAgICCh8yAg
+yOe6ztPruPfW1snPy77P4LSmo78NCiAgICCh8yAgzsrM4qO6ztK1xMnPvLa199ffwcvU9cO0sOyj
+vw0KICAgICAgICCh+iAgsLjA/aO6wey1vMjDztLE0c6qx+mjrM7SuMPU9cO0sOyjvw0KICAgICAg
+ICCh+iAgsLjA/aO6yOe6ztPrzazKwrvyz8K8ts/gtKajvw0KICAgICAgICCh+iAgsLjA/aO609DI
+y9TaxOPD5sewsafUucTjtcTB7LW8uMPU9cO0sOyjvw0KICAgIKHzICDM1sLbo7rI57rOt6K709fU
+ye3TxcrGxvC6w9CttffX99PDo78NCiAgICDI57rOs8nOqsnPy761w8Gm1vrK1g0KICAgIKHzICDT
+xdDjw9jK6bXEusvQxL661fnBpg0KICAgIKHzICDWqry61qqxy6O6t9bO9snPy761xLmk1/fM2LXj
+DQogICAgofMgIMjnus621LT9srvNrNDUuPHA4NDNtcTJz8u+DQogICAgofMgINW+1NrPwry2tcTO
+u9bDyc/LvL+8yc+8trXEysINCiAgICCh8yAg0+vJz7y2z+C0ptei0uLKws/uDQogICAgtee7sMDx
+0scNCiAgICCh8yAgvdPM/bXnu7C1xLv5sb7UrdTyDQogICAgofMgIL3TzP2157uwtcS8uM/u16LS
+4iANCiAgICCh8yAgsqa08rXnu7C1xLy4tPPSqrXjDQoNCsj9oaLKsbzkudzA7bywuaTX982zs++8
+vMfJDQogICAgofMgIMqxvOS53MDttcTO88f4DQogICAgofMgIMqxvOS53MDttcTUrdTyDQogICAg
+ICAgocwgxL+x6rncwO3T6zgwLzIwt6jU8g0KICAgICAgIKHMILu6vLHH4dbYtcTTxc/IudzA7Q0K
+ICAgICAgIKHMILj2yMvKsbzk0+vB7LW8uaTX98qxvOS8xruu0+uwssXFDQogICAgofMgIMqxvOS5
+3MDt0KHHz8PFDQogICAgofMgILH2v82907T90+u157uwtKbA7Q0KICAgIKHzICDJz7y2tcTKsbzk
+udzA7dPrsLLFxQ0KICAgIKHzICDX1M7Sx+nQ97/Y1sbT69G5waa53MDtDQoNCsvEoaK74c7x1+nW
+r9PrudzA7Q0KICAgIKHzICC74c7xt9bA4KOt1+nWr8u8wrcNCiAgICCh8yAg1+nWr73Xts6jurvh
+x7DXvLG4oaK74dbQ0K3W+qGiu+G689X7wO0NCiAgICCh8yAg1+nWr7e9t6gNCiAgICCh8yAgwP27
+4bXE1+nWrw0KICAgIKHzICC089DNu+HS6aGi1bm74bXE1+nWrw0KICAgIKHzICDI57rOtaPIzrvh
+0unW97PWyMsNCiAgICCh8yAgyOe6zrWxusO74dLpw9jK6aO/DQogICAgofMgIMirvrCwuMD9o7rE
+s7mry77E6rbItPPQzcfsteS77ravst+7rsq8xKkNCiAgICAgICAgofogILC4wP2jurTz0M274dLp
+vLC77ravst+7rrC4DQogICAgofMgIMjnus6x3MPiz93T2rvh0unDpsK11q7W0KO/DQoNCs7loaLO
+xLz+18rBz7ncwO3T69TL08MNCiAgICCh8yAgzsS1tbfWwOCx6te8DQogICAgofMgILW1sLi53MDt
+tcTUrdTyDQogICAgofMgIM7EtbW1xMv30v0NCiAgICCh8yAgtefX087EtbW1xLGjDQogICAgofMg
+INOh1cK1xLncwO0NCiAgICAgICAgofogILC4wP231s72o7oNCiAgICCh8yAg0dDM1qO6yOe6zsD7
+08O1tbC4zqq5q8u+0rXO8bf+zvGjvw0KDQrB+aGi0MXPorW1sLi53MDtDQogICAgofMgINDFz6K5
+3MDtu/mxvsH3s8wNCiAgICCh8yAg0MXPorXEytW8r9X7wO0NCiAgICCh8yAg0MXPorXEtKu13Q0K
+ICAgIKHzICDQxc+itcS0orTm0+uxo8PcDQogICAgofMgILGjw9zS4sq20+uxo8PcuebU8g0KICAg
+IKHzICDD2MrptcS7+bG+1rDStbXAtcINCg0Kxt+hormrzsTQtNf30+u0psDtyrXO8Q0KICAgIKHz
+ICC5q87Et9bA4A0KICAgIKHzICC5q87EtcS94bm5DQogICAgofMgINb6wO3D2MrpzsTX1tans9bT
+prTvtb21xNKqx/MNCiAgICCh8yAguavOxNC01/e55tTyus3TptPDvLzHyQ0KICAgIKHzICDK/dfW
+tcTV/ci3yrnTww0KICAgIKHzICC7+cr9tMq6zdDyyv20yrXE1f3It9TL08MNCiAgICCh8yAgxKO6
+/bTKus3Eo8ystMq1xNX9yLfKudPDDQogICAgofMgILmrzsTOxNbW1Nq5pNf31tC1xNf308MNCiAg
+ICCh8yAgz+nO9rOj08POxNbWtcTQtNf3vLzHyQ0KICAgICAgICDNqNaqDQogICAgICAgIMfryr4N
+CiAgICAgICAgsai45g0KICAgICAgICC5pNf319y94Q0KICAgICAgICC5pNf3vMa7rqOo1tyhotTC
+oaLE6qOpDQogICAgICAgIMr21rCxqLjmDQogICAgofMgIMfJ08PNvLHto6zIw9fcveGxqLjmuPy+
+3cu1t/7Bpg0KICAgIKHzICBTTUFSVNSt1PLT61NXT1S3vbeoDQogICAgofMgIMjd0te77M/9tcS5
+q87EzsTW1g0KICAgICAgICANCr7FoaLJzM7xwPHSx9Pr1rDStdDOz/PL3NTsDQogICAgMaGisNHO
+1bXa0rvToc/zo6zL3NTsuPbIy9aws6HQzs/zDQogICAgICAgIKHzICDXxdewtcRUT1DUrdTyDQog
+ICAgICAgIKHzICChsL7cvvihsNfF17Cw3LHKoaqhqtfF17DO88f4DQogICAgICAgIKHzICDTw8G8
+usO1xNLHzKyjrMzlz9a49sjLxvjWyg0KICAgICAgICCh8yAgt6LQzaGiu6/XsaGi1b6hosGioaLX
+36Gi1/gNCiAgICAgICAgofMgIMehtbG1xNarzOXT79HUIMjD19S8urPJzqrSu7j209DL2NH4tcTI
+yw0KICAgIDKhoiC7+bG+yee9u8Dx0scNCiAgICAgICAgofMgILz7w+a96cnctcTA8dLHDQogICAg
+ICAgIKHzICDOyrrytcTA8dLHDQogICAgICAgIKHzICDD+8astcTKudPDDQogICAgICAgIKHzICDI
+1bOjyczO8bvutq/W0LXEwPHSx7nmt7YNCiAgICAgICAgofMgINPruaTX99PQudi1xM7EzOW77rav
+1tC1xMDx0se55re2DQogICAgM6GiIMnMzvHR58frwPHSxw0KICAgICAgICCh8yAgteOyy7y8x8mh
+qqGqyOe6zrPUtcO9ob+1DQogICAgICAgIKHzICC+xtHnvLzHyaGqoarI57rOtfe92sb4t9UNCiAg
+ICAgICAgofMgINbQoaLO97LN08OyzcDx0scNCiAgICAgICAgofMgILLN0vvA8dLHvfu8yQ0KDQoN
+CqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppQ0KDQq9ssqmvPK96aO61cXS687Exa7Kvw0KICAgIM73sLK9
+u82otPPRp7ncwO3Rp9S6o6i5pMnMudzA7aOpJrDE1t648cHWzf7WzrTz0aejqMrQs6HTqs/6o6lN
+QkHLtsq/O9T4sbsNCsra0+jDwLn6UFBUufq8ytaw0rXF4NG1yqbIz9akoaLP47jbufq8yrncwO3R
+p9S6xvPStbjfvLbXydGvucvOytfKuPHIz9ako7vU+LvxDQrJ7tvavdyz9sbz0rXXydGvucvOyteo
+vNKzxrrFo7u24MTqtaPIzr/nufrG89K1IMPAufpBc2hlcqGiILeoufpUcmlzyv3C67/GvLy1yA0K
+xvPStbjfvLa+rcDtoaMNCg0KICAgINT4uKi1vNfJ0a+1xMbz0rXT0NOiufpTVEnXydGvudzA7bv6
+ubmhos/juNu/tcH6yrXStbnJt925q8u+oaLDwLn6yP3BoryvzcWhog0Kw8C5+kFTSEVSu/q5ubXI
+tPPQzbyvzcW5q8u+oaLJ7tva1dDJzM7vwfehosnu29pMWUS437/GvLy5ybfduavLvqGiycLO98P3
+tcC7r7mkDQqyxMHPucm33bmry76horijvajB+syp1v3U7NPQz965q8u+oaK547art/DJvcLesLK9
+8Mr01sbU7NPQz965q8u+oaK547art/DJvdDC1LQNCszVtMm5ybfdvK/NxaGiy9XW3czYwPbLubXn
+1LS7+rm5oaLEz76pyc/UqrrsxL680r7fuavLvqGjDQoNCiAgICDW972yv86zzKO6oba437y20NDV
+/s7Ew9jWsNK1u6/RtcG3obehoqG2udzA7bm1zajS1cr1us252M+10K2196G3oaKhts3iw7PKtQ0K
+1b2y2df3vLzHyaG3oaKhtrmrzsTQtNf3obehoqG2tPO/zbunv6q3orf+zvHT67ncwO2ht6Gioba7
+4dLpvKjQp7ncwO2ht6GiobbJzM7xDQrA8dLH0+vR58frvLzHyaG3oaMNCg0KICAgINfJ0a/F4NG1
+uf21xMbz0rXT0KO61tC98MHrxM+3sr/ax6bQv7/zoaLC3rCyvK/NxaGizNjA9su5sLK3wLmry76h
+otDCzqy087nJDQq33byvzcW5q8u+oaLQwtS0zNW0ybyvzcWhorfwzNW8r83FoaLO4NbdwarNqLmr
+y76hosTP0828r83FoaLL1dbduuy2ubyvzcWhotSq0uINCrzSvt/WxtTsuavLvqGisbG+qbar0fTI
+yMTcvK/NxaGiu6rI87yvzcWhosD7tO/Ds9LXoaK73cHpzajNqNG2uavLvqGixM/Uwcr9vt3NqA0K
+0MW5q8u+oaK4u8q/v7Whorq9vM67+rm5oaK80ri7uLvHxbyvzcWhos/Dw8W/qreix/i12LL6uavL
+vqGi1dDJzNbD0rWhos73sLLA+7GmDQrJ+sysvK/NxaGiycLO98zsyMvT0Lv6ucm33bmry76horXC
+saa5+rzKoaK608TPtefBpqGiuKPW3brsutO67MS+vNK+36GixP6yqMzAxLcNCta4yeixuLmry76h
+osPAufrI/cGivK/NxaGiQUNFu/q5uaGisbG+qbar0fTMq9H0xNzCr77fs6ehor+tsqm84MDtuavL
+vqGiIM/juNvQ7A0KuuvS49ewys7J6LzGuavLvqGiuqPBwdOyxczWxtTsuavLvqGiuePW3c6wzNq8
+r83FoaLUwcypvK/NxaGiv7XHxcrp1Lqhornax8ew/NewDQrWxsa309DP3rmry76hotDxyNW98Mr0
+1sbGt9PQz965q8u+oaKxsb6p0ce2vLnJt925q8u+oaLJ7tvatefQxbfWuavLvrXIoaMNCg0KLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0K
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
-
---huq684BweRXVnRxX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Stephen,
-
-> >  static struct of_platform_driver mpc52xx_psc_spi_of_driver =3D {
-> >  	.owner =3D THIS_MODULE,
-> > -	.name =3D "mpc52xx-psc-spi",
-> > +	.name =3D DRIVER_NAME,
->=20
-> You no longer need to set either owner or name in the of_platform driver,
-> just in the included struct driver (as is done below), so you could just
-> remove the above two lines.
-
-Okay, thanks. Will drop it.
-
->=20
-> >  	.match_table =3D mpc52xx_psc_spi_of_match,
-> >  	.probe =3D mpc52xx_psc_spi_of_probe,
-> >  	.remove =3D __exit_p(mpc52xx_psc_spi_of_remove),
-> >  	.driver =3D {
-> > -		.name =3D "mpc52xx-psc-spi",
-> > +		.name =3D DRIVER_NAME,
-> >  		.owner =3D THIS_MODULE,
-> >  	},
-> >  };
->=20
-> I am hoping that we can remove the owner and name fields from struct
-> of_platform_driver sometime.
-
-Sounds good! :)
-
-Regards,
-
-   Wolfram
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---huq684BweRXVnRxX
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAkrr/XsACgkQD27XaX1/VRvmywCdGQQdRHL8CIrS50ypAFOAJl7d
-Mf4An3tRrAtngfopNf0r0NlA1aHqrfu5
-=TgCu
------END PGP SIGNATURE-----
-
---huq684BweRXVnRxX--
-
---===============8258220967048845384==
+------------------------------------------------------------------------------
+Come build with us! The BlackBerry(R) Developer Conference in SF, CA
+is the only developer event you need to attend this year. Jumpstart your
+developing skills, take BlackBerry mobile applications to market and stay 
+ahead of the curve. Join us from November 9 - 12, 2009. Register now!
+http://p.sf.net/sfu/devconference
+--=_NextPart_2rfkindysadvnqw3nerasdf
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 _______________________________________________
-Linuxppc-dev mailing list
-Linuxppc-dev@lists.ozlabs.org
-https://lists.ozlabs.org/listinfo/linuxppc-dev
---===============8258220967048845384==--
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

@@ -1,54 +1,91 @@
-From: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
-Subject: [PATCH] trivial: some fixes in spi documentation
-Date: Fri, 30 Oct 2009 19:28:14 -0200
-Message-ID: <1256938094-8137-1-git-send-email-cascardo@holoscopio.com>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Randy Dunlap <rdunlap@xenotime.net>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-To: trivial@kernel.org
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S932937AbZJ3V2U@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: [PATCH] mpc52xx-psc-spi: refactor probe and remove to make use
+	of of_register_spi_devices()
+Date: Sat, 31 Oct 2009 16:32:59 +1100
+Message-ID: <20091031163259.5c651773.sfr@canb.auug.org.au>
+References: <1256931852-13255-1-git-send-email-w.sang@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============5169322083775573285=="
+Cc: =?UTF-8?B?S8OhcmkgRGF2w60=?= =?UTF-8?B?w7Bzc29u?=
+	<kari.davidsson@marel.com>,
+	spi-devel-general@lists.sourceforge.net, linuxppc-dev@ozlabs.org
+To: Wolfram Sang <w.sang@pengutronix.de>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <1256931852-13255-1-git-send-email-w.sang@pengutronix.de>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
----
- Documentation/spi/spi-summary |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
+--===============5169322083775573285==
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Sat__31_Oct_2009_16_32_59_+1100_a+306G2MiZby2M/3"
 
-diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-index deab51d..607aa97 100644
---- a/Documentation/spi/spi-summary
-+++ b/Documentation/spi/spi-summary
-@@ -121,7 +121,7 @@ active.  So the master must set the clock to inactive before selecting
- a slave, and the slave can tell the chosen polarity by sampling the
- clock level when its select line goes active.  That's why many devices
- support for example both modes 0 and 3:  they don't care about polarity,
--and alway clock data in/out on rising clock edges.
-+and always clock data in/out on rising clock edges.
- 
- 
- How do these driver programming interfaces work?
-@@ -236,7 +236,7 @@ And SOC-specific utility code might look something like:
- 		struct mysoc_spi_data *pdata2;
- 
- 		pdata2 = kmalloc(sizeof *pdata2, GFP_KERNEL);
--		*pdata2 = pdata;
-+		*pdata2 = *pdata;
- 		...
- 		if (n == 2) {
- 			spi2->dev.platform_data = pdata2;
-@@ -427,8 +427,8 @@ any more such messages.
-     it, should only be used with small amounts of data where the
-     cost of an extra copy may be ignored.  It's designed to support
-     common RPC-style requests, such as writing an eight bit command
--    and reading a sixteen bit response -- spi_w8r16() being one its
--    wrappers, doing exactly that.
-+    and reading a sixteen bit response -- spi_w8r16() being one of
-+    its wrappers, doing exactly that.
- 
- Some drivers may need to modify spi_device characteristics like the
- transfer mode, wordsize, or clock rate.  This is done with spi_setup(),
--- 
-1.6.3.3
+--Signature=_Sat__31_Oct_2009_16_32_59_+1100_a+306G2MiZby2M/3
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Wolfram,
+
+On Fri, 30 Oct 2009 20:44:12 +0100 Wolfram Sang <w.sang@pengutronix.de> wro=
+te:
+>
+>  static struct of_platform_driver mpc52xx_psc_spi_of_driver =3D {
+>  	.owner =3D THIS_MODULE,
+> -	.name =3D "mpc52xx-psc-spi",
+> +	.name =3D DRIVER_NAME,
+
+You no longer need to set either owner or name in the of_platform driver,
+just in the included struct driver (as is done below), so you could just
+remove the above two lines.
+
+>  	.match_table =3D mpc52xx_psc_spi_of_match,
+>  	.probe =3D mpc52xx_psc_spi_of_probe,
+>  	.remove =3D __exit_p(mpc52xx_psc_spi_of_remove),
+>  	.driver =3D {
+> -		.name =3D "mpc52xx-psc-spi",
+> +		.name =3D DRIVER_NAME,
+>  		.owner =3D THIS_MODULE,
+>  	},
+>  };
+
+I am hoping that we can remove the owner and name fields from struct
+of_platform_driver sometime.
+
+--=20
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au
+http://www.canb.auug.org.au/~sfr/
+
+--Signature=_Sat__31_Oct_2009_16_32_59_+1100_a+306G2MiZby2M/3
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAkrrzAsACgkQjjKRsyhoI8zkPACfWvLFMPT+IGon6R7fVZu+hSuJ
+A/EAn0RBqP/UnD2smgqx/yaLGVWm85Fd
+=mTv6
+-----END PGP SIGNATURE-----
+
+--Signature=_Sat__31_Oct_2009_16_32_59_+1100_a+306G2MiZby2M/3--
+
+--===============5169322083775573285==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linuxppc-dev mailing list
+Linuxppc-dev@lists.ozlabs.org
+https://lists.ozlabs.org/listinfo/linuxppc-dev
+--===============5169322083775573285==--

@@ -1,184 +1,384 @@
-From: "ii" <lixo-fyyYI70gGcU@public.gmane.org>
-Subject: [SPAM] 楂樼骇鏂囩銆侀珮绾ц鏀垮姪鐞嗚亴涓氬寲璁粌
-Date: Sun, 1 Nov 2009 04:30:16 +0800
-Message-ID: <E1N4Kaw-00080b-7G@335xhf1.ch3.sourceforge.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] mpc52xx-psc-spi: refactor probe and remove to make use of
+	of_register_spi_devices()
+Date: Sat, 31 Oct 2009 19:03:55 -0600
+Message-ID: <fa686aa40910311803m43504167s1ad802aecd2b4344@mail.gmail.com>
+References: <1256931852-13255-1-git-send-email-w.sang@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary=000e0cd598da0a5ba0047744d716
+Cc: =?ISO-8859-1?B?S+FyaSBEYXbt8HNzb24=?= <kari.davidsson@marel.com>,
+	spi-devel-general@lists.sourceforge.net, linuxppc-dev@ozlabs.org
+To: Wolfram Sang <w.sang@pengutronix.de>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <1256931852-13255-1-git-send-email-w.sang@pengutronix.de>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+--000e0cd598da0a5ba0047744d716
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Hi Wolfram,
 
-清看 附件，如果有打扰，清原谅，谢谢！
+Thanks for this work. Comments below.
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="高级文秘、高级行政助理职业化训练.txt"
-Content-Transfer-Encoding: base64
+On Fri, Oct 30, 2009 at 1:44 PM, Wolfram Sang <w.sang@pengutronix.de> wrote=
+:
+> This driver has a generic part for the probe/remove routines which probab=
+ly
+> used to be called from a platform driver and an of_platform driver. Meanw=
+hile,
+> the driver is of_platform only, so there is no need for the generic part
+> anymore. Unifying probe/remove finally enables us to call
+> of_register_spi_devices(), so spi-device nodes from the device tree will =
+be
+> parsed. This was also mentioned by:
+> http://lists.ozlabs.org/pipermail/linuxppc-dev/2009-June/073273.html
+
+I haven't really been happy with any of the patches that added the
+of_register_spi_devices() call, but I never got around to dealing with
+it properly, or even replying.  I found Jon's patch too invasive, and
+the patch referenced above is a little ugly.  Adding the call should
+be really simple.  I've drafted a patch to do only that step and
+attached it to this mail.  If this one works for you, then I'll merge
+it immediately into -next.
+
+> On the way, some patterns have been changed to current best practices (li=
+ke
+> using '!ptr' and 'struct resource'). Also, an older, yet uncommented, pat=
+ch
+> from me has been incorporated to improve the checks if the selected PSC i=
+s
+> valid:
+>
+> http://patchwork.ozlabs.org/patch/36780/
+
+There are at least 3 discrete changes here.  I prefer for each to be
+provided as a separate patch so I can cherry pick the ones that are
+ready.  I'll go back and comment on the patch you referenced above
+patch right now.
+
+Also, I'm resistant to changing the probe layout on this driver at
+this time.  With the work being done to generalize the OF support
+code, there is a strong possibility that of_platform will be
+deprecated in favor of going back to using the platform bus directly
+(just like how OF support works for i2c, spi, etc).  I'd rather not
+refactor the driver until I'm certain of the direction that things are
+going to go.
+
+Cheers,
+g.
+
+>
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> Cc: K=E1ri Dav=ED=F0sson <kari.davidsson@marel.com>
+> Cc: Grant Likely <grant.likely@secretlab.ca>
+> ---
+> =A0drivers/spi/mpc52xx_psc_spi.c | =A0110 +++++++++++++++++++------------=
+---------
+> =A01 files changed, 52 insertions(+), 58 deletions(-)
+>
+> diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.=
+c
+> index 1b74d5c..3fa8c78 100644
+> --- a/drivers/spi/mpc52xx_psc_spi.c
+> +++ b/drivers/spi/mpc52xx_psc_spi.c
+> @@ -17,6 +17,7 @@
+> =A0#include <linux/errno.h>
+> =A0#include <linux/interrupt.h>
+> =A0#include <linux/of_platform.h>
+> +#include <linux/of_spi.h>
+> =A0#include <linux/workqueue.h>
+> =A0#include <linux/completion.h>
+> =A0#include <linux/io.h>
+> @@ -27,6 +28,7 @@
+> =A0#include <asm/mpc52xx.h>
+> =A0#include <asm/mpc52xx_psc.h>
+>
+> +#define DRIVER_NAME "mpc52xx-psc-spi"
+> =A0#define MCLK 20000000 /* PSC port MClk in hz */
+>
+> =A0struct mpc52xx_psc_spi {
+> @@ -358,32 +360,54 @@ static irqreturn_t mpc52xx_psc_spi_isr(int irq, voi=
+d *dev_id)
+> =A0 =A0 =A0 =A0return IRQ_NONE;
+> =A0}
+>
+> -/* bus_num is used only for the case dev->platform_data =3D=3D NULL */
+> -static int __init mpc52xx_psc_spi_do_probe(struct device *dev, u32 regad=
+dr,
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 u32 size, u=
+nsigned int irq, s16 bus_num)
+> +static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
+> + =A0 =A0 =A0 const struct of_device_id *match)
+> =A0{
+> - =A0 =A0 =A0 struct fsl_spi_platform_data *pdata =3D dev->platform_data;
+> + =A0 =A0 =A0 struct fsl_spi_platform_data *pdata =3D op->dev.platform_da=
+ta;
+> =A0 =A0 =A0 =A0struct mpc52xx_psc_spi *mps;
+> =A0 =A0 =A0 =A0struct spi_master *master;
+> + =A0 =A0 =A0 struct resource mem;
+> + =A0 =A0 =A0 s16 id =3D -1;
+> =A0 =A0 =A0 =A0int ret;
+>
+> - =A0 =A0 =A0 master =3D spi_alloc_master(dev, sizeof *mps);
+> - =A0 =A0 =A0 if (master =3D=3D NULL)
+> + =A0 =A0 =A0 /* get PSC id (only 1,2,3,6 can do SPI) */
+> + =A0 =A0 =A0 if (!pdata) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 const u32 *psc_nump;
+> +
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 psc_nump =3D of_get_property(op->node, "cel=
+l-index", NULL);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (!psc_nump || (*psc_nump > 2 && *psc_num=
+p !=3D 5)) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&op->dev, "PSC can'=
+t do SPI\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 id =3D *psc_nump + 1;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 ret =3D of_address_to_resource(op->node, 0, &mem);
+> + =A0 =A0 =A0 if (ret)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ret;
+> +
+> + =A0 =A0 =A0 master =3D spi_alloc_master(&op->dev, sizeof *mps);
+> + =A0 =A0 =A0 if (!master)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -ENOMEM;
+>
+> - =A0 =A0 =A0 dev_set_drvdata(dev, master);
+> + =A0 =A0 =A0 if (!request_mem_region(mem.start, resource_size(&mem), DRI=
+VER_NAME)) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -ENOMEM;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto free_master;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 dev_set_drvdata(&op->dev, master);
+> =A0 =A0 =A0 =A0mps =3D spi_master_get_devdata(master);
+>
+> =A0 =A0 =A0 =A0/* the spi->mode bits understood by this driver: */
+> =A0 =A0 =A0 =A0master->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | =
+SPI_LSB_FIRST;
+>
+> - =A0 =A0 =A0 mps->irq =3D irq;
+> - =A0 =A0 =A0 if (pdata =3D=3D NULL) {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_warn(dev, "probe called without platfor=
+m data, no "
+> + =A0 =A0 =A0 mps->irq =3D irq_of_parse_and_map(op->node, 0);
+> + =A0 =A0 =A0 if (!pdata) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_info(&op->dev, "probe called without pl=
+atform data, no "
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0"cs_contro=
+l function will be called\n");
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mps->cs_control =3D NULL;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mps->sysclk =3D 0;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 master->bus_num =3D bus_num;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 master->bus_num =3D id;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0master->num_chipselect =3D 255;
+> =A0 =A0 =A0 =A0} else {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mps->cs_control =3D pdata->cs_control;
+> @@ -395,19 +419,18 @@ static int __init mpc52xx_psc_spi_do_probe(struct d=
+evice *dev, u32 regaddr,
+> =A0 =A0 =A0 =A0master->transfer =3D mpc52xx_psc_spi_transfer;
+> =A0 =A0 =A0 =A0master->cleanup =3D mpc52xx_psc_spi_cleanup;
+>
+> - =A0 =A0 =A0 mps->psc =3D ioremap(regaddr, size);
+> + =A0 =A0 =A0 mps->psc =3D ioremap(mem.start, resource_size(&mem));
+> =A0 =A0 =A0 =A0if (!mps->psc) {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(dev, "could not ioremap I/O port ra=
+nge\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&op->dev, "could not ioremap I/O po=
+rt range\n");
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D -EFAULT;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto free_master;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto free_unmap;
+> =A0 =A0 =A0 =A0}
+> =A0 =A0 =A0 =A0/* On the 5200, fifo regs are immediately ajacent to the p=
+sc regs */
+> =A0 =A0 =A0 =A0mps->fifo =3D ((void __iomem *)mps->psc) + sizeof(struct m=
+pc52xx_psc);
+>
+> - =A0 =A0 =A0 ret =3D request_irq(mps->irq, mpc52xx_psc_spi_isr, 0, "mpc5=
+2xx-psc-spi",
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mps);
+> + =A0 =A0 =A0 ret =3D request_irq(mps->irq, mpc52xx_psc_spi_isr, 0, DRIVE=
+R_NAME, mps);
+> =A0 =A0 =A0 =A0if (ret)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto free_master;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto free_unmap;
+>
+> =A0 =A0 =A0 =A0ret =3D mpc52xx_psc_spi_port_config(master->bus_num, mps);
+> =A0 =A0 =A0 =A0if (ret < 0)
+> @@ -429,24 +452,29 @@ static int __init mpc52xx_psc_spi_do_probe(struct d=
+evice *dev, u32 regaddr,
+> =A0 =A0 =A0 =A0if (ret < 0)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto unreg_master;
+>
+> + =A0 =A0 =A0 of_register_spi_devices(master, op->node);
+> +
+> =A0 =A0 =A0 =A0return ret;
+>
+> =A0unreg_master:
+> =A0 =A0 =A0 =A0destroy_workqueue(mps->workqueue);
+> =A0free_irq:
+> =A0 =A0 =A0 =A0free_irq(mps->irq, mps);
+> -free_master:
+> +free_unmap:
+> =A0 =A0 =A0 =A0if (mps->psc)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0iounmap(mps->psc);
+> + =A0 =A0 =A0 release_mem_region(mem.start, resource_size(&mem));
+> +free_master:
+> =A0 =A0 =A0 =A0spi_master_put(master);
+>
+> =A0 =A0 =A0 =A0return ret;
+> =A0}
+>
+> -static int __exit mpc52xx_psc_spi_do_remove(struct device *dev)
+> +static int __exit mpc52xx_psc_spi_of_remove(struct of_device *op)
+> =A0{
+> - =A0 =A0 =A0 struct spi_master *master =3D dev_get_drvdata(dev);
+> + =A0 =A0 =A0 struct spi_master *master =3D dev_get_drvdata(&op->dev);
+> =A0 =A0 =A0 =A0struct mpc52xx_psc_spi *mps =3D spi_master_get_devdata(mas=
+ter);
+> + =A0 =A0 =A0 struct resource mem;
+>
+> =A0 =A0 =A0 =A0flush_workqueue(mps->workqueue);
+> =A0 =A0 =A0 =A0destroy_workqueue(mps->workqueue);
+> @@ -454,46 +482,12 @@ static int __exit mpc52xx_psc_spi_do_remove(struct =
+device *dev)
+> =A0 =A0 =A0 =A0free_irq(mps->irq, mps);
+> =A0 =A0 =A0 =A0if (mps->psc)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0iounmap(mps->psc);
+> + =A0 =A0 =A0 if (of_address_to_resource(op->node, 0, &mem) =3D=3D 0)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 release_mem_region(mem.start, resource_size=
+(&mem));
+>
+> =A0 =A0 =A0 =A0return 0;
+> =A0}
+>
+> -static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
+> - =A0 =A0 =A0 const struct of_device_id *match)
+> -{
+> - =A0 =A0 =A0 const u32 *regaddr_p;
+> - =A0 =A0 =A0 u64 regaddr64, size64;
+> - =A0 =A0 =A0 s16 id =3D -1;
+> -
+> - =A0 =A0 =A0 regaddr_p =3D of_get_address(op->node, 0, &size64, NULL);
+> - =A0 =A0 =A0 if (!regaddr_p) {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 printk(KERN_ERR "Invalid PSC address\n");
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+> - =A0 =A0 =A0 }
+> - =A0 =A0 =A0 regaddr64 =3D of_translate_address(op->node, regaddr_p);
+> -
+> - =A0 =A0 =A0 /* get PSC id (1..6, used by port_config) */
+> - =A0 =A0 =A0 if (op->dev.platform_data =3D=3D NULL) {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 const u32 *psc_nump;
+> -
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 psc_nump =3D of_get_property(op->node, "cel=
+l-index", NULL);
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (!psc_nump || *psc_nump > 5) {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 printk(KERN_ERR "mpc52xx_ps=
+c_spi: Device node %s has invalid "
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 "cell-index property\n", op->node->full_name);
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 id =3D *psc_nump + 1;
+> - =A0 =A0 =A0 }
+> -
+> - =A0 =A0 =A0 return mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (=
+u32)size64,
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 irq_of_parse_and_map(op->node, 0), id);
+> -}
+> -
+> -static int __exit mpc52xx_psc_spi_of_remove(struct of_device *op)
+> -{
+> - =A0 =A0 =A0 return mpc52xx_psc_spi_do_remove(&op->dev);
+> -}
+> -
+> =A0static struct of_device_id mpc52xx_psc_spi_of_match[] =3D {
+> =A0 =A0 =A0 =A0{ .compatible =3D "fsl,mpc5200-psc-spi", },
+> =A0 =A0 =A0 =A0{ .compatible =3D "mpc5200-psc-spi", }, /* old */
+> @@ -504,12 +498,12 @@ MODULE_DEVICE_TABLE(of, mpc52xx_psc_spi_of_match);
+>
+> =A0static struct of_platform_driver mpc52xx_psc_spi_of_driver =3D {
+> =A0 =A0 =A0 =A0.owner =3D THIS_MODULE,
+> - =A0 =A0 =A0 .name =3D "mpc52xx-psc-spi",
+> + =A0 =A0 =A0 .name =3D DRIVER_NAME,
+> =A0 =A0 =A0 =A0.match_table =3D mpc52xx_psc_spi_of_match,
+> =A0 =A0 =A0 =A0.probe =3D mpc52xx_psc_spi_of_probe,
+> =A0 =A0 =A0 =A0.remove =3D __exit_p(mpc52xx_psc_spi_of_remove),
+> =A0 =A0 =A0 =A0.driver =3D {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =3D "mpc52xx-psc-spi",
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =3D DRIVER_NAME,
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.owner =3D THIS_MODULE,
+> =A0 =A0 =A0 =A0},
+> =A0};
+> --
+> 1.6.3.3
+>
+>
+
+
+
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+--000e0cd598da0a5ba0047744d716
+Content-Type: text/x-patch; charset=US-ASCII;
+	name="0001-spi-mpc5200-Register-SPI-devices-described-in-device.patch"
 Content-Disposition: attachment;
-        filename="高级文秘、高级行政助理职业化训练.txt"
+	filename="0001-spi-mpc5200-Register-SPI-devices-described-in-device.patch"
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_g1h3ej6a0
 
-ICAgICAgICAgICAgICAgILjfvLbOxMPYoaK437y20NDV/tb6wO3WsNK1u6/RtcG3DQoNCg0KICAg
-ICAgICAgICAgDQq/qr/OyrG85DogMjAwOcTqMTHUwjIxLTIyyNUgICAgIMnu29q98LDZus8gDQog
-ICAgICAgICAgMjAwOcTqMDEw1MIyNC0yNcjVICAgILGxvqnI8LPJIA0KICAgICAgICAgIDIwMDnE
-6jEx1MI3LTjI1SAgICAgIMnPuqPBvLCyDQoNCg0KxeDRtbfR08OjujIwMDDUqi/IyyAgo6jXysHP
-t9GjrNbQss230aOssui147fRo6y6z9OwtcijrKOpDQoNCtb3sOy1pc67OiDW2sjL0NC53MDt18nR
-r834ICAgd3d3LjEyNnB4LmNvbQ0KDQoNCsjIz9/XydGvo7o0MDA4MTE4ODkwDQrXydGvtee7sKO6
-MDc1NS0yNjA3NTQyOSAgMjYwNzUzNjUgIDI2OTc1MjY1ICAwMjEtNjQ4NTQ4NzcgDQq0qyAgICDV
-5qO6MDc1NS02MTM1MTM5NiAgDQrBqiDPtSDIy6O6IMHo0KG94yAgIA0KDQogDQqppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaUNCg0KICAgIMjnus7XvMi3oaLRuMvZwey74cnPvLa1xNXmyrXS4s28ID8NCiAg
-ICDI57rO0K3W+sHstby0psDt0rvQqdLJxNHOysziID8NCiAgICDI57rOs8nOqsHstby1xNfzsPLT
-0rHbID8NCiAgICDNqLn9sb60zsXg0bXO0sPHu+G4+MTjvsW087e9z/KhosquzuXW1r3ivva3vbeo
-DQoNCiAgICC21LjfvLbW+sDtus3D2MrpwLTLtaOsw7vT0Mrctb3XqNK1z7XNs9G1wbejrL2rzt63
-qLTT1b3C1NDUyKu3vc67vce2yMjPDQrWqsPYyunT69b6wO21xLmk1/eju9Tay/m008rCtcS5pNf3
-1tC40L71yLG3psDtwtvWp7PWo7u5pNf31tDX3MrHsbu2r9DQysKjrA0KsrvE3Nb3tq/Vxs7VuaTX
-973a1+Cju8/rzqrB7LW81/e1xLj8tuChorj8usPItMO709C6w7XEt723qKGiy7zCt6O7z+u4/LrD
-tcQNCta00NDB7LW8tcTV/rLfo6zItNfcyse1w7K7tb3Wp7PWo7vP67j4uavLvr3ayqG30dPDo6y1
-q8i0srvWqrTTus60ps/CytajrM/rDQq4/LrDtdi0psDtusO5q7myudjPtaOo1f64rrmrudijqaOs
-yLTX3MrHsru1w9KqwewtLS0t1u7I59LUyc+1xM7KzOKjrLa8ysfDvw0KuPbW+sDtw9jK6bmk1/fI
-y9Sxy/nD5rbU0+vAp7vztcSjrMjnus6w0c7V1f3It7e9z/K007b40bjL2czhyf3X1Mnt1rDStcvY
-0fijrA0Ks8nBy87Sw8ex2NDrw+a21NPrveK+9rXEv87M4qGjDQoNCsXg0bW21M/zo7oNCiAgICC4
-97y21vrA7brNw9jK6aO619yyw6Oo19y+rcDto6nD2MrpoaKyv8PFw9jK6aGisOy5q8rS1vfIzqGi
-0NDV/rK/vq3A7aOoDQrW+sDtoaLW97ncoaLOxNawyMvUsbXIKQ0KDQqppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaUNCg0KofIgv86zzMrVu/Gjug0KICAgofogINXGztW437y20NDV/tb6wO3D2MrptcTWsNK1
-vLzE3A0KICAgofogIMnG09q0psDtuaTX99bQuPe8trm1zajE0bXjo6zM4cn919TJ7daw0rXE3MGm
-DQogICCh+iAg1cbO1dPryc/Lvrm1zai1xLy8x8mjrLPJzqrB7LW8sru/ybvyyLG1xNfzsPLT0rHb
-DQogICCh+iAgyOe6zrXstqjU2qGwz8LK9KGxw+bHsLXEwey1vLXYzrsNCiAgIKH6ICDHycPutKbA
-7aGwyOK80OLJobG1xLmk1/ejrMzlz9a49sjLuaTX98TcwaYNCiAgIKH6ICDI57rOwPvTw8+1zbO1
-xMDtwtvWqsq2o6zKtc/W1Nq5pNf31tC1xNOm08MNCiAgIKH6ICDVxs7V1f7O8bmrudi1xLv5sb68
-vMfJDQogICCh+iAgyMPX1Ly6s8nOqtK7uPa439CnubXNqNXfo6zM5c/W1rCzobzb1rUNCiAgIKH6
-ICC31s/ty/vIy7jf0Ke5pNf3vq3R6aOsyrXP1tfUztLT0NCntcTKsbzkudzA7Q0KICAgofogIMq1
-z9bP1rT6zsTD2Lmk1/e6zbW1sLi53MDtuaTX97XEuea3ts/OvdMNCiAgIKH6ICDRp8+w1cbO1bnm
-t7a1xMnMzvHQtNf3vLzHyaOszOG437mrzsTQtNf3y67GvQ0KICAgofogINGnz7DVxs7Vu+HS6bXE
-1+nWr8u8wre8sLjf0KfCyrXE1+nWr7e9t6ihow0KICAgofogINXGztW7+bG+tcTJzM7xu+62r8Dx
-0sejrMq5xPrKytOmyNWzo8nMzvGzobrPtcTA8dLH0qrH8w0KICAgofogINXGztW+xtHnvLzHyc3q
-s8nJzM7x0efH68S/tcSjrMq1z9bW97H2y6vTrrXEusO+1sPmDQogICCh+iAgwcu94r3TtP2/zbun
-tcTA8dLHz7i92qOsyMPE+rXEw7/Su867v83Iy7H21sHI57npDQoNCqmlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppQ0KDQqh8iDF4NG1zOG42aO6DQrSu6GixvPStdDQ1f7W+sDtw9jK6daw0rXM2NDU0+vL2NbK
-0qrH8w0KICAgIKHzICDW+sDtw9jK6bXE1rDStbzb1rW6zdf308MNCiAgICAgICAgofogILC4wP2j
-utb6wO3D2MrpuNrOu7XExsC82w0KICAgIKHzICDW+sDtw9jK6cjL1LG1xNaw1PDT69b30qq5pNf3
-xNrI3SANCiAgICAgICAgofogILC4wP2jutb6wO3D2MrpyMvUsbXE1rDOu8u1w/fK6dH5sOUgDQog
-ICAgofMgINb6wO3D2MrptcTWsNK1t6LVubnmu64NCiAgICCh8yAg1vrA7cPYyunIy9SxtcTX1M7S
-vcfJq7aozrsNCiAgICCh8yAg08XQ49b6wO3D2MrpyMvUsbXEyqTIzsvY1soNCiAgICAgICAgofog
-ILC4wP231s72o7ogDQoNCrb+oaLIy7zKubXNqNPruaTX99Cttfe8vMfJDQogICAgofMgILm1zai2
-1NPa1vrA7cPYyum1xNLi0uUNCiAgICCh8yAgs6PTw7m1zai3vcq91q6xyL3PDQogICAgofMgILjf
-vLbW+sDtw9jK6cjL1LG1xLm1zai8vMfJDQogICAgICAgIKH6ICCwuMD9o7rI57rOzP22rsDPsOW1
-xKGww7vT0Mu1s/bAtLXE0uLLvKGxo78gDQogICAgofMgIMjnus7Iw8Hstby5zsS/z+C/tKGiu/G1
-w9DFyM6jvw0KICAgIKHzICDI57rO0+vE47XEyc/LvtCttfe2+LK7sO+1ucOmo78NCiAgICCh8yAg
-yOe6ztPruPfW1snPy77P4LSmo78NCiAgICCh8yAgzsrM4qO6ztK1xMnPvLa199ffwcvU9cO0sOyj
-vw0KICAgICAgICCh+iAgsLjA/aO6wey1vMjDztLE0c6qx+mjrM7SuMPU9cO0sOyjvw0KICAgICAg
-ICCh+iAgsLjA/aO6yOe6ztPrzazKwrvyz8K8ts/gtKajvw0KICAgICAgICCh+iAgsLjA/aO609DI
-y9TaxOPD5sewsafUucTjtcTB7LW8uMPU9cO0sOyjvw0KICAgIKHzICDM1sLbo7rI57rOt6K709fU
-ye3TxcrGxvC6w9CttffX99PDo78NCiAgICDI57rOs8nOqsnPy761w8Gm1vrK1g0KICAgIKHzICDT
-xdDjw9jK6bXEusvQxL661fnBpg0KICAgIKHzICDWqry61qqxy6O6t9bO9snPy761xLmk1/fM2LXj
-DQogICAgofMgIMjnus621LT9srvNrNDUuPHA4NDNtcTJz8u+DQogICAgofMgINW+1NrPwry2tcTO
-u9bDyc/LvL+8yc+8trXEysINCiAgICCh8yAg0+vJz7y2z+C0ptei0uLKws/uDQogICAgtee7sMDx
-0scNCiAgICCh8yAgvdPM/bXnu7C1xLv5sb7UrdTyDQogICAgofMgIL3TzP2157uwtcS8uM/u16LS
-4iANCiAgICCh8yAgsqa08rXnu7C1xLy4tPPSqrXjDQoNCsj9oaLKsbzkudzA7bywuaTX982zs++8
-vMfJDQogICAgofMgIMqxvOS53MDttcTO88f4DQogICAgofMgIMqxvOS53MDttcTUrdTyDQogICAg
-ICAgocwgxL+x6rncwO3T6zgwLzIwt6jU8g0KICAgICAgIKHMILu6vLHH4dbYtcTTxc/IudzA7Q0K
-ICAgICAgIKHMILj2yMvKsbzk0+vB7LW8uaTX98qxvOS8xruu0+uwssXFDQogICAgofMgIMqxvOS5
-3MDt0KHHz8PFDQogICAgofMgILH2v82907T90+u157uwtKbA7Q0KICAgIKHzICDJz7y2tcTKsbzk
-udzA7dPrsLLFxQ0KICAgIKHzICDX1M7Sx+nQ97/Y1sbT69G5waa53MDtDQoNCsvEoaK74c7x1+nW
-r9PrudzA7Q0KICAgIKHzICC74c7xt9bA4KOt1+nWr8u8wrcNCiAgICCh8yAg1+nWr73Xts6jurvh
-x7DXvLG4oaK74dbQ0K3W+qGiu+G689X7wO0NCiAgICCh8yAg1+nWr7e9t6gNCiAgICCh8yAgwP27
-4bXE1+nWrw0KICAgIKHzICC089DNu+HS6aGi1bm74bXE1+nWrw0KICAgIKHzICDI57rOtaPIzrvh
-0unW97PWyMsNCiAgICCh8yAgyOe6zrWxusO74dLpw9jK6aO/DQogICAgofMgIMirvrCwuMD9o7rE
-s7mry77E6rbItPPQzcfsteS77ravst+7rsq8xKkNCiAgICAgICAgofogILC4wP2jurTz0M274dLp
-vLC77ravst+7rrC4DQogICAgofMgIMjnus6x3MPiz93T2rvh0unDpsK11q7W0KO/DQoNCs7loaLO
-xLz+18rBz7ncwO3T69TL08MNCiAgICCh8yAgzsS1tbfWwOCx6te8DQogICAgofMgILW1sLi53MDt
-tcTUrdTyDQogICAgofMgIM7EtbW1xMv30v0NCiAgICCh8yAgtefX087EtbW1xLGjDQogICAgofMg
-INOh1cK1xLncwO0NCiAgICAgICAgofogILC4wP231s72o7oNCiAgICCh8yAg0dDM1qO6yOe6zsD7
-08O1tbC4zqq5q8u+0rXO8bf+zvGjvw0KDQrB+aGi0MXPorW1sLi53MDtDQogICAgofMgINDFz6K5
-3MDtu/mxvsH3s8wNCiAgICCh8yAg0MXPorXEytW8r9X7wO0NCiAgICCh8yAg0MXPorXEtKu13Q0K
-ICAgIKHzICDQxc+itcS0orTm0+uxo8PcDQogICAgofMgILGjw9zS4sq20+uxo8PcuebU8g0KICAg
-IKHzICDD2MrptcS7+bG+1rDStbXAtcINCg0Kxt+hormrzsTQtNf30+u0psDtyrXO8Q0KICAgIKHz
-ICC5q87Et9bA4A0KICAgIKHzICC5q87EtcS94bm5DQogICAgofMgINb6wO3D2MrpzsTX1tans9bT
-prTvtb21xNKqx/MNCiAgICCh8yAguavOxNC01/e55tTyus3TptPDvLzHyQ0KICAgIKHzICDK/dfW
-tcTV/ci3yrnTww0KICAgIKHzICC7+cr9tMq6zdDyyv20yrXE1f3It9TL08MNCiAgICCh8yAgxKO6
-/bTKus3Eo8ystMq1xNX9yLfKudPDDQogICAgofMgILmrzsTOxNbW1Nq5pNf31tC1xNf308MNCiAg
-ICCh8yAgz+nO9rOj08POxNbWtcTQtNf3vLzHyQ0KICAgICAgICDNqNaqDQogICAgICAgIMfryr4N
-CiAgICAgICAgsai45g0KICAgICAgICC5pNf319y94Q0KICAgICAgICC5pNf3vMa7rqOo1tyhotTC
-oaLE6qOpDQogICAgICAgIMr21rCxqLjmDQogICAgofMgIMfJ08PNvLHto6zIw9fcveGxqLjmuPy+
-3cu1t/7Bpg0KICAgIKHzICBTTUFSVNSt1PLT61NXT1S3vbeoDQogICAgofMgIMjd0te77M/9tcS5
-q87EzsTW1g0KICAgICAgICANCr7FoaLJzM7xwPHSx9Pr1rDStdDOz/PL3NTsDQogICAgMaGisNHO
-1bXa0rvToc/zo6zL3NTsuPbIy9aws6HQzs/zDQogICAgICAgIKHzICDXxdewtcRUT1DUrdTyDQog
-ICAgICAgIKHzICChsL7cvvihsNfF17Cw3LHKoaqhqtfF17DO88f4DQogICAgICAgIKHzICDTw8G8
-usO1xNLHzKyjrMzlz9a49sjLxvjWyg0KICAgICAgICCh8yAgt6LQzaGiu6/XsaGi1b6hosGioaLX
-36Gi1/gNCiAgICAgICAgofMgIMehtbG1xNarzOXT79HUIMjD19S8urPJzqrSu7j209DL2NH4tcTI
-yw0KICAgIDKhoiC7+bG+yee9u8Dx0scNCiAgICAgICAgofMgILz7w+a96cnctcTA8dLHDQogICAg
-ICAgIKHzICDOyrrytcTA8dLHDQogICAgICAgIKHzICDD+8astcTKudPDDQogICAgICAgIKHzICDI
-1bOjyczO8bvutq/W0LXEwPHSx7nmt7YNCiAgICAgICAgofMgINPruaTX99PQudi1xM7EzOW77rav
-1tC1xMDx0se55re2DQogICAgM6GiIMnMzvHR58frwPHSxw0KICAgICAgICCh8yAgteOyy7y8x8mh
-qqGqyOe6zrPUtcO9ob+1DQogICAgICAgIKHzICC+xtHnvLzHyaGqoarI57rOtfe92sb4t9UNCiAg
-ICAgICAgofMgINbQoaLO97LN08OyzcDx0scNCiAgICAgICAgofMgILLN0vvA8dLHvfu8yQ0KDQoN
-CqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppQ0KDQq9ssqmvPK96aO61cXS687Exa7Kvw0KICAgIM73sLK9
-u82otPPRp7ncwO3Rp9S6o6i5pMnMudzA7aOpJrDE1t648cHWzf7WzrTz0aejqMrQs6HTqs/6o6lN
-QkHLtsq/O9T4sbsNCsra0+jDwLn6UFBUufq8ytaw0rXF4NG1yqbIz9akoaLP47jbufq8yrncwO3R
-p9S6xvPStbjfvLbXydGvucvOytfKuPHIz9ako7vU+LvxDQrJ7tvavdyz9sbz0rXXydGvucvOyteo
-vNKzxrrFo7u24MTqtaPIzr/nufrG89K1IMPAufpBc2hlcqGiILeoufpUcmlzyv3C67/GvLy1yA0K
-xvPStbjfvLa+rcDtoaMNCg0KICAgINT4uKi1vNfJ0a+1xMbz0rXT0NOiufpTVEnXydGvudzA7bv6
-ubmhos/juNu/tcH6yrXStbnJt925q8u+oaLDwLn6yP3BoryvzcWhog0Kw8C5+kFTSEVSu/q5ubXI
-tPPQzbyvzcW5q8u+oaLJ7tva1dDJzM7vwfehosnu29pMWUS437/GvLy5ybfduavLvqGiycLO98P3
-tcC7r7mkDQqyxMHPucm33bmry76horijvajB+syp1v3U7NPQz965q8u+oaK547art/DJvcLesLK9
-8Mr01sbU7NPQz965q8u+oaK547art/DJvdDC1LQNCszVtMm5ybfdvK/NxaGiy9XW3czYwPbLubXn
-1LS7+rm5oaLEz76pyc/UqrrsxL680r7fuavLvqGjDQoNCiAgICDW972yv86zzKO6oba437y20NDV
-/s7Ew9jWsNK1u6/RtcG3obehoqG2udzA7bm1zajS1cr1us252M+10K2196G3oaKhts3iw7PKtQ0K
-1b2y2df3vLzHyaG3oaKhtrmrzsTQtNf3obehoqG2tPO/zbunv6q3orf+zvHT67ncwO2ht6Gioba7
-4dLpvKjQp7ncwO2ht6GiobbJzM7xDQrA8dLH0+vR58frvLzHyaG3oaMNCg0KICAgINfJ0a/F4NG1
-uf21xMbz0rXT0KO61tC98MHrxM+3sr/ax6bQv7/zoaLC3rCyvK/NxaGizNjA9su5sLK3wLmry76h
-otDCzqy087nJDQq33byvzcW5q8u+oaLQwtS0zNW0ybyvzcWhorfwzNW8r83FoaLO4NbdwarNqLmr
-y76hosTP0828r83FoaLL1dbduuy2ubyvzcWhotSq0uINCrzSvt/WxtTsuavLvqGisbG+qbar0fTI
-yMTcvK/NxaGiu6rI87yvzcWhosD7tO/Ds9LXoaK73cHpzajNqNG2uavLvqGixM/Uwcr9vt3NqA0K
-0MW5q8u+oaK4u8q/v7Whorq9vM67+rm5oaK80ri7uLvHxbyvzcWhos/Dw8W/qreix/i12LL6uavL
-vqGi1dDJzNbD0rWhos73sLLA+7GmDQrJ+sysvK/NxaGiycLO98zsyMvT0Lv6ucm33bmry76horXC
-saa5+rzKoaK608TPtefBpqGiuKPW3brsutO67MS+vNK+36GixP6yqMzAxLcNCta4yeixuLmry76h
-osPAufrI/cGivK/NxaGiQUNFu/q5uaGisbG+qbar0fTMq9H0xNzCr77fs6ehor+tsqm84MDtuavL
-vqGiIM/juNvQ7A0KuuvS49ewys7J6LzGuavLvqGiuqPBwdOyxczWxtTsuavLvqGiuePW3c6wzNq8
-r83FoaLUwcypvK/NxaGiv7XHxcrp1Lqhornax8ew/NewDQrWxsa309DP3rmry76hotDxyNW98Mr0
-1sbGt9PQz965q8u+oaKxsb6p0ce2vLnJt925q8u+oaLJ7tvatefQxbfWuavLvrXIoaMNCg0KLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0K
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Come build with us! The BlackBerry(R) Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9 - 12, 2009. Register now!
-http://p.sf.net/sfu/devconference
---=_NextPart_2rfkindysadvnqw3nerasdf
+RnJvbSA3NjI5ZDQwZGMzNDNmZjIxNmI3NTJkNWM2ODY1NGRjOWQzMGYwYzkxIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBHcmFudCBMaWtlbHkgPGdyYW50Lmxpa2VseUBzZWNyZXRsYWIu
+Y2E+CkRhdGU6IFNhdCwgMzEgT2N0IDIwMDkgMTc6NDk6MzggLTA2MDAKU3ViamVjdDogW1BBVENI
+XSBzcGkvbXBjNTIwMDogUmVnaXN0ZXIgU1BJIGRldmljZXMgZGVzY3JpYmVkIGluIGRldmljZSB0
+cmVlCgpBZGQgY2FsbCB0byBvZl9yZWdpc3Rlcl9zcGlfZGV2aWNlcygpIHRvIHJlZ2lzdGVyIFNQ
+SSBkZXZpY2VzIGRlc2NyaWJlZAppbiB0aGUgT0YgZGV2aWNlIHRyZWUuCgpTaWduZWQtb2ZmLWJ5
+OiBHcmFudCBMaWtlbHkgPGdyYW50Lmxpa2VseUBzZWNyZXRsYWIuY2E+Ci0tLQogZHJpdmVycy9z
+cGkvbXBjNTJ4eF9wc2Nfc3BpLmMgfCAgICA4ICsrKysrKystCiAxIGZpbGVzIGNoYW5nZWQsIDcg
+aW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9t
+cGM1Mnh4X3BzY19zcGkuYyBiL2RyaXZlcnMvc3BpL21wYzUyeHhfcHNjX3NwaS5jCmluZGV4IDFi
+NzRkNWMuLmI0NDU0NjQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL21wYzUyeHhfcHNjX3NwaS5j
+CisrKyBiL2RyaXZlcnMvc3BpL21wYzUyeHhfcHNjX3NwaS5jCkBAIC0xNyw2ICsxNyw3IEBACiAj
+aW5jbHVkZSA8bGludXgvZXJybm8uaD4KICNpbmNsdWRlIDxsaW51eC9pbnRlcnJ1cHQuaD4KICNp
+bmNsdWRlIDxsaW51eC9vZl9wbGF0Zm9ybS5oPgorI2luY2x1ZGUgPGxpbnV4L29mX3NwaS5oPgog
+I2luY2x1ZGUgPGxpbnV4L3dvcmtxdWV1ZS5oPgogI2luY2x1ZGUgPGxpbnV4L2NvbXBsZXRpb24u
+aD4KICNpbmNsdWRlIDxsaW51eC9pby5oPgpAQCAtNDY0LDYgKzQ2NSw3IEBAIHN0YXRpYyBpbnQg
+X19pbml0IG1wYzUyeHhfcHNjX3NwaV9vZl9wcm9iZShzdHJ1Y3Qgb2ZfZGV2aWNlICpvcCwKIAlj
+b25zdCB1MzIgKnJlZ2FkZHJfcDsKIAl1NjQgcmVnYWRkcjY0LCBzaXplNjQ7CiAJczE2IGlkID0g
+LTE7CisJaW50IHJjOwogCiAJcmVnYWRkcl9wID0gb2ZfZ2V0X2FkZHJlc3Mob3AtPm5vZGUsIDAs
+ICZzaXplNjQsIE5VTEwpOwogCWlmICghcmVnYWRkcl9wKSB7CkBAIC00ODUsOCArNDg3LDEyIEBA
+IHN0YXRpYyBpbnQgX19pbml0IG1wYzUyeHhfcHNjX3NwaV9vZl9wcm9iZShzdHJ1Y3Qgb2ZfZGV2
+aWNlICpvcCwKIAkJaWQgPSAqcHNjX251bXAgKyAxOwogCX0KIAotCXJldHVybiBtcGM1Mnh4X3Bz
+Y19zcGlfZG9fcHJvYmUoJm9wLT5kZXYsICh1MzIpcmVnYWRkcjY0LCAodTMyKXNpemU2NCwKKwly
+YyA9IG1wYzUyeHhfcHNjX3NwaV9kb19wcm9iZSgmb3AtPmRldiwgKHUzMilyZWdhZGRyNjQsICh1
+MzIpc2l6ZTY0LAogCQkJCQlpcnFfb2ZfcGFyc2VfYW5kX21hcChvcC0+bm9kZSwgMCksIGlkKTsK
+KwlpZiAoIXJjKQorCQlvZl9yZWdpc3Rlcl9zcGlfZGV2aWNlcyhkZXZfZ2V0X2RydmRhdGEoJm9w
+LT5kZXYpLCBvcC0+bm9kZSk7CisKKwlyZXR1cm4gcmM7CiB9CiAKIHN0YXRpYyBpbnQgX19leGl0
+IG1wYzUyeHhfcHNjX3NwaV9vZl9yZW1vdmUoc3RydWN0IG9mX2RldmljZSAqb3ApCi0tIAoxLjYu
+My4zCgo=
+--000e0cd598da0a5ba0047744d716
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 _______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+Linuxppc-dev mailing list
+Linuxppc-dev@lists.ozlabs.org
+https://lists.ozlabs.org/listinfo/linuxppc-dev
+--000e0cd598da0a5ba0047744d716--

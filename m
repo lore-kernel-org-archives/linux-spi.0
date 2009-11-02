@@ -1,77 +1,125 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] mpc52xx-psc-spi: refactor probe and remove to make use of
-	of_register_spi_devices()
-Date: Mon, 2 Nov 2009 09:08:31 -0700
-Message-ID: <fa686aa40911020808n73a898ack5fb66933188555da@mail.gmail.com>
-References: <1256931852-13255-1-git-send-email-w.sang@pengutronix.de>
-	<fa686aa40910311803m43504167s1ad802aecd2b4344@mail.gmail.com>
-	<20091102131427.GB4696@pengutronix.de>
+From: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
+Subject: Re: [spi-devel-general] [PATCH] trivial: some fixes in spi
+	documentation
+Date: Mon, 2 Nov 2009 14:54:51 -0200
+Message-ID: <20091102165451.GA20277@vespa.holoscopio.com>
+References: <1256938094-8137-1-git-send-email-cascardo@holoscopio.com> <20091102121334.GA4696@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: =?ISO-8859-1?B?S+FyaSBEYXbt8HNzb24=?= <kari.davidsson@marel.com>,
-	spi-devel-general@lists.sourceforge.net, linuxppc-dev@ozlabs.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="CE+1k2dSO48ffgeK"
+Cc: trivial@kernel.org,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Randy Dunlap <rdunlap@xenotime.net>,
+	spi-devel-general@lists.sourceforge.net
 To: Wolfram Sang <w.sang@pengutronix.de>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <20091102131427.GB4696@pengutronix.de>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20091102121334.GA4696@pengutronix.de>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Nov 2, 2009 at 6:14 AM, Wolfram Sang <w.sang@pengutronix.de> wrote:
->> Also, I'm resistant to changing the probe layout on this driver at
->> this time. =A0With the work being done to generalize the OF support
->> code, there is a strong possibility that of_platform will be
->> deprecated in favor of going back to using the platform bus directly
->> (just like how OF support works for i2c, spi, etc). =A0I'd rather not
->> refactor the driver until I'm certain of the direction that things are
->> going to go.
->
-> And this was possibly the best answer I could get \o/ Sounds really promi=
-sing,
-> is there somewhere a discussion about how OF-generalization could happen?
 
-It has been discussed on-and-off on the mailing list and on IRC.
-There are 2 major problems that need to be solved before it can be
-done:
-1. Figure out how to do OF-style driver probing with the platform bus.
- I could use the same heuristic as used by i2c & spi, but that
-approach isn't very scalable, and doesn't handle backwards
-compatibility very well.
-2. Figure out the best way to extract platform data from the device
-tree without having a huge impact on the device drivers.  The adapter
-code still driver specific, so it needs to be part of the device
-driver itself, but I want to establish a pattern which does not
-require major surgery to platform drivers in order to add OF support.
+--CE+1k2dSO48ffgeK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> - =A0 =A0 return mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32=
-)size64,
->> + =A0 =A0 rc =3D mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32=
-)size64,
->> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 irq_of_parse_and_map(op->node, 0), id);
->> + =A0 =A0 if (!rc)
->
-> A matter of taste, maybe: I'd prefer
->
-> =A0 =A0 =A0 =A0if (rc =3D=3D 0)
->
-> as (!ptr) is often used for catching errors with pointers, but here it is=
- the
-> 'all went OK'-path.
+On Mon, Nov 02, 2009 at 01:13:34PM +0100, Wolfram Sang wrote:
+> Hi,
+>=20
+> the typo fixes look good, still...
+>=20
+> On Fri, Oct 30, 2009 at 07:28:14PM -0200, Thadeu Lima de Souza Cascardo w=
+rote:
+> > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>
+> > ---
+> >  Documentation/spi/spi-summary |    8 ++++----
+> >  1 files changed, 4 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summ=
+ary
+> > index deab51d..607aa97 100644
+> > --- a/Documentation/spi/spi-summary
+> > +++ b/Documentation/spi/spi-summary
+> > @@ -121,7 +121,7 @@ active.  So the master must set the clock to inacti=
+ve before selecting
+> >  a slave, and the slave can tell the chosen polarity by sampling the
+> >  clock level when its select line goes active.  That's why many devices
+> >  support for example both modes 0 and 3:  they don't care about polarit=
+y,
+> > -and alway clock data in/out on rising clock edges.
+> > +and always clock data in/out on rising clock edges.
+> > =20
+> > =20
+> >  How do these driver programming interfaces work?
+> > @@ -236,7 +236,7 @@ And SOC-specific utility code might look something =
+like:
+> >  		struct mysoc_spi_data *pdata2;
+> > =20
+> >  		pdata2 =3D kmalloc(sizeof *pdata2, GFP_KERNEL);
+> > -		*pdata2 =3D pdata;
+> > +		*pdata2 =3D *pdata;
+>=20
+> ... this looks correct, because a few lines above it is stated:
+>=20
+>         static struct mysoc_spi_data __initdata pdata =3D { ... };
+>=20
+> No pointer here. But yeah, pretty confusing for an example.
+>=20
 
-Okay, I'll change this.  Thanks for the feedback.
+Oh. Right. I may have thought that was an array or something. I will
+resend without it or think of a more clear example (perhaps, get some
+real but simple code).
 
-g.
+> >  		...
+> >  		if (n =3D=3D 2) {
+> >  			spi2->dev.platform_data =3D pdata2;
+> > @@ -427,8 +427,8 @@ any more such messages.
+> >      it, should only be used with small amounts of data where the
+> >      cost of an extra copy may be ignored.  It's designed to support
+> >      common RPC-style requests, such as writing an eight bit command
+> > -    and reading a sixteen bit response -- spi_w8r16() being one its
+> > -    wrappers, doing exactly that.
+> > +    and reading a sixteen bit response -- spi_w8r16() being one of
+> > +    its wrappers, doing exactly that.
+> > =20
+> >  Some drivers may need to modify spi_device characteristics like the
+> >  transfer mode, wordsize, or clock rate.  This is done with spi_setup(),
+> > --=20
+> > 1.6.3.3
+> >=20
+> >=20
+> > -----------------------------------------------------------------------=
+-------
+> > Come build with us! The BlackBerry(R) Developer Conference in SF, CA
+> > is the only developer event you need to attend this year. Jumpstart your
+> > developing skills, take BlackBerry mobile applications to market and st=
+ay=20
+> > ahead of the curve. Join us from November 9 - 12, 2009. Register now!
+> > http://p.sf.net/sfu/devconference
+> > _______________________________________________
+> > spi-devel-general mailing list
+> > spi-devel-general@lists.sourceforge.net
+> > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+>=20
+> --=20
+> Pengutronix e.K.                           | Wolfram Sang                |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
--- =
 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+
+--CE+1k2dSO48ffgeK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iEYEARECAAYFAkrvDtoACgkQyTpryRcqtS0isACfRo5J5o+I5OsMK17bq/vzSrSC
+SRMAoIGzFNTi8/dw2Rx82Q4eJ/JWhzDs
+=MIY+
+-----END PGP SIGNATURE-----
+
+--CE+1k2dSO48ffgeK--

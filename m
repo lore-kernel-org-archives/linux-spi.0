@@ -1,140 +1,318 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [PATCH] spi/mpc52xx: check for invalid PSC usage
-Date: Mon, 2 Nov 2009 14:53:11 +0100
-Message-ID: <20091102135244.GC4696@pengutronix.de>
-References: <1256297157-28246-1-git-send-email-w.sang@pengutronix.de>
-	<fa686aa40910311822i4ba27b2bs350c5684cd57187b@mail.gmail.com>
+From: christian pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
+Subject: Re: [PATCH net-next-2.6] Driver for the Microchip MCP251x SPI CAN
+	controllers
+Date: Mon, 2 Nov 2009 16:06:21 +0100
+Message-ID: <cabda6420911020706r340ef073qea40527f09551a8a@mail.gmail.com>
+References: <1256824214-21420-1-git-send-email-chripell@fsfe.org>
+	<4AED5589.3090106@grandegger.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4677125422338131226=="
-Cc: spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>, linuxppc-dev@ozlabs.org
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <fa686aa40910311822i4ba27b2bs350c5684cd57187b@mail.gmail.com>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: socketcan-core-0fE9KPoRgkgATYTw5x5z8w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wolfgang Grandegger <wg-5Yr1BZd7O62+XT7JhA+gdA@public.gmane.org>
+Return-path: <socketcan-core-bounces-0fE9KPoRgkgATYTw5x5z8w@public.gmane.org>
+In-Reply-To: <4AED5589.3090106-5Yr1BZd7O62+XT7JhA+gdA@public.gmane.org>
+List-Unsubscribe: <https://lists.berlios.de/mailman/listinfo/socketcan-core>,
+	<mailto:socketcan-core-request-0fE9KPoRgkgATYTw5x5z8w@public.gmane.org?subject=unsubscribe>
+List-Archive: <https://lists.berlios.de/pipermail/socketcan-core>
+List-Post: <mailto:socketcan-core-0fE9KPoRgkgATYTw5x5z8w@public.gmane.org>
+List-Help: <mailto:socketcan-core-request-0fE9KPoRgkgATYTw5x5z8w@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.berlios.de/mailman/listinfo/socketcan-core>,
+	<mailto:socketcan-core-request-0fE9KPoRgkgATYTw5x5z8w@public.gmane.org?subject=subscribe>
+Sender: socketcan-core-bounces-0fE9KPoRgkgATYTw5x5z8w@public.gmane.org
+Errors-To: socketcan-core-bounces-0fE9KPoRgkgATYTw5x5z8w@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Sun, Nov 1, 2009 at 10:31 AM, Wolfgang Grandegger <wg-5Yr1BZd7O62+XT7JhA+gdA@public.gmane.org> wr=
+ote:
+> Hi Christian,
+>
 
---===============4677125422338131226==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="bajzpZikUji1w+G9"
-Content-Disposition: inline
+Hi,
+
+> there are a few. In general, please check the usage of {} for if
+
+sorry for missing this: I read your link below: I missed that rule on
+first reading! And I tend to trust checkpatch.pl too much ;-)
+
+> statements and check if "if (ret)" should be used instead of "if (ret <
+> 0)" if 0 means success and !0 failure. I don't have a MCP251x hardware
+
+ok, I misunderstood this to. Now I think it's ok.
+
+I'm replying to this thread with v2 patch. I'm rebasing the
+differences against SVN trunk too, but I'm waiting to send them until
+this patch is accepted in net-next-2.6 since their are only of
+cosmetic nature.
+
+>
+> Please use the subject prefix "can: Driver for the..."
+
+ack
+
+>> + =A0 =A0 depends on CAN && CAN_DEV && SPI
+>
+> You can drop the redundant dependency on "CAN".
+>
+
+ack, I just copied AT91 CAN which has this dependency
+
+>> + * <chripell-LERDrqjqfvZg9hUCZPvPmw@public.gmane.org>
+>
+> Please add your "Copyright ...".
+>
+
+ack
+
+>> +#include <linux/can/core.h>
+>
+> I don't think you need "can/core.h"?
+>
+
+I tried without but there are some dependencies in "can/dev.h" to some
+netdev stuff that are broken if I omit it.
+
+>> +#include <linux/if_arp.h>
+>
+> And that one either.
+>
+
+ack
+
+>> +#define TXBCTRL(n) =A0((n * 0x10) + 0x30)
+>
+> Please put brackets around "n": (((n) * 0x10) + 0x30)
+> Also the proper offset definition should be used.
+>
+> #define TXBCTRL(n) =A0(((n) * 0x10) + 0x30 + TXBCTRL_OFF)
+>
+> Here and in similar cases below.
+
+ack
+
+>> +#define RXBDAT_OFF =A06
+>
+> I was thinking to use structure(s) for the offsets (register layout)
+> above, but fiddling with offsetof() does probably not make the code more
+> readable.
+>
+
+Well I try avoid to unpacking bitfields with structs, I saw too many
+problems witch cross-compiling when you have many different
+architectures. I guess that using u8, u16 and similar should solve the
+problems but I'm a bit like my cat: after she burned her whiskers, she
+always stays away from kitchen stoves.
+
+>> + =A0 =A0 if (ret < 0)
+>
+> if (ret) ?
+>
+
+ack
+
+>> +static void mcp251x_hw_tx_frame(struct spi_device *spi, u8 *data,
+>
+> s/data/buf/ to avoid confusion with the CAN payload data.
+>
+
+ack
+
+>> +static void mcp251x_hw_rx_frame(struct spi_device *spi, u8 *data,
+>
+> s/data/buf/, see above.
+>
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SET_BYTE(buf[RXBEID0_OFF], =A0=
+ =A0 =A0 =A0 =A0 =A0 =A0 0) |
+>
+> Please don't align arguments or variables.
+>
+
+ack, sorry for the nostalgia of ASCII art times
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 }
+>
+> Remove {}, please.
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (buf[RXBSIDL_OFF] >> RXBSIDL_S=
+HIFT);
+>
+> Please use {} here as well.
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 return 0;
+>
+> return NETDEV_TX_OK; ?
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 mcp251x_write_reg(spi, CANCTRL, CANCTRL_REQOP_=
+LOOPBACK);
+>
+> Please use brackets here as well. See:
+>
+> http://lxr.linux.no/#linux+v2.6.31/Documentation/CodingStyle#L171
+>
+
+ack and thanks for the link
+
+>> + =A0 =A0 /* Store original mode and set mode to config */
+>
+> Do you need that. The bit-timing can only be set when the device is
+> stopped (down).
+>
+
+ack, you are right, no need for it because normal/loopback mode is
+always set afterwards in _open
+
+>> + =A0 =A0 if (ret < 0)
+>
+> if (ret) ?
+>
+
+ack
+
+>> + =A0 =A0 if (ret < 0) {
+>
+> "if (ret)" ?
+>
+
+ack
+
+>> + =A0 =A0 if (ret < 0) {
+>
+> "if (ret)" ?
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 disable_irq(spi->irq);
+>
+> free_irq? And what about the transeiver? The usual goto cleanup method
+> would make sense here.
+>
+
+ack
+
+>> + =A0 =A0 disable_irq(spi->irq);
+>
+> Why not freeing the irq already here?
+>
+
+ack, you are right
+
+>> + =A0 =A0 flush_workqueue(priv->wq);
+>> +
+>> + =A0 =A0 mcp251x_write_reg(spi, TXBCTRL(0), 0);
+>
+> Hm, but you still need the interrupt!?
+
+no, SPI interface and MCP251x interrupt are different
+
+>> + =A0 =A0 close_candev(net);
+>
+> You should call close_candev early to cancel the buf-off recovery timer.
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mcp251x_set_normal_mode(spi);
+>
+> Please use {} here as well.
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mcp251x_hw_sleep(spi);
+>
+> Please use {} here as well.
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 new_state =3D CAN_STATE_ERROR_=
+ACTIVE;
+>
+> Please use {} here as well.
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0"cannot allocate error skb\n");
+>
+> Please use {} here as well.
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct mcp251x_platform_data *pdat=
+a)
+>
+> Add __devinit or, even better, put the code into mcp251x_can_probe?
+>
+
+ack, moved altogether
+
+>> + =A0 =A0 priv->can.do_set_bittiming =A0 =A0 =A0=3D mcp251x_do_set_bitti=
+ming;
+>
+> Don't align expressions. Use just *one* space before and after "=3D".
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mcp251x_enable_dma =3D 0;
+>
+> Please use {} here as well.
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 priv->spi_=
+tx_buf, priv->spi_tx_dma);
+>
+> Please use {} here as well.
+>
+
+ack
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 priv->after_suspend =3D AFTER_SUSPEND_DOWN;
+>
+> Please use {} here as well.
+>
+
+ack
+
+>
+> Please use {} here as well and check for similar cases. I might not have
+> spotted all.
+>
+
+ack, I searched for all else and checked
+
+>> + =A0 =A0 .resume =A0 =A0 =A0 =A0 =3D mcp251x_can_resume,
+>
+> Use just *one* space before and after "=3D".
+>
+
+ack
 
 
---bajzpZikUji1w+G9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for the review!
 
-> I wouldn't even bother.  It's not actively dangerous to try and use
-> PSC{4,5} in SPI mode.  It just not going to work.  Besides, the
-> MPC5200 common code already checks for an invalid PSC number when
-> setting the clock divisor.
->=20
-> Have you seen cases of users trying to do the wrong thing with the
-> crippled PSCs?
+-- =
 
-Yes, that was the reason for this patch :) How about this patch to give use=
-rs a
-better idea than just -ENODEV via set_psc_clkdiv? ...[/me hacks]...
-Uuuh, there is even a bug which makes the case go unnoticed.
-
-=3D=3D=3D
-
-Subject: [PATCH] spi/mpc52xx-psc-spi: check for valid PSC
-
-This driver calls mpc52xx_set_psc_clkdiv() but doesn't check its return val=
-ue
-to see if the PSC is actually valid for SPI use. Add the check and a hint f=
-or
-the user.
-
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
-Cc: Grant Likely <grant.likely@secretlab.ca>
----
- drivers/spi/mpc52xx_psc_spi.c |   12 ++++++++----
- 1 files changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
-index 1b74d5c..e268437 100644
---- a/drivers/spi/mpc52xx_psc_spi.c
-+++ b/drivers/spi/mpc52xx_psc_spi.c
-@@ -313,11 +313,13 @@ static int mpc52xx_psc_spi_port_config(int psc_id, st=
-ruct mpc52xx_psc_spi *mps)
- 	struct mpc52xx_psc __iomem *psc =3D mps->psc;
- 	struct mpc52xx_psc_fifo __iomem *fifo =3D mps->fifo;
- 	u32 mclken_div;
--	int ret =3D 0;
-+	int ret;
-=20
- 	/* default sysclk is 512MHz */
- 	mclken_div =3D (mps->sysclk ? mps->sysclk : 512000000) / MCLK;
--	mpc52xx_set_psc_clkdiv(psc_id, mclken_div);
-+	ret =3D mpc52xx_set_psc_clkdiv(psc_id, mclken_div);
-+	if (ret)
-+		return ret;
-=20
- 	/* Reset the PSC into a known state */
- 	out_8(&psc->command, MPC52xx_PSC_RST_RX);
-@@ -341,7 +343,7 @@ static int mpc52xx_psc_spi_port_config(int psc_id, stru=
-ct mpc52xx_psc_spi *mps)
-=20
- 	mps->bits_per_word =3D 8;
-=20
--	return ret;
-+	return 0;
- }
-=20
- static irqreturn_t mpc52xx_psc_spi_isr(int irq, void *dev_id)
-@@ -410,8 +412,10 @@ static int __init mpc52xx_psc_spi_do_probe(struct devi=
-ce *dev, u32 regaddr,
- 		goto free_master;
-=20
- 	ret =3D mpc52xx_psc_spi_port_config(master->bus_num, mps);
--	if (ret < 0)
-+	if (ret < 0) {
-+		dev_err(dev, "can't configure PSC! Is it capable of SPI?\n");
- 		goto free_irq;
-+	}
-=20
- 	spin_lock_init(&mps->lock);
- 	init_completion(&mps->done);
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---bajzpZikUji1w+G9
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAkru5EcACgkQD27XaX1/VRvwfwCbBsp3Xw3V8FRDmz3dHvEvJCQy
-tdcAn0tsMj3WX7C+DUZBA8p0nQCNXh2Z
-=PK+b
------END PGP SIGNATURE-----
-
---bajzpZikUji1w+G9--
-
---===============4677125422338131226==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linuxppc-dev mailing list
-Linuxppc-dev@lists.ozlabs.org
-https://lists.ozlabs.org/listinfo/linuxppc-dev
---===============4677125422338131226==--
+Christian Pellegrin, see http://www.evolware.org/chri/
+"Real Programmers don't play tennis, or any other sport which requires
+you to change clothes. Mountain climbing is OK, and Real Programmers
+wear their climbing boots to work in case a mountain should suddenly
+spring up in the middle of the computer room."

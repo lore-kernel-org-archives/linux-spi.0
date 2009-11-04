@@ -1,9 +1,10 @@
-From: Joun <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Wall-breaker in panties
-Date: Tue, 3 Nov 2009 23:37:13 +0100
-Message-ID: <5DB95092.54081@lists.sourceforge.net>
+From: Cliff Brake <cliff.brake-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: PXA270 SPI + SD card
+Date: Wed, 4 Nov 2009 16:53:11 -0500
+Message-ID: <f96d234e0911041353o25aeee4aqbb482f162aaeac5f@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7663470358197477381=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,55 +17,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---===============7663470358197477381==
-Content-Type: multipart/alternative;
-	boundary="------------246016112601780492916176"
+Hello,
 
-This is a multi-part message in MIME format.
---------------246016112601780492916176
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+I'm trying to get a PXA270 to talk to a SD card via SPI.  Has anyone
+else done this?
 
-Found your money after party http://www.laqadxr.cn/
+One of the requirements is the CS stay low for the entire transaction.
+ Can this be done with the PXA270 controlling the frame (CS) signal,
+or is GPIO control typically required?
 
---------------246016112601780492916176
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Any pointers welcome.
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-</head>
-<body bgcolor="#ffffff" text="#000000">
-Found your money after party <a href="http://www.laqadxr.cn/">http://www.laqadxr.cn/</a><br>
-</body>
-</html>
-
---------------246016112601780492916176--
-
-
---===============7663470358197477381==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Thanks,
+Cliff
 
 ------------------------------------------------------------------------------
-Come build with us! The BlackBerry(R) Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9 - 12, 2009. Register now!
-http://p.sf.net/sfu/devconference
---===============7663470358197477381==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============7663470358197477381==--
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july

@@ -1,46 +1,33 @@
-From: Kumar Gala <galak@kernel.crashing.org>
-Subject: Re: [PATCH 7/8] spi_mpc8xxx: Turn qe_mode into flags
-Date: Thu, 5 Nov 2009 07:47:50 -0600
-Message-ID: <3E303C4F-CE29-470F-B34A-3413F31BC23C@kernel.crashing.org>
-References: <20091012164841.GA32214@oksana.dev.rtsoft.ru>
-	<20091012164925.GG4578@oksana.dev.rtsoft.ru>
-Mime-Version: 1.0 (Apple Message framework v1076)
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
+From: Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH 0/6] Misc driver fixes for 2.6.32
+Date: Thu, 05 Nov 2009 16:25:55 +0100
+Message-ID: <20091105152555.227009519@linux-mips.org>
+Cc: David Daney <ddaney@caviumnetworks.com>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	Julia Lawall <julia@diku.dk>,
 	Greg Kroah-Hartman <gregkh@suse.de>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
+	devel@driverdev.osuosl.org,
+	David Brownell <dbrownell@users.sourceforge.net>,
 	spi-devel-general@lists.sourceforge.net,
-	Andrew Morton <akpm@linux-foundation.org>
-To: Anton Vorontsov <avorontsov@ru.mvista.com>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <20091012164925.GG4578@oksana.dev.rtsoft.ru>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	netdev@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <netdev-owner@vger.kernel.org>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a series of patches which 
 
-On Oct 12, 2009, at 11:49 AM, Anton Vorontsov wrote:
+  o 1/6, 2/6, 3/6: Fixes for the Octeon ethernet driver in drivers/staging.
+    The Octeon is a MIPS-based SOC so with permisson from Greg I'm merging
+    these via the MIPS tree.
+  o 4/6: A fix to a MIPS-specific SPI driver.  Posted before, no comments
+    were received.
+  o 5/6: A fix to the resource allocation to the framebuffer of the MIPS-
+    based SGI O2 and i686-based Visual Workstation.  Also posted before, no
+    comments were received.
+  o 6/6: A fix to the serial driver for the BCM63xx which is a MIPS-based
+    SOC.
 
-> Soon there will be more flags introduced in subsequent patches, so
-> let's turn qe_mode into flags.
->
-> Also introduce mpc8xxx_spi_strmode() and print current SPI mode.
->
-> Signed-off-by: Anton Vorontsov <avorontsov@ru.mvista.com>
-> Acked-by: David Brownell <dbrownell@users.sourceforge.net>
-> ---
-> drivers/spi/spi_mpc8xxx.c   |   30 +++++++++++++++++++-----------
-> include/linux/fsl_devices.h |    2 +-
-> 2 files changed, 20 insertions(+), 12 deletions(-)
+  Ralf
 
-applied to next
-
-- k

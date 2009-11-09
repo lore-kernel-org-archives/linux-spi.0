@@ -1,18 +1,18 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] xilinx_spi: Added platform driver
-	and support for DS570
-Date: Mon, 9 Nov 2009 13:12:03 -0700
-Message-ID: <fa686aa40911091212y1af6ecb6i5862af6162761b86@mail.gmail.com>
-References: <4A258795.2080205@mocean-labs.com>
+Subject: Re: [PATCH v4] xilinx_spi: Splitted into
+	generic, of and platform driver, added support for DS570
+Date: Mon, 9 Nov 2009 14:21:42 -0700
+Message-ID: <fa686aa40911091321w187fe85fl4e6d9f36f5966f34@mail.gmail.com>
+References: <4AC0C699.2070506@mocean-labs.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrei Konovalov <akonovalov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: =?UTF-8?B?UmljaGFyZCBSxaHDtmpmb3Jz?= <richard.rojfors.ext-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	John Linn <John.Linn-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: =?ISO-8859-1?Q?Richard_R=F6jfors?= <richard.rojfors-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4A258795.2080205-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
+In-Reply-To: <4AC0C699.2070506-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,162 +23,208 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SG1tbS4gIEl0IHNlZW1zIGxpa2UgdGhpcyBwYXRjaCBnb3QgZHJvcHBlZCBvbiB0aGUgZmxvb3Ig
-d2l0aG91dCBhbnkKY29tbWVudHMuICBIZXJlJ3MgbXkgcmV2aWV3Li4uLgoKT24gVHVlLCBKdW4g
-MiwgMjAwOSBhdCAxOjEyIFBNLCBSaWNoYXJkIFLFocO2amZvcnMKPHJpY2hhcmQucm9qZm9ycy5l
-eHRAbW9jZWFuLWxhYnMuY29tPiB3cm90ZToKPiBIZXJlIGlzIGEgcGF0Y2ggd2hlcmUgdGhlIHhp
-bGlueF9zcGkgaXMgc3BsaXR0ZWQgaW50byB0aHJlZSBwYXJ0cywgYW4gT0YgYW5kIGEgcGxhdGZv
-cm0gZHJpdmVyIGFuZCBnZW5lcmljIHBhcnQuCj4KPiBUaGUgZ2VuZXJpYyBwYXJ0IG5vdyBhbHNv
-IHdvcmtzIG9uIFg4NiBhbmQgc3VwcG9ydCBmb3IgdGhlIFhpbGlueCBTUEkgSVAgRFM1NzAKPgo+
-IFNpZ25lZC1vZmYtYnk6IFJpY2hhcmQgUsO2amZvcnMgPHJpY2hhcmQucm9qZm9ycy5leHRAbW9j
-ZWFuLWxhYnMuY29tPgoKSW4gZ2VuZXJhbCBJJ20gbm90IG9wcG9zZWQgdG8gdGhlIGNoYW5nZSwg
-YnV0IEkndmUgZ290IGNvbmNlcm5zIGFib3V0CnRoZSBmb3JtIGFuZCBzb21lIG9mIHRoZSBkZXRh
-aWxzLgoKRmlyc3QsIGl0IGlzIGFuIGludmFzaXZlIHBhdGNoLCBwcmltYXJpbHkgZHVlIHRvIHRo
-ZSBhZGRpdGlvbiBvZgphY2Nlc29yIG1hY3Jvcy4gIEknZCBsaWtlIHRvIHNlZSB0aGUgY3JlYXRp
-b24gb2YgdGhlIGFjY2Vzc29ycyBzcGxpdAppbnRvIGEgc2VwYXJhdGUgcGF0Y2ggZnJvbSB0aGUg
-cGxhdGZvcm0vb2ZfcGxhdGZvcm0gYnVzIGJpbmRpbmcKY2hhbmdlcyBzbyB0aGF0IHJldmlldyBp
-cyBlYXNpZXIuICBNb3JlIGNvbW1lbnRzIGJlbG93LgoKPiAtLS0KPiBJbmRleDogbGludXgtMi42
-LjMwLXJjNy9kcml2ZXJzL3NwaS9LY29uZmlnCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQo+IC0tLSBsaW51eC0yLjYu
-MzAtcmM3L2RyaXZlcnMvc3BpL0tjb25maWcgwqAgwqAgwqAgwqAocmV2aXNpb24gODYxKQo+ICsr
-KyBsaW51eC0yLjYuMzAtcmM3L2RyaXZlcnMvc3BpL0tjb25maWcgwqAgwqAgwqAgwqAocmV2aXNp
-b24gODY5KQo+IEBAIC0yMTEsOCArMjExLDggQEAKPiDCoCDCoCDCoCDCoCDCoFNQSSBkcml2ZXIg
-Zm9yIFRvc2hpYmEgVFh4OSBNSVBTIFNvQ3MKPgo+IMKgY29uZmlnIFNQSV9YSUxJTlgKPiAtIMKg
-IMKgIMKgIHRyaXN0YXRlICJYaWxpbnggU1BJIGNvbnRyb2xsZXIiCj4gLSDCoCDCoCDCoCBkZXBl
-bmRzIG9uIFhJTElOWF9WSVJURVggJiYgRVhQRVJJTUVOVEFMCj4gKyDCoCDCoCDCoCB0cmlzdGF0
-ZSAiWGlsaW54IFNQSSBjb250cm9sbGVyIGNvbW1vbiBtb2R1bGUiCj4gKyDCoCDCoCDCoCBkZXBl
-bmRzIG9uIEVYUEVSSU1FTlRBTAoKRHJvcCB0aGUgY2hhbmdlIHRvIHRoZSBkZXNjcmlwdGlvbiAo
-c2VlIGJlbG93KQoKPiDCoCDCoCDCoCDCoHNlbGVjdCBTUElfQklUQkFORwo+IMKgIMKgIMKgIMKg
-aGVscAo+IMKgIMKgIMKgIMKgIMKgVGhpcyBleHBvc2VzIHRoZSBTUEkgY29udHJvbGxlciBJUCBm
-cm9tIHRoZSBYaWxpbnggRURLLgo+IEBAIC0yMjAsNiArMjIwLDI1IEBACj4gwqAgwqAgwqAgwqAg
-wqBTZWUgdGhlICJPUEIgU2VyaWFsIFBlcmlwaGVyYWwgSW50ZXJmYWNlIChTUEkpICh2MS4wMGUp
-Igo+IMKgIMKgIMKgIMKgIMKgUHJvZHVjdCBTcGVjaWZpY2F0aW9uIGRvY3VtZW50IChEUzQ2NCkg
-Zm9yIGhhcmR3YXJlIGRldGFpbHMuCj4KPiArY29uZmlnIFNQSV9YSUxJTlhfT0YKPiArIMKgIMKg
-IMKgIHRyaXN0YXRlICJYaWxpbnggU1BJIGNvbnRyb2xsZXIgT0YgZGV2aWNlIgo+ICsgwqAgwqAg
-wqAgZGVwZW5kcyBvbiBTUElfWElMSU5YICYmIFhJTElOWF9WSVJURVgKPiArIMKgIMKgIMKgIGhl
-bHAKPiArIMKgIMKgIMKgIMKgIFRoaXMgZXhwb3NlcyB0aGUgU1BJIGNvbnRyb2xsZXIgSVAgZnJv
-bSB0aGUgWGlsaW54IEVESy4KPiArCj4gKyDCoCDCoCDCoCDCoCBTZWUgdGhlICJPUEIgU2VyaWFs
-IFBlcmlwaGVyYWwgSW50ZXJmYWNlIChTUEkpICh2MS4wMGUpIgo+ICsgwqAgwqAgwqAgwqAgUHJv
-ZHVjdCBTcGVjaWZpY2F0aW9uIGRvY3VtZW50IChEUzQ2NCkgZm9yIGhhcmR3YXJlIGRldGFpbHMu
-Cj4gKwo+ICtjb25maWcgU1BJX1hJTElOWF9QTFRGTQo+ICsgwqAgwqAgwqAgdHJpc3RhdGUgIlhp
-bGlueCBTUEkgY29udHJvbGxlciBwbGF0Zm9ybSBkZXZpY2UiCj4gKyDCoCDCoCDCoCBkZXBlbmRz
-IG9uIFNQSV9YSUxJTlgKPiArIMKgIMKgIMKgIGhlbHAKPiArIMKgIMKgIMKgIMKgIFRoaXMgZXhw
-b3NlcyB0aGUgU1BJIGNvbnRyb2xsZXIgSVAgZnJvbSB0aGUgWGlsaW54IEVESy4KPiArCj4gKyDC
-oCDCoCDCoCDCoCBTZWUgdGhlICJPUEIgU2VyaWFsIFBlcmlwaGVyYWwgSW50ZXJmYWNlIChTUEkp
-ICh2MS4wMGUpIgo+ICsgwqAgwqAgwqAgwqAgUHJvZHVjdCBTcGVjaWZpY2F0aW9uIGRvY3VtZW50
-IChEUzQ2NCkgZm9yIGhhcmR3YXJlIGRldGFpbHMuCgpQZXJzb25hbGx5LCBJJ2QgcmF0aGVyIHRo
-ZXNlIDIgb3B0aW9ucyBub3QgYmUgdXNlci12aXNhYmxlIGFuZCBpbnN0ZWFkCmF1dG8tZW5hYmxl
-IHRoZSBPRiBiaW5kaW5nIHdoZW4gdGhlIG9mX2J1cyBpcyBlbmFibGVkLCBhbmQgYXV0by1lbmFi
-bGUKdGhlIHBsYXRmb3JtIGJ1cyBiaW5kaW5nIHdoZW4gcGxhdGZvcm0gYnVzIGlzIGVuYWJsZWQu
-Cgo+IEluZGV4OiBsaW51eC0yLjYuMzAtcmM3L2RyaXZlcnMvc3BpL3hpbGlueF9zcGkuYwo+ID09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT0KPiAtLS0gbGludXgtMi42LjMwLXJjNy9kcml2ZXJzL3NwaS94aWxpbnhfc3BpLmMg
-wqAgKHJldmlzaW9uIDg2MSkKPiArKysgbGludXgtMi42LjMwLXJjNy9kcml2ZXJzL3NwaS94aWxp
-bnhfc3BpLmMgwqAgKHJldmlzaW9uIDg2OSkKPiBAQCAtMTQsMjIgKzE0LDc5IEBACj4gwqAjaW5j
-bHVkZSA8bGludXgvbW9kdWxlLmg+Cj4gwqAjaW5jbHVkZSA8bGludXgvaW5pdC5oPgo+IMKgI2lu
-Y2x1ZGUgPGxpbnV4L2ludGVycnVwdC5oPgo+IC0jaW5jbHVkZSA8bGludXgvcGxhdGZvcm1fZGV2
-aWNlLmg+Cj4KPiAtI2luY2x1ZGUgPGxpbnV4L29mX3BsYXRmb3JtLmg+Cj4gLSNpbmNsdWRlIDxs
-aW51eC9vZl9kZXZpY2UuaD4KPiAtI2luY2x1ZGUgPGxpbnV4L29mX3NwaS5oPgo+IC0KPiDCoCNp
-bmNsdWRlIDxsaW51eC9zcGkvc3BpLmg+Cj4gwqAjaW5jbHVkZSA8bGludXgvc3BpL3NwaV9iaXRi
-YW5nLmg+Cj4gwqAjaW5jbHVkZSA8bGludXgvaW8uaD4KPgo+IC0jZGVmaW5lIFhJTElOWF9TUElf
-TkFNRSAieGlsaW54X3NwaSIKPiArI2luY2x1ZGUgInhpbGlueF9zcGkuaCIKPgo+ICtzdHJ1Y3Qg
-eGlsaW54X3NwaSB7Cj4gKyDCoCDCoCDCoCAvKiBiaXRiYW5nIGhhcyB0byBiZSBmaXJzdCAqLwo+
-ICsgwqAgwqAgwqAgc3RydWN0IHNwaV9iaXRiYW5nIGJpdGJhbmc7Cj4gKyDCoCDCoCDCoCBzdHJ1
-Y3QgY29tcGxldGlvbiBkb25lOwo+ICsgwqAgwqAgwqAgc3RydWN0IHJlc291cmNlIG1lbTsgLyog
-cGh5cyBtZW0gKi8KPiArIMKgIMKgIMKgIHZvaWQgX19pb21lbSDCoCDCoCpyZWdzOyDCoC8qIHZp
-cnQuIGFkZHJlc3Mgb2YgdGhlIGNvbnRyb2wgcmVnaXN0ZXJzICovCj4gKyDCoCDCoCDCoCB1MzIg
-aXJxOwo+ICsgwqAgwqAgwqAgdTggKnJ4X3B0cjsgwqAgwqAgwqAgwqAgwqAgwqAgLyogcG9pbnRl
-ciBpbiB0aGUgVHggYnVmZmVyICovCj4gKyDCoCDCoCDCoCBjb25zdCB1OCAqdHhfcHRyOyDCoCDC
-oCDCoCAvKiBwb2ludGVyIGluIHRoZSBSeCBidWZmZXIgKi8KPiArIMKgIMKgIMKgIGludCByZW1h
-aW5pbmdfYnl0ZXM7IMKgIMKgLyogdGhlIG51bWJlciBvZiBieXRlcyBsZWZ0IHRvIHRyYW5zZmVy
-ICovCj4gKyDCoCDCoCDCoCAvKiBvZmZzZXQgdG8gdGhlIFhTUEkgcmVncywgdGhlc2UgbWlnaHQg
-dmFyeS4uLiAqLwo+ICsgwqAgwqAgwqAgdTggY3Jfb2Zmc2V0Owo+ICsgwqAgwqAgwqAgdTggc3Jf
-b2Zmc2V0Owo+ICsgwqAgwqAgwqAgdTggdHhkX29mZnNldDsKPiArIMKgIMKgIMKgIHU4IHJ4ZF9v
-ZmZzZXQ7Cj4gKyDCoCDCoCDCoCB1OCBzc3Jfb2Zmc2V0Owo+ICsgwqAgwqAgwqAgdTggYml0c19w
-ZXJfd29yZDsKPiArIMKgIMKgIMKgIHU4IG1vZGVsOwo+ICt9OwoKV2h5IGRpZCB0aGUgc3RydWN0
-dXJlIGRlZmluaXRpb24gZ2V0IG1vdmVkPwoKPiArI2lmbmRlZiBDT05GSUdfUFBDCj4gKyNkZWZp
-bmUgaW5fOChhZGRyKSBpb3JlYWQ4KGFkZHIpCj4gKyNkZWZpbmUgaW5fYmUxNihhZGRyKSBpb3Jl
-YWQxNihhZGRyKQo+ICsjZGVmaW5lIGluX2JlMzIoYWRkcikgaW9yZWFkMzIoYWRkcikKPiArCj4g
-KyNkZWZpbmUgb3V0XzgoYWRkciwgYikgaW93cml0ZTgoYiwgYWRkcikKPiArI2RlZmluZSBvdXRf
-YmUxNihhZGRyLCB3KSBpb3dyaXRlMTYodywgYWRkcikKPiArI2RlZmluZSBvdXRfYmUzMihhZGRy
-LCBsKSBpb3dyaXRlMzIobCwgYWRkcikKPiArI2VuZGlmCgpPaCwgdWdseS4gIElmIGluXyovb3V0
-XyogYXJlIG5vIGxvbmdlciBhcHByb3ByaWF0ZSwgdGhlbiBkb24ndCBkZWZpbmUKdGhlbSB0byB0
-aGUgbGl0dGxlIGVuZGlhbiB2YXJpYW50cy4gIFJlbW92ZSB0aGUgY2FsbHMgdG8gaW5fL291dF8q
-IGFuZAp1c2UgdGhlIGlvcmVhZC9pb3dyaXRlIGNhbGxzIGluc3RlYWQuICBJbiBmYWN0LCBldmVu
-IGZvciBwb3dlcnBjIHRoZQpkcml2ZXIgY291bGQgcHJvYmFibHkgYmUgbW9kaWZpZWQgdG8gdXNl
-IGlve3JlYWQsd3JpdGV9ezgsMTZiZSwzMmJlKS4KCj4gKwo+ICsjZGVmaW5lIFhTUElfV1JJVEU4
-KHhzcGksIG9mZnMsIHZhbCkgXAo+ICsgwqAgwqAgwqAgZG8geyBcCj4gKyDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCBpZiAoeHNwaS0+bW9kZWwgPT0gWElMSU5YX1NQSV9NT0RFTF9EUzQ2NCkgXAo+ICsg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgb3V0XzgoeHNwaS0+cmVncyArIG9mZnMs
-ICh2YWwpICYgMHhmZik7IFwKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGVsc2UgXAo+ICsgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgWFNQSV9XUklURTMyKHhzcGksIG9mZnMsIHZh
-bCk7IFwKPiArIMKgIMKgIMKgIH0gd2hpbGUgKDApCj4gKwo+ICsjZGVmaW5lIFhTUElfV1JJVEUx
-Nih4c3BpLCBvZmZzLCB2YWwpIFwKPiArIMKgIMKgIMKgIGRvIHsgXAo+ICsgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgaWYgKHhzcGktPm1vZGVsID09IFhJTElOWF9TUElfTU9ERUxfRFM0NjQpIFwKPiAr
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIG91dF9iZTE2KHhzcGktPnJlZ3MgKyBv
-ZmZzLCAodmFsKSAmIDB4ZmZmZik7IFwKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGVsc2UgXAo+
-ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgWFNQSV9XUklURTMyKHhzcGksIG9m
-ZnMsIHZhbCk7IFwKPiArIMKgIMKgIMKgIH0gd2hpbGUgKDApCj4gKwo+ICsjZGVmaW5lIFhTUElf
-V1JJVEUzMih4c3BpLCBvZmZzLCB2YWwpIFwKPiArIMKgIMKgIMKgIG91dF9iZTMyKHhzcGktPnJl
-Z3MgKyBvZmZzLCB2YWwpCj4gKwo+ICsjZGVmaW5lIFhTUElfUkVBRDgoeHNwaSwgb2ZmcykgXAo+
-ICsgwqAgwqAgwqAgKHhzcGktPm1vZGVsID09IFhJTElOWF9TUElfTU9ERUxfRFM0NjQpID8gXAo+
-ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaW5fOCh4c3BpLT5yZWdzICsgb2ZmcykgOiBYU1BJX1JF
-QUQzMih4c3BpLCBvZmZzKQo+ICsKPiArI2RlZmluZSBYU1BJX1JFQUQxNih4c3BpLCBvZmZzKSBc
-Cj4gKyDCoCDCoCDCoCAoeHNwaS0+bW9kZWwgPT0gWElMSU5YX1NQSV9NT0RFTF9EUzQ2NCkgPyBc
-Cj4gKyDCoCDCoCDCoCBpbl9iZTE2KHhzcGktPnJlZ3MgKyBvZmZzKSA6IFhTUElfUkVBRDMyKHhz
-cGksIG9mZnMpCj4gKwo+ICsjZGVmaW5lIFhTUElfUkVBRDMyKHhzcGksIG9mZnMpIFwKPiArIMKg
-IMKgIMKgIGluX2JlMzIoeHNwaS0+cmVncyArIG9mZnMpCgppbmxpbmVzIHBsZWFzZS4gIERvbid0
-IHVzZSAjZGVmaW5lIG1hY3Jvcy4gIEluIGZhY3QsIEknZCBjb25zaWRlcgpzZXR0aW5nIHVwIGFu
-IElPIGFjY2VzcyBvcHMgdGFibGUgd2hpY2ggd291bGQgYWxsb3cgdGhlIGNvcnJlY3QKYWNjZXNz
-b3JzIHRvIGJlIHNldCB1cCBhdCBwcm9iZSB0aW1lIGFuZCB3b3VsZCBlbGltaW5hdGUgYWxsIHRo
-ZQp4c3BpLT5tb2RlbCBjaGVja3MgZnJvbSBhYm92ZS4KCj4gKwo+ICsKPiDCoC8qIFJlZ2lzdGVy
-IGRlZmluaXRpb25zIGFzIHBlciAiT1BCIFNlcmlhbCBQZXJpcGhlcmFsIEludGVyZmFjZSAoU1BJ
-KSAodjEuMDBlKQo+IMKgKiBQcm9kdWN0IFNwZWNpZmljYXRpb24iLCBEUzQ2NAo+IMKgKi8KPiAt
-I2RlZmluZSBYU1BJX0NSX09GRlNFVCDCoCDCoCDCoCDCoCAweDYyIMKgIMKgLyogMTYtYml0IENv
-bnRyb2wgUmVnaXN0ZXIgKi8KPiArI2RlZmluZSBYU1BJX0NSX09GRlNFVF9EUzQ2NCDCoCAweDYy
-IMKgIMKgLyogMTYtYml0IENvbnRyb2wgUmVnaXN0ZXIgKi8KPiArI2RlZmluZSBYU1BJX0NSX09G
-RlNFVF9EUzU3MCDCoCAweDYwCj4KPiDCoCNkZWZpbmUgWFNQSV9DUl9FTkFCTEUgwqAgwqAgwqAg
-wqAgMHgwMgo+IMKgI2RlZmluZSBYU1BJX0NSX01BU1RFUl9NT0RFIMKgIMKgMHgwNAo+IEBAIC00
-MCw4ICs5NywxMCBAQAo+IMKgI2RlZmluZSBYU1BJX0NSX1JYRklGT19SRVNFVCDCoCAweDQwCj4g
-wqAjZGVmaW5lIFhTUElfQ1JfTUFOVUFMX1NTRUxFQ1QgMHg4MAo+IMKgI2RlZmluZSBYU1BJX0NS
-X1RSQU5TX0lOSElCSVQgwqAweDEwMAo+ICsjZGVmaW5lIFhTUElfQ1JfTFNCX0ZJUlNUIMKgIMKg
-IMKgMHgyMDAKPgo+IC0jZGVmaW5lIFhTUElfU1JfT0ZGU0VUIMKgIMKgIMKgIMKgIDB4NjcgwqAg
-wqAvKiA4LWJpdCBTdGF0dXMgUmVnaXN0ZXIgKi8KPiArI2RlZmluZSBYU1BJX1NSX09GRlNFVF9E
-UzQ2NCDCoCAweDY3IMKgIMKgLyogOC1iaXQgU3RhdHVzIFJlZ2lzdGVyICovCj4gKyNkZWZpbmUg
-WFNQSV9TUl9PRkZTRVRfRFM1NzAgwqAgMHg2NAo+Cj4gwqAjZGVmaW5lIFhTUElfU1JfUlhfRU1Q
-VFlfTUFTSyDCoDB4MDEgwqAgwqAvKiBSZWNlaXZlIEZJRk8gaXMgZW1wdHkgKi8KPiDCoCNkZWZp
-bmUgWFNQSV9TUl9SWF9GVUxMX01BU0sgwqAgMHgwMiDCoCDCoC8qIFJlY2VpdmUgRklGTyBpcyBm
-dWxsICovCj4gQEAgLTQ5LDEwICsxMDgsMTMgQEAKPiDCoCNkZWZpbmUgWFNQSV9TUl9UWF9GVUxM
-X01BU0sgwqAgMHgwOCDCoCDCoC8qIFRyYW5zbWl0IEZJRk8gaXMgZnVsbCAqLwo+IMKgI2RlZmlu
-ZSBYU1BJX1NSX01PREVfRkFVTFRfTUFTSyDCoCDCoCDCoCDCoDB4MTAgwqAgwqAvKiBNb2RlIGZh
-dWx0IGVycm9yICovCj4KPiAtI2RlZmluZSBYU1BJX1RYRF9PRkZTRVQgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAweDZiIMKgIMKgLyogOC1iaXQgRGF0YSBUcmFuc21pdCBSZWdpc3RlciAqLwo+IC0j
-ZGVmaW5lIFhTUElfUlhEX09GRlNFVCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoDB4NmYgwqAgwqAv
-KiA4LWJpdCBEYXRhIFJlY2VpdmUgUmVnaXN0ZXIgKi8KPiArI2RlZmluZSBYU1BJX1RYRF9PRkZT
-RVRfRFM0NjQgwqAweDZiIMKgIMKgLyogOC1iaXQgRGF0YSBUcmFuc21pdCBSZWdpc3RlciAqLwo+
-ICsjZGVmaW5lIFhTUElfVFhEX09GRlNFVF9EUzU3MCDCoDB4NjgKPiArI2RlZmluZSBYU1BJX1JY
-RF9PRkZTRVRfRFM0NjQgwqAweDZmIMKgIMKgLyogOC1iaXQgRGF0YSBSZWNlaXZlIFJlZ2lzdGVy
-ICovCj4gKyNkZWZpbmUgWFNQSV9SWERfT0ZGU0VUX0RTNTcwIMKgMHg2Qwo+Cj4gLSNkZWZpbmUg
-WFNQSV9TU1JfT0ZGU0VUIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgMHg3MCDCoCDCoC8qIDMyLWJp
-dCBTbGF2ZSBTZWxlY3QgUmVnaXN0ZXIgKi8KPiArI2RlZmluZSBYU1BJX1NTUl9PRkZTRVRfRFM0
-NjQgwqAweDcwIMKgIMKgLyogMzItYml0IFNsYXZlIFNlbGVjdCBSZWdpc3RlciAqLwo+ICsjZGVm
-aW5lIFhTUElfU1NSX09GRlNFVF9EUzU3MCDCoDB4NzAKCkl0IGxvb2tzIGxpa2UgeW91IG5lZWQg
-dG8gYWNjZXNzIHRoZSByZWdpc3RlcnMgb24gMzIgYml0IGJvdW5kYXJpZXMsCmFuZCB0aGUgY3Vy
-cmVudCBwcGMgY29kZSBoYXBwZW5zIHRvIGRvIGEgZmV3IDE2IGFuZCA4IGJpdCBhY2NjZXNzZXMu
-CkkgaGF2ZW4ndCBsb29rZWQgYXQgdGhlIGRhdGEgc2hlZXQsIGJ1dCBJIHdvdWxkbid0IGJlIHN1
-cnByaXNlZCBpZiB0aGUKOCBhbmQgMTYgYml0IHJlZ2lzdGVycyBjYW4gYWxzbyBiZSBjbGVhbmx5
-IGFjY2VzcyB3aXRoIDMyIGJpdAp0cmFuc2ZlcnMuICBJbiB3aGljaCBjYXNlIGlmIHlvdSBjaGFu
-Z2VkIGFsbCBhY2Nlc3MgdG8gYmUgMzIgYml0CmFsaWduZWQsIHRoZW4geW91ciBwYXRjaCBjb3Vs
-ZCBiZSBhIGdvb2QgZGVhbCBzaW1wbGVyLCBhbmQgeW91CndvdWxkbid0IG5lZWQgdG8gbWVzcyBh
-Ym91dCB3aXRoIGFsbCB0aGUgRFM0NjQvRFM1NzAgc3R1ZmYuCgpnLgoKLS0gCkdyYW50IExpa2Vs
-eSwgQi5TYy4sIFAuRW5nLgpTZWNyZXQgTGFiIFRlY2hub2xvZ2llcyBMdGQuCgotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KTGV0IENyeXN0YWwgUmVwb3J0cyBoYW5kbGUgdGhlIHJlcG9ydGluZyAtIEZy
-ZWUgQ3J5c3RhbCBSZXBvcnRzIDIwMDggMzAtRGF5IAp0cmlhbC4gU2ltcGxpZnkgeW91ciByZXBv
-cnQgZGVzaWduLCBpbnRlZ3JhdGlvbiBhbmQgZGVwbG95bWVudCAtIGFuZCBmb2N1cyBvbiAKd2hh
-dCB5b3UgZG8gYmVzdCwgY29yZSBhcHBsaWNhdGlvbiBjb2RpbmcuIERpc2NvdmVyIHdoYXQncyBu
-ZXcgd2l0aApDcnlzdGFsIFJlcG9ydHMgbm93LiAgaHR0cDovL3Auc2YubmV0L3NmdS9ib2JqLWp1
-bHkKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
-dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
-ZGV2ZWwtZ2VuZXJhbAo=
+Oops, I replied to the original version, but missed the subsequent
+versions.  Looks like some of my comments still apply though.
+Overall, the patch changes too many things all at once.  You should
+look at splitting it up.  At the very least the io accessor changes
+should be done in a separate patch.
+
+On Mon, Sep 28, 2009 at 7:22 AM, Richard R=F6jfors
+<richard.rojfors-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org> wrote:
+> @@ -227,6 +227,21 @@ config SPI_XILINX
+> =A0 =A0 =A0 =A0 =A0See the "OPB Serial Peripheral Interface (SPI) (v1.00e=
+)"
+> =A0 =A0 =A0 =A0 =A0Product Specification document (DS464) for hardware de=
+tails.
+>
+> + =A0 =A0 =A0 =A0 Or for the DS570, see "XPS Serial Peripheral Interface =
+(SPI) (v2.00b)"
+> +
+> +config SPI_XILINX_OF
+> + =A0 =A0 =A0 tristate "Xilinx SPI controller OF device"
+> + =A0 =A0 =A0 depends on SPI_XILINX && XILINX_VIRTEX
+> + =A0 =A0 =A0 help
+> + =A0 =A0 =A0 =A0 This is the OF driver for the SPI controller IP from th=
+e Xilinx EDK.
+> +
+> +config SPI_XILINX_PLTFM
+> + =A0 =A0 =A0 tristate "Xilinx SPI controller platform device"
+> + =A0 =A0 =A0 depends on SPI_XILINX
+> + =A0 =A0 =A0 help
+> + =A0 =A0 =A0 =A0 This is the platform driver for the SPI controller IP
+> + =A0 =A0 =A0 =A0 from the Xilinx EDK.
+> +
+
+Personally, I don't think it is necessary to present these options to
+the user.  I think they can be auto-selected depending on CONFIG_OF
+and CONFIG_PLATFORM.
+
+> +struct xilinx_spi {
+> + =A0 =A0 =A0 /* bitbang has to be first */
+> + =A0 =A0 =A0 struct spi_bitbang bitbang;
+> + =A0 =A0 =A0 struct completion done;
+> + =A0 =A0 =A0 struct resource mem; /* phys mem */
+> + =A0 =A0 =A0 void __iomem =A0 =A0*regs; =A0/* virt. address of the contr=
+ol registers */
+> + =A0 =A0 =A0 u32 irq;
+> + =A0 =A0 =A0 u8 *rx_ptr; =A0 =A0 =A0 =A0 =A0 =A0 /* pointer in the Tx bu=
+ffer */
+> + =A0 =A0 =A0 const u8 *tx_ptr; =A0 =A0 =A0 /* pointer in the Rx buffer */
+> + =A0 =A0 =A0 int remaining_bytes; =A0 =A0/* the number of bytes left to =
+transfer */
+> + =A0 =A0 =A0 /* offset to the XSPI regs, these might vary... */
+> + =A0 =A0 =A0 u8 bits_per_word;
+> + =A0 =A0 =A0 bool big_endian; =A0 =A0 =A0 =A0/* The device could be acce=
+ssed big or little
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* endian
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*/
+> +};
+> +
+
+Why is the definition of xilinx_spi moved?
+
+> =A0/* Register definitions as per "OPB Serial Peripheral Interface (SPI) =
+(v1.00e)
+> =A0* Product Specification", DS464
+> =A0*/
+> -#define XSPI_CR_OFFSET =A0 =A0 =A0 =A0 0x62 =A0 =A0/* 16-bit Control Reg=
+ister */
+> +#define XSPI_CR_OFFSET =A0 =A0 =A0 =A0 0x60 =A0 =A0/* Control Register */
+>
+> =A0#define XSPI_CR_ENABLE =A0 =A0 =A0 =A0 0x02
+> =A0#define XSPI_CR_MASTER_MODE =A0 =A00x04
+> @@ -40,8 +53,9 @@
+> =A0#define XSPI_CR_RXFIFO_RESET =A0 0x40
+> =A0#define XSPI_CR_MANUAL_SSELECT 0x80
+> =A0#define XSPI_CR_TRANS_INHIBIT =A00x100
+> +#define XSPI_CR_LSB_FIRST =A0 =A0 =A00x200
+>
+> -#define XSPI_SR_OFFSET =A0 =A0 =A0 =A0 0x67 =A0 =A0/* 8-bit Status Regis=
+ter */
+> +#define XSPI_SR_OFFSET =A0 =A0 =A0 =A0 0x64 =A0 =A0/* Status Register */
+>
+> =A0#define XSPI_SR_RX_EMPTY_MASK =A00x01 =A0 =A0/* Receive FIFO is empty =
+*/
+> =A0#define XSPI_SR_RX_FULL_MASK =A0 0x02 =A0 =A0/* Receive FIFO is full */
+> @@ -49,8 +63,8 @@
+> =A0#define XSPI_SR_TX_FULL_MASK =A0 0x08 =A0 =A0/* Transmit FIFO is full =
+*/
+> =A0#define XSPI_SR_MODE_FAULT_MASK =A0 =A0 =A0 =A00x10 =A0 =A0/* Mode fau=
+lt error */
+>
+> -#define XSPI_TXD_OFFSET =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A00x6b =A0 =A0/* 8-=
+bit Data Transmit Register */
+> -#define XSPI_RXD_OFFSET =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A00x6f =A0 =A0/* 8-=
+bit Data Receive Register */
+> +#define XSPI_TXD_OFFSET =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A00x68 =A0 =A0/* Da=
+ta Transmit Register */
+> +#define XSPI_RXD_OFFSET =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A00x6C =A0 =A0/* Da=
+ta Receive Register */
+>
+> =A0#define XSPI_SSR_OFFSET =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A00x70 =A0 =A0/* =
+32-bit Slave Select Register */
+>
+> @@ -70,43 +84,72 @@
+> =A0#define XSPI_INTR_TX_UNDERRUN =A0 =A0 =A0 =A0 =A00x08 =A0 =A0/* TxFIFO=
+ was underrun */
+> =A0#define XSPI_INTR_RX_FULL =A0 =A0 =A0 =A0 =A0 =A0 =A00x10 =A0 =A0/* Rx=
+FIFO is full */
+> =A0#define XSPI_INTR_RX_OVERRUN =A0 =A0 =A0 =A0 =A0 0x20 =A0 =A0/* RxFIFO=
+ was overrun */
+> +#define XSPI_INTR_TX_HALF_EMPTY =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A00x40 =A0 =
+=A0/* TxFIFO is half empty */
+>
+> =A0#define XIPIF_V123B_RESETR_OFFSET =A0 =A0 =A00x40 =A0 =A0/* IPIF reset=
+ register */
+> =A0#define XIPIF_V123B_RESET_MASK =A0 =A0 =A0 =A0 0x0a =A0 =A0/* the valu=
+e to write */
+>
+> -struct xilinx_spi {
+> - =A0 =A0 =A0 /* bitbang has to be first */
+> - =A0 =A0 =A0 struct spi_bitbang bitbang;
+> - =A0 =A0 =A0 struct completion done;
+> +/* to follow are some functions that does little of big endian read and
+> + * write depending on the config of the device.
+> + */
+> +static inline void xspi_write8(struct xilinx_spi *xspi, u32 offs, u8 val)
+> +{
+> + =A0 =A0 =A0 iowrite8(val, xspi->regs + offs + ((xspi->big_endian) ? 3 :=
+ 0));
+> +}
+>
+> - =A0 =A0 =A0 void __iomem =A0 =A0*regs; =A0/* virt. address of the contr=
+ol registers */
+> +static inline void xspi_write16(struct xilinx_spi *xspi, u32 offs, u16 v=
+al)
+> +{
+> + =A0 =A0 =A0 if (xspi->big_endian)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite16be(val, xspi->regs + offs + 2);
+> + =A0 =A0 =A0 else
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite16(val, xspi->regs + offs);
+> +}
+>
+> - =A0 =A0 =A0 u32 =A0 =A0 =A0 =A0 =A0 =A0 irq;
+> +static inline void xspi_write32(struct xilinx_spi *xspi, u32 offs, u32 v=
+al)
+> +{
+> + =A0 =A0 =A0 if (xspi->big_endian)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32be(val, xspi->regs + offs);
+> + =A0 =A0 =A0 else
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(val, xspi->regs + offs);
+> +}
+>
+> - =A0 =A0 =A0 u32 =A0 =A0 =A0 =A0 =A0 =A0 speed_hz; /* SCK has a fixed fr=
+equency of speed_hz Hz */
+> +static inline u8 xspi_read8(struct xilinx_spi *xspi, u32 offs)
+> +{
+> + =A0 =A0 =A0 return ioread8(xspi->regs + offs + ((xspi->big_endian) ? 3 =
+: 0));
+> +}
+>
+> - =A0 =A0 =A0 u8 *rx_ptr; =A0 =A0 =A0 =A0 =A0 =A0 /* pointer in the Tx bu=
+ffer */
+> - =A0 =A0 =A0 const u8 *tx_ptr; =A0 =A0 =A0 /* pointer in the Rx buffer */
+> - =A0 =A0 =A0 int remaining_bytes; =A0 =A0/* the number of bytes left to =
+transfer */
+> -};
+> +static inline u16 xspi_read16(struct xilinx_spi *xspi, u32 offs)
+> +{
+> + =A0 =A0 =A0 if (xspi->big_endian)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ioread16be(xspi->regs + offs + 2);
+> + =A0 =A0 =A0 else
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ioread16(xspi->regs + offs);
+> +}
+> +
+> +static inline u32 xspi_read32(struct xilinx_spi *xspi, u32 offs)
+> +{
+> + =A0 =A0 =A0 if (xspi->big_endian)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ioread32be(xspi->regs + offs);
+> + =A0 =A0 =A0 else
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ioread32(xspi->regs + offs);
+> +}
+
+Ah, you changed these to functions instead of macros.  I like.
+However, as you suggested elsewhere in this thread, you could change
+these to callbacks and then eliminate the if/else statements.  I think
+that is the approach you should use.  I don't think you need to worry
+about it being slower.  Any extra cycles for jumping to a callback
+will be far dwarfed by the number of cycles it takes to complete an
+SPI transfer.
+
+g.
+
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
+---
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day =
+
+trial. Simplify your report design, integration and deployment - and focus =
+on =
+
+what you do best, core application coding. Discover what's new with
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july

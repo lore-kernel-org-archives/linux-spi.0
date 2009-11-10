@@ -1,19 +1,20 @@
-From: Luotao Fu <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 3/3] mpc52xx_spi: add gpio chipselect
-Date: Tue, 10 Nov 2009 10:12:09 +0100
-Message-ID: <1257844329-20687-4-git-send-email-l.fu@pengutronix.de>
-References: <1257844329-20687-1-git-send-email-l.fu@pengutronix.de>
-	<1257844329-20687-2-git-send-email-l.fu@pengutronix.de>
-	<1257844329-20687-3-git-send-email-l.fu@pengutronix.de>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v4] xilinx_spi: Splitted into
+	generic, of and platform driver, added support for DS570
+Date: Tue, 10 Nov 2009 09:44:30 -0700
+Message-ID: <fa686aa40911100844q19789297h8e6713e915185a7@mail.gmail.com>
+References: <4AC0C699.2070506@mocean-labs.com>
+	<fa686aa40911091321w187fe85fl4e6d9f36f5966f34@mail.gmail.com>
+	<4AF99298.9020207@mocean-labs.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	John Linn <John.Linn-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
+To: =?ISO-8859-1?Q?Richard_R=F6jfors?= <richard.rojfors-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1257844329-20687-3-git-send-email-l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <4AF99298.9020207-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,150 +25,83 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This one enables the mpc52xx_spi driver for usage of user defined gpio lines
-as chipselect. This way we can control some more spi devices than only one
+On Tue, Nov 10, 2009 at 9:19 AM, Richard R=F6jfors
+<richard.rojfors-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org> wrote:
+> Grant Likely wrote:
+>> Oops, I replied to the original version, but missed the subsequent
+>> versions. =A0Looks like some of my comments still apply though.
+>> Overall, the patch changes too many things all at once. =A0You should
+>> look at splitting it up. =A0At the very least the io accessor changes
+>> should be done in a separate patch.
 
-Signed-off-by: Luotao Fu <l.fu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Hi Richard.  Please do another spin of this patch.  I don't have any
+particular problem with the changes, but it needs to be in a more
+granular form so I can review it properly.
+
+>>> +struct xilinx_spi {
+>>> + =A0 =A0 =A0 /* bitbang has to be first */
+>>> + =A0 =A0 =A0 struct spi_bitbang bitbang;
+>>> + =A0 =A0 =A0 struct completion done;
+>>> + =A0 =A0 =A0 struct resource mem; /* phys mem */
+>>> + =A0 =A0 =A0 void __iomem =A0 =A0*regs; =A0/* virt. address of the con=
+trol registers */
+>>> + =A0 =A0 =A0 u32 irq;
+>>> + =A0 =A0 =A0 u8 *rx_ptr; =A0 =A0 =A0 =A0 =A0 =A0 /* pointer in the Tx =
+buffer */
+>>> + =A0 =A0 =A0 const u8 *tx_ptr; =A0 =A0 =A0 /* pointer in the Rx buffer=
+ */
+>>> + =A0 =A0 =A0 int remaining_bytes; =A0 =A0/* the number of bytes left t=
+o transfer */
+>>> + =A0 =A0 =A0 /* offset to the XSPI regs, these might vary... */
+>>> + =A0 =A0 =A0 u8 bits_per_word;
+>>> + =A0 =A0 =A0 bool big_endian; =A0 =A0 =A0 =A0/* The device could be ac=
+cessed big or little
+>>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* endi=
+an
+>>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*/
+>>> +};
+>>> +
+>>
+>> Why is the definition of xilinx_spi moved?
+>
+> I liked the idea of heaving the struct defined in the top of the file.
+
+... which is completely unrelated to the patch purpose, and is not
+mentioned in the patch header.  If you really want to move it then put
+it in a completely separate patch and describe the change properly.
+As it is right now it is just noise that makes the stated purpose of
+the patch hard to review.
+
+>> Ah, you changed these to functions instead of macros. =A0I like.
+>> However, as you suggested elsewhere in this thread, you could change
+>> these to callbacks and then eliminate the if/else statements. =A0I think
+>> that is the approach you should use. =A0I don't think you need to worry
+>> about it being slower. =A0Any extra cycles for jumping to a callback
+>> will be far dwarfed by the number of cycles it takes to complete an
+>> SPI transfer.
+>
+> Sure that can be updated. I prefer to do that in an incremental patch, wo=
+uld be great to get this
+> big one merged first.
+
+As already commented on, this patch is too big and does too many
+unrelated things.  Please split into discrete changes so it can be
+reviewed properly.
+
+Thanks,
+g.
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/mpc52xx_spi.c |   57 +++++++++++++++++++++++++++++++++++++++++---
- 1 files changed, 53 insertions(+), 4 deletions(-)
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day =
 
-diff --git a/drivers/spi/mpc52xx_spi.c b/drivers/spi/mpc52xx_spi.c
-index 79ba678..58c2ce5 100644
---- a/drivers/spi/mpc52xx_spi.c
-+++ b/drivers/spi/mpc52xx_spi.c
-@@ -21,6 +21,7 @@
- #include <linux/spi/mpc52xx_spi.h>
- #include <linux/of_spi.h>
- #include <linux/io.h>
-+#include <linux/of_gpio.h>
- #include <asm/time.h>
- #include <asm/mpc52xx.h>
- 
-@@ -79,7 +80,6 @@ struct mpc52xx_spi {
- 	spinlock_t lock;
- 	struct work_struct work;
- 
--
- 	/* Details of current transfer (length, and buffer pointers) */
- 	struct spi_message *message;	/* current message */
- 	struct spi_transfer *transfer;	/* current transfer */
-@@ -89,6 +89,8 @@ struct mpc52xx_spi {
- 	u8 *rx_buf;
- 	const u8 *tx_buf;
- 	int cs_change;
-+	int gpio_cs_count;
-+	unsigned int *gpio_cs;
- };
- 
- /*
-@@ -96,7 +98,13 @@ struct mpc52xx_spi {
-  */
- static void mpc52xx_spi_chipsel(struct mpc52xx_spi *ms, int value)
- {
--	out_8(ms->regs + SPI_PORTDATA, value ? 0 : 0x08);
-+	int cs;
-+
-+	if (ms->gpio_cs_count > 0) {
-+		cs = ms->message->spi->chip_select;
-+		gpio_direction_output(ms->gpio_cs[cs], value);
-+	} else
-+		out_8(ms->regs + SPI_PORTDATA, value ? 0 : 0x08);
- }
- 
- /*
-@@ -390,8 +398,9 @@ static int __devinit mpc52xx_spi_probe(struct of_device *op,
- 	struct spi_master *master;
- 	struct mpc52xx_spi *ms;
- 	void __iomem *regs;
--	int rc;
- 	int ctrl1;
-+	int rc, i = 0;
-+	int gpio_cs;
- 
- 	/* MMIO registers */
- 	dev_dbg(&op->dev, "probing mpc5200 SPI device\n");
-@@ -426,8 +435,8 @@ static int __devinit mpc52xx_spi_probe(struct of_device *op,
- 		rc = -ENOMEM;
- 		goto err_alloc;
- 	}
-+
- 	master->bus_num = -1;
--	master->num_chipselect = 1;
- 	master->setup = mpc52xx_spi_setup;
- 	master->transfer = mpc52xx_spi_transfer;
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-@@ -441,6 +450,39 @@ static int __devinit mpc52xx_spi_probe(struct of_device *op,
- 	ms->irq1 = irq_of_parse_and_map(op->node, 1);
- 	ms->state = mpc52xx_spi_fsmstate_idle;
- 	ms->ipb_freq = mpc5xxx_get_bus_frequency(op->node);
-+	ms->gpio_cs_count = of_gpio_count(op->node);
-+	if (ms->gpio_cs_count > 0) {
-+		master->num_chipselect = ms->gpio_cs_count;
-+		ms->gpio_cs = kmalloc(ms->gpio_cs_count * sizeof(unsigned int),
-+				GFP_KERNEL);
-+		if (!ms->gpio_cs) {
-+			rc = -ENOMEM;
-+			goto err_alloc;
-+		}
-+
-+		for (i = 0; i < ms->gpio_cs_count; i++) {
-+			gpio_cs = of_get_gpio(op->node, i);
-+			if (gpio_cs < 0) {
-+				dev_err(&op->dev,
-+					"could not parse the gpio field "
-+					"in oftree\n");
-+				rc = -ENODEV;
-+				goto err_alloc;
-+			}
-+
-+			ms->gpio_cs[i] = gpio_cs;
-+			rc = gpio_request(ms->gpio_cs[i], dev_name(&op->dev));
-+			if (rc) {
-+				dev_err(&op->dev,
-+					"can't request spi cs gpio #%d "
-+					"on gpio line %d\n",
-+					i, gpio_cs);
-+				goto err_gpio;
-+			}
-+		}
-+	} else
-+		master->num_chipselect = 1;
-+
- 	spin_lock_init(&ms->lock);
- 	INIT_LIST_HEAD(&ms->queue);
- 	INIT_WORK(&ms->work, mpc52xx_spi_wq);
-@@ -477,6 +519,9 @@ static int __devinit mpc52xx_spi_probe(struct of_device *op,
-  err_register:
- 	dev_err(&ms->master->dev, "initialization failed\n");
- 	spi_master_put(master);
-+ err_gpio:
-+	while (i-- > 0)
-+		gpio_free(ms->gpio_cs[i]);
-  err_alloc:
-  err_init:
- 	iounmap(regs);
-@@ -487,10 +532,14 @@ static int __devexit mpc52xx_spi_remove(struct of_device *op)
- {
- 	struct spi_master *master = dev_get_drvdata(&op->dev);
- 	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
-+	int i;
- 
- 	free_irq(ms->irq0, ms);
- 	free_irq(ms->irq1, ms);
- 
-+	for (i = 0; i < ms->gpio_cs_count; i++)
-+		gpio_free(ms->gpio_cs[i]);
-+
- 	spi_unregister_master(master);
- 	spi_master_put(master);
- 	iounmap(ms->regs);
--- 
-1.6.5.2
+trial. Simplify your report design, integration and deployment - and focus =
+on =
 
-
-------------------------------------------------------------------------------
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
-trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july

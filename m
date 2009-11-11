@@ -1,219 +1,119 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [spi-devel-general] [PATCH 3/3] mpc52xx_spi: add gpio
-	chipselect
-Date: Wed, 11 Nov 2009 11:50:38 +0100
-Message-ID: <20091111105038.GC4234@pengutronix.de>
-References: <1257844329-20687-1-git-send-email-l.fu@pengutronix.de> <1257844329-20687-2-git-send-email-l.fu@pengutronix.de> <1257844329-20687-3-git-send-email-l.fu@pengutronix.de> <1257844329-20687-4-git-send-email-l.fu@pengutronix.de>
+From: Petr Vsevolodovich <petrvsevolodovich-ColKEJEGj63QT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] Работа водителем
+Date: Wed, 11 Nov 2009 14:00:50 +0300
+Message-ID: <6555000213.20091111140050@l3388l.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2/5bycvrmDh4d1IB"
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org
-To: Luotao Fu <l.fu@pengutronix.de>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1757330AbZKKKuu@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1257844329-20687-4-git-send-email-l.fu@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============8545967730793397576=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============8545967730793397576==
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
---2/5bycvrmDh4d1IB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
+bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL2h0bWw0L2xvb3NlLmR0ZCI+DQo8aHRt
+bD4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0
+ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjx0aXRsZT48L3RpdGxlPg0KPHN0
+eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHksdGQsdGggew0KCWZvbnQtZmFtaWx5
+OiBWZXJkYW5hLCBHZW5ldmEsIHNhbnMtc2VyaWYsIEFyaWFsOw0KCWZvbnQtc2l6ZTogMTNw
+eDsNCgljb2xvcjogIzNENTczRDsNCn0NCmJvZHkgew0KCWJhY2tncm91bmQtY29sb3I6ICNG
+RkY7DQp9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9keT4NCjx0YWJsZSB3aWR0aD0i
+NzkzIiBib3JkZXI9IjEiIGFsaWduPSJjZW50ZXIiIGNlbGxwYWRkaW5nPSI1Ij4NCiAgPHRy
+Pg0KICAgIDx0ZCB3aWR0aD0iNzc1IiBhbGlnbj0ibGVmdCI+PHA+PGZvbnQgY29sb3I9IiMz
+RDU3M0QiIHN0eWxlPSJmb250LXNpemU6IDEzcHg7Ij7I+fMg8ODhb/LzIOIgyujl4mUg7+4g
+8e9l9ujg6/zt7mPy6CAmbmRhc2g7IDxzdHJvbmc+4u7k6PJl6/wt/epj72Xk6PLu8C48L3N0
+cm9uZz48L2ZvbnQ+PC9wPg0KICAgICAgPHA+PGZvbnQgY29sb3I9IiMzRDU3M0QiIHN0eWxl
+PSJmb250LXNpemU6IDEzcHg7Ij48c3Ryb25nPs5j7e7i7ftlIOTg7e375To8L3N0cm9uZz48
+L2ZvbnQ+PGJyPg0KICAgICAgICA8Zm9udCBjb2xvcj0iIzNENTczRCIgc3R5bGU9ImZvbnQt
+c2l6ZTogMTNweDsiPszz5vfo7WEsIDQwIOtl8iwg5uXtYfIsIOTl8ug6IG/k6O0gcOXh5e1v
+6jwvZm9udD48L3A+DQogICAgICA8cD48Zm9udCBjb2xvcj0iIzNENTczRCIgc3R5bGU9ImZv
+bnQtc2l6ZTogMTNweDsiPjxzdHJvbmc+zu/78iDwYeFv8vs6PC9zdHJvbmc+PC9mb250Pjxi
+cj4NCiAgICAgICAgPGZvbnQgY29sb3I9IiMzRDU3M0QiIHN0eWxlPSJmb250LXNpemU6IDEz
+cHg7Ij7Cb+To8uXr/PHq6OkgY/Jh5iAyNSDr5fIsIDEg6uthY/Eg6Ocg7ej1IDEwIO1l7/Bl
+8Pvi7ft4IOvl8iDiIG/k7e7pIOpv7O/g7ejoLjwvZm9udD48YnI+DQogICAgICAgIDxmb250
+IGNvbG9yPSIjM0Q1NzNEIiBzdHlsZT0iZm9udC1zaXplOiAxM3B4OyI+0ODhb/Jh6yDxIODi
+8m/s7uHo6//s6CDvcOXk8fLg4ujy5ev8Y+ru4+4g6uvgY2PgIOzu5GXrZekgKE1lcmNlZGVz
+cywgTWF5YmFjaCwgTGluY29sbiwgVG95b3RhIOgg5HDz4+jlKS48L2ZvbnQ+PC9wPg0KICAg
+ICAgPHA+PGZvbnQgY29sb3I9IiMzRDU3M0QiIHN0eWxlPSJmb250LXNpemU6IDEzcHg7Ij48
+c3Ryb25nPsTu7+7r7ejyZev87eD/IOjt9O5w7OD26P86PC9zdHJvbmc+PC9mb250Pjxicj4N
+CiAgICAgICAgPGZvbnQgY29sb3I9IiMzRDU3M0QiIHN0eWxlPSJmb250LXNpemU6IDEzcHg7
+Ij7Db/Lu4u3uY/L8IOog7eXtb/Ds6PDu4uDt7W/s8yBw4OHu92Xs8yDk7f4uPC9mb250Pjxi
+cj4NCiAgICAgICAgPGZvbnQgY29sb3I9IiMzRDU3M0QiIHN0eWxlPSJmb250LXNpemU6IDEz
+cHg7Ij7NYevo9+hlIOvo9+3u428g4OLy7uxv4ejr/y48L2ZvbnQ+PGJyPg0KICAgICAgICA8
+Zm9udCBjb2xvcj0iIzNENTczRCIgc3R5bGU9ImZvbnQtc2l6ZTogMTNweDsiPsjsZWXy8f8g
+8vBh4uzg8uj35fHqb+Ugb3Dz5uhlIOgg8GHncOX4Ze3o5SDtYSDtZeNvLjwvZm9udD48YnI+
+DQogICAgICAgIDxmb250IGNvbG9yPSIjM0Q1NzNEIiBzdHlsZT0iZm9udC1zaXplOiAxM3B4
+OyI+wWXnIOLw5eTt+3gg73Do4vv3ZeouPC9mb250PjwvcD4NCiAgICAgIDxwPjxmb250IGNv
+bG9yPSIjM0Q1NzNEIiBzdHlsZT0iZm9udC1zaXplOiAxM3B4OyI+PHN0cm9uZz4wPGZvbnQg
+Y29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPvU8L2ZvbnQ+OTxmb250
+IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7+PC9mb250PjMgMjxm
+b250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7gPC9mb250PjU8
+Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+5DwvZm9udD41
+IC0gMzxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij75PC9m
+b250PjMgLSA1PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsi
+Pvs8L2ZvbnQ+OCAmbmRhc2g7INHl8ONl6Twvc3Ryb25nPjwvZm9udD48YnI+DQogICAgICAg
+IDxhIGhyZWY9Im1haWx0bzpzZXJnZXktc2hldkB1a3IubmV0IiBzdHlsZT0iY29sb3I6IzA2
+OSI+c2VyZ2V5LXNoZXZAdWtyLm5ldDwvYT48YnI+DQogICAgPC9wPjwvdGQ+DQogIDwvdHI+
+DQo8L3RhYmxlPg0KPHAgYWxpZ249ImNlbnRlciI+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvM8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvQ8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvc8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPuE8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPv88L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPu08L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPu08L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPv08L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPus8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvk8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPu48L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPv88L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvI8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPuE8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPuU8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvk8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvU8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPuw8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPu08L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvc8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvM8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvU8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPuo8L2ZvbnQ+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPvM8L2ZvbnQ+PC9wPg0KPC9ib2R5Pg0KPC9odG1sPg0K
 
-On Tue, Nov 10, 2009 at 10:12:09AM +0100, Luotao Fu wrote:
-> This one enables the mpc52xx_spi driver for usage of user defined gpio li=
-nes
-> as chipselect. This way we can control some more spi devices than only one
->=20
-> Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
-> ---
->  drivers/spi/mpc52xx_spi.c |   57 +++++++++++++++++++++++++++++++++++++++=
-++---
->  1 files changed, 53 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/spi/mpc52xx_spi.c b/drivers/spi/mpc52xx_spi.c
-> index 79ba678..58c2ce5 100644
-> --- a/drivers/spi/mpc52xx_spi.c
-> +++ b/drivers/spi/mpc52xx_spi.c
-> @@ -21,6 +21,7 @@
->  #include <linux/spi/mpc52xx_spi.h>
->  #include <linux/of_spi.h>
->  #include <linux/io.h>
-> +#include <linux/of_gpio.h>
->  #include <asm/time.h>
->  #include <asm/mpc52xx.h>
-> =20
-> @@ -79,7 +80,6 @@ struct mpc52xx_spi {
->  	spinlock_t lock;
->  	struct work_struct work;
-> =20
-> -
->  	/* Details of current transfer (length, and buffer pointers) */
->  	struct spi_message *message;	/* current message */
->  	struct spi_transfer *transfer;	/* current transfer */
-> @@ -89,6 +89,8 @@ struct mpc52xx_spi {
->  	u8 *rx_buf;
->  	const u8 *tx_buf;
->  	int cs_change;
-> +	int gpio_cs_count;
-> +	unsigned int *gpio_cs;
->  };
-> =20
->  /*
-> @@ -96,7 +98,13 @@ struct mpc52xx_spi {
->   */
->  static void mpc52xx_spi_chipsel(struct mpc52xx_spi *ms, int value)
->  {
-> -	out_8(ms->regs + SPI_PORTDATA, value ? 0 : 0x08);
-> +	int cs;
-> +
-> +	if (ms->gpio_cs_count > 0) {
-> +		cs =3D ms->message->spi->chip_select;
-> +		gpio_direction_output(ms->gpio_cs[cs], value);
 
-Use gpio_set_value() in combination with...
 
-> +	} else
-> +		out_8(ms->regs + SPI_PORTDATA, value ? 0 : 0x08);
->  }
-> =20
->  /*
-> @@ -390,8 +398,9 @@ static int __devinit mpc52xx_spi_probe(struct of_devi=
-ce *op,
->  	struct spi_master *master;
->  	struct mpc52xx_spi *ms;
->  	void __iomem *regs;
-> -	int rc;
->  	int ctrl1;
-> +	int rc, i =3D 0;
-> +	int gpio_cs;
-> =20
->  	/* MMIO registers */
->  	dev_dbg(&op->dev, "probing mpc5200 SPI device\n");
-> @@ -426,8 +435,8 @@ static int __devinit mpc52xx_spi_probe(struct of_devi=
-ce *op,
->  		rc =3D -ENOMEM;
->  		goto err_alloc;
->  	}
-> +
->  	master->bus_num =3D -1;
-> -	master->num_chipselect =3D 1;
->  	master->setup =3D mpc52xx_spi_setup;
->  	master->transfer =3D mpc52xx_spi_transfer;
->  	master->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-> @@ -441,6 +450,39 @@ static int __devinit mpc52xx_spi_probe(struct of_dev=
-ice *op,
->  	ms->irq1 =3D irq_of_parse_and_map(op->node, 1);
->  	ms->state =3D mpc52xx_spi_fsmstate_idle;
->  	ms->ipb_freq =3D mpc5xxx_get_bus_frequency(op->node);
-> +	ms->gpio_cs_count =3D of_gpio_count(op->node);
-> +	if (ms->gpio_cs_count > 0) {
-> +		master->num_chipselect =3D ms->gpio_cs_count;
-> +		ms->gpio_cs =3D kmalloc(ms->gpio_cs_count * sizeof(unsigned int),
-> +				GFP_KERNEL);
-> +		if (!ms->gpio_cs) {
-> +			rc =3D -ENOMEM;
-> +			goto err_alloc;
-> +		}
-> +
-> +		for (i =3D 0; i < ms->gpio_cs_count; i++) {
-> +			gpio_cs =3D of_get_gpio(op->node, i);
 
-=2E.. with of_get_gpio_flags() to avoid initialisation jitter?
-
-> +			if (gpio_cs < 0) {
-> +				dev_err(&op->dev,
-> +					"could not parse the gpio field "
-> +					"in oftree\n");
-> +				rc =3D -ENODEV;
-> +				goto err_alloc;
-
-That should go to err_gpio and unregister the previous allocated ones.
-
-> +			}
-> +
-> +			ms->gpio_cs[i] =3D gpio_cs;
-> +			rc =3D gpio_request(ms->gpio_cs[i], dev_name(&op->dev));
-> +			if (rc) {
-> +				dev_err(&op->dev,
-> +					"can't request spi cs gpio #%d "
-> +					"on gpio line %d\n",
-> +					i, gpio_cs);
-
-Last two lines could become one.
-
-> +				goto err_gpio;
-> +			}
-> +		}
-> +	} else
-> +		master->num_chipselect =3D 1;
-> +
->  	spin_lock_init(&ms->lock);
->  	INIT_LIST_HEAD(&ms->queue);
->  	INIT_WORK(&ms->work, mpc52xx_spi_wq);
-> @@ -477,6 +519,9 @@ static int __devinit mpc52xx_spi_probe(struct of_devi=
-ce *op,
->   err_register:
->  	dev_err(&ms->master->dev, "initialization failed\n");
->  	spi_master_put(master);
-> + err_gpio:
-> +	while (i-- > 0)
-> +		gpio_free(ms->gpio_cs[i]);
->   err_alloc:
->   err_init:
->  	iounmap(regs);
-> @@ -487,10 +532,14 @@ static int __devexit mpc52xx_spi_remove(struct of_d=
-evice *op)
->  {
->  	struct spi_master *master =3D dev_get_drvdata(&op->dev);
->  	struct mpc52xx_spi *ms =3D spi_master_get_devdata(master);
-> +	int i;
-> =20
->  	free_irq(ms->irq0, ms);
->  	free_irq(ms->irq1, ms);
-> =20
-> +	for (i =3D 0; i < ms->gpio_cs_count; i++)
-> +		gpio_free(ms->gpio_cs[i]);
-> +
->  	spi_unregister_master(master);
->  	spi_master_put(master);
->  	iounmap(ms->regs);
-> --=20
-> 1.6.5.2
->=20
->=20
-> -------------------------------------------------------------------------=
------
-> Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-D=
-ay=20
-> trial. Simplify your report design, integration and deployment - and focu=
-s on=20
-> what you do best, core application coding. Discover what's new with
-> Crystal Reports now.  http://p.sf.net/sfu/bobj-july
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---2/5bycvrmDh4d1IB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+--===============8545967730793397576==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--===============8545967730793397576==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-iEYEARECAAYFAkr6lv4ACgkQD27XaX1/VRvx+ACghBuRjou+tqT+RkS9WDevZYQc
-+1IAoLJJk8WpsaUyZpRGrrgfXrtmi4IX
-=UWDP
------END PGP SIGNATURE-----
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---2/5bycvrmDh4d1IB--
+--===============8545967730793397576==--

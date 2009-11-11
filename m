@@ -1,7 +1,7 @@
 From: =?ISO-8859-1?Q?Richard_R=F6jfors?= <richard.rojfors@mocean-labs.com>
-Subject: [PATCH] xilinx_spi: Add the platform driver to the Kconfig
-Date: Wed, 11 Nov 2009 17:33:45 +0100
-Message-ID: <4AFAE769.8040909@mocean-labs.com>
+Subject: [PATCH v2] xilinx_spi: Add the platform driver to the Kconfig
+Date: Wed, 11 Nov 2009 17:38:08 +0100
+Message-ID: <4AFAE870.7080308@mocean-labs.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -20,7 +20,7 @@ Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds the xilinx_spi_pltfm to the SPI Kconfig.
+This patch adds the xilinx_spi_pltfm to the SPI Kconfig and Makefile.
 
 The xilinx_spi_pltfm was added in a previous patchset.
 
@@ -44,3 +44,15 @@ index b956284..d1f8ee3 100644
  #
  # Add new SPI master controllers in alphabetical order above this line
  #
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 97dee8f..d8b0e4c 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -32,6 +32,7 @@ obj-$(CONFIG_SPI_S3C24XX)		+=3D spi_s3c24xx.o
+ obj-$(CONFIG_SPI_TXX9)			+=3D spi_txx9.o
+ obj-$(CONFIG_SPI_XILINX)		+=3D xilinx_spi.o
+ obj-$(CONFIG_SPI_XILINX_OF)		+=3D xilinx_spi_of.o
++obj-$(CONFIG_SPI_XILINX_PLTFM)		+=3D xilinx_spi_pltfm.o
+ obj-$(CONFIG_SPI_SH_SCI)		+=3D spi_sh_sci.o
+ obj-$(CONFIG_SPI_STMP3XXX)		+=3D spi_stmp.o
+ # 	... add above this line ...

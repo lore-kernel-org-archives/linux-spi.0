@@ -1,41 +1,76 @@
-From: =?ISO-8859-1?Q?Richard_R=F6jfors?= <richard.rojfors@mocean-labs.com>
-Subject: Re: [spi-devel-general] [PATCH v4] xilinx_spi: Splitted into generic,
-	of and platform driver, added support for DS570
-Date: Wed, 11 Nov 2009 11:18:07 +0100
-Message-ID: <4AFA8F5F.6010006@mocean-labs.com>
-References: <4AC0C699.2070506@mocean-labs.com>
-	<fa686aa40911091321w187fe85fl4e6d9f36f5966f34@mail.gmail.com>
-	<4AF99298.9020207@mocean-labs.com>
-	<fa686aa40911100844q19789297h8e6713e915185a7@mail.gmail.com>
+From: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH 2/3] mpc52xx_spi: add missing mode_bits definition
+Date: Wed, 11 Nov 2009 11:38:53 +0100
+Message-ID: <20091111103853.GB4234@pengutronix.de>
+References: <1257844329-20687-1-git-send-email-l.fu@pengutronix.de> <1257844329-20687-2-git-send-email-l.fu@pengutronix.de> <1257844329-20687-3-git-send-email-l.fu@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	Andrew Morton <akpm@linux-foundation.org>, dbrownell@users.sourceforge.net,
-	John Linn <John.Linn@xilinx.com>, linuxppc-dev@ozlabs.org
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <fa686aa40911100844q19789297h8e6713e915185a7@mail.gmail.com>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="+g7M9IMkV8truYOl"
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org
+To: Luotao Fu <l.fu@pengutronix.de>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1757182AbZKKKjE@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1257844329-20687-3-git-send-email-l.fu@pengutronix.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Grant Likely wrote:
-> 
-> Hi Richard.  Please do another spin of this patch.  I don't have any
-> particular problem with the changes, but it needs to be in a more
-> granular form so I can review it properly.
 
-I will post an update today.
+--+g7M9IMkV8truYOl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In the future, if you are "quasi responsible for everything Xilinx", please reply earlier to patches
-on drivers for your IP:s.
+On Tue, Nov 10, 2009 at 10:12:08AM +0100, Luotao Fu wrote:
+> Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
 
---Richard
+SPI_CS_HIGH should be dropped, otherwise:
+
+Reviewed-by: Wolfram Sang <w.sang@pengutronix.de>
+
+> ---
+>  drivers/spi/mpc52xx_spi.c |    2 ++
+>  1 files changed, 2 insertions(+), 0 deletions(-)
+>=20
+> diff --git a/drivers/spi/mpc52xx_spi.c b/drivers/spi/mpc52xx_spi.c
+> index 5b036f2..79ba678 100644
+> --- a/drivers/spi/mpc52xx_spi.c
+> +++ b/drivers/spi/mpc52xx_spi.c
+> @@ -430,6 +430,8 @@ static int __devinit mpc52xx_spi_probe(struct of_devi=
+ce *op,
+>  	master->num_chipselect =3D 1;
+>  	master->setup =3D mpc52xx_spi_setup;
+>  	master->transfer =3D mpc52xx_spi_transfer;
+> +	master->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
+> +
+>  	dev_set_drvdata(&op->dev, master);
+> =20
+>  	ms =3D spi_master_get_devdata(master);
+> --=20
+> 1.6.5.2
+>=20
+> _______________________________________________
+> Linuxppc-dev mailing list
+> Linuxppc-dev@lists.ozlabs.org
+> https://lists.ozlabs.org/listinfo/linuxppc-dev
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--+g7M9IMkV8truYOl
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iEYEARECAAYFAkr6lD0ACgkQD27XaX1/VRts5gCeMIoCcdxQ1HfutQ0PsKq60GR5
++mEAnjM2LXjIpDuZJ43GElcC4l9SFHmk
+=2J75
+-----END PGP SIGNATURE-----
+
+--+g7M9IMkV8truYOl--

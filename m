@@ -1,23 +1,12 @@
-From: John Linn <linnj-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH v4] xilinx_spi: Splitted into
-	generic, of and platform driver, added support for DS570
-Date: Tue, 10 Nov 2009 10:23:02 -0700
-Message-ID: <00fe7c25-4fd8-4df1-b712-ed31db58ba58@SG2EHSMHS010.ehs.local>
-References: <4AC0C699.2070506@mocean-labs.com>
-	<fa686aa40911091321w187fe85fl4e6d9f36f5966f34@mail.gmail.com>
-	<4AF99298.9020207@mocean-labs.com>
-	<fa686aa40911100844q19789297h8e6713e915185a7@mail.gmail.com>
+From: Amoureux par Centralmarques <newsletter-95V9+DVbUV+sTnJN9+BGXg@public.gmane.org>
+Subject: [SPAM] Rencontrez la personne faite pour vous
+Date: 11 Nov 2009 09:32:23 -0000
+Message-ID: <20091111093223.31856.qmail@ks359736.kimsufi.com>
+Reply-To: Amoureux par Centralmarques <newsletter-95V9+DVbUV+sTnJN9+BGXg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
-To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	=?iso-8859-1?Q?Richard_R=F6jfors?= <richard.rojfors-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============5208851348547129998=="
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Class: urn:content-classes:message
-In-Reply-To: <fa686aa40911100844q19789297h8e6713e915185a7-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,123 +17,88 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> -----Original Message-----
-> From: glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org [mailto:glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org] On Behalf Of Gra=
-nt Likely
-> Sent: Tuesday, November 10, 2009 9:45 AM
-> To: Richard R=F6jfors
-> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; And=
-rew Morton;
-> dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; John Linn
-> Subject: Re: [spi-devel-general] [PATCH v4] xilinx_spi: Splitted into gen=
-eric, of and platform
-> driver, added support for DS570
-> =
 
-> On Tue, Nov 10, 2009 at 9:19 AM, Richard R=F6jfors
-> <richard.rojfors-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org> wrote:
-> > Grant Likely wrote:
-> >> Oops, I replied to the original version, but missed the subsequent
-> >> versions. =A0Looks like some of my comments still apply though.
-> >> Overall, the patch changes too many things all at once. =A0You should
-> >> look at splitting it up. =A0At the very least the io accessor changes
-> >> should be done in a separate patch.
-> =
-
-> Hi Richard.  Please do another spin of this patch.  I don't have any
-> particular problem with the changes, but it needs to be in a more
-> granular form so I can review it properly.
-
-I agree.  =
+--===============5208851348547129998==
+Content-Type: multipart/alternative;
+	boundary="_----------=_parties_fb45a8bd2c3c5cd27a5c6b848de4186f"
 
 
-We have a functioning driver such that I need to make sure it doesn't regre=
-ss. More granular changes will also allow us to better isolate any problems=
- if they occur.
+--_----------=_parties_fb45a8bd2c3c5cd27a5c6b848de4186f
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-Thanks,
-John
+Version "en ligne" de ce message: http://newsletter.makine.net/svi/miroir.php?bat=amoureux1109_ctrm
 
-> =
+amoureux .com
+Site de rencontres 100% gratuit
+Je m'inscris maintenant
 
-> >>> +struct xilinx_spi {
-> >>> + =A0 =A0 =A0 /* bitbang has to be first */
-> >>> + =A0 =A0 =A0 struct spi_bitbang bitbang;
-> >>> + =A0 =A0 =A0 struct completion done;
-> >>> + =A0 =A0 =A0 struct resource mem; /* phys mem */
-> >>> + =A0 =A0 =A0 void __iomem =A0 =A0*regs; =A0/* virt. address of the c=
-ontrol registers */
-> >>> + =A0 =A0 =A0 u32 irq;
-> >>> + =A0 =A0 =A0 u8 *rx_ptr; =A0 =A0 =A0 =A0 =A0 =A0 /* pointer in the T=
-x buffer */
-> >>> + =A0 =A0 =A0 const u8 *tx_ptr; =A0 =A0 =A0 /* pointer in the Rx buff=
-er */
-> >>> + =A0 =A0 =A0 int remaining_bytes; =A0 =A0/* the number of bytes left=
- to transfer */
-> >>> + =A0 =A0 =A0 /* offset to the XSPI regs, these might vary... */
-> >>> + =A0 =A0 =A0 u8 bits_per_word;
-> >>> + =A0 =A0 =A0 bool big_endian; =A0 =A0 =A0 =A0/* The device could be =
-accessed big or little
-> >>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* en=
-dian
-> >>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*/
-> >>> +};
-> >>> +
-> >>
-> >> Why is the definition of xilinx_spi moved?
-> >
-> > I liked the idea of heaving the struct defined in the top of the file.
-> =
+plus d'infos sur http://newsletter.makine.net/svi/linkserv.php?bat=amoureux1109_ctrm&nb=2655&n=9047704&c=rencontres
 
-> ... which is completely unrelated to the patch purpose, and is not
-> mentioned in the patch header.  If you really want to move it then put
-> it in a completely separate patch and describe the change properly.
-> As it is right now it is just noise that makes the stated purpose of
-> the patch hard to review.
-> =
+--------------------------------
+Cette offre vous est envoyée par CentralMarques
+Pour ne plus recevoir de message sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : http://newsletter.makine.net/svi/gestionserv.php?nb=2655&numuser=9047704&code=HWeuIQdw&src=50
 
-> >> Ah, you changed these to functions instead of macros. =A0I like.
-> >> However, as you suggested elsewhere in this thread, you could change
-> >> these to callbacks and then eliminate the if/else statements. =A0I thi=
-nk
-> >> that is the approach you should use. =A0I don't think you need to worry
-> >> about it being slower. =A0Any extra cycles for jumping to a callback
-> >> will be far dwarfed by the number of cycles it takes to complete an
-> >> SPI transfer.
-> >
-> > Sure that can be updated. I prefer to do that in an incremental patch, =
-would be great to get this
-> > big one merged first.
-> =
-
-> As already commented on, this patch is too big and does too many
-> unrelated things.  Please split into discrete changes so it can be
-> reviewed properly.
-> =
-
-> Thanks,
-> g.
-> =
-
-> --
-> Grant Likely, B.Sc., P.Eng.
-> Secret Lab Technologies Ltd.
+--_----------=_parties_fb45a8bd2c3c5cd27a5c6b848de4186f
+Content-Type: text/html; charset="iso-8859-1" 
+Content-Transfer-Encoding: 8bit
 
 
-This email and any attachments are intended for the sole use of the named r=
-ecipient(s) and contain(s) confidential information that may be proprietary=
-, privileged or copyrighted under applicable law. If you are not the intend=
-ed recipient, do not read, copy, or forward this email message or any attac=
-hments. Delete this email message and any attachments immediately.
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head> 
+<title>amoureux .com</title>
+</head>
+<body><center>
+<p id='lienhaut'>
+<a id=ID_LIENINTERNE2 style='font-family:inherit;background-color:inherit;color:inherit;' href='http://newsletter.makine.net/svi/miroir.php?bat=amoureux1109_ctrm' target='_blank'>Afficher correctement cet email</a><br><font style='color:#ffffff;background-color:#ffffff;font-size:8px;'>9047704&code=HWeuIQdw&src=50</font><br>
+</p>
+<table id='ID_BORDURE' CELLSPACING=0 CELLPADDING=0 style='width:600px;border: 2px dotted #F40505;padding:0px;'>
+<tr>
+<td id='ID_TITRE' align='center' style='display:block;padding:5px;background-color:#FFFFFF;font-family:Verdana;color:#FF0000;font-size:24px'>
+<p id='INNER_TITRE' style='display:inline;'> <a href="http://newsletter.makine.net/svi/linkserv.php?bat=amoureux1109_ctrm&nb=2655&n=9047704&c=rencontres" style="text-decoration:none;color:#FF0000;">amoureux .com</a></p>
+</td></tr>
+<tr><td id='ID_SSTITRE' align='center' style='margin:3px;padding:5px;background-color:#010101;font-family:Arial;color:#FFFFFF;font-size:18px;'>
+<a href="http://newsletter.makine.net/svi/linkserv.php?bat=amoureux1109_ctrm&nb=2655&n=9047704&c=rencontres" style="text-decoration:none;color:#FFFFFF;">Site de rencontres 100% gratuit</a>
+</td></tr>
+<tr>
+<td id='ID_DETAIL' align='center' style='padding:5px;font-family:Arial;color:#000000;font-size:16px;background-color:#FFFFFF;'>
+<a href="http://newsletter.makine.net/svi/linkserv.php?bat=amoureux1109_ctrm&nb=2655&n=9047704&c=rencontres" style="text-decoration:none;color:#000000;">Je m'inscris maintenant</a>
+</td></tr>
+<tr><td id='ID_VISUEL' align='center' style='padding:5px;background-color:#FFFFFF;'>
+<a href="http://newsletter.makine.net/svi/linkserv.php?bat=amoureux1109_ctrm&nb=2655&n=9047704&c=rencontres" style="text-decoration:none;"><img src="http://banniere.reussissonsensemble.fr/view.asp?ref=481959&site=4418&b=81" border="0" alt="Amoureux" width="540" height="526" /></a>
+</td></tr>
+</table>
+<br><br>
+<img src="http://newsletter.makine.net/svi/img_nb_2655_numuser_9047704_code_HWeuIQdw_src_50.jpg" width=1 height=1 alt=''>
+<p id='lienbas'>
+Ce message est envoyé par central marques - <a href="http://newsletter.makine.net/svi/gestionserv.php?nb=2655&cat=rencontres&email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&n1=9047704&code=HWeuIQdw&src=50" target="_top">acc&egrave;s &agrave; votre compte </a>
+</p>
+</center></body>
+</html>
 
 
+--_----------=_parties_fb45a8bd2c3c5cd27a5c6b848de4186f--
 
----------------------------------------------------------------------------=
----
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day =
+--===============5208851348547129998==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-trial. Simplify your report design, integration and deployment - and focus =
-on =
-
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
 what you do best, core application coding. Discover what's new with
 Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--===============5208851348547129998==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5208851348547129998==--

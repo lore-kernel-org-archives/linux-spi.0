@@ -1,50 +1,97 @@
-From: =?ISO-8859-1?Q?Richard_R=F6jfors?= <richard.rojfors@mocean-labs.com>
-Subject: Re: [PATCH 2/4] xilinx_spi: Switch to iomem functions and support
-	little endian.
-Date: Wed, 11 Nov 2009 15:54:39 +0100
-Message-ID: <4AFAD02F.9080305@mocean-labs.com>
-References: <4AFACC6A.304@mocean-labs.com>
-	<20091111144924.GG30489@zod.rchland.ibm.com>
+From: "Hipnosis Chile" <hipnosischile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] DIPLOMADO DE HIPNOSIS
+Date: Wed, 11 Nov 2009 11:00:15 -0300
+Message-ID: <3042244815-220091131114015284@AnaMaria1>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net,
-	Andrew Morton <akpm@linux-foundation.org>, dbrownell@users.sourceforge.net,
-	John Linn <John.Linn@xilinx.com>, linuxppc-dev@ozlabs.org
-To: Josh Boyer <jwboyer@linux.vnet.ibm.com>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <20091111144924.GG30489@zod.rchland.ibm.com>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: multipart/mixed; boundary="===============5600362316262684051=="
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Josh Boyer wrote:
-> On Wed, Nov 11, 2009 at 03:38:34PM +0100, Richard R=F6jfors wrote:
->> This patch changes the out_(be)(8|16|32) and in_(be)(8|16|32) calls to i=
-owrite(8|16|32)
->> and ioread(8|16|32). This to be able to build on platforms not supportin=
-g the in/out calls
->> for instance x86.
->>
->> Support is also added for little endian writes. In some systems the regi=
-sters should be
->> accessed little endian rather than big endian.
-> =
+--===============5600362316262684051==
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_30422177248111244814015285"
 
-> I wonder if you should make the endianness a config option.  Right now you
-> have a conditional check for every read and write.  Does that impact
-> performance at all?
+------=_NextPart_30422177248111244814015285
+Content-type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-It won't affect the performance noticeable.
 
-In our case we need the possibility to run both endians using the same xili=
-nx_spi module.
+http://www=2Ehipnosischile=2Ecl/ELSECRETO/=20
 
---Richard
+
+
+------=_NextPart_30422177248111244814015285
+Content-Type: text/html; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-=
+1252">
+<title>El Secreto</title>
+</head>
+
+<body bgcolor=3D"#010101" topmargin=3D"0" leftmargin=3D"0" rightmargin=3D"=
+0" bottommargin=3D"0">
+
+<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0"><map name=3D=
+"FPMap0">
+<area href=3D"mailto:info@hipnosischile=2Ecl=3Fsubject=3DDeseo Inscribirme=
+ en el DIPLOMADO" shape=3D"rect" coords=3D"168, 767, 338, 787">
+<area href=3D"http://www=2Ehipnosischile=2Ecl" shape=3D"default">
+<area href=3D"http://www=2Ehipnosischile=2Ecl" coords=3D"0, 0, 10000, 1000=
+0" shape=3D"rect">
+<area href=3D"http://www=2Ehipnosischile=2Ecl/inscripciones=2Ehtm" shape=3D=
+"rect" coords=3D"248, 661, 499, 686">
+</map>
+<font face=3D"Arial" size=3D"1"><a href=3D"http://www=2Ehipnosischile=2Ecl=
+/ELSECRETO/">
+<font color=3D"#000000">http://www=2Ehipnosischile=2Ecl/ELSECRETO/</font><=
+/a> </font></p>
+<p align=3D"center" style=3D"margin-top: 0; margin-bottom: 0">
+<img border=3D"0" src=3D"http://www=2Ehipnosischile=2Ecl/DIPLOMADO/DIPLOMA=
+DO=2Egif" width=3D"650" height=3D"800" usemap=3D"#FPMap0" alt=3D"www=2Ehip=
+nosischile=2Ecl"></p>
+
+</body>
+
+</html>
+
+------=_NextPart_30422177248111244814015285--
+
+
+
+--===============5600362316262684051==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--===============5600362316262684051==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5600362316262684051==--

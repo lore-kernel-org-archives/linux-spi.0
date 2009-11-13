@@ -1,41 +1,35 @@
 From: Luotao Fu <l.fu@pengutronix.de>
-Subject: [PATCH 2/3] [V2] mpc52xx_spi: add missing mode_bits definition
-Date: Fri, 13 Nov 2009 11:41:16 +0100
-Message-ID: <1258108877-25435-3-git-send-email-l.fu@pengutronix.de>
+Subject: [V2] Patches for mpc52xx_spi
+Date: Fri, 13 Nov 2009 11:41:14 +0100
+Message-ID: <1258108877-25435-1-git-send-email-l.fu@pengutronix.de>
 References: <1257844329-20687-1-git-send-email-l.fu@pengutronix.de>
- <1258108877-25435-1-git-send-email-l.fu@pengutronix.de>
- <1258108877-25435-2-git-send-email-l.fu@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general@lists.sourceforge.net,
 	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org,
-	Luotao Fu <l.fu@pengutronix.de>
+	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org
 To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S932147AbZKMKmY@vger.kernel.org>
-In-Reply-To: <1258108877-25435-2-git-send-email-l.fu@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <1257844329-20687-1-git-send-email-l.fu@pengutronix.de>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-V2 changes:
-* remove CS_HIGH mode
 
-Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
-Acked-by: Wolfram Sang <w.sang@pengutronix.de>
----
- drivers/spi/mpc52xx_spi.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+Hi Grand,
 
-diff --git a/drivers/spi/mpc52xx_spi.c b/drivers/spi/mpc52xx_spi.c
-index 2322250..64862cf 100644
---- a/drivers/spi/mpc52xx_spi.c
-+++ b/drivers/spi/mpc52xx_spi.c
-@@ -430,6 +430,8 @@ static int __devinit mpc52xx_spi_probe(struct of_device *op,
- 	master->num_chipselect = 1;
- 	master->setup = mpc52xx_spi_setup;
- 	master->transfer = mpc52xx_spi_transfer;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
-+
- 	dev_set_drvdata(&op->dev, master);
- 
- 	ms = spi_master_get_devdata(master);
--- 
-1.6.5.2
+here are the V2 of my patchset for mpc52xx_spi. Besides Wolframs suggestions I
+also added some more fixes. Details of changes can be checked in the patch
+header. Please do consider to apply the patches. The patch 1/2 e.g. fix bugs,
+which prevent the driver to work in some cases, as seen on my board.
+
+cheers
+Luotao Fu

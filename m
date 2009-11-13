@@ -1,18 +1,21 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [V2] Patches for mpc52xx_spi
-Date: Fri, 13 Nov 2009 11:53:23 -0700
-Message-ID: <fa686aa40911131053xec0774ey33e451b6233ff6c4@mail.gmail.com>
-References: <1257844329-20687-1-git-send-email-l.fu@pengutronix.de>
-	<1258108877-25435-1-git-send-email-l.fu@pengutronix.de>
+From: John Linn <John.Linn@xilinx.com>
+Subject: RE: [PATCH v3 0/4] xilinx_spi: Split into platform and of driver,
+	support new IP, platform independence.
+Date: Fri, 13 Nov 2009 12:59:40 -0700
+Message-ID: <74ee2358-38c2-472b-9c53-2fb7ad51da60@VA3EHSMHS023.ehs.local>
+References: <4AFD50F0.6050805@mocean-labs.com>
+	<fa686aa40911131029uddb497ah7907ccd9dc23c6e3@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org
-To: Luotao Fu <l.fu@pengutronix.de>
+	Andrew Morton <akpm@linux-foundation.org>,
+	dbrownell@users.sourceforge.net, linuxppc-dev@ozlabs.org
+To: "Grant Likely" <grant.likely@secretlab.ca>,
+	=?iso-8859-1?Q?Richard_R=F6jfors?= <richard.rojfors@mocean-labs.com>
 Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <1258108877-25435-1-git-send-email-l.fu@pengutronix.de>
+Content-Class: urn:content-classes:message
+In-Reply-To: <fa686aa40911131029uddb497ah7907ccd9dc23c6e3@mail.gmail.com>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
 	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
@@ -24,19 +27,61 @@ Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Nov 13, 2009 at 3:41 AM, Luotao Fu <l.fu@pengutronix.de> wrote:
->
-> Hi Grand,
->
-> here are the V2 of my patchset for mpc52xx_spi. Besides Wolframs suggestions I
-> also added some more fixes. Details of changes can be checked in the patch
-> header. Please do consider to apply the patches. The patch 1/2 e.g. fix bugs,
-> which prevent the driver to work in some cases, as seen on my board.
+> -----Original Message-----
+> From: glikely@secretlab.ca [mailto:glikely@secretlab.ca] On Behalf Of Gra=
+nt Likely
+> Sent: Friday, November 13, 2009 11:30 AM
+> To: Richard R=F6jfors
+> Cc: spi-devel-general@lists.sourceforge.net; linuxppc-dev@ozlabs.org; And=
+rew Morton;
+> dbrownell@users.sourceforge.net; John Linn
+> Subject: Re: [PATCH v3 0/4] xilinx_spi: Split into platform and of driver=
+, support new IP, platform
+> independence.
+> =
 
-Applied to my 'test' branch on git.secretlab.ca
+> On Fri, Nov 13, 2009 at 5:28 AM, Richard R=F6jfors
+> <richard.rojfors@mocean-labs.com> wrote:
+> > Hi,
+> >
+> > To follow is a series of patches against the xilinx_spi driver.
+> >
+> > The patchset is against 2.6.32-rc6
+> >
+> > The patchset addresses several problems in the current driver:
+> > * It's PPC only (OF and uses PPC specific memory operations)
+> > * Only supporting big endian writes
+> > * Supports only 8bit SPI, support for DS570 (also 16 or 32 bit) is adde=
+d.
+> > * A platform driver is introduced for non OF capable architectures.
+> >
+> > These patches were posted as one big patch up to 4 iterations, not spli=
+tted into 4.
+> >
+> > This version, 3, is updated after review from Grant Likely and John Linn
+> >
+> > John Linn has also tested the code on PPC, I have only tested on X86.
+> =
 
-g.
+> Applied to my 'test' branch on git.secretlab.ca.  There was a conflict
+> on patch 3/4 with a previous bugfix from John Linn.  Please check that
+> I've fixed it up correctly.
 
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+I think I reverted that change as Richard's fixes it I believe.
+
+> =
+
+> Cheers,
+> g.
+> =
+
+> --
+> Grant Likely, B.Sc., P.Eng.
+> Secret Lab Technologies Ltd.
+
+
+This email and any attachments are intended for the sole use of the named r=
+ecipient(s) and contain(s) confidential information that may be proprietary=
+, privileged or copyrighted under applicable law. If you are not the intend=
+ed recipient, do not read, copy, or forward this email message or any attac=
+hments. Delete this email message and any attachments immediately.

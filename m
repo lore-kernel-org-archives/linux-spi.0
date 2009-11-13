@@ -1,156 +1,74 @@
-From: "dddc" <weskypp20-k+cT0dCbe1g@public.gmane.org>
-Subject: [SPAM] Ë°åÊîøÂ∑•‰ΩúÁªüÁ≠πÁÆ°ÁêÜÈ´òÁ∫ßÁ†î‰øÆÁè≠
-Date: Sat, 14 Nov 2009 01:12:12 +0800
-Message-ID: <E1N8zkK-0003L8-Im@235xhf1.ch3.sourceforge.com>
-Reply-To: weskypp20-k+cT0dCbe1g@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 3/3] [V2] mpc52xx_spi: add gpio chipselect
+Date: Fri, 13 Nov 2009 11:22:31 -0700
+Message-ID: <fa686aa40911131022yc84ab95wd9c67ab5d03c5ecb@mail.gmail.com>
+References: <1257844329-20687-1-git-send-email-l.fu@pengutronix.de>
+	<1258108877-25435-1-git-send-email-l.fu@pengutronix.de>
+	<1258108877-25435-2-git-send-email-l.fu@pengutronix.de>
+	<1258108877-25435-3-git-send-email-l.fu@pengutronix.de>
+	<1258108877-25435-4-git-send-email-l.fu@pengutronix.de>
+	<20091113111019.GA3563@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general@lists.sourceforge.net,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	linux-kernel@vger.kernel.org, Luotao Fu <l.fu@pengutronix.de>,
+	linuxppc-dev@ozlabs.org
+To: Wolfram Sang <w.sang@pengutronix.de>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <20091113111019.GA3563@pengutronix.de>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+On Fri, Nov 13, 2009 at 4:10 AM, Wolfram Sang <w.sang@pengutronix.de> wrote:
+> On Fri, Nov 13, 2009 at 11:41:17AM +0100, Luotao Fu wrote:
+>> This one enables the mpc52xx_spi driver for usage of user defined gpio l=
+ines
+>> as chipselect. This way we can control some more spi devices than only o=
+ne
+>>
+>> V2 Changes:
+>> * preinitialize the gpio as output in probe function and call gpio_set_v=
+alue in
+>> =A0 the chip select function instead of calling direction_output every t=
+ime.
+>> * initialize the gpio line with output high, since we don't support CS_H=
+IGH
+>> =A0 in the driver currently any way. change gpio value setting to defaul=
+t active
+>> =A0 low in chip select call.
+>> * free the gpio array while error or removing.
+>>
+>> Signed-off-by: Luotao Fu <l.fu@pengutronix.de>
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+>> @@ -477,6 +520,12 @@ static int __devinit mpc52xx_spi_probe(struct of_de=
+vice *op,
+>> =A0 err_register:
+>> =A0 =A0 =A0 dev_err(&ms->master->dev, "initialization failed\n");
+>> =A0 =A0 =A0 spi_master_put(master);
+>> + err_gpio:
+>> + =A0 =A0 while (i-- > 0)
+>> + =A0 =A0 =A0 =A0 =A0 =A0 gpio_free(ms->gpio_cs[i]);
+>> +
+>> + =A0 =A0 if (ms->gpio_cs !=3D NULL)
+>> + =A0 =A0 =A0 =A0 =A0 =A0 kfree(ms->gpio_cs);
+>
+> kfree() is NULL aware, so no if needed.
 
-«Îø¥∏Ωº˛£¨»Áπ˚”–¥Ú»≈£¨«Î‘≠¡¬£¨–ª–ª£°
+Not dangerous though.  No need to respin just for this.
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="––’˛π§◊˜Õ≥≥Ôπ‹¿Ì∏ﬂº∂—––ﬁ∞‡.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="––’˛π§◊˜Õ≥≥Ôπ‹¿Ì∏ﬂº∂—––ﬁ∞‡.txt"
+g.
 
-DQoNCiAgICAgICAgICAgICAgINDQ1f65pNf3zbOz77ncwO2437y20dDQ3rDgDQoNCsqxvOS12LXj
-o7q549bdIDEx1MIyNy0yOMjVICAgIMnu29ogMTHUwjIwLTIxyNUgICAgIMnPuqMgMTLUwjE5LTIw
-yNUNCiAgICAgICAgICCxsb6pIDEy1MIyNS0yNsjVICAgIMvV1t0gMTLUwjE3LTE4yNUgDQoNCrLO
-vNO21M/zo7rQ0NX+19y84KOs0NDV/r6twO2jrLDsuavK0tb3yM6jrNDQ1f7OxNSxIA0KICANCtGn
-z7C30dPDo7qjpDI1MDDUqi/IyyC6rMXg0bW30aGi18rBz7fRoaLO57LNoaKy6LXjtcgNCg0KyM/W
-pLfR08OjujUwMNSqL8jLICAgo6iyu7LOvNPIz9akv8myu727xMm0y7fR08OjqQ0KICAgICAgICAg
-IMXg0bW94cr4uvOjrLeyv7zK1LrPuPHV36Os08nP47jbxeDRtcjP1qTW0NDEufq8ytaw0rXXyrjx
-yM/WpNbQ0MQNCiAgICAgICAgICCw5Leioba5+rzK16Ky4dDQ1f653MDtyqajqNfbus+53MDtt73P
-8qOpobeho6Oov86zzL3hyvjSu9bcuvO/7LXds/ajqQ0KDQrW97DstaXOuzog1trIy9DQudzA7dfJ
-0a/N+CAgIMnu29rK0NK7tv7I/bncwO3XydGv09DP3rmry74NCg0KsbggICAg16Kjug0K18nRr7Xn
-u7CjujA3NTUtMjYwNzUzNjUgIDA3NTUtMjY5NzUyNjUgIDAyMS01MTg3NTE0OSANCrSrICAgINXm
-o7owNzU1LTYxMzUxMzk2ICANCsGqIM+1IMjLo7ogwejQob3jICAxMzgxNjQ3NjM5OQ0KDQqppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaUNCg0Kv86zzLGzvrANCiAgICDI57n7xPrKx9K7zrvG89K1udzA7dXf
-o6zDu9PQ16jStbPftsjI57rOuuLBv9DQ1f65pNCno78NCg0KICAgIMjnufvE+srH0rvOu9DQ1f64
-utTwyMujrMe3yLHXqNK1uaS+38jnus7X1NDFw+a21NSxuaSjvw0KDQogICAgyOe5+8T6ysfSu867
-zsTD2Lmk1/fV36OstO25/deo0rXWuLW81PXE3LvxtcPWsLOhvfrJ/aO/DQoNCrG+v86zzL2rzqrE
-+szhuam008DtxO61vby8xNy1xMirw+bRtcG3o6yw79b6xPrM4bjf0NDV/s2zs++53MDttcTXqNK1
-vLzE3KOsDQrW97av1cbO1bmk1/e92tfgo6zT0NCnv9jWxtDQ1f6zybG+o6y3wLe20NDV/rmk1/eh
-sLratrShsaOhv86zzL2r0tS5+rzKzagNCtPDtcTWsNK1serXvM6qu/m0oaOsveG6z8DPyqa24MTq
-uqPN4sH00aehorTT0rW1xL6t0emjrLzT1q7G5LbAtb2+q8nutcS9sg0KveKzys/Wus3RtcG3tePG
-wLXE16jStcq1waajrLbUxvPStdDQ1f653MDtyMvUsb340NC/xtGnoaLXqNK1oaLPyL34tcTPtc2z
-DQq7r9G1wbehow0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCsXgING1IMzhILjZDQoNCtK7oaLP
-1rT6xvPStdbQ0NDV/rncwO21xLaozrsNCiAgICAxoaLP1rT6xvPStdTL0NDEo9DNICAgICAgICAg
-IA0KICAgIDKhotDQ1f653MDtuaTX97XEvKjQp7zb1rUNCiAgICAzoaLQ0NX+udzA7cjL1LG1xMvY
-1srM2LXjICAgIA0KICAgIDShotDQ1f653MDt1sa2yLXEv/K83L3hubkNCiAgICCjqtHdwbejurmk
-1/fCqba0vr++ubP21NrExMDvo78NCg0Ktv6hotDQ1f7W97nctcTX1M7SudzA7Q0KICAgIDGhotaw
-0rW55re20qq149PrxsC5wLHq17wgICAgDQogICAgMqGiyMu8yrnYz7W0psDttcTXvNTy0+u4w9ei
-0uK1xKGxz92+rqGxDQogICAgM6Gi1rDStdPFysaxo7PWtcTSqrXjDQogICAgo6rR3cG3o7rI57rO
-y7W3/sTjtcTJz8u+DQoNCsj9oaLQ0NX+sr/DxbXExNqyv7ncwO0NCiAgICAxoaLHsMyozsTUsbnc
-wO0gICAgICAgICAgICAgDQogICAgMqGiw9jK6aOowey1vMPYyumjqbncwO0gICAgICAgIA0KICAg
-IDOhotDQ1f65pNf3yMvUsbncwO0gICAgICAgIA0KICAgIDShosu+u/qhorGjsLKhosflveC5pLnc
-wO0gICAgDQogICAgNaGi0NDV/srCzvHQ1Lmk1/e1xMTasr+31rmkICAgIA0KICAgIDahose/u6/Q
-0NX+uaTX99a00NC7+tbGDQogICAgN6Gis8rP1s27s/bQ0NX+uaTX99K1vKgNCiAgIKOq0d3Bt6O6
-1fu6z9fK1LQtt9a5pNCt1/cttO+zycS/seoNCg0Ky8Shor6t0em7/cDb0+vWqsq2tLTQwrncwO0N
-CiAgICAxoaK5q87EtKbA7dPrudzA7SAgICAgICAgICAgIA0KICAgIDKhorvh0umzybn7tcTM4cG2
-0+u31s/tICAgICAgICANCiAgICAzoaK5pNf3tLTQwrncwO3T69Om08MNCg0KzuWhotDQ1f7Ns7Pv
-udzA7bnYvPzKws7vv9jWxg0KICAgIDEuILyvzcW157uwudzA7SAgICAgICAgICAgICAgDQogICAg
-Mi4gvK/NxbXEuLTTobv6udzA7SAgICAgICAgICAgIA0KICAgIDMuILyvzcW1xLO1wb653MDtsrvN
-rLe9yr0gICAgDQogICAgNC4gyrPMw7ncwO21xM3isPzB97PMICAgICAgICANCiAgICA1LiDUsbmk
-tcTTpryxsLLIq7Gj1c8gICAgICAgICAgDQogICAgNi4gsOy5q8rSsry+1rncwO0NCiAgICA3LiCw
-7LmrytKw4bzSudzA7SAgICAgICAgICAgIA0KICAgIDguINPrzu/StbXEudjPtdKqteMgICAgICAg
-ICAgICANCiAgICA5LiC21MqpuaS3vbXEudzA7dKqteMgICAgICAgICANCiAgICAxMC4guavLvtek
-1Nq12LXEyefH+LnYz7UgICAgIA0KICAgIDExLiC5q7myudjPtbncwO0gICAgICAgICAgICAgICAN
-CiAgICAxMi4gzqO7+rSmwO0NCg0KwfmhotDQ1f7Ns7PvsdixuLXEubXNqLy8x8kNCiAgICAxoaLK
-qdW5yMu8ytOwz+y94r72udzA7bPlzbsgICAgDQogICAgMqGiuNDV2cv7yMu1xDS088jIvPwNCiAg
-ICAzoaKx7dHvoaLF+sbANbK9t6ggICAgICAgICAgIA0KICAgIDShosHuyMvQxLf+v9q3/rXEt723
-qA0KICAgIKOq0d3Bt6O6zqq6zrfRwaayu8zWusOjoaO/DQoNCsbfoaK74dLp1+nWr9Pru+62r7nc
-wO0NCiAgICAxoaKzybmmu+HS6bXE17yxuLmk1/ejurvhx7Chorvh1tChorvhuvMgIA0KICAgIDKh
-osjnus7W97PWu+HS6dPruavLvrvutq8NCiAgICAzoaK439Cnwsq74dLptcTKtdPDuaS+3w0KDQqw
-y6GivdO0/bmk1/fT69aw0rXA8dLHDQogICAgMaGivdO0/bmk1/fW0LXEyq608737vMnC2yAgICAg
-ICAgICAgIA0KICAgIDKhotDQ1f7Iy9SxtcTXxdewoaLSx7HtoaLT79HUDQogICAgM6GiyrnTw7Xn
-u7ChosrWu/qhokUtbWFpbLXEwPHSx7nmt7YgICANCiAgICA0oaLR58froaKyzrnboaLCw9POtcTA
-8dLHuea3tg0KDQq+xaGi0NDV/rncwO3Iy9SxtcTWsNK1uea7rg0KICAgIDGhotDQ1f653MDt1rDS
-tbXE1rCzob3XzN0gICAgICAgICAgICAgDQogICAgMqGi1rDStcn60cS55ruu1tC1xM7luPbSu7mk
-s8wNCiAgICAzoaK009PF0OO1vde/1L2jrLTTvLzK9bW90tXK9Q0KICAgIKOqsc/StdHdwbejurDL
-t9bW08novMbWsLOhsMvE6qOhDQoNCg0KqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlDQogICAgICAgICAN
-CiAgICAgICAgIA0KvbLKpr3pydyhqsH1tPO6ow0KDQogICAgxbfRx8jLwabXytS0t6LVucGqw8vW
-0Ln6x/jK18+v18nRr8qmLNHH1t7XydGvxeDRtdPrt6LVudCtu+HD2Mrps6SjrNfKye4NCrnLzsqh
-ozIwMDHE6r+qyrzXqNawtNPKwtPaxeDRtdPr18nRr7mk1/ejrNLUt8POytGn1d/J7bfdtuC0zrP2
-t8O5/beoufqhorXCufqhog0KyPDKv7XIufrWqsP7tPPRp7rNtPPQzcbz0rWjrNTaxvPStdbQuN+y
-476twO3Iy8HstbzL2NbKzOHJ/aGixvPStdDQ1f7M5c+1ubm9qA0KvLDNqNPDudzA7cHs0/K1yLe9
-w+bTtdPQwezPyLXEytO9x7rNt+G68bXEyrW8+b6t0emho8bkytq/zszYyavKx7TTufrE2sbz0rXL
-+Q0Kw+bB2bXEyrW8ys7KzOKz9reio6zNqLn9uPfW1rXk0M2wuMD9tcS9sr3ius231s72o6zS1Lyw
-xKPE4s/WyrW7t76ztcSy2df30d3Bt6OsDQrPtc2zzOHJ/cbz0rW94r72zsrM4rXExNzBprrNyrXK
-qbLZ1/fLrsa9oaMNCg0KINa4tby5/bXExvPStdPQo7oNCrCywPujqNbQufqjqaGisNm2yKGiuqO2
-+7yvzcWhosPAtcS8r83FoaLBqs/rvK/NxaGiye63otW5oaK2q7fnyNWy+qGiyc+6o7HI0ce1z6Gi
-DQrJ7tva0sa2r6GiuePW3dLGtq+hotbQyb3SxravoaLW0L/G1se1o7GjvK/NxaGiur3M7L/GuaS8
-r83FoaK547arusu157yvzcWhog0Ku6rHyLPHzu/StaGis6Szx87v0rWhorGxvqnQxc3+zajRtqGi
-z8PDxcP718u8r83FoaLJ7tvayMuxo7LGz9Whosnu29rM7LrnycyzoaGiDQrJ7tvaytC+rc6zv8a8
-vNPQz965q8u+oaLW0Ln6yMuyxcjIz9+hos73sr/Iy8Gm18rUtMrQs6GhosypsLq159fToaKzrLuq
-tefX06GiDQrBqs/rvK/NxSy3vdX9vK/NxSyxsb6p0du/xtHQvr/L+aOsyfO8xsrwzeLXytbQ0MSj
-rA0KvNHE3NDFz6K8vMr1o6ixsb6po6nT0M/euavLvszsvfKyqLqjur2/1bmry76jrLGxvqm2q7e9
-0MXBqs7ez9/NqNDF09DP3rmry76jrA0K1tC5+sPx1+XWpMiv09DP3tTwyM65q8u+o6yxvMvdo6jM
-7L3yo6m6o9HzyeixuNPQz965q8u+IKOsyfLR9NLHse2/xtGn0dC+v9S6IKOsDQrI2cqiv9i5yaOs
-sbG+qb/HxcbI87us083XqML0teqjrMG619PKsdewtciw2dPgvNLW0M3ixvPStaGjDQoNCg0KLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0KyOfSqrLOvNOxvrTO0dDM1rvho6y/yc2ouf3PwsPmt73K
-vbGow/uyzrzTo7oNCg0KvavS1M/CsajD+7HtxNrI3bTy06HM7tC0uvO0q9Xmtb2juqOoMDc1NaOp
-NjEzNTEzOTYNCg0KsaihoaGhw/uhoaGhu9ihoaGh1rQNCg0Kss6807/OzOKjutbQsuO+rcDt19u6
-z7ncwO28vMTczOHJ/dHQ0N6w4KGhDQoNCrXYteOjuiAgICDKsbzko7oNCg0Kss674bWlzrvD+7PG
-o7pfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXyBFbWFpbKO6X19fX19fX19fX19f
-X19fX19fX19fXyChoQ0KIA0KwarPtcjLo7pfX19fX19fX19fX19fX18gtee7sKO6X19fX19fX19f
-X19fX19fX19fX19fILSr1eajul9fX19fX19fX19fX19fX19fX19fXw0KIKGhDQqyzrzT0afUsaO6
-X19fX19fX1/WsM7xo7pfX19fX19fX19fX19fX1/K1rv6o7pfX19fX19fX19fX19fX19FbWFpbKO6
-X19fX19fX19fX19fDQoNCrLOvNPRp9Sxo7pfX19fX19fX9awzvE6X19fX19fX19fX19fX19fIMrW
-u/qjul9fX19fX19fX19fX19fX0VtYWlso7pfX19fX19fX19fX18NCg0Kss6809Gn1LGjul9fX19f
-X19f1rDO8aO6X19fX19fX19fX19fX19fyta7+qO6X19fX19fX19fX19fX19fRW1haWyjul9fX19f
-X19fX19fXw0KICAgICAgDQq4tr/ut73KvaO6ofXP1r3woaGh9danxrGhoaH116rVyg0KDQrIy8r9
-o7pfX19fX1/IyyAgILLOu+G30dPDo7q5srzGo7pfX19fX1/UqiANCg0KsbjXog0KMS7K1bW9ufPL
-vrGow/vQxc+iuvOjrM7Sw8e9q7Xa0rvKsbzkus2588u+ss674cGqz7XIy7340NDIt8jPo7sNCjIu
-1Nq/qr/Ox7DSu9bco6zO0sPH09DXqMjLuPi588u+t6LLzbLOvNPF4NG1tcTIt8jPuq+jrMnPw+bT
-0MXg0bWxqLW91rjS/aOs0tS8sM/qDQogIM+4tcTJz7/OtdjWt7rNwrfP3828o7sNCjMutMu/zrPM
-0rK/ydLUsLLFxcbz0rXE2tG1o6y7ttOtwLS159fJ0a+8sMnqx+vFxcbao7sNCjQuyOe21LTLv86z
-zNPQyM66ztLJzsqjrLu2062yprTytee7sM/yztLDx9fJ0a+how0KDQoNCg==
+-- =
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
-trial. Simplify your report design, integration and deployment - and focus on 
-what you do best, core application coding. Discover what's new with
-Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

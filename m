@@ -1,8 +1,7 @@
 From: =?ISO-8859-1?Q?Richard_R=F6jfors?= <richard.rojfors@mocean-labs.com>
-Subject: [PATCH v3 2/4] xilinx_spi: Switch to iomem functions and support
-	little endian.
-Date: Fri, 13 Nov 2009 13:28:49 +0100
-Message-ID: <4AFD5101.50800@mocean-labs.com>
+Subject: [PATCH v3 3/4] xilinx_spi: add support for the DS570 IP.
+Date: Fri, 13 Nov 2009 13:28:55 +0100
+Message-ID: <4AFD5107.3070509@mocean-labs.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -21,35 +20,42 @@ Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch changes the out_(be)(8|16|32) and in_(be)(8|16|32) calls to 32 b=
-its ioread/iowrite.
+This patch adds in support for the DS570 IP.
 
-The read and write function are attached to the internal struct as callback=
-s, callback
-is selected depending on endianess.
+It's register compatible with the DS464, but adds support for 8/16/32 SPI.
 
-This will also build on platforms not supporting the in/out calls for insta=
-nce x86.
+The 8/16/32 support is added by attaching callbacks reading/writing the
+proper amount of data. To indicate to the driver which amount of bits
+to use a new field is introduced in the platform data struct.
 
 Acked-by: Grant Likely <grant.likely@secretlab.ca>
 Tested-by: John Linn <John.Linn@xilinx.com>
 Signed-off-by: Richard R=F6jfors <richard.rojfors@mocean-labs.com>
 ---
 diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index c08fd4f..04ba35f 100644
+index 04ba35f..35fb1e2 100644
 --- a/drivers/spi/Kconfig
 +++ b/drivers/spi/Kconfig
-@@ -236,7 +236,7 @@ config SPI_TXX9
+@@ -235,7 +235,7 @@ config SPI_TXX9
+ 	  SPI driver for Toshiba TXx9 MIPS SoCs
 
  config SPI_XILINX
- 	tristate "Xilinx SPI controller"
--	depends on EXPERIMENTAL
-+	depends on HAS_IOMEM && EXPERIMENTAL
+-	tristate "Xilinx SPI controller"
++	tristate "Xilinx SPI controller common module"
+ 	depends on HAS_IOMEM && EXPERIMENTAL
  	select SPI_BITBANG
  	select SPI_XILINX_OF if (XILINX_VIRTEX || MICROBLAZE)
- 	help
+@@ -245,6 +245,8 @@ config SPI_XILINX
+ 	  See the "OPB Serial Peripheral Interface (SPI) (v1.00e)"
+ 	  Product Specification document (DS464) for hardware details.
+
++	  Or for the DS570, see "XPS Serial Peripheral Interface (SPI) (v2.00b)"
++
+ config SPI_XILINX_OF
+ 	tristate "Xilinx SPI controller OF device"
+ 	depends on SPI_XILINX && (XILINX_VIRTEX || MICROBLAZE)
 diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
-index fa53d85..74a04d6 100644
+index 74a04d6..bac51e8 100644
 --- a/drivers/spi/xilinx_spi.c
 +++ b/drivers/spi/xilinx_spi.c
 @@ -27,7 +27,7 @@
@@ -57,238 +63,259 @@ index fa53d85..74a04d6 100644
 00e)
   * Product Specification", DS464
   */
--#define XSPI_CR_OFFSET		0x62	/* 16-bit Control Register */
-+#define XSPI_CR_OFFSET		0x60	/* 16-bit Control Register */
+-#define XSPI_CR_OFFSET		0x60	/* 16-bit Control Register */
++#define XSPI_CR_OFFSET		0x60	/* Control Register */
 
  #define XSPI_CR_ENABLE		0x02
  #define XSPI_CR_MASTER_MODE	0x04
-@@ -39,7 +39,7 @@
+@@ -38,8 +38,9 @@
+ #define XSPI_CR_RXFIFO_RESET	0x40
  #define XSPI_CR_MANUAL_SSELECT	0x80
  #define XSPI_CR_TRANS_INHIBIT	0x100
++#define XSPI_CR_LSB_FIRST	0x200
 
--#define XSPI_SR_OFFSET		0x67	/* 8-bit Status Register */
-+#define XSPI_SR_OFFSET		0x64	/* 8-bit Status Register */
+-#define XSPI_SR_OFFSET		0x64	/* 8-bit Status Register */
++#define XSPI_SR_OFFSET		0x64	/* Status Register */
 
  #define XSPI_SR_RX_EMPTY_MASK	0x01	/* Receive FIFO is empty */
  #define XSPI_SR_RX_FULL_MASK	0x02	/* Receive FIFO is full */
-@@ -47,8 +47,8 @@
+@@ -47,8 +48,8 @@
  #define XSPI_SR_TX_FULL_MASK	0x08	/* Transmit FIFO is full */
  #define XSPI_SR_MODE_FAULT_MASK	0x10	/* Mode fault error */
 
--#define XSPI_TXD_OFFSET		0x6b	/* 8-bit Data Transmit Register */
--#define XSPI_RXD_OFFSET		0x6f	/* 8-bit Data Receive Register */
-+#define XSPI_TXD_OFFSET		0x68	/* 8-bit Data Transmit Register */
-+#define XSPI_RXD_OFFSET		0x6c	/* 8-bit Data Receive Register */
+-#define XSPI_TXD_OFFSET		0x68	/* 8-bit Data Transmit Register */
+-#define XSPI_RXD_OFFSET		0x6c	/* 8-bit Data Receive Register */
++#define XSPI_TXD_OFFSET		0x68	/* Data Transmit Register */
++#define XSPI_RXD_OFFSET		0x6c	/* Data Receive Register */
 
  #define XSPI_SSR_OFFSET		0x70	/* 32-bit Slave Select Register */
 
-@@ -86,25 +86,29 @@ struct xilinx_spi {
+@@ -68,6 +69,7 @@
+ #define XSPI_INTR_TX_UNDERRUN		0x08	/* TxFIFO was underrun */
+ #define XSPI_INTR_RX_FULL		0x10	/* RxFIFO is full */
+ #define XSPI_INTR_RX_OVERRUN		0x20	/* RxFIFO was overrun */
++#define XSPI_INTR_TX_HALF_EMPTY		0x40	/* TxFIFO is half empty */
+
+ #define XIPIF_V123B_RESETR_OFFSET	0x40	/* IPIF reset register */
+ #define XIPIF_V123B_RESET_MASK		0x0a	/* the value to write */
+@@ -81,15 +83,61 @@ struct xilinx_spi {
+
+ 	u32		irq;
+
+-	u32		speed_hz; /* SCK has a fixed frequency of speed_hz Hz */
+-
  	u8 *rx_ptr;		/* pointer in the Tx buffer */
  	const u8 *tx_ptr;	/* pointer in the Rx buffer */
  	int remaining_bytes;	/* the number of bytes left to transfer */
-+	unsigned int (*read_fn) (void __iomem *);
-+	void (*write_fn) (u32, void __iomem *);
++	u8 bits_per_word;
+ 	unsigned int (*read_fn) (void __iomem *);
+ 	void (*write_fn) (u32, void __iomem *);
++	void (*tx_fn) (struct xilinx_spi *);
++	void (*rx_fn) (struct xilinx_spi *);
  };
 
--static void xspi_init_hw(void __iomem *regs_base)
-+static void xspi_init_hw(struct xilinx_spi *xspi)
- {
-+	void __iomem *regs_base =3D xspi->regs;
++static void xspi_tx8(struct xilinx_spi *xspi)
++{
++	xspi->write_fn(*xspi->tx_ptr, xspi->regs + XSPI_TXD_OFFSET);
++	xspi->tx_ptr++;
++}
 +
- 	/* Reset the SPI device */
--	out_be32(regs_base + XIPIF_V123B_RESETR_OFFSET,
--		 XIPIF_V123B_RESET_MASK);
-+	xspi->write_fn(XIPIF_V123B_RESET_MASK,
-+		regs_base + XIPIF_V123B_RESETR_OFFSET);
- 	/* Disable all the interrupts just in case */
--	out_be32(regs_base + XIPIF_V123B_IIER_OFFSET, 0);
-+	xspi->write_fn(0, regs_base + XIPIF_V123B_IIER_OFFSET);
- 	/* Enable the global IPIF interrupt */
--	out_be32(regs_base + XIPIF_V123B_DGIER_OFFSET,
--		 XIPIF_V123B_GINTR_ENABLE);
-+	xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
-+		regs_base + XIPIF_V123B_DGIER_OFFSET);
- 	/* Deselect the slave on the SPI bus */
--	out_be32(regs_base + XSPI_SSR_OFFSET, 0xffff);
-+	xspi->write_fn(0xffff, regs_base + XSPI_SSR_OFFSET);
++static void xspi_tx16(struct xilinx_spi *xspi)
++{
++	xspi->write_fn(*(u16 *)(xspi->tx_ptr), xspi->regs + XSPI_TXD_OFFSET);
++	xspi->tx_ptr +=3D 2;
++}
++
++static void xspi_tx32(struct xilinx_spi *xspi)
++{
++	xspi->write_fn(*(u32 *)(xspi->tx_ptr), xspi->regs + XSPI_TXD_OFFSET);
++	xspi->tx_ptr +=3D 4;
++}
++
++static void xspi_rx8(struct xilinx_spi *xspi)
++{
++	u32 data =3D xspi->read_fn(xspi->regs + XSPI_RXD_OFFSET);
++	if (xspi->rx_ptr) {
++		*xspi->rx_ptr =3D data & 0xff;
++		xspi->rx_ptr++;
++	}
++}
++
++static void xspi_rx16(struct xilinx_spi *xspi)
++{
++	u32 data =3D xspi->read_fn(xspi->regs + XSPI_RXD_OFFSET);
++	if (xspi->rx_ptr) {
++		*(u16 *)(xspi->rx_ptr) =3D data & 0xffff;
++		xspi->rx_ptr +=3D 2;
++	}
++}
++
++static void xspi_rx32(struct xilinx_spi *xspi)
++{
++	u32 data =3D xspi->read_fn(xspi->regs + XSPI_RXD_OFFSET);
++	if (xspi->rx_ptr) {
++		*(u32 *)(xspi->rx_ptr) =3D data;
++		xspi->rx_ptr +=3D 4;
++	}
++}
++
+ static void xspi_init_hw(struct xilinx_spi *xspi)
+ {
+ 	void __iomem *regs_base =3D xspi->regs;
+@@ -107,8 +155,8 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
  	/* Disable the transmitter, enable Manual Slave Select Assertion,
  	 * put SPI controller into master mode, and enable it */
--	out_be16(regs_base + XSPI_CR_OFFSET,
--		 XSPI_CR_TRANS_INHIBIT | XSPI_CR_MANUAL_SSELECT
--		 | XSPI_CR_MASTER_MODE | XSPI_CR_ENABLE);
-+	xspi->write_fn(XSPI_CR_TRANS_INHIBIT | XSPI_CR_MANUAL_SSELECT |
-+		XSPI_CR_MASTER_MODE | XSPI_CR_ENABLE,
-+		regs_base + XSPI_CR_OFFSET);
+ 	xspi->write_fn(XSPI_CR_TRANS_INHIBIT | XSPI_CR_MANUAL_SSELECT |
+-		XSPI_CR_MASTER_MODE | XSPI_CR_ENABLE,
+-		regs_base + XSPI_CR_OFFSET);
++		XSPI_CR_MASTER_MODE | XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |
++		XSPI_CR_RXFIFO_RESET, regs_base + XSPI_CR_OFFSET);
  }
 
  static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
-@@ -113,16 +117,16 @@ static void xilinx_spi_chipselect(struct spi_device *=
+@@ -141,17 +189,20 @@ static void xilinx_spi_chipselect(struct spi_device *=
 spi, int is_on)
 
- 	if (is_on =3D=3D BITBANG_CS_INACTIVE) {
- 		/* Deselect the slave on the SPI bus */
--		out_be32(xspi->regs + XSPI_SSR_OFFSET, 0xffff);
-+		xspi->write_fn(0xffff, xspi->regs + XSPI_SSR_OFFSET);
- 	} else if (is_on =3D=3D BITBANG_CS_ACTIVE) {
- 		/* Set the SPI clock phase and polarity */
--		u16 cr =3D in_be16(xspi->regs + XSPI_CR_OFFSET)
-+		u16 cr =3D xspi->read_fn(xspi->regs + XSPI_CR_OFFSET)
- 			 & ~XSPI_CR_MODE_MASK;
- 		if (spi->mode & SPI_CPHA)
- 			cr |=3D XSPI_CR_CPHA;
- 		if (spi->mode & SPI_CPOL)
- 			cr |=3D XSPI_CR_CPOL;
--		out_be16(xspi->regs + XSPI_CR_OFFSET, cr);
-+		xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
+ /* spi_bitbang requires custom setup_transfer() to be defined if there is a
+  * custom txrx_bufs(). We have nothing to setup here as the SPI IP block
+- * supports just 8 bits per word, and SPI clock can't be changed in softwa=
+re.
+- * Check for 8 bits per word. Chip select delay calculations could be
++ * supports 8 or 16 bits per word, which can not be changed in software.
++ * SPI clock can't be changed in software.
++ * Check for correct bits per word. Chip select delay calculations could be
+  * added here as soon as bitbang_work() can be made aware of the delay val=
+ue.
+  */
+ static int xilinx_spi_setup_transfer(struct spi_device *spi,
+-		struct spi_transfer *t)
++	struct spi_transfer *t)
+ {
+ 	u8 bits_per_word;
++	struct xilinx_spi *xspi =3D spi_master_get_devdata(spi->master);
 
- 		/* We do not check spi->max_speed_hz here as the SPI clock
- 		 * frequency is not software programmable (the IP block design
-@@ -130,8 +134,8 @@ static void xilinx_spi_chipselect(struct spi_device *sp=
-i, int is_on)
- 		 */
+-	bits_per_word =3D (t) ? t->bits_per_word : spi->bits_per_word;
+-	if (bits_per_word !=3D 8) {
++	bits_per_word =3D (t->bits_per_word) ? t->bits_per_word :
++		spi->bits_per_word;
++	if (bits_per_word !=3D xspi->bits_per_word) {
+ 		dev_err(&spi->dev, "%s, unsupported bits_per_word=3D%d\n",
+ 			__func__, bits_per_word);
+ 		return -EINVAL;
+@@ -162,17 +213,16 @@ static int xilinx_spi_setup_transfer(struct spi_devic=
+e *spi,
 
- 		/* Activate the chip select */
--		out_be32(xspi->regs + XSPI_SSR_OFFSET,
--			 ~(0x0001 << spi->chip_select));
-+		xspi->write_fn(~(0x0001 << spi->chip_select),
-+			xspi->regs + XSPI_SSR_OFFSET);
- 	}
+ static int xilinx_spi_setup(struct spi_device *spi)
+ {
+-	struct spi_bitbang *bitbang;
+-	struct xilinx_spi *xspi;
+-	int retval;
+-
+-	xspi =3D spi_master_get_devdata(spi->master);
+-	bitbang =3D &xspi->bitbang;
+-
+-	retval =3D xilinx_spi_setup_transfer(spi, NULL);
+-	if (retval < 0)
+-		return retval;
+-
++	/* always return 0, we can not check the number of bits.
++	 * There are cases when SPI setup is called before any driver is
++	 * there, in that case the SPI core defaults to 8 bits, which we
++	 * do not support in some cases. But if we return an error, the
++	 * SPI device would not be registered and no driver can get hold of it
++	 * When the driver is there, it will call SPI setup again with the
++	 * correct number of bits per transfer.
++	 * If a driver setups with the wrong bit number, it will fail when
++	 * it tries to do a transfer
++	 */
+ 	return 0;
  }
 
-@@ -177,15 +181,15 @@ static void xilinx_spi_fill_tx_fifo(struct xilinx_spi=
+@@ -184,11 +234,10 @@ static void xilinx_spi_fill_tx_fifo(struct xilinx_spi=
  *xspi)
- 	u8 sr;
-
- 	/* Fill the Tx FIFO with as many bytes as possible */
--	sr =3D in_8(xspi->regs + XSPI_SR_OFFSET);
-+	sr =3D xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
+ 	sr =3D xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
  	while ((sr & XSPI_SR_TX_FULL_MASK) =3D=3D 0 && xspi->remaining_bytes > 0)=
  {
--		if (xspi->tx_ptr) {
--			out_8(xspi->regs + XSPI_TXD_OFFSET, *xspi->tx_ptr++);
--		} else {
--			out_8(xspi->regs + XSPI_TXD_OFFSET, 0);
--		}
-+		if (xspi->tx_ptr)
-+			xspi->write_fn(*xspi->tx_ptr++,
-+				xspi->regs + XSPI_TXD_OFFSET);
-+		else
-+			xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
- 		xspi->remaining_bytes--;
--		sr =3D in_8(xspi->regs + XSPI_SR_OFFSET);
-+		sr =3D xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
+ 		if (xspi->tx_ptr)
+-			xspi->write_fn(*xspi->tx_ptr++,
+-				xspi->regs + XSPI_TXD_OFFSET);
++			xspi->tx_fn(xspi);
+ 		else
+ 			xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
+-		xspi->remaining_bytes--;
++		xspi->remaining_bytes -=3D xspi->bits_per_word / 8;
+ 		sr =3D xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
  	}
  }
-
-@@ -207,18 +211,19 @@ static int xilinx_spi_txrx_bufs(struct spi_device *sp=
-i, struct spi_transfer *t)
- 	/* Enable the transmit empty interrupt, which we use to determine
- 	 * progress on the transmission.
- 	 */
--	ipif_ier =3D in_be32(xspi->regs + XIPIF_V123B_IIER_OFFSET);
--	out_be32(xspi->regs + XIPIF_V123B_IIER_OFFSET,
--		 ipif_ier | XSPI_INTR_TX_EMPTY);
-+	ipif_ier =3D xspi->read_fn(xspi->regs + XIPIF_V123B_IIER_OFFSET);
-+	xspi->write_fn(ipif_ier | XSPI_INTR_TX_EMPTY,
-+		xspi->regs + XIPIF_V123B_IIER_OFFSET);
-
- 	/* Start the transfer by not inhibiting the transmitter any longer */
--	cr =3D in_be16(xspi->regs + XSPI_CR_OFFSET) & ~XSPI_CR_TRANS_INHIBIT;
--	out_be16(xspi->regs + XSPI_CR_OFFSET, cr);
-+	cr =3D xspi->read_fn(xspi->regs + XSPI_CR_OFFSET) &
-+		~XSPI_CR_TRANS_INHIBIT;
-+	xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
-
- 	wait_for_completion(&xspi->done);
-
- 	/* Disable the transmit empty interrupt */
--	out_be32(xspi->regs + XIPIF_V123B_IIER_OFFSET, ipif_ier);
-+	xspi->write_fn(ipif_ier, xspi->regs + XIPIF_V123B_IIER_OFFSET);
-
- 	return t->len - xspi->remaining_bytes;
- }
-@@ -235,8 +240,8 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
- 	u32 ipif_isr;
-
- 	/* Get the IPIF interrupts, and clear them immediately */
--	ipif_isr =3D in_be32(xspi->regs + XIPIF_V123B_IISR_OFFSET);
--	out_be32(xspi->regs + XIPIF_V123B_IISR_OFFSET, ipif_isr);
-+	ipif_isr =3D xspi->read_fn(xspi->regs + XIPIF_V123B_IISR_OFFSET);
-+	xspi->write_fn(ipif_isr, xspi->regs + XIPIF_V123B_IISR_OFFSET);
-
- 	if (ipif_isr & XSPI_INTR_TX_EMPTY) {	/* Transmission completed */
- 		u16 cr;
-@@ -247,20 +252,20 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_=
-id)
- 		 * transmitter while the Isr refills the transmit register/FIFO,
- 		 * or make sure it is stopped if we're done.
- 		 */
--		cr =3D in_be16(xspi->regs + XSPI_CR_OFFSET);
--		out_be16(xspi->regs + XSPI_CR_OFFSET,
--			 cr | XSPI_CR_TRANS_INHIBIT);
-+		cr =3D xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
-+		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
-+			xspi->regs + XSPI_CR_OFFSET);
-
+@@ -259,12 +308,7 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_i=
+d)
  		/* Read out all the data from the Rx FIFO */
--		sr =3D in_8(xspi->regs + XSPI_SR_OFFSET);
-+		sr =3D xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
+ 		sr =3D xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
  		while ((sr & XSPI_SR_RX_EMPTY_MASK) =3D=3D 0) {
- 			u8 data;
-
--			data =3D in_8(xspi->regs + XSPI_RXD_OFFSET);
-+			data =3D xspi->read_fn(xspi->regs + XSPI_RXD_OFFSET);
- 			if (xspi->rx_ptr) {
- 				*xspi->rx_ptr++ =3D data;
- 			}
--			sr =3D in_8(xspi->regs + XSPI_SR_OFFSET);
-+			sr =3D xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
+-			u8 data;
+-
+-			data =3D xspi->read_fn(xspi->regs + XSPI_RXD_OFFSET);
+-			if (xspi->rx_ptr) {
+-				*xspi->rx_ptr++ =3D data;
+-			}
++			xspi->rx_fn(xspi);
+ 			sr =3D xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
  		}
 
- 		/* See if there is more data to send */
-@@ -269,7 +274,7 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
- 			/* Start the transfer by not inhibiting the
- 			 * transmitter any longer
- 			 */
--			out_be16(xspi->regs + XSPI_CR_OFFSET, cr);
-+			xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
- 		} else {
- 			/* No more data to send.
- 			 * Indicate the transfer is completed.
-@@ -324,9 +329,16 @@ struct spi_master *xilinx_spi_init(struct device *dev,=
+@@ -336,6 +380,19 @@ struct spi_master *xilinx_spi_init(struct device *dev,=
  struct resource *mem,
-
- 	xspi->mem =3D *mem;
- 	xspi->irq =3D irq;
-+	if (pdata->little_endian) {
-+		xspi->read_fn =3D ioread32;
-+		xspi->write_fn =3D iowrite32;
-+	} else {
-+		xspi->read_fn =3D ioread32be;
-+		xspi->write_fn =3D iowrite32be;
-+	}
+ 		xspi->read_fn =3D ioread32be;
+ 		xspi->write_fn =3D iowrite32be;
+ 	}
++	xspi->bits_per_word =3D pdata->bits_per_word;
++	if (xspi->bits_per_word =3D=3D 8) {
++		xspi->tx_fn =3D xspi_tx8;
++		xspi->rx_fn =3D xspi_rx8;
++	} else if (xspi->bits_per_word =3D=3D 16) {
++		xspi->tx_fn =3D xspi_tx16;
++		xspi->rx_fn =3D xspi_rx16;
++	} else if (xspi->bits_per_word =3D=3D 32) {
++		xspi->tx_fn =3D xspi_tx32;
++		xspi->rx_fn =3D xspi_rx32;
++	} else
++		goto unmap_io;
++
 
  	/* SPI controller initializations */
--	xspi_init_hw(xspi->regs);
-+	xspi_init_hw(xspi);
-
- 	/* Register for SPI Interrupt */
- 	ret =3D request_irq(xspi->irq, xilinx_spi_irq, 0, XILINX_SPI_NAME, xspi);
+ 	xspi_init_hw(xspi);
+diff --git a/drivers/spi/xilinx_spi_of.c b/drivers/spi/xilinx_spi_of.c
+index 151aa13..71dc3ad 100644
+--- a/drivers/spi/xilinx_spi_of.c
++++ b/drivers/spi/xilinx_spi_of.c
+@@ -72,6 +72,7 @@ static int __devinit xilinx_spi_of_probe(struct of_device=
+ *ofdev,
+ 		return -EINVAL;
+ 	}
+ 	pdata->num_chipselect =3D *prop;
++	pdata->bits_per_word =3D 8;
+ 	master =3D xilinx_spi_init(&ofdev->dev, &r_mem, r_irq.start, -1);
+ 	if (!master)
+ 		return -ENODEV;
 diff --git a/include/linux/spi/xilinx_spi.h b/include/linux/spi/xilinx_spi.h
-index 06df0ab..a705ad8 100644
+index a705ad8..6f17278 100644
 --- a/include/linux/spi/xilinx_spi.h
 +++ b/include/linux/spi/xilinx_spi.h
-@@ -4,11 +4,13 @@
+@@ -3,14 +3,16 @@
+
  /**
   * struct xspi_platform_data - Platform data of the Xilinx SPI driver
-  * @num_chipselect:	Number of chip select by the IP
-+ * @little_endian	If registers should be accessed little endian or not
+- * @num_chipselect:	Number of chip select by the IP
+- * @little_endian	If registers should be accessed little endian or not
++ * @num_chipselect:	Number of chip select by the IP.
++ * @little_endian:	If registers should be accessed little endian or not.
++ * @bits_per_word:	Number of bits per word.
   * @devices:		Devices to add when the driver is probed.
   * @num_devices:	Number of devices in the devices array.
   */
  struct xspi_platform_data {
  	u16 num_chipselect;
-+	bool little_endian;
+ 	bool little_endian;
++	u8 bits_per_word;
  	struct spi_board_info *devices;
  	u8 num_devices;
  };

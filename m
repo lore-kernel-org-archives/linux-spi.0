@@ -1,79 +1,54 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v3 0/4] xilinx_spi: Split into platform and of driver,
-	support new IP, platform independence.
-Date: Fri, 13 Nov 2009 13:13:45 -0700
-Message-ID: <fa686aa40911131213qaeebd9dt9eb066bb0ebbd17d@mail.gmail.com>
-References: <4AFD50F0.6050805@mocean-labs.com>
-	<fa686aa40911131029uddb497ah7907ccd9dc23c6e3@mail.gmail.com>
-	<74ee2358-38c2-472b-9c53-2fb7ad51da60@VA3EHSMHS023.ehs.local>
+Subject: [RFC] MAINTAINERS: add SPI co-maintainer.
+Date: Fri, 13 Nov 2009 17:25:45 -0700
+Message-ID: <20091114001001.5343.99566.stgit@angua>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net,
-	=?ISO-8859-1?Q?Richard_R=F6jfors?= <richard.rojfors@mocean-labs.com>,
-	dbrownell@users.sourceforge.net, Andrew Morton <akpm@linux-foundation.org>,
-	linuxppc-dev@ozlabs.org
-To: John Linn <John.Linn@xilinx.com>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <74ee2358-38c2-472b-9c53-2fb7ad51da60@VA3EHSMHS023.ehs.local>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+To: akpm@linux-foundation.org, dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1757732AbZKNAZp@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Nov 13, 2009 at 12:59 PM, John Linn <John.Linn@xilinx.com> wrote:
->> -----Original Message-----
->> From: glikely@secretlab.ca [mailto:glikely@secretlab.ca] On Behalf Of Gr=
-ant Likely
->> Sent: Friday, November 13, 2009 11:30 AM
->> To: Richard R=F6jfors
->> Cc: spi-devel-general@lists.sourceforge.net; linuxppc-dev@ozlabs.org; An=
-drew Morton;
->> dbrownell@users.sourceforge.net; John Linn
->> Subject: Re: [PATCH v3 0/4] xilinx_spi: Split into platform and of drive=
-r, support new IP, platform
->> independence.
->>
->> On Fri, Nov 13, 2009 at 5:28 AM, Richard R=F6jfors
->> <richard.rojfors@mocean-labs.com> wrote:
->> > Hi,
->> >
->> > To follow is a series of patches against the xilinx_spi driver.
->> >
->> > The patchset is against 2.6.32-rc6
->> >
->> > The patchset addresses several problems in the current driver:
->> > * It's PPC only (OF and uses PPC specific memory operations)
->> > * Only supporting big endian writes
->> > * Supports only 8bit SPI, support for DS570 (also 16 or 32 bit) is add=
-ed.
->> > * A platform driver is introduced for non OF capable architectures.
->> >
->> > These patches were posted as one big patch up to 4 iterations, not spl=
-itted into 4.
->> >
->> > This version, 3, is updated after review from Grant Likely and John Li=
-nn
->> >
->> > John Linn has also tested the code on PPC, I have only tested on X86.
->>
->> Applied to my 'test' branch on git.secretlab.ca. =A0There was a conflict
->> on patch 3/4 with a previous bugfix from John Linn. =A0Please check that
->> I've fixed it up correctly.
->
-> I think I reverted that change as Richard's fixes it I believe.
+Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
+---
 
-It is a real bug fix, and so should be in a separate patch.
+Hi David, Andrew.
 
+David, I know that you haven't had enough time lately to keep on top
+of the pending SPI patches, so I was wondering if you would like some
+help?  If you are interested, I'm willing to act as co-maintainer of
+for the SPI subsystem.
+
+Here's what I'm thinking.  Right now all SPI patches are going through
+the -mm tree and just adding to akpm's burden.  I'd be more than happy
+to take over the task of actually collecting the acked patches into a
+git tree, getting them some exposure on linux-next, and asking Linus
+to pull it during the merge window.  If you ack them, then I'll merge
+them.
+
+I'm also be willing to take responsibility for all powerpc-specific
+SPI patches so that you don't need to look at them.
+
+How does this sound to you?
+
+Cheers,
 g.
 
--- =
+ MAINTAINERS |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a1a2ace..2b697cb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4937,6 +4937,7 @@ F:	drivers/char/specialix*
+ 
+ SPI SUBSYSTEM
+ M:	David Brownell <dbrownell@users.sourceforge.net>
++M:	Grant Likely <grant.likely@secretlab.ca>
+ L:	spi-devel-general@lists.sourceforge.net
+ S:	Maintained
+ F:	Documentation/spi/

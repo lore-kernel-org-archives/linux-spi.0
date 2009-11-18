@@ -1,208 +1,58 @@
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] ARM: Add spi controller driver support for NUC900
-Date: Wed, 18 Nov 2009 14:21:09 -0800
-Message-ID: <20091118142109.ff2c5ef6.akpm@linux-foundation.org>
-References: <4B024748.9080001@gmail.com>
+From: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Subject: Re: [spi-devel-general] [PATCH] gpio: add driver for MAX7300 I2C
+ GPIO extender
+Date: Thu, 19 Nov 2009 02:10:52 +0300
+Message-ID: <20091118231052.GA23699@oksana.dev.rtsoft.ru>
+References: <1258546646-11586-1-git-send-email-w.sang@pengutronix.de>
+Reply-To: avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi <spi-devel-general@lists.sourceforge.net>,
-	David Brownell-sourceforge <dbrownell@users.sourceforge.net>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-To: Wan ZongShun <mcuos.com@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <4B024748.9080001@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=utf-8
+Cc: linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Juergen Beisert <j.beisert-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1258546646-11586-1-git-send-email-w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 17 Nov 2009 14:48:40 +0800
-Wan ZongShun <mcuos.com@gmail.com> wrote:
-
-> Dear David,
+On Wed, Nov 18, 2009 at 01:17:26PM +0100, Wolfram Sang wrote:
+> Add the MAX7300-I2C variant to the MAX7301-SPI version. They share most parts
+> of the driver (i.e. the logic) and the read/write-register functions get
+> encapsulated. It is thus possible to use both variants simultaneously.
 > 
-> Add winbond/nuvoton NUC900 spi controller driver support, 
-> on my evaluation board,there is a winbond w25x16 spi flash,
-> so I test my spi controller driver with m25p80.c.
-> 
->
-> ...
->
-> +static inline struct w90p910_spi *to_hw(struct spi_device *sdev)
-> +{
-> +	return spi_master_get_devdata(sdev->master);
-> +}
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index 2ad0128..a1d2608 100644
+[...]
+> +MODULE_ALIAS("spi:max7301");
 > +
-> +static void w90p910_slave_seclect(struct spi_device *spi, unsigned int ssr)
+> +#define max7301_add_driver(drv) spi_register_driver(drv)
+> +#define max7301_del_driver(drv) spi_unregister_driver(drv)
+> +#else
+> +#define max7301_add_driver(drv) (0)
+> +#define max7301_del_driver(drv) do { } while(0)
+> +#endif /* CONFIG_GPIO_MAX7301_SPI */
+[...]
+>  static int __init max7301_init(void)
+>  {
+> -	return spi_register_driver(&max7301_driver);
+> +	int ret;
+> +	ret = max7300_add_driver(&max7300_driver);
+> +	if (ret)
+> +		return ret;
+> +	ret = max7301_add_driver(&max7301_driver);
 
-I think you meant "select" here?
+Nowadays you can use device table matching, as an example see
+commit 8cec03eee4a771f949c70cff07775c9bb21d4642 ("hwmon: lm70:
+convert to device table matching").
 
-> +{
-> +	struct w90p910_spi *hw = to_hw(spi);
-> +	unsigned int val;
-> +	unsigned int cs = spi->mode & SPI_CS_HIGH ? 1 : 0;
-> +	unsigned int cpol = spi->mode & SPI_CPOL ? 1 : 0;
-> +
-> +	val = __raw_readl(hw->regs + USI_SSR);
-> +
-> +	if (!cs)
-> +		val &= ~SELECTLEV;
-> +	else
-> +		val |= SELECTLEV;
-> +
-> +	if (!ssr)
-> +		val &= ~SELECTSLAVE;
-> +	else
-> +		val |= SELECTSLAVE;
-> +
-> +	__raw_writel(val, hw->regs + USI_SSR);
-> +
-> +	val = __raw_readl(hw->regs + USI_CNT);
-> +
-> +	if (!cpol)
-> +		val &= ~SELECTPOL;
-> +	else
-> +		val |= SELECTPOL;
-> +
-> +	__raw_writel(val, hw->regs + USI_CNT);
-> +}
+Thanks,
 
-That's a read-modify-write operation.  What locking prevents two
-threads of control from altering the USI_SSR and USI_CNT registers at
-the same time, resulting in an indeterminate setting?
-
-> +static void w90p910_spi_chipsel(struct spi_device *spi, int value)
-> +{
-> +	switch (value) {
-> +	case BITBANG_CS_INACTIVE:
-> +		w90p910_slave_seclect(spi, 0);
-> +		break;
-> +
-> +	case BITBANG_CS_ACTIVE:
-> +		w90p910_slave_seclect(spi, 1);
-> +		break;
-> +	}
-> +}
-> +
-> +static void w90p910_spi_setup_txnum(struct w90p910_spi *hw,
-> +							unsigned int txnum)
-> +{
-> +	unsigned int val;
-> +
-> +	val = __raw_readl(hw->regs + USI_CNT);
-> +
-> +	if (!txnum)
-> +		val &= ~TXNUM;
-> +	else
-> +		val |= txnum << 0x08;
-> +
-> +	__raw_writel(val, hw->regs + USI_CNT);
-> +
-> +}
-> +
-> +static void w90p910_spi_setup_txbitlen(struct w90p910_spi *hw,
-> +							unsigned int txbitlen)
-> +{
-> +	unsigned int val;
-> +
-> +	val = __raw_readl(hw->regs + USI_CNT);
-> +
-> +	val |= (txbitlen << 0x03);
-> +
-> +	__raw_writel(val, hw->regs + USI_CNT);
-> +}
-> +
-> +static void w90p910_spi_gobusy(struct w90p910_spi *hw)
-> +{
-> +	unsigned int val;
-> +
-> +	val = __raw_readl(hw->regs + USI_CNT);
-> +
-> +	val |= GOBUSY;
-> +
-> +	__raw_writel(val, hw->regs + USI_CNT);
-> +}
-
-ditto, ditto, ditto.
-
-> +static int w90p910_spi_setupxfer(struct spi_device *spi,
-> +				 struct spi_transfer *t)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int w90p910_spi_setup(struct spi_device *spi)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline unsigned int hw_txbyte(struct w90p910_spi *hw, int count)
-> +{
-> +	return hw->tx ? hw->tx[count] : 0;
-> +}
-> +
-> +static int w90p910_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
-> +{
-> +	struct w90p910_spi *hw = to_hw(spi);
-> +
-> +	hw->tx = t->tx_buf;
-> +	hw->rx = t->rx_buf;
-> +	hw->len = t->len;
-> +	hw->count = 0;
-> +
-> +	init_completion(&hw->done);
-> +
-> +	__raw_writel(hw_txbyte(hw, 0x0), hw->regs + USI_TX0);
-> +
-> +	w90p910_spi_gobusy(hw);
-> +
-> +	wait_for_completion(&hw->done);
-> +
-> +	return hw->count;
-> +}
-
-The init_completion() should be unneeded?  The structure was
-initialised at setup time and will be left in a reusable state after a
-complete()/wait_for_completion().  Reinitialising the structure all the
-time like this adds risk that it will be scribbled on while in use.
-
->
-> ...
->
-> +static int __devexit w90p910_spi_remove(struct platform_device *dev)
-> +{
-> +	struct w90p910_spi *hw = platform_get_drvdata(dev);
-> +
-> +	platform_set_drvdata(dev, NULL);
-> +
-> +	spi_unregister_master(hw->master);
-> +
-> +	clk_disable(hw->clk);
-> +	clk_put(hw->clk);
-
-As far as I can tell, a hardware interrupt could still be pending, or
-be under service while the above code is executing?
-
-If so, I expect bad things will happen?
-
-> +	free_irq(hw->irq, hw);
-> +	iounmap(hw->regs);
-> +
-> +	release_resource(hw->ioarea);
-> +	kfree(hw->ioarea);
-> +
-> +	spi_master_put(hw->master);
-> +	return 0;
-> +}
-> +
->
-> ...
->
+-- 
+Anton Vorontsov
+email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+irc://irc.freenode.net/bd2

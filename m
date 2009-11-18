@@ -1,211 +1,202 @@
-From: Luotao Fu <l.fu@pengutronix.de>
-Subject: Re: [PATCH] spi/mpc52xx-spi: cleanups
-Date: Tue, 17 Nov 2009 15:43:00 +0100
-Message-ID: <20091117144300.GB4850@pengutronix.de>
-References: <1258468268-9911-1-git-send-email-w.sang@pengutronix.de>
+From: "dfew" <sf-OfUkvUzLPQo@public.gmane.org>
+Subject: [SPAM] 楂樼骇鏂囩銆侀珮绾ц鏀垮姪鐞嗚亴涓氬寲璁粌
+Date: Wed, 18 Nov 2009 09:05:08 +0800
+Message-ID: <E1NAYz1-0003pV-0x@335xhf1.ch3.sourceforge.com>
+Reply-To: wwsf-OfUkvUzLPQo@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3305698337386193301=="
-Cc: spi-devel-general@lists.sourceforge.net, Luotao Fu <l.fu@pengutronix.de>,
-	linuxppc-dev@ozlabs.org
-To: Wolfram Sang <w.sang@pengutronix.de>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <1258468268-9911-1-git-send-email-w.sang@pengutronix.de>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: multipart/mixed;
+	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a multi-part message in MIME format
 
---===============3305698337386193301==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="AhhlLboLdkugWU4S"
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+详细内容在附件中
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: application/octet-stream;
+        name="高级文秘、高级行政助理职业化训练.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+        filename="高级文秘、高级行政助理职业化训练.txt"
+
+ICAgICAgICAgICAgICAgILjfvLbOxMPYoaK437y20NDV/tb6wO3WsNK1u6/RtcG3DQoNCtb3sOy1
+pc67o7rJ7tva1trIy9DQudzA7dfJ0a/N+CAgDQrJ7tvaytDSu7b+yP253MDt18nRr9PQz965q8u+
+DQoNCiAgICAgICAgICAgIA0Kv6q/zsqxvOQ6IDIwMDnE6jEx1MIyMS0yMsjVICAgICAgICAgICAg
+ICDJ7tvavfCw2brPIA0KICAgICAgICAgIDIwMDnE6jEy1MIxMi0xM8jVICAgICAgICAgICAgICCx
+sb6pyPCzySANCiAgICAgICAgICAyMDA5xOoxMtTCMTktMjDI1SAgICAgICAgICAgICAgyc+6o8G8
+sLINCg0KDQrF4NG1t9HTw6O6MjAwMNSqL8jLICCjqNfKwc+30aOs1tCyzbfRo6yy6LXjt9GjrLrP
+07C1yKOso6kNCg0KsbggICAg16Kjug0K18nRr7Xnu7CjujA3NTUtMjYwNzUzNjUgIDA3NTUtMjY5
+NzUyNjUgIDAyMS01MTg3NTE0OSANCrSrICAgINXmo7owNzU1LTYxMzUxMzk2ICANCsGqIM+1IMjL
+o7ogwejQob3jICAxMzgxNjQ3NjM5OQ0KDQogDQqppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCg0KICAg
+IMjnus7XvMi3oaLRuMvZwey74cnPvLa1xNXmyrXS4s28ID8NCiAgICDI57rO0K3W+sHstby0psDt
+0rvQqdLJxNHOysziID8NCiAgICDI57rOs8nOqsHstby1xNfzsPLT0rHbID8NCiAgICDNqLn9sb60
+zsXg0bXO0sPHu+G4+MTjvsW087e9z/KhosquzuXW1r3ivva3vbeoDQoNCiAgICC21LjfvLbW+sDt
+us3D2MrpwLTLtaOsw7vT0Mrctb3XqNK1z7XNs9G1wbejrL2rzt63qLTT1b3C1NDUyKu3vc67vce2
+yMjPDQrWqsPYyunT69b6wO21xLmk1/eju9Tay/m008rCtcS5pNf31tC40L71yLG3psDtwtvWp7PW
+o7u5pNf31tDX3MrHsbu2r9DQysKjrA0KsrvE3Nb3tq/Vxs7VuaTX973a1+Cju8/rzqrB7LW81/e1
+xLj8tuChorj8usPItMO709C6w7XEt723qKGiy7zCt6O7z+u4/LrDtcQNCta00NDB7LW8tcTV/rLf
+o6zItNfcyse1w7K7tb3Wp7PWo7vP67j4uavLvr3ayqG30dPDo6y1q8i0srvWqrTTus60ps/Cytaj
+rM/rDQq4/LrDtdi0psDtusO5q7myudjPtaOo1f64rrmrudijqaOsyLTX3MrHsru1w9KqwewtLS0t
+1u7I59LUyc+1xM7KzOKjrLa8ysfDvw0KuPbW+sDtw9jK6bmk1/fIy9Sxy/nD5rbU0+vAp7vztcSj
+rMjnus6w0c7V1f3It7e9z/K007b40bjL2czhyf3X1Mnt1rDStcvY0fijrA0Ks8nBy87Sw8ex2NDr
+w+a21NPrveK+9rXEv87M4qGjDQoNCsXg0bW21M/zo7oNCiAgICC497y21vrA7brNw9jK6aO619yy
+w6Oo19y+rcDto6nD2MrpoaKyv8PFw9jK6aGisOy5q8rS1vfIzqGi0NDV/rK/vq3A7aOoDQrW+sDt
+oaLW97ncoaLOxNawyMvUsbXIKQ0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCg0KofIgv86zzMrV
+u/Gjug0KICAgofogINXGztW437y20NDV/tb6wO3D2MrptcTWsNK1vLzE3A0KICAgofogIMnG09q0
+psDtuaTX99bQuPe8trm1zajE0bXjo6zM4cn919TJ7daw0rXE3MGmDQogICCh+iAg1cbO1dPryc/L
+vrm1zai1xLy8x8mjrLPJzqrB7LW8sru/ybvyyLG1xNfzsPLT0rHbDQogICCh+iAgyOe6zrXstqjU
+2qGwz8LK9KGxw+bHsLXEwey1vLXYzrsNCiAgIKH6ICDHycPutKbA7aGwyOK80OLJobG1xLmk1/ej
+rMzlz9a49sjLuaTX98TcwaYNCiAgIKH6ICDI57rOwPvTw8+1zbO1xMDtwtvWqsq2o6zKtc/W1Nq5
+pNf31tC1xNOm08MNCiAgIKH6ICDVxs7V1f7O8bmrudi1xLv5sb68vMfJDQogICCh+iAgyMPX1Ly6
+s8nOqtK7uPa439CnubXNqNXfo6zM5c/W1rCzobzb1rUNCiAgIKH6ICC31s/ty/vIy7jf0Ke5pNf3
+vq3R6aOsyrXP1tfUztLT0NCntcTKsbzkudzA7Q0KICAgofogIMq1z9bP1rT6zsTD2Lmk1/e6zbW1
+sLi53MDtuaTX97XEuea3ts/OvdMNCiAgIKH6ICDRp8+w1cbO1bnmt7a1xMnMzvHQtNf3vLzHyaOs
+zOG437mrzsTQtNf3y67GvQ0KICAgofogINGnz7DVxs7Vu+HS6bXE1+nWr8u8wre8sLjf0KfCyrXE
+1+nWr7e9t6ihow0KICAgofogINXGztW7+bG+tcTJzM7xu+62r8Dx0sejrMq5xPrKytOmyNWzo8nM
+zvGzobrPtcTA8dLH0qrH8w0KICAgofogINXGztW+xtHnvLzHyc3qs8nJzM7x0efH68S/tcSjrMq1
+z9bW97H2y6vTrrXEusO+1sPmDQogICCh+iAgwcu94r3TtP2/zbuntcTA8dLHz7i92qOsyMPE+rXE
+w7/Su867v83Iy7H21sHI57npDQoNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppQ0KDQqh8iDF4NG1zOG4
+2aO6DQrSu6GixvPStdDQ1f7W+sDtw9jK6daw0rXM2NDU0+vL2NbK0qrH8w0KICAgIKHzICDW+sDt
+w9jK6bXE1rDStbzb1rW6zdf308MNCiAgICAgICAgofogILC4wP2jutb6wO3D2MrpuNrOu7XExsC8
+2w0KICAgIKHzICDW+sDtw9jK6cjL1LG1xNaw1PDT69b30qq5pNf3xNrI3SANCiAgICAgICAgofog
+ILC4wP2jutb6wO3D2MrpyMvUsbXE1rDOu8u1w/fK6dH5sOUgDQogICAgofMgINb6wO3D2MrptcTW
+sNK1t6LVubnmu64NCiAgICCh8yAg1vrA7cPYyunIy9SxtcTX1M7SvcfJq7aozrsNCiAgICCh8yAg
+08XQ49b6wO3D2MrpyMvUsbXEyqTIzsvY1soNCiAgICAgICAgofogILC4wP231s72o7ogDQoNCrb+
+oaLIy7zKubXNqNPruaTX99Cttfe8vMfJDQogICAgofMgILm1zai21NPa1vrA7cPYyum1xNLi0uUN
+CiAgICCh8yAgs6PTw7m1zai3vcq91q6xyL3PDQogICAgofMgILjfvLbW+sDtw9jK6cjL1LG1xLm1
+zai8vMfJDQogICAgICAgIKH6ICCwuMD9o7rI57rOzP22rsDPsOW1xKGww7vT0Mu1s/bAtLXE0uLL
+vKGxo78gDQogICAgofMgIMjnus7Iw8Hstby5zsS/z+C/tKGiu/G1w9DFyM6jvw0KICAgIKHzICDI
+57rO0+vE47XEyc/LvtCttfe2+LK7sO+1ucOmo78NCiAgICCh8yAgyOe6ztPruPfW1snPy77P4LSm
+o78NCiAgICCh8yAgzsrM4qO6ztK1xMnPvLa199ffwcvU9cO0sOyjvw0KICAgICAgICCh+iAgsLjA
+/aO6wey1vMjDztLE0c6qx+mjrM7SuMPU9cO0sOyjvw0KICAgICAgICCh+iAgsLjA/aO6yOe6ztPr
+zazKwrvyz8K8ts/gtKajvw0KICAgICAgICCh+iAgsLjA/aO609DIy9TaxOPD5sewsafUucTjtcTB
+7LW8uMPU9cO0sOyjvw0KICAgIKHzICDM1sLbo7rI57rOt6K709fUye3TxcrGxvC6w9CttffX99PD
+o78NCiAgICDI57rOs8nOqsnPy761w8Gm1vrK1g0KICAgIKHzICDTxdDjw9jK6bXEusvQxL661fnB
+pg0KICAgIKHzICDWqry61qqxy6O6t9bO9snPy761xLmk1/fM2LXjDQogICAgofMgIMjnus621LT9
+srvNrNDUuPHA4NDNtcTJz8u+DQogICAgofMgINW+1NrPwry2tcTOu9bDyc/LvL+8yc+8trXEysIN
+CiAgICCh8yAg0+vJz7y2z+C0ptei0uLKws/uDQogICAgtee7sMDx0scNCiAgICCh8yAgvdPM/bXn
+u7C1xLv5sb7UrdTyDQogICAgofMgIL3TzP2157uwtcS8uM/u16LS4iANCiAgICCh8yAgsqa08rXn
+u7C1xLy4tPPSqrXjDQoNCsj9oaLKsbzkudzA7bywuaTX982zs++8vMfJDQogICAgofMgIMqxvOS5
+3MDttcTO88f4DQogICAgofMgIMqxvOS53MDttcTUrdTyDQogICAgICAgocwgxL+x6rncwO3T6zgw
+LzIwt6jU8g0KICAgICAgIKHMILu6vLHH4dbYtcTTxc/IudzA7Q0KICAgICAgIKHMILj2yMvKsbzk
+0+vB7LW8uaTX98qxvOS8xruu0+uwssXFDQogICAgofMgIMqxvOS53MDt0KHHz8PFDQogICAgofMg
+ILH2v82907T90+u157uwtKbA7Q0KICAgIKHzICDJz7y2tcTKsbzkudzA7dPrsLLFxQ0KICAgIKHz
+ICDX1M7Sx+nQ97/Y1sbT69G5waa53MDtDQoNCsvEoaK74c7x1+nWr9PrudzA7Q0KICAgIKHzICC7
+4c7xt9bA4KOt1+nWr8u8wrcNCiAgICCh8yAg1+nWr73Xts6jurvhx7DXvLG4oaK74dbQ0K3W+qGi
+u+G689X7wO0NCiAgICCh8yAg1+nWr7e9t6gNCiAgICCh8yAgwP274bXE1+nWrw0KICAgIKHzICC0
+89DNu+HS6aGi1bm74bXE1+nWrw0KICAgIKHzICDI57rOtaPIzrvh0unW97PWyMsNCiAgICCh8yAg
+yOe6zrWxusO74dLpw9jK6aO/DQogICAgofMgIMirvrCwuMD9o7rEs7mry77E6rbItPPQzcfsteS7
+7ravst+7rsq8xKkNCiAgICAgICAgofogILC4wP2jurTz0M274dLpvLC77ravst+7rrC4DQogICAg
+ofMgIMjnus6x3MPiz93T2rvh0unDpsK11q7W0KO/DQoNCs7loaLOxLz+18rBz7ncwO3T69TL08MN
+CiAgICCh8yAgzsS1tbfWwOCx6te8DQogICAgofMgILW1sLi53MDttcTUrdTyDQogICAgofMgIM7E
+tbW1xMv30v0NCiAgICCh8yAgtefX087EtbW1xLGjDQogICAgofMgINOh1cK1xLncwO0NCiAgICAg
+ICAgofogILC4wP231s72o7oNCiAgICCh8yAg0dDM1qO6yOe6zsD708O1tbC4zqq5q8u+0rXO8bf+
+zvGjvw0KDQrB+aGi0MXPorW1sLi53MDtDQogICAgofMgINDFz6K53MDtu/mxvsH3s8wNCiAgICCh
+8yAg0MXPorXEytW8r9X7wO0NCiAgICCh8yAg0MXPorXEtKu13Q0KICAgIKHzICDQxc+itcS0orTm
+0+uxo8PcDQogICAgofMgILGjw9zS4sq20+uxo8PcuebU8g0KICAgIKHzICDD2MrptcS7+bG+1rDS
+tbXAtcINCg0Kxt+hormrzsTQtNf30+u0psDtyrXO8Q0KICAgIKHzICC5q87Et9bA4A0KICAgIKHz
+ICC5q87EtcS94bm5DQogICAgofMgINb6wO3D2MrpzsTX1tans9bTprTvtb21xNKqx/MNCiAgICCh
+8yAguavOxNC01/e55tTyus3TptPDvLzHyQ0KICAgIKHzICDK/dfWtcTV/ci3yrnTww0KICAgIKHz
+ICC7+cr9tMq6zdDyyv20yrXE1f3It9TL08MNCiAgICCh8yAgxKO6/bTKus3Eo8ystMq1xNX9yLfK
+udPDDQogICAgofMgILmrzsTOxNbW1Nq5pNf31tC1xNf308MNCiAgICCh8yAgz+nO9rOj08POxNbW
+tcTQtNf3vLzHyQ0KICAgICAgICDNqNaqDQogICAgICAgIMfryr4NCiAgICAgICAgsai45g0KICAg
+ICAgICC5pNf319y94Q0KICAgICAgICC5pNf3vMa7rqOo1tyhotTCoaLE6qOpDQogICAgICAgIMr2
+1rCxqLjmDQogICAgofMgIMfJ08PNvLHto6zIw9fcveGxqLjmuPy+3cu1t/7Bpg0KICAgIKHzICBT
+TUFSVNSt1PLT61NXT1S3vbeoDQogICAgofMgIMjd0te77M/9tcS5q87EzsTW1g0KICAgICAgICAN
+Cr7FoaLJzM7xwPHSx9Pr1rDStdDOz/PL3NTsDQogICAgMaGisNHO1bXa0rvToc/zo6zL3NTsuPbI
+y9aws6HQzs/zDQogICAgICAgIKHzICDXxdewtcRUT1DUrdTyDQogICAgICAgIKHzICChsL7cvvih
+sNfF17Cw3LHKoaqhqtfF17DO88f4DQogICAgICAgIKHzICDTw8G8usO1xNLHzKyjrMzlz9a49sjL
+xvjWyg0KICAgICAgICCh8yAgt6LQzaGiu6/XsaGi1b6hosGioaLX36Gi1/gNCiAgICAgICAgofMg
+IMehtbG1xNarzOXT79HUIMjD19S8urPJzqrSu7j209DL2NH4tcTIyw0KICAgIDKhoiC7+bG+yee9
+u8Dx0scNCiAgICAgICAgofMgILz7w+a96cnctcTA8dLHDQogICAgICAgIKHzICDOyrrytcTA8dLH
+DQogICAgICAgIKHzICDD+8astcTKudPDDQogICAgICAgIKHzICDI1bOjyczO8bvutq/W0LXEwPHS
+x7nmt7YNCiAgICAgICAgofMgINPruaTX99PQudi1xM7EzOW77rav1tC1xMDx0se55re2DQogICAg
+M6GiIMnMzvHR58frwPHSxw0KICAgICAgICCh8yAgteOyy7y8x8mhqqGqyOe6zrPUtcO9ob+1DQog
+ICAgICAgIKHzICC+xtHnvLzHyaGqoarI57rOtfe92sb4t9UNCiAgICAgICAgofMgINbQoaLO97LN
+08OyzcDx0scNCiAgICAgICAgofMgILLN0vvA8dLHvfu8yQ0KDQoNCqmlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppQ0KDQq9ssqmvPK96aO61cXS687Exa7Kvw0KICAgIM73sLK9u82otPPRp7ncwO3Rp9S6o6i5
+pMnMudzA7aOpJrDE1t648cHWzf7WzrTz0aejqMrQs6HTqs/6o6lNQkHLtsq/O9T4sbsNCsra0+jD
+wLn6UFBUufq8ytaw0rXF4NG1yqbIz9akoaLP47jbufq8yrncwO3Rp9S6xvPStbjfvLbXydGvucvO
+ytfKuPHIz9ako7vU+LvxDQrJ7tvavdyz9sbz0rXXydGvucvOyteovNKzxrrFo7u24MTqtaPIzr/n
+ufrG89K1IMPAufpBc2hlcqGiILeoufpUcmlzyv3C67/GvLy1yA0KxvPStbjfvLa+rcDtoaMNCg0K
+ICAgINT4uKi1vNfJ0a+1xMbz0rXT0NOiufpTVEnXydGvudzA7bv6ubmhos/juNu/tcH6yrXStbnJ
+t925q8u+oaLDwLn6yP3BoryvzcWhog0Kw8C5+kFTSEVSu/q5ubXItPPQzbyvzcW5q8u+oaLJ7tva
+1dDJzM7vwfehosnu29pMWUS437/GvLy5ybfduavLvqGiycLO98P3tcC7r7mkDQqyxMHPucm33bmr
+y76horijvajB+syp1v3U7NPQz965q8u+oaK547art/DJvcLesLK98Mr01sbU7NPQz965q8u+oaK5
+47art/DJvdDC1LQNCszVtMm5ybfdvK/NxaGiy9XW3czYwPbLubXn1LS7+rm5oaLEz76pyc/Uqrrs
+xL680r7fuavLvqGjDQoNCiAgICDW972yv86zzKO6oba437y20NDV/s7Ew9jWsNK1u6/RtcG3obeh
+oqG2udzA7bm1zajS1cr1us252M+10K2196G3oaKhts3iw7PKtQ0K1b2y2df3vLzHyaG3oaKhtrmr
+zsTQtNf3obehoqG2tPO/zbunv6q3orf+zvHT67ncwO2ht6Gioba74dLpvKjQp7ncwO2ht6GiobbJ
+zM7xDQrA8dLH0+vR58frvLzHyaG3oaMNCg0KICAgINfJ0a/F4NG1uf21xMbz0rXT0KO61tC98MHr
+xM+3sr/ax6bQv7/zoaLC3rCyvK/NxaGizNjA9su5sLK3wLmry76hotDCzqy087nJDQq33byvzcW5
+q8u+oaLQwtS0zNW0ybyvzcWhorfwzNW8r83FoaLO4NbdwarNqLmry76hosTP0828r83FoaLL1dbd
+uuy2ubyvzcWhotSq0uINCrzSvt/WxtTsuavLvqGisbG+qbar0fTIyMTcvK/NxaGiu6rI87yvzcWh
+osD7tO/Ds9LXoaK73cHpzajNqNG2uavLvqGixM/Uwcr9vt3NqA0K0MW5q8u+oaK4u8q/v7Whorq9
+vM67+rm5oaK80ri7uLvHxbyvzcWhos/Dw8W/qreix/i12LL6uavLvqGi1dDJzNbD0rWhos73sLLA
++7GmDQrJ+sysvK/NxaGiycLO98zsyMvT0Lv6ucm33bmry76horXCsaa5+rzKoaK608TPtefBpqGi
+uKPW3brsutO67MS+vNK+36GixP6yqMzAxLcNCta4yeixuLmry76hosPAufrI/cGivK/NxaGiQUNF
+u/q5uaGisbG+qbar0fTMq9H0xNzCr77fs6ehor+tsqm84MDtuavLvqGiIM/juNvQ7A0KuuvS49ew
+ys7J6LzGuavLvqGiuqPBwdOyxczWxtTsuavLvqGiuePW3c6wzNq8r83FoaLUwcypvK/NxaGiv7XH
+xcrp1Lqhornax8ew/NewDQrWxsa309DP3rmry76hotDxyNW98Mr01sbGt9PQz965q8u+oaKxsb6p
+0ce2vLnJt925q8u+oaLJ7tvatefQxbfWuavLvrXIoaMNCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0NCg0KyOfSqrLOvNOxvrTO0dDM1rvho6y/yc2ouf3PwsPmt73KvbGow/uyzrzTo7oNCg0KvavS
+1M/CsajD+7HtxNrI3bTy06HM7tC0uvO0q9Xmtb2juqOoMDc1NaOpNjEzNTEzOTYNCg0KsaihoaGh
+w/uhoaGhu9ihoaGh1rQNCg0Kss6807/OzOKjurjfvLbOxMPYoaK437y20NDV/tb6wO3WsNK1u6/R
+tcG3oaENCg0Ktdi146O6ICAgIMqxvOSjug0KDQqyzrvhtaXOu8P7s8ajul9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fIEVtYWlso7pfX19fX19fX19fX19fX19fX19fX19fIKGhDQog
+DQrBqs+1yMujul9fX19fX19fX19fX19fXyC157uwo7pfX19fX19fX19fX19fX19fX19fX18gtKvV
+5qO6X19fX19fX19fX19fX19fX19fX19fDQogoaENCrLOvNPRp9Sxo7pfX19fX19fX9awzvGjul9f
+X19fX19fX19fX19fX8rWu/qjul9fX19fX19fX19fX19fX0VtYWlso7pfX19fX19fX19fX18NCg0K
+ss6809Gn1LGjul9fX19fX19f1rDO8TpfX19fX19fX19fX19fX18gyta7+qO6X19fX19fX19fX19f
+X19fRW1haWyjul9fX19fX19fX19fXw0KDQqyzrzT0afUsaO6X19fX19fX1/WsM7xo7pfX19fX19f
+X19fX19fX1/K1rv6o7pfX19fX19fX19fX19fX19FbWFpbKO6X19fX19fX19fX19fDQogICAgICAN
+Cri2v+63vcq9o7qh9c/WvfChoaH11qfGsaGhofXXqtXKDQoNCsjLyv2jul9fX19fX8jLICAgss67
+4bfR08OjurmyvMajul9fX19fX9SqIA0KDQqxuNeiDQoxLsrVtb2588u+sajD+9DFz6K686OsztLD
+x72rtdrSu8qxvOS6zbnzy76yzrvhwarPtcjLvfjQ0Mi3yM+juw0KMi7U2r+qv87HsNK71tyjrM7S
+w8fT0NeoyMu4+Lnzy763osvNss6808Xg0bW1xMi3yM+6r6Osyc/D5tPQxeDRtbGotb3WuNL9o6zS
+1Lywz+oNCiAgz7i1xMnPv8612Na3us3Ct8/fzbyjuw0KMy60y7/Os8zSsr/J0tSwssXFxvPStcTa
+0bWjrLu2063AtLXn18nRr7ywyerH68XFxtqjuw0KNC7I57bUtMu/zrPM09DIzrrO0snOyqOsu7bT
+rbKmtPK157uwz/LO0sPH18nRr6Gj
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
-
---AhhlLboLdkugWU4S
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Nov 17, 2009 at 03:31:08PM +0100, Wolfram Sang wrote:
-> - drop own, obsolete include-file
-> - drop IRQF_SAMPLE_RANDOM (deprecated feature)
-> - drop 'if' above kfree()
-> - typos, braces & whitespaces
->=20
-> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
-> Cc: Luotao Fu <l.fu@pengutronix.de>
-> Cc: Grant Likely <grant.likely@secretlab.ca>
-
-acked-by: Luotao Fu <l.fu@pengutronix.de>
-
-minor comments see below,
-
-> ---
->=20
-> This goes ontop of Grant's test-branch.
->=20
->  drivers/spi/mpc52xx_spi.c       |   24 ++++++++++--------------
->  include/linux/spi/mpc52xx_spi.h |   10 ----------
->  2 files changed, 10 insertions(+), 24 deletions(-)
->  delete mode 100644 include/linux/spi/mpc52xx_spi.h
->=20
-> diff --git a/drivers/spi/mpc52xx_spi.c b/drivers/spi/mpc52xx_spi.c
-> index 97beba2..7f4089c 100644
-> --- a/drivers/spi/mpc52xx_spi.c
-> +++ b/drivers/spi/mpc52xx_spi.c
-> @@ -18,7 +18,6 @@
->  #include <linux/interrupt.h>
->  #include <linux/delay.h>
->  #include <linux/spi/spi.h>
-> -#include <linux/spi/mpc52xx_spi.h>
->  #include <linux/of_spi.h>
->  #include <linux/io.h>
->  #include <linux/of_gpio.h>
-> @@ -54,7 +53,7 @@ MODULE_LICENSE("GPL");
->  /* FSM state return values */
->  #define FSM_STOP	0	/* Nothing more for the state machine to */
->  				/* do.  If something interesting happens */
-> -				/* then and IRQ will be received */
-> +				/* then an IRQ will be received */
->  #define FSM_POLL	1	/* need to poll for completion, an IRQ is */
->  				/* not expected */
->  #define FSM_CONTINUE	2	/* Keep iterating the state machine */
-> @@ -62,13 +61,12 @@ MODULE_LICENSE("GPL");
->  /* Driver internal data */
->  struct mpc52xx_spi {
->  	struct spi_master *master;
-> -	u32 sysclk;
->  	void __iomem *regs;
->  	int irq0;	/* MODF irq */
->  	int irq1;	/* SPIF irq */
-> -	int ipb_freq;
-> +	unsigned int ipb_freq;
-> =20
-> -	/* Statistics */
-> +	/* Statistics; not used now, but will be reintroduced for debugfs */
->  	int msg_count;
->  	int wcol_count;
->  	int wcol_ticks;
-> @@ -229,7 +227,7 @@ static int mpc52xx_spi_fsmstate_transfer(int irq, str=
-uct mpc52xx_spi *ms,
->  		ms->wcol_tx_timestamp =3D get_tbl();
->  		data =3D 0;
->  		if (ms->tx_buf)
-> -			data =3D *(ms->tx_buf-1);
-> +			data =3D *(ms->tx_buf - 1);
->  		out_8(ms->regs + SPI_DATA, data); /* try again */
->  		return FSM_CONTINUE;
->  	} else if (status & SPI_STATUS_MODF) {
-> @@ -481,8 +479,9 @@ static int __devinit mpc52xx_spi_probe(struct of_devi=
-ce *op,
->  			gpio_direction_output(gpio_cs, 1);
->  			ms->gpio_cs[i] =3D gpio_cs;
->  		}
-> -	} else
-> +	} else {
->  		master->num_chipselect =3D 1;
-> +	}
-> =20
->  	spin_lock_init(&ms->lock);
->  	INIT_LIST_HEAD(&ms->queue);
-> @@ -490,9 +489,9 @@ static int __devinit mpc52xx_spi_probe(struct of_devi=
-ce *op,
-> =20
->  	/* Decide if interrupts can be used */
->  	if (ms->irq0 && ms->irq1) {
-> -		rc =3D request_irq(ms->irq0, mpc52xx_spi_irq, IRQF_SAMPLE_RANDOM,
-> +		rc =3D request_irq(ms->irq0, mpc52xx_spi_irq, 0,
->  				  "mpc5200-spi-modf", ms);
-> -		rc |=3D request_irq(ms->irq1, mpc52xx_spi_irq, IRQF_SAMPLE_RANDOM,
-> +		rc |=3D request_irq(ms->irq1, mpc52xx_spi_irq, 0,
->  				  "mpc5200-spi-spiF", ms);
-
-The "spiF" here is probably also a typo.
-
->  		if (rc) {
->  			free_irq(ms->irq0, ms);
-> @@ -524,8 +523,7 @@ static int __devinit mpc52xx_spi_probe(struct of_devi=
-ce *op,
->  	while (i-- > 0)
->  		gpio_free(ms->gpio_cs[i]);
-> =20
-> -	if (ms->gpio_cs !=3D NULL)
-> -		kfree(ms->gpio_cs);
-> +	kfree(ms->gpio_cs);
->   err_alloc:
->   err_init:
->  	iounmap(regs);
-> @@ -544,9 +542,7 @@ static int __devexit mpc52xx_spi_remove(struct of_dev=
-ice *op)
->  	for (i =3D 0; i < ms->gpio_cs_count; i++)
->  		gpio_free(ms->gpio_cs[i]);
-> =20
-> -	if (ms->gpio_cs !=3D NULL)
-> -		kfree(ms->gpio_cs);
-> -
-> +	kfree(ms->gpio_cs);
->  	spi_unregister_master(master);
->  	spi_master_put(master);
->  	iounmap(ms->regs);
-> diff --git a/include/linux/spi/mpc52xx_spi.h b/include/linux/spi/mpc52xx_=
-spi.h
-> deleted file mode 100644
-> index d1004cf..0000000
-> --- a/include/linux/spi/mpc52xx_spi.h
-> +++ /dev/null
-> @@ -1,10 +0,0 @@
-> -
-> -#ifndef INCLUDE_MPC5200_SPI_H
-> -#define INCLUDE_MPC5200_SPI_H
-> -
-> -extern void mpc52xx_spi_set_premessage_hook(struct spi_master *master,
-> -					    void (*hook)(struct spi_message *m,
-> -							 void *context),
-> -					    void *hook_context);
-> -
-> -#endif
-> --=20
-> 1.6.3.3
->=20
-
-cheers
-Luotao Fu
---=20
-Pengutronix e.K.                           | Dipl.-Ing. Luotao Fu        |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---AhhlLboLdkugWU4S
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAksCtnQACgkQkLuxfMCkDTbtigCbBXVeiLfkv0vLLPPkGnR2gcXG
-5nUAn3WIgxAgCpdurdc/uIM7MeGKqFf3
-=5+aS
------END PGP SIGNATURE-----
-
---AhhlLboLdkugWU4S--
-
---===============3305698337386193301==
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--=_NextPart_2rfkindysadvnqw3nerasdf
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 _______________________________________________
-Linuxppc-dev mailing list
-Linuxppc-dev@lists.ozlabs.org
-https://lists.ozlabs.org/listinfo/linuxppc-dev
---===============3305698337386193301==--
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

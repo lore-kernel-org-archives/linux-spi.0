@@ -1,77 +1,57 @@
-From: Wan ZongShun <mcuos.com@gmail.com>
-Subject: Re: [PATCH] ARM: Add spi controller driver support for NUC900
-Date: Thu, 19 Nov 2009 17:49:22 +0800
-Message-ID: <e68bb3470911190149k3bc77ef6h26475bc7272784b8@mail.gmail.com>
-References: <4B024748.9080001@gmail.com>
-	 <20091118142109.ff2c5ef6.akpm@linux-foundation.org>
-	 <e68bb3470911182223r28e9bac0lf185c1443168ff52@mail.gmail.com>
-	 <20091118234928.8d86a9f9.akpm@linux-foundation.org>
-	 <e68bb3470911190040v2c14bbcfi46177cd58649e1c@mail.gmail.com>
-	 <20091119090204.GB13376@n2100.arm.linux.org.uk>
+From: Daniel Mack <daniel@caiaq.de>
+Subject: [PATCH] SPI: drain MXC SPI transfer buffer when probing device
+Date: Thu, 19 Nov 2009 11:44:47 +0100
+Message-ID: <1258627487-7408-1-git-send-email-daniel@caiaq.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	linux-spi <spi-devel-general@lists.sourceforge.net>,
-	David Brownell-sourceforge <dbrownell@users.sourceforge.net>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-To: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754755AbZKSJtS@vger.kernel.org>
-In-Reply-To: <20091119090204.GB13376@n2100.arm.linux.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Daniel Mack <daniel@caiaq.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	spi-devel-general@lists.sourceforge.net,
+	Andrew Morton <akpm@linux-foundation.org>
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-2009/11/19 Russell King - ARM Linux <linux@arm.linux.org.uk>:
-> On Thu, Nov 19, 2009 at 04:40:50PM +0800, Wan ZongShun wrote:
->> 2009/11/19 Andrew Morton <akpm@linux-foundation.org>:
->> > I don't know, because I don't know what operation the hardware nee=
-ds to
->> > stop it from generating interrupts. =C2=A0Perhaps that's clk_disab=
-le()?
->>
->> The interrupt will be not occur as long as I run clk_disable().
->>
->> > Once you've stopped the source of interrupts then the code should =
-wait
->> > for the IRQ handler to complete if it's running on another CPU. =C2=
-=A0Yes,
->> > free_irq() does that.
->>
->> So, regarding my system of single CPU, maybe I need put this
->> 'clk_disable()' in the front of function of w90p910_spi_remove().
->>
->> right?
->
-> Depending on the hardware, that's not the right answer. =C2=A0If turn=
-ing off
-> the clock also causes register accesses to the device to abort, it is
-> a very dangerous thing to do.
->
-> It can also be dangerous if the clock is used to synchronise the inte=
-rrupt
-> output - it can lead to the output being permanently asserted if the =
-clock
-> is turned off with it asserted.
->
-> Normally devices have an "interrupt enable" register. =C2=A0You shoul=
-d disable
-> all interrupts from the device using this register after unregisterin=
-g
-> the driver from the (SPI) subsystem.
-
-sir, so I need implement a API to disable spi device interrupt by
-"interrupt enable" register?
-but I did not find the operation in other ARM platform when they close
-your spi driver.
-
-or something I missed?
-
->
-
-
-
---=20
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+T24gdGhlIE1YMzFsaXRla2l0LCB0aGUgYm9vdGxvYWRlciBzZWVtcyB0byBjb21tdW5pY2F0ZSB3
+aXRoIHRoZSBNQzEzNzgzClBNSUMgY2hpcCBiZWZvcmUgYm9vdGluZyBMaW51eC4gSG93ZXZlciwg
+aXQgZG9lcyBub3QgZmx1c2ggYWxsIHRoZQpidWZmZXJzIHByb3Blcmx5IGFmdGVyIHRoYXQsIHdo
+aWNoIG1ha2VzIHRoZSBpbXgtc3BpIGRyaXZlciByZWFkCmJvZ3VzIGRhdGEgd2hlbiBwcm9iaW5n
+IHRoZSBNQzEzNzgzLgoKRml4IHRoYXQgYnkgZHJhaW5pbmcgdGhlIFNQSSBidWZmZXIgb24gc3Rh
+cnR1cC4KClNpZ25lZC1vZmYtYnk6IERhbmllbCBNYWNrIDxkYW5pZWxAY2FpYXEuZGU+CkNjOiBE
+YXZpZCBCcm93bmVsbCA8ZGJyb3duZWxsQHVzZXJzLnNvdXJjZWZvcmdlLm5ldD4KQ2M6IEFuZHJl
+dyBNb3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+CkNjOiBTYXNjaGEgSGF1ZXIgPHMu
+aGF1ZXJAcGVuZ3V0cm9uaXguZGU+CkNjOiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29l
+bmlnQHBlbmd1dHJvbml4LmRlPgpDYzogc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
+Z2UubmV0Ci0tLQogZHJpdmVycy9zcGkvc3BpX2lteC5jIHwgICAgNyArKysrKysrCiAxIGZpbGVz
+IGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9k
+cml2ZXJzL3NwaS9zcGlfaW14LmMgYi9kcml2ZXJzL3NwaS9zcGlfaW14LmMKaW5kZXggODljMjJl
+Zi4uYTM4OTRmZCAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpX2lteC5jCisrKyBiL2RyaXZl
+cnMvc3BpL3NwaV9pbXguYwpAQCAtNDIsOCArNDIsMTEgQEAKICNkZWZpbmUgTVhDX0NTUElUWERB
+VEEJCTB4MDQKICNkZWZpbmUgTVhDX0NTUElDVFJMCQkweDA4CiAjZGVmaW5lIE1YQ19DU1BJSU5U
+CQkweDBjCisjZGVmaW5lIE1YQ19DU1BJU1RBVAkJMHgxNAogI2RlZmluZSBNWENfUkVTRVQJCTB4
+MWMKIAorI2RlZmluZSBNWENfQ1NQSVNUQVRfUlIJCSgxIDw8IDMpCisKIC8qIGdlbmVyaWMgZGVm
+aW5lcyB0byBhYnN0cmFjdCBmcm9tIHRoZSBkaWZmZXJlbnQgcmVnaXN0ZXIgbGF5b3V0cyAqLwog
+I2RlZmluZSBNWENfSU5UX1JSCSgxIDw8IDApIC8qIFJlY2VpdmUgZGF0YSByZWFkeSBpbnRlcnJ1
+cHQgKi8KICNkZWZpbmUgTVhDX0lOVF9URQkoMSA8PCAxKSAvKiBUcmFuc21pdCBGSUZPIGVtcHR5
+IGludGVycnVwdCAqLwpAQCAtNTkzLDYgKzU5NiwxMCBAQCBzdGF0aWMgaW50IF9faW5pdCBzcGlf
+aW14X3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCiAJaWYgKCFjcHVfaXNfbXgz
+MSgpIHx8ICFjcHVfaXNfbXgzNSgpKQogCQl3cml0ZWwoMSwgc3BpX2lteC0+YmFzZSArIE1YQ19S
+RVNFVCk7CiAKKwkvKiBkcmFpbiB0aGUgYnVmZmVyICovCisJd2hpbGUgKHJlYWRsKHNwaV9pbXgt
+PmJhc2UgKyBNWENfQ1NQSVNUQVQpICYgTVhDX0NTUElTVEFUX1JSKQorCQlyZWFkbChzcGlfaW14
+LT5iYXNlICsgTVhDX0NTUElSWERBVEEpOworCiAJc3BpX2lteC0+aW50Y3RybChzcGlfaW14LCAw
+KTsKIAogCXJldCA9IHNwaV9iaXRiYW5nX3N0YXJ0KCZzcGlfaW14LT5iaXRiYW5nKTsKLS0gCjEu
+Ni41LjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwps
+aW51eC1hcm0ta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJh
+ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51
+eC1hcm0ta2VybmVsCg==

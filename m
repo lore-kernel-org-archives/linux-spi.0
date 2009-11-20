@@ -1,634 +1,374 @@
-From: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2]: NUC900: Add spi driver support for
-	nuc900
-Date: Fri, 20 Nov 2009 13:26:31 +0800
-Message-ID: <4B062887.90803@gmail.com>
+From: Li Jie <eltshanli@gmail.com>
+Subject: Re: [PATCH v2]: NUC900: Add spi driver support for nuc900
+Date: Fri, 20 Nov 2009 16:18:34 +0800
+Message-ID: <8fb2581d0911200018v53bad77aob74d0c33a7c14716@mail.gmail.com>
+References: <4B062887.90803@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: linux-spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	David Brownell-sourceforge <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: linux-spi <spi-devel-general@lists.sourceforge.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Brownell-sourceforge <dbrownell@users.sourceforge.net>,
+	Russell King <linux@arm.linux.org.uk>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+To: Wan ZongShun <mcuos.com@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <4B062887.90803@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear sirs,
-
-Thanks a lot for your help,and I fix the spi driver and re-submit it.
-
-
-Signed-off-by: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
----
- arch/arm/mach-w90x900/include/mach/nuc900_spi.h |   35 ++
- drivers/spi/Kconfig                             |    7 +
- drivers/spi/Makefile                            |    1 +
- drivers/spi/spi_nuc900.c                        |  509 +++++++++++++++++++++++
- 4 files changed, 552 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/mach-w90x900/include/mach/nuc900_spi.h
- create mode 100644 drivers/spi/spi_nuc900.c
-
-diff --git a/arch/arm/mach-w90x900/include/mach/nuc900_spi.h b/arch/arm/mach-w90x900/include/mach/nuc900_spi.h
-new file mode 100644
-index 0000000..24ea23b
---- /dev/null
-+++ b/arch/arm/mach-w90x900/include/mach/nuc900_spi.h
-@@ -0,0 +1,35 @@
-+/*
-+ * arch/arm/mach-w90x900/include/mach/nuc900_spi.h
-+ *
-+ * Copyright (c) 2009 Nuvoton technology corporation.
-+ *
-+ * Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation;version 2 of the License.
-+ *
-+ */
-+
-+#ifndef __ASM_ARCH_SPI_H
-+#define __ASM_ARCH_SPI_H
-+
-+extern void mfp_set_groupg(struct device *dev);
-+
-+struct w90p910_spi_info {
-+	unsigned int num_cs;
-+	unsigned int lsb;
-+	unsigned int txneg;
-+	unsigned int rxneg;
-+	unsigned int divider;
-+	unsigned int sleep;
-+	unsigned int txnum;
-+	unsigned int txbitlen;
-+	int bus_num;
-+};
-+
-+struct w90p910_spi_chip {
-+	unsigned char bits_per_word;
-+};
-+
-+#endif /* __ASM_ARCH_SPI_H */
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 4b6f7cb..2e1b20c 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -244,6 +244,13 @@ config SPI_XILINX
- 	  See the "OPB Serial Peripheral Interface (SPI) (v1.00e)"
- 	  Product Specification document (DS464) for hardware details.
- 
-+config SPI_NUC900
-+	tristate "Nuvoton NUC900 series SPI"
-+	depends on ARCH_W90X900 && EXPERIMENTAL
-+	select SPI_BITBANG
-+	help
-+	  SPI driver for Nuvoton NUC900 series ARM SoCs
-+
- #
- # Add new SPI master controllers in alphabetical order above this line
- #
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 21a1182..694a4cb 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -33,6 +33,7 @@ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
- obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
- obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
- obj-$(CONFIG_SPI_STMP3XXX)		+= spi_stmp.o
-+obj-$(CONFIG_SPI_NUC900)		+= spi_nuc900.o
- # 	... add above this line ...
- 
- # SPI protocol drivers (device/link on bus)
-diff --git a/drivers/spi/spi_nuc900.c b/drivers/spi/spi_nuc900.c
-new file mode 100644
-index 0000000..6836fd1
---- /dev/null
-+++ b/drivers/spi/spi_nuc900.c
-@@ -0,0 +1,509 @@
-+/* linux/drivers/spi/spi_nuc900.c
-+ *
-+ * Copyright (c) 2009 Nuvoton technology.
-+ * Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+*/
-+
-+#include <linux/init.h>
-+#include <linux/spinlock.h>
-+#include <linux/workqueue.h>
-+#include <linux/interrupt.h>
-+#include <linux/delay.h>
-+#include <linux/errno.h>
-+#include <linux/err.h>
-+#include <linux/clk.h>
-+#include <linux/device.h>
-+#include <linux/platform_device.h>
-+#include <linux/gpio.h>
-+#include <linux/io.h>
-+
-+#include <linux/spi/spi.h>
-+#include <linux/spi/spi_bitbang.h>
-+
-+#include <mach/nuc900_spi.h>
-+
-+/* usi registers offset */
-+#define USI_CNT		0x00
-+#define USI_DIV		0x04
-+#define USI_SSR		0x08
-+#define USI_RX0		0x10
-+#define USI_TX0		0x10
-+
-+/* usi register bit */
-+#define ENINT		(0x01 << 17)
-+#define ENFLG		(0x01 << 16)
-+#define TXNUM		(0x03 << 8)
-+#define TXNEG		(0x01 << 2)
-+#define RXNEG		(0x01 << 1)
-+#define LSB		(0x01 << 10)
-+#define SELECTLEV	(0x01 << 2)
-+#define SELECTPOL	(0x01 << 31)
-+#define SELECTSLAVE	0x01
-+#define GOBUSY		0x01
-+
-+struct w90p910_spi {
-+	struct spi_bitbang	 bitbang;
-+	struct completion	 done;
-+	void __iomem		*regs;
-+	int			 irq;
-+	int			 len;
-+	int			 count;
-+	const unsigned char	*tx;
-+	unsigned char		*rx;
-+	struct clk		*clk;
-+	struct resource		*ioarea;
-+	struct spi_master	*master;
-+	struct spi_device	*curdev;
-+	struct device		*dev;
-+	struct w90p910_spi_info *pdata;
-+	spinlock_t		lock;
-+};
-+
-+static inline struct w90p910_spi *to_hw(struct spi_device *sdev)
-+{
-+	return spi_master_get_devdata(sdev->master);
-+}
-+
-+static void w90p910_slave_select(struct spi_device *spi, unsigned int ssr)
-+{
-+	struct w90p910_spi *hw = to_hw(spi);
-+	unsigned int val;
-+	unsigned int cs = spi->mode & SPI_CS_HIGH ? 1 : 0;
-+	unsigned int cpol = spi->mode & SPI_CPOL ? 1 : 0;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_SSR);
-+
-+	if (!cs)
-+		val &= ~SELECTLEV;
-+	else
-+		val |= SELECTLEV;
-+
-+	if (!ssr)
-+		val &= ~SELECTSLAVE;
-+	else
-+		val |= SELECTSLAVE;
-+
-+	__raw_writel(val, hw->regs + USI_SSR);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (!cpol)
-+		val &= ~SELECTPOL;
-+	else
-+		val |= SELECTPOL;
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void w90p910_spi_chipsel(struct spi_device *spi, int value)
-+{
-+	switch (value) {
-+	case BITBANG_CS_INACTIVE:
-+		w90p910_slave_select(spi, 0);
-+		break;
-+
-+	case BITBANG_CS_ACTIVE:
-+		w90p910_slave_select(spi, 1);
-+		break;
-+	}
-+}
-+
-+static void w90p910_spi_setup_txnum(struct w90p910_spi *hw,
-+							unsigned int txnum)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (!txnum)
-+		val &= ~TXNUM;
-+	else
-+		val |= txnum << 0x08;
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+
-+}
-+
-+static void w90p910_spi_setup_txbitlen(struct w90p910_spi *hw,
-+							unsigned int txbitlen)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	val |= (txbitlen << 0x03);
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void w90p910_spi_gobusy(struct w90p910_spi *hw)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	val |= GOBUSY;
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static int w90p910_spi_setupxfer(struct spi_device *spi,
-+				 struct spi_transfer *t)
-+{
-+	return 0;
-+}
-+
-+static int w90p910_spi_setup(struct spi_device *spi)
-+{
-+	return 0;
-+}
-+
-+static inline unsigned int hw_txbyte(struct w90p910_spi *hw, int count)
-+{
-+	return hw->tx ? hw->tx[count] : 0;
-+}
-+
-+static int w90p910_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	struct w90p910_spi *hw = to_hw(spi);
-+
-+	hw->tx = t->tx_buf;
-+	hw->rx = t->rx_buf;
-+	hw->len = t->len;
-+	hw->count = 0;
-+
-+	__raw_writel(hw_txbyte(hw, 0x0), hw->regs + USI_TX0);
-+
-+	w90p910_spi_gobusy(hw);
-+
-+	wait_for_completion(&hw->done);
-+
-+	return hw->count;
-+}
-+
-+static irqreturn_t w90p910_spi_irq(int irq, void *dev)
-+{
-+	struct w90p910_spi *hw = dev;
-+	unsigned int status;
-+	unsigned int count = hw->count;
-+
-+	status = __raw_readl(hw->regs + USI_CNT);
-+	__raw_writel(status, hw->regs + USI_CNT);
-+
-+	if (status & ENFLG) {
-+		hw->count++;
-+
-+		if (hw->rx)
-+			hw->rx[count] = __raw_readl(hw->regs + USI_RX0);
-+		count++;
-+
-+		if (count < hw->len) {
-+			__raw_writel(hw_txbyte(hw, count), hw->regs + USI_TX0);
-+			w90p910_spi_gobusy(hw);
-+		} else {
-+			complete(&hw->done);
-+		}
-+
-+		return IRQ_HANDLED;
-+	}
-+
-+	complete(&hw->done);
-+	return IRQ_HANDLED;
-+}
-+
-+static void w90p910_tx_edge(struct w90p910_spi *hw, unsigned int edge)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (edge)
-+		val |= TXNEG;
-+	else
-+		val &= ~TXNEG;
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void w90p910_rx_edge(struct w90p910_spi *hw, unsigned int edge)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (edge)
-+		val |= RXNEG;
-+	else
-+		val &= ~RXNEG;
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void w90p910_send_first(struct w90p910_spi *hw, unsigned int lsb)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (lsb)
-+		val |= LSB;
-+	else
-+		val &= ~LSB;
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void w90p910_set_sleep(struct w90p910_spi *hw, unsigned int sleep)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (sleep)
-+		val |= (sleep << 12);
-+	else
-+		val &= ~(0x0f << 12);
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void w90p910_enable_int(struct w90p910_spi *hw, unsigned int enable)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (enable)
-+		val |= ENINT;
-+	else
-+		val &= ~ENINT;
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void w90p910_set_divider(struct w90p910_spi *hw)
-+{
-+	__raw_writel(hw->pdata->divider, hw->regs + USI_DIV);
-+}
-+
-+static void w90p910_init_spi(struct w90p910_spi *hw)
-+{
-+	clk_enable(hw->clk);
-+	spin_lock_init(&hw->lock);
-+
-+	w90p910_tx_edge(hw, hw->pdata->txneg);
-+	w90p910_rx_edge(hw, hw->pdata->rxneg);
-+	w90p910_send_first(hw, hw->pdata->lsb);
-+	w90p910_set_sleep(hw, hw->pdata->sleep);
-+	w90p910_spi_setup_txbitlen(hw, hw->pdata->txbitlen);
-+	w90p910_spi_setup_txnum(hw, hw->pdata->txnum);
-+	w90p910_set_divider(hw);
-+	w90p910_enable_int(hw, 1);
-+}
-+
-+static int __devinit w90p910_spi_probe(struct platform_device *pdev)
-+{
-+	struct w90p910_spi *hw;
-+	struct spi_master *master;
-+	struct resource *res;
-+	int err = 0;
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(struct w90p910_spi));
-+	if (master == NULL) {
-+		dev_err(&pdev->dev, "No memory for spi_master\n");
-+		err = -ENOMEM;
-+		goto err_nomem;
-+	}
-+
-+	hw = spi_master_get_devdata(master);
-+	memset(hw, 0, sizeof(struct w90p910_spi));
-+
-+	hw->master = spi_master_get(master);
-+	hw->pdata  = pdev->dev.platform_data;
-+	hw->dev = &pdev->dev;
-+
-+	if (hw->pdata == NULL) {
-+		dev_err(&pdev->dev, "No platform data supplied\n");
-+		err = -ENOENT;
-+		goto err_pdata;
-+	}
-+
-+	platform_set_drvdata(pdev, hw);
-+	init_completion(&hw->done);
-+
-+	master->mode_bits          = SPI_MODE_0;
-+	master->num_chipselect     = hw->pdata->num_cs;
-+	master->bus_num            = hw->pdata->bus_num;
-+	hw->bitbang.master         = hw->master;
-+	hw->bitbang.setup_transfer = w90p910_spi_setupxfer;
-+	hw->bitbang.chipselect     = w90p910_spi_chipsel;
-+	hw->bitbang.txrx_bufs      = w90p910_spi_txrx;
-+	hw->bitbang.master->setup  = w90p910_spi_setup;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (res == NULL) {
-+		dev_err(&pdev->dev, "Cannot get IORESOURCE_MEM\n");
-+		err = -ENOENT;
-+		goto err_pdata;
-+	}
-+
-+	hw->ioarea = request_mem_region(res->start,
-+					resource_size(res), pdev->name);
-+
-+	if (hw->ioarea == NULL) {
-+		dev_err(&pdev->dev, "Cannot reserve region\n");
-+		err = -ENXIO;
-+		goto err_pdata;
-+	}
-+
-+	hw->regs = ioremap(res->start, resource_size(res));
-+	if (hw->regs == NULL) {
-+		dev_err(&pdev->dev, "Cannot map IO\n");
-+		err = -ENXIO;
-+		goto err_iomap;
-+	}
-+
-+	hw->irq = platform_get_irq(pdev, 0);
-+	if (hw->irq < 0) {
-+		dev_err(&pdev->dev, "No IRQ specified\n");
-+		err = -ENOENT;
-+		goto err_irq;
-+	}
-+
-+	err = request_irq(hw->irq, w90p910_spi_irq, 0, pdev->name, hw);
-+	if (err) {
-+		dev_err(&pdev->dev, "Cannot claim IRQ\n");
-+		goto err_irq;
-+	}
-+
-+	hw->clk = clk_get(&pdev->dev, "spi");
-+	if (IS_ERR(hw->clk)) {
-+		dev_err(&pdev->dev, "No clock for device\n");
-+		err = PTR_ERR(hw->clk);
-+		goto err_clk;
-+	}
-+
-+	mfp_set_groupg(&pdev->dev);
-+	w90p910_init_spi(hw);
-+
-+	err = spi_bitbang_start(&hw->bitbang);
-+	if (err) {
-+		dev_err(&pdev->dev, "Failed to register SPI master\n");
-+		goto err_register;
-+	}
-+
-+	return 0;
-+
-+err_register:
-+	clk_disable(hw->clk);
-+	clk_put(hw->clk);
-+err_clk:
-+	free_irq(hw->irq, hw);
-+err_irq:
-+	iounmap(hw->regs);
-+err_iomap:
-+	release_resource(hw->ioarea);
-+	kfree(hw->ioarea);
-+err_pdata:
-+	spi_master_put(hw->master);;
-+
-+err_nomem:
-+	return err;
-+}
-+
-+static int __devexit w90p910_spi_remove(struct platform_device *dev)
-+{
-+	struct w90p910_spi *hw = platform_get_drvdata(dev);
-+
-+	w90p910_enable_int(hw, 0);
-+
-+	free_irq(hw->irq, hw);
-+
-+	platform_set_drvdata(dev, NULL);
-+
-+	spi_unregister_master(hw->master);
-+
-+	clk_disable(hw->clk);
-+	clk_put(hw->clk);
-+
-+	iounmap(hw->regs);
-+
-+	release_resource(hw->ioarea);
-+	kfree(hw->ioarea);
-+
-+	spi_master_put(hw->master);
-+	return 0;
-+}
-+
-+static struct platform_driver w90p910_spi_driver = {
-+	.probe		= w90p910_spi_probe,
-+	.remove		= __devexit_p(w90p910_spi_remove),
-+	.driver		= {
-+		.name	= "w90p910-spi",
-+		.owner	= THIS_MODULE,
-+	},
-+};
-+
-+static int __init w90p910_spi_init(void)
-+{
-+	return platform_driver_register(&w90p910_spi_driver);
-+}
-+
-+static void __exit w90p910_spi_exit(void)
-+{
-+	platform_driver_unregister(&w90p910_spi_driver);
-+}
-+
-+module_init(w90p910_spi_init);
-+module_exit(w90p910_spi_exit);
-+
-+MODULE_AUTHOR("Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>");
-+MODULE_DESCRIPTION("w90p910 spi driver!");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:w90p910-spi");
--- 
-1.5.6.3
-
-------------------------------------------------------------------------------
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
-trial. Simplify your report design, integration and deployment - and focus on 
-what you do best, core application coding. Discover what's new with
-Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+T24gRnJpLCBOb3YgMjAsIDIwMDkgYXQgMToyNiBQTSwgV2FuIFpvbmdTaHVuIDxtY3Vvcy5jb21A
+Z21haWwuY29tPiB3cm90ZToKPiBEZWFyIHNpcnMsCj4KPiBUaGFua3MgYSBsb3QgZm9yIHlvdXIg
+aGVscCxhbmQgSSBmaXggdGhlIHNwaSBkcml2ZXIgYW5kIHJlLXN1Ym1pdCBpdC4KPgo+Cj4gU2ln
+bmVkLW9mZi1ieTogV2FuIFpvbmdTaHVuIDxtY3Vvcy5jb21AZ21haWwuY29tPgo+Cj4gLS0tCj4g
+wqBhcmNoL2FybS9tYWNoLXc5MHg5MDAvaW5jbHVkZS9tYWNoL251YzkwMF9zcGkuaCB8IMKgIDM1
+ICsrCj4gwqBkcml2ZXJzL3NwaS9LY29uZmlnIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIHwgwqAgwqA3ICsKPiDCoGRyaXZlcnMvc3BpL01ha2VmaWxlIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCDCoCDCoDEgKwo+IMKgZHJpdmVycy9z
+cGkvc3BpX251YzkwMC5jIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfCDCoDUw
+OSArKysrKysrKysrKysrKysrKysrKysrKwo+IMKgNCBmaWxlcyBjaGFuZ2VkLCA1NTIgaW5zZXJ0
+aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKPiDCoGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9t
+YWNoLXc5MHg5MDAvaW5jbHVkZS9tYWNoL251YzkwMF9zcGkuaAo+IMKgY3JlYXRlIG1vZGUgMTAw
+NjQ0IGRyaXZlcnMvc3BpL3NwaV9udWM5MDAuYwo+Cj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21h
+Y2gtdzkweDkwMC9pbmNsdWRlL21hY2gvbnVjOTAwX3NwaS5oIGIvYXJjaC9hcm0vbWFjaC13OTB4
+OTAwL2luY2x1ZGUvbWFjaC9udWM5MDBfc3BpLmgKPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGlu
+ZGV4IDAwMDAwMDAuLjI0ZWEyM2IKPiAtLS0gL2Rldi9udWxsCj4gKysrIGIvYXJjaC9hcm0vbWFj
+aC13OTB4OTAwL2luY2x1ZGUvbWFjaC9udWM5MDBfc3BpLmgKPiBAQCAtMCwwICsxLDM1IEBACj4g
+Ky8qCj4gKyAqIGFyY2gvYXJtL21hY2gtdzkweDkwMC9pbmNsdWRlL21hY2gvbnVjOTAwX3NwaS5o
+Cj4gKyAqCj4gKyAqIENvcHlyaWdodCAoYykgMjAwOSBOdXZvdG9uIHRlY2hub2xvZ3kgY29ycG9y
+YXRpb24uCj4gKyAqCj4gKyAqIFdhbiBab25nU2h1biA8bWN1b3MuY29tQGdtYWlsLmNvbT4KPiAr
+ICoKPiArICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmli
+dXRlIGl0IGFuZC9vciBtb2RpZnkKPiArICogaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUg
+R2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcyBwdWJsaXNoZWQgYnkKPiArICogdGhlIEZyZWUgU29m
+dHdhcmUgRm91bmRhdGlvbjt2ZXJzaW9uIDIgb2YgdGhlIExpY2Vuc2UuCj4gKyAqCj4gKyAqLwo+
+ICsKPiArI2lmbmRlZiBfX0FTTV9BUkNIX1NQSV9ICj4gKyNkZWZpbmUgX19BU01fQVJDSF9TUElf
+SAo+ICsKPiArZXh0ZXJuIHZvaWQgbWZwX3NldF9ncm91cGcoc3RydWN0IGRldmljZSAqZGV2KTsK
+PiArCj4gK3N0cnVjdCB3OTBwOTEwX3NwaV9pbmZvIHsKPiArIMKgIMKgIMKgIHVuc2lnbmVkIGlu
+dCBudW1fY3M7Cj4gKyDCoCDCoCDCoCB1bnNpZ25lZCBpbnQgbHNiOwo+ICsgwqAgwqAgwqAgdW5z
+aWduZWQgaW50IHR4bmVnOwo+ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50IHJ4bmVnOwo+ICsgwqAg
+wqAgwqAgdW5zaWduZWQgaW50IGRpdmlkZXI7Cj4gKyDCoCDCoCDCoCB1bnNpZ25lZCBpbnQgc2xl
+ZXA7Cj4gKyDCoCDCoCDCoCB1bnNpZ25lZCBpbnQgdHhudW07Cj4gKyDCoCDCoCDCoCB1bnNpZ25l
+ZCBpbnQgdHhiaXRsZW47Cj4gKyDCoCDCoCDCoCBpbnQgYnVzX251bTsKPiArfTsKPiArCj4gK3N0
+cnVjdCB3OTBwOTEwX3NwaV9jaGlwIHsKPiArIMKgIMKgIMKgIHVuc2lnbmVkIGNoYXIgYml0c19w
+ZXJfd29yZDsKPiArfTsKPiArCj4gKyNlbmRpZiAvKiBfX0FTTV9BUkNIX1NQSV9IICovCj4gZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvc3BpL0tjb25maWcgYi9kcml2ZXJzL3NwaS9LY29uZmlnCj4gaW5k
+ZXggNGI2ZjdjYi4uMmUxYjIwYyAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL3NwaS9LY29uZmlnCj4g
+KysrIGIvZHJpdmVycy9zcGkvS2NvbmZpZwo+IEBAIC0yNDQsNiArMjQ0LDEzIEBAIGNvbmZpZyBT
+UElfWElMSU5YCj4gwqAgwqAgwqAgwqAgwqBTZWUgdGhlICJPUEIgU2VyaWFsIFBlcmlwaGVyYWwg
+SW50ZXJmYWNlIChTUEkpICh2MS4wMGUpIgo+IMKgIMKgIMKgIMKgIMKgUHJvZHVjdCBTcGVjaWZp
+Y2F0aW9uIGRvY3VtZW50IChEUzQ2NCkgZm9yIGhhcmR3YXJlIGRldGFpbHMuCj4KPiArY29uZmln
+IFNQSV9OVUM5MDAKPiArIMKgIMKgIMKgIHRyaXN0YXRlICJOdXZvdG9uIE5VQzkwMCBzZXJpZXMg
+U1BJIgo+ICsgwqAgwqAgwqAgZGVwZW5kcyBvbiBBUkNIX1c5MFg5MDAgJiYgRVhQRVJJTUVOVEFM
+Cj4gKyDCoCDCoCDCoCBzZWxlY3QgU1BJX0JJVEJBTkcKPiArIMKgIMKgIMKgIGhlbHAKPiArIMKg
+IMKgIMKgIMKgIFNQSSBkcml2ZXIgZm9yIE51dm90b24gTlVDOTAwIHNlcmllcyBBUk0gU29Dcwo+
+ICsKPiDCoCMKPiDCoCMgQWRkIG5ldyBTUEkgbWFzdGVyIGNvbnRyb2xsZXJzIGluIGFscGhhYmV0
+aWNhbCBvcmRlciBhYm92ZSB0aGlzIGxpbmUKPiDCoCMKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9z
+cGkvTWFrZWZpbGUgYi9kcml2ZXJzL3NwaS9NYWtlZmlsZQo+IGluZGV4IDIxYTExODIuLjY5NGE0
+Y2IgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9zcGkvTWFrZWZpbGUKPiArKysgYi9kcml2ZXJzL3Nw
+aS9NYWtlZmlsZQo+IEBAIC0zMyw2ICszMyw3IEBAIG9iai0kKENPTkZJR19TUElfVFhYOSkgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqArPSBzcGlfdHh4OS5vCj4gwqBvYmotJChD
+T05GSUdfU1BJX1hJTElOWCkgwqAgwqAgwqAgwqAgwqAgwqAgwqAgKz0geGlsaW54X3NwaS5vCj4g
+wqBvYmotJChDT05GSUdfU1BJX1NIX1NDSSkgwqAgwqAgwqAgwqAgwqAgwqAgwqAgKz0gc3BpX3No
+X3NjaS5vCj4gwqBvYmotJChDT05GSUdfU1BJX1NUTVAzWFhYKSDCoCDCoCDCoCDCoCDCoCDCoCAr
+PSBzcGlfc3RtcC5vCj4gK29iai0kKENPTkZJR19TUElfTlVDOTAwKSDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCArPSBzcGlfbnVjOTAwLm8KPiDCoCMgwqAgwqAgwqAuLi4gYWRkIGFib3ZlIHRoaXMgbGlu
+ZSAuLi4KPgo+IMKgIyBTUEkgcHJvdG9jb2wgZHJpdmVycyAoZGV2aWNlL2xpbmsgb24gYnVzKQo+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGlfbnVjOTAwLmMgYi9kcml2ZXJzL3NwaS9zcGlf
+bnVjOTAwLmMKPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAuLjY4MzZmZDEK
+PiAtLS0gL2Rldi9udWxsCj4gKysrIGIvZHJpdmVycy9zcGkvc3BpX251YzkwMC5jCj4gQEAgLTAs
+MCArMSw1MDkgQEAKPiArLyogbGludXgvZHJpdmVycy9zcGkvc3BpX251YzkwMC5jCj4gKyAqCj4g
+KyAqIENvcHlyaWdodCAoYykgMjAwOSBOdXZvdG9uIHRlY2hub2xvZ3kuCj4gKyAqIFdhbiBab25n
+U2h1biA8bWN1b3MuY29tQGdtYWlsLmNvbT4KPiArICoKPiArICogVGhpcyBwcm9ncmFtIGlzIGZy
+ZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vciBtb2RpZnkKPiArICog
+aXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSB2ZXJz
+aW9uIDIgYXMKPiArICogcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24u
+Cj4gKyAqCj4gKyovCj4gKwo+ICsjaW5jbHVkZSA8bGludXgvaW5pdC5oPgo+ICsjaW5jbHVkZSA8
+bGludXgvc3BpbmxvY2suaD4KPiArI2luY2x1ZGUgPGxpbnV4L3dvcmtxdWV1ZS5oPgo+ICsjaW5j
+bHVkZSA8bGludXgvaW50ZXJydXB0Lmg+Cj4gKyNpbmNsdWRlIDxsaW51eC9kZWxheS5oPgo+ICsj
+aW5jbHVkZSA8bGludXgvZXJybm8uaD4KPiArI2luY2x1ZGUgPGxpbnV4L2Vyci5oPgo+ICsjaW5j
+bHVkZSA8bGludXgvY2xrLmg+Cj4gKyNpbmNsdWRlIDxsaW51eC9kZXZpY2UuaD4KPiArI2luY2x1
+ZGUgPGxpbnV4L3BsYXRmb3JtX2RldmljZS5oPgo+ICsjaW5jbHVkZSA8bGludXgvZ3Bpby5oPgo+
+ICsjaW5jbHVkZSA8bGludXgvaW8uaD4KPiArCj4gKyNpbmNsdWRlIDxsaW51eC9zcGkvc3BpLmg+
+Cj4gKyNpbmNsdWRlIDxsaW51eC9zcGkvc3BpX2JpdGJhbmcuaD4KPiArCj4gKyNpbmNsdWRlIDxt
+YWNoL251YzkwMF9zcGkuaD4KPiArCj4gKy8qIHVzaSByZWdpc3RlcnMgb2Zmc2V0ICovCj4gKyNk
+ZWZpbmUgVVNJX0NOVCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoDB4MDAKPiArI2RlZmluZSBVU0lf
+RElWIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgMHgwNAo+ICsjZGVmaW5lIFVTSV9TU1IgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAweDA4Cj4gKyNkZWZpbmUgVVNJX1JYMCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoDB4MTAKPiArI2RlZmluZSBVU0lfVFgwIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgMHgx
+MAo+ICsKPiArLyogdXNpIHJlZ2lzdGVyIGJpdCAqLwo+ICsjZGVmaW5lIEVOSU5UIMKgIMKgIMKg
+IMKgIMKgKDB4MDEgPDwgMTcpCj4gKyNkZWZpbmUgRU5GTEcgwqAgwqAgwqAgwqAgwqAoMHgwMSA8
+PCAxNikKPiArI2RlZmluZSBUWE5VTSDCoCDCoCDCoCDCoCDCoCgweDAzIDw8IDgpCj4gKyNkZWZp
+bmUgVFhORUcgwqAgwqAgwqAgwqAgwqAoMHgwMSA8PCAyKQo+ICsjZGVmaW5lIFJYTkVHIMKgIMKg
+IMKgIMKgIMKgKDB4MDEgPDwgMSkKPiArI2RlZmluZSBMU0IgwqAgwqAgwqAgwqAgwqAgwqAoMHgw
+MSA8PCAxMCkKPiArI2RlZmluZSBTRUxFQ1RMRVYgwqAgwqAgwqAoMHgwMSA8PCAyKQo+ICsjZGVm
+aW5lIFNFTEVDVFBPTCDCoCDCoCDCoCgweDAxIDw8IDMxKQo+ICsjZGVmaW5lIFNFTEVDVFNMQVZF
+IMKgIMKgMHgwMQo+ICsjZGVmaW5lIEdPQlVTWSDCoCDCoCDCoCDCoCAweDAxCj4gKwo+ICtzdHJ1
+Y3QgdzkwcDkxMF9zcGkgewo+ICsgwqAgwqAgwqAgc3RydWN0IHNwaV9iaXRiYW5nIMKgIMKgIMKg
+IGJpdGJhbmc7Cj4gKyDCoCDCoCDCoCBzdHJ1Y3QgY29tcGxldGlvbiDCoCDCoCDCoCDCoGRvbmU7
+Cj4gKyDCoCDCoCDCoCB2b2lkIF9faW9tZW0gwqAgwqAgwqAgwqAgwqAgwqAqcmVnczsKPiArIMKg
+IMKgIMKgIGludCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGlycTsKPiArIMKgIMKg
+IMKgIGludCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGxlbjsKPiArIMKgIMKgIMKg
+IGludCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGNvdW50Owo+ICsgwqAgwqAgwqAg
+Y29uc3QgdW5zaWduZWQgY2hhciDCoCDCoCAqdHg7Cj4gKyDCoCDCoCDCoCB1bnNpZ25lZCBjaGFy
+IMKgIMKgIMKgIMKgIMKgICpyeDsKPiArIMKgIMKgIMKgIHN0cnVjdCBjbGsgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAqY2xrOwo+ICsgwqAgwqAgwqAgc3RydWN0IHJlc291cmNlIMKgIMKgIMKgIMKgICpp
+b2FyZWE7Cj4gKyDCoCDCoCDCoCBzdHJ1Y3Qgc3BpX21hc3RlciDCoCDCoCDCoCAqbWFzdGVyOwo+
+ICsgwqAgwqAgwqAgc3RydWN0IHNwaV9kZXZpY2UgwqAgwqAgwqAgKmN1cmRldjsKPiArIMKgIMKg
+IMKgIHN0cnVjdCBkZXZpY2UgwqAgwqAgwqAgwqAgwqAgKmRldjsKPiArIMKgIMKgIMKgIHN0cnVj
+dCB3OTBwOTEwX3NwaV9pbmZvICpwZGF0YTsKPiArIMKgIMKgIMKgIHNwaW5sb2NrX3QgwqAgwqAg
+wqAgwqAgwqAgwqAgwqBsb2NrOwo+ICt9Owo+ICsKPiArc3RhdGljIGlubGluZSBzdHJ1Y3Qgdzkw
+cDkxMF9zcGkgKnRvX2h3KHN0cnVjdCBzcGlfZGV2aWNlICpzZGV2KQo+ICt7Cj4gKyDCoCDCoCDC
+oCByZXR1cm4gc3BpX21hc3Rlcl9nZXRfZGV2ZGF0YShzZGV2LT5tYXN0ZXIpOwo+ICt9Cj4gKwo+
+ICtzdGF0aWMgdm9pZCB3OTBwOTEwX3NsYXZlX3NlbGVjdChzdHJ1Y3Qgc3BpX2RldmljZSAqc3Bp
+LCB1bnNpZ25lZCBpbnQgc3NyKQo+ICt7Cj4gKyDCoCDCoCDCoCBzdHJ1Y3QgdzkwcDkxMF9zcGkg
+Kmh3ID0gdG9faHcoc3BpKTsKPiArIMKgIMKgIMKgIHVuc2lnbmVkIGludCB2YWw7Cj4gKyDCoCDC
+oCDCoCB1bnNpZ25lZCBpbnQgY3MgPSBzcGktPm1vZGUgJiBTUElfQ1NfSElHSCA/IDEgOiAwOwo+
+ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50IGNwb2wgPSBzcGktPm1vZGUgJiBTUElfQ1BPTCA/IDEg
+OiAwOwo+ICsgwqAgwqAgwqAgdW5zaWduZWQgbG9uZyBmbGFnczsKPiArCj4gKyDCoCDCoCDCoCBz
+cGluX2xvY2tfaXJxc2F2ZSgmaHctPmxvY2ssIGZsYWdzKTsKPiArCj4gKyDCoCDCoCDCoCB2YWwg
+PSBfX3Jhd19yZWFkbChody0+cmVncyArIFVTSV9TU1IpOwo+ICsKPiArIMKgIMKgIMKgIGlmICgh
+Y3MpCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB2YWwgJj0gflNFTEVDVExFVjsKPiArIMKgIMKg
+IMKgIGVsc2UKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHZhbCB8PSBTRUxFQ1RMRVY7Cj4gKwo+
+ICsgwqAgwqAgwqAgaWYgKCFzc3IpCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB2YWwgJj0gflNF
+TEVDVFNMQVZFOwo+ICsgwqAgwqAgwqAgZWxzZQo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdmFs
+IHw9IFNFTEVDVFNMQVZFOwo+ICsKPiArIMKgIMKgIMKgIF9fcmF3X3dyaXRlbCh2YWwsIGh3LT5y
+ZWdzICsgVVNJX1NTUik7Cj4gKwo+ICsgwqAgwqAgwqAgdmFsID0gX19yYXdfcmVhZGwoaHctPnJl
+Z3MgKyBVU0lfQ05UKTsKPiArCj4gKyDCoCDCoCDCoCBpZiAoIWNwb2wpCj4gKyDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCB2YWwgJj0gflNFTEVDVFBPTDsKPiArIMKgIMKgIMKgIGVsc2UKPiArIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIHZhbCB8PSBTRUxFQ1RQT0w7Cj4gKwo+ICsgwqAgwqAgwqAgX19yYXdf
+d3JpdGVsKHZhbCwgaHctPnJlZ3MgKyBVU0lfQ05UKTsKPiArCj4gKyDCoCDCoCDCoCBzcGluX3Vu
+bG9ja19pcnFyZXN0b3JlKCZody0+bG9jaywgZmxhZ3MpOwo+ICt9Cj4gKwo+ICtzdGF0aWMgdm9p
+ZCB3OTBwOTEwX3NwaV9jaGlwc2VsKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIGludCB2YWx1ZSkK
+PiArewo+ICsgwqAgwqAgwqAgc3dpdGNoICh2YWx1ZSkgewo+ICsgwqAgwqAgwqAgY2FzZSBCSVRC
+QU5HX0NTX0lOQUNUSVZFOgo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdzkwcDkxMF9zbGF2ZV9z
+ZWxlY3Qoc3BpLCAwKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJyZWFrOwo+ICsKPiArIMKg
+IMKgIMKgIGNhc2UgQklUQkFOR19DU19BQ1RJVkU6Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB3
+OTBwOTEwX3NsYXZlX3NlbGVjdChzcGksIDEpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgYnJl
+YWs7Cj4gKyDCoCDCoCDCoCB9Cj4gK30KPiArCj4gK3N0YXRpYyB2b2lkIHc5MHA5MTBfc3BpX3Nl
+dHVwX3R4bnVtKHN0cnVjdCB3OTBwOTEwX3NwaSAqaHcsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCB1bnNpZ25lZCBpbnQgdHhudW0pCj4gK3sKPiArIMKgIMKgIMKgIHVuc2lnbmVkIGludCB2
+YWw7Cj4gKyDCoCDCoCDCoCB1bnNpZ25lZCBsb25nIGZsYWdzOwo+ICsKPiArIMKgIMKgIMKgIHNw
+aW5fbG9ja19pcnFzYXZlKCZody0+bG9jaywgZmxhZ3MpOwo+ICsKPiArIMKgIMKgIMKgIHZhbCA9
+IF9fcmF3X3JlYWRsKGh3LT5yZWdzICsgVVNJX0NOVCk7Cj4gKwo+ICsgwqAgwqAgwqAgaWYgKCF0
+eG51bSkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHZhbCAmPSB+VFhOVU07Cj4gKyDCoCDCoCDC
+oCBlbHNlCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB2YWwgfD0gdHhudW0gPDwgMHgwODsKPiAr
+Cj4gKyDCoCDCoCDCoCBfX3Jhd193cml0ZWwodmFsLCBody0+cmVncyArIFVTSV9DTlQpOwo+ICsK
+PiArIMKgIMKgIMKgIHNwaW5fdW5sb2NrX2lycXJlc3RvcmUoJmh3LT5sb2NrLCBmbGFncyk7Cj4g
+Kwo+ICt9Cj4gKwo+ICtzdGF0aWMgdm9pZCB3OTBwOTEwX3NwaV9zZXR1cF90eGJpdGxlbihzdHJ1
+Y3QgdzkwcDkxMF9zcGkgKmh3LAo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdW5zaWduZWQg
+aW50IHR4Yml0bGVuKQo+ICt7Cj4gKyDCoCDCoCDCoCB1bnNpZ25lZCBpbnQgdmFsOwo+ICsgwqAg
+wqAgwqAgdW5zaWduZWQgbG9uZyBmbGFnczsKPiArCj4gKyDCoCDCoCDCoCBzcGluX2xvY2tfaXJx
+c2F2ZSgmaHctPmxvY2ssIGZsYWdzKTsKPiArCj4gKyDCoCDCoCDCoCB2YWwgPSBfX3Jhd19yZWFk
+bChody0+cmVncyArIFVTSV9DTlQpOwo+ICsKPiArIMKgIMKgIMKgIHZhbCB8PSAodHhiaXRsZW4g
+PDwgMHgwMyk7Cj4gKwo+ICsgwqAgwqAgwqAgX19yYXdfd3JpdGVsKHZhbCwgaHctPnJlZ3MgKyBV
+U0lfQ05UKTsKPiArCj4gKyDCoCDCoCDCoCBzcGluX3VubG9ja19pcnFyZXN0b3JlKCZody0+bG9j
+aywgZmxhZ3MpOwo+ICt9Cj4gKwo+ICtzdGF0aWMgdm9pZCB3OTBwOTEwX3NwaV9nb2J1c3koc3Ry
+dWN0IHc5MHA5MTBfc3BpICpodykKPiArewo+ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50IHZhbDsK
+PiArIMKgIMKgIMKgIHVuc2lnbmVkIGxvbmcgZmxhZ3M7Cj4gKwo+ICsgwqAgwqAgwqAgc3Bpbl9s
+b2NrX2lycXNhdmUoJmh3LT5sb2NrLCBmbGFncyk7Cj4gKwo+ICsgwqAgwqAgwqAgdmFsID0gX19y
+YXdfcmVhZGwoaHctPnJlZ3MgKyBVU0lfQ05UKTsKPiArCj4gKyDCoCDCoCDCoCB2YWwgfD0gR09C
+VVNZOwo+ICsKPiArIMKgIMKgIMKgIF9fcmF3X3dyaXRlbCh2YWwsIGh3LT5yZWdzICsgVVNJX0NO
+VCk7Cj4gKwo+ICsgwqAgwqAgwqAgc3Bpbl91bmxvY2tfaXJxcmVzdG9yZSgmaHctPmxvY2ssIGZs
+YWdzKTsKPiArfQo+ICsKPiArc3RhdGljIGludCB3OTBwOTEwX3NwaV9zZXR1cHhmZXIoc3RydWN0
+IHNwaV9kZXZpY2UgKnNwaSwKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgc3RydWN0IHNwaV90cmFuc2ZlciAqdCkKPiArewo+ICsgwqAgwqAgwqAgcmV0
+dXJuIDA7Cj4gK30KPiArCj4gK3N0YXRpYyBpbnQgdzkwcDkxMF9zcGlfc2V0dXAoc3RydWN0IHNw
+aV9kZXZpY2UgKnNwaSkKPiArewo+ICsgwqAgwqAgwqAgcmV0dXJuIDA7Cj4gK30KPiArCj4gK3N0
+YXRpYyBpbmxpbmUgdW5zaWduZWQgaW50IGh3X3R4Ynl0ZShzdHJ1Y3QgdzkwcDkxMF9zcGkgKmh3
+LCBpbnQgY291bnQpCj4gK3sKPiArIMKgIMKgIMKgIHJldHVybiBody0+dHggPyBody0+dHhbY291
+bnRdIDogMDsKPiArfQo+ICsKPiArc3RhdGljIGludCB3OTBwOTEwX3NwaV90eHJ4KHN0cnVjdCBz
+cGlfZGV2aWNlICpzcGksIHN0cnVjdCBzcGlfdHJhbnNmZXIgKnQpCj4gK3sKPiArIMKgIMKgIMKg
+IHN0cnVjdCB3OTBwOTEwX3NwaSAqaHcgPSB0b19odyhzcGkpOwo+ICsKPiArIMKgIMKgIMKgIGh3
+LT50eCA9IHQtPnR4X2J1ZjsKPiArIMKgIMKgIMKgIGh3LT5yeCA9IHQtPnJ4X2J1ZjsKPiArIMKg
+IMKgIMKgIGh3LT5sZW4gPSB0LT5sZW47Cj4gKyDCoCDCoCDCoCBody0+Y291bnQgPSAwOwo+ICsK
+PiArIMKgIMKgIMKgIF9fcmF3X3dyaXRlbChod190eGJ5dGUoaHcsIDB4MCksIGh3LT5yZWdzICsg
+VVNJX1RYMCk7Cj4gKwo+ICsgwqAgwqAgwqAgdzkwcDkxMF9zcGlfZ29idXN5KGh3KTsKPiArCj4g
+KyDCoCDCoCDCoCB3YWl0X2Zvcl9jb21wbGV0aW9uKCZody0+ZG9uZSk7Cj4gKwo+ICsgwqAgwqAg
+wqAgcmV0dXJuIGh3LT5jb3VudDsKPiArfQo+ICsKPiArc3RhdGljIGlycXJldHVybl90IHc5MHA5
+MTBfc3BpX2lycShpbnQgaXJxLCB2b2lkICpkZXYpCj4gK3sKPiArIMKgIMKgIMKgIHN0cnVjdCB3
+OTBwOTEwX3NwaSAqaHcgPSBkZXY7Cj4gKyDCoCDCoCDCoCB1bnNpZ25lZCBpbnQgc3RhdHVzOwo+
+ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50IGNvdW50ID0gaHctPmNvdW50Owo+ICsKPiArIMKgIMKg
+IMKgIHN0YXR1cyA9IF9fcmF3X3JlYWRsKGh3LT5yZWdzICsgVVNJX0NOVCk7Cj4gKyDCoCDCoCDC
+oCBfX3Jhd193cml0ZWwoc3RhdHVzLCBody0+cmVncyArIFVTSV9DTlQpOwo+ICsKPiArIMKgIMKg
+IMKgIGlmIChzdGF0dXMgJiBFTkZMRykgewo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaHctPmNv
+dW50Kys7Cj4gKwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGh3LT5yeCkKPiArIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGh3LT5yeFtjb3VudF0gPSBfX3Jhd19yZWFkbCho
+dy0+cmVncyArIFVTSV9SWDApOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgY291bnQrKzsKPiAr
+Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBpZiAoY291bnQgPCBody0+bGVuKSB7Cj4gKyDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBfX3Jhd193cml0ZWwoaHdfdHhieXRlKGh3LCBj
+b3VudCksIGh3LT5yZWdzICsgVVNJX1RYMCk7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCB3OTBwOTEwX3NwaV9nb2J1c3koaHcpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+fSBlbHNlIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGNvbXBsZXRlKCZo
+dy0+ZG9uZSk7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB9Cj4gKwo+ICsgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgcmV0dXJuIElSUV9IQU5ETEVEOwo+ICsgwqAgwqAgwqAgfQo+ICsKPiArIMKgIMKg
+IMKgIGNvbXBsZXRlKCZody0+ZG9uZSk7Cj4gKyDCoCDCoCDCoCByZXR1cm4gSVJRX0hBTkRMRUQ7
+Cj4gK30KPiArCj4gK3N0YXRpYyB2b2lkIHc5MHA5MTBfdHhfZWRnZShzdHJ1Y3QgdzkwcDkxMF9z
+cGkgKmh3LCB1bnNpZ25lZCBpbnQgZWRnZSkKPiArewo+ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50
+IHZhbDsKPiArIMKgIMKgIMKgIHVuc2lnbmVkIGxvbmcgZmxhZ3M7Cj4gKwo+ICsgwqAgwqAgwqAg
+c3Bpbl9sb2NrX2lycXNhdmUoJmh3LT5sb2NrLCBmbGFncyk7Cj4gKwo+ICsgwqAgwqAgwqAgdmFs
+ID0gX19yYXdfcmVhZGwoaHctPnJlZ3MgKyBVU0lfQ05UKTsKPiArCj4gKyDCoCDCoCDCoCBpZiAo
+ZWRnZSkKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHZhbCB8PSBUWE5FRzsKPiArIMKgIMKgIMKg
+IGVsc2UKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHZhbCAmPSB+VFhORUc7Cj4gKyDCoCDCoCDC
+oCBfX3Jhd193cml0ZWwodmFsLCBody0+cmVncyArIFVTSV9DTlQpOwo+ICsKPiArIMKgIMKgIMKg
+IHNwaW5fdW5sb2NrX2lycXJlc3RvcmUoJmh3LT5sb2NrLCBmbGFncyk7Cj4gK30KPiArCj4gK3N0
+YXRpYyB2b2lkIHc5MHA5MTBfcnhfZWRnZShzdHJ1Y3QgdzkwcDkxMF9zcGkgKmh3LCB1bnNpZ25l
+ZCBpbnQgZWRnZSkKPiArewo+ICsgwqAgwqAgwqAgdW5zaWduZWQgaW50IHZhbDsKPiArIMKgIMKg
+IMKgIHVuc2lnbmVkIGxvbmcgZmxhZ3M7Cj4gKwo+ICsgwqAgwqAgwqAgc3Bpbl9sb2NrX2lycXNh
+dmUoJmh3LT5sb2NrLCBmbGFncyk7Cj4gKwo+ICsgwqAgwqAgwqAgdmFsID0gX19yYXdfcmVhZGwo
+aHctPnJlZ3MgKyBVU0lfQ05UKTsKPiArCj4gKyDCoCDCoCDCoCBpZiAoZWRnZSkKPiArIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIHZhbCB8PSBSWE5FRzsKPiArIMKgIMKgIMKgIGVsc2UKPiArIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIHZhbCAmPSB+UlhORUc7Cj4gKyDCoCDCoCDCoCBfX3Jhd193cml0ZWwo
+dmFsLCBody0+cmVncyArIFVTSV9DTlQpOwo+ICsKPiArIMKgIMKgIMKgIHNwaW5fdW5sb2NrX2ly
+cXJlc3RvcmUoJmh3LT5sb2NrLCBmbGFncyk7Cj4gK30KPiArCj4gK3N0YXRpYyB2b2lkIHc5MHA5
+MTBfc2VuZF9maXJzdChzdHJ1Y3QgdzkwcDkxMF9zcGkgKmh3LCB1bnNpZ25lZCBpbnQgbHNiKQo+
+ICt7Cj4gKyDCoCDCoCDCoCB1bnNpZ25lZCBpbnQgdmFsOwo+ICsgwqAgwqAgwqAgdW5zaWduZWQg
+bG9uZyBmbGFnczsKPiArCj4gKyDCoCDCoCDCoCBzcGluX2xvY2tfaXJxc2F2ZSgmaHctPmxvY2ss
+IGZsYWdzKTsKPiArCj4gKyDCoCDCoCDCoCB2YWwgPSBfX3Jhd19yZWFkbChody0+cmVncyArIFVT
+SV9DTlQpOwo+ICsKPiArIMKgIMKgIMKgIGlmIChsc2IpCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCB2YWwgfD0gTFNCOwo+ICsgwqAgwqAgwqAgZWxzZQo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+dmFsICY9IH5MU0I7Cj4gKyDCoCDCoCDCoCBfX3Jhd193cml0ZWwodmFsLCBody0+cmVncyArIFVT
+SV9DTlQpOwo+ICsKPiArIMKgIMKgIMKgIHNwaW5fdW5sb2NrX2lycXJlc3RvcmUoJmh3LT5sb2Nr
+LCBmbGFncyk7Cj4gK30KPiArCj4gK3N0YXRpYyB2b2lkIHc5MHA5MTBfc2V0X3NsZWVwKHN0cnVj
+dCB3OTBwOTEwX3NwaSAqaHcsIHVuc2lnbmVkIGludCBzbGVlcCkKPiArewo+ICsgwqAgwqAgwqAg
+dW5zaWduZWQgaW50IHZhbDsKPiArIMKgIMKgIMKgIHVuc2lnbmVkIGxvbmcgZmxhZ3M7Cj4gKwo+
+ICsgwqAgwqAgwqAgc3Bpbl9sb2NrX2lycXNhdmUoJmh3LT5sb2NrLCBmbGFncyk7Cj4gKwo+ICsg
+wqAgwqAgwqAgdmFsID0gX19yYXdfcmVhZGwoaHctPnJlZ3MgKyBVU0lfQ05UKTsKPiArCj4gKyDC
+oCDCoCDCoCBpZiAoc2xlZXApCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCB2YWwgfD0gKHNsZWVw
+IDw8IDEyKTsKPiArIMKgIMKgIMKgIGVsc2UKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHZhbCAm
+PSB+KDB4MGYgPDwgMTIpOwo+ICsgwqAgwqAgwqAgX19yYXdfd3JpdGVsKHZhbCwgaHctPnJlZ3Mg
+KyBVU0lfQ05UKTsKPiArCj4gKyDCoCDCoCDCoCBzcGluX3VubG9ja19pcnFyZXN0b3JlKCZody0+
+bG9jaywgZmxhZ3MpOwo+ICt9Cj4gKwo+ICtzdGF0aWMgdm9pZCB3OTBwOTEwX2VuYWJsZV9pbnQo
+c3RydWN0IHc5MHA5MTBfc3BpICpodywgdW5zaWduZWQgaW50IGVuYWJsZSkKPiArewo+ICsgwqAg
+wqAgwqAgdW5zaWduZWQgaW50IHZhbDsKPiArIMKgIMKgIMKgIHVuc2lnbmVkIGxvbmcgZmxhZ3M7
+Cj4gKwo+ICsgwqAgwqAgwqAgc3Bpbl9sb2NrX2lycXNhdmUoJmh3LT5sb2NrLCBmbGFncyk7Cj4g
+Kwo+ICsgwqAgwqAgwqAgdmFsID0gX19yYXdfcmVhZGwoaHctPnJlZ3MgKyBVU0lfQ05UKTsKPiAr
+Cj4gKyDCoCDCoCDCoCBpZiAoZW5hYmxlKQo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdmFsIHw9
+IEVOSU5UOwo+ICsgwqAgwqAgwqAgZWxzZQo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgdmFsICY9
+IH5FTklOVDsKPiArCj4gKyDCoCDCoCDCoCBfX3Jhd193cml0ZWwodmFsLCBody0+cmVncyArIFVT
+SV9DTlQpOwo+ICsKPiArIMKgIMKgIMKgIHNwaW5fdW5sb2NrX2lycXJlc3RvcmUoJmh3LT5sb2Nr
+LCBmbGFncyk7Cj4gK30KPiArCj4gK3N0YXRpYyB2b2lkIHc5MHA5MTBfc2V0X2RpdmlkZXIoc3Ry
+dWN0IHc5MHA5MTBfc3BpICpodykKPiArewo+ICsgwqAgwqAgwqAgX19yYXdfd3JpdGVsKGh3LT5w
+ZGF0YS0+ZGl2aWRlciwgaHctPnJlZ3MgKyBVU0lfRElWKTsKPiArfQo+ICsKPiArc3RhdGljIHZv
+aWQgdzkwcDkxMF9pbml0X3NwaShzdHJ1Y3QgdzkwcDkxMF9zcGkgKmh3KQo+ICt7Cj4gKyDCoCDC
+oCDCoCBjbGtfZW5hYmxlKGh3LT5jbGspOwo+ICsgwqAgwqAgwqAgc3Bpbl9sb2NrX2luaXQoJmh3
+LT5sb2NrKTsKPiArCj4gKyDCoCDCoCDCoCB3OTBwOTEwX3R4X2VkZ2UoaHcsIGh3LT5wZGF0YS0+
+dHhuZWcpOwo+ICsgwqAgwqAgwqAgdzkwcDkxMF9yeF9lZGdlKGh3LCBody0+cGRhdGEtPnJ4bmVn
+KTsKPiArIMKgIMKgIMKgIHc5MHA5MTBfc2VuZF9maXJzdChodywgaHctPnBkYXRhLT5sc2IpOwo+
+ICsgwqAgwqAgwqAgdzkwcDkxMF9zZXRfc2xlZXAoaHcsIGh3LT5wZGF0YS0+c2xlZXApOwo+ICsg
+wqAgwqAgwqAgdzkwcDkxMF9zcGlfc2V0dXBfdHhiaXRsZW4oaHcsIGh3LT5wZGF0YS0+dHhiaXRs
+ZW4pOwo+ICsgwqAgwqAgwqAgdzkwcDkxMF9zcGlfc2V0dXBfdHhudW0oaHcsIGh3LT5wZGF0YS0+
+dHhudW0pOwo+ICsgwqAgwqAgwqAgdzkwcDkxMF9zZXRfZGl2aWRlcihodyk7Cj4gKyDCoCDCoCDC
+oCB3OTBwOTEwX2VuYWJsZV9pbnQoaHcsIDEpOwo+ICt9Cj4gKwo+ICtzdGF0aWMgaW50IF9fZGV2
+aW5pdCB3OTBwOTEwX3NwaV9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQo+ICt7
+Cj4gKyDCoCDCoCDCoCBzdHJ1Y3QgdzkwcDkxMF9zcGkgKmh3Owo+ICsgwqAgwqAgwqAgc3RydWN0
+IHNwaV9tYXN0ZXIgKm1hc3RlcjsKPiArIMKgIMKgIMKgIHN0cnVjdCByZXNvdXJjZSAqcmVzOwo+
+ICsgwqAgwqAgwqAgaW50IGVyciA9IDA7Cj4gKwo+ICsgwqAgwqAgwqAgbWFzdGVyID0gc3BpX2Fs
+bG9jX21hc3RlcigmcGRldi0+ZGV2LCBzaXplb2Yoc3RydWN0IHc5MHA5MTBfc3BpKSk7Cj4gKyDC
+oCDCoCDCoCBpZiAobWFzdGVyID09IE5VTEwpIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGRl
+dl9lcnIoJnBkZXYtPmRldiwgIk5vIG1lbW9yeSBmb3Igc3BpX21hc3RlclxuIik7Cj4gKyDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCBlcnIgPSAtRU5PTUVNOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+Z290byBlcnJfbm9tZW07Cj4gKyDCoCDCoCDCoCB9Cj4gKwo+ICsgwqAgwqAgwqAgaHcgPSBzcGlf
+bWFzdGVyX2dldF9kZXZkYXRhKG1hc3Rlcik7Cj4gKyDCoCDCoCDCoCBtZW1zZXQoaHcsIDAsIHNp
+emVvZihzdHJ1Y3QgdzkwcDkxMF9zcGkpKTsKPiArCj4gKyDCoCDCoCDCoCBody0+bWFzdGVyID0g
+c3BpX21hc3Rlcl9nZXQobWFzdGVyKTsKPiArIMKgIMKgIMKgIGh3LT5wZGF0YSDCoD0gcGRldi0+
+ZGV2LnBsYXRmb3JtX2RhdGE7Cj4gKyDCoCDCoCDCoCBody0+ZGV2ID0gJnBkZXYtPmRldjsKPiAr
+Cj4gKyDCoCDCoCDCoCBpZiAoaHctPnBkYXRhID09IE5VTEwpIHsKPiArIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIGRldl9lcnIoJnBkZXYtPmRldiwgIk5vIHBsYXRmb3JtIGRhdGEgc3VwcGxpZWRcbiIp
+Owo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZXJyID0gLUVOT0VOVDsKPiArIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIGdvdG8gZXJyX3BkYXRhOwo+ICsgwqAgwqAgwqAgfQo+ICsKPiArIMKgIMKgIMKg
+IHBsYXRmb3JtX3NldF9kcnZkYXRhKHBkZXYsIGh3KTsKPiArIMKgIMKgIMKgIGluaXRfY29tcGxl
+dGlvbigmaHctPmRvbmUpOwo+ICsKPiArIMKgIMKgIMKgIG1hc3Rlci0+bW9kZV9iaXRzIMKgIMKg
+IMKgIMKgIMKgPSBTUElfTU9ERV8wOwo+ICsgwqAgwqAgwqAgbWFzdGVyLT5udW1fY2hpcHNlbGVj
+dCDCoCDCoCA9IGh3LT5wZGF0YS0+bnVtX2NzOwo+ICsgwqAgwqAgwqAgbWFzdGVyLT5idXNfbnVt
+IMKgIMKgIMKgIMKgIMKgIMKgPSBody0+cGRhdGEtPmJ1c19udW07Cj4gKyDCoCDCoCDCoCBody0+
+Yml0YmFuZy5tYXN0ZXIgwqAgwqAgwqAgwqAgPSBody0+bWFzdGVyOwo+ICsgwqAgwqAgwqAgaHct
+PmJpdGJhbmcuc2V0dXBfdHJhbnNmZXIgPSB3OTBwOTEwX3NwaV9zZXR1cHhmZXI7Cj4gKyDCoCDC
+oCDCoCBody0+Yml0YmFuZy5jaGlwc2VsZWN0IMKgIMKgID0gdzkwcDkxMF9zcGlfY2hpcHNlbDsK
+PiArIMKgIMKgIMKgIGh3LT5iaXRiYW5nLnR4cnhfYnVmcyDCoCDCoCDCoD0gdzkwcDkxMF9zcGlf
+dHhyeDsKPiArIMKgIMKgIMKgIGh3LT5iaXRiYW5nLm1hc3Rlci0+c2V0dXAgwqA9IHc5MHA5MTBf
+c3BpX3NldHVwOwo+ICsKPiArIMKgIMKgIMKgIHJlcyA9IHBsYXRmb3JtX2dldF9yZXNvdXJjZShw
+ZGV2LCBJT1JFU09VUkNFX01FTSwgMCk7Cj4gKyDCoCDCoCDCoCBpZiAocmVzID09IE5VTEwpIHsK
+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGRldl9lcnIoJnBkZXYtPmRldiwgIkNhbm5vdCBnZXQg
+SU9SRVNPVVJDRV9NRU1cbiIpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZXJyID0gLUVOT0VO
+VDsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGdvdG8gZXJyX3BkYXRhOwo+ICsgwqAgwqAgwqAg
+fQo+ICsKPiArIMKgIMKgIMKgIGh3LT5pb2FyZWEgPSByZXF1ZXN0X21lbV9yZWdpb24ocmVzLT5z
+dGFydCwKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIHJlc291cmNlX3NpemUocmVzKSwgcGRldi0+bmFtZSk7Cj4gKwo+ICsgwqAgwqAg
+wqAgaWYgKGh3LT5pb2FyZWEgPT0gTlVMTCkgewo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZGV2
+X2VycigmcGRldi0+ZGV2LCAiQ2Fubm90IHJlc2VydmUgcmVnaW9uXG4iKTsKPiArIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIGVyciA9IC1FTlhJTzsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGdvdG8g
+ZXJyX3BkYXRhOwo+ICsgwqAgwqAgwqAgfQo+ICsKPiArIMKgIMKgIMKgIGh3LT5yZWdzID0gaW9y
+ZW1hcChyZXMtPnN0YXJ0LCByZXNvdXJjZV9zaXplKHJlcykpOwo+ICsgwqAgwqAgwqAgaWYgKGh3
+LT5yZWdzID09IE5VTEwpIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGRldl9lcnIoJnBkZXYt
+PmRldiwgIkNhbm5vdCBtYXAgSU9cbiIpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZXJyID0g
+LUVOWElPOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZ290byBlcnJfaW9tYXA7Cj4gKyDCoCDC
+oCDCoCB9Cj4gKwo+ICsgwqAgwqAgwqAgaHctPmlycSA9IHBsYXRmb3JtX2dldF9pcnEocGRldiwg
+MCk7Cj4gKyDCoCDCoCDCoCBpZiAoaHctPmlycSA8IDApIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIGRldl9lcnIoJnBkZXYtPmRldiwgIk5vIElSUSBzcGVjaWZpZWRcbiIpOwo+ICsgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgZXJyID0gLUVOT0VOVDsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGdv
+dG8gZXJyX2lycTsKPiArIMKgIMKgIMKgIH0KPiArCj4gKyDCoCDCoCDCoCBlcnIgPSByZXF1ZXN0
+X2lycShody0+aXJxLCB3OTBwOTEwX3NwaV9pcnEsIDAsIHBkZXYtPm5hbWUsIGh3KTsKPiArIMKg
+IMKgIMKgIGlmIChlcnIpIHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGRldl9lcnIoJnBkZXYt
+PmRldiwgIkNhbm5vdCBjbGFpbSBJUlFcbiIpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZ290
+byBlcnJfaXJxOwo+ICsgwqAgwqAgwqAgfQo+ICsKPiArIMKgIMKgIMKgIGh3LT5jbGsgPSBjbGtf
+Z2V0KCZwZGV2LT5kZXYsICJzcGkiKTsKPiArIMKgIMKgIMKgIGlmIChJU19FUlIoaHctPmNsaykp
+IHsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGRldl9lcnIoJnBkZXYtPmRldiwgIk5vIGNsb2Nr
+IGZvciBkZXZpY2VcbiIpOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZXJyID0gUFRSX0VSUiho
+dy0+Y2xrKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGdvdG8gZXJyX2NsazsKPiArIMKgIMKg
+IMKgIH0KPiArCj4gKyDCoCDCoCDCoCBtZnBfc2V0X2dyb3VwZygmcGRldi0+ZGV2KTsKPiArIMKg
+IMKgIMKgIHc5MHA5MTBfaW5pdF9zcGkoaHcpOwo+ICsKPiArIMKgIMKgIMKgIGVyciA9IHNwaV9i
+aXRiYW5nX3N0YXJ0KCZody0+Yml0YmFuZyk7Cj4gKyDCoCDCoCDCoCBpZiAoZXJyKSB7Cj4gKyDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCBkZXZfZXJyKCZwZGV2LT5kZXYsICJGYWlsZWQgdG8gcmVnaXN0
+ZXIgU1BJIG1hc3RlclxuIik7Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBnb3RvIGVycl9yZWdp
+c3RlcjsKPiArIMKgIMKgIMKgIH0KPiArCj4gKyDCoCDCoCDCoCByZXR1cm4gMDsKPiArCj4gK2Vy
+cl9yZWdpc3RlcjoKPiArIMKgIMKgIMKgIGNsa19kaXNhYmxlKGh3LT5jbGspOwo+ICsgwqAgwqAg
+wqAgY2xrX3B1dChody0+Y2xrKTsKPiArZXJyX2NsazoKPiArIMKgIMKgIMKgIGZyZWVfaXJxKGh3
+LT5pcnEsIGh3KTsKPiArZXJyX2lycToKPiArIMKgIMKgIMKgIGlvdW5tYXAoaHctPnJlZ3MpOwo+
+ICtlcnJfaW9tYXA6Cj4gKyDCoCDCoCDCoCByZWxlYXNlX3Jlc291cmNlKGh3LT5pb2FyZWEpOwo+
+ICsgwqAgwqAgwqAga2ZyZWUoaHctPmlvYXJlYSk7CgpJIHRoaW5rIHJlbGVhc2VfbWVtX3JlZ2lv
+bigpIGlzIGJldHRlciB0aGFuIHJlbGVhc2VfcmVzb3VyY2UoKSBhZnRlcgpyZXF1ZXN0X21lbV9y
+ZWdpb24oKS4KQWZ0ZXIgYWxsLCB0aGV5IGFyZSBhIGNvdXBsZSA6KQoKPiArZXJyX3BkYXRhOgo+
+ICsgwqAgwqAgwqAgc3BpX21hc3Rlcl9wdXQoaHctPm1hc3Rlcik7Owo+ICsKPiArZXJyX25vbWVt
+Ogo+ICsgwqAgwqAgwqAgcmV0dXJuIGVycjsKPiArfQo+ICsKPiArc3RhdGljIGludCBfX2RldmV4
+aXQgdzkwcDkxMF9zcGlfcmVtb3ZlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKmRldikKPiArewo+
+ICsgwqAgwqAgwqAgc3RydWN0IHc5MHA5MTBfc3BpICpodyA9IHBsYXRmb3JtX2dldF9kcnZkYXRh
+KGRldik7Cj4gKwo+ICsgwqAgwqAgwqAgdzkwcDkxMF9lbmFibGVfaW50KGh3LCAwKTsKPiArCj4g
+KyDCoCDCoCDCoCBmcmVlX2lycShody0+aXJxLCBodyk7Cj4gKwo+ICsgwqAgwqAgwqAgcGxhdGZv
+cm1fc2V0X2RydmRhdGEoZGV2LCBOVUxMKTsKPiArCj4gKyDCoCDCoCDCoCBzcGlfdW5yZWdpc3Rl
+cl9tYXN0ZXIoaHctPm1hc3Rlcik7Cj4gKwo+ICsgwqAgwqAgwqAgY2xrX2Rpc2FibGUoaHctPmNs
+ayk7Cj4gKyDCoCDCoCDCoCBjbGtfcHV0KGh3LT5jbGspOwo+ICsKPiArIMKgIMKgIMKgIGlvdW5t
+YXAoaHctPnJlZ3MpOwo+ICsKPiArIMKgIMKgIMKgIHJlbGVhc2VfcmVzb3VyY2UoaHctPmlvYXJl
+YSk7Cj4gKyDCoCDCoCDCoCBrZnJlZShody0+aW9hcmVhKTsKPiArCj4gKyDCoCDCoCDCoCBzcGlf
+bWFzdGVyX3B1dChody0+bWFzdGVyKTsKPiArIMKgIMKgIMKgIHJldHVybiAwOwo+ICt9Cj4gKwo+
+ICtzdGF0aWMgc3RydWN0IHBsYXRmb3JtX2RyaXZlciB3OTBwOTEwX3NwaV9kcml2ZXIgPSB7Cj4g
+KyDCoCDCoCDCoCAucHJvYmUgwqAgwqAgwqAgwqAgwqA9IHc5MHA5MTBfc3BpX3Byb2JlLAo+ICsg
+wqAgwqAgwqAgLnJlbW92ZSDCoCDCoCDCoCDCoCA9IF9fZGV2ZXhpdF9wKHc5MHA5MTBfc3BpX3Jl
+bW92ZSksCj4gKyDCoCDCoCDCoCAuZHJpdmVyIMKgIMKgIMKgIMKgID0gewo+ICsgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgLm5hbWUgwqAgPSAidzkwcDkxMC1zcGkiLAo+ICsgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgLm93bmVyIMKgPSBUSElTX01PRFVMRSwKPiArIMKgIMKgIMKgIH0sCj4gK307Cj4gKwo+
+ICtzdGF0aWMgaW50IF9faW5pdCB3OTBwOTEwX3NwaV9pbml0KHZvaWQpCj4gK3sKPiArIMKgIMKg
+IMKgIHJldHVybiBwbGF0Zm9ybV9kcml2ZXJfcmVnaXN0ZXIoJnc5MHA5MTBfc3BpX2RyaXZlcik7
+Cj4gK30KPiArCj4gK3N0YXRpYyB2b2lkIF9fZXhpdCB3OTBwOTEwX3NwaV9leGl0KHZvaWQpCj4g
+K3sKPiArIMKgIMKgIMKgIHBsYXRmb3JtX2RyaXZlcl91bnJlZ2lzdGVyKCZ3OTBwOTEwX3NwaV9k
+cml2ZXIpOwo+ICt9Cj4gKwo+ICttb2R1bGVfaW5pdCh3OTBwOTEwX3NwaV9pbml0KTsKPiArbW9k
+dWxlX2V4aXQodzkwcDkxMF9zcGlfZXhpdCk7Cj4gKwo+ICtNT0RVTEVfQVVUSE9SKCJXYW4gWm9u
+Z1NodW4gPG1jdW9zLmNvbUBnbWFpbC5jb20+Iik7Cj4gK01PRFVMRV9ERVNDUklQVElPTigidzkw
+cDkxMCBzcGkgZHJpdmVyISIpOwo+ICtNT0RVTEVfTElDRU5TRSgiR1BMIik7Cj4gK01PRFVMRV9B
+TElBUygicGxhdGZvcm06dzkwcDkxMC1zcGkiKTsKPiAtLQo+IDEuNS42LjMKPgo+IF9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gbGludXgtYXJtLWtlcm5l
+bCBtYWlsaW5nIGxpc3QKPiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKPiBo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJu
+ZWwKPgoKCgotLSAKUmVnYXJkcwpMaSBKaWUKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LWFy
+bS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK

@@ -1,67 +1,574 @@
-From: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2]: NUC900: Add spi driver support
-	for nuc900
-Date: Fri, 20 Nov 2009 17:49:06 +0800
-Message-ID: <e68bb3470911200149m2f16a529o4701c77d3550abfc@mail.gmail.com>
-References: <4B062887.90803@gmail.com>
-	<8fb2581d0911200018v53bad77aob74d0c33a7c14716@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	David Brownell-sourceforge <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Li Jie <eltshanli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <8fb2581d0911200018v53bad77aob74d0c33a7c14716-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH V3] gpio: add driver for MAX7300 I2C GPIO extender
+Date: Fri, 20 Nov 2009 11:56:58 +0100
+Message-ID: <1258714618-26734-1-git-send-email-w.sang@pengutronix.de>
+References: <20091119150626.GA6057@oksana.dev.rtsoft.ru>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Juergen Beisert <j.beisert-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
+	Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20091119150626.GA6057-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgTEkgamllLAoKMjAwOS8xMS8yMCBMaSBKaWUgPGVsdHNoYW5saUBnbWFpbC5jb20+Ogo+IE9u
-IEZyaSwgTm92IDIwLCAyMDA5IGF0IDE6MjYgUE0sIFdhbiBab25nU2h1biA8bWN1b3MuY29tQGdt
-YWlsLmNvbT4gd3JvdGU6Cj4+IERlYXIgc2lycywKPj4gKyDCoCDCoCDCoCBlcnIgPSByZXF1ZXN0
-X2lycShody0+aXJxLCB3OTBwOTEwX3NwaV9pcnEsIDAsIHBkZXYtPm5hbWUsIGh3KTsKPj4gKyDC
-oCDCoCDCoCBpZiAoZXJyKSB7Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZGV2X2VycigmcGRl
-di0+ZGV2LCAiQ2Fubm90IGNsYWltIElSUVxuIik7Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-Z290byBlcnJfaXJxOwo+PiArIMKgIMKgIMKgIH0KPj4gKwo+PiArIMKgIMKgIMKgIGh3LT5jbGsg
-PSBjbGtfZ2V0KCZwZGV2LT5kZXYsICJzcGkiKTsKPj4gKyDCoCDCoCDCoCBpZiAoSVNfRVJSKGh3
-LT5jbGspKSB7Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZGV2X2VycigmcGRldi0+ZGV2LCAi
-Tm8gY2xvY2sgZm9yIGRldmljZVxuIik7Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgZXJyID0g
-UFRSX0VSUihody0+Y2xrKTsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBnb3RvIGVycl9jbGs7
-Cj4+ICsgwqAgwqAgwqAgfQo+PiArCj4+ICsgwqAgwqAgwqAgbWZwX3NldF9ncm91cGcoJnBkZXYt
-PmRldik7Cj4+ICsgwqAgwqAgwqAgdzkwcDkxMF9pbml0X3NwaShodyk7Cj4+ICsKPj4gKyDCoCDC
-oCDCoCBlcnIgPSBzcGlfYml0YmFuZ19zdGFydCgmaHctPmJpdGJhbmcpOwo+PiArIMKgIMKgIMKg
-IGlmIChlcnIpIHsKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBkZXZfZXJyKCZwZGV2LT5kZXYs
-ICJGYWlsZWQgdG8gcmVnaXN0ZXIgU1BJIG1hc3RlclxuIik7Cj4+ICsgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgZ290byBlcnJfcmVnaXN0ZXI7Cj4+ICsgwqAgwqAgwqAgfQo+PiArCj4+ICsgwqAgwqAg
-wqAgcmV0dXJuIDA7Cj4+ICsKPj4gK2Vycl9yZWdpc3RlcjoKPj4gKyDCoCDCoCDCoCBjbGtfZGlz
-YWJsZShody0+Y2xrKTsKPj4gKyDCoCDCoCDCoCBjbGtfcHV0KGh3LT5jbGspOwo+PiArZXJyX2Ns
-azoKPj4gKyDCoCDCoCDCoCBmcmVlX2lycShody0+aXJxLCBodyk7Cj4+ICtlcnJfaXJxOgo+PiAr
-IMKgIMKgIMKgIGlvdW5tYXAoaHctPnJlZ3MpOwo+PiArZXJyX2lvbWFwOgo+PiArIMKgIMKgIMKg
-IHJlbGVhc2VfcmVzb3VyY2UoaHctPmlvYXJlYSk7Cj4+ICsgwqAgwqAgwqAga2ZyZWUoaHctPmlv
-YXJlYSk7Cj4KPiBJIHRoaW5rIHJlbGVhc2VfbWVtX3JlZ2lvbigpIGlzIGJldHRlciB0aGFuIHJl
-bGVhc2VfcmVzb3VyY2UoKSBhZnRlcgo+IHJlcXVlc3RfbWVtX3JlZ2lvbigpLgo+IEFmdGVyIGFs
-bCwgdGhleSBhcmUgYSBjb3VwbGUgOikKPgoKVGhhbmsgeW91LApUaGF0IHNvdW5kcyBub3QgYmFk
-LiA6KQoKPj4gK2Vycl9wZGF0YToKPj4gKyDCoCDCoCDCoCBzcGlfbWFzdGVyX3B1dChody0+bWFz
-dGVyKTs7Cj4+ICsKPj4gK2Vycl9ub21lbToKPj4gKyDCoCDCoCDCoCByZXR1cm4gZXJyOwo+PiAr
-fQo+PiArCj4KCgoKLS0gCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LWFybS1r
-ZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMZXQg
-Q3J5c3RhbCBSZXBvcnRzIGhhbmRsZSB0aGUgcmVwb3J0aW5nIC0gRnJlZSBDcnlzdGFsIFJlcG9y
-dHMgMjAwOCAzMC1EYXkgCnRyaWFsLiBTaW1wbGlmeSB5b3VyIHJlcG9ydCBkZXNpZ24sIGludGVn
-cmF0aW9uIGFuZCBkZXBsb3ltZW50IC0gYW5kIGZvY3VzIG9uIAp3aGF0IHlvdSBkbyBiZXN0LCBj
-b3JlIGFwcGxpY2F0aW9uIGNvZGluZy4gRGlzY292ZXIgd2hhdCdzIG5ldyB3aXRoCkNyeXN0YWwg
-UmVwb3J0cyBub3cuICBodHRwOi8vcC5zZi5uZXQvc2Z1L2JvYmotanVseQpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Add the MAX7300-I2C variant to the MAX7301-SPI version. They share most parts
+of the driver (i.e. the logic) and the read/write-register functions get
+encapsulated. It is thus possible to use both variants simultaneously. (This
+is the outcome of an experiment how to combine I2C and SPI into one driver.)
+
+Signed-off-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Cc: Juergen Beisert <j.beisert-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
+Cc: Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Cc: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+---
+
+Changes since V2:
+* improve Kconfig logic. Main part depends now on I2C or SPI (Thanks again, Anton!).
+  Seperate busses are now 'default y' if a bus is present, so old defconfigs will
+  update automatically (it is also more convenient).
+* use already present #defines instead of hardcoded values
+* add some empty lines to make code more readable
+
+Changes since V1:
+* Use id_table for spi, too (Thanks to Anton for the hint!)
+* removed some whitespace issues
+* in driver init, remove first driver if registering the second fails
+
+ drivers/gpio/Kconfig   |   27 ++++-
+ drivers/gpio/max7301.c |  307 ++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 225 insertions(+), 109 deletions(-)
+
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 2ad0128..3ba21c7 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -65,6 +65,27 @@ config GPIO_SYSFS
+ 
+ # put expanders in the right section, in alphabetical order
+ 
++comment "GPIO expanders for multiple busses"
++
++config GPIO_MAX7301
++	tristate "Maxim MAX730x GPIO expander"
++	depends on I2C || SPI_MASTER
++	help
++	  GPIO driver for Maxim MAX7300/7301 GPIO expanders.
++	  Also select which bus you want to use.
++
++if GPIO_MAX7301
++config GPIO_MAX7301_I2C
++	bool "I2C support (for MAX7300)"
++	depends on I2C
++	default y
++
++config GPIO_MAX7301_SPI
++	bool "SPI support (for MAX7301)"
++	depends on SPI_MASTER
++	default y
++endif
++
+ comment "Memory mapped GPIO expanders:"
+ 
+ config GPIO_PL061
+@@ -198,12 +219,6 @@ config GPIO_LANGWELL
+ 
+ comment "SPI GPIO expanders:"
+ 
+-config GPIO_MAX7301
+-	tristate "Maxim MAX7301 GPIO expander"
+-	depends on SPI_MASTER
+-	help
+-	  gpio driver for Maxim MAX7301 SPI GPIO expander.
+-
+ config GPIO_MCP23S08
+ 	tristate "Microchip MCP23S08 I/O expander"
+ 	depends on SPI_MASTER
+diff --git a/drivers/gpio/max7301.c b/drivers/gpio/max7301.c
+index 480956f..8a4233f 100644
+--- a/drivers/gpio/max7301.c
++++ b/drivers/gpio/max7301.c
+@@ -3,6 +3,7 @@
+  *
+  * Copyright (C) 2006 Juergen Beisert, Pengutronix
+  * Copyright (C) 2008 Guennadi Liakhovetski, Pengutronix
++ * Copyright (C) 2009 Wolfram Sang, Pengutronix
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License version 2 as
+@@ -34,12 +35,11 @@
+ #include <linux/init.h>
+ #include <linux/platform_device.h>
+ #include <linux/mutex.h>
++#include <linux/i2c.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/max7301.h>
+ #include <linux/gpio.h>
+ 
+-#define DRIVER_NAME "max7301"
+-
+ /*
+  * Pin configurations, see MAX7301 datasheet page 6
+  */
+@@ -50,7 +50,6 @@
+ 
+ #define PIN_NUMBER 28
+ 
+-
+ /*
+  * Some registers must be read back to modify.
+  * To save time we cache them here in memory
+@@ -60,62 +59,21 @@ struct max7301 {
+ 	u8		port_config[8];	/* field 0 is unused */
+ 	u32		out_level;	/* cached output levels */
+ 	struct gpio_chip chip;
+-	struct spi_device *spi;
++	struct device *dev;
++	int (*write)(struct device *dev, unsigned int reg, unsigned int val);
++	int (*read)(struct device *dev, unsigned int reg);
+ };
+ 
+-/**
+- * max7301_write - Write a new register content
+- * @spi: The SPI device
+- * @reg: Register offset
+- * @val: Value to write
+- *
+- * A write to the MAX7301 means one message with one transfer
+- *
+- * Returns 0 if successful or a negative value on error
+- */
+-static int max7301_write(struct spi_device *spi, unsigned int reg, unsigned int val)
+-{
+-	u16 word = ((reg & 0x7F) << 8) | (val & 0xFF);
+-	return spi_write(spi, (const u8 *)&word, sizeof(word));
+-}
+-
+-/**
+- * max7301_read - Read back register content
+- * @spi: The SPI device
+- * @reg: Register offset
+- *
+- * A read from the MAX7301 means two transfers; here, one message each
+- *
+- * Returns positive 8 bit value from device if successful or a
+- * negative value on error
+- */
+-static int max7301_read(struct spi_device *spi, unsigned int reg)
+-{
+-	int ret;
+-	u16 word;
+-
+-	word = 0x8000 | (reg << 8);
+-	ret = spi_write(spi, (const u8 *)&word, sizeof(word));
+-	if (ret)
+-		return ret;
+-	/*
+-	 * This relies on the fact, that a transfer with NULL tx_buf shifts out
+-	 * zero bytes (=NOOP for MAX7301)
+-	 */
+-	ret = spi_read(spi, (u8 *)&word, sizeof(word));
+-	if (ret)
+-		return ret;
+-	return word & 0xff;
+-}
+-
+ static int max7301_direction_input(struct gpio_chip *chip, unsigned offset)
+ {
+ 	struct max7301 *ts = container_of(chip, struct max7301, chip);
+ 	u8 *config;
++	u8 offset_bits;
+ 	int ret;
+ 
+ 	/* First 4 pins are unused in the controller */
+ 	offset += 4;
++	offset_bits = (offset & 3) << 1;
+ 
+ 	config = &ts->port_config[offset >> 2];
+ 
+@@ -123,9 +81,10 @@ static int max7301_direction_input(struct gpio_chip *chip, unsigned offset)
+ 
+ 	/* Standard GPIO API doesn't support pull-ups, has to be extended.
+ 	 * Hard-coding no pollup for now. */
+-	*config = (*config & ~(3 << (offset & 3))) | (1 << (offset & 3));
++	*config = (*config & ~(PIN_CONFIG_MASK << offset_bits))
++			   | (PIN_CONFIG_IN_WO_PULLUP << offset_bits);
+ 
+-	ret = max7301_write(ts->spi, 0x08 + (offset >> 2), *config);
++	ret = ts->write(ts->dev, 0x08 + (offset >> 2), *config);
+ 
+ 	mutex_unlock(&ts->lock);
+ 
+@@ -136,10 +95,10 @@ static int __max7301_set(struct max7301 *ts, unsigned offset, int value)
+ {
+ 	if (value) {
+ 		ts->out_level |= 1 << offset;
+-		return max7301_write(ts->spi, 0x20 + offset, 0x01);
++		return ts->write(ts->dev, 0x20 + offset, 0x01);
+ 	} else {
+ 		ts->out_level &= ~(1 << offset);
+-		return max7301_write(ts->spi, 0x20 + offset, 0x00);
++		return ts->write(ts->dev, 0x20 + offset, 0x00);
+ 	}
+ }
+ 
+@@ -148,21 +107,24 @@ static int max7301_direction_output(struct gpio_chip *chip, unsigned offset,
+ {
+ 	struct max7301 *ts = container_of(chip, struct max7301, chip);
+ 	u8 *config;
++	u8 offset_bits;
+ 	int ret;
+ 
+ 	/* First 4 pins are unused in the controller */
+ 	offset += 4;
++	offset_bits = (offset & 3) << 1;
+ 
+ 	config = &ts->port_config[offset >> 2];
+ 
+ 	mutex_lock(&ts->lock);
+ 
+-	*config = (*config & ~(3 << (offset & 3))) | (1 << (offset & 3));
++	*config = (*config & ~(PIN_CONFIG_MASK << offset_bits))
++			   | (PIN_CONFIG_OUT << offset_bits);
+ 
+ 	ret = __max7301_set(ts, offset, value);
+ 
+ 	if (!ret)
+-		ret = max7301_write(ts->spi, 0x08 + (offset >> 2), *config);
++		ret = ts->write(ts->dev, 0x08 + (offset >> 2), *config);
+ 
+ 	mutex_unlock(&ts->lock);
+ 
+@@ -179,17 +141,18 @@ static int max7301_get(struct gpio_chip *chip, unsigned offset)
+ 
+ 	mutex_lock(&ts->lock);
+ 
+-	config = (ts->port_config[offset >> 2] >> ((offset & 3) * 2)) & 3;
++	config = (ts->port_config[offset >> 2] >> ((offset & 3) << 1))
++			& PIN_CONFIG_MASK;
+ 
+ 	switch (config) {
+-	case 1:
++	case PIN_CONFIG_OUT:
+ 		/* Output: return cached level */
+ 		level =  !!(ts->out_level & (1 << offset));
+ 		break;
+-	case 2:
+-	case 3:
++	case PIN_CONFIG_IN_WO_PULLUP:
++	case PIN_CONFIG_IN_PULLUP:
+ 		/* Input: read out */
+-		level = max7301_read(ts->spi, 0x20 + offset) & 0x01;
++		level = ts->read(ts->dev, 0x20 + offset) & 0x01;
+ 	}
+ 	mutex_unlock(&ts->lock);
+ 
+@@ -210,41 +173,25 @@ static void max7301_set(struct gpio_chip *chip, unsigned offset, int value)
+ 	mutex_unlock(&ts->lock);
+ }
+ 
+-static int __devinit max7301_probe(struct spi_device *spi)
++static int __devinit __max7301_probe(struct max7301 *ts)
+ {
+-	struct max7301 *ts;
++	struct device *dev = ts->dev;
+ 	struct max7301_platform_data *pdata;
+ 	int i, ret;
+ 
+-	pdata = spi->dev.platform_data;
++	pdata = dev->platform_data;
+ 	if (!pdata || !pdata->base) {
+-		dev_dbg(&spi->dev, "incorrect or missing platform data\n");
++		dev_err(dev, "incorrect or missing platform data\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	/*
+-	 * bits_per_word cannot be configured in platform data
+-	 */
+-	spi->bits_per_word = 16;
+-
+-	ret = spi_setup(spi);
+-	if (ret < 0)
+-		return ret;
+-
+-	ts = kzalloc(sizeof(struct max7301), GFP_KERNEL);
+-	if (!ts)
+-		return -ENOMEM;
+-
+ 	mutex_init(&ts->lock);
+-
+-	dev_set_drvdata(&spi->dev, ts);
++	dev_set_drvdata(dev, ts);
+ 
+ 	/* Power up the chip and disable IRQ output */
+-	max7301_write(spi, 0x04, 0x01);
+-
+-	ts->spi = spi;
++	ts->write(dev, 0x04, 0x01);
+ 
+-	ts->chip.label = DRIVER_NAME,
++	ts->chip.label = dev->driver->name;
+ 
+ 	ts->chip.direction_input = max7301_direction_input;
+ 	ts->chip.get = max7301_get;
+@@ -254,7 +201,7 @@ static int __devinit max7301_probe(struct spi_device *spi)
+ 	ts->chip.base = pdata->base;
+ 	ts->chip.ngpio = PIN_NUMBER;
+ 	ts->chip.can_sleep = 1;
+-	ts->chip.dev = &spi->dev;
++	ts->chip.dev = dev;
+ 	ts->chip.owner = THIS_MODULE;
+ 
+ 	/*
+@@ -264,7 +211,7 @@ static int __devinit max7301_probe(struct spi_device *spi)
+ 	for (i = 1; i < 8; i++) {
+ 		int j;
+ 		/* 0xAA means input with internal pullup disabled */
+-		max7301_write(spi, 0x08 + i, 0xAA);
++		ts->write(dev, 0x08 + i, 0xAA);
+ 		ts->port_config[i] = 0xAA;
+ 		for (j = 0; j < 4; j++) {
+ 			int offset = (i - 1) * 4 + j;
+@@ -281,49 +228,203 @@ static int __devinit max7301_probe(struct spi_device *spi)
+ 	return ret;
+ 
+ exit_destroy:
+-	dev_set_drvdata(&spi->dev, NULL);
++	dev_set_drvdata(dev, NULL);
+ 	mutex_destroy(&ts->lock);
+-	kfree(ts);
+ 	return ret;
+ }
+ 
+-static int __devexit max7301_remove(struct spi_device *spi)
++static int __devexit __max7301_remove(struct device *dev)
+ {
+-	struct max7301 *ts;
++	struct max7301 *ts = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	ts = dev_get_drvdata(&spi->dev);
+ 	if (ts == NULL)
+ 		return -ENODEV;
+ 
+-	dev_set_drvdata(&spi->dev, NULL);
++	dev_set_drvdata(dev, NULL);
+ 
+ 	/* Power down the chip and disable IRQ output */
+-	max7301_write(spi, 0x04, 0x00);
++	ts->write(dev, 0x04, 0x00);
+ 
+ 	ret = gpiochip_remove(&ts->chip);
+ 	if (!ret) {
+ 		mutex_destroy(&ts->lock);
+ 		kfree(ts);
+ 	} else
+-		dev_err(&spi->dev, "Failed to remove the GPIO controller: %d\n",
+-			ret);
++		dev_err(dev, "Failed to remove GPIO controller: %d\n", ret);
++
++	return ret;
++}
++
++#ifdef CONFIG_GPIO_MAX7301_SPI
++
++/* A write to the MAX7301 means one message with one transfer */
++static int max7301_spi_write(struct device *dev, unsigned int reg,
++				unsigned int val)
++{
++	struct spi_device *spi = to_spi_device(dev);
++	u16 word = ((reg & 0x7F) << 8) | (val & 0xFF);
++
++	return spi_write(spi, (const u8 *)&word, sizeof(word));
++}
++
++/* A read from the MAX7301 means two transfers; here, one message each */
++
++static int max7301_spi_read(struct device *dev, unsigned int reg)
++{
++	int ret;
++	u16 word;
++	struct spi_device *spi = to_spi_device(dev);
++
++	word = 0x8000 | (reg << 8);
++	ret = spi_write(spi, (const u8 *)&word, sizeof(word));
++	if (ret)
++		return ret;
++	/*
++	 * This relies on the fact, that a transfer with NULL tx_buf shifts out
++	 * zero bytes (=NOOP for MAX7301)
++	 */
++	ret = spi_read(spi, (u8 *)&word, sizeof(word));
++	if (ret)
++		return ret;
++	return word & 0xff;
++}
+ 
++static int __devinit max7301_probe(struct spi_device *spi)
++{
++	struct max7301 *ts;
++	int ret;
++
++	/* bits_per_word cannot be configured in platform data */
++	spi->bits_per_word = 16;
++	ret = spi_setup(spi);
++	if (ret < 0)
++		return ret;
++
++	ts = kzalloc(sizeof(struct max7301), GFP_KERNEL);
++	if (!ts)
++		return -ENOMEM;
++
++	ts->read = max7301_spi_read;
++	ts->write = max7301_spi_write;
++	ts->dev = &spi->dev;
++
++	ret = __max7301_probe(ts);
++	if (ret)
++		kfree(ts);
+ 	return ret;
+ }
+ 
++static int __devexit max7301_remove(struct spi_device *spi)
++{
++	return __max7301_remove(&spi->dev);
++}
++
++static const struct spi_device_id max7301_id[] = {
++	{ "max7301", 0 },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, max7301_id);
++
+ static struct spi_driver max7301_driver = {
+ 	.driver = {
+-		.name		= DRIVER_NAME,
+-		.owner		= THIS_MODULE,
++		.name = "max7301",
++		.owner = THIS_MODULE,
+ 	},
+-	.probe		= max7301_probe,
+-	.remove		= __devexit_p(max7301_remove),
++	.probe = max7301_probe,
++	.remove = __devexit_p(max7301_remove),
++	.id_table = max7301_id,
+ };
+ 
++#define max7301_add_driver(drv) spi_register_driver(drv)
++#define max7301_del_driver(drv) spi_unregister_driver(drv)
++#else
++#define max7301_add_driver(drv) (0)
++#define max7301_del_driver(drv) do { } while (0)
++#endif /* CONFIG_GPIO_MAX7301_SPI */
++
++#ifdef CONFIG_GPIO_MAX7301_I2C
++
++static int max7301_i2c_write(struct device *dev, unsigned int reg,
++				unsigned int val)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++
++	return i2c_smbus_write_byte_data(client, reg, val);
++}
++
++static int max7301_i2c_read(struct device *dev, unsigned int reg)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++
++	return i2c_smbus_read_byte_data(client, reg);
++}
++
++static int __devinit max7300_probe(struct i2c_client *client,
++			 const struct i2c_device_id *id)
++{
++	struct max7301 *ts;
++	int ret;
++
++	if (!i2c_check_functionality(client->adapter,
++			I2C_FUNC_SMBUS_BYTE_DATA))
++		return -EIO;
++
++	ts = kzalloc(sizeof(struct max7301), GFP_KERNEL);
++	if (!ts)
++		return -ENOMEM;
++
++	ts->read = max7301_i2c_read;
++	ts->write = max7301_i2c_write;
++	ts->dev = &client->dev;
++
++	ret = __max7301_probe(ts);
++	if (ret)
++		kfree(ts);
++	return ret;
++}
++
++static int __devexit max7300_remove(struct i2c_client *client)
++{
++	return __max7301_remove(&client->dev);
++}
++
++static const struct i2c_device_id max7300_id[] = {
++	{ "max7300", 0 },
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, max7300_id);
++
++static struct i2c_driver max7300_driver = {
++	.driver = {
++		.name = "max7300",
++		.owner = THIS_MODULE,
++	},
++	.probe = max7300_probe,
++	.remove = __devexit_p(max7300_remove),
++	.id_table = max7300_id,
++};
++
++#define max7300_add_driver(drv) i2c_add_driver(drv)
++#define max7300_del_driver(drv) i2c_del_driver(drv)
++#else
++#define max7300_add_driver(drv) (0)
++#define max7300_del_driver(drv) do { } while (0)
++#endif /* CONFIG_GPIO_MAX7301_I2C */
++
+ static int __init max7301_init(void)
+ {
+-	return spi_register_driver(&max7301_driver);
++	int ret;
++
++	ret = max7300_add_driver(&max7300_driver);
++	if (ret)
++		return ret;
++
++	ret = max7301_add_driver(&max7301_driver);
++	if (ret)
++		max7300_del_driver(&max7300_driver);
++
++	return ret;
+ }
+ /* register after spi postcore initcall and before
+  * subsys initcalls that may rely on these GPIOs
+@@ -332,11 +433,11 @@ subsys_initcall(max7301_init);
+ 
+ static void __exit max7301_exit(void)
+ {
+-	spi_unregister_driver(&max7301_driver);
++	max7300_del_driver(&max7300_driver);
++	max7301_del_driver(&max7301_driver);
+ }
+ module_exit(max7301_exit);
+ 
+-MODULE_AUTHOR("Juergen Beisert");
++MODULE_AUTHOR("Juergen Beisert, Wolfram Sang");
+ MODULE_LICENSE("GPL v2");
+-MODULE_DESCRIPTION("MAX7301 SPI based GPIO-Expander");
+-MODULE_ALIAS("spi:" DRIVER_NAME);
++MODULE_DESCRIPTION("MAX7300/1 based GPIO-Expander");
+-- 
+1.6.3.3

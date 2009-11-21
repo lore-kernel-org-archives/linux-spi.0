@@ -1,47 +1,59 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi/mpc52xx-spi: cleanups
-Date: Fri, 20 Nov 2009 14:46:19 -0700
-Message-ID: <fa686aa40911201346p4ca1c23eu1861fe1cb1e4bf26@mail.gmail.com>
-References: <1258468268-9911-1-git-send-email-w.sang@pengutronix.de>
-	<20091117144300.GB4850@pengutronix.de>
-	<20091118095828.GA5166@pengutronix.de>
+From: Li Jie <eltshanli@gmail.com>
+Subject: Re: [PATCH v2]: NUC900: Add spi driver support for nuc900
+Date: Sat, 21 Nov 2009 22:10:24 +0800
+Message-ID: <8fb2581d0911210610j125b5700ydeb25e72efa88eac@mail.gmail.com>
+References: <4B062887.90803@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net, Luotao Fu <l.fu@pengutronix.de>,
-	linuxppc-dev@ozlabs.org
-To: Wolfram Sang <w.sang@pengutronix.de>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <20091118095828.GA5166@pengutronix.de>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: linux-spi <spi-devel-general@lists.sourceforge.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Brownell-sourceforge <dbrownell@users.sourceforge.net>,
+	Russell King <linux@arm.linux.org.uk>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+To: Wan ZongShun <mcuos.com@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <4B062887.90803@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 18, 2009 at 2:58 AM, Wolfram Sang <w.sang@pengutronix.de> wrote:
->> > - =A0 =A0 =A0 =A0 =A0 rc |=3D request_irq(ms->irq1, mpc52xx_spi_irq, I=
-RQF_SAMPLE_RANDOM,
->> > + =A0 =A0 =A0 =A0 =A0 rc |=3D request_irq(ms->irq1, mpc52xx_spi_irq, 0,
->> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "mpc5200-s=
-pi-spiF", ms);
->>
->> The "spiF" here is probably also a typo.
->
-> Ack. Grant, if you think it is worth you may modify my patch to avoid a r=
-esend.
-> If it is easier for you, I will do the resend, of course.
-
-Don't resend.  Patch looks okay.
-
-g.
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+T24gRnJpLCBOb3YgMjAsIDIwMDkgYXQgMToyNiBQTSwgV2FuIFpvbmdTaHVuIDxtY3Vvcy5jb21A
+Z21haWwuY29tPiB3cm90ZToKPgo+ICtzdGF0aWMgdm9pZCB3OTBwOTEwX2luaXRfc3BpKHN0cnVj
+dCB3OTBwOTEwX3NwaSAqaHcpCj4gK3sKPiArICAgICAgIGNsa19lbmFibGUoaHctPmNsayk7Cj4g
+KyAgICAgICBzcGluX2xvY2tfaW5pdCgmaHctPmxvY2spOwo+ICsKPiArICAgICAgIHc5MHA5MTBf
+dHhfZWRnZShodywgaHctPnBkYXRhLT50eG5lZyk7Cj4gKyAgICAgICB3OTBwOTEwX3J4X2VkZ2Uo
+aHcsIGh3LT5wZGF0YS0+cnhuZWcpOwo+ICsgICAgICAgdzkwcDkxMF9zZW5kX2ZpcnN0KGh3LCBo
+dy0+cGRhdGEtPmxzYik7Cj4gKyAgICAgICB3OTBwOTEwX3NldF9zbGVlcChodywgaHctPnBkYXRh
+LT5zbGVlcCk7Cj4gKyAgICAgICB3OTBwOTEwX3NwaV9zZXR1cF90eGJpdGxlbihodywgaHctPnBk
+YXRhLT50eGJpdGxlbik7Cj4gKyAgICAgICB3OTBwOTEwX3NwaV9zZXR1cF90eG51bShodywgaHct
+PnBkYXRhLT50eG51bSk7Cj4gKyAgICAgICB3OTBwOTEwX3NldF9kaXZpZGVyKGh3KTsKPiArICAg
+ICAgIHc5MHA5MTBfZW5hYmxlX2ludChodywgMSk7Cj4gK30KPiArCj4gK3N0YXRpYyBpbnQgX19k
+ZXZpbml0IHc5MHA5MTBfc3BpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCj4g
+K3sKPiArIMKgIMKgIMKgIHN0cnVjdCB3OTBwOTEwX3NwaSAqaHc7Cj4gKyDCoCDCoCDCoCBzdHJ1
+Y3Qgc3BpX21hc3RlciAqbWFzdGVyOwo+ICsgwqAgwqAgwqAgc3RydWN0IHJlc291cmNlICpyZXM7
+Cj4gKyDCoCDCoCDCoCBpbnQgZXJyID0gMDsKPiArCj4gKyDCoCDCoCDCoCBtYXN0ZXIgPSBzcGlf
+YWxsb2NfbWFzdGVyKCZwZGV2LT5kZXYsIHNpemVvZihzdHJ1Y3QgdzkwcDkxMF9zcGkpKTsKPiAr
+IMKgIMKgIMKgIGlmIChtYXN0ZXIgPT0gTlVMTCkgewo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+ZGV2X2VycigmcGRldi0+ZGV2LCAiTm8gbWVtb3J5IGZvciBzcGlfbWFzdGVyXG4iKTsKPiArIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIGVyciA9IC1FTk9NRU07Cj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCBnb3RvIGVycl9ub21lbTsKPiArIMKgIMKgIMKgIH0KPiArCj4gKyDCoCDCoCDCoCBodyA9IHNw
+aV9tYXN0ZXJfZ2V0X2RldmRhdGEobWFzdGVyKTsKPiArIMKgIMKgIMKgIG1lbXNldChodywgMCwg
+c2l6ZW9mKHN0cnVjdCB3OTBwOTEwX3NwaSkpOwo+ICsKPiArIMKgIMKgIMKgIGh3LT5tYXN0ZXIg
+PSBzcGlfbWFzdGVyX2dldChtYXN0ZXIpOwo+ICsgwqAgwqAgwqAgaHctPnBkYXRhIMKgPSBwZGV2
+LT5kZXYucGxhdGZvcm1fZGF0YTsKClNlZW1zIHRoYXQgcGxhdGZvcm1fZGF0YSBpcyBuZWNlc3Nh
+cnkgaW4geW91ciBkcml2ZXIsCmJ1dCBJIGZvdW5kIGl0IGlzIG5vdCBpbml0aWFsaXplZCBpbiBt
+YWNoLXc5MHg5MDAvZGV2LmM6CgpzdGF0aWMgc3RydWN0IHBsYXRmb3JtX2RldmljZSBudWM5MDBf
+ZGV2aWNlX3NwaSA9IHsKCS5uYW1lCQk9ICJudWM5MDAtc3BpIiwKCS5pZAkJPSAtMSwKCS5udW1f
+cmVzb3VyY2VzCT0gQVJSQVlfU0laRShudWM5MDBfc3BpX3Jlc291cmNlKSwKCS5yZXNvdXJjZQk9
+IG51YzkwMF9zcGlfcmVzb3VyY2UsCn07CgotLSAKUmVnYXJkcwpMaSBKaWUKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFp
+bGluZyBsaXN0CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
+dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK

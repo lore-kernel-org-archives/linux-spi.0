@@ -1,21 +1,16 @@
 From: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2]: NUC900: Add spi driver support
-	for nuc900
-Date: Sun, 22 Nov 2009 01:38:55 +0800
-Message-ID: <e68bb3470911210938v2a91b39ax1f1073edab150c11@mail.gmail.com>
-References: <4B062887.90803@gmail.com>
-	<8fb2581d0911210610j125b5700ydeb25e72efa88eac@mail.gmail.com>
+Subject: [PATCH] NUC900: add spi resource plaform_data
+	structure initialization
+Date: Mon, 23 Nov 2009 15:48:51 +0800
+Message-ID: <4B0A3E63.1080904@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	David Brownell-sourceforge <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Li Jie <eltshanli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: David Brownell-sourceforge <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	linux-spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Russell K
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <8fb2581d0911210610j125b5700ydeb25e72efa88eac-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,54 +21,62 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-RGVhciBMaSBKaWUsCgoKMjAwOS8xMS8yMSBMaSBKaWUgPGVsdHNoYW5saUBnbWFpbC5jb20+Ogo+
-IE9uIEZyaSwgTm92IDIwLCAyMDA5IGF0IDE6MjYgUE0sIFdhbiBab25nU2h1biA8bWN1b3MuY29t
-QGdtYWlsLmNvbT4gd3JvdGU6Cj4+Cj4+ICtzdGF0aWMgdm9pZCB3OTBwOTEwX2luaXRfc3BpKHN0
-cnVjdCB3OTBwOTEwX3NwaSAqaHcpCj4+ICt7Cj4+ICsgwqAgwqAgwqAgY2xrX2VuYWJsZShody0+
-Y2xrKTsKPj4gKyDCoCDCoCDCoCBzcGluX2xvY2tfaW5pdCgmaHctPmxvY2spOwo+PiArCj4+ICsg
-wqAgwqAgwqAgdzkwcDkxMF90eF9lZGdlKGh3LCBody0+cGRhdGEtPnR4bmVnKTsKPj4gKyDCoCDC
-oCDCoCB3OTBwOTEwX3J4X2VkZ2UoaHcsIGh3LT5wZGF0YS0+cnhuZWcpOwo+PiArIMKgIMKgIMKg
-IHc5MHA5MTBfc2VuZF9maXJzdChodywgaHctPnBkYXRhLT5sc2IpOwo+PiArIMKgIMKgIMKgIHc5
-MHA5MTBfc2V0X3NsZWVwKGh3LCBody0+cGRhdGEtPnNsZWVwKTsKPj4gKyDCoCDCoCDCoCB3OTBw
-OTEwX3NwaV9zZXR1cF90eGJpdGxlbihodywgaHctPnBkYXRhLT50eGJpdGxlbik7Cj4+ICsgwqAg
-wqAgwqAgdzkwcDkxMF9zcGlfc2V0dXBfdHhudW0oaHcsIGh3LT5wZGF0YS0+dHhudW0pOwo+PiAr
-IMKgIMKgIMKgIHc5MHA5MTBfc2V0X2RpdmlkZXIoaHcpOwo+PiArIMKgIMKgIMKgIHc5MHA5MTBf
-ZW5hYmxlX2ludChodywgMSk7Cj4+ICt9Cj4+ICsKPj4gK3N0YXRpYyBpbnQgX19kZXZpbml0IHc5
-MHA5MTBfc3BpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCj4+ICt7Cj4+ICsg
-wqAgwqAgwqAgc3RydWN0IHc5MHA5MTBfc3BpICpodzsKPj4gKyDCoCDCoCDCoCBzdHJ1Y3Qgc3Bp
-X21hc3RlciAqbWFzdGVyOwo+PiArIMKgIMKgIMKgIHN0cnVjdCByZXNvdXJjZSAqcmVzOwo+PiAr
-IMKgIMKgIMKgIGludCBlcnIgPSAwOwo+PiArCj4+ICsgwqAgwqAgwqAgbWFzdGVyID0gc3BpX2Fs
-bG9jX21hc3RlcigmcGRldi0+ZGV2LCBzaXplb2Yoc3RydWN0IHc5MHA5MTBfc3BpKSk7Cj4+ICsg
-wqAgwqAgwqAgaWYgKG1hc3RlciA9PSBOVUxMKSB7Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-ZGV2X2VycigmcGRldi0+ZGV2LCAiTm8gbWVtb3J5IGZvciBzcGlfbWFzdGVyXG4iKTsKPj4gKyDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCBlcnIgPSAtRU5PTUVNOwo+PiArIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIGdvdG8gZXJyX25vbWVtOwo+PiArIMKgIMKgIMKgIH0KPj4gKwo+PiArIMKgIMKgIMKgIGh3
-ID0gc3BpX21hc3Rlcl9nZXRfZGV2ZGF0YShtYXN0ZXIpOwo+PiArIMKgIMKgIMKgIG1lbXNldCho
-dywgMCwgc2l6ZW9mKHN0cnVjdCB3OTBwOTEwX3NwaSkpOwo+PiArCj4+ICsgwqAgwqAgwqAgaHct
-Pm1hc3RlciA9IHNwaV9tYXN0ZXJfZ2V0KG1hc3Rlcik7Cj4+ICsgwqAgwqAgwqAgaHctPnBkYXRh
-IMKgPSBwZGV2LT5kZXYucGxhdGZvcm1fZGF0YTsKPgo+IFNlZW1zIHRoYXQgcGxhdGZvcm1fZGF0
-YSBpcyBuZWNlc3NhcnkgaW4geW91ciBkcml2ZXIsCj4gYnV0IEkgZm91bmQgaXQgaXMgbm90IGlu
-aXRpYWxpemVkIGluIG1hY2gtdzkweDkwMC9kZXYuYzoKPgo+IHN0YXRpYyBzdHJ1Y3QgcGxhdGZv
-cm1fZGV2aWNlIG51YzkwMF9kZXZpY2Vfc3BpID0gewo+IMKgIMKgIMKgIMKgLm5hbWUgwqAgwqAg
-wqAgwqAgwqAgPSAibnVjOTAwLXNwaSIsCj4gwqAgwqAgwqAgwqAuaWQgwqAgwqAgwqAgwqAgwqAg
-wqAgPSAtMSwKPiDCoCDCoCDCoCDCoC5udW1fcmVzb3VyY2VzIMKgPSBBUlJBWV9TSVpFKG51Yzkw
-MF9zcGlfcmVzb3VyY2UpLAo+IMKgIMKgIMKgIMKgLnJlc291cmNlIMKgIMKgIMKgID0gbnVjOTAw
-X3NwaV9yZXNvdXJjZSwKPiB9Owo+CgpZZXMgLCB5b3UgYXJlIHJpZ2h0LCBJIHRlc3RlZCB0aGUg
-c3BpIGRyaXZlciB2aWEgJ20yNXA4MCcsIHNvIEkgbXVzdAphZGQgc29tZSBpdHMgZGVmaW5pdGlv
-biAgdG8gbXkgZGV2LmMgYW5kIHVzZSAnc3BpX3JlZ2lzdGVyX2JvYXJkX2luZm8nCnRvIHJlZ2lz
-dGVyIHRoaXMgdHlwZSBmbGFzaCBpbmZvLgoKU28sIEkganVzdCB3YW50IHRvIGFkZCB0aGUgcGxh
-dGZvcm1fZGF0YSBkZWZpbml0aW9uIHBhdGNoIGFsb25nIHdpdGgKYWJvdmUgYW5kIEkgdGhpbmsg
-SSB3aWxsIHN1Ym1pdCBpdCBsYXRlci4KCkFueXdheSwgdGhhbmtzIGEgbG90IGZvciB5b3VyIGNh
-cmVmdWwgcmV2aWV3aW5nIG15IHBhdGNoLgoKPiAtLQo+IFJlZ2FyZHMKPiBMaSBKaWUKPgoKCgot
-LSAKbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJtLWtlcm5lbEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-bGludXgtYXJtLWtlcm5lbAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxldCBDcnlzdGFsIFJlcG9y
-dHMgaGFuZGxlIHRoZSByZXBvcnRpbmcgLSBGcmVlIENyeXN0YWwgUmVwb3J0cyAyMDA4IDMwLURh
-eSAKdHJpYWwuIFNpbXBsaWZ5IHlvdXIgcmVwb3J0IGRlc2lnbiwgaW50ZWdyYXRpb24gYW5kIGRl
-cGxveW1lbnQgLSBhbmQgZm9jdXMgb24gCndoYXQgeW91IGRvIGJlc3QsIGNvcmUgYXBwbGljYXRp
-b24gY29kaW5nLiBEaXNjb3ZlciB3aGF0J3MgbmV3IHdpdGgKQ3J5c3RhbCBSZXBvcnRzIG5vdy4g
-IGh0dHA6Ly9wLnNmLm5ldC9zZnUvYm9iai1qdWx5Cl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
-b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Dear Russell,
+
+Add spi resource plaform_data structure initialization.
+
+Signed-off-by: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+
+---
+ arch/arm/mach-w90x900/dev.c |   16 ++++++++++++++++
+ 1 files changed, 16 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/mach-w90x900/dev.c b/arch/arm/mach-w90x900/dev.c
+index 2a6f98d..51f17b7 100644
+--- a/arch/arm/mach-w90x900/dev.c
++++ b/arch/arm/mach-w90x900/dev.c
+@@ -32,6 +32,7 @@
+ #include <asm/mach-types.h>
+ 
+ #include <mach/regs-serial.h>
++#include <mach/nuc900_spi.h>
+ #include <mach/map.h>
+ 
+ #include "cpu.h"
+@@ -196,6 +197,18 @@ static struct platform_device nuc900_device_emc = {
+ 
+ /* SPI device */
+ 
++static struct w90p910_spi_info nuc900_spiflash_data = {
++	.num_cs		= 1,
++	.lsb		= 0,
++	.txneg		= 1,
++	.rxneg		= 0,
++	.divider	= 24,
++	.sleep		= 0,
++	.txnum		= 0,
++	.txbitlen	= 1,
++	.bus_num	= 0,
++};
++
+ static struct resource nuc900_spi_resource[] = {
+ 	[0] = {
+ 		.start = W90X900_PA_I2C + SPIOFFSET,
+@@ -214,6 +227,9 @@ static struct platform_device nuc900_device_spi = {
+ 	.id		= -1,
+ 	.num_resources	= ARRAY_SIZE(nuc900_spi_resource),
+ 	.resource	= nuc900_spi_resource,
++	.dev		= {
++				.platform_data = &nuc900_spiflash_data,
++			}
+ };
+ 
+ /* spi device, spi flash info */
+-- 
+1.5.6.3
+
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july

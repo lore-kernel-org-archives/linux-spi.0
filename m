@@ -1,215 +1,771 @@
-From: Aristarch Nikolaevich <aristarchnikolaevich-L/YRQdCDplbQT0dZR+AlfA@public.gmane.org>
-Subject: [SPAM] И как добиться успеха?
-Date: Tue, 24 Nov 2009 09:14:59 +0300
-Message-ID: <6798627685.20091124091459@l3377l.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5246637484922497475=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Magnus Damm <magnus.damm@gmail.com>
+Subject: [PATCH] spi: SuperH MSIOF SPI Master driver
+Date: Tue, 24 Nov 2009 21:55:31 +0900
+Message-ID: <20091124125531.14957.41264.sendpatchset@rxone.opensource.se>
+Cc: Magnus Damm <magnus.damm@gmail.com>,
+	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S932837AbZKXNAz@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5246637484922497475==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+From: Magnus Damm <damm@opensource.se>
 
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
-bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL2h0bWw0L2xvb3NlLmR0ZCI+DQo8aHRt
-bD4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0
-ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjx0aXRsZT48L3RpdGxlPg0KPHN0
-eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHksdGQsdGggew0KCWZvbnQtZmFtaWx5
-OiBWZXJkYW5hLCBHZW5ldmEsIHNhbnMtc2VyaWYsIEFyaWFsOw0KCWZvbnQtc2l6ZTogMTNw
-eDsNCgljb2xvcjogIzAwMDsNCn0NCmJvZHkgew0KCWJhY2tncm91bmQtY29sb3I6ICNGRkY7
-DQp9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9keT4NCjx0YWJsZSB3aWR0aD0iODMw
-IiBib3JkZXI9IjAiIGFsaWduPSJjZW50ZXIiIGNlbGxwYWRkaW5nPSIyIj4NCiAgPHRyPg0K
-ICAgIDx0ZCB3aWR0aD0iODIyIiBhbGlnbj0ibGVmdCI+PHA+PHN0cm9uZz7RYexh/yDo5+Ll
-Y/LtYf8g8eLgeGEg0O5jY+joINDu5+Ag0f/h6PLu4mEsIOLl5PP54P8g8uXrZe/w7uNwYezs
-+yAmcXVvdDvE4OLg6SDvb+Zl7ejs8f8mcXVvdDs8L3N0cm9uZz48YnI+DQogICAgICAgIDxz
-dHJvbmc+4iDK6OXi5SA3IO1v/+Fw/zwvc3Ryb25nPjwvcD4NCjxwPvPrLiDKcGX5YfLo6iwg
-MiAmbGFxdW870+pwYejt8ero6SDk7uwmcmFxdW87PC9wPg0KICAgIDxwPjxzdHJvbmc+zDxm
-b250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij78PC9mb250PuA8
-Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+6zwvZm9udD7x
-PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPv88L2ZvbnQ+
-8jxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7tPC9mb250
-PmU8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+5DwvZm9u
-dD7wLeo8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+8zwv
-Zm9udD7rPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPv88
-L2ZvbnQ+YTxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij73
-PC9mb250PvE8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+
-8DwvZm9udD7xOiAmbGFxdW87yuDqIO3g6fLoIOzz5vfo7fMg8eLuZekg7OX38vsg6CDh+/L8
-IGMg7ejsIGP34PHy6+ji7ukmcmFxdW87Ljwvc3Ryb25nPjwvcD48L3RkPg0KICA8L3RyPg0K
-ICA8dHI+DQogICAgPHRkIGFsaWduPSJsZWZ0Ij48cD48c3Ryb25nPtdh8fL8IO9l8OLg/y48
-L3N0cm9uZz48L3A+DQogICAgICA8cD48c3Ryb25nPsIg/fLu6SD3YfHy6CDs4GPy5XAt6uth
-8WPgIOZl7fno7WEg7WHp5GXyIO7y4uXy+yDt4CDx62Xk8/756OUg4m/vcO7x+zo8L3N0cm9u
-Zz48YnI+DQogICAgICAgICZidWxsOyDD5GUg6CDq4Oog7WHp8uggzPPm9+jt8yBj4m9l6SDs
-Zffy+z88YnI+DQogICAgICAgICZidWxsOyDK4Oru6SDy6O8g7PPm9+jtIO/w6OLrZephZfIg
-6Oxl7e3uIGXlPzxicj4NCiAgICAgICAgJmJ1bGw7INPsZWXyIOvoIG/t4CDz9+jy/GP/IO1h
-IPHib+h4IG/46OHqYfU/PGJyPg0KICAgICAgICAmYnVsbDsg1/LuIOxl+OBl8iDl6SBj8vDu
-6PL8IOjkZWHr/O37ZSBv8u1v+OXt6P8/PGJyPg0KICAgICAgICAmYnVsbDsg1/JvIO3z5u3u
-IOTr/yDy7uPuLCD38u7h+yDr/uHo8vwg6CDh+/L8IOv+4ejsb+k/PC9wPg0KICAgICAgPHA+
-zWHz9+jy8f8g4vvh6PDg8vwgzPPm9+jt8ywg6u7yb3D76SDvb+T17uTo8iDo7GXt7W8g5ekg
-6CDv8ODi6Ov87W8gYyDt6Owg5+1h6u7s6PL8Y/8uIM/u7f/y/Cwg6mHq6GUg7/Do9+jt+yDn
-4PHyYeLr//7yIGXlIPFv73Du8uji6//y/GP/IO9v6PHq8yDkb2Py7unt7uPuIGPv8/Lt6Oph
-IObo5+3oLCDoIOrg6iDx5OXr4PL8IPLg6iwg9/Jv4fsg5uXrYe3o/yDt4Pfg6+gg6PHv7uvt
-//L8Y/8sIOAg7GX38vsg8eH74uDy/GP/PyDKYeog7eDz9+jy/PH/LCDoY+/u6/zn7uLg8vws
-IO/u6/P3Ze3t++Ug6O3x8nDz6vbo6Cwg6CDxIOtl4+pv8fL8/iBj8nDu6PL8LCDz5O7i6+Xy
-4u5w//756GUg5HDz4yDk8PPjYSBv8u1v+OXt6P8uPC9wPg0KICAgICAgPHA+PHN0cm9uZz7A
-IPJh6ublIOHz5PPyIHBh8WPs7vJwZe37IGPr5eTz/vno5SDy5ez7Ojwvc3Ryb25nPjxicj4N
-CiAgICAgICAgJmJ1bGw7IMDt4Ovo5yBjeGXsIG/y7W/45e3o6SDxIO9wZeT75PP56OzoIOzz
-5vfo7WHs6Ds8YnI+DQogICAgICAgICZidWxsOyDA7eDr6Ocg8fLw4PVv4iDoIGP2Ze3g8Ohl
-4iDvb+Ll5OXt6P8sIOru8u5w++Ug7OX44P7yIGPycO7o8vwgb/Lt7vhl7ej/Ozxicj4NCiAg
-ICAgICAgJmJ1bGw7IMFhcPxl8PssIOxl+OD++ehlIGPv7mNv4e1v8fLoIOv+4ejy/CDs8+b3
-6O3zLCDoIOzl8u7k+yDo9SDv8OXu5O7r5e3o/y48L3A+DQogICAgICA8cD48c3Ryb25nPszg
-Y/Ll8C3q62HxYyDwYWPx9+jy4O0g7eUg8u7r/OruIO1hIGPi7uFv5O379SDm5e356O0sIO1v
-IOgg8mX1LCDzIOru4+4g8+blIGXx8vwg729j8u7/7e376SDvYfDy7WVwLjwvc3Ryb25nPjwv
-cD4NCiAgICAgIDxwPjxzdHJvbmc+wvJvcOD/IPfg8fL8Ojwvc3Ryb25nPjwvcD4NCiAgICAg
-IDxwPjxzdHJvbmc+yuDqIO9v5O3/8vwgY+Dsb+725e3q8y4gJnF1b3Q7yPHq8/Fj8uLuIOH7
-8vwg8ffg8fLr6OLu6SZxdW90Oy48L3N0cm9uZz48YnI+DQogICAgICAgIM3lIOJv5+3o6mHr
-byDr6CDzIOJhYyDyYepv4+4gb/nz+eXt6P8sIPfybywg7eUg8ezu8nD/IO1hIOLx5SDkb/Hy
-6OPt8/Jv5Swg7eXyIPfz4mPy4mEg8+Tu4utl8uLucOXt6P8/IMJh7CDt5SBv8fLgZfLx/yDx
-6Osg6CDicGXs5e3oLCD38u7h+yDt4GPrYebkYfL88f8g5ujn7fz+PyDC+yDsb+bl8uUg7WHz
-9+jy/GP/IO/u6/P3YfL8IPPkb+Lu6/xj8uLoZSDu8iDm6Oft6Cwg4ujk5fL8IO1hY/Jv//no
-6SBj7Ptj6yDx4m/l4+4g8fP5ZfHy4m/i4O3o/ywg4CDy4Orm5SDvZXDl5uji4PL8IOgg8e7n
-5GHiYfL8IOhj8ujt7ftlIOxv7GXt8vsgY+JvZeNvIGP3YWPy/P8sIGPi/+fg7e37ZSBjIPFl
-7Pzl6Swg5OXy/OzoIOggcGHh7vJv6S48L3A+DQogICAgICA8cD48c3Ryb25nPsLy7nDg/yD3
-4PHy/CDv7uxv5uXyOjwvc3Ryb25nPjxicj4NCiAgICAgICAgJmJ1bGw7IO/u7f/y/CwgyvJv
-IMLbPyDR92Hx8uvo4vsg6+ggwvs/IMPk5SDoIOpv4+RhIML7IPHh6OvoY/wgYyDv8/LoOzxi
-cj4NCiAgICAgICAgJmJ1bGw7IO9v7f/y/Cwg9/LuIPJh6u5lINHy5fDi4Cwg4fvy/CDo6+gg
-7eUg4fvy/CDl6T88YnI+DQogICAgICAgICZidWxsOyDvb+vz9+jy/CBvcOjl7fLo8Psg7+7t
-6Ozg7ej/IOgg4m/n4nDg+WXt6P8g7vIgY2Xh/yDv8OXm7WXpIOog8eXh5SDtYWPy7v/5Zek7
-PGJyPg0KICAgICAgICAmYnVsbDsg7+7t//L8IOrg6mH/IML7IMbl7fno7WE/IM725e3o8vwg
-wmH48yDz4uVw5e3t7vHy/CDoIHBh52/h8GHy/GP/IOIgY+Lu6PUg73Bv8ujib/Bl9+j/eDs8
-L3A+DQogICAgICA8cD48c3Ryb25nPs9v7G/m5fIg7vLi5fLo8vwg7eAg4u7vcG/x+zo8L3N0
-cm9uZz48YnI+DQogICAgICAgICZidWxsOyDR6u7r/OruIOz7IGPyb+jsPzxicj4NCiAgICAg
-ICAgJmJ1bGw7IM/u9+Xs8yDoIOrg6iDu9mXt6OJhZfIg7PPm9+jt4CDm5e356O3zPzxicj4N
-CiAgICAgICAgJmJ1bGw7IM/u92Xs8yDz5/sg6/7h4ugg4WVj8ejr/O37IO9lcOXkIGPy8ODx
-8vz+IPPk7uLrZfLi7vBl7ej/IOzg8uVw6ODr/O37eCDv7vLwZeHtb/HyZeksIOPk5SBv4fno
-6SDn7WHsZe3g8mXr/CDkZe384+g/PGJyPg0KICAgICAgICAmYnVsbDsgz2/3ZezzIO3g7Cwg
-5mXt+ejt4Owg6CDs8+b36O1h7Cwg8uDqIOLg5u3uIPFv7vLi5fLx8uLu4mHy/CBv7/Dl5GXr
-5e3t++wg8O7rZeL77CDu4XDg5/bg7Cwg6u7yb/D7ZSDqYebk++kg5OXt/CDvcOjt7vH/8iDt
-7uL75SDoY+/78uDt6P8sIOLl5Pwg7/Do9e7k6PL8Y/8g7+5j8m//7e1vIPPhZebkYfL8IGNl
-4f8g6CDk8PPj6PUg4iDyb+wsIPfy7iDy+yBjb+7y4mXy8fLi8+X4/Cwg5+3g9+jyIOIg7+7w
-/+TqZSwg7e4g7eAg8WHsb+wg5OXr5SDs+yD38+Jj8uLzZewg8eXh/yDu5Ojt7uro7OgsIHju
-8v8g6CDq4OZl7PH/IG/h+ejy5ev87fvs6CDoIPPkb+Lr5fLi7vBl7e377OggY+Lu5ekg5ujn
-7fz+Pzxicj4NCiAgICAgICAgJmJ1bGw7IMHo5+1l8SDsZfjgZfIg6+j37W/pIObo5+3oPyDP
-b/fl7PMsIOIg8GXn8+v88mHyZSDh7uv8+Ojt8fLi7iDmZe356O0g5OXr4P7yIGPyYeLq8yDy
-7uv86u4g7eAg5+Ds8+bl8fLi7iwg7vLqYef74uD/8fwgb/IgY2Xh/ywgb/Ig6+j37e7jbyBw
-b2Py4CDoIO9w5eJwYflh/yDxZeH/IOIg73Bl5Oxl8iDy7vDj4D88YnI+DQogICAgICAgICZi
-dWxsOyDK4Oog6CDiIOHo5+1l8eUsIOgg4iDqYfD85fDlLCDoIOIg6+j37e7pIObo5+3oIOH7
-8vwg6CBvY/Lg4uDy/PH/IPFh7Ojs6CBjb+Hu6S4gyCDqYeog7uFwZfHy6CDybyBj9+Bj8vxl
-LCDuIOpv8u5wb+wg7OX38mHl8iDm5e356O1hPzxicj4NCiAgICAgICAgJmJ1bGw7IMgg6uDq
-IORv4ejy/GP/IPNj7+X1YT88L3A+DQogICAgICA8cD7H4ORh9+Ag7GHx8mXwLerr4PHxYSDk
-4PL8IO9v7f/y/CDmZe356O3lIO7k7fMg73BvY/Lz/iDoY/Lo7fMsIPfybyDiY2Ug7WH36O3g
-ZfLx/yBjIOv+4eLoIOog8eXhZS4g1/LuIO/uY/Jl72Xt7e4sIPjg4yDnYSD44OPu7CwgY+tl
-5PP/LCDvb+vz9+Xt7fvsIHDl6u7sZe3kYfbo/+wg6CDoY+9v6/zn8/8g73Bl5Ovg4+Bl7Ptl
-IOxl8m/k+ywgb+1hIO1h8/fo8vH/IObo8vwg4iDr/uHi6Dog4ujk5fL8IOv+4W/i/Cwg9/Pi
-8fLib+Lg8vwgZeUgY+rib+f8IGPyZe37IOfrb2Py6Cwg4W/r6CDx8vBh9eAg4iDk8/hheCDk
-8PPj6Hgg6CDvb+xv42Hy/CDo7Cwg7vLqcPvi4PL8IOIg8eXh5SD98u4g7eXm7e7lIPfz4vHy
-4u4uIM3g8/fo8mP/IG/v8GXk5ev/8vwg73Dob3Do8mXy+ywg7WHv8Ojs5XAg8uDq6GU6ICZs
-YXF1bzvF8evoIOL7IPPx72X47fsg4iDqYXD8ZXDlLCDt7iBw/+Tu7CDt5fIg5O7x8m/p7W/j
-7iDs8+b36O37ICZuZGFzaDsg/fLuIO1lIOftYffo8vwsIPfybyDi+yDtZSDzY+9l+O37IOrg
-6iDmZe356O1hLCD98m8g5+1h9+jyLCD38u4g4nDl7P8g5fnlIO1lIO/w6Pjr7iZyYXF1bzsu
-PC9wPg0KICAgICAgPHA+PHN0cm9uZz7PcO7o4/D74mH/ICZuZGFzaDsg7WUgY2/mYevl8vws
-IOL76ONw++Lg/yAmbmRhc2g7IO1lIOTz7ODy/Cwg9/LuIPJh6iDh8+Tl8iDi8WXj5GEuPC9z
-dHJvbmc+PC9wPg0KICAgICAgPHA+PHN0cm9uZz7HYepw5e/o8vwg/fLoIOftYe3o/yDvb+xv
-4/PyIO/w4Ory6PflY+roZSDwZepv7GXt5OD26Ogg6CDo7WPycPPq9ujoLCBhIOjsZe3tbzo8
-L3N0cm9uZz48YnI+DQogICAgICAgICZidWxsOyDSZXjt6OphIOL74W9w4Cwg7+7keO7k//ll
-428g5Ov/IORh7e3u428g7PPm9+jt+zs8YnI+DQogICAgICAgICZidWxsOyDD5OUg7eDp8ugs
-IOgg6mHqIO9w6OLr5ff8IOLt6Ozg7ejlIOzz5vfo7fssIPfyb+H7IGMg7ejsIO/u5+1h6m/s
-6PL8Y/87PGJyPg0KICAgICAgICAmYnVsbDsg1/LuIO3z5u1vIPHk5evg8vwsIPfyb+H7IOjn
-4WXm4PL8IOLnYejs7e7jbyDt5e/u7ejs4O3o/y48YnI+DQogICAgICAgICZidWxsOyDO5+3g
-6u7s6PL88f8gYyBv4fP34P755ekg7/Bv43Dg7Oxv6Swg6m/y7vBh/yDk4OXyY/8g4iDi6ORl
-IPJl8fLgLCDoIO/u5+Lu6//l8iDmZe356O1lIO1hIOv+4e7sIP3y4O9lIO7y7W/4Ze3o6SDv
-b+3/8vwg7eDsZXBl7ej/IOzz5vfo7fsg728g8ejj7WHrYewsIOpv8m/w+2Ug7u0g72/k4GXy
-LiDN4PP36PL8Y/8g7/DueG/k6PL8IOrg5uT76SD98mHvIG/y7W/45e3o6Swg6uDqIOzu5u3u
-IOvz9/hlIOgg8SDt4Ojhb+v8+OjsIPBl5/Pr/PJh8m/sLiDAINbl7e375SDoIO9v62Xn7fvl
-IHBl6u7sZe3kYfbo6CDx8uDt8/Ig9e5w7vhl6SDvb+Tx6uDn6u7pIOgg8PPq7uJv5PHy4u7s
-IOog7eDo4W/rZeUg/fT05ery6OLt++wg5OXp8fLi6P/sIPFvIPHy7nBv7fsg5mXt+ejt+yDv
-8ODq8uj35fHq6CDk6/8g6/7h7ukgY+jy82H26OgsIOpv8m9w+2Ug7G/j8/Ig4m/n7ejq7fPy
-/CDiIG/y7W/45e3o/3gg8SDs8+b36O3u6S48L3A+DQogICAgPHA+PHN0cm9uZz7CPGZvbnQg
-Y29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPuo8L2ZvbnQ+5Txmb250
-IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7vPC9mb250PuQ8Zm9u
-dCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+7DwvZm9udD7zPGZv
-bnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPvs8L2ZvbnQ++Txm
-b250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij70PC9mb250PuA8
-Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+/jwvZm9udD7/
-Ojwvc3Ryb25nPiDQb+dhINH/4ejyb+JhIC0g72PoeG/r7uMgKOIg73Bv+Otv7CAmbmRhc2g7
-IORl7/Py4PIgw2/w7uRj6u7pIOTz7PssIOBw8i3k6PDl6vLu8CksIObl7fno7WEsIPHz5Pzh
-YSDq7vLucG/pIO7y7/Nj8ujr4CD55eRw7iDz5OD3LCDoIO/u8mXw/C4g0e/l9ujg6+hj8iDi
-IG/h62Hx8ugg4udh6Oxv7vLt7vhl7ejpIOv+5OXpLCDz9+Dx8u3o6iDs7W/j6Hgg8mXr5eLo
-5+ju7e37eCDoIHDg5OjuIO/lcOXk4PcuIMJl5PP5Yf8g7+XwZeTg9+gg7eAgz+Vw4m/sIOrg
-7WHr5SAmbGFxdW87xMDCwMkgz87Gxc3IzNHfJnJhcXVvOy4gwmXk8/ng/yDoIODi8m/wIO/w
-b+Pw4Ozs+yAmbGFxdW870W/iZfL7IO7yINDu5/sg0f/h6PLu4m/pJnJhcXVvOyDt4CDw4OTo
-byAmbGFxdW87zM7fINHFzNzfJnJhcXVvOyDoIO/w7uPwYezs+yAmcXVvdDvQZfbl7/L7IPH3
-YWPy/P8mcXVvdDsg7eAgJnF1b3Q71cjSIEZNJnF1b3Q7LiDA4vLucCDq7ejjOiAmbGFxdW87
-zPPm9+jtYSDMZffy+zog7eDp8ugg6CDh+/L8IGMg7ejsIGP3YWPy6+ji7ukmcmFxdW87LCAm
-bGFxdW871+XjbyDx8m/o8iDmZe356O3gLCDo6+ggyuDqIO9v5O3/8vwgY2Hsb2/25e3q8yZy
-YXF1bzssICZsYXF1bzvK4Oog4uv+4ejy/CDiIGNl4f8g6m/jbyDz42/k7e4mcmFxdW87LiDE
-5enx8uLo8uXr/O376SDz92Fj8u3o6iDMZebk8+1hcG/k7e7pIMBj8W/26GH26Ogg6+j37W9j
-8u3u4+4gcO5j8mEg6CDR4OxvcODn4ujy6P8uIDE1IOtl8iDi7ufj62Hi6/9l8iBj6/Pm4fMg
-5+1h6m/s8fLiICZsYXF1bzvQb+dhLcrr8+EmcmFxdW87IOgg8+Ll8OXtYSwg9/LuIOft4OXy
-IO4g7/Bl5Oxl8mUg8eLu5eNvIOHo5+3lY2Eg4mX56Cwg5G8g6u7y7vD7eCDv7uphIO3o6vJv
-IOX55SDt5SDkb+Tz7GHrY/8uPGhyPg0KICAgIDxwIGFsaWduPSJjZW50ZXIiPtDl4+jx8vBh
-9uj/OiDxIDktMDAg5O4gMTAtMDA8L3A+DQogICAgPHAgYWxpZ249ImNlbnRlciI+Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A70OXj6+Ds5e3yOiBjIDEwLTAwIORvIDE3LTAwPC9w
-Pg0KICAgIDxwIGFsaWduPSJjZW50ZXIiPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO9Tz8Pjl8jogYyAxMy0wMCDkbyAxNC0wMDwvcD4N
-CiAgICA8cCBhbGlnbj0iY2VudGVyIj7T6vBh6O1j6ujpIORv7CDjLiDK6GXiLCDz6y4gynBl
-+WHy6OosIDI8L3A+DQogICAgPHAgYWxpZ249ImNlbnRlciI+PGZvbnQgY29sb3I9IiNDQzAw
-MzMiIHN0eWxlPSJmb250LXNpemU6IDE0cHg7Ij7PbyDu6u7t9+Dt6Ogg7Dxmb250IGNvbG9y
-PSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7iPC9mb250PmE8Zm9udCBjb2xv
-cj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+6jwvZm9udD7xPGZvbnQgY29s
-b3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPug8L2ZvbnQ+8jxmb250IGNv
-bG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij78PC9mb250PuU8Zm9udCBj
-b2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+5zwvZm9udD7wLeo8Zm9u
-dCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+9jwvZm9udD7rPGZv
-bnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPug8L2ZvbnQ+YTxm
-b250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij73PC9mb250PmM8
-Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+6DwvZm9udD5j
-PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPuE8L2ZvbnQ+
-YSDh8+Tz8iBw4Of74/D74uDy/GP/IPbl7e37ZSDv8Ojn+yEhITwvZm9udD48L3A+DQogICAg
-PHAgYWxpZ249ImNlbnRlciI+wW/rZWUg72/kcG/h7WH/IOjt9G9w7GH26P8g728g8mXrZfRv
-7fM6PGJyPg0KICAgIDxwIGFsaWduPSJjZW50ZXIiPjxmb250IGNvbG9yPSIjMDAwMDAwIiBz
-dHlsZT0iZm9udC1zaXplOiAxNnB4OyI+MDxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0i
-Zm9udC1zaXplOiAxcHg7Ij7jPC9mb250PjQ8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9
-ImZvbnQtc2l6ZTogMXB4OyI+8jwvZm9udD40IDI8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5
-bGU9ImZvbnQtc2l6ZTogMXB4OyI++jwvZm9udD4yPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
-eWxlPSJmb250LXNpemU6IDFweDsiPvU8L2ZvbnQ+MyAtIDU8Zm9udCBjb2xvcj0iI0ZGRkZG
-RiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+7jwvZm9udD4zIC0gNDxmb250IGNvbG9yPSIj
-RkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij74PC9mb250PjU8L2ZvbnQ+PC9wPjwv
-cD48L3RkPg0KICA8L3RyPg0KPC90YWJsZT4NCjwvYm9keT4NCjwvaHRtbD4NCg==
+This patch adds SPI Master support for the SuperH MSIOF
+hardware block. Full duplex, spi mode 0-3, active high cs,
+3-wire and lsb first should all be supported, but the driver
+has so far only been tested with "mmc_spi".
 
+The MSIOF hardware comes with 32-bit FIFOs for receive and
+transmit, and this driver simply breaks the SPI messages
+into FIFO-sized chunks. The MSIOF hardware manages the pins
+for clock, receive and transmit (sck/miso/mosi), but the chip
+select pin is managed by software and must be configured as
+a regular GPIO pin by the board code.
 
+Performance wise there is still room for improvement, but
+on a Ecovec board with the built-in sh7724 MSIOF0 this driver
+gets Mini-sd read speeds of about half a megabyte per second.
 
+Future work include better clock setup and merging of 8-bit
+transfers into 32-bit words to reduce interrupt load and
+improve throughput.
 
---===============5246637484922497475==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Magnus Damm <damm@opensource.se>
+---
 
-------------------------------------------------------------------------------
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
-trial. Simplify your report design, integration and deployment - and focus on 
-what you do best, core application coding. Discover what's new with
-Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============5246637484922497475==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+ drivers/spi/Kconfig          |    7 
+ drivers/spi/Makefile         |    1 
+ drivers/spi/spi.c            |    1 
+ drivers/spi/spi_sh_msiof.c   |  675 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/sh_msiof.h |   10 
+ 5 files changed, 693 insertions(+), 1 deletion(-)
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5246637484922497475==--
+--- 0001/drivers/spi/Kconfig
++++ work/drivers/spi/Kconfig	2009-11-24 20:39:48.000000000 +0900
+@@ -215,6 +215,13 @@ config SPI_S3C24XX_GPIO
+ 	  the inbuilt hardware cannot provide the transfer mode, or
+ 	  where the board is using non hardware connected pins.
+ 
++config SPI_SH_MSIOF
++	tristate "SuperH MSIOF SPI controller"
++	depends on SUPERH && HAVE_CLK
++	select SPI_BITBANG
++	help
++	  SPI driver for SuperH MSIOF blocks.
++
+ config SPI_SH_SCI
+ 	tristate "SuperH SCI SPI controller"
+ 	depends on SUPERH
+--- 0001/drivers/spi/Makefile
++++ work/drivers/spi/Makefile	2009-11-24 20:39:48.000000000 +0900
+@@ -32,6 +32,7 @@ obj-$(CONFIG_SPI_S3C24XX)		+= spi_s3c24x
+ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
+ obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
+ obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
++obj-$(CONFIG_SPI_SH_MSIOF)		+= spi_sh_msiof.o
+ obj-$(CONFIG_SPI_STMP3XXX)		+= spi_stmp.o
+ # 	... add above this line ...
+ 
+--- 0001/drivers/spi/spi.c
++++ work/drivers/spi/spi.c	2009-11-24 20:39:48.000000000 +0900
+@@ -17,7 +17,6 @@
+  * along with this program; if not, write to the Free Software
+  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-
+ #include <linux/kernel.h>
+ #include <linux/device.h>
+ #include <linux/init.h>
+--- /dev/null
++++ work/drivers/spi/spi_sh_msiof.c	2009-11-24 20:39:49.000000000 +0900
+@@ -0,0 +1,675 @@
++/*
++ * SuperH MSIOF SPI Master Interface
++ *
++ * Copyright (c) 2009 Magnus Damm
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/interrupt.h>
++#include <linux/platform_device.h>
++#include <linux/completion.h>
++#include <linux/pm_runtime.h>
++#include <linux/gpio.h>
++#include <linux/bitmap.h>
++#include <linux/clk.h>
++#include <linux/io.h>
++
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_bitbang.h>
++#include <linux/spi/sh_msiof.h>
++
++#include <asm/spi.h>
++#include <asm/unaligned.h>
++
++struct sh_msiof_spi_priv {
++	struct spi_bitbang bitbang; /* must be first for spi_bitbang.c */
++	void __iomem *mapbase;
++	struct clk *clk;
++	struct platform_device *pdev;
++	struct sh_msiof_spi_info *info;
++	struct completion done;
++	unsigned long flags;
++	int tx_fifo_size;
++	int rx_fifo_size;
++};
++
++#define TMDR1	0x00
++#define TMDR2	0x04
++#define TMDR3	0x08
++#define RMDR1	0x10
++#define RMDR2	0x14
++#define RMDR3	0x18
++#define TSCR	0x20
++#define RSCR	0x22
++#define CTR	0x28
++#define FCTR	0x30
++#define STR	0x40
++#define IER	0x44
++#define TDR1	0x48
++#define TDR2	0x4c
++#define TFDR	0x50
++#define RDR1	0x58
++#define RDR2	0x5c
++#define RFDR	0x60
++
++#define CTR_TSCKE (1 << 15)
++#define CTR_TFSE  (1 << 14)
++#define CTR_TXE   (1 << 9)
++#define CTR_RXE   (1 << 8)
++
++#define STR_TEOF  (1 << 23)
++#define STR_REOF  (1 << 7)
++
++static unsigned long sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
++{
++	switch (reg_offs) {
++	case TSCR:
++	case RSCR:
++		return ioread16(p->mapbase + reg_offs);
++	default:
++		return ioread32(p->mapbase + reg_offs);
++	}
++}
++
++static void sh_msiof_write(struct sh_msiof_spi_priv *p, int reg_offs,
++			   unsigned long value)
++{
++	switch (reg_offs) {
++	case TSCR:
++	case RSCR:
++		iowrite16(value, p->mapbase + reg_offs);
++		break;
++	default:
++		iowrite32(value, p->mapbase + reg_offs);
++		break;
++	}
++}
++
++static void sh_msiof_modify_ctr_wait(struct sh_msiof_spi_priv *p,
++				     unsigned long clr, unsigned long set)
++{
++	unsigned long mask = clr | set;
++	unsigned long data;
++
++	data = sh_msiof_read(p, CTR);
++	data &= ~clr;
++	data |= set;
++	sh_msiof_write(p, CTR, data);
++
++	while ((sh_msiof_read(p, CTR) & mask) != set)
++		;
++}
++
++static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
++{
++	struct sh_msiof_spi_priv *p = data;
++
++	/* just disable the interrupt and wake up */
++	sh_msiof_write(p, IER, 0);
++
++	complete(&p->done);
++
++	return IRQ_HANDLED;
++}
++
++static struct {
++	unsigned short div;
++	unsigned short scr;
++} sh_msiof_spi_clk_table[] = {
++	{ 1, 0x0007 },
++	{ 2, 0x0000 },
++	{ 4, 0x0001 },
++	{ 8, 0x0002 },
++	{ 16, 0x0003 },
++	{ 32, 0x0004 },
++	{ 64, 0x1f00 },
++	{ 128, 0x1f01 },
++	{ 256, 0x1f02 },
++	{ 512, 0x1f03 },
++	{ 1024, 0x1f04 },
++};
++
++static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
++				      unsigned long parent_rate,
++				      unsigned long spi_hz)
++{
++	unsigned long div = 1024;
++	int k;
++
++	if (!spi_hz || !parent_rate)
++		WARN_ON(1);
++	else
++		div = parent_rate / spi_hz;
++
++	/* TODO: make more fine grained */
++
++	for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_clk_table); k++) {
++		if (sh_msiof_spi_clk_table[k].div >= div)
++			break;
++	}
++
++	k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_clk_table) - 1);
++
++	sh_msiof_write(p, TSCR, sh_msiof_spi_clk_table[k].scr);
++	sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
++}
++
++static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
++				      int cpol, int cpha,
++				      int tx_hi_z, int lsb_first)
++{
++	unsigned long tmp;
++	int edge;
++
++	/*
++	 * CPOL CPHA     TSCKIZ RSCKIZ TEDG REDG(!)
++	 *    0    0         10     10    1    0
++	 *    0    1         10     10    0    1
++	 *    1    0         11     11    0    1
++	 *    1    1         11     11    1    0
++	 *
++	 * (!) Note: REDG is inverted recommended data sheet setting
++	 */
++
++	sh_msiof_write(p, FCTR, 0);
++	sh_msiof_write(p, TMDR1, 0xe2000005 | (lsb_first << 24));
++	sh_msiof_write(p, RMDR1, 0x22000005 | (lsb_first << 24));
++
++	tmp = 0xa0000000;
++	tmp |= cpol << 30; /* TSCKIZ */
++	tmp |= cpol << 28; /* RSCKIZ */
++
++	edge = cpol ? cpha : !cpha;
++
++	tmp |= edge << 27; /* TEDG */
++	tmp |= !edge << 26; /* REDG */
++	tmp |= (tx_hi_z ? 2 : 0) << 22; /* TXDIZ */
++	sh_msiof_write(p, CTR, tmp);
++}
++
++static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
++				       const void *tx_buf, void *rx_buf,
++				       int bits, int words)
++{
++	unsigned long dr2;
++
++	dr2 = ((bits - 1) << 24) | ((words - 1) << 16);
++
++	if (tx_buf)
++		sh_msiof_write(p, TMDR2, dr2);
++	else
++		sh_msiof_write(p, TMDR2, dr2 | 1);
++
++	if (rx_buf)
++		sh_msiof_write(p, RMDR2, dr2);
++
++	sh_msiof_write(p, IER, STR_TEOF | STR_REOF);
++}
++
++static void sh_msiof_reset_str(struct sh_msiof_spi_priv *p)
++{
++	sh_msiof_write(p, STR, sh_msiof_read(p, STR));
++}
++
++static void sh_msiof_spi_write_fifo_8(struct sh_msiof_spi_priv *p,
++				      const void *tx_buf, int words, int fs)
++{
++	const unsigned char *buf_8 = tx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		sh_msiof_write(p, TFDR, buf_8[k] << fs);
++}
++
++static void sh_msiof_spi_write_fifo_16(struct sh_msiof_spi_priv *p,
++				       const void *tx_buf, int words, int fs)
++{
++	const unsigned short *buf_16 = tx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		sh_msiof_write(p, TFDR, buf_16[k] << fs);
++}
++
++static void sh_msiof_spi_write_fifo_16u(struct sh_msiof_spi_priv *p,
++					const void *tx_buf, int words, int fs)
++{
++	const unsigned short *buf_16 = tx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		sh_msiof_write(p, TFDR, get_unaligned(&buf_16[k]) << fs);
++}
++
++static void sh_msiof_spi_write_fifo_32(struct sh_msiof_spi_priv *p,
++				       const void *tx_buf, int words, int fs)
++{
++	const unsigned int *buf_32 = tx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		sh_msiof_write(p, TFDR, buf_32[k] << fs);
++}
++
++static void sh_msiof_spi_write_fifo_32u(struct sh_msiof_spi_priv *p,
++					const void *tx_buf, int words, int fs)
++{
++	const unsigned int *buf_32 = tx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		sh_msiof_write(p, TFDR, get_unaligned(&buf_32[k]) << fs);
++}
++
++static void sh_msiof_spi_read_fifo_8(struct sh_msiof_spi_priv *p,
++				     void *rx_buf, int words, int fs)
++{
++	unsigned char *buf_8 = rx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		buf_8[k] = sh_msiof_read(p, RFDR) >> fs;
++}
++
++static void sh_msiof_spi_read_fifo_16(struct sh_msiof_spi_priv *p,
++				      void *rx_buf, int words, int fs)
++{
++	unsigned short *buf_16 = rx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		buf_16[k] = sh_msiof_read(p, RFDR) >> fs;
++}
++
++static void sh_msiof_spi_read_fifo_16u(struct sh_msiof_spi_priv *p,
++				       void *rx_buf, int words, int fs)
++{
++	unsigned short *buf_16 = rx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		put_unaligned(sh_msiof_read(p, RFDR) >> fs, &buf_16[k]);
++}
++
++static void sh_msiof_spi_read_fifo_32(struct sh_msiof_spi_priv *p,
++				      void *rx_buf, int words, int fs)
++{
++	unsigned int *buf_32 = rx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		buf_32[k] = sh_msiof_read(p, RFDR) >> fs;
++}
++
++static void sh_msiof_spi_read_fifo_32u(struct sh_msiof_spi_priv *p,
++				       void *rx_buf, int words, int fs)
++{
++	unsigned int *buf_32 = rx_buf;
++	int k;
++
++	for (k = 0; k < words; k++)
++		put_unaligned(sh_msiof_read(p, RFDR) >> fs, &buf_32[k]);
++}
++
++static int sh_msiof_spi_bits(struct spi_device *spi, struct spi_transfer *t)
++{
++	int bits;
++
++	bits = t ? t->bits_per_word : 0;
++	bits = bits ? bits : spi->bits_per_word;
++
++	return bits;
++}
++
++static unsigned long sh_msiof_spi_hz(struct spi_device *spi,
++				     struct spi_transfer *t)
++{
++	unsigned long hz;
++
++	hz = t ? t->speed_hz : 0;
++	hz = hz ? hz : spi->max_speed_hz;
++
++	return hz;
++}
++
++static int sh_msiof_spi_setup_transfer(struct spi_device *spi,
++				       struct spi_transfer *t)
++{
++	int bits;
++
++	bits = sh_msiof_spi_bits(spi, t);
++
++	if (bits < 8)
++		return -EINVAL;
++
++	if (bits > 32)
++		return -EINVAL;
++
++	/* noting to check hz values against since parent clock is disabled */
++
++	return 0;
++}
++
++static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
++{
++	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
++	int value;
++
++	/* chip select ia active low unless SPI_CS_HIGH is set */
++	if (spi->mode & SPI_CS_HIGH)
++		value = (is_on == BITBANG_CS_ACTIVE) ? 1 : 0;
++	else
++		value = (is_on == BITBANG_CS_ACTIVE) ? 0 : 1;
++
++	if (is_on == BITBANG_CS_ACTIVE) {
++		if (!test_and_set_bit(0, &p->flags)) {
++			pm_runtime_get_sync(&p->pdev->dev);
++			clk_enable(p->clk);
++		}
++
++		/* Configure pins before asserting CS */
++		sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
++					  !!(spi->mode & SPI_CPHA),
++					  !!(spi->mode & SPI_3WIRE),
++					  !!(spi->mode & SPI_LSB_FIRST));
++	}
++
++	/* use spi->controller data for CS (same as spi_gpio) */
++	gpio_set_value((unsigned)spi->controller_data, value);
++
++	if (is_on == BITBANG_CS_INACTIVE) {
++		if (test_and_clear_bit(0, &p->flags)) {
++			clk_disable(p->clk);
++			pm_runtime_put(&p->pdev->dev);
++		}
++	}
++}
++
++static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
++				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
++						  const void *, int, int),
++				  void (*rx_fifo)(struct sh_msiof_spi_priv *,
++						  void *, int, int),
++				  const void *tx_buf, void *rx_buf,
++				  int words, int bits)
++{
++	int fifo_shift;
++
++	/* limit maximum word transfer to rx/tx fifo size */
++	if (tx_buf)
++		words = min_t(int, words, p->tx_fifo_size);
++	if (rx_buf)
++		words = min_t(int, words, p->rx_fifo_size);
++
++	/* the fifo contents need shifting */
++	fifo_shift = 32 - bits;
++
++	/* setup msiof transfer mode registers */
++	sh_msiof_spi_set_mode_regs(p, tx_buf, rx_buf, bits, words);
++
++	/* write tx fifo */
++	if (tx_buf)
++		tx_fifo(p, tx_buf, words, fifo_shift);
++
++	/* setup clock and rx/tx signals */
++	sh_msiof_modify_ctr_wait(p, 0, CTR_TSCKE);
++	if (rx_buf)
++		sh_msiof_modify_ctr_wait(p, 0, CTR_RXE);
++	sh_msiof_modify_ctr_wait(p, 0, CTR_TXE);
++
++	/* start by setting frame bit */
++	INIT_COMPLETION(p->done);
++	sh_msiof_modify_ctr_wait(p, 0, CTR_TFSE);
++
++	/* wait for tx fifo to be emptied / rx fifo to be filled */
++	wait_for_completion(&p->done);
++
++	/* read rx fifo */
++	if (rx_buf)
++		rx_fifo(p, rx_buf, words, fifo_shift);
++
++	/* clear status bits */
++	sh_msiof_reset_str(p);
++
++	/* shut down frame, tx/tx and clock signals */
++	sh_msiof_modify_ctr_wait(p, CTR_TFSE, 0);
++	sh_msiof_modify_ctr_wait(p, CTR_TXE, 0);
++	if (rx_buf)
++		sh_msiof_modify_ctr_wait(p, CTR_RXE, 0);
++	sh_msiof_modify_ctr_wait(p, CTR_TSCKE, 0);
++
++	return words;
++}
++
++static int sh_msiof_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
++	void (*tx_fifo)(struct sh_msiof_spi_priv *, const void *, int, int);
++	void (*rx_fifo)(struct sh_msiof_spi_priv *, void *, int, int);
++	int bits;
++	int bytes_per_word;
++	int bytes_done;
++	int words;
++	int n;
++
++	bits = sh_msiof_spi_bits(spi, t);
++
++	/* setup bytes per word and fifo read/write functions */
++	if (bits <= 8) {
++		bytes_per_word = 1;
++		tx_fifo = sh_msiof_spi_write_fifo_8;
++		rx_fifo = sh_msiof_spi_read_fifo_8;
++	} else if (bits <= 16) {
++		bytes_per_word = 2;
++		if ((unsigned long)t->tx_buf & 0x01)
++			tx_fifo = sh_msiof_spi_write_fifo_16u;
++		else
++			tx_fifo = sh_msiof_spi_write_fifo_16;
++
++		if ((unsigned long)t->rx_buf & 0x01)
++			rx_fifo = sh_msiof_spi_read_fifo_16u;
++		else
++			rx_fifo = sh_msiof_spi_read_fifo_16;
++	} else {
++		bytes_per_word = 4;
++		if ((unsigned long)t->tx_buf & 0x03)
++			tx_fifo = sh_msiof_spi_write_fifo_32u;
++		else
++			tx_fifo = sh_msiof_spi_write_fifo_32;
++
++		if ((unsigned long)t->rx_buf & 0x03)
++			rx_fifo = sh_msiof_spi_read_fifo_32u;
++		else
++			rx_fifo = sh_msiof_spi_read_fifo_32;
++	}
++
++	/* setup clocks (clock already enabled in chipselect()) */
++	sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk),
++				  sh_msiof_spi_hz(spi, t));
++
++	/* transfer in fifo sized chunks */
++	words = t->len / bytes_per_word;
++	bytes_done = 0;
++
++	while (bytes_done < t->len) {
++		n = sh_msiof_spi_txrx_once(p, tx_fifo, rx_fifo,
++					   t->tx_buf + bytes_done,
++					   t->rx_buf + bytes_done,
++					   words, bits);
++		bytes_done += n * bytes_per_word;
++		words -= n;
++	}
++
++	return bytes_done;
++}
++
++static u32 sh_msiof_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
++				  u32 word, u8 bits)
++{
++	BUG_ON(1); /* unused but needed by bitbang code */
++	return 0;
++}
++
++static int sh_msiof_spi_probe(struct platform_device *pdev)
++{
++	struct resource	*r;
++	struct spi_master *master;
++	struct sh_msiof_spi_priv *p;
++	char clk_name[16];
++	int i;
++	int ret;
++
++	master = spi_alloc_master(&pdev->dev, sizeof(struct sh_msiof_spi_priv));
++	if (master == NULL) {
++		dev_err(&pdev->dev, "failed to allocate spi master\n");
++		ret = -ENOMEM;
++		goto err0;
++	}
++
++	p = spi_master_get_devdata(master);
++
++	platform_set_drvdata(pdev, p);
++	p->info = pdev->dev.platform_data;
++	init_completion(&p->done);
++
++	snprintf(clk_name, sizeof(clk_name), "msiof%d", pdev->id);
++	p->clk = clk_get(&pdev->dev, clk_name);
++	if (IS_ERR(p->clk)) {
++		dev_err(&pdev->dev, "cannot get clock \"%s\"\n", clk_name);
++		ret = PTR_ERR(p->clk);
++		goto err1;
++	}
++
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	i = platform_get_irq(pdev, 0);
++	if (!r || i < 0) {
++		dev_err(&pdev->dev, "cannot get platform resources\n");
++		ret = -ENOENT;
++		goto err2;
++	}
++	p->mapbase = ioremap_nocache(r->start, resource_size(r));
++	if (!p->mapbase) {
++		dev_err(&pdev->dev, "unable to ioremap\n");
++		ret = -ENXIO;
++		goto err2;
++	}
++
++	ret = request_irq(i, sh_msiof_spi_irq, IRQF_DISABLED,
++			  dev_name(&pdev->dev), p);
++	if (ret) {
++		dev_err(&pdev->dev, "unable to request irq\n");
++		goto err3;
++	}
++
++	p->pdev = pdev;
++	pm_runtime_enable(&pdev->dev);
++
++	/* The standard version of MSIOF use 64 word FIFOs */
++	p->tx_fifo_size = 64;
++	p->rx_fifo_size = 64;
++
++	/* Platform data may override FIFO sizes */
++	if (p->info->tx_fifo_override)
++		p->tx_fifo_size = p->info->tx_fifo_override;
++	if (p->info->rx_fifo_override)
++		p->rx_fifo_size = p->info->rx_fifo_override;
++
++	/* init master and bitbang code */
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	master->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
++	master->flags = 0;
++	master->bus_num = pdev->id;
++	master->num_chipselect = p->info->num_chipselect;
++	master->setup = spi_bitbang_setup;
++	master->cleanup = spi_bitbang_cleanup;
++
++	p->bitbang.master = master;
++	p->bitbang.chipselect = sh_msiof_spi_chipselect;
++	p->bitbang.setup_transfer = sh_msiof_spi_setup_transfer;
++	p->bitbang.txrx_bufs = sh_msiof_spi_txrx;
++	p->bitbang.txrx_word[SPI_MODE_0] = sh_msiof_spi_txrx_word;
++	p->bitbang.txrx_word[SPI_MODE_1] = sh_msiof_spi_txrx_word;
++	p->bitbang.txrx_word[SPI_MODE_2] = sh_msiof_spi_txrx_word;
++	p->bitbang.txrx_word[SPI_MODE_3] = sh_msiof_spi_txrx_word;
++
++	ret = spi_bitbang_start(&p->bitbang);
++	if (ret == 0)
++		return 0;
++
++	pm_runtime_disable(&pdev->dev);
++ err3:
++	iounmap(p->mapbase);
++ err2:
++	clk_put(p->clk);
++ err1:
++	spi_master_put(master);
++ err0:
++	return ret;
++}
++
++static int sh_msiof_spi_remove(struct platform_device *pdev)
++{
++	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
++	int ret;
++
++	ret = spi_bitbang_stop(&p->bitbang);
++	if (!ret) {
++		pm_runtime_disable(&pdev->dev);
++		free_irq(platform_get_irq(pdev, 0), sh_msiof_spi_irq);
++		iounmap(p->mapbase);
++		clk_put(p->clk);
++		spi_master_put(p->bitbang.master);
++	}
++	return ret;
++}
++
++static int sh_msiof_spi_runtime_nop(struct device *dev)
++{
++	/* Runtime PM callback shared between ->runtime_suspend()
++	 * and ->runtime_resume(). Simply returns success.
++	 *
++	 * This driver re-initializes all registers after
++	 * pm_runtime_get_sync() anyway so there is no need
++	 * to save and restore registers here.
++	 */
++	return 0;
++}
++
++static struct dev_pm_ops sh_msiof_spi_dev_pm_ops = {
++	.runtime_suspend = sh_msiof_spi_runtime_nop,
++	.runtime_resume = sh_msiof_spi_runtime_nop,
++};
++
++static struct platform_driver sh_msiof_spi_drv = {
++	.probe		= sh_msiof_spi_probe,
++	.remove		= sh_msiof_spi_remove,
++	.driver		= {
++		.name	= "spi_sh_msiof",
++		.owner		= THIS_MODULE,
++		.pm		= &sh_msiof_spi_dev_pm_ops,
++	},
++};
++
++static int __init sh_msiof_spi_init(void)
++{
++	return platform_driver_register(&sh_msiof_spi_drv);
++}
++module_init(sh_msiof_spi_init);
++
++static void __exit sh_msiof_spi_exit(void)
++{
++	platform_driver_unregister(&sh_msiof_spi_drv);
++}
++module_exit(sh_msiof_spi_exit);
++
++MODULE_DESCRIPTION("SuperH MSIOF SPI Master Interface Driver");
++MODULE_AUTHOR("Magnus Damm");
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:spi_sh_msiof");
+--- /dev/null
++++ work/include/linux/spi/sh_msiof.h	2009-11-24 20:39:49.000000000 +0900
+@@ -0,0 +1,10 @@
++#ifndef __SPI_SH_MSIOF_H__
++#define __SPI_SH_MSIOF_H__
++
++struct sh_msiof_spi_info {
++	int tx_fifo_override;
++	int rx_fifo_override;
++	u16 num_chipselect;
++};
++
++#endif /* __SPI_SH_MSIOF_H__ */

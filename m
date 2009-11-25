@@ -1,92 +1,113 @@
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: [RFC] two new linux-next trees (SPI and devicetree)
-Date: Wed, 25 Nov 2009 13:38:07 +1100
-Message-ID: <20091125133807.c3803d92.sfr@canb.auug.org.au>
-References: <fa686aa40911241654w6ceb2c96nb3a6a57ac1b471f5@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA1";
- boundary="Signature=_Wed__25_Nov_2009_13_38_07_+1100_piG94Yi_jaK7gci+"
-Cc: akpm@linux-foundation.org, dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Michal Simek <michal.simek@petalogix.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S934210AbZKYCiM@vger.kernel.org>
-In-Reply-To: <fa686aa40911241654w6ceb2c96nb3a6a57ac1b471f5@mail.gmail.com>
+From: Magnus Damm <magnus.damm@gmail.com>
+Subject: [PATCH] spi: Allow using spi_bitbang_setup() with custom txrx_bufs()
+Date: Wed, 25 Nov 2009 17:26:03 +0900
+Message-ID: <20091125082603.25618.57438.sendpatchset@rxone.opensource.se>
+Cc: grant.likely@secretlab.ca, Magnus Damm <magnus.damm@gmail.com>,
+	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S933660AbZKYIbY@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---Signature=_Wed__25_Nov_2009_13_38_07_+1100_piG94Yi_jaK7gci+
-Content-Type: text/plain; charset=US-ASCII
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+From: Magnus Damm <damm@opensource.se>
 
-Hi Grant,
+This patch modifies the shared spi bitbanging code
+to allow using spi_bitbang_setup() even though the
+txrx_word[] callbacks are unset. Useful for drivers
+that want to make use of spi_bitbang_setup() but
+have their own txrx_bufs() callback.
 
-On Tue, 24 Nov 2009 17:54:27 -0700 Grant Likely <grant.likely@secretlab.ca>=
- wrote:
->
-> First one is a bunch of SPI patches.  I've made the offer to be SPI
-> co-maintainer, but I haven't received any feedback yet from either
-> akpm or dbrownell.  In the mean time, I still have a bunch of SPI
-> patches (properly signed off and everything) that should have
-> linux-next exposure before the merge window.  I've put them in the
-> tree shown in the request-pull output below.
->=20
-> David, akpm, please note:  I'm not intending to ask Linus to pull this
-> tree, but I do really need some feedback on what you want me to do.
-> The tree should be properly formed and signed off, so I can ask Linus
-> to pull from me directly if you wish.
->=20
->   git://git.secretlab.ca/git/linux-2.6 next-spi
+While at it, drop the MSIOF driver workaround.
 
-I have added this to linux-next from today.
+Signed-off-by: Magnus Damm <damm@opensource.se>
+---
 
-Thanks for adding your subsystem tree as a participant of linux-next.  As
-you may know, this is not a judgment of your code.  The purpose of
-linux-next is for integration testing and to lower the impact of
-conflicts between subsystems in the next merge window.=20
+ Depends on the MSIOF driver.
 
-You will need to ensure that the patches/commits in your tree/series have
-been:
-     * submitted under GPL v2 (or later) and include the Contributor's
-	Signed-off-by,
-     * posted to the relevant mailing list,
-     * reviewed by you (or another maintainer of your subsystem tree),
-     * successfully unit tested, and=20
-     * destined for the current or next Linux merge window.
+ drivers/spi/spi_bitbang.c  |   25 ++++++++++++++-----------
+ drivers/spi/spi_sh_msiof.c |   11 -----------
+ 2 files changed, 14 insertions(+), 22 deletions(-)
 
-Basically, this should be just what you would send to Linus (or ask him
-to fetch).  It is allowed to be rebased if you deem it necessary.
-
---=20
-Cheers,
-Stephen Rothwell=20
-sfr@canb.auug.org.au
-
-Legal Stuff:
-By participating in linux-next, your subsystem tree contributions are
-public and will be included in the linux-next trees.  You may be sent
-e-mail messages indicating errors or other issues when the
-patches/commits from your subsystem tree are merged and tested in
-linux-next.  These messages may also be cross-posted to the linux-next
-mailing list, the linux-kernel mailing list, etc.  The linux-next tree
-project and IBM (my employer) make no warranties regarding the linux-next
-project, the testing procedures, the results, the e-mails, etc.  If you
-don't agree to these ground rules, let me know and I'll remove your tree
-from participation in linux-next.
-
---Signature=_Wed__25_Nov_2009_13_38_07_+1100_piG94Yi_jaK7gci+
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAksMmJAACgkQjjKRsyhoI8yh3ACfaoDUwcAhmXibgf2QFr1Z0m0O
-P3oAnROWXl2qM4nj4+bzago2xDK8Fvva
-=hXsj
------END PGP SIGNATURE-----
-
---Signature=_Wed__25_Nov_2009_13_38_07_+1100_piG94Yi_jaK7gci+--
+--- 0001/drivers/spi/spi_bitbang.c
++++ work/drivers/spi/spi_bitbang.c	2009-11-25 15:30:45.000000000 +0900
+@@ -176,6 +176,14 @@ int spi_bitbang_setup_transfer(struct sp
+ }
+ EXPORT_SYMBOL_GPL(spi_bitbang_setup_transfer);
+ 
++static int spi_bitbang_bufs(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct spi_bitbang_cs	*cs = spi->controller_state;
++	unsigned		nsecs = cs->nsecs;
++
++	return cs->txrx_bufs(spi, cs->txrx_word, nsecs, t);
++}
++
+ /**
+  * spi_bitbang_setup - default setup for per-word I/O loops
+  */
+@@ -183,6 +191,7 @@ int spi_bitbang_setup(struct spi_device 
+ {
+ 	struct spi_bitbang_cs	*cs = spi->controller_state;
+ 	struct spi_bitbang	*bitbang;
++	int			mode_mask = SPI_CPOL | SPI_CPHA;
+ 	int			retval;
+ 	unsigned long		flags;
+ 
+@@ -196,9 +205,11 @@ int spi_bitbang_setup(struct spi_device 
+ 	}
+ 
+ 	/* per-word shift register access, in hardware or bitbanging */
+-	cs->txrx_word = bitbang->txrx_word[spi->mode & (SPI_CPOL|SPI_CPHA)];
+-	if (!cs->txrx_word)
+-		return -EINVAL;
++	if (bitbang->txrx_bufs == spi_bitbang_bufs) {
++		cs->txrx_word = bitbang->txrx_word[spi->mode & mode_mask];
++		if (!cs->txrx_word)
++			return -EINVAL;
++	}
+ 
+ 	retval = bitbang->setup_transfer(spi, NULL);
+ 	if (retval < 0)
+@@ -232,14 +243,6 @@ void spi_bitbang_cleanup(struct spi_devi
+ }
+ EXPORT_SYMBOL_GPL(spi_bitbang_cleanup);
+ 
+-static int spi_bitbang_bufs(struct spi_device *spi, struct spi_transfer *t)
+-{
+-	struct spi_bitbang_cs	*cs = spi->controller_state;
+-	unsigned		nsecs = cs->nsecs;
+-
+-	return cs->txrx_bufs(spi, cs->txrx_word, nsecs, t);
+-}
+-
+ /*----------------------------------------------------------------------*/
+ 
+ /*
+--- 0002/drivers/spi/spi_sh_msiof.c
++++ work/drivers/spi/spi_sh_msiof.c	2009-11-25 15:25:32.000000000 +0900
+@@ -510,13 +510,6 @@ static int sh_msiof_spi_txrx(struct spi_
+ 	return bytes_done;
+ }
+ 
+-static u32 sh_msiof_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
+-				  u32 word, u8 bits)
+-{
+-	BUG_ON(1); /* unused but needed by bitbang code */
+-	return 0;
+-}
+-
+ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource	*r;
+@@ -594,10 +587,6 @@ static int sh_msiof_spi_probe(struct pla
+ 	p->bitbang.chipselect = sh_msiof_spi_chipselect;
+ 	p->bitbang.setup_transfer = sh_msiof_spi_setup_transfer;
+ 	p->bitbang.txrx_bufs = sh_msiof_spi_txrx;
+-	p->bitbang.txrx_word[SPI_MODE_0] = sh_msiof_spi_txrx_word;
+-	p->bitbang.txrx_word[SPI_MODE_1] = sh_msiof_spi_txrx_word;
+-	p->bitbang.txrx_word[SPI_MODE_2] = sh_msiof_spi_txrx_word;
+-	p->bitbang.txrx_word[SPI_MODE_3] = sh_msiof_spi_txrx_word;
+ 
+ 	ret = spi_bitbang_start(&p->bitbang);
+ 	if (ret == 0)

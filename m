@@ -1,49 +1,92 @@
-From: Andrew Morton <akpm@linux-foundation.org>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 Subject: Re: [RFC] two new linux-next trees (SPI and devicetree)
-Date: Tue, 24 Nov 2009 18:11:39 -0800
-Message-ID: <20091124181139.b9e218ed.akpm@linux-foundation.org>
+Date: Wed, 25 Nov 2009 13:38:07 +1100
+Message-ID: <20091125133807.c3803d92.sfr@canb.auug.org.au>
 References: <fa686aa40911241654w6ceb2c96nb3a6a57ac1b471f5@mail.gmail.com>
-	<20091124170419.92cb63f6.akpm@linux-foundation.org>
-	<fa686aa40911241753lca699c9sa9ca0a0585a9d39d@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: dbrownell@users.sourceforge.net,
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Wed__25_Nov_2009_13_38_07_+1100_piG94Yi_jaK7gci+"
+Cc: akpm@linux-foundation.org, dbrownell@users.sourceforge.net,
 	spi-devel-general@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
 	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
 	Michal Simek <michal.simek@petalogix.com>
 To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S934054AbZKYCML@vger.kernel.org>
-In-Reply-To: <fa686aa40911241753lca699c9sa9ca0a0585a9d39d@mail.gmail.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S934210AbZKYCiM@vger.kernel.org>
+In-Reply-To: <fa686aa40911241654w6ceb2c96nb3a6a57ac1b471f5@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 24 Nov 2009 18:53:21 -0700 Grant Likely <grant.likely@secretlab.ca> wrote:
+--Signature=_Wed__25_Nov_2009_13_38_07_+1100_piG94Yi_jaK7gci+
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > My current stash:
-> >
-> >
-> > atmel_spi-fix-dma-addr-calculation-for-len-buffer_size.patch
-> > spi-controller-driver-for-designware-spi-core.patch
-> > spi-add-pci-interface-driver-for-designware-spi-core.patch
-> > spi-add-pci-interface-driver-for-designware-spi-core-fix.patch
-> > spi-controller-driver-for-designware-spi-core-fix.patch
-> > spidev-add-proper-section-markers.patch
-> > spidev-use-declare_bitmap-instead-of-declaring-the-array.patch
-> > spidev-use-declare_bitmap-instead-of-declaring-the-array-checkpatch-fixes.patch
-> > spi-drain-mxc-spi-transfer-buffer-when-probing-device.patch
-> > spi_s3c24xx-add-fiq-pseudo-dma-support.patch
-> 
-> Since they're already in your tree, do you mind continuing to shepherd
-> these (either merge or drop)?
+Hi Grant,
 
-Sure.
+On Tue, 24 Nov 2009 17:54:27 -0700 Grant Likely <grant.likely@secretlab.ca>=
+ wrote:
+>
+> First one is a bunch of SPI patches.  I've made the offer to be SPI
+> co-maintainer, but I haven't received any feedback yet from either
+> akpm or dbrownell.  In the mean time, I still have a bunch of SPI
+> patches (properly signed off and everything) that should have
+> linux-next exposure before the merge window.  I've put them in the
+> tree shown in the request-pull output below.
+>=20
+> David, akpm, please note:  I'm not intending to ask Linus to pull this
+> tree, but I do really need some feedback on what you want me to do.
+> The tree should be properly formed and signed off, so I can ask Linus
+> to pull from me directly if you wish.
+>=20
+>   git://git.secretlab.ca/git/linux-2.6 next-spi
 
-> > I haven't heard anything from David in over a month.
-> 
-> Okay, shall I go ahead and merge my change to MAINTAINERS through my
-> tree too then?
+I have added this to linux-next from today.
 
-OK by me.
+Thanks for adding your subsystem tree as a participant of linux-next.  As
+you may know, this is not a judgment of your code.  The purpose of
+linux-next is for integration testing and to lower the impact of
+conflicts between subsystems in the next merge window.=20
+
+You will need to ensure that the patches/commits in your tree/series have
+been:
+     * submitted under GPL v2 (or later) and include the Contributor's
+	Signed-off-by,
+     * posted to the relevant mailing list,
+     * reviewed by you (or another maintainer of your subsystem tree),
+     * successfully unit tested, and=20
+     * destined for the current or next Linux merge window.
+
+Basically, this should be just what you would send to Linus (or ask him
+to fetch).  It is allowed to be rebased if you deem it necessary.
+
+--=20
+Cheers,
+Stephen Rothwell=20
+sfr@canb.auug.org.au
+
+Legal Stuff:
+By participating in linux-next, your subsystem tree contributions are
+public and will be included in the linux-next trees.  You may be sent
+e-mail messages indicating errors or other issues when the
+patches/commits from your subsystem tree are merged and tested in
+linux-next.  These messages may also be cross-posted to the linux-next
+mailing list, the linux-kernel mailing list, etc.  The linux-next tree
+project and IBM (my employer) make no warranties regarding the linux-next
+project, the testing procedures, the results, the e-mails, etc.  If you
+don't agree to these ground rules, let me know and I'll remove your tree
+from participation in linux-next.
+
+--Signature=_Wed__25_Nov_2009_13_38_07_+1100_piG94Yi_jaK7gci+
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAksMmJAACgkQjjKRsyhoI8yh3ACfaoDUwcAhmXibgf2QFr1Z0m0O
+P3oAnROWXl2qM4nj4+bzago2xDK8Fvva
+=hXsj
+-----END PGP SIGNATURE-----
+
+--Signature=_Wed__25_Nov_2009_13_38_07_+1100_piG94Yi_jaK7gci+--

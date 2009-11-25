@@ -1,255 +1,187 @@
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] spi: SuperH MSIOF SPI Master driver
-Date: Wed, 25 Nov 2009 12:11:52 -0800
-Message-ID: <20091125121152.4ccf03dc.akpm@linux-foundation.org>
-References: <20091124125531.14957.41264.sendpatchset@rxone.opensource.se>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: spi_mpc8xxx.c: chip select polarity problem
+Date: Wed, 25 Nov 2009 15:11:57 -0700
+Message-ID: <fa686aa40911251411t13dd0131od6b497399641ce3d@mail.gmail.com>
+References: <200911161742.46663.to-fleischer@t-online.de>
+	<200911211708.47253.to-fleischer@t-online.de>
+	<fa686aa40911241633q38dc0cf8x8b23038fe2fdf10d@mail.gmail.com>
+	<200911252141.59549.to-fleischer@t-online.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
-	Paul Mundt <lethal@linux-sh.org>
-To: Magnus Damm <magnus.damm@gmail.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S934958AbZKYUMH@vger.kernel.org>
-In-Reply-To: <20091124125531.14957.41264.sendpatchset@rxone.opensource.se>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
+To: Torsten Fleischer <to-fleischer@t-online.de>
+Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <200911252141.59549.to-fleischer@t-online.de>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 24 Nov 2009 21:55:31 +0900
-Magnus Damm <magnus.damm@gmail.com> wrote:
+On Wed, Nov 25, 2009 at 1:41 PM, Torsten Fleischer
+<to-fleischer@t-online.de> wrote:
+> On Wen, Nov 25, 2009 at 01:33:57 Grant Likely wrote:
+>> Thanks. =A0However, there needs to be a proper description of what this
+>> patch does to go in the commit header. =A0Can you please write one?
+>>
+>> Thanks,
+>> g.
+>>
+> [...]
+>
+> The initialization of the chip selects is removed from the probe() functi=
+on of
+> the spi_mpc8xxx driver, because the driver doesn't know the polarity of t=
+he
+> chip selects of the SPI devices at the time of its initialization.
+>
+> For this reason the initialization of the several chip selects is postpon=
+ed
+> to the point of time when the very first SPI transfer to the associated d=
+evice
+> occurs.
+>
+>
+> Signed-off-by: Torsten Fleischer <to-fleischer@t-online.de>
 
-> From: Magnus Damm <damm@opensource.se>
-> 
-> This patch adds SPI Master support for the SuperH MSIOF
-> hardware block. Full duplex, spi mode 0-3, active high cs,
-> 3-wire and lsb first should all be supported, but the driver
-> has so far only been tested with "mmc_spi".
-> 
-> The MSIOF hardware comes with 32-bit FIFOs for receive and
-> transmit, and this driver simply breaks the SPI messages
-> into FIFO-sized chunks. The MSIOF hardware manages the pins
-> for clock, receive and transmit (sck/miso/mosi), but the chip
-> select pin is managed by software and must be configured as
-> a regular GPIO pin by the board code.
-> 
-> Performance wise there is still room for improvement, but
-> on a Ecovec board with the built-in sh7724 MSIOF0 this driver
-> gets Mini-sd read speeds of about half a megabyte per second.
-> 
-> Future work include better clock setup and merging of 8-bit
-> transfers into 32-bit words to reduce interrupt load and
-> improve throughput.
-> 
+Ah.  I understand what you're doing now.   Hmmm.  This approach
+concerns me because it relies on firmware or platform code to get CS
+gpios set up properly before the driver is probed.  Firmware doesn't
+always get it right, and I prefer to avoid platform specific setups as
+much as possible.  Why can't the CS polarity be encoded into the
+device tree so the driver *does* have the polarity data at probe time?
+
+g.
+
+> ---
 >
-> ...
+> diff -u -r -N linux-2.6.31.6_orig//drivers/spi/spi_mpc8xxx.c linux-2.6.31=
+.6/drivers/spi/spi_mpc8xxx.c
+> --- linux-2.6.31.6_orig//drivers/spi/spi_mpc8xxx.c =A0 =A0 =A02009-11-10 =
+01:32:31.000000000 +0100
+> +++ linux-2.6.31.6/drivers/spi/spi_mpc8xxx.c =A0 =A02009-11-19 08:15:33.0=
+00000000 +0100
+> @@ -114,6 +114,7 @@
+> =A0 =A0 =A0 =A0u32 rx_shift; =A0 =A0 =A0 =A0 =A0 /* RX data reg shift whe=
+n in qe mode */
+> =A0 =A0 =A0 =A0u32 tx_shift; =A0 =A0 =A0 =A0 =A0 /* TX data reg shift whe=
+n in qe mode */
+> =A0 =A0 =A0 =A0u32 hw_mode; =A0 =A0 =A0 =A0 =A0 =A0/* Holds HW mode regis=
+ter settings */
+> + =A0 =A0 =A0 int initialized;
+> =A0};
 >
-> --- 0001/drivers/spi/spi.c
-> +++ work/drivers/spi/spi.c	2009-11-24 20:39:48.000000000 +0900
-> @@ -17,7 +17,6 @@
->   * along with this program; if not, write to the Free Software
->   * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
->   */
+> =A0static inline void mpc8xxx_spi_write_reg(__be32 __iomem *reg, u32 val)
+> @@ -503,15 +504,52 @@
+>
+> =A0 =A0 =A0 =A0return ret;
+> =A0}
+> +
+> +
+> +struct mpc8xxx_spi_probe_info {
+> + =A0 =A0 =A0 struct fsl_spi_platform_data pdata;
+> + =A0 =A0 =A0 int *gpios;
+> + =A0 =A0 =A0 bool *alow_flags;
+> +};
+> +
+> +static struct mpc8xxx_spi_probe_info *
+> +to_of_pinfo(struct fsl_spi_platform_data *pdata)
+> +{
+> + =A0 =A0 =A0 return container_of(pdata, struct mpc8xxx_spi_probe_info, p=
+data);
+> +}
+> +
+> +static int mpc8xxx_spi_cs_init(struct spi_device *spi)
+> +{
+> + =A0 =A0 =A0 struct device *dev =3D spi->dev.parent;
+> + =A0 =A0 =A0 struct mpc8xxx_spi_probe_info *pinfo =3D to_of_pinfo(dev->p=
+latform_data);
+> + =A0 =A0 =A0 u16 cs =3D spi->chip_select;
+> + =A0 =A0 =A0 int gpio =3D pinfo->gpios[cs];
+> + =A0 =A0 =A0 bool on =3D pinfo->alow_flags[cs] ^ !(spi->mode & SPI_CS_HI=
+GH);
+> +
+> + =A0 =A0 =A0 return gpio_direction_output(gpio, on);
+> +}
+> +
+> =A0static int mpc8xxx_spi_transfer(struct spi_device *spi,
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0struct spi=
+_message *m)
+> =A0{
+> =A0 =A0 =A0 =A0struct mpc8xxx_spi *mpc8xxx_spi =3D spi_master_get_devdata=
+(spi->master);
+> + =A0 =A0 =A0 struct spi_mpc8xxx_cs *cs =3D spi->controller_state;
+> =A0 =A0 =A0 =A0unsigned long flags;
+>
+> =A0 =A0 =A0 =A0m->actual_length =3D 0;
+> =A0 =A0 =A0 =A0m->status =3D -EINPROGRESS;
+>
+> + =A0 =A0 =A0 if (cs && !cs->initialized) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 int ret;
+> +
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D mpc8xxx_spi_cs_init(spi);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (ret) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(&spi->dev, "cs_init=
+ failed: %d\n", ret);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ret;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->initialized =3D 1;
+> + =A0 =A0 =A0 }
+> +
+> =A0 =A0 =A0 =A0spin_lock_irqsave(&mpc8xxx_spi->lock, flags);
+> =A0 =A0 =A0 =A0list_add_tail(&m->queue, &mpc8xxx_spi->queue);
+> =A0 =A0 =A0 =A0queue_work(mpc8xxx_spi->workqueue, &mpc8xxx_spi->work);
+> @@ -648,18 +686,6 @@
+> =A0 =A0 =A0 =A0return 0;
+> =A0}
+>
+> -struct mpc8xxx_spi_probe_info {
+> - =A0 =A0 =A0 struct fsl_spi_platform_data pdata;
+> - =A0 =A0 =A0 int *gpios;
+> - =A0 =A0 =A0 bool *alow_flags;
+> -};
 > -
->  #include <linux/kernel.h>
->  #include <linux/device.h>
->  #include <linux/init.h>
-
-whoops?
-
-> --- /dev/null
-> +++ work/drivers/spi/spi_sh_msiof.c	2009-11-24 20:39:49.000000000 +0900
-> @@ -0,0 +1,675 @@
-> +/*
-> + * SuperH MSIOF SPI Master Interface
-> + *
-> + * Copyright (c) 2009 Magnus Damm
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + *
-> + */
-> +
-> +#include <linux/kernel.h>
-
-But not consistently.
-
-> +#include <linux/init.h>
-> +#include <linux/delay.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/completion.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/gpio.h>
-> +#include <linux/bitmap.h>
-> +#include <linux/clk.h>
-> +#include <linux/io.h>
-> +
-> +#include <linux/spi/spi.h>
-> +#include <linux/spi/spi_bitbang.h>
-> +#include <linux/spi/sh_msiof.h>
-> +
-> +#include <asm/spi.h>
-> +#include <asm/unaligned.h>
-> +
-> +struct sh_msiof_spi_priv {
-> +	struct spi_bitbang bitbang; /* must be first for spi_bitbang.c */
-
-Well if that's the case then spi_bitbang.c needs smacking.  What causes
-this requirement?
-
-> +	void __iomem *mapbase;
-> +	struct clk *clk;
-> +	struct platform_device *pdev;
-> +	struct sh_msiof_spi_info *info;
-> +	struct completion done;
-> +	unsigned long flags;
-> +	int tx_fifo_size;
-> +	int rx_fifo_size;
-> +};
-> +
+> -static struct mpc8xxx_spi_probe_info *
+> -to_of_pinfo(struct fsl_spi_platform_data *pdata)
+> -{
+> - =A0 =A0 =A0 return container_of(pdata, struct mpc8xxx_spi_probe_info, p=
+data);
+> -}
+> -
+> =A0static void mpc8xxx_spi_cs_control(struct spi_device *spi, bool on)
+> =A0{
+> =A0 =A0 =A0 =A0struct device *dev =3D spi->dev.parent;
+> @@ -720,14 +746,6 @@
 >
-> ...
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0pinfo->gpios[i] =3D gpio;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0pinfo->alow_flags[i] =3D flags & OF_GPIO_A=
+CTIVE_LOW;
+> -
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D gpio_direction_output(pinfo->gpios[=
+i],
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 pinfo->alow_flags[i]);
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (ret) {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(dev, "can't set out=
+put direction for gpio "
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "#%d: %d\n"=
+, i, ret);
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_loop;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+> =A0 =A0 =A0 =A0}
 >
-> +static void sh_msiof_modify_ctr_wait(struct sh_msiof_spi_priv *p,
-> +				     unsigned long clr, unsigned long set)
-> +{
-> +	unsigned long mask = clr | set;
-> +	unsigned long data;
-> +
-> +	data = sh_msiof_read(p, CTR);
-> +	data &= ~clr;
-> +	data |= set;
-> +	sh_msiof_write(p, CTR, data);
-> +
-> +	while ((sh_msiof_read(p, CTR) & mask) != set)
-> +		;
-
-hm, confidence.  No timeout needed here?
-
-> +}
-> +
-> +static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
-> +{
-> +	struct sh_msiof_spi_priv *p = data;
-> +
-> +	/* just disable the interrupt and wake up */
-> +	sh_msiof_write(p, IER, 0);
-> +
-> +	complete(&p->done);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static struct {
-> +	unsigned short div;
-> +	unsigned short scr;
-> +} sh_msiof_spi_clk_table[] = {
-> +	{ 1, 0x0007 },
-> +	{ 2, 0x0000 },
-> +	{ 4, 0x0001 },
-> +	{ 8, 0x0002 },
-> +	{ 16, 0x0003 },
-> +	{ 32, 0x0004 },
-> +	{ 64, 0x1f00 },
-> +	{ 128, 0x1f01 },
-> +	{ 256, 0x1f02 },
-> +	{ 512, 0x1f03 },
-> +	{ 1024, 0x1f04 },
-> +};
-
-Could be const (to save some .data) btu I think the compiler does that
-itself nowadays.
-
-> +static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
-> +				      unsigned long parent_rate,
-> +				      unsigned long spi_hz)
-> +{
-> +	unsigned long div = 1024;
-> +	int k;
-> +
-> +	if (!spi_hz || !parent_rate)
-> +		WARN_ON(1);
-> +	else
-> +		div = parent_rate / spi_hz;
-
-This could be more neatly coded as
-
-	if (!WARN_ON(!spi_hz || !parent_rate))
-		div = parent_rate / spi_hz;
-
-also, if this warning ever triggers, you won't know whether it was due
-to !spi_hx or to !parent_rate, which might make you sad.
-
-Can spi_hz and parent_rate ever be zero here anyway?  If not, zap it. 
-If so, why?  Programming bug?
-
-> +	/* TODO: make more fine grained */
-> +
-> +	for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_clk_table); k++) {
-> +		if (sh_msiof_spi_clk_table[k].div >= div)
-> +			break;
-> +	}
-> +
-> +	k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_clk_table) - 1);
-
-actually it's pretty obvious from all the above that k should have been
-size_t.
-
-> +	sh_msiof_write(p, TSCR, sh_msiof_spi_clk_table[k].scr);
-> +	sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
-> +}
-> +
-> +static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
-> +				      int cpol, int cpha,
-> +				      int tx_hi_z, int lsb_first)
-> +{
-> +	unsigned long tmp;
-> +	int edge;
-> +
-> +	/*
-> +	 * CPOL CPHA     TSCKIZ RSCKIZ TEDG REDG(!)
-> +	 *    0    0         10     10    1    0
-> +	 *    0    1         10     10    0    1
-> +	 *    1    0         11     11    0    1
-> +	 *    1    1         11     11    1    0
-> +	 *
-> +	 * (!) Note: REDG is inverted recommended data sheet setting
-> +	 */
-> +
-> +	sh_msiof_write(p, FCTR, 0);
-> +	sh_msiof_write(p, TMDR1, 0xe2000005 | (lsb_first << 24));
-> +	sh_msiof_write(p, RMDR1, 0x22000005 | (lsb_first << 24));
-> +
-> +	tmp = 0xa0000000;
-> +	tmp |= cpol << 30; /* TSCKIZ */
-> +	tmp |= cpol << 28; /* RSCKIZ */
-> +
-> +	edge = cpol ? cpha : !cpha;
-> +
-> +	tmp |= edge << 27; /* TEDG */
-> +	tmp |= !edge << 26; /* REDG */
-
-um, OK.  This mixture of logical-not with bit-operations is a bit woozy
-but I don't see any actual bugs there.
-
-> +	tmp |= (tx_hi_z ? 2 : 0) << 22; /* TXDIZ */
-> +	sh_msiof_write(p, CTR, tmp);
-> +}
-> +
+> =A0 =A0 =A0 =A0pdata->max_chipselect =3D ngpios;
 >
-> ...
->
-> +static u32 sh_msiof_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
-> +				  u32 word, u8 bits)
-> +{
-> +	BUG_ON(1); /* unused but needed by bitbang code */
 
-	BUG();
 
-> +	return 0;
-> +}
-> +
->
-> ...
->
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

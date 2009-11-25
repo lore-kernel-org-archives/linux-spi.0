@@ -1,66 +1,255 @@
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: Re: linux-next: spi tree build warning
-Date: Thu, 26 Nov 2009 01:35:05 +1100
-Message-ID: <20091126013505.037e5751.sfr@canb.auug.org.au>
-References: <20091125212959.601673f5.sfr@canb.auug.org.au>
-	<fa686aa40911250630h764c4f26xb2e7cc735261e987@mail.gmail.com>
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] spi: SuperH MSIOF SPI Master driver
+Date: Wed, 25 Nov 2009 12:11:52 -0800
+Message-ID: <20091125121152.4ccf03dc.akpm@linux-foundation.org>
+References: <20091124125531.14957.41264.sendpatchset@rxone.opensource.se>
 Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA1";
- boundary="Signature=_Thu__26_Nov_2009_01_35_05_+1100_tbhnh57s9se/R6kc"
-Cc: linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
-	=?UTF-8?B?IlJpY2hhcmQgUsO2amZvcnMi?=
-	<richard.rojfors@mocean-labs.com>,
-	spi-devel-general@lists.sourceforge.net
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-next-owner@vger.kernel.org>
-In-Reply-To: <fa686aa40911250630h764c4f26xb2e7cc735261e987@mail.gmail.com>
-Sender: linux-next-owner@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
+	Paul Mundt <lethal@linux-sh.org>
+To: Magnus Damm <magnus.damm@gmail.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S934958AbZKYUMH@vger.kernel.org>
+In-Reply-To: <20091124125531.14957.41264.sendpatchset@rxone.opensource.se>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---Signature=_Thu__26_Nov_2009_01_35_05_+1100_tbhnh57s9se/R6kc
-Content-Type: text/plain; charset=US-ASCII
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 24 Nov 2009 21:55:31 +0900
+Magnus Damm <magnus.damm@gmail.com> wrote:
 
-Hi Grant,
-
-On Wed, 25 Nov 2009 07:30:19 -0700 Grant Likely <grant.likely@secretlab.ca>=
- wrote:
+> From: Magnus Damm <damm@opensource.se>
+> 
+> This patch adds SPI Master support for the SuperH MSIOF
+> hardware block. Full duplex, spi mode 0-3, active high cs,
+> 3-wire and lsb first should all be supported, but the driver
+> has so far only been tested with "mmc_spi".
+> 
+> The MSIOF hardware comes with 32-bit FIFOs for receive and
+> transmit, and this driver simply breaks the SPI messages
+> into FIFO-sized chunks. The MSIOF hardware manages the pins
+> for clock, receive and transmit (sck/miso/mosi), but the chip
+> select pin is managed by software and must be configured as
+> a regular GPIO pin by the board code.
+> 
+> Performance wise there is still room for improvement, but
+> on a Ecovec board with the built-in sh7724 MSIOF0 this driver
+> gets Mini-sd read speeds of about half a megabyte per second.
+> 
+> Future work include better clock setup and merging of 8-bit
+> transfers into 32-bit words to reduce interrupt load and
+> improve throughput.
+> 
 >
-> Trivial fix committed to next-spi branch:
->=20
-> diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
-> index b927812..9f38637 100644
-> --- a/drivers/spi/xilinx_spi.c
-> +++ b/drivers/spi/xilinx_spi.c
-> @@ -408,8 +408,8 @@ struct spi_master *xilinx_spi_init(struct device *dev=
-, struc
->                 goto free_irq;
->         }
->=20
-> -       dev_info(dev, "at 0x%08X mapped to 0x%08X, irq=3D%d\n",
-> -               (u32)mem->start, (u32)xspi->regs, xspi->irq);
-> +       dev_info(dev, "at 0x%08llX mapped to 0x%p, irq=3D%d\n",
-> +               (unsigned long long)mem->start, xspi->regs, xspi->irq);
->         return master;
+> ...
+>
+> --- 0001/drivers/spi/spi.c
+> +++ work/drivers/spi/spi.c	2009-11-24 20:39:48.000000000 +0900
+> @@ -17,7 +17,6 @@
+>   * along with this program; if not, write to the Free Software
+>   * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+>   */
+> -
+>  #include <linux/kernel.h>
+>  #include <linux/device.h>
+>  #include <linux/init.h>
 
-Thanks.
+whoops?
 
---=20
-Cheers,
-Stephen Rothwell                    sfr@canb.auug.org.au
-http://www.canb.auug.org.au/~sfr/
+> --- /dev/null
+> +++ work/drivers/spi/spi_sh_msiof.c	2009-11-24 20:39:49.000000000 +0900
+> @@ -0,0 +1,675 @@
+> +/*
+> + * SuperH MSIOF SPI Master Interface
+> + *
+> + * Copyright (c) 2009 Magnus Damm
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + *
+> + */
+> +
+> +#include <linux/kernel.h>
 
---Signature=_Thu__26_Nov_2009_01_35_05_+1100_tbhnh57s9se/R6kc
-Content-Type: application/pgp-signature
+But not consistently.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
+> +#include <linux/init.h>
+> +#include <linux/delay.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/completion.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/gpio.h>
+> +#include <linux/bitmap.h>
+> +#include <linux/clk.h>
+> +#include <linux/io.h>
+> +
+> +#include <linux/spi/spi.h>
+> +#include <linux/spi/spi_bitbang.h>
+> +#include <linux/spi/sh_msiof.h>
+> +
+> +#include <asm/spi.h>
+> +#include <asm/unaligned.h>
+> +
+> +struct sh_msiof_spi_priv {
+> +	struct spi_bitbang bitbang; /* must be first for spi_bitbang.c */
 
-iEYEARECAAYFAksNQJkACgkQjjKRsyhoI8xBwgCeO+SzowWVPNo2nHEM1u6qkKIl
-6fgAn0GHimYYVopCh9h954oQAW2rFygD
-=MEzm
------END PGP SIGNATURE-----
+Well if that's the case then spi_bitbang.c needs smacking.  What causes
+this requirement?
 
---Signature=_Thu__26_Nov_2009_01_35_05_+1100_tbhnh57s9se/R6kc--
+> +	void __iomem *mapbase;
+> +	struct clk *clk;
+> +	struct platform_device *pdev;
+> +	struct sh_msiof_spi_info *info;
+> +	struct completion done;
+> +	unsigned long flags;
+> +	int tx_fifo_size;
+> +	int rx_fifo_size;
+> +};
+> +
+>
+> ...
+>
+> +static void sh_msiof_modify_ctr_wait(struct sh_msiof_spi_priv *p,
+> +				     unsigned long clr, unsigned long set)
+> +{
+> +	unsigned long mask = clr | set;
+> +	unsigned long data;
+> +
+> +	data = sh_msiof_read(p, CTR);
+> +	data &= ~clr;
+> +	data |= set;
+> +	sh_msiof_write(p, CTR, data);
+> +
+> +	while ((sh_msiof_read(p, CTR) & mask) != set)
+> +		;
+
+hm, confidence.  No timeout needed here?
+
+> +}
+> +
+> +static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
+> +{
+> +	struct sh_msiof_spi_priv *p = data;
+> +
+> +	/* just disable the interrupt and wake up */
+> +	sh_msiof_write(p, IER, 0);
+> +
+> +	complete(&p->done);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static struct {
+> +	unsigned short div;
+> +	unsigned short scr;
+> +} sh_msiof_spi_clk_table[] = {
+> +	{ 1, 0x0007 },
+> +	{ 2, 0x0000 },
+> +	{ 4, 0x0001 },
+> +	{ 8, 0x0002 },
+> +	{ 16, 0x0003 },
+> +	{ 32, 0x0004 },
+> +	{ 64, 0x1f00 },
+> +	{ 128, 0x1f01 },
+> +	{ 256, 0x1f02 },
+> +	{ 512, 0x1f03 },
+> +	{ 1024, 0x1f04 },
+> +};
+
+Could be const (to save some .data) btu I think the compiler does that
+itself nowadays.
+
+> +static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+> +				      unsigned long parent_rate,
+> +				      unsigned long spi_hz)
+> +{
+> +	unsigned long div = 1024;
+> +	int k;
+> +
+> +	if (!spi_hz || !parent_rate)
+> +		WARN_ON(1);
+> +	else
+> +		div = parent_rate / spi_hz;
+
+This could be more neatly coded as
+
+	if (!WARN_ON(!spi_hz || !parent_rate))
+		div = parent_rate / spi_hz;
+
+also, if this warning ever triggers, you won't know whether it was due
+to !spi_hx or to !parent_rate, which might make you sad.
+
+Can spi_hz and parent_rate ever be zero here anyway?  If not, zap it. 
+If so, why?  Programming bug?
+
+> +	/* TODO: make more fine grained */
+> +
+> +	for (k = 0; k < ARRAY_SIZE(sh_msiof_spi_clk_table); k++) {
+> +		if (sh_msiof_spi_clk_table[k].div >= div)
+> +			break;
+> +	}
+> +
+> +	k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_clk_table) - 1);
+
+actually it's pretty obvious from all the above that k should have been
+size_t.
+
+> +	sh_msiof_write(p, TSCR, sh_msiof_spi_clk_table[k].scr);
+> +	sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
+> +}
+> +
+> +static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+> +				      int cpol, int cpha,
+> +				      int tx_hi_z, int lsb_first)
+> +{
+> +	unsigned long tmp;
+> +	int edge;
+> +
+> +	/*
+> +	 * CPOL CPHA     TSCKIZ RSCKIZ TEDG REDG(!)
+> +	 *    0    0         10     10    1    0
+> +	 *    0    1         10     10    0    1
+> +	 *    1    0         11     11    0    1
+> +	 *    1    1         11     11    1    0
+> +	 *
+> +	 * (!) Note: REDG is inverted recommended data sheet setting
+> +	 */
+> +
+> +	sh_msiof_write(p, FCTR, 0);
+> +	sh_msiof_write(p, TMDR1, 0xe2000005 | (lsb_first << 24));
+> +	sh_msiof_write(p, RMDR1, 0x22000005 | (lsb_first << 24));
+> +
+> +	tmp = 0xa0000000;
+> +	tmp |= cpol << 30; /* TSCKIZ */
+> +	tmp |= cpol << 28; /* RSCKIZ */
+> +
+> +	edge = cpol ? cpha : !cpha;
+> +
+> +	tmp |= edge << 27; /* TEDG */
+> +	tmp |= !edge << 26; /* REDG */
+
+um, OK.  This mixture of logical-not with bit-operations is a bit woozy
+but I don't see any actual bugs there.
+
+> +	tmp |= (tx_hi_z ? 2 : 0) << 22; /* TXDIZ */
+> +	sh_msiof_write(p, CTR, tmp);
+> +}
+> +
+>
+> ...
+>
+> +static u32 sh_msiof_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
+> +				  u32 word, u8 bits)
+> +{
+> +	BUG_ON(1); /* unused but needed by bitbang code */
+
+	BUG();
+
+> +	return 0;
+> +}
+> +
+>
+> ...
+>

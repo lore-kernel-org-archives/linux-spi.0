@@ -1,90 +1,84 @@
-From: "le Reflexe Impots" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: [SPAM] Vous voulez reduire vos impots ?
-	Decouvrez comment avec notre VIDEO de presentation
-Date: Thu, 26 Nov 2009 13:12:19 +0100 (CET)
-Message-ID: <ktptwh.f3udkl@front07.g7r9.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: Allow using spi_bitbang_setup() with custom
+	txrx_bufs()
+Date: Thu, 26 Nov 2009 07:45:51 -0700
+Message-ID: <fa686aa40911260645i50bf0c35g93b4146952a5f82e@mail.gmail.com>
+References: <20091125082603.25618.57438.sendpatchset@rxone.opensource.se>
+	<fa686aa40911251415q624f3610n92cbc20437b12bf6@mail.gmail.com>
+	<aec7e5c30911252247i344f5bf3pb0240b9c23878bf5@mail.gmail.com>
+	<fa686aa40911252321t3111a8e8w9afc22ef1f262424@mail.gmail.com>
+	<aec7e5c30911252350r717393e8sd476fa7e3aeb301f@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1637833484445181381=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: spi-devel-general@lists.sourceforge.net,
+	dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org
+To: Magnus Damm <magnus.damm@gmail.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1760572AbZKZOqQ@vger.kernel.org>
+In-Reply-To: <aec7e5c30911252350r717393e8sd476fa7e3aeb301f@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1637833484445181381==
-Content-Type: multipart/alternative;
-	boundary="=_d6232f28a5cf08c619e6be589f69e17a"
+On Thu, Nov 26, 2009 at 12:50 AM, Magnus Damm <magnus.damm@gmail.com> w=
+rote:
+> On Thu, Nov 26, 2009 at 4:21 PM, Grant Likely <grant.likely@secretlab=
+=2Eca> wrote:
+>> On Wed, Nov 25, 2009 at 11:47 PM, Magnus Damm <magnus.damm@gmail.com=
+> wrote:
+>>> On Thu, Nov 26, 2009 at 7:15 AM, Grant Likely <grant.likely@secretl=
+ab.ca> wrote:
+>>>> On Wed, Nov 25, 2009 at 1:26 AM, Magnus Damm <magnus.damm@gmail.co=
+m> wrote:
+>>>>> =A0 =A0 =A0 =A0/* per-word shift register access, in hardware or =
+bitbanging */
+>>>>> - =A0 =A0 =A0 cs->txrx_word =3D bitbang->txrx_word[spi->mode & (S=
+PI_CPOL|SPI_CPHA)];
+>>>>> - =A0 =A0 =A0 if (!cs->txrx_word)
+>>>>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+>>>>> + =A0 =A0 =A0 if (bitbang->txrx_bufs =3D=3D spi_bitbang_bufs) {
+>>>>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs->txrx_word =3D bitbang->txrx_wor=
+d[spi->mode & mode_mask];
+>>>>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (!cs->txrx_word)
+>>>>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+>>>>> + =A0 =A0 =A0 }
+>>>>
+>>>> Hmmm... this smells like an ugly hack to me. =A0It seems to me tha=
+t if
+>>>> some bitbang backend drivers don't want this code, then it should =
+be
+>>>> encoded into a callback so it can be overridden. =A0Thoughts.
+>>>
+>>> Yeah, it's far from clean. I want to make use of spi_bitbang_setup(=
+)
+>>> in my MSIOF driver, but I want to avoid dummy txtx_word[] callbacks
+>>> that will be unused since i'm using a driver specific
+>>> bitbang->txrx_bufs function.
+>>>
+>>> I guess the attached patch is slightly cleaner? I like the idea of
+>>> letting bitbang drivers use shared code for
+>>> spi_bitbang_setup()/spi_bitbang_cleanup() with their private
+>>> setup_transfer() function which in turn calls
+>>> spi_bitbang_setup_transfer(). My impression is that there's quite a
+>>> bit of duplicated setup()/cleanup() code.
+>>
+>> This is certainly less ugly. =A0But with the points brought up in th=
+e
+>> other thread, I want to have a close look at spi-bitbang before I
+>> start applying stuff. =A0It seems nasty. =A0Give me a few days.
+>
+> Sure, I plan on posting a V2 of the MSIOF driver. I plan to keep the
+> dummy txrx_word() function for now - this to disconnect the cleanup
+> from the driver integration, hope that sounds like a good plan.
 
---=_d6232f28a5cf08c619e6be589f69e17a
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Works for me.  Now I just need to find someone with the time to
+refactor spi-bitbang.  :-)
 
-
---=_d6232f28a5cf08c619e6be589f69e17a
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>=0D<head>=0D</head>=0D<body>=0D<div align=3D"center"><font face=3D"ve=
-rdana" size=3D"3"><a href=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_=
-1&l=3Dhttp%3A%2F%2Fwww.vtqrsedf.info%2Fformulaires%2Faffich_form.php%3Fseri=
-al%3Dvn392v">Si ce message n'est pas lisible, suivez ce lien</a></font><br =
-/></div>=0D<table width=3D"554" align=3D"center" border=3D"0" cellspacing=
-=3D"0" cellpadding=3D"0">=0D<tbody style=3D"FONT-FAMILY: Arial,Helvetica,sa=
-ns-serif; FONT-SIZE: 12px">=0D<tr>=0D<td width=3D"600" valign=3D"top"><a hr=
-ef=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_1&l=3Dhttp%3A%2F%2Fwww.=
-vtqrsedf.info%2Fformulaires%2Faffich_form.php%3Fserial%3Dvn392v"><img width=
-=3D"675" height=3D"159" src=3D"http://www.power-mta.com/hebergement_message=
-s/20489/images/VP1_0906_01.jpg" border=3D"0" complete=3D"true" /></a><a hre=
-f=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_1&l=3Dhttp%3A%2F%2Fwww.v=
-tqrsedf.info%2Fformulaires%2Faffich_form.php%3Fserial%3Dvn392v"><img width=
-=3D"675" height=3D"171" src=3D"http://www.power-mta.com/hebergement_message=
-s/20489/images/VP1_0906_02.jpg" border=3D"0" complete=3D"true" /></a><a hre=
-f=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_1&l=3Dhttp%3A%2F%2Fwww.v=
-tqrsedf.info%2Fformulaires%2Faffich_form.php%3Fserial%3Dvn392v"><img width=
-=3D"675" height=3D"140" src=3D"http://www.power-mta.com/hebergement_message=
-s/20489/images/VP1_0906_03.jpg" border=3D"0" complete=3D"true" /></a><a hre=
-f=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_1&l=3Dhttp%3A%2F%2Fwww.v=
-tqrsedf.info%2Fformulaires%2Faffich_form.php%3Fserial%3Dvn392v"><img width=
-=3D"675" height=3D"105" src=3D"http://www.power-mta.com/hebergement_message=
-s/20489/images/VP1_0906_04.jpg" border=3D"0" complete=3D"true" /></a></td>=
-=0D</tr>=0D</tbody>=0D</table><br /><br />=0D<br><br><br><div align=3D"cent=
-er"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#999999=
-">
-Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
-acces et de rectification.<br>
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://cdirecte.r7g.com=
-/AA077KRZTX_39191/877">ici</a></font></div><img src=3D"http://front.taemis.=
-com/ZZ077KRZTX_39191.png" /></body></html>
---=_d6232f28a5cf08c619e6be589f69e17a--
+g.
 
 
 
---===============1637833484445181381==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
-------------------------------------------------------------------------------
-Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
-trial. Simplify your report design, integration and deployment - and focus on 
-what you do best, core application coding. Discover what's new with
-Crystal Reports now.  http://p.sf.net/sfu/bobj-july
---===============1637833484445181381==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============1637833484445181381==--
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

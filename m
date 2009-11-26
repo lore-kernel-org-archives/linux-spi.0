@@ -1,68 +1,90 @@
-From: Anton Vorontsov <avorontsov@ru.mvista.com>
-Subject: Re: spi_mpc8xxx.c: chip select polarity problem
-Date: Thu, 26 Nov 2009 15:12:04 +0300
-Message-ID: <20091126121204.GA3558@oksana.dev.rtsoft.ru>
-References: <200911161742.46663.to-fleischer@t-online.de>
-	<200911211708.47253.to-fleischer@t-online.de>
-	<fa686aa40911241633q38dc0cf8x8b23038fe2fdf10d@mail.gmail.com>
-	<200911252141.59549.to-fleischer@t-online.de>
-	<fa686aa40911251411t13dd0131od6b497399641ce3d@mail.gmail.com>
-Reply-To: avorontsov@ru.mvista.com
+From: "le Reflexe Impots" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: [SPAM] Vous voulez reduire vos impots ?
+	Decouvrez comment avec notre VIDEO de presentation
+Date: Thu, 26 Nov 2009 13:12:19 +0100 (CET)
+Message-ID: <ktptwh.f3udkl@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Torsten Fleischer <to-fleischer@t-online.de>,
-	spi-devel-general@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-Content-Disposition: inline
-In-Reply-To: <fa686aa40911251411t13dd0131od6b497399641ce3d@mail.gmail.com>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: multipart/mixed; boundary="===============1637833484445181381=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gV2VkLCBOb3YgMjUsIDIwMDkgYXQgMDM6MTE6NTdQTSAtMDcwMCwgR3JhbnQgTGlrZWx5IHdy
-b3RlOgo+IE9uIFdlZCwgTm92IDI1LCAyMDA5IGF0IDE6NDEgUE0sIFRvcnN0ZW4gRmxlaXNjaGVy
-Cj4gPHRvLWZsZWlzY2hlckB0LW9ubGluZS5kZT4gd3JvdGU6Cj4gPiBPbiBXZW4sIE5vdiAyNSwg
-MjAwOSBhdCAwMTozMzo1NyBHcmFudCBMaWtlbHkgd3JvdGU6Cj4gPj4gVGhhbmtzLiDCoEhvd2V2
-ZXIsIHRoZXJlIG5lZWRzIHRvIGJlIGEgcHJvcGVyIGRlc2NyaXB0aW9uIG9mIHdoYXQgdGhpcwo+
-ID4+IHBhdGNoIGRvZXMgdG8gZ28gaW4gdGhlIGNvbW1pdCBoZWFkZXIuIMKgQ2FuIHlvdSBwbGVh
-c2Ugd3JpdGUgb25lPwo+ID4+Cj4gPj4gVGhhbmtzLAo+ID4+IGcuCj4gPj4KPiA+IFsuLi5dCj4g
-Pgo+ID4gVGhlIGluaXRpYWxpemF0aW9uIG9mIHRoZSBjaGlwIHNlbGVjdHMgaXMgcmVtb3ZlZCBm
-cm9tIHRoZSBwcm9iZSgpIGZ1bmN0aW9uIG9mCj4gPiB0aGUgc3BpX21wYzh4eHggZHJpdmVyLCBi
-ZWNhdXNlIHRoZSBkcml2ZXIgZG9lc24ndCBrbm93IHRoZSBwb2xhcml0eSBvZiB0aGUKPiA+IGNo
-aXAgc2VsZWN0cyBvZiB0aGUgU1BJIGRldmljZXMgYXQgdGhlIHRpbWUgb2YgaXRzIGluaXRpYWxp
-emF0aW9uLgo+ID4KPiA+IEZvciB0aGlzIHJlYXNvbiB0aGUgaW5pdGlhbGl6YXRpb24gb2YgdGhl
-IHNldmVyYWwgY2hpcCBzZWxlY3RzIGlzIHBvc3Rwb25lZAo+ID4gdG8gdGhlIHBvaW50IG9mIHRp
-bWUgd2hlbiB0aGUgdmVyeSBmaXJzdCBTUEkgdHJhbnNmZXIgdG8gdGhlIGFzc29jaWF0ZWQgZGV2
-aWNlCj4gPiBvY2N1cnMuCj4gPgo+ID4KPiA+IFNpZ25lZC1vZmYtYnk6IFRvcnN0ZW4gRmxlaXNj
-aGVyIDx0by1mbGVpc2NoZXJAdC1vbmxpbmUuZGU+Cj4gCj4gQWguICBJIHVuZGVyc3RhbmQgd2hh
-dCB5b3UncmUgZG9pbmcgbm93LiAgIEhtbW0uICBUaGlzIGFwcHJvYWNoCj4gY29uY2VybnMgbWUg
-YmVjYXVzZSBpdCByZWxpZXMgb24gZmlybXdhcmUgb3IgcGxhdGZvcm0gY29kZSB0byBnZXQgQ1MK
-PiBncGlvcyBzZXQgdXAgcHJvcGVybHkgYmVmb3JlIHRoZSBkcml2ZXIgaXMgcHJvYmVkLgoKWWVz
-LCB0aGF0IHdhcyBzYWlkIGF0IHRoZSB2ZXJ5IGJlZ2lubmluZyBvZiB0aGlzIHRocmVhZC4KCj4g
-IEZpcm13YXJlIGRvZXNuJ3QKPiBhbHdheXMgZ2V0IGl0IHJpZ2h0LCBhbmQgSSBwcmVmZXIgdG8g
-YXZvaWQgcGxhdGZvcm0gc3BlY2lmaWMgc2V0dXBzIGFzCj4gbXVjaCBhcyBwb3NzaWJsZS4gIFdo
-eSBjYW4ndCB0aGUgQ1MgcG9sYXJpdHkgYmUgZW5jb2RlZCBpbnRvIHRoZQo+IGRldmljZSB0cmVl
-IHNvIHRoZSBkcml2ZXIgKmRvZXMqIGhhdmUgdGhlIHBvbGFyaXR5IGRhdGEgYXQgcHJvYmUgdGlt
-ZT8KCldlIGhhdmUgdGhlIHNwaS1jcy1oaWdoIHByb3BlcnR5LCBidXQgaXQgZHVwbGljYXRlcyBj
-b21wYXRpYmxlCnByb3BlcnR5LiAnY29tcGF0aWJsZScgaXMgZW5vdWdoIHRvIHRlbGwgd2hldGhl
-ciBzb21lIGRldmljZSBoYXMKY3MtaGlnaCBvciBjcy1sb3cgKGRldmljZSdzIGRyaXZlciBrbm93
-cyB0aGF0IGFscmVhZHkpLgoKVGhlIHByb2JsZW0gaXMgdGhhdCBTUEkgYnVzIG1hc3RlciBkb2Vz
-bid0IGtub3cgYWxsIHRoZSBkZXZpY2VzLApzbyBpdCBjYW4ndCBleHRyYWN0IHRoYXQgaW5mb3Jt
-YXRpb24gZnJvbSB0aGUgY29tcGF0aWJsZSBzdHJpbmcuClRvIHdvcmthcm91bmQgdGhhdCB3ZSBj
-YW4gdXNlICdzcGktY3MtaGlnaCcsIGJ1dCB0aGF0J3MgdWdseQp3b3JrYXJvdW5kLgoKU1BJIG1v
-ZGVzICgwLDEsMiwzKSBpcyBhbm90aGVyIG1hdHRlciwgc29tZSBkZXZpY2VzIGNhbiB3b3JrIGlu
-CnNldmVyYWwgbW9kZXMsIHNvICdzcGktY3BvbCcgYW5kICdzcGktY3BoYScgYXJlIGFjdHVhbGx5
-IHVzZWZ1bC4KCi0tIApBbnRvbiBWb3JvbnRzb3YKZW1haWw6IGNib3VhdG1haWxydUBnbWFpbC5j
-b20KaXJjOi8vaXJjLmZyZWVub2RlLm5ldC9iZDIKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KTGludXhwcGMtZGV2IG1haWxpbmcgbGlzdApMaW51eHBwYy1k
-ZXZAbGlzdHMub3psYWJzLm9yZwpodHRwczovL2xpc3RzLm96bGFicy5vcmcvbGlzdGluZm8vbGlu
-dXhwcGMtZGV2
+--===============1637833484445181381==
+Content-Type: multipart/alternative;
+	boundary="=_d6232f28a5cf08c619e6be589f69e17a"
+
+--=_d6232f28a5cf08c619e6be589f69e17a
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+--=_d6232f28a5cf08c619e6be589f69e17a
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>=0D<head>=0D</head>=0D<body>=0D<div align=3D"center"><font face=3D"ve=
+rdana" size=3D"3"><a href=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_=
+1&l=3Dhttp%3A%2F%2Fwww.vtqrsedf.info%2Fformulaires%2Faffich_form.php%3Fseri=
+al%3Dvn392v">Si ce message n'est pas lisible, suivez ce lien</a></font><br =
+/></div>=0D<table width=3D"554" align=3D"center" border=3D"0" cellspacing=
+=3D"0" cellpadding=3D"0">=0D<tbody style=3D"FONT-FAMILY: Arial,Helvetica,sa=
+ns-serif; FONT-SIZE: 12px">=0D<tr>=0D<td width=3D"600" valign=3D"top"><a hr=
+ef=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_1&l=3Dhttp%3A%2F%2Fwww.=
+vtqrsedf.info%2Fformulaires%2Faffich_form.php%3Fserial%3Dvn392v"><img width=
+=3D"675" height=3D"159" src=3D"http://www.power-mta.com/hebergement_message=
+s/20489/images/VP1_0906_01.jpg" border=3D"0" complete=3D"true" /></a><a hre=
+f=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_1&l=3Dhttp%3A%2F%2Fwww.v=
+tqrsedf.info%2Fformulaires%2Faffich_form.php%3Fserial%3Dvn392v"><img width=
+=3D"675" height=3D"171" src=3D"http://www.power-mta.com/hebergement_message=
+s/20489/images/VP1_0906_02.jpg" border=3D"0" complete=3D"true" /></a><a hre=
+f=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_1&l=3Dhttp%3A%2F%2Fwww.v=
+tqrsedf.info%2Fformulaires%2Faffich_form.php%3Fserial%3Dvn392v"><img width=
+=3D"675" height=3D"140" src=3D"http://www.power-mta.com/hebergement_message=
+s/20489/images/VP1_0906_03.jpg" border=3D"0" complete=3D"true" /></a><a hre=
+f=3D"http://lt.taemis.com/r.php?i=3D077KRZTX_39191_1&l=3Dhttp%3A%2F%2Fwww.v=
+tqrsedf.info%2Fformulaires%2Faffich_form.php%3Fserial%3Dvn392v"><img width=
+=3D"675" height=3D"105" src=3D"http://www.power-mta.com/hebergement_message=
+s/20489/images/VP1_0906_04.jpg" border=3D"0" complete=3D"true" /></a></td>=
+=0D</tr>=0D</tbody>=0D</table><br /><br />=0D<br><br><br><div align=3D"cent=
+er"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#999999=
+">
+Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
+acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://cdirecte.r7g.com=
+/AA077KRZTX_39191/877">ici</a></font></div><img src=3D"http://front.taemis.=
+com/ZZ077KRZTX_39191.png" /></body></html>
+--=_d6232f28a5cf08c619e6be589f69e17a--
+
+
+
+--===============1637833484445181381==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july
+--===============1637833484445181381==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1637833484445181381==--

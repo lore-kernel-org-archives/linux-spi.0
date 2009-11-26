@@ -1,7 +1,7 @@
-From: Anton Vorontsov <avorontsov@ru.mvista.com>
+From: Grant Likely <grant.likely@secretlab.ca>
 Subject: Re: spi_mpc8xxx.c: chip select polarity problem
-Date: Thu, 26 Nov 2009 22:01:01 +0300
-Message-ID: <20091126190101.GA19404@oksana.dev.rtsoft.ru>
+Date: Thu, 26 Nov 2009 12:17:35 -0700
+Message-ID: <fa686aa40911261117y4744e56bmf4d1d8260c7a51d0@mail.gmail.com>
 References: <200911161742.46663.to-fleischer@t-online.de>
 	<200911211708.47253.to-fleischer@t-online.de>
 	<fa686aa40911241633q38dc0cf8x8b23038fe2fdf10d@mail.gmail.com>
@@ -11,16 +11,15 @@ References: <200911161742.46663.to-fleischer@t-online.de>
 	<fa686aa40911261016p489981a2g1fac393264c4d1c7@mail.gmail.com>
 	<20091126184157.GA16607@oksana.dev.rtsoft.ru>
 	<fa686aa40911261050g3f7ae231mc82c41f058ff8530@mail.gmail.com>
-Reply-To: avorontsov@ru.mvista.com
+	<20091126190101.GA19404@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: Torsten Fleischer <to-fleischer@t-online.de>,
 	spi-devel-general@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
-To: Grant Likely <grant.likely@secretlab.ca>
+To: avorontsov@ru.mvista.com
 Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-Content-Disposition: inline
-In-Reply-To: <fa686aa40911261050g3f7ae231mc82c41f058ff8530@mail.gmail.com>
+In-Reply-To: <20091126190101.GA19404@oksana.dev.rtsoft.ru>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
 	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
@@ -32,29 +31,52 @@ Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBOb3YgMjYsIDIwMDkgYXQgMTE6NTA6MDVBTSAtMDcwMCwgR3JhbnQgTGlrZWx5IHdy
-b3RlOgo+IE9uIFRodSwgTm92IDI2LCAyMDA5IGF0IDExOjQxIEFNLCBBbnRvbiBWb3JvbnRzb3YK
-PiA8YXZvcm9udHNvdkBydS5tdmlzdGEuY29tPiB3cm90ZToKPiA+IE9uIFRodSwgTm92IDI2LCAy
-MDA5IGF0IDExOjE2OjM0QU0gLTA3MDAsIEdyYW50IExpa2VseSB3cm90ZToKPiA+IFsuLi5dCj4g
-Pj4gVGhlIHNwaS1jcy1oaWdoIHByb3BlcnR5IGlzIGRlZmluZWQgaW4KPiA+PiBEb2N1bWVudGF0
-aW9uL3Bvd2VycGMvZHRzLWJpbmRpbmdzL3NwaS1idXMudHh0LCBidXQgaXQgZGVmaW5pdGVseSB3
-YXMKPiA+PiBhIG1pc3Rha2UKPiA+Cj4gPiBZdXAuCj4gPgo+ID4+IEN1cnJlbnRseSB0aGUgc3Bp
-LWNzLWhpZ2ggcHJvcGVydHkgaXMgcGFyc2VkIGluIHRoZQo+ID4+IG9mX3JlZ2lzdGVyX3NwaV9k
-ZXZpY2VzKCkgZnVuY3Rpb24sIGJ1dCB0aGUgQ1MgcG9sYXJpdHkgbmVlZHMgdG8gYmUKPiA+PiBr
-bm93biBiZWZvcmUgcmVnaXN0ZXJpbmcgZGV2aWNlcy4gwqBJdCBuZWVkcyB0byBiZSBmYWN0b3Jl
-ZCBvdXQgaW50bwo+ID4+IGFub3RoZXIgdXRpbGl0eSBmdW5jdGlvbiBjYWxsYWJsZSBieSBzcGkg
-YnVzIGRyaXZlcnMgc28gdGhhdCBpdCBjYW4KPiA+PiBnZXQgcG9sYXJpdHkgZGF0YSBhdCBwcm9i
-ZSB0aW1lLgo+ID4KPiA+IFVudGlsbCB3ZSBoYXZlIHRoaXMsIFRvcnN0ZW4ncyBwYXRjaCBpcyBh
-IHJlYWwgaW1wcm92ZW1lbnQsIGFuZAo+ID4gd29ya3MgZm9yIG5vbi1icm9rZW4gaHcvZncuCj4g
-Pgo+ID4gU28gSSB0aGluayBpdCBzaG91bGQgYmUgYXBwbGllZC4KPiAKPiBJIGRpc2FncmVlIHNp
-bmNlIGl0IG9ubHkgYmFuZC1haWRzIHRoZSBwcm9ibGVtIGFuZCB1Z2xpZmllcyB0aGUgZHJpdmVy
-Cj4gaW4gdGhlIHByb2Nlc3MuICBJbiB0aGUgaW1tZWRpYXRlIHRlcm0gdGhlIGRyaXZlciBuZWVk
-cyB0byBiZSBjaGFuZ2VkCj4gdG8gcmVhZCB0aGUgc3BpLWNzLWhpZ2ggcHJvcGVydHkgb3V0IG9m
-IHRoZSBjaGlsZCBub2RlcyBiZWZvcmUKPiByZWdpc3RlcmluZyB0aGUgZGV2aWNlcy4KCkhtLiBJ
-IHRob3VnaHQgd2UgYWdyZWVkIHRoYXQgc3BpLWNzLWhpZ2ggaXMgbm90IGdvb2Q/IFdoeSBkbyB5
-b3UKZW5jb3VyYWdlIHVzaW5nIGl0IHRoZW4/IFdlJ2xsIGhhdmUgdG8gdWdsaWZ5IHRoZSBkcml2
-ZXIgd2l0aApsZWdhY3kgZGV2aWNlLXRyZWUgaGFuZGxpbmcgY29kZS4KCi0tIApBbnRvbiBWb3Jv
-bnRzb3YKZW1haWw6IGNib3VhdG1haWxydUBnbWFpbC5jb20KaXJjOi8vaXJjLmZyZWVub2RlLm5l
-dC9iZDIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGlu
-dXhwcGMtZGV2IG1haWxpbmcgbGlzdApMaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZwpodHRw
-czovL2xpc3RzLm96bGFicy5vcmcvbGlzdGluZm8vbGludXhwcGMtZGV2
+On Thu, Nov 26, 2009 at 12:01 PM, Anton Vorontsov
+<avorontsov@ru.mvista.com> wrote:
+> On Thu, Nov 26, 2009 at 11:50:05AM -0700, Grant Likely wrote:
+>> On Thu, Nov 26, 2009 at 11:41 AM, Anton Vorontsov
+>> <avorontsov@ru.mvista.com> wrote:
+>> > On Thu, Nov 26, 2009 at 11:16:34AM -0700, Grant Likely wrote:
+>> > [...]
+>> >> The spi-cs-high property is defined in
+>> >> Documentation/powerpc/dts-bindings/spi-bus.txt, but it definitely was
+>> >> a mistake
+>> >
+>> > Yup.
+>> >
+>> >> Currently the spi-cs-high property is parsed in the
+>> >> of_register_spi_devices() function, but the CS polarity needs to be
+>> >> known before registering devices. =A0It needs to be factored out into
+>> >> another utility function callable by spi bus drivers so that it can
+>> >> get polarity data at probe time.
+>> >
+>> > Untill we have this, Torsten's patch is a real improvement, and
+>> > works for non-broken hw/fw.
+>> >
+>> > So I think it should be applied.
+>>
+>> I disagree since it only band-aids the problem and uglifies the driver
+>> in the process. =A0In the immediate term the driver needs to be changed
+>> to read the spi-cs-high property out of the child nodes before
+>> registering the devices.
+>
+> Hm. I thought we agreed that spi-cs-high is not good? Why do you
+> encourage using it then? We'll have to uglify the driver with
+> legacy device-tree handling code.
+
+spi-cs-high is definitely not a complete solution, but it isn't
+actively evil either.  Plus it is documented and (presumably) in
+active use. so support for it should not be dropped.
+
+Regardless, there needs to be a library function for parsing all the
+SPI child nodes and returning the active state for each GPIO chip
+select.  All the code for parsing the old spi-cs-high properties can
+be contained in the same place as a new yet-to-be-defined bus node cs
+polarity property.  The rework to the driver itself is not ugly.
+
+g.
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

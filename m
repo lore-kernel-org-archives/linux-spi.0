@@ -1,82 +1,200 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: spi_mpc8xxx.c: chip select polarity problem
-Date: Thu, 26 Nov 2009 12:17:35 -0700
-Message-ID: <fa686aa40911261117y4744e56bmf4d1d8260c7a51d0@mail.gmail.com>
-References: <200911161742.46663.to-fleischer@t-online.de>
-	<200911211708.47253.to-fleischer@t-online.de>
-	<fa686aa40911241633q38dc0cf8x8b23038fe2fdf10d@mail.gmail.com>
-	<200911252141.59549.to-fleischer@t-online.de>
-	<fa686aa40911251411t13dd0131od6b497399641ce3d@mail.gmail.com>
-	<20091126121204.GA3558@oksana.dev.rtsoft.ru>
-	<fa686aa40911261016p489981a2g1fac393264c4d1c7@mail.gmail.com>
-	<20091126184157.GA16607@oksana.dev.rtsoft.ru>
-	<fa686aa40911261050g3f7ae231mc82c41f058ff8530@mail.gmail.com>
-	<20091126190101.GA19404@oksana.dev.rtsoft.ru>
+From: Dmitri Belimov <d.belimov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: SPI bitbang master for TV cards
+Date: Fri, 27 Nov 2009 14:15:48 +0900
+Message-ID: <20091127141548.36e8e58d@glory.loctelecom.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Torsten Fleischer <to-fleischer@t-online.de>,
-	spi-devel-general@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
-To: avorontsov@ru.mvista.com
-Return-path: <linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <20091126190101.GA19404@oksana.dev.rtsoft.ru>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppd-linuxppc64-dev=m.gmane.org@lists.ozlabs.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Nov 26, 2009 at 12:01 PM, Anton Vorontsov
-<avorontsov@ru.mvista.com> wrote:
-> On Thu, Nov 26, 2009 at 11:50:05AM -0700, Grant Likely wrote:
->> On Thu, Nov 26, 2009 at 11:41 AM, Anton Vorontsov
->> <avorontsov@ru.mvista.com> wrote:
->> > On Thu, Nov 26, 2009 at 11:16:34AM -0700, Grant Likely wrote:
->> > [...]
->> >> The spi-cs-high property is defined in
->> >> Documentation/powerpc/dts-bindings/spi-bus.txt, but it definitely was
->> >> a mistake
->> >
->> > Yup.
->> >
->> >> Currently the spi-cs-high property is parsed in the
->> >> of_register_spi_devices() function, but the CS polarity needs to be
->> >> known before registering devices. =A0It needs to be factored out into
->> >> another utility function callable by spi bus drivers so that it can
->> >> get polarity data at probe time.
->> >
->> > Untill we have this, Torsten's patch is a real improvement, and
->> > works for non-broken hw/fw.
->> >
->> > So I think it should be applied.
->>
->> I disagree since it only band-aids the problem and uglifies the driver
->> in the process. =A0In the immediate term the driver needs to be changed
->> to read the spi-cs-high property out of the child nodes before
->> registering the devices.
->
-> Hm. I thought we agreed that spi-cs-high is not good? Why do you
-> encourage using it then? We'll have to uglify the driver with
-> legacy device-tree handling code.
+Hi All.
 
-spi-cs-high is definitely not a complete solution, but it isn't
-actively evil either.  Plus it is documented and (presumably) in
-active use. so support for it should not be dropped.
+I write some support for our TV cards (open source of course)
+One of them has hardware MPEG2 encoder connected to host chip
+via GPIO. In our windows drivers we wrote internal simple SPI bitbang
+driver. For Linux we want use generic SPI subsystem.
+I wrote my ugly code, not working yet.
 
-Regardless, there needs to be a library function for parsing all the
-SPI child nodes and returning the active state for each GPIO chip
-select.  All the code for parsing the old spi-cs-high properties can
-be contained in the same place as a new yet-to-be-defined bus node cs
-polarity property.  The rework to the driver itself is not ugly.
 
-g.
+#include "saa7134-reg.h"
+#include "saa7134.h"
+#include <media/v4l2-common.h>
 
--- =
+/* ----------------------------------------------------------- */
 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+static unsigned int spi_debug;
+module_param(spi_debug, int, 0644);
+MODULE_PARM_DESC(spi_debug,"enable debug messages [spi]");
+
+#define d1printk if (1 == spi_debug) printk
+#define d2printk if (2 == spi_debug) printk
+
+static inline struct saa7134_spi_gpio *to_sb(struct spi_device *spi)
+{
+	return spi_master_get_devdata(spi->master);
+}
+
+static inline void setsck(struct spi_device *dev, int on)
+{
+	struct saa7134_spi_gpio *sb = to_sb(dev);
+
+	saa7134_set_gpio(sb->controller_data, sb->controller_data->spi.clock, on ? 1 : 0);
+}
+
+static inline void setmosi(struct spi_device *dev, int on)
+{
+	struct saa7134_spi_gpio *sb = to_sb(dev);
+
+	saa7134_set_gpio(sb->controller_data, sb->controller_data->spi.mosi, on ? 1 : 0);
+}
+
+static inline u32 getmiso(struct spi_device *dev)
+{
+	struct saa7134_spi_gpio *sb = to_sb(dev);
+	unsigned long status;
+
+	status = saa7134_get_gpio(sb->controller_data);
+	if ( status & (1 << sb->controller_data->spi.miso)) return 1;
+	else
+		return 0;
+}
+
+static void saa7134_spi_gpio_chipsel(struct spi_device *dev, int on)
+{
+	struct saa7134_spi_gpio *sb = to_sb(dev);
+
+	saa7134_set_gpio(sb->controller_data, sb->controller_data->spi.cs, on ? 1 : 0);
+}
+
+int saa7134_spi_register(struct saa7134_dev *dev)
+{
+	struct spi_master *master = dev->spi_adap.master;
+	struct saa7134_spi_gpio *sb = &dev->spi_adap;
+	int ret = 0;
+
+printk("SPI register start\n");
+
+	if (!dev->spi.spi_enable)
+	{
+	printk("SPI is not configured\n");
+		return 0;
+	}
+
+	master = spi_alloc_master(&dev->spi_adap.pdev->dev, sizeof(struct saa7134_spi_gpio));
+
+	if (master == NULL) {
+		dev_err(&dev->spi_adap.pdev->dev, "failed to allocate spi master\n");
+		ret = -ENOMEM;
+		goto err;
+	}
+
+	sb = spi_master_get_devdata(master);
+
+	master->num_chipselect = dev->spi.num_chipselect;
+	master->bus_num = -1;
+
+	sb->master = spi_master_get(master);
+
+	sb->bitbang.master = sb->master;
+	sb->bitbang.master->bus_num = -1;
+	sb->bitbang.chipselect = saa7134_spi_gpio_chipsel;
+	sb->bitbang.master->num_chipselect = dev->spi.num_chipselect;
+
+	/* set state of spi pins */
+	saa7134_set_gpio(dev, dev->spi.cs, 1);
+	saa7134_set_gpio(dev, dev->spi.clock, 1);
+	saa7134_set_gpio(dev, dev->spi.mosi, 1);
+	saa7134_set_gpio(dev, dev->spi.miso, 3);
+
+//	drv_set_drvdata(&sb->master->dev, sb);
+
+	ret = spi_bitbang_start(&sb->bitbang);
+
+	if (ret) {
+		dev_err(&dev->spi_adap.pdev->dev, "Failed to register SPI master\n");
+		goto err_no_bitbang;
+	}
+
+	dev_info(&dev->spi_adap.pdev->dev,
+		"spi master registered: bus_num=%d num_chipselect=%d\n",
+		master->bus_num, master->num_chipselect);
+
+	sb->controller_data = dev;
+printk("SPI register stop and OK\n");
+	return 0;
+
+err_no_bitbang:
+	spi_master_put(&sb->bitbang.master);
+err:
+printk("SPI register stop and FAIL\n");
+	return ret;
+}
+
+int saa7134_spi_unregister(struct saa7134_dev *dev)
+{
+	spi_bitbang_stop(&dev->spi_adap.bitbang);
+	spi_master_put(&dev->spi_adap.bitbang.master);
+	return 0;
+}
+
+
+Some structures from saa7134.h
+
+Structure for store config of GPIO
+struct saa7134_software_spi {
+	unsigned char cs:5;
+	unsigned char clock:5;
+	unsigned char mosi:5;
+	unsigned char miso:5;
+	unsigned char num_chipselect:3;
+	unsigned char spi_enable:1;
+};
+
+Structure for SPI controller
+struct saa7134_spi_gpio {
+	struct spi_bitbang	bitbang;
+	struct spi_master	*master;
+	struct platform_device	*pdev;
+	struct saa7134_dev	*controller_data;
+};
+
+/* global device status */
+struct saa7134_dev {
+
+skip
+
+	/* software spi */
+	struct saa7134_spi_gpio    spi_adap;
+	struct saa7134_software_spi spi;
+
+skip
+};
+
+/* ----------------------------------------------------------- */
+/* saa7134-spi.c                                               */
+
+int saa7134_spi_register(struct saa7134_dev *dev);
+int saa7134_spi_unregister(struct saa7134_dev *dev);
+
+saa7134-spi build to one saa7134 module. When modprobe I get NULL pointer operation.
+I don't understand how to write device driver structure for store data about driver.
+How to init all structure.
+Must sources consist standalon SPI master driver.
+
+With my best regards, Dmitry.
+
+------------------------------------------------------------------------------
+Let Crystal Reports handle the reporting - Free Crystal Reports 2008 30-Day 
+trial. Simplify your report design, integration and deployment - and focus on 
+what you do best, core application coding. Discover what's new with
+Crystal Reports now.  http://p.sf.net/sfu/bobj-july

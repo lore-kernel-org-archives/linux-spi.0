@@ -1,15 +1,10 @@
-From: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3]ARM: NUC900: Add spi driver support
-	for nuc900
-Date: Tue, 01 Dec 2009 22:29:20 +0800
-Message-ID: <4B152840.4050207@gmail.com>
+From: egor esin <egoresin-ColKEJEGj63QT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] Это PRосто. Полиграфические услуги
+Date: Tue, 01 Dec 2009 18:10:30 +0300
+Message-ID: <6314205258.20091201181030@l3388l.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0214231265287498720=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,610 +16,95 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Andrew,
+--===============0214231265287498720==
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
-I have fixed this spi patch and named it v3.
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
+bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL2h0bWw0L2xvb3NlLmR0ZCI+DQo8aHRt
+bD4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0
+ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjx0aXRsZT48L3RpdGxlPg0KPHN0
+eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHksdGQsdGggew0KCWZvbnQtZmFtaWx5
+OiBWZXJkYW5hLCBHZW5ldmEsIHNhbnMtc2VyaWYsIEFyaWFsOw0KCWZvbnQtc2l6ZTogMTNw
+eDsNCgljb2xvcjogIzAwMDsNCn0NCmJvZHkgew0KCWJhY2tncm91bmQtY29sb3I6ICNGRkY7
+DQp9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9keT4NCjx0YWJsZSB3aWR0aD0iNzUw
+IiBib3JkZXI9IjAiIGFsaWduPSJjZW50ZXIiIGNlbGxwYWRkaW5nPSIwIj4NCiAgPHRyPg0K
+ICAgIDx0ZD48cD7K4Oog7WUg72/y5XD/8vwgY/JhcPt4IOrr6OXt8u7iIOgg73Do4utl9/wg
+7e7i+/UuLi4/PGJyPg0KICAgICAg0ODn8+ztb2UgcGX4Ze3o5SAmbmRhc2g7IOph92Vj8uLl
+7e3g/yBwZerrYezt4P8g73Du5PPq9uj/IO/uIP3q7u1v7O3u6SD25e1lITxicj4NCiAgICAg
+IMz7IO1lIO/wZeTrYePg5ewgwmHsIP3q7u1v7Ojy/CDtYSDqYfdlY/LiZSAtIOz7IO/w5eTr
+YeNhZewg7+th8ujy/CDnYSDt5ePuIOzl7fz4ZS48L3A+DQogICAgICA8cD4xMDAwIMLIx8jS
+zsogICAgICAgICAgMTUwIOPw7Txicj4NCiAgICAgICAgMTAwMCDKwMvFzcTA0MXJICAgICAg
+ICAgIDIwMCDjcO08YnI+DQogICAgICAgIDEwMDAgy8jR0s7CzsogwDUgICAgIDcwMCDjcO08
+YnI+DQogICAgICAgIDEwMDAgy8jR0s7CzsogwDYgICAgIDQwMCDjcO08YnI+DQogICAgICAg
+IDEwMDAg1MvAxdDOwiAgICAgICAgICA0NTAg43DtPGJyPg0KICAgICAgICAxMDAwIM/Az87K
+ICAgICAgICAgIDM2MDAg4/DtPC9wPg0KICAgICAgPHA+wiDv8GXk5OLl8OjoIM1v4u7j7iDD
+7uTgLCDs+yDv7uxv5mXsIOJv7+tv8ujy/CDC4PjoIO3u4m/jb+Tt6OUg6OTl6C48YnI+DQog
+ICAgICAgIMrg92Xx8uJvIOjx72/r7WXt6P8sIOjt5Oji6OTzYev87fvpIOTo5+Dp7SDoIO/w
+b/Rl8fHo7u1h6/zt++Ug6u7tY/Pr/PLg9ujoIO/u7G/j8/I8YnI+DQogICAgICAgIMLg7CDt
+4Ony6CBv7/Lo7ODr/O3u5SDw5fjl7ehlIOTr/yBj4m/l6SAmcXVvdDvN7uJv4+7k7WXpIOfg
+5OD36CZxdW90Oy4gPC9wPg0KICAgICAgPHA+PHN0cm9uZz7KIO1v4u7j7uTt6Owg73Dg5+Tt
+6Org7CDs+yDv8OXk62HjYWXsIGPrZeTz/vnoZSDz8evz4+g6PC9zdHJvbmc+PGJyPg0KICAg
+ICAgICAmbmJzcDsmbmJzcDstIM/l9+Dy/CDt7uLu42/k7eh4IG/y6nD78m/qICji7ufsb+bt
++yDs4Ov75SDy6HDg5ugpIDxicj4NCiAgICAgICAgJm5ic3A7Jm5ic3A7LSDPZfdh8vwg6mHr
+Ze3kYXBl6SAo6mHw7GHt7ftlLCAmcXVvdDvkb+zo6ugmcXVvdDssIO9lcGXq6OTt+2UsIOri
+YfDy4Ov87ftlLCBWSVApPGJyPg0KICAgICAgICAmbmJzcDsmbmJzcDstIM9l92Hy/CDvcGHn
+5O3o9+379SDv4Opl8m/iICjh8+zg5u375Swg7+7r6P3y6Otl7W/i+2UpPGJyPg0KICAgICAg
+ICAmbmJzcDsmbmJzcDstIM1h7eXx5e3o5SDtYSDl5uXk7WXi7ejq6CAob/Ig73DuY/L79SDk
+byD96mPq6/7n6OLt+/UpPGJyPg0KICAgICAgICAmbmJzcDsmbmJzcDstIM9l9+Dy/CDt4CDt
+7uJv4+7k7eh4IGPz4mXt6HBh9SAocPP36ugsIOrw8+bq6Cwg5evu9+37ZSD44PD7IOgg8i7k
+Lik8YnI+DQogICAgICAgICZuYnNwOyZuYnNwOy0gz+X3YfL8IO3g6uvlZeog7eAg+GHs7+Dt
+Y+ruZTxicj4NCiAgICAgICAgJm5ic3A7Jm5ic3A7LSDPZfdh8vwg9O7y7iDtYSD17utj8mUg
+6CD96mPq6/7n6OLt+2Ug7+7k4PDq6CAmcXVvdDtIYW5kIG1hZGUmcXVvdDs8L3A+DQogICAg
+ICA8cD48c3Ryb25nPsz7IO1lIO7x8mHi6OwgwmFjIOHl5yDv7uTg8Oru4jwvc3Ryb25nPjwv
+cD4NCiAgICAgIDxwPs/QyCDHwMrAx8UgMTAwMCDKwsDQ0sDL3M3b1SDKwMvFzcTA0MXJICZu
+ZGFzaDsgMTAwMCDKwMvFzcTA0MXJLcTOzMjKzsIgwiA8c3Ryb25nPs/OxMDQzsogISEhPC9z
+dHJvbmc+PGJyPg0KICAgICAgICDP0Mggx8DKwMfFIDEwMDAgzcDR0s7L3M3b1SDKwMvFzcTA
+0MXJICZuZGFzaDsgMTAwMCDKwNDMwM3N29UgysDLxc3EwNDIys7CIMIgPHN0cm9uZz7PzsTA
+0M7KICEhITwvc3Ryb25nPjxicj4NCiAgICAgICAgz9DIIMfAysDHxSAyMDAwIMrAy8XNxMDQ
+xcktIMTOzMjKzsIgJm5kYXNoOyAxMDAwIMrA0MzAzc3b1SDKwMvFzcTA0MjKzsIgwiA8c3Ry
+b25nPs/OxMDQzsogISEhPC9zdHJvbmc+PC9wPg0KICAgICAgPHA+0+ft4OnyZSDuIO1v4vt4
+IO/wZeTr7ubl7ej/9SDzIOzl7eXk5uVwb+Ig6u7s7+Dt6OghISE8YnI+DQogICAgICAgIMfi
+7u3o8mUg728g8uXrZfTu7WHsICgwPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250
+LXNpemU6IDFweDsiPvU8L2ZvbnQ+NDxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9u
+dC1zaXplOiAxcHg7Ij78PC9mb250PjQpIDI8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9
+ImZvbnQtc2l6ZTogMXB4OyI+5zwvZm9udD4zPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxl
+PSJmb250LXNpemU6IDFweDsiPuw8L2ZvbnQ+OS0yPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0
+eWxlPSJmb250LXNpemU6IDFweDsiPuQ8L2ZvbnQ+NS0zPGZvbnQgY29sb3I9IiNGRkZGRkYi
+IHN0eWxlPSJmb250LXNpemU6IDFweDsiPuU8L2ZvbnQ+NCwgKDA8Zm9udCBjb2xvcj0iI0ZG
+RkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+9zwvZm9udD41PGZvbnQgY29sb3I9IiNG
+RkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPuM8L2ZvbnQ+MCkgNjxmb250IGNvbG9y
+PSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7iPC9mb250PjI8Zm9udCBjb2xv
+cj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+8DwvZm9udD42LTE8Zm9udCBj
+b2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI++TwvZm9udD43LTU8Zm9u
+dCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+5jwvZm9udD4xPC9w
+Pg0KICAgIDxwPtEgzcDR0tPPwN7ZyMwgzc7C28wgw87EzswhISE8L3A+PC90ZD4NCiAgPC90
+cj4NCjwvdGFibGU+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
 
-Thanks a lot for your help.
 
 
-Signed-off-by: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
----
- arch/arm/mach-w90x900/include/mach/nuc900_spi.h |   35 ++
- drivers/spi/Kconfig                             |    7 +
- drivers/spi/Makefile                            |    1 +
- drivers/spi/spi_nuc900.c                        |  504 +++++++++++++++++++++++
- 4 files changed, 547 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/mach-w90x900/include/mach/nuc900_spi.h
- create mode 100644 drivers/spi/spi_nuc900.c
-
-diff --git a/arch/arm/mach-w90x900/include/mach/nuc900_spi.h b/arch/arm/mach-w90x900/include/mach/nuc900_spi.h
-new file mode 100644
-index 0000000..bd94819
---- /dev/null
-+++ b/arch/arm/mach-w90x900/include/mach/nuc900_spi.h
-@@ -0,0 +1,35 @@
-+/*
-+ * arch/arm/mach-w90x900/include/mach/nuc900_spi.h
-+ *
-+ * Copyright (c) 2009 Nuvoton technology corporation.
-+ *
-+ * Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation;version 2 of the License.
-+ *
-+ */
-+
-+#ifndef __ASM_ARCH_SPI_H
-+#define __ASM_ARCH_SPI_H
-+
-+extern void mfp_set_groupg(struct device *dev);
-+
-+struct nuc900_spi_info {
-+	unsigned int num_cs;
-+	unsigned int lsb;
-+	unsigned int txneg;
-+	unsigned int rxneg;
-+	unsigned int divider;
-+	unsigned int sleep;
-+	unsigned int txnum;
-+	unsigned int txbitlen;
-+	int bus_num;
-+};
-+
-+struct nuc900_spi_chip {
-+	unsigned char bits_per_word;
-+};
-+
-+#endif /* __ASM_ARCH_SPI_H */
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 4b6f7cb..2e1b20c 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -244,6 +244,13 @@ config SPI_XILINX
- 	  See the "OPB Serial Peripheral Interface (SPI) (v1.00e)"
- 	  Product Specification document (DS464) for hardware details.
- 
-+config SPI_NUC900
-+	tristate "Nuvoton NUC900 series SPI"
-+	depends on ARCH_W90X900 && EXPERIMENTAL
-+	select SPI_BITBANG
-+	help
-+	  SPI driver for Nuvoton NUC900 series ARM SoCs
-+
- #
- # Add new SPI master controllers in alphabetical order above this line
- #
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 21a1182..694a4cb 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -33,6 +33,7 @@ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
- obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
- obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
- obj-$(CONFIG_SPI_STMP3XXX)		+= spi_stmp.o
-+obj-$(CONFIG_SPI_NUC900)		+= spi_nuc900.o
- # 	... add above this line ...
- 
- # SPI protocol drivers (device/link on bus)
-diff --git a/drivers/spi/spi_nuc900.c b/drivers/spi/spi_nuc900.c
-new file mode 100644
-index 0000000..b319f9b
---- /dev/null
-+++ b/drivers/spi/spi_nuc900.c
-@@ -0,0 +1,504 @@
-+/* linux/drivers/spi/spi_nuc900.c
-+ *
-+ * Copyright (c) 2009 Nuvoton technology.
-+ * Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+*/
-+
-+#include <linux/init.h>
-+#include <linux/spinlock.h>
-+#include <linux/workqueue.h>
-+#include <linux/interrupt.h>
-+#include <linux/delay.h>
-+#include <linux/errno.h>
-+#include <linux/err.h>
-+#include <linux/clk.h>
-+#include <linux/device.h>
-+#include <linux/platform_device.h>
-+#include <linux/gpio.h>
-+#include <linux/io.h>
-+
-+#include <linux/spi/spi.h>
-+#include <linux/spi/spi_bitbang.h>
-+
-+#include <mach/nuc900_spi.h>
-+
-+/* usi registers offset */
-+#define USI_CNT		0x00
-+#define USI_DIV		0x04
-+#define USI_SSR		0x08
-+#define USI_RX0		0x10
-+#define USI_TX0		0x10
-+
-+/* usi register bit */
-+#define ENINT		(0x01 << 17)
-+#define ENFLG		(0x01 << 16)
-+#define TXNUM		(0x03 << 8)
-+#define TXNEG		(0x01 << 2)
-+#define RXNEG		(0x01 << 1)
-+#define LSB		(0x01 << 10)
-+#define SELECTLEV	(0x01 << 2)
-+#define SELECTPOL	(0x01 << 31)
-+#define SELECTSLAVE	0x01
-+#define GOBUSY		0x01
-+
-+struct nuc900_spi {
-+	struct spi_bitbang	 bitbang;
-+	struct completion	 done;
-+	void __iomem		*regs;
-+	int			 irq;
-+	int			 len;
-+	int			 count;
-+	const unsigned char	*tx;
-+	unsigned char		*rx;
-+	struct clk		*clk;
-+	struct resource		*ioarea;
-+	struct spi_master	*master;
-+	struct spi_device	*curdev;
-+	struct device		*dev;
-+	struct nuc900_spi_info *pdata;
-+	spinlock_t		lock;
-+	struct resource		*res;
-+};
-+
-+static inline struct nuc900_spi *to_hw(struct spi_device *sdev)
-+{
-+	return spi_master_get_devdata(sdev->master);
-+}
-+
-+static void nuc900_slave_select(struct spi_device *spi, unsigned int ssr)
-+{
-+	struct nuc900_spi *hw = to_hw(spi);
-+	unsigned int val;
-+	unsigned int cs = spi->mode & SPI_CS_HIGH ? 1 : 0;
-+	unsigned int cpol = spi->mode & SPI_CPOL ? 1 : 0;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_SSR);
-+
-+	if (!cs)
-+		val &= ~SELECTLEV;
-+	else
-+		val |= SELECTLEV;
-+
-+	if (!ssr)
-+		val &= ~SELECTSLAVE;
-+	else
-+		val |= SELECTSLAVE;
-+
-+	__raw_writel(val, hw->regs + USI_SSR);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (!cpol)
-+		val &= ~SELECTPOL;
-+	else
-+		val |= SELECTPOL;
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void nuc900_spi_chipsel(struct spi_device *spi, int value)
-+{
-+	switch (value) {
-+	case BITBANG_CS_INACTIVE:
-+		nuc900_slave_select(spi, 0);
-+		break;
-+
-+	case BITBANG_CS_ACTIVE:
-+		nuc900_slave_select(spi, 1);
-+		break;
-+	}
-+}
-+
-+static void nuc900_spi_setup_txnum(struct nuc900_spi *hw,
-+							unsigned int txnum)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (!txnum)
-+		val &= ~TXNUM;
-+	else
-+		val |= txnum << 0x08;
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+
-+}
-+
-+static void nuc900_spi_setup_txbitlen(struct nuc900_spi *hw,
-+							unsigned int txbitlen)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	val |= (txbitlen << 0x03);
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void nuc900_spi_gobusy(struct nuc900_spi *hw)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	val |= GOBUSY;
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static int nuc900_spi_setupxfer(struct spi_device *spi,
-+				 struct spi_transfer *t)
-+{
-+	return 0;
-+}
-+
-+static int nuc900_spi_setup(struct spi_device *spi)
-+{
-+	return 0;
-+}
-+
-+static inline unsigned int hw_txbyte(struct nuc900_spi *hw, int count)
-+{
-+	return hw->tx ? hw->tx[count] : 0;
-+}
-+
-+static int nuc900_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	struct nuc900_spi *hw = to_hw(spi);
-+
-+	hw->tx = t->tx_buf;
-+	hw->rx = t->rx_buf;
-+	hw->len = t->len;
-+	hw->count = 0;
-+
-+	__raw_writel(hw_txbyte(hw, 0x0), hw->regs + USI_TX0);
-+
-+	nuc900_spi_gobusy(hw);
-+
-+	wait_for_completion(&hw->done);
-+
-+	return hw->count;
-+}
-+
-+static irqreturn_t nuc900_spi_irq(int irq, void *dev)
-+{
-+	struct nuc900_spi *hw = dev;
-+	unsigned int status;
-+	unsigned int count = hw->count;
-+
-+	status = __raw_readl(hw->regs + USI_CNT);
-+	__raw_writel(status, hw->regs + USI_CNT);
-+
-+	if (status & ENFLG) {
-+		hw->count++;
-+
-+		if (hw->rx)
-+			hw->rx[count] = __raw_readl(hw->regs + USI_RX0);
-+		count++;
-+
-+		if (count < hw->len) {
-+			__raw_writel(hw_txbyte(hw, count), hw->regs + USI_TX0);
-+			nuc900_spi_gobusy(hw);
-+		} else {
-+			complete(&hw->done);
-+		}
-+
-+		return IRQ_HANDLED;
-+	}
-+
-+	complete(&hw->done);
-+	return IRQ_HANDLED;
-+}
-+
-+static void nuc900_tx_edge(struct nuc900_spi *hw, unsigned int edge)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (edge)
-+		val |= TXNEG;
-+	else
-+		val &= ~TXNEG;
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void nuc900_rx_edge(struct nuc900_spi *hw, unsigned int edge)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (edge)
-+		val |= RXNEG;
-+	else
-+		val &= ~RXNEG;
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void nuc900_send_first(struct nuc900_spi *hw, unsigned int lsb)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (lsb)
-+		val |= LSB;
-+	else
-+		val &= ~LSB;
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void nuc900_set_sleep(struct nuc900_spi *hw, unsigned int sleep)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	if (sleep)
-+		val |= (sleep << 12);
-+	else
-+		val &= ~(0x0f << 12);
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void nuc900_enable_int(struct nuc900_spi *hw)
-+{
-+	unsigned int val;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&hw->lock, flags);
-+
-+	val = __raw_readl(hw->regs + USI_CNT);
-+
-+	val |= ENINT;
-+
-+	__raw_writel(val, hw->regs + USI_CNT);
-+
-+	spin_unlock_irqrestore(&hw->lock, flags);
-+}
-+
-+static void nuc900_set_divider(struct nuc900_spi *hw)
-+{
-+	__raw_writel(hw->pdata->divider, hw->regs + USI_DIV);
-+}
-+
-+static void nuc900_init_spi(struct nuc900_spi *hw)
-+{
-+	clk_enable(hw->clk);
-+	spin_lock_init(&hw->lock);
-+
-+	nuc900_tx_edge(hw, hw->pdata->txneg);
-+	nuc900_rx_edge(hw, hw->pdata->rxneg);
-+	nuc900_send_first(hw, hw->pdata->lsb);
-+	nuc900_set_sleep(hw, hw->pdata->sleep);
-+	nuc900_spi_setup_txbitlen(hw, hw->pdata->txbitlen);
-+	nuc900_spi_setup_txnum(hw, hw->pdata->txnum);
-+	nuc900_set_divider(hw);
-+	nuc900_enable_int(hw);
-+}
-+
-+static int __devinit nuc900_spi_probe(struct platform_device *pdev)
-+{
-+	struct nuc900_spi *hw;
-+	struct spi_master *master;
-+	int err = 0;
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(struct nuc900_spi));
-+	if (master == NULL) {
-+		dev_err(&pdev->dev, "No memory for spi_master\n");
-+		err = -ENOMEM;
-+		goto err_nomem;
-+	}
-+
-+	hw = spi_master_get_devdata(master);
-+	memset(hw, 0, sizeof(struct nuc900_spi));
-+
-+	hw->master = spi_master_get(master);
-+	hw->pdata  = pdev->dev.platform_data;
-+	hw->dev = &pdev->dev;
-+
-+	if (hw->pdata == NULL) {
-+		dev_err(&pdev->dev, "No platform data supplied\n");
-+		err = -ENOENT;
-+		goto err_pdata;
-+	}
-+
-+	platform_set_drvdata(pdev, hw);
-+	init_completion(&hw->done);
-+
-+	master->mode_bits          = SPI_MODE_0;
-+	master->num_chipselect     = hw->pdata->num_cs;
-+	master->bus_num            = hw->pdata->bus_num;
-+	hw->bitbang.master         = hw->master;
-+	hw->bitbang.setup_transfer = nuc900_spi_setupxfer;
-+	hw->bitbang.chipselect     = nuc900_spi_chipsel;
-+	hw->bitbang.txrx_bufs      = nuc900_spi_txrx;
-+	hw->bitbang.master->setup  = nuc900_spi_setup;
-+
-+	hw->res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (hw->res == NULL) {
-+		dev_err(&pdev->dev, "Cannot get IORESOURCE_MEM\n");
-+		err = -ENOENT;
-+		goto err_pdata;
-+	}
-+
-+	hw->ioarea = request_mem_region(hw->res->start,
-+					resource_size(hw->res), pdev->name);
-+
-+	if (hw->ioarea == NULL) {
-+		dev_err(&pdev->dev, "Cannot reserve region\n");
-+		err = -ENXIO;
-+		goto err_pdata;
-+	}
-+
-+	hw->regs = ioremap(hw->res->start, resource_size(hw->res));
-+	if (hw->regs == NULL) {
-+		dev_err(&pdev->dev, "Cannot map IO\n");
-+		err = -ENXIO;
-+		goto err_iomap;
-+	}
-+
-+	hw->irq = platform_get_irq(pdev, 0);
-+	if (hw->irq < 0) {
-+		dev_err(&pdev->dev, "No IRQ specified\n");
-+		err = -ENOENT;
-+		goto err_irq;
-+	}
-+
-+	err = request_irq(hw->irq, nuc900_spi_irq, 0, pdev->name, hw);
-+	if (err) {
-+		dev_err(&pdev->dev, "Cannot claim IRQ\n");
-+		goto err_irq;
-+	}
-+
-+	hw->clk = clk_get(&pdev->dev, "spi");
-+	if (IS_ERR(hw->clk)) {
-+		dev_err(&pdev->dev, "No clock for device\n");
-+		err = PTR_ERR(hw->clk);
-+		goto err_clk;
-+	}
-+
-+	mfp_set_groupg(&pdev->dev);
-+	nuc900_init_spi(hw);
-+
-+	err = spi_bitbang_start(&hw->bitbang);
-+	if (err) {
-+		dev_err(&pdev->dev, "Failed to register SPI master\n");
-+		goto err_register;
-+	}
-+
-+	return 0;
-+
-+err_register:
-+	clk_disable(hw->clk);
-+	clk_put(hw->clk);
-+err_clk:
-+	free_irq(hw->irq, hw);
-+err_irq:
-+	iounmap(hw->regs);
-+err_iomap:
-+	release_mem_region(hw->res->start, resource_size(hw->res));
-+	kfree(hw->ioarea);
-+err_pdata:
-+	spi_master_put(hw->master);;
-+
-+err_nomem:
-+	return err;
-+}
-+
-+static int __devexit nuc900_spi_remove(struct platform_device *dev)
-+{
-+	struct nuc900_spi *hw = platform_get_drvdata(dev);
-+
-+	free_irq(hw->irq, hw);
-+
-+	platform_set_drvdata(dev, NULL);
-+
-+	spi_unregister_master(hw->master);
-+
-+	clk_disable(hw->clk);
-+	clk_put(hw->clk);
-+
-+	iounmap(hw->regs);
-+
-+	release_mem_region(hw->res->start, resource_size(hw->res));
-+	kfree(hw->ioarea);
-+
-+	spi_master_put(hw->master);
-+	return 0;
-+}
-+
-+static struct platform_driver nuc900_spi_driver = {
-+	.probe		= nuc900_spi_probe,
-+	.remove		= __devexit_p(nuc900_spi_remove),
-+	.driver		= {
-+		.name	= "nuc900-spi",
-+		.owner	= THIS_MODULE,
-+	},
-+};
-+
-+static int __init nuc900_spi_init(void)
-+{
-+	return platform_driver_register(&nuc900_spi_driver);
-+}
-+
-+static void __exit nuc900_spi_exit(void)
-+{
-+	platform_driver_unregister(&nuc900_spi_driver);
-+}
-+
-+module_init(nuc900_spi_init);
-+module_exit(nuc900_spi_exit);
-+
-+MODULE_AUTHOR("Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>");
-+MODULE_DESCRIPTION("nuc900 spi driver!");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:nuc900-spi");
--- 
-1.5.6.3
+--===============0214231265287498720==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Join us December 9, 2009 for the Red Hat Virtual Experience,
 a free event focused on virtualization and cloud computing. 
 Attend in-depth sessions from your desk. Your couch. Anywhere.
 http://p.sf.net/sfu/redhat-sfdev2dev
+--===============0214231265287498720==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0214231265287498720==--

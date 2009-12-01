@@ -1,10 +1,11 @@
-From: Roman Stepanovich <romanstepanovich-L/YRQdCDplbQT0dZR+AlfA@public.gmane.org>
-Subject: [SPAM] Анaлиз cтpaxoв и cцeнapиeв пoвeдeния, кoтopыe мeшaют cтpoить oтнoшeния.
-Date: Tue, 01 Dec 2009 08:43:04 +0300
-Message-ID: <3786324120.20091201084304@l3377l.com>
+From: "Bouygues Immobilier" <logement-vBiHMX0iB9TL/pTOOJAPzJwf/2TLjaOD@public.gmane.org>
+Subject: [SPAM] C'est le moment de devenir
+	eco-proprietaire
+Date: Tue,  1 Dec 2009 11:37:59 +0100 (CET)
+Message-ID: <ktyyvb.gx1fst@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7635167436827872840=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============3452187351348489216=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,181 +17,185 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7635167436827872840==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+--===============3452187351348489216==
+Content-Type: multipart/alternative;
+	boundary="=_21736a3697a217b76010d8299de6ff56"
 
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
-bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL2h0bWw0L2xvb3NlLmR0ZCI+DQo8aHRt
-bD4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0
-ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjx0aXRsZT48L3RpdGxlPg0KPHN0
-eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHksdGQsdGggew0KCWZvbnQtZmFtaWx5
-OiBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOw0KCWZvbnQtc2l6ZTogMTNweDsNCglj
-b2xvcjogIzAwMDAwMDsNCn0NCmJvZHkgew0KCWJhY2tncm91bmQtY29sb3I6ICNGRkZGRkY7
-DQp9DQouc3R5bGUxIHsNCgljb2xvcjogI0ZGMDAwMDsNCglmb250LXdlaWdodDogYm9sZDsN
-Cn0NCi5zdHlsZTIgew0KCWNvbG9yOiAjMDAwMEZGOw0KCWZvbnQtd2VpZ2h0OiBib2xkOw0K
-fQ0KLnN0eWxlMyB7DQoJY29sb3I6ICMwMDk5NjY7DQoJZm9udC13ZWlnaHQ6IGJvbGQ7DQp9
-DQouc3R5bGU0IHsNCgljb2xvcjogIzY2NjY2NjsNCglmb250LXdlaWdodDogYm9sZDsNCn0N
-Ci0tPg0KPC9zdHlsZT48L2hlYWQ+DQoNCjxib2R5Pg0KPHRhYmxlIHdpZHRoPSI4MDAiIGJv
-cmRlcj0iMCIgYWxpZ249ImNlbnRlciI+DQogIDx0cj4NCiAgICA8dGQgd2lkdGg9IjczNyI+
-PHA+PHN0cm9uZz41IOTl6mHhcP88L3N0cm9uZz48L3A+DQogICAgICA8cD7MYWPy5XAt6uvg
-Y/E6IDxicj4NCiAgICAgICAgPHN0cm9uZz6ryuDqIO1h6fLoIOzz5vfo7fMg8eJvZekg7OX3
-8vsg6CDh+/L8IGMg7ejsIGP34PHy6+jib+m7Ljwvc3Ryb25nPjwvcD4NCiAgICA8cD7jLiDK
-6GXiLCDz6y4gyvDl+WHy6OosIDIgq9Pq8ODo7fHq6Okg5G/suzwvcD4NCiAgICA8cD48c3Ry
-b25nPs08Zm9udCBjb2xvcj0iI0VFRUVFRSIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+4Dwv
-Zm9udD5hPGZvbnQgY29sb3I9IiNFRUVFRUUiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPuE8
-L2ZvbnQ++Dxmb250IGNvbG9yPSIjRUVFRUVFIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7y
-PC9mb250Pugg6jxmb250IGNvbG9yPSIjRUVFRUVFIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7
-Ij77PC9mb250Pm88Zm9udCBjb2xvcj0iI0VFRUVFRSIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4
-OyI+9TwvZm9udD7tPGZvbnQgY29sb3I9IiNFRUVFRUUiIHN0eWxlPSJmb250LXNpemU6IDFw
-eDsiPuc8L2ZvbnQ+8jxmb250IGNvbG9yPSIjRUVFRUVFIiBzdHlsZT0iZm9udC1zaXplOiAx
-cHg7Ij7tPC9mb250PmE8Zm9udCBjb2xvcj0iI0VFRUVFRSIgc3R5bGU9ImZvbnQtc2l6ZTog
-MXB4OyI+5zwvZm9udD7qPGZvbnQgY29sb3I9IiNFRUVFRUUiIHN0eWxlPSJmb250LXNpemU6
-IDFweDsiPuo8L2ZvbnQ+8jxmb250IGNvbG9yPSIjRUVFRUVFIiBzdHlsZT0iZm9udC1zaXpl
-OiAxcHg7Ij7lPC9mb250Pvs6ICg8Zm9udCBjb2xvcj0iI0VFRUVFRSIgc3R5bGU9ImZvbnQt
-c2l6ZTogMXB4OyI+/TwvZm9udD4wPGZvbnQgY29sb3I9IiNFRUVFRUUiIHN0eWxlPSJmb250
-LXNpemU6IDFweDsiPv08L2ZvbnQ+NDxmb250IGNvbG9yPSIjRUVFRUVFIiBzdHlsZT0iZm9u
-dC1zaXplOiAxcHg7Ij7rPC9mb250PjQ8Zm9udCBjb2xvcj0iI0VFRUVFRSIgc3R5bGU9ImZv
-bnQtc2l6ZTogMXB4OyI+/DwvZm9udD4pIDI8Zm9udCBjb2xvcj0iI0VFRUVFRSIgc3R5bGU9
-ImZvbnQtc2l6ZTogMXB4OyI+4jwvZm9udD4yPGZvbnQgY29sb3I9IiNFRUVFRUUiIHN0eWxl
-PSJmb250LXNpemU6IDFweDsiPv08L2ZvbnQ+Mzxmb250IGNvbG9yPSIjRUVFRUVFIiBzdHls
-ZT0iZm9udC1zaXplOiAxcHg7Ij7+PC9mb250Pi08Zm9udCBjb2xvcj0iI0VFRUVFRSIgc3R5
-bGU9ImZvbnQtc2l6ZTogMXB4OyI+6TwvZm9udD41PGZvbnQgY29sb3I9IiNFRUVFRUUiIHN0
-eWxlPSJmb250LXNpemU6IDFweDsiPvs8L2ZvbnQ+Mzxmb250IGNvbG9yPSIjRUVFRUVFIiBz
-dHlsZT0iZm9udC1zaXplOiAxcHg7Ij75PC9mb250Pi08Zm9udCBjb2xvcj0iI0VFRUVFRSIg
-c3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+9jwvZm9udD40PGZvbnQgY29sb3I9IiNFRUVFRUUi
-IHN0eWxlPSJmb250LXNpemU6IDFweDsiPu08L2ZvbnQ+NTwvc3Ryb25nPjwvcD48L3RkPg0K
-ICA8L3RyPg0KICA8dHI+DQogICAgPHRkPjxocj48cD48ZW0+1+Bj8vwg7+Xw4uD/LjwvZW0+
-PC9wPg0KICAgICAgPHA+PHN0cm9uZz7CIP3yb+kg92Hx8ugg7GFj8mVwLerrYfFj4CDm5e35
-6O1hIO3g6eTl8iBv8uJl8vsg7eAg8etl5PP++ejlIOLu7/Du8fs6PC9zdHJvbmc+PGJyPg0K
-ICAgICAgICCVIMPk5SDoIOrg6iDt4Ony6CDM8+b36O3zIPHib2XpIOzl9/L7Pzxicj4NCiAg
-ICAgICAglSDK4Opv6SDy6O8g7PPm9+jtIO/w6OLr5erg5fIg6Oxl7e1vIGXlPzxicj4NCiAg
-ICAgICAglSDT7GXl8iDr6CDu7eAg8/fo8vxj/yDtYSBj4u7oeCDu+Ojh6mH1Pzxicj4NCiAg
-ICAgICAglSDX8u4g7GX4YWXyIOXpIGPycG/o8vwg6OTlYev87fvlIG/y7e74Ze3o/z88YnI+
-DQogICAgICCVINfybyDt8+btbyDk6/8g8m/j7iwg9/Lu4fsg6/7h6PL8IOgg4fvy/CDr/uHo
-7O7pPzwvcD4NCiAgICAgIDxwPs3g8/fo8vH/IOL74ehw4PL8IMzz5vfo7fMsIOru8u5w++kg
-7+7keO7k6PIg6Ozl7e1vIOXpIOgg73Bh4ujr/O1vIGMg7ejsIOft4Oru7Ojy/PH/LiDP7u3/
-8vwsIOph6uhlIO/w6Pfo7fsg52Hx8uDi6//+8iDl5SDx7u9wb/Lo4uv/8vxj/yDv7ujx6vMg
-5O5j8u7p7W/j7iBj7/Py7ejqYSDm6Oft6Cwg6CDqYeogY+Rl6+Dy/CDy4OosIPfyb+H7IObl
-62Ht6P8g7eD34OvoIOjx72/r7f/y/GP/LCBhIOzl9/L7IGPh++Lg8vxj/z8gyuDqIO3g8/fo
-8vzx/ywg6PHv7uv852/i4PL8LCDv7uvz92Xt7fvlIOjt8fLw8+r26OgsIOggYyDr5ePqb/Hy
-/P4g8fLw7ujy/Cwg8+Rv4utl8uLucP/++ejlIOTw8+Mg5HDz4+Ag7vLt7vjl7ej/LjwvcD4N
-CiAgICAgIDxwPjxzdHJvbmc+wCDyYermZSDh8+Tz8iDw4GNj7G/y8GXt+yBj6+Xk8/756OUg
-8uXs+zo8L3N0cm9uZz48YnI+DQogICAgICAgIJUgwO3g6+jnIPF4Zewgb/Lt7vhl7ejpIPEg
-7/Dl5Pvk8/no7Ogg7PPm9+jt4OzoOzxicj4NCiAgICAgICAglSDA7WHr6Ocg8fJwYXju4iDo
-IGP25e3g8Ohl4iDvb+Jl5GXt6P8sIOpv8m/w++Ug7GX44P7yIPHy8O7o8vwgb/Ltb/jl7ej/
-Ozxicj4NCiAgICAgIJUgwWHw/OXw+ywg7OX44P756OUg8e9v8W/h7W/x8ugg6/7h6PL8IOzz
-5vfo7fMsIOgg7GXyb+T7IOj1IO9wZW/k7utl7ej/LjwvcD4NCiAgICAgIDxwPjxzdHJvbmc+
-zGFj8uXwLerrYWPxIHDg8fH36PLg7SDtZSDy7uv86m8g7WEgY+Lu4e7k7ft4IOZl7fno7Swg
-7e4g6CDy5XgsIPMg6u7j7iDz5uUg5fHy/CDvb2Pyb//t7fvpIO/g8PLtZfAuPC9zdHJvbmc+
-PC9wPg0KICAgICAgPHA+PGVtPsLyb3Bh/yD34PHy/Do8L2VtPjwvcD4NCiAgICAgIDxwPjxz
-dHJvbmc+yuDqIO/u5O3/8vwg8WHs7m/2Ze3q8y4gJnF1b3Q7yGPq8/Fj8uLuIOH78vwg8ffg
-8fLr6OLu6SZxdW90Oy48L3N0cm9uZz48YnI+DQogICAgICAgIM1lIOJv5+3o6uDrbyDr6CDz
-IOLg8SDyYepv4+4g7vnz+WXt6P8sIPfybywg7eUgY+xv8nD/IO3gIOLxZSDk7mPy6OPt8/Jv
-5Swg7eXyIPfz4mPy4mEg8+Rv4uvl8uLucGXt6P8/IMJh7CDt5SDu8fJh5fJj/yDx6Osg6CDi
-8OXs5e3oLCD38m/h+yDtYfHrYebk4PL8Y/8g5ujn7fz+PyDC+yDsb+bl8mUg7eDz9+jy/GP/
-IO/u6/P34PL8IPPk7uLu6/xj8uLo5SDu8iDm6Oft6Cwg4ujkZfL8IO3gY/Jv//no6SDx7Ptj
-6yBj4u7l4+4g8fP55fHy4u7iYe3o/ywgYSDyYerm5SDv5XDl5uji4PL8IOgg8W/n5GHi4PL8
-IOjx8ujt7ftlIOzu7GXt8vsgY+JvZePuIGP3YfHy/P8sIGPi/+fg7e375SBjIGNl7Pzl6Swg
-5OXy/OzoIOggcGHhb/Jv6S48L3A+DQogICAgICA8cD48c3Ryb25nPsLy7nDg/yD3YWPy/CDv
-b+zu5uXyOjwvc3Ryb25nPjxicj4NCiAgICAgICAglSDv7u3/8vwsIMrybyDC2z8g0ffgY/Lr
-6OL7IOvoIML7PyDD5GUg6CDq7uPkYSDC+yBj4ejr6GP8IPEg7/Py6Ds8YnI+DQogICAgICAg
-IJUg7+7t//L8LCD38u4g8mHq7uUg0fLl8OLgLCDh+/L8IOjr6CDt5SDh+/L8IOXpPzxicj4N
-CiAgICAgICAglSDv7uvz9+jy/CDu8Ojl7fLocPsg7+7t6Oxh7ej/IOgg4m/n4vDg+WXt6P8g
-7vIgY+Xh/yDv8GXm7eXpIOogY+Xh5SDt4GPyb//5Zek7PGJyPg0KICAgICAgICCVIO/u7f/y
-/CDqYeph/yDC+yDG5e356O1hPyDO9uXt6PL8IMJh+PMg8+Ll8GXt7e7x8vwg6CDw4Odv4fBh
-8vzx/yDiIGPib+h4IO/w7vLo4m9wZffo//U7PC9wPg0KICAgICAgPHA+PHN0cm9uZz7P7uzu
-5mXyIG/y4uXy6PL8IO1hIOJv7/DuY/s6PC9zdHJvbmc+PGJyPg0KICAgICAgICCVINHq7uv8
-6m8g7PsgY/Jv6Ow/PGJyPg0KICAgICAgICCVIM9v92Xs8yDoIOph6iDu9mXt6OLgZfIg7PPm
-9+jt4CDmZe356O3zPzxicj4NCiAgICAgICAglSDPb/dl7PMg8+f7IOv+4eLoIOFlY2Po6/zt
-+yDvZfBl5CBj8vDg8fL8/iDz5O7i62Xy4u5w5e3o/yDsYfJl8Ohh6/zt+3gg7+7y8OXh7e5j
-8uXpLCDj5OUgb+H56Okg5+3g7GXtYfLl6/wg5GXt/OPoPzxicj4NCiAgICAgICAglSDP7vdl
-7PMg7WHsLCDmZe356O3g7CDoIOzz5vfo7eDsLCDy4Oog4mHm7W8g8W9v8uJl8mPy4m/iYfL8
-IO7v8GXkZevl7e377CDwb+tl4vvsIG/h8ODn9mHsLCDq7vLu8PvlIOph5uT76SDk5e38IO/w
-6O3u8f/yIO1v4vvlIOjx7/vy4O3o/ywg4uXk/CDvcOh4b+To8vzx/yDvb2Py7v/t7W8g8+Fl
-5uRh8vwg8eXh/yDoIORw8+PoeCDiIPJv7Cwg9/JvIPL7IGNvb/LiZfLx8uLzZfj8LCDn7eD3
-6PIg4iDv7nD/5OplLCDt7iDtYSBj4Ozu7CDk5evlIOz7IPfz4mPy4vNl7CDxZeH/IO7k6O1v
-6ujs6Cwg9e7y/yDoIOph5uXsY/8gb+H56PLl6/zt++zoIOgg8+Rv4uvl8uJvcOXt7fvs6CBj
-4u7l6SDm6Oft/P4/PGJyPg0KICAgICAgICCVIMHo5+3l8SDs5fjg5fIg6+j37W/pIObo5+3o
-PyDPb/fl7PMsIOIg8GXn8+v88uDyZSDhb+v8+OjtY/Li7iDmZe356O0g5OXr4P7yIGPyYeLq
-8yDy7uv86u4g7WEg52Hs8+ZlY/Li7iwg7vLq4Of74uD/Y/wgb/IgY2Xh/ywgb/Ig6+j37W/j
-7iDwb2Py4CDoIO9wZeJwYflh/yBjZeH/IOIg73Dl5Oxl8iDy7nDjYT88YnI+DQogICAgICAg
-IJUgymHqIOgg4iDh6Oft5fHlLCDoIOIg6mFw/GXw5Swg6CDiIOvo9+3u6SDm6Oft6CDh+/L8
-IOggb/HyYeJh8vzx/yDx4Ozo7OggY+7h7ukuIMgg6mHqIG/hcOVj8ugg8m8g8ffgY/L8ZSwg
-byDqb/Lu8G/sIOxl9/JhZfIg5mXt+ejtYT88YnI+DQogICAgICAgIJUgyCDqYeog5O7h6PL8
-Y/8g82Pv5fVhPzwvcD4NCiAgICAgIDxwPsdh5GH3YSDsYfHyZXAt6uvg8fFhIOTg8vwg7+7t
-//L8IOZl7fno7eUgb+Tt8yDv8O5j8vP+IOhj8ujt8ywg9/JvIOLxZSDt4Pfo7eDl8vH/IGMg
-6/7h4ugg6iBj5eFlLiDX8m8g7+5j8uXv5e3t7iwg+GHjIOdhIPjg4+7sLCDx6+Xk8/8sIO/u
-6/P35e3t++wg8OXq7uxl7eRh9uj/7CDoIOjx7+7r/Ofz/yDv8GXk62Hj4OXs+2Ug7OXyb+T7
-LCBv7WEg7eDz9+jy8f8g5ujy/CDiIOv+4eLoOiDi6OTl8vwg6/7hb+L8LCD38+Lx8uLu4mHy
-/CDlZSBj6uJv5/wgY/Ll7fsg5+tv8fLoLCDhb+voIGPy8OD14CDiIOTz+GF4IORw8+Po9SDo
-IO/u7G/j4PL8IOjsLCDu8upw++Lg8vwg4iBjZeFlIP3y7iDtZebt7uUg9/Pi8fLiby4gzeDz
-9+jyY/8gb+9w5eTl6//y/CDv8Oju8OjyZfL7LCDt4O9w6Ozl8CDy4OroZTogq8Xx6+gg4vsg
-8/Hv5fjt+yDiIOphcPzl8OUsIO3uIHD/5O7sIO3l8iDkb/Hyb+nt7uNvIOzz5vfo7fsgliD9
-8m8g7WUg5+1h9+jy/Cwg9/JvIOL7IO1lIPPx7+X47fsg6uDqIObl7fno7WEsIP3ybyDn7eD3
-6PIsIPfy7iDi8GXs/yDl+eUg7eUg73Do+Otvuy48L3A+DQogICAgICA8cD48c3Ryb25nPs9w
-b+jjcPvi4P8gliDt5SBj7ubg62Xy/Cwg4vvo43D74mH/IJYg7eUg5PPs4PL8LCD38m8g8uDq
-IOHz5OXyIOJjZePkYS48L3N0cm9uZz48L3A+DQogICAgICA8cD48c3Ryb25nPsfg6vDl7+jy
-/CD98ugg5+3g7ej/IO/u7G/j8/Ig7/Dg6vLo92Xx6uhlIPDl6m/sZe3k4Pbo6CDoIOjtY/Jw
-8+r26OgsIGEg6Ozl7e1vOjwvc3Ryb25nPjxicj4NCiAgICAgICAglSDS5Xjt6OrgIOL74e5w
-4Cwg72/keG/k//nl428g5Ov/IOTg7e1v4+4g7PPm9+jt+zs8YnI+DQogICAgICAgIJUgw+Tl
-IO3g6fLoLCDoIOrg6iDvcOji62X3/CDi7ejsYe3oZSDs8+b36O37LCD38u7h+yBjIO3o7CDv
-b+ft4Oru7Ojy/GP/Ozxicj4NCiAgICAgICAglSDX8u4g7fPm7W8gY+Rl6+Dy/Cwg9/Jv4fsg
-6OfhZeZh8vwg4ufg6Ozt7uPuIO3l7+7t6Ozg7ej/Ljxicj4NCiAgICAgICAglSDO5+1h6u7s
-6PL88f8g8SBv4fP34P75Zekg7/Du43Dg7Ozu6Swg6m/yb3Bh/yDk4OXyY/8g4iDi6ORlIPJl
-Y/JhLCDoIO/u5+Lu6/9l8iDmZe356O1lIO3gIOv+4W/sIP3y4O/lIO7y7e745e3o6SDvb+3/
-8vwg7eDs5fDl7ej/IOzz5vfo7fsg728gY+jj7WHr4OwsIOru8m9w+2Ugb+0g72/k4OXyLiDN
-4PP36PL8Y/8g73BveO7k6PL8IOrg5uT76SD98uDvIO7y7e745e3o6Swg6mHqIOzu5u1vIOvz
-9/hlIOggYyDtYejh7uv8+OjsIHDl5/Pr/PJh8m/sLiDAINbl7e37ZSDoIO/u6+Xn7fvlIHBl
-6m/s5e3k4Pbo6CBj8uDt8/Ig9W9w7vhl6SDvb+Rj6mHn6m/pIOgg8PPq7uLu5GPy4u7sIOog
-7eDo4e7r5WUg/fT05ery6OLt++wg5GXpY/Li6P/sIPHuIPHy7vDu7fsg5mXt+ejt+yDv8GHq
-8uj3ZfHq6CDk6/8g6/7hb+kg8ejy82H26OgsIOru8u5w++Ug7G/j8/Ig4m/n7ejq7fPy/CDi
-IG/y7W/45e3o/3gg8SDs8+b36O3u6S48L3A+DQogICAgICA8cD48c3Ryb25nPkLl5PP5Yf86
-PC9zdHJvbmc+IFDu52EgQ//h6PJv4mEgz2PoeO7rb+MgKOIg7/Bv+Ovu7CCWIOTl7/Py4PIg
-w29w7uRj6u7pIOTz7PssIGHw8i3k6HDl6vJv8CksIObl7fno7WEsIPHz5PzhYSDq7vLucG/p
-IO7y7/Px8ujr4CD5ZeTw7iDz5GH3LCDoIO/u8uVw/C4g0e/l9ujg6+jx8iDiIO7h62Fj8ugg
-4ufg6Ozu7vLtb/hl7ejpIOv+5GXpLCDz9+Dx8u3o6iDs7e7j6Hgg8mXrZeLo5+ju7e37eCDo
-IPDg5OhvIO9lcOXk4PcuIMJl5PP54P8g7+XwZeTg9+gg7WEgz2Xw4m/sIOrg7eDrZSCrxMDC
-wMkgz87Gxc3IzNHfuy4gwmXk8/ng/yDoIODi8u7wIO9wb+Pw4Ozs+yCr0W/iZfL7IG/yINDu
-5/sg0f/h6PJv4m/puyDt4CBwYeTobyCrzM7fINHFzNzfuyDoIO/w7uPwYezs+yAmcXVvdDvQ
-5fZl7/L7IGP3YWPy/P8mcXVvdDsg7WEgJnF1b3Q71cjSIEZNJnF1b3Q7LiDA4vJvcCDq7ejj
-OiCrzPPm9+jtYSDM5ffy+zog7eDp8ugg6CDh+/L8IGMg7ejsIPH3YWPy6+jib+m7LCCr1+Xj
-byBj8u7o8iDmZe356O3gLCDo6+ggymHqIO9v5O3/8vwg8WHsb+72Ze3q87ssIKvKYeog4uv+
-4ejy/CDiIPHl4f8g6m/jbyDz42/k7W+7LiDE5elj8uLo8uXr/O376SDz92Fj8u3o6iDM5ebk
-8+1h8O7k7W/pIMBjY+726OD26Ogg6+j37W/x8u1v4+4g8G/x8mEg6CDRYexvcODn4ujy6P8u
-IDE1IOtl8iDi7ufj62Hi6//l8iBj6/Pm4fMg5+3g6m/sY/LiIKvQ7ufgLcrr8+G7IOgg8+Ll
-cGXt4Cwg9/LuIOft4GXyIG8g73Dl5Oxl8mUgY+Jv5eNvIOHo5+1l8eAg4uX56Cwg5O4g6u7y
-7vD79SDv7urgIO3o6vLuIOX55SDtZSDk7uTz7ODr8f8uPC9wPg0KICAgICAgPHA+PHN0cm9u
-Zz7Q5ePoY/Jw4Pbo/zo8L3N0cm9uZz4g8SA5LTAwIORvIDEwLTAwPC9wPg0KICAgICAgPHA+
-PHN0cm9uZz7Q5ePr4Ozl7fI6PC9zdHJvbmc+IPEgMTAtMDAg5G8gMTctMDA8L3A+DQogICAg
-ICA8cD48c3Ryb25nPtTzcPjl8jo8L3N0cm9uZz4gYyAxMy0wMCDk7iAxNC0wMDwvcD4NCiAg
-ICA8L3RkPg0KICA8L3RyPg0KICA8dHI+DQogICAgPHRkPjxocj4NCiAgICA8cCBhbGlnbj0i
-Y2VudGVyIj48c3Ryb25nPkNUT8hNT0NU3CDByMtFVE9COjwvc3Ryb25nPjwvcD4NCiAgICA8
-ZGl2IGFsaWduPSJjZW50ZXIiPg0KICAgICAgPHRhYmxlIHdpZHRoPSIyODIiIGJvcmRlcj0i
-MCIgY2VsbHBhZGRpbmc9IjUiPg0KICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZCB3
-aWR0aD0iMTQ4Ij48ZGl2IGFsaWduPSJjZW50ZXIiPjxlbT48c3Ryb25nPsph8mXj7nDo6Dwv
-c3Ryb25nPjwvZW0+PC9kaXY+PC90ZD4NCiAgICAgICAgICAgIDx0ZCB3aWR0aD0iMTA4Ij48
-ZGl2IGFsaWduPSJjZW50ZXIiPjxlbT48c3Ryb25nPs3u/+Fw/Dwvc3Ryb25nPjwvZW0+PC9k
-aXY+PC90ZD4NCiAgICAgICAgICA8L3RyPg0KICAgICAgICAgIDx0cj4NCiAgICAgICAgICAg
-IDx0ZD48ZGl2IGFsaWduPSJjZW50ZXIiPjxzcGFuIGNsYXNzPSJzdHlsZTIiPu/l8OJh/yDq
-YfJl4+7w6P88L3NwYW4+PC9kaXY+PC90ZD4NCiAgICAgICAgICAgIDx0ZD48ZGl2IGFsaWdu
-PSJjZW50ZXIiPjxzcGFuIGNsYXNzPSJzdHlsZTIiPjEyMDAg43DtLjwvc3Bhbj48L2Rpdj48
-L3RkPg0KICAgICAgICAgIDwvdHI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRk
-PjxkaXYgYWxpZ249ImNlbnRlciI+PHNwYW4gY2xhc3M9InN0eWxlMyI+4vJvcOD/IOrg8mXj
-7nDo/zwvc3Bhbj48L2Rpdj48L3RkPg0KICAgICAgICAgICAgPHRkPjxkaXYgYWxpZ249ImNl
-bnRlciI+PHNwYW4gY2xhc3M9InN0eWxlMyI+MTAwMCDj8O0uPC9zcGFuPjwvZGl2PjwvdGQ+
-DQogICAgICAgICAgPC90cj4NCiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQ+PGRp
-diBhbGlnbj0iY2VudGVyIj48c3BhbiBjbGFzcz0ic3R5bGU0Ij7y8GXy/P8g6mHyZeNv8Oj/
-PC9zcGFuPjwvZGl2PjwvdGQ+DQogICAgICAgICAgICA8dGQ+PGRpdiBhbGlnbj0iY2VudGVy
-Ij48c3BhbiBjbGFzcz0ic3R5bGU0Ij43MDAg43DtLjwvc3Bhbj48L2Rpdj48L3RkPg0KICAg
-ICAgICAgIDwvdHI+DQogICAgICAgICAgPC90YWJsZT48aHI+DQogICAgPC9kaXY+PC90ZD4N
-CiAgPC90cj4NCjwvdGFibGU+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
+--=_21736a3697a217b76010d8299de6ff56
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
 
+--=_21736a3697a217b76010d8299de6ff56
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=0D<html>=0D=
+<head><title>Bouygues Immobilier</title>=0D<meta content=3D"text/html; char=
+set=3Diso-8859-1" http-equiv=3DContent-Type>=0D<style type=3Dtext/css>=0D<!=
+--=0D.Style1 {=0Dfont-size: 9px;=0Dfont-family: Arial, Helvetica, sans-seri=
+f;=0Dcolor: #88715F;=0D}=0Da:link {=0Dcolor: #91A301;=0D}=0Da:visited {=0Dc=
+olor: #999999;=0D}=0D.Style2 {=0Dfont-family: Verdana, Arial, Helvetica, sa=
+ns-serif;=0Dfont-size: 12px;=0Dcolor: #548301;=0Dfont-weight: bold;=0D}=0D-=
+->=0D</style>=0D</head>=0D<body topmargin=3D"0" leftmargin=3D"0" bgcolor=3D=
+"#ffffff" marginheight=3D"0" marginwidth=3D"0"><div align=3D"center"><font =
+size=3D"2" face=3D"verdana"><a href=3D"http://cdirecte.r7g.com/php/emailing=
+/view_mail.php?CODE=3D07ZY67ZZ_39191&HASH=3De04a449cbb310a540a4acde3c023c60=
+6">Si vous ne pouvez pas consulter correctement ce message, suivez ce lien<=
+/a></font></div>
+=0D<div align=3D"center"><!-- Save for Web Slices (emailing_base_investisse=
+ur.psd) --><span class=3D"Style2">France Patrimoine vous recommande l'offre=
+ de son partenaire Bouygues Immobilier</span><br /></div>=0D<table width=3D=
+"651" height=3D"804" align=3D"center" id=3D"Tableau_01" border=3D"0" cellsp=
+acing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td colspan=3D"7"><a href=
+=3D"http://www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/index.php">=
+<img width=3D"650" height=3D"119" style=3D"DISPLAY: block" alt=3D"GINKO - I=
+nvestir c'est bien plus que d=E9fiscaliser ! " src=3D"http://webe.emv3.com/=
+bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/em_inv_GINKO_header.jp=
+g" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D<td><img =
+width=3D"1" height=3D"119" style=3D"DISPLAY: block" src=3D"http://webe.emv3=
+.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" compl=
+ete=3D"true" complete=3D"true" /></td>=0D</tr>=0D<tr>=0D<td rowspan=3D"8"><=
+a href=3D"http://www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/index=
+.php"><img width=3D"68" height=3D"684" style=3D"DISPLAY: block" src=3D"http=
+://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/em_in=
+v_GINKO_gauche.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a>=
+</td>=0D<td width=3D"285" height=3D"314" background=3D"http://webe.emv3.com=
+/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/em_inv_GINKO_texte1.j=
+pg" rowspan=3D"2" colspan=3D"2"><a style=3D"TEXT-DECORATION: none" href=3D"=
+http://www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/index.php"><fon=
+t color=3D"#000000" face=3D"Arial, Helvetica, sans-serif" size=3D"2"><stron=
+g>Madame, Monsieur </strong>,<br /><br />Situ=E9 dans un lieu exceptionnel =
+face au <strong>Lac de Bordeaux</strong>, d=E9couvrez le futur =E9co-quarti=
+er GINKO. Ce projet s'inscrit dans une d=E9marche r=E9solument tourn=E9e ve=
+rs le <strong>d=E9veloppement durable et les =E9conomies d'=E9nergie</stron=
+g>.<br /><br /><strong>Avec 75 % de ses logements en basse consommation d'=
+=E9nergie&nbsp;</strong>(label BBC - Effinergie=AE<sup>*</sup>), ce nouveau=
+ quartier, =E0 seulement <strong>15 min en tramway du centre-ville</strong>=
+, participe aux efforts de r=E9duction d'empreinte =E9cologique de la ville=
+ dans ses projets de d=E9veloppement.<br /><br /><strong>Rejoignez tous ceu=
+x qui font le pari de l'avenir !</strong></font></a></td>=0D<td colspan=3D"=
+2"><img width=3D"157" height=3D"8" style=3D"DISPLAY: block" src=3D"http://w=
+ebe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/em_inv_GI=
+NKO_CBOFF1.jpg" complete=3D"true" complete=3D"true" /></td>=0D<td><img widt=
+h=3D"114" height=3D"8" style=3D"DISPLAY: block" alt=3D"Tout savoir sur GINK=
+O &gt;&gt;" src=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML=
+_GINKO_INV_SANSCB/em_inv_GINKO_savoir1.jpg" complete=3D"true" complete=3D"t=
+rue" /></td>=0D<td rowspan=3D"8"><a href=3D"http://www.bouygues-immobilier.=
+net/2009/11/ginko-eml-perffp/index.php"><img width=3D"26" height=3D"684" st=
+yle=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailing20=
+09/1109_EML_GINKO_INV_SANSCB/em_inv_GINKO_droite.jpg" border=3D"0" complete=
+=3D"true" complete=3D"true" /></a></td>=0D<td><img width=3D"1" height=3D"8"=
+ style=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailin=
+g2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" complete=3D"t=
+rue" /></td>=0D</tr>=0D<tr>=0D<td rowspan=3D"3" colspan=3D"3"><a href=3D"ht=
+tp://www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/index.php"><img w=
+idth=3D"271" height=3D"434" style=3D"DISPLAY: block" src=3D"http://webe.emv=
+3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/em_inv_GINKO_per=
+s.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D<td><=
+img width=3D"1" height=3D"306" style=3D"DISPLAY: block" src=3D"http://webe.=
+emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" c=
+omplete=3D"true" complete=3D"true" /></td>=0D</tr>=0D<tr>=0D<td colspan=3D"=
+2"><a href=3D"http://www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/i=
+ndex.php"><img width=3D"285" height=3D"32" style=3D"DISPLAY: block" alt=3D"=
+Le dispositif Scellier*" src=3D"http://webe.emv3.com/bouygues_immo/Emailing=
+2009/1109_EML_GINKO_INV_SANSCB/em_inv_GINKO_scellier.jpg" border=3D"0" comp=
+lete=3D"true" complete=3D"true" /></a></td>=0D<td><img width=3D"1" height=
+=3D"32" style=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/=
+Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" comple=
+te=3D"true" /></td>=0D</tr>=0D<tr>=0D<td width=3D"285" height=3D"96" backgr=
+ound=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_=
+SANSCB/em_inv_GINKO_texte2.jpg" colspan=3D"2"><a style=3D"TEXT-DECORATION: =
+none" href=3D"http://www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/i=
+ndex.php"><font color=3D"#000000" face=3D"Arial, Helvetica, sans-serif" siz=
+e=3D"2">Il vous permet de b=E9n=E9ficier d'une <strong>r=E9duction d'imp=F4=
+t =E9gale =E0 25 % du prix d'acquisition du bien</strong> destin=E9 =E0 la =
+location (dans la limite de 300 000 =80 d'investissement), sur 9 ans.</font=
+></a></td>=0D<td><img width=3D"1" height=3D"96" style=3D"DISPLAY: block" sr=
+c=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SAN=
+SCB/spacer.gif" complete=3D"true" complete=3D"true" /></td>=0D</tr>=0D<tr>=
+=0D<td colspan=3D"5"><a href=3D"http://www.bouygues-immobilier.net/2009/11/=
+ginko-eml-perffp/index.php"><img width=3D"556" height=3D"148" style=3D"DISP=
+LAY: block" alt=3D"Rendez-vous sur notre site internet Sp=E9cial Investisse=
+urs, cliquez ici !" src=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/=
+1109_EML_GINKO_INV_SANSCB/em_inv_GINKO_RDV.jpg" border=3D"0" complete=3D"tr=
+ue" complete=3D"true" /></a></td>=0D<td><img width=3D"1" height=3D"148" sty=
+le=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailing200=
+9/1109_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" complete=3D"true"=
+ /></td>=0D</tr>=0D<tr>=0D<td><img width=3D"199" height=3D"11" style=3D"DIS=
+PLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EM=
+L_GINKO_INV_SANSCB/em_inv_GINKO_CBOFF2.jpg" complete=3D"true" complete=3D"t=
+rue" /></td>=0D<td colspan=3D"2"><img width=3D"110" height=3D"11" style=3D"=
+DISPLAY: block" alt=3D"Tout savoir sur GINKO &gt;&gt;" src=3D"http://webe.e=
+mv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/em_inv_GINKO_s=
+avoir2.jpg" complete=3D"true" complete=3D"true" /></td>=0D<td colspan=3D"2"=
+><img width=3D"247" height=3D"11" style=3D"DISPLAY: block" alt=3D"Les autre=
+s programmes de Bouygues Immobilier" src=3D"http://webe.emv3.com/bouygues_i=
+mmo/Emailing2009/1109_EML_GINKO_INV_SANSCB/em_inv_GINKO_autres.jpg" complet=
+e=3D"true" complete=3D"true" /></td>=0D<td><img width=3D"1" height=3D"11" s=
+tyle=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailing2=
+009/1109_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" complete=3D"tru=
+e" /></td>=0D</tr>=0D<tr>=0D<td colspan=3D"5"><a href=3D"http://www.bouygue=
+s-immobilier.net/2009/11/ginko-eml-perffp/index.php"><img width=3D"556" hei=
+ght=3D"40" style=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_im=
+mo/Emailing2009/1109_EML_GINKO_INV_SANSCB/emailing_base_investisseur_14.jpg=
+" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D<td><img w=
+idth=3D"1" height=3D"40" style=3D"DISPLAY: block" src=3D"http://webe.emv3.c=
+om/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" complet=
+e=3D"true" complete=3D"true" /></td>=0D</tr>=0D<tr>=0D<td width=3D"556" hei=
+ght=3D"43" background=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/11=
+09_EML_GINKO_INV_SANSCB/emailing_base_investisseur_15.jpg" colspan=3D"5"><a=
+ style=3D"TEXT-DECORATION: none" href=3D"http://www.effinergie.org/site/Eff=
+inergie/0-Accueil"><font color=3D"#ffffff" face=3D"Arial, Helvetica, sans-s=
+erif" size=3D"1">* Label d=E9livr=E9 par Cerqual, en option de la certifica=
+tion Habitat et Environnement.<br />Pour plus d'information rendez-vous sur=
+ <u>le site Effinergie=AE</u></font></a><br /><a style=3D"TEXT-DECORATION: =
+none" href=3D"http://www.bouygues-immobilier.com/jahia/Jahia/logement/infos=
+_et_services_pour_investir/Loi_Scellier"><font color=3D"#ffffff" face=3D"Ar=
+ial, Helvetica, sans-serif" size=3D"1">** Pour plus de d=E9tails sur le dis=
+positif Scellier <u>cliquez ici</u></font></a></td>=0D<td><img width=3D"1" =
+height=3D"43" style=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues=
+_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" =
+complete=3D"true" /></td>=0D</tr>=0D<tr>=0D<td><img width=3D"68" height=3D"=
+1" style=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Email=
+ing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" complete=3D=
+"true" /></td>=0D<td><img width=3D"199" height=3D"1" style=3D"DISPLAY: bloc=
+k" src=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_IN=
+V_SANSCB/spacer.gif" complete=3D"true" complete=3D"true" /></td>=0D<td><img=
+ width=3D"86" height=3D"1" style=3D"DISPLAY: block" src=3D"http://webe.emv3=
+.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" compl=
+ete=3D"true" complete=3D"true" /></td>=0D<td><img width=3D"24" height=3D"1"=
+ style=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailin=
+g2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" complete=3D"t=
+rue" /></td>=0D<td><img width=3D"133" height=3D"1" style=3D"DISPLAY: block"=
+ src=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_=
+SANSCB/spacer.gif" complete=3D"true" complete=3D"true" /></td>=0D<td><img w=
+idth=3D"114" height=3D"1" style=3D"DISPLAY: block" src=3D"http://webe.emv3.=
+com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" comple=
+te=3D"true" complete=3D"true" /></td>=0D<td><img width=3D"26" height=3D"1" =
+style=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailing=
+2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" complete=3D"tr=
+ue" /></td>=0D<td><br /></td>=0D</tr>=0D</tbody>=0D</table>=0D<div align=3D=
+"center">=0D<table width=3D"649" border=3D"0">=0D<tbody>=0D<tr>=0D<td width=
+=3D"639">=0D<div align=3D"left"><span class=3D"Style1">Conformement a la lo=
+i Informatique et Libertes, vous disposez d'un droit d'acces et de rectific=
+ation. A r=E9ception, celui-ci sera pris en compte conform=E9ment =E0 la lo=
+i n=B0 78-17 du 06-01-1978 relative&nbsp;=E0 l=92informatique, aux fichiers=
+ et aux libert=E9s modifi=E9e par la loi n=B02004-801 du 06/08/2004<br />En=
+registrement aupr=E9s de la CNIL sous le num=E9ro 1281237.<br />Je souhaite=
+&nbsp;<a href=3D"http://cdirecte.r7g.com/AA07ZY67ZZ_39191/1087">ne plus rec=
+evoir</a>&nbsp;d'information de cet annonceur.<br />Je souhaite&nbsp;<a hre=
+f=3D"http://cdirecte.r7g.com/AA07ZY67ZZ_39191/1088">ne plus recevoir</a>&nb=
+sp;aucune newsletter ni aucune information de France Patrimoine.<br />Si ce=
+ message vous a caus=E9 un quelconque d=E9rangement, nous vous prions de no=
+us en excuser.</span></div>=0D</td>=0D</tr>=0D</tbody>=0D</table>=0D</div>=
+=0D<p align=3D"center"><br /><!-- End Save for Web Slices --></p>=0D<img sr=
+c=3D"http://front.taemis.com/ZZ07ZY67ZZ_39191.png" /></body></html>
+--=_21736a3697a217b76010d8299de6ff56--
 
 
---===============7635167436827872840==
+
+--===============3452187351348489216==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -201,7 +206,7 @@ Join us December 9, 2009 for the Red Hat Virtual Experience,
 a free event focused on virtualization and cloud computing. 
 Attend in-depth sessions from your desk. Your couch. Anywhere.
 http://p.sf.net/sfu/redhat-sfdev2dev
---===============7635167436827872840==
+--===============3452187351348489216==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -212,4 +217,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7635167436827872840==--
+--===============3452187351348489216==--

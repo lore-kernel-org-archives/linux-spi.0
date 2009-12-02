@@ -1,201 +1,327 @@
-From: Yakov Arkadevich <yakovarkadevich-ColKEJEGj63QT0dZR+AlfA@public.gmane.org>
-Subject: [SPAM] Составление бюджета отдела управления персоналом
-Date: Wed, 02 Dec 2009 04:26:17 +0300
-Message-ID: <2833089694.20091202042617@l3388l.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0643465284226394931=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Magnus Damm <magnus.damm@gmail.com>
+Subject: [PATCH][RFC] spi: put struct spi_master in struct spi_bitbang
+Date: Wed, 02 Dec 2009 14:23:02 +0900
+Message-ID: <20091202052302.12394.18621.sendpatchset@rxone.opensource.se>
+Cc: dbrownell@users.sourceforge.net, linux-kernel@vger.kernel.org,
+	grant.likely@secretlab.ca, lethal@linux-sh.org,
+	Magnus Damm <magnus.damm@gmail.com>, akpm@linux-foundation.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1751313AbZLBF2a@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0643465284226394931==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+From: Magnus Damm <damm@opensource.se>
 
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
-bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL2h0bWw0L2xvb3NlLmR0ZCI+DQo8aHRt
-bD4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0
-ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjx0aXRsZT48L3RpdGxlPg0KPHN0
-eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHksdGQsdGggew0KCWZvbnQtZmFtaWx5
-OiBWZXJkYW5hLCBHZW5ldmEsIHNhbnMtc2VyaWYsIEFyaWFsOw0KCWZvbnQtc2l6ZTogMTNw
-eDsNCgljb2xvcjogIzAwMDsNCn0NCmJvZHkgew0KCWJhY2tncm91bmQtY29sb3I6ICNGRkY7
-DQp9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9keT4NCjx0YWJsZSB3aWR0aD0iOTAw
-IiBhbGlnbj0iY2VudGVyIj4NCiAgPHRyPg0KICAgIDx0ZD4mbmJzcDs8L3RkPg0KICA8L3Ry
-Pg0KICA8dHI+DQogICAgPHRkPjx0YWJsZSB3aWR0aD0iODk1IiBib3JkZXI9IjAiIGFsaWdu
-PSJjZW50ZXIiIGNlbGxwYWRkaW5nPSIwIj4NCiAgICAgIDx0cj4NCiAgICAgICAgPHRkIHdp
-ZHRoPSI2NDYiPjx0YWJsZSB3aWR0aD0iNjM4IiBib3JkZXI9IjAiIGFsaWduPSJsZWZ0IiBj
-ZWxscGFkZGluZz0iNSI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRkIHdpZHRo
-PSI2MjQiIGFsaWduPSJjZW50ZXIiPjxmb250IGNvbG9yPSIjRTEwMDAwIiBzdHlsZT0iZm9u
-dC1zaXplOiAxOHB4OyI+PHN0cm9uZz7Py8DNLcPA1MjKIMzF0M7P0Mjf0sjJPC9zdHJvbmc+
-PC9mb250PjwvdGQ+DQogICAgICAgICAgPC90cj4NCiAgICAgICAgICA8dHI+DQogICAgICAg
-ICAgICA8dGQgYWxpZ249ImxlZnQiPjxzdHJvbmc+MyDkZerg4XD/PC9zdHJvbmc+PGJyPg0K
-ICAgICAgICAgICAgICA8YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2Vy
-dmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvZGVrYWJyL2FrdGl2bnllX3Byb2RhemhpX3Zfcm96
-bmljaG5val90b3Jnb3ZsZS5odG0iIHN0eWxlPSJjb2xvcjojRjAwIj7A6vLo4u375SDv8G/k
-4OboIOIg8O7n7ej37e7pIPJv8OPu4utlLjwvYT48L3RkPg0KICAgICAgICAgIDwvdHI+DQog
-ICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRkIGFsaWduPSJsZWZ0Ij48c3Ryb25nPjgg
-5OXqYeFw/zwvc3Ryb25nPjxicj4NCiAgICAgICAgICAgICAgPGEgaHJlZj0iaHR0cDovL3d3
-dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L2Rla2Fici9z
-dnlhemlfcmVzaGFqdXRfdnNlLmh0bSIgc3R5bGU9ImNvbG9yOiNGMDAiPtHC38fIINDF2MDe
-0iDC0cUhPC9hPjwvdGQ+DQogICAgICAgICAgPC90cj4NCiAgICAgICAgICA8dHI+DQogICAg
-ICAgICAgICA8dGQgYWxpZ249ImxlZnQiPjxzdHJvbmc+OSDkZeph4fD/PC9zdHJvbmc+PGJy
-Pg0KICAgICAgICAgICAgICA8YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMv
-c2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvZGVrYWJyL3Bvc3Ryb2VuaWVfc2lzdGVteV9l
-ZmZla3Rpdm5vZ28uaHRtIiBzdHlsZT0iY29sb3I6I0YwMCI+z2/x8vDuZe3oZSBj6PHyZez7
-IP309OXq8uji7W/jbyDwZepw8/Lo7eNhICDiIOTo8fLw6OH8/vLucGPq7ukg6m/s72Ht6Ogg
-IOjr6CDqYeog7eDp8ugsIO7y7uHwYfL8IOgg7mPyYeLo8vwgy/P3+Oh4PC9hPjwvdGQ+DQog
-ICAgICAgICAgPC90cj4NCiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYWxpZ249
-ImxlZnQiPjxzdHJvbmc+MTEg5GXq4OHw/zwvc3Ryb25nPjxicj4NCiAgICAgICAgICAgICAg
-PGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdp
-LVNlbWluYXJ5L2Rla2Fici9wcm92ZXJlbm55ZV9yZXNoZW5peWFfZGx5YV91ZHZvZW5peWFf
-Lmh0bSIgc3R5bGU9ImNvbG9yOiNGMDAiPs/wb+Ll8GXt7ftlIHDl+GXt6P8g5Ov/IPPk4u5l
-7ej/IP309GXq8uji7W9j8uggwuD4ZeNvIOHo5+3l8WE8L2E+PC90ZD4NCiAgICAgICAgICA8
-L3RyPg0KICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZCBhbGlnbj0ibGVmdCI+PHN0
-cm9uZz4xMiDk5eph4fD/PC9zdHJvbmc+PGJyPg0KICAgICAgICAgICAgICA8YSBocmVmPSJo
-dHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkv
-ZGVrYWJyL3ZzZV9wcm9fb3BsYXR1X3ByYWNpX3RhX3ZpZHB1c3RraS5odG0iIHN0eWxlPSJj
-b2xvcjojRjAwIj7C8WUg73BvIO7v62Hy8yDv8GH2syDyYSDis+Tv82Py6ug8L2E+PC90ZD4N
-CiAgICAgICAgICA8L3RyPg0KICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZCBhbGln
-bj0ibGVmdCI+PHN0cm9uZz4xMiDkZerg4XD/PC9zdHJvbmc+PGJyPg0KICAgICAgICAgICAg
-ICA8YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmlu
-Z2ktU2VtaW5hcnkvZGVrYWJyL2xpZGVyc3R2by5odG0iIHN0eWxlPSJjb2xvcjojRjAwIj7L
-6OTl8GPy4u46IG/yIO9wb+Xq8mEg6iD99PTl6vLzLiDR8nDg8uXj6Pdl8epvZSDr6OTlcPHy
-4u4g4iDh6OftZWNlLjwvYT48L3RkPg0KICAgICAgICAgIDwvdHI+DQogICAgICAgICAgPHRy
-Pg0KICAgICAgICAgICAgPHRkIGFsaWduPSJsZWZ0Ij48c3Ryb25nPjE2IORl6mHh8P88L3N0
-cm9uZz48YnI+DQogICAgICAgICAgICAgIDxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25i
-Yy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9kZWthYnIvZmluYW5zb3ZheWFf
-ZGlhZ25vc3Rpa2Ffa29tcGFuaWkuaHRtIiBzdHlsZT0iY29sb3I6I0YwMCI+1OjtYe1jb+Lg
-/yDk6GHj7W/x8ujqYSDq7uzv4O3o6C48L2E+PC90ZD4NCiAgICAgICAgICA8L3RyPg0KICAg
-ICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZCBhbGlnbj0ibGVmdCI+PHN0cm9uZz4xNi0x
-OCDkZeph4XD/PC9zdHJvbmc+PGJyPg0KICAgICAgICAgICAgICA8YSBocmVmPSJodHRwOi8v
-d3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvbm95YWJy
-L3N0cmF0ZWdpY2hlc2theWFfcGVyZWdydXBwaXJvdmthLmh0bSIgc3R5bGU9ImNvbG9yOiNG
-MDAiPtHy8ODy5ePo92Xx6uD/IO9lcGXj8PPv7+jwb+LqYSDh6Oft5fFhIOIg82Prb+Lo/3gg
-6vDo5+jxYSDoIO/u8evl5PP++eXjbyDx7+Dk4DwvYT48L3RkPg0KICAgICAgICAgIDwvdHI+
-DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRkIGFsaWduPSJsZWZ0Ij48c3Ryb25n
-PjE3IOTl6mHh8P88L3N0cm9uZz48YnI+DQogICAgICAgICAgICAgIDxhIGhyZWY9Imh0dHA6
-Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9kZWth
-YnIva2FrX3NvemRhdF96aGVsYWVtb2VfYnVkdXNjaGVlX192X25vdm9tX2dvZHVfLmh0bSIg
-c3R5bGU9ImNvbG9yOiNGMDAiPsrg6iBjb+fkYfL8IObl62Hl7O5lIOHz5PP5ZeUgIOIg7W/i
-7uwg4+7k8y48L2E+PC90ZD4NCiAgICAgICAgICA8L3RyPg0KICAgICAgICAgIDx0cj4NCiAg
-ICAgICAgICAgIDx0ZCBhbGlnbj0ibGVmdCI+PHN0cm9uZz4xOCDkZeph4XD/PC9zdHJvbmc+
-PGJyPg0KICAgICAgICAgICAgICA8YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFn
-ZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvZGVrYWJyL2VmZmVrdGl2bmF5YV9sb2dp
-c3Rpa2Ffc2tsYWRpcm92YW5peWEuaHRtIiBzdHlsZT0iY29sb3I6I0YwMCI+3fT05ery6OLt
-4P8g62/j6GPy6OrgIGPq6+Dk6PDu4uDt6P8uPC9hPjwvdGQ+DQogICAgICAgICAgPC90cj4N
-CiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYWxpZ249ImxlZnQiPjxzdHJvbmc+
-MjMg5OXq4OHw/zwvc3Ryb25nPjxicj4NCiAgICAgICAgICAgICAgPGEgaHJlZj0iaHR0cDov
-L3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L2Rla2Fi
-ci9lc2xpX2tfdmFtX3ByaXNobGlfa29udHJvbGlydWp1c2NoaWVfb3JnYW55Lmh0bSIgc3R5
-bGU9ImNvbG9yOiNGMDAiPiZsYXF1bzvFY+voIOog4mHsIO9w6Pjr6CDqb+3y8G/r6PDz/vno
-5SDucOPg7fsuLi4mcmFxdW87PC9hPjwvdGQ+DQogICAgICAgICAgPC90cj4NCiAgICAgICAg
-ICA8dHI+DQogICAgICAgICAgICA8dGQgYWxpZ249ImxlZnQiPjxzdHJvbmc+MjMg5GXqYeFw
-/zwvc3Ryb25nPjxicj4NCiAgICAgICAgICAgICAgPGEgaHJlZj0iaHR0cDovL3d3dy5uYmMu
-dWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L2Rla2Fici9wbGFuaXJv
-dmFuaWVfaV9vcmdhbml6YWNpeWEuaHRtIiBzdHlsZT0iY29sb3I6I0YwMCI+z+th7ehwb+Lg
-7ejlIOggb3DjYe3o5+D26P8g8+9w4OLr5e3o/yDtYSBvY+3u4mUg7vZl7eroIPDuY/LgIPHy
-7ujs7vHy6CDqb+zvYe3o6C48L2E+PC90ZD4NCiAgICAgICAgICA8L3RyPg0KICAgICAgICA8
-L3RhYmxlPjwvdGQ+DQogICAgICAgIDx0ZCAgd2lkdGg9IjI0MyIgYWxpZ249InJpZ2h0IiB2
-YWxpZ249InRvcCIgYmdjb2xvcj0iI0ZGRkY5OSIgPjx0YWJsZSB3aWR0aD0iMjM4IiBib3Jk
-ZXI9IjAiIGNlbGxwYWRkaW5nPSI1Ij4NCiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8
-dGQgYWxpZ249ImNlbnRlciIgYmdjb2xvcj0iI0ZGRkY5OSI+PGZvbnQgY29sb3I9IiNFMTAw
-MDAiIHN0eWxlPSJmb250LXNpemU6IDE4cHg7Ij48c3Ryb25nPtHSwNLcyDwvc3Ryb25nPjwv
-Zm9udD48L3RkPg0KICAgICAgICAgIDwvdHI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAg
-ICAgPHRkIGJnY29sb3I9IiNGRkZGOTkiPjxwIGFsaWduPSJjZW50ZXIiPjxhIGhyZWY9Imh0
-dHA6Ly9uYmMudWEvcGFnZXMvcHVibGljYXRpb25zL2ludGVybmV0Lmh0bSIgc3R5bGU9ImNv
-bG9yOiMwMDAiPsjt8uXw7WXyPC9hPjxicj4NCiAgICAgICAgICAgIDxwIGFsaWduPSJjZW50
-ZXIiPjxhIGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFnZXMvcHVibGljYXRpb25zL3RyZWQuaHRt
-IiBzdHlsZT0iY29sb3I6IzAwMCI+0nBl6eRl8Ps8L2E+PGJyPg0KICAgICAgICAgICAgICA8
-cCBhbGlnbj0iY2VudGVyIj48YSBocmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0
-aW9ucy9tYXJrZXQuaHRtIiBzdHlsZT0iY29sb3I6IzAwMCI+zGFw6mXy6O3jPC9hPjxicj4N
-CiAgICAgICAgICAgICAgPHAgYWxpZ249ImNlbnRlciI+PGEgaHJlZj0iaHR0cDovL25iYy51
-YS9wYWdlcy9wdWJsaWNhdGlvbnMvbWVuLmh0bSIgc3R5bGU9ImNvbG9yOiMwMDAiPsxl7eXk
-5uzl7fI8L2E+PGJyPg0KICAgICAgICAgICAgICA8cCBhbGlnbj0iY2VudGVyIj48YSBocmVm
-PSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0aW9ucy9wcmVzLmh0bSIgc3R5bGU9ImNv
-bG9yOiMwMDAiPs/w5WNj4CDuIO3gYzwvYT48YnI+DQogICAgICAgICAgICAgIDxwIGFsaWdu
-PSJjZW50ZXIiPjxhIGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFnZXMvcHVibGljYXRpb25zL3Nv
-dmV0Lmh0bSIgc3R5bGU9ImNvbG9yOiMwMDAiPtFv4uXy+yDtYffo7WH++ejsPC9hPjxicj4N
-CiAgICAgICAgICAgICAgPHAgYWxpZ249ImNlbnRlciI+PGEgaHJlZj0iaHR0cDovL25iYy51
-YS9wYWdlcy9wdWJsaWNhdGlvbnMvc292ZXR5X3ZlbGlraWhfbGp1ZGVqLmh0bSIgc3R5bGU9
-ImNvbG9yOiMwMDAiPtFv4mXy+yDC5evo6uh4IOv+5GXpPC9hPjxicj4NCiAgICAgICAgICAg
-ICAgPHAgYWxpZ249ImNlbnRlciI+PGEgaHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJs
-aWNhdGlvbnMvYnVoZ2FsdC5odG0iIHN0eWxlPSJjb2xvcjojMDAwIj7R8uDy/Ogg7W/ib2Py
-6CDy83Do5+xhPC9hPjxicj4NCiAgICAgICAgICAgICAgPHAgYWxpZ249ImNlbnRlciI+PGEg
-aHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJsaWNhdGlvbnMvZmluYW5zLmh0bSIgc3R5
-bGU9ImNvbG9yOiMwMDAiPsH+5OZl8uhw7uLg7ehlIOgg9Ojt4O1j+zwvYT48YnI+DQogICAg
-ICAgICAgICAgIDxwIGFsaWduPSJjZW50ZXIiPjxhIGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFn
-ZXMvcHVibGljYXRpb25zL3NhcGZvLmh0bSIgc3R5bGU9ImNvbG9yOiMwMDAiPtHyYfL86CDk
-6/8g5OXi8/jl6iDoIObl7fno7TwvYT48YnI+DQogICAgICAgICAgICAgIDxwIGFsaWduPSJj
-ZW50ZXIiPjxhIGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFnZXMvcHVibGljYXRpb25zL2luZm9y
-bS5odG0iIHN0eWxlPSJjb2xvcjojMDAwIj7I7fTu8Ozg9uju7e376SDn4OLy8GHqIOxv5+Pg
-PC9hPjwvcD48L3RkPg0KICAgICAgICAgIDwvdHI+DQogICAgICAgICAgPHRyPg0KICAgICAg
-ICAgICAgPHRkIGJnY29sb3I9IiNGRkZGOTkiPiZuYnNwOzwvdGQ+DQogICAgICAgICAgPC90
-cj4NCiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYmdjb2xvcj0iI0ZGRkY5OSIg
-YWxpZ249ImNlbnRlciI+PGZvbnQgY29sb3I9IiNFMTAwMDAiIHN0eWxlPSJmb250LXNpemU6
-IDE4cHg7Ij48c3Ryb25nPtE8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6
-ZTogMXB4OyI+6DwvZm9udD7FPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNp
-emU6IDFweDsiPvM8L2ZvbnQ+zDxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1z
-aXplOiAxcHg7Ij7/PC9mb250Psg8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQt
-c2l6ZTogMXB4OyI++TwvZm9udD7NPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250
-LXNpemU6IDFweDsiPuA8L2ZvbnQ+wDxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9u
-dC1zaXplOiAxcHg7Ij7vPC9mb250PtA8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZv
-bnQtc2l6ZTogMXB4OyI+6zwvZm9udD7bPC9zdHJvbmc+PC9mb250Pjxicj4NCiAgICAgICAg
-ICAgICAgPGZvbnQgY29sb3I9IiNFMTAwMDAiIHN0eWxlPSJmb250LXNpemU6IDE4cHg7Ij48
-c3Ryb25nPs08Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+
-6zwvZm9udD7AIDI8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4
-OyI+/TwvZm9udD4wPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFw
-eDsiPvM8L2ZvbnQ+MTxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAx
-cHg7Ij7hPC9mb250PjAgwzxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXpl
-OiAxcHg7Ij7+PC9mb250Ps48Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6
-ZTogMXB4OyI+4DwvZm9udD7EPC9zdHJvbmc+PC9mb250PjwvdGQ+DQogICAgICAgICAgPC90
-cj4NCiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYmdjb2xvcj0iI0ZGRkY5OSIg
-YWxpZ249ImNlbnRlciI+PGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3Nl
-cnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L3lhbnZhci5odG0iIHN0eWxlPSJjb2xvcjojMDAw
-Ij7f7eLg8Pw8L2E+PGJyPg0KICAgICAgICAgICAgICA8YSBocmVmPSJodHRwOi8vd3d3Lm5i
-Yy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvZmV2cmFsLmh0bSIg
-c3R5bGU9ImNvbG9yOiMwMDAiPtTl4vDg6/w8L2E+PGJyPg0KICAgICAgICAgICAgICA8YSBo
-cmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2Vt
-aW5hcnkvbWFydC5odG0iIHN0eWxlPSJjb2xvcjojMDAwIj7MYXDyPC9hPjxicj4NCiAgICAg
-ICAgICAgICAgPGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2Vz
-L1RyZW5pbmdpLVNlbWluYXJ5L2FwcmVsLmh0bSIgc3R5bGU9ImNvbG9yOiMwMDAiPsDv8GXr
-/DwvYT48YnI+DQogICAgICAgICAgICAgIDxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25i
-Yy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFyeS9hcmhpdi5odG0iIHN0eWxlPSJj
-b2xvcjojMDAwIj7AcHjo4jwvYT48L3RkPg0KICAgICAgICAgIDwvdHI+DQogICAgICAgIDwv
-dGFibGU+PC90ZD4NCiAgICAgIDwvdHI+DQogICAgPC90YWJsZT48L3RkPg0KICA8L3RyPg0K
-PC90YWJsZT4NCjwvYm9keT4NCjwvaHRtbD4NCg==
+This hack simply converts struct spi_bitbang from
+containing a struct master * to containing the actual
+structure itself. This allows us to use container_of()
+in spi_bitbang_setup() and spi_bitbang_transfer().
 
+Together with this are the functions spi_init_master()
+and spi_bitbang_init() for initialization of static
+structures. The idea is that spi_master_release() never
+should be invoked, but not sure if I got that right.
 
+Only the drivers spi_gpio.c and spi_sh_msiof.c are converted
+at this point. If this seems like a good idea then we should
+do this step by step and all drivers should be modified.
 
+Dry coded only at this point.
 
---===============0643465284226394931==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Magnus Damm <damm@opensource.se>
+---
 
-------------------------------------------------------------------------------
-Join us December 9, 2009 for the Red Hat Virtual Experience,
-a free event focused on virtualization and cloud computing. 
-Attend in-depth sessions from your desk. Your couch. Anywhere.
-http://p.sf.net/sfu/redhat-sfdev2dev
---===============0643465284226394931==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+ drivers/spi/spi.c               |   17 ++++++++++++++---
+ drivers/spi/spi_bitbang.c       |   39 ++++++++++++++++++++++++---------------
+ drivers/spi/spi_gpio.c          |   15 ++++++++-------
+ drivers/spi/spi_sh_msiof.c      |   18 +++++++++---------
+ include/linux/spi/spi.h         |    1 +
+ include/linux/spi/spi_bitbang.h |    4 +++-
+ 6 files changed, 59 insertions(+), 35 deletions(-)
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0643465284226394931==--
+--- 0001/drivers/spi/spi.c
++++ work/drivers/spi/spi.c	2009-12-02 13:57:02.000000000 +0900
+@@ -441,6 +441,19 @@ static struct class spi_master_class = {
+ 
+ 
+ /**
++ * spi_init_master - init SPI master controller
++ * @master: master to initialize
++ * @dev: the controller device
++ */
++void spi_init_master(struct spi_master *master, struct device *dev)
++{
++	device_initialize(&master->dev);
++	master->dev.class = &spi_master_class;
++	master->dev.parent = get_device(dev);
++}
++EXPORT_SYMBOL_GPL(spi_init_master);
++
++/**
+  * spi_alloc_master - allocate SPI master controller
+  * @dev: the controller, possibly using the platform_bus
+  * @size: how much zeroed driver-private data to allocate; the pointer to this
+@@ -470,9 +483,7 @@ struct spi_master *spi_alloc_master(stru
+ 	if (!master)
+ 		return NULL;
+ 
+-	device_initialize(&master->dev);
+-	master->dev.class = &spi_master_class;
+-	master->dev.parent = get_device(dev);
++	spi_init_master(master, dev);
+ 	spi_master_set_devdata(master, &master[1]);
+ 
+ 	return master;
+--- 0001/drivers/spi/spi_bitbang.c
++++ work/drivers/spi/spi_bitbang.c	2009-12-02 13:59:26.000000000 +0900
+@@ -186,7 +186,7 @@ int spi_bitbang_setup(struct spi_device 
+ 	int			retval;
+ 	unsigned long		flags;
+ 
+-	bitbang = spi_master_get_devdata(spi->master);
++	bitbang = container_of(spi->master, struct spi_bitbang, master);
+ 
+ 	if (!cs) {
+ 		cs = kzalloc(sizeof *cs, GFP_KERNEL);
+@@ -398,8 +398,7 @@ int spi_bitbang_transfer(struct spi_devi
+ 
+ 	m->actual_length = 0;
+ 	m->status = -EINPROGRESS;
+-
+-	bitbang = spi_master_get_devdata(spi->master);
++	bitbang = container_of(spi->master, struct spi_bitbang, master);
+ 
+ 	spin_lock_irqsave(&bitbang->lock, flags);
+ 	if (!spi->max_speed_hz)
+@@ -443,35 +442,35 @@ int spi_bitbang_start(struct spi_bitbang
+ {
+ 	int	status;
+ 
+-	if (!bitbang->master || !bitbang->chipselect)
++	if (!bitbang->chipselect)
+ 		return -EINVAL;
+ 
+ 	INIT_WORK(&bitbang->work, bitbang_work);
+ 	spin_lock_init(&bitbang->lock);
+ 	INIT_LIST_HEAD(&bitbang->queue);
+ 
+-	if (!bitbang->master->mode_bits)
+-		bitbang->master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
++	if (!bitbang->master.mode_bits)
++		bitbang->master.mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
+ 
+-	if (!bitbang->master->transfer)
+-		bitbang->master->transfer = spi_bitbang_transfer;
++	if (!bitbang->master.transfer)
++		bitbang->master.transfer = spi_bitbang_transfer;
+ 	if (!bitbang->txrx_bufs) {
+ 		bitbang->use_dma = 0;
+ 		bitbang->txrx_bufs = spi_bitbang_bufs;
+-		if (!bitbang->master->setup) {
++		if (!bitbang->master.setup) {
+ 			if (!bitbang->setup_transfer)
+ 				bitbang->setup_transfer =
+ 					 spi_bitbang_setup_transfer;
+-			bitbang->master->setup = spi_bitbang_setup;
+-			bitbang->master->cleanup = spi_bitbang_cleanup;
++			bitbang->master.setup = spi_bitbang_setup;
++			bitbang->master.cleanup = spi_bitbang_cleanup;
+ 		}
+-	} else if (!bitbang->master->setup)
++	} else if (!bitbang->master.setup)
+ 		return -EINVAL;
+ 
+ 	/* this task is the only thing to touch the SPI bits */
+ 	bitbang->busy = 0;
+ 	bitbang->workqueue = create_singlethread_workqueue(
+-			dev_name(bitbang->master->dev.parent));
++			dev_name(bitbang->master.dev.parent));
+ 	if (bitbang->workqueue == NULL) {
+ 		status = -EBUSY;
+ 		goto err1;
+@@ -480,7 +479,7 @@ int spi_bitbang_start(struct spi_bitbang
+ 	/* driver may get busy before register() returns, especially
+ 	 * if someone registered boardinfo for devices
+ 	 */
+-	status = spi_register_master(bitbang->master);
++	status = spi_register_master(&bitbang->master);
+ 	if (status < 0)
+ 		goto err2;
+ 
+@@ -498,7 +497,7 @@ EXPORT_SYMBOL_GPL(spi_bitbang_start);
+  */
+ int spi_bitbang_stop(struct spi_bitbang *bitbang)
+ {
+-	spi_unregister_master(bitbang->master);
++	spi_unregister_master(&bitbang->master);
+ 
+ 	WARN_ON(!list_empty(&bitbang->queue));
+ 
+@@ -508,5 +507,15 @@ int spi_bitbang_stop(struct spi_bitbang 
+ }
+ EXPORT_SYMBOL_GPL(spi_bitbang_stop);
+ 
++/**
++ * spi_bitbang_init - init SPI bitbang controller
++ */
++void spi_bitbang_init(struct spi_bitbang *bitbang, struct device *dev)
++{
++	spi_init_master(&bitbang->master, dev);
++}
++EXPORT_SYMBOL_GPL(spi_bitbang_init);
++
++
+ MODULE_LICENSE("GPL");
+ 
+--- 0001/drivers/spi/spi_gpio.c
++++ work/drivers/spi/spi_gpio.c	2009-12-02 14:05:39.000000000 +0900
+@@ -278,24 +278,26 @@ static int __init spi_gpio_probe(struct 
+ 	if (status < 0)
+ 		return status;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof *spi_gpio);
+-	if (!master) {
++	spi_gpio = kzalloc(sizeof(struct spi_gpio), GFP_KERNEL);
++	if (!spi_gpio) {
+ 		status = -ENOMEM;
+ 		goto gpio_free;
+ 	}
+-	spi_gpio = spi_master_get_devdata(master);
++
++	spi_bitbang_init(&spi_gpio->bitbang, &pdev->dev);
++	spi_master_set_devdata(&spi_gpio->bitbang.master, spi_gpio);
+ 	platform_set_drvdata(pdev, spi_gpio);
+ 
+ 	spi_gpio->pdev = pdev;
+ 	if (pdata)
+ 		spi_gpio->pdata = *pdata;
+ 
++	master = &spi_gpio->bitbang.master;
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = SPI_N_CHIPSEL;
+ 	master->setup = spi_gpio_setup;
+ 	master->cleanup = spi_gpio_cleanup;
+ 
+-	spi_gpio->bitbang.master = spi_master_get(master);
+ 	spi_gpio->bitbang.chipselect = spi_gpio_chipselect;
+ 	spi_gpio->bitbang.txrx_word[SPI_MODE_0] = spi_gpio_txrx_word_mode0;
+ 	spi_gpio->bitbang.txrx_word[SPI_MODE_1] = spi_gpio_txrx_word_mode1;
+@@ -306,12 +308,11 @@ static int __init spi_gpio_probe(struct 
+ 
+ 	status = spi_bitbang_start(&spi_gpio->bitbang);
+ 	if (status < 0) {
+-		spi_master_put(spi_gpio->bitbang.master);
+ gpio_free:
+ 		gpio_free(SPI_MISO_GPIO);
+ 		gpio_free(SPI_MOSI_GPIO);
+ 		gpio_free(SPI_SCK_GPIO);
+-		spi_master_put(master);
++		kfree(spi_gpio);
+ 	}
+ 
+ 	return status;
+@@ -328,7 +329,7 @@ static int __exit spi_gpio_remove(struct
+ 
+ 	/* stop() unregisters child devices too */
+ 	status = spi_bitbang_stop(&spi_gpio->bitbang);
+-	spi_master_put(spi_gpio->bitbang.master);
++	kfree(spi_gpio);
+ 
+ 	platform_set_drvdata(pdev, NULL);
+ 
+--- 0010/drivers/spi/spi_sh_msiof.c
++++ work/drivers/spi/spi_sh_msiof.c	2009-12-02 14:00:30.000000000 +0900
+@@ -29,7 +29,7 @@
+ #include <asm/unaligned.h>
+ 
+ struct sh_msiof_spi_priv {
+-	struct spi_bitbang bitbang; /* must be first for spi_bitbang.c */
++	struct spi_bitbang bitbang;
+ 	void __iomem *mapbase;
+ 	struct clk *clk;
+ 	struct platform_device *pdev;
+@@ -542,15 +542,15 @@ static int sh_msiof_spi_probe(struct pla
+ 	int i;
+ 	int ret;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(struct sh_msiof_spi_priv));
+-	if (master == NULL) {
+-		dev_err(&pdev->dev, "failed to allocate spi master\n");
++	p = kzalloc(sizeof(struct sh_msiof_spi_priv), GFP_KERNEL);
++	if (!p) {
++		dev_err(&pdev->dev, "failed to allocate private spi data\n");
+ 		ret = -ENOMEM;
+ 		goto err0;
+ 	}
+ 
+-	p = spi_master_get_devdata(master);
+-
++	spi_bitbang_init(&p->bitbang, &pdev->dev);
++	spi_master_set_devdata(&p->bitbang.master, p);
+ 	platform_set_drvdata(pdev, p);
+ 	p->info = pdev->dev.platform_data;
+ 	init_completion(&p->done);
+@@ -604,6 +604,7 @@ static int sh_msiof_spi_probe(struct pla
+ 		p->rx_fifo_size = p->info->rx_fifo_override;
+ 
+ 	/* init master and bitbang code */
++	master = &p->bitbang.master;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 	master->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
+ 	master->flags = 0;
+@@ -612,7 +613,6 @@ static int sh_msiof_spi_probe(struct pla
+ 	master->setup = spi_bitbang_setup;
+ 	master->cleanup = spi_bitbang_cleanup;
+ 
+-	p->bitbang.master = master;
+ 	p->bitbang.chipselect = sh_msiof_spi_chipselect;
+ 	p->bitbang.setup_transfer = sh_msiof_spi_setup_transfer;
+ 	p->bitbang.txrx_bufs = sh_msiof_spi_txrx;
+@@ -631,7 +631,7 @@ static int sh_msiof_spi_probe(struct pla
+  err2:
+ 	clk_put(p->clk);
+  err1:
+-	spi_master_put(master);
++	kfree(p);
+  err0:
+ 	return ret;
+ }
+@@ -647,7 +647,7 @@ static int sh_msiof_spi_remove(struct pl
+ 		free_irq(platform_get_irq(pdev, 0), sh_msiof_spi_irq);
+ 		iounmap(p->mapbase);
+ 		clk_put(p->clk);
+-		spi_master_put(p->bitbang.master);
++		kfree(p);
+ 	}
+ 	return ret;
+ }
+--- 0001/include/linux/spi/spi.h
++++ work/include/linux/spi/spi.h	2009-12-02 13:42:23.000000000 +0900
+@@ -320,6 +320,7 @@ static inline void spi_master_put(struct
+ 
+ 
+ /* the spi driver core manages memory for the spi_master classdev */
++extern void spi_init_master(struct spi_master *master, struct device *dev);
+ extern struct spi_master *
+ spi_alloc_master(struct device *host, unsigned size);
+ 
+--- 0001/include/linux/spi/spi_bitbang.h
++++ work/include/linux/spi/spi_bitbang.h	2009-12-02 13:59:43.000000000 +0900
+@@ -31,7 +31,7 @@ struct spi_bitbang {
+ 	u8			use_dma;
+ 	u8			flags;		/* extra spi->mode support */
+ 
+-	struct spi_master	*master;
++	struct spi_master	master;
+ 
+ 	/* setup_transfer() changes clock and/or wordsize to match settings
+ 	 * for this transfer; zeroes restore defaults from spi_device.
+@@ -67,6 +67,8 @@ extern int spi_bitbang_setup_transfer(st
+ extern int spi_bitbang_start(struct spi_bitbang *spi);
+ extern int spi_bitbang_stop(struct spi_bitbang *spi);
+ 
++extern void spi_bitbang_init(struct spi_bitbang *bitbang, struct device *dev);
++
+ #endif	/* __SPI_BITBANG_H */
+ 
+ /*-------------------------------------------------------------------------*/

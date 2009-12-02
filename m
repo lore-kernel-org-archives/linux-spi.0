@@ -1,11 +1,15 @@
-From: Vsevolod Stanislavovich <vsevolodstanislavovich-ColKEJEGj63QT0dZR+AlfA@public.gmane.org>
-Subject: [SPAM] Эмоциональная поддержка клиента.
-Date: Wed, 02 Dec 2009 14:58:32 +0300
-Message-ID: <1752194662.20091202145832@l3388l.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: SPI bitbang master for TV cards
+Date: Wed, 2 Dec 2009 15:21:15 -0700
+Message-ID: <fa686aa40912021421m57c9de5cs3b988727f0063f47@mail.gmail.com>
+References: <20091124162250.34ed1be7@glory.loctelecom.ru>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2051234004905838546=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Dmitri Belimov <d.belimov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20091124162250.34ed1be7-ToADIhs8vbH6CWgS4j6HTijHesifYMBh@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,225 +20,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2051234004905838546==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+On Tue, Nov 24, 2009 at 12:22 AM, Dmitri Belimov <d.belimov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> Hi Grant
+>
+> I found you mails about SPI subsystem. Can you help me?
+> I write some support for our TV cards (open source of course)
+> One of them has hardware MPEG2 encoder connected to host chip
+> via GPIO. In our windows drivers we wrote internal simple SPI bitbang
+> driver. For Linux we want use generic SPI subsystem.
+> I wrote my ugly code, not working yet.
+>
+> If it's intresting for you I'll send it.
 
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
-bmFsLy9FTiI+DQoNCjxodG1sPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50
-LVR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD13aW5kb3dzLTEyNTEiPg0KPHN0
-eWxlIHR5cGU9InRleHQvY3NzIiBtZWRpYT0ic2NyZWVuIj4NCnRhYmxlIHsgZm9udC1zaXpl
-OiAxMnB4OyBjb2xvcjogIzAwMDAwMDsgZm9udC1mYW1pbHk6IFZlcmRhbmEsIEdlbmV2YSwg
-QXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgdGV4dC1kZWNvcmF0aW9uOiBub25lOyBi
-YWNrZ3JvdW5kOiAjZmZmZmZmOyB9CQkNCm9sIGxpIHtmb250LXNpemU6IDEycHg7fQ0KYm9k
-eSx0ZCx0aCB7DQoJZm9udC1mYW1pbHk6IFZlcmRhbmEsIEdlbmV2YSwgQXJpYWwsIEhlbHZl
-dGljYSwgc2Fucy1zZXJpZjsNCglmb250LXNpemU6IDEycHg7DQoJY29sb3I6ICMwMDA7DQp9
-DQpib2R5IHsNCgliYWNrZ3JvdW5kLWNvbG9yOiAjRkZGRkZGOw0KfQ0KPC9zdHlsZT4NCjwv
-aGVhZD4NCjxib2R5IGxlZnRtYXJnaW49IjAiIG1hcmdpbmhlaWdodD0iMCIgbWFyZ2lud2lk
-dGg9IjAiIHRvcG1hcmdpbj0iMCI+DQo8dGFibGUgY2VsbHNwYWNpbmc9IjAiIGNlbGxwYWRk
-aW5nPSIwIiB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIj4NCjx0cj4NCjx0ZCBiZ2NvbG9yPSIj
-MDAwMDg4IiBzdHlsZT0icGFkZGluZy1sZWZ0OiAxMXB4OyBwYWRkaW5nLXJpZ2h0OiAxMHB4
-OyBwYWRkaW5nLXRvcDogMTBweDsgcGFkZGluZy1ib3R0b206IDEwcHg7Ij4NCjxmb250IHNp
-emU9IjQiIGNvbG9yPSIjZmZmZmZlIj48Yj5BS1TIQkjbRSDPUE/EQcbIIEIgUE/HzcjXSE/J
-IFRPUMNPQstFPC9iPjwvZm9udD4NCjwvdGQ+DQo8L3RyPg0KPHRyPg0KPHRkIGJnY29sb3I9
-IiNlZWVlZWUiIHN0eWxlPSJwYWRkaW5nLWxlZnQ6IDExcHg7IHBhZGRpbmctcmlnaHQ6IDEw
-cHg7IHBhZGRpbmctdG9wOiAxMHB4OyBwYWRkaW5nLWJvdHRvbTogMTBweDsiPg0KPHAgc3R5
-bGU9Im1hcmdpbi1ib3R0b206IDZweDsiPjxmb250IGNvbG9yPSIjOTk5OTk5Ij4glSA8L2Zv
-bnQ+PGZvbnQgY29sb3I9IiNjYzAwMDAiPjxiPjMg5GXq4OFw/zwvYj48L2ZvbnQ+PGZvbnQg
-Y29sb3I9IiM5OTk5OTkiPiCVIDwvZm9udD48Zm9udCBzaXplPSIyIiBjb2xvcj0iI2NjMDAw
-MCI+PGI+MjAwOSDjLjwvYj48L2ZvbnQ+PGJyPg0KICA8Zm9udCBjb2xvcj0iIzk5OTk5OSI+
-IJUgPC9mb250Pjxmb250IHNpemU9IjIiIGNvbG9yPSIjY2MwMDAwIj48Yj7h8+v84i4g2OXi
-92Xt6m8gNDwvYj48L2ZvbnQ+PGZvbnQgY29sb3I9IiM5OTk5OTkiPiCVIDwvZm9udD48Zm9u
-dCBzaXplPSIyIiBjb2xvcj0iI2NjMDAwMCI+PGI+7vLl6/wgItHg7eryLc9l8mVw4fPw4yI8
-L2I+PC9mb250PjwvcD4NCjxwIHN0eWxlPSJtYXJnaW4tdG9wOiA2cHg7Ij4NCjxmb250IGNv
-bG9yPSIjOTk5OTk5Ij4glSA8L2ZvbnQ+PGZvbnQgY29sb3I9IiNjYzAwMDAiPjxiPtLl6y46
-ICgwPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPuQ8L2Zv
-bnQ+NDxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7kPC9m
-b250PjQpIDI8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+
-8zwvZm9udD4zPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsi
-PvY8L2ZvbnQ+My00PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFw
-eDsiPuI8L2ZvbnQ+Njxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAx
-cHg7Ij7pPC9mb250PjY8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTog
-MXB4OyI+/zwvZm9udD45LCAyPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNp
-emU6IDFweDsiPvY8L2ZvbnQ+Mzxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1z
-aXplOiAxcHg7Ij7oPC9mb250PjctOTxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9u
-dC1zaXplOiAxcHg7Ij7pPC9mb250PjA8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZv
-bnQtc2l6ZTogMXB4OyI+/jwvZm9udD4wPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJm
-b250LXNpemU6IDFweDsiPvk8L2ZvbnQ+NTwvYj48L2ZvbnQ+DQo8L3RkPg0KPC90cj4NCjx0
-cj4NCjx0ZCBzdHlsZT0icGFkZGluZy1sZWZ0OiAxMXB4OyBwYWRkaW5nLXJpZ2h0OiA3cHg7
-IHBhZGRpbmctdG9wOiAxNnB4OyBwYWRkaW5nLWJvdHRvbTogMTBweDsiPg0KICA8cD48c3Ry
-b25nPtbl62XiYf8g4PPk6PLu8Oj/Ojwvc3Ryb25nPiDvZfBj7u1h6yDqb+zv4O3o6Swg7eXv
-b/Hw5eRj8uLl7e3uIO7h8evz5ujiYf756Okg7+7q8+9h8mXrZekg4iDyb3Dj7uJv7CDnYevl
-ICZuZGFzaDsg7/Du5GHi9vssIOpv7fHz6/zy4O3y+ywg7GXt5eTm5fD7IPLu8ONv4u7j7iDn
-4OthLCBh5Ozo7ehj8vBh8u5w+ywgY2/y8PPk7ejq6CDi+2Py4OLu6i3v8O7kYeYsIGHj5e3y
-+yDv7iDvcO7k4Obg7CDzY+vz4yD06Ofo92Vj6ujsIOvo9uDsLjwvcD4NCiAgPHA+PHN0cm9u
-Zz7WZev8Ojwvc3Ryb25nPiBv4uvg5GXt6GUg/fT05ery6OLt++zoIOzl8m/kYezoIO9w7uRh
-5iDoIOru7Ozz7ejqYfbo6CDxIOrr6OXt8mHs6CDiIHBl5/Pr/PLg8uUgIHBh5+Lo8uj/IOru
-7Ozz7ejq4PLo4u379SDq4Pfl8fLiIPP3YfHy7ejqb+Ig8nBl7ejt42EsIGEg8mHq5uUg5+Ag
-Y/dl8iBv4uvg5OXt6P8g7W/i++zoIPPs5e3o/+zoIOgg7WHi++rg7Ogg73Du5OLo5mXt6P8g
-8u7i4HDgIOIg7OXx8mH1IO/w7uRh5uguPC9wPg0KICA8aDUgc3R5bGU9Im1hcmdpbi10b3A6
-IDEwcHg7IG1hcmdpbi1ib3R0b206IDdweDsgQk9SREVSLUJPVFRPTTogI2JiYmJiYiAxcHgg
-c29saWQ7IGZvbnQtc2l6ZTogMTRweDsiPjxmb250IGNvbG9yPSIjMDAwMDg4Ij48Yj7PUE/D
-UEFNTUE8L2I+PC9mb250PjwvaDU+DQo8b2w+DQogIDxwPjxzdHJvbmc+MS4gz/Do7fbo7/sg
-4Ory6OLt7ukg73Bv5GHm6CDiIHDu5+3o9+1v6SDyb3Djb+LrZTo8L3N0cm9uZz48L3A+DQog
-IDxwPiZidWxsOyDOY+7h5e3tb/Hy6CDv7ufo9ujpIO9w6CDi5+Do7G/kZelj8uLo6CDxIOrr
-6GXt8uDs6C48YnI+DQogICAgJmJ1bGw7IMDt4Ovo5yDxb+Fj8uJl7e1v6SDv7ufo9ujoIOgg
-7vLtb/hl7ej/IOog6uvo5e3yYewuPGJyPg0KICAgICZidWxsOyDR6GPyZexhIPZl7e3u8fJl
-6SDoIPPhZebk5e3o6SD99PTl6vLo4u3u428g73Bv5ODi9uAuPGJyPg0KICAgICZidWxsOyDT
-Y/Lg7W/i6ugg6CDz4eXm5OXt6P8sIO9w5e//8mPy4vP++ehlIOgg8e/u8e7hY/Li8/756OUg
-73Du5GHm5Txicj4NCiAgICAmYnVsbDsg0GHh7vLgIPEg7uHw4Ofu7CAmYmRxdW876ORlYev8
-7W/j7iDvcO7kYeL2YSZyZHF1bzs8YnI+DQogICAgJmJ1bGw7INRvcOzocG/i4O3oZSDoIO9w
-6O3/8ujlIOjkZe3y6Pft7mPy6CDvcG/k4OL2YS48YnI+DQogICAgJmJ1bGw7IMru7O9v7WXt
-8vsg6Ozo5OZhIO/w7vRl8WPob+3g6/ztb+PuIO/wb+Tg4vZhLjwvcD4NCiAgPHA+PHN0cm9u
-Zz4yLiDR8vDz6vLzcOAg73Bv5ODm6Do8L3N0cm9uZz48L3A+DQogIDxwPiZidWxsOyDOY+1v
-4u37ZSD98uDv+yDi5+Do7O7kZenx8uLo/yBjIOrr6GXt8m/sLjxicj4NCiAgICAmYnVsbDsg
-1eBwYery5fDoY/Lo6uAg6CDn7eD3Ze3oZSDqYebkb+NvIOjnIP3yYe9v4iDvcO7k4OboLjxi
-cj4NCiAgICAmYnVsbDsgzu/wZeTl62Xt6OUg6uv+92Xi+3ggY/Jh5OjpIOLn4Ojs7uTl6fHy
-4uj/IGMg6uvoZe3yYezoLjxicj4NCiAgICAmYnVsbDsgz+5j8mHt7uLq4CD25etl6SDoIOfg
-5GH3IOTr/yDqYebkb+kgY/Lg5OjoIO/w7uTg5i48YnI+DQogICAgJmJ1bGw7IM9v5ONv8u7i
-6mEg6iDv8O7k4OblLiDX8u4gIORv6+bl7SDn7eDy/CDv8G/k4OLl9iBvIPJv4mFw5Swg6u7y
-b3D76SDu7SDvcG/k4OXyLjwvcD4NCiAgPHA+PHN0cm9uZz4zLiDTY/Lg7W/i62Xt6OUg6m/t
-8mHq8mEg8SDq6+hl7fJv7Do8L3N0cm9uZz48L3A+DQogIDxwPiZidWxsOyDOY+7hZe3tb2Py
-6CDvcP/s7uNvIOpv7fJh6vLgLiDPZfDi++Ug9PDg5/sg4iDw4Ofjb+Lu8GUuPGJyPg0KICAg
-ICZidWxsOyDP7uR47uQg6iDq6+hl7fLzLiDUb/Ds6HBv4mHt6OUg72/n6PLo4u3u4+4g72Xw
-4m/j7iDi72X3YfLr5e3o/y48YnI+DQogICAgJmJ1bGw7IM/w6GXs+yDvcOji62X35e3o/yDi
-7ejs4O3o/yDvb+rz72HyZev/IOIg8u5w42/ib+wg5+DrZS48YnI+DQogICAgJmJ1bGw7IM/x
-6PXu42Xu43Bh9Oj/IO/w7vHycGHt8fLi4CDibyDicGXs/yDr6Pftb+NvIOpv7fJh6vJhIGMg
-6uvoZe3y7uwuPGJyPg0KICAgICZidWxsOyDUYeryb/D7LCDx7+5jb+Hx8uLz/vnoZSDzY/Lg
-7W/i6+Xt6P4geG/wb/hl4+4g6m/t8uDq8uAgYyDq6+jl7fJv7C48YnI+DQogICAgJmJ1bGw7
-INLl9e3o6ugg8/HyYe1v4utl7ej/IOJlcOFh6/ztb+NvIOgg7eXiZfDh4Ov87e7jbyDq7u3y
-4Ory4CBjIOrr6OXt8m/sLiAgzGXyb+Rv6+7j6P8gJmxhcXVvO8pv7fJh6vImcmFxdW87Ljxi
-cj4NCiAgICAmYnVsbDsgw+7r7vEg6CDt5eJlcOHg6/zt7mUg72/i5eTl7ehlIO/wb+Rh4vZh
-IOph6iDuY+3u4u1v6SDo7WPy8PPsZe3yIOLr6P/t6P8g7WEg6uvoZe3yYS48YnI+DQogICAg
-JmJ1bGw7INPvcODi6+Xt6OUg6u7t8uDq8m/sOiDyZfXt6OroICZsYXF1bzviZeTl7ej/JnJh
-cXVvOyDq6+jl7fJhLjwvcD4NCiAgPHA+PHN0cm9uZz40LiAgzvDo5e3y4Pbo/yDiIOrr6GXt
-8uXi+//i6+Xt6GUg7+7ycOXh7e7x8uXpOjwvc3Ryb25nPjwvcD4NCiAgPHA+JmJ1bGw7INLo
-72/r7uPo/yDoIOxl8u7k+yDi+//i62Xt6P8g72/ycOXh7W9j8mXpIOrr6GXt8mEuPGJyPg0K
-ICAgICZidWxsOyDO7/Dl5OXr5e3o5SDuY+1v4u3u4+4g6O3yZXBl8eAg6uvoZe3yYS48YnI+
-DQogICAgJmJ1bGw7INLo7/sg4u7v8G/xb+Ig6CDyZXjt6OroIOj1IOru7WPy8PPocO7i4O3o
-/y48YnI+DQogICAgJmJ1bGw7INLleO3o6uAgb/LqcPvy+3gg4u7v8G9j7uIgJmxhcXVvO8Jv
-7/DuY/sg9+hj8m/j7iD/5/vq4CZyYXF1bzsuPGJyPg0KICAgICZidWxsOyDOY+3u4u375SDu
-+Ojh6ugg7/DoIPBh4e7yZSBjIOJv73Bv8eDs6C48YnI+DQogICAgJmJ1bGw7INLl9e3o6ugg
-Yery6OLtb+NvIGPr8/jg7ej/LCDtZeLl8OHg6/zt+2Ug6u7s72/tZe3y+yBh6vLo4u1v4+4g
-8evz+ODt6P8uPGJyPg0KICAgICZidWxsOyDMZfJv5PsgIOJl5GXt6P8g5Ojg6+7j4CDxIOrr
-6OXt8m/sLjwvcD4NCiAgPHA+PHN0cm9uZz41LiAg0ujv+yDq6+jl7fJv4iDoIOh4IO/x6PXu
-62/j6PdlY+roZSDuY2/hZe3tb2Py6Do8L3N0cm9uZz48L3A+DQogIDxwPiZidWxsOyDS6O9v
-62/j6P8g6uvoZe3yb+IuIMxl8m/k+yDh+/HycO7j7iDu73Bl5OXr5e3o/yDy6O9hIOrr6GXt
-8mEuPGJyPg0KICAgICZidWxsOyDO8e7hZe3tb2Py6CDi52Ho7G/k5elj8uLo/yBjIOrr6GXt
-8uDs6CDw4Ofr6Pft7uPuIPLo72EuPGJyPg0KICAgICZidWxsOyDR8nBh8mXj6Ogg73Do7f/y
-6P8g8OX4Ze3o6SBvIO9v6vPv6mUg6uvo5e3yYezoIHBh5+vo9+1v4+4g8ujvYS48L3A+DQog
-IDxwPjxzdHJvbmc+Ni4g3fT0Zery6OLtb2Ug73Dl5Ovu5uXt6GUg6uvoZe3y8zo8L3N0cm9u
-Zz48L3A+DQogIDxwPiZidWxsOyDUb/Ds6HBv4mHt6GUg73Bl5Ovu5mXt6P8uINHub/Ltb/jl
-7ehlIPRh6vLu4iwg73Dl6Ozz+eVj8uIg6CDi++Pu5CDiIO/wZedl7fJh9ujoIO9w5eTr7uZl
-7ej//jxicj4NCiAgICAmYnVsbDsgzG/y6OLocG/iYe3oZSDq6+hl7fLgLiDU7nDs6HDu4mHt
-6GUg6O3yZfBl8eAg6iDv8GXk6+Dj4GXs7uzzIO9wb+Tz6vLzLjxicj4NCiAgICAmYnVsbDsg
-yO3x8nDz7GXt8vsg4PDj8+xl7fLg9ujoIOgg8+Hl5uTl7ej/IOrr6GXt8mEuPGJyPg0KICAg
-ICZidWxsOyDQYfbob+3g6/ztYf8g6CD97O726O7t4Ov87WH/IPFvY/Jh4uv//vno5SDgcOPz
-7OXt8uD26OguPGJyPg0KICAgICZidWxsOyDI8e/u6/znb+Lg7ejlIHDl9+Xi+/UgY/LwYfLl
-4+jpIOLr6P/t6P8g4u4g4vDl7P8g73Bl5+Xt8mH26OguICDM5fJh9O7w6PdlY+ruZSDi6+j/
-7ehlLjxicj4NCiAgICAmYnVsbDsgz3Dl52Xt8uD26P8g73Dl5Ovu5uXt6P8g4iD0b3DsZSDk
-6ODr7uPgLjwvcD4NCiAgPHA+PHN0cm9uZz43LiDQ4OHu8uAgYyDib+fwYeZl7ej/7Ogg6uvo
-5e3yYTo8L3N0cm9uZz48L3A+DQogIDxwPiZidWxsOyDC6OT7IPHu7/Du8uji62Xt6P8g6uvo
-5e3yYS48YnI+DQogICAgJmJ1bGw7INLo7+7r7uPo/yDib+dw4OZl7ejpLiDBYefu4vtlIO9w
-YeLo62EgcGVh4+hw7uLg7ej/IO1hIOLu5/Bh5mXt6P8uPGJyPg0KICAgICZidWxsOyDR8mHt
-5OBw8u37ZSDi7ufw4Obl7ej/IOrr6GXt8uAg6CDs5fLu5Psg8ODh7vL7IGMg7ejs6C48YnI+
-DQogICAgJmJ1bGw7IMDr429w6PLsIHDg4e7y+yBjIOLu5/Bh5uXt6P/s6C4g0OX35eL75SDx
-8nDg8uXj6Ogg7WXp8vBh6+jnYfbo6CDi7udwYebl7ejpLjxicj4NCiAgICAmYnVsbDsg1G/w
-7Ohwb+Lg7ehlIOggb/Lw4OFv8uphIOjt5Oji6OTzYev87W/pIPHycODy5ePo6CDwYeFv8vsg
-YyDib+dwYeZl7ej/7OguPC9wPg0KICA8cD48c3Ryb25nPjguIMfg6uv+9+Xt6OUg8eTl6+ro
-Ojwvc3Ryb25nPjwvcD4NCiAgPHA+JmJ1bGw7IM9w6OLo6+Ag7+7i5eTl7ej/IO9w7uRh4vbg
-IO3gIP3y4O9lIOfg6uv+9+Xt6P8gY+Tl6+roLjxicj4NCiAgICAmYnVsbDsg0fLo7PPr6PDu
-4uDt6OUg6uvo5e3y4CDtYSDv8Ojt//LoZSBwZfjl7ej/IO4g72/q8+/q5S48YnI+DQogICAg
-JmJ1bGw7IN3sb/bob+1h6/zt4P8g72/k5GXw5uphIOrr6GXt8uAuPGJyPg0KICAgICZidWxs
-OyDS5Xjt6OroIOdh4uVw+GXt6P8gY+Tl6+roLjxicj4NCiAgICAmYnVsbDsg1O5w7Ojw7uJh
-7ejlIOzu8ujiYfbo6CDqIORh6/zt5en4ZezzIGNv8vDz5O3o9+Vj8uLzLjwvcD4NCg0KPC9v
-bD4NCjxoNSBzdHlsZT0ibWFyZ2luLXRvcDogMTBweDsgbWFyZ2luLWJvdHRvbTogN3B4OyBC
-T1JERVItQk9UVE9NOiAjYmJiYmJiIDFweCBzb2xpZDsgZm9udC1zaXplOiAxNHB4OyI+PGZv
-bnQgY29sb3I9IiMwMDAwODgiPjxiPkIgUEXH08vcVEFURSDPUE9YT8bERUjI3yBUUEVIyEjD
-QSDT10FDVEjIS8g6PC9iPjwvZm9udD48L2g1Pg0KPG9sPg0KICAmYnVsbDsg7+7i+/H/8iDx
-4m/pIPNwb+Ll7fwg6u7s7PPt6Org8uji7W/pIOru7O9l8mXt9ujoIOIg8GHhb/LlIPEg6uvo
-5e3yYezoOzxicj4NCiAgJmJ1bGw7IPPr8/f44PIg8/Bv4uXt/CDq4PdlY/Li4CDu4WPr8+bo
-4mHt6P8g6uvoZe3y7uI7PGJyPg0KICAmYnVsbDsgb+Lr4OTl/vIg73Dg6vLo9+Vj6uhlIO3g
-4vvqYezoIOL7Y/JwYeji4O3o/yBv8u1v+OXt6OkgYyDq6+jl7fLu7Ds8YnI+DQogICZidWxs
-OyDt4PP34PJj/yD99PTl6vLo4u1vIO9w5edl7fJv4mHy/CBj4u7oIPJv4mHw+y/z8evz4+g7
-PGJyPg0KICAmYnVsbDsg8ezu4/PyICDyb/ftbyDi+//i6//y/CDsb/Lo4vsg6CDv7vLwZeHt
-b2Py6CDq6+jl7fLgOzxicj4NCiAgJmJ1bGw7IG/x4m//8iDy5Xjt6OroIO/w5e7k7uvl7ej/
-IOJv5/Bh5mXt6Okg6CDn4OJlcPjl7ej/IO9lcGXjb+Lu8O7iIO4g7/Bv5ODm5Ts8YnI+DQog
-ICZidWxsOyDx8nDz6vLzcOhw8/7yIGPib+gg7WHi++roIOgg8+xl7ej/IOIgY/Tl8GUg7/Bv
-5ODmOzxicj4NCiAgJmJ1bGw7IO9v4vtj//IgcOXn8+v88mHy6OLt7mPy/CDx4u7o9SDv8G/k
-4OYg6uvo5e3yYewuDQoNCjwvb2w+DQo8aDUgc3R5bGU9Im1hcmdpbi10b3A6IDEwcHg7IG1h
-cmdpbi1ib3R0b206IDdweDsgQk9SREVSLUJPVFRPTTogI2JiYmJiYiAxcHggc29saWQ7IGZv
-bnQtc2l6ZTogMTRweDsiPjxmb250IGNvbG9yPSIjMDAwMDg4Ij48Yj5NRVRPxNsgUEHBT1Tb
-OjwvYj48L2ZvbnQ+PC9oNT4NCjxvbD4NCiAg6O3yZfDg6vLo4u37ZSDz73Dg5u3l7ej/LCDs
-6O3oLetl6vbo6CwgcODh7vJhIOIg7Ojt6C3jcPPv72F4LCDo7eTo4ujk8+Dr/O375SDz73Bh
-5u1l7ej/LCDw7utl4vvlIOjjcPsuDQoNCjwvb2w+DQo8aDUgc3R5bGU9Im1hcmdpbi10b3A6
-IDEwcHg7IG1hcmdpbi1ib3R0b206IDdweDsgQk9SREVSLUJPVFRPTTogI2JiYmJiYiAxcHgg
-c29saWQ7IGZvbnQtc2l6ZTogMTRweDsiPjxmb250IGNvbG9yPSIjMDAwMDg4Ij48Yj7ByMdI
-RUMtVFBFSEVQLCDPUEFLVMjXRUNLyMkgz0PIWE/LT8M8L2I+PC9mb250PjwvaDU+DQo8dWwg
-dHlwZT0iZGlzYyI+DQrKYexl7eX26ujpINHy4O3o8eth4iDC62Hk6OzocO7i6PcgLSBj72X2
-6ODr6Ofo8PNl8vH/IO3gIGHk4O/y4Pbo6CDoIOLtZeRw5e3o6CDv8ej17vJl9e3u6+7j6Okg
-4iBj9GXw8yDh6OftZWMt6u7s7PPt6Oph9ujpOiDvZfBl4+7i7vD7LCDv8O7kYeboLCDz73Bh
-4utl7ehlLiDI7GXl8iD+8Ojk6Pdl8epv5SDoIO/x6PXu62/j6Pfl8epvZSBv4fBh52/iYe3o
-5S4gyOfz92HrIP3w6Orx7u3u4vHq6Okg4+jv7e7nIOgg7eXpcG8t6+jt4+LoY/Lo9+Xx6m/l
-IO/wb+Nw4Ozs6PDu4uDt6OUgKM3Lzykg8yDi5eTz+eh4IPHvZfboYevoY/Jv4jogwWXy8ugg
-3evr6GMg3XDo6vHu7SAo0djAKSwgw+Xw7ODtIMTl6+v8ICjM/u31Ze0pLCDKLiDKb+Lg6+Xt
-b+osIMAuIMLo7W/j8GHk7uIsINIuIMNh4+jtLCDRLiDDb3Do7SAozG9j6uJhKToNCjwvdWw+
-DQo8aDUgc3R5bGU9Im1hcmdpbi10b3A6IDEwcHg7IG1hcmdpbi1ib3R0b206IDdweDsgQk9S
-REVSLUJPVFRPTTogI2JiYmJiYiAxcHggc29saWQ7IGZvbnQtc2l6ZTogMTRweDsiPjxmb250
-IGNvbG9yPSIjMDAwMDg4Ij48Yj5QRcPLQU1FSFQ8L2I+PC9mb250PjwvaDU+DQo8dWw+DQog
-IDxsaT48Yj45LjMwPC9iPi08Yj4xNy4zMDwvYj4NCjxsaT7PZXDl8PviIDxiPjEzLjMwPC9i
-Pi08Yj4xNC4zMDwvYj4NCjxsaT7QZePoY/Lw4Pbo/yDxIDxiPjkuMzA8L2I+IOIg9e7r6+Uu
-PC91bD4NCg0KPGg1IHN0eWxlPSJtYXJnaW4tYm90dG9tOiAzcHg7IEJPUkRFUi1CT1RUT006
-ICNiYmJiYmIgMXB4IHNvbGlkOyBmb250LXNpemU6IDE0cHg7Ij48Zm9udCBjb2xvcj0iIzAw
-MDA4OCI+PGI+Q1RPyE1PQ1TcPC9iPjwvZm9udD48L2g1Pg0KPHVsPg0KPGxpPjxmb250IGNv
-bG9yPSIjY2MwMDAwIj48Yj44MDAuMDAg4/DtLjwvYj4gPC9mb250PufgIG/k7W/j7iDz9+Bj
-8u3o6mEuDQo8bGk+xOv/IOLy7vBv428g6CDycOXy/OXj7iDz9+Bj8u3o6uAgY+ro5OroIJcg
-NSUg6CA3JSBj7u7y4uXy8fLi5e3tby4NCjxsaT7CIGPyb+jsb/Hy/CDi9e7k6PI6IOjt9G9w
-7GH26O7t7e4t6u7t8fPr/PJh9uju7e1vZSDu4fHr8+bo4mHt6GUg7eAgY2Xs6O1hcGUsIPHh
-b3Dt6Oog7GHy5fDo4Otv4iwg6u70ZS3hcGXp6iwg7uFl5CDiIPBlY/Jv8GHtZSwgb+Hx8+bk
-5e3o5SDk7urrYeTu4iDoIO7h7OXtIOztZe3o/+zoIPEg6+Xq8m/wb+wuDQo8L3VsPg0KPGg1
-IHN0eWxlPSJtYXJnaW4tYm90dG9tOiAzcHg7IEJPUkRFUi1CT1RUT006ICNiYmJiYmIgMXB4
-IHNvbGlkOyBmb250LXNpemU6IDE0cHg7Ij48Zm9udCBjb2xvcj0iIzAwMDA4OCI+PGI+UEXD
-yENUUEHWyN88L2I+PC9mb250PjwvaDU+DQo8dWw+DQo8bGk+PGI+0uXrLjogKDA8Zm9udCBj
-b2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+7zwvZm9udD40PGZvbnQg
-Y29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPuA8L2ZvbnQ+NCkgMjxm
-b250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7nPC9mb250PjM8
-Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+6DwvZm9udD4z
-LTQ8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+7zwvZm9u
-dD42PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPuQ8L2Zv
-bnQ+Njxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij76PC9m
-b250PjksIDI8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+
-4TwvZm9udD4zPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsi
-Pvg8L2ZvbnQ+Ny05PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFw
-eDsiPuQ8L2ZvbnQ+MDxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAx
-cHg7Ij7+PC9mb250PjA8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTog
-MXB4OyI+4DwvZm9udD41PC9iPg0KPC91bD4NCg0KPC90ZD4NCjwvdHI+DQo8L3RhYmxlPg0K
-PC9ib2R5Pg0KPC9odG1sPg0KDQoNCg0K
+Post your details and questions to the
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org mailing list.  That's probably
+the best way to get help.
 
+Alternately if you need commercial support, my company provides both
+consulting and engineering services to help get your driver written.
+Let me know if you want details.
 
+Cheers,
+g.
 
-
---===============2051234004905838546==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
 
 ------------------------------------------------------------------------------
 Join us December 9, 2009 for the Red Hat Virtual Experience,
 a free event focused on virtualization and cloud computing. 
 Attend in-depth sessions from your desk. Your couch. Anywhere.
 http://p.sf.net/sfu/redhat-sfdev2dev
---===============2051234004905838546==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2051234004905838546==--

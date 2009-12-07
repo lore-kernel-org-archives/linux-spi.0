@@ -1,75 +1,61 @@
-From: Florian Fainelli <ffainelli-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
-Subject: [PATCH] fix spidev compilation failure when
-	VERBOSE is defined
-Date: Mon, 7 Dec 2009 15:28:43 +0100
-Message-ID: <200912071528.44001.ffainelli@freebox.fr>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH 1/3] [SPI] [OMAP] Add OMAP spi100k driver
+Date: Mon, 7 Dec 2009 10:08:05 -0800
+Message-ID: <20091207180805.GD24013@atomide.com>
+References: <1260161299-17656-1-git-send-email-darkstar6262@gmail.com>
+ <1260161299-17656-2-git-send-email-darkstar6262@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
+To: Cory Maccarrone <darkstar6262@gmail.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1260161299-17656-2-git-send-email-darkstar6262@gmail.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Grant,
+Hi,
 
-I am sending this patch to you as you have taken over the
-maintainership of the spi tree. Thanks!
---
-From: Florian Fainelli <ffainelli-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
-Subject: [PATCH] fix spidev compilation failure when VERBOSE is defined
+* Cory Maccarrone <darkstar6262@gmail.com> [091206 20:48]:
+> This change adds the OMAP SPI 100k driver created by
+> Fabrice Crohas <fcrohas@gmail.com>.  This SPI bus is found on
+> OMAP7xx-series smartphones, and for many, the touchscreen is
+> attached to this bus.
+> 
+> The lion's share of the work was done by Fabrice on this driver --
+> I am merely porting it from the Linwizard project on his behalf.
+> 
+> Signed-off-by: Cory Maccarrone <darkstar6262@gmail.com>
+> ---
+>  drivers/spi/Kconfig         |    6 +
+>  drivers/spi/Makefile        |    1 +
+>  drivers/spi/omap_spi_100k.c |  642 +++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 649 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/spi/omap_spi_100k.c
 
-When VERBOSE is defined in the spidev module, the compilation
-will throw an error on 'spi' not being defined:
+<snip>
 
-CC [M]  drivers/spi/spidev.o                   
-drivers/spi/spidev.c: In function 'spidev_message':
-drivers/spi/spidev.c:266: error: 'spi' undeclared (first use in this function)
-drivers/spi/spidev.c:266: error: (Each undeclared identifier is reported only once
-drivers/spi/spidev.c:266: error: for each function it appears in.) 
+> +static void spi100k_enable_clock(struct spi_master *master)
+> +{
+> +	unsigned int val;
+> +	struct omap1_spi100k *spi100k = spi_master_get_devdata(master);
+> +
+> +	/* enable SPI */
+> +	val = omap_readw(spi100k->base_addr + SPI_SETUP1);
+> +	val |= SPI_SETUP1_CLOCK_ENABLE;
+> +	omap_writew(val, spi100k->base_addr + SPI_SETUP1);
+> +}
 
-instead of using spi-> we should actually use spidev->spi.
-This patch fixes the build failure.
+Please do not use omap_read/write for the new drivers.
 
-Signed-off-by: Florian Fainelli <ffainelli-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
----
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 5d869c4..c80c31b 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -262,15 +262,15 @@ static int spidev_message(struct spidev_data *spidev,
- 		k_tmp->delay_usecs = u_tmp->delay_usecs;
- 		k_tmp->speed_hz = u_tmp->speed_hz;
- #ifdef VERBOSE
--		dev_dbg(&spi->dev,
-+		dev_dbg(&spidev->spi->dev,
- 			"  xfer len %zd %s%s%s%dbits %u usec %uHz\n",
- 			u_tmp->len,
- 			u_tmp->rx_buf ? "rx " : "",
- 			u_tmp->tx_buf ? "tx " : "",
- 			u_tmp->cs_change ? "cs " : "",
--			u_tmp->bits_per_word ? : spi->bits_per_word,
-+			u_tmp->bits_per_word ? : spidev->spi->bits_per_word,
- 			u_tmp->delay_usecs,
--			u_tmp->speed_hz ? : spi->max_speed_hz);
-+			u_tmp->speed_hz ? : spidev->spi->max_speed_hz);
- #endif
- 		spi_message_add_tail(k_tmp, &msg);
- 	}
+Instead, please use ioremap in the platform init code in
+arch/arm/mach-omap1/, and pass the virtual address in
+platform_data to the driver. Then you can use readw/writew
+in the driver.
 
+We have static mappings in place for ioremap, so there's
+no extra overhead.
 
+Regards,
 
-
-------------------------------------------------------------------------------
-Join us December 9, 2009 for the Red Hat Virtual Experience,
-a free event focused on virtualization and cloud computing. 
-Attend in-depth sessions from your desk. Your couch. Anywhere.
-http://p.sf.net/sfu/redhat-sfdev2dev
+Tony

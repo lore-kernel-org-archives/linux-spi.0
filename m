@@ -1,10 +1,13 @@
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 2/5] spi-imx: correct check for
-	platform_get_irq failing
-Date: Tue,  8 Dec 2009 22:14:07 +0100
-Message-ID: <1260306850-14945-2-git-send-email-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 5/5] spi-imx: don't access struct device
+	directly but use dev_get_platdata
+Date: Tue,  8 Dec 2009 22:14:10 +0100
+Message-ID: <1260306850-14945-5-git-send-email-u.kleine-koenig@pengutronix.de>
 References: <20091208211258.GA13706@pengutronix.de>
 	<1260306850-14945-1-git-send-email-u.kleine-koenig@pengutronix.de>
+	<1260306850-14945-2-git-send-email-u.kleine-koenig@pengutronix.de>
+	<1260306850-14945-3-git-send-email-u.kleine-koenig@pengutronix.de>
+	<1260306850-14945-4-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
@@ -14,7 +17,7 @@ Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1260306850-14945-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1260306850-14945-4-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,20 +28,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-cGxhdGZvcm1fZ2V0X2lycSByZXR1cm5zIC1FTlhJTyBpZiB0aGVyZSBpcyBubyBlbnRyeS4gIFNv
-IGRvbid0IGNoZWNrCnJldHVybiB2YWx1ZSBiZWluZyBub256ZXJvIGJ1dCBncmVhdGVyIG9yIGVx
-dWFsIHRvIHplcm8uCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUt
-a29lbmlnQHBlbmd1dHJvbml4LmRlPgpDYzogRGF2aWQgQnJvd25lbGwgPGRicm93bmVsbEB1c2Vy
-cy5zb3VyY2Vmb3JnZS5uZXQ+CkNjOiBBbmRyZXcgTW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRp
-b24ub3JnPgpDYzogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgotLS0KIGRy
-aXZlcnMvc3BpL3NwaV9pbXguYyB8ICAgIDIgKy0KIDEgZmlsZXMgY2hhbmdlZCwgMSBpbnNlcnRp
-b25zKCspLCAxIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaV9pbXgu
-YyBiL2RyaXZlcnMvc3BpL3NwaV9pbXguYwppbmRleCBjODNjYTA1Li5kOGQ5YTM1IDEwMDY0NAot
-LS0gYS9kcml2ZXJzL3NwaS9zcGlfaW14LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpX2lteC5jCkBA
-IC01NTQsNyArNTU0LDcgQEAgc3RhdGljIGludCBfX2luaXQgc3BpX2lteF9wcm9iZShzdHJ1Y3Qg
-cGxhdGZvcm1fZGV2aWNlICpwZGV2KQogCX0KIAogCXNwaV9pbXgtPmlycSA9IHBsYXRmb3JtX2dl
-dF9pcnEocGRldiwgMCk7Ci0JaWYgKCFzcGlfaW14LT5pcnEpIHsKKwlpZiAoc3BpX2lteC0+aXJx
-IDwgMCkgewogCQlyZXQgPSAtRUlOVkFMOwogCQlnb3RvIG91dF9pb3VubWFwOwogCX0KLS0gCjEu
+QWxzbyB0aGVyZSBpcyBubyBjYXN0aW5nIG5lZWRlZCB0byBhc3NpZ24gYSB2b2lkIHBvaW50ZXIu
+CgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1
+dHJvbml4LmRlPgpDYzogRGF2aWQgQnJvd25lbGwgPGRicm93bmVsbEB1c2Vycy5zb3VyY2Vmb3Jn
+ZS5uZXQ+CkNjOiBBbmRyZXcgTW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnPgpDYzog
+U2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvc3BpL3Nw
+aV9pbXguYyB8ICAgIDIgKy0KIDEgZmlsZXMgY2hhbmdlZCwgMSBpbnNlcnRpb25zKCspLCAxIGRl
+bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaV9pbXguYyBiL2RyaXZlcnMv
+c3BpL3NwaV9pbXguYwppbmRleCA1OWIzYTMwLi5lYTZkNzAxIDEwMDY0NAotLS0gYS9kcml2ZXJz
+L3NwaS9zcGlfaW14LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpX2lteC5jCkBAIC00OTIsNyArNDky
+LDcgQEAgc3RhdGljIGludCBfX2luaXQgc3BpX2lteF9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2
+aWNlICpwZGV2KQogCXN0cnVjdCByZXNvdXJjZSAqcmVzOwogCWludCBpLCByZXQ7CiAKLQlteGNf
+cGxhdGZvcm1faW5mbyA9IChzdHJ1Y3Qgc3BpX2lteF9tYXN0ZXIgKilwZGV2LT5kZXYucGxhdGZv
+cm1fZGF0YTsKKwlteGNfcGxhdGZvcm1faW5mbyA9IGRldl9nZXRfcGxhdGRhdGEoJnBkZXYtPmRl
+dik7CiAJaWYgKCFteGNfcGxhdGZvcm1faW5mbykgewogCQlkZXZfZXJyKCZwZGV2LT5kZXYsICJj
+YW4ndCBnZXQgdGhlIHBsYXRmb3JtIGRhdGFcbiIpOwogCQlyZXR1cm4gLUVJTlZBTDsKLS0gCjEu
 Ni41LjIKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KUmV0dXJuIG9uIEluZm9ybWF0aW9uOgpHb29n
 bGUgRW50ZXJwcmlzZSBTZWFyY2ggcGF5cyB5b3UgYmFjawpHZXQgdGhlIGZhY3RzLgpodHRwOi8v

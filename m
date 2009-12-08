@@ -1,21 +1,18 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 4/5] spi-imx: Add mx25 support
-Date: Tue,  8 Dec 2009 22:14:09 +0100
-Message-ID: <1260306850-14945-4-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Subject: Re: [PATCH 0/5] spi-imx: some updates
+Date: Tue, 8 Dec 2009 15:32:39 -0800
+Message-ID: <20091208153239.af0b5bb8.akpm@linux-foundation.org>
 References: <20091208211258.GA13706@pengutronix.de>
-	<1260306850-14945-1-git-send-email-u.kleine-koenig@pengutronix.de>
-	<1260306850-14945-2-git-send-email-u.kleine-koenig@pengutronix.de>
-	<1260306850-14945-3-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1260306850-14945-3-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <20091208211258.GA13706-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,42 +23,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgoKU2lnbmVkLW9mZi1i
-eTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgpTaWduZWQtb2ZmLWJ5OiBV
-d2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgpDYzogRGF2
-aWQgQnJvd25lbGwgPGRicm93bmVsbEB1c2Vycy5zb3VyY2Vmb3JnZS5uZXQ+CkNjOiBBbmRyZXcg
-TW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnPgotLS0KIGRyaXZlcnMvc3BpL3NwaV9p
-bXguYyB8ICAgIDggKysrKy0tLS0KIDEgZmlsZXMgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0
-IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaV9pbXguYyBiL2RyaXZl
-cnMvc3BpL3NwaV9pbXguYwppbmRleCAwY2NiZDFjLi41OWIzYTMwIDEwMDY0NAotLS0gYS9kcml2
-ZXJzL3NwaS9zcGlfaW14LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpX2lteC5jCkBAIC0yMDgsNyAr
-MjA4LDcgQEAgc3RhdGljIGludCBteDMxX2NvbmZpZyhzdHJ1Y3Qgc3BpX2lteF9kYXRhICpzcGlf
-aW14LAogCiAJaWYgKGNwdV9pc19teDMxKCkpCiAJCXJlZyB8PSAoY29uZmlnLT5icHcgLSAxKSA8
-PCBNWDMxX0NTUElDVFJMX0JDX1NISUZUOwotCWVsc2UgaWYgKGNwdV9pc19teDM1KCkpIHsKKwll
-bHNlIGlmIChjcHVfaXNfbXgyNSgpIHx8IGNwdV9pc19teDM1KCkpIHsKIAkJcmVnIHw9IChjb25m
-aWctPmJwdyAtIDEpIDw8IE1YMzVfQ1NQSUNUUkxfQkxfU0hJRlQ7CiAJCXJlZyB8PSBNWDMxX0NT
-UElDVFJMX1NTQ1RMOwogCX0KQEAgLTIyMiw3ICsyMjIsNyBAQCBzdGF0aWMgaW50IG14MzFfY29u
-ZmlnKHN0cnVjdCBzcGlfaW14X2RhdGEgKnNwaV9pbXgsCiAJaWYgKGNvbmZpZy0+Y3MgPCAwKSB7
-CiAJCWlmIChjcHVfaXNfbXgzMSgpKQogCQkJcmVnIHw9IChjb25maWctPmNzICsgMzIpIDw8IE1Y
-MzFfQ1NQSUNUUkxfQ1NfU0hJRlQ7Ci0JCWVsc2UgaWYgKGNwdV9pc19teDM1KCkpCisJCWVsc2Ug
-aWYgKGNwdV9pc19teDI1KCkgfHwgY3B1X2lzX214MzUoKSkKIAkJCXJlZyB8PSAoY29uZmlnLT5j
-cyArIDMyKSA8PCBNWDM1X0NTUElDVFJMX0NTX1NISUZUOwogCX0KIApAQCAtNTY1LDcgKzU2NSw3
-IEBAIHN0YXRpYyBpbnQgX19pbml0IHNwaV9pbXhfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2Rldmlj
-ZSAqcGRldikKIAkJZ290byBvdXRfaW91bm1hcDsKIAl9CiAKLQlpZiAoY3B1X2lzX214MzEoKSB8
-fCBjcHVfaXNfbXgzNSgpKSB7CisJaWYgKGNwdV9pc19teDI1KCkgfHwgY3B1X2lzX214MzEoKSB8
-fCBjcHVfaXNfbXgzNSgpKSB7CiAJCXNwaV9pbXgtPmludGN0cmwgPSBteDMxX2ludGN0cmw7CiAJ
-CXNwaV9pbXgtPmNvbmZpZyA9IG14MzFfY29uZmlnOwogCQlzcGlfaW14LT50cmlnZ2VyID0gbXgz
-MV90cmlnZ2VyOwpAQCAtNTk3LDcgKzU5Nyw3IEBAIHN0YXRpYyBpbnQgX19pbml0IHNwaV9pbXhf
-cHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikKIAkJd3JpdGVsKDEsIHNwaV9pbXgt
-PmJhc2UgKyBNWENfUkVTRVQpOwogCiAJLyogZHJhaW4gcmVjZWl2ZSBidWZmZXIgKi8KLQlpZiAo
-Y3B1X2lzX214MzEoKSB8fCBjcHVfaXNfbXgzNSgpKQorCWlmIChjcHVfaXNfbXgyNSgpIHx8IGNw
-dV9pc19teDMxKCkgfHwgY3B1X2lzX214MzUoKSkKIAkJd2hpbGUgKHJlYWRsKHNwaV9pbXgtPmJh
-c2UgKyBNWDNfQ1NQSVNUQVQpICYgTVgzX0NTUElTVEFUX1JSKQogCQkJcmVhZGwoc3BpX2lteC0+
-YmFzZSArIE1YQ19DU1BJUlhEQVRBKTsKIAotLSAKMS42LjUuMgoKCi0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLQpSZXR1cm4gb24gSW5mb3JtYXRpb246Ckdvb2dsZSBFbnRlcnByaXNlIFNlYXJjaCBwYXlz
-IHlvdSBiYWNrCkdldCB0aGUgZmFjdHMuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvZ29vZ2xlLWRldjJk
-ZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
-dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
-ZGV2ZWwtZ2VuZXJhbAo=
+On Tue, 8 Dec 2009 22:12:58 +0100
+Uwe Kleine-K__nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
+
+> this series depends on "spi: drain MXC SPI transfer buffer when probing
+> device" which is currently in -mm and also included in my spi-imx branch
+> (see below).  IMHO at least my first patch should go into .33 as it
+> fixes an oops.
+
+I queued all five for 2.6.33.
+
+
+Once I've merged up the current -mm patch queue:
+
+atmel_spi-fix-dma-addr-calculation-for-len-buffer_size.patch
+spi-controller-driver-for-designware-spi-core.patch
+#
+spi-add-pci-interface-driver-for-designware-spi-core.patch
+spi-add-pci-interface-driver-for-designware-spi-core-fix.patch
+spi-controller-driver-for-designware-spi-core-fix.patch
+#
+spidev-add-proper-section-markers.patch
+spidev-use-declare_bitmap-instead-of-declaring-the-array.patch
+spidev-use-declare_bitmap-instead-of-declaring-the-array-checkpatch-fixes.patch
+spi-drain-mxc-spi-transfer-buffer-when-probing-device.patch
+spi_s3c24xx-add-fiq-pseudo-dma-support.patch
+spi-superh-msiof-spi-master-driver.patch
+spi-superh-msiof-spi-master-driver-update.patch
+spi-nuc900-add-arm-driver-support-for-nuc900.patch
+spi-fix-spidev-compilation-failure-when-verbose-is-defined.patch
+#
+spi-imx-use-platform_driver_probe-as-probe-lives-in-inittext.patch
+spi-imx-correct-check-for-platform_get_irq-failing.patch
+spi-imx-use-positive-logic-to-distinguish-cpu-variants.patch
+spi-imx-add-mx25-support.patch
+spi-imx-dont-access-struct-device-directly-but-use-dev_get_platdata.patch
+
+
+I shall stop sending SPI patches to Linus.  I'll send any which I
+accumulate to Grant instead.
+
+
+
+------------------------------------------------------------------------------
+Return on Information:
+Google Enterprise Search pays you back
+Get the facts.
+http://p.sf.net/sfu/google-dev2dev

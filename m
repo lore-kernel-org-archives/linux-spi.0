@@ -1,141 +1,79 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 2/3] [OMAP] Add spi100k configuration to OMAP1
-Date: Mon, 7 Dec 2009 10:14:01 -0800
-Message-ID: <20091207181401.GE24013@atomide.com>
-References: <1260161299-17656-1-git-send-email-darkstar6262@gmail.com>
- <1260161299-17656-3-git-send-email-darkstar6262@gmail.com>
+From: Leontiy Artirovich <leontiyartirovich-L/YRQdCDplbQT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] ГРИПП и Иммунитет
+Date: Tue, 08 Dec 2009 02:54:05 -2100
+Message-ID: <6518474815.20091208025405@l3377l.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
-To: Cory Maccarrone <darkstar6262@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1260161299-17656-3-git-send-email-darkstar6262@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============7116803568334422296=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-* Cory Maccarrone <darkstar6262@gmail.com> [091206 20:48]:
-> This change implements the clocks, platform driver, and register
-> information necessary to use the spi100k bus with OMAP 7xx systems.
-> 
-> The clocks added are dummy clocks because, although we're pretty
-> sure there are clocks used for SPI, all current booting methods result
-> in proper operation without the enabling of any other clocks.
-> 
-> Signed-off-by: Cory Maccarrone <darkstar6262@gmail.com>
-> ---
->  arch/arm/mach-omap1/clock.c               |    4 ++
->  arch/arm/mach-omap1/devices.c             |   70 +++++++++++++++++++++++++++++
->  arch/arm/plat-omap/include/plat/omap7xx.h |    3 +
->  arch/arm/plat-omap/include/plat/spi100k.h |   15 ++++++
->  4 files changed, 92 insertions(+), 0 deletions(-)
->  create mode 100644 arch/arm/plat-omap/include/plat/spi100k.h
-> 
-> diff --git a/arch/arm/mach-omap1/clock.c b/arch/arm/mach-omap1/clock.c
-> index dc8ca91..e584c0f 100644
-> --- a/arch/arm/mach-omap1/clock.c
-> +++ b/arch/arm/mach-omap1/clock.c
-> @@ -135,6 +135,10 @@ static struct omap_clk omap_clks[] = {
->  	CLK("i2c_omap.1", "fck",	&i2c_fck,	CK_16XX | CK_1510 | CK_310 | CK_7XX),
->  	CLK("i2c_omap.1", "ick",	&i2c_ick,	CK_16XX),
->  	CLK("i2c_omap.1", "ick",	&dummy_ck,	CK_1510 | CK_310 | CK_7XX),
-> +	CLK("omap1_spi100k.1", "fck",	&dummy_ck,	CK_7XX),
-> +	CLK("omap1_spi100k.1", "ick",	&dummy_ck,	CK_7XX),
-> +	CLK("omap1_spi100k.2", "fck",	&dummy_ck,	CK_7XX),
-> +	CLK("omap1_spi100k.2", "ick",	&dummy_ck,	CK_7XX),
->  	CLK("omap_uwire", "fck",	&armxor_ck.clk,	CK_16XX | CK_1510 | CK_310),
->  	CLK("omap-mcbsp.1", "ick",	&dspper_ck,	CK_16XX),
->  	CLK("omap-mcbsp.1", "ick",	&dummy_ck,	CK_1510 | CK_310),
-> diff --git a/arch/arm/mach-omap1/devices.c b/arch/arm/mach-omap1/devices.c
-> index 23ded2d..9f1c1cc 100644
-> --- a/arch/arm/mach-omap1/devices.c
-> +++ b/arch/arm/mach-omap1/devices.c
-> @@ -24,6 +24,12 @@
->  #include <mach/gpio.h>
->  #include <plat/mmc.h>
->  
-> +#if defined(CONFIG_SPI_OMAP_100K)
-> +#include <plat/omap7xx.h>
-> +#include <plat/spi100k.h>
-> +#include <linux/spi/spi.h>
-> +#endif
-> +
+--===============7116803568334422296==
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
-Please don't ifdef includes, you should be able to include them even
-if the driver is not selected.
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
+bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL2h0bWw0L2xvb3NlLmR0ZCI+DQo8aHRt
+bD4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0
+ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjx0aXRsZT48L3RpdGxlPg0KPHN0
+eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHksdGQsdGggew0KCWZvbnQtZmFtaWx5
+OiBWZXJkYW5hLCBHZW5ldmEsIHNhbnMtc2VyaWYsIEFyaWFsOw0KCWZvbnQtc2l6ZTogMTRw
+eDsNCgljb2xvcjogIzAwMDsNCn0NCmJvZHkgew0KCWJhY2tncm91bmQtY29sb3I6ICNGRkY7
+DQp9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9keT4NCjx0YWJsZSB3aWR0aD0iNjA4
+IiBhbGlnbj0iY2VudGVyIj4NCiAgPHRyPg0KICAgIDx0ZCB3aWR0aD0iNjAwIj48c3Ryb25n
+Ps3FIOfg4fvi4OksIMPQyM/PIO3lIORwZezr5fIhPC9zdHJvbmc+PGJyPg0KICAgICAgPGJy
+Pg0KICAgICAgyiDx7uZh62Xt6P4sIO9h7eRl7Oj/IMPQyM/PwCDtZSDnYeru7ffo62Fj/Cwg
+6Cwg7WFjIPEgwuDs6CDu5ujkYeXyIDxzdHJvbmc+4vLucGH/IOgg8vDl8vz/IOLu6+37ITwv
+c3Ryb25nPjxicj4NCiAgICAgIMph6iD98u7jbyDo5+Fl5uDy/D8gz+7q4CDl+WUg5fHy/CDi
+8GXs/ywg7eXu4Xhv5Ojs7iDvb+Tj7vLu4ujy/CBvcONh7ejn7CDqIOLx8vBl92Ug4ujw8/Hg
+LiA8c3Ryb25nPs3A2MAg6Ozs8+3tYf8gY+hj8mXsYSBj7+5j7uHt4CDt4GMg5+D56PLo8vwh
+IM3lb+H1b+To7O4gbyDt5ekg7+7n4OHu8ujy/GP/ITwvc3Ryb25nPjxicj4NCiAgICAgIMjn
+4mXx8u3uLCD38u4g5Ov/IPPqcGXv62Xt6P8g6CDvb+L7+OXt6P8g6Ozs8+3o8uXy4CDvcOjs
+Ze3//vJj/yA8YSBocmVmPSJodHRwOi8vcG9ub3MuaW4udWEvaW5kZXguaHRtIiBzdHlsZT0i
+Y29sb3I6I0YwMCI+PHN0cm9uZz7i6PJh7Ojt7fvlIO/wZe/g8GHy+zwvc3Ryb25nPjwvYT4g
+6CA8YSBocmVmPSJodHRwOi8vcG9ub3MuaW4udWEvYmlmaS5odG0iIHN0eWxlPSJjb2xvcjoj
+RjAwIj48c3Ryb25nPu9w7uHob/Lo6uguPC9zdHJvbmc+PC9hPjxicj4NCiAgICDR7m/h+eDl
+7CDC4OwsIPfy7iBv8e1v4vvi4P/x/CDt4CBw5efz6/zyYfLg9SDo8WPr5eTu4mHt6OksIOz7
+IHDl6u7sZe3k8+XsIO/w6O3o7GHy/CDq7uzv6+XqYyDi6PLg7Ojt7uIgYyDs6O1lcGHrYezo
+IDxzdHJvbmc+zPPr/PLoLfLg4WM8L3N0cm9uZz4mcmVnOyDn4CDsZWP/9iDk7iDvcOXk72/r
+4OPgZezu6SD97+jkZezo6CDoIO3gIO/wb/L/5uXt6Ogg4mPl6SD97+jkZezo6CDj8Ojv7+Ag
+7+4gMSDy4OHrZfLqZSDl5uXk7WXi7W8g6CDvcOXv4HDg8iA8c3Ryb25nPsHo9Oj07vDsPC9z
+dHJvbmc+JnJlZzsg4iDyZffl7ejlIOJjZekg/e/o5GXs6Ogg7+4gMSDq4O9j8+tlIOXmZeTt
+ZeLtby48L3RkPg0KICA8L3RyPg0KPC90YWJsZT4NCjwvYm9keT4NCjwvaHRtbD4NCg==
 
 
->  /*-------------------------------------------------------------------------*/
->  
->  #if defined(CONFIG_RTC_DRV_OMAP) || defined(CONFIG_RTC_DRV_OMAP_MODULE)
-> @@ -196,6 +202,69 @@ void __init omap1_init_mmc(struct omap_mmc_platform_data **mmc_data,
->  
->  /*-------------------------------------------------------------------------*/
->  
-> +/* OMAP7xx SPI support */
-> +#if defined(CONFIG_SPI_OMAP_100K)
-> +
-> +#include <plat/omap7xx.h>
-> +#include <plat/spi100k.h>
-> +#include <linux/spi/spi.h>
-> +
-> +static struct omap_spi100k_platform_config omap_spi1_config = {
-> +        .num_cs         = 2,
-> +};
-> +
-> +static struct resource omap_spi1_resources[] = {
-> +	{
-> +		.start          = OMAP7XX_SPI1_BASE,
-> +		.end            = OMAP7XX_SPI1_BASE + 0x7ff,
-> +		.flags          = IORESOURCE_MEM,
-> +	},
-> +};
-> +
-> +struct platform_device omap_spi1 = {
-> +        .name           = "omap1_spi100k",
-> +        .id             = 1,
-> +        .num_resources  = ARRAY_SIZE(omap_spi1_resources),
-> +        .resource       = omap_spi1_resources,
-> +        .dev            = {
-> +                .platform_data = &omap_spi1_config,
-> +        },
-> +};
-> +
-> +static struct omap_spi100k_platform_config omap_spi2_config = {
-> +        .num_cs         = 2,
-> +};
-> +
-> +static struct resource omap_spi2_resources[] = {
-> +        {
-> +                .start          = OMAP7XX_SPI2_BASE,
-> +                .end            = OMAP7XX_SPI2_BASE + 0x7ff,
-> +                .flags          = IORESOURCE_MEM,
-> +        },
-> +};
-> +
-> +struct platform_device omap_spi2 = {
-> +        .name           = "omap1_spi100k",
-> +        .id             = 2,
-> +        .num_resources  = ARRAY_SIZE(omap_spi2_resources),
-> +        .resource       = omap_spi2_resources,
-> +        .dev            = {
-> +	        .platform_data = &omap_spi2_config,
-> +	},
-> +};
-> +
-> +static void omap_init_spi100k(void)
-> +{
-> +        platform_device_register(&omap_spi1);
-> +        platform_device_register(&omap_spi2);
-> +}
-> +
-> +#else
-> +static inline void omap_init_spi100k(void) {}
-> +#endif
 
-Here you can do the ioremap I mentioned in the comments for
-the driver patch.
 
-Regards,
+--===============7116803568334422296==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Tony
+------------------------------------------------------------------------------
+Return on Information:
+Google Enterprise Search pays you back
+Get the facts.
+http://p.sf.net/sfu/google-dev2dev
+
+--===============7116803568334422296==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7116803568334422296==--

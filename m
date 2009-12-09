@@ -1,53 +1,61 @@
-From: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [PATCH 0/5] spi-imx: some updates
-Date: Tue, 8 Dec 2009 16:35:46 -0800
-Message-ID: <20091208163546.3354a7f5.akpm@linux-foundation.org>
+From: jassi brar <jassisinghbrar@gmail.com>
+Subject: Re: [spi-devel-general] [PATCH 0/5] spi-imx: some updates
+Date: Wed, 9 Dec 2009 09:47:17 +0900
+Message-ID: <1b68c6790912081647p39f0b285q2c164ab41c673aeb@mail.gmail.com>
 References: <20091208211258.GA13706@pengutronix.de>
-	<20091208153239.af0b5bb8.akpm@linux-foundation.org>
-	<fa686aa40912081625y3750a7fegbac38926182e38c6@mail.gmail.com>
+	 <20091208153239.af0b5bb8.akpm@linux-foundation.org>
+	 <fa686aa40912081625y3750a7fegbac38926182e38c6@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>,
-	Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa40912081625y3750a7fegbac38926182e38c6-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	linux-kernel@vger.kernel.org, Daniel Mack <daniel@caiaq.de>,
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?=
+	<u.kleine-koenig@pengutronix.de>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S967031AbZLIArN@vger.kernel.org>
+In-Reply-To: <fa686aa40912081625y3750a7fegbac38926182e38c6@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 8 Dec 2009 17:25:59 -0700
-Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-
+On Wed, Dec 9, 2009 at 9:25 AM, Grant Likely <grant.likely@secretlab.ca=
+> wrote:
+> 2009/12/8 Andrew Morton <akpm@linux-foundation.org>:
+>> On Tue, 8 Dec 2009 22:12:58 +0100
+>> Uwe Kleine-K__nig <u.kleine-koenig@pengutronix.de> wrote:
+>>
+>>> this series depends on "spi: drain MXC SPI transfer buffer when pro=
+bing
+>>> device" which is currently in -mm and also included in my spi-imx b=
+ranch
+>>> (see below). =C2=A0IMHO at least my first patch should go into .33 =
+as it
+>>> fixes an oops.
+>>
+>> I queued all five for 2.6.33.
+>
+> I had also picked up "drain MXC SPI transfer..." into my next-spi tre=
+e
+> earlier today. =C2=A0After a few days I'll send Linus a pull request.=
+ =C2=A0I
+> just need to make sure that Ben's tree gets pulled first because I've
+> got other stuff in there depending on it.
+>
+>> Once I've merged up the current -mm patch queue:
+> [... list of patches snipped ...]
+>> I shall stop sending SPI patches to Linus. =C2=A0I'll send any which=
+ I
+>> accumulate to Grant instead.
+>
 > I'm new to the job, so I'm being cautions about which things I'm pick
-> up.  However, I'll happily merge anything that Andrew says is okay.
-
-oop.  If I'm going to send a patch to a subsystem maintainer I'll usually give
-it less attention than the ones I plan to merge myself.
-
-Oh well, at least this way people will get their patches merged easily ;)
-
+> up. =C2=A0However, I'll happily merge anything that Andrew says is ok=
+ay.
 > Andrew, when in the merge window do you typically send out patch
 > queues?
+>
 
-Late.  I stage the -mm patches after linux-next so I spend most of the
-merge window waiting for people to get their stuff into mainline.
-
-Often there are stragglers who I need to route around.  It's usually
-not a significant problem though.
-
-------------------------------------------------------------------------------
-Return on Information:
-Google Enterprise Search pays you back
-Get the facts.
-http://p.sf.net/sfu/google-dev2dev
+Grant, may I know of your tree, if it's public?
+thanks

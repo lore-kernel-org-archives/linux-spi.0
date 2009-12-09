@@ -1,105 +1,169 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: + spi-imx-correct-check-for-platform_get_irq-failing.patch added
-	to -mm tree
-Date: Wed, 9 Dec 2009 11:00:19 -0700
-Message-ID: <fa686aa40912091000h16942fe9m239997ca3f2d9e4a@mail.gmail.com>
-References: <200912082330.nB8NU4IO016215@imap1.linux-foundation.org>
-	<fa686aa40912081638m734e97c3r2c3f412898d293b@mail.gmail.com>
-	<20091209074533.GB8136@pengutronix.de> <fa686aa40912090708g45879802l6cea7b401b1434e3@mail.gmail.com>
-	<20091209153241.GB1389@pengutronix.de> <20091209175553.GA25451@pengutronix.de>
+From: Dmitriy Germanovich <dmitriygermanovich-4FdXya5EiA9Wk0Htik3J/w@public.gmane.org>
+Subject: [SPAM] Нова істотна умова договору відчуження будинку на земельній ділянці.
+Date: Wed, 09 Dec 2009 21:40:02 +0300
+Message-ID: <9907072219.20091209214002@vikentiy.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: akpm@linux-foundation.org, mm-commits@vger.kernel.org,
-	daniel@caiaq.de, dbrownell@users.sourceforge.net,
-	s.hauer@pengutronix.de, spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: =?ISO-8859-1?Q?Uwe_Kleine=2DK=F6nig?=
-	<u.kleine-koenig@pengutronix.de>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1756407AbZLISAg@vger.kernel.org>
-In-Reply-To: <20091209175553.GA25451@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============6835400910146510973=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2009/12/9 Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>:
-> On Wed, Dec 09, 2009 at 04:32:41PM +0100, Uwe Kleine-K=F6nig wrote:
->> On Wed, Dec 09, 2009 at 08:08:19AM -0700, Grant Likely wrote:
->> > (resend because I forgot to cc the mailing list)
->> >
->> > 2009/12/9 Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>:
->> > > Hello Grant,
->> > >
->> > > On Tue, Dec 08, 2009 at 05:38:57PM -0700, Grant Likely wrote:
->> > >> > diff -puN drivers/spi/spi_imx.c~spi-imx-correct-check-for-pla=
-tform_get_irq-failing drivers/spi/spi_imx.c
->> > >> > --- a/drivers/spi/spi_imx.c~spi-imx-correct-check-for-platfor=
-m_get_irq-failing
->> > >> > +++ a/drivers/spi/spi_imx.c
->> > >> > @@ -554,7 +554,7 @@ static int __init spi_imx_probe(struct p
->> > >> > =A0 =A0 =A0 =A0}
->> > >> >
->> > >> > =A0 =A0 =A0 =A0spi_imx->irq =3D platform_get_irq(pdev, 0);
->> > >> > - =A0 =A0 =A0 if (!spi_imx->irq) {
->> > >> > + =A0 =A0 =A0 if (spi_imx->irq < 0) {
->> > >>
->> > >> This changes the old behaviour. =A0Is that what you intended? =A0=
-'<=3D 0' perhaps?
->> > > Yes, the old check was wrong. =A0What if the irq to use is 0? =A0=
-I thought
->> > > the commit log to be understandable. =A0platform_get_irq returns=
- -ENXIO on
->> > > error and an irq number on success. =A0So 0 has to be interprete=
-d as valid
->> > > irq, not an error.
->> >
->> > 0 is not a valid IRQ
->> Hmm, on my x86 I have:
->>
->> =A0 =A0 =A0 $ grep '\<0:' /proc/interrupts
->> =A0 =A0 =A0 =A0 =A00: =A0 =A0 =A024330 =A0 IO-APIC-edge =A0 =A0 =A0t=
-imer
->>
->> arm/davinci starts at 0, too. =A0As does arm/ns9xxx. =A0arm/pxa seem=
-s to
->> start at 1. =A0realview starts at 1, too. =A0So four out of five mak=
-e are
->> wrong? =A0Seems like a big area for cleanup.
-> I've read a bit and I think the best for a driver writer (i.e. the ro=
-le
-> I have when changing drivers/spi/spi_imx.c) is to accept what
-> platform_get_irq returns to me. =A0If the platform specified
->
-> =A0 =A0 =A0 =A0struct resource mydevicesresources[] =3D {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0...
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0{
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.start =3D 0,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.end =3D 0,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.flags =3D IORESOURCE_=
-IRQ,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0},
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0...
-> =A0 =A0 =A0 =A0};
->
-> then the best thing to do is to take irq0, isn't it. =A0So as
-> platform_get_irq is implemented as
->
-> =A0 =A0 =A0 =A0int platform_get_irq(struct platform_device *dev, unsi=
-gned int num)
-> =A0 =A0 =A0 =A0{
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0struct resource *r =3D platform_get_re=
-source(dev, IORESOURCE_IRQ, num);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return r ? r->start : -ENXIO;
-> =A0 =A0 =A0 =A0}
->
-> testing for <0 seems right to me.
+--===============6835400910146510973==
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
-Regardless.  I won't accept that change for a theoretical use case.
-In the general case I'll maintain the pattern that irq 0 is invalid
-unless it is the only way to get around a real problem.
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
+bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL2h0bWw0L2xvb3NlLmR0ZCI+DQo8aHRt
+bD4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0
+ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjx0aXRsZT48L3RpdGxlPg0KPHN0
+eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHksdGQsdGggew0KCWZvbnQtZmFtaWx5
+OiBWZXJkYW5hLCBHZW5ldmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7DQoJZm9u
+dC1zaXplOiAxMnB4Ow0KCWNvbG9yOiAjMDAwOw0KfQ0KYm9keSB7DQoJYmFja2dyb3VuZC1j
+b2xvcjogI0ZGRkZGRjsNCn0NCnN0eWxlMSB7Zm9udC1zaXplOiAxM3B4fQ0Kc3R5bGUyIHsN
+Cglmb250LXNpemU6IDE0cHg7DQoJZm9udC13ZWlnaHQ6IGJvbGQ7DQp9DQotLT4NCjwvc3R5
+bGU+PC9oZWFkPg0KDQo8Ym9keT4NCjx0YWJsZSB3aWR0aD0iNzAwIiBib3JkZXI9IjAiIGFs
+aWduPSJjZW50ZXIiIGNlbGxzcGFjaW5nPSIwIj4NCiAgPHRyPg0KICAgIDx0ZD48dGFibGUg
+d2lkdGg9IjY5NCIgYm9yZGVyPSIwIiBhbGlnbj0iY2VudGVyIiBjZWxscGFkZGluZz0iNSIg
+Y2VsbHNwYWNpbmc9IjAiPg0KICAgICAgPHRyPg0KICAgICAgICA8dGQgd2lkdGg9IjIxNSIg
+Ymdjb2xvcj0iIzAwMDBGRiIgYWxpZ249ImNlbnRlciI+PHAgYWxpZ249ImNlbnRlciI+PGZv
+bnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDEycHg7Ij48c3Ryb25nPjIy
+IOPw8+Tt/yAyMDA5IHAuPC9zdHJvbmc+PC9mb250PjwvcD4NCiAgICAgICAgICA8cCBhbGln
+bj0iY2VudGVyIj48Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMTJw
+eDsiPjxzdHJvbmc+yu7t8mHq8ug6PC9zdHJvbmc+PC9mb250Pjxicj4NCiAgICAgICAgICA8
+Zm9udCBjb2xvcj0iI0ZGRkY5OSIgc3R5bGU9ImZvbnQtc2l6ZTogMTJweDsiPjxzdHJvbmc+
+KDA8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+9jwvZm9u
+dD40PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPu48L2Zv
+bnQ+NCkgMjxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7o
+PC9mb250PjM8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+
++zwvZm9udD43LTk8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4
+OyI+7zwvZm9udD4wPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFw
+eDsiPu08L2ZvbnQ+MDxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAx
+cHg7Ij7oPC9mb250PjUvMjxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXpl
+OiAxcHg7Ij7sPC9mb250PjM8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6
+ZTogMXB4OyI++DwvZm9udD4zLTQ8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQt
+c2l6ZTogMXB4OyI+9zwvZm9udD42PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250
+LXNpemU6IDFweDsiPu08L2ZvbnQ+Njxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9u
+dC1zaXplOiAxcHg7Ij7yPC9mb250Pjk8L3N0cm9uZz48L2ZvbnQ+PC9wPjwvdGQ+DQogICAg
+ICAgIDx0ZCB3aWR0aD0iNDU5Ij48ZGl2IGFsaWduPSJjZW50ZXIiPjxmb250IGNvbG9yPSIj
+RkYwMDAwIiBzdHlsZT0iZm9udC1zaXplOiAyMHB4OyI+PHN0cm9uZz7H7LPt6CDzIOdl7GXr
+/O3u7PMg5+Dqb+1v5GHi8fLisywg/+og7eDh6PBh/vL8IPfo7e1vY/KzIPMg43Dz5O2zIDIw
+MDkg8O7q8yDyYSDzIGOz9+2zIDIwMTAgcG/q8yCWIGPvcO755e3o6SDvb/D/5G/qIO3g4fPy
+8v8g73Dg4iDtYSDnZezr/iE8L3N0cm9uZz48L2ZvbnQ+PC9kaXY+PC90ZD4NCiAgICAgIDwv
+dHI+DQogICAgPC90YWJsZT48L3RkPg0KICA8L3RyPg0KICA8dHI+DQogICAgPHRkPjx0YWJs
+ZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBjZWxscGFkZGluZz0iNSIgY2VsbHNwYWNpbmc9
+IjAiPg0KICAgICAgPHRyPg0KICAgICAgICA8dGQgYmdjb2xvcj0iI0ZGMDAwMCI+Jm5ic3A7
+PC90ZD4NCiAgICAgIDwvdHI+DQogICAgPC90YWJsZT48L3RkPg0KICA8L3RyPg0KICA8dHI+
+DQogICAgPHRkPjx0YWJsZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBjZWxscGFkZGluZz0i
+NSIgY2VsbHNwYWNpbmc9IjAiPg0KICAgICAgPHRyPg0KICAgICAgICA8dGQgYWxpZ249Imxl
+ZnQiPjxwPjxzdHJvbmc+MS4gze7iZSBj77Pi4rPk7e74Ze3t/yDqYfLl42/ws78g8mEg9rPr
+/O7ib+NvIOLo6m9w6PHy4O3t/yDnZezl6/zt7r8g5LPr/+3q6C48L3N0cm9uZz48YnI+DQog
+ICAgICAgICAgLSDu8e1v4u2zIOrg8mXj7nCzvyDn5exl6/wg8yDis+Tv7uKz5O1vY/KzILPn
+IG/x8mHt7bPs6CDn7LPtYezoIPMgx+Xs5ev87e7s8yDq7uTl6mOzINPqcGG/7bM7PGJyPg0K
+ICAgICAgICAgIC0g+e4g8mHq5SDi6OToIOLo6m/w6PHyYe3tsyDyYSD2s+v87uLlIO9w6Oft
+Yfdl7e3/IOfl7OuzOzxicj4NCiAgICAgICAgICAtIPHz5O7iYSDvcGHq8ujqYSDv7iDvcOjv
+6O3l7e3+IO/wYeIg7eAg5+Xs6/4g8yDn4iZyc3F1bzv/5+rzILPnIO1l9rPr/O7i6Owg4ujq
+7nDoY/Jh7e3/7Ds8L3A+DQogICAgICAgICAgPHA+PHN0cm9uZz4yLiDNb+Lo6SDv7vD/5O7q
+IO7kZXDm4O3t/yDhZefu7+th8u1vIPMg4uth8e2z8fL8IOfl7OXr/O1vvyDks+v/7eroOjwv
+c3Ryb25nPjxicj4NCiAgICAgICAgICAgIC0g7+5w/+Rv6iDv7uRh97Mg6uvu72/yYe3t/yDy
+YSDk7uRh7ej1IORvIO38b+PuIOTu6vPsZe3ys+I7PGJyPg0KICAgICAgICAgICAgLSDis+Tx
+8/Lts2Py/CDg6vLzIOLo4W/w8yDnZexl6/zt7r8g5LPr/+3q6Ds8YnI+DQogICAgICAgICAg
+ICAtIO/w6Pfo7egg8mEg72/w/+Rv6iBvY+phcObl7e2zIOKz5Ozu4ugg8yDtYeRh7e2zIOfl
+7GXr/O1vvyDks+v/7eroLjwvcD4NCiAgICAgICAgICA8cD48c3Ryb25nPjMuIMfss+3oIPMg
+729w/+Tq8yDvZfDleG/k8yDvcGHi4CDi6+Bj7W/x8rMg4OHuIOpvcOjx8vPiYe3t/yDt4CDn
+5ezl6/zt8yDks+v/7erzIO9w6CDv5XBleG/ksyDv8GHiYSDi6+Bj7W/x8rMg7eAg4fPk6O1v
+6jo8L3N0cm9uZz48YnI+DQogICAgICAgICAgICAtIO9v8P/k7uog7/Do7+jtZe3t/yDvcODi
+IO3gIOfl7OXr/O3zIOSz6//t6vMg73DoIO/wb+Tg5rMgb+EmcnNxdW87uury8yDtZXDzeO7s
+b2Pyszs8YnI+DQogICAgICAgICAgICAtIO3u4mEgs/Hyb/LtYSDz7O7iYSDk7uPu4m9w8yDi
+s+T38+bl7e3/IOHz5Ojt6vMg7WEg5+Xs5ev87bPpIOSz6//t9rM7PGJyPg0KICAgICAgICAg
+ICAgLSDvb/D/5O7qIPRvcOzz4uDt7f8g5+Xs5ev87e6/IOSz6//t6ugg8mEgv78g8O7n7LPw
+Ozxicj4NCiAgICAgICAgICAgIC0g5+yz7egg8yBj8i4gMzc3INbKINPqcGG/7eguPC9wPg0K
+ICAgICAgICAgIDxwPjxzdHJvbmc+NC4gz29w/+Tu6iDtYeRh7e3/IOfl7GXr/O3oeCDks+v/
+7W/qIOTlcObg4u3uvyBh4W8g6m/s8+3g6/zt7r8g4uthY+3uY/KzOjwvc3Ryb25nPjxicj4N
+CiAgICAgICAgICAgIC0g4uj35XDv7ejpIO9l8GXrs+og77Pk8fJh4iDk6/8gcO7ncO7h6+Xt
+7f8g73DuZery8yDn5ezr5fNj8vDu/iD5b+RvIOKz5OJl5OXt7f8g52Xs5ev87W+/IOSz6//t
+6ug7PGJyPg0KICAgICAgICAgICAgLSD3s/LqsyDvs+Tx8uDi6CDk6/8g4rPk7G/i6CDzIO3g
+5GHt7bMg5G/n4u7r8yDtYSDw7udw7uHr5e3t/yDv8G9l6vLzIOdl7Otl82Py8G/+Ozxicj4N
+CiAgICAgICAgICAgIC0g7uFv4iZyc3F1bzv/5+qz4iDn7LNj8iBws/jl7e3/IO9w7iDtYeTg
+7e3/IOfl7OXr/O1vvyDks+v/7eroOzwvcD4NCiAgICAgICAgICA8cD48c3Ryb25nPjUuIM3u
+4ujpIO9l8GXrs+og4ujvYeTqs+IsIOpv6+gg5+XsZev87WEg5LPr/+3q4CAo4OHuIO9w4OLg
+IO3gIO1lvykg5OXw5mHi7W+/IODhbyDq7uzz7eDr/O3uvyDi62Hx7e7x8rMg7WHk4Lry/GP/
+IPMg6u5w6GPy8+Jh7e3/IGHhbyDzIOLrYfHts2Py/CDhZecg73Bv5GHm8yDt4CDq7u3q83Dx
+7ej1IOdhY2HkYXghPC9zdHJvbmc+PC9wPg0KICAgICAgICAgIDxwPjxzdHJvbmc+Ni4gzW/i
+6Okg72/w/+Tu6iDvb+Nv5Obl7e3/IO/o8mHt/Cwg72/iJnJzcXVvO//n4O3o9SCz5yDi6Ovz
+92Xt7f/sICji6Orz7+7sKSDnZezl6/zt6PUg5LPr/+1v6iDk6/8g8fPx77Pr/O3oeCDvb/Lw
+ZeEgYeFvIOcg7G/y6OKz4iDx8/Hvs+v87W+/IO1lb+F4s+Tt7mPysy48L3N0cm9uZz48L3A+
+DQogICAgICAgICAgPHA+PHN0cm9uZz43LiDR8uJv8GXt7iDt7uLo6SBvcOPg7SDk6/8g72/j
+7uTm5e3t/yDk7urz7OXt8mH2s78gs+cg5+Xs6+Xz8fJwb/46PC9zdHJvbmc+PGJyPg0KICAg
+ICAgICAgICAgLSDx6uvg5CDy4CDv7vD/5O7qIPHy4u7wZe3t/yDKb+yz8bO/Ozxicj4NCiAg
+ICAgICAgICAgIC0g6m/r7iDv6PJh7fwsIP/qsyDvb+Pu5Obz/vL8Y/8gym/ss/Gzuv47PGJy
+Pg0KICAgICAgICAgICAgLSDs7ubr6OKzY/L8IG/h8ODm5e3t/yC/vyDws/hl7fwg8mEg5LPp
+LiA8L3A+DQogICAgICAgICAgPHA+PHN0cm9uZz44LiDP8Ojqs+325eKzIPLgIO9l8OV4s+Tt
+syDvb+vu5uXt7f8g7e7i7uPuIMfg6m/t8y48L3N0cm9uZz48L3A+PC90ZD4NCiAgICAgIDwv
+dHI+DQogICAgPC90YWJsZT48L3RkPg0KICA8L3RyPg0KICA8dHI+DQogICAgPHRkPjx0YWJs
+ZSB3aWR0aD0iMTAwJSIgYm9yZGVyPSIwIiBjZWxscGFkZGluZz0iNSIgY2VsbHNwYWNpbmc9
+IjAiPg0KICAgICAgPHRyPg0KICAgICAgICA8dGQgYmdjb2xvcj0iIzAwMDBGRiIgYWxpZ249
+ImxlZnQiPjxwPjxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxMnB4
+OyI+PHN0cm9uZz7C4PDys2Py/CDz9+Bj8rM6PC9zdHJvbmc+PC9mb250Pjxicj4NCiAgICAg
+ICAgICA8Zm9udCBjb2xvcj0iI0ZGRkY2NiIgc3R5bGU9ImZvbnQtc2l6ZTogMTJweDsiPjxz
+dHJvbmc+OTUwLjAwIOPw7S4glyDn4CBv5O1v428g8/fgY/Lt6OrgLjwvc3Ryb25nPjwvZm9u
+dD48YnI+DQogICAgICAgICAgPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNp
+emU6IDEycHg7Ij7E6/8g5PDz42/j7iCzIPJwZfL87uPuIPP34GPt6OrgIOft6Obq6CCWIDUl
+ILMgNyUg4rPk7+7is+Tt7i48L2ZvbnQ+PC9wPjwvdGQ+DQogICAgICA8L3RyPg0KICAgIDwv
+dGFibGU+PC90ZD4NCiAgPC90cj4NCiAgPHRyPg0KICAgIDx0ZD48dGFibGUgd2lkdGg9IjEw
+MCUiIGJvcmRlcj0iMCIgY2VsbHBhZGRpbmc9IjUiIGNlbGxzcGFjaW5nPSIwIj4NCiAgICAg
+IDx0cj4NCiAgICAgICAgPHRkIGJnY29sb3I9IiM5OWNjZmYiPjxwIGFsaWduPSJjZW50ZXIi
+IGNsYXNzPSJzdHlsZTIiPjxzdHJvbmc+yu7t8uDq8ug6PC9zdHJvbmc+PC9wPg0KICAgICAg
+ICAgIDxwIGFsaWduPSJjZW50ZXIiPjxzcGFuIGNsYXNzPSJzdHlsZTEiPtJl6y46ICAoMDxm
+b250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij79PC9mb250PjQ8
+Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+5DwvZm9udD40
+KSAyPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPuY8L2Zv
+bnQ+Mzxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7+PC9m
+b250PjMtNDxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij7r
+PC9mb250PjYtNjxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7
+Ij7rPC9mb250PjksIDI8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTog
+MXB4OyI+5zwvZm9udD4zPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6
+IDFweDsiPu48L2ZvbnQ+Ny05PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNp
+emU6IDFweDsiPv48L2ZvbnQ+MC0wPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250
+LXNpemU6IDFweDsiPuk8L2ZvbnQ+NTwvc3Bhbj48YnI+DQogICAgICAgICAgPC9wPjwvdGQ+
+DQogICAgICA8L3RyPg0KICAgIDwvdGFibGU+PC90ZD4NCiAgPC90cj4NCiAgPHRyPg0KICAg
+IDx0ZD48dGFibGUgd2lkdGg9IjEwMCUiIGJvcmRlcj0iMCIgY2VsbHBhZGRpbmc9IjUiIGNl
+bGxzcGFjaW5nPSIwIiBiZ2NvbG9yPSIjRkYwMDAwIj4NCiAgICAgIDx0cj4NCiAgICAgICAg
+PHRkPiZuYnNwOzwvdGQ+DQogICAgICA8L3RyPg0KICAgIDwvdGFibGU+PC90ZD4NCiAgPC90
+cj4NCjwvdGFibGU+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
 
-g.
 
---=20
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+
+
+--===============6835400910146510973==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Return on Information:
+Google Enterprise Search pays you back
+Get the facts.
+http://p.sf.net/sfu/google-dev2dev
+
+--===============6835400910146510973==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============6835400910146510973==--

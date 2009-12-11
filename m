@@ -1,16 +1,16 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: spi_set_drvdata() handling in spidev_probe()
-Date: Thu, 10 Dec 2009 18:25:21 -0800
-Message-ID: <200912101825.21244.david-b@pacbell.net>
+Date: Thu, 10 Dec 2009 21:32:06 -0500
+Message-ID: <8bd0f97a0912101832g1398f6dbld984d55bbf37f4ee@mail.gmail.com>
 References: <8bd0f97a0910122332y321138ak8294e5f152064344@mail.gmail.com>
+	<200912101825.21244.david-b@pacbell.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <8bd0f97a0910122332y321138ak8294e5f152064344-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <200912101825.21244.david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,44 +21,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 12 October 2009, Mike Frysinger wrote:
-> i was browsing the change history of spidev when i noticed the change:
-> aaacf4bb51b243875b203e6ff73b5047636b4efa spi: avoid spidev crash when
-> device is removed
-> 
-> which seems to be due to this change:
-> 3d81252ddb10f63ae4db713d9b32faabe641b850 device create: spi: convert
-> device_create to device_create_drvdata
-> 
-> getting an incomplete revert with this change:
-> a9b12619f7b6f19c871437ec24a088787a04b1de device create: misc: convert
-> device_create_drvdata to device_create
-
-More accurately:  not a revert, but a name change.
-
-
-> my point being is that the original code was doing the
-> spi_set_drvdata() while holding the device_list_lock mutex while the
-> new one is not.  shouldnt the code be changed back to the state
-> previous to 3d81252d ?
-
-Yes, that particular assignment should be mutex-protected.
-
-The original patch shouldn't really have removed it; the
-change to the device_create() signature was addressing a
-slightly different race.
-
-- Dave
-
-
-> -mike
-> 
-> 
-
-
-
-------------------------------------------------------------------------------
-Return on Information:
-Google Enterprise Search pays you back
-Get the facts.
-http://p.sf.net/sfu/google-dev2dev
+T24gVGh1LCBEZWMgMTAsIDIwMDkgYXQgMjE6MjUsIERhdmlkIEJyb3duZWxsIHdyb3RlOgo+IE9u
+IE1vbmRheSAxMiBPY3RvYmVyIDIwMDksIE1pa2UgRnJ5c2luZ2VyIHdyb3RlOgo+PiBpIHdhcyBi
+cm93c2luZyB0aGUgY2hhbmdlIGhpc3Rvcnkgb2Ygc3BpZGV2IHdoZW4gaSBub3RpY2VkIHRoZSBj
+aGFuZ2U6Cj4+IGFhYWNmNGJiNTFiMjQzODc1YjIwM2U2ZmY3M2I1MDQ3NjM2YjRlZmEgc3BpOiBh
+dm9pZCBzcGlkZXYgY3Jhc2ggd2hlbgo+PiBkZXZpY2UgaXMgcmVtb3ZlZAo+Pgo+PiB3aGljaCBz
+ZWVtcyB0byBiZSBkdWUgdG8gdGhpcyBjaGFuZ2U6Cj4+IDNkODEyNTJkZGIxMGY2M2FlNGRiNzEz
+ZDliMzJmYWFiZTY0MWI4NTAgZGV2aWNlIGNyZWF0ZTogc3BpOiBjb252ZXJ0Cj4+IGRldmljZV9j
+cmVhdGUgdG8gZGV2aWNlX2NyZWF0ZV9kcnZkYXRhCj4+Cj4+IGdldHRpbmcgYW4gaW5jb21wbGV0
+ZSByZXZlcnQgd2l0aCB0aGlzIGNoYW5nZToKPj4gYTliMTI2MTlmN2I2ZjE5Yzg3MTQzN2VjMjRh
+MDg4Nzg3YTA0YjFkZSBkZXZpY2UgY3JlYXRlOiBtaXNjOiBjb252ZXJ0Cj4+IGRldmljZV9jcmVh
+dGVfZHJ2ZGF0YSB0byBkZXZpY2VfY3JlYXRlCj4KPiBNb3JlIGFjY3VyYXRlbHk6IMKgbm90IGEg
+cmV2ZXJ0LCBidXQgYSBuYW1lIGNoYW5nZS4KPgo+Cj4+IG15IHBvaW50IGJlaW5nIGlzIHRoYXQg
+dGhlIG9yaWdpbmFsIGNvZGUgd2FzIGRvaW5nIHRoZQo+PiBzcGlfc2V0X2RydmRhdGEoKSB3aGls
+ZSBob2xkaW5nIHRoZSBkZXZpY2VfbGlzdF9sb2NrIG11dGV4IHdoaWxlIHRoZQo+PiBuZXcgb25l
+IGlzIG5vdC4gwqBzaG91bGRudCB0aGUgY29kZSBiZSBjaGFuZ2VkIGJhY2sgdG8gdGhlIHN0YXRl
+Cj4+IHByZXZpb3VzIHRvIDNkODEyNTJkID8KPgo+IFllcywgdGhhdCBwYXJ0aWN1bGFyIGFzc2ln
+bm1lbnQgc2hvdWxkIGJlIG11dGV4LXByb3RlY3RlZC4KPgo+IFRoZSBvcmlnaW5hbCBwYXRjaCBz
+aG91bGRuJ3QgcmVhbGx5IGhhdmUgcmVtb3ZlZCBpdDsgdGhlCj4gY2hhbmdlIHRvIHRoZSBkZXZp
+Y2VfY3JlYXRlKCkgc2lnbmF0dXJlIHdhcyBhZGRyZXNzaW5nIGEKPiBzbGlnaHRseSBkaWZmZXJl
+bnQgcmFjZS4KCnNob3VsZCBpIHNlbmQgYSBwYXRjaCwgb3IgeW91IGdvaW5nIHRvIGZpeCBpdCB1
+cCA/ICBpIHdvdWxkIHNpbXBseQpyZXN0b3JlIHRoZSBtdXRleCBjb2RlIGxpa2UgaXQgd2FzIGJl
+Zm9yZSAuLi4KLW1pa2UKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpSZXR1cm4gb24gSW5mb3JtYXRp
+b246Ckdvb2dsZSBFbnRlcnByaXNlIFNlYXJjaCBwYXlzIHlvdSBiYWNrCkdldCB0aGUgZmFjdHMu
+Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvZ29vZ2xlLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
+CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
+dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

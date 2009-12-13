@@ -1,62 +1,118 @@
-From: Cory Maccarrone <darkstar6262@gmail.com>
-Subject: [PATCH v2 3/3] [OMAP] Add OMAP 7xx pin muxes for SPI
-Date: Sat, 12 Dec 2009 17:34:48 -0800
-Message-ID: <1260668088-27555-4-git-send-email-darkstar6262@gmail.com>
-References: <1260668088-27555-1-git-send-email-darkstar6262@gmail.com>
-Cc: Cory Maccarrone <darkstar6262@gmail.com>
-To: spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1260668088-27555-1-git-send-email-darkstar6262@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: [git pull] SPI changes for 2.6.33
+Date: Sun, 13 Dec 2009 01:16:27 -0700
+Message-ID: <fa686aa40912130016j517349c8wbc3da6ec1a1339b5@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	spi-devel-general@lists.sourceforge.net,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1751699AbZLMIQu@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This change adds pin mux configuration for SPI100k on
-omap7xx platforms.
+Hi Linus,
 
-Signed-off-by: Cory Maccarrone <darkstar6262@gmail.com>
----
- arch/arm/mach-omap1/mux.c             |    8 ++++++++
- arch/arm/plat-omap/include/plat/mux.h |    8 ++++++++
- 2 files changed, 16 insertions(+), 0 deletions(-)
+Wearing my shiny new SPI maintainer hat, here's a pull request for the
+SPI patches that I've gathered for 2.6.33.
 
-diff --git a/arch/arm/mach-omap1/mux.c b/arch/arm/mach-omap1/mux.c
-index 07212cc..8434137 100644
---- a/arch/arm/mach-omap1/mux.c
-+++ b/arch/arm/mach-omap1/mux.c
-@@ -62,6 +62,14 @@ MUX_CFG_7XX("MMC_7XX_DAT0",        2,   17,    0,   16,   1, 0)
- /* I2C interface */
- MUX_CFG_7XX("I2C_7XX_SCL",         5,    1,    0,    0,   1, 0)
- MUX_CFG_7XX("I2C_7XX_SDA",         5,    5,    0,    0,   1, 0)
-+
-+/* SPI pins */
-+MUX_CFG_7XX("SPI_7XX_1",           6,    5,    4,    4,   1, 0)
-+MUX_CFG_7XX("SPI_7XX_2",           6,    9,    4,    8,   1, 0)
-+MUX_CFG_7XX("SPI_7XX_3",           6,   13,    4,   12,   1, 0)
-+MUX_CFG_7XX("SPI_7XX_4",           6,   17,    4,   16,   1, 0)
-+MUX_CFG_7XX("SPI_7XX_5",           8,   25,    0,   24,   0, 0)
-+MUX_CFG_7XX("SPI_7XX_6",           9,    5,    0,    4,   0, 0)
- };
- #define OMAP7XX_PINS_SZ		ARRAY_SIZE(omap7xx_pins)
- #else
-diff --git a/arch/arm/plat-omap/include/plat/mux.h b/arch/arm/plat-omap/include/plat/mux.h
-index 8f069cc..692c90e 100644
---- a/arch/arm/plat-omap/include/plat/mux.h
-+++ b/arch/arm/plat-omap/include/plat/mux.h
-@@ -183,6 +183,14 @@ enum omap7xx_index {
- 	/* I2C */
- 	I2C_7XX_SCL,
- 	I2C_7XX_SDA,
-+
-+	/* SPI */
-+	SPI_7XX_1,
-+	SPI_7XX_2,
-+	SPI_7XX_3,
-+	SPI_7XX_4,
-+	SPI_7XX_5,
-+	SPI_7XX_6,
- };
- 
- enum omap1xxx_index {
--- 
-1.6.3.3
+The following changes since commit f40542532e96dda5506eb76badea322f2ae4=
+731c:
+  Linus Torvalds (1):
+        Merge branch 'ixp4xx' of git://git.kernel.org/.../chris/linux-2=
+=2E6
 
+are available in the git repository at:
+
+  git://git.secretlab.ca/git/linux-2.6 next-spi
+
+Cory Maccarrone (1):
+      Add OMAP spi100k driver
+
+Daniel Mack (1):
+      spi/i.mx: drain MXC SPI transfer buffer when probing device
+
+=46lorian Fainelli (1):
+      spi: fix spidev compilation failure when VERBOSE is defined
+
+Grant Likely (3):
+      spi/xilinx_spi: fix incorrect casting
+      MAINTAINERS: add SPI co-maintainer.
+      spi: fix probe/remove section markings
+
+Jan Nikitenko (1):
+      spi/au1550_spi: fix setupxfer not to override cfg with zeros
+
+John Ogness (1):
+      spi/i.MX: fix broken error handling for gpio_request
+
+Luotao Fu (3):
+      mpc52xx_spi: fix clearing status register
+      mpc52xx_spi: add missing mode_bits definition
+      mpc52xx_spi: add gpio chipselect
+
+Magnus Damm (1):
+      spi: SuperH MSIOF SPI Master driver V2
+
+Richard R=C3=B6jfors (4):
+      xilinx_spi: Split into of driver and generic part.
+      xilinx_spi: Switch to iomem functions and support little endian.
+      xilinx_spi: add support for the DS570 IP.
+      xilinx_spi: add a platform driver using the xilinx_spi common mod=
+ule.
+
+Sascha Hauer (1):
+      spi-imx: Add mx25 support
+
+Uwe Kleine-K=C3=B6nig (4):
+      spi/mpc8xxx: don't use __exit_p to wrap plat_mpc8xxx_spi_remove
+      spi-imx: correct check for platform_get_irq failing
+      spi-imx: use positive logic to distinguish cpu variants
+      spi-imx: don't access struct device directly but use dev_get_plat=
+data
+
+Wan ZongShun (1):
+      ARM: NUC900: Add spi driver support for nuc900
+
+Wolfram Sang (1):
+      spi/mpc52xx-spi: minor cleanups
+
+ MAINTAINERS                                     |    1 +
+ arch/arm/mach-w90x900/include/mach/nuc900_spi.h |   35 ++
+ drivers/spi/Kconfig                             |   40 ++-
+ drivers/spi/Makefile                            |    5 +
+ drivers/spi/au1550_spi.c                        |   10 +-
+ drivers/spi/mpc52xx_spi.c                       |   86 +++-
+ drivers/spi/omap_spi_100k.c                     |  635 +++++++++++++++=
+++++++
+ drivers/spi/spi_imx.c                           |   35 +-
+ drivers/spi/spi_mpc8xxx.c                       |    2 +-
+ drivers/spi/spi_nuc900.c                        |  504 +++++++++++++++=
+++
+ drivers/spi/spi_sh_msiof.c                      |  691 +++++++++++++++=
+++++++++
+ drivers/spi/spidev.c                            |    6 +-
+ drivers/spi/xilinx_spi.c                        |  355 ++++++------
+ drivers/spi/xilinx_spi.h                        |   32 +
+ drivers/spi/xilinx_spi_of.c                     |  134 +++++
+ drivers/spi/xilinx_spi_pltfm.c                  |  102 ++++
+ include/linux/spi/mpc52xx_spi.h                 |   10 -
+ include/linux/spi/sh_msiof.h                    |   10 +
+ include/linux/spi/xilinx_spi.h                  |   20 +
+ 19 files changed, 2484 insertions(+), 229 deletions(-)
+ create mode 100644 arch/arm/mach-w90x900/include/mach/nuc900_spi.h
+ create mode 100644 drivers/spi/omap_spi_100k.c
+ create mode 100644 drivers/spi/spi_nuc900.c
+ create mode 100644 drivers/spi/spi_sh_msiof.c
+ create mode 100644 drivers/spi/xilinx_spi.h
+ create mode 100644 drivers/spi/xilinx_spi_of.c
+ create mode 100644 drivers/spi/xilinx_spi_pltfm.c
+ delete mode 100644 include/linux/spi/mpc52xx_spi.h
+ create mode 100644 include/linux/spi/sh_msiof.h
+ create mode 100644 include/linux/spi/xilinx_spi.h
+
+
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

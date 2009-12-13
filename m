@@ -1,509 +1,861 @@
-From: Darrell <extrasystole-ATCcL5kQwtbrdFhGAvkOdgC/G2K4zDHf@public.gmane.org>
-Subject: (no subject)
-Date: Sun, 13 Dec 2009 21:22:29 +0100
-Message-ID: <4B254A9C.1010405@streekstra.nl>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------080608040201040406060906"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Cory Maccarrone <darkstar6262@gmail.com>
+Subject: [PATCH] Input: Add tsc2046 touchscreen driver
+Date: Sun, 13 Dec 2009 12:39:14 -0800
+Message-ID: <1260736754-374-1-git-send-email-darkstar6262@gmail.com>
+Cc: Cory Maccarrone <darkstar6262@gmail.com>
+To: linux-input@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-input-owner@vger.kernel.org>
+Sender: linux-input-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------080608040201040406060906
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Content-Transfer-Encoding: 7bit
+This change implements a new driver for the TSC2046-series
+touchscreen found on many HTC OMAP850-based smartphones.
+This driver differs from the ADS7846 in that it uses 16-bit
+commands instead of 8-bit, and does not include temerature
+or voltage sensing capabilities.
 
+This driver was submitted in May of 2007 to the linux-omap
+list at:
 
+http://linux.omap.com/pipermail/linux-omap-open-source/2007-May/009745.html
 
---------------080608040201040406060906
-Content-Type: image/jpeg;
- name="leadsman.jpg"
-Content-Transfer-Encoding: base64
-Content-Disposition: inline;
- filename="leadsman.jpg"
+This is a resubmit of this driver, with additions that allows
+the injection of pointercal parameters from tslib through
+/sys.  This was done for the Wing Linux project primarily to
+allow this touchscreen to work with Android, but it's useful for
+any userspace that doesn't support tslib calibration.  Pointercal
+use is optional -- it produces raw parameters unless the use_pointercal
+/sys file is set to 1.
 
-/9j/4AAQSkZJRgABAQEBLAEsAAD/2wBDAA4JCgwKCQ4MCwwPDw4QFSIWFRMTFSoeIBkiMiw0
-NDEsMC83Pk9DNzpLOy8wRV5GS1JUWVlZNUJhaGBWZ09XWVX/2wBDAQ8PDxUSFSgWFihVOTA5
-VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/wAAR
-CAFXAUwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAA
-AgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkK
-FhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWG
-h4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl
-5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREA
-AgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYk
-NOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOE
-hYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk
-5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD0WP7p+p/nTqbH90/U/wA6dWQyOMZeT/f/
-AKCpKiRsPJgE5bt9BT/nPov60xsdTS6jgsM+lGwd8n6mlAA4AxSEJvHv+Ro3j0b/AL5NOooA
-iLjzlPIG09R7igspmUhhgK3f6UrnEyE/3W/mKQjdMu8D7p49OlMoaTunU8g4/OpsimrGuVfn
-Ip/WkQFFJj0NGfWgBaKKKBhRRRQIKKKKBkZ/16f7rfzFMh/5Yf8AXI/+y08/69P91v5imQ/8
-sP8Arkf/AGWmWtv68x8/+ok/3T/Khf8AXN67V/rRP/qJP90/yoH+vf8A3V/maOgun9eQR/fk
-x/e5/IU/mmx/fk/3v6Cn0Esjk+/Hn+9x+Rp/NMf5pEGeBk8ev+TT6QMKKWigQYqOb7g/3l/m
-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
---------------080608040201040406060906
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Though this driver was previously submitted to linux-omap, there
+is nothing omap-specific in this driver.
 
-------------------------------------------------------------------------------
-Return on Information:
-Google Enterprise Search pays you back
-Get the facts.
-http://p.sf.net/sfu/google-dev2dev
+Signed-off-by: Cory Maccarrone <darkstar6262@gmail.com>
+---
+ drivers/input/touchscreen/Kconfig   |   14 +
+ drivers/input/touchscreen/Makefile  |    1 +
+ drivers/input/touchscreen/tsc2046.c |  740 +++++++++++++++++++++++++++++++++++
+ include/linux/input/tsc2046.h       |   26 ++
+ 4 files changed, 781 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/input/touchscreen/tsc2046.c
+ create mode 100644 include/linux/input/tsc2046.h
 
---------------080608040201040406060906
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/drivers/input/touchscreen/Kconfig b/drivers/input/touchscreen/Kconfig
+index 8cc453c..1f3273b 100644
+--- a/drivers/input/touchscreen/Kconfig
++++ b/drivers/input/touchscreen/Kconfig
+@@ -501,6 +501,20 @@ config TOUCHSCREEN_TOUCHIT213
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called touchit213.
+ 
++config TOUCHSCREEN_TSC2046
++	tristate "TSC2046 based touchscreens"
++	depends on SPI_MASTER
++	help
++	  Say Y here if you have a touchscreen interface using the
++	  TI TSC 2046 controller, and your board-specific initialization
++	  code includes that in its table of SPI devices.  Also make
++	  sure the proper SPI controller is selected.
++
++	  If unsure, say N (but it's safe to say "Y").
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called tsc2046.
++
+ config TOUCHSCREEN_TSC2007
+ 	tristate "TSC2007 based touchscreens"
+ 	depends on I2C
+diff --git a/drivers/input/touchscreen/Makefile b/drivers/input/touchscreen/Makefile
+index 15fa62c..3c413f7 100644
+--- a/drivers/input/touchscreen/Makefile
++++ b/drivers/input/touchscreen/Makefile
+@@ -30,6 +30,7 @@ obj-$(CONFIG_TOUCHSCREEN_TOUCHIT213)	+= touchit213.o
+ obj-$(CONFIG_TOUCHSCREEN_TOUCHRIGHT)	+= touchright.o
+ obj-$(CONFIG_TOUCHSCREEN_TOUCHWIN)	+= touchwin.o
+ obj-$(CONFIG_TOUCHSCREEN_TSC2007)	+= tsc2007.o
++obj-$(CONFIG_TOUCHSCREEN_TSC2046)	+= tsc2046.o
+ obj-$(CONFIG_TOUCHSCREEN_UCB1400)	+= ucb1400_ts.o
+ obj-$(CONFIG_TOUCHSCREEN_WACOM_W8001)	+= wacom_w8001.o
+ obj-$(CONFIG_TOUCHSCREEN_WM97XX)	+= wm97xx-ts.o
+diff --git a/drivers/input/touchscreen/tsc2046.c b/drivers/input/touchscreen/tsc2046.c
+new file mode 100644
+index 0000000..e45d251
+--- /dev/null
++++ b/drivers/input/touchscreen/tsc2046.c
+@@ -0,0 +1,740 @@
++/*
++ * TSC2046 Touchscreen driver
++ *
++ * Author: Kevin Hilman, MontaVista Software, Inc. <source@mvista.com>
++ *
++ * Communication details from original TI driver
++ * Copyright (C) 2004-2005 Texas Instruments, Inc.
++ *
++ * Structure based heavily on TSC2301 driver
++ * Copyright (C) 2005-2006 Nokia Corporation
++ *
++ * 2007 (c) MontaVista Software, Inc. This file is licensed under
++ * the terms of the GNU General Public License version 2. This program
++ * is licensed "as is" without any warranty of any kind, whether express
++ * or implied.
++ *
++ */
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/input.h>
++#include <linux/interrupt.h>
++#include <linux/delay.h>
++#include <linux/spi/spi.h>
++#include <linux/gpio.h>
++
++#include <linux/input/tsc2046.h>
++
++/* TSC2046 commands */
++#define START_BYTE		0x8000
++#define X_CMDWD			0xd300
++#define Y_CMDWD			0x9300
++#define Z1_CMDWD		0xb300
++#define Z2_CMDWD		0xc300
++
++#define TSC2046_TS_SCAN_TIME	1
++#define MAX_12BIT		((1 << 12) - 1)
++
++#define MIN_ABS_X    528
++#define MAX_ABS_X    3760
++#define MIN_ABS_Y    624
++#define MAX_ABS_Y    3760
++
++/* The TSC2046 operates at a maximum speed of 2MHz */
++#define TSC2046_HZ	2000000
++
++#define CONV_DATA(d1, d2) \
++  (((d1 & 0x7f) << 5) | ((d2 >> 11) & 0x1f))
++
++/* Convenience macros for pointercal calibration calculation */
++#define PA ts->pointercal[0]
++#define PB ts->pointercal[1]
++#define PC ts->pointercal[2]
++#define PD ts->pointercal[3]
++#define PE ts->pointercal[4]
++#define PF ts->pointercal[5]
++#define PS ts->pointercal[6]
++
++struct tsc2046_ts {
++	struct input_dev	*idev;
++	char			phys[32];
++	struct timer_list	timer;
++	spinlock_t		lock;
++
++	struct spi_transfer	read_xfer[3];
++	struct spi_message	read_msg;
++	struct spi_message	enable_msg;
++	u16                     data[5];
++
++	u16			x;
++	u16			y;
++	u16			p;
++	u16			old_x;
++	u16			old_y;
++	u16			old_pressure;
++	int			sample_cnt;
++
++	int			ignore_last : 1;
++	u16			x_plate_ohm;
++	int			max_pressure;
++	int			touch_pressure;
++	int			pressure_limit;
++
++	int			pointercal[7];
++	u16			x_res;
++	u16			y_res;
++
++	u16			irq_enabled:1;
++	u16			pen_down:1;
++	u16			disabled:1;
++	u16			pending:1;
++	u16			use_pointercal:1;
++
++	s16			dav_gpio;
++	int			(*get_pendown_state)(void);
++	int			irq;
++};
++
++struct tsc2046 {
++	struct spi_device	*spi;
++	struct tsc2046_ts	*ts;
++};
++
++static const u16 tsc2046_ts_cmd_data[] = {
++	START_BYTE, X_CMDWD, Y_CMDWD, Z1_CMDWD, Z2_CMDWD,
++};
++
++static int tsc2046_device_suspended(struct device *dev)
++{
++	struct tsc2046 *tsc = dev_get_drvdata(dev);
++	return dev->power.power_state.event != PM_EVENT_ON || tsc->ts->disabled;
++}
++
++static void tsc2046_update_pen_state(struct tsc2046 *tsc, int x, int y, int pressure)
++{
++	struct tsc2046_ts *ts = tsc->ts;
++
++	if (x <= ts->old_x - 4 || x >= ts->old_x + 4 ||
++	    y <= ts->old_y - 4 || y >= ts->old_y + 4 ||
++	    pressure <= ts->old_pressure - 4 || pressure >= ts->old_pressure + 4)
++	{
++		if (pressure) {
++			if (!ts->use_pointercal || (ts->use_pointercal &&
++			    x >= 0 &&
++			    x <= ts->x_res - 1 &&
++			    y >= 0 &&
++			    y <= ts->y_res - 1))
++			{
++				input_report_abs(ts->idev, ABS_X, x);
++				input_report_abs(ts->idev, ABS_Y, y);
++				input_report_abs(ts->idev, ABS_PRESSURE, 1);
++				input_report_key(ts->idev, BTN_TOUCH, 1);
++				ts->pen_down = 1;
++			} else {
++				input_report_abs(ts->idev, ABS_PRESSURE, 0);
++				input_report_key(ts->idev, BTN_TOUCH, 0);
++				ts->pen_down = 0;
++			}
++		} else {
++			input_report_abs(ts->idev, ABS_PRESSURE, 0);
++			input_report_key(ts->idev, BTN_TOUCH, 0);
++			ts->pen_down = 0;
++		}
++
++		ts->old_x = x;
++		ts->old_y = y;
++		ts->old_pressure = pressure;
++
++		input_sync(ts->idev);
++
++#ifdef VERBOSE
++		dev_dbg(&tsc->spi->dev, "x %4d y %4d p %4d\n", x, y, pressure);
++#endif
++	}
++}
++
++/*
++ * This procedure is called by the SPI framework after the coordinates
++ * have been read from TSC2046
++ */
++static void tsc2046_ts_rx(void *arg)
++{
++	struct tsc2046 *tsc = arg;
++	struct tsc2046_ts *ts = tsc->ts;
++	unsigned int x, y, z1, z2, pressure;
++	int xN, yN;
++
++	x  = CONV_DATA(ts->data[2], ts->data[3]);
++	y  = CONV_DATA(ts->data[1], ts->data[2]);
++	z1 = CONV_DATA(ts->data[3], ts->data[4]);
++	z2 = CONV_DATA(ts->data[4], 0);
++
++	if (z1) {
++		pressure = ts->x_plate_ohm * x;
++		pressure /= 4096;
++		pressure *= z2 - z1;
++		pressure /= z1;
++	} else
++		pressure = 0;
++
++	if (ts->use_pointercal) {
++		/* Transform pen state according to calibration parameters.  This
++		 * algorithm is the same used by tslib and Qt to do 7-value
++		 * screen transforms.  See:
++		 *
++		 * http://doc.trolltech.com/4.3/qwscalibratedmousehandler.html#transform
++		 */
++		xN = ((PA * x) + (PB * y) + PC) / PS;
++		yN = ((PD * x) + (PE * y) + PF) / PS;
++
++		x = (xN < 0) ? 0 : (xN > ts->x_res ? ts->x_res - 1 : (unsigned int)xN);
++		y = (yN < 0) ? 0 : (yN > ts->y_res ? ts->y_res - 1 : (unsigned int)yN);
++	}
++
++	/* If pressure value is above a preset limit (pen is barely
++	 * touching the screen) we can't trust the coordinate values.
++	 */
++	if (pressure < ts->pressure_limit && x < MAX_12BIT && y < MAX_12BIT) {
++		ts->pressure_limit = ts->max_pressure;
++		if (ts->ignore_last) {
++			if (ts->sample_cnt)
++				tsc2046_update_pen_state(tsc, ts->x, ts->y, ts->p);
++			ts->x = x;
++			ts->y = y;
++			ts->p = pressure;
++		} else
++			tsc2046_update_pen_state(tsc, x, y, pressure);
++		ts->sample_cnt++;
++	}
++
++	mod_timer(&ts->timer,
++		  jiffies + msecs_to_jiffies(TSC2046_TS_SCAN_TIME));
++}
++
++static int tsc2046_is_pen_down(struct tsc2046_ts *ts)
++{
++	return ts->pen_down;
++}
++
++static int tsc2046_get_pendown_state(struct tsc2046_ts *ts)
++{
++	if (ts->get_pendown_state)
++		return ts->get_pendown_state();
++
++	return !gpio_get_value(ts->dav_gpio);
++}
++
++/*
++ * Timer is called every TSC2046_TS_SCAN_TIME when the pen is down
++ */
++static void tsc2046_ts_timer(unsigned long arg)
++{
++	struct tsc2046 *tsc = (void *) arg;
++	struct tsc2046_ts *ts = tsc->ts;
++	unsigned long flags;
++	int ndav;
++	int r;
++
++	spin_lock_irqsave(&ts->lock, flags);
++	ndav = tsc2046_get_pendown_state(ts);
++	if (!ndav || tsc2046_device_suspended(&tsc->spi->dev)) {
++		/* Pen has been lifted */
++		if (!tsc2046_device_suspended(&tsc->spi->dev) &&
++		    !ts->irq_enabled)
++		{
++			ts->irq_enabled = 1;
++			enable_irq(ts->irq);
++		}
++		tsc2046_update_pen_state(tsc, 0, 0, 0);
++		ts->pending = 0;
++		spin_unlock_irqrestore(&ts->lock, flags);
++
++	} else {
++		ts->pen_down = 1;
++		spin_unlock_irqrestore(&ts->lock, flags);
++
++		r = spi_async(tsc->spi, &ts->read_msg);
++		if (r)
++			dev_err(&tsc->spi->dev, "ts: spi_async() failed");
++	}
++}
++
++/*
++ * This interrupt is called when pen is down and first coordinates are
++ * available. That is indicated by a falling edge on DEV line.  IRQ is
++ * disabled here because while the pen is down the coordinates are
++ * read by a timer.
++ */
++static irqreturn_t tsc2046_ts_irq_handler(int irq, void *dev_id)
++{
++	struct tsc2046 *tsc = dev_id;
++	struct tsc2046_ts *ts = tsc->ts;
++	unsigned long flags;
++
++	spin_lock_irqsave(&ts->lock, flags);
++	if (ts->irq_enabled) {
++		ts->irq_enabled = 0;
++		disable_irq_nosync(ts->irq);
++		ts->pending = 1;
++		ts->pressure_limit = ts->touch_pressure;
++		ts->sample_cnt = 0;
++		mod_timer(&ts->timer,
++			  jiffies + msecs_to_jiffies(TSC2046_TS_SCAN_TIME));
++	}
++	spin_unlock_irqrestore(&ts->lock, flags);
++
++	return IRQ_HANDLED;
++}
++
++/* Must be called with ts->lock held */
++static void tsc2046_ts_disable(struct tsc2046 *tsc)
++{
++	struct tsc2046_ts *ts = tsc->ts;
++
++	if (ts->disabled)
++		return;
++
++	ts->disabled = 1;
++	if (!ts->pending) {
++		ts->irq_enabled = 0;
++		disable_irq(ts->irq);
++	} else {
++		while (ts->pending) {
++			spin_unlock_irq(&ts->lock);
++			msleep(1);
++			spin_lock_irq(&ts->lock);
++		}
++	}
++}
++
++static void tsc2046_ts_enable(struct tsc2046 *tsc)
++{
++	struct tsc2046_ts *ts = tsc->ts;
++
++	if (!ts->disabled)
++		return;
++
++	ts->disabled = 0;
++	ts->irq_enabled = 1;
++	enable_irq(ts->irq);
++}
++
++#ifdef CONFIG_PM
++int tsc2046_ts_suspend(struct tsc2046 *tsc)
++{
++	struct tsc2046_ts *ts = tsc->ts;
++
++	spin_lock_irq(&ts->lock);
++	tsc2046_ts_disable(tsc);
++	spin_unlock_irq(&ts->lock);
++
++	return 0;
++}
++
++void tsc2046_ts_resume(struct tsc2046 *tsc)
++{
++	struct tsc2046_ts *ts = tsc->ts;
++
++	spin_lock_irq(&ts->lock);
++	tsc2046_ts_enable(tsc);
++	spin_unlock_irq(&ts->lock);
++}
++#endif
++
++static void tsc2046_ts_setup_spi_xfer(struct tsc2046 *tsc)
++{
++	struct tsc2046_ts *ts = tsc->ts;
++	struct spi_message *m = &ts->read_msg;
++	struct spi_transfer *x = &ts->read_xfer[1];
++
++	spi_message_init(m);
++
++	/* read and write data in one transaction */
++	x->tx_buf = &tsc2046_ts_cmd_data;
++	x->rx_buf = &ts->data;
++	x->len    = 10;
++	spi_message_add_tail(x, m);
++
++	/* send another START_BYTE to (re)enable pen interrupts */
++	x++;
++	x->tx_buf = &tsc2046_ts_cmd_data[0];
++	x->rx_buf = &ts->data;
++	x->len = 2;
++	spi_message_add_tail(x, m);
++
++	m->complete = tsc2046_ts_rx;
++	m->context = tsc;
++}
++
++/* Attribute functions */
++
++static ssize_t tsc2046_ts_use_pointercal_show(struct device *dev,
++				       struct device_attribute *attr, char *buf)
++{
++	struct tsc2046		*tsc = dev_get_drvdata(dev);
++	struct tsc2046_ts	*ts = tsc->ts;
++
++	return sprintf(buf, "%u\n", ts->use_pointercal);
++}
++
++static ssize_t tsc2046_ts_use_pointercal_store(struct device *dev,
++					struct device_attribute *attr,
++					const char *buf, size_t count)
++{
++	struct tsc2046		*tsc = dev_get_drvdata(dev);
++	struct tsc2046_ts	*ts = tsc->ts;
++	char *endp;
++	int i;
++
++	i = simple_strtoul(buf, &endp, 10);
++	spin_lock_irq(&ts->lock);
++
++	if (i)
++		ts->use_pointercal = 1;
++	else
++		ts->use_pointercal = 0;
++
++	spin_unlock_irq(&ts->lock);
++
++	return count;
++}
++
++static DEVICE_ATTR(use_pointercal, 0644, tsc2046_ts_use_pointercal_show, tsc2046_ts_use_pointercal_store);
++
++static ssize_t tsc2046_ts_pointercal_show(struct device *dev,
++		   struct device_attribute *attr, char *buf)
++{
++	struct tsc2046		*tsc = dev_get_drvdata(dev);
++	struct tsc2046_ts	*ts = tsc->ts;
++
++	return sprintf(buf, "%d %d %d %d %d %d %d\n", PA, PB, PC, PD, PE, PF, PS);
++}
++
++static ssize_t tsc2046_ts_pointercal_store(struct device *dev,
++					struct device_attribute *attr,
++					const char *buf, size_t count)
++{
++	struct tsc2046		*tsc = dev_get_drvdata(dev);
++	struct tsc2046_ts	*ts = tsc->ts;
++	char *endp;
++	int i;
++	unsigned int index = 0, offset = 0;
++
++	spin_lock_irq(&ts->lock);
++
++	for (index = 0; index < 7; index++) {
++		/* Grab the numbers */
++		i = simple_strtol(buf + offset, &endp, 10);
++		ts->pointercal[index] = i;
++
++		/* Skip the space */
++		offset = endp - buf + 1;
++	}
++
++	spin_unlock_irq(&ts->lock);
++
++	return count;
++}
++
++static DEVICE_ATTR(pointercal, 0644, tsc2046_ts_pointercal_show, tsc2046_ts_pointercal_store);
++
++static ssize_t tsc2046_ts_screen_res_show(struct device *dev,
++		   struct device_attribute *attr, char *buf)
++{
++	struct tsc2046		*tsc = dev_get_drvdata(dev);
++	struct tsc2046_ts	*ts = tsc->ts;
++
++	return sprintf(buf, "%u %u\n", ts->x_res, ts->y_res);
++}
++
++static ssize_t tsc2046_ts_screen_res_store(struct device *dev,
++					struct device_attribute *attr,
++					const char *buf, size_t count)
++{
++	struct tsc2046		*tsc = dev_get_drvdata(dev);
++	struct tsc2046_ts	*ts = tsc->ts;
++	char *endp;
++	unsigned int i, offset = 0;
++
++	spin_lock_irq(&ts->lock);
++
++	/* Grab the x res */
++	i = simple_strtoul(buf, &endp, 10);
++	ts->x_res = i;
++
++	/* Skip the space */
++	offset = endp - buf + 1;
++
++	/* Grab the y res */
++	i = simple_strtoul(buf + offset, &endp, 10);
++	ts->y_res = i;
++
++	/* Update the device parameters */
++	input_set_abs_params(ts->idev, ABS_X, 0, ts->x_res - 1, 0, 0);
++	input_set_abs_params(ts->idev, ABS_Y, 0, ts->y_res - 1, 0, 0);
++
++	spin_unlock_irq(&ts->lock);
++
++	return count;
++}
++
++static DEVICE_ATTR(screen_res, 0644, tsc2046_ts_screen_res_show, tsc2046_ts_screen_res_store);
++
++static ssize_t tsc2046_ts_pen_down_show(struct device *dev,
++					struct device_attribute *attr,
++					char *buf)
++{
++	struct tsc2046 *tsc = dev_get_drvdata(dev);
++
++	return sprintf(buf, "%u\n", tsc2046_is_pen_down(tsc->ts));
++}
++
++static DEVICE_ATTR(pen_down, S_IRUGO, tsc2046_ts_pen_down_show, NULL);
++
++static ssize_t tsc2046_ts_disable_show(struct device *dev,
++				       struct device_attribute *attr, char *buf)
++{
++	struct tsc2046		*tsc = dev_get_drvdata(dev);
++	struct tsc2046_ts	*ts = tsc->ts;
++
++	return sprintf(buf, "%u\n", ts->disabled);
++}
++
++static ssize_t tsc2046_ts_disable_store(struct device *dev,
++					struct device_attribute *attr,
++					const char *buf, size_t count)
++{
++	struct tsc2046		*tsc = dev_get_drvdata(dev);
++	struct tsc2046_ts	*ts = tsc->ts;
++	char *endp;
++	int i;
++
++	i = simple_strtoul(buf, &endp, 10);
++	spin_lock_irq(&ts->lock);
++
++	if (i)
++		tsc2046_ts_disable(tsc);
++	else
++		tsc2046_ts_enable(tsc);
++
++	spin_unlock_irq(&ts->lock);
++
++	return count;
++}
++
++static DEVICE_ATTR(disable_ts, 0664, tsc2046_ts_disable_show,
++		   tsc2046_ts_disable_store);
++
++/* Init functions */
++
++static int __devinit tsc2046_probe(struct spi_device *spi)
++{
++	struct tsc2046			*tsc;
++	struct tsc2046_ts		*ts;
++	struct tsc2046_platform_data	*pdata = spi->dev.platform_data;
++	struct input_dev		*idev;
++	int r = -ENODEV;
++
++	dev_dbg(&spi->dev, "%s\n", __FUNCTION__);
++
++	if (!pdata) {
++		dev_dbg(&spi->dev, "no platform data?\n");
++		return -ENODEV;
++	}
++
++	tsc = kzalloc(sizeof(*tsc), GFP_KERNEL);
++	if (tsc == NULL)
++		return -ENOMEM;
++
++	dev_set_drvdata(&spi->dev, tsc);
++	tsc->spi = spi;
++	spi->dev.power.power_state = PMSG_ON;
++
++	spi->mode = SPI_MODE_1;
++	spi->bits_per_word = 16;
++
++	/* The max speed might've been defined by the board-specific
++	 * struct */
++	if (!spi->max_speed_hz)
++		spi->max_speed_hz = TSC2046_HZ;
++	spi_setup(spi);
++
++	if (spi->irq < 0) {
++		dev_err(&tsc->spi->dev, "need DAV IRQ/GPIO");
++		return -EINVAL;
++	}
++
++	if (!pdata->get_pendown_state && !gpio_is_valid(pdata->gpio_pendown)) {
++		dev_err(&spi->dev, "no get_pendown_state nor gpio_pendown?\n");
++		return -EINVAL;
++	}
++
++	ts = kzalloc(sizeof(*ts), GFP_KERNEL);
++	if (ts == NULL)
++		return -ENOMEM;
++	tsc->ts = ts;
++
++	if (pdata->get_pendown_state)
++		ts->get_pendown_state = pdata->get_pendown_state;
++	else {
++		ts->dav_gpio = pdata->gpio_pendown;
++		r = gpio_request(ts->dav_gpio, dev_name(&tsc->spi->dev));
++		if (r < 0) {
++			dev_err(&tsc->spi->dev, "unable to get DAV GPIO");
++			goto err1;
++		}
++		gpio_direction_input(ts->dav_gpio);
++	}
++
++	ts->irq = spi->irq;
++
++	init_timer(&ts->timer);
++	ts->timer.data = (unsigned long) tsc;
++	ts->timer.function = tsc2046_ts_timer;
++
++	spin_lock_init(&ts->lock);
++
++	ts->x_plate_ohm	= pdata->ts_x_plate_ohm ? : 280;
++	ts->max_pressure = pdata->ts_max_pressure ? : MAX_12BIT;
++	ts->touch_pressure = pdata->ts_touch_pressure ? : ts->max_pressure;
++	ts->ignore_last	= pdata->ts_ignore_last;
++
++	idev = input_allocate_device();
++	if (idev == NULL) {
++		r = -ENOMEM;
++		goto err2;
++	}
++	idev->name = "TSC2046 touchscreen";
++	snprintf(ts->phys, sizeof(ts->phys),
++		 "%s/input-ts", dev_name(&tsc->spi->dev));
++	idev->phys = ts->phys;
++
++	idev->evbit[0] = BIT(EV_ABS) | BIT(EV_KEY);
++	idev->absbit[0] = BIT(ABS_X) | BIT(ABS_Y) | BIT(ABS_PRESSURE);
++	ts->idev = idev;
++
++	tsc2046_ts_setup_spi_xfer(tsc);
++
++	/* X and Y res default to 240x320 */
++	ts->x_res = pdata->ts_x_res ? : 240;
++	ts->y_res = pdata->ts_y_res ? : 320;
++
++	input_set_abs_params(idev, ABS_X, 0, ts->x_res - 1, 0, 0);
++	input_set_abs_params(idev, ABS_Y, 0, ts->y_res - 1, 0, 0);
++	input_set_abs_params(idev, ABS_PRESSURE, 0, 1, 0, 0);
++
++	set_bit(BTN_TOUCH, idev->keybit);
++
++	r = request_irq(ts->irq, tsc2046_ts_irq_handler,
++			IRQF_SAMPLE_RANDOM | IRQF_TRIGGER_FALLING,
++			"tsc2046-ts", tsc);
++	if (r < 0) {
++		dev_err(&tsc->spi->dev, "unable to get DAV IRQ");
++		goto err3;
++	}
++	set_irq_wake(ts->irq, 1);
++	ts->irq_enabled = 1;
++
++	/* Create the various driver attributes */
++	if (device_create_file(&tsc->spi->dev, &dev_attr_pen_down) < 0)
++		goto err4;
++	if (device_create_file(&tsc->spi->dev, &dev_attr_disable_ts) < 0)
++		goto err5;
++	if (device_create_file(&tsc->spi->dev, &dev_attr_use_pointercal) < 0)
++		goto err6;
++	if (device_create_file(&tsc->spi->dev, &dev_attr_pointercal) < 0)
++		goto err7;
++	if (device_create_file(&tsc->spi->dev, &dev_attr_screen_res) < 0)
++		goto err8;
++
++	r = input_register_device(idev);
++	if (r < 0) {
++		dev_err(&tsc->spi->dev, "can't register touchscreen device\n");
++		goto err9;
++	}
++
++	/* kick off a transaction to enable pen interrupts */
++	spi_async(tsc->spi, &ts->read_msg);
++
++	return 0;
++err9:
++	device_remove_file(&tsc->spi->dev, &dev_attr_screen_res);
++err8:
++	device_remove_file(&tsc->spi->dev, &dev_attr_pointercal);
++err7:
++	device_remove_file(&tsc->spi->dev, &dev_attr_use_pointercal);
++err6:
++	device_remove_file(&tsc->spi->dev, &dev_attr_disable_ts);
++err5:
++	device_remove_file(&tsc->spi->dev, &dev_attr_pen_down);
++err4:
++	free_irq(ts->irq, tsc);
++err3:
++	input_free_device(idev);
++err2:
++	if (ts->dav_gpio)
++		gpio_free(ts->dav_gpio);
++err1:
++	kfree(ts);
++	return r;
++}
++
++static int __devexit tsc2046_remove(struct spi_device *spi)
++{
++	struct tsc2046 *tsc = dev_get_drvdata(&spi->dev);
++	struct tsc2046_ts *ts = tsc->ts;
++	unsigned long flags;
++
++	dev_dbg(&tsc->spi->dev, "%s\n", __FUNCTION__);
++
++	spin_lock_irqsave(&ts->lock, flags);
++	tsc2046_ts_disable(tsc);
++	spin_unlock_irqrestore(&ts->lock, flags);
++
++	device_remove_file(&tsc->spi->dev, &dev_attr_disable_ts);
++	device_remove_file(&tsc->spi->dev, &dev_attr_pen_down);
++	device_remove_file(&tsc->spi->dev, &dev_attr_use_pointercal);
++	device_remove_file(&tsc->spi->dev, &dev_attr_pointercal);
++	device_remove_file(&tsc->spi->dev, &dev_attr_screen_res);
++
++	free_irq(ts->irq, tsc);
++	input_unregister_device(ts->idev);
++
++	if (ts->dav_gpio)
++		gpio_free(ts->dav_gpio);
++
++	kfree(ts);
++	kfree(tsc);
++
++	return 0;
++}
++
++static struct spi_driver tsc2046_driver = {
++	.driver = {
++		   .name = "tsc2046",
++		   .bus = &spi_bus_type,
++		   .owner = THIS_MODULE,
++	},
++	.probe = tsc2046_probe,
++	.remove = __devexit_p(tsc2046_remove),
++};
++
++static int __init tsc2046_init(void)
++{
++	printk(KERN_INFO "TSC2046 driver initializing\n");
++
++	return spi_register_driver(&tsc2046_driver);
++}
++
++static void __exit tsc2046_exit(void)
++{
++	spi_unregister_driver(&tsc2046_driver);
++}
++
++module_init(tsc2046_init);
++module_exit(tsc2046_exit);
++
++MODULE_AUTHOR("Kevin Hilman <khilman@mvista.com>");
++MODULE_LICENSE("GPL");
++
+diff --git a/include/linux/input/tsc2046.h b/include/linux/input/tsc2046.h
+new file mode 100644
+index 0000000..acb8fed
+--- /dev/null
++++ b/include/linux/input/tsc2046.h
+@@ -0,0 +1,26 @@
++#ifndef _LINUX_INPUT_TSC2046_H
++#define _LINUX_INPUT_TSC2046_H
++
++#include <linux/types.h>
++#include <linux/timer.h>
++
++struct tsc2046_platform_data {
++	int	(*get_pendown_state)(void);
++	int	gpio_pendown;
++	s16	gpio_debounce;
++	u16	ts_x_plate_ohm;
++	u32	ts_max_pressure;  /* Samples with bigger pressure value will
++				     be ignored, since the corresponding X, Y
++				     values are unreliable */
++	u32	ts_touch_pressure;/* Pressure limit until we report a
++				     touch event. After that we switch
++				     to ts_max_pressure. */
++	u32	ts_x_res;
++	u32	ts_y_res;
++	unsigned ts_ignore_last : 1;
++
++};
++
++#endif
++
++
+-- 
+1.6.3.3
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---------------080608040201040406060906--

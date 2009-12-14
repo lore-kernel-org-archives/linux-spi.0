@@ -1,23 +1,12 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: +
-	spi-imx-use-platform_driver_probe-as-probe-lives-in-inittext.patch
-	added to -mm tree
-Date: Mon, 14 Dec 2009 10:57:29 -0700
-Message-ID: <fa686aa40912140957t3a828baegd74af59fee60e7d@mail.gmail.com>
-References: <200912082330.nB8NU1Ud016093@imap1.linux-foundation.org>
-	<fa686aa40912081634q22319e2ud67d56f10cfc6c25@mail.gmail.com>
-	<20091209074251.GA8136@pengutronix.de>
-	<fa686aa40912090715j7235a722nac10f0dc08554d97@mail.gmail.com>
-	<fa686aa40912090723n6b15dba3p9b63a2f4ae5d9067@mail.gmail.com>
+From: "ada" <shenme-Bj69hT8ICwg@public.gmane.org>
+Subject: [SPAM] ÂÖ®ÁêÉÈ¢ÜÂÖà‰ºÅ‰∏öÁöÑÊ∏†ÈÅìÁÆ°ÁêÜ‰∏éÂ§ßÂÆ¢Êà∑ÂºÄÂèë
+Date: Tue, 15 Dec 2009 03:03:55 +0800
+Message-ID: <E1NKGDL-0001vt-LR@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, mm-commits-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	daniel-rDUAYElUppE@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
-To: =?ISO-8859-1?Q?Uwe_Kleine=2DK=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa40912090723n6b15dba3p9b63a2f4ae5d9067-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,94 +17,216 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2009/12/9 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>:
-> 2009/12/9 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>:
->> 2009/12/9 Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>:
->>> On Tue, Dec 08, 2009 at 05:34:21PM -0700, Grant Likely wrote:
->>>> Hi Uwe.
->>>>
->>>> On Tue, Dec 8, 2009 at 4:30 PM, =A0<akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org> wrote:
->>>> > Subject: spi-imx: use platform_driver_probe as probe lives in .init.=
-text
->>>> > From: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
->>>> >
->>>> > Using platform_driver_register with a probe function defined using _=
-_init
->>>> > is wrong.
->>>> >
->>>> > This fixes an oops after:
->>>> >
->>>> > =A0 =A0 =A0 =A0cd /sys/bus/platform/drivers/spi_imx
->>>> > =A0 =A0 =A0 =A0echo -n spi_imx.0 > unbind
->>>> > =A0 =A0 =A0 =A0echo -n spi_imx.0 > bind
->>>> >
->>>> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
->>>> > Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
->>>> > Cc: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
->>>> > Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
->>>> > Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
->>>> > Signed-off-by: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
->>>> > ---
->>>> >
->>>> > =A0drivers/spi/spi_imx.c | =A0 =A03 +--
->>>> > =A01 file changed, 1 insertion(+), 2 deletions(-)
->>>> >
->>>> > diff -puN drivers/spi/spi_imx.c~spi-imx-use-platform_driver_probe-as=
--probe-lives-in-inittext drivers/spi/spi_imx.c
->>>> > --- a/drivers/spi/spi_imx.c~spi-imx-use-platform_driver_probe-as-pro=
-be-lives-in-inittext
->>>> > +++ a/drivers/spi/spi_imx.c
->>>> > @@ -666,13 +666,12 @@ static struct platform_driver spi_imx_dr
->>>> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =3D DRIVER_NAME,
->>>> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 .owner =3D THIS_MODULE,
->>>> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 },
->>>> > - =A0 =A0 =A0 .probe =3D spi_imx_probe,
->>>> > =A0 =A0 =A0 =A0.remove =3D __exit_p(spi_imx_remove),
->>>>
->>>> This looks wrong. =A0Why can't spi_imx_probe and spi_imx_remove be
->>>> changed to be __devinit and __devexit?
->>> I don't care much, but I thought this to be in accordance to
->>>
->>> =A0 =A0 =A0 =A0d1e44d9 (SPI driver runtime footprint shrinkage)
->>>
->>> (http://git.kernel.org/linus/d1e44d9). =A0I have a whole bunch of such
->>> patches and already sent it three times (I think). =A0There is no
->>> accordance in the community that one of the two possibilities is better
->>> than the other.
->>
->> hmmm. =A0I don't like the pattern, but I'm not going to reject it out of
->> hand. =A0Let me think about it for a bit.
->
-> But regardless, I'll make a decision before the end of the merge
-> window because I know it fixes an oops.
+This is a multi-part message in MIME format
 
-I've committed a patch to change probe/remove to __devinit/__devexit.
->From a patterns point of view, I don't think it is the right thing to
-do.  I understand the pragmatic reason for calling
-platform_driver_probe() in the module init, but I think there has to
-be a better way to go about it.
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-The way I see it, right now CONFIG_HOTPLUG is an all or nothing thing.
- Either all drivers discard __devinit sections, or none of them do.
-It should be possible to make that decision at build time (or even run
-time in the case of modules) without changing the coding pattern on a
-driver-by-driver basis.  I think it is worth investigating, but in the
-mean time I've just done the __devinit thing to fix the oops.
+«Âø¥ ∏Ωº˛£¨»Áπ˚”–¥Ú»≈£¨«Â‘≠¡¬£¨–ª–ª£°
 
-This isn't a final decision, but I wanted to merge something before
-the window closed.
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: application/octet-stream;
+        name="∆∆Ω‚œ˙ €¿ßæ÷-»´«Ú¡Ïœ»∆Û“µµƒ«˛µ¿π‹¿Ì”Î¥ÛøÕªßø™∑¢.txt"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+        filename="∆∆Ω‚œ˙ €¿ßæ÷-»´«Ú¡Ïœ»∆Û“µµƒ«˛µ¿π‹¿Ì”Î¥ÛøÕªßø™∑¢.txt"
 
-Cheers,
-g.
+DQoNCiAgICAgICAgICAgxsa94s/6ytvAp77WLS0tyKvH8sHsz8jG89K1tcTH/rXAudzA7dPrtPO/
+zbunv6q3og0KDQoNCsqxvOQ6yc+6oyAgMjAwOcTqMTLUwjI2LTI3yNUgICAgICAgIMnu29ogMjAw
+OcTqMTLUwjUtNsjVDQoNCtb3sOy1pc67OiDW2sjL0NC53MDt18nRr834ICAgye7b2srQ0ru2/sj9
+udzA7dfJ0a/T0M/euavLvg0KDQrF4NG1ttTP8zqxvr/Os8zKyrrP09rSqtLU1+7W1b/Nu6fOqs/6
+ytvEv7HqtcS/zbunz/rK27T6se0oQWNjb3VudCBTYWxlcyk7z/rK2w0KICAgICAgICAgvq3A7TvS
+1Lyw0+u/zbunz/rK29PQudi1xMjL1LENCg0KxeDRtbfR08M6MjgwMNSqL8jLDQoNCrG4ICAgINei
+o7oNCtfJ0a+157uwo7owNzU1LTI2MDc1MzY1ICAwNzU1LTI2OTc1MjY1ICAwMjEtNTE4NzUxNDkg
+DQq0qyAgICDV5qO6MDc1NS02MTM1MTM5NiAgDQrBqiDPtSDIy6O6IMHo0KG94yAgMTM4MTY0NzYz
+OTkNCg0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCg0KICAgILWxvfG1xNbQufrK0LOh1L3AtNS9
+s8nK7KOsvrrV+dKy1L3AtNS9vKTB0qOssru99rbUz/rK28jL1LG1xMvY1sqhory8xNwgDQq1yLe9
+w+a1xNKqx/PUvcC01L243ywguPzKx7bU09rO0sPHtcS53MDt1d/E3LfxvajBotK7zNfKytOmxvPS
+tbei1bm1xNbGtsjM4Q0Ks/bBy8z01b07w7+49srQs6G1sdbQtrzT0NPF0OO1xMbz0rW05tTaLCDL
++8PHysfI57rOs8m+zbWxvfG1xMHs0OS12M67LCAgy/sNCsPH1NqzybOktcS5/bPM1tDKx8jnus6z
+ybmmwvXP8te/1L0gIMbz0rW3otW5tcS7t76zuPeyu8/gzawsILncwO21xMSjyr3O3reoDQrV1bDh
+uLTWxiwgtau21NPas8m5psbz0rW53MDtwO3E7rXEzL3M1tPr0afPsCwgttTL+8PHvq3A+rXEx7Cz
+tdauvPi1xLvYucvT6w0Kt7TLvCwgsdi9q9PQ1vrT2s7Sw8e21NfUye3G89K1udzA7bXEzerJxtPr
+zOG43y4gDQoNCiAgICCxvr/Os8zS1L2yyqbX1Mntt/7O8bXEvLi80rLGuLs1MDDHv8bz0rXU2ruq
+t6LVub6twPrOqrv5tKEs0tTF4NH408XQ49OqDQrP+rncwO3Iy9SxzqrEv7Hqo6zPtc2ztdi31s72
+z/rK27ywytCzobXEuPe49ru3vdq1xMzYteOhorLfwtShory8x8mjrNa81NrM4Q0KuN/P+srbyMvU
+sdTaw7/Su7j2z/rK27u3vdq31s72zsrM4rrNveK+9s7KzOK1xMTcwaajrLTyv6rNqM35s8m5ptau
+w8Whow0KDQrK1SDS5qO6CQ0KICCwtNXV16jStc/6ytu1xLHq17zAtMu8v7y6zdDQysKho8HLveLP
++srbyKu5/bPMvLC4973Xts7P+srbuaTX99KqteOjrNf2tb0NCiAg1NrV/ci3tcTKsbzkoaK21NX9
+yLe1xMjLoaLX9tX9yLe1xMrCzOG437/Nu6e3w8y4tcTE3MGmo6zXvMi3yLe2qLfDzLi6zc/6DQog
+IMrbttTP86GjDQogINGnu+HUy9PDubXNqLy8x8m90738v827p6Gi0661w7/Nu6e1xNDFyM6yor2o
+waK52M+1oaMNCiAg1cbO1cjnus7Iq6Gi17yhorywyrG12MrVvK+/zbunubrC8tDFz6Khow0KICDR
+p7vhzdq+8r/Nu6e1xNXmyrXQ6Mfzo6zM4bP209C+utX5waa1xL3ivva3vbC4oaMNCg0K0MK1xM/6
+ytu7t76zo6zK0LOhvrrV+bj8zqq8pMHSDQrP1tTao6zO0sPH0/a1vcHLuPy24LXEvrrV+bbUytaj
+rMv7w8ejug0KICAgMaGisru2z83+0LLO0sPHtcTK0LOhDQogICAyoaKyu7bPx8C24c7Sw8e1xL/N
+u6cNCs/W1NqjrM7Sw8fD5rbU1tKzz7bIsru2z721tc21xL/Nu6ejrMv7w8ejug0KICAgMaGi1cbO
+1dfFtPPBv7XEytCzodDFz6INCiAgIDKhotO109C547e6tcTRodTxt7bOpw0KICAgM6GiyLG3psTN
+0MSjrMvmyrG/ycTc16rP8g0KICAgNKGiobDTwLK7wvrX46GxDQoNCsrXz8ijrMu8v7zSu9Cp1+67
++bG+tcTOysziDQogICCh+iDO0sPHwvS1xMrHyrLDtCAgLS3Q0NK1tcS21MrW1tq24LfX56GjrM7S
+w8e/v8qyw7TIocqkDQogICCh+iDC9Lj4y60/LS0tIL/Nu6e1xNGh1PHI1dLm1Pa24KOstavO0sPH
+tcS/zbun1NrExMDvDQogICCh+iDL+8PH09DKssO0zNi14z8NCiAgIKH6IMv7w8e087a81NrKssO0
+tdi3vcL0Pw0KICAgofogztLDx7L6xrejqNPDu6ejqc2ouf3LrcL0o6jC8qOpP6Gqx/61wNb3tbzK
+0LOhu7nKx8a3xcbS/bW8z/u30Q0KICAgofogy/vDx86qyrLDtLvhwvTO0sPHtcSy+sa3Pw0KICAg
+ofogy/vDx86qyrLDtLvhwvSx8MjLtcSy+sa3Pw0KDQqppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCrXa
+0ru1pdSqo7rO3r7lzPTVvS0tLb3wxcbP+srbtcS087/Nu6e/qrei0+vOrLukDQoNCsew0dSjurTz
+v827p7ncwO21xLjFyva6zbei1bkNCqH6IMqyw7TKx7Tzv827pw0KofogtPO/zbunysfI57rO0M6z
+ybXEDQqh+iDOqsqyw7TSqrbUtPO/zbunvfjQ0LncwO0NCqH6ILTzv827p7ncwO23otW5xKPQzbyw
+vde2zg0Kofogx/jT8tTL1/fEo9DNDQoNCrXa0rvVwiC/zbunv6q3otPrz/rK28SxwtSjug0K0ruj
+rtaqvLrWqrHLDQoxLiDO0sPHz/rK27XEysfKssO0DQoyLiDO0sPHtcTTxcrGysfKssO0DQozo67O
+0sPHtcSyu9fjysfKssO0DQo0o67LrcrHvrrV+bbUytYNCjUuIL/Nu6fKx8utDQo2LiC/zbunzqq6
+zrvh0aHU8c7Sw8cNCg0Ktv6jrrK71b22+MqkDQoxLiDI/dbWsrvNrLLjtM61xL661fkNCjIuIMj9
+1tayu82st73KvbXEvrrV+Q0KMy4g1fu6z9fK1LSjrMi3waLTxcrGIA0KNC4gy/i2qMS/seqjrLK7
+1b22+MqkDQoNCrXatv7VwiDV67bUtPO/zbuntcTP+srbxKPKvQ0K0rsuINOqz/rEo8q9vva2qMbz
+0rWzybDcDQoxLiC0tNDCy7zOrLXEvajBog0KMi4gsuDW2LPJsb6/2NbGtcTP+srbxKPKvQ0KMy4g
+16LW2Mur0661xNOqz/rEo8q9DQo0LiC/tNbYs6TG2rrP1/e1xNOqz/rEo8q9DQo1LiDNu7P2v827
+p7jQyty1xNOqz/rEo8q9DQoNCrb+LiDT0NCntcS/zbun0OjH87fWzvbT68/6ytvEo8q9vajBog0K
+MS4gv827p7XEx7HU2tDox/O55sSjDQoyLiC/zbuntcSyybm6s8mxvg0KMy4gv827p7XEvvay39Xf
+DQo0LiC/zbuntcSyybm6yrHG2g0KNS4gztLDx7XEvrrV+bbUytYNCjYuIL/Nu6e1xMzYteO8sM+w
+ud8NCjcuIL/Nu6e1xNXmyrXQ6MfzDQo4LiDO0sPHyOe6zsL61+O/zbunDQoNCrXayP3VwiDV67bU
+tPO/zbuntcRTUElOucvOysq9z/rK27e9wtQNCtK7LiC0q82zz/rK28/fy/e6zc/WtPrP+srbz9/L
+9w0Ktv4uIMqyw7TKx1NQSU7M4c7Kt73KvQ0KyP0uILfisdXKvczhzsq6zb+qt8XKvczhzsoNCsvE
+LiDI57rOxvDTw1NQSU7M4c7KDQrO5S4gU1BJTszhzsq3vcq9tcTXotLiteMNCg0KtdrLxNXCIMjn
+us7By73iu/LN2r7ytPO/zbuntcTQ6MfzDQogICAgICDS/dHUo7rTrrXDv827p9DFyM61xLXa0ruy
+vaGqv827p7Ddt8MNCtK7LiCz9bTOsN23w7XEs8zQ8g0Ktv4uILP1tM6w3bfD06bXotLitcTKws/u
+o7oNCsj9LiDU2bTOsN23w7XEs8zQ8qO6DQrLxC4gyOe6ztOmuLbP+7yrt7TTptXfDQrO5S4g0qrJ
+xtPa8fbM/b/Nu6fLtbuwDQoxLiC24Mz9ydnLtbXEusO0pg0KMi4gtuDLtcnZzP21xM6juqajug0K
+My4gyOe6zsnG09rx9sz9DQrB+S4gwcu94rvyzdq+8tDox/O1xL7fzOW3vbeoDQoxLiC/zbun0OjH
+87XEsuO0zg0KMi4gxL+x6r/Nu6e1xNfbus+w3bfDDQozLiDP+srb1LG6zb/Nu6e1xMvE1tbQxcjO
+udjPtQ0KNC4gzdq+8r72st/Iy9SxuPbIy7XEzNjK4tDox/MNCg0KtdrO5dXCIMjnus6+38zlzca8
+9rL6xrcNCtK7LiDKub/Nu6e5usLyzNjQ1LrNsvrGt8zY0NTP4NK71sINCrb+LiC0psDtusPE2rK/
+z/rK287KzOINCsj9LiBGQUK3vbeotcTUy9PDDQrLxC4gzca89snMxrfKsbXE16LS4srCz+4NCjEu
+ILK706aw0c3Gz/qx5LPJ1fnC27vy1b22tw0KMi4gsaOz1seizLi1xNPRusPG+LfVDQozLiC9ssfz
+s8/QxaOsy7W1vdf2tb0NCjQuIL/Y1sbHosy4t73P8g0KNS4g0aHU8brPysrKsbv6DQo2LiDSqsnG
+09rM/cLy1vfLtbuwDQo3LiDXotbY0aHU8c3GvPbJzMa3tcS12LXjus27t76zDQrO5S4gzai5/db6
+z/rXsLG4wLTNxrz2svrGtw0KwfkuIMfJ08PPt77n0Ke5+83GvPay+sa3DQrG3y4gyrnTw8rK09q/
+zbuntcTT79HUvbvMuA0KMS4gtuDTw7zytsy1xLTK0+8NCjIuIMq508PC8tb30te2rrXE0+/R1A0K
+My4g0+vC8tb30+/R1M2ssr219w0KNC4gydnTw7L6xre0+rrFDQo1LiDTw7T409C40MfpyauyyrXE
+0+/R1Lykt6K/zbunDQoNCrXawfnVwiDFxbP9t8GwrbXE09DQp7eo1PINCtK7LiC21LT91c+wrbXE
+zKy2yA0Ktv4uINXPsK21xNbWwOANCsj9LiDI57rOsunD98S/seq/zbun0v6xzrXE0MTA7dXPsK0N
+CsvELiDFxbP91c+wrbXE19yy38LUDQoNCrXaxt/VwiDI57rO1/a6w7Tzv827p7XE08XWyrf+zvEN
+CtK7LiDTxdbKt/7O8bXE1tjSqtDUDQq2/i4gy8TW1rf+zvHA4NDNt9bO9g0KyP0uIMjnus60psDt
+v827p7XEsafUubrNzbbL3w0KMS4gv827p822y9+1xMTayN0NCjIuILSmwO2/zbunsrvC+rXE1K3U
+8rrNvLzHyQ0KDQq12rDL1cIgtPO/zbunz/rK28jL1LG1xNfUztK53MDtus3Q3sG2DQrSuy4gyrG8
+5LfWxeS53MDtDQq2/i4gs8m5ps/6ytvIy8q/tcTB+c/u19TO0tDewbYNCjGjrr2owaLU2tSt1PK7
++bShyc+1xNfUztLJ88rTtcTQ3sG2DQoyo67X1M7Swey1vLXE0N7Btg0KM6Ou19TO0rncwO21xNDe
+wbYNCjSjrsur067LvM6syMu8ysHstby1xNDewbYNCjWjrtPQ0Ke5tc2otcTQ3sG2DQo2o660tNTs
+0NS6z9f3tcTQ3sG2DQoNCg0Ktdq2/rWl1Kog1rHD5s6ju/otvfDFxs/6ytu1xMf+tcC9qMno0+u5
+3MDtDQoNCrXa0rvVwqO6zqO7+tPrzqO7+rncwO0NCtK7Lgmyu7/Ju9ix3LXEzqO7+g0KDQq2/i4J
+zqO7+sPmx7DI3dLXs/bP1rXEtO3O8w0KDQrI/S4JyOe6ztTay7zP68nP1f3It7bUtP3Oo7v6tcSz
+9s/WIA0KDQrLxC4JyOe6zr7fzOW0psDty/nD5sHZtcTOo7v6IA0KPwnKws/I1KSy4g0KPwnRuMvZ
+t7TTpg0KPwnX8NbYysLKtQ0KPwmz0LWj1PDIzg0KPwnMubPPubXNqA0KPwnB6bvuseTNqCANCg0K
+IA0Ktdq2/tXCo7rH/rXAtcS9qMno0+u+rc/6ycy53MDtDQrSu6Oux/61wMnovMa1xNSt1PLT69Kq
+y9gJDQogICAgofogzeKyv7u3vrMNCiAgICCh+iDE2rK/tcTTxcrG0+vB08rGDQo/ICCh+iDH/rXA
+udzA7bXEy8TP7tSt1PINCj8gIKH6IMf+tcC9qMnotcQ2tPPEv7HqDQoNCrb+o66+rc/6ycy1xNGh
+1PGjugkNCqHvIM7Sw8fSqr6tz/rJzNf2yrLDtKO/DQqh+iCzp7zSttS+rc/6ycy1xMbazfstLS0N
+CqH6IMDtz+u1xL6tz/rJzNOmuMPKxy0tLQ0Kofog0aHU8b6tz/rJzLXEserXvMrHLS0tCQ0Koe8g
+x/61wL2oyejW0LXEvLjW1su8v7yjug0Kofogz/rK28nMoaK0+sDtyczK/cG/1L224NS9usOjvw0K
+ofog19S9qMf+tcDN+MLnscjW0Lzkycy6w6O/DQqh+iDN+MLnuLK4x9S9tPPUvcPc1L26w6O/DQqh
++iDSu7ao0qrRocq1wabHv7XEvq3P+snMo78NCqH6ILrP1/fWu8rH1N3KsbXEo78NCqH6IMf+tcDV
+/rLfysfUvdPFu93UvbrDo78NCqGtIKGtDQo/IKHvIM7Sw8e1xL3hwtvKxy0tLSAgICAgICAgIA0K
+ofogvq3P+snM1LjS4r6tz/q1xLL6xrejuiAgIA0Kofogvq3P+snMttSzp7zStcTG2s37o7oNCqH6
+ILOnvNLTpr6htcTS5c7xDQqh+iCzp7zSv8nS1Mzhuam1xLDv1voNCqH6ILOnvNK27s3izOG5qbXE
+t/7O8Q0KPyCh7yDO0sPHtcS94cLbysctLQ0KICAgICCh+iC21Le9tcTQ6Mfzo6zV/crHxOO21Mbk
+udzA7bXEx9DI67XjDQoNCsj9o66+rc/6ycy1xLncwO0NCj8gIKH6IMf+tcDTqs/6udzA7cvE1K3U
+8g0KPyAgofogyOe6ztbGtqm31s/61f6y3yAgICAgICAgICAgICAgICAgICAgICAgICAgICANCqH6
+ILfWz/rIqLyw16jTqsio1f6y3w0KofogvNu48brNt7XA+9X+st8NCqH6IMTq1tW9scD41f6y3w0K
+ofogtNnP+tX+st8NCqH6IL/Nu6e3/s7x1f6y3w0Kofogv827p7m1zai6zcXg0bXV/rLfDQqh+iDP
++srb0rW8qMrHzqjSu7XExsC5wMTayN3C8KO/DQqh+iDIt7ao0rW8qLHq17wNCqH6ILaotu4NCqH6
+INbY0qq1xL/Jwb+7r7XE0MXPorK5s+QNCqH6ILL6xrfX6brPus3K0LOhyfjNuA0KKiAgxsC5wMTq
+tsjStbyoICAgICANCqH6ILaotu7N6rPJwsoNCqH6IM/6ytvV/rLftcTIz82sus3WtNDQDQqh+iC/
+zbunwvrS4rbIDQqh+iDK0LOh1PazpMLKDQqh+iDK0LOht9227g0Koe8gzNbC26O6x/61wLncwO3W
+0LXEvLi49sTRteMNCg0Ky8Sjrsjnus64/LrDtdjT676tz/rJzLTyusO9u7XAo78NCqHvINPrx7HU
+2r6tz/rJzLXEubXNqLy8x8kNCiogILHttO+zz9Lio6zBy73ittS3vQ0KKiAgs+S31rHttO/X1M7S
+DQqh7yDT0NCnubXNqLXEt723qA0Ko7Euw/fIt7m1zai1xNbYtePKx8qyw7QNCqOyLrm1zai1xNbY
+0qrQ1A0Ko7MuttTT2tKqubXNqLXEysLH6bXEusO7tbfWzvYNCqO0LtPDus7W1srWts66zbe9t6jK
+tdDQDQqh7yDBvbXj16LS4qO6DQqjsS7LvM/rw/TI8aOsxNzLtbvhuMm1xMjLsrvSu7aoyse5tc2o
+xNzBpse/tcTIyw0Ko7IuubXNqMqx0ru2qNKqwfTS4rbUt721xMfp0PcNCqHvINPQ0Ke5tc2otcTM
+/aGiy7WhorbBoaLQtA0Koe8g1/bSu7j2obDT0NDEyMuhsS0tLQ0KofogtbG/zbun08zUpcqxo7sN
+CqH6ILWxv827p9LJwsfKsaO7DQqh+iC1sb/Nu6e1xNKqx/O5/dPav8G/zMqxo7sNCqH6ILWxv827
+p7XE0MvIpLK7tPPKsaO7DQoNCs7lo67H/rXAs+XNu7XEudzA7aO6DQqh7yDH/rXA1q685NPQxMTQ
+qbPlzbujvw0KofogytCzobe2zqe1xLPlzbujuw0Kofogvq3TqrzbuPG1xLPlzbujuw0Kofogvq3T
+qsa31ta1xLPlzbujuw0Kofogvq3Tqre9yr21xLPlzbujuw0Kofogvq3TqsvY1sq1xLPlzbujuw0K
+oe8gx/61wLPlzbu1xMq11sqjug0Koe8gwPvS5rXEs+XNu8rHo7oNCqHvIMf+tcCz5c27tcTTprbU
+o7oNCqH6INHPuPG957aovq3Tqre2zqcNCqH6IL3ntqi827jxzOXPtQ0Kofogvee2qMf+tcC1xLy2
+sfCjqLTTuavLvtaxvdO9+Lv1tcSyu7a8ysfSu7y2v827p6OpDQqh+iCyu82swODQzcf+tcCyu82s
+1f6y3w0Kofog0MK+rc/6tcS39rPW0+vAz76tz/q53MDtyc+1xMjL0NS7rw0KofogttTO0sPHtcTS
+tc7x1LHRz7jx0qrH8w0KDQrB+aOuz/rK27bTzum53MDtDQqh7yDP+srbttPO6bXEudzA7aO6DQqh
++iDP+srbtPqx7dPrvq3P+snMtcSyu82s1/fTww0Kofogz/rK27XEu/mxvsvY1sq8sMjnus7M4bjf
+DQqh+iDP+srbyMvUsbXENM/uu/mxvrmk1/cNCqH6IM/6ytuw3bfD1sa2yLXEvajBog0KKiAgv+K0
+5g0KKiAgz/rK283qs8kNCiogIMrQs6HV/rLftcTWtNDQDQoqICDK0LOh0MXPore0wKENCiogILLG
+zvENCqHvIMf+tcC53MDt1tC1xLnbxO7XqrHkICAgICAgICAgICAgICAgICAgICANCqH6INTatcO1
+vcq1vMq72L/u1q7HsLXEz/rK27busqKyu8rH1ebV/bXEz/rK26GjDQqh+iC/2NbGt+fP1bKisru7
+4cvwuqbP+srboaMNCqH6IM/WvfC1vcrW1q7HsM/6ytuyosO709DN6rPJoaMNCqH6ILmry77L+dX1
+tcTDv9K7t9bHrra8vq3Tyc7Sw8e1xMuryta2+Mq1z9ahow0Kofogu/W/7rXEzc/Ht7HIu7XVyrj8
+xNzH1sq0wPvS5qGjDQqh+iDEx8rHztLDx7XEx64tLb/Nu6eyu7n9ysfU3b3otvjS0aGjDQqh+iDU
+vbywyrHM4dDRv827p77N1L3U57XYytW1vbv1v+6how0Kofogv827p7TTwLS2vLK7u+HS8rG7zOHQ
+0bi2v+62+LK7wvoNCg0Kxt+jrr/Nu6fQxdPDudzA7dPrz/rK29Skvq/Ptc2zDQqh+iDP+srbwb+y
+u9X9s6OyqLavDQqh+iDE2s3isr+5/cG/v+K05g0Kofogudi8/MjL1LGx5LavDQqh+iDQwrL6xre6
+zdDCytCzob+qt6Kyu8D7DQqh+iDVysHkvLG+57bxu68NCqH6ILL6xrfWysG/tPO3+c/Cu6wNCg0K
+sMujrr/OzMPR3cG3o7oNCg0KDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUJDQoNCr2yyqa96cnco7pQ
+SElMSVBTDQogICCxsb6ptPPRp76tvMPPtdHQvr/J+qO7DQogICDDwLn6xM+809bdtPPRp6OoVVND
+o6m5pMnMudzA7cu2yr+juw0KICAg06rP+tGnoaK/zbunt9bO9tGnoaLMuMXQvLzHydeovNKjrNfK
+ye7Tqs/6udzA7cXg0bXKpqGjDQogICDU+MjOusnAvLfJwPvG1qGitcK5+s73w8XX06Git6i5+sqp
+xM21wrXIufq8ytaqw/u5q8u+tcS+rc/6ycy53MDtoaK087/Nu6e+rcDtoaINCs/6ytu+rcDtoaLK
+0LOh19y84LXI1rDOu6GjDQoNCsS/x7DI1L7N1rDT2rLGuLs1MDDHv8bz0rWjrLWjyM6089bQu6rH
++LXE06rP+rncwO25pNf3oaMNCg0KICAgIL7f09C34bi7tcTJzNK1yrXVvcDtwtu7+bSh0+vKtbz5
+vq3R6aOssPzAqMf+tcC53MDtoaK087/Nu6e53MDtoaLP+srbvLzHyaGiDQrJzM7xzLjF0KGiz/rK
+283FttO9qMnooaK1yMirt73D5sH3s8zF4NG1o6zTtdPQt+G4u7XE1eu21NbQuN+y47ncwO3Iy9Sx
+us3Su8/fDQrP+srbyMvUsb340NDF4NG1us253MDttcS+rdHpoaPS1LbAtb21xLncwO3Tqs/6vq3R
+6aOsvbK94r3hus+7pbavoaLH6b6wyr3F4NG1o6wNCrv5tKHWqsq20+vKtbzK1MvTw7Ki1tijrNei
+1tjK3NG1yMvUsbXEuNDO8rywss7T66GjxeDRtbe9yr3B6bvuo6zT79HU08TErL6rsdmjrA0KxeDR
+tc/Ws6HRp9Sxss7T69DUx7+jrMb4t9XIyMHSo6y548rcss7RtdGn1LG1xMe/wdK6w8bAoaMNCg0K
+0tG/qsnotcSyv7fW08XKxsXg0bXP7sS/Og0KobbWsNK1vq3A7cjL18q48cjP1qSht6Gioba5pNK1
+1sbGt7XEz/rK29PrttPO6b2oyeiht6Gioba+rc/6ycy53MDtobehoqG21tCy4w0K06rP+rncwO3I
+y9SxtcS53MDtvLzE3KG3oaKhts3FttO53MDtobehoqG2y6vTrsy4xdC8vMfJobehoqG2tPO/zbun
+udzA7aG3oaINCqG2vKTA+Ly8x8mht6GiobbEv7HqudzA7aG3oaKhtsrQs6HTqs/6obehoqG2z/rK
+27y8x8mht6Gioba8qNCnudzA7aG3oaINCqG2x+m+sLncwO21xNLVyvWht7XIo7sNCg0KDQotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQrI59Kqss6807G+tM7R0MzWu+GjrL/Jzai5/c/Cw+a3vcq9
+sajD+7LOvNOjug0KDQq9q9LUz8KxqMP7se3E2sjdtPLToczu0LS687Sr1ea1vaO6o6gwNzU1o6k2
+MTM1MTM5Ng0KDQqxqKGhoaHD+6GhoaG72KGhoaHWtA0KDQqyzrzTv87M4qO6xsa94s/6ytvAp77W
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIA0KICAgICAgICAgLS3Iq8fywezPyMbz0rW1xMf+
+tcC53MDt0+u087/Nu6e/qreioaENCg0Ktdi146O6ICAgIMqxvOSjug0KDQqyzrvhtaXOu8P7s8aj
+ul9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fIEVtYWlso7pfX19fX19fX19fX19f
+X19fX19fX19fIKGhDQogDQrBqs+1yMujul9fX19fX19fX19fX19fXyC157uwo7pfX19fX19fX19f
+X19fX19fX19fX18gtKvV5qO6X19fX19fX19fX19fX19fX19fX19fDQogoaENCrLOvNPRp9Sxo7pf
+X19fX19fX9awzvGjul9fX19fX19fX19fX19fX8rWu/qjul9fX19fX19fX19fX19fX0VtYWlso7pf
+X19fX19fX19fX18NCg0Kss6809Gn1LGjul9fX19fX19f1rDO8TpfX19fX19fX19fX19fX18gyta7
++qO6X19fX19fX19fX19fX19fRW1haWyjul9fX19fX19fX19fXw0KDQqyzrzT0afUsaO6X19fX19f
+X1/WsM7xo7pfX19fX19fX19fX19fX1/K1rv6o7pfX19fX19fX19fX19fX19FbWFpbKO6X19fX19f
+X19fX19fDQogICAgICANCri2v+63vcq9o7qh9c/WvfChoaH11qfGsaGhofXXqtXKDQoNCsjLyv2j
+ul9fX19fX8jLICAgss674bfR08OjurmyvMajul9fX19fX9SqIA0KDQqxuNeiDQoxLsrVtb2588u+
+sajD+9DFz6K686OsztLDx72rtdrSu8qxvOS6zbnzy76yzrvhwarPtcjLvfjQ0Mi3yM+juw0KMi7U
+2r+qv87HsNK71tyjrM7Sw8fT0NeoyMu4+Lnzy763osvNss6808Xg0bW1xMi3yM+6r6Osyc/D5tPQ
+xeDRtbGotb3WuNL9o6zS1Lywz+oNCiAgz7i1xMnPv8612Na3us3Ct8/fzbyjuw0KMy60y7/Os8zS
+sr/J0tSwssXFxvPStcTa0bWjrLu2063AtLXn18nRr7ywyerH68XFxtqjuw0KNC7I57bUtMu/zrPM
+09DIzrrO0snOyqOsu7bTrbKmtPK157uwz/LO0sPH18nRr6Gj
 
--- =
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Return on Information:
 Google Enterprise Search pays you back
 Get the facts.
 http://p.sf.net/sfu/google-dev2dev
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

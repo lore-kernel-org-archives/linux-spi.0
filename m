@@ -1,11 +1,11 @@
 From: "H Hartley Sweeten" <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: [PATCH] spi_sh_sci.c: use resource_size()
-Date: Mon, 14 Dec 2009 17:40:05 -0500
-Message-ID: <BD79186B4FD85F4B8E60E381CAEE19090200EA8E@mi8nycmail19.Mi8.com>
+Subject: [PATCH] spi_txx9.c: use resource_size()
+Date: Mon, 14 Dec 2009 17:43:42 -0500
+Message-ID: <BD79186B4FD85F4B8E60E381CAEE19090200EA8F@mi8nycmail19.Mi8.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: "kernel list" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -24,22 +24,29 @@ Use resource_size().
 
 Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
 
 ---
 
-diff --git a/drivers/spi/spi_sh_sci.c b/drivers/spi/spi_sh_sci.c
-index 7d36720..a65c12f 100644
---- a/drivers/spi/spi_sh_sci.c
-+++ b/drivers/spi/spi_sh_sci.c
-@@ -148,7 +148,7 @@ static int sh_sci_spi_probe(struct platform_device *dev)
- 		ret = -ENOENT;
- 		goto err1;
- 	}
--	sp->membase = ioremap(r->start, r->end - r->start + 1);
-+	sp->membase = ioremap(r->start, resource_size(r));
- 	if (!sp->membase) {
- 		ret = -ENXIO;
- 		goto err1; 
+diff --git a/drivers/spi/spi_txx9.c b/drivers/spi/spi_txx9.c
+index 19f7562..dfa024b 100644
+--- a/drivers/spi/spi_txx9.c
++++ b/drivers/spi/spi_txx9.c
+@@ -375,12 +375,10 @@ static int __init txx9spi_probe(struct platform_device *dev)
+ 	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
+ 	if (!res)
+ 		goto exit_busy;
+-	if (!devm_request_mem_region(&dev->dev,
+-				     res->start, res->end - res->start + 1,
++	if (!devm_request_mem_region(&dev->dev, res->start, resource_size(res),
+ 				     "spi_txx9"))
+ 		goto exit_busy;
+-	c->membase = devm_ioremap(&dev->dev,
+-				  res->start, res->end - res->start + 1);
++	c->membase = devm_ioremap(&dev->dev, res->start, resource_size(res));
+ 	if (!c->membase)
+ 		goto exit_busy;
+  
 
 ------------------------------------------------------------------------------
 Return on Information:

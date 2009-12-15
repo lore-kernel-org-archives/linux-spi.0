@@ -1,31 +1,28 @@
-From: Paul Mundt <lethal@linux-sh.org>
-Subject: Re: [PATCH] sh: MSIOF/mmc_spi platform data for the Ecovec24 board
-Date: Tue, 15 Dec 2009 12:40:15 +0900
-Message-ID: <20091215034015.GE7395@linux-sh.org>
-References: <20091207140545.6294.90256.sendpatchset@rxone.opensource.se>
+From: "Tilly Manley" <johnston-RxvP+SW2jJiakBO8gow8eQ@public.gmane.org>
+Subject: [SPAM] Unbeatable loving skills for you
+Date: Tue, 15 Dec 2009 15:31:06 +0100
+Message-ID: <20091215153106.7030700@lucasarts.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-sh@vger.kernel.org, spi-devel-general@lists.sourceforge.net,
-	akpm@linux-foundation.org
-To: Magnus Damm <magnus.damm@gmail.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20091207140545.6294.90256.sendpatchset@rxone.opensource.se>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Dec 07, 2009 at 11:05:45PM +0900, Magnus Damm wrote:
-> This patch adds MSIOF and mmc_spi platform data for
-> the CN11 port on the SuperH Ecovec24 board. No card
-> detect interrupt is available so the MMC code is
-> configured to poll. The WP signal is implemented
-> together with CD and power control. The board only
-> supports 3.3V power.
-> 
-> The platform data is wrapped in SDHI #ifdefs to
-> allow both the SDHI and the MSIOF to coexist. Only
-> one configuration is allowed at a time. The pin
-> routing is selected by a dip switch but we can
-> unfortunately not detect this setting at run time.
+Increased desire, lubrication and climax force with this clit oil. 
+http://ouqh.smegihpeg.com/
 
-Now that the MSIOF driver is merged, I've applied this.
+
+------------------------------------------------------------------------------
+Return on Information:
+Google Enterprise Search pays you back
+Get the facts.
+http://p.sf.net/sfu/google-dev2dev

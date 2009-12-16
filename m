@@ -1,63 +1,89 @@
-From: Russian Brides <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Russian queens are waiting.
-Date: Wed, 16 Dec 2009 04:40:50 +0000
-Message-ID: <E1NKlgw-0006sR-97@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Paul Mundt <lethal@linux-sh.org>
+Subject: [PATCH] spi: xilinx_spi: Fix up I/O routine wrapping bogosity.
+Date: Wed, 16 Dec 2009 15:01:30 +0900
+Message-ID: <20091216060130.GD31265@linux-sh.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5447853871834081826=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: richard.rojfors@mocean-labs.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: John Linn <John.Linn@xilinx.com>,
+	Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1761606AbZLPGBh@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5447853871834081826==
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
+xilinx_spi presently makes some fairly questionable assumptions about I/O
+routines, and attempts to assign ioread32/iowrite32 and friends directly
+to its own internal function pointers. On many platforms these I/O
+routines are macros or wrappers and not actual functions on their own,
+resulting in things like:
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 1.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>Welcome</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-</head>
+ERROR: "ioread32be" [drivers/spi/xilinx_spi.ko] undefined!
+ERROR: "iowrite32be" [drivers/spi/xilinx_spi.ko] undefined!
+ERROR: "iowrite32" [drivers/spi/xilinx_spi.ko] undefined!
+ERROR: "ioread32" [drivers/spi/xilinx_spi.ko] undefined!
 
-<body text="#999999" vLink="#999999" aLink="#999999" link="#999999" bgColor="#ffffff">
-<div align="center">
-9 new ladies profiles (dating)<br>
-<a href="http://cid-6379f866cb77a23e.spaces.live.com" target="_blank">http://cid-6379f866cb77a23e.spaces.live.com</a>
-</div>
-</body>
+If xilinx_spi wants to do this sort of casting, it needs to provide its
+own wrappers for these, or change how it does accesses completely.
 
-</html>
+I've opted for the first approach, and the attached silly patch does
+that. If someone with the hardware available wants to give the second
+option a try that's ok too. In any event, the current code is broken for
+at least: arm, avr32, blackfin, microblaze, mn10300, and sh.
 
+Signed-off-by: Paul Mundt <lethal@linux-sh.org>
 
---===============5447853871834081826==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+---
 
-------------------------------------------------------------------------------
-This SF.Net email is sponsored by the Verizon Developer Community
-Take advantage of Verizon's best-in-class app development support
-A streamlined, 14 day to market process makes app distribution fast and easy
-Join now and get one step closer to millions of Verizon customers
-http://p.sf.net/sfu/verizon-dev2dev 
---===============5447853871834081826==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+ drivers/spi/xilinx_spi.c |   28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5447853871834081826==--
+diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
+index 9f38637..154e908 100644
+--- a/drivers/spi/xilinx_spi.c
++++ b/drivers/spi/xilinx_spi.c
+@@ -93,6 +93,26 @@ struct xilinx_spi {
+ 	void (*rx_fn) (struct xilinx_spi *);
+ };
+ 
++static void xspi_write32(u32 val, void __iomem *addr)
++{
++	iowrite32(val, addr);
++}
++
++static unsigned int xspi_read32(void __iomem *addr)
++{
++	return ioread32(addr);
++}
++
++static void xspi_write32_be(u32 val, void __iomem *addr)
++{
++	iowrite32be(val, addr);
++}
++
++static unsigned int xspi_read32_be(void __iomem *addr)
++{
++	return ioread32be(addr);
++}
++
+ static void xspi_tx8(struct xilinx_spi *xspi)
+ {
+ 	xspi->write_fn(*xspi->tx_ptr, xspi->regs + XSPI_TXD_OFFSET);
+@@ -374,11 +394,11 @@ struct spi_master *xilinx_spi_init(struct device *dev, struct resource *mem,
+ 	xspi->mem = *mem;
+ 	xspi->irq = irq;
+ 	if (pdata->little_endian) {
+-		xspi->read_fn = ioread32;
+-		xspi->write_fn = iowrite32;
++		xspi->read_fn = xspi_read32;
++		xspi->write_fn = xspi_write32;
+ 	} else {
+-		xspi->read_fn = ioread32be;
+-		xspi->write_fn = iowrite32be;
++		xspi->read_fn = xspi_read32_be;
++		xspi->write_fn = xspi_write32_be;
+ 	}
+ 	xspi->bits_per_word = pdata->bits_per_word;
+ 	if (xspi->bits_per_word == 8) {

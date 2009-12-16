@@ -1,74 +1,100 @@
-From: Sergio Donati <sergio_donati-whZMOeQn8C0@public.gmane.org>
-Subject: Linux SPI newbie ST M25P16
-Date: Wed, 16 Dec 2009 18:24:15 +0000 (GMT)
-Message-ID: <137450.30492.qm@web24207.mail.ird.yahoo.com>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 6/7] spi/mpc8xxx: don't check platform_get_irq's return
+	value against zero
+Date: Wed, 16 Dec 2009 20:18:39 +0100
+Message-ID: <20091216191839.GA23614@pengutronix.de>
+References: <1260979809-24811-1-git-send-email-u.kleine-koenig@pengutronix.de> <1260979809-24811-2-git-send-email-u.kleine-koenig@pengutronix.de> <1260979809-24811-3-git-send-email-u.kleine-koenig@pengutronix.de> <1260979809-24811-4-git-send-email-u.kleine-koenig@pengutronix.de> <1260979809-24811-5-git-send-email-u.kleine-koenig@pengutronix.de> <1260979809-24811-6-git-send-email-u.kleine-koenig@pengutronix.de> <20091216163229.GA26350@oksana.dev.rtsoft.ru> <20091216174904.GB26325@pengutronix.de> <20091216182034.GA7590@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-kernel@vger.kernel.org, David Vrabel <david.vrabel@csr.com>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Kumar Gala <galak@kernel.crashing.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	spi-devel-general@lists.sourceforge.net,
+	Linus Torvalds <torvalds@linux-foundation.org>
+To: Anton Vorontsov <avorontsov@ru.mvista.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S964907AbZLPTSs@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20091216182034.GA7590@oksana.dev.rtsoft.ru>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Good morning,
+Hi Anton,
 
-I run into a big trouble:
-I am very new to linux embedded , and i have to interface an ST M25p16 to a MPC8313E cpu.
-I am working on a demoboard MPC8313E-RDB REVA2, with the ltib-mpc8313erdb-20081222 coming from Freescale.
-~ # uname -a
-Linux mpc8313erdb 2.6.23 #12 Tue Dec 15 14:21:22 CET 2009 ppc unknown
+On Wed, Dec 16, 2009 at 09:20:34PM +0300, Anton Vorontsov wrote:
+> On Wed, Dec 16, 2009 at 06:49:04PM +0100, Uwe Kleine-K=F6nig wrote:
+> [...]
+> > > Noooooo... :-(
+> > >=20
+> > > Please revert 305b3228f9ff4d59f49e6d34a7034d44ee8ce2f0 instead,
+> > > and fix platforms to remap HWIRQ0 to something that is not VIRQ0.
+> > >=20
+> > > IRQ0 is invalid for everything that is outside of arch/*.
+> > >=20
+> > > http://lkml.org/lkml/2005/11/22/159
+> > > http://lkml.org/lkml/2005/11/22/213
+> > > http://lkml.org/lkml/2005/11/22/227
+> > First note that my check is safe with both variants (e.g. it does t=
+he
+> > right thing independent of the error being signaled by 0 or
+> > -ESOMETHING.)
+> >=20
+> > Then arch/arm/mach-pxa/devices.c has:
+> >=20
+> > static struct resource pxa27x_resource_ssp3[] =3D {
+> > 	...
+> > 	[1] =3D {
+> > 		.start  =3D IRQ_SSP3,
+> > 		.end    =3D IRQ_SSP3,
+> > 		.flags  =3D IORESOURCE_IRQ,
+> > 	},
+> > 	...
+> > }
+> >=20
+> > with IRQ_SSP3 being zero (sometimes).  The driver is implemented in
+> > arch/arm/mach-pxa/ssp.c and uses platform_get_irq.
+>=20
+> So fix this *one* driver? Implement arm-specific platform_get_irq() a=
+s
+> a band-aid. Or better, implement virtual irqs <-> hardware irqs mappi=
+ng
+> for ARM.
+>=20
+> [...]
+> > I'm a bit annoyed as this is the third time[1] this month this irq0
+> > discussion pops up for me.  I think people see that irq0 is involve=
+d
+> > somehow, start wailing and stop seeing the issues being fixed.
+>=20
+> For this particular driver, there is NO issue whatsoever. It is
+> only used for PowerPC, which has VIRQ0 =3D=3D invalid IRQ. And note
+> that there still could be HWIRQ0 on PowerPC, but it is *never*
+> mapped to VIRQ0.
+Yes, there is an issue.  If the platform device doesn't have a resource
+specifing the irq, platform_get_irq returns -ENXIO.  So in the driver
+(unsigned)(-ENXIO) is passed to mpc8xxx_spi_probe as (!(-ENXIO)) is
+false and so the error isn't catched.
 
-  i have connected the M25P16 to the SPI controller but now i am very very confused.
-I know quite well how the SPI signals works, but:
+> [...]
+> > [1] one is:
+> > 	http://thread.gmane.org/gmane.linux.kernel/924739
+>=20
+> No wonder the discussion popped up. You're adding some ugly
+> #ifdef stuff that adds some arch-specific knowledge to a generic
+> code.
+I wouldn't argue if people objected to the arch-specific #ifdef.  The
+arch-specific code is already in there and I don't object to just
+removing it.  But answering that irq0 must not be used isn't helpful.
+=20
+Best regards
+Uwe
 
-I don't know how to access the memory and how to use the functions and/or the driver resources.
-
-I have activated into the kernel configuration the following items: 
-
-----Memory Technology Device (MTD) support
-     <*>   MTD concatenating support
-     [*]   MTD partitioning support
-     [*]     Command line partition table parsing
-     <*>   Direct char device access to MTD devices
-     <*>   Caching block device access to MTD devices
-
----- SPI support
-     [*] SPI support
-     <*> Freescale MPC83xx SPI controller
-     <*> SPI EEPROMs from most vendors
-
-- The /dev directory doesn't show any device referring to the memory.
-- The SPI signals except of one dummy byte during the startup phase are stucked into the idle state.
-
-I take a look to the file "m25p80.c" but i have not clear how to use it.
-Have i to declare something into the .dts file? in wich way?
-Someone knows if there is some example about it?
-Same story with "spidev.c".
-Which log can help you to help me?  
-
-100000 Thanks to everyone that will help me.
-
-                                   Sergio Donati
-
-
-
-
-
-
-
-
-      
-
-------------------------------------------------------------------------------
-This SF.Net email is sponsored by the Verizon Developer Community
-Take advantage of Verizon's best-in-class app development support
-A streamlined, 14 day to market process makes app distribution fast and easy
-Join now and get one step closer to millions of Verizon customers
-http://p.sf.net/sfu/verizon-dev2dev 
+--=20
+Pengutronix e.K.                              | Uwe Kleine-K=F6nig     =
+       |
+Industrial Linux Solutions                    | http://www.pengutronix.=
+de/  |

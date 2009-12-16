@@ -1,89 +1,63 @@
-From: Paul Mundt <lethal@linux-sh.org>
-Subject: [PATCH] spi: xilinx_spi: Fix up I/O routine wrapping bogosity.
-Date: Wed, 16 Dec 2009 15:01:30 +0900
-Message-ID: <20091216060130.GD31265@linux-sh.org>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
+	<u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 6/7] spi/mpc8xxx: don't check platform_get_irq's return value against zero
+Date: Wed, 16 Dec 2009 17:10:08 +0100
+Message-ID: <1260979809-24811-6-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1260979809-24811-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1260979809-24811-2-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1260979809-24811-3-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1260979809-24811-4-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1260979809-24811-5-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: richard.rojfors@mocean-labs.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: John Linn <John.Linn@xilinx.com>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1761606AbZLPGBh@vger.kernel.org>
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: David Vrabel <dvrabel@arcom.com>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Kumar Gala <galak@kernel.crashing.org>,
+	Anton Vorontsov <avorontsov@ru.mvista.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	spi-devel-general@lists.sourceforge.net
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S934937AbZLPQMU@vger.kernel.org>
+In-Reply-To: <1260979809-24811-5-git-send-email-u.kleine-koenig@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xilinx_spi presently makes some fairly questionable assumptions about I/O
-routines, and attempts to assign ioread32/iowrite32 and friends directly
-to its own internal function pointers. On many platforms these I/O
-routines are macros or wrappers and not actual functions on their own,
-resulting in things like:
+platform_get_irq returns -ENXIO on failure, so !irq was probably
+always true.  Better use (int)irq <=3D 0.  Note that a return value of
+zero is still handled as error even though this could mean irq0.
 
-ERROR: "ioread32be" [drivers/spi/xilinx_spi.ko] undefined!
-ERROR: "iowrite32be" [drivers/spi/xilinx_spi.ko] undefined!
-ERROR: "iowrite32" [drivers/spi/xilinx_spi.ko] undefined!
-ERROR: "ioread32" [drivers/spi/xilinx_spi.ko] undefined!
+This is a followup to 305b3228f9ff4d59f49e6d34a7034d44ee8ce2f0 that
+changed the return value of platform_get_irq from 0 to -ENXIO on error.
 
-If xilinx_spi wants to do this sort of casting, it needs to provide its
-own wrappers for these, or change how it does accesses completely.
-
-I've opted for the first approach, and the attached silly patch does
-that. If someone with the hardware available wants to give the second
-option a try that's ok too. In any event, the current code is broken for
-at least: arm, avr32, blackfin, microblaze, mn10300, and sh.
-
-Signed-off-by: Paul Mundt <lethal@linux-sh.org>
-
+Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Cc: David Vrabel <dvrabel@arcom.com>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>
+Cc: David Brownell <dbrownell@users.sourceforge.net>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: Kumar Gala <galak@kernel.crashing.org>
+Cc: Anton Vorontsov <avorontsov@ru.mvista.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: spi-devel-general@lists.sourceforge.net
 ---
+ drivers/spi/spi_mpc8xxx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
- drivers/spi/xilinx_spi.c |   28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
-index 9f38637..154e908 100644
---- a/drivers/spi/xilinx_spi.c
-+++ b/drivers/spi/xilinx_spi.c
-@@ -93,6 +93,26 @@ struct xilinx_spi {
- 	void (*rx_fn) (struct xilinx_spi *);
- };
- 
-+static void xspi_write32(u32 val, void __iomem *addr)
-+{
-+	iowrite32(val, addr);
-+}
-+
-+static unsigned int xspi_read32(void __iomem *addr)
-+{
-+	return ioread32(addr);
-+}
-+
-+static void xspi_write32_be(u32 val, void __iomem *addr)
-+{
-+	iowrite32be(val, addr);
-+}
-+
-+static unsigned int xspi_read32_be(void __iomem *addr)
-+{
-+	return ioread32be(addr);
-+}
-+
- static void xspi_tx8(struct xilinx_spi *xspi)
- {
- 	xspi->write_fn(*xspi->tx_ptr, xspi->regs + XSPI_TXD_OFFSET);
-@@ -374,11 +394,11 @@ struct spi_master *xilinx_spi_init(struct device *dev, struct resource *mem,
- 	xspi->mem = *mem;
- 	xspi->irq = irq;
- 	if (pdata->little_endian) {
--		xspi->read_fn = ioread32;
--		xspi->write_fn = iowrite32;
-+		xspi->read_fn = xspi_read32;
-+		xspi->write_fn = xspi_write32;
- 	} else {
--		xspi->read_fn = ioread32be;
--		xspi->write_fn = iowrite32be;
-+		xspi->read_fn = xspi_read32_be;
-+		xspi->write_fn = xspi_write32_be;
- 	}
- 	xspi->bits_per_word = pdata->bits_per_word;
- 	if (xspi->bits_per_word == 8) {
+diff --git a/drivers/spi/spi_mpc8xxx.c b/drivers/spi/spi_mpc8xxx.c
+index e9390d7..b13501a 100644
+--- a/drivers/spi/spi_mpc8xxx.c
++++ b/drivers/spi/spi_mpc8xxx.c
+@@ -1339,7 +1339,7 @@ static int __devinit plat_mpc8xxx_spi_probe(struc=
+t platform_device *pdev)
+ 		return -EINVAL;
+=20
+ 	irq =3D platform_get_irq(pdev, 0);
+-	if (!irq)
++	if ((int)irq <=3D 0)
+ 		return -EINVAL;
+=20
+ 	master =3D mpc8xxx_spi_probe(&pdev->dev, mem, irq);
+--=20
+1.6.5.2

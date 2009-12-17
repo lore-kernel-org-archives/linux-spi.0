@@ -1,45 +1,86 @@
-From: Mike Frysinger <vapier.adi@gmail.com>
-Subject: Re: [spi-devel-general] [PATCH 1/2] spi: new SPI bus
-	lock/unlockfunctions
-Date: Wed, 16 Dec 2009 18:00:04 -0500
-Message-ID: <8bd0f97a0912161500h1dd95f1cr7a978b67ab6278b4@mail.gmail.com>
-References: <1253224997-7422-1-git-send-email-vapier@gentoo.org>
-	<BD79186B4FD85F4B8E60E381CAEE19090200ED81@mi8nycmail19.Mi8.com>
+From: RReid-bzdhNXfUkCO9cZYRalvpnEEOCMrvLtNR@public.gmane.org
+Subject: spi dd ICH10
+Date: Wed, 16 Dec 2009 21:15:29 -0500
+Message-ID: <OF6E3F3B85.3E309D49-ON8525768F.000BE576-8525768F.000C67B3@overlandstorage.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Yi Li <yi.li@analog.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-To: H Hartley Sweeten <hartleys@visionengravers.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S935882AbZLPXAp@vger.kernel.org>
-In-Reply-To: <BD79186B4FD85F4B8E60E381CAEE19090200ED81@mi8nycmail19.Mi8.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============6856167959432353148=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Dec 16, 2009 at 17:49, H Hartley Sweeten wrote:
-> On Thursday, September 17, 2009 3:03 PM, Mike Frysinger wrote:
->>
->> From: Yi Li <yi.li@analog.com>
->>
->> For some MMC cards over SPI bus, it needs to lock the SPI bus for it=
-s own
->> use. =C2=A0The SPI transfer must not be interrupted by other SPI dev=
-ices that
->> share the SPI bus with SPI MMC card.
->>
->> This patch introduces 2 APIs for SPI bus locking operation.
->
-> Has any additional work be done on this patchset?
+This is a multipart message in MIME format.
+--===============6856167959432353148==
+Content-Type: multipart/alternative;
+	boundary="=_alternative 000C655F8525768F_="
 
-nope
+This is a multipart message in MIME format.
+--=_alternative 000C655F8525768F_=
+Content-Type: text/plain; charset="US-ASCII"
 
-> It would be nice to finally have a solution that lets the mmc_spi dri=
-ver
-> work on a shared spi bus.
+I am working on a platform with Tylersburg chip set with an ICH10 south 
+bridge acting as the spi controller to an atmel flash device. (linux 
+kernel = 2.6.27.19)  The mtd device driver m25p80 supports our atmel flash 
+but I seem to be lacking an spi driver for the ICH10.  (I am not finding 
+the spi master support for ICH10)  Does anyone know whether there even is 
+such support or where I might find it?  (or could point me in a better 
+direction?)
 
-the latest patch is on the list for _anyone_ to contribute their fixes
-to address the posted issues
--mike
+----------------------------------------------------
+Tiered Data Protection Made Simple
+http://www.overlandstorage.com/
+----------------------------------------------------
+
+
+--=_alternative 000C655F8525768F_=
+Content-Type: text/html; charset="US-ASCII"
+
+
+<br><font size=2 face="sans-serif">I am working on a platform with Tylersburg
+chip set with an ICH10 south bridge acting as the spi controller to an
+atmel flash device. (linux kernel = 2.6.27.19) &nbsp;The mtd device driver
+m25p80 supports our atmel flash but I seem to be lacking an spi driver
+for the ICH10. &nbsp;(I am not finding the spi master support for ICH10)
+&nbsp;Does anyone know whether there even is such support or where I might
+find it? &nbsp;(or could point me in a better direction?)</font><FONT SIZE=3><BR>
+<BR>
+----------------------------------------------------<BR>
+Tiered Data Protection Made Simple<BR>
+http://www.overlandstorage.com/<BR>
+----------------------------------------------------<BR>
+</FONT>
+
+--=_alternative 000C655F8525768F_=--
+
+
+--===============6856167959432353148==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF.Net email is sponsored by the Verizon Developer Community
+Take advantage of Verizon's best-in-class app development support
+A streamlined, 14 day to market process makes app distribution fast and easy
+Join now and get one step closer to millions of Verizon customers
+http://p.sf.net/sfu/verizon-dev2dev 
+--===============6856167959432353148==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============6856167959432353148==--

@@ -1,104 +1,83 @@
-From: =?ISO-8859-1?Q?Richard_R=F6jfors?=
-	<richard.rojfors@mocean-labs.com>
-Subject: Re: [PATCH] spi: xilinx_spi: Fix up I/O routine wrapping bogosity.
-Date: Thu, 17 Dec 2009 11:59:51 +0100
-Message-ID: <4B2A0F27.8070906@mocean-labs.com>
-References: <20091216060130.GD31265@linux-sh.org>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 6/7] spi/mpc8xxx: don't check platform_get_irq's return
+	value against zero
+Date: Thu, 17 Dec 2009 14:05:49 +0100
+Message-ID: <20091217130549.GA9032@pengutronix.de>
+References: <1260979809-24811-2-git-send-email-u.kleine-koenig@pengutronix.de> <1260979809-24811-3-git-send-email-u.kleine-koenig@pengutronix.de> <1260979809-24811-4-git-send-email-u.kleine-koenig@pengutronix.de> <1260979809-24811-5-git-send-email-u.kleine-koenig@pengutronix.de> <1260979809-24811-6-git-send-email-u.kleine-koenig@pengutronix.de> <20091216163229.GA26350@oksana.dev.rtsoft.ru> <20091216174904.GB26325@pengutronix.de> <20091216182034.GA7590@oksana.dev.rtsoft.ru> <20091216191839.GA23614@pengutronix.de> <20091216193745.GA20429@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: John Linn <John.Linn@xilinx.com>,
+Cc: linux-kernel@vger.kernel.org, David Vrabel <david.vrabel@csr.com>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	David Brownell <dbrownell@users.sourceforge.net>,
 	Grant Likely <grant.likely@secretlab.ca>,
+	Kumar Gala <galak@kernel.crashing.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Paul Mundt <lethal@linux-sh.org>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1764500AbZLQLPF@vger.kernel.org>
-In-Reply-To: <20091216060130.GD31265@linux-sh.org>
+	Linus Torvalds <torvalds@linux-foundation.org>
+To: Anton Vorontsov <avorontsov@ru.mvista.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S935424AbZLQNGF@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20091216193745.GA20429@oksana.dev.rtsoft.ru>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Paul Mundt wrote:
-> xilinx_spi presently makes some fairly questionable assumptions about=
- I/O
-> routines, and attempts to assign ioread32/iowrite32 and friends direc=
-tly
-> to its own internal function pointers. On many platforms these I/O
-> routines are macros or wrappers and not actual functions on their own=
-,
-> resulting in things like:
->=20
-> ERROR: "ioread32be" [drivers/spi/xilinx_spi.ko] undefined!
-> ERROR: "iowrite32be" [drivers/spi/xilinx_spi.ko] undefined!
-> ERROR: "iowrite32" [drivers/spi/xilinx_spi.ko] undefined!
-> ERROR: "ioread32" [drivers/spi/xilinx_spi.ko] undefined!
->=20
-> If xilinx_spi wants to do this sort of casting, it needs to provide i=
-ts
-> own wrappers for these, or change how it does accesses completely.
->=20
-> I've opted for the first approach, and the attached silly patch does
-> that. If someone with the hardware available wants to give the second
-> option a try that's ok too. In any event, the current code is broken =
-for
-> at least: arm, avr32, blackfin, microblaze, mn10300, and sh.
->=20
-> Signed-off-by: Paul Mundt <lethal@linux-sh.org>
+Hi Anton,
 
-Looks good to me.
+On Wed, Dec 16, 2009 at 10:37:45PM +0300, Anton Vorontsov wrote:
+> On Wed, Dec 16, 2009 at 08:18:39PM +0100, Uwe Kleine-K=F6nig wrote:
+> [...]
+> > > > I'm a bit annoyed as this is the third time[1] this month this =
+irq0
+> > > > discussion pops up for me.  I think people see that irq0 is inv=
+olved
+> > > > somehow, start wailing and stop seeing the issues being fixed.
+> > >=20
+> > > For this particular driver, there is NO issue whatsoever. It is
+> > > only used for PowerPC, which has VIRQ0 =3D=3D invalid IRQ. And no=
+te
+> > > that there still could be HWIRQ0 on PowerPC, but it is *never*
+> > > mapped to VIRQ0.
+> > Yes, there is an issue.  If the platform device doesn't have a reso=
+urce
+> > specifing the irq, platform_get_irq returns -ENXIO.  So in the driv=
+er
+> > (unsigned)(-ENXIO) is passed to mpc8xxx_spi_probe as (!(-ENXIO)) is
+> > false and so the error isn't catched.
+>=20
+> If you look into how we create the platform device, you'll notice
+> that -ENXIO isn't possible.
+> It's in arch/powerpc/platforms/83xx/mpc832x_rdb.c:of_fsl_spi_probe(),
+> which is a legacy interface that I'd like to be removed anyway.
+>=20
+> Though, if you want to fix the inconsistency in the platform device
+> API, then I'd suggest to fix the platform_get_irq(). The driver itsel=
+f
+> is correct.
+With platform_get_irq as it is today, the check in
 
-Acked-by: Richard R=F6jfors <richard.rojfors@pelagicore.com>
+	irq =3D platform_get_irq(pdev, 0);
+	if (!irq)
+		return -EINVAL;
 
->=20
-> ---
->=20
->  drivers/spi/xilinx_spi.c |   28 ++++++++++++++++++++++++----
->  1 file changed, 24 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
-> index 9f38637..154e908 100644
-> --- a/drivers/spi/xilinx_spi.c
-> +++ b/drivers/spi/xilinx_spi.c
-> @@ -93,6 +93,26 @@ struct xilinx_spi {
->  	void (*rx_fn) (struct xilinx_spi *);
->  };
-> =20
-> +static void xspi_write32(u32 val, void __iomem *addr)
-> +{
-> +	iowrite32(val, addr);
-> +}
-> +
-> +static unsigned int xspi_read32(void __iomem *addr)
-> +{
-> +	return ioread32(addr);
-> +}
-> +
-> +static void xspi_write32_be(u32 val, void __iomem *addr)
-> +{
-> +	iowrite32be(val, addr);
-> +}
-> +
-> +static unsigned int xspi_read32_be(void __iomem *addr)
-> +{
-> +	return ioread32be(addr);
-> +}
-> +
->  static void xspi_tx8(struct xilinx_spi *xspi)
->  {
->  	xspi->write_fn(*xspi->tx_ptr, xspi->regs + XSPI_TXD_OFFSET);
-> @@ -374,11 +394,11 @@ struct spi_master *xilinx_spi_init(struct devic=
-e *dev, struct resource *mem,
->  	xspi->mem =3D *mem;
->  	xspi->irq =3D irq;
->  	if (pdata->little_endian) {
-> -		xspi->read_fn =3D ioread32;
-> -		xspi->write_fn =3D iowrite32;
-> +		xspi->read_fn =3D xspi_read32;
-> +		xspi->write_fn =3D xspi_write32;
->  	} else {
-> -		xspi->read_fn =3D ioread32be;
-> -		xspi->write_fn =3D iowrite32be;
-> +		xspi->read_fn =3D xspi_read32_be;
-> +		xspi->write_fn =3D xspi_write32_be;
->  	}
->  	xspi->bits_per_word =3D pdata->bits_per_word;
->  	if (xspi->bits_per_word =3D=3D 8) {
+is non-sense as !irq always evaluates to 0.  If your argue that the
+resources are right, then the logical consequence is to strip down
+plat_mpc8xxx_spi_probe to just
+
+	struct spi_master *master;
+	master =3D mpc8xxx_spi_probe(&pdev->dev,
+		platform_get_resource(pdev, IORESOURCE_MEM, 0)
+		platform_get_irq(pdev, 0));
+	if (IS_ERR(master))
+		return PTR_ERR(master);
+	return 0;
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                              | Uwe Kleine-K=F6nig     =
+       |
+Industrial Linux Solutions                    | http://www.pengutronix.=
+de/  |

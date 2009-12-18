@@ -1,40 +1,87 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [spi-devel-general] [git pull] 2nd batch of SPI changes
-Date: Thu, 17 Dec 2009 20:00:14 -0700
-Message-ID: <fa686aa40912171900k386c748awb8d6ccb37d95285f@mail.gmail.com>
-References: <fa686aa40912170840h6bd921b4me244cb83c31cab7f@mail.gmail.com>
-	<1b68c6790912171645m4de68ac9i6f31346249147bd1@mail.gmail.com>
+From: James Getzendanner <James.Getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org>
+Subject: [PATCH] Clear control bits in
+	drivers/spi/spi_bfin5xx.c as necessary
+Date: Fri, 18 Dec 2009 02:29:53 -0500
+Message-ID: <DA80C3E6C10BE94E8FCACEB239C2FEE46645317E77@EXVS01.olin.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Brownell <dbrownell@users.sourceforge.net>
-To: jassi brar <jassisinghbrar@gmail.com>
-Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1755963AbZLRDAp@vger.kernel.org>
-In-Reply-To: <1b68c6790912171645m4de68ac9i6f31346249147bd1@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: "uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
+	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 17, 2009 at 5:45 PM, jassi brar <jassisinghbrar@gmail.com> =
-wrote:
-> On Fri, Dec 18, 2009 at 1:40 AM, Grant Likely <grant.likely@secretlab=
-=2Eca> wrote:
->> Jassi Brar (1):
->> =A0 =A0 =A0spi: Add s3c64xx SPI Controller driver
-> IIRC, I didn't get any final ack of acceptance from you or any other =
-maintainer.
-> I thought perhaps the patch is lost and was preparing to resend after
-> including some minor changes suggested by my ARCH maintainer(Ben Dook=
-s).
-> Though I can just as well send those changes as patches right away.
-> I apologize, if i messed up.
+From: Andy Getzendanner <james.getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org>
 
-Don't worry about it, just send an incremental patch.  I'm new to the
-SPI maintainer job, and I didn't know any of the background or see any
-major reason not to merge the driver, especially since it is a new
-driver, and not a change to an existing one.
+This patch corrects the behavior of bfin_spi_setup() to clear bits LSBF,
+CPHA, and CPOL in the SPI control register when required by the desired
+SPI configuration.  The patch also modifies bfin_spi_setup() to
+set/clear the SIZE bit as appropriate.
+Signed-off-by: Andy Getzendanner <james.getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org>
+---
+The control bits LSBF, CPHA, and CPOL are set by bfin_spi_setup() when
+appropriate, but the function appears to assume they are clear at entry
+and leaves them untouched when the desired configuration calls for them
+to be clear.  The SIZE bit is never set or cleared.
+bfin_spi_setup() is triggered in response to an ioctl which calls for
+the SPI configuration to be changed, but the settings controlled by
+LSBF, CPHA, and CPOL cannot be changed away from the setting implied by
+the value 1.  Additionally, the word length setting (controlled by SIZE)
+is not set correctly.
+The patch has been tested against 2.6.30.4 (it applies against 2.6.32.1)
+and observed to correct the behavior of the affected ioctl.
+Please CC me at james.getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org in any replies as I
+am not on the list.
+--- linux-2.6.32.1/drivers/spi/spi_bfin5xx.c.orig	2009-12-14 12:47:25.000000000 -0500
++++ linux-2.6.32.1/drivers/spi/spi_bfin5xx.c	2009-12-18 00:27:10.000000000 -0500
+@@ -1051,10 +1051,16 @@ static int bfin_spi_setup(struct spi_dev
+ 	/* translate common spi framework into our register */
+ 	if (spi->mode & SPI_CPOL)
+ 		chip->ctl_reg |= CPOL;
++	else
++		chip->ctl_reg &= ~CPOL;
+ 	if (spi->mode & SPI_CPHA)
+ 		chip->ctl_reg |= CPHA;
++	else
++		chip->ctl_reg &= ~CPHA;
+ 	if (spi->mode & SPI_LSB_FIRST)
+ 		chip->ctl_reg |= LSBF;
++	else
++		chip->ctl_reg &= ~LSBF;
+ 	/* we dont support running in slave mode (yet?) */
+ 	chip->ctl_reg |= MSTR;
+ 
+@@ -1106,6 +1112,7 @@ static int bfin_spi_setup(struct spi_dev
+ 			bfin_spi_u8_cs_chg_writer : bfin_spi_u8_writer;
+ 		chip->duplex = chip->cs_change_per_word ?
+ 			bfin_spi_u8_cs_chg_duplex : bfin_spi_u8_duplex;
++		chip->ctl_reg &= ~SIZE;
+ 		break;
+ 
+ 	case 16:
+@@ -1117,6 +1124,7 @@ static int bfin_spi_setup(struct spi_dev
+ 			bfin_spi_u16_cs_chg_writer : bfin_spi_u16_writer;
+ 		chip->duplex = chip->cs_change_per_word ?
+ 			bfin_spi_u16_cs_chg_duplex : bfin_spi_u16_duplex;
++		chip->ctl_reg |= SIZE;
+ 		break;
+ 
+ 	default:
 
-g.
+------------------------------------------------------------------------------
+This SF.Net email is sponsored by the Verizon Developer Community
+Take advantage of Verizon's best-in-class app development support
+A streamlined, 14 day to market process makes app distribution fast and easy
+Join now and get one step closer to millions of Verizon customers
+http://p.sf.net/sfu/verizon-dev2dev 

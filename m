@@ -1,17 +1,19 @@
-From: James Getzendanner <James.Getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org>
-Subject: [PATCH] Clear control bits in
-	drivers/spi/spi_bfin5xx.c as necessary
-Date: Fri, 18 Dec 2009 02:29:53 -0500
-Message-ID: <DA80C3E6C10BE94E8FCACEB239C2FEE46645317E77@EXVS01.olin.edu>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [Uclinux-dist-devel] [PATCH] Clear control
+	bits in drivers/spi/spi_bfin5xx.c as necessary
+Date: Fri, 18 Dec 2009 08:14:45 -0500
+Message-ID: <8bd0f97a0912180514k42f32162jc850f4b4abbc3f7a@mail.gmail.com>
+References: <DA80C3E6C10BE94E8FCACEB239C2FEE46645317E77@EXVS01.olin.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
+	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: "uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
-	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+To: James Getzendanner <James.Getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <DA80C3E6C10BE94E8FCACEB239C2FEE46645317E77-64WhM8za9n95vsLK/AIMcA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,66 +24,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Andy Getzendanner <james.getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org>
-
-This patch corrects the behavior of bfin_spi_setup() to clear bits LSBF,
-CPHA, and CPOL in the SPI control register when required by the desired
-SPI configuration.  The patch also modifies bfin_spi_setup() to
-set/clear the SIZE bit as appropriate.
-Signed-off-by: Andy Getzendanner <james.getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org>
----
-The control bits LSBF, CPHA, and CPOL are set by bfin_spi_setup() when
-appropriate, but the function appears to assume they are clear at entry
-and leaves them untouched when the desired configuration calls for them
-to be clear.  The SIZE bit is never set or cleared.
-bfin_spi_setup() is triggered in response to an ioctl which calls for
-the SPI configuration to be changed, but the settings controlled by
-LSBF, CPHA, and CPOL cannot be changed away from the setting implied by
-the value 1.  Additionally, the word length setting (controlled by SIZE)
-is not set correctly.
-The patch has been tested against 2.6.30.4 (it applies against 2.6.32.1)
-and observed to correct the behavior of the affected ioctl.
-Please CC me at james.getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org in any replies as I
-am not on the list.
---- linux-2.6.32.1/drivers/spi/spi_bfin5xx.c.orig	2009-12-14 12:47:25.000000000 -0500
-+++ linux-2.6.32.1/drivers/spi/spi_bfin5xx.c	2009-12-18 00:27:10.000000000 -0500
-@@ -1051,10 +1051,16 @@ static int bfin_spi_setup(struct spi_dev
- 	/* translate common spi framework into our register */
- 	if (spi->mode & SPI_CPOL)
- 		chip->ctl_reg |= CPOL;
-+	else
-+		chip->ctl_reg &= ~CPOL;
- 	if (spi->mode & SPI_CPHA)
- 		chip->ctl_reg |= CPHA;
-+	else
-+		chip->ctl_reg &= ~CPHA;
- 	if (spi->mode & SPI_LSB_FIRST)
- 		chip->ctl_reg |= LSBF;
-+	else
-+		chip->ctl_reg &= ~LSBF;
- 	/* we dont support running in slave mode (yet?) */
- 	chip->ctl_reg |= MSTR;
- 
-@@ -1106,6 +1112,7 @@ static int bfin_spi_setup(struct spi_dev
- 			bfin_spi_u8_cs_chg_writer : bfin_spi_u8_writer;
- 		chip->duplex = chip->cs_change_per_word ?
- 			bfin_spi_u8_cs_chg_duplex : bfin_spi_u8_duplex;
-+		chip->ctl_reg &= ~SIZE;
- 		break;
- 
- 	case 16:
-@@ -1117,6 +1124,7 @@ static int bfin_spi_setup(struct spi_dev
- 			bfin_spi_u16_cs_chg_writer : bfin_spi_u16_writer;
- 		chip->duplex = chip->cs_change_per_word ?
- 			bfin_spi_u16_cs_chg_duplex : bfin_spi_u16_duplex;
-+		chip->ctl_reg |= SIZE;
- 		break;
- 
- 	default:
-
-------------------------------------------------------------------------------
-This SF.Net email is sponsored by the Verizon Developer Community
-Take advantage of Verizon's best-in-class app development support
-A streamlined, 14 day to market process makes app distribution fast and easy
-Join now and get one step closer to millions of Verizon customers
-http://p.sf.net/sfu/verizon-dev2dev 
+T24gRnJpLCBEZWMgMTgsIDIwMDkgYXQgMDI6MjksIEphbWVzIEdldHplbmRhbm5lciB3cm90ZToK
+PiBGcm9tOiBBbmR5IEdldHplbmRhbm5lciA8amFtZXMuZ2V0emVuZGFubmVyQHN0dWRlbnRzLm9s
+aW4uZWR1Pgo+Cj4gVGhpcyBwYXRjaCBjb3JyZWN0cyB0aGUgYmVoYXZpb3Igb2YgYmZpbl9zcGlf
+c2V0dXAoKSB0byBjbGVhciBiaXRzIExTQkYsCj4gQ1BIQSwgYW5kIENQT0wgaW4gdGhlIFNQSSBj
+b250cm9sIHJlZ2lzdGVyIHdoZW4gcmVxdWlyZWQgYnkgdGhlIGRlc2lyZWQKPiBTUEkgY29uZmln
+dXJhdGlvbi4KCndoeSBub3QgYWx3YXlzIHplcm8gb3V0IGN0bF9yZWcgdGhlbgogICAgaWYgKGNo
+aXBfaW5mbykgewogICAgLi4uCiAgICB9IGVsc2UgeworICAgICAgICBjaGlwLT5jdGxfcmVnID0g
+MDsKCj7CoFRoZSBwYXRjaCBhbHNvIG1vZGlmaWVzIGJmaW5fc3BpX3NldHVwKCkgdG8KPiBzZXQv
+Y2xlYXIgdGhlIFNJWkUgYml0IGFzIGFwcHJvcHJpYXRlLgoKb2ssIGJ1dCB0aGlzIGlzbnQgdGhl
+IHBsYWNlIHRvIGRvIGl0LiAgdGhlIHNpemUgY2FuIGJlIGNoYW5nZWQgb24gYQpwZXItdHJhbnNm
+ZXIgYmFzaXMuICBpIGhhdmUgYSBwYXRjaCBsb2NhbGx5IHRvIHVuaWZ5IHRoZSB0cmFuc2ZlciBz
+aXplCmxvZ2ljIGFuZCBpJ2xsIGluY2x1ZGUgdGhpcyBmaXggaW4gdGhlIHByb2Nlc3MuCgo+IFRo
+ZSBjb250cm9sIGJpdHMgTFNCRiwgQ1BIQSwgYW5kIENQT0wgYXJlIHNldCBieSBiZmluX3NwaV9z
+ZXR1cCgpIHdoZW4KPiBhcHByb3ByaWF0ZSwgYnV0IHRoZSBmdW5jdGlvbiBhcHBlYXJzIHRvIGFz
+c3VtZSB0aGV5IGFyZSBjbGVhciBhdCBlbnRyeQo+IGFuZCBsZWF2ZXMgdGhlbSB1bnRvdWNoZWQg
+d2hlbiB0aGUgZGVzaXJlZCBjb25maWd1cmF0aW9uIGNhbGxzIGZvciB0aGVtCj4gdG8gYmUgY2xl
+YXIuIMKgVGhlIFNJWkUgYml0IGlzIG5ldmVyIHNldCBvciBjbGVhcmVkLgo+IGJmaW5fc3BpX3Nl
+dHVwKCkgaXMgdHJpZ2dlcmVkIGluIHJlc3BvbnNlIHRvIGFuIGlvY3RsIHdoaWNoIGNhbGxzIGZv
+cgo+IHRoZSBTUEkgY29uZmlndXJhdGlvbiB0byBiZSBjaGFuZ2VkLCBidXQgdGhlIHNldHRpbmdz
+IGNvbnRyb2xsZWQgYnkKPiBMU0JGLCBDUEhBLCBhbmQgQ1BPTCBjYW5ub3QgYmUgY2hhbmdlZCBh
+d2F5IGZyb20gdGhlIHNldHRpbmcgaW1wbGllZCBieQo+IHRoZSB2YWx1ZSAxLiDCoEFkZGl0aW9u
+YWxseSwgdGhlIHdvcmQgbGVuZ3RoIHNldHRpbmcgKGNvbnRyb2xsZWQgYnkgU0laRSkKPiBpcyBu
+b3Qgc2V0IGNvcnJlY3RseS4KCnRoaXMgaW5mbyBzaG91bGQgYmUgaW4gdGhlIGNoYW5nZWxvZywg
+bm90IGJlbG93IHRoZSAtLS0gaWdub3JlIG1hcmtlcgotbWlrZQoKLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tClRoaXMgU0YuTmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSB0aGUgVmVyaXpvbiBEZXZlbG9w
+ZXIgQ29tbXVuaXR5ClRha2UgYWR2YW50YWdlIG9mIFZlcml6b24ncyBiZXN0LWluLWNsYXNzIGFw
+cCBkZXZlbG9wbWVudCBzdXBwb3J0CkEgc3RyZWFtbGluZWQsIDE0IGRheSB0byBtYXJrZXQgcHJv
+Y2VzcyBtYWtlcyBhcHAgZGlzdHJpYnV0aW9uIGZhc3QgYW5kIGVhc3kKSm9pbiBub3cgYW5kIGdl
+dCBvbmUgc3RlcCBjbG9zZXIgdG8gbWlsbGlvbnMgb2YgVmVyaXpvbiBjdXN0b21lcnMKaHR0cDov
+L3Auc2YubmV0L3NmdS92ZXJpem9uLWRldjJkZXYgCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

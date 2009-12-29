@@ -1,10 +1,16 @@
-From: Borislav Yaroslavovich <borislavyaroslavovich-HAYYvzXtQWxebOIQVrZPIQ@public.gmane.org>
-Subject: [SPAM] Новогодний подарок близким
-Date: Tue, 29 Dec 2009 16:19:53 +0300
-Message-ID: <7954819080.20091229161953@bonifatsiy.com>
+From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [RFC][PATCH] serial: spi: add spi-uart driver
+	for Maxim 3110
+Date: Tue, 29 Dec 2009 22:20:06 +0800
+Message-ID: <20091229222006.1ddb28a4__2413.46659972823$1262096654$gmane$org@feng-desktop>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8990818279661863662=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+To: Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>, David Brownell
+	<dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	spi-devel-list <spi-devel-general-5NWGOfrQmneRv+LV9MX5upmplPMkL2fr@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,179 +22,987 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8990818279661863662==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+Hi All,
 
-PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVu
-dD0idGV4dC9odG1sOyBjaGFyc2V0PXdpbmRvd3MtMTI1MSI+DQo8dGl0bGU+PC90aXRsZT4N
-CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQpib2R5LHRkLHRoIHsNCmZvbnQtZmFt
-aWx5OiBWZXJkYW5hLCBHZW5ldmEsIHNhbnMtc2VyaWYsIEFyaWFsOw0KZm9udC1zaXplOiAx
-M3B4Ow0KY29sb3I6ICMwMDA7DQp9DQpib2R5IHsNCmJhY2tncm91bmQtY29sb3I6ICNmZjgx
-ZmM7DQp9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9keSBiZ2NvbG9yPSIjZmY4MWZj
-Ij4NCjx0YWJsZSB3aWR0aD0iNjk1IiBjZWxscGFkZGluZz0iMTAiIGFsaWduPSJjZW50ZXIi
-Pg0KPHRyPg0KPHRkIGJnY29sb3I9IiNmY2ZmZDciIHdpZHRoPSI2ODciIGFsaWduPSJsZWZ0
-Ij4NCjxkaXYgYWxpZ249ImNlbnRlciI+DQo8cD48c3Ryb25nPjxmb250IHNpemU9IjUiIGNv
-bG9yPSJyZWQiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYi
-Psvz9/jo6SDt7uLu4+7k7ejpIO/u5GFw7uogMjAxMCCWIDxicj4NCjwvZm9udD48Zm9udCBz
-aXplPSI2IiBjb2xvcj0icmVkIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBz
-YW5zLXNlcmlmIj7PIEEg0CDUIN4gTSDFIFAgyCDfICEhITwvZm9udD48L3N0cm9uZz48L3A+
-DQo8cD48YnI+DQo8c3Ryb25nPjxmb250IHNpemU9IjIiIGNvbG9yPSIjMDAwMGNjIiBmYWNl
-PSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj5Lb+3y4Ory+zogPGEg
-aHJlZj0iaHR0cDovL3BhcmZ1bTJ5b3Uua2lldi51YS8iPnBhcmZ1bTJ5b3Uua2lldi51YTwv
-YT48L2ZvbnQ+PGZvbnQgc2l6ZT0iLTIiIGNvbG9yPSIjOTk5OTk5Ij4glSA8L2ZvbnQ+PGZv
-bnQgc2l6ZT0iMiIgY29sb3I9IiMwMDY2MzMiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2
-ZXRpY2EsIHNhbnMtc2VyaWYiPklDUTogNTUxLTA0My00MTQ8L2ZvbnQ+PGZvbnQgc2l6ZT0i
-LTIiIGNvbG9yPSIjOTk5OTk5Ij4glSA8L2ZvbnQ+PGZvbnQgc2l6ZT0iMiIgY29sb3I9IiMw
-MDAwY2MiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPlRl
-bDogKDA0NCkgMzUzLTY2LTY1PGJyPg0KPGJyPg0KPC9mb250Pjwvc3Ryb25nPjwvcD4NCjxw
-PjxzdHJvbmc+PGZvbnQgc2l6ZT0iMiIgY29sb3I9InJlZCIgZmFjZT0iVmVyZGFuYSwgQXJp
-YWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+lSDPb+rz72H/IOTi4CDr/uH7eCDvYfD0/uxh
-IOIg6O3yZfDt5fIt7ODjYefo7eUgcGFyZnVtMnlvdS5raWV2LnVhPGJyPg0KPHU+wvsg7+vg
-8ujy5SDiY2Xj7iA1MDAg43DtLiEhITwvdT48L2ZvbnQ+PC9zdHJvbmc+PC9wPg0KPHA+PHN0
-cm9uZz48Zm9udCBzaXplPSIyIiBjb2xvcj0icmVkIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwg
-SGVsdmV0aWNhLCBzYW5zLXNlcmlmIj6VIMfgIPBl4+hj8nDg9uj+IO1hIPFh6fLlIDx1PsL7
-IO9v6/P34GXy5SDh7u3zY+7sIDI1IONw6OLl7TwvdT4gPGJyPg0K6CDv7urz7+phIOTi83gg
-9Ovg6m/tb+Igb+H17uTo8mP/IMJh7CDi8eXj7iDiIDQ3NSDjcO0uPC9mb250Pjwvc3Ryb25n
-PjwvcD4NCjxwPjxzdHJvbmc+PGZvbnQgc2l6ZT0iMiIgY29sb3I9InJlZCIgZmFjZT0iVmVy
-ZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+lSA8dT7Eb/HyYeLq4DwvdT4g
-728g4vHl6SDyZXDw6PLu8OjoINPqcODo7fsgPGJyPg0K73DoIO9v6vPv6mUg5OLz9SD06+Dq
-7u1v4iDk8/Vv4iA8dT7h5WPv6+Dy7eD/PC91PiE8L2ZvbnQ+PC9zdHJvbmc+PC9wPg0KPC9k
-aXY+DQo8cD48YnI+DQo8c3Ryb25nPjxmb250IHNpemU9IjIiIGZhY2U9IlZlcmRhbmEsIEFy
-aWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPsIg7WH4Zewg6O3y5XDt5fIt7ODj4Ofo7eUg
-7/Bl5PHyYeLrZe37IOJjZSDiZeTz+ejlIDwvZm9udD48Zm9udCBzaXplPSIyIiBjb2xvcj0i
-Izk5MDAwMCIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+
-7Ojwb+L75SDhcP3t5Ps8L2ZvbnQ+PGZvbnQgc2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJp
-YWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+OjwvZm9udD48L3N0cm9uZz48L3A+DQo8cD48
-Zm9udCBzaXplPSIyIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNl
-cmlmIj5Bcm1hbmksIENhY2hhcmVsLCBDYWx2aW4gS2xlaW4sIENoYW5lbCwgQ2hyaXN0aWFu
-IERpb3IsIEQmYW1wO0csIERLTlksIEVzY2FkYSwgR2l2ZW5jaHksIEd1Y2NpLCBHdWVybGFp
-biwgSHVnbyBCb3NzLCBLZW56bywgTGFDb3N0ZSwgTGFuY29tZSwgTW9zY2hpbm8sIE5pbmEg
-UmljY2ksIFBhY28gUmFiYW5uZSwgVmVyc2FjZSwgWW9oamkgWWFtYW1vdG8sIFl2ZXMgU2Fp
-bnQgTGF1cmVudDwvZm9udD48L3A+DQo8cD48c3Ryb25nPjxmb250IHNpemU9IjIiIGZhY2U9
-IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPsJj5SBI7uLo7eroIO/g
-cPT+7OXw7e7j7iDw++3qYSDyYermZSDv8G/k4P7y8f8g4iDtYfjl7CDo7fJlcO1l8i3sYePg
-5+jtZSA8L2ZvbnQ+PGZvbnQgc2l6ZT0iMiIgY29sb3I9IiM5OTAwMDAiIGZhY2U9IlZlcmRh
-bmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPu/uIGHq9ujoIKsxKzE9NTAw4/Dt
-Lrs8L2ZvbnQ+PC9zdHJvbmc+PC9wPg0KPHVsPg0KPGxpPjxmb250IHNpemU9IjIiIGZhY2U9
-IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPjxiPkNhbHZpbiBLbGVp
-biBGcmVlIGZvciBtZW48L2I+ICgxMDDs6ykgliA8L2ZvbnQ+PGZvbnQgc2l6ZT0iMiIgY29s
-b3I9IiM5OTAwMDAiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2Vy
-aWYiPjxiPjI4MCDj8O0uPC9iPjwvZm9udD48Zm9udCBzaXplPSIyIiBmYWNlPSJWZXJkYW5h
-LCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj4gKOLsZfHy7iAzMzYg4/DtLik8L2Zv
-bnQ+DQo8bGk+PGZvbnQgc2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGlj
-YSwgc2Fucy1zZXJpZiI+PGI+RGF2aWRvZmYgSG90IFdhdGVyPC9iPiAoMTEw7OspIJYgPC9m
-b250Pjxmb250IHNpemU9IjIiIGNvbG9yPSIjOTkwMDAwIiBmYWNlPSJWZXJkYW5hLCBBcmlh
-bCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj48Yj40NjQg43DtLjwvYj48L2ZvbnQ+PGZvbnQg
-c2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+
-ICji7GVj8u4gNjMyIOPw7S4pPC9mb250Pg0KPGxpPjxmb250IHNpemU9IjIiIGZhY2U9IlZl
-cmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPjxiPlByYWRhIEluZnVzaW9u
-IGRlIEZsZXVyIGQnT3JhbmdlcjwvYj4gKDEwMOzrKSCWIDwvZm9udD48Zm9udCBzaXplPSIy
-IiBjb2xvcj0iIzk5MDAwMCIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fu
-cy1zZXJpZiI+PGI+NDA4IOPw7S48L2I+PC9mb250Pjxmb250IHNpemU9IjIiIGZhY2U9IlZl
-cmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPiAo4uxlY/LuIDU2OCDj8O0u
-KTwvZm9udD4NCjxsaT48Zm9udCBzaXplPSIyIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVs
-dmV0aWNhLCBzYW5zLXNlcmlmIj48Yj5Fc3RlZSBMYXVkZXIgRW1lcmFsZCBEcmVhbTwvYj4g
-KDEwMOzrKSCWIDwvZm9udD48Zm9udCBzaXplPSIyIiBjb2xvcj0iIzk5MDAwMCIgZmFjZT0i
-VmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+PGI+Mjk2IOPw7S48L2I+
-PC9mb250Pjxmb250IHNpemU9IjIiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2Es
-IHNhbnMtc2VyaWYiPiAo4uxlY/LuIDMzNiDj8O0uKTwvZm9udD4NCjxsaT48Zm9udCBzaXpl
-PSIyIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj48Yj5L
-ZW56byBMYEVhdSBwYXIgcG91ciBGZW1tZSBMb3ZlIExgRWF1PC9iPiAoMTAw7OspIJYgPC9m
-b250Pjxmb250IHNpemU9IjIiIGNvbG9yPSIjOTkwMDAwIiBmYWNlPSJWZXJkYW5hLCBBcmlh
-bCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj48Yj4yNTYg4/DtLjwvYj48L2ZvbnQ+PGZvbnQg
-c2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+
-ICji7OXx8m8gMzIwIOPw7S4pPC9mb250Pg0KPGxpPjxmb250IHNpemU9IjIiIGZhY2U9IlZl
-cmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPjxiPlN0ZWxsYSBNY0NhcnRu
-ZXkgSW4gVHdvIFBlb255PC9iPiAoNzUg7OspIJYgPC9mb250Pjxmb250IHNpemU9IjIiIGNv
-bG9yPSIjOTkwMDAwIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNl
-cmlmIj48Yj41Njgg43DtLjwvYj48L2ZvbnQ+PGZvbnQgc2l6ZT0iMiIgZmFjZT0iVmVyZGFu
-YSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+ICji7OXx8m8gNzc2IONw7S4pPC9m
-b250Pg0KPGxpPjxmb250IHNpemU9IjIiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRp
-Y2EsIHNhbnMtc2VyaWYiPjxiPkNlcnJ1dGkgTJJFc3NlbmNlIERlIENlcnJ1dGk8L2I+ICgx
-MDAg7OspIJYgPC9mb250Pjxmb250IHNpemU9IjIiIGNvbG9yPSIjOTkwMDAwIiBmYWNlPSJW
-ZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj48Yj4zMjAg4/DtLjwvYj48
-L2ZvbnQ+PGZvbnQgc2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwg
-c2Fucy1zZXJpZiI+ICji7GVj8m8gNjIwIOPw7S4pPC9mb250Pg0KPGxpPjxmb250IHNpemU9
-IjIiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPjxiPktl
-bnpvIEVhdSBkZSBGbGV1ciBkZSBNYWdub2xpYTwvYj4gKDEwMCDs6ykgliA8L2ZvbnQ+PGZv
-bnQgc2l6ZT0iMiIgY29sb3I9IiM5OTAwMDAiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2
-ZXRpY2EsIHNhbnMtc2VyaWYiPjxiPjMxMCDjcO0uPC9iPjwvZm9udD48Zm9udCBzaXplPSIy
-IiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj4gKOLsZfHy
-byA3MTAg43DtLik8L2ZvbnQ+DQo8bGk+PGZvbnQgc2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwg
-QXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+PGI+TGBFYXUgcGFyIEtlbnpvIEVhdSBJ
-bmRpZ288L2I+ICgxMDAg7OspIJYgPC9mb250Pjxmb250IHNpemU9IjIiIGNvbG9yPSIjOTkw
-MDAwIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj48Yj4z
-NDAg43DtLjwvYj48L2ZvbnQ+PGZvbnQgc2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWws
-IEhlbHZldGljYSwgc2Fucy1zZXJpZiI+ICji7OVj8u4gNTE0KTwvZm9udD4NCjxsaT48Zm9u
-dCBzaXplPSIyIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlm
-Ij48Yj5HaW9yZ2lvIEFybWFuaSBPbmRlIFZlcnRpZ2U8L2I+ICgxMDAg7OspIJYgPC9mb250
-Pjxmb250IHNpemU9IjIiIGNvbG9yPSIjOTkwMDAwIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwg
-SGVsdmV0aWNhLCBzYW5zLXNlcmlmIj48Yj40MjUg43DtLjwvYj48L2ZvbnQ+PGZvbnQgc2l6
-ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+ICji
-7OVj8u4gOTE1IONw7S4pPC9mb250Pg0KPGxpPjxmb250IHNpemU9IjIiIGZhY2U9IlZlcmRh
-bmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPjxiPkNoYW5lbCBDcmlzdGFsbGU8
-L2I+ICgxMDAg7OspIJYgPC9mb250Pjxmb250IHNpemU9IjIiIGNvbG9yPSIjOTkwMDAwIiBm
-YWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj48Yj40NTAg4/Dt
-LjwvYj48L2ZvbnQ+PGZvbnQgc2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZl
-dGljYSwgc2Fucy1zZXJpZiI+ICji7GXx8m8gOTcwIOPw7S4pPC9mb250Pg0KPGxpPjxmb250
-IHNpemU9IjIiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYi
-PjxiPkVzY2FkYSBEZXNpcmUgTWU8L2I+ICg3NSDs6ykgliA8L2ZvbnQ+PGZvbnQgc2l6ZT0i
-MiIgY29sb3I9IiM5OTAwMDAiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNh
-bnMtc2VyaWYiPjxiPjI5MCDj8O0uPC9iPjwvZm9udD48Zm9udCBzaXplPSIyIiBmYWNlPSJW
-ZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIj4gKOLsZWPy7iA0MTAg43Dt
-Lik8L2ZvbnQ+DQo8bGk+PGZvbnQgc2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhl
-bHZldGljYSwgc2Fucy1zZXJpZiI+PGI+Q2FjaGFyZWwgU2NhcmxldDwvYj50ICg4MCDs6ykg
-liA8L2ZvbnQ+PGZvbnQgc2l6ZT0iMiIgY29sb3I9IiM5OTAwMDAiIGZhY2U9IlZlcmRhbmEs
-IEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPjxiPjI5MCDjcO0uIDwvYj48L2ZvbnQ+
-PGZvbnQgc2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1z
-ZXJpZiI+KOLs5fHy7iA0NzUg4/DtLik8L2ZvbnQ+DQo8L3VsPg0KPHA+PGJyPg0KPGZvbnQg
-c2l6ZT0iMiIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+
-wiDtYfhl7CDo7fJl8O3l8i3sYeNh5+jt5SDv8OXkY/Jh4uvl7WEgPHU+8u7r/OruIOph92Xx
-8uJl7e3g/yDk7nDu4+D/IOvo9uXt5+j/PC91PiEgPGJyPg0KTfsg7WUg7/vy4OXs8f8gwmHs
-IO9wb+Rh8vwg4vLw6OTucO7j7iDy83Bl9urz/iDv7uTk5evq8yDo6+gg3ezo8ODy+yDt6Ofq
-7uPuIOrg9+Vj8uLgIOgg4vvm4PL8IOjnIMJhYyDsYepj6Ozz7C4gPGJyPg0KPHU+TfsgeG/y
-6OwsIPfy7uEgwvsg4mXw7fPr6PH8IOIg7WH4IOjt8uXw7WXyLezg42Hn6O0gY+3u4uA8L3U+
-LCDgIO/u8m/s8yDvcGXkb/HyYeLr/+XsIHBh5+1v7uHw4Oft+2Ug8ero5OroIOgg5Ojx6m/t
-8u37ZSDt4Opv7+jy5evoOjwvZm9udD48L3A+DQo8dWw+DQo8bGk+PGZvbnQgc2l6ZT0iMiIg
-ZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+PGI+NTAwIONw
-7S4g52Eg5OJhIOv+4fv1IPTr4Oru7WE8L2I+ICjkcPPj6GUg8u7m5SDv8G/k4P7yIO/uIPLg
-6ujsIPbl7eDsLCDt7iDh8+T88uUg8+LlcGXt+ywg9/JvIDM0MCDj8O0uIOjnIO3oeCCWIP3y
-byDo9SD36PHy4P8g73Do4fvr/Ck8L2ZvbnQ+DQo8bGk+PGZvbnQgc2l6ZT0iMiIgZmFjZT0i
-VmVyZGFuYSwgQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+PGI+0SDq4Obkb+kg7+7q
-8+/q6CDtYSDiYfjl7CBj92Xy8yDuY/Jh/vJj/yAxMCUgb/IgY/Lu6OzuY/LoIO9v6vPv6ug8
-L2I+LiBU7iDlY/L8LCDq8+/o4iDy7uJhcCDtYSA1MDAg4/DtLiwgY+vl5PP++eD/IMJh+GEg
-7+7q8+/q4CDh8+Tl8iDt4CA1MCDj8O0uIOTl+GXi62UuPC9mb250Pg0KPGxpPjxmb250IHNp
-emU9IjIiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPjxi
-Pk37IORhcOjsIMJh7CDnYSDwZePo8fJw4Pbo/iAyNSDjcO0uPC9iPiDv7vLu7PMg5ODmZSDv
-ZfDi4P8g7+7q8+/qYSDh8+Rl8iBj8u7o8vwgNDc1IONw7S4g5+Ag5OLgIPTrYepv7WEg8SA8
-dT7h5fHv6+Dy7e7pIOTu8fLg4upv6SDv7iDiY+XpINPq8GHo7WU8L3U+LCBhIO1lIDUwMCDj
-cO0uICsg5G/x8mHi6uAuPC9mb250Pg0KPC91bD4NCjxkaXYgYWxpZ249ImNlbnRlciI+DQo8
-cD48YnI+DQo8Zm9udCBzaXplPSIzIiBjb2xvcj0iIzk5MDAwMCIgZmFjZT0iVmVyZGFuYSwg
-QXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiI+PGk+PGI+we7r5WUgMzAwIO/g8PT+7O7i
-IO3gIOv+4W/pIOLq8/Eg6CDqb/jl6+XqITxicj4NCsFv6+VlIDEwIO1v4ujtb+ogY+Xn7u1h
-ITwvYj48L2k+PC9mb250PjwvcD4NCjxwPjxzdHJvbmc+PGZvbnQgc2l6ZT0iMyIgY29sb3I9
-IiNjYzY2MDAiIGZhY2U9IlZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYi
-PsTgcOjy5SDw4ORv8fL8IGPib+jsIOHr6Ofq6Owg6CDq7uvrZeNh7CDi7GXx8uUgPGJyPg0K
-8SDt4Pjo7CDo7fJlcO3l8i3s4OPg5+jt7uwgPGEgaHJlZj0iaHR0cDovL3BhcmZ1bTJ5b3Uu
-a2lldi51YS8iPnBhcmZ1bTJ5b3Uua2lldi51YTwvYT48L2ZvbnQ+PC9zdHJvbmc+PC9wPg0K
-PHA+PGZvbnQgc2l6ZT0iMyIgY29sb3I9IiMwMDAwOTkiIGZhY2U9IlZlcmRhbmEsIEFyaWFs
-LCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPjxzdHJvbmc+VGXrOiAoMDQ0KSDHNcctNjYtNjU8
-L3N0cm9uZz48L2ZvbnQ+PGZvbnQgc2l6ZT0iMyIgZmFjZT0iVmVyZGFuYSwgQXJpYWwsIEhl
-bHZldGljYSwgc2Fucy1zZXJpZiI+PGJyPg0KPC9mb250Pjxmb250IHNpemU9IjMiIGNvbG9y
-PSIjMzM2NjAwIiBmYWNlPSJWZXJkYW5hLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlm
-Ij48c3Ryb25nPklDUTogNTUxLTA0My00MTQ8L3N0cm9uZz48L2ZvbnQ+PC9wPg0KPC9kaXY+
-DQo8L3RkPg0KPC90cj4NCjwvdGFibGU+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
+Here is a driver for Maxim 3110 SPI-UART device, please help to review.
+
+It has been validated with Designware SPI controller (drivers/spi: dw_spi.c &
+dw_spi_pci.c). It supports polling and IRQ mode, supports batch read, and
+provides a console.
+
+As a RFC, the driver doesn't have a valid UART port type yet, but borrow
+PORT_PXA. I would apply one if there is no main objection for it.
+
+Thanks!
 
 
+Feng
 
+>From 3155eec53d8b1193cae1dce2b0491e86892e6933 Mon Sep 17 00:00:00 2001
+From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Date: Tue, 29 Dec 2009 17:11:17 +0800
+Subject: [PATCH] serial: spi: add spi-uart driver for Maxim 3110
 
---===============8990818279661863662==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+This is the driver for Max3110 SPI-UART device, which connect
+to host with SPI interface. It supports baud rates from 300 to
+230400. It supports both polling and IRQ mode, as well as
+providing a console for system use
+
+Its datasheet could be found here:
+http://datasheets.maxim-ic.com/en/ds/MAX3110E-MAX3111E.pdf
+
+Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/serial/Kconfig   |   17 +
+ drivers/serial/max3110.c |  842 ++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/serial/max3110.h |   59 ++++
+ 3 files changed, 918 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/serial/max3110.c
+ create mode 100644 drivers/serial/max3110.h
+
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 9ff47db..b8d24ae 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -688,6 +688,23 @@ config SERIAL_SA1100_CONSOLE
+ 	  your boot loader (lilo or loadlin) about how to pass options to the
+ 	  kernel at boot time.)
+ 
++config SERIAL_MAX3110
++	tristate "SPI UART driver for Max3110"
++	select SERIAL_CORE
++	select SERIAL_CORE_CONSOLE
++	help
++	  This is the UART protocol driver for MAX3110 device
++
++config MAX3110_DESIGNWARE
++	boolean "Enable Max3110 to work with Designware controller"
++	default y
++	depends on SERIAL_MAX3110
++
++config MAX3110_IRQ
++	boolean "Enable IRQ for Max3110"
++	default n
++	depends on SERIAL_MAX3110
++
+ config SERIAL_BFIN
+ 	tristate "Blackfin serial port support"
+ 	depends on BLACKFIN
+diff --git a/drivers/serial/max3110.c b/drivers/serial/max3110.c
+new file mode 100644
+index 0000000..1923ade
+--- /dev/null
++++ b/drivers/serial/max3110.c
+@@ -0,0 +1,842 @@
++/*
++ * max3110.c - spi uart protocol driver for Maxim 3110
++ *
++ * Copyright (c) 2009, Intel Corporation.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++/*
++ * Note:
++ * * From Max3110 spec, the Rx FIFO has 8 words, while the Tx FIFO only has
++ *   1 word. If SPI master controller doesn't support sclk frequency change,
++ *   then the char need be sent out one by one with some delay
++ *
++ * * Currently only RX availabe interrrupt is used
++ */
++
++#include <linux/module.h>
++#include <linux/ioport.h>
++#include <linux/init.h>
++#include <linux/console.h>
++#include <linux/platform_device.h>
++#include <linux/tty.h>
++#include <linux/tty_flip.h>
++#include <linux/serial_core.h>
++#include <linux/serial_reg.h>
++
++#include <linux/kthread.h>
++#include <linux/delay.h>
++#include <asm/atomic.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/dw_spi.h>
++
++#include "max3110.h"
++
++#define PR_FMT	"max3110: "
++
++struct uart_max3110 {
++	struct uart_port port;
++	struct spi_device *spi;
++	char *name;
++
++	wait_queue_head_t wq;
++	struct task_struct *main_thread;
++	struct task_struct *read_thread;
++	int mthread_up;
++	spinlock_t lock;
++
++	u32 baud;
++	u16 cur_conf;
++	u8 clock;
++	u8 parity, word_7bits;
++
++	atomic_t uart_tx_need;
++
++	/* console related */
++	struct circ_buf con_xmit;
++	atomic_t con_tx_need;
++
++	/* irq related */
++	u16 irq;
++	atomic_t irq_pending;
++};
++
++struct uart_max3110 *pmax;
++static void receive_chars(struct uart_max3110 *max,
++				unsigned char *str, int len);
++static int max3110_read_multi(struct uart_max3110 *max, int len, u8 *buf);
++static void max3110_con_receive(struct uart_max3110 *max);
++
++int max3110_write_then_read(struct uart_max3110 *max,
++		const u8 *txbuf, u8 *rxbuf, unsigned len, int always_fast)
++{
++	struct spi_device *spi = max->spi;
++	struct spi_message	message;
++	struct spi_transfer	x;
++	int ret;
++
++	if (!txbuf || !rxbuf)
++		return -EINVAL;
++
++	spi_message_init(&message);
++	memset(&x, 0, sizeof x);
++	x.len = len;
++	x.tx_buf = txbuf;
++	x.rx_buf = rxbuf;
++	spi_message_add_tail(&x, &message);
++
++	if (always_fast)
++		x.speed_hz = spi->max_speed_hz;
++	else if (max->baud)
++		x.speed_hz = max->baud;
++
++	/* Do the i/o */
++	ret = spi_sync(spi, &message);
++	return ret;
++}
++
++/* Write a u16 to the device, and return one u16 read back */
++int max3110_out(struct uart_max3110 *max, const u16 out)
++{
++	u16 tmp;
++	int ret;
++
++	ret = max3110_write_then_read(max, (u8 *)&out, (u8 *)&tmp, 2, 1);
++	if (ret)
++		return ret;
++
++	/* If some valid data is read back */
++	if (tmp & MAX3110_READ_DATA_AVAILABLE) {
++		tmp &= 0xff;
++		receive_chars(max, (unsigned char *)&tmp, 1);
++	}
++
++	return ret;
++}
++
++#define MAX_READ_LEN	20
++/*
++ * This is usually used to read data from SPIC RX FIFO, which doesn't
++ * need any delay like flushing character out.
++ * Returns how many valide bytes are read back
++ */
++static int max3110_read_multi(struct uart_max3110 *max, int len, u8 *buf)
++{
++	u16 out[MAX_READ_LEN], in[MAX_READ_LEN];
++	u8 *pbuf, valid_str[MAX_READ_LEN];
++	int i, j, bytelen;
++
++	if (len > MAX_READ_LEN) {
++		pr_err(PR_FMT "read len %d is too large\n", len);
++		return 0;
++	}
++
++	bytelen = len * 2;
++	memset(out, 0, bytelen);
++	memset(in, 0, bytelen);
++
++	if (max3110_write_then_read(max, (u8 *)out, (u8 *)in, bytelen, 1))
++		return 0;
++
++	/* If caller doesn't provide a buffer, then handle received char */
++	pbuf = buf ? buf : valid_str;
++
++	for (i = 0, j = 0; i < len; i++) {
++		if (in[i] & MAX3110_READ_DATA_AVAILABLE)
++			pbuf[j++] = (u8)(in[i] & 0xff);
++	}
++
++	if (j && (pbuf == valid_str))
++		receive_chars(max, valid_str, j);
++
++	return j;
++}
++
++static void serial_m3110_con_putchar(struct uart_port *port, int ch)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	struct circ_buf *xmit = &max->con_xmit;
++
++	if (uart_circ_chars_free(xmit)) {
++		xmit->buf[xmit->head] = (char)ch;
++		xmit->head = (xmit->head + 1) & (PAGE_SIZE - 1);
++	}
++
++	if (!atomic_read(&max->con_tx_need)) {
++		atomic_set(&max->con_tx_need, 1);
++		wake_up_process(max->main_thread);
++	}
++}
++
++/*
++ * Print a string to the serial port trying not to disturb
++ * any possible real use of the port...
++ *
++ *	The console_lock must be held when we get here.
++ */
++static void serial_m3110_con_write(struct console *co,
++				const char *s, unsigned int count)
++{
++	if (!pmax)
++		return;
++
++	uart_console_write(&pmax->port, s, count, serial_m3110_con_putchar);
++}
++
++static int __init
++serial_m3110_con_setup(struct console *co, char *options)
++{
++	struct uart_max3110 *max = pmax;
++	int baud = 115200;
++	int bits = 8;
++	int parity = 'n';
++	int flow = 'n';
++
++	pr_info(PR_FMT "setting up console\n");
++
++	if (!max) {
++		pr_err(PR_FMT "pmax is NULL, return");
++		return -ENODEV;
++	}
++
++	if (options)
++		uart_parse_options(options, &baud, &parity, &bits, &flow);
++
++	return uart_set_options(&max->port, co, baud, parity, bits, flow);
++}
++
++static struct tty_driver *serial_m3110_con_device(struct console *co,
++							int *index)
++{
++	struct uart_driver *p = co->data;
++	*index = co->index;
++	return p->tty_driver;
++}
++
++static struct uart_driver serial_m3110_reg;
++static struct console serial_m3110_console = {
++	.name		= "ttyS",
++	.write		= serial_m3110_con_write,
++	.device		= serial_m3110_con_device,
++	.setup		= serial_m3110_con_setup,
++	.flags		= CON_PRINTBUFFER,
++	.index		= -1,
++	.data		= &serial_m3110_reg,
++};
++
++#define MRST_CONSOLE	(&serial_m3110_console)
++
++static unsigned int serial_m3110_tx_empty(struct uart_port *port)
++{
++	return 1;
++}
++
++static void serial_m3110_stop_tx(struct uart_port *port)
++{
++	return;
++}
++
++/* stop_rx will be called in spin_lock env */
++static void serial_m3110_stop_rx(struct uart_port *port)
++{
++	return;
++}
++
++#define WORDS_PER_XFER	128
++static inline void send_circ_buf(struct uart_max3110 *max,
++				struct circ_buf *xmit)
++{
++	int len, left = 0;
++	u16 obuf[WORDS_PER_XFER], ibuf[WORDS_PER_XFER];
++	u8 valid_str[WORDS_PER_XFER];
++	int i, j;
++
++	while (!uart_circ_empty(xmit)) {
++		left = uart_circ_chars_pending(xmit);
++		while (left) {
++			len = (left >= WORDS_PER_XFER) ? WORDS_PER_XFER : left;
++
++			memset(obuf, 0, len * 2);
++			memset(ibuf, 0, len * 2);
++			for (i = 0; i < len; i++) {
++				obuf[i] = (u8)xmit->buf[xmit->tail] | WD_TAG;
++				xmit->tail = (xmit->tail + 1) &
++						(UART_XMIT_SIZE - 1);
++			}
++			max3110_write_then_read(max, (u8 *)obuf,
++						(u8 *)ibuf, len * 2, 0);
++
++			for (i = 0, j = 0; i < len; i++) {
++				if (ibuf[i] & MAX3110_READ_DATA_AVAILABLE)
++					valid_str[j++] = (u8)(ibuf[i] & 0xff);
++			}
++
++			if (j)
++				receive_chars(max, valid_str, j);
++
++			max->port.icount.tx += len;
++			left -= len;
++		}
++	}
++}
++
++static void transmit_char(struct uart_max3110 *max)
++{
++	struct uart_port *port = &max->port;
++	struct circ_buf *xmit = &port->state->xmit;
++
++	if (uart_circ_empty(xmit) || uart_tx_stopped(port))
++		return;
++
++	send_circ_buf(max, xmit);
++
++	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
++		uart_write_wakeup(port);
++
++	if (uart_circ_empty(xmit))
++		serial_m3110_stop_tx(port);
++}
++
++/*
++ * This will be called by uart_write() and tty_write, can't
++ * go to sleep
++ */
++static void serial_m3110_start_tx(struct uart_port *port)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++
++	if (!atomic_read(&max->uart_tx_need)) {
++		atomic_set(&max->uart_tx_need, 1);
++		wake_up_process(max->main_thread);
++	}
++}
++
++static void receive_chars(struct uart_max3110 *max, unsigned char *str, int len)
++{
++	struct uart_port *port = &max->port;
++	struct tty_struct *tty;
++	int usable;
++
++	/* If uart is not opened, just return */
++	if (!port->state)
++		return;
++
++	tty = port->state->port.tty;
++	if (!tty)
++		return;
++
++	while (len) {
++		usable = tty_buffer_request_room(tty, len);
++		if (usable) {
++			tty_insert_flip_string(tty, str, usable);
++			str += usable;
++			port->icount.rx += usable;
++			tty_flip_buffer_push(tty);
++		}
++		len -= usable;
++	}
++}
++
++static void max3110_con_receive(struct uart_max3110 *max)
++{
++	int loop = 1, num, total = 0;
++	u8 recv_buf[512], *pbuf;
++
++	pbuf = recv_buf;
++	do {
++		/* 3110 RX buffer is 8 words */
++		num = max3110_read_multi(max, 8, pbuf);
++
++		if (num) {
++			loop = 5;
++			pbuf += num;
++			total += num;
++
++			if (total >= 500) {
++				receive_chars(max, recv_buf, total);
++				pbuf = recv_buf;
++				total = 0;
++			}
++		}
++	} while (--loop);
++
++	if (total)
++		receive_chars(max, recv_buf, total);
++}
++
++static int max3110_main_thread(void *_max)
++{
++	struct uart_max3110 *max = _max;
++	wait_queue_head_t *wq = &max->wq;
++	int ret = 0;
++	struct circ_buf *xmit = &max->con_xmit;
++
++	init_waitqueue_head(wq);
++	pr_info(PR_FMT "start main thread\n");
++
++	do {
++		wait_event_interruptible(*wq, (atomic_read(&max->irq_pending) ||
++					       atomic_read(&max->con_tx_need) ||
++					     atomic_read(&max->uart_tx_need)) ||
++					     kthread_should_stop());
++		max->mthread_up = 1;
++
++#ifdef CONFIG_MAX3110_IRQ
++		if (atomic_read(&max->irq_pending)) {
++			max3110_con_receive(max);
++			atomic_set(&max->irq_pending, 0);
++		}
++#endif
++
++		/* first handle console output */
++		if (atomic_read(&max->con_tx_need)) {
++			send_circ_buf(max, xmit);
++			atomic_set(&max->con_tx_need, 0);
++		}
++
++		/* handle uart output */
++		if (atomic_read(&max->uart_tx_need)) {
++			transmit_char(max);
++			atomic_set(&max->uart_tx_need, 0);
++		}
++		max->mthread_up = 0;
++	} while (!kthread_should_stop());
++
++	return ret;
++}
++
++#ifdef CONFIG_MAX3110_IRQ
++irqreturn_t static serial_m3110_irq(int irq, void *dev_id)
++{
++	struct uart_max3110 *max = dev_id;
++
++	/* max3110's irq is a falling edge, not level triggered,
++	 * so no need to disable the irq */
++	if (!atomic_read(&max->irq_pending)) {
++		atomic_inc(&max->irq_pending);
++		wake_up_process(max->main_thread);
++	}
++	return IRQ_HANDLED;
++}
++#else
++/* if don't use RX IRQ, then need a thread to polling read */
++static int max3110_read_thread(void *_max)
++{
++	struct uart_max3110 *max = _max;
++
++	pr_info(PR_FMT "start read thread\n");
++	do {
++		if (!max->mthread_up)
++			max3110_con_receive(max);
++
++		set_current_state(TASK_INTERRUPTIBLE);
++		schedule_timeout(HZ / 20);
++	} while (!kthread_should_stop());
++
++	return 0;
++}
++#endif
++
++static int serial_m3110_startup(struct uart_port *port)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	u16 config = 0;
++	int ret = 0;
++
++	if (port->line != 0)
++		pr_err(PR_FMT "uart port startup failed\n");
++
++	/* firstly disable all IRQ and config it to 115200, 8n1 */
++	config = WC_TAG | WC_FIFO_ENABLE
++			| WC_1_STOPBITS
++			| WC_8BIT_WORD
++			| WC_BAUD_DR2;
++	ret = max3110_out(max, config);
++
++	/* as we use thread to handle tx/rx, need set low latency */
++	port->state->port.tty->low_latency = 1;
++
++#ifdef CONFIG_MAX3110_IRQ
++	ret = request_irq(max->irq, serial_m3110_irq,
++				IRQ_TYPE_EDGE_FALLING, "max3110", max);
++	if (ret)
++		return ret;
++
++	/* enable RX IRQ only */
++	config |= WC_RXA_IRQ_ENABLE;
++	max3110_out(max, config);
++#else
++	/* if IRQ is disabled, start a read thread for input data */
++	max->read_thread =
++		kthread_run(max3110_read_thread, max, "max3110_read");
++#endif
++
++	max->cur_conf = config;
++	return 0;
++}
++
++static void serial_m3110_shutdown(struct uart_port *port)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	u16 config;
++
++	if (max->read_thread) {
++		kthread_stop(max->read_thread);
++		max->read_thread = NULL;
++	}
++
++#ifdef CONFIG_MAX3110_IRQ
++	free_irq(max->irq, max);
++#endif
++
++	/* Disable interrupts from this port */
++	config = WC_TAG | WC_SW_SHDI;
++	max3110_out(max, config);
++}
++
++static void serial_m3110_release_port(struct uart_port *port)
++{
++}
++
++static int serial_m3110_request_port(struct uart_port *port)
++{
++	return 0;
++}
++
++static void serial_m3110_config_port(struct uart_port *port, int flags)
++{
++	/* Give it fake type */
++	port->type = PORT_PXA;
++}
++
++static int
++serial_m3110_verify_port(struct uart_port *port, struct serial_struct *ser)
++{
++	/* we don't want the core code to modify any port params */
++	return -EINVAL;
++}
++
++
++static const char *serial_m3110_type(struct uart_port *port)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	return max->name;
++}
++
++static void
++serial_m3110_set_termios(struct uart_port *port, struct ktermios *termios,
++		       struct ktermios *old)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	unsigned char cval;
++	unsigned int baud, parity = 0;
++	int clk_div = -1;
++	u16 new_conf = max->cur_conf;
++
++	switch (termios->c_cflag & CSIZE) {
++	case CS7:
++		cval = UART_LCR_WLEN7;
++		new_conf |= WC_7BIT_WORD;
++		break;
++	default:
++	case CS8:
++		cval = UART_LCR_WLEN8;
++		new_conf |= WC_8BIT_WORD;
++		break;
++	}
++
++	baud = uart_get_baud_rate(port, termios, old, 0, 230400);
++
++	/* first calc the div for 1.8MHZ clock case */
++	switch (baud) {
++	case 300:
++		clk_div = WC_BAUD_DR384;
++		break;
++	case 600:
++		clk_div = WC_BAUD_DR192;
++		break;
++	case 1200:
++		clk_div = WC_BAUD_DR96;
++		break;
++	case 2400:
++		clk_div = WC_BAUD_DR48;
++		break;
++	case 4800:
++		clk_div = WC_BAUD_DR24;
++		break;
++	case 9600:
++		clk_div = WC_BAUD_DR12;
++		break;
++	case 19200:
++		clk_div = WC_BAUD_DR6;
++		break;
++	case 38400:
++		clk_div = WC_BAUD_DR3;
++		break;
++	case 57600:
++		clk_div = WC_BAUD_DR2;
++		break;
++	case 115200:
++		clk_div = WC_BAUD_DR1;
++		break;
++	case 230400:
++		if (max->clock & MAX3110_HIGH_CLK)
++			break;
++	default:
++		/* pick the previous baud rate */
++		baud = max->baud;
++		clk_div = max->cur_conf & WC_BAUD_DIV_MASK;
++		tty_termios_encode_baud_rate(termios, baud, baud);
++	}
++
++	if (max->clock & MAX3110_HIGH_CLK) {
++		clk_div += 1;
++		/* high clk version max3110 doesn't support B300 */
++		if (baud == 300)
++			baud = 600;
++		if (baud == 230400)
++			clk_div = WC_BAUD_DR1;
++		tty_termios_encode_baud_rate(termios, baud, baud);
++	}
++
++	new_conf = (new_conf & ~WC_BAUD_DIV_MASK) | clk_div;
++	if (termios->c_cflag & CSTOPB)
++		new_conf |= WC_2_STOPBITS;
++	else
++		new_conf &= ~WC_2_STOPBITS;
++
++	if (termios->c_cflag & PARENB) {
++		new_conf |= WC_PARITY_ENABLE;
++		parity |= UART_LCR_PARITY;
++	} else
++		new_conf &= ~WC_PARITY_ENABLE;
++
++	if (!(termios->c_cflag & PARODD))
++		parity |= UART_LCR_EPAR;
++	max->parity = parity;
++
++	uart_update_timeout(port, termios->c_cflag, baud);
++
++	new_conf |= WC_TAG;
++	if (new_conf != max->cur_conf) {
++		max3110_out(max, new_conf);
++		max->cur_conf = new_conf;
++		max->baud = baud;
++	}
++}
++
++/* don't handle hw handshaking */
++static unsigned int serial_m3110_get_mctrl(struct uart_port *port)
++{
++	return TIOCM_DSR | TIOCM_CAR | TIOCM_DSR;
++}
++
++static void serial_m3110_set_mctrl(struct uart_port *port, unsigned int mctrl)
++{
++}
++
++static void serial_m3110_break_ctl(struct uart_port *port, int break_state)
++{
++}
++
++static void serial_m3110_pm(struct uart_port *port, unsigned int state,
++			unsigned int oldstate)
++{
++}
++
++static void serial_m3110_enable_ms(struct uart_port *port)
++{
++}
++
++struct uart_ops serial_m3110_ops = {
++	.tx_empty	= serial_m3110_tx_empty,
++	.set_mctrl	= serial_m3110_set_mctrl,
++	.get_mctrl	= serial_m3110_get_mctrl,
++	.stop_tx	= serial_m3110_stop_tx,
++	.start_tx	= serial_m3110_start_tx,
++	.stop_rx	= serial_m3110_stop_rx,
++	.enable_ms	= serial_m3110_enable_ms,
++	.break_ctl	= serial_m3110_break_ctl,
++	.startup	= serial_m3110_startup,
++	.shutdown	= serial_m3110_shutdown,
++	.set_termios	= serial_m3110_set_termios,
++	.pm		= serial_m3110_pm,
++	.type		= serial_m3110_type,
++	.release_port	= serial_m3110_release_port,
++	.request_port	= serial_m3110_request_port,
++	.config_port	= serial_m3110_config_port,
++	.verify_port	= serial_m3110_verify_port,
++};
++
++static struct uart_driver serial_m3110_reg = {
++	.owner		= THIS_MODULE,
++	.driver_name	= "MRST serial",
++	.dev_name	= "ttyS",
++	.major		= TTY_MAJOR,
++	.minor		= 64,
++	.nr		= 1,
++	.cons		= MRST_CONSOLE,
++};
++
++static int serial_m3110_suspend(struct spi_device *spi, pm_message_t state)
++{
++	return 0;
++}
++
++static int serial_m3110_resume(struct spi_device *spi)
++{
++	return 0;
++}
++
++#ifdef CONFIG_MAX3110_DESIGNWARE
++static struct dw_spi_chip spi_uart = {
++	.poll_mode = 1,
++	.enable_dma = 0,
++	.type = SPI_FRF_SPI,
++};
++#endif
++
++static int serial_m3110_probe(struct spi_device *spi)
++{
++	struct uart_max3110 *max;
++	int ret;
++	unsigned char *buffer;
++
++	max = kzalloc(sizeof(*max), GFP_KERNEL);
++	if (!max)
++		return -ENOMEM;
++
++	/* set spi info */
++	spi->mode = SPI_MODE_0;
++	spi->bits_per_word = 16;
++#ifdef CONFIG_MAX3110_DESIGNWARE
++	spi->controller_data = &spi_uart;
++#endif
++	spi_setup(spi);
++
++	max->clock = MAX3110_HIGH_CLK;
++	max->port.type = PORT_PXA;	/* Need apply for a max3110 type */
++	max->port.fifosize = 2;		/* only have 16b buffer */
++	max->port.ops = &serial_m3110_ops;
++	max->port.line = 0;
++	max->port.dev = &spi->dev;
++	max->port.uartclk = 115200;
++
++	max->spi = spi;
++	max->name = spi->modalias;	/* use spi name as the name */
++	max->irq = (u16)spi->irq;
++
++	spin_lock_init(&max->lock);
++
++	max->word_7bits = 0;
++	max->parity = 0;
++	max->baud = 0;
++
++	max->cur_conf = 0;
++	atomic_set(&max->irq_pending, 0);
++
++	buffer = (unsigned char *)__get_free_page(GFP_KERNEL);
++	if (!buffer) {
++		ret = -ENOMEM;
++		goto err_get_page;
++	}
++	max->con_xmit.buf = (unsigned char *)buffer;
++	max->con_xmit.head = max->con_xmit.tail = 0;
++
++	max->main_thread = kthread_run(max3110_main_thread,
++					max, "max3110_main");
++	if (IS_ERR(max->main_thread)) {
++		ret = PTR_ERR(max->main_thread);
++		goto err_kthread;
++	}
++
++	pmax = max;
++	/* Give membase a psudo value to pass serial_core's check */
++	max->port.membase = (void *)0xff110000;
++	uart_add_one_port(&serial_m3110_reg, &max->port);
++
++	return 0;
++
++err_kthread:
++	free_page((unsigned long)buffer);
++err_get_page:
++	pmax = NULL;
++	kfree(max);
++	return ret;
++}
++
++static int max3110_remove(struct spi_device *dev)
++{
++	struct uart_max3110 *max = pmax;
++
++	if (!pmax)
++		return 0;
++
++	pmax = NULL;
++	uart_remove_one_port(&serial_m3110_reg, &max->port);
++
++	free_page((unsigned long)max->con_xmit.buf);
++
++	if (max->main_thread)
++		kthread_stop(max->main_thread);
++
++	kfree(max);
++	return 0;
++}
++
++static struct spi_driver uart_max3110_driver = {
++	.driver = {
++			.name	= "spi_max3111",
++			.bus	= &spi_bus_type,
++			.owner	= THIS_MODULE,
++	},
++	.probe		= serial_m3110_probe,
++	.remove		= __devexit_p(max3110_remove),
++	.suspend	= serial_m3110_suspend,
++	.resume		= serial_m3110_resume,
++};
++
++int __init serial_m3110_init(void)
++{
++	int ret = 0;
++
++	ret = uart_register_driver(&serial_m3110_reg);
++	if (ret)
++		return ret;
++
++	ret = spi_register_driver(&uart_max3110_driver);
++	if (ret)
++		uart_unregister_driver(&serial_m3110_reg);
++
++	return ret;
++}
++
++void __exit serial_m3110_exit(void)
++{
++	spi_unregister_driver(&uart_max3110_driver);
++	uart_unregister_driver(&serial_m3110_reg);
++}
++
++module_init(serial_m3110_init);
++module_exit(serial_m3110_exit);
++
++MODULE_ALIAS("max3110-uart");
++MODULE_AUTHOR("Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>");
+diff --git a/drivers/serial/max3110.h b/drivers/serial/max3110.h
+new file mode 100644
+index 0000000..eae93bd
+--- /dev/null
++++ b/drivers/serial/max3110.h
+@@ -0,0 +1,59 @@
++#ifndef _MAX3110_HEAD_FILE_
++#define _MAX3110_HEAD_FILE_
++
++#define MAX3110_HIGH_CLK	0x1	/* 3.6864 MHZ */
++#define MAX3110_LOW_CLK		0x0	/* 1.8432 MHZ */
++
++/* status bits for all 4 MAX3110 operate modes */
++#define MAX3110_READ_DATA_AVAILABLE	(1 << 15)
++#define MAX3110_WRITE_BUF_EMPTY		(1 << 14)
++
++#define WC_TAG			(3 << 14)
++#define RC_TAG			(1 << 14)
++#define WD_TAG			(2 << 14)
++#define RD_TAG			(0 << 14)
++
++/* bits def for write configuration */
++#define WC_FIFO_ENABLE_MASK	(1 << 13)
++#define WC_FIFO_ENABLE		(0 << 13)
++
++#define WC_SW_SHDI		(1 << 12)
++
++#define WC_IRQ_MASK		(0xF << 8)
++#define WC_TXE_IRQ_ENABLE	(1 << 11)	/* TX empty irq */
++#define WC_RXA_IRQ_ENABLE	(1 << 10)	/* RX availabe irq */
++#define WC_PAR_HIGH_IRQ_ENABLE	(1 << 9)
++#define WC_REC_ACT_IRQ_ENABLE	(1 << 8)
++
++#define WC_IRDA_ENABLE		(1 << 7)
++
++#define WC_STOPBITS_MASK	(1 << 6)
++#define WC_2_STOPBITS		(1 << 6)
++#define WC_1_STOPBITS		(0 << 6)
++
++#define WC_PARITY_ENABLE_MASK	(1 << 5)
++#define WC_PARITY_ENABLE	(1 << 5)
++
++#define WC_WORDLEN_MASK		(1 << 4)
++#define WC_7BIT_WORD		(1 << 4)
++#define WC_8BIT_WORD		(0 << 4)
++
++#define WC_BAUD_DIV_MASK	(0xF)
++#define WC_BAUD_DR1		(0x0)
++#define WC_BAUD_DR2		(0x1)
++#define WC_BAUD_DR4		(0x2)
++#define WC_BAUD_DR8		(0x3)
++#define WC_BAUD_DR16		(0x4)
++#define WC_BAUD_DR32		(0x5)
++#define WC_BAUD_DR64		(0x6)
++#define WC_BAUD_DR128		(0x7)
++#define WC_BAUD_DR3		(0x8)
++#define WC_BAUD_DR6		(0x9)
++#define WC_BAUD_DR12		(0xA)
++#define WC_BAUD_DR24		(0xB)
++#define WC_BAUD_DR48		(0xC)
++#define WC_BAUD_DR96		(0xD)
++#define WC_BAUD_DR192		(0xE)
++#define WC_BAUD_DR384		(0xF)
++
++#endif
+-- 
+1.6.0.4
 
 ------------------------------------------------------------------------------
 This SF.Net email is sponsored by the Verizon Developer Community
@@ -196,15 +1010,3 @@ Take advantage of Verizon's best-in-class app development support
 A streamlined, 14 day to market process makes app distribution fast and easy
 Join now and get one step closer to millions of Verizon customers
 http://p.sf.net/sfu/verizon-dev2dev 
---===============8990818279661863662==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============8990818279661863662==--

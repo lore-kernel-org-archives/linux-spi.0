@@ -1,7 +1,7 @@
 From: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
 Subject: Re: [PATCH v2] SPI DaVinci: SPI master driver for DaVinci/DA8xx
-Date: Tue, 05 Jan 2010 15:43:30 -0800
-Message-ID: <87iqbgqfrx.fsf@deeprootsystems.com>
+Date: Tue, 05 Jan 2010 15:46:38 -0800
+Message-ID: <878wccqfmp.fsf@deeprootsystems.com>
 References: <1261000938-1897-1-git-send-email-s-paulraj@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -10,7 +10,7 @@ Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, spi-devel-general-5NWG
         davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
         akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org
 To: s-paulraj-l0cyMroinI0@public.gmane.org
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
 In-Reply-To: <1261000938-1897-1-git-send-email-s-paulraj-l0cyMroinI0@public.gmane.org>
 	(s-paulraj-l0cyMroinI0@public.gmane.org's message of "Wed\,
 	16 Dec 2009 17\:02\:18 -0500")
@@ -21,8 +21,8 @@ List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@pu
 List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
 List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Sender: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 s-paulraj-l0cyMroinI0@public.gmane.org writes:
@@ -37,9 +37,18 @@ s-paulraj-l0cyMroinI0@public.gmane.org writes:
 > Signed-off-by: Philby John <pjohn-k0rHJ+Hhz/SB+jHODAdFcQ@public.gmane.org>
 > Signed-off-by: Sudhakar Rajashekhara <sudhakar.raj-l0cyMroinI0@public.gmane.org>
 
-In case it helps move this along...
+Sandeep,
 
-Signed-off-by: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
+This needs a minor refresh against current Linus tree for the Makefile
+change.
+
+While doing the Makefile addition, it looks like the list is maintained in
+alphabetical order.  Please add davinci in the right order, and feel free to
+add my signoff.
+
+Thanks,
+
+Kevin
 
 > ---
 >  drivers/spi/Kconfig       |    7 +

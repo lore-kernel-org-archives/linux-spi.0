@@ -1,10 +1,11 @@
-From: "Business Division" <noreply3347-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Get in Front of Millions
-Date: Thu, 7 Jan 2010 17:47:05 -0700
-Message-ID: <d1cd67d55eeaac90628fc1880016e4b7@ymail.com>
+From: "Securitas Direct par Plein Temps" <postmaster-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: =?iso-8859-1?q?Protegez_vous_efficacement_pou?=
+	=?iso-8859-1?q?r_50=25_moins_cher_que_votre_caf=E9_quotidien?=
+Date: Fri,  8 Jan 2010 08:18:11 +0100 (CET)
+Message-ID: <kvx2xm.fvywex@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4950394804378273240=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============7085600273605178672=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,195 +17,83 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4950394804378273240==
-Content-Type: text/html;
-	charset="windows-1252"
+--===============7085600273605178672==
+Content-Type: multipart/alternative;
+	boundary="=_c68ff9e6582505ece742c372172a8b1e"
+
+--=_c68ff9e6582505ece742c372172a8b1e
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html><head>
-<meta http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Dwindows-1252">
-<meta content=3D"MSHTML 6.00.6001.18063" name=3DGENERATOR></head>
-<body bgColor=3D#efefef>
-<table style=3D"WIDTH: 523px; HEIGHT: 517px" height=3D517 cellSpacing=3D0=20
-cellPadding=3D0 width=3D523 align=3Dcenter bgColor=3D#ffffff border=3D1>
-  <tbody>
-  <tr>
-    <td vAlign=3Dbottom borderColor=3D#000000 align=3Dmiddle>
-      <table style=3D"WIDTH: 524px; HEIGHT: 64px" height=3D64 =
-cellSpacing=3D0=20
-      cellPadding=3D0 width=3D524 align=3Dcenter bgColor=3D#0f0f0f =
-border=3D0>
-        <tbody>
-        <tr>
-          <td>
-            <p align=3Dcenter><font size=3D6><font =
-color=3D#ffffff><strong>E-mail=20
-            Marketing=20
-        =
-W</strong><strong>orks!</strong></font></font></p></td></tr></tbody></table>
-      <p class=3DMsoNormal dir=3Dltr style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dcenter><span=20
-      style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; mso-bidi-font-size: =
-12.0pt; mso-ascii-font-family: 'Times New Roman'"><font=20
-      face=3D"Times New Roman" =
-size=3D1><strong></strong></font></span>&nbsp;</p>
-      <p class=3DMsoNormal dir=3Dltr style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dcenter><span=20
-      style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; mso-bidi-font-size: =
-12.0pt; mso-ascii-font-family: 'Times New Roman'"><font=20
-      face=3D"Times New Roman" color=3D#ff0000 size=3D6><strong>Want a =
-solution to get=20
-      in front of millions&nbsp;of targeted=20
-prospects?</strong></font></span></p>
-      <blockquote dir=3Dltr style=3D"MARGIN-RIGHT: 0px">
-        <blockquote dir=3Dltr style=3D"MARGIN-RIGHT: 0px">
-          <blockquote dir=3Dltr style=3D"MARGIN-RIGHT: 0px">
-            <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dleft><span=20
-            style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; =
-mso-bidi-font-size: 12.0pt; mso-ascii-font-family: 'Times New =
-Roman'">=B7</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt"><span=20
-            style=3D"mso-spacerun: yes">&nbsp; </span></span><span=20
-            style=3D"mso-bidi-font-size: 10.0pt">Our Graphics Team Will =
-Design=20
-            Your AD</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt">=20
-            <o:p></o:p></span></p>
-            <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dleft><span=20
-            style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; =
-mso-bidi-font-size: 12.0pt; mso-ascii-font-family: 'Times New =
-Roman'">=B7</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt"><span=20
-            style=3D"mso-spacerun: yes">&nbsp; </span></span><span=20
-            style=3D"mso-bidi-font-size: 10.0pt">You Get to Pick Your =
-Target=20
-            Audience </span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: =
-12.0pt"><o:p></o:p></span></p>
-            <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dleft><span=20
-            style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; =
-mso-bidi-font-size: 12.0pt; mso-ascii-font-family: 'Times New =
-Roman'">=B7</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt"><span=20
-            style=3D"mso-spacerun: yes">&nbsp; </span></span><span=20
-            style=3D"mso-bidi-font-size: 10.0pt">We Will Compile OPT-IN =
-Customer=20
-            List</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt">=20
-            <o:p></o:p></span></p>
-            <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dleft><span=20
-            style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; =
-mso-bidi-font-size: 12.0pt; mso-ascii-font-family: 'Times New =
-Roman'">=B7</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt"><span=20
-            style=3D"mso-spacerun: yes">&nbsp; </span></span><span=20
-            style=3D"mso-bidi-font-size: 10.0pt">We Scrub Through Do Not =
-E-mail=20
-            Database</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt">=20
-            <o:p></o:p></span></p>
-            <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dleft><span=20
-            style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; =
-mso-bidi-font-size: 12.0pt; mso-ascii-font-family: 'Times New =
-Roman'">=B7</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt"><span=20
-            style=3D"mso-spacerun: yes">&nbsp; </span></span><span=20
-            style=3D"mso-bidi-font-size: 10.0pt">We Will&nbsp;Send Via=20
-            Our&nbsp;Mailing Servers</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: =
-12.0pt">&nbsp;<o:p></o:p></span></p>
-            <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dleft><span=20
-            style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; =
-mso-bidi-font-size: 12.0pt; mso-ascii-font-family: 'Times New =
-Roman'">=B7</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt"><span=20
-            style=3D"mso-spacerun: yes">&nbsp; </span></span><span=20
-            style=3D"mso-bidi-font-size: 10.0pt">Access to Track =
-Click-<span=20
-            class=3Dspelle>Thru's</span> &amp; Open Rates</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt">=20
-            <o:p></o:p></span></p>
-            <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dleft><span=20
-            style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; =
-mso-bidi-font-size: 12.0pt; mso-ascii-font-family: 'Times New =
-Roman'">=B7</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt"><span=20
-            style=3D"mso-spacerun: yes">&nbsp; </span></span><span=20
-            style=3D"mso-bidi-font-size: 10.0pt">Direct Traffic To Your =
-Web Site=20
-            or Phone #</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: =
-12.0pt">&nbsp;<o:p></o:p></span></p>
-            <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dleft><span=20
-            style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; =
-mso-bidi-font-size: 12.0pt; mso-ascii-font-family: 'Times New =
-Roman'">=B7</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt"><span=20
-            style=3D"mso-spacerun: yes">&nbsp; </span></span><span=20
-            style=3D"mso-bidi-font-size: 10.0pt">Interested=20
-            Customers&nbsp;Will&nbsp;Contact You Directly</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt">=20
-            <o:p></o:p></span></p>
-            <p class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt" =
-align=3Dleft><span=20
-            style=3D"FONT-SIZE: 14pt; FONT-FAMILY: Symbol; =
-mso-bidi-font-size: 12.0pt; mso-ascii-font-family: 'Times New =
-Roman'">=B7</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt"><span=20
-            style=3D"mso-spacerun: yes">&nbsp; </span></span><span=20
-            style=3D"mso-bidi-font-size: 10.0pt">E-mail Blast Can Broken =
-Up As You=20
-            Need&nbsp;</span><span=20
-            style=3D"FONT-SIZE: 14pt; mso-bidi-font-size: 12.0pt">=20
-            <o:p></o:p></span></p></blockquote></blockquote></blockquote>
-      <p dir=3Dltr align=3Dcenter><a =
-title=3D"blocked::mailto:sendtomillions-KK0ffGbhmjU@public.gmane.org?bcc=3Dbuildresponse@gmail.c=
-om&amp;subject=3DPlease Send FREE Info on Your E-mail =
-Programs&amp;body=3DMy Name:My Address:My Phone:Best Time to Contact:My =
-Email Address:Feel free to send me future offers." style=3D"COLOR: blue; =
-TEXT-DECORATION: underline" =
-href=3D"mailto:sendtomillions-KK0ffGbhmjU@public.gmane.org?bcc=3Dbuildresponse-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org&amp;sub=
-ject=3DPlease%20Send%20FREE%20Info%20on%20Your%20E%2Dmail%20Programs&amp;bo=
-dy=3DMy%20Name%3A%0D%0AMy%20Address%3A%0D%0AMy%20Phone%3A%0D%0ABest%20Time%=
-20to%20Contact%3A%0D%0AMy%20Email%20Address%3A%0D%0A%0D%0AFeel%20free%20to%=
-20send%20me%20future%20offers%2E" target=3D_self><strong=20
-      =
-title=3D"blocked::mailto:sendtomillions-KK0ffGbhmjU@public.gmane.org?bcc=3Dbuildresponse@gmail.c=
-om&amp;subject=3DPlease Send FREE Info on Your E-mail =
-Programs&amp;body=3DMy Name:My Address:My Phone:Best Time to Contact:My =
-Email Address:Feel free to send me future offers."><font=20
-      size=3D5>Click Here</font></strong></a><font size=3D5>&nbsp; to Find =
-Out More=20
-      Info!</font></p>
-      <p dir=3Dltr align=3Dcenter>
-      <table style=3D"WIDTH: 524px; HEIGHT: 64px" height=3D64 =
-cellSpacing=3D0=20
-      cellPadding=3D0 width=3D524 align=3Dcenter bgColor=3D#0f0f0f =
-border=3D0>
-        <tbody>
-        <tr>
-          <td>
-            <p align=3Dcenter><font color=3D#ffffff size=3D6><strong>Call =
-1 (888)=20
-            313-2220=20
-  =
-Today!</strong></font></p></td></tr></tbody></table></p></td></tr></tbody><=
-/table></body></html>
+
+--=_c68ff9e6582505ece742c372172a8b1e
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"=0D"http://ww=
+w.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html xmlns=3D"http://ww=
+w.w3.org/1999/xhtml">=0D<head><title>mail.jpg</title>=0D<meta content=3D"te=
+xt/html; charset=3Dutf-8" http-equiv=3DContent-Type>=0D<style type=3Dtext/c=
+ss>=0Dtd img {display: block;}.Style2 {=0Dfont-size: 12px;=0Dfont-weight: b=
+old;=0Dcolor: #FFFF33;=0D}=0Da:link {=0Dcolor: #FFFF33;=0D}=0Da:visited {=
+=0Dcolor: #000000;=0D}=0D</style>=0D</head>=0D<body bgcolor=3D"#b0b0b0">=0D=
+<table width=3D"550" align=3D"center" border=3D"0" cellspacing=3D"0" cellpa=
+dding=3D"0">=0D<tbody>=0D<tr>=0D<td><img width=3D"550" height=3D"1" src=3D"=
+../imag/spacer.gif" border=3D"0" /></td>=0D</tr>=0D<tr>=0D<td align=3D"righ=
+t"><font face=3D"Verdana, Arial, Helvetica, sans-serif"><span class=3D"Styl=
+e2">Si vous ne pouvez pas voir correctement ce message, <a href=3D"http://b=
+aseco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D=
+298983&C=3D4747&P=3D20031&T=3DE&W=3D1&CREA=3D155750&URL">cliquez ici</a></s=
+pan></font></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.web=
+orama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D298983&C=3D4747&P=
+=3D20031&T=3DE&W=3D1&CREA=3D155750&URL"><img name=3D"mail_r1_c1" width=3D"5=
+50" height=3D"113" id=3D"mail_r1_c1" src=3D"http://www.securitasdirect.fr/b=
+ase_co/imag/mail_r1_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true=
+" /></a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.webora=
+ma.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D298983&C=3D4747&P=3D2=
+0031&T=3DE&W=3D1&CREA=3D155750&URL"><img name=3D"mail_r2_c1" width=3D"550" =
+height=3D"105" id=3D"mail_r2_c1" src=3D"http://www.securitasdirect.fr/base_=
+co/imag/mail_r2_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true" />=
+</a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.weborama.f=
+r/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D298983&C=3D4747&P=3D20031=
+&T=3DE&W=3D1&CREA=3D155750&URL"><img name=3D"mail_r3_c1" width=3D"550" heig=
+ht=3D"83" id=3D"mail_r3_c1" src=3D"http://www.securitasdirect.fr/base_co/im=
+ag/mail_r3_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a><=
+/td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcg=
+i-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D298983&C=3D4747&P=3D20031&T=3D=
+E&W=3D1&CREA=3D155750&URL"><img name=3D"mail_r4_c1" width=3D"550" height=3D=
+"87" id=3D"mail_r4_c1" src=3D"http://www.securitasdirect.fr/base_co/imag/ma=
+il_r4_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=
+=0D</tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcgi-bi=
+n/performance.fcgi?ID=3D310703&A=3D1&L=3D298983&C=3D4747&P=3D20031&T=3DE&W=
+=3D1&CREA=3D155750&URL"><img name=3D"mail_r5_c1" width=3D"550" height=3D"80=
+" id=3D"mail_r5_c1" src=3D"http://www.securitasdirect.fr/base_co/imag/mail_=
+r5_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D<=
+/tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/pe=
+rformance.fcgi?ID=3D310703&A=3D1&L=3D298983&C=3D4747&P=3D20031&T=3DE&W=3D1&=
+CREA=3D155750&URL"><img name=3D"mail_r6_c1" width=3D"550" height=3D"81" id=
+=3D"mail_r6_c1" src=3D"http://www.securitasdirect.fr/base_co/imag/mail_r6_c=
+1.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=
+=0D<tr>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/perfor=
+mance.fcgi?ID=3D310703&A=3D1&L=3D298983&C=3D4747&P=3D20031&T=3DE&W=3D1&CREA=
+=3D155750&URL"><img name=3D"mail_r7_c1" width=3D"550" height=3D"101" id=3D"=
+mail_r7_c1" src=3D"http://www.securitasdirect.fr/base_co/imag/mail_r7_c1.jp=
+g" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr><img=
+ width=3D"1" height=3D"1" src=3D"http://baseco.solution.weborama.fr/fcgi-bi=
+n/adserv.fcgi?tag=3D298983&f=3D10&h=3DR&rnd=3D[RANDOM]" border=3D"0" comple=
+te=3D"true" complete=3D"true" /> </ /></ /></ /></ /></ /></ /></ /></ /></=
+ /></>=0D</tbody>=0D</table>=0D<div align=3D"center"><br /><br /><font face=
+=3D"Verdana, Arial, Helvetica, sans-serif" size=3D"1"><font face=3D"Arial, =
+Helvetica, sans-serif">Conformement a la loi Informatique et Libertes, vous=
+ disposez d'un droit d'acces et de rectification.<br />Si vous voulez vous =
+desinscrire, cliquez <a href=3D"http://front.ta271.com/AA502TDM44_1199994/8=
+77">ici</a></font></font> </div>=0D<img src=3D"http://front.ta271.com/ZZ502=
+TDM44_1199994.png" /></body></html>
+--=_c68ff9e6582505ece742c372172a8b1e--
 
 
 
-
---===============4950394804378273240==
+--===============7085600273605178672==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -216,7 +105,7 @@ Take advantage of Verizon's best-in-class app development support
 A streamlined, 14 day to market process makes app distribution fast and easy
 Join now and get one step closer to millions of Verizon customers
 http://p.sf.net/sfu/verizon-dev2dev 
---===============4950394804378273240==
+--===============7085600273605178672==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -227,4 +116,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============4950394804378273240==--
+--===============7085600273605178672==--

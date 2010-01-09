@@ -1,11 +1,12 @@
-From: <th123ge-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Important Message!
-Date: 08 Jan 10 7:48:13 PM
-Message-ID: <20100108194813100.1536@gmail.com>
+From: "MAGNETOTERAPIA" <hipnosischile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: =?windows-1252?q?Invitaci=F3n_al_Curso_de_Ima?=
+	=?windows-1252?q?nes_para_Sanar?=
+Date: Fri, 8 Jan 2010 22:11:28 -0300
+Message-ID: <914038634-2201016911128859@usuario-1109edb>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_AF_000021C_01C"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,65 +18,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+Estimad@ spi-devel-general:
+Quisiera invitarte para este lunes 11 y miercoles 13 de Enero al Curso "Mag=
+netoterapia, el Arte de Sanar con Imanes". Se realiza en el horario de 19 a=
+ 21 hrs. en Dr. Barros Borgono 384 - Providencia (Metro Manuel Montt) El ap=
+rendizaje es garantizado y le ayudara a sanar de su estres, dolores f=EDsic=
+os, mejorar el animo, prevenir enfermedades, etc.
+El curso tiene un valor de $100.000.- e incluye Apuntes, 1 iman medicinal, =
+1 DVD y una entrevista - clase personal con el profesor una vez que haya pr=
+acticado con los imanes.
+Si te inscribes hasta este domingo 10 enviando tus datos por e-mail (nombre=
+, telefono de contacto) obtienes un 10% de descuento y quedas automaticamen=
+te inscrito/a.
+Mas informacion del curso en http://www.hipnosischile.cl/magnetoterapia3.htm
+ESTE MISMO CURSO SE DARA EN LA SERENA EL DIA 27 de Enero de 18 a 21 hrs.
 
-------=_NextPart_AF_000021C_01C
-Content-Type: multipart/alternative; boundary="----=_NextPart_AF_000021C_01E"
+Un abrazo,
+
+Antonio Diaz L.
+Hipnosis  Chile
+www.hipnosischile.cl
 
 
-------=_NextPart_AF_000021C_01E
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-
-If I do not get a relative urgently,it would be forfeited and subsequently converted to company's own which will benefit only the directors of my firm. Please note that since the death of the account owner:(1) No one has operated this account since 1999(2) He died without an heir; hence it has been floating.(3) No other person knows about this account and there was no known beneficiary.
-This can be approved to you legally as with all the necessary documentary approvals in your name.However, you would be required to show some proof of claim which I will provide you with and also guide you on how to make your applications. Please do give me a reply so that I can send you detailed information on the modalities of my proposition. I completely trust you to keep this Proposition absolutely confidential. Kindly forward your telephone and fax numbers where Ican reach you easily.I look forward to your prompt response. Please you can reach on my private email
-
-Best Regards,
-Mr. Thomas George
-
-+44-7077-087-063
-
-
-
-------=_NextPart_AF_000021C_01E
-Content-Type: text/html;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8bit
-
-<html><body>If I do not get a relative urgently,it would be forfeited and subsequently converted to company's own which will benefit only the directors of my firm. Please note that since the death of the account owner:(1) No one has operated this account since 1999(2) He died without an heir; hence it has been floating.(3) No other person knows about this account and there was no known beneficiary.<br>
-This can be approved to you legally as with all the necessary documentary approvals in your name.However, you would be required to show some proof of claim which I will provide you with and also guide you on how to make your applications. Please do give me a reply so that I can send you detailed information on the modalities of my proposition. I completely trust you to keep this Proposition absolutely confidential. Kindly forward your telephone and fax numbers where Ican reach you easily.I look forward to your prompt response. Please you can reach on my private email<br>
-<br>
-Best Regards,<br>
-Mr. Thomas George<br>
-<br>
-+44-7077-087-063<br>
-<br>
-</body></html>
-
-------=_NextPart_AF_000021C_01E--
-
-------=_NextPart_AF_000021C_01C
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 This SF.Net email is sponsored by the Verizon Developer Community
 Take advantage of Verizon's best-in-class app development support
 A streamlined, 14 day to market process makes app distribution fast and easy
 Join now and get one step closer to millions of Verizon customers
-http://p.sf.net/sfu/verizon-dev2dev 
-------=_NextPart_AF_000021C_01C
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=_NextPart_AF_000021C_01C--
+http://p.sf.net/sfu/verizon-dev2dev =

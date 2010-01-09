@@ -1,49 +1,30 @@
-From: "MAGNETOTERAPIA" <hipnosischile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: =?windows-1252?q?Invitaci=F3n_al_Curso_de_Ima?=
-	=?windows-1252?q?nes_para_Sanar?=
-Date: Fri, 8 Jan 2010 22:11:28 -0300
-Message-ID: <914038634-2201016911128859@usuario-1109edb>
+From: Cory Maccarrone <darkstar6262@gmail.com>
+Subject: Re: [PATCH v2 2/3] [OMAP] Add spi100k configuration to OMAP1
+Date: Sat, 9 Jan 2010 09:14:36 -0800
+Message-ID: <6cb013311001090914r219cfb48i4797631900f0871a@mail.gmail.com>
+References: <1260668088-27555-1-git-send-email-darkstar6262@gmail.com>
+	<1260668088-27555-3-git-send-email-darkstar6262@gmail.com>
+	<20100106191946.GB11511@atomide.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Cc: spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
+To: Tony Lindgren <tony@atomide.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20100106191946.GB11511@atomide.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Estimad@ spi-devel-general:
-Quisiera invitarte para este lunes 11 y miercoles 13 de Enero al Curso "Mag=
-netoterapia, el Arte de Sanar con Imanes". Se realiza en el horario de 19 a=
- 21 hrs. en Dr. Barros Borgono 384 - Providencia (Metro Manuel Montt) El ap=
-rendizaje es garantizado y le ayudara a sanar de su estres, dolores f=EDsic=
-os, mejorar el animo, prevenir enfermedades, etc.
-El curso tiene un valor de $100.000.- e incluye Apuntes, 1 iman medicinal, =
-1 DVD y una entrevista - clase personal con el profesor una vez que haya pr=
-acticado con los imanes.
-Si te inscribes hasta este domingo 10 enviando tus datos por e-mail (nombre=
-, telefono de contacto) obtienes un 10% de descuento y quedas automaticamen=
-te inscrito/a.
-Mas informacion del curso en http://www.hipnosischile.cl/magnetoterapia3.htm
-ESTE MISMO CURSO SE DARA EN LA SERENA EL DIA 27 de Enero de 18 a 21 hrs.
+On Wed, Jan 6, 2010 at 11:19 AM, Tony Lindgren <tony@atomide.com> wrote:
+> Hi,
+>
+> Looks like the driver is in mainline, so let's try to make it working..
+>
+> I've updated your patch to just check the return value of ioremap instead
+> of BUG_ON. I've also merged it with the mux patch, see below. Can you
+> please try it out and make sure everything is OK?
+>
 
-Un abrazo,
+Just finished testing it -- with the one fix in device.c that's
+covered in a different email thread, the changes work perfectly.
 
-Antonio Diaz L.
-Hipnosis  Chile
-www.hipnosischile.cl
-
-
----------------------------------------------------------------------------=
----
-This SF.Net email is sponsored by the Verizon Developer Community
-Take advantage of Verizon's best-in-class app development support
-A streamlined, 14 day to market process makes app distribution fast and easy
-Join now and get one step closer to millions of Verizon customers
-http://p.sf.net/sfu/verizon-dev2dev =
+- Cory

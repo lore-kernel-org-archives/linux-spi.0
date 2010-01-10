@@ -1,121 +1,55 @@
-From: =?UTF-8?B?TsOpbWV0aCBNw6FydG9u?= <nm127@freemail.hu>
-Subject: [PATCH] spi: make Open Firmware device id constant
-Date: Sun, 10 Jan 2010 13:14:14 +0100
-Message-ID: <4B49C496.2090507@freemail.hu>
+From: Cory Maccarrone <darkstar6262-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] Input: Add tsc2046 touchscreen
+	driver
+Date: Sun, 10 Jan 2010 15:07:02 -0800
+Message-ID: <6cb013311001101507s42f21679l87ccbea6fd06d8b8@mail.gmail.com>
+References: <1260736754-374-1-git-send-email-darkstar6262@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net,
-	LKML <linux-kernel@vger.kernel.org>, cocci@diku.dk
-To: David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <cocci-bounces@diku.dk>
-List-Unsubscribe: <http://lists.diku.dk/mailman/listinfo/cocci>,
-	<mailto:cocci-request@diku.dk?subject=unsubscribe>
-List-Archive: <http://lists.diku.dk/pipermail/cocci>
-List-Post: <mailto:cocci@diku.dk>
-List-Help: <mailto:cocci-request@diku.dk?subject=help>
-List-Subscribe: <http://lists.diku.dk/mailman/listinfo/cocci>,
-	<mailto:cocci-request@diku.dk?subject=subscribe>
-Sender: cocci-bounces@diku.dk
-Errors-To: cocci-bounces@diku.dk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1260736754-374-1-git-send-email-darkstar6262-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: M=C3=A1rton N=C3=A9meth <nm127@freemail.hu>
-
-The match_table field of the struct of_device_id is constant in <linux/of=
-_platform.h>
-so it is worth to make the initialization data constant.
-
-The semantic match that finds this kind of pattern is as follows:
-(http://coccinelle.lip6.fr/)
-
-// <smpl>
-@r@
-disable decl_init,const_decl_init;
-identifier I1, I2, x;
-@@
-	struct I1 {
-	  ...
-	  const struct I2 *x;
-	  ...
-	};
-@s@
-identifier r.I1, y;
-identifier r.x, E;
-@@
-	struct I1 y =3D {
-	  .x =3D E,
-	};
-@c@
-identifier r.I2;
-identifier s.E;
-@@
-	const struct I2 E[] =3D ... ;
-@depends on !c@
-identifier r.I2;
-identifier s.E;
-@@
-+	const
-	struct I2 E[] =3D ...;
-// </smpl>
-
-Signed-off-by: M=C3=A1rton N=C3=A9meth <nm127@freemail.hu>
-Cc: Julia Lawall <julia@diku.dk>
-Cc: cocci@diku.dk
----
-diff -u -p a/drivers/spi/xilinx_spi_of.c b/drivers/spi/xilinx_spi_of.c
---- a/drivers/spi/xilinx_spi_of.c 2010-01-07 19:08:45.000000000 +0100
-+++ b/drivers/spi/xilinx_spi_of.c 2010-01-08 09:11:27.000000000 +0100
-@@ -99,7 +99,7 @@ static int __exit xilinx_spi_of_remove(s
- 	return xilinx_spi_remove(op);
- }
-
--static struct of_device_id xilinx_spi_of_match[] =3D {
-+static const struct of_device_id xilinx_spi_of_match[] =3D {
- 	{ .compatible =3D "xlnx,xps-spi-2.00.a", },
- 	{ .compatible =3D "xlnx,xps-spi-2.00.b", },
- 	{}
-diff -u -p a/drivers/spi/mpc52xx_spi.c b/drivers/spi/mpc52xx_spi.c
---- a/drivers/spi/mpc52xx_spi.c 2010-01-07 19:08:45.000000000 +0100
-+++ b/drivers/spi/mpc52xx_spi.c 2010-01-08 09:11:55.000000000 +0100
-@@ -550,7 +550,7 @@ static int __devexit mpc52xx_spi_remove(
- 	return 0;
- }
-
--static struct of_device_id mpc52xx_spi_match[] __devinitdata =3D {
-+static const struct of_device_id mpc52xx_spi_match[] __devinitconst =3D =
-{
- 	{ .compatible =3D "fsl,mpc5200-spi", },
- 	{}
- };
-diff -u -p a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.=
-c
---- a/drivers/spi/mpc52xx_psc_spi.c 2010-01-07 19:08:45.000000000 +0100
-+++ b/drivers/spi/mpc52xx_psc_spi.c 2010-01-08 09:13:23.000000000 +0100
-@@ -503,7 +503,7 @@ static int __exit mpc52xx_psc_spi_of_rem
- 	return mpc52xx_psc_spi_do_remove(&op->dev);
- }
-
--static struct of_device_id mpc52xx_psc_spi_of_match[] =3D {
-+static const struct of_device_id mpc52xx_psc_spi_of_match[] =3D {
- 	{ .compatible =3D "fsl,mpc5200-psc-spi", },
- 	{ .compatible =3D "mpc5200-psc-spi", }, /* old */
- 	{}
-diff -u -p a/drivers/spi/spi_ppc4xx.c b/drivers/spi/spi_ppc4xx.c
---- a/drivers/spi/spi_ppc4xx.c 2009-12-03 04:51:21.000000000 +0100
-+++ b/drivers/spi/spi_ppc4xx.c 2010-01-08 09:13:36.000000000 +0100
-@@ -578,7 +578,7 @@ static int __exit spi_ppc4xx_of_remove(s
- 	return 0;
- }
-
--static struct of_device_id spi_ppc4xx_of_match[] =3D {
-+static const struct of_device_id spi_ppc4xx_of_match[] =3D {
- 	{ .compatible =3D "ibm,ppc4xx-spi", },
- 	{},
- };
-_______________________________________________
-Cocci mailing list
-Cocci@diku.dk
-http://lists.diku.dk/mailman/listinfo/cocci
-(Web access from inside DIKUs LAN only)
+T24gU3VuLCBEZWMgMTMsIDIwMDkgYXQgMTI6MzkgUE0sIENvcnkgTWFjY2Fycm9uZQo8ZGFya3N0
+YXI2MjYyQGdtYWlsLmNvbT4gd3JvdGU6Cj4gVGhpcyBjaGFuZ2UgaW1wbGVtZW50cyBhIG5ldyBk
+cml2ZXIgZm9yIHRoZSBUU0MyMDQ2LXNlcmllcwo+IHRvdWNoc2NyZWVuIGZvdW5kIG9uIG1hbnkg
+SFRDIE9NQVA4NTAtYmFzZWQgc21hcnRwaG9uZXMuCj4gVGhpcyBkcml2ZXIgZGlmZmVycyBmcm9t
+IHRoZSBBRFM3ODQ2IGluIHRoYXQgaXQgdXNlcyAxNi1iaXQKPiBjb21tYW5kcyBpbnN0ZWFkIG9m
+IDgtYml0LCBhbmQgZG9lcyBub3QgaW5jbHVkZSB0ZW1lcmF0dXJlCj4gb3Igdm9sdGFnZSBzZW5z
+aW5nIGNhcGFiaWxpdGllcy4KPgo+IFRoaXMgZHJpdmVyIHdhcyBzdWJtaXR0ZWQgaW4gTWF5IG9m
+IDIwMDcgdG8gdGhlIGxpbnV4LW9tYXAKPiBsaXN0IGF0Ogo+Cj4gaHR0cDovL2xpbnV4Lm9tYXAu
+Y29tL3BpcGVybWFpbC9saW51eC1vbWFwLW9wZW4tc291cmNlLzIwMDctTWF5LzAwOTc0NS5odG1s
+Cj4KPiBUaGlzIGlzIGEgcmVzdWJtaXQgb2YgdGhpcyBkcml2ZXIsIHdpdGggYWRkaXRpb25zIHRo
+YXQgYWxsb3dzCj4gdGhlIGluamVjdGlvbiBvZiBwb2ludGVyY2FsIHBhcmFtZXRlcnMgZnJvbSB0
+c2xpYiB0aHJvdWdoCj4gL3N5cy4gwqBUaGlzIHdhcyBkb25lIGZvciB0aGUgV2luZyBMaW51eCBw
+cm9qZWN0IHByaW1hcmlseSB0bwo+IGFsbG93IHRoaXMgdG91Y2hzY3JlZW4gdG8gd29yayB3aXRo
+IEFuZHJvaWQsIGJ1dCBpdCdzIHVzZWZ1bCBmb3IKPiBhbnkgdXNlcnNwYWNlIHRoYXQgZG9lc24n
+dCBzdXBwb3J0IHRzbGliIGNhbGlicmF0aW9uLiDCoFBvaW50ZXJjYWwKPiB1c2UgaXMgb3B0aW9u
+YWwgLS0gaXQgcHJvZHVjZXMgcmF3IHBhcmFtZXRlcnMgdW5sZXNzIHRoZSB1c2VfcG9pbnRlcmNh
+bAo+IC9zeXMgZmlsZSBpcyBzZXQgdG8gMS4KPgo+IFRob3VnaCB0aGlzIGRyaXZlciB3YXMgcHJl
+dmlvdXNseSBzdWJtaXR0ZWQgdG8gbGludXgtb21hcCwgdGhlcmUKPiBpcyBub3RoaW5nIG9tYXAt
+c3BlY2lmaWMgaW4gdGhpcyBkcml2ZXIuCj4KPiBTaWduZWQtb2ZmLWJ5OiBDb3J5IE1hY2NhcnJv
+bmUgPGRhcmtzdGFyNjI2MkBnbWFpbC5jb20+CgpJIGhhdmVuJ3QgaGVhcmQgYW55dGhpbmcgb24g
+dGhpcyB5ZXQsIHNvIEkgd2FudCB0byBnaXZlIGEgZ2VudGxlIHBva2UuCiBBbnkgY2hhbmNlIG9m
+IHRoaXMgbWFraW5nIGl0IGluIGZvciAuMzMsIG9yIGhhcyB0aGlzIHBhdGNoIGFscmVhZHkKbWlz
+c2VkIHRoYXQgd2luZG93PwoKVGhhbmtzCkNvcnkKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlz
+IFNGLk5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgdGhlIFZlcml6b24gRGV2ZWxvcGVyIENvbW11
+bml0eQpUYWtlIGFkdmFudGFnZSBvZiBWZXJpem9uJ3MgYmVzdC1pbi1jbGFzcyBhcHAgZGV2ZWxv
+cG1lbnQgc3VwcG9ydApBIHN0cmVhbWxpbmVkLCAxNCBkYXkgdG8gbWFya2V0IHByb2Nlc3MgbWFr
+ZXMgYXBwIGRpc3RyaWJ1dGlvbiBmYXN0IGFuZCBlYXN5CkpvaW4gbm93IGFuZCBnZXQgb25lIHN0
+ZXAgY2xvc2VyIHRvIG1pbGxpb25zIG9mIFZlcml6b24gY3VzdG9tZXJzCmh0dHA6Ly9wLnNmLm5l
+dC9zZnUvdmVyaXpvbi1kZXYyZGV2IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,15 +1,12 @@
-From: Cory Maccarrone <darkstar6262-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] Input: Add tsc2046 touchscreen
-	driver
-Date: Sun, 10 Jan 2010 15:07:02 -0800
-Message-ID: <6cb013311001101507s42f21679l87ccbea6fd06d8b8@mail.gmail.com>
-References: <1260736754-374-1-git-send-email-darkstar6262@gmail.com>
+From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
+Subject: nitin vishnoi invites you to join Ecademy
+Date: Mon, 11 Jan 2010 03:21:23 +0000 (GMT)
+Message-ID: <20100111032123.695E7D9813C@ecweb2.ecademy.com>
+Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============7639275735130964027=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1260736754-374-1-git-send-email-darkstar6262-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,36 +17,92 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU3VuLCBEZWMgMTMsIDIwMDkgYXQgMTI6MzkgUE0sIENvcnkgTWFjY2Fycm9uZQo8ZGFya3N0
-YXI2MjYyQGdtYWlsLmNvbT4gd3JvdGU6Cj4gVGhpcyBjaGFuZ2UgaW1wbGVtZW50cyBhIG5ldyBk
-cml2ZXIgZm9yIHRoZSBUU0MyMDQ2LXNlcmllcwo+IHRvdWNoc2NyZWVuIGZvdW5kIG9uIG1hbnkg
-SFRDIE9NQVA4NTAtYmFzZWQgc21hcnRwaG9uZXMuCj4gVGhpcyBkcml2ZXIgZGlmZmVycyBmcm9t
-IHRoZSBBRFM3ODQ2IGluIHRoYXQgaXQgdXNlcyAxNi1iaXQKPiBjb21tYW5kcyBpbnN0ZWFkIG9m
-IDgtYml0LCBhbmQgZG9lcyBub3QgaW5jbHVkZSB0ZW1lcmF0dXJlCj4gb3Igdm9sdGFnZSBzZW5z
-aW5nIGNhcGFiaWxpdGllcy4KPgo+IFRoaXMgZHJpdmVyIHdhcyBzdWJtaXR0ZWQgaW4gTWF5IG9m
-IDIwMDcgdG8gdGhlIGxpbnV4LW9tYXAKPiBsaXN0IGF0Ogo+Cj4gaHR0cDovL2xpbnV4Lm9tYXAu
-Y29tL3BpcGVybWFpbC9saW51eC1vbWFwLW9wZW4tc291cmNlLzIwMDctTWF5LzAwOTc0NS5odG1s
-Cj4KPiBUaGlzIGlzIGEgcmVzdWJtaXQgb2YgdGhpcyBkcml2ZXIsIHdpdGggYWRkaXRpb25zIHRo
-YXQgYWxsb3dzCj4gdGhlIGluamVjdGlvbiBvZiBwb2ludGVyY2FsIHBhcmFtZXRlcnMgZnJvbSB0
-c2xpYiB0aHJvdWdoCj4gL3N5cy4gwqBUaGlzIHdhcyBkb25lIGZvciB0aGUgV2luZyBMaW51eCBw
-cm9qZWN0IHByaW1hcmlseSB0bwo+IGFsbG93IHRoaXMgdG91Y2hzY3JlZW4gdG8gd29yayB3aXRo
-IEFuZHJvaWQsIGJ1dCBpdCdzIHVzZWZ1bCBmb3IKPiBhbnkgdXNlcnNwYWNlIHRoYXQgZG9lc24n
-dCBzdXBwb3J0IHRzbGliIGNhbGlicmF0aW9uLiDCoFBvaW50ZXJjYWwKPiB1c2UgaXMgb3B0aW9u
-YWwgLS0gaXQgcHJvZHVjZXMgcmF3IHBhcmFtZXRlcnMgdW5sZXNzIHRoZSB1c2VfcG9pbnRlcmNh
-bAo+IC9zeXMgZmlsZSBpcyBzZXQgdG8gMS4KPgo+IFRob3VnaCB0aGlzIGRyaXZlciB3YXMgcHJl
-dmlvdXNseSBzdWJtaXR0ZWQgdG8gbGludXgtb21hcCwgdGhlcmUKPiBpcyBub3RoaW5nIG9tYXAt
-c3BlY2lmaWMgaW4gdGhpcyBkcml2ZXIuCj4KPiBTaWduZWQtb2ZmLWJ5OiBDb3J5IE1hY2NhcnJv
-bmUgPGRhcmtzdGFyNjI2MkBnbWFpbC5jb20+CgpJIGhhdmVuJ3QgaGVhcmQgYW55dGhpbmcgb24g
-dGhpcyB5ZXQsIHNvIEkgd2FudCB0byBnaXZlIGEgZ2VudGxlIHBva2UuCiBBbnkgY2hhbmNlIG9m
-IHRoaXMgbWFraW5nIGl0IGluIGZvciAuMzMsIG9yIGhhcyB0aGlzIHBhdGNoIGFscmVhZHkKbWlz
-c2VkIHRoYXQgd2luZG93PwoKVGhhbmtzCkNvcnkKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlz
-IFNGLk5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgdGhlIFZlcml6b24gRGV2ZWxvcGVyIENvbW11
-bml0eQpUYWtlIGFkdmFudGFnZSBvZiBWZXJpem9uJ3MgYmVzdC1pbi1jbGFzcyBhcHAgZGV2ZWxv
-cG1lbnQgc3VwcG9ydApBIHN0cmVhbWxpbmVkLCAxNCBkYXkgdG8gbWFya2V0IHByb2Nlc3MgbWFr
-ZXMgYXBwIGRpc3RyaWJ1dGlvbiBmYXN0IGFuZCBlYXN5CkpvaW4gbm93IGFuZCBnZXQgb25lIHN0
-ZXAgY2xvc2VyIHRvIG1pbGxpb25zIG9mIFZlcml6b24gY3VzdG9tZXJzCmh0dHA6Ly9wLnNmLm5l
-dC9zZnUvdmVyaXpvbi1kZXYyZGV2IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+This is a multi-part message in MIME format.
+
+--===============7639275735130964027==
+Content-Type: multipart/alternative;
+	boundary="EC_3cc289c00f33fbd0337bb75a59a5ef07"
+
+This is a multi-part message in MIME format.
+
+--EC_3cc289c00f33fbd0337bb75a59a5ef07
+Content-Type: text/plain;
+	charset="iso-8859-1"
+
+Hi,
+
+Join Ecademy now for business networking and support >
+
+- Share Knowledge
+- Build your Network
+- Grow your Business
+
+thanks,
+nitin vishnoi
+nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+
+
+This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To avoid receiving these emails in the future send an email from that address to
+invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
+or go to
+http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
+Email:support-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org Company Registration:3651083 VAT:718 0377 36
+
+
+--EC_3cc289c00f33fbd0337bb75a59a5ef07
+Content-Type: text/html;
+	charset="iso-8859-1"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<body><table width="589" border="0" cellpadding="5"><tr><td valign="top"><a href="http://www.ecademy.com/account.php?id=517814&xref=517814" title="Sign up and join this person's network on Ecademy"></a></td><td valign="top"><span style="font-family:Arial,Helvetica,sans-serif;color:#333333;"><a href="http://www.ecademy.com/account.php?op=signup&xref=517814"><img alt="Ecademy - connecting business people" src="http://www.ecademy.com/images/logos/ecademy_101_27.gif" width="101" height="27" border="0" align="right"></a>Hi,<br />
+<br />
+<b><a href="http://www.ecademy.com/account.php?op=signup&xref=517814">Join Ecademy now for business networking and support ></a></b><br />
+<br />
+- Share Knowledge<br />
+- Build your Network<br />
+- Grow your Business<br />
+<br />
+thanks,<br />
+nitin vishnoi<br />
+nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org<br />
+<br />
+</span></td></tr><tr><td colspan="2"><span style="font-family:Arial,Helvetica,sans-serif;color:#333333;font-size:x-small"><br />
+<hr size="1" color="#33ccff" />This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org<br />
+To avoid receiving these emails in the future send an email from that address to<br />
+<strong><a href="mailto:invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org">invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org</a></strong><br />
+or go to<br />
+<strong><a href="http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org">http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org</a></strong>      <br />
+Email:support-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org Company Registration:3651083 VAT:718 0377 36</span></td></tr></table><br />
+
+</body>
+</html>
+
+--EC_3cc289c00f33fbd0337bb75a59a5ef07--
+
+
+--===============7639275735130964027==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF.Net email is sponsored by the Verizon Developer Community
+Take advantage of Verizon's best-in-class app development support
+A streamlined, 14 day to market process makes app distribution fast and easy
+Join now and get one step closer to millions of Verizon customers
+http://p.sf.net/sfu/verizon-dev2dev 
+--===============7639275735130964027==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7639275735130964027==--

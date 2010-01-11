@@ -1,295 +1,718 @@
-From: criterion <ignatignatovich-4FdXya5EiA9Wk0Htik3J/w@public.gmane.org>
-Subject: [SPAM] Прием триединого манипулирования.
-Date: Mon, 11 Jan 2010 21:20:30 +0300
-Message-ID: <1707948006.20100111212030@vikentiy.com>
+From: Steven King <sfking@fdwdc.com>
+Subject: [PATCH] m68knommu: Freescale/Motorola Coldfire QSPI driver
+Date: Mon, 11 Jan 2010 12:33:47 -0800
+Message-ID: <201001111233.48173.sfking@fdwdc.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0999931843354744174=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Greg Ungerer <gerg@snapgear.com>
+Return-path: <linux-kernel-owner+glk-linux-kernel-3=40m.gmane.org-S1754298Ab0AKUdx@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0999931843354744174==
-Content-Type: multipart/related;
-	boundary="----=_NextPart_000_0004_1825E14A.8CB25F2D"
+Add support for the QSPI controller found some on Freescale/Motorola
+Coldfire MCUs.
 
-------=_NextPart_000_0004_1825E14A.8CB25F2D
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+Full duplex, active high cs, spi modes 0-3 and word sizes 8-16 bits are
+supported.  The hardware drives the MISO, MOSI and SCLK lines, but the chip
+selects are managed via GPIO and must be configured by the board code.
 
-PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
-bmFsLy9FTiI+DQoNCjxodG1sPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50
-LVR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD13aW5kb3dzLTEyNTEiPg0KPHN0
-eWxlIHR5cGU9InRleHQvY3NzIiBtZWRpYT0ic2NyZWVuIj4NCnRhYmxlIHsgZm9udC1zaXpl
-OiAxMnB4OyBjb2xvcjogIzAwMDAwMDsgZm9udC1mYW1pbHk6IFZlcmRhbmEsIEdlbmV2YSwg
-QXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgdGV4dC1kZWNvcmF0aW9uOiBub25lOyBi
-YWNrZ3JvdW5kOiAjZmZmZmZmOyB9CQkNCm9sIGxpIHtmb250LXNpemU6IDEycHg7fQ0KYm9k
-eSx0ZCx0aCB7DQoJZm9udC1mYW1pbHk6IFZlcmRhbmEsIEdlbmV2YSwgQXJpYWwsIEhlbHZl
-dGljYSwgc2Fucy1zZXJpZjsNCglmb250LXNpemU6IDEycHg7DQoJY29sb3I6ICMwMDA7DQp9
-DQpib2R5IHsNCgliYWNrZ3JvdW5kLWNvbG9yOiAjRkZGRkZGOw0KfQ0KPC9zdHlsZT4NCjwv
-aGVhZD4NCjxib2R5IGxlZnRtYXJnaW49IjAiIG1hcmdpbmhlaWdodD0iMCIgbWFyZ2lud2lk
-dGg9IjAiIHRvcG1hcmdpbj0iMCI+DQo8dGFibGUgY2VsbHNwYWNpbmc9IjAiIGNlbGxwYWRk
-aW5nPSIwIiB3aWR0aD0iMTAxJSIgYm9yZGVyPSIwIj4NCjx0cj4NCjx0ZCBiZ2NvbG9yPSIj
-MDAwMDg4IiBzdHlsZT0icGFkZGluZy1sZWZ0OiAxMXB4OyBwYWRkaW5nLXJpZ2h0OiAxMHB4
-OyBwYWRkaW5nLXRvcDogMTBweDsgcGFkZGluZy1ib3R0b206IDEwcHg7Ij4NCjxmb250IHNp
-emU9IjQiIGNvbG9yPSIjZmZmZmZlIj48Yj4iS2/j5OAgq81F0rsg73Dl4vBh+eBl8vH/IOIg
-q8TAuzo8L2I+PC9mb250Pjxicj4NCjxmb250IHNpemU9IjQiIGNvbG9yPSIjZmZmZmZlIj48
-Yj4mbmJzcDsmbmJzcDvo6+gg8ODh7vJhIPEg4u7n8GHmZe3o/+zoIOggY2/s7WXt6P/s6CDq
-6+jl7fLgIjwvYj48L2ZvbnQ+PC90ZD4NCjwvdHI+DQo8dHI+DQo8dGQgYmdjb2xvcj0iI0Y5
-RjlGOSIgc3R5bGU9InBhZGRpbmctbGVmdDogMTFweDsgcGFkZGluZy1yaWdodDogMTBweDsg
-cGFkZGluZy10b3A6IDEwcHg7IHBhZGRpbmctYm90dG9tOiAxMHB4OyI+DQogIDxwIGFsaWdu
-PSJsZWZ0Ij48Zm9udCBjb2xvcj0iIzNENTczRCI+PHN0cm9uZz4yMSD/7eJh8P88L3N0cm9u
-Zz48L2ZvbnQ+PC9wPg0KICA8cCBhbGlnbj0ibGVmdCI+PGZvbnQgY29sb3I9IiMzRDU3M0Qi
-PuMuIMroZeIsIOHz6/ziLiDY5eL35e3qbywgNDwvZm9udD48L3A+DQogIDxwIGFsaWduPSJs
-ZWZ0IiBzdHlsZT0ibWFyZ2luLWJvdHRvbTogNnB4Ij48Zm9udCBjb2xvcj0iIzNENTczRCI+
-PHN0cm9uZz7SZesuOiAwPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6
-IDFweDsiPus8L2ZvbnQ+NDxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXpl
-OiAxcHg7Ij7wPC9mb250PjQgMjxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1z
-aXplOiAxcHg7Ij7iPC9mb250PjM8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQt
-c2l6ZTogMXB4OyI+4TwvZm9udD43LTk8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZv
-bnQtc2l6ZTogMXB4OyI+4jwvZm9udD4wLTA8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9
-ImZvbnQtc2l6ZTogMXB4OyI+8DwvZm9udD41IC8gMjxmb250IGNvbG9yPSIjRkZGRkZGIiBz
-dHlsZT0iZm9udC1zaXplOiAxcHg7Ij7kPC9mb250PjM8Zm9udCBjb2xvcj0iI0ZGRkZGRiIg
-c3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+5DwvZm9udD4zLTQ8Zm9udCBjb2xvcj0iI0ZGRkZG
-RiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+9zwvZm9udD42LTY8Zm9udCBjb2xvcj0iI0ZG
-RkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+8jwvZm9udD45PC9zdHJvbmc+PC9mb250
-PjwvcD4NCiAgPC90ZD4NCjwvdHI+DQo8dHI+DQo8dGQgc3R5bGU9InBhZGRpbmctbGVmdDog
-MTFweDsgcGFkZGluZy1yaWdodDogN3B4OyBwYWRkaW5nLXRvcDogMTZweDsgcGFkZGluZy1i
-b3R0b206IDEwcHg7Ij48Zm9udCBjb2xvcj0iIzNENTczRCI+PHN0cm9uZz7WZetl4mH/IODz
-5Ojyb/Do/zo8L3N0cm9uZz48L2ZvbnQ+PGJyPg0KICAmbmJzcDsmbmJzcDuVIM7h8/dl7ehl
-IO/w5eTtYeft4Pdl7SDk6/8g8PPq7uLu5OjyZetl6Swg7WH34Ov87ejq7uIg7vLkZevu4iDv
-cO7k4OYsIOxl7WXk5mXwb+Ig728g8GHh7vLlIPEg6uvoZe3y4OzoLCDgIPJh6uZlIO/w7uTg
-4vbu4iDu7/Jv4vv1IOgg8O7n7ej37ft4IO9wb+Rh5i48L3A+DQogIDxwPjxmb250IGNvbG9y
-PSIjM0Q1NzNEIj48c3Ryb25nPtZl6/wg6CDnYeTg9+g6PC9zdHJvbmc+PC9mb250Pjxicj4N
-CiAgJm5ic3A7Jm5ic3A7lSDR9G9w7Ojwb+Jh8vwg6vPr/PLzcPMg6CDyb+vlcODt8u1v8fL8
-IOIg8ODh7vLlIPEg4m/n8ODm5e3o/+zoIMrr6GXt8m/iICDq4Oog7mPtb+Lt7ukg72/q4Odh
-8mXr/CDo7Ojk5uAg6CDw5e/z8uD26Ogg6m/s72Ht6Og8YnI+DQogICAgJm5ic3A7Jm5ic3A7
-lSDPcO7k5ezu7fHycOjwb+Lg8vwgIPP3YfHy7ejq4Owg8nBl7ejt42Eg73DocG/k8yDoIO/w
-6Pfo7fsg4m/n8ODm5e3o6Txicj4NCiAgICAmbmJzcDsmbmJzcDuVIFBh5+Lo8vwg7/Du9OVj
-Y+hv7WHr/O375SDoIO/x6Hhv6+7j6Pfl8ero5SDqYfdl8fLiYSwg8e/uY+7h8fLi8/756OUg
-43Dg7G/y7e7pIHDg4e7yZSBjIOLu53Bh5mXt6P/s6CBL6+jl7fLu4jxicj4NCiAgICAmbmJz
-cDsmbmJzcDuVIE/x4u7o8vwg8ODn6+j37fvlIPJleO3o6ugg6CDy4Ory6OroIO/wZeLwYfll
-7ej/IOLu53Bh5mXt6Okg4iDib+fsb+bt7vHy/CDk6/8g7/Bv5ODm6CDy7uJhcO7iL/Nj6/Pj
-IOpv7O9h7ejoLjwvcD4NCiAgPGg1IHN0eWxlPSJtYXJnaW4tdG9wOiAxMHB4OyBtYXJnaW4t
-Ym90dG9tOiA3cHg7IEJPUkRFUi1CT1RUT006ICNiYmJiYmIgMXB4IHNvbGlkOyBmb250LXNp
-emU6IDE0cHg7Ij48Zm9udCBjb2xvcj0iIzAwMDA4OCI+PGI+z1DOw1BBzE3APC9iPjwvZm9u
-dD48L2g1Pg0KPG9sPg0KICA8cD48c3Ryb25nPjEuIM9w6HBv5GEg6CDvcOj36O37IOJv5/Dg
-5uXt6Ok8L3N0cm9uZz48YnI+DQogICAgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7S2HqIHDu
-5uRh/vLx/yDib+dw4Obl7ej/LiDU5e3u7GXtIMrwb/Pr6C48YnI+DQogICAgJm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7yOPw4CCr0W/hYephIMNhcPDouy48YnI+DQogICAgJm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7zu/wZeTl62Xt6OUg8e7hY/Li5e3t7uNvIPHy6Ov/IHDg4e7y+yDx
-IOJv5/Bh5uXt6P/s6C4gVOXx8iCrzO3lIOLu53Bh5uD+8oW7LiDA7eDr6Ocg6CDq7vDw5er2
-6P8g7vjo4W/qIPLw5e1lcO7sLjxicj4NCiAgICAmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDvP
-b/fl7PMgyuvo5e3y+yDib+fwYebg/vI/IMjj8GEgq9PsZe3o5SBj6/P4YfL8uy4gKMfg7+jx
-/CDt4CDi6OTlb+ph7GVw8yDxIO9vY+tl5PP++ejsIODtYevo52/sIPJw5e3l8OApLjxicj4N
-CiAgICAmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDtU8Ogg7/Du9mXx8eAgY2/n5ODt6P8gY/Ph
-+uXq8uji7W/pIOrgcPL7IPDl4Ov87e7x8uguIMpv7fbl7/bo/yDx5OLo4+Ag7+DwYeTo4+z7
-IEMuIEvu4ugg4iBwYeFv8mUg8SDib+dwYeZl7ej/7OguPC9wPg0KICA8cD48c3Ryb25nPjIu
-IM/wb/RlY2Pob+1h6/zt+2Ug6mH3ZfHy4uAg6CDv8ej1b+tv4+j3ZWPq6OUg8uX17ejq6CDi
-IHDg4e7yZSBjIOJv53Bh5uXt6P/s6Dwvc3Ryb25nPjxicj4NCiAgICAmbmJzcDsmbmJzcDsm
-bmJzcDsmbmJzcDvI4/BhIKtB5PHq6OUg4WH47ei7LiDHYe/o8fwg7WEg4ujkZW/qYezl8PMg
-8SDvb2PrZeTz/vno7CDg7eDr6Ofu7CDycGXtZfBhLiA8YnI+DQogICAgJm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7z3Do8vdhIO4g+OVj8ugg7PPkcOX2YXguPGJyPg0KICAgICZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwO1Rv62Vw4O3y7e5j8vwg4iDw4OFv8uUgYyDib+fw4Obl7ej/7Ogu
-PGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO9Pv8ODm7eXt6OUgq8L7Le9v5Hju
-5LsuPGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO89w6O326O8g/ezv4PLo6CDi
-IPBh4e7yZSDxIOLu53Bh5uXt6P/s6C48YnI+DQogICAgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A70+9w4ObtZe3o5SCr3y3vb+R47uS7Ljxicj4NCiAgICAmbmJzcDsmbmJzcDsmbmJzcDsm
-bmJzcDvPcGHi6OtvIENv6vDg8mEuIM/w7uLl5GXt6GUg8+/wYebtZe3o/y48YnI+DQogICAg
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A73fT05eryIM/o4+zg6+hv7eAg4iDw4OHu8uUg8SDi
-b+fw4Obl7ej/7OguIM/wb+Jl5GXt6OUg8+9w4Obt5e3o/y48YnI+DQogICAgJm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7yONw4CCrQ+DsYSDvbyBj5eHluy48L3A+DQogIDxwPjxzdHJvbmc+
-My4gz/Dg4ujrYSDw4OHu8vsg8SDib+fw4Obl7ej/7OggS+voZe3yb+I8L3N0cm9uZz48YnI+
-DQogICAgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7yONw4CCrxOLgIO/r5ezl7ei7LiDHYe/o
-Y/wg7WEg4ujkZW/qYexl8PMuPGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOzEy
-IPLo7+7iIOLu53Bh5mXt6OkuIMhj8ujt7fvlIOgg62/m7ftlIOLu5/Bh5mXt6P8uIFTl9e3o
-6ugg8GHn6+j35e3o/yDr7ubtb+NvIOgg6GPy6O3tb+PuIOJv5/Dg5uXt6P8uPGJyPg0KICAg
-ICZuYnNwOyZuYnNwO5Ug0mX17ejq4CCrz/Dl5O/u62/m6Oy7PGJyPg0KICAgICZuYnNwOyZu
-YnNwO5Ug0uV47ejqYSCr1/JvIJYg7ejh8+T8IOX55T+7PGJyPg0KICAgICZuYnNwOyZuYnNw
-O5Ug0mV47ejq4CCryPHq8OXt7e5j8vy7PGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwOyZu
-YnNwO8/wb+Ll5GXt6OUg8+/wYebt5e3o6SDt4CDu8nDg4e7y6vMg4vv45e3g5+Jh7e379SDy
-ZfXt6OouPGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO0Lu53Bh5mXt6P8g6CDu
-8uPu4u7w6uguPGJyPg0KICAgICZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO0Hr4+7w6PLs+yBw
-4OHu8vsg8SDi7ufw4OZl7ej/7Og8YnI+DQogICAgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-z3DoZewgq0hv4+Ag4iDk4mVw/Lsg6OvoIPhl8fL8IOrrYWNj6PflY+roeCD44ONv4iDiIPDg
-4e7yZSDxIOJv5/Dg5mXt6P/s6Dxicj4NCiAgICAmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDtD
-9mXt4HDo6CDwYeHu8vsgYyDi7ufwYebl7ej/7Og8L3A+DQogIDxwPjxlbT48c3Ryb25nPt3y
-7iDkb/Du428g6OvoIOLu53Bh5uXt6GUg728g9uXt5S48L3N0cm9uZz48L2VtPjxicj4NCiAg
-ICAmbmJzcDsmbmJzcDuVIM/wYeLo628gq9HiZeTl7ehlIOog7/Nj8v/q87suPGJyPg0KICAg
-ICZuYnNwOyZuYnNwO5UgzGXy7uQgweXt5Obg7Ojt4CDUcODt6uvo7WEuPGJyPg0KICAgICZu
-YnNwOyZuYnNwO5Ugz3DoZewg8vDo5eTo7W/jbyDsYe3o7/Pr6PDu4mHt6P8uPGJyPg0KICAg
-ICZuYnNwOyZuYnNwO5Ug0GHh7vLgIPHuIGPq6OTq7ukuPGJyPg0KICAgICZuYnNwOyZuYnNw
-OyZuYnNwOyZuYnNwO0Pvb/Fv4fsg7uHuY+3u4uDt6P8g9mXt+y48YnI+DQogICAgJm5ic3A7
-Jm5ic3A7lSDLb+Po92Xx6ujpIGPv7vHu4Txicj4NCiAgICAmbmJzcDsmbmJzcDuVIN3sb/bo
-7u1h6/zt++kg8e/uY+7hPGJyPg0KICAgICZuYnNwOyZuYnNwO5UgzOXy4PTu8Ps8YnI+DQog
-ICAgJm5ic3A7Jm5ic3A7lSDRY/vr6mEg7WEg7e7w7Psg6CDv8ODi6OvgPGJyPg0KICAgICZu
-YnNwOyZuYnNwO5Ugz3Bh4ujrbyDh8+xl8GHt4+A8YnI+DQogICAgJm5ic3A7Jm5ic3A7lSDR
-5OLo4yDiIOHz5PP55WU8YnI+DQogICAgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7KM/w7uLl
-5OXt6GUg4ujkZe7y8GXt6ONhIGMg729j62Xk8/756OwgYe1h6+jnb+wg8vDl7eXwYSkuPC9w
-Pg0KICA8cD48ZW0+PHN0cm9uZz5C7ufwYeZl7ehlIO/uIOru7erz8OXt8mHsLiCrzPsg8+Zl
-IHDg4W/yYeXsIGMg5HDz42/pIOru7O/g7ehl6Swg6CDt4PEg4mPlIPNj8vBh6OLg5fK7Ljwv
-c3Ryb25nPjwvZW0+PGJyPg0KICAgICZuYnNwOyZuYnNwO5Ugz/Do5ewgq89w7uny6Cwg7WUg
-7+7k7ejsYf8g4+th54W7PGJyPg0KICAgICZuYnNwOyZuYnNwO5UgTeXy7uQgq8Lx7+7s7ejy
-/CDv8O746+7luzxicj4NCiAgICAmbmJzcDsmbmJzcDuVIMzl8u7kIKtPLCD98u4g4m/r+OXh
-7WH/IPHr7uJvhSCrY+/l9uj06OphuyEuLjxicj4NCiAgICAmbmJzcDsmbmJzcDsmbmJzcDsm
-bmJzcDsoz/Du4uXkZe3oZSDi6ORlb/LwZe3o4+AgYyDvb2Pr5eTz/vno7CDg7WHr6Ofu7CDy
-8OXtZXBhKS48L3A+DQogIDxwPjxlbT48c3Ryb25nPkLu5/Dg5uXt6P8g728g6mH3ZWPy4vM6
-IPHv8GHi5eTr6OL7ZSDoICDs4O3o7/Pr//Lo4u375S48L3N0cm9uZz48L2VtPjxicj4NCiAg
-ICAmbmJzcDsmbmJzcDuVIMzl8m/kIP3qY+9l8Ojs5e3y4Ov87e7jbyDk7urg52Hy5ev88fLi
-4Dxicj4NCiAgICAmbmJzcDsmbmJzcDuVIDUg+ODj7uIg4iBw4OHu8mUg8W8gY+/wYeLl5Ovo
-4vvs6CDi7ufw4Obl7ej/7OguIM/wb+Ll5OXt6OUg8vDl7ejt4+AuPGJyPg0KICAgICZuYnNw
-OyZuYnNwO5UgVOV47ejqYSCr1GHq8vsg6CDy7uv86u4g9GHq8vu7IOIg8GHh7vJlIPEg7ODt
-6O/z6//y6OLt++zoIOJv53Bh5uXt6P/s6Dxicj4NCiAgICAmbmJzcDsmbmJzcDuVIE1l8u7k
-6OrgIKtIYeQt72/n6Pbo/7sg6OvoIKtUYery6OrgIODt4+vo6fHq6Okg73Du9GVjY+5wIOIg
-cGHhb/JlIGPuIGPq4O3kYev87fvsIEvr6GXt8u7sLjwvcD4NCiAgPHA+PGVtPjxzdHJvbmc+
-Qm/ncGHm5e3oZSDvbyDt5fH0b3Ds6HDu4mHt7e7pIO9v8nDl4e3uY/LoIOjr6CCrSODsIP3y
-7iDtZSDtYeRvuy4gPC9zdHJvbmc+PC9lbT48YnI+DQogICAgJm5ic3A7Jm5ic3A7lSDUb3Ds
-6HDu4uDt6OUg72/ycGXh7e7x8ugg4iDh8+Tz+WXsPGJyPg0KICAgICZuYnNwOyZuYnNwO5Ug
-q0Vj6+gg7eUg5Ov/IMLgYywg8m8g5Ov/IMJh+Oj1IOpv6+vl47s8YnI+DQogICAgJm5ic3A7
-Jm5ic3A7lSAgz/Do5ewgq9fy7iD/IPHk5evg6yDt5SDyYeo/uzwvcD4NCiAgPHA+PGZvbnQg
-Y29sb3I9IiMwMDAwODgiPjxzdHJvbmc+z1BPwkXERc3IRSBU0MXNyEjDQS48L3N0cm9uZz48
-L2ZvbnQ+PGJyPg0KICAgINRv8Ozz62Eg9G/w7Ojw7uLg7ej/IO9v8nBl4e3uY/Jl6SDiIPHu
-5+1h7ej/IMrr6OXt8u7iIEEtSS1ELUMtQS48L3A+DQo8L29sPg0KPGg1IHN0eWxlPSJtYXJn
-aW4tdG9wOiAxMHB4OyBtYXJnaW4tYm90dG9tOiA3cHg7IEJPUkRFUi1CT1RUT006ICNiYmJi
-YmIgMXB4IHNvbGlkOyBmb250LXNpemU6IDE0cHg7Ij48Zm9udCBjb2xvcj0iIzAwMDA4OCI+
-PGI+zMVUzsTbIFBBwc5U2zo8L2I+PC9mb250PjwvaDU+DQo8b2w+DQogIOjt8uXw4Ory6OLt
-+2Ug8+/w4ObtZe3o/ywg7Ojt6C3rZer26OgsIHBh4W/y4CDiIOzo7egt4/Dz7+/g9Swg6O3k
-6OLo5PPg6/zt++Ug8+9wYebtZe3o/ywgcG/rZeL7ZSDo43D7Lg0KPC9vbD4NCjxoNSBzdHls
-ZT0ibWFyZ2luLXRvcDogMTBweDsgbWFyZ2luLWJvdHRvbTogN3B4OyBCT1JERVItQk9UVE9N
-OiAjYmJiYmJiIDFweCBzb2xpZDsgZm9udC1zaXplOiAxNHB4OyI+PGZvbnQgY29sb3I9IiMw
-MDAwODgiPjxiPlTQxUhF0C1LT0hD08vc0kHNVDo8L2I+PC9mb250PjwvaDU+DQo8dWwgdHlw
-ZT0iZGlzYyI+DQo8Zm9udCBjb2xvcj0iIzAwMzNGRiI+yOLg7e7iYSBUYfL8/+3gPC9mb250
-Piwg5O7q8u5wIO9l5GHj7uPo92Vj6uj1IO1h8+osIO/w7vRlY/HucC4gReTo7fHy4mXt7fvp
-IOIg0+pw4OjtZSDh6OftZfEt8vDl7eVwLCDn4Pno8uji+OjpIORv6vJv8PHq8/4g5Ohj8eXw
-8mH26P4sIO9vY+L/+WXt7fP+IOxl8m/k6Oph7CDoIPLleO1v62/j6P/sIO9w7uLl5OXt6P8g
-8vDl7ejt4+7iLiAxMy3r5fLt6OkgY/Jh5iDvcG/i5eRl7ej/IOHo5+1l8S3ycOXt6O3jb+Ig
-4iDT6nBh6O3lLCBQb/Hx6OgsIMzu6+Tg4ujoLCDD5fDsYe3o6CwgyPDrYe3k6OguDQo8L3Vs
-Pg0KPGg1IHN0eWxlPSJtYXJnaW4tdG9wOiAxMHB4OyBtYXJnaW4tYm90dG9tOiA3cHg7IEJP
-UkRFUi1CT1RUT006ICNiYmJiYmIgMXB4IHNvbGlkOyBmb250LXNpemU6IDE0cHg7Ij48Zm9u
-dCBjb2xvcj0iIzAwMDA4OCI+PGI+UMXDy8DMRUhUPC9iPjwvZm9udD48L2g1Pg0KPHVsPg0K
-ICA8bGk+PGI+OS4zMDwvYj4tPGI+MTcuMzA8L2I+DQo8bGk+z+Vw5fD74iA8Yj4xMy4zMDwv
-Yj4tPGI+MTQuMzA8L2I+DQo8bGk+0OXj6GPy8OD26P8gYyA8Yj45LjMwPC9iPiDiIPVv6+tl
-LjwvdWw+DQoNCjxoNSBzdHlsZT0ibWFyZ2luLWJvdHRvbTogM3B4OyBCT1JERVItQk9UVE9N
-OiAjYmJiYmJiIDFweCBzb2xpZDsgZm9udC1zaXplOiAxNHB4OyI+PGZvbnQgY29sb3I9IiMw
-MDAwODgiPjxiPkPSzsjMT9HS3DwvYj48L2ZvbnQ+PC9oNT4NCjx1bD4NCjxsaT48Zm9udCBj
-b2xvcj0iI2NjMDAwMCI+PGI+ODUwLjAwIONw7S48L2I+IDwvZm9udD7n4CBv5O1v428g8/fg
-Y/Lt6OrgLg0KPGxpPsTr/yDi8m9wb+PuIOgg8vBl8vzl428g8/fg8fLt6OrgIGPq6OTq6CCX
-IDUlIOggNyUg8e7u8uJl8vHy4uXt7e4uDQo8bGk+PHN0cm9uZz48ZW0+wiBj8u7o7O5j8vwg
-4vXu5OjyOjwvZW0+PC9zdHJvbmc+IOjt9O7w7OD26O7t7e4t6u7t8fPr/PLg9uju7e1v5SBv
-4fHr8+bo4uDt6GUsIGPhb/Dt6Oog7ODy5XDo4Ovu4iwg6u705S3h8OXp6iwgb+Hl5CDiIHBl
-Y/Jv8GHt5Swg7uHx8+bk5e3o5SDkb+rr4OTu4iDoIO7h7GXtIOzt5e3o/+zoIPEg62Xq8u7w
-7uwuDQo8L3VsPg0KPGg1IHN0eWxlPSJtYXJnaW4tYm90dG9tOiAzcHg7IEJPUkRFUi1CT1RU
-T006ICNiYmJiYmIgMXB4IHNvbGlkOyBmb250LXNpemU6IDE0cHg7Ij48Zm9udCBjb2xvcj0i
-IzAwMDA4OCI+PGI+wcvIxsDJ2MjFIENFTchIQVDbIMggVFBFSMhIw8g8L2I+PC9mb250Pjwv
-aDU+DQo8dWw+DQogIDxsaT48c3Ryb25nPjIyIP/t4uDw/zwvc3Ryb25nPjxicj4NCs9wYery
-6Orz7CDyZetl9G/t7fv1IO9w7uTg5i4NCiAgJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7PGEg
-aHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNl
-bWluYXJ5L3lhbnZhci9wcmFrdGlrdW1fdGVsZWZvbm55aF9wcm9kYXpoLmh0bSIgc3R5bGU9
-ImNvbG9yOiMwMDAwMDAiPs9v5PDu4e1l5TwvYT4NCiAgPGltZyBzcmM9ImNpZDpyZXNvbmF0
-b3IuZ2lmIiB3aWR0aD0iOSIgaGVpZ2h0PSI5IiAvPg0KICA8L3VsPg0KPHVsPg0KICA8bGk+
-PHN0cm9uZz4yNCD/7eJh8P88L3N0cm9uZz48YnI+DQrM4PHyZfAt6uthY/E6PGJyPg0KPHN0
-cm9uZz6r08dIwMkg0UVL0MXSuzwvc3Ryb25nPjxicj4NCjxzdHJvbmc+0/fgY/Lt6OroIPTo
-6/zs4CCrQ+XqcOXyuyAoq1RoZSBTZWNyZXS7KTwvc3Ryb25nPiAgJm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7PGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2Vz
-L1RyZW5pbmdpLVNlbWluYXJ5L25veWFici91em5hal9zZWtyZXQuaHRtIiBzdHlsZT0iY29s
-b3I6IzAwMDAwMCI+z+7kcO7h7WVlPC9hPiA8aW1nIHNyYz0iY2lkOnJlc29uYXRvci5naWYi
-IHdpZHRoPSI5IiBoZWlnaHQ9IjkiIC8+DQogIDwvdWw+DQo8dWw+DQogIDxsaT48c3Ryb25n
-PjI2IP/t4mFw/zwvc3Ryb25nPjxicj4NCsjn7GXt5e3o/yDiIOdl7OXr/O1v7CDn4Oru7W/k
-4PJl6/xj8uLlLCDqb/LucPtlIOJj8vPvYf7yIOIgY+jr8yDiIORl6mHhcGUgMjAwOSDjb+Tg
-IOgg4iA8YnI+DQr/7eLg8OUgMjAxMCDjb+RhIJYg8+/wb/ll7e376SDv7vD/5G/qIO/w6O7h
-8OXyZe3o/yDv8ODiIO1hIOfl7Ov+IQ0KICAmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDs8YSBocmVmPSJodHRwOi8v
-d3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvZGVrYWJy
-L2l6bWVuZW5peWFfdl96ZW1lbG5vbV96YWtvbm9kYXRlbHN0dmUuaHRtIiBzdHlsZT0iY29s
-b3I6IzAwMDAwMCI+z+7kcO7h7WXlPC9hPiA8aW1nIHNyYz0iY2lkOnJlc29uYXRvci5naWYi
-IHdpZHRoPSI5IiBoZWlnaHQ9IjkiIC8+DQogIDwvdWw+DQo8aDUgc3R5bGU9IkJPUkRFUi1C
-T1RUT006ICNiYmJiYmIgMXB4IHNvbGlkOyBmb250LXNpemU6IDE0cHg7Ij4mbmJzcDs8L2g1
-Pg0KPHRhYmxlIHdpZHRoPSI2OTAiIGFsaWduPSJjZW50ZXIiPg0KICA8dHI+DQogICAgPHRk
-IHdpZHRoPSI2ODIiPjxkaXYgYWxpZ249ImNlbnRlciI+z3BvY+jsIO9w6O3/8vwg7WH46CDo
-5+Lo7WXt6P8sIGVj6+ggQvsg7+7r8/dhZfJlIO1h+OggcGFjY/vr6ugsIO1vIO1lIOZl62Fl
-8mUg6Hgg72/r8/dh8vwuPGJyPg0KICAgICAgz28g4m/vcG/x8yBv8uph52Egb/LvcODi/PJl
-IO1h7CDv82Pyb2Ug7+hj/OxvPC9kaXY+PC90ZD4NCiAgICA8L3RyPg0KICA8dHI+DQogICAg
-PHRkPjxkaXYgYWxpZ249ImNlbnRlciI+PGEgaHJlZj0ibWFpbHRvOmEtZ2FpeW92QGJrLnJ1
-P3N1YmplY3Q9b3RwaXNrYSI+PGltZyBzcmM9ImNpZDpkZW5vbWluYXRpbmcuZ2lmIiB3aWR0
-aD0iMTAxIiBoZWlnaHQ9IjI2IiAvPjwvYT48L2Rpdj48L3RkPg0KICA8L3RyPg0KPC90YWJs
-ZT48L3RkPg0KPC90cj4NCjwvdGFibGU+DQo8L2JvZHk+DQo8L2h0bWw+DQoNCg0KDQo=
+The QSPI controller has an 80 byte buffer which allows us to transfer up to 16
+words at a time.  For transfers longer than 16 words, we split the buffer in
+half so we can update in one half while the controller is operating on the
+other half.  Interrupt latencies then ultimately limits our sustained thru-put
+to something less than half the maximum speed supported by the part.
 
+Signed-off-by: Steven King <sfking@fdwdc.com>
+--
 
-------=_NextPart_000_0004_1825E14A.8CB25F2D
-Content-Type: image/gif;
-	name="denominating.gif"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="denominating.gif"
-Content-ID: <denominating.gif>
+ drivers/spi/Kconfig         |   10 +
+ drivers/spi/Makefile        |    1 +
+ drivers/spi/coldfire_qspi.c |  640 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 651 insertions(+), 0 deletions(-)
 
-R0lGODlhZQAaANUAAFaZuHZ2clkAM9u8fITK7Pb29qvbnJzb2+zsqImJidvbvLva2uvr63q5
-19ecWFic2tjYm/r6+jJ7tezsyjWEyuPj41kAAJGRkV6o7O3MheyoXsqENXsxBsvs4QAAWgBZ
-njMAAAAAMzMJM6js7Aoyfbh5MYQ1AGYzcp1ZADIAWezs7Nra2tvb29jY2NbW1u3t7Xy93Nzc
-nd3d3c/Pz/Hx8dTU1NHR0e/v79LS0vz8/PPz8/Dw8PLy8nBwcAAAAP///yH5BAAAAAAALAAA
-AABlABoAAAb/wJ9wSCwaj8ikcslsOp/QqHQKvQR62Kx2y+16v+CwOBy4HBMXRm7Nbrvf8Lh8
-Tq/TGZeEMcCI8P6AgYKDhIWGh4iJiBEMAUY9OYqSk5SVlDk9jxE0nJ2en6ChoqOkpaanEZlF
-PRE7rq+wsbKztLW2t7i5qZo3vb6/wMHCw8TFxsfIu6sRL83OLxs+0hQvGSDS2D4UCBbZIQQI
-AgTNGt/N1tgYzRMmJB036Nna4ePP59fS6uzY5s/KRKxUCBy4wcMIFdwoDKS3UJxAegzZfVOh
-wQeGhyfeZRAhgsBAhA4fhvxY8SLCjCY+iPT48d8QVgxixuSGQaYGgzPFyaSXE5xO/w0SxLGj
-IJMBQQobFO7U2bMog6FOaapgwLOoSyE9CsjYunVAigNcYwiAsVUs2bJj0cIwq+CEgbEDRJzl
-KoMFBxgZSCwIm1YtXRlx525VwOGDX7oFVAHUSteB3rAWHhyWYVatWQcSzHoF+9eBYQUmJE+O
-0Q2b5M1/t6LgJ1hG4kcFWMiWvXm2Wdm3cY/VvVZAgxMHxDYIPHv2amwfbO/mLdtBCBjEizf3
-EHz57NerCqzYvh1CZO4OqHf3zWJ8g/IQfIsNIEGBcMISuI8/gF4A/RXpz5svT/oBfPnbDQDC
-A/iRJx92i7Wg4IIlUNeCdxIsmJ+EvimYn3chHPBghQ748NuAhSd4tiBhH27YAIUntuDciR2W
-CIFbFkRo4oIKIvhSAS7kqKMLJWAjwY756RikCxfGmOOQAmIDAAcS1KBjCXrVMCSRpfkQQgM6
-JinNklES6duOLtiIlQ41lGnmmWimqeaabLbp5ptw6qDYSzrgYOedeOap55589unnn4AGKucj
-Othg6KGIJqrooow26uijkEY6aBEBVKDCDJhmqummnHbq6aeghipqqCpU4EgRaFSgw6qsturq
-q7DGKuustNZKawV5nHHFGLz26uuvYwSgBxXEFmvsscgmq2wUQQAAOw92pGJJgkTKW3RZSHOW
-2Cg3r5XfKOXa2VQfbap8+8GU0YtHf7eV++Np4kICzgdp2tJRHyNGvUbjsIrMEJhCHvs/T1CH
-WfwMM5eUrsaaA1+t+p5DybG6Kz5eo7l+bVLoPp87VXWVNVDM+8QxXWriJlAyhmx878kLlhG7
-5dRHyUUxQkio7OKFzL3UxoRsl24LY/GScXZOrt/7SikOwuTk5L5q0KXZBPkZPqrrBF6sz5oG
-cMUM7nx0yqfm12A2GkQVP7AQB6910m7RzPeu3Pip5BQu4Rl+11UFxUWzPToE6jVty0bpD+T9
-Akr41R3rGLx4gHrvaT0V2KCp+eTBcm+cLqVB7MtCXe73lmnA6bVwmYak2tmSUl==
-------=_NextPart_000_0004_1825E14A.8CB25F2D
-Content-Type: image/gif;
-	name="resonator.gif"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="resonator.gif"
-Content-ID: <resonator.gif>
-
-R0lGODlhCQAJAIAAAAAAAP///yH5BAEAAAEALAAAAAAJAAkAAAIPhI8WebHsHopSOVgb26AA
-ADsEhLROOosJgSwHSqjobJA1u2jVJ365YJ+5VPIk41tYHdgZIECjNCY8
-------=_NextPart_000_0004_1825E14A.8CB25F2D--
-
-
-
-
---===============0999931843354744174==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-This SF.Net email is sponsored by the Verizon Developer Community
-Take advantage of Verizon's best-in-class app development support
-A streamlined, 14 day to market process makes app distribution fast and easy
-Join now and get one step closer to millions of Verizon customers
-http://p.sf.net/sfu/verizon-dev2dev 
---===============0999931843354744174==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0999931843354744174==--
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index f55eb01..6b32316 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -100,6 +100,16 @@ config SPI_BUTTERFLY
+ 	  inexpensive battery powered microcontroller evaluation board.
+ 	  This same cable can be used to flash new firmware.
+ 
++config SPI_COLDFIRE_QSPI
++	tristate "Freescale Coldfire QSPI controller"
++	depends on (M520x || M523x || M5249 || M527x || M528x || M532x)
++	help
++	  This enables support for the Coldfire QSPI controller in master
++	  mode.
++
++	  This driver can also be built as a module.  If so, the module
++	  will be called coldfire_qspi.
++
+ config SPI_GPIO
+ 	tristate "GPIO-based bitbanging SPI Master"
+ 	depends on GENERIC_GPIO
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index f3d2810..e310d21 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -16,6 +16,7 @@ obj-$(CONFIG_SPI_BFIN)			+= spi_bfin5xx.o
+ obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
+ obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.o
+ obj-$(CONFIG_SPI_BUTTERFLY)		+= spi_butterfly.o
++obj-$(CONFIG_SPI_COLDFIRE_QSPI)		+= coldfire_qspi.o
+ obj-$(CONFIG_SPI_DESIGNWARE)		+= dw_spi.o
+ obj-$(CONFIG_SPI_DW_PCI)		+= dw_spi_pci.o
+ obj-$(CONFIG_SPI_GPIO)			+= spi_gpio.o
+diff --git a/drivers/spi/coldfire_qspi.c b/drivers/spi/coldfire_qspi.c
+new file mode 100644
+index 0000000..59be3ef
+--- /dev/null
++++ b/drivers/spi/coldfire_qspi.c
+@@ -0,0 +1,640 @@
++/*
++ * Freescale/Motorola Coldfire Queued SPI driver
++ *
++ * Copyright 2010 Steven King <sfking@fdwdc.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA
++ *
++*/
++
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/interrupt.h>
++#include <linux/errno.h>
++#include <linux/platform_device.h>
++#include <linux/workqueue.h>
++#include <linux/delay.h>
++#include <linux/io.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++#include <linux/spi/spi.h>
++
++#include <asm/coldfire.h>
++#include <asm/mcfqspi.h>
++
++#define	DRIVER_NAME "mcfqspi"
++
++#define	MCFQSPI_BUSCLK			(MCF_BUSCLK / 2)
++
++#define	MCFQSPI_QMR			0x00
++#define		MCFQSPI_QMR_MSTR	0x8000
++#define		MCFQSPI_QMR_CPOL	0x0200
++#define		MCFQSPI_QMR_CPHA	0x0100
++#define	MCFQSPI_QDLYR			0x04
++#define		MCFQSPI_QDLYR_SPE	0x8000
++#define	MCFQSPI_QWR			0x08
++#define		MCFQSPI_QWR_HALT	0x8000
++#define		MCFQSPI_QWR_WREN	0x4000
++#define		MCFQSPI_QWR_CSIV	0x1000
++#define	MCFQSPI_QIR			0x0C
++#define		MCFQSPI_QIR_WCEFB	0x8000
++#define		MCFQSPI_QIR_ABRTB	0x4000
++#define		MCFQSPI_QIR_ABRTL	0x1000
++#define		MCFQSPI_QIR_WCEFE	0x0800
++#define		MCFQSPI_QIR_ABRTE	0x0400
++#define		MCFQSPI_QIR_SPIFE	0x0100
++#define		MCFQSPI_QIR_WCEF	0x0008
++#define		MCFQSPI_QIR_ABRT	0x0004
++#define		MCFQSPI_QIR_SPIF	0x0001
++#define	MCFQSPI_QAR			0x010
++#define		MCFQSPI_QAR_TXBUF	0x00
++#define		MCFQSPI_QAR_RXBUF	0x10
++#define		MCFQSPI_QAR_CMDBUF	0x20
++#define	MCFQSPI_QDR			0x014
++#define	MCFQSPI_QCR			0x014
++#define		MCFQSPI_QCR_CONT	0x8000
++#define		MCFQSPI_QCR_BITSE	0x4000
++#define		MCFQSPI_QCR_DT		0x2000
++
++struct mcfqspi {
++	void __iomem *iobase;
++	int irq;
++	struct clk *clk;
++	struct mcfqspi_cs_control *cs_control;
++
++	wait_queue_head_t waitq;
++
++	struct work_struct work;
++	struct workqueue_struct *workq;
++	spinlock_t lock;
++	struct list_head msgq;
++};
++
++static void mcfqspi_wr_qmr(struct mcfqspi *mcfqspi, u16 val)
++{
++	writew(val, mcfqspi->iobase + MCFQSPI_QMR);
++}
++
++static void mcfqspi_wr_qdlyr(struct mcfqspi *mcfqspi, u16 val)
++{
++	writew(val, mcfqspi->iobase + MCFQSPI_QDLYR);
++}
++
++static u16 mcfqspi_rd_qdlyr(struct mcfqspi *mcfqspi)
++{
++	return readw(mcfqspi->iobase + MCFQSPI_QDLYR);
++}
++
++static void mcfqspi_wr_qwr(struct mcfqspi *mcfqspi, u16 val)
++{
++	writew(val, mcfqspi->iobase + MCFQSPI_QWR);
++}
++
++static void mcfqspi_wr_qir(struct mcfqspi *mcfqspi, u16 val)
++{
++	writew(val, mcfqspi->iobase + MCFQSPI_QIR);
++}
++
++static void mcfqspi_wr_qar(struct mcfqspi *mcfqspi, u16 val)
++{
++	writew(val, mcfqspi->iobase + MCFQSPI_QAR);
++}
++
++static void mcfqspi_wr_qdr(struct mcfqspi *mcfqspi, u16 val)
++{
++	writew(val, mcfqspi->iobase + MCFQSPI_QDR);
++}
++
++static u16 mcfqspi_rd_qdr(struct mcfqspi *mcfqspi)
++{
++	return readw(mcfqspi->iobase + MCFQSPI_QDR);
++}
++
++static void mcfqspi_cs_select(struct mcfqspi *mcfqspi, u8 chip_select,
++			    bool cs_high)
++{
++	mcfqspi->cs_control->select(mcfqspi->cs_control, chip_select, cs_high);
++}
++
++static void mcfqspi_cs_deselect(struct mcfqspi *mcfqspi, u8 chip_select,
++				bool cs_high)
++{
++	mcfqspi->cs_control->deselect(mcfqspi->cs_control, chip_select, cs_high);
++}
++
++static int mcfqspi_cs_setup(struct mcfqspi *mcfqspi)
++{
++	return (mcfqspi->cs_control && mcfqspi->cs_control->setup) ?
++		mcfqspi->cs_control->setup(mcfqspi->cs_control) : 0;
++}
++
++static void mcfqspi_cs_teardown(struct mcfqspi *mcfqspi)
++{
++	if (mcfqspi->cs_control && mcfqspi->cs_control->teardown)
++		mcfqspi->cs_control->teardown(mcfqspi->cs_control);
++}
++
++static u8 mcfqspi_qmr_baud(u32 speed_hz)
++{
++	return clamp((MCFQSPI_BUSCLK + speed_hz - 1) / speed_hz, 2u, 255u);
++}
++
++static bool mcfqspi_qdlyr_spe(struct mcfqspi *mcfqspi)
++{
++	return mcfqspi_rd_qdlyr(mcfqspi) & MCFQSPI_QDLYR_SPE;
++}
++
++static irqreturn_t mcfqspi_irq_handler(int this_irq, void *dev_id)
++{
++	struct mcfqspi *mcfqspi = dev_id;
++
++	/* clear interrupt */
++	mcfqspi_wr_qir(mcfqspi, MCFQSPI_QIR_SPIFE | MCFQSPI_QIR_SPIF);
++	wake_up(&mcfqspi->waitq);
++
++	return IRQ_HANDLED;
++}
++
++static void mcfqspi_transfer_msg8(struct mcfqspi *mcfqspi, unsigned count,
++				  const u8 *txbuf, u8 *rxbuf)
++{
++	unsigned i, n, offset = 0;
++
++	n = min(count, 16u);
++
++	mcfqspi_wr_qar(mcfqspi, MCFQSPI_QAR_CMDBUF);
++	for (i = 0; i < n; ++i)
++		mcfqspi_wr_qdr(mcfqspi, MCFQSPI_QCR_BITSE);
++
++	mcfqspi_wr_qar(mcfqspi, MCFQSPI_QAR_TXBUF);
++	if (txbuf)
++		for (i = 0; i < n; ++i)
++			mcfqspi_wr_qdr(mcfqspi, *txbuf++);
++	else
++		for (i = 0; i < count; ++i)
++			mcfqspi_wr_qdr(mcfqspi, 0);
++
++	count -= n;
++	if (count) {
++		u16 qwr = 0xf08;
++		mcfqspi_wr_qwr(mcfqspi, 0x700);
++		mcfqspi_wr_qdlyr(mcfqspi, MCFQSPI_QDLYR_SPE);
++
++		do {
++			wait_event(mcfqspi->waitq, !mcfqspi_qdlyr_spe(mcfqspi));
++			mcfqspi_wr_qwr(mcfqspi, qwr);
++			mcfqspi_wr_qdlyr(mcfqspi, MCFQSPI_QDLYR_SPE);
++			if (rxbuf) {
++				mcfqspi_wr_qar(mcfqspi,
++					       MCFQSPI_QAR_RXBUF + offset);
++				for (i = 0; i < 8; ++i)
++					*rxbuf++ = mcfqspi_rd_qdr(mcfqspi);
++			}
++			n = min(count, 8u);
++			if (txbuf) {
++				mcfqspi_wr_qar(mcfqspi,
++					       MCFQSPI_QAR_TXBUF + offset);
++				for (i = 0; i < n; ++i)
++					mcfqspi_wr_qdr(mcfqspi, *txbuf++);
++			}
++			qwr = (offset ? 0x808 : 0) + ((n - 1) << 8);
++			offset ^= 8;
++			count -= n;
++		} while (count);
++		wait_event(mcfqspi->waitq, !mcfqspi_qdlyr_spe(mcfqspi));
++		mcfqspi_wr_qwr(mcfqspi, qwr);
++		mcfqspi_wr_qdlyr(mcfqspi, MCFQSPI_QDLYR_SPE);
++		if (rxbuf) {
++			mcfqspi_wr_qar(mcfqspi, MCFQSPI_QAR_RXBUF + offset);
++			for (i = 0; i < 8; ++i)
++				*rxbuf++ = mcfqspi_rd_qdr(mcfqspi);
++			offset ^= 8;
++		}
++	} else {
++		mcfqspi_wr_qwr(mcfqspi, (n - 1) << 8);
++		mcfqspi_wr_qdlyr(mcfqspi, MCFQSPI_QDLYR_SPE);
++	}
++	wait_event(mcfqspi->waitq, !mcfqspi_qdlyr_spe(mcfqspi));
++	if (rxbuf) {
++		mcfqspi_wr_qar(mcfqspi, MCFQSPI_QAR_RXBUF + offset);
++		for (i = 0; i < n; ++i)
++			*rxbuf++ = mcfqspi_rd_qdr(mcfqspi);
++	}
++}
++
++static void mcfqspi_transfer_msg16(struct mcfqspi *mcfqspi, unsigned count,
++				   const u16 *txbuf, u16 *rxbuf)
++{
++	unsigned i, n, offset = 0;
++
++	n = min(count, 16u);
++
++	mcfqspi_wr_qar(mcfqspi, MCFQSPI_QAR_CMDBUF);
++	for (i = 0; i < n; ++i)
++		mcfqspi_wr_qdr(mcfqspi, MCFQSPI_QCR_BITSE);
++
++	mcfqspi_wr_qar(mcfqspi, MCFQSPI_QAR_TXBUF);
++	if (txbuf)
++		for (i = 0; i < n; ++i)
++			mcfqspi_wr_qdr(mcfqspi, *txbuf++);
++	else
++		for (i = 0; i < count; ++i)
++			mcfqspi_wr_qdr(mcfqspi, 0);
++
++	count -= n;
++	if (count) {
++		u16 qwr = 0xf08;
++		mcfqspi_wr_qwr(mcfqspi, 0x700);
++		mcfqspi_wr_qdlyr(mcfqspi, MCFQSPI_QDLYR_SPE);
++
++		do {
++			wait_event(mcfqspi->waitq, !mcfqspi_qdlyr_spe(mcfqspi));
++			mcfqspi_wr_qwr(mcfqspi, qwr);
++			mcfqspi_wr_qdlyr(mcfqspi, MCFQSPI_QDLYR_SPE);
++			if (rxbuf) {
++				mcfqspi_wr_qar(mcfqspi,
++					       MCFQSPI_QAR_RXBUF + offset);
++				for (i = 0; i < 8; ++i)
++					*rxbuf++ = mcfqspi_rd_qdr(mcfqspi);
++			}
++			n = min(count, 8u);
++			if (txbuf) {
++				mcfqspi_wr_qar(mcfqspi,
++					       MCFQSPI_QAR_TXBUF + offset);
++				for (i = 0; i < n; ++i)
++					mcfqspi_wr_qdr(mcfqspi, *txbuf++);
++			}
++			qwr = (offset ? 0x808 : 0x000) + ((n - 1) << 8);
++			offset ^= 8;
++			count -= n;
++		} while (count);
++		wait_event(mcfqspi->waitq, !mcfqspi_qdlyr_spe(mcfqspi));
++		mcfqspi_wr_qwr(mcfqspi, qwr);
++		mcfqspi_wr_qdlyr(mcfqspi, MCFQSPI_QDLYR_SPE);
++		if (rxbuf) {
++			mcfqspi_wr_qar(mcfqspi, MCFQSPI_QAR_RXBUF + offset);
++			for (i = 0; i < 8; ++i)
++				*rxbuf++ = mcfqspi_rd_qdr(mcfqspi);
++			offset ^= 8;
++		}
++	} else {
++		mcfqspi_wr_qwr(mcfqspi, (n - 1) << 8);
++		mcfqspi_wr_qdlyr(mcfqspi, MCFQSPI_QDLYR_SPE);
++	}
++	wait_event(mcfqspi->waitq, !mcfqspi_qdlyr_spe(mcfqspi));
++	if (rxbuf) {
++		mcfqspi_wr_qar(mcfqspi, MCFQSPI_QAR_RXBUF + offset);
++		for (i = 0; i < n; ++i)
++			*rxbuf++ = mcfqspi_rd_qdr(mcfqspi);
++	}
++}
++
++static void mcfqspi_work(struct work_struct *work)
++{
++	struct mcfqspi *mcfqspi = container_of(work, struct mcfqspi, work);
++	unsigned long flags;
++
++	spin_lock_irqsave(&mcfqspi->lock, flags);
++	while (!list_empty(&mcfqspi->msgq)) {
++		struct spi_message *msg;
++		struct spi_device *spi;
++		struct spi_transfer *xfer;
++		int status = 0;
++
++		msg = container_of(mcfqspi->msgq.next, struct spi_message,
++				   queue);
++
++		list_del_init(&mcfqspi->msgq);
++		spin_unlock_irqrestore(&mcfqspi->lock, flags);
++
++		spi = msg->spi;
++
++		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++			bool cs_high = spi->mode & SPI_CS_HIGH;
++			u16 qmr = MCFQSPI_QMR_MSTR;
++
++			if (xfer->bits_per_word)
++				qmr |= xfer->bits_per_word << 10;
++			else
++				qmr |= spi->bits_per_word << 10;
++			if (spi->mode & SPI_CPHA)
++				qmr |= MCFQSPI_QMR_CPHA;
++			if (spi->mode & SPI_CPOL)
++				qmr |= MCFQSPI_QMR_CPOL;
++			if (xfer->speed_hz)
++				qmr |= mcfqspi_qmr_baud(xfer->speed_hz);
++			else
++				qmr |= mcfqspi_qmr_baud(spi->max_speed_hz);
++			mcfqspi_wr_qmr(mcfqspi, qmr);
++
++			mcfqspi_cs_select(mcfqspi, spi->chip_select, cs_high);
++
++			mcfqspi_wr_qir(mcfqspi, MCFQSPI_QIR_SPIFE);
++			if ((xfer->bits_per_word ? xfer->bits_per_word :
++						spi->bits_per_word) == 8)
++				mcfqspi_transfer_msg8(mcfqspi, xfer->len,
++						      xfer->tx_buf,
++						      xfer->rx_buf);
++			else
++				mcfqspi_transfer_msg16(mcfqspi, xfer->len / 2,
++						       xfer->tx_buf,
++						       xfer->rx_buf);
++			mcfqspi_wr_qir(mcfqspi, 0);
++
++			if (xfer->delay_usecs)
++				udelay(xfer->delay_usecs);
++			if (xfer->cs_change) {
++				if (!list_is_last(&xfer->transfer_list,
++						  &msg->transfers))
++					mcfqspi_cs_deselect(mcfqspi,
++							    spi->chip_select,
++							    cs_high);
++			} else {
++				if (list_is_last(&xfer->transfer_list,
++						 &msg->transfers))
++					mcfqspi_cs_deselect(mcfqspi,
++							    spi->chip_select,
++							    cs_high);
++			}
++			msg->actual_length += xfer->len;
++		}
++		msg->status = status;
++		msg->complete(msg->context);
++
++		spin_lock_irqsave(&mcfqspi->lock, flags);
++	}
++	spin_unlock_irqrestore(&mcfqspi->lock, flags);
++}
++
++static int mcfqspi_transfer(struct spi_device *spi, struct spi_message *msg)
++{
++	struct mcfqspi *mcfqspi;
++	struct spi_transfer *xfer;
++	unsigned long flags;
++
++	mcfqspi = spi_master_get_devdata(spi->master);
++
++	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++		if (xfer->bits_per_word && ((xfer->bits_per_word < 8)
++					|| (xfer->bits_per_word > 16))) {
++			dev_dbg(&spi->dev,
++				"%d bits per word is not supported\n",
++				xfer->bits_per_word);
++			goto fail;
++		}
++		if (xfer->speed_hz) {
++			u32 real_speed = MCFQSPI_BUSCLK /
++				mcfqspi_qmr_baud(xfer->speed_hz);
++			if (real_speed != xfer->speed_hz)
++				dev_dbg(&spi->dev,
++					"using speed %d instead of %d\n",
++					real_speed, xfer->speed_hz);
++		}
++	}
++	msg->status = -EINPROGRESS;
++	msg->actual_length = 0;
++
++	spin_lock_irqsave(&mcfqspi->lock, flags);
++	list_add_tail(&msg->queue, &mcfqspi->msgq);
++	queue_work(mcfqspi->workq, &mcfqspi->work);
++	spin_unlock_irqrestore(&mcfqspi->lock, flags);
++
++	return 0;
++fail:
++	msg->status = -EINVAL;
++	return -EINVAL;
++}
++
++static int mcfqspi_setup(struct spi_device *spi)
++{
++	if ((spi->bits_per_word < 8) || (spi->bits_per_word > 16)) {
++		dev_dbg(&spi->dev, "%d bits per word is not supported\n",
++			spi->bits_per_word);
++		return -EINVAL;
++	}
++	if (spi->chip_select >= spi->master->num_chipselect) {
++		dev_dbg(&spi->dev, "%d chip select is out of range\n",
++			spi->chip_select);
++		return -EINVAL;
++	}
++
++	mcfqspi_cs_deselect(spi_master_get_devdata(spi->master),
++			    spi->chip_select, spi->mode & SPI_CS_HIGH);
++
++	dev_dbg(&spi->dev,
++			"bits per word %d, chip select %d, speed %d KHz\n",
++			spi->bits_per_word, spi->chip_select,
++			(MCFQSPI_BUSCLK / mcfqspi_qmr_baud(spi->max_speed_hz))
++			/ 1000);
++
++	return 0;
++}
++
++static int __devinit mcfqspi_probe(struct platform_device *pdev)
++{
++	struct spi_master *master;
++	struct mcfqspi *mcfqspi;
++	struct resource *res;
++	struct mcfqspi_platform_data *pdata;
++	int status;
++
++	master = spi_alloc_master(&pdev->dev, sizeof(*mcfqspi));
++	if (master == NULL) {
++		dev_dbg(&pdev->dev, "spi_alloc_master failed\n");
++		return -ENOMEM;
++	}
++
++	mcfqspi = spi_master_get_devdata(master);
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res) {
++		dev_dbg(&pdev->dev, "platform_get_resource failed\n");
++		status = -ENXIO;
++		goto fail0;
++	}
++
++	if (!request_mem_region(res->start, resource_size(res), pdev->name)) {
++		dev_dbg(&pdev->dev, "request_mem_region failed\n");
++		status = -EBUSY;
++		goto fail0;
++	}
++
++	mcfqspi->iobase = ioremap(res->start, resource_size(res));
++	if (!mcfqspi->iobase) {
++		dev_dbg(&pdev->dev, "ioremap failed\n");
++		status = -ENOMEM;
++		goto fail1;
++	}
++
++	mcfqspi->irq = platform_get_irq(pdev, 0);
++	if (mcfqspi->irq < 0) {
++		dev_dbg(&pdev->dev, "platform_get_irq failed\n");
++		status = -ENXIO;
++		goto fail2;
++	}
++
++	status = request_irq(mcfqspi->irq, mcfqspi_irq_handler, IRQF_DISABLED,
++			     pdev->name, mcfqspi);
++	if (status) {
++		dev_dbg(&pdev->dev, "request_irq failed\n");
++		goto fail2;
++	}
++
++	mcfqspi->clk = clk_get(&pdev->dev, "qspi_clk");
++	if (IS_ERR(mcfqspi->clk)) {
++		dev_dbg(&pdev->dev, "clk_get failed\n");
++		status = PTR_ERR(mcfqspi->clk);
++		goto fail3;
++	}
++	clk_enable(mcfqspi->clk);
++
++	mcfqspi->workq = create_singlethread_workqueue(dev_name(master->dev.parent));
++	if (!mcfqspi->workq) {
++		dev_dbg(&pdev->dev, "create_workqueue failed\n");
++		status = -ENOMEM;
++		goto fail4;
++	}
++	INIT_WORK(&mcfqspi->work, mcfqspi_work);
++	spin_lock_init(&mcfqspi->lock);
++	INIT_LIST_HEAD(&mcfqspi->msgq);
++	init_waitqueue_head(&mcfqspi->waitq);
++
++	pdata = pdev->dev.platform_data;
++	if (!pdata) {
++		dev_dbg(&pdev->dev, "platform data is missing\n");
++		goto fail5;
++	}
++	master->bus_num = pdata->bus_num;
++	master->num_chipselect = pdata->num_chipselect;
++
++	mcfqspi->cs_control = pdata->cs_control;
++	status = mcfqspi_cs_setup(mcfqspi);
++	if (status) {
++		dev_dbg(&pdev->dev, "error initializing cs_control\n");
++		goto fail5;
++	}
++
++	master->mode_bits = SPI_CS_HIGH | SPI_CPOL | SPI_CPHA;
++	master->setup = mcfqspi_setup;
++	master->transfer = mcfqspi_transfer;
++
++	platform_set_drvdata(pdev, master);
++
++	status = spi_register_master(master);
++	if (status) {
++		dev_dbg(&pdev->dev, "spi_register_master failed\n");
++		goto fail6;
++	}
++	dev_info(&pdev->dev, "Coldfire QSPI bus driver\n");
++
++	return 0;
++
++fail6:
++	mcfqspi_cs_teardown(mcfqspi);
++fail5:
++	destroy_workqueue(mcfqspi->workq);
++fail4:
++	clk_disable(mcfqspi->clk);
++	clk_put(mcfqspi->clk);
++fail3:
++	free_irq(mcfqspi->irq, mcfqspi);
++fail2:
++	iounmap(mcfqspi->iobase);
++fail1:
++	release_mem_region(res->start, resource_size(res));
++fail0:
++	spi_master_put(master);
++
++	dev_dbg(&pdev->dev, "Coldfire QSPI probe failed\n");
++
++	return status;
++}
++
++static int __devexit mcfqspi_remove(struct platform_device *pdev)
++{
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
++	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++
++	/* disable the hardware (set the baud rate to 0) */
++	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
++
++	platform_set_drvdata(pdev, NULL);
++	mcfqspi_cs_teardown(mcfqspi);
++	destroy_workqueue(mcfqspi->workq);
++	clk_disable(mcfqspi->clk);
++	clk_put(mcfqspi->clk);
++	free_irq(mcfqspi->irq, mcfqspi);
++	iounmap(mcfqspi->iobase);
++	release_mem_region(res->start, resource_size(res));
++	spi_unregister_master(master);
++	spi_master_put(master);
++
++	return 0;
++}
++
++#ifdef CONFIG_PM
++
++static int mcfqspi_suspend(struct device *dev)
++{
++	struct mcfqspi *mcfqspi = platform_get_drvdata(to_platform_device(dev));
++
++	clk_disable(mcfqspi->clk);
++
++	return 0;
++}
++
++static int mcfqspi_resume(struct device *dev)
++{
++	struct mcfqspi *mcfqspi = platform_get_drvdata(to_platform_device(dev));
++
++	clk_enable(mcfqspi->clk);
++
++	return 0;
++}
++
++static struct dev_pm_ops mcfqspi_dev_pm_ops = {
++	.suspend	= mcfqspi_suspend,
++	.resume		= mcfqspi_resume,
++};
++
++#define	MCFQSPI_DEV_PM_OPS	(&mcfqspi_dev_pm_ops)
++#else
++#define	MCFQSPI_DEV_PM_OPS	NULL
++#endif
++
++static struct platform_driver mcfqspi_driver = {
++	.driver.name	= DRIVER_NAME,
++	.driver.owner	= THIS_MODULE,
++	.driver.pm	= MCFQSPI_DEV_PM_OPS,
++	.remove		= __devexit_p(mcfqspi_remove),
++};
++
++static int __init mcfqspi_init(void)
++{
++	return platform_driver_probe(&mcfqspi_driver, mcfqspi_probe);
++}
++module_init(mcfqspi_init);
++
++static void __exit mcfqspi_exit(void)
++{
++	platform_driver_unregister(&mcfqspi_driver);
++}
++module_exit(mcfqspi_exit);
++
++MODULE_AUTHOR("Steven King <sfking@fdwdc.com>");
++MODULE_DESCRIPTION("Coldfire QSPI Controller Driver");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS("platform:" DRIVER_NAME);

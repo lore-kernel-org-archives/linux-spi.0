@@ -1,10 +1,14 @@
-From: "Plus Jamais Froid" <postmaster-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Rechauffez-vous un maximum à prix minimum : guide Gratuit
-Date: Thu, 14 Jan 2010 13:10:54 +0100 (CET)
-Message-ID: <kw8ki5.nblaeh@front07.g7r9.com>
+From: "Ayers boyhood" <themailisnotcheckedhere-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] There is data for over 34 different
+	medical specialties
+Date: Thu, 14 Jan 2010 14:45:24 +0000
+Message-ID: <E1NVQwu-0001lz-Sn@sfs-ml-3.v29.ch3.sourceforge.com>
+Reply-To: notacheckedmailbox-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8915107419966060389=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: qfr-VHfslSvdRKl83aM7KZfwmQ@public.gmane.org, sales-9U0tZr9MDs3Q+s5bJwwLd2Xnswh1EIUO@public.gmane.org, izf-AmvqVXLKdyK0RpcN2oUUTP8+0UxHXcjY@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, contact-GKtzvu9hwvcesTIZlEfwmg@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,55 +20,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8915107419966060389==
-Content-Type: multipart/alternative;
-	boundary="=_faef37962521440b291b0e0aae938122"
+Dear Mr. Trent
 
---=_faef37962521440b291b0e0aae938122
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Thank you for your inquiry. We have some very good and recent lists for US Doctors and Dentists and there is sale pricing available this week. 
+If you would like some stats and samples please contact me here Tracey-zLcwNzyUqNXkfBnqBYDrtXEBWwrx8trH@public.gmane.org Also, please make sure to include this email in your response. 
 
-
---=_faef37962521440b291b0e0aae938122
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>=0D<head>=0D</head>=0D<body>=0D<div align=3D"center"><font face=3D"ve=
-rdana" size=3D"3"><a href=3D"http://lt07.g7r9.com/r.php?i=3D07TJYNDZ_119999=
-4_1&l=3Dhttp%3A%2F%2Fwww.cdirecte.com%2Fformulaire%2F20090514%2Fformulaire.=
-php">Si vous n'arrivez pas =E0 lire correctement ce message, suivez ce lien=
-</a></font><br /></div>=0D<table width=3D"404" align=3D"center" border=3D"0=
-" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody style=3D"FONT-FAMILY: Arial=
-,Helvetica,sans-serif; FONT-SIZE: 12px">=0D<tr>=0D<td width=3D"600" valign=
-=3D"top"><a href=3D"http://lt07.g7r9.com/r.php?i=3D07TJYNDZ_1199994_1&l=3Dh=
-ttp%3A%2F%2Fwww.cdirecte.com%2Fformulaire%2F20090514%2Fformulaire.php"><img=
- width=3D"600" height=3D"163" src=3D"http://www.power-mta.com/hebergement_m=
-essages/19557/images/Ecotherm0905_01.jpg" border=3D"0" complete=3D"true" co=
-mplete=3D"true" /></a><a href=3D"http://lt07.g7r9.com/r.php?i=3D07TJYNDZ_11=
-99994_1&l=3Dhttp%3A%2F%2Fwww.cdirecte.com%2Fformulaire%2F20090514%2Fformula=
-ire.php"><img width=3D"600" height=3D"196" src=3D"http://www.power-mta.com/=
-hebergement_messages/19557/images/Ecotherm0905_02.jpg" border=3D"0" complet=
-e=3D"true" complete=3D"true" /></a><a href=3D"http://lt07.g7r9.com/r.php?i=
-=3D07TJYNDZ_1199994_1&l=3Dhttp%3A%2F%2Fwww.cdirecte.com%2Fformulaire%2F2009=
-0514%2Fformulaire.php"><img width=3D"600" height=3D"141" src=3D"http://www.=
-power-mta.com/hebergement_messages/19557/images/Ecotherm0905_03.jpg" border=
-=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D</tbody>=
-=0D</table>=0D<br><br><br><div align=3D"center"><font size=3D"1" face=3D"Ar=
-ial, Helvetica, sans-serif" color=3D"#999999">
-Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
-acces et de rectification.<br>
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://cdirecte.r7g.com=
-/AA07TJYNDZ_1199994/877">ici</a></font></div><img src=3D"http://front.taemi=
-s.com/ZZ07TJYNDZ_1199994.png" /></body></html>
---=_faef37962521440b291b0e0aae938122--
+Regards,
 
 
+Brett Valencia
 
---===============8915107419966060389==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+PS: To be exluded from this and future correspondence please contact Nellie at this address: rembox-zLcwNzyUqNXkfBnqBYDrtReHL2rgt/dS@public.gmane.org
 
 ------------------------------------------------------------------------------
 Throughout its 18-year history, RSA Conference consistently attracts the
@@ -72,15 +38,3 @@ world's best and brightest in the field, creating opportunities for Conference
 attendees to learn about information security's most important issues through
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev
---===============8915107419966060389==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============8915107419966060389==--

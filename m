@@ -1,10 +1,10 @@
-From: "SKiBed par Plein Temps" <postmaster-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: =?iso-8859-1?q?Gagnez_une_semaine_au_ski_=E0_?=
-	=?iso-8859-1?q?vie?=
-Date: Fri, 15 Jan 2010 05:49:08 +0100 (CET)
-Message-ID: <kw9urp.3g26ez@front02.r7g.com>
+From: "David PHILD" <postmaster-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Quelles sont les previsions sur 2010? Posez vos
+	questions gratuitement
+Date: Fri, 15 Jan 2010 08:25:59 +0100 (CET)
+Message-ID: <kwa1zb.wexgrw@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5443797433890904925=="
+Content-Type: multipart/mixed; boundary="===============1653687678957781679=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,68 +17,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5443797433890904925==
+--===============1653687678957781679==
 Content-Type: multipart/alternative;
-	boundary="=_3756bd2cc6ee26d1cb670f35c3f4e9c3"
+	boundary="=_379122fb9ff2a6bd1f1b113199a6d9ad"
 
---=_3756bd2cc6ee26d1cb670f35c3f4e9c3
+--=_379122fb9ff2a6bd1f1b113199a6d9ad
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
 
---=_3756bd2cc6ee26d1cb670f35c3f4e9c3
+--=_379122fb9ff2a6bd1f1b113199a6d9ad
 Content-Type: text/html; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-<html>=0D<head>=0D<style type=3Dtext/css>=0D<!--=0D.Style2 {=0Dfont-family:=
- Verdana, Arial, Helvetica, sans-serif;=0Dfont-size: 12px;=0D}=0D.Style3 {f=
-ont-family: Arial, Helvetica, sans-serif;=0Dfont-size: 9px;=0D}=0D-->=0D</s=
-tyle>=0D</head>=0D<body><center><span class=3D"Style2"><a href=3D"http://ba=
-seco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D3=
-15710&C=3D11439&P=3D20031&T=3DE&W=3D1&CREA=3D164184&URL">Si ce message ne s=
-'affiche pas completement, visualisez la version en ligne</a></span> <br />=
-=0D<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=
-=0D<tbody>=0D<tr>=0D<td width=3D"204">=0D<table width=3D"204" border=3D"0" =
-cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"http=
-://baseco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&=
-L=3D315710&C=3D11439&P=3D20031&T=3DE&W=3D1&CREA=3D164184&URL" target=3D"_bl=
-ank"><img width=3D"204" height=3D"79" alt=3D"Logo skibed" src=3D"http://www=
-.skibed.com/statique/fr/image/jeuxconcours2009/ski-jeu2009-mail-logo.png" b=
-order=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=
-=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/performance.f=
-cgi?ID=3D310703&A=3D1&L=3D315710&C=3D11439&P=3D20031&T=3DE&W=3D1&CREA=3D164=
-184&URL" target=3D"_blank"><img width=3D"204" height=3D"429" alt=3D"jeu ski=
-bed" src=3D"http://www.skibed.com/statique/fr/image/jeuxconcours2009/ski-je=
-u2009-mail-fille.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></=
-a></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D<td width=3D"396">=0D<table=
- width=3D"396" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=
-=0D<tr>=0D<td><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/perfor=
-mance.fcgi?ID=3D310703&A=3D1&L=3D315710&C=3D11439&P=3D20031&T=3DE&W=3D1&CRE=
-A=3D164184&URL" target=3D"_blank"><img width=3D"396" height=3D"320" alt=3D"=
-Gagnez une semaine de ski =E0 vie avec Skibed" src=3D"http://www.skibed.com=
-/statique/fr/image/jeuxconcours2009/ski-jeu2009-mail-accroche.png" border=
-=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td=
-><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=
-=3D310703&A=3D1&L=3D315710&C=3D11439&P=3D20031&T=3DE&W=3D1&CREA=3D164184&UR=
-L" target=3D"_blank"><img width=3D"396" height=3D"188" alt=3D"Go" src=3D"ht=
-tp://www.skibed.com/statique/fr/image/jeuxconcours2009/ski-jeu2009-mail-go.=
-png" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=
-=0D</tbody>=0D</table>=0D</td><img width=3D"1" height=3D"1" src=3D"http://b=
-aseco.solution.weborama.fr/fcgi-bin/adserv.fcgi?tag=3D315710&f=3D10&h=3DR&r=
-nd=3D[RANDOM]" border=3D"0" complete=3D"true" complete=3D"true" /> </ /></>=
-=0D</tr>=0D</tbody>=0D</table><br /></center><br><br><br><div align=3D"cent=
-er"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#999999=
-">
-Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
-acces et de rectification.<br>
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://www.okazionet.co=
-m/AA55ARJFQV_1379318/877">ici</a></font></div><img src=3D"http://front.taem=
-us.com/ZZ55ARJFQV_1379318.png" /></body></html>
---=_3756bd2cc6ee26d1cb670f35c3f4e9c3--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html xmlns=3D"http://www.=
+w3.org/1999/xhtml">=0D<head><title>David Phild</title>=0D<meta content=3D"t=
+ext/html; charset=3Dutf-8" http-equiv=3DContent-Type>=0D<style type=3Dtext/=
+css> <!--=0Dbody {=0Dmargin-left: 0px;=0Dmargin-top: 40px;=0Dmargin-right: =
+0px;=0Dmargin-bottom: 0px;=0Dbackground-color: #D4E6FC;=0D}=0D.Style1 {=0Df=
+ont-family: Verdana, Arial, Helvetica, sans-serif;=0Dfont-size: 12px;=0D}=
+=0D.Style2 {=0Dfont-family: Arial, Helvetica, sans-serif;=0Dfont-size: 9px;=
+=0D}=0D-->=0D</style>=0D</head>=0D<body><div align=3D"center"><font size=3D=
+"2" face=3D"Arial, Helvetica, sans-serif"><a href=3D"http://action.metaffil=
+iation.com/suivi.php?mclic=3DS4366B4E3B51316777219&urlrv=3Dhttp%3A%2F%2Fwww=
+.voyancegratuite.com%2Fvotre-voyance-gratuite.php%3Fdiff%3Dnetaff&urlv=3D2d=
+347112916d0f046dccc7e4457fbcb4" target=3D"_blank">Si vous ne pouvez pas con=
+sulter correctement ce message, suivez ce lien</a><br>
+</font></div>=0D<table width=3D"589" align=3D"center" border=3D"0" cellspac=
+ing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td align=3D"center" backgr=
+ound=3D"images/fond.gif" valign=3D"top"><a href=3D"http://action.metaffilia=
+tion.com/suivi.php?mclic=3DS4366B4E3B51316777219&urlrv=3Dhttp%3A%2F%2Fwww.v=
+oyancegratuite.com%2Fvotre-voyance-gratuite.php%3Fdiff%3Dnetaff&urlv=3D2d34=
+7112916d0f046dccc7e4457fbcb4" target=3D"_blank"><img width=3D"589" height=
+=3D"522" src=3D"http://img.netaffiliation.com/8/13931/mail3_3_0.jpg" border=
+=3D"0" complete=3D"true" /></a></td>=0D</tr>=0D</tbody>=0D</table>=0D<div a=
+lign=3D"center"><br /><br /><span class=3D"Style2">Conformement a la loi In=
+formatique et Libertes, vous disposez d'un droit d'acces et de rectificatio=
+n.<br />Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.ta=
+271.com/AA5043XNTE_1199994/877">ici</a></span><br /><img width=3D"1" height=
+=3D"1" src=3D"http://action.metaffiliation.com/suivi.php?taff=3DS4366B4E3B5=
+133" border=3D"0" /></div>=0D<img src=3D"http://front.ta271.com/ZZ5043XNTE_=
+1199994.png" /></body></html>
+--=_379122fb9ff2a6bd1f1b113199a6d9ad--
 
 
 
---===============5443797433890904925==
+--===============1653687678957781679==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -90,7 +75,7 @@ world's best and brightest in the field, creating opportunities for Conference
 attendees to learn about information security's most important issues through
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev
---===============5443797433890904925==
+--===============1653687678957781679==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -101,4 +86,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5443797433890904925==--
+--===============1653687678957781679==--

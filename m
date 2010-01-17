@@ -1,12 +1,10 @@
-From: Barr. Brian Lloyd. <bblchambers4-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] ATTN : DEAR FRIEND.
-Date: Sun, 17 Jan 2010 09:52:03 +0100 (CET)
-Message-ID: <20100117085203.786FB12783B@vps129.nlg.hu>
-Reply-To: bblchambers1-EMRzualFZlQ@public.gmane.org
+From: Gordey Ignatovich <gordeyignatovich-HAYYvzXtQWxebOIQVrZPIQ@public.gmane.org>
+Subject: [SPAM] Этапы процесса продаж по телефону
+Date: Sun, 17 Jan 2010 19:19:36 +0300
+Message-ID: <7621065997.20100117191936@bonifatsiy.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============6781546068651609905=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,41 +16,251 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--===============6781546068651609905==
+Content-Type: multipart/related;
+	boundary="----=_NextPart_000_0018_F5EB4A45.EA642C55"
 
-THE PRESIDENT / CEO.
-ATTN : DEAR FRIEND.
-RE: JOINT VENTURE.
+------=_NextPart_000_0018_F5EB4A45.EA642C55
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
-I know this email might come as a surprise to you, but I would be very plain with you. I used the opportunity to seek your contact while I was abroad for business researches.
-I am contacting you regarding the recent financial melt down which hit some many businesses.
-I would like to apply through this medium for your co-operation and to
-secure an opportunity to invest and do joint business with you in your
-country.
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMDEgVHJhbnNpdGlv
+bmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL2h0bWw0L2xvb3NlLmR0ZCI+DQo8aHRt
+bD4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0
+ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUxIj4NCjx0aXRsZT48L3RpdGxlPg0KPHN0
+eWxlIHR5cGU9InRleHQvY3NzIj4NCjwhLS0NCmJvZHksdGQsdGggew0KCWZvbnQtZmFtaWx5
+OiBWZXJkYW5hLCBHZW5ldmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7DQoJY29s
+b3I6ICMzRDU3M0Q7DQoJZm9udC1zaXplOiAxMnB4Ow0KfQ0KYm9keSB7DQoJYmFja2dyb3Vu
+ZC1jb2xvcjogI0ZGRkZGRjsNCn0NCi5zdHlsZTEge2NvbG9yOiAjRkZGRkZGfQ0KLS0+DQo8
+L3N0eWxlPjwvaGVhZD4NCg0KPGJvZHk+DQo8dGFibGUgd2lkdGg9IjEwMjQiIGJvcmRlcj0i
+MCIgYWxpZ249ImNlbnRlciIgY2VsbHBhZGRpbmc9IjAiIGNlbGxzcGFjaW5nPSIwIiBiZ2Nv
+bG9yPSIjRkZGRkZGIj4NCjx0ciBib3JkZXJjb2xvcj0iI0RERERERCIgYmdjb2xvcj0iI2U1
+ZjJmZiI+IA0KPHRkIGNvbHNwYW49IjIiIGJnY29sb3I9IiNGRkZGRkYiPjx0YWJsZSB3aWR0
+aD0iMTAwJSIgYm9yZGVyPSIwIiBjZWxscGFkZGluZz0iNSIgY2VsbHNwYWNpbmc9IjAiPg0K
+ICA8dHI+DQogICAgPHRkPjxwIGFsaWduPSJsZWZ0Ij48Zm9udCBjb2xvcj0iIzAwMDBGRiIg
+c3R5bGU9ImZvbnQtc2l6ZTogMTRweDsiPjxzdHJvbmc+z/Dg6vLo6vPsIPLl6+X07u3t+/Ug
+7/Du5ODmLjwvc3Ryb25nPjwvZm9udD48L3A+DQogICAgICA8cCBhbGlnbj0ibGVmdCI+PGZv
+bnQgY29sb3I9IiMzRDU3M0QiPjxzdHJvbmc+MjIg/+3i4PD/Ljwvc3Ryb25nPjwvZm9udD48
+L3A+DQogICAgICA8cCBhbGlnbj0ibGVmdCI+PGZvbnQgY29sb3I9IiMzRDU3M0QiPuMuIMro
+5eIsIOHz6/ziLiDY5eL35e3q7iwgNDwvZm9udD48L3A+DQogICAgICA8cCBhbGlnbj0ibGVm
+dCI+PGZvbnQgY29sb3I9IiMzRDU3M0QiPjxzdHJvbmc+0mXrLjogMDxmb250IGNvbG9yPSIj
+RkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAxcHg7Ij79PC9mb250PjQ8Zm9udCBjb2xvcj0i
+I0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+4jwvZm9udD40IDI8Zm9udCBjb2xv
+cj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+7TwvZm9udD4zPGZvbnQgY29s
+b3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPvw8L2ZvbnQ+My00PGZvbnQg
+Y29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPvc8L2ZvbnQ+Ni02PGZv
+bnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPvM8L2ZvbnQ+OSAv
+IDI8Zm9udCBjb2xvcj0iI0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMXB4OyI+7zwvZm9u
+dD4zPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPuI8L2Zv
+bnQ+Ny05PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsiPvc8
+L2ZvbnQ+MC0wPGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDFweDsi
+PvA8L2ZvbnQ+NTwvc3Ryb25nPjwvZm9udD48L3A+PC90ZD4NCiAgPC90cj4NCjwvdGFibGU+
+PC90ZD4NCjwvdHI+DQo8dHIgYmdjb2xvcj0iIzAwMDA4OCI+PHRkIGhlaWdodD0iMTBweCIg
+Y29sc3Bhbj0iMiIgYmdjb2xvcj0iIzAwMDA5OSIgc3R5bGU9InBhZGRpbmc6MHB4OyBtYXJn
+aW46MHB4OyI+PC90ZD4NCjwvdHI+DQo8dHI+DQo8dGQgd2lkdGg9Ijg0MiIgYmdjb2xvcj0i
+RjFGMUYxIj48dGFibGUgd2lkdGg9IjEwMCUiIGJvcmRlcj0iMCIgY2VsbHBhZGRpbmc9IjUi
+IGNlbGxzcGFjaW5nPSIwIj4NCiAgPHRyPg0KICAgIDx0ZCBhbGlnbj0ibGVmdCI+PHAgYWxp
+Z249ImNlbnRlciI+PGVtPsrg9+Xx8uLuIOgg/fT05ery6OLt7vHy/CAgIPDg4e7y+yAg7OXt
+5eTm5fDgIO/uIO/w7uTg5uDsIOfg9+Dx8vP+IO7v8OXk5ev/5fIgIPPx7+X1IPLu8OPu4u7p
+IO7w4+Dt6Ofg9ujoIOIg9uXr7uwsIPfy7iDx7ufk4OXyIO/u8fLu/+3t8/4g7+7y8OXh7e7x
+8vwg4iDx6PHy5ezg8ujn4Pbo6Cwg8+vz9/jl7ejoIOgg8ODn4ujy6OggIO/w7vTl8fHo7u3g
+6/zt+/Ug7eDi++ru4iDy7vDj7uLu4+4g7+Xw8e7t4OvgLiDE4O3t++kg8vDl7ejt4yDv7ufi
+7uvo8iDz9+Dx8u3o6uDsIOL78fLu6PL8IPHy8O7p7fP+IOrg8PLo7fMg7/Du9uXx8eAg7/Du
+5ODmIO/uIPLl6+X07u3zIPEg4u7n7O7m7e7x8vz+IOXlIOPo4eru4+4g6Ofs5e3l7ej/IOIg
+5+Di6PHo7O7x8ugg7vIg7vIg6u7t8uXq8fLgIO/w4Ory6Pfl8eru4+4g6PHv7uv85+7i4O3o
+/yDx5OXr4OIg8uXr5fTu7SDt4PHy7v/56Owg6PHy7vft6Oru7CDv8Ojh++voLiDM5fLu5Ojq
+4CDu8e3u4uDt4CDt4CDx6O3y5eflIO/w4Ory6OroIO/w7uTg5iwg7/Ho9e7r7uPo9+Xx6uj1
+IPLl9e3u6+7j6Okg6CDw5eDr/O3u4+4g7/Do7OXt5e3o/yDk4O3t7uPuIO/u5PXu5OAg4iDh
+6Oft5fHlLjwvZW0+PC9wPg0KICAgICAgPHAgYWxpZ249ImNlbnRlciI+Jm5ic3A7PC9wPg0K
+ICAgICAgPHA+PGZvbnQgY29sb3I9IiMwMDAwRkYiIHN0eWxlPSJmb250LXNpemU6IDE0cHg7
+Ij4tIMru7fHz6/zy4O3yOjwvZm9udD48YnI+DQogICAgICAgICZuYnNwOyZuYnNwOyZuYnNw
+O9Hy4O3o8evg4iDK4Ozl7eX26ujpIJYg7/Dg6vLo9+Xx6ujpIO/x6PXu6+7jLCDx5fDy6PTo
+9ujw7uLg7e376SDx7+X26ODr6PHyIO/uIM3LzyDoIDxicj4NCiAgICAgICAgJm5ic3A7Jm5i
+c3A7Jm5ic3A7/fDo6vHu7e7i8eru7PMg4+jv7e7n8y48L3A+DQogICAgICA8cD48Zm9udCBj
+b2xvcj0iIzAwMDBGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsiPi0g1uXr/Do8L2ZvbnQ+
+IO3g8/fo8vwg8/fg8fLt6Oru4iDs5fLu5ODsIP309OXq8uji7e7pIO/w7uTg5ugg7+4g8uXr
+5fTu7fMg6CDv5fDx7u3g6/zt7ukg7vDj4O3o5+D26Og8YnI+IA0KICAgICAgICAmbmJzcDsm
+bmJzcDsmbmJzcDvw4OHu9+Xj7iDv8O725fHx4C48L3A+DQogICAgICA8cD48Zm9udCBjb2xv
+cj0iIzAwMDBGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsiPi0g1uXr5eLg/yDg8+To8u7w
+6P86PC9mb250PiDs5e3l5Obl8Psg7+4g7/Du5ODm4OwsIPDz6u7i7uTo8uXr6CDu8uTl6+Ag
+7/Du5ODmLCDu7+Xw4PLu8PsgY2FsbC325e3y8O7iLjwvcD4NCiAgICAgIDxwPjxmb250IGNv
+bG9yPSIjMDAwMEZGIiBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyI+z9DOw9DAzMzAPC9mb250
+PjwvcD4NCiAgICAgIDxwPjxzdHJvbmc+MS4g0ejx8uXs4Dwvc3Ryb25nPjwvcD4NCiAgICAg
+IDxwPiZuYnNwOyZuYnNwOyZuYnNwO5Ug0fLw8+ry8/DgIO7w4+Dt6Ofg9ujoIPDg4e7y+yDi
+IPLl6+X07u3t+/Ug7/Du5ODm4PU8YnI+DQogICAgICAgICZuYnNwOyZuYnNwOyZuYnNwO5Ug
+0ejx8uXs7fvlIOfg6u7t+yDiIO/w7uTg5uD1PGJyPg0KICAgICAgICAmbmJzcDsmbmJzcDsm
+bmJzcDuVIMvo9+3u8fLt++Ug6CDv8O705fHx6O7t++Ug9ODq8u7w+yDi6+j//vno5SDt4CDv
+8O725fHxIO/w7uTg5jxicj4NCiAgICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7lSDO8OPg7ejn
+4Pbo/yDv5fDx7u3g6/zt7uPuICDv8O725fHx4CDv8O7k4OY6IO/w6O326O/7IOgg7/Dg6vLo
+9+Xx6ujpIOjt8fLw8+zl7fLg8OjpPC9wPg0KICAgICAgPHA+PHN0cm9uZz4yLiDS5fXt7uvu
+4+j/PC9zdHJvbmc+PC9wPg0KICAgICAgPHA+Jm5ic3A7Jm5ic3A7Jm5ic3A7lSDQ4OHu8uAg
+8SDq6+jl7fLx6u7pIOHg5+7pOiAg9O7w7Ojw7uLg7ejlLCDx5ePs5e3y4Pbo/ywg4Ory8+Dr
+6Ofg9uj/PGJyPg0KICAgICAgICAmbmJzcDsmbmJzcDsmbmJzcDuVIMjx8u737ejq6CD07vDs
+6PDu4uDt6P8g6uvo6u3y8eru6SDh4Of7PGJyPg0KICAgICAgICAmbmJzcDsmbmJzcDsmbmJz
+cDuVIMjx7+7r/Ofu4uDt6OUg7/Du4/Dg7Ozt+/UgIOgg5PDz4+j1IPHw5eTx8uIgIOTr/yDg
+4vLu7ODy6Ofg9ujoIOggICAg7+7i+/jl7ej/ICDq4Pfl8fLi4CDw4OHu8vs8YnI+DQogICAg
+ICAgICZuYnNwOyZuYnNwOyZuYnNwO5Ugyu7r6Pfl8fLi5e3t++Ug6CDq4Pfl8fLi5e3t++Ug
+7+7q4Ofg8uXr6CDw4OHu8vs6IPHy8PPq8vPw4CDv5fDx7u3g6/zt7uPuIO7y9+Xy4Dxicj4N
+CiAgICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7lSDd8uDv+yDv8O725fHx4CDv8O7k4OYg7+4g
+8uXr5fTu7fM8YnI+DQogICAgICAgICZuYnNwOyZuYnNwOyZuYnNwO5Ugz+7x8uDt7uLq4CD2
+5evl6SDoIOfg5OD3IOTr/yDq4Obk7uPuIP3y4O/gIPDg4e7y+zwvcD4NCiAgICAgIDxwPjxz
+dHJvbmc+My4gyO3x8vDz7OXt8uDw6Ok8L3N0cm9uZz48L3A+DQogICAgICA8cD4mbmJzcDsm
+bmJzcDsmbmJzcDuVIMru7Ozz7ejq4Pbo/yDv7iDy5evl9O7t8zog7vHu4eXt7e7x8ugsIO7j
+8ODt6Pfl7ej/IOgg4u7n7O7m7e7x8ug8YnI+DQogICAgICAgICZuYnNwOyZuYnNwOyZuYnNw
+O5Ugz/Du9OXx8eju7eDr/O3u5SDi5eTl7ejlIO/l8OXj7uLu8O7iIO/uICDy5evl9O7t8zxi
+cj4NCiAgICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7lSDM5fLu5Psg7/Ho9e7r7uPo9+Xx6u7j
+7iDi7ufk5enx8uLo/yDiIOTo8fLg7fbo7u3t7ukg8ODh7vLlIPEg6uvo5e3y7uw8YnI+DQog
+ICAgICAgICZuYnNwOyZuYnNwOyZuYnNwO5UgxOjg4+3u8fLo6uAg6+j37e7x8u379SDu8e7h
+5e3t7vHy5ekg6uvo5e3y4CDv7iDj7uvu8fM8YnI+DQogICAgICAgICZuYnNwOyZuYnNwOyZu
+YnNwO5Ug3erx7/Dl8fEg7OXy7uTo6uAg8ODn4ujy6P8g6CDi7ufk5enx8uLo/yDj7uvu8e7s
+IO3gIPHu8fLu/+3o5SDx7uHl8eXk7ejq4Dxicj4NCiAgICAgICAgJm5ic3A7Jm5ic3A7Jm5i
+c3A7lSDC5fDh4Ov87fvlIOgg7eXi5fDh4Ov87fvlIPLl9e3o6ugg8+/w4OLr5e3o/yDq7u3y
+4Ory7uw8YnI+DQogICAgICAgICZuYnNwOyZuYnNwOyZuYnNwO5UgwOry6OLt7uUg8evz+ODt
+6OUg6CDu4fDg8u3g/yDx4v/n/CDiIPLl6+X07u3t7uwg7uH55e3o6Dxicj4NCiAgICAgICAg
+Jm5ic3A7Jm5ic3A7Jm5ic3A7lSDQ5ffl4vvlIPHy8ODy5ePo6CDi6+j/7ej/PGJyPg0KICAg
+ICAgICAmbmJzcDsmbmJzcDsmbmJzcDuVIN309OXq8uji7eD/IPDg4e7y4CDxIPHu7/Du8uji
+6+Xt6OXsIOgg4u7n8ODm5e3o/+zoIOrr6OXt8uA8YnI+DQogICAgICAgICZuYnNwOyZuYnNw
+OyZuYnNwO5UgzOXy7uT7IODw4/Ps5e3y4Pbo6CDoIPPh5ebk5e3o/zwvcD4NCiAgICAgIDxw
+PjxzdHJvbmc+NC4gz/Dg6vLo6uA8L3N0cm9uZz48L3A+DQogICAgICA8cD4mbmJzcDsmbmJz
+cDsmbmJzcDuVIM/u5OPu8u7i6uAg6iDv8O7k4OblOiDv8ej17uvu4+j35fHq4P8sIO/w7vTl
+8fHo7u3g6/zt4P8sIPLl9e3o9+Xx6uD/PGJyPg0KICAgICAgICAmbmJzcDsmbmJzcDsmbmJz
+cDuVIMzl8u7k+yDi+/Xu5OAg7eAg6+j27iDv8Ojt6Ozg/vnl5SDw5fjl7ejlLCDi6+j//vnl
+5SDt4CDt5ePuLjxicj4NCiAgICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7lSDP8O717ubk5e3o
+5SDx5erw5fLg8PHq7uPuIOgg5PDz4+j1ICDh4PD85fDu4jxicj4NCiAgICAgICAgJm5ic3A7
+Jm5ic3A7Jm5ic3A7lSDP5fDi++kg6u7t8uDq8iDxIOrr6OXt8u7sOiDv7vHy8O7l7ejlIOTl
+6+7i+/Ug7vLt7vjl7ejpPGJyPg0KICAgICAgICAmbmJzcDsmbmJzcDsmbmJzcDuVINTu8Ozo
+8O7i4O3o5SDv5fDi7uPuIOLv5ffg8uvl7ej/IOgg6vDl5Ojy4CDv8O705fHx6O7t4Ov87e7j
+7iDk7uLl8Oj/PGJyPg0KICAgICAgICAmbmJzcDsmbmJzcDsmbmJzcDuVIM3g5+3g9+Xt6OUg
+5OXr7uLu6SDi8fLw5ffoIO/uIPLl6+X07u3zOiDw4Ofr6Pft++Ug4ujk+yDx9uXt4PDo5eIg
+8ODn4+7i7vDgPGJyPg0KICAgICAgICAmbmJzcDsmbmJzcDsmbmJzcDuVINH25e3g8OjoIPDg
+5+Pu4u7w4Dog7+Xw4uj37fvpLCDv7uLy7vDt++ksIPDl6u7s5e3k7uLg7e376SDn4u7t7uog
+6CDk8C48YnI+DQogICAgICAgICZuYnNwOyZuYnNwOyZuYnNwO5UgzvDo5e3y4Pbo/yDiIOrr
+6OXt8uU6ICDi7u/w7vH7IOL7//Ht//756OUg6CDg6vLz4Ovo5+jw8/756OUg7+7y8OXh7e7x
+8ug8YnI+DQogICAgICAgICZuYnNwOyZuYnNwOyZuYnNwO5UgzvHu4eXt7e7x8ugg5OXr7uLu
+6SDv5fDl7+jx6ug6IP/n++osIPHy6Ov8LCDq6/735eL75SD08ODn+zxicj4NCiAgICAgICAg
+Jm5ic3A7Jm5ic3A7Jm5ic3A7lSDK7uzs5fD35fHq7uUg7/Dl5Ovu5uXt6OU6IPHy8PPq8vPw
+4Cwg8e7k5fDm4O3o5Swg7OXy7uT7IOTu7eXx5e3o/zxicj4NCiAgICAgICAgJm5ic3A7Jm5i
+c3A7Jm5ic3A7lSDP8O7k4ObgIOL74+7kIOgg7/Dl6Ozz+eXx8uIg6u7s7OXw9+Xx6u7j7iDv
+8OXk6+7m5e3o/zxicj4NCiAgICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7lSDP7ufo9uju7ejw
+7uLg7ejlIO/w5eTr7ubl7ej/IOgg7OXy7uT7IO7y8fLw7unq6CDu8iDq7u3q8/Dl7fLu4jxi
+cj4NCiAgICAgICAgJm5ic3A7Jm5ic3A7Jm5ic3A7lSDC5//y6OUg7uH/5+Dy5ev88fLiIOgg
+9Ojq8ejw7uLg7ejlIOTu8fLo4+3z8vv1IOTu4+7i7vDl7e7x8uXpPC9wPg0KICAgICAgPHA+
+Jm5ic3A7Jm5ic3A7PGZvbnQgY29sb3I9IiMwMDAwRkYiIHN0eWxlPSJmb250LXNpemU6IDE0
+cHg7Ij4gwcvIxsDJ2MjFINHFzMjNwNDbIMgg0tDFzcjNw8g8L2ZvbnQ+PC9wPg0KICAgICAg
+PHA+Jm5ic3A7Jm5ic3A7Jm5ic3A7PHN0cm9uZz4yNCD/7eLg8P88L3N0cm9uZz48YnI+DQom
+bmJzcDsmbmJzcDsmbmJzcDvM4PHy5fAt6uvg8fE6PGJyPg0KPHN0cm9uZz4mbmJzcDsmbmJz
+cDsmbmJzcDur08fNwMkg0cXK0MXSuzwvc3Ryb25nPjxicj4NCjxzdHJvbmc+Jm5ic3A7Jm5i
+c3A7Jm5ic3A70/fg8fLt6OroIPTo6/zs4CCr0eXq8OXyuyAoq1RoZSBTZWNyZXS7KTwvc3Ry
+b25nPiAmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDs8YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51
+YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkvbm95YWJyL3V6bmFqX3Nl
+a3JldC5odG0iIHN0eWxlPSJjb2xvcjojMDAwMDAwIj7P7uTw7uHt5eU8L2E+IDxpbWcgc3Jj
+PSJjaWQ6ZnJhbWUuZ2lmIiB3aWR0aD0iOSIgaGVpZ2h0PSI5IiAvPjwvcD4NCiAgICAgIDxw
+PiZuYnNwOyZuYnNwOyZuYnNwOzxzdHJvbmc+MjYg/+3i4PD/PC9zdHJvbmc+PGJyPg0KJm5i
+c3A7Jm5ic3A7Jm5ic3A7yOfs5e3l7ej/IOIg5+Xs5ev87e7sIOfg6u7t7uTg8uXr/PHy4uUs
+IOru8u7w++Ug4vHy8+/g/vIg4iDx6OvzIOIg5OXq4OHw5SAyMDA5IOPu5OAg6CDiIDxicj4N
+CiZuYnNwOyZuYnNwOyZuYnNwO//t4uDw5SAyMDEwIOPu5OAgliDz7/Du+eXt7fvpIO/u8P/k
+7uog7/Do7uHw5fLl7ej/IO/w4OIg7eAg5+Xs6/4hDQogICZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOzxhIGhyZWY9
+Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5naS1TZW1pbmFy
+eS9kZWthYnIvaXptZW5lbml5YV92X3plbWVsbm9tX3pha29ub2RhdGVsc3R2ZS5odG0iIHN0
+eWxlPSJjb2xvcjojMDAwMDAwIj7P7uTw7uHt5eU8L2E+IDxpbWcgc3JjPSJjaWQ6ZnJhbWUu
+Z2lmIiB3aWR0aD0iOSIgaGVpZ2h0PSI5IiAvPjwvcD4NCiAgICAgIDxwPiZuYnNwOyZuYnNw
+OyZuYnNwOzxzdHJvbmc+MjYg/+3i4PD/PC9zdHJvbmc+IDxicj4NCiAgICAgICAgJm5ic3A7
+Jm5ic3A7Jm5ic3A7x+7r7vL75SDw7vHx++/oIPLl6+X07u3t7uPuIOzg8Orl8ujt4+Ag6Ovo
+IOrg6iDz8e/l+O3uIO/w7uTg4uDy/CDv7iDy5evl9O7t8yAmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDs8YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJl
+bmluZ2ktU2VtaW5hcnkveWFudmFyL3pvbG90eWVfcm9zc3lwaS5odG0iIHN0eWxlPSJjb2xv
+cjojMDAwMDAwIj7P7uTw7uHt5eU8L2E+IDxpbWcgc3JjPSJjaWQ6ZnJhbWUuZ2lmIiB3aWR0
+aD0iOSIgaGVpZ2h0PSI5IiAvPjwvcD48L3RkPg0KICA8L3RyPg0KPC90YWJsZT48L3RkPg0K
+PHRkIHdpZHRoPSIzMDkiIHZhbGlnbj0idG9wIiBiZ2NvbG9yPSIjMDAwMEZGIj4gDQo8dGFi
+bGUgd2lkdGg9IjEwMCUiIGJvcmRlcj0iMCIgY2VsbHBhZGRpbmc9IjUiIGNlbGxzcGFjaW5n
+PSIwIj4NCiAgPHRyPg0KICAgIDx0ZCBiZ2NvbG9yPSIjMDAwMEZGIj48cCBhbGlnbj0ibGVm
+dCI+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDEzcHg7Ij48c3Ry
+b25nPtHyb+jsb2Py/CAmbmJzcDsmbmJzcDt592Fj8uj/Ojwvc3Ryb25nPjwvZm9udD48YnI+
+DQogICAgICAgIDxmb250IGNvbG9yPSIjRkZGRjAwIiBzdHlsZT0iZm9udC1zaXplOiAxMnB4
+OyI+PHN0cm9uZz45NTAuMDAg43DtLjwvc3Ryb25nPjwvZm9udD4gPGZvbnQgY29sb3I9IiNG
+RkZGRkYiIHN0eWxlPSJmb250LXNpemU6IDEycHg7Ij4tIOdhIG/k7W/jbyB592Fj8u3o6mEu
+PC9mb250Pjxicj4NCiAgICAgICAgPC9wPg0KICAgICAgPHA+PGZvbnQgY29sb3I9IiNGRkZG
+RkYiIHN0eWxlPSJmb250LXNpemU6IDEycHg7Ij7E6/8g4vLu8O7j7iDoIPLw5fL85ePuIPP3
+4PHy7ejq4CDx6ujk6ug8YnI+IA0KICAgICAgICA8c3Ryb25nPpYgNSU8L3N0cm9uZz4g6CA8
+c3Ryb25nPiA3JTwvc3Ryb25nPiDx7u7y4uXy8fLi5e3t7jwvZm9udD48L3A+DQogICAgICA8
+cCBhbGlnbj0ibGVmdCI+PGZvbnQgY29sb3I9IiNGRkZGRkYiIHN0eWxlPSJmb250LXNpemU6
+IDEycHg7Ij48c3Ryb25nPsIgY/Jv6OxvY/L8IOJ4b+To8iZuYnNwOzo8L3N0cm9uZz4g6O30
+7vDs4Pbo7u3t7i3q7u3x8+v88uD26O7t7e7lIO7h8evz5uji4O3o5Swg8eHu8O3o6iDs4PLl
+8Ojg6+7iLCDq7vTlLeHw5enqLCDu4eXkIOIg8OXx8u7w4O3lLCDu4fHz5uTl7ejlIOTu6uvg
+5O7iIOgg7uHs5e0g7O3l7ej/7Ogg8SDr5ery7vDu7C48L2ZvbnQ+PC9wPg0KICAgICAgPHAg
+YWxpZ249ImxlZnQiPjxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAx
+MnB4OyI+PHN0cm9uZz7Q5ePr4Ozl7fI6IDwvc3Ryb25nPjkuMzAgliAxNy4zMC4gPC9mb250
+Pjxicj4NCiAgICAgIDwvcD4NCiAgICAgIDxwIGFsaWduPSJsZWZ0Ij48Zm9udCBjb2xvcj0i
+I0ZGRkZGRiIgc3R5bGU9ImZvbnQtc2l6ZTogMTJweDsiPjxzdHJvbmc+z+Xw5fD74jogPC9z
+dHJvbmc+MTMuMDAtMTQuNDUuPC9mb250Pjxicj4NCiAgICAgICAgPC9wPg0KICAgICAgPHAg
+YWxpZ249ImxlZnQiPjxmb250IGNvbG9yPSIjRkZGRkZGIiBzdHlsZT0iZm9udC1zaXplOiAx
+M3B4OyI+PHN0cm9uZz7Q5ePo8fLw4Pbo/zogPC9zdHJvbmc+8TxzdHJvbmc+IDkuMDAgIDwv
+c3Ryb25nPuIg9e7r6+UuPC9mb250PjwvcD48L3RkPg0KICA8L3RyPg0KICA8dHI+DQogICAg
+PHRkIGJnY29sb3I9IiMwMDAwRkYiPjxwIGFsaWduPSJjZW50ZXIiIGNsYXNzPSJzdHlsZTEi
+PiZuYnNwOzwvcD4NCiAgICAgIDxwIGFsaWduPSJjZW50ZXIiIGNsYXNzPSJzdHlsZTEiPiZu
+YnNwOzwvcD4NCiAgICAgIDxwIGFsaWduPSJjZW50ZXIiIHN0eWxlPSJjb2xvcjojRkZGRkZG
+Ij7PcG9j6Owg73Do7f/y/CDtYfjoIOjn4ujtZe3o/yw8YnI+IGVj6+ggQvsg7+7r8/dhZfJl
+IO1h+OggcGFj8fvr6ugsIDxicj7tbyDtZSDmZethZfJlIOh4IO9v6/P3YfL8Ljxicj4NCiAg
+ICAgICAgz28g4m/vcG/x8yBv8uph52Egb/Lv8ODi/PJlPGJyPiDtYewg7/Nj8m9lIO/oY/zs
+bzwvcD4NCiAgICAgIDxwIGFsaWduPSJjZW50ZXIiPjxhIGhyZWY9Im1haWx0bzphLWdhaXlv
+dkBiay5ydT9zdWJqZWN0PW90cGlza2EiPjxpbWcgc3JjPSJjaWQ6ZGVmZW5zaXZlbHkuZ2lm
+IiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjI2IiAvPjwvYT48L3A+PC90ZD4NCiAgPC90cj4NCjwv
+dGFibGU+DQo8L3RkPg0KPC90cj4NCjwvdGFibGU+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
 
-I have a substantial capital I honorably intend to invest in
-your country into a very lucrative venture of which you are to advise
-and execute the said venture over there for the mutual benefits of both
-of us. Your able co-operation is to become my business partner in your
-country and create ideas on how money will be invested, probably managed
-and the type of investment after the money is transferred to your
-custody with your assistance.
 
-Meanwhile, on indication of your willingness to handle this transaction sincerely
-by protecting our interests and upon your acceptance of this proposal, I would furnish you
-with the full detailed information,procedure, amount involve and mutual
-agreement on your percentage interest or share holding for helping me to
-secure the release of the deposit and investing the money. I shall be
-glad to reserve this respect and opportunity for you, if you so desire,
-but i do urge you to give the matter your immediate attention it
-deserves.
+------=_NextPart_000_0018_F5EB4A45.EA642C55
+Content-Type: image/gif;
+	name="frame.gif"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="frame.gif"
+Content-ID: <frame.gif>
 
-Looking forward to your response through my
-Email: bblchambers1-EMRzualFZlQ@public.gmane.org
-Dr. Brian Lloyd.
+R0lGODlhCQAJAIAAAAAAAP///yH5BAEAAAEALAAAAAAJAAkAAAIPhI8WebHsHopSOVgb26AA
+ADsqPIqnEGvN6Mty9XzrzZLlSNJxlpL7ZbmpkQQoWA1RNiDK532tQBTi
+------=_NextPart_000_0018_F5EB4A45.EA642C55
+Content-Type: image/gif;
+	name="defensively.gif"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="defensively.gif"
+Content-ID: <defensively.gif>
+
+R0lGODlhZQAaANUAAFaZuHZ2clkAM9u8fITK7Pb29qvbnJzb2+zsqImJidvbvLva2uvr63q5
+19ecWFic2tjYm/r6+jJ7tezsyjWEyuPj41kAAJGRkV6o7O3MheyoXsqENXsxBsvs4QAAWgBZ
+njMAAAAAMzMJM6js7Aoyfbh5MYQ1AGYzcp1ZADIAWezs7Nra2tvb29jY2NbW1u3t7Xy93Nzc
+nd3d3c/Pz/Hx8dTU1NHR0e/v79LS0vz8/PPz8/Dw8PLy8nBwcAAAAP///yH5BAAAAAAALAAA
+AABlABoAAAb/wJ9wSCwaj8ikcslsOp/QqHQKvQR62Kx2y+16v+CwOBy4HBMXRm7Nbrvf8Lh8
+Tq/TGZeEMcCI8P6AgYKDhIWGh4iJiBEMAUY9OYqSk5SVlDk9jxE0nJ2en6ChoqOkpaanEZlF
+PRE7rq+wsbKztLW2t7i5qZo3vb6/wMHCw8TFxsfIu6sRL83OLxs+0hQvGSDS2D4UCBbZIQQI
+AgTNGt/N1tgYzRMmJB036Nna4ePP59fS6uzY5s/KRKxUCBy4wcMIFdwoDKS3UJxAegzZfVOh
+wQeGhyfeZRAhgsBAhA4fhvxY8SLCjCY+iPT48d8QVgxixuSGQaYGgzPFyaSXE5xO/w0SxLGj
+IJMBQQobFO7U2bMog6FOaapgwLOoSyE9CsjYunVAigNcYwiAsVUs2bJj0cIwq+CEgbEDRJzl
+KoMFBxgZSCwIm1YtXRlx525VwOGDX7oFVAHUSteB3rAWHhyWYVatWQcSzHoF+9eBYQUmJE+O
+0Q2b5M1/t6LgJ1hG4kcFWMiWvXm2Wdm3cY/VvVZAgxMHxDYIPHv2amwfbO/mLdtBCBjEizf3
+EHz57NerCqzYvh1CZO4OqHf3zWJ8g/IQfIsNIEGBcMISuI8/gF4A/RXpz5svT/oBfPnbDQDC
+A/iRJx92i7Wg4IIlUNeCdxIsmJ+EvimYn3chHPBghQ748NuAhSd4tiBhH27YAIUntuDciR2W
+CIFbFkRo4oIKIvhSAS7kqKMLJWAjwY756RikCxfGmOOQAmIDAAcS1KBjCXrVMCSRpfkQQgM6
+JinNklES6duOLtiIlQ41lGnmmWimqeaabLbp5ptw6qDYSzrgYOedeOap55589unnn4AGKucj
+Othg6KGIJqrooow26uijkEY6aBEBVKDCDJhmqummnHbq6aeghipqqCpU4EgRaFSgw6qsturq
+q7DGKuustNZKawV5nHHFGLz26uuvYwSgBxXEFmvsscgmq2wUQQAAOwU0Fgvf7VIfmZH9a9On
+fSyZJoHaqa943Ss9yccuylNZ+VWYTl/z3xNAaUbEvY9nrqkdHAL5lZSkvp8CO82FuDGIYhNH
+6Kul1SD8TP25oIdYyabAWRFFUMOsub0omjOb2RYJgODJXgiJ79JROPWjbkQJAEymoACeSaoz
+pr8AMeJHcSZriwO9VfGVk58M5/rLZT/D/8DMbMU3ftiBex/zQGI0/FB4EsEeADh//kMaxgSR
+O1TsmSf3YosXttQyaURaYyZYXmzJGFaU6tAh/fYYIFv2z/pNU6nssBFEn5Nt/oC5VCbVi0tr
+5dh=
+------=_NextPart_000_0018_F5EB4A45.EA642C55--
 
 
 
 
+--===============6781546068651609905==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Throughout its 18-year history, RSA Conference consistently attracts the
@@ -60,3 +268,15 @@ world's best and brightest in the field, creating opportunities for Conference
 attendees to learn about information security's most important issues through
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev
+--===============6781546068651609905==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============6781546068651609905==--

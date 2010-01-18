@@ -1,10 +1,10 @@
-From: Lev Stanislavovich <levstanislavovich-QnxaslidyBYAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Учись и побеждай
-Date: Mon, 18 Jan 2010 14:59:14 +0300
-Message-ID: <5815567341.20100118145914@guriy.com>
+From: "Securitas Direct par Plein Temps" <postmaster-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] la Haute Securite nouvelle generation chez vous à prix inedit
+Date: Mon, 18 Jan 2010 16:54:50 +0100 (CET)
+Message-ID: <kwg9ll.5n40ow@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5834824232969919597=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============2792140593088526402=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,129 +16,92 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5834824232969919597==
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+--===============2792140593088526402==
+Content-Type: multipart/alternative;
+	boundary="=_84dde964290902940c6df6ea5e183409"
 
-PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVu
-dD0idGV4dC9odG1sOyBjaGFyc2V0PXdpbmRvd3MtMTI1MSI+DQo8dGl0bGU+PC90aXRsZT4N
-CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQpib2R5LHRkLHRoIHsNCglmb250LWZh
-bWlseTogVmVyZGFuYSwgR2VuZXZhLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOw0K
-CWZvbnQtc2l6ZTogMTNweDsNCgljb2xvcjogIzAwMDAwMDsNCn0NCmJvZHkgew0KCWJhY2tn
-cm91bmQtY29sb3I6ICNGRkZGRkY7DQp9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9k
-eT4NCjx0YWJsZSB3aWR0aD0iMTAyNCIgYWxpZ249ImNlbnRlciI+DQogIDx0cj4NCiAgICA8
-dGQgYWxpZ249ImxlZnQiPjxwPjxzdHJvbmc+yu7t6vPw5e326P88L3N0cm9uZz4gliDo5/P3
-5e3o5SDq7u3q8/Dl7fbo6CCWIOLu7/Du8SDy7uPuLCDq7uPuIO/l8OL77CDi++Hl8PPyLCDy
-7vIg6CDv7uvz9+jyIO/w6OH76/wuIM/u4+7t/yDn4CDq6+jl7fLu7CCWIOPu7ergIO7yIOru
-7erz8OXt8uAuIMjt4uXx8ujw7uLg7ejlIOIg8e7n5ODt6OUg6u7t6vPw5e3y7e7j7iDv8OXo
-7PP55fHy4uAgliDo7eLl8fLo8O7i4O3o5SDiIPDu8fIg7/Du5ODmIOgg7+7r8/fl7ejlIPfz
-5uj1IOrr6OXt8u7iLjxicj4NCiAgICAgIMLu8iDy8/It8u4g6CDi7uft6Org5fIg4u7v8O7x
-IO4g7/Dl6Ozz+eXx8uLlIMLg+OXpIOru7O/g7ejoLCDgIDxzdHJvbmc+/fLuIO/w7vTl8fHo
-7u3g6/zt++Ug8e7y8PPk7ejq6CAg6CDw8+ru4u7k8fLi7iwg4CDk6/8g/fLu4+4g6CDt5e7h
-9e7k6OzuPC9zdHJvbmc+ICAtIMrQwNLKztHS0M7Xzc7FIM7B0MDHzsLAzcjFPC9wPg0KICAg
-IDxwPiZuYnNwOzwvcD48L3RkPg0KICA8L3RyPg0KICA8dHI+DQogICAgPHRkPjx0YWJsZSB3
-aWR0aD0iMTAxMiIgYWxpZ249ImNlbnRlciIgY2VsbHNwYWNpbmc9IjUiPg0KICAgICAgPHRy
-Pg0KICAgICAgICA8dGQgd2lkdGg9IjczNSIgYWxpZ249ImxlZnQiPjxwIGFsaWduPSJjZW50
-ZXIiPtLw5e3o7ePu4uD/IOru7O/g7ej/ILkxIOIg0+rw4Ojt5SwgPHN0cm9uZz7B6Oft5fEt
-1uXt8vAgq83g9uju7eDr/O376bs8L3N0cm9uZz4sPGJyPg0KICAgICAgICAgICAg7/Dl5Ovg
-4+Dl8iDC4OwsIO/r4O0gIOrw4PLq7vHw7vft+/Ug6vPw8e7iIO7h8/fl7ej/Og0KICAgICAg
-ICAgICAgPHRhYmxlIHdpZHRoPSI3MjUiIGFsaWduPSJjZW50ZXIiIGNlbGxwYWRkaW5nPSIx
-MCI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRkIHdpZHRoPSI2NzMiIGFsaWdu
-PSJsZWZ0Ij48c3Ryb25nPjIxIP/t4uDw/zwvc3Ryb25nPiA8YnI+DQogICAgICAgICAgICAg
-IDxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5n
-aS1TZW1pbmFyeS95YW52YXIva29nZGFfbmV0X3ByZXZyYXNjaGFldHN5YV92X2RhLmh0bSIg
-c3R5bGU9ImNvbG9yOiMwMDAwMDAiPiZxdW90O8ru4+TgIKvNxdK7IO/w5eLw4Png5fLx/yDi
-IKvEwLs6PGJyPg0KICAgICAgICAgICAgICDo6+gg8ODh7vLgIPEg4u7n8ODm5e3o/+zoIOgg
-8e7s7eXt6P/s6CDq6+jl7fLgJnF1b3Q7PC9hPjwvdGQ+DQogICAgICAgICAgICA8L3RyPg0K
-ICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZCBhbGlnbj0ibGVmdCI+PHN0cm9uZz4y
-MiD/7eLg8P88L3N0cm9uZz4gPGJyPg0KICAgICAgICAgICAgICA8YSBocmVmPSJodHRwOi8v
-d3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkveWFudmFy
-L3ByYWt0aWt1bV90ZWxlZm9ubnloX3Byb2RhemguaHRtIiBzdHlsZT0iY29sb3I6IzAwMDAw
-MCI+z/Dg6vLo6vPsIPLl6+X07u3t+/Ug7/Du5ODmLjwvYT48L3RkPg0KICAgICAgICAgICAg
-PC90cj4NCiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYWxpZ249ImxlZnQiPjxz
-dHJvbmc+MjQg/+3i4PD/PC9zdHJvbmc+IDxicj4NCiAgICAgICAgICAgICAgPGEgaHJlZj0i
-aHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5
-L25veWFici91em5hal9zZWtyZXQuaHRtIiBzdHlsZT0iY29sb3I6IzAwMDAwMCI+zODx8uXw
-Lerr4PHxOjxicj4NCiAgICAgICAgICAgICAgq9PHzcDJINHFytDF0rs8YnI+DQogICAgICAg
-ICAgICAgINP34PHy7ejq6CD06Ov87OAgq9Hl6vDl8rsgKKtUaGUgU2VjcmV0uyk8L2E+PC90
-ZD4NCiAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRk
-IGFsaWduPSJsZWZ0Ij48c3Ryb25nPjI2IP/t4uDw/zwvc3Ryb25nPjxicj4NCiAgICAgICAg
-ICAgICAgPGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1Ry
-ZW5pbmdpLVNlbWluYXJ5L2Rla2Fici9pem1lbmVuaXlhX3ZfemVtZWxub21femFrb25vZGF0
-ZWxzdHZlLmh0bSIgc3R5bGU9ImNvbG9yOiMwMDAwMDAiPsjn7OXt5e3o/yDiIOfl7OXr/O3u
-7CDn4Oru7e7k4PLl6/zx8uLlLCDq7vLu8PvlIOLx8vPv4P7yIOIg8ejr8yDiIOTl6uDh8OUg
-MjAwOSDj7uTgIOgg4iD/7eLg8OUgMjAxMCDj7uTgIJYg8+/w7vnl7e376SDv7vD/5O7qIO/w
-6O7h8OXy5e3o/yDv8ODiIO3gIOfl7Ov+ITwvYT48L3RkPg0KICAgICAgICAgICAgPC90cj4N
-CiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYWxpZ249ImxlZnQiPjxzdHJvbmc+
-MjYg/+3i4PD/PC9zdHJvbmc+PGJyPg0KICAgICAgICAgICAgICA8YSBocmVmPSJodHRwOi8v
-d3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkveWFudmFy
-L3pvbG90eWVfcm9zc3lwaS5odG0iIHN0eWxlPSJjb2xvcjojMDAwMDAwIj7H7uvu8vvlIPDu
-8fH77+gg8uXr5fTu7e3u4+4g7ODw6uXy6O3j4CDo6+gg6uDqIPPx7+X47e4g7/Du5ODi4PL8
-IO/uIPLl6+X07u3zPC9hPjwvdGQ+DQogICAgICAgICAgICA8L3RyPg0KDQogICAgICAgICAg
-PHRyPg0KICAgICAgICAgICAgPHRkIGFsaWduPSJsZWZ0Ij48c3Ryb25nPjI4LTI5IP/t4uDw
-/zwvc3Ryb25nPjxicj4NCiAgICAgICAgICAgICAgPGEgaHJlZj0iaHR0cDovL3d3dy5uYmMu
-dWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L3lhbnZhci9zdWNoYXNu
-ZV9kaWxvdm9kc3R2b190YV9hcmhpdm5hX3NwcmF2YS5odG0iIHN0eWxlPSJjb2xvcjojMDAw
-MDAwIj7R8/fg8e3lIOSz6+7i7uTx8uLuIPLgIODw9bPi7eAg8e/w4OLgLjwvYT48L3RkPg0K
-ICAgICAgICAgICAgPC90cj4NCiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYWxp
-Z249ImxlZnQiPjxzdHJvbmc+Mjkg/+3i4PD/PC9zdHJvbmc+PGJyPg0KICAgICAgICAgICAg
-ICA8YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmlu
-Z2ktU2VtaW5hcnkvZGVrYWJyL3N2eWF6aV9yZXNoYWp1dF92c2UuaHRtIiBzdHlsZT0iY29s
-b3I6IzAwMDAwMCI+0cLfx8gg0MXYwN7SIMLRxSE8L2E+PC90ZD4NCiAgICAgICAgICAgIDwv
-dHI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRkIGFsaWduPSJsZWZ0Ij48c3Ry
-b25nPjI5IP/t4uDw/zwvc3Ryb25nPjxicj4NCiAgICAgICAgICAgICAgPGEgaHJlZj0iaHR0
-cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L3lh
-bnZhci9tZXRvZHlfcmFib3R5X3NfZG9semhuaWthbWkuaHRtIiBzdHlsZT0iY29sb3I6IzAw
-MDAwMCI+zOXy7uT7IPDg4e7y+yDxIOTu6+bt6Org7Ogg7+4g8uXr5fTu7fMuPC9hPjwvdGQ+
-DQogICAgICAgICAgICA8L3RyPg0KICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZCBh
-bGlnbj0ibGVmdCI+PHN0cm9uZz4zMC0zMSD/7eLg8P88L3N0cm9uZz48YnI+DQogICAgICAg
-ICAgICAgIDxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9U
-cmVuaW5naS1TZW1pbmFyeS95YW52YXIvZGVuZ2lfbGp1YmltX3VwcmF2bHlhZW1femFyYWJh
-dHl2YWVtLmh0bSIgc3R5bGU9ImNvbG9yOiMwMDAwMDAiPsrg6iDr/uHo8vwg5OXt/OPoPyDK
-4Oog8+/w4OLr//L8IOTl7fzj4OzoPyDK4Oog5+Dw4OHg8vvi4PL8IOTl7fzj6D88L2E+PC90
-ZD4NCiAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRk
-IGFsaWduPSJsZWZ0Ij48c3Ryb25nPjMwLTMxIP/t4uDw/zwvc3Ryb25nPjxicj4NCiAgICAg
-ICAgICAgICAgPGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2Vz
-L1RyZW5pbmdpLVNlbWluYXJ5L3lhbnZhci9hbnRpcGlrYXBfaWxpX2tha19wb3N0cm9pdF91
-ZG9ibnllX3ZhbV9vdG5vc2hlbml5YS5odG0iIHN0eWxlPSJjb2xvcjojMDAwMDAwIj7A7fLo
-7+jq4O8g6OvoIMrg6iDv7vHy8O7o8vwg8+Tu4e375SDC4Owg7vLt7vjl7ej/PzwvYT48L3Rk
-Pg0KICAgICAgICAgICAgPC90cj4NCiAgICAgICAgPC90YWJsZT48L3RkPg0KICAgICAgICA8
-dGQgd2lkdGg9IjI2NSIgYWxpZ249ImxlZnQiIHZhbGlnbj0idG9wIiBiZ2NvbG9yPSIjMDA5
-OTAwIj48cCBhbGlnbj0iY2VudGVyIiBzdHlsZT0iY29sb3I6I0ZGRkZGRiI+Jm5ic3A7PC9w
-Pg0KICAgICAgICAgIDxwIGFsaWduPSJjZW50ZXIiIHN0eWxlPSJjb2xvcjojRkZGRkZGIj48
-c3Ryb25nPtHy4PL86Dwvc3Ryb25nPjwvcD4NCiAgICAgICAgICA8cD4mbmJzcDsmbmJzcDs8
-YSBocmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0aW9ucy90cmVkLmh0bSIgc3R5
-bGU9ImNvbG9yOiNGRkZGRkYiPtLw5enk5fD7PC9hPjxicj48YnI+DQombmJzcDsmbmJzcDs8
-YSBocmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0aW9ucy9pbnRlcm5ldC5odG0i
-IHN0eWxlPSJjb2xvcjojRkZGRkZGIj7I7fLl8O3l8jwvYT48YnI+PGJyPg0KJm5ic3A7Jm5i
-c3A7PGEgaHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJsaWNhdGlvbnMvbWFya2V0Lmh0
-bSIgc3R5bGU9ImNvbG9yOiNGRkZGRkYiPszg8Orl8ujt4zwvYT48YnI+PGJyPg0KJm5ic3A7
-Jm5ic3A7PGEgaHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJsaWNhdGlvbnMvbWVuLmh0
-bSIgc3R5bGU9ImNvbG9yOiNGRkZGRkYiPszl7eXk5uzl7fI8L2E+PGJyPjxicj4NCiZuYnNw
-OyZuYnNwOzxhIGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFnZXMvcHVibGljYXRpb25zL3ByZXMu
-aHRtIiBzdHlsZT0iY29sb3I6I0ZGRkZGRiI+z/Dl8fHgIO4g7eDxPC9hPjxicj48YnI+DQom
-bmJzcDsmbmJzcDs8YSBocmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0aW9ucy9z
-b3ZldC5odG0iIHN0eWxlPSJjb2xvcjojRkZGRkZGIj7R7uLl8vsg7eD36O3g/vno7DwvYT48
-YnI+PGJyPg0KJm5ic3A7Jm5ic3A7PGEgaHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJs
-aWNhdGlvbnMvc292ZXR5X3ZlbGlraWhfbGp1ZGVqLmh0bSIgc3R5bGU9ImNvbG9yOiNGRkZG
-RkYiPtHu4uXy+yDC5evo6uj1IOv+5OXpPC9hPjxicj48YnI+DQombmJzcDsmbmJzcDs8YSBo
-cmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0aW9ucy9idWhnYWx0Lmh0bSIgc3R5
-bGU9ImNvbG9yOiNGRkZGRkYiPtHy4PL86CDt7uLu8fLoIPLz8Ojn7OA8L2E+PGJyPjxicj4N
-CiZuYnNwOyZuYnNwOzxhIGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFnZXMvcHVibGljYXRpb25z
-L2ZpbmFucy5odG0iIHN0eWxlPSJjb2xvcjojRkZGRkZGIj7B/uTm5fLo8O7i4O3o5SDoIPTo
-7eDt8fs8L2E+PGJyPjxicj4NCiZuYnNwOyZuYnNwOzxhIGhyZWY9Imh0dHA6Ly9uYmMudWEv
-cGFnZXMvcHVibGljYXRpb25zL3NhcGZvLmh0bSIgc3R5bGU9ImNvbG9yOiNGRkZGRkYiPtHy
-4PL86CDk6/8g5OXi8/jl6iDoIObl7fno7TwvYT48YnI+PGJyPg0KJm5ic3A7Jm5ic3A7PGEg
-aHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJsaWNhdGlvbnMvaW5mb3JtLmh0bSIgc3R5
-bGU9ImNvbG9yOiNGRkZGRkYiPsjt9O7w7OD26O7t7fvpIOfg4vLw4Oog7O7n4+A8L2E+PC9w
-Pg0KICAgICAgICAgIDwvdGQ+DQogICAgICA8L3RyPg0KICAgIDwvdGFibGU+PC90ZD4NCiAg
-PC90cj4NCjwvdGFibGU+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
+--=_84dde964290902940c6df6ea5e183409
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+--=_84dde964290902940c6df6ea5e183409
+Content-Type: text/html; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"=0D"http://ww=
+w.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html>=0D<head><title>Se=
+curitas Direct</title>=0D</head>=0D<body bgcolor=3D"#ffffff"><div align=3D"=
+center"><font size=3D"2" face=3D"verdana"><a href=3D"http://baseco.solution=
+.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D315163&C=3D474=
+7&P=3D20031&T=3DE&W=3D1&CREA=3D163920&URL">Si ce message n'est pas lisible,=
+ suivez ce lien</a></font></div>=0D<table width=3D"540" align=3D"center" bo=
+rder=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td><cen=
+ter><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/performance.fcgi=
+?ID=3D310703&A=3D1&L=3D315163&C=3D4747&P=3D20031&T=3DE&W=3D1&CREA=3D163920&=
+URL"><img width=3D"270" height=3D"150" style=3D"DISPLAY: block" alt=3D"Secu=
+ritas Direct" src=3D"http://front.okazionet.com/gfm/550002/te/3/entete1.jpg=
+" border=3D"0" complete=3D"true" complete=3D"true" /></a></center></td>=0D<=
+td><center><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/performan=
+ce.fcgi?ID=3D310703&A=3D1&L=3D315163&C=3D4747&P=3D20031&T=3DE&W=3D1&CREA=3D=
+163920&URL"><img width=3D"270" height=3D"150" style=3D"DISPLAY: block" alt=
+=3D"Depuis que nos ma=EEtres ont contact=E9 Securitas Direct... Il nous fau=
+t bien d'autres occupations !" src=3D"http://front.okazionet.com/gfm/550002=
+/te/3/entete2.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a><=
+/center></td>=0D</tr>=0D<tr>=0D<td><center><a href=3D"http://baseco.solutio=
+n.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D315163&C=3D47=
+47&P=3D20031&T=3DE&W=3D1&CREA=3D163920&URL"><img width=3D"270" height=3D"13=
+0" style=3D"DISPLAY: block" src=3D"http://front.okazionet.com/gfm/550002/te=
+/3/entete3.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a></ce=
+nter></td>=0D<td><center><a href=3D"http://baseco.solution.weborama.fr/fcgi=
+-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D315163&C=3D4747&P=3D20031&T=3DE=
+&W=3D1&CREA=3D163920&URL"><img width=3D"270" height=3D"130" style=3D"DISPLA=
+Y: block" src=3D"http://front.okazionet.com/gfm/550002/te/3/entete4.jpg" bo=
+rder=3D"0" complete=3D"true" complete=3D"true" /></a></center></td>=0D</tr>=
+=0D<tr>=0D<td><center><a href=3D"http://baseco.solution.weborama.fr/fcgi-bi=
+n/performance.fcgi?ID=3D310703&A=3D1&L=3D315163&C=3D4747&P=3D20031&T=3DE&W=
+=3D1&CREA=3D163920&URL"><img width=3D"270" height=3D"120" style=3D"DISPLAY:=
+ block" src=3D"http://front.okazionet.com/gfm/550002/te/3/entete5.jpg" bord=
+er=3D"0" complete=3D"true" complete=3D"true" /></a></center></td>=0D<td><ce=
+nter><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/performance.fcg=
+i?ID=3D310703&A=3D1&L=3D315163&C=3D4747&P=3D20031&T=3DE&W=3D1&CREA=3D163920=
+&URL"><img width=3D"270" height=3D"120" style=3D"DISPLAY: block" src=3D"htt=
+p://front.okazionet.com/gfm/550002/te/3/entete6.jpg" border=3D"0" complete=
+=3D"true" complete=3D"true" /></a></center></td>=0D</tr>=0D<tr>=0D<td width=
+=3D"540" height=3D"130" bgcolor=3D"#660000" colspan=3D"2"><center><font col=
+or=3D"#ffffff" face=3D"arial" size=3D"+2">Profitez d'un devis gratuit!</fon=
+t><br /><br /><font color=3D"#ffffff" face=3D"arial" size=3D"+2"><strong>L'=
+alarme HAUTE S=C9CURIT=C9</strong></font><br /><font color=3D"#ffc000" face=
+=3D"arial" size=3D"+2"><strong>avec alerte =E0 la police</strong>*</font></=
+center></td>=0D</tr>=0D<tr>=0D<td width=3D"540" height=3D"50" bgcolor=3D"#6=
+60000" colspan=3D"2"><center><a href=3D"http://baseco.solution.weborama.fr/=
+fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D315163&C=3D4747&P=3D20031&T=
+=3DE&W=3D1&CREA=3D163920&URL"><img width=3D"280" height=3D"50" style=3D"DIS=
+PLAY: block" alt=3D"Pour en savoir plus..." src=3D"http://front.okazionet.c=
+om/gfm/550002/te/3/entete7.gif" border=3D"0" complete=3D"true" complete=3D"=
+true" /></a></center></td>=0D</tr>=0D<tr>=0D<td width=3D"540" height=3D"60"=
+ bgcolor=3D"#660000" colspan=3D"2"><center><font color=3D"#ffffff" face=3D"=
+arial" size=3D"+1">1 055 000 Clients nous font d=E9j=E0 confiance<br />pour=
+ assurer leur s=E9curit=E9 ou celle de leur bien.</font></center></td>=0D</=
+tr>=0D<tr><img width=3D"1" height=3D"1" src=3D"http://baseco.solution.webor=
+ama.fr/fcgi-bin/adserv.fcgi?tag=3D315163&f=3D10&h=3DR&rnd=3D[RANDOM]" borde=
+r=3D"0" complete=3D"true" complete=3D"true" /> </ /></ /></ /></ /></ /></ =
+/></ /></ /></ /></>=0D<td colspan=3D"2"><center><img width=3D"540" height=
+=3D"10" style=3D"DISPLAY: block" src=3D"http://front.okazionet.com/gfm/5500=
+02/te/3/entete8.gif" border=3D"0" complete=3D"true" complete=3D"true" /></c=
+enter></td>=0D</tr>=0D</tbody>=0D</table>=0D<br><br><br><div align=3D"cente=
+r"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#999999"=
+>
+Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
+acces et de rectification.<br>
+Si vous voulez vous desinscrire, cliquez <a href=3D"http://www.okazionet.co=
+m/AA55MMHUL4_1958848/877">ici</a></font></div><img src=3D"http://front.taem=
+us.com/ZZ55MMHUL4_1958848.png" /></body></html>
+--=_84dde964290902940c6df6ea5e183409--
 
 
 
-
---===============5834824232969919597==
+--===============2792140593088526402==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -150,7 +113,7 @@ world's best and brightest in the field, creating opportunities for Conference
 attendees to learn about information security's most important issues through
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev
---===============5834824232969919597==
+--===============2792140593088526402==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -161,4 +124,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============5834824232969919597==--
+--===============2792140593088526402==--

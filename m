@@ -1,21 +1,17 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 5/6] SPI: S3C64XX: Include moved
-	header
-Date: Mon, 18 Jan 2010 11:13:27 -0700
-Message-ID: <fa686aa41001181013i62142f3fs5c387a406f3b7d59@mail.gmail.com>
-References: <1263808215-16544-1-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-2-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-3-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-4-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-5-git-send-email-jassisinghbrar@gmail.com>
+From: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH] Memory-mapped Dwsignware SPI driver
+Date: Mon, 18 Jan 2010 13:14:49 -0500
+Message-ID: <4B54A519.7030606@octasic.com>
+References: <20100118164921.23527.74770.stgit@station520.octasic.com>
+	<fa686aa41001180921u3919c3e4u3711097218cbfa7e@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org
-To: jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1263808215-16544-5-git-send-email-jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <fa686aa41001180921u3919c3e4u3711097218cbfa7e-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,54 +22,80 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 18, 2010 at 2:50 AM,  <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
->
-> Header for platform specific stuff has been rename to include the SoC
-> type. Include the new header instead.
-
-Is this to fix a compile failure?  If so, then you should say so in
-the subject so I know that it is higher priority to pick up.
-
-g.
-
->
-> Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> ---
-> =A0drivers/spi/spi_s3c64xx.c | =A0 =A02 +-
-> =A01 files changed, 1 insertions(+), 1 deletions(-)
->
-> diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
-> index 0e883f9..9fa0b99 100644
-> --- a/drivers/spi/spi_s3c64xx.c
-> +++ b/drivers/spi/spi_s3c64xx.c
-> @@ -28,7 +28,7 @@
-> =A0#include <linux/spi/spi.h>
->
-> =A0#include <mach/dma.h>
-> -#include <plat/spi.h>
-> +#include <plat/s3c64xx-spi.h>
->
-> =A0/* Registers and bit-fields */
->
-> --
-> 1.6.2.5
->
->
 
 
+Grant Likely wrote:
+> On Mon, Jan 18, 2010 at 9:50 AM, Jean-Hugues Deschenes
+> <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org> wrote:
+>   
+>> +choice
+>> +       prompt "Designware bus type"
+>> +       depends on SPI_DESIGNWARE
+>> +       default SPI_DW_PCI
+>> +
+>>  config SPI_DW_PCI
+>> -       tristate "PCI interface driver for DW SPI core"
+>> -       depends on SPI_DESIGNWARE && PCI
+>> +       bool "PCI interface driver for DW SPI core"
+>> +       depends on PCI
+>> +
+>> +config SPI_DW_MMIO
+>> +       bool "Memory-mapped io interface driver for DW SPI core"
+>> +
+>> +endchoice
+>>     
+>
+> The MMIO patch looks non-orthogonal to the PCI stuff so I don't
+> understand why a choice/endchoice is being used here.  Is there any
+> reason that both bus attachments cannot be compiled as modules at the
+> same time?
+>   
+Aside from the fact that no chip would realistically have both at the 
+same time, nope. I'll lift the restriction.
+>   
+>> --- /dev/null
+>> +++ b/drivers/spi/dw_spi_mmio.c
+>> @@ -0,0 +1,164 @@
+>> +/*
+>> + * dw_spi_mmio.c - Memory-mapped interface driver for DW SPI Core
+>> + *
+>> + * Copyright (c) 2010, Octasic semiconductor.
+>> + *
+>> + * Somewhat derived from PCI implementation,
+>> + * Copyright (c) 2009, Intel Corporation.
+>> + *
+>> + * ...and from designware i2c driver
+>> + * Copyright (C) 2006 Texas Instruments.
+>> + * Copyright (C) 2007 MontaVista Software Inc.
+>> + * Copyright (C) 2009 Provigent Ltd.
+>> + *
+>> + * This program is free software; you can redistribute it and/or modify it
+>> + * under the terms and conditions of the GNU General Public License,
+>> + * version 2, as published by the Free Software Foundation.
+>> + *
+>> + * This program is distributed in the hope it will be useful, but WITHOUT
+>> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+>> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+>> + * more details.
+>> + *
+>> + * You should have received a copy of the GNU General Public License along
+>> + * with this program; if not, write to the Free Software Foundation,
+>> + * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
+>>     
+>
+> Do you really need these three paragraphs of preamble?  IMNSOH, the
+> first paragraph stating GPLv2 should be sufficient.
+>   
+I'm always a bit uncomfortable with the legal stuff, but this code Is 
+not very controversial so I guess I can make the preamble lighter...
 
--- =
+Thanks!
 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+jh
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Throughout its 18-year history, RSA Conference consistently attracts the
-world's best and brightest in the field, creating opportunities for Confere=
-nce
-attendees to learn about information security's most important issues throu=
-gh
+world's best and brightest in the field, creating opportunities for Conference
+attendees to learn about information security's most important issues through
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev

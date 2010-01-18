@@ -1,16 +1,18 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] Memory-mapped Dwsignware SPI driver
-Date: Mon, 18 Jan 2010 10:21:21 -0700
-Message-ID: <fa686aa41001180921u3919c3e4u3711097218cbfa7e@mail.gmail.com>
-References: <20100118164921.23527.74770.stgit@station520.octasic.com>
+Subject: Re: [PATCH 2/6] SPI: S3C64XX: Differentiate ip
+	and rate clock
+Date: Mon, 18 Jan 2010 10:58:00 -0700
+Message-ID: <fa686aa41001180958l15df3a9dyfa5869b6f53c8fcb@mail.gmail.com>
+References: <1263808215-16544-1-git-send-email-jassisinghbrar@gmail.com>
+	<1263808215-16544-2-git-send-email-jassisinghbrar@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org
+To: jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100118164921.23527.74770.stgit-PR71IgaHmJalNznWqnLNUK6RkeBMCJyt@public.gmane.org>
+In-Reply-To: <1263808215-16544-2-git-send-email-jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,110 +23,113 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 18, 2010 at 9:50 AM, Jean-Hugues Deschenes
-<jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org> wrote:
-> Adds a memory-mapped I/O dw_spi platform device.
+On Mon, Jan 18, 2010 at 2:50 AM,  <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 >
-> Signed-off-by: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
-> ---
-> =A0drivers/spi/Kconfig =A0 =A0 =A0 | =A0 16 ++++
-> =A0drivers/spi/Makefile =A0 =A0 =A0| =A0 =A01
-> =A0drivers/spi/dw_spi_mmio.c | =A0164 +++++++++++++++++++++++++++++++++++=
-++++++++++
-> =A03 files changed, 178 insertions(+), 3 deletions(-)
-> =A0create mode 100644 drivers/spi/dw_spi_mmio.c
+> The instance of SPI clock for controller and that used for generating
+> signals ought to be independently handled.
 >
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index f55eb01..79c8d5f 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -308,14 +308,24 @@ config SPI_NUC900
-> =A0#
->
-> =A0config SPI_DESIGNWARE
-> - =A0 =A0 =A0 bool "DesignWare SPI controller core support"
-> + =A0 =A0 =A0 tristate "DesignWare SPI controller core support"
-> =A0 =A0 =A0 =A0depends on SPI_MASTER
-> =A0 =A0 =A0 =A0help
-> =A0 =A0 =A0 =A0 =A0general driver for SPI controller core from DesignWare
->
-> +choice
-> + =A0 =A0 =A0 prompt "Designware bus type"
-> + =A0 =A0 =A0 depends on SPI_DESIGNWARE
-> + =A0 =A0 =A0 default SPI_DW_PCI
-> +
-> =A0config SPI_DW_PCI
-> - =A0 =A0 =A0 tristate "PCI interface driver for DW SPI core"
-> - =A0 =A0 =A0 depends on SPI_DESIGNWARE && PCI
-> + =A0 =A0 =A0 bool "PCI interface driver for DW SPI core"
-> + =A0 =A0 =A0 depends on PCI
-> +
-> +config SPI_DW_MMIO
-> + =A0 =A0 =A0 bool "Memory-mapped io interface driver for DW SPI core"
-> +
-> +endchoice
+> Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-The MMIO patch looks non-orthogonal to the PCI stuff so I don't
-understand why a choice/endchoice is being used here.  Is there any
-reason that both bus attachments cannot be compiled as modules at the
-same time?
+Will this patch break existing users of the driver that depend on the
+sci->src_clk checks?
 
-> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> index f3d2810..c3e5ce7 100644
-> --- a/drivers/spi/Makefile
-> +++ b/drivers/spi/Makefile
-> @@ -18,6 +18,7 @@ obj-$(CONFIG_SPI_AU1550) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=
-=3D au1550_spi.o
-> =A0obj-$(CONFIG_SPI_BUTTERFLY) =A0 =A0 =A0 =A0 =A0 =A0+=3D spi_butterfly.o
-> =A0obj-$(CONFIG_SPI_DESIGNWARE) =A0 =A0 =A0 =A0 =A0 +=3D dw_spi.o
-> =A0obj-$(CONFIG_SPI_DW_PCI) =A0 =A0 =A0 =A0 =A0 =A0 =A0 +=3D dw_spi_pci.o
-> +obj-$(CONFIG_SPI_DW_MMIO) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D dw_spi_mmio.o
-> =A0obj-$(CONFIG_SPI_GPIO) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 +=3D spi_gpio.o
-> =A0obj-$(CONFIG_SPI_IMX) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D spi_imx.o
-> =A0obj-$(CONFIG_SPI_LM70_LLP) =A0 =A0 =A0 =A0 =A0 =A0 +=3D spi_lm70llp.o
-> diff --git a/drivers/spi/dw_spi_mmio.c b/drivers/spi/dw_spi_mmio.c
-> new file mode 100644
-> index 0000000..9abeb45
-> --- /dev/null
-> +++ b/drivers/spi/dw_spi_mmio.c
-> @@ -0,0 +1,164 @@
-> +/*
-> + * dw_spi_mmio.c - Memory-mapped interface driver for DW SPI Core
-> + *
-> + * Copyright (c) 2010, Octasic semiconductor.
-> + *
-> + * Somewhat derived from PCI implementation,
-> + * Copyright (c) 2009, Intel Corporation.
-> + *
-> + * ...and from designware i2c driver
-> + * Copyright (C) 2006 Texas Instruments.
-> + * Copyright (C) 2007 MontaVista Software Inc.
-> + * Copyright (C) 2009 Provigent Ltd.
-> + *
-> + * This program is free software; you can redistribute it and/or modify =
-it
-> + * under the terms and conditions of the GNU General Public License,
-> + * version 2, as published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope it will be useful, but WITHOUT
-> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> + * FITNESS FOR A PARTICULAR PURPOSE. =A0See the GNU General Public Licen=
-se for
-> + * more details.
-> + *
-> + * You should have received a copy of the GNU General Public License alo=
-ng
-> + * with this program; if not, write to the Free Software Foundation,
-> + * Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
-
-Do you really need these three paragraphs of preamble?  IMNSOH, the
-first paragraph stating GPLv2 should be sufficient.
-
-Otherwise, the patch looks good to me.  I don't have any technical
-comments on the code.
-
-Thanks,
 g.
+
+> ---
+> =A0drivers/spi/spi_s3c64xx.c | =A0 28 ++++++++--------------------
+> =A01 files changed, 8 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
+> index ad93d5d..6d03d8f 100644
+> --- a/drivers/spi/spi_s3c64xx.c
+> +++ b/drivers/spi/spi_s3c64xx.c
+> @@ -1000,10 +1000,7 @@ static int __init s3c64xx_spi_probe(struct platfor=
+m_device *pdev)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err4;
+> =A0 =A0 =A0 =A0}
+>
+> - =A0 =A0 =A0 if (sci->src_clk_nr =3D=3D S3C64XX_SPI_SRCCLK_PCLK)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 sci->src_clk =3D sdd->clk;
+> - =A0 =A0 =A0 else
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 sci->src_clk =3D clk_get(&pdev->dev, sci->s=
+rc_clk_name);
+> + =A0 =A0 =A0 sci->src_clk =3D clk_get(&pdev->dev, sci->src_clk_name);
+> =A0 =A0 =A0 =A0if (IS_ERR(sci->src_clk)) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_err(&pdev->dev,
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0"Unable to acquire clock '=
+%s'\n", sci->src_clk_name);
+> @@ -1011,7 +1008,7 @@ static int __init s3c64xx_spi_probe(struct platform=
+_device *pdev)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err5;
+> =A0 =A0 =A0 =A0}
+>
+> - =A0 =A0 =A0 if (sci->src_clk !=3D sdd->clk && clk_enable(sci->src_clk))=
+ {
+> + =A0 =A0 =A0 if (clk_enable(sci->src_clk)) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_err(&pdev->dev, "Couldn't enable clock=
+ '%s'\n",
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0sci->src_clk_name);
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D -EBUSY;
+> @@ -1053,11 +1050,9 @@ static int __init s3c64xx_spi_probe(struct platfor=
+m_device *pdev)
+> =A0err8:
+> =A0 =A0 =A0 =A0destroy_workqueue(sdd->workqueue);
+> =A0err7:
+> - =A0 =A0 =A0 if (sci->src_clk !=3D sdd->clk)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clk_disable(sci->src_clk);
+> + =A0 =A0 =A0 clk_disable(sci->src_clk);
+> =A0err6:
+> - =A0 =A0 =A0 if (sci->src_clk !=3D sdd->clk)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clk_put(sci->src_clk);
+> + =A0 =A0 =A0 clk_put(sci->src_clk);
+> =A0err5:
+> =A0 =A0 =A0 =A0clk_disable(sdd->clk);
+> =A0err4:
+> @@ -1093,11 +1088,8 @@ static int s3c64xx_spi_remove(struct platform_devi=
+ce *pdev)
+>
+> =A0 =A0 =A0 =A0destroy_workqueue(sdd->workqueue);
+>
+> - =A0 =A0 =A0 if (sci->src_clk !=3D sdd->clk)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clk_disable(sci->src_clk);
+> -
+> - =A0 =A0 =A0 if (sci->src_clk !=3D sdd->clk)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clk_put(sci->src_clk);
+> + =A0 =A0 =A0 clk_disable(sci->src_clk);
+> + =A0 =A0 =A0 clk_put(sci->src_clk);
+>
+> =A0 =A0 =A0 =A0clk_disable(sdd->clk);
+> =A0 =A0 =A0 =A0clk_put(sdd->clk);
+> @@ -1130,9 +1122,7 @@ static int s3c64xx_spi_suspend(struct platform_devi=
+ce *pdev, pm_message_t state)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0msleep(10);
+>
+> =A0 =A0 =A0 =A0/* Disable the clock */
+> - =A0 =A0 =A0 if (sci->src_clk !=3D sdd->clk)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clk_disable(sci->src_clk);
+> -
+> + =A0 =A0 =A0 clk_disable(sci->src_clk);
+> =A0 =A0 =A0 =A0clk_disable(sdd->clk);
+>
+> =A0 =A0 =A0 =A0sdd->cur_speed =3D 0; /* Output Clock is stopped */
+> @@ -1150,9 +1140,7 @@ static int s3c64xx_spi_resume(struct platform_devic=
+e *pdev)
+> =A0 =A0 =A0 =A0sci->cfg_gpio(pdev);
+>
+> =A0 =A0 =A0 =A0/* Enable the clock */
+> - =A0 =A0 =A0 if (sci->src_clk !=3D sdd->clk)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clk_enable(sci->src_clk);
+> -
+> + =A0 =A0 =A0 clk_enable(sci->src_clk);
+> =A0 =A0 =A0 =A0clk_enable(sdd->clk);
+>
+> =A0 =A0 =A0 =A0s3c64xx_spi_hwinit(sdd, pdev->id);
+> --
+> 1.6.2.5
+>
+>
 
 
 

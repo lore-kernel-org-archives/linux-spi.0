@@ -1,19 +1,18 @@
-From: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [git pull] 2nd batch of SPI changes
-Date: Mon, 18 Jan 2010 18:49:37 +0900
-Message-ID: <1b68c6791001180149g319ac08aqa8f37b405cd6660f@mail.gmail.com>
-References: <fa686aa40912170840h6bd921b4me244cb83c31cab7f@mail.gmail.com>
-	<1b68c6790912171645m4de68ac9i6f31346249147bd1@mail.gmail.com>
-	<fa686aa40912171900k386c748awb8d6ccb37d95285f@mail.gmail.com>
+From: jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Subject: [PATCH 5/6] SPI: S3C64XX: Include moved header
+Date: Mon, 18 Jan 2010 18:50:14 +0900
+Message-ID: <1263808215-16544-5-git-send-email-jassisinghbrar@gmail.com>
+References: <1263808215-16544-1-git-send-email-jassisinghbrar@gmail.com>
+	<1263808215-16544-2-git-send-email-jassisinghbrar@gmail.com>
+	<1263808215-16544-3-git-send-email-jassisinghbrar@gmail.com>
+	<1263808215-16544-4-git-send-email-jassisinghbrar@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Ben Dooks <ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa40912171900k386c748awb8d6ccb37d95285f-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1263808215-16544-4-git-send-email-jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,33 +23,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gRnJpLCBEZWMgMTgsIDIwMDkgYXQgMTI6MDAgUE0sIEdyYW50IExpa2VseQo8Z3JhbnQubGlr
-ZWx5QHNlY3JldGxhYi5jYT4gd3JvdGU6Cj4gT24gVGh1LCBEZWMgMTcsIDIwMDkgYXQgNTo0NSBQ
-TSwgamFzc2kgYnJhciA8amFzc2lzaW5naGJyYXJAZ21haWwuY29tPiB3cm90ZToKPj4gT24gRnJp
-LCBEZWMgMTgsIDIwMDkgYXQgMTo0MCBBTSwgR3JhbnQgTGlrZWx5IDxncmFudC5saWtlbHlAc2Vj
-cmV0bGFiLmNhPiB3cm90ZToKPj4+IEphc3NpIEJyYXIgKDEpOgo+Pj4gwqAgwqAgwqBzcGk6IEFk
-ZCBzM2M2NHh4IFNQSSBDb250cm9sbGVyIGRyaXZlcgo+PiBJSVJDLCBJIGRpZG4ndCBnZXQgYW55
-IGZpbmFsIGFjayBvZiBhY2NlcHRhbmNlIGZyb20geW91IG9yIGFueSBvdGhlciBtYWludGFpbmVy
-Lgo+PiBJIHRob3VnaHQgcGVyaGFwcyB0aGUgcGF0Y2ggaXMgbG9zdCBhbmQgd2FzIHByZXBhcmlu
-ZyB0byByZXNlbmQgYWZ0ZXIKPj4gaW5jbHVkaW5nIHNvbWUgbWlub3IgY2hhbmdlcyBzdWdnZXN0
-ZWQgYnkgbXkgQVJDSCBtYWludGFpbmVyKEJlbiBEb29rcykuCj4+IFRob3VnaCBJIGNhbiBqdXN0
-IGFzIHdlbGwgc2VuZCB0aG9zZSBjaGFuZ2VzIGFzIHBhdGNoZXMgcmlnaHQgYXdheS4KPj4gSSBh
-cG9sb2dpemUsIGlmIGkgbWVzc2VkIHVwLgo+Cj4gRG9uJ3Qgd29ycnkgYWJvdXQgaXQsIGp1c3Qg
-c2VuZCBhbiBpbmNyZW1lbnRhbCBwYXRjaC4gwqBJJ20gbmV3IHRvIHRoZQo+IFNQSSBtYWludGFp
-bmVyIGpvYiwgYW5kIEkgZGlkbid0IGtub3cgYW55IG9mIHRoZSBiYWNrZ3JvdW5kIG9yIHNlZSBh
-bnkKPiBtYWpvciByZWFzb24gbm90IHRvIG1lcmdlIHRoZSBkcml2ZXIsIGVzcGVjaWFsbHkgc2lu
-Y2UgaXQgaXMgYSBuZXcKPiBkcml2ZXIsIGFuZCBub3QgYSBjaGFuZ2UgdG8gYW4gZXhpc3Rpbmcg
-b25lLgpOb3csIHRoYXQgbXkgU29DIHNwZWNpZmljIHN0dWZmIGhhcyBiZWVuIHNvcnRlZCBvdXQg
-YW5kIGFjY2VwdGVkIGluIG15Cm1haW50YWluZXIncyB0cmVlLCBJIGFtIGdvaW5nIHRvIHN1Ym1p
-dCBpbmNyZW1lbnRhbCBwYXRjaGVzIGZvcgpkcml2ZXJzL3NwaS9zcGlfczNjNjR4eC5jCgotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KVGhyb3VnaG91dCBpdHMgMTgteWVhciBoaXN0b3J5LCBSU0EgQ29u
-ZmVyZW5jZSBjb25zaXN0ZW50bHkgYXR0cmFjdHMgdGhlCndvcmxkJ3MgYmVzdCBhbmQgYnJpZ2h0
-ZXN0IGluIHRoZSBmaWVsZCwgY3JlYXRpbmcgb3Bwb3J0dW5pdGllcyBmb3IgQ29uZmVyZW5jZQph
-dHRlbmRlZXMgdG8gbGVhcm4gYWJvdXQgaW5mb3JtYXRpb24gc2VjdXJpdHkncyBtb3N0IGltcG9y
-dGFudCBpc3N1ZXMgdGhyb3VnaAppbnRlcmFjdGlvbnMgd2l0aCBwZWVycywgbHVtaW5hcmllcyBh
-bmQgZW1lcmdpbmcgYW5kIGVzdGFibGlzaGVkIGNvbXBhbmllcy4KaHR0cDovL3Auc2YubmV0L3Nm
-dS9yc2Fjb25mLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+
+Header for platform specific stuff has been rename to include the SoC
+type. Include the new header instead.
+
+Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+ drivers/spi/spi_s3c64xx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
+index 0e883f9..9fa0b99 100644
+--- a/drivers/spi/spi_s3c64xx.c
++++ b/drivers/spi/spi_s3c64xx.c
+@@ -28,7 +28,7 @@
+ #include <linux/spi/spi.h>
+ 
+ #include <mach/dma.h>
+-#include <plat/spi.h>
++#include <plat/s3c64xx-spi.h>
+ 
+ /* Registers and bit-fields */
+ 
+-- 
+1.6.2.5
+
+
+------------------------------------------------------------------------------
+Throughout its 18-year history, RSA Conference consistently attracts the
+world's best and brightest in the field, creating opportunities for Conference
+attendees to learn about information security's most important issues through
+interactions with peers, luminaries and emerging and established companies.
+http://p.sf.net/sfu/rsaconf-dev2dev

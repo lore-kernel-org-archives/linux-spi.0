@@ -1,20 +1,11 @@
-From: jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Subject: [PATCH 6/6] SPI: S3C64XX: Add new parameter to
-	cs callback
-Date: Mon, 18 Jan 2010 18:50:15 +0900
-Message-ID: <1263808215-16544-6-git-send-email-jassisinghbrar@gmail.com>
-References: <1263808215-16544-1-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-2-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-3-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-4-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-5-git-send-email-jassisinghbrar@gmail.com>
+From: Lev Stanislavovich <levstanislavovich-QnxaslidyBYAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Учись и побеждай
+Date: Mon, 18 Jan 2010 14:59:14 +0300
+Message-ID: <5815567341.20100118145914@guriy.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5834824232969919597=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1263808215-16544-5-git-send-email-jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,50 +16,133 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+--===============5834824232969919597==
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
-Since most of the chip-selects are simply going to be like
-gpio_set_value, it would do good to have the same callback type
-so that it could simply be made to point at gpio_set_value.
+PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVu
+dD0idGV4dC9odG1sOyBjaGFyc2V0PXdpbmRvd3MtMTI1MSI+DQo8dGl0bGU+PC90aXRsZT4N
+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQpib2R5LHRkLHRoIHsNCglmb250LWZh
+bWlseTogVmVyZGFuYSwgR2VuZXZhLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOw0K
+CWZvbnQtc2l6ZTogMTNweDsNCgljb2xvcjogIzAwMDAwMDsNCn0NCmJvZHkgew0KCWJhY2tn
+cm91bmQtY29sb3I6ICNGRkZGRkY7DQp9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9k
+eT4NCjx0YWJsZSB3aWR0aD0iMTAyNCIgYWxpZ249ImNlbnRlciI+DQogIDx0cj4NCiAgICA8
+dGQgYWxpZ249ImxlZnQiPjxwPjxzdHJvbmc+yu7t6vPw5e326P88L3N0cm9uZz4gliDo5/P3
+5e3o5SDq7u3q8/Dl7fbo6CCWIOLu7/Du8SDy7uPuLCDq7uPuIO/l8OL77CDi++Hl8PPyLCDy
+7vIg6CDv7uvz9+jyIO/w6OH76/wuIM/u4+7t/yDn4CDq6+jl7fLu7CCWIOPu7ergIO7yIOru
+7erz8OXt8uAuIMjt4uXx8ujw7uLg7ejlIOIg8e7n5ODt6OUg6u7t6vPw5e3y7e7j7iDv8OXo
+7PP55fHy4uAgliDo7eLl8fLo8O7i4O3o5SDiIPDu8fIg7/Du5ODmIOgg7+7r8/fl7ejlIPfz
+5uj1IOrr6OXt8u7iLjxicj4NCiAgICAgIMLu8iDy8/It8u4g6CDi7uft6Org5fIg4u7v8O7x
+IO4g7/Dl6Ozz+eXx8uLlIMLg+OXpIOru7O/g7ejoLCDgIDxzdHJvbmc+/fLuIO/w7vTl8fHo
+7u3g6/zt++Ug8e7y8PPk7ejq6CAg6CDw8+ru4u7k8fLi7iwg4CDk6/8g/fLu4+4g6CDt5e7h
+9e7k6OzuPC9zdHJvbmc+ICAtIMrQwNLKztHS0M7Xzc7FIM7B0MDHzsLAzcjFPC9wPg0KICAg
+IDxwPiZuYnNwOzwvcD48L3RkPg0KICA8L3RyPg0KICA8dHI+DQogICAgPHRkPjx0YWJsZSB3
+aWR0aD0iMTAxMiIgYWxpZ249ImNlbnRlciIgY2VsbHNwYWNpbmc9IjUiPg0KICAgICAgPHRy
+Pg0KICAgICAgICA8dGQgd2lkdGg9IjczNSIgYWxpZ249ImxlZnQiPjxwIGFsaWduPSJjZW50
+ZXIiPtLw5e3o7ePu4uD/IOru7O/g7ej/ILkxIOIg0+rw4Ojt5SwgPHN0cm9uZz7B6Oft5fEt
+1uXt8vAgq83g9uju7eDr/O376bs8L3N0cm9uZz4sPGJyPg0KICAgICAgICAgICAg7/Dl5Ovg
+4+Dl8iDC4OwsIO/r4O0gIOrw4PLq7vHw7vft+/Ug6vPw8e7iIO7h8/fl7ej/Og0KICAgICAg
+ICAgICAgPHRhYmxlIHdpZHRoPSI3MjUiIGFsaWduPSJjZW50ZXIiIGNlbGxwYWRkaW5nPSIx
+MCI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRkIHdpZHRoPSI2NzMiIGFsaWdu
+PSJsZWZ0Ij48c3Ryb25nPjIxIP/t4uDw/zwvc3Ryb25nPiA8YnI+DQogICAgICAgICAgICAg
+IDxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9UcmVuaW5n
+aS1TZW1pbmFyeS95YW52YXIva29nZGFfbmV0X3ByZXZyYXNjaGFldHN5YV92X2RhLmh0bSIg
+c3R5bGU9ImNvbG9yOiMwMDAwMDAiPiZxdW90O8ru4+TgIKvNxdK7IO/w5eLw4Png5fLx/yDi
+IKvEwLs6PGJyPg0KICAgICAgICAgICAgICDo6+gg8ODh7vLgIPEg4u7n8ODm5e3o/+zoIOgg
+8e7s7eXt6P/s6CDq6+jl7fLgJnF1b3Q7PC9hPjwvdGQ+DQogICAgICAgICAgICA8L3RyPg0K
+ICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZCBhbGlnbj0ibGVmdCI+PHN0cm9uZz4y
+MiD/7eLg8P88L3N0cm9uZz4gPGJyPg0KICAgICAgICAgICAgICA8YSBocmVmPSJodHRwOi8v
+d3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkveWFudmFy
+L3ByYWt0aWt1bV90ZWxlZm9ubnloX3Byb2RhemguaHRtIiBzdHlsZT0iY29sb3I6IzAwMDAw
+MCI+z/Dg6vLo6vPsIPLl6+X07u3t+/Ug7/Du5ODmLjwvYT48L3RkPg0KICAgICAgICAgICAg
+PC90cj4NCiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYWxpZ249ImxlZnQiPjxz
+dHJvbmc+MjQg/+3i4PD/PC9zdHJvbmc+IDxicj4NCiAgICAgICAgICAgICAgPGEgaHJlZj0i
+aHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5
+L25veWFici91em5hal9zZWtyZXQuaHRtIiBzdHlsZT0iY29sb3I6IzAwMDAwMCI+zODx8uXw
+Lerr4PHxOjxicj4NCiAgICAgICAgICAgICAgq9PHzcDJINHFytDF0rs8YnI+DQogICAgICAg
+ICAgICAgINP34PHy7ejq6CD06Ov87OAgq9Hl6vDl8rsgKKtUaGUgU2VjcmV0uyk8L2E+PC90
+ZD4NCiAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRk
+IGFsaWduPSJsZWZ0Ij48c3Ryb25nPjI2IP/t4uDw/zwvc3Ryb25nPjxicj4NCiAgICAgICAg
+ICAgICAgPGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1Ry
+ZW5pbmdpLVNlbWluYXJ5L2Rla2Fici9pem1lbmVuaXlhX3ZfemVtZWxub21femFrb25vZGF0
+ZWxzdHZlLmh0bSIgc3R5bGU9ImNvbG9yOiMwMDAwMDAiPsjn7OXt5e3o/yDiIOfl7OXr/O3u
+7CDn4Oru7e7k4PLl6/zx8uLlLCDq7vLu8PvlIOLx8vPv4P7yIOIg8ejr8yDiIOTl6uDh8OUg
+MjAwOSDj7uTgIOgg4iD/7eLg8OUgMjAxMCDj7uTgIJYg8+/w7vnl7e376SDv7vD/5O7qIO/w
+6O7h8OXy5e3o/yDv8ODiIO3gIOfl7Ov+ITwvYT48L3RkPg0KICAgICAgICAgICAgPC90cj4N
+CiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYWxpZ249ImxlZnQiPjxzdHJvbmc+
+MjYg/+3i4PD/PC9zdHJvbmc+PGJyPg0KICAgICAgICAgICAgICA8YSBocmVmPSJodHRwOi8v
+d3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmluZ2ktU2VtaW5hcnkveWFudmFy
+L3pvbG90eWVfcm9zc3lwaS5odG0iIHN0eWxlPSJjb2xvcjojMDAwMDAwIj7H7uvu8vvlIPDu
+8fH77+gg8uXr5fTu7e3u4+4g7ODw6uXy6O3j4CDo6+gg6uDqIPPx7+X47e4g7/Du5ODi4PL8
+IO/uIPLl6+X07u3zPC9hPjwvdGQ+DQogICAgICAgICAgICA8L3RyPg0KDQogICAgICAgICAg
+PHRyPg0KICAgICAgICAgICAgPHRkIGFsaWduPSJsZWZ0Ij48c3Ryb25nPjI4LTI5IP/t4uDw
+/zwvc3Ryb25nPjxicj4NCiAgICAgICAgICAgICAgPGEgaHJlZj0iaHR0cDovL3d3dy5uYmMu
+dWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L3lhbnZhci9zdWNoYXNu
+ZV9kaWxvdm9kc3R2b190YV9hcmhpdm5hX3NwcmF2YS5odG0iIHN0eWxlPSJjb2xvcjojMDAw
+MDAwIj7R8/fg8e3lIOSz6+7i7uTx8uLuIPLgIODw9bPi7eAg8e/w4OLgLjwvYT48L3RkPg0K
+ICAgICAgICAgICAgPC90cj4NCiAgICAgICAgICA8dHI+DQogICAgICAgICAgICA8dGQgYWxp
+Z249ImxlZnQiPjxzdHJvbmc+Mjkg/+3i4PD/PC9zdHJvbmc+PGJyPg0KICAgICAgICAgICAg
+ICA8YSBocmVmPSJodHRwOi8vd3d3Lm5iYy51YS9uYmMvcGFnZXMvc2VydmljZXMvVHJlbmlu
+Z2ktU2VtaW5hcnkvZGVrYWJyL3N2eWF6aV9yZXNoYWp1dF92c2UuaHRtIiBzdHlsZT0iY29s
+b3I6IzAwMDAwMCI+0cLfx8gg0MXYwN7SIMLRxSE8L2E+PC90ZD4NCiAgICAgICAgICAgIDwv
+dHI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRkIGFsaWduPSJsZWZ0Ij48c3Ry
+b25nPjI5IP/t4uDw/zwvc3Ryb25nPjxicj4NCiAgICAgICAgICAgICAgPGEgaHJlZj0iaHR0
+cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2VzL1RyZW5pbmdpLVNlbWluYXJ5L3lh
+bnZhci9tZXRvZHlfcmFib3R5X3NfZG9semhuaWthbWkuaHRtIiBzdHlsZT0iY29sb3I6IzAw
+MDAwMCI+zOXy7uT7IPDg4e7y+yDxIOTu6+bt6Org7Ogg7+4g8uXr5fTu7fMuPC9hPjwvdGQ+
+DQogICAgICAgICAgICA8L3RyPg0KICAgICAgICAgIDx0cj4NCiAgICAgICAgICAgIDx0ZCBh
+bGlnbj0ibGVmdCI+PHN0cm9uZz4zMC0zMSD/7eLg8P88L3N0cm9uZz48YnI+DQogICAgICAg
+ICAgICAgIDxhIGhyZWY9Imh0dHA6Ly93d3cubmJjLnVhL25iYy9wYWdlcy9zZXJ2aWNlcy9U
+cmVuaW5naS1TZW1pbmFyeS95YW52YXIvZGVuZ2lfbGp1YmltX3VwcmF2bHlhZW1femFyYWJh
+dHl2YWVtLmh0bSIgc3R5bGU9ImNvbG9yOiMwMDAwMDAiPsrg6iDr/uHo8vwg5OXt/OPoPyDK
+4Oog8+/w4OLr//L8IOTl7fzj4OzoPyDK4Oog5+Dw4OHg8vvi4PL8IOTl7fzj6D88L2E+PC90
+ZD4NCiAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgPHRyPg0KICAgICAgICAgICAgPHRk
+IGFsaWduPSJsZWZ0Ij48c3Ryb25nPjMwLTMxIP/t4uDw/zwvc3Ryb25nPjxicj4NCiAgICAg
+ICAgICAgICAgPGEgaHJlZj0iaHR0cDovL3d3dy5uYmMudWEvbmJjL3BhZ2VzL3NlcnZpY2Vz
+L1RyZW5pbmdpLVNlbWluYXJ5L3lhbnZhci9hbnRpcGlrYXBfaWxpX2tha19wb3N0cm9pdF91
+ZG9ibnllX3ZhbV9vdG5vc2hlbml5YS5odG0iIHN0eWxlPSJjb2xvcjojMDAwMDAwIj7A7fLo
+7+jq4O8g6OvoIMrg6iDv7vHy8O7o8vwg8+Tu4e375SDC4Owg7vLt7vjl7ej/PzwvYT48L3Rk
+Pg0KICAgICAgICAgICAgPC90cj4NCiAgICAgICAgPC90YWJsZT48L3RkPg0KICAgICAgICA8
+dGQgd2lkdGg9IjI2NSIgYWxpZ249ImxlZnQiIHZhbGlnbj0idG9wIiBiZ2NvbG9yPSIjMDA5
+OTAwIj48cCBhbGlnbj0iY2VudGVyIiBzdHlsZT0iY29sb3I6I0ZGRkZGRiI+Jm5ic3A7PC9w
+Pg0KICAgICAgICAgIDxwIGFsaWduPSJjZW50ZXIiIHN0eWxlPSJjb2xvcjojRkZGRkZGIj48
+c3Ryb25nPtHy4PL86Dwvc3Ryb25nPjwvcD4NCiAgICAgICAgICA8cD4mbmJzcDsmbmJzcDs8
+YSBocmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0aW9ucy90cmVkLmh0bSIgc3R5
+bGU9ImNvbG9yOiNGRkZGRkYiPtLw5enk5fD7PC9hPjxicj48YnI+DQombmJzcDsmbmJzcDs8
+YSBocmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0aW9ucy9pbnRlcm5ldC5odG0i
+IHN0eWxlPSJjb2xvcjojRkZGRkZGIj7I7fLl8O3l8jwvYT48YnI+PGJyPg0KJm5ic3A7Jm5i
+c3A7PGEgaHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJsaWNhdGlvbnMvbWFya2V0Lmh0
+bSIgc3R5bGU9ImNvbG9yOiNGRkZGRkYiPszg8Orl8ujt4zwvYT48YnI+PGJyPg0KJm5ic3A7
+Jm5ic3A7PGEgaHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJsaWNhdGlvbnMvbWVuLmh0
+bSIgc3R5bGU9ImNvbG9yOiNGRkZGRkYiPszl7eXk5uzl7fI8L2E+PGJyPjxicj4NCiZuYnNw
+OyZuYnNwOzxhIGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFnZXMvcHVibGljYXRpb25zL3ByZXMu
+aHRtIiBzdHlsZT0iY29sb3I6I0ZGRkZGRiI+z/Dl8fHgIO4g7eDxPC9hPjxicj48YnI+DQom
+bmJzcDsmbmJzcDs8YSBocmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0aW9ucy9z
+b3ZldC5odG0iIHN0eWxlPSJjb2xvcjojRkZGRkZGIj7R7uLl8vsg7eD36O3g/vno7DwvYT48
+YnI+PGJyPg0KJm5ic3A7Jm5ic3A7PGEgaHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJs
+aWNhdGlvbnMvc292ZXR5X3ZlbGlraWhfbGp1ZGVqLmh0bSIgc3R5bGU9ImNvbG9yOiNGRkZG
+RkYiPtHu4uXy+yDC5evo6uj1IOv+5OXpPC9hPjxicj48YnI+DQombmJzcDsmbmJzcDs8YSBo
+cmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3B1YmxpY2F0aW9ucy9idWhnYWx0Lmh0bSIgc3R5
+bGU9ImNvbG9yOiNGRkZGRkYiPtHy4PL86CDt7uLu8fLoIPLz8Ojn7OA8L2E+PGJyPjxicj4N
+CiZuYnNwOyZuYnNwOzxhIGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFnZXMvcHVibGljYXRpb25z
+L2ZpbmFucy5odG0iIHN0eWxlPSJjb2xvcjojRkZGRkZGIj7B/uTm5fLo8O7i4O3o5SDoIPTo
+7eDt8fs8L2E+PGJyPjxicj4NCiZuYnNwOyZuYnNwOzxhIGhyZWY9Imh0dHA6Ly9uYmMudWEv
+cGFnZXMvcHVibGljYXRpb25zL3NhcGZvLmh0bSIgc3R5bGU9ImNvbG9yOiNGRkZGRkYiPtHy
+4PL86CDk6/8g5OXi8/jl6iDoIObl7fno7TwvYT48YnI+PGJyPg0KJm5ic3A7Jm5ic3A7PGEg
+aHJlZj0iaHR0cDovL25iYy51YS9wYWdlcy9wdWJsaWNhdGlvbnMvaW5mb3JtLmh0bSIgc3R5
+bGU9ImNvbG9yOiNGRkZGRkYiPsjt9O7w7OD26O7t7fvpIOfg4vLw4Oog7O7n4+A8L2E+PC9w
+Pg0KICAgICAgICAgIDwvdGQ+DQogICAgICA8L3RyPg0KICAgIDwvdGFibGU+PC90ZD4NCiAg
+PC90cj4NCjwvdGFibGU+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
 
-Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi_s3c64xx.c |    7 ++++---
- 1 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
-index 9fa0b99..32db695 100644
---- a/drivers/spi/spi_s3c64xx.c
-+++ b/drivers/spi/spi_s3c64xx.c
-@@ -300,13 +300,14 @@ static inline void enable_cs(struct s3c64xx_spi_driver_data *sdd,
- 		if (sdd->tgl_spi != spi) { /* if last mssg on diff device */
- 			/* Deselect the last toggled device */
- 			cs = sdd->tgl_spi->controller_data;
--			cs->set_level(spi->mode & SPI_CS_HIGH ? 0 : 1);
-+			cs->set_level(cs->line,
-+					spi->mode & SPI_CS_HIGH ? 0 : 1);
- 		}
- 		sdd->tgl_spi = NULL;
- 	}
- 
- 	cs = spi->controller_data;
--	cs->set_level(spi->mode & SPI_CS_HIGH ? 1 : 0);
-+	cs->set_level(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
- }
- 
- static int wait_for_xfer(struct s3c64xx_spi_driver_data *sdd,
-@@ -386,7 +387,7 @@ static inline void disable_cs(struct s3c64xx_spi_driver_data *sdd,
- 	if (sdd->tgl_spi == spi)
- 		sdd->tgl_spi = NULL;
- 
--	cs->set_level(spi->mode & SPI_CS_HIGH ? 0 : 1);
-+	cs->set_level(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
- }
- 
- static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
--- 
-1.6.2.5
 
+
+--===============5834824232969919597==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Throughout its 18-year history, RSA Conference consistently attracts the
@@ -76,3 +150,15 @@ world's best and brightest in the field, creating opportunities for Conference
 attendees to learn about information security's most important issues through
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev
+--===============5834824232969919597==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5834824232969919597==--

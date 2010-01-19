@@ -1,17 +1,13 @@
-From: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi: dw_spi: refine the IRQ
- mode working flow
-Date: Tue, 19 Jan 2010 09:20:53 -0500
-Message-ID: <4B55BFC5.506@octasic.com>
-References: <20100119112033.74a0f5be@feng-desktop>
+From: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: update MSIOF includes
+Date: Tue, 19 Jan 2010 23:21:27 +0900
+Message-ID: <20100119142127.18061.98110.sendpatchset@rxone.opensource.se>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100119112033.74a0f5be@feng-desktop>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,43 +18,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Feng,
+From: Magnus Damm <damm-yzvPICuk2ACczHhG9Qg4qA@public.gmane.org>
 
-Feng Tang wrote:
->  	dws->num_cs = 4;
->  	dws->max_freq = 25000000;	/* for Moorestwon */
->  	dws->irq = pdev->irq;
-> +	dws->fifo_len = 40;		/* FIFO has 40 words buffer */
->
->  	ret = dw_spi_add_host(dws);
->
->   
-Since we'll be sharing some of our init code, as well as some of our 
-init values, would it be a good idea to move:
-"dws->num_cs = 4;" and "dws->fifo_len = 40;"
+Update the MSIOF driver to remove the architecture
+speficic spi header file and add err.h. This makes
+the driver compile on non-SH architectures.
 
-into dw_spi_add_host(), if no values were provided by the caller?
+Signed-off-by: Magnus Damm <damm-yzvPICuk2ACczHhG9Qg4qA@public.gmane.org>
+---
 
- example:
---------------------------- [PATCH] ------------------
-diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index 31620fa..01ad79a 100644
---- a/drivers/spi/dw_spi.c
-+++ b/drivers/spi/dw_spi.c
-@@ -832,6 +832,11 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
-                goto exit;
-        }
+ drivers/spi/spi_sh_msiof.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- 0001/drivers/spi/spi_sh_msiof.c
++++ work/drivers/spi/spi_sh_msiof.c	2010-01-19 16:46:59.000000000 +0900
+@@ -20,12 +20,12 @@
+ #include <linux/bitmap.h>
+ #include <linux/clk.h>
+ #include <linux/io.h>
++#include <linux/err.h>
  
-+       if (!dws->num_cs)
-+               dws->num_cs = 4;
-+       if (!dws->fifo_len)
-+               dws->fifo_len = 40;
-+      
-        dws->master = master;
-        dws->type = SSI_MOTO_SPI;
-        dws->prev_chip = NULL;
-
-
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/spi/sh_msiof.h>
+ 
+-#include <asm/spi.h>
+ #include <asm/unaligned.h>
+ 
+ struct sh_msiof_spi_priv {
 
 ------------------------------------------------------------------------------
 Throughout its 18-year history, RSA Conference consistently attracts the

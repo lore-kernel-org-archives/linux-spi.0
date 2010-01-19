@@ -1,22 +1,15 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 4/6] SPI: S3C64XX: Check before
-	mem-region release
-Date: Mon, 18 Jan 2010 19:32:39 -0700
-Message-ID: <fa686aa41001181832r3d2462f6y87649244b8afc5f2@mail.gmail.com>
-References: <1263808215-16544-1-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-2-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-3-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-4-git-send-email-jassisinghbrar@gmail.com>
-	<fa686aa41001181012s57c0e863s6b9b6b2724514a9f@mail.gmail.com>
-	<1b68c6791001181542p618a8d47n45a120e51cfed1f1@mail.gmail.com>
+From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 1/3] spi: dw_spi: fix a bug in
+	wait_till_not_busy()
+Date: Tue, 19 Jan 2010 11:20:01 +0800
+Message-ID: <20100119112001.6c391ea7@feng-desktop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org
-To: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, Grant Likely
+	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1b68c6791001181542p618a8d47n45a120e51cfed1f1-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,58 +20,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 18, 2010 at 4:42 PM, jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrot=
-e:
-> On Tue, Jan 19, 2010 at 3:12 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>=
- wrote:
->> On Mon, Jan 18, 2010 at 2:50 AM, =A0<jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>> From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
->>>
->>> Add precautionary check before releasing memory region.
->>>
->>> Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
->>> ---
->>> =A0drivers/spi/spi_s3c64xx.c | =A0 =A03 ++-
->>> =A01 files changed, 2 insertions(+), 1 deletions(-)
->>>
->>> diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
->>> index 3acf381..0e883f9 100644
->>> --- a/drivers/spi/spi_s3c64xx.c
->>> +++ b/drivers/spi/spi_s3c64xx.c
->>> @@ -1097,7 +1097,8 @@ static int s3c64xx_spi_remove(struct platform_dev=
-ice *pdev)
->>> =A0 =A0 =A0 =A0iounmap((void *) sdd->regs);
->>>
->>> =A0 =A0 =A0 =A0mem_res =3D platform_get_resource(pdev, IORESOURCE_MEM, =
-0);
->>> - =A0 =A0 =A0 release_mem_region(mem_res->start, resource_size(mem_res)=
-);
->>> + =A0 =A0 =A0 if (mem_res !=3D NULL)
->>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 release_mem_region(mem_res->start, resour=
-ce_size(mem_res));
->>
->>
->> request_mem_region() in in an unconditional path in the .probe() hook.
->> =A0Are you seeing failure on the remove path?
-> No failure, just warnings upon running some static code analyzer.
+>From 124fda393891d31debc2a3b760627edb18422203 Mon Sep 17 00:00:00 2001
+From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Date: Fri, 25 Dec 2009 11:18:32 +0800
+Subject: [PATCH 1/3] spi: dw_spi: fix a bug in wait_till_not_busy()
 
-Okay.  For future reference, it makes my job easier (and more likely
-that I'll pick up the patch) if the commit log states why a change is
-being made, and not just what.
+Make the driver wait at least  for 1 jiffie before issuing the
+warning, no matter what HZ is set to
 
-g.
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
+Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 ---
+ drivers/spi/dw_spi.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
+index 31620fa..521d680 100644
+--- a/drivers/spi/dw_spi.c
++++ b/drivers/spi/dw_spi.c
+@@ -161,7 +161,7 @@ static inline void mrst_spi_debugfs_remove(struct dw_spi *dws)
+ 
+ static void wait_till_not_busy(struct dw_spi *dws)
+ {
+-	unsigned long end = jiffies + usecs_to_jiffies(1000);
++	unsigned long end = jiffies + 1 + usecs_to_jiffies(1000);
+ 
+ 	while (time_before(jiffies, end)) {
+ 		if (!(dw_readw(dws, sr) & SR_BUSY))
+-- 
+1.6.0.4
+
+------------------------------------------------------------------------------
 Throughout its 18-year history, RSA Conference consistently attracts the
-world's best and brightest in the field, creating opportunities for Confere=
-nce
-attendees to learn about information security's most important issues throu=
-gh
+world's best and brightest in the field, creating opportunities for Conference
+attendees to learn about information security's most important issues through
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev

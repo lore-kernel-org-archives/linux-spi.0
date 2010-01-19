@@ -1,23 +1,22 @@
-From: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 6/6] SPI: S3C64XX: Add new parameter
-	to cs callback
-Date: Tue, 19 Jan 2010 08:49:57 +0900
-Message-ID: <1b68c6791001181549h1d0d212ek6a039fa9cee69cd@mail.gmail.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 4/6] SPI: S3C64XX: Check before
+	mem-region release
+Date: Mon, 18 Jan 2010 19:32:39 -0700
+Message-ID: <fa686aa41001181832r3d2462f6y87649244b8afc5f2@mail.gmail.com>
 References: <1263808215-16544-1-git-send-email-jassisinghbrar@gmail.com>
 	<1263808215-16544-2-git-send-email-jassisinghbrar@gmail.com>
 	<1263808215-16544-3-git-send-email-jassisinghbrar@gmail.com>
 	<1263808215-16544-4-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-5-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-6-git-send-email-jassisinghbrar@gmail.com>
-	<fa686aa41001181015g6b3d35fdy8ee0f5134a8ca1a5@mail.gmail.com>
+	<fa686aa41001181012s57c0e863s6b9b6b2724514a9f@mail.gmail.com>
+	<1b68c6791001181542p618a8d47n45a120e51cfed1f1@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa41001181015g6b3d35fdy8ee0f5134a8ca1a5-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1b68c6791001181542p618a8d47n45a120e51cfed1f1-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,63 +27,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCBKYW4gMTksIDIwMTAgYXQgMzoxNSBBTSwgR3JhbnQgTGlrZWx5IDxncmFudC5saWtl
-bHlAc2VjcmV0bGFiLmNhPiB3cm90ZToKPiBPbiBNb24sIEphbiAxOCwgMjAxMCBhdCAyOjUwIEFN
-LCDCoDxqYXNzaXNpbmdoYnJhckBnbWFpbC5jb20+IHdyb3RlOgo+PiBGcm9tOiBKYXNzaSBCcmFy
-IDxqYXNzaS5icmFyQHNhbXN1bmcuY29tPgo+Pgo+PiBTaW5jZSBtb3N0IG9mIHRoZSBjaGlwLXNl
-bGVjdHMgYXJlIHNpbXBseSBnb2luZyB0byBiZSBsaWtlCj4+IGdwaW9fc2V0X3ZhbHVlLCBpdCB3
-b3VsZCBkbyBnb29kIHRvIGhhdmUgdGhlIHNhbWUgY2FsbGJhY2sgdHlwZQo+PiBzbyB0aGF0IGl0
-IGNvdWxkIHNpbXBseSBiZSBtYWRlIHRvIHBvaW50IGF0IGdwaW9fc2V0X3ZhbHVlLgo+Pgo+PiBT
-aWduZWQtb2ZmLWJ5OiBKYXNzaSBCcmFyIDxqYXNzaS5icmFyQHNhbXN1bmcuY29tPgo+Cj4gVGhp
-cyBwYXRjaCBjaGFuZ2VzIHRoZSBjYWxsaW5nIGFyZ3VtZW50cywgYnV0IEkgZG9uJ3Qgc2VlIGFu
-eSBmdW5jdGlvbgo+IHNpZ25hdHVyZXMgY2hhbmdlZCB0byByZWZsZWN0IHRoZSBuZXcgcGFyYW1l
-dGVycy4gwqBJcyB0aGlzIGdvaW5nIHRvCj4gYnJlYWsgc3R1ZmY/CkkgaG9wZSByZXBsaWVzIHRv
-IHlvdXIgb3RoZXIgcXVlcmllcyB3aWxsIG1ha2UgdGhpcyBjbGVhciB0b28uCgpJbiBzdW1tYXJ5
-LCBvbmx5IGRyaXZlcnMvc3BpL3NwaV9zM2M2NHh4LmMgd2FzIHB1bGxlZCBpbiB5b3VyIHRyZWUg
-d2hpbGUKdGhlIGJhY2tlbmQgcGxhdGZvcm0gc3VwcG9ydCBmb3IgdGhpcyBTUEkgZHJpdmVyIHdh
-cyBoZWxkIGJhY2sgdW50aWwKc29tZSBjaGFuZ2VzIHdlcmUgbWFkZS4KVGhlc2UgNiBwYXRjaGVz
-IHVwZGF0ZSB0aGUgZHJpdmVyIGZvciB0aG9zZSBjaGFuZ2VzIHN1Z2dlc3RlZCBieSBteQpTb0Mg
-c3VwcG9ydCBtYWludGFpbmVyKEJlbiBEb29rcykuCkkgdGhpbmsgeW91IGNvdWxkIHNpbXBseSBh
-cHBseSB0aGVzZSBwYXRjaGVzLCBiZWNhdXNlIHRoZSBleHRhbnQgZHJpdmVyCmlzIHVzZWxlc3Mg
-d2l0aG91dCBwbGF0Zm9ybSBzdXBwb3J0ICh3aGljaCBoYXMgb25seSBiZWVuIGFjY2VwdGVkIHll
-c3RlcmRheS4pCgo+IGcuCj4KPj4gLS0tCj4+IMKgZHJpdmVycy9zcGkvc3BpX3MzYzY0eHguYyB8
-IMKgIMKgNyArKysrLS0tCj4+IMKgMSBmaWxlcyBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDMg
-ZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGlfczNjNjR4eC5j
-IGIvZHJpdmVycy9zcGkvc3BpX3MzYzY0eHguYwo+PiBpbmRleCA5ZmEwYjk5Li4zMmRiNjk1IDEw
-MDY0NAo+PiAtLS0gYS9kcml2ZXJzL3NwaS9zcGlfczNjNjR4eC5jCj4+ICsrKyBiL2RyaXZlcnMv
-c3BpL3NwaV9zM2M2NHh4LmMKPj4gQEAgLTMwMCwxMyArMzAwLDE0IEBAIHN0YXRpYyBpbmxpbmUg
-dm9pZCBlbmFibGVfY3Moc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZlcl9kYXRhICpzZGQsCj4+IMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgaWYgKHNkZC0+dGdsX3NwaSAhPSBzcGkpIHsgLyogaWYgbGFz
-dCBtc3NnIG9uIGRpZmYgZGV2aWNlICovCj4+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgLyogRGVzZWxlY3QgdGhlIGxhc3QgdG9nZ2xlZCBkZXZpY2UgKi8KPj4gwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBjcyA9IHNkZC0+dGdsX3NwaS0+Y29udHJvbGxlcl9k
-YXRhOwo+PiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGNzLT5zZXRfbGV2ZWwo
-c3BpLT5tb2RlICYgU1BJX0NTX0hJR0ggPyAwIDogMSk7Cj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgY3MtPnNldF9sZXZlbChjcy0+bGluZSwKPj4gKyDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBzcGktPm1vZGUgJiBT
-UElfQ1NfSElHSCA/IDAgOiAxKTsKPj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB9Cj4+IMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgc2RkLT50Z2xfc3BpID0gTlVMTDsKPj4gwqAgwqAgwqAgwqB9Cj4+
-Cj4+IMKgIMKgIMKgIMKgY3MgPSBzcGktPmNvbnRyb2xsZXJfZGF0YTsKPj4gLSDCoCDCoCDCoCBj
-cy0+c2V0X2xldmVsKHNwaS0+bW9kZSAmIFNQSV9DU19ISUdIID8gMSA6IDApOwo+PiArIMKgIMKg
-IMKgIGNzLT5zZXRfbGV2ZWwoY3MtPmxpbmUsIHNwaS0+bW9kZSAmIFNQSV9DU19ISUdIID8gMSA6
-IDApOwo+PiDCoH0KPj4KPj4gwqBzdGF0aWMgaW50IHdhaXRfZm9yX3hmZXIoc3RydWN0IHMzYzY0
-eHhfc3BpX2RyaXZlcl9kYXRhICpzZGQsCj4+IEBAIC0zODYsNyArMzg3LDcgQEAgc3RhdGljIGlu
-bGluZSB2b2lkIGRpc2FibGVfY3Moc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZlcl9kYXRhICpzZGQs
-Cj4+IMKgIMKgIMKgIMKgaWYgKHNkZC0+dGdsX3NwaSA9PSBzcGkpCj4+IMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgc2RkLT50Z2xfc3BpID0gTlVMTDsKPj4KPj4gLSDCoCDCoCDCoCBjcy0+c2V0X2xl
-dmVsKHNwaS0+bW9kZSAmIFNQSV9DU19ISUdIID8gMCA6IDEpOwo+PiArIMKgIMKgIMKgIGNzLT5z
-ZXRfbGV2ZWwoY3MtPmxpbmUsIHNwaS0+bW9kZSAmIFNQSV9DU19ISUdIID8gMCA6IDEpOwo+PiDC
-oH0KPj4KPj4gwqBzdGF0aWMgdm9pZCBzM2M2NHh4X3NwaV9jb25maWcoc3RydWN0IHMzYzY0eHhf
-c3BpX2RyaXZlcl9kYXRhICpzZGQpCj4+IC0tCj4+IDEuNi4yLjUKPj4KPj4KPgo+Cj4KPiAtLQo+
-IEdyYW50IExpa2VseSwgQi5TYy4sIFAuRW5nLgo+IFNlY3JldCBMYWIgVGVjaG5vbG9naWVzIEx0
-ZC4KPgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRocm91Z2hvdXQgaXRzIDE4LXllYXIgaGlzdG9y
-eSwgUlNBIENvbmZlcmVuY2UgY29uc2lzdGVudGx5IGF0dHJhY3RzIHRoZQp3b3JsZCdzIGJlc3Qg
-YW5kIGJyaWdodGVzdCBpbiB0aGUgZmllbGQsIGNyZWF0aW5nIG9wcG9ydHVuaXRpZXMgZm9yIENv
-bmZlcmVuY2UKYXR0ZW5kZWVzIHRvIGxlYXJuIGFib3V0IGluZm9ybWF0aW9uIHNlY3VyaXR5J3Mg
-bW9zdCBpbXBvcnRhbnQgaXNzdWVzIHRocm91Z2gKaW50ZXJhY3Rpb25zIHdpdGggcGVlcnMsIGx1
-bWluYXJpZXMgYW5kIGVtZXJnaW5nIGFuZCBlc3RhYmxpc2hlZCBjb21wYW5pZXMuCmh0dHA6Ly9w
-LnNmLm5ldC9zZnUvcnNhY29uZi1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Mon, Jan 18, 2010 at 4:42 PM, jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrot=
+e:
+> On Tue, Jan 19, 2010 at 3:12 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>=
+ wrote:
+>> On Mon, Jan 18, 2010 at 2:50 AM, =A0<jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>>>
+>>> Add precautionary check before releasing memory region.
+>>>
+>>> Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>>> ---
+>>> =A0drivers/spi/spi_s3c64xx.c | =A0 =A03 ++-
+>>> =A01 files changed, 2 insertions(+), 1 deletions(-)
+>>>
+>>> diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
+>>> index 3acf381..0e883f9 100644
+>>> --- a/drivers/spi/spi_s3c64xx.c
+>>> +++ b/drivers/spi/spi_s3c64xx.c
+>>> @@ -1097,7 +1097,8 @@ static int s3c64xx_spi_remove(struct platform_dev=
+ice *pdev)
+>>> =A0 =A0 =A0 =A0iounmap((void *) sdd->regs);
+>>>
+>>> =A0 =A0 =A0 =A0mem_res =3D platform_get_resource(pdev, IORESOURCE_MEM, =
+0);
+>>> - =A0 =A0 =A0 release_mem_region(mem_res->start, resource_size(mem_res)=
+);
+>>> + =A0 =A0 =A0 if (mem_res !=3D NULL)
+>>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 release_mem_region(mem_res->start, resour=
+ce_size(mem_res));
+>>
+>>
+>> request_mem_region() in in an unconditional path in the .probe() hook.
+>> =A0Are you seeing failure on the remove path?
+> No failure, just warnings upon running some static code analyzer.
+
+Okay.  For future reference, it makes my job easier (and more likely
+that I'll pick up the patch) if the commit log states why a change is
+being made, and not just what.
+
+g.
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
+---
+Throughout its 18-year history, RSA Conference consistently attracts the
+world's best and brightest in the field, creating opportunities for Confere=
+nce
+attendees to learn about information security's most important issues throu=
+gh
+interactions with peers, luminaries and emerging and established companies.
+http://p.sf.net/sfu/rsaconf-dev2dev

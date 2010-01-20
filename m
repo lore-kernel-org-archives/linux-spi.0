@@ -1,8 +1,8 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH v2] SPI DaVinci: SPI master driver
 	for DaVinci/DA8xx
-Date: Wed, 20 Jan 2010 13:26:59 -0700
-Message-ID: <fa686aa41001201226p5480ca20l4f1535b0b8eade8a@mail.gmail.com>
+Date: Wed, 20 Jan 2010 13:47:32 -0700
+Message-ID: <fa686aa41001201247i73c92141o133fb5cc0d7e6538@mail.gmail.com>
 References: <1261000938-1897-1-git-send-email-s-paulraj@ti.com>
 	<878wccqfmp.fsf@deeprootsystems.com>
 	<fa686aa41001051641w58ae2b11w476ae2fd8ef325ed@mail.gmail.com>
@@ -71,24 +71,10 @@ free to
 >
 > Acked-by: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
 
-I've already picked it up, no need for the refresh.
+If it has been through your hands in some form, then yes a s-o-b is
+appropriate.  I'll take care of it.
 
-Some notes:  It looks like the contents of the .h file is entirely
-driver private stuff.  I only want to see .h files when they are
-needed to export interface information (like platform data), or when a
-driver needs multiple .c files.  Rather than comment and wait for a
-refresh, I've picked up the patch and moved the .h contents into the
-.c.  If you really do need something in a .h then you can submit a
-fixup patch to move the parts you need back out.
-
-I also fixed up minor mistake in linuxdoc headers (linuxdoc headers
-start with /** instead of /*).
-
-This will be pushed out to my next-spi branch sometime later today.
-
-Cheers,
 g.
-
 
 -- =
 

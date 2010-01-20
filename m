@@ -1,17 +1,21 @@
-From: Ben Gamari <bgamari-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: (no subject)
-Date: Wed, 20 Jan 2010 14:47:23 -0500
-Message-ID: <1264016711-sup-309@ben-laptop>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v2] SPI DaVinci: SPI master driver
+	for DaVinci/DA8xx
+Date: Wed, 20 Jan 2010 13:26:59 -0700
+Message-ID: <fa686aa41001201226p5480ca20l4f1535b0b8eade8a@mail.gmail.com>
+References: <1261000938-1897-1-git-send-email-s-paulraj@ti.com>
+	<878wccqfmp.fsf@deeprootsystems.com>
+	<fa686aa41001051641w58ae2b11w476ae2fd8ef325ed@mail.gmail.com>
+	<87iqbgnjpq.fsf@deeprootsystems.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	beagleboard <beagleboard-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
-	Eric Miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-omap <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, s-paulraj-l0cyMroinI0@public.gmane.org
+To: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <87iqbgnjpq.fsf-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,48 +26,81 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Bcc: 
-Subject: GPIO chip select support in omap2_mcspi driver
+On Tue, Jan 5, 2010 at 5:46 PM, Kevin Hilman
+<khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org> wrote:
+> Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> writes:
+>
+>> On Tue, Jan 5, 2010 at 4:46 PM, Kevin Hilman
+>> <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org> wrote:
+>>> s-paulraj-l0cyMroinI0@public.gmane.org writes:
+>>>
+>>>> From: Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>
+>>>>
+>>>> This patch adds support for a SPI master driver for the
+>>>> DaVinci series of SOCs
+>>>>
+>>>> Signed-off-by: Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>
+>>>> Signed-off-by: Mark A. Greer <mgreer-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
+>>>> Signed-off-by: Philby John <pjohn-k0rHJ+Hhz/SB+jHODAdFcQ@public.gmane.org>
+>>>> Signed-off-by: Sudhakar Rajashekhara <sudhakar.raj-l0cyMroinI0@public.gmane.org>
+>>>
+>>> Sandeep,
+>>>
+>>> This needs a minor refresh against current Linus tree for the Makefile
+>>> change.
+>>>
+>>> While doing the Makefile addition, it looks like the list is maintained=
+ in
+>>> alphabetical order. =A0Please add davinci in the right order, and feel =
+free to
+>>> add my signoff.
+>>
+>> Signed-of-by lines are only for patches that actually pass through
+>> your hands (ie. you add it yourself when you pick it up and pass it).
+>> It is not appropriate to add a s-o-b line for someone else.
+>> "Acked-by" or "Reviewed-by" should be used instead.
+>
+> Understood. =A0This driver has passed through my hands (and in front of
+> my eyes) in various forms many times in its development, so I figured
+> an s-o-b was appropriate.
+>
+> That being said, for this particular version, and ack is probably more
+> appropriate.
+>
+> Sandeep, after you refresh, please add
+>
+> Acked-by: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
 
-Hey,
+I've already picked it up, no need for the refresh.
 
-Recently I have been looking to use a BeagleBoard to drive several
-serial ADCs and DACs in a data acquisition and analysis setup. Unfortunately, the
-BeagleBoard is severely limited by the number of SPI controllers it
-exposes on the expansion connector (McSPI3 with 2 CS lines and McSPI4
-with one). This is insufficient for our application and thus I have been
-investigating adding support to the mcspi driver for using GPIO lines as
-chip select lines, as is done in the pxa2xx, bfin5xx, and s3c24xx drivers.
+Some notes:  It looks like the contents of the .h file is entirely
+driver private stuff.  I only want to see .h files when they are
+needed to export interface information (like platform data), or when a
+driver needs multiple .c files.  Rather than comment and wait for a
+refresh, I've picked up the patch and moved the .h contents into the
+.c.  If you really do need something in a .h then you can submit a
+fixup patch to move the parts you need back out.
 
-To this end, I have a few questions about how this support was
-implemented. First, it seems that the s3c24xx driver is built on the
-spi_bitbang driver, despite interfacing with a dedicated hardware SPI
-controller.  What is the reason for this? Was this done specifically for
-the purpose of incorporating support for GPIO CS pins?
+I also fixed up minor mistake in linuxdoc headers (linuxdoc headers
+start with /** instead of /*).
 
-It seems like the rough idea is to add a cs_gpio field to the device
-struct (omap2_mcspi) and add the appropriate code to the
-omap2_mcspi_force_cs() to bring cs_gpio high or low if it is valid. The
-potential problem I can see with this is that omap2_mcspi_set_enable()
-is called to enable the channel before the force_cs() is called (in
-omap2_mcspi_work()). If I'm interpreting the documentation correctly,
-the enable bit starts the clocks, meaning that the chip will begin
-clocking out data before CS is brought high. I must be missing something
-here, no?
+This will be pushed out to my next-spi branch sometime later today.
 
-For reference, I included a short list of relevant commits below, largely for
-my own benefit. I would greatly appreciate any feedback you might have.
-
-Thanks,
-- Ben
+Cheers,
+g.
 
 
-pxa2xx_spi: a7bb3909b3293d503211d7f6af8ed62c1644b686
-bfin_spi: 42c78b2bf51bafb4cfa98dfecc28dd9b8bcd04b0
+-- =
 
-------------------------------------------------------------------------------
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
+---
 Throughout its 18-year history, RSA Conference consistently attracts the
-world's best and brightest in the field, creating opportunities for Conference
-attendees to learn about information security's most important issues through
+world's best and brightest in the field, creating opportunities for Confere=
+nce
+attendees to learn about information security's most important issues throu=
+gh
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev

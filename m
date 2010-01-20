@@ -1,17 +1,16 @@
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi: dw_spi: refine the IRQ
- mode working flow
-Date: Wed, 20 Jan 2010 11:18:27 +0800
-Message-ID: <20100120111827.6ebd4cc8@feng-desktop>
-References: <20100119112033.74a0f5be@feng-desktop> <4B55BFC5.506@octasic.com>
+From: Alberto Panizzo <maramaopercheseimorto-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi_imx: add device information to
+	debug.
+Date: Wed, 20 Jan 2010 10:47:14 +0100
+Message-ID: <1263980834.3083.18.camel@realization>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: spi-devel-list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4B55BFC5.506-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,41 +21,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 19 Jan 2010 22:20:53 +0800
-Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org> wrote:
-
-> Hi Feng,
-> 
-> Feng Tang wrote:
-> >  	dws->num_cs = 4;
-> >  	dws->max_freq = 25000000;	/* for Moorestwon */
-> >  	dws->irq = pdev->irq;
-> > +	dws->fifo_len = 40;		/* FIFO has 40 words
-> > buffer */
-> >
-> >  	ret = dw_spi_add_host(dws);
-> >
-> >   
-> Since we'll be sharing some of our init code, as well as some of our 
-> init values, would it be a good idea to move:
-> "dws->num_cs = 4;" and "dws->fifo_len = 40;"
-> 
-> into dw_spi_add_host(), if no values were provided by the caller?
-
-For FIFO depth, it depends on each specific implementation based on DW core,
-and interface driver would better set it. If fifo_len is not set in IRQ mode,
-core driver will set 0 as the TX interrupt threshold, which will only trigger
-the TXE IRQ when the TX FIFO is fully empty. This is my design thought.
-
-For num_cs, I don't think it's a big deal to put its initialization in the
-interface driver :) 
-
-Thanks,
-Feng
-
-------------------------------------------------------------------------------
-Throughout its 18-year history, RSA Conference consistently attracts the
-world's best and brightest in the field, creating opportunities for Conference
-attendees to learn about information security's most important issues through
-interactions with peers, luminaries and emerging and established companies.
-http://p.sf.net/sfu/rsaconf-dev2dev
+SGkgYWxsIQpJIGFscmVhZHkgc2VudCB0aGlzIHBhdGNoIHRvIHRoZSBsaW51eC1hcm0ta2VybmVs
+IG1haWxpbmcgbGlzdCwKYnV0IG5vdCBjYyB5b3UuCkluIHJlZmVyZW5jZSB0bzoKaHR0cDovL3Ro
+cmVhZC5nbWFuZS5vcmcvZ21hbmUubGludXgucG9ydHMuYXJtLmtlcm5lbC83MTExOQoKUGF0Y2gg
+YmVsb3c6CnRoaXMgcGF0Y2ggYXBwbHkgdG8gIGxpbnVzIC4zMy1yYzQgCi0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpOb3QgYW4g
+aGVhdnkgZml4LCBidXQgZ29vZCB3aGVuIGRlYnVnZ2luZyBtdWx0aXBsZSBzcGkgY2hhbm5lbHMu
+CgpTaWduZWQtb2ZmLWJ5OiBBbGJlcnRvIFBhbml6em8gPG1hcmFtYW9wZXJjaGVzZWltb3J0b0Bn
+bWFpbC5jb20+CkFja2VkLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBl
+bmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvc3BpL3NwaV9pbXguYyB8ICAgIDIgKy0KIDEgZmls
+ZXMgY2hhbmdlZCwgMSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvc3BpL3NwaV9pbXguYyBiL2RyaXZlcnMvc3BpL3NwaV9pbXguYwppbmRleCA4OWMy
+MmVmLi4xOGJiZmEzIDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGlfaW14LmMKKysrIGIvZHJp
+dmVycy9zcGkvc3BpX2lteC5jCkBAIC00NjYsNyArNDY2LDcgQEAgc3RhdGljIGludCBzcGlfaW14
+X3NldHVwKHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpCiAgICAgICAgc3RydWN0IHNwaV9pbXhfZGF0
+YSAqc3BpX2lteCA9IHNwaV9tYXN0ZXJfZ2V0X2RldmRhdGEoc3BpLT5tYXN0ZXIpOwogICAgICAg
+IGludCBncGlvID0gc3BpX2lteC0+Y2hpcHNlbGVjdFtzcGktPmNoaXBfc2VsZWN0XTsKIAotICAg
+ICAgIHByX2RlYnVnKCIlczogbW9kZSAlZCwgJXUgYnB3LCAlZCBoelxuIiwgX19mdW5jX18sCisg
+ICAgICAgZGV2X2RiZygmc3BpLT5kZXYsICIlczogbW9kZSAlZCwgJXUgYnB3LCAlZCBoelxuIiwg
+X19mdW5jX18sCiAgICAgICAgICAgICAgICAgc3BpLT5tb2RlLCBzcGktPmJpdHNfcGVyX3dvcmQs
+IHNwaS0+bWF4X3NwZWVkX2h6KTsKIAogICAgICAgIGlmIChncGlvID49IDApCi0tIAoxLjYuMy4z
+CgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaHJvdWdob3V0IGl0cyAxOC15ZWFyIGhpc3Rvcnks
+IFJTQSBDb25mZXJlbmNlIGNvbnNpc3RlbnRseSBhdHRyYWN0cyB0aGUKd29ybGQncyBiZXN0IGFu
+ZCBicmlnaHRlc3QgaW4gdGhlIGZpZWxkLCBjcmVhdGluZyBvcHBvcnR1bml0aWVzIGZvciBDb25m
+ZXJlbmNlCmF0dGVuZGVlcyB0byBsZWFybiBhYm91dCBpbmZvcm1hdGlvbiBzZWN1cml0eSdzIG1v
+c3QgaW1wb3J0YW50IGlzc3VlcyB0aHJvdWdoCmludGVyYWN0aW9ucyB3aXRoIHBlZXJzLCBsdW1p
+bmFyaWVzIGFuZCBlbWVyZ2luZyBhbmQgZXN0YWJsaXNoZWQgY29tcGFuaWVzLgpodHRwOi8vcC5z
+Zi5uZXQvc2Z1L3JzYWNvbmYtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
+LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

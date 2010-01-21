@@ -1,13 +1,13 @@
 From: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH] dw_spi_mmio code style fixups
-Date: Thu, 21 Jan 2010 10:17:33 -0500
-Message-ID: <20100121151659.6622.46967.stgit@station520.octasic.com>
+Subject: [PATCH] link dw_spi.o with the kernel objects
+Date: Thu, 21 Jan 2010 10:33:53 -0500
+Message-ID: <20100121153254.18310.27155.stgit@station520.octasic.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,43 +19,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Minor code style cleanups following comments by Wolfram Sang
+The bulk of the dw_spi driver is contained in dw_spi.c, which was statically
+linked with the kernel, whether dw_spi_(pci|mmio) was requested to be built
+as a module or not. This patch links dw_spi.o with the kernel module.
+
+The kernel objects are renamed to dw_spi_(pic|mmio)_drv.ko in the process.
 
 Signed-off-by: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/dw_spi_mmio.c |    7 +++----
- 1 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/Makefile |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/dw_spi_mmio.c b/drivers/spi/dw_spi_mmio.c
-index 26c4b49..e35b45a 100644
---- a/drivers/spi/dw_spi_mmio.c
-+++ b/drivers/spi/dw_spi_mmio.c
-@@ -17,8 +17,8 @@
- #define DRIVER_NAME "dw_spi_mmio"
- 
- struct dw_spi_mmio {
--	struct dw_spi	dws;
--	struct clk		*clk;
-+	struct dw_spi  dws;
-+	struct clk     *clk;
- };
- 
- static int __devinit dw_spi_mmio_probe(struct platform_device *pdev)
-@@ -134,13 +134,12 @@ static int __init dw_spi_mmio_init(void)
- {
- 	return platform_driver_probe(&dw_spi_mmio_driver, dw_spi_mmio_probe);
- }
-+module_init(dw_spi_mmio_init);
- 
- static void __exit dw_spi_mmio_exit(void)
- {
- 	platform_driver_unregister(&dw_spi_mmio_driver);
- }
--
--module_init(dw_spi_mmio_init);
- module_exit(dw_spi_mmio_exit);
- 
- MODULE_AUTHOR("Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>");
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index c3e5ce7..e061b71 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -16,9 +16,10 @@ obj-$(CONFIG_SPI_BFIN)			+= spi_bfin5xx.o
+ obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
+ obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.o
+ obj-$(CONFIG_SPI_BUTTERFLY)		+= spi_butterfly.o
+-obj-$(CONFIG_SPI_DESIGNWARE)		+= dw_spi.o
+-obj-$(CONFIG_SPI_DW_PCI)		+= dw_spi_pci.o
+-obj-$(CONFIG_SPI_DW_MMIO)		+= dw_spi_mmio.o
++obj-$(CONFIG_SPI_DW_PCI)		+= dw_spi_pci_drv.o
++dw_spi_pci_drv-objs				:= dw_spi_pci.o dw_spi.o
++obj-$(CONFIG_SPI_DW_MMIO)		+= dw_spi_mmio_drv.o
++dw_spi_mmio_drv-objs			:= dw_spi_mmio.o dw_spi.o
+ obj-$(CONFIG_SPI_GPIO)			+= spi_gpio.o
+ obj-$(CONFIG_SPI_IMX)			+= spi_imx.o
+ obj-$(CONFIG_SPI_LM70_LLP)		+= spi_lm70llp.o
 
 
 ------------------------------------------------------------------------------

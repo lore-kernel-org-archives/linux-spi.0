@@ -1,27 +1,17 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 4/6] SPI: S3C64XX: Check before
-	mem-region release
-Date: Thu, 21 Jan 2010 08:00:11 -0700
-Message-ID: <fa686aa41001210700p4d06ff45h4db23c9ea03d6ffb@mail.gmail.com>
-References: <1263808215-16544-1-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-4-git-send-email-jassisinghbrar@gmail.com>
-	<fa686aa41001181012s57c0e863s6b9b6b2724514a9f@mail.gmail.com>
-	<1b68c6791001181542p618a8d47n45a120e51cfed1f1@mail.gmail.com>
-	<fa686aa41001181832r3d2462f6y87649244b8afc5f2@mail.gmail.com>
-	<1b68c6791001190152m652fd117k468893144af8dcfe@mail.gmail.com>
-	<1b68c6791001201735w3060c54blfa85b547917727c2@mail.gmail.com>
-	<1b68c6791001201746p313234bbkdf5fe5db0dcecd9f@mail.gmail.com>
-	<fa686aa41001201855m5c054d90nb3652a5b0d3ffd86@mail.gmail.com>
-	<1b68c6791001201906r45c52f71h7f5ea396e91ef3b8@mail.gmail.com>
+Subject: Re: [PATCH v2] Memory-mapped dw_spi driver
+Date: Thu, 21 Jan 2010 08:01:39 -0700
+Message-ID: <fa686aa41001210701rae6b5dexdec006214eaa3e3f@mail.gmail.com>
+References: <20100121142636.31707.70616.stgit@station520.octasic.com>
+	<20100121145336.GC3738@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, patchwork <patchwork-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Jeremy Kerr <jeremy.kerr-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>, ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org
-To: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1b68c6791001201906r45c52f71h7f5ea396e91ef3b8-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20100121145336.GC3738-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -32,63 +22,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jan 20, 2010 at 8:06 PM, jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrot=
-e:
-> On Thu, Jan 21, 2010 at 11:55 AM, Grant Likely
-> <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
->> On Wed, Jan 20, 2010 at 6:46 PM, jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> w=
-rote:
->>> On Thu, Jan 21, 2010 at 10:35 AM, jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>=
- wrote:
->>>> Hi Grant Likely,
->>>> =A0You have reviewed this series of patches but didn't ACK/NAK.
->>>> Could you kindly confirm if u accept them or want some changes?
->>>> Thanks.
->>> Nevermind, I just saw ur ACK at my official ID (many maintainers reply
->>> something like
->>> 'pulled now' to the patch thread but thats ok if you ACK personally).
->>> Thanks.
+On Thu, Jan 21, 2010 at 7:53 AM, Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
+> On Thu, Jan 21, 2010 at 09:27:26AM -0500, Jean-Hugues Deschenes wrote:
+>> Adds a memory-mapped I/O dw_spi platform device.
 >>
->> I'm using patchwork.kernel.org for collecting spi patches.
->> Unfortunately patchwork doesn't provide any mechanism for emailing
->> "merged" messages when I accept patches. =A0To compensate, I've started
->> cc'ing patch authors my next- branch update message when I push out an
->> updated tree.
->>
->> You can also always look at patchwork.kernel.org to see if your
->> patches are still in the queue. =A0I won't forget accidentally drop any
->> patches tracked by patchwork.
-> well, it might not just be the submitter, but also others in the thread
-> interested in knowing the fate of a particular patch. And having to
-> poll some repo for that, isn't very efficient. It's not important to be n=
-otified
-> _when_ you accept the patch, but only _if_ you accept, which I think
-> you would know after seeing the patch and/or some further clarifications
-> from the submitter.
+>
+> Only minor stuff.
 
-Since I review patches on patchwork, I don't have an easy link between
-what I'm picking up and my email client.  Only when I need to comment
-on something will I actually go and find the thread in my mailer.  So
-it is considerably less efficient for me to go and reply to every
-patch submission.
+I've already picked up the driver, so Jean can send the fixups and
+follow on patches.
 
-Jeremy, would it be possible to have a way of sending out a status
-update email from within patchwork?
-
-Thanks,
 g.
 
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Throughout its 18-year history, RSA Conference consistently attracts the
-world's best and brightest in the field, creating opportunities for Confere=
-nce
-attendees to learn about information security's most important issues throu=
-gh
+world's best and brightest in the field, creating opportunities for Conference
+attendees to learn about information security's most important issues through
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev

@@ -1,19 +1,13 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] link dw_spi.o with the kernel
-	objects
-Date: Thu, 21 Jan 2010 08:56:15 -0700
-Message-ID: <fa686aa41001210756n358d5ff2ja9bb93a9b37ce9c1@mail.gmail.com>
-References: <20100121153254.18310.27155.stgit@station520.octasic.com>
-	<fa686aa41001210741m456d6a07x6184f34bc621cc46@mail.gmail.com>
-	<4B5877C1.1080605@octasic.com>
+From: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH] dw_spi.c can now be built as a module.
+Date: Thu, 21 Jan 2010 11:44:09 -0500
+Message-ID: <20100121164349.10132.24020.stgit@station520.octasic.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4B5877C1.1080605-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,39 +18,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jan 21, 2010 at 8:50 AM, Jean-Hugues Deschenes
-<jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org> wrote:
->
-> Grant Likely wrote:
->>
->> On Thu, Jan 21, 2010 at 8:33 AM, Jean-Hugues Deschenes
->> <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org> wrote:
->>
->>>
->>> The bulk of the dw_spi driver is contained in dw_spi.c, which was
->>> statically
->>> linked with the kernel, whether dw_spi_(pci|mmio) was requested to be
->>> built
->>> as a module or not. This patch links dw_spi.o with the kernel module.
->>>
->>
->> Why not just make dw_spi a kernel module on its own?
->>
->
-> That would work also.
->
-> The reason I see is because dw_spi is useless on its own since it requires a
-> "bus interface drver" (dw_spi_(pci|mmio) for the moment)...
+dw_spi.c can now be built as a module.
 
-... just like all the other common code in the kernel.  :-)
+Signed-off-by: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+---
+ drivers/spi/Kconfig  |    2 +-
+ drivers/spi/dw_spi.c |   11 +++++++++++
+ 2 files changed, 12 insertions(+), 1 deletions(-)
 
-Make it a module.
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 02be3a6..505f1c2 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -308,7 +308,7 @@ config SPI_NUC900
+ #
+ 
+ config SPI_DESIGNWARE
+-	bool "DesignWare SPI controller core support"
++	tristate "DesignWare SPI controller core support"
+ 	depends on SPI_MASTER
+ 	help
+ 	  general driver for SPI controller core from DesignWare
+diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
+index 4b5a9a1..754f21c 100644
+--- a/drivers/spi/dw_spi.c
++++ b/drivers/spi/dw_spi.c
+@@ -940,6 +940,17 @@ int dw_spi_resume_host(struct dw_spi *dws)
+ }
+ EXPORT_SYMBOL(dw_spi_resume_host);
+ 
++static int __init dw_spi_init(void)
++{
++	return 0;
++}
++module_init(dw_spi_init);
++
++static void __exit dw_spi_exit(void)
++{
++}
++module_exit(dw_spi_exit);
++
+ MODULE_AUTHOR("Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>");
+ MODULE_DESCRIPTION("Driver for DesignWare SPI controller core");
+ MODULE_LICENSE("GPL v2");
 
-g.
-
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
 
 ------------------------------------------------------------------------------
 Throughout its 18-year history, RSA Conference consistently attracts the

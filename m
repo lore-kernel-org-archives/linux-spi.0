@@ -1,26 +1,18 @@
-From: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 4/6] SPI: S3C64XX: Check before
-	mem-region release
-Date: Thu, 21 Jan 2010 12:06:26 +0900
-Message-ID: <1b68c6791001201906r45c52f71h7f5ea396e91ef3b8@mail.gmail.com>
-References: <1263808215-16544-1-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-3-git-send-email-jassisinghbrar@gmail.com>
-	<1263808215-16544-4-git-send-email-jassisinghbrar@gmail.com>
-	<fa686aa41001181012s57c0e863s6b9b6b2724514a9f@mail.gmail.com>
-	<1b68c6791001181542p618a8d47n45a120e51cfed1f1@mail.gmail.com>
-	<fa686aa41001181832r3d2462f6y87649244b8afc5f2@mail.gmail.com>
-	<1b68c6791001190152m652fd117k468893144af8dcfe@mail.gmail.com>
-	<1b68c6791001201735w3060c54blfa85b547917727c2@mail.gmail.com>
-	<1b68c6791001201746p313234bbkdf5fe5db0dcecd9f@mail.gmail.com>
-	<fa686aa41001201855m5c054d90nb3652a5b0d3ffd86@mail.gmail.com>
+From: George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>
+Subject: [PATCH 5/5] spi/dw_spi.c: conditional transfer
+	mode changes
+Date: Thu, 21 Jan 2010 11:40:52 +0000
+Message-ID: <1264074052-2214-5-git-send-email-george@georgeshore.com>
+References: <1264074052-2214-1-git-send-email-george@georgeshore.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>
+To: spi-devel-list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa41001201855m5c054d90nb3652a5b0d3ffd86-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1264074052-2214-1-git-send-email-george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -31,39 +23,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBKYW4gMjEsIDIwMTAgYXQgMTE6NTUgQU0sIEdyYW50IExpa2VseQo8Z3JhbnQubGlr
-ZWx5QHNlY3JldGxhYi5jYT4gd3JvdGU6Cj4gT24gV2VkLCBKYW4gMjAsIDIwMTAgYXQgNjo0NiBQ
-TSwgamFzc2kgYnJhciA8amFzc2lzaW5naGJyYXJAZ21haWwuY29tPiB3cm90ZToKPj4gT24gVGh1
-LCBKYW4gMjEsIDIwMTAgYXQgMTA6MzUgQU0sIGphc3NpIGJyYXIgPGphc3Npc2luZ2hicmFyQGdt
-YWlsLmNvbT4gd3JvdGU6Cj4+PiBIaSBHcmFudCBMaWtlbHksCj4+PiDCoFlvdSBoYXZlIHJldmll
-d2VkIHRoaXMgc2VyaWVzIG9mIHBhdGNoZXMgYnV0IGRpZG4ndCBBQ0svTkFLLgo+Pj4gQ291bGQg
-eW91IGtpbmRseSBjb25maXJtIGlmIHUgYWNjZXB0IHRoZW0gb3Igd2FudCBzb21lIGNoYW5nZXM/
-Cj4+PiBUaGFua3MuCj4+IE5ldmVybWluZCwgSSBqdXN0IHNhdyB1ciBBQ0sgYXQgbXkgb2ZmaWNp
-YWwgSUQgKG1hbnkgbWFpbnRhaW5lcnMgcmVwbHkKPj4gc29tZXRoaW5nIGxpa2UKPj4gJ3B1bGxl
-ZCBub3cnIHRvIHRoZSBwYXRjaCB0aHJlYWQgYnV0IHRoYXRzIG9rIGlmIHlvdSBBQ0sgcGVyc29u
-YWxseSkuCj4+IFRoYW5rcy4KPgo+IEknbSB1c2luZyBwYXRjaHdvcmsua2VybmVsLm9yZyBmb3Ig
-Y29sbGVjdGluZyBzcGkgcGF0Y2hlcy4KPiBVbmZvcnR1bmF0ZWx5IHBhdGNod29yayBkb2Vzbid0
-IHByb3ZpZGUgYW55IG1lY2hhbmlzbSBmb3IgZW1haWxpbmcKPiAibWVyZ2VkIiBtZXNzYWdlcyB3
-aGVuIEkgYWNjZXB0IHBhdGNoZXMuIMKgVG8gY29tcGVuc2F0ZSwgSSd2ZSBzdGFydGVkCj4gY2Mn
-aW5nIHBhdGNoIGF1dGhvcnMgbXkgbmV4dC0gYnJhbmNoIHVwZGF0ZSBtZXNzYWdlIHdoZW4gSSBw
-dXNoIG91dCBhbgo+IHVwZGF0ZWQgdHJlZS4KPgo+IFlvdSBjYW4gYWxzbyBhbHdheXMgbG9vayBh
-dCBwYXRjaHdvcmsua2VybmVsLm9yZyB0byBzZWUgaWYgeW91cgo+IHBhdGNoZXMgYXJlIHN0aWxs
-IGluIHRoZSBxdWV1ZS4gwqBJIHdvbid0IGZvcmdldCBhY2NpZGVudGFsbHkgZHJvcCBhbnkKPiBw
-YXRjaGVzIHRyYWNrZWQgYnkgcGF0Y2h3b3JrLgp3ZWxsLCBpdCBtaWdodCBub3QganVzdCBiZSB0
-aGUgc3VibWl0dGVyLCBidXQgYWxzbyBvdGhlcnMgaW4gdGhlIHRocmVhZAppbnRlcmVzdGVkIGlu
-IGtub3dpbmcgdGhlIGZhdGUgb2YgYSBwYXJ0aWN1bGFyIHBhdGNoLiBBbmQgaGF2aW5nIHRvCnBv
-bGwgc29tZSByZXBvIGZvciB0aGF0LCBpc24ndCB2ZXJ5IGVmZmljaWVudC4gSXQncyBub3QgaW1w
-b3J0YW50IHRvIGJlIG5vdGlmaWVkCl93aGVuXyB5b3UgYWNjZXB0IHRoZSBwYXRjaCwgYnV0IG9u
-bHkgX2lmXyB5b3UgYWNjZXB0LCB3aGljaCBJIHRoaW5rCnlvdSB3b3VsZCBrbm93IGFmdGVyIHNl
-ZWluZyB0aGUgcGF0Y2ggYW5kL29yIHNvbWUgZnVydGhlciBjbGFyaWZpY2F0aW9ucwpmcm9tIHRo
-ZSBzdWJtaXR0ZXIuCnJlZ2FyZHMuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhyb3VnaG91dCBp
-dHMgMTgteWVhciBoaXN0b3J5LCBSU0EgQ29uZmVyZW5jZSBjb25zaXN0ZW50bHkgYXR0cmFjdHMg
-dGhlCndvcmxkJ3MgYmVzdCBhbmQgYnJpZ2h0ZXN0IGluIHRoZSBmaWVsZCwgY3JlYXRpbmcgb3Bw
-b3J0dW5pdGllcyBmb3IgQ29uZmVyZW5jZQphdHRlbmRlZXMgdG8gbGVhcm4gYWJvdXQgaW5mb3Jt
-YXRpb24gc2VjdXJpdHkncyBtb3N0IGltcG9ydGFudCBpc3N1ZXMgdGhyb3VnaAppbnRlcmFjdGlv
-bnMgd2l0aCBwZWVycywgbHVtaW5hcmllcyBhbmQgZW1lcmdpbmcgYW5kIGVzdGFibGlzaGVkIGNv
-bXBhbmllcy4KaHR0cDovL3Auc2YubmV0L3NmdS9yc2Fjb25mLWRldjJkZXYKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+This allows the switching between transfer modes between 'transmit only',
+'receive only' and 'transmit and receive' modes. Due to the design of the SPI
+block, changing transfer modes requires that the block be disabled; in doing
+so the chipselect line is inherently deasserted and (usually) the attached
+device discards its state. Consequentially, switching modes requires that a
+platform-specific chipselect function has been defined so that the chipselect
+is not dropped during the change.
+
+Signed-off-by: George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>
+---
+ drivers/spi/dw_spi.c |   16 ++++++++++++++++
+ 1 files changed, 16 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
+index 4f91554..a1c195f 100644
+--- a/drivers/spi/dw_spi.c
++++ b/drivers/spi/dw_spi.c
+@@ -537,6 +537,22 @@ static void pump_transfers(unsigned long data)
+ 	}
+ 	message->state = RUNNING_STATE;
+ 
++	/*
++	 * Adjust transfer mode if necessary. Requires platform dependent
++	 * chipselect mechanism.
++	 */
++	if (dws->cs_control) {
++		if (dws->rx && dws->tx)
++			chip->tmode = 0x00;
++		else if (dws->rx)
++			chip->tmode = 0x02;
++		else
++			chip->tmode = 0x01;
++
++		cr0 &= ~(0x3 << SPI_MODE_OFFSET);
++		cr0 |= (chip->tmode << SPI_TMOD_OFFSET);
++	}
++
+ 	/* Check if current transfer is a DMA transaction */
+ 	dws->dma_mapped = map_dma_buffers(dws);
+ 
+-- 
+1.6.6.264.gd0743
+
+
+------------------------------------------------------------------------------
+Throughout its 18-year history, RSA Conference consistently attracts the
+world's best and brightest in the field, creating opportunities for Conference
+attendees to learn about information security's most important issues through
+interactions with peers, luminaries and emerging and established companies.
+http://p.sf.net/sfu/rsaconf-dev2dev

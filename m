@@ -1,8 +1,8 @@
 From: George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>
-Subject: [PATCH 4/5] spi/dw_spi.c: remove conditional
-	from 'poll_transfer'.
-Date: Thu, 21 Jan 2010 11:40:51 +0000
-Message-ID: <1264074052-2214-4-git-send-email-george@georgeshore.com>
+Subject: [PATCH 2/5] spi/dw_spi: add return value to
+	empty mrst_spi_debugfs_init()
+Date: Thu, 21 Jan 2010 11:40:49 +0000
+Message-ID: <1264074052-2214-2-git-send-email-george@georgeshore.com>
 References: <1264074052-2214-1-git-send-email-george@georgeshore.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,38 +23,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The 'poll_transfer' function employs a conditional to test whether the
-transmit buffer is valid; in doing so, on a receive operation no data is
-clocked out, thus no data is clocked in and ultimately errors appear.
-
-This removes the conditional as the transmit function will be set to a null
-writer when the transmit buffer is invalid, allowing the driver to clock 0x00
-out to the device to receive data from the device.
+As per the function signature.
 
 Signed-off-by: George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>
 ---
- drivers/spi/dw_spi.c |    7 ++-----
- 1 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/spi/dw_spi.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index 01292da..4f91554 100644
+index f713af8..56d53a5 100644
 --- a/drivers/spi/dw_spi.c
 +++ b/drivers/spi/dw_spi.c
-@@ -408,12 +408,9 @@ static irqreturn_t dw_spi_irq(int irq, void *dev_id)
- /* Must be called inside pump_transfers() */
- static void poll_transfer(struct dw_spi *dws)
+@@ -152,6 +152,7 @@ static void mrst_spi_debugfs_remove(struct dw_spi *dws)
+ #else
+ static inline int mrst_spi_debugfs_init(struct dw_spi *dws)
  {
--	if (dws->tx) {
--		while (dws->write(dws))
--			dws->read(dws);
--	}
-+	while (dws->write(dws))
-+		dws->read(dws);
- 
--	dws->read(dws);
- 	transfer_complete(dws);
++	return 0;
  }
  
+ static inline void mrst_spi_debugfs_remove(struct dw_spi *dws)
 -- 
 1.6.6.264.gd0743
 

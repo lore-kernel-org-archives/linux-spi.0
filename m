@@ -1,10 +1,11 @@
-From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH v2] Memory-mapped dw_spi driver
-Date: Thu, 21 Jan 2010 15:53:36 +0100
-Message-ID: <20100121145336.GC3738@pengutronix.de>
+Date: Thu, 21 Jan 2010 07:46:35 -0700
+Message-ID: <fa686aa41001210646h9c8422exec5572eeb2b0ae65@mail.gmail.com>
 References: <20100121142636.31707.70616.stgit@station520.octasic.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0082352723911529055=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
@@ -20,72 +21,64 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============0082352723911529055==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ghzN8eJ9Qlbqn3iT"
-Content-Disposition: inline
-
-
---ghzN8eJ9Qlbqn3iT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jan 21, 2010 at 09:27:26AM -0500, Jean-Hugues Deschenes wrote:
+On Thu, Jan 21, 2010 at 7:27 AM, Jean-Hugues Deschenes
+<jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org> wrote:
 > Adds a memory-mapped I/O dw_spi platform device.
->=20
-
-Only minor stuff.
-
+>
 > ---
 > Changelog v1->v2
 > - simplified dw_spi_mmio.c preamble (Grant Likely)
 > - build of dw_spi_mmio and dw_spi_pci are now independant
->   of each other (Grant Likely)
+> =A0of each other (Grant Likely)
 > - add call to dw_spi_remove_host (Feng Tang)
 > ---
->=20
+>
 > Signed-off-by: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
 > ---
->  drivers/spi/Kconfig       |    4 +
->  drivers/spi/Makefile      |    1=20
->  drivers/spi/dw_spi_mmio.c |  148 +++++++++++++++++++++++++++++++++++++++=
-++++++
->  3 files changed, 153 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/spi/dw_spi_mmio.c
->=20
+
+BTW, anything below a '---' line gets dropped by git, so your s-o-b
+line got dropped and I had to add it back manually.  Please make sure
+anything that belongs in the commit text goes above the first ---
+line.
+
+Cheers,
+g.
+
+> =A0drivers/spi/Kconfig =A0 =A0 =A0 | =A0 =A04 +
+> =A0drivers/spi/Makefile =A0 =A0 =A0| =A0 =A01
+> =A0drivers/spi/dw_spi_mmio.c | =A0148 +++++++++++++++++++++++++++++++++++=
+++++++++++
+> =A03 files changed, 153 insertions(+), 0 deletions(-)
+> =A0create mode 100644 drivers/spi/dw_spi_mmio.c
+>
 > diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
 > index f55eb01..02be3a6 100644
 > --- a/drivers/spi/Kconfig
 > +++ b/drivers/spi/Kconfig
 > @@ -317,6 +317,10 @@ config SPI_DW_PCI
->  	tristate "PCI interface driver for DW SPI core"
->  	depends on SPI_DESIGNWARE && PCI
-> =20
+> =A0 =A0 =A0 =A0tristate "PCI interface driver for DW SPI core"
+> =A0 =A0 =A0 =A0depends on SPI_DESIGNWARE && PCI
+>
 > +config SPI_DW_MMIO
-> +	tristate "Memory-mapped io interface driver for DW SPI core"
-
-DesignWare would be better readable than DW, but then it should be fixed for
-PCI, too. Well, never mind...
-
-> +	depends on SPI_DESIGNWARE
+> + =A0 =A0 =A0 tristate "Memory-mapped io interface driver for DW SPI core"
+> + =A0 =A0 =A0 depends on SPI_DESIGNWARE
 > +
->  #
->  # There are lots of SPI device types, with sensors and memory
->  # being probably the most widely used ones.
+> =A0#
+> =A0# There are lots of SPI device types, with sensors and memory
+> =A0# being probably the most widely used ones.
 > diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
 > index f3d2810..c3e5ce7 100644
 > --- a/drivers/spi/Makefile
 > +++ b/drivers/spi/Makefile
-> @@ -18,6 +18,7 @@ obj-$(CONFIG_SPI_AU1550)		+=3D au1550_spi.o
->  obj-$(CONFIG_SPI_BUTTERFLY)		+=3D spi_butterfly.o
->  obj-$(CONFIG_SPI_DESIGNWARE)		+=3D dw_spi.o
->  obj-$(CONFIG_SPI_DW_PCI)		+=3D dw_spi_pci.o
-> +obj-$(CONFIG_SPI_DW_MMIO)		+=3D dw_spi_mmio.o
->  obj-$(CONFIG_SPI_GPIO)			+=3D spi_gpio.o
->  obj-$(CONFIG_SPI_IMX)			+=3D spi_imx.o
->  obj-$(CONFIG_SPI_LM70_LLP)		+=3D spi_lm70llp.o
+> @@ -18,6 +18,7 @@ obj-$(CONFIG_SPI_AU1550) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=
+=3D au1550_spi.o
+> =A0obj-$(CONFIG_SPI_BUTTERFLY) =A0 =A0 =A0 =A0 =A0 =A0+=3D spi_butterfly.o
+> =A0obj-$(CONFIG_SPI_DESIGNWARE) =A0 =A0 =A0 =A0 =A0 +=3D dw_spi.o
+> =A0obj-$(CONFIG_SPI_DW_PCI) =A0 =A0 =A0 =A0 =A0 =A0 =A0 +=3D dw_spi_pci.o
+> +obj-$(CONFIG_SPI_DW_MMIO) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D dw_spi_mmio.o
+> =A0obj-$(CONFIG_SPI_GPIO) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 +=3D spi_gpio.o
+> =A0obj-$(CONFIG_SPI_IMX) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D spi_imx.o
+> =A0obj-$(CONFIG_SPI_LM70_LLP) =A0 =A0 =A0 =A0 =A0 =A0 +=3D spi_lm70llp.o
 > diff --git a/drivers/spi/dw_spi_mmio.c b/drivers/spi/dw_spi_mmio.c
 > new file mode 100644
 > index 0000000..26c4b49
@@ -112,183 +105,157 @@ it
 > +#define DRIVER_NAME "dw_spi_mmio"
 > +
 > +struct dw_spi_mmio {
-> +	struct dw_spi	dws;
-> +	struct clk		*clk;
+> + =A0 =A0 =A0 struct dw_spi =A0 dws;
+> + =A0 =A0 =A0 struct clk =A0 =A0 =A0 =A0 =A0 =A0 =A0*clk;
 > +};
-
-Broken indentation (just space after the struct name)
-
 > +
 > +static int __devinit dw_spi_mmio_probe(struct platform_device *pdev)
 > +{
-> +	struct dw_spi_mmio *dwsmmio;
-> +	struct dw_spi *dws;
-> +	struct resource *mem, *ioarea;
-> +	int ret;
+> + =A0 =A0 =A0 struct dw_spi_mmio *dwsmmio;
+> + =A0 =A0 =A0 struct dw_spi *dws;
+> + =A0 =A0 =A0 struct resource *mem, *ioarea;
+> + =A0 =A0 =A0 int ret;
 > +
-> +	dwsmmio =3D kzalloc(sizeof(struct dw_spi_mmio), GFP_KERNEL);
-> +	if (!dwsmmio) {
-> +		ret =3D -ENOMEM;
-> +		goto err_end;
-> +	}
+> + =A0 =A0 =A0 dwsmmio =3D kzalloc(sizeof(struct dw_spi_mmio), GFP_KERNEL);
+> + =A0 =A0 =A0 if (!dwsmmio) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -ENOMEM;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_end;
+> + =A0 =A0 =A0 }
 > +
-> +	dws =3D &dwsmmio->dws;
+> + =A0 =A0 =A0 dws =3D &dwsmmio->dws;
 > +
-> +	/* Get basic io resource and map it */
-> +	mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (!mem) {
-> +		dev_err(&pdev->dev, "no mem resource?\n");
-> +		ret =3D -EINVAL;
-> +		goto err_kfree;
-> +	}
+> + =A0 =A0 =A0 /* Get basic io resource and map it */
+> + =A0 =A0 =A0 mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> + =A0 =A0 =A0 if (!mem) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev, "no mem resource?\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -EINVAL;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_kfree;
+> + =A0 =A0 =A0 }
 > +
-> +	ioarea =3D request_mem_region(mem->start, resource_size(mem),
-> +			pdev->name);
-> +	if (!ioarea) {
-> +		dev_err(&pdev->dev, "SPI region already claimed\n");
-> +		ret =3D -EBUSY;
-> +		goto err_kfree;
-> +	}
+> + =A0 =A0 =A0 ioarea =3D request_mem_region(mem->start, resource_size(mem=
+),
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdev->name);
+> + =A0 =A0 =A0 if (!ioarea) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev, "SPI region already cla=
+imed\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -EBUSY;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_kfree;
+> + =A0 =A0 =A0 }
 > +
-> +	dws->regs =3D ioremap_nocache(mem->start, resource_size(mem));
-> +	if (!dws->regs) {
-> +		dev_err(&pdev->dev, "SPI region already mapped\n");
-> +		ret =3D -ENOMEM;
-> +		goto err_release_reg;
-> +	}
+> + =A0 =A0 =A0 dws->regs =3D ioremap_nocache(mem->start, resource_size(mem=
+));
+> + =A0 =A0 =A0 if (!dws->regs) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev, "SPI region already map=
+ped\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -ENOMEM;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_release_reg;
+> + =A0 =A0 =A0 }
 > +
-> +	dws->irq =3D platform_get_irq(pdev, 0);
-> +	if (dws->irq < 0) {
-> +		dev_err(&pdev->dev, "no irq resource?\n");
-> +		ret =3D dws->irq; /* -ENXIO */
-> +		goto err_unmap;
-> +	}
+> + =A0 =A0 =A0 dws->irq =3D platform_get_irq(pdev, 0);
+> + =A0 =A0 =A0 if (dws->irq < 0) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev, "no irq resource?\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D dws->irq; /* -ENXIO */
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_unmap;
+> + =A0 =A0 =A0 }
 > +
-> +	dwsmmio->clk =3D clk_get(&pdev->dev, NULL);
-> +	if (!dwsmmio->clk) {
-> +		ret =3D -ENODEV;
-> +		goto err_irq;
-> +	}
-> +	clk_enable(dwsmmio->clk);
+> + =A0 =A0 =A0 dwsmmio->clk =3D clk_get(&pdev->dev, NULL);
+> + =A0 =A0 =A0 if (!dwsmmio->clk) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -ENODEV;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_irq;
+> + =A0 =A0 =A0 }
+> + =A0 =A0 =A0 clk_enable(dwsmmio->clk);
 > +
-> +	dws->parent_dev =3D &pdev->dev;
-> +	dws->bus_num =3D 0;
-> +	dws->num_cs =3D 4;
-> +	dws->max_freq =3D clk_get_rate(dwsmmio->clk);
+> + =A0 =A0 =A0 dws->parent_dev =3D &pdev->dev;
+> + =A0 =A0 =A0 dws->bus_num =3D 0;
+> + =A0 =A0 =A0 dws->num_cs =3D 4;
+> + =A0 =A0 =A0 dws->max_freq =3D clk_get_rate(dwsmmio->clk);
 > +
-> +	ret =3D dw_spi_add_host(dws);
-> +	if (ret)
-> +		goto err_clk;
+> + =A0 =A0 =A0 ret =3D dw_spi_add_host(dws);
+> + =A0 =A0 =A0 if (ret)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_clk;
 > +
-> +	platform_set_drvdata(pdev, dwsmmio);
-> +	return 0;
+> + =A0 =A0 =A0 platform_set_drvdata(pdev, dwsmmio);
+> + =A0 =A0 =A0 return 0;
 > +
 > +err_clk:
-> +	clk_disable(dwsmmio->clk);
-> +	clk_put(dwsmmio->clk);
-> +	dwsmmio->clk =3D NULL;
+> + =A0 =A0 =A0 clk_disable(dwsmmio->clk);
+> + =A0 =A0 =A0 clk_put(dwsmmio->clk);
+> + =A0 =A0 =A0 dwsmmio->clk =3D NULL;
 > +err_irq:
-> +	free_irq(dws->irq, dws);
+> + =A0 =A0 =A0 free_irq(dws->irq, dws);
 > +err_unmap:
-> +	iounmap(dws->regs);
+> + =A0 =A0 =A0 iounmap(dws->regs);
 > +err_release_reg:
-> +	release_mem_region(mem->start, resource_size(mem));
+> + =A0 =A0 =A0 release_mem_region(mem->start, resource_size(mem));
 > +err_kfree:
-> +	kfree(dwsmmio);
+> + =A0 =A0 =A0 kfree(dwsmmio);
 > +err_end:
-> +	return ret;
+> + =A0 =A0 =A0 return ret;
 > +}
 > +
 > +static int __devexit dw_spi_mmio_remove(struct platform_device *pdev)
 > +{
-> +	struct dw_spi_mmio *dwsmmio =3D platform_get_drvdata(pdev);
-> +	struct resource *mem;
+> + =A0 =A0 =A0 struct dw_spi_mmio *dwsmmio =3D platform_get_drvdata(pdev);
+> + =A0 =A0 =A0 struct resource *mem;
 > +
-> +	platform_set_drvdata(pdev, NULL);
+> + =A0 =A0 =A0 platform_set_drvdata(pdev, NULL);
 > +
-> +	clk_disable(dwsmmio->clk);
-> +	clk_put(dwsmmio->clk);
-> +	dwsmmio->clk =3D NULL;
+> + =A0 =A0 =A0 clk_disable(dwsmmio->clk);
+> + =A0 =A0 =A0 clk_put(dwsmmio->clk);
+> + =A0 =A0 =A0 dwsmmio->clk =3D NULL;
 > +
-> +	free_irq(dwsmmio->dws.irq, &dwsmmio->dws);
-> +	dw_spi_remove_host(&dwsmmio->dws);
-> +	iounmap(dwsmmio->dws.regs);
-> +	kfree(dwsmmio);
+> + =A0 =A0 =A0 free_irq(dwsmmio->dws.irq, &dwsmmio->dws);
+> + =A0 =A0 =A0 dw_spi_remove_host(&dwsmmio->dws);
+> + =A0 =A0 =A0 iounmap(dwsmmio->dws.regs);
+> + =A0 =A0 =A0 kfree(dwsmmio);
 > +
-> +	mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	release_mem_region(mem->start, resource_size(mem));
-> +	return 0;
+> + =A0 =A0 =A0 mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> + =A0 =A0 =A0 release_mem_region(mem->start, resource_size(mem));
+> + =A0 =A0 =A0 return 0;
 > +}
 > +
 > +static struct platform_driver dw_spi_mmio_driver =3D {
-> +	.remove		=3D __devexit_p(dw_spi_mmio_remove),
-> +	.driver		=3D {
-> +		.name	=3D DRIVER_NAME,
-> +		.owner	=3D THIS_MODULE,
-> +	},
+> + =A0 =A0 =A0 .remove =A0 =A0 =A0 =A0 =3D __devexit_p(dw_spi_mmio_remove),
+> + =A0 =A0 =A0 .driver =A0 =A0 =A0 =A0 =3D {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =3D DRIVER_NAME,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .owner =A0=3D THIS_MODULE,
+> + =A0 =A0 =A0 },
 > +};
 > +
 > +static int __init dw_spi_mmio_init(void)
 > +{
-> +	return platform_driver_probe(&dw_spi_mmio_driver, dw_spi_mmio_probe);
+> + =A0 =A0 =A0 return platform_driver_probe(&dw_spi_mmio_driver, dw_spi_mm=
+io_probe);
 > +}
 > +
 > +static void __exit dw_spi_mmio_exit(void)
 > +{
-> +	platform_driver_unregister(&dw_spi_mmio_driver);
+> + =A0 =A0 =A0 platform_driver_unregister(&dw_spi_mmio_driver);
 > +}
 > +
 > +module_init(dw_spi_mmio_init);
 > +module_exit(dw_spi_mmio_exit);
-
-Those should be directly below the functions.
-
 > +
 > +MODULE_AUTHOR("Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>=
 ");
 > +MODULE_DESCRIPTION("Memory-mapped I/O interface driver for DW SPI Core");
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---ghzN8eJ9Qlbqn3iT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAktYanAACgkQD27XaX1/VRuY7ACgmEeS/h+PHHAV9YEMZwsu30LL
-O78AoMYnViUpRwWjX/N6hWP85viD/oK8
-=42sy
------END PGP SIGNATURE-----
-
---ghzN8eJ9Qlbqn3iT--
+> +MODULE_LICENSE("GPL v2");
+>
+>
 
 
---===============0082352723911529055==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
-------------------------------------------------------------------------------
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
+---
 Throughout its 18-year history, RSA Conference consistently attracts the
-world's best and brightest in the field, creating opportunities for Conference
-attendees to learn about information security's most important issues through
+world's best and brightest in the field, creating opportunities for Confere=
+nce
+attendees to learn about information security's most important issues throu=
+gh
 interactions with peers, luminaries and emerging and established companies.
 http://p.sf.net/sfu/rsaconf-dev2dev
---===============0082352723911529055==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0082352723911529055==--

@@ -1,90 +1,75 @@
-From: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
-Subject: Re:
-Date: Thu, 21 Jan 2010 09:04:30 +0900
-Message-ID: <4B579A0E.4030108__299.369081813161$1264032479$gmane$org@simtec.co.uk>
-References: <1264016711-sup-309@ben-laptop>
-Reply-To: beagleboard-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+From: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 4/6] SPI: S3C64XX: Check before
+	mem-region release
+Date: Thu, 21 Jan 2010 10:35:11 +0900
+Message-ID: <1b68c6791001201735w3060c54blfa85b547917727c2@mail.gmail.com>
+References: <1263808215-16544-1-git-send-email-jassisinghbrar@gmail.com>
+	<1263808215-16544-2-git-send-email-jassisinghbrar@gmail.com>
+	<1263808215-16544-3-git-send-email-jassisinghbrar@gmail.com>
+	<1263808215-16544-4-git-send-email-jassisinghbrar@gmail.com>
+	<fa686aa41001181012s57c0e863s6b9b6b2724514a9f@mail.gmail.com>
+	<1b68c6791001181542p618a8d47n45a120e51cfed1f1@mail.gmail.com>
+	<fa686aa41001181832r3d2462f6y87649244b8afc5f2@mail.gmail.com>
+	<1b68c6791001190152m652fd117k468893144af8dcfe@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary=001485f89b7ef7f840047da17bbb
-Cc: beagleboard <beagleboard-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- linux-omap <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
- Eric Miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
- Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
- Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
- spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Ben Gamari <bgamari-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <3r5pXSwMMC-wPSbgWahSQ.Qc.iYPSOUZSPcOfRUccUZSUfcidg.Qca-JX7+OpRa80S8N/ZHIG5xj07CuiCeIGUxQQ4Iyu8u01E@public.gmane.org>
-In-Reply-To: <1264016711-sup-309@ben-laptop>
-List-Post: <http://groups.google.com/group/beagleboard/post?hl=>,
-	<mailto:beagleboard-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/?hl=>, <mailto:beagleboard+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/beagleboard?hl=>
-Sender: beagleboard-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Unsubscribe: <http://groups.google.com/group/beagleboard/subscribe?hl=>,
-	<mailto:beagleboard+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Subscribe: <http://groups.google.com/group/beagleboard/subscribe?hl=>,
-	<mailto:beagleboard+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1b68c6791001190152m652fd117k468893144af8dcfe-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---001485f89b7ef7f840047da17bbb
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-Ben Gamari wrote:
-> Bcc: 
-> Subject: GPIO chip select support in omap2_mcspi driver
-> 
-> Hey,
-> 
-> Recently I have been looking to use a BeagleBoard to drive several
-> serial ADCs and DACs in a data acquisition and analysis setup. Unfortunately, the
-> BeagleBoard is severely limited by the number of SPI controllers it
-> exposes on the expansion connector (McSPI3 with 2 CS lines and McSPI4
-> with one). This is insufficient for our application and thus I have been
-> investigating adding support to the mcspi driver for using GPIO lines as
-> chip select lines, as is done in the pxa2xx, bfin5xx, and s3c24xx drivers.
-> 
-> To this end, I have a few questions about how this support was
-> implemented. First, it seems that the s3c24xx driver is built on the
-> spi_bitbang driver, despite interfacing with a dedicated hardware SPI
-> controller.  What is the reason for this? Was this done specifically for
-> the purpose of incorporating support for GPIO CS pins?
-
-The spi_bitbang driver also has a really useful spi queue and workqueue
-built into it, which is what the s3c24xx spi driver actually bothers to
-use.
-
-> It seems like the rough idea is to add a cs_gpio field to the device
-> struct (omap2_mcspi) and add the appropriate code to the
-> omap2_mcspi_force_cs() to bring cs_gpio high or low if it is valid. The
-> potential problem I can see with this is that omap2_mcspi_set_enable()
-> is called to enable the channel before the force_cs() is called (in
-> omap2_mcspi_work()). If I'm interpreting the documentation correctly,
-> the enable bit starts the clocks, meaning that the chip will begin
-> clocking out data before CS is brought high. I must be missing something
-> here, no?
-> 
-> For reference, I included a short list of relevant commits below, largely for
-> my own benefit. I would greatly appreciate any feedback you might have.
-> 
-> Thanks,
-> - Ben
-> 
-> 
-> pxa2xx_spi: a7bb3909b3293d503211d7f6af8ed62c1644b686
-> bfin_spi: 42c78b2bf51bafb4cfa98dfecc28dd9b8bcd04b0
-
-
---001485f89b7ef7f840047da17bbb
-Content-Type: text/plain; charset=ISO-8859-1
-
--- 
-You received this message because you are subscribed to the Google Groups "Beagle Board" group.
-To post to this group, send email to beagleboard-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
-To unsubscribe from this group, send email to beagleboard+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
-For more options, visit this group at http://groups.google.com/group/beagleboard?hl=en.
-
-
-
---001485f89b7ef7f840047da17bbb--
+T24gVHVlLCBKYW4gMTksIDIwMTAgYXQgNjo1MiBQTSwgamFzc2kgYnJhciA8amFzc2lzaW5naGJy
+YXJAZ21haWwuY29tPiB3cm90ZToKPiBPbiBUdWUsIEphbiAxOSwgMjAxMCBhdCAxMTozMiBBTSwg
+R3JhbnQgTGlrZWx5Cj4gPGdyYW50Lmxpa2VseUBzZWNyZXRsYWIuY2E+IHdyb3RlOgo+PiBPbiBN
+b24sIEphbiAxOCwgMjAxMCBhdCA0OjQyIFBNLCBqYXNzaSBicmFyIDxqYXNzaXNpbmdoYnJhckBn
+bWFpbC5jb20+IHdyb3RlOgo+Pj4gT24gVHVlLCBKYW4gMTksIDIwMTAgYXQgMzoxMiBBTSwgR3Jh
+bnQgTGlrZWx5IDxncmFudC5saWtlbHlAc2VjcmV0bGFiLmNhPiB3cm90ZToKPj4+PiBPbiBNb24s
+IEphbiAxOCwgMjAxMCBhdCAyOjUwIEFNLCDCoDxqYXNzaXNpbmdoYnJhckBnbWFpbC5jb20+IHdy
+b3RlOgo+Pj4+PiBGcm9tOiBKYXNzaSBCcmFyIDxqYXNzaS5icmFyQHNhbXN1bmcuY29tPgo+Pj4+
+Pgo+Pj4+PiBBZGQgcHJlY2F1dGlvbmFyeSBjaGVjayBiZWZvcmUgcmVsZWFzaW5nIG1lbW9yeSBy
+ZWdpb24uCj4+Pj4+Cj4+Pj4+IFNpZ25lZC1vZmYtYnk6IEphc3NpIEJyYXIgPGphc3NpLmJyYXJA
+c2Ftc3VuZy5jb20+Cj4+Pj4+IC0tLQo+Pj4+PiDCoGRyaXZlcnMvc3BpL3NwaV9zM2M2NHh4LmMg
+fCDCoCDCoDMgKystCj4+Pj4+IMKgMSBmaWxlcyBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDEg
+ZGVsZXRpb25zKC0pCj4+Pj4+Cj4+Pj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGlfczNj
+NjR4eC5jIGIvZHJpdmVycy9zcGkvc3BpX3MzYzY0eHguYwo+Pj4+PiBpbmRleCAzYWNmMzgxLi4w
+ZTg4M2Y5IDEwMDY0NAo+Pj4+PiAtLS0gYS9kcml2ZXJzL3NwaS9zcGlfczNjNjR4eC5jCj4+Pj4+
+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaV9zM2M2NHh4LmMKPj4+Pj4gQEAgLTEwOTcsNyArMTA5Nyw4
+IEBAIHN0YXRpYyBpbnQgczNjNjR4eF9zcGlfcmVtb3ZlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2Ug
+KnBkZXYpCj4+Pj4+IMKgIMKgIMKgIMKgaW91bm1hcCgodm9pZCAqKSBzZGQtPnJlZ3MpOwo+Pj4+
+Pgo+Pj4+PiDCoCDCoCDCoCDCoG1lbV9yZXMgPSBwbGF0Zm9ybV9nZXRfcmVzb3VyY2UocGRldiwg
+SU9SRVNPVVJDRV9NRU0sIDApOwo+Pj4+PiAtIMKgIMKgIMKgIHJlbGVhc2VfbWVtX3JlZ2lvbiht
+ZW1fcmVzLT5zdGFydCwgcmVzb3VyY2Vfc2l6ZShtZW1fcmVzKSk7Cj4+Pj4+ICsgwqAgwqAgwqAg
+aWYgKG1lbV9yZXMgIT0gTlVMTCkKPj4+Pj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZWxlYXNl
+X21lbV9yZWdpb24obWVtX3Jlcy0+c3RhcnQsIHJlc291cmNlX3NpemUobWVtX3JlcykpOwo+Pj4+
+Cj4+Pj4KPj4+PiByZXF1ZXN0X21lbV9yZWdpb24oKSBpbiBpbiBhbiB1bmNvbmRpdGlvbmFsIHBh
+dGggaW4gdGhlIC5wcm9iZSgpIGhvb2suCj4+Pj4gwqBBcmUgeW91IHNlZWluZyBmYWlsdXJlIG9u
+IHRoZSByZW1vdmUgcGF0aD8KPj4+IE5vIGZhaWx1cmUsIGp1c3Qgd2FybmluZ3MgdXBvbiBydW5u
+aW5nIHNvbWUgc3RhdGljIGNvZGUgYW5hbHl6ZXIuCj4+Cj4+IE9rYXkuIMKgRm9yIGZ1dHVyZSBy
+ZWZlcmVuY2UsIGl0IG1ha2VzIG15IGpvYiBlYXNpZXIgKGFuZCBtb3JlIGxpa2VseQo+PiB0aGF0
+IEknbGwgcGljayB1cCB0aGUgcGF0Y2gpIGlmIHRoZSBjb21taXQgbG9nIHN0YXRlcyB3aHkgYSBj
+aGFuZ2UgaXMKPj4gYmVpbmcgbWFkZSwgYW5kIG5vdCBqdXN0IHdoYXQuCj4gT2ssIHdpbGwgdGFr
+ZSBjYXJlIGluIGZ1dHVyZS4gVGhhbmtzLgpIaSBHcmFudCBMaWtlbHksCiBZb3UgaGF2ZSByZXZp
+ZXdlZCB0aGlzIHNlcmllcyBvZiBwYXRjaGVzIGJ1dCBkaWRuJ3QgQUNLL05BSy4KQ291bGQgeW91
+IGtpbmRseSBjb25maXJtIGlmIHUgYWNjZXB0IHRoZW0gb3Igd2FudCBzb21lIGNoYW5nZXM/ClRo
+YW5rcy4KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaHJvdWdob3V0IGl0cyAxOC15ZWFyIGhpc3Rv
+cnksIFJTQSBDb25mZXJlbmNlIGNvbnNpc3RlbnRseSBhdHRyYWN0cyB0aGUKd29ybGQncyBiZXN0
+IGFuZCBicmlnaHRlc3QgaW4gdGhlIGZpZWxkLCBjcmVhdGluZyBvcHBvcnR1bml0aWVzIGZvciBD
+b25mZXJlbmNlCmF0dGVuZGVlcyB0byBsZWFybiBhYm91dCBpbmZvcm1hdGlvbiBzZWN1cml0eSdz
+IG1vc3QgaW1wb3J0YW50IGlzc3VlcyB0aHJvdWdoCmludGVyYWN0aW9ucyB3aXRoIHBlZXJzLCBs
+dW1pbmFyaWVzIGFuZCBlbWVyZ2luZyBhbmQgZXN0YWJsaXNoZWQgY29tcGFuaWVzLgpodHRwOi8v
+cC5zZi5uZXQvc2Z1L3JzYWNvbmYtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRl
+dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9y
+Z2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

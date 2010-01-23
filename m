@@ -1,10 +1,10 @@
-From: "Claire LAMY" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] les reponses 2010 pour ameliorer vos
-	revenus avec notre catalogue Gratuit
-Date: Sat, 23 Jan 2010 16:19:00 +0100 (CET)
-Message-ID: <kwpha2.ho1428@front02.r7g.com>
+From: =?GB2312?B?18nRrw==?= <79999...wsrt-SyO+X3TzcQY@public.gmane.org>
+Subject: [SPAM] 票据代理
+Date: Sun, 24 Jan 2010 05:27:41 +0800
+Message-ID: <E1NYnWC-0002Ay-V6@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2446519413247732130=="
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,72 +17,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2446519413247732130==
-Content-Type: multipart/alternative;
-	boundary="=_25dbc72456541b930d8fb94c09d7555e"
-
---=_25dbc72456541b930d8fb94c09d7555e
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-
---=_25dbc72456541b930d8fb94c09d7555e
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>=0D<head>=0D</head>=0D<body>=0D<div align=3D"center">=0D<div align=3D=
-"center"><font face=3D"arial" size=3D"2">Si vous n'arrivez pas =E0 lire cet=
- e-mail, <a href=3D"http://lt.okazionet.com/r.php?i=3D55HPURFX_525945_1&l=
-=3Dhttp%3A%2F%2Fwww.vtroxci.info%2Fformulaires%2Faffich_form.php%3Fserial%3=
-DN5sjQ7c5">suivez ce lien</a> <br /></font></div>=0D<table width=3D"504" al=
-ign=3D"center" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody s=
-tyle=3D"FONT-FAMILY: Arial,Helvetica,sans-serif; FONT-SIZE: 12px">=0D<tr>=
-=0D<td width=3D"502" valign=3D"top"><a href=3D"http://lt.okazionet.com/r.ph=
-p?i=3D55HPURFX_525945_1&l=3Dhttp%3A%2F%2Fwww.vtroxci.info%2Fformulaires%2Fa=
-ffich_form.php%3Fserial%3DN5sjQ7c5"><img width=3D"500" height=3D"179" src=
-=3D"http://www.vtroxci.info/hebergement_messages/10141/images/DPHS_0809_p1_=
-01.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a><a href=3D"h=
-ttp://lt.okazionet.com/r.php?i=3D55HPURFX_525945_1&l=3Dhttp%3A%2F%2Fwww.vtr=
-oxci.info%2Fformulaires%2Faffich_form.php%3Fserial%3DN5sjQ7c5"><img width=
-=3D"500" height=3D"198" src=3D"http://www.vtroxci.info/hebergement_messages=
-/10141/images/DPHS_0809_p1_02.jpg" border=3D"0" complete=3D"true" complete=
-=3D"true" /></a><a href=3D"http://lt.okazionet.com/r.php?i=3D55HPURFX_52594=
-5_1&l=3Dhttp%3A%2F%2Fwww.vtroxci.info%2Fformulaires%2Faffich_form.php%3Fser=
-ial%3DN5sjQ7c5"><img width=3D"500" height=3D"173" src=3D"http://www.vtroxci=
-.info/hebergement_messages/10141/images/DPHS_0809_p1_03.jpg" border=3D"0" c=
-omplete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D</tbody>=0D</table=
->=0D</div>=0D<br><br><br><div align=3D"center"><font size=3D"1" face=3D"Ari=
-al, Helvetica, sans-serif" color=3D"#999999">
-Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
-acces et de rectification.<br>
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://front.okazionet.=
-com/AA55HPURFX_525945/877">ici</a></font></div><img src=3D"http://front.tae=
-mus.com/ZZ55HPURFX_525945.png" /></body></html>
---=_25dbc72456541b930d8fb94c09d7555e--
-
-
-
---===============2446519413247732130==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Throughout its 18-year history, RSA Conference consistently attracts the
-world's best and brightest in the field, creating opportunities for Conference
-attendees to learn about information security's most important issues through
-interactions with peers, luminaries and emerging and established companies.
-http://p.sf.net/sfu/rsaconf-dev2dev
---===============2446519413247732130==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2446519413247732130==--
+ufO5q8u+uLrU8MjLKL6twO0vssbO8aOpxPq6w6O6CiAgICDO0srHye7b2srQ9s7Dr8q10rXT0M/e
+uavLvrXEo6i549bdoaK2q924oaLJz7qjoaLPw8PFoaK6vNbdoaLL1dbdtci12L7509AKt9a5q8u+
+o6mho87Sy77KtcGm0Nu68aOs09DXxcG8usO1xMnnu+G52M+1oaPS8r34z+69z7bgz9bN6rPJsrvB
+y8O/1MLP+srbtu62yKGjCsO/1MLT0NK7sr+31lvU9ta1y7BdtefE1LeiQMaxNiW6zVvG1c2oXbei
+QMax1tbA4Mjnz8KjusnMxrfP+srbt6JAxrGjrLXnxNTUy8rkt6JAxrGjrAq547jmt6JAxrHX4sHe
+0rW3okDGsSy3/s7x0rW3okDGsbXIICi5+suwtdjLsKOpMS0yJdPFu920+r+qu/K6z9f3o6y148r9
+vc+1zaGju7m/yQrS1Lj5vt3L+df2yv3Bv7butsi1xLTz0KHAtMnMzNbTxbvdtcS148r9o6y5q8u+
+s8nBorbgxOrSu9axvOGz1tLUobCzz9DFobHOqtbQCtDE1/fOqrmry761xLrL0MTLvM/roaLAzrnM
+yvfBormry77Qzs/zo6yxvrmry77Wo9bYs9DFtcv508O++LbUysfV5saxo6G4/M+jzfsKxNy5u9PQ
+u/q74dPrufPLvrrP1/ejoQqhoaGhCiAgICDI57nzy77U2lu3okDGsV21xNXmzrG3vcPm09DIzrrO
+0snCx7vytaPQxKOsv8nJz834sunWpLvyztLLvtaxvdPT67nzy77IpcuwzvG+1gq11r/busu21KGj
+IAogICAgIAogICAgtMvQxc+is6TG2tPQ0KejrMjn0Ou9+NK7sr3HosnMOiAKICAgIAqhoaGhytYg
+ILv6OjEzNTMwOTA5MzQ0CgogICAgLS0tLVFROzc3MTUwOTM0NAoKoaGhocGqz7XIy6O6wO7PyMn6
+CgogICDLs9ejCiAgICAgIMnM7PejoSAKICAgICAKoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGh
+oSAgoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaHJ7tvaytD2zsOvyrXStdPQz965q8u+CgotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KVGhyb3VnaG91dCBpdHMgMTgteWVhciBoaXN0b3J5LCBSU0EgQ29u
+ZmVyZW5jZSBjb25zaXN0ZW50bHkgYXR0cmFjdHMgdGhlCndvcmxkJ3MgYmVzdCBhbmQgYnJpZ2h0
+ZXN0IGluIHRoZSBmaWVsZCwgY3JlYXRpbmcgb3Bwb3J0dW5pdGllcyBmb3IgQ29uZmVyZW5jZQph
+dHRlbmRlZXMgdG8gbGVhcm4gYWJvdXQgaW5mb3JtYXRpb24gc2VjdXJpdHkncyBtb3N0IGltcG9y
+dGFudCBpc3N1ZXMgdGhyb3VnaAppbnRlcmFjdGlvbnMgd2l0aCBwZWVycywgbHVtaW5hcmllcyBh
+bmQgZW1lcmdpbmcgYW5kIGVzdGFibGlzaGVkIGNvbXBhbmllcy4KaHR0cDovL3Auc2YubmV0L3Nm
+dS9yc2Fjb25mLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

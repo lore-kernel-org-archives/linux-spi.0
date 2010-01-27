@@ -1,11 +1,10 @@
-From: "Energy Devis par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Passez a l energie renouvelable pour
-	faire des economies, 3 devis offerts!
-Date: Wed, 27 Jan 2010 01:37:02 +0100 (CET)
-Message-ID: <kwvr4f.6hbih7@front02.r7g.com>
+From: Anatoliy Aleksandrovich <anatoliyaleksandrovich-YdqcNoyKvP6sTnJN9+BGXg@public.gmane.org>
+Subject: [SPAM] СРОЧНАЯ ЛИКВИДАЦИЯ ПРОБЛЕМНЫХ ООО, ЧП БЕЗ ПРОВЕРОК
+Date: Wed, 27 Jan 2010 04:08:23 +0300
+Message-ID: <7988354874.20100127040823@sporvn.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7487658863225023272=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============6231583270305416184=="
+To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,67 +16,194 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7487658863225023272==
-Content-Type: multipart/alternative;
-	boundary="=_173eeeb6cd66cc7884a210311778dd44"
+--===============6231583270305416184==
+Content-Type: multipart/related;
+	boundary="----=_NextPart_000_0004_674A6EEA.7AE73F94"
 
---=_173eeeb6cd66cc7884a210311778dd44
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+------=_NextPart_000_0004_674A6EEA.7AE73F94
+Content-Type: text/html;
+	charset=Windows-1251
+Content-Transfer-Encoding: base64
 
-
---=_173eeeb6cd66cc7884a210311778dd44
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"=0D"http://ww=
-w.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html xmlns=3D"http://ww=
-w.w3.org/1999/xhtml">=0D<head><title>http://front.okazionet.com/gfm/550002/=
-te/2/Energy%20Devis.jpg</title>=0D<meta content=3D"text/html; charset=3Dutf=
--8" http-equiv=3DContent-Type>=0D<style type=3Dtext/css>td img {display: bl=
-ock;}</style>=0D</head>=0D<body bgcolor=3D"#ffffff"><div align=3D"center"><=
-font size=3D"2" face=3D"verdana"><a href=3D"http://www.okazionet.com/php/em=
-ailing/view_mail.php?CODE=3D55AP84JT_1199994&HASH=3De04a449cbb310a540a4acde=
-3c023c606">Si vous ne pouvez pas consulter correctement ce message, suivez =
-ce lien</a></font></div>=0D<table width=3D"502" align=3D"center" border=3D"=
-0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td><a href=3D"h=
-ttp://baseco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=
-=3D1&L=3D313411&C=3D11586&P=3D20031&T=3DE&W=3D1&CREA=3D162091&URL"><img nam=
-e=3D"energydevis_r1_c1" width=3D"502" height=3D"110" id=3D"energydevis_r1_c=
-1" alt=3D"Energy-Devis" src=3D"http://front.okazionet.com/gfm/550002/te/2/e=
-nergy-devis_r1_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true" /><=
-/a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.weborama.fr=
-/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D313411&C=3D11586&P=3D20031=
-&T=3DE&W=3D1&CREA=3D162091&URL"><img name=3D"energydevis_r2_c1" width=3D"50=
-2" height=3D"198" id=3D"energydevis_r2_c1" alt=3D"Energy-Devis" src=3D"http=
-://front.okazionet.com/gfm/550002/te/2/energy-devis_r2_c1.jpg" border=3D"0"=
- complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td><a hr=
-ef=3D"http://baseco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310=
-703&A=3D1&L=3D313411&C=3D11586&P=3D20031&T=3DE&W=3D1&CREA=3D162091&URL"><im=
-g name=3D"energydevis_r3_c1" width=3D"502" height=3D"163" id=3D"energydevis=
-_r3_c1" alt=3D"Energy-Devis" src=3D"http://front.okazionet.com/gfm/550002/t=
-e/2/energy-devis_r3_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true=
-" /></a></td>=0D</tr>=0D<tr>=0D<td><a href=3D"http://baseco.solution.webora=
-ma.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D313411&C=3D11586&P=3D=
-20031&T=3DE&W=3D1&CREA=3D162091&URL"><img name=3D"energydevis_r4_c1" width=
-=3D"502" height=3D"82" id=3D"energydevis_r4_c1" alt=3D"Demandez votre devis=
- gratuit!" src=3D"http://front.okazionet.com/gfm/550002/te/2/energy-devis_r=
-4_c1.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</=
-tr><img width=3D"1" height=3D"1" src=3D"http://baseco.solution.weborama.fr/=
-fcgi-bin/adserv.fcgi?tag=3D313411&f=3D10&h=3DR&rnd=3D[RANDOM]" border=3D"0"=
- complete=3D"true" complete=3D"true" /> </ /></ /></ /></ /></ /></ /></ />=
-</>=0D</tbody>=0D</table>=0D<br><br><br><div align=3D"center"><font size=3D=
-"1" face=3D"Arial, Helvetica, sans-serif" color=3D"#999999">
-Conformement a la loi Informatique et Libertes, vous disposez d'un droit d'=
-acces et de rectification.<br>
-Si vous voulez vous desinscrire, cliquez <a href=3D"http://www.okazionet.co=
-m/AA55AP84JT_1199994/877">ici</a></font></div><img src=3D"http://front.taem=
-us.com/ZZ55AP84JT_1199994.png" /></body></html>
---=_173eeeb6cd66cc7884a210311778dd44--
+PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVu
+dD0idGV4dC9odG1sOyBjaGFyc2V0PXdpbmRvd3MtMTI1MSI+DQo8dGl0bGU+PC90aXRsZT4N
+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQo8IS0tDQpib2R5LHRkLHRoIHsNCglmb250LWZh
+bWlseTogVmVyZGFuYSwgR2VuZXZhLCBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOw0K
+CWZvbnQtc2l6ZTogMTVweDsNCgljb2xvcjogIzAwMDAwMDsNCn0NCmJvZHkgew0KCWJhY2tn
+cm91bmQtY29sb3I6ICNGRkZGRkY7DQp9DQotLT4NCjwvc3R5bGU+PC9oZWFkPg0KDQo8Ym9k
+eT4NCjx0YWJsZSB3aWR0aD0iODAwIiBhbGlnbj0iY2VudGVyIj4NCiAgPHRyPg0KICAgIDx0
+ZD48ZGl2IGFsaWduPSJsZWZ0Ij48aW1nIHNyYz0iY2lkOmd1YW5vLmpwZyIgd2lkdGg9IjE3
+MCIgaGVpZ2h0PSIyMDAiIC8+PC9kaXY+PC90ZD4NCiAgICA8dGQgYWxpZ249ImxlZnQiPjxw
+Psvo6uLo5OD26P8g7/Du4evl7O379SDv8OXk7/Do//Lo6SDn4CDx8/Lq6CA4MDAwIOPw7S48
+YnI+DQogICAgICA8L3A+DQogICAgICA8cD48c3Ryb25nPjxmb250IGNvbG9yPSIjRkYwMDAw
+Ij7CIO3u4vvpIOPu5CDh5ecg8fLg8Pv1IO/w7uHr5ewhPC9mb250Pjwvc3Ryb25nPjxicj4N
+CiAgICAgIDwvcD4NCiAgICAgIDxwPsvo6uLo5OD26P8g7uH55fHy4uXt7fv1IO7w4+Dt6Ofg
+9ujpIOfgIPHz8uroIDEwMDAwIOPw7S48L3A+DQogICAgICA8cCBhbGlnbj0icmlnaHQiPjxm
+b250IGNvbG9yPSIjRkYwMDAwIj7B7uvl5SDv7uTw7uHt7iDv7iDy5evl9O7t4Ow6PC9mb250
+Pjxicj4NCiAgICAgIDwvcD4NCiAgICAgIDxwIGFsaWduPSJyaWdodCI+PGZvbnQgY29sb3I9
+IiNGRjAwMDAiPjxzdHJvbmc+MDQ0IDIyMyA0NiA5MTwvc3Ryb25nPjwvZm9udD48YnI+DQog
+ICAgPGZvbnQgY29sb3I9IiNGRjAwMDAiPjxzdHJvbmc+MDY3IDQ5OCA2NiA5Mjwvc3Ryb25n
+PjwvZm9udD48L3A+DQogICAgPHAgYWxpZ249InJpZ2h0Ij48Zm9udCBjb2xvcj0iI0ZGMDAw
+MCI+6OvoIO3gIDxzdHJvbmc+PGEgaHJlZj0iaHR0cDovL3d3dy5saWt2aWRhcy5jb20udWEv
+IiBzdHlsZT0iY29sb3I6I0ZGMDAwMCI+8eDp8uU8L2E+PC9zdHJvbmc+PC9mb250PjwvcD48
+L3RkPg0KICA8L3RyPg0KPC90YWJsZT4NCjwvYm9keT4NCjwvaHRtbD4NCg==
 
 
+------=_NextPart_000_0004_674A6EEA.7AE73F94
+Content-Type: image/jpeg;
+	name="guano.jpg"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="guano.jpg"
+Content-ID: <guano.jpg>
 
---===============7487658863225023272==
+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
+------=_NextPart_000_0004_674A6EEA.7AE73F94--
+
+
+
+
+--===============6231583270305416184==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -89,7 +215,7 @@ Stay online with enterprise data centers and the best network in the business
 Choose flexible plans and management services without long-term contracts
 Personal 24x7 support from experience hosting pros just a phone call away.
 http://p.sf.net/sfu/theplanet-com
---===============7487658863225023272==
+--===============6231583270305416184==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -100,4 +226,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============7487658863225023272==--
+--===============6231583270305416184==--

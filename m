@@ -1,11 +1,19 @@
-From: Eugen Nikitovich <eugennikitovich-YdqcNoyKvP6sTnJN9+BGXg@public.gmane.org>
-Subject: [SPAM] Какие методы мы используем при зарабатывании денег.
-Date: Thu, 28 Jan 2010 01:18:08 -2100
-Message-ID: <3274951317.20100128011808@sporvn.net>
+From: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: McSPI questions pertaining to GPIO chip select
+	support
+Date: Wed, 27 Jan 2010 23:10:26 -0500
+Message-ID: <1264651770-sup-5197__49645.0047860437$1264651881$gmane$org@ben-laptop>
+References: <1264016711-sup-309@ben-laptop>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4923547013494931913=="
-To: Spi <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: beagleboard <beagleboard-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
+	linux-omap <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Eric Miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Michael Henn
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-reply-to: <1264016711-sup-309@ben-laptop>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,216 +24,76 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4923547013494931913==
-Content-Type: multipart/related;
-	boundary="----=_NextPart_000_0036_400A21AF.F1FA2CF9"
+Hey all!
 
-------=_NextPart_000_0036_400A21AF.F1FA2CF9
-Content-Type: text/html;
-	charset=Windows-1251
-Content-Transfer-Encoding: base64
+Recently I've been thinking about adding support to the McSPI driver for
+using GPIO pins as chip selects. As a starting point, I've browsed the
+driver source trying to identify what changes would be necessary to add
+this support. It seems like the rough idea is,
 
-PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVu
-dD0idGV4dC9odG1sOyBjaGFyc2V0PXdpbmRvd3MtMTI1MSI+PHN0eWxlIHR5cGU9InRleHQv
-Y3NzIj4NCjwhLS0NCmJvZHksdGQsdGggew0KCWZvbnQtZmFtaWx5OiBWZXJkYW5hLCBHZW5l
-dmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7DQoJZm9udC1zaXplOiAxM3B4Ow0K
-CWNvbG9yOiAjMDAwMDAwOw0KfQ0KYm9keSB7DQoJYmFja2dyb3VuZC1jb2xvcjogI0ZGRkZG
-RjsNCn0NCi0tPg0KPC9zdHlsZT48L2hlYWQ+PGJvZHkgYWxpbms9IiMwMDAwMDAiIGxpbms9
-IiM2NjAwMDAiIHZsaW5rPSIjMDAwMDAwIiA+DQo8Y2VudGVyPg0KPHRhYmxlIHdpZHRoPSIx
-MDI0IiBib3JkZXI9IjAiIGNlbGxwYWRkaW5nPSIwIiBjZWxsc3BhY2luZz0iNCIgYmFja2dy
-b3VuZD0iIiBiZ2NvbG9yPSIjZmZmZmZmIiBjbGFzcz0id2VhdGgiIHN0eWxlPSJiYWNrZ3Jv
-dW5kLWNvbG9yOiAjZmZmZmZmOyBiYWNrZ3JvdW5kLWltYWdlOiA7IiBzdW1tYXJ5PSIiPg0K
-DQo8dHI+PHRkIGJnY29sb3I9IiNmZmZmZmYiIGJhY2tncm91bmQ9IiIgc3R5bGU9ImJhY2tn
-cm91bmQtY29sb3I6ICNmZmZmZmY7IGJhY2tncm91bmQtaW1hZ2U6IDsgYm9yZGVyOiBzb2xp
-ZCAxcHggI2RkZGRkZDsiPg0KPHRhYmxlIHN1bW1hcnk9IiIgd2lkdGg9IjEwMCUiIGJvcmRl
-cj0iMCIgYmdjb2xvcj0iI2ZmZmZmZiIgYmFja2dyb3VuZD0iIiBzdHlsZT0iYmFja2dyb3Vu
-ZC1jb2xvcjogI2ZmZmZmZjsgYmFja2dyb3VuZC1pbWFnZTogOyIgY2VsbHNwYWNpbmc9IjAi
-IGNlbGxwYWRkaW5nPSIwIiBjbGFzcz0id2VhdGgiPjx0cj4NCjx0ZCB3aWR0aD0iMTg1IiB2
-YWxpZ249InRvcCIgYWxpZ249ImxlZnQiIHJvd3NwYW49IjIiPjxpbWcgc3JjPSJjaWQ6bG8u
-Z2lmIiB3aWR0aD0iMTg1IiBoZWlnaHQ9IjUyIiAvPjwvdGQ+DQo8dGQgd2lkdGg9IjEwMCUi
-IGhlaWdodD0iMTYiPjwvdGQ+DQo8L3RyPg0KDQo8dHI+PHRkIHdpZHRoPSIxMDAlIiB2YWxp
-Z249InRvcCIgYWxpZ249ImNlbnRlciI+PGZvbnQgZmFjZT0iQXJpYWwsIEhlbHZldGljYSwg
-c2Fucy1zZXJpZiIgc2l6ZT0iMyIgY29sb3I9IiMwMDAwMDAiIHN0eWxlPSJjb2xvcjojRkYw
-MDAwOyBmb250LWZhbWlseTogQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZjsgZm9udC1z
-aXplOjE4cHg7IGZvbnQtd2VpZ2h0OiBib2xkOyB0ZXh0LWRlY29yYXRpb246IG5vbmU7Ij48
-Yj7KYeog6/7h6PL8IORl7fzj6D8gS2HqIPPvcODi6//y/CDk5e3842Hs6D8gymHqIOfg8GHh
-YfL74uDy/CDkZe384+g/PC9iPjwvZm9udD48aW1nIHNyYz0iaHR0cDovL2ltYWdlLnN1YnNj
-cmliZS5ydS8xLmdpZi90ZXN0LDE1MjQ1LzIwMDYwMzEwMTUzMDU5L24vbTAiIGFsdD0iIiBo
-ZWlnaHQ9IjEiIHdpZHRoPSIxIiBib3JkZXI9IjAiPjwvdGQ+DQo8L3RyPjwvdGFibGU+DQo8
-L3RkPjwvdHI+DQoNCjx0ciB2YWxpZ249InRvcCIgYWxpZ249ImxlZnQiPg0KPHRkIGJnY29s
-b3I9IiNlZWVlZWUiIGJhY2tncm91bmQ9IiIgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6ICNl
-ZWVlZTsgYmFja2dyb3VuZC1pbWFnZTogO2JvcmRlcjogc29saWQgMXB4ICNkZGRkZGQ7Ij4N
-Cjx0YWJsZSBzdW1tYXJ5PSIiIHdpZHRoPSIxMDE0IiBib3JkZXI9IjAiIGJnY29sb3I9IiNl
-ZWVlZWUiIGJhY2tncm91bmQ9IiIgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6ICNlZWVlZWU7
-IGJhY2tncm91bmQtaW1hZ2U6IDsiIGNlbGxzcGFjaW5nPSI1IiBjZWxscGFkZGluZz0iMCIg
-Y2xhc3M9IndlYXRoIj4NCjx0ciB2YWxpZ249InRvcCIgYWxpZ249ImxlZnQiPg0KPHRkIHdp
-ZHRoPSIxOCUiIGJnY29sb3I9IiNFRUVFRUUiPiZuYnNwOzwvdGQ+DQo8dGQgd2lkdGg9Ijgy
-JSIgYmdjb2xvcj0iI2RiZWNmNyIgYmFja2dyb3VuZD0iIiBzdHlsZT0icGFkZGluZzogNXB4
-OyBiYWNrZ3JvdW5kLWNvbG9yOiAjZGJlY2Y3OyBiYWNrZ3JvdW5kLWltYWdlOiA7IGJvcmRl
-cjogc29saWQgMXB4ICNkZGRkZGQ7IiBhbGlnbj0ibGVmdCI+PFA+PHN0cm9uZz4mbmJzcDsz
-MC0zMSD/7eJhcP8uPC9zdHJvbmc+IDxicj4NCiAgJm5ic3A74y4gyujl4iwg4fPr/OIuINhl
-4vdl7epvLCA0DQo8VEFCTEUgd2lkdGg9IjEwMCUiPg0KPFRSIGFsaWduPSJsZWZ0Ij48VEQg
-Ymdjb2xvcj0iI2RiZWNmNyI+PHA+PHN0cm9uZz7PUM7By8XMQdLIS0E8L3N0cm9uZz48YnI+
-DQogINfybyDsZfhhZfIgQuDsIOH78vwg4e7j4PL77CDoIHlj72X47fvsIOgg6Oxl8vwgY/Jv
-6/zq7iDk5e1l4ywgY+ru6/zqbyDCYewg7WVv4fXu5Ojsbz88YnI+DQogIM9v9+Xs8yBC+ywg
-6O3u4+TgIGNv4mVw+OXt7e4g7eXv7u3/8u3uIO9v92XseSwgq/Jl8P9l8uW7IORl7fzj6CDo
-6+gg7eUg7O7m5fLlIOdhcGHhb/Jh8vwg6PUg5O5j8mHy7vftbywg7eXx7O7y8P8g7eAg4vHl
-IPPx6Ovo/z88YnI+DQogIEvg6iDs7ubt7iCr72/38+Jj8uJv4uDy/Lsg5GXt/OPoPyBLYeog
-7/Do4utl9/wg5OXt/OPoIOIgY+Jv/iDm6Oft/D88L3A+DQogICAgPHA+PHN0cm9uZz7Wxcvc
-PC9zdHJvbmc+PGJyPg0KICAgICAgQuD4IGPy6Ov8IJPkZe1l5u1vY/LolCDsb+bt7iDu7+hj
-YfL8IOxh8mXs4PLo9+Vj6uguPGJyPg0KICAgICAgQvsg6+Xj6u4gY+zu5mXyZSDv7u3/8vwg
-7/Do9+jt+yDoIOzl9eDt6Ofs+yDq4OogY+Jv6PUg8+Tg9ywg8mHqIOgg5GXt5ebt+/Ug52Hy
-8Hnk7WXt6OksIO9v6exl8mUsIPfybyDo7OXt7W8g4iDkZe3l5u1v7CDvb/Lu6uUg5+Di6PHo
-8iDr6PftbyDu8iBC4GMuPC9wPg0KICAgIDxwPjxzdHJvbmc+z9DOw1DATcxBPC9zdHJvbmc+
-PGJyPg0KICAgICAglSBCYfjoIHnh5ebkZe3o/yBvIORl7fzj4PU6IPfl7PMg7eDxIO3geffo
-6+guIE3o9Psg6CBw5eDr/O3u8fL8PGJyPg0KICAgICAglSBIeebtbyDr6CDxIPJweeTu7CDn
-4PDg4WHy++Jh8vwg6OvoIOzu5u1vIP3y7iDkZevg8vwg6+Xj6m8/PGJyPg0KICAgICAglSDE
-Ze384+gg6CDy4u5w92Xx8uJvLiBN7ubt7iDr6CAo6CDt8+bt7iDr6Ckg6PHvb+v85+7iYfL8
-IPLi7vD3ZfHq6Okg7+7k9W/kIOIg52FwYeFh8vvi4O3o6CDkZe1l4z8gyONw4C48YnI+DQog
-ICAgICCVIEvg6ujlIOzl8u7k+yDs+yDoY+/u6/zn82XsIO/w6CDn4PBh4eDy++Lg7ejoIOTl
-7eXjLiDI4/BhLiDX8m8g7Psg8+ftYevoIO4g8eXh5Tog4u7n7O7m7W/x8ugg6CDv8OXv//Lx
-8uLo/y48YnI+DQogICAgICCVIMjyYeosIORl7fzj6Dog6/7h6PIgliDtZSDr/uHo8iAoIOv+
-4ejy/C3tZSDr/uHo8vwpPC9wPg0KICAgIDxwPjxzdHJvbmc+QuXk8/ng/zwvc3Ryb25nPiAt
-INHs6PDtb+LgIFTg7GHw4C4gz+Xw4m9lIG/h8GHn7uJh7ehlIJYg9Ojn6OosIO/wZe9v5GHi
-YfJl6/wg9Ojn6OroLiDC8u5w7mUgb+Fw4Ofu4uDt6GUgIC0g73Bh6vLo92Vj6uD/IO/x6PXu
-62/j6P8uINFlcPLo9Oj26PDu4mHt7fvpIOPl+PLg6/zyLfLlcODvZeLyLiAgw+X48uDr/PLy
-ZfDg7+Xi8iDMw8guINJw5fL8/yDx8vPv5e38IO7heffl7ej/IE3DyC4gz/Du+OthIOTu7+7r
-7ejyZev87e5lIG/heffl7ehlIOggY2Vw8uj06Pbo8G/i4O3gIO9vOiDP8O7i7urg8uji7eD/
-IO9j6PXu8uVwYe/o/y4gS+559+jt4y4gT/Dj6u7t8Xnr/PLocO7i4O3oZS4gVODtYfJv8uXw
-Ye/o/y4g0mXr5fHt4P8g72Po9W/y5fDg7+j/LiBBcPLy5fBh7+j/LiBY8GVj8u7sYfLo/yDy
-5etl8e3u6SDyZXBh7+joLiBD5epjb+vu4+j/LiBU4O325eLg6/ztby3k4ujjYfLl6/zt4P8g
-8uXw4O/o/y4gUGHhb/JhIGMg72Po9W/r7uPo92Vj6m/pIPLw4OLsb+kg5GXyZekg6CDi53Du
-Y+v79S4gUGHhb/LgIPEg5GXvcOVj8ej/7OguIFBv4W/y4CBjbyDx8vBh9WHs6Cwg9O7h6P/s
-6Cwg8vDl4u7j4OzoLiBLefDx+yDv7iDucOMgLSDq7u3xeev88ujw7uLg7ej+LiDP8G/h6+Xs
-+yDv8O70ZWNj6O7tYev87e7jbyDi++PucODt6P8uICDE8Hnj7mUuLi48L3A+DQogICAgPHA+
-PHN0cm9uZz5NRVTOxE/LzsPI3yDP0M5CRcRFzcjfPC9zdHJvbmc+PGJyPg0KICAgICAgVOJv
-8Pdl8ero5SDo43D7IOxv5GXr6PDz/vIg82Prb+Lo/yBC4Phl4+4g4vvm6OJh7ej/IOIg82Pr
-7uLo//UgIPD77W/37W/j7iBv6nDz5mXt6P8gLSDyYeog9/JvIO7x8vD75SDu+fP55e3o/yBC
-Yewg4+Dw4O3y6HB5/i48YnI+DQogICAgICDM6O3oLetl6vbo6Cwg73Dg6vLo92Xx6ujlIOdh
-5GHt6P8sIHnv8GHm7eXt6P8t6OPw+ywg7vHu5+1h4uDt6GUg8eLu6PUgY+jr/O379SDoIPHr
-YeH79SBj8m/w7u0uPGJyPg0KICAgICAgQfLsb/H05XDgIOrz8GNhIO/w5eTwYWPvb+vg42Fl
-8iDqIO/w6O3/8uj+IO1v4vv1IPDl+OXt6Okg7+4gY/Lo6//sIOgg8fJwYfLl4+j/7CBC4Pjo
-9SDi5+Do7O5v8u1v+GXt6OkgYyDE5e384+Ds6CDoIO9l8GXx7O7ycHkg4iDmZevgZexv7CDt
-4O/w4OLrZe3o6CB55mUgY3n55WPy4vP++ej1IGPv7mPu4W/iLjxicj4NCiAgICAgIMTr/yDE
-efjoIOIg/fJv6SDv8G/j8ODs7GUg8uDq5uUg5O7x8mHyb/ft7iDs7W/j7iDkb2Pyb+nt7uNv
-IOzlY/JhLjxicj4NCiAgICAgINfy7iDq4GPgZfJj/yDv7uv85/sg5Ov/IPBl4Ov87e7pIObo
-5+3oLCDybyBv7eAgwmHsIONhcGHt8ujweeXyY/8uPGJyPg0KICAgICAgwiD1b+RlIOp58GPg
-IML7IPHs7uZl8mUg7vZl7ejy/CDoIPNj7uLlcPhl7fHy4u7i4PL8IGPib+gg7WHi++roIO7h
-+eXt6P8gYyDkZe3842Hs6C48YnI+DQogICAgICDKYebk++kg8/dhY/Lt6Oog7+7r8/fo8iDo
-7eTo4ujk82Hr/O375SBw5epv7OXt5OD26Ogg8vDl7WXw4C48YnI+DQogICAgICCVIFDl6m/s
-Ze3keWXy8f8g6Oxl8vwg7/DoIGNl4WUg7vLk5ev87fvpIOru+OXr5eogYyDs5evq6OzoIOTl
-7fzj4OzoIOTr/yDv8ODq8uj3ZWPq6PUgee/wYebtZe3o6SAo7+4gMS0yIOPw6OLt+ywg7G/t
-5fL7LCDiIG/h+eXpIPHz7OxlIDUwIONw7SkuIDwvcD48L1REPg0KPC9UUj4NCjxUUj4NCiAg
-PFREIGJnY29sb3I9IiNkYmVjZjciPjxocj4NCiAgICA8cCBhbGlnbj0iY2VudGVyIj48c3Ry
-b25nPkPy7ujsb/Hy/CB592Fj8uj/Ojwvc3Ryb25nPjxicj4NCiAgICAgIDE0MDAuMDAg4/Dt
-LiAtIOfgIO7k7e7j7iDz92Fj8u3o6uAuPGJyPg0KICAgICAgxOv/IOLy7nDu4+4g6CDy8OXy
-/OXjbyB59+Dx8u3o6mEgY+ro5OroIJYgNSUg6CA3JSBjb+7y4mXyY/LiZe3tby48L3A+PC9U
-RD4NCjwvVFI+DQo8L1RBQkxFPg0KPCEtLSAtLT48L3RkPjwvdHI+DQo8L3RhYmxlPg0KDQo8
-L3RkPg0KPC90cj4NCg0KDQo8dHI+PHRkICBhbGlnbj0iY2VudGVyIiB2YWxpZ249Im1pZGRs
-ZSIgYmdjb2xvcj0iI2VlZWVlZSIgYmFja2dyb3VuZD0iInN0eWxlPSJiYWNrZ3JvdW5kLWNv
-bG9yOiAjZWVlZWVlOyBiYWNrZ3JvdW5kLWltYWdlOiA7IGJvcmRlcjogc29saWQgMXB4ICNk
-ZGRkZGQ7Ij4NCg0KPHRhYmxlIHN1bW1hcnk9IiIgY2VsbHBhZGRpbmc9IjAiIGNlbGxzcGFj
-aW5nPSI1IiBib3JkZXI9IjAiIHdpZHRoPSIxMDAlIiBzdHlsZT0iYmFja2dyb3VuZC1jb2xv
-cjogI2VlZWVlZTsgYmFja2dyb3VuZC1pbWFnZTogOyIgIGJhY2tncm91bmQ9IiIgYmdjb2xv
-cj0iI2VlZWVlZSIgY2xhc3M9IndlYXRoIj48dHI+DQo8dGQgd2lkdGg9IjMwJSIgYWxpZ249
-ImxlZnQiIHZhbGlnbj0idG9wIiBiZ2NvbG9yPSIjRUVFRUVFIj48YSBocmVmPSJodHRwOi8v
-bmJjLnVhLyIgc3R5bGU9ImNvbG9yOiM2NjY2NjYiIHRhcmdldD0iX2JsYW5rIj5OQkMuVUE8
-L2E+PGJyPg0KICA8YSBocmVmPSJodHRwOi8vbmJjLnVhL3BhZ2VzL3NlcnZpY2VzL2NvbmZl
-cmVuY2Utc2VydmljZXMuaHRtIiBzdHlsZT0iY29sb3I6IzY2NjY2NiIgdGFyZ2V0PSJfYmxh
-bmsiPspPSNRF0MXN1i1DRVBCyEM8L2E+PGJyPg0KICA8YSBocmVmPSJodHRwOi8vbmJjLnVh
-L3BhZ2VzL3NlcnZpY2VzL3RvdXItc2VydmljZXMuaHRtIiBzdHlsZT0iY29sb3I6IzY2NjY2
-NiIgdGFyZ2V0PSJfYmxhbmsiPlTT0MhDVMjXRdHKyMUg09HL08PIPC9hPjwvdGQ+DQo8dGQg
-d2lkdGg9IjQwJSIgYWxpZ249ImNlbnRlciIgdmFsaWduPSJ0b3AiIGJnY29sb3I9IiNFRUVF
-RUUiPjxhIGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFnZXMvc2VydmljZXMvY29ycG9yYXRlLXRy
-YWluaW5ncy5odG0iIHN0eWxlPSJjb2xvcjojNjY2NjY2IiB0YXJnZXQ9Il9ibGFuayI+S85Q
-z87QwNLIQs3bRSBUUEVIyM3DyDwvYT48YnI+DQogIDxhIGhyZWY9Imh0dHA6Ly9uYmMudWEv
-cGFnZXMvc2VydmljZXMvc2VtaW5hcnMtYWJyb2FkLmh0bSIgc3R5bGU9ImNvbG9yOiM2NjY2
-NjYiIHRhcmdldD0iX2JsYW5rIj5UUEVIyEjDyCDHwCDDUMDNyNZFyTwvYT48YnI+DQogIDxh
-IGhyZWY9Imh0dHA6Ly9uYmMudWEvcGFnZXMvdHJhaW5lcnMuaHRtIiBzdHlsZT0iY29sb3I6
-IzY2NjY2NiIgdGFyZ2V0PSJfYmxhbmsiPsHIM0hFQy1UUEVIRVDbPC9hPjwvdGQ+DQo8dGQg
-d2lkdGg9IjMwJSIgYWxpZ249InJpZ2h0IiB2YWxpZ249InRvcCIgYmdjb2xvcj0iI0VFRUVF
-RSI+PGZvbnQgY29sb3I9IiM2NjY2NjYiIHRhcmdldD0iX2JsYW5rIj5IQdjIIEtPSFRBS1Tb
-OjwvZm9udD48YnI+DQogIDxpbWcgc3JjPSJjaWQ6dGVsLmdpZiIgd2lkdGg9IjEyMyIgaGVp
-Z2h0PSIyOSIgLz4gPC90ZD4NCjwvdHI+PC90YWJsZT4NCg0KPC90ZD48L3RyPg0KPC90YWJs
-ZT4NCg0KPC9jZW50ZXI+DQoNCjwvYm9keT48L2h0bWw+DQo=
+  a) add a cs_gpio field to the device struct (omap2_mcspi)
+  b) modify omap2_mcspi_force_cs() to use cs_gpio instead of the
+     CHxCONF[FORCE] bit if cs_gpio is valid
+
+Unfortunately, I'm having a bit of difficulty seeing how the existing
+configuration works. In master mode, it seems that the controller is
+configured in single forced channel mode (MCSPI_MODULECTRL_SINGLE).  As
+far as I can tell, this means that the driver is responsible for
+managing the chip selects through the MCSPI_CHxCONF[FORCE] bits. It
+seems that this is ideal as little will need to be changed to
+incorporate GPIO CS support.
+
+Nevertheless, the timing of the various operations isn't making sense to
+me. As far as I understand it, the callgraph is as follows,
 
 
-------=_NextPart_000_0036_400A21AF.F1FA2CF9
-Content-Type: image/gif;
-	name="lo.gif"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="lo.gif"
-Content-ID: <lo.gif>
-
-R0lGODlhuQA0ALMAAIzMpJubmxQTFF5fXuzz78jIyHTCkVGzdszn1hGXQ7Hdwi6jWgWSPACQ
-NwCQNv///yH5BAAAAAAALAAAAAC5ADQAAAT/8MlJq7046827/2Aofklpnmiqriw6vnAsz1bi
-NPid507v3zpgo4cbDolHoK+RoDmf0GjCGFQKrccsUntlFI3NqHhM5kwdBgVirWi71wi3fE6v
-G3a4cHnPH58RBAGCCBQIggEEMgA2DQsADA56fZOUMIwIBQKaARQBmgIFMAgLOgsECEOSlaus
-GzYOmJ+cE56aoSIEBpA4BokGPaqtwsMPr7GbnZ+3H7mvDgsKEgpgxNXDf5nItMrMizkMvdJe
-qdblq5fZmgPrA5+gHc08B4TiScHm+GLY7vzcGggGphQ5EG3CI2Be7uVbSAOdO3bt/F0AeKYB
-g3kUCBwAQjAhw49Q/4ylmyWh1jsLCA6Ms0iwgoIFRg48QMVERr+Tq9qR1PTRobaSEiWk3BUJ
-Y6GNNxgAkADghsIPmhJV0zmBJ8N9Px+YXDZURwID9CZ0vbGAHoJXTz1EtUZVgtWFWAWQ1Mqt
-ayqwLlUeSbBUAgFS5GKsrdBuAF0BpyIaJrCWqslZ6QZIndD2gVUEit3KpbuO3wCTtmbEnbv1
-wBEGjiZLQ3p38t8vaTv0M/ygMOOomgzJvZ1IZybDOm9zJrxZs+ZAAgwj80S7ba01by3dUHNo
-2YMCAQoM8LKg+4Hsh7KbzvFV9agsNQUjBgo8ecT1QBE1luuJ0+/6GSrz/G18eXIJzv1XG/9O
-L7xSEAYaeeHAezdBEkk4FHjzoEfqTcZTYckNFtEDt7kTAIPJ4YeBfgIc5o5lngFYHHMqzjUC
-IwdaoAAjDhwA4kOoAaDaTKyVRVNsHAyG4oC5CckcbwMKUlx8GX3S2U4l8keBf82tKGA71r04
-RIwRjpNANO8FcEKOOzbjwwGJTJMeDIOxGJF8iPF05HzZ/RdcVNkQB+VxLFLZIlACQFeiDAZe
-0NQQZamY3A5GZSQhE309oCaQG8ymKId4OkkAko7JIkFkYSmaImbqaMYJi0kCGlGoBW5pwaE1
-UvAeRNkVEpARDTQqKTAgzcAYbS+g6gSMFTTVgwETaHSjk2scIBD/S6zuGkmvMvwag7AN4RCj
-mmhMMGMDs3bmJBUXceltHtRag61oPRx41rF+/dLDe1KlIwAkX0VLgQK8puvvA2URAKRABb0W
-K4dI1UhvSgm8lxoH/K75b6/8OhBpBsQ+8EsjiYyiA7KKqcTArDtmUDGlE09MLALjRPMuEwUx
-CKKLGkT8FL8ySUBKWKQsQMEvB5Yw0zMTkNJXSsBE+ktfBEzrF7xi/dDDUkDLeDDAsGBdptNC
-69wtxtoCzMtMjCQq6bIhgjCpyVfvLJQPYVUtgdAIEP2AsUsJbMrdCeS89NN6GOtz1IP/Lfe+
-bWdNytZhdF0xsmDDoqYpAgNDiEbPrBNe/3ZSQTQZZppLE9gFOBedtcY1WjzB4XQT/ZcNS7nN
-lOp/c+g01hu5a7fhDphbuteELF5B042HsYANkGNAMEy9G5zojERAg6A7k0UmjVNs54w1PcfX
-PTjqQTfhPeob6Wj32zLVTvzTjnw9dOG092619m4LnxHXTTT1S/IXTHERog8YT6IekYeLWYAA
-iqmek653u6akxGcVkxohSic71onvGQI7wNLqpj3b+UxePwhDU3SUgO+ND3VUkxqapCVBrP1A
-JusrRhMWcAD9ASwN8puA/xSkAGMlgBB3QJS+MpLACVhPUoH5Sw3l97vtofBuqgOfDi9IQ1hs
-8GoefKLtjJe13P+9DX4pLMhZIJi44DlAKk1BE/6AZsOmvOR7xfgBNBwUjTv0YIUbQKA6FFiq
-XaUHaN25Hv0Ud8YsSnFuF7RB+izWNDiWTn3TauTsIHdC3h1oI3Eoo9aKloAYmsBnNgQYNKIY
-x5gwD1kbc18ei/ipBSLxj70L5K4GmUmpZc2CQ+sBEFUnuydCMn+2HBwHJWDJCWCyifUrpM46
-ybV2QRFy3eFXpF5hEZg0QmM5MKAG9JgcPgpoGrejoRtnaTqAkLKYiMyl31Q3xkSkkZhRXB8p
-DjTPXUEOnWMkJ/A2CUU1Ns5ubYwlHGm0CwbEIZsg4KZkjOjKk3kLFgcgIy17ya8P2rL2RnU7
-Xe2QNrXVxTMSkjQIGjayN19K7XmaJMULN9XMgtiQhvyKEY2AAACW3YB/8GDldRo6ujE0rYMp
-I8MZoneeXOFCp0d0aBl+GlQ+OAMHAEBKSRMapvA4iRM2a6pWa5AEDVpuBNy8CfWyutWyxvFj
-r9CmB8Iq1qiQ1axapWZ3hgDUEGCiAHjNK17ptTa4xpUIAplqFExCAKX6NajPSoq5nlALw9RN
-Yof9l0B8AI06WPaymAUAXhFwKJRF1hxPtcgSgrADImyBB0Uw7Q4YwFohePaz1niqDnBV2h8k
-IQm2pYIS0NNT2FKrBcANrnBP4NviGve4HYgAADs=
-------=_NextPart_000_0036_400A21AF.F1FA2CF9
-Content-Type: image/gif;
-	name="tel.gif"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="tel.gif"
-Content-ID: <tel.gif>
-
-R0lGODlhewAdAKIAAJiYmMvLy6+vr4qKim9vb+Xl5WZmZu7u7iH5BAAAAAAALAAAAAB7AB0A
-AAP/eLrcW8GtUKS9OOvNexaGIAWEYQ2DEDkCMQAiY8xDaVRWABAEsHobAcomEc4IAhwjMIs1
-BjPLbAZQKnZT52E6HVxIBt7sZwwnL2WkFcD1NtjcsLVg0ypAUUdBAA8Vp0sBAXh2DFA3BVRX
-cXISfVMESlAqgg14VQVwAAx9dkyAX0cSiQabDmwEGKA0B5cFmYqWVK+aCyUvhYc4pKkKTIda
-dAaHGaINAVADVgqkTigoMcDNB7rMos8p1Qe8C3F2oAqgdJFNnCF4GJ+FR1UsM0pcMWBcEeBb
-UfH24BB9DTa7rA6wUVHuThgdeU4MW2YwTANhbpjlwOPmn7Vh2xhY3BZw/4KxBZpolcPDaJsN
-b44OUjgGp9cCQhuQjVlUSqSfN7Ng3dzT5wezk10qFMB2xA2AZzYG+KQ55cenI0uhRNpQ5wFQ
-GgyFxVHmC9JSZmVSMLwX0VBCBiSbesQ1dhAHEkv3HBJrQS6NMz9hANnLt2+GsX4DCx5MuLDh
-w4gTK17MuLHjx5Ajd4DwBbBkX5YvYwBR6ACYEym+tnKhdwnpziNKjML7l/WEHT1Ep3Hd9eaT
-szKmtON00k7vDcSOlTCVbrjwMDaWPjoyp6os3GA7/YFOUkN1BlpRWy24QBcp4q1y1gKZ5RiX
-dB+xx1JfKsNTE2ZtXwDmYBXG7u8uuvzF3eQw6McNpOdLMsvIZMAP2MQA0VlppdDdMyI0qIU0
-/emTxzjTkCcAOqHIF04Yu3XDDg7xLLLhWZo4V2KK3M2jli35cXTfQOq8dBAcGBA4nUsP4NHL
-MiAQgBB8H5rATUa5GSngIB3RhAkcETIShVYonaJSgS05MCSP2zESwz9HOgDmkofEddVC2xAV
-hlFI0fDVck5xIeQScoomUJvDrOBjchbsOZNG/fU4F20floUfkWgxEidb5jGqQXAvSeXDZpJ+
-BZdmmEaWWaacLpYAADs=
-------=_NextPart_000_0036_400A21AF.F1FA2CF9--
+omap2_mcspi_work():
+  loop over messages
+    omap2_mcspi_set_enable(1)
+    loop over transfers:
+      configure bus parameters
+      if (!cs_active) cs = 1
+      if (dma):
+        omap2_mcspi_txrx_dma()
+      else:
+        omap2_mcspi_txrx_pio()
+      if (cs_change) cs = 0
+    end loop
+  
+    if (cs_active) cs = 0
+    omap2_mcspi_set_enable(0)
+  end loop
 
 
+It seems that omap2_mcspi_set_enable() is called to enable the channel
+(MCSPI_CHCTRLx[EN] is set) before force_cs() is called. If I'm
+interpreting the hardware documentation correctly, the enable bit (among
+other things) starts the SPI clock, meaning that the chip will begin
+clocking out zeros to the device before CS is brought high.
+Furthermore, even after CS is brought high, it seems there could be a
+fair amount of time before the chip begins actually clocking out valid
+data.
+
+As I am writing this, it now occurs to me that perhaps the chip doesn't
+start SPI_CLK until it has data to send. It seems that if this were the
+case my concerns would be resolved. However, it is not at all clear that
+this is the case from the documentation. When exactly does the
+controller start the bus clock? Is this stated explicitly anywhere in
+the documentation?
+
+Any input you could offer would be greatly appreciated.
+Thanks for your time.
+
+- Ben
 
 
---===============4923547013494931913==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+P.S. The more and more I think about it, it seems like my hypothesis is
+the only logical behavior. It would be great if someone could confirm my
+suspicions, however. It really seems like this should be in the
+documentation either way.
+
+P.P.S. I apologize if this is something someone familiar with SPI should
+just know. My knowledge is a little spotty on this sort of thing.
 
 ------------------------------------------------------------------------------
 The Planet: dedicated and managed hosting, cloud storage, colocation
@@ -233,15 +101,3 @@ Stay online with enterprise data centers and the best network in the business
 Choose flexible plans and management services without long-term contracts
 Personal 24x7 support from experience hosting pros just a phone call away.
 http://p.sf.net/sfu/theplanet-com
---===============4923547013494931913==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============4923547013494931913==--

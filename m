@@ -1,31 +1,125 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [GIT PULL] sh updates for 2.6.33-rc7
-Date: Tue, 2 Feb 2010 06:54:50 -0700
-Message-ID: <fa686aa41002020554k2d09c835u781f47e69674d051@mail.gmail.com>
-References: <20100202040628.GH13428@linux-sh.org> <fa686aa41002020017m5ea0020di6924905a631dc7d6@mail.gmail.com>
-	<20100202082144.GB5716@linux-sh.org> <fa686aa41002020031r38e6bc9eyfce6476d86d47ec2@mail.gmail.com>
-	<20100202084659.GC5716@linux-sh.org>
+From: familytreasure2010-/E1597aS9LT10XsdtD+oqA@public.gmane.org
+Subject: [SPAM] Kojo Mensah has forwarded a page to you
+	from Vermonters for Economic Health
+Date: 2 Feb 2010 02:27:10 -0500
+Message-ID: <20100202072710.9713.qmail@host2.pshift.com>
+Reply-To: familytreasure2010-/E1597aS9LT10XsdtD+oqA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Paul Mundt <lethal@linux-sh.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <20100202084659.GC5716@linux-sh.org>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============5006928172977876817=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 2, 2010 at 1:46 AM, Paul Mundt <lethal@linux-sh.org> wrote:
-> Ahh.. this is where the confusion came from. The initial version of the
-> patch was only posted to the sh list, Magnus asked for it to be reposted
-> to the spi list and I hadn't heard anything about it since then, so I
-> assumed the poster just disappeared and I just cleaned it up and applied
-> it by hand. Apparently it was reposted but the sh list was dropped, so I
-> never saw the updated version. If I had known that it had hit the SPI
-> list I would have followed up there, I'll be more careful next time now
-> that I know someone is paying attention :-)
+--===============5006928172977876817==
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8Bit
 
-:-)  Thanks.
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <style>
+      <!--
+        html, body {margin:0; padding:0; background-color:#fff;}
+        #container {margin:0 auto; width:670px; font:normal 10pt arial,helvetica,sans-serif;}
+        #header {width:670px; margin:0; text-align:center;}
+        #body {width:630px; margin:0; padding:5px 20px; text-align:left; background-color:#fff;}
+        #footer {width:670px; height:35px; margin:0; padding:5px 0 0 0; font-size:9pt; text-align:center; color:#fff;}
+        .ad_footer, .message, .article  {font-size:10pt; padding:0;}
+        .frm_title, .frm_txt {font-size:12pt;}
+        .frm_txt {padding-bottom:15px;}
+        .links {font-size:10pt; font-style:italic;}
+        .article_title {font-size:12pt;}
+        .dyn_content { padding-top:10px;}
+      -->
+    </style>
+    <base href="http://economichealth.org/drupal/" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="header"><a href="http://economichealth.org/drupal/"><img src="" border="0" alt="Vermonters for Economic Health"></a></div>
+      <div id="body">
+        <div class="frm_txt"><a href="mailto:familytreasure2010-/E1597aS9LT10XsdtD+oqA@public.gmane.org">Kojo Mensah</a> thought you would like to see this page from the Vermonters for Economic Health web site.</div>
+        <div class="frm_title">Message from Sender:</div>
+        <div class="frm_txt"><p><b>Dear Sir,
+ 
+With regards to your e-mail contact i got during my
+research in internet, I wish to write you this message
+with all sincerity and i believe we can establish a good
+business relationship with you. My name is Nana Owusuh
+from The family of Chief Nana Num Mensah Bosontwi
+Sam 111 of Bogoso village Tarkwa Western Region
+Ghana .
+ 
+We are a local gold miner, we mine in our own family
+concessions where we are using the local method to mine
+which has become a big problems for us to extract the
+gold from the soil because we lack equipments machines
+to work, base on that we will need your assistance to arrange
+ mining equipments for us.
+ 
+We have 73 kilo grams of Alluvial gold dust 23 carats, we
+can get more if need be.
 
-g.
+I will furnish you with more details as soon as I hear from
+you.
+ 
+Waiting to hear from you soonest.
+Regards,
+Kojo Mensah.
+00233-20-5210176,
+familytreasure2010-/E1597aS9LQAvxtiuMwx3w@public.gmane.org</b></p></div>
+        <div><b><a href="http://economichealth.org/drupal/forward/emailref/201">VEH&#039;s Scott Hardy Speaks at &#039;Tea Party&#039; For a Healthy Business Climate and Against theTax Burden</a></b>
+        <br /><i>by <em>admin</em></i>
+        </div>
+        <div class="article"><p>
+The Vermont Tea Party held in Montpelier was a resounding success as 400-500 Vermonters gathered on the State House lawn for two hours of peaceful protest and remarks by several speakers. VEH's Scott Hardy presented the remarks below. We want the General Assembly to hear those Vermonters who are deeply concerned with the direction of government generally and who are frustrated by the ever-increasing spending and tax burdens on those in Vermont who pay them.
+</p>
+<p align="center">
+<strong><u>Remarks by Scott Hardy at Montpelier Tea Party April 15, 2009</u></strong>
+</p>
+<p align="center" class="western" style="font-family: Tahoma">
+&nbsp;
+</p>
+</div>
+        <div class="links"><a href="http://economichealth.org/drupal/forward/emailref/201">Click here to read more on our site</a></div>
+        <div class="dyn_content"><br /></div>
+        <div class="ad_footer"><br /> <br></div>
+      </div>
+      <div id="footer"> </div>
+    </div>
+  </body>
+</html>
+
+
+--===============5006928172977876817==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+The Planet: dedicated and managed hosting, cloud storage, colocation
+Stay online with enterprise data centers and the best network in the business
+Choose flexible plans and management services without long-term contracts
+Personal 24x7 support from experience hosting pros just a phone call away.
+http://p.sf.net/sfu/theplanet-com
+--===============5006928172977876817==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5006928172977876817==--

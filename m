@@ -1,74 +1,49 @@
-From: Joe Perches <joe@perches.com>
-Subject: [PATCH 00/10] Non-printk continuation line fixes
-Date: Mon,  1 Feb 2010 23:22:06 -0800
-Message-ID: <cover.1265095093.git.joe@perches.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [GIT PULL] sh updates for 2.6.33-rc7
+Date: Tue, 2 Feb 2010 01:17:49 -0700
+Message-ID: <fa686aa41002020017m5ea0020di6924905a631dc7d6@mail.gmail.com>
+References: <20100202040628.GH13428@linux-sh.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-fbdev@vger.kernel.org,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	linux-ia64@vger.kernel.org, kvm@vger.kernel.org,
-	David Airlie <airlied@linux.ie>, alsa-devel@alsa-project.org,
-	Jaroslav Kysela <perex@perex.cz>, Grant Likely <grant.likely@secretlab.ca>,
-	linux-ide@vger.kernel.org, devel@driverdev.osuosl.org,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-scsi@vger.kernel.org, lm-sensors@lm-sensors.org,
-	Takashi Iwai <tiwai@suse.de>, Scott Fang <ScottFang@viatech.com.cn>,
-	Avi Kivity <avi@redhat.com>, dri-devel@lists.sourceforge.net,
-	Jeff Garzik <jgarzik@pobox.com>, Xiantao Zhang <xiantao.zhang@intel.com>,
-	Andrew Vasquez <andrew.vasquez@qlogic.com>,
-	Fenghua Yu <fenghua.yu@intel.com>, Roger Lucas <vt8231@hiddenengine.co.uk>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	"James E.J. Bottomley" <James.Bottomley@suse.de>,
-	Liam Girdwood <lrg@slimlogic.co.uk>,
-	Tony
-To: linux-kernel@vger.kernel.org
-Return-path: <dri-devel-bounces@lists.sourceforge.net>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/dri-devel>,
-	<mailto:dri-devel-request@lists.sourceforge.net?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=dri-devel>
-List-Post: <mailto:dri-devel@lists.sourceforge.net>
-List-Help: <mailto:dri-devel-request@lists.sourceforge.net?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/dri-devel>,
-	<mailto:dri-devel-request@lists.sourceforge.net?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.sourceforge.net
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Paul Mundt <lethal@linux-sh.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20100202040628.GH13428@linux-sh.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Some more fixes to formats with continuation lines
+On Mon, Feb 1, 2010 at 9:06 PM, Paul Mundt <lethal@linux-sh.org> wrote:
+> Please pull from:
+>
+> =A0 =A0 =A0 =A0master.kernel.org:/pub/scm/linux/kernel/git/lethal/sh-=
+2.6.git sh/for-2.6.33
+>
+> Which contains:
+>
+> Magnus Damm (1):
+> =A0 =A0 =A0usb: r8a66597-hdc disable interrupts fix
+>
+> Marek Skuczynski (2):
+> =A0 =A0 =A0sh: Fix access to released memory in dwarf_unwinder_cleanu=
+p()
+> =A0 =A0 =A0sh: Fix access to released memory in clk_debugfs_register_=
+one()
+>
+> Markus Pietrek (1):
+> =A0 =A0 =A0spi: spi_sh_msiof: Fixed data sampling on the correct edge
 
-Joe Perches (10):
-  arch/ia64: Fix continuation line formats
-  drivers/ata: Fix continuation line formats
-  drivers/gpu/drm/i915/intel_bios.c: Fix continuation line formats
-  drivers/hwmon/vt8231.c: Fix continuation line formats
-  drivers/net/davinci_emac.c: Fix continuation line formats
-  drivers/scsi/qla2xxx/qua_os.c: Fix continuation line formats
-  drivers/spi/spi_s3c64xx.c: Fix continuation line formats
-  drivers/staging: Fix continuation line formats
-  drivers/video/via: Fix continuation line formats
-  sound/soc/s3c24xx/s2c-pcm.c: Fix continuation line formats
+Hold the phone; please coordinate with me before picking up SPI
+patches into your tree.  I don't mind arch specific spi changes going
+in via a different tree, but I'd like to know about it before I waste
+time farting around with the same patch (like I did with this one
+tonight, and only found out that you also picked it up when I came
+across this pull request by chance).
 
- arch/ia64/kvm/mmio.c                   |    4 ++--
- arch/ia64/kvm/vcpu.c                   |    4 ++--
- drivers/ata/pata_at91.c                |    4 ++--
- drivers/gpu/drm/i915/intel_bios.c      |    3 +--
- drivers/hwmon/vt8231.c                 |    3 +--
- drivers/net/davinci_emac.c             |    3 +--
- drivers/scsi/qla2xxx/qla_os.c          |    4 ++--
- drivers/spi/spi_s3c64xx.c              |   11 +++++------
- drivers/staging/rtl8192su/r8192S_phy.c |   16 ++++++++--------
- drivers/staging/sep/sep_driver.c       |    5 +++--
- drivers/staging/slicoss/slicoss.c      |    6 ++----
- drivers/video/via/dvi.c                |    8 ++++----
- drivers/video/via/lcd.c                |   12 ++++++------
- sound/soc/s3c24xx/s3c-pcm.c            |    3 +--
- 14 files changed, 40 insertions(+), 46 deletions(-)
+g.
 
-
-------------------------------------------------------------------------------
-The Planet: dedicated and managed hosting, cloud storage, colocation
-Stay online with enterprise data centers and the best network in the business
-Choose flexible plans and management services without long-term contracts
-Personal 24x7 support from experience hosting pros just a phone call away.
-http://p.sf.net/sfu/theplanet-com
---
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

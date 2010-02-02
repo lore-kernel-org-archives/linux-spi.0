@@ -1,42 +1,46 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 07/10] drivers/spi/spi_s3c64xx.c:
-	Fix continuation line formats
-Date: Tue, 2 Feb 2010 01:21:05 -0700
-Message-ID: <fa686aa41002020021p1bac7116o9911e14e62da059a@mail.gmail.com>
-References: <cover.1265095093.git.joe@perches.com>
-	<bf8e8f72e7c2da124daebc9e96f1236e34badbca.1265095094.git.joe@perches.com>
+From: Paul Mundt <lethal@linux-sh.org>
+Subject: Re: [GIT PULL] sh updates for 2.6.33-rc7
+Date: Tue, 2 Feb 2010 17:21:44 +0900
+Message-ID: <20100202082144.GB5716@linux-sh.org>
+References: <20100202040628.GH13428@linux-sh.org> <fa686aa41002020017m5ea0020di6924905a631dc7d6@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Joe Perches <joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <bf8e8f72e7c2da124daebc9e96f1236e34badbca.1265095094.git.joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <fa686aa41002020017m5ea0020di6924905a631dc7d6@mail.gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 2, 2010 at 12:22 AM, Joe Perches <joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org> wrote:
-> String constants that are continued on subsequent lines with \
-> are not good.
->
-> Signed-off-by: Joe Perches <joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org>
-
-Merged into next-spi, thanks.
-
-g.
-
-------------------------------------------------------------------------------
-The Planet: dedicated and managed hosting, cloud storage, colocation
-Stay online with enterprise data centers and the best network in the business
-Choose flexible plans and management services without long-term contracts
-Personal 24x7 support from experience hosting pros just a phone call away.
-http://p.sf.net/sfu/theplanet-com
+On Tue, Feb 02, 2010 at 01:17:49AM -0700, Grant Likely wrote:
+> On Mon, Feb 1, 2010 at 9:06 PM, Paul Mundt <lethal@linux-sh.org> wrote:
+> > Please pull from:
+> >
+> > ? ? ? ?master.kernel.org:/pub/scm/linux/kernel/git/lethal/sh-2.6.git sh/for-2.6.33
+> >
+> > Which contains:
+> >
+> > Magnus Damm (1):
+> > ? ? ?usb: r8a66597-hdc disable interrupts fix
+> >
+> > Marek Skuczynski (2):
+> > ? ? ?sh: Fix access to released memory in dwarf_unwinder_cleanup()
+> > ? ? ?sh: Fix access to released memory in clk_debugfs_register_one()
+> >
+> > Markus Pietrek (1):
+> > ? ? ?spi: spi_sh_msiof: Fixed data sampling on the correct edge
+> 
+> Hold the phone; please coordinate with me before picking up SPI
+> patches into your tree.  I don't mind arch specific spi changes going
+> in via a different tree, but I'd like to know about it before I waste
+> time farting around with the same patch (like I did with this one
+> tonight, and only found out that you also picked it up when I came
+> across this pull request by chance).
+> 
+If there's someone actively looking after the SPI stuff then that's fine.
+I didn't bother bouncing this one off of the SPI list since it's a
+hardware-specific correctness fix and has no dependency on anything
+subsystem related.

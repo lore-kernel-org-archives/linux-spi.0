@@ -1,21 +1,12 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH] spi_board_info_cmdline.c: unknown
- command line options are ignored and all options have a name instead of
- being anonymous
-Date: Thu, 4 Feb 2010 07:58:21 +0200
-Message-ID: <20100204055820.GA4378@jasper.tkos.co.il>
-References: <95F51F4B902CAC40AF459205F6322F0171E8D49880@BMK019S01.emtrion.local>
-	<20100130230629.GA2634@tarshish>
-	<95F51F4B902CAC40AF459205F6322F0171E8D499AC@BMK019S01.emtrion.local>
+From: =?GB2312?B?1cXPyMn6?= <zhangyhgbjh18-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 进出口报关.报检.买单
+Date: Fri, 5 Feb 2010 07:50:48 +0800
+Message-ID: <E1NdBT5-0005J9-56@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: "Pietrek, Markus" <Markus.Pietrek-BU0Y/NROKIiELgA04lAiVw@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <95F51F4B902CAC40AF459205F6322F0171E8D499AC-76KB/CMpcTeJqUQdFWzYuOuPKLVQfWtC@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,164 +17,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 02, 2010 at 04:08:57PM +0100, Pietrek, Markus wrote:
-> Hi Barauch,
-> 
-> as requested a more open approach for the command line options
-
-Thanks. You should also update the cs_high option in the Kconfig help text.
-
-baruch
-
-> 
-> Signed-off-by: Markus Pietrek <markus.pietrek-BU0Y/NROKIiELgA04lAiVw@public.gmane.org>
-> ---
->  drivers/spi/Kconfig                  |    2 +-
->  drivers/spi/spi_board_info_cmdline.c |   92 +++++++++++++++------------------
->  2 files changed, 43 insertions(+), 51 deletions(-)
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 85e88fa..c8f3bbe 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -327,7 +327,7 @@ config SPI_BOARD_INFO_CMDLINE
->            The syntax is:
->           spi_board_info=<devcfg>[,<devcfg>...]
->           with <devcfg> as
-> -         <devname>[:<max_speed_hz>[:<bus_num>[:<chip_select>[:<irq>[:<opt>[:<opt>...]]]]]]
-> +         <devname>[:max_speed_hz=<int>][:bus_num=<int>][:chip_select=<int>][:irq=<int>][:cs_gpio=<int>][:<opt>][:<opt>]...
->            and <opt> as one of
->            cpha,cpol,mode0,mode1,mode2,mode3,cs,lsb,3wire,loop,no_cs,ready
-> 
-> diff --git a/drivers/spi/spi_board_info_cmdline.c b/drivers/spi/spi_board_info_cmdline.c
-> index 765a941..1d86f87 100644
-> --- a/drivers/spi/spi_board_info_cmdline.c
-> +++ b/drivers/spi/spi_board_info_cmdline.c
-> @@ -65,57 +65,49 @@ static int __init spi_board_info_register_device(char *dev)
->                 if (next)
->                         *next++ = '\0';
-> 
-> -               if (strlen(opt) > 0) {
-> -                       switch (num) {
-> -                           case 0:
-> -                               strncpy(info->modalias, opt, ARRAY_SIZE(info->modalias));
-> -                               info->modalias[ARRAY_SIZE(info->modalias)-1]=0;
-> -                               break;
-> -                           case 1:
-> -                               info->max_speed_hz = simple_strtoul(opt, NULL, 10);
-> -                               break;
-> -                           case 2:
-> -                               info->bus_num = simple_strtoul(opt, NULL, 10);
-> -                               break;
-> -                           case 3:
-> -                               info->chip_select = simple_strtoul(opt, NULL, 10);
-> -                               break;
-> -                           case 4:
-> +               if (!num) {
-> +                       /* name of device */
-> +                       strncpy(info->modalias, opt, ARRAY_SIZE(info->modalias));
-> +                       info->modalias[ARRAY_SIZE(info->modalias)-1]=0;
-> +               } else {
-> +                       if (!strcmp(opt, "cpha"))
-> +                               info->mode |= SPI_CPHA;
-> +                       else if (!strcmp(opt, "cpol"))
-> +                               info->mode |= SPI_CPOL;
-> +                       else if (!strcmp(opt, "mode0"))
-> +                               info->mode |= SPI_MODE_0;
-> +                       else if (!strcmp(opt, "mode1"))
-> +                               info->mode |= SPI_MODE_1;
-> +                       else if (!strcmp(opt, "mode2"))
-> +                               info->mode |= SPI_MODE_2;
-> +                       else if (!strcmp(opt, "mode3"))
-> +                               info->mode |= SPI_MODE_3;
-> +                       else if (!strcmp(opt, "cs_high"))
-> +                               info->mode |= SPI_CS_HIGH;
-> +                       else if (!strcmp(opt, "lsb"))
-> +                               info->mode |= SPI_LSB_FIRST;
-> +                       else if (!strcmp(opt, "3wire"))
-> +                               info->mode |= SPI_3WIRE;
-> +                       else if (!strcmp(opt, "loop"))
-> +                               info->mode |= SPI_LOOP;
-> +                       else if (!strcmp(opt, "no_cs"))
-> +                               info->mode |= SPI_NO_CS;
-> +                       else if (!strcmp(opt, "ready"))
-> +                               info->mode |= SPI_READY;
-> +                       else if (!strncmp(opt, "chip_select=", 12))
-> +                               info->chip_select = simple_strtoul(&opt[12], NULL, 10);
-> +                       else if (!strncmp(opt, "cs_gpio=", 8))
-> +                               /* defines the GPIO to be used as chipselect for spi_gpio.c */
-> +                               info->controller_data = (void*) simple_strtol(&opt[8], NULL, 10);
-> +                       else if (!strncmp(opt, "bus_num=", 8))
-> +                               info->bus_num = simple_strtoul(&opt[8], NULL, 10);
-> +                       else if (!strncmp(opt, "max_speed_hz=", 13))
-> +                               info->max_speed_hz = simple_strtoul(&opt[13], NULL, 10);
-> +                       else if (!strncmp(opt, "irq=", 4))
->                                 info->irq = simple_strtoul(opt, NULL, 10);
-> -                               break;
-> -                           default:
-> -                               if (!strcmp(opt, "cpha"))
-> -                                       info->mode |= SPI_CPHA;
-> -                               else if (!strcmp(opt, "cpol"))
-> -                                       info->mode |= SPI_CPOL;
-> -                               else if (!strcmp(opt, "mode0"))
-> -                                       info->mode |= SPI_MODE_0;
-> -                               else if (!strcmp(opt, "mode1"))
-> -                                       info->mode |= SPI_MODE_1;
-> -                               else if (!strcmp(opt, "mode2"))
-> -                                       info->mode |= SPI_MODE_2;
-> -                               else if (!strcmp(opt, "mode3"))
-> -                                       info->mode |= SPI_MODE_3;
-> -                               else if (!strcmp(opt, "cs"))
-> -                                       info->mode |= SPI_CS_HIGH;
-> -                               else if (!strcmp(opt, "lsb"))
-> -                                       info->mode |= SPI_LSB_FIRST;
-> -                               else if (!strcmp(opt, "3wire"))
-> -                                       info->mode |= SPI_3WIRE;
-> -                               else if (!strcmp(opt, "loop"))
-> -                                       info->mode |= SPI_LOOP;
-> -                               else if (!strcmp(opt, "no_cs"))
-> -                                       info->mode |= SPI_NO_CS;
-> -                               else if (!strcmp(opt, "ready"))
-> -                                       info->mode |= SPI_READY;
-> -                               else {
-> -                                       pr_err(DRIVER_NAME ": Don't know value %s\n", opt);
-> -                                       kfree(info);
-> -                                       return -1;
-> -                               }
-> -
-> -                               break;
-> -                       }
-> +                       else
-> +                               pr_err(DRIVER_NAME ": Unknown option %s, ignoring\n", opt);
-> +                       break;
->                 }
-> 
->                 /* next option */
-> --
-> 1.5.4.3
-> 
-> _____________________________________
-> 
-> Amtsgericht Mannheim
-> HRB 110 300
-> Gesch?ftsf?hrer: Dieter Baur, Ramona Maurer
-> _____________________________________
-> 
-> Important Note:
-> - This e-mail may contain trade secrets or privileged, undisclosed or otherwise confidential information.
-> - If you have received this e-mail in error, you are hereby notified that any review, copying or distribution of it is strictly prohibited.
-> - Please inform us immediately and destroy the original transmittal.
-> 
-> Thank you for your cooperation.
-
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
-
-------------------------------------------------------------------------------
-The Planet: dedicated and managed hosting, cloud storage, colocation
-Stay online with enterprise data centers and the best network in the business
-Choose flexible plans and management services without long-term contracts
-Personal 24x7 support from experience hosting pros just a phone call away.
-http://p.sf.net/sfu/theplanet-com
+xPq6w6OhCiAgICAgIMnu29rK0NPAtqu9qMOz0tfT0M/euavLvgoKICAgvq3Tqre2zqejur34s/a/
+2rGoudgusai87C7C8rWlo6y0+rDsxtW73dakKEZPUk0uQSmhorL6tdjWpChDTymhosnMvOyhotay
+vOyhotGs1fShosnMu+HWpKGiusvP+rWlIKOs16qzp7rLz/qhorqjudixuLC4o6zE6snztci3/s7x
+oaMKICAgIAogICCxqLnYu/XO77D8wKijurXn19O158b3oaK158TU1tyx38nosbihorzSy72horf+
+17ChotCswOChos/koaKw/KGitPyhoszVtMmhosvcvbrWxsa3oaLO5b3w1sbGt6GiyqW1rrmk0tXG
+t7XIu/XO76GjCiAgILj3tPO3/s7xv9qwtqO6zsS99bbJoaK7yrjaoaLRzszvoaLJ37/aoaLL8bja
+0tS8sLGjy7Cy1r/iKMnu29opoaK549bdoaMKICAgCiAgILmry760+sDtuPe12LOnvNLNy8uwtaUv
+zPnPorWlo6EKICAgCiAgILu2063AtMjLwLS158eizLiho9XFz8jJ+iAxMzYgODY4OCA1MjA3ILXn
+u7CjujA3NTUtMjE5MDkxOTggtKvV5qO6MDc1NS0yNTQwMTQ1MSBNU06junlvbmdkb25namlhbkBo
+b3RtYWlsLmNvbSBRUaO6MTg0Mzg0NDk2IAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoZSBQbGFu
+ZXQ6IGRlZGljYXRlZCBhbmQgbWFuYWdlZCBob3N0aW5nLCBjbG91ZCBzdG9yYWdlLCBjb2xvY2F0
+aW9uClN0YXkgb25saW5lIHdpdGggZW50ZXJwcmlzZSBkYXRhIGNlbnRlcnMgYW5kIHRoZSBiZXN0
+IG5ldHdvcmsgaW4gdGhlIGJ1c2luZXNzCkNob29zZSBmbGV4aWJsZSBwbGFucyBhbmQgbWFuYWdl
+bWVudCBzZXJ2aWNlcyB3aXRob3V0IGxvbmctdGVybSBjb250cmFjdHMKUGVyc29uYWwgMjR4NyBz
+dXBwb3J0IGZyb20gZXhwZXJpZW5jZSBob3N0aW5nIHByb3MganVzdCBhIHBob25lIGNhbGwgYXdh
+eS4KaHR0cDovL3Auc2YubmV0L3NmdS90aGVwbGFuZXQtY29tCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
+dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
+b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

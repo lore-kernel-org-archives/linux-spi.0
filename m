@@ -1,49 +1,70 @@
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Subject: Re: [RFC][PATCH v2] serial: spi: add spi-uart driver for Maxim 3110
-Date: Tue, 9 Feb 2010 09:25:02 +0000
-Message-ID: <20100209092502.25ca2231@lxorguk.ukuu.org.uk>
-References: <20091229222006.1ddb28a4@feng-desktop>
-	<20100208165946.0e4dde83@feng-i7>
-	<20100208162010.b1f69728.akpm@linux-foundation.org>
+From: "Hemanth V" <hemanthv@ti.com>
+Subject: Re: OMAP3 Slave McSPI driver
+Date: Tue, 9 Feb 2010 18:28:37 +0530
+Message-ID: <00f001caa987$9981cc20$LocalHost@wipblrx0099946>
+References: <74583B8642AB8841B30447520659FCA9E782241C@dnce01.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain;
+	format=flowed;
+	charset="Windows-1252";
+	reply-type=original
 Content-Transfer-Encoding: 7bit
-Cc: Feng Tang <feng.tang@intel.com>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	Greg KH <greg@kroah.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <20100208162010.b1f69728.akpm@linux-foundation.org>
-Sender: linux-serial-owner@vger.kernel.org
+Cc: <spi-devel-general@lists.sourceforge.net>
+To: "Talis, Gilles" <g-talis@ti.com>, <linux-omap@vger.kernel.org>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> > +			for (i = 0; i < len; i++) {
-> > +				obuf[i] = (u8)xmit->buf[xmit->tail] | WD_TAG;
-> > +				xmit->tail = (xmit->tail + 1) &
-> > +						(UART_XMIT_SIZE - 1);
+----- Original Message ----- 
+From: "Talis, Gilles" <g-talis@ti.com>
+To: <linux-omap@vger.kernel.org>
+Sent: Tuesday, February 09, 2010 3:06 PM
+Subject: OMAP3 Slave McSPI driver
+
+
+> Hi,
+>
+> My customer is using Android 2.6.29 kernel from OMAPZOOM and is looking 
+> for support for slave mode on the SPI driver.
+> I saw there were patches for this feature sent to this list, but I was 
+> wondering if those patches were tested on 2.6.29.
+>
+
+These patches have not been specifically tested on 29 kernel, but you could 
+give it a shot. Pl also look at the latest patches (V2) posted.
+
+> I am also looking for some kind of API usage guidelines. How to setup the 
+> slave mode and how is OMAP notified that data have been received from 
+> external master device? My customer plans to use this driver in interrupt 
+> mode (no DMA needed).
+>
+
+To set any mcspi controller to slave mode, you need to modify 
+arch/arm/mach-omap2/devices.c file and set mode to OMAP2_MCSPI_SLAVE.
+
+Typically gpio is used by master to notify the slave that it is ready to 
+transfer data. On gpio interrupt slave client could issue spi_read/spi_write 
+commands.
+
+Two modes are supported i.e PIO and DMA. Any specific reason not to use DMA 
+mode.
+
+Thanks
+Hemanth
+
+> Thanks
+> Gilels.
+>
+>
+>
+> Texas Instruments France SA, 821 Avenue Jack Kilby, 06270 Villeneuve 
+> Loubet. 036 420 040 R.C.S Antibes. Capital de EUR 753.920
+>
+>
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 > 
-> Could this driver use include/linux/kfifo.h, rather than open-coding it?
 
-The circ buffer stuff comes from the serial layer. The whole serial layer
-wants switching to kfifo (as and when we know why the kfifo changes seem
-to have broken USB serial) but the driver can't do that itself and use
-the serial core code until then.
-
-(Actually most of the serial_core code wants a rewrite but having had a
-couple of goes at doing it I've not figured out any way to do it without
-simply breaking all sorts of embedded platform serial drivers that need
-specific hardware to fix).
-
-> > +			}
-> > +			max3110_write_then_read(max, (u8 *)obuf,
-> > +						(u8 *)ibuf, len * 2, 0);
-> 
-> Error codes are ignored.
-
-The drivers/serial midlayer has no provision for reporting them.
-
-Alan

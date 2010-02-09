@@ -1,113 +1,46 @@
-From: Tony Lindgren <tony@atomide.com>
+From: Grant Likely <grant.likely@secretlab.ca>
 Subject: Re: PATCH[V2 1/3]: Update Platform files for SPI
-Date: Tue, 9 Feb 2010 14:25:13 -0800
-Message-ID: <20100209222513.GJ21755@atomide.com>
+Date: Tue, 9 Feb 2010 15:40:43 -0700
+Message-ID: <fa686aa41002091440p588ad328i14d0fb28390b2672@mail.gmail.com>
 References: <9629.10.24.255.17.1265192505.squirrel@dbdmail.itg.ti.com>
+	<20100209222513.GJ21755@atomide.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-omap@vger.kernel.org, dbrownell@users.sourceforge.net,
-	grant.likely@secretlab.ca
-To: Hemanth V <hemanthv@ti.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Hemanth V <hemanthv@ti.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, dbrownell@users.sourceforge.net
+To: Tony Lindgren <tony@atomide.com>
 Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <9629.10.24.255.17.1265192505.squirrel@dbdmail.itg.ti.com>
+In-Reply-To: <20100209222513.GJ21755@atomide.com>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-* Hemanth V <hemanthv@ti.com> [100203 02:19]:
-> From ee48142ddc43129a21676dbb56a83e3e7d8063de Mon Sep 17 00:00:00 2001
-> From: Hemanth V <hemanthv@ti.com>
-> Date: Fri, 27 Nov 2009 14:22:30 +0530
-> Subject: [PATCH] Update platform files
-> 
-> This patch updates platform files for
-> fifo, slave support
-> 
-> Signed-off-by: Hemanth V <hemanthv@ti.com>
+On Tue, Feb 9, 2010 at 3:25 PM, Tony Lindgren <tony@atomide.com> wrote:
+> * Hemanth V <hemanthv@ti.com> [100203 02:19]:
+>> From ee48142ddc43129a21676dbb56a83e3e7d8063de Mon Sep 17 00:00:00 2001
+>> From: Hemanth V <hemanthv@ti.com>
+>> Date: Fri, 27 Nov 2009 14:22:30 +0530
+>> Subject: [PATCH] Update platform files
+>>
+>> This patch updates platform files for
+>> fifo, slave support
+>>
+>> Signed-off-by: Hemanth V <hemanthv@ti.com>
+>
+> This should get merged via the spi-devel list with the other patches.
+>
+> Acked-by: Tony Lindgren <tony@atomide.com>
 
-This should get merged via the spi-devel list with the other patches.
+Personally, I prefer not to carry arch/* changes in my next-spi
+branch, since it means that my pull requests are less obvious for
+Linus and there is greater chance of conflict.
 
-Acked-by: Tony Lindgren <tony@atomide.com>
+But if you still really want me to merge it through my tree, (or if
+getting the patches out of order will break things) then I'll pick it
+up.  Just let me know.
 
+g.
 
-> ---
->  arch/arm/mach-omap2/devices.c           |    5 +++++
->  arch/arm/plat-omap/include/plat/mcspi.h |   29 ++++++++++++++++++++++++++++- 2
-> files changed, 33 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap2/devices.c b/arch/arm/mach-omap2/devices.c
-> index 733d3dc..79b5396 100644
-> --- a/arch/arm/mach-omap2/devices.c
-> +++ b/arch/arm/mach-omap2/devices.c
-> @@ -282,6 +282,7 @@ static inline void omap_init_sti(void) {}
-> 
->  static struct omap2_mcspi_platform_config omap2_mcspi1_config = {
->  	.num_cs		= 4,
-> +	.force_cs_mode	= 1,
->  };
-> 
->  static struct resource omap2_mcspi1_resources[] = {
-> @@ -304,6 +305,10 @@ static struct platform_device omap2_mcspi1 = {
-> 
->  static struct omap2_mcspi_platform_config omap2_mcspi2_config = {
->  	.num_cs		= 2,
-> +	.mode		= OMAP2_MCSPI_MASTER,
-> +	.dma_mode	= 0,
-> +	.force_cs_mode	= 0,
-> +	.fifo_depth	= 0,
->  };
-> 
->  static struct resource omap2_mcspi2_resources[] = {
-> diff --git a/arch/arm/plat-omap/include/plat/mcspi.h
-> b/arch/arm/plat-omap/include/plat/mcspi.h
-> index 1254e49..ffda0a1 100644
-> --- a/arch/arm/plat-omap/include/plat/mcspi.h
-> +++ b/arch/arm/plat-omap/include/plat/mcspi.h
-> @@ -1,8 +1,35 @@
->  #ifndef _OMAP2_MCSPI_H
->  #define _OMAP2_MCSPI_H
-> 
-> +#define OMAP2_MCSPI_MASTER		0
-> +#define OMAP2_MCSPI_SLAVE		1
-> +
-> +/**
-> + * struct omap2_mcspi_platform_config - McSPI controller configuration + *
-> @num_cs: Number of chip selects or channels supported
-> + * @mode: SPI is master or slave
-> + * @dma_mode: Use only DMA for data transfers
-> + * @force_cs_mode: Use force chip select mode or auto chip select mode + *
-> @fifo_depth: FIFO depth in bytes, max value 64
-> + *
-> + * @dma_mode when set to 1 uses only dma for data transfers
-> + * else the default behaviour is to use PIO mode for transfer
-> + * size of 8 bytes or less. This mode is useful when mcspi
-> + * is configured as slave
-> + *
-> + * @force_cs_mode when set to 1 allows continuous transfer of multiple + * spi
-> words without toggling the chip select line.
-> + *
-> + * @fifo_depth when set to non zero values enables FIFO. fifo_depth + * should
-> be set as a multiple of buffer size used for read/write. + */
-> +
->  struct omap2_mcspi_platform_config {
-> -	unsigned short	num_cs;
-> +	u8	num_cs;
-> +	u8	mode;
-> +	u8	dma_mode;
-> +	u8	force_cs_mode;
-> +	unsigned short fifo_depth;
->  };
-> 
->  struct omap2_mcspi_device_config {
-> -- 
-> 1.5.6.3
-> 
-> 
-> 
-> 
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

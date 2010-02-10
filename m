@@ -1,9 +1,10 @@
-From: "=?koi8-r?B?89fF0sjawdDPzcnOwc7JxQ==?=" <memazezaxo-GO3HOXYuGN1BDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Английский язык за 2 месяца!
-Date: Wed, 10 Feb 2010 09:42:37 +0300
-Message-ID: <1893439797.20100210094237@onelist.com>
+From: Maris <maris.rob-rHNaxI9ti4Y@public.gmane.org>
+Subject: Proposal spi.h
+Date: Wed, 10 Feb 2010 08:36:27 +0100
+Message-ID: <op.u7wh21l67fwl0e@rob-desktop.lan>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6297807118390896011=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,171 +17,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+* extend spi_device struct element 'mode' to u16 (currently u8, fully  
+utilized as of 2.6.3x)
+* chip_select to s16 (until now also u8)
 
---===============6297807118390896011==
-Content-Type: multipart/alternative;
-	boundary="----------0JIMXHHBACZDTKVR"
+Background:
+Chip select size change: allow specification of SPI-device  
+hardware-related spi control per device-specific (native) or gpio-based  
+control.
+mode size change: obligatory... A mode bit could also be assigned a  
+selection bit: chip_select interpreted as native SSEL-index or as  
+gpio-index (instead of negative value for chip_select).
 
-This is a multi-part message in MIME format.
+Chip select differentiation bottom line: Naming of the device. I'm not  
+sure how to establish this. spidev0.x are normally assigned for chip  
+selects driven by the SPI peripheral hardware. GPIO-based: spidev0.gpioxx?
 
-------------0JIMXHHBACZDTKVR
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-Alltime scvelrypdgcwxodul stxroasqqlfdkdcvsxz
-
-------------0JIMXHHBACZDTKVR
-Content-Type: text/html;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Dutf-8" http-equiv=3DContent-Type>
-<META name=3DGENERATOR content=3D"MSHTML 8.00.7100.0">
-<STYLE>online style</STYLE>
-</HEAD><!-&#63
-<BODY bgColor=3D#ffffff>
-<DIV><FONT size=3D2 face=3DArial>
-<DIV class=3DSection1>
-<P class=3DMsoNormal>=D0=97=D0=BD=D0=B0=D0=BD=D0=B8=D0=B5 =
-=D0=B0=D0=BD=D0=B3=D0=BB=D0=B8=D0=B9=D1=81=D0=BA=D0=BE=D0=B3=D0=BE - =
-=D1=8D=D1=82=D0=BE =D0=BE=D1=82=D0=BA=D1=80=D1=8B=D1=82=D1=8B=D0=B5 =
-=D0=B4=D0=B2=D0=B5=D1=80=D0=B8 =D0=B2 =D1=86=D0=B5=D0=BB=D1=8B=D0=B9 =
-=D0=BC=D0=B8=D1=80!=20
-<?xml:namespace prefix =3D o ns =3D =
-"urn:schemas-microsoft-com:office:office"=20
-/><o:p></o:p></P>
-<P class=3DMsoNormal>=D0=9F=D0=BE=D0=B4=D0=B0=D1=80=D0=B8=D1=82=D0=B5 =
-=D1=81=D0=B5=D0=B1=D0=B5 =D0=BD=D0=BE=D0=B2=D1=83=D1=8E =
-=D0=B6=D0=B8=D0=B7=D0=BD=D1=8C - =D0=B6=D0=B8=D0=B7=D0=BD=D1=8C =
-=D1=81=D0=BE =D1=81=D0=B2=D0=BE=D0=B1=D0=BE=D0=B4=D0=BD=D1=8B=D0=BC=20
-=D0=BE=D0=B1=D1=89=D0=B5=D0=BD=D0=B8=D0=B5=D0=BC!<o:p></o:p></P>
-<P class=3DMsoNormal><SPAN style=3D"mso-spacerun: =
-yes">&nbsp;</SPAN><o:p></o:p></P>
-<P class=3DMsoNormal><B style=3D"mso-bidi-font-weight: =
-normal"><U>=D0=AD=D1=82=D0=BE =D0=BD=D0=BE=D0=B2=D1=8B=D0=B9 =
-=D0=BF=D1=80=D0=BE=D1=80=D1=8B=D0=B2=20
-=D1=82=D0=B5=D1=85=D0=BD=D0=BE=D0=BB=D0=BE=D0=B3=D0=B8=D0=B9!</U></B> =
-=D0=98=D0=B7=D1=83=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =
-=D0=B8=D0=BD=D0=BE=D1=81=D1=82=D1=80=D0=B0=D0=BD=D0=BD=D1=8B=D1=85 =
-=D1=8F=D0=B7=D1=8B=D0=BA=D0=BE=D0=B2 =D1=83=D0=B6=D0=B5 =
-=D1=81=D1=82=D0=B0=D0=BB=D0=BE =
-=D0=B3=D0=BE=D1=80=D0=B0=D0=B7=D0=B4=D0=BE =
-=D0=B1=D1=8B=D1=81=D1=82=D1=80=D0=B5=D0=B5,=20
-=D1=87=D0=B5=D0=BC<SPAN style=3D"mso-spacerun: yes">&nbsp; =
-</SPAN>=D0=BC=D1=8B =
-=D0=BF=D1=80=D0=B8=D0=B2=D1=8B=D0=BA=D0=BB=D0=B8.<o:p></o:p></P>
-<P class=3DMsoNormal>=D0=9D=D0=B0=D0=B9=D0=B4=D0=B5=D0=BD=D0=BE =
-=D0=B4=D0=BE=D1=81=D1=82=D0=BE=D0=B9=D0=BD=D0=BE=D0=B5 =
-=D0=BF=D1=80=D0=B8=D0=BC=D0=B5=D0=BD=D0=B5=D0=BD=D0=B8=D0=B5 =
-=D1=8D=D1=84=D1=84=D0=B5=D0=BA=D1=82=D1=83 25-=D0=B3=D0=BE =
-=D0=BA=D0=B0=D0=B4=D1=80=D0=B0, =D0=B8 =
-=D1=82=D0=B5=D0=BF=D0=B5=D1=80=D1=8C =D0=BE=D0=BD=20
-=D1=81=D0=BB=D1=83=D0=B6=D0=B8=D1=82 =
-=D0=BB=D1=8E=D0=B4=D1=8F=D0=BC.<SPAN style=3D"mso-spacerun: yes">&nbsp; =
-</SPAN><o:p></o:p></P>
-<P class=3DMsoNormal>=D0=9B=D0=B5=D0=BA=D1=81=D0=B8=D0=BA=D0=B0, =
-=D0=BF=D1=80=D0=B5=D0=BF=D0=BE=D0=B4=D0=BD=D0=BE=D1=81=D0=B8=D0=BC=D0=B0=D1=
-=8F<SPAN style=3D"mso-spacerun: yes">&nbsp;=20
-</SPAN>=D0=BA=D0=BE=D0=BC=D0=BF=D1=8C=D1=8E=D1=82=D0=B5=D1=80=D0=BD=D0=BE=
-=D0=B9 =D0=BF=D1=80=D0=BE=D0=B3=D1=80=D0=B0=D0=BC=D0=BC=D0=BE=D0=B9 =
-=D0=BD=D0=B0 =D0=B2=D1=8B=D1=81=D0=BE=D0=BA=D0=BE=D0=B9<SPAN =
-style=3D"mso-spacerun: yes">&nbsp;=20
-</SPAN>=D1=87=D0=B0=D1=81=D1=82=D0=BE=D1=82=D0=B5, =
-=D0=B7=D0=B0=D0=BF=D0=BE=D0=BC=D0=B8=D0=BD=D0=B0=D0=B5=D1=82=D1=81=D1=8F =
-<SPAN class=3DSpellE>=D1=81=D1=83=D0=BF=D0=B5=D1=80</SPAN>=20
-=D1=8D=D1=84=D1=84=D0=B5=D0=BA=D1=82=D0=B8=D0=B2=D0=BD=D0=BE.<o:p></o:p><=
-/P>
-<P class=3DMsoNormal>=D0=92=D1=8B =D0=BF=D1=80=D0=BE=D1=81=D1=82=D0=BE =
-=D1=81=D0=BC=D0=BE=D1=82=D1=80=D0=B8=D1=82=D0=B5 =D0=BD=D0=B0 =
-=D1=81=D0=B2=D0=BE=D0=B9 =D0=BC=D0=BE=D0=BD=D0=B8=D1=82=D0=BE=D1=80, =
-=D0=B8<SPAN=20
-style=3D"mso-spacerun: yes">&nbsp; </SPAN>=D1=83=D0=B6=D0=B5 =
-=D1=87=D0=B5=D1=80=D0=B5=D0=B7 =D0=BD=D0=B5=D0=B4=D0=B5=D0=BB=D1=8E =
-=D0=92=D0=B0=D1=88 =
-=D1=81=D0=BB=D0=BE=D0=B2=D0=B0=D1=80=D0=BD=D1=8B=D0=B9<SPAN=20
-style=3D"mso-spacerun: yes">&nbsp; </SPAN>=D0=B7=D0=B0=D0=BF=D0=B0=D1=81 =
-=D0=BF=D0=BE=D0=B7=D0=B2=D0=BE=D0=BB=D1=8F=D0=B5=D1=82 =
-=D0=BF=D0=BE=D0=BD=D0=B8=D0=BC=D0=B0=D1=82=D1=8C =
-=D0=BF=D0=B5=D1=81=D0=BD=D0=B8 =D0=B8 =
-=D1=84=D0=B8=D0=BB=D1=8C=D0=BC=D1=8B=20
-=D0=BD=D0=B0 =
-=D0=B0=D0=BD=D0=B3=D0=BB=D0=B8=D0=B9=D1=81=D0=BA=D0=BE=D0=BC. =D0=90 =
-=D1=83=D0=B6 =D1=87=D0=B5=D1=80=D0=B5=D0=B7 =
-=D0=BC=D0=B5=D1=81=D1=8F=D1=86! <o:p></o:p></P>
-<P =
-class=3DMsoNormal>=D0=9F=D1=80=D0=BE=D0=B3=D1=80=D0=B0=D0=BC=D0=BC=D0=B0 =
-=D0=BE=D1=87=D0=B5=D0=BD=D1=8C<SPAN style=3D"mso-spacerun: yes">&nbsp;=20
-</SPAN>=D0=BF=D1=80=D0=BE=D1=81=D1=82=D0=B0 =D0=B2 =
-=D0=B8=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=
-=B8. =D0=9E=D0=BD=D0=B0 =
-=D1=80=D0=B0=D1=81=D1=81=D1=87=D0=B8=D1=82=D0=B0=D0=BD=D0=B0 =
-=D0=BD=D0=B0 =D0=B2=D1=81=D0=B5=D1=85 =
-=D0=B6=D0=B5=D0=BB=D0=B0=D1=8E=D1=89=D0=B8=D1=85, =D0=B8 =D0=BD=D0=B5 =
-=D1=82=D1=80=D0=B5=D0=B1=D1=83=D0=B5=D1=82=20
-=D0=BD=D0=B8=D0=BA=D0=B0=D0=BA=D0=BE=D0=B9<SPAN style=3D"mso-spacerun: =
-yes">&nbsp; =
-</SPAN>=D1=81=D0=BF=D0=B5=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D0=B9=
- =D0=BF=D0=BE=D0=B4=D0=B3=D0=BE=D1=82=D0=BE=D0=B2=D0=BA=D0=B8.=20
-<o:p></o:p></P>
-<P =
-class=3DMsoNormal>=D0=9D=D0=B0=D1=81=D0=BB=D0=B0=D0=B6=D0=B4=D0=B0=D0=B9=D1=
-=82=D0=B5=D1=81=D1=8C =D0=B8<SPAN style=3D"mso-spacerun: yes">&nbsp;=20
-</SPAN>=D0=B7=D0=B0=D0=B1=D1=83=D0=B4=D1=8C=D1=82=D0=B5 =D0=BE =
-=D0=B7=D1=83=D0=B1=D1=80=D1=91=D0=B6=D0=BA=D0=B5! =
-=D0=9F=D1=80=D0=B5=D0=B4=D0=BB=D0=B0=D0=B3=D0=B0=D0=B5=D0=BC=D0=B0=D1=8F =
-=D0=BA=D0=BE=D0=BC=D0=BF=D1=8C=D1=8E=D1=82=D0=B5=D1=80=D0=BD=D0=B0=D1=8F =
-=D0=BF=D1=80=D0=BE=D0=B3=D1=80=D0=B0=D0=BC=D0=BC=D0=B0 =
-=D1=81=D0=BE=D1=87=D0=B5=D1=82=D0=B0=D0=B5=D1=82 <SPAN=20
-class=3DSpellE>=D1=81=D1=83=D0=BF=D0=B5=D1=80</SPAN> =
-=D1=8D=D1=84=D1=84=D0=B5=D0=BA=D1=82=D0=B8=D0=B2=D0=BD=D0=BE=D0=B5 =
-=D0=B7=D0=B0=D0=BF=D0=BE=D0=BC=D0=B8=D0=BD=D0=B0=D0=BD=D0=B8=D0=B5 =
-=D1=81 =
-=D0=BA=D0=BB=D0=B0=D1=81=D1=81=D0=B8=D1=87=D0=B5=D1=81=D0=BA=D0=BE=D0=B9 =
-=D0=BC=D0=B5=D1=82=D0=BE=D0=B4=D0=B8=D0=BA=D0=BE=D0=B9=20
-=D0=BF=D1=80=D0=B5=D0=BF=D0=BE=D0=B4=D0=B0=D0=B2=D0=B0=D0=BD=D0=B8=D1=8F,=
- =D0=B8 =D1=81=D0=BE=D0=B4=D0=B5=D1=80=D0=B6=D0=B8=D1=82 =
-=D0=B2=D0=B5=D1=81=D1=8C =
-=D0=BD=D0=B5=D0=BE=D0=B1=D1=85=D0=BE=D0=B4=D0=B8=D0=BC=D1=8B=D0=B9 =
-=D0=BC=D0=B0=D1=82=D0=B5=D1=80=D0=B8=D0=B0=D0=BB.<o:p></o:p></P>
-<P class=3DMsoNormal><SPAN style=3D"mso-spacerun: =
-yes">&nbsp;</SPAN><o:p></o:p></P>
-<P =
-class=3DMsoNormal>=D0=91=D0=B5=D1=81=D0=BF=D0=BB=D0=B0=D1=82=D0=BD=D0=B0=D1=
-=8F =D0=B4=D0=BE=D1=81=D1=82=D0=B0=D0=B2=D0=BA=D0=B0 =D0=BF=D0=BE =
-=D0=9C=D0=BE=D1=81=D0=BA=D0=B2=D0=B5 =D0=B8 =
-=D0=A0=D0=BE=D1=81=D1=81=D0=B8=D0=B8 <o:p></o:p></P>
-<P =
-class=3DMsoNormal>=D0=9F=D0=BE=D0=B4=D1=80=D0=BE=D0=B1=D0=BD=D0=BE=D1=81=D1=
-=82=D0=B8 =D0=BD=D0=B0 =D1=81=D0=B0=D0=B9=D1=82=D0=B5=20
-www.k25english.ru</P></DIV></FONT></DIV><!--></BODY></HTML>
-
-------------0JIMXHHBACZDTKVR--
-
-
-
---===============6297807118390896011==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-Rob
 
 ------------------------------------------------------------------------------
 SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
 Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
 http://p.sf.net/sfu/solaris-dev2dev
---===============6297807118390896011==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============6297807118390896011==--

@@ -1,41 +1,84 @@
-From: Maris <maris.rob-rHNaxI9ti4Y@public.gmane.org>
-Subject: Proposal spi.h
-Date: Wed, 10 Feb 2010 08:36:27 +0100
-Message-ID: <op.u7wh21l67fwl0e@rob-desktop.lan>
+From: "Hemanth V" <hemanthv@ti.com>
+Subject: Re: PATCH[V2 1/3]: Update Platform files for SPI
+Date: Wed, 10 Feb 2010 15:33:51 +0530 (IST)
+Message-ID: <34696.10.24.255.18.1265796231.squirrel@dbdmail.itg.ti.com>
+References: <9629.10.24.255.17.1265192505.squirrel@dbdmail.itg.ti.com>
+    <20100209222513.GJ21755@atomide.com>
+    <fa686aa41002091440p588ad328i14d0fb28390b2672@mail.gmail.com>
+    <20100209230710.GL21755@atomide.com>
+    <fa686aa41002091610y59d55626nf783fa2f5b8171e9@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: "Tony Lindgren" <tony@atomide.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, dbrownell@users.sourceforge.net
+To: "Grant Likely" <grant.likely@secretlab.ca>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <fa686aa41002091610y59d55626nf783fa2f5b8171e9@mail.gmail.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-* extend spi_device struct element 'mode' to u16 (currently u8, fully  
-utilized as of 2.6.3x)
-* chip_select to s16 (until now also u8)
+> On Tue, Feb 9, 2010 at 4:07 PM, Tony Lindgren <tony@atomide.com> wrot=
+e:
+>> * Grant Likely <grant.likely@secretlab.ca> [100209 14:38]:
+>>> On Tue, Feb 9, 2010 at 3:25 PM, Tony Lindgren <tony@atomide.com> wr=
+ote:
+>>> > * Hemanth V <hemanthv@ti.com> [100203 02:19]:
+>>> >> From ee48142ddc43129a21676dbb56a83e3e7d8063de Mon Sep 17 00:00:0=
+0 2001
+>>> >> From: Hemanth V <hemanthv@ti.com>
+>>> >> Date: Fri, 27 Nov 2009 14:22:30 +0530
+>>> >> Subject: [PATCH] Update platform files
+>>> >>
+>>> >> This patch updates platform files for
+>>> >> fifo, slave support
+>>> >>
+>>> >> Signed-off-by: Hemanth V <hemanthv@ti.com>
+>>> >
+>>> > This should get merged via the spi-devel list with the other patc=
+hes.
+>>> >
+>>> > Acked-by: Tony Lindgren <tony@atomide.com>
+>>>
+>>> Personally, I prefer not to carry arch/* changes in my next-spi
+>>> branch, since it means that my pull requests are less obvious for
+>>> Linus and there is greater chance of conflict.
+>>>
+>>> But if you still really want me to merge it through my tree, (or if
+>>> getting the patches out of order will break things) then I'll pick =
+it
+>>> up. =A0Just let me know.
+>>
+>> OK, if you ack it, I'll add the header into omap for-next. That
+>> might break git bisect for some configurations depending in which
+>> order the patches get pulled by Linus..
+>
+> git bisect breakage is breakage enough.  :-)  You're right.  I should
+> pick this one up.  I can see that now that I've had my tea and I'm no
+> longer grumpy.
+>
+>> I guess eventually this header should not live under plat.
+>
+> Any reason the header cannot be moved to include/linux/spi/ now?
 
-Background:
-Chip select size change: allow specification of SPI-device  
-hardware-related spi control per device-specific (native) or gpio-based  
-control.
-mode size change: obligatory... A mode bit could also be assigned a  
-selection bit: chip_select interpreted as native SSEL-index or as  
-gpio-index (instead of negative value for chip_select).
+Quite a few board files use this header file, which would also require =
+changes.
+Tony, are you ok with accepting changes to board files.
 
-Chip select differentiation bottom line: Naming of the device. I'm not  
-sure how to establish this. spidev0.x are normally assigned for chip  
-selects driven by the SPI peripheral hardware. GPIO-based: spidev0.gpioxx?
+Thanks
+Hemanth
+>
+> g.
+>
+> --
+> Grant Likely, B.Sc., P.Eng.
+> Secret Lab Technologies Ltd.
+>
 
--Rob
 
-------------------------------------------------------------------------------
-SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
-Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
-http://p.sf.net/sfu/solaris-dev2dev
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

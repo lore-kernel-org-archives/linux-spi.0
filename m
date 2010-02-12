@@ -1,73 +1,61 @@
-From: "cornel" <cornel-A2uI6HRCdcGCXkmsZUeKUQ@public.gmane.org>
-Subject: [SPAM] invitatie
-Date: Fri, 12 Feb 2010 22:15:51 -0800
-Message-ID: <20100212.OYTRIRJOPCWMZKAT@upload-ro.ro>
-Reply-To: cornel <cornel-A2uI6HRCdcGCXkmsZUeKUQ@public.gmane.org>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: PATCH[V2 1/3]: Update Platform files for SPI
+Date: Fri, 12 Feb 2010 13:48:26 -0800
+Message-ID: <20100212214825.GV21755@atomide.com>
+References: <9629.10.24.255.17.1265192505.squirrel@dbdmail.itg.ti.com>
+ <20100209222513.GJ21755@atomide.com>
+ <fa686aa41002091440p588ad328i14d0fb28390b2672@mail.gmail.com>
+ <20100209230710.GL21755@atomide.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3800108273156824732=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Hemanth V <hemanthv@ti.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, dbrownell@users.sourceforge.net
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20100209230710.GL21755@atomide.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3800108273156824732==
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: base64
+* Tony Lindgren <tony@atomide.com> [100209 15:03]:
+> * Grant Likely <grant.likely@secretlab.ca> [100209 14:38]:
+> > On Tue, Feb 9, 2010 at 3:25 PM, Tony Lindgren <tony@atomide.com> wrote:
+> > > * Hemanth V <hemanthv@ti.com> [100203 02:19]:
+> > >> From ee48142ddc43129a21676dbb56a83e3e7d8063de Mon Sep 17 00:00:00 2001
+> > >> From: Hemanth V <hemanthv@ti.com>
+> > >> Date: Fri, 27 Nov 2009 14:22:30 +0530
+> > >> Subject: [PATCH] Update platform files
+> > >>
+> > >> This patch updates platform files for
+> > >> fifo, slave support
+> > >>
+> > >> Signed-off-by: Hemanth V <hemanthv@ti.com>
+> > >
+> > > This should get merged via the spi-devel list with the other patches.
+> > >
+> > > Acked-by: Tony Lindgren <tony@atomide.com>
+> > 
+> > Personally, I prefer not to carry arch/* changes in my next-spi
+> > branch, since it means that my pull requests are less obvious for
+> > Linus and there is greater chance of conflict.
+> > 
+> > But if you still really want me to merge it through my tree, (or if
+> > getting the patches out of order will break things) then I'll pick it
+> > up.  Just let me know.
+> 
+> OK, if you ack it, I'll add the header into omap for-next. That
+> might break git bisect for some configurations depending in which
+> order the patches get pulled by Linus..
+> 
+> I guess eventually this header should not live under plat.
 
-PEhUTUw+PEhFQUQ+PHRpdGxlPmludml0YXRpZTwvdGl0bGU+DQo8TUVUQSBjb250ZW50PSJ0ZXh0
-L2h0bWw7IGNoYXJzZXQ9aXNvLTg4NTktMSIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVU
-QSBuYW1lPUdFTkVSQVRPUiBjb250ZW50PSJFbWFpbCBNYXJrZXRlciBNZXNzYWdlIEVkaXRvciI+
-DQo8U1RZTEUgdHlwZT10ZXh0L2Nzcz4NCmJvZHksdGFibGUsdGQsdHIscCxpbnB1dCB7Zm9udC1m
-YW1pbHk6IFZlcmRhbmEsIEFyaWFsLCBIZWx2ZXRpY2EsIFNhbnMtU2VyaWY7IGZvbnQtc2l6ZTog
-MTFweH0NCmhyIHtoZWlnaHQ6IDFweH0NCjwvU1RZTEU+DQo8L0hFQUQ+DQo8Qk9EWT4NCjxESVYg
-c3R5bGU9IkJPUkRFUi1CT1RUT006ICMwMDAgMXB4IHNvbGlkOyBCT1JERVItTEVGVDogIzAwMCAx
-cHggc29saWQ7IEJBQ0tHUk9VTkQtQ09MT1I6ICMxMzUwNzM7IFdJRFRIOiA2MDBweDsgSEVJR0hU
-OiAyMHB4OyBDT0xPUjogI2ZmZjsgQk9SREVSLVRPUDogIzAwMCAxcHggc29saWQ7IEJPUkRFUi1S
-SUdIVDogIzAwMCAxcHggc29saWQiPiZuYnNwOyZuYnNwOyZuYnNwOzxCPkN1cnN1cmkgR3JhdHVp
-dGU8L0I+PC9ESVY+DQo8RElWIHN0eWxlPSJCT1JERVItQk9UVE9NOiAjMDAwIDFweCBzb2xpZDsg
-Qk9SREVSLUxFRlQ6ICMwMDAgMXB4IHNvbGlkOyBCQUNLR1JPVU5ELUNPTE9SOiAjZmZmOyBXSURU
-SDogNjAwcHg7IEhFSUdIVDogYXV0bzsgQk9SREVSLVRPUDogIzAwMCAxcHggc29saWQ7IEJPUkRF
-Ui1SSUdIVDogIzAwMCAxcHggc29saWQiPjxCUj48QlI+Jm5ic3A7Jm5ic3A7Jm5ic3A7U2FsdXQg
-LDxCUj48QlI+Jm5ic3A7Jm5ic3A7Jm5ic3A7PEI+QWkgcHJpbWl0IG8gaW52aXRhdGllIGxhIEN1
-cnN1cmkgR3JhdHVpdGUgITwvQj48QlI+PEJSPiZuYnNwOyZuYnNwOy0gSXRpIHBvdGkgYWxlZ2Ug
-c2luZ3VyIHRpbXB1bCBzaSByaXRtdWwgZGUgaW52YXRhcmU7PEJSPiZuYnNwOyZuYnNwOy0gRWNo
-aXBhIGRlIHByb2Zlc2lvbmlzdGk7PEJSPiZuYnNwOyZuYnNwOy0gVXNvciBhY2Nlc2liaWw7PEJS
-PiZuYnNwOyZuYnNwOy0gRm9ybWEgZGUgcHJlZ2F0aXJlIG1vZGVybmE7PEJSPiZuYnNwOyZuYnNw
-Oy0gR1JBVFVJVCAhPEJSPjxCUj4mbmJzcDsmbmJzcDtTdWNjZXMgISA8QlI+PEEgaHJlZj0iaHR0
-cDovL3d3dy5jdXJzdXJpZ3JhdHVpdGVvbmxpbmUucm8vIiB0YXJnZXQ9X2JsYW5rPjxGT05UIGNv
-bG9yPSMzMzMzNjYgc2l6ZT01Pnd3dy5jdXJzdXJpZ3JhdHVpdGVvbmxpbmUucm88L0ZPTlQ+PC9B
-PiZuYnNwOyZuYnNwOzxCUj48QlI+PC9ESVY+PEJSPjxGT05UIGNvbG9yPWdyYXk+QWkgZm9zdCBp
-bnZpdGF0IHBlIEN1cnN1cmkgR3JhdHVpdGUuPEJSPkNvcHlyaWdodCAmY29weTsgMjAwOSA8QSBo
-cmVmPSIiPjxGT05UIGNvbG9yPSMzMzMzNjYgc2l6ZT01PkN1cnN1cmkgR3JhdHVpdGU8L0ZPTlQ+
-PC9BPi4gVG9hdGUgZHJlcHR1cmlsZSByZXplcnZhdGUuPC9GT05UPiA8L0JPRFk+PC9IVE1MPg==
+Hemanth, the patch is missing line breaks so it won't apply:
 
+http://patchwork.kernel.org/patch/76675/
 
---===============3800108273156824732==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Please resend, I'm not editing patches manually any longer thanks.
 
-------------------------------------------------------------------------------
-SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
-Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
-http://p.sf.net/sfu/solaris-dev2dev
---===============3800108273156824732==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Regards,
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3800108273156824732==--
+Tony

@@ -1,90 +1,74 @@
-From: "Immo-web" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Offert : notre guide pour mieux gerer
-	votre epargne et developper votre patrimoine
-Date: Sat, 13 Feb 2010 19:32:10 +0100 (CET)
-Message-ID: <kxsm5l.me49qn@front07.g7r9.com>
+From: Linus Walleij <linus.ml.walleij@gmail.com>
+Subject: Re: [spi-devel-general] SPI-ADC
+Date: Sat, 13 Feb 2010 22:20:06 +0100
+Message-ID: <63386a3d1002131320u5afbc35ak2bc3533aab3f1e54@mail.gmail.com>
+References: <dc6d3181002122148v6451ebffka164de288738485d@mail.gmail.com>
+	 <63386a3d1002130548y7c839072y85097a9bcdf66cad@mail.gmail.com>
+	 <4B76D8AE.7040102@jic23.retrosnub.co.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5381668751940685023=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: arjun rath <rath.arjun@gmail.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux kernel <linux-kernel@vger.kernel.org>
+To: Jonathan Cameron <kernel@jic23.retrosnub.co.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <4B76D8AE.7040102@jic23.retrosnub.co.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============5381668751940685023==
-Content-Type: multipart/alternative;
-	boundary="=_04b25b37eb601f89dd59e08b5cd23090"
+2010/2/13 Jonathan Cameron <kernel@jic23.retrosnub.co.uk>:
 
---=_04b25b37eb601f89dd59e08b5cd23090
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+>>> can anybody share how to start a spi based ADC linux driver.I am ha=
+ving a
+>>> MAXIM 1242 ADC chip.
+>>
+>> The =E1=B8=B1ernel does not contain any generic ADC subsystem abstra=
+ction
+>> (...)
+>
+> That's not entirely true. =C2=A0These are covered by the IIO subsyste=
+m which
+> is admittedly currently in staging as some elements still need cleani=
+ng up.
+> (...)
+> ADC drivers are under drivers/staging/iio/adc.
 
+Great stuff. I knew about IIO and then it fell out of my mind, how
+could I...
 
---=_04b25b37eb601f89dd59e08b5cd23090
-Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+What strikes me especially about IIO is the underlying assumption, whic=
+h I
+think ought to be written in clear somewhere where I missed it, and tha=
+t
+is that all IIO drivers are supposed to deliver values and be controlle=
+r from
+userspace with this nice ABI, and nothing's wrong with that of course.
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
-w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D<html xmlns=3D"http://www.=
-w3.org/1999/xhtml">=0D<head><title>Patrimoine Conseils</title>=0D<meta cont=
-ent=3D"text/html; charset=3Diso-8859-1" http-equiv=3DContent-Type>=0D</head=
->=0D<body><div align=3D"center"><font size=3D"1" face=3D"Arial, Helvetica, =
-sans-serif">Patrimoine Conseils vous est pr=E9sent=E9 par Objectif Patrimoi=
-ne<br>Si vous ne pouvez pas lire cet email, cliquez <a href=3D"http://cdire=
-cte.r7g.com//AA078Z647Y_1536517/1056">ici</a></font></div>=0D<div align=3D"=
-left"></div>=0D<table width=3D"503" align=3D"center" border=3D"0" cellspaci=
-ng=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"754" height=3D"402"><a href=3D"ht=
-tp://cdirecte.r7g.com//AA078Z647Y_1536517/1056"><img width=3D"501" height=
-=3D"126" alt=3D"new_mailigV2_01.jpg" src=3D"http://www07.r7g.com/6269/e/new=
-_mailigV2_01.jpg" border=3D"0" hspace=3D"0" complete=3D"true" complete=3D"t=
-rue" /></a><a href=3D"http://cdirecte.r7g.com//AA078Z647Y_1536517/1056"><im=
-g width=3D"501" height=3D"180" alt=3D"new_mailigV2_02.jpg" src=3D"http://ww=
-w07.r7g.com/6269/e/new_mailigV2_02.jpg" border=3D"0" hspace=3D"0" complete=
-=3D"true" complete=3D"true" /></a><a href=3D"http://cdirecte.r7g.com//AA078=
-Z647Y_1536517/1056"><img width=3D"501" height=3D"195" alt=3D"new_mailigV2_0=
-3.jpg" src=3D"http://www07.r7g.com/6269/e/new_mailigV2_03.jpg" border=3D"0"=
- hspace=3D"0" complete=3D"true" complete=3D"true" /></a></td>=0D</tr>=0D<tr=
->=0D<td height=3D"26">=0D<div align=3D"center"><font color=3D"#999999" face=
-=3D"Verdana, Arial, Helvetica, sans-serif" size=3D"1"><br /></font></div>=
-=0D</td>=0D</tr>=0D</tbody>=0D</table><meta name=3D"SKYPE_FRAMEID" content=
-=3D"DSXIHVKRNO" />=0D<div align=3D"center"><font size=3D"1" face=3D"Arial, =
-Helvetica, sans-serif">Vous recevez ce message parce que vous vous etes ins=
-crit sur l'un des sites partenaires Objectif Patrimoine.<br>
-Conform=E9ment =E0 la loi Informatique et Libert=E9s, vous disposez d'un dr=
-oit d'acc=E8s et de rectification.</font></div>
-<div align=3D"center"><font size=3D"1" face=3D"Arial, Helvetica, sans-serif=
-">Si vous voulez vous d=E9sinscrire, cliquez <a href=3D"http://cdirecte.r7g=
-.com/AA078Z647Y_1536517/877">ici</a></font></div><img src=3D"http://front.t=
-aemis.com/ZZ078Z647Y_1536517.png" /></body></html>
---=_04b25b37eb601f89dd59e08b5cd23090--
+But I'm hinting about a few in-kernel uses: for AB3100 we have a batter=
+y
+charging mechanism, which use a (calibrated) ADC value supporting the
+bulk of the driver in the power/ subsystem.
 
+As it looks today IIO is not intended for the case where another subsys=
+tem
+needs to grab and use and ADC for its own purposes. Is this correct or =
+did
+I get it all wrong?
 
+Would you say it'd be a good idea to hack the IIO ADC interface (for
+example) to be used also internally in the kernel, or would that violat=
+e
+the idea behind IIO?
 
---===============5381668751940685023==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+If these are disparate categories it would warrant a separate adc/
+subsystem, see.
 
-------------------------------------------------------------------------------
-SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
-Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
-http://p.sf.net/sfu/solaris-dev2dev
---===============5381668751940685023==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> Currently all discussions take place on LKML, but we are working on a=
+ more
+> focused alternative list which I'll announce once it is sorted out.
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+LKML is just fine with me, for one.
 
---===============5381668751940685023==--
+Yours,
+Linus Walleij

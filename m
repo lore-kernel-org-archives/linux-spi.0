@@ -1,18 +1,19 @@
-From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] Add support for slave controllers
 	plus sysfs entries for power management
-Date: Mon, 15 Feb 2010 00:20:19 +0100
-Message-ID: <63386a3d1002141520p7cf33256vd8d6f7c23f61b0fe@mail.gmail.com>
+Date: Mon, 15 Feb 2010 10:37:45 +0900
+Message-ID: <1b68c6791002141737l6211c88dy79c762a3761cc93c@mail.gmail.com>
 References: <1261170416.10785.5.camel@ubuntu-vmware>
 	<fa686aa41001190759j1d916f87o309efe37b3e96bf4@mail.gmail.com>
+	<63386a3d1002141520p7cf33256vd8d6f7c23f61b0fe@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa41001190759j1d916f87o309efe37b3e96bf4-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <63386a3d1002141520p7cf33256vd8d6f7c23f61b0fe-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,51 +24,61 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/1/19 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>:
-
-> =A0The current model is that each spi_device is registered with an
-> spi_master. =A0Many device drivers operate on the assumption that the
-> ->master pointer is valid. =A0With this patch, it appears that
-> spi_devices can be registered either against an spi_master or an
-> spi_slave; thus invalidating the assumption drivers are already
-> operating under. =A0That alone makes me nervous.
-
-IIRC in my last review of this patch I proposed that drivers be
-either master, slave or both. With the current approach that would
-mean putting  #ifdefs over the ->master as well and making master
-support optional. (You can even #ifdef out these parts of the struct
-to be absolutely sure.)
-
-The AMBA PL022 can act as both master or slave for example.
-It is possible to support either, master, slave, or both modes on this.
-
-You won't act as both master and slave on a certain bus. So at
-probetime a dual-mode thing like a PL022 would have to
-decide for being either master or slave. But it's not possible to
-do so at compile time: we may have a plethora of PL022:s on
-a SoC, some masters, some slaves.
-
-If spraying #ifdefs all over the place is undesirable, spi.h need
-to be split in spi-master.h and spi-slave.h IMHO, but they may
-share so much code and structure that #ifdefs is less disturbing
-really.
-
-> Do you expect any spi_device to be registered on an spi_slave?
->=A0Does the behaviour of an spi_device need
-> to change when it is registered against an spi_slave?
-
-Not that I'm an expert on how people construct their SPI systems,
-but only masters have devices, right? If you're a slave, some
-other master is asking you for something, so if one used USB
-terminology (why not) slaves would have functions, not devices,
-and function drivers, not device drivers.
-
-Just my =800.01...
-
-Linus Walleij
-
----------------------------------------------------------------------------=
----
-SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
-Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
-http://p.sf.net/sfu/solaris-dev2dev
+T24gTW9uLCBGZWIgMTUsIDIwMTAgYXQgODoyMCBBTSwgTGludXMgV2FsbGVpago8bGludXMubWwu
+d2FsbGVpakBnbWFpbC5jb20+IHdyb3RlOgo+IDIwMTAvMS8xOSBHcmFudCBMaWtlbHkgPGdyYW50
+Lmxpa2VseUBzZWNyZXRsYWIuY2E+Ogo+Cj4+IMKgVGhlIGN1cnJlbnQgbW9kZWwgaXMgdGhhdCBl
+YWNoIHNwaV9kZXZpY2UgaXMgcmVnaXN0ZXJlZCB3aXRoIGFuCj4+IHNwaV9tYXN0ZXIuIMKgTWFu
+eSBkZXZpY2UgZHJpdmVycyBvcGVyYXRlIG9uIHRoZSBhc3N1bXB0aW9uIHRoYXQgdGhlCj4+IC0+
+bWFzdGVyIHBvaW50ZXIgaXMgdmFsaWQuIMKgV2l0aCB0aGlzIHBhdGNoLCBpdCBhcHBlYXJzIHRo
+YXQKPj4gc3BpX2RldmljZXMgY2FuIGJlIHJlZ2lzdGVyZWQgZWl0aGVyIGFnYWluc3QgYW4gc3Bp
+X21hc3RlciBvciBhbgo+PiBzcGlfc2xhdmU7IHRodXMgaW52YWxpZGF0aW5nIHRoZSBhc3N1bXB0
+aW9uIGRyaXZlcnMgYXJlIGFscmVhZHkKPj4gb3BlcmF0aW5nIHVuZGVyLiDCoFRoYXQgYWxvbmUg
+bWFrZXMgbWUgbmVydm91cy4KPgo+IElJUkMgaW4gbXkgbGFzdCByZXZpZXcgb2YgdGhpcyBwYXRj
+aCBJIHByb3Bvc2VkIHRoYXQgZHJpdmVycyBiZQo+IGVpdGhlciBtYXN0ZXIsIHNsYXZlIG9yIGJv
+dGguIFdpdGggdGhlIGN1cnJlbnQgYXBwcm9hY2ggdGhhdCB3b3VsZAo+IG1lYW4gcHV0dGluZyDC
+oCNpZmRlZnMgb3ZlciB0aGUgLT5tYXN0ZXIgYXMgd2VsbCBhbmQgbWFraW5nIG1hc3Rlcgo+IHN1
+cHBvcnQgb3B0aW9uYWwuIChZb3UgY2FuIGV2ZW4gI2lmZGVmIG91dCB0aGVzZSBwYXJ0cyBvZiB0
+aGUgc3RydWN0Cj4gdG8gYmUgYWJzb2x1dGVseSBzdXJlLikKCkkgZG9uJ3QgdGhpbmsgYWRkaW5n
+IFNQSV9TTEFWRSBzdXBwb3J0IGlzIGp1c3QgYSBtYXR0ZXIgb2YgcHJvdmlkaW5nCmFkZGl0aW9u
+YWwgY2FsbGJhY2tzIGFuZCBzdHJ1Y3R1cmVzLCBhcyBpcyBwb2ludGVkIG91dCBpbiB0aGlzIHRo
+cmVhZC4uLi4KaHR0cDovL3d3dy5tYWlsLWFyY2hpdmUuY29tL3NwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldC9tc2cwMDM2OC5odG1sCgpXZSdkIGJldHRlciBzZWUgaWYgdGhl
+IGltcGxlbWVudGF0aW9uIGNvdmVycyBhdCBsZWFzdCBzb21lIGFzcGVjdHMgb2YKYmVpbmcgYSBT
+UEkgc2xhdmUsCm90aGVyd2lzZSBpdCBzZWVtcyBtb3JlIGxpa2UgYSAnd29ya2Fyb3VuZCcgdGhh
+biBzdXBwb3J0LgoKbXkgMiBwYWlzZQotagoKPgo+IFRoZSBBTUJBIFBMMDIyIGNhbiBhY3QgYXMg
+Ym90aCBtYXN0ZXIgb3Igc2xhdmUgZm9yIGV4YW1wbGUuCj4gSXQgaXMgcG9zc2libGUgdG8gc3Vw
+cG9ydCBlaXRoZXIsIG1hc3Rlciwgc2xhdmUsIG9yIGJvdGggbW9kZXMgb24gdGhpcy4KPgo+IFlv
+dSB3b24ndCBhY3QgYXMgYm90aCBtYXN0ZXIgYW5kIHNsYXZlIG9uIGEgY2VydGFpbiBidXMuIFNv
+IGF0Cj4gcHJvYmV0aW1lIGEgZHVhbC1tb2RlIHRoaW5nIGxpa2UgYSBQTDAyMiB3b3VsZCBoYXZl
+IHRvCj4gZGVjaWRlIGZvciBiZWluZyBlaXRoZXIgbWFzdGVyIG9yIHNsYXZlLiBCdXQgaXQncyBu
+b3QgcG9zc2libGUgdG8KPiBkbyBzbyBhdCBjb21waWxlIHRpbWU6IHdlIG1heSBoYXZlIGEgcGxl
+dGhvcmEgb2YgUEwwMjI6cyBvbgo+IGEgU29DLCBzb21lIG1hc3RlcnMsIHNvbWUgc2xhdmVzLgo+
+Cj4gSWYgc3ByYXlpbmcgI2lmZGVmcyBhbGwgb3ZlciB0aGUgcGxhY2UgaXMgdW5kZXNpcmFibGUs
+IHNwaS5oIG5lZWQKPiB0byBiZSBzcGxpdCBpbiBzcGktbWFzdGVyLmggYW5kIHNwaS1zbGF2ZS5o
+IElNSE8sIGJ1dCB0aGV5IG1heQo+IHNoYXJlIHNvIG11Y2ggY29kZSBhbmQgc3RydWN0dXJlIHRo
+YXQgI2lmZGVmcyBpcyBsZXNzIGRpc3R1cmJpbmcKPiByZWFsbHkuCj4KPj4gRG8geW91IGV4cGVj
+dCBhbnkgc3BpX2RldmljZSB0byBiZSByZWdpc3RlcmVkIG9uIGFuIHNwaV9zbGF2ZT8KPj7CoERv
+ZXMgdGhlIGJlaGF2aW91ciBvZiBhbiBzcGlfZGV2aWNlIG5lZWQKPj4gdG8gY2hhbmdlIHdoZW4g
+aXQgaXMgcmVnaXN0ZXJlZCBhZ2FpbnN0IGFuIHNwaV9zbGF2ZT8KPgo+IE5vdCB0aGF0IEknbSBh
+biBleHBlcnQgb24gaG93IHBlb3BsZSBjb25zdHJ1Y3QgdGhlaXIgU1BJIHN5c3RlbXMsCj4gYnV0
+IG9ubHkgbWFzdGVycyBoYXZlIGRldmljZXMsIHJpZ2h0PyBJZiB5b3UncmUgYSBzbGF2ZSwgc29t
+ZQo+IG90aGVyIG1hc3RlciBpcyBhc2tpbmcgeW91IGZvciBzb21ldGhpbmcsIHNvIGlmIG9uZSB1
+c2VkIFVTQgo+IHRlcm1pbm9sb2d5ICh3aHkgbm90KSBzbGF2ZXMgd291bGQgaGF2ZSBmdW5jdGlv
+bnMsIG5vdCBkZXZpY2VzLAo+IGFuZCBmdW5jdGlvbiBkcml2ZXJzLCBub3QgZGV2aWNlIGRyaXZl
+cnMuCj4KPiBKdXN0IG15IOKCrDAuMDEuLi4KPgo+IExpbnVzIFdhbGxlaWoKPgo+IC0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQo+IFNPTEFSSVMgMTAgaXMgdGhlIE9TIGZvciBEYXRhIENlbnRlcnMgLSBw
+cm92aWRlcyBmZWF0dXJlcyBzdWNoIGFzIERUcmFjZSwKPiBQcmVkaWN0aXZlIFNlbGYgSGVhbGlu
+ZyBhbmQgQXdhcmQgV2lubmluZyBaRlMuIEdldCBTb2xhcmlzIDEwIE5PVwo+IGh0dHA6Ly9wLnNm
+Lm5ldC9zZnUvc29sYXJpcy1kZXYyZGV2Cj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KPiBzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKPiBzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKPiBodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo+CgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KU09MQVJJUyAxMCBpcyB0aGUgT1MgZm9yIERhdGEgQ2VudGVycyAtIHByb3Zp
+ZGVzIGZlYXR1cmVzIHN1Y2ggYXMgRFRyYWNlLApQcmVkaWN0aXZlIFNlbGYgSGVhbGluZyBhbmQg
+QXdhcmQgV2lubmluZyBaRlMuIEdldCBTb2xhcmlzIDEwIE5PVwpodHRwOi8vcC5zZi5uZXQvc2Z1
+L3NvbGFyaXMtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

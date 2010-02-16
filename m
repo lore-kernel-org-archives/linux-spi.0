@@ -1,7 +1,8 @@
 From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 4/5] mmc_spi: added spi_register_lock_bus
-Date: Tue, 16 Feb 2010 20:57:38 +0100
-Message-ID: <20100216205738.535a7081.eschwab@online.de>
+Subject: [PATCH 5/5] spi: added SPI bus locking to
+	mpc8xxx_spi
+Date: Tue, 16 Feb 2010 20:57:43 +0100
+Message-ID: <20100216205743.c4d736d1.eschwab@online.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -22,91 +23,144 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 
-Added spi_register_lock_bus call to mmc_spi, removed code that counts 
-the number of SPI devices.
+Added SPI bus locking functions. If the bus is locked, the SPI queue is
+searched for SPI transmit messages for the chipselect for which the bus is
+locked; no other messages will be transmitted, until the bus is unlocked 
+again. 
+Algorithm borrowed from the blackfin driver spi_bfin5xx.c.
 
 Signed-off-by: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 ---
-diff -upr a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -1083,8 +1083,10 @@ static void mmc_spi_request(struct mmc_h
- 	}
- #endif
+diff -upr a/drivers/spi/spi_mpc8xxx.c b/drivers/spi/spi_mpc8xxx.c
+--- a/drivers/spi/spi_mpc8xxx.c
++++ b/drivers/spi/spi_mpc8xxx.c
+@@ -124,6 +124,9 @@ struct spi_pram {
+ #define	SPI_PRAM_SIZE	0x100
+ #define	SPI_MRBLR	((unsigned int)PAGE_SIZE)
  
--	/* issue command; then optionally data and stop */
-+	/* request exclusive bus access */
- 	spi_lock_bus(host->spi);
++/* value for 'locked' variable to indicate that the bus is unlocked */
++#define SPIBUS_UNLOCKED	0xFF		
 +
-+	/* issue command; then optionally data and stop */
- 	status = mmc_spi_command_send(host, mrq, mrq->cmd, mrq->data != NULL);
- 	if (status == 0 && mrq->data) {
- 		mmc_spi_data_do(host, mrq->cmd, mrq->data, mrq->data->blksz);
-@@ -1093,7 +1095,10 @@ static void mmc_spi_request(struct mmc_h
- 		else
- 			mmc_cs_off(host);
- 	}
-+
-+	/* release the bus */
- 	spi_unlock_bus(host->spi);
-+
- 	mmc_request_done(host->mmc, mrq);
- }
+ /* SPI Controller driver's private data. */
+ struct mpc8xxx_spi {
+ 	struct device *dev;
+@@ -171,6 +174,8 @@ struct mpc8xxx_spi {
+ 	spinlock_t lock;
  
-@@ -1290,23 +1295,6 @@ mmc_spi_detect_irq(int irq, void *mmc)
- 	return IRQ_HANDLED;
- }
+ 	struct completion done;
++
++	u8 locked;		/* chipselect number if bus is locked */
+ };
  
--struct count_children {
--	unsigned	n;
--	struct bus_type	*bus;
--};
--
--static int maybe_count_child(struct device *dev, void *c)
--{
--	struct count_children *ccp = c;
--
--	if (dev->bus == ccp->bus) {
--		if (ccp->n)
--			return -EBUSY;
--		ccp->n++;
--	}
--	return 0;
--}
--
- static int mmc_spi_probe(struct spi_device *spi)
+ static void *mpc8xxx_dummy_rx;
+@@ -605,11 +610,39 @@ static void mpc8xxx_spi_work(struct work
  {
- 	void			*ones;
-@@ -1338,6 +1326,13 @@ static int mmc_spi_probe(struct spi_devi
- 		return status;
- 	}
+ 	struct mpc8xxx_spi *mpc8xxx_spi = container_of(work, struct mpc8xxx_spi,
+ 						       work);
++	u8 locked_cs;
++	u8 next_cs;
  
-+	/* Ensure that the driver can get exclusive access. */
-+	status = spi_register_lock_bus(spi);
-+	if (status < 0) {
-+		dev_err(&spi->dev, "can't share SPI bus\n");
-+		return -EBUSY;
-+	}
+ 	spin_lock_irq(&mpc8xxx_spi->lock);
+ 	while (!list_empty(&mpc8xxx_spi->queue)) {
+ 		struct spi_message *m = container_of(mpc8xxx_spi->queue.next,
+ 						   struct spi_message, queue);
++		struct spi_message *msg = NULL;
 +
- 	/* We need a supply of ones to transmit.  This is the only time
- 	 * the CPU touches these, so cache coherency isn't a concern.
- 	 *
-@@ -1471,6 +1466,7 @@ fail_nobuf1:
++		if (mpc8xxx_spi->locked != SPIBUS_UNLOCKED) {
++			locked_cs = mpc8xxx_spi->locked;
++			next_cs = m->spi->chip_select;
++
++			if (next_cs != locked_cs) {
++				list_for_each_entry(msg, &mpc8xxx_spi->queue, 
++						    queue) {
++					next_cs = msg->spi->chip_select;
++					if (next_cs == locked_cs) {
++						m = msg;
++						break;
++					}
++				}
++
++				/* 
++				 * Do nothing even if there are messages 
++				 * for other devices 
++				 */
++				if (next_cs != locked_cs) {
++					spin_unlock_irq(&mpc8xxx_spi->lock);
++					return;
++				}
++			}
++		}
  
- nomem:
- 	kfree(ones);
-+	spi_unregister_lock_bus(spi);
- 	return status;
+ 		list_del_init(&m->queue);
+ 		spin_unlock_irq(&mpc8xxx_spi->lock);
+@@ -736,6 +769,50 @@ static irqreturn_t mpc8xxx_spi_irq(s32 i
+ 	return ret;
  }
  
-@@ -1503,6 +1499,7 @@ static int __devexit mmc_spi_remove(stru
- 		mmc_free_host(mmc);
- 		mmc_spi_put_pdata(spi);
- 		dev_set_drvdata(&spi->dev, NULL);
-+		spi_unregister_lock_bus(spi);
- 	}
- 	return 0;
- }
++/*
++ * lock the spi bus for exclusive access
++ */
++static int mpc8xxx_spi_lock_bus(struct spi_device *spi)
++{
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
++	unsigned long flags;
++
++	spin_lock_irqsave(&mpc8xxx_spi->lock, flags);
++	if (mpc8xxx_spi->locked != SPIBUS_UNLOCKED) {
++		spin_unlock_irqrestore(&mpc8xxx_spi->lock, flags);
++		return -ENOLCK;
++	}
++	mpc8xxx_spi->locked = spi->chip_select;
++
++	spin_unlock_irqrestore(&mpc8xxx_spi->lock, flags);
++
++	return 0;
++}
++
++/*
++ * unlock the spi bus from exclusive access
++ */
++static int mpc8xxx_spi_unlock_bus(struct spi_device *spi)
++{
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
++	unsigned long flags;
++
++	spin_lock_irqsave(&mpc8xxx_spi->lock, flags);
++
++	/* remove the spi bus lock */
++	mpc8xxx_spi->locked = SPIBUS_UNLOCKED;
++
++	/* 
++	 * process all deferred messages for all chipselects 
++	 * other than the locked after the bus became unlocked
++	 */
++	queue_work(mpc8xxx_spi->workqueue, &mpc8xxx_spi->work);
++
++	spin_unlock_irqrestore(&mpc8xxx_spi->lock, flags);
++
++	return 0;
++}
++
+ static int mpc8xxx_spi_transfer(struct spi_device *spi,
+ 				struct spi_message *m)
+ {
+@@ -992,6 +1069,8 @@ mpc8xxx_spi_probe(struct device *dev, st
+ 	master->setup = mpc8xxx_spi_setup;
+ 	master->transfer = mpc8xxx_spi_transfer;
+ 	master->cleanup = mpc8xxx_spi_cleanup;
++	master->lock_bus = mpc8xxx_spi_lock_bus;
++	master->unlock_bus = mpc8xxx_spi_unlock_bus;
+ 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 	mpc8xxx_spi->dev = dev;
+@@ -999,6 +1078,7 @@ mpc8xxx_spi_probe(struct device *dev, st
+ 	mpc8xxx_spi->get_tx = mpc8xxx_spi_tx_buf_u8;
+ 	mpc8xxx_spi->flags = pdata->flags;
+ 	mpc8xxx_spi->spibrg = pdata->sysclk;
++	mpc8xxx_spi->locked = SPIBUS_UNLOCKED;
+ 
+ 	ret = mpc8xxx_spi_cpm_init(mpc8xxx_spi);
+ 	if (ret)
 
 
 

@@ -1,18 +1,20 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH] Add support for slave controllers
- plus sysfs entries for power management
-Date: Tue, 16 Feb 2010 15:48:12 -0500
-Message-ID: <4B7B048C.8080205@whoi.edu>
-References: <1261170416.10785.5.camel@ubuntu-vmware>	<fa686aa41001190759j1d916f87o309efe37b3e96bf4@mail.gmail.com>	<63386a3d1002141520p7cf33256vd8d6f7c23f61b0fe@mail.gmail.com>	<1b68c6791002141737l6211c88dy79c762a3761cc93c@mail.gmail.com>
-	<63386a3d1002161133k501e51f4xf4e94a307cb4fcf5@mail.gmail.com>
+	plus sysfs entries for power management
+Date: Tue, 16 Feb 2010 15:01:20 -0700
+Message-ID: <fa686aa41002161401y72cd08bfq68135e9e259eca2c@mail.gmail.com>
+References: <1261170416.10785.5.camel@ubuntu-vmware>
+	<fa686aa41001190759j1d916f87o309efe37b3e96bf4@mail.gmail.com>
+	<63386a3d1002141520p7cf33256vd8d6f7c23f61b0fe@mail.gmail.com>
+	<1b68c6791002141737l6211c88dy79c762a3761cc93c@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <63386a3d1002161133k501e51f4xf4e94a307cb4fcf5-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1b68c6791002141737l6211c88dy79c762a3761cc93c-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,61 +25,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/16/2010 02:33 PM, Linus Walleij wrote:
-> 2010/2/15 jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> 
->> I don't think adding SPI_SLAVE support is just a matter of providing
->> additional callbacks and structures, as is pointed out in this thread....
->> http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg00368.html
-> 
-> You mean that the responsiveness / control of latencies is the other thing
-> that's needed? Yep so it is. But getting the infrastructure in place doesn't
-> hurt because this is something many people (including self) need and Ken
-> over at Intel is the only one actually doing something about it.
-> 
-> Getting SPI slaves to actually work by spawning their worker threads as
-> realtime under that patchset is of course a larger issue. One does not
-> exclude the other tho.
+On Sun, Feb 14, 2010 at 6:37 PM, jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrot=
+e:
+> On Mon, Feb 15, 2010 at 8:20 AM, Linus Walleij
+> <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> 2010/1/19 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>:
+>>
+>>> =A0The current model is that each spi_device is registered with an
+>>> spi_master. =A0Many device drivers operate on the assumption that the
+>>> ->master pointer is valid. =A0With this patch, it appears that
+>>> spi_devices can be registered either against an spi_master or an
+>>> spi_slave; thus invalidating the assumption drivers are already
+>>> operating under. =A0That alone makes me nervous.
+>>
+>> IIRC in my last review of this patch I proposed that drivers be
+>> either master, slave or both. With the current approach that would
+>> mean putting =A0#ifdefs over the ->master as well and making master
+>> support optional. (You can even #ifdef out these parts of the struct
+>> to be absolutely sure.)
+>
+> I don't think adding SPI_SLAVE support is just a matter of providing
+> additional callbacks and structures, as is pointed out in this thread....
+> http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg00=
+368.html
+>
+> We'd better see if the implementation covers at least some aspects of
+> being a SPI slave,
+> otherwise it seems more like a 'workaround' than support.
 
-I'm a little fuzzy on what application you have in mind for this.  It
-doesn't seem productive to lay in a layer of changes for slave operation
-before knowing if it is possible to create a useful slave.  Putting the
-infrastructure before determining feasibility seems the wrong way
-around, especially since you wouldn't be sure what support to add unless
-you have a working model.
+I agree.  I need to see a real usage model before I merge anything.
+As it stands right now, spi_master looks like an entirely different
+thing from an spi_slave, even if both happen to use spi_messages
+(although spi_message only seems to handle a small number of the
+possible spi slave use cases.  For example, it doesn't address at all
+a command and response within the same SPI transfer).  I don't at all
+like the idea of allowing the current spi_device to be registered on
+either an spi_master or an spi_slave.
 
-As pointed out in the above thread (by David Brownell, not by me), many
-masters expect the slave to respond within one SPI clock cycle (between
-the last bit of the command and the first bit of the response).  On a
-400MHz PXA processor, I have measured interrupt latency in excess of
-600us (100us min, 200us typ), so that would imply a maximum SPI clock of
-1kHz for generalized slave operation.  I'm not sure how many
-applications would be happy with that; likely a few.  I don't think use
-of real time threads will decrease the latency significantly; that is to
-say: whatever reduced latency is achievable is likely to still present a
-significant limit on SPI clock rate for the general case.
+I may let a driver through that happens to turn on an SPI slave mode
+in the hardware, but if you're doing that, be aware that it may be an
+abuse of the spi_master model, and you'll get little sympathy when
+breakage happens.
 
-If, on the other hand, you mean to develop restricted slave capability,
-such as the always-predictable case of data-streaming between a single
-slave/master pair, that would be different.   That is the way my slave
-application (and likely others) work.  Note that I did not need any
-changes to the SPI core for that application, only to the device drivers.
+I haven't seen anything spi_slave related yet that I'll merge in the
+common spi code.
 
-I don't mean to be negative, just realistic.  It's only worth adding
-this capability if there is a clear case that it will be useful in practice.
+g.
 
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
-
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
 Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
 http://p.sf.net/sfu/solaris-dev2dev

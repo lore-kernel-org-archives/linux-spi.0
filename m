@@ -1,8 +1,8 @@
 From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 5/5] spi: added SPI bus locking to
-	mpc8xxx_spi
-Date: Tue, 16 Feb 2010 20:57:43 +0100
-Message-ID: <20100216205743.c4d736d1.eschwab@online.de>
+Subject: [PATCH 1/5] spi: spi_lock_bus and spi_unlock_bus
+Date: Tue, 16 Feb 2010 20:57:20 +0100
+Message-ID: <20100216205720.ebe949a1.eschwab@online.de>
+References: <20100216204450.e043eed8.eschwab@online.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,6 +11,7 @@ To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Kumar G
 	<galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>, David Brownell
 	<dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100216204450.e043eed8.eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,146 +22,116 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Added SPI bus locking functions. If the bus is locked, the SPI queue is
-searched for SPI transmit messages for the chipselect for which the bus is
-locked; no other messages will be transmitted, until the bus is unlocked 
-again. 
-Algorithm borrowed from the blackfin driver spi_bfin5xx.c.
+For some MMC cards over SPI bus, it needs to lock the SPI bus for its own
+use.  The SPI transfer must not be interrupted by other SPI devices that
+share the SPI bus with SPI MMC card.
 
-Signed-off-by: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+This patch introduces 2 APIs for SPI bus locking operation.
+
+Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
-diff -upr a/drivers/spi/spi_mpc8xxx.c b/drivers/spi/spi_mpc8xxx.c
---- a/drivers/spi/spi_mpc8xxx.c
-+++ b/drivers/spi/spi_mpc8xxx.c
-@@ -124,6 +124,9 @@ struct spi_pram {
- #define	SPI_PRAM_SIZE	0x100
- #define	SPI_MRBLR	((unsigned int)PAGE_SIZE)
- 
-+/* value for 'locked' variable to indicate that the bus is unlocked */
-+#define SPIBUS_UNLOCKED	0xFF		
-+
- /* SPI Controller driver's private data. */
- struct mpc8xxx_spi {
- 	struct device *dev;
-@@ -171,6 +174,8 @@ struct mpc8xxx_spi {
- 	spinlock_t lock;
- 
- 	struct completion done;
-+
-+	u8 locked;		/* chipselect number if bus is locked */
- };
- 
- static void *mpc8xxx_dummy_rx;
-@@ -605,11 +610,39 @@ static void mpc8xxx_spi_work(struct work
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi = container_of(work, struct mpc8xxx_spi,
- 						       work);
-+	u8 locked_cs;
-+	u8 next_cs;
- 
- 	spin_lock_irq(&mpc8xxx_spi->lock);
- 	while (!list_empty(&mpc8xxx_spi->queue)) {
- 		struct spi_message *m = container_of(mpc8xxx_spi->queue.next,
- 						   struct spi_message, queue);
-+		struct spi_message *msg = NULL;
-+
-+		if (mpc8xxx_spi->locked != SPIBUS_UNLOCKED) {
-+			locked_cs = mpc8xxx_spi->locked;
-+			next_cs = m->spi->chip_select;
-+
-+			if (next_cs != locked_cs) {
-+				list_for_each_entry(msg, &mpc8xxx_spi->queue, 
-+						    queue) {
-+					next_cs = msg->spi->chip_select;
-+					if (next_cs == locked_cs) {
-+						m = msg;
-+						break;
-+					}
-+				}
-+
-+				/* 
-+				 * Do nothing even if there are messages 
-+				 * for other devices 
-+				 */
-+				if (next_cs != locked_cs) {
-+					spin_unlock_irq(&mpc8xxx_spi->lock);
-+					return;
-+				}
-+			}
-+		}
- 
- 		list_del_init(&m->queue);
- 		spin_unlock_irq(&mpc8xxx_spi->lock);
-@@ -736,6 +769,50 @@ static irqreturn_t mpc8xxx_spi_irq(s32 i
- 	return ret;
+Andrew: we've posted these in the past with no response.  could you pick
+        them up please ?
+ drivers/spi/spi.c       |   48 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h |    7 ++++++
+ 2 files changed, 55 insertions(+), 0 deletions(-)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 70845cc..b82b8ad 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -653,6 +653,54 @@ static void spi_complete(void *arg)
  }
  
-+/*
-+ * lock the spi bus for exclusive access
+ /**
++ * spi_lock_bus - lock SPI bus for exclusive access
++ * @spi: device which want to lock the bus
++ * Context: any
++ *
++ * Once the caller owns exclusive access to the SPI bus,
++ * only messages for this device will be transferred.
++ * Messages for other devices are queued but not transferred until
++ * the bus owner unlock the bus.
++ *
++ * The caller may call spi_lock_bus() before spi_sync() or spi_async().
++ * So this call may be used in irq and other contexts which can't sleep,
++ * as well as from task contexts which can sleep.
++ *
++ * It returns zero on success, else a negative error code.
 + */
-+static int mpc8xxx_spi_lock_bus(struct spi_device *spi)
++int spi_lock_bus(struct spi_device *spi)
 +{
-+	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&mpc8xxx_spi->lock, flags);
-+	if (mpc8xxx_spi->locked != SPIBUS_UNLOCKED) {
-+		spin_unlock_irqrestore(&mpc8xxx_spi->lock, flags);
-+		return -ENOLCK;
-+	}
-+	mpc8xxx_spi->locked = spi->chip_select;
-+
-+	spin_unlock_irqrestore(&mpc8xxx_spi->lock, flags);
-+
-+	return 0;
++	if (spi->master->lock_bus)
++		return spi->master->lock_bus(spi);
++	else
++		return 0;
 +}
++EXPORT_SYMBOL_GPL(spi_lock_bus);
 +
-+/*
-+ * unlock the spi bus from exclusive access
++/**
++ * spi_unlock_bus - unlock SPI bus
++ * @spi: device which want to unlock the bus
++ * Context: any
++ *
++ * The caller has called spi_lock_bus() to lock the bus. It calls
++ * spi_unlock_bus() to release the bus so messages for other devices
++ * can be transferred.
++ *
++ * If the caller did not call spi_lock_bus() before, spi_unlock_bus()
++ * should have no effect.
++ *
++ * It returns zero on success, else a negative error code.
 + */
-+static int mpc8xxx_spi_unlock_bus(struct spi_device *spi)
++int spi_unlock_bus(struct spi_device *spi)
 +{
-+	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&mpc8xxx_spi->lock, flags);
-+
-+	/* remove the spi bus lock */
-+	mpc8xxx_spi->locked = SPIBUS_UNLOCKED;
-+
-+	/* 
-+	 * process all deferred messages for all chipselects 
-+	 * other than the locked after the bus became unlocked
-+	 */
-+	queue_work(mpc8xxx_spi->workqueue, &mpc8xxx_spi->work);
-+
-+	spin_unlock_irqrestore(&mpc8xxx_spi->lock, flags);
-+
-+	return 0;
++	if (spi->master->unlock_bus)
++		return spi->master->unlock_bus(spi);
++	else
++		return 0;
 +}
++EXPORT_SYMBOL_GPL(spi_unlock_bus);
 +
- static int mpc8xxx_spi_transfer(struct spi_device *spi,
- 				struct spi_message *m)
- {
-@@ -992,6 +1069,8 @@ mpc8xxx_spi_probe(struct device *dev, st
- 	master->setup = mpc8xxx_spi_setup;
- 	master->transfer = mpc8xxx_spi_transfer;
- 	master->cleanup = mpc8xxx_spi_cleanup;
-+	master->lock_bus = mpc8xxx_spi_lock_bus;
-+	master->unlock_bus = mpc8xxx_spi_unlock_bus;
++/**
+  * spi_sync - blocking/synchronous SPI data transfers
+  * @spi: device with which data will be exchanged
+  * @message: describes the data transfers
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index c47c4b4..c53292c 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -214,6 +214,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	the device whose settings are being modified.
+  * @transfer: adds a message to the controller's transfer queue.
+  * @cleanup: frees controller-specific state
++ * @lock_bus: lock SPI bus for exclusive access
++ * @unlock_bus: unlock SPI bus so other devices can access
+  *
+  * Each SPI master controller can communicate with one or more @spi_device
+  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
+@@ -286,6 +288,9 @@ struct spi_master {
  
- 	mpc8xxx_spi = spi_master_get_devdata(master);
- 	mpc8xxx_spi->dev = dev;
-@@ -999,6 +1078,7 @@ mpc8xxx_spi_probe(struct device *dev, st
- 	mpc8xxx_spi->get_tx = mpc8xxx_spi_tx_buf_u8;
- 	mpc8xxx_spi->flags = pdata->flags;
- 	mpc8xxx_spi->spibrg = pdata->sysclk;
-+	mpc8xxx_spi->locked = SPIBUS_UNLOCKED;
+ 	/* called on release() to free memory provided by spi_master */
+ 	void			(*cleanup)(struct spi_device *spi);
++
++	int			(*lock_bus)(struct spi_device *spi);
++	int			(*unlock_bus)(struct spi_device *spi);
+ };
  
- 	ret = mpc8xxx_spi_cpm_init(mpc8xxx_spi);
- 	if (ret)
+ static inline void *spi_master_get_devdata(struct spi_master *master)
+@@ -578,6 +583,8 @@ spi_async(struct spi_device *spi, struct spi_message *message)
+  */
+ 
+ extern int spi_sync(struct spi_device *spi, struct spi_message *message);
++extern int spi_lock_bus(struct spi_device *spi);
++extern int spi_unlock_bus(struct spi_device *spi);
+ 
+ /**
+  * spi_write - SPI synchronous write
+
+  
 
 
 

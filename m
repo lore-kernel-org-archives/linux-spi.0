@@ -1,112 +1,196 @@
-From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH] of: added documentation for spi chipselects
-Date: Tue, 16 Feb 2010 21:14:59 +0100
-Message-ID: <20100216201459.GA17428@pengutronix.de>
-References: <20100216193957.ccdffee2.eschwab@online.de>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/5] spi: spi_lock_bus and
+	spi_unlock_bus
+Date: Tue, 16 Feb 2010 13:43:59 -0700
+Message-ID: <fa686aa41002161243y6e24e439yff54a28cbe295de3@mail.gmail.com>
+References: <20100216204450.e043eed8.eschwab@online.de>
+	<20100216205720.ebe949a1.eschwab@online.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8978198028554060750=="
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
 To: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <20100216193957.ccdffee2.eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100216205720.ebe949a1.eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============8978198028554060750==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="YiEDa0DAkWCtVeE4"
-Content-Disposition: inline
-
-
---YiEDa0DAkWCtVeE4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Feb 16, 2010 at 07:39:57PM +0100, Ernst Schwab wrote:
-> From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
->=20
-> Added devicetree binding documentation for gpios used as chipselect. The
-> code to evaluate these is already present in spi_mpc8xxx.c.
->=20
-> Signed-off-by: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+On Tue, Feb 16, 2010 at 12:57 PM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
+> From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+>
+> For some MMC cards over SPI bus, it needs to lock the SPI bus for its own
+> use. =A0The SPI transfer must not be interrupted by other SPI devices that
+> share the SPI bus with SPI MMC card.
+>
+> This patch introduces 2 APIs for SPI bus locking operation.
+>
+> Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 > ---
-> diff -upr a/Documentation/powerpc/dts-bindings/fsl/spi.txt b/Documentatio=
-n/powerpc/dts-bindings/fsl/spi.txt
-> --- a/Documentation/powerpc/dts-bindings/fsl/spi.txt
-> +++ b/Documentation/powerpc/dts-bindings/fsl/spi.txt
-> @@ -13,6 +13,11 @@ Required properties:
->  - interrupt-parent : the phandle for the interrupt controller that
->    services interrupts for this device.
-> =20
-> +Optional properties:
-> +- gpios : specifies the gpio pins to be used for chipselects.=20
-> +  The gpios will be referred to as reg=3D<index> in the SPI child nodes.
-> +  If unspecified, a single SPI device without a chip select can be used.
+> Andrew: we've posted these in the past with no response. =A0could you pick
+> =A0 =A0 =A0 =A0them up please ?
+> =A0drivers/spi/spi.c =A0 =A0 =A0 | =A0 48 +++++++++++++++++++++++++++++++=
+++++++++++++++++
+> =A0include/linux/spi/spi.h | =A0 =A07 ++++++
+> =A02 files changed, 55 insertions(+), 0 deletions(-)
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 70845cc..b82b8ad 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -653,6 +653,54 @@ static void spi_complete(void *arg)
+> =A0}
+>
+> =A0/**
+> + * spi_lock_bus - lock SPI bus for exclusive access
+> + * @spi: device which want to lock the bus
+> + * Context: any
+> + *
+> + * Once the caller owns exclusive access to the SPI bus,
+> + * only messages for this device will be transferred.
+> + * Messages for other devices are queued but not transferred until
+> + * the bus owner unlock the bus.
+> + *
+> + * The caller may call spi_lock_bus() before spi_sync() or spi_async().
+> + * So this call may be used in irq and other contexts which can't sleep,
+> + * as well as from task contexts which can sleep.
+> + *
+> + * It returns zero on success, else a negative error code.
+> + */
+> +int spi_lock_bus(struct spi_device *spi)
+> +{
+> + =A0 =A0 =A0 if (spi->master->lock_bus)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return spi->master->lock_bus(spi);
+> + =A0 =A0 =A0 else
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(spi_lock_bus);
 
-Minor: I'd prefer spaces around the '=3D'.
+This series seems to try and solve the problem the hard way, and by
+creating a new locking scheme (and as history shows, new locking
+schemes are *alwasy* broken).
+
+Why is the locking getting pushed down to the bus driver level?  It
+seems to me that the whole thing could be handled with common code and
+a mutex in the spi_master structure.  spi_sync would be easy to handle
+by putting a mutex around the spi_message submission.  spi_async would
+be a little harder since it needs to be atomic, but that could also be
+handled with a flag protected by a spinlock.
+
+Basically, the idea is that existing drivers continue to use the API as-is
+
+Drivers that want to lock the bus for exclusive access must call
+spi_lock_bus() which should take the mutex and then sleep until all
+in-flight spi_messages are processed.  After that, anyone calling
+spi_async() will simply sleep until the locker unlocks the bus again.
+
+To handle spi_sync() would probably require a flag protected by a
+spinlock.  If the flag is set, then spi_sync() would simply fail.
+
+Finally, the locking driver would need locked versions of spi_sync()
+and spi_async() that sidestep the lock checks.  It would only be valid
+to call these versions when holding the SPI bus lock.
+
+There is no need to specify the spi_device in the lock request.  Since
+the lock is exclusive, it is known that the only driver calling the
+locked API version must already hold the lock.
+
+Have I got this wrong?
+
+g.
 
 > +
->  Example:
->  	spi@4c0 {
->  		cell-index =3D <0>;
-> @@ -21,4 +26,6 @@ Example:
->  		interrupts =3D <82 0>;
->  		interrupt-parent =3D <700>;
->  		mode =3D "cpu";
-> +		gpios =3D <&gpio 18 1	// device reg=3D<0>, low-active
-> +			 &gpio 19 1>;	// device reg=3D<1>, low-active
+> +/**
+> + * spi_unlock_bus - unlock SPI bus
+> + * @spi: device which want to unlock the bus
+> + * Context: any
+> + *
+> + * The caller has called spi_lock_bus() to lock the bus. It calls
+> + * spi_unlock_bus() to release the bus so messages for other devices
+> + * can be transferred.
+> + *
+> + * If the caller did not call spi_lock_bus() before, spi_unlock_bus()
+> + * should have no effect.
+> + *
+> + * It returns zero on success, else a negative error code.
+> + */
+> +int spi_unlock_bus(struct spi_device *spi)
+> +{
+> + =A0 =A0 =A0 if (spi->master->unlock_bus)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return spi->master->unlock_bus(spi);
+> + =A0 =A0 =A0 else
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(spi_unlock_bus);
+> +
+> +/**
+> =A0* spi_sync - blocking/synchronous SPI data transfers
+> =A0* @spi: device with which data will be exchanged
+> =A0* @message: describes the data transfers
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index c47c4b4..c53292c 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -214,6 +214,8 @@ static inline void spi_unregister_driver(struct spi_d=
+river *sdrv)
+> =A0* =A0 =A0 the device whose settings are being modified.
+> =A0* @transfer: adds a message to the controller's transfer queue.
+> =A0* @cleanup: frees controller-specific state
+> + * @lock_bus: lock SPI bus for exclusive access
+> + * @unlock_bus: unlock SPI bus so other devices can access
+> =A0*
+> =A0* Each SPI master controller can communicate with one or more @spi_dev=
+ice
+> =A0* children. =A0These make a small bus, sharing MOSI, MISO and SCK sign=
+als
+> @@ -286,6 +288,9 @@ struct spi_master {
+>
+> =A0 =A0 =A0 =A0/* called on release() to free memory provided by spi_mast=
+er */
+> =A0 =A0 =A0 =A0void =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(*cleanup)(str=
+uct spi_device *spi);
+> +
+> + =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (*lock_bus)(str=
+uct spi_device *spi);
+> + =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (*unlock_bus)(s=
+truct spi_device *spi);
+> =A0};
+>
+> =A0static inline void *spi_master_get_devdata(struct spi_master *master)
+> @@ -578,6 +583,8 @@ spi_async(struct spi_device *spi, struct spi_message =
+*message)
+> =A0*/
+>
+> =A0extern int spi_sync(struct spi_device *spi, struct spi_message *messag=
+e);
+> +extern int spi_lock_bus(struct spi_device *spi);
+> +extern int spi_unlock_bus(struct spi_device *spi);
+>
+> =A0/**
+> =A0* spi_write - SPI synchronous write
+>
+>
+>
+>
+>
 
-I'd drop the comments. GPIO controllers may have private xlate-functions, so
-'1' could theoretically mean something else than "low-active" (although in
-practice it hopefully won't).
 
->  	};
->=20
->=20
-> _______________________________________________
-> devicetree-discuss mailing list
-> devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-> https://lists.ozlabs.org/listinfo/devicetree-discuss
 
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+-- =
 
---YiEDa0DAkWCtVeE4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAkt6/MMACgkQD27XaX1/VRssDQCfVnAy5zowoJyY+1gVjQSPtfEF
-w6sAnROre2A4KhwGGRlsvQe7vRHoMeph
-=woy4
------END PGP SIGNATURE-----
-
---YiEDa0DAkWCtVeE4--
-
---===============8978198028554060750==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-devicetree-discuss mailing list
-devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-https://lists.ozlabs.org/listinfo/devicetree-discuss
-
---===============8978198028554060750==--
+---------------------------------------------------------------------------=
+---
+SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
+Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
+http://p.sf.net/sfu/solaris-dev2dev

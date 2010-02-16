@@ -1,21 +1,19 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] Add support for slave controllers
-	plus sysfs entries for power management
-Date: Tue, 16 Feb 2010 15:07:28 -0700
-Message-ID: <fa686aa41002161407o267b34cg3890282365956d3a@mail.gmail.com>
-References: <1261170416.10785.5.camel@ubuntu-vmware>
-	<fa686aa41001190759j1d916f87o309efe37b3e96bf4@mail.gmail.com>
-	<63386a3d1002141520p7cf33256vd8d6f7c23f61b0fe@mail.gmail.com>
-	<1b68c6791002141737l6211c88dy79c762a3761cc93c@mail.gmail.com>
-	<63386a3d1002161133k501e51f4xf4e94a307cb4fcf5@mail.gmail.com>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: Re: [PATCH 1/5] spi: spi_lock_bus
+	and	spi_unlock_bus
+Date: Tue, 16 Feb 2010 16:16:12 -0500
+Message-ID: <4B7B0B1C.8050407@whoi.edu>
+References: <20100216204450.e043eed8.eschwab@online.de>	<20100216205720.ebe949a1.eschwab@online.de>
+	<fa686aa41002161243y6e24e439yff54a28cbe295de3@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <63386a3d1002161133k501e51f4xf4e94a307cb4fcf5-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <fa686aa41002161243y6e24e439yff54a28cbe295de3-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,40 +24,60 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 16, 2010 at 12:33 PM, Linus Walleij
-<linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> 2010/2/15 jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
->
->> I don't think adding SPI_SLAVE support is just a matter of providing
->> additional callbacks and structures, as is pointed out in this thread....
->> http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg00368.html
->
-> You mean that the responsiveness / control of latencies is the other thing
-> that's needed? Yep so it is. But getting the infrastructure in place doesn't
-> hurt because this is something many people (including self) need and Ken
-> over at Intel is the only one actually doing something about it.
+On 02/16/2010 03:43 PM, Grant Likely wrote:
+> On Tue, Feb 16, 2010 at 12:57 PM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
+>> From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+>>
+>> For some MMC cards over SPI bus, it needs to lock the SPI bus for its own
+>> use.  The SPI transfer must not be interrupted by other SPI devices that
+>> share the SPI bus with SPI MMC card.
+>>
+>> This patch introduces 2 APIs for SPI bus locking operation.
+> 
+> This series seems to try and solve the problem the hard way, and by
+> creating a new locking scheme (and as history shows, new locking
+> schemes are *alwasy* broken).
+> 
+> Why is the locking getting pushed down to the bus driver level?  It
+> seems to me that the whole thing could be handled with common code and
+> a mutex in the spi_master structure.  spi_sync would be easy to handle
+> by putting a mutex around the spi_message submission.  spi_async would
+> be a little harder since it needs to be atomic, but that could also be
+> handled with a flag protected by a spinlock.
+> 
+> Basically, the idea is that existing drivers continue to use the API as-is
+> 
+> Drivers that want to lock the bus for exclusive access must call
+> spi_lock_bus() which should take the mutex and then sleep until all
+> in-flight spi_messages are processed.  After that, anyone calling
+> spi_async() will simply sleep until the locker unlocks the bus again.
+> 
+> To handle spi_sync() would probably require a flag protected by a
+> spinlock.  If the flag is set, then spi_sync() would simply fail.
+> 
+> Finally, the locking driver would need locked versions of spi_sync()
+> and spi_async() that sidestep the lock checks.  It would only be valid
+> to call these versions when holding the SPI bus lock.
+> 
+> There is no need to specify the spi_device in the lock request.  Since
+> the lock is exclusive, it is known that the only driver calling the
+> locked API version must already hold the lock.
+> 
+> Have I got this wrong?
 
-No, the model needs to be in place first.  That means describing the
-model for spi_slave transfers.  Does the driver need to turn around
-and respond mid-transfer?  Does there need to be latency controls?
-How are protocol drivers interfaced with spi slave controllers (1 to
-1, or 1 to many, how is the protocol selected)?
+Not sure.  Does your proposal account for the case of a system with more
+than one SPI bus?  In such a case, there should be a lock per bus.
 
-I appreciate the work Ken is doing, but the patches posted so far
-abuse the spi_master model in a way I'm not willing to merge.  I think
-spi_slave is a different enough thing that it warrants an entirely
-different core infrastructure (but I do reserve the right to have my
-mind changed).
+-- 
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
+http://www.whoi.edu/hpb/Site.do?id=1532
+http://www.whoi.edu/page.do?pid=10079
 
-> Getting SPI slaves to actually work by spawning their worker threads as
-> realtime under that patchset is of course a larger issue. One does not
-> exclude the other tho.
-
-Your right, the realtime issues are separate, but I still need to see
-how spi_slave devices are intended to work, and what the
-strengths/limitations of the model are.
-
-g.
 
 ------------------------------------------------------------------------------
 SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,

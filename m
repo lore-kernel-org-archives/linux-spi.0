@@ -1,65 +1,83 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] of: add bus-number specification to spi_mpc8xxx
-Date: Tue, 16 Feb 2010 14:23:49 -0700
-Message-ID: <fa686aa41002161323v72dbcdb4rd28ece040c878972@mail.gmail.com>
-References: <20100216150850.d966cd79.eschwab@online.de>
-	<fa686aa41002160628g62bd6564h50e712e8fb9c384d@mail.gmail.com>
-	<20100216160832.730cb00b.eschwab@online.de>
-	<fa686aa41002160718u36fe6f7ey7be83ab69317ec76@mail.gmail.com>
-	<20100216195943.e40e104e.eschwab@online.de>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: Re: [PATCH] Add support for slave controllers
+ plus sysfs entries for power management
+Date: Tue, 16 Feb 2010 15:48:12 -0500
+Message-ID: <4B7B048C.8080205@whoi.edu>
+References: <1261170416.10785.5.camel@ubuntu-vmware>	<fa686aa41001190759j1d916f87o309efe37b3e96bf4@mail.gmail.com>	<63386a3d1002141520p7cf33256vd8d6f7c23f61b0fe@mail.gmail.com>	<1b68c6791002141737l6211c88dy79c762a3761cc93c@mail.gmail.com>
+	<63386a3d1002161133k501e51f4xf4e94a307cb4fcf5@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-To: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <20100216195943.e40e104e.eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <63386a3d1002161133k501e51f4xf4e94a307cb4fcf5-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 16, 2010 at 11:59 AM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
-> Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
->
->> Add a property to the /chosen node to assign short labels to devices.
->
-> I'm not familiar with this and will check - does anyone know of an
-> existing example for this?
+On 02/16/2010 02:33 PM, Linus Walleij wrote:
+> 2010/2/15 jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+> 
+>> I don't think adding SPI_SLAVE support is just a matter of providing
+>> additional callbacks and structures, as is pointed out in this thread....
+>> http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg00368.html
+> 
+> You mean that the responsiveness / control of latencies is the other thing
+> that's needed? Yep so it is. But getting the infrastructure in place doesn't
+> hurt because this is something many people (including self) need and Ken
+> over at Intel is the only one actually doing something about it.
+> 
+> Getting SPI slaves to actually work by spawning their worker threads as
+> realtime under that patchset is of course a larger issue. One does not
+> exclude the other tho.
 
-Oops, sorry.  I meant the 'aliases' node.  'chosen' is for something else.
+I'm a little fuzzy on what application you have in mind for this.  It
+doesn't seem productive to lay in a layer of changes for slave operation
+before knowing if it is possible to create a useful slave.  Putting the
+infrastructure before determining feasibility seems the wrong way
+around, especially since you wouldn't be sure what support to add unless
+you have a working model.
 
-Properties in the aliases node are simply name =3D "/path/to/node";
-pairs.  Do "grep -A 6 arch/powerpc/boot/dts/" to see lots of examples.
-dtc expands the <name> =3D &label; construct into the full path to the
-node.
+As pointed out in the above thread (by David Brownell, not by me), many
+masters expect the slave to respond within one SPI clock cycle (between
+the last bit of the command and the first bit of the response).  On a
+400MHz PXA processor, I have measured interrupt latency in excess of
+600us (100us min, 200us typ), so that would imply a maximum SPI clock of
+1kHz for generalized slave operation.  I'm not sure how many
+applications would be happy with that; likely a few.  I don't think use
+of real time threads will decrease the latency significantly; that is to
+say: whatever reduced latency is achievable is likely to still present a
+significant limit on SPI clock rate for the general case.
 
->> Unless you're trying to line up disparate data structure, the actually
->> number assigned to a bus really doesn't matter. =A0It is better to let
->> Linux dynamically assign than to manually maintain the assigned bus
->> numbers for each machine. =A0Assuming dynamic assignment also protects
->> against breaking userspace applications when, for whatever reason, the
->> bus numbers get shuffled on a platform.
->
-> Hm. What if we have two identical devices, lets say EEPROMs at25,
-> connected to two SPI controllers. These are set up as
-> /sys/bus/spi/devices/spi32766.0/eeprom and
-> /sys/bus/spi/devices/spi32765.0/eeprom.
-> How can userspace code determine which one it should
-> use if it needs to use the one connected to the first spi controller?
-> Can this be solved with the /chosen mechanism?
+If, on the other hand, you mean to develop restricted slave capability,
+such as the always-predictable case of data-streaming between a single
+slave/master pair, that would be different.   That is the way my slave
+application (and likely others) work.  Note that I did not need any
+changes to the SPI core for that application, only to the device drivers.
 
-Use the alias to find the spi bus you care about in /sys/devices/.
-Then whichever eeprom has that bus as its parent is the device you
-want.  You can read the expanded device tree in /proc/device-tree.
-Unfortunately I don't have sample code that shows how to do this; I
-haven't had to do so personally yet.
+I don't mean to be negative, just realistic.  It's only worth adding
+this capability if there is a clear case that it will be useful in practice.
 
-g.
+-- 
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
+http://www.whoi.edu/hpb/Site.do?id=1532
+http://www.whoi.edu/page.do?pid=10079
+
+
+------------------------------------------------------------------------------
+SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
+Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
+http://p.sf.net/sfu/solaris-dev2dev

@@ -1,20 +1,22 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 1/5] spi: spi_lock_bus and
 	spi_unlock_bus
-Date: Tue, 16 Feb 2010 21:32:53 -0700
-Message-ID: <fa686aa41002162032l2a2bc065t1f53d7b79760b2dd@mail.gmail.com>
+Date: Tue, 16 Feb 2010 23:34:24 -0500
+Message-ID: <8bd0f97a1002162034r2d3e397eq12ae0f0df1ae2adb@mail.gmail.com>
 References: <20100216204450.e043eed8.eschwab@online.de>
 	<20100216205720.ebe949a1.eschwab@online.de>
 	<fa686aa41002161243y6e24e439yff54a28cbe295de3@mail.gmail.com>
-	<552DB282258F46CE995A09EF352B1094@pces>
+	<8bd0f97a1002161607m3c748ccegaffb83c42667287a@mail.gmail.com>
+	<fa686aa41002161948o31a48fc9kac263b0ac34f1a8d@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
-To: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <552DB282258F46CE995A09EF352B1094@pces>
+In-Reply-To: <fa686aa41002161948o31a48fc9kac263b0ac34f1a8d-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,150 +27,87 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 16, 2010 at 5:16 PM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
-> Grant Likely wrote:
->
->> This series seems to try and solve the problem the hard way, and by
->> creating a new locking scheme (and as history shows, new locking
->> schemes are *alwasy* broken).
->> Why is the locking getting pushed down to the bus driver level?
->
-> The proposal, as well as the proposal of the underlying patches
-> for the blackfin uClinux solution, wants to minimize the risk
-> introduced by changes to the SPI layer - it tries to be as
-> noninvasive as possible.
-
-It sounds like you're very worried about making changes to the core
-code, and jumping through hopes to push as much as possible out to the
-device drivers (working around instead of fixing a limitation of the
-SPI bus infrastructure).  However, it ends up being ugly, complex, and
-probably wrong.
-
-Simplicity and correctness is far more important that trying to avoid
-churn in the core code.  It is far better to change the core code
-because then you'll get more testing and review, and you'll reduce the
-burden on driver writers.
-
-> Thus, it allows the use of the mmc_spi driver under the same conditions
-> as before (only one SPI device present), and makes its use even
-> safer than before - in case an SPI device is registered after the mmc_spi
-> driver. The mechanism to have the atomic transmission of SPI sequences mo=
-ved
-> to the SPI master driver is existent in (now) two master drivers and
-> working, and until now, we have only the choice between
-> the "ASSUMING SPI bus stays unshared!/can't share SPI bus" pestilence now
-> present in the kernel and the "need to modify the SPI master" cholera. I
-> think anything beyond this would be a new locking scheme, which...
->
->> It
->> seems to me that the whole thing could be handled with common code and
->> a mutex in the spi_master structure. =A0spi_sync would be easy to handle
->> by putting a mutex around the spi_message submission. =A0spi_async would
->> be a little harder since it needs to be atomic, but that could also be
->> handled with a flag protected by a spinlock.
->
-> Maybe, but who can implement that in a quality required to make it to
-> the kernel? Any volunteers ;-)? I will test it.
-
-You do it.  You write good code.  You're just approaching the problem
-from the wrong angle.  You may not get it right on the first posting,
-but there are lots of people who are here who will help you and
-review.  As long as you are responsive to review you will do just
-fine.
-
-It will require 2 patches, plus another cleanup patch for each
-spi_master driver.
-
-1) add new locking API and implementation to core SPI code
-- no drivers or mmc stuff has to change at this point
-
-2) make mmc layer use the new api and remove the old hacks
-- Clean cutover to new locking scheme.  Immediately stops using old
-driver-specific hacks
-
-3) remove the old hacks from spi_master driver
-- because now the code isn't used anymore.  (But as far as I can tell,
-none of this is actually mainlined, so this might not be necessary).
-- However, by moving locking into the spi core, it may be that
-spi_master drivers can become simpler and remove a lot of driver-local
-locking.
-- Regardless, neither patch 1 nor 2 force changes to the spi_master drivers.
-
-In fact, now that I've had an evening to think about it, the solution
-is even simpler than what I said earlier.  It requires 3 things to be
-added to struct spi_master.
-- 1 Mutex
-- 1 spin lock
-- 1 flag.
-
-The mutex protects spi_async, and provides sleeping "for free"
-The spinlock protects the atomic spi_sync call.
-The flag is set when the lock is obtained, and checked while holding
-the spinlock in spi_sync().  If the flag is checked, then spi_sync()
-must fail immediately.
-
-The current runtime API looks like this:
-spi_sync(struct spi_device*, struct spi_message*);
-spi_async(struct spi_device*, struct spi_message*);
-
-The API needs to be extended to this:
-spi_sync(struct spi_device*, struct spi_message*)
-spi_async(struct spi_device*, struct spi_message*)
-spi_bus_lock(struct spi_master*)  /* although struct spi_device* might
-be easier */
-spi_bus_unlock(struct spi_master*)
-spi_sync_locked(struct spi_device*, struct spi_message*)
-spi_async_locked(struct spi_device*, struct spi_message*)
-
-Drivers can only call the last two if they already hold the spi_master_lock=
-().
-
-spi_bus_lock() obtains the mutex, obtains the spin lock, sets the
-flag, and releases the spin lock before returning.  It doesn't even
-need to sleep while waiting for "in-flight" spi_transactions to
-complete because its purpose is to guarantee no additional
-transactions are added.  It does not guarantee that the bus is idle.
-
-spi_bus_unlock() clears the flag and releases the mutex, which will
-wake up any waiters.
-
-The difference between spi_sync() and spi_sync_locked() is that the
-locked version bypasses the check of the lock flag.  Both versions
-need to obtain the spinlock.
-
-The difference between spi_async() and spi_async_locked() is that
-spi_async() must hold the mutex while enqueuing a new transfer.
-spi_async_locked() doesn't because the mutex is already held.  Note
-however that spi_async must *not* continue to hold the mutex while
-waiting for the transfer to complete, otherwise only one transfer
-could be queued up at a time!
-
-Almost no code needs to be written.  The current spi_sync() and
-spi_async() can probably be renamed to __spi_sync() and __spI_async()
-so that spi_sync(), spi_async(), spi_sync_locked() and
-spi_async_locked() can just become wrappers around the common code.
-
-That's it.  Easy to implement, low risk, simple and above all passes
-the correctness test.
-
-> For me, there seems to be no disadvantage in having this or a similar
-> solution as an intermediate step to the perfect solution (any volunteers?=
-).
-
-The intermediate step is worse that the current situation.  It reduces
-the pain for some users (which reduces motivation) while complicating
-the code and inventing a new (and guaranteed to be subtly broken)
-locking scheme.
-
-g.
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
-Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
-http://p.sf.net/sfu/solaris-dev2dev
+T24gVHVlLCBGZWIgMTYsIDIwMTAgYXQgMjI6NDgsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBU
+dWUsIEZlYiAxNiwgMjAxMCBhdCA1OjA3IFBNLCBNaWtlIEZyeXNpbmdlciB3cm90ZToKPj4gT24g
+VHVlLCBGZWIgMTYsIDIwMTAgYXQgMTU6NDMsIEdyYW50IExpa2VseSB3cm90ZToKPj4+IE9uIFR1
+ZSwgRmViIDE2LCAyMDEwIGF0IDEyOjU3IFBNLCBFcm5zdCBTY2h3YWIgd3JvdGU6Cj4+Pj4gRnJv
+bTogWWkgTGkgPHlpLmxpQGFuYWxvZy5jb20+Cj4+Pj4KPj4+PiBGb3Igc29tZSBNTUMgY2FyZHMg
+b3ZlciBTUEkgYnVzLCBpdCBuZWVkcyB0byBsb2NrIHRoZSBTUEkgYnVzIGZvciBpdHMgb3duCj4+
+Pj4gdXNlLiDCoFRoZSBTUEkgdHJhbnNmZXIgbXVzdCBub3QgYmUgaW50ZXJydXB0ZWQgYnkgb3Ro
+ZXIgU1BJIGRldmljZXMgdGhhdAo+Pj4+IHNoYXJlIHRoZSBTUEkgYnVzIHdpdGggU1BJIE1NQyBj
+YXJkLgo+Pj4+Cj4+Pj4gVGhpcyBwYXRjaCBpbnRyb2R1Y2VzIDIgQVBJcyBmb3IgU1BJIGJ1cyBs
+b2NraW5nIG9wZXJhdGlvbi4KPj4+Pgo+Pj4+IFNpZ25lZC1vZmYtYnk6IFlpIExpIDx5aS5saUBh
+bmFsb2cuY29tPgo+Pj4+IFNpZ25lZC1vZmYtYnk6IEJyeWFuIFd1IDxjb29sb25leUBrZXJuZWwu
+b3JnPgo+Pj4+IFNpZ25lZC1vZmYtYnk6IE1pa2UgRnJ5c2luZ2VyIDx2YXBpZXJAZ2VudG9vLm9y
+Zz4KPj4+PiAtLS0KPj4+PiBBbmRyZXc6IHdlJ3ZlIHBvc3RlZCB0aGVzZSBpbiB0aGUgcGFzdCB3
+aXRoIG5vIHJlc3BvbnNlLiDCoGNvdWxkIHlvdSBwaWNrCj4+Pj4gwqAgwqAgwqAgwqB0aGVtIHVw
+IHBsZWFzZSA/Cj4+Pj4gwqBkcml2ZXJzL3NwaS9zcGkuYyDCoCDCoCDCoCB8IMKgIDQ4ICsrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCj4+Pj4gwqBpbmNsdWRl
+L2xpbnV4L3NwaS9zcGkuaCB8IMKgIMKgNyArKysrKysKPj4+PiDCoDIgZmlsZXMgY2hhbmdlZCwg
+NTUgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKPj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9zcGkvc3BpLmMgYi9kcml2ZXJzL3NwaS9zcGkuYwo+Pj4+IGluZGV4IDcwODQ1Y2MuLmI4MmI4
+YWQgMTAwNjQ0Cj4+Pj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLmMKPj4+PiArKysgYi9kcml2ZXJz
+L3NwaS9zcGkuYwo+Pj4+IEBAIC02NTMsNiArNjUzLDU0IEBAIHN0YXRpYyB2b2lkIHNwaV9jb21w
+bGV0ZSh2b2lkICphcmcpCj4+Pj4gwqB9Cj4+Pj4KPj4+PiDCoC8qKgo+Pj4+ICsgKiBzcGlfbG9j
+a19idXMgLSBsb2NrIFNQSSBidXMgZm9yIGV4Y2x1c2l2ZSBhY2Nlc3MKPj4+PiArICogQHNwaTog
+ZGV2aWNlIHdoaWNoIHdhbnQgdG8gbG9jayB0aGUgYnVzCj4+Pj4gKyAqIENvbnRleHQ6IGFueQo+
+Pj4+ICsgKgo+Pj4+ICsgKiBPbmNlIHRoZSBjYWxsZXIgb3ducyBleGNsdXNpdmUgYWNjZXNzIHRv
+IHRoZSBTUEkgYnVzLAo+Pj4+ICsgKiBvbmx5IG1lc3NhZ2VzIGZvciB0aGlzIGRldmljZSB3aWxs
+IGJlIHRyYW5zZmVycmVkLgo+Pj4+ICsgKiBNZXNzYWdlcyBmb3Igb3RoZXIgZGV2aWNlcyBhcmUg
+cXVldWVkIGJ1dCBub3QgdHJhbnNmZXJyZWQgdW50aWwKPj4+PiArICogdGhlIGJ1cyBvd25lciB1
+bmxvY2sgdGhlIGJ1cy4KPj4+PiArICoKPj4+PiArICogVGhlIGNhbGxlciBtYXkgY2FsbCBzcGlf
+bG9ja19idXMoKSBiZWZvcmUgc3BpX3N5bmMoKSBvciBzcGlfYXN5bmMoKS4KPj4+PiArICogU28g
+dGhpcyBjYWxsIG1heSBiZSB1c2VkIGluIGlycSBhbmQgb3RoZXIgY29udGV4dHMgd2hpY2ggY2Fu
+J3Qgc2xlZXAsCj4+Pj4gKyAqIGFzIHdlbGwgYXMgZnJvbSB0YXNrIGNvbnRleHRzIHdoaWNoIGNh
+biBzbGVlcC4KPj4+PiArICoKPj4+PiArICogSXQgcmV0dXJucyB6ZXJvIG9uIHN1Y2Nlc3MsIGVs
+c2UgYSBuZWdhdGl2ZSBlcnJvciBjb2RlLgo+Pj4+ICsgKi8KPj4+PiAraW50IHNwaV9sb2NrX2J1
+cyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQo+Pj4+ICt7Cj4+Pj4gKyDCoCDCoCDCoCBpZiAoc3Bp
+LT5tYXN0ZXItPmxvY2tfYnVzKQo+Pj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgcmV0dXJuIHNw
+aS0+bWFzdGVyLT5sb2NrX2J1cyhzcGkpOwo+Pj4+ICsgwqAgwqAgwqAgZWxzZQo+Pj4+ICsgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgcmV0dXJuIDA7Cj4+Pj4gK30KPj4+PiArRVhQT1JUX1NZTUJPTF9H
+UEwoc3BpX2xvY2tfYnVzKTsKPj4+Cj4+PiBUaGlzIHNlcmllcyBzZWVtcyB0byB0cnkgYW5kIHNv
+bHZlIHRoZSBwcm9ibGVtIHRoZSBoYXJkIHdheSwgYW5kIGJ5Cj4+PiBjcmVhdGluZyBhIG5ldyBs
+b2NraW5nIHNjaGVtZSAoYW5kIGFzIGhpc3Rvcnkgc2hvd3MsIG5ldyBsb2NraW5nCj4+PiBzY2hl
+bWVzIGFyZSAqYWx3YXN5KiBicm9rZW4pLgo+Pj4KPj4+IFdoeSBpcyB0aGUgbG9ja2luZyBnZXR0
+aW5nIHB1c2hlZCBkb3duIHRvIHRoZSBidXMgZHJpdmVyIGxldmVsPyDCoEl0Cj4+PiBzZWVtcyB0
+byBtZSB0aGF0IHRoZSB3aG9sZSB0aGluZyBjb3VsZCBiZSBoYW5kbGVkIHdpdGggY29tbW9uIGNv
+ZGUgYW5kCj4+PiBhIG11dGV4IGluIHRoZSBzcGlfbWFzdGVyIHN0cnVjdHVyZS4gwqBzcGlfc3lu
+YyB3b3VsZCBiZSBlYXN5IHRvIGhhbmRsZQo+Pj4gYnkgcHV0dGluZyBhIG11dGV4IGFyb3VuZCB0
+aGUgc3BpX21lc3NhZ2Ugc3VibWlzc2lvbi4gwqBzcGlfYXN5bmMgd291bGQKPj4+IGJlIGEgbGl0
+dGxlIGhhcmRlciBzaW5jZSBpdCBuZWVkcyB0byBiZSBhdG9taWMsIGJ1dCB0aGF0IGNvdWxkIGFs
+c28gYmUKPj4+IGhhbmRsZWQgd2l0aCBhIGZsYWcgcHJvdGVjdGVkIGJ5IGEgc3BpbmxvY2suCj4+
+Pgo+Pj4gQmFzaWNhbGx5LCB0aGUgaWRlYSBpcyB0aGF0IGV4aXN0aW5nIGRyaXZlcnMgY29udGlu
+dWUgdG8gdXNlIHRoZSBBUEkgYXMtaXMKPj4+Cj4+PiBEcml2ZXJzIHRoYXQgd2FudCB0byBsb2Nr
+IHRoZSBidXMgZm9yIGV4Y2x1c2l2ZSBhY2Nlc3MgbXVzdCBjYWxsCj4+PiBzcGlfbG9ja19idXMo
+KSB3aGljaCBzaG91bGQgdGFrZSB0aGUgbXV0ZXggYW5kIHRoZW4gc2xlZXAgdW50aWwgYWxsCj4+
+PiBpbi1mbGlnaHQgc3BpX21lc3NhZ2VzIGFyZSBwcm9jZXNzZWQuIMKgQWZ0ZXIgdGhhdCwgYW55
+b25lIGNhbGxpbmcKPj4+IHNwaV9hc3luYygpIHdpbGwgc2ltcGx5IHNsZWVwIHVudGlsIHRoZSBs
+b2NrZXIgdW5sb2NrcyB0aGUgYnVzIGFnYWluLgo+Pj4KPj4+IFRvIGhhbmRsZSBzcGlfc3luYygp
+IHdvdWxkIHByb2JhYmx5IHJlcXVpcmUgYSBmbGFnIHByb3RlY3RlZCBieSBhCj4+PiBzcGlubG9j
+ay4gwqBJZiB0aGUgZmxhZyBpcyBzZXQsIHRoZW4gc3BpX3N5bmMoKSB3b3VsZCBzaW1wbHkgZmFp
+bC4KPj4+Cj4+PiBGaW5hbGx5LCB0aGUgbG9ja2luZyBkcml2ZXIgd291bGQgbmVlZCBsb2NrZWQg
+dmVyc2lvbnMgb2Ygc3BpX3N5bmMoKQo+Pj4gYW5kIHNwaV9hc3luYygpIHRoYXQgc2lkZXN0ZXAg
+dGhlIGxvY2sgY2hlY2tzLiDCoEl0IHdvdWxkIG9ubHkgYmUgdmFsaWQKPj4+IHRvIGNhbGwgdGhl
+c2UgdmVyc2lvbnMgd2hlbiBob2xkaW5nIHRoZSBTUEkgYnVzIGxvY2suCj4+Pgo+Pj4gVGhlcmUg
+aXMgbm8gbmVlZCB0byBzcGVjaWZ5IHRoZSBzcGlfZGV2aWNlIGluIHRoZSBsb2NrIHJlcXVlc3Qu
+IMKgU2luY2UKPj4+IHRoZSBsb2NrIGlzIGV4Y2x1c2l2ZSwgaXQgaXMga25vd24gdGhhdCB0aGUg
+b25seSBkcml2ZXIgY2FsbGluZyB0aGUKPj4+IGxvY2tlZCBBUEkgdmVyc2lvbiBtdXN0IGFscmVh
+ZHkgaG9sZCB0aGUgbG9jay4KPj4KPj4gdGhpcyBpcyB3aGF0IGkgcHJvcG9zZWQgbGFzdCB0aW1l
+LCBidXQgd2UgaGF2ZW50IGdvdHRlbiBhcm91bmQgdG8KPj4gaW1wbGVtZW50aW5nIGl0Ogo+Pgo+
+PiB0aGVyZSdzIG5vdGhpbmcgQmxhY2tmaW4tc3BlY2lmaWMgaW4gdGhlIGltcGxlbWVudGF0aW9u
+IG9mIHRoZXNlCj4+IGZ1bmN0aW9ucy4gwqBpIHRoaW5rIHRoZSB3YXkgd2Ugc2hvdWxkIGJlIGhh
+bmRsaW5nIHRoZXNlIGlzIGJ5IGRvaW5nOgo+PiDCoC0gcmVtb3ZlIHtsb2NrLHVubG9ja31fYnVz
+IGZ1bmN0aW9ucyBmcm9tIHNwaV9tYXN0ZXIKPj4gwqAtIG1vdmUgdGhlIHtsb2NrLHVubG9ja31f
+YnVzIGNvZGUgZnJvbSBzcGlfYmZpbjV4eC5jIHRvIHNwaS5jCj4+IMKgLSBkcm9wIHRoZSBTUElf
+QkZJTl9MT0NLIEtjb25maWcKPgo+IEFtIEkgbWlzc2luZyBzb21ldGhpbmcuIEkgY2Fubm90IGZp
+bmQgYW55IGxvY2sgcmVsYXRlZCBmdW5jdGlvbnMgaW4KPiB0aGUgc3BpIGNvZGUuIMKgSXMgdGhp
+cyBzdHVmZiBpbiBtYWlubGluZT8KCmknbSBwcm9wb3Npbmcgd2hhdCBzaG91bGQgYmUgZG9uZS4g
+IHRoZXJlIGlzIG5vIGxvY2tpbmcgbG9naWMgYW55d2hlcmUgYXRtLgotbWlrZQoKLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tClNPTEFSSVMgMTAgaXMgdGhlIE9TIGZvciBEYXRhIENlbnRlcnMgLSBwcm92
+aWRlcyBmZWF0dXJlcyBzdWNoIGFzIERUcmFjZSwKUHJlZGljdGl2ZSBTZWxmIEhlYWxpbmcgYW5k
+IEF3YXJkIFdpbm5pbmcgWkZTLiBHZXQgU29sYXJpcyAxMCBOT1cKaHR0cDovL3Auc2YubmV0L3Nm
+dS9zb2xhcmlzLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

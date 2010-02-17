@@ -1,115 +1,40 @@
-From: =?ISO-8859-1?Q?Jos=E9_Miguel_Gon=E7alves?= <jose.goncalves@inov.pt>
-Subject: [PATCH] spi_s3c24xx: Fix for SPI on S3C2412
-Date: Wed, 17 Feb 2010 18:09:35 +0000
-Message-ID: <4B7C30DF.90805@inov.pt>
+From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH 0/2] spi/mmc_spi: SPI bus locking API
+ and mmc_spi adaptations
+Date: Wed, 17 Feb 2010 19:15:13 +0100
+Message-ID: <20100217191513.52392dd6.eschwab@online.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="------------020001050709070404040205"
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Simtec Linux Team <linux@simtec.co.uk>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Russell King <linux@arm.linux.org.uk>, Ben Dooks <ben@simtec.co.uk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org,
+	vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Kumar Gala
+	<galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>, David Brownell
+	<dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------020001050709070404040205
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Hi,
+Here's my first version of a mutex-locked SPI bus locking.
+First tests on powerpc architecture with spi_mpc8xxx,
+mmc_spi, at25 and at45 drivers and 12 SPI devices
+sharing an SPI bus.
 
-Testing some SPI temperature sensors and ADCs with a S3C4212 host I have 
-found that I could not read the correct data.  I've probed the SPI 
-signals with a scope and everything seemed OK.
-I dig into the driver sources and on the S3C2412 datasheet to find that 
-this device can not use the same S3C2410 driver's code because of the 
-added FIFOs, even if not used. The following patch is needed to make the 
-driver to work on the S3C2412 chip (and probably on the S3C2413).
+1 - modifications to spi.c/spi.h
+2 - adaption of mmc_spi.c
 
-Regards,
-José Miguel Gonçalves
+Regards
+Ernst
 
---------------020001050709070404040205
-Content-Type: text/x-patch;
- name="linux-2.6.git-spi_s3c2412.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="linux-2.6.git-spi_s3c2412.patch"
-
-Signed-off-by: Jose Miguel Goncalves <jose.goncalves@inov.pt>
-
-diff --git a/arch/arm/mach-s3c2412/s3c2412.c b/arch/arm/mach-s3c2412/s3c2412.c
-index bef39f7..c58330f 100644
---- a/arch/arm/mach-s3c2412/s3c2412.c
-+++ b/arch/arm/mach-s3c2412/s3c2412.c
-@@ -100,11 +100,9 @@ void __init s3c2412_init_uarts(struct s3c2410_uartcfg *cfg, int no)
- 	s3c_device_sdi.resource[1].end   = IRQ_S3C2412_SDI;
- 
- 	/* spi channel related changes, s3c2412/13 specific */
--	s3c_device_spi0.name = "s3c2412-spi";
--	s3c_device_spi0.resource[0].end = S3C24XX_PA_SPI + 0x24;
--	s3c_device_spi1.name = "s3c2412-spi";
-+	s3c_device_spi0.resource[0].end = S3C24XX_PA_SPI + 0x2F;
- 	s3c_device_spi1.resource[0].start = S3C24XX_PA_SPI + S3C2412_SPI1;
--	s3c_device_spi1.resource[0].end = S3C24XX_PA_SPI + S3C2412_SPI1 + 0x24;
-+	s3c_device_spi1.resource[0].end = S3C24XX_PA_SPI + S3C2412_SPI1 + 0x2F;
- 
- }
- 
-diff --git a/arch/arm/plat-s3c24xx/include/plat/regs-spi.h b/arch/arm/plat-s3c24xx/include/plat/regs-spi.h
-index 2b35479..57e799c 100644
---- a/arch/arm/plat-s3c24xx/include/plat/regs-spi.h
-+++ b/arch/arm/plat-s3c24xx/include/plat/regs-spi.h
-@@ -75,7 +75,8 @@
- #define S3C2410_SPRDAT	 (0x14)
- 
- #define S3C2412_TXFIFO	 (0x18)
--#define S3C2412_RXFIFO	 (0x18)
-+#define S3C2412_RXFIFO	 (0x1C)
-+#define S3C2412_SPRDATB	 (0x20)
- #define S3C2412_SPFIC	 (0x24)
- 
- 
-diff --git a/drivers/spi/spi_s3c24xx.c b/drivers/spi/spi_s3c24xx.c
-index c010733..9c57715 100644
---- a/drivers/spi/spi_s3c24xx.c
-+++ b/drivers/spi/spi_s3c24xx.c
-@@ -440,6 +440,12 @@ static int s3c24xx_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
- 	return hw->count;
- }
- 
-+#ifdef CONFIG_CPU_S3C2412
-+#define SPRDAT S3C2412_SPRDATB
-+#else
-+#define SPRDAT S3C2410_SPRDAT
-+#endif
-+
- static irqreturn_t s3c24xx_spi_irq(int irq, void *dev)
- {
- 	struct s3c24xx_spi *hw = dev;
-@@ -462,7 +468,7 @@ static irqreturn_t s3c24xx_spi_irq(int irq, void *dev)
- 		hw->count++;
- 
- 		if (hw->rx)
--			hw->rx[count] = readb(hw->regs + S3C2410_SPRDAT);
-+			hw->rx[count] = readb(hw->regs + SPRDAT);
- 
- 		count++;
- 
-@@ -475,7 +481,7 @@ static irqreturn_t s3c24xx_spi_irq(int irq, void *dev)
- 		hw->fiq_inuse = 0;
- 
- 		if (hw->rx)
--			hw->rx[hw->len-1] = readb(hw->regs + S3C2410_SPRDAT);
-+			hw->rx[hw->len-1] = readb(hw->regs + SPRDAT);
- 
- 		complete(&hw->done);
- 	}
-
---------------020001050709070404040205--
+------------------------------------------------------------------------------
+SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
+Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
+http://p.sf.net/sfu/solaris-dev2dev

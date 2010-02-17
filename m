@@ -1,22 +1,21 @@
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH 1/5] spi: spi_lock_bus and
 	spi_unlock_bus
-Date: Tue, 16 Feb 2010 23:34:24 -0500
-Message-ID: <8bd0f97a1002162034r2d3e397eq12ae0f0df1ae2adb@mail.gmail.com>
+Date: Tue, 16 Feb 2010 21:37:10 -0700
+Message-ID: <fa686aa41002162037n5b57f3a3o3d7e52d31659d49b@mail.gmail.com>
 References: <20100216204450.e043eed8.eschwab@online.de>
 	<20100216205720.ebe949a1.eschwab@online.de>
 	<fa686aa41002161243y6e24e439yff54a28cbe295de3@mail.gmail.com>
 	<8bd0f97a1002161607m3c748ccegaffb83c42667287a@mail.gmail.com>
-	<fa686aa41002161948o31a48fc9kac263b0ac34f1a8d@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa41002161948o31a48fc9kac263b0ac34f1a8d-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <8bd0f97a1002161607m3c748ccegaffb83c42667287a-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,87 +26,119 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCBGZWIgMTYsIDIwMTAgYXQgMjI6NDgsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBU
-dWUsIEZlYiAxNiwgMjAxMCBhdCA1OjA3IFBNLCBNaWtlIEZyeXNpbmdlciB3cm90ZToKPj4gT24g
-VHVlLCBGZWIgMTYsIDIwMTAgYXQgMTU6NDMsIEdyYW50IExpa2VseSB3cm90ZToKPj4+IE9uIFR1
-ZSwgRmViIDE2LCAyMDEwIGF0IDEyOjU3IFBNLCBFcm5zdCBTY2h3YWIgd3JvdGU6Cj4+Pj4gRnJv
-bTogWWkgTGkgPHlpLmxpQGFuYWxvZy5jb20+Cj4+Pj4KPj4+PiBGb3Igc29tZSBNTUMgY2FyZHMg
-b3ZlciBTUEkgYnVzLCBpdCBuZWVkcyB0byBsb2NrIHRoZSBTUEkgYnVzIGZvciBpdHMgb3duCj4+
-Pj4gdXNlLiDCoFRoZSBTUEkgdHJhbnNmZXIgbXVzdCBub3QgYmUgaW50ZXJydXB0ZWQgYnkgb3Ro
-ZXIgU1BJIGRldmljZXMgdGhhdAo+Pj4+IHNoYXJlIHRoZSBTUEkgYnVzIHdpdGggU1BJIE1NQyBj
-YXJkLgo+Pj4+Cj4+Pj4gVGhpcyBwYXRjaCBpbnRyb2R1Y2VzIDIgQVBJcyBmb3IgU1BJIGJ1cyBs
-b2NraW5nIG9wZXJhdGlvbi4KPj4+Pgo+Pj4+IFNpZ25lZC1vZmYtYnk6IFlpIExpIDx5aS5saUBh
-bmFsb2cuY29tPgo+Pj4+IFNpZ25lZC1vZmYtYnk6IEJyeWFuIFd1IDxjb29sb25leUBrZXJuZWwu
-b3JnPgo+Pj4+IFNpZ25lZC1vZmYtYnk6IE1pa2UgRnJ5c2luZ2VyIDx2YXBpZXJAZ2VudG9vLm9y
-Zz4KPj4+PiAtLS0KPj4+PiBBbmRyZXc6IHdlJ3ZlIHBvc3RlZCB0aGVzZSBpbiB0aGUgcGFzdCB3
-aXRoIG5vIHJlc3BvbnNlLiDCoGNvdWxkIHlvdSBwaWNrCj4+Pj4gwqAgwqAgwqAgwqB0aGVtIHVw
-IHBsZWFzZSA/Cj4+Pj4gwqBkcml2ZXJzL3NwaS9zcGkuYyDCoCDCoCDCoCB8IMKgIDQ4ICsrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCj4+Pj4gwqBpbmNsdWRl
-L2xpbnV4L3NwaS9zcGkuaCB8IMKgIMKgNyArKysrKysKPj4+PiDCoDIgZmlsZXMgY2hhbmdlZCwg
-NTUgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKPj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9zcGkvc3BpLmMgYi9kcml2ZXJzL3NwaS9zcGkuYwo+Pj4+IGluZGV4IDcwODQ1Y2MuLmI4MmI4
-YWQgMTAwNjQ0Cj4+Pj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLmMKPj4+PiArKysgYi9kcml2ZXJz
-L3NwaS9zcGkuYwo+Pj4+IEBAIC02NTMsNiArNjUzLDU0IEBAIHN0YXRpYyB2b2lkIHNwaV9jb21w
-bGV0ZSh2b2lkICphcmcpCj4+Pj4gwqB9Cj4+Pj4KPj4+PiDCoC8qKgo+Pj4+ICsgKiBzcGlfbG9j
-a19idXMgLSBsb2NrIFNQSSBidXMgZm9yIGV4Y2x1c2l2ZSBhY2Nlc3MKPj4+PiArICogQHNwaTog
-ZGV2aWNlIHdoaWNoIHdhbnQgdG8gbG9jayB0aGUgYnVzCj4+Pj4gKyAqIENvbnRleHQ6IGFueQo+
-Pj4+ICsgKgo+Pj4+ICsgKiBPbmNlIHRoZSBjYWxsZXIgb3ducyBleGNsdXNpdmUgYWNjZXNzIHRv
-IHRoZSBTUEkgYnVzLAo+Pj4+ICsgKiBvbmx5IG1lc3NhZ2VzIGZvciB0aGlzIGRldmljZSB3aWxs
-IGJlIHRyYW5zZmVycmVkLgo+Pj4+ICsgKiBNZXNzYWdlcyBmb3Igb3RoZXIgZGV2aWNlcyBhcmUg
-cXVldWVkIGJ1dCBub3QgdHJhbnNmZXJyZWQgdW50aWwKPj4+PiArICogdGhlIGJ1cyBvd25lciB1
-bmxvY2sgdGhlIGJ1cy4KPj4+PiArICoKPj4+PiArICogVGhlIGNhbGxlciBtYXkgY2FsbCBzcGlf
-bG9ja19idXMoKSBiZWZvcmUgc3BpX3N5bmMoKSBvciBzcGlfYXN5bmMoKS4KPj4+PiArICogU28g
-dGhpcyBjYWxsIG1heSBiZSB1c2VkIGluIGlycSBhbmQgb3RoZXIgY29udGV4dHMgd2hpY2ggY2Fu
-J3Qgc2xlZXAsCj4+Pj4gKyAqIGFzIHdlbGwgYXMgZnJvbSB0YXNrIGNvbnRleHRzIHdoaWNoIGNh
-biBzbGVlcC4KPj4+PiArICoKPj4+PiArICogSXQgcmV0dXJucyB6ZXJvIG9uIHN1Y2Nlc3MsIGVs
-c2UgYSBuZWdhdGl2ZSBlcnJvciBjb2RlLgo+Pj4+ICsgKi8KPj4+PiAraW50IHNwaV9sb2NrX2J1
-cyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQo+Pj4+ICt7Cj4+Pj4gKyDCoCDCoCDCoCBpZiAoc3Bp
-LT5tYXN0ZXItPmxvY2tfYnVzKQo+Pj4+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgcmV0dXJuIHNw
-aS0+bWFzdGVyLT5sb2NrX2J1cyhzcGkpOwo+Pj4+ICsgwqAgwqAgwqAgZWxzZQo+Pj4+ICsgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgcmV0dXJuIDA7Cj4+Pj4gK30KPj4+PiArRVhQT1JUX1NZTUJPTF9H
-UEwoc3BpX2xvY2tfYnVzKTsKPj4+Cj4+PiBUaGlzIHNlcmllcyBzZWVtcyB0byB0cnkgYW5kIHNv
-bHZlIHRoZSBwcm9ibGVtIHRoZSBoYXJkIHdheSwgYW5kIGJ5Cj4+PiBjcmVhdGluZyBhIG5ldyBs
-b2NraW5nIHNjaGVtZSAoYW5kIGFzIGhpc3Rvcnkgc2hvd3MsIG5ldyBsb2NraW5nCj4+PiBzY2hl
-bWVzIGFyZSAqYWx3YXN5KiBicm9rZW4pLgo+Pj4KPj4+IFdoeSBpcyB0aGUgbG9ja2luZyBnZXR0
-aW5nIHB1c2hlZCBkb3duIHRvIHRoZSBidXMgZHJpdmVyIGxldmVsPyDCoEl0Cj4+PiBzZWVtcyB0
-byBtZSB0aGF0IHRoZSB3aG9sZSB0aGluZyBjb3VsZCBiZSBoYW5kbGVkIHdpdGggY29tbW9uIGNv
-ZGUgYW5kCj4+PiBhIG11dGV4IGluIHRoZSBzcGlfbWFzdGVyIHN0cnVjdHVyZS4gwqBzcGlfc3lu
-YyB3b3VsZCBiZSBlYXN5IHRvIGhhbmRsZQo+Pj4gYnkgcHV0dGluZyBhIG11dGV4IGFyb3VuZCB0
-aGUgc3BpX21lc3NhZ2Ugc3VibWlzc2lvbi4gwqBzcGlfYXN5bmMgd291bGQKPj4+IGJlIGEgbGl0
-dGxlIGhhcmRlciBzaW5jZSBpdCBuZWVkcyB0byBiZSBhdG9taWMsIGJ1dCB0aGF0IGNvdWxkIGFs
-c28gYmUKPj4+IGhhbmRsZWQgd2l0aCBhIGZsYWcgcHJvdGVjdGVkIGJ5IGEgc3BpbmxvY2suCj4+
-Pgo+Pj4gQmFzaWNhbGx5LCB0aGUgaWRlYSBpcyB0aGF0IGV4aXN0aW5nIGRyaXZlcnMgY29udGlu
-dWUgdG8gdXNlIHRoZSBBUEkgYXMtaXMKPj4+Cj4+PiBEcml2ZXJzIHRoYXQgd2FudCB0byBsb2Nr
-IHRoZSBidXMgZm9yIGV4Y2x1c2l2ZSBhY2Nlc3MgbXVzdCBjYWxsCj4+PiBzcGlfbG9ja19idXMo
-KSB3aGljaCBzaG91bGQgdGFrZSB0aGUgbXV0ZXggYW5kIHRoZW4gc2xlZXAgdW50aWwgYWxsCj4+
-PiBpbi1mbGlnaHQgc3BpX21lc3NhZ2VzIGFyZSBwcm9jZXNzZWQuIMKgQWZ0ZXIgdGhhdCwgYW55
-b25lIGNhbGxpbmcKPj4+IHNwaV9hc3luYygpIHdpbGwgc2ltcGx5IHNsZWVwIHVudGlsIHRoZSBs
-b2NrZXIgdW5sb2NrcyB0aGUgYnVzIGFnYWluLgo+Pj4KPj4+IFRvIGhhbmRsZSBzcGlfc3luYygp
-IHdvdWxkIHByb2JhYmx5IHJlcXVpcmUgYSBmbGFnIHByb3RlY3RlZCBieSBhCj4+PiBzcGlubG9j
-ay4gwqBJZiB0aGUgZmxhZyBpcyBzZXQsIHRoZW4gc3BpX3N5bmMoKSB3b3VsZCBzaW1wbHkgZmFp
-bC4KPj4+Cj4+PiBGaW5hbGx5LCB0aGUgbG9ja2luZyBkcml2ZXIgd291bGQgbmVlZCBsb2NrZWQg
-dmVyc2lvbnMgb2Ygc3BpX3N5bmMoKQo+Pj4gYW5kIHNwaV9hc3luYygpIHRoYXQgc2lkZXN0ZXAg
-dGhlIGxvY2sgY2hlY2tzLiDCoEl0IHdvdWxkIG9ubHkgYmUgdmFsaWQKPj4+IHRvIGNhbGwgdGhl
-c2UgdmVyc2lvbnMgd2hlbiBob2xkaW5nIHRoZSBTUEkgYnVzIGxvY2suCj4+Pgo+Pj4gVGhlcmUg
-aXMgbm8gbmVlZCB0byBzcGVjaWZ5IHRoZSBzcGlfZGV2aWNlIGluIHRoZSBsb2NrIHJlcXVlc3Qu
-IMKgU2luY2UKPj4+IHRoZSBsb2NrIGlzIGV4Y2x1c2l2ZSwgaXQgaXMga25vd24gdGhhdCB0aGUg
-b25seSBkcml2ZXIgY2FsbGluZyB0aGUKPj4+IGxvY2tlZCBBUEkgdmVyc2lvbiBtdXN0IGFscmVh
-ZHkgaG9sZCB0aGUgbG9jay4KPj4KPj4gdGhpcyBpcyB3aGF0IGkgcHJvcG9zZWQgbGFzdCB0aW1l
-LCBidXQgd2UgaGF2ZW50IGdvdHRlbiBhcm91bmQgdG8KPj4gaW1wbGVtZW50aW5nIGl0Ogo+Pgo+
-PiB0aGVyZSdzIG5vdGhpbmcgQmxhY2tmaW4tc3BlY2lmaWMgaW4gdGhlIGltcGxlbWVudGF0aW9u
-IG9mIHRoZXNlCj4+IGZ1bmN0aW9ucy4gwqBpIHRoaW5rIHRoZSB3YXkgd2Ugc2hvdWxkIGJlIGhh
-bmRsaW5nIHRoZXNlIGlzIGJ5IGRvaW5nOgo+PiDCoC0gcmVtb3ZlIHtsb2NrLHVubG9ja31fYnVz
-IGZ1bmN0aW9ucyBmcm9tIHNwaV9tYXN0ZXIKPj4gwqAtIG1vdmUgdGhlIHtsb2NrLHVubG9ja31f
-YnVzIGNvZGUgZnJvbSBzcGlfYmZpbjV4eC5jIHRvIHNwaS5jCj4+IMKgLSBkcm9wIHRoZSBTUElf
-QkZJTl9MT0NLIEtjb25maWcKPgo+IEFtIEkgbWlzc2luZyBzb21ldGhpbmcuIEkgY2Fubm90IGZp
-bmQgYW55IGxvY2sgcmVsYXRlZCBmdW5jdGlvbnMgaW4KPiB0aGUgc3BpIGNvZGUuIMKgSXMgdGhp
-cyBzdHVmZiBpbiBtYWlubGluZT8KCmknbSBwcm9wb3Npbmcgd2hhdCBzaG91bGQgYmUgZG9uZS4g
-IHRoZXJlIGlzIG5vIGxvY2tpbmcgbG9naWMgYW55d2hlcmUgYXRtLgotbWlrZQoKLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tClNPTEFSSVMgMTAgaXMgdGhlIE9TIGZvciBEYXRhIENlbnRlcnMgLSBwcm92
-aWRlcyBmZWF0dXJlcyBzdWNoIGFzIERUcmFjZSwKUHJlZGljdGl2ZSBTZWxmIEhlYWxpbmcgYW5k
-IEF3YXJkIFdpbm5pbmcgWkZTLiBHZXQgU29sYXJpcyAxMCBOT1cKaHR0cDovL3Auc2YubmV0L3Nm
-dS9zb2xhcmlzLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Tue, Feb 16, 2010 at 5:07 PM, Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrot=
+e:
+> On Tue, Feb 16, 2010 at 15:43, Grant Likely wrote:
+>> On Tue, Feb 16, 2010 at 12:57 PM, Ernst Schwab wrote:
+>>> From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+>>>
+>>> For some MMC cards over SPI bus, it needs to lock the SPI bus for its o=
+wn
+>>> use. =A0The SPI transfer must not be interrupted by other SPI devices t=
+hat
+>>> share the SPI bus with SPI MMC card.
+>>>
+>>> This patch introduces 2 APIs for SPI bus locking operation.
+>>>
+>>> Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+>>> Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+>>> Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+>>> ---
+>>> Andrew: we've posted these in the past with no response. =A0could you p=
+ick
+>>> =A0 =A0 =A0 =A0them up please ?
+>>> =A0drivers/spi/spi.c =A0 =A0 =A0 | =A0 48 +++++++++++++++++++++++++++++=
+++++++++++++++++++
+>>> =A0include/linux/spi/spi.h | =A0 =A07 ++++++
+>>> =A02 files changed, 55 insertions(+), 0 deletions(-)
+>>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+>>> index 70845cc..b82b8ad 100644
+>>> --- a/drivers/spi/spi.c
+>>> +++ b/drivers/spi/spi.c
+>>> @@ -653,6 +653,54 @@ static void spi_complete(void *arg)
+>>> =A0}
+>>>
+>>> =A0/**
+>>> + * spi_lock_bus - lock SPI bus for exclusive access
+>>> + * @spi: device which want to lock the bus
+>>> + * Context: any
+>>> + *
+>>> + * Once the caller owns exclusive access to the SPI bus,
+>>> + * only messages for this device will be transferred.
+>>> + * Messages for other devices are queued but not transferred until
+>>> + * the bus owner unlock the bus.
+>>> + *
+>>> + * The caller may call spi_lock_bus() before spi_sync() or spi_async().
+>>> + * So this call may be used in irq and other contexts which can't slee=
+p,
+>>> + * as well as from task contexts which can sleep.
+>>> + *
+>>> + * It returns zero on success, else a negative error code.
+>>> + */
+>>> +int spi_lock_bus(struct spi_device *spi)
+>>> +{
+>>> + =A0 =A0 =A0 if (spi->master->lock_bus)
+>>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return spi->master->lock_bus(spi);
+>>> + =A0 =A0 =A0 else
+>>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 0;
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(spi_lock_bus);
+>>
+>> This series seems to try and solve the problem the hard way, and by
+>> creating a new locking scheme (and as history shows, new locking
+>> schemes are *alwasy* broken).
+>>
+>> Why is the locking getting pushed down to the bus driver level? =A0It
+>> seems to me that the whole thing could be handled with common code and
+>> a mutex in the spi_master structure. =A0spi_sync would be easy to handle
+>> by putting a mutex around the spi_message submission. =A0spi_async would
+>> be a little harder since it needs to be atomic, but that could also be
+>> handled with a flag protected by a spinlock.
+>>
+>> Basically, the idea is that existing drivers continue to use the API as-=
+is
+>>
+>> Drivers that want to lock the bus for exclusive access must call
+>> spi_lock_bus() which should take the mutex and then sleep until all
+>> in-flight spi_messages are processed. =A0After that, anyone calling
+>> spi_async() will simply sleep until the locker unlocks the bus again.
+>>
+>> To handle spi_sync() would probably require a flag protected by a
+>> spinlock. =A0If the flag is set, then spi_sync() would simply fail.
+>>
+>> Finally, the locking driver would need locked versions of spi_sync()
+>> and spi_async() that sidestep the lock checks. =A0It would only be valid
+>> to call these versions when holding the SPI bus lock.
+>>
+>> There is no need to specify the spi_device in the lock request. =A0Since
+>> the lock is exclusive, it is known that the only driver calling the
+>> locked API version must already hold the lock.
+>
+> this is what i proposed last time, but we havent gotten around to
+> implementing it:
+>
+> there's nothing Blackfin-specific in the implementation of these
+> functions. =A0i think the way we should be handling these is by doing:
+> =A0- remove {lock,unlock}_bus functions from spi_master
+> =A0- move the {lock,unlock}_bus code from spi_bfin5xx.c to spi.c
+> =A0- drop the SPI_BFIN_LOCK Kconfig
+> =A0- add a new spi_master flag to spi.h like SPI_MASTER_HALF_DUPLEX --
+> SPI_MASTER_LOCK_BUS
+> =A0- have spi_bfin5xx.c/bfin_sport_spi.c add that flag to its master setup
+> =A0- have the common spi code key off of that flag to return ENOSYS
+> =A0- have the mmc_spi code check that bit in the master before falling
+> back to its hack
+
+I think you're making it too complicated.  I think it can all be
+implemented without touching the spi_master drivers at all.  And I
+think the hack can be entirely removed from the mmc_spi code.  But I'm
+coming into this problem cold, please feel free to point out my
+mistaken assumptions and punch holes in my argument.  :-)
+
+g.
+
+---------------------------------------------------------------------------=
+---
+SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
+Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
+http://p.sf.net/sfu/solaris-dev2dev

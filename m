@@ -1,45 +1,115 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH V2] of: added documentation for spi chipselects
-Date: Wed, 17 Feb 2010 07:33:53 -0700
-Message-ID: <fa686aa41002170633n5848eae7nacca8f33f605d1a4@mail.gmail.com>
-References: <20100216193957.ccdffee2.eschwab@online.de>
-	<20100216201459.GA17428@pengutronix.de>
-	<20100217132322.76cea805.eschwab@online.de>
-	<20100217134138.GC26125@pengutronix.de>
+From: =?ISO-8859-1?Q?Jos=E9_Miguel_Gon=E7alves?= <jose.goncalves@inov.pt>
+Subject: [PATCH] spi_s3c24xx: Fix for SPI on S3C2412
+Date: Wed, 17 Feb 2010 18:09:35 +0000
+Message-ID: <4B7C30DF.90805@inov.pt>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <20100217134138.GC26125-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Content-Type: multipart/mixed;
+ boundary="------------020001050709070404040205"
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Simtec Linux Team <linux@simtec.co.uk>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Russell King <linux@arm.linux.org.uk>, Ben Dooks <ben@simtec.co.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 17, 2010 at 6:41 AM, Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> On Wed, Feb 17, 2010 at 01:23:22PM +0100, Ernst Schwab wrote:
->> From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
->>
->> Added devicetree binding documentation for gpios used as chipselect. The
->> code to evaluate these is already present in spi_mpc8xxx.c.
->>
->> Signed-off-by: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
->
-> Hmm, as Grant merged the original patch already, it might be necessary to
-> convert this into a follow-up patch. He will surely tell you. For both
-> versions, you can add my
->
-> Reviewed-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+This is a multi-part message in MIME format.
+--------------020001050709070404040205
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
 
-I'll just patch up the one in my tree.  Don't worry about it.
+Hi,
 
-g.
+Testing some SPI temperature sensors and ADCs with a S3C4212 host I have 
+found that I could not read the correct data.  I've probed the SPI 
+signals with a scope and everything seemed OK.
+I dig into the driver sources and on the S3C2412 datasheet to find that 
+this device can not use the same S3C2410 driver's code because of the 
+added FIFOs, even if not used. The following patch is needed to make the 
+driver to work on the S3C2412 chip (and probably on the S3C2413).
+
+Regards,
+José Miguel Gonçalves
+
+--------------020001050709070404040205
+Content-Type: text/x-patch;
+ name="linux-2.6.git-spi_s3c2412.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="linux-2.6.git-spi_s3c2412.patch"
+
+Signed-off-by: Jose Miguel Goncalves <jose.goncalves@inov.pt>
+
+diff --git a/arch/arm/mach-s3c2412/s3c2412.c b/arch/arm/mach-s3c2412/s3c2412.c
+index bef39f7..c58330f 100644
+--- a/arch/arm/mach-s3c2412/s3c2412.c
++++ b/arch/arm/mach-s3c2412/s3c2412.c
+@@ -100,11 +100,9 @@ void __init s3c2412_init_uarts(struct s3c2410_uartcfg *cfg, int no)
+ 	s3c_device_sdi.resource[1].end   = IRQ_S3C2412_SDI;
+ 
+ 	/* spi channel related changes, s3c2412/13 specific */
+-	s3c_device_spi0.name = "s3c2412-spi";
+-	s3c_device_spi0.resource[0].end = S3C24XX_PA_SPI + 0x24;
+-	s3c_device_spi1.name = "s3c2412-spi";
++	s3c_device_spi0.resource[0].end = S3C24XX_PA_SPI + 0x2F;
+ 	s3c_device_spi1.resource[0].start = S3C24XX_PA_SPI + S3C2412_SPI1;
+-	s3c_device_spi1.resource[0].end = S3C24XX_PA_SPI + S3C2412_SPI1 + 0x24;
++	s3c_device_spi1.resource[0].end = S3C24XX_PA_SPI + S3C2412_SPI1 + 0x2F;
+ 
+ }
+ 
+diff --git a/arch/arm/plat-s3c24xx/include/plat/regs-spi.h b/arch/arm/plat-s3c24xx/include/plat/regs-spi.h
+index 2b35479..57e799c 100644
+--- a/arch/arm/plat-s3c24xx/include/plat/regs-spi.h
++++ b/arch/arm/plat-s3c24xx/include/plat/regs-spi.h
+@@ -75,7 +75,8 @@
+ #define S3C2410_SPRDAT	 (0x14)
+ 
+ #define S3C2412_TXFIFO	 (0x18)
+-#define S3C2412_RXFIFO	 (0x18)
++#define S3C2412_RXFIFO	 (0x1C)
++#define S3C2412_SPRDATB	 (0x20)
+ #define S3C2412_SPFIC	 (0x24)
+ 
+ 
+diff --git a/drivers/spi/spi_s3c24xx.c b/drivers/spi/spi_s3c24xx.c
+index c010733..9c57715 100644
+--- a/drivers/spi/spi_s3c24xx.c
++++ b/drivers/spi/spi_s3c24xx.c
+@@ -440,6 +440,12 @@ static int s3c24xx_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
+ 	return hw->count;
+ }
+ 
++#ifdef CONFIG_CPU_S3C2412
++#define SPRDAT S3C2412_SPRDATB
++#else
++#define SPRDAT S3C2410_SPRDAT
++#endif
++
+ static irqreturn_t s3c24xx_spi_irq(int irq, void *dev)
+ {
+ 	struct s3c24xx_spi *hw = dev;
+@@ -462,7 +468,7 @@ static irqreturn_t s3c24xx_spi_irq(int irq, void *dev)
+ 		hw->count++;
+ 
+ 		if (hw->rx)
+-			hw->rx[count] = readb(hw->regs + S3C2410_SPRDAT);
++			hw->rx[count] = readb(hw->regs + SPRDAT);
+ 
+ 		count++;
+ 
+@@ -475,7 +481,7 @@ static irqreturn_t s3c24xx_spi_irq(int irq, void *dev)
+ 		hw->fiq_inuse = 0;
+ 
+ 		if (hw->rx)
+-			hw->rx[hw->len-1] = readb(hw->regs + S3C2410_SPRDAT);
++			hw->rx[hw->len-1] = readb(hw->regs + SPRDAT);
+ 
+ 		complete(&hw->done);
+ 	}
+
+--------------020001050709070404040205--

@@ -1,84 +1,68 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 1/5] spi: spi_lock_bus and
-	spi_unlock_bus
-Date: Wed, 17 Feb 2010 06:30:51 -0700
-Message-ID: <fa686aa41002170530i2ae007c2ia4f2ad185dfd2713@mail.gmail.com>
-References: <20100216204450.e043eed8.eschwab@online.de>
-	<20100216205720.ebe949a1.eschwab@online.de>
-	<fa686aa41002161243y6e24e439yff54a28cbe295de3@mail.gmail.com>
-	<552DB282258F46CE995A09EF352B1094@pces>
-	<fa686aa41002162032l2a2bc065t1f53d7b79760b2dd@mail.gmail.com>
-	<CA3825EF38754795BC8264175475E1F0@pces>
+From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] of: added documentation for spi chipselects, follow-up patch
+Date: Wed, 17 Feb 2010 15:15:18 +0100
+Message-ID: <20100217151518.42e0a5ba.eschwab@online.de>
+References: <20100216193957.ccdffee2.eschwab@online.de>
+	<20100216201459.GA17428@pengutronix.de>
+	<20100217132322.76cea805.eschwab@online.de>
+	<20100217134138.GC26125@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
-To: Ernst Schwab <mail-3FdAPXqljGQisWB6T/0fQA@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CA3825EF38754795BC8264175475E1F0@pces>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <20100217134138.GC26125-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 17, 2010 at 12:35 AM, Ernst Schwab <mail-3FdAPXqljGQisWB6T/0fQA@public.gmane.org> wrote:
-> Grant Likely wrote:
->
->> It sounds like you're very worried about making changes to the core
->> code,
->
-> Maybe...
->
->> In fact, now that I've had an evening to think about it, the solution
->> is even simpler than what I said earlier. =A0It requires 3 things to be
->> added to struct spi_master.
->> - 1 Mutex
->> - 1 spin lock
->> - 1 flag.
->
->> The mutex protects spi_async, and provides sleeping "for free"
->> The spinlock protects the atomic spi_sync call.
->
-> Sound viable and good, but, in Documentation/spi/spi-summary we have:
->
-> "
-> The basic I/O primitive is spi_async(). =A0Async requests may be
-> issued in any context (irq handler, task, etc) and completion
-> is reported using a callback provided with the message.
-> After any detected error, the chip is deselected and processing
-> of that spi_message is aborted.
-> "
->
-> Is this compatible with a Mutex protecting spi_async?
-> It seems to me, that spi_async must queue the SPI message
-> immediately and return. The queue is implemented in the SPI master driver=
-. I
-> suppose that's why the blackfin bus locking pioneers chose to make the
-> change in the SPI master driver.
+From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 
-No, sorry, I made a mistake and got the functions backwards when I was
-writing up my description.  What I meant to say is:
+Improved comments and formatting of devicetree binding documentation 
+for gpios used as chipselect. 
 
-spi_sync() is protected by a mutex because it can sleep
-spi_async() needs to be protected with a flag and a spinlock because
-it can be called atomically and must not sleep
-
-Cheers,
-g.
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
+Signed-off-by: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+Reviewed-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
-SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
-Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
-http://p.sf.net/sfu/solaris-dev2dev
+Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
+
+> Hmm, as Grant merged the original patch already, it might be necessary to
+> convert this into a follow-up patch. He will surely tell you. For both
+> versions, you can add my
+> 
+> Reviewed-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+
+Ok, I understand - I have to get used to it...
+
+diff -upr a/Documentation/powerpc/dts-bindings/fsl/spi.txt b/Documentation/powerpc/dts-bindings/fsl/spi.txt
+--- a/Documentation/powerpc/dts-bindings/fsl/spi.txt
++++ b/Documentation/powerpc/dts-bindings/fsl/spi.txt
+@@ -14,8 +14,8 @@ Required properties:
+   services interrupts for this device.
+ 
+ Optional properties:
+-- gpios : specifies the gpio pins to be used for chipselects. 
+-  The gpios will be referred to as reg=<index> in the SPI child nodes.
++- gpios : specifies the gpio pins to be used for chipselects.
++  The gpios will be referred to as reg = <index> in the SPI child nodes.
+   If unspecified, a single SPI device without a chip select can be used.
+ 
+ Example:
+@@ -26,6 +26,6 @@ Example:
+ 		interrupts = <82 0>;
+ 		interrupt-parent = <700>;
+ 		mode = "cpu";
+-		gpios = <&gpio 18 1	// device reg=<0>, low-active
+-			 &gpio 19 1>;	// device reg=<1>, low-active
++		gpios = <&gpio 18 1	// device reg = <0>
++			 &gpio 19 1>;	// device reg = <1>
+ 	};

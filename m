@@ -1,22 +1,14 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] Add support for slave controllers
-	plus sysfs entries for power management
-Date: Tue, 16 Feb 2010 20:19:31 -0700
-Message-ID: <fa686aa41002161919r5da78e4bhd4531f8141d0bbc8@mail.gmail.com>
-References: <1261170416.10785.5.camel@ubuntu-vmware>
-	<fa686aa41001190759j1d916f87o309efe37b3e96bf4@mail.gmail.com>
-	<63386a3d1002141520p7cf33256vd8d6f7c23f61b0fe@mail.gmail.com>
-	<1b68c6791002141737l6211c88dy79c762a3761cc93c@mail.gmail.com>
-	<63386a3d1002161133k501e51f4xf4e94a307cb4fcf5@mail.gmail.com>
-	<4B7B048C.8080205@whoi.edu>
+From: "=?utf-8?B?0J7RgtCy0LXRgtGLINC90LAg0LLQvtC/0YDQvtGB0Ys=?="
+	<tovezejicy-AGEZhWnf4Rsox3rIn2DAYQ@public.gmane.org>
+Subject: =?utf-8?b?W1NQQU1dINCo0YLRgNCw0YTQvdGL0LUg?=
+	=?utf-8?b?0YHQsNC90LrRhtC40Lgg0LIgINGA0LDQsdC+0YLQtSDRgSDQutCw0LQ=?=
+	=?utf-8?b?0YDQsNC80Lg=?=
+Date: Wed, 17 Feb 2010 06:46:46 +0300
+Message-ID: <1119716644.20100217064646@nextmail.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============4665005951809599149=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4B7B048C.8080205-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,63 +19,310 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 16, 2010 at 1:48 PM, Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrote:
-> On 02/16/2010 02:33 PM, Linus Walleij wrote:
->> 2010/2/15 jassi brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
->>
->>> I don't think adding SPI_SLAVE support is just a matter of providing
->>> additional callbacks and structures, as is pointed out in this thread..=
-..
->>> http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg=
-00368.html
->>
->> You mean that the responsiveness / control of latencies is the other thi=
-ng
->> that's needed? Yep so it is. But getting the infrastructure in place doe=
-sn't
->> hurt because this is something many people (including self) need and Ken
->> over at Intel is the only one actually doing something about it.
->>
->> Getting SPI slaves to actually work by spawning their worker threads as
->> realtime under that patchset is of course a larger issue. One does not
->> exclude the other tho.
->
-> I'm a little fuzzy on what application you have in mind for this. =A0It
-> doesn't seem productive to lay in a layer of changes for slave operation
-> before knowing if it is possible to create a useful slave. =A0Putting the
-> infrastructure before determining feasibility seems the wrong way
-> around, especially since you wouldn't be sure what support to add unless
-> you have a working model.
+This is a multi-part message in MIME format.
 
-exactly right.  Otherwise it is premature generalization.
+--===============4665005951809599149==
+Content-Type: multipart/alternative;
+	boundary="----------6TGPGXXY0Z2RIPD"
 
-> As pointed out in the above thread (by David Brownell, not by me), many
-> masters expect the slave to respond within one SPI clock cycle (between
-> the last bit of the command and the first bit of the response). =A0On a
-> 400MHz PXA processor, I have measured interrupt latency in excess of
-> 600us (100us min, 200us typ), so that would imply a maximum SPI clock of
-> 1kHz for generalized slave operation. =A0I'm not sure how many
-> applications would be happy with that; likely a few. =A0I don't think use
-> of real time threads will decrease the latency significantly; that is to
-> say: whatever reduced latency is achievable is likely to still present a
-> significant limit on SPI clock rate for the general case.
->
-> If, on the other hand, you mean to develop restricted slave capability,
-> such as the always-predictable case of data-streaming between a single
-> slave/master pair, that would be different. =A0 That is the way my slave
-> application (and likely others) work. =A0Note that I did not need any
-> changes to the SPI core for that application, only to the device drivers.
->
-> I don't mean to be negative, just realistic. =A0It's only worth adding
-> this capability if there is a clear case that it will be useful in practi=
-ce.
+This is a multi-part message in MIME format.
 
-Well said.  You've pretty much nailed it from my perspective.
+------------6TGPGXXY0Z2RIPD
+Content-Type: text/plain;
+	charset=windows-1251
+Content-Transfer-Encoding: quoted-printable
 
-g.
+=C4=EB=FF =F0=F3=EA=EE=E2=EE=E4=E8=F2=E5=EB=E5=E9 =E8 =
+=F1=EF=E5=F6=E8=E0=EB=E8=F1=F2=EE=E2 =EA=E0=E4=F0=EE=E2=FB=F5 =
+=F1=EB=F3=E6=E1,
+=F0=F3=EA=EE=E2=EE=E4=E8=F2=E5=EB=E5=E9 =
+=EE=F0=E3=E0=ED=E8=E7=E0=F6=E8=E9
 
----------------------------------------------------------------------------=
----
+25 =F4=E5=E2=F0=E0=EB=FF 2010 =E3.
+=CA=E0=E4=F0=EE=E2=EE=E5 =
+=E4=E5=EB=EE=EF=F0=EE=E8=E7=E2=EE=E4=F1=F2=E2=EE =E8 =
+=EF=F0=E0=E2=EE=E2=EE=E5 =F0=E5=E3=F3=EB=E8=F0=EE=E2=E0=ED=E8=E5=20
+=F2=F0=F3=E4=EE=E2=FB=F5 =EE=F2=ED=EE=F8=E5=ED=E8=E9 =F1 =
+=F3=F7=E5=F2=EE=EC =EF=EE=F1=EB=E5=E4=ED=E8=F5 =
+=E8=E7=EC=E5=ED=E5=ED=E8=E9 =E2 2010 =E3.
+
+=CB=E5=EA=F2=EE=F0 - =C0=ED=E4=F0=E5=E5=E2=E0 =
+=C2=E0=EB=E5=ED=F2=E8=ED=E0 =C8=E2=E0=ED=EE=E2=ED=E0 =96 =EA.=E8.=ED., =
+=EF=F0=EE=F4=E5=F1=F1=EE=F0 =EA=E0=F4=E5=E4=F0=FB =
+=F2=F0=F3=E4=EE=E2=EE=E3=EE=20
+=EF=F0=E0=E2=E0 =D0=EE=F1=F1=E8=E9=F1=EA=EE=E9 =E0=EA=E0=E4=E5=EC=E8=E8 =
+=EF=F0=E0=E2=EE=F1=F3=E4=E8=FF, =F7=EB=E5=ED =CA=EE=EC=E8=F2=E5=F2=E0 =
+=EF=EE =F2=F0=F3=E4=EE=E2=EE=EC=F3=20
+=E7=E0=EA=EE=ED=EE=E4=E0=F2=E5=EB=FC=F1=F2=E2=F3 =
+=CD=E0=F6=E8=EE=ED=E0=EB=FC=ED=EE=E3=EE =F1=EE=FE=E7=E0 =
+=EA=E0=E4=F0=EE=E2=E8=EA=EE=E2. =C0=E2=F2=EE=F0 =EA=ED=E8=E3 =EF=EE =
+=EA=E0=E4=F0=EE=E2=EE=EC=F3=20
+=E4=E5=EB=EE=EF=F0=EE=E8=E7=E2=EE=E4=F1=F2=E2=F3.
+=CF=F0=E0=E2=EE=E2=FB=E5 =EE=F1=ED=EE=E2=FB =
+=E4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=FF =
+=E4=E5=FF=F2=E5=EB=FC=ED=EE=F1=F2=E8 =EA=E0=E4=F0=EE=E2=FB=F5 =
+=F1=EB=F3=E6=E1
+=D2=F0=E5=E1=EE=E2=E0=ED=E8=FF =EA =EA=E0=E4=F0=EE=E2=EE=EC=F3 =
+=E4=E5=EB=EE=EF=F0=EE=E8=E7=E2=EE=E4=F1=F2=E2=F3, =
+=EF=F0=E5=E4=F3=F1=EC=EE=F2=F0=E5=ED=ED=FB=E5 =D2=CA =D0=D4. =
+=C3=EE=F1=F3=E4=E0=F0=F1=F2=E2=E5=ED=ED=FB=E9 =ED=E0=E4=E7=EE=F0 =E8=20
+=EA=EE=ED=F2=F0=EE=EB=FC =E7=E0 =F1=EE=E1=EB=FE=E4=E5=ED=E8=E5=EC =
+=E7=E0=EA=EE=ED=EE=E4=E0=F2=E5=EB=FC=F1=F2=E2=E0 =E2 =
+=EE=E1=EB=E0=F1=F2=E8 =E4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=FF =
+=F0=E0=E1=EE=F2=FB =F1 =EA=E0=E4=F0=E0=EC=E8.=20
+=D8=F2=F0=E0=F4=ED=FB=E5 =F1=E0=ED=EA=F6=E8=E8 =E7=E0 =
+=ED=E0=F0=F3=F8=E5=ED=E8=E5 =EF=EE=F0=FF=E4=EA=E0 =F0=E0=E1=EE=F2=FB =F1 =
+=EA=E0=E4=F0=EE=E2=EE=E9 =E4=EE=EA=F3=EC=E5=ED=F2=E0=F6=E8=E5=E9.
+=D1=E8=F1=F2=E5=EC=E0 =EA=E0=E4=F0=EE=E2=EE=E9 =
+=E4=EE=EA=F3=EC=E5=ED=F2=E0=F6=E8=E8. =D1=EE=F1=F2=E0=E2 =
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2 =EA=E0=E4=F0=EE=E2=EE=E9 =
+=F1=EB=F3=E6=E1=FB. =CD=EE=F0=EC=E0=F2=E8=E2=ED=EE-
+=EC=E5=F2=EE=E4=E8=F7=E5=F1=EA=E8=E5 =EE=F1=ED=EE=E2=FB =
+=EE=F4=EE=F0=EC=EB=E5=ED=E8=FF =EA=E0=E4=F0=EE=E2=FB=F5 =
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2. =
+=D3=ED=E8=F4=E8=F6=E8=F0=EE=E2=E0=ED=ED=FB=E5 =F1=E8=F1=F2=E5=EC=FB=20
+=E4=EE=EA=F3=EC=E5=ED=F2=E0=F6=E8=E8, =EF=F0=E8=EC=E5=ED=FF=E5=EC=FB=E5 =
+=E2 =EF=F0=EE=F6=E5=F1=F1=E5 =
+=E4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=FF =F0=E0=E1=EE=F2=FB =F1 =
+=EF=E5=F0=F1=EE=ED=E0=EB=EE=EC. =C4=E5=EB=E5=E3=E8=F0=EE=E2=E0=ED=E8=E5=20
+=EF=EE=EB=ED=EE=EC=EE=F7=E8=E9 =EF=F0=E8 =E8=E7=E4=E0=ED=E8=E8 =
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2. =CF=EE=F0=FF=E4=EE=EA =
+=EF=F0=E8=E4=E0=ED=E8=FF =E4=EE=EA=F3=EC=E5=ED=F2=E0=EC =
+=FE=F0=E8=E4=E8=F7=E5=F1=EA=EE=E9 =F1=E8=EB=FB.=20
+=D2=E8=EF=E8=F7=ED=FB=E5 =EE=F8=E8=E1=EA=E8 =E2 =
+=EE=F4=EE=F0=EC=EB=E5=ED=E8=E8 =E4=EE=EA=F3=EC=E5=ED=F2=EE=E2, =
+=F1=F3=E4=E5=E1=ED=E0=FF =EF=F0=E0=EA=F2=E8=EA=E0.
+=C4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=E5 =
+=EF=F0=EE=F6=E5=E4=F3=F0 =EF=EE=E4=E1=EE=F0=E0 =E8 =EE=F2=E1=EE=F0=E0 =
+=EF=E5=F0=F1=EE=ED=E0=EB=E0. =CF=F0=EE=E2=E5=F0=EA=E0 =
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2,=20
+=EF=F0=E5=E4=FA=FF=E2=EB=FF=E5=EC=FB=F5 =EF=F0=E8 =EF=F0=E8=E5=EC=E5 =
+=ED=E0 =F0=E0=E1=EE=F2=F3. =CE=EF=F0=E5=E4=E5=EB=E5=ED=E8=E5 =
+=EF=EE=E4=EB=E8=ED=ED=EE=F1=F2=E8 =E4=EE=EA=F3=EC=E5=ED=F2=EE=E2. =
+=CF=E8=F1=FC=EC=E5=ED=ED=FB=E9 =EE=F2=EA=E0=E7=20
+=E2 =EF=F0=E8=E5=EC=E5 =ED=E0 =F0=E0=E1=EE=F2=F3: =
+=EE=E1=FF=E7=E0=F2=E5=EB=FC=ED=EE=F1=F2=FC =
+=F1=EE=F1=F2=E0=E2=EB=E5=ED=E8=FF, =EF=F0=E0=E2=E8=EB=FC=ED=EE=F1=F2=FC =
+=EE=F4=EE=F0=EC=EB=E5=ED=E8=FF, =EE=E1=E6=E0=EB=EE=E2=E0=ED=E8=E5 =E2 =
+=F1=F3=E4=E5.
+=C4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=E5 =
+=EF=F0=EE=F6=E5=E4=F3=F0, =EF=F0=E5=E4=F8=E5=F1=F2=E2=F3=FE=F9=E8=F5 =
+=E7=E0=EA=EB=FE=F7=E5=ED=E8=FE =F2=F0=F3=E4=EE=E2=EE=E3=EE =
+=E4=EE=E3=EE=E2=EE=F0=E0
+=C4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=E5 =
+=F2=F0=F3=E4=EE=E2=FB=F5 =EE=F2=ED=EE=F8=E5=ED=E8=E9. =C2=E8=E4=FB =
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2 =E8 =EF=F0=E0=E2=E8=EB=E0 =E8=F5=20
+=EE=F4=EE=F0=EC=EB=E5=ED=E8=FF =CE=F4=EE=F0=EC=EB=E5=ED=E8=E5 =
+=EF=F0=E8=E5=EC=E0 =ED=E0 =F0=E0=E1=EE=F2=F3, =
+=EE=E1=FF=E7=E0=F2=E5=EB=FC=ED=FB=E5 =E8 =
+=F0=E5=EA=EE=EC=E5=ED=E4=E0=F2=E5=EB=FC=ED=FB=E5 =
+=E4=EE=EA=F3=EC=E5=ED=F2=FB..=20
+=C4=EE=EA=F3=EC=E5=ED=F2=FB, =F1=EE=E7=E4=E0=E2=E0=E5=EC=FB=E5 =EF=F0=E8 =
+=E8=E7=EC=E5=ED=E5=ED=E8=E8 =F2=F0=F3=E4=EE=E2=EE=E3=EE =
+=E4=EE=E3=EE=E2=EE=F0=E0. =
+=C4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=E5 =
+=EF=F0=E5=EA=F0=E0=F9=E5=ED=E8=FF=20
+=F2=F0=F3=E4=EE=E2=EE=E3=EE =E4=EE=E3=EE=E2=EE=F0=E0. =
+=C4=EE=EA=F3=EC=E5=ED=F2=FB-=EE=F1=ED=EE=E2=E0=ED=E8=FF =E4=EB=FF =
+=F3=E2=EE=EB=FC=ED=E5=ED=E8=FF =F0=E0=E1=EE=F2=ED=E8=EA=EE=E2.
+
+=D1=F2=EE=E8=EC=EE=F1=F2=FC =F3=F7=E0=F1=F2=E8=FF =
+=F1=E5=EC=E8=ED=E0=F0=E0 6990 =F0=F3=E1.=20
+=CF=EE =EE=EA=EE=ED=F7=E0=ED=E8=E8 =F1=E5=EC=E8=ED=E0=F0=E0 =
+=E2=FB=E4=E0=B8=F2=F1=FF =F1=E5=F0=F2=E8=F4=E8=EA=E0=F2.
+
+=CC=E5=F1=F2=EE =EF=F0=EE=E2=E5=E4=E5=ED=E8=FF: =E3.=CC=EE=F1=EA=E2=E0 =
+=D3=D6=C1=C0=20
+=C7=E0=FF=E2=EA=E8 =ED=E0 =F3=F7=E0=F1=F2=E8=E5 =EF=EE =F2=E5=EB. (495) =
+741-87-05, 506-30-78
+=CF=F0=E8 =F3=F7=E0=F1=F2=E8=E8 =E2 =E4=E2=F3=F5 =
+=F1=E5=EC=E8=ED=E0=F0=E0=F5 =F1=EA=E8=E4=EA=E0 10 %
+
+26 =F4=E5=E2=F0=E0=EB=FF 2010 =C0=F0=F5=E8=E2 =E8 =
+=E4=E5=EB=EE=EF=F0=EE=E8=E7=E2=EE=E4=F1=F2=E2=EE =
+=EF=F0=E5=E4=EF=F0=E8=FF=F2=E8=FF -=20
+=F1=EE=E2=F0=E5=EC=E5=ED=ED=FB=E5 =F2=F0=E5=E1=EE=E2=E0=ED=E8=FF. =
+=D1=E5=EC=E8=ED=E0=F0 =E2=E5=E4=B8=F2: =C6=F3=F0=E0=E2=EB=B8=E2=E0 =
+=CC.=C2
+=CD=EE=F0=EC=E0=F2=E8=E2=ED=FB=E5 =E8 =
+=EC=E5=F2=EE=E4=E8=F7=E5=F1=EA=E8=E5 =E4=EE=EA=F3=EC=E5=ED=F2=FB =EF=EE =
+=E0=F0=F5=E8=E2=ED=EE=EC=F3 =E4=E5=EB=F3.=20
+=D2=F0=E5=E1=EE=E2=E0=ED=E8=FF =D4=E5=E4=E5=F0=E0=EB=FC=ED=EE=E9 =
+=C0=F0=F5=E8=E2=ED=EE=E9 =D1=EB=F3=E6=E1=FB. =
+=CD=EE=EC=E5=ED=EA=EB=E0=F2=F3=F0=E0 =E4=E5=EB. =
+=CE=F0=E3=E0=ED=E8=E7=E0=F6=E8=FF =F0=E0=E1=EE=F2=FB =E8=20
+=F5=F0=E0=ED=E5=ED=E8=FF =E1=F3=F5=E3=E0=EB=F2=E5=F0=F1=EA=E8=F5 =
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2. =C2=ED=E5=EE=F4=E8=F1=ED=EE=E5 =
+=F5=F0=E0=ED=E5=ED=E8=E5 =E4=EE=EA=F3=EC=E5=ED=F2=EE=E2.
+=D1=F2=EE=E8=EC=EE=F1=F2=FC =F3=F7=E0=F1=F2=E8=FF 7000 =F0=F3=E1.
+
+------------6TGPGXXY0Z2RIPD
+Content-Type: text/html;
+	charset=windows-1251
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dwindows-1251">
+<META content=3D"MSHTML 6.00.2900.5512" name=3DGENERATOR>
+<STYLE>Tarelka</STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV>
+<P><B><FONT color=3D#ff0000 size=3D4>=C4=EB=FF =
+=F0=F3=EA=EE=E2=EE=E4=E8=F2=E5=EB=E5=E9 =E8 =
+=F1=EF=E5=F6=E8=E0=EB=E8=F1=F2=EE=E2 =EA=E0=E4=F0=EE=E2=FB=F5=20
+=F1=EB=F3=E6=E1,<BR>=F0=F3=EA=EE=E2=EE=E4=E8=F2=E5=EB=E5=E9 =
+=EE=F0=E3=E0=ED=E8=E7=E0=F6=E8=E9</FONT></B></P>
+<P align=3Dcenter><B><FONT size=3D4>25 =F4=E5=E2=F0=E0=EB=FF 2010 =
+=E3.<BR>=CA=E0=E4=F0=EE=E2=EE=E5 =
+=E4=E5=EB=EE=EF=F0=EE=E8=E7=E2=EE=E4=F1=F2=E2=EE=20
+=E8 =EF=F0=E0=E2=EE=E2=EE=E5 =F0=E5=E3=F3=EB=E8=F0=EE=E2=E0=ED=E8=E5 =
+<BR>=F2=F0=F3=E4=EE=E2=FB=F5 =EE=F2=ED=EE=F8=E5=ED=E8=E9 =F1 =
+=F3=F7=E5=F2=EE=EC =EF=EE=F1=EB=E5=E4=ED=E8=F5 =
+=E8=E7=EC=E5=ED=E5=ED=E8=E9 =E2=20
+2010 =E3.</FONT></B></P>
+<P><FONT color=3D#ff0000><B>=CB=E5=EA=F2=EE=F0 - =
+=C0=ED=E4=F0=E5=E5=E2=E0 =C2=E0=EB=E5=ED=F2=E8=ED=E0 =
+=C8=E2=E0=ED=EE=E2=ED=E0 =96 =EA.=E8.=ED.,=20
+=EF=F0=EE=F4=E5=F1=F1=EE=F0 =EA=E0=F4=E5=E4=F0=FB =
+=F2=F0=F3=E4=EE=E2=EE=E3=EE <BR>=EF=F0=E0=E2=E0 =
+=D0=EE=F1=F1=E8=E9=F1=EA=EE=E9 =E0=EA=E0=E4=E5=EC=E8=E8 =
+=EF=F0=E0=E2=EE=F1=F3=E4=E8=FF, =F7=EB=E5=ED=20
+=CA=EE=EC=E8=F2=E5=F2=E0 =EF=EE =F2=F0=F3=E4=EE=E2=EE=EC=F3 =
+<BR>=E7=E0=EA=EE=ED=EE=E4=E0=F2=E5=EB=FC=F1=F2=E2=F3 =
+=CD=E0=F6=E8=EE=ED=E0=EB=FC=ED=EE=E3=EE =F1=EE=FE=E7=E0 =
+=EA=E0=E4=F0=EE=E2=E8=EA=EE=E2. =C0=E2=F2=EE=F0=20
+=EA=ED=E8=E3 =EF=EE =EA=E0=E4=F0=EE=E2=EE=EC=F3 =
+<BR>=E4=E5=EB=EE=EF=F0=EE=E8=E7=E2=EE=E4=F1=F2=E2=F3.</B></FONT><BR><B>=CF=
+=F0=E0=E2=EE=E2=FB=E5 =EE=F1=ED=EE=E2=FB=20
+=E4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=FF =
+=E4=E5=FF=F2=E5=EB=FC=ED=EE=F1=F2=E8 =EA=E0=E4=F0=EE=E2=FB=F5 =
+=F1=EB=F3=E6=E1</B><BR>=D2=F0=E5=E1=EE=E2=E0=ED=E8=FF =EA =
+=EA=E0=E4=F0=EE=E2=EE=EC=F3=20
+=E4=E5=EB=EE=EF=F0=EE=E8=E7=E2=EE=E4=F1=F2=E2=F3, =
+=EF=F0=E5=E4=F3=F1=EC=EE=F2=F0=E5=ED=ED=FB=E5 =D2=CA =D0=D4. =
+=C3=EE=F1=F3=E4=E0=F0=F1=F2=E2=E5=ED=ED=FB=E9 =ED=E0=E4=E7=EE=F0 =E8 =
+<BR>=EA=EE=ED=F2=F0=EE=EB=FC=20
+=E7=E0 =F1=EE=E1=EB=FE=E4=E5=ED=E8=E5=EC =
+=E7=E0=EA=EE=ED=EE=E4=E0=F2=E5=EB=FC=F1=F2=E2=E0 =E2 =
+=EE=E1=EB=E0=F1=F2=E8 =E4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=FF =
+=F0=E0=E1=EE=F2=FB =F1 =EA=E0=E4=F0=E0=EC=E8.=20
+<BR>=D8=F2=F0=E0=F4=ED=FB=E5 =F1=E0=ED=EA=F6=E8=E8 =E7=E0 =
+=ED=E0=F0=F3=F8=E5=ED=E8=E5 =EF=EE=F0=FF=E4=EA=E0 =F0=E0=E1=EE=F2=FB =F1 =
+=EA=E0=E4=F0=EE=E2=EE=E9=20
+=E4=EE=EA=F3=EC=E5=ED=F2=E0=F6=E8=E5=E9.<BR><B>=D1=E8=F1=F2=E5=EC=E0 =
+=EA=E0=E4=F0=EE=E2=EE=E9 =E4=EE=EA=F3=EC=E5=ED=F2=E0=F6=E8=E8.</B> =
+=D1=EE=F1=F2=E0=E2 =E4=EE=EA=F3=EC=E5=ED=F2=EE=E2=20
+=EA=E0=E4=F0=EE=E2=EE=E9 =F1=EB=F3=E6=E1=FB. =
+=CD=EE=F0=EC=E0=F2=E8=E2=ED=EE-<BR>=EC=E5=F2=EE=E4=E8=F7=E5=F1=EA=E8=E5 =
+=EE=F1=ED=EE=E2=FB =EE=F4=EE=F0=EC=EB=E5=ED=E8=FF =
+=EA=E0=E4=F0=EE=E2=FB=F5=20
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2. =
+=D3=ED=E8=F4=E8=F6=E8=F0=EE=E2=E0=ED=ED=FB=E5 =F1=E8=F1=F2=E5=EC=FB =
+<BR>=E4=EE=EA=F3=EC=E5=ED=F2=E0=F6=E8=E8, =
+=EF=F0=E8=EC=E5=ED=FF=E5=EC=FB=E5 =E2 =EF=F0=EE=F6=E5=F1=F1=E5=20
+=E4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=FF =F0=E0=E1=EE=F2=FB =F1 =
+=EF=E5=F0=F1=EE=ED=E0=EB=EE=EC. =C4=E5=EB=E5=E3=E8=F0=EE=E2=E0=ED=E8=E5 =
+<BR>=EF=EE=EB=ED=EE=EC=EE=F7=E8=E9 =EF=F0=E8 =E8=E7=E4=E0=ED=E8=E8=20
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2. =CF=EE=F0=FF=E4=EE=EA =
+=EF=F0=E8=E4=E0=ED=E8=FF =E4=EE=EA=F3=EC=E5=ED=F2=E0=EC =
+=FE=F0=E8=E4=E8=F7=E5=F1=EA=EE=E9 =F1=E8=EB=FB. =
+<BR>=D2=E8=EF=E8=F7=ED=FB=E5 =EE=F8=E8=E1=EA=E8 =E2=20
+=EE=F4=EE=F0=EC=EB=E5=ED=E8=E8 =E4=EE=EA=F3=EC=E5=ED=F2=EE=E2, =
+=F1=F3=E4=E5=E1=ED=E0=FF =
+=EF=F0=E0=EA=F2=E8=EA=E0.<BR><B>=C4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=
+=E8=E5 =EF=F0=EE=F6=E5=E4=F3=F0=20
+=EF=EE=E4=E1=EE=F0=E0 =E8 =EE=F2=E1=EE=F0=E0 =
+=EF=E5=F0=F1=EE=ED=E0=EB=E0.</B> =CF=F0=EE=E2=E5=F0=EA=E0 =
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2, =
+<BR>=EF=F0=E5=E4=FA=FF=E2=EB=FF=E5=EC=FB=F5 =EF=F0=E8=20
+=EF=F0=E8=E5=EC=E5 =ED=E0 =F0=E0=E1=EE=F2=F3. =
+=CE=EF=F0=E5=E4=E5=EB=E5=ED=E8=E5 =EF=EE=E4=EB=E8=ED=ED=EE=F1=F2=E8 =
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2. =CF=E8=F1=FC=EC=E5=ED=ED=FB=E9 =
+=EE=F2=EA=E0=E7 <BR>=E2=20
+=EF=F0=E8=E5=EC=E5 =ED=E0 =F0=E0=E1=EE=F2=F3: =
+=EE=E1=FF=E7=E0=F2=E5=EB=FC=ED=EE=F1=F2=FC =
+=F1=EE=F1=F2=E0=E2=EB=E5=ED=E8=FF, =EF=F0=E0=E2=E8=EB=FC=ED=EE=F1=F2=FC =
+=EE=F4=EE=F0=EC=EB=E5=ED=E8=FF,=20
+=EE=E1=E6=E0=EB=EE=E2=E0=ED=E8=E5 =E2 =
+=F1=F3=E4=E5.<BR><B>=C4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=E5 =
+=EF=F0=EE=F6=E5=E4=F3=F0, =EF=F0=E5=E4=F8=E5=F1=F2=E2=F3=FE=F9=E8=F5 =
+=E7=E0=EA=EB=FE=F7=E5=ED=E8=FE=20
+=F2=F0=F3=E4=EE=E2=EE=E3=EE =
+=E4=EE=E3=EE=E2=EE=F0=E0</B><BR><B>=C4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=
+=ED=E8=E5 =F2=F0=F3=E4=EE=E2=FB=F5 =EE=F2=ED=EE=F8=E5=ED=E8=E9. =
+=C2=E8=E4=FB=20
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2 =E8 =EF=F0=E0=E2=E8=EB=E0 =E8=F5 =
+<BR>=EE=F4=EE=F0=EC=EB=E5=ED=E8=FF</B> =CE=F4=EE=F0=EC=EB=E5=ED=E8=E5 =
+=EF=F0=E8=E5=EC=E0 =ED=E0 =F0=E0=E1=EE=F2=F3,=20
+=EE=E1=FF=E7=E0=F2=E5=EB=FC=ED=FB=E5 =E8 =
+=F0=E5=EA=EE=EC=E5=ED=E4=E0=F2=E5=EB=FC=ED=FB=E5 =
+=E4=EE=EA=F3=EC=E5=ED=F2=FB.. <BR>=C4=EE=EA=F3=EC=E5=ED=F2=FB, =
+=F1=EE=E7=E4=E0=E2=E0=E5=EC=FB=E5 =EF=F0=E8=20
+=E8=E7=EC=E5=ED=E5=ED=E8=E8 =F2=F0=F3=E4=EE=E2=EE=E3=EE =
+=E4=EE=E3=EE=E2=EE=F0=E0. =
+=C4=EE=EA=F3=EC=E5=ED=F2=E8=F0=EE=E2=E0=ED=E8=E5 =
+=EF=F0=E5=EA=F0=E0=F9=E5=ED=E8=FF <BR>=F2=F0=F3=E4=EE=E2=EE=E3=EE=20
+=E4=EE=E3=EE=E2=EE=F0=E0. =
+=C4=EE=EA=F3=EC=E5=ED=F2=FB-=EE=F1=ED=EE=E2=E0=ED=E8=FF =E4=EB=FF =
+=F3=E2=EE=EB=FC=ED=E5=ED=E8=FF =F0=E0=E1=EE=F2=ED=E8=EA=EE=E2.</P>
+<P align=3Dcenter><B>=D1=F2=EE=E8=EC=EE=F1=F2=FC =F3=F7=E0=F1=F2=E8=FF =
+=F1=E5=EC=E8=ED=E0=F0=E0 6990 =F0=F3=E1. </B><BR><B><FONT=20
+color=3D#ff0000 size=3D4>=CF=EE =EE=EA=EE=ED=F7=E0=ED=E8=E8 =
+=F1=E5=EC=E8=ED=E0=F0=E0 =E2=FB=E4=E0=B8=F2=F1=FF =
+=F1=E5=F0=F2=E8=F4=E8=EA=E0=F2.</FONT></B></P>
+<P><B>=CC=E5=F1=F2=EE =EF=F0=EE=E2=E5=E4=E5=ED=E8=FF: =
+</B>=E3.=CC=EE=F1=EA=E2=E0 =D3=D6=C1=C0 <BR><B><FONT =
+size=3D5>=C7=E0=FF=E2=EA=E8 =ED=E0 =F3=F7=E0=F1=F2=E8=E5=20
+=EF=EE =F2=E5=EB. (495) 741-87-05, 506-30-78<BR>=CF=F0=E8 =
+=F3=F7=E0=F1=F2=E8=E8 =E2 =E4=E2=F3=F5 =F1=E5=EC=E8=ED=E0=F0=E0=F5 <FONT =
+
+color=3D#ff0000>=F1=EA=E8=E4=EA=E0 10 %</FONT></FONT></B></P>
+<P><B><FONT size=3D4><FONT color=3D#ff0000>26 =F4=E5=E2=F0=E0=EB=FF =
+2010</FONT> =C0=F0=F5=E8=E2 =E8=20
+=E4=E5=EB=EE=EF=F0=EE=E8=E7=E2=EE=E4=F1=F2=E2=EE =
+=EF=F0=E5=E4=EF=F0=E8=FF=F2=E8=FF - =
+<BR>=F1=EE=E2=F0=E5=EC=E5=ED=ED=FB=E5 =
+=F2=F0=E5=E1=EE=E2=E0=ED=E8=FF.</FONT></B> =D1=E5=EC=E8=ED=E0=F0=20
+=E2=E5=E4=B8=F2: =C6=F3=F0=E0=E2=EB=B8=E2=E0 =
+=CC.=C2<BR>=CD=EE=F0=EC=E0=F2=E8=E2=ED=FB=E5 =E8 =
+=EC=E5=F2=EE=E4=E8=F7=E5=F1=EA=E8=E5 =E4=EE=EA=F3=EC=E5=ED=F2=FB =EF=EE =
+=E0=F0=F5=E8=E2=ED=EE=EC=F3 =E4=E5=EB=F3.=20
+<BR>=D2=F0=E5=E1=EE=E2=E0=ED=E8=FF =D4=E5=E4=E5=F0=E0=EB=FC=ED=EE=E9 =
+=C0=F0=F5=E8=E2=ED=EE=E9 =D1=EB=F3=E6=E1=FB. =
+=CD=EE=EC=E5=ED=EA=EB=E0=F2=F3=F0=E0 =E4=E5=EB. =
+=CE=F0=E3=E0=ED=E8=E7=E0=F6=E8=FF =F0=E0=E1=EE=F2=FB=20
+=E8 <BR>=F5=F0=E0=ED=E5=ED=E8=FF =E1=F3=F5=E3=E0=EB=F2=E5=F0=F1=EA=E8=F5 =
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2. =C2=ED=E5=EE=F4=E8=F1=ED=EE=E5 =
+=F5=F0=E0=ED=E5=ED=E8=E5=20
+=E4=EE=EA=F3=EC=E5=ED=F2=EE=E2.<BR><B>=D1=F2=EE=E8=EC=EE=F1=F2=FC =
+=F3=F7=E0=F1=F2=E8=FF 7000 =F0=F3=E1.</B></P></DIV></BODY></HTML>
+
+------------6TGPGXXY0Z2RIPD--
+
+
+
+--===============4665005951809599149==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
 SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
 Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
 http://p.sf.net/sfu/solaris-dev2dev
+--===============4665005951809599149==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4665005951809599149==--

@@ -1,21 +1,20 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 1/5] spi: spi_lock_bus and
 	spi_unlock_bus
-Date: Tue, 16 Feb 2010 16:23:01 -0700
-Message-ID: <fa686aa41002161523v6da23d5dl9952a05e940ea4f2@mail.gmail.com>
+Date: Tue, 16 Feb 2010 19:07:49 -0500
+Message-ID: <8bd0f97a1002161607m3c748ccegaffb83c42667287a@mail.gmail.com>
 References: <20100216204450.e043eed8.eschwab@online.de>
 	<20100216205720.ebe949a1.eschwab@online.de>
 	<fa686aa41002161243y6e24e439yff54a28cbe295de3@mail.gmail.com>
-	<4B7B0B1C.8050407@whoi.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org
-To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4B7B0B1C.8050407-/d+BM93fTQY@public.gmane.org>
+In-Reply-To: <fa686aa41002161243y6e24e439yff54a28cbe295de3-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,65 +25,84 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 16, 2010 at 2:16 PM, Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrote:
-> On 02/16/2010 03:43 PM, Grant Likely wrote:
->> On Tue, Feb 16, 2010 at 12:57 PM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
->>> From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
->>>
->>> For some MMC cards over SPI bus, it needs to lock the SPI bus for its o=
-wn
->>> use. =A0The SPI transfer must not be interrupted by other SPI devices t=
-hat
->>> share the SPI bus with SPI MMC card.
->>>
->>> This patch introduces 2 APIs for SPI bus locking operation.
->>
->> This series seems to try and solve the problem the hard way, and by
->> creating a new locking scheme (and as history shows, new locking
->> schemes are *alwasy* broken).
->>
->> Why is the locking getting pushed down to the bus driver level? =A0It
->> seems to me that the whole thing could be handled with common code and
->> a mutex in the spi_master structure. =A0spi_sync would be easy to handle
->> by putting a mutex around the spi_message submission. =A0spi_async would
->> be a little harder since it needs to be atomic, but that could also be
->> handled with a flag protected by a spinlock.
->>
->> Basically, the idea is that existing drivers continue to use the API as-=
-is
->>
->> Drivers that want to lock the bus for exclusive access must call
->> spi_lock_bus() which should take the mutex and then sleep until all
->> in-flight spi_messages are processed. =A0After that, anyone calling
->> spi_async() will simply sleep until the locker unlocks the bus again.
->>
->> To handle spi_sync() would probably require a flag protected by a
->> spinlock. =A0If the flag is set, then spi_sync() would simply fail.
->>
->> Finally, the locking driver would need locked versions of spi_sync()
->> and spi_async() that sidestep the lock checks. =A0It would only be valid
->> to call these versions when holding the SPI bus lock.
->>
->> There is no need to specify the spi_device in the lock request. =A0Since
->> the lock is exclusive, it is known that the only driver calling the
->> locked API version must already hold the lock.
->>
->> Have I got this wrong?
->
-> Not sure. =A0Does your proposal account for the case of a system with more
-> than one SPI bus? =A0In such a case, there should be a lock per bus.
-
-Yes.  One lock per bus.  In the spi_master structure.
-
-g.
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
-Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
-http://p.sf.net/sfu/solaris-dev2dev
+T24gVHVlLCBGZWIgMTYsIDIwMTAgYXQgMTU6NDMsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBU
+dWUsIEZlYiAxNiwgMjAxMCBhdCAxMjo1NyBQTSwgRXJuc3QgU2Nod2FiIHdyb3RlOgo+PiBGcm9t
+OiBZaSBMaSA8eWkubGlAYW5hbG9nLmNvbT4KPj4KPj4gRm9yIHNvbWUgTU1DIGNhcmRzIG92ZXIg
+U1BJIGJ1cywgaXQgbmVlZHMgdG8gbG9jayB0aGUgU1BJIGJ1cyBmb3IgaXRzIG93bgo+PiB1c2Uu
+IMKgVGhlIFNQSSB0cmFuc2ZlciBtdXN0IG5vdCBiZSBpbnRlcnJ1cHRlZCBieSBvdGhlciBTUEkg
+ZGV2aWNlcyB0aGF0Cj4+IHNoYXJlIHRoZSBTUEkgYnVzIHdpdGggU1BJIE1NQyBjYXJkLgo+Pgo+
+PiBUaGlzIHBhdGNoIGludHJvZHVjZXMgMiBBUElzIGZvciBTUEkgYnVzIGxvY2tpbmcgb3BlcmF0
+aW9uLgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBZaSBMaSA8eWkubGlAYW5hbG9nLmNvbT4KPj4gU2ln
+bmVkLW9mZi1ieTogQnJ5YW4gV3UgPGNvb2xvbmV5QGtlcm5lbC5vcmc+Cj4+IFNpZ25lZC1vZmYt
+Ynk6IE1pa2UgRnJ5c2luZ2VyIDx2YXBpZXJAZ2VudG9vLm9yZz4KPj4gLS0tCj4+IEFuZHJldzog
+d2UndmUgcG9zdGVkIHRoZXNlIGluIHRoZSBwYXN0IHdpdGggbm8gcmVzcG9uc2UuIMKgY291bGQg
+eW91IHBpY2sKPj4gwqAgwqAgwqAgwqB0aGVtIHVwIHBsZWFzZSA/Cj4+IMKgZHJpdmVycy9zcGkv
+c3BpLmMgwqAgwqAgwqAgfCDCoCA0OCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKwo+PiDCoGluY2x1ZGUvbGludXgvc3BpL3NwaS5oIHwgwqAgwqA3ICsrKysr
+Kwo+PiDCoDIgZmlsZXMgY2hhbmdlZCwgNTUgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkK
+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS5jIGIvZHJpdmVycy9zcGkvc3BpLmMKPj4g
+aW5kZXggNzA4NDVjYy4uYjgyYjhhZCAxMDA2NDQKPj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLmMK
+Pj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLmMKPj4gQEAgLTY1Myw2ICs2NTMsNTQgQEAgc3RhdGlj
+IHZvaWQgc3BpX2NvbXBsZXRlKHZvaWQgKmFyZykKPj4gwqB9Cj4+Cj4+IMKgLyoqCj4+ICsgKiBz
+cGlfbG9ja19idXMgLSBsb2NrIFNQSSBidXMgZm9yIGV4Y2x1c2l2ZSBhY2Nlc3MKPj4gKyAqIEBz
+cGk6IGRldmljZSB3aGljaCB3YW50IHRvIGxvY2sgdGhlIGJ1cwo+PiArICogQ29udGV4dDogYW55
+Cj4+ICsgKgo+PiArICogT25jZSB0aGUgY2FsbGVyIG93bnMgZXhjbHVzaXZlIGFjY2VzcyB0byB0
+aGUgU1BJIGJ1cywKPj4gKyAqIG9ubHkgbWVzc2FnZXMgZm9yIHRoaXMgZGV2aWNlIHdpbGwgYmUg
+dHJhbnNmZXJyZWQuCj4+ICsgKiBNZXNzYWdlcyBmb3Igb3RoZXIgZGV2aWNlcyBhcmUgcXVldWVk
+IGJ1dCBub3QgdHJhbnNmZXJyZWQgdW50aWwKPj4gKyAqIHRoZSBidXMgb3duZXIgdW5sb2NrIHRo
+ZSBidXMuCj4+ICsgKgo+PiArICogVGhlIGNhbGxlciBtYXkgY2FsbCBzcGlfbG9ja19idXMoKSBi
+ZWZvcmUgc3BpX3N5bmMoKSBvciBzcGlfYXN5bmMoKS4KPj4gKyAqIFNvIHRoaXMgY2FsbCBtYXkg
+YmUgdXNlZCBpbiBpcnEgYW5kIG90aGVyIGNvbnRleHRzIHdoaWNoIGNhbid0IHNsZWVwLAo+PiAr
+ICogYXMgd2VsbCBhcyBmcm9tIHRhc2sgY29udGV4dHMgd2hpY2ggY2FuIHNsZWVwLgo+PiArICoK
+Pj4gKyAqIEl0IHJldHVybnMgemVybyBvbiBzdWNjZXNzLCBlbHNlIGEgbmVnYXRpdmUgZXJyb3Ig
+Y29kZS4KPj4gKyAqLwo+PiAraW50IHNwaV9sb2NrX2J1cyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3Bp
+KQo+PiArewo+PiArIMKgIMKgIMKgIGlmIChzcGktPm1hc3Rlci0+bG9ja19idXMpCj4+ICsgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgcmV0dXJuIHNwaS0+bWFzdGVyLT5sb2NrX2J1cyhzcGkpOwo+PiAr
+IMKgIMKgIMKgIGVsc2UKPj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCByZXR1cm4gMDsKPj4gK30K
+Pj4gK0VYUE9SVF9TWU1CT0xfR1BMKHNwaV9sb2NrX2J1cyk7Cj4KPiBUaGlzIHNlcmllcyBzZWVt
+cyB0byB0cnkgYW5kIHNvbHZlIHRoZSBwcm9ibGVtIHRoZSBoYXJkIHdheSwgYW5kIGJ5Cj4gY3Jl
+YXRpbmcgYSBuZXcgbG9ja2luZyBzY2hlbWUgKGFuZCBhcyBoaXN0b3J5IHNob3dzLCBuZXcgbG9j
+a2luZwo+IHNjaGVtZXMgYXJlICphbHdhc3kqIGJyb2tlbikuCj4KPiBXaHkgaXMgdGhlIGxvY2tp
+bmcgZ2V0dGluZyBwdXNoZWQgZG93biB0byB0aGUgYnVzIGRyaXZlciBsZXZlbD8gwqBJdAo+IHNl
+ZW1zIHRvIG1lIHRoYXQgdGhlIHdob2xlIHRoaW5nIGNvdWxkIGJlIGhhbmRsZWQgd2l0aCBjb21t
+b24gY29kZSBhbmQKPiBhIG11dGV4IGluIHRoZSBzcGlfbWFzdGVyIHN0cnVjdHVyZS4gwqBzcGlf
+c3luYyB3b3VsZCBiZSBlYXN5IHRvIGhhbmRsZQo+IGJ5IHB1dHRpbmcgYSBtdXRleCBhcm91bmQg
+dGhlIHNwaV9tZXNzYWdlIHN1Ym1pc3Npb24uIMKgc3BpX2FzeW5jIHdvdWxkCj4gYmUgYSBsaXR0
+bGUgaGFyZGVyIHNpbmNlIGl0IG5lZWRzIHRvIGJlIGF0b21pYywgYnV0IHRoYXQgY291bGQgYWxz
+byBiZQo+IGhhbmRsZWQgd2l0aCBhIGZsYWcgcHJvdGVjdGVkIGJ5IGEgc3BpbmxvY2suCj4KPiBC
+YXNpY2FsbHksIHRoZSBpZGVhIGlzIHRoYXQgZXhpc3RpbmcgZHJpdmVycyBjb250aW51ZSB0byB1
+c2UgdGhlIEFQSSBhcy1pcwo+Cj4gRHJpdmVycyB0aGF0IHdhbnQgdG8gbG9jayB0aGUgYnVzIGZv
+ciBleGNsdXNpdmUgYWNjZXNzIG11c3QgY2FsbAo+IHNwaV9sb2NrX2J1cygpIHdoaWNoIHNob3Vs
+ZCB0YWtlIHRoZSBtdXRleCBhbmQgdGhlbiBzbGVlcCB1bnRpbCBhbGwKPiBpbi1mbGlnaHQgc3Bp
+X21lc3NhZ2VzIGFyZSBwcm9jZXNzZWQuIMKgQWZ0ZXIgdGhhdCwgYW55b25lIGNhbGxpbmcKPiBz
+cGlfYXN5bmMoKSB3aWxsIHNpbXBseSBzbGVlcCB1bnRpbCB0aGUgbG9ja2VyIHVubG9ja3MgdGhl
+IGJ1cyBhZ2Fpbi4KPgo+IFRvIGhhbmRsZSBzcGlfc3luYygpIHdvdWxkIHByb2JhYmx5IHJlcXVp
+cmUgYSBmbGFnIHByb3RlY3RlZCBieSBhCj4gc3BpbmxvY2suIMKgSWYgdGhlIGZsYWcgaXMgc2V0
+LCB0aGVuIHNwaV9zeW5jKCkgd291bGQgc2ltcGx5IGZhaWwuCj4KPiBGaW5hbGx5LCB0aGUgbG9j
+a2luZyBkcml2ZXIgd291bGQgbmVlZCBsb2NrZWQgdmVyc2lvbnMgb2Ygc3BpX3N5bmMoKQo+IGFu
+ZCBzcGlfYXN5bmMoKSB0aGF0IHNpZGVzdGVwIHRoZSBsb2NrIGNoZWNrcy4gwqBJdCB3b3VsZCBv
+bmx5IGJlIHZhbGlkCj4gdG8gY2FsbCB0aGVzZSB2ZXJzaW9ucyB3aGVuIGhvbGRpbmcgdGhlIFNQ
+SSBidXMgbG9jay4KPgo+IFRoZXJlIGlzIG5vIG5lZWQgdG8gc3BlY2lmeSB0aGUgc3BpX2Rldmlj
+ZSBpbiB0aGUgbG9jayByZXF1ZXN0LiDCoFNpbmNlCj4gdGhlIGxvY2sgaXMgZXhjbHVzaXZlLCBp
+dCBpcyBrbm93biB0aGF0IHRoZSBvbmx5IGRyaXZlciBjYWxsaW5nIHRoZQo+IGxvY2tlZCBBUEkg
+dmVyc2lvbiBtdXN0IGFscmVhZHkgaG9sZCB0aGUgbG9jay4KCnRoaXMgaXMgd2hhdCBpIHByb3Bv
+c2VkIGxhc3QgdGltZSwgYnV0IHdlIGhhdmVudCBnb3R0ZW4gYXJvdW5kIHRvCmltcGxlbWVudGlu
+ZyBpdDoKCnRoZXJlJ3Mgbm90aGluZyBCbGFja2Zpbi1zcGVjaWZpYyBpbiB0aGUgaW1wbGVtZW50
+YXRpb24gb2YgdGhlc2UKZnVuY3Rpb25zLiAgaSB0aGluayB0aGUgd2F5IHdlIHNob3VsZCBiZSBo
+YW5kbGluZyB0aGVzZSBpcyBieSBkb2luZzoKIC0gcmVtb3ZlIHtsb2NrLHVubG9ja31fYnVzIGZ1
+bmN0aW9ucyBmcm9tIHNwaV9tYXN0ZXIKIC0gbW92ZSB0aGUge2xvY2ssdW5sb2NrfV9idXMgY29k
+ZSBmcm9tIHNwaV9iZmluNXh4LmMgdG8gc3BpLmMKIC0gZHJvcCB0aGUgU1BJX0JGSU5fTE9DSyBL
+Y29uZmlnCiAtIGFkZCBhIG5ldyBzcGlfbWFzdGVyIGZsYWcgdG8gc3BpLmggbGlrZSBTUElfTUFT
+VEVSX0hBTEZfRFVQTEVYIC0tClNQSV9NQVNURVJfTE9DS19CVVMKIC0gaGF2ZSBzcGlfYmZpbjV4
+eC5jL2JmaW5fc3BvcnRfc3BpLmMgYWRkIHRoYXQgZmxhZyB0byBpdHMgbWFzdGVyIHNldHVwCiAt
+IGhhdmUgdGhlIGNvbW1vbiBzcGkgY29kZSBrZXkgb2ZmIG9mIHRoYXQgZmxhZyB0byByZXR1cm4g
+RU5PU1lTCiAtIGhhdmUgdGhlIG1tY19zcGkgY29kZSBjaGVjayB0aGF0IGJpdCBpbiB0aGUgbWFz
+dGVyIGJlZm9yZSBmYWxsaW5nCmJhY2sgdG8gaXRzIGhhY2sKLW1pa2UKCi0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQpTT0xBUklTIDEwIGlzIHRoZSBPUyBmb3IgRGF0YSBDZW50ZXJzIC0gcHJvdmlkZXMg
+ZmVhdHVyZXMgc3VjaCBhcyBEVHJhY2UsClByZWRpY3RpdmUgU2VsZiBIZWFsaW5nIGFuZCBBd2Fy
+ZCBXaW5uaW5nIFpGUy4gR2V0IFNvbGFyaXMgMTAgTk9XCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc29s
+YXJpcy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
+cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
+dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,18 +1,21 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi/mmc_spi: mmc_spi
-	adaptations for SPI bus locking API
-Date: Wed, 17 Feb 2010 13:07:35 -0700
-Message-ID: <fa686aa41002171207x237da42dsb513cf5c8e0478b0@mail.gmail.com>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi/mmc_spi: SPI bus locking
+	API, using mutex
+Date: Wed, 17 Feb 2010 15:19:30 -0500
+Message-ID: <8bd0f97a1002171219y78c67661o4e1b03c92e2793d0@mail.gmail.com>
 References: <20100217191513.52392dd6.eschwab@online.de>
-	<20100217191900.a57d0a60.eschwab@online.de>
+	<20100217191709.2fd1028c.eschwab@online.de>
+	<8bd0f97a1002171103g3e08ee02pf761866f3c57f391@mail.gmail.com>
+	<fa686aa41002171206o6cbb7477r7f427ef7be0e8450@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
-To: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100217191900.a57d0a60.eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <fa686aa41002171206o6cbb7477r7f427ef7be0e8450-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,190 +26,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 17, 2010 at 11:19 AM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
-> From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
->
-> Modification of the mmc_spi driver to use the SPI bus locking API.
-> With this, the mmc_spi driver can be used together with other SPI
-> devices on the same SPI bus. The exclusive access to the SPI bus is
-> now managed in the SPI layer. The counting of chip selects in the probe
-> function is no longer needed.
->
-> Signed-off-by: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
-
-Looks good to me.
-
-g.
-
-> ---
-> diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-> --- a/drivers/mmc/host/mmc_spi.c
-> +++ b/drivers/mmc/host/mmc_spi.c
-> @@ -181,7 +181,7 @@ mmc_spi_readbytes(struct mmc_spi_host *host, unsigned=
- len)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0host->data=
-_dma, sizeof(*host->data),
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0DMA_FROM_D=
-EVICE);
->
-> - =A0 =A0 =A0 status =3D spi_sync(host->spi, &host->readback);
-> + =A0 =A0 =A0 status =3D spi_sync_locked(host->spi, &host->readback);
->
-> =A0 =A0 =A0 =A0if (host->dma_dev)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dma_sync_single_for_cpu(host->dma_dev,
-> @@ -540,7 +540,7 @@ mmc_spi_command_send(struct mmc_spi_host *host,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0host->data=
-_dma, sizeof(*host->data),
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0DMA_BIDIRE=
-CTIONAL);
-> =A0 =A0 =A0 =A0}
-> - =A0 =A0 =A0 status =3D spi_sync(host->spi, &host->m);
-> + =A0 =A0 =A0 status =3D spi_sync_locked(host->spi, &host->m);
->
-> =A0 =A0 =A0 =A0if (host->dma_dev)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dma_sync_single_for_cpu(host->dma_dev,
-> @@ -684,7 +684,7 @@ mmc_spi_writeblock(struct mmc_spi_host *host, struct =
-spi_transfer *t,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0host->data=
-_dma, sizeof(*scratch),
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0DMA_BIDIRE=
-CTIONAL);
->
-> - =A0 =A0 =A0 status =3D spi_sync(spi, &host->m);
-> + =A0 =A0 =A0 status =3D spi_sync_locked(spi, &host->m);
->
-> =A0 =A0 =A0 =A0if (status !=3D 0) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_dbg(&spi->dev, "write error (%d)\n", s=
-tatus);
-> @@ -821,7 +821,7 @@ mmc_spi_readblock(struct mmc_spi_host *host, struct s=
-pi_transfer *t,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0DMA_FROM_D=
-EVICE);
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 status =3D spi_sync(spi, &host->m);
-> + =A0 =A0 =A0 status =3D spi_sync_locked(spi, &host->m);
->
-> =A0 =A0 =A0 =A0if (host->dma_dev) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dma_sync_single_for_cpu(host->dma_dev,
-> @@ -1017,7 +1017,7 @@ mmc_spi_data_do(struct mmc_spi_host *host, struct m=
-mc_command *cmd,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0host->data_dma, sizeof(*scratch),
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0DMA_BIDIRECTIONAL);
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 tmp =3D spi_sync(spi, &host->m);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tmp =3D spi_sync_locked(spi, &host->m);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (host->dma_dev)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dma_sync_single_for_cpu(ho=
-st->dma_dev,
-> @@ -1083,6 +1083,9 @@ static void mmc_spi_request(struct mmc_host *mmc, s=
-truct mmc_request *mrq)
-> =A0 =A0 =A0 =A0}
-> =A0#endif
->
-> + =A0 =A0 =A0 /* request exclusive bus access */
-> + =A0 =A0 =A0 spi_bus_lock(host->spi);
-> +
-> =A0 =A0 =A0 =A0/* issue command; then optionally data and stop */
-> =A0 =A0 =A0 =A0status =3D mmc_spi_command_send(host, mrq, mrq->cmd, mrq->=
-data !=3D NULL);
-> =A0 =A0 =A0 =A0if (status =3D=3D 0 && mrq->data) {
-> @@ -1093,6 +1096,9 @@ static void mmc_spi_request(struct mmc_host *mmc, s=
-truct mmc_request *mrq)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mmc_cs_off(host);
-> =A0 =A0 =A0 =A0}
->
-> + =A0 =A0 =A0 /* release the bus */
-> + =A0 =A0 =A0 spi_bus_unlock(host->spi);
-> +
-> =A0 =A0 =A0 =A0mmc_request_done(host->mmc, mrq);
-> =A0}
->
-> @@ -1289,23 +1295,6 @@ mmc_spi_detect_irq(int irq, void *mmc)
-> =A0 =A0 =A0 =A0return IRQ_HANDLED;
-> =A0}
->
-> -struct count_children {
-> - =A0 =A0 =A0 unsigned =A0 =A0 =A0 =A0n;
-> - =A0 =A0 =A0 struct bus_type *bus;
-> -};
-> -
-> -static int maybe_count_child(struct device *dev, void *c)
-> -{
-> - =A0 =A0 =A0 struct count_children *ccp =3D c;
-> -
-> - =A0 =A0 =A0 if (dev->bus =3D=3D ccp->bus) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (ccp->n)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EBUSY;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 ccp->n++;
-> - =A0 =A0 =A0 }
-> - =A0 =A0 =A0 return 0;
-> -}
-> -
-> =A0static int mmc_spi_probe(struct spi_device *spi)
-> =A0{
-> =A0 =A0 =A0 =A0void =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*ones;
-> @@ -1337,32 +1326,6 @@ static int mmc_spi_probe(struct spi_device *spi)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return status;
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 /* We can use the bus safely iff nobody else will interfere=
- with us.
-> - =A0 =A0 =A0 =A0* Most commands consist of one SPI message to issue a co=
-mmand, then
-> - =A0 =A0 =A0 =A0* several more to collect its response, then possibly mo=
-re for data
-> - =A0 =A0 =A0 =A0* transfer. =A0Clocking access to other devices during t=
-hat period will
-> - =A0 =A0 =A0 =A0* corrupt the command execution.
-> - =A0 =A0 =A0 =A0*
-> - =A0 =A0 =A0 =A0* Until we have software primitives which guarantee non-=
-interference,
-> - =A0 =A0 =A0 =A0* we'll aim for a hardware-level guarantee.
-> - =A0 =A0 =A0 =A0*
-> - =A0 =A0 =A0 =A0* REVISIT we can't guarantee another device won't be add=
-ed later...
-> - =A0 =A0 =A0 =A0*/
-> - =A0 =A0 =A0 if (spi->master->num_chipselect > 1) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct count_children cc;
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cc.n =3D 0;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cc.bus =3D spi->dev.bus;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =3D device_for_each_child(spi->dev.p=
-arent, &cc,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 maybe_count=
-_child);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (status < 0) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&spi->dev, "can't s=
-hare SPI bus\n");
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return status;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_warn(&spi->dev, "ASSUMING SPI bus stays=
- unshared!\n");
-> - =A0 =A0 =A0 }
-> -
-> =A0 =A0 =A0 =A0/* We need a supply of ones to transmit. =A0This is the on=
-ly time
-> =A0 =A0 =A0 =A0 * the CPU touches these, so cache coherency isn't a conce=
-rn.
-> =A0 =A0 =A0 =A0 *
->
->
->
-
-
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-SOLARIS 10 is the OS for Data Centers - provides features such as DTrace,
-Predictive Self Healing and Award Winning ZFS. Get Solaris 10 NOW
-http://p.sf.net/sfu/solaris-dev2dev
+T24gV2VkLCBGZWIgMTcsIDIwMTAgYXQgMTU6MDYsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBX
+ZWQsIEZlYiAxNywgMjAxMCBhdCAxMjowMyBQTSwgTWlrZSBGcnlzaW5nZXIgd3JvdGU6Cj4+IE9u
+IFdlZCwgRmViIDE3LCAyMDEwIGF0IDEzOjE3LCBFcm5zdCBTY2h3YWIgd3JvdGU6Cj4+PiBUaGUg
+Y3VycmVudCBydW50aW1lIEFQSSBsb29rcyBsaWtlIHRoaXM6Cj4+PiBzcGlfYXN5bmMoc3RydWN0
+IHNwaV9kZXZpY2UqLCBzdHJ1Y3Qgc3BpX21lc3NhZ2UqKTsKPj4+IHNwaV9zeW5jKHN0cnVjdCBz
+cGlfZGV2aWNlKiwgc3RydWN0IHNwaV9tZXNzYWdlKik7Cj4+Pgo+Pj4gVGhlIEFQSSBuZWVkcyB0
+byBiZSBleHRlbmRlZCB0byB0aGlzOgo+Pj4gc3BpX2FzeW5jKHN0cnVjdCBzcGlfZGV2aWNlKiwg
+c3RydWN0IHNwaV9tZXNzYWdlKikKPj4+IHNwaV9zeW5jKHN0cnVjdCBzcGlfZGV2aWNlKiwgc3Ry
+dWN0IHNwaV9tZXNzYWdlKikKPj4+IHNwaV9idXNfbG9jayhzdHJ1Y3Qgc3BpX21hc3RlciopIMKg
+LyogYWx0aG91Z2ggc3RydWN0IHNwaV9kZXZpY2UqIG1pZ2h0Cj4+PiBiZSBlYXNpZXIgKi8KPj4+
+IHNwaV9idXNfdW5sb2NrKHN0cnVjdCBzcGlfbWFzdGVyKikKPj4+IHNwaV9hc3luY19sb2NrZWQo
+c3RydWN0IHNwaV9kZXZpY2UqLCBzdHJ1Y3Qgc3BpX21lc3NhZ2UqKQo+Pj4gc3BpX3N5bmNfbG9j
+a2VkKHN0cnVjdCBzcGlfZGV2aWNlKiwgc3RydWN0IHNwaV9tZXNzYWdlKikKPj4+Cj4+PiBEcml2
+ZXJzIGNhbiBvbmx5IGNhbGwgdGhlIGxhc3QgdHdvIGlmIHRoZXkgYWxyZWFkeSBob2xkIHRoZSBz
+cGlfbWFzdGVyX2xvY2soKS4KPj4+Cj4+PiBzcGlfYnVzX2xvY2soKSBvYnRhaW5zIHRoZSBtdXRl
+eCwgb2J0YWlucyB0aGUgc3BpbiBsb2NrLCBzZXRzIHRoZQo+Pj4gZmxhZywgYW5kIHJlbGVhc2Vz
+IHRoZSBzcGluIGxvY2sgYmVmb3JlIHJldHVybmluZy4gwqBJdCBkb2Vzbid0IGV2ZW4KPj4+IG5l
+ZWQgdG8gc2xlZXAgd2hpbGUgd2FpdGluZyBmb3IgImluLWZsaWdodCIgc3BpX3RyYW5zYWN0aW9u
+cyB0bwo+Pj4gY29tcGxldGUgYmVjYXVzZSBpdHMgcHVycG9zZSBpcyB0byBndWFyYW50ZWUgbm8g
+YWRkaXRpb25hbAo+Pj4gdHJhbnNhY3Rpb25zIGFyZSBhZGRlZC4gwqBJdCBkb2VzIG5vdCBndWFy
+YW50ZWUgdGhhdCB0aGUgYnVzIGlzIGlkbGUuCj4+Pgo+Pj4gc3BpX2J1c191bmxvY2soKSBjbGVh
+cnMgdGhlIGZsYWcgYW5kIHJlbGVhc2VzIHRoZSBtdXRleCwgd2hpY2ggd2lsbAo+Pj4gd2FrZSB1
+cCBhbnkgd2FpdGVycy4KPj4+Cj4+PiBUaGUgZGlmZmVyZW5jZSBiZXR3ZWVuIHNwaV9hc3luYygp
+IGFuZCBzcGlfYXN5bmNfbG9ja2VkKCkgaXMgdGhhdCB0aGUKPj4+IGxvY2tlZCB2ZXJzaW9uIGJ5
+cGFzc2VzIHRoZSBjaGVjayBvZiB0aGUgbG9jayBmbGFnLiDCoEJvdGggdmVyc2lvbnMKPj4+IG5l
+ZWQgdG8gb2J0YWluIHRoZSBzcGlubG9jay4KPj4+Cj4+PiBUaGUgZGlmZmVyZW5jZSBiZXR3ZWVu
+IHNwaV9zeW5jKCkgYW5kIHNwaV9zeW5jX2xvY2tlZCgpIGlzIHRoYXQKPj4+IHNwaV9zeW5jKCkg
+bXVzdCBob2xkIHRoZSBtdXRleCB3aGlsZSBlbnF1ZXVpbmcgYSBuZXcgdHJhbnNmZXIuCj4+PiBz
+cGlfc3luY19sb2NrZWQoKSBkb2Vzbid0IGJlY2F1c2UgdGhlIG11dGV4IGlzIGFscmVhZHkgaGVs
+ZC4gwqBOb3RlCj4+PiBob3dldmVyIHRoYXQgc3BpX3N5bmMgbXVzdCAqbm90KiBjb250aW51ZSB0
+byBob2xkIHRoZSBtdXRleCB3aGlsZQo+Pj4gd2FpdGluZyBmb3IgdGhlIHRyYW5zZmVyIHRvIGNv
+bXBsZXRlLCBvdGhlcndpc2Ugb25seSBvbmUgdHJhbnNmZXIKPj4+IGNvdWxkIGJlIHF1ZXVlZCB1
+cCBhdCBhIHRpbWUhCj4+Pgo+Pj4gQWxtb3N0IG5vIGNvZGUgbmVlZHMgdG8gYmUgd3JpdHRlbi4g
+wqBUaGUgY3VycmVudCBzcGlfYXN5bmMoKSBhbmQKPj4+IHNwaV9zeW5jKCkgY2FuIHByb2JhYmx5
+IGJlIHJlbmFtZWQgdG8gX19zcGlfYXN5bmMoKSBhbmQgX19zcGlfc3luYygpCj4+PiBzbyB0aGF0
+IHNwaV9hc3luYygpLCBzcGlfc3luYygpLCBzcGlfYXN5bmNfbG9ja2VkKCkgYW5kCj4+PiBzcGlf
+c3luY19sb2NrZWQoKSBjYW4ganVzdCBiZWNvbWUgd3JhcHBlcnMgYXJvdW5kIHRoZSBjb21tb24g
+Y29kZS4KPj4+Cj4+PiBzcGlfc3luYygpIGlzIHByb3RlY3RlZCBieSBhIG11dGV4IGJlY2F1c2Ug
+aXQgY2FuIHNsZWVwCj4+PiBzcGlfYXN5bmMoKSBuZWVkcyB0byBiZSBwcm90ZWN0ZWQgd2l0aCBh
+IGZsYWcgYW5kIGEgc3BpbmxvY2sgYmVjYXVzZQo+Pj4gaXQgY2FuIGJlIGNhbGxlZCBhdG9taWNh
+bGx5IGFuZCBtdXN0IG5vdCBzbGVlcAo+Pgo+PiBpIGRvbnQgdGhpbmsgdGhlc2UgbmV3ICJfbG9j
+a2VkIiB2ZXJzaW9ucyBhcmUgYSBnb29kIGlkZWEuIMKgd2h5IGNhbnQKPj4gaXQgYmUgaGFuZGxl
+ZCB0cmFuc3BhcmVudGx5IHRvIHRoZSBjYWxsZXIgaW4gdGhlIGNvcmUgPyDCoHRoZSBzcGkgY29y
+ZQo+PiBhbHJlYWR5IHJlcXVpcmVzIHRoZSBDUyBmaWVsZCBvZiB0aGUgc3BpIGRldmljZSB0byBi
+ZSB1bmlxdWUgcGVyIGJ1cy4KPj4gcmUtdXNlIHRoYXQgdG8gY2hlY2sgb3duZXJzaGlwIG9mIHRo
+ZSBtdXRleC4KPgo+IE5vLiDCoHRoZSBidXMgbG9ja2luZyBvcGVyYXRpb24gaXMgY29tcGxldGVs
+eSBvcnRob2dvbmFsIHRvIHRoZSBzcGkKPiBkZXZpY2UgYmVpbmcgdXNlZCBmb3IgdGhlIHRyYW5z
+ZmVyLiDCoEEgZHJpdmVyIGNvdWxkIGV2ZW4gb2J0YWluIHRoZQo+IGxvY2ssIGFuZCB0aGVuIHVz
+ZSBtdWx0aXBsZSBzcGlfZGV2aWNlcyB0byBleGVjdXRlIHRyYW5zZmVycyBiZWZvcmUKPiByZWxl
+YXNpbmcgaXQuCj4KPiBUaGUgQVBJIGFkZGl0aW9uIGlzIGRlZmluaXRlbHkgcmVxdWlyZWQuIMKg
+Q2FsbGVycyBsb2NraW5nIHRoZSBidXMKPiAqYWJzb2x1dGVseSogbXVzdCB1bmRlcnN0YW5kIHdo
+YXQgdGhleSBhcmUgZG9pbmcuCj4KPiBJZiBhbnl0aGluZywgSSdkIGNvbnNlbnQgdG8gYSBkZWJ1
+ZyBvcHRpb24gdGhhdCBkb2VzIGEgV0FSTl9PTiBpZiB0aGUKPiB3cm9uZyBmdW5jdGlvbiBpcyBj
+YWxsZWQgd2hlbiB0aGUgYnVzIGlzbid0IGxvY2tlZC4gwqBpZS4gX2xvY2tlZAo+IHZlcnNpb24g
+Y2FsbGVkIHdoZW4gYnVzIGlzbid0IGxvY2tlZC4KCnRoZSBBUEkgcHJvdmlkZXMgbm8gcHJvdGVj
+dGlvbiBsZXQgYWxvbmUgZGV0ZWN0aW9uIG9mIHRoZSBjb2RlIHRoYXQKbG9ja2VkIHRoZSBidXMg
+aXMgdGhlIG9uZSB1c2luZyBpdC4gIHRoYXQgd291bGQgYmUgdGhlIHBvaW50IG9mIHR5aW5nCmEg
+Y2xpZW50IHRvIHRoZSBsb2NraW5nIHN0ZXAsIGJ1dCB3aXRob3V0IGl0LCB0aGVyZSBuZWVkcyB0
+byBiZSBhCmhhbmRsZSBvZiBzb21lIHNvcnQgcmV0dXJuZWQgZnJvbSB0aGUgYnVzIGxvY2tpbmcg
+YW5kIHN1YnNlcXVlbnRseQpwYXNzZWQgdG8gdGhlIHNwaV97c3luYyxhc3luY31fbG9ja2VkKCkg
+YW5kIHNwaV9idXNfdW5sb2NrKCkuCi1taWtlCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU09MQVJJ
+UyAxMCBpcyB0aGUgT1MgZm9yIERhdGEgQ2VudGVycyAtIHByb3ZpZGVzIGZlYXR1cmVzIHN1Y2gg
+YXMgRFRyYWNlLApQcmVkaWN0aXZlIFNlbGYgSGVhbGluZyBhbmQgQXdhcmQgV2lubmluZyBaRlMu
+IEdldCBTb2xhcmlzIDEwIE5PVwpodHRwOi8vcC5zZi5uZXQvc2Z1L3NvbGFyaXMtZGV2MmRldgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
+Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
+bC1nZW5lcmFsCg==

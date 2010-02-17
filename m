@@ -1,21 +1,20 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH 1/5] spi: spi_lock_bus and
 	spi_unlock_bus
-Date: Tue, 16 Feb 2010 20:48:08 -0700
-Message-ID: <fa686aa41002161948o31a48fc9kac263b0ac34f1a8d@mail.gmail.com>
+Date: Tue, 16 Feb 2010 21:32:53 -0700
+Message-ID: <fa686aa41002162032l2a2bc065t1f53d7b79760b2dd@mail.gmail.com>
 References: <20100216204450.e043eed8.eschwab@online.de>
 	<20100216205720.ebe949a1.eschwab@online.de>
 	<fa686aa41002161243y6e24e439yff54a28cbe295de3@mail.gmail.com>
-	<8bd0f97a1002161607m3c748ccegaffb83c42667287a@mail.gmail.com>
+	<552DB282258F46CE995A09EF352B1094@pces>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>,
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
-To: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <8bd0f97a1002161607m3c748ccegaffb83c42667287a-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <552DB282258F46CE995A09EF352B1094@pces>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,107 +25,147 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 16, 2010 at 5:07 PM, Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrot=
-e:
-> On Tue, Feb 16, 2010 at 15:43, Grant Likely wrote:
->> On Tue, Feb 16, 2010 at 12:57 PM, Ernst Schwab wrote:
->>> From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
->>>
->>> For some MMC cards over SPI bus, it needs to lock the SPI bus for its o=
-wn
->>> use. =A0The SPI transfer must not be interrupted by other SPI devices t=
-hat
->>> share the SPI bus with SPI MMC card.
->>>
->>> This patch introduces 2 APIs for SPI bus locking operation.
->>>
->>> Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
->>> Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
->>> Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
->>> ---
->>> Andrew: we've posted these in the past with no response. =A0could you p=
-ick
->>> =A0 =A0 =A0 =A0them up please ?
->>> =A0drivers/spi/spi.c =A0 =A0 =A0 | =A0 48 +++++++++++++++++++++++++++++=
-++++++++++++++++++
->>> =A0include/linux/spi/spi.h | =A0 =A07 ++++++
->>> =A02 files changed, 55 insertions(+), 0 deletions(-)
->>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
->>> index 70845cc..b82b8ad 100644
->>> --- a/drivers/spi/spi.c
->>> +++ b/drivers/spi/spi.c
->>> @@ -653,6 +653,54 @@ static void spi_complete(void *arg)
->>> =A0}
->>>
->>> =A0/**
->>> + * spi_lock_bus - lock SPI bus for exclusive access
->>> + * @spi: device which want to lock the bus
->>> + * Context: any
->>> + *
->>> + * Once the caller owns exclusive access to the SPI bus,
->>> + * only messages for this device will be transferred.
->>> + * Messages for other devices are queued but not transferred until
->>> + * the bus owner unlock the bus.
->>> + *
->>> + * The caller may call spi_lock_bus() before spi_sync() or spi_async().
->>> + * So this call may be used in irq and other contexts which can't slee=
-p,
->>> + * as well as from task contexts which can sleep.
->>> + *
->>> + * It returns zero on success, else a negative error code.
->>> + */
->>> +int spi_lock_bus(struct spi_device *spi)
->>> +{
->>> + =A0 =A0 =A0 if (spi->master->lock_bus)
->>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return spi->master->lock_bus(spi);
->>> + =A0 =A0 =A0 else
->>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 0;
->>> +}
->>> +EXPORT_SYMBOL_GPL(spi_lock_bus);
->>
+On Tue, Feb 16, 2010 at 5:16 PM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
+> Grant Likely wrote:
+>
 >> This series seems to try and solve the problem the hard way, and by
 >> creating a new locking scheme (and as history shows, new locking
 >> schemes are *alwasy* broken).
->>
->> Why is the locking getting pushed down to the bus driver level? =A0It
+>> Why is the locking getting pushed down to the bus driver level?
+>
+> The proposal, as well as the proposal of the underlying patches
+> for the blackfin uClinux solution, wants to minimize the risk
+> introduced by changes to the SPI layer - it tries to be as
+> noninvasive as possible.
+
+It sounds like you're very worried about making changes to the core
+code, and jumping through hopes to push as much as possible out to the
+device drivers (working around instead of fixing a limitation of the
+SPI bus infrastructure).  However, it ends up being ugly, complex, and
+probably wrong.
+
+Simplicity and correctness is far more important that trying to avoid
+churn in the core code.  It is far better to change the core code
+because then you'll get more testing and review, and you'll reduce the
+burden on driver writers.
+
+> Thus, it allows the use of the mmc_spi driver under the same conditions
+> as before (only one SPI device present), and makes its use even
+> safer than before - in case an SPI device is registered after the mmc_spi
+> driver. The mechanism to have the atomic transmission of SPI sequences mo=
+ved
+> to the SPI master driver is existent in (now) two master drivers and
+> working, and until now, we have only the choice between
+> the "ASSUMING SPI bus stays unshared!/can't share SPI bus" pestilence now
+> present in the kernel and the "need to modify the SPI master" cholera. I
+> think anything beyond this would be a new locking scheme, which...
+>
+>> It
 >> seems to me that the whole thing could be handled with common code and
 >> a mutex in the spi_master structure. =A0spi_sync would be easy to handle
 >> by putting a mutex around the spi_message submission. =A0spi_async would
 >> be a little harder since it needs to be atomic, but that could also be
 >> handled with a flag protected by a spinlock.
->>
->> Basically, the idea is that existing drivers continue to use the API as-=
-is
->>
->> Drivers that want to lock the bus for exclusive access must call
->> spi_lock_bus() which should take the mutex and then sleep until all
->> in-flight spi_messages are processed. =A0After that, anyone calling
->> spi_async() will simply sleep until the locker unlocks the bus again.
->>
->> To handle spi_sync() would probably require a flag protected by a
->> spinlock. =A0If the flag is set, then spi_sync() would simply fail.
->>
->> Finally, the locking driver would need locked versions of spi_sync()
->> and spi_async() that sidestep the lock checks. =A0It would only be valid
->> to call these versions when holding the SPI bus lock.
->>
->> There is no need to specify the spi_device in the lock request. =A0Since
->> the lock is exclusive, it is known that the only driver calling the
->> locked API version must already hold the lock.
 >
-> this is what i proposed last time, but we havent gotten around to
-> implementing it:
->
-> there's nothing Blackfin-specific in the implementation of these
-> functions. =A0i think the way we should be handling these is by doing:
-> =A0- remove {lock,unlock}_bus functions from spi_master
-> =A0- move the {lock,unlock}_bus code from spi_bfin5xx.c to spi.c
-> =A0- drop the SPI_BFIN_LOCK Kconfig
+> Maybe, but who can implement that in a quality required to make it to
+> the kernel? Any volunteers ;-)? I will test it.
 
-Am I missing something. I cannot find any lock related functions in
-the spi code.  Is this stuff in mainline?
+You do it.  You write good code.  You're just approaching the problem
+from the wrong angle.  You may not get it right on the first posting,
+but there are lots of people who are here who will help you and
+review.  As long as you are responsive to review you will do just
+fine.
+
+It will require 2 patches, plus another cleanup patch for each
+spi_master driver.
+
+1) add new locking API and implementation to core SPI code
+- no drivers or mmc stuff has to change at this point
+
+2) make mmc layer use the new api and remove the old hacks
+- Clean cutover to new locking scheme.  Immediately stops using old
+driver-specific hacks
+
+3) remove the old hacks from spi_master driver
+- because now the code isn't used anymore.  (But as far as I can tell,
+none of this is actually mainlined, so this might not be necessary).
+- However, by moving locking into the spi core, it may be that
+spi_master drivers can become simpler and remove a lot of driver-local
+locking.
+- Regardless, neither patch 1 nor 2 force changes to the spi_master drivers.
+
+In fact, now that I've had an evening to think about it, the solution
+is even simpler than what I said earlier.  It requires 3 things to be
+added to struct spi_master.
+- 1 Mutex
+- 1 spin lock
+- 1 flag.
+
+The mutex protects spi_async, and provides sleeping "for free"
+The spinlock protects the atomic spi_sync call.
+The flag is set when the lock is obtained, and checked while holding
+the spinlock in spi_sync().  If the flag is checked, then spi_sync()
+must fail immediately.
+
+The current runtime API looks like this:
+spi_sync(struct spi_device*, struct spi_message*);
+spi_async(struct spi_device*, struct spi_message*);
+
+The API needs to be extended to this:
+spi_sync(struct spi_device*, struct spi_message*)
+spi_async(struct spi_device*, struct spi_message*)
+spi_bus_lock(struct spi_master*)  /* although struct spi_device* might
+be easier */
+spi_bus_unlock(struct spi_master*)
+spi_sync_locked(struct spi_device*, struct spi_message*)
+spi_async_locked(struct spi_device*, struct spi_message*)
+
+Drivers can only call the last two if they already hold the spi_master_lock=
+().
+
+spi_bus_lock() obtains the mutex, obtains the spin lock, sets the
+flag, and releases the spin lock before returning.  It doesn't even
+need to sleep while waiting for "in-flight" spi_transactions to
+complete because its purpose is to guarantee no additional
+transactions are added.  It does not guarantee that the bus is idle.
+
+spi_bus_unlock() clears the flag and releases the mutex, which will
+wake up any waiters.
+
+The difference between spi_sync() and spi_sync_locked() is that the
+locked version bypasses the check of the lock flag.  Both versions
+need to obtain the spinlock.
+
+The difference between spi_async() and spi_async_locked() is that
+spi_async() must hold the mutex while enqueuing a new transfer.
+spi_async_locked() doesn't because the mutex is already held.  Note
+however that spi_async must *not* continue to hold the mutex while
+waiting for the transfer to complete, otherwise only one transfer
+could be queued up at a time!
+
+Almost no code needs to be written.  The current spi_sync() and
+spi_async() can probably be renamed to __spi_sync() and __spI_async()
+so that spi_sync(), spi_async(), spi_sync_locked() and
+spi_async_locked() can just become wrappers around the common code.
+
+That's it.  Easy to implement, low risk, simple and above all passes
+the correctness test.
+
+> For me, there seems to be no disadvantage in having this or a similar
+> solution as an intermediate step to the perfect solution (any volunteers?=
+).
+
+The intermediate step is worse that the current situation.  It reduces
+the pain for some users (which reduces motivation) while complicating
+the code and inventing a new (and guaranteed to be subtly broken)
+locking scheme.
 
 g.
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
 
 ---------------------------------------------------------------------------=
 ---

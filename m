@@ -1,8 +1,9 @@
 From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 1/2 V2] spi/mmc_spi: SPI bus locking API,
-	using mutex
-Date: Thu, 18 Feb 2010 12:44:25 +0100
-Message-ID: <20100218124425.599c4d76.eschwab@online.de>
+Subject: [PATCH 2/2 V2] spi/mmc_spi: mmc_spi adaptations
+ for SPI bus locking API
+Date: Thu, 18 Feb 2010 12:47:46 +0100
+Message-ID: <20100218124746.d1bea430.eschwab@online.de>
+References: <20100218124425.599c4d76.eschwab@online.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,6 +13,7 @@ To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Kumar G
 	<galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>, David Brownell
 	<dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100218124425.599c4d76.eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,375 +26,141 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 
-SPI bus locking API to allow exclusive access to the SPI bus, especially, but
-not limited to, for the mmc_spi driver.
-
-Coded according to an outline from Grant Likely; here is his
-specification (accidentally swapped function names corrected):
-
-It requires 3 things to be added to struct spi_master.
-- 1 Mutex
-- 1 spin lock
-- 1 flag.
-
-The mutex protects spi_sync, and provides sleeping "for free"
-The spinlock protects the atomic spi_async call.
-The flag is set when the lock is obtained, and checked while holding
-the spinlock in spi_async().  If the flag is checked, then spi_async()
-must fail immediately.
-
-The current runtime API looks like this:
-spi_async(struct spi_device*, struct spi_message*);
-spi_sync(struct spi_device*, struct spi_message*);
-
-The API needs to be extended to this:
-spi_async(struct spi_device*, struct spi_message*)
-spi_sync(struct spi_device*, struct spi_message*)
-spi_bus_lock(struct spi_master*)  /* although struct spi_device* might
-be easier */
-spi_bus_unlock(struct spi_master*)
-spi_async_locked(struct spi_device*, struct spi_message*)
-spi_sync_locked(struct spi_device*, struct spi_message*)
-
-Drivers can only call the last two if they already hold the spi_master_lock().
-
-spi_bus_lock() obtains the mutex, obtains the spin lock, sets the
-flag, and releases the spin lock before returning.  It doesn't even
-need to sleep while waiting for "in-flight" spi_transactions to
-complete because its purpose is to guarantee no additional
-transactions are added.  It does not guarantee that the bus is idle.
-
-spi_bus_unlock() clears the flag and releases the mutex, which will
-wake up any waiters.
-
-The difference between spi_async() and spi_async_locked() is that the
-locked version bypasses the check of the lock flag.  Both versions
-need to obtain the spinlock.
-
-The difference between spi_sync() and spi_sync_locked() is that
-spi_sync() must hold the mutex while enqueuing a new transfer.
-spi_sync_locked() doesn't because the mutex is already held.  Note
-however that spi_sync must *not* continue to hold the mutex while
-waiting for the transfer to complete, otherwise only one transfer
-could be queued up at a time!
-
-Almost no code needs to be written.  The current spi_async() and
-spi_sync() can probably be renamed to __spi_async() and __spi_sync()
-so that spi_async(), spi_sync(), spi_async_locked() and
-spi_sync_locked() can just become wrappers around the common code.
-
-spi_sync() is protected by a mutex because it can sleep
-spi_async() needs to be protected with a flag and a spinlock because
-it can be called atomically and must not sleep
+Modification of the mmc_spi driver to use the SPI bus locking API.
+With this, the mmc_spi driver can be used together with other SPI
+devices on the same SPI bus. The exclusive access to the SPI bus is
+now managed in the SPI layer. The counting of chip selects in the probe
+function is no longer needed.
 
 Signed-off-by: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 ---
-V2: integrated improvements suggested by Grant Likely
+V2: pass spi_master* instead of spi* to spi_bus_lock
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -524,6 +524,10 @@ int spi_register_master(struct spi_maste
- 		dynamic = 1;
+--- linux-2.6.33-rc8.orig/drivers/mmc/host/mmc_spi.c	2010-02-12 20:07:45.000000000 +0100
++++ buslocknew/drivers/mmc/host/mmc_spi.c	2010-02-18 12:21:26.000000000 +0100
+@@ -181,7 +181,7 @@ mmc_spi_readbytes(struct mmc_spi_host *h
+ 				host->data_dma, sizeof(*host->data),
+ 				DMA_FROM_DEVICE);
+ 
+-	status = spi_sync(host->spi, &host->readback);
++	status = spi_sync_locked(host->spi, &host->readback);
+ 
+ 	if (host->dma_dev)
+ 		dma_sync_single_for_cpu(host->dma_dev,
+@@ -540,7 +540,7 @@ mmc_spi_command_send(struct mmc_spi_host
+ 				host->data_dma, sizeof(*host->data),
+ 				DMA_BIDIRECTIONAL);
+ 	}
+-	status = spi_sync(host->spi, &host->m);
++	status = spi_sync_locked(host->spi, &host->m);
+ 
+ 	if (host->dma_dev)
+ 		dma_sync_single_for_cpu(host->dma_dev,
+@@ -684,7 +684,7 @@ mmc_spi_writeblock(struct mmc_spi_host *
+ 				host->data_dma, sizeof(*scratch),
+ 				DMA_BIDIRECTIONAL);
+ 
+-	status = spi_sync(spi, &host->m);
++	status = spi_sync_locked(spi, &host->m);
+ 
+ 	if (status != 0) {
+ 		dev_dbg(&spi->dev, "write error (%d)\n", status);
+@@ -821,7 +821,7 @@ mmc_spi_readblock(struct mmc_spi_host *h
+ 				DMA_FROM_DEVICE);
  	}
  
-+	spin_lock_init(&master->bus_lock_spinlock);
-+	mutex_init(&master->bus_lock_mutex);
-+	master->bus_lock_flag = 0;
-+
- 	/* register the device, then userspace will see it.
- 	 * registration fails if the bus ID is in use.
- 	 */
-@@ -663,6 +667,35 @@ int spi_setup(struct spi_device *spi)
- }
- EXPORT_SYMBOL_GPL(spi_setup);
+-	status = spi_sync(spi, &host->m);
++	status = spi_sync_locked(spi, &host->m);
  
-+static int __spi_async(struct spi_device *spi, struct spi_message *message)
-+{
-+	struct spi_master *master = spi->master;
-+
-+	/* Half-duplex links include original MicroWire, and ones with
-+	 * only one data pin like SPI_3WIRE (switches direction) or where
-+	 * either MOSI or MISO is missing.  They can also be caused by
-+	 * software limitations.
-+	 */
-+	if ((master->flags & SPI_MASTER_HALF_DUPLEX)
-+			|| (spi->mode & SPI_3WIRE)) {
-+		struct spi_transfer *xfer;
-+		unsigned flags = master->flags;
-+
-+		list_for_each_entry(xfer, &message->transfers, transfer_list) {
-+			if (xfer->rx_buf && xfer->tx_buf)
-+				return -EINVAL;
-+			if ((flags & SPI_MASTER_NO_TX) && xfer->tx_buf)
-+				return -EINVAL;
-+			if ((flags & SPI_MASTER_NO_RX) && xfer->rx_buf)
-+				return -EINVAL;
-+		}
-+	}
-+
-+	message->spi = spi;
-+	message->status = -EINPROGRESS;
-+	return master->transfer(spi, message);
-+}
-+
- /**
-  * spi_async - asynchronous SPI transfer
-  * @spi: device with which data will be exchanged
-@@ -695,33 +728,68 @@ EXPORT_SYMBOL_GPL(spi_setup);
- int spi_async(struct spi_device *spi, struct spi_message *message)
- {
- 	struct spi_master *master = spi->master;
-+	int ret;
-+	unsigned long flags;
+ 	if (host->dma_dev) {
+ 		dma_sync_single_for_cpu(host->dma_dev,
+@@ -1017,7 +1017,7 @@ mmc_spi_data_do(struct mmc_spi_host *hos
+ 					host->data_dma, sizeof(*scratch),
+ 					DMA_BIDIRECTIONAL);
  
--	/* Half-duplex links include original MicroWire, and ones with
--	 * only one data pin like SPI_3WIRE (switches direction) or where
--	 * either MOSI or MISO is missing.  They can also be caused by
--	 * software limitations.
--	 */
--	if ((master->flags & SPI_MASTER_HALF_DUPLEX)
--			|| (spi->mode & SPI_3WIRE)) {
--		struct spi_transfer *xfer;
--		unsigned flags = master->flags;
-+	spin_lock_irqsave(&master->bus_lock_spinlock, flags);
+-		tmp = spi_sync(spi, &host->m);
++		tmp = spi_sync_locked(spi, &host->m);
  
--		list_for_each_entry(xfer, &message->transfers, transfer_list) {
--			if (xfer->rx_buf && xfer->tx_buf)
--				return -EINVAL;
--			if ((flags & SPI_MASTER_NO_TX) && xfer->tx_buf)
--				return -EINVAL;
--			if ((flags & SPI_MASTER_NO_RX) && xfer->rx_buf)
--				return -EINVAL;
--		}
--	}
-+	if (master->bus_lock_flag)
-+		ret = -EBUSY;
-+	else
-+		ret = __spi_async(spi, message);
+ 		if (host->dma_dev)
+ 			dma_sync_single_for_cpu(host->dma_dev,
+@@ -1083,6 +1083,9 @@ static void mmc_spi_request(struct mmc_h
+ 	}
+ #endif
  
--	message->spi = spi;
--	message->status = -EINPROGRESS;
--	return master->transfer(spi, message);
-+	spin_unlock_irqrestore(&master->bus_lock_spinlock, flags);
++	/* request exclusive bus access */
++	spi_bus_lock(host->spi->master);
 +
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(spi_async);
+ 	/* issue command; then optionally data and stop */
+ 	status = mmc_spi_command_send(host, mrq, mrq->cmd, mrq->data != NULL);
+ 	if (status == 0 && mrq->data) {
+@@ -1093,6 +1096,9 @@ static void mmc_spi_request(struct mmc_h
+ 			mmc_cs_off(host);
+ 	}
  
-+/**
-+ * spi_async_locked - version of spi_async with exclusive bus usage
-+ * @spi: device with which data will be exchanged
-+ * @message: describes the data transfers, including completion callback
-+ * Context: any (irqs may be blocked, etc)
-+ *
-+ * This call may be used in_irq and other contexts which can't sleep,
-+ * as well as from task contexts which can sleep.
-+ *
-+ * The completion callback is invoked in a context which can't sleep.
-+ * Before that invocation, the value of message->status is undefined.
-+ * When the callback is issued, message->status holds either zero (to
-+ * indicate complete success) or a negative error code.  After that
-+ * callback returns, the driver which issued the transfer request may
-+ * deallocate the associated memory; it's no longer in use by any SPI
-+ * core or controller driver code.
-+ *
-+ * Note that although all messages to a spi_device are handled in
-+ * FIFO order, messages may go to different devices in other orders.
-+ * Some device might be higher priority, or have various "hard" access
-+ * time requirements, for example.
-+ *
-+ * On detection of any fault during the transfer, processing of
-+ * the entire message is aborted, and the device is deselected.
-+ * Until returning from the associated message completion callback,
-+ * no other spi_message queued to that device will be processed.
-+ * (This rule applies equally to all the synchronous transfer calls,
-+ * which are wrappers around this core asynchronous primitive.)
-+ */
-+int spi_async_locked(struct spi_device *spi, struct spi_message *message)
-+{
-+	struct spi_master *master = spi->master;
-+	int ret;
-+	unsigned long flags;
++	/* release the bus */
++	spi_bus_unlock(host->spi->master);
 +
-+	spin_lock_irqsave(&master->bus_lock_spinlock, flags);
-+
-+	ret = __spi_async(spi, message);
-+
-+	spin_unlock_irqrestore(&master->bus_lock_spinlock, flags);
-+
-+	return ret;
-+
-+}
-+EXPORT_SYMBOL_GPL(spi_async_locked);
-+
- 
- /*-------------------------------------------------------------------------*/
- 
-@@ -735,6 +803,32 @@ static void spi_complete(void *arg)
- 	complete(arg);
+ 	mmc_request_done(host->mmc, mrq);
  }
  
-+static int __spi_sync(struct spi_device *spi, struct spi_message *message,
-+		      int bus_locked)
-+{
-+	DECLARE_COMPLETION_ONSTACK(done);
-+	int status;
-+	struct spi_master *master = spi->master;
-+
-+	message->complete = spi_complete;
-+	message->context = &done;
-+
-+	if (!bus_locked)
-+		mutex_lock(&master->bus_lock_mutex);
-+
-+	status = spi_async_locked(spi, message);
-+
-+	if (!bus_locked)
-+		mutex_unlock(&master->bus_lock_mutex);
-+
-+	if (status == 0) {
-+		wait_for_completion(&done);
-+		status = message->status;
-+	}
-+	message->context = NULL;
-+	return status;
-+}
-+
- /**
-  * spi_sync - blocking/synchronous SPI data transfers
-  * @spi: device with which data will be exchanged
-@@ -758,21 +852,84 @@ static void spi_complete(void *arg)
-  */
- int spi_sync(struct spi_device *spi, struct spi_message *message)
- {
--	DECLARE_COMPLETION_ONSTACK(done);
--	int status;
+@@ -1289,23 +1295,6 @@ mmc_spi_detect_irq(int irq, void *mmc)
+ 	return IRQ_HANDLED;
+ }
+ 
+-struct count_children {
+-	unsigned	n;
+-	struct bus_type	*bus;
+-};
 -
--	message->complete = spi_complete;
--	message->context = &done;
--	status = spi_async(spi, message);
--	if (status == 0) {
--		wait_for_completion(&done);
--		status = message->status;
+-static int maybe_count_child(struct device *dev, void *c)
+-{
+-	struct count_children *ccp = c;
+-
+-	if (dev->bus == ccp->bus) {
+-		if (ccp->n)
+-			return -EBUSY;
+-		ccp->n++;
 -	}
--	message->context = NULL;
--	return status;
-+	__spi_sync(spi, message, 0);
- }
- EXPORT_SYMBOL_GPL(spi_sync);
+-	return 0;
+-}
+-
+ static int mmc_spi_probe(struct spi_device *spi)
+ {
+ 	void			*ones;
+@@ -1337,32 +1326,6 @@ static int mmc_spi_probe(struct spi_devi
+ 		return status;
+ 	}
  
-+/**
-+ * spi_sync_locked - version of spi_sync with exclusive bus usage
-+ * @spi: device with which data will be exchanged
-+ * @message: describes the data transfers
-+ * Context: can sleep
-+ *
-+ * This call may only be used from a context that may sleep.  The sleep
-+ * is non-interruptible, and has no timeout.  Low-overhead controller
-+ * drivers may DMA directly into and out of the message buffers.
-+ *
-+ * This call should be used by drivers that require exclusive access to the
-+ * SPI bus. It has to be preceeded by a spi_bus_lock call. The SPI bus must
-+ * be released by a spi_bus_unlock call when the exclusive access is over.
-+ *
-+ * It returns zero on success, else a negative error code.
-+ */
-+int spi_sync_locked(struct spi_device *spi, struct spi_message *message)
-+{
-+	__spi_sync(spi, message, 1);
-+}
-+EXPORT_SYMBOL_GPL(spi_sync_locked);
-+
-+/**
-+ * spi_bus_lock - obtain a lock for exclusive SPI bus usage
-+ * @master: SPI bus master that should be locked for exclusive bus access
-+ * Context: can sleep
-+ *
-+ * This call may only be used from a context that may sleep.  The sleep
-+ * is non-interruptible, and has no timeout.
-+ *
-+ * This call should be used by drivers that require exclusive access to the
-+ * SPI bus. The SPI bus must be released by a spi_bus_unlock call when the
-+ * exclusive access is over. Data transfer must be done by spi_sync_locked
-+ * and spi_async_locked calls when the SPI bus lock is held.
-+ *
-+ * It returns zero on success, else a negative error code.
-+ */
-+int spi_bus_lock(struct spi_master *master)
-+{
-+	mutex_lock(&master->bus_lock_mutex);
-+
-+	spin_lock(&master->bus_lock_spinlock);
-+	master->bus_lock_flag = 1;
-+	spin_unlock(&master->bus_lock_spinlock);
-+
-+	/* mutex remains locked until spi_bus_unlock is called */
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(spi_bus_lock);
-+
-+/**
-+ * spi_bus_unlock - release the lock for exclusive SPI bus usage
-+ * @master: SPI bus master that was locked for exclusive bus access
-+ * Context: can sleep
-+ *
-+ * This call may only be used from a context that may sleep.  The sleep
-+ * is non-interruptible, and has no timeout.
-+ *
-+ * This call releases an SPI bus lock previously obtained by an spi_bus_lock
-+ * call.
-+ *
-+ * It returns zero on success, else a negative error code.
-+ */
-+int spi_bus_unlock(struct spi_master *master)
-+{
-+	master->bus_lock_flag = 0;
-+
-+	mutex_unlock(&master->bus_lock_mutex);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(spi_bus_unlock);
-+
- /* portable code must never pass more than 32 bytes */
- #define	SPI_BUFSIZ	max(32,SMP_CACHE_BYTES)
- 
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -261,6 +261,13 @@ struct spi_master {
- #define SPI_MASTER_NO_RX	BIT(1)		/* can't do buffer read */
- #define SPI_MASTER_NO_TX	BIT(2)		/* can't do buffer write */
- 
-+	/* lock and mutex for SPI bus locking */
-+	spinlock_t		bus_lock_spinlock;
-+	struct mutex		bus_lock_mutex;
-+
-+	/* flag indicating that the SPI bus is locked for exclusive use */
-+	u8			bus_lock_flag;
-+
- 	/* Setup mode and clock, etc (spi driver may call many times).
+-	/* We can use the bus safely iff nobody else will interfere with us.
+-	 * Most commands consist of one SPI message to issue a command, then
+-	 * several more to collect its response, then possibly more for data
+-	 * transfer.  Clocking access to other devices during that period will
+-	 * corrupt the command execution.
+-	 *
+-	 * Until we have software primitives which guarantee non-interference,
+-	 * we'll aim for a hardware-level guarantee.
+-	 *
+-	 * REVISIT we can't guarantee another device won't be added later...
+-	 */
+-	if (spi->master->num_chipselect > 1) {
+-		struct count_children cc;
+-
+-		cc.n = 0;
+-		cc.bus = spi->dev.bus;
+-		status = device_for_each_child(spi->dev.parent, &cc,
+-				maybe_count_child);
+-		if (status < 0) {
+-			dev_err(&spi->dev, "can't share SPI bus\n");
+-			return status;
+-		}
+-
+-		dev_warn(&spi->dev, "ASSUMING SPI bus stays unshared!\n");
+-	}
+-
+ 	/* We need a supply of ones to transmit.  This is the only time
+ 	 * the CPU touches these, so cache coherency isn't a concern.
  	 *
- 	 * IMPORTANT:  this may be called when transfers to another
-@@ -541,6 +548,8 @@ static inline void spi_message_free(stru
- 
- extern int spi_setup(struct spi_device *spi);
- extern int spi_async(struct spi_device *spi, struct spi_message *message);
-+extern int spi_async_locked(struct spi_device *spi,
-+			    struct spi_message *message);
- 
- /*---------------------------------------------------------------------------*/
- 
-@@ -550,6 +559,9 @@ extern int spi_async(struct spi_device *
-  */
- 
- extern int spi_sync(struct spi_device *spi, struct spi_message *message);
-+extern int spi_sync_locked(struct spi_device *spi, struct spi_message *message);
-+extern int spi_bus_lock(struct spi_master *master);
-+extern int spi_bus_unlock(struct spi_master *master);
- 
- /**
-  * spi_write - SPI synchronous write
+
 
 ------------------------------------------------------------------------------
 Download Intel&reg; Parallel Studio Eval

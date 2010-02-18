@@ -1,12 +1,12 @@
 From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 2/2 V2] spi/mmc_spi: mmc_spi adaptations
- for SPI bus locking API
-Date: Thu, 18 Feb 2010 12:47:46 +0100
-Message-ID: <20100218124746.d1bea430.eschwab@online.de>
+Subject: Re: [PATCH 1/2 V2] spi/mmc_spi: SPI bus locking
+	API, using mutex
+Date: Thu, 18 Feb 2010 13:10:57 +0100
+Message-ID: <20100218131057.40f9e623.eschwab@online.de>
 References: <20100218124425.599c4d76.eschwab@online.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org,
 	vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Kumar Gala
@@ -24,147 +24,76 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+I integrated your changes in V2, I hope I did not miss anything.
 
-Modification of the mmc_spi driver to use the SPI bus locking API.
-With this, the mmc_spi driver can be used together with other SPI
-devices on the same SPI bus. The exclusive access to the SPI bus is
-now managed in the SPI layer. The counting of chip selects in the probe
-function is no longer needed.
+On Wed, 17 Feb 2010 13:03:04 -0700
+Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
 
-Signed-off-by: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+[...]
+> spi_sync() and spi_sync_locked() are largely idenical.  Only
+> difference is that spi_sync() needs to obtain the mutex.  Rename
+> spi_sync() to __spi_sync() and add a 'get_lock' flag parameter.  Then
+> make spi_sync() and spi_sync_locked() call __spi_sync() with the flag
+> set appropriately.
+
+I made the parameter 'bus_locked' instead of 'get_lock' because we
+do not only get the lock but release it after use.
+
+
+[...]
+> > =A0extern int spi_setup(struct spi_device *spi);
+> > =A0extern int spi_async(struct spi_device *spi, struct spi_message *mes=
+sage);
+> > +extern int
+> > +spi_async_locked(struct spi_device *spi, struct spi_message *message);
+> =
+
+> Please keep return parameters and annotations on the same line as the
+> function name (makes grep results more useful).  You can break lines
+> between parameters.
+
+Hm, the prototype for spi_alloc_master in the same file let me assume,
+that this should be the style used in this header file. Normally, I =
+
+wouldn't do a linebreak there, ever...
+
+Something more important:
+
+I have concerns on the use of the spin lock around the =
+
+__spi_async() call, as Mike Frysinger already remarked.
+
+Why do we 'need' this spin lock:
+- by definition, spi_async can be called from any context
+	"
+	 * Context: any (irqs may be blocked, etc)
+	 *
+	 * This call may be used in_irq and other contexts which can't sleep,
+	 * as well as from task contexts which can sleep.
+	"
+- we are not sure that spi_async isn't used reentrant (e.g. interrupt
+  service routine and normal context
+- __spi_async calls the master->transfer() function which is not required
+  to be reentrant (or is it?)
+
+But: This all is true for the original design, there seems to be no
+protection against accidental reentrant use of spi_async().
+
+Maybe we should check if there is any current call of spi_async() from
+context that cannot sleep, and change the definition where it is allowed
+to be called, if possible.
+
+Regards
+Ernst
+
+
+
+---------------------------------------------------------------------------=
 ---
-V2: pass spi_master* instead of spi* to spi_bus_lock
-
---- linux-2.6.33-rc8.orig/drivers/mmc/host/mmc_spi.c	2010-02-12 20:07:45.000000000 +0100
-+++ buslocknew/drivers/mmc/host/mmc_spi.c	2010-02-18 12:21:26.000000000 +0100
-@@ -181,7 +181,7 @@ mmc_spi_readbytes(struct mmc_spi_host *h
- 				host->data_dma, sizeof(*host->data),
- 				DMA_FROM_DEVICE);
- 
--	status = spi_sync(host->spi, &host->readback);
-+	status = spi_sync_locked(host->spi, &host->readback);
- 
- 	if (host->dma_dev)
- 		dma_sync_single_for_cpu(host->dma_dev,
-@@ -540,7 +540,7 @@ mmc_spi_command_send(struct mmc_spi_host
- 				host->data_dma, sizeof(*host->data),
- 				DMA_BIDIRECTIONAL);
- 	}
--	status = spi_sync(host->spi, &host->m);
-+	status = spi_sync_locked(host->spi, &host->m);
- 
- 	if (host->dma_dev)
- 		dma_sync_single_for_cpu(host->dma_dev,
-@@ -684,7 +684,7 @@ mmc_spi_writeblock(struct mmc_spi_host *
- 				host->data_dma, sizeof(*scratch),
- 				DMA_BIDIRECTIONAL);
- 
--	status = spi_sync(spi, &host->m);
-+	status = spi_sync_locked(spi, &host->m);
- 
- 	if (status != 0) {
- 		dev_dbg(&spi->dev, "write error (%d)\n", status);
-@@ -821,7 +821,7 @@ mmc_spi_readblock(struct mmc_spi_host *h
- 				DMA_FROM_DEVICE);
- 	}
- 
--	status = spi_sync(spi, &host->m);
-+	status = spi_sync_locked(spi, &host->m);
- 
- 	if (host->dma_dev) {
- 		dma_sync_single_for_cpu(host->dma_dev,
-@@ -1017,7 +1017,7 @@ mmc_spi_data_do(struct mmc_spi_host *hos
- 					host->data_dma, sizeof(*scratch),
- 					DMA_BIDIRECTIONAL);
- 
--		tmp = spi_sync(spi, &host->m);
-+		tmp = spi_sync_locked(spi, &host->m);
- 
- 		if (host->dma_dev)
- 			dma_sync_single_for_cpu(host->dma_dev,
-@@ -1083,6 +1083,9 @@ static void mmc_spi_request(struct mmc_h
- 	}
- #endif
- 
-+	/* request exclusive bus access */
-+	spi_bus_lock(host->spi->master);
-+
- 	/* issue command; then optionally data and stop */
- 	status = mmc_spi_command_send(host, mrq, mrq->cmd, mrq->data != NULL);
- 	if (status == 0 && mrq->data) {
-@@ -1093,6 +1096,9 @@ static void mmc_spi_request(struct mmc_h
- 			mmc_cs_off(host);
- 	}
- 
-+	/* release the bus */
-+	spi_bus_unlock(host->spi->master);
-+
- 	mmc_request_done(host->mmc, mrq);
- }
- 
-@@ -1289,23 +1295,6 @@ mmc_spi_detect_irq(int irq, void *mmc)
- 	return IRQ_HANDLED;
- }
- 
--struct count_children {
--	unsigned	n;
--	struct bus_type	*bus;
--};
--
--static int maybe_count_child(struct device *dev, void *c)
--{
--	struct count_children *ccp = c;
--
--	if (dev->bus == ccp->bus) {
--		if (ccp->n)
--			return -EBUSY;
--		ccp->n++;
--	}
--	return 0;
--}
--
- static int mmc_spi_probe(struct spi_device *spi)
- {
- 	void			*ones;
-@@ -1337,32 +1326,6 @@ static int mmc_spi_probe(struct spi_devi
- 		return status;
- 	}
- 
--	/* We can use the bus safely iff nobody else will interfere with us.
--	 * Most commands consist of one SPI message to issue a command, then
--	 * several more to collect its response, then possibly more for data
--	 * transfer.  Clocking access to other devices during that period will
--	 * corrupt the command execution.
--	 *
--	 * Until we have software primitives which guarantee non-interference,
--	 * we'll aim for a hardware-level guarantee.
--	 *
--	 * REVISIT we can't guarantee another device won't be added later...
--	 */
--	if (spi->master->num_chipselect > 1) {
--		struct count_children cc;
--
--		cc.n = 0;
--		cc.bus = spi->dev.bus;
--		status = device_for_each_child(spi->dev.parent, &cc,
--				maybe_count_child);
--		if (status < 0) {
--			dev_err(&spi->dev, "can't share SPI bus\n");
--			return status;
--		}
--
--		dev_warn(&spi->dev, "ASSUMING SPI bus stays unshared!\n");
--	}
--
- 	/* We need a supply of ones to transmit.  This is the only time
- 	 * the CPU touches these, so cache coherency isn't a concern.
- 	 *
-
-
-------------------------------------------------------------------------------
 Download Intel&reg; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs 
-proactively, and fine-tune applications for parallel performance. 
+Try the new software tools for yourself. Speed compiling, find bugs =
+
+proactively, and fine-tune applications for parallel performance. =
+
 See why Intel Parallel Studio got high marks during beta.
 http://p.sf.net/sfu/intel-sw-dev

@@ -1,162 +1,402 @@
-From: "Hemanth V" <hemanthv@ti.com>
-Subject: [RESEND][PATCH V2 3/3] Add support for Slave mode
-Date: Thu, 18 Feb 2010 16:18:54 +0530 (IST)
-Message-ID: <50566.10.24.255.18.1266490134.squirrel@dbdmail.itg.ti.com>
+From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH 1/2 V2] spi/mmc_spi: SPI bus locking API,
+	using mutex
+Date: Thu, 18 Feb 2010 12:44:25 +0100
+Message-ID: <20100218124425.599c4d76.eschwab@online.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;boundary="----=_20100218161854_93180"
-Cc: linux-omap@vger.kernel.org, spi-devel-general@lists.sourceforge.net
-To: grant.likely@secretlab.ca
-Return-path: <linux-omap-owner@vger.kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org,
+	vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Kumar Gala
+	<galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>, David Brownell
+	<dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-------=_20100218161854_93180
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
+From: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 
-Pl also find the patch attached, incase corrupted by mailer
+SPI bus locking API to allow exclusive access to the SPI bus, especially, but
+not limited to, for the mmc_spi driver.
 
-Thanks
-Hemanth
+Coded according to an outline from Grant Likely; here is his
+specification (accidentally swapped function names corrected):
 
->From ae4c6a91bbcfc842f97cf48dd13f6de02baae1d3 Mon Sep 17 00:00:00 2001
-From: Hemanth V <hemanthv@ti.com>
-Date: Fri, 27 Nov 2009 14:37:20 +0530
-Subject: [PATCH 3/3] Add McSPI slave support.
+It requires 3 things to be added to struct spi_master.
+- 1 Mutex
+- 1 spin lock
+- 1 flag.
 
-This patch adds support for mcspi slave mode.
+The mutex protects spi_sync, and provides sleeping "for free"
+The spinlock protects the atomic spi_async call.
+The flag is set when the lock is obtained, and checked while holding
+the spinlock in spi_async().  If the flag is checked, then spi_async()
+must fail immediately.
 
-Signed-off-by: Hemanth V <hemanthv@ti.com>
+The current runtime API looks like this:
+spi_async(struct spi_device*, struct spi_message*);
+spi_sync(struct spi_device*, struct spi_message*);
+
+The API needs to be extended to this:
+spi_async(struct spi_device*, struct spi_message*)
+spi_sync(struct spi_device*, struct spi_message*)
+spi_bus_lock(struct spi_master*)  /* although struct spi_device* might
+be easier */
+spi_bus_unlock(struct spi_master*)
+spi_async_locked(struct spi_device*, struct spi_message*)
+spi_sync_locked(struct spi_device*, struct spi_message*)
+
+Drivers can only call the last two if they already hold the spi_master_lock().
+
+spi_bus_lock() obtains the mutex, obtains the spin lock, sets the
+flag, and releases the spin lock before returning.  It doesn't even
+need to sleep while waiting for "in-flight" spi_transactions to
+complete because its purpose is to guarantee no additional
+transactions are added.  It does not guarantee that the bus is idle.
+
+spi_bus_unlock() clears the flag and releases the mutex, which will
+wake up any waiters.
+
+The difference between spi_async() and spi_async_locked() is that the
+locked version bypasses the check of the lock flag.  Both versions
+need to obtain the spinlock.
+
+The difference between spi_sync() and spi_sync_locked() is that
+spi_sync() must hold the mutex while enqueuing a new transfer.
+spi_sync_locked() doesn't because the mutex is already held.  Note
+however that spi_sync must *not* continue to hold the mutex while
+waiting for the transfer to complete, otherwise only one transfer
+could be queued up at a time!
+
+Almost no code needs to be written.  The current spi_async() and
+spi_sync() can probably be renamed to __spi_async() and __spi_sync()
+so that spi_async(), spi_sync(), spi_async_locked() and
+spi_sync_locked() can just become wrappers around the common code.
+
+spi_sync() is protected by a mutex because it can sleep
+spi_async() needs to be protected with a flag and a spinlock because
+it can be called atomically and must not sleep
+
+Signed-off-by: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
 ---
- drivers/spi/omap2_mcspi.c |   24 ++++++++++++++++++------
- 1 files changed, 18 insertions(+), 6 deletions(-)
+V2: integrated improvements suggested by Grant Likely
 
-diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-index 75a3f04..03d61cf 100644
---- a/drivers/spi/omap2_mcspi.c
-+++ b/drivers/spi/omap2_mcspi.c
-@@ -428,6 +428,18 @@ static void omap2_mcspi_set_master_mode(struct spi_master
-*master)
- 	omap2_mcspi_ctx[master->bus_num - 1].modulctrl = l;
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -524,6 +524,10 @@ int spi_register_master(struct spi_maste
+ 		dynamic = 1;
+ 	}
+ 
++	spin_lock_init(&master->bus_lock_spinlock);
++	mutex_init(&master->bus_lock_mutex);
++	master->bus_lock_flag = 0;
++
+ 	/* register the device, then userspace will see it.
+ 	 * registration fails if the bus ID is in use.
+ 	 */
+@@ -663,6 +667,35 @@ int spi_setup(struct spi_device *spi)
  }
-
-+static void omap2_mcspi_set_slave_mode(struct spi_master *master)
+ EXPORT_SYMBOL_GPL(spi_setup);
+ 
++static int __spi_async(struct spi_device *spi, struct spi_message *message)
 +{
-+	u32 l;
++	struct spi_master *master = spi->master;
 +
-+	l = mcspi_read_reg(master, OMAP2_MCSPI_MODULCTRL);
-+	MOD_REG_BIT(l, OMAP2_MCSPI_MODULCTRL_STEST, 0);
-+	MOD_REG_BIT(l, OMAP2_MCSPI_MODULCTRL_MS, 1);
-+	mcspi_write_reg(master, OMAP2_MCSPI_MODULCTRL, l);
++	/* Half-duplex links include original MicroWire, and ones with
++	 * only one data pin like SPI_3WIRE (switches direction) or where
++	 * either MOSI or MISO is missing.  They can also be caused by
++	 * software limitations.
++	 */
++	if ((master->flags & SPI_MASTER_HALF_DUPLEX)
++			|| (spi->mode & SPI_3WIRE)) {
++		struct spi_transfer *xfer;
++		unsigned flags = master->flags;
 +
-+	omap2_mcspi_ctx[master->bus_num - 1].modulctrl = l;
++		list_for_each_entry(xfer, &message->transfers, transfer_list) {
++			if (xfer->rx_buf && xfer->tx_buf)
++				return -EINVAL;
++			if ((flags & SPI_MASTER_NO_TX) && xfer->tx_buf)
++				return -EINVAL;
++			if ((flags & SPI_MASTER_NO_RX) && xfer->rx_buf)
++				return -EINVAL;
++		}
++	}
++
++	message->spi = spi;
++	message->status = -EINPROGRESS;
++	return master->transfer(spi, message);
 +}
 +
- static int mcspi_wait_for_reg_bit(void __iomem *reg, unsigned long bit)
+ /**
+  * spi_async - asynchronous SPI transfer
+  * @spi: device with which data will be exchanged
+@@ -695,33 +728,68 @@ EXPORT_SYMBOL_GPL(spi_setup);
+ int spi_async(struct spi_device *spi, struct spi_message *message)
  {
- 	unsigned long timeout;
-@@ -827,10 +839,11 @@ static int omap2_mcspi_setup_transfer(struct spi_device
-*spi,
- 		l &= ~(OMAP2_MCSPI_CHCONF_IS|OMAP2_MCSPI_CHCONF_DPE1);
- 		l |= OMAP2_MCSPI_CHCONF_DPE0;
- 	} else {
--		return -EINVAL;
-+		l |= OMAP2_MCSPI_CHCONF_IS;
-+		l |= OMAP2_MCSPI_CHCONF_DPE1;
-+		l &= ~OMAP2_MCSPI_CHCONF_DPE0;
- 	}
-
--
- 	/* wordlength */
- 	l &= ~OMAP2_MCSPI_CHCONF_WL_MASK;
- 	l |= (word_len - 1) << 7;
-@@ -1214,7 +1227,6 @@ static int __init omap2_mcspi_reset(struct omap2_mcspi
-*mcspi)
- {
- 	struct spi_master	*master = mcspi->master;
- 	u32			tmp;
--	u32			error = 0;
-
- 	if (omap2_mcspi_enable_clocks(mcspi))
- 		return -1;
-@@ -1238,10 +1250,10 @@ static int __init omap2_mcspi_reset(struct omap2_mcspi
-*mcspi)
- 	if (mcspi->mcspi_mode == OMAP2_MCSPI_MASTER)
- 		omap2_mcspi_set_master_mode(master);
- 	else
--		error = -EINVAL;
-+		omap2_mcspi_set_slave_mode(master);
-
- 	omap2_mcspi_disable_clocks(mcspi);
--	return error;
-+	return 0;
+ 	struct spi_master *master = spi->master;
++	int ret;
++	unsigned long flags;
+ 
+-	/* Half-duplex links include original MicroWire, and ones with
+-	 * only one data pin like SPI_3WIRE (switches direction) or where
+-	 * either MOSI or MISO is missing.  They can also be caused by
+-	 * software limitations.
+-	 */
+-	if ((master->flags & SPI_MASTER_HALF_DUPLEX)
+-			|| (spi->mode & SPI_3WIRE)) {
+-		struct spi_transfer *xfer;
+-		unsigned flags = master->flags;
++	spin_lock_irqsave(&master->bus_lock_spinlock, flags);
+ 
+-		list_for_each_entry(xfer, &message->transfers, transfer_list) {
+-			if (xfer->rx_buf && xfer->tx_buf)
+-				return -EINVAL;
+-			if ((flags & SPI_MASTER_NO_TX) && xfer->tx_buf)
+-				return -EINVAL;
+-			if ((flags & SPI_MASTER_NO_RX) && xfer->rx_buf)
+-				return -EINVAL;
+-		}
+-	}
++	if (master->bus_lock_flag)
++		ret = -EBUSY;
++	else
++		ret = __spi_async(spi, message);
+ 
+-	message->spi = spi;
+-	message->status = -EINPROGRESS;
+-	return master->transfer(spi, message);
++	spin_unlock_irqrestore(&master->bus_lock_spinlock, flags);
++
++	return ret;
  }
+ EXPORT_SYMBOL_GPL(spi_async);
+ 
++/**
++ * spi_async_locked - version of spi_async with exclusive bus usage
++ * @spi: device with which data will be exchanged
++ * @message: describes the data transfers, including completion callback
++ * Context: any (irqs may be blocked, etc)
++ *
++ * This call may be used in_irq and other contexts which can't sleep,
++ * as well as from task contexts which can sleep.
++ *
++ * The completion callback is invoked in a context which can't sleep.
++ * Before that invocation, the value of message->status is undefined.
++ * When the callback is issued, message->status holds either zero (to
++ * indicate complete success) or a negative error code.  After that
++ * callback returns, the driver which issued the transfer request may
++ * deallocate the associated memory; it's no longer in use by any SPI
++ * core or controller driver code.
++ *
++ * Note that although all messages to a spi_device are handled in
++ * FIFO order, messages may go to different devices in other orders.
++ * Some device might be higher priority, or have various "hard" access
++ * time requirements, for example.
++ *
++ * On detection of any fault during the transfer, processing of
++ * the entire message is aborted, and the device is deselected.
++ * Until returning from the associated message completion callback,
++ * no other spi_message queued to that device will be processed.
++ * (This rule applies equally to all the synchronous transfer calls,
++ * which are wrappers around this core asynchronous primitive.)
++ */
++int spi_async_locked(struct spi_device *spi, struct spi_message *message)
++{
++	struct spi_master *master = spi->master;
++	int ret;
++	unsigned long flags;
++
++	spin_lock_irqsave(&master->bus_lock_spinlock, flags);
++
++	ret = __spi_async(spi, message);
++
++	spin_unlock_irqrestore(&master->bus_lock_spinlock, flags);
++
++	return ret;
++
++}
++EXPORT_SYMBOL_GPL(spi_async_locked);
++
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+@@ -735,6 +803,32 @@ static void spi_complete(void *arg)
+ 	complete(arg);
+ }
+ 
++static int __spi_sync(struct spi_device *spi, struct spi_message *message,
++		      int bus_locked)
++{
++	DECLARE_COMPLETION_ONSTACK(done);
++	int status;
++	struct spi_master *master = spi->master;
++
++	message->complete = spi_complete;
++	message->context = &done;
++
++	if (!bus_locked)
++		mutex_lock(&master->bus_lock_mutex);
++
++	status = spi_async_locked(spi, message);
++
++	if (!bus_locked)
++		mutex_unlock(&master->bus_lock_mutex);
++
++	if (status == 0) {
++		wait_for_completion(&done);
++		status = message->status;
++	}
++	message->context = NULL;
++	return status;
++}
++
+ /**
+  * spi_sync - blocking/synchronous SPI data transfers
+  * @spi: device with which data will be exchanged
+@@ -758,21 +852,84 @@ static void spi_complete(void *arg)
+  */
+ int spi_sync(struct spi_device *spi, struct spi_message *message)
+ {
+-	DECLARE_COMPLETION_ONSTACK(done);
+-	int status;
+-
+-	message->complete = spi_complete;
+-	message->context = &done;
+-	status = spi_async(spi, message);
+-	if (status == 0) {
+-		wait_for_completion(&done);
+-		status = message->status;
+-	}
+-	message->context = NULL;
+-	return status;
++	__spi_sync(spi, message, 0);
+ }
+ EXPORT_SYMBOL_GPL(spi_sync);
+ 
++/**
++ * spi_sync_locked - version of spi_sync with exclusive bus usage
++ * @spi: device with which data will be exchanged
++ * @message: describes the data transfers
++ * Context: can sleep
++ *
++ * This call may only be used from a context that may sleep.  The sleep
++ * is non-interruptible, and has no timeout.  Low-overhead controller
++ * drivers may DMA directly into and out of the message buffers.
++ *
++ * This call should be used by drivers that require exclusive access to the
++ * SPI bus. It has to be preceeded by a spi_bus_lock call. The SPI bus must
++ * be released by a spi_bus_unlock call when the exclusive access is over.
++ *
++ * It returns zero on success, else a negative error code.
++ */
++int spi_sync_locked(struct spi_device *spi, struct spi_message *message)
++{
++	__spi_sync(spi, message, 1);
++}
++EXPORT_SYMBOL_GPL(spi_sync_locked);
++
++/**
++ * spi_bus_lock - obtain a lock for exclusive SPI bus usage
++ * @master: SPI bus master that should be locked for exclusive bus access
++ * Context: can sleep
++ *
++ * This call may only be used from a context that may sleep.  The sleep
++ * is non-interruptible, and has no timeout.
++ *
++ * This call should be used by drivers that require exclusive access to the
++ * SPI bus. The SPI bus must be released by a spi_bus_unlock call when the
++ * exclusive access is over. Data transfer must be done by spi_sync_locked
++ * and spi_async_locked calls when the SPI bus lock is held.
++ *
++ * It returns zero on success, else a negative error code.
++ */
++int spi_bus_lock(struct spi_master *master)
++{
++	mutex_lock(&master->bus_lock_mutex);
++
++	spin_lock(&master->bus_lock_spinlock);
++	master->bus_lock_flag = 1;
++	spin_unlock(&master->bus_lock_spinlock);
++
++	/* mutex remains locked until spi_bus_unlock is called */
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(spi_bus_lock);
++
++/**
++ * spi_bus_unlock - release the lock for exclusive SPI bus usage
++ * @master: SPI bus master that was locked for exclusive bus access
++ * Context: can sleep
++ *
++ * This call may only be used from a context that may sleep.  The sleep
++ * is non-interruptible, and has no timeout.
++ *
++ * This call releases an SPI bus lock previously obtained by an spi_bus_lock
++ * call.
++ *
++ * It returns zero on success, else a negative error code.
++ */
++int spi_bus_unlock(struct spi_master *master)
++{
++	master->bus_lock_flag = 0;
++
++	mutex_unlock(&master->bus_lock_mutex);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(spi_bus_unlock);
++
+ /* portable code must never pass more than 32 bytes */
+ #define	SPI_BUFSIZ	max(32,SMP_CACHE_BYTES)
+ 
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -261,6 +261,13 @@ struct spi_master {
+ #define SPI_MASTER_NO_RX	BIT(1)		/* can't do buffer read */
+ #define SPI_MASTER_NO_TX	BIT(2)		/* can't do buffer write */
+ 
++	/* lock and mutex for SPI bus locking */
++	spinlock_t		bus_lock_spinlock;
++	struct mutex		bus_lock_mutex;
++
++	/* flag indicating that the SPI bus is locked for exclusive use */
++	u8			bus_lock_flag;
++
+ 	/* Setup mode and clock, etc (spi driver may call many times).
+ 	 *
+ 	 * IMPORTANT:  this may be called when transfers to another
+@@ -541,6 +548,8 @@ static inline void spi_message_free(stru
+ 
+ extern int spi_setup(struct spi_device *spi);
+ extern int spi_async(struct spi_device *spi, struct spi_message *message);
++extern int spi_async_locked(struct spi_device *spi,
++			    struct spi_message *message);
+ 
+ /*---------------------------------------------------------------------------*/
+ 
+@@ -550,6 +559,9 @@ extern int spi_async(struct spi_device *
+  */
+ 
+ extern int spi_sync(struct spi_device *spi, struct spi_message *message);
++extern int spi_sync_locked(struct spi_device *spi, struct spi_message *message);
++extern int spi_bus_lock(struct spi_master *master);
++extern int spi_bus_unlock(struct spi_master *master);
+ 
+ /**
+  * spi_write - SPI synchronous write
 
- static u8 __initdata spi1_rxdma_id [] = {
-@@ -1353,7 +1365,7 @@ static int __init omap2_mcspi_probe(struct
-platform_device *pdev)
-
- 	mcspi = spi_master_get_devdata(master);
- 	mcspi->master = master;
--	mcspi->mcspi_mode = OMAP2_MCSPI_MASTER;
-+	mcspi->mcspi_mode = pdata->mode;
- 	mcspi->dma_mode = pdata->dma_mode;
- 	mcspi->force_cs_mode = pdata->force_cs_mode;
-
--- 
-1.6.3.3
-
-------=_20100218161854_93180
-Content-Type: application/octet-stream;
-      name="0003-Add-McSPI-slave-support.patch"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-      filename="0003-Add-McSPI-slave-support.patch"
-
-RnJvbSBhZTRjNmE5MWJiY2ZjODQyZjk3Y2Y0OGRkMTNmNmRlMDJiYWFlMWQzIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBIZW1hbnRoIFYgPGhlbWFudGh2QHRpLmNvbT4KRGF0ZTogRnJp
-LCAyNyBOb3YgMjAwOSAxNDozNzoyMCArMDUzMApTdWJqZWN0OiBbUEFUQ0ggMy8zXSBBZGQgTWNT
-UEkgc2xhdmUgc3VwcG9ydC4KClRoaXMgcGF0Y2ggYWRkcyBzdXBwb3J0IGZvciBtY3NwaSBzbGF2
-ZSBtb2RlLgoKU2lnbmVkLW9mZi1ieTogSGVtYW50aCBWIDxoZW1hbnRodkB0aS5jb20+Ci0tLQog
-ZHJpdmVycy9zcGkvb21hcDJfbWNzcGkuYyB8ICAgMjQgKysrKysrKysrKysrKysrKysrLS0tLS0t
-CiAxIGZpbGVzIGNoYW5nZWQsIDE4IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCgpkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9zcGkvb21hcDJfbWNzcGkuYyBiL2RyaXZlcnMvc3BpL29tYXAyX21j
-c3BpLmMKaW5kZXggNzVhM2YwNC4uMDNkNjFjZiAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvb21h
-cDJfbWNzcGkuYworKysgYi9kcml2ZXJzL3NwaS9vbWFwMl9tY3NwaS5jCkBAIC00MjgsNiArNDI4
-LDE4IEBAIHN0YXRpYyB2b2lkIG9tYXAyX21jc3BpX3NldF9tYXN0ZXJfbW9kZShzdHJ1Y3Qgc3Bp
-X21hc3RlciAqbWFzdGVyKQogCW9tYXAyX21jc3BpX2N0eFttYXN0ZXItPmJ1c19udW0gLSAxXS5t
-b2R1bGN0cmwgPSBsOwogfQogCitzdGF0aWMgdm9pZCBvbWFwMl9tY3NwaV9zZXRfc2xhdmVfbW9k
-ZShzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyKQoreworCXUzMiBsOworCisJbCA9IG1jc3BpX3Jl
-YWRfcmVnKG1hc3RlciwgT01BUDJfTUNTUElfTU9EVUxDVFJMKTsKKwlNT0RfUkVHX0JJVChsLCBP
-TUFQMl9NQ1NQSV9NT0RVTENUUkxfU1RFU1QsIDApOworCU1PRF9SRUdfQklUKGwsIE9NQVAyX01D
-U1BJX01PRFVMQ1RSTF9NUywgMSk7CisJbWNzcGlfd3JpdGVfcmVnKG1hc3RlciwgT01BUDJfTUNT
-UElfTU9EVUxDVFJMLCBsKTsKKworCW9tYXAyX21jc3BpX2N0eFttYXN0ZXItPmJ1c19udW0gLSAx
-XS5tb2R1bGN0cmwgPSBsOworfQorCiBzdGF0aWMgaW50IG1jc3BpX3dhaXRfZm9yX3JlZ19iaXQo
-dm9pZCBfX2lvbWVtICpyZWcsIHVuc2lnbmVkIGxvbmcgYml0KQogewogCXVuc2lnbmVkIGxvbmcg
-dGltZW91dDsKQEAgLTgyNywxMCArODM5LDExIEBAIHN0YXRpYyBpbnQgb21hcDJfbWNzcGlfc2V0
-dXBfdHJhbnNmZXIoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwKIAkJbCAmPSB+KE9NQVAyX01DU1BJ
-X0NIQ09ORl9JU3xPTUFQMl9NQ1NQSV9DSENPTkZfRFBFMSk7CiAJCWwgfD0gT01BUDJfTUNTUElf
-Q0hDT05GX0RQRTA7CiAJfSBlbHNlIHsKLQkJcmV0dXJuIC1FSU5WQUw7CisJCWwgfD0gT01BUDJf
-TUNTUElfQ0hDT05GX0lTOworCQlsIHw9IE9NQVAyX01DU1BJX0NIQ09ORl9EUEUxOworCQlsICY9
-IH5PTUFQMl9NQ1NQSV9DSENPTkZfRFBFMDsKIAl9CiAKLQogCS8qIHdvcmRsZW5ndGggKi8KIAls
-ICY9IH5PTUFQMl9NQ1NQSV9DSENPTkZfV0xfTUFTSzsKIAlsIHw9ICh3b3JkX2xlbiAtIDEpIDw8
-IDc7CkBAIC0xMjE0LDcgKzEyMjcsNiBAQCBzdGF0aWMgaW50IF9faW5pdCBvbWFwMl9tY3NwaV9y
-ZXNldChzdHJ1Y3Qgb21hcDJfbWNzcGkgKm1jc3BpKQogewogCXN0cnVjdCBzcGlfbWFzdGVyCSpt
-YXN0ZXIgPSBtY3NwaS0+bWFzdGVyOwogCXUzMgkJCXRtcDsKLQl1MzIJCQllcnJvciA9IDA7CiAK
-IAlpZiAob21hcDJfbWNzcGlfZW5hYmxlX2Nsb2NrcyhtY3NwaSkpCiAJCXJldHVybiAtMTsKQEAg
-LTEyMzgsMTAgKzEyNTAsMTAgQEAgc3RhdGljIGludCBfX2luaXQgb21hcDJfbWNzcGlfcmVzZXQo
-c3RydWN0IG9tYXAyX21jc3BpICptY3NwaSkKIAlpZiAobWNzcGktPm1jc3BpX21vZGUgPT0gT01B
-UDJfTUNTUElfTUFTVEVSKQogCQlvbWFwMl9tY3NwaV9zZXRfbWFzdGVyX21vZGUobWFzdGVyKTsK
-IAllbHNlCi0JCWVycm9yID0gLUVJTlZBTDsKKwkJb21hcDJfbWNzcGlfc2V0X3NsYXZlX21vZGUo
-bWFzdGVyKTsKIAogCW9tYXAyX21jc3BpX2Rpc2FibGVfY2xvY2tzKG1jc3BpKTsKLQlyZXR1cm4g
-ZXJyb3I7CisJcmV0dXJuIDA7CiB9CiAKIHN0YXRpYyB1OCBfX2luaXRkYXRhIHNwaTFfcnhkbWFf
-aWQgW10gPSB7CkBAIC0xMzUzLDcgKzEzNjUsNyBAQCBzdGF0aWMgaW50IF9faW5pdCBvbWFwMl9t
-Y3NwaV9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQogCiAJbWNzcGkgPSBzcGlf
-bWFzdGVyX2dldF9kZXZkYXRhKG1hc3Rlcik7CiAJbWNzcGktPm1hc3RlciA9IG1hc3RlcjsKLQlt
-Y3NwaS0+bWNzcGlfbW9kZSA9IE9NQVAyX01DU1BJX01BU1RFUjsKKwltY3NwaS0+bWNzcGlfbW9k
-ZSA9IHBkYXRhLT5tb2RlOwogCW1jc3BpLT5kbWFfbW9kZSA9IHBkYXRhLT5kbWFfbW9kZTsKIAlt
-Y3NwaS0+Zm9yY2VfY3NfbW9kZSA9IHBkYXRhLT5mb3JjZV9jc19tb2RlOwogCi0tIAoxLjYuMy4z
-Cgo=
-------=_20100218161854_93180--
-
-
+------------------------------------------------------------------------------
+Download Intel&reg; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs 
+proactively, and fine-tune applications for parallel performance. 
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

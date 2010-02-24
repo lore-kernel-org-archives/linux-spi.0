@@ -1,698 +1,1062 @@
-From: "=?utf-8?B?OS0xMCDQvNCw0YDRgtCwIDIwMTAg0LMu?=" <sucoladoza-GO3HOXYuGN1BDgjK7y7TUQ@public.gmane.org>
-Subject: =?utf-8?b?W1NQQU1dINCj0L/RgNCw0LLQu9C10L0=?=
-	=?utf-8?b?0LjQtSDQtNC10LHQuNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQttC1?=
-	=?utf-8?b?0L3QvdC+0YHRgtGM0Y46INC+0YDQs9Cw0L3QuNC30LDRhtC40L7QvdC9?=
-	=?utf-8?b?0YvQtSDQuCDQv9GA0LDQstC+0LLRi9C1INCy0L7Qv9GA0L7RgdGLINGA?=
-	=?utf-8?b?0LDQsdC+0YLRiyDRgSDQtNC+0LvQs9Cw0LzQuCDQsiDQutC+0LzQv9Cw?=
-	=?utf-8?b?0L3QuNC4eGp6?=
-Date: Wed, 24 Feb 2010 07:37:30 +0300
-Message-ID: <1955403614.20100224073730@onelist.com>
+From: Feng Tang <feng.tang@intel.com>
+Subject: [RFC][PATCH v3] serial: spi: add spi-uart driver for Maxim 3110
+Date: Wed, 24 Feb 2010 13:11:30 +0800
+Message-ID: <20100224131130.61530b62@feng-i7>
+References: <20091229222006.1ddb28a4@feng-desktop>
+	<20100208165946.0e4dde83@feng-i7>
+	<20100208162010.b1f69728.akpm@linux-foundation.org>
+	<fa686aa41002081626i24caff52n15f140d0fffadedd@mail.gmail.com>
+	<20100209093644.2dead2d9@feng-i7>
+	<20100217225817.GD31557@kroah.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============9025022360403228176=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 8BIT
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	"David Brownell" <dbrownell@users.sourceforge.net>,
+	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>
+To: Greg KH <greg@kroah.com>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <20100217225817.GD31557@kroah.com>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+Hi All,
 
-sarefu  vaderyni  carepf
-=D0=BA=D0  =BE=D0=B2 =D0=BE=D0=0D=0A=2E
-=20=83=BA=D0=BE
+Here is a driver for Maxim 3110 SPI-UART device, please help to review.
 
---===============9025022360403228176==
-Content-Type: multipart/alternative;
-	boundary="----------5GDKKYEHNYL79XYY"
-Content-Transfer-Encoding: quoted-printable
+It has been validated with Designware SPI controller (drivers/spi: dw_spi.c &
+dw_spi_pci.c). It supports polling and IRQ mode, supports batch read, and
+provides a console.
 
-This is a multi-part message in MIME format.
+change log:
+ since v2:
+	* Address comments from Andrew Morton
+	* Use test/set_bit to avoid race condition for SMP/preempt case
+	* Fix bug related with endian order
 
-sarefu  vaderyni  carepf
-=D0=BA=D0  =BE=D0=B2 =D0=BE=D0=0D=0A=2E
-=20=83=BA=D0=BE
+ since v1:
+        * Address comments from Alan Cox
+        * Use a "use_irq" module parameter to runtime check whether
+          to use IRQ mode
+        * Add the suspend/resume implementation
 
-------------5GDKKYEHNYL79XYY
-Content-Type: text/plain;
-	charset=koi8-r
-Content-Transfer-Encoding: quoted-printable
+Thanks!
+Feng
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   09 - 10 =CD=C1=D2=D4=C1 2010=C7.
-=20
- =F5=F0=F2=E1=F7=EC=E5=EE=E9=E5  =E4=E5=E2=E9=F4=EF=F2=F3=EB=EF=EA  =
-=FA=E1=E4=EF=EC=F6=E5=EE=EE=EF=F3=F4=F8=E0: =
-=CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=CF=CE=CE=D9=C5 =C9 =
-=D0=D2=C1=D7=CF=D7=D9=C5 =D7=CF=D0=D2=CF=D3=D9 =D2=C1=C2=CF=D4=D9 =D3 =
-=C4=CF=CC=C7=C1=CD=C9 =D7 =CB=CF=CD=D0=C1=CE=C9=C9
+>From 93455ea6fbf0bfb6494b88ea83296f26f29f7eee Mon Sep 17 00:00:00 2001
+From: Feng Tang <feng.tang@intel.com>
+Date: Tue, 23 Feb 2010 17:52:00 +0800
+Subject: [PATCH] serial: spi: add spi-uart driver for Maxim 3110
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=EE=C1 =D3=C5=CD=C9=CE=C1=D2 =F0=F2=E9=E7=EC=E1=FB=E1=E0=F4=F3=F1: =
-=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C9 =CB=CF=CD=D0=C1=CE=C9=CA, =
-=CB=CF=CD=CD=C5=D2=DE=C5=D3=CB=C9=C5 =C4=C9=D2=C5=CB=D4=CF=D2=C1, =
-=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C9 =C6=C9=CE=C1=CE=D3=CF=D7=D9=C8 =
-=CF=D4=C4=C5=CC=CF=D7, =D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C9 =
-=CF=D4=C4=C5=CC=CF=D7 =D0=D2=CF=C4=C1=D6, =D3=CF=D4=D2=D5=C4=CE=C9=CB=C9 =
-=C4=CF=C7=CF=D7=CF=D2=CE=D9=C8 =CF=D4=C4=C5=CC=CF=D7, =
-=D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=D9 =D3=C2=D9=D4=CF=D7=D9=C8 =
-=D3=CC=D5=D6=C2, =C1 =D4=C1=CB=D6=C5 =D7=D3=C5 =
-=D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=D9, =CB=CF=D4=CF=D2=D9=CD =
-=D0=D2=C9=C8=CF=C4=C9=D4=D3=D1 =D2=C1=C2=CF=D4=C1=D4=D8 =D3 =
-=C4=CF=CC=D6=CE=C9=CB=C1=CD=C9.
+This is the driver for Max3110 SPI-UART device, which connect
+to host with SPI interface. It supports baud rates from 300 to
+230400, and supports both polling and IRQ mode, as well as
+providing a console for system use
 
-=E3=E5=EC=F8 =D3=C5=CD=C9=CE=C1=D2=C1: =D5=DE=C1=D3=D4=CE=C9=CB=C9 =
-=D3=C5=CD=C9=CE=C1=D2=C1 =D5=DA=CE=C1=C0=D4, =CB=C1=CB =
-=D0=CF=D3=D4=D2=CF=C9=D4=D8 =D3=C9=D3=D4=C5=CD=D5 =
-=D5=D0=D2=C1=D7=CC=C5=CE=C9=D1 =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0 =D7 =CB=CF=CD=D0=C1=CE=C9=C9, =
-=D0=D2=C9=CF=C2=D2=C5=D4=D5=D4 =CE=C1=D7=D9=CB=C9 =C9 =
-=C9=CE=D3=D4=D2=D5=CD=C5=CE=D4=D9 =C4=CC=D1 =
-=D3=C1=CD=CF=D3=D4=CF=D1=D4=C5=CC=D8=CE=CF=C7=CF =
-=D0=CF=D3=D4=D2=CF=C5=CE=C9=D1 =D3=C9=D3=D4=C5=CD=D9 =D0=CF =
-=D7=CF=DA=D7=D2=C1=D4=D5 =C4=CF=CC=C7=CF=D7 =D7 =D3=D7=CF=C5=CA =
-=CB=CF=CD=D0=C1=CE=C9=C9.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=F0=F2=EF=E7=F2=E1=ED=ED=E1 =F3=E5=ED=E9=EE=E1=F2=E1
+Its datasheet could be found here:
+http://datasheets.maxim-ic.com/en/ds/MAX3110E-MAX3111E.pdf
 
-=F7=EF=F0=F2=EF=F3=F9 =F5=F0=F2=E1=F7=EC=E5=EE=E9=F1 =
-=E4=E5=E2=E9=F4=EF=F2=F3=EB=EF=EA =
-=FA=E1=E4=EF=EC=F6=E5=EE=EE=EF=F3=F4=F8=E0
-=EF=F2=E7=E1=EE=E9=FA=E1=E3=E9=EF=EE=EE=E1=F1  =
-=F3=F4=F2=F5=EB=F4=F5=F2=E1 =D5=D0=D2=C1=D7=CC=C5=CE=C9=D1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0:
-   - =EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =
-=D3=D4=D2=D5=CB=D4=D5=D2=CE=CF=C7=CF =
-=D0=CF=C4=D2=C1=DA=C4=C5=CC=C5=CE=C9=D1 =
-(=D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=C1) =D0=CF =
-=D5=D0=D2=C1=D7=CC=C5=CE=C9=C0 =C4=CF=CC=C7=C1=CD=C9;=20
-   - =E3=C5=CC=C9, =DA=C1=C4=C1=DE=C9 =C9 =D0=CF=CC=CE=CF=CD=CF=DE=C9=D1 =
-=C9=CE=CB=C1=D3=D3=C1=C3=C9=C9 =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0.=20
+Signed-off-by: Feng Tang <feng.tang@intel.com>
+---
+ drivers/serial/Kconfig      |   12 +
+ drivers/serial/max3110.c    |  879 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/serial/max3110.h    |   60 +++
+ include/linux/serial_core.h |    3 +
+ 4 files changed, 954 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/serial/max3110.c
+ create mode 100644 drivers/serial/max3110.h
 
-=F0=F2=EF=E6=E9=EC=E1=EB=F4=E9=EB=E1 =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0:
-   - =EF=C2=C5=D3=D0=C5=DE=C9=D4=C5=CC=D8=CE=D9=C5 =CD=C5=D2=D9 =
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=D1 =CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=C1=CD=C9 =
-=C9=C8 =CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7 =C9=CC=C9 =CB=C1=CB =
-=DA=C1=DD=C9=D4=C9=D4=D8 =CB=D2=C5=C4=C9=D4=CF=D2=C1 =CF=D4 =
-=D2=C9=D3=CB=C1 =CE=C5=D7=CF=DA=D7=D2=C1=DD=C5=CE=C9=D1 =C4=CF=CC=C7=C1; =
-
-   - =E6=CF=D2=CD=C9=D2=CF=D7=C1=CE=C9=D1 =
-=C9=D3=D0=CF=CC=CE=C9=D4=C5=CC=D8=D3=CB=CF=CA =
-=C4=C9=D3=C3=C9=D0=CC=C9=CE=D9 =CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7;=20
-   - =ED=CF=D4=C9=D7=C1=C3=C9=D1 =C4=CF=CC=D6=CE=C9=CB=CF=D7.=20
-
-=EB=F2=E5=E4=E9=F4=EE=E1=F1  =F0=EF=EC=E9=F4=E9=EB=E1  =
-=D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=D1 =D3 =D0=CF=DA=C9=C3=C9=C9 =
-=D0=D2=CF=C6=C9=CC=C1=CB=D4=C9=CB=C9 =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0:
-   - =F0=CF=D3=D4=D2=CF=C5=CE=C9=C5 =D2=C5=CA=D4=C9=CE=C7=CF=D7=CF=CA =
-=DB=CB=C1=CC=D9 =C4=CF=CC=D6=CE=C9=CB=CF=D7 =C9 =
-=CB=CC=C1=D3=D3=C9=C6=C9=CB=C1=C3=C9=D1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0 =D7 =C3=C5=CC=D1=C8 =
-=CD=C9=CE=C9=CD=C9=DA=C1=C3=C9=C9 =
-=D0=D2=C5=C4=D0=D2=C9=CE=C9=CD=C1=D4=C5=CC=D8=D3=CB=C9=C8 =
-=D2=C9=D3=CB=CF=D7;=20
-   - =ED=C1=D2=CB=C5=D4=C9=CE=C7=CF=D7=D9=C5 =C1=D3=D0=C5=CB=D4=D9 =D7 =
-=CB=D2=C5=C4=C9=D4=CE=CF=CA =D0=CF=CC=C9=D4=C9=CB=C5.=20
-
-=F2=E9=F3=EB=E9  =D5=D0=D2=C1=D7=CC=C5=CE=C9=D1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0:
-   - =F2=C9=D3=CB=C9, =D3=D7=D1=DA=C1=CE=CE=D9=C5 =D3 =
-=CB=D2=C5=C4=C9=D4=CE=CF=CA =D0=CF=CC=C9=D4=C9=CB=CF=CA =C9 =
-=D3=C9=D3=D4=C5=CD=CF=CA =D5=D0=D2=C1=D7=CC=C5=CE=C9=D1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0;=20
-   - =F2=C9=D3=CB=C9, =D3=D7=D1=DA=C1=CE=CE=D9=C5 =D3 =
-=C4=CF=CC=D6=CE=C9=CB=CF=CD =C9 =C4=CF=CC=C7=CF=CD.=20
-
-=F0=EF=F3=F4=E1=EE=EF=F7=EB=E1  =F5=FE=E5=F4=E1  =E9  =
-=EB=EF=EE=F4=F2=EF=EC=F1  =DA=C1 =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0 =CE=C1 =
-=D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=C9:
-   - =F3=CF=D3=D4=C1=D7 =C9 =D3=D4=D2=D5=CB=D4=D5=D2=C1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0;=20
-   - =EB=D5=CC=D8=D4=D5=D2=C1 =C4=CF=CB=D5=CD=C5=CE=D4=C1=D2=CE=CF=C7=CF =
-=CF=C6=CF=D2=CD=CC=C5=CE=C9=D1 =CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7.=20
-
-=EF=F2=E7=E1=EE=E9=FA=E1=E3=E9=F1  =F0=F2=EF=F7=E5=E4=E5=EE=E9=F1  =
-=E1=EE=E1=EC=E9=FA=E1  =C4=CF=CC=D6=CE=C9=CB=CF=D7, =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=C9 =C9 =D2=C1=C2=CF=D4=D9 =D3 =
-=CE=C9=CD=C9:
-   - =EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =D0=D2=CF=C3=C5=C4=D5=D2 due =
-diligence =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=C9 =C9 =C4=CF=CC=D6=CE=C9=CB=CF=D7 =
-=CE=C1 =D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=C9;=20
-   - =F7=CF=D0=D2=CF=D3=D9 =CF=C3=C5=CE=CB=C9 =C9 =C1=D5=C4=C9=D4=C1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0: =D0=CF=D2=D1=C4=CF=CB =
-=D0=D2=C9=D7=CC=C5=DE=C5=CE=C9=D1 =D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=CF=D7 =
-=C9 =D0=CF=D3=D4=C1=CE=CF=D7=CB=C1 =DA=C1=C4=C1=DE=C9.=20
-
-=E1=EC=E7=EF=F2=E9=F4=ED  =F0=F2=E9=EE=F1=F4=E9=F1  =
-=F2=E5=FB=E5=EE=E9=EA  =D0=CF =D5=D0=D2=C1=D7=CC=C5=CE=C9=C0 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=C9:
-   - =EF=D0=D2=C5=C4=C5=CC=C5=CE=C9=C5 =
-=C3=C5=CC=C5=D3=CF=CF=C2=D2=C1=DA=CE=CF=D3=D4=C9 =
-=D0=D2=CF=D7=C5=C4=C5=CE=C9=D1 =D3=C4=C5=CC=CF=CB =D3 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=C9;=20
-   - =E9=D3=D0=CF=CC=D8=DA=CF=D7=C1=CE=C9=C5 =C4=CF=C7=CF=D7=CF=D2=CF=D7 =
-=D5=D3=D4=D5=D0=CB=C9 =D0=D2=C1=D7=C1 =D4=D2=C5=C2=CF=D7=C1=CE=C9=D1 =C9 =
-=D0=C5=D2=C5=D7=CF=C4=C1 =C4=CF=CC=C7=C1 (=D3 =D5=DE=C5=D4=CF=CD =
-=D7=C1=CC=C0=D4=CE=D9=C8, =C1=CE=D4=C9=CD=CF=CE=CF=D0=CF=CC=D8=CE=D9=C8, =
-=CB=CF=D2=D0=CF=D2=C1=D4=C9=D7=CE=D9=C8 =
-=CF=C7=D2=C1=CE=C9=DE=C5=CE=C9=CA);=20
-   - =F7=CF=D0=D2=CF=D3=D9 =D5=DE=C5=D4=C1 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
-=D3=CF=D3=D4=C1=D7=CC=D1=C0=DD=C5=CA =D0=D2=C9 =D0=D2=C9=CE=D1=D4=C9=C9 =
-=D5=D0=D2=C1=D7=CC=C5=CE=DE=C5=D3=CB=C9=C8 =D2=C5=DB=C5=CE=C9=CA =D3 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0.=20
-
-=F7=C9=C4=D9 =D3=CF=C4=C5=CA=D3=D4=D7=C9=D1 =
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=D1 =C4=CF=CC=D6=CE=C9=CB=C1=CD=C9 =C9=C8 =
-=CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7:
-   - =FC=CB=CF=CE=CF=CD=C9=DE=C5=D3=CB=C1=D1 =
-=D3=CF=D3=D4=C1=D7=CC=D1=C0=DD=C1=D1 =D3=CF=C4=C5=CA=D3=D4=D7=C9=D1 =
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=C0;=20
-   - =F0=D3=C9=C8=CF=CC=CF=C7=C9=DE=C5=D3=CB=C9=C5 =C1=D3=D0=C5=CB=D4=D9 =
-=D7=DA=C1=C9=CD=CF=C4=C5=CA=D3=D4=D7=C9=D1 =D3 =
-=C4=CF=CC=D6=CE=C9=CB=C1=CD=C9.=20
-
-=EF=F2=E7=E1=EE=E9=FA=E1=E3=E9=F1 =
-=F0=F2=E5=F4=E5=EE=FA=E9=EF=EE=EE=EF=EA =E9 =E9=F3=EB=EF=F7=EF=EA =
-=F2=E1=E2=EF=F4=F9 =EE=E1 =F0=F2=E5=E4=F0=F2=E9=F1=F4=E9=E9
-=EF=F2=E7=E1=EE=E9=FA=E1=E3=E9=F1  =E9  =F0=EF=E4=E7=EF=F4=EF=F7=EB=E1  =
-=F0=F2=E5=F4=E5=EE=FA=E9=E9:
-   - =EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=CF=CE=CE=D9=C5 =DC=D4=C1=D0=D9 =
-=D0=D2=C5=D4=C5=CE=DA=C9=CF=CE=CE=CF=CA =D2=C1=C2=CF=D4=D9;=20
-   - =E6=CF=D2=CD=C9=D2=CF=D7=C1=CE=C9=C5 =D4=C9=D0=CF=D7=CF=CA =
-=D0=D2=C5=D4=C5=CE=DA=C9=C9;=20
-   - =ED=C5=D4=CF=C4=C9=CB=C9 =D0=D2=CF=D7=C5=C4=C5=CE=C9=D1 =
-=D0=C5=D2=C5=C7=CF=D7=CF=D2=CF=D7;=20
-   - =EF=D4=D7=C5=D4 =CE=C1 =D0=D2=C5=D4=C5=CE=DA=C9=C9.=20
-
-=F0=EF=F2=F1=E4=EF=EB  =F0=F2=E5=E4=FF=F1=F7=EC=E5=EE=E9=F1  =
-=E9=F3=EB=E1:
-   - =F0=D2=CF=C2=CC=C5=CD=D9 =CF=C2=C5=D3=D0=C5=DE=C5=CE=C9=D1 =
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=D1 =C4=CF=CC=C7=CF=D7=CF=C7=CF =
-=CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7=C1;=20
-   - =F7=CF=D0=D2=CF=D3=D9 =DA=C1=D4=D1=C7=C9=D7=C1=CE=C9=D1 =
-=D0=D2=CF=C3=C5=D3=D3=C1;=20
-   - =F0=CF=D2=D1=C4=CF=CB =C9 =D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=D1 =
-=CF=C2=D6=C1=CC=CF=D7=C1=CE=C9=D1 =D3=D5=C4=C5=C2=CE=D9=C8 =
-=C1=CB=D4=CF=D7.=20
-
-=F0=F2=E9=EE=F5=E4=E9=F4=E5=EC=F8=EE=EF=E5  =F7=FA=F9=F3=EB=E1=EE=E9=E5  =
-=E4=EF=EC=E7=E1   =D3 =C0=D2=C9=C4=C9=DE=C5=D3=CB=C9=C8 =C9 =
-=C6=C9=DA=C9=DE=C5=D3=CB=C9=C8 =CC=C9=C3:
-   - =FC=C6=C6=C5=CB=D4=C9=D7=CE=CF=C5 =
-=D0=D2=C5=C4=DF=D1=D7=CC=C5=CE=C9=C5 =
-=C9=D3=D0=CF=CC=CE=C9=D4=C5=CC=D8=CE=CF=C7=CF =
-=C4=CF=CB=D5=CD=C5=CE=D4=C1;=20
-   - =EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =
-=D7=DA=C1=C9=CD=CF=C4=C5=CA=D3=D4=D7=C9=D1 =D3 =
-=D3=D5=C4=C5=C2=CE=D9=CD=C9 =D0=D2=C9=D3=D4=C1=D7=C1=CD=C9;=20
-   - =F0=CF=D2=D1=C4=CF=CB =CF=C2=D6=C1=CC=CF=D7=C1=CE=C9=D1 =C9 =
-=CF=D3=D0=C1=D2=C9=D7=C1=CE=C9=D1 =C4=C5=CA=D3=D4=D7=C9=CA =
-(=C2=C5=DA=C4=C5=CA=D3=D4=D7=C9=CA) =D3=D5=C4=C5=C2=CE=D9=C8 =
-=D0=D2=C9=D3=D4=C1=D7=CF=D7.=20
-
-=F0=F2=EF=E3=E5=E4=F5=F2=E1  =E2=E1=EE=EB=F2=EF=F4=F3=F4=F7=E1  =
-=C4=CF=CC=D6=CE=C9=CB=C1 - =D5=D0=D2=C1=D7=CC=C5=CE=DE=C5=D3=CB=CF=C5 =
-=D2=C5=DB=C5=CE=C9=C5:
-   - =EB=CF=C7=C4=C1, =CB=C1=CB =C9 =DA=C1=DE=C5=CD =
-=C9=CE=C9=C3=C9=C9=D2=CF=D7=C1=D4=D8 =C2=C1=CE=CB=D2=CF=D4=D3=D4=D7=CF;=20
-   - =F3=D4=CF=C9=D4 =CC=C9 =C2=C1=CE=CB=D2=CF=D4=C9=D4=D8 =
-=D3=D7=CF=C5=C7=CF =C4=CF=CC=D6=CE=C9=CB=C1.=20
-
-=EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =
-=E1=E4=ED=E9=EE=E9=F3=F4=F2=E1=F4=E9=F7=EE=EF=E7=EF  =
-=E4=E1=F7=EC=E5=EE=E9=F1 =CE=C1 =C4=CF=CC=D6=CE=C9=CB=C1:
-   - =F7=CF=D0=D2=CF=D3=D9 =
-=C3=C5=CC=C5=D3=CF=CF=C2=D2=C1=DA=CE=CF=D3=D4=C9 =
-=D0=D2=C9=D7=CC=C5=DE=C5=CE=C9=D1 =C4=CF=CC=D6=CE=C9=CB=C1 =CB =
-=C1=C4=CD=C9=CE=C9=D3=D4=D2=C1=D4=C9=D7=CE=CF=CA =C9 =
-=D5=C7=CF=CC=CF=D7=CE=CF=CA =
-=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9.=20
-   - =ED=C5=C8=C1=CE=C9=DA=CD=D9 =
-=C1=C4=CD=C9=CE=C9=D3=D4=D2=C1=D4=C9=D7=CE=CF=C7=CF =
-=C4=C1=D7=CC=C5=CE=C9=D1 =CE=C1 =C4=CF=CC=D6=CE=C9=CB=C1;=20
-   - =E1=D5=D4=D3=CF=D2=D3=C9=CE=C7 =C9=CC=C9 =
-=D0=D2=C9=D7=CC=C5=CB=C1=C5=CD =D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=CF=D7;=20
-
-=E3=C5=CC=C5=D3=CF=CF=C2=D2=C1=DA=CE=CF=D3=D4=D8 =
-=D0=D2=C9=D7=CC=C5=DE=C5=CE=C9=D1 =
-=D0=D2=CF=C6=C5=D3=D3=C9=CF=CE=C1=CC=D8=CE=D9=C8 =
-=C1=D5=C4=C9=D4=CF=D2=CF=D7 =C9 =CF=C3=C5=CE=DD=C9=CB=CF=D7:
-   - =EB=CF=CC=CC=C5=CB=D4=CF=D2=D3=CB=C1=D1 =
-=C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=D8 =CB=C1=CB =CF=C4=C9=CE =C9=DA =
-=D0=D5=D4=C5=CA =D2=C5=DB=C5=CE=C9=D1 =D0=D2=CF=C2=CC=C5=CD=D9 =
-=C9=D3=D4=D2=C5=C2=CF=D7=C1=CE=C9=D1 =C4=CF=CC=C7=CF=D7;=20
-   - =F7=D9=C2=CF=D2 =D7=C9=C4=C1 =C4=CF=C7=CF=D7=CF=D2=C1 =D3 =
-=CB=CF=CC=CC=C5=CB=D4=CF=D2=CF=CD;=20
-   - =EF=D3=CF=C2=C5=CE=CE=CF=D3=D4=C9 =C4=CF=C7=CF=D7=CF=D2=CF=D7;=20
-   - =F7=CF=D0=D2=CF=D3=D9 =CF=C2=CF=D2=CF=D4=C1 =
-=C9=CE=C6=CF=D2=CD=C1=C3=C9=C9 =C9 =
-=CB=CF=CE=C6=C9=C4=C5=CE=C3=C9=C1=CC=D8=CE=CF=D3=D4=D8;=20
-   - =EF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=D8 =
-=D0=CF=D3=D2=C5=C4=CE=C9=CB=C1.=20
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-09 - 10 =CD=C1=D2=D4=C1 2010=C7.  (2 =C4=CE=D1 =D3 10.00 =C4=CF 18.00)=20
-=ED=C5=D3=D4=CF =D0=D2=CF=D7=C5=C4=C5=CE=C9=D1: =ED=CF=D3=CB=D7=C1, =CD. =
-=E2=CF=D4=C1=CE=C9=DE=C5=D3=CB=C9=CA =D3=C1=C4, "=F5=DE=C5=C2=CE=C1=D1 =
-=C7=CF=D3=D4=C9=CE=C9=C3=C1"
-=F3=D4=CF=C9=CD=CF=D3=D4=D8 =D5=DE=C1=D3=D4=C9=D1: 17 500 =D2=D5=C2.
-(=F7 =D3=D4=CF=C9=CD=CF=D3=D4=D8 =D7=C8=CF=C4=C9=D4 =
-=CF=C2=D5=DE=C5=CE=C9=C5, =D0=C5=DE=C1=D4=CE=D9=C5 =
-=CD=C1=D4=C5=D2=C9=C1=CC=D9 =D0=CF =D4=C5=CD=C5 =
-=D3=C5=CD=C9=CE=C1=D2=C1, =CF=C2=C5=C4=D9, =
-=CB=CF=C6=C5-=D0=C1=D5=DA=D9). =F0=CF =CF=CB=CF=CE=DE=C1=CE=C9=C9 =
-=D7=D9=C4=C1=C5=D4=D3=D1 =D3=C5=D2=D4=C9=C6=C9=CB=C1=D4 =CF =
-=D0=D2=CF=C8=CF=D6=C4=C5=CE=C9=C9 =CF=C2=D5=DE=C5=CE=C9=D1 =D0=CF =
-=C4=C1=CE=CE=CF=CA =D4=C5=CD=C5.=20
-=E9=CE=CF=C7=CF=D2=CF=C4=CE=C9=CD =D0=CF=CD=CF=D6=C5=CD =
-=DA=C1=C2=D2=CF=CE=C9=D2=CF=D7=C1=D4=D8 =CE=CF=CD=C5=D2=C1 =D7 =
-=C7=CF=D3=D4=C9=CE=C9=C3=C5. =EF=C2=D5=DE=C5=CE=C9=C5 =C9 =
-=D0=D2=CF=D6=C9=D7=C1=CE=C9=C5 =D7 =CF=C4=CE=CF=CD =DA=C4=C1=CE=C9=C9.
-
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-=F0=CF=C4=D2=CF=C2=CE=C1=D1 =C9=CE=C6=CF=D2=CD=C1=C3=C9=D1 =C9 =
-=D2=C5=C7=C9=D3=D4=D2=C1=C3=C9=D1 =D0=CF =D4=C5=CC=C5=C6=CF=CE=D5: 8 =
-(495) 229-04-33
-
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-
-=F7=CE=C9=CD=C1=CE=C9=C5! =E5=D3=CC=C9 =F7=C1=DB =C1=C4=D2=C5=D3 =
-=D3=CC=D5=DE=C1=CA=CE=CF =D0=CF=D0=C1=CC =D7 =C2=C1=DA=D5 =
-=D2=C1=D3=D3=D9=CC=CB=C9, =C9 =F7=D9 =C2=CF=CC=D8=DB=C5 =CE=C5 =
-=C8=CF=D4=C9=D4=C5 =D0=CF=CC=D5=DE=C1=D4=D8 =
-=C9=CE=C6=CF=D2=CD=C1=C3=C9=C0 =CF=C2 =
-=CF=C2=D2=C1=DA=CF=D7=C1=D4=C5=CC=D8=CE=D9=C8 =
-=CD=C5=D2=CF=D0=D2=C9=D1=D4=C9=D1=C8,=20
-=D0=D2=CF=D3=D4=CF =CF=D4=D0=D2=C1=D7=D8=D4=C5 =D0=D5=D3=D4=CF=C5 =
-=D0=C9=D3=D8=CD=CF =D7 =F7=C1=DB=C5=C7=CF =C1=C4=D2=C5=D3=C1 =CE=C1 =
-=C1=C4=D2=C5=D3 =
-visloguzovepo-7nl8rL9eBqAvJsYlp49lxw@public.gmane.org?subject=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org =C9 =D7 =
-=D4=C5=CD=C5 =D0=C9=D3=D8=CD=C1 =D5=CB=C1=D6=C9=D4=C5 =F7=C1=DB =
-=C1=C4=D2=C5=D3 =DC=CC=C5=CB=D4=D2=CF=CE=CE=CF=CA =D0=CF=DE=D4=D9.=20
-
-=F7=C1=DB =C1=C4=D2=C5=D3 =C2=D5=C4=C5=D4 =
-=C1=D7=D4=CF=CD=C1=D4=C9=DE=C5=D3=CB=C9 =D5=C4=C1=CC=C5=CE =C9=DA =
-=D2=C1=D3=D3=D9=CC=CB=C9 =D7 =D4=C5=DE=C5=CE=C9=C5 1 =
-(=CF=C4=CE=CF=C7=CF) =C4=CE=D1!
-
-TO  UNSUBSCRIBE   SEND  YOUR   EMAIL   ADDRESS IN SUBJECT TO   =
-visloguzovepo-7nl8rL9eBqAvJsYlp49lxw@public.gmane.org?subject=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org=20
-
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-------------5GDKKYEHNYL79XYY
-Content-Type: text/html;
-	charset=koi8-r
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META content=3D"text/html; charset=3Dkoi8-r" http-equiv=3DContent-Type>
-<META name=3DGENERATOR content=3D"MSHTML 8.00.6001.18702">
-<STYLE>
-shape atable:debinv
-</STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV><FONT size=3D2 face=3DArial><SPAN class=3Dlg><FONT size=3D3=20
-face=3D"Times New Roman">&nbsp;<SPAN class=3Dlg><FONT=20
-face=3D"Times New Roman"><STRONG><FONT =
-face=3DArial>09</FONT></STRONG><FONT=20
-face=3DArial><STRONG>&nbsp;-&nbsp;10&nbsp;=CD=C1=D2=D4=C1 2010 =
-=C7=CF=C4=C1</STRONG>=20
-</FONT></FONT></SPAN></FONT>
-<H1><FONT color=3D#ff0000 size=3D5>=F5=D0=D2=C1=D7=CC=C5=CE=C9=C5 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0:=20
-=CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=CF=CE=CE=D9=C5 =C9 =
-=D0=D2=C1=D7=CF=D7=D9=C5 =D7=CF=D0=D2=CF=D3=D9 =D2=C1=C2=CF=D4=D9 =D3 =
-=C4=CF=CC=C7=C1=CD=C9 =D7 =CB=CF=CD=D0=C1=CE=C9=C9</FONT></H1>
-<P><HR>
-<P><B>=EE=C1 =D3=C5=CD=C9=CE=C1=D2 =
-=D0=D2=C9=C7=CC=C1=DB=C1=C0=D4=D3=D1:</B> =
-=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C9 =CB=CF=CD=D0=C1=CE=C9=CA, =
-=CB=CF=CD=CD=C5=D2=DE=C5=D3=CB=C9=C5=20
-=C4=C9=D2=C5=CB=D4=CF=D2=C1, =D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C9 =
-=C6=C9=CE=C1=CE=D3=CF=D7=D9=C8 =CF=D4=C4=C5=CC=CF=D7, =
-=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C9 =CF=D4=C4=C5=CC=CF=D7 =
-=D0=D2=CF=C4=C1=D6,=20
-=D3=CF=D4=D2=D5=C4=CE=C9=CB=C9 =C4=CF=C7=CF=D7=CF=D2=CE=D9=C8 =
-=CF=D4=C4=C5=CC=CF=D7, =D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=D9 =
-=D3=C2=D9=D4=CF=D7=D9=C8 =D3=CC=D5=D6=C2, =C1 =D4=C1=CB=D6=C5 =D7=D3=C5=20
-=D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=D9, =CB=CF=D4=CF=D2=D9=CD =
-=D0=D2=C9=C8=CF=C4=C9=D4=D3=D1 =D2=C1=C2=CF=D4=C1=D4=D8 =D3 =
-=C4=CF=CC=D6=CE=C9=CB=C1=CD=C9.</P><P></P>
-<P><B>=E3=C5=CC=D8 =D3=C5=CD=C9=CE=C1=D2=C1:</B> =
-=D5=DE=C1=D3=D4=CE=C9=CB=C9 =D3=C5=CD=C9=CE=C1=D2=C1 =D5=DA=CE=C1=C0=D4, =
-=CB=C1=CB =D0=CF=D3=D4=D2=CF=C9=D4=D8 =D3=C9=D3=D4=C5=CD=D5=20
-=D5=D0=D2=C1=D7=CC=C5=CE=C9=D1 =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0 =D7 =CB=CF=CD=D0=C1=CE=C9=C9, =
-=D0=D2=C9=CF=C2=D2=C5=D4=D5=D4 =CE=C1=D7=D9=CB=C9 =C9=20
-=C9=CE=D3=D4=D2=D5=CD=C5=CE=D4=D9 =C4=CC=D1 =
-=D3=C1=CD=CF=D3=D4=CF=D1=D4=C5=CC=D8=CE=CF=C7=CF =
-=D0=CF=D3=D4=D2=CF=C5=CE=C9=D1 =D3=C9=D3=D4=C5=CD=D9 =D0=CF =
-=D7=CF=DA=D7=D2=C1=D4=D5 =C4=CF=CC=C7=CF=D7 =D7 =D3=D7=CF=C5=CA=20
-=CB=CF=CD=D0=C1=CE=C9=C9.</P><P><H3><HR></H3>
-<DIV><FONT size=3D3><STRONG><U>=F0=F2=EF=E7=F2=E1=ED=ED=E1&nbsp; =
-=F3=E5=ED=E9=EE=E1=F2=E1</U></STRONG></FONT></DIV>
-<H3><FONT size=3D2>=F7=EF=F0=F2=EF=F3=F9 =F5=F0=F2=E1=F7=EC=E5=EE=E9=F1 =
-=E4=E5=E2=E9=F4=EF=F2=F3=EB=EF=EA =
-=FA=E1=E4=EF=EC=F6=E5=EE=EE=EF=F3=F4=F8=E0</FONT></H3>
-<H4><FONT size=3D2>=EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=CF=CE=CE=C1=D1 =
-=D3=D4=D2=D5=CB=D4=D5=D2=C1 =D5=D0=D2=C1=D7=CC=C5=CE=C9=D1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA=20
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0:</FONT></H4>
-<UL>
-  <LI>=EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =
-=D3=D4=D2=D5=CB=D4=D5=D2=CE=CF=C7=CF =
-=D0=CF=C4=D2=C1=DA=C4=C5=CC=C5=CE=C9=D1 =
-(=D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=C1) =D0=CF =
-=D5=D0=D2=C1=D7=CC=C5=CE=C9=C0=20
-  =C4=CF=CC=C7=C1=CD=C9;=20
-  <LI>=E3=C5=CC=C9, =DA=C1=C4=C1=DE=C9 =C9 =
-=D0=CF=CC=CE=CF=CD=CF=DE=C9=D1 =C9=CE=CB=C1=D3=D3=C1=C3=C9=C9 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0. </LI></UL>
-<H4><FONT size=3D2>=F0=D2=CF=C6=C9=CC=C1=CB=D4=C9=CB=C1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0:</FONT></H4>
-<UL>
-  <LI>=EF=C2=C5=D3=D0=C5=DE=C9=D4=C5=CC=D8=CE=D9=C5 =CD=C5=D2=D9 =
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=D1 =CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=C1=CD=C9 =
-=C9=C8 =CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7 =C9=CC=C9 =CB=C1=CB=20
-  =DA=C1=DD=C9=D4=C9=D4=D8 =CB=D2=C5=C4=C9=D4=CF=D2=C1 =CF=D4 =
-=D2=C9=D3=CB=C1 =CE=C5=D7=CF=DA=D7=D2=C1=DD=C5=CE=C9=D1 =C4=CF=CC=C7=C1; =
-  <LI>=E6=CF=D2=CD=C9=D2=CF=D7=C1=CE=C9=D1 =
-=C9=D3=D0=CF=CC=CE=C9=D4=C5=CC=D8=D3=CB=CF=CA =
-=C4=C9=D3=C3=C9=D0=CC=C9=CE=D9 =CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7;=20
-  <LI>=ED=CF=D4=C9=D7=C1=C3=C9=D1 =C4=CF=CC=D6=CE=C9=CB=CF=D7. =
-</LI></UL>
-<H4><FONT size=3D2>=EB=D2=C5=C4=C9=D4=CE=C1=D1 =D0=CF=CC=C9=D4=C9=CB=C1 =
-=D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=D1 =D3 =D0=CF=DA=C9=C3=C9=C9 =
-=D0=D2=CF=C6=C9=CC=C1=CB=D4=C9=CB=C9=20
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0:</FONT></H4>
-<UL>
-  <LI>=F0=CF=D3=D4=D2=CF=C5=CE=C9=C5 =D2=C5=CA=D4=C9=CE=C7=CF=D7=CF=CA =
-=DB=CB=C1=CC=D9 =C4=CF=CC=D6=CE=C9=CB=CF=D7 =C9 =
-=CB=CC=C1=D3=D3=C9=C6=C9=CB=C1=C3=C9=D1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA=20
-  =DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0 =D7 =C3=C5=CC=D1=C8 =
-=CD=C9=CE=C9=CD=C9=DA=C1=C3=C9=C9 =
-=D0=D2=C5=C4=D0=D2=C9=CE=C9=CD=C1=D4=C5=CC=D8=D3=CB=C9=C8 =
-=D2=C9=D3=CB=CF=D7;=20
-  <LI>=ED=C1=D2=CB=C5=D4=C9=CE=C7=CF=D7=D9=C5 =C1=D3=D0=C5=CB=D4=D9 =D7 =
-=CB=D2=C5=C4=C9=D4=CE=CF=CA =D0=CF=CC=C9=D4=C9=CB=C5. </LI></UL>
-<H4><FONT size=3D2>=F2=C9=D3=CB=C9 =D5=D0=D2=C1=D7=CC=C5=CE=C9=D1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0:</FONT></H4>
-<UL>
-  <LI>=F2=C9=D3=CB=C9, =D3=D7=D1=DA=C1=CE=CE=D9=C5 =D3 =
-=CB=D2=C5=C4=C9=D4=CE=CF=CA =D0=CF=CC=C9=D4=C9=CB=CF=CA =C9 =
-=D3=C9=D3=D4=C5=CD=CF=CA <STRONG>=D5=D0=D2=C1=D7=CC=C5=CE=C9=D1=20
-  =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0</STRONG>;=20
-  <LI>=F2=C9=D3=CB=C9, =D3=D7=D1=DA=C1=CE=CE=D9=C5 =D3 =
-=C4=CF=CC=D6=CE=C9=CB=CF=CD =C9 =C4=CF=CC=C7=CF=CD. </LI></UL>
-<H4><FONT size=3D2>=F0=CF=D3=D4=C1=CE=CF=D7=CB=C1 =D5=DE=C5=D4=C1 =C9 =
-=CB=CF=CE=D4=D2=CF=CC=D1 =DA=C1 =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0 =CE=C1=20
-=D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=C9:</FONT></H4>
-<UL>
-  <LI>=F3=CF=D3=D4=C1=D7 =C9 =D3=D4=D2=D5=CB=D4=D5=D2=C1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0;=20
-  <LI>=EB=D5=CC=D8=D4=D5=D2=C1 =
-=C4=CF=CB=D5=CD=C5=CE=D4=C1=D2=CE=CF=C7=CF =
-=CF=C6=CF=D2=CD=CC=C5=CE=C9=D1 =CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7. =
-</LI></UL>
-<H4><FONT size=3D2>=EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9 =
-=D0=D2=CF=D7=C5=C4=C5=CE=C9=D1 =C1=CE=C1=CC=C9=DA=C1 =
-=C4=CF=CC=D6=CE=C9=CB=CF=D7, =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA=20
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=C9 =C9 =D2=C1=C2=CF=D4=D9 =D3 =
-=CE=C9=CD=C9:</FONT></H4>
-<UL>
-  <LI>=EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =D0=D2=CF=C3=C5=C4=D5=D2 =
-<STRONG>due diligence</STRONG> =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA=20
-  =DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=C9 =C9 =
-=C4=CF=CC=D6=CE=C9=CB=CF=D7 =CE=C1 =D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=C9;=20
-  <LI>=F7=CF=D0=D2=CF=D3=D9 =CF=C3=C5=CE=CB=C9 =C9 =C1=D5=C4=C9=D4=C1 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0: =D0=CF=D2=D1=C4=CF=CB =
-=D0=D2=C9=D7=CC=C5=DE=C5=CE=C9=D1=20
-  =D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=CF=D7 =C9 =
-=D0=CF=D3=D4=C1=CE=CF=D7=CB=C1 =DA=C1=C4=C1=DE=C9. </LI></UL>
-<H4><FONT size=3D2>=E1=CC=C7=CF=D2=C9=D4=CD =D0=D2=C9=CE=D1=D4=C9=D1 =
-=D2=C5=DB=C5=CE=C9=CA =D0=CF =D5=D0=D2=C1=D7=CC=C5=CE=C9=C0 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA=20
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=C9:</FONT></H4>
-<UL>
-  <LI>=EF=D0=D2=C5=C4=C5=CC=C5=CE=C9=C5 =
-=C3=C5=CC=C5=D3=CF=CF=C2=D2=C1=DA=CE=CF=D3=D4=C9 =
-=D0=D2=CF=D7=C5=C4=C5=CE=C9=D1 =D3=C4=C5=CC=CF=CB =D3 =
-=C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA=20
-  =DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=C9;=20
-  <LI>=E9=D3=D0=CF=CC=D8=DA=CF=D7=C1=CE=C9=C5 =
-=C4=CF=C7=CF=D7=CF=D2=CF=D7 =D5=D3=D4=D5=D0=CB=C9 =D0=D2=C1=D7=C1 =
-=D4=D2=C5=C2=CF=D7=C1=CE=C9=D1 =C9 =D0=C5=D2=C5=D7=CF=C4=C1 =
-=C4=CF=CC=C7=C1 (=D3=20
-  =D5=DE=C5=D4=CF=CD =D7=C1=CC=C0=D4=CE=D9=C8, =
-=C1=CE=D4=C9=CD=CF=CE=CF=D0=CF=CC=D8=CE=D9=C8, =
-=CB=CF=D2=D0=CF=D2=C1=D4=C9=D7=CE=D9=C8 =
-=CF=C7=D2=C1=CE=C9=DE=C5=CE=C9=CA);=20
-  <LI>=F7=CF=D0=D2=CF=D3=D9 =D5=DE=C5=D4=C1 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
-=D3=CF=D3=D4=C1=D7=CC=D1=C0=DD=C5=CA =D0=D2=C9 =D0=D2=C9=CE=D1=D4=C9=C9 =
-=D5=D0=D2=C1=D7=CC=C5=CE=DE=C5=D3=CB=C9=C8 =D2=C5=DB=C5=CE=C9=CA =D3=20
-  =C4=C5=C2=C9=D4=CF=D2=D3=CB=CF=CA =
-=DA=C1=C4=CF=CC=D6=C5=CE=CE=CF=D3=D4=D8=C0. </LI></UL>
-<H4><FONT size=3D2>=F7=C9=C4=D9 =D3=CF=C4=C5=CA=D3=D4=D7=C9=D1 =
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=D1 =C4=CF=CC=D6=CE=C9=CB=C1=CD=C9 =C9=C8=20
-=CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7:</FONT></H4>
-<UL>
-  <LI>=FC=CB=CF=CE=CF=CD=C9=DE=C5=D3=CB=C1=D1 =
-=D3=CF=D3=D4=C1=D7=CC=D1=C0=DD=C1=D1 =D3=CF=C4=C5=CA=D3=D4=D7=C9=D1 =
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=C0;=20
-  <LI>=F0=D3=C9=C8=CF=CC=CF=C7=C9=DE=C5=D3=CB=C9=C5 =
-=C1=D3=D0=C5=CB=D4=D9 =D7=DA=C1=C9=CD=CF=C4=C5=CA=D3=D4=D7=C9=D1 =D3 =
-=C4=CF=CC=D6=CE=C9=CB=C1=CD=C9. </LI></UL>
-<H3><FONT size=3D3></FONT>&nbsp;</H3>
-<H3><FONT size=3D2>=EF=F2=E7=E1=EE=E9=FA=E1=E3=E9=F1 =
-=F0=F2=E5=F4=E5=EE=FA=E9=EF=EE=EE=EF=EA =E9 =E9=F3=EB=EF=F7=EF=EA =
-=F2=E1=E2=EF=F4=F9 =EE=E1=20
-=F0=F2=E5=E4=F0=F2=E9=F1=F4=E9=E9</FONT></H3>
-<H4><FONT size=3D2>=EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =C9 =
-=D0=CF=C4=C7=CF=D4=CF=D7=CB=C1 =D0=D2=C5=D4=C5=CE=DA=C9=C9:</FONT></H4>
-<UL>
-  <LI>=EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=CF=CE=CE=D9=C5 =DC=D4=C1=D0=D9 =
-=D0=D2=C5=D4=C5=CE=DA=C9=CF=CE=CE=CF=CA =D2=C1=C2=CF=D4=D9;=20
-  <LI>=E6=CF=D2=CD=C9=D2=CF=D7=C1=CE=C9=C5 =D4=C9=D0=CF=D7=CF=CA =
-=D0=D2=C5=D4=C5=CE=DA=C9=C9;=20
-  <LI>=ED=C5=D4=CF=C4=C9=CB=C9 =D0=D2=CF=D7=C5=C4=C5=CE=C9=D1 =
-=D0=C5=D2=C5=C7=CF=D7=CF=D2=CF=D7;=20
-  <LI>=EF=D4=D7=C5=D4 =CE=C1 =D0=D2=C5=D4=C5=CE=DA=C9=C9. </LI></UL>
-<H4><FONT size=3D2>=F0=CF=D2=D1=C4=CF=CB =
-=D0=D2=C5=C4=DF=D1=D7=CC=C5=CE=C9=D1 =C9=D3=CB=C1:</FONT></H4>
-<UL>
-  <LI>=F0=D2=CF=C2=CC=C5=CD=D9 =CF=C2=C5=D3=D0=C5=DE=C5=CE=C9=D1 =
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=D1 =C4=CF=CC=C7=CF=D7=CF=C7=CF =
-=CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7=C1;=20
-  <LI>=F7=CF=D0=D2=CF=D3=D9 =DA=C1=D4=D1=C7=C9=D7=C1=CE=C9=D1 =
-=D0=D2=CF=C3=C5=D3=D3=C1;=20
-  <LI>=F0=CF=D2=D1=C4=CF=CB =C9 =D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=D1 =
-=CF=C2=D6=C1=CC=CF=D7=C1=CE=C9=D1 =D3=D5=C4=C5=C2=CE=D9=C8 =
-=C1=CB=D4=CF=D7. </LI></UL>
-<H4><FONT size=3D2>=F0=D2=C9=CE=D5=C4=C9=D4=C5=CC=D8=CE=CF=C5 =
-=D7=DA=D9=D3=CB=C1=CE=C9=C5 =C4=CF=CC=C7=C1 =D3 =
-=C0=D2=C9=C4=C9=DE=C5=D3=CB=C9=C8 =C9 =C6=C9=DA=C9=DE=C5=D3=CB=C9=C8=20
-=CC=C9=C3:</FONT></H4>
-<UL>
-  <LI>=FC=C6=C6=C5=CB=D4=C9=D7=CE=CF=C5 =
-=D0=D2=C5=C4=DF=D1=D7=CC=C5=CE=C9=C5 =
-=C9=D3=D0=CF=CC=CE=C9=D4=C5=CC=D8=CE=CF=C7=CF =
-=C4=CF=CB=D5=CD=C5=CE=D4=C1;=20
-  <LI>=EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =
-=D7=DA=C1=C9=CD=CF=C4=C5=CA=D3=D4=D7=C9=D1 =D3 =
-=D3=D5=C4=C5=C2=CE=D9=CD=C9 =D0=D2=C9=D3=D4=C1=D7=C1=CD=C9;=20
-  <LI>=F0=CF=D2=D1=C4=CF=CB =CF=C2=D6=C1=CC=CF=D7=C1=CE=C9=D1 =C9 =
-=CF=D3=D0=C1=D2=C9=D7=C1=CE=C9=D1 =C4=C5=CA=D3=D4=D7=C9=CA =
-(=C2=C5=DA=C4=C5=CA=D3=D4=D7=C9=CA) =D3=D5=C4=C5=C2=CE=D9=C8=20
-  =D0=D2=C9=D3=D4=C1=D7=CF=D7. </LI></UL>
-<H4><FONT size=3D2>=F0=D2=CF=C3=C5=C4=D5=D2=C1 =
-=C2=C1=CE=CB=D2=CF=D4=D3=D4=D7=C1 =C4=CF=CC=D6=CE=C9=CB=C1 &#8211; =
-=D5=D0=D2=C1=D7=CC=C5=CE=DE=C5=D3=CB=CF=C5=20
-=D2=C5=DB=C5=CE=C9=C5:</FONT></H4>
-<UL>
-  <LI>=EB=CF=C7=C4=C1, =CB=C1=CB =C9 =DA=C1=DE=C5=CD =
-=C9=CE=C9=C3=C9=C9=D2=CF=D7=C1=D4=D8 =
-<STRONG>=C2=C1=CE=CB=D2=CF=D4=D3=D4=D7=CF</STRONG>;=20
-  <LI>=F3=D4=CF=C9=D4 =CC=C9 =C2=C1=CE=CB=D2=CF=D4=C9=D4=D8 =
-=D3=D7=CF=C5=C7=CF =C4=CF=CC=D6=CE=C9=CB=C1. </LI></UL>
-<H4><FONT size=3D2>=EF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =
-=C1=C4=CD=C9=CE=C9=D3=D4=D2=C1=D4=C9=D7=CE=CF=C7=CF =
-=C4=C1=D7=CC=C5=CE=C9=D1 =CE=C1 =C4=CF=CC=D6=CE=C9=CB=C1:</FONT></H4>
-<UL>
-  <LI>=F7=CF=D0=D2=CF=D3=D9 =
-=C3=C5=CC=C5=D3=CF=CF=C2=D2=C1=DA=CE=CF=D3=D4=C9 =
-=D0=D2=C9=D7=CC=C5=DE=C5=CE=C9=D1 =C4=CF=CC=D6=CE=C9=CB=C1 =CB =
-=C1=C4=CD=C9=CE=C9=D3=D4=D2=C1=D4=C9=D7=CE=CF=CA =C9=20
-  =D5=C7=CF=CC=CF=D7=CE=CF=CA =
-=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9.=20
-  <LI>=ED=C5=C8=C1=CE=C9=DA=CD=D9 =
-=C1=C4=CD=C9=CE=C9=D3=D4=D2=C1=D4=C9=D7=CE=CF=C7=CF =
-=C4=C1=D7=CC=C5=CE=C9=D1 =CE=C1 =C4=CF=CC=D6=CE=C9=CB=C1;=20
-  <LI>=E1=D5=D4=D3=CF=D2=D3=C9=CE=C7 =C9=CC=C9 =
-=D0=D2=C9=D7=CC=C5=CB=C1=C5=CD =D3=D0=C5=C3=C9=C1=CC=C9=D3=D4=CF=D7; =
-</LI></UL>
-<H4><FONT size=3D2>=E3=C5=CC=C5=D3=CF=CF=C2=D2=C1=DA=CE=CF=D3=D4=D8 =
-=D0=D2=C9=D7=CC=C5=DE=C5=CE=C9=D1 =
-=D0=D2=CF=C6=C5=D3=D3=C9=CF=CE=C1=CC=D8=CE=D9=C8 =
-=C1=D5=C4=C9=D4=CF=D2=CF=D7 =C9=20
-=CF=C3=C5=CE=DD=C9=CB=CF=D7:</FONT></H4>
-<UL>
-  <LI><STRONG>=EB=CF=CC=CC=C5=CB=D4=CF=D2=D3=CB=C1=D1 =
-=C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=D8</STRONG> =CB=C1=CB =CF=C4=C9=CE =
-=C9=DA =D0=D5=D4=C5=CA =D2=C5=DB=C5=CE=C9=D1=20
-  =D0=D2=CF=C2=CC=C5=CD=D9 =C9=D3=D4=D2=C5=C2=CF=D7=C1=CE=C9=D1 =
-=C4=CF=CC=C7=CF=D7;=20
-  <LI>=F7=D9=C2=CF=D2 =D7=C9=C4=C1 =C4=CF=C7=CF=D7=CF=D2=C1 =D3 =
-=CB=CF=CC=CC=C5=CB=D4=CF=D2=CF=CD;=20
-  <LI>=EF=D3=CF=C2=C5=CE=CE=CF=D3=D4=C9 =C4=CF=C7=CF=D7=CF=D2=CF=D7;=20
-  <LI>=F7=CF=D0=D2=CF=D3=D9 =CF=C2=CF=D2=CF=D4=C1 =
-=C9=CE=C6=CF=D2=CD=C1=C3=C9=C9 =C9 =
-=CB=CF=CE=C6=C9=C4=C5=CE=C3=C9=C1=CC=D8=CE=CF=D3=D4=D8;=20
-  <LI>=EF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=D8 =
-=D0=CF=D3=D2=C5=C4=CE=C9=CB=C1. </LI></UL><P><HR></P>
-<P><STRONG>09</STRONG><FONT size=3D2><FONT=20
-face=3DArial><STRONG>&nbsp;-&nbsp;10&nbsp;=CD=C1=D2=D4=C1 2010 =
-=C7=CF=C4=C1.&nbsp; <SPAN=20
-style=3D"FONT-FAMILY: 'Arial','sans-serif'; FONT-SIZE: 10pt; =
-mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; =
-mso-ansi-language: RU; mso-fareast-language: RU; mso-bidi-language: =
-AR-SA">(2=20
-=C4=CE=D1 =D3 10.00 =C4=CF 18.00) </SPAN></STRONG></FONT></FONT></P>
-<P><FONT size=3D2><FONT face=3DArial><STRONG>=ED=C5=D3=D4=CF =
-=D0=D2=CF=D7=C5=C4=C5=CE=C9=D1: =ED=CF=D3=CB=D7=C1, =CD.=20
-=E2=CF=D4=C1=CE=C9=DE=C5=D3=CB=C9=CA =D3=C1=C4, "=F5=DE=C5=C2=CE=C1=D1 =
-=C7=CF=D3=D4=C9=CE=C9=C3=C1"</STRONG></FONT></FONT></P>
-<P><FONT size=3D2><FONT face=3DArial><STRONG>=F3=D4=CF=C9=CD=CF=D3=D4=D8 =
-=D5=DE=C1=D3=D4=C9=D1:&nbsp;17 500=20
-=D2=D5=C2.</STRONG> (=F7 =D3=D4=CF=C9=CD=CF=D3=D4=D8 =D7=C8=CF=C4=C9=D4 =
-=CF=C2=D5=DE=C5=CE=C9=C5, =D0=C5=DE=C1=D4=CE=D9=C5 =
-=CD=C1=D4=C5=D2=C9=C1=CC=D9 =D0=CF =D4=C5=CD=C5 =
-=D3=C5=CD=C9=CE=C1=D2=C1,=20
-=CF=C2=C5=C4=D9, =CB=CF=C6=C5-=D0=C1=D5=DA=D9). =F0=CF =
-=CF=CB=CF=CE=DE=C1=CE=C9=C9 =D7=D9=C4=C1=C5=D4=D3=D1 =
-=D3=C5=D2=D4=C9=C6=C9=CB=C1=D4 =CF =D0=D2=CF=C8=CF=D6=C4=C5=CE=C9=C9 =
-=CF=C2=D5=DE=C5=CE=C9=D1 =D0=CF=20
-=C4=C1=CE=CE=CF=CA =D4=C5=CD=C5. =E9=CE=CF=C7=CF=D2=CF=C4=CE=C9=CD =
-=D0=CF=CD=CF=D6=C5=CD =DA=C1=C2=D2=CF=CE=C9=D2=CF=D7=C1=D4=D8 =
-=CE=CF=CD=C5=D2=C1 =D7 =C7=CF=D3=D4=C9=CE=C9=C3=C5. =
-=EF=C2=D5=DE=C5=CE=C9=C5 =C9=20
-=D0=D2=CF=D6=C9=D7=C1=CE=C9=C5 =D7 =CF=C4=CE=CF=CD =
-=DA=C4=C1=CE=C9=C9.</FONT></FONT></P>
-<P><FONT size=3D2 face=3DArial></FONT></P><FONT size=3D2 face=3DArial>
-<DIV><STRONG><HR></STRONG></DIV></FONT><P></P>
-<P><FONT size=3D2><FONT face=3DArial><STRONG>=F0=CF=C4=D2=CF=C2=CE=C1=D1 =
-=C9=CE=C6=CF=D2=CD=C1=C3=C9=D1 =C9 =D2=C5=C7=C9=D3=D4=D2=C1=C3=C9=D1 =
-=D0=CF=20
-=D4=C5=CC=C5=C6=CF=CE=D5: 8 (495) 229&nbsp;- 04&nbsp;- =
-33</STRONG></FONT></FONT></P>
-<P><FONT size=3D2 face=3DArial></FONT></P><FONT face=3DArial>
-<DIV><STRONG><HR><HR></STRONG></DIV></FONT><P></P>
-<P><FONT size=3D1 face=3DArial><EM><STRONG>=F7=CE=C9=CD=C1=CE=C9=C5! =
-=E5=D3=CC=C9 =F7=C1=DB =C1=C4=D2=C5=D3 =D3=CC=D5=DE=C1=CA=CE=CF =
-=D0=CF=D0=C1=CC =D7=20
-=C2=C1=DA=D5 =D2=C1=D3=D3=D9=CC=CB=C9, =C9 =F7=D9 =C2=CF=CC=D8=DB=C5 =
-=CE=C5 =C8=CF=D4=C9=D4=C5 =D0=CF=CC=D5=DE=C1=D4=D8 =
-=C9=CE=C6=CF=D2=CD=C1=C3=C9=C0 =CF=C2 =
-=CF=C2=D2=C1=DA=CF=D7=C1=D4=C5=CC=D8=CE=D9=C8=20
-=CD=C5=D2=CF=D0=D2=C9=D1=D4=C9=D1=C8, </STRONG></EM></FONT></P>
-<P><FONT size=3D1 face=3DArial><EM><STRONG>=D0=D2=CF=D3=D4=CF =
-=CF=D4=D0=D2=C1=D7=D8=D4=C5 =D0=D5=D3=D4=CF=C5 =D0=C9=D3=D8=CD=CF =D7 =
-=F7=C1=DB=C5=C7=CF=20
-=C1=C4=D2=C5=D3=C1 =CE=C1 =C1=C4=D2=C5=D3 </STRONG></EM></FONT><A=20
-href=3D"visloguzovepo-7nl8rL9eBqAvJsYlp49lxw@public.gmane.org?subject=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"><FONT size=3D1=20
-face=3DArial><EM><STRONG>visloguzovepo-7nl8rL9eBqAvJsYlp49lxw@public.gmane.org</STRONG></EM></FONT> =
-</A><FONT=20
-size=3D1 face=3DArial><EM><STRONG>&nbsp;=C9 =D7 =D4=C5=CD=C5 =
-=D0=C9=D3=D8=CD=C1 =D5=CB=C1=D6=C9=D4=C5 =F7=C1=DB =C1=C4=D2=C5=D3=20
-=DC=CC=C5=CB=D4=D2=CF=CE=CE=CF=CA =D0=CF=DE=D4=D9. =
-</STRONG></EM></FONT></P>
-<P><FONT face=3DArial></FONT></P><FONT face=3DArial>
-<DIV><FONT size=3D2 face=3DArial>
-<P><EM><STRONG>=F7=C1=DB =C1=C4=D2=C5=D3 =C2=D5=C4=C5=D4 =
-=C1=D7=D4=CF=CD=C1=D4=C9=DE=C5=D3=CB=C9 =D5=C4=C1=CC=C5=CE =C9=DA =
-=D2=C1=D3=D3=D9=CC=CB=C9 =D7 =D4=C5=DE=C5=CE=C9=C5 1=20
-(=CF=C4=CE=CF=C7=CF) =C4=CE=D1!</STRONG></EM></P></FONT></DIV>
-<DIV><STRONG><HR></STRONG></DIV>
-<DIV><EM><FONT size=3D1><STRONG>TO&nbsp;&nbsp;UNSUBSCRIBE&nbsp;&nbsp;=20
-SEND&nbsp;&nbsp;YOUR&nbsp;&nbsp; EMAIL&nbsp;&nbsp; ADDRESS IN=20
-SUBJECT&nbsp;TO&nbsp;&nbsp; </STRONG><A=20
-href=3D"visloguzovepo-7nl8rL9eBqAvJsYlp49lxw@public.gmane.org?subject=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"><FONT size=3D1=20
-face=3DArial><EM><STRONG>visloguzovepo-7nl8rL9eBqAvJsYlp49lxw@public.gmane.org</STRONG></EM></FONT>=20
-</A></FONT></EM><STRONG></STRONG></DIV><STRONG><DIV><HR>
-</DIV></STRONG></FONT></SPAN></FONT></DIV></BODY></HTML>
-
-------------5GDKKYEHNYL79XYY--
-
-
-
---===============9025022360403228176==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
---===============9025022360403228176==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============9025022360403228176==--
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 9ff47db..f7daf2f 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -688,6 +688,18 @@ config SERIAL_SA1100_CONSOLE
+ 	  your boot loader (lilo or loadlin) about how to pass options to the
+ 	  kernel at boot time.)
+ 
++config SERIAL_MAX3110
++	tristate "SPI UART driver for Max3110"
++	select SERIAL_CORE
++	select SERIAL_CORE_CONSOLE
++	help
++	  This is the UART protocol driver for MAX3110 device
++
++config MAX3110_DESIGNWARE
++	boolean "Enable Max3110 to work with Designware controller"
++	default y
++	depends on SERIAL_MAX3110
++
+ config SERIAL_BFIN
+ 	tristate "Blackfin serial port support"
+ 	depends on BLACKFIN
+diff --git a/drivers/serial/max3110.c b/drivers/serial/max3110.c
+new file mode 100644
+index 0000000..e8c44fa
+--- /dev/null
++++ b/drivers/serial/max3110.c
+@@ -0,0 +1,879 @@
++/*
++ * max3110.c - spi uart protocol driver for Maxim 3110
++ *
++ * Copyright (c) 2009, Intel Corporation.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++/*
++ * Note:
++ * * From Max3110 spec, the Rx FIFO has 8 words, while the Tx FIFO only has
++ *   1 word. If SPI master controller doesn't support sclk frequency change,
++ *   then the char need be sent out one by one with some delay
++ *
++ * * Currently only RX availabe interrrupt is used
++ */
++
++#include <linux/module.h>
++#include <linux/ioport.h>
++#include <linux/init.h>
++#include <linux/console.h>
++#include <linux/platform_device.h>
++#include <linux/tty.h>
++#include <linux/tty_flip.h>
++#include <linux/serial_core.h>
++#include <linux/serial_reg.h>
++
++#include <linux/kthread.h>
++#include <linux/delay.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/dw_spi.h>
++
++#include "max3110.h"
++
++#define PR_FMT	"max3110: "
++
++struct uart_max3110 {
++	struct uart_port port;
++	struct spi_device *spi;
++	char *name;
++
++	wait_queue_head_t wq;
++	struct task_struct *main_thread;
++	struct task_struct *read_thread;
++	spinlock_t lock;
++
++	u32 baud;
++	u16 cur_conf;
++	u8 clock;
++	u8 parity, word_7bits;
++	u16 irq;
++
++	/* bit map for UART status */
++	unsigned long flags;
++#define M3110_CON_TX_NEED	0
++#define M3110_UART_TX_NEED	1
++#define M3110_IRQ_PENDING	2
++	unsigned long mthread_up;
++
++	/* console buffer */
++	struct circ_buf con_xmit;
++};
++
++static struct uart_max3110 *pmax;
++
++static int use_irq = 1;
++module_param(use_irq, int, 0444);
++MODULE_PARM_DESC(use_irq, "Whether using Max3110's IRQ capability");
++
++static void receive_chars(struct uart_max3110 *max,
++				unsigned char *str, int len);
++static int max3110_read_multi(struct uart_max3110 *max, u8 *buf);
++static void max3110_con_receive(struct uart_max3110 *max);
++
++static int max3110_write_then_read(struct uart_max3110 *max,
++		const void *txbuf, void *rxbuf, unsigned len, int always_fast)
++{
++	struct spi_device *spi = max->spi;
++	struct spi_message	message;
++	struct spi_transfer	x;
++	int ret;
++
++	spi_message_init(&message);
++	memset(&x, 0, sizeof x);
++	x.len = len;
++	x.tx_buf = txbuf;
++	x.rx_buf = rxbuf;
++	spi_message_add_tail(&x, &message);
++
++	if (always_fast)
++		x.speed_hz = spi->max_speed_hz;
++	else if (max->baud)
++		x.speed_hz = max->baud;
++
++	/* Do the i/o */
++	ret = spi_sync(spi, &message);
++	return ret;
++}
++
++/* Write a u16 to the device, and return one u16 read back */
++static int max3110_out(struct uart_max3110 *max, const u16 out)
++{
++	u16 tmp;
++	u8  ch;
++	int ret;
++
++	ret = max3110_write_then_read(max, &out, &tmp, 2, 1);
++	if (ret) {
++		pr_warning(PR_FMT "%s(): get err msg %d when sending 0x%x\n",
++				__func__, ret, out);
++		return ret;
++	}
++
++	/* If some valid data is read back */
++	if (tmp & MAX3110_READ_DATA_AVAILABLE) {
++		ch = tmp & 0xff;
++		receive_chars(max, &ch, 1);
++	}
++
++	return ret;
++}
++
++/*
++ * This is usually used to read data from SPIC RX FIFO, which doesn't
++ * need any delay like flushing character out.
++ *
++ * Return how many valide bytes are read back
++ */
++static int max3110_read_multi(struct uart_max3110 *max, u8 *buf)
++{
++	u16 obuf[M3110_RX_FIFO_DEPTH], ibuf[M3110_RX_FIFO_DEPTH];
++	u8 *pbuf, valid_str[M3110_RX_FIFO_DEPTH];
++	int i, j;
++
++	memset(obuf, 0, sizeof(obuf));
++	memset(obuf, 0, sizeof(ibuf));
++
++	if (max3110_write_then_read(max, obuf, ibuf,
++				M3110_RX_FIFO_DEPTH * 2, 1))
++		return 0;
++
++	/* If caller doesn't provide a buffer, then handle received char */
++	pbuf = buf ? buf : valid_str;
++
++	for (i = 0, j = 0; i < M3110_RX_FIFO_DEPTH; i++) {
++		if (ibuf[i] & MAX3110_READ_DATA_AVAILABLE)
++			pbuf[j++] = ibuf[i] & 0xff;
++	}
++
++	if (j && (pbuf == valid_str))
++		receive_chars(max, valid_str, j);
++
++	return j;
++}
++
++static void serial_m3110_con_putchar(struct uart_port *port, int ch)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	struct circ_buf *xmit = &max->con_xmit;
++
++	if (uart_circ_chars_free(xmit)) {
++		xmit->buf[xmit->head] = (char)ch;
++		xmit->head = (xmit->head + 1) & (PAGE_SIZE - 1);
++	}
++
++	set_bit(M3110_CON_TX_NEED, &max->flags);
++	if (!test_bit(0, &max->mthread_up))
++		wake_up_process(max->main_thread);
++}
++
++/*
++ * Print a string to the serial port trying not to disturb
++ * any possible real use of the port...
++ *
++ *	The console_lock must be held when we get here.
++ */
++static void serial_m3110_con_write(struct console *co,
++				const char *s, unsigned int count)
++{
++	if (!pmax)
++		return;
++
++	uart_console_write(&pmax->port, s, count, serial_m3110_con_putchar);
++}
++
++static int __init
++serial_m3110_con_setup(struct console *co, char *options)
++{
++	struct uart_max3110 *max = pmax;
++	int baud = 115200;
++	int bits = 8;
++	int parity = 'n';
++	int flow = 'n';
++
++	pr_info(PR_FMT "setting up console\n");
++
++	if (!max) {
++		pr_err(PR_FMT "pmax is NULL, return");
++		return -ENODEV;
++	}
++
++	if (options)
++		uart_parse_options(options, &baud, &parity, &bits, &flow);
++
++	return uart_set_options(&max->port, co, baud, parity, bits, flow);
++}
++
++static struct tty_driver *serial_m3110_con_device(struct console *co,
++							int *index)
++{
++	struct uart_driver *p = co->data;
++	*index = co->index;
++	return p->tty_driver;
++}
++
++static struct uart_driver serial_m3110_reg;
++static struct console serial_m3110_console = {
++	.name		= "ttyS",
++	.write		= serial_m3110_con_write,
++	.device		= serial_m3110_con_device,
++	.setup		= serial_m3110_con_setup,
++	.flags		= CON_PRINTBUFFER,
++	.index		= -1,
++	.data		= &serial_m3110_reg,
++};
++
++#define MRST_CONSOLE	(&serial_m3110_console)
++
++static unsigned int serial_m3110_tx_empty(struct uart_port *port)
++{
++	return 1;
++}
++
++static void serial_m3110_stop_tx(struct uart_port *port)
++{
++	return;
++}
++
++static void serial_m3110_stop_rx(struct uart_port *port)
++{
++	return;
++}
++
++#define WORDS_PER_XFER	128
++static void send_circ_buf(struct uart_max3110 *max,
++				struct circ_buf *xmit)
++{
++	int len, blen, left = 0;
++	u16 obuf[WORDS_PER_XFER], ibuf[WORDS_PER_XFER];
++	u8 valid_str[WORDS_PER_XFER];
++	int i, j;
++	int ret = 0;
++
++	while (!uart_circ_empty(xmit)) {
++		left = uart_circ_chars_pending(xmit);
++		while (left) {
++			len = min(left, WORDS_PER_XFER);
++			blen = len * sizeof(u16);
++			memset(obuf, 0, blen);
++			memset(ibuf, 0, blen);
++
++			for (i = 0; i < len; i++) {
++				obuf[i] = (u8)xmit->buf[xmit->tail] | WD_TAG;
++				xmit->tail = (xmit->tail + 1) &
++						(UART_XMIT_SIZE - 1);
++			}
++
++			/* Fail to send msg to console is not very critical */
++			ret = max3110_write_then_read(max, obuf, ibuf, blen, 0);
++			if (ret)
++				pr_warning(PR_FMT "%s(): get err msg %d\n",
++						__func__, ret);
++
++			for (i = 0, j = 0; i < len; i++) {
++				if (ibuf[i] & MAX3110_READ_DATA_AVAILABLE)
++					valid_str[j++] = ibuf[i] & 0xff;
++			}
++
++			if (j)
++				receive_chars(max, valid_str, j);
++
++			max->port.icount.tx += len;
++			left -= len;
++		}
++	}
++}
++
++static void transmit_char(struct uart_max3110 *max)
++{
++	struct uart_port *port = &max->port;
++	struct circ_buf *xmit = &port->state->xmit;
++
++	if (uart_circ_empty(xmit) || uart_tx_stopped(port))
++		return;
++
++	send_circ_buf(max, xmit);
++
++	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
++		uart_write_wakeup(port);
++}
++
++/*
++ * This will be called by uart_write() and tty_write, can't
++ * go to sleep
++ */
++static void serial_m3110_start_tx(struct uart_port *port)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++
++	set_bit(M3110_UART_TX_NEED, &max->flags);
++	if (!test_bit(0, &max->mthread_up))
++		wake_up_process(max->main_thread);
++}
++
++static void receive_chars(struct uart_max3110 *max, unsigned char *str, int len)
++{
++	struct uart_port *port = &max->port;
++	struct tty_struct *tty;
++	int usable;
++
++	/* If uart is not opened, just return */
++	if (!port->state)
++		return;
++
++	tty = port->state->port.tty;
++	if (!tty)
++		return;
++
++	while (len) {
++		usable = tty_buffer_request_room(tty, len);
++		if (usable) {
++			tty_insert_flip_string(tty, str, usable);
++			str += usable;
++			port->icount.rx += usable;
++		}
++		len -= usable;
++	}
++	tty_flip_buffer_push(tty);
++}
++
++/*
++ * This routine will be used in read_thread or RX IRQ handling,
++ * it will first do one round buffer read(8 words), if there is some
++ * valid RX data, will try to read 5 more rounds till all data
++ * is read out.
++ *
++ * Use stack space as data buffer to save some system load, and chose
++ * 504 Btyes as a threadhold to do a bulk push to upper tty layer when
++ * receiving bulk data, a much bigger buffer may cause stack overflow
++ */
++static void max3110_con_receive(struct uart_max3110 *max)
++{
++	int loop = 1, num, total = 0;
++	u8 recv_buf[512], *pbuf;
++
++	pbuf = recv_buf;
++	do {
++		num = max3110_read_multi(max, pbuf);
++
++		if (num) {
++			loop = 5;
++			pbuf += num;
++			total += num;
++
++			if (total >= 504) {
++				receive_chars(max, recv_buf, total);
++				pbuf = recv_buf;
++				total = 0;
++			}
++		}
++	} while (--loop);
++
++	if (total)
++		receive_chars(max, recv_buf, total);
++}
++
++static int max3110_main_thread(void *_max)
++{
++	struct uart_max3110 *max = _max;
++	wait_queue_head_t *wq = &max->wq;
++	int ret = 0;
++	struct circ_buf *xmit = &max->con_xmit;
++
++	init_waitqueue_head(wq);
++	pr_info(PR_FMT "start main thread\n");
++
++	do {
++		wait_event_interruptible(*wq,
++				max->flags || kthread_should_stop());
++		set_bit(0, &max->mthread_up);
++
++		if (use_irq && test_bit(M3110_IRQ_PENDING, &max->flags)) {
++			max3110_con_receive(max);
++			clear_bit(M3110_IRQ_PENDING, &max->flags);
++		}
++
++		/* First handle console output */
++		if (test_bit(M3110_CON_TX_NEED, &max->flags)) {
++			send_circ_buf(max, xmit);
++			clear_bit(M3110_CON_TX_NEED, &max->flags);
++		}
++
++		/* Handle uart output */
++		if (test_bit(M3110_UART_TX_NEED, &max->flags)) {
++			transmit_char(max);
++			clear_bit(M3110_UART_TX_NEED, &max->flags);
++		}
++		clear_bit(0, &max->mthread_up);
++	} while (!kthread_should_stop());
++
++	return ret;
++}
++
++static irqreturn_t serial_m3110_irq(int irq, void *dev_id)
++{
++	struct uart_max3110 *max = dev_id;
++
++	/* max3110's irq is a falling edge, not level triggered,
++	 * so no need to disable the irq */
++	set_bit(M3110_IRQ_PENDING, &max->flags);
++
++	if (!test_bit(0, &max->mthread_up))
++		wake_up_process(max->main_thread);
++
++	return IRQ_HANDLED;
++}
++
++/* If don't use RX IRQ, then need a thread to polling read */
++static int max3110_read_thread(void *_max)
++{
++	struct uart_max3110 *max = _max;
++
++	pr_info(PR_FMT "start read thread\n");
++	do {
++		if (!test_bit(0, &max->mthread_up))
++			max3110_con_receive(max);
++
++		set_current_state(TASK_INTERRUPTIBLE);
++		schedule_timeout_interruptible(HZ / 20);
++	} while (!kthread_should_stop());
++
++	return 0;
++}
++
++static int serial_m3110_startup(struct uart_port *port)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	u16 config = 0;
++	int ret = 0;
++
++	if (port->line != 0) {
++		pr_err(PR_FMT "uart port startup failed\n");
++		return -1;
++	}
++
++	/* Disable all IRQ and config it to 115200, 8n1 */
++	config = WC_TAG | WC_FIFO_ENABLE
++			| WC_1_STOPBITS
++			| WC_8BIT_WORD
++			| WC_BAUD_DR2;
++
++	/* As we use thread to handle tx/rx, need set low latency */
++	port->state->port.tty->low_latency = 1;
++
++	if (use_irq) {
++		ret = request_irq(max->irq, serial_m3110_irq,
++					IRQ_TYPE_EDGE_FALLING, "max3110", max);
++		if (ret)
++			return ret;
++
++		/* Enable RX IRQ only */
++		config |= WC_RXA_IRQ_ENABLE;
++	} else {
++		/* If IRQ is disabled, start a read thread for input data */
++		max->read_thread =
++			kthread_run(max3110_read_thread, max, "max3110_read");
++		if (IS_ERR(max->read_thread)) {
++			ret = PTR_ERR(max->read_thread);
++			max->read_thread = 0;
++			pr_err(PR_FMT "Can't create read thread!");
++			return ret;
++		}
++	}
++
++	ret = max3110_out(max, config);
++	if (ret) {
++		if (use_irq)
++			free_irq(max->irq, max);
++		else
++			kthread_stop(max->read_thread);
++
++		return ret;
++	}
++
++	max->cur_conf = config;
++	return 0;
++}
++
++static void serial_m3110_shutdown(struct uart_port *port)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	u16 config;
++
++	if (max->read_thread) {
++		kthread_stop(max->read_thread);
++		max->read_thread = NULL;
++	}
++
++	if (use_irq)
++		free_irq(max->irq, max);
++
++	/* Disable interrupts from this port */
++	config = WC_TAG | WC_SW_SHDI;
++	max3110_out(max, config);
++}
++
++static void serial_m3110_release_port(struct uart_port *port)
++{
++}
++
++static int serial_m3110_request_port(struct uart_port *port)
++{
++	return 0;
++}
++
++static void serial_m3110_config_port(struct uart_port *port, int flags)
++{
++	port->type = PORT_MAX3110;
++}
++
++static int
++serial_m3110_verify_port(struct uart_port *port, struct serial_struct *ser)
++{
++	/* We don't want the core code to modify any port params */
++	return -EINVAL;
++}
++
++
++static const char *serial_m3110_type(struct uart_port *port)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	return max->name;
++}
++
++static void
++serial_m3110_set_termios(struct uart_port *port, struct ktermios *termios,
++		       struct ktermios *old)
++{
++	struct uart_max3110 *max =
++		container_of(port, struct uart_max3110, port);
++	unsigned char cval;
++	unsigned int baud, parity = 0;
++	int clk_div = -1;
++	u16 new_conf = max->cur_conf;
++
++	switch (termios->c_cflag & CSIZE) {
++	case CS7:
++		cval = UART_LCR_WLEN7;
++		new_conf |= WC_7BIT_WORD;
++		break;
++	default:
++		/* We only support CS7 & CS8 */
++		termios->c_cflag &= ~CSIZE;
++		termios->c_cflag |= CS8;
++	case CS8:
++		cval = UART_LCR_WLEN8;
++		new_conf |= WC_8BIT_WORD;
++		break;
++	}
++
++	baud = uart_get_baud_rate(port, termios, old, 0, 230400);
++
++	/* First calc the div for 1.8MHZ clock case */
++	switch (baud) {
++	case 300:
++		clk_div = WC_BAUD_DR384;
++		break;
++	case 600:
++		clk_div = WC_BAUD_DR192;
++		break;
++	case 1200:
++		clk_div = WC_BAUD_DR96;
++		break;
++	case 2400:
++		clk_div = WC_BAUD_DR48;
++		break;
++	case 4800:
++		clk_div = WC_BAUD_DR24;
++		break;
++	case 9600:
++		clk_div = WC_BAUD_DR12;
++		break;
++	case 19200:
++		clk_div = WC_BAUD_DR6;
++		break;
++	case 38400:
++		clk_div = WC_BAUD_DR3;
++		break;
++	case 57600:
++		clk_div = WC_BAUD_DR2;
++		break;
++	case 115200:
++		clk_div = WC_BAUD_DR1;
++		break;
++	case 230400:
++		if (max->clock & MAX3110_HIGH_CLK)
++			break;
++	default:
++		/* Pick the previous baud rate */
++		baud = max->baud;
++		clk_div = max->cur_conf & WC_BAUD_DIV_MASK;
++		tty_termios_encode_baud_rate(termios, baud, baud);
++	}
++
++	if (max->clock & MAX3110_HIGH_CLK) {
++		clk_div += 1;
++		/* High clk version max3110 doesn't support B300 */
++		if (baud == 300)
++			baud = 600;
++		if (baud == 230400)
++			clk_div = WC_BAUD_DR1;
++		tty_termios_encode_baud_rate(termios, baud, baud);
++	}
++
++	new_conf = (new_conf & ~WC_BAUD_DIV_MASK) | clk_div;
++
++	if (unlikely(termios->c_cflag & CMSPAR))
++		termios->c_cflag &= ~CMSPAR;
++
++	if (termios->c_cflag & CSTOPB)
++		new_conf |= WC_2_STOPBITS;
++	else
++		new_conf &= ~WC_2_STOPBITS;
++
++	if (termios->c_cflag & PARENB) {
++		new_conf |= WC_PARITY_ENABLE;
++		parity |= UART_LCR_PARITY;
++	} else
++		new_conf &= ~WC_PARITY_ENABLE;
++
++	if (!(termios->c_cflag & PARODD))
++		parity |= UART_LCR_EPAR;
++	max->parity = parity;
++
++	uart_update_timeout(port, termios->c_cflag, baud);
++
++	new_conf |= WC_TAG;
++	if (new_conf != max->cur_conf) {
++		if (!max3110_out(max, new_conf)) {
++			max->cur_conf = new_conf;
++			max->baud = baud;
++		}
++	}
++}
++
++/* Don't handle hw handshaking */
++static unsigned int serial_m3110_get_mctrl(struct uart_port *port)
++{
++	return TIOCM_DSR | TIOCM_CAR | TIOCM_DSR;
++}
++
++static void serial_m3110_set_mctrl(struct uart_port *port, unsigned int mctrl)
++{
++}
++
++static void serial_m3110_break_ctl(struct uart_port *port, int break_state)
++{
++}
++
++static void serial_m3110_pm(struct uart_port *port, unsigned int state,
++			unsigned int oldstate)
++{
++}
++
++static void serial_m3110_enable_ms(struct uart_port *port)
++{
++}
++
++struct uart_ops serial_m3110_ops = {
++	.tx_empty	= serial_m3110_tx_empty,
++	.set_mctrl	= serial_m3110_set_mctrl,
++	.get_mctrl	= serial_m3110_get_mctrl,
++	.stop_tx	= serial_m3110_stop_tx,
++	.start_tx	= serial_m3110_start_tx,
++	.stop_rx	= serial_m3110_stop_rx,
++	.enable_ms	= serial_m3110_enable_ms,
++	.break_ctl	= serial_m3110_break_ctl,
++	.startup	= serial_m3110_startup,
++	.shutdown	= serial_m3110_shutdown,
++	.set_termios	= serial_m3110_set_termios,
++	.pm		= serial_m3110_pm,
++	.type		= serial_m3110_type,
++	.release_port	= serial_m3110_release_port,
++	.request_port	= serial_m3110_request_port,
++	.config_port	= serial_m3110_config_port,
++	.verify_port	= serial_m3110_verify_port,
++};
++
++static struct uart_driver serial_m3110_reg = {
++	.owner		= THIS_MODULE,
++	.driver_name	= "Maxim 3110",
++	.dev_name	= "ttyS",
++	.major		= TTY_MAJOR,
++	.minor		= 64,
++	.nr		= 1,
++	.cons		= MRST_CONSOLE,
++};
++
++#ifdef CONFIG_PM
++static int serial_m3110_suspend(struct spi_device *spi, pm_message_t state)
++{
++	disable_irq(pmax->irq);
++	uart_suspend_port(&serial_m3110_reg, &pmax->port);
++	max3110_out(pmax, pmax->cur_conf | WC_SW_SHDI);
++	return 0;
++}
++
++static int serial_m3110_resume(struct spi_device *spi)
++{
++	max3110_out(pmax, pmax->cur_conf);
++	uart_resume_port(&serial_m3110_reg, &pmax->port);
++	enable_irq(pmax->irq);
++	return 0;
++}
++#else
++#define serial_m3110_suspend	NULL
++#define serial_m3110_resume	NULL
++#endif
++
++#ifdef CONFIG_MAX3110_DESIGNWARE
++static struct dw_spi_chip spi_uart = {
++	.poll_mode = 1,
++	.enable_dma = 0,
++	.type = SPI_FRF_SPI,
++};
++#endif
++
++static int __devinit serial_m3110_probe(struct spi_device *spi)
++{
++	struct uart_max3110 *max;
++	int ret;
++	void *buffer;
++
++	max = kzalloc(sizeof(*max), GFP_KERNEL);
++	if (!max)
++		return -ENOMEM;
++
++	/* set spi info */
++	spi->mode = SPI_MODE_0;
++	spi->bits_per_word = 16;
++#ifdef CONFIG_MAX3110_DESIGNWARE
++	spi->controller_data = &spi_uart;
++#endif
++	spi_setup(spi);
++
++	max->clock = MAX3110_HIGH_CLK;
++	max->port.type = PORT_MAX3110;
++	max->port.fifosize = 2;		/* only have 16b buffer */
++	max->port.ops = &serial_m3110_ops;
++	max->port.line = 0;
++	max->port.dev = &spi->dev;
++	max->port.uartclk = 115200;
++
++	max->spi = spi;
++	max->name = spi->modalias;	/* use spi name as the name */
++	max->irq = (u16)spi->irq;
++	spin_lock_init(&max->lock);
++
++	max->word_7bits = 0;
++	max->parity = 0;
++	max->baud = 0;
++
++	max->cur_conf = 0;
++	max->flags = 0;
++
++	buffer = (void *)__get_free_page(GFP_KERNEL);
++	if (!buffer) {
++		ret = -ENOMEM;
++		goto err_get_page;
++	}
++	max->con_xmit.buf = buffer;
++	max->con_xmit.head = max->con_xmit.tail = 0;
++
++	max->main_thread = kthread_run(max3110_main_thread,
++					max, "max3110_main");
++	if (IS_ERR(max->main_thread)) {
++		ret = PTR_ERR(max->main_thread);
++		goto err_kthread;
++	}
++
++	pmax = max;
++	/* Give membase a psudo value to pass serial_core's check */
++	max->port.membase = buffer;
++	uart_add_one_port(&serial_m3110_reg, &max->port);
++
++	return 0;
++
++err_kthread:
++	free_page((unsigned long)buffer);
++err_get_page:
++	pmax = NULL;
++	kfree(max);
++	return ret;
++}
++
++static int __devexit max3110_remove(struct spi_device *dev)
++{
++	struct uart_max3110 *max = pmax;
++
++	if (!pmax)
++		return 0;
++
++	pmax = NULL;
++	uart_remove_one_port(&serial_m3110_reg, &max->port);
++
++	free_page((unsigned long)max->con_xmit.buf);
++
++	if (max->main_thread)
++		kthread_stop(max->main_thread);
++
++	kfree(max);
++	return 0;
++}
++
++static struct spi_driver uart_max3110_driver = {
++	.driver = {
++			.name	= "spi_max3111",
++			.bus	= &spi_bus_type,
++			.owner	= THIS_MODULE,
++	},
++	.probe		= serial_m3110_probe,
++	.remove		= __devexit_p(max3110_remove),
++	.suspend	= serial_m3110_suspend,
++	.resume		= serial_m3110_resume,
++};
++
++static int __init serial_m3110_init(void)
++{
++	int ret = 0;
++
++	ret = uart_register_driver(&serial_m3110_reg);
++	if (ret)
++		return ret;
++
++	ret = spi_register_driver(&uart_max3110_driver);
++	if (ret)
++		uart_unregister_driver(&serial_m3110_reg);
++
++	return ret;
++}
++
++static void __exit serial_m3110_exit(void)
++{
++	spi_unregister_driver(&uart_max3110_driver);
++	uart_unregister_driver(&serial_m3110_reg);
++}
++
++module_init(serial_m3110_init);
++module_exit(serial_m3110_exit);
++
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("max3110-uart");
++MODULE_AUTHOR("Feng Tang <feng.tang@intel.com>");
+diff --git a/drivers/serial/max3110.h b/drivers/serial/max3110.h
+new file mode 100644
+index 0000000..e5a2882
+--- /dev/null
++++ b/drivers/serial/max3110.h
+@@ -0,0 +1,60 @@
++#ifndef _MAX3110_HEAD_FILE_
++#define _MAX3110_HEAD_FILE_
++
++#define MAX3110_HIGH_CLK	0x1	/* 3.6864 MHZ */
++#define MAX3110_LOW_CLK		0x0	/* 1.8432 MHZ */
++
++/* status bits for all 4 MAX3110 operate modes */
++#define MAX3110_READ_DATA_AVAILABLE	(1 << 15)
++#define MAX3110_WRITE_BUF_EMPTY		(1 << 14)
++
++#define WC_TAG			(3 << 14)
++#define RC_TAG			(1 << 14)
++#define WD_TAG			(2 << 14)
++#define RD_TAG			(0 << 14)
++
++/* bits def for write configuration */
++#define WC_FIFO_ENABLE_MASK	(1 << 13)
++#define WC_FIFO_ENABLE		(0 << 13)
++
++#define WC_SW_SHDI		(1 << 12)
++
++#define WC_IRQ_MASK		(0xF << 8)
++#define WC_TXE_IRQ_ENABLE	(1 << 11)	/* TX empty irq */
++#define WC_RXA_IRQ_ENABLE	(1 << 10)	/* RX availabe irq */
++#define WC_PAR_HIGH_IRQ_ENABLE	(1 << 9)
++#define WC_REC_ACT_IRQ_ENABLE	(1 << 8)
++
++#define WC_IRDA_ENABLE		(1 << 7)
++
++#define WC_STOPBITS_MASK	(1 << 6)
++#define WC_2_STOPBITS		(1 << 6)
++#define WC_1_STOPBITS		(0 << 6)
++
++#define WC_PARITY_ENABLE_MASK	(1 << 5)
++#define WC_PARITY_ENABLE	(1 << 5)
++
++#define WC_WORDLEN_MASK		(1 << 4)
++#define WC_7BIT_WORD		(1 << 4)
++#define WC_8BIT_WORD		(0 << 4)
++
++#define WC_BAUD_DIV_MASK	(0xF)
++#define WC_BAUD_DR1		(0x0)
++#define WC_BAUD_DR2		(0x1)
++#define WC_BAUD_DR4		(0x2)
++#define WC_BAUD_DR8		(0x3)
++#define WC_BAUD_DR16		(0x4)
++#define WC_BAUD_DR32		(0x5)
++#define WC_BAUD_DR64		(0x6)
++#define WC_BAUD_DR128		(0x7)
++#define WC_BAUD_DR3		(0x8)
++#define WC_BAUD_DR6		(0x9)
++#define WC_BAUD_DR12		(0xA)
++#define WC_BAUD_DR24		(0xB)
++#define WC_BAUD_DR48		(0xC)
++#define WC_BAUD_DR96		(0xD)
++#define WC_BAUD_DR192		(0xE)
++#define WC_BAUD_DR384		(0xF)
++
++#define M3110_RX_FIFO_DEPTH	8
++#endif
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index 8c3dd36..119ba73 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -182,6 +182,9 @@
+ /* Aeroflex Gaisler GRLIB APBUART */
+ #define PORT_APBUART    90
+ 
++/* Maxim M3110 */
++#define PORT_MAX3110	91
++
+ #ifdef __KERNEL__
+ 
+ #include <linux/compiler.h>
+-- 
+1.6.3.3

@@ -1,10 +1,9 @@
-From: "Elisa Laurent" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: 70 business porteurs recherchent des
-	entrepreneurs
-Date: Wed, 24 Feb 2010 01:32:09 +0100 (CET)
-Message-ID: <kyblhl.qcf55f@front.ta271.com>
+From: Postmaster-/cwUa6eCs99gyP1fQBLAoA@public.gmane.org
+Subject: Undeliverable mail
+Date: Wed, 24 Feb 2010 12:36:26 +0900
+Message-ID: <iss.47ba8326.21c3.4b849eba.b94.93@kuichi.jp.nec.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8521003388313103136=="
+Content-Type: multipart/mixed; boundary="===============4594990608026382725=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,93 +16,78 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============8521003388313103136==
-Content-Type: multipart/alternative;
-	boundary="=_505a69b98b96ccdf0c176e53113cc286"
+--===============4594990608026382725==
+Content-Type: multipart/report; report-type=delivery-status;
+	boundary="=_mh.ndn.21c3.4b849eba_="
 
---=_505a69b98b96ccdf0c176e53113cc286
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+--=_mh.ndn.21c3.4b849eba_=
+Content-Type: text/plain; charset=us-ascii
 
+Your message was not delivered to the following recipients:
 
---=_505a69b98b96ccdf0c176e53113cc286
+     spi-faq-txSTLQF8SSQjyN/gNBvGhkEOCMrvLtNR@public.gmane.org: User unknown
+
+--=_mh.ndn.21c3.4b849eba_=
+Content-Type: message/delivery-status
+Content-Transfer-Encoding: 7bit
+
+Reporting-MTA: dns;kuichi.jp.nec.com
+
+Final-Recipient: rfc822;spi-faq-txSTLQF8SSQjyN/gNBvGhkEOCMrvLtNR@public.gmane.org
+Action: failed
+Status: 5.1.1
+
+--=_mh.ndn.21c3.4b849eba_=
+Content-Type: message/rfc822
+
+Received: from mailgate3.nec.co.jp ([10.7.68.195] [10.7.68.195]) by
+	mta.jp.nec.com with ESMTP; Wed, 24 Feb 2010 12:36:25 +0900
+Received: (from root@localhost) by mailgate3.nec.co.jp
+	(8.11.7/3.7W-MAILGATE-NEC)
+	id o1O3aPq13581 for spi-faq-txSTLQF8SSQjyN/gNBvGhkEOCMrvLtNR@public.gmane.org;
+	Wed, 24 Feb 2010 12:36:25 +0900 (JST)
+Received: from TYO196.gate.nec.co.jp (tyo196.gate.nec.co.jp [202.32.8.196])
+	by tyo204.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id o1O3aPnP019814
+	for <spi-faq-txSTLQF8SSQjyN/gNBvGhkEOCMrvLtNR@public.gmane.org>; Wed, 24 Feb 2010 12:36:25 +0900 (JST)
+Message-Id: <201002240336.o1O3aPnP019814-Zc4akCC9QtWnIKrhWXyTU0v2NXO6HgA6@public.gmane.org>
+X-SBRS-Score: -1.8
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: AlH/APcshEtfvOcKUmdsb2JhbAAQE4E6JGeHLpB8ASRDnR2VYQ
+Subject: ##spam## For spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org Discount #41913 
+X-spam-filter-result: spam
+Received: from unknown (HELO company-61fedb6) ([95.188.231.10])
+	by TYO196.gate.nec.co.jp with SMTP; 24 Feb 2010 12:36:23 +0900
+From: VIAGRA ® Official Site <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: "spi-faq" <spi-faq-txSTLQF8SSQjyN/gNBvGhkEOCMrvLtNR@public.gmane.org>
+Reply-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Date: Wed, 24 Feb 2010 03:36:25 -0480
+MIME-Version: 1.0
 Content-Type: text/html; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-<html>=0D<head>=0D</head>=0D<body topmargin=3D"0" leftmargin=3D"0" bgcolor=
-=3D"#ffffff" link=3D"#bc5254" vlink=3D"#c87c7c" marginwidth=3D"0" marginhei=
-ght=3D"0"><center><font color=3D"#666666" face=3D"Verdana, Arial, Helvetica=
-, sans-serif" size=3D"3"><a href=3D"http://front.ta271.com/php/emailing/vie=
-w_mail.php?CODE=3D50GMBN3E_1199994&HASH=3De04a449cbb310a540a4acde3c023c606"=
->Si ce message n'est pas lisible, rendez-vous ici</a> </font><br />=0D<tabl=
-e width=3D"600" height=3D"1000" border=3D"0" cellspacing=3D"0" cellpadding=
-=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"600" height=3D"105"><a href=3D"http=
-://baseco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&=
-L=3D328107&C=3D11832&P=3D20031&T=3DE&W=3D1&CREA=3D172764&URL"><img width=3D=
-"600" height=3D"105" alt=3D"Les echos de la Franchise.com" src=3D"http://pa=
-ris.salondesentrepreneurs.com/lesechosdelafranchise/emailing/20091123/image=
-s/emailing_01.gif" border=3D"0" complete=3D"true" complete=3D"true" /></a><=
-/td>=0D</tr>=0D<tr>=0D<td width=3D"600" height=3D"155">=0D<table width=3D"6=
-00" height=3D"155" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">=0D<tbo=
-dy>=0D<tr>=0D<td width=3D"600" height=3D"26" colspan=3D"2"><img width=3D"60=
-0" height=3D"26" src=3D"http://paris.salondesentrepreneurs.com/lesechosdela=
-franchise/emailing/20091123/images/bloc_01.jpg" complete=3D"true" complete=
-=3D"true" /></td>=0D</tr>=0D<tr>=0D<td width=3D"424" height=3D"129" align=
-=3D"center"><font color=3D"#cb0000" face=3D"Century gothic" size=3D"7"><str=
-ong>70</strong></font><br /><font color=3D"#111111" face=3D"Arial" size=3D"=
-5">business porteurs recherchent<br />leur cr=E9ateur d'entreprise</font> <=
-/td>=0D<td width=3D"176" height=3D"129"><img width=3D"176" height=3D"129" s=
-rc=3D"http://paris.salondesentrepreneurs.com/lesechosdelafranchise/emailing=
-/20091123/images/bloc_03.jpg" complete=3D"true" complete=3D"true" /></td>=
-=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr>=0D<tr>=0D<td width=3D"600" h=
-eight=3D"105"><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/perfor=
-mance.fcgi?ID=3D310703&A=3D1&L=3D328107&C=3D11832&P=3D20031&T=3DE&W=3D1&CRE=
-A=3D172764&URL"><img width=3D"600" height=3D"105" alt=3D"Pourquoi pas vous =
-?" src=3D"http://paris.salondesentrepreneurs.com/lesechosdelafranchise/emai=
-ling/20091123/images/emailing_03.jpg" border=3D"0" complete=3D"true" comple=
-te=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td width=3D"600" height=3D"60"><a=
- href=3D"http://baseco.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D=
-310703&A=3D1&L=3D328107&C=3D11832&P=3D20031&T=3DE&W=3D1&CREA=3D172764&URL">=
-<img width=3D"600" height=3D"60" alt=3D"Cliquez ici" src=3D"http://paris.sa=
-londesentrepreneurs.com/lesechosdelafranchise/emailing/20091123/images/emai=
-ling_04.jpg" border=3D"0" complete=3D"true" complete=3D"true" /></a></td>=
-=0D</tr>=0D<tr>=0D<td width=3D"600" height=3D"376"><a href=3D"http://baseco=
-.solution.weborama.fr/fcgi-bin/performance.fcgi?ID=3D310703&A=3D1&L=3D32810=
-7&C=3D11832&P=3D20031&T=3DE&W=3D1&CREA=3D172764&URL"><img width=3D"600" hei=
-ght=3D"376" src=3D"http://paris.salondesentrepreneurs.com/lesechosdelafranc=
-hise/emailing/20091123/images/emailing_05.jpg" border=3D"0" complete=3D"tru=
-e" complete=3D"true" /></a></td>=0D</tr>=0D<tr>=0D<td width=3D"600" height=
-=3D"199">=0D<table width=3D"600" height=3D"199" border=3D"0" cellspacing=3D=
-"0" cellpadding=3D"0">=0D<tbody>=0D<tr>=0D<td width=3D"93" height=3D"199" r=
-owspan=3D"2"><img width=3D"93" height=3D"199" src=3D"http://paris.salondese=
-ntrepreneurs.com/lesechosdelafranchise/emailing/20091123/images/footer_01.j=
-pg" complete=3D"true" complete=3D"true" /></td>=0D<td width=3D"488" height=
-=3D"74" align=3D"center" bgcolor=3D"#f9fcff"><font color=3D"#111111" face=
-=3D"Arial" size=3D"5">le plus court chemin vers<br />la cr=E9ation d'entrep=
-rise passe par</font></td>=0D<td width=3D"19" height=3D"199" rowspan=3D"2">=
-<img width=3D"19" height=3D"199" src=3D"http://paris.salondesentrepreneurs.=
-com/lesechosdelafranchise/emailing/20091123/images/footer_03.jpg" complete=
-=3D"true" complete=3D"true" /></td>=0D</tr>=0D<tr>=0D<td width=3D"488" heig=
-ht=3D"125"><a href=3D"http://baseco.solution.weborama.fr/fcgi-bin/performan=
-ce.fcgi?ID=3D310703&A=3D1&L=3D328107&C=3D11832&P=3D20031&T=3DE&W=3D1&CREA=
-=3D172764&URL"><img width=3D"488" height=3D"125" alt=3D"les Echos de la Fra=
-nchise.com" src=3D"http://paris.salondesentrepreneurs.com/lesechosdelafranc=
-hise/emailing/20091123/images/footer_04.gif" border=3D"0" complete=3D"true"=
- complete=3D"true" /></a></td>=0D</tr>=0D</tbody>=0D</table>=0D</td>=0D</tr=
->=0D</tbody>=0D</table><br /><br /><font color=3D"#666666" face=3D"Arial, H=
-elvetica, sans-serif" size=3D"1">Conform=E9ment =E0 la loi Informatique et =
-Libert=E9s, vous disposez d'un droit d'acc=E8s et de rectification. <br />S=
-i vous voulez vous d=E9sinscrire, cliquez <a href=3D"http://front.ta271.com=
-/AA50GMBN3E_1199994/877">ici</a></font> </center><img width=3D"1" height=3D=
-"1" src=3D"http://baseco.solution.weborama.fr/fcgi-bin/adserv.fcgi?tag=3D32=
-8107&f=3D10&h=3DR&rnd=3D[RANDOM]" border=3D"0" complete=3D"true" complete=
-=3D"true" /> <img src=3D"http://front.ta271.com/ZZ50GMBN3E_1199994.png" /><=
-/body></html>
---=_505a69b98b96ccdf0c176e53113cc286--
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+      </head>
+   <body>
+
+<table border="0" cellpadding="0" cellspacing="0" style="width: 896px">
+<tr><td align="center" style="font: normal 11px Verdana, sans-serif; color: #333;"><a href="http://qru.dihasedap.cn" style="text-decoration: none; color: #0099ff;">Click here</a> to view as a web page. </td></tr>
+<tr><td align="center">
+<br />
+<a href="http://gup.dihasedap.cn"><img alt="View image in browser now" src="http://xgg.dihasedap.cn/1.gif" style="border-width: 0px" /></a></td></tr>
+</table>
+</body>
+</html>
 
 
 
---===============8521003388313103136==
+--=_mh.ndn.21c3.4b849eba_=--
+
+
+--===============4594990608026382725==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -115,7 +99,7 @@ Try the new software tools for yourself. Speed compiling, find bugs
 proactively, and fine-tune applications for parallel performance.
 See why Intel Parallel Studio got high marks during beta.
 http://p.sf.net/sfu/intel-sw-dev
---===============8521003388313103136==
+--===============4594990608026382725==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -126,4 +110,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============8521003388313103136==--
+--===============4594990608026382725==--

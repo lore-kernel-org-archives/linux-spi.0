@@ -1,149 +1,141 @@
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [RFC][PATCH v3] serial: spi: add spi-uart driver for Maxim 3110
-Date: Wed, 24 Feb 2010 15:18:32 -0800
-Message-ID: <20100224151832.42c699f2.akpm@linux-foundation.org>
-References: <20091229222006.1ddb28a4@feng-desktop>
-	<20100208165946.0e4dde83@feng-i7>
-	<20100208162010.b1f69728.akpm@linux-foundation.org>
-	<fa686aa41002081626i24caff52n15f140d0fffadedd@mail.gmail.com>
-	<20100209093644.2dead2d9@feng-i7>
-	<20100217225817.GD31557@kroah.com>
-	<20100224131130.61530b62@feng-i7>
+From: "=?koi8-r?B?8NLFzdjF0iDH0tXQ0A==?=" <goxumuhojygo-BoNl9JPmOHUAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Персонифицированные данные в Пенсионный фонд
+Date: Thu, 25 Feb 2010 05:39:14 +0300
+Message-ID: <1587992863.20100225053914@inbox.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Greg KH <greg@kroah.com>, Grant Likely <grant.likely@secretlab.ca>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	"David Brownell" <dbrownell@users.sourceforge.net>,
-	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>
-To: Feng Tang <feng.tang@intel.com>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <20100224131130.61530b62@feng-i7>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============4853099913459274665=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 24 Feb 2010 13:11:30 +0800 Feng Tang <feng.tang@intel.com> wrote:
+This is a multi-part message in MIME format.
 
-> Hi All,
-> 
-> Here is a driver for Maxim 3110 SPI-UART device, please help to review.
-> 
-> It has been validated with Designware SPI controller (drivers/spi: dw_spi.c &
-> dw_spi_pci.c). It supports polling and IRQ mode, supports batch read, and
-> provides a console.
-> 
-> change log:
->  since v2:
-> 	* Address comments from Andrew Morton
-> 	* Use test/set_bit to avoid race condition for SMP/preempt case
-> 	* Fix bug related with endian order
-> 
->  since v1:
->         * Address comments from Alan Cox
->         * Use a "use_irq" module parameter to runtime check whether
->           to use IRQ mode
->         * Add the suspend/resume implementation
-> 
-> Thanks!
-> Feng
-> 
-> >From 93455ea6fbf0bfb6494b88ea83296f26f29f7eee Mon Sep 17 00:00:00 2001
-> From: Feng Tang <feng.tang@intel.com>
-> Date: Tue, 23 Feb 2010 17:52:00 +0800
-> Subject: [PATCH] serial: spi: add spi-uart driver for Maxim 3110
-> 
-> This is the driver for Max3110 SPI-UART device, which connect
-> to host with SPI interface. It supports baud rates from 300 to
-> 230400, and supports both polling and IRQ mode, as well as
-> providing a console for system use
-> 
-> Its datasheet could be found here:
-> http://datasheets.maxim-ic.com/en/ds/MAX3110E-MAX3111E.pdf
-> 
-> ...
->
-> +static int max3110_main_thread(void *_max)
-> +{
-> +	struct uart_max3110 *max = _max;
-> +	wait_queue_head_t *wq = &max->wq;
-> +	int ret = 0;
-> +	struct circ_buf *xmit = &max->con_xmit;
-> +
-> +	init_waitqueue_head(wq);
-> +	pr_info(PR_FMT "start main thread\n");
-> +
-> +	do {
-> +		wait_event_interruptible(*wq,
-> +				max->flags || kthread_should_stop());
-> +		set_bit(0, &max->mthread_up);
-> +
-> +		if (use_irq && test_bit(M3110_IRQ_PENDING, &max->flags)) {
-> +			max3110_con_receive(max);
-> +			clear_bit(M3110_IRQ_PENDING, &max->flags);
-> +		}
-> +
-> +		/* First handle console output */
-> +		if (test_bit(M3110_CON_TX_NEED, &max->flags)) {
-> +			send_circ_buf(max, xmit);
-> +			clear_bit(M3110_CON_TX_NEED, &max->flags);
-> +		}
-> +
-> +		/* Handle uart output */
-> +		if (test_bit(M3110_UART_TX_NEED, &max->flags)) {
-> +			transmit_char(max);
-> +			clear_bit(M3110_UART_TX_NEED, &max->flags);
-> +		}
-> +		clear_bit(0, &max->mthread_up);
-> +	} while (!kthread_should_stop());
-> +
-> +	return ret;
-> +}
-> +
-> +static irqreturn_t serial_m3110_irq(int irq, void *dev_id)
-> +{
-> +	struct uart_max3110 *max = dev_id;
-> +
-> +	/* max3110's irq is a falling edge, not level triggered,
-> +	 * so no need to disable the irq */
-> +	set_bit(M3110_IRQ_PENDING, &max->flags);
-> +
-> +	if (!test_bit(0, &max->mthread_up))
-> +		wake_up_process(max->main_thread);
-> +
-> +	return IRQ_HANDLED;
-> +}
+--===============4853099913459274665==
+Content-Type: multipart/alternative;
+	boundary="----------6UK3W7UFZTJ0QO9R"
 
-The manipulation of mthread_up here (and in several other places) is
-clearly quite racy.  If you hit that race, the thread will not wake up
-and the driver will sit there not doing anything until some other event
-happens.
+This is a multi-part message in MIME format.
 
-This is perhaps fixable with test_and_set_bit() and
-test_and_clear_bit() (need to think about that) or, of course, by
-adding locking.
+------------6UK3W7UFZTJ0QO9R
+Content-Type: text/plain;
+	charset=koi8-r
+Content-Transfer-Encoding: quoted-printable
 
-But a simpler fix is just to delete mthread_up altogether.  wake_up_process()
-on a running process is an OK thing to do and hopefully isn't terribly slow.
+      =F7=E1=FB=E1 =F0=E5=EE=F3=E9=F1!=20
+      =FC=D4=CF =
+=D0=C5=D2=D3=CF=CE=C9=C6=C9=C3=C9=D2=CF=D7=C1=CE=CE=D9=C5 =
+=C4=C1=CE=CE=D9=C5 =D0=D2=C5=C4=D3=D4=C1=D7=CC=C5=CE=CE=D9=C5 =D7 =
+=F0=C5=CE=D3=C9=CF=CE=CE=D9=CA =E6=CF=CE=C4!=20
+      =F7=C1=DB=C5 =D0=D2=C1=D7=CF =D0=CF=D4=D2=C5=C2=CF=D7=C1=D4=D8 =D5 =
+=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=D1 =CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9 =
+=D0=D2=C5=C4=CF=D3=D4=C1=D7=C9=D4=D8=20
+      =D4=C1=CB=D5=C0 =C9=CE=C6=CF=D2=CD=C1=C3=C9=C0 =D7 =
+=F0=C5=CE=D3=C9=CF=CE=CE=D9=CA =C6=CF=CE=C4 =C4=CF 01 =CD=C1=D2=D4=C1 =
+2010 =C7=CF=C4=C1!
+      =EF=D4 1 =C4=CF 20 =D3=CF=D4=D2=D5=C4=CE=C9=CB=CF=D7 - 2500 =
+=D2=D5=C2=CC=C5=CA,
+      =F3=D7=D9=DB=C5 20 -150 =D2=D5=C2=CC=C5=CA =DA=C1 =
+=CB=C1=D6=C4=CF=C7=CF =D3=CF=D4=D2=D5=C4=CE=C9=CB=C1.
+      =F3=E4=E1=E5=ED =E7=EF=E4=EF=F7=F5=E0 =
+=E2=F5=E8=EF=F4=FE=E5=F4=EE=EF=F3=F4=F8!!!
+      =F3=E4=E1=FE=E1 =E2=E5=F3=F0=EC=E1=F4=EE=E1! =D4=C5=CC: 765 34 02
+      =D0=D2=C9 =DA=C1=CB=CC=C0=DE=C5=CE=CE=CF=CD =
+=C4=CF=C7=CF=D7=CF=D2=C5 =CF =C2=D5=C8=C7=C1=CC=D4=C5=D2=D3=CB=CF=CD=20
+      =CF=C2=D3=CC=D5=D6=C9=D7=C1=CE=C9=C9 =CE=C1 2010 =C7=CF=C4!
+      e-mail: sdaemotchet-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+    =20
 
-> +/* If don't use RX IRQ, then need a thread to polling read */
-> +static int max3110_read_thread(void *_max)
-> +{
-> +	struct uart_max3110 *max = _max;
-> +
-> +	pr_info(PR_FMT "start read thread\n");
-> +	do {
-> +		if (!test_bit(0, &max->mthread_up))
-> +			max3110_con_receive(max);
-> +
-> +		set_current_state(TASK_INTERRUPTIBLE);
-> +		schedule_timeout_interruptible(HZ / 20);
 
-The set_current_state(TASK_INTERRUPTIBLE) is unneeded.
 
-> +	} while (!kthread_should_stop());
-> +
-> +	return 0;
-> +}
+------------6UK3W7UFZTJ0QO9R
+Content-Type: text/html;
+	charset=koi8-r
+Content-Transfer-Encoding: quoted-printable
 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3Dkoi8-r">
+<META content=3D"MSHTML 6.00.2900.5512" name=3DGENERATOR>
+<STYLE>imailpost</STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV>
+<DIV align=3Dcenter>
+<TABLE id=3Dtable1 border=3D0>
+  <TBODY>
+  <TR>
+    <TD>
+      <P align=3Dleft><FONT face=3DTahoma><FONT style=3D"FONT-SIZE: =
+28pt"=20
+      color=3D#df0000>=F7=E1=FB=E1 =F0=E5=EE=F3=E9=F1! </FONT><FONT =
+color=3D#000080><BR><B>=FC=D4=CF=20
+      =D0=C5=D2=D3=CF=CE=C9=C6=C9=C3=C9=D2=CF=D7=C1=CE=CE=D9=C5 =
+=C4=C1=CE=CE=D9=C5 =D0=D2=C5=C4=D3=D4=C1=D7=CC=C5=CE=CE=D9=C5 =D7 =
+=F0=C5=CE=D3=C9=CF=CE=CE=D9=CA =E6=CF=CE=C4! <BR>=F7=C1=DB=C5=20
+      =D0=D2=C1=D7=CF =D0=CF=D4=D2=C5=C2=CF=D7=C1=D4=D8 =D5 =
+=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=D1 =CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9 =
+=D0=D2=C5=C4=CF=D3=D4=C1=D7=C9=D4=D8 <BR>=D4=C1=CB=D5=C0=20
+      =C9=CE=C6=CF=D2=CD=C1=C3=C9=C0 =D7 =F0=C5=CE=D3=C9=CF=CE=CE=D9=CA =
+=C6=CF=CE=C4 =C4=CF 01 =CD=C1=D2=D4=C1 2010 =
+=C7=CF=C4=C1!</B><BR></FONT><FONT=20
+      color=3D#df0000 size=3D5>=EF=D4 1 =C4=CF 20 =
+=D3=CF=D4=D2=D5=C4=CE=C9=CB=CF=D7 &#8211; 2500 =
+=D2=D5=C2=CC=C5=CA,</FONT><FONT=20
+      color=3D#000080><BR></FONT><FONT color=3D#df0000 =
+size=3D5>=F3=D7=D9=DB=C5 20 -150 =D2=D5=C2=CC=C5=CA=20
+      =DA=C1 =CB=C1=D6=C4=CF=C7=CF =
+=D3=CF=D4=D2=D5=C4=CE=C9=CB=C1.</FONT><FONT =
+color=3D#000080><BR></FONT><FONT=20
+      color=3D#000080 size=3D6>=F3=E4=E1=E5=ED =E7=EF=E4=EF=F7=F5=E0 =
+=E2=F5=E8=EF=F4=FE=E5=F4=EE=EF=F3=F4=F8!!!</FONT><FONT=20
+      color=3D#000080><BR></FONT><FONT color=3D#df0000 =
+size=3D6>=F3=E4=E1=FE=E1 =E2=E5=F3=F0=EC=E1=F4=EE=E1!=20
+      </FONT><FONT color=3D#000080><FONT size=3D5>=D4=C5=CC: =
+</FONT><FONT size=3D6>765 34=20
+      02</FONT><BR><FONT size=3D5>=D0=D2=C9 =
+=DA=C1=CB=CC=C0=DE=C5=CE=CE=CF=CD =C4=CF=C7=CF=D7=CF=D2=C5 =CF =
+=C2=D5=C8=C7=C1=CC=D4=C5=D2=D3=CB=CF=CD=20
+      <BR>=CF=C2=D3=CC=D5=D6=C9=D7=C1=CE=C9=C9 =CE=C1 2010 =
+=C7=CF=C4!</FONT><BR><B><FONT size=3D2>e-mail: <A=20
+      href=3D"mailto:sdaemotchet-/E1597aS9LQAvxtiuMwx3w@public.gmane.org"><FONT=20
+      =
+color=3D#000080>sdaemotchet-/E1597aS9LQAvxtiuMwx3w@public.gmane.org</FONT></A></FONT></B></FONT></FONT>=
+</P></TD></TR></TBODY></TABLE></DIV>
+<P align=3Dleft>&nbsp;</P></DIV></BODY></HTML>
+
+------------6UK3W7UFZTJ0QO9R--
+
+
+
+--===============4853099913459274665==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev
+--===============4853099913459274665==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4853099913459274665==--

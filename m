@@ -1,324 +1,132 @@
-From: "=?koi8-r?B?48XO1CDQz9fZ28XOydEgy9fBzMnGycvBw8nJ?="
-	<matakukyra-AGEZhWnf4Rsox3rIn2DAYQ@public.gmane.org>
-Subject: [SPAM] Секретарское дело.
-Date: Thu, 25 Feb 2010 09:32:03 +0300
-Message-ID: <00c501cab5e4$3e44fd00$693fa8c0@ip10990222170.unitymediagroup.de>
+From: Feng Tang <feng.tang@intel.com>
+Subject: Re: [RFC][PATCH v3] serial: spi: add spi-uart driver for Maxim 3110
+Date: Thu, 25 Feb 2010 14:39:40 +0800
+Message-ID: <20100225143940.40e21ff7@feng-i7>
+References: <20091229222006.1ddb28a4@feng-desktop>
+	<20100208165946.0e4dde83@feng-i7>
+	<20100208162010.b1f69728.akpm@linux-foundation.org>
+	<fa686aa41002081626i24caff52n15f140d0fffadedd@mail.gmail.com>
+	<20100209093644.2dead2d9@feng-i7>
+	<20100217225817.GD31557@kroah.com>
+	<20100224131130.61530b62@feng-i7>
+	<20100224151832.42c699f2.akpm@linux-foundation.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5660303444581587081=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Cc: Greg KH <greg@kroah.com>, Grant Likely <grant.likely@secretlab.ca>,
+	"Greg Kroah-Hartman" <gregkh@suse.de>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>
+To: Andrew Morton <akpm@linux-foundation.org>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <20100224151832.42c699f2.akpm@linux-foundation.org>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+On Thu, 25 Feb 2010 07:18:32 +0800
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
---===============5660303444581587081==
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_00C2_01CAB5FD.01CAB5FD"
+> > ...
+> >
+> > +static int max3110_main_thread(void *_max)
+> > +{
+> > +	struct uart_max3110 *max = _max;
+> > +	wait_queue_head_t *wq = &max->wq;
+> > +	int ret = 0;
+> > +	struct circ_buf *xmit = &max->con_xmit;
+> > +
+> > +	init_waitqueue_head(wq);
+> > +	pr_info(PR_FMT "start main thread\n");
+> > +
+> > +	do {
+> > +		wait_event_interruptible(*wq,
+> > +				max->flags ||
+> > kthread_should_stop());
+> > +		set_bit(0, &max->mthread_up);
+> > +
+> > +		if (use_irq && test_bit(M3110_IRQ_PENDING,
+> > &max->flags)) {
+> > +			max3110_con_receive(max);
+> > +			clear_bit(M3110_IRQ_PENDING, &max->flags);
+> > +		}
+> > +
+> > +		/* First handle console output */
+> > +		if (test_bit(M3110_CON_TX_NEED, &max->flags)) {
+> > +			send_circ_buf(max, xmit);
+> > +			clear_bit(M3110_CON_TX_NEED, &max->flags);
+> > +		}
+> > +
+> > +		/* Handle uart output */
+> > +		if (test_bit(M3110_UART_TX_NEED, &max->flags)) {
+> > +			transmit_char(max);
+> > +			clear_bit(M3110_UART_TX_NEED, &max->flags);
+> > +		}
+> > +		clear_bit(0, &max->mthread_up);
+> > +	} while (!kthread_should_stop());
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static irqreturn_t serial_m3110_irq(int irq, void *dev_id)
+> > +{
+> > +	struct uart_max3110 *max = dev_id;
+> > +
+> > +	/* max3110's irq is a falling edge, not level triggered,
+> > +	 * so no need to disable the irq */
+> > +	set_bit(M3110_IRQ_PENDING, &max->flags);
+> > +
+> > +	if (!test_bit(0, &max->mthread_up))
+> > +		wake_up_process(max->main_thread);
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> 
+> The manipulation of mthread_up here (and in several other places) is
+> clearly quite racy.  If you hit that race, the thread will not wake up
+> and the driver will sit there not doing anything until some other
+> event happens.
+> 
+> This is perhaps fixable with test_and_set_bit() and
+> test_and_clear_bit() (need to think about that) or, of course, by
+> adding locking.
+> 
+> But a simpler fix is just to delete mthread_up altogether.
+> wake_up_process() on a running process is an OK thing to do and
+> hopefully isn't terribly slow.
 
-This is a multi-part message in MIME format.
+Yes, wake_up_process won't harm a running process, our driver's case
+is a little special, the console's write() func may call
+wake_up_process() for every character in the buffer, thus we will
+try to avoid to call it. mthread_up can't be removed as it is also
+referenced in read_thread.
 
-------=_NextPart_000_00C2_01CAB5FD.01CAB5FD
-Content-Type: text/plain;
-	charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+I prefer to use the test_and_set/clear_bit for "mthread_up".
 
- =ED=CF=D3=CB=CF=D7=D3=CB=C9=CA =C3=C5=CE=D4=D2 =
-=D0=CF=D7=D9=DB=C5=CE=C9=C5 =CB=D7=C1=CC=C9=C6=C9=CB=C1=C3=C9=C9 =
-=F3=C5=CB=D2=C5=D4=C1=D2=C5=CA
+Thanks,
+Feng
 
-10 =CD=C1=D2=D4=C1 2010 =C7. =
-=E4=C5=CC=CF=D0=D2=CF=C9=DA=D7=CF=C4=D3=D4=D7=CF - =
-=CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =
-=C4=CF=CB=D5=CD=C5=CE=D4=CF=CF=C2=CF=D2=CF=D4=C1=20
-=D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=D1.
-=E1=D7=D4=CF=D2 =C9 =D7=C5=C4=D5=DD=C9=CA =D3=C5=CD=C9=CE=C1=D2=C1: =
-=E2=CF=C7=C1=D4=CF=D7=C1 =E5.=F3. - =
-=D0=D2=C5=D0=CF=C4=C1=D7=C1=D4=C5=CC=D8 =
-=CD=C5=D6=C4=D5=CE=C1=D2=CF=C4=CE=CF=C7=CF =DC=D4=C9=CB=C5=D4=C1 =
-=ED=CF=D3=CB=CF=D7=D3=CB=CF=C7=CF=20
-=C2=C1=CE=CB=CF=D7=D3=CB=CF=C7=CF =C9=CE=D3=D4=C9=D4=D5=D4=C1 =C9 =
-=ED=CF=D3=CB=CF=D7=D3=CB=CF=CA =C1=CB=C1=C4=C5=CD=C9=C9 =
-=C7=CF=D3=D5=C4=C1=D2=D3=D4=D7=C5=CE=CE=CF=C7=CF =C9 =
-=CD=D5=CE=C9=C3=C9=D0=C1=CC=D8=CE=CF=C7=CF =
-=D5=D0=D2=C1=D7=CC=C5=CE=C9=D1 =F2=E1=E7=F3=20
-=D0=D2=C9 =F0=D2=C5=DA=C9=C4=C5=CE=D4=C5 =F2=E6, =
-=CB=CF=CE=D3=D5=CC=D8=D4=C1=CE=D4 =
-=E7=CF=D3=D5=C4=C1=D2=D3=D4=D7=C5=CE=CE=CF=CA =E4=D5=CD=D9 =F2=E6.
-1. =EE=CF=D2=CD=C1=D4=C9=D7=CE=CF-=D0=D2=C1=D7=CF=D7=D9=C5 =C1=CB=D4=D9 =
-=D0=CF =C4=C5=CC=CF=D0=D2=CF=C9=DA=D7=CF=C4=D3=D4=D7=D5. =
-=EF=D3=CE=CF=D7=CE=D9=C5 =CB=C1=D4=C5=C7=CF=D2=C9=C9 =
-=C4=CF=CB=D5=CD=C5=CE=D4=CF=D7. =F3=CF=DA=C4=C1=CE=C9=C5=20
-=F4=C1=C2=C5=CC=D1 =D5=CE=C9=C6=C9=C3=C9=D2=CF=D7=C1=CE=CE=D9=C8 =
-=C6=CF=D2=CD =C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =
-=D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=D1. =F0=D2=C1=D7=C9=CC=C1 =
-=CF=C6=CF=D2=CD=CC=C5=CE=C9=D1 =C4=CF=CB=D5=CD=C5=CE=D4=CF=D7.=20
-=F7=C9=C4=D9 =C2=CC=C1=CE=CB=CF=D7. =EE=C1=C9=C2=CF=CC=C5=C5 =
-=D2=C1=D3=D0=D2=CF=D3=D4=D2=C1=CE=C5=CE=CE=D9=C5 =
-=D0=CF=C7=D2=C5=DB=CE=CF=D3=D4=C9 =D0=D2=C9 =
-=D2=C1=DA=D2=C1=C2=CF=D4=CB=C5 =C6=C9=D2=CD=C5=CE=CE=D9=C8 =
-=C2=CC=C1=CE=CB=CF=D7=20
-=CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9. =
-=F2=C1=D3=D0=CF=D2=D1=C4=C9=D4=C5=CC=D8=CE=D9=C5 =
-=C4=CF=CB=D5=CD=C5=CE=D4=D9. =F0=D2=C9=DA=CE=C1=CB=C9 =
-=C0=D2=C9=C4=C9=DE=C5=D3=CB=CF=CA =D3=C9=CC=D9 =
-=C4=CF=CB=D5=CD=C5=CE=D4=C1.
-2. =EF=D3=CF=C2=C5=CE=CE=CF=D3=D4=C9 =CF=C6=CF=D2=CD=CC=C5=CE=C9=D1 =C9 =
-=C8=D2=C1=CE=C5=CE=C9=D1 =C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =D0=CF =
-=CC=C9=DE=CE=CF=CD=D5 =D3=CF=D3=D4=C1=D7=D5. =
-=F3=D0=D2=C1=D7=CF=DE=CE=CF-
-=C9=CE=C6=CF=D2=CD=C1=C3=C9=CF=CE=CE=D9=C5 =C4=CF=CB=D5=CD=C5=CE=D4=D9. =
-=E4=C5=CC=CF=D7=CF=C5 =D0=C9=D3=D8=CD=CF. =
-=F2=C5=CB=CF=CD=C5=CE=C4=C1=C3=C9=C9, =CB=CF=D4=CF=D2=D9=CD=C9 =CE=C5 =
-=D3=CC=C5=C4=D5=C5=D4=20
-=D0=D2=C5=CE=C5=C2=D2=C5=C7=C1=D4=D8. =F0=D2=C1=D7=C9=CC=C1 =
-=DA=C1=D7=C5=D2=C5=CE=C9=D1 =CB=CF=D0=C9=CA =
-=C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =D7 =CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9. =
-=F3=CF=D7=C5=D2=DB=C5=CE=D3=D4=D7=CF=D7=C1=CE=C9=C5=20
-=C4=C5=CC=CF=D0=D2=CF=C9=DA=D7=CF=C4=D3=D4=D7=C5=CE=CE=D9=C8 =
-=D0=D2=CF=C3=C5=D3=D3=CF=D7. =EB=CF=CE=D4=D2=CF=CC=D8 =
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=D1. =F3=CF=D3=D4=C1=D7=CC=C5=CE=C9=C5 =
-=CE=CF=CD=C5=CE=CB=CC=C1=D4=D5=D2=D9 =C4=C5=CC.=20
-=E6=CF=D2=CD=C9=D2=CF=D7=C1=CE=C9=C5 =C9 =CF=C6=CF=D2=CD=CC=C5=CE=C9=C5 =
-=C4=C5=CC. =FE=D4=CF =C4=CF=CC=D6=C5=CE =DA=CE=C1=D4=D8 =C9 =
-=D5=CD=C5=D4=D8 =D3=C5=CB=D2=C5=D4=C1=D2=D8 =D0=D2=C9 =
-=D0=CF=C4=C7=CF=D4=CF=D7=CB=C5 =C9=20
-=D0=C5=D2=C5=C4=C1=DE=C5 =C4=C5=CC =CE=C1 =C1=D2=C8=C9=D7=CE=CF=C5 =
-=C8=D2=C1=CE=C5=CE=C9=C5. =F0=D2=C1=CB=D4=C9=DE=C5=D3=CB=C1=D1 =
-=D2=C1=C2=CF=D4=C1 =D3 =C4=CF=CB=D5=CD=C5=CE=D4=C1=CD=C9.
+diff --git a/drivers/serial/max3110.c b/drivers/serial/max3110.c
+index e8c44fa..d5bd71f 100644
+--- a/drivers/serial/max3110.c
++++ b/drivers/serial/max3110.c
+@@ -400,7 +400,7 @@ static int max3110_main_thread(void *_max)
+ 	do {
+ 		wait_event_interruptible(*wq,
+ 				max->flags || kthread_should_stop());
+-		set_bit(0, &max->mthread_up);
++		test_and_set_bit(0, &max->mthread_up);
+ 
+ 		if (use_irq && test_bit(M3110_IRQ_PENDING, &max->flags)) {
+ 			max3110_con_receive(max);
+@@ -418,7 +418,7 @@ static int max3110_main_thread(void *_max)
+ 			transmit_char(max);
+ 			clear_bit(M3110_UART_TX_NEED, &max->flags);
+ 		}
+-		clear_bit(0, &max->mthread_up);
++		test_and_clear_bit(0, &max->mthread_up);
+ 	} while (!kthread_should_stop());
+ 
+ 	return ret;
 
-11 =CD=C1=D2=D4=C1 2010 =C7. =F3=CF=D7=D2=C5=CD=C5=CE=CE=D9=CA =
-=D3=C5=CB=D2=C5=D4=C1=D2=D8, =CF=C6=C9=D3-=CD=C5=CE=C5=C4=D6=C5=D2:=20
-=C6=D5=CE=CB=C3=C9=CF=CE=C1=CC=D8=CE=D9=C5 =
-=CF=C2=D1=DA=C1=CE=CE=CF=D3=D4=C9 =C9 =DC=D4=C9=CB=C5=D4 =
-=D3=CC=D5=D6=C5=C2=CE=D9=C8 =CF=D4=CE=CF=DB=C5=CE=C9=CA
-1. =EB=CF=D2=D0=CF=D2=C1=D4=C9=D7=CE=C1=D1 =CB=D5=CC=D8=D4=D5=D2=C1. =
-=E9=CD=C9=C4=D6 =D3=C5=CB=D2=C5=D4=C1=D2=D1. =
-=ED=C5=D6=C4=D5=CE=C1=D2=CF=C4=CE=D9=CA =D3=D4=C1=CE=C4=C1=D2=D4. =
-=E6=D5=CE=CB=C3=C9=CF=CE=C1=CC=D8=CE=D9=C5=20
-=CF=C2=D1=DA=C1=CE=CE=CF=D3=D4=C9 =D3=C5=CB=D2=C5=D4=C1=D2=D1. =
-=EC=C9=DE=CE=D9=C5 =C9 =D0=D2=CF=C6=C5=D3=D3=C9=CF=CE=C1=CC=D8=CE=D9=C5 =
-=CB=C1=DE=C5=D3=D4=D7=C1. =E4=C5=CC=CF=D7=CF=C5 =CF=C2=DD=C5=CE=C9=C5: =
-=D0=D2=C1=D7=C9=CC=C1=20
-=DC=D4=C9=CB=C5=D4=C1 =D0=D2=C9 =D0=D2=C9=D7=C5=D4=D3=D4=D7=C9=C9 =C9 =
-=D0=D2=C5=C4=D3=D4=C1=D7=CC=C5=CE=C9=C9. =
-=E8=C1=D2=C1=CB=D4=C5=D2=CE=D9=C5 =CF=DB=C9=C2=CB=C9 =D7 =
-=CF=C6=CF=D2=CD=CC=C5=CE=C9=C9 =C9 =
-=C9=D3=D0=CF=CC=D8=DA=CF=D7=C1=CE=C9=C9.
-2. =E6=D5=CE=CB=C3=C9=C9 =D3=C5=CB=D2=C5=D4=C1=D2=D1 =D0=CF =
-=CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9 =D0=D2=C9=C5=CD=C1 =
-=D0=CF=D3=C5=D4=C9=D4=C5=CC=C5=CA. =
-"=F4=D2=C1=C4=C9=C3=C9=CF=CE=CE=D9=C5" =CF=DB=C9=C2=CB=C9 =D0=D2=C9 =
-=D0=D2=C9=C5=CD=C5=20
-=C4=C5=CC=CF=D7=D9=C8 =D0=C1=D2=D4=CE=C5=D2=CF=D7 =C9 =
-=D0=CF=D3=C5=D4=C9=D4=C5=CC=C5=CA. =
-=ED=C5=D6=C4=D5=CE=C1=D2=CF=C4=CE=D9=C5 =D0=D2=C1=D7=C9=CC=C1 =
-=C4=C1=D2=C5=CE=C9=D1 =C9 =D0=D2=C9=CE=D1=D4=C9=D1 =
-=D0=CF=C4=C1=D2=CB=CF=D7 =C9=20
-=D3=D5=D7=C5=CE=C9=D2=CF=D7. =
-=F7=DA=C1=C9=CD=CF=CF=D4=CE=CF=DB=C5=CE=C9=D1 =D3 =
-=D3=CF=D4=D2=D5=C4=CE=C9=CB=C1=CD=C9 =C9 =
-=D2=D5=CB=CF=D7=CF=C4=D3=D4=D7=CF=CD. =
-=E9=D3=D0=CF=CC=D8=DA=CF=D7=C1=CE=C9=C5 =
-=D0=D3=C9=C8=CF=CC=CF=C7=C9=DE=C5=D3=CB=C9=C8=20
-=C4=C9=D3=D4=C1=CE=C3=C9=CA =C9 =D6=C5=D3=D4=CF=D7 =D7 =
-=C4=C5=CC=CF=D7=CF=CA =CF=C2=D3=D4=C1=CE=CF=D7=CB=C5. =
-=EB=D5=CC=D8=D4=D5=D2=C1 =C4=C5=CC=CF=D7=CF=CA =D2=C5=DE=C9. =
-=F0=D2=C1=D7=C9=CC=D8=CE=CF =CC=C9 =CD=D9 =D3=D4=C1=D7=C9=CD=20
-=D5=C4=C1=D2=C5=CE=C9=D1? =F4=C5=CC=C5=C6=CF=CE=CE=D9=C5 =
-=D0=C5=D2=C5=C7=CF=D7=CF=D2=D9: =DA=C1=C2=D9=D4=D9=C5 =
-=C9=D3=D4=C9=CE=D9. =F7=C9=C4=D9 =D0=D2=C9=C5=CD=CF=D7.
-
-** =F3=D4=CF=C9=CD=CF=D3=D4=D8 =D5=DE=C1=D3=D4=C9=D1 =D7 =
-=CB=C1=D6=C4=CF=CD =C9=DA =C4=CE=C5=CA 5200 =D2=D5=C2=CC=C5=CA
-=F3=D4=CF=C9=CD=CF=D3=D4=D8 =D5=DE=C1=D3=D4=C9=D1 =D7 =C4=D7=D5=C8 =
-=C4=CE=D1=C8 -8780 =D2=D5=C2=CC=C5=CA.
-
-=F5=DE=C1=D3=D4=CE=C9=CB=C9 =CF=C2=C5=D3=D0=C5=DE=C9=D7=C1=C0=D4=D3=D1 =
-=CD=C5=D4=CF=C4=C9=DE=C5=D3=CB=C9=CD=C9 =
-=CD=C1=D4=C5=D2=C9=C1=CC=C1=CD=C9.
-=F0=CF =CF=CB=CF=CE=DE=C1=CE=C9=C9 =D3=C5=CD=C9=CE=C1=D2=C1 =
-=D7=D9=C4=C1=A3=D4=D3=D1 =D3=C5=D2=D4=C9=C6=C9=CB=C1=D4.=20
-=ED=C5=D3=D4=CF =D0=D2=CF=D7=C5=C4=C5=CE=C9=D1: .=ED=CF=D3=CB=D7=C1 =CD. =
-=F2=C9=D6=D3=CB=C1=D1, =F5=E3=E2=E1
-=FA=C1=D1=D7=CB=C9 =CE=C1 =D5=DE=C1=D3=D4=C9=C5 =C9 =
-=C4=CF=D0=CF=CC=CE=C9=D4=C5=CC=D8=CE=C1=D1 =
-=C9=CE=C6=CF=D2=CD=C1=C3=C9=D1=20
-=D0=CF =D4=C5=CC. (495) 506-30-78, 741-87-05
-
-------=_NextPart_000_00C2_01CAB5FD.01CAB5FD
-Content-Type: text/html;
-	charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3Dkoi8-r">
-<META content=3D"MSHTML 6.00.2900.5512" name=3DGENERATOR>
-<STYLE>PrStyle</STYLE>
-</HEAD>
-<BODY bgColor=3D#ffffff>
-<DIV>
-<P align=3Dcenter><B><FONT color=3D#0000ff =
-size=3D5>&nbsp;=ED=CF=D3=CB=CF=D7=D3=CB=C9=CA =C3=C5=CE=D4=D2 =
-=D0=CF=D7=D9=DB=C5=CE=C9=C5=20
-=CB=D7=C1=CC=C9=C6=C9=CB=C1=C3=C9=C9 =
-=F3=C5=CB=D2=C5=D4=C1=D2=C5=CA</FONT></B></P>
-<P><B><FONT size=3D5><FONT color=3D#0000ff>10 =CD=C1=D2=D4=C1 2010 =C7. =
-</FONT>=E4=C5=CC=CF=D0=D2=CF=C9=DA=D7=CF=C4=D3=D4=D7=CF=20
-- =CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=D1 =
-=C4=CF=CB=D5=CD=C5=CE=D4=CF=CF=C2=CF=D2=CF=D4=C1 =
-<BR>=D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=D1.</FONT></B><BR><B>=E1=D7=D4=CF=D2 =
-=C9 =D7=C5=C4=D5=DD=C9=CA=20
-=D3=C5=CD=C9=CE=C1=D2=C1: =E2=CF=C7=C1=D4=CF=D7=C1 =E5.=F3. &#8211; =
-=D0=D2=C5=D0=CF=C4=C1=D7=C1=D4=C5=CC=D8 =
-=CD=C5=D6=C4=D5=CE=C1=D2=CF=C4=CE=CF=C7=CF =DC=D4=C9=CB=C5=D4=C1 =
-=ED=CF=D3=CB=CF=D7=D3=CB=CF=C7=CF=20
-<BR>=C2=C1=CE=CB=CF=D7=D3=CB=CF=C7=CF =C9=CE=D3=D4=C9=D4=D5=D4=C1 =C9 =
-=ED=CF=D3=CB=CF=D7=D3=CB=CF=CA =C1=CB=C1=C4=C5=CD=C9=C9 =
-=C7=CF=D3=D5=C4=C1=D2=D3=D4=D7=C5=CE=CE=CF=C7=CF =C9=20
-=CD=D5=CE=C9=C3=C9=D0=C1=CC=D8=CE=CF=C7=CF =
-=D5=D0=D2=C1=D7=CC=C5=CE=C9=D1 =F2=E1=E7=F3 <BR>=D0=D2=C9 =
-=F0=D2=C5=DA=C9=C4=C5=CE=D4=C5 =F2=E6, =CB=CF=CE=D3=D5=CC=D8=D4=C1=CE=D4 =
-
-=E7=CF=D3=D5=C4=C1=D2=D3=D4=D7=C5=CE=CE=CF=CA =E4=D5=CD=D9 =
-=F2=E6.</B><BR>1. =
-=EE=CF=D2=CD=C1=D4=C9=D7=CE=CF-=D0=D2=C1=D7=CF=D7=D9=C5 =C1=CB=D4=D9 =
-=D0=CF =C4=C5=CC=CF=D0=D2=CF=C9=DA=D7=CF=C4=D3=D4=D7=D5.=20
-=EF=D3=CE=CF=D7=CE=D9=C5 =CB=C1=D4=C5=C7=CF=D2=C9=C9 =
-=C4=CF=CB=D5=CD=C5=CE=D4=CF=D7. =F3=CF=DA=C4=C1=CE=C9=C5 =
-<BR>=F4=C1=C2=C5=CC=D1 =D5=CE=C9=C6=C9=C3=C9=D2=CF=D7=C1=CE=CE=D9=C8 =
-=C6=CF=D2=CD=20
-=C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =D0=D2=C5=C4=D0=D2=C9=D1=D4=C9=D1. =
-=F0=D2=C1=D7=C9=CC=C1 =CF=C6=CF=D2=CD=CC=C5=CE=C9=D1 =
-=C4=CF=CB=D5=CD=C5=CE=D4=CF=D7. <BR>=F7=C9=C4=D9 =C2=CC=C1=CE=CB=CF=D7.=20
-=EE=C1=C9=C2=CF=CC=C5=C5 =
-=D2=C1=D3=D0=D2=CF=D3=D4=D2=C1=CE=C5=CE=CE=D9=C5 =
-=D0=CF=C7=D2=C5=DB=CE=CF=D3=D4=C9 =D0=D2=C9 =
-=D2=C1=DA=D2=C1=C2=CF=D4=CB=C5 =C6=C9=D2=CD=C5=CE=CE=D9=C8 =
-=C2=CC=C1=CE=CB=CF=D7=20
-<BR>=CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9. =
-=F2=C1=D3=D0=CF=D2=D1=C4=C9=D4=C5=CC=D8=CE=D9=C5 =
-=C4=CF=CB=D5=CD=C5=CE=D4=D9. =F0=D2=C9=DA=CE=C1=CB=C9 =
-=C0=D2=C9=C4=C9=DE=C5=D3=CB=CF=CA =D3=C9=CC=D9=20
-=C4=CF=CB=D5=CD=C5=CE=D4=C1.<BR>2. =EF=D3=CF=C2=C5=CE=CE=CF=D3=D4=C9 =
-=CF=C6=CF=D2=CD=CC=C5=CE=C9=D1 =C9 =C8=D2=C1=CE=C5=CE=C9=D1 =
-=C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =D0=CF =CC=C9=DE=CE=CF=CD=D5=20
-=D3=CF=D3=D4=C1=D7=D5. =
-=F3=D0=D2=C1=D7=CF=DE=CE=CF-<BR>=C9=CE=C6=CF=D2=CD=C1=C3=C9=CF=CE=CE=D9=C5=
- =C4=CF=CB=D5=CD=C5=CE=D4=D9. =E4=C5=CC=CF=D7=CF=C5 =D0=C9=D3=D8=CD=CF. =
-=F2=C5=CB=CF=CD=C5=CE=C4=C1=C3=C9=C9,=20
-=CB=CF=D4=CF=D2=D9=CD=C9 =CE=C5 =D3=CC=C5=C4=D5=C5=D4 =
-<BR>=D0=D2=C5=CE=C5=C2=D2=C5=C7=C1=D4=D8. =F0=D2=C1=D7=C9=CC=C1 =
-=DA=C1=D7=C5=D2=C5=CE=C9=D1 =CB=CF=D0=C9=CA =
-=C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =D7=20
-=CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9. =
-=F3=CF=D7=C5=D2=DB=C5=CE=D3=D4=D7=CF=D7=C1=CE=C9=C5 =
-<BR>=C4=C5=CC=CF=D0=D2=CF=C9=DA=D7=CF=C4=D3=D4=D7=C5=CE=CE=D9=C8 =
-=D0=D2=CF=C3=C5=D3=D3=CF=D7. =EB=CF=CE=D4=D2=CF=CC=D8=20
-=C9=D3=D0=CF=CC=CE=C5=CE=C9=D1. =F3=CF=D3=D4=C1=D7=CC=C5=CE=C9=C5 =
-=CE=CF=CD=C5=CE=CB=CC=C1=D4=D5=D2=D9 =C4=C5=CC. =
-<BR>=E6=CF=D2=CD=C9=D2=CF=D7=C1=CE=C9=C5 =C9 =
-=CF=C6=CF=D2=CD=CC=C5=CE=C9=C5 =C4=C5=CC. =FE=D4=CF=20
-=C4=CF=CC=D6=C5=CE =DA=CE=C1=D4=D8 =C9 =D5=CD=C5=D4=D8 =
-=D3=C5=CB=D2=C5=D4=C1=D2=D8 =D0=D2=C9 =D0=CF=C4=C7=CF=D4=CF=D7=CB=C5 =C9 =
-<BR>=D0=C5=D2=C5=C4=C1=DE=C5 =C4=C5=CC =CE=C1 =C1=D2=C8=C9=D7=CE=CF=C5=20
-=C8=D2=C1=CE=C5=CE=C9=C5. =F0=D2=C1=CB=D4=C9=DE=C5=D3=CB=C1=D1 =
-=D2=C1=C2=CF=D4=C1 =D3 =C4=CF=CB=D5=CD=C5=CE=D4=C1=CD=C9.</P>
-<P><B><FONT size=3D5><FONT color=3D#0000ff>11 =CD=C1=D2=D4=C1 2010 =C7. =
-</FONT>=F3=CF=D7=D2=C5=CD=C5=CE=CE=D9=CA=20
-=D3=C5=CB=D2=C5=D4=C1=D2=D8, =CF=C6=C9=D3-=CD=C5=CE=C5=C4=D6=C5=D2: =
-<BR>=C6=D5=CE=CB=C3=C9=CF=CE=C1=CC=D8=CE=D9=C5 =
-=CF=C2=D1=DA=C1=CE=CE=CF=D3=D4=C9 =C9 =DC=D4=C9=CB=C5=D4 =
-=D3=CC=D5=D6=C5=C2=CE=D9=C8=20
-=CF=D4=CE=CF=DB=C5=CE=C9=CA</FONT></B><BR>1. =
-=EB=CF=D2=D0=CF=D2=C1=D4=C9=D7=CE=C1=D1 =CB=D5=CC=D8=D4=D5=D2=C1. =
-=E9=CD=C9=C4=D6 =D3=C5=CB=D2=C5=D4=C1=D2=D1.=20
-=ED=C5=D6=C4=D5=CE=C1=D2=CF=C4=CE=D9=CA =D3=D4=C1=CE=C4=C1=D2=D4. =
-=E6=D5=CE=CB=C3=C9=CF=CE=C1=CC=D8=CE=D9=C5 =
-<BR>=CF=C2=D1=DA=C1=CE=CE=CF=D3=D4=C9 =D3=C5=CB=D2=C5=D4=C1=D2=D1. =
-=EC=C9=DE=CE=D9=C5 =C9=20
-=D0=D2=CF=C6=C5=D3=D3=C9=CF=CE=C1=CC=D8=CE=D9=C5 =
-=CB=C1=DE=C5=D3=D4=D7=C1. =E4=C5=CC=CF=D7=CF=C5 =CF=C2=DD=C5=CE=C9=C5: =
-=D0=D2=C1=D7=C9=CC=C1 <BR>=DC=D4=C9=CB=C5=D4=C1 =D0=D2=C9 =
-=D0=D2=C9=D7=C5=D4=D3=D4=D7=C9=C9=20
-=C9 =D0=D2=C5=C4=D3=D4=C1=D7=CC=C5=CE=C9=C9. =
-=E8=C1=D2=C1=CB=D4=C5=D2=CE=D9=C5 =CF=DB=C9=C2=CB=C9 =D7 =
-=CF=C6=CF=D2=CD=CC=C5=CE=C9=C9 =C9 =
-=C9=D3=D0=CF=CC=D8=DA=CF=D7=C1=CE=C9=C9.<BR>2. =E6=D5=CE=CB=C3=C9=C9=20
-=D3=C5=CB=D2=C5=D4=C1=D2=D1 =D0=CF =CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9 =
-=D0=D2=C9=C5=CD=C1 =D0=CF=D3=C5=D4=C9=D4=C5=CC=C5=CA. =
-"=F4=D2=C1=C4=C9=C3=C9=CF=CE=CE=D9=C5" =CF=DB=C9=C2=CB=C9 =D0=D2=C9 =
-=D0=D2=C9=C5=CD=C5=20
-<BR>=C4=C5=CC=CF=D7=D9=C8 =D0=C1=D2=D4=CE=C5=D2=CF=D7 =C9 =
-=D0=CF=D3=C5=D4=C9=D4=C5=CC=C5=CA. =
-=ED=C5=D6=C4=D5=CE=C1=D2=CF=C4=CE=D9=C5 =D0=D2=C1=D7=C9=CC=C1 =
-=C4=C1=D2=C5=CE=C9=D1 =C9 =D0=D2=C9=CE=D1=D4=C9=D1=20
-=D0=CF=C4=C1=D2=CB=CF=D7 =C9 <BR>=D3=D5=D7=C5=CE=C9=D2=CF=D7. =
-=F7=DA=C1=C9=CD=CF=CF=D4=CE=CF=DB=C5=CE=C9=D1 =D3 =
-=D3=CF=D4=D2=D5=C4=CE=C9=CB=C1=CD=C9 =C9 =
-=D2=D5=CB=CF=D7=CF=C4=D3=D4=D7=CF=CD.=20
-=E9=D3=D0=CF=CC=D8=DA=CF=D7=C1=CE=C9=C5 =
-=D0=D3=C9=C8=CF=CC=CF=C7=C9=DE=C5=D3=CB=C9=C8 =
-<BR>=C4=C9=D3=D4=C1=CE=C3=C9=CA =C9 =D6=C5=D3=D4=CF=D7 =D7 =
-=C4=C5=CC=CF=D7=CF=CA =CF=C2=D3=D4=C1=CE=CF=D7=CB=C5.=20
-=EB=D5=CC=D8=D4=D5=D2=C1 =C4=C5=CC=CF=D7=CF=CA =D2=C5=DE=C9. =
-=F0=D2=C1=D7=C9=CC=D8=CE=CF =CC=C9 =CD=D9 =D3=D4=C1=D7=C9=CD =
-<BR>=D5=C4=C1=D2=C5=CE=C9=D1? =F4=C5=CC=C5=C6=CF=CE=CE=D9=C5=20
-=D0=C5=D2=C5=C7=CF=D7=CF=D2=D9: =DA=C1=C2=D9=D4=D9=C5 =
-=C9=D3=D4=C9=CE=D9. =F7=C9=C4=D9 =D0=D2=C9=C5=CD=CF=D7.</P>
-<P align=3Dcenter><FONT color=3D#0000ff><B>** =
-=F3=D4=CF=C9=CD=CF=D3=D4=D8 =D5=DE=C1=D3=D4=C9=D1 =D7 =CB=C1=D6=C4=CF=CD =
-=C9=DA =C4=CE=C5=CA=20
-5200 =D2=D5=C2=CC=C5=CA<BR>=F3=D4=CF=C9=CD=CF=D3=D4=D8 =
-=D5=DE=C1=D3=D4=C9=D1 =D7 =C4=D7=D5=C8 =C4=CE=D1=C8 -8780 =
-=D2=D5=C2=CC=C5=CA.</B></FONT></P>
-<P>=F5=DE=C1=D3=D4=CE=C9=CB=C9 =
-=CF=C2=C5=D3=D0=C5=DE=C9=D7=C1=C0=D4=D3=D1 =
-=CD=C5=D4=CF=C4=C9=DE=C5=D3=CB=C9=CD=C9 =
-=CD=C1=D4=C5=D2=C9=C1=CC=C1=CD=C9.<BR>=F0=CF =CF=CB=CF=CE=DE=C1=CE=C9=C9 =
-=D3=C5=CD=C9=CE=C1=D2=C1=20
-=D7=D9=C4=C1=A3=D4=D3=D1 =D3=C5=D2=D4=C9=C6=C9=CB=C1=D4. =
-<BR><B>=ED=C5=D3=D4=CF =D0=D2=CF=D7=C5=C4=C5=CE=C9=D1: =
-</B>.=ED=CF=D3=CB=D7=C1 =CD. =F2=C9=D6=D3=CB=C1=D1,=20
-=F5=E3=E2=E1<BR><B><FONT color=3D#0000ff size=3D5>=FA=C1=D1=D7=CB=C9 =
-=CE=C1 =D5=DE=C1=D3=D4=C9=C5 =C9 =
-=C4=CF=D0=CF=CC=CE=C9=D4=C5=CC=D8=CE=C1=D1=20
-=C9=CE=C6=CF=D2=CD=C1=C3=C9=D1 <BR>=D0=CF =D4=C5=CC. (495) 506-30-78,=20
-741-87-05</FONT></B></P></DIV></BODY></HTML>
-
-------=_NextPart_000_00C2_01CAB5FD.01CAB5FD--
-
-
-
---===============5660303444581587081==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
---===============5660303444581587081==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============5660303444581587081==--

@@ -1,123 +1,154 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: [git pull] SPI changes for 2.6.34
-Date: Thu, 25 Feb 2010 10:28:51 -0700
-Message-ID: <fa686aa41002250928u5cf04507u7e9334ff1a428b53@mail.gmail.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/2 V2] spi/mmc_spi: SPI bus locking
+	API, using mutex
+Date: Thu, 25 Feb 2010 11:34:12 -0700
+Message-ID: <fa686aa41002251034t25493d69x9f3726ba6b588396@mail.gmail.com>
+References: <20100218124425.599c4d76.eschwab@online.de>
+	<20100218131057.40f9e623.eschwab@online.de>
+	<fa686aa41002241232x6b6d92fci73ce7597c6e38b0@mail.gmail.com>
+	<20100225113601.fc8cf2c1.eschwab@online.de>
+	<fa686aa41002250838q3189d1e6q828428c521242742@mail.gmail.com>
+	<20100225182556.10b5a3b8.eschwab@online.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-next <linux-next@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-next-owner@vger.kernel.org>
-Sender: linux-next-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org
+To: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100225182556.10b5a3b8.eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Linus.
+On Thu, Feb 25, 2010 at 10:25 AM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
+> On Thu, 25 Feb 2010 09:38:48 -0700 Grant Likely <grant.likely@secretlab.c=
+a> wrote:
+>
+>> I looked at them all this morning. =A0Without exception, every single
+>> driver follows this pattern:
+>> - [maybe check some stuff]
+>> - spin_lock_irqsave()
+>> - list_add_tail()
+>> - <trigger workqueue or other way to kick off transfer>
+>> - spin_unlock_irqrestore()
+>>
+>> Yet every driver implements its own transfer list and spin lock in the
+>> private data structure. =A0That says to me that the spi layer is
+>> abstracting at the wrong level. =A0I'm cautious about taking away the
+>> ability for drivers to make their own decisions about how to manage
+>> transfers, but it seems like the transfer queue and spin lock should
+>> be provided by the common code. =A0The trick is how to do it while
+>> providing a migration path for drivers.
+>>
+>> One option is to deprecate the ->transfer hook and allow drivers to
+>> provide a .request() hook to signal the driver that new transfers have
+>> been added to the list. =A0Something like how the block layer works.
+>> That would keep the critical region in spi_async() small. =A0Another
+>> option is to let drivers provide a .prepare() hook that validates and
+>> prepares a message before entering the critical region. =A0The
+>> .prepare() option is probably the simplest to implement and has the
+>> lowest impact on existing device drivers to use the new functionality,
+>> but the .request() option might be better in the long run.
+>
+> I'd vote for the .request() hook.
 
-SPI changes.  Marinated in linux-next for the better part of a month
-to enhance the flavour.
+It may even be advantageous to provide both .prepare and .request
+hooks.  .prepare would allow messages to be checked out of line before
+touching any critical regions at all.  The two hooks are pretty much
+mutually independent.
+
+>> The spinlock is absolutely required. =A0Otherwise the test of
+>> bus_lock_flag is racy.
+> [...]
+>> See? =A0Without the spinlock there is nothing preventing B3 from getting
+>> called in the midst of A's bus lock.
+>
+> Ok, now, I see; an interrupt being executed on a different core than
+> the process context will manage it to malfunction if the spinlock is
+> missing.
+
+It is even broken on a single processor.  If an IRQ occurs between B2
+and B3, and the IRQ goes down an spi bus lock path, then things still
+get out of order.
+
+>> > A possible solution would be to add an extra queue, handled in the
+>> > spi.c module, stored in the master's data structure, that stores all
+>> > messages coming in while the bus lock is active. The queue can be
+>> > flushed by calling __spi_async() for each message as soon as the bus
+>> > lock is removed.
+>>
+>> That also works. =A0In fact, this would work well with the .request()
+>> hook suggestion I made above because when the lock is removed, the
+>> delayed list could just be appended to the normal request list. =A0A
+>> .prepare() hook would also be useful because the message can still be
+>> pre-checked for validity outside of the critical region before being
+>> added to the delay list.
+>
+> Maybe all of the list/queue handling should be done in spi.c, and (inline)
+> functions in spi.h; then, the driver could call a 'spi_get_next_message()'
+> function and will get a message out of one of the two queues:
+
+Try not to get too exotic here.  It should be sufficient for the
+driver to only look at the 'direct' queue and let the core code decide
+when to move stuff from delayed to direct.  In fact, the existing
+list_del_init() callsites will probably work as-is with just changing
+the pointer to the list head.
+
+> spi_sync_locked() and spi_async_locked()
+> =A0 =A0 =A0 =A0will add to 'direct' queue, and call .request()
+> spi_sync() and spi_async()
+> =A0 =A0 =A0 =A0will add to 'delayed' queue if spi bus is locked
+> =A0 =A0 =A0 =A0will add to 'direct' queue if unlocked, and call .request()
+>
+> spi_bus_unlock()
+> =A0 =A0 =A0 =A0will append entire 'delayed' to 'direct' queue, and call .=
+request()
+
+Sounds appropriate.  However, I think you'll want to avoid having to
+change every bus driver all at once.  I think this can be done without
+breaking drivers.  If you leave the .transfer() hook in place and add
+the .request() hook, then drivers can provide one or the other.
+
+If a .transfer() hook is provided, then everything works fine.
+spi_async*() calls the transfer hook for each message received.  If
+the bus is locked, then spi_async() adds them to the delayed queue
+without calling .transfer().
+
+If transfer is NULL, then the setup code should set .transfer to a
+'stock' transfer function that only adds the message to the direct
+queue.  Drivers that migrate to this mode then take advantage of the
+nice short critical region provided by the stock .transfer() hook.
+
+In either case, spi_bus_unlock() will walk the delayed queue and call
+.transfer() on each message.  If .request is set, then it should be
+called after each .transfer() call and also at the end of
+spi_bus_unlock().
+
+Once all the drivers are migrated to the .request() API, then the
+stock transfer hook can be folded directly into __spi_async() , the
+hook removed from struct spi_master, and the spi_bus_unlock() path can
+be simplified to append the delayed queue onto the direct queue.
+
+>> If you want to attempt this, maintain it as a separate patch on top of
+>> the core bus locking patch.
+>
+> I will look at it if I find the time...
+
+Thanks.
 
 g.
 
-secretlab/next-spi
-The following changes since commit 60b341b778cc2929df16c0a504c91621b3c6=
-a4ad:
-  Linus Torvalds (1):
-        Linux 2.6.33
-
-are available in the git repository at:
-
-  git://git.secretlab.ca/git/linux-2.6 next-spi
-
-Alberto Panizzo (1):
-      spi/spi_imx: add device information by switching pr_debug() to de=
-v_dbg()
-
-Ernst Schwab (1):
-      spi: Correct SPI clock frequency setting in spi_mpc8xxx
-
-=46eng Tang (5):
-      spi/dw_spi: bug fix in wait_till_not_busy()
-      spi/dw_spi: add a missed dw_spi_remove_host() in exit sequence
-      spi/dw_spi: refine the IRQ mode working flow
-      spi/dw_spi: add a FIFO depth detection
-      spi/dw_spi: fix missing export of dw_spi_remove_host
-
-George Shore (5):
-      spi/dw_spi: enable platform specific chipselect.
-      spi/dw_spi: add return value to empty mrst_spi_debugfs_init()
-      spi/dw_spi: fixed a spelling typo in a warning message.
-      spi/dw_spi: remove conditional from 'poll_transfer'.
-      spi/dw_spi: conditional transfer mode changes
-
-Grant Likely (2):
-      spi/dw_spi: fix __init/__devinit section mismatch
-      Merge commit 'v2.6.33-rc6' into secretlab/next-spi
-
-Jassi Brar (6):
-      spi/s3c64xx: Rename s3c64xx_spi_cntrlr_info
-      spi/s3c64xx: Differentiate ip and rate clock
-      spi/s3c64xx: Move src_clk to local driver data
-      spi/s3c64xx: Check before mem-region release
-      spi/s3c64xx: Include moved header
-      spi/s3c64xx: Add new parameter to cs callback
-
-Jean-Hugues Deschenes (4):
-      Memory-mapped dw_spi driver
-      spi/dw_spi: mmio code style fixups
-      spi/dw_spi: Allow dw_spi.c to be a module
-      spi/dw_spi: Fix dw_spi_mmio to depend on HAVE_CLK
-
-Joe Perches (1):
-      spi/spi_s3c64xx.c: Fix continuation line formats
-
-Magnus Damm (1):
-      spi: update MSIOF includes
-
-M=E1rton N=E9meth (1):
-      spi: make Open Firmware device id constant
-
-Paul Mundt (1):
-      spi: xilinx_spi: Fix up I/O routine wrapping bogosity.
-
-Robert P. J. Day (1):
-      spi: Fix reversed args to time_before() in Freescale stmp driver.
-
-Sandeep Paulraj (1):
-      spi: Add SPI master driver for DaVinci/DA8xx
-
-Steven King (1):
-      spi: Add Freescale/Motorola Coldfire QSPI driver
-
-Uwe Kleine-K=F6nig (1):
-      spi/mpc8xxx: don't check platform_get_irq's return value against =
-zero
-
- drivers/spi/Kconfig           |   23 +-
- drivers/spi/Makefile          |    3 +
- drivers/spi/coldfire_qspi.c   |  640 +++++++++++++++++++++
- drivers/spi/davinci_spi.c     | 1255 +++++++++++++++++++++++++++++++++=
-++++++++
- drivers/spi/dw_spi.c          |  111 +++--
- drivers/spi/dw_spi_mmio.c     |  147 +++++
- drivers/spi/dw_spi_pci.c      |    2 +
- drivers/spi/mpc52xx_psc_spi.c |    2 +-
- drivers/spi/mpc52xx_spi.c     |    2 +-
- drivers/spi/spi_imx.c         |    2 +-
- drivers/spi/spi_mpc8xxx.c     |    8 +-
- drivers/spi/spi_ppc4xx.c      |    2 +-
- drivers/spi/spi_s3c64xx.c     |   89 ++--
- drivers/spi/spi_sh_msiof.c    |    2 +-
- drivers/spi/spi_stmp.c        |    2 +-
- drivers/spi/xilinx_spi.c      |   28 +-
- drivers/spi/xilinx_spi_of.c   |    2 +-
- include/linux/spi/dw_spi.h    |    5 +
- 18 files changed, 2225 insertions(+), 100 deletions(-)
- create mode 100644 drivers/spi/coldfire_qspi.c
- create mode 100644 drivers/spi/davinci_spi.c
- create mode 100644 drivers/spi/dw_spi_mmio.c
-
-
---=20
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+---------------------------------------------------------------------------=
+---
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

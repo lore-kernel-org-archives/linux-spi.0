@@ -1,21 +1,11 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: [PATCH 1/2 V2] spi/mmc_spi: SPI bus locking
- API, using mutex
-Date: Thu, 25 Feb 2010 14:07:48 -0500
-Message-ID: <4B86CA84.5030705@whoi.edu>
-References: <20100218124425.599c4d76.eschwab@online.de>	<20100218131057.40f9e623.eschwab@online.de>
-	<fa686aa41002241232x6b6d92fci73ce7597c6e38b0@mail.gmail.com>
-	<20100225113601.fc8cf2c1.eschwab@online.de>
-	<fa686aa41002250838q3189d1e6q828428c521242742@mail.gmail.com>
+From: "=?koi8-r?B?79DUyc3J2sHDydEgzsHMz8fP1y4=?=" <fafenirow-jZNX3hXLiDc@public.gmane.org>
+Subject: [SPAM] Чем заменить "серые" и "черные" схемы?
+Date: Fri, 26 Feb 2010 06:21:11 +0300
+Message-ID: <1132377845.20100226062111@epage.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============4133895859865558749=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa41002250838q3189d1e6q828428c521242742-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,108 +16,366 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/25/2010 11:38 AM, Grant Likely wrote:
-> On Thu, Feb 25, 2010 at 3:36 AM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
->> On Wed, 24 Feb 2010 13:32:43 -0700 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
->>> On Thu, Feb 18, 2010 at 5:10 AM, Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org> wrote:
->> [...]
->>>> I have concerns on the use of the spin lock around the
->>>> __spi_async() call, as Mike Frysinger already remarked.
->> [...]
->>
->>> I think the spinlock should always be held when calling the bus
->>> drivers ->transfer() hook.  That will also allow us to remove
->>> driver-specific locking from the bus drivers.  Otherwise we've got an
->>> inconsistent locking scheme which is asking for trouble down the road.
->>
->> Hm, I do not agree to that. I think it is a bad idea to have a spinlock
->> around a function call that may do a lot of things (we don't know about
->> it in the spi.c module) and may block multiple CPU cores or disable
->> interrupts for an indefinite time. The list_for_each_entry(xfer,...)
->> loop may process many elements, during that time, all other cores are
->> locked off without need.
->> The implementation present in the kernel (without patches) apparently
->> made the assumption, that master->transfer() itself can be called
->> from process and interrupt context concurrently and does its own locking.
->> This is true for the (few) drivers I looked it up.
->> The list_for_each_entry(xfer, &message->transfers, transfer_list) loop
->> seems to be safe (although I'm not absolutely sure about it) without
->> locking, since it only seems to access data stored in the message passed
->> as a function argument.
-> 
-> I looked at them all this morning.  Without exception, every single
-> driver follows this pattern:
-> - [maybe check some stuff]
-> - spin_lock_irqsave()
-> - list_add_tail()
-> - <trigger workqueue or other way to kick off transfer>
-> - spin_unlock_irqrestore()
+This is a multi-part message in MIME format.
 
-I am only familiar with the px2xx_spi.c driver.  This driver has a lock
-in ->transfer() that is constructed as above.  The lock protects
-internal data structures that are shared between ->transfer(), a
-workqueue that pulls the next message from the queue, and a tasklet that
-prepares each transfer within a message for processing by the hardware
-and returns any completed messages.  In addition to the list_add_tail()
-mentioned above, there is also private (perhaps could be public) message
-state information that gets set.
+--===============4133895859865558749==
+Content-Type: multipart/alternative;
+	boundary="----------6QRKI4OAFPPKEZD1"
 
-As a side note: I noticed that the data being protected in ->transfer()
-is only accessed in workqueue and tasklet context, never in interrupt
-context.  Thus, in my (greatly extended) private version of
-pxa2xx_spi.c, I added a new lock to the private driver data and swapped
-the spinlock_irqsave for spinlock_bh in all places that protect the
-message queue and state, so that there would be less (however small)
-impact on hardware interrupts.
+This is a multi-part message in MIME format.
 
-> Yet every driver implements its own transfer list and spin lock in the
-> private data structure.  That says to me that the spi layer is
-> abstracting at the wrong level.  I'm cautious about taking away the
-> ability for drivers to make their own decisions about how to manage
-> transfers, but it seems like the transfer queue and spin lock should
-> be provided by the common code.  The trick is how to do it while
-> providing a migration path for drivers.
+------------6QRKI4OAFPPKEZD1
+Content-Type: text/plain;
+	charset=koi8-r
+Content-Transfer-Encoding: quoted-printable
 
-I don't see how migrating the queue and locking to the core saves a lot.
- You still need a queue per controller driver.  It would provide
-standardization of the function, but the function is not complicated, as
-you point out above.  Most of the manipulation of the queue still exists
-inside the driver. The existing spi core design allows drivers to add
-whatever other state information they need within the same lock.  I'm
-not sure if every driver's private state is standard enough that it
-could become public.  If not, it is important (helpful, required?) that
-the state be updated atomically with the queue entry.
+=F7=CE=C9=CD=C1=CE=C9=C0 =D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C5=CA, =
+=C6=C9=CE=C1=CE=D3=C9=D3=D4=CF=D7, =C7=CC. =
+=C2=D5=C8=C7=C1=CC=D4=C5=D2=CF=D7 =C9 =C0=D2=C9=D3=D4=CF=D7!
 
-> One option is to deprecate the ->transfer hook and allow drivers to
-> provide a .request() hook to signal the driver that new transfers have
-> been added to the list.  Something like how the block layer works.
-> That would keep the critical region in spi_async() small.  Another
-> option is to let drivers provide a .prepare() hook that validates and
-> prepares a message before entering the critical region.  The
-> .prepare() option is probably the simplest to implement and has the
-> lowest impact on existing device drivers to use the new functionality,
-> but the .request() option might be better in the long run.
+=E7=CC=CF=C2=C1=CC=D8=CE=D9=CA =DC=CB=CF=CE=CF=CD=C9=DE=C5=D3=CB=C9=CA =
+=CB=D2=C9=DA=C9=D3 =D0=D2=C9=D7=C5=CC =D7 =D4=CF=CD =DE=C9=D3=CC=C5 =CB =
+=D5=D6=C5=D3=D4=CF=DE=C5=CE=C9=C0 =CE=C1=CC=CF=C7=CF=D7=CF=CA=20
+=D0=CF=CC=C9=D4=C9=CB=C9 =C7=CF=D3=D5=C4=C1=D2=D3=D4=D7=C1, =
+=D0=CF=D7=D9=DB=C5=CE=C9=C0 =D3=D4=C1=D7=CF=CB =CE=C1=CC=CF=C7=CF=D7 =C9 =
+=C2=CF=D2=D8=C2=C5 =DA=C1 =C9=C8 =D3=CF=C2=C9=D2=C1=C5=CD=CF=D3=D4=D8. =
+=F7=20
+=D3=CF=D7=D2=C5=CD=C5=CE=CE=D9=C8 =D5=D3=CC=CF=D7=C9=D1=C8 =
+=C9=D3=D0=CF=CC=D8=DA=CF=D7=C1=CE=C9=C5 =D4=C1=CB=C9=C8 =
+=D4=D2=C1=C4=C9=C3=C9=CF=CE=CE=D9=C8 =D3=D0=CF=D3=CF=C2=CF=D7 =
+=D0=D3=C5=D7=C4=CF=CF=D0=D4=C9=CD=C9=DA=C1=C3=C9=C9,=20
+=CB=C1=CB =CF=C2=CE=C1=CC=C9=DE=CB=C1 =C9 =
+=C6=C9=D2=CD=D9-=CF=C4=CE=CF=C4=CE=C5=D7=CB=C9 =
+=D3=D4=C1=CE=CF=D7=C9=D4=D3=D1 =CF=D0=C1=D3=CE=D9=CD, =
+=C4=CF=D2=CF=C7=C9=CD =C9 =CD=C1=CC=CF=C4=CF=D3=D4=D5=D0=CE=D9=CD. =
+=E3=C5=CC=D8=20
+=D3=C5=CD=C9=CE=C1=D2=C1 - =D0=CF=CD=CF=DE=D8 =
+=CB=CF=CD=D0=C1=CE=C9=D1=CD, =D0=D2=C9=CD=C5=CE=D1=C0=DD=C9=CD =
+"=D3=C5=D2=D9=C5" =C9 "=DE=C5=D2=CE=D9=C5" =D3=C8=C5=CD=D9 =
+=CF=D0=D4=C9=CD=C9=DA=C1=C3=C9=C9=20
+=CE=C1=CC=CF=C7=CF=D7, =D5=CA=D4=C9 =CF=D4 =CE=C9=C8, =C9 =D0=D2=C9 =
+=DC=D4=CF=CD =CE=C5 =D2=C1=DA=CF=D2=C9=D4=D8=D3=D1, =CE=C5 =
+=D5=D3=D4=D5=D0=C9=D4=D8 =CB=CF=CE=CB=D5=D2=C5=CE=D4=C1=CD, =CE=C5 =
+=D5=CA=D4=C9 =D3 =D2=D9=CE=CB=C1.=20
+=EE=C1=CA=D4=C9 =DA=C1=CB=CF=CE=CE=D9=C5 =
+=C1=CC=D8=D4=C5=D2=CE=C1=D4=C9=D7=D9 =D4=C1=CB=C9=CD =D3=C8=C5=CD=C1=CD, =
+=D0=CC=C1=D4=C9=D4=D8 =CE=C1=CC=CF=C7=C9, =CE=CF =CE=C5 =
+=D0=C5=D2=C5=D0=CC=C1=DE=C9=D7=C1=D4=D8 - =D7=CF=D4=20
+=CF=D3=CE=CF=D7=CE=C1=D1 =C9=C4=C5=D1 =CE=C1=CC=CF=C7=CF=D7=CF=C7=CF =
+=D0=CC=C1=CE=C9=D2=CF=D7=C1=CE=C9=D1 =C2=C5=DA "=D0=CF=CD=CF=C5=CB" =C9 =
+"=DE=C5=D2=CE=CF=C7=CF =CE=C1=CC=C1".=20
 
-You definitely need something like .prepare, if this change is made.  As
-David Brownell has pointed out in the past, the driver is responsible
-for rejecting any message that it cannot implement, preferably at the
-time ->transfer() is called.  This principal is not universally
-implemented in all drivers (pxa2xx_spi rejects some messages at the time
-it tries to execute a transfer, rather than checking the whole message
-when queued, as it should).  Reasons for rejection include
-unimplementable: clock speed, length, bits/word, etc.  Only the driver
-knows the capability of the hardware; that function cannot be centralized.
+1 =CD=C1=D2=D4=C1 2010 =C7 =EE=C1=CC=CF=C7=CF=D7=CF=C5 =
+=D0=CC=C1=CE=C9=D2=CF=D7=C1=CE=C9=C5 =D7 =D5=D3=CC=CF=D7=C9=D1=C8 =
+=CB=D2=C9=DA=C9=D3=C1: =CB=C1=CB=20
+=D6=C9=D4=D8 =C2=C5=DA =CF=C2=CE=C1=CC=C9=DE=CB=C9 =C9 =
+=C6=C9=D2=CD-=CF=C4=CE=CF=C4=CE=C5=D7=CF=CB =C9 =CE=C5 =
+=D2=C1=DA=CF=D2=C9=D4=D8=D3=D1
 
--- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
+=EF=C2=CE=C1=CC=C9=DE=C9=D7=C1=CE=C9=C5. =E4=CC=D1 =DE=C5=C7=CF =
+=C9=D3=D0=CF=CC=D8=DA=D5=C5=D4=D3=D1: "=DE=C5=D2=CE=C1=D1" =
+=DA=C1=D2=D0=CC=C1=D4=C1 =C9 =C4=CF=C8=CF=C4=D9 =
+=D3=CF=C2=D3=D4=D7=C5=CE=CE=C9=CB=CF=D7 =C2=C9=DA=CE=C5=D3=C1;=20
+=CF=D0=CC=C1=D4=C1 =D2=C1=D3=C8=CF=C4=CF=D7, =CB=CF=D4=CF=D2=D9=C5 =
+=CE=C5 =C8=CF=DE=C5=D4=D3=D1 =D0=D2=CF=D7=CF=C4=C9=D4=D8 =
+=CF=C6=C9=C3=C9=C1=CC=D8=CE=CF; =CE=C5=DA=C1=CB=CF=CE=CE=C1=D1 =
+=C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=D8 (=D7=DA=D1=D4=CB=C9, =
+=CF=D4=CB=C1=D4=D9,=20
+=C6=C9=CE=C1=CE=D3=C9=D2=CF=D7=C1=CE=C9=C5 =
+=D0=CF=CC=C9=D4=C9=DE=C5=D3=CB=CF=CA =
+=C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=C9:); =FA=C1=CB=CF=CE=CE=D9=C5 =
+=C1=CC=D8=D4=C5=D2=CE=C1=D4=C9=D7=D9 (=D4=CF=CC=D8=CB=CF =C4=CC=D1 =
+=DA=C1=CB=CF=CE=CE=D9=C8=20
+=C3=C5=CC=C5=CA!): =F7=D9=C2=CF=D2 =
+=C2=C1=CE=CB=CF=D7;=DA=C1=D2=D0=CC=C1=D4=C1 =D7 =C2=CF=CC=D8=DB=CF=CD =
+=D2=C1=DA=CD=C5=D2=C5 - =CE=D5=CC=C5=D7=C1=D1 =D3=D4=C1=D7=CB=C1 =
+=D3=D4=D2=C1=C8=CF=D7=D9=C8 =D7=DA=CE=CF=D3=CF=D7;=D0=CC=C1=D4=C5=D6=C9 =
+=CF=D4=20
+=CE=C5=D2=C5=DA=C9=C4=C5=CE=D4=CF=D7 =CE=C1 =CB=C1=D2=D4=D9, =
+=CF=D3=CE=CF=D7=C1=CE=C9=D1 =D0=CC=C1=D4=C5=D6=C5=CA. =
+=E1=D5=D4=D3=D4=C1=C6=C6=C9=CE=C7 =CF=D4 =
+=CE=C5=D2=C5=DA=C9=C4=C5=CE=D4=C1;=D0=C5=D2=C5=D7=CF=C4 =
+=D2=C1=D3=C8=CF=C4=CF=D7 =D7=20
+=C2=C5=DA=CE=C1=CC=C9=DE=CE=D5=C0 =C6=CF=D2=CD=D5. =
+=F0=D2=C5=C4=D3=D4=C1=D7=C9=D4=C5=CC=D8=D3=CB=C9=C5 =
+=D2=C1=D3=C8=CF=C4=D9. =D0=CC=C1=D4=C5=D6=C9 =CF=D4 =
+=CE=C5=D2=C5=DA=C9=C4=C5=CE=D4=CF=D7 =CE=C1 =CB=C1=D2=D4=D9.
+=EF=C4=CE=CF=C4=CE=C5=D7=CB=C9. =E4=CC=D1 =DE=C5=C7=CF =
+=C9=D3=D0=CF=CC=D8=DA=D5=C0=D4=D3=D1: =
+=D0=D3=C5=D7=C4=CF=CF=D0=D4=C9=CD=C9=DA=C1=C3=C9=D1 =EE=E4=F3 =C9 =
+=CE=C1=CC=CF=C7=C1 =CE=C1 =D0=D2=C9=C2=D9=CC=D8 =D7 =
+=CF=D4=C4=C5=CC=D8=CE=D9=C8=20
+=D3=C4=C5=CC=CB=C1=C8 =C9=CC=C9 =D7=D3=C5=CA =
+=C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=C9; "=D3=C5=D2=D9=CA =
+=C9=CD=D0=CF=D2=D4"; "=D3=C5=D2=C1=D1 =
+=CB=CF=CE=D7=C5=D2=D4=C1=C3=C9=D1"; =CE=C5=DA=C1=CB=CF=CE=CE=C1=D1 =
+=C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=D8.=20
+=FA=C1=CB=CF=CE=CE=D9=C5 =C1=CC=D8=D4=C5=D2=CE=C1=D4=C9=D7=D9 =
+=CF=C4=CE=CF=C4=CE=C5=D7=CB=C1=CD (=D4=CF=CC=D8=CB=CF =C4=CC=D1 =
+=DA=C1=CB=CF=CE=CE=D9=C8 =C3=C5=CC=C5=CA!) =DA=C1=D4=D2=C1=D4=CE=D9=C5 =
+=CD=C5=C8=C1=CE=C9=DA=CD=D9 =C9=CC=C9=20
+=D4=D2=C1=CE=D3=C6=C5=D2=D4=CE=CF=C5 =
+=C3=C5=CE=CF=CF=C2=D2=C1=DA=CF=D7=C1=CE=C9=C5 =D3 =
+=D5=DE=C1=D3=D4=C9=C5=CD =CE=C9=DA=CB=CF=CE=C1=CC=CF=C7=CF=D7=D9=C8 =
+=D3=D5=C2=DF=C5=CB=D4=CF=D7; =D7=D9=D1=D7=CC=C5=CE=C9=C5 =
+(=D3=CF=DA=C4=C1=CE=C9=C5) =D0=CF=CB=D5=D0=C1=D4=C5=CC=C5=CA=20
+(=DA=C1=CB=C1=DA=DE=C9=CB=CF=D7), =CE=C5 =
+=CE=D5=D6=C4=C1=C0=DD=C9=C8=D3=D1 =D7 =D7=D9=DE=C5=D4=C5 =EE=E4=F3, =
+=D2=C1=DA=C4=C5=CC=C5=CE=C9=C5 =C6=C9=CE=C1=CE=D3=CF=D7=D9=C8 =
+=D0=CF=D4=CF=CB=CF=D7 "=D3 =EE=E4=F3" =C9 "=C2=C5=DA =EE=E4=F3";=20
+=F2=C1=D3=DE=C5=D4 =CE=C1=CC=CF=C7=CF=D7=CF=CA =CE=C1=C7=D2=D5=DA=CB=C9 =
+=CE=C1 =D0=D2=C9=CD=C5=D2=C5. =EB=C1=CB=CF=D7=D9 =C2=D5=C4=D5=D4 (=C9 =
+=C2=D5=C4=D5=D4 =CC=C9) =D0=CF=D4=C5=D2=C9 =D0=D2=C9 =CF=D4=CB=C1=DA=C5 =
+=CF=D4 "=DE=C5=D2=CE=D9=C8"=20
+=D3=C8=C5=CD. =EB=CF=C7=C4=C1 =D0=D2=C9 =DC=D4=CF=CD =CD=CF=D6=CE=CF =
+=C4=C1=D6=C5 =D3=DC=CB=CF=CE=CF=CD=C9=D4=D8. =EF=D4=D7=C5=D4=D9 =CE=C1 =
+=D7=CF=D0=D2=CF=D3=D9. =EB=C1=CB =CD=CF=D6=CE=CF =C9 =CB=C1=CB =
+=CE=C5=CC=D8=DA=D1=20
+=CF=D0=D4=C9=CD=C9=DA=C9=D2=CF=D7=C1=D4=D8 =CE=C1=CC=CF=C7=C9 =D7 2010 =
+=C7. =D3 =D5=DE=C5=D4=CF=CD =C9=DA=CD=C5=CE=C5=CE=C9=CA =
+=DA=C1=CB=CF=CE=CF=C4=C1=D4=C5=CC=D8=D3=D4=D7=C1, =
+=D3=D5=C4=C5=C2=CE=CF=CA =D0=D2=C1=CB=D4=C9=CB=C9 =C9=20
+=D4=C5=CE=C4=C5=CE=C3=C9=CA =D2=C1=DA=D7=C9=D4=C9=D1 =
+=D0=D2=C1=D7=CF=D0=D2=C9=CD=C5=CE=C5=CE=C9=D1. =EF=C2=DA=CF=D2 =
+=C9=DA=CD=C5=CE=C5=CE=C9=CA =CE=C1=CC=CF=C7=CF=D7=CF=C7=CF =
+=DA=C1=CB=CF=CE=CF=C4=C1=D4=C5=CC=D8=D3=D4=D7=C1 =D7 2010 =C7., =
+=CB=C1=CB=20
+=CF=CE=C9 =D0=CF=D7=CC=C9=D1=CC=C9 =CE=C1 =CE=C1=CC=CF=C7=CF=D7=D9=C5 =
+=D3=C8=C5=CD=D9. =EB=C1=CB =C7=CF=D3=CF=D2=C7=C1=CE=D9 =
+=D0=CC=C1=CE=C9=D2=D5=C0=D4 =C2=CF=D2=CF=D4=D8=D3=D1 =D3 =
+"=DE=C5=D2=CE=D9=CD=C9" =C9 "=D3=C5=D2=D9=CD=C9" =D3=C8=C5=CD=C1=CD=C9=20
+=D7 2010-2011 =C7=C7. =EF=D4=D7=C5=D4=D9 =CE=C1 =D7=CF=D0=D2=CF=D3=D9. =
+=F0=CF =D6=C5=CC=C1=CE=C9=C0 =C9 =D7=CF=DA=CD=CF=D6=CE=CF=D3=D4=C9 - =
+=C9=CE=C4=C9=D7=C9=C4=D5=C1=CC=D8=CE=CF=C5 =DC=CB=D3=D0=D2=C5=D3=D3-
+=CD=CF=C4=C5=CC=C9=D2=CF=D7=C1=CE=C9=C5 =D3=C8=C5=CD =
+=CE=C1=CC=CF=C7=CF=D7=CF=C7=CF =D0=CC=C1=CE=C9=D2=CF=D7=C1=CE=C9=D1 =
+=C4=CC=D1 =CB=CF=CD=D0=C1=CE=C9=CA-=D5=DE=C1=D3=D4=CE=C9=C3 =
+=D3=C5=CD=C9=CE=C1=D2=C1.=20
+=F3=D4=CF=C9=CD=CF=D3=D4=D8 =D5=DE=C1=D3=D4=C9=D1 =
+=D3=C5=CD=C9=CE=C1=D2=C1 7900 =D2=D5=C2.=20
 
+=FA=C1=D1=D7=CB=C9 =CE=C1 =D5=DE=C1=D3=D4=C9=C5 =D0=CF =
+=D4=C5=CC=C5=C6=CF=CE=C1=CD: (495) 506-30-78,741-87-05
+
+12.03.2010 =EE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=C5 =
+=D0=CF=D3=D4=C1=D7=DD=C9=CB=C9. =EB=C1=CB =D3=CF=C8=D2=C1=CE=C9=D4=D8 =
+=D7=D9=DE=C5=D4=D9, =D5=CA=D4=C9=20
+=CF=D4 =CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9" =
+=F3=C5=CD=C9=CE=C1=D2 =D0=CF=D3=D7=D1=DD=C5=CE =D7=CF=D0=D2=CF=D3=D5 =
+=DA=C1=DD=C9=D4=D9 =CE=C1=CC=CF=C7=CF=D0=CC=C1=D4=C5=CC=D8=DD=C9=CB=C1, =
+=D0=D2=C9=DA=D7=C1=CE =D0=CF=CD=CF=DE=D8=20
+=C5=CD=D5 =CB=C1=CB =CE=C5 =D0=CF=C7=D2=D1=DA=CE=D5=D4=D8 =D7 =
+=D4=CF=D4=C1=CC=D8=CE=D9=C8 =D0=D2=CF=D7=C5=D2=CB=C1=C8 =D3=D7=CF=C9=C8 =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7, =D4=C1=CB =C9 =D7 =
+=D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=C9 =DA=C1=DD=C9=D4=C9=D4=D8 =D3=D7=CF=C9=20
+=D0=D2=C1=D7=C1 =D0=CF =D7=DA=C1=C9=CD=CF=CF=D4=CE=CF=DB=C5=CE=C9=D1=CD =
+=D1 =D4=C1=CB=C9=CD=C9 =CB=CF=CD=D0=C1=CE=C9=D1=CD=C9. =EE=C1 =
+=D3=C5=CD=C9=CE=C1=D2=C5 =CE=C5 =D4=CF=CC=D8=CB=CF =C2=D5=C4=D5=D4 =
+=D0=CF=CB=C1=DA=C1=CE=D9 =D3=D0=CF=D3=CF=C2=D9=20
+=D0=D2=CF=D4=C9=D7=CF=C4=C5=CA=D3=D4=D7=C9=D1 =
+=D0=D2=C9=C4=C9=D2=CB=C1=CD =CE=C1=CC=CF=C7=CF=D7=CF=CA, =CE=CF =C9 =
+=C2=D5=C4=D5=D4 =D2=C1=DA=CF=C2=D2=C1=CE=D9 =D3=D0=CF=D3=CF=C2=D9 =
+=DA=C1=CB=CC=C0=DE=C5=CE=C9=D1 =C4=CF=C7=CF=D7=CF=D2=CF=D7, =
+=CB=CF=D4=CF=D2=D9=C5 =D7=20
+=D0=D2=C9=CE=C3=C9=D0=C5 =C9=D3=CB=CC=C0=DE=C1=C0=D4 =
+=D7=CF=DA=CD=CF=D6=CE=CF=D3=D4=D8 =D0=D2=C9=DA=CE=C1=CE=C9=D1 =
+=CC=C9=C3=C1 =CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=CD, =C1 =
+=D4=C1=CB=D6=C5 =DA=C1=CB=CF=CE=CE=D9=C5 =D3=D0=CF=D3=CF=C2=D9=20
+=D3=CE=C9=D6=C5=CE=C9=C5 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
+=CE=C1=C7=D2=D5=DA=CB=C9 =D0=CF =EE=E4=F3 =D7 =D4=CF=CD =
+=D3=CC=D5=DE=C1=C5, =C5=D3=CC=C9 =
+=CE=C1=CC=CF=C7=CF=D0=CC=C1=D4=C5=CC=D8=DD=C9=CB =D7 =DC=D4=CF=CD=20
+=DA=C1=C9=CE=D4=C5=D2=C5=D3=CF=D7=C1=CE. =F3=D4=CF=C9=CD=CF=D3=D4=D8 =
+=D5=DE=C1=D3=D4=C9=D1 =D3=C5=CD=C9=CE=C1=D2=C1 7900 =D2=D5=C2.=20
+
+------------6QRKI4OAFPPKEZD1
+Content-Type: text/html;
+	charset=koi8-r
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3Dkoi8-r">
+<META content=3D"MSHTML 6.00.2900.5512" name=3DGENERATOR>
+<STYLE>enter</STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>
+<P align=3Dcenter><B><FONT color=3D#ff0000 =
+size=3D4>=F7=CE=C9=CD=C1=CE=C9=C0 =
+=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C5=CA,=20
+=C6=C9=CE=C1=CE=D3=C9=D3=D4=CF=D7, =C7=CC. =
+=C2=D5=C8=C7=C1=CC=D4=C5=D2=CF=D7 =C9 =
+=C0=D2=C9=D3=D4=CF=D7!</FONT></B></P>
+<P><B>=E7=CC=CF=C2=C1=CC=D8=CE=D9=CA =
+=DC=CB=CF=CE=CF=CD=C9=DE=C5=D3=CB=C9=CA =CB=D2=C9=DA=C9=D3 =
+=D0=D2=C9=D7=C5=CC =D7 =D4=CF=CD =DE=C9=D3=CC=C5 =CB =
+=D5=D6=C5=D3=D4=CF=DE=C5=CE=C9=C0 =CE=C1=CC=CF=C7=CF=D7=CF=CA=20
+<BR>=D0=CF=CC=C9=D4=C9=CB=C9 =C7=CF=D3=D5=C4=C1=D2=D3=D4=D7=C1, =
+=D0=CF=D7=D9=DB=C5=CE=C9=C0 =D3=D4=C1=D7=CF=CB =CE=C1=CC=CF=C7=CF=D7 =C9 =
+=C2=CF=D2=D8=C2=C5 =DA=C1 =C9=C8 =D3=CF=C2=C9=D2=C1=C5=CD=CF=D3=D4=D8.=20
+=F7 <BR>=D3=CF=D7=D2=C5=CD=C5=CE=CE=D9=C8 =D5=D3=CC=CF=D7=C9=D1=C8 =
+=C9=D3=D0=CF=CC=D8=DA=CF=D7=C1=CE=C9=C5 =D4=C1=CB=C9=C8 =
+=D4=D2=C1=C4=C9=C3=C9=CF=CE=CE=D9=C8 =D3=D0=CF=D3=CF=C2=CF=D7=20
+=D0=D3=C5=D7=C4=CF=CF=D0=D4=C9=CD=C9=DA=C1=C3=C9=C9, <BR>=CB=C1=CB =
+=CF=C2=CE=C1=CC=C9=DE=CB=C1 =C9 =
+=C6=C9=D2=CD=D9-=CF=C4=CE=CF=C4=CE=C5=D7=CB=C9 =
+=D3=D4=C1=CE=CF=D7=C9=D4=D3=D1 =CF=D0=C1=D3=CE=D9=CD,=20
+=C4=CF=D2=CF=C7=C9=CD =C9 =CD=C1=CC=CF=C4=CF=D3=D4=D5=D0=CE=D9=CD. =
+=E3=C5=CC=D8 <BR>=D3=C5=CD=C9=CE=C1=D2=C1 &#8211; =D0=CF=CD=CF=DE=D8 =
+=CB=CF=CD=D0=C1=CE=C9=D1=CD, =D0=D2=C9=CD=C5=CE=D1=C0=DD=C9=CD=20
+"=D3=C5=D2=D9=C5" =C9 "=DE=C5=D2=CE=D9=C5" =D3=C8=C5=CD=D9 =
+=CF=D0=D4=C9=CD=C9=DA=C1=C3=C9=C9 <BR>=CE=C1=CC=CF=C7=CF=D7, =
+=D5=CA=D4=C9 =CF=D4 =CE=C9=C8, =C9 =D0=D2=C9 =DC=D4=CF=CD =CE=C5=20
+=D2=C1=DA=CF=D2=C9=D4=D8=D3=D1, =CE=C5 =D5=D3=D4=D5=D0=C9=D4=D8 =
+=CB=CF=CE=CB=D5=D2=C5=CE=D4=C1=CD, =CE=C5 =D5=CA=D4=C9 =D3 =
+=D2=D9=CE=CB=C1. <BR>=EE=C1=CA=D4=C9 =DA=C1=CB=CF=CE=CE=D9=C5=20
+=C1=CC=D8=D4=C5=D2=CE=C1=D4=C9=D7=D9 =D4=C1=CB=C9=CD =D3=C8=C5=CD=C1=CD, =
+=D0=CC=C1=D4=C9=D4=D8 =CE=C1=CC=CF=C7=C9, =CE=CF =CE=C5 =
+=D0=C5=D2=C5=D0=CC=C1=DE=C9=D7=C1=D4=D8 &#8211; =D7=CF=D4=20
+<BR>=CF=D3=CE=CF=D7=CE=C1=D1 =C9=C4=C5=D1 =CE=C1=CC=CF=C7=CF=D7=CF=C7=CF =
+=D0=CC=C1=CE=C9=D2=CF=D7=C1=CE=C9=D1 =C2=C5=DA "=D0=CF=CD=CF=C5=CB" =C9 =
+"=DE=C5=D2=CE=CF=C7=CF =CE=C1=CC=C1".=20
+</B></P>
+<P align=3Dcenter><B><FONT size=3D5>1 =CD=C1=D2=D4=C1 2010 =C7 <FONT =
+color=3D#ff0000><SPAN=20
+style=3D"BACKGROUND-COLOR: #ffff00">=EE=C1=CC=CF=C7=CF=D7=CF=C5 =
+=D0=CC=C1=CE=C9=D2=CF=D7=C1=CE=C9=C5 =D7 =D5=D3=CC=CF=D7=C9=D1=C8 =
+=CB=D2=C9=DA=C9=D3=C1: =CB=C1=CB=20
+<BR>=D6=C9=D4=D8 =C2=C5=DA =CF=C2=CE=C1=CC=C9=DE=CB=C9 =C9 =
+=C6=C9=D2=CD-=CF=C4=CE=CF=C4=CE=C5=D7=CF=CB =C9 =CE=C5=20
+=D2=C1=DA=CF=D2=C9=D4=D8=D3=D1</SPAN></FONT></FONT></B></P>
+<P><B>=EF=C2=CE=C1=CC=C9=DE=C9=D7=C1=CE=C9=C5. =E4=CC=D1 =DE=C5=C7=CF =
+=C9=D3=D0=CF=CC=D8=DA=D5=C5=D4=D3=D1:</B> "=DE=C5=D2=CE=C1=D1" =
+=DA=C1=D2=D0=CC=C1=D4=C1 =C9 =C4=CF=C8=CF=C4=D9=20
+=D3=CF=C2=D3=D4=D7=C5=CE=CE=C9=CB=CF=D7 =C2=C9=DA=CE=C5=D3=C1; =
+<BR>=CF=D0=CC=C1=D4=C1 =D2=C1=D3=C8=CF=C4=CF=D7, =CB=CF=D4=CF=D2=D9=C5 =
+=CE=C5 =C8=CF=DE=C5=D4=D3=D1 =D0=D2=CF=D7=CF=C4=C9=D4=D8=20
+=CF=C6=C9=C3=C9=C1=CC=D8=CE=CF; =CE=C5=DA=C1=CB=CF=CE=CE=C1=D1 =
+=C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=D8 (=D7=DA=D1=D4=CB=C9, =
+=CF=D4=CB=C1=D4=D9, <BR>=C6=C9=CE=C1=CE=D3=C9=D2=CF=D7=C1=CE=C9=C5=20
+=D0=CF=CC=C9=D4=C9=DE=C5=D3=CB=CF=CA =
+=C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=C9&#8230;); =FA=C1=CB=CF=CE=CE=D9=C5 =
+=C1=CC=D8=D4=C5=D2=CE=C1=D4=C9=D7=D9 (<B>=D4=CF=CC=D8=CB=CF =C4=CC=D1 =
+=DA=C1=CB=CF=CE=CE=D9=C8=20
+<BR>=C3=C5=CC=C5=CA!</B>): =F7=D9=C2=CF=D2 =
+=C2=C1=CE=CB=CF=D7;=DA=C1=D2=D0=CC=C1=D4=C1 =D7 =C2=CF=CC=D8=DB=CF=CD =
+=D2=C1=DA=CD=C5=D2=C5 &#8211; =CE=D5=CC=C5=D7=C1=D1 =D3=D4=C1=D7=CB=C1=20
+=D3=D4=D2=C1=C8=CF=D7=D9=C8 =D7=DA=CE=CF=D3=CF=D7;=D0=CC=C1=D4=C5=D6=C9 =
+=CF=D4 <BR>=CE=C5=D2=C5=DA=C9=C4=C5=CE=D4=CF=D7 =CE=C1 =CB=C1=D2=D4=D9, =
+=CF=D3=CE=CF=D7=C1=CE=C9=D1 =D0=CC=C1=D4=C5=D6=C5=CA.=20
+=E1=D5=D4=D3=D4=C1=C6=C6=C9=CE=C7 =CF=D4 =
+=CE=C5=D2=C5=DA=C9=C4=C5=CE=D4=C1;=D0=C5=D2=C5=D7=CF=C4 =
+=D2=C1=D3=C8=CF=C4=CF=D7 =D7 <BR>=C2=C5=DA=CE=C1=CC=C9=DE=CE=D5=C0 =
+=C6=CF=D2=CD=D5.=20
+=F0=D2=C5=C4=D3=D4=C1=D7=C9=D4=C5=CC=D8=D3=CB=C9=C5 =
+=D2=C1=D3=C8=CF=C4=D9. =D0=CC=C1=D4=C5=D6=C9 =CF=D4 =
+=CE=C5=D2=C5=DA=C9=C4=C5=CE=D4=CF=D7 =CE=C1 =
+=CB=C1=D2=D4=D9.<BR><B>=EF=C4=CE=CF=C4=CE=C5=D7=CB=C9.=20
+=E4=CC=D1 =DE=C5=C7=CF =C9=D3=D0=CF=CC=D8=DA=D5=C0=D4=D3=D1:</B> =
+=D0=D3=C5=D7=C4=CF=CF=D0=D4=C9=CD=C9=DA=C1=C3=C9=D1 =EE=E4=F3 =C9 =
+=CE=C1=CC=CF=C7=C1 =CE=C1 =D0=D2=C9=C2=D9=CC=D8 =D7 =
+=CF=D4=C4=C5=CC=D8=CE=D9=C8=20
+<BR>=D3=C4=C5=CC=CB=C1=C8 =C9=CC=C9 =D7=D3=C5=CA =
+=C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=C9; "=D3=C5=D2=D9=CA =
+=C9=CD=D0=CF=D2=D4"; "=D3=C5=D2=C1=D1 =
+=CB=CF=CE=D7=C5=D2=D4=C1=C3=C9=D1";=20
+=CE=C5=DA=C1=CB=CF=CE=CE=C1=D1 =C4=C5=D1=D4=C5=CC=D8=CE=CF=D3=D4=D8. =
+<BR><B>=FA=C1=CB=CF=CE=CE=D9=C5 =C1=CC=D8=D4=C5=D2=CE=C1=D4=C9=D7=D9 =
+=CF=C4=CE=CF=C4=CE=C5=D7=CB=C1=CD</B> <B>(=D4=CF=CC=D8=CB=CF=20
+=C4=CC=D1 =DA=C1=CB=CF=CE=CE=D9=C8 =C3=C5=CC=C5=CA!) =
+</B>=DA=C1=D4=D2=C1=D4=CE=D9=C5 =CD=C5=C8=C1=CE=C9=DA=CD=D9 =C9=CC=C9 =
+<BR>=D4=D2=C1=CE=D3=C6=C5=D2=D4=CE=CF=C5=20
+=C3=C5=CE=CF=CF=C2=D2=C1=DA=CF=D7=C1=CE=C9=C5 =D3 =
+=D5=DE=C1=D3=D4=C9=C5=CD =CE=C9=DA=CB=CF=CE=C1=CC=CF=C7=CF=D7=D9=C8 =
+=D3=D5=C2=DF=C5=CB=D4=CF=D7; =D7=D9=D1=D7=CC=C5=CE=C9=C5 =
+(=D3=CF=DA=C4=C1=CE=C9=C5)=20
+=D0=CF=CB=D5=D0=C1=D4=C5=CC=C5=CA <BR>(=DA=C1=CB=C1=DA=DE=C9=CB=CF=D7), =
+=CE=C5 =CE=D5=D6=C4=C1=C0=DD=C9=C8=D3=D1 =D7 =D7=D9=DE=C5=D4=C5 =
+=EE=E4=F3, =D2=C1=DA=C4=C5=CC=C5=CE=C9=C5 =C6=C9=CE=C1=CE=D3=CF=D7=D9=C8 =
+
+=D0=CF=D4=CF=CB=CF=D7 "=D3 =EE=E4=F3" =C9 "=C2=C5=DA =EE=E4=F3"; =
+<BR><B>=F2=C1=D3=DE=C5=D4 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
+=CE=C1=C7=D2=D5=DA=CB=C9 =CE=C1 =D0=D2=C9=CD=C5=D2=C5.</B>=20
+=EB=C1=CB=CF=D7=D9 =C2=D5=C4=D5=D4 (=C9 =C2=D5=C4=D5=D4 =CC=C9) =
+=D0=CF=D4=C5=D2=C9 =D0=D2=C9 =CF=D4=CB=C1=DA=C5 =CF=D4 =
+"=DE=C5=D2=CE=D9=C8" <BR>=D3=C8=C5=CD. =EB=CF=C7=C4=C1 =D0=D2=C9 =
+=DC=D4=CF=CD=20
+=CD=CF=D6=CE=CF =C4=C1=D6=C5 =D3=DC=CB=CF=CE=CF=CD=C9=D4=D8. =
+<B>=EF=D4=D7=C5=D4=D9 =CE=C1 =D7=CF=D0=D2=CF=D3=D9. =EB=C1=CB =
+=CD=CF=D6=CE=CF =C9 =CB=C1=CB =CE=C5=CC=D8=DA=D1=20
+<BR>=CF=D0=D4=C9=CD=C9=DA=C9=D2=CF=D7=C1=D4=D8 =CE=C1=CC=CF=C7=C9 =D7 =
+2010 =C7. =D3 =D5=DE=C5=D4=CF=CD =C9=DA=CD=C5=CE=C5=CE=C9=CA =
+=DA=C1=CB=CF=CE=CF=C4=C1=D4=C5=CC=D8=D3=D4=D7=C1,=20
+=D3=D5=C4=C5=C2=CE=CF=CA =D0=D2=C1=CB=D4=C9=CB=C9 =C9 =
+<BR>=D4=C5=CE=C4=C5=CE=C3=C9=CA =D2=C1=DA=D7=C9=D4=C9=D1 =
+=D0=D2=C1=D7=CF=D0=D2=C9=CD=C5=CE=C5=CE=C9=D1. </B>=EF=C2=DA=CF=D2 =
+=C9=DA=CD=C5=CE=C5=CE=C9=CA=20
+=CE=C1=CC=CF=C7=CF=D7=CF=C7=CF =
+=DA=C1=CB=CF=CE=CF=C4=C1=D4=C5=CC=D8=D3=D4=D7=C1 =D7 2010 =C7., =
+=CB=C1=CB <BR>=CF=CE=C9 =D0=CF=D7=CC=C9=D1=CC=C9 =CE=C1 =
+=CE=C1=CC=CF=C7=CF=D7=D9=C5 =D3=C8=C5=CD=D9.=20
+=EB=C1=CB =C7=CF=D3=CF=D2=C7=C1=CE=D9 =D0=CC=C1=CE=C9=D2=D5=C0=D4 =
+=C2=CF=D2=CF=D4=D8=D3=D1 =D3 "=DE=C5=D2=CE=D9=CD=C9" =C9 =
+"=D3=C5=D2=D9=CD=C9" =D3=C8=C5=CD=C1=CD=C9 <BR>=D7 2010-2011=20
+=C7=C7. =EF=D4=D7=C5=D4=D9 =CE=C1 =D7=CF=D0=D2=CF=D3=D9. =F0=CF =
+=D6=C5=CC=C1=CE=C9=C0 =C9 =D7=CF=DA=CD=CF=D6=CE=CF=D3=D4=C9 &#8211;<B> =
+=C9=CE=C4=C9=D7=C9=C4=D5=C1=CC=D8=CE=CF=C5=20
+=DC=CB=D3=D0=D2=C5=D3=D3-<BR>=CD=CF=C4=C5=CC=C9=D2=CF=D7=C1=CE=C9=C5 =
+=D3=C8=C5=CD =CE=C1=CC=CF=C7=CF=D7=CF=C7=CF =
+=D0=CC=C1=CE=C9=D2=CF=D7=C1=CE=C9=D1 =C4=CC=D1 =
+=CB=CF=CD=D0=C1=CE=C9=CA-=D5=DE=C1=D3=D4=CE=C9=C3=20
+=D3=C5=CD=C9=CE=C1=D2=C1. <BR><FONT size=3D4>=F3=D4=CF=C9=CD=CF=D3=D4=D8 =
+=D5=DE=C1=D3=D4=C9=D1 =D3=C5=CD=C9=CE=C1=D2=C1 7900 =D2=D5=C2. =
+</FONT></B></P>
+<P align=3Dcenter><B><FONT size=3D5>=FA=C1=D1=D7=CB=C9 =CE=C1 =
+=D5=DE=C1=D3=D4=C9=C5 =D0=CF =D4=C5=CC=C5=C6=CF=CE=C1=CD: (495)=20
+506-30-78,741-87-05</FONT></B></P>
+<P><B><FONT size=3D4><SPAN style=3D"BACKGROUND-COLOR: =
+#ffff00">12.03.2010=20
+=EE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=C5 =
+=D0=CF=D3=D4=C1=D7=DD=C9=CB=C9. =EB=C1=CB =D3=CF=C8=D2=C1=CE=C9=D4=D8 =
+=D7=D9=DE=C5=D4=D9, =D5=CA=D4=C9 <BR>=CF=D4=20
+=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9"</SPAN> =
+</FONT>=F3=C5=CD=C9=CE=C1=D2 =D0=CF=D3=D7=D1=DD=C5=CE</B> =
+=D7=CF=D0=D2=CF=D3=D5 =DA=C1=DD=C9=D4=D9=20
+=CE=C1=CC=CF=C7=CF=D0=CC=C1=D4=C5=CC=D8=DD=C9=CB=C1, =
+=D0=D2=C9=DA=D7=C1=CE =D0=CF=CD=CF=DE=D8 <BR>=C5=CD=D5 =CB=C1=CB =CE=C5 =
+=D0=CF=C7=D2=D1=DA=CE=D5=D4=D8 =D7 =D4=CF=D4=C1=CC=D8=CE=D9=C8=20
+=D0=D2=CF=D7=C5=D2=CB=C1=C8 =D3=D7=CF=C9=C8 =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7, =D4=C1=CB =C9 =D7 =
+=D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=C9 =DA=C1=DD=C9=D4=C9=D4=D8 =D3=D7=CF=C9 =
+<BR>=D0=D2=C1=D7=C1 =D0=CF=20
+=D7=DA=C1=C9=CD=CF=CF=D4=CE=CF=DB=C5=CE=C9=D1=CD =D1 =D4=C1=CB=C9=CD=C9 =
+=CB=CF=CD=D0=C1=CE=C9=D1=CD=C9. =EE=C1 =D3=C5=CD=C9=CE=C1=D2=C5 =CE=C5 =
+=D4=CF=CC=D8=CB=CF =C2=D5=C4=D5=D4 =D0=CF=CB=C1=DA=C1=CE=D9=20
+=D3=D0=CF=D3=CF=C2=D9 <BR>=D0=D2=CF=D4=C9=D7=CF=C4=C5=CA=D3=D4=D7=C9=D1 =
+=D0=D2=C9=C4=C9=D2=CB=C1=CD =CE=C1=CC=CF=C7=CF=D7=CF=CA, =CE=CF =C9 =
+=C2=D5=C4=D5=D4 =D2=C1=DA=CF=C2=D2=C1=CE=D9 =D3=D0=CF=D3=CF=C2=D9=20
+=DA=C1=CB=CC=C0=DE=C5=CE=C9=D1 =C4=CF=C7=CF=D7=CF=D2=CF=D7, =
+=CB=CF=D4=CF=D2=D9=C5 =D7 <BR>=D0=D2=C9=CE=C3=C9=D0=C5 =
+=C9=D3=CB=CC=C0=DE=C1=C0=D4 =D7=CF=DA=CD=CF=D6=CE=CF=D3=D4=D8 =
+=D0=D2=C9=DA=CE=C1=CE=C9=D1=20
+=CC=C9=C3=C1 =CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=CD, =C1 =
+=D4=C1=CB=D6=C5 =DA=C1=CB=CF=CE=CE=D9=C5 =D3=D0=CF=D3=CF=C2=D9 =
+<BR>=D3=CE=C9=D6=C5=CE=C9=C5 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
+=CE=C1=C7=D2=D5=DA=CB=C9=20
+=D0=CF =EE=E4=F3 =D7 =D4=CF=CD =D3=CC=D5=DE=C1=C5, =C5=D3=CC=C9 =
+=CE=C1=CC=CF=C7=CF=D0=CC=C1=D4=C5=CC=D8=DD=C9=CB =D7 =DC=D4=CF=CD =
+<BR>=DA=C1=C9=CE=D4=C5=D2=C5=D3=CF=D7=C1=CE.<B>=20
+=F3=D4=CF=C9=CD=CF=D3=D4=D8 =D5=DE=C1=D3=D4=C9=D1 =
+=D3=C5=CD=C9=CE=C1=D2=C1 7900 =D2=D5=C2. =
+</B></P></FONT></DIV></BODY></HTML>
+
+------------6QRKI4OAFPPKEZD1--
+
+
+
+--===============4133895859865558749==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval
@@ -135,3 +383,15 @@ Try the new software tools for yourself. Speed compiling, find bugs
 proactively, and fine-tune applications for parallel performance.
 See why Intel Parallel Studio got high marks during beta.
 http://p.sf.net/sfu/intel-sw-dev
+--===============4133895859865558749==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4133895859865558749==--

@@ -1,72 +1,64 @@
-From: Masakazu Mokuno <mokuno@sm.sony.co.jp>
+From: David Brownell <david-b@pacbell.net>
 Subject: Re: [PATCH v4] serial: spi: add spi-uart driver for Maxim 3110
-Date: Fri, 26 Feb 2010 18:59:38 +0900
-Message-ID: <201002260959.o1Q9xIVA021953@imail.sm.sony.co.jp>
-References: <20100224131130.61530b62@feng-i7> <20100226114729.679bb933@feng-i7>
+Date: Fri, 26 Feb 2010 11:41:42 -0800
+Message-ID: <201002261141.43002.david-b@pacbell.net>
+References: <20100224131130.61530b62@feng-i7> <20100226114729.679bb933@feng-i7> <201002260959.o1Q9xIVA021953@imail.sm.sony.co.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-Cc: Greg KH <greg@kroah.com>,
-	David Brownell <dbrownell@users.sourceforge.net>,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Feng Tang <feng.tang@intel.com>, Greg KH <greg@kroah.com>,
 	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
+	"spi-devel-list" <spi-devel-general@lists.sourceforge.net>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>
-To: Feng Tang <feng.tang@intel.com>
+To: Masakazu Mokuno <mokuno@sm.sony.co.jp>
 Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <20100226114729.679bb933@feng-i7>
+In-Reply-To: <201002260959.o1Q9xIVA021953@imail.sm.sony.co.jp>
+Content-Disposition: inline
 Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Friday 26 February 2010, Masakazu Mokuno wrote:
+> > +static int max3110_read_multi(struct uart_max3110 *max, u8 *buf)
+> > +{
+> > +=A0=A0=A0=A0=A0u16 obuf[M3110_RX_FIFO_DEPTH], ibuf[M3110_RX_FIFO_D=
+EPTH];
+>=20
+> Doing I/O on stack is guaranteed safe for spi functions?
 
-On Fri, 26 Feb 2010 11:47:29 +0800
-Feng Tang <feng.tang@intel.com> wrote:
+Good catch ...  no it's not safe.
 
-> Hi All,
-> 
-> Here is a driver for Maxim 3110 SPI-UART device, please help to review.
+No DMA-enabled programming interface allows it, including SPI.
 
-<snip>
+The Documentation/PCI/PCI-DMA-mapping.txt file has a section with
+the oddly punctuated title "What memory is DMA'able?".  That's
+generic to all uses of DMA.  When it was moved to the PCI area,
+that information became harder to find ... but no less true for
+non-PCI contexts (sigh).  One relevant paragraph being:
 
-> +/*
-> + * This is usually used to read data from SPIC RX FIFO, which doesn't
-> + * need any delay like flushing character out.
-> + *
-> + * Return how many valide bytes are read back
-> + */
-> +static int max3110_read_multi(struct uart_max3110 *max, u8 *buf)
-> +{
-> +	u16 obuf[M3110_RX_FIFO_DEPTH], ibuf[M3110_RX_FIFO_DEPTH];
+  This rule also means that you may use neither kernel image addresses
+  (items in data/text/bss segments), nor module image addresses, nor
+  stack addresses for DMA.  These could all be mapped somewhere entirel=
+y
+  different than the rest of physical memory.  Even if those classes of
+  memory could physically work with DMA, you'd need to ensure the I/O
+  buffers were cacheline-aligned.  Without that, you'd see cacheline
+  sharing problems (data corruption) on CPUs with DMA-incoherent caches=
+=2E
+  (The CPU could write to one word, DMA would write to a different one
+  in the same cache line, and one of them could be overwritten.)
 
-Doing I/O on stack is guaranteed safe for spi functions?
+Those cacheline sharing problems are particularly bad for the stack,
+since the data corruption often includes return addresses.
 
-> +	u8 *pbuf, valid_str[M3110_RX_FIFO_DEPTH];
-> +	int i, j;
-> +
-> +	memset(obuf, 0, sizeof(obuf));
-> +	memset(obuf, 0, sizeof(ibuf));
+In short, passing a stack-based I/O buffer could work on some machines,
+but cause perplexing data corruption issues on others.  So don't try
+to do it any driver that claims to be portable.
 
-memset(ibuf, 0, sizeof(ibuf))?
+- Dave
 
-> +
-> +	if (max3110_write_then_read(max, obuf, ibuf,
-> +				M3110_RX_FIFO_DEPTH * 2, 1))
-> +		return 0;
-> +
-> +	/* If caller doesn't provide a buffer, then handle received char */
-> +	pbuf = buf ? buf : valid_str;
-> +
-> +	for (i = 0, j = 0; i < M3110_RX_FIFO_DEPTH; i++) {
-> +		if (ibuf[i] & MAX3110_READ_DATA_AVAILABLE)
-> +			pbuf[j++] = ibuf[i] & 0xff;
-> +	}
-> +
-> +	if (j && (pbuf == valid_str))
-> +		receive_chars(max, valid_str, j);
-> +
-> +	return j;
-
--- 
-Masakazu Mokuno
-
+--
+To unsubscribe from this list: send the line "unsubscribe linux-serial"=
+ in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,9 +1,15 @@
-From: "aswzadf" <6yypp15-k+cT0dCbe1g@public.gmane.org>
-Subject: [SPAM] éƒ¨é—¨ç»ç†ã€ç®¡ç†å¹²éƒ¨ç»¼åˆç®¡ç†æŠ€èƒ½æå‡
-Date: Sat, 27 Feb 2010 17:55:14 +0800
-Message-ID: <E1NlJRs-00030x-Me@sfs-ml-1.v29.ch3.sourceforge.com>
-Reply-To: w7ypp15-k+cT0dCbe1g@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============2353335492858694651=="
+From: "=?utf-8?B?MDkgLSAxMCDQvNCw0YDRgtCwIDIwMTAg0LMu?="
+	<fyqyzaqowav-h2myTqZJoK5eoWH0uzbU5w@public.gmane.org>
+Subject: =?utf-8?b?0JTQtdCx0LjRgtC+0YDRgdC60LDRjyA=?=
+	=?utf-8?b?0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0Yw6INC+0YDQs9Cw0L3QuNC3?=
+	=?utf-8?b?0LDRhtC40L7QvdC90YvQtSDQuCDQv9GA0LDQstC+0LLRi9C1INCy0L4=?=
+	=?utf-8?b?0L/RgNC+0YHRiyDRgNCw0LHQvtGC0Ysg0YEg0LTQvtC70LPQsNC80Lgg?=
+	=?utf-8?b?0LIg0LrQvtC80L/QsNC90LjQuHh2dg==?=
+Date: Sun, 28 Feb 2010 08:01:24 +0300
+Message-ID: <1085112625.20100228080124@cantv.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,263 +22,179 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2353335492858694651==
-Content-Type: text/plain;charset="GB2312"
-
-
-               ²¿ÃÅ¾­Àí¡¢¹ÜÀí¸É²¿×ÛºÏ¹ÜÀí¼¼ÄÜÌáÉý(2Ìì)
-
-
-¾Ù°ìÊ±¼ä£º3ÔÂ26-27ÈÕ ÉîÛÚ         4ÔÂ9-10ÈÕ  ÉÏº£          4ÔÂ23-24ÈÕ ±±¾©
-	
-ÅàÑµ·ÑÓÃ£º2600Ôª/Á½Ìì£¨º¬Á½ÌìÖÐ²Í¡¢Ö¸¶¨½Ì²Ä¡¢²èµã£©  
-
-ÊÚ¿Î·½Ê½£ºÄÚÈÝ½²Êö¡¢°¸Àý·ÖÎö¡¢ÓÎÏ·»¥¶¯¡¢ÌÖÂÛµãÆÀ¡¢Çé¾°ÑÝÁ·
-
-ÅàÑµ¶ÔÏó£ºÆóÒµ¸±×Ü¡¢¸÷²¿ÃÅ¾­Àí¡¢Ö÷¹Ü¡¢¸÷¼¶ÖÐ²ã¹ÜÀíÈËÔ±¡¢ÐÂÌá°ÎµÄ¡¢´Ó×¨ÒµÈË
-          ²Å×ªÐÍµ½¹ÜÀíµÄ¡¢½øÒ»²½ÏëÌá¸ß¹ÜÀí¼¨Ð§µÄ¡¢½úÉýµ½¸ß²ã¹ÜÀíÒÔ¼°ÆäËüÔ¤
-          ±¸¹ÜÀíÈËÔ±
-
-Ö÷°ìµ¥Î»£ºÖÚÈËÐÐ¹ÜÀí×ÉÑ¯Íø    
-
-×ÉÑ¯±¨Ãû£º0755-26075365 26075429  13728719948   ÁèÐ¡½ã
-
-
-©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥
-                                     Òý   ÑÔ
-
-                     ¹ÜÀí¸É²¿ÊÇÆóÒµ¾ö²ßÊµÊ©ºÍÖ´ÐÐµÄ±£Ö¤ £¡
-                     ÓÅÐãµÄ¸É²¿¼ÈÒªÓÐ¹ÜÀíÄÜÁ¦ÓÖÒªÓÐÊµ²Ù¼¼ÄÜ£¡
-                     ¹ÜÀí¸É²¿µÄ³É³¤Í¨³£Òª¾­ÀúÂþ³¤µÄ¾­Ñé»ýÀÛ£¡
-                     ±¾´ÎÅàÑµ¿ìËÙ¡¢ÓÐÐ§µØ´ï³É¹ÜÀí¸É²¿µÄ·ÉÔ¾ÌáÉý £¡
-
-©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥
-
-¿Î ³Ì ÊÕ Òæ
-
-¡ú ÐÂÈÎ¾­Àí¡¢²¿ÃÅ¾­Àí¡¢¹ÜÀí¸É²¿¿ìËÙÖ°Òµ»¯£»
-¡ú Ñ§Ï°´¦ÀíÁìµ¼¡¢ÏÂÊô¡¢ÆäËü²¿ÃÅÖ®¼äµÄÐ­Í¬ºÏ×÷¹ØÏµ£¬´¦ÀíºÃ¹¤×÷ÓëÈË¼Ê¹ØÏµ£¬×î
-   ´óÏÞ¶ÈµØ·¢»Ó¹«Ë¾µÄ×ÛºÏÊµÁ¦£»
-¡ú Ñ§Ï°ÈçºÎ³ÉÎªÒ»¸öÓÅÐãµÄÁìµ¼ÈË£¬ÈçºÎ¸üºÃµÄ´øÁìÏÂÊôÍê³É¹¤×÷Ä¿±ê£»
-¡ú Ñ§»áÓ¦ÓÃÖ÷ÒªµÄ¹ÜÀí¹¤¾ß£¨Í·ÄÔ·ç±©¡¢SWOT¡¢PDCA¡¢SMART£©£»
-¡ú ÈçºÎÌá¸ßÏÂÊôµÄÄÜÁ¦£¬½¨Éè¸ß¼¨Ð§µÄ¹ÜÀíÍÅ¶Ó£¬ÈÃÏÂÊôÔÚ¹¤×÷ÖÐ·¢»Ó¸ü¸ßµÄ¹¤×÷»ý
-   ¼«ÐÔºÍ¹¤×÷ÈÈÇé¡£
-¡ú Ñ§Ï°Ä¿±êÓë¼Æ»®¹ÜÀí£¬Ñ¸ËÙ¸ßÐ§µÄ¿ªÕ¹¹¤×÷¡£
-
-©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥
-
-¿Î ³Ì ÌØ É«
-
-¡úÀíÂÛÁªÏµÊµ¼ù£ºÔÙºÃµÄÀíÂÛ£¬²»ÄÜÊµ¼ÊÓ¦ÓÃ£¬¶ÔÆóÒµÃ»ÓÐÈÎºÎ×÷ÓÃ¡£±¾´ÎÅàÑµÊÇÔÚ
-  Ñµ×¨¼ÒÊµ¼ù¹¤×÷µÄ»ù´¡ÉÏ£¬ÔÙ´ÎÉÏÉýµ½ÀíÂÛÖ¸µ¼µÄ¸ß¶ÈÉÏ£»
-¡ú²Ù×÷ÐÔÇ¿£ºÔÚÉîÈëÀí½âµÄ»ù´¡ÉÏ£¬ÌáÁ¶¡¢×Ü½á¡¢¹éÄÉ´óÁ¿µÄ¹ÜÀí¹¤¾ßÐÔµÄ
-¡úÉú¶¯»î²¨£ºÀíÂÛ·ÖÎö¡¢°¸ÀýÌÖÂÛ¡¢ÊµÀý·ÖÎö¡¢½ÇÉ«°çÑÝ¡¢ÅàÑµÓÎÏ·¡¢¹ÊÊÂÃèÊöµÈÁé
-  »î¶àÑùµÄÅàÑµÐÎÊ½£¬ÔÚÇáËÉÓä¿ìµÄ»·¾³ÖÐµÃµ½ÌáÉý¡£
-
-©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥
-
-Åà Ñµ Ìá ¸Ù
-
-µÚÒ»ÕÂ¡¢Ê²Ã´ÊÇ¹ÜÀí
- 	¡ú ¹ÜÀíµÄÊµÖÊÊÇÊ²Ã´   
- 	¡ú ¹ÜÀíµÄÄ¿µÄÊÇÈÃ±ðÈË×÷ÊÂ£¬¹ÜÀíºÃ×Ô¼º²»ÊÇºÃµÄ¹ÜÀí
-
-µÚ¶þÕÂ¡¢ÈçºÎ¹ÜÀíÐÄÌ¬
- 	¡ú ÈçºÎ²ÅÄÜ¿ìËÙµÄÌá¸ßÏÂÊôµÄ¹¤×÷¼¨Ð§£¿
- 	¡ú ÈçºÎÈÃÏÂÊôÔÚÖ÷¶¯»ý¼«£¬¶ø²»ÊÇ±»¶¯Ïû¼«£¿
- 	¡ú ÈçºÎÈÃÏÂÊôÔÚ¹¤×÷ÖÐÈ«Á¦ÒÔ¸°£¬¶ø²»ÊÇÈ«Á¦Ó¦¸¶£¿
- 	¡ú ÈçºÎÈÃÏÂÊôÔÚ¹¤×÷ÖÐÈ«Á¦Ïë°ì·¨£¬¶ø²»ÊÇÍÆÐ¶ÔðÈÎ 
- 	¡ú ºÏÀíÍêÉÆµÄÖÆ¶È½¨ÉèÊÇÒ»¸ö³¤ÆÚ¡¢³ÖÐøµÄµÄ¹¤×÷
- 	¡ú ÄÜ²»ÄÜÕÒµ½Ò»¸öÁ¢¸Ë¼ûÓ°µÄ·½·¨£¿ ÏÖÔÚ¸Ä±äÂíÉÏ¾Í¿´µ½Ð§¹û£¿
-
-µÚÈýÕÂ¡¢¹ÜÀíµÄ»ù±¾ÌØÐÔ
- 	¡ú Ä¿µÄÐÔ  ÓÐÐ§ÐÔ   ËûÈËÐÔ   ¶àÑùÐÔ
-
-µÚËÄÕÂ¡¢Ê²Ã´ÑùµÄ¹ÜÀíÊÇ×îÊÊºÏÆóÒµµÄ¹ÜÀí
- 	¡ú ¹ÜÀíµÄ·½·¨ºÍ¼¼Êõ¶àÖÖ¶àÑù£¬Ê²Ã´ÑùµÄÄ£Ê½²ÅÊÇ×îÊÊºÏÆóÒµ·¢Õ¹µÄ£¿
- 	¡ú Ö»ÓÐÕÒµ½×îÊÊºÏÎÒÃÇÆóÒµ·¢Õ¹µÄ¹ÜÀíÄ£Ê½£¬²ÅÄÜ±ÜÃâ¹ÜÀíµÄÃ¤Ä¿ÐÔ
-
-µÚÎåÕÂ¡¢¹ÜÀí¡¢×éÖ¯¡¢Áìµ¼ÈýÕßµÄÏà»¥¹ØÏµºÍÒìÍ¬ 
- 	¡ú ¹ÜÀíÕß¡¢Áìµ¼Õßµ½µ×Ó¦¸Ã×öÄÄÐ©ÊÂ£¿²»Ó¦¸Ã×öÄÄÐ©ÊÂ£¿
- 	¡ú ÖÆ¶È»¯¹ÜÀíÓëÈËÐÔ»¯¹ÜÀíÈçºÎ½áºÏ£¿
- 	¡ú ¹ÜÀíÕßºÍÁìµ¼ÕßÃ¿ÌìµÄ¹¤×÷ÄÚÈÝÓÐÊ²Ã´²»Í¬£¿
- 	¡ú ×éÖ¯µÄÄ¿µÄÊÇÊ²Ã´£¿
-
-µÚÁùÕÂ¡¢¹ÜÀí½ÇÉ«µÄÈÏÖª
- 	¡ú Ã¿ÌìÁìµ¼µÄ¹¤×÷½ôÕÅ¡¢Ã¦Âµ¡¢¶øÏÂÊôµ¹ÊÇÓÐÊ±¼ä¿´±¨Ö½¡¢ºÈ¿§·È
- 	¡ú ÉÏ¼¶¾­³£×öÁË¹ý¶àÏÂÊôÓ¦¸Ã×öµÄÊÂÇé
- 	¡ú ×Ô¼ºµÄÊÂÇéÓÖÃ»ÓÐÊ±¼ä×öºÃ  µ¼ÖÂ¹¤×÷¼¨Ð§²»ºÃ¡¢Ä¿±êÎÞ·¨Íê³É
-
-Àí½â·ÖÎö º«·Ç×Ó £º ÏÂ¾ý¾¡ÒÑÖ®ÄÜ
-                   ÖÐ¾ý¾¡ÈËÖ®Á¦
-                   ÉÏ¾ý¾¡ÈËÖ®ÖÇ
-
-µÚÆßÕÂ¡¢Áìµ¼Á¦ÌáÉýµÄ¼¼ÇÉ
-        ·ÖÎöÌÖÂÛ£ºÊ²Ã´ÑùµÄÁìµ¼ÊÇÒ»¸öÓÅÐãµÄÁìµ¼ 
-        Ò»¡¢Áìµ¼È¨ÍþµÄÀ´Ô´
-            Áìµ¼Á¦µÄ°Ë¸öËØÖÊÌØÕ÷
-            1¡¢³ÏÐÅ£¨ÊÇ½¨Á¢ÐÅÈÎ¹ØÏµµÄ³ö·¢µã£©
-            2¡¢×¨ÒµÄÜÁ¦(Ö÷ÒªÊÇ·½ÏòºÍ¾ö²ß£¬ÊÇÁìµ¼Á¦µÄ»ù´¡)
-            3¡¢¹ØÐÄ¡¢°ïÖúÏÂÊô£¨´Ó¹¤×÷¡¢Éú»îÌåÏÖÊÇÁìµ¼Á¦µÄÔ´Èª£©
-            4¡¢¿íÑÏÏà¼Ã(Ò»ÕÅÒ»³Ú¡¢ÎÄÎäÖ®µÀÊÇÁìµ¼Á¦ÊµÏÖµÄÊÖ¶Î)
-            5¡¢·ÖÏí³É¹¦ÓëÊ§°Ü£¨ÊÇÁìµ¼Á¦µÄ½á¹û±£Ö¤£©
-            6¡¢Ñ§Ï°Ìá¸ß£¨ÊÇÁìµ¼Á¦³¤Ô¶ÌåÏÖµÄ¸ù±¾£©
-            7¡¢¾«Á¦ºÍÈÈÇé£¨ÊÇ¼¤·¢ÏÂÊôµÄ·¢¶¯»ú£©
-            8¡¢¼á³Ö £¨ÊÇÍê³É¹¤×÷Ä¿±êµÄ»ùÊ¯£©
-
-        ¶þ¡¢Áìµ¼·½Ê½
-        Èý¡¢Çé¾³Áìµ¼ÓëËÄÖÖÁìµ¼·ç¸ñ
-           ¡ú ¸ù¾Ý±»Áìµ¼ÕßµÄ¾ßÌåÇé¿ö¾ö¶¨²»Í¬µÄÁìµ¼·ç¸ñ
- 	    ¡ú ¸æÖªÊ½  ÍÆÏúÊ½  ²ÎÓëÊ½  ÊÚÈ¨Ê½ 
- 	    ¡ú °¸Àý·ÖÎö£º 
-
-        ËÄ¡¢ÈçºÎÅàÑøÏÂÊô
- 	    ¡ú ÔÚÓÅÐãÁìµ¼ÑÛÖÐÏÂÊô¸ö¸ö¶¼ÊÇÈË²Å£¬ÔÚÆ½Ó¹Áìµ¼ÑÛÖÐÏÂÊô¸ö¸ö¶¼ÊÇ±¿µ°
- 	    ¡ú ÅàÑøÏÂÊôµÄ×î¸ßÔ­ÔòÊÇÈÎÓÃÏÂÊôµÄÓÅµã£¬¶ø²»ÊÇ·¢ÏÖÏÂÊôµÄÈ±µã
- 	    ¡ú ÈçºÎ²ÅÄÜÖªÈËÉÆÓÃ£¬ÈçºÎ²ÅÄÜÈË¾¡Æä²Å£¿
-               1¡¢ÅàÑøÏÂÊôÓÐÊ²Ã´ºÃ´¦
-               2¡¢ÅàÑøÏÂÊôµÄ¹ËÂÇ
-               3¡¢ÅàÑøÏÂÊôµÄ·½·¨
-               4¡¢ÅàÑøÏÂÊôµÄÔ­Ôò
- 	    ¡ú °¸Àý·ÖÎö£ºÈçºÎÀí½âÒò²ÄÊ©½ÌµÄÅàÑøÔ­Ôò£¿
-
-        Îå¡¢ÊÚÈ¨¹ÜÀí
-            ¡ú Ã»ÓÐÊÚÈ¨ ¾ÍÃ»ÓÐÁìµ¼µÄÁ¼ºÃ¹¤×÷¼¨Ð§
-               1¡¢ÎªÊ²Ã´ÒªÊÚÈ¨
-               2¡¢ÊÚÈ¨¹ÜÀíµÄÎóÇøÊÇÊ²Ã´
-               3¡¢ÊÚÈ¨¹ÜÀíµÄÔ­Ôò
-               4¡¢ÊÚÈ¨¹ÜÀíµÄ·½·¨ 
-
-µÚ°ËÕÂ¡¢¹ÜÀí¹µÍ¨Óë¹ØÏµÐ­µ÷
- 	¡ú ¹ÜÀí¹µÍ¨µÄ¼¼ÇÉÊÇÖÐ²ã¹ÜÀíÈËÔ±×î¹Ø¼üÒ²ÊÇ×îÖØÒªµÄ¹¤×÷ÄÜÁ¦
- 	¡ú Ã»ÓÐÁ¼ºÃË³³©µÄ¹µÍ¨  ¾ÍÃ»ÓÐÁ¼ºÃµÄ¹¤×÷½á¹û
-
-        Ò»¡¢Ê²Ã´ÊÇ¹µÍ¨ £¿
- 	    ¡ú ¹µÍ¨²»ÊÇ¼òµ¥µÄ½²»°£¬¹µÍ¨ÊÇÏà»¥µÄÀí½â
- 	    ¡ú ÓÐÐ§¹µÍ¨µÄÈý¸ö»ù±¾Ô­ÔòÊÇÊ²Ã´£¿
- 	    ¡ú Õ¾ÔÚ¶Ô·½µÄÁ¢³¡ÉÏÔ­Ôò    Ê±¼ä¼°Ê±ÐÔÔ­Ôò  Ö÷¶¯ÐÔÔ­Ôò   
-
-        ¶þ¡¢¹µÍ¨µÄÌØÐÔ 
- 	    ¡ú Ë«Ïò·´À¡ÊÇ¹µÍ¨µÄ»ù´¡
- 	    ¡ú ²»Í¬ÎÄ»¯¡¢²»Í¬Ãñ×å¡¢²»Í¬·½ÏòµÄ¹µÍ¨Ä£Ê½²»Í¬£º
- 	    ¡ú ÃÀ¹úÊ½µÄ¹µÍ¨ÊÇÊ²Ã´Ä£Ê½£¿
- 	    ¡ú ÈÕ±¾Ê½µÄ¹µÍ¨ÊÇÊ²Ã´Ä£Ê½£¿
- 	    ¡ú ÖÐ¹úÊ½µÄ¹µÍ¨ÊÇÊ²Ã´Ä£Ê½£¿
- 	    ¡ú ÓëÉÏ¼¶Áìµ¼µÄ¹µÍ¨ÊÇÊ²Ã´Ä£Ê½£¿
- 	    ¡ú ÓëÏÂÊôµÄ¹µÍ¨ÊÇÊ²Ã´Ä£Ê½£¿
- 	    ¡ú ¹µÍ¨µÄÐ§¹û±ÈÓÐµÀÀíÖØÒª
-
-        Èý¡¢¹ÜÀí¹µÍ¨µÄÖÖÀà¼°ÐÎÊ½
- 	    ¡ú ¹ÜÀí¹µÍ¨²»¾ÖÏÞÓÚÓïÑÔ¡¢·ÇÓïÑÔµÄ¹µÍ¨¾ßÓÐ¸üÖØÒªµÄ×÷ÓÃ
- 	    ¡ú ·ÇÓïÑÔµÄ¹µÍ¨·½Ê½»á¸üÖ±½Ó¡¢¸ü¿ìËÙ¡¢¸üÄÑÒÔ×÷¼Ù
- 	    ¡ú °¸Àý·ÖÎö ¡¢ÌÖÂÛ  Â¼Ïñ·ÖÎö
-
-        ËÄ¡¢¹µÍ¨µÄ²½Öè 
-
-        Îå¡¢²»Í¬¹µÍ¨·ç¸ñµÄ¹ÜÀíÕß·ÖÎöÓëÓ¦¶Ô
- 	    ¡ú Ã¿¸öÈË¶¼ÓÐ²»Í¬µÄÐÔ¸ñ£¬¾ö¶¨ËûµÄÐÐÎª·½Ê½ºÍ×÷ÊÂÔ­Ôò
- 	    ¡ú Ñ§»áÁË½â×Ô¼º¡¢ÈÏÊ¶±ðÈËµÄÐÔ¸ñ£¬×öµ½ÖªÒÑÖªÈË£¬²ÅÄÜ¸üºÃµÄ¹µÍ¨Ð­µ÷
- 	    ¡ú ÓÐ·½Ïò¡¢½²·½·¨Óë¶Ô·½¹µÍ¨Ð­µ÷
- 	       1.·ÖÎöÐÍÈËµÄÌØÕ÷Óë¹µÍ¨¼¼ÇÉ
- 	       2.Ö§ÅäÐÍÈËµÄÌØÕ÷Óë¹µÍ¨¼¼ÇÉ
- 	       3.±í´ïÐÍÈËµÄÌØÕ÷Óë¹µÍ¨¼¼ÇÉ
- 	       4.ºÍ°ªÐÍÈËµÄÌØÕ÷Óë¹µÍ¨¼¼ÇÉ
- 	    ¡ú °¸Àý·ÖÎö£º·ÖÎö²Ü²Ù¡¢Áõ±¸¡¢ËïÈ¨µÄ¸öÐÔÓë¹µÍ¨¼¼ÇÉ
-
-        Áù¡¢¹µÍ¨µÄ·½Ïò
- 	    ¡ú ¹ÜÀíÕßÓëÉÏ¼¶¡¢Í¬¼¶¡¢ÏÂÊô¹µÍ¨µÄ¼¼ÇÉ
-               1¡¢¹µÍ¨µÄÔ­Ôò
-               2¡¢¹µÍ¨µÄ·½·¨
-               3¡¢¹µÍ¨µÄÕÏ°­
- 	    ¡ú °¸ÀýÌÖÂÛ£º¶ÔÉÏ¼¶µÄ¹¤×÷ÓÐ²»Í¬µÄÒâ¼ûÄãÓ¦¸ÃÔõÃ´°ì£¿
- 	    ¡ú °¸ÀýÌÖÂÛ£ºÉÏ¼¶¶ÔÄãµÄ±¨¸æÓÐ·´¶ÔÒâ¼û ÄãÔõÃ´°ì£¿
- 	       ¡Ñ ÈçºÎ¡¸´¦ÀíÏÂ¼¶Ô½¼¶ÏòÄã»ã±¨¡¹£¿
- 	       ¡Ñ ÈçºÎ¡¸´¦Àí²¿ÊôµÄ¹ýÊ§ÐÐÎª¡¹£¿
- 	       ¡Ñ ÈçºÎ¡¸´¦ÀíÉÏË¾µ÷ÅÉ×Ô¼º²¿Êô¹¤×÷µÄÇé¿ö¡¹£¿
- 	       ¡Ñ ÈçºÎ¡¸Ãæ¶ÔÓÐÄÜÁ¦µ«²»Ìý»°µÄ²¿Êô¡¹£¿
-
-µÚ¾ÅÕÂ¡¢Ê±¼ä¹ÜÀí
-        Ò»¡¢ÎªÊ²Ã´Òª¹ÜÀíÊ±¼ä
-            1¡¢´ÓÆóÒµÀ´Ëµ¡ªÊÐ³¡¾ºÕùµÄ±ØÈ»
-            2¡¢´Ó¸öÈËÀ´Ëµ¨C ¸öÌåÉúÃüµÄÓÐÏÞÐÔ
-        ¶þ¡¢Ê±¼ä¹ÜÀíµÄÄ¿±ê£º
-        Èý¡¢Ê±¼ä¹ÜÀíµÄÈý¸öÔ­Ôò
-            µÚÒ»Ô­Ôò£ºÄ¿±ê¹ÜÀíÔ­Ôò
-            µÚ¶þÔ­Ôò£º×¥×¡ÖØµãÔ­Ôò ¡°80¡¢20¡±·¨ÔòÔËÓÃ
-            µÚÈýÔ­Ôò£º¹¤×÷ÓÅÏÈ¼¶×ÛºÏ·ÖÎö
-        ËÄ¡¢Ê±¼ä¹ÜÀíµÄ22¸ö²ßÂÔ
-
-µÚÊ®ÕÂ¡¢Ä¿±êÓë¼Æ»®¹ÜÀí
-        Ò»¡¢Ä¿±ê¹ÜÀíµÄÖØÒªÐÔ
-        ¶þ¡¢Ä¿±ê¹ÜÀíÔÚÆóÒµµÄÓ¦ÓÃ
-        Èý¡¢ÈçºÎÖÆ¶¨ÕýÈ·µÄÆóÒµÄ¿±ê
-        ËÄ¡¢Ä¿±êÓë¼Æ»®µÄ¾ßÌå²Ù×÷
-        Îå¡¢Ä¿±êÓë¼Æ»®µÄ¿ØÖÆ
-            1¡¢×ÊÔ´¹ÜÀí
-            2¡¢·Ö¹¤Ð­×÷
-            3¡¢Ä¿±êÐÞÕý
-            4¡¢×Ü½áÌá¸ß
-
-
-©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥
-         
-½²Ê¦½éÉÜ¡ªÀî¸ïÔö
-
-    ÊµÕ½ÐÍÅàÑµ×¨¼Ò£»Çå»ª´óÑ§¡¢±±¾©´óÑ§ÌØÆ¸ÅàÑµ½²Ê¦£»ÉîÛÚ¹ÜÀí×ÉÑ¯Ð­»á¹ÜÀí×¨¼Ò£»
-ÍâÉÌÍ¶×ÊÐ­»áÅàÑµ×¨¼Ò£»ÖÐ¹úÆóÒµÁªºÏ»á¹ËÎÊ£»Ïã¸Û¹â»ª¹ÜÀíÑ§Ôº¿Í×ù½ÌÊÚ£»ÃÀ¹úAITA
-ÈÏÖ¤¹ú¼ÊÖ°ÒµÅàÑµÊ¦£»Å·ÖÞSKP»ú¹¹¸ß¼¶¹ÜÀí¹ËÎÊ£»ÆóÒµ¼ÒÐ­»áÌØÆ¸ÅàÑµ½²Ê¦£»¶àÄê´ÓÊÂ
-ÆóÒµ¸ß²ã¹ÜÀíÓë×ÉÑ¯¹¤×÷¾­Ñé£¬ÔÚµÂÂ¡¼¯ÍÅ¡¢Éî¸ßËÙ¡¢ÃÀ¹ú¡°MOTHERS¡±¡¢ÖÚÈËÐÐ¹ÜÀí×É
-Ñ¯µÈ´óÐÍ¼¯ÍÅ¹«Ë¾¼°¹ÜÀí¹ËÎÊ¹«Ë¾ÀúÈÎÅàÑµ¾­Àí¡¢ÐÐÕþ×Ü¼à¡¢ÓªÏú×Ü¼à¡¢ÅàÑµ×Ü¼à¡¢¸±
-×Ü¾­ÀíµÈÖ°Î»¡£
-
-    ¶ÔÆóÒµ¹ÜÀí¡¢¿Í»§·þÎñ¡¢Æ·ÅÆ¹ÜÀí¡¢ÆóÒµÎÄ»¯µÈ¾ßÓÐÁ¼ºÃµÄÅàÑµÓë×ÉÑ¯¾­Ñé£»²»½ö
-¾ßÓÐÉîºñµÄÀíÂÛÖªÊ¶£¬¶øÇÒ¾ß±¸·á¸»µÄÊµ¼ù²Ù×÷ÄÜÁ¦£»×¢ÖØ¶ÔÆóÒµ¹ÜÀíÎÊÌâµÄ·ÖÎöºÍ½â
-¾ö¡¢½²ÇóÊµÐ§ÐÔºÍÊÊÓÃÐÔ¡£
-
-    ÉÃ³¤¿Î³Ì£º¡¶Ö°Òµ¾­ÀíÈË×Ê¸ñÈÏÖ¤¡·¡¢¡¶ÆóÒµÖÐ²ã¾­Àí×ÛºÏ¹ÜÀí¼¼ÄÜÅàÑµ¡·¡¶¸ß¼¶
-ÃØÊéÖ°Òµ»¯ÅàÑµ¡·¡¢¡¶ÈçºÎ³ÉÎªÓÅÐãÔ±¹¤¡·¡¢¡¶¹ÜÀí¹µÍ¨Óë¹¤×÷Ð­µ÷¼¼ÇÉ¡·
-
-    ÅàÑµÌØÉ«£ºÒÔ»¥¶¯¡¢Çé¾°Ê½ÅàÑµ¼û³¤£¬×¢ÖØÊÜÑµÈËÔ±µÄ¸ÐÎò¼°²ÎÓë£¬ÅàÑµ·ç¸ñÉîÈë
-Ç³³ö¡¢ÌõÀíÇåÎú¡¢¿ÎÌÃÆø·ÕÇáËÉ¡¢»îÔ¾¡¢ÊµÕ½ÐÔÇ¿£¬Í¨¹ý¸÷ÖÖÊµ¼Ê°¸Àý¼°¹ÜÀíÓÎÏ·µÈ·½
-Ê½³ä·Öµ÷¶¯²ÎÑµÈËÔ±µÄÅàÑµÈÈÇé¡£
-
-    ÔøÅàÑµ»ò×ÉÑ¯¹ýµÄÆóÒµÓÐ£º³¤½­µçÁ¦(ÈýÏ¿×Ü¹«Ë¾)¡¢ÉîÛÚ»ªÎª¡¢ÖÐ¹úµçÐÅ¡¢ÇàµºÖÐ
-»¯¼¯ÍÅ¡¢ÖÐÊ¯ÓÍ¡¢É£·ÆÍ¨Ñ¶¡¢°ÂÁÖ°ÍË¹¡¢ÏÃÃÅº½¿Õ¡¢ËÕÖÝÈýÐÇµç×Ó¡¢¹ã¶«ÒÆ¶¯¡¢Éß¿ÚÄÏ
-Ë³Ãæ·Û¡¢ÈýÑó»úµç¡¢ÆôÃ÷ÐÇ³¿¡¢Áª°î¿ìµÝ¡¢¿ÂÄá¿¨ÃÀÄÜ´ï¡¢ÖÐÐÅÎïÒµ¡¢ÐÅÍ³¹âµç¡¢Ìì»ª
-»á¼ÆÊ¦ÊÂÎñËù¡¢ÄÏæÚµç³Ø¡¢TCL¼¯ÍÅ¡¢º£Å·ÎÀÔ¡¡¢½­ÁåÆû³µ¡¢ÓÑ°î±£ÏÕ¡¢ÖÐµç¼¯ÍÅ¡¢ º£
-ÄÏÂí×Ô´ï¡¢Ò¼Ê±´ú´«Ã½¡¢´´Î¬¼¯ÍÅ¡¢Õã½­½ðÖÞ¼¯ÍÅ¡¢³¤ÁÁ¿Æ¼¼¡¢ÁªÌ©¼¯ÍÅ¡¢·ÉÀûÆÖÖÐ¹ú¡¢
-¿ÆÑóÊýÂë¡¢·ðÉ½º£ÄÉ´¨Ò©Òµ¡¢ÄÏÌ«¼¯ÍÅ¡¢ÉñÁúÆû³µ¡¢ÖÐ¹úÊ¯ÓÍ¡¢Äþ²¨ÐÂ·åµçÆ÷¡¢Íþº£±±
-ÑóµçÆø¼¯ÍÅ¡¢ºÍ¼Í»ÆÆÒÖÐÒ©¡¢ºÓ±±ÈÈµç¡¢ÖÐ¼¯¼¯×°Ïä¡¢ÈýöÎ¹É·Ý¡¢ÖÐÐÅ¼¯ÍÅ¡¢ÃÀµÄ¼Òµç¡¢
-ÖÐº£¼¯ÍÅ¡¢·ÉÀûÆÖ°ëµ¼Ìå¡¢ÖÐ¹úµç×Ó×Ü¹«Ë¾¡¢¹ãÎ÷µçÁ¦¡¢ÉÏº£ÆÖ¶«·¢Õ¹ÒøÐÐ¡¢½¨ÉèÒøÐÐ
-¸£½¨Ö§ÐÐ¡¢ÖÐ¹úÍøÍ¨¡¢±±¾©Ê×¶¼»ú³¡¡¢Î÷ÃÅ×Ó¡¢Å·ÆÕÕÕÃ÷¡¢Ìì½ò°¬ÈðË¹¼¯ÍÅ¡¢¹ã¶«ÈýÓÑ
-¼¯ÍÅ¡¢Ê¯¼Ò×¯»ªµç¹©ÈÈ¼¯ÍÅ¡¢ÉîÛÚ½õ·å¼¯ÍÅ¡¢¹ãÎ÷µçÁ¦¡¢ÖÐº½µØ²ú¡¢¹ÛÀ½¸ß¶û·ò¡¢Ìì½ò
-Ö°Òµ¾­ÀíÈËÑ§Ôº¡¢É½Î÷¹ØÂÁ¡¢¸£½¨°®ÆÕÉú¡¢ÔÆÄÏÑÌ²Ý¡¢¿ÆÀÕ¡¢ÁúµÄ¼Òµç¡¢ÍõÀÏ¼ª¡¢÷è÷ë
-Æ¡¾Æ¡¢ÖÐ½ðÁëÄÏ¡¢ÔÆÌì»¯¼¯ÍÅ¡¢ºÓÄÏÐÄÁ¬ÐÄ»¯·Ê¡¢ºÓÄÏÈð±´¿¨¼¯ÍÅµÈ¡£
-
-
-
-
---===============2353335492858694651==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
---===============2353335492858694651==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============2353335492858694651==--
+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fgog
+ICAwOSAtIDEwINC80LDRgNGC0LAgMjAxMNCzLgogCiDQo9Cf0KDQkNCS0JvQldCd0JjQlSAg0JTQ
+ldCR0JjQotCe0KDQodCa0J7QmSAg0JfQkNCU0J7Qm9CW0JXQndCd0J7QodCi0KzQrjog0L7RgNCz
+0LDQvdC40LfQsNGG0LjQvtC90L3Ri9C1INC4INC/0YDQsNCy0L7QstGL0LUg0LLQvtC/0YDQvtGB
+0Ysg0YDQsNCx0L7RgtGLINGBINC00L7Qu9Cz0LDQvNC4INCyINC60L7QvNC/0LDQvdC40LgKCn5+
+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4K0J3Q
+sCDRgdC10LzQuNC90LDRgCDQn9Cg0JjQk9Cb0JDQqNCQ0K7QotCh0K86INGA0YPQutC+0LLQvtC0
+0LjRgtC10LvQuCDQutC+0LzQv9Cw0L3QuNC5LCDQutC+0LzQvNC10YDRh9C10YHQutC40LUg0LTQ
+uNGA0LXQutGC0L7RgNCwLCDRgNGD0LrQvtCy0L7QtNC40YLQtdC70Lgg0YTQuNC90LDQvdGB0L7Q
+stGL0YUg0L7RgtC00LXQu9C+0LIsINGA0YPQutC+0LLQvtC00LjRgtC10LvQuCDQvtGC0LTQtdC7
+0L7QsiDQv9GA0L7QtNCw0LYsINGB0L7RgtGA0YPQtNC90LjQutC4INC00L7Qs9C+0LLQvtGA0L3R
+i9GFINC+0YLQtNC10LvQvtCyLCDRgdC/0LXRhtC40LDQu9C40YHRgtGLINGB0LHRi9GC0L7QstGL
+0YUg0YHQu9GD0LbQsSwg0LAg0YLQsNC60LbQtSDQstGB0LUg0YHQv9C10YbQuNCw0LvQuNGB0YLR
+iywg0LrQvtGC0L7RgNGL0Lwg0L/RgNC40YXQvtC00LjRgtGB0Y8g0YDQsNCx0L7RgtCw0YLRjCDR
+gSDQtNC+0LvQttC90LjQutCw0LzQuC4KCtCm0JXQm9CsINGB0LXQvNC40L3QsNGA0LA6INGD0YfQ
+sNGB0YLQvdC40LrQuCDRgdC10LzQuNC90LDRgNCwINGD0LfQvdCw0Y7Rgiwg0LrQsNC6INC/0L7R
+gdGC0YDQvtC40YLRjCDRgdC40YHRgtC10LzRgyDRg9C/0YDQsNCy0LvQtdC90LjRjyDQtNC10LHQ
+uNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQttC10L3QvdC+0YHRgtGM0Y4g0LIg0LrQvtC80L/Q
+sNC90LjQuCwg0L/RgNC40L7QsdGA0LXRgtGD0YIg0L3QsNCy0YvQutC4INC4INC40L3RgdGC0YDR
+g9C80LXQvdGC0Ysg0LTQu9GPINGB0LDQvNC+0YHRgtC+0Y/RgtC10LvRjNC90L7Qs9C+INC/0L7R
+gdGC0YDQvtC10L3QuNGPINGB0LjRgdGC0LXQvNGLINC/0L4g0LLQvtC30LLRgNCw0YLRgyDQtNC+
+0LvQs9C+0LIg0LIg0YHQstC+0LXQuSDQutC+0LzQv9Cw0L3QuNC4Lgp+fn5+fn5+fn5+fn5+fn5+
+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+CtCf0KDQntCT0KDQkNCc0JzQ
+kCDQodCV0JzQmNCd0JDQoNCQCgrQktCe0J/QoNCe0KHQqyDQo9Cf0KDQkNCS0JvQldCd0JjQryDQ
+lNCV0JHQmNCi0J7QoNCh0JrQntCZINCX0JDQlNCe0JvQltCV0J3QndCe0KHQotCs0K4K0J7QoNCT
+0JDQndCY0JfQkNCm0JjQntCd0J3QkNCvICDQodCi0KDQo9Ca0KLQo9Cg0JAg0YPQv9GA0LDQstC7
+0LXQvdC40Y8g0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQtdC90L3QvtGB0YLR
+jNGOOgogICAtINCe0YDQs9Cw0L3QuNC30LDRhtC40Y8g0YHRgtGA0YPQutGC0YPRgNC90L7Qs9C+
+INC/0L7QtNGA0LDQt9C00LXQu9C10L3QuNGPICjRgdC/0LXRhtC40LDQu9C40YHRgtCwKSDQv9C+
+INGD0L/RgNCw0LLQu9C10L3QuNGOINC00L7Qu9Cz0LDQvNC4OyAKICAgLSDQptC10LvQuCwg0LfQ
+sNC00LDRh9C4INC4INC/0L7Qu9C90L7QvNC+0YfQuNGPINC40L3QutCw0YHRgdCw0YbQuNC4INC0
+0LXQsdC40YLQvtGA0YHQutC+0Lkg0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0YzRji4gCgrQn9Cg
+0J7QpNCY0JvQkNCa0KLQmNCa0JAg0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQ
+tdC90L3QvtGB0YLRjNGOOgogICAtINCe0LHQtdGB0L/QtdGH0LjRgtC10LvRjNC90YvQtSDQvNC1
+0YDRiyDQuNGB0L/QvtC70L3QtdC90LjRjyDQutC+0L3RgtGA0LDQs9C10L3RgtCw0LzQuCDQuNGF
+INC+0LHRj9C30LDRgtC10LvRjNGB0YLQsiDQuNC70Lgg0LrQsNC6INC30LDRidC40YLQuNGC0Ywg
+0LrRgNC10LTQuNGC0L7RgNCwINC+0YIg0YDQuNGB0LrQsCDQvdC10LLQvtC30LLRgNCw0YnQtdC9
+0LjRjyDQtNC+0LvQs9CwOyAKICAgLSDQpNC+0YDQvNC40YDQvtCy0LDQvdC40Y8g0LjRgdC/0L7Q
+u9C90LjRgtC10LvRjNGB0LrQvtC5INC00LjRgdGG0LjQv9C70LjQvdGLINC60L7QvdGC0YDQsNCz
+0LXQvdGC0L7QsjsgCiAgIC0g0JzQvtGC0LjQstCw0YbQuNGPINC00L7Qu9C20L3QuNC60L7Qsi4g
+CgrQmtCg0JXQlNCY0KLQndCQ0K8gINCf0J7Qm9CY0KLQmNCa0JAgINC/0YDQtdC00L/RgNC40Y/R
+gtC40Y8g0YEg0L/QvtC30LjRhtC40Lgg0L/RgNC+0YTQuNC70LDQutGC0LjQutC4INC00LXQsdC4
+0YLQvtGA0YHQutC+0Lkg0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0YzRjjoKICAgLSDQn9C+0YHR
+gtGA0L7QtdC90LjQtSDRgNC10LnRgtC40L3Qs9C+0LLQvtC5INGI0LrQsNC70Ysg0LTQvtC70LbQ
+vdC40LrQvtCyINC4INC60LvQsNGB0YHQuNGE0LjQutCw0YbQuNGPINC00LXQsdC40YLQvtGA0YHQ
+utC+0Lkg0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0YzRjiDQsiDRhtC10LvRj9GFINC80LjQvdC4
+0LzQuNC30LDRhtC40Lgg0L/RgNC10LTQv9GA0LjQvdC40LzQsNGC0LXQu9GM0YHQutC40YUg0YDQ
+uNGB0LrQvtCyOyAKICAgLSDQnNCw0YDQutC10YLQuNC90LPQvtCy0YvQtSDQsNGB0L/QtdC60YLR
+iyDQsiDQutGA0LXQtNC40YLQvdC+0Lkg0L/QvtC70LjRgtC40LrQtS4gCgrQoNCY0KHQmtCYICDR
+g9C/0YDQsNCy0LvQtdC90LjRjyDQtNC10LHQuNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQttC1
+0L3QvdC+0YHRgtGM0Y46CiAgIC0g0KDQuNGB0LrQuCwg0YHQstGP0LfQsNC90L3Ri9C1INGBINC6
+0YDQtdC00LjRgtC90L7QuSDQv9C+0LvQuNGC0LjQutC+0Lkg0Lgg0YHQuNGB0YLQtdC80L7QuSDR
+g9C/0YDQsNCy0LvQtdC90LjRjyDQtNC10LHQuNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQttC1
+0L3QvdC+0YHRgtGM0Y47IAogICAtINCg0LjRgdC60LgsINGB0LLRj9C30LDQvdC90YvQtSDRgSDQ
+tNC+0LvQttC90LjQutC+0Lwg0Lgg0LTQvtC70LPQvtC8LiAKCtCf0J7QodCi0JDQndCe0JLQmtCQ
+ICDQo9Cn0JXQotCQICDQmCAg0JrQntCd0KLQoNCe0JvQryAg0LfQsCDQtNC10LHQuNGC0L7RgNGB
+0LrQvtC5INC30LDQtNC+0LvQttC10L3QvdC+0YHRgtGM0Y4g0L3QsCDQv9GA0LXQtNC/0YDQuNGP
+0YLQuNC4OgogICAtINCh0L7RgdGC0LDQsiDQuCDRgdGC0YDRg9C60YLRg9GA0LAg0LTQtdCx0LjR
+gtC+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQtdC90L3QvtGB0YLRjNGOOyAKICAgLSDQmtGD0LvR
+jNGC0YPRgNCwINC00L7QutGD0LzQtdC90YLQsNGA0L3QvtCz0L4g0L7RhNC+0YDQvNC70LXQvdC4
+0Y8g0L7QsdGP0LfQsNGC0LXQu9GM0YHRgtCyLiAKCtCe0KDQk9CQ0J3QmNCX0JDQptCY0K8gINCf
+0KDQntCS0JXQlNCV0J3QmNCvICDQkNCd0JDQm9CY0JfQkCAg0LTQvtC70LbQvdC40LrQvtCyLCDQ
+tNC10LHQuNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQttC10L3QvdC+0YHRgtC4INC4INGA0LDQ
+sdC+0YLRiyDRgSDQvdC40LzQuDoKICAgLSDQntGA0LPQsNC90LjQt9Cw0YbQuNGPINC/0YDQvtGG
+0LXQtNGD0YAgZHVlIGRpbGlnZW5jZSDQtNC10LHQuNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQ
+ttC10L3QvdC+0YHRgtC4INC4INC00L7Qu9C20L3QuNC60L7QsiDQvdCwINC/0YDQtdC00L/RgNC4
+0Y/RgtC40Lg7IAogICAtINCS0L7Qv9GA0L7RgdGLINC+0YbQtdC90LrQuCDQuCDQsNGD0LTQuNGC
+0LAg0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQtdC90L3QvtGB0YLRjNGOOiDQ
+v9C+0YDRj9C00L7QuiDQv9GA0LjQstC70LXRh9C10L3QuNGPINGB0L/QtdGG0LjQsNC70LjRgdGC
+0L7QsiDQuCDQv9C+0YHRgtCw0L3QvtCy0LrQsCDQt9Cw0LTQsNGH0LguIAoK0JDQm9CT0J7QoNCY
+0KLQnCAg0J/QoNCY0J3Qr9Ci0JjQryAg0KDQldCo0JXQndCY0JkgINC/0L4g0YPQv9GA0LDQstC7
+0LXQvdC40Y4g0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQtdC90L3QvtGB0YLQ
+uDoKICAgLSDQntC/0YDQtdC00LXQu9C10L3QuNC1INGG0LXQu9C10YHQvtC+0LHRgNCw0LfQvdC+
+0YHRgtC4INC/0YDQvtCy0LXQtNC10L3QuNGPINGB0LTQtdC70L7QuiDRgSDQtNC10LHQuNGC0L7R
+gNGB0LrQvtC5INC30LDQtNC+0LvQttC10L3QvdC+0YHRgtC4OyAKICAgLSDQmNGB0L/QvtC70YzQ
+t9C+0LLQsNC90LjQtSDQtNC+0LPQvtCy0L7RgNC+0LIg0YPRgdGC0YPQv9C60Lgg0L/RgNCw0LLQ
+sCDRgtGA0LXQsdC+0LLQsNC90LjRjyDQuCDQv9C10YDQtdCy0L7QtNCwINC00L7Qu9Cz0LAgKNGB
+INGD0YfQtdGC0L7QvCDQstCw0LvRjtGC0L3Ri9GFLCDQsNC90YLQuNC80L7QvdC+0L/QvtC70YzQ
+vdGL0YUsINC60L7RgNC/0L7RgNCw0YLQuNCy0L3Ri9GFINC+0LPRgNCw0L3QuNGH0LXQvdC40Lkp
+OyAKICAgLSDQktC+0L/RgNC+0YHRiyDRg9GH0LXRgtCwINC90LDQu9C+0LPQvtCy0L7QuSDRgdC+
+0YHRgtCw0LLQu9GP0Y7RidC10Lkg0L/RgNC4INC/0YDQuNC90Y/RgtC40Lgg0YPQv9GA0LDQstC7
+0LXQvdGH0LXRgdC60LjRhSDRgNC10YjQtdC90LjQuSDRgSDQtNC10LHQuNGC0L7RgNGB0LrQvtC5
+INC30LDQtNC+0LvQttC10L3QvdC+0YHRgtGM0Y4uIAoK0JLQuNC00Ysg0YHQvtC00LXQudGB0YLQ
+stC40Y8g0LjRgdC/0L7Qu9C90LXQvdC40Y8g0LTQvtC70LbQvdC40LrQsNC80Lgg0LjRhSDQvtCx
+0Y/Qt9Cw0YLQtdC70YzRgdGC0LI6CiAgIC0g0K3QutC+0L3QvtC80LjRh9C10YHQutCw0Y8g0YHQ
+vtGB0YLQsNCy0LvRj9GO0YnQsNGPINGB0L7QtNC10LnRgdGC0LLQuNGPINC40YHQv9C+0LvQvdC1
+0L3QuNGOOyAKICAgLSDQn9GB0LjRhdC+0LvQvtCz0LjRh9C10YHQutC40LUg0LDRgdC/0LXQutGC
+0Ysg0LLQt9Cw0LjQvNC+0LTQtdC50YHRgtCy0LjRjyDRgSDQtNC+0LvQttC90LjQutCw0LzQuC4g
+CgrQntCg0JPQkNCd0JjQl9CQ0KbQmNCvINCf0KDQldCi0JXQndCX0JjQntCd0J3QntCZINCYINCY
+0KHQmtCe0JLQntCZINCg0JDQkdCe0KLQqyDQndCQINCf0KDQldCU0J/QoNCY0K/QotCY0JgK0J7Q
+oNCT0JDQndCY0JfQkNCm0JjQryAg0JggINCf0J7QlNCT0J7QotCe0JLQmtCQICDQn9Cg0JXQotCV
+0J3Ql9CY0Jg6CiAgIC0g0J7RgNCz0LDQvdC40LfQsNGG0LjQvtC90L3Ri9C1INGN0YLQsNC/0Ysg
+0L/RgNC10YLQtdC90LfQuNC+0L3QvdC+0Lkg0YDQsNCx0L7RgtGLOyAKICAgLSDQpNC+0YDQvNC4
+0YDQvtCy0LDQvdC40LUg0YLQuNC/0L7QstC+0Lkg0L/RgNC10YLQtdC90LfQuNC4OyAKICAgLSDQ
+nNC10YLQvtC00LjQutC4INC/0YDQvtCy0LXQtNC10L3QuNGPINC/0LXRgNC10LPQvtCy0L7RgNC+
+0LI7IAogICAtINCe0YLQstC10YIg0L3QsCDQv9GA0LXRgtC10L3Qt9C40LguIAoK0J/QntCg0K/Q
+lNCe0JogINCf0KDQldCU0KrQr9CS0JvQldCd0JjQryAg0JjQodCa0JA6CiAgIC0g0J/RgNC+0LHQ
+u9C10LzRiyDQvtCx0LXRgdC/0LXRh9C10L3QuNGPINC40YHQv9C+0LvQvdC10L3QuNGPINC00L7Q
+u9Cz0L7QstC+0LPQviDQvtCx0Y/Qt9Cw0YLQtdC70YzRgdGC0LLQsDsgCiAgIC0g0JLQvtC/0YDQ
+vtGB0Ysg0LfQsNGC0Y/Qs9C40LLQsNC90LjRjyDQv9GA0L7RhtC10YHRgdCwOyAKICAgLSDQn9C+
+0YDRj9C00L7QuiDQuCDQv9C+0YHQu9C10LTRgdGC0LLQuNGPINC+0LHQttCw0LvQvtCy0LDQvdC4
+0Y8g0YHRg9C00LXQsdC90YvRhSDQsNC60YLQvtCyLiAKCtCf0KDQmNCd0KPQlNCY0KLQldCb0KzQ
+ndCe0JUgINCS0JfQq9Ch0JrQkNCd0JjQlSAg0JTQntCb0JPQkCAgINGBINGO0YDQuNC00LjRh9C1
+0YHQutC40YUg0Lgg0YTQuNC30LjRh9C10YHQutC40YUg0LvQuNGGOgogICAtINCt0YTRhNC10LrR
+gtC40LLQvdC+0LUg0L/RgNC10LTRitGP0LLQu9C10L3QuNC1INC40YHQv9C+0LvQvdC40YLQtdC7
+0YzQvdC+0LPQviDQtNC+0LrRg9C80LXQvdGC0LA7IAogICAtINCe0YDQs9Cw0L3QuNC30LDRhtC4
+0Y8g0LLQt9Cw0LjQvNC+0LTQtdC50YHRgtCy0LjRjyDRgSDRgdGD0LTQtdCx0L3Ri9C80Lgg0L/R
+gNC40YHRgtCw0LLQsNC80Lg7IAogICAtINCf0L7RgNGP0LTQvtC6INC+0LHQttCw0LvQvtCy0LDQ
+vdC40Y8g0Lgg0L7RgdC/0LDRgNC40LLQsNC90LjRjyDQtNC10LnRgdGC0LLQuNC5ICjQsdC10LfQ
+tNC10LnRgdGC0LLQuNC5KSDRgdGD0LTQtdCx0L3Ri9GFINC/0YDQuNGB0YLQsNCy0L7Qsi4gCgrQ
+n9Cg0J7QptCV0JTQo9Cg0JAgINCR0JDQndCa0KDQntCi0KHQotCS0JAgINC00L7Qu9C20L3QuNC6
+0LAg4oCTINGD0L/RgNCw0LLQu9C10L3Rh9C10YHQutC+0LUg0YDQtdGI0LXQvdC40LU6CiAgIC0g
+0JrQvtCz0LTQsCwg0LrQsNC6INC4INC30LDRh9C10Lwg0LjQvdC40YbQuNC40YDQvtCy0LDRgtGM
+INCx0LDQvdC60YDQvtGC0YHRgtCy0L47IAogICAtINCh0YLQvtC40YIg0LvQuCDQsdCw0L3QutGA
+0L7RgtC40YLRjCDRgdCy0L7QtdCz0L4g0LTQvtC70LbQvdC40LrQsC4gCgrQntGA0LPQsNC90LjQ
+t9Cw0YbQuNGPINCQ0JTQnNCY0J3QmNCh0KLQoNCQ0KLQmNCS0J3QntCT0J4gINCU0JDQktCb0JXQ
+ndCY0K8g0L3QsCDQtNC+0LvQttC90LjQutCwOgogICAtINCS0L7Qv9GA0L7RgdGLINGG0LXQu9C1
+0YHQvtC+0LHRgNCw0LfQvdC+0YHRgtC4INC/0YDQuNCy0LvQtdGH0LXQvdC40Y8g0LTQvtC70LbQ
+vdC40LrQsCDQuiDQsNC00LzQuNC90LjRgdGC0YDQsNGC0LjQstC90L7QuSDQuCDRg9Cz0L7Qu9C+
+0LLQvdC+0Lkg0L7RgtCy0LXRgtGB0YLQstC10L3QvdC+0YHRgtC4LiAKICAgLSDQnNC10YXQsNC9
+0LjQt9C80Ysg0LDQtNC80LjQvdC40YHRgtGA0LDRgtC40LLQvdC+0LPQviDQtNCw0LLQu9C10L3Q
+uNGPINC90LAg0LTQvtC70LbQvdC40LrQsDsgCiAgIC0g0JDRg9GC0YHQvtGA0YHQuNC90LMg0LjQ
+u9C4INC/0YDQuNCy0LvQtdC60LDQtdC8INGB0L/QtdGG0LjQsNC70LjRgdGC0L7QsjsgCgrQptC1
+0LvQtdGB0L7QvtCx0YDQsNC30L3QvtGB0YLRjCDQv9GA0LjQstC70LXRh9C10L3QuNGPINC/0YDQ
+vtGE0LXRgdGB0LjQvtC90LDQu9GM0L3Ri9GFINCw0YPQtNC40YLQvtGA0L7QsiDQuCDQvtGG0LXQ
+vdGJ0LjQutC+0LI6CiAgIC0g0JrQvtC70LvQtdC60YLQvtGA0YHQutCw0Y8g0LTQtdGP0YLQtdC7
+0YzQvdC+0YHRgtGMINC60LDQuiDQvtC00LjQvSDQuNC3INC/0YPRgtC10Lkg0YDQtdGI0LXQvdC4
+0Y8g0L/RgNC+0LHQu9C10LzRiyDQuNGB0YLRgNC10LHQvtCy0LDQvdC40Y8g0LTQvtC70LPQvtCy
+OyAKICAgLSDQktGL0LHQvtGAINCy0LjQtNCwINC00L7Qs9C+0LLQvtGA0LAg0YEg0LrQvtC70LvQ
+tdC60YLQvtGA0L7QvDsgCiAgIC0g0J7RgdC+0LHQtdC90L3QvtGB0YLQuCDQtNC+0LPQvtCy0L7R
+gNC+0LI7IAogICAtINCS0L7Qv9GA0L7RgdGLINC+0LHQvtGA0L7RgtCwINC40L3RhNC+0YDQvNCw
+0YbQuNC4INC4INC60L7QvdGE0LjQtNC10L3RhtC40LDQu9GM0L3QvtGB0YLRjDsgCiAgIC0g0J7R
+gtCy0LXRgtGB0YLQstC10L3QvdC+0YHRgtGMINC/0L7RgdGA0LXQtNC90LjQutCwLiAKCn5+fn5+
+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4KCjA5IC0g
+MTAg0LzQsNGA0YLQsCAyMDEw0LMuICAoMiDQtNC90Y8g0YEgMTAuMDAg0LTQviAxOC4wMCkgCtCc
+0LXRgdGC0L4g0L/RgNC+0LLQtdC00LXQvdC40Y86INCc0L7RgdC60LLQsCwg0LwuINCR0L7RgtCw
+0L3QuNGH0LXRgdC60LjQuSDRgdCw0LQsICLQo9GH0LXQsdC90LDRjyDQs9C+0YHRgtC40L3QuNGG
+0LAiCtCh0YLQvtC40LzQvtGB0YLRjCDRg9GH0LDRgdGC0LjRjzogMTcgNTAwINGA0YPQsS4KKNCS
+INGB0YLQvtC40LzQvtGB0YLRjCDQstGF0L7QtNC40YIg0L7QsdGD0YfQtdC90LjQtSwg0L/QtdGH
+0LDRgtC90YvQtSDQvNCw0YLQtdGA0LjQsNC70Ysg0L/QviDRgtC10LzQtSDRgdC10LzQuNC90LDR
+gNCwLCDQvtCx0LXQtNGLLCDQutC+0YTQtS3Qv9Cw0YPQt9GLKS4g0J/QviDQvtC60L7QvdGH0LDQ
+vdC40Lgg0LLRi9C00LDQtdGC0YHRjyDRgdC10YDRgtC40YTQuNC60LDRgiDQviDQv9GA0L7RhdC+
+0LbQtNC10L3QuNC4INC+0LHRg9GH0LXQvdC40Y8g0L/QviDQtNCw0L3QvdC+0Lkg0YLQtdC80LUu
+IArQmNC90L7Qs9C+0YDQvtC00L3QuNC8INC/0L7QvNC+0LbQtdC8INC30LDQsdGA0L7QvdC40YDQ
+vtCy0LDRgtGMINC90L7QvNC10YDQsCDQsiDQs9C+0YHRgtC40L3QuNGG0LUuINCe0LHRg9GH0LXQ
+vdC40LUg0Lgg0L/RgNC+0LbQuNCy0LDQvdC40LUg0LIg0L7QtNC90L7QvCDQt9C00LDQvdC40Lgu
+CgoKCn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
+fn4KCgrQn9C+0LTRgNC+0LHQvdCw0Y8g0LjQvdGE0L7RgNC80LDRhtC40Y8g0Lgg0YDQtdCz0LjR
+gdGC0YDQsNGG0LjRjyDQv9C+INGC0LXQu9C10YTQvtC90YM6IDggKDQ5NSkgMiAyIDkgIC0gIDAg
+NCAgLSAgMyAzCgoKCn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
+fn5+fn5+fn5+fn4KCn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
+fn5+fn5+fn5+fn4KCgoKCtCS0L3QuNC80LDQvdC40LUhINCV0YHQu9C4INCS0LDRiCDQsNC00YDQ
+tdGBINGB0LvRg9GH0LDQudC90L4g0L/QvtC/0LDQuyDQsiDQsdCw0LfRgyDRgNCw0YHRgdGL0LvQ
+utC4LCDQuCDQktGLINCx0L7Qu9GM0YjQtSDQvdC1INGF0L7RgtC40YLQtSDQv9C+0LvRg9GH0LDR
+gtGMINC40L3RhNC+0YDQvNCw0YbQuNGOINC+0LEg0L7QsdGA0LDQt9C+0LLQsNGC0LXQu9GM0L3R
+i9GFINC80LXRgNC+0L/RgNC40Y/RgtC40Y/RhSwgCtC/0YDQvtGB0YLQviDQvtGC0L/RgNCw0LLR
+jNGC0LUg0L/Rg9GB0YLQvtC1INC/0LjRgdGM0LzQviDQsiDQktCw0YjQtdCz0L4g0LDQtNGA0LXR
+gdCwINC90LAg0LDQtNGA0LXRgSB6YXNlZGF0ZWxlYWJ5cWFnQHNtdHAucnU/c3ViamVjdD1zcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQg0Lgg0LIg0YLQtdC80LUg0L/QuNGB
+0YzQvNCwINGD0LrQsNC20LjRgtC1INCS0LDRiCDQsNC00YDQtdGBINGN0LvQtdC60YLRgNC+0L3Q
+vdC+0Lkg0L/QvtGH0YLRiy4gCgrQktCw0Ygg0LDQtNGA0LXRgSDQsdGD0LTQtdGCINCw0LLRgtC+
+0LzQsNGC0LjRh9C10YHQutC4INGD0LTQsNC70LXQvSDQuNC3INGA0LDRgdGB0YvQu9C60Lgg0LIg
+0YLQtdGH0LXQvdC40LUgMSAo0L7QtNC90L7Qs9C+KSDQtNC90Y8hCgpUTyAgVU5TVUJTQ1JJQkUg
+ICBTRU5EICBZT1VSICAgRU1BSUwgICBBRERSRVNTIElOIFNVQkpFQ1QgVE8gICB6YXNlZGF0ZWxl
+YWJ5cWFnQHNtdHAucnU/c3ViamVjdD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQgCgoKfn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
+fn5+fn5+fgoKCgoKZGUgYml0byByc2thIHlhbWoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpEb3du
+bG9hZCBJbnRlbCYjMTc0OyBQYXJhbGxlbCBTdHVkaW8gRXZhbApUcnkgdGhlIG5ldyBzb2Z0d2Fy
+ZSB0b29scyBmb3IgeW91cnNlbGYuIFNwZWVkIGNvbXBpbGluZywgZmluZCBidWdzCnByb2FjdGl2
+ZWx5LCBhbmQgZmluZS10dW5lIGFwcGxpY2F0aW9ucyBmb3IgcGFyYWxsZWwgcGVyZm9ybWFuY2Uu
+ClNlZSB3aHkgSW50ZWwgUGFyYWxsZWwgU3R1ZGlvIGdvdCBoaWdoIG1hcmtzIGR1cmluZyBiZXRh
+LgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVsLXN3LWRldgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
+cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

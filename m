@@ -1,107 +1,378 @@
-From: Feng Tang <feng.tang@intel.com>
-Subject: Re: [PATCH v4] serial: spi: add spi-uart driver for Maxim 3110
-Date: Mon, 1 Mar 2010 10:30:07 +0800
-Message-ID: <20100301103007.60926192@feng-i7>
-References: <20100224131130.61530b62@feng-i7>
-	<20100226114729.679bb933@feng-i7>
-	<201002260959.o1Q9xIVA021953@imail.sm.sony.co.jp>
-	<201002261141.43002.david-b@pacbell.net>
+From: "=?koi8-r?B?8sXLz83FzsTBw8nJ?=" <qurotab-e6HrHRgU56Y@public.gmane.org>
+Subject: [SPAM] Заключение договоров с поставщиками
+Date: Mon, 1 Mar 2010 13:17:44 +0300
+Message-ID: <1642930408.20100301131744@hu2.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Masakazu Mokuno <mokuno@sm.sony.co.jp>, Greg KH <greg@kroah.com>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <201002261141.43002.david-b@pacbell.net>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============4736381162809814797=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 27 Feb 2010 03:41:42 +0800
-David Brownell <david-b@pacbell.net> wrote:
+This is a multi-part message in MIME format.
 
-> On Friday 26 February 2010, Masakazu Mokuno wrote:
-> > > +static int max3110_read_multi(struct uart_max3110 *max, u8 *buf)
-> > > +{
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u16 obuf[M3110_RX_FIFO_DEPTH], ibu=
-f[M3110_RX_FIFO_DEPTH];
-> >=20
-> > Doing I/O on stack is guaranteed safe for spi functions?
->=20
-> Good catch ...  no it's not safe.
->=20
-> No DMA-enabled programming interface allows it, including SPI.
-Hi David,
+--===============4736381162809814797==
+Content-Type: multipart/alternative;
+	boundary="----------9L4LH4JKAX9E89PU"
 
-I agree that DMA working mode must not use stack as IO buffer, and spi =
-core
-code(spi.c/spi.h) has clearly message stating that. But this driver doe=
-sn't
-intend to use DMA by design. In early version of this patch there is so=
-me
-controller specific data which show "enable_dma =3D 0".
+This is a multi-part message in MIME format.
 
-The reason of not using DMA for Maxim 3110 is, it is a low speed SPI UA=
-RT
-device, which only has one word (16b) TX buffer and 8 words RX buffer, =
-using
-DMA may benefit in some use case but will be over-kill for others. This
-driver implement a console,  take one example of editing a file on the =
-console,
-each char we input will be echoed back on screen, which will use a spi_=
-message
-and a spi_transfer, if using DMA, that DMA operation length will be 2 b=
-ytes,
-if the file been edited has 4K characters, there will be 4K DMA transac=
-tions,
-which will occupy quiet some system load.=20
+------------9L4LH4JKAX9E89PU
+Content-Type: text/plain;
+	charset=koi8-r
+Content-Transfer-Encoding: quoted-printable
 
-Also whether a 16b word could be DMAed is still a question for some typ=
-es of
-DMA controllers, I know some platform whose DMA controllers can only  o=
-r
-configured to only work with data at least 32 bits aligned.=20
+=20
+=E3=C5=CE=D4=D2 =D0=CF=D7=D9=DB=C5=CE=C9=D1 =
+=CB=D7=C1=CC=C9=C6=C9=CB=C1=C3=C9=C9
 
-So in this driver, it leverages some options provided by SPI controller=
- drivers
-(pxa2xx and Designware) to chose not using DMA.=20
+=F0=D2=C5=C4=CC=C1=C7=C1=C5=D4 =CC=D5=DE=DB=C9=CA =
+=D3=D0=C5=C3=CB=D5=D2=D3 =C4=CC=D1 =
+=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C5=CA, =
+=C6=C9=CE=C1=CE=D3=C9=D3=D4=CF=D7, =C0=D2=C9=D3=D4=CF=D7 =C9=20
+=C7=CC.=C2=D5=C8=C7=C1=CC=D4=C5=D2=CF=D7
 
-Thanks,
-=46eng
+12 =CD=C1=D2=D4=C1 2010 =C7. (10.00-18.00)
+"=EE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=C5 =
+=D0=CF=D3=D4=C1=D7=DD=C9=CB=C9. =EB=C1=CB =D3=CF=C8=D2=C1=CE=C9=D4=D8 =
+=D7=D9=DE=C5=D4=D9, =D5=CA=D4=C9 =CF=D4=20
+=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9"
 
->=20
-> The Documentation/PCI/PCI-DMA-mapping.txt file has a section with
-> the oddly punctuated title "What memory is DMA'able?".  That's
-> generic to all uses of DMA.  When it was moved to the PCI area,
-> that information became harder to find ... but no less true for
-> non-PCI contexts (sigh).  One relevant paragraph being:
->=20
->   This rule also means that you may use neither kernel image addresse=
-s
->   (items in data/text/bss segments), nor module image addresses, nor
->   stack addresses for DMA.  These could all be mapped somewhere
-> entirely different than the rest of physical memory.  Even if those
-> classes of memory could physically work with DMA, you'd need to
-> ensure the I/O buffers were cacheline-aligned.  Without that, you'd
-> see cacheline sharing problems (data corruption) on CPUs with
-> DMA-incoherent caches. (The CPU could write to one word, DMA would
-> write to a different one in the same cache line, and one of them
-> could be overwritten.)
->=20
-> Those cacheline sharing problems are particularly bad for the stack,
-> since the data corruption often includes return addresses.
->=20
-> In short, passing a stack-based I/O buffer could work on some
-> machines, but cause perplexing data corruption issues on others.  So
-> don't try to do it any driver that claims to be portable.
->=20
-> - Dave
->=20
---
-To unsubscribe from this list: send the line "unsubscribe linux-serial"=
- in
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+=F3=C5=CD=C9=CE=C1=D2 =D0=CF=D3=D7=D1=DD=C5=CE =D7=CF=D0=D2=CF=D3=D5 =
+=DA=C1=DD=C9=D4=D9 =CE=C1=CC=CF=C7=CF=D0=CC=C1=D4=C5=CC=D8=DD=C9=CB=C1, =
+=D0=D2=C9=DA=D7=C1=CE =D0=CF=CD=CF=DE=D8 =C5=CD=D5 =CB=C1=CB =CE=C5 =
+=D0=CF=C7=D2=D1=DA=CE=D5=D4=D8 =D7=20
+=D4=CF=D4=C1=CC=D8=CE=D9=C8 =D0=D2=CF=D7=C5=D2=CB=C1=C8 =D3=D7=CF=C9=C8 =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7, =D4=C1=CB =C9 =D7 =
+=D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=C9 =DA=C1=DD=C9=D4=C9=D4=D8 =D3=D7=CF=C9 =
+=D0=D2=C1=D7=C1 =D0=CF =D7=DA=C1=C9=CD=CF=CF=D4=CE=CF=DB=C5=CE=C9=D1=CD=20
+=D1 =D4=C1=CB=C9=CD=C9 =CB=CF=CD=D0=C1=CE=C9=D1=CD=C9. =EE=C1 =
+=D3=C5=CD=C9=CE=C1=D2=C5 =CE=C5 =D4=CF=CC=D8=CB=CF =C2=D5=C4=D5=D4 =
+=D0=CF=CB=C1=DA=C1=CE=D9 =D3=D0=CF=D3=CF=C2=D9 =
+=D0=D2=CF=D4=C9=D7=CF=C4=C5=CA=D3=D4=D7=C9=D1 =
+=D0=D2=C9=C4=C9=D2=CB=C1=CD=20
+=CE=C1=CC=CF=C7=CF=D7=CF=CA, =CE=CF =C9 =C2=D5=C4=D5=D4 =
+=D2=C1=DA=CF=C2=D2=C1=CE=D9 =D3=D0=CF=D3=CF=C2=D9 =
+=DA=C1=CB=CC=C0=DE=C5=CE=C9=D1 =C4=CF=C7=CF=D7=CF=D2=CF=D7, =
+=CB=CF=D4=CF=D2=D9=C5 =D7 =D0=D2=C9=CE=C3=C9=D0=C5 =
+=C9=D3=CB=CC=C0=DE=C1=C0=D4=20
+=D7=CF=DA=CD=CF=D6=CE=CF=D3=D4=D8 =D0=D2=C9=DA=CE=C1=CE=C9=D1 =
+=CC=C9=C3=C1 =CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=CD, =C1 =
+=D4=C1=CB=D6=C5 =DA=C1=CB=CF=CE=CE=D9=C5 =D3=D0=CF=D3=CF=C2=D9 =
+=D3=CE=C9=D6=C5=CE=C9=C5 =CE=C1=CC=CF=C7=CF=D7=CF=CA=20
+=CE=C1=C7=D2=D5=DA=CB=C9 =D0=CF =EE=E4=F3 =D7 =D4=CF=CD =
+=D3=CC=D5=DE=C1=C5, =C5=D3=CC=C9 =
+=CE=C1=CC=CF=C7=CF=D0=CC=C1=D4=C5=CC=D8=DD=C9=CB =D7 =DC=D4=CF=CD =
+=DA=C1=C9=CE=D4=C5=D2=C5=D3=CF=D7=C1=CE.
+
+=F3=C5=CD=C9=CE=C1=D2 =C4=C1=D3=D4 =D3=CC=D5=DB=C1=D4=C5=CC=D1=CD =
+=CF=D4=D7=C5=D4 =CE=C1 =D4=CF, =CB=C1=CB =D0=D2=C1=D7=C9=CC=D8=CE=CF =
+=DA=C1=CB=CC=C0=DE=C1=D4=D8 =C4=CF=C7=CF=D7=CF=D2=D9 =C9 =DE=D4=CF =
+=C4=C5=CC=C1=D4=D8,=20
+=C5=D3=CC=C9 =CF=CE =CF=DB=C9=C2=D3=D1, =CE=CF =D0=D2=C9 =DC=D4=CF=CD =
+=C8=CF=D4=C5=CC =C2=D9 =D3=CF=C8=D2=C1=CE=C9=D4=D8 =D3=D7=CF=C9 =
+=CE=C1=CC=CF=C7=CF=D7=D9=C5 =CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7=C1 =
+=C2=C5=DA=20
+=C9=DA=CD=C5=CE=C5=CE=C9=CA. =F3=CC=D5=DB=C1=D4=C5=CC=C9 =C2=D5=C4=D5=D4 =
+=D4=CF=DE=CE=CF =DA=CE=C1=D4=D8 =DE=D4=CF =C9 =CB=C1=CB =
+=CF=D4=D7=C5=DE=C1=D4=D8 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
+=C9=CE=D3=D0=C5=CB=C3=C9=C9 =D7=20
+=D3=CC=D5=DE=C1=C5 =D0=D2=CF=D7=C5=D2=CB=C9 =D4=C1=CB=C9=C8 =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7. =F0=CF=CA=CD=D5=D4 =CB=C1=CB =
+=CD=CF=D6=CE=CF =D5=CA=D4=C9 =CF=D4 =EE=E4=F3 =C2=C5=DA =
+=D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=CA.=20
+=ED=C5=D4=CF=C4=C9=DE=C5=D3=CB=C9=C5 =D5=CB=C1=DA=C1=CE=C9=D1 =
+=ED=C9=CE=C6=C9=CE=C1 =CF =CE=C1=DA=CE=C1=DE=C5=CE=C9=C9 =
+=D7=D9=C5=DA=C4=CE=D9=C8 =CE=C1=CC=CF=C7=CF=D7=D9=C8 =
+=D0=D2=CF=D7=C5=D2=CF=CB.
+=ED=C5=D4=CF=C4=C9=DE=C5=D3=CB=C9=C5 =D5=CB=C1=DA=C1=CE=C9=D1 =
+=ED=C9=CE=C6=C9=CE=C1 =D0=CF =D0=CF=C9=D3=CB=D5 =
+=CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=C8 =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7.=EF=D3=CE=CF=D7=C1=CE=C9=D1 =
+=D0=D2=C9=DA=CE=C1=CE=C9=D1=20
+=CE=C1=CC=CF=C7=CF=D7=CF=CA =D7=D9=C7=CF=C4=D9 =
+=CE=C5=CF=C2=CF=D3=CE=CF=D7=C1=CE=CE=CF=CA (=CE=C1 =
+=CF=D3=CE=CF=D7=C1=CE=C9=C9 =D3=D5=C4=C5=C2=CE=CF=CA =
+=D0=D2=C1=CB=D4=C9=CB=C9, =D0=C9=D3=C5=CD =ED=C9=CE=C6=C9=CE=C1, =
+=D0=D2=C1=CB=D4=C9=CB=C9=20
+=D0=D2=CF=D7=C5=D2=CF=CB).=FE=D4=CF =CE=C5=CF=C2=C8=CF=C4=C9=CD=CF =
+=D3=C4=C5=CC=C1=D4=D8, =DE=D4=CF=C2=D9 =D0=D2=CF=D1=D7=C9=D4=D8 =
+=D2=C1=DA=D5=CD=CE=D5=C0 =
+=CF=D3=CD=CF=D4=D2=C9=D4=C5=CC=D8=CE=CF=D3=D4=D8. =EB=C1=CB=C9=C5 =
+=C4=CF=CB=D5=CD=C5=CE=D4=D9 =C9=20
+=CB=C1=CB=D5=C0 =C9=CE=C6=CF=D2=CD=C1=C3=C9=C0 =CF =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=C5 =CE=C5=CF=C2=C8=CF=C4=C9=CD=CF =
+=D3=CF=C2=D2=C1=D4=D8.=20
+=EB=C1=CB =DA=C1=DD=C9=D4=C9=D4=D8=D3=D1 =CF=D4 =
+=D0=D2=C5=D4=C5=CE=DA=C9=CA =CE=C1=CC=CF=C7=CF=D7=CF=C7=CF =
+=CF=D2=C7=C1=CE=C1. =F3=D0=CF=D3=CF=C2 =D5=C8=CF=C4=C1 =CF=D4 =
+=D0=D2=C9=DA=CE=C1=CE=C9=D1 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
+=D7=D9=C7=CF=C4=D9=20
+=CE=C5=CF=C2=CF=D3=CE=CF=D7=C1=CE=CE=CF=CA =D0=D2=C9 =
+=DA=C1=CB=CC=C0=DE=C5=CE=C9=C9 =C4=CF=C7=CF=D7=CF=D2=CF=D7 =D3 =
+=D0=CF=D3=D4=C1=D7=DD=C9=CB=C1=CD=C9 =D0=D2=C9 =D0=CF=CD=CF=DD=C9 =
+=D0=CF=D3=D2=C5=C4=CE=C9=CB=C1. =EB=C1=CB =D0=CF=D3=D4=D2=CF=C9=D4=D8=20
+=C4=CF=C7=CF=D7=CF=D2, =DE=D4=CF=C2=D9 =D0=D2=C5=D4=C5=CE=DA=C9=C9 =
+=D0=CF =D0=CF=D3=D4=C1=D7=DD=C9=CB=C1=CD =CE=C5=CC=D8=DA=D1 =C2=D9=CC=CF =
+=D0=D2=C5=C4=DF=D1=D7=C9=D4=D8.=20
+=F5=C8=CF=C4 =CF=D4 =D0=D2=C9=DA=CE=C1=CE=C9=D1 =
+=CE=C1=CC=CF=C7=CF=D7=CF=CA =D7=D9=C7=CF=C4=D9 =
+=CE=C5=CF=C2=CF=D3=CE=CF=D7=C1=CE=CE=CF=CA =D0=D5=D4=C5=CD =
+=CF=D3=CF=C2=CF=C7=CF =D3=D0=CF=D3=CF=C2=C1 =
+=DA=C1=CB=CC=C0=DE=C5=CE=C9=D1 =C4=CF=C7=CF=D7=CF=D2=CF=D7.=20
+=F5=C8=CF=C4 =CF=D4 =D5=D0=CC=C1=D4=D9 =EE=E4=F3 .=EB=D4=CF =
+=CF=D4=D7=C5=DE=C1=C5=D4 =DA=C1 =D2=C1=C2=CF=D4=D5 =D3 =
+=CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=CD=C9 =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=C1=CD=C9 (=C4=C9=D2=C5=CB=D4=CF=D2 =
+=C9=CC=C9=20
+=C2=D5=C8=C7=C1=CC=D4=C5=D2) =C9 =D7 =CB=C1=CB=CF=CA =DE=C1=D3=D4=C9. =
+=F0=CF=D4=C5=D2=D1 =C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =D0=CF =
+=CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=CD =
+=D0=CF=D3=D4=C1=D7=DD=C9=CB=C1=CD. =EE=C1=CC=CF=C7=CF=D7=D9=C5=20
+=D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=D1. =F5=CB=C1=DA=C1=CE=C9=D1 =
+=ED=C9=CE=C6=C9=CE=C1 =D0=CF =D0=D2=C9=D7=CC=C5=DE=C5=CE=C9=C0 =CB =
+=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9 =D7 =D4=C1=CB=CF=CD =
+=D3=CC=D5=DE=C1=C5. =F3=D0=CF=D3=CF=C2 =DA=C1=DD=C9=D4=D9 =CF=D4=20
+=CE=C1=CC=CF=C7=CF=D7=D9=C8 =D0=D2=C5=D4=C5=CE=DA=C9=CA. =
+=F1=D7=CC=D1=C5=D4=D3=D1 =CC=C9 =D0=CF=D4=C5=D2=D1 =
+=C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =DA=C1=DD=C9=D4=CF=CA =CF=D4 =
+=D0=D2=C5=D4=C5=CE=DA=C9=CA =
+=D0=D2=C1=D7=CF=CF=C8=D2=C1=CE=C9=D4=C5=CC=D8=CE=D9=C8=20
+=CF=D2=C7=C1=CE=CF=D7.=20
+
+=F3=D4=CF=C9=CD=CF=D3=D4=D8 =D5=DE=C1=D3=D4=C9=D1 =
+=D3=C5=CD=C9=CE=C1=D2=C1 7900 =D2=D5=C2.=20
+=FA=C1=D1=D7=CB=C9 =CE=C1 =D5=DE=C1=D3=D4=C9=C5 =D0=CF =
+=D4=C5=CC=C5=C6=CF=CE=C1=CD: (495)741-87-05, 506-30-78
+
+26 =CD=C1=D2=D4=C1 2010 =C7.(10.0-18.00) =
+=EF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=D8 =
+=D3=CF=C2=D3=D4=D7=C5=CE=CE=C9=CB=C1 =C9 =
+=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=D1=20
+=D0=CF =C4=CF=CC=C7=C1=CD =CB=CF=CD=D0=C1=CE=C9=C9: =
+=CE=CF=D7=C5=CC=CC=D9 =DA=C1=CB=CF=CE=CF=C4=C1=D4=C5=CC=D8=D3=D4=D7=C1 =
+=CF =C2=C1=CE=CB=D2=CF=D4=D3=D4=D7=C5. =EB=C1=CB =D5=CA=D4=C9 =CF=D4=20
+=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9.
+
+=EF=D3=CE=CF=D7=C1=CE=C9=D1 =D0=D2=C9=DA=CE=C1=CE=C9=D1 =
+=C4=CF=CC=D6=CE=C9=CB=C1 =CE=C5=D3=CF=D3=D4=CF=D1=D4=C5=CC=D8=CE=D9=CD =
+(=C2=C1=CE=CB=D2=CF=D4=CF=CD). =EF=D3=CE=CF=D7=C1=CE=C9=D1 =C4=CC=D1 =
+=CF=C2=D1=DA=C1=D4=C5=CC=D8=CE=CF=C7=CF=20
+=C4=CF=C2=D2=CF=D7=CF=CC=D8=CE=CF=C7=CF =CF=C2=D2=C1=DD=C5=CE=C9=D1 =D7 =
+=D3=D5=C4. =F3=D0=CF=D3=CF=C2=D9 =D5=C8=CF=C4=C1 =
+=C4=C9=D2=C5=CB=D4=CF=D2=C1 =CF=D4 =
+=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9. =F3=D0=CF=D3=CF=C2=D9 =
+=D5=C8=CF=C4=C1=20
+=CB=CF=CE=D4=D2=CF=CC=C9=D2=D5=C0=DD=C5=C7=CF =C4=CF=CC=D6=CE=C9=CB=C1 =
+=CC=C9=C3=C1 =CF=D4 =CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9 =
+=F3=CF=CB=D2=D9=D4=C9=C5 =D3=D4=D2=D5=CB=D4=D5=D2=D9 =
+=D3=CF=C2=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9 =D3=20
+=D0=CF=CD=CF=DD=D8=C0 =
+=CF=C6=C6=DB=CF=D2=C1/=CE=C5=D2=C5=DA=C9=C4=C5=CE=D4=C1. =
+=F0=CF=D2=D1=C4=CF=CB =D7=DA=D9=D3=CB=C1=CE=C9=D1 =C4=CF=CC=C7=CF=D7 =
+=CB=D2=C5=C4=C9=D4=CF=D2=CF=D7 =D3=20
+=C4=C9=D2=C5=CB=D4=CF=D2=C1/=CB=CF=CE=D4=D2=CF=CC=C9=D2=D5=C0=DD=C9=C8 =
+=CC=C9=C3 =CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9 =C4=CF=CC=D6=CE=C9=CB=C1.
+=F3=D4=CF=C9=CD=CF=D3=D4=D8 =D5=DE=C1=D3=D4=C9=D1 =
+=D3=C5=CD=C9=CE=C1=D2=C1 7900 =D2=D5=C2.=20
+
+------------9L4LH4JKAX9E89PU
+Content-Type: text/html;
+	charset=koi8-r
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; charset=3Dkoi8-r">
+<META content=3D"MSHTML 6.00.6000.21148" name=3DGENERATOR>
+<STYLE>orlando style</STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D4><FONT face=3D"Times New Roman" =
+size=3D3>&nbsp;</FONT>
+<P align=3Dcenter><FONT size=3D5><B>=E3=C5=CE=D4=D2 =
+=D0=CF=D7=D9=DB=C5=CE=C9=D1 =
+=CB=D7=C1=CC=C9=C6=C9=CB=C1=C3=C9=C9</B></FONT></P>
+<P><B><FONT size=3D4>=F0=D2=C5=C4=CC=C1=C7=C1=C5=D4 =CC=D5=DE=DB=C9=CA =
+=D3=D0=C5=C3=CB=D5=D2=D3 =C4=CC=D1 =
+=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=C5=CA, =
+=C6=C9=CE=C1=CE=D3=C9=D3=D4=CF=D7,=20
+=C0=D2=C9=D3=D4=CF=D7 =C9 =
+<BR>=C7=CC.=C2=D5=C8=C7=C1=CC=D4=C5=D2=CF=D7</FONT></B></P>
+<P align=3Dcenter><B><FONT size=3D4>12 =CD=C1=D2=D4=C1 2010 =C7.=20
+(10.00-18.00)<BR>"=EE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=C5 =
+=D0=CF=D3=D4=C1=D7=DD=C9=CB=C9. =EB=C1=CB =D3=CF=C8=D2=C1=CE=C9=D4=D8 =
+=D7=D9=DE=C5=D4=D9, =D5=CA=D4=C9 =CF=D4=20
+<BR>=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9"</FONT></B></P>
+<P><FONT color=3D#ff0000><B>=F3=C5=CD=C9=CE=C1=D2 =
+=D0=CF=D3=D7=D1=DD=C5=CE</B> =D7=CF=D0=D2=CF=D3=D5 =DA=C1=DD=C9=D4=D9 =
+=CE=C1=CC=CF=C7=CF=D0=CC=C1=D4=C5=CC=D8=DD=C9=CB=C1,=20
+=D0=D2=C9=DA=D7=C1=CE =D0=CF=CD=CF=DE=D8 =C5=CD=D5 =CB=C1=CB =CE=C5 =
+=D0=CF=C7=D2=D1=DA=CE=D5=D4=D8 =D7 <BR>=D4=CF=D4=C1=CC=D8=CE=D9=C8 =
+=D0=D2=CF=D7=C5=D2=CB=C1=C8 =D3=D7=CF=C9=C8=20
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7, =D4=C1=CB =C9 =D7 =
+=D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=C9 =DA=C1=DD=C9=D4=C9=D4=D8 =D3=D7=CF=C9 =
+=D0=D2=C1=D7=C1 =D0=CF =D7=DA=C1=C9=CD=CF=CF=D4=CE=CF=DB=C5=CE=C9=D1=CD =
+<BR>=D1=20
+=D4=C1=CB=C9=CD=C9 =CB=CF=CD=D0=C1=CE=C9=D1=CD=C9. =EE=C1 =
+=D3=C5=CD=C9=CE=C1=D2=C5 =CE=C5 =D4=CF=CC=D8=CB=CF =C2=D5=C4=D5=D4 =
+=D0=CF=CB=C1=DA=C1=CE=D9 =D3=D0=CF=D3=CF=C2=D9 =
+=D0=D2=CF=D4=C9=D7=CF=C4=C5=CA=D3=D4=D7=C9=D1=20
+=D0=D2=C9=C4=C9=D2=CB=C1=CD <BR>=CE=C1=CC=CF=C7=CF=D7=CF=CA, =CE=CF =C9 =
+=C2=D5=C4=D5=D4 =D2=C1=DA=CF=C2=D2=C1=CE=D9 =D3=D0=CF=D3=CF=C2=D9 =
+=DA=C1=CB=CC=C0=DE=C5=CE=C9=D1 =C4=CF=C7=CF=D7=CF=D2=CF=D7,=20
+=CB=CF=D4=CF=D2=D9=C5 =D7 =D0=D2=C9=CE=C3=C9=D0=C5 =
+=C9=D3=CB=CC=C0=DE=C1=C0=D4 <BR>=D7=CF=DA=CD=CF=D6=CE=CF=D3=D4=D8 =
+=D0=D2=C9=DA=CE=C1=CE=C9=D1 =CC=C9=C3=C1 =
+=CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=CD, =C1=20
+=D4=C1=CB=D6=C5 =DA=C1=CB=CF=CE=CE=D9=C5 =D3=D0=CF=D3=CF=C2=D9 =
+=D3=CE=C9=D6=C5=CE=C9=C5 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
+<BR>=CE=C1=C7=D2=D5=DA=CB=C9 =D0=CF =EE=E4=F3 =D7 =D4=CF=CD =
+=D3=CC=D5=DE=C1=C5, =C5=D3=CC=C9=20
+=CE=C1=CC=CF=C7=CF=D0=CC=C1=D4=C5=CC=D8=DD=C9=CB =D7 =DC=D4=CF=CD =
+=DA=C1=C9=CE=D4=C5=D2=C5=D3=CF=D7=C1=CE.</FONT><BR><BR><FONT=20
+color=3D#ff0000><B>=F3=C5=CD=C9=CE=C1=D2 =C4=C1=D3=D4 =
+=D3=CC=D5=DB=C1=D4=C5=CC=D1=CD =CF=D4=D7=C5=D4 =CE=C1 =D4=CF, =CB=C1=CB =
+=D0=D2=C1=D7=C9=CC=D8=CE=CF =DA=C1=CB=CC=C0=DE=C1=D4=D8=20
+=C4=CF=C7=CF=D7=CF=D2=D9 =C9 =DE=D4=CF =C4=C5=CC=C1=D4=D8, =
+<BR>=C5=D3=CC=C9 =CF=CE =CF=DB=C9=C2=D3=D1, =CE=CF =D0=D2=C9 =
+=DC=D4=CF=CD =C8=CF=D4=C5=CC =C2=D9 =D3=CF=C8=D2=C1=CE=C9=D4=D8 =
+=D3=D7=CF=C9=20
+=CE=C1=CC=CF=C7=CF=D7=D9=C5 =CF=C2=D1=DA=C1=D4=C5=CC=D8=D3=D4=D7=C1 =
+=C2=C5=DA <BR>=C9=DA=CD=C5=CE=C5=CE=C9=CA. =F3=CC=D5=DB=C1=D4=C5=CC=C9 =
+=C2=D5=C4=D5=D4 =D4=CF=DE=CE=CF =DA=CE=C1=D4=D8 =DE=D4=CF =C9 =CB=C1=CB=20
+=CF=D4=D7=C5=DE=C1=D4=D8 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
+=C9=CE=D3=D0=C5=CB=C3=C9=C9 =D7 <BR>=D3=CC=D5=DE=C1=C5 =
+=D0=D2=CF=D7=C5=D2=CB=C9 =D4=C1=CB=C9=C8 =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7. =F0=CF=CA=CD=D5=D4=20
+=CB=C1=CB =CD=CF=D6=CE=CF =D5=CA=D4=C9 =CF=D4 =EE=E4=F3 =C2=C5=DA =
+=D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=CA. =
+</B></FONT><BR>=ED=C5=D4=CF=C4=C9=DE=C5=D3=CB=C9=C5 =
+=D5=CB=C1=DA=C1=CE=C9=D1=20
+=ED=C9=CE=C6=C9=CE=C1 =CF =CE=C1=DA=CE=C1=DE=C5=CE=C9=C9 =
+=D7=D9=C5=DA=C4=CE=D9=C8 =CE=C1=CC=CF=C7=CF=D7=D9=C8 =
+=D0=D2=CF=D7=C5=D2=CF=CB.<BR>=ED=C5=D4=CF=C4=C9=DE=C5=D3=CB=C9=C5 =
+=D5=CB=C1=DA=C1=CE=C9=D1=20
+=ED=C9=CE=C6=C9=CE=C1 =D0=CF =D0=CF=C9=D3=CB=D5 =
+=CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=C8 =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=CF=D7.=EF=D3=CE=CF=D7=C1=CE=C9=D1 =
+=D0=D2=C9=DA=CE=C1=CE=C9=D1=20
+<BR>=CE=C1=CC=CF=C7=CF=D7=CF=CA =D7=D9=C7=CF=C4=D9 =
+=CE=C5=CF=C2=CF=D3=CE=CF=D7=C1=CE=CE=CF=CA (=CE=C1 =
+=CF=D3=CE=CF=D7=C1=CE=C9=C9 =D3=D5=C4=C5=C2=CE=CF=CA =
+=D0=D2=C1=CB=D4=C9=CB=C9, =D0=C9=D3=C5=CD=20
+=ED=C9=CE=C6=C9=CE=C1, =D0=D2=C1=CB=D4=C9=CB=C9 =
+<BR>=D0=D2=CF=D7=C5=D2=CF=CB).=FE=D4=CF =CE=C5=CF=C2=C8=CF=C4=C9=CD=CF =
+=D3=C4=C5=CC=C1=D4=D8, =DE=D4=CF=C2=D9 =D0=D2=CF=D1=D7=C9=D4=D8 =
+=D2=C1=DA=D5=CD=CE=D5=C0=20
+=CF=D3=CD=CF=D4=D2=C9=D4=C5=CC=D8=CE=CF=D3=D4=D8. =EB=C1=CB=C9=C5 =
+=C4=CF=CB=D5=CD=C5=CE=D4=D9 =C9 <BR>=CB=C1=CB=D5=C0 =
+=C9=CE=C6=CF=D2=CD=C1=C3=C9=C0 =CF =CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=C5=20
+=CE=C5=CF=C2=C8=CF=C4=C9=CD=CF =D3=CF=C2=D2=C1=D4=D8. <BR>=EB=C1=CB =
+=DA=C1=DD=C9=D4=C9=D4=D8=D3=D1 =CF=D4 =D0=D2=C5=D4=C5=CE=DA=C9=CA =
+=CE=C1=CC=CF=C7=CF=D7=CF=C7=CF =CF=D2=C7=C1=CE=C1. =F3=D0=CF=D3=CF=C2=20
+=D5=C8=CF=C4=C1 =CF=D4 =D0=D2=C9=DA=CE=C1=CE=C9=D1 =
+=CE=C1=CC=CF=C7=CF=D7=CF=CA =D7=D9=C7=CF=C4=D9 =
+<BR>=CE=C5=CF=C2=CF=D3=CE=CF=D7=C1=CE=CE=CF=CA =D0=D2=C9 =
+=DA=C1=CB=CC=C0=DE=C5=CE=C9=C9 =C4=CF=C7=CF=D7=CF=D2=CF=D7=20
+=D3 =D0=CF=D3=D4=C1=D7=DD=C9=CB=C1=CD=C9 =D0=D2=C9 =D0=CF=CD=CF=DD=C9 =
+=D0=CF=D3=D2=C5=C4=CE=C9=CB=C1. =EB=C1=CB =D0=CF=D3=D4=D2=CF=C9=D4=D8 =
+<BR>=C4=CF=C7=CF=D7=CF=D2, =DE=D4=CF=C2=D9 =D0=D2=C5=D4=C5=CE=DA=C9=C9=20
+=D0=CF =D0=CF=D3=D4=C1=D7=DD=C9=CB=C1=CD =CE=C5=CC=D8=DA=D1 =C2=D9=CC=CF =
+=D0=D2=C5=C4=DF=D1=D7=C9=D4=D8. <BR>=F5=C8=CF=C4 =CF=D4 =
+=D0=D2=C9=DA=CE=C1=CE=C9=D1 =CE=C1=CC=CF=C7=CF=D7=CF=CA =
+=D7=D9=C7=CF=C4=D9=20
+=CE=C5=CF=C2=CF=D3=CE=CF=D7=C1=CE=CE=CF=CA =D0=D5=D4=C5=CD =
+=CF=D3=CF=C2=CF=C7=CF =D3=D0=CF=D3=CF=C2=C1 =
+=DA=C1=CB=CC=C0=DE=C5=CE=C9=D1 =C4=CF=C7=CF=D7=CF=D2=CF=D7. =
+<BR>=F5=C8=CF=C4 =CF=D4 =D5=D0=CC=C1=D4=D9=20
+=EE=E4=F3 .=EB=D4=CF =CF=D4=D7=C5=DE=C1=C5=D4 =DA=C1 =D2=C1=C2=CF=D4=D5 =
+=D3 =CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=CD=C9 =
+=CB=CF=CE=D4=D2=C1=C7=C5=CE=D4=C1=CD=C9 (=C4=C9=D2=C5=CB=D4=CF=D2 =
+=C9=CC=C9=20
+<BR>=C2=D5=C8=C7=C1=CC=D4=C5=D2) =C9 =D7 =CB=C1=CB=CF=CA =
+=DE=C1=D3=D4=C9. =F0=CF=D4=C5=D2=D1 =C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =
+=D0=CF =CE=C5=C4=CF=C2=D2=CF=D3=CF=D7=C5=D3=D4=CE=D9=CD=20
+=D0=CF=D3=D4=C1=D7=DD=C9=CB=C1=CD. =EE=C1=CC=CF=C7=CF=D7=D9=C5 =
+<BR>=D0=CF=D3=CC=C5=C4=D3=D4=D7=C9=D1. =F5=CB=C1=DA=C1=CE=C9=D1 =
+=ED=C9=CE=C6=C9=CE=C1 =D0=CF =D0=D2=C9=D7=CC=C5=DE=C5=CE=C9=C0 =CB=20
+=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9 =D7 =D4=C1=CB=CF=CD =
+=D3=CC=D5=DE=C1=C5. =F3=D0=CF=D3=CF=C2 =DA=C1=DD=C9=D4=D9 =CF=D4 =
+<BR>=CE=C1=CC=CF=C7=CF=D7=D9=C8 =D0=D2=C5=D4=C5=CE=DA=C9=CA.=20
+=F1=D7=CC=D1=C5=D4=D3=D1 =CC=C9 =D0=CF=D4=C5=D2=D1 =
+=C4=CF=CB=D5=CD=C5=CE=D4=CF=D7 =DA=C1=DD=C9=D4=CF=CA =CF=D4 =
+=D0=D2=C5=D4=C5=CE=DA=C9=CA =
+=D0=D2=C1=D7=CF=CF=C8=D2=C1=CE=C9=D4=C5=CC=D8=CE=D9=C8=20
+<BR>=CF=D2=C7=C1=CE=CF=D7. </P>
+<P align=3Dcenter><B>=F3=D4=CF=C9=CD=CF=D3=D4=D8 =D5=DE=C1=D3=D4=C9=D1 =
+=D3=C5=CD=C9=CE=C1=D2=C1 7900 =D2=D5=C2. </B><FONT=20
+size=3D5><BR><FONT color=3D#ff0000>=FA=C1=D1=D7=CB=C9 =CE=C1 =
+=D5=DE=C1=D3=D4=C9=C5 =D0=CF =D4=C5=CC=C5=C6=CF=CE=C1=CD:=20
+<B>(495)741-87-05, 506-30-78</B></FONT></FONT></P>
+<P align=3Dcenter><B><FONT size=3D4>26 =CD=C1=D2=D4=C1 2010 =
+=C7.(10.0-18.00) <FONT=20
+color=3D#ff0000>=EF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=D8 =
+=D3=CF=C2=D3=D4=D7=C5=CE=CE=C9=CB=C1 =C9 =
+=D2=D5=CB=CF=D7=CF=C4=C9=D4=C5=CC=D1 <BR>=D0=CF =C4=CF=CC=C7=C1=CD=20
+=CB=CF=CD=D0=C1=CE=C9=C9: =CE=CF=D7=C5=CC=CC=D9 =
+=DA=C1=CB=CF=CE=CF=C4=C1=D4=C5=CC=D8=D3=D4=D7=C1 =CF =
+=C2=C1=CE=CB=D2=CF=D4=D3=D4=D7=C5. =EB=C1=CB =D5=CA=D4=C9 =CF=D4=20
+<BR>=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9.</FONT></FONT></B></P>
+<P>=EF=D3=CE=CF=D7=C1=CE=C9=D1 =D0=D2=C9=DA=CE=C1=CE=C9=D1 =
+=C4=CF=CC=D6=CE=C9=CB=C1 =CE=C5=D3=CF=D3=D4=CF=D1=D4=C5=CC=D8=CE=D9=CD =
+(=C2=C1=CE=CB=D2=CF=D4=CF=CD). =EF=D3=CE=CF=D7=C1=CE=C9=D1 =C4=CC=D1=20
+=CF=C2=D1=DA=C1=D4=C5=CC=D8=CE=CF=C7=CF =
+<BR>=C4=CF=C2=D2=CF=D7=CF=CC=D8=CE=CF=C7=CF =CF=C2=D2=C1=DD=C5=CE=C9=D1 =
+=D7 =D3=D5=C4. =F3=D0=CF=D3=CF=C2=D9 =D5=C8=CF=C4=C1 =
+=C4=C9=D2=C5=CB=D4=CF=D2=C1 =CF=D4=20
+=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9. <B>=F3=D0=CF=D3=CF=C2=D9 =
+=D5=C8=CF=C4=C1 <BR>=CB=CF=CE=D4=D2=CF=CC=C9=D2=D5=C0=DD=C5=C7=CF =
+=C4=CF=CC=D6=CE=C9=CB=C1 =CC=C9=C3=C1 =CF=D4=20
+=CF=D4=D7=C5=D4=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9 =F3=CF=CB=D2=D9=D4=C9=C5 =
+=D3=D4=D2=D5=CB=D4=D5=D2=D9 =D3=CF=C2=D3=D4=D7=C5=CE=CE=CF=D3=D4=C9 =D3 =
+<BR>=D0=CF=CD=CF=DD=D8=C0=20
+=CF=C6=C6=DB=CF=D2=C1/=CE=C5=D2=C5=DA=C9=C4=C5=CE=D4=C1. =
+=F0=CF=D2=D1=C4=CF=CB =D7=DA=D9=D3=CB=C1=CE=C9=D1 =C4=CF=CC=C7=CF=D7 =
+=CB=D2=C5=C4=C9=D4=CF=D2=CF=D7 =D3=20
+<BR>=C4=C9=D2=C5=CB=D4=CF=D2=C1/=CB=CF=CE=D4=D2=CF=CC=C9=D2=D5=C0=DD=C9=C8=
+ =CC=C9=C3 =CF=D2=C7=C1=CE=C9=DA=C1=C3=C9=C9 =
+=C4=CF=CC=D6=CE=C9=CB=C1.<BR>=F3=D4=CF=C9=CD=CF=D3=D4=D8 =
+=D5=DE=C1=D3=D4=C9=D1=20
+=D3=C5=CD=C9=CE=C1=D2=C1 7900 =D2=D5=C2. =
+</B></P></FONT></DIV></BODY></HTML>
+
+------------9L4LH4JKAX9E89PU--
+
+
+
+--===============4736381162809814797==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev
+--===============4736381162809814797==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4736381162809814797==--

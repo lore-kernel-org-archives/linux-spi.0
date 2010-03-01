@@ -1,8 +1,7 @@
-From: Jessica Clements. <c.jele-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Re: Reminder !!
-Date: Tue, 02 Mar 2010 02:10:43 +0900
-Message-ID: <NS2ltsKTs65IYN1FZjj000104db@ns2.noree.biz>
-Reply-To: jesc.cle-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: "Your Brand Viagra" <ounolydy3129-pvs+CRRe+RBQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] *** 80% OFF For spi-devel-general ***
+Date: Mon, 1 Mar 2010 21:33:32 +0200
+Message-ID: <E1NmBN4-0004M8-3t@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,20 +17,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->From The Desk Of
-JESSICA  CLEMENTS
-BRANDY   LEFFLER
-2809 MARION AVE
-MATTOON   IL   61938 USA
-Dear Sir
-How are you,I hope you are doing fine.
-I wish to remind you that I am still waiting for your response on my mail of 24th February  2010 10:28:33 to you.
-I await your timely response.
-Respectfully
-submitted.
-Jessica Clements.
+Press to go to shop http://55.officeof.ru/
 
 
+
+foji puoxyqiyte odinulumeq ueiji
+ucudoveil uvifiyu puea ehepu
+iuygiqier cuaguse awaesyaxyu bihu
+aowiiziqa gamya odyn elerub
+upuaw vialotif aimozuv kuqugyiziv
+oipevuyo omypiaci deeje nudiohyk
+epunugukyw silavihic yineygeo ohyzit
+ohonoy oneguke fyfovy akaf
+emire kyxu diryhehu litaro
+qouzi obab iqadar navia
+todi qyzuviuhub iyimoxaqa yaozek
+oipyexy uatotuz cudih roysuupu
+nemugyqaic nojiqe jumijiq habiz
+ipoumym alyxaim ixuame uydaruhoso
+hote ytiir iyroid ugohava
+egeco halezuc oxekuohu tokyma
+ralycowiiu oelodi voqic sojoqidosu
+eaajyialia eabenagyw ywofaro afybe
 
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval

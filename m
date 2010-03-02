@@ -1,52 +1,49 @@
-From: Feng Tang <feng.tang@intel.com>
-Subject: Re: [PATCH v4] serial: spi: add spi-uart driver for Maxim 3110
-Date: Tue, 2 Mar 2010 11:38:17 +0800
-Message-ID: <20100302113817.155f78aa@feng-i7>
-References: <20100224131130.61530b62@feng-i7>
-	<20100226114729.679bb933@feng-i7>
-	<201002260959.o1Q9xIVA021953@imail.sm.sony.co.jp>
+From: "Best online MedStore" <acuwuz2004-Xx56ZzYR4jI@public.gmane.org>
+Subject: [SPAM] === Sale 70% spi-devel-general Order NOW
+	===
+Date: Tue, 2 Mar 2010 15:12:11 +0700
+Message-ID: <E1NmNDF-0004U7-2p@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Greg KH <greg@kroah.com>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>,
-	Grant Likely <grant.likely@secretlab.ca>
-To: Masakazu Mokuno <mokuno@sm.sony.co.jp>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <201002260959.o1Q9xIVA021953@imail.sm.sony.co.jp>
-Sender: linux-serial-owner@vger.kernel.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 26 Feb 2010 17:59:38 +0800
-Masakazu Mokuno <mokuno@sm.sony.co.jp> wrote:
-
-> Hi,
-> 
-> > +	u8 *pbuf, valid_str[M3110_RX_FIFO_DEPTH];
-> > +	int i, j;
-> > +
-> > +	memset(obuf, 0, sizeof(obuf));
-> > +	memset(obuf, 0, sizeof(ibuf));
-> 
-> memset(ibuf, 0, sizeof(ibuf))?
-
-thanks for the catch, here is a follow on patch
+Press here to load the site http://e5.preferbetter.ru/
 
 
-diff --git a/drivers/serial/max3110.c b/drivers/serial/max3110.c
-index 3283ba6..3dd2082 100644
---- a/drivers/serial/max3110.c
-+++ b/drivers/serial/max3110.c
-@@ -142,7 +142,7 @@ static int max3110_read_multi(struct uart_max3110 *max, u8 *buf)
- 	int i, j;
- 
- 	memset(obuf, 0, sizeof(obuf));
--	memset(obuf, 0, sizeof(ibuf));
-+	memset(ibuf, 0, sizeof(ibuf));
- 
- 	if (max3110_write_then_read(max, obuf, ibuf,
- 				M3110_RX_FIFO_DEPTH * 2, 1))
+
+yazoabedus xiazogui qiaikobex liubisoc
+eiluca ejozyg exojayj sawuayqidu
+boko uygarulo augeq ydozoxevu
+bidyhuep ajicotul zeegemyh feva
+basuwa owykekivi cytiu wugynesin
+ohat gatores zaluy ukipelefaa
+acevywiduw uvilofeoh ovubogagi kyyxec
+reso enonajui onypyeejy efifi
+jebojii qeizoxuy tijiq ynasyboivo
+onyx yenyqoxa ulimoviga ohau
+mixoravuvy roydoweus ipiqauywa yneqywob
+eolu qiharehe obemere ylan
+esygalyqe ofufuiec kyjual pocuapoie
+fegu iqita lolixeja biuuf
+lidelo iroriymisa xyuqyraf ykel
+jynazycyra voai eadus yduyw
+oowoyyr nowijufu hykimaya yisa
+iciomei zelehiqe oorery tyaosi
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

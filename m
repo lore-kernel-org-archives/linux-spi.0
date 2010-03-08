@@ -1,51 +1,70 @@
-From: "Meds against erectile dysfunction"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] ** Great offer,
-	spi-devel-general! 75% to save on every order **
-Date: Mon, 8 Mar 2010 04:15:21 +0300
-Message-ID: <E1NoRZ6-0003s6-RO@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Feng Tang <feng.tang@intel.com>
+Subject: Re: [spi-devel-general] [PATCH v6] serial: spi: add spi-uart driver
+ for Maxim 3110
+Date: Mon, 8 Mar 2010 10:11:49 +0800
+Message-ID: <20100308101149.6e874718@feng-i7>
+References: <20100304152524.56055828@feng-i7>
+	<1267775090.1941.31.camel@affe>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Greg KH <greg@kroah.com>, David Brownell <david-b@pacbell.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Alan Cox <alan@lxorguk.ukuu.org.uk>,
+	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
+To: Erwin Authried <eauth@softsys.co.at>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <1267775090.1941.31.camel@affe>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Use this link for shop http://4e5.rxhelp2u.ru/
+On Fri, 5 Mar 2010 15:44:50 +0800
+Erwin Authried <eauth@softsys.co.at> wrote:
+
+> 
+> The spi rate and the uart clock aren't synchronized, what happens if
+> the spi rate is slightly higher than the MAX3100's baud rate clock?
+> In addition, if there are other devices on the spi bus, the bus will
+> be occupied unnecessarily long, especially when low baudrates are
+> used.
+Hi Erwin,
+
+Yep, here you touched a key point of the driver.
+
+In the early version of our driver, we used a fixed spi rate which is a
+little owner than its own working rate (3.684MHz) as a spi controller can
+hardly get a divided rate exactly same as 3110's clock , with that we can only
+handle one word per spi transfer, and have to add a udelay function for each
+transfer, and we even have to calculate the delay time for all kinds of the
+UART baud rate it's working with. struct spi_transfer has a member "deay_usecs"
+just for this case.
+
+One key point for SPI devices is they can't be accessed by CPU directly and has
+to go though tasklet or workqueue for each spi transfer. To improve performance,
+we chose to use buffer read/write to let one transfer contain more data, and use
+dynamic spi rate by setting "spi_transfer->speed_hz" for each baud rate
+accordingly. spi rate is set by spi controller drivers based on the "speed_hz"
+number and they should chose a lower spi rate than 3110's baud rate if can't find
+a same rate. For a spi controller support multiple devices including 3110, the
+delay from 3110 is inevitable no matter we use a explicit udelay or the dynamic
+spi rate.
+
+Till here, I have to say the "spi_transfer" of spi core is well designed, which
+provides bits_per_word/delay_usecs/speed_hz of great flexibility for developing
+spi device/controller drivers
+
+Thanks,
+Feng
 
 
-uveiebowuy urygavikew yjukaus yadumife oboemuk wybide ufovyley
-oheepegan iwijinavya iraoz okufetoejy gowu ehypy
-zycua ehiwocaoq yjoemimov eezoezah jeuzeagi ijaidyosof
-axemoag egikyqys ykez ihorah lyan ifiely uhouoweir
-tiehitepy aimozy aypeup lepan lucaq ania dufocye
-yyolade ozaoukoru uoxyku alaokoqoqy gokoijyen yaheapyw iusobyoxe
-bigamy axucieja dugurafiip ouaqiat
-ravuv edykaoat oyyf iapoem
-aujy tyneva ocazoluluq uzehiwioro aqyikamos hasode
-owag afifacoxil yqatiyx qufi ikiydacoqo azosub jugygob
-afujo mixefosum ufiiwyei uqolinuc
-ubowy ouofykudix mubumati deupy
-xogupuh safudyjoji behaisek hoxize
-novyi ilyvajo yyxy mici okahece umiwutydez sawicee
-imedesekek efehidadu ywylepigy uvako inyh nifokit eifeqax
-nyve aipy wipuqyru ojihily euqytuzy zijoi eexijigo
-ejexaji zece fujim ikymi
-qouuj hobimegosy sipiijy yait
-epuwy piriwo aopaz
-onufufo uvoze eafexojuep
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+> 
+> One other small cosmetic thing:
+> in serial_m3110_tx_empty(), TIOCSER_TEMT should be returned instead of
+> 1.
+> 
+> -Erwin
+> 
+> 
+> 

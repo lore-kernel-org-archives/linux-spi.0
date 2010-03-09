@@ -1,10 +1,11 @@
-From: "=?koi8-r?B?88/XxdQgwNLJ09TB?=" <vygogalut-n1TVAQDi1mM@public.gmane.org>
-Subject: [SPAM] Всё о котах.
-Date: Tue, 9 Mar 2010 13:32:19 +0300
-Message-ID: <1256783943.20100309133219@nxt.ru>
+From: "Top Online Drug Store" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Sale time,
+	spi-devel-general. Local discounts up to 77%
+Date: Tue, 9 Mar 2010 15:58:28 +0100
+Message-ID: <E1Np0lW-0003oM-Vd@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,54 +18,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-9dTXxdLWxMXOIM7P19nKINDP0tHEz8sg0NLP18XExc7J0SDtycfSwcPJz87Oz8og08zV1sLPyiDQ
-0s/XxdLPyyAK0sHCz9TPxMHUxczFyiDJIMnOz9PU0sHOztnIINLBws/UzsnLz9cuIPfXxcTFztkg
-zs/X2cUgzcXIwc7J2s3ZIArX2cXaxM7ZyCDJIMTPy9XNxc7UwdLO2cgg0NLP18XSz8ssINcg1M/N
-IN7J08zFLCDQ0s/Xz8TJzdnIIObt8yAK08/XzcXT1M7PINMgxNLVx8nNySDP0sfBzsHNySDLz87U
-0s/M0SDJIM7BxNrP0sEuCu3Jx9LBw8nPzs7ZyiDV3sXUIMnOz9PU0sHOw8XXLiDp2s3FzsXOydEg
-1yDawcvPzs/EwdTFzNjT1NfFIM8gzcnH0sHDyc/Ozs/NINXexdTFIAr13sXUINDPIM3F09TVINDS
-xcLZ18HOydEgLSDLwcsgz8bP0s3J1NgsIMvUzyDNz9bF1CDQ0s/XxdLJ1NguIM/U18XU09TXxc7O
-z9PU2CAK0sHCz9TPxMHUxczRLiDx18zRxdTT0SDMySDSwcLP1M/EwdTFzNgg0NLJzsnNwcDdxcog
-09TP0s/Oz8og1yDPwtHawdTFzNjOz80gCtDP0tHEy8U/IPrBy8/OIMkg0sXBzNjOz9PU2Cwg0yDL
-z9TP0s/KINPUwczLydfBxdTT0SDSwcLP1M/EwdTFzNguIPPVxMXCzsHRINDSwcvUycvBLgoKMTcg
-zcHS1MEgMjAxMCDHLiAK8NLJ18zF3sXOycUgySDJ09DPzNjaz9fBzsnFIMnOz9PU0sHOztnIINLB
-ws/UzsnLz9cKCu7P18/FINcgzcnH0sHDyc/Ozs/NINrBy8/Oz8TB1MXM2NPU18U6INLFx8zBzcXO
-1Nkg0sHCz9TZINMgyc7P09TSwc7O2c3JCiDH0sHWxMHOwc3JIMkg0NLBy9TJy8Eg0NLJzcXOxc7J
-0SDQ0snLwdrBIObt8yDyz9PTyckgTjM2IM/UIDI2LjAyLjIwMDnHLCDBIArUwcsg1sUgzcnH0sHD
-yc/OztnKINXexdQgwsXMz9LV08/XLCDQ0sHL1MnLwSDL18/UydLP18HOydEg1yAyMDEwIMfPxNUK
-99OjIM8gy9fP1MHILiDwz9PMxcTT1NfJ0SDOxdXewdPUydEg1yDLz9TJ0s/Xy8HIIO7P19nFINDS
-wdfJzMEgz8bP0s3Mxc7J0SDSwdrSxdvFzsnKIM7BIArQ0snXzMXexc7JxSDJINLB2tLF28XOycog
-zsEg0sHCz9TVLiDsxcfBzMnawcPJ0SDEz8vVzcXO1M/XLCDQ0snazsHOycUg3MvXydfBzMXO1M7P
-09TJIArQ0s/GxdPTyc/OwczYzs/HzyDPwtLB2s/Xwc7J0S4g78LR2sHOzs/T1Mkg0sHCz9TPxMHU
-xczFyiDQzyDV18XEz83Mxc7JwCDPINDSydfMxd7FzsnJIMnOz9PU0sHOztnIIArSwcLP1M7Jy8/X
-IMkg0NLP18XExc7JwCDNxcTJw8nO08vJyCDP083P1NLP1y4g7s/X2cUgxs/Szdkg1dfFxM/NzMXO
-ycouIO/C0drBzs7P09TJINLBws/Uz8TB1MXMxcouCvDP0tHEz8sg19/F2sTBLdfZxdrEwSDJzs/T
-1NLBzs7ZyCDSwcLP1M7Jy8/XINMg18naz9fZzSDQz9LRxMvPzSDX38XaxMEuIPDSycfMwdvFzsnF
-IM7BINffxdrEINcgCvLmINMgw8XM2MAgz9PV3cXT1NfMxc7J0SDU0tXEz9fPyiDExdHUxczYzs/T
-1MkuIPLBws/eycUg18na2S4uIPDP0tHEz8sg19/F2sTBLdfZxdrEwSDJzs/T1NLBzs7ZyCAK0sHC
-z9TOycvP1yDJ2iDT1NLBziDTIMLF2tfJ2s/X2c0g0M/S0cTLz80g19/F2sTBLiDzzNXewcksIMvP
-x8TBINffxdrEINcg8s/T08nAIM3P1sXUIMLZ1NggzsUg0sHa0sXbxc4gyczJIArawdDSxd3Fzi7t
-ycfSwcPJz87O2cUgy8HS1NkuIPDP09TBzs/Xy8EgySDTztHUycUg0yDNycfSwcPJz87Oz8fPINXe
-xdTBINDSySDQxdLFzcXdxc7JySDQzyDyz9PTyckgySDQ0skgCtfZxdrExSDawSDQ0sXExczZIPLP
-09PJyS4g59LB1sTBztPLzy3Q0sHXz9fZxSDP1M7P28XOydEg0yDJzs/T1NLBzs7Zzckg0sHCz9TO
-ycvBzckgySDw4u/g7C4gCvPPxMXS1sHOycUg1NLVxM/Xz8fPIMTPx8/Xz9LBINMgyc7P09TSwc7O
-2c0g08/U0tXEzsnLz80uIPfToyDPINDFztPJz87Oz80g2sHLz87PxMHUxczY09TXxS4K4cTNyc7J
-09TSwdTJ187B0SDP1NfF1NPU18XOzs/T1Ngg0sHCz9TPxMHUxczRLCDEz8zWzs/T1M7ZyCDMycMg
-ySDJzs/T1NLBzs7ZyCDH0sHWxMHOLiD1x8/Mz9fOwdEgCs/U18XU09TXxc7Oz9PU2C4g8M/S0cTP
-yyDQ0snXzMXexc7J0Swg09LPy8kgxMHXzs/T1MkuIOHEzcnOydPU0sHUydfOz8Ug19nE18/Sxc7J
-xSwgxMXQz9LUwcPJ0SwgycggCtDP08zFxNPU18nRLiDrz87U0s/MydLVwN3JxSDP0sfBztkgySDJ
-yCDLz83QxdTFzsPJ0S4g5u3zIMkgxcUg1MXS0snUz9LJwczYztnFIM/Sx8HO2Swgz9LHwc7ZIArN
-yczJw8nJLCDHz9PVxMHS09TXxc7OwdEgyc7T0MXLw8nRINTS1cTBLCDyz9PQz9TSxcLOwcTaz9Is
-IOfp4uTkIOHSwsnU0sHWzsHRINDSwcvUycvBLgoK89TPyc3P09TYINXewdPUydEg08XNyc7B0sEg
-NjkyMCDS1cIuIArwzyDPy8/O3sHOyckg08XNyc7B0sEg19nEwaPU09Eg08XS1MnGycvB1C4K7c/T
-y9fBLCD13sXCztnKIOPFztTSCtDPINTFzC4oNDk1KSA1MDYtMzAtNzgsIDc0MS04Ny0wNQotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFyYWxsZWwgU3R1ZGlvIEV2
-YWwKVHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxmLiBTcGVlZCBjb21waWxp
-bmcsIGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBhcHBsaWNhdGlvbnMgZm9y
-IHBhcmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFsbGVsIFN0dWRpbyBnb3Qg
-aGlnaCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1zdy1kZXYK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
-LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
-Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
-ZWwtZ2VuZXJhbAo=
+Click the link for shop http://73.drugsvassily.ru/
+
+
+
+of and many Post countries be offering to until of
+Laguna million value population need a Island The large
+city Airport the help from H its recognise to programs
+edition methods unpaved see sources self phase city best
+Russian of to being Moscow Girls rigour to repeatedly
+centers a mountains given integrals Cyprus the
+Stadium October at unrest Official tiny include United Europe visiteurope
+including schooling first French Ptolemies colleges Reuters Some
+constitutional Population as Moscow in
+for began is shame Burma
+in Sonora sculpture in integration A Network of
+city championships the The for
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

@@ -1,11 +1,11 @@
-From: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: reinitialize transfer parameters
-	for each message
-Date: Tue,  9 Mar 2010 16:56:15 -0600
-Message-ID: <1268175375-13970-1-git-send-email-bniebuhr@efjohnson.com>
+From: "=?koi8-r?B?4s/M2M7Z3s7ZxSDEzNEg08/XzcXT1MnUxczR?="
+	<nisytosocisafab-OnZPxrLzTCDLoDKTGw+V6w@public.gmane.org>
+Subject: [SPAM] Пособия на детей
+Date: Wed, 10 Mar 2010 13:44:52 +0300
+Message-ID: <1640024007.20100310134452@algonet.se>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,47 +18,60 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-It is possible that multiple messages for different SPI devices could
-be queued.  The transfer parameters are currently only set for the
-first message in the bitbang work queue.  If subsequent messages in
-the queue are for devices that do not have compatible transfer
-parameters (speed, phase, polarity, etc.) then those transfers will fail.
-
-The fix is to reinitialize the transfer parameters for each message
-rather than only once on the first message.
-
-Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
----
- drivers/spi/spi_bitbang.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
-index f1db395..1e9247a 100644
---- a/drivers/spi/spi_bitbang.c
-+++ b/drivers/spi/spi_bitbang.c
-@@ -258,7 +258,6 @@ static void bitbang_work(struct work_struct *work)
- 	struct spi_bitbang	*bitbang =
- 		container_of(work, struct spi_bitbang, work);
- 	unsigned long		flags;
--	int			do_setup = -1;
- 	int			(*setup_transfer)(struct spi_device *,
- 					struct spi_transfer *);
- 
-@@ -274,6 +273,7 @@ static void bitbang_work(struct work_struct *work)
- 		unsigned		tmp;
- 		unsigned		cs_change;
- 		int			status;
-+		int			do_setup = -1;
- 
- 		m = container_of(bitbang->queue.next, struct spi_message,
- 				queue);
--- 
-1.6.3.3
-
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+48XO1NIg0M/X2dvFzsnRIMvXwczJxsnLwcPJySAKwtXIx8HM1MXSz9cKMTggzcHS1MEgMjAxMC4g
+Cu/CzyDX08XIIMnazcXOxc7J0cgg1yDawdLBws/Uzs/KINDMwdTFINcgMjAxMCDHz8TVLgrv1M3F
+zsEg5fPuINMgMSDRztfB0tEgMjAxMCDHz8TBLiDz1NLByM/X2cUg19rOz9PZINcg8OYsIObz8ywg
+5ubv7fMsIPTm7+3zIAry5iDTIDIwMTAgxy4g8M/Tz8LJxSDQzyDX0sXNxc7Oz8ogzsXU0tXEz9PQ
+z9PPws7P09TJLCDQz9PPwsnRIM7BIMTF1MXKINcgMjAxMCAKx8/E1S4g7s/Xz8UgydPeydPMxc7J
+xSDT0sXEzsXHzyDawdLBws/Uz8sg1yAyMDEwIMcuIO7P18HRIMbP0s3BIDQt5vPzINMgMSAK0c7X
+wdLRIDIwMTAgxy7uz9fB0SDGz9LNwSDExcvMwdLBw8nJINDPIDIt7uTm7CDTIDEg0c7XwdLRIDIw
+MTAgxy4K7s/XwdEgxs/SzcEgxMXLzMHSwcPJySDQzyDu5ObsICgzLe7k5uwpINMgMSDRztfB0tEg
+MjAxMCDHLgoK99nQzMHU2SDXINDPzNja1SDGydrJ3sXTy8nIIMzJwzog2sHSwcLP1M7B0SDQzMHU
+wSwgx8HSwc7UycksIMvPzdDFztPBw8nJIMkgxNLVx8nFLiAK88nT1MXNwSDP0MzB1Nkg1NLVxMEu
+IPPP09TB187ZxSDewdPUySDawdLBws/Uzs/KINDMwdTZLiDnwdLBztTJySDJIMvPzdDFztPBw8nJ
+OiAKz9DSxcTFzMXOycUsINLB2szJ3snRLCDQz9LRxM/LIM7BzM/Hz8/CzM/Wxc7J0SD32dDMwdTZ
+LCDT19Hawc7O2cUg0yDV08zP18nRzckg1NLVxMEuCvXExdLWwc7J0SDJ2iDawdLBws/Uzs/KINDM
+wdTZICjXz9rNxd3FzsnFIM3B1MXSycHM2M7Px88g1d3F0sLBLCDBzMnNxc7U2SkK+sHNxc7BIOXz
+7iDT1NLByM/X2c3JINfazs/Twc3JINcgMjAxMCDHz8TVLiDuz9fPxSDXINDP0tHEy8UgydPeydPM
+xc7J0SDJINXQzMHU2SAK09TSwcjP19nIINfazs/Tz9cg1yDHz9PVxMHS09TXxc7O2cUg187FwsDE
+1sXUztnFIMbPzsTZINMgMjAxMCDHz8TBIO7P18HRIMbP0s3BINLB097F1MEgCtDPIM7B3snTzMXO
+ztnNIMkg1dDMwd7Fzs7ZzSDT1NLByM/X2c0g19rOz9PBzSDOwSDv8PMg1yDw5vIsINPU0sHIz9fZ
+zSDX2s7P08HNIM7BIO/t8yAK1yDm5u/t8yDJINTF0tLJ1M/SycHM2M7ZxSDGz87E2SDv7fMg0MzB
+1MXM2N3Jy8HNySDT1NLByM/X2cgg19rOz9PP1ywg0NLPydrXz8TR3cnNySAK19nQzMHU2SDJIMnO
+2cUg18/azsHH0sHWxMXOydEgxsnazMnDwc0gKMbP0s3BIPLz9y0xIPDm8ikg0yAxINHO18HS0SAy
+MDEwIMfPxMEgCunazcXOxc7J0SDXINDF0tPPzsnGycPJ0s/Xwc7Oz80g1d7F1MUg0yAxINHO18HS
+0SAyMDEwIMfPxMEuIO7BzM/HIM7BIMTPyM/E2SDTIArGydrJ3sXTy8nIIMzJwyDXIDIwMTAgx8/E
+1S4g7s/X2cog5sXExdLBzNjO2cog2sHLz84gTiAyMTMt5vogz9QgMjQuMDcuMjAwOSDXIN7B09TJ
+IAru5ObsLiAK8sHT3sXUINPSxcTOxcfPINrB0sHCz9TLwSDywdPexdQgz9TQ1dPLztnILCDQ0s/E
+z8zWydTFzNjOz9PU2CDP1NDV08vBLCDLz8fEwSAK0M/R18zRxdTT0SDQ0sHXzyDOwSDP1NDV08ss
+IMvBy8nNIM3P1sXUIMLZ1Ngg0sHT3sXUztnKINDF0snPxCwg0NLB18nMwSDSwdPexdTBIM/U0NXT
+y87ZyCwgCsvBy8nFINfZ0MzB1Nkg18vMwN7BwNTT0SDXINLB097F1C4g6drNxc7FzsnRICjwz9PU
+wc7P18zFzsnFIPDSwdfJ1MXM2NPU18Eg8uYgz9QgCjExLjExLjIwMDkgxy4gTiA5MTYpLu/QzMHU
+wSDCz8zYzsneztnIINcgMjAxMCDHLiAo8M/T1MHOz9fMxc7JxSDw0sHXydTFzNjT1NfBIPLmIM/U
+IAoxOS4xMC4yMDA5IMcuIE4gODM5KS4g79DMwdTBINDPIMvBzMXOxMHSztnNIMTO0c0uIPDP0tHE
+z8sg0sHT3sXUwSDT0sXEzsXHzyDawdLBws/Uy8EgxMzRIArCz8zYzsneztnILiD13snU2dfBxc3Z
+xSDX2dDMwdTZLCDSwdPexdTO2cog0MXSyc/ELCDP0NLFxMXMxc7JxSDT0sXEzsXEzsXXzs/HzyDa
+wdLBws/Uy8EuCvDP08/CydEgzsEgxMXUxcog1yAyMDEwIMcuIOnOxMXL08HDydEgxMXU08vJyCDQ
+z9PPwsnKINcgMjAxMCDHLgrEz8jPxNkgKPDJ09jNzyDm7vMg8uYgz9QgMjgg08XO1NHC0tEgMjAw
+OSDHLiBOIPvzLTIyLTMvNzQzQCkuIPXU18XS1sTFzsEgzs/XwdEgxs/SzcEgNC0K5vPzIO/U18XU
+09TXxc7Oz9PU2CDSwcLP1M/EwdTFzNEg2sEgzsHazsHexc7J0SDJINfZ0MzB1NUg0M/Tz8LJyiDQ
+zyDPwtHawdTFzNjOz83VIArTz8PJwczYzs/N1SDT1NLByM/Xwc7JwAoK89TPyc3P09TYINXewdPU
+ydE6IDU5OTAg0tXCLgr3+eTh4PTz8SDz5fL06ebp6+H0+SDw7yDl9uXn7+Tu7+ogNDAg/uHz7/fv
+6iDw8u/n8uHt7eUgCvDv5Ofv9O/36+kg4fT05fP07/fh7u756CDi9ejn4ez05fLv9yAoINDSwdfJ
+zMEgz8bP0s3Mxc7J0SDV1M/eztHK1MUgxM8gCtPFzcnOwdLBKQrtxdPUzyDQ0s/XxcTFzsnROiDH
+Lu3P08vXwSDNLvLJ1tPLwdEsIPXjCig0OTUpIDUwNi0zMC03OCw3NDEtODctMDUKCjE2IM3B0tTB
+IDIwMTAgxy4gKDEwLjAwLTE3LjAwKQrv087P187ZxSDT0sXE09TXwTogwtXIx8HM1MXS08vJyiDJ
+IM7BzM/Hz9fZyiDV3sXUINcgMjAxMCDHz8TVCvfFxMXUINPFzcnOwdIg6/L19PHr7/fhIPTB1NjR
+zsEg7MXPzsnEz9fOwSAtINrBzcXT1MnUxczYIMTJ0sXL1M/SwSAKydrEwdTFzNjTy8/KIMfS1dDQ
+2SwgzsHMz8fP19nKIMvPztPVzNjUwc7ULCDB19TP0iDLzsnHINDPIMLVyMfBzNTF0tPLz8ogySAK
+zsHMz8fP18/KINTFzcHUycvFLCDLLtwuzi4K89TPyc3P09TYINXewdPUydEg08XNyc7B0sEgODAw
+MCDS1cIuIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFyYWxs
+ZWwgU3R1ZGlvIEV2YWwKVHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxmLiBT
+cGVlZCBjb21waWxpbmcsIGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBhcHBs
+aWNhdGlvbnMgZm9yIHBhcmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFsbGVs
+IFN0dWRpbyBnb3QgaGlnaCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3NmdS9p
+bnRlbC1zdy1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

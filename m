@@ -1,48 +1,40 @@
-From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
-Subject: nitin vishnoi invites you to join Ecademy
-Date: Thu, 11 Mar 2010 03:51:07 +0000 (GMT)
-Message-ID: <20100311035107.09AB6D98162@ecweb2.ecademy.com>
-Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
+From: Feng Tang <feng.tang@intel.com>
+Subject: Re: [PATCH v6] serial: spi: add spi-uart driver for Maxim 3110
+Date: Thu, 11 Mar 2010 16:32:08 +0800
+Message-ID: <20100311163208.03702414@feng-i7>
+References: <20100304152524.56055828@feng-i7>
+	<fa686aa41003072030xc63dcfemd4a43140a9e05310@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Greg KH <greg@kroah.com>, David Brownell <david-b@pacbell.net>,
+	Alan Cox <alan@lxorguk.ukuu.org.uk>,
+	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <fa686aa41003072030xc63dcfemd4a43140a9e05310@mail.gmail.com>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Mon, 8 Mar 2010 12:30:13 +0800
+Grant Likely <grant.likely@secretlab.ca> wrote:
 
-Join Ecademy now for business networking and support >
+> Hi Feng,
+> 
+> I'm really concerned with this driver.  I think it needs a lot more
+> work before it is ready for prime-time.  Again, you might want to
+> consider asking Greg to add it to the staging tree while you clean
+> stuff up and coordinate with the max3100 driver author.
+> 
+> Comments below.
 
-- Share Knowledge
-- Build your Network
-- Grow your Business
+Hi Grant,
 
-thanks,
-nitin vishnoi
-nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Thanks for the comments, will address them in future submission.
 
+For your suggestion about merging with max3100.c, I did tried but failed
+as the basic working model differ a lot, anyway I will recheck that.
 
-This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To avoid receiving these emails in the future send an email from that address to
-invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
-or go to
-http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
-Email:support-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org The Ecademy Limited, Stronsay, Tilford Road, Hindhead, Surrey, GU26 6UG, UK
-Registered in England and Wales Company Registration: 3651083 VAT: 718 0377 36
-
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+- Feng 

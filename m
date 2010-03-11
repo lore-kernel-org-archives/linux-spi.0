@@ -1,13 +1,11 @@
-From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH] misc/eeprom/at25: init dynamic
-	bin_attribute structures
-Date: Thu, 11 Mar 2010 01:57:42 +0100
-Message-ID: <1268269062-24817-1-git-send-email-w.sang@pengutronix.de>
+From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
+Subject: nitin vishnoi invites you to join Ecademy
+Date: Thu, 11 Mar 2010 03:51:07 +0000 (GMT)
+Message-ID: <20100311035107.09AB6D98162@ecweb2.ecademy.com>
+Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"Eric W. Biederman" <ebiederm-aS9lmoZGLiVWk0Htik3J/w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -20,28 +18,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q29tbWl0IDY5OTJmNTMzNDk5NWFmNDc0YzJiNThkMDEwZDA4YmM1OTdmMGYyZmUgaW50cm9kdWNl
-ZCB0aGlzIHJlcXVpcmVtZW50LgoKUmVwb3J0ZWQtYnk6IEFsYnJlY2h0IERyZcOfIDxhbGJyZWNo
-dC5kcmVzc0BhcmNvci5kZT4KU2lnbmVkLW9mZi1ieTogV29sZnJhbSBTYW5nIDx3LnNhbmdAcGVu
-Z3V0cm9uaXguZGU+CkNjOiBFcmljIFcuIEJpZWRlcm1hbiA8ZWJpZWRlcm1AeG1pc3Npb24uY29t
-PgpDYzogRGF2aWQgQnJvd25lbGwgPGRicm93bmVsbEB1c2Vycy5zb3VyY2Vmb3JnZS5uZXQ+CkNj
-OiBHcmFudCBMaWtlbHkgPGdyYW50Lmxpa2VseUBzZWNyZXRsYWIuY2E+Ci0tLQogZHJpdmVycy9t
-aXNjL2VlcHJvbS9hdDI1LmMgfCAgICAxICsKIDEgZmlsZXMgY2hhbmdlZCwgMSBpbnNlcnRpb25z
-KCspLCAwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbWlzYy9lZXByb20vYXQy
-NS5jIGIvZHJpdmVycy9taXNjL2VlcHJvbS9hdDI1LmMKaW5kZXggZDkwMmQ4MS4uMTNlMzgxNCAx
-MDA2NDQKLS0tIGEvZHJpdmVycy9taXNjL2VlcHJvbS9hdDI1LmMKKysrIGIvZHJpdmVycy9taXNj
-L2VlcHJvbS9hdDI1LmMKQEAgLTM1MSw2ICszNTEsNyBAQCBzdGF0aWMgaW50IGF0MjVfcHJvYmUo
-c3RydWN0IHNwaV9kZXZpY2UgKnNwaSkKIAlhdDI1LT5iaW4uYXR0ci5tb2RlID0gU19JUlVTUjsK
-IAlhdDI1LT5iaW4ucmVhZCA9IGF0MjVfYmluX3JlYWQ7CiAJYXQyNS0+bWVtLnJlYWQgPSBhdDI1
-X21lbV9yZWFkOworCXN5c2ZzX2Jpbl9hdHRyX2luaXQoJmF0MjUtPmJpbik7CiAKIAlhdDI1LT5i
-aW4uc2l6ZSA9IGF0MjUtPmNoaXAuYnl0ZV9sZW47CiAJaWYgKCEoY2hpcC0+ZmxhZ3MgJiBFRV9S
-RUFET05MWSkpIHsKLS0gCjEuNy4wCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkRvd25sb2FkIElu
-dGVsJiMxNzQ7IFBhcmFsbGVsIFN0dWRpbyBFdmFsClRyeSB0aGUgbmV3IHNvZnR3YXJlIHRvb2xz
-IGZvciB5b3Vyc2VsZi4gU3BlZWQgY29tcGlsaW5nLCBmaW5kIGJ1Z3MKcHJvYWN0aXZlbHksIGFu
-ZCBmaW5lLXR1bmUgYXBwbGljYXRpb25zIGZvciBwYXJhbGxlbCBwZXJmb3JtYW5jZS4KU2VlIHdo
-eSBJbnRlbCBQYXJhbGxlbCBTdHVkaW8gZ290IGhpZ2ggbWFya3MgZHVyaW5nIGJldGEuCmh0dHA6
-Ly9wLnNmLm5ldC9zZnUvaW50ZWwtc3ctZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Hi,
+
+Join Ecademy now for business networking and support >
+
+- Share Knowledge
+- Build your Network
+- Grow your Business
+
+thanks,
+nitin vishnoi
+nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+
+
+This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To avoid receiving these emails in the future send an email from that address to
+invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
+or go to
+http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
+Email:support-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org The Ecademy Limited, Stronsay, Tilford Road, Hindhead, Surrey, GU26 6UG, UK
+Registered in England and Wales Company Registration: 3651083 VAT: 718 0377 36
+
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

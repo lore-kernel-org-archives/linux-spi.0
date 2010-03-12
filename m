@@ -1,7 +1,7 @@
-From: "Voyage Prive par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] des voyages d exception a prix reduit
-Date: Fri, 12 Mar 2010 21:16:28 +0100 (CET)
-Message-ID: <kz6r14.pbsirx@front02.r7g.com>
+From: "ECO-REV" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Confort energetique et economies maximums à decouvrir avec notre guide
+Date: Sat, 13 Mar 2010 00:37:03 +0100 (CET)
+Message-ID: <kz70a0.c0bq81@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

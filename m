@@ -1,55 +1,61 @@
-From: Scott Ellis <scott@jumpnowtek.com>
-Subject: [PATCH 6/6] SPI omap2_mcspi.c: Limit debug messages from
- setup_transfer
-Date: Fri, 12 Mar 2010 10:22:14 -0500
-Message-ID: <1268407334.14445.55.camel@quad>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH 2/6] SPI omap2_mcspi: Add max_clk_div field to mcspi
+ platform config
+Date: Fri, 12 Mar 2010 09:21:48 -0800
+Message-ID: <20100312172148.GG2900@atomide.com>
+References: <1268407307.14445.51.camel@quad>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	David Brownell <dbrownell@users.sourceforge.net>,
 	Grant Likely <grant.likely@secretlab.ca>,
-	Tony Lindgren <tony@atomide.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Roman Tereshonkov <roman.tereshonkov@nokia.com>,
 	linux-omap@vger.kernel.org,
 	Aaro Koskinen <Aaro.Koskinen@nokia.com>,
-	Kevin Hilman <khilman@deeprootsystems.com>
-To: spi-devel-general@lists.sourceforge.net
+	Kevin Hilman <khilman@deeprootsystems.com>,
+	linux-arm-kernel@lists.infradead.org
+To: Scott Ellis <scott@jumpnowtek.com>
 Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1268407307.14445.51.camel@quad>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Limit the debug messages put out in omap2_mcspi_setup_transfer().
-If you are overriding the speed on transfers, the volume is 
-excessive. 
+* Scott Ellis <scott@jumpnowtek.com> [100312 07:20]:
+> The McSPI_CHxCONF.CLKD register field has different limits for the
+> OMAP3 then the OMAP24xx. As per recommendation from the linux-omap
+> list, added a field for max_clk_div to the platform data for use in 
+> omap2_mcspi.c.
+> 
+> Used in a subsequent patch. 
+> 
+> Signed-off-by: Scott Ellis <scott@jumpnowtek.com>
+> 
+>  arch/arm/mach-omap2/devices.c           |   16 ++++++++++++++++
+>  arch/arm/plat-omap/include/plat/mcspi.h |    1 +
+>  2 files changed, 17 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap2/devices.c b/arch/arm/mach-omap2/devices.c
+> index 23e4d77..d4ad126 100644
+> --- a/arch/arm/mach-omap2/devices.c
+> +++ b/arch/arm/mach-omap2/devices.c
+> @@ -302,6 +302,11 @@ static inline void omap_init_sti(void) {}
+>  
+>  static struct omap2_mcspi_platform_config omap2_mcspi1_config = {
+>  	.num_cs		= 4,
+> +#if defined(CONFIG_ARCH_OMAP3) || defined(CONFIG_ARCH_OMAP4)
+> +	.max_clk_div	= 0x0c,
+> +#else
+> +	.max_clk_div	= 0x0f,
+> +#endif
+>  };
+>  
 
-Wrap it with VERBOSE.
+Can't do ifdef else like this. It will break multi-omap booting on
+omap2 + 3 + 4. In the platform init just set the values once with
+cpu_is_omapXXXX() instead.
 
-Signed-off-by: Scott Ellis <scott@jumpnowtek.com>
+Regards,
 
- drivers/spi/omap2_mcspi.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-index adc6fd3..b2dbbc0 100644
---- a/drivers/spi/omap2_mcspi.c
-+++ b/drivers/spi/omap2_mcspi.c
-@@ -637,11 +637,12 @@ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
- 
- 	mcspi_write_chconf0(spi, l);
- 
-+#ifdef VERBOSE
- 	dev_dbg(&spi->dev, "setup: speed %d, sample %s edge, clk %s\n",
- 			OMAP2_MCSPI_MAX_FREQ / (1 << div),
- 			(spi->mode & SPI_CPHA) ? "trailing" : "leading",
- 			(spi->mode & SPI_CPOL) ? "inverted" : "normal");
--
-+#endif
- 	return 0;
- }
- 
-
-
-
-
-
+Tony

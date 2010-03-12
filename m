@@ -1,86 +1,98 @@
 From: Scott Ellis <scott@jumpnowtek.com>
-Subject: [PATCH 1/6 Revised] SPI omap2_mcspi.c: Check params before
- dereference or use
-Date: Fri, 12 Mar 2010 10:11:53 -0500
-Message-ID: <1268406713.14445.50.camel@quad>
+Subject: [PATCH 2/6] SPI omap2_mcspi: Add max_clk_div field to mcspi
+ platform config
+Date: Fri, 12 Mar 2010 10:21:47 -0500
+Message-ID: <1268407307.14445.51.camel@quad>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 Cc: David Brownell <dbrownell@users.sourceforge.net>,
 	Grant Likely <grant.likely@secretlab.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
 	Tony Lindgren <tony@atomide.com>,
-	Kevin Hilman <khilman@deeprootsystems.com>,
-	Aaro Koskinen <Aaro.Koskinen@nokia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Roman Tereshonkov <roman.tereshonkov@nokia.com>,
-	linux-omap@vger.kernel.org
+	linux-omap@vger.kernel.org,
+	Aaro Koskinen <Aaro.Koskinen@nokia.com>,
+	Kevin Hilman <khilman@deeprootsystems.com>,
+	linux-arm-kernel@lists.infradead.org
 To: spi-devel-general@lists.sourceforge.net
 Return-path: <linux-omap-owner@vger.kernel.org>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This was previously submitted directly to the linux-kernel list.
-It was incomplete the first time because it failed to also check
-the chip_select value.
+The McSPI_CHxCONF.CLKD register field has different limits for the
+OMAP3 then the OMAP24xx. As per recommendation from the linux-omap
+list, added a field for max_clk_div to the platform data for use in 
+omap2_mcspi.c.
 
-Check spi->controller_state before dereference.
-Check spi->chip_select for range before use.
-
-Neither are necessarily valid after spi_alloc_device() and 
-then spi_add_device() fails. Calling spi_put_device() will 
-trigger the error.
+Used in a subsequent patch. 
 
 Signed-off-by: Scott Ellis <scott@jumpnowtek.com>
 
- drivers/spi/omap2_mcspi.c |   30 +++++++++++++++++-------------
- 1 files changed, 17 insertions(+), 13 deletions(-)
+ arch/arm/mach-omap2/devices.c           |   16 ++++++++++++++++
+ arch/arm/plat-omap/include/plat/mcspi.h |    1 +
+ 2 files changed, 17 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-index 715c518..fe1b56d 100644
---- a/drivers/spi/omap2_mcspi.c
-+++ b/drivers/spi/omap2_mcspi.c
-@@ -748,22 +748,26 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
- 	struct omap2_mcspi_dma	*mcspi_dma;
- 	struct omap2_mcspi_cs	*cs;
+diff --git a/arch/arm/mach-omap2/devices.c b/arch/arm/mach-omap2/devices.c
+index 23e4d77..d4ad126 100644
+--- a/arch/arm/mach-omap2/devices.c
++++ b/arch/arm/mach-omap2/devices.c
+@@ -302,6 +302,11 @@ static inline void omap_init_sti(void) {}
  
--	mcspi = spi_master_get_devdata(spi->master);
--	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
-+	if (spi->controller_state) {
-+		/* Unlink controller state from context save list */
-+		cs = spi->controller_state;
-+		list_del(&cs->node);
+ static struct omap2_mcspi_platform_config omap2_mcspi1_config = {
+ 	.num_cs		= 4,
++#if defined(CONFIG_ARCH_OMAP3) || defined(CONFIG_ARCH_OMAP4)
++	.max_clk_div	= 0x0c,
++#else
++	.max_clk_div	= 0x0f,
++#endif
+ };
  
--	/* Unlink controller state from context save list */
--	cs = spi->controller_state;
--	list_del(&cs->node);
-+		kfree(spi->controller_state);
-+	}
+ static struct resource omap2_mcspi1_resources[] = {
+@@ -324,6 +329,11 @@ static struct platform_device omap2_mcspi1 = {
  
--	kfree(spi->controller_state);
-+	if (spi->chip_select < spi->master->num_chipselect) {
-+		mcspi = spi_master_get_devdata(spi->master);
-+		mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+ static struct omap2_mcspi_platform_config omap2_mcspi2_config = {
+ 	.num_cs		= 2,
++#if defined(CONFIG_ARCH_OMAP3) || defined(CONFIG_ARCH_OMAP4)
++	.max_clk_div	= 0x0c,
++#else
++	.max_clk_div	= 0x0f,
++#endif
+ };
  
--	if (mcspi_dma->dma_rx_channel != -1) {
--		omap_free_dma(mcspi_dma->dma_rx_channel);
--		mcspi_dma->dma_rx_channel = -1;
--	}
--	if (mcspi_dma->dma_tx_channel != -1) {
--		omap_free_dma(mcspi_dma->dma_tx_channel);
--		mcspi_dma->dma_tx_channel = -1;
-+		if (mcspi_dma->dma_rx_channel != -1) {
-+			omap_free_dma(mcspi_dma->dma_rx_channel);
-+			mcspi_dma->dma_rx_channel = -1;
-+		}
-+		if (mcspi_dma->dma_tx_channel != -1) {
-+			omap_free_dma(mcspi_dma->dma_tx_channel);
-+			mcspi_dma->dma_tx_channel = -1;
-+		}
- 	}
- }
-
-
-
+ static struct resource omap2_mcspi2_resources[] = {
+@@ -348,6 +358,11 @@ static struct platform_device omap2_mcspi2 = {
+ 	defined(CONFIG_ARCH_OMAP4)
+ static struct omap2_mcspi_platform_config omap2_mcspi3_config = {
+ 	.num_cs		= 2,
++#if defined(CONFIG_ARCH_OMAP3) || defined(CONFIG_ARCH_OMAP4)
++	.max_clk_div	= 0x0c,
++#else
++	.max_clk_div	= 0x0f,
++#endif
+ };
+ 
+ static struct resource omap2_mcspi3_resources[] = {
+@@ -372,6 +387,7 @@ static struct platform_device omap2_mcspi3 = {
+ #if defined(CONFIG_ARCH_OMAP3) || defined(CONFIG_ARCH_OMAP4)
+ static struct omap2_mcspi_platform_config omap2_mcspi4_config = {
+ 	.num_cs		= 1,
++	.max_clk_div	= 0x0c,
+ };
+ 
+ static struct resource omap2_mcspi4_resources[] = {
+diff --git a/arch/arm/plat-omap/include/plat/mcspi.h b/arch/arm/plat-omap/include/plat/mcspi.h
+index 1254e49..9fadddd 100644
+--- a/arch/arm/plat-omap/include/plat/mcspi.h
++++ b/arch/arm/plat-omap/include/plat/mcspi.h
+@@ -3,6 +3,7 @@
+ 
+ struct omap2_mcspi_platform_config {
+ 	unsigned short	num_cs;
++	unsigned short	max_clk_div;
+ };
+ 
+ struct omap2_mcspi_device_config {
 
 
 

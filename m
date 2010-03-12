@@ -1,27 +1,89 @@
-From: "Alarmes Securitas par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: =?iso-8859-1?q?La_haute_s=E9curit=E9_Triple_a?=
-	=?iso-8859-1?q?ction_=E0_prix_inedit?=
-Date: Fri, 12 Mar 2010 15:54:09 +0100 (CET)
-Message-ID: <kz6c29.svyrvw@front.ta271.com>
+From: Scott Ellis <scott@jumpnowtek.com>
+Subject: [PATCH 1/6 Revised] SPI omap2_mcspi.c: Check params before
+ dereference or use
+Date: Fri, 12 Mar 2010 10:11:53 -0500
+Message-ID: <1268406713.14445.50.camel@quad>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Kevin Hilman <khilman@deeprootsystems.com>,
+	Aaro Koskinen <Aaro.Koskinen@nokia.com>,
+	Roman Tereshonkov <roman.tereshonkov@nokia.com>,
+	linux-omap@vger.kernel.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This was previously submitted directly to the linux-kernel list.
+It was incomplete the first time because it failed to also check
+the chip_select value.
 
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+Check spi->controller_state before dereference.
+Check spi->chip_select for range before use.
+
+Neither are necessarily valid after spi_alloc_device() and 
+then spi_add_device() fails. Calling spi_put_device() will 
+trigger the error.
+
+Signed-off-by: Scott Ellis <scott@jumpnowtek.com>
+
+ drivers/spi/omap2_mcspi.c |   30 +++++++++++++++++-------------
+ 1 files changed, 17 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index 715c518..fe1b56d 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -748,22 +748,26 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
+ 	struct omap2_mcspi_dma	*mcspi_dma;
+ 	struct omap2_mcspi_cs	*cs;
+ 
+-	mcspi = spi_master_get_devdata(spi->master);
+-	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
++	if (spi->controller_state) {
++		/* Unlink controller state from context save list */
++		cs = spi->controller_state;
++		list_del(&cs->node);
+ 
+-	/* Unlink controller state from context save list */
+-	cs = spi->controller_state;
+-	list_del(&cs->node);
++		kfree(spi->controller_state);
++	}
+ 
+-	kfree(spi->controller_state);
++	if (spi->chip_select < spi->master->num_chipselect) {
++		mcspi = spi_master_get_devdata(spi->master);
++		mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+ 
+-	if (mcspi_dma->dma_rx_channel != -1) {
+-		omap_free_dma(mcspi_dma->dma_rx_channel);
+-		mcspi_dma->dma_rx_channel = -1;
+-	}
+-	if (mcspi_dma->dma_tx_channel != -1) {
+-		omap_free_dma(mcspi_dma->dma_tx_channel);
+-		mcspi_dma->dma_tx_channel = -1;
++		if (mcspi_dma->dma_rx_channel != -1) {
++			omap_free_dma(mcspi_dma->dma_rx_channel);
++			mcspi_dma->dma_rx_channel = -1;
++		}
++		if (mcspi_dma->dma_tx_channel != -1) {
++			omap_free_dma(mcspi_dma->dma_tx_channel);
++			mcspi_dma->dma_tx_channel = -1;
++		}
+ 	}
+ }
+
+
+
+
+
+
+
+
+

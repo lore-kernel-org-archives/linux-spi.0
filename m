@@ -1,19 +1,24 @@
-From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: [PATCH 2/3] ep93xx: added chip revision reading
-	function
-Date: Mon, 15 Mar 2010 18:26:11 +0200
-Message-ID: <3d93e748eb068963a9378b454ba9cd117cbbc737.1268669236.git.mika.westerberg@iki.fi>
-References: <cover.1268669236.git.mika.westerberg@iki.fi>
-	<774b9c08b6e9484a2ca5084b8b6019aa18dddd99.1268669236.git.mika.westerberg@iki.fi>
+From: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH 2/6 Revised] SPI omap2_mcspi: Add
+ max_clk_div field to mcspi platform config
+Date: Mon, 15 Mar 2010 09:32:46 -0700
+Message-ID: <20100315163246.GT2900@atomide.com>
+References: <1268407307.14445.51.camel@quad>
+	<20100312172148.GG2900@atomide.com>
+	<1268587548.30878.11.camel@quad>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
+	Aaro Koskinen <Aaro.Koskinen-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+To: Scott Ellis <scott-oZqG5KApg2M/jFmSBShxMA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <774b9c08b6e9484a2ca5084b8b6019aa18dddd99.1268669236.git.mika.westerberg-X3B1VOXEql0@public.gmane.org>
-In-Reply-To: <cover.1268669236.git.mika.westerberg-X3B1VOXEql0@public.gmane.org>
-References: <cover.1268669236.git.mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1268587548.30878.11.camel@quad>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,77 +29,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Added a new function: ep93xx_chip_revision() which reads chip revision from the
-sysconfig register.
+* Scott Ellis <scott-oZqG5KApg2M/jFmSBShxMA@public.gmane.org> [100314 10:22]:
+> The McSPI_CHxCONF.CLKD register field has different limits for
+> the OMAP3 then the OMAP24xx. New max_clk_div field added to
+> mcspi platform config structure to keep track of this.
+> 
+> Revised patch to not break multi-omap booting.
+> 
+> Signed-off-by: Scott Ellis <scott-oZqG5KApg2M/jFmSBShxMA@public.gmane.org>
+> 
+>  arch/arm/mach-omap2/devices.c           |   14 ++++++++++++++
+>  arch/arm/plat-omap/include/plat/mcspi.h |    1 +
+>  2 files changed, 15 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap2/devices.c b/arch/arm/mach-omap2/devices.c
+> index 23e4d77..200f382 100644
+> --- a/arch/arm/mach-omap2/devices.c
+> +++ b/arch/arm/mach-omap2/devices.c
+> @@ -415,6 +415,11 @@ static inline void omap4_mcspi_fixup(void)
+>  	defined(CONFIG_ARCH_OMAP4)
+>  static inline void omap2_mcspi3_init(void)
+>  {
+> +	if (cpu_is_omap343x() || cpu_is_omap44xx())
+> +		omap2_mcspi3_config.max_clk_div = 0x0c;
+> +	else
+> +		omap2_mcspi3_config.max_clk_div = 0x0f;
+> +
+>  	platform_device_register(&omap2_mcspi3);
+>  }
+>  #else
 
-Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
----
- arch/arm/mach-ep93xx/core.c                  |   26 ++++++++++++++++++++++++++
- arch/arm/mach-ep93xx/include/mach/platform.h |   11 +++++++++++
- 2 files changed, 37 insertions(+), 0 deletions(-)
+Hmm now it looks like you're missing 3630 handling?
 
-diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
-index 90fb591..2e496c9 100644
---- a/arch/arm/mach-ep93xx/core.c
-+++ b/arch/arm/mach-ep93xx/core.c
-@@ -64,6 +64,32 @@ void __init ep93xx_map_io(void)
- 	iotable_init(ep93xx_io_desc, ARRAY_SIZE(ep93xx_io_desc));
- }
- 
-+/**
-+ * ep93xx_chip_revision() - returns EP93xx chip revision
-+ *
-+ * Returns EP93xx chip revision number read from sysconfig register. Possible
-+ * values can be one of the following:
-+ *
-+ * %EP93XX_CHIP_REV_A
-+ * %EP93XX_CHIP_REV_B
-+ * %EP93XX_CHIP_REV_C
-+ * %EP93XX_CHIP_REV_D0
-+ * %EP93XX_CHIP_REV_D1
-+ * %EP93XX_CHIP_REV_E0
-+ * %EP93XX_CHIP_REV_E1
-+ * %EP93XX_CHIP_REV_E2
-+ *
-+ * and in future maybe something else. See also <mach/platform.h>.
-+ */
-+u8 ep93xx_chip_revision(void)
-+{
-+	u32 v;
-+
-+	v = __raw_readl(EP93XX_SYSCON_SYSCFG);
-+	v &= EP93XX_SYSCON_SYSCFG_REV_MASK;
-+	v >>= EP93XX_SYSCON_SYSCFG_REV_SHIFT;
-+	return (u8)v;
-+}
- 
- /*************************************************************************
-  * Timer handling for EP93xx
-diff --git a/arch/arm/mach-ep93xx/include/mach/platform.h b/arch/arm/mach-ep93xx/include/mach/platform.h
-index c6dc14d..8603837 100644
---- a/arch/arm/mach-ep93xx/include/mach/platform.h
-+++ b/arch/arm/mach-ep93xx/include/mach/platform.h
-@@ -33,6 +33,17 @@ static inline void ep93xx_devcfg_clear_bits(unsigned int bits)
- 	ep93xx_devcfg_set_clear(0x00, bits);
- }
- 
-+#define EP93XX_CHIP_REV_A      0
-+#define EP93XX_CHIP_REV_B      1
-+#define EP93XX_CHIP_REV_C      2
-+#define EP93XX_CHIP_REV_D0     3
-+#define EP93XX_CHIP_REV_D1     4
-+#define EP93XX_CHIP_REV_E0     5
-+#define EP93XX_CHIP_REV_E1     6
-+#define EP93XX_CHIP_REV_E2     7
-+
-+u8 ep93xx_chip_revision(void);
-+
- void ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr);
- void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
- 			 struct i2c_board_info *devices, int num);
--- 
-1.5.6.5
+If the max_clk_div is 0x0f for 2420 and 2430, then you
+can just check for cpu_is_omap24xx(). If it's only
+different for 2420, then you can check for cpu_is_omap2420().
 
+That way it should be more future proof, and you don't
+need to change it for new processors.
+
+Regards,
+
+Tony
 
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval

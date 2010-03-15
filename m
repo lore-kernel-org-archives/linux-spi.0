@@ -1,65 +1,63 @@
-From: Brian Niebuhr <BNiebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
-Subject: RE: [PATCH 1/2 v2] spi: overhaul davinci spi driver to correct
-	multiple errors
-Date: Mon, 15 Mar 2010 09:24:35 -0500
-Message-ID: <A117B9F753B6EB4580D381ED91D0FED00178A905@transmail01.transcrypt.local>
-References: <1268422520-22642-1-git-send-email-bniebuhr@efjohnson.com><1268422520-22642-2-git-send-email-bniebuhr@efjohnson.com>
-	<87k4th2hpn.fsf@deeprootsystems.com>
+From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Subject: Re: SPI troubles
+Date: Mon, 15 Mar 2010 10:38:38 -0400
+Message-ID: <4B9E466E.3040405@whoi.edu>
+References: <4b9d9f11.9a15f10a.3902.6dc3@mx.google.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-To: "Kevin Hilman" <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Content-Class: urn:content-classes:message
-In-Reply-To: <87k4th2hpn.fsf-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, beagleboard-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4b9d9f11.9a15f10a.3902.6dc3-ATjtLOhZ0NVl57MIdRCFDg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- > > This patch is a significant overhaul of the davinci spi 
-> controller driver
-> > that corrects multiple errors:
-> >
-> > - Eliminate a race condition that exists for slow SPI devices
-> > - Fix DMA transfer length error
-> > - Fix limitations preventing multiple SPI devices on the 
-> same controller
-> >
-> > Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
+On 03/14/2010 10:44 PM, Ben Gamari wrote:
 > 
-> The verbose description of the issues addressed from PATCH 0/2 should
-> go here is well so it makes it into the permanent git history.
-
-I can certainly do that.
- 
-> That being said, I think for the sake of reviewing, you're going to
-> need to break this up into reviewable pieces, each having a verbose
-> description of the issues being solved.
+> When measuring the SIMO signal on the expansion connector with my daughterboard
+> connected, I noticed that the daughterboard's level shifter appeared to be
+> driving the signal higher than it should, to ~2.9 Volts. I then checked the
+> 1.8V rail voltage and found that it too was higher than expected, again at 2.9
+> volts. When I unplug the daughterboard, the 1.8V rail voltage returns to its
+> expected value.
 > 
-> There is also a mixture of fixes, enhancements, renames etc.  These
-> should be done as separate patches. 
-> 
-> I know that it's more work to break it up like this, but that's the
-> only way to make a large change like this reviewable by others.
+> I'm both perplexed and concerned with this behavior. I completely fail to
+> see how my board is raising the voltage on the 1.8V rail (schematic available
+> at [3]).  While the BeagleBoard seems quite stable, I'm very concerned that
+> perhaps the daughterboard over-drove the SIMO ball and burned out some subset
+> of the OMAP.  Regardless, as mentioned earlier, I have verified the
+> functionality of the same ball as a GPIO input. Thus, I am thoroughly confused.
+> Is it possible that the ball's GPIO receiver could remain functional while the
+> McSPI receiver is burned out?
+>
+> [3] http://goldnerlab.physics.umass.edu/git?p=tracker-board.git;a=summary
 
-I guess I was hoping that this could be reviewed as if it were a new
-driver submission.  I ended up more or less rewriting all of the
-functional parts of the driver (txrx_bufs(), chipselect(), IRQs and DMA
-callbacks), so it's very difficult to show this as a series of changes.
-I do understand the problem from your perspective, though.  My thought
-was that if the TI folks were willing to look the driver over and they
-gave their blessing, that you would look at it as if it were a
-replacement driver and accept or deny it on that basis.
+I'd be happy to check your circuit for you, if it were posted in a more
+widely used format.  How about a PDF of the schematic.
 
-Thanks for your consideration,
+-- 
+Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
+Oceanographic Systems Lab                                  508-289-2226
+Applied Ocean Physics and Engineering Dept.
+Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
+http://www.whoi.edu/
+http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
+http://www.whoi.edu/hpb/Site.do?id=1532
+http://www.whoi.edu/page.do?pid=10079
 
-Brian
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

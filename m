@@ -1,78 +1,79 @@
-From: Ned Forrester <nforrester@whoi.edu>
-Subject: Re: [spi-devel-general] SPI troubles
-Date: Mon, 15 Mar 2010 16:57:27 -0400
-Message-ID: <4B9E9F37.9030906@whoi.edu>
-References: <4b9d9f11.9a15f10a.3902.6dc3@mx.google.com>	<4B9E466E.3040405@whoi.edu> <4b9e58d3.11435e0a.1736.2cf9@mx.google.com>
+From: Thomas Weber <swirl-EOsNSARiLbg@public.gmane.org>
+Subject: [PATCH 0/4] Some typo fixing
+Date: Mon, 15 Mar 2010 21:55:43 +0100
+Message-ID: <1268686558-28171-1-git-send-email-swirl@gmx.li>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: beagleboard@googlegroups.com,
-	spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
-To: Ben Gamari <bgamari.foss@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <4b9e58d3.11435e0a.1736.2cf9@mx.google.com>
-Sender: linux-omap-owner@vger.kernel.org
+Cc: Karsten Keil <isdn-iHCpqvpFUx0uJkBD2foKsQ@public.gmane.org>, Lin Ming <ming.m.lin-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        Takashi Iwai <tiwai-l3A5Bk7waGM@public.gmane.org>,
+        Benjamin Herrenschmidt <benh-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
+        Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>, Pavel Machek <pavel-AlSwsSmVLrQ@public.gmane.org>,
+        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        KOSAKI Motohiro <kosaki.motohiro-+CUm20s59erQFUHtdCDX3A@public.gmane.org>,
+        Bjorn Helgaas <bjorn.helgaas-VXdhtT5mjnY@public.gmane.org>,
+        Rusty Russell <rusty-8n+1lVoiYb80n/F98K4Iww@public.gmane.org>,
+        "John W. Linville" <linville-2XuSBdqkA4R54TAoqtyWWQ@public.gmane.org>,
+        Steve Conklin <sconklin-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>,
+        Ralph Campbell <infinipath-h88ZbnxC6KDQT0dZR+AlfA@public.gmane.org>,
+        Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>, cbe-oss-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+        Liam Girdwood <lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org>,
+        Anthony Liguori <aliguori-r/Jw6+rmf7HQT0dZR+AlfA@public.gmane.org>, Jiri Kosina <jkosina-AlSwsSmVLrQ@public.gmane.org>,
+        Randy Dunlap <rdunlap-/UHa2rfvQTnk1uMJSBkQmQ@public.gmane.org>, Tejun Heo <tj@kernel
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <containers-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
+List-Unsubscribe: <https://lists.linux-foundation.org/mailman/listinfo/containers>,
+	<mailto:containers-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.linux-foundation.org/pipermail/containers>
+List-Post: <mailto:containers-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
+List-Help: <mailto:containers-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.linux-foundation.org/mailman/listinfo/containers>,
+	<mailto:containers-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=subscribe>
+Sender: containers-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+Errors-To: containers-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 03/15/2010 11:57 AM, Ben Gamari wrote:
-> When measuring the SIMO signal on the expansion connector with my daughterboard
-> connected, I noticed that the daughterboard's level shifter appeared to be
-> driving the signal higher than it should, to ~2.9 Volts. I then checked the
-> 1.8V rail voltage and found that it too was higher than expected, again at 2.9
-> volts. When I unplug the daughterboard, the 1.8V rail voltage returns to its
-> expected value.
->
-> On Mon, 15 Mar 2010 10:38:38 -0400, Ned Forrester <nforrester@whoi.edu> wrote:
->> I'd be happy to check your circuit for you, if it were posted in a more
->> widely used format.  How about a PDF of the schematic.
->>
-> Certainly, it's a available at http://goldnerlab.physics.umass.edu/~bgamari/schematic.png.
+I have fixed some typos.
 
-Your problem is likely caused by pulling the THREE STATE pin to 5V.  The
-spec sheet is explicit (in the Absolute Maximum ratings on page 2, and
-in the functional description on page 12 that this pin should be pulled
-to VL, not VCC to enable the outputs.  Likely by pulling it to 5V the
-some part of the chip is biased wrong and may cause OVL1 to be pulled
-above VL.
+Thomas Weber (4):
+  Fix typo: [Ss]ytem => [Ss]ystem
+  Fix typo: udpate => update
+  Fix typo: paramters => parameters
+  Fix typo: orginal => original
 
-I can't exactly explain the symptoms you report above, based on the
-mis-connected pin, but most anything could be happening in the MAX3390
-once the absolute maximum ratings have been exceeded.  The 10K resistors
-on the THREE STATE lines may have saved the circuit from permanent
-damage, but they may not save it from improper operation.
-
-Other suggestions, nothing fatal...
-
-1. The pinout of the MAX3390E on the drawing is for the TSSOP package.
-Hopefully that is the package you actually used.
-
-2. All uncommitted inputs should be terminated high or low.  This
-applies to: LS2 pins 4, 5 and 13; LS3 pin 13 and possibly unused pins on
-the A/Ds and D/A.
-
-3. The MAX3390E family has extremely low drive capability and slow
-response.  Is this device really fast enough for your intended clock
-rates?  Note that the device can only pull down 1ma, and can only pull
-up 20ua.  If there are any pull-downs or pull-ups on the BeagleBoard,
-the MAX3390E might not be able to drive them.
-
-4. I find it curious that the AVDD to the A/D and D/A is fead through a
-1ohm resistor that is paralleled by C11 and C12.  Likely you meant to
-tie one side of each of C11 and C12 (the side now connected to C10
-positive) to ground.  That connection would make a filter to reduce the
-noise on AVDD rather than passing the noise along.
-
-5. Is see on the Maxim site that this series of translators is not
-recommended for new design.  Likely the suggested alternatives have much
-better specifications.
-
--- 
-Ned Forrester                                       nforrester@whoi.edu
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
-
+ Documentation/cgroups/cgroups.txt               |    2 +-
+ Documentation/kbuild/kconfig.txt                |    2 +-
+ Documentation/sysfs-rules.txt                   |    2 +-
+ Documentation/trace/events.txt                  |    8 ++++----
+ drivers/acpi/osl.c                              |    4 ++--
+ drivers/ata/ata_piix.c                          |    2 +-
+ drivers/firewire/ohci.c                         |    2 +-
+ drivers/gpu/drm/drm_bufs.c                      |    2 +-
+ drivers/infiniband/hw/ipath/ipath_iba6110.c     |    2 +-
+ drivers/infiniband/hw/ipath/ipath_iba6120.c     |    4 ++--
+ drivers/infiniband/hw/ipath/ipath_iba7220.c     |    2 +-
+ drivers/isdn/hisax/hfc4s8s_l1.c                 |    2 +-
+ drivers/macintosh/windfarm_pm81.c               |    2 +-
+ drivers/media/dvb/dvb-usb/friio-fe.c            |    2 +-
+ drivers/net/smsc911x.c                          |    4 ++--
+ drivers/pci/hotplug/cpqphp_core.c               |    2 +-
+ drivers/pci/pci.c                               |    2 +-
+ drivers/ps3/ps3-sys-manager.c                   |    2 +-
+ drivers/regulator/core.c                        |    2 +-
+ drivers/s390/char/sclp_cpi_sys.c                |    2 +-
+ drivers/scsi/bfa/include/defs/bfa_defs_cee.h    |    2 +-
+ drivers/scsi/bfa/include/defs/bfa_defs_status.h |    4 ++--
+ drivers/spi/spi_mpc8xxx.c                       |    2 +-
+ drivers/staging/iio/Documentation/overview.txt  |    2 +-
+ drivers/staging/rt2860/rtmp.h                   |    2 +-
+ drivers/staging/rtl8187se/r8180_core.c          |    4 ++--
+ drivers/staging/rtl8187se/r8180_dm.c            |    2 +-
+ drivers/staging/rtl8187se/r8185b_init.c         |    2 +-
+ drivers/virtio/virtio_pci.c                     |    2 +-
+ fs/jfs/jfs_dmap.c                               |    2 +-
+ kernel/cgroup.c                                 |    2 +-
+ mm/page_alloc.c                                 |    2 +-
+ net/wimax/op-rfkill.c                           |    2 +-
+ sound/pci/emu10k1/emu10k1_main.c                |    2 +-
+ 34 files changed, 42 insertions(+), 42 deletions(-)

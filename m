@@ -1,18 +1,14 @@
-From: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/2] omap2_mcspi: small fixes of output
-	data format
-Date: Mon, 15 Mar 2010 11:06:29 +0200
-Message-ID: <1268643989-29688-2-git-send-email-roman.tereshonkov@nokia.com>
-References: <1268643989-29688-1-git-send-email-roman.tereshonkov@nokia.com>
+From: "Centelles, Sylvain" <sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Purpose of the  "msg->status"
+Date: Mon, 15 Mar 2010 10:13:52 +0000
+Message-ID: <2A84145621092446B6659B8A0F28E26F4245B483E9@irsmsx501.ger.corp.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>,
-	scott-oZqG5KApg2M/jFmSBShxMA@public.gmane.org, gadiyar-l0cyMroinI0@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1268643989-29688-1-git-send-email-roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,39 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Replaces %04x by %08x for 32-bits data output.
+Hi,
+I'm currently working on a spi driver for Intel platform, and when reading the various other spi drivers available in the kernel, I saw the msg->status was often updated (EINPROGRESS for example), but could not figure out who checks this status. I would have thought it would be needed to prevent concurrent access for example, but I didn't see anything in the core, nore in any driver. If it's not needed, then I would not like to carry some useless status updates in the driver I'm currently working on.
+Maybe I missed something... So if someone can please give some info on this, it would be great!
 
-Signed-off-by: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/omap2_mcspi.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+Regards,
+Sylvain
+---------------------------------------------------------------------
+Intel Corporation SAS (French simplified joint stock company)
+Registered headquarters: "Les Montalets"- 2, rue de Paris, 
+92196 Meudon Cedex, France
+Registration Number:  302 456 199 R.C.S. NANTERRE
+Capital: 4,572,000 Euros
 
-diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-index 3b50d07..a9d58ce 100644
---- a/drivers/spi/omap2_mcspi.c
-+++ b/drivers/spi/omap2_mcspi.c
-@@ -532,7 +532,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
- 					goto out;
- 				}
- #ifdef VERBOSE
--				dev_dbg(&spi->dev, "write-%d %04x\n",
-+				dev_dbg(&spi->dev, "write-%d %08x\n",
- 						word_len, *tx);
- #endif
- 				__raw_writel(*tx++, tx_reg);
-@@ -550,7 +550,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
- 					mcspi_write_chconf0(spi, l);
- 				*rx++ = __raw_readl(rx_reg);
- #ifdef VERBOSE
--				dev_dbg(&spi->dev, "read-%d %04x\n",
-+				dev_dbg(&spi->dev, "read-%d %08x\n",
- 						word_len, *(rx - 1));
- #endif
- 			}
--- 
-1.6.2.rc1.3.g81d3f
-
-
+This e-mail and any attachments may contain confidential material for
+the sole use of the intended recipient(s). Any review or distribution
+by others is strictly prohibited. If you are not the intended
+recipient, please contact the sender and delete all copies.
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval
 Try the new software tools for yourself. Speed compiling, find bugs

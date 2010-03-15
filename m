@@ -1,7 +1,9 @@
 From: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/2] omap2_mcspi: Flush posted writes
-Date: Mon, 15 Mar 2010 11:06:28 +0200
-Message-ID: <1268643989-29688-1-git-send-email-roman.tereshonkov@nokia.com>
+Subject: [PATCH 2/2] omap2_mcspi: small fixes of output
+	data format
+Date: Mon, 15 Mar 2010 11:06:29 +0200
+Message-ID: <1268643989-29688-2-git-send-email-roman.tereshonkov@nokia.com>
+References: <1268643989-29688-1-git-send-email-roman.tereshonkov@nokia.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -10,6 +12,7 @@ Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	scott-oZqG5KApg2M/jFmSBShxMA@public.gmane.org, gadiyar-l0cyMroinI0@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1268643989-29688-1-git-send-email-roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,26 +23,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-mcspi_write_chconf0 is used to control rx/tx triggering.
-Post-write flushing is needed to get the immediate effect.
+Replaces %04x by %08x for 32-bits data output.
 
 Signed-off-by: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/omap2_mcspi.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ drivers/spi/omap2_mcspi.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-index bf5f95a..3b50d07 100644
+index 3b50d07..a9d58ce 100644
 --- a/drivers/spi/omap2_mcspi.c
 +++ b/drivers/spi/omap2_mcspi.c
-@@ -203,6 +203,7 @@ static inline void mcspi_write_chconf0(const struct spi_device *spi, u32 val)
- 
- 	cs->chconf0 = val;
- 	mcspi_write_cs_reg(spi, OMAP2_MCSPI_CHCONF0, val);
-+	mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHCONF0);
- }
- 
- static void omap2_mcspi_set_dma_req(const struct spi_device *spi,
+@@ -532,7 +532,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 					goto out;
+ 				}
+ #ifdef VERBOSE
+-				dev_dbg(&spi->dev, "write-%d %04x\n",
++				dev_dbg(&spi->dev, "write-%d %08x\n",
+ 						word_len, *tx);
+ #endif
+ 				__raw_writel(*tx++, tx_reg);
+@@ -550,7 +550,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 					mcspi_write_chconf0(spi, l);
+ 				*rx++ = __raw_readl(rx_reg);
+ #ifdef VERBOSE
+-				dev_dbg(&spi->dev, "read-%d %04x\n",
++				dev_dbg(&spi->dev, "read-%d %08x\n",
+ 						word_len, *(rx - 1));
+ #endif
+ 			}
 -- 
 1.6.2.rc1.3.g81d3f
 

@@ -1,69 +1,226 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 2/6 Revised] SPI omap2_mcspi: Add max_clk_div field to
- mcspi platform config
-Date: Mon, 15 Mar 2010 11:52:13 -0700
-Message-ID: <20100315185213.GW2900@atomide.com>
-References: <1268407307.14445.51.camel@quad>
- <20100312172148.GG2900@atomide.com>
- <1268587548.30878.11.camel@quad>
- <20100315163246.GT2900@atomide.com>
- <20100315180351.GB3857@gandalf>
+From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: Re: [PATCH 3/3] ep93xx: SPI driver platform
+ support	code
+Date: Mon, 15 Mar 2010 14:05:38 -0500
+Message-ID: <0D753D10438DA54287A00B02708426976368533454@AUSP01VMBX24.collaborationhost.net>
+References: <cover.1268669236.git.mika.westerberg@iki.fi>
+	<7346460bf58ddd90037e92e70f44e60df64540fe.1268669236.git.mika.westerberg@iki.fi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Scott Ellis <scott@jumpnowtek.com>,
-	spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Tereshonkov <roman.tereshonkov@nokia.com>,
-	linux-omap@vger.kernel.org,
-	Aaro Koskinen <Aaro.Koskinen@nokia.com>,
-	Kevin Hilman <khilman@deeprootsystems.com>
-To: Felipe Balbi <me@felipebalbi.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20100315180351.GB3857@gandalf>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <7346460bf58ddd90037e92e70f44e60df64540fe.1268669236.git.mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-* Felipe Balbi <me@felipebalbi.com> [100315 10:59]:
-> Hi,
->  
-> On Mon, Mar 15, 2010 at 09:32:46AM -0700, Tony Lindgren wrote:
-> > Hmm now it looks like you're missing 3630 handling?
+On Monday, March 15, 2010 9:26 AM, Mika Westerberg wrote:
+> This patch adds platform side support code for EP93xx SPI driver. This
+> includes clock, resources and muxing. There is a new function:
+> ep93xx_register_spi() that can be used by board support code to
+> register new SPI devices for the board.
+>
+> Patch depends on the previous patch which adds function ep93xx_chip_revision().
+>
+> Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+
+Mika,
+
+Some initial comments.
+
+> ---
+>  arch/arm/mach-ep93xx/clock.c                    |   21 +++++++++++
+>  arch/arm/mach-ep93xx/core.c                     |   42 +++++++++++++++++++++++
+>  arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h |    1 +
+>  arch/arm/mach-ep93xx/include/mach/platform.h    |    2 +
+>  4 files changed, 66 insertions(+), 0 deletions(-)
 > 
-> a bit unrelated but Tony, would you mind looking at patches splitting
-> devices.c into something like dev34xx.c dev24xx.c and dev44xx.c ??
+> diff --git a/arch/arm/mach-ep93xx/clock.c b/arch/arm/mach-ep93xx/clock.c
+> index 5f80092..1dc22cc 100644
+> --- a/arch/arm/mach-ep93xx/clock.c
+> +++ b/arch/arm/mach-ep93xx/clock.c
+> @@ -100,6 +100,10 @@ static struct clk clk_pwm = {
+>  	.parent		= &clk_xtali,
+>  	.rate		= EP93XX_EXT_CLK_RATE,
+>  };
+> +static struct clk clk_spi = {
+> +	.parent		= &clk_xtali,
+> +	.rate		= EP93XX_EXT_CLK_RATE / 2,
+> +};
 
-Yeah I've been thinking about that too earlier. We could have common
-devices.c with the init code, then dev24xx.c and dev34xx.c et al
-would just call the common init functions with something like this:
-
-
-static int __init dev34xx_init(void)
-{
-	if (!cpu_is_omap34xx())
-		return -ENODEV;
-
-	omap_init_mbox(omap34xx_mbox_resources, omap34xx_mbox_nr_resources);
-	omap_init_sti(omap34xx_sti_resources, omap34xx_sti_nr_resources);
-	...	
-
-	return 0;
-}
-
-subsys_initcall(emu_init);
-
-Of course that needs to be coordinated with the pending hwmod patches.
-
+Please put the clk_spi before the clk_pwm.
  
-> personally I think we should have mach-omap3 and mach-omap4 directories
-> but that would be too intrusive IMO.
+>  static struct clk clk_video = {
+>  	.sw_locked	= 1,
+> @@ -187,6 +191,7 @@ static struct clk_lookup clocks[] = {
+>  	INIT_CK("ep93xx-keypad",	NULL,		&clk_keypad),
+>  	INIT_CK("ep93xx-fb",		NULL,		&clk_video),
+>  	INIT_CK(NULL,			"pwm_clk",	&clk_pwm),
+> +	INIT_CK(NULL,			"spi_clk",	&clk_spi),
 
-I think we can achieve most of that by right naming of the files and
-with hwmod. Having separate directories typically means multiple copies
-of almost the same code.
+Ditto.
 
-Regards,
+Also, change the init so we can use dev_id matching.
 
-Tony
++	INIT_CLK("ep93xx-spi",		NULL,		&clk_spi),
+
+>  	INIT_CK(NULL,			"m2p0",		&clk_m2p0),
+>  	INIT_CK(NULL,			"m2p1",		&clk_m2p1),
+>  	INIT_CK(NULL,			"m2p2",		&clk_m2p2),
+> @@ -480,6 +485,22 @@ static int __init ep93xx_clock_init(void)
+>  		clk_p.rate / 1000000);
+>  
+>  	clkdev_add_table(clocks, ARRAY_SIZE(clocks));
+> +
+> +	/*
+> +	 * EP93xx SSP clock rate was doubled in version E2 and forwards. For
+> +	 * more information see:
+> +	 *     http://www.cirrus.com/en/pubs/appNote/AN273REV4.pdf
+> +	 */
+> +	if (ep93xx_chip_revision() >= EP93XX_CHIP_REV_E2) {
+> +		struct clk *clk;
+> +
+> +		clk = clk_get(NULL, "spi_clk");
+> +		if (!IS_ERR(clk)) {
+> +			clk->rate *= 2;
+> +			clk_put(clk);
+> +		}
+> +	}
+> +
+
+Please move this block before the pr_info's.
+
+Also, no need to use clk_get/clk_put.  Just do:
+
++	if (ep93xx_chip_revision() >= EP93XX_CHIP_REV_E2)
++		clk_spi.rate *= 2;
+
+>  	return 0;
+>  }
+>  arch_initcall(ep93xx_clock_init);
+> diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
+> index 2e496c9..36a7833 100644
+> --- a/arch/arm/mach-ep93xx/core.c
+> +++ b/arch/arm/mach-ep93xx/core.c
+> @@ -31,6 +31,7 @@
+>  #include <linux/amba/serial.h>
+>  #include <linux/i2c.h>
+>  #include <linux/i2c-gpio.h>
+> +#include <linux/clk.h>
+
+Is this include necessary?
+
+>  
+>  #include <mach/hardware.h>
+>  #include <mach/fb.h>
+> @@ -389,6 +390,47 @@ void __init ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr)
+>  	platform_device_register(&ep93xx_eth_device);
+>  }
+>  
+> +static struct resource ep93xx_spi_resources[] = {
+> +	{
+> +		.start	= EP93XX_SPI_PHYS_BASE,
+> +		.end	= EP93XX_SPI_PHYS_BASE + SZ_4K - 1,
+
+The spi resource is only + 0x18 - 1.
+
+> +		.flags	= IORESOURCE_MEM,
+> +	},
+> +	{
+> +		.start	= IRQ_EP93XX_SSP,
+
+Please add the .end value also:
+
++		.end		= IRQ_EP93XX_SSP,
+
+> +		.flags	= IORESOURCE_IRQ,
+> +	},
+> +};
+> +
+> +static struct platform_device ep93xx_spi_device = {
+> +	.name		= "ep93xx-spi",
+> +	.id		= -1,
+> +	.num_resources	= ARRAY_SIZE(ep93xx_spi_resources),
+> +	.resource	= ep93xx_spi_resources,
+> +};
+> +
+> +/**
+> + * ep93xx_register_spi() - registers spi platform device
+> + * @info: ep93xx board specific spi info
+> + *
+> + * This function registers platform device for the EP93xx SPI controller and
+> + * also makes sure that SPI pins are muxed so that I2S is not using those
+> + * pins. Caller should allocate necessary GPIO lines and register any SPI
+> + * devices before calling this (see also spi_register_board_info()).
+> + *
+> + * Returns %0 in success and negative value in case of failure.
+> + */
+> +int __init ep93xx_register_spi(struct ep93xx_spi_info *info)
+> +{
+> +	/*
+> +	 * When SPI is used, we need to make sure that I2S is muxed off from
+> +	 * SPI pins.
+> +	 */
+> +	ep93xx_devcfg_clear_bits(EP93XX_SYSCON_DEVCFG_I2SONSSP);
+> +
+> +	ep93xx_spi_device.dev.platform_data = info;
+> +	return platform_device_register(&ep93xx_spi_device);
+> +}
+>  
+>  /*************************************************************************
+>   * EP93xx i2c peripheral handling
+> diff --git a/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h b/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
+> index 93e2ecc..b1e096f 100644
+> --- a/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
+> +++ b/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
+> @@ -106,6 +106,7 @@
+>  
+>  #define EP93XX_AAC_BASE			EP93XX_APB_IOMEM(0x00080000)
+>  
+> +#define EP93XX_SPI_PHYS_BASE		EP93XX_APB_PHYS(0x000a0000)
+>  #define EP93XX_SPI_BASE			EP93XX_APB_IOMEM(0x000a0000)
+>  
+>  #define EP93XX_IRDA_BASE		EP93XX_APB_IOMEM(0x000b0000)
+> diff --git a/arch/arm/mach-ep93xx/include/mach/platform.h b/arch/arm/mach-ep93xx/include/mach/platform.h
+> index 8603837..1f02147 100644
+> --- a/arch/arm/mach-ep93xx/include/mach/platform.h
+> +++ b/arch/arm/mach-ep93xx/include/mach/platform.h
+> @@ -9,6 +9,7 @@ struct i2c_board_info;
+>  struct platform_device;
+>  struct ep93xxfb_mach_info;
+>  struct ep93xx_keypad_platform_data;
+> +struct ep93xx_spi_info;
+>  
+>  struct ep93xx_eth_data
+>  {
+> @@ -49,6 +50,7 @@ void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
+>  			 struct i2c_board_info *devices, int num);
+>  void ep93xx_register_fb(struct ep93xxfb_mach_info *data);
+>  void ep93xx_register_pwm(int pwm0, int pwm1);
+> +int ep93xx_register_spi(struct ep93xx_spi_info *info);
+
+Please move this up, above ep93xx_register_i2c, to match how it is in the
+core.c file.
+
+>  int ep93xx_pwm_acquire_gpio(struct platform_device *pdev);
+>  void ep93xx_pwm_release_gpio(struct platform_device *pdev);
+>  void ep93xx_register_keypad(struct ep93xx_keypad_platform_data *data);
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

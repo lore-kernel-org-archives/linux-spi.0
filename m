@@ -1,41 +1,115 @@
-From: Felipe Balbi <me@felipebalbi.com>
-Subject: Re: [PATCH 2/6 Revised] SPI omap2_mcspi: Add max_clk_div field to
- mcspi platform config
-Date: Mon, 15 Mar 2010 20:03:51 +0200
-Message-ID: <20100315180351.GB3857@gandalf>
-References: <1268407307.14445.51.camel@quad>
- <20100312172148.GG2900@atomide.com>
- <1268587548.30878.11.camel@quad>
- <20100315163246.GT2900@atomide.com>
-Reply-To: me@felipebalbi.com
+From: H Hartley Sweeten <hartleys@visionengravers.com>
+Subject: RE: [spi-devel-general] [PATCH 2/3] ep93xx: added chip revision
+	reading	function
+Date: Mon, 15 Mar 2010 13:06:24 -0500
+Message-ID: <0D753D10438DA54287A00B027084269763685332EF@AUSP01VMBX24.collaborationhost.net>
+References: <cover.1268669236.git.mika.westerberg@iki.fi>
+	<3d93e748eb068963a9378b454ba9cd117cbbc737.1268669236.git.mika.westerberg@iki.fi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Scott Ellis <scott@jumpnowtek.com>,
-	spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Roman Tereshonkov <roman.tereshonkov@nokia.com>,
-	linux-omap@vger.kernel.org,
-	Aaro Koskinen <Aaro.Koskinen@nokia.com>,
-	Kevin Hilman <khilman@deeprootsystems.com>
-To: Tony Lindgren <tony@atomide.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20100315163246.GT2900@atomide.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Mika Westerberg <mika.westerberg@iki.fi>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <3d93e748eb068963a9378b454ba9cd117cbbc737.1268669236.git.mika.westerberg@iki.fi>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
- 
-On Mon, Mar 15, 2010 at 09:32:46AM -0700, Tony Lindgren wrote:
-> Hmm now it looks like you're missing 3630 handling?
+On Monday, March 15, 2010 9:26 AM, Mika Westerberg wrote:
+> Added a new function: ep93xx_chip_revision() which reads chip revision from 
+> the sysconfig register.
+>
+> Signed-off-by: Mika Westerberg <mika.westerberg@iki.fi>
 
-a bit unrelated but Tony, would you mind looking at patches splitting
-devices.c into something like dev34xx.c dev24xx.c and dev44xx.c ??
+Hello Mike,
 
-personally I think we should have mach-omap3 and mach-omap4 directories
-but that would be too intrusive IMO.
+A couple comments below.
 
--- 
-balbi
+> ---
+>  arch/arm/mach-ep93xx/core.c                  |   26 ++++++++++++++++++++++++++
+>  arch/arm/mach-ep93xx/include/mach/platform.h |   11 +++++++++++
+>  2 files changed, 37 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
+> index 90fb591..2e496c9 100644
+> --- a/arch/arm/mach-ep93xx/core.c
+> +++ b/arch/arm/mach-ep93xx/core.c
+> @@ -64,6 +64,32 @@ void __init ep93xx_map_io(void)
+>  	iotable_init(ep93xx_io_desc, ARRAY_SIZE(ep93xx_io_desc));
+>  }
+>  
+> +/**
+> + * ep93xx_chip_revision() - returns EP93xx chip revision
+> + *
+> + * Returns EP93xx chip revision number read from sysconfig register. Possible
+> + * values can be one of the following:
+> + *
+> + * %EP93XX_CHIP_REV_A
+> + * %EP93XX_CHIP_REV_B
+> + * %EP93XX_CHIP_REV_C
+> + * %EP93XX_CHIP_REV_D0
+> + * %EP93XX_CHIP_REV_D1
+> + * %EP93XX_CHIP_REV_E0
+> + * %EP93XX_CHIP_REV_E1
+> + * %EP93XX_CHIP_REV_E2
+> + *
+> + * and in future maybe something else. See also <mach/platform.h>.
+> + */
+> +u8 ep93xx_chip_revision(void)
+> +{
+> +	u32 v;
+> +
+> +	v = __raw_readl(EP93XX_SYSCON_SYSCFG);
+> +	v &= EP93XX_SYSCON_SYSCFG_REV_MASK;
+> +	v >>= EP93XX_SYSCON_SYSCFG_REV_SHIFT;
+> +	return (u8)v;
+> +}
+
+Please change the return type to 'int' and remove the (u8) cast.
+
+Also, please move this block up so that it's right after the #include's.
+
+>  
+>  /*************************************************************************
+>   * Timer handling for EP93xx
+> diff --git a/arch/arm/mach-ep93xx/include/mach/platform.h b/arch/arm/mach-ep93xx/include/mach/platform.h
+> index c6dc14d..8603837 100644
+> --- a/arch/arm/mach-ep93xx/include/mach/platform.h
+> +++ b/arch/arm/mach-ep93xx/include/mach/platform.h
+> @@ -33,6 +33,17 @@ static inline void ep93xx_devcfg_clear_bits(unsigned int bits)
+>  	ep93xx_devcfg_set_clear(0x00, bits);
+>  }
+>  
+> +#define EP93XX_CHIP_REV_A      0
+> +#define EP93XX_CHIP_REV_B      1
+> +#define EP93XX_CHIP_REV_C      2
+> +#define EP93XX_CHIP_REV_D0     3
+> +#define EP93XX_CHIP_REV_D1     4
+> +#define EP93XX_CHIP_REV_E0     5
+> +#define EP93XX_CHIP_REV_E1     6
+> +#define EP93XX_CHIP_REV_E2     7
+
+Please use tabs instead of spaces above.
+
+> +
+> +u8 ep93xx_chip_revision(void);
+> +
+
+Also, please move this block up so it's right after the struct ep93xx_eth_data
+stuff.
+
+>  void ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr);
+>  void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
+> 			 struct i2c_board_info *devices, int num);

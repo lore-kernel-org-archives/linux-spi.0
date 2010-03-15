@@ -1,93 +1,60 @@
-From: Randy Dunlap <rdunlap-/UHa2rfvQTnk1uMJSBkQmQ@public.gmane.org>
-Subject: Re: [PATCH 0/4] Some typo fixing
-Date: Mon, 15 Mar 2010 14:09:40 -0700
-Message-ID: <4B9EA214.7010203@xenotime.net>
-References: <1268686558-28171-1-git-send-email-swirl@gmx.li>
+From: "=?koi8-r?B?5s/S1c0gINDPINfBzMDUxS4=?=" <cudexudebygupit-h2myTqZJoK5eoWH0uzbU5w@public.gmane.org>
+Subject: [SPAM] Валютное регулирование 2010
+Date: Tue, 16 Mar 2010 02:07:59 +0300
+Message-ID: <00ab01cac494$5b6881e0$e372a8c0@cpe238.167.55.190.inaddr.arpa>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Karsten Keil <isdn-iHCpqvpFUx0uJkBD2foKsQ@public.gmane.org>, Lin Ming <ming.m.lin-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Takashi Iwai <tiwai-l3A5Bk7waGM@public.gmane.org>,
-        Benjamin Herrenschmidt <benh-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
-        Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>, Pavel Machek <pavel-AlSwsSmVLrQ@public.gmane.org>,
-        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        KOSAKI Motohiro <kosaki.motohiro-+CUm20s59erQFUHtdCDX3A@public.gmane.org>,
-        Bjorn Helgaas <bjorn.helgaas-VXdhtT5mjnY@public.gmane.org>,
-        Rusty Russell <rusty-8n+1lVoiYb80n/F98K4Iww@public.gmane.org>,
-        "John W. Linville" <linville-2XuSBdqkA4R54TAoqtyWWQ@public.gmane.org>,
-        Steve Conklin <sconklin-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>,
-        Ralph Campbell <infinipath-h88ZbnxC6KDQT0dZR+AlfA@public.gmane.org>,
-        Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>, cbe-oss-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-        Liam Girdwood <lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org>,
-        Anthony Liguori <aliguori-r/Jw6+rmf7HQT0dZR+AlfA@public.gmane.org>, Jiri Kosina <jkosina-AlSwsSmVLrQ@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Joe Perches <joe-6d6DIl74uiOIwRZHo2/mJg@public.gmane.org
-To: Thomas Weber <swirl-EOsNSARiLbg@public.gmane.org>
-Return-path: <containers-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
-In-Reply-To: <1268686558-28171-1-git-send-email-swirl-EOsNSARiLbg@public.gmane.org>
-List-Unsubscribe: <https://lists.linux-foundation.org/mailman/listinfo/containers>,
-	<mailto:containers-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.linux-foundation.org/pipermail/containers>
-List-Post: <mailto:containers-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
-List-Help: <mailto:containers-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.linux-foundation.org/mailman/listinfo/containers>,
-	<mailto:containers-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=subscribe>
-Sender: containers-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
-Errors-To: containers-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 03/15/10 13:55, Thomas Weber wrote:
-> I have fixed some typos.
-
-Acked-by: Randy Dunlap <rdunlap-/UHa2rfvQTnk1uMJSBkQmQ@public.gmane.org>
-
-Jiri, can you merge these, please, unless someone objects (?).
-
-
-> Thomas Weber (4):
->   Fix typo: [Ss]ytem => [Ss]ystem
->   Fix typo: udpate => update
->   Fix typo: paramters => parameters
->   Fix typo: orginal => original
-> 
->  Documentation/cgroups/cgroups.txt               |    2 +-
->  Documentation/kbuild/kconfig.txt                |    2 +-
->  Documentation/sysfs-rules.txt                   |    2 +-
->  Documentation/trace/events.txt                  |    8 ++++----
->  drivers/acpi/osl.c                              |    4 ++--
->  drivers/ata/ata_piix.c                          |    2 +-
->  drivers/firewire/ohci.c                         |    2 +-
->  drivers/gpu/drm/drm_bufs.c                      |    2 +-
->  drivers/infiniband/hw/ipath/ipath_iba6110.c     |    2 +-
->  drivers/infiniband/hw/ipath/ipath_iba6120.c     |    4 ++--
->  drivers/infiniband/hw/ipath/ipath_iba7220.c     |    2 +-
->  drivers/isdn/hisax/hfc4s8s_l1.c                 |    2 +-
->  drivers/macintosh/windfarm_pm81.c               |    2 +-
->  drivers/media/dvb/dvb-usb/friio-fe.c            |    2 +-
->  drivers/net/smsc911x.c                          |    4 ++--
->  drivers/pci/hotplug/cpqphp_core.c               |    2 +-
->  drivers/pci/pci.c                               |    2 +-
->  drivers/ps3/ps3-sys-manager.c                   |    2 +-
->  drivers/regulator/core.c                        |    2 +-
->  drivers/s390/char/sclp_cpi_sys.c                |    2 +-
->  drivers/scsi/bfa/include/defs/bfa_defs_cee.h    |    2 +-
->  drivers/scsi/bfa/include/defs/bfa_defs_status.h |    4 ++--
->  drivers/spi/spi_mpc8xxx.c                       |    2 +-
->  drivers/staging/iio/Documentation/overview.txt  |    2 +-
->  drivers/staging/rt2860/rtmp.h                   |    2 +-
->  drivers/staging/rtl8187se/r8180_core.c          |    4 ++--
->  drivers/staging/rtl8187se/r8180_dm.c            |    2 +-
->  drivers/staging/rtl8187se/r8185b_init.c         |    2 +-
->  drivers/virtio/virtio_pci.c                     |    2 +-
->  fs/jfs/jfs_dmap.c                               |    2 +-
->  kernel/cgroup.c                                 |    2 +-
->  mm/page_alloc.c                                 |    2 +-
->  net/wimax/op-rfkill.c                           |    2 +-
->  sound/pci/emu10k1/emu10k1_main.c                |    2 +-
->  34 files changed, 42 insertions(+), 42 deletions(-)
-> 
-
-Thanks.
-
--- 
-~Randy
+4+Igyc7Gz9LNydLVxdQgzyDQz9PMxcTOycggydrNxc7FzsnRyCDXIPfBzMDUzs/NIArawcvPzs/E
+wdTFzNjT1NfFIQrrwcsgydrNxc7J1NPRINrBy8/Oz8TB1MXM2NPU188g1yAyMDEwID8KMjQgzcHS
+1MEgMjAxMCDHLgoK8NLJzcXOxc7JxSDOz9LNINfBzMDUzs/HzyDSxcfVzMnSz9fBzsnRIMkg18HM
+wNTOz8fPIMvPztTSz8zRLgrzxc3JzsHSLSDQ0sHL1MnL1c0gKyDQz9PMxcTOycUgydrNxc7FzsnR
+INcg18HMwNTOz80g2sHLz87PxMHUxczY09TXxS4K7MXL1M/SIMnaIOTF0MHS1MHNxc7UwSDGyc7B
+ztPP18/HzyDtz87J1M/Syc7HwSDJINfBzMDUzs/HzyDLz87U0s/M0SDj4iDy5goKMS4g88nT1MXN
+wSDXwczA1M7Px88g0sXH1czJ0s/Xwc7J0SDJINfBzMDUzs/HzyDLz87U0s/M0SDXIPLP09PJytPL
+z8og5sXExdLBw8nJIMkg18HMwNTO2cogCsvPztTSz8zYINXQz8zOz83P3sXOztnIIMLBzsvP1y4g
+7s/SzcHUydfO2cUgwcvU2SDiwc7LwSDyz9PTyckuIAoyLiDwwdPQz9LUwSDTxMXMz8ssIMvByyDE
+z8vVzcXO1Nkg18HMwNTOz8fPIMvPztTSz8zRLiDQ0s/CzMXNztnFINfP0NLP09kgz8bP0s3Mxc7J
+0SDJINfFxMXOydEuIArkz8vVzcXO1Nkg18HMwNTOz8fPIMvPztTSz8zRLCDV3sXUwSDJIM/U3sXU
+zs/T1MkuIOTFytPU18nRINXQz8zOz83P3sXOztnIIMLBzsvP1yDQ0skgz8bP0s3Mxc7JySAKySDQ
+0s/XxcTFzsnJINfBzMDUztnIIM/QxdLBw8nKLgozLiD1y8Hawc7JxSDiwc7LwSDyz9PTyckgIu8g
+xs/SzcHIINXexdTBINDPINfBzMDUztnNIM/QxdLBw8nRzSwgz9PV3cXT1NfM0cXN2c0g0sXaycTF
+ztTBzcksIArawSDJ08vMwN7FzsnFzSDL0sXEydTO2cggz9LHwc7J2sHDycogySDXwczA1M7ZyCDC
+ydLWIiBOMTk1MC31IMkgxcfPINfMydHOycUgzsEgCsvXwczJxsnLwcPJwCDQ0sHXz87B0tXbxc7J
+yi4gCjUuIPLFx9XMydLP18HOycUg0M/S0cTLwSDQ0sXE09TB18zFzsnRIMnOxs/SzcHDyckgzyDO
+wdLV28XOydHIINfBzMDUzs/HzyDawcvPzs/EwdTFzNjT1NfBLiDwCjYuIPfBzMDUzs/FINLFx9XM
+ydLP18HOycUgz9DF0sHDycogxsnayd7F08vJyCDMycMuIO/QxdLBw8nJIMbJ2snexdPLycggzMnD
+IMkg18HMwNTO2cogCsvPztTSz8zYINXQz8zOz83P3sXOztnIIMLBzsvP1y4g7s/Szdkg0NLRzc/H
+zyDExcrT1NfJ0SDmxcTF0sHM2M7Px88g2sHLz87BIE4gMTczLeb6LiDwz9LRxM/LIArP09XdxdPU
+18zFzsnRINDF0sXXz8TP1yDExc7F1s7ZyCDT0sXE09TXIMbJ2snexdPLyc3JIMzJw8HNySDJ2iDy
+z9PTycrTy8/KIObFxMXSwcPJySDJINDPIArUxdLSydTP0snJIPLP09PJytPLz8og5sXExdLBw8nJ
+LiDpztPU0tXLw8nRIOLBzsvBIPLP09PJySBOMTEzLekgKNMgydrNxc7FzsnRzckgySDEz9DPzM7F
+zsnRzckpLiAK9cvB2sHOycUg4sHOy8Eg8s/T08nJIM/UIDIwLjA3LjIwMDcgTjE4Njgt9SkKNy4g
+79TXxdTT1NfFzs7P09TYINrBIM7B0tXbxc7JxSDXwczA1M7Px88g2sHLz87PxMHUxczY09TXwS4K
+OC4g8MXS09DFy9TJ19kg0sHa18nUydEg18HMwNTOz8fPINLFx9XMydLP18HOydEgySDXwczA1M7P
+x88gy8/O1NLPzNEg1yDyz9PTycrTy8/KIObFxMXSwcPJyS4K89DFw8nBzMnT1Nkg4+Igz9TXxdTR
+1CDOwSD3wdvJINfP0NLP09kuCgrz1M/Jzc/T1Ngg1d7B09TJ0SDTxc3JzsHSwSA4MjYwINLVwi4g
+Cu3F09TPINDSz9fFxMXOydE6IMcu7c/Ty9fBIM0uIO3B0cvP19PLwdEg9d7Fws7ZyiDjxc7U0gr6
+wdHXy8kgzsEg1d7B09TJxSDQzyDUxcwuICg0OTUpIDUxOC00MS0zOSwgNTE4LTQyLTk3Ci0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQpEb3dubG9hZCBJbnRlbCYjMTc0OyBQYXJhbGxlbCBTdHVkaW8gRXZh
+bApUcnkgdGhlIG5ldyBzb2Z0d2FyZSB0b29scyBmb3IgeW91cnNlbGYuIFNwZWVkIGNvbXBpbGlu
+ZywgZmluZCBidWdzCnByb2FjdGl2ZWx5LCBhbmQgZmluZS10dW5lIGFwcGxpY2F0aW9ucyBmb3Ig
+cGFyYWxsZWwgcGVyZm9ybWFuY2UuClNlZSB3aHkgSW50ZWwgUGFyYWxsZWwgU3R1ZGlvIGdvdCBo
+aWdoIG1hcmtzIGR1cmluZyBiZXRhLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVsLXN3LWRldgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
+Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
+bC1nZW5lcmFsCg==

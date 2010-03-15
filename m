@@ -1,78 +1,69 @@
-From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: Re: [PATCH 0/3] spi: driver for Cirrus EP93xx
- SPI	controller
-Date: Mon, 15 Mar 2010 13:22:51 -0500
-Message-ID: <0D753D10438DA54287A00B0270842697636853334B@AUSP01VMBX24.collaborationhost.net>
-References: <cover.1268669236.git.mika.westerberg@iki.fi>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH 2/6 Revised] SPI omap2_mcspi: Add max_clk_div field to
+ mcspi platform config
+Date: Mon, 15 Mar 2010 11:52:13 -0700
+Message-ID: <20100315185213.GW2900@atomide.com>
+References: <1268407307.14445.51.camel@quad>
+ <20100312172148.GG2900@atomide.com>
+ <1268587548.30878.11.camel@quad>
+ <20100315163246.GT2900@atomide.com>
+ <20100315180351.GB3857@gandalf>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <cover.1268669236.git.mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Content-Language: en-US
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Scott Ellis <scott@jumpnowtek.com>,
+	spi-devel-general@lists.sourceforge.net,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Tereshonkov <roman.tereshonkov@nokia.com>,
+	linux-omap@vger.kernel.org,
+	Aaro Koskinen <Aaro.Koskinen@nokia.com>,
+	Kevin Hilman <khilman@deeprootsystems.com>
+To: Felipe Balbi <me@felipebalbi.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20100315180351.GB3857@gandalf>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday, March 15, 2010 9:26 AM, Mika Westerberg wrote:
-> Hello,
+* Felipe Balbi <me@felipebalbi.com> [100315 10:59]:
+> Hi,
+>  
+> On Mon, Mar 15, 2010 at 09:32:46AM -0700, Tony Lindgren wrote:
+> > Hmm now it looks like you're missing 3630 handling?
 > 
-> This series provides SPI master controller driver implementation for
-> Cirrus Logic EP93xx controllers.
-> 
-> I've tested this on my TS-7260 board with SPI EEPROM (through at25 driver)
-> and with few SD/MMC cards that I own (through mmc_spi driver). Unfortunately
-> I don't have other SPI devices so if someone wants to try this, it would be
-> great (see [1] for example code that I used with MMC cards).
-> 
-> This series applies on top of Linus' 2.6.34-rc1.
-> 
-> Please review.
-> 
-> Thanks,
-> MW
+> a bit unrelated but Tony, would you mind looking at patches splitting
+> devices.c into something like dev34xx.c dev24xx.c and dev44xx.c ??
 
-Hello Mika,
+Yeah I've been thinking about that too earlier. We could have common
+devices.c with the init code, then dev24xx.c and dev34xx.c et al
+would just call the common init functions with something like this:
 
-I also have a SPI driver (originally from Bluewater Systems) that I have been
-sitting on.  Your's has the advantage of using interrupts and is already
-coded for 16-bit targets, mine is currently polled and only handles 8-bit
-targets.
 
-Based on that I'll try to help you get yours merged instead.
+static int __init dev34xx_init(void)
+{
+	if (!cpu_is_omap34xx())
+		return -ENODEV;
 
-I already responded to patch 2/3.  Overall it's fine I would just like
-the code moved a bit in the source files.  Please review the comments.
+	omap_init_mbox(omap34xx_mbox_resources, omap34xx_mbox_nr_resources);
+	omap_init_sti(omap34xx_sti_resources, omap34xx_sti_nr_resources);
+	...	
 
-Patch 3/3 looks ok initially.  I think you are hindering the chip-select
-options but I will work that out when I go through the patch 1/3.
+	return 0;
+}
 
-Patch 1/3 looks good for a start.  The only problem I see is your
-limitation to only using built-in gpio's for chipselects.
+subsys_initcall(emu_init);
 
-I will try to get your patches merged into my tree this week and test
-them.  At that point I will provide more feedback and try to address
-the chipselect limitation.
+Of course that needs to be coordinated with the pending hwmod patches.
 
-Thanks for the submission.
+ 
+> personally I think we should have mach-omap3 and mach-omap4 directories
+> but that would be too intrusive IMO.
+
+I think we can achieve most of that by right naming of the files and
+with hwmod. Having separate directories typically means multiple copies
+of almost the same code.
 
 Regards,
-Hartley
 
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+Tony

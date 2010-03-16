@@ -1,11 +1,22 @@
-From: Manuel Stahl <manuel.stahl-GeUHRtUQU7nSyEMIgutvibNAH6kLmebB@public.gmane.org>
-Subject: [PATCH] spi: atmel-spi fix cs_change behaviour
-Date: Tue, 16 Mar 2010 16:22:59 +0100
-Message-ID: <4B9FA253.5030109@iis.fraunhofer.de>
+From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: Re: [PATCH 2/3] ep93xx: added chip
+	revision	reading	function
+Date: Tue, 16 Mar 2010 11:53:26 -0500
+Message-ID: <0D753D10438DA54287A00B02708426976368534001@AUSP01VMBX24.collaborationhost.net>
+References: <cover.1268669236.git.mika.westerberg@iki.fi>
+	<3d93e748eb068963a9378b454ba9cd117cbbc737.1268669236.git.mika.westerberg@iki.fi>
+	<0D753D10438DA54287A00B027084269763685332EF@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------040409040203070909060000"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <0D753D10438DA54287A00B027084269763685332EF-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,38 +27,117 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------040409040203070909060000
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Monday, March 15, 2010 11:06 AM, H Hartley Sweeten wrote:
+> On Monday, March 15, 2010 9:26 AM, Mika Westerberg wrote:
+>> Added a new function: ep93xx_chip_revision() which reads chip revision from 
+>> the sysconfig register.
+>>
+>> Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+>
+> Hello Mike,
+>
+> A couple comments below.
 
-There is a problem in the cs_change behaviour in atmel-spi.
+After merging your patch I had some second thoughts on my comments. Please see below.
 
-In include/linux/spi/spi.h it says:
+>> ---
+>>  arch/arm/mach-ep93xx/core.c                  |   26 ++++++++++++++++++++++++++
+>>  arch/arm/mach-ep93xx/include/mach/platform.h |   11 +++++++++++
+>>  2 files changed, 37 insertions(+), 0 deletions(-)
+>> 
+>> diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
+>> index 90fb591..2e496c9 100644
+>> --- a/arch/arm/mach-ep93xx/core.c
+>> +++ b/arch/arm/mach-ep93xx/core.c
+>> @@ -64,6 +64,32 @@ void __init ep93xx_map_io(void)
+>>  	iotable_init(ep93xx_io_desc, ARRAY_SIZE(ep93xx_io_desc));
+>>  }
+>>  
+>> +/**
+>> + * ep93xx_chip_revision() - returns EP93xx chip revision
+>> + *
+>> + * Returns EP93xx chip revision number read from sysconfig register. Possible
+>> + * values can be one of the following:
+>> + *
+>> + * %EP93XX_CHIP_REV_A
+>> + * %EP93XX_CHIP_REV_B
+>> + * %EP93XX_CHIP_REV_C
+>> + * %EP93XX_CHIP_REV_D0
+>> + * %EP93XX_CHIP_REV_D1
+>> + * %EP93XX_CHIP_REV_E0
+>> + * %EP93XX_CHIP_REV_E1
+>> + * %EP93XX_CHIP_REV_E2
+>> + *
+>> + * and in future maybe something else. See also <mach/platform.h>.
+>> + */
 
-Chipselect stays active during the entire message
-(unless modified by spi_transfer.cs_change != 0).
+As noted by Martin Guy, the E2 revision will be the last one released by Cirrus.
 
-The last parameter in atmel_spi_msg_done is named stay, so it must be 
-called with inverted cs_change value.
+The comment is a bit wordy.  How about just:
 
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -501,7 +501,7 @@ atmel_spi_interrupt(int irq, void *dev_id)
-  			if (atmel_spi_xfer_is_last(msg, xfer)) {
-  				/* report completed message */
-  				atmel_spi_msg_done(master, as, msg, 0,
--						xfer->cs_change);
-+						!xfer->cs_change);
-  			} else {
-  				if (xfer->cs_change) {
-  					cs_deactivate(as, msg->spi);
++/**
++ * ep93xx_chip_revision - Returns the EP93xx chip revision.
++ *
++ * See <mach/platform.h> for more information.
++ */
 
---------------040409040203070909060000
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+>> +u8 ep93xx_chip_revision(void)
+>> +{
+>> +	u32 v;
+>> +
+>> +	v = __raw_readl(EP93XX_SYSCON_SYSCFG);
+>> +	v &= EP93XX_SYSCON_SYSCFG_REV_MASK;
+>> +	v >>= EP93XX_SYSCON_SYSCFG_REV_SHIFT;
+>> +	return (u8)v;
+>> +}
+>
+> Please change the return type to 'int' and remove the (u8) cast.
+>
+> Also, please move this block up so that it's right after the #include's.
+
+Actually, please move the function down to right after the:
+
+EXPORT_SYMBOL(ep93xx_devcfg_set_clear);
+
+I would like to keep all the syscon helper functions together.
+
+>>  
+>>  /*************************************************************************
+>>   * Timer handling for EP93xx
+>> diff --git a/arch/arm/mach-ep93xx/include/mach/platform.h b/arch/arm/mach-ep93xx/include/mach/platform.h
+>> index c6dc14d..8603837 100644
+>> --- a/arch/arm/mach-ep93xx/include/mach/platform.h
+>> +++ b/arch/arm/mach-ep93xx/include/mach/platform.h
+>> @@ -33,6 +33,17 @@ static inline void ep93xx_devcfg_clear_bits(unsigned int bits)
+>>  	ep93xx_devcfg_set_clear(0x00, bits);
+>>  }
+>>  
+>> +#define EP93XX_CHIP_REV_A      0
+>> +#define EP93XX_CHIP_REV_B      1
+>> +#define EP93XX_CHIP_REV_C      2
+>> +#define EP93XX_CHIP_REV_D0     3
+>> +#define EP93XX_CHIP_REV_D1     4
+>> +#define EP93XX_CHIP_REV_E0     5
+>> +#define EP93XX_CHIP_REV_E1     6
+>> +#define EP93XX_CHIP_REV_E2     7
+>
+> Please use tabs instead of spaces above.
+>
+>> +
+>> +u8 ep93xx_chip_revision(void);
+>> +
+>
+> Also, please move this block up so it's right after the struct ep93xx_eth_data
+> stuff.
+
+Moving the function above means these are actually in the correct place.
+
+>>  void ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr);
+>>  void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
+>> 			 struct i2c_board_info *devices, int num);
+
+Regards,
+Hartley
 
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval
@@ -55,15 +145,3 @@ Try the new software tools for yourself. Speed compiling, find bugs
 proactively, and fine-tune applications for parallel performance.
 See why Intel Parallel Studio got high marks during beta.
 http://p.sf.net/sfu/intel-sw-dev
---------------040409040203070909060000
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---------------040409040203070909060000--

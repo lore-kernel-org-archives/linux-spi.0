@@ -1,64 +1,56 @@
-From: christian pellegrin <chripell@gmail.com>
-Subject: Re: spi-devel-general Digest, Vol 46, Issue 10
-Date: Tue, 16 Mar 2010 18:32:32 +0100
-Message-ID: <cabda6421003161032y32f34472s32dab90233500a7b@mail.gmail.com>
-References: <mailman.59674.1267729564.5170.spi-devel-general@lists.sourceforge.net>
+From: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/3] ep93xx: added chip revision
+	reading function
+Date: Tue, 16 Mar 2010 23:52:17 +0000
+Message-ID: <56d259a01003161652n40abcb8s115fd8d054118c82@mail.gmail.com>
+References: <cover.1268669236.git.mika.westerberg@iki.fi>
+	<3d93e748eb068963a9378b454ba9cd117cbbc737.1268669236.git.mika.westerberg@iki.fi>
+	<0D753D10438DA54287A00B027084269763685332EF@AUSP01VMBX24.collaborationhost.net>
+	<0D753D10438DA54287A00B02708426976368534001@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Greg KH <greg@kroah.com>, David Brownell <david-b@pacbell.net>,
-	linux-serial@vger.kernel.org,
-	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
-	Andrew Morton <akpm@linuxfoundation.org>,
-	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To: Masakazu Mokuno <mokuno@sm.sony.co.jp>,
-	Feng Tang <feng.tang@intel.com>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <mailman.59674.1267729564.5170.spi-devel-general@lists.sourceforge.net>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <0D753D10438DA54287A00B02708426976368534001-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On 3/16/10, H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org> wrote:
+> On Monday, March 15, 2010 11:06 AM, H Hartley Sweeten wrote:
+>  > On Monday, March 15, 2010 9:26 AM, Mika Westerberg wrote:
+>  >> + * %EP93XX_CHIP_REV_A
+>  >> + * %EP93XX_CHIP_REV_B
+>  >> + * %EP93XX_CHIP_REV_C
+>  >> + * %EP93XX_CHIP_REV_D0
+>  >> + * %EP93XX_CHIP_REV_D1
+>  >> + * %EP93XX_CHIP_REV_E0
+>  >> + * %EP93XX_CHIP_REV_E1
+>  >> + * %EP93XX_CHIP_REV_E2
 
-On Thu, Mar 4, 2010 at 8:06 PM,
-<spi-devel-general-request@lists.sourceforge.net> wrote:
+Come to that, I've never heard of revisions A B or C.
+Even D0 now is so rare as to be nonexistent.
+I have a very early EP board, the Armadillo-9. and even that is E0, so
+I'd certainly drop [ABC] unless you have some evidence of their
+existence
 
->> + =A0 =A0 if (use_irq) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 ret =3D request_irq(max->irq, serial_m3110=
-_irq,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 IRQ_TYPE_EDGE_FALLING, "max3110", max);
->
-> According to the manufacturer's datasheet, it looks like MAX3110'irq =
-is
-> level interrupt. Refer Figure 6 of the datasheet.
->
+     M
 
-It should work anyway if you are sure you clear the the condition that
-generated the interrupt (so the interrupt line will have another
-transition for sure). It's quite common when using deferred work
-(worqueues for example) otherwise you have to turn irq off to avoid an
-interrupt storm. Usually turning interrupts on and off is quite tricky
-because they are counted.
-
->> + =A0 =A0 pmax =3D max;
->
-> If this driver supports only one instance of devices, how about
-> declaring a global struct uart_m3100 instead of kmallc()?
->
-
-huh didn't noticed that it supports only one instance. I guess this is
-very bad (my test machine for example has 2 MAX3100s, one for a GPS
-receiver and one for a slow RS485 link).
-
---=20
-Christian Pellegrin, see http://www.evolware.org/chri/
-"Real Programmers don't play tennis, or any other sport which requires
-you to change clothes. Mountain climbing is OK, and Real Programmers
-wear their climbing boots to work in case a mountain should suddenly
-spring up in the middle of the computer room."
---
-To unsubscribe from this list: send the line "unsubscribe linux-serial"=
- in
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

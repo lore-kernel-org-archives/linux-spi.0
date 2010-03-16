@@ -1,22 +1,18 @@
-From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: Re: [PATCH 2/3] ep93xx: added chip
-	revision	reading	function
-Date: Tue, 16 Mar 2010 11:53:26 -0500
-Message-ID: <0D753D10438DA54287A00B02708426976368534001@AUSP01VMBX24.collaborationhost.net>
-References: <cover.1268669236.git.mika.westerberg@iki.fi>
-	<3d93e748eb068963a9378b454ba9cd117cbbc737.1268669236.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B027084269763685332EF@AUSP01VMBX24.collaborationhost.net>
+From: christian pellegrin <chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v6] serial: spi: add spi-uart driver for
+	Maxim 3110
+Date: Tue, 16 Mar 2010 18:22:46 +0100
+Message-ID: <cabda6421003161022x7c6e5a14xd283969e0843c493@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Greg KH <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <0D753D10438DA54287A00B027084269763685332EF-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,119 +23,138 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday, March 15, 2010 11:06 AM, H Hartley Sweeten wrote:
-> On Monday, March 15, 2010 9:26 AM, Mika Westerberg wrote:
->> Added a new function: ep93xx_chip_revision() which reads chip revision from 
->> the sysconfig register.
->>
->> Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+On Thu, Mar 4, 2010 at 8:22 AM,
+<spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org> wrote:
+
 >
-> Hello Mike,
+> Hi All,
 >
-> A couple comments below.
 
-After merging your patch I had some second thoughts on my comments. Please see below.
+Hi, first of all let me apologize that I haven't see your previous
+versions of the driver. I completely missed them. I am the author of
+the max3100 driver. As far as I can see the max3110 is just a max3100
+with the TTL to EIA level converter. So, first of all, may I ask why
+you did start a new driver from scratch? I'm quite happy with the
+current one, the only problem I see is that it uses worqueues which
+are scheduled like normal processes and so under load their latency is
+*big*. I wanted to move to threaded interrupts (otherwise you have to
+use some ugly tricks to give workqueue threads real-time scheduling
+class) but was waiting for my beta testers^H^H^H^H^H^H^H^H^H^H^H^H^H
+customers to move to modern kernel that support them. Anyway the patch
+is trivial and I can provide it if there is some interest. A quick
+glance at your patch shows you are using the same sched_other threads
+so you will face the same problems. I saw you added console capability
+which isn't present in current driver, but it's easy to add (I didn't
+implement it initially because I don't see a good idea using the
+max3100 for initial bring-up of an embedded system because it relies
+on the SPI subsystem, worqueues, scheduler and such complicated
+things). Anyway keep in mind that the MAX3100 is rather low-end UART
+so don't push it too much.
 
->> ---
->>  arch/arm/mach-ep93xx/core.c                  |   26 ++++++++++++++++++++++++++
->>  arch/arm/mach-ep93xx/include/mach/platform.h |   11 +++++++++++
->>  2 files changed, 37 insertions(+), 0 deletions(-)
->> 
->> diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
->> index 90fb591..2e496c9 100644
->> --- a/arch/arm/mach-ep93xx/core.c
->> +++ b/arch/arm/mach-ep93xx/core.c
->> @@ -64,6 +64,32 @@ void __init ep93xx_map_io(void)
->>  	iotable_init(ep93xx_io_desc, ARRAY_SIZE(ep93xx_io_desc));
->>  }
->>  
->> +/**
->> + * ep93xx_chip_revision() - returns EP93xx chip revision
->> + *
->> + * Returns EP93xx chip revision number read from sysconfig register. Possible
->> + * values can be one of the following:
->> + *
->> + * %EP93XX_CHIP_REV_A
->> + * %EP93XX_CHIP_REV_B
->> + * %EP93XX_CHIP_REV_C
->> + * %EP93XX_CHIP_REV_D0
->> + * %EP93XX_CHIP_REV_D1
->> + * %EP93XX_CHIP_REV_E0
->> + * %EP93XX_CHIP_REV_E1
->> + * %EP93XX_CHIP_REV_E2
->> + *
->> + * and in future maybe something else. See also <mach/platform.h>.
->> + */
+I'm more than happy to work with you to have just one perfect (or
+almost perfect) driver instead of two of them half-done. See some
+comments inline.
 
-As noted by Martin Guy, the E2 revision will be the last one released by Cirrus.
+> + * 1. From Max3110 spec, the Rx FIFO has 8 words, while the Tx FIFO only=
+ has
+> + * =A0 =A01 word. If SPI master controller doesn't support sclk frequenc=
+y change,
+> + * =A0 =A0then the char need be sent out one by one with some delay
 
-The comment is a bit wordy.  How about just:
+I don't think this is a good idea to change speed. Just check the T
+bit to see when the TX buffer is empty and send at the maximum
+available speed. So the usage of the SPI bus is better.
 
-+/**
-+ * ep93xx_chip_revision - Returns the EP93xx chip revision.
-+ *
-+ * See <mach/platform.h> for more information.
-+ */
+> + *
+> + * 2. Currently only RX availabe interrrupt is used
 
->> +u8 ep93xx_chip_revision(void)
->> +{
->> +	u32 v;
->> +
->> +	v = __raw_readl(EP93XX_SYSCON_SYSCFG);
->> +	v &= EP93XX_SYSCON_SYSCFG_REV_MASK;
->> +	v >>= EP93XX_SYSCON_SYSCFG_REV_SHIFT;
->> +	return (u8)v;
->> +}
->
-> Please change the return type to 'int' and remove the (u8) cast.
->
-> Also, please move this block up so that it's right after the #include's.
+yeah, this is one of the reasons why MAX31x0 sucks: when you change
+configuration of interrupts the  RX buffer is cleared. So you cannot
+activate/deactivate TX empty interrupt as needed.
 
-Actually, please move the function down to right after the:
+> +static int use_irq =3D 1;
+> +module_param(use_irq, int, 0444);
+> +MODULE_PARM_DESC(use_irq, "Whether using Max3110's IRQ capability");
 
-EXPORT_SYMBOL(ep93xx_devcfg_set_clear);
+I don't think it's a good idea using an UART in polling mode, it just
+kills the system. Just pretend this is not possible otherwise some
+hardware guys will pester us to do this just to save an electric wire.
 
-I would like to keep all the syscon helper functions together.
+> + =A0 =A0 =A0 memset(&x, 0, sizeof x);
+> + =A0 =A0 =A0 x.len =3D len;
+> + =A0 =A0 =A0 x.tx_buf =3D txbuf;
+> + =A0 =A0 =A0 x.rx_buf =3D rxbuf;
 
->>  
->>  /*************************************************************************
->>   * Timer handling for EP93xx
->> diff --git a/arch/arm/mach-ep93xx/include/mach/platform.h b/arch/arm/mach-ep93xx/include/mach/platform.h
->> index c6dc14d..8603837 100644
->> --- a/arch/arm/mach-ep93xx/include/mach/platform.h
->> +++ b/arch/arm/mach-ep93xx/include/mach/platform.h
->> @@ -33,6 +33,17 @@ static inline void ep93xx_devcfg_clear_bits(unsigned int bits)
->>  	ep93xx_devcfg_set_clear(0x00, bits);
->>  }
->>  
->> +#define EP93XX_CHIP_REV_A      0
->> +#define EP93XX_CHIP_REV_B      1
->> +#define EP93XX_CHIP_REV_C      2
->> +#define EP93XX_CHIP_REV_D0     3
->> +#define EP93XX_CHIP_REV_D1     4
->> +#define EP93XX_CHIP_REV_E0     5
->> +#define EP93XX_CHIP_REV_E1     6
->> +#define EP93XX_CHIP_REV_E2     7
->
-> Please use tabs instead of spaces above.
->
->> +
->> +u8 ep93xx_chip_revision(void);
->> +
->
-> Also, please move this block up so it's right after the struct ep93xx_eth_data
-> stuff.
+why don't initialize this like:
 
-Moving the function above means these are actually in the correct place.
+        struct spi_transfer x =3D {
+                .tx_buf =3D txbuf,
+                .rx_buf =3D rxbuf,
+                .len =3D len,
+        };
 
->>  void ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr);
->>  void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
->> 			 struct i2c_board_info *devices, int num);
 
-Regards,
-Hartley
+> + =A0 =A0 =A0 buf =3D kmalloc(8, GFP_KERNEL | GFP_DMA);
 
-------------------------------------------------------------------------------
+you do kmalloc and kfree in routines that are called in quite tight
+loops: I guess it's an overkill for performance.
+
+> +static unsigned int serial_m3110_tx_empty(struct uart_port *port)
+> +{
+> + =A0 =A0 =A0 return 1;
+> +}
+> +
+> +static void serial_m3110_stop_tx(struct uart_port *port)
+> +{
+> + =A0 =A0 =A0 return;
+> +}
+> +
+> +static void serial_m3110_stop_rx(struct uart_port *port)
+> +{
+> + =A0 =A0 =A0 return;
+> +}
+
+are you sure it's sane to just ignore these from higher level?
+
+> + =A0 =A0 =A0 u8 recv_buf[512], *pbuf;
+
+is this sane to allocate 512 byte on the stack?
+
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 wait_event_interruptible(*wq,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 max->flags =
+|| kthread_should_stop());
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 test_and_set_bit(0, &max->mthread_up);
+
+I guess you are using mthread_up to avoid awakening the main thread
+too many times. But this makes sense? Anyway because the awakening and
+the setting of the bit is not atomic it won't work anyway.
+
+> +/* Don't handle hw handshaking */
+> +static unsigned int serial_m3110_get_mctrl(struct uart_port *port)
+> +{
+> + =A0 =A0 =A0 return TIOCM_DSR | TIOCM_CAR | TIOCM_DSR;
+> +}
+> +
+> +static void serial_m3110_set_mctrl(struct uart_port *port, unsigned int =
+mctrl)
+> +{
+> +}
+> +
+
+this is quite bad because the MAX3100 is rather slow.
+
+Bye!
+
+-- =
+
+Christian Pellegrin, see http://www.evolware.org/chri/
+"Real Programmers don't play tennis, or any other sport which requires
+you to change clothes. Mountain climbing is OK, and Real Programmers
+wear their climbing boots to work in case a mountain should suddenly
+spring up in the middle of the computer room."
+
+---------------------------------------------------------------------------=
+---
 Download Intel&#174; Parallel Studio Eval
 Try the new software tools for yourself. Speed compiling, find bugs
 proactively, and fine-tune applications for parallel performance.

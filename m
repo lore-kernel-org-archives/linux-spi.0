@@ -1,193 +1,128 @@
-From: Feng Tang <feng.tang@intel.com>
-Subject: Re: [PATCH v6] serial: spi: add spi-uart driver for Maxim 3110
-Date: Wed, 17 Mar 2010 10:35:32 +0800
-Message-ID: <20100317103532.6e19db08@feng-i7>
-References: <cabda6421003161022x7c6e5a14xd283969e0843c493@mail.gmail.com>
+From: "=?utf-8?B?0JzQsNC50YHQutC40LUg0L/RgNCw0LfQtNC90LjQutC4?="
+	<cudexudebygupit-h2myTqZJoK5eoWH0uzbU5w@public.gmane.org>
+Subject: =?utf-8?b?W1NQQU1dINCR0YPQtNCw0L/QtdGI0YIs?=
+	=?utf-8?b?INCS0LXQvdCwINC90LAg0LzQsNC50YHQutC40LUg0L7RgiA0MDkg0LU=?=
+	=?utf-8?b?0LLRgNC+IQ==?=
+Date: Wed, 17 Mar 2010 06:33:47 +0300
+Message-ID: <1185172009.20100317063347@cantv.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Greg KH <greg@kroah.com>, David Brownell <david-b@pacbell.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
-To: christian pellegrin <chripell@gmail.com>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <cabda6421003161022x7c6e5a14xd283969e0843c493@mail.gmail.com>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Christian,
-
-Thanks for taking time to review the driver. Please see my answers inli=
-ne
-
-- Feng
-On Wed, 17 Mar 2010 01:22:46 +0800
-christian pellegrin <chripell@gmail.com> wrote:
-
-> On Thu, Mar 4, 2010 at 8:22 AM,
-> <spi-devel-general-request@lists.sourceforge.net> wrote:
->=20
-> >
-> > Hi All,
-> >
->=20
-> Hi, first of all let me apologize that I haven't see your previous
-> versions of the driver. I completely missed them. I am the author of
-> the max3100 driver. As far as I can see the max3110 is just a max3100
-> with the TTL to EIA level converter. So, first of all, may I ask why
-> you did start a new driver from scratch? I'm quite happy with the
-I don't want to reinvent the wheel, as I have many more tasks to handle=
- :)
-My 3110 driver started to work in 2008(surely very basic at that time) =
-before
-your driver is posted on public. And the reasons I still posted driver =
-here are:
-1. It provides a console
-2. It use buffer read/write to meet our performance goal, max3110 doesn=
-'t have
-good FIFO, but spi controller have and we can leverage that for perform=
-ance=20
-
-If we can cooperate to make current 3100 driver meet our expectation, I=
-'m more
-than happy to drop my 3110 one. I'd rather submit some bug fix for it t=
-han
-posting 6 or more versions of code :)
-
-> current one, the only problem I see is that it uses worqueues which
-> are scheduled like normal processes and so under load their latency i=
-s
-> *big*. I wanted to move to threaded interrupts (otherwise you have to
-> use some ugly tricks to give workqueue threads real-time scheduling
-> class) but was waiting for my beta testers^H^H^H^H^H^H^H^H^H^H^H^H^H
-> customers to move to modern kernel that support them. Anyway the patc=
-h
-> is trivial and I can provide it if there is some interest. A quick
-> glance at your patch shows you are using the same sched_other threads
-> so you will face the same problems. I saw you added console capabilit=
-y
-> which isn't present in current driver, but it's easy to add (I didn't
-> implement it initially because I don't see a good idea using the
-> max3100 for initial bring-up of an embedded system because it relies
-> on the SPI subsystem, worqueues, scheduler and such complicated
-> things). Anyway keep in mind that the MAX3100 is rather low-end UART
-> so don't push it too much.
-It's not me push it too much, but I was pushed too much :)
-We can't make the decision how the HW is used on all kinds of platforms=
-=2E For
-ours, we heavily rely on it as a sole console, and basic requirement is=
-:
-the datasheet say it supports 230400~300 baud rate, then driver guy nee=
-d make
-it work as it claims, like copying 500 bytes string somewhere and paste=
- it on
-this console in 230400/600 rate.
-
-=46or the kernel early boot phase debug, I actually had another 3110
-early_printk patch which can work right after the kernel starts
-
->=20
-> I'm more than happy to work with you to have just one perfect (or
-> almost perfect) driver instead of two of them half-done. See some
-> comments inline.
-Can't agree more, all I want is just a upstream driver which meets the =
-basic
-requirement.
-
->=20
-> > + * 1. From Max3110 spec, the Rx FIFO has 8 words, while the Tx
-> > FIFO only has
-> > + * =C2=A0 =C2=A01 word. If SPI master controller doesn't support s=
-clk
-> > frequency change,
-> > + * =C2=A0 =C2=A0then the char need be sent out one by one with som=
-e delay
->=20
-> I don't think this is a good idea to change speed. Just check the T
-> bit to see when the TX buffer is empty and send at the maximum
-> available speed. So the usage of the SPI bus is better.
-Yes, checking T bit is a good idea for single word transfer model, but =
-it
-doesn't help when using buffer read/write
-
->=20
-> > + *
-> > + * 2. Currently only RX availabe interrrupt is used
->=20
-> yeah, this is one of the reasons why MAX31x0 sucks: when you change
-> configuration of interrupts the  RX buffer is cleared. So you cannot
-> activate/deactivate TX empty interrupt as needed.
->=20
-> > +static int use_irq =3D 1;
-> > +module_param(use_irq, int, 0444);
-> > +MODULE_PARM_DESC(use_irq, "Whether using Max3110's IRQ
-> > capability");
->=20
-> I don't think it's a good idea using an UART in polling mode, it just
-> kills the system. Just pretend this is not possible otherwise some
-> hardware guys will pester us to do this just to save an electric wire=
-=2E
-Yes, like Grant and others have mentioned, I plan to use spi->irq as th=
-e
-condition, platform code which initialize the board_info should clear t=
-he
-irq to 0 if they won't use IRQ for 3110
-
-	if (spi->irq)
-		request_irq(spi->irq,...);
-	else
-		start_read_thread;
-
->=20
->=20
-> > + =C2=A0 =C2=A0 =C2=A0 buf =3D kmalloc(8, GFP_KERNEL | GFP_DMA);
->=20
-> you do kmalloc and kfree in routines that are called in quite tight
-> loops: I guess it's an overkill for performance.
-
-Overkill is just the word I have used when replying comments on my
-earlier version :)
-
-I didn't use kmalloc/kfree in my earlier submission, but other develope=
-rs
-mentioned the buffer allocated here need be DMA safe, as 3110 may work
-with many kinds of SPI controller, some of them only supports DMA mode.
-
->=20
-> are you sure it's sane to just ignore these from higher level?
->=20
-> > + =C2=A0 =C2=A0 =C2=A0 u8 recv_buf[512], *pbuf;
->=20
-> is this sane to allocate 512 byte on the stack?
-
-The function is called only in driver's own main thread and reader thre=
-ad
-context, 512 should be safe enough. Also the reason I don't use
-kzalloc/kfree is the same as you mentioned: performance
-
->=20
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 wait_event_inter=
-ruptible(*wq,
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 max->flags ||
-> > kthread_should_stop());
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 test_and_set_bit=
-(0, &max->mthread_up);
->=20
-> I guess you are using mthread_up to avoid awakening the main thread
-> too many times. But this makes sense? Anyway because the awakening an=
-d
-> the setting of the bit is not atomic it won't work anyway.
-Why this can't work? the test/set_bit are atomic operations. This bit
-check is not exclusive, it just try to save some waking up, though waki=
-ng a
-already running thread doesn't cost too much as mentioned by Andrew
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-serial"=
- in
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+0J/QntCU0JPQntCi0J7QktCs0KLQlSDQotCV0JvQniDQmiDQm9CV0KLQoyEK0KHQn9CQIC0g0J3Q
+ldCU0JXQm9CvINCSINCS0JXQndCT0KDQmNCYINCe0KIgNDA5INCV0JLQoNCeIQoK0JzQsNC50YHQ
+utC40LUg0L/RgNCw0LfQtNC90LjQutC4IArQnNCw0LnRgdC60LjQtSDQv9GA0LDQt9C00L3QuNC6
+0LghINCh0J/QkCAtINC90LXQtNC10LvRjyDQsiDQkdGD0LTQsNC/0LXRiNGC0LUuINCS0YvQu9C1
+0YIgMjYg0LDQv9GA0LXQu9GPINC+0YIgNTQ5INC10LLRgNC+IArQnNCw0LnRgdC60LjQtSDQv9GA
+0LDQt9C00L3QuNC60LghINCh0J/QkCAtINC90LXQtNC10LvRjyDQsiDQkdGD0LTQsNC/0LXRiNGC
+0LUuINCS0YvQu9C10YIgMzAg0LDQv9GA0LXQu9GPINC+0YIgNTg1INC10LLRgNC+IAoK0KHRgtC+
+0LjQvNC+0YHRgtGMINGC0YPRgNCwINCy0LrQu9GO0YfQsNC10YI6IAotINC/0LXRgNC10LvQtdGC
+INCw0LLQuNCw0LrQvtC80L/QsNC90LjQtdC5IE1BTEVWINC40Lcg0KgtMjog0JzQvtGB0LrQstCw
+IOKAkyDQkdGD0LTQsNC/0LXRiNGCIE1BIDEwMSAxNC4yMCDigJMgMTUuMDAsIArQkdGD0LTQsNC/
+0LXRiNGCIOKAkyDQnNC+0YHQutCy0LAgTUEgMTAwIDA4LjUwIOKAkyAxMy4yNSwKLSDRgtGA0LDQ
+vdGB0YTQtdGAINCw0Y3RgNC+0L/QvtGA0YIg4oCTINC+0YLQtdC70Ywg4oCTINCw0Y3RgNC+0L/Q
+vtGA0YIg0YEg0YDRg9GB0YHQutC+0LPQvtCy0L7RgNGP0YnQuNC8INCz0LjQtNC+0LwsIAotINC8
+0LXQtNC40YbQuNC90YHQutCw0Y8g0YHRgtGA0LDRhdC+0LLQutCwLCAKLSDRgdGC0YDQsNGF0L7Q
+stC60LAg0L7RgiDQvdC10LLRi9C10LfQtNCwKiosIAotINGA0LDQt9C80LXRidC10L3QuNC1INCy
+INC+0YLQtdC70LUg0L/QviDQstGL0LHQvtGA0YMg0L3QsCA3INC90L7Rh9C10Lkg0YEg0LfQsNCy
+0YLRgNCw0LrQvtC8LCAKLSDQvtCx0LfQvtGA0L3QsNGPINGN0LrRgdC60YPRgNGB0LjRjyDQv9C+
+INCR0YPQtNCw0L/QtdGI0YLRgywgCi0g0LIg0L/QvtC00LDRgNC+0LohINCf0YDQvtCz0YPQu9C6
+0LAg0L3QsCDQutC+0YDQsNCx0LvQuNC60LUg0L/QviDQlNGD0L3QsNGOLCAKLSDQsiDRgtC10YDQ
+vNCw0LvRjNC90YvRhSDQodCf0JAgLSDQvtGC0LXQu9GP0YUg0LIg0YHRgtC+0LjQvNC+0YHRgtGM
+INCy0YXQvtC00LjRgiDQv9C+0LvRjNC30L7QstCw0L3QuNC1INGC0LXRgNC80LDQu9GM0L3Ri9C8
+INC60L7QvNC/0LvQtdC60YHQvtC8IAoo0LHQsNGB0YHQtdC50L3Riywg0LLQvtC00L3Ri9C5INC8
+0LDRgdGB0LDQtiwg0YHQsNGD0L3RiyDQuCDQsdCw0L3QuCkuIAoK0JzQsNC5INCyINCR0YPQtNCw
+0L/QtdGI0YLQtSEg0JLRgdC1INC60YDQsNGB0LrQuCDQktC10L3Qs9GA0LjQuCArINCS0LXQvdCw
+LiDQktGL0LvQtdGCIDI2INCw0L/RgNC10LvRjyDQvtGCIDU3NSDQtdCy0YDQviAK0JzQsNC5INCy
+INCR0YPQtNCw0L/QtdGI0YLQtSEg0JLRgdC1INC60YDQsNGB0LrQuCDQktC10L3Qs9GA0LjQuCAr
+INCS0LXQvdCwLiDQktGL0LvQtdGCIDMwINCw0L/RgNC10LvRjyDQvtGCIDYxNSDQtdCy0YDQviAK
+0JzQsNC5INCyINCR0YPQtNCw0L/QtdGI0YLQtSEg0JLRgdC1INC60YDQsNGB0LrQuCDQktC10L3Q
+s9GA0LjQuCArINCS0LXQvdCwLiDQli/QtCDRgtGD0YAuINCS0YvQtdC30LTRiyAyNCDQuCAyOCDQ
+sNC/0YDQtdC70Y8g0L7RgiA0NTUg0LXQstGA0L4gCgrQodGC0L7QuNC80L7RgdGC0Ywg0YLRg9GA
+0LAg0LLQutC70Y7Rh9Cw0LXRgjogCi0g0L/QtdGA0LXQu9C10YIg0LDQstC40LDQutC+0LzQv9Cw
+0L3QuNC10LkgTUFMRVYg0LjQtyDQqC0yOiDQnNC+0YHQutCy0LAg4oCTINCR0YPQtNCw0L/QtdGI
+0YIgTUEgMTAzIDIwLjMwIOKAkyAyMS4xMCwgCtCR0YPQtNCw0L/QtdGI0YIg4oCTINCc0L7RgdC6
+0LLQsCBNQSAxMDIgMTUuNTAg4oCTIDE5LjM1LyDQti/QtCDQv9C10YDQtdC10LfQtCDQnNC+0YHQ
+utCy0LAg4oCTINCR0YPQtNCw0L/QtdGI0YIg4oCTINCc0L7RgdC60LLQsCAK0L/QvtC10LfQtNC+
+0LwgTiAxNSAvINC+0LHRgNCw0YLQvdC+IOKEliAxNiwg0LLRgtC+0YDQvtC5INC60LvQsNGB0YEK
+LSDRgtGA0LDQvdGB0YTQtdGAINCw0Y3RgNC+0L/QvtGA0YIg4oCTINC+0YLQtdC70Ywg4oCTINCw
+0Y3RgNC+0L/QvtGA0YIg0YEg0YDRg9GB0YHQutC+0LPQvtCy0L7RgNGP0YnQuNC8INCz0LjQtNC+
+0LwvINGC0YDQsNC90YHRhNC10YAg0LLQvtC60LfQsNC7IOKAkyAK0L7RgtC10LvRjCDigJMg0LLQ
+vtC60LfQsNC7INGBINGA0YPRgdGB0LrQvtCz0L7QstC+0YDRj9GJ0LjQvCDQs9C40LTQvtC8Ci0g
+0LzQtdC00LjRhtC40L3RgdC60LDRjyDRgdGC0YDQsNGF0L7QstC60LAsIAotINGB0YLRgNCw0YXQ
+vtCy0LrQsCDQvtGCINC90LXQstGL0LXQt9C00LAqKiwgCi0g0YDQsNC30LzQtdGJ0LXQvdC40LUg
+0LIg0L7RgtC10LvQtSDQv9C+INCy0YvQsdC+0YDRgyDQvdCwIDcg0L3QvtGH0LXQuSDRgSDQt9Cw
+0LLRgtGA0LDQutC+0LwsIAotINC+0LHQt9C+0YDQvdCw0Y8g0Y3QutGB0LrRg9GA0YHQuNGPINC/
+0L4g0JHRg9C00LDQv9C10YjRgtGDLCAKLSDRjdC60YHQutGD0YDRgdC40Y8g0LIg0JjQt9C70YPR
+h9C40L3RgyDQlNGD0L3QsNGPLCDQstC60LvRjtGH0LDRjyDQutC+0L3QvdC+0LUg0YjQvtGDINC4
+INC+0LHQtdC0INCyINGH0LDRgNC00LUsIAotINGN0LrRgdC60YPRgNGB0LjRjyDQsiDQktC10L3R
+gywgCi0g0LIg0L/QvtC00LDRgNC+0LohINCf0YDQvtCz0YPQu9C60LAg0L3QsCDQutC+0YDQsNCx
+0LvQuNC60LUg0L/QviDQlNGD0L3QsNGOLCAKLSDQsiDRgtC10YDQvNCw0LvRjNC90YvRhSDQodCf
+0JAgLSDQvtGC0LXQu9GP0YUg0LIg0YHRgtC+0LjQvNC+0YHRgtGMINCy0YXQvtC00LjRgiDQv9C+
+0LvRjNC30L7QstCw0L3QuNC1INGC0LXRgNC80LDQu9GM0L3Ri9C8INC60L7QvNC/0LvQtdC60YHQ
+vtC8IAoo0LHQsNGB0YHQtdC50L3Riywg0LLQvtC00L3Ri9C5INC80LDRgdGB0LDQtiwg0YHQsNGD
+0L3RiyDQuCDQsdCw0L3QuCkuIAoK0JzQsNC50YHQutC40LUg0L/RgNCw0LfQtNC90LjQutC4ISDQ
+ktC10L3QsCDigJMg0JHRg9C00LDQv9C10YjRgiwg0JHRgNCw0YLQuNGB0LvQsNCy0LAg0LIg0L/Q
+vtC00LDRgNC+0LouINCS0YvQu9C10YIgMDMg0LzQsNGPINC+0YIgNjU1INC10LLRgNC+IArQnNCw
+0LnRgdC60LjQtSDQv9GA0LDQt9C00L3QuNC60LghINCS0LXQvdCwIOKAkyDQkdGD0LTQsNC/0LXR
+iNGCLCDQkdGA0LDRgtC40YHQu9Cw0LLQsCDQsiDQv9C+0LTQsNGA0L7Qui4g0JLRi9C70LXRgiAy
+OSDQsNC/0YDQtdC70Y8g0L7RgiA2ODAg0LXQstGA0L4gCtCc0LDQudGB0LrQuNC1INC/0YDQsNC3
+0LTQvdC40LrQuCEg0JLQtdC90LAg4oCTINCR0YPQtNCw0L/QtdGI0YIsINCR0YDQsNGC0LjRgdC7
+0LDQstCwINCyINC/0L7QtNCw0YDQvtC6LiDQli/QtCDRgtGD0YAuCtCS0YvQtdC30LTRiyAyNyDQ
+sNC/0YDQtdC70Y8g0LggMDEg0LzQsNGPINC+0YIgNTI1INC10LLRgNC+IAoK0KHRgtC+0LjQvNC+
+0YHRgtGMINGC0YPRgNCwINCy0LrQu9GO0YfQsNC10YI6IAotINC/0LXRgNC10LvQtdGCINCw0LLQ
+uNCw0LrQvtC80L/QsNC90LjQtdC5IE1BTEVWINC40Lcg0KgtMjog0JzQvtGB0LrQstCwIOKAkyDQ
+kdGD0LTQsNC/0LXRiNGCIE1BIDEwMSAxNC4yMCDigJMgMTUuMDAsIArQkdGD0LTQsNC/0LXRiNGC
+IOKAkyDQnNC+0YHQutCy0LAgTUEgMTAwIDA4LjUwIOKAkyAxMy4yNSwgCi0g0LLRgdC1INGC0YDQ
+sNC90YHRhNC10YDRiyDQv9C+INC/0YDQvtCz0YDQsNC80LzQtSwgCi0g0LzQtdC00LjRhtC40L3R
+gdC60LDRjyDRgdGC0YDQsNGF0L7QstC60LAsIAotINGB0YLRgNCw0YXQvtCy0LrQsCDQvtGCINC9
+0LXQstGL0LXQt9C00LAqKiwgCi0g0YDQsNC30LzQtdGJ0LXQvdC40LUg0LIg0JHRg9C00LDQv9C1
+0YjRgtC1INC4INCS0LXQvdC1INC/0L4g0LLRi9Cx0L7RgNGDLCAKLSDQt9Cw0LLRgtGA0LDQutC4
+ICLRiNCy0LXQtNGB0LrQuNC5INGB0YLQvtC7IiwgCi0g0Y3QutGB0LrRg9GA0YHQuNC+0L3QvdCw
+0Y8g0L/RgNC+0LPRgNCw0LzQvNCwINGBINGA0YPRgdGB0LrQvtCz0L7QstC+0YDRj9GJ0LjQvCDQ
+s9C40LTQvtC8LCAKLSDQkiDQn9Ce0JTQkNCg0J7QmiEg0L/RgNC+0LPRg9C70LrQsCDQvdCwINC6
+0L7RgNCw0LHQu9C40LrQtSDQv9C+INCU0YPQvdCw0Y4sIAotINCSINCf0J7QlNCQ0KDQntCaISDQ
+rdC60YHQutGD0YDRgdC40Y8g0LIg0JHRgNCw0YLQuNGB0LvQsNCy0YMuIAoK0KHQv9C10YbQv9GA
+0LXQtNC70L7QttC10L3QuNGPIArQodCf0JAgLSDQvdC10LTQtdC70Y8g0LIg0JHRg9C00LDQv9C1
+0YjRgtC1LiDQktGL0LvQtdGCIDI3LjAzLjEwINC+0YIgNDQ1INC10LLRgNC+IArQodCf0JAgLSDQ
+vdC10LTQtdC70Y8g0LIg0JHRg9C00LDQv9C10YjRgtC1ISDQktGL0LvQtdGCIDMwLjAzLjEwINC+
+0YIgNDA5INC10LLRgNC+IAoK0KHRgtC+0LjQvNC+0YHRgtGMINGC0YPRgNCwINCy0LrQu9GO0YfQ
+sNC10YI6IAotINC/0LXRgNC10LvQtdGCINCw0LLQuNCw0LrQvtC80L/QsNC90LjQtdC5IE1BTEVW
+INC40Lcg0KgtMjog0JzQvtGB0LrQstCwIOKAkyDQkdGD0LTQsNC/0LXRiNGCIE1BIDEwMSAxNC4y
+MCDigJMgMTUuMDAsIArQkdGD0LTQsNC/0LXRiNGCIOKAkyDQnNC+0YHQutCy0LAgTUEgMTAwIDA4
+LjUwIOKAkyAxMy4yNSAK0JDRjdGA0L7RhNC70L7RgiDQuNC3INCoLTI6INCc0L7RgdC60LLQsCDi
+gJMg0JHRg9C00LDQv9C10YjRgiBTVTEzMSAwOTozNSDigJMgMTA6MzAsINCR0YPQtNCw0L/QtdGI
+0YIg4oCTINCc0L7RgdC60LLQsCBTVTEzMiAKMTE6MzAg4oCTIDE2OjA1IAotINGC0YDQsNC90YHR
+hNC10YAg0LDRjdGA0L7Qv9C+0YDRgiDigJMg0L7RgtC10LvRjCDigJMg0LDRjdGA0L7Qv9C+0YDR
+giDRgSDRgNGD0YHRgdC60L7Qs9C+0LLQvtGA0Y/RidC40Lwg0LPQuNC00L7QvCwgCi0g0LzQtdC0
+0LjRhtC40L3RgdC60LDRjyDRgdGC0YDQsNGF0L7QstC60LAsIAotINGB0YLRgNCw0YXQvtCy0LrQ
+sCDQvtGCINC90LXQstGL0LXQt9C00LAqKiwgCi0g0YDQsNC30LzQtdGJ0LXQvdC40LUg0LIg0L7R
+gtC10LvQtSDQv9C+INCy0YvQsdC+0YDRgyDQvdCwIDcg0L3QvtGH0LXQuSDRgSDQt9Cw0LLRgtGA
+0LDQutC+0LwsIAotINCSINCf0J7QlNCQ0KDQntCaISDRjdC60YHQutGD0YDRgdC40Y8g0L3QsCDQ
+utC+0YDQsNCx0LvQuNC60LUg0L/QviDQlNGD0L3QsNGOIAotINCyINCh0J/QkCAtINC+0YLQtdC7
+0Y/RhSDQsiDRgdGC0L7QuNC80L7RgdGC0Ywg0LLRhdC+0LTQuNGCINC/0L7Qu9GM0LfQvtCy0LDQ
+vdC40LUg0YLQtdGA0LzQsNC70YzQvdGL0Lwg0LrQvtC80L/Qu9C10LrRgdC+0LwgKNCx0LDRgdGB
+0LXQudC90YssIArQstC+0LTQvdGL0Lkg0LzQsNGB0YHQsNC2LCDRgdCw0YPQvdGLINC4INCx0LDQ
+vdC4KS4gCgoiSW50ZXJQYXJlcyBidXNpbmVzcyB0cmF2ZWwiCtCi0LXQuzogKzcgKDQ5NSkyMzQt
+MDMtMzQgKNC80L3QvtCz0L7QutCw0L3QsNC70YzQvdGL0LkpCtCk0LDQutGBOis3ICg0OTUpMjM0
+LTAzLTExCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpEb3dubG9hZCBJbnRlbCYjMTc0OyBQYXJhbGxl
+bCBTdHVkaW8gRXZhbApUcnkgdGhlIG5ldyBzb2Z0d2FyZSB0b29scyBmb3IgeW91cnNlbGYuIFNw
+ZWVkIGNvbXBpbGluZywgZmluZCBidWdzCnByb2FjdGl2ZWx5LCBhbmQgZmluZS10dW5lIGFwcGxp
+Y2F0aW9ucyBmb3IgcGFyYWxsZWwgcGVyZm9ybWFuY2UuClNlZSB3aHkgSW50ZWwgUGFyYWxsZWwg
+U3R1ZGlvIGdvdCBoaWdoIG1hcmtzIGR1cmluZyBiZXRhLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2lu
+dGVsLXN3LWRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
+c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
+bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,128 +1,132 @@
-From: "=?utf-8?B?0JzQsNC50YHQutC40LUg0L/RgNCw0LfQtNC90LjQutC4?="
-	<cudexudebygupit-h2myTqZJoK5eoWH0uzbU5w@public.gmane.org>
-Subject: =?utf-8?b?W1NQQU1dINCR0YPQtNCw0L/QtdGI0YIs?=
-	=?utf-8?b?INCS0LXQvdCwINC90LAg0LzQsNC50YHQutC40LUg0L7RgiA0MDkg0LU=?=
-	=?utf-8?b?0LLRgNC+IQ==?=
-Date: Wed, 17 Mar 2010 06:33:47 +0300
-Message-ID: <1185172009.20100317063347@cantv.net>
+From: christian pellegrin <chripell@gmail.com>
+Subject: Re: [PATCH v6] serial: spi: add spi-uart driver for Maxim 3110
+Date: Wed, 17 Mar 2010 08:39:23 +0100
+Message-ID: <cabda6421003170039o4c8a75a4uea8341920478a244@mail.gmail.com>
+References: <cabda6421003161022x7c6e5a14xd283969e0843c493@mail.gmail.com>
+	 <20100317103532.6e19db08@feng-i7>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Greg KH <greg@kroah.com>, David Brownell <david-b@pacbell.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Alan Cox <alan@lxorguk.ukuu.org.uk>,
+	spi-devel-list <spi-devel-general@lists.sourceforge.net>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
+To: Feng Tang <feng.tang@intel.com>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <20100317103532.6e19db08@feng-i7>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-0J/QntCU0JPQntCi0J7QktCs0KLQlSDQotCV0JvQniDQmiDQm9CV0KLQoyEK0KHQn9CQIC0g0J3Q
-ldCU0JXQm9CvINCSINCS0JXQndCT0KDQmNCYINCe0KIgNDA5INCV0JLQoNCeIQoK0JzQsNC50YHQ
-utC40LUg0L/RgNCw0LfQtNC90LjQutC4IArQnNCw0LnRgdC60LjQtSDQv9GA0LDQt9C00L3QuNC6
-0LghINCh0J/QkCAtINC90LXQtNC10LvRjyDQsiDQkdGD0LTQsNC/0LXRiNGC0LUuINCS0YvQu9C1
-0YIgMjYg0LDQv9GA0LXQu9GPINC+0YIgNTQ5INC10LLRgNC+IArQnNCw0LnRgdC60LjQtSDQv9GA
-0LDQt9C00L3QuNC60LghINCh0J/QkCAtINC90LXQtNC10LvRjyDQsiDQkdGD0LTQsNC/0LXRiNGC
-0LUuINCS0YvQu9C10YIgMzAg0LDQv9GA0LXQu9GPINC+0YIgNTg1INC10LLRgNC+IAoK0KHRgtC+
-0LjQvNC+0YHRgtGMINGC0YPRgNCwINCy0LrQu9GO0YfQsNC10YI6IAotINC/0LXRgNC10LvQtdGC
-INCw0LLQuNCw0LrQvtC80L/QsNC90LjQtdC5IE1BTEVWINC40Lcg0KgtMjog0JzQvtGB0LrQstCw
-IOKAkyDQkdGD0LTQsNC/0LXRiNGCIE1BIDEwMSAxNC4yMCDigJMgMTUuMDAsIArQkdGD0LTQsNC/
-0LXRiNGCIOKAkyDQnNC+0YHQutCy0LAgTUEgMTAwIDA4LjUwIOKAkyAxMy4yNSwKLSDRgtGA0LDQ
-vdGB0YTQtdGAINCw0Y3RgNC+0L/QvtGA0YIg4oCTINC+0YLQtdC70Ywg4oCTINCw0Y3RgNC+0L/Q
-vtGA0YIg0YEg0YDRg9GB0YHQutC+0LPQvtCy0L7RgNGP0YnQuNC8INCz0LjQtNC+0LwsIAotINC8
-0LXQtNC40YbQuNC90YHQutCw0Y8g0YHRgtGA0LDRhdC+0LLQutCwLCAKLSDRgdGC0YDQsNGF0L7Q
-stC60LAg0L7RgiDQvdC10LLRi9C10LfQtNCwKiosIAotINGA0LDQt9C80LXRidC10L3QuNC1INCy
-INC+0YLQtdC70LUg0L/QviDQstGL0LHQvtGA0YMg0L3QsCA3INC90L7Rh9C10Lkg0YEg0LfQsNCy
-0YLRgNCw0LrQvtC8LCAKLSDQvtCx0LfQvtGA0L3QsNGPINGN0LrRgdC60YPRgNGB0LjRjyDQv9C+
-INCR0YPQtNCw0L/QtdGI0YLRgywgCi0g0LIg0L/QvtC00LDRgNC+0LohINCf0YDQvtCz0YPQu9C6
-0LAg0L3QsCDQutC+0YDQsNCx0LvQuNC60LUg0L/QviDQlNGD0L3QsNGOLCAKLSDQsiDRgtC10YDQ
-vNCw0LvRjNC90YvRhSDQodCf0JAgLSDQvtGC0LXQu9GP0YUg0LIg0YHRgtC+0LjQvNC+0YHRgtGM
-INCy0YXQvtC00LjRgiDQv9C+0LvRjNC30L7QstCw0L3QuNC1INGC0LXRgNC80LDQu9GM0L3Ri9C8
-INC60L7QvNC/0LvQtdC60YHQvtC8IAoo0LHQsNGB0YHQtdC50L3Riywg0LLQvtC00L3Ri9C5INC8
-0LDRgdGB0LDQtiwg0YHQsNGD0L3RiyDQuCDQsdCw0L3QuCkuIAoK0JzQsNC5INCyINCR0YPQtNCw
-0L/QtdGI0YLQtSEg0JLRgdC1INC60YDQsNGB0LrQuCDQktC10L3Qs9GA0LjQuCArINCS0LXQvdCw
-LiDQktGL0LvQtdGCIDI2INCw0L/RgNC10LvRjyDQvtGCIDU3NSDQtdCy0YDQviAK0JzQsNC5INCy
-INCR0YPQtNCw0L/QtdGI0YLQtSEg0JLRgdC1INC60YDQsNGB0LrQuCDQktC10L3Qs9GA0LjQuCAr
-INCS0LXQvdCwLiDQktGL0LvQtdGCIDMwINCw0L/RgNC10LvRjyDQvtGCIDYxNSDQtdCy0YDQviAK
-0JzQsNC5INCyINCR0YPQtNCw0L/QtdGI0YLQtSEg0JLRgdC1INC60YDQsNGB0LrQuCDQktC10L3Q
-s9GA0LjQuCArINCS0LXQvdCwLiDQli/QtCDRgtGD0YAuINCS0YvQtdC30LTRiyAyNCDQuCAyOCDQ
-sNC/0YDQtdC70Y8g0L7RgiA0NTUg0LXQstGA0L4gCgrQodGC0L7QuNC80L7RgdGC0Ywg0YLRg9GA
-0LAg0LLQutC70Y7Rh9Cw0LXRgjogCi0g0L/QtdGA0LXQu9C10YIg0LDQstC40LDQutC+0LzQv9Cw
-0L3QuNC10LkgTUFMRVYg0LjQtyDQqC0yOiDQnNC+0YHQutCy0LAg4oCTINCR0YPQtNCw0L/QtdGI
-0YIgTUEgMTAzIDIwLjMwIOKAkyAyMS4xMCwgCtCR0YPQtNCw0L/QtdGI0YIg4oCTINCc0L7RgdC6
-0LLQsCBNQSAxMDIgMTUuNTAg4oCTIDE5LjM1LyDQti/QtCDQv9C10YDQtdC10LfQtCDQnNC+0YHQ
-utCy0LAg4oCTINCR0YPQtNCw0L/QtdGI0YIg4oCTINCc0L7RgdC60LLQsCAK0L/QvtC10LfQtNC+
-0LwgTiAxNSAvINC+0LHRgNCw0YLQvdC+IOKEliAxNiwg0LLRgtC+0YDQvtC5INC60LvQsNGB0YEK
-LSDRgtGA0LDQvdGB0YTQtdGAINCw0Y3RgNC+0L/QvtGA0YIg4oCTINC+0YLQtdC70Ywg4oCTINCw
-0Y3RgNC+0L/QvtGA0YIg0YEg0YDRg9GB0YHQutC+0LPQvtCy0L7RgNGP0YnQuNC8INCz0LjQtNC+
-0LwvINGC0YDQsNC90YHRhNC10YAg0LLQvtC60LfQsNC7IOKAkyAK0L7RgtC10LvRjCDigJMg0LLQ
-vtC60LfQsNC7INGBINGA0YPRgdGB0LrQvtCz0L7QstC+0YDRj9GJ0LjQvCDQs9C40LTQvtC8Ci0g
-0LzQtdC00LjRhtC40L3RgdC60LDRjyDRgdGC0YDQsNGF0L7QstC60LAsIAotINGB0YLRgNCw0YXQ
-vtCy0LrQsCDQvtGCINC90LXQstGL0LXQt9C00LAqKiwgCi0g0YDQsNC30LzQtdGJ0LXQvdC40LUg
-0LIg0L7RgtC10LvQtSDQv9C+INCy0YvQsdC+0YDRgyDQvdCwIDcg0L3QvtGH0LXQuSDRgSDQt9Cw
-0LLRgtGA0LDQutC+0LwsIAotINC+0LHQt9C+0YDQvdCw0Y8g0Y3QutGB0LrRg9GA0YHQuNGPINC/
-0L4g0JHRg9C00LDQv9C10YjRgtGDLCAKLSDRjdC60YHQutGD0YDRgdC40Y8g0LIg0JjQt9C70YPR
-h9C40L3RgyDQlNGD0L3QsNGPLCDQstC60LvRjtGH0LDRjyDQutC+0L3QvdC+0LUg0YjQvtGDINC4
-INC+0LHQtdC0INCyINGH0LDRgNC00LUsIAotINGN0LrRgdC60YPRgNGB0LjRjyDQsiDQktC10L3R
-gywgCi0g0LIg0L/QvtC00LDRgNC+0LohINCf0YDQvtCz0YPQu9C60LAg0L3QsCDQutC+0YDQsNCx
-0LvQuNC60LUg0L/QviDQlNGD0L3QsNGOLCAKLSDQsiDRgtC10YDQvNCw0LvRjNC90YvRhSDQodCf
-0JAgLSDQvtGC0LXQu9GP0YUg0LIg0YHRgtC+0LjQvNC+0YHRgtGMINCy0YXQvtC00LjRgiDQv9C+
-0LvRjNC30L7QstCw0L3QuNC1INGC0LXRgNC80LDQu9GM0L3Ri9C8INC60L7QvNC/0LvQtdC60YHQ
-vtC8IAoo0LHQsNGB0YHQtdC50L3Riywg0LLQvtC00L3Ri9C5INC80LDRgdGB0LDQtiwg0YHQsNGD
-0L3RiyDQuCDQsdCw0L3QuCkuIAoK0JzQsNC50YHQutC40LUg0L/RgNCw0LfQtNC90LjQutC4ISDQ
-ktC10L3QsCDigJMg0JHRg9C00LDQv9C10YjRgiwg0JHRgNCw0YLQuNGB0LvQsNCy0LAg0LIg0L/Q
-vtC00LDRgNC+0LouINCS0YvQu9C10YIgMDMg0LzQsNGPINC+0YIgNjU1INC10LLRgNC+IArQnNCw
-0LnRgdC60LjQtSDQv9GA0LDQt9C00L3QuNC60LghINCS0LXQvdCwIOKAkyDQkdGD0LTQsNC/0LXR
-iNGCLCDQkdGA0LDRgtC40YHQu9Cw0LLQsCDQsiDQv9C+0LTQsNGA0L7Qui4g0JLRi9C70LXRgiAy
-OSDQsNC/0YDQtdC70Y8g0L7RgiA2ODAg0LXQstGA0L4gCtCc0LDQudGB0LrQuNC1INC/0YDQsNC3
-0LTQvdC40LrQuCEg0JLQtdC90LAg4oCTINCR0YPQtNCw0L/QtdGI0YIsINCR0YDQsNGC0LjRgdC7
-0LDQstCwINCyINC/0L7QtNCw0YDQvtC6LiDQli/QtCDRgtGD0YAuCtCS0YvQtdC30LTRiyAyNyDQ
-sNC/0YDQtdC70Y8g0LggMDEg0LzQsNGPINC+0YIgNTI1INC10LLRgNC+IAoK0KHRgtC+0LjQvNC+
-0YHRgtGMINGC0YPRgNCwINCy0LrQu9GO0YfQsNC10YI6IAotINC/0LXRgNC10LvQtdGCINCw0LLQ
-uNCw0LrQvtC80L/QsNC90LjQtdC5IE1BTEVWINC40Lcg0KgtMjog0JzQvtGB0LrQstCwIOKAkyDQ
-kdGD0LTQsNC/0LXRiNGCIE1BIDEwMSAxNC4yMCDigJMgMTUuMDAsIArQkdGD0LTQsNC/0LXRiNGC
-IOKAkyDQnNC+0YHQutCy0LAgTUEgMTAwIDA4LjUwIOKAkyAxMy4yNSwgCi0g0LLRgdC1INGC0YDQ
-sNC90YHRhNC10YDRiyDQv9C+INC/0YDQvtCz0YDQsNC80LzQtSwgCi0g0LzQtdC00LjRhtC40L3R
-gdC60LDRjyDRgdGC0YDQsNGF0L7QstC60LAsIAotINGB0YLRgNCw0YXQvtCy0LrQsCDQvtGCINC9
-0LXQstGL0LXQt9C00LAqKiwgCi0g0YDQsNC30LzQtdGJ0LXQvdC40LUg0LIg0JHRg9C00LDQv9C1
-0YjRgtC1INC4INCS0LXQvdC1INC/0L4g0LLRi9Cx0L7RgNGDLCAKLSDQt9Cw0LLRgtGA0LDQutC4
-ICLRiNCy0LXQtNGB0LrQuNC5INGB0YLQvtC7IiwgCi0g0Y3QutGB0LrRg9GA0YHQuNC+0L3QvdCw
-0Y8g0L/RgNC+0LPRgNCw0LzQvNCwINGBINGA0YPRgdGB0LrQvtCz0L7QstC+0YDRj9GJ0LjQvCDQ
-s9C40LTQvtC8LCAKLSDQkiDQn9Ce0JTQkNCg0J7QmiEg0L/RgNC+0LPRg9C70LrQsCDQvdCwINC6
-0L7RgNCw0LHQu9C40LrQtSDQv9C+INCU0YPQvdCw0Y4sIAotINCSINCf0J7QlNCQ0KDQntCaISDQ
-rdC60YHQutGD0YDRgdC40Y8g0LIg0JHRgNCw0YLQuNGB0LvQsNCy0YMuIAoK0KHQv9C10YbQv9GA
-0LXQtNC70L7QttC10L3QuNGPIArQodCf0JAgLSDQvdC10LTQtdC70Y8g0LIg0JHRg9C00LDQv9C1
-0YjRgtC1LiDQktGL0LvQtdGCIDI3LjAzLjEwINC+0YIgNDQ1INC10LLRgNC+IArQodCf0JAgLSDQ
-vdC10LTQtdC70Y8g0LIg0JHRg9C00LDQv9C10YjRgtC1ISDQktGL0LvQtdGCIDMwLjAzLjEwINC+
-0YIgNDA5INC10LLRgNC+IAoK0KHRgtC+0LjQvNC+0YHRgtGMINGC0YPRgNCwINCy0LrQu9GO0YfQ
-sNC10YI6IAotINC/0LXRgNC10LvQtdGCINCw0LLQuNCw0LrQvtC80L/QsNC90LjQtdC5IE1BTEVW
-INC40Lcg0KgtMjog0JzQvtGB0LrQstCwIOKAkyDQkdGD0LTQsNC/0LXRiNGCIE1BIDEwMSAxNC4y
-MCDigJMgMTUuMDAsIArQkdGD0LTQsNC/0LXRiNGCIOKAkyDQnNC+0YHQutCy0LAgTUEgMTAwIDA4
-LjUwIOKAkyAxMy4yNSAK0JDRjdGA0L7RhNC70L7RgiDQuNC3INCoLTI6INCc0L7RgdC60LLQsCDi
-gJMg0JHRg9C00LDQv9C10YjRgiBTVTEzMSAwOTozNSDigJMgMTA6MzAsINCR0YPQtNCw0L/QtdGI
-0YIg4oCTINCc0L7RgdC60LLQsCBTVTEzMiAKMTE6MzAg4oCTIDE2OjA1IAotINGC0YDQsNC90YHR
-hNC10YAg0LDRjdGA0L7Qv9C+0YDRgiDigJMg0L7RgtC10LvRjCDigJMg0LDRjdGA0L7Qv9C+0YDR
-giDRgSDRgNGD0YHRgdC60L7Qs9C+0LLQvtGA0Y/RidC40Lwg0LPQuNC00L7QvCwgCi0g0LzQtdC0
-0LjRhtC40L3RgdC60LDRjyDRgdGC0YDQsNGF0L7QstC60LAsIAotINGB0YLRgNCw0YXQvtCy0LrQ
-sCDQvtGCINC90LXQstGL0LXQt9C00LAqKiwgCi0g0YDQsNC30LzQtdGJ0LXQvdC40LUg0LIg0L7R
-gtC10LvQtSDQv9C+INCy0YvQsdC+0YDRgyDQvdCwIDcg0L3QvtGH0LXQuSDRgSDQt9Cw0LLRgtGA
-0LDQutC+0LwsIAotINCSINCf0J7QlNCQ0KDQntCaISDRjdC60YHQutGD0YDRgdC40Y8g0L3QsCDQ
-utC+0YDQsNCx0LvQuNC60LUg0L/QviDQlNGD0L3QsNGOIAotINCyINCh0J/QkCAtINC+0YLQtdC7
-0Y/RhSDQsiDRgdGC0L7QuNC80L7RgdGC0Ywg0LLRhdC+0LTQuNGCINC/0L7Qu9GM0LfQvtCy0LDQ
-vdC40LUg0YLQtdGA0LzQsNC70YzQvdGL0Lwg0LrQvtC80L/Qu9C10LrRgdC+0LwgKNCx0LDRgdGB
-0LXQudC90YssIArQstC+0LTQvdGL0Lkg0LzQsNGB0YHQsNC2LCDRgdCw0YPQvdGLINC4INCx0LDQ
-vdC4KS4gCgoiSW50ZXJQYXJlcyBidXNpbmVzcyB0cmF2ZWwiCtCi0LXQuzogKzcgKDQ5NSkyMzQt
-MDMtMzQgKNC80L3QvtCz0L7QutCw0L3QsNC70YzQvdGL0LkpCtCk0LDQutGBOis3ICg0OTUpMjM0
-LTAzLTExCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpEb3dubG9hZCBJbnRlbCYjMTc0OyBQYXJhbGxl
-bCBTdHVkaW8gRXZhbApUcnkgdGhlIG5ldyBzb2Z0d2FyZSB0b29scyBmb3IgeW91cnNlbGYuIFNw
-ZWVkIGNvbXBpbGluZywgZmluZCBidWdzCnByb2FjdGl2ZWx5LCBhbmQgZmluZS10dW5lIGFwcGxp
-Y2F0aW9ucyBmb3IgcGFyYWxsZWwgcGVyZm9ybWFuY2UuClNlZSB3aHkgSW50ZWwgUGFyYWxsZWwg
-U3R1ZGlvIGdvdCBoaWdoIG1hcmtzIGR1cmluZyBiZXRhLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2lu
-dGVsLXN3LWRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
-c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
-bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Wed, Mar 17, 2010 at 3:35 AM, Feng Tang <feng.tang@intel.com> wrote:
+> Hi Christian,
+
+Hi,
+
+> your driver is posted on public. And the reasons I still posted driver here are:
+> 1. It provides a console
+
+I'll provide a patch to the mainline driver for the console. Let me
+just finish my daily job duties ;-)
+
+> 2. It use buffer read/write to meet our performance goal, max3110 doesn't have
+> good FIFO, but spi controller have and we can leverage that for performance
+
+I think this line of thinking is wrong. SPI generic layer is well ....
+generic. For example the platform I use is the S3C24xx which has a SPI
+shift register depth of just one byte. And using DMA is not an option
+because the setup of a DMA transfer takes tens of microseconds.
+Additionally the SPI driver in mainline is based on bit-banging which
+uses workqueues and so is limited by the fact that it fights with
+other sched_other processes. Unfortunately an alternative driver which
+was posted never got mainlined and we, who need it, have to maintain
+it ourself. But this is another story, the bottom line is that we have
+to cope with the most basic SPI support we can meet.
+
+This said I tested the throughput of the driver by doing a zmodem
+transfer and, as far as I remember, the results were pretty good.
+Please note that the transmission is already buffered in higher layer.
+Don't be fooled by the fact that tx_empty is correctly implemented in
+the actual driver: you *have* to implement it otherwise some things
+like termios call tcdrain() will be broken. For example applications
+that do RS485 rx/tx switching in user-space will go nuts without it.
+As far receiving is concerned .....
+
+> the datasheet say it supports 230400~300 baud rate, then driver guy need make
+> it work as it claims, like copying 500 bytes string somewhere and paste it on
+> this console in 230400/600 rate.
+
+.... this is exactly the problem I was facing: loosing chars on RX. I
+tracked the problem to a too long latency in awakening of the
+workqueue (the RX FIFO of the MAX3100 overflows). I will post shortly
+a patch that moves this to threaded interrupts which solved the
+problem on the S3C platform I mentioned above working at 115200. A
+quick and dirty fix for workqueues is posted here:
+http://www.evolware.org/chri/paciugo/index.html. Anyway it has to do
+with scheduling of processes so many more factors are concerned, like
+HZ and preemption being enabled.
+
+I will post some tests together with the patch, if you have some
+benchmarks you like to be run don't hesitate to send them. Thanks in
+advance!
+
+>> I'm more than happy to work with you to have just one perfect (or
+>> almost perfect) driver instead of two of them half-done. See some
+>> comments inline.
+> Can't agree more, all I want is just a upstream driver which meets the basic
+> requirement.
+>
+
+I think upstream drivers have to meet the requirement of the average
+user not be tailored to specific user-cases (see the Android code
+inclusion debate). For example changing SPI speed to meet some rate of
+data flow is wrong. Nothing will assure you that you get the rate you
+asked: it all depends of the master SPI clock and the granularity
+resulting by its division. So I still think the best way is poll the T
+bit by using the SPI bus as little as possible.
+
+>> I don't think this is a good idea to change speed. Just check the T
+>> bit to see when the TX buffer is empty and send at the maximum
+>> available speed. So the usage of the SPI bus is better.
+> Yes, checking T bit is a good idea for single word transfer model, but it
+> doesn't help when using buffer read/write
+
+I really don't understand why, can you elaborate on this?
+
+> I didn't use kmalloc/kfree in my earlier submission, but other developers
+> mentioned the buffer allocated here need be DMA safe, as 3110 may work
+> with many kinds of SPI controller, some of them only supports DMA mode.
+>
+
+why you don't preallocate buffer for SPI transfers that are DMA-safe?
+For example the mcp251x driver
+(http://lxr.free-electrons.com/source/drivers/net/can/mcp251x.c?v=2.6.34-rc1)
+does this.
+
+>> I guess you are using mthread_up to avoid awakening the main thread
+>> too many times. But this makes sense? Anyway because the awakening and
+>> the setting of the bit is not atomic it won't work anyway.
+> Why this can't work? the test/set_bit are atomic operations. This bit
+> check is not exclusive, it just try to save some waking up, though waking a
+> already running thread doesn't cost too much as mentioned by Andrew
+
+First of all I think that the cost of re-awakening an already running
+thread is lower than the logic of testing bits. My note was just
+nit-picking: there is a window between when the task was woken-up and
+where you set the bit, so it doesn't guarantee you that you aren't
+awakening the thread more than once anyway.
+
+Bye,
+
+PS.: sorry to have missed you previous emails where some points where
+already discussed. Please CC me next time, unfortunately spi-devel
+mailing list carries quite a bit of spam and so I have to search its
+post in the trash folder. I realized this is the reason why I didn't
+see your previous posts :-/
+
+-- 
+Christian Pellegrin, see http://www.evolware.org/chri/
+"Real Programmers don't play tennis, or any other sport which requires
+you to change clothes. Mountain climbing is OK, and Real Programmers
+wear their climbing boots to work in case a mountain should suddenly
+spring up in the middle of the computer room."

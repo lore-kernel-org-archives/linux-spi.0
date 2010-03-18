@@ -1,8 +1,8 @@
-From: "Cyril DORET" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Devenez proprietaire avec 0 euro
-	d'apport !
-Date: Thu, 18 Mar 2010 12:07:07 +0100 (CET)
-Message-ID: <kzh5ju.ooo9w7@front07.g7r9.com>
+From: "iForex" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Devenez Trader ! Recevez votre Kit
+	maintenant
+Date: Thu, 18 Mar 2010 16:07:06 +0100 (CET)
+Message-ID: <kzhgns.mimsf3@front.ta271.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

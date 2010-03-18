@@ -1,11 +1,10 @@
-From: "=?koi8-r?B?8sXLz83FzsTBw8nJINPQxcPJwczJ09TB?="
-	<potyhyqufipoma-GO3HOXYuGN1BDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Как уйти от обналички без потерь?
-Date: Thu, 18 Mar 2010 09:57:54 +0300
-Message-ID: <1210226098.20100318095754@onelist.com>
+From: "Orange Mediatic news" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] les technologies de la  communication à votre portée gratuitement
+Date: Thu, 18 Mar 2010 10:40:58 +0100 (CET)
+Message-ID: <kzh1mc.2moa2w@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,60 +17,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-987JzcHOycAg0tXLz9fPxMnUxczFyiwgxsnOwc7TydPUz9csIMfMLiDC1cjHwczUxdLP1yDJIMDS
-ydPUz9chCvcg08/X0sXNxc7O2cgg1dPMz9fJ0cggydPQz8zY2s/Xwc7JxSDUwcvJyCDU0sHEycPJ
-z87O2cgg09DP08/Cz9cgCtDTxdfEz8/Q1MnNydrBw8nJLCDLwcsgz8LOwczJ3svBIMkgxsnSzdkt
-z8TOz8TOxdfLySDT1MHOz9fJ1NPRIM/QwdPO2c0sIMTP0s/Hyc0gySAKzcHMz8TP09TV0M7ZzS4g
-48XM2CDTxc3JzsHSwSAtINDPzc/e2CDLz83Qwc7J0c0sINDSyc3FztHA3cnNICLTxdLZxSIgySAi
-3sXSztnFIiAK08jFzdkgz9DUyc3J2sHDyckgzsHMz8fP1ywg1crUySDP1CDOycgsIMkg0NLJINzU
-z80gzsUg0sHaz9LJ1NjT0SwgzsUg1dPU1dDJ1NggCsvPzsvV0sXO1MHNLCDOxSDVytTJINMg0tnO
-y8EuIO7BytTJINrBy8/OztnFIMHM2NTF0s7B1MnX2SDUwcvJzSDTyMXNwc0sINDMwdTJ1NggCs7B
-zM/HySwgzs8gzsUg0MXSxdDMwd7J18HU2CAtINfP1CDP087P187B0SDJxMXRIM7BzM/Hz9fPx88g
-0MzBzsnSz9fBzsnRIMLF2iAi0M/Nz8XLIiDJIAoi3sXSzs/HzyDOwczBIi4KCjIgwdDSxczRIDIw
-MTAgxy4gCu7BzM/Hz9fPxSDQzMHOydLP18HOycUg1yDV08zP18nRyCDL0snaydPBOiDLwcsg1snU
-2CDCxdogCs/CzsHMyd7LySDJIMbJ0s0tz8TOz8TOxdfPyyDJIM7FINLB2s/SydTY09EKCu/CzsHM
-yd7J18HOycUuIOTM0SDexcfPIMnT0M/M2NrVxdTT0TogIt7F0s7B0SIg2sHS0MzB1MEgySDEz8jP
-xNkg08/C09TXxc7OycvP1yDCydrOxdPBOyAKz9DMwdTBINLB08jPxM/XLCDLz9TP0tnFIM7FIMjP
-3sXU09Eg0NLP18/EydTYIM/GycPJwczYzs87IM7F2sHLz87OwdEgxMXR1MXM2M7P09TYICjX2tHU
-y8ksIM/Uy8HU2SwgCsbJzsHO08nSz9fBzsnFINDPzMnUyd7F08vPyiDExdHUxczYzs/T1Mk6KTsg
-+sHLz87O2cUgwczY1MXSzsHUydfZICjUz8zYy88gxMzRINrBy8/OztnIIMPFzMXKISk6IArawdLQ
-zMHUwSDXIMLPzNjbz80g0sHazcXSxSAtINLFx9LF09PJ0SDQzyDl8+47INDMwdTF1skgz9QgzsXS
-xdrJxMXO1M/XIM7BIMvB0tTZLCDP087P18HOydEuIArh1dTT1MHGyc7HIM/UIM7F0sXaycTFztTB
-OyDQxdLF18/EINLB08jPxM/XINcgwsXazsHMyd7O1cAgxs/SzdUuIPDSxcTT1MHXydTFzNjTy8nF
-INLB08jPxNkuIArvxM7PxM7F18vJLiDkzNEg3sXHzyDJ09DPzNja1cDU09E6INDTxdfEz8/Q1MnN
-ydrBw8nRIO7k8yDJIM7BzM/HwSDOwSDQ0snC2czYINcgz9TExczYztnIIArTxMXMy8HIIMnMySDX
-08XKIMTF0dTFzNjOz9PUyTsgItPF0tnKIMnN0M/S1CI7ICLTxdLB0SDLz87XxdLUwcPJ0SI7IM7F
-2sHLz87OwdEgxMXR1MXM2M7P09TYLiAK+sHLz87O2cUgwczY1MXSzsHUydfZIM/Ezs/EzsXXy8HN
-ICjUz8zYy88gxMzRINrBy8/OztnIIMPFzMXKISkg2sHU0sHUztnFIM3FyMHOydrN2SDJzMkgCtTS
-wc7TxsXS1M7PxSDDxc7Pz8LSwdrP18HOycUg0yDV3sHT1MnFzSDOydrLz87BzM/Hz9fZyCDT1cLf
-xcvUz9c7INfZ0dfMxc7JxSAo08/axMHOycUpINDPy9XQwdTFzMXKIAoo2sHLwdreycvP1yksIM7F
-IM7V1sTBwN3JyNPRINcg19nexdTFIO7k8ywg0sHaxMXMxc7JxSDGyc7BztPP19nIINDP1M/Lz9cg
-ItMg7uTzIiDJICLCxdog7uTzIjsgCtDSz9PUz8Ug1M/XwdLJ3cXT1NfPINMg1d7B09TJxc0g09XC
-38XL1M/XIPXz7iDJL8nMySDOxdLF2snExc7Uz9csINLBws/UwSDQzyDBx8XO1NPLyc0gyczJIArL
-z83J09PJz87O2c0gxM/Hz9fP0sHNINMgzsnNyTsg0NLRzc/KIMnN0M/S1CDTIMnT0M/M2NrP18HO
-ycXNIMnMySDOxSDJ09DPzNjaz9fBzsnFzSAK1NLBztPGxdLUztnIIMPFziDJINrB1NLB1M7ZyCDN
-xcjBzsnazc/XIMkg1C7ELgrywdPexdQgzsHMz8fP18/KIM7Bx9LV2svJIM7BINDSyc3F0sUuIOvB
-y8/X2SDC1cTV1CAoySDC1cTV1CDMySkg0M/UxdLJINDSySDP1MvB2sUgz9QgIt7F0s7ZyCIgCtPI
-xc0uIOvPx8TBINDSySDc1M/NIM3P1s7PIMTB1sUg09zLz87PzcnU2C4g79TXxdTZIM7BINfP0NLP
-09kuIAoK89TPyc3P09TYINXewdPUydEg08XNyc7B0sEgNzkwMCDS1cIuIAr6wdHXy8kgzsEg1d7B
-09TJxSDQzyDUxczFxs/Owc06ICg0OTUpIDUxOC00MS0zOSwgNTE4LTQyLTk3CgoyNiDNwdLUIDIw
-MTAgxy4oMTAuMC0xOC4wMCkg79TXxdTT1NfFzs7P09TYINPPwtPU18XOzsnLwSDJINLVy8/Xz8TJ
-1MXM0SAK0M8gxM/Mx8HNIMvPzdDBzsnJOiDOz9fFzMzZINrBy8/Oz8TB1MXM2NPU18EgzyDCwc7L
-0s/U09TXxS4g68HLINXK1Mkgz9QgCs/U18XU09TXxc7Oz9PUyS4K79POz9fBzsnRINDSydrOwc7J
-0SDEz8zWzsnLwSDOxdPP09TP0dTFzNjO2c0gKMLBzsvSz9TPzSkuIO/Tzs/Xwc7J0SDEzNEgz8LR
-2sHUxczYzs/HzyAKxM/C0s/Xz8zYzs/HzyDPwtLB3cXOydEg1yDT1cQuIPPQz9PPwtkg1cjPxMEg
-xMnSxcvUz9LBIM/UIM/U18XU09TXxc7Oz9PUyS4g89DP08/C2SDVyM/EwSAKy8/O1NLPzMnS1cDd
-xcfPIMTPzNbOycvBIMzJw8Egz9Qgz9TXxdTT1NfFzs7P09TJIPPPy9LZ1MnFINPU0tXL1NXS2SDT
-z8LT1NfFzs7P09TJINMgCtDPzc/d2MAgz8bG28/SwS/OxdLF2snExc7UwS4g8M/S0cTPyyDX2tnT
-y8HOydEgxM/Mx8/XIMvSxcTJ1M/Sz9cg0yAKxMnSxcvUz9LBL8vPztTSz8zJ0tXA3cnIIMzJwyDP
-0sfBzsnawcPJySDEz8zWzsnLwS4K89TPyc3P09TYINXewdPUydEg08XNyc7B0sEgNzkwMCDS1cIu
-IAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFyYWxsZWwgU3R1
-ZGlvIEV2YWwKVHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxmLiBTcGVlZCBj
-b21waWxpbmcsIGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBhcHBsaWNhdGlv
-bnMgZm9yIHBhcmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFsbGVsIFN0dWRp
-byBnb3QgaGlnaCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1z
-dy1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
-LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
-ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
-cGktZGV2ZWwtZ2VuZXJhbAo=
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

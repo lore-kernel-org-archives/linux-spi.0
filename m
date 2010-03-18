@@ -1,11 +1,10 @@
-From: "Planete Fonctionnaire par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Avec la Banque Populaire,
-	facilitez votre quotidien avec la convention de relation Equipage
-Date: Wed, 17 Mar 2010 23:39:53 +0100 (CET)
-Message-ID: <kzg70e.u96ude@front02.r7g.com>
+From: "=?koi8-r?B?98HbwSDC1cjHwczUxdLJ0Q==?=" <potyhyqufipoma-GO3HOXYuGN1BDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Составляем и сдаем отчетность
+Date: Thu, 18 Mar 2010 07:51:17 +0300
+Message-ID: <1117657321.20100318075117@onelist.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,10 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+ICAgICAg8/Lv/u7vISDzz9PUwdfM0cXNIMkg08TBxc0gx8/Ez9fVwCAKICAgICAgwtXIx8HM1MXS
+08vVwCDJIM7BzM/Hz9fVwCAKICAgICAgz9TexdTOz9PU2CEg1MXMLjc2NSAzNCAwMiAKICAgICAg
+5MXCxdQg0yDL0sXEydTPzSDP0NHU2CDOxSDTyM/E0dTT0SwKICAgICAg6SDCwczBztMgz9DR1Ngt
+1MHLySDOxSDT18/EydTT0SEKICAgICAg78TOwSDLz9DFxd7LwSDH1czRxdQgx8TFLdTPCiAgICAg
+IPEg0M/KxNUgxcUgydPLwdTYINDPINPXxdTVLi4uIAogICAgICDw0s/KxNUg09XCy8/O1M8sIM/C
+z8rE1SDQwdPTydfZLi4uCiAgICAgIOkg087P18EgwsXT0dTT0SDNz8kgwcvUydfZLAogICAgICDp
+IMvSxcTJ1M/S08vB0SDP0NHU2CDSwdPUxdQsCiAgICAgIOEg18XE2CDEz8zWzs8gwtnU2CDOwc/C
+z9LP1CEgCiAgICAgIO/Ezs8gySDUz9bFIC0g1MHLIMvB1sTZyiDHz8QKICAgICAg89fP1tUg0SDT
+1NLBzs7ZyiDHz8TP18/KIM/U3sXUIQogICAgICDr18HS1MHM2M7ZyiAtINDF087RLCAKICAgICAg
+8yDOyc0gzsUg09LB187J1Ngg7c/JIM3V3sXOydEg1yDLz87DxSDayc3ZLiAKICAgICAg78TOwSDL
+z9DFysvBIC0gy8HawczP09ggwtkKICAgICAg/sXHzyDNzsUg09TPydQgzyDOxcog2sHC2dTYLAog
+ICAgICDuzyDRIMLVyMfBzNTF0iDJINzUwSDSz8zYCiAgICAgIO3OxSDXIM7By8Hawc7JxSDQ0snO
+z9PJ1CDCz8zYIAogICAgICDkz9TP287P09TJIM3Pxcog08zFxNkKICAgICAg6dPLwdTYIMvP0MXK
+y9Ug1yDLz87DxSDayc3ZLi4uCiAgICAgIO/Ezs8gySDUz9bFIC0g1MHLIMvB1sTZyiDHz8QKICAg
+ICAg89fP1tUg0SDT1NLBzs7ZyiDHz8TP18/KIM/U3sXUISAKICAgICAg8/Lv/u7vISDzz9PUwdfM
+0cXNIMkg08TBxc0gx8/Ez9fVwCAKICAgICAgwtXIx8HM1MXS08vVwCDJIM7BzM/Hz9fVwCAKICAg
+ICAgz9TexdTOz9PU2CEg1MXMLjc2NSAzNCAwMgogICAgICBlLW1haWw6IGdvZG90Y2hldG5vc3RA
+eWFob28uY29tIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFy
+YWxsZWwgU3R1ZGlvIEV2YWwKVHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxm
+LiBTcGVlZCBjb21waWxpbmcsIGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBh
+cHBsaWNhdGlvbnMgZm9yIHBhcmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFs
+bGVsIFN0dWRpbyBnb3QgaGlnaCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3Nm
+dS9pbnRlbC1zdy1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
+aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

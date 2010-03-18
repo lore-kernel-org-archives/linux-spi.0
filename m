@@ -1,7 +1,8 @@
-From: "Orange Mediatic news" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] les technologies de la  communication à votre portée gratuitement
-Date: Thu, 18 Mar 2010 10:40:58 +0100 (CET)
-Message-ID: <kzh1mc.2moa2w@front02.r7g.com>
+From: "Cyril DORET" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Devenez proprietaire avec 0 euro
+	d'apport !
+Date: Thu, 18 Mar 2010 12:07:07 +0100 (CET)
+Message-ID: <kzh5ju.ooo9w7@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

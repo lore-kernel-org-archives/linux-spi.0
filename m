@@ -1,18 +1,18 @@
-From: Christian Pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
-Subject: [PATCH 3/3] max3100: adds console support for
-	MAX3100
-Date: Fri, 19 Mar 2010 09:39:57 +0100
-Message-ID: <1268987997-22746-1-git-send-email-chripell@fsfe.org>
-References: <cabda6421003190139h344bc172h3556fca78e4b25cb@mail.gmail.com>
+From: Amit Uttamchandani <amit.uttam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Spinlock vs mutexes for spi network driver
+Date: Fri, 19 Mar 2010 02:35:59 -0700
+Message-ID: <20100319093559.GA29381@debian>
+References: <20100317204915.GB6358@canoga.com> <4BA14970.3050603@whoi.edu>
+	<20100318164641.GA22298@canoga.com> <4BA262B1.5050001@whoi.edu>
+	<20100318200940.GC16834@canoga.com> <4BA2A4F4.60207@whoi.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Christian Pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
-To: feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org,
-	david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux
+Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <cabda6421003190139h344bc172h3556fca78e4b25cb-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <4BA2A4F4.60207-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,308 +23,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds console support for the MAX3100 UART
-(console=ttyMAX0,11500). The SPI subsystem and an
-suitable SPI master driver have to be compiled in the kernel.
+On Thu, Mar 18, 2010 at 06:11:00PM -0400, Ned Forrester wrote:
 
-Signed-off-by: Christian Pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
----
- drivers/serial/Kconfig   |   20 +++++
- drivers/serial/max3100.c |  184 +++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 187 insertions(+), 17 deletions(-)
+[...]
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 9ff47db..bc72e84 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -547,6 +547,26 @@ config SERIAL_MAX3100
- 	help
- 	  MAX3100 chip support
- 
-+config SERIAL_MAX3100_CONSOLE
-+	bool "Support console on MAX3100"
-+	depends on SERIAL_MAX3100=y
-+	select SERIAL_CORE_CONSOLE
-+	help
-+	  Console on MAX3100
-+
-+config SERIAL_MAX3100_CONSOLE_N
-+	int "Number of MAX3100 chips to wait before registering console"
-+	depends on SERIAL_MAX3100_CONSOLE=y
-+	default "1"
-+	help
-+	  Unfortunately due to the async nature of Linux boot we must
-+	  know in advance when to register the console. If we do it
-+	  too early not all the MAX3100 chips are known to the system
-+	  yet. And we just cannot know how many MAX3100 will be in the
-+	  system so it's impossible to wait for the last one.  If you
-+	  just want to have the console on the first MAX3100 chip
-+	  probed (ttyMAX0) it's safe to leave this to 1.
-+
- config SERIAL_DZ
- 	bool "DECstation DZ serial driver"
- 	depends on MACH_DECSTATION && 32BIT
-diff --git a/drivers/serial/max3100.c b/drivers/serial/max3100.c
-index 0c972c6..f6d250d 100644
---- a/drivers/serial/max3100.c
-+++ b/drivers/serial/max3100.c
-@@ -48,6 +48,7 @@
- #include <linux/kthread.h>
- #include <linux/interrupt.h>
- #include <linux/bitops.h>
-+#include <linux/console.h>
- 
- #include <linux/serial_max3100.h>
- 
-@@ -131,6 +132,10 @@ struct max3100_port {
- 	int poll_time;
- 	/* and its timer */
- 	struct timer_list	timer;
-+
-+	int console_flags;
-+	/* is this port a console? */
-+#define MAX3100_IS_CONSOLE   (1 << 0)
- };
- 
- static struct max3100_port *max3100s[MAX_MAX3100]; /* the chips */
-@@ -175,7 +180,8 @@ static void max3100_resume_work(struct work_struct *w)
- 	struct max3100_port *s = container_of(w, struct max3100_port,
- 					      resume_work);
- 
--	raise_threaded_irq(s->irq);
-+	if (s->irq)
-+		raise_threaded_irq(s->irq);
- }
- 
- static void max3100_timeout(unsigned long data)
-@@ -552,14 +558,16 @@ static void max3100_shutdown(struct uart_port *port)
- 	if (s->irq)
- 		free_irq(s->irq, s);
- 
--	/* set shutdown mode to save power */
--	if (s->max3100_hw_suspend)
--		s->max3100_hw_suspend(1);
--	else  {
--		u16 tx, rx;
-+	if (!(s->console_flags & MAX3100_IS_CONSOLE)) {
-+		/* set shutdown mode to save power */
-+		if (s->max3100_hw_suspend)
-+			s->max3100_hw_suspend(1);
-+		else  {
-+			u16 tx, rx;
- 
--		tx = MAX3100_WC | MAX3100_SHDN;
--		max3100_sr(s, tx, &rx);
-+			tx = MAX3100_WC | MAX3100_SHDN;
-+			max3100_sr(s, tx, &rx);
-+		}
- 	}
- }
- 
-@@ -578,10 +586,8 @@ static int max3100_startup(struct uart_port *port)
- 	s->parity = 0;
- 	s->rts = 0;
- 
--	INIT_WORK(&s->resume_work, max3100_resume_work);
--
- 	if (request_threaded_irq(s->irq, NULL, max3100_ist,
--			IRQF_TRIGGER_FALLING, "max3100", s) < 0) {
-+				 IRQF_TRIGGER_FALLING, "max3100", s) < 0) {
- 		dev_err(&s->spi->dev, "cannot allocate irq %d\n", s->irq);
- 		s->irq = 0;
- 		return -EBUSY;
-@@ -699,6 +705,136 @@ static struct uart_ops max3100_ops = {
- 	.verify_port	= max3100_verify_port,
- };
- 
-+#ifdef CONFIG_SERIAL_MAX3100_CONSOLE
-+
-+static void max3100_console_putchar(struct uart_port *port, int ch)
-+{
-+	struct max3100_port *s = container_of(port, struct max3100_port, port);
-+	unsigned long tout = 10 * HZ / 1000; /* 10ms */
-+	unsigned long start;
-+	u16 tx, rx;
-+
-+	if (tout == 0)
-+		tout = 1;
-+	start = jiffies;
-+	do {
-+		tx = MAX3100_RC;
-+		max3100_sr(s, tx, &rx);
-+	} while ((rx & MAX3100_T) == 0 &&
-+		 !time_after(jiffies, start + tout));
-+	tx = ch;
-+	max3100_calc_parity(s, &tx);
-+	tx |= MAX3100_WD | MAX3100_RTS;
-+	max3100_sr(s, tx, &rx);
-+}
-+
-+static void max3100_console_write(struct console *co,
-+				  const char *str, unsigned int count)
-+{
-+	struct max3100_port *s = max3100s[co->index];;
-+
-+	uart_console_write(&s->port, str, count, max3100_console_putchar);
-+}
-+
-+static int max3100_console_setup(struct console *co, char *options)
-+{
-+	struct max3100_port *s;
-+	int baud = 115200;
-+	int bits = 8;
-+	int parity = 'n';
-+	int flow = 'n';
-+	int ret;
-+	u16 tx, rx;
-+
-+	if (co->index == -1 || co->index >= MAX_MAX3100)
-+		co->index = 0;
-+	s = max3100s[co->index];
-+	if (!s)
-+		return -ENOENT;
-+	s->console_flags |= MAX3100_IS_CONSOLE;
-+
-+	if (options)
-+		uart_parse_options(options, &baud, &parity, &bits, &flow);
-+	ret = uart_set_options(&s->port, co, baud, parity, bits, flow);
-+
-+	tx = 0;
-+	switch (baud) {
-+	case 300:
-+		tx = 15;
-+		break;
-+	case 600:
-+		tx = 14 + s->crystal;
-+		break;
-+	case 1200:
-+		tx = 13 + s->crystal;
-+		break;
-+	case 2400:
-+		tx = 12 + s->crystal;
-+		break;
-+	case 4800:
-+		tx = 11 + s->crystal;
-+		break;
-+	case 9600:
-+		tx = 10 + s->crystal;
-+		break;
-+	case 19200:
-+		tx = 9 + s->crystal;
-+		break;
-+	case 38400:
-+		tx = 8 + s->crystal;
-+		break;
-+	case 57600:
-+		tx = 1 + s->crystal;
-+		break;
-+	case 115200:
-+		tx = 0 + s->crystal;
-+		break;
-+	case 230400:
-+		tx = 0;
-+		break;
-+	}
-+
-+	if (bits == 8) {
-+		tx &= ~MAX3100_L;
-+		s->parity &= ~MAX3100_7BIT;
-+	} else {
-+		tx |= MAX3100_L;
-+		s->parity |= MAX3100_7BIT;
-+	}
-+
-+	if (parity == 'o' || parity == 'e') {
-+		tx |= MAX3100_PE;
-+		parity |= MAX3100_PARITY_ON;
-+	} else {
-+		tx &= ~MAX3100_PE;
-+		parity &= ~MAX3100_PARITY_ON;
-+	}
-+
-+	if (parity == 'o')
-+		parity |= MAX3100_PARITY_ODD;
-+	else
-+		parity &= ~MAX3100_PARITY_ODD;
-+
-+
-+	tx |= MAX3100_WC;
-+	max3100_sr(s, tx, &rx);
-+
-+	msleep(50);
-+	return ret;
-+}
-+
-+static struct uart_driver max3100_uart_driver;
-+static struct console max3100_console = {
-+	.name		= "ttyMAX",
-+	.write		= max3100_console_write,
-+	.device		= uart_console_device,
-+	.setup		= max3100_console_setup,
-+	.flags		= CON_PRINTBUFFER,
-+	.index		= -1,
-+	.data		= &max3100_uart_driver,
-+};
-+#endif
-+
- static struct uart_driver max3100_uart_driver = {
- 	.owner          = THIS_MODULE,
- 	.driver_name    = "ttyMAX",
-@@ -706,6 +842,9 @@ static struct uart_driver max3100_uart_driver = {
- 	.major          = MAX3100_MAJOR,
- 	.minor          = MAX3100_MINOR,
- 	.nr             = MAX_MAX3100,
-+#ifdef CONFIG_SERIAL_MAX3100_CONSOLE
-+	.cons           = &max3100_console,
-+#endif
- };
- static int uart_driver_registered;
- 
-@@ -768,18 +907,26 @@ static int __devinit max3100_probe(struct spi_device *spi)
- 	max3100s[i]->port.line = i;
- 	max3100s[i]->port.type = PORT_MAX3100;
- 	max3100s[i]->port.dev = &spi->dev;
-+	INIT_WORK(&max3100s[i]->resume_work, max3100_resume_work);
- 	retval = uart_add_one_port(&max3100_uart_driver, &max3100s[i]->port);
- 	if (retval < 0)
- 		dev_warn(&spi->dev,
- 			 "uart_add_one_port failed for line %d with error %d\n",
- 			 i, retval);
- 
--	/* set shutdown mode to save power. Will be woken-up on open */
--	if (max3100s[i]->max3100_hw_suspend)
--		max3100s[i]->max3100_hw_suspend(1);
--	else {
--		tx = MAX3100_WC | MAX3100_SHDN;
--		max3100_sr(max3100s[i], tx, &rx);
-+#ifdef CONFIG_SERIAL_MAX3100_CONSOLE
-+	if (i == (CONFIG_SERIAL_MAX3100_CONSOLE_N - 1))
-+		register_console(&max3100_console);
-+#endif
-+
-+	if (!(max3100s[i]->console_flags & MAX3100_IS_CONSOLE)) {
-+		/* set shutdown mode to save power. Will be woken-up on open */
-+		if (max3100s[i]->max3100_hw_suspend)
-+			max3100s[i]->max3100_hw_suspend(1);
-+		else {
-+			tx = MAX3100_WC | MAX3100_SHDN;
-+			max3100_sr(max3100s[i], tx, &rx);
-+		}
- 	}
- 	mutex_unlock(&max3100s_lock);
- 	return 0;
-@@ -810,6 +957,9 @@ static int __devexit max3100_remove(struct spi_device *spi)
- 		}
- 	pr_debug("removing max3100 driver\n");
- 	uart_unregister_driver(&max3100_uart_driver);
-+#ifdef CONFIG_SERIAL_MAX3100_CONSOLE
-+	unregister_console(&max3100_console);
-+#endif
- 
- 	mutex_unlock(&max3100s_lock);
- 	return 0;
--- 
-1.5.6.5
+> 
+> I'm not familiar with spi_read and spi_write.  I guess those may be part
+> of the user space driver: spidev?  (I wrote a dedicated protocol driver
+> for my device.)
+
+Looking at spi.c, spi_read and spi_write both use spi_sync, so both are
+blocking.
+
+> 
+> It could be a lot of places, from bug in your code to bug in the
+> controller driver.  I'm not sure how much testing omap2_mcspi.c has
+> received.  When I first started using pxa2xx_spi.c, less than a year
+> after it appeared in the kernel, I found a variety of bugs.  I then
+> spent about 6 months re-writing the driver to handle a high data-rate
+> read-only master.  It was much harder for me than I expected.
+
+You're right. In our case, a lot of the problems where from the FPGA
+side of things. We implemented the open cores ethmac controller in our
+FPGA. Then wrote a SPI to wishbone protocol communication controller. I
+am sure there are bugs in there too.
+
+> 
+> > Could I be using SPI with dma to improve speed and maybe have access to
+> > more resource in system memory?
+> 
+> Way too short a question, with way too many unspecified variables.  I
+> really can't help you with that, because I know nothing about omap.  DMA
+> is useful if you are transmitting/receiving lots of data.  If your
+> device requires short exchanges (bytes, not Kbytes or Mbytes) with
+> decision making in between, then DMA might not help.  Many of the
+> controller drivers have DMA built-in, and it is not hard to enable it,
+> but I don't know about omap2_mcspi.c.
+> 
+
+I guess I won't be needing DMA as our transfers and quite small. Thanks
+for the explanation.
+
+Thank you again for your help.
+
+Amit
 
 
 ------------------------------------------------------------------------------

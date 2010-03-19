@@ -1,7 +1,8 @@
 From: Christian Pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
-Subject: [PATCH 2/3] max3100: moved to threaded interrupt
-Date: Fri, 19 Mar 2010 09:39:33 +0100
-Message-ID: <1268987973-22719-1-git-send-email-chripell@fsfe.org>
+Subject: [PATCH 3/3] max3100: adds console support for
+	MAX3100
+Date: Fri, 19 Mar 2010 09:39:57 +0100
+Message-ID: <1268987997-22746-1-git-send-email-chripell@fsfe.org>
 References: <cabda6421003190139h344bc172h3556fca78e4b25cb@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,280 +23,306 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The driver was reworked to use threaded interrupts instead of workqueus.
-This is a major boost in performance because the former are scheduled as
-SCHED_FIFO processes. As a side effect suspend/resume code was greatly
-simplified.
+This patch adds console support for the MAX3100 UART
+(console=ttyMAX0,11500). The SPI subsystem and an
+suitable SPI master driver have to be compiled in the kernel.
 
 Signed-off-by: Christian Pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
 ---
- drivers/serial/max3100.c |  102 ++++++++++++++-------------------------------
- 1 files changed, 32 insertions(+), 70 deletions(-)
+ drivers/serial/Kconfig   |   20 +++++
+ drivers/serial/max3100.c |  184 +++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 187 insertions(+), 17 deletions(-)
 
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 9ff47db..bc72e84 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -547,6 +547,26 @@ config SERIAL_MAX3100
+ 	help
+ 	  MAX3100 chip support
+ 
++config SERIAL_MAX3100_CONSOLE
++	bool "Support console on MAX3100"
++	depends on SERIAL_MAX3100=y
++	select SERIAL_CORE_CONSOLE
++	help
++	  Console on MAX3100
++
++config SERIAL_MAX3100_CONSOLE_N
++	int "Number of MAX3100 chips to wait before registering console"
++	depends on SERIAL_MAX3100_CONSOLE=y
++	default "1"
++	help
++	  Unfortunately due to the async nature of Linux boot we must
++	  know in advance when to register the console. If we do it
++	  too early not all the MAX3100 chips are known to the system
++	  yet. And we just cannot know how many MAX3100 will be in the
++	  system so it's impossible to wait for the last one.  If you
++	  just want to have the console on the first MAX3100 chip
++	  probed (ttyMAX0) it's safe to leave this to 1.
++
+ config SERIAL_DZ
+ 	bool "DECstation DZ serial driver"
+ 	depends on MACH_DECSTATION && 32BIT
 diff --git a/drivers/serial/max3100.c b/drivers/serial/max3100.c
-index 3c30c56..0c972c6 100644
+index 0c972c6..f6d250d 100644
 --- a/drivers/serial/max3100.c
 +++ b/drivers/serial/max3100.c
-@@ -45,7 +45,9 @@
- #include <linux/serial_core.h>
- #include <linux/serial.h>
- #include <linux/spi/spi.h>
--#include <linux/freezer.h>
-+#include <linux/kthread.h>
-+#include <linux/interrupt.h>
-+#include <linux/bitops.h>
+@@ -48,6 +48,7 @@
+ #include <linux/kthread.h>
+ #include <linux/interrupt.h>
+ #include <linux/bitops.h>
++#include <linux/console.h>
  
  #include <linux/serial_max3100.h>
  
-@@ -113,18 +115,15 @@ struct max3100_port {
- 
- 	int irq;		/* irq assigned to the max3100 */
- 
-+	/* the workqueue is needed because we cannot schedule
-+	   a threaded interrupt during PM
-+	 */
-+	struct work_struct resume_work;
+@@ -131,6 +132,10 @@ struct max3100_port {
+ 	int poll_time;
+ 	/* and its timer */
+ 	struct timer_list	timer;
 +
- 	int minor;		/* minor number */
- 	int crystal;		/* 1 if 3.6864Mhz crystal 0 for 1.8432 */
- 	int loopback;		/* 1 if we are in loopback mode */
++	int console_flags;
++	/* is this port a console? */
++#define MAX3100_IS_CONSOLE   (1 << 0)
+ };
  
--	/* for handling irqs: need workqueue since we do spi_sync */
--	struct workqueue_struct *workqueue;
--	struct work_struct work;
--	/* set to 1 to make the workhandler exit as soon as possible */
--	int  force_end_work;
--	/* need to know we are suspending to avoid deadlock on workqueue */
--	int suspending;
--
- 	/* hook for suspending MAX3100 via dedicated pin */
- 	void (*max3100_hw_suspend) (int suspend);
+ static struct max3100_port *max3100s[MAX_MAX3100]; /* the chips */
+@@ -175,7 +180,8 @@ static void max3100_resume_work(struct work_struct *w)
+ 	struct max3100_port *s = container_of(w, struct max3100_port,
+ 					      resume_work);
  
-@@ -171,13 +170,12 @@ static void max3100_calc_parity(struct max3100_port *s, u16 *c)
- 		*c |= max3100_do_parity(s, *c) << 8;
- }
- 
--static void max3100_work(struct work_struct *w);
--
--static void max3100_dowork(struct max3100_port *s)
-+static void max3100_resume_work(struct work_struct *w)
- {
--	if (!s->force_end_work && !work_pending(&s->work) &&
--	    !freezing(current) && !s->suspending)
--		queue_work(s->workqueue, &s->work);
-+	struct max3100_port *s = container_of(w, struct max3100_port,
-+					      resume_work);
-+
-+	raise_threaded_irq(s->irq);
+-	raise_threaded_irq(s->irq);
++	if (s->irq)
++		raise_threaded_irq(s->irq);
  }
  
  static void max3100_timeout(unsigned long data)
-@@ -185,7 +183,7 @@ static void max3100_timeout(unsigned long data)
- 	struct max3100_port *s = (struct max3100_port *)data;
- 
- 	if (s->port.state) {
--		max3100_dowork(s);
-+		raise_threaded_irq(s->irq);
- 		mod_timer(&s->timer, jiffies + s->poll_time);
- 	}
- }
-@@ -255,9 +253,9 @@ static int max3100_handlerx(struct max3100_port *s, u16 rx)
- 	return ret;
- }
- 
--static void max3100_work(struct work_struct *w)
-+static irqreturn_t max3100_ist(int irq, void *dev_id)
- {
--	struct max3100_port *s = container_of(w, struct max3100_port, work);
-+	struct max3100_port *s = dev_id;
- 	int rxchars;
- 	u16 tx, rx;
- 	int conf, cconf, rts, crts;
-@@ -314,23 +312,14 @@ static void max3100_work(struct work_struct *w)
- 		if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
- 			uart_write_wakeup(&s->port);
- 
--	} while (!s->force_end_work &&
--		 !freezing(current) &&
-+	} while (!kthread_should_stop() &&
- 		 ((rx & MAX3100_R) ||
- 		  (!uart_circ_empty(xmit) &&
- 		   !uart_tx_stopped(&s->port))));
- 
- 	if (rxchars > 0 && s->port.state->port.tty != NULL)
- 		tty_flip_buffer_push(s->port.state->port.tty);
--}
--
--static irqreturn_t max3100_irq(int irqno, void *dev_id)
--{
--	struct max3100_port *s = dev_id;
--
--	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
--	max3100_dowork(s);
- 	return IRQ_HANDLED;
- }
- 
-@@ -353,7 +342,7 @@ static void max3100_start_tx(struct uart_port *port)
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
--	max3100_dowork(s);
-+	raise_threaded_irq(s->irq);
- }
- 
- static void max3100_stop_rx(struct uart_port *port)
-@@ -369,7 +358,7 @@ static void max3100_stop_rx(struct uart_port *port)
- 	s->conf &= ~MAX3100_RM;
- 	s->conf_commit = 1;
- 	spin_unlock(&s->conf_lock);
--	max3100_dowork(s);
-+	raise_threaded_irq(s->irq);
- }
- 
- static unsigned int max3100_tx_empty(struct uart_port *port)
-@@ -381,7 +370,7 @@ static unsigned int max3100_tx_empty(struct uart_port *port)
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
- 	/* may not be truly up-to-date */
--	max3100_dowork(s);
-+	raise_threaded_irq(s->irq);
- 	return s->tx_empty;
- }
- 
-@@ -394,7 +383,7 @@ static unsigned int max3100_get_mctrl(struct uart_port *port)
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
- 	/* may not be truly up-to-date */
--	max3100_dowork(s);
-+	raise_threaded_irq(s->irq);
- 	/* always assert DCD and DSR since these lines are not wired */
- 	return (s->cts ? TIOCM_CTS : 0) | TIOCM_DSR | TIOCM_CAR;
- }
-@@ -414,7 +403,7 @@ static void max3100_set_mctrl(struct uart_port *port, unsigned int mctrl)
- 	if (s->rts != rts) {
- 		s->rts = rts;
- 		s->rts_commit = 1;
--		max3100_dowork(s);
-+		raise_threaded_irq(s->irq);
- 	}
- 	spin_unlock(&s->conf_lock);
- }
-@@ -528,7 +517,7 @@ max3100_set_termios(struct uart_port *port, struct ktermios *termios,
- 			MAX3100_STATUS_PE | MAX3100_STATUS_FE |
- 			MAX3100_STATUS_OE;
- 
--	/* we are sending char from a workqueue so enable */
-+	/* we are sending char from a threded irq so enable */
- 	s->port.state->port.tty->low_latency = 1;
- 
- 	if (s->poll_time > 0)
-@@ -541,7 +530,7 @@ max3100_set_termios(struct uart_port *port, struct ktermios *termios,
- 	s->conf_commit = 1;
- 	s->parity = parity;
- 	spin_unlock(&s->conf_lock);
--	max3100_dowork(s);
-+	raise_threaded_irq(s->irq);
- 
- 	if (UART_ENABLE_MS(&s->port, termios->c_cflag))
- 		max3100_enable_ms(&s->port);
-@@ -555,19 +544,11 @@ static void max3100_shutdown(struct uart_port *port)
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
--	if (s->suspending)
--		return;
--
--	s->force_end_work = 1;
--
- 	if (s->poll_time > 0)
- 		del_timer_sync(&s->timer);
- 
--	if (s->workqueue) {
--		flush_workqueue(s->workqueue);
--		destroy_workqueue(s->workqueue);
--		s->workqueue = NULL;
--	}
-+	flush_work(&s->resume_work);
-+
+@@ -552,14 +558,16 @@ static void max3100_shutdown(struct uart_port *port)
  	if (s->irq)
  		free_irq(s->irq, s);
  
-@@ -587,7 +568,6 @@ static int max3100_startup(struct uart_port *port)
- 	struct max3100_port *s = container_of(port,
- 					      struct max3100_port,
- 					      port);
--	char b[12];
+-	/* set shutdown mode to save power */
+-	if (s->max3100_hw_suspend)
+-		s->max3100_hw_suspend(1);
+-	else  {
+-		u16 tx, rx;
++	if (!(s->console_flags & MAX3100_IS_CONSOLE)) {
++		/* set shutdown mode to save power */
++		if (s->max3100_hw_suspend)
++			s->max3100_hw_suspend(1);
++		else  {
++			u16 tx, rx;
  
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
+-		tx = MAX3100_WC | MAX3100_SHDN;
+-		max3100_sr(s, tx, &rx);
++			tx = MAX3100_WC | MAX3100_SHDN;
++			max3100_sr(s, tx, &rx);
++		}
+ 	}
+ }
  
-@@ -595,27 +575,15 @@ static int max3100_startup(struct uart_port *port)
- 	s->baud = s->crystal ? 230400 : 115200;
- 	s->rx_enabled = 1;
- 
--	if (s->suspending)
--		return 0;
--
--	s->force_end_work = 0;
+@@ -578,10 +586,8 @@ static int max3100_startup(struct uart_port *port)
  	s->parity = 0;
  	s->rts = 0;
  
--	sprintf(b, "max3100-%d", s->minor);
--	s->workqueue = create_freezeable_workqueue(b);
--	if (!s->workqueue) {
--		dev_warn(&s->spi->dev, "cannot create workqueue\n");
--		return -EBUSY;
--	}
--	INIT_WORK(&s->work, max3100_work);
-+	INIT_WORK(&s->resume_work, max3100_resume_work);
- 
--	if (request_irq(s->irq, max3100_irq,
-+	if (request_threaded_irq(s->irq, NULL, max3100_ist,
- 			IRQF_TRIGGER_FALLING, "max3100", s) < 0) {
--		dev_warn(&s->spi->dev, "cannot allocate irq %d\n", s->irq);
-+		dev_err(&s->spi->dev, "cannot allocate irq %d\n", s->irq);
+-	INIT_WORK(&s->resume_work, max3100_resume_work);
+-
+ 	if (request_threaded_irq(s->irq, NULL, max3100_ist,
+-			IRQF_TRIGGER_FALLING, "max3100", s) < 0) {
++				 IRQF_TRIGGER_FALLING, "max3100", s) < 0) {
+ 		dev_err(&s->spi->dev, "cannot allocate irq %d\n", s->irq);
  		s->irq = 0;
--		destroy_workqueue(s->workqueue);
--		s->workqueue = NULL;
  		return -EBUSY;
+@@ -699,6 +705,136 @@ static struct uart_ops max3100_ops = {
+ 	.verify_port	= max3100_verify_port,
+ };
+ 
++#ifdef CONFIG_SERIAL_MAX3100_CONSOLE
++
++static void max3100_console_putchar(struct uart_port *port, int ch)
++{
++	struct max3100_port *s = container_of(port, struct max3100_port, port);
++	unsigned long tout = 10 * HZ / 1000; /* 10ms */
++	unsigned long start;
++	u16 tx, rx;
++
++	if (tout == 0)
++		tout = 1;
++	start = jiffies;
++	do {
++		tx = MAX3100_RC;
++		max3100_sr(s, tx, &rx);
++	} while ((rx & MAX3100_T) == 0 &&
++		 !time_after(jiffies, start + tout));
++	tx = ch;
++	max3100_calc_parity(s, &tx);
++	tx |= MAX3100_WD | MAX3100_RTS;
++	max3100_sr(s, tx, &rx);
++}
++
++static void max3100_console_write(struct console *co,
++				  const char *str, unsigned int count)
++{
++	struct max3100_port *s = max3100s[co->index];;
++
++	uart_console_write(&s->port, str, count, max3100_console_putchar);
++}
++
++static int max3100_console_setup(struct console *co, char *options)
++{
++	struct max3100_port *s;
++	int baud = 115200;
++	int bits = 8;
++	int parity = 'n';
++	int flow = 'n';
++	int ret;
++	u16 tx, rx;
++
++	if (co->index == -1 || co->index >= MAX_MAX3100)
++		co->index = 0;
++	s = max3100s[co->index];
++	if (!s)
++		return -ENOENT;
++	s->console_flags |= MAX3100_IS_CONSOLE;
++
++	if (options)
++		uart_parse_options(options, &baud, &parity, &bits, &flow);
++	ret = uart_set_options(&s->port, co, baud, parity, bits, flow);
++
++	tx = 0;
++	switch (baud) {
++	case 300:
++		tx = 15;
++		break;
++	case 600:
++		tx = 14 + s->crystal;
++		break;
++	case 1200:
++		tx = 13 + s->crystal;
++		break;
++	case 2400:
++		tx = 12 + s->crystal;
++		break;
++	case 4800:
++		tx = 11 + s->crystal;
++		break;
++	case 9600:
++		tx = 10 + s->crystal;
++		break;
++	case 19200:
++		tx = 9 + s->crystal;
++		break;
++	case 38400:
++		tx = 8 + s->crystal;
++		break;
++	case 57600:
++		tx = 1 + s->crystal;
++		break;
++	case 115200:
++		tx = 0 + s->crystal;
++		break;
++	case 230400:
++		tx = 0;
++		break;
++	}
++
++	if (bits == 8) {
++		tx &= ~MAX3100_L;
++		s->parity &= ~MAX3100_7BIT;
++	} else {
++		tx |= MAX3100_L;
++		s->parity |= MAX3100_7BIT;
++	}
++
++	if (parity == 'o' || parity == 'e') {
++		tx |= MAX3100_PE;
++		parity |= MAX3100_PARITY_ON;
++	} else {
++		tx &= ~MAX3100_PE;
++		parity &= ~MAX3100_PARITY_ON;
++	}
++
++	if (parity == 'o')
++		parity |= MAX3100_PARITY_ODD;
++	else
++		parity &= ~MAX3100_PARITY_ODD;
++
++
++	tx |= MAX3100_WC;
++	max3100_sr(s, tx, &rx);
++
++	msleep(50);
++	return ret;
++}
++
++static struct uart_driver max3100_uart_driver;
++static struct console max3100_console = {
++	.name		= "ttyMAX",
++	.write		= max3100_console_write,
++	.device		= uart_console_device,
++	.setup		= max3100_console_setup,
++	.flags		= CON_PRINTBUFFER,
++	.index		= -1,
++	.data		= &max3100_uart_driver,
++};
++#endif
++
+ static struct uart_driver max3100_uart_driver = {
+ 	.owner          = THIS_MODULE,
+ 	.driver_name    = "ttyMAX",
+@@ -706,6 +842,9 @@ static struct uart_driver max3100_uart_driver = {
+ 	.major          = MAX3100_MAJOR,
+ 	.minor          = MAX3100_MINOR,
+ 	.nr             = MAX_MAX3100,
++#ifdef CONFIG_SERIAL_MAX3100_CONSOLE
++	.cons           = &max3100_console,
++#endif
+ };
+ static int uart_driver_registered;
+ 
+@@ -768,18 +907,26 @@ static int __devinit max3100_probe(struct spi_device *spi)
+ 	max3100s[i]->port.line = i;
+ 	max3100s[i]->port.type = PORT_MAX3100;
+ 	max3100s[i]->port.dev = &spi->dev;
++	INIT_WORK(&max3100s[i]->resume_work, max3100_resume_work);
+ 	retval = uart_add_one_port(&max3100_uart_driver, &max3100s[i]->port);
+ 	if (retval < 0)
+ 		dev_warn(&spi->dev,
+ 			 "uart_add_one_port failed for line %d with error %d\n",
+ 			 i, retval);
+ 
+-	/* set shutdown mode to save power. Will be woken-up on open */
+-	if (max3100s[i]->max3100_hw_suspend)
+-		max3100s[i]->max3100_hw_suspend(1);
+-	else {
+-		tx = MAX3100_WC | MAX3100_SHDN;
+-		max3100_sr(max3100s[i], tx, &rx);
++#ifdef CONFIG_SERIAL_MAX3100_CONSOLE
++	if (i == (CONFIG_SERIAL_MAX3100_CONSOLE_N - 1))
++		register_console(&max3100_console);
++#endif
++
++	if (!(max3100s[i]->console_flags & MAX3100_IS_CONSOLE)) {
++		/* set shutdown mode to save power. Will be woken-up on open */
++		if (max3100s[i]->max3100_hw_suspend)
++			max3100s[i]->max3100_hw_suspend(1);
++		else {
++			tx = MAX3100_WC | MAX3100_SHDN;
++			max3100_sr(max3100s[i], tx, &rx);
++		}
  	}
- 
-@@ -628,7 +596,7 @@ static int max3100_startup(struct uart_port *port)
- 	if (s->max3100_hw_suspend)
- 		s->max3100_hw_suspend(0);
- 	s->conf_commit = 1;
--	max3100_dowork(s);
-+	raise_threaded_irq(s->irq);
- 	/* wait for clock to settle */
- 	msleep(50);
- 
-@@ -857,9 +825,6 @@ static int max3100_suspend(struct spi_device *spi, pm_message_t state)
- 
- 	disable_irq(s->irq);
- 
--	s->suspending = 1;
--	uart_suspend_port(&max3100_uart_driver, &s->port);
--
- 	if (s->max3100_hw_suspend)
- 		s->max3100_hw_suspend(1);
- 	else {
-@@ -880,14 +845,11 @@ static int max3100_resume(struct spi_device *spi)
- 
- 	if (s->max3100_hw_suspend)
- 		s->max3100_hw_suspend(0);
--	uart_resume_port(&max3100_uart_driver, &s->port);
--	s->suspending = 0;
- 
- 	enable_irq(s->irq);
--
-+	/* must reconfigure if power was cut-off the chip during suspend */
- 	s->conf_commit = 1;
--	if (s->workqueue)
--		max3100_dowork(s);
-+	schedule_work(&s->resume_work);
- 
+ 	mutex_unlock(&max3100s_lock);
  	return 0;
- }
+@@ -810,6 +957,9 @@ static int __devexit max3100_remove(struct spi_device *spi)
+ 		}
+ 	pr_debug("removing max3100 driver\n");
+ 	uart_unregister_driver(&max3100_uart_driver);
++#ifdef CONFIG_SERIAL_MAX3100_CONSOLE
++	unregister_console(&max3100_console);
++#endif
+ 
+ 	mutex_unlock(&max3100s_lock);
+ 	return 0;
 -- 
 1.5.6.5
 

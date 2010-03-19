@@ -1,18 +1,14 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: Spinlock vs mutexes for spi network driver
-Date: Thu, 18 Mar 2010 19:14:32 -0400
-Message-ID: <4BA2B3D8.7000506@whoi.edu>
-References: <20100317204915.GB6358@canoga.com>
-	<4BA14970.3050603@whoi.edu>	<20100318164641.GA22298@canoga.com>
-	<4BA262B1.5050001@whoi.edu>	<20100318200940.GC16834@canoga.com>
-	<4BA2A4F4.60207@whoi.edu>
+From: christian pellegrin <chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/3] max3100: improvements
+Date: Fri, 19 Mar 2010 09:39:02 +0100
+Message-ID: <cabda6421003190139h344bc172h3556fca78e4b25cb@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Amit Uttamchandani <amit.uttam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Greg KH <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4BA2A4F4.60207-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,42 +19,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 03/18/2010 06:11 PM, Ned Forrester wrote:
->
-> It could be a lot of places, from bug in your code to bug in the
-> controller driver.  I'm not sure how much testing omap2_mcspi.c has
-> received.  When I first started using pxa2xx_spi.c, less than a year
-> after it appeared in the kernel, I found a variety of bugs.  I then
-> spent about 6 months re-writing the driver to handle a high data-rate
-> read-only master.  It was much harder for me than I expected.
+Hi all,
 
-Oops! On re-reading what I wrote, I see that left some loose ends.
+first of all I'm sending this patch to all the people that were in CC
+to the original Feng's email. Let me know if this bothers you.
 
-For the bugs that I found, I worked with the original author (Stephen
-Street) to develop a patch, which he then submitted and which has long
-since been incorporated in the mainline kernel.  I and many others have
-fixed other bugs since then.
-
-The major re-write for a high-speed master device (streaming data, the
-only device on the bus) have never been submitted as patches.  This is
-partly because, while it now works, it is ugly and has never been
-cleaned up to be suitable for submission.  The other reason is that,
-while it might be useful as a model to others, the major changes greatly
-expand the size of the driver, and they would only be useful for single
-devices that stream large amounts of data in or out.  This work was done
-several years ago, and the driver would now need major renovation to
-move it from 2.6.20 to 2.6.35.
+This bunch of patches should solve the problems noted by Feng to the
+max3100 driver. It was tested on an S3C2440 system which has a rather
+bad SPI master controller. The efficiency is very good on zmodem
+receive (near 100% at 115200) and not so bad on zmodem send (around
+95% at 115200). I guess the reason is the TX buffer of the MAX3100
+being just one byte deep. All the tests were done with two MAX3100
+running on the same SPI bus: the first one as a console and under
+test, the second one happily receiving a 4800 bit/s NMEA stream from a
+GPS (with a process checking we don't get wrong sentences). I also did
+the simple "cut&paste a screenful of charters" test and it worked! The
+console was stressed as much I could (things like putting the S3C to
+suspend during a zmodem transfer and checking it restarts after
+resume).
 
 -- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-http://www.whoi.edu/page.do?pid=10079
-
+Christian Pellegrin, see http://www.evolware.org/chri/
+"Real Programmers don't play tennis, or any other sport which requires
+you to change clothes. Mountain climbing is OK, and Real Programmers
+wear their climbing boots to work in case a mountain should suddenly
+spring up in the middle of the computer room."
 
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval

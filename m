@@ -1,14 +1,17 @@
-From: christian pellegrin <chripell-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 0/3] max3100: improvements
-Date: Fri, 19 Mar 2010 09:39:02 +0100
-Message-ID: <cabda6421003190139h344bc172h3556fca78e4b25cb@mail.gmail.com>
+From: Christian Pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
+Subject: [PATCH 1/3] max3100: added raise_threaded_irq
+Date: Fri, 19 Mar 2010 09:38:54 +0100
+Message-ID: <1268987934-22690-1-git-send-email-chripell@fsfe.org>
+References: <cabda6421003190139h344bc172h3556fca78e4b25cb@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Greg KH <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+Cc: Christian Pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
+To: feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org,
+	david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <cabda6421003190139h344bc172h3556fca78e4b25cb-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,31 +22,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi all,
+raise_threaded_irq schedules the execution of an interrupt thread
 
-first of all I'm sending this patch to all the people that were in CC
-to the original Feng's email. Let me know if this bothers you.
+Signed-off-by: Christian Pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
+---
+ include/linux/interrupt.h |    3 +++
+ kernel/irq/manage.c       |   27 +++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 0 deletions(-)
 
-This bunch of patches should solve the problems noted by Feng to the
-max3100 driver. It was tested on an S3C2440 system which has a rather
-bad SPI master controller. The efficiency is very good on zmodem
-receive (near 100% at 115200) and not so bad on zmodem send (around
-95% at 115200). I guess the reason is the TX buffer of the MAX3100
-being just one byte deep. All the tests were done with two MAX3100
-running on the same SPI bus: the first one as a console and under
-test, the second one happily receiving a 4800 bit/s NMEA stream from a
-GPS (with a process checking we don't get wrong sentences). I also did
-the simple "cut&paste a screenful of charters" test and it worked! The
-console was stressed as much I could (things like putting the S3C to
-suspend during a zmodem transfer and checking it restarts after
-resume).
-
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index 75f3f00..14c0c13 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -144,6 +144,9 @@ request_threaded_irq(unsigned int irq, irq_handler_t handler,
+ static inline void exit_irq_thread(void) { }
+ #endif
+ 
++extern int raise_threaded_irq(unsigned int irq);
++
++
+ extern void free_irq(unsigned int, void *);
+ 
+ struct device;
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index eb6078c..a7d21e0 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1088,3 +1088,30 @@ int request_threaded_irq(unsigned int irq, irq_handler_t handler,
+ 	return retval;
+ }
+ EXPORT_SYMBOL(request_threaded_irq);
++
++/**
++ *	raise_threaded_irq - triggers a threded interrupt
++ *	@irq: Interrupt line to trigger
++ */
++int raise_threaded_irq(unsigned int irq)
++{
++	struct irq_desc *desc = irq_to_desc(irq);
++	struct irqaction *action;
++
++	if (!desc)
++		return -ENOENT;
++	action = desc->action;
++	if (!action)
++		return -ENOENT;
++	if (unlikely(!action->thread_fn))
++		return -EINVAL;
++	if (likely(!test_bit(IRQTF_DIED,
++			     &action->thread_flags))) {
++		set_bit(IRQTF_RUNTHREAD, &action->thread_flags);
++		wake_up_process(action->thread);
++	} else {
++		return -ECHILD;
++	}
++	return 0;
++}
++EXPORT_SYMBOL(raise_threaded_irq);
 -- 
-Christian Pellegrin, see http://www.evolware.org/chri/
-"Real Programmers don't play tennis, or any other sport which requires
-you to change clothes. Mountain climbing is OK, and Real Programmers
-wear their climbing boots to work in case a mountain should suddenly
-spring up in the middle of the computer room."
+1.5.6.5
+
 
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval

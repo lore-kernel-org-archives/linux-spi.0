@@ -1,14 +1,24 @@
-From: "=?koi8-r?B?89TSz8nUxczYztnNIMvPzdDBzsnRzQ==?="
-	<rocarakotajepyz-0Zj9dfcBYHgWI+UwmH2aBQ@public.gmane.org>
-Subject: =?koi8-r?b?+sXNxczYzs/FINrBy8/Oz8TB1MXM2NPU?=
-	=?koi8-r?b?188gMjAxMC4=?=
-Date: Mon, 22 Mar 2010 07:07:11 +0300
-Message-ID: <1147560565.20100322070711@qualitynet.net>
+From: christian pellegrin <chripell-VaTbYqLCNhc@public.gmane.org>
+Subject: Re: [PATCH 3/3] max3100: adds console support
+	for MAX3100
+Date: Mon, 22 Mar 2010 08:03:00 +0100
+Message-ID: <cabda6421003220003h42fa6229xe5a83a37c36ae7bc@mail.gmail.com>
+References: <cabda6421003190139h344bc172h3556fca78e4b25cb@mail.gmail.com>
+	<1268987997-22746-1-git-send-email-chripell@fsfe.org>
+	<20100322093157.705bf458@feng-i7>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org" <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>,
+	"david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	"linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	"alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org" <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100322093157.705bf458@feng-i7>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,64 +29,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-yOfs5e3l7ej/IOIgx+Xs5ev87e7sIOfg6u7t7uTg8uXr/PHy4uUg4iAyMDEwIOMuCjMwIOzg8PLg
-IDIwMTAg4y4gz/Du4evl7Psg7/Do7OXt5e3o/yDk5enx8uLz/vnl4+4gCufg6u7t7uTg8uXr/PHy
-4uAg4iDx9OXw5SDn5ezr5e/u6/zn7uLg7ej/IPEg8/fl8u7sIAro5+zl7eXt6OkgMjAxMCDjLgoK
-y+Xq8u7wIM/w5eTx8uDi6PLl6/wgwvvx+OXj7iDA8OHo8vDg5u3u4+4g0fPk4CDQ1CAKKPHk5evq
-6CDiIPH05fDlIO3l5OLo5ujs7vHy6CkuCgrK8/DxIO/uIO7x4uX55e3o/iDu8e3u4u379SDv8O7h
-6+XsLCDq7vLu8PvlIOLu5+3o6uD+8iDiIO/w7vbl8fHlIArw5eDr6Ofg9ujoIO3u8Owg5OXp8fLi
-8/755ePuIOfl7OXr/O3u4+4g5+Dq7u3u5ODy5ev88fLi4CDt4CDv8ODq8ujq5Swg8SDz9+Xy7uwg
-CuDw4ejy8ODm7e7pIPHz5OXh7e7pIO/w4Ory6OroLiDS4Orm5SDg7eDr6Ofo8PP+8vH/IOLn4Ojs
-7u7y7e745e3o/yDs5ebk8yAK4+7x8+Tg8PHy4uXt7fvs6CDu8OPg7eDs6Cwg7PPt6Pbo7+Dr/O37
-7Ogg7uHw4Ofu4uDt6P/s6CDoIPXu5//p8fLi8/756OzoIArx8+H65ery4OzoIO/uIOLu7/Du8eDs
-IO/w5eTu8fLg4uvl7ej/IOIg7+7r/Ofu4uDt6P8g5+Xs5ev87fv1IPP34PHy6u7iIOjnIArs8+3o
-9ujv4Ov87e7pIOgg4+7x8+Tg8PHy4uXt7e7pIPHu4fHy4uXt7e7x8ugsIOIg8u7sIPfo8evlIOTr
-/yD25evl6SAK8fLw7ujy5ev88fLi4C4gzvHi5fng/vLx/yDu8e3u4u375SDx7+7x7uH7IOfg+ejy
-+yDv8ODiIOfl7Ovl7+7r/Ofu4uDy5evl6SDoIArx7uHx8uLl7e3o6u7iIOfl7OXr/O379SDz9+Dx
-8uru4i4g0eXs6O3g8CDv7ufi7uv/5fIg8ejx8uXs7e4g4iD25evu7CAK8fTu8Ozo8O7i4PL8IO/w
-5eTx8uDi6+Xt6OUg7iDv8ODq8ujq5SDv8Ojs5e3l7ej/IO3u8Owg5+Dq7u3u5ODy5ev88fLi4CDi
-IAru4evg8fLoIOfl7Ovl7+7r/Ofu4uDt6P8KzuH65ery+yDn5ezl6/zt+/Ug7/Dg4u7u8u3u+OXt
-6OkuIMLu7/Du8fsg6uDk4PHy8O7i7uPuIPP35fLgIOfl7OXr/O379SDz9+Dx8uru4i4gCs7x7uHl
-7e3u8fLoIOrg5ODx8vDu4u7j7iDz9+Xy4CDi7e7i/CDx7ufk4OLg5ez79SDoIOjn7OXt/+Xs+/Ug
-7uH65ery7uIg7eXk4ujm6Ozu8fLoIOIgCs/w4Ory6Pfl8ero5SDi7u/w7vH7IOrg5ODx8vDu4u7p
-IPHy7ujs7vHy6CDu4frl6vLu4iDt5eTi6Obo7O7x8uguIM/w4OLuIO/u8fLu/+3t7uPuIAoo4eXx
-8fDu9+3u4+4pIO/u6/zn7uLg7ej/IOfl7Ovl6S4gz/Dg4u7i7ukg8OXm6Owg5+Xs5ev8IPHl6/zx
-6u717uf/6fHy4uXt7e7j7iAK7eDn7eD35e3o/y4gz/Du4evl7Psg8ODx7+7w/+bl7ej/IOfl7OXr
-/O377Ogg5O7r/+zoIOjnIOfl7OXr/CDx5ev88eru9e7n/+nx8uLl7e3u4+4gCu3g5+3g9+Xt6P8u
-IM/w6OLg8ujn4Pbo/yDn5ezr6C4gz/Py6CDw5fjl7ej/IOLu7/Du8e7iLCDi7uft6Org/vno9SDv
-8Ogg7/Dl5O7x8uDi6+Xt6OggCufl7OXr/O379SDz9+Dx8uru4iDo5yDj7vHz5ODw8fLi5e3t7ukg
-6CDs8+3o9ujv4Ov87e7pIPHu4fHy4uXt7e7x8uguINDg8e/u8P/m5e3o5SAK5+Xs5ev87fvs6CDz
-9+Dx8urg7OgsIOPu8fPk4PDx8uLl7e3g/yDx7uHx8uLl7e3u8fL8IO3gIOru8u7w++Ug7eUg8ODn
-4/Dg7ej35e3gLiDH5ezr6CAK7+7x5evl7ejpLiDP7u3/8ujlIPDg5/Dl+OXt7e7j7iDo8e/u6/zn
-7uLg7ej/IOfl7OXr/O379SDz9+Dx8uru4iDxIPP35fLu7CDy8OXh7uLg7ejpIArD8ODk7vHy8O7o
-8uXr/O3u4+4g6u7k5erx4CDQ7vHx6Onx6u7pINTl5OXw4Pbo6C4gzvHu4eXt7e7x8ugg7/Dl5O7x
-8uDi6+Xt6P8g5+Xs5ev87fv1IArz9+Dx8uru4iDv7uQg8fLw7ujy5ev88fLi7i4gzvTu8Ozr5e3o
-5SDw4Ofw5fjl7ejpIO3gIPHy8O7o8uXr/PHy4u4g8SDz9+Xy7uwg8vDl4e7i4O3o6SAK5+Xs5ev8
-7e7j7iDn4Oru7e7k4PLl6/zx8uLgLiDO8e7h5e3t7vHy6CDv8OXk7vHy4OLr5e3o/yDn5ezl6/zt
-+/Ug8/fg8fLq7uIg7+7kIArs7e7j7v3y4Obt++zoIObo6/vs6CDk7uzg7OguIM/w4Ory6Pfl8ero
-5SDw5eru7OXt5OD26OguINPw5ePz6+jw7uLg7ejlIOfl7OXr/O379SAK7vLt7vjl7ejpIM/u8P/k
-7uog5+Dq6/735e3o/ywg6Ofs5e3l7ej/IOgg8ODx8u7w5uXt6P8g5O7j7uLu8O7iIODw5e3k+yDn
-5ezl6/zt+/UgCvP34PHy6u7iLCDt4PXu5P/56PXx/yDiIOPu8fPk4PDx8uLl7e3u6SDo6+gg7PPt
-6Pbo7+Dr/O3u6SDx7uHx8uLl7e3u8fLoIPEg8/fl8u7sIO/w4Ory6OroIArg8OHo8vDg5u379SDx
-8+Tu4i4gw+7x8+Tg8PHy4uXt7eD/IPDl4+jx8vDg9uj/IO/w4OIg6CDx5OXr7uog8SDn5ezr5eku
-IDguIMfl7OXr/O375SAK7vLt7vjl7ej/IOIg7vHu4fv1IP3q7u3u7Oj35fHq6PUg5+7t4PUuIDku
-IM3g6+7j7u7h6+7m5e3o5SDiIPH05fDlIOfl7Ovl7+7r/Ofu4uDt6P8uIAoK0fLu6Ozu8fL8IPP3
-4PHy6P8g8eXs6O3g8OAgNzIwMPDz4S4KzOXx8u4g7/Du4uXk5e3o/zog4y7M7vHq4uAg7C7Q6Obx
-6uD/LCDT1grH4P/i6ugg7eAg8/fg8fLo5SDoIOTu7+7r7ejy5ev87eD/IOjt9O7w7OD26P8K7+4g
-8uXrLiAoNDk1KSA1MDYtMzAtNzgsNzQxLTg3LTA1CgoyIODv8OXr/yAyMDEwIOMuIMzl5uTz7eDw
-7uTt++Ug7+Xw5eLu5+roIOPw8+fu4iAKz/Dg4ujr/O3uIO7w4+Dt6Ofu4uDt7fvlIOzl5uTz7eDw
-7uTt++Ug7+Xw5eLu5+roIC0g0+zl7fz44P7yIPDo8eroIN3q7u3u7P/yIAri8OXs5e3t7ukg8OXx
-8/DxIOgg8+Ll6+j36OLg/vIg4+Dw4O3y6Ogg4vvv7uvt5e3o/yDC4Pjo9SDu4f/n4PLl6/zx8uIg
-CtPq8OXv6//+8iDk7uLl8OjlIOjt7vHy8ODt7fv1IO/g8PLt5fDu4iDoIOrr6OXt8u7iIM7y6vD7
-4uD+8iDv8O7x8u7wIOTr/yAK7/Do4fvr/O3u6SDk5f/y5ev87e7x8ugg7eAg8fLw5ezo8uXr/O3u
-IPDg5+Lo4uD++eXs8f8g7OXm5PPt4PDu5O3u7CDw++3q5QrR8u7o7O7x8vwg8/fg8fLo/yA3NTAw
-IPDz4S4KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkRvd25sb2FkIEludGVsJiMxNzQ7IFBhcmFsbGVs
-IFN0dWRpbyBFdmFsClRyeSB0aGUgbmV3IHNvZnR3YXJlIHRvb2xzIGZvciB5b3Vyc2VsZi4gU3Bl
-ZWQgY29tcGlsaW5nLCBmaW5kIGJ1Z3MKcHJvYWN0aXZlbHksIGFuZCBmaW5lLXR1bmUgYXBwbGlj
-YXRpb25zIGZvciBwYXJhbGxlbCBwZXJmb3JtYW5jZS4KU2VlIHdoeSBJbnRlbCBQYXJhbGxlbCBT
-dHVkaW8gZ290IGhpZ2ggbWFya3MgZHVyaW5nIGJldGEuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50
-ZWwtc3ctZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Mon, Mar 22, 2010 at 2:31 AM, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+>
+> Hi Christian,
+
+Hi,
+
+>
+> You'd better not call max3110_sr (which calls spi_sync) here, a console's
+> putchar() func may be called in some atomic context.
+>
+
+ack, I didn't realize that. Unfortunately this makes reliable use of
+MAX3100 as a console near impossible. Some SPI master driver use
+workqueues (see the bit banging ones). I don't see any way to yield
+CPU to them while somehow wait the output has finished (a busy loop
+won't work: perhaps the thread calling the console has a higher
+priority than the one doing actual SPI output so the system will
+deadlock). The only way out I see is to provide a buffer large enough
+for all practical purposes. Will try it in the next version of the
+patch.
+
+Thanks.
+
+-- 
+Christian Pellegrin, see http://www.evolware.org/chri/
+"Real Programmers don't play tennis, or any other sport which requires
+you to change clothes. Mountain climbing is OK, and Real Programmers
+wear their climbing boots to work in case a mountain should suddenly
+spring up in the middle of the computer room."
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

@@ -1,246 +1,87 @@
-From: Christian Pellegrin <chripell@fsfe.org>
-Subject: [PATCH v1 4/4] max3100: introduced to_max3100_port, small style fixes
-Date: Tue, 23 Mar 2010 11:29:53 +0100
-Message-ID: <1269340193-6606-1-git-send-email-chripell@fsfe.org>
-References: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
-Cc: Christian Pellegrin <chripell@fsfe.org>
-To: feng.tang@intel.com, akpm@linux-foundation.org, greg@kroah.com,
-	david-b@pacbell.net, grant.likely@secretlab.ca,
-	alan@lxorguk.ukuu.org.uk, spi-devel-general@lists.sourceforge.net,
-	linu
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
-Sender: linux-serial-owner@vger.kernel.org
+From: "=?koi8-r?B?68/O1MXKzsXSzsHRINTSwc7T0M/S1M7B0SDTydPUxc3B?="
+	<xudahuhiramogyce-OnZPxrLzTCDLoDKTGw+V6w@public.gmane.org>
+Subject: [SPAM] Правовое регулирование перевозок грузов
+Date: Tue, 23 Mar 2010 15:56:05 +0300
+Message-ID: <1646330272.20100323155605@algonet.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-static inline to_max3100_port was introduced for clarity. Whitespace
-fixes.
-
-Signed-off-by: Christian Pellegrin <chripell@fsfe.org>
----
- drivers/serial/max3100.c |   77 +++++++++++++++-------------------------------
- 1 files changed, 25 insertions(+), 52 deletions(-)
-
-diff --git a/drivers/serial/max3100.c b/drivers/serial/max3100.c
-index ec3e13a..6644222 100644
---- a/drivers/serial/max3100.c
-+++ b/drivers/serial/max3100.c
-@@ -131,7 +131,7 @@ struct max3100_port {
- 	/* poll time (in ms) for ctrl lines */
- 	int poll_time;
- 	/* and its timer */
--	struct timer_list	timer;
-+	struct timer_list timer;
- 
- 	int console_flags;
- 	/* is this port a console? */
-@@ -153,6 +153,11 @@ struct max3100_port {
- static struct max3100_port *max3100s[MAX_MAX3100]; /* the chips */
- static DEFINE_MUTEX(max3100s_lock);		   /* race on probe */
- 
-+static inline struct max3100_port *to_max3100_port(struct uart_port *port)
-+{
-+  return container_of(port, struct max3100_port, port);
-+}
-+
- static int max3100_do_parity(struct max3100_port *s, u16 c)
- {
- 	int parity;
-@@ -344,9 +349,7 @@ static irqreturn_t max3100_ist(int irq, void *dev_id)
- 
- static void max3100_enable_ms(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	if (s->poll_time > 0)
- 		mod_timer(&s->timer, jiffies);
-@@ -355,9 +358,7 @@ static void max3100_enable_ms(struct uart_port *port)
- 
- static void max3100_start_tx(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
-@@ -366,9 +367,7 @@ static void max3100_start_tx(struct uart_port *port)
- 
- static void max3100_stop_rx(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
-@@ -382,9 +381,7 @@ static void max3100_stop_rx(struct uart_port *port)
- 
- static unsigned int max3100_tx_empty(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
-@@ -395,9 +392,7 @@ static unsigned int max3100_tx_empty(struct uart_port *port)
- 
- static unsigned int max3100_get_mctrl(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
-@@ -409,9 +404,7 @@ static unsigned int max3100_get_mctrl(struct uart_port *port)
- 
- static void max3100_set_mctrl(struct uart_port *port, unsigned int mctrl)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 	int rts;
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
-@@ -431,9 +424,7 @@ static void
- max3100_set_termios(struct uart_port *port, struct ktermios *termios,
- 		    struct ktermios *old)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 	int baud = 0;
- 	unsigned cflag;
- 	u32 param_new, param_mask, parity = 0;
-@@ -557,9 +548,7 @@ max3100_set_termios(struct uart_port *port, struct ktermios *termios,
- 
- static void max3100_shutdown(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
-@@ -586,9 +575,7 @@ static void max3100_shutdown(struct uart_port *port)
- 
- static int max3100_startup(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
-@@ -600,7 +587,7 @@ static int max3100_startup(struct uart_port *port)
- 	s->rts = 0;
- 
- 	if (request_threaded_irq(s->irq, NULL, max3100_ist,
--			IRQF_TRIGGER_FALLING, "max3100", s) < 0) {
-+				 IRQF_TRIGGER_FALLING, "max3100", s) < 0) {
- 		dev_err(&s->spi->dev, "cannot allocate irq %d\n", s->irq);
- 		s->irq = 0;
- 		return -EBUSY;
-@@ -626,9 +613,7 @@ static int max3100_startup(struct uart_port *port)
- 
- static const char *max3100_type(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
-@@ -637,18 +622,14 @@ static const char *max3100_type(struct uart_port *port)
- 
- static void max3100_release_port(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- }
- 
- static void max3100_config_port(struct uart_port *port, int flags)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 
-@@ -659,9 +640,7 @@ static void max3100_config_port(struct uart_port *port, int flags)
- static int max3100_verify_port(struct uart_port *port,
- 			       struct serial_struct *ser)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 	int ret = -EINVAL;
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
-@@ -673,18 +652,14 @@ static int max3100_verify_port(struct uart_port *port,
- 
- static void max3100_stop_tx(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- }
- 
- static int max3100_request_port(struct uart_port *port)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- 	return 0;
-@@ -692,9 +667,7 @@ static int max3100_request_port(struct uart_port *port)
- 
- static void max3100_break_ctl(struct uart_port *port, int break_state)
- {
--	struct max3100_port *s = container_of(port,
--					      struct max3100_port,
--					      port);
-+	struct max3100_port *s = to_max3100_port(port);
- 
- 	dev_dbg(&s->spi->dev, "%s\n", __func__);
- }
-@@ -1010,9 +983,9 @@ static int max3100_suspend(struct spi_device *spi, pm_message_t state)
- 	s->console_flags |= MAX3100_SUSPENDING;
- 	disable_irq(s->irq);
- 
--	if (s->max3100_hw_suspend)
-+	if (s->max3100_hw_suspend) {
- 		s->max3100_hw_suspend(1);
--	else {
-+	} else {
- 		/* no HW suspend, so do SW one */
- 		u16 tx, rx;
- 
--- 
-1.5.6.5
-
+987JzcHOycAg3MvT0M/S1MXSz9cgySDJzdDP0tTF0s/XLgoK987JzcHOycUgydrNxc7FzsnRINMg
+MjAxMCDHLiD3zcXT1MUg0yD0wc3P1sXOztnNIMvPxMXL08/NIPTBzc/Wxc7Oz8fPINPPwNrBIDAx
+IArJwMzRIDIwMTAgx8/EwSDX09TV0NHUINcg08nM1Tog88/HzMHbxc7J0SDPINDP0tHEy8UgxMXL
+zMHSydLP18HOydEg1MHNz9bFzs7PyiDT1M/Jzc/T1Mkg1M/XwdLP1yAKySDPINDP0tHEy8Ugz9PV
+3cXT1NfMxc7J0SDLz87U0s/M0SDQ0sHXyczYzs/T1Mkgz9DSxcTFzMXOydEg1MHNz9bFzs7PyiDT
+1M/Jzc/T1Mkg1M/XwdLP1ywgCtDF0sXNxd3Bxc3ZyCDexdLF2iDUwc3P1sXOztXAIMfSwc7Jw9Ug
+1MHNz9bFzs7Px88g08/A2sEgCvDBy8XUIMTPy9XNxc7Uz9csINLFx8zBzcXO1MnS1cDdycgg0M/S
+0cTPyyDQ0snNxc7FzsnRINPBzsnUwdLO2cgsINfF1MXSyc7B0s7PLdPBzsnUwdLO2cggySAKxsnU
+z9PBzsnUwdLO2cggzcXSLCDP08/Cxc7Oz9PUySDJINDP0tHEz8sgz8LSwd3FzsnRINDSz8TVy8PJ
+ySwg0M/EzMXWwd3FyiDPwtHawdTFzNjOz8ogz8PFzsvFIAoo0M/E1NfF0tbExc7JwCkg08/P1NfF
+1NPU18nRIM7BINTBzc/Wxc7Oz8og1MXS0snUz9LJySD0wc3P1sXOzs/HzyDTz8DawSAK88/HzMHb
+xc7JxSDPINDSyc7DydDByCDX2snNwc7J0SDLz9PXxc7O2cggzsHMz8fP1yDQ0skg3MvT0M/S1MUg
+ySDJzdDP0tTFINTP18HSz9cgySDQ0s/Uz8vPzCDPIArQz9LRxMvFINfayc3BzsnRIMvP09fFzs7Z
+yCDOwczPx8/XIMkgzcXIwc7J2s3FIMvPztTSz8zRINrBIMnIINXQzMHUz8og0NLJINzL09DP0tTF
+IMkgyc3Qz9LUxSAK1M/XwdLP1yDXIPTBzc/Wxc7Oz80g08/A2sUuIAoyIMHQ0sXM0SAyMDEwIMcu
+IO3F1sTVzsHSz8TO2cUg0MXSxdfP2svJIMfS1drP1yAK8NLB18nM2M7PIM/Sx8HOydrP18HOztnF
+IM3F1sTVzsHSz8TO2cUg0MXSxdfP2svJIC0g9c3FztjbwcDUINLJ08vJIPzLz87PzdHUINfSxc3F
+zs7PyiAK0sXT1dLTIMkg1dfFzMneydfBwNQgx8HSwc7Uyckg19nQz8zOxc7J0SD3wdvJyCDPwtHa
+wdTFzNjT1Ncg9cvSxdDM0cDUIMTP18XSycUgCsnOz9PU0sHOztnIINDB0tTOxdLP1yDJIMvMycXO
+1M/XIO/Uy9LZ18HA1CDQ0s/T1M/SIMTM0SDQ0snC2czYzs/KIMTF0dTFzNjOz9PUySDOwSAK09TS
+xc3J1MXM2M7PINLB2tfJ18HA3cXN09EgzcXWxNXOwdLPxM7PzSDS2c7LxSAK8NLB18/Xz8Ug0sXH
+1czJ0s/Xwc7JxSDNxdbE1c7B0s/EztnIINDF0sXXz9rPyyDH0tXaz9cuIOvPztfFzsPJ0SDPIMTP
+x8/Xz9LFIM3F1sTVzsHSz8TOz8ogCtDF0sXXz9rLySDH0tXaz9cgLSDr5PDnLiD0wc3P1sXOzsHR
+IMvPztfFzsPJ0SDPIM3F1sTVzsHSz8TOz8og0MXSxdfP2svFIMfS1drP1yDTINDSyc3FzsXOycXN
+IArLzsnWy8kg7eTwICjrz87Xxc7DydEg7eTwKS4g88/HzMHbxc7J0SDPIM3F1sTVzsHSz8TOz80g
+1sXMxdrOz8TP0s/Wzs/NIMfS1drP18/NIArTz8/C3cXOyckgKPPt5/MpLiDtxdbE1c7B0s/EzsHR
+IOvPztfFzsPJ0SDPwiDVzsnGycvBw8nJIM7Fy8/Uz9LZyCDQ0sHXycwgzyDLz87P08HNxc7UxSAK
+KOfBwcfTy8nFINDSwdfJzMEpLuTPx8/Xz9Ig1NLBztPQz9LUzs/KINzL09DFxMnDyckuIPDSwdfB
+IMkgz8LR2sHOzs/T1Mkgx9LV2s/P1NDSwdfJ1MXMxcosIArH0tXaz9DPzNXewdTFzMXKLCDQxdLF
+18/a3snLz9cgySDcy9PQxcTJ1M/Sz9cg08/HzMHTzs8gwsHaydPO2c0g1dPMz9fJ0c0g0M/T1MHX
+y8kgLSAK6e7r7/Tl8u3zLTIwMDAuIO3F1sTVzsHSz8TO2cUg1NLBztPQz9LUztnFIMvP0snEz9LZ
+LiDrz87UxcrOxdLOwdEg1NLBztPQz9LUzsHRINPJ09TFzcEgCu/QxdLBw8nJINMgx9LV2sHNySDJ
+INTBzc/Wxc7O2cUgxs/SzcHM2M7P09TJINcg0NXOy9TByCDQ0s/Q1dPLwS4g987V1NLFzs7JyiDJ
+IM3F1sTVzsHSz8TO2cogCtTBzc/Wxc7O2cog1NLBztrJ1C4g79PPwsXOzs/T1Mkg1MHNz9bFzs7P
+x88gz8bP0s3Mxc7J0SDUz9fB0s/XINDF0sXXz9rJzdnIINLB2szJ3s7ZzckgCtfJxMHNySDU0sHO
+09DP0tTBLiDv0NTJzcnawcPJ0SDP0MXSwcPJyiDJIM3JzsnNydrBw8nRINLJ08vP1yDQ0skg0MXS
+xdfP2svByC4g89TSwcjP18HOycUgCs3F1sTVzsHSz8TO2cgg0MXSxdfP2s/LLgryxdrVzNjUwdQg
+z8LV3sXOydEg7cnOyc3BzNjO2cUg0snTy8kgySDP0NTJzcHM2M7ZxSDP0MXSwcPJySDQ0skg0MXS
+xdfP2svByCAK+s7BzsnFIM/Tz8LFzs7P09TFyiDQxdLF18/ay8kgx9LV2s/XINLB2s7Zzckg18nE
+wc3JINTSwc7T0M/S1MEuCgrz1M/Jzc/T1Ngg1d7B09TJ0SDXINPFzcnOwdLFIDc1MDAg0tXCLgoK
+MjEgwdDSxczRIDIwMTAgxy4g987F287F1M/Sx8/XwdEg08TFzMvBOiDP08/Cxc7Oz9PUySDawcvM
+wN7FzsnRIMkg0sXBzMnawcPJySAK79LHwc7J2sHDyckg187F287F1M/Sx8/Xz8og08TFzMvJIM7B
+IM3F1sTVzsHSz8TO2cgg0tnOy8HILiDv08/Cxc7Oz9PUySDSxcHMydrBw8nJIArXzsXbzsXUz9LH
+z9fPyiDTxMXMy8kuIO/Tz8LFzs7P09TJINTBzc/Wxc7Oz8fPIM/Gz9LNzMXOycUg187F287F1M/S
+x8/X2cggx9LV2s/XINcg1dPMz9fJ0cggCvTBzc/Wxc7Oz8fPINPPwNrBLiDz1M/Jzc/T1Ngg1d7B
+09TJ0SDXINPFzcnOwdLFIDc1MDAg0tXCLgoKMjItMjMgwdDSxczRIDIwMTDHLiD0wc3P1sXOzsHR
+INPUz8nNz9PU2CDUz9fB0s/XIC0gz9DSxcTFzMXOycUsINDPxNTXxdLWxMXOycUsIArEz8vB2sHU
+xczY09TXzyAtINDSwcvUyd7F08vJxSDB09DFy9TZLiDh0sLJ1NLB1s7B0SDQ0sHL1MnLwSDQzyDT
+0M/Swc0g0yAK1MHNz9bFzs7Zzckgz9LHwc7BzckiCu/Tz8LFzs7P09TJIM/Q0sXExczFzsnRLCDa
+wdHXzMXOydEsIMvPztTSz8zRIMkgy8/S0sXL1MnSz9fLySDUwc3P1sXOzs/KINPUz8nNz9PUySAK
+19fP2snN2cgg1M/XwdLP1yDQz9PMxSDX09TV0MzFzsnRINcg08nM1SD0wc3P1sXOzs/HzyDLz8TF
+y9PBIPTBzc/Wxc7Oz8fPINPPwNrBLCAK88/HzMHbxc7JyiDPINDP0tHEy8UgxMXLzMHSydLP18HO
+ydEg1MHNz9bFzs7PyiDT1M/Jzc/T1Mkg1M/XwdLP1yDJIM8g0M/S0cTLxSAKz9PV3cXT1NfMxc7J
+0SDLz87U0s/M0SDQ0sHXyczYzs/T1Mkgz9DSxcTFzMXOydEg1MHNz9bFzs7PyiDT1M/Jzc/T1Mkg
+1M/XwdLP1ywgCtDF0sXNxd3Bxc3ZyCDexdLF2iDUwc3P1sXOztXAIMfSwc7Jw9Ug9MHNz9bFzs7P
+x88g08/A2sEuIPPUz8nNz9PU2CDV3sHT1MnRIDE0MDAwINLVwi4KCuvPztTBy9TO2cUg1MXMxcbP
+ztk6ICg0OTUpIDUwNi0zMC03OCw3NDEtODctMDUK7c/Ty9fBLCD13sXCztnKIOPFztTSCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQpEb3dubG9hZCBJbnRlbCYjMTc0OyBQYXJhbGxlbCBTdHVkaW8gRXZh
+bApUcnkgdGhlIG5ldyBzb2Z0d2FyZSB0b29scyBmb3IgeW91cnNlbGYuIFNwZWVkIGNvbXBpbGlu
+ZywgZmluZCBidWdzCnByb2FjdGl2ZWx5LCBhbmQgZmluZS10dW5lIGFwcGxpY2F0aW9ucyBmb3Ig
+cGFyYWxsZWwgcGVyZm9ybWFuY2UuClNlZSB3aHkgSW50ZWwgUGFyYWxsZWwgU3R1ZGlvIGdvdCBo
+aWdoIG1hcmtzIGR1cmluZyBiZXRhLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVsLXN3LWRldgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
+Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
+bC1nZW5lcmFsCg==

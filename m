@@ -1,39 +1,75 @@
-From: "=?koi8-r?B?98HMxdLJyiDpx8/SxdfJ3g==?=" <xudahuhiramogyce-OnZPxrLzTCDLoDKTGw+V6w@public.gmane.org>
-Subject: =?koi8-r?b?88vMwcQg1yDtz9PL18UgzNXe28nFINLB?=
-	=?koi8-r?b?08PFzsvJ?=
-Date: Tue, 23 Mar 2010 00:19:04 +0300
-Message-ID: <1878380845.20100323001904@algonet.se>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Christian Pellegrin <chripell@fsfe.org>
+Subject: [PATCH v1 1/4] max3100: added raise_threaded_irq
+Date: Tue, 23 Mar 2010 11:28:25 +0100
+Message-ID: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
+References: <cabda6421003230329w3fe596dbn8e4b37cc36118f9f@mail.gmail.com>
+Cc: Christian Pellegrin <chripell@fsfe.org>
+To: feng.tang@intel.com, akpm@linux-foundation.org, greg@kroah.com,
+	david-b@pacbell.net, grant.likely@secretlab.ca,
+	alan@lxorguk.ukuu.org.uk, spi-devel-general@lists.sourceforge.net,
+	linu
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <cabda6421003230329w3fe596dbn8e4b37cc36118f9f@mail.gmail.com>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-ICAgICAg79TXxdTT1NfFzs7PxSDI0sHOxc7JxSDXIO3P08vXxSDJIPTSwc7T0M/S1M7ZxSDV08zV
-x8kuIAogICAgICDs1d7bycUg1MHSycbZLCDQz8zOwdEgz9TXxdTT1NfFzs7P09TYINrBIMnN1d3F
-09TXzy4gCiAgICAgIPPUxczMwdbOz8UgySDOwdDPzNjOz8UgyNLBzsXOycUsINDPx9LV2s/ezs8t
-0sHax9LV2s/eztnFINLBws/U2Swg08LP0iDawcvB2s/XLCDQxdLF1dDBy8/Xy8EsINDF0sXH0tXa
-INMgzcHbyc7ZIM7BIM3B28nO1S4gCiAgICAgCiAgICAgIDEwINLVwi4g1yDT1dTLySDawSDI0sHO
-xc7JxSDF19LP0MHMzMXU2SDOwSDT1MXMzMHWwcgsIAogICAgICAxMiDS1cIuINcg09XUy8kg2sEg
-y9cuIM3F1NIg0NLJIM7B0M/M2M7PzSDI0sHOxc7JyS4gCiAgICAgCiAgICAgIOHX1M/U0sHO09DP
-0tQ6IDznwdrFzNg+IC0gMzE1INLVwi4v3sHTLAogICAgICAgPOLZ3sXLPiAtIDQ0MCDS1cIuL97B
-0y4gCiAgICAgIGUtbWFpbDogZ3J1c2NocmFuQHlhaG9vLmNvbSAg1MXMLiAoOTY3KTE5OC00My0y
-MQogICAgIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFyYWxs
-ZWwgU3R1ZGlvIEV2YWwKVHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxmLiBT
-cGVlZCBjb21waWxpbmcsIGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBhcHBs
-aWNhdGlvbnMgZm9yIHBhcmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFsbGVs
-IFN0dWRpbyBnb3QgaGlnaCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3NmdS9p
-bnRlbC1zdy1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+raise_threaded_irq schedules the execution of an interrupt thread
+
+Signed-off-by: Christian Pellegrin <chripell@fsfe.org>
+---
+ include/linux/interrupt.h |    3 +++
+ kernel/irq/manage.c       |   27 +++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 0 deletions(-)
+
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index 75f3f00..14c0c13 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -144,6 +144,9 @@ request_threaded_irq(unsigned int irq, irq_handler_t handler,
+ static inline void exit_irq_thread(void) { }
+ #endif
+ 
++extern int raise_threaded_irq(unsigned int irq);
++
++
+ extern void free_irq(unsigned int, void *);
+ 
+ struct device;
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index eb6078c..a7d21e0 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1088,3 +1088,30 @@ int request_threaded_irq(unsigned int irq, irq_handler_t handler,
+ 	return retval;
+ }
+ EXPORT_SYMBOL(request_threaded_irq);
++
++/**
++ *	raise_threaded_irq - triggers a threded interrupt
++ *	@irq: Interrupt line to trigger
++ */
++int raise_threaded_irq(unsigned int irq)
++{
++	struct irq_desc *desc = irq_to_desc(irq);
++	struct irqaction *action;
++
++	if (!desc)
++		return -ENOENT;
++	action = desc->action;
++	if (!action)
++		return -ENOENT;
++	if (unlikely(!action->thread_fn))
++		return -EINVAL;
++	if (likely(!test_bit(IRQTF_DIED,
++			     &action->thread_flags))) {
++		set_bit(IRQTF_RUNTHREAD, &action->thread_flags);
++		wake_up_process(action->thread);
++	} else {
++		return -ECHILD;
++	}
++	return 0;
++}
++EXPORT_SYMBOL(raise_threaded_irq);
+-- 
+1.5.6.5
+

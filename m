@@ -1,13 +1,22 @@
-From: "=?koi8-r?B?68/O1MXKzsXSzsHRINTSwc7T0M/S1M7B0SDTydPUxc3B?="
-	<xudahuhiramogyce-OnZPxrLzTCDLoDKTGw+V6w@public.gmane.org>
-Subject: [SPAM] Правовое регулирование перевозок грузов
-Date: Tue, 23 Mar 2010 15:56:05 +0300
-Message-ID: <1646330272.20100323155605@algonet.se>
+From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Subject: Re: [PATCH v2 2/3] ep93xx: added chip
+	revision	reading function
+Date: Thu, 25 Mar 2010 11:06:38 +0200
+Message-ID: <20100325090638.GA20512@gw.healthdatacare.com>
+References: <cover.1268930557.git.mika.westerberg@iki.fi>
+	<c222c3df9c94d9ec919817f640a953e4f45ae99b.1268930557.git.mika.westerberg@iki.fi>
+	<0D753D10438DA54287A00B02708426976368AC725D@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <0D753D10438DA54287A00B02708426976368AC725D-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,70 +27,81 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-987JzcHOycAg3MvT0M/S1MXSz9cgySDJzdDP0tTF0s/XLgoK987JzcHOycUgydrNxc7FzsnRINMg
-MjAxMCDHLiD3zcXT1MUg0yD0wc3P1sXOztnNIMvPxMXL08/NIPTBzc/Wxc7Oz8fPINPPwNrBIDAx
-IArJwMzRIDIwMTAgx8/EwSDX09TV0NHUINcg08nM1Tog88/HzMHbxc7J0SDPINDP0tHEy8UgxMXL
-zMHSydLP18HOydEg1MHNz9bFzs7PyiDT1M/Jzc/T1Mkg1M/XwdLP1yAKySDPINDP0tHEy8Ugz9PV
-3cXT1NfMxc7J0SDLz87U0s/M0SDQ0sHXyczYzs/T1Mkgz9DSxcTFzMXOydEg1MHNz9bFzs7PyiDT
-1M/Jzc/T1Mkg1M/XwdLP1ywgCtDF0sXNxd3Bxc3ZyCDexdLF2iDUwc3P1sXOztXAIMfSwc7Jw9Ug
-1MHNz9bFzs7Px88g08/A2sEgCvDBy8XUIMTPy9XNxc7Uz9csINLFx8zBzcXO1MnS1cDdycgg0M/S
-0cTPyyDQ0snNxc7FzsnRINPBzsnUwdLO2cgsINfF1MXSyc7B0s7PLdPBzsnUwdLO2cggySAKxsnU
-z9PBzsnUwdLO2cggzcXSLCDP08/Cxc7Oz9PUySDJINDP0tHEz8sgz8LSwd3FzsnRINDSz8TVy8PJ
-ySwg0M/EzMXWwd3FyiDPwtHawdTFzNjOz8ogz8PFzsvFIAoo0M/E1NfF0tbExc7JwCkg08/P1NfF
-1NPU18nRIM7BINTBzc/Wxc7Oz8og1MXS0snUz9LJySD0wc3P1sXOzs/HzyDTz8DawSAK88/HzMHb
-xc7JxSDPINDSyc7DydDByCDX2snNwc7J0SDLz9PXxc7O2cggzsHMz8fP1yDQ0skg3MvT0M/S1MUg
-ySDJzdDP0tTFINTP18HSz9cgySDQ0s/Uz8vPzCDPIArQz9LRxMvFINfayc3BzsnRIMvP09fFzs7Z
-yCDOwczPx8/XIMkgzcXIwc7J2s3FIMvPztTSz8zRINrBIMnIINXQzMHUz8og0NLJINzL09DP0tTF
-IMkgyc3Qz9LUxSAK1M/XwdLP1yDXIPTBzc/Wxc7Oz80g08/A2sUuIAoyIMHQ0sXM0SAyMDEwIMcu
-IO3F1sTVzsHSz8TO2cUg0MXSxdfP2svJIMfS1drP1yAK8NLB18nM2M7PIM/Sx8HOydrP18HOztnF
-IM3F1sTVzsHSz8TO2cUg0MXSxdfP2svJIC0g9c3FztjbwcDUINLJ08vJIPzLz87PzdHUINfSxc3F
-zs7PyiAK0sXT1dLTIMkg1dfFzMneydfBwNQgx8HSwc7Uyckg19nQz8zOxc7J0SD3wdvJyCDPwtHa
-wdTFzNjT1Ncg9cvSxdDM0cDUIMTP18XSycUgCsnOz9PU0sHOztnIINDB0tTOxdLP1yDJIMvMycXO
-1M/XIO/Uy9LZ18HA1CDQ0s/T1M/SIMTM0SDQ0snC2czYzs/KIMTF0dTFzNjOz9PUySDOwSAK09TS
-xc3J1MXM2M7PINLB2tfJ18HA3cXN09EgzcXWxNXOwdLPxM7PzSDS2c7LxSAK8NLB18/Xz8Ug0sXH
-1czJ0s/Xwc7JxSDNxdbE1c7B0s/EztnIINDF0sXXz9rPyyDH0tXaz9cuIOvPztfFzsPJ0SDPIMTP
-x8/Xz9LFIM3F1sTVzsHSz8TOz8ogCtDF0sXXz9rLySDH0tXaz9cgLSDr5PDnLiD0wc3P1sXOzsHR
-IMvPztfFzsPJ0SDPIM3F1sTVzsHSz8TOz8og0MXSxdfP2svFIMfS1drP1yDTINDSyc3FzsXOycXN
-IArLzsnWy8kg7eTwICjrz87Xxc7DydEg7eTwKS4g88/HzMHbxc7J0SDPIM3F1sTVzsHSz8TOz80g
-1sXMxdrOz8TP0s/Wzs/NIMfS1drP18/NIArTz8/C3cXOyckgKPPt5/MpLiDtxdbE1c7B0s/EzsHR
-IOvPztfFzsPJ0SDPwiDVzsnGycvBw8nJIM7Fy8/Uz9LZyCDQ0sHXycwgzyDLz87P08HNxc7UxSAK
-KOfBwcfTy8nFINDSwdfJzMEpLuTPx8/Xz9Ig1NLBztPQz9LUzs/KINzL09DFxMnDyckuIPDSwdfB
-IMkgz8LR2sHOzs/T1Mkgx9LV2s/P1NDSwdfJ1MXMxcosIArH0tXaz9DPzNXewdTFzMXKLCDQxdLF
-18/a3snLz9cgySDcy9PQxcTJ1M/Sz9cg08/HzMHTzs8gwsHaydPO2c0g1dPMz9fJ0c0g0M/T1MHX
-y8kgLSAK6e7r7/Tl8u3zLTIwMDAuIO3F1sTVzsHSz8TO2cUg1NLBztPQz9LUztnFIMvP0snEz9LZ
-LiDrz87UxcrOxdLOwdEg1NLBztPQz9LUzsHRINPJ09TFzcEgCu/QxdLBw8nJINMgx9LV2sHNySDJ
-INTBzc/Wxc7O2cUgxs/SzcHM2M7P09TJINcg0NXOy9TByCDQ0s/Q1dPLwS4g987V1NLFzs7JyiDJ
-IM3F1sTVzsHSz8TO2cogCtTBzc/Wxc7O2cog1NLBztrJ1C4g79PPwsXOzs/T1Mkg1MHNz9bFzs7P
-x88gz8bP0s3Mxc7J0SDUz9fB0s/XINDF0sXXz9rJzdnIINLB2szJ3s7ZzckgCtfJxMHNySDU0sHO
-09DP0tTBLiDv0NTJzcnawcPJ0SDP0MXSwcPJyiDJIM3JzsnNydrBw8nRINLJ08vP1yDQ0skg0MXS
-xdfP2svByC4g89TSwcjP18HOycUgCs3F1sTVzsHSz8TO2cgg0MXSxdfP2s/LLgryxdrVzNjUwdQg
-z8LV3sXOydEg7cnOyc3BzNjO2cUg0snTy8kgySDP0NTJzcHM2M7ZxSDP0MXSwcPJySDQ0skg0MXS
-xdfP2svByCAK+s7BzsnFIM/Tz8LFzs7P09TFyiDQxdLF18/ay8kgx9LV2s/XINLB2s7Zzckg18nE
-wc3JINTSwc7T0M/S1MEuCgrz1M/Jzc/T1Ngg1d7B09TJ0SDXINPFzcnOwdLFIDc1MDAg0tXCLgoK
-MjEgwdDSxczRIDIwMTAgxy4g987F287F1M/Sx8/XwdEg08TFzMvBOiDP08/Cxc7Oz9PUySDawcvM
-wN7FzsnRIMkg0sXBzMnawcPJySAK79LHwc7J2sHDyckg187F287F1M/Sx8/Xz8og08TFzMvJIM7B
-IM3F1sTVzsHSz8TO2cgg0tnOy8HILiDv08/Cxc7Oz9PUySDSxcHMydrBw8nJIArXzsXbzsXUz9LH
-z9fPyiDTxMXMy8kuIO/Tz8LFzs7P09TJINTBzc/Wxc7Oz8fPIM/Gz9LNzMXOycUg187F287F1M/S
-x8/X2cggx9LV2s/XINcg1dPMz9fJ0cggCvTBzc/Wxc7Oz8fPINPPwNrBLiDz1M/Jzc/T1Ngg1d7B
-09TJ0SDXINPFzcnOwdLFIDc1MDAg0tXCLgoKMjItMjMgwdDSxczRIDIwMTDHLiD0wc3P1sXOzsHR
-INPUz8nNz9PU2CDUz9fB0s/XIC0gz9DSxcTFzMXOycUsINDPxNTXxdLWxMXOycUsIArEz8vB2sHU
-xczY09TXzyAtINDSwcvUyd7F08vJxSDB09DFy9TZLiDh0sLJ1NLB1s7B0SDQ0sHL1MnLwSDQzyDT
-0M/Swc0g0yAK1MHNz9bFzs7Zzckgz9LHwc7BzckiCu/Tz8LFzs7P09TJIM/Q0sXExczFzsnRLCDa
-wdHXzMXOydEsIMvPztTSz8zRIMkgy8/S0sXL1MnSz9fLySDUwc3P1sXOzs/KINPUz8nNz9PUySAK
-19fP2snN2cgg1M/XwdLP1yDQz9PMxSDX09TV0MzFzsnRINcg08nM1SD0wc3P1sXOzs/HzyDLz8TF
-y9PBIPTBzc/Wxc7Oz8fPINPPwNrBLCAK88/HzMHbxc7JyiDPINDP0tHEy8UgxMXLzMHSydLP18HO
-ydEg1MHNz9bFzs7PyiDT1M/Jzc/T1Mkg1M/XwdLP1yDJIM8g0M/S0cTLxSAKz9PV3cXT1NfMxc7J
-0SDLz87U0s/M0SDQ0sHXyczYzs/T1Mkgz9DSxcTFzMXOydEg1MHNz9bFzs7PyiDT1M/Jzc/T1Mkg
-1M/XwdLP1ywgCtDF0sXNxd3Bxc3ZyCDexdLF2iDUwc3P1sXOztXAIMfSwc7Jw9Ug9MHNz9bFzs7P
-x88g08/A2sEuIPPUz8nNz9PU2CDV3sHT1MnRIDE0MDAwINLVwi4KCuvPztTBy9TO2cUg1MXMxcbP
-ztk6ICg0OTUpIDUwNi0zMC03OCw3NDEtODctMDUK7c/Ty9fBLCD13sXCztnKIOPFztTSCi0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQpEb3dubG9hZCBJbnRlbCYjMTc0OyBQYXJhbGxlbCBTdHVkaW8gRXZh
-bApUcnkgdGhlIG5ldyBzb2Z0d2FyZSB0b29scyBmb3IgeW91cnNlbGYuIFNwZWVkIGNvbXBpbGlu
-ZywgZmluZCBidWdzCnByb2FjdGl2ZWx5LCBhbmQgZmluZS10dW5lIGFwcGxpY2F0aW9ucyBmb3Ig
-cGFyYWxsZWwgcGVyZm9ybWFuY2UuClNlZSB3aHkgSW50ZWwgUGFyYWxsZWwgU3R1ZGlvIGdvdCBo
-aWdoIG1hcmtzIGR1cmluZyBiZXRhLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVsLXN3LWRldgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
-Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
-bC1nZW5lcmFsCg==
+On Thu, Mar 18, 2010 at 12:27:15PM -0500, H Hartley Sweeten wrote:
+> On Thursday, March 18, 2010 10:00 AM, Mika Westerberg wrote:
+> > Added a new function: ep93xx_chip_revision() which reads chip revision from the
+> > sysconfig register.
+> > 
+> > Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+> 
+> Hello Mika,
+> 
+> I'm ok with this part of your patch series.
+> 
+> Acked-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+
+Hello,
+
+Any comments on the v2 series of the driver? If it is OK could it be considered for .35?
+
+Thanks,
+MW
+
+> 
+> 
+> > ---
+> >  arch/arm/mach-ep93xx/core.c                  |   14 ++++++++++++++
+> >  arch/arm/mach-ep93xx/include/mach/platform.h |    8 ++++++++
+> >  2 files changed, 22 insertions(+), 0 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
+> > index 90fb591..07572bb 100644
+> > --- a/arch/arm/mach-ep93xx/core.c
+> > +++ b/arch/arm/mach-ep93xx/core.c
+> > @@ -222,6 +222,20 @@ void ep93xx_devcfg_set_clear(unsigned int set_bits, unsigned int clear_bits)
+> >  }
+> >  EXPORT_SYMBOL(ep93xx_devcfg_set_clear);
+> >  
+> > +/**
+> > + * ep93xx_chip_revision() - returns the EP93xx chip revision
+> > + *
+> > + * See <mach/platform.h> for more information.
+> > + */
+> > +unsigned int ep93xx_chip_revision(void)
+> > +{
+> > +	unsigned int v;
+> > +
+> > +	v = __raw_readl(EP93XX_SYSCON_SYSCFG);
+> > +	v &= EP93XX_SYSCON_SYSCFG_REV_MASK;
+> > +	v >>= EP93XX_SYSCON_SYSCFG_REV_SHIFT;
+> > +	return v;
+> > +}
+> >  
+> >  /*************************************************************************
+> >   * EP93xx peripheral handling
+> > diff --git a/arch/arm/mach-ep93xx/include/mach/platform.h b/arch/arm/mach-ep93xx/include/mach/platform.h
+> > index c6dc14d..b663390 100644
+> > --- a/arch/arm/mach-ep93xx/include/mach/platform.h
+> > +++ b/arch/arm/mach-ep93xx/include/mach/platform.h
+> > @@ -33,6 +33,14 @@ static inline void ep93xx_devcfg_clear_bits(unsigned int bits)
+> >  	ep93xx_devcfg_set_clear(0x00, bits);
+> >  }
+> >  
+> > +#define EP93XX_CHIP_REV_D0	3
+> > +#define EP93XX_CHIP_REV_D1	4
+> > +#define EP93XX_CHIP_REV_E0	5
+> > +#define EP93XX_CHIP_REV_E1	6
+> > +#define EP93XX_CHIP_REV_E2	7
+> > +
+> > +unsigned int ep93xx_chip_revision(void);
+> > +
+> >  void ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr);
+> >  void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
+> >  			 struct i2c_board_info *devices, int num);
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

@@ -1,22 +1,12 @@
-From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: Re: [PATCH v2 2/3] ep93xx: added chip
-	revision	reading function
-Date: Thu, 25 Mar 2010 11:06:38 +0200
-Message-ID: <20100325090638.GA20512@gw.healthdatacare.com>
-References: <cover.1268930557.git.mika.westerberg@iki.fi>
-	<c222c3df9c94d9ec919817f640a953e4f45ae99b.1268930557.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B02708426976368AC725D@AUSP01VMBX24.collaborationhost.net>
+From: "eBuyClub par Optimal" <optimal-UjpWPo6LobQ@public.gmane.org>
+Subject: =?iso-8859-1?q?Vos_r=E9ductions_exclusives?=
+Date: Thu, 25 Mar 2010 12:43:45 +0100
+Message-ID: <KPYN02A0002A9088000B8QL8031433800@bp06.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <0D753D10438DA54287A00B02708426976368AC725D-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,79 +17,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Mar 18, 2010 at 12:27:15PM -0500, H Hartley Sweeten wrote:
-> On Thursday, March 18, 2010 10:00 AM, Mika Westerberg wrote:
-> > Added a new function: ep93xx_chip_revision() which reads chip revision from the
-> > sysconfig register.
-> > 
-> > Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-> 
-> Hello Mika,
-> 
-> I'm ok with this part of your patch series.
-> 
-> Acked-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Si vous ne visualisez pas ce mail, suivez ce lien http://tr1.bp52.net/r5.as=
+px?GV1=3DKPYN02A001N70002A90006ULT000B8QL8
 
-Hello,
 
-Any comments on the v2 series of the driver? If it is OK could it be considered for .35?
 
-Thanks,
-MW
+Profitez de r=E9ductions chez
 
-> 
-> 
-> > ---
-> >  arch/arm/mach-ep93xx/core.c                  |   14 ++++++++++++++
-> >  arch/arm/mach-ep93xx/include/mach/platform.h |    8 ++++++++
-> >  2 files changed, 22 insertions(+), 0 deletions(-)
-> > 
-> > diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
-> > index 90fb591..07572bb 100644
-> > --- a/arch/arm/mach-ep93xx/core.c
-> > +++ b/arch/arm/mach-ep93xx/core.c
-> > @@ -222,6 +222,20 @@ void ep93xx_devcfg_set_clear(unsigned int set_bits, unsigned int clear_bits)
-> >  }
-> >  EXPORT_SYMBOL(ep93xx_devcfg_set_clear);
-> >  
-> > +/**
-> > + * ep93xx_chip_revision() - returns the EP93xx chip revision
-> > + *
-> > + * See <mach/platform.h> for more information.
-> > + */
-> > +unsigned int ep93xx_chip_revision(void)
-> > +{
-> > +	unsigned int v;
-> > +
-> > +	v = __raw_readl(EP93XX_SYSCON_SYSCFG);
-> > +	v &= EP93XX_SYSCON_SYSCFG_REV_MASK;
-> > +	v >>= EP93XX_SYSCON_SYSCFG_REV_SHIFT;
-> > +	return v;
-> > +}
-> >  
-> >  /*************************************************************************
-> >   * EP93xx peripheral handling
-> > diff --git a/arch/arm/mach-ep93xx/include/mach/platform.h b/arch/arm/mach-ep93xx/include/mach/platform.h
-> > index c6dc14d..b663390 100644
-> > --- a/arch/arm/mach-ep93xx/include/mach/platform.h
-> > +++ b/arch/arm/mach-ep93xx/include/mach/platform.h
-> > @@ -33,6 +33,14 @@ static inline void ep93xx_devcfg_clear_bits(unsigned int bits)
-> >  	ep93xx_devcfg_set_clear(0x00, bits);
-> >  }
-> >  
-> > +#define EP93XX_CHIP_REV_D0	3
-> > +#define EP93XX_CHIP_REV_D1	4
-> > +#define EP93XX_CHIP_REV_E0	5
-> > +#define EP93XX_CHIP_REV_E1	6
-> > +#define EP93XX_CHIP_REV_E2	7
-> > +
-> > +unsigned int ep93xx_chip_revision(void);
-> > +
-> >  void ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr);
-> >  void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
-> >  			 struct i2c_board_info *devices, int num);
+      + de 1000 marchands partenaires !
 
-------------------------------------------------------------------------------
+
+
+
+
+
+http://tr1.bp52.net/r5.aspx?GV1=3DKPYN02A001N70002A90006UL7000B8QL8&prmv1=
+=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&prmv2=3Dspi-devel-general@lists.=
+sourceforge.net =
+
+
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+
+
+
+
+http://tr1.bp52.net/r5.aspx?GV1=3DKPYN02A001N70002A90006UL8000B8QL8&prmv1=
+=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&prmv2=3Dspi-devel-general@lists.=
+sourceforge.net =
+
+Changer d'email=A0
+
+Confirmez votre email et b=E9n=E9ficiez  imm=E9diatement =
+
+
+            des r=E9ductions qui vous ont =E9t=E9 r=E9serv=E9es=A0!
+
+Vous recevrez vos premiers codes de r=E9duction eBuyClub et les offres de s=
+es partenaires.
+
+
+  =
+
+---------------------------------------------------------------------------=
+---
 Download Intel&#174; Parallel Studio Eval
 Try the new software tools for yourself. Speed compiling, find bugs
 proactively, and fine-tune applications for parallel performance.

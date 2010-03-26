@@ -1,20 +1,14 @@
-From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: Re: [PATCH v2 1/3] spi: implemented driver for
-	Cirrus EP93xx SPI	controller
-Date: Thu, 25 Mar 2010 20:43:16 +0200
-Message-ID: <20100325184316.GB20512@gw.healthdatacare.com>
-References: <cover.1268930557.git.mika.westerberg@iki.fi>
-	<9de3769ae253830fb0eebc98d299137c59c69b8c.1268930557.git.mika.westerberg@iki.fi>
-	<56d259a01003250649ubf0e32ejc15e4f3b45ec43cd@mail.gmail.com>
+From: "=?windows-1251?B?1Ojt4O3x7uLu7PMg5Ojw5ery7vDz?="
+	<secondmail-dqS66rj0C8PWO3iv0lnsqw@public.gmane.org>
+Subject: =?windows-1251?b?zeDr7uMg7eAg7/Do4fvr/Dog6PH3?=
+	=?windows-1251?b?6PHr5e3o5SDt4Ovu4+Ag4iAyMDEwIOPu5PM=?=
+Date: Fri, 26 Mar 2010 08:10:07 +0300
+Message-ID: <1165384136.20100326081007@secondmail.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-7"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <56d259a01003250649ubf0e32ejc15e4f3b45ec43cd-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,108 +19,98 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Mar 25, 2010 at 01:49:32PM +0000, Martin Guy wrote:
-> On 3/18/10, Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org> wrote:
-> > This patch adds an SPI master driver for the Cirrus EP93xx SPI controller found
-> >  in EP93xx chips (EP9301, EP9302, EP9307, EP9312 and EP9315).
-> >
-> >  Driver currently supports only interrupt driven mode but in future we may add
-> >  polling mode support as well.
-> >
-> >  Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-> >  ---
-> 
-> >  diff --git a/drivers/spi/ep93xx_spi.c b/drivers/spi/ep93xx_spi.c
-> >  new file mode 100644
-> >  index 0000000..17935f3
-> >  --- /dev/null
-> >  +++ b/drivers/spi/ep93xx_spi.c
-> 
-> >  +/**
-> >  + * ep93xx_spi_calc_divisors() - calculates SPI clock divisors
-> >  + * @espi: ep93xx SPI controller struct
-> >  + * @chip: divisors are calculated for this chip
-> >  + * @rate: maximum rate (in Hz) that this chip supports
-> 
-> Isn't that
-> >  + * @rate: desired SPI output clock rate
-
-Yes.
-
-> 
-> >  + *
-> >  + * Function calculates cpsr (clock pre-scaler) and scr divisors based on
-> >  + * given @rate and places them to @chip->div_cpsr and @chip->div_scr. If,
-> >  + * for some reason, divisors cannot be calculated nothing is stored and
-> >  + * %-EINVAL is returned.
-> >  + */
-> >  +static int ep93xx_spi_calc_divisors(const struct ep93xx_spi *espi,
-> >  +                                   struct ep93xx_spi_chip *chip,
-> >  +                                   unsigned long rate)
-> >  +{
-> ...
-> >  +       /*
-> >  +        * Calculate divisors so that we can get speed according the
-> >  +        * following formula:
-> >  +        *      rate = max_speed / (cpsr * (1 + scr))
-> >  +        * where max_speed is same as SPI clock rate.
-> >  +        *
-> >  +        * cpsr must be even number and starts from 2, scr can be any number
-> >  +        * between 0 and 255.
-> >  +        */
-> >  +       for (cpsr = 2; cpsr <= 254; cpsr += 2) {
-> >  +               for (scr = 0; scr <= 255; scr++) {
-> >  +                       if ((espi->max_rate / (cpsr * (scr + 1))) < rate) {
-> 
-> Shouldn't that be
-> 
-> >  +                       if (clk_get_rate(espi->clk) / (cpsr * (scr + 1)) <= rate) {
-> 
-> since max_rate is the maximum usable rate, which is sspclk / 2, so the
-> existing code seems like it would set the divisors to give twice the
-> requested frequency.
-> 
-> Conversely, if an exact divisor of the master clock rate is requested
-> (such as 1843200), the "<" would give the next lower rate instead of
-> the requested rate so for the highest rates the doubling and this
-> halving would cancel out, while for lower rates you could get up to
-> twice the requested clock frequecy.
-
-Yes, you are right. Very good observation :)
-
-> 
-> >  +static int __init ep93xx_spi_probe(struct platform_device *pdev)
-> >  +{
-> ...
-> >  +       espi->max_rate = clk_get_rate(espi->clk) / 2;
-> >  +       espi->min_rate = clk_get_rate(espi->clk) / (254 * 255);
-> 
-> Isn't that
-> >  +       espi->min_rate = clk_get_rate(espi->clk) / (254 * 256);
-> 
-> since the output SPI clock frequency is sspclk / (cpsr * (1 + scr))
-> where cpsr = 2..254 step 2, scr = 1..255
-
-Yes.
-
-> I also notice that the code recalculates the clock divisors, programs
-> them ad resotres them for every transfer, even if the frequency etc is
-> always the same.
-
-It shouldn't. This is checked in ep93xx_spi_setup() and clocks are
-only calculated when speed is changed. Same thing is with
-ep93xx_spi_process_transfer() where clocks are only calculated when
-different transfer speed is requested (t->speed_hz != 0).
-
-Thank you for your comments. I will fix these in the next revision
-of the patch series.
-
-Regards,
-MW
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+K0JCMEVNQVE3QkQ0RU13ICtCRDBFTUEgK0JEOEVRQVE0QkRFRVN3UTdCRXcgK0JEZyArQkIwRUZB
+UWg6ICtCRGdFUVFSSEJEZ0VRUVE3QkRVRVBRUTRCRFUgK0JEZyArQkVNRVB3UTdCREFFUWdRdyAr
+QkRJIDIwMTAgK0JETUVQZ1EwQkVNLgoKMzEgK0JEd0VNQVJBQkVJRU1BIHwgK0JCd0VQZ1JCQkRv
+RU1nUXcKCitCQ0FFVHdReEJENEVNZ1F3ICtCQ0EuICtCQmcuIC0gK0JEb0VQZ1E5QkVFRVF3UTdC
+RXdFUWdRd0JEMEVRZyArQkJnRUh3UVIgK0JDQUVQZ1JCQkVFRU9BUTQsICtCRDhFUUFRMUJEOEVQ
+Z1EwQkRBRU1nUXdCRUlFTlFRN0JFdyArQkJ3RUV3UWogK0JEZ0VQQSArQkJzRVBnUThCRDRFUFFR
+K0JFRUVQZ1F5QkRBLgoKK0JCZ0VQUVJFQkQ0RVFBUThCREFFUmdRNEJFOCArQkRnICtCRUFFTlFR
+ekJEZ0VRUVJDQkVBRU1BUkdCRGdFVHc6IDggKDQ5NSkgOTIxLTMwLTE3CgorQkJJICtCRDhFUUFR
+K0JETUVRQVF3QkR3RVBBUTE6IAorQkIwRU1BUTdCRDRFTXcgK0JEMEVNQSArQkQ4RVFBUTRCREVF
+U3dRN0JFdy4gK0JCZ0VOd1E4QkRVRVBRUTFCRDBFT0FSUCArQkRNRU93UXdCRElFU3cgMjUgK0JC
+MEVHZyArQkNBRUpBICtCRUUgMjAxMCArQkRNRVBnUTBCREEuIAoxLiArQkJnRU53UThCRFVFUFFR
+MUJEMEVPQVJQICtCREkgK0JFRUVNZ1JQQkRjRU9BICtCRUUgK0JENEVRZ1E4QkRVRVBRUStCRGsg
+K0JCVUVJUVFkLiAKMi4gK0JCNEVRZ1E4QkRVRVBRUXcgK0JEOC4xNSArQkRnICtCRGdFTndROEJE
+VUVQUVExQkQwRU9BUTEgK0JEOC4xNiArQkVFRVFnUXdCRUlFVEFRNCAyNTUgK0JCb0VQZ1EwQkRV
+RU9nUkJCREEuCjMuICtCQjRFUWdROEJEVUVQUVF3ICtCRDhFTlFSQUJEVUVQZ1JHQkRVRVBRUTZC
+RGcgK0JEQUVNZ1F3QkQwRVFRUStCREkgK0JESSArQkRnRVBRUStCRUVFUWdSQUJEQUVQUVE5QkQ0
+RU9RICtCRElFTUFRN0JFNEVRZ1ExLgo0LiArQkJnRU53UThCRFVFUFFRMUJEMEVPQVExICtCRDRF
+UmdRMUJEMEVPZ1E0ICtCQ0lFSEFRbSArQkRJICtCRElFT0FRMEJEVSArQkRnRU53UTdCRGdFU0FR
+NkJENEVNZywgK0JESUVTd1JQQkRJRU93UTFCRDBFUFFSTEJFVSArQkQ4RVFBUTQgK0JEZ0VQUVF5
+QkRVRVBRUkNCREFFUUFRNEJEY0VNQVJHQkRnRU9BLCArQkRnRU93UTQgK0JEOEVRQVE0ICtCRFFF
+TlFROEJENEVQUVJDQkRBRU5nUTEgCiAgICArQkRJRVN3UXlCRDRFTkFRNEJEd0VTd1JGICtCRGdF
+TncgK0JFMEVPZ1JCQkQ4RU93UkRCREFFUWdRd0JFWUVPQVE0ICtCRDRFUVFROUJENEVNZ1E5QkVz
+RVJRICtCRUVFUUFRMUJEUUVRUVJDQkRJLgo1LiArQkJnRU53UThCRFVFUFFRMUJEMEVPQVExICtC
+RDhFUGdSQUJFOEVOQVE2QkRBICtCRDBFTUFSSEJEZ0VRUVE3QkRVRVBRUTRCRTggK0JEQUVQQVEr
+QkVBRVFnUTRCRGNFTUFSR0JEZ0VPQSArQkRvRU1BUS9CRGdFUWdRd0JEc0VUQVE5QkVzRVJRICtC
+RElFT3dRK0JEWUVOUVE5QkRnRU9RICtCRDBFTlFRK0JFSUVOQVExQkRzRU9BUThCRDRFTXdRKyAr
+QkVVRU1BUkFCREFFT2dSQ0JEVUVRQVF3ICtCRUUgCiAgICArQkVBRU1BUTNCRHNFT0FSSEJEMEVT
+d1E4QkRnICtCRUVFUUFRK0JEb0VNQVE4QkRnICtCRDhFUGdRN0JEVUVOd1E5QkQ0RU13USsgK0JE
+Z0VRUVEvQkQ0RU93Uk1CRGNFUGdReUJEQUVQUVE0QkU4Lgo2LiArQkJnRU53UThCRFVFUFFRMUJE
+MEVPQVExICtCRHdFUGdROEJEVUVQUVJDQkRBICtCRGcgK0JEOEVQZ1JBQkU4RU5BUTZCREEgK0JE
+OEVRQVE0QkRjRVBRUXdCRDBFT0FSUCArQkRRRVBnUkZCRDRFTkFRK0JESSArQkRnICtCRUFFTUFS
+QkJFVUVQZ1EwQkQ0RU1nICtCREkgK0JESUVPQVEwQkRVICtCRDhFUUFRK0JFWUVOUVE5QkVJRVBn
+UXkgK0JEOEVQZyArQkRRRVBnUTdCRE1FUGdReUJFc0VQQSAKICAgICtCRDRFTVFSUEJEY0VNQVJD
+QkRVRU93Uk1CRUVFUWdReUJEQUVQQS4KNy4gK0JCZ0VOd1E4QkRVRVBRUTFCRDBFT0FRMSArQkQ4
+RVBnUkFCRThFTkFRNkJEQSArQkQwRU1BUTdCRDRFTXdRK0JENEVNUVE3QkQ0RU5nUTFCRDBFT0FS
+UCArQkVZRU5RUTlCRDBFU3dSRiArQkRFRVF3UThCREFFTXcgK0JEZyArQkQ0RVB3UTFCRUFFTUFS
+R0JEZ0VPQSArQkQ4RVBnICtCRDhFUUFRMUJEUUVQZ1JCQkVJRU1BUXlCRHNFTlFROUJEZ0VUZyAr
+QkRjRU1BUTVCRHdFTUEgCiAgICArQkVZRU5RUTlCRDBFU3dROEJEZyArQkRFRVF3UThCREFFTXdR
+d0JEd0VPQS4KOC4gK0JCZ0VOd1E4QkRVRVBRUTFCRDBFT0FRMSArQkQ4RVBnUkFCRThFTkFRNkJE
+QSArQkQwRU1BUTdCRDRFTXdRK0JENEVNUVE3QkQ0RU5nUTFCRDBFT0FSUCArQkRRRU9BUXlCRGdF
+TkFRMUJEMEVOQVErQkRJLgo5LiArQkI4RVFBUXdCRG9FUWdRNEJEb0VNQSArQkQ4RVFBUTRCRHdF
+TlFROUJEVUVQUVE0QkU4ICtCRE1FT3dRd0JESUVTdyAyNSArQkIwRUdnICtCQ0FFSkEKCitCQjBF
+RkFRaCArQkRJIDIwMTAgK0JETUVQZ1EwQkVNLiArQkJnRU53UThCRFVFUFFRMUJEMEVPQVJQICtC
+RGcgK0JEOEVRQVF3QkRvRVFnUTRCRG9FTUEgK0JEOEVRQVE0QkR3RU5RUTlCRFVFUFFRNEJFOCAr
+QkRNRU93UXdCRElFU3cgMjEgK0JCMEVHZyArQkNBRUpBLgoxLiArQkNRRUZ3IE4gMzE4LStCQ1FF
+RncgLSArQkJjRU1BUlBCRElFT0FSQ0JEVUVPd1JNQkQwRVN3UTUgK0JEOEVQZ1JBQkU4RU5BUStC
+RG8gK0JESUVQZ1EzQkR3RU5RUkpCRFVFUFFRNEJFOCArQkIwRUZBUWggKCtCRU1FUVFRN0JENEVN
+Z1E0QkU4ICtCRGcgK0JEOEVQZ1JCQkRzRU5RUTBCRUVFUWdReUJEZ0VUdyk7IAogICAgK0JEMEVO
+UVJCQkVNRVNRUTFCRUVFUWdReUJEVUVQUVE5QkVzRU5RICtCRDRFU0FRNEJERUVPZ1E0ICtCRDhF
+UUFRNCArQkRjRU1BUS9CRDRFT3dROUJEVUVQUVE0QkRnICtCRUVFUndRMUJFSUVQZ1F5LS0rQkVR
+RU1BUTZCRUlFUXdSQSAoK0JCUUVQZ1EvQkQ0RU93UTlCRFVFUFFRNEJEVSArQkRJICtCRDguMiAr
+QkVFRVFnLjE2OSArQkIwRUdnICtCQ0FFSkEpOwoyLiArQkNRRUZ3IE4gMjg3LStCQ1FFRncgLSAr
+QkQwRVBnUXlCRXNFTlEgK0JEc0VUQVF6QkQ0RVFnUkwsICtCRDRFUUFRekJEQUVQUVE0QkRjRU1B
+UkdCRGdFVHdROCwgK0JENEVNUVJCQkRzRVF3UTJCRGdFTWdRd0JFNEVTUVE0QkR3ICtCRFlFT0FR
+N0JENEVPUSArQkVRRVBnUTlCRFE7CjMuICtCQ1FFRncgTiAyODEtK0JDUUVGdyAtICtCRHNFVEFR
+ekJENEVRZ1F3ICtCRDhFUGcgK0JEOEVOUVJBQkRVRU5BUXdCRWNFTlEgK0JETUVQZ1JCQkRnRVBB
+UkRCRWtFTlFSQkJFSUVNZ1F3ICtCREkgK0JEOEVQZ1E3QkV3RU53UStCRElFTUFROUJEZ0VOUSAr
+QkQwRU5RUTZCRDRFUEFROEJEVUVRQVJIQkRVRVFRUTZCRGdFUEEgK0JENEVRQVF6QkRBRVBRUTRC
+RGNFTUFSR0JEZ0VUd1E4OyAKICAgICtCRGdFTndROEJEVUVQUVExQkQwRU9BUTEgK0JFRUVQZ1JC
+QkVJRU1BUXlCREEgK0JENEVQd1ExQkVBRU1BUkdCRGdFT1EgK0JFRSArQkVZRU5RUTlCRDBFU3dR
+OEJEZyArQkRFRVF3UThCREFFTXdRd0JEd0VPQSwgK0JEMEVOUSArQkQ4RVBnUTBCRHNFTlFRMkJE
+QUVTUVE0QkVVICtCRDBFTUFRN0JENEVNd1ErQkQ0RU1RUTdCRDRFTmdRMUJEMEVPQVJPICtCQjBF
+RkFRaC4KNC4gK0JDRUVPd1ErQkRZRVBRUkxCRFUgK0JESUVQZ1EvQkVBRVBnUkJCRXMgK0JEOEVR
+QVE0QkR3RU5RUTlCRFVFUFFRNEJFOCArQkRNRU93UXdCRElFU3cgMjEgK0JCMEVHZyArQkNBRUpB
+OiArQkVBRU5RUXdCRHNFT0FRM0JEQUVSZ1E0QkU4ICtCRGcgK0JEOEVRQVE0QkQ0RU1RUkFCRFVF
+UWdRMUJEMEVPQVExICtCRWNFTlFSQUJEVUVOdyArQkQ4RVBnUkJCRUFFTlFRMEJEMEVPQVE2QkQ0
+RU1nOyAKICAgICtCRDBFTUFSSEJEZ0VRUVE3QkRVRVBRUTRCRFUgK0JEZyArQkRJRVN3UkhCRFVF
+UWdSTCArQkIwRUZBUWggK0JEOEVQZyArQkRBRU1nUXdCRDBFUVFRd0JEdzsgK0JCMEVGQVFoICtC
+RDhFUUFRNCArQkVBRU1BUkJCRWNFVVFSQ0JEQUVSUSArQkRJICtCRU1FUVFRN0JENEVNZ1E5QkVz
+RVJRICtCRFVFTkFRNEJEMEVPQVJHQkRBRVJRICtCRUUgK0JFTUVSd1JSQkVJRVBnUTggK0JEOEVQ
+Z1EzQkRnRVJnUTRCRGcgCiAgICArQkJJRUVBUWggK0JDQUVKQTsgK0JFQUVNQVEzQkRRRU5RUTdC
+RXdFUFFSTEJEayArQkVNRVJ3UTFCRUkgK0JEZyArQkRJRVBnUkJCRUVFUWdRd0JEMEVQZ1F5QkRz
+RU5RUTlCRGdFTlEgK0JCMEVGQVFoOyArQkQwRVBnUXlCREFFVHcgK0JEUUVOUVE2QkRzRU1BUkFC
+REFFUmdRNEJFOCArQkQ4RVBnICtCQjBFRkFRaC0tICtCRDhFUUFRNEJEb0VNQVEzICtCQndFT0FR
+OUJFUUVPQVE5QkRBIAogICAgK0JDQUVQZ1JCQkVFRU9BUTQgK0JENEVRZyAxNS4xMC4yMDA5IE4g
+MTA0K0JEMC4KCitCQ0VFUWdRK0JEZ0VQQVErQkVFRVFnUk0gK0JFTUVSd1F3QkVFRVFnUTRCRTg6
+IDY5MDAgK0JFQUVRd1F4QkRzRU5RUTUuCitCQndFTlFSQkJFSUVQZyArQkQ4RVFBUStCRElFTlFR
+MEJEVUVQUVE0QkU4OiArQkR3LiArQkJFRU1BUkRCRHdFTUFROUJFRUVPZ1F3QkU4LCArQkVNRU93
+LiArQkJFRU1BUkRCRHdFTUFROUJFRUVPZ1F3QkU4LCArQkRRLjYsICtCREVFT0FRM0JEMEVOUVJC
+ICtCRVlFTlFROUJFSUVRQSAiK0JCSUVPQVE2QkVJRVBnUkFCRGdFVHcgK0JCOEVPd1F3QkRjRU1B
+Ii4KK0JCSSArQkVFRVFnUStCRGdFUEFRK0JFRUVRZ1JNICtCRElFUlFRK0JEUUVPQVJDICtCRHdF
+TlFSQ0JENEVOQVE0QkVjRU5RUkJCRG9FT0FRNSArQkR3RU1BUkNCRFVFUUFRNEJEQUVPdywgK0JE
+NEVNUVExQkRRRVN3LCArQkRvRVBnUkVCRFUtLStCRDhFTUFSREJEY0VTdywgK0JFRUVOUVJBQkVJ
+RU9BUkVCRGdFT2dRd0JFSS4gCgorQkJnRVBRUkVCRDRFUUFROEJEQUVSZ1E0QkU4ICtCRGcgK0JF
+QUVOUVF6QkRnRVFRUkNCRUFFTUFSR0JEZ0VUdzogOCAoNDk1KSA5MjEgMzAgMTcKLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCkRvd25sb2FkIEludGVsJiMxNzQ7IFBhcmFsbGVsIFN0dWRpbyBFdmFsClRy
+eSB0aGUgbmV3IHNvZnR3YXJlIHRvb2xzIGZvciB5b3Vyc2VsZi4gU3BlZWQgY29tcGlsaW5nLCBm
+aW5kIGJ1Z3MKcHJvYWN0aXZlbHksIGFuZCBmaW5lLXR1bmUgYXBwbGljYXRpb25zIGZvciBwYXJh
+bGxlbCBwZXJmb3JtYW5jZS4KU2VlIHdoeSBJbnRlbCBQYXJhbGxlbCBTdHVkaW8gZ290IGhpZ2gg
+bWFya3MgZHVyaW5nIGJldGEuCmh0dHA6K0FDOEFMdy1wLnNmLm5ldCtBQzgtc2Z1K0FDOC1pbnRl
+bC1zdy1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
+dXJjZWZvcmdlLm5ldApodHRwczorQUM4QUx3LWxpc3RzLnNvdXJjZWZvcmdlLm5ldCtBQzgtbGlz
+dHMrQUM4LWxpc3RpbmZvK0FDOC1zcGktZGV2ZWwtZ2VuZXJhbAo=

@@ -1,23 +1,12 @@
-From: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 2/3] ep93xx: added chip revision
-	reading function
-Date: Fri, 26 Mar 2010 15:40:01 +0000
-Message-ID: <56d259a01003260840sacc120ep7fd74ab2c33a8c4a@mail.gmail.com>
-References: <cover.1268930557.git.mika.westerberg@iki.fi>
-	<c222c3df9c94d9ec919817f640a953e4f45ae99b.1268930557.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B02708426976368AC725D@AUSP01VMBX24.collaborationhost.net>
-	<20100325090638.GA20512@gw.healthdatacare.com>
-	<0D753D10438DA54287A00B02708426976368F66FD1@AUSP01VMBX24.collaborationhost.net>
+From: Schumucker Nethkin <attitude-X5shtqks3ZnQT0dZR+AlfA@public.gmane.org>
+Subject: E United States,
+	we do not claim a right to preven
+Date: Sun, 28 Mar 2010 20:35:36 +0200
+Message-ID: <4BAF9D5A.8010809@mme-fr.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary=001517588b980b33d60482b5fa5e
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Content-Type: multipart/mixed; boundary="------------070508050004020902070108"
+To: Sharratt Nicoles <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <0D753D10438DA54287A00B02708426976368F66FD1-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,33 +17,59 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---001517588b980b33d60482b5fa5e
-Content-Type: text/plain; charset=ISO-8859-1
+This is a multi-part message in MIME format.
+--------------070508050004020902070108
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 3/25/10, H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org> wrote:
->  For parts 1 and 3.
->
->  I tried testing them in my setup with the mmc_spi.c and sst25l.c drivers.  Both
->  did not work.  For some reason the data read is always either 0x00 or 0xff.
->
->  I will try to get some time this week/weekend to look into this.
+Put these coins on strings and carry them around their necks. It
+would take many such coins to make a dollar. [Illustration: Korean
+Money.] There are farms
+in Korea, where they grow
 
-I got these working with the Sim.One board without modification.
-The data rate when dd'ing from the block device is slightly slower
-than the Cirrus Logic patches (222kB/s instead of 235kB/s), and I got
-the same kind of write errors at the same frequency as we did with the
-Cirrus code, but this seems to be some problem with our board. Unlike
-the CIrrus code, it successfully retries failed multi-block read
-requests using single-block reads.
+wheat, rice, rye, tobacco, cotton, watermelons, and many kinds of
+fruit. If you were in Korea, you would think it the strangest country
+in the world. They do many things very unlike the
 
-In case it's useful to you, I attach the first hack of the
-modifications I made to the board description file
-I'm not sure it's right, and I haven't coded in the use of the
-MMC-card-present GPIO interrupt line yet, but it "seems to work" ^TM
+way we do them. With us bright-colored things are worn by women. In
+Korea the men
+wear bright colors. They have a funny way of
+selling eggs there. They place ten eggs end to end in a row, and put
 
-    M
+straw around them. Then they tie strings around the straw between the
+eggs. This is called a stick of eggs. When people go to buy eggs,
+they ask for one or two sticks, or as many
+as they wish. One stick of eggs costs less than five cents.
+[Illustration: A Stick of Eggs.] Instead of a president they have a
+king. The king lives in the largest town. There
+is a thick, high wall all around this town. There
+are gates in the wall, and these are shut at night. After the
+gates are shut, no one can get in or out until they are opened in the
+morning. The people
 
---001517588b980b33d60482b5fa5e
+show very great respect
+for the king. When they go to speak to him they throw themselves down
+on their
+faces before
+his throne. The people love their country very much. They think it is
+the most beautiful country in the world. INDIA.
+How would you like to go to school at
+six o'clock in the morning? That is the time many children go to
+school in India.
+India is a large country in Asia. The children stay in school till
+nine o'clock. Then they go home for breakfast, and
+go back to school at ten. At two o'clock they go home for dinner.
+They go back again
+at three to stay till evening. You will think that this is a long
+time to be at school. [Illustration: Hindoo Children at School.] In
+some of the schools they have no desks or chairs, but the boys and
+girls sit
+
+on the floor. In other schools they have long tables instead of
+desks. They do not learn their letters as we do. The teachers write
+five letters in sand on
+
+--------------070508050004020902070108
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -66,7 +81,7 @@ Try the new software tools for yourself. Speed compiling, find bugs
 proactively, and fine-tune applications for parallel performance.
 See why Intel Parallel Studio got high marks during beta.
 http://p.sf.net/sfu/intel-sw-dev
---001517588b980b33d60482b5fa5e
+--------------070508050004020902070108
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -77,4 +92,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---001517588b980b33d60482b5fa5e--
+--------------070508050004020902070108--

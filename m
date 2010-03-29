@@ -1,95 +1,100 @@
-From: Schumucker Nethkin <attitude-X5shtqks3ZnQT0dZR+AlfA@public.gmane.org>
-Subject: E United States,
-	we do not claim a right to preven
-Date: Sun, 28 Mar 2010 20:35:36 +0200
-Message-ID: <4BAF9D5A.8010809@mme-fr.com>
+From: Feng Tang <feng.tang@intel.com>
+Subject: Re: [PATCH v1 3/4] max3100: adds console support for MAX3100
+Date: Mon, 29 Mar 2010 10:48:38 +0800
+Message-ID: <20100329104838.49c18075@feng-i7>
+References: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
+	<1269340170-6558-1-git-send-email-chripell@fsfe.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------070508050004020902070108"
-To: Sharratt Nicoles <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"greg@kroah.com" <greg@kroah.com>,
+	"david-b@pacbell.net" <david-b@pacbell.net>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Christian Pellegrin <chripell@fsfe.org>
+To: Christian Pellegrin <chripell@fsfe.org>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <1269340170-6558-1-git-send-email-chripell@fsfe.org>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------070508050004020902070108
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi,
 
-Put these coins on strings and carry them around their necks. It
-would take many such coins to make a dollar. [Illustration: Korean
-Money.] There are farms
-in Korea, where they grow
+I modified the code a little and run it on our HW platform, it really show
+some sigh of life: it can boots to console (the print format is not so good),
+I can input command and it execute correctly, but very slow, I type 3
+characters and it takes about 2 seconds to echo back on screen and start the
+execution, and after about 1 minute, the console hang there and input stopped
+to work.
 
-wheat, rice, rye, tobacco, cotton, watermelons, and many kinds of
-fruit. If you were in Korea, you would think it the strangest country
-in the world. They do many things very unlike the
+I also have some comments inline.
 
-way we do them. With us bright-colored things are worn by women. In
-Korea the men
-wear bright colors. They have a funny way of
-selling eggs there. They place ten eggs end to end in a row, and put
+Thanks,
+Feng
 
-straw around them. Then they tie strings around the straw between the
-eggs. This is called a stick of eggs. When people go to buy eggs,
-they ask for one or two sticks, or as many
-as they wish. One stick of eggs costs less than five cents.
-[Illustration: A Stick of Eggs.] Instead of a president they have a
-king. The king lives in the largest town. There
-is a thick, high wall all around this town. There
-are gates in the wall, and these are shut at night. After the
-gates are shut, no one can get in or out until they are opened in the
-morning. The people
 
-show very great respect
-for the king. When they go to speak to him they throw themselves down
-on their
-faces before
-his throne. The people love their country very much. They think it is
-the most beautiful country in the world. INDIA.
-How would you like to go to school at
-six o'clock in the morning? That is the time many children go to
-school in India.
-India is a large country in Asia. The children stay in school till
-nine o'clock. Then they go home for breakfast, and
-go back to school at ten. At two o'clock they go home for dinner.
-They go back again
-at three to stay till evening. You will think that this is a long
-time to be at school. [Illustration: Hindoo Children at School.] In
-some of the schools they have no desks or chairs, but the boys and
-girls sit
+On Tue, 23 Mar 2010 18:29:30 +0800
+Christian Pellegrin <chripell@fsfe.org> wrote:
 
-on the floor. In other schools they have long tables instead of
-desks. They do not learn their letters as we do. The teachers write
-five letters in sand on
+> This patch adds console support for the MAX3100 UART
+> (console=ttyMAX0,11500). The SPI subsystem and an
 
---------------070508050004020902070108
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+115200?
 
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
---------------070508050004020902070108
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+>  
+> +#ifdef CONFIG_SERIAL_MAX3100_CONSOLE
+> +
+> +static void max3100_console_work(struct work_struct *w)
+> +{
+> +	struct max3100_port *s = container_of(w, struct max3100_port,
+> +					      console_work);
+> +	unsigned long start;
+> +	u16 tx, rx;
+> +
+> +	while (s->console_head != s->console_tail &&
+> +	       (s->console_flags & MAX3100_SUSPENDING) == 0) {
+> +		start = jiffies;
+> +		do {
+> +			tx = MAX3100_RC;
+> +			max3100_sr(s, tx, &rx);
+> +		} while ((rx & MAX3100_T) == 0 &&
+> +			 !time_after(jiffies, start +
+> s->console_tout));
+> +		tx = s->console_buf[s->console_tail];
+> +		max3100_calc_parity(s, &tx);
+> +		tx |= MAX3100_WD | MAX3100_RTS;
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+Does this imply to have to work with HW flow control? on my platform
+I have to remove the RTS bit to make it work.
 
---------------070508050004020902070108--
+> +		max3100_sr(s, tx, &rx);
+
+It doesn't handle received characters here? If the console is printing out
+a bulk of message while user input some command, the command may be ignored.
+Myself have met the same problem in our driver.
+
+
+> +		s->console_tail = (s->console_tail + 1) %
+> CONSOLE_BUF_SIZE;
+> +	}
+> +}
+> +
+> +static void max3100_console_putchar(struct uart_port *port, int ch)
+> +{
+> +	struct max3100_port *s = to_max3100_port(port);
+> +	int next = (s->console_head + 1) % CONSOLE_BUF_SIZE;
+> +
+> +	if (next != s->console_tail) {
+> +		s->console_buf[next] = ch;
+> +		s->console_head = next;
+> +	}
+
+Also I saw max3100_sr() uses cpu_to_be16() and be16_to_cpu(), is it really
+necessary, our platform is little-endian(x86), and I have to disable them
+to make the code work. Is your test platform big-endian?
+

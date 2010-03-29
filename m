@@ -1,88 +1,44 @@
-From: christian pellegrin <chripell@fsfe.org>
-Subject: Re: [PATCH v1 3/4] max3100: adds console support for MAX3100
-Date: Mon, 29 Mar 2010 14:55:51 +0200
-Message-ID: <cabda6421003290555k70d13168y4beba2c3ae6e2ece@mail.gmail.com>
-References: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
-	 <1269340170-6558-1-git-send-email-chripell@fsfe.org>
-	 <20100329104838.49c18075@feng-i7>
-	 <cabda6421003282311x78051e1eq38ada68f2553609e@mail.gmail.com>
-	 <20100329150642.4a94e78a@feng-i7>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"greg@kroah.com" <greg@kroah.com>,
-	"david-b@pacbell.net" <david-b@pacbell.net>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Feng Tang <feng.tang@intel.com>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <20100329150642.4a94e78a@feng-i7>
-Sender: linux-serial-owner@vger.kernel.org
+From: Linus Walleij <linus.walleij@stericsson.com>
+Subject: [PATCH 0/5] ARM: PrimeCell DMA patches v4
+Date: Tue, 30 Mar 2010 01:35:28 +0200
+Message-ID: <1269905728-5452-1-git-send-email-linus.walleij@stericsson.com>
+Cc: spi-devel-general@lists.sourceforge.net, linux-mmc@vger.kernel.org,
+	STEricsson_nomadik_linux@list.st.com,
+	Linus Walleij <linus.walleij@stericsson.com>
+To: linux-arm-kernel@lists.infradead.org,
+	Dan Williams <dan.j.williams@intel.com>,
+	Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Mar 29, 2010 at 9:06 AM, Feng Tang <feng.tang@intel.com> wrote:
+This is a fourth iteration of the PrimeCell DMA API on top of the
+generic DMA devices (sibling to the DMA engine). It's based on
+the suggestion from Russell to try and define a specific extension
+subset for DMA devices.
 
-> Our platform is Intel Moorestown platform, and use a spi controller core
-> from Designware (drivers/spi/dw_*.c). I know the problem may probably be
-> caused by my setting, but the dw_spi driver works fine with our own
-> 3110 driver.
+Since last iteration the changes are:
 
-I had a look at the dw_spi driver. The spi_transfer path queues some
-work to a worqueue that itself schedules a tasklet. I don't think this
-is good for latency, I won't bet that such an architecture could
-deliver good performance. Now I see why you needed to do only big fat
-SPI transfers. Anyway this doesn't justify the 2 seconds delay between
-chars coming in and going out through the max31x0 you are seeing. I
-will try to analyze what's going on. BTW is only input slow or output
-is sluggish too? The initial messages from the console are coming out
-fast? If you disable the MAX3110 for console but you use just as a
-normal terminal (set console=/dev/null in the kernel command line and
-add getty 115200 /dev/ttyMAX0 in iniitab) is the interaction with the
-system fine? Thanks for helping sorting out this.
+- Some necessary extensions to the DMA engine were folded into
+  the generic DMA engine framework and are now pending in Dan's
+  -next tree.
 
->>
->> yes but I think it's quite difficult to solve this problem in every
->> case. Console output is massively used only on boot when the user is
->> not supposed to type a lot.
->
-> It's difficult but not impossible, actually our driver checks every word
-> read back and handle it if it contains a valid data
->
+- I have now also implemented support for the PL022 PrimeCell.
 
-Of course it is possible, I just wanted to keep the max3100 a small
-clean driver. Unfortunately console and serial drivers are two
-different beings in the Linux kernel, but the max3100 implements the
-tx-rx in one indivisible instruction (that is slow compared to
-registers IO and has to be called in an preemptible contex for added
-fun).  To implement what you are saying we need:
+PL011, PL022 and PL180 drivers were tested on the U300 with the
+COH 901 318 DMA device.
 
-1) the console code has to check if the serial port associated to the
-same physical max3100 is up (console driver start their life much
-before serial ones).
+The PL011 driver was also tested on the U8500 with the pending
+DMA40 DMA device.
 
-2) if yes send data to the tty associated to the serial driver.
-Locking is needed here.
+We're running huge and high-speed transfers on all peripherals.
+It works.
 
-I will implement this ASAP.
+Patches will be added to the patch tracker soonish, but if this
+is eventually OK:ed by Russell I guess it will have to go in
+through Dan's DMA tree. Also Grant has to OK it as maintainer of
+the SPI subsystem.
 
->> Have you configured your SPI controller as LSB first somehow, haven't
->> you? BTW my platform is a quite usual ARM9 S3C2440 which is little
->> endian.
->>
-> yeah, you hit the point that our spi controller is LSB naturally (not
-> configured to), here may need a check for whether to do a swap
->
-
-ok, I think the dw_spi driver has to be fixed.
-
-
--- 
-Christian Pellegrin, see http://www.evolware.org/chri/
-"Real Programmers don't play tennis, or any other sport which requires
-you to change clothes. Mountain climbing is OK, and Real Programmers
-wear their climbing boots to work in case a mountain should suddenly
-spring up in the middle of the computer room."
+Yours,
+Linus Walleij
+ST-Ericsson SA

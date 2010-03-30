@@ -1,53 +1,65 @@
-From: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Subject: Re: [PATCH v1 3/4] max3100: adds console support for MAX3100
-Date: Tue, 30 Mar 2010 09:46:37 +0100
-Message-ID: <20100330094637.325d3fb9@lxorguk.ukuu.org.uk>
-References: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
-	<1269340170-6558-1-git-send-email-chripell@fsfe.org>
-	<20100329104838.49c18075@feng-i7>
-	<cabda6421003282311x78051e1eq38ada68f2553609e@mail.gmail.com>
-	<20100329150642.4a94e78a@feng-i7>
-	<cabda6421003290555k70d13168y4beba2c3ae6e2ece@mail.gmail.com>
-	<20100330101445.5c64dedb@feng-i7>
-	<cabda6421003292349m2dd6125cp2bcc1060f5aa8741@mail.gmail.com>
+From: Linus WALLEIJ <linus.walleij@stericsson.com>
+Subject: RE: [PATCH 0/5] ARM: PrimeCell DMA patches v4
+Date: Tue, 30 Mar 2010 11:57:12 +0200
+Message-ID: <CEE6BB42CAD6E947908279175AF8470A039B48CC@EXDCVYMBSTM006.EQ1STM.local>
+References: <1269905728-5452-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Feng Tang <feng.tang@intel.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"greg@kroah.com" <greg@kroah.com>,
-	"david-b@pacbell.net" <david-b@pacbell.net>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+Cc: "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	STEricsson_nomadik_linux <STEricsson_nomadik_linux@list.st.com>,
 	"spi-devel-general@lists.sourceforge.net"
 	<spi-devel-general@lists.sourceforge.net>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
-To: christian pellegrin <chripell@fsfe.org>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <cabda6421003292349m2dd6125cp2bcc1060f5aa8741@mail.gmail.com>
-Sender: linux-serial-owner@vger.kernel.org
+	Dan Williams <dan.j.williams@intel.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Russell King <linux@arm.linux.org.uk>,
+	Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1269905728-5452-1-git-send-email-linus.walleij@stericsson.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-> 1) latency on rx chars becomes very high because we can process
-> incoming transfers only after a full 8 byte (or whatever the spi
-> transfer dimension is). For a 9600 this is too much.
+[Self]
 
-There I would partly disagree. Fixing the spi driver clearly makes sense
-but the serial driver should be batching better. Is there a reason the
-driver couldn't adjust the size based upon the tty speed when getting a
-termios request ?
+> This is a fourth iteration of the PrimeCell DMA API on top of the
+> generic DMA devices (sibling to the DMA engine). It's based on
+> the suggestion from Russell to try and define a specific extension
+> subset for DMA devices.
 
-> 2) even worse is that we can do flow control decision only on such boundary.
+Russell & Grant can you give some hint on the direction you
+see for this patch set?
 
-For serial flow control it doesn't matter, its implicitly asynchronous
-and if you only turn the fifo on at high speed you response time will be
-reasonably bounded.
+The problem we're facing is that next I will start adding DMA
+support for the U8500 and the MMCI derivate found in that platform
+doesn't *have* a PIO IRQ, which means the system cannot even
+boot without some solid DMA framework in place. (It is currently
+unbootable from the released kernels.)
 
-> 3) this is not reliable: think of what happens if the actual SPI
-> transfer speed we get will be slower that the one we requested. We
-> won't be emptying the RX buffer fastly enough even if could.
+So unless there is some outstanding issue with this approach
+we pretty much need this now to keep working on mainlining
+the U8500.
 
-Consoles are not usually balanced for I/O. I grant you probably don't
-want to be using full fifo sized blocks but I'm not sure I understand why
-there is a problem below that ?
+I would very much like to have the DMA patches for PrimeCell
+support pushed through Dan's tree, but that requires your ACKs
+of course, and it will inevitably collide with other PrimeCell
+patches for the next merge window (many submitted by myself
+admittedly).
 
-Alan
+I can feed all the PrimeCell stuff to Dan if all agree that this
+is a good approach. Another approach is to apply the latest
+patches from Dan's tree to ARM and SPI alike and then feed
+the PrimeCell stuff through the ARM tree.
+
+Yours,
+Linus Walleij

@@ -1,65 +1,111 @@
-From: Linus WALLEIJ <linus.walleij@stericsson.com>
-Subject: RE: [PATCH 0/5] ARM: PrimeCell DMA patches v4
-Date: Tue, 30 Mar 2010 11:57:12 +0200
-Message-ID: <CEE6BB42CAD6E947908279175AF8470A039B48CC@EXDCVYMBSTM006.EQ1STM.local>
-References: <1269905728-5452-1-git-send-email-linus.walleij@stericsson.com>
+From: christian pellegrin <chripell@fsfe.org>
+Subject: Re: [PATCH v1 3/4] max3100: adds console support for MAX3100
+Date: Tue, 30 Mar 2010 14:03:20 +0200
+Message-ID: <cabda6421003300503t4fc7d3c4tc51167611180fef9@mail.gmail.com>
+References: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
+	 <1269340170-6558-1-git-send-email-chripell@fsfe.org>
+	 <20100329104838.49c18075@feng-i7>
+	 <cabda6421003282311x78051e1eq38ada68f2553609e@mail.gmail.com>
+	 <20100329150642.4a94e78a@feng-i7>
+	 <cabda6421003290555k70d13168y4beba2c3ae6e2ece@mail.gmail.com>
+	 <20100330101445.5c64dedb@feng-i7>
+	 <cabda6421003292349m2dd6125cp2bcc1060f5aa8741@mail.gmail.com>
+	 <20100330094637.325d3fb9@lxorguk.ukuu.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	STEricsson_nomadik_linux <STEricsson_nomadik_linux@list.st.com>,
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Feng Tang <feng.tang@intel.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"greg@kroah.com" <greg@kroah.com>,
+	"david-b@pacbell.net" <david-b@pacbell.net>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
 	"spi-devel-general@lists.sourceforge.net"
 	<spi-devel-general@lists.sourceforge.net>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Russell King <linux@arm.linux.org.uk>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1269905728-5452-1-git-send-email-linus.walleij@stericsson.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <20100330094637.325d3fb9@lxorguk.ukuu.org.uk>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-[Self]
+On Tue, Mar 30, 2010 at 10:46 AM, Alan Cox <alan@lxorguk.ukuu.org.uk> wrote:
+>
+> There I would partly disagree. Fixing the spi driver clearly makes sense
+> but the serial driver should be batching better. Is there a reason the
+> driver couldn't adjust the size based upon the tty speed when getting a
+> termios request ?
 
-> This is a fourth iteration of the PrimeCell DMA API on top of the
-> generic DMA devices (sibling to the DMA engine). It's based on
-> the suggestion from Russell to try and define a specific extension
-> subset for DMA devices.
+Just a small note for those who don't know max31x0. There are just 2
+instructions to tx/rx data: simple data rx (in which we read one data
+from the fifo (the data is valid if R status bit is set), control
+lines (CTS) and status bits) and a combined tx/rx (like before but we
+also send one byte (if the T status bit the char will be accepted) and
+set control lines (RTS)). Every of these instructions is 2 bytes long.
+It's a full SPI message (so you have to assert CS before and de-assert
+it afterwards to make it work). TX buffer is just 1 byte deep, RX one
+is 8 bytes.
 
-Russell & Grant can you give some hint on the direction you
-see for this patch set?
+Unfortunately we cannot batch TX if SPI speed (in chars going in /
+time unit) is higher than the baud rate of serial communication. We
+need to check that T bis is asserted before sending a char, otherwise
+it is lost. For low baud rates doing this means monopolizing the bus.
+And there is a subtle problem if we reduce SPI speed to the UART baud
+rate: we can ask only for a maximum speed on the SPI. In case this is
+lower the one we asked (maybe because of SPI clock divisors) and we do
+a TX batch big enough we could not be emptying the RX FIFO fast enough
+and so we risk to loose chars in a full duplex operation (*).
 
-The problem we're facing is that next I will start adding DMA
-support for the U8500 and the MMCI derivate found in that platform
-doesn't *have* a PIO IRQ, which means the system cannot even
-boot without some solid DMA framework in place. (It is currently
-unbootable from the released kernels.)
+We could do batch RX operation but perhaps we are just transferring
+bytes for nothing because we don't know in advance if the R bit is
+set. And we cannot interleave TX and RX like current drivers do
+because we are forced to use the simple rx operation and not the
+combined rx/tx.
 
-So unless there is some outstanding issue with this approach
-we pretty much need this now to keep working on mainlining
-the U8500.
+There's another point about batching: single instructions are complete
+SPI messages. Many SPI master drivers I worked with (S3C24xx, AT91
+because of a bug in the hardware) manage CS as a normal gpio. Another
+problem here is that many devices require a configurable delay on CS
+change (see delay_usecs field of spi_transfer) which is not handle by
+hardware and so the drivers must somehow break a SPI messages in
+single transfers and do something at the end of every one of these. So
+even we batch 10 tx/rx instructions I really don't think many SPI
+master controllers will be able to do a DMA of 20 bytes. Anyway I
+agree that if we find a way of doing batching it's a good thing
+because better controllers can benefit.
 
-I would very much like to have the DMA patches for PrimeCell
-support pushed through Dan's tree, but that requires your ACKs
-of course, and it will inevitably collide with other PrimeCell
-patches for the next merge window (many submitted by myself
-admittedly).
+>
+>> 2) even worse is that we can do flow control decision only on such boundary.
+>
+> For serial flow control it doesn't matter, its implicitly asynchronous
+> and if you only turn the fifo on at high speed you response time will be
+> reasonably bounded.
+>
 
-I can feed all the PrimeCell stuff to Dan if all agree that this
-is a good approach. Another approach is to apply the latest
-patches from Dan's tree to ARM and SPI alike and then feed
-the PrimeCell stuff through the ARM tree.
+if we somehow manage to batch a TX of n bytes and after the first one
+CTS changes we are going to send n-1 chars anyway. OK, maybe our peer
+de-asserted CTS when still having n-1 byes of buffer free and somehow
+higher layer protocols will recover. So I agree this could be not so
+worrisome. But we should keep n small enough.
 
-Yours,
-Linus Walleij
+>> 3) this is not reliable: think of what happens if the actual SPI
+>> transfer speed we get will be slower that the one we requested. We
+>> won't be emptying the RX buffer fastly enough even if could.
+>
+> Consoles are not usually balanced for I/O. I grant you probably don't
+> want to be using full fifo sized blocks but I'm not sure I understand why
+> there is a problem below that ?
+>
+
+My concern is expressed above (*). Perhaps it's me missing some point.
+To make it clear: I'm more than happy to test a driver that takes
+another approach and switch to it if it's better (but it has to have
+support of multiple instances and a fair usage of SPI bandwidth at
+least). But I really don't see a reliable way of adding batching of
+tx/rx. And I think it will be better to provide a patch to the current
+driver than to rewrite it completely.
+
+-- 
+Christian Pellegrin, see http://www.evolware.org/chri/
+"Real Programmers don't play tennis, or any other sport which requires
+you to change clothes. Mountain climbing is OK, and Real Programmers
+wear their climbing boots to work in case a mountain should suddenly
+spring up in the middle of the computer room."

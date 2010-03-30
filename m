@@ -1,111 +1,100 @@
-From: christian pellegrin <chripell@fsfe.org>
-Subject: Re: [PATCH v1 3/4] max3100: adds console support for MAX3100
-Date: Tue, 30 Mar 2010 14:03:20 +0200
-Message-ID: <cabda6421003300503t4fc7d3c4tc51167611180fef9@mail.gmail.com>
-References: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
-	 <1269340170-6558-1-git-send-email-chripell@fsfe.org>
-	 <20100329104838.49c18075@feng-i7>
-	 <cabda6421003282311x78051e1eq38ada68f2553609e@mail.gmail.com>
-	 <20100329150642.4a94e78a@feng-i7>
-	 <cabda6421003290555k70d13168y4beba2c3ae6e2ece@mail.gmail.com>
-	 <20100330101445.5c64dedb@feng-i7>
-	 <cabda6421003292349m2dd6125cp2bcc1060f5aa8741@mail.gmail.com>
-	 <20100330094637.325d3fb9@lxorguk.ukuu.org.uk>
+From: "=?utf-8?B?0J3QsNC70L7Qs9C+0LLQuNC60Lgg0L4g0LTRgNC+0LHQu9C10L3QuNC4INCx0LjQt9C90LXRgdCw?="
+	<malininabk-dqS66rj0C8PWO3iv0lnsqw@public.gmane.org>
+Subject: =?utf-8?b?0KDQuNGB0LrQuCDQuCDQvtGI0LjQsdC6?=
+	=?utf-8?b?0Lgg0L/RgNC4INC00YDQvtCx0LvQtdC90LjQuCDQsdC40LfQvdC10YE=?=
+	=?utf-8?b?0LA=?=
+Date: Tue, 30 Mar 2010 20:17:10 +0400
+Message-ID: <00e601cad024$732253b0$e7e3a8c0@188.16.61.67>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Feng Tang <feng.tang@intel.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"greg@kroah.com" <greg@kroah.com>,
-	"david-b@pacbell.net" <david-b@pacbell.net>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <20100330094637.325d3fb9@lxorguk.ukuu.org.uk>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Mar 30, 2010 at 10:46 AM, Alan Cox <alan@lxorguk.ukuu.org.uk> wrote:
->
-> There I would partly disagree. Fixing the spi driver clearly makes sense
-> but the serial driver should be batching better. Is there a reason the
-> driver couldn't adjust the size based upon the tty speed when getting a
-> termios request ?
-
-Just a small note for those who don't know max31x0. There are just 2
-instructions to tx/rx data: simple data rx (in which we read one data
-from the fifo (the data is valid if R status bit is set), control
-lines (CTS) and status bits) and a combined tx/rx (like before but we
-also send one byte (if the T status bit the char will be accepted) and
-set control lines (RTS)). Every of these instructions is 2 bytes long.
-It's a full SPI message (so you have to assert CS before and de-assert
-it afterwards to make it work). TX buffer is just 1 byte deep, RX one
-is 8 bytes.
-
-Unfortunately we cannot batch TX if SPI speed (in chars going in /
-time unit) is higher than the baud rate of serial communication. We
-need to check that T bis is asserted before sending a char, otherwise
-it is lost. For low baud rates doing this means monopolizing the bus.
-And there is a subtle problem if we reduce SPI speed to the UART baud
-rate: we can ask only for a maximum speed on the SPI. In case this is
-lower the one we asked (maybe because of SPI clock divisors) and we do
-a TX batch big enough we could not be emptying the RX FIFO fast enough
-and so we risk to loose chars in a full duplex operation (*).
-
-We could do batch RX operation but perhaps we are just transferring
-bytes for nothing because we don't know in advance if the R bit is
-set. And we cannot interleave TX and RX like current drivers do
-because we are forced to use the simple rx operation and not the
-combined rx/tx.
-
-There's another point about batching: single instructions are complete
-SPI messages. Many SPI master drivers I worked with (S3C24xx, AT91
-because of a bug in the hardware) manage CS as a normal gpio. Another
-problem here is that many devices require a configurable delay on CS
-change (see delay_usecs field of spi_transfer) which is not handle by
-hardware and so the drivers must somehow break a SPI messages in
-single transfers and do something at the end of every one of these. So
-even we batch 10 tx/rx instructions I really don't think many SPI
-master controllers will be able to do a DMA of 20 bytes. Anyway I
-agree that if we find a way of doing batching it's a good thing
-because better controllers can benefit.
-
->
->> 2) even worse is that we can do flow control decision only on such boundary.
->
-> For serial flow control it doesn't matter, its implicitly asynchronous
-> and if you only turn the fifo on at high speed you response time will be
-> reasonably bounded.
->
-
-if we somehow manage to batch a TX of n bytes and after the first one
-CTS changes we are going to send n-1 chars anyway. OK, maybe our peer
-de-asserted CTS when still having n-1 byes of buffer free and somehow
-higher layer protocols will recover. So I agree this could be not so
-worrisome. But we should keep n small enough.
-
->> 3) this is not reliable: think of what happens if the actual SPI
->> transfer speed we get will be slower that the one we requested. We
->> won't be emptying the RX buffer fastly enough even if could.
->
-> Consoles are not usually balanced for I/O. I grant you probably don't
-> want to be using full fifo sized blocks but I'm not sure I understand why
-> there is a problem below that ?
->
-
-My concern is expressed above (*). Perhaps it's me missing some point.
-To make it clear: I'm more than happy to test a driver that takes
-another approach and switch to it if it's better (but it has to have
-support of multiple instances and a fair usage of SPI bandwidth at
-least). But I really don't see a reliable way of adding batching of
-tx/rx. And I think it will be better to provide a patch to the current
-driver than to rewrite it completely.
-
--- 
-Christian Pellegrin, see http://www.evolware.org/chri/
-"Real Programmers don't play tennis, or any other sport which requires
-you to change clothes. Mountain climbing is OK, and Real Programmers
-wear their climbing boots to work in case a mountain should suddenly
-spring up in the middle of the computer room."
+0JTQoNCe0JHQm9CV0J3QmNCVINCR0JjQl9Cd0JXQodCQOiDQoNCY0KHQmtCYINCYINCe0KjQmNCR
+0JrQmC4K0J/RgNC40LzQtdC90LXQvdC40LUg0LvRjNCz0L7RgtC90YvRhSDRgNC10LbQuNC80L7Q
+siDQvdCw0LvQvtCz0L7QvtCx0LvQvtC20LXQvdC40Y8g0LTQu9GPINC90LDQu9C+0LPQvtCy0L7Q
+s9C+INC/0LvQsNC90LjRgNC+0LLQsNC90LjRjy4KCioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgoK
+MDgg0LDQv9GA0LXQu9GPIHwg0JzQvtGB0LrQstCwCgoqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioK
+CgrQkiDQv9GA0L7Qs9GA0LDQvNC80LU6CjEuINCS0YvQstC+0LQg0YHQvtGC0YDRg9C00L3QuNC6
+0L7Qsi4g0JDRg9GC0YHQvtGA0YHQuNC90LMuINCh0L/QvtGB0L7QsdGLINGA0LDQt9C00LXQu9C1
+0L3QuNGPINC+0YDQs9Cw0L3QuNC30LDRhtC40LguIAoyLiDQoNCw0LfQsdC+0YAg0LTQtdC50YHR
+gtCy0LXQvdC90YvRhSAi0LvQtdCz0LXQvdC0IiDQsiDQvtCx0L7RgdC90L7QstCw0L3QuNC1INC0
+0YDQvtCx0LvQtdC90LjRjyDQsdC40LfQvdC10YHQsCAo0L3QsCDQvtGB0L3QvtCy0LUg0L/RgNCw
+0LrRgtC40LrQuCwg0YDQtdGI0LXQvdC40Lkg0YHRg9C00L7QsikuIAozLiDQn9C10YDQtdC60LLQ
+sNC70LjRhNC40LrQsNGG0LjRjyDQsNGD0YLRgdC+0YDRgdC40L3Qs9CwLCDQstC+0LfQvNC10LfQ
+tNC90L7Qs9C+INC+0LrQsNC30LDQvdC40Y8g0YPRgdC70YPQsyDQsiDRgtGA0YPQtNC+0LLRi9C1
+INC+0YLQvdC+0YjQtdC90LjRjy4KNC4g0J7RgdC90L7QstCw0L3QuNGPINC30LDQstGL0YjQtdC9
+0LjRjyDRgdGC0L7QuNC80L7RgdGC0Lgg0YDQsNCx0L7Rgiwg0YPRgdC70YPQsywg0L/QvtC70YPR
+h9Cw0LXQvNGL0YUg0L7RgiDQstC90L7QstGMINGB0L7Qt9C00LDQvdC90L7Qs9C+INC/0YDQtdC0
+0L/RgNC40Y/RgtC40Y8uCjUuINCg0LDQt9Cx0L7RgCDRgdC/0L7RgdC+0LHQsCDQv9C+0LfQstC+
+0LvRj9GO0YnQtdCz0L4g0LfQsNGJ0LjRgtC40YLRjNGB0Y8g0L7RgiDQv9GA0LXRgtC10L3Qt9C4
+0Lkg0L/QviDRgtGA0LDQvdGB0YTQtdGA0YLQvdC+0LzRgyDRhtC10L3QvtC+0LHRgNCw0LfQvtCy
+0LDQvdC40Y4g0Lgg0L/RgNC40LfQvdCw0L3QuNGOINC70LjRhiDQvdC10LTQvtCx0YDQvtGB0L7Q
+stC10YHRgtC90YvQvNC4Lgo2LiDQl9Cw0YnQuNGC0LAg0L7RgiDQv9C+0LrQsNC30LDQvdC40Lkv
+0YjQsNC90YLQsNC20LAg0YHQvtGC0YDRg9C00L3QuNC60L7Qsi4gCjcuINCe0LHRhdC+0LQg0L/R
+gNC10LTQtdC70L7QsiDQv9GA0LjQvNC10L3QtdC90LjRjyDQo9Ch0J0g0YEg0LjRgdC/0L7Qu9GM
+0LfQvtCy0LDQvdC40LXQvCDQtNC+0LPQvtCy0L7RgNCwINC/0YDQvtGB0YLQvtCz0L4g0YLQvtCy
+0LDRgNC40YnQtdGB0YLQstCwLiAKOC4g0J/QvtC70YPRh9C10L3QuNC1INC60L7QvNC/0LDQvdC4
+0Y/QvNC4INCd0JTQoSDQv9GA0Lgg0L7Qv9C70LDRgtC1INGA0LDQsdC+0YIv0YPRgdC70YPQsyDQ
+sNGD0YLRgdC+0YDRgdC10YDQsCDQvdCwINCj0KHQnS4g0KDQuNGB0LrQuCDQuCDRgdC/0L7RgdC+
+0LHRiyDQt9Cw0YnQuNGC0YsuIAo5LiDQn9C+0YLQtdGA0Y8g0LTQvtC60YPQvNC10L3RgtC+0LIs
+INC60LDQuiDRgdC/0L7RgdC+0LEg0LzQsNC60YHQuNC80LDQu9GM0L3QvtC5INC30LDRidC40YLR
+iyDQvtGCINCy0L7Qt9C80L7QttC90YvRhSDQv9GA0LXRgtC10L3Qt9C40Lkg0LrQvtC90YLRgNC+
+0LvQuNGA0YPRjtGJ0LjRhSDQvtGA0LPQsNC90L7Qsi4gCjEwLiDQkNC90LDQu9C40Lcg0LvQuNC8
+0LjRgtCwINCy0YvRgNGD0YfQutC4INC/0YDQuCDQv9GA0LjQvNC10L3QtdC90LjQuCDQo9Ch0J0u
+IAoxMS4g0KTQsNC60YLQuNGH0LXRgdC60L7QtSDQvdCw0YXQvtC20LTQtdC90LjQtSDRjtGA0LjQ
+tNC40YfQtdGB0LrQvtCz0L4g0LvQuNGG0LAg0L3QtSDQv9C+INC80LXRgdGC0YMg0YDQtdCz0LjR
+gdGC0YDQsNGG0LjQuCwg0LvQuNCx0L4g0L3QsNC70LjRh9C40LUg0L7QsdC+0YHQvtCx0LvQtdC9
+0L3Ri9GFINC/0L7QtNGA0LDQt9C00LXQu9C10L3QuNC5INC/0L4g0YHRgi4gNTUg0JPQmiDQoNCk
+INC60LDQuiDQvtGB0L3QvtCy0LDQvdC40LUg0YPRgtGA0LDRgtGLINC/0YDQsNCy0LAg0L3QsCDQ
+v9GA0LjQvNC10L3QtdC90LjQtSDQo9Ch0J0uIAoxMi4g0KHQvtC60YDRi9GC0LjQtSDQsNGE0LjQ
+u9C70LjRgNC+0LLQsNC90L3QvtGB0YLQuDog0LjRgdC/0L7Qu9GM0LfQvtCy0LDQvdC40LUg0LTQ
+vtCy0LXRgNC10L3QvdGL0YUg0LvQuNGGLCDQvtGE0YTRiNC+0YDQvtCyLCDQvdC10LrQvtC80LzQ
+tdGA0YfQtdGB0LrQuNGFINC+0YDQs9Cw0L3QuNC30LDRhtC40LkuIAoxMy4g0J/QtdGA0LXQtNCw
+0YfQsCDQuNC80YPRidC10YHRgtCy0LAg0L/RgNC4INC00YDQvtCx0LvQtdC90LjQuDog0YDQtdC+
+0YDQs9Cw0L3QuNC30LDRhtC40Y8sINCy0LfQvdC+0YEg0LIg0YPRgdGC0LDQstC90YvQuSDQutCw
+0L/QuNGC0LDQuywg0LfQsNC50LzRiyDQuCDRgi7Qvy4g0KHRg9C00LXQsdC90LDRjyDQv9GA0LDQ
+utGC0LjQutCwLgoxNC4g0KHQv9C+0YHQvtCx0Ysg0LrQvtC90YLRgNC+0LvRjyDQtNC+0LLQtdGA
+0LXQvdC90YvRhSDQu9C40YYg0LrQsNC6INGN0LvQtdC80LXQvdGCINCx0LXQt9C+0L/QsNGB0L3Q
+vtGB0YLQuCDQsNC60YLQuNCy0L7Qsi4gCjE1LiDQodC/0L7RgdC+0LHRiyDRg9C/0YDQsNCy0LvQ
+tdC90LjRjyDQs9GA0YPQv9C/0L7QuSDQutC+0LzQv9Cw0L3QuNC5LiAKMTYuINCf0YDQtdC30YPQ
+vNC/0YbQuNGPINC90LXQtNC+0LHRgNC+0YHQvtCy0LXRgdGC0L3QvtGB0YLQuC4g0J/RgNC+0LXQ
+utGCINCf0L7RgdGC0LDQvdC+0LLQu9C10L3QuNGPINCS0JDQoSDQviDQvdC10LTQvtCx0YDQvtGB
+0L7QstC10YHRgtC90L7RgdGC0LguCjE3LiDQoNCw0YHRgdC80L7RgtGA0LXQvdC40LUg0LzQtdGC
+0L7QtNC40YfQtdC6INCc0LjQvdGE0LjQvdCwICjQlNCh0J8pINC+INCy0YvRj9Cy0LvQtdC90LjQ
+uCDQuCDQv9GA0LXQtNGK0Y/QstC70LXQvdC40Lgg0L/RgNC10YLQtdC90LfQuNC5INC6INC60L7Q
+vNC/0LDQvdC40Y/QvCwg0L7RgdGD0YnQtdGB0YLQstC40LLRiNC40Lwg0LTRgNC+0LHQu9C10L3Q
+uNC1INGB0LLQvtC10Lkg0YHRgtGA0YPQutGC0YPRgNGLLgoKKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqCgrQodGC0L7QuNC80L7RgdGC0Ywg0YPRh9Cw0YHRgtC40Y86IDgwMDAg0YDRg9Cx0LvQtdC5
+LgrQnNC10YHRgtC+ICDQv9GA0L7QstC10LTQtdC90LjRjzog0LwuINCR0LDRg9C80LDQvdGB0LrQ
+sNGPLCDRg9C7LiDQkdCw0YPQvNCw0L3RgdC60LDRjywg0LQuNiwg0LHQuNC30L3QtdGBINGG0LXQ
+vdGC0YAgItCS0LjQutGC0L7RgNC40Y8g0J/Qu9Cw0LfQsCIuCtCSINGB0YLQvtC40LzQvtGB0YLR
+jCDQstGF0L7QtNC40YIg0LzQtdGC0L7QtNC40YfQtdGB0LrQuNC5INC80LDRgtC10YDQuNCw0Lss
+INC+0LHQtdC00YssINC60L7RhNC1LdC/0LDRg9C30YssINGB0LXRgNGC0LjRhNC40LrQsNGCLiAK
+CioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKgogCtCY0L3RhNC+0YDQvNCw0YbQuNGPINC4INGA0LXQ
+s9C40YHRgtGA0LDRhtC40Y86IDggKDQ5NSkgOTIxLTMwLTE3CioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFyYWxsZWwg
+U3R1ZGlvIEV2YWwKVHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxmLiBTcGVl
+ZCBjb21waWxpbmcsIGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBhcHBsaWNh
+dGlvbnMgZm9yIHBhcmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFsbGVsIFN0
+dWRpbyBnb3QgaGlnaCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRl
+bC1zdy1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
+dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
+by9zcGktZGV2ZWwtZ2VuZXJhbAo=

@@ -1,15 +1,11 @@
-From: "=?utf-8?B?0KPQv9GA0LDQstC70LXQvdC40LUg0J/RgNC+0LTQsNC20LDQvNC4?="
-	<cunokunyrec-xQvtZHaCEeQvJsYlp49lxw@public.gmane.org>
-Subject: =?utf-8?b?0JjQvdGB0YLRgNGD0LzQtdC90YLRiyA=?=
-	=?utf-8?b?0YPQv9GA0LDQstC70LXQvdC40Y8g0L7RgtC00LXQu9C+0Lwg0L/RgNC+?=
-	=?utf-8?b?0LTQsNC2LiBUb1NkZU0g4oCTIFRvb2xzIG9mIFNhbGVzIERlcGFydG1l?=
-	=?utf-8?q?nt_Manageryo?=
-Date: Fri, 2 Apr 2010 10:57:25 +0300
-Message-ID: <00ad01cad23a$21e54490$741ca8c0@dra38382236189179.fbx.proxad.net>
-Reply-To: answer-xQvtZHaCEeQvJsYlp49lxw@public.gmane.org
+From: "Optimal Protection par Fanito" <optimal-UjpWPo6LobQ@public.gmane.org>
+Subject: =?iso-8859-1?q?Recevez_vos_offres_privil=E8ge?=
+	=?iso-8859-1?q?s?=
+Date: Fri, 02 Apr 2010 20:02:51 +0200
+Message-ID: <KPYN02A0002B6058000B8QL8073093878@bp06.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -22,99 +18,85 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-MDggLSAwOSDg7/Dl6/8gMjAxMCDjLiAgKDIg5O3/KSAKCiDIzdHS0NPMxc3S2yAg08/QwMLLxc3I
-3yAgztLExcvOzCAgz9DOxMDGLi4gCihUb1NEZU0gliBUb29scyBvZiBTYWxlcyBEZXBhcnRtZW50
-IE1hbmFnZXIuKQoKXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5e
-Xl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXgoK0tDFzcjNwyAgz9DFxM3Ax83A18XNIOTr/zog5Ojw
-5ery7vDu4iDq7uzv4O3o6Cwg6PUg5+Ds5fHy6PLl6+XpLCDw8+ru4u7k6PLl6+XpIO7y5OXr7uIg
-7/Du5ODmLCDw5ePo7u3g6/zt+/Ug7OXt5eTm5fDu4iDoIOTo8OXq8u7w7uIg7+4g7/Du5ODm4Ows
-IOru8u7w++wg7+4g8O7k8yDx4u7l6SDk5f/y5ev87e7x8ugg7eXu4fXu5Ojs7iDz9+Dx8uLu4uDy
-/CDiIOL78ODh7vLq5SDx8vDg8uXj6Ogg8ODn4ujy6P8g8eLu5ekg8uXw8Ojy7vDo6Cwg5Ojx8vDo
-4fP26Ogg7/Du5PPq8u7iLCDq7u3q8/Dl7fLt7ukg4e7w/OH7LCDw4Ofi6OLg8vwg6CDs7vLo4ujw
-7uLg8vwg7+7k9+jt5e3t+/UsIPPr8/f44PL8IPDl5/Pr/PLg8uji7e7x8vwg6PUg8ODh7vL7LCDu
-7/Lo7Ojn6PDu4uDy/CDk7vHy6Obl7ejlIO/u8fLg4uvl7e379SD25evl6SDoIO/u4vv44PL8IO/w
-6OLl8Obl7e3u8fL8IOru8O/u8ODy6OLt++wg9uXt7e7x8v/sLgoK1sXL3CAg0tDFzcjNw8AgliDk
-4PL8IPHo8fLl7O376SDv7uT17uQg6iDn7eDt6P4g6CDv7u3o7ODt6P4g8fLw4PLl4+j35fHq6PUg
-6CDy4Ory6Pfl8ero9SDn4OTg9ywg8fLu//no9SDv5fDl5CDw8+ru4u7k6PLl6+XsIO/w7uTg5iwg
-7vHt7uLt+/Ug/fLg7+7iIPDg5+Lo8uj/IO7y5OXr4CDv8O7k4OYsIPHy8PPq8vPw6PDu4uDy/CDx
-7uLw5ezl7e376SDoIO3g6OHu6+XlIP309OXq8uji7fvpIO7v+/Ig8+/w4OLr5e3o/yDv8O7k4Obg
-7OguIAoKwiD17uTlIPLw5e3o7ePgIOz7IPHs7ubl7CDw4Ofu4fDg8vwg4Ory8+Dr/O375SDx6PLz
-4Pbo6CDx6/P44PLl6+XpLCDt4Ony6CDu7/Lo7ODr/O375SDoIP309OXq8uji7fvlIPDl+OXt6P8g
-8e7h8fLi5e3t+/Ug7/Du4evl7C4gCgrCIPLw5e3o7ePlIO/w5eTz8ezu8vDl7fsg7/Dg6vLo9+Xx
-6ujlIPDg5+Hu8Psg7+4g4u7v8O7x4Owg8OXu8OPg7ejn4Pbo6CDu8uTl6+Ag7/Du5ODmLCDv7vHy
-8O7l7ej/IOzu8uji4Pbo7u3t7ukg8fXl7PssIPDl+OXt6P8g8evu5u379SDn4OTg9yDi7iDi5+Do
-7O7u8u3u+OXt6P/1IPEg8e7y8PPk7ejq4OzoLCDw4OHu8uAg7eDkIO/w4Ory6Pfl8ero7Ogg7/Do
-7OXw4OzoIOgg7uHz9+Xt6P4g7eAg8e7h8fLi5e3t7uwg7u/78uUuIAoKwiD36PHr5SDv8O736PUg
-8+/w4Obt5e3o6Swg4vsg8ODn8ODh7vLg5fLlIOvo9+376SDv6+DtIOTl6fHy4ujpIO/uIOLu5/Dg
-+eXt6P4g7eAg8ODh7vfl5SDs5fHy7i4KCs3gIPLw5e3o7ePlIOjx7+7r/Ofz5fLx/yA6IAogICAt
-IM/w5efl7fLg9uj/IPLl7vDl8uj35fHq7uPuIOzg8uXw6ODr4Cwg5ePuIO7h8fPm5OXt6OUuIAog
-ICAtIMTl7O7t8fLw4Pbo/yDy8OXt5fDu7CDw4Ofr6Pft+/Ug7eDi++ru4iDw8+ru4u7k6PLl6/8g
-8SDu4fr/8e3l7ejl7CDoIODt4Ovo5+7sLiAKICAgLSDP8O7i5eTl7ejlIPP34PHy7ejq4OzoIOzu
-5+Pu4vv1IPjy8/Ds7uIuIAogICAtIMPw8+/v7uLu5SDw5fjl7ejlIO/w4Ory6Pfl8ero9SDn4OTg
-9y4gCiAgIC0g0O7r5eL75SDoIOTl6+7i++Ug6OPw+y4gCgpeXl5eXl5eXl5eXl5eXl5eXl5eXl5e
-Xl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eCgrP0M7D0MDM
-zMAgINLQxc3IzcPACgrR0tDA0sXDyN8gIMggINLQxcnELczA0MrF0sjNwwogICAtIM7v8OXk5evl
-7ejlIPHy8ODy5ePo6C4gzO7k5evoIO/u7/Pr//Dt+/Ug8fLw4PLl4+j35fHq6PUg+Oru6y4gCiAg
-IC0g0OXx8/Dx7fvpIO/u5PXu5CDqIPHy8ODy5ePo6C4gCiAgIC0gyuv+9+Xi++Ug9ODq8u7w+yDz
-8e/l9eAg4iDu8vDg8evoLiAKICAgLSBTV09UIJYg4O3g6+jnIOTr/yDu8uTl6+Ag7/Du5ODmLiAK
-ICAgLSDO7/Dl5OXr5e3o5SDx7uHx8uLl7e3u6SDx8vDg8uXj6Ogg8ODn4ujy6P8g7eAg8Pvt6uUu
-IAogICAtINLw5enkLezg8Orl8ujt4yDk6/8g7vLk5evgIO/w7uTg5i4gzvHt7uLt++Ug4u7v8O7x
-+y4gCiAgIC0gzu/w5eTl6+Xt6OUgq/Dg5/D74u7iuyDoIO/l8OXv8O7l6vLo8O7i4O3o5SDx8vDz
-6vLz8Psg7/Du5ODmLiAKCtPP0MDCy8XNyMUgINHS0NPK0tPQzskgIM/QzsTAxiAgLSAg1sjKyyAg
-zMXNxcTGzMXN0sAKICAgLSDA7eDr6Ocg8uXq8/nl6SDx6PLz4Pbo6C4gCiAgIC0gz+7x8vDu5e3o
-5SDi6OTl7ej/IOHz5PP56PUg5O7x8ujm5e3o6S4gCiAgIC0g1uXr5e/u6+Dj4O3o5SDoIOrg8erg
-5Ojw7uLg7ejlIPbl6+XpLiAKICAgLSDP6+Dt6PDu4uDt6OUg8OXx8/Dx7uIuIAogICAtIMzu7ejy
-7vDo7eMg8uXq8/nl6SDw5efz6/zy4PLo4u3u8fLoLiAKICAgLSDK7u3y8O7r/CDw5efz6/zy4PLu
-4i4gCiAgIC0gzvbl7ergIPDl5/Pr/PLg8u7iIOgg4O3g6+jnIOLu5+zu5u3u8fLl6S4gCgrNwMHO
-0CAgyCAgzsHT18XNyMUgIMzFzcXExsXQzsIgIM/OIM/QzsTAxsDMCiAgIC0gzu/w5eTl6+Xt6P8g
-7/Du9Ojr/yDw4OHu8vsuIAogICAtINHu8fLg4uvl7ejlIOTu6+bt7vHy7e7pIOjt8fLw8+r26Ogu
-IAogICAtIM7v8OXk5evl7ejlIPXg8ODq8uXw6PHy6Oog7eDo6/P3+OXj7iDq4O3k6OTg8uAuIAog
-ICAtINHy8PPq8vPw4CDv8O7i5eTl7ej/IOjt8uXw4vz+LiAKICAgLSDP8Ojl7Psg6CDy5fXt6Oro
-IPPx7+X47e7j7iDw5erw8/Ll8OAuIAogICAtIM/w6O3/8ujlIPDl+OXt6P8g6CDi4uXk5e3o5SDi
-IOTu6+bt7vHy/C4gCiAgIC0g0ejx8uXs4CDu4fP35e3o/yDx7vLw8+Tt6OrgLiAKCtHI0dLFzMAg
-IMzO0sjCwNbIyAogICAtINTg6vLu8Psg7O7y6OLg9ujoOgogICAgICAgICAtIMzg8uXw6ODr/O37
-5SD04Ory7vD7OwogICAgICAgICAtIM3l7ODy5fDo4Ov87fvlIPTg6vLu8PsuIAogICAtIM/u8fLw
-7uXt6OUg8ejx8uXs+yDx8ujs8+vo8O7i4O3o/yDx7vLw8+Tt6Oru4joKICAgICAgICAgLSDM4PLl
-8Ojg6/zt7uUg8fLo7PPr6PDu4uDt6OU7CiAgICAgICAgIC0gyvDo8uXw6Ogg8e7x8uDi6+Xt6P8g
-7+vg7eAg7/Du5ODmOwogICAgICAgICAtINTu8Ozz6/sg8ODx9+Xy4CDn4PDg4e7y7e7pIO/r4PL7
-ICjh7u3z8fssIO/w5ezo4Ov87fvlLCDt4OTh4OLq6Ck7CiAgICAgICAgIC0g0ODx7/Dl5OXr5e3o
-5SD07u3k4CDn4PDg4e7y7e7pIO/r4PL7LiAKICAgLSDR7+7x7uH7IO3l7ODy5fDo4Ov87e7j7iDx
-8ujs8+vo8O7i4O3o/y4gCiAgIC0g0ODn4e7wIPLo7+j37fv1IPHo8vPg9ujpIOgg7vjo4e7qIOIg
-7+7k9e7k5SDqIOzu8uji6PDu4uDt6P4uIAoKztjIwcrIICDQ08rOws7EyNLFy98KICAgLSDL7uLz
-+OroIPHo6+7i7uPuIPDz6u7i7uTx8uLgLiAKICAgLSDM4O3o7/Pr//bo6C4gCiAgIC0gzeXk7uLl
-8OjlLiAKICAgLSDO8vHz8vHy4ujlIOLl8Psg4iDv7vLl7fbo4Osg8e7y8PPk7ejq7uIuIAoKCgoj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjCgowOCAtIDA5IODv8OXr/yAyMDEwIOPu5OAuICAoMiDk7f8g8SAxMC4w
-MCDk7iAxOC4wMCkgCgrM5fHy7iDv8O7i5eTl7ej/OiDM7vHq4uAsIOwuIMHu8uDt6Pfl8ero6SDx
-4OQsICLT9+Xh7eD/IOPu8fLo7ej24CIKCtHy7ujs7vHy/CDz9+Dx8uj/OiAxNyA1MDAg8PPhLiAo
-wiDx8u7o7O7x8vwg4vXu5OjyIO7h8/fl7ejlLCDv5ffg8u375SDs4PLl8Ojg6/sg7+4g8uXs5SDx
-5ezo7eDw4Cwg7uHl5PssIOru9OUt7+Dz5/spLiDP7iDu6u7t9+Dt6Ogg4vvk4OXy8f8g8eXw8uj0
-6Org8iDuIO/w7vXu5uTl7ejoIO7h8/fl7ej/IO/uIOTg7e3u6SDy5ezlLiDI7e7j7vDu5O3o7CDv
-7uzu5uXsIOfg4fDu7ejw7uLg8vwg7e7s5fDgIOIg4+7x8ujt6PblLiDO4fP35e3o5SDoIO/w7ubo
-4uDt6OUg4iDu5O3u7CDn5ODt6OguCgojIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjCgrP7uTw7uHt4P8g6O307vDs
-4Pbo/yDoIPDl4+jx8vDg9uj/IO/uIPLl6+X07u3zOiA4ICg0OTUpIDIyOSAtIDA0IC0KLSAzMwoK
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIwojIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjCgoKCsLt6Ozg7ejlISDF8evoIMLg+CDg
-5PDl8SDx6/P34Ont7iDv7u/g6yDiIOHg5/Mg8ODx8fvr6ugsIOggwvsg4e7r/PjlIO3lIPXu8ujy
-5SDv7uvz9+Dy/CDo7fTu8Ozg9uj+IO7hIO7h8ODn7uLg8uXr/O379SDs5fDu7/Do//Lo//UsIArv
-8O7x8u4g7vLv8ODi/PLlIO/z8fLu5SDv6PH87O4g4iDC4Pjl4+4g4OTw5fHgIO3gIODk8OXxIHVu
-c3Vic2NyaWJlQG5vdHNlbWluYXIucnU/c3ViamVjdD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQg6CDiIPLl7OUg7+jx/OzgIPPq4Obo8uUgwuD4IODk8OXxIP3r5ery8O7t
-7e7pIO/u9/L7LiAKCgrC4Pgg4OTw5fEg4fPk5fIg4OLy7uzg8uj35fHq6CDz5ODr5e0g6Ocg8ODx
-8fvr6ugg4iDy5ffl7ejlIDEgKO7k7e7j7ikg5O3/IQoKClRPICBVTlNVQlNDUklCRSAgIFNFTkQg
-IFlPVVIgICBFTUFJTCAgIEFERFJFU1MgSU4gU1VCSkVDVCBUTyAgIHVuc3Vic2NyaWJlQG5vdHNl
-bWluYXIucnU/c3ViamVjdD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQg
-CgoKIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIwoKCgoKU2FsZXMgRGVwYXJ0IG1lbnQgc2VybgotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFyYWxsZWwgU3R1ZGlvIEV2YWwKVHJ5
-IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxmLiBTcGVlZCBjb21waWxpbmcsIGZp
-bmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBhcHBsaWNhdGlvbnMgZm9yIHBhcmFs
-bGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFsbGVsIFN0dWRpbyBnb3QgaGlnaCBt
-YXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1zdy1kZXYKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
-YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
-dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
-ZXJhbAo=
+Si vous ne visualisez pas ce mail, suivez ce lien http://tr1.bp52.net/r5.as=
+px?GV1=3DKPYN02A001O00002B60007047000B8QL8
+
+VOUS RECEVEZ CET EMAIL EN TANT QUE MEMBRE OPTIMAL PROTECTION.
+      =
+
+
+
+
+
+=A0
+
+Cher internaute, =
+
+
+
+Vous avez souhait=E9 recevoir les offres promotionnelles d'un des sites de =
+la soci=E9t=E9 Optimal Protection et c'est pourquoi nous avons le plaisir d=
+e vous faire b=E9n=E9ficier des aujourd'hui des offres de Fanito.
+Fanito est un programme gratuit et sans engagement qui vous propose
+des OFFRES AVANTAGEUSES
+des VENTES PRIVEES
+des JEUX
+et des BONS PLANS SHOPPING.
+Ce programme d'avantages a =E9t=E9 sp=E9cialement selectionn=E9 pour vous !
+
+
+
+http://tr1.bp52.net/r5.aspx?GV1=3DKPYN02A001O00002B60006ZW8000B8QL8 =
+
+
+Bien =E9videmment, si vous ne souhaitez plus recevoir les b=E9n=E9fices de =
+ce programme, vous pourrez vous d=E9sinscrire a tout moment en cliquant sur=
+ le lien de d=E9sabonnement pr=E9sent dans chaque message. Ainsi, vous pour=
+rez vous d=E9sabonner des aujourd'hui en cliquant sur le lien ci-dessous : =
+
+
+> =
+
+http://tr1.bp52.net/r5.aspx?GV1=3DKPYN02A001O00002B60006ZW9000B8QL8&fguidv5=
+=3D0002B5 =
+
+Je refuse les offres de Fanito
+
+
+
+                      Nous vous remercions et a bient=F4t !=A0
+
+Si vous souhaitez vous d=E9sabonner, cliquez =
+
+http://tr1.bp52.net/r5.aspx?GV1=3DKPYN02A001O00002B60006ZWA000B8QL8&fguidv5=
+=3D0002B5 =
+
+ici.
+
+
+Si vous souhaitez contacter le service clients, cliquez =
+
+mailto:contact-Q7J3tgzUFWBQFI55V6+gNQ@public.gmane.org =
+
+ici. =
+
+
+        Veuillez ne pas r=E9pondre a cet email.
+
+
+ A tout moment, vous disposez d'un droit d'acces, de modification, de recti=
+fication et de suppression de vos donn=E9es personnelles (art 34 de la loi =
+Informatique et Libert=E9s du 6 Janvier 1978).  Vous pouvez =E9galement en =
+faire la demande par courrier :  Plebicom - Service Clients - 16 quai de la=
+ M=E9gisserie - 75001Paris
+
+
+  =
+
+---------------------------------------------------------------------------=
+---
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

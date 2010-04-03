@@ -1,7 +1,8 @@
-From: "Marie Clement" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
-Subject: [SPAM] Exclusif : votre guide gratuit pour être en bonne sante
-Date: Sat,  3 Apr 2010 09:11:30 +0000 (UTC)
-Message-ID: <l0amv4.dofeuu@front07.g7r9.com>
+From: "Plein Temps presente Securitas Direct" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: =?iso-8859-1?q?Protegez_vous_efficacement_pou?=
+	=?iso-8859-1?q?r_50=25_moins_cher_que_votre_caf=E9_quotidien?=
+Date: Sat,  3 Apr 2010 23:21:00 +0200 (CEST)
+Message-ID: <l0bkn0.a8ws5l@front.ta271.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

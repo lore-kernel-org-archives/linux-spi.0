@@ -1,11 +1,10 @@
-From: "=?koi8-r?B?9uvo?=" <fabokitywod-xQvtZHaCEeQvJsYlp49lxw@public.gmane.org>
-Subject: [SPAM] Жилищно-коммунальное хозяйство: особенности регулирования и налогообложенияzpz
-Date: Sat, 3 Apr 2010 02:22:54 +0300
-Message-ID: <1698137167.20100403022254@edupost.ru>
-Reply-To: answer-xQvtZHaCEeQvJsYlp49lxw@public.gmane.org
+From: "Marie Clement" <offre-ripNDUUJ0YS7LctlYX+wo0EOCMrvLtNR@public.gmane.org>
+Subject: [SPAM] Exclusif : votre guide gratuit pour être en bonne sante
+Date: Sat,  3 Apr 2010 09:11:30 +0000 (UTC)
+Message-ID: <l0amv4.dofeuu@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,100 +17,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqCiogIDE0IC0gMTUgIODv8OXr/yAgMjAxMOMuCioKKiAgIMbK1SAgICjGyMvI2c3OICAtICDK
-zszM083Ay9zNzsUgINXOx9/J0dLCzik6IAoqICAg7vHu4eXt7e7x8ugg8OXj8+vo8O7i4O3o/yDo
-IO3g6+7j7u7h6+7m5e3o/woqCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKgoKz9DIw8vA2MDe0tHfOiDw8+ru4u7k6PLl6+gg7/Dl5O/w
-6P/y6OkgxsrVLCDj6+Di7fvlIOHz9ePg6/Ll8PssIP7w6PHy+y4KCioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgoKz9DOw9DAzMzAICDR
-xczIzcDQwAoKMS4gzuH56OUg7+7r7ubl7ej/IO7hIO7q4Ofg7ejoIPPx6/PjIOIg5ujr6Pnt7iCW
-IOru7Ozz7eDr/O3u7CD17uf/6fHy4uUuIMfg+ejy4CDv8ODiIO/u8vDl4ejy5evl6SDv8Ogg7urg
-5+Dt6Ogg8/Hr8+Mg4iDm6Ovo+e3uIJYg6u7s7PPt4Ov87e7sIPXu5//p8fLi5S4KCjIuIM/w6OXs
-IO/u8fLw7uXt7fv1IO7h+uXq8u7iIO3gIO7h8evz5uji4O3o5SAo4iDz7/Dg4uvl7ejlKS4gwf7k
-5uXy7e7lIPTo7eDt8ejw7uLg7ejlIO/w5eTv8Oj/8ujpIObo6+j57e4gLSDq7uzs8+3g6/zt7uPu
-IOru7O/r5erx4C4gwf7k5uXy7fvlIPP38OXm5OXt6P8g5ujr6Pnt7iAtIOru7Ozz7eDr/O3u4+4g
-6u7s7+vl6vHgLiDP6+Dy4CDn4CDt4OXsIObo6/z/LiDN4Ovu4+7u4evu5uXt6OUg9uXr5eLu4+4g
-9Ojt4O3x6PDu4uDt6P8g6CD25evl4vv1IO/u8fLz7+vl7ejpLiDU6O3g7fHo8O7i4O3o5SDq4O/o
-8uDr/O3u4+4g8OXs7u3y4Cwg4iDy7uwg9+jx6+Ug7eDq7u/r5e3o5S4gzPPt6Pbo7+Dr/O376SDn
-4Org5y4KCjMuIMri4PDy7+vg8uAgliDx6PHy5ezgIO3g6+7j7u7h6+7m5e3o/yDiIPHu7vLi5fLx
-8uLo6CDx7iDx8vDz6vLz8O7pLiDX4PHy/CDq4uDw8u/r4PL7LCDn4CDz8evz4+gg7+4g8+/w4OLr
-5e3o/iDoIPHu5OXw5uDt6P4g7uH55ePuIOjs8/nl8fLi4CAo4eXnIO/l8OXv8OXk+v/i6//l7Pv1
-IOru7Ozz7eDr/O379SDv6+Dy5ebl6SkuIMri4PDy7+vg8uAgliDk7urz7OXt8u7u4e7w7vIuIMrg
-8fHu4vvlIO7v5fDg9ujoIOIg5ujr6Pnt7iAtIOru7Ozz7eDr/O3u7CDq7uzv6+Xq8eUuIMru7Ozz
-7eDr/O375SDv6+Dy5eboLCDi+/Hy4OLr/+Xs++Ug5ujr/Pbg7CDv7iDv7vHw5eTt6Pfl8eru6SDq
-4uDr6PTo6uD26OguIM/u6/P35e3o5SDo5yDh/uTm5fLgIPTo7eDt8ejw7uLg7ej/IO3gIOru7O/l
-7fHg9uj+IOri4PDy7+vg8vsgliDq4uDr6PTo6uD26P8sIPP35fIg6CDt4Ovu4+7u4evu5uXt6OUu
-IM7v8OXk5evl7ejlIPLg8Oj07uIg4iDm6Ovo+e3uIC0g6u7s7PPt4Ov87e7sIOru7O/r5erx5S4g
-Cgo0LiDN4Ovu4yDt4CDv8Ojh++v8IO/uIO7h8evz5uji4P756Owg7/Du6Ofi7uTx8uLg7CDoIPXu
-5//p8fLi4OwuINPv8O755e3t4P8g8ejx8uXs4CDt4Ovu4+7u4evu5uXt6P8g4iDm6Ovo+e3uIC0g
-6u7s7PPt4Ov87e7sIOru7O/r5erx5S4gxc3CxCDiIObo6+j57e4gLSDq7uzs8+3g6/zt7uwg6u7s
-7+vl6vHlLgoKNS4gyu7t9uXx8eju7e375SDx7uPr4Pjl7ej/IJYg7/Dg4u7i++Ug7vHt7uL7LiDK
-7u325fHx6O7t7fvlIPHu4+vg+OXt6P8gliDh8/Xj4Ovy5fDx6ujpIPP35fIuIMru7fbl8fHo7u3t
-++Ug8e7j6+D45e3o/yCWIO3g6+7j7u7h6+7m5e3o5SDv8Ojh++voLiDN4Ovu4yDt4CDo7PP55fHy
-4u4g7/DoIOru7fbl8fHo7u3t+/UuIMru7fbl8fHo7u3t7uUg8e7j6+D45e3o5SDoIM3E0S4KCjYu
-INPv8ODi6//++ejlIO7w4+Dt6Ofg9ujoLCDv8ODi7uL75SDu8e3u4vssIOru7erz8PEg7+4g4vvh
-7vDzLiDT7/Dg4uv//vno5SDu8OPg7ejn4Pbo6CCWIOHz9ePg6/Ll8PHq6Okg8/fl8i4g0+/w4OLr
-//756OUg7vDj4O3o5+D26OggliDt4Ovu4+7u4evu5uXt6OUuCgo3LiDN5eTi6Obo7O7x8vwg6uDq
-IO7x7e7i7e7lIPHw5eTx8uLuLCDv8O7h6+Xs+yDx4v/n4O3t++Ug8SDk4PLu6SDt4Pfg6+Ag7eDr
-7uPu4u7j7iDo6+gg4fP14+Dr8uXw8eru4+4g8/fl8uAuIMbo6/zlIOrg6iDu8e3u4u3u5SDx8OXk
-8fLi7i4gzeDr7uMg7eAg6Ozz+eXx8uLuIOIgxsrVLiDH5ezr/yDq4Oog7vHt7uLt7uUg8fDl5PHy
-4u4uIM/w6O7h8OXy5e3o5SDn5ezl6/zt+/Ug8/fg8fLq7uIg4iDx7uHx8uLl7e3u8fL8LiDH5ezl
-6/zt++kg7eDr7uMg4iDGytUuCgo4LiDG6Ovo+e376SDt4Oru7+jy5ev87fvpIOru7u/l8ODy6OIg
-liDv8ODi7uL75SDu8e3u4vsuIMbo6+j57fvpICjm6Ovo+e3uLfHy8O7o8uXr/O376Skg6u7u7+Xw
-4PLo4iCWIO/w4OLu4vvlIO7x7e7i+y4g0fLw7ujy5ev88fLi7iDxIPHu5+Tg7ejl7CDu8OPg7ejn
-4Pbo6CDk6/8g7uH65eTo7eXt6P8g8yDu8OPg7ejn4Pbo6CAoxtHKIOgg8i7vLikuINHy8O7o8uXr
-/PHy4u4g8SDx7ufk4O3o5ewg7vDj4O3o5+D26Ogg5Ov/IO7h+uXk6O3l7ej/IPMg6O3i5fHy7vDg
-ICjG0cog6CDyLu8uKS4KCjkuINLu4uDw6Pnl8fLi4CDx7uHx8uLl7e3o6u7iIObo6/z/ICjS0cYp
-IJYg7/Dg4u7i++Ug7vHt7uL7LiDS7uLg8Oj55fHy4uAg8e7h8fLi5e3t6Oru4iDm6Ov8/yCWIOHz
-9ePg6/Ll8PHq6Okg8/fl8i4g0u7i4PDo+eXx8uLgIPHu4fHy4uXt7ejq7uIg5ujr/P8gliDt4Ovu
-4+7u4evu5uXt6OUuCgoxMC4g0e7h8fLi5e3t++Ug6u7y5ev87fvlLiDP6+Dy4CDn4CDu8u7v6+Xt
-6OUgliDw5ePz6+jw7uLg7ejlLCDz9+XyIOgg7eDr7uPu7uHr7ubl7ejlLiDP6+Dy4CDn4CD96+Xq
-8vDo9+Xx8uLuIJYg8OXj8+vo8O7i4O3o5Swg8/fl8iDoIO3g6+7j7u7h6+7m5e3o5S4gz+vg8uAg
-5+Ag4+Dn7vHt4OHm5e3o5SCWIPDl4/Pr6PDu4uDt6OUsIPP35fIg6CDt4Ovu4+7u4evu5uXt6OUu
-IM/r4PLgIOfgIOLu5O7x7eDh5uXt6OUgliDw5ePz6+jw7uLg7ejlLCDz9+XyIOgg7eDr7uPu7uHr
-7ubl7ejlLiDP6+Dy4CDn4CDi7uTu7vLi5eTl7ejlIJYg8OXj8+vo8O7i4O3o5Swg8/fl8iDoIO3g
-6+7j7u7h6+7m5e3o5S4gCgoxMS4gyPHv7uv85+7i4O3o5SDu4fnl4+4g6Ozz+eXx8uLgICjq7u3k
-7uzo7ejz7CkuIM7y4uXy8fLi5e3t7vHy/CDn4CDi8OXkLCDt4O3l8eXt7fvpIO7h+ejsIOjs8/nl
-8fLi7uwuIM/r4PLgIOfgIO3l4+Dy6OLt7uUg4u7n5OXp8fLi6OUg7eAg7urw8+bg/vnz/iDx8OXk
-8yDoIOL74u7nIPLi5fDk+/Ug4fvy7uL79SDu8vXu5O7iLgoKMTIuIMTu6vPs5e3y7u7h7vDu8iDv
-7iDw5ezu7fLzIObo6+j57e7j7iD07u3k4C4g0uXq8/no6SDw5ezu7fIg5ujr6Pnt7uPuIPTu7eTg
-LiDQ4PH17uT7IO/uIOHr4OPu8/Hy8O7p8fLi8yCWIO3g6+7jIO3gIO/w6OH76/wuIM/w6OTu7O7i
-++Ug4OLy7vHy7v/t6uguCgoxMy4g0eDk7uLu5Pfl8eru5Swg7uPu8O7k7ej35fHq7uUg6OvoIOTg
-9+3u5SDt5eru7Ozl8Pfl8eru5SDu4frl5Ojt5e3o5SDj8ODm5ODtIJYg7/Dg4u7i++Ug7vHt7uL7
-LiDR4OTu4u7k9+Xx6u7lIPLu4uDw6Pnl8fLi7iCWIPP35fIg6CDt4Ovu4+7u4evu5uXt6OUuINHu
-4fHy4uXt7fvlIPHq4uDm6O37LCDxIPP35fLu7CDi7uTt7uPuIO3g6+7j4C4KCs7y4uXy+yDt4CDi
-8eUg4u7v8O7x+yDv7iDm6Ovo+e3uLeru7Ozz7eDr/O3u7PMg9e7n/+nx8uLzLgoKKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCgoxNCAt
-IDE1IODv8OXr/yAyMDEwIOPu5OAuICAoMiDk7f8g8SAxMC4wMCDk7iAxOC4wMCkgCgrM5fHy7iDv
-8O7i5eTl7ej/OiDM7vHq4uAsIOwuIMHu8uDt6Pfl8ero6SDx4OQsICLT9+Xh7eD/IOPu8fLo7ej2
-4CIKCtHy7ujs7vHy/CDz9+Dx8uj/OiAxNyA1MDAg8PPhLiAowiDx8u7o7O7x8vwg4vXu5OjyIO7h
-8/fl7ejlLCDv5ffg8u375SDs4PLl8Ojg6/sg7+4g8uXs5SDx5ezo7eDw4Cwg7uHl5PssIOru9OUt
-7+Dz5/spLiDP7iDu6u7t9+Dt6Ogg4vvk4OXy8f8g8eXw8uj06Org8iDuIO/w7vXu5uTl7ejoIO7h
-8/fl7ej/IO/uIOTg7e3u6SDy5ezlLiDI7e7j7vDu5O3o7CDv7uzu5uXsIOfg4fDu7ejw7uLg8vwg
-7e7s5fDgIOIg4+7x8ujt6PblLiDO4fP35e3o5SDoIO/w7ubo4uDt6OUg4iDu5O3u7CDn5ODt6Ogu
-CgoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioKCgrP7uTw7uHt4P8g6O307vDs4Pbo/yDoIPDl4+jx8vDg9uj/IO/uIPLl6+X07u3zOiA4
-ICg0OTUpIDIyOSAtIDA0IC0gMzMKCgoKKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqCioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgoKCgrC7ejs4O3o5SEgxfHr6CDC4Pgg4OTw
-5fEg8evz9+Dp7e4g7+7v4Osg4iDh4OfzIPDg8fH76+roLCDoIML7IOHu6/z45SDt5SD17vLo8uUg
-7+7r8/fg8vwg6O307vDs4Pbo/iDu4SDu4fDg5+7i4PLl6/zt+/Ug7OXw7u/w6P/y6P/1LCAK7/Du
-8fLuIO7y7/Dg4vzy5SDv8/Hy7uUg7+jx/OzuIOIgwuD45ePuIODk8OXx4CDt4CDg5PDl8SB1bnN1
-YnNjcmliZUBub3RzZW1pbmFyLnJ1P3N1YmplY3Q9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0IOgg4iDy5ezlIO/o8fzs4CDz6uDm6PLlIMLg+CDg5PDl8SD96+Xq8vDu7e3u
-6SDv7vfy+y4gCgoKwuD4IODk8OXxIOHz5OXyIODi8u7s4PLo9+Xx6ugg8+Tg6+XtIOjnIPDg8fH7
-6+roIOIg8uX35e3o5SAxICju5O3u4+4pIOTt/yEKCgpUTyAgVU5TVUJTQ1JJQkUgICBTRU5EICBZ
-T1VSICAgRU1BSUwgICBBRERSRVNTIElOIFNVQkpFQ1QgVE8gICB1bnN1YnNjcmliZUBub3RzZW1p
-bmFyLnJ1P3N1YmplY3Q9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IAoK
-CioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKgoKCgoKCmdpbGtvbWhvbmVuCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpEb3dubG9hZCBJbnRl
-bCYjMTc0OyBQYXJhbGxlbCBTdHVkaW8gRXZhbApUcnkgdGhlIG5ldyBzb2Z0d2FyZSB0b29scyBm
-b3IgeW91cnNlbGYuIFNwZWVkIGNvbXBpbGluZywgZmluZCBidWdzCnByb2FjdGl2ZWx5LCBhbmQg
-ZmluZS10dW5lIGFwcGxpY2F0aW9ucyBmb3IgcGFyYWxsZWwgcGVyZm9ybWFuY2UuClNlZSB3aHkg
-SW50ZWwgUGFyYWxsZWwgU3R1ZGlvIGdvdCBoaWdoIG1hcmtzIGR1cmluZyBiZXRhLgpodHRwOi8v
-cC5zZi5uZXQvc2Z1L2ludGVsLXN3LWRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

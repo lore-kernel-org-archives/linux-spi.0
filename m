@@ -1,121 +1,71 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v1 3/4] max3100: adds console support for MAX3100
-Date: Mon, 5 Apr 2010 13:00:38 -0600
-Message-ID: <r2sfa686aa41004051200l73c7725ajd3f1bd503fa73447@mail.gmail.com>
-References: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
-	<cabda6421003282311x78051e1eq38ada68f2553609e@mail.gmail.com>
-	<20100329150642.4a94e78a@feng-i7> <cabda6421003290555k70d13168y4beba2c3ae6e2ece@mail.gmail.com>
-	<20100330101445.5c64dedb@feng-i7> <cabda6421003292349m2dd6125cp2bcc1060f5aa8741@mail.gmail.com>
-	<20100330094637.325d3fb9@lxorguk.ukuu.org.uk> <cabda6421003300503t4fc7d3c4tc51167611180fef9@mail.gmail.com>
-	<v2mfa686aa41003302304rd966efe0k204d78aef793f75c@mail.gmail.com>
-	<u2qcabda6421004051119xe4b0753by4450d74a934e00b2@mail.gmail.com>
+From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Subject: Re: [PATCH v2 1/3] spi: implemented driver for
+	Cirrus EP93xx SPI	controller
+Date: Tue, 6 Apr 2010 08:44:18 +0300
+Message-ID: <20100406054418.GA27465@gw.healthdatacare.com>
+References: <cover.1268930557.git.mika.westerberg@iki.fi>
+	<9de3769ae253830fb0eebc98d299137c59c69b8c.1268930557.git.mika.westerberg@iki.fi>
+	<56d259a01003250649ubf0e32ejc15e4f3b45ec43cd@mail.gmail.com>
+	<20100325184316.GB20512@gw.healthdatacare.com>
+	<s2n56d259a01003311715ke5b93a96v9d453ec32f08ec29@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	Feng Tang <feng.tang@intel.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"greg@kroah.com" <greg@kroah.com>,
-	"david-b@pacbell.net" <david-b@pacbell.net>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
-To: christian pellegrin <chripell@fsfe.org>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <u2qcabda6421004051119xe4b0753by4450d74a934e00b2@mail.gmail.com>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <s2n56d259a01003311715ke5b93a96v9d453ec32f08ec29-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Apr 5, 2010 at 12:19 PM, christian pellegrin <chripell@fsfe.org=
-> wrote:
-> Hi,
->
-> first of all I'm sorry for the late response, just now I found time t=
-o
-> work on this.
->
-> On Wed, Mar 31, 2010 at 8:04 AM, Grant Likely <grant.likely@secretlab=
-=2Eca> wrote:
->
->> Is checking the T bit really necessary if Linux instead tracks the
->> timing between bytes internally? =A0ie. =A0If the driver uses an hrt=
-imer
->> to schedule the submission of SPI transfers such that the time betwe=
-en
->> SPI submissions is always greater than the time required for a seria=
-l
->> character to be transmitted?
->
-> I think you have to check it anyway. For example the SPI bus may be
-> shared with another device so we don't know when our char will be sen=
-t
-> (it might be delayed for more than the duration of a char being sent
-> on the serial line if the initial execution of the SPI command is
-> delayed). But using a hrtimer will be for sure more fair than polling
-> T bit as far as resource usage is concerned. I was always hesitant
-> about using hrtimers: I really don't know if all platforms support
-> them with the needed granularity (at 115200 a char takes around 100us=
-)
-> and the aren't many users of them in the drivers directory (quite all
-> of them are in the staging one). But it's definitely a good idea if
-> hrtimers do work. I'll make some tests.
+On Thu, Apr 01, 2010 at 01:15:20AM +0100, Martin Guy wrote:
+> On 3/25/10, Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org> wrote:
+> >  > > This patch adds an SPI master driver for the Cirrus EP93xx SPI controller found
+> >  > >  in EP93xx chips (EP9301, EP9302, EP9307, EP9312 and EP9315).
+> >  > >
+> >  > >  Driver currently supports only interrupt driven mode but in future we may add
+> >  > >  polling mode support as well.
+> 
+> I've been staring more at this again and it looks (2 clock
+> strangenesses and extensive control reg setting apart) like good code.
+> I have another question: like the Cirrus driver, this takes 100% CPU
+> doing busy wait for the current transfer to complete.
 
-Another thing to think about: this device is never going to be high
-performance.  If tx gets delayed, then it isn't a big deal because
-there won't be any data loss.  The real concern is RX where if you
-don't process fast enough then characters get dropped.  Fortunately
-you have an 8 byte deep buffer.  So if each timer fire schedules more
-than one transfer (even if only one char is actually transmitted),
-then it is okay if the timer granularity is 300-400us at 115200.
+Hi,
 
->
->>
->> You may be able to set this up into a free-running state machine.
->> Submit the SPI transfers asynchronously, and use a callback to be
->> notified when the transfer is completed. =A0In most cases, the trans=
-fer
->> will be completed every time, but if it is not, then the state machi=
-ne
->> can just wait another time period before submitting. =A0By doing it =
-this
->> way, all the work can be handled at the atomic context without any
->> workqueues or threaded IRQ handlers.
->>
->
-> yes a completely async design could improve performance (the greatest
-> culprit for low performance (not mentioning slow SPI master drivers)
-> is the latency in the delayed work being started). When I first wrote
-> this driver I wanted to keep it simple so I was a bit frightened by a
-> state-machine like design, but it can be done for sure. My concern
-> here is: everything is the kernel is moving to doing as much as
-> possible in a delayed work mechanics (see the introduction of threade=
-d
-> interrupts (which could became the default) or the "coming soon" deat=
-h
-> of IRQF_DISABLED). Is doing a big part of the work (of course I would
-> use spi_async directly in the interrupt handler and handle the
-> incoming/outgoing chars in spi_async callback which is usually called
-> in an interrupt context) in an interrupt context "antihistorical",
-> isn't it?
+I tried to find out whether the driver did something wrong to get
+into busylooping but couldn't find anything. In case of MMC/SD
+cards, through mmc_spi, transfer sizes are >= 512 bytes at a time
+and FIFO size is only 8 bytes (or words) so the CPU is expected to
+be pretty busy serving interrupts from the SSP.
 
-If you only use spi_async (which must be atomic), and you don't do any
-heavy data processing or udelay()s in the irq path, then your driver
-will not be adding major latency.  Use a ring buffer for both the tx
-and rx paths so that the console processing can be done in a workqueue
-or something and you should be just fine.
+I'm about to post updated series with your comments addressed. I
+also added support for polling transfers.
 
-> BTW: both of the design changes you mentioned seem sensible to me for
-> better performance of the driver. But they don't do any form of
-> batching and won't help if the underlying SPI master driver uses some
-> form of delayed work itself.
+> Given that this driver is interrupt-based, is there any reason why it
+> can't do something else in the meanwhile?
+> Not that that's a reason not to include it in 2.6.35 - it works well
+> and we can think whether to make it more efficient in N+1...
 
-Then the SPI master driver is broken.  It must be fixed.  :-)
-Submission of SPI transfers via spi_async() is supposed to always be
-atomic.
+>From the User's guide, it seems that the controller is able to
+support DMA as well (via two M2M channels). Maybe we can add support
+for that in subsequent versions?
 
-g.
---
-To unsubscribe from this list: send the line "unsubscribe linux-serial"=
- in
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+MW
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

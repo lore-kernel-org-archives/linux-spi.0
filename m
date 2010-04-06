@@ -1,12 +1,24 @@
-From: "=?koi8-r?B?9MHNz9bFzs7ZyiDzz8DaIDIwMTA=?=" <qe-huDBShMCN3rILq5++fvS8w@public.gmane.org>
-Subject: [SPAM] Особенности таможенного регулирования в рамках Таможенного союза.
-Date: Tue, 6 Apr 2010 19:52:41 +0400
-Message-ID: <1587229771.20100406195241@optimcons.ru>
+From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Subject: Re: [PATCH v2 1/3] spi: implemented driver for
+	Cirrus EP93xx SPI	controller
+Date: Tue, 6 Apr 2010 21:18:39 +0300
+Message-ID: <20100406181839.GA2685@gw.healthdatacare.com>
+References: <cover.1268930557.git.mika.westerberg@iki.fi>
+	<9de3769ae253830fb0eebc98d299137c59c69b8c.1268930557.git.mika.westerberg@iki.fi>
+	<56d259a01003250649ubf0e32ejc15e4f3b45ec43cd@mail.gmail.com>
+	<20100325184316.GB20512@gw.healthdatacare.com>
+	<s2n56d259a01003311715ke5b93a96v9d453ec32f08ec29@mail.gmail.com>
+	<20100406054418.GA27465@gw.healthdatacare.com>
+	<s2g56d259a01004060550me72bd64cr35e4a83c495d6909@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <s2g56d259a01004060550me72bd64cr35e4a83c495d6909-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,131 +29,207 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-0JLQrdCUINC60L7QvNC/0LDQvdC40Lg6INC+0YHQvtCx0LXQvdC90L7RgdGC0Lgg0YLQsNC80L7Q
-ttC10L3QvdC+0LPQviDRgNC10LPRg9C70LjRgNC+0LLQsNC90LjRjyDQsiDRgNCw0LzQutCw0YUg
-CtCi0LDQvNC+0LbQtdC90L3QvtCz0L4g0YHQvtGO0LfQsC4KCjE5LTIwINCw0L/RgNC10LvRjyB8
-INCc0L7RgdC60LLQsAoK0JjQvdGE0L7RgNC80LDRhtC40Y8g0Lgg0YDQtdCz0LjRgdGC0YDQsNGG
-0LjRjzogOCAoNDk1KSAtIDkyMS0zMC0xNwoK0JIg0L/RgNC+0LPRgNCw0LzQvNC1OgoKMS4g0KLQ
-vtCy0LDRgNC90LDRjyDQndC+0LzQtdC90LrQu9Cw0YLRg9GA0LAg0JLQrdCUINCi0LDQvNC+0LbQ
-tdC90L3QvtCz0L4g0KHQvtGO0LfQsCwg0LLRgdGC0YPQv9C40LLRiNCw0Y8g0LIg0YHQuNC70YMg
-0YEgMDEg0Y/QvdCy0LDRgNGPIDIwMTAgCtCz0L7QtNCwLCDQtdC1INC+0YHQvdC+0LLQvdGL0LUg
-0L7RgtC70LjRh9C40Y8g0L7RgiDQotCdINCS0K3QlCDQoNCkLiDQntGB0L7QsdC10L3QvdC+0YHR
-gtC4INGC0LDQvNC+0LbQtdC90L3Qvi3RgtCw0YDQuNGE0L3QvtCz0L4g0YDQtdCz0YPQu9C40YDQ
-vtCy0LDQvdC40Y8g0L3QsCAK0YLQtdGA0YDQuNGC0L7RgNC40Lgg0KLQsNC80L7QttC10L3QvdC+
-0LPQviDRgdC+0Y7Qt9CwINGBIDAxINGP0L3QstCw0YDRjyAyMDEwINCz0L7QtNCwLiDQldC00LjQ
-vdGL0Lkg0YLQsNC80L7QttC10L3QvdGL0Lkg0YLQsNGA0LjRhCDQotCw0LzQvtC20LXQvdC90L7Q
-s9C+IArRgdC+0Y7Qt9CwLiDQotCw0YDQuNGE0L3Ri9C1INC/0YDQtdGE0LXRgNC10L3RhtC40Lgg
-0LIg0L7RgtC90L7RiNC10L3QuNC4INGC0L7QstCw0YDQvtCyLCDQstCy0L7Qt9C40LzRi9GFINC9
-0LAg0YLQtdGA0YDQuNGC0L7RgNC40Y4g0KLQsNC80L7QttC10L3QvdC+0LPQviAK0YHQvtGO0LfQ
-sC4g0KLQsNGA0LjRhNC90YvQtSDQu9GM0LPQvtGC0YsuINCi0LDRgNC40YTQvdGL0LUg0LrQstC+
-0YLRiy4gCgoyLiDQldC00LjQvdC+0LUg0L3QtdGC0LDRgNC40YTQvdC+0LUg0YDQtdCz0YPQu9C4
-0YDQvtCy0LDQvdC40LUg0L3QsCDRgtC10YDRgNC40YLQvtGA0LjQuCDQotCw0LzQvtC20LXQvdC9
-0L7Qs9C+INGB0L7RjtC30LAg0YEgMDEg0Y/QvdCy0LDRgNGPIDIwMTAgCtCz0L7QtNCwLiDQn9C+
-0YDRj9C00L7QuiDQstCy0LXQtNC10L3QuNGPINC4INC/0YDQuNC80LXQvdC10L3QuNGPINC80LXR
-gCwg0LfQsNGC0YDQsNCz0LjQstCw0Y7RidC40YUg0LLQvdC10YjQvdGO0Y4g0YLQvtGA0LPQvtCy
-0LvRjiDRgtC+0LLQsNGA0LDQvNC4LCDQvdCwIArQtdC00LjQvdC+0Lkg0YLQsNC80L7QttC10L3Q
-vdC+0Lkg0YLQtdGA0YDQuNGC0L7RgNC40Lgg0LIg0L7RgtC90L7RiNC10L3QuNC4INGC0YDQtdGC
-0YzQuNGFINGB0YLRgNCw0L0uINCi0L7QstCw0YDRiywg0LIg0L7RgtC90L7RiNC10L3QuNC4INC6
-0L7RgtC+0YDRi9GFIArQv9GA0LjQvNC10L3Rj9GO0YLRgdGPINC30LDQv9GA0LXRgtGLINC40LvQ
-uCDQvtCz0YDQsNC90LjRh9C10L3QuNGPINC90LAg0LLQstC+0Lcg0LjQu9C4INCy0YvQstC+0Lcg
-0LPQvtGB0YPQtNCw0YDRgdGC0LLQsNC80LggLSDRg9GH0LDRgdGC0L3QuNC60LDQvNC4IArQotCw
-0LzQvtC20LXQvdC90L7Qs9C+INGB0L7RjtC30LAg0LIg0YDQsNC80LrQsNGFINCV0LLRgNCQ0LfQ
-rdGBINCyINGC0L7RgNCz0L7QstC70LUg0YEg0YLRgNC10YLRjNC40LzQuCDRgdGC0YDQsNC90LDQ
-vNC4LiDQntGB0L7QsdC10L3QvdC+0YHRgtC4INCy0LLQvtC30LAg0L3QsCAK0YLQsNC80L7QttC1
-0L3QvdGD0Y4g0YLQtdGA0YDQuNGC0L7RgNC40Y4g0Lgg0LLRi9Cy0L7Qt9CwINGBINGC0LDQvNC+
-0LbQtdC90L3QvtC5INGC0LXRgNGA0LjRgtC+0YDQuNC4INCi0LDQvNC+0LbQtdC90L3QvtCz0L4g
-0YHQvtGO0LfQsCDRgtC+0LLQsNGA0L7QsiwgCtC+0LPRgNCw0L3QuNGH0LXQvdC90YvRhSDQuiDQ
-v9C10YDQtdC80LXRidC10L3QuNGOINGH0LXRgNC10Lcg0LPRgNCw0L3QuNGG0YMg0YLQsNC80L7Q
-ttC10L3QvdC+0LPQviDRgdC+0Y7Qt9CwLiDQn9GA0LDQstC40LvQsCDQuCDQv9C+0YDRj9C00L7Q
-uiDQstGL0LTQsNGH0LggCtC70LjRhtC10L3Qt9C40Lkg0Lgg0YDQsNC30YDQtdGI0LXQvdC40Lkg
-0L3QsCDRjdC60YHQv9C+0YDRgi3QuNC80L/QvtGA0YIsINCy0YHRgtGD0L/QuNCy0YjQuNC1INCy
-INGB0LjQu9GDINGBIDAxINGP0L3QstCw0YDRjyAyMDEwINCz0L7QtNCwLgoKMy4g0KLQtdGF0L3Q
-uNGH0LXRgdC60L7QtSDRgNC10LPRg9C70LjRgNC+0LLQsNC90LjQtSwg0YHQtdGA0YLQuNGE0LjQ
-utCw0YbQuNGPLCDQv9GA0LjQvNC10L3QtdC90LjQtSDRgdCw0L3QuNGC0LDRgNC90YvRhSwg0LLQ
-tdGC0LXRgNC40L3QsNGA0L3Ri9GFINC4IArRhNC40YLQvtGB0LDQvdC40YLQsNGA0L3Ri9GFINC8
-0LXRgCDQvdCwINGC0LXRgNGA0LjRgtC+0YDQuNC4INGC0LDQvNC+0LbQtdC90L3QvtCz0L4g0YHQ
-vtGO0LfQsCDRgSAwMSDRj9C90LLQsNGA0Y8gMjAxMCDQs9C+0LTQsC4gCtCe0YHQvtCx0LXQvdC9
-0L7RgdGC0Lgg0Lgg0L/QvtGA0Y/QtNC+0Log0L7QsdGA0LDRidC10L3QuNC4INC/0YDQvtC00YPQ
-utGG0LjQuCwg0L/QvtC00LvQtdC20LDRidC10Lkg0L7QsdGP0LfQsNGC0LXQu9GM0L3QvtC5INC+
-0YbQtdC90LrQtSAKKNC/0L7QtNGC0LLQtdGA0LbQtNC10L3QuNGOKSDRgdC+0L7RgtCy0LXRgtGB
-0YLQstC40Y8sINC90LAg0YLQsNC80L7QttC10L3QvdC+0Lkg0YLQtdGA0YDQuNGC0L7RgNC40Lgg
-0YLQsNC80L7QttC10L3QvdC+0LPQviDRgdC+0Y7Qt9CwLiDQktC30LDQuNC80L3QvtC1IArQv9GA
-0LjQt9C90LDQvdC40LUg0LDQutC60YDQtdC00LjRgtCw0YbQuNC4INC+0YDQs9Cw0L3QvtCyINC/
-0L4g0YHQtdGA0YLQuNGE0LjQutCw0YbQuNC4ICjQv9C+0LTRgtCy0LXRgNC20LTQtdC90LjRjiDR
-gdC+0L7RgtCy0LXRgtGB0YLQstC40Y8pINC4IArQuNGB0L/Ri9GC0LDRgtC10LvRjNC90YvRhSDQ
-u9Cw0LHQvtGA0LDRgtC+0YDQuNC5ICjRhtC10L3RgtGA0L7QsiksINCy0YvQv9C+0LvQvdGP0Y7R
-idC40YUg0YDQsNCx0L7RgtGLINC/0L4g0L/QvtC00YLQstC10YDQttC00LXQvdC40Y4g0YHQvtC+
-0YLQstC10YLRgdGC0LLQuNGPLiAK0J/RgNC40LzQtdC90LXQvdC40LUg0YHQsNC90LjRgtCw0YDQ
-vdGL0YUsINCy0LXRgtC10YDQuNC90LDRgNC90YvRhSDQuCDRhNC40YLQvtGB0LDQvdC40YLQsNGA
-0L3Ri9GFINC80LXRgCDQvdCwINGC0LXRgNGA0LjRgtC+0YDQuNC4INGC0LDQvNC+0LbQtdC90L3Q
-vtCz0L4g0YHQvtGO0LfQsC4KCjQuINCe0YHQvtCx0LXQvdC90L7RgdGC0LgsINC/0L7RgNGP0LTQ
-vtC6INCy0LfQuNC80LDQvdC40Y8g0LrQvtGB0LLQtdC90L3Ri9GFINC90LDQu9C+0LPQvtCyINC4
-INC80LXRhdCw0L3QuNC30Lwg0LrQvtC90YLRgNC+0LvRjyDQvdCw0LQg0LjRhSDRg9C/0LvQsNGC
-0L7QuSAK0L/RgNC4INGN0LrRgdC/0L7RgNGC0LUg0Lgg0LjQvNC/0L7RgNGC0LUg0YLQvtCy0LDR
-gNC+0LIg0L/QvtGB0LvQtSDQstGB0YLRg9C/0LvQtdC90LjRjyDQsiDRgdC40LvRgyDQodC+0LPQ
-u9Cw0YjQtdC90LjRjyDQviDQv9GA0LjQvdGG0LjQv9Cw0YUgCtCy0LfQuNC80LDQvdC40Y8g0LrQ
-vtGB0LLQtdC90L3Ri9GFINC90LDQu9C+0LPQvtCyLiAKCjUuINCY0LfQvNC10L3QtdC90LjRjyDQ
-siDRgdC40YHRgtC10LzQtSDQstCw0LvRjtGC0L3QvtCz0L4g0YDQtdCz0YPQu9C40YDQvtCy0LDQ
-vdC40Y8g0Lgg0LLQsNC70Y7RgtC90L7Qs9C+INC60L7QvdGC0YDQvtC70Y8g0L3QsNC0IArQstC9
-0LXRiNC90LXRgtC+0YDQs9C+0LLRi9C80Lgg0L7Qv9C10YDQsNGG0LjRj9C80Lgg0LIg0KLQsNC8
-0L7QttC10L3QvdC+0Lwg0YHQvtGO0LfQtS4g0J7RgdC+0LHQtdC90L3QvtGB0YLQuCDQstCw0LvR
-jtGC0L3QvtCz0L4g0LrQvtC90YLRgNC+0LvRjyDQsiAK0KLQsNC80L7QttC10L3QvdC+0Lwg0YHQ
-vtGO0LfQtS4KCjYuINCi0LDQvNC+0LbQtdC90L3Ri9C5INC60L7QtNC10LrRgSDQotCw0LzQvtC2
-0LXQvdC90L7Qs9C+INGB0L7RjtC30LAgKNCi0Jog0KLQoSkg0Lgg0LXQs9C+INC+0YHQvdC+0LLQ
-vdGL0LUg0L7RgtC70LjRh9C40Y8g0L7RgiDQotCw0LzQvtC20LXQvdC90L7Qs9C+IArQutC+0LTQ
-tdC60YHQsCDQoNC+0YHRgdC40LnRgdC60L7QuSDQpNC10LTQtdGA0LDRhtC40LguINCf0L7RgNGP
-0LTQvtC6INGB0L7QstC10YDRiNC10L3QuNGPINGC0LDQvNC+0LbQtdC90L3Ri9GFINC+0L/QtdGA
-0LDRhtC40Lkg0LIg0L7RgtC90L7RiNC10L3QuNC4IArRgtC+0LLQsNGA0L7Qsiwg0LLQstC+0LfQ
-uNC80YvRhSDQvdCwINGC0LDQvNC+0LbQtdC90L3Rg9GOINGC0LXRgNGA0LjRgtC+0YDQuNGOINCi
-0KEg0Lgg0LLRi9Cy0L7Qt9C40LzRi9GFINGBINC10LPQviDRgtC10YDRgNC40YLQvtGA0LjQuC4g
-0KPQv9GA0L7RidC10L3QuNC1IArQv9C+0YDRj9C00LrQsCDRgdC+0LLQtdGA0YjQtdC90LjRjyDR
-gtCw0LzQvtC20LXQvdC90YvRhSDQvtC/0LXRgNCw0YbQuNC5INC/0YDQuCDQtNC10LrQu9Cw0YDQ
-uNGA0L7QstCw0L3QuNC4INC4INCy0YvQv9GD0YHQutC1INGC0L7QstCw0YDQvtCyLCAK0L/RgNC1
-0LTRg9GB0LzQvtGC0YDQtdC90L3Ri9C1INCi0Jog0KLQoS4g0J7RgdC+0LHQtdC90L3QvtGB0YLQ
-uCDQuNGB0YfQuNGB0LvQtdC90LjRjywg0YPQv9C70LDRgtGLINC4INCy0L7Qt9Cy0YDQsNGC0LAg
-0YLQsNC80L7QttC10L3QvdGL0YUg0L/Qu9Cw0YLQtdC20LXQuSDQsiAK0YHQvtC+0YLQstC10YLR
-gdGC0LLQuNC1INGBINCi0Jog0KLQoS4g0J/RgNC40LHRi9GC0LjQtSDRgtC+0LLQsNGA0L7QsiDQ
-uCDRgtGA0LDQvdGB0L/QvtGA0YLQvdGL0YUg0YHRgNC10LTRgdGC0LIg0L3QsCDRgtCw0LzQvtC2
-0LXQvdC90YPRjiDRgtC10YDRgNC40YLQvtGA0LjRjiAK0KLQsNC80L7QttC10L3QvdC+0LPQviDR
-gdC+0Y7Qt9CwLiDQmNC30LzQtdC90LXQvdC40Y8g0LIg0YLQsNC80L7QttC10L3QvdC+0Lkg0L/R
-gNC+0YbQtdC00YPRgNC1INGC0LDQvNC+0LbQtdC90L3QvtCz0L4g0YLRgNCw0L3Qt9C40YLQsCwg
-CtC/0YDQtdC00YPRgdC80L7RgtGA0LXQvdC90YvQtSDQotCaINCi0KEuINCi0YDQsNC90LfQuNGC
-0L3QsNGPINC00LXQutC70LDRgNCw0YbQuNGPOiDQvtGE0L7RgNC80LvQtdC90LjQtSwg0L/QvtGA
-0Y/QtNC+0Log0L/QvtC00LDRh9C4LCDRgNC10LPQuNGB0YLRgNCw0YbQuNGPLiAK0J7RgdC+0LHQ
-tdC90L3QvtGB0YLQuCDQvtGE0L7RgNC80LvQtdC90LjRjyDRgtGA0LDQvdGB0L/QvtGA0YLQvdGL
-0YUg0Lgg0YLQvtCy0LDRgNC+0YHQvtC/0YDQvtCy0L7QtNC40YLQtdC70YzQvdGL0YUg0LTQvtC6
-0YPQvNC10L3RgtC+0LIsINC90LXQvtCx0YXQvtC00LjQvNGL0YUgCtC00LvRjyDQv9GA0L7QuNC3
-0LLQvtC00YHRgtCy0LAg0YLQsNC80L7QttC10L3QvdC+0LPQviDQvtGE0L7RgNC80LvQtdC90LjR
-jyDQuCDRgtCw0LzQvtC20LXQvdC90L7Qs9C+INC60L7QvdGC0YDQvtC70Y8g0L3QsCDRgtC10YDR
-gNC40YLQvtGA0LjQuCDQotCw0LzQvtC20LXQvdC90L7Qs9C+IArRgdC+0Y7Qt9CwLiAKCjcuINCe
-0YHQvtCx0LXQvdC90L7RgdGC0Lgg0L7Qv9GA0LXQtNC10LvQtdC90LjRjywg0LfQsNGP0LLQu9C1
-0L3QuNGPLCDQutC+0L3RgtGA0L7Qu9GPINC4INC60L7RgNGA0LXQutGC0LjRgNC+0LLQutC4INGC
-0LDQvNC+0LbQtdC90L3QvtC5INGB0YLQvtC40LzQvtGB0YLQuCwgCtCy0LLQvtC30LjQvNGL0YUg
-0YLQvtCy0LDRgNC+0LIg0L/QvtGB0LvQtSDQstGB0YLRg9C/0LvQtdC90LjRjyDQsiDRgdC40LvR
-gyDQotCw0LzQvtC20LXQvdC90L7Qs9C+INC60L7QtNC10LrRgdCwINCi0LDQvNC+0LbQtdC90L3Q
-vtCz0L4g0YHQvtGO0LfQsC4K0KHQvtCz0LvQsNGI0LXQvdC40Lkg0L4g0L/QvtGA0Y/QtNC60LUg
-0LTQtdC60LvQsNGA0LjRgNC+0LLQsNC90LjRjyDRgtCw0LzQvtC20LXQvdC90L7QuSDRgdGC0L7Q
-uNC80L7RgdGC0Lgg0YLQvtCy0LDRgNC+0LIg0Lgg0L4g0L/QvtGA0Y/QtNC60LUgCtC+0YHRg9GJ
-0LXRgdGC0LLQu9C10L3QuNGPINC60L7QvdGC0YDQvtC70Y8g0L/RgNCw0LLQuNC70YzQvdC+0YHR
-gtC4INC+0L/RgNC10LTQtdC70LXQvdC40Y8g0YLQsNC80L7QttC10L3QvdC+0Lkg0YHRgtC+0LjQ
-vNC+0YHRgtC4INGC0L7QstCw0YDQvtCyLCAK0L/QtdGA0LXQvNC10YnQsNC10LzRi9GFINGH0LXR
-gNC10Lcg0YLQsNC80L7QttC10L3QvdGD0Y4g0LPRgNCw0L3QuNGG0YMg0KLQsNC80L7QttC10L3Q
-vdC+0LPQviDRgdC+0Y7Qt9CwLiAKCtCh0YLQvtC40LzQvtGB0YLRjCDRg9GH0LDRgdGC0LjRjzog
-MTc1MDAg0YDRg9Cx0LvQtdC5LgoK0JzQtdGB0YLQviDQv9GA0L7QstC10LTQtdC90LjRjzog0Lwu
-INCR0LDRg9C80LDQvdGB0LrQsNGPLCDRg9C7LiDQkdCw0YPQvNCw0L3RgdC60LDRjywg0LQuNiwg
-0LHQuNC30L3QtdGBINGG0LXQvdGC0YAgItCS0LjQutGC0L7RgNC40Y8g0J/Qu9Cw0LfQsCIuCtCS
-INGB0YLQvtC40LzQvtGB0YLRjCDQstGF0L7QtNC40YIg0LzQtdGC0L7QtNC40YfQtdGB0LrQuNC5
-INC80LDRgtC10YDQuNCw0LssINC+0LHQtdC00YssINC60L7RhNC1LdC/0LDRg9C30YssINGB0LXR
-gNGC0LjRhNC40LrQsNGCLiDQmNC90L7Qs9C+0YDQvtC00L3QuNC8IArRg9GH0LDRgdGC0L3QuNC6
-0LDQvCDQv9C+0LzQvtCz0LDQtdC8INCyINCx0YDQvtC90LjRgNC+0LLQsNC90LjQuCDQs9C+0YHR
-gtC40L3QuNGG0YsuCgrQmNC90YTQvtGA0LzQsNGG0LjRjyDQuCDRgNC10LPQuNGB0YLRgNCw0YbQ
-uNGPOiA4ICg0OTUpIC0gOTIxLTMwLTE3Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpEb3dubG9hZCBJ
-bnRlbCYjMTc0OyBQYXJhbGxlbCBTdHVkaW8gRXZhbApUcnkgdGhlIG5ldyBzb2Z0d2FyZSB0b29s
-cyBmb3IgeW91cnNlbGYuIFNwZWVkIGNvbXBpbGluZywgZmluZCBidWdzCnByb2FjdGl2ZWx5LCBh
-bmQgZmluZS10dW5lIGFwcGxpY2F0aW9ucyBmb3IgcGFyYWxsZWwgcGVyZm9ybWFuY2UuClNlZSB3
-aHkgSW50ZWwgUGFyYWxsZWwgU3R1ZGlvIGdvdCBoaWdoIG1hcmtzIGR1cmluZyBiZXRhLgpodHRw
-Oi8vcC5zZi5uZXQvc2Z1L2ludGVsLXN3LWRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRl
-dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9y
-Z2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Tue, Apr 06, 2010 at 01:50:44PM +0100, Martin Guy wrote:
+> On 4/6/10, Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org> wrote:
+> > On Thu, Apr 01, 2010 at 01:15:20AM +0100, Martin Guy wrote:
+> >  > I have another question: like the Cirrus driver, this takes 100% CPU
+> >  > doing busy wait for the current transfer to complete.
+> >
+> >  I tried to find out whether the driver did something wrong to get
+> >  into busylooping but couldn't find anything. In case of MMC/SD
+> >  cards, through mmc_spi, transfer sizes are >= 512 bytes at a time
+> >  and FIFO size is only 8 bytes (or words) so the CPU is expected to
+> >  be pretty busy serving interrupts from the SSP.
+> 
+> Right. that explains it.
+> The board I'm testing it with just has a single mmc/sd card on the ssp port.
+> 
+> The docs say "separate transmit and receive FIFO memory buffers, 16
+> bits wide, 8 locations deep".
+> Watching vmstat output with this driver, it gets 226 kB/sec reading
+> /dev/mmcblk0 at 100% system cpu usage with 2354 interrupts and 2724
+> context switches per second. I don't see how that relates to 8 bytes
+> or 8 halfwords per interrupt; it suggests 100 bytes transferred per
+> interrupt once you remove the 100/sec of clock tick irq.
+> Writing instead gets 228kB/sec incurring 1916 (read: 1815) irqs and
+> 934 context switches.
+> Similarly, checking /proc/interrupts, writing 10MB to the raw device
+> incurs 83221 ep93xx-spi interrupts: one per 125 bytes transferred. Is
+> it maybe busy-waiting filling the output FIFO as fast as it is
+> emptying?
+
+If you check the sizes of the transfers for the MMC case it is something like:
+
+[ 1796.080000] ep93xx-spi ep93xx-spi: setup: mode 0, cpsr 2, scr 0, dss 7
+[ 1796.080000] ep93xx-spi ep93xx-spi: setup: cr0 0x7
+[ 1796.080000] ep93xx-spi ep93xx-spi: ep93xx_spi_process_transfer: transferring 512 bytes
+[ 1796.080000] ep93xx-spi ep93xx-spi: ep93xx_spi_interrupt: handling interrupt
+[ 1796.080000] ep93xx-spi ep93xx-spi: ep93xx_spi_read_write: tx=512, rx=512
+[ 1796.080000] ep93xx-spi ep93xx-spi: ep93xx_spi_process_transfer: transferring 2 bytes
+[ 1796.080000] ep93xx-spi ep93xx-spi: ep93xx_spi_interrupt: handling interrupt
+[ 1796.080000] ep93xx-spi ep93xx-spi: ep93xx_spi_read_write: tx=2, rx=2
+[ 1796.080000] ep93xx-spi ep93xx-spi: ep93xx_spi_process_transfer: transferring 1 bytes
+[ 1796.080000] ep93xx-spi ep93xx-spi: ep93xx_spi_interrupt: handling interrupt
+[ 1796.080000] ep93xx-spi ep93xx-spi: ep93xx_spi_read_write: tx=1, rx=1
+
+So size of the transfer varies, depending on what kind of message
+is passed from mmc_spi to the driver. From the above, we can see
+that ep93xx_spi_read_write() transfers 512 bytes before passing control
+back to the calling interrupt handler.
+
+I got the same results with polling enabled (this is with v3 which is not yet
+posted).
+
+> 
+> Here's the code I'm talking about:
+> 
+> static int ep93xx_spi_read_write(struct ep93xx_spi *espi)
+> {
+> ...
+>         /*
+>          * Write as long as TX FIFO is not full. After every write we check
+>          * whether RX FIFO has any new data in it (and in that case we read what
+>          * ever was in the RX FIFO).
+>          */
+>         while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_TNF) &&
+>                 espi->tx < t->len) {
+>                 ep93xx_do_write(espi, t);
+> 
+>                 if (ep93xx_spi_wait_busy(espi, SPI_TIMEOUT)) {
+>                         msg->status = -ETIMEDOUT;
+>                         return msg->status;
+>                 }
+> 
+>                 while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE) &&
+>                         espi->rx < t->len) {
+>                         ep93xx_do_read(espi, t);
+>                 }
+>         }
+> ...
+> 
+> and ep93xx_spi_wait_busy() reads a device register in an busy loop
+> with a timeout:
+> 
+> static int ep93xx_spi_wait_busy(const struct ep93xx_spi *espi,
+>                                 unsigned long msecs)
+> {
+>         unsigned long timeout = jiffies + msecs_to_jiffies(msecs);
+> 
+>         while (time_before(jiffies, timeout)) {
+>                 if ((ep93xx_spi_read_u16(espi, SSPSR) & SSPSR_BSY) == 0)
+>                         return 0;
+>                 cpu_relax();
+>         }
+> 
+>         return -ETIMEDOUT;
+> }
+> 
+> The manual says that the BSY status bit means
+> "SSP is currently transmitting and / or receiving a frame
+> or the transmit FIFO is non-empty."
+
+I think that when the controller is enabled (SSE is set), it is
+transmitting/receiving once there is data (TX). It even enables the
+SPI output clock only when TX data is put into TX FIFO (I checked
+this with oscilloscope).
+
+I added debug print to this function (ep93xx_spi_wait_busy()) and
+it loops only once. If I don't wait while the bit is cleared, the
+controller hangs.
+
+> so this would make the code
+> - output one byte/halfword
+> - wait busily until the FIFO is empty of that one datum
+> - maybe read one received word/byte
+> - loop
+> 
+> This seems bizarre compared to what the hardware suggests:
+> We only have one interrupt, which is triggered when
+> - the TX buffer is less than half empty (ie there is room for 4 or more words)
+> - the RX buffer is more than half full (ie there are four or more
+> words to read from it)
+> - RX overrun
+> and there are status bits to tell us whether the TX and RX buffers are
+> full, empty or half-full (the half-full bits triggering the
+> interrupts).
+> 
+> My understanding ATM is that this version enables interrupts to start
+> a transfer, immediately gets interrupted because the transmit buffer
+> is less than half empty, and if it is supposed to be reading from the
+> card, tramsmits a 0 byte/halfword for every byte/halfword it is
+> supposed to be receiving.
+> 
+> If it's supposed to be sending, it pokes one byte/halfword into the
+> write FIFO, waits for that to have been completely transmitted and for
+> the FIFO to be empty, then checks if it should read anything, then
+> writes another byte/halfword etc. and so on.
+> 
+> This seems completely at odds with what the hardware suggests, which would be
+> WRITE: fill the TX buffer, then wait for half-empty IRQ.
+> READ: react to half-full IRQ by emptying the RX buffer.
+> with some hackery because if you receive a final 1, 2 or 3
+> byte/halfwords, you don't get an RX interrupt.
+
+Since SPI is full-duplex, I think that it is enough to just perform
+another transfer once we get RX/TX interrupt. This also makes the
+driver simpler (yet not the most efficient).
+
+At least if you see my comments above, the driver seems to do the
+right thing (for example it transmitted one spi_transfer at a time
+without busy looping).
+
+> I've tried removing the busy-wait from the read-write loop and the
+> kernel hangs forever as soon as it looks at the SSP device. Worse, my
+> serial console is dead so I can't be more expicit.
+
+Yup, I noticed same thing. Once BSY bit is cleared, RX FIFO can be
+read without hangs (or something like that).
+
+> Am I missing something here, or is the current strategy forced by
+> undocumented brokenness of the hardware?
+
+I'm not sure.
+
+For me, current strategy seems clear:
+	1. Fetch next message
+		1.1 Enable the SPI controller
+		1.2 Assert chip-select
+		1.3 Fetch next transfer
+			1.3.1 Enable interrupts (if not polling)
+			1.3.2 Perform the transfer
+				write/read to/from the FIFO
+			1.3.2 Disable interrupts (if not polling)
+			... (for all spi_transfers)
+		1.4 De-assert chip-select
+		1.5 Disable the SPI controller
+		1.6 call msg->complete
+		...
+
+It isn't the most optimized but my purpose was to get it working first. Since I only
+have one ep9302 board and 2 SPI devices, it limits my testing a bit. Thanks to you
+I've got very valuable input related to the driver :)
+
+If you have time, I suggest that add some printk()s to the
+ep93xx_spi_wait_busy() and see whether it busy loops in your device
+(or does some other weird things).
+
+> Lastly, what is the meaning of conditional operator(s) in
+>         return t->bits_per_word ?: msg->spi->bits_per_word;
+> It compiles, but it's the first time I've seen this construct in 27
+> years of C programming. What is the "normal" syntax for this?
+
+It is an GCC extension:
+
+http://gcc.gnu.org/onlinedocs/gcc-4.4.3/gcc/Conditionals.html#Conditionals
+
+I've been using it once I saw it somewhere in the kernel source.
+
+Thanks again,
+MW
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

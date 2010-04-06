@@ -1,22 +1,13 @@
-From: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 1/3] spi: implemented driver for
-	Cirrus EP93xx SPI controller
-Date: Tue, 6 Apr 2010 13:50:44 +0100
-Message-ID: <s2g56d259a01004060550me72bd64cr35e4a83c495d6909@mail.gmail.com>
-References: <cover.1268930557.git.mika.westerberg@iki.fi>
-	<9de3769ae253830fb0eebc98d299137c59c69b8c.1268930557.git.mika.westerberg@iki.fi>
-	<56d259a01003250649ubf0e32ejc15e4f3b45ec43cd@mail.gmail.com>
-	<20100325184316.GB20512@gw.healthdatacare.com>
-	<s2n56d259a01003311715ke5b93a96v9d453ec32f08ec29@mail.gmail.com>
-	<20100406054418.GA27465@gw.healthdatacare.com>
+From: "=?windows-1251?B?0PPq7uLu5Ojy5ev+IMYgyiDV?=" <culemegy-xQvtZHaCEeQvJsYlp49lxw@public.gmane.org>
+Subject: [SPAM] Жилищно - коммунальное хозяйство: правовое регулирование и налогообложениеaj
+Date: Tue, 6 Apr 2010 19:35:13 +0300
+Message-ID: <1795543982.20100406193513@edupost.ru>
+Reply-To: answer-xQvtZHaCEeQvJsYlp49lxw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100406054418.GA27465-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,130 +18,161 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 4/6/10, Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org> wrote:
-> On Thu, Apr 01, 2010 at 01:15:20AM +0100, Martin Guy wrote:
->  > I have another question: like the Cirrus driver, this takes 100% CPU
->  > doing busy wait for the current transfer to complete.
->
->  I tried to find out whether the driver did something wrong to get
->  into busylooping but couldn't find anything. In case of MMC/SD
->  cards, through mmc_spi, transfer sizes are >= 512 bytes at a time
->  and FIFO size is only 8 bytes (or words) so the CPU is expected to
->  be pretty busy serving interrupts from the SSP.
-
-Right. that explains it.
-The board I'm testing it with just has a single mmc/sd card on the ssp port.
-
-The docs say "separate transmit and receive FIFO memory buffers, 16
-bits wide, 8 locations deep".
-Watching vmstat output with this driver, it gets 226 kB/sec reading
-/dev/mmcblk0 at 100% system cpu usage with 2354 interrupts and 2724
-context switches per second. I don't see how that relates to 8 bytes
-or 8 halfwords per interrupt; it suggests 100 bytes transferred per
-interrupt once you remove the 100/sec of clock tick irq.
-Writing instead gets 228kB/sec incurring 1916 (read: 1815) irqs and
-934 context switches.
-Similarly, checking /proc/interrupts, writing 10MB to the raw device
-incurs 83221 ep93xx-spi interrupts: one per 125 bytes transferred. Is
-it maybe busy-waiting filling the output FIFO as fast as it is
-emptying?
-
-Here's the code I'm talking about:
-
-static int ep93xx_spi_read_write(struct ep93xx_spi *espi)
-{
-...
-        /*
-         * Write as long as TX FIFO is not full. After every write we check
-         * whether RX FIFO has any new data in it (and in that case we read what
-         * ever was in the RX FIFO).
-         */
-        while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_TNF) &&
-                espi->tx < t->len) {
-                ep93xx_do_write(espi, t);
-
-                if (ep93xx_spi_wait_busy(espi, SPI_TIMEOUT)) {
-                        msg->status = -ETIMEDOUT;
-                        return msg->status;
-                }
-
-                while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE) &&
-                        espi->rx < t->len) {
-                        ep93xx_do_read(espi, t);
-                }
-        }
-...
-
-and ep93xx_spi_wait_busy() reads a device register in an busy loop
-with a timeout:
-
-static int ep93xx_spi_wait_busy(const struct ep93xx_spi *espi,
-                                unsigned long msecs)
-{
-        unsigned long timeout = jiffies + msecs_to_jiffies(msecs);
-
-        while (time_before(jiffies, timeout)) {
-                if ((ep93xx_spi_read_u16(espi, SSPSR) & SSPSR_BSY) == 0)
-                        return 0;
-                cpu_relax();
-        }
-
-        return -ETIMEDOUT;
-}
-
-The manual says that the BSY status bit means
-"SSP is currently transmitting and / or receiving a frame
-or the transmit FIFO is non-empty."
-so this would make the code
-- output one byte/halfword
-- wait busily until the FIFO is empty of that one datum
-- maybe read one received word/byte
-- loop
-
-This seems bizarre compared to what the hardware suggests:
-We only have one interrupt, which is triggered when
-- the TX buffer is less than half empty (ie there is room for 4 or more words)
-- the RX buffer is more than half full (ie there are four or more
-words to read from it)
-- RX overrun
-and there are status bits to tell us whether the TX and RX buffers are
-full, empty or half-full (the half-full bits triggering the
-interrupts).
-
-My understanding ATM is that this version enables interrupts to start
-a transfer, immediately gets interrupted because the transmit buffer
-is less than half empty, and if it is supposed to be reading from the
-card, tramsmits a 0 byte/halfword for every byte/halfword it is
-supposed to be receiving.
-
-If it's supposed to be sending, it pokes one byte/halfword into the
-write FIFO, waits for that to have been completely transmitted and for
-the FIFO to be empty, then checks if it should read anything, then
-writes another byte/halfword etc. and so on.
-
-This seems completely at odds with what the hardware suggests, which would be
-WRITE: fill the TX buffer, then wait for half-empty IRQ.
-READ: react to half-full IRQ by emptying the RX buffer.
-with some hackery because if you receive a final 1, 2 or 3
-byte/halfwords, you don't get an RX interrupt.
-
-I've tried removing the busy-wait from the read-write loop and the
-kernel hangs forever as soon as it looks at the SSP device. Worse, my
-serial console is dead so I can't be more expicit.
-
-Am I missing something here, or is the current strategy forced by
-undocumented brokenness of the hardware?
-
-Lastly, what is the meaning of conditional operator(s) in
-        return t->bits_per_word ?: msg->spi->bits_per_word;
-It compiles, but it's the first time I've seen this construct in 27
-years of C programming. What is the "normal" syntax for this?
-
-    M
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqCiogIDE0IC0gMTUgINCw0L/RgNC10LvRjyAgMjAxMNCzLgoqCiogICDQltCa0KUgICAo0JbQ
+mNCb0JjQqdCd0J4gIC0gINCa0J7QnNCc0KPQndCQ0JvQrNCd0J7QlSAg0KXQntCX0K/QmdCh0KLQ
+ktCeKTogCiogICDQvtGB0L7QsdC10L3QvdC+0YHRgtC4INGA0LXQs9GD0LvQuNGA0L7QstCw0L3Q
+uNGPINC4INC90LDQu9C+0LPQvtC+0LHQu9C+0LbQtdC90LjRjwoqCioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgoK0J/QoNCY0JPQm9CQ
+0KjQkNCu0KLQodCvOiDRgNGD0LrQvtCy0L7QtNC40YLQtdC70Lgg0L/RgNC10LTQv9GA0LjRj9GC
+0LjQuSDQltCa0KUsINCz0LvQsNCy0L3Ri9C1INCx0YPRhdCz0LDQu9GC0LXRgNGLLCDRjtGA0LjR
+gdGC0YsuCgoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioKCtCf0KDQntCT0KDQkNCc0JzQkCAg0KHQldCc0JjQndCQ0KDQkAoKMS4g0J7Q
+sdGJ0LjQtSDQv9C+0LvQvtC20LXQvdC40Y8g0L7QsSDQvtC60LDQt9Cw0L3QuNC4INGD0YHQu9GD
+0LMg0LIg0LbQuNC70LjRidC90L4g4oCTINC60L7QvNC80YPQvdCw0LvRjNC90L7QvCDRhdC+0LfR
+j9C50YHRgtCy0LUuINCX0LDRidC40YLQsCDQv9GA0LDQsiDQv9C+0YLRgNC10LHQuNGC0LXQu9C1
+0Lkg0L/RgNC4INC+0LrQsNC30LDQvdC40Lgg0YPRgdC70YPQsyDQsiDQttC40LvQuNGJ0L3QviDi
+gJMg0LrQvtC80LzRg9C90LDQu9GM0L3QvtC8INGF0L7Qt9GP0LnRgdGC0LLQtS4KCjIuINCf0YDQ
+uNC10Lwg0L/QvtGB0YLRgNC+0LXQvdC90YvRhSDQvtCx0YrQtdC60YLQvtCyINC90LAg0L7QsdGB
+0LvRg9C20LjQstCw0L3QuNC1ICjQsiDRg9C/0YDQsNCy0LvQtdC90LjQtSkuINCR0Y7QtNC20LXR
+gtC90L7QtSDRhNC40L3QsNC90YHQuNGA0L7QstCw0L3QuNC1INC/0YDQtdC00L/RgNC40Y/RgtC4
+0Lkg0LbQuNC70LjRidC90L4gLSDQutC+0LzQvNGD0L3QsNC70YzQvdC+0LPQviDQutC+0LzQv9C7
+0LXQutGB0LAuINCR0Y7QtNC20LXRgtC90YvQtSDRg9GH0YDQtdC20LTQtdC90LjRjyDQttC40LvQ
+uNGJ0L3QviAtINC60L7QvNC80YPQvdCw0LvRjNC90L7Qs9C+INC60L7QvNC/0LvQtdC60YHQsC4g
+0J/Qu9Cw0YLQsCDQt9CwINC90LDQtdC8INC20LjQu9GM0Y8uINCd0LDQu9C+0LPQvtC+0LHQu9C+
+0LbQtdC90LjQtSDRhtC10LvQtdCy0L7Qs9C+INGE0LjQvdCw0L3RgdC40YDQvtCy0LDQvdC40Y8g
+0Lgg0YbQtdC70LXQstGL0YUg0L/QvtGB0YLRg9C/0LvQtdC90LjQuS4g0KTQuNC90LDQvdGB0LjR
+gNC+0LLQsNC90LjQtSDQutCw0L/QuNGC0LDQu9GM0L3QvtCz0L4g0YDQtdC80L7QvdGC0LAsINCy
+INGC0L7QvCDRh9C40YHQu9C1INC90LDQutC+0L/Qu9C10L3QuNC1LiDQnNGD0L3QuNGG0LjQv9Cw
+0LvRjNC90YvQuSDQt9Cw0LrQsNC3LgoKMy4g0JrQstCw0YDRgtC/0LvQsNGC0LAg4oCTINGB0LjR
+gdGC0LXQvNCwINC90LDQu9C+0LPQvtC+0LHQu9C+0LbQtdC90LjRjyDQsiDRgdC+0L7RgtCy0LXR
+gtGB0YLQstC40Lgg0YHQviDRgdGC0YDRg9C60YLRg9GA0L7QuS4g0KfQsNGB0YLRjCDQutCy0LDR
+gNGC0L/Qu9Cw0YLRiywg0LfQsCDRg9GB0LvRg9Cz0Lgg0L/QviDRg9C/0YDQsNCy0LvQtdC90LjR
+jiDQuCDRgdC+0LTQtdGA0LbQsNC90LjRjiDQvtCx0YnQtdCz0L4g0LjQvNGD0YnQtdGB0YLQstCw
+ICjQsdC10Lcg0L/QtdGA0LXQv9GA0LXQtNGK0Y/QstC70Y/QtdC80YvRhSDQutC+0LzQvNGD0L3Q
+sNC70YzQvdGL0YUg0L/Qu9Cw0YLQtdC20LXQuSkuINCa0LLQsNGA0YLQv9C70LDRgtCwIOKAkyDQ
+tNC+0LrRg9C80LXQvdGC0L7QvtCx0L7RgNC+0YIuINCa0LDRgdGB0L7QstGL0LUg0L7Qv9C10YDQ
+sNGG0LjQuCDQsiDQttC40LvQuNGJ0L3QviAtINC60L7QvNC80YPQvdCw0LvRjNC90L7QvCDQutC+
+0LzQv9C70LXQutGB0LUuINCa0L7QvNC80YPQvdCw0LvRjNC90YvQtSDQv9C70LDRgtC10LbQuCwg
+0LLRi9GB0YLQsNCy0LvRj9C10LzRi9C1INC20LjQu9GM0YbQsNC8INC/0L4g0L/QvtGB0YDQtdC0
+0L3QuNGH0LXRgdC60L7QuSDQutCy0LDQu9C40YTQuNC60LDRhtC40LguINCf0L7Qu9GD0YfQtdC9
+0LjQtSDQuNC3INCx0Y7QtNC20LXRgtCwINGE0LjQvdCw0L3RgdC40YDQvtCy0LDQvdC40Y8g0L3Q
+sCDQutC+0LzQv9C10L3RgdCw0YbQuNGOINC60LLQsNGA0YLQv9C70LDRgtGLIOKAkyDQutCy0LDQ
+u9C40YTQuNC60LDRhtC40Y8sINGD0YfQtdGCINC4INC90LDQu9C+0LPQvtC+0LHQu9C+0LbQtdC9
+0LjQtS4g0J7Qv9GA0LXQtNC10LvQtdC90LjQtSDRgtCw0YDQuNGE0L7QsiDQsiDQttC40LvQuNGJ
+0L3QviAtINC60L7QvNC80YPQvdCw0LvRjNC90L7QvCDQutC+0LzQv9C70LXQutGB0LUuIAoKNC4g
+0J3QsNC70L7QsyDQvdCwINC/0YDQuNCx0YvQu9GMINC/0L4g0L7QsdGB0LvRg9C20LjQstCw0Y7R
+idC40Lwg0L/RgNC+0LjQt9Cy0L7QtNGB0YLQstCw0Lwg0Lgg0YXQvtC30Y/QudGB0YLQstCw0Lwu
+INCj0L/RgNC+0YnQtdC90L3QsNGPINGB0LjRgdGC0LXQvNCwINC90LDQu9C+0LPQvtC+0LHQu9C+
+0LbQtdC90LjRjyDQsiDQttC40LvQuNGJ0L3QviAtINC60L7QvNC80YPQvdCw0LvRjNC90L7QvCDQ
+utC+0LzQv9C70LXQutGB0LUuINCV0J3QktCUINCyINC20LjQu9C40YnQvdC+IC0g0LrQvtC80LzR
+g9C90LDQu9GM0L3QvtC8INC60L7QvNC/0LvQtdC60YHQtS4KCjUuINCa0L7QvdGG0LXRgdGB0LjQ
+vtC90L3Ri9C1INGB0L7Qs9C70LDRiNC10L3QuNGPIOKAkyDQv9GA0LDQstC+0LLRi9C1INC+0YHQ
+vdC+0LLRiy4g0JrQvtC90YbQtdGB0YHQuNC+0L3QvdGL0LUg0YHQvtCz0LvQsNGI0LXQvdC40Y8g
+4oCTINCx0YPRhdCz0LDQu9GC0LXRgNGB0LrQuNC5INGD0YfQtdGCLiDQmtC+0L3RhtC10YHRgdC4
+0L7QvdC90YvQtSDRgdC+0LPQu9Cw0YjQtdC90LjRjyDigJMg0L3QsNC70L7Qs9C+0L7QsdC70L7Q
+ttC10L3QuNC1INC/0YDQuNCx0YvQu9C4LiDQndCw0LvQvtCzINC90LAg0LjQvNGD0YnQtdGB0YLQ
+stC+INC/0YDQuCDQutC+0L3RhtC10YHRgdC40L7QvdC90YvRhS4g0JrQvtC90YbQtdGB0YHQuNC+
+0L3QvdC+0LUg0YHQvtCz0LvQsNGI0LXQvdC40LUg0Lgg0J3QlNChLgoKNi4g0KPQv9GA0LDQstC7
+0Y/RjtGJ0LjQtSDQvtGA0LPQsNC90LjQt9Cw0YbQuNC4LCDQv9GA0LDQstC+0LLRi9C1INC+0YHQ
+vdC+0LLRiywg0LrQvtC90LrRg9GA0YEg0L/QviDQstGL0LHQvtGA0YMuINCj0L/RgNCw0LLQu9GP
+0Y7RidC40LUg0L7RgNCz0LDQvdC40LfQsNGG0LjQuCDigJMg0LHRg9GF0LPQsNC70YLQtdGA0YHQ
+utC40Lkg0YPRh9C10YIuINCj0L/RgNCw0LLQu9GP0Y7RidC40LUg0L7RgNCz0LDQvdC40LfQsNGG
+0LjQuCDigJMg0L3QsNC70L7Qs9C+0L7QsdC70L7QttC10L3QuNC1LgoKNy4g0J3QtdC00LLQuNC2
+0LjQvNC+0YHRgtGMINC60LDQuiDQvtGB0L3QvtCy0L3QvtC1INGB0YDQtdC00YHRgtCy0L4sINC/
+0YDQvtCx0LvQtdC80Ysg0YHQstGP0LfQsNC90L3Ri9C1INGBINC00LDRgtC+0Lkg0L3QsNGH0LDQ
+u9CwINC90LDQu9C+0LPQvtCy0L7Qs9C+INC40LvQuCDQsdGD0YXQs9Cw0LvRgtC10YDRgdC60L7Q
+s9C+INGD0YfQtdGC0LAuINCW0LjQu9GM0LUg0LrQsNC6INC+0YHQvdC+0LLQvdC+0LUg0YHRgNC1
+0LTRgdGC0LLQvi4g0J3QsNC70L7QsyDQvdCwINC40LzRg9GJ0LXRgdGC0LLQviDQsiDQltCa0KUu
+INCX0LXQvNC70Y8g0LrQsNC6INC+0YHQvdC+0LLQvdC+0LUg0YHRgNC10LTRgdGC0LLQvi4g0J/R
+gNC40L7QsdGA0LXRgtC10L3QuNC1INC30LXQvNC10LvRjNC90YvRhSDRg9GH0LDRgdGC0LrQvtCy
+INCyINGB0L7QsdGB0YLQstC10L3QvdC+0YHRgtGMLiDQl9C10LzQtdC70YzQvdGL0Lkg0L3QsNC7
+0L7QsyDQsiDQltCa0KUuCgo4LiDQltC40LvQuNGJ0L3Ri9C5INC90LDQutC+0L/QuNGC0LXQu9GM
+0L3Ri9C5INC60L7QvtC/0LXRgNCw0YLQuNCyIOKAkyDQv9GA0LDQstC+0LLRi9C1INC+0YHQvdC+
+0LLRiy4g0JbQuNC70LjRidC90YvQuSAo0LbQuNC70LjRidC90L4t0YHRgtGA0L7QuNGC0LXQu9GM
+0L3Ri9C5KSDQutC+0L7Qv9C10YDQsNGC0LjQsiDigJMg0L/RgNCw0LLQvtCy0YvQtSDQvtGB0L3Q
+vtCy0YsuINCh0YLRgNC+0LjRgtC10LvRjNGB0YLQstC+INGBINGB0L7Qt9C00LDQvdC40LXQvCDQ
+vtGA0LPQsNC90LjQt9Cw0YbQuNC4INC00LvRjyDQvtCx0YrQtdC00LjQvdC10L3QuNGPINGDINC+
+0YDQs9Cw0L3QuNC30LDRhtC40LggKNCW0KHQmiDQuCDRgi7Qvy4pLiDQodGC0YDQvtC40YLQtdC7
+0YzRgdGC0LLQviDRgSDRgdC+0LfQtNCw0L3QuNC10Lwg0L7RgNCz0LDQvdC40LfQsNGG0LjQuCDQ
+tNC70Y8g0L7QsdGK0LXQtNC40L3QtdC90LjRjyDRgyDQuNC90LLQtdGB0YLQvtGA0LAgKNCW0KHQ
+miDQuCDRgi7Qvy4pLgoKOS4g0KLQvtCy0LDRgNC40YnQtdGB0YLQstCwINGB0L7QsdGB0YLQstC1
+0L3QvdC40LrQvtCyINC20LjQu9GM0Y8gKNCi0KHQlikg4oCTINC/0YDQsNCy0L7QstGL0LUg0L7R
+gdC90L7QstGLLiDQotC+0LLQsNGA0LjRidC10YHRgtCy0LAg0YHQvtCx0YHRgtCy0LXQvdC90LjQ
+utC+0LIg0LbQuNC70YzRjyDigJMg0LHRg9GF0LPQsNC70YLQtdGA0YHQutC40Lkg0YPRh9C10YIu
+INCi0L7QstCw0YDQuNGJ0LXRgdGC0LLQsCDRgdC+0LHRgdGC0LLQtdC90L3QuNC60L7QsiDQttC4
+0LvRjNGPIOKAkyDQvdCw0LvQvtCz0L7QvtCx0LvQvtC20LXQvdC40LUuCgoxMC4g0KHQvtCx0YHR
+gtCy0LXQvdC90YvQtSDQutC+0YLQtdC70YzQvdGL0LUuINCf0LvQsNGC0LAg0LfQsCDQvtGC0L7Q
+v9C70LXQvdC40LUg4oCTINGA0LXQs9GD0LvQuNGA0L7QstCw0L3QuNC1LCDRg9GH0LXRgiDQuCDQ
+vdCw0LvQvtCz0L7QvtCx0LvQvtC20LXQvdC40LUuINCf0LvQsNGC0LAg0LfQsCDRjdC70LXQutGC
+0YDQuNGH0LXRgdGC0LLQviDigJMg0YDQtdCz0YPQu9C40YDQvtCy0LDQvdC40LUsINGD0YfQtdGC
+INC4INC90LDQu9C+0LPQvtC+0LHQu9C+0LbQtdC90LjQtS4g0J/Qu9Cw0YLQsCDQt9CwINCz0LDQ
+t9C+0YHQvdCw0LHQttC10L3QuNC1IOKAkyDRgNC10LPRg9C70LjRgNC+0LLQsNC90LjQtSwg0YPR
+h9C10YIg0Lgg0L3QsNC70L7Qs9C+0L7QsdC70L7QttC10L3QuNC1LiDQn9C70LDRgtCwINC30LAg
+0LLQvtC00L7RgdC90LDQsdC20LXQvdC40LUg4oCTINGA0LXQs9GD0LvQuNGA0L7QstCw0L3QuNC1
+LCDRg9GH0LXRgiDQuCDQvdCw0LvQvtCz0L7QvtCx0LvQvtC20LXQvdC40LUuINCf0LvQsNGC0LAg
+0LfQsCDQstC+0LTQvtC+0YLQstC10LTQtdC90LjQtSDigJMg0YDQtdCz0YPQu9C40YDQvtCy0LDQ
+vdC40LUsINGD0YfQtdGCINC4INC90LDQu9C+0LPQvtC+0LHQu9C+0LbQtdC90LjQtS4gCgoxMS4g
+0JjRgdC/0L7Qu9GM0LfQvtCy0LDQvdC40LUg0L7QsdGJ0LXQs9C+INC40LzRg9GJ0LXRgdGC0LLQ
+sCAo0LrQvtC90LTQvtC80LjQvdC40YPQvCkuINCe0YLQstC10YLRgdGC0LLQtdC90L3QvtGB0YLR
+jCDQt9CwINCy0YDQtdC0LCDQvdCw0L3QtdGB0LXQvdC90YvQuSDQvtCx0YnQuNC8INC40LzRg9GJ
+0LXRgdGC0LLQvtC8LiDQn9C70LDRgtCwINC30LAg0L3QtdCz0LDRgtC40LLQvdC+0LUg0LLQvtC3
+0LTQtdC50YHRgtCy0LjQtSDQvdCwINC+0LrRgNGD0LbQsNGO0YnRg9GOINGB0YDQtdC00YMg0Lgg
+0LLRi9Cy0L7QtyDRgtCy0LXRgNC00YvRhSDQsdGL0YLQvtCy0YvRhSDQvtGC0YXQvtC00L7Qsi4K
+CjEyLiDQlNC+0LrRg9C80LXQvdGC0L7QvtCx0L7RgNC+0YIg0L/QviDRgNC10LzQvtC90YLRgyDQ
+ttC40LvQuNGJ0L3QvtCz0L4g0YTQvtC90LTQsC4g0KLQtdC60YPRidC40Lkg0YDQtdC80L7QvdGC
+INC20LjQu9C40YnQvdC+0LPQviDRhNC+0L3QtNCwLiDQoNCw0YHRhdC+0LTRiyDQv9C+INCx0LvQ
+sNCz0L7Rg9GB0YLRgNC+0LnRgdGC0LLRgyDigJMg0L3QsNC70L7QsyDQvdCwINC/0YDQuNCx0YvQ
+u9GMLiDQn9GA0LjQtNC+0LzQvtCy0YvQtSDQsNCy0YLQvtGB0YLQvtGP0L3QutC4LgoKMTMuINCh
+0LDQtNC+0LLQvtC00YfQtdGB0LrQvtC1LCDQvtCz0L7RgNC+0LTQvdC40YfQtdGB0LrQvtC1INC4
+0LvQuCDQtNCw0YfQvdC+0LUg0L3QtdC60L7QvNC80LXRgNGH0LXRgdC60L7QtSDQvtCx0YrQtdC0
+0LjQvdC10L3QuNC1INCz0YDQsNC20LTQsNC9IOKAkyDQv9GA0LDQstC+0LLRi9C1INC+0YHQvdC+
+0LLRiy4g0KHQsNC00L7QstC+0LTRh9C10YHQutC+0LUg0YLQvtCy0LDRgNC40YnQtdGB0YLQstC+
+IOKAkyDRg9GH0LXRgiDQuCDQvdCw0LvQvtCz0L7QvtCx0LvQvtC20LXQvdC40LUuINCh0L7QsdGB
+0YLQstC10L3QvdGL0LUg0YHQutCy0LDQttC40L3Riywg0YEg0YPRh9C10YLQvtC8INCy0L7QtNC9
+0L7Qs9C+INC90LDQu9C+0LPQsC4KCtCe0YLQstC10YLRiyDQvdCwINCy0YHQtSDQstC+0L/RgNC+
+0YHRiyDQv9C+INC20LjQu9C40YnQvdC+LdC60L7QvNC80YPQvdCw0LvRjNC90L7QvNGDINGF0L7Q
+t9GP0LnRgdGC0LLRgy4KCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKgoKMTQgLSAxNSDQsNC/0YDQtdC70Y8gMjAxMCDQs9C+0LTQsC4g
+ICgyINC00L3RjyDRgSAxMC4wMCDQtNC+IDE4LjAwKSAKCtCc0LXRgdGC0L4g0L/RgNC+0LLQtdC0
+0LXQvdC40Y86INCc0L7RgdC60LLQsCwg0LwuINCR0L7RgtCw0L3QuNGH0LXRgdC60LjQuSDRgdCw
+0LQsICLQo9GH0LXQsdC90LDRjyDQs9C+0YHRgtC40L3QuNGG0LAiCgrQodGC0L7QuNC80L7RgdGC
+0Ywg0YPRh9Cw0YHRgtC40Y86IDE3IDUwMCDRgNGD0LEuICjQkiDRgdGC0L7QuNC80L7RgdGC0Ywg
+0LLRhdC+0LTQuNGCINC+0LHRg9GH0LXQvdC40LUsINC/0LXRh9Cw0YLQvdGL0LUg0LzQsNGC0LXR
+gNC40LDQu9GLINC/0L4g0YLQtdC80LUg0YHQtdC80LjQvdCw0YDQsCwg0L7QsdC10LTRiywg0LrQ
+vtGE0LUt0L/QsNGD0LfRiykuINCf0L4g0L7QutC+0L3Rh9Cw0L3QuNC4INCy0YvQtNCw0LXRgtGB
+0Y8g0YHQtdGA0YLQuNGE0LjQutCw0YIg0L4g0L/RgNC+0YXQvtC20LTQtdC90LjQuCDQvtCx0YPR
+h9C10L3QuNGPINC/0L4g0LTQsNC90L3QvtC5INGC0LXQvNC1LiDQmNC90L7Qs9C+0YDQvtC00L3Q
+uNC8INC/0L7QvNC+0LbQtdC8INC30LDQsdGA0L7QvdC40YDQvtCy0LDRgtGMINC90L7QvNC10YDQ
+sCDQsiDQs9C+0YHRgtC40L3QuNGG0LUuINCe0LHRg9GH0LXQvdC40LUg0Lgg0L/RgNC+0LbQuNCy
+0LDQvdC40LUg0LIg0L7QtNC90L7QvCDQt9C00LDQvdC40LguCgoqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioKCgrQn9C+0LTRgNC+0LHQ
+vdCw0Y8g0LjQvdGE0L7RgNC80LDRhtC40Y8g0Lgg0YDQtdCz0LjRgdGC0YDQsNGG0LjRjyDQv9C+
+INGC0LXQu9C10YTQvtC90YM6IDggKDQ5NSkgMjI5IC0gMDQgLSAzMwoKCgoqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioKKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCgoKCtCS
+0L3QuNC80LDQvdC40LUhINCV0YHQu9C4INCS0LDRiCDQsNC00YDQtdGBINGB0LvRg9GH0LDQudC9
+0L4g0L/QvtC/0LDQuyDQsiDQsdCw0LfRgyDRgNCw0YHRgdGL0LvQutC4LCDQuCDQktGLINCx0L7Q
+u9GM0YjQtSDQvdC1INGF0L7RgtC40YLQtSDQv9C+0LvRg9GH0LDRgtGMINC40L3RhNC+0YDQvNCw
+0YbQuNGOINC+0LEg0L7QsdGA0LDQt9C+0LLQsNGC0LXQu9GM0L3Ri9GFINC80LXRgNC+0L/RgNC4
+0Y/RgtC40Y/RhSwgCtC/0YDQvtGB0YLQviDQvtGC0L/RgNCw0LLRjNGC0LUg0L/Rg9GB0YLQvtC1
+INC/0LjRgdGM0LzQviDQsiDQktCw0YjQtdCz0L4g0LDQtNGA0LXRgdCwINC90LAg0LDQtNGA0LXR
+gSB1bnN1YnNjcmliZUBub3RzZW1pbmFyLnJ1P3N1YmplY3Q9c3BpLWRldmVsLWdlbmVyYWxAbGlz
+dHMuc291cmNlZm9yZ2UubmV0INC4INCyINGC0LXQvNC1INC/0LjRgdGM0LzQsCDRg9C60LDQttC4
+0YLQtSDQktCw0Ygg0LDQtNGA0LXRgSDRjdC70LXQutGC0YDQvtC90L3QvtC5INC/0L7Rh9GC0Ysu
+IAoKCtCS0LDRiCDQsNC00YDQtdGBINCx0YPQtNC10YIg0LDQstGC0L7QvNCw0YLQuNGH0LXRgdC6
+0Lgg0YPQtNCw0LvQtdC9INC40Lcg0YDQsNGB0YHRi9C70LrQuCDQsiDRgtC10YfQtdC90LjQtSAx
+ICjQvtC00L3QvtCz0L4pINC00L3RjyEKCgpUTyAgVU5TVUJTQ1JJQkUgICBTRU5EICBZT1VSICAg
+RU1BSUwgICBBRERSRVNTIElOIFNVQkpFQ1QgVE8gICB1bnN1YnNjcmliZUBub3RzZW1pbmFyLnJ1
+P3N1YmplY3Q9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IAoKCioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgoK
+CgoKCmdpbGtvbWhvZWEKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpEb3dubG9hZCBJbnRlbCYjMTc0
+OyBQYXJhbGxlbCBTdHVkaW8gRXZhbApUcnkgdGhlIG5ldyBzb2Z0d2FyZSB0b29scyBmb3IgeW91
+cnNlbGYuIFNwZWVkIGNvbXBpbGluZywgZmluZCBidWdzCnByb2FjdGl2ZWx5LCBhbmQgZmluZS10
+dW5lIGFwcGxpY2F0aW9ucyBmb3IgcGFyYWxsZWwgcGVyZm9ybWFuY2UuClNlZSB3aHkgSW50ZWwg
+UGFyYWxsZWwgU3R1ZGlvIGdvdCBoaWdoIG1hcmtzIGR1cmluZyBiZXRhLgpodHRwOi8vcC5zZi5u
+ZXQvc2Z1L2ludGVsLXN3LWRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
+c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,22 +1,14 @@
-From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: Re: [PATCH v2 1/3] spi: implemented driver for
-	Cirrus EP93xx SPI	controller
-Date: Tue, 6 Apr 2010 08:44:18 +0300
-Message-ID: <20100406054418.GA27465@gw.healthdatacare.com>
-References: <cover.1268930557.git.mika.westerberg@iki.fi>
-	<9de3769ae253830fb0eebc98d299137c59c69b8c.1268930557.git.mika.westerberg@iki.fi>
-	<56d259a01003250649ubf0e32ejc15e4f3b45ec43cd@mail.gmail.com>
-	<20100325184316.GB20512@gw.healthdatacare.com>
-	<s2n56d259a01003311715ke5b93a96v9d453ec32f08ec29@mail.gmail.com>
+From: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 1/2] spi: Add support for dma_min_bytes
+	configuration.
+Date: Tue,  6 Apr 2010 13:39:48 +0300
+Message-ID: <1270550389-30392-1-git-send-email-roman.tereshonkov@nokia.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <s2n56d259a01003311715ke5b93a96v9d453ec32f08ec29-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,41 +19,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Apr 01, 2010 at 01:15:20AM +0100, Martin Guy wrote:
-> On 3/25/10, Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org> wrote:
-> >  > > This patch adds an SPI master driver for the Cirrus EP93xx SPI controller found
-> >  > >  in EP93xx chips (EP9301, EP9302, EP9307, EP9312 and EP9315).
-> >  > >
-> >  > >  Driver currently supports only interrupt driven mode but in future we may add
-> >  > >  polling mode support as well.
-> 
-> I've been staring more at this again and it looks (2 clock
-> strangenesses and extensive control reg setting apart) like good code.
-> I have another question: like the Cirrus driver, this takes 100% CPU
-> doing busy wait for the current transfer to complete.
+This parameters defines the minimum number of bytes when dma is used.
 
-Hi,
+Signed-off-by: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi.c       |    1 +
+ include/linux/spi/spi.h |    3 +++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
 
-I tried to find out whether the driver did something wrong to get
-into busylooping but couldn't find anything. In case of MMC/SD
-cards, through mmc_spi, transfer sizes are >= 512 bytes at a time
-and FIFO size is only 8 bytes (or words) so the CPU is expected to
-be pretty busy serving interrupts from the SSP.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b76f246..5bf7992 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -347,6 +347,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
+ 	proxy->max_speed_hz = chip->max_speed_hz;
+ 	proxy->mode = chip->mode;
+ 	proxy->irq = chip->irq;
++	proxy->dma_min_bytes = chip->dma_min_bytes;
+ 	strlcpy(proxy->modalias, chip->modalias, sizeof(proxy->modalias));
+ 	proxy->dev.platform_data = (void *) chip->platform_data;
+ 	proxy->controller_data = chip->controller_data;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 97b60b3..4e9961d 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -84,6 +84,7 @@ struct spi_device {
+ #define	SPI_NO_CS	0x40			/* 1 dev/bus, no chipselect */
+ #define	SPI_READY	0x80			/* slave pulls low to pause */
+ 	u8			bits_per_word;
++	int			dma_min_bytes;
+ 	int			irq;
+ 	void			*controller_state;
+ 	void			*controller_data;
+@@ -727,6 +728,8 @@ struct spi_board_info {
+ 	 */
+ 	u8		mode;
+ 
++	/* dma_min_bytes defines minimum bytes when dma is used */
++	u32		dma_min_bytes;
+ 	/* ... may need additional spi_device chip config data here.
+ 	 * avoid stuff protocol drivers can set; but include stuff
+ 	 * needed to behave without being bound to a driver:
+-- 
+1.6.2.rc1.3.g81d3f
 
-I'm about to post updated series with your comments addressed. I
-also added support for polling transfers.
-
-> Given that this driver is interrupt-based, is there any reason why it
-> can't do something else in the meanwhile?
-> Not that that's a reason not to include it in 2.6.35 - it works well
-> and we can think whether to make it more efficient in N+1...
-
->From the User's guide, it seems that the controller is able to
-support DMA as well (via two M2M channels). Maybe we can add support
-for that in subsequent versions?
-
-Thanks,
-MW
 
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval

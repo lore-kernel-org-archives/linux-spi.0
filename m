@@ -1,67 +1,42 @@
-From: christian pellegrin <chripell@fsfe.org>
-Subject: Re: [PATCH v1 3/4] max3100: adds console support for MAX3100
-Date: Thu, 8 Apr 2010 11:43:10 +0200
-Message-ID: <h2xcabda6421004080243ifd2a47e4u8033a187b415d031@mail.gmail.com>
-References: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
-	 <1269340170-6558-1-git-send-email-chripell@fsfe.org>
-	 <20100329104838.49c18075@feng-i7>
-	 <v2ocabda6421004080231r7b7a734ao9fce206a82bf944b@mail.gmail.com>
+From: " " <fcfgjgvhbfrhgg-k+cT0dCbe1g@public.gmane.org>
+Subject: [SPAM] 诚信/服务
+Date: Thu, 8 Apr 2010 18:17:25 +0800
+Message-ID: <E1Nzonf-0008TZ-LU@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"greg@kroah.com" <greg@kroah.com>,
-	"david-b@pacbell.net" <david-b@pacbell.net>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Feng Tang <feng.tang@intel.com>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <v2ocabda6421004080231r7b7a734ao9fce206a82bf944b@mail.gmail.com>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Apr 8, 2010 at 11:31 AM, christian pellegrin <chripell@fsfe.org=
-> wrote:
-> On Mon, Mar 29, 2010 at 4:48 AM, Feng Tang <feng.tang@intel.com> wrot=
-e:
->
->>> + =A0 =A0 =A0 =A0 =A0 =A0 tx |=3D MAX3100_WD | MAX3100_RTS;
->>
->> Does this imply to have to work with HW flow control? on my platform
->> I have to remove the RTS bit to make it work.
->>
->
-> Finally I had time to check this. If you compare the 8250 (or similar=
-)
-> data-sheet with the MAX31x0 one you see that the handling of the
-> RTX/CTS bits is exactly the same (8250 about RTS bit for example:
-> "When any of these bits are cleared, the associated output is forced
-> high." and MAX3110: "Request-to-Send Bit. Controls the state of the
-> RTS output. This bit is reset on power-up (RTS
-> bit =3D 0 sets the RTS pin =3D logic high)."). If you look at the 825=
-0.c
-> driver (grep for UART_MCR_RTS) you notice that the bit is set on
-> device open (together with DTR of course). So I think the driver is
-> doing the right thing here.
->
-
-anyway I'll set it to on only in case the flow control is enabled. So
-even if, for some reason, you have to keep it to off on your platform,
-it won't make troubles.
-
-
---=20
-Christian Pellegrin, see http://www.evolware.org/chri/
-"Real Programmers don't play tennis, or any other sport which requires
-you to change clothes. Mountain climbing is OK, and Real Programmers
-wear their climbing boots to work in case a mountain should suddenly
-spring up in the middle of the computer room."
---
-To unsubscribe from this list: send the line "unsubscribe linux-serial"=
- in
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+ufO5q8u+uLrU8MjLKL6twO0vssbO8SnE+rrDo7oKICAgsb65q8u+1NqjqLGxvqmhosnPuqOhornj
+tquhotXjva2hor2ty9W1yLj3tPOzx8rQ09C31rmry76jqQq24MTqwLTSu9axtNPKwtfFy7DO8bmk
+1/eho76ttuDE6rXExazBprei1bm5q8u+07XT0NK71qfKtdW9vq3R6Qq34bi7tcS2087p0+vIq7n6
+tuC80rmry77T0NfFw9zH0LXE0rXO8cGqz7WjrNLyvfjP7r3PtuDP1s3qs8myu8HLCsO/1MLP+srb
+tu62yKGjw7/UwtPQ0ruyv7fW1PbWtbeixrGjqDYlLTcl1/PT0qOpus3G1c2ot6LGsaOoMC41JS0y
+Jdfz09KjqQrTxbvdz/LN4rT6wO278rrP1/ejrLXjyv29z7XNoaMKz+7Ev7f+zvG3ts6nOiAK0rs6
+1PbWtcuwOjE6MTcl16jTw9T21rUyOsbVzajU9ta1Mzq6o7nY1PbWtQq2/jq5+suwOjE6yczGt8/6
+ytsyOrv1zu/Ns9K7z/rK2zM6uaTStc2z0rvP+srboaMKyP06tdjLsDoxOr2o1v7StTI6ueO45tK1
+Mzq7+ravs7XP+srbNDrLsM7xtPq/qgogICAgICAgIDU61MvK5DY6vNO5pNDewO21yNeo08O3osax
+oaMKxuTL/Lf+zvE61+LB3rfRoaK74dLpt9Ghotehy9630aGi18nRr7fRoaK3/s7xt9Ghoraotu6y
+zdL7tcggCiAgICAgICAgPT09Pdaj1tiz0MW1PT09PQrS1MnPxrG+3b75zqq497WlzrvU2suwzvG+
+1sv5yerB7KOsv8nR6dakuvO4tr/uoaMKCsGqIMLnIMjLOrXLvq3A7QrIyM/ftee7sDoxMzQxMDE4
+MTcxNwrStSDO8SBRUTo4MjcyODM3MTIKRS1tYWlsOnd3d2ZxMjAxMEAxMjYuY29tCgotLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFyYWxsZWwgU3R1ZGlvIEV2YWwK
+VHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxmLiBTcGVlZCBjb21waWxpbmcs
+IGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBhcHBsaWNhdGlvbnMgZm9yIHBh
+cmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFsbGVsIFN0dWRpbyBnb3QgaGln
+aCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1zdy1kZXYKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
+bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
+Z2VuZXJhbAo=

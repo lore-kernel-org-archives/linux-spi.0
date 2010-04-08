@@ -1,12 +1,18 @@
-From: " " <fcfgjgvhbfrhgg-k+cT0dCbe1g@public.gmane.org>
-Subject: [SPAM] 诚信/服务
-Date: Thu, 8 Apr 2010 18:17:25 +0800
-Message-ID: <E1Nzonf-0008TZ-LU@sfs-ml-2.v29.ch3.sourceforge.com>
+From: <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: Add support for
+	dma_min_bytes configuration.
+Date: Thu, 8 Apr 2010 12:33:52 +0200
+Message-ID: <E1C7579D1379824DAE67858071C8103828208BC339@NOK-EUMSG-02.mgdnok.nokia.com>
+References: <1270550389-30392-1-git-send-email-roman.tereshonkov@nokia.com>
+	<z2rfa686aa41004072326z5ff8c044l46330b85dfd7ae74@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <z2rfa686aa41004072326z5ff8c044l46330b85dfd7ae74-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,26 +23,145 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8SnE+rrDo7oKICAgsb65q8u+1NqjqLGxvqmhosnPuqOhornj
-tquhotXjva2hor2ty9W1yLj3tPOzx8rQ09C31rmry76jqQq24MTqwLTSu9axtNPKwtfFy7DO8bmk
-1/eho76ttuDE6rXExazBprei1bm5q8u+07XT0NK71qfKtdW9vq3R6Qq34bi7tcS2087p0+vIq7n6
-tuC80rmry77T0NfFw9zH0LXE0rXO8cGqz7WjrNLyvfjP7r3PtuDP1s3qs8myu8HLCsO/1MLP+srb
-tu62yKGjw7/UwtPQ0ruyv7fW1PbWtbeixrGjqDYlLTcl1/PT0qOpus3G1c2ot6LGsaOoMC41JS0y
-Jdfz09KjqQrTxbvdz/LN4rT6wO278rrP1/ejrLXjyv29z7XNoaMKz+7Ev7f+zvG3ts6nOiAK0rs6
-1PbWtcuwOjE6MTcl16jTw9T21rUyOsbVzajU9ta1Mzq6o7nY1PbWtQq2/jq5+suwOjE6yczGt8/6
-ytsyOrv1zu/Ns9K7z/rK2zM6uaTStc2z0rvP+srboaMKyP06tdjLsDoxOr2o1v7StTI6ueO45tK1
-Mzq7+ravs7XP+srbNDrLsM7xtPq/qgogICAgICAgIDU61MvK5DY6vNO5pNDewO21yNeo08O3osax
-oaMKxuTL/Lf+zvE61+LB3rfRoaK74dLpt9Ghotehy9630aGi18nRr7fRoaK3/s7xt9Ghoraotu6y
-zdL7tcggCiAgICAgICAgPT09Pdaj1tiz0MW1PT09PQrS1MnPxrG+3b75zqq497WlzrvU2suwzvG+
-1sv5yerB7KOsv8nR6dakuvO4tr/uoaMKCsGqIMLnIMjLOrXLvq3A7QrIyM/ftee7sDoxMzQxMDE4
-MTcxNwrStSDO8SBRUTo4MjcyODM3MTIKRS1tYWlsOnd3d2ZxMjAxMEAxMjYuY29tCgotLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFyYWxsZWwgU3R1ZGlvIEV2YWwK
-VHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxmLiBTcGVlZCBjb21waWxpbmcs
-IGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBhcHBsaWNhdGlvbnMgZm9yIHBh
-cmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFsbGVsIFN0dWRpbyBnb3QgaGln
-aCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1zdy1kZXYKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
-bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
-dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
-Z2VuZXJhbAo=
+
+Hi,
+
+
+>-----Original Message-----
+>From: glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org [mailto:glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org] On =
+
+>Behalf Of ext Grant Likely
+>Sent: 08 April, 2010 09:27
+>To: Tereshonkov Roman (Nokia-D/Helsinki)
+>Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+>Subject: Re: [PATCH 1/2] spi: Add support for dma_min_bytes =
+
+>configuration.
+>
+>Hi Roman,
+>
+>On Tue, Apr 6, 2010 at 4:39 AM, Roman Tereshonkov
+><roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org> wrote:
+>> This parameters defines the minimum number of bytes when dma is used.
+>>
+>> Signed-off-by: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+>
+>The intent of this feature is... ?  Your patch needs a better
+>description as to why it is needed; especially considering that it
+>changes common code.
+>
+>But, inferring from the code that is written, I can guess what you're
+>trying to do, if not why.  Why would spi_devices care what the minimum
+>size of a DMA transfer is?  The SPI bus driver is in a far better
+>position to make that determination.
+>
+>Also, since this essentially adds a new 'knob' for spi_devices to
+>twiddle, what is the expected behaviour for SPI bus controllers that
+>don't support it?  Is it a required feature for spi bus drivers to
+>implement if they support DMA?
+
+The spi transactions can be handled in two ways: dma and pio.
+For the best perfomance the minimun number of bytes when dma is used =
+
+can be found experimentaly and passed through the platform board config fil=
+es.
+
+Now I will talk about omap2/3 spi only.
+If the mentioned parameter is not set then the static default one =
+
+is used (as it is nowdays).
+This exludes the patch influence on other spi devices controlled =
+
+by the same omap2/3 spi master.
+
+I think you might be right. The better way would be to pass it =
+
+through the controller_data field of the spi_board_info.
+Then I do not need to touch spi.h and spi.c.
+
+I will create a new patch.
+But now I wonder about patches syncronization.
+The first patch should go to linux-omap tree as it is for arch/arm/plat-oma=
+p/include/plat/mcspi.h.
+The second patch applied after the first one is for driver/spi/omap2_mcspi.=
+h.
+Or can you handle both patches?
+
+
+Regards
+Roman
+>
+>Cheers,
+>g.
+>
+>> ---
+>> =A0drivers/spi/spi.c =A0 =A0 =A0 | =A0 =A01 +
+>> =A0include/linux/spi/spi.h | =A0 =A03 +++
+>> =A02 files changed, 4 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+>> index b76f246..5bf7992 100644
+>> --- a/drivers/spi/spi.c
+>> +++ b/drivers/spi/spi.c
+>> @@ -347,6 +347,7 @@ struct spi_device *spi_new_device(struct =
+
+>spi_master *master,
+>> =A0 =A0 =A0 =A0proxy->max_speed_hz =3D chip->max_speed_hz;
+>> =A0 =A0 =A0 =A0proxy->mode =3D chip->mode;
+>> =A0 =A0 =A0 =A0proxy->irq =3D chip->irq;
+>> + =A0 =A0 =A0 proxy->dma_min_bytes =3D chip->dma_min_bytes;
+>> =A0 =A0 =A0 =A0strlcpy(proxy->modalias, chip->modalias, =
+
+>sizeof(proxy->modalias));
+>> =A0 =A0 =A0 =A0proxy->dev.platform_data =3D (void *) chip->platform_data;
+>> =A0 =A0 =A0 =A0proxy->controller_data =3D chip->controller_data;
+>> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+>> index 97b60b3..4e9961d 100644
+>> --- a/include/linux/spi/spi.h
+>> +++ b/include/linux/spi/spi.h
+>> @@ -84,6 +84,7 @@ struct spi_device {
+>> =A0#define =A0 =A0 =A0 =A0SPI_NO_CS =A0 =A0 =A0 0x40 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 =A0 =A0/* 1 =
+
+>dev/bus, no chipselect */
+>> =A0#define =A0 =A0 =A0 =A0SPI_READY =A0 =A0 =A0 0x80 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 =A0 =A0/* =
+
+>slave pulls low to pause */
+>> =A0 =A0 =A0 =A0u8 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bits_per_wo=
+rd;
+>> + =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_min_bytes;
+>> =A0 =A0 =A0 =A0int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 irq;
+>> =A0 =A0 =A0 =A0void =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*controller_s=
+tate;
+>> =A0 =A0 =A0 =A0void =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*controller_d=
+ata;
+>> @@ -727,6 +728,8 @@ struct spi_board_info {
+>> =A0 =A0 =A0 =A0 */
+>> =A0 =A0 =A0 =A0u8 =A0 =A0 =A0 =A0 =A0 =A0 =A0mode;
+>>
+>> + =A0 =A0 =A0 /* dma_min_bytes defines minimum bytes when dma is used */
+>> + =A0 =A0 =A0 u32 =A0 =A0 =A0 =A0 =A0 =A0 dma_min_bytes;
+>> =A0 =A0 =A0 =A0/* ... may need additional spi_device chip config data he=
+re.
+>> =A0 =A0 =A0 =A0 * avoid stuff protocol drivers can set; but include stuff
+>> =A0 =A0 =A0 =A0 * needed to behave without being bound to a driver:
+>> --
+>> 1.6.2.rc1.3.g81d3f
+>>
+>>
+>
+>
+>
+>-- =
+
+>Grant Likely, B.Sc., P.Eng.
+>Secret Lab Technologies Ltd.
+>
+---------------------------------------------------------------------------=
+---
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

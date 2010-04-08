@@ -1,191 +1,57 @@
-From: "=?windows-1251?B?w+7x8+Tg8PHy4uXt7fvlIMru7fLw4Ory+w==?="
-	<gegexyx-aKnJTB3zVZovJsYlp49lxw@public.gmane.org>
-Subject: =?windows-1251?b?wu3o7ODt6P4g7+7x8uDi+ejq7uIg?=
-	=?windows-1251?b?5Ov/IOPu8fPk4PDx8uLl7e379SDt8+bka3Jw?=
-Date: Thu, 8 Apr 2010 11:38:18 +0300
-Message-ID: <1955507707.20100408113818@abapost.ru>
-Reply-To: answer-aKnJTB3zVZovJsYlp49lxw@public.gmane.org
+From: christian pellegrin <chripell@fsfe.org>
+Subject: Re: [PATCH v1 3/4] max3100: adds console support for MAX3100
+Date: Thu, 8 Apr 2010 11:31:09 +0200
+Message-ID: <v2ocabda6421004080231r7b7a734ao9fce206a82bf944b@mail.gmail.com>
+References: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
+	 <1269340170-6558-1-git-send-email-chripell@fsfe.org>
+	 <20100329104838.49c18075@feng-i7>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"greg@kroah.com" <greg@kroah.com>,
+	"david-b@pacbell.net" <david-b@pacbell.net>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Feng Tang <feng.tang@intel.com>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <20100329104838.49c18075@feng-i7>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqCioKKiAgMTktMjAg4O/w5ev/LiDP0MDK0sjXxdHKyMkgINHFzMjNwNAgIM/OICDD
-ztHHwMrTz8rAzDog6uDqIPHy4PL8IO/u8fLg4vno6u7sIOTr/yDj7vHz5ODw8fLi5e3t+/Ug7fPm
-5C4KKiAgMjEg4O/w5ev/LiDPxdDF1c7EICDNwCAg3cvFytLQzs3N28Ug0s7Qw8g6IO/r/vH7IOgg
-7Ojt8/H7LgoqCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKgoKCjo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6CgoxOS0yMCDg7/Dl6/8uIM/QwMrSyNfF0crIySAg
-0cXMyM3A0CAgz84gIMPO0cfAytPPysDMOiDq4Oog8fLg8vwg7+7x8uDi+ejq7uwg5Ov/IOPu8fPk
-4PDx8uLl7e379SDt8+bkLgoKKDIg5O3/IPEgMTAuMDAg5O4gMTguMDApICDR8u7o7O7x8vwg8/fg
-8fLo/zogMTcgNTAwIPDz4S4KCiA6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6OgoKzeAg8eXs6O3g8CDP0MjDy8DYwN7S0d86IPDz6u7i
-7uTo8uXr6CDoIPHv5fbo4Ovo8fL7LCDu8uLl9+D++ejlIOfgIPDg5+zl+eXt6OUg4+7x8+Tg8PHy
-4uXt7e7j7iDoIOzz7ej26O/g6/zt7uPuIOfg6uDn4Cwg8PPq7uLu5Ojy5evoIO/w5eTv8Oj/8ujp
-LCDw8+ru4u7k6PLl6+gg/vDo5Oj35fHq6PUg7vLk5evu4iDoIO7y5OXr7uIg7/Du5ODmLCD+8Ojx
-8vsuCgrWxcvcIPHl7Ojt4PDgOiDu5+3g6u7s6PL8IPEg5OXp8fLi8/756Owg5+Dq7u3u5ODy5ev8
-8fLi7uwsIPDl4+vg7OXt8ujw8/756Owg8ODn7OX55e3o5SDj7vHz5ODw8fLi5e3t7uPuIOfg6uDn
-4CDoIO/u4vvx6PL8IP309OXq8uji7e7x8vwg8/fg8fLo/yDiIOru7erz8PHg9SDoIODz6vbo7u3g
-9Swg7/Du4u7k6Oz79SDj7vHz5ODw8fLi5e3t++zoIOgg7PPt6Pbo7+Dr/O377Ogg5+Dq4Of36Org
-7OguCgogOjo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6OjoKCs/QzsPQwMzMwCDRxczIzcDQwAoKICAtICDU5eTl8ODr/O376SDn4Oru7SC5
-IDk0IO7yIDIxLjA3LjA1IKvOIPDg5+zl+eXt6Ogg5+Dq4Ofu4iDt4CDv7vHy4OLq6CDy7uLg8O7i
-LCDi++/u6+3l7ejlIPDg4e7yLCDu6uDn4O3o5SDz8evz4yDk6/8g4+7x8+Tg8PHy4uXt7fv1IOgg
-7PPt6Pbo7+Dr/O379SDt8+bkuyDiIPDl5ODq9ujoIDkzLdTHIO7yIDA4LjA1LjA5LiDR9OXw4CDv
-8Ojs5e3l7ej/IOfg6u7t4Cwg6Ofs5e3l7ej/IOIg7u/w5eTl6+Xt6Oggx+Dq4Of36OrgLCDt7uL7
-5SDy8OXh7uLg7ej/IOog9+vl7eDsIOru7Ojx8ejpIO/uIPDg5+zl+eXt6P4g4+7x8+Tg8PHy4uXt
-7e7j7iDoIOzz7ej26O/g6/zt7uPuIOfg6uDn4C4KCiAgLSAgyu7s8ywg6CDq4Oro7CDu4fDg5+7s
-IOTu6+bt+yDv8OXk7vHy4OLr//L88f8g7/Dl6Ozz+eXx8uLgIO/w6CDw4Ofs5fnl7ejoIOPu8efg
-6uDn7uI/IAogIC0gIMfg6u7t7uTg8uXr/O375SDo7ej26ODy6OL7IO/uIO/u5OTl8Obq5SDx8+H6
-5ery7uIg7ODr7uPuIO/w5eTv8Ojt6Ozg8uXr/PHy4uAg6CDv8O7k8+r26Ogg7vLl9+Xx8uLl7e3u
-4+4g7/Du6Ofi7uTx8uLgLgoK0MDHzMXZxc3IxSAgx8DKwMfAICDP09LFzCAgz9DOwsXExc3I3yAg
-ys7NytPRwDogCiAgLSAgz+7w/+Tu6iDu7/Ph6+jq7uLg7ej/IOjn4uX55e3o/ywg6u7t6vPw8e3u
-6SDk7urz7OXt8uD26OgsIOjn7OXt5e3o6Swg8ODn+v/x7eXt6OksIOjy7uPu4iDq7u3q8/Dx4C4K
-ICAtICDR8vDz6vLz8OAg6u7t6vPw8e3u6SDk7urz7OXt8uD26OgsIO7h5fHv5ffl7ejlIOru7erz
-8PHt7ukg5+D/4uroIOgg4+Dw4O3y6Ogg4vvv7uvt5e3o/yDq7u3y8ODq8uAuCiAgLSAgze7i++Ug
-8vDl4e7i4O3o/yDqIO7v6PHg7ej+IO/w5eTs5fLgIOru7fLw4Ory4C4gyOfs5e3l7ejlIPLw5eHu
-4uDt6Okg6iDz9+Dx8u3o6uDsIPDg5+zl+eXt6P8g5+Dq4Ofu4i4KICAtICDT8u737eXt6OUg8e7x
-8uDi4CDoIO/u8P/k6uAg7vTu8Ozr5e3o/yDq7u3q8/Dx7fv1IOfg/+Lu6iwg4vHq8Pvy6OUg6u7t
-4uXw8u7iIPEg5+D/4urg7OgsIPDg8fHs7vLw5e3o5Swg7vbl7ergIOgg8e7v7vHy4OLr5e3o5SDn
-4P/i7uog7eAg8/fg8fLo5SDiIOru7erz8PHlLCDv8O7y7uru6/sg7/Du4uXk5e3o/yDq7u3q8/Dx
-7uIuICAgCiAgLSAgyvDo8uXw6Ogg6CDv7vD/5O7qIO7v8OXk5evl7ej/IO/u4eXk6PLl6/8uIAog
-IC0gIMru7erz8PEg8SDu5O3o7CDz9+Dx8u3o6u7sLiAKCtDAx8zF2cXNyMUgIMfAysDHwCAgz9PS
-xcwgIM/QzsLFxMXNyN8gIMDTytbIzs3AOgogIC0gIMrg6iDv8ODi6Ov87e4g7/Do7OXt6PL8IM/w
-6Org5yDM3dAguSA0Mjcg7/DoIO/w7uLl5OXt6Ogg4PPq9uju7eA/IM/u7/Dg4uroIOIgz/Do6uDn
-IMzd0CC5IDEyMyDu8iAwOC4wNC4yMDA5LgogIC0gIM/u8P/k7uog7u/z4evo6u7i4O3o/yDo5+Ll
-+eXt6P8sIODz6vbo7u3t7ukg5O7q8+zl7fLg9ujoLCDo5+zl7eXt6OksIPDg5/r/8e3l7ejpLCDo
-8u7j7uIg4PPq9uju7eAKICAtICDR8vDz6vLz8OAg4PPq9uju7e3u6SDk7urz7OXt8uD26OgsIO7h
-5fHv5ffl7ejlIODz6vbo7u3t7ukg5+D/4uroIOgg4+Dw4O3y6Ogg4vvv7uvt5e3o/yDq7u3y8ODq
-8uAsIODz6vbo7u3gIPEg7uTt6Owg8/fg8fLt6Oru7C4gCiAgLSAgwujk+yDg8+r26O7t7uIuIN3r
-5ery8O7t7fvlIOfg/+Lq6C4gze7i++Ug8vDl4e7i4O3o/yDqIO7v6PHg7ej+IO/w5eTs5fLgIOru
-7fLw4Ory4C4KICAtICDI5+zl7eXt6OUg8vDl4e7i4O3o6SDqIPP34PHy7ejq4Owg8ODn7OX55e3o
-/yDn4Org5+7iIOgg6u7t6vDl8ujn4Pbo/yDx7vHy4OLgIOgg7+7w/+Tq4CDu9O7w7Ovl7ej/IODz
-6vbo7u3t+/Ug5+D/4u7qLgoKwNPK1sjOzSAgwiAg3cvFytLQzs3NzskgINTO0MzFIJYg4+vu4eDr
-/O375SDo5+zl7eXt6P8g4iDv8O725eTz8OUuIMru4+TgIOLx8vPv4P7yIOIg8ejr8z8gCiAgLSAg
-zvHt7uLt++Ug7u/w5eTl6+Xt6P8sIPLw5eHu4uDt6P8g6iDu7+Xw4PLu8PMg/evl6vLw7u3t7ukg
-7+vu+eDk6ugsIPLw5eHu4uDt6P8g6iDz9+Dx8u3o6vMg8u7w4+7iLCD08+3q9ujoIOfg6uDn9+jq
-4C4gCiAgLSAgyuDq6OUg5O7q8+zl7fL7IO3z5u3uIO/w5eTu8fLg4ujy/CDk6/8g7/Du9e7m5OXt
-6P8g4Orq8OXk6PLg9ujoIO3gIPLu8OPu4u7pIO/r7vng5OrlPyAKICAtICDH4Pfl7CDt8+bt4CDg
-8+r26O7t7eD/IOru7Ojx8ej/IOIg/evl6vLw7u3t+/Ug4PPq9uju7eD1PyAKICAtICDE7urz7OXt
-8uD26P8g6CDn4P/i6uAg4iD96+Xq8vDu7e3u7CDg8+r26O7t5S4gCiAgLSAgzuHl8e/l9+Xt6OUg
-6CDl4+4g4evu6ujw7uLg7ejlOiDq4Oog/fLuIOTu6+bt7iDw4OHu8uDy/C4gCiAgLSAgwOvj7vDo
-8uwg7/Du4uXk5e3o/yDg8+r26O7t4CDiIP3r5ery8O7t7e7pIPTu8OzlLiAKICAtICDH4Pno8uAg
-6O3y5fDl8e7iIOfg6uDn9+jq4CDoIPP34PHy7ejq4C4gCiAgLSAgyu7t8vDu6/wg6CDu8uLl8vHy
-4uXt7e7x8vwg8fLu8O7tLiAKCs/QztHS28UgIMzF0s7E2yAgx8DK08/Oyjog5+Dv8O7xIOru8ujw
-7uLu6iwg7eAg4ejw5uUsIPMg5eTo7fHy4uXt7e7j7iDv7vHy4OL56OrgLgrQ4PHx7ODy8Oji4OXs
-IO/u5PDu4e3uIOfg6vPv6ugg7+4g8fIuIDU1LiAKyuDqIOfg6uv+9+Dy/CDq7u3y8ODq8vsg8SDl
-8fLl8fLi5e3t++zoIOzu7e7v7uvo/+zoPwoKys7N0tDOy9wgIMggIM7SwsXS0dLCxc3NztHS3CAg
-wiAg0dTF0MUgINDAx8zF2cXNyN8gIMPO0cfAysDHzsIKICAtICDT7+7r7e7s7vfl7e375SDu8OPg
-7fsg4iDx9OXw5SDw4Ofs5fnl7ej/IOPu8fPk4PDx8uLl7e3u4+4g6CDs8+3o9ujv4Ov87e7j7iDn
-4Org5+AsIOru7fLw7uv87fvlIO7w4+Dt+y4gCiAgLSAg0/Ho6+Xt6OUg7vLi5fLx8uLl7e3u8fLo
-IMfg6uDn9+jq7uIuIAogIC0gIM4g4u7n7O7m7e7x8ugg4uLl5OXt6P8g8+Pu6+7i7e7pIO7y4uXy
-8fLi5e3t7vHy6CDn4CDt5eL77+7r7eXt6OUg7/Dl5O/o8eDt6Okg1MDRLgoKytDTw8vbySAg0dLO
-yy4gzvLi5fL7IO3gIOLu7/Du8fsg8evz+ODy5evl6S4KCgoqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioKKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKgoKOjo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6OjoKCjIxIODv8OXr/y4gz8XQxdXOxCAgzcAgIN3LxcrS0M7NzdvFINLO0MPI
-OiDv6/7x+yDoIOzo7fPx+y4KCigxIOTl7fwg8SAxMC4wMCDk7iAxOC4wMCkgINHy7ujs7vHy/CDz
-9+Dx8uj/OiA5IDUwMCDw8+EuCgo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6OgoK0eXs6O3g8CDP0MXEzcDHzcDXxc0g5Ov/OiDw8+ru
-4u7k6PLl6+XpLCDs5e3l5Obl8O7iIOgg4uXk8/no9SDx7+X26ODr6PHy7uIuCgrWxcvcIPHl7Ojt
-4PDgOiDu5+3g6u7s6PL8IPHu8vDz5O3o6u7iIOru7O/g7ejoIPEg7e7i7uLi5eTl7ej/7Ogg4iDn
-4Oru7e7k4PLl6/zx8uLlLCDw5ePr4Ozl7fLo8PP++ejsIPDg5+zl+eXt6OUg4+7x8+Tg8PHy4uXt
-7e7j7iDn4Org5+Ag7/Py5ewg7/Du4uXk5e3o/yDg8+r26O7t7uIuCgo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6
-Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6OgoKz9DOw9DAzMzA
-INHFzMjNwNDACgrOwdnIxSAgz87LzsbFzcjfICDIICDOz9DFxMXLxc3I3y4KICAtICDU5eTl8ODr
-/O376SDn4Oru7SC5IDk0IO7yIDIxLjA3LjA1IKvOIPDg5+zl+eXt6Ogg5+Dq4Ofu4iDt4CDv7vHy
-4OLq6CDy7uLg8O7iLCDi++/u6+3l7ejlIPDg4e7yLCDu6uDn4O3o5SDz8evz4yDk6/8g4+7x8+Tg
-8PHy4uXt7fv1IOgg7PPt6Pbo7+Dr/O379SDt8+bkuyDiIO/u8evl5O3l6SDw5eTg6vbo6C4gCiAg
-LSAgzvHt7uLt++Ug7u/w5eTl6+Xt6P86IOry7iDl8fL8IOfg6uDn9+jq6CDoIOry7iD/4uv/5fLx
-/yDz9+Dx8u3o6u7sIPDg5+zl+eXt6P8g5+Dq4OfgLgoKwNPK1sjOzSAgwiAg3cvFytLQzs3Nzskg
-INTO0MzFOiAKICAtICDP8Ojt9ujv6ODr/O375SDu8uvo9+j/IOTl6fHy4vP++eXpIPDl5ODq9ujo
-IPHyLiA0MS4g6CDj6+Di+yAzLjEuCiAgLSAgwOvj7vDo8uwg7/Du4uXk5e3o/yDg8+r26O7t4CDi
-IP3r5ery8O7t7e7pIPTu8OzlLiDI7fTu8Ozg9uju7e3uLfLl9e3o9+Xx6u7lIOgg5O7q8+zl7fLg
-6/zt7uUg8e7v8O7i7ubk5e3o5SDv8O725eTz8Psg4PPq9uju7eAuIMIg9+XsIO3l5O7x8uDy6ugg
-/evl6vLw7u3t+/Ug4PPq9uju7e7iIO/w7uLu5Ojs+/Ug4iDt4PHy7v/55eUg4vDl7P8/INfy7iDz
-6/P3+Ojy8f8/CiAgLSAgyOfs5e3l7ej/IOIg7+7w/+Tq5SDv8O7i5eTl7ej/IO7y6vD78u7j7iDg
-8+r26O7t4CDiIP3r5ery8O7t7e7pIPTu8OzlLCDi8fLz7+D++ejlIOIg8ejr8yDxIDAxIOj+6/8g
-MjAwOSDj7uTgCiAgLSAg0vDl4e7i4O3o/yDqIO7v5fDg8u7w8yD96+Xq8vDu7e3u6SDv6+754OTq
-6Cwg8vDl4e7i4O3o/yDqIPP34PHy7ejq8yDy7vDj7uIsIPTz7er26Ogg5+Dq4Of36OrgLiAKICAt
-ICDK4Oro5SDk7urz7OXt8vsg7fPm7e4g7/Dl5O7x8uDi6PL8IOTr/yDv8O717ubk5e3o/yDg6urw
-5eTo8uD26Ogg7eAg8u7w4+7i7ukg7+vu+eDk6uUuIM/w6O3/8ujlIPDl+OXt6P8g7iDv8O7i5eTl
-7ejoIODz6vbo7u3gIOIg/evl6vLw7u3t7ukg9O7w7OUuIM7h5fHv5ffl7ejlIOfg/+Lu6iDt4CDz
-9+Dx8ujlIOIg4PPq9uju7eUg4iD96+Xq8vDu7e3u6SD07vDs5S4g0e7k5fDm4O3o5SDoIPHy8PPq
-8vPw4CDo5+Ll+eXt6P8uCgrP0M7WxcTT0MAgIM7SytDb0s7DziAgwNPK1sjOzcAgIMIgIN3LxcrS
-0M7Nzc7JICDUztDMxSwg7/Dl6Ozz+eXx8uLgIP3r5ery8O7t7fv1IODz6vbo7u3u4i4KICAtICDI
-7fTu8Ozg9uju7e3uLfLl9e3o9+Xx6u7lIOgg5O7q8+zl7fLg6/zt7uUg8e7v8O7i7ubk5e3o5SDv
-8O725eTz8Psg4PPq9uju7eAuCiAgLSAgzvTu8Ozr5e3o5SDo8u7j7uIg7vLq8Pvy7uPuIODz6vbo
-7u3gIOIg/evl6vLw7u3t7ukg9O7w7OUuCiAgLSAgx+Dq6/735e3o5SDq7u3y8ODq8uAg7+4g6PLu
-4+DsIODz6vbo7u3gLgogIC0gIM/w6Oft4O3o5SDg8+r26O7t4CDt5fHu8fLu/+L46Ozx/y4KICAt
-ICDP7vD/5O7qIO/u6/zn7uLg7ej/IPHg6fLg7Ogg4iDx5fLoIKvI7fLl8O3l8rssIO3gIOru8u7w
-+/Ug7vHz+eXx8uLr/+Xy8f8g7/Du4uXk5e3o5SDu8urw+/L79SDg8+r26O7t7uIg4iD96+Xq8vDu
-7e3u6SD07vDs5S4gzvLi5fLx8uLl7e3u8fL8IO7v5fDg8u7w4CD96+Xq8vDu7e3u6SDv6+754OTq
-6C4gCgrK0NPDy9vJICDR0s7LLiDO8uLl8vsg7eAg4u7v8O7x+yDx6/P44PLl6+XpLgoKKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKgoKMTktMjAg4O/w5ev/LiAoMiDk7f8g8SAxMC4wMCDk7iAxOC4wMCkgz9DA
-ytLI18XRysjJICDRxczIzcDQICDPziAgw87Rx8DK08/KwMw6IOrg6iDx8uDy/CDv7vHy4OL56Oru
-7CDk6/8g4+7x8+Tg8PHy4uXt7fv1IO3z5uQuCtHy7ujs7vHy/CDz9+Dx8uj/OiAxNyA1MDAg8PPh
-LiAowiDx8u7o7O7x8vwg4vXu5OjyIO7h8/fl7ejlLCDv5ffg8u375SDs4PLl8Ojg6/sg7+4g8uXs
-5SDx5ezo7eDw4Cwg7uHl5PssIOru9OUt7+Dz5/spLiDP7iA9RDDq7u334O3o6CDi++Tg5fLx/yDx
-5fDy6PTo6uDyIO4g7/Du9e7m5OXt6Ogg7uHz9+Xt6P8g7+4g5ODt7e7pIPLl7OUuIMjt7uPu8O7k
-7ejsIO/u7O7m5ewg5+Dh8O7t6PDu4uDy/CDt7uzl8OAg4iDj7vHy6O3o9uUuIM7h8/fl7ejlIOgg
-7/Du5uji4O3o5SDiIO7k7e7sIOfk4O3o6C4KCjIxIODv8OXr/y4gKDEg5OXt/CDxIDEwLjAwIOTu
-IDE4LjAwKS4gz8XQxdXOxCAgzcAgIN3LxcrS0M7NzdvFINLO0MPIOiDv6/7x+yDoIOzo7fPx+y4K
-0fLu6Ozu8fL8IPP34PHy6P86IDkgNTAwIPDz4S4gKMIg8fLu6Ozu8fL8IOL17uTo8iDu4fP35e3o
-5Swg7+X34PLt++Ug7ODy5fDo4Ov7IO/uIPLl7OUg8eXs6O3g8OAsIO7h5eT7LCDq7vTlLe/g8+f7
-KS4gz+4g7uru7ffg7ejoIOL75ODl8vH/IPHl8PLo9Ojq4PIg7iDv8O717ubk5e3o6CDu4fP35e3o
-/yDv7iDk4O3t7ukg8uXs5S4gyO3u4+7w7uTt6Owg7+7s7ubl7CDn4OHw7u3o8O7i4PL8IO3u7OXw
-4CDiIOPu8fLo7ej25S4gzuHz9+Xt6OUg6CDv8O7m6OLg7ejlIOIg7uTt7uwg5+Tg7ejoLgoKzOXx
-8u4g7/Du4uXk5e3o/zogzO7x6uLgLCDsLiDB7vLg7ej35fHq6Okg8eDkLCAi0/fl4e3g/yDj7vHy
-6O3o9uAiCgoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioKCs/u5PDu4e3g/yDo7fTu8Ozg9uj/IOgg8OXj6PHy8OD26P8g7+4g
-8uXr5fTu7fM6IDggKDQ5NSkgMjI5IC0gMDQgLSAzMwoKKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgoKCgrC
-7ejs4O3o5SEgxfHr6CDC4Pgg4OTw5fEg8evz9+Dp7e4g7+7v4Osg4iDh4OfzIPDg8fH76+roLCDo
-IML7IOHu6/z45SDt5SD17vLo8uUg7+7r8/fg8vwg6O307vDs4Pbo/iDu4SDu4fDg5+7i4PLl6/zt
-+/Ug7OXw7u/w6P/y6P/1LCAK7/Du8fLuIO7y7/Dg4vzy5SDv8/Hy7uUg7+jx/OzuIOIgwuD45ePu
-IODk8OXx4CDt4CDg5PDl8SB1bnN1YnNjcmliZUBub3RzZW1pbmFyLnJ1P3N1YmplY3Q9c3BpLWRl
-dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IOgg4iDy5ezlIO/o8fzs4CDz6uDm6PLl
-IMLg+CDg5PDl8SD96+Xq8vDu7e3u6SDv7vfy+y4gCgoKwuD4IODk8OXxIOHz5OXyIODi8u7s4PLo
-9+Xx6ugg8+Tg6+XtIOjnIPDg8fH76+roIOIg8uX35e3o5SAxICju5O3u4+4pIOTt/yEKCgpUTyAg
-VU5TVUJTQ1JJQkUgICBTRU5EICBZT1VSICAgRU1BSUwgICBBRERSRVNTIElOIFNVQkpFQ1QgVE8g
-ICB1bnN1YnNjcmliZUBub3RzZW1pbmFyLnJ1P3N1YmplY3Q9c3BpLWRldmVsLWdlbmVyYWxAbGlz
-dHMuc291cmNlZm9yZ2UubmV0IAoKCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgoKCgoKdGVuZGV2YnMKLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tCkRvd25sb2FkIEludGVsJiMxNzQ7IFBhcmFsbGVsIFN0dWRpbyBFdmFsClRyeSB0
-aGUgbmV3IHNvZnR3YXJlIHRvb2xzIGZvciB5b3Vyc2VsZi4gU3BlZWQgY29tcGlsaW5nLCBmaW5k
-IGJ1Z3MKcHJvYWN0aXZlbHksIGFuZCBmaW5lLXR1bmUgYXBwbGljYXRpb25zIGZvciBwYXJhbGxl
-bCBwZXJmb3JtYW5jZS4KU2VlIHdoeSBJbnRlbCBQYXJhbGxlbCBTdHVkaW8gZ290IGhpZ2ggbWFy
-a3MgZHVyaW5nIGJldGEuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZWwtc3ctZGV2Cl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+On Mon, Mar 29, 2010 at 4:48 AM, Feng Tang <feng.tang@intel.com> wrote:
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 tx |=3D MAX3100_WD | MAX3100_RTS;
+>
+> Does this imply to have to work with HW flow control? on my platform
+> I have to remove the RTS bit to make it work.
+>
+
+=46inally I had time to check this. If you compare the 8250 (or similar=
+)
+data-sheet with the MAX31x0 one you see that the handling of the
+RTX/CTS bits is exactly the same (8250 about RTS bit for example:
+"When any of these bits are cleared, the associated output is forced
+high." and MAX3110: "Request-to-Send Bit. Controls the state of the
+RTS output. This bit is reset on power-up (RTS
+bit =3D 0 sets the RTS pin =3D logic high)."). If you look at the 8250.=
+c
+driver (grep for UART_MCR_RTS) you notice that the bit is set on
+device open (together with DTR of course). So I think the driver is
+doing the right thing here.
+
+--=20
+Christian Pellegrin, see http://www.evolware.org/chri/
+"Real Programmers don't play tennis, or any other sport which requires
+you to change clothes. Mountain climbing is OK, and Real Programmers
+wear their climbing boots to work in case a mountain should suddenly
+spring up in the middle of the computer room."
+--
+To unsubscribe from this list: send the line "unsubscribe linux-serial"=
+ in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

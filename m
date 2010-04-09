@@ -1,13 +1,22 @@
-From: "=?windows-1251?B?zeD34Ov87ejq8yDR6uvg5OA=?=" <sigodexeda-aKnJTB3zVZovJsYlp49lxw@public.gmane.org>
-Subject: [SPAM] Современный склад: проектирование, технологии, управлениеqz
-Date: Fri, 9 Apr 2010 06:55:45 +0300
-Message-ID: <1278654267.20100409065545@abapost.ru>
-Reply-To: answer-aKnJTB3zVZovJsYlp49lxw@public.gmane.org
+From: Juuso Oikarinen <juuso.oikarinen-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: Add support for
+	dma_min_bytes configuration.
+Date: Fri, 09 Apr 2010 07:05:39 +0300
+Message-ID: <1270785939.10120.1141.camel@wimaxnb.nmp.nokia.com>
+References: <1270550389-30392-1-git-send-email-roman.tereshonkov@nokia.com>
+	<z2rfa686aa41004072326z5ff8c044l46330b85dfd7ae74@mail.gmail.com>
+	<E1C7579D1379824DAE67858071C8103828208BC339@NOK-EUMSG-02.mgdnok.nokia.com>
+	<s2vfa686aa41004080808o443dd6b7ge4d23c513a1f80a8@mail.gmail.com>
+	<E1C7579D1379824DAE67858071C8103828208BC539@NOK-EUMSG-02.mgdnok.nokia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Samuel Ortiz <samuel.ortiz-EmnPodGKVbzby3iVrkZq2A@public.gmane.org>
+To: "Tereshonkov Roman (Nokia-D/Helsinki)" <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <E1C7579D1379824DAE67858071C8103828208BC539-xJW1crHCIS+8kqYwC468Frtp2NbXvJi8gfoxzgwHRXE@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,172 +27,134 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqCiogIDE5IC0gMjAg0LDQv9GA0LXQu9GPIDIwMTDQsy4KKgoqICDQodCe0JLQoNCV
-0JzQldCd0J3Qq9CZICDQodCa0JvQkNCUOiDQv9GA0L7QtdC60YLQuNGA0L7QstCw0L3QuNC1LCDR
-gtC10YXQvdC+0LvQvtCz0LjQuCwg0YPQv9GA0LDQstC70LXQvdC40LUuCioKKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCgrQ
-ndCQICDQodCV0JzQmNCd0JDQoCAg0J/QoNCY0JPQm9CQ0KjQkNCu0KLQodCvOiDRgNGD0LrQvtCy
-0L7QtNC40YLQtdC70Lgg0Lgg0LzQtdC90LXQtNC20LXRgNGLINGB0LrQu9Cw0LTQvtCyLCDRgdC/
-0LXRhtC40LDQu9C40YHRgtGLINC+0YLQtNC10LvQvtCyINGB0L3QsNCx0LbQtdC90LjRjyDQuCDQ
-u9C+0LPQuNGB0YLQuNC60LguCgrQodCV0JzQmNCd0JDQoCAg0J/QntCh0JLQr9Cp0JXQnSAg0LrQ
-vtC80L/Qu9C10LrRgdC90L7QvNGDINGA0LDRgdGB0LzQvtGC0YDQtdC90LjRjiDQvNC10YLQvtC0
-0L7QsiDRgdC+0LLQtdGA0YjQtdC90YHRgtCy0L7QstCw0L3QuNGPINGA0LDQsdC+0YLRiyDQuCDR
-gNCw0LfQstC40YLQuNGPINGB0LrQu9Cw0LTRgdC60LjRhSDQutC+0LzQv9C70LXQutGB0L7Qsi4K
-CtCm0JXQm9CsINCh0JXQnNCY0J3QkNCg0JA6CiAgLSDQv9C+0LvRg9GH0LjRgtGMINC40L3RhNC+
-0YDQvNCw0YbQuNGOINC+INGB0L7QstGA0LXQvNC10L3QvdGL0YUg0YLQtdGF0L3QvtC70L7Qs9C4
-0Y/RhSDRgdC60LvQsNC00L7QsiDRgNCw0LfQu9C40YfQvdGL0YUg0YLQuNC/0L7QsiDQuCDQvdCw
-0LfQvdCw0YfQtdC90LjQuSwg0LzQtdGC0L7QtNCw0YUg0Lgg0L7QsdC+0YDRg9C00L7QstCw0L3Q
-uNC4INC00LvRjyDRgdC60LvQsNC00LjRgNC+0LLQsNC90LjRjyDRgtC+0LLQsNGA0L7Qsiwg0L7Q
-sdC+0YDRg9C00L7QstCw0L3QuNC4INC00LvRjyDQv9C10YDQtdC80LXRidC10L3QuNGPINC4INC+
-0LHRgNCw0LHQvtGC0LrQuCDRgtC+0LLQsNGA0L7QsjsgCiAgLSDRgNCw0YHRgdC80L7RgtGA0LXR
-gtGMINC+0YLQtNC10LvRjNC90L4g0YHQvtCy0LXRgNGI0LXQvdGB0YLQstC+0LLQsNC90LjQtSDR
-gdC60LvQsNC00LAg0L/QviDRgNCw0LfQu9C40YfQvdGL0Lwg0L3QsNC/0YDQsNCy0LvQtdC90LjR
-j9C8INCyINC60LDRh9C10YHRgtCy0LUg0L7RgtC00LXQu9GM0L3QvtCz0L4g0L/RgNC+0LXQutGC
-0LAg0YDQsNC30LLQuNGC0LjRjzsgCiAgLSDQt9Cw0LrRgNC10L/QuNGC0Ywg0L3QsNCy0YvQuiDQ
-v9GA0L7QtdC60YLQuNGA0L7QstCw0L3QuNGPINGB0LrQu9Cw0LTQsCDQuCDRgNCw0YHRh9C10YLQ
-vtCyINC/0L7QutCw0LfQsNGC0LXQu9C10Lkg0Y3RhNGE0LXQutGC0LjQstC90L7RgdGC0Lgg0YDQ
-sNCx0L7RgtGLLiAKCtCg0JXQl9Cj0JvQrNCi0JDQotCrICDQodCV0JzQmNCd0JDQoNCQOiAKICAt
-INC/0L7QstGL0YHQuNGC0Ywg0LrQstCw0LvQuNGE0LjQutCw0YbQuNGOINGD0YfQsNGB0YLQvdC4
-0LrQvtCyINCyINCy0L7Qv9GA0L7RgdCw0YUg0YDQsNC30LLQuNGC0LjRjyDRgdC60LvQsNC00LA7
-IAogIC0g0L7RgdCy0L7QuNGC0Ywg0LzQtdGC0L7QtNC+0LvQvtCz0LjRjiDRg9C/0YDQsNCy0LvQ
-tdC90LjRjyDQv9GA0L7QtdC60YLQsNC80Lgg0YDQsNC30LLQuNGC0LjRjyDRgdC60LvQsNC00LA7
-IAogIC0gKNC/0YDQuCDQvdCw0LvQuNGH0LjQuCDQuNGB0YXQvtC00L3Ri9GFINC00LDQvdC90YvR
-hSDRgdCy0L7QtdCz0L4g0L/RgNC10LTQv9GA0LjRj9GC0LjRjykg0YDQsNGB0YHRh9C40YLQsNGC
-0Ywg0L/QvtC60LDQt9Cw0YLQtdC70Lgg0Y3RhNGE0LXQutGC0LjQstC90L7RgdGC0Lgg0YDQsNCx
-0L7RgtGLINGB0LrQu9Cw0LTQsCDQuCDRgdC10LHQtdGB0YLQvtC40LzQvtGB0YLRjCDQstGL0L/Q
-vtC70L3Rj9C10LzRi9GFINC+0L/QtdGA0LDRhtC40LkuCgoqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioKCtCf0KDQntCT0KDQ
-kNCc0JzQkCDQodCV0JzQmNCd0JDQoNCQCgrQodCe0JLQoNCV0JzQldCd0J3QntCVICDQo9Cf0KDQ
-kNCS0JvQldCd0JjQlSAg0KHQmtCb0JDQlNCe0JwKICAtINCh0L7QstGA0LXQvNC10L3QvdGL0LUg
-0YHRgNC10LTRgdGC0LLQsCDQvtC/0LjRgdCw0L3QuNGPINC4INC80L7QtNC10LvQuNGA0L7QstCw
-0L3QuNGPINCx0LjQt9C90LXRgS3Qv9GA0L7RhtC10YHRgdC+0LI7IAogIC0g0J/QvtC00YXQvtC0
-0Ysg0Log0YDQsNGB0YfQtdGC0YMg0YHRgtC+0LjQvNC+0YHRgtC4INC70L7Qs9C40YHRgtC40YfR
-gdC60LjRhSDQvtC/0LXRgNCw0YbQuNC5OyAKICAtINCj0L/RgNCw0LLQu9C10L3QuNC1INC/0YDQ
-vtC10LrRgtCw0LzQuC4gCgrQodCi0KDQkNCi0JXQk9CY0KfQldCh0JrQmNCZICDQkNCd0JDQm9CY
-0JcgINCh0J7QntCi0JLQldCi0KHQotCS0JjQryAg0KHQmtCb0JDQlNCh0JrQntCT0J4gINCl0J7Q
-l9Cv0JnQodCi0JLQkCAg0KLQoNCV0JHQntCS0JDQndCY0K/QnCAg0JHQmNCX0J3QldCh0JAKICAt
-INCe0YbQtdC90LrQsCDQv9C+0YLRgNC10LHQvdC+0YHRgtC10Lkg0L/QviDQstC80LXRgdGC0LjQ
-vNC+0YHRgtC4INGB0LrQu9Cw0LTQsDsgCiAgLSDQntGG0LXQvdC60LAg0L/QvtGC0YDQtdCx0L3Q
-vtGB0YLQuCDQv9C+INC/0YDQvtC/0YPRgdC60L3QvtC5INGB0L/QvtGB0L7QsdC90L7RgdGC0Lgg
-0YHQutC70LDQtNCwOyAKICAtINCe0YbQtdC90LrQsCDQv9C+INC00L7Qv9GD0YHRgtC40LzQvtC5
-INGB0YLQvtC40LzQvtGB0YLQuCDQstGL0L/QvtC70L3QtdC90LjRjyDRgdC60LvQsNC00YHQutC4
-0YUg0L7Qv9C10YDQsNGG0LjQuTsgCgrQoNCw0YHRgdC80L7RgtGA0LXQvdC40LUg0LLQsNGA0LjQ
-sNC90YLQvtCyINC40LfQvNC10L3QtdC90LjRjyDQv9Cw0YDQsNC80LXRgtGA0L7QsiDRgNCw0LHQ
-vtGC0Ysg0YHQutC70LDQtNCwICjQstC80LXRgdGC0LjQvNC+0YHRgtGMLCDQv9GA0L7Qv9GD0YHQ
-utC90LDRjyDRgdC/0L7RgdC+0LHQvdC+0YHRgtGMLCDRgdGC0L7QuNC80L7RgdGC0Ywg0L7Qv9C1
-0YDQsNGG0LjQuSkuCtCY0J3QpNCg0JDQodCi0KPQmtCi0KPQoNCd0KvQlSAg0J/QoNCe0JXQmtCi
-0Ks6CiAgLSDQodGC0YDQvtC40YLQtdC70YzRgdGC0LLQvi/RgNC10LrQvtC90YHRgtGA0YPQutGG
-0LjRjyDRgdC60LvQsNC00LA7IAogIC0g0KHRgtC10LvQu9Cw0LbQvdC+0LUg0L7QsdC+0YDRg9C0
-0L7QstCw0L3QuNC1OyAKICAtINCf0L7QtNGK0LXQvNC90L4t0YLRgNCw0L3RgdC/0L7RgNGC0L3Q
-vtC1INC+0LHQvtGA0YPQtNC+0LLQsNC90LjQtTsgCiAgLSDQodC/0LXRhtC40LDQu9GM0L3QvtC1
-INC+0LHQvtGA0YPQtNC+0LLQsNC90LjQtSAo0LTQvtC60L7QstC+0LUg0L7QsdC+0YDRg9C00L7Q
-stCw0LjQtSwg0LrQvtC90YLRgNC+0LvRjNC90L7QtSDQvtCx0L7RgNGD0LTQvtCy0LDQvdC40LUs
-INC/0LDQu9C10YLQuNGA0YPRjtGJ0LXQtSDQvtCx0L7RgNGD0LTQvtCy0LDQvdC40LUg0Lgg0YIu
-0LQuKTsgCiAgLSDQl9C+0L3QuNGA0L7QstCw0L3QuNC1INGB0LrQu9Cw0LTQsC4gCgrQotCV0KXQ
-ndCe0JvQntCT0JjQp9CV0KHQmtCY0JkgINCf0KDQntCV0JrQotCrOgogIC0g0JDQtNGA0LXRgdC9
-0L7QtSDRhdGA0LDQvdC10L3QuNC1INC/0YDQvtC00YPQutGG0LjQuCDQvdCwINGB0LrQu9Cw0LTQ
-tTsgCiAgLSDQnNC+0YLQuNCy0LDRhtC40Y8g0L/QtdGA0YHQvtC90LDQu9CwINGB0L7RgtGA0YPQ
-tNC90LjQutC+0LIg0YHQutC70LDQtNCwOyAKICAtINCg0LXQttC40Lwg0YDQsNCx0L7RgtGLINGB
-0LrQu9Cw0LTRgdC60L7Qs9C+INC60L7QvNC/0LvQtdC60YHQsDsgCiAgLSDQktC90LXQtNGA0LXQ
-vdC40LUg0YHQuNGB0YLQtdC8INC60LvQsNGB0YHQsCBXTVM7IAogIC0g0KDQtdCz0LvQsNC80LXQ
-vdGC0LDRhtC40Y8g0YDQsNCx0L7RgtGLINC/0LXRgNGB0L7QvdCw0LvQsCAo0YDQsNC30YDQsNCx
-0L7RgtC60LAsINC00L7QutGD0LzQtdC90YLQuNGA0L7QstCw0L3QuNC1INC4INC60L7QvdGC0YDQ
-vtC70Ywg0LLRi9C/0L7Qu9C90LXQvdC40Y8g0LHQuNC30L3QtdGBLdC/0YDQvtGG0LXRgdGB0L7Q
-sik7IAogIC0g0J7RhtC10L3QutCwINGN0YTRhNC10LrRgtC40LLQvdC+0YHRgtC4INGA0LXQsNC7
-0LjQt9Cw0YbQuNC4INC/0YDQvtC10LrRgtC+0LIg0LzQtdGC0L7QtNC+0Lwg0LTQuNC90LDQvNC4
-0YfQtdGB0LrQvtCz0L4g0LzQvtC00LXQu9C40YDQvtCy0LDQvdC40Y87IAogIC0g0KPRgdC70L7Q
-stC40Y8g0L/RgNC40L3Rj9GC0LjRjyDRgNC10YjQtdC90LjRjyDQvtCxINCw0YPRgtGB0L7RgNGB
-0LjQvdCz0LUg0YHQutC70LDQtNGB0LrQuNGFINGD0YHQu9GD0LMuIAoK0KLQkNCa0KLQmNCn0JXQ
-odCa0J7QlSAg0KPQn9Cg0JDQktCb0JXQndCY0JUg0KHQmtCb0JDQlNCe0JwK0KLQldCl0J3QntCb
-0J7Qk9CY0KfQldCh0JrQmNCZICDQn9Cg0J7QptCV0KHQoToKICAtINCf0YDQuNC10LzQutCwINC/
-0YDQvtC00YPQutGG0LjQuDsgCiAgLSDQntC/0YDQuNGF0L7QtNC+0LLQsNC90LjQtSDQv9GA0L7Q
-tNGD0LrRhtC40Lg7IAogIC0g0KDQsNC30LzQtdGJ0LXQvdC40LUg0L/RgNC+0LTRg9C60YbQuNC4
-INC90LAg0YXRgNCw0L3QtdC90LjQtTsgCiAgLSDQntGC0LHQvtGAINC/0YDQvtC00YPQutGG0LjQ
-uDsgCiAgLSDQmtC+0LzQv9C70LXQutGC0LDRhtC40Y8g0LfQsNC60LDQt9C+0LI7IAogIC0g0KXR
-gNCw0L3QtdC90LjQtSDQs9C+0YLQvtCy0YvRhSDQt9Cw0LrQsNC30L7QsjsgCiAgLSDQlNC+0LrR
-g9C80LXQvdGC0LDRhtC40L7QvdC90L7QtSDQvtCx0LXRgdC/0LXRh9C10L3QuNC1OyAKICAtINCY
-0L3QstC10L3RgtCw0YDQuNC30LDRhtC40Y8g0L3QsCDRgdC60LvQsNC00LU7IAogIC0g0J7RgtGH
-0ZHRgtC90L7RgdGC0Ywg0YHQutC70LDQtNGB0LrQvtC5INGB0LvRg9C20LHRizsgCiAgLSDQoNCw
-0YHRh9GR0YIg0L/QvtC60LDQt9Cw0YLQtdC70LXQuSDQvtGB0L3QvtCy0L3Ri9GFINCx0LjQt9C9
-0LXRgS3Qv9GA0L7RhtC10YHRgdC+0LI7IAogIC0g0J/QvtC60LDQt9Cw0YLQtdC70Lgg0Y3RhNGE
-0LXQutGC0LjQstC90L7RgdGC0Lgg0Lgg0YDQtdC30YPQu9GM0YLQsNGC0LjQstC90L7RgdGC0Lgg
-0L7RgdC90L7QstC90YvRhSDQv9GA0L7RhtC10YHRgdC+0LIg0L3QsCDRgdC60LvQsNC00LU7IAog
-IC0g0KPRh9GR0YIg0LTQstC40LbQtdC90LjRjyDRgtC+0LLQsNGA0L3Qvi3QvNCw0YLQtdGA0LjQ
-sNC70YzQvdGL0YUg0YbQtdC90L3QvtGB0YLQtdC5ICjQv9C10YDQstC40YfQvdGL0LUg0LTQvtC6
-0YPQvNC10L3RgtGLLCDQutC+0L3RgtGA0L7Qu9GMINGB0LrQu9Cw0LTRgdC60L7Qs9C+INGD0YfR
-kdGC0LApOyAKICAtINCh0YLQsNC90LTQsNGA0YLRiyDRhdGA0LDQvdC10L3QuNGPINGC0L7QstCw
-0YDQvdC+LdC80LDRgtC10YDQuNCw0LvRjNC90YvRhSDRhtC10L3QvdC+0YHRgtC10Lkg4oCTINGA
-0LDQt9GA0LDQsdC+0YLQutCwINC4INC60L7QvdGC0YDQvtC70Ywg0LLRi9C/0L7Qu9C90LXQvdC4
-0Y87IAogIC0g0J/RgNCw0LLQuNC70LAg0L/RgNC+0LLQtdC00LXQvdC40Y8g0LjQvdCy0LXQvdGC
-0LDRgNC40LfQsNGG0LjQuDsgCiAgLSDQoNC+0YLQsNGG0LjQvtC90L3Ri9C5INC/0YDQuNC90YbQ
-uNC/INC+0YLQs9GA0YPQt9C60Lg7IAogIC0g0J7RgdC90L7QstC90YvQtSDRgdGC0LDRgtGM0Lgg
-0YDQsNGB0YXQvtC00L7Qsjog0LHRjtC00LbQtdGC0LjRgNC+0LLQsNC90LjQtSDRgdC60LvQsNC0
-0YHQutC+0LPQviDQutC+0LzQv9C70LXQutGB0LAgKNGG0LXQvdGC0YAg0LfQsNGC0YDQsNGCLCDR
-gNCw0YHQv9GA0LXQtNC10LvQtdC90LjQtSDQt9Cw0YLRgNCw0YIg0L/QviDQv9GA0L7QtdC60YLQ
-sNC8ICjQtNC70Y8g0LTQuNGB0YLRgNC40LHRg9GC0L7RgNGB0LrQvtC5INC60L7QvNC/0LDQvdC4
-0Lgg4oCTINC/0L4g0L/QvtGB0YLQsNCy0YnQuNC60LDQvCDQv9GA0L7QtNGD0LrRhtC40LgpINC4
-INC60LDQvdCw0LvQsNC8INGB0LHRi9GC0LApLiAKCtCf0KDQkNCa0KLQmNCn0JXQodCa0JjQlSAg
-0JfQkNCU0JDQndCY0K8gKNCy0YvQv9C+0LvQvdGP0Y7RgtGB0Y8g0LIg0LPRgNGD0L/Qv9Cw0YUg
-0Lgg0LjQvdC00LjQstC40LTRg9Cw0LvRjNC90L4g0LIg0YXQvtC00LUg0YHQtdC80LjQvdCw0YDQ
-sCk6CiAgLSDQoNCw0YHRh9C10YIg0LjQt9C80LXQvdC10L3QuNGPINCy0LzQtdGB0YLQuNC80L7R
-gdGC0Lgg0Lgg0YHRgtC+0LjQvNC+0YHRgtC4INGF0YDQsNC90LXQvdC40Y8g0LfQsNC00LDQvdC9
-0L7Qs9C+INGB0LrQu9Cw0LTQsCDQv9GA0Lgg0LjQt9C80LXQvdC10L3QuNC4INCy0YvRgdC+0YLR
-iyDRgdC60LvQsNC00LjRgNC+0LLQsNC90LjRjyDQuCDRiNC40YDQuNC90Ysg0YDQsNCx0L7Rh9C1
-0LPQviDQutC+0YDQuNC00L7RgNCwOyAKICAtINCg0LDQt9GA0LDQsdC+0YLQutCwINGB0LjRgdGC
-0LXQvNGLINCw0LTRgNC10YHQvdC+0LPQviDRhdGA0LDQvdC10L3QuNGPINC00LvRjyDQt9Cw0LTQ
-sNC90L3QvtC5INC90L7QvNC10L3QutC70LDRgtGD0YDRiyDQuCDQt9Cw0LTQsNC90L3QvtCz0L4g
-0YHQutC70LDQtNCwOyAKICAtINCe0YbQtdC90LrQsCDRjdC60L7QvdC+0LzQuNGH0LXRgdC60L7Q
-s9C+INGN0YTRhNC10LrRgtCwINC4INGB0YDQvtC60LAg0L7QutGD0L/QsNC10LzQvtGB0YLQuCDQ
-v9GA0L7QtdC60YLQsCDQstC90LXQtNGA0LXQvdC40LggV01TINC00LvRjyDQt9Cw0LTQsNC90L3R
-i9GFINGD0YHQu9C+0LLQuNC5OyAKICAtINCg0LDRgdGH0LXRgiDRgdC00LXQu9GM0L3Ri9GFINGA
-0LDRgdGG0LXQvdC+0Log0L7Qv9C70LDRgtGLINGC0YDRg9C00LAg0LTQu9GPINC30LDQtNCw0L3Q
-vdGL0YUg0YPRgdC70L7QstC40Lk7IAogIC0g0J7Qv9C40YHQsNGC0Ywg0L/RgNC+0YbQtdGB0YEg
-0YHQsdC+0YDQsCDQt9Cw0LrQsNC30L7QsiDQtNC70Y8g0LfQsNC00LDQvdC90YvRhSDRg9GB0LvQ
-vtCy0LjQuTsgCiAgLSDQoNCw0YHRh9C10YIg0YHQtdCx0LXRgdGC0L7QuNC80L7RgdGC0Ywg0YXR
-gNCw0L3QtdC90LjRjyDQuCDQvtCx0YDQsNCx0L7RgtC60Lgg0L/RgNC+0LTRg9C60YbQuNC4INC9
-0LAg0LfQsNC00LDQvdC90L7QvCDRgdC60LvQsNC00LUg0Lgg0LTRgC4gCgoqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioKCjE5
-IC0gMjAg0LDQv9GA0LXQu9GPIDIwMTDQsy4gICgyINC00L3RjyDRgSAxMC4wMCDQtNC+IDE4LjAw
-KSAK0JzQtdGB0YLQviDQv9GA0L7QstC10LTQtdC90LjRjzog0JzQvtGB0LrQstCwLCDQvC4g0JHQ
-vtGC0LDQvdC40YfQtdGB0LrQuNC5INGB0LDQtCwgItCj0YfQtdCx0L3QsNGPINCz0L7RgdGC0LjQ
-vdC40YbQsCIK0KHRgtC+0LjQvNC+0YHRgtGMINGD0YfQsNGB0YLQuNGPOiAxNyA1MDAg0YDRg9Cx
-Lgoo0JIg0YHRgtC+0LjQvNC+0YHRgtGMINCy0YXQvtC00LjRgiDQvtCx0YPRh9C10L3QuNC1LCDQ
-v9C10YfQsNGC0L3Ri9C1INC80LDRgtC10YDQuNCw0LvRiyDQv9C+INGC0LXQvNC1INGB0LXQvNC4
-0L3QsNGA0LAsINC+0LHQtdC00YssINC60L7RhNC1LdC/0LDRg9C30YspLiDQn9C+INC+0LrQvtC9
-0YfQsNC90LjQuCDQstGL0LTQsNC10YLRgdGPINGB0LXRgNGC0LjRhNC40LrQsNGCINC+INC/0YDQ
-vtGF0L7QttC00LXQvdC40Lgg0L7QsdGD0YfQtdC90LjRjyDQv9C+INC00LDQvdC90L7QuSDRgtC1
-0LzQtS4gCtCY0L3QvtCz0L7RgNC+0LTQvdC40Lwg0L/QvtC80L7QttC10Lwg0LfQsNCx0YDQvtC9
-0LjRgNC+0LLQsNGC0Ywg0L3QvtC80LXRgNCwINCyINCz0L7RgdGC0LjQvdC40YbQtS4g0J7QsdGD
-0YfQtdC90LjQtSDQuCDQv9GA0L7QttC40LLQsNC90LjQtSDQsiDQvtC00L3QvtC8INC30LTQsNC9
-0LjQuC4KCgoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioKCtCf0L7QtNGA0L7QsdC90LDRjyDQuNC90YTQvtGA0LzQsNGG0LjR
-jyDQuCDRgNC10LPQuNGB0YLRgNCw0YbQuNGPINC/0L4g0YLQtdC70LXRhNC+0L3RgzogOCAoNDk1
-KSAyMjkgLSAwNCAtIDMzCgoKKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqCioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgoKCtCS0L3QuNC80LDQvdC40LUh
-INCV0YHQu9C4INCS0LDRiCDQsNC00YDQtdGBINGB0LvRg9GH0LDQudC90L4g0L/QvtC/0LDQuyDQ
-siDQsdCw0LfRgyDRgNCw0YHRgdGL0LvQutC4LCDQuCDQktGLINCx0L7Qu9GM0YjQtSDQvdC1INGF
-0L7RgtC40YLQtSDQv9C+0LvRg9GH0LDRgtGMINC40L3RhNC+0YDQvNCw0YbQuNGOINC+0LEg0L7Q
-sdGA0LDQt9C+0LLQsNGC0LXQu9GM0L3Ri9GFINC80LXRgNC+0L/RgNC40Y/RgtC40Y/RhSwgCtC/
-0YDQvtGB0YLQviDQvtGC0L/RgNCw0LLRjNGC0LUg0L/Rg9GB0YLQvtC1INC/0LjRgdGM0LzQviDQ
-siDQktCw0YjQtdCz0L4g0LDQtNGA0LXRgdCwINC90LAg0LDQtNGA0LXRgSB1bnN1YnNjcmliZUBu
-b3RzZW1pbmFyLnJ1P3N1YmplY3Q9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0INC4INCyINGC0LXQvNC1INC/0LjRgdGM0LzQsCDRg9C60LDQttC40YLQtSDQktCw0Ygg0LDQ
-tNGA0LXRgSDRjdC70LXQutGC0YDQvtC90L3QvtC5INC/0L7Rh9GC0YsuIAoKCtCS0LDRiCDQsNC0
-0YDQtdGBINCx0YPQtNC10YIg0LDQstGC0L7QvNCw0YLQuNGH0LXRgdC60Lgg0YPQtNCw0LvQtdC9
-INC40Lcg0YDQsNGB0YHRi9C70LrQuCDQsiDRgtC10YfQtdC90LjQtSAxICjQvtC00L3QvtCz0L4p
-INC00L3RjyEKCgpUTyAgVU5TVUJTQ1JJQkUgICBTRU5EICBZT1VSICAgRU1BSUwgICBBRERSRVNT
-IElOIFNVQkpFQ1QgVE8gICB1bnN1YnNjcmliZUBub3RzZW1pbmFyLnJ1P3N1YmplY3Q9c3BpLWRl
-dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IAoKCioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgoKCgoKCndhcmUgIGhvdXNl
-IG1hbmFnZXlnYQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFy
-YWxsZWwgU3R1ZGlvIEV2YWwKVHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxm
-LiBTcGVlZCBjb21waWxpbmcsIGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBh
-cHBsaWNhdGlvbnMgZm9yIHBhcmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFs
-bGVsIFN0dWRpbyBnb3QgaGlnaCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3Nm
-dS9pbnRlbC1zdy1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
-aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hi,
+
+The wl1271 driver does not actually require this value to be adjustable
+- i.e. the driver does not need to know the value. In fact, the wl1271
+does not know about DMA at all, instead the SPI controller driver makes
+the choice on how to perform the transfer most optimally.
+
+So we - or the wl1271 driver - just need the selection between DMA and
+PIO to be optimal in point of view of throughput and CPU load. The old
+threshold value of 8 is far from optimal - something like 160-200 is in
+the correct range.
+
+AFAIK performing the SPI transfer optimally should not affect other SPI
+clients in a negative way, and AFAIK there are no other SPI clients in
+Dali than the wl1271, so I guess this new threshold value could also be
+hard-coded into the omap2_mcspi driver.
+
+-Juuso
+
+On Thu, 2010-04-08 at 17:25 +0200, Tereshonkov Roman (Nokia-D/Helsinki)
+wrote:
+> The others from wlan team need DMA_MIN_BYTES to be adjustable.
+> Juuso can comment this.
+> 
+> Just changing DMA_MIN_BYTES might influence on other spi devices 
+> controlled by omap2/3 spi controller driver.
+> 
+> Roman
+> 
+> >-----Original Message-----
+> >From: glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org [mailto:glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org] On 
+> >Behalf Of ext Grant Likely
+> >Sent: 08 April, 2010 18:09
+> >To: Tereshonkov Roman (Nokia-D/Helsinki)
+> >Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; Samuel Ortiz
+> >Subject: Re: [PATCH 1/2] spi: Add support for dma_min_bytes 
+> >configuration.
+> >
+> >On Thu, Apr 8, 2010 at 4:33 AM,  <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org> wrote:
+> >>
+> >> Hi,
+> >>
+> >>
+> >>>-----Original Message-----
+> >>>From: glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org [mailto:glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org] On
+> >>>Behalf Of ext Grant Likely
+> >>>Sent: 08 April, 2010 09:27
+> >>>To: Tereshonkov Roman (Nokia-D/Helsinki)
+> >>>Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> >>>Subject: Re: [PATCH 1/2] spi: Add support for dma_min_bytes
+> >>>configuration.
+> >>>
+> >>>Hi Roman,
+> >>>
+> >>>On Tue, Apr 6, 2010 at 4:39 AM, Roman Tereshonkov
+> >>><roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org> wrote:
+> >>>> This parameters defines the minimum number of bytes when 
+> >dma is used.
+> >>>>
+> >>>> Signed-off-by: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+> >>>
+> >>>The intent of this feature is... ?  Your patch needs a better
+> >>>description as to why it is needed; especially considering that it
+> >>>changes common code.
+> >>>
+> >>>But, inferring from the code that is written, I can guess what you're
+> >>>trying to do, if not why.  Why would spi_devices care what 
+> >the minimum
+> >>>size of a DMA transfer is?  The SPI bus driver is in a far better
+> >>>position to make that determination.
+> >>>
+> >>>Also, since this essentially adds a new 'knob' for spi_devices to
+> >>>twiddle, what is the expected behaviour for SPI bus controllers that
+> >>>don't support it?  Is it a required feature for spi bus drivers to
+> >>>implement if they support DMA?
+> >>
+> >> The spi transactions can be handled in two ways: dma and pio.
+> >> For the best perfomance the minimun number of bytes when dma is used
+> >> can be found experimentaly and passed through the platform 
+> >board config files.
+> >>
+> >> Now I will talk about omap2/3 spi only.
+> >> If the mentioned parameter is not set then the static default one
+> >> is used (as it is nowdays).
+> >> This exludes the patch influence on other spi devices controlled
+> >> by the same omap2/3 spi master.
+> >>
+> >> I think you might be right. The better way would be to pass it
+> >> through the controller_data field of the spi_board_info.
+> >> Then I do not need to touch spi.h and spi.c.
+> >
+> >The question that must be asked, will this new optimization option
+> >actually be profiled for most boards?  Should it really be a
+> >board-specific parameter?  Or even an SoC specific parameter?  Or to
+> >be even more specific, do *you* have two different boards that need a
+> >different value for the minimum dma bytes?
+> >
+> >If the answer is no, then I recommend profiling your platform and
+> >floating out a patch that changes the default value to what you find
+> >is best.  If there is no opposition to the value you choose, then
+> >there is no need to make it a tunable until someone else comes along
+> >who needs it to be something different.
+> >
+> >The current value of DMA_MIN_BYTES hasn't changed since the driver was
+> >first submitted.  I suspect that it has not been optimized.  What does
+> >Samuel have to say about it?
+> >
+> >g.
+> >
+> >>
+> >> I will create a new patch.
+> >> But now I wonder about patches syncronization.
+> >> The first patch should go to linux-omap tree as it is for 
+> >arch/arm/plat-omap/include/plat/mcspi.h.
+> >> The second patch applied after the first one is for 
+> >driver/spi/omap2_mcspi.h.
+> >> Or can you handle both patches?
+> >>
+> >>
+> >> Regards
+> >> Roman
+> >
+
+
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

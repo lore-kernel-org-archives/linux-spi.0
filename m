@@ -1,13 +1,26 @@
-From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
-Subject: nitin vishnoi invites you to join Ecademy
-Date: Sun, 11 Apr 2010 04:09:50 +0100 (BST)
-Message-ID: <20100411030950.3FB6DD9813D@ecweb2.ecademy.com>
-Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
+From: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 1/3] spi: implemented driver for
+	Cirrus EP93xx SPI controller
+Date: Sun, 11 Apr 2010 15:24:21 +0100
+Message-ID: <j2g56d259a01004110724q7e038392r9b7b33772b66e1f1@mail.gmail.com>
+References: <cover.1268930557.git.mika.westerberg@iki.fi>
+	<56d259a01003250649ubf0e32ejc15e4f3b45ec43cd@mail.gmail.com>
+	<20100325184316.GB20512@gw.healthdatacare.com>
+	<s2n56d259a01003311715ke5b93a96v9d453ec32f08ec29@mail.gmail.com>
+	<20100406054418.GA27465@gw.healthdatacare.com>
+	<s2g56d259a01004060550me72bd64cr35e4a83c495d6909@mail.gmail.com>
+	<20100406181839.GA2685@gw.healthdatacare.com>
+	<x2r56d259a01004061428raffb32e9o1d42570c79c0ee56@mail.gmail.com>
+	<l2j56d259a01004091056i91598adub4201b47c4a86a90@mail.gmail.com>
+	<20100410155443.GG2685@gw.healthdatacare.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100410155443.GG2685-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,27 +31,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On 4/10/10, Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org> wrote:
+>  Can you try following with your devices?
 
-Join Ecademy now for business networking and support >
+Woo, nice one!
+Same CPU usage (~57%) same throughput (315kb/s) and it's much more
+elegant. :) Just using repeated interrupts to handle the last 4 words
+instead of the nasty busy-wait loops seems fairer to other interrupts
+too!
 
-- Share Knowledge
-- Build your Network
-- Grow your Business
+You can make it even smaller be removing some redundant checks
+deriving from the fact that it's synchronous, so N writes always cause
+N reads:
 
-thanks,
-nitin vishnoi
-nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+>         if (espi->tx == 0 && espi->rx == 0)
+>                 espi->fifo_level = 0;
 
+can be
 
-This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To avoid receiving these emails in the future send an email from that address to
-invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
-or go to
-http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
-Email:support-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org The Ecademy Limited, Stronsay, Tilford Road, Hindhead, Surrey, GU26 6UG, UK
-Registered in England and Wales Company Registration: 3651083 VAT: 718 0377 36
+         if (espi->tx == 0)
+                 espi->fifo_level = 0;
 
+,
+
+>         while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE) &&
+>                 espi->rx < t->len) {
+
+         while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE)) {
+
+and
+
+>         /* is transfer finished? */
+>         if (espi->tx == t->len && espi->rx == t->len) {
+
+         if (espi->rx == t->len) {
+
+Cheers!
+
+    M
 
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval

@@ -1,14 +1,12 @@
 From: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] omap2_mcspi: change default
-	DMA_MIN_BYTES value to 160
-Date: Mon, 12 Apr 2010 12:07:54 +0300
-Message-ID: <1271063274-13222-1-git-send-email-roman.tereshonkov@nokia.com>
+Subject: [PATCH] spi: spi_device memory should be
+	released instead of device.
+Date: Mon, 12 Apr 2010 12:56:35 +0300
+Message-ID: <1271066195-17664-1-git-send-email-roman.tereshonkov@nokia.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: juuso.oikarinen-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org, glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, imre.deak-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org,
-	samuel.ortiz-EmnPodGKVbzby3iVrkZq2A@public.gmane.org, johannes-cdvu00un1VgdHxzADdlk8Q@public.gmane.org,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+Cc: glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -21,29 +19,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The value 160 has been obtained as optimal in testing it for
-wl1271 which use spi for communication.
-In some sense this change might also influence on other spi devices
-connected to omap2_mcspi controller.
+The memory for dev variable is allocated as a part of
+spi_device structure memory which the dev belongs to.
+Thus when the memory is released the right pointer is used.
 
 Signed-off-by: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/omap2_mcspi.c |    2 +-
+ drivers/spi/spi.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-index a9d58ce..d24a05e 100644
---- a/drivers/spi/omap2_mcspi.c
-+++ b/drivers/spi/omap2_mcspi.c
-@@ -112,7 +112,7 @@ struct omap2_mcspi_dma {
- /* use PIO for small transfers, avoiding DMA setup/teardown overhead and
-  * cache operations; better heuristics consider wordsize and bitrate.
-  */
--#define DMA_MIN_BYTES			8
-+#define DMA_MIN_BYTES			160
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 9ffb0fd..5ec8e5f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -41,7 +41,7 @@ static void spidev_release(struct device *dev)
+ 		spi->master->cleanup(spi);
  
+ 	spi_master_put(spi->master);
+-	kfree(dev);
++	kfree(spi);
+ }
  
- struct omap2_mcspi {
+ static ssize_t
 -- 
 1.6.2.rc1.3.g81d3f
 

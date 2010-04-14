@@ -1,15 +1,12 @@
-From: "=?utf-8?B?0J3QsNGH0LDQu9GM0L3QuNC60YMg0KHQutC70LDQtNCw?="
-	<numyrymewad-oNQ42X0Nby5iLUuM0BA3LQ@public.gmane.org>
-Subject: =?utf-8?b?0KHQvtCy0YDQtdC80LXQvdC90YvQuSA=?=
-	=?utf-8?b?0YHQutC70LDQtDog0L/RgNC+0LXQutGC0LjRgNC+0LLQsNC90LjQtSwg?=
-	=?utf-8?b?0YLQtdGF0L3QvtC70L7Qs9C40LgsINGD0L/RgNCw0LLQu9C10L3QuNC1?=
-	=?utf-8?q?gps?=
-Date: Tue, 13 Apr 2010 19:00:58 +0300
-Message-ID: <1175914630.20100413190058@afterwork.com>
+From: LT.Robinson Moore. <clark.jack-FhtRXb7CoQBt1OO0OYaSVA@public.gmane.org>
+Subject: i await your thoughts
+Date: Wed, 14 Apr 2010 09:42:07 +0100
+Message-ID: <20100414094207.NJEWBPVEAPAHPG@btinternet.com>
+Reply-To: robnsonmoore-EMRzualFZlQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,107 +18,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqCiogIDE5IC0gMjAg4O/w5ev/IDIwMTDjLgoqCiogINHOwtDFzMXNzdvJICDRysvA
-xDog7/Du5ery6PDu4uDt6OUsIPLl9e3u6+7j6OgsIPPv8ODi6+Xt6OUuCioKKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCgrN
-wCAg0cXMyM3A0CAgz9DIw8vA2MDe0tHfOiDw8+ru4u7k6PLl6+gg6CDs5e3l5Obl8Psg8err4OTu
-4iwg8e/l9ujg6+jx8vsg7vLk5evu4iDx7eDh5uXt6P8g6CDr7uPo8fLo6uguCgrRxczIzcDQICDP
-ztHC39nFzSAg6u7s7+vl6vHt7uzzIPDg8fHs7vLw5e3o/iDs5fLu5O7iIPHu4uXw+OXt8fLi7uLg
-7ej/IPDg4e7y+yDoIPDg5+Lo8uj/IPHq6+Dk8ero9SDq7uzv6+Xq8e7iLgoK1sXL3CDRxczIzcDQ
-wDoKICAtIO/u6/P36PL8IOjt9O7w7OD26P4g7iDx7uLw5ezl7e379SDy5fXt7uvu4+j/9SDx6uvg
-5O7iIPDg5+vo9+379SDy6O/u4iDoIO3g5+3g9+Xt6OksIOzl8u7k4PUg6CDu4e7w8+Tu4uDt6Ogg
-5Ov/IPHq6+Dk6PDu4uDt6P8g8u7i4PDu4iwg7uHu8PPk7uLg7ejoIOTr/yDv5fDl7OX55e3o/yDo
-IO7h8ODh7vLq6CDy7uLg8O7iOyAKICAtIPDg8fHs7vLw5fL8IO7y5OXr/O3uIPHu4uXw+OXt8fLi
-7uLg7ejlIPHq6+Dk4CDv7iDw4Ofr6Pft++wg7eDv8ODi6+Xt6P/sIOIg6uD35fHy4uUg7vLk5ev8
-7e7j7iDv8O7l6vLgIPDg5+Lo8uj/OyAKICAtIOfg6vDl7+jy/CDt4OL76iDv8O7l6vLo8O7i4O3o
-/yDx6uvg5OAg6CDw4PH35fLu4iDv7urg5+Dy5evl6SD99PTl6vLo4u3u8fLoIPDg4e7y+y4gCgrQ
-xcfTy9zSwNLbICDRxczIzcDQwDogCiAgLSDv7uL78ejy/CDq4uDr6PTo6uD26P4g8/fg8fLt6Oru
-4iDiIOLu7/Du8eD1IPDg5+Lo8uj/IPHq6+Dk4DsgCiAgLSDu8eLu6PL8IOzl8u7k7uvu4+j+IPPv
-8ODi6+Xt6P8g7/Du5ery4OzoIPDg5+Lo8uj/IPHq6+Dk4DsgCiAgLSAo7/DoIO3g6+j36Ogg6PH1
-7uTt+/Ug5ODt7fv1IPHi7uXj7iDv8OXk7/Do//Lo/ykg8ODx8ffo8uDy/CDv7urg5+Dy5evoIP30
-9OXq8uji7e7x8ugg8ODh7vL7IPHq6+Dk4CDoIPHl4eXx8u7o7O7x8vwg4vvv7uvt/+Xs+/Ug7u/l
-8OD26OkuCgoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioKCs/QzsPQwMzMwCDRxczIzcDQwAoK0c7C0MXMxc3NzsUgINPP0MDC
-y8XNyMUgINHKy8DEzswKICAtINHu4vDl7OXt7fvlIPHw5eTx8uLgIO7v6PHg7ej/IOgg7O7k5evo
-8O7i4O3o/yDh6Oft5fEt7/Du9uXx8e7iOyAKICAtIM/u5PXu5Psg6iDw4PH35fLzIPHy7ujs7vHy
-6CDr7uPo8fLo9/Hq6PUg7u/l8OD26Ok7IAogIC0g0+/w4OLr5e3o5SDv8O7l6vLg7OguIAoK0dLQ
-wNLFw8jXxdHKyMkgIMDNwMvIxyAg0c7O0sLF0tHSwsjfICDRysvAxNHKzsPOICDVzsffydHSwsAg
-INLQxcHOwsDNyN/MICDByMfNxdHACiAgLSDO9uXt6uAg7+7y8OXh7e7x8uXpIO/uIOLs5fHy6Ozu
-8fLoIPHq6+Dk4DsgCiAgLSDO9uXt6uAg7+7y8OXh7e7x8ugg7+4g7/Du7/Px6u3u6SDx7+7x7uHt
-7vHy6CDx6uvg5OA7IAogIC0gzvbl7ergIO/uIOTu7/Px8ujs7ukg8fLu6Ozu8fLoIOL77+7r7eXt
-6P8g8err4OTx6uj1IO7v5fDg9ujpOyAKCtDg8fHs7vLw5e3o5SDi4PDo4O3y7uIg6Ofs5e3l7ej/
-IO/g8ODs5fLw7uIg8ODh7vL7IPHq6+Dk4CAo4uzl8fLo7O7x8vwsIO/w7u/z8ert4P8g8e/u8e7h
-7e7x8vwsIPHy7ujs7vHy/CDu7+Xw4Pbo6SkuCsjN1NDA0dLTytLT0M3bxSAgz9DOxcrS2zoKICAt
-INHy8O7o8uXr/PHy4u4v8OXq7u3x8vDz6vbo/yDx6uvg5OA7IAogIC0g0fLl6+vg5u3u5SDu4e7w
-8+Tu4uDt6OU7IAogIC0gz+7k+uXs7e4t8vDg7fHv7vDy7e7lIO7h7vDz5O7i4O3o5TsgCiAgLSDR
-7+X26ODr/O3u5SDu4e7w8+Tu4uDt6OUgKOTu6u7i7uUg7uHu8PPk7uLg6OUsIOru7fLw7uv87e7l
-IO7h7vDz5O7i4O3o5Swg7+Dr5fLo8PP++eXlIO7h7vDz5O7i4O3o5SDoIPIu5C4pOyAKICAtIMfu
-7ejw7uLg7ejlIPHq6+Dk4C4gCgrSxdXNzsvOw8jXxdHKyMkgIM/QzsXK0ts6CiAgLSDA5PDl8e3u
-5SD18ODt5e3o5SDv8O7k8+r26Ogg7eAg8err4OTlOyAKICAtIMzu8uji4Pbo/yDv5fDx7u3g6+Ag
-8e7y8PPk7ejq7uIg8err4OTgOyAKICAtINDl5ujsIPDg4e7y+yDx6uvg5PHq7uPuIOru7O/r5erx
-4DsgCiAgLSDC7eXk8OXt6OUg8ejx8uXsIOrr4PHx4CBXTVM7IAogIC0g0OXj6+Ds5e3y4Pbo/yDw
-4OHu8vsg7+Xw8e7t4OvgICjw4Ofw4OHu8urgLCDk7urz7OXt8ujw7uLg7ejlIOgg6u7t8vDu6/wg
-4vvv7uvt5e3o/yDh6Oft5fEt7/Du9uXx8e7iKTsgCiAgLSDO9uXt6uAg/fT05ery6OLt7vHy6CDw
-5eDr6Ofg9ujoIO/w7uXq8u7iIOzl8u7k7uwg5Ojt4Ozo9+Xx6u7j7iDs7uTl6+jw7uLg7ej/OyAK
-ICAtINPx6+7i6P8g7/Do7f/y6P8g8OX45e3o/yDu4SDg8/Lx7vDx6O3j5SDx6uvg5PHq6PUg8/Hr
-8+MuIAoK0sDK0sjXxdHKzsUgINPP0MDCy8XNyMUg0crLwMTOzArSxdXNzsvOw8jXxdHKyMkgIM/Q
-ztbF0dE6CiAgLSDP8Ojl7OrgIO/w7uTz6vbo6DsgCiAgLSDO7/Do9e7k7uLg7ejlIO/w7uTz6vbo
-6DsgCiAgLSDQ4Ofs5fnl7ejlIO/w7uTz6vbo6CDt4CD18ODt5e3o5TsgCiAgLSDO8uHu8CDv8O7k
-8+r26Og7IAogIC0gyu7s7+vl6vLg9uj/IOfg6uDn7uI7IAogIC0g1fDg7eXt6OUg4+7y7uL79SDn
-4Org5+7iOyAKICAtIMTu6vPs5e3y4Pbo7u3t7uUg7uHl8e/l9+Xt6OU7IAogIC0gyO3i5e3y4PDo
-5+D26P8g7eAg8err4OTlOyAKICAtIM7y97jy7e7x8vwg8err4OTx6u7pIPHr8+bh+zsgCiAgLSDQ
-4PH3uPIg7+7q4Ofg8uXr5ekg7vHt7uLt+/Ug4ejn7eXxLe/w7vbl8fHu4jsgCiAgLSDP7urg5+Dy
-5evoIP309OXq8uji7e7x8ugg6CDw5efz6/zy4PLo4u3u8fLoIO7x7e7i7fv1IO/w7vbl8fHu4iDt
-4CDx6uvg5OU7IAogIC0g0/e48iDk4ujm5e3o/yDy7uLg8O3uLezg8uXw6ODr/O379SD25e3t7vHy
-5ekgKO/l8OLo9+375SDk7urz7OXt8vssIOru7fLw7uv8IPHq6+Dk8eru4+4g8/e48uApOyAKICAt
-INHy4O3k4PDy+yD18ODt5e3o/yDy7uLg8O3uLezg8uXw6ODr/O379SD25e3t7vHy5ekgliDw4Ofw
-4OHu8urgIOgg6u7t8vDu6/wg4vvv7uvt5e3o/zsgCiAgLSDP8ODi6OvgIO/w7uLl5OXt6P8g6O3i
-5e3y4PDo5+D26Og7IAogIC0g0O7y4Pbo7u3t++kg7/Do7fbo7yDu8uPw8+fq6DsgCiAgLSDO8e3u
-4u375SDx8uDy/Ogg8ODx9e7k7uI6IOH+5Obl8ujw7uLg7ejlIPHq6+Dk8eru4+4g6u7s7+vl6vHg
-ICj25e3y8CDn4PLw4PIsIPDg8e/w5eTl6+Xt6OUg5+Dy8ODyIO/uIO/w7uXq8uDsICjk6/8g5Ojx
-8vDo4fPy7vDx6u7pIOru7O/g7ejoIJYg7+4g7+7x8uDi+ejq4Owg7/Du5PPq9ujoKSDoIOrg7eDr
-4Owg8eH78uApLiAKCs/QwMrSyNfF0crIxSAgx8DEwM3I3yAo4vvv7uvt//7y8f8g4iDj8PPv7+D1
-IOgg6O3k6OLo5PPg6/zt7iDiIPXu5OUg8eXs6O3g8OApOgogIC0g0ODx9+XyIOjn7OXt5e3o/yDi
-7OXx8ujs7vHy6CDoIPHy7ujs7vHy6CD18ODt5e3o/yDn4OTg7e3u4+4g8err4OTgIO/w6CDo5+zl
-7eXt6Ogg4vvx7vL7IPHq6+Dk6PDu4uDt6P8g6CD46PDo7fsg8ODh7vfl4+4g6u7w6OTu8OA7IAog
-IC0g0ODn8ODh7vLq4CDx6PHy5ez7IODk8OXx7e7j7iD18ODt5e3o/yDk6/8g5+Dk4O3t7ukg7e7s
-5e3q6+Dy8/D7IOgg5+Dk4O3t7uPuIPHq6+Dk4DsgCiAgLSDO9uXt6uAg/eru7e7s6Pfl8eru4+4g
-/fT05ery4CDoIPHw7urgIO7q8+/g5ezu8fLoIO/w7uXq8uAg4u3l5PDl7ejoIFdNUyDk6/8g5+Dk
-4O3t+/Ug8/Hr7uLo6TsgCiAgLSDQ4PH35fIg8eTl6/zt+/Ug8ODx9uXt7uog7u/r4PL7IPLw8+Tg
-IOTr/yDn4OTg7e379SDz8evu4ujpOyAKICAtIM7v6PHg8vwg7/Du9uXx8SDx4e7w4CDn4Org5+7i
-IOTr/yDn4OTg7e379SDz8evu4ujpOyAKICAtINDg8ffl8iDx5eHl8fLu6Ozu8fL8IPXw4O3l7ej/
-IOgg7uHw4OHu8uroIO/w7uTz6vbo6CDt4CDn4OTg7e3u7CDx6uvg5OUg6CDk8C4gCgoqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioKCjE5IC0gMjAg4O/w5ev/IDIwMTDjLiAgKDIg5O3/IPEgMTAuMDAg5O4gMTguMDApIArM5fHy
-7iDv8O7i5eTl7ej/OiDM7vHq4uAsIOwuIMHu8uDt6Pfl8ero6SDx4OQsICLT9+Xh7eD/IOPu8fLo
-7ej24CIK0fLu6Ozu8fL8IPP34PHy6P86IDE3IDUwMCDw8+EuCijCIPHy7ujs7vHy/CDi9e7k6PIg
-7uHz9+Xt6OUsIO/l9+Dy7fvlIOzg8uXw6ODr+yDv7iDy5ezlIPHl7Ojt4PDgLCDu4eXk+ywg6u70
-5S3v4PPn+ykuIM/uIO7q7u334O3o6CDi++Tg5fLx/yDx5fDy6PTo6uDyIO4g7/Du9e7m5OXt6Ogg
-7uHz9+Xt6P8g7+4g5ODt7e7pIPLl7OUuIArI7e7j7vDu5O3o7CDv7uzu5uXsIOfg4fDu7ejw7uLg
-8vwg7e7s5fDgIOIg4+7x8ujt6PblLiDO4fP35e3o5SDoIO/w7ubo4uDt6OUg4iDu5O3u7CDn5ODt
-6OguCgoKKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqCgrP7uTw7uHt4P8g6O307vDs4Pbo/yDoIPDl4+jx8vDg9uj/IO/uIPLl
-6+X07u3zOiA4ICg0OTUpIDIyOSAtIDA0IC0gMzMKCgoqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioKKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCgoKwu3o
-7ODt6OUhIMXx6+ggwuD4IODk8OXxIPHr8/fg6e3uIO/u7+DrIOIg4eDn8yDw4PHx++vq6Cwg6CDC
-+yDh7uv8+OUg7eUg9e7y6PLlIO/u6/P34PL8IOjt9O7w7OD26P4g7uEg7uHw4Ofu4uDy5ev87fv1
-IOzl8O7v8Oj/8uj/9SwgCu/w7vHy7iDu8u/w4OL88uUg7/Px8u7lIO/o8fzs7iDiIMLg+OXj7iDg
-5PDl8eAg7eAg4OTw5fEgdW5zdWJzY3JpYmVAbm90c2VtaW5hcj9zdWJqZWN0PTxzcGktZGV2ZWwt
-Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQ+IOgg4iDy5ezlIO/o8fzs4CDz6uDm6PLlIMLg
-+CDg5PDl8SD96+Xq8vDu7e3u6SDv7vfy+y4gCgoKwuD4IODk8OXxIOHz5OXyIODi8u7s4PLo9+Xx
-6ugg8+Tg6+XtIOjnIPDg8fH76+roIOIg8uX35e3o5SAxICju5O3u4+4pIOTt/yEKCgpUTyAgVU5T
-VUJTQ1JJQkUgICBTRU5EICBZT1VSICAgRU1BSUwgICBBRERSRVNTIElOIFNVQkpFQ1QgVE8gICB1
-bnN1YnNjcmliZUBub3RzZW1pbmFyP3N1YmplY3Q9PHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldD4gCgoKKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqCgoKCgoKd2FyZWhvdXNlcWlkCgotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3NDsgUGFyYWxsZWwgU3R1ZGlvIEV2YWwKVHJ5IHRoZSBu
-ZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlvdXJzZWxmLiBTcGVlZCBjb21waWxpbmcsIGZpbmQgYnVn
-cwpwcm9hY3RpdmVseSwgYW5kIGZpbmUtdHVuZSBhcHBsaWNhdGlvbnMgZm9yIHBhcmFsbGVsIHBl
-cmZvcm1hbmNlLgpTZWUgd2h5IEludGVsIFBhcmFsbGVsIFN0dWRpbyBnb3QgaGlnaCBtYXJrcyBk
-dXJpbmcgYmV0YS4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1zdy1kZXYKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Greetings,
+
+I know you would be surprised to read from someone relatively unknown to you. My name is LT.Robinson Moore, a member of the U.S. ARMY USARPAC Medical Team, which was deployed to Iraq at the beginning of the war in Iraq.
+
+I would like to share some highly personal classified information about my personal experience and role which I played in the pursuit of my career serving under the U.S 1st Armored which was at the fore-front of the war in Iraq.
+
+Though, I would like to hold back certain information for security reasons for now until you have found the time to visit the BBC website stated below to enable you have an insight into what I intend sharing with you, believing that it would be of your desired interest one-way or the other.
+
+http://news.bbc.co.uk/2/hi/middle_east/2988455.stm
+
+Also, could you get back to me having visiting the above website to enable us discuss in a more clarifying manner to the best of your understanding. I must say that I'm very uncomfortable sending this message to you without knowing truly if you would misconstrue the importance and decides to go public. In this regards, I will not hold back to say that the essence of this message is strictly for mutual benefit between you and I and nothing more.
+
+I will be vivid and coherent in my next message in this regards, meanwhile, could you send me an email confirming that you have visited the site and that you have understood my intentions? I will await your thoughts via my personal email: robnsonmoore-EMRzualFZlQ@public.gmane.org
+
+
+Thanks,
+
+Best Regards
+
+
+LT. Robinson Moore.
+
+
+
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

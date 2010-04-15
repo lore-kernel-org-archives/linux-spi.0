@@ -1,26 +1,73 @@
-From: "SwissLife =?ISO-8859-1?Q?Sant=E9?=" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] le soutien efficace à vos depenses de santé avec nos 6 formules exclusives
-Date: Thu, 15 Apr 2010 00:11:30 +0200 (CEST)
-Message-ID: <l0w0ck.ypwfwm@front02.r7g.com>
+From: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v1 1/4] max3100: added raise_threaded_irq
+Date: Fri, 16 Apr 2010 01:22:23 +0200 (CEST)
+Message-ID: <alpine.LFD.2.00.1004160110360.3625@localhost.localdomain>
+References: <cabda6421003230329w3fe596dbn8e4b37cc36118f9f@mail.gmail.com> <1269340105-6503-1-git-send-email-chripell@fsfe.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: feng.tang@intel.com, akpm@linux-foundation.org, greg@kroah.com,
+	david-b@pacbell.net, grant.likely@secretlab.ca,
+	alan@lxorguk.ukuu.org.uk, spi-devel-general@lists.sourceforge.net,
+	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Christian Pellegrin <chripell@fsfe.org>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <1269340105-6503-1-git-send-email-chripell@fsfe.org>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, 23 Mar 2010, Christian Pellegrin wrote:
 
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+> raise_threaded_irq schedules the execution of an interrupt thread
+
+I really have a hard time to understand _WHY_ we want to have that
+function.
+
+Interrupt threads are woken up either by the primary handler or by a
+interrupt demultiplexer and the code has all interfaces for that
+already.
+
+Can you please explain, what you are trying to achieve and why it
+can't be done with the existing interfaces ?
+
+> +
+> +/**
+> + *	raise_threaded_irq - triggers a threded interrupt
+> + *	@irq: Interrupt line to trigger
+> + */
+> +int raise_threaded_irq(unsigned int irq)
+> +{
+> +	struct irq_desc *desc = irq_to_desc(irq);
+> +	struct irqaction *action;
+> +
+> +	if (!desc)
+> +		return -ENOENT;
+> +	action = desc->action;
+
+That's racy. You cannot access desc->action w/o holding desc->lock or
+having set the IRQ_INPROGRESS flag in desc->status under desc->lock.
+
+> +	if (!action)
+> +		return -ENOENT;
+> +	if (unlikely(!action->thread_fn))
+> +		return -EINVAL;
+> +	if (likely(!test_bit(IRQTF_DIED,
+> +			     &action->thread_flags))) {
+> +		set_bit(IRQTF_RUNTHREAD, &action->thread_flags);
+> +		wake_up_process(action->thread);
+> +	} else {
+> +		return -ECHILD;
+> +	}
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL(raise_threaded_irq);
+
+EXPORT_SYMBOL_GPL if at all.
+
+Aside of that the name of of the function sucks: irq_wake_thread()
+perhaps ?
+
+But I still have no idea why we would need it at all.
+
+Thanks,
+
+	tglx

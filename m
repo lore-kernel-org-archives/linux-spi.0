@@ -1,59 +1,78 @@
-From: christian pellegrin <chripell@fsfe.org>
-Subject: Re: [PATCH v1 1/4] max3100: added raise_threaded_irq
-Date: Fri, 16 Apr 2010 18:18:54 +0200
-Message-ID: <w2gcabda6421004160918vc5dc5ee2y14a5814b4e8573b3@mail.gmail.com>
-References: <cabda6421003230329w3fe596dbn8e4b37cc36118f9f@mail.gmail.com>
-	 <1269340105-6503-1-git-send-email-chripell@fsfe.org>
-	 <alpine.LFD.2.00.1004160110360.3625@localhost.localdomain>
+From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: Re: [PATCH v3 0/2] spi: driver for Cirrus
+ EP93xx	SPI controller
+Date: Fri, 16 Apr 2010 13:28:05 -0500
+Message-ID: <0D753D10438DA54287A00B0270842697636D710785@AUSP01VMBX24.collaborationhost.net>
+References: <cover.1271156934.git.mika.westerberg@iki.fi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: feng.tang@intel.com, akpm@linux-foundation.org, greg@kroah.com,
-	david-b@pacbell.net, grant.likely@secretlab.ca,
-	alan@lxorguk.ukuu.org.uk, spi-devel-general@lists.sourceforge.net,
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Thomas Gleixner <tglx@linutronix.de>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <alpine.LFD.2.00.1004160110360.3625@localhost.localdomain>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <cover.1271156934.git.mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Tuesday, April 13, 2010 7:10 AM, Mika Westerberg wrote:
+> Hello,
+> 
+> This is third revision of the driver. Thanks to Martin Guy who tested and
+> reviewed the code.
+> 
+> Changes since v2:
+> 	- corrected spi clock rate calculation
+> 	- interrupt handling is now more efficient
+> 	- driver now supports polling mode as well, this can be selected with
+> 	  'transfer_method' module parameter.
+> 	- controller is disabled in probe function
+> 	- some cosmetic changes
+> 
+> I have been testing this on my TS-7260 board (ep9302 based) with mmc_spi and
+> at25 drivers.
+> 
+> Note that patch 2/2 depends on patch that is already in Russell's patch
+> tracking system:
+> 	http://www.arm.linux.org.uk/developer/patches/viewpatch.php?id=5998/1
+> 
 
-On Fri, Apr 16, 2010 at 1:22 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
->
->> raise_threaded_irq schedules the execution of an interrupt thread
->
-> I really have a hard time to understand _WHY_ we want to have that
-> function.
->
-.....
->
-> Can you please explain, what you are trying to achieve and why it
-> can't be done with the existing interfaces ?
->
+Hello Mika,
 
-The idea was that by using this function we just need one kind of
-deferred work (interrupt threads) instead of two (for example
-interrupt threads and workqueues) in some situations. This is very
-handy with devices that do transmission and reception at the same
-time, for example many SPI devices. The user case is the max3100 UART
-on SPI driver. The same SPI instruction both receives and sends chars.
-So when we need to send a char we just start the interrupt thread
-instead of having another kind of deferred work doing the job. This
-greatly simplifies locking and avoids duplication of functionality
-(otherwise we must have an interrupt thread that does reception and a
-workqueue that does sending and receiving for example) because
-everything is done in just one point. The move from worqueues to
-interrupt threads was motivated by the much smaller latency under load
-of the latter because they are scheduled as RT processes. I hope this
-doesn't sound like a terrible abuse of threaded interrupts. Let me
-know before I try to fix other problems you mentioned.
+I finally was able to get this working on my system.  Not sure what the issue
+was earlier.
 
-Thanks
+The only thing I don't like right off hand is the chip select handling.
 
--- 
-Christian Pellegrin, see http://www.evolware.org/chri/
-"Real Programmers don't play tennis, or any other sport which requires
-you to change clothes. Mountain climbing is OK, and Real Programmers
-wear their climbing boots to work in case a mountain should suddenly
-spring up in the middle of the computer room."
+The way it currently is done you are limited to using only the built-in GPIO's
+of the EP93xx.  This prohibits a system from using an external i2c/spi/etc.
+gpio expander to provide more chip selects.  And if a platform is not setup
+correctly, the BUG_ON in cs_to_gpio in your example for the tx72xx is pretty
+nasty.
+
+Ryan and I worked out a runtime setup/cleanup for the spi device chip selects
+in the spi driver I have in my tree.  I will take a look at it and see how
+much trouble it will be to implement in your driver.
+
+Anyway, now that I have your driver functioning I will be able to actually
+provide some feedback to you.
+
+Regards,
+Hartley
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

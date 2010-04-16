@@ -1,66 +1,59 @@
-From: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: release device claimed by
-	bus_find_device_by_name
-Date: Fri, 16 Apr 2010 12:52:59 +0300
-Message-ID: <1271411579-30294-1-git-send-email-roman.tereshonkov@nokia.com>
+From: christian pellegrin <chripell@fsfe.org>
+Subject: Re: [PATCH v1 1/4] max3100: added raise_threaded_irq
+Date: Fri, 16 Apr 2010 18:18:54 +0200
+Message-ID: <w2gcabda6421004160918vc5dc5ee2y14a5814b4e8573b3@mail.gmail.com>
+References: <cabda6421003230329w3fe596dbn8e4b37cc36118f9f@mail.gmail.com>
+	 <1269340105-6503-1-git-send-email-chripell@fsfe.org>
+	 <alpine.LFD.2.00.1004160110360.3625@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: feng.tang@intel.com, akpm@linux-foundation.org, greg@kroah.com,
+	david-b@pacbell.net, grant.likely@secretlab.ca,
+	alan@lxorguk.ukuu.org.uk, spi-devel-general@lists.sourceforge.net,
+	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Thomas Gleixner <tglx@linutronix.de>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <alpine.LFD.2.00.1004160110360.3625@localhost.localdomain>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-In success case the function bus_find_device_by_name calls
-get_device. In our context put_device should be called to
-decrease the device count usage.
+Hi,
 
-Signed-off-by: Roman Tereshonkov <roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi.c |    6 ++++--
- 1 files changed, 4 insertions(+), 2 deletions(-)
+On Fri, Apr 16, 2010 at 1:22 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
+>
+>> raise_threaded_irq schedules the execution of an interrupt thread
+>
+> I really have a hard time to understand _WHY_ we want to have that
+> function.
+>
+.....
+>
+> Can you please explain, what you are trying to achieve and why it
+> can't be done with the existing interfaces ?
+>
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 9ffb0fd..ec429d1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -257,6 +257,7 @@ int spi_add_device(struct spi_device *spi)
- {
- 	static DEFINE_MUTEX(spi_add_lock);
- 	struct device *dev = spi->master->dev.parent;
-+	struct device *d;
- 	int status;
- 
- 	/* Chipselects are numbered 0..max; validate. */
-@@ -278,10 +279,11 @@ int spi_add_device(struct spi_device *spi)
- 	 */
- 	mutex_lock(&spi_add_lock);
- 
--	if (bus_find_device_by_name(&spi_bus_type, NULL, dev_name(&spi->dev))
--			!= NULL) {
-+	d = bus_find_device_by_name(&spi_bus_type, NULL, dev_name(&spi->dev));
-+	if (d != NULL) {
- 		dev_err(dev, "chipselect %d already in use\n",
- 				spi->chip_select);
-+		put_device(d);
- 		status = -EBUSY;
- 		goto done;
- 	}
+The idea was that by using this function we just need one kind of
+deferred work (interrupt threads) instead of two (for example
+interrupt threads and workqueues) in some situations. This is very
+handy with devices that do transmission and reception at the same
+time, for example many SPI devices. The user case is the max3100 UART
+on SPI driver. The same SPI instruction both receives and sends chars.
+So when we need to send a char we just start the interrupt thread
+instead of having another kind of deferred work doing the job. This
+greatly simplifies locking and avoids duplication of functionality
+(otherwise we must have an interrupt thread that does reception and a
+workqueue that does sending and receiving for example) because
+everything is done in just one point. The move from worqueues to
+interrupt threads was motivated by the much smaller latency under load
+of the latter because they are scheduled as RT processes. I hope this
+doesn't sound like a terrible abuse of threaded interrupts. Let me
+know before I try to fix other problems you mentioned.
+
+Thanks
+
 -- 
-1.6.2.rc1.3.g81d3f
-
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+Christian Pellegrin, see http://www.evolware.org/chri/
+"Real Programmers don't play tennis, or any other sport which requires
+you to change clothes. Mountain climbing is OK, and Real Programmers
+wear their climbing boots to work in case a mountain should suddenly
+spring up in the middle of the computer room."

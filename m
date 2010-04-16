@@ -1,22 +1,14 @@
-From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: Re: [PATCH v3 2/2] ep93xx: SPI driver
-	platform	support code
-Date: Fri, 16 Apr 2010 13:40:20 -0500
-Message-ID: <0D753D10438DA54287A00B0270842697636D7107C5@AUSP01VMBX24.collaborationhost.net>
-References: <cover.1271156934.git.mika.westerberg@iki.fi>
-	<d24cf3f10fb125837c9b660b3880956940440b79.1271156934.git.mika.westerberg@iki.fi>
+From: UK PHONE SHOP <sales-WWC1qm4+ip+ji62/1+/r0AC/G2K4zDHf@public.gmane.org>
+Subject: GET YOUR MOBILE PHONES OR CAMERAS OR LAPTOP OR
+	GAMES AT AFFORDABLE PRICES
+Date: 17 Apr 2010 06:41:19 +0900
+Message-ID: <20100416214119.5408.qmail@s239.xrea.com>
+Reply-To: ukphoneshop000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <d24cf3f10fb125837c9b660b3880956940440b79.1271156934.git.mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,199 +19,286 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday, April 13, 2010 7:10 AM, Mika Westerberg wrote:
-> This patch adds platform side support code for EP93xx SPI driver. This includes
-> clock, resources and muxing. There is a new function: ep93xx_register_spi() that
-> can be used by board support code to register new SPI devices for the board.
-> 
-> This patch depends on following ARM patch:
-> 	5998/1 ep93xx: added chip revision reading function
-> 
-> Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-> ---
->  arch/arm/mach-ep93xx/clock.c                    |   14 +++++++
->  arch/arm/mach-ep93xx/core.c                     |   42 +++++++++++++++++++++++
->  arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h |    1 +
->  arch/arm/mach-ep93xx/include/mach/platform.h    |    2 +
->  4 files changed, 59 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/mach-ep93xx/clock.c b/arch/arm/mach-ep93xx/clock.c
-> index 5f80092..daaa799 100644
-> --- a/arch/arm/mach-ep93xx/clock.c
-> +++ b/arch/arm/mach-ep93xx/clock.c
-> @@ -96,6 +96,10 @@ static struct clk clk_keypad = {
->  	.enable_mask	= EP93XX_SYSCON_KEYTCHCLKDIV_KEN,
->  	.set_rate	= set_keytchclk_rate,
->  };
-> +static struct clk clk_spi = {
-> +	.parent		= &clk_xtali,
-> +	.rate		= EP93XX_EXT_CLK_RATE / 2,
 
-Please change to:
 
-	.rate		= EP93XX_EXT_CLK_RATE,
+Dear Prospective Customer,
 
-Under the assumption that all newer systems use Rev E2 silicon.
 
-> +};
-> static struct clk clk_pwm = {
-> 	.parent		= &clk_xtali,
-> 	.rate		= EP93XX_EXT_CLK_RATE,
-> @@ -186,6 +190,7 @@ static struct clk_lookup clocks[] = {
->  	INIT_CK("ep93xx-ohci",		NULL,		&clk_usb_host),
->  	INIT_CK("ep93xx-keypad",	NULL,		&clk_keypad),
->  	INIT_CK("ep93xx-fb",		NULL,		&clk_video),
-> +	INIT_CK("ep93xx-spi",		NULL,		&clk_spi),
->  	INIT_CK(NULL,			"pwm_clk",	&clk_pwm),
->  	INIT_CK(NULL,			"m2p0",		&clk_m2p0),
->  	INIT_CK(NULL,			"m2p1",		&clk_m2p1),
-> @@ -473,6 +478,14 @@ static int __init ep93xx_clock_init(void)
->  	/* Initialize the pll2 derived clocks */
->  	clk_usb_host.rate = clk_pll2.rate / (((value >> 28) & 0xf) + 1);
->  
-> +	/*
-> +	 * EP93xx SSP clock rate was doubled in version E2. For more information
-> +	 * see:
-> +	 *     http://www.cirrus.com/en/pubs/appNote/AN273REV4.pdf
-> +	 */
-> +	if (ep93xx_chip_revision() >= EP93XX_CHIP_REV_E2)
-> +		clk_spi.rate *= 2;
 
-That makes this:
 
-	if (ep93xx_chip_revision() < EP93XX_CHIP_REV_E2)
-		clk_spi.rate /= 2;
 
-This just makes sure there are no rounding errors due to the / then * in case
-someone has a goofy system and changes the definition of EP93XX_EXT_CLK_RATE.
+We are selling all brand and latest electronics such as mobile phones, pda, laptop, notebook, ipods, digital camera, gps, plasma television, games, at affordable and competitive prices.
 
-> +
->  	pr_info("PLL1 running at %ld MHz, PLL2 at %ld MHz\n",
->  		clk_pll1.rate / 1000000, clk_pll2.rate / 1000000);
->  	pr_info("FCLK %ld MHz, HCLK %ld MHz, PCLK %ld MHz\n",
-> @@ -480,6 +493,7 @@ static int __init ep93xx_clock_init(void)
->  		clk_p.rate / 1000000);
->  
->  	clkdev_add_table(clocks, ARRAY_SIZE(clocks));
-> +
->  	return 0;
->  }
->  arch_initcall(ep93xx_clock_init);
-> diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
-> index 90fb591..08b7747 100644
-> --- a/arch/arm/mach-ep93xx/core.c
-> +++ b/arch/arm/mach-ep93xx/core.c
-> @@ -363,6 +363,48 @@ void __init ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr)
->  	platform_device_register(&ep93xx_eth_device);
->  }
 
-Please add:
 
-static struct ep93xx_spi_info ep93xx_spi_master_data;
+Our products are brand new ( mobiles are unlocked ) with complete accessories and it comes with 18 months international warranty and 8 months return policy.
 
->  
-> +static struct resource ep93xx_spi_resources[] = {
-> +	{
-> +		.start	= EP93XX_SPI_PHYS_BASE,
-> +		.end	= EP93XX_SPI_PHYS_BASE + 0x18 - 1,
-> +		.flags	= IORESOURCE_MEM,
-> +	},
-> +	{
-> +		.start	= IRQ_EP93XX_SSP,
-> +		.end	= IRQ_EP93XX_SSP,
-> +		.flags	= IORESOURCE_IRQ,
-> +	},
-> +};
-> +
-> +static struct platform_device ep93xx_spi_device = {
-> +	.name		= "ep93xx-spi",
-> +	.id		= -1,
 
-And add:
 
-	.dev		= {
-		.platform_data	= &ep93xx_spi_master_data,
-	},
+WE CAN HELP YOU ESTABLISH YOUR OWN BUSINESS
 
-> +	.num_resources	= ARRAY_SIZE(ep93xx_spi_resources),
-> +	.resource	= ep93xx_spi_resources,
-> +};
-> +
-> +/**
-> + * ep93xx_register_spi() - registers spi platform device
-> + * @info: ep93xx board specific spi info
 
-Change to:
 
-* @info: ep93xx board specific spi master info (__initdata)
 
-> + *
-> + * This function registers platform device for the EP93xx SPI controller and
-> + * also makes sure that SPI pins are muxed so that I2S is not using those
-> + * pins. Caller should allocate necessary GPIO lines and register any SPI
-> + * devices before calling this (see also spi_register_board_info()).
-> + *
-> + * Returns %0 in success and negative value in case of failure.
-> + */
-+int __init ep93xx_register_spi(struct ep93xx_spi_info *info)
-+{
-+	/*
-+	 * When SPI is used, we need to make sure that I2S is muxed off from
-+	 * SPI pins.
-+	 */
-+	ep93xx_devcfg_clear_bits(EP93XX_SYSCON_DEVCFG_I2SONSSP);
-+
-+	ep93xx_spi_device.dev.platform_data = info;
 
-Then change this to:
+For further Enquiry and Order Placement, Contact us as below :
 
-	ep93xx_spi_master_data = *info;
 
-The platform init should then declare the 'info' as __initdata.
 
-This makes sure that the data in the platform init is discarded after startup
-is complete.
+Below is our Price List: 
 
-> +	return platform_device_register(&ep93xx_spi_device);
-> +}
->  
->  /*************************************************************************
->   * EP93xx i2c peripheral handling
-> diff --git a/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h b/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
-> index 93e2ecc..b1e096f 100644
-> --- a/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
-> +++ b/arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h
-> @@ -106,6 +106,7 @@
->  
->  #define EP93XX_AAC_BASE			EP93XX_APB_IOMEM(0x00080000)
->  
-> +#define EP93XX_SPI_PHYS_BASE		EP93XX_APB_PHYS(0x000a0000)
->  #define EP93XX_SPI_BASE			EP93XX_APB_IOMEM(0x000a0000)
->  
->  #define EP93XX_IRDA_BASE		EP93XX_APB_IOMEM(0x000b0000)
-> diff --git a/arch/arm/mach-ep93xx/include/mach/platform.h b/arch/arm/mach-ep93xx/include/mach/platform.h
-> index c6dc14d..5816581 100644
-> --- a/arch/arm/mach-ep93xx/include/mach/platform.h
-> +++ b/arch/arm/mach-ep93xx/include/mach/platform.h
-> @@ -9,6 +9,7 @@ struct i2c_board_info;
->  struct platform_device;
->  struct ep93xxfb_mach_info;
->  struct ep93xx_keypad_platform_data;
-> +struct ep93xx_spi_info;
->  
->  struct ep93xx_eth_data
->  {
-> @@ -34,6 +35,7 @@ static inline void ep93xx_devcfg_clear_bits(unsigned int bits)
->  }
->  
->  void ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr);
-> +int ep93xx_register_spi(struct ep93xx_spi_info *info);
->  void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
->  			 struct i2c_board_info *devices, int num);
->  void ep93xx_register_fb(struct ep93xxfb_mach_info *data);
 
-Regards,
-Hartley
+
+PHONES:
+
+
+
+NOKIA 5800 MUSIC XPRESS ..................$300 USD
+
+NOKIA N82 TITANIUM WHITE (UNLOCKED).......$250 USD
+
+NOKIA E90 COMMUNICATOR (UNLOCKED).........$450 USD
+
+NOKIA N96 (UNLOCKED)......................$350 USD
+
+NOKIA N95 8GB (UNLOCKED)..................$320 USD
+
+NOKIA E61i (UNLOCKED).....................$300 USD
+
+NOKIA 8800 Sapphire Arte (UNLOCKED).......$400USD
+
+NOKIA 8800 Sapphire Arte Triband 3G Unlocked Phone, Sapphire .......$470 USD
+
+NOKIA 6210 Navigator (UNLOCKED)...........$200 USD
+
+NOKIA N81 8GB (UNLOCKED)..................$300 USD
+
+NOKIA 7900 Prism (UNLOCKED)...............$250 USD
+
+NOKIA N76 (UNLOCKED)......................$200 USD
+
+
+
+
+
+APPLE IPHONE 3G 16GB.................$250 USD
+
+APPLE IPHONE 3G 8GB..................$200 USD
+
+
+
+MOTOROLA MING A1800 (UNLOCKED).......$500 USD
+
+MOTOROLA Z9 (UNLOCKED)...............$410 USD
+
+MOTOROLA Z6W (UNLOCKED)..............$150 USD
+
+MOTOROLA SIKEKICK SLIDE (UNLOCKED)...$170 USD
+
+MOTOROLA KRZR K3 (UNLOCKED)..........$250 USD
+
+MOTOROLA Q9H (UNLOCKED)..............$300 USD
+
+MOTOROLA v3i gold edition (UNLOCKED)................$200 USD
+
+MOTORLA Q (UNLOCKED)................................$220 USD 
+
+MOTOROLA MPX300 (UNLOCKED)..........................$115 USD
+
+
+
+SAMSUNG TOCCO.......................................$400 USD 
+
+SAMSUNG F110 (ULOCKED)..............................$350 USD
+
+SAMSUNG F480 (UNLOCKED).............................$400 USD
+
+SAMSUNG G810 (UNLOCKED).............................$500 USD
+
+SAMSUNG F700 (UNLOCKED).............................$450 USD
+
+SAMSUNG G600 (UNLOCKED).............................$300 USD
+
+SAMSUNG Z710 (UNLOCKED).............................$280 USD
+
+SAMSUNG M8000 (UNLOCKED)............................$250 USD 
+
+SAMSUNG sgh-i830 (UNLOCKED).........................$150 USD
+
+SAMSUNG G810 (UNLOCKED).............................$200 USD
+
+SAMSUNG ARMANI (UNLOCKED)...........................$300 USD
+
+SAMSUNG F700 (UNLOCKED).............................$400 USD
+
+SAMSUNG P960 (UNLOCKED).............................$450 USD
+
+SAMSUNG U900 SOUL (UNLOCKED)........................$550 USD
+
+SAMSUNG Giorgio Armani P520 (unlocked)..............$350 USD
+
+Samsung Omnia i900 (16GB)...........................$500 USD
+
+
+
+SONY ERICSSON C702 (UNLOCKED).......................$420 USD
+
+SONY ERICSSON W760 (UNLOCKED).......................$400 USD
+
+SONY ERICSSON W960 (UNLOCKED).......................$400 USD
+
+SONY ERICSSON XPERIA XI (UNLOCKED)..................$350 USD
+
+SONY ERICSSON T303 (UNLOCKED).......................$420 USD
+
+SONY ERICSSON G900 (UNLOCKED).......................$300 USD
+
+SONY ERICSSON P1 (UNLOCKED).........................$410 USD
+
+
+
+
+
+BLACKBERRY PEARL 8220........................$410 USD
+
+RIM BLACKBERRY STORM 9500....................$300 USD
+
+BLACKBERRY PEARL 8220........................$350 USD
+
+BLACKBERRY 8320 CURVE (UNLOCKED).............$250 USD
+
+BLACKBERRY 8707V (UNLOCKED)..................$340 USD
+
+BLACKBERRY PEARL 8120 (UNLOCKED).............$311 USD
+
+BLACKBERRY 7730 (UNLOCKED)...................$200 USD
+
+BLACKBERRY 7100X (UNLOCKED)..................$210 USD
+
+BLACKBERRY 8700C (UNLOCKED)..................$200 USD
+
+
+
+
+
+HTC ADVANTAGE X7510 (UNLOCKED)......................$500 USD
+
+HTC P3470 (UNLOCKED)................................$300 USD
+
+HTC S630 (UNLOCKED).................................$250 USD
+
+HTC SHIFT (UNLOCKED)................................$700 USD
+
+HTC TYTN (UNLOCKED).................................$410 USD
+
+HTC S710 (UNLOCKED).................................$230 USD
+
+HTC P3300 (UNLOCKED)................................$340 USD
+
+HCT TOUCH DIAMOND...................................$300 USD
+
+
+
+CAMERAS: 
+
+
+
+Brand New Nikon D700.......1200USD
+
+Brand New Nikon D40........320USD
+
+Brand New Nikon D40x.......399USD
+
+Brand New Nikon D60........400USD
+
+Brand New Nikon D80........450USD
+
+Brand New Nikon D90........510USD
+
+Brand New Nikon D200.......450USD
+
+Brand New Nikon D300.......700USD
+
+Brand New Nikon D3.........800USD
+
+
+
+Brand New Canon 1000D........ .650USD
+
+Brand New Canon XH A1..........800USD
+
+Brand New Canon 40D............490USD
+
+Brand New Canon 400D...........400USD
+
+Brand New Canon 450D...........500USD
+
+
+
+DIGITAL CAMERA
+
+CANON EOS-1D Mark II-N 8 Megapixel Digital...............$750 USD
+
+Canon EOS-5D Digital , 12.8 .............................$700 USD  
+
+Canon XH A1 1.67MP 3CCD Camcorder with 20x Optical Zoom..$700 USD
+
+Canon XL2 3CCD MiniDV Camcorder w/20x Optical Zoom.......$800 USD
+
+Canon XL1 Digital Camcorder Kit..........................$600 USD
+
+Canon EOS 1D Mark II N 8.2MP Digital SLR Camera..........$750 USD
+
+Canon Camera Kit 1234B002................................$300 USD
+
+Canon EOS 30D Digital SLR Camera & Canon.................$500 USD
+
+
+
+MINIMUM ORDER IS 5 UNITS
+
+
+
+And the shipping cost $50 to any destination
+
+
+
+We sell in bulk purchase also below is our bulk purchase ordee..
+
+
+
+BUY 5 UNITS GET 2 FREE
+
+BUY 10 UNITS GET 4 FREE AND 1 SIDEKICK LX
+
+
+
+
+
+Tel:+447031937508
+
+
+
+Raymond Scout
+
+
+
+UNITED KINGDOM
+
+
+
+ukphoneshop000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+
+
+
+
+
+
+
+
+
+
+
 ------------------------------------------------------------------------------
 Download Intel&#174; Parallel Studio Eval
 Try the new software tools for yourself. Speed compiling, find bugs

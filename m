@@ -1,21 +1,12 @@
-From: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 0/2] spi: driver for Cirrus
-	EP93xx SPI controller
-Date: Sat, 17 Apr 2010 19:43:23 +0100
-Message-ID: <s2i56d259a01004171143m74b06d85yd1cbb38ef7ce778e@mail.gmail.com>
-References: <cover.1271156934.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B0270842697636D710785@AUSP01VMBX24.collaborationhost.net>
-	<20100417045913.GA19534@gw.healthdatacare.com>
+From: "=?windows-1251?B?4O/w5ev8IDIyLTIz?=" <dicojyzeziwivaz-OnZPxrLzTCDLoDKTGw+V6w@public.gmane.org>
+Subject: [SPAM] Инструменты роста для руководителей торговых компанийpc
+Date: Sun, 18 Apr 2010 02:26:12 +0300
+Message-ID: <003201cade85$5e1c9ab0$8750a8c0@141.red881738.dynamicip.rimatde.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Content-Type: text/plain; charset="windows-1251"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100417045913.GA19534-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,48 +17,110 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-(sorry for the duplicate, Mika, I forgot to include the list)
-
-On 4/17/10, Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org> wrote:
->  However, I'm not sure what you mean by limited only to built-in GPIOs? Currently
->  the driver does:
->
->         info->cs_control(spi->chip_select, value, info->data);
->
->  when it wants to assert/deassert the chip select.
-
-There's a further strangeness when a board has a single SPI device not
-using any GPIO chip select. At present, clients seem to need to
-declare that they have 1 chip select and to provide an empty
-cs_control function that does nothing. For example:
-
-static void null_cs_control(unsigned cs, unsigned value, void *data) {
-       /* Sim.One only has MMC card and no GPIO chip select logic */
-}
-
-static struct ep93xx_spi_info simone_spi_info = {
-       .num_chipselect = 1,
-       .cs_control     = null_cs_control,
-       .data           = NULL,
-};
-...
-static void __init simone_init_machine(void)
-{
-...
-       spi_register_board_info(simone_spi_board_info,
-ARRAY_SIZE(simone_spi_board_info));
-       ep93xx_register_spi(&simone_spi_info);
-...
-
-Allowing cs_control to be NULL would do away with the empty function, but
-when I just tried with num_chipselect = 0 the device did not appear. There
-may be a better solution.
-
-   M
-
-------------------------------------------------------------------------------
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+MjIgLSAyMyDg7/Dl6/8gMjAxMCDjLiAgKDIg5O3/KSAKCsjN0dLQ08zFzdLbICDQztHSwCAgxMvf
+ICDQ08rOws7EyNLFy8XJICDSztDDzsLb1SAgys7Mz8DNyMkKCl5eXl5eXl5eXl5eXl5eXl5eXl5e
+Xl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl4KCtHl7Ojt
+4PAgz9DFxM3Ax83A18XNOiDE6PDl6vLu8ODsIO/w7ujn4u7k8fLi5e3t+/UsIOTo8fLw6OH8/vLu
+8PHq6PUsIO7v8u7i+/Ug6CDw7uft6Pft+/Ug6u7s7+Dt6OkgliDk6/8g7+7o8ergIOjx8u737ejq
+7uIg8+vz9/jl7ejpIOIg6u7s7+Dt6OguINDz6u7i7uTo8uXr/+wg6CDx7+X26ODr6PHy4Owg7vLk
+5evu4iDv8O7k4OYsIOzg8Orl8ujt4+AsIOgg8OXq6+Ds+yCWIOTr/yDu8eLu5e3o/yDx7uLw5ezl
+7e379SDs5fLu5O7iIPPi5evo9+Xt6P8g7/Du5ODmIOgg7/Do4fvr6CDq7uzv4O3o6C4g0PPq7uLu
+5Ojy5ev/7CDx6/Pm4SD06O3g7fHu4iDoIOfg6vPv7uogliDk6/8g7+7i+/jl7ej/IP309OXq8uji
+7e7x8ugg6PHv7uv85+7i4O3o/yD06O3g7fHu4vv1IPDl8fPw8e7iLiAKCtbFy9wg8eXs6O3g8OA6
+IO7h8/fo8vwg7/Dg6vLo9+Xx6ujsIPLl9e3u6+7j6P/sIPPx7+X47e7j7iDw7vHy4CDv8O7k4OYg
+4iDy7vDj7uL79SDq7uzv4O3o//UuIDEwJSDy5e7w6OgsIDkwJSDv8ODq8ujq6C4gz+7r8/fl7e37
+5SDt4OL76ugg7O7j8/Ig4fvy/CDz8e/l+O3uIOjx7+7r/Ofu4uDt+yDiIPLl6vP55ekg8ODh7vLl
+IPHw4OfzIOblIO/u8evlIPLw5e3o7ePgLgoKXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5e
+Xl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXgoKz9DOw9DAzMzAICDRxczI
+zcDQwAoKwsLFxMXNyMUKICAgLSDS5e3k5e326Ogg4iDu7/LlIOgg8O7n7ej25S4gCiAgIC0gyuDq
+6OUg5fHy/CDo8fLu9+3o6ugg4vvx4u7h7ubk5e3o/yDw5fHz8PHu4iwgytDOzMUg8+Lu6/zt5e3o
+6Swg8e7q8OD55e3o/yDn4PDv6+DyIOggq+fg7O7w7ufq6Lsg7e7i+/Ug7eDv8ODi6+Xt6OkuIAog
+ICAtIM/w6Pfo7fsg6CDx7+7x7uH7IPPx8vDg7eXt6P8gq+/r7vXo9bsg7/Du5ODmIO7y5OXr/O37
+9SDv8O7k8+ry7uIuIAoKyM3R0tDTzMXN0tsg0MDBztLbINEgwNHRztDSyMzFzdLOzAogICAtIML7
+5OXr5e3o5SDiIODx8e7w8ujs5e3y5SDw7uvl4vv1IOPw8+/vLiAKICAgLSDQ4PHx8uDt7uLq4CDv
+8Oju8Ojy5fLu4iDiIPDg5+Lo8ujoIODx8e7w8ujs5e3y4C4g0e7x8uDi6//l7CDw5eny6O3jIKvv
+7vLw5eHo8uXr/PHq7ukg7eXu4fXu5Ojs7vHy6Lsg8u7i4PDu4i4gyuDq6OUg4/Dz7+/7IPLu4uDw
+7uIg7eXr/Of/IPHu6vDg+eDy/CDh5ecg8/nl8OHgIOTr/yDx5eH/IOIg4fPk8/nl7C4gCiAgIC0g
+yuDq6OUg4/Dz7+/7IO3z5u3uIPHu6vDg8ujy/C4gz/Dg4ujr4CDh5efu7+Dx7e7j7iDi++Lu5OAg
+6Ocg4PHx7vDy6Ozl7fLgLiAKICAgLSDA7eDr6OfgIPHy4PLo8fLo6ugg7/Du5ODmIOTr/yDu7/Lo
+7Ojn4Pbo6CDg8fHu8PLo7OXt8uAg6CDv6+Dt6PDu4uDt6P8g5+Dq8+/u6i4gz/Dg6vLo6vPsLiAK
+ICAgLSDP8Ojl7Psg7+7i+/jl7ej/IOTu9e7k4CDu8iDy7uLg8O7iIPEg7eXu5O3u5+3g9+377Ogg
+9Ojt4O3x7uL77Ogg7+7q4Ofg8uXr/+zoLiAKCs/OwtvYxc3IxSDd1NTFytLIws3O0dLIIMfAytPP
+zsoKICAgLSDP7vD/5O7qIOfg6vPv7uouINDl6fLo7eMg8u7i4PDu4iDiIOfg6vPv6uUuINDl4+vg
+7OXt8ujw7uLg7ejlIOfg6vPv7uouIAogICAtIMPk5SDv8P/38/Lx/yDk7u/u6+3o8uXr/O375SDx
+8OXk8fLi4CDt4CDn4Orz7+rzPyDR7+7x7uH7IP3q7u3u7OjoLiAKICAgLSDP8Ojl7Psg8ODh7vL7
+IPEg7+7x8uDi+ejq4OzoLiAKCsjN0dLQ08zFzdLbINbFzc7OwdDAx87CwM3I3wogICAtIM746OHq
+6CD25e3u7uHw4Ofu4uDt6P8g6CDo9SDx8u7o7O7x8vwg5Ov/IOru7O/g7ejoLiAKICAgLSDR6O3k
+8O7sIKvx8uXx7ejy5ev87e7j7rsg8u7i4PDu4uXk4C4gCiAgIC0gq9Hg7O7z4ejp8fLi5e3t++W7
+IPHq6OTq6C4gCiAgIC0g0e/u8e7h+yDz9e7k4CDu8iD25e3u4u7pIOru7erz8OXt9ujoIOgg5OXs
+7+jt4+AuIAoKzs/SyMzIx8DWyN8g0cHb0s7Czskg0cXSyCDIIMrLyMXN0tHKzskgwcDH2wogICAt
+IM3g+CDq6+jl7fIg4vHl4+TgIO/w4OIhIMry7iDu7SCWIM3g+CDq6+jl7fI/IM7x7uHl7e3u8fLo
+IPD77eru4iBCMkIg6CBCMkMuIAogICAtIM7x7e7i+yDq6+jl7fLu7vDo5e3y6PDu4uDt7e7x8ugu
+IAogICAtIM725e3q4CDw5efz6/zy4PLu4iDv8O7k4OYg5Ov/IPTu6vPx6PDu4uroIO3gIPHy4OHo
+6/zt+/Ug4/Dz7+/g9SDq6+jl7fLu4i4gCiAgIC0gwO3g6+jnIO/w7uTg5iDk6/8g7vbl7eroIPDg
+4e7y+yBzYWxlcy3s5e3l5Obl8O7iIOIg7u/y7uL79SDq7uzv4O3o//UuIAogICAtIMrr4PHx6PTo
+6uD26P8g6CDi++Hu8CDy7vDj7uL79SDq4O3g6+7iLiAKICAgLSDK7uPuICLx7O7l8iIg8Pvt7uog
+6Ocg8u7w4+7i7ukg9uXv6D8gzu/y6Ozo5+D26P8g8eH78u7i7ukg8eXy6C4gCgrOz9LIzMjHwNbI
+3yDQxcrLwMzN29UgyCDMwNDKxdLIzcPOwtvVIMrOzMzTzcjKwNbIyQogICAtIMLo5Psg7ODw6uXy
+6O3j7uL79SDq7uzs8+3o6uD26OkuIAogICAtIMLo5Psg/fT05ery6OLt+/Ug4f7k5uXy7fv1IOzg
+8Orl8ujt4+7i+/Ug6u7s7PPt6Org9ujpLiAKICAgLSDP8ODi6OvgIPHu5+Tg7ej/IPDg4e7y4P75
+6PUg8OXq6+Ds7fv1IPHu7uH55e3o6S4gCiAgIC0gz+7i5eTl7ffl8erg/yDs7uTl6/wg5OXp8fLi
+6P8g8OXq6+Ds+y4gCiAgIC0gz/Do5ez7IPHt6Obl7ej/IOfg8vDg8iDt4CDv8O7k4ujm5e3o5S4g
+CiAgIC0gz+735ezzIPLw4OTo9uju7e3g/yDw5err4OzgIOjt7uPk4CDi8OXk6PIg6u7s7+Dt6Ogu
+INDg5+Hu8CDu+Ojh7uouIAogICAtIM725e3q4CD99PTl6vLo4u3u8fLoIOzl8O7v8Oj/8ujpIO/u
+IO/w7uTi6Obl7ej+LiDP8ODq8ujq8+wuIAoK0dLIzNPLyNDOwsDNyMUg0cHb0sAgwiDSztDDzsLO
+ySDWxc/ICiAgIC0gyu7j7iDoIOfgIPfy7iDt4OPw4Obk4PL8PyDS6O/o9+375SDu+Ojh6uguIAog
+ICAtIMzg8uXw6ODr/O3g/yDs7vLo4uD26P86IPbl7e7i4P8gKPHq6OTq6CksIPHu8OXi7e7i4PLl
+6/zt4P8sIPTo7eDt8e7i4P8gKPLo7/sg6CDt4Oft4Pfl7ejlIOHu7fPx7uIpLiDR7ejm5e3o5SDn
+4PLw4PIg7eAg7/Du4/Dg7OzzLiAKICAgLSDO4fP35e3o5SDv5fDx7u3g6+Ag5Ojx8vDo4fPy7vDu
+4iwg7/Dl5+Xt8uD26Ogg5Ov/IO7v8u7i6Oru4iDoIPIu5C4gCiAgIC0gzOX14O3o5+z7IPDl4Ovo
+5+D26Ogg7/Du4/Dg7Owg8fLo7PPr6PDu4uDt6P8g8eH78uAuIAogICAtIMzg8Orl8ujt4+7i++kg
+9O7t5CDq4Oog6O3x8vDz7OXt8iDv7uL7+OXt6P8g7vLk4PfoIO7yIOzl8O7v8Oj/8ujpIO/uIPHy
+6Ozz6+jw7uLg7ej+LiAKICAgLSDP8Ojs5fD7IO/w7uPw4OzsIOzu8uji4Pbo6CDk6Ovl8O7iLiAK
+CtHSyMzTy8jQzsLAzcjFINDOx83I183b1SDP0M7EwMYKICAgLSDR8uDt5ODw8u375SBCVEwg6CDt
+5fHy4O3k4PDy7fvlIEV2ZW50IO/w7uzuLeDq9ujoIOTr/yDv7vLw5eHo8uXr5ekuIM/w7uPw4Ozs
++yDr7v/r/O3u8fLoIO/u8vDl4ejy5evl6S4gCiAgIC0gzOXw9+Xt5ODp5+jt4yDoIO/x6PXu6+7j
+6P8g7+7i5eTl7ej/IO/u6vPv4PLl6/8g4iDs4OPg5+jt5S4gCiAgIC0g0ODx7/Dl5OXr5e3o5SDv
+7uvu9+3u4+4g7/Du8fLw4O3x8uLgLiDK8Ojy5fDo6CDi++Hu8OAg8u7i4PDu4iDk6/8g5O7v7uvt
+6PLl6/zt7ukg4vvq6+Dk6uguINHy8ODy5ePo6CDw4Ofs5fnl7ej/IO3u4u7j7iDy7uLg8OAuIAog
+ICAtINbl6+gg7OXw7u/w6P/y6Okg7+4g8fLo7PPr6PDu4uDt6P4g7eAg8ODn7fv1IP3y4O/g9SDm
+6Oft5e3t7uPuIPbo6uvgIPLu4uDw4C4gCiAgIC0gz+vg7ejw7uLg7ejlIO/w7uPw4OzsIPHy6Ozz
+6+jw7uLg7ej/IO/w7uTg5i4gCiAgIC0g0OXg6+jn4Pbo/yDv8O7j8ODs7CDx8ujs8+vo8O7i4O3o
+/yDv8O7k4OYuIM7w4+Dt6Ofg9uj/IOgg6u7t8vDu6/wg8ODh7vL7IO/w7uzu8/Ll8O7iLiDS6O/o
+9+375SDu+Ojh6ugg6CDq4Oog6PUg6Ofh5ebg8vwuIAogICAtINDg4e7y4CDxIO/w7uzuLeDj5e3y
+8fLi4OzoLCDq4Oog7eUg4fvy/CDu4ezg7fPy++zoIOgg7+7i+/Ho8vwg7vLk4PfzIO7yIOj1IOTl
+//Ll6/zt7vHy6C4gCgojIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjCgoyMiAtIDIzIODv8OXr/yAyMDEwIOPu5OAu
+ICAoMiDk7f8g8SAxMC4wMCDk7iAxOC4wMCkgCgrM5fHy7iDv8O7i5eTl7ej/OiDM7vHq4uAsIOwu
+IMHu8uDt6Pfl8ero6SDx4OQsICLT9+Xh7eD/IOPu8fLo7ej24CIKCtHy7ujs7vHy/CDz9+Dx8uj/
+OiAxNyA1MDAg8PPhLiAowiDx8u7o7O7x8vwg4vXu5OjyIO7h8/fl7ejlLCDv5ffg8u375SDs4PLl
+8Ojg6/sg7+4g8uXs5SDx5ezo7eDw4Cwg7uHl5PssIOru9OUt7+Dz5/spLiDP7iDu6u7t9+Dt6Ogg
+4vvk4OXy8f8g8eXw8uj06Org8iDuIO/w7vXu5uTl7ejoIO7h8/fl7ej/IO/uIOTg7e3u6SDy5ezl
+LiDI7e7j7vDu5O3o7CDv7uzu5uXsIOfg4fDu7ejw7uLg8vwg7e7s5fDgIOIg4+7x8ujt6PblLiDO
+4fP35e3o5SDoIO/w7ubo4uDt6OUg4iDu5O3u7CDn5ODt6OguCgojIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjCgrP
+7uTw7uHt4P8g6O307vDs4Pbo/yDoIPDl4+jx8vDg9uj/IO/uIPLl6+X07u3zOiA4ICg0OTUpIDIy
+OSAtIDA0IC0gMzMKCiMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMKIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIwoKCgrC7ejs4O3o
+5SEgxfHr6CDC4Pgg4OTw5fEg8evz9+Dp7e4g7+7v4Osg4iDh4OfzIPDg8fH76+roLCDoIML7IOHu
+6/z45SDt5SD17vLo8uUg7+7r8/fg8vwg6O307vDs4Pbo/iDu4SDu4fDg5+7i4PLl6/zt+/Ug7OXw
+7u/w6P/y6P/1LCAK7/Du8fLuIO7y7/Dg4vzy5SDv8/Hy7uUg7+jx/OzuIOIgwuD45ePuIODk8OXx
+4CDt4CDg5PDl8SBvZmlwdWFib2ZpbHVAcG9jaHRhLnJ1P3N1YmplY3Q9c3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IOgg4iDy5ezlIO/o8fzs4CDz6uDm6PLlIMLg+CDg5PDl
+8SD96+Xq8vDu7e3u6SDv7vfy+y4gCgoKwuD4IODk8OXxIOHz5OXyIODi8u7s4PLo9+Xx6ugg8+Tg
+6+XtIOjnIPDg8fH76+roIOIg8uX35e3o5SAxICju5O3u4+4pIOTt/yEKCgpUTyAgVU5TVUJTQ1JJ
+QkUgICBTRU5EICBZT1VSICAgRU1BSUwgICBBRERSRVNTIElOIFNVQkpFQ1QgVE8gICBvZmlwdWFi
+b2ZpbHVAcG9jaHRhLnJ1P3N1YmplY3Q9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
+Z2UubmV0IAoKCiMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMKCgoKCm1hciBrZSAgcmV0YSBpbG95bWEKLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tCkRvd25sb2FkIEludGVsJiMxNzQ7IFBhcmFsbGVsIFN0dWRpbyBFdmFs
+ClRyeSB0aGUgbmV3IHNvZnR3YXJlIHRvb2xzIGZvciB5b3Vyc2VsZi4gU3BlZWQgY29tcGlsaW5n
+LCBmaW5kIGJ1Z3MKcHJvYWN0aXZlbHksIGFuZCBmaW5lLXR1bmUgYXBwbGljYXRpb25zIGZvciBw
+YXJhbGxlbCBwZXJmb3JtYW5jZS4KU2VlIHdoeSBJbnRlbCBQYXJhbGxlbCBTdHVkaW8gZ290IGhp
+Z2ggbWFya3MgZHVyaW5nIGJldGEuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZWwtc3ctZGV2Cl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

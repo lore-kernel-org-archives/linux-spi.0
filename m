@@ -1,47 +1,27 @@
-From: christian pellegrin <chripell@fsfe.org>
-Subject: Re: [PATCH v1 1/4] max3100: added raise_threaded_irq
-Date: Sat, 17 Apr 2010 18:25:31 +0200
-Message-ID: <g2xcabda6421004170925l8c824191t5d451434d24320ae@mail.gmail.com>
-References: <cabda6421003230329w3fe596dbn8e4b37cc36118f9f@mail.gmail.com>
-	 <1269340105-6503-1-git-send-email-chripell@fsfe.org>
-	 <alpine.LFD.2.00.1004160110360.3625@localhost.localdomain>
-	 <w2gcabda6421004160918vc5dc5ee2y14a5814b4e8573b3@mail.gmail.com>
-	 <alpine.LFD.2.00.1004162143300.3625@localhost.localdomain>
+From: "Mon Album Photo" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Creez et recevez gratuitement le livre
+	photo de votre choix
+Date: Sat, 17 Apr 2010 18:30:05 +0200 (CEST)
+Message-ID: <l114jq.z231ig@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: feng.tang@intel.com, akpm@linux-foundation.org, greg@kroah.com,
-	david-b@pacbell.net, grant.likely@secretlab.ca,
-	alan@lxorguk.ukuu.org.uk, spi-devel-general@lists.sourceforge.net,
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Thomas Gleixner <tglx@linutronix.de>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <alpine.LFD.2.00.1004162143300.3625@localhost.localdomain>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
 
-
-On Sat, Apr 17, 2010 at 12:06 AM, Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> I wonder whether we should restrict this mechanism to threaded
-> handlers or just implement it in the following way:
->
-.....
-> This will not work out of the box when the irq is nested into some
-> demultiplexing thread handler (IRQF_NESTED_THREAD).
->
-
-OK, I see. The solution you proposed has many other uses such testing
-of interrupt handlers in general. I will try to do some work along the
-line you suggested next week.
-
-Thank you!
-
-
--- 
-Christian Pellegrin, see http://www.evolware.org/chri/
-"Real Programmers don't play tennis, or any other sport which requires
-you to change clothes. Mountain climbing is OK, and Real Programmers
-wear their climbing boots to work in case a mountain should suddenly
-spring up in the middle of the computer room."
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

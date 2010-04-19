@@ -1,29 +1,27 @@
-From: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-Subject: 32-bit transfers broken in OMAP SPI driver?
-Date: Mon, 19 Apr 2010 09:58:20 +0200 (CEST)
-Message-ID: <Pine.LNX.4.64.1004190950380.4080@axis700.grange>
+From: "Voyage Prive (Club Privileges)" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Obtenez les plus beaux voyages aux plus bas
+	prix toute l'annee!
+Date: Mon, 19 Apr 2010 11:11:31 +0200 (CEST)
+Message-ID: <l149j7.t55s7o@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-omap-owner@vger.kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ran across drivers/spi/omap_spi_100k.c and its handling of > 16-bit 
-transfers seems buggy to me. Firstly, addresses do not get incremented in 
-omap1_spi100k_txrx_pio() (word_len <= 32) case, a fix for which seems to 
-be obvious, secondly, spi100k_write_data() and spi100k_read_data() only 
-write / read 16-bit data blocks, for which I'm not adventurous enough to 
-propose a patch without even touching the hardware;) Am I right? Maybe 
-just disable > 16-bit transfers altogether, since they are broken, and 
-thus, obviously, unused.
 
-Thanks
-Guennadi
----
-Guennadi Liakhovetski, Ph.D.
-Freelance Open-Source Software Developer
-http://www.open-technology.de/
+------------------------------------------------------------------------------
+Download Intel&#174; Parallel Studio Eval
+Try the new software tools for yourself. Speed compiling, find bugs
+proactively, and fine-tune applications for parallel performance.
+See why Intel Parallel Studio got high marks during beta.
+http://p.sf.net/sfu/intel-sw-dev

@@ -1,22 +1,13 @@
-From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: Re: [PATCH v3 1/2] spi: implemented driver for
-	Cirrus EP93xx SPI	controller
-Date: Tue, 20 Apr 2010 09:16:19 +0300
-Message-ID: <20100420061619.GI19534@gw.healthdatacare.com>
-References: <cover.1271156934.git.mika.westerberg@iki.fi>
-	<e0e5dc30af89f0b65fd2e5e52f9e7fe9f162516b.1271156934.git.mika.westerberg@iki.fi>
-	<n2jfa686aa41004162330qae611a0u87be76ca08bfb52a@mail.gmail.com>
-	<20100417110036.GC19534@gw.healthdatacare.com>
-	<q2pfa686aa41004191102qc93f09b6m941785b4cb4e32db@mail.gmail.com>
+From: "=?windows-1251?B?wujq8u7w6P8gzOXk4uXk8erg/w==?="
+	<baxiqobudywymet-h2myTqZJoK5eoWH0uzbU5w@public.gmane.org>
+Subject: [SPAM] Управление финансами на основе бюджетирования и управленческого учета.
+Date: Tue, 20 Apr 2010 15:35:35 +0300
+Message-ID: <00ea01cae085$f9bce9a0$5a62a8c0@20245231201.fibertel.com.ar>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <q2pfa686aa41004191102qc93f09b6m941785b4cb4e32db-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,562 +18,144 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Apr 19, 2010 at 12:02:39PM -0600, Grant Likely wrote:
-> On Sat, Apr 17, 2010 at 5:00 AM, Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>=
- wrote:
-> > On Fri, Apr 16, 2010 at 11:30:45PM -0700, Grant Likely wrote:
-> >> Thanks for the patch. =A0Comments below.
-> >
-> > Thanks for the comments. See below my replies.
-> =
-
-> >> On Tue, Apr 13, 2010 at 7:10 AM, Mika Westerberg <mika.westerberg@iki.=
-fi> wrote:
-> >> > +static int transfer_method =3D EP93XX_SPI_METHOD_INTERRUPT;
-> >> > +module_param(transfer_method, int, S_IRUGO);
-> >> > +MODULE_PARM_DESC(transfer_method,
-> >> > + =A0 =A0 =A0 "Used transfer method (0=3Dpoll, 1=3Dinterrupt [defaul=
-t])");
-> >>
-> >> Should this really be a module parameter? =A0Would it be better to
-> >> expose this knob as part of pdata or in sysfs? =A0(Assuming there even
-> >> is a real need to manipulate this control)
-> >
-> > Hard to say. At least it was easier to test both modes by just
-> > loading the module with correct parameter but it could possibly be
-> > placed in pdata also, if required.
-> =
-
-> Is it the sort of thing that can/should be changed at runtime (sysfs)?
->  Is there the possibility of multiple instances of this device on a
-> single SoC?  I'm not strictly opposed to these lines, but I ask to
-> make sure they are the right abstraction.
-
-I've actually decided to drop the whole polling mode.  So this
-parameter will be gone in next revision.
-
-> =
-
-> >> > + =A0 =A0 =A0 struct clk =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
-*clk;
-> >> > + =A0 =A0 =A0 void __iomem =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*r=
-egs_base;
-> >> > + =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 irq;
-> >> > + =A0 =A0 =A0 unsigned long =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 min_=
-rate;
-> >> > + =A0 =A0 =A0 unsigned long =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 max_=
-rate;
-> >> > + =A0 =A0 =A0 bool =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0running;
-> >> > + =A0 =A0 =A0 struct workqueue_struct =A0 =A0 =A0 =A0 *wq;
-> >> > + =A0 =A0 =A0 struct work_struct =A0 =A0 =A0 =A0 =A0 =A0 =A0msg_work;
-> >> > + =A0 =A0 =A0 struct completion =A0 =A0 =A0 =A0 =A0 =A0 =A0 wait;
-> >> > + =A0 =A0 =A0 struct list_head =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0msg_qu=
-eue;
-> >> > + =A0 =A0 =A0 struct spi_message =A0 =A0 =A0 =A0 =A0 =A0 =A0*current=
-_msg;
-> >> > + =A0 =A0 =A0 size_t =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0tx;
-> >> > + =A0 =A0 =A0 size_t =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0rx;
-> >> > + =A0 =A0 =A0 size_t =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0fifo_level;
-> >> > + =A0 =A0 =A0 void =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0(*transfer)(struct ep93xx_spi *);
-> >> > +};
-> >> > +
-> >> > +/**
-> >> > + * struct ep93xx_spi_chip - SPI device hardware settings
-> >> > + * @rate: max rate in hz this chip supports
-> >> > + * @div_cpsr: cpsr (pre-scaler) divider
-> >> > + * @div_scr: scr divider
-> >> > + * @dss: bits per word (4 - 16 bits)
-> >> > + * @mode: chip SPI mode (see also &struct spi_device)
-> >> > + *
-> >> > + * This structure is used to store hardware register specific setti=
-ngs for each
-> >> > + * SPI device. Settings are written to hardware by function
-> >> > + * ep93xx_spi_chip_setup().
-> >> > + */
-> >> > +struct ep93xx_spi_chip {
-> >> > + =A0 =A0 =A0 unsigned long =A0 rate;
-> >> > + =A0 =A0 =A0 u8 =A0 =A0 =A0 =A0 =A0 =A0 =A0div_cpsr;
-> >> > + =A0 =A0 =A0 u8 =A0 =A0 =A0 =A0 =A0 =A0 =A0div_scr;
-> >> > + =A0 =A0 =A0 u8 =A0 =A0 =A0 =A0 =A0 =A0 =A0dss;
-> >> > + =A0 =A0 =A0 u8 =A0 =A0 =A0 =A0 =A0 =A0 =A0mode;
-> >> > +};
-> >> > +
-> >> > +/* converts bits per word to CR0.DSS value */
-> >> > +#define bits_per_word_to_dss(bpw) =A0 =A0 =A0((bpw) - 1)
-> >> > +
-> >> > +static inline void
-> >> > +ep93xx_spi_write_u8(const struct ep93xx_spi *espi, u16 reg, u8 valu=
-e)
-> >> > +{
-> >> > + =A0 =A0 =A0 __raw_writeb(value, espi->regs_base + reg);
-> >> > +}
-> >> > +
-> >> > +static inline u8
-> >> > +ep93xx_spi_read_u8(const struct ep93xx_spi *spi, u16 reg)
-> >> > +{
-> >> > + =A0 =A0 =A0 return __raw_readb(spi->regs_base + reg);
-> >> > +}
-> >> > +
-> >> > +static inline void
-> >> > +ep93xx_spi_write_u16(const struct ep93xx_spi *espi, u16 reg, u16 va=
-lue)
-> >> > +{
-> >> > + =A0 =A0 =A0 __raw_writew(value, espi->regs_base + reg);
-> >> > +}
-> >> > +
-> >> > +static inline u16
-> >> > +ep93xx_spi_read_u16(const struct ep93xx_spi *spi, u16 reg)
-> >> > +{
-> >> > + =A0 =A0 =A0 return __raw_readw(spi->regs_base + reg);
-> >> > +}
-> >> > +
-> >> > +/**
-> >> > + * ep93xx_spi_enable() - enables the SPI controller and clock
-> >> > + * @espi: ep93xx SPI controller struct
-> >> > + *
-> >> > + * This function enables the SPI controller and its clock. Returns =
-%0 in case
-> >> > + * of success and negative error in case if failure.
-> >> > + */
-> >> > +static int ep93xx_spi_enable(const struct ep93xx_spi *espi)
-> >> > +{
-> >> > + =A0 =A0 =A0 u8 regval;
-> >> > + =A0 =A0 =A0 int err;
-> >> > +
-> >> > + =A0 =A0 =A0 err =3D clk_enable(espi->clk);
-> >> > + =A0 =A0 =A0 if (err)
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return err;
-> >> > +
-> >> > + =A0 =A0 =A0 regval =3D ep93xx_spi_read_u8(espi, SSPCR1);
-> >> > + =A0 =A0 =A0 regval |=3D SSPCR1_SSE;
-> >> > + =A0 =A0 =A0 ep93xx_spi_write_u8(espi, SSPCR1, regval);
-> >> > +
-> >> > + =A0 =A0 =A0 return 0;
-> >> > +}
-> >> > +
-> >> > +/**
-> >> > + * ep93xx_spi_disable() - disables the SPI controller and clock
-> >> > + * @espi: ep93xx SPI controller struct
-> >> > + *
-> >> > + * Function disables SPI controller and its clock.
-> >> > + */
-> >> > +static void ep93xx_spi_disable(const struct ep93xx_spi *espi)
-> >> > +{
-> >> > + =A0 =A0 =A0 u8 regval;
-> >> > +
-> >> > + =A0 =A0 =A0 regval =3D ep93xx_spi_read_u8(espi, SSPCR1);
-> >> > + =A0 =A0 =A0 regval &=3D ~SSPCR1_SSE;
-> >> > + =A0 =A0 =A0 ep93xx_spi_write_u8(espi, SSPCR1, regval);
-> >> > +
-> >> > + =A0 =A0 =A0 clk_disable(espi->clk);
-> >> > +}
-> >> > +
-> >> > +/**
-> >> > + * ep93xx_spi_enable_interrupts() - enables all SPI interrupts
-> >> > + * @espi: ep93xx SPI controller struct
-> >> > + *
-> >> > + * Enables all SPI interrupts: receive overrun (ROR), transmit and =
-receive.
-> >> > + */
-> >> > +static inline void
-> >> > +ep93xx_spi_enable_interrupts(const struct ep93xx_spi *espi)
-> >> > +{
-> >> > + =A0 =A0 =A0 u8 regval;
-> >> > +
-> >> > + =A0 =A0 =A0 regval =3D ep93xx_spi_read_u8(espi, SSPCR1);
-> >> > + =A0 =A0 =A0 regval |=3D (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
-> >> > + =A0 =A0 =A0 ep93xx_spi_write_u8(espi, SSPCR1, regval);
-> >> > +}
-> >> > +
-> >> > +/**
-> >> > + * ep93xx_spi_disable_interrupts() - disables all SPI interrupts
-> >> > + * @espi: ep93xx SPI controller struct
-> >> > + *
-> >> > + * Disables all SPI interrupts.
-> >> > + */
-> >> > +static inline void
-> >> > +ep93xx_spi_disable_interrupts(const struct ep93xx_spi *espi)
-> >> > +{
-> >> > + =A0 =A0 =A0 u8 regval;
-> >> > +
-> >> > + =A0 =A0 =A0 regval =3D ep93xx_spi_read_u8(espi, SSPCR1);
-> >> > + =A0 =A0 =A0 regval &=3D ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
-> >> > + =A0 =A0 =A0 ep93xx_spi_write_u8(espi, SSPCR1, regval);
-> >> > +}
-> >> > +
-> >> > +/**
-> >> > + * ep93xx_spi_flush() - flushes SPI RX FIFO
-> >> > + * @espi: ep93xx SPI controller struct
-> >> > + * @msecs: timeout in milliseconds to wait
-> >> > + *
-> >> > + * This function flushes RX FIFO. Returns %0 in case of success and=
- %-ETIMEDOUT
-> >> > + * when timeout occured. Wait is implemented in busylooping so this=
- function can
-> >> > + * also be called from atomic context.
-> >> > + */
-> >> > +static int ep93xx_spi_flush(const struct ep93xx_spi *espi, unsigned=
- long msecs)
-> >> > +{
-> >> > + =A0 =A0 =A0 unsigned long timeout =3D jiffies + msecs_to_jiffies(m=
-secs);
-> >> > +
-> >> > + =A0 =A0 =A0 while (ep93xx_spi_read_u16(espi, SSPSR) & SSPSR_RNE) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (time_after(jiffies, timeout))
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -ETIMEDOUT;
-> >>
-> >> Ouch. =A0With the current code the driver could busy wait for 100ms! =
-=A0If
-> >> flushing takes time, then don't busywait. =A0Bail out to some form of
-> >> deferred work. =A0Let the kernel get on with something else.
-> >
-> > I've never witnessed flushing to take this whole 100ms. Timeout is
-> > there just to make sure that this ends eventually. I can change it
-> > to some lower value (say few msecs or something like that).
-> =
-
-> Even with a lower value, the driver is still busywaiting which is bad
-> for latency.  If I see a lot of busywaiting, then I look very closely
-> at refactoring the driver into a state machine that can easily defer
-> work.
-
-RNE (RX FIFO not empty) bit is set only when there is stuff in the
-FIFO. So it should be safe to read from. In normal cases FIFO is
-just cleared and no timeout happens. It shouldn't busywait because
-for every iteration it reads next frame from the FIFO.
-
-Timeout was added there just to make sure that if the controller
-goes mad we don't hang there forever.
-
-But if you can explain little more detail how to implement this with
-a state machine which can defer work I can implement that then.
-
-> >> > +
-> >> > +/**
-> >> > + * ep93xx_spi_calc_divisors() - calculates SPI clock divisors
-> >> > + * @espi: ep93xx SPI controller struct
-> >> > + * @chip: divisors are calculated for this chip
-> >> > + * @rate: desired SPI output clock rate
-> >> > + *
-> >> > + * Function calculates cpsr (clock pre-scaler) and scr divisors bas=
-ed on
-> >> > + * given @rate and places them to @chip->div_cpsr and @chip->div_sc=
-r. If,
-> >> > + * for some reason, divisors cannot be calculated nothing is stored=
- and
-> >> > + * %-EINVAL is returned.
-> >> > + */
-> >> > +static int ep93xx_spi_calc_divisors(const struct ep93xx_spi *espi,
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 struct ep93xx_spi_chip *chip,
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 unsigned long rate)
-> >> > +{
-> >> > + =A0 =A0 =A0 unsigned long spi_clk_rate =3D clk_get_rate(espi->clk);
-> >> > + =A0 =A0 =A0 int cpsr, scr;
-> >> > +
-> >> > + =A0 =A0 =A0 /*
-> >> > + =A0 =A0 =A0 =A0* Make sure that max value is between values suppor=
-ted by the
-> >> > + =A0 =A0 =A0 =A0* controller. Note that minimum value is already ch=
-ecked in
-> >> > + =A0 =A0 =A0 =A0* ep93xx_spi_transfer().
-> >> > + =A0 =A0 =A0 =A0*/
-> >> > + =A0 =A0 =A0 rate =3D clamp(rate, espi->min_rate, espi->max_rate);
-> >> > +
-> >> > + =A0 =A0 =A0 /*
-> >> > + =A0 =A0 =A0 =A0* Calculate divisors so that we can get speed accor=
-ding the
-> >> > + =A0 =A0 =A0 =A0* following formula:
-> >> > + =A0 =A0 =A0 =A0* =A0 =A0 =A0rate =3D spi_clock_rate / (cpsr * (1 +=
- scr))
-> >> > + =A0 =A0 =A0 =A0*
-> >> > + =A0 =A0 =A0 =A0* cpsr must be even number and starts from 2, scr c=
-an be any number
-> >> > + =A0 =A0 =A0 =A0* between 0 and 255.
-> >> > + =A0 =A0 =A0 =A0*/
-> >> > + =A0 =A0 =A0 for (cpsr =3D 2; cpsr <=3D 254; cpsr +=3D 2) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 for (scr =3D 0; scr <=3D 255; scr++) {
-> >>
-> >> Non-deterministic. =A0Big nested loops mean a lot of calculations with=
-in
-> >> =A0ep93xx_spi_process_transfer, and calculated values aren't cached if
-> >> they get replaced. =A0If you can, it would be better if you can
-> >> algebraically calculate the factors instead of an iterative loop.
-> >> It's requires more thinking at the outset, but it is worth the effort.
-> >
-> > Is it normal to change speed per transfer? ep93xx_spi_process_transfer()
-> > only calls this if speed changes. That's why I used those loops
-> > here; the assumption is that it is only called at setup time (and
-> > even there only when speed changes).
-> >
-> > For example in my test system using mmc_spi it was called total 3 times.
-> =
-
-> But it is a concern if you have two spi devices with different
-> constraints attached to the same bus.
-> =
-
-> I'm not going to reject the driver over this, but you should be aware
-> of it and it probably should be fixed.
-
-OK.
-
-> =
-
-> >> > + =A0 =A0 =A0 chip->mode =3D spi->mode;
-> >> > + =A0 =A0 =A0 chip->dss =3D bits_per_word_to_dss(spi->bits_per_word);
-> >>
-> >> Why is mode and dss getting copied into chip? =A0chip should probable
-> >> instead have a reference back to its assigned spi device and the
-> >> original values should be used.
-> >
-> > This is done because if there are transfer specific settings (for
-> > example bits per word changes) we can just make temporary copy of
-> > chip and change those values and then restore back the original,
-> > once the transfer is finished (see ep93xx_spi_process_transfer()).
-> >
-> > Mode, however is redundant as it cannot be changed per transfer (or
-> > even per message). I will drop that from the struct.
-> =
-
-> ok
-> =
-
-> >> > + =A0 =A0 =A0 /* read all received data */
-> >> > + =A0 =A0 =A0 while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE) &&
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 espi->rx < t->len) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ep93xx_do_read(espi, t);
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 espi->fifo_level--;
-> >> > + =A0 =A0 =A0 }
-> >>
-> >> Another busywait loop. =A0Could end up burning an awful lot of cycles
-> >> here. =A0A state machine might be more suitable for this driver so that
-> >> processing can be punted to deferred work when the FIFO gets either
-> >> empty or full.
-> >
-> > FIFO size is max 8 frames so there should be 8 iterations when the
-> > FIFO is full. So is it enought to to add check that we only read
-> > max 8 frames from the FIFO?
-> =
-
-> If you do it right, FIFO size shouldn't matter.  The driver should
-> easily be able to read however many are available and defer until more
-> is ready.
-
-Agreed. There is no need for FIFO size checking in this particular loop.
-
-Checking the RNE bit is enough. The driver reads as many frames as there
-are available.
-
-I'll also remove those useless checks as Martin commented in his previous
-mail.
-
-> >
-> >> > +
-> >> > + =A0 =A0 =A0 /* write as long as FIFO has room */
-> >> > + =A0 =A0 =A0 while (espi->fifo_level < SPI_FIFO_SIZE && espi->tx < =
-t->len) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ep93xx_do_write(espi, t);
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 espi->fifo_level++;
-> >> > + =A0 =A0 =A0 }
-> >> > +
-> >> > + =A0 =A0 =A0 /* are we done yet? */
-> >> > + =A0 =A0 =A0 if (espi->tx =3D=3D t->len && espi->rx =3D=3D t->len) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 msg->actual_length +=3D t->len;
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return t->len;
-> >> > + =A0 =A0 =A0 }
-> >> > +
-> >> > + =A0 =A0 =A0 return 0;
-> >> > +}
-> >> > +
-> >> > +/**
-> >> > + * ep93xx_spi_polling_transfer() - implement polling mode transfer
-> >> > + * @espi: ep93xx SPI controller struct
-> >> > + *
-> >> > + * Function performs one polling mode transfer. When this function =
-is finished,
-> >> > + * the whole transfer should be completed, or failed in case of err=
-or.
-> >> > + */
-> >> > +static void ep93xx_spi_polling_transfer(struct ep93xx_spi *espi)
-> >> > +{
-> >> > + =A0 =A0 =A0 while (!ep93xx_spi_read_write(espi))
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cpu_relax();
-> >>
-> >> And if it never finishes? =A0No exit path on error.
-> >
-> > Well with current implementation of ep93xx_spi_read_write() it
-> > cannot fail. =A0I guess some sort of timeout could be used here. Also
-> > we can take ROR (receive overrun) interrupt and report that back.
-> =
-
-> In cases like this, if you've got a guaranteed no-fail path, then a
-> comment stating explicitly that is helpful to the reader.  :-)
-
-Yeah sorry about that.
-
-I'll drop the polling mode so this function is gone in next revision.
-
-> =
-
-> >> > + =A0 =A0 =A0 if (t->cs_change) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 /*
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* In case protocol driver is asking=
- us to drop the
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* chipselect briefly, we let the sc=
-heduler to handle
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* any "delay" here.
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*/
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (!list_is_last(&t->transfer_list, &=
-msg->transfers)) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ep93xx_spi_deselect_de=
-vice(espi, msg->spi);
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 cond_resched();
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ep93xx_spi_select_devi=
-ce(espi, msg->spi);
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> >> > + =A0 =A0 =A0 }
-> >> > +
-> >> > + =A0 =A0 =A0 if (t->speed_hz || t->bits_per_word)
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ep93xx_spi_chip_setup(espi, chip);
-> >> > +}
-> >> > +
-> >> > +/*
-> >> > + * ep93xx_spi_process_message() - process one SPI message
-> >> > + * @espi: ep93xx SPI controller struct
-> >> > + * @msg: message to process
-> >> > + *
-> >> > + * This function processes a single SPI message. We go through all =
-transfers in
-> >> > + * the message and pass them to ep93xx_spi_process_transfer(). Chip=
-select is
-> >> > + * asserted during the whole message (unless per transfer cs_change=
- is set).
-> >> > + *
-> >> > + * @msg->status contains %0 in case of success or negative error co=
-de in case of
-> >> > + * failure.
-> >> > + */
-> >> > +static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0struct spi_message *msg)
-> >> > +{
-> >> > + =A0 =A0 =A0 struct spi_transfer *t;
-> >> > + =A0 =A0 =A0 int err;
-> >> > +
-> >> > + =A0 =A0 =A0 /*
-> >> > + =A0 =A0 =A0 =A0* Enable the SPI controller and its clock.
-> >> > + =A0 =A0 =A0 =A0*/
-> >> > + =A0 =A0 =A0 err =3D ep93xx_spi_enable(espi);
-> >> > + =A0 =A0 =A0 if (err) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&espi->pdev->dev, "failed to e=
-nable SPI controller\n");
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 msg->status =3D err;
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return;
-> >> > + =A0 =A0 =A0 }
-> >> > +
-> >> > + =A0 =A0 =A0 /*
-> >> > + =A0 =A0 =A0 =A0* Just to be sure: flush any data from RX FIFO.
-> >> > + =A0 =A0 =A0 =A0*/
-> >> > + =A0 =A0 =A0 err =3D ep93xx_spi_flush(espi, SPI_TIMEOUT);
-> >> > + =A0 =A0 =A0 if (err) {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_warn(&espi->pdev->dev, "timeout wh=
-ile flushing RX fifo\n");
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 msg->status =3D err;
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return;
-> >> > + =A0 =A0 =A0 }
-> >> > +
-> >> > + =A0 =A0 =A0 /*
-> >> > + =A0 =A0 =A0 =A0* Update SPI controller registers according to spi =
-device and assert
-> >> > + =A0 =A0 =A0 =A0* the chipselect.
-> >> > + =A0 =A0 =A0 =A0*/
-> >> > + =A0 =A0 =A0 ep93xx_spi_chip_setup(espi, spi_get_ctldata(msg->spi));
-> >> > + =A0 =A0 =A0 ep93xx_spi_select_device(espi, msg->spi);
-> >> > +
-> >> > + =A0 =A0 =A0 list_for_each_entry(t, &msg->transfers, transfer_list)=
- {
-> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cond_resched();
-> >>
-> >> Why is this necessary?
-> >
-> > Well it isn't strictly necessary. This is just one of the places where =
-we can
-> > voluntarily relinguish the cpu for a while. I can remove that if necess=
-ary.
-> =
-
-> I'd remove it.  There aren't very many places where the driver would
-> legitimately want to do this, especially if you reduce the
-> busywaiting.  Trust the scheduler to make sure you're process doesn't
-> get too much time.
-
-OK.
-
-> =
-
-> >> > + =A0 =A0 =A0 list_del_init(&msg->queue);
-> >> > + =A0 =A0 =A0 espi->current_msg =3D msg;
-> >> > + =A0 =A0 =A0 spin_unlock_irq(&espi->lock);
-> >>
-> >> I'm nervous about the locking. =A0I'm not convinced that it covers all
-> >> the important cases. =A0Are you able to describe what the locks protec=
-t,
-> >> and why they are taken when they are? =A0That would help me evaluate
-> >> what the driver should be doing.
-> >
-> > Ok. here is a description of the locking model (sorry if this is
-> > bit messy):
-> >
-> > Lock should protect following fields:
-> > =A0 =A0 =A0 =A0running
-> > =A0 =A0 =A0 =A0current_msg
-> > =A0 =A0 =A0 =A0msg_queue
-> >
-> > (rest of the fields are basically only set once, except rx, tx and
-> > fifo_level)
-> >
-> > espi->msg_queue needs protection because there might be multiple
-> > threads adding to the queue.
-> >
-> > espi->running signals whether the driver is processing messages or
-> > not. It can be changed when module is unloading, hence it needs
-> > protection.
-> >
-> > espi->current_msg is used to hold pointer to currently processed
-> > message. This message has been removed from the espi->msg_queue.
-> > It also indicates whether we can proceed with the next message. If
-> > it is NULL we are allowed to process the next message.
-> >
-> > Assumption is that when espi->current_msg is not NULL, message is
-> > processed and we won't call ep93xx_spi_process_message(). This
-> > allows us to use espi->rx, espi->tx, and espi->fifo_level without
-> > locks.
-> =
-
-> So you need to make sure that the lock is held over the entire region
-> between checking ->running, checking ->current_msg, and actually
-> modifying the queue or setting current_msg, right?
-
-Right. I think it is currently like that, no?
-
-Thank you very much for your comments. I'll try to post next revision
-later today.
-
-Regards,
-MW
-
----------------------------------------------------------------------------=
----
-Download Intel&#174; Parallel Studio Eval
-Try the new software tools for yourself. Speed compiling, find bugs
-proactively, and fine-tune applications for parallel performance.
-See why Intel Parallel Studio got high marks during beta.
-http://p.sf.net/sfu/intel-sw-dev
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqCioKKiAg0J/QoNCQ0JrQotCY0KfQldCh0JrQmNCVICDQnNCV0KLQntCU0KsgINCR
+0K7QlNCW0JXQotCY0KDQntCS0JDQndCY0K8gINCYICDQo9Cf0KDQkNCS0JvQldCd0KfQldCh0JrQ
+ntCT0J4gINCj0KfQldCi0JAuCioKKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCgrQndCwINGB0LXQvNC40L3QsNGAINC/0YDQ
+uNCz0LvQsNGI0LDRjtGC0YHRjzog0YDRg9C60L7QstC+0LTQuNGC0LXQu9C4INC60L7QvNC/0LDQ
+vdC40LksINGE0LjQvdCw0L3RgdC+0LLRi9C1INC00LjRgNC10LrRgtC+0YDQsCDQuCDRgdC+0YLR
+gNGD0LTQvdC40LrQuCDRhNC40L3QsNC90YHQvtCy0L4t0Y3QutC+0L3QvtC80LjRh9C10YHQutC4
+0YUg0YHQu9GD0LbQsS4gCgrQlNCw0YLRiyDQv9GA0L7QstC10LTQtdC90LjRjzogMjYtMjcg0LDQ
+v9GA0LXQu9GPIArQoNC10LPQuNGB0YLRgNCw0YbQuNGPINC4INC40L3RhNC+0YDQvNCw0YbQuNGP
+OiA4KDQ5NSk0MTEtOTQtMzEKCioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKgoK0JIg0J/QoNCe0JPQoNCQ0JzQnNCVOgoKMS4g
+0JrQsNC6INC/0YDQsNCy0LjQu9GM0L3QviDRgdGH0LjRgtCw0YLRjCDQtNC10L3RjNCz0LguINCa
+0LDQuiDQvtGA0LPQsNC90LjQt9C+0LLQsNGC0Ywg0YPRh9C10YIg0LIg0LrQvtC80L/QsNC90LjQ
+uAogICAgICAgLSDQn9GA0L7RhtC10YHRgSDRhNC+0YDQvNC40YDQvtCy0LDQvdC40Y8g0YPQv9GA
+0LDQstC70LXQvdGH0LXRgdC60L7QuSDQuNC90YTQvtGA0LzQsNGG0LjQuC4gCiAgICAgICAtINCt
+0LvQtdC80LXQvdGC0YsgwqvQutC+0L3RgdGC0YDRg9C60YLQvtGA0LDCuyDRg9C/0YDQsNCy0LvQ
+tdC90YfQtdGB0LrQvtC5INC+0YLRh9C10YLQvdC+0YHRgtC4LiAKICAgICAgIC0g0J/QuNGA0LDQ
+vNC40LTQsCDQutC+0L3RgtGA0L7Qu9GPLiAKICAgICAgIC0g0JLQt9Cw0LjQvNC+0YHQstGP0LfR
+jCDQvNC10LbQtNGDINGD0L/RgNCw0LLQu9C10L3Rh9C10YHQutC+0Lkg0Lgg0LHRg9GF0LPQsNC7
+0YLQtdGA0YHQutC+0Lkg0L7RgtGH0LXRgtC90L7RgdGC0YzRji4KCjIuINCe0YHQvdC+0LLQvdGL
+0LUg0YTQuNC90LDQvdGB0L7QstGL0LUg0LTQvtC60YPQvNC10L3RgtGLLiDQo9C/0YDQsNCy0LvQ
+tdC90YfQtdGB0LrQuNC1INGE0L7RgNC80Ysg0L7RgtGH0LXRgtC+0LIKICAgICAgIC0g0J7RgtGH
+0LXRgiDQviDQv9GA0LjQsdGL0LvQuC4g0JHQsNC70LDQvdGBLiAKICAgICAgIC0g0J7RgtGH0LXR
+giDQviDQtNCy0LjQttC10L3QuNC4INC00LXQvdC10LbQvdGL0YUg0YHRgNC10LTRgdGC0LIuIAog
+ICAgICAgLSDQkNC00LDQv9GC0LDRhtC40Y8g0LTQu9GPINGA0LXRiNC10L3QuNGPINGD0L/RgNCw
+0LLQu9C10L3Rh9C10YHQutC40YUg0LfQsNC00LDRhy4gCiAgICAgICAtINCf0YDQuNC80LXRgNGL
+INGA0LDQsdC+0YfQuNGFINGE0L7RgNC8INC+0YLRh9C10YLQvdC+0YHRgtC4INGA0L7RgdGB0LjQ
+udGB0LrQuNGFINC60L7QvNC/0LDQvdC40LkuCgozLiDCq9CT0LTQtSDQtNC10L3RjNCz0Lg/wrsu
+INCe0YLQstC10YIg0L3QsCDQs9C70LDQstC90YvQuSDQstC+0L/RgNC+0YEg0YDRg9C60L7QstC+
+0LTQuNGC0LXQu9GPCiAgICAgICAtINCf0YDQuNCx0YvQu9GMINC10YHRgtGMLCDQsCDQtNC10L3Q
+tdCzINC90LXRgi4g0JPQtNC1INC+0L3QuD8gCiAgICAgICAtINCd0LDQs9C70Y/QtNC90YvQtSDR
+hNC+0YDQvNGLINC00LvRjyDQv9C+0L3QuNC80LDQvdC40Y8g0LjRgdGC0L7Rh9C90LjQutC+0LIg
+0LTQtdC90LXQttC90YvRhSDRgdGA0LXQtNGB0YLQsiDQuCDQvdCw0L/RgNCw0LLQu9C10L3QuNGP
+INC40YUg0LjRgdC/0L7Qu9GM0LfQvtCy0LDQvdC40Y8uIAogICAgICAgLSDQntGC0YHQu9C10LbQ
+uNCy0LDQvdC40LUg0YTQuNC90LDQvdGB0L7QstGL0YUg0L/QvtGC0L7QutC+0LIg0LzQtdC20LTR
+gyDRgNCw0LfQvdGL0LzQuCDQstC40LTQsNC80Lgg0LTQtdGP0YLQtdC70YzQvdC+0YHRgtC4LgoK
+NC4g0KPRh9C10YIg0Lgg0YPQv9GA0LDQstC70LXQvdC40LUg0L7RgtC00LXQu9GM0L3Ri9C80Lgg
+0YHRgtCw0YLRjNGP0LzQuCDQvtCx0L7RgNC+0YLQvdC+0LPQviDQutCw0L/QuNGC0LDQu9CwCiAg
+ICAgICAtINCh0L7RgdGC0LDQstC70Y/RjtGJ0LjQtSDQvtCx0L7RgNC+0YLQvdC+0LPQviDQutCw
+0L/QuNGC0LDQu9CwLiAKICAgICAgIC0g0JvQvtCz0LjQutCwINC60L7QvNC80LXRgNGH0LXRgdC6
+0L7Qs9C+INGG0LjQutC70LAuIAogICAgICAgLSDQo9GH0LXRgiDQuCDRg9C/0YDQsNCy0LvQtdC9
+0LjQtSDRgdGC0LDRgtGM0Y/QvNC4INC+0LHQvtGA0L7RgtC90L7Qs9C+INC60LDQv9C40YLQsNC7
+0LAuIAogICAgICAgLSDQo9C00L7QsdC90YvQtSDRhNC+0YDQvNGLINC00LvRjyDRg9GH0LXRgtCw
+INC4INCw0L3QsNC70LjQt9CwLiAKICAgICAgIC0g0JrQvtC90YLRgNC+0LvRjNC90YvQtSDRgtC+
+0YfQutC4INC/0YDQvtCy0LXRgNC60Lgg0L7RgtGH0LXRgtC90L7RgdGC0LguCgo1LiDQoNC10L3R
+gtCw0LHQtdC70YzQvdC+0YHRgtGMLCDQvtCx0L7RgNCw0YfQuNCy0LDQtdC80L7RgdGC0YwsINC/
+0YDQvtC40LfQstC+0LTQuNGC0LXQu9GM0L3QvtGB0YLRjCwg0LvQuNC60LLQuNC00L3QvtGB0YLR
+jCwg0YPQs9GA0L7Qt9CwINCx0LDQvdC60YDQvtGC0YHRgtCy0LAuINCX0LAg0YfQtdC8INGB0LvQ
+tdC00LjRgtGMINC4INC60LDQuiDQsiDRjdGC0L7QvCDQvdC1INC/0L7RgtC10YDRj9GC0YzRgdGP
+CiAgICAgICAtINCe0YHQvdC+0LLQvdGL0LUg0LPRgNGD0L/Qv9GLINC60L7RjdGE0YTQuNGG0LjQ
+tdC90YLQvtCyICjRgNC10L3RgtCw0LHQtdC70YzQvdC+0YHRgtGMLCDQvtCx0L7RgNCw0YfQuNCy
+0LDQtdC80L7RgdGC0YwsINC70LjQutCy0LjQtNC90L7RgdGC0YwsINGD0LPRgNC+0LfQsCDQsdCw
+0L3QutGA0L7RgtGB0YLQstCwKS4g0JvQvtCz0LjQutCwINC40YUg0L/QvtGB0YLRgNC+0LXQvdC4
+0Y8uIAogICAgICAgLSDCq9Cf0YDQsNCy0LjQu9GM0L3Ri9C1wrsg0YTQvtGA0LzRg9C70YsuINCh
+INGH0LXQvCDRgdGA0LDQstC90LjQstCw0YLRjCDQv9C+0LrQsNC30LDRgtC10LvQuC4gCiAgICAg
+ICAtINCd0L7RgNC80LjRgNC+0LLQsNC90LjQtSDQv9C+0LrQsNC30LDRgtC10LvQtdC5LgoKNi4g
+0JDQvdCw0LvQuNC3INCy0YvQs9C+0LTQvdC+0YHRgtC4INCw0YHRgdC+0YDRgtC40LzQtdC90YLQ
+sCDQuCDQstC40LTQvtCyINC00LXRj9GC0LXQu9GM0L3QvtGB0YLQuAogICAgICAgLSDQnNCw0YDQ
+ttC40L3QsNC70YzQvdGL0Lkg0LDQvdCw0LvQuNC3INCw0YHRgdC+0YDRgtC40LzQtdC90YLQsCDQ
+uCDQstC40LTQvtCyINC00LXRj9GC0LXQu9GM0L3QvtGB0YLQuC4gCiAgICAgICAtINCe0YbQtdC9
+0LrQsCDRgNC10LDQu9GM0L3QvtC5INGN0LrQvtC90L7QvNC40YfQtdGB0LrQvtC5INGN0YTRhNC1
+0LrRgtC40LLQvdC+0YHRgtC4LiAKICAgICAgIC0g0JPQtNC1INC80Ysg0LfQsNGA0LDQsdCw0YLR
+i9Cy0LDQtdC8LCDQsCDQs9C00LUg0YLQtdGA0Y/QtdC8LiAKICAgICAgIC0g0JfQsNC60YDRi9Cy
+0LDRgtGMINC40LvQuCDQvdC1INC30LDQutGA0YvQstCw0YLRjCDQvdCw0L/RgNCw0LLQu9C10L3Q
+uNC1INCyINGB0LvRg9GH0LDQtSDQvtGC0YDQuNGG0LDRgtC10LvRjNC90L7Qs9C+INGA0LXQt9GD
+0LvRjNGC0LDRgtCwLgoKNy4g0JrQvtC90YLRgNC+0LvRjCDQvdCw0LQg0LfQsNGC0YDQsNGC0LDQ
+vNC4LiDQotC+0YfQutCwINCx0LXQt9GD0LHRi9GC0L7Rh9C90L7RgdGC0LguINCc0LXRgNGLINC/
+0L4g0YHQvdC40LbQtdC90LjRjiDQt9Cw0YLRgNCw0YIKICAgICAgIC0g0JDQvdCw0LvQuNC3INC4
+INC/0YDQuNC90YbQuNC/0Ysg0YDQsNC30LTQtdC70LXQvdC40Y8g0LfQsNGC0YDQsNGCLiAKICAg
+ICAgIC0g0J7RhtC10L3QutCwINGC0L7Rh9C60Lgg0LHQtdC30YPQsdGL0YLQvtGH0L3QvtGB0YLQ
+uC4gCiAgICAgICAtINCe0YDQs9Cw0L3QuNC30LDRhtC40Y8g0LrQvtC90YLRgNC+0LvRjyDQvdCw
+0LQg0LfQsNGC0YDQsNGC0LDQvNC4LiAKICAgICAgIC0g0J/RgNC40LzQtdGA0Ysg0L/RgNC+0LPR
+gNCw0LzQvCDQv9C+INGB0L3QuNC20LXQvdC40Y4g0LfQsNGC0YDQsNGCLgoKOC4g0KHQuNGB0YLQ
+tdC80LAg0YTQuNC90LDQvdGB0L7QstC+0LPQviDQv9C70LDQvdC40YDQvtCy0LDQvdC40Y8gLSDQ
+sdGO0LTQttC10YLQuNGA0L7QstCw0L3QuNGPCiAgICAgICAtINCX0LDQtNCw0YfQuCDQuCDQvdCw
+0LfQvdCw0YfQtdC90LjQtSDRgdC40YHRgtC10LzRiyDRhNC40L3QsNC90YHQvtCy0L7Qs9C+INC/
+0LvQsNC90LjRgNC+0LLQsNC90LjRjy4gCiAgICAgICAtINCT0L7RgNC40LfQvtC90YLRiyDQv9C7
+0LDQvdC40YDQvtCy0LDQvdC40Y8uIAogICAgICAgLSDQntGB0L3QvtCy0L3Ri9C1INGN0YLQsNC/
+0Ysg0YbQuNC60LvQsCDQv9C70LDQvdC40YDQvtCy0LDQvdC40Y8uIAogICAgICAgLSDQo9GB0LvQ
+vtCy0LjRjyDQstGL0L/QvtC70L3QuNC80L7RgdGC0Lgg0L/Qu9Cw0L3QsCDQuCDQvNC10YDRiyDQ
+v9C+INGD0YHRgtGA0LDQvdC10L3QuNGOINC00LXRhNC40YbQuNGC0LAg0LHRjtC00LbQtdGC0LAu
+IAogICAgICAgLSDQn9GA0LjQvNC10YDRiyDRgNC10LDQu9C40LfQsNGG0LjQuC4KCjkuINCe0L/Q
+tdGA0LDRgtC40LLQvdC+0LUg0L/Qu9Cw0L3QuNGA0L7QstCw0L3QuNC1INC00LXQvdC10LbQvdGL
+0YUg0YHRgNC10LTRgdGC0LIgCiAgICAgICAtINCf0YDQsNC60YLQuNGH0LXRgdC60LDRjyDRgtC1
+0YXQvdC+0LvQvtCz0LjRjyDQv9C+0YHRgtCw0L3QvtCy0LrQuCDRgdC40YHRgtC10LzRiyDQv9C7
+0LDQvdC40YDQvtCy0LDQvdC40Y8g0LTQstC40LbQtdC90LjRjyDQtNC10L3QtdC20L3Ri9GFINGB
+0YDQtdC00YHRgtCyLiAKICAgICAgIC0g0J7RgNCz0LDQvdC40LfQsNGG0LjQvtC90L3Ri9C1INC8
+0L7QvNC10L3RgtGLLiAKICAgICAgIC0g0KTQvtGA0LzQuNGA0L7QstCw0L3QuNC1INC90LDQsdC+
+0YDQsCDQsdGO0LTQttC10YLQvtCyINC4INC+0YLQstC10YLRgdGC0LLQtdC90L3Ri9GFINC30LAg
+0LLRi9C/0L7Qu9C90LXQvdC40LUuIAogICAgICAgLSDQkdGO0LTQttC10YLQvdGL0Lkg0YDQtdCz
+0LvQsNC80LXQvdGCLCDRgNCw0YHQv9GA0LXQtNC10LvQtdC90LjQtSDRhNGD0L3QutGG0LjQuSwg
+0L/QvtGA0Y/QtNC+0Log0LLQt9Cw0LjQvNC+0LTQtdC50YHRgtCy0LjRjy4gCiAgICAgICAtINCe
+0YDQs9Cw0L3QuNC30LDRhtC40Y8g0YPQv9GA0LDQstC70LXQvdC40Y8g0LHRjtC00LbQtdGC0LDQ
+vNC4LgoKMTAuINCa0L7QvNC/0LvQtdC60YHQvdC+0LUg0YTQuNC90LDQvdGB0L7QstC+0LUg0L/Q
+u9Cw0L3QuNGA0L7QstCw0L3QuNC1INC90LAg0LPQvtC0INC4INC+0YbQtdC90LrQsCDQstC+0LfQ
+vNC+0LbQvdGL0YUg0YDQuNGB0LrQvtCyCiAgICAgICAtINCf0L7RgdGC0YDQvtC10L3QuNC1INGE
+0LjQvdCw0L3RgdC+0LLQvi3RjdC60L7QvdC+0LzQuNGH0LXRgdC60L7QuSDQvNC+0LTQtdC70Lgg
+0YDQsNC30LLQuNGC0LjRjyDQutC+0LzQv9Cw0L3QuNC4LiAKICAgICAgIC0g0J/QtdGA0LXRh9C1
+0L3RjCDQvtGB0L3QvtCy0L3Ri9GFINCx0Y7QtNC20LXRgtC+0LIuINCY0YUg0LLQt9Cw0LjQvNC+
+0YHQstGP0LfRjCDQsiDQvtCx0YnQtdC5INGB0YXQtdC80LUg0LrQvtC80L/Qu9C10LrRgdC90L7Q
+s9C+INGE0LjQvdCw0L3RgdC+0LLQvtCz0L4g0L/Qu9Cw0L3QuNGA0L7QstCw0L3QuNGPLiAKICAg
+ICAgIC0g0J7Qv9GA0LXQtNC10LvQtdC90LjQtSDQs9GA0LDQvdC40YYg0LTQu9GPINC/0LXRgNC1
+0YHQvNC+0YLRgNCwINC/0LvQsNC90L7QsiDQuCDQvtGG0LXQvdC60LAg0YDQuNGB0LrQvtCyLgoK
+MTEuINCd0LXQvtCx0YXQvtC00LjQvNGL0LUg0YDQtdGB0YPRgNGB0Ysg0LTQu9GPINGA0LDQt9Cy
+0LjRgtC40Y8g0LrQvtC80L/QsNC90LjQuC4g0J/QvtC40YHQuiDRgdC+0LHRgdGC0LLQtdC90L3R
+i9GFINGA0LXQt9C10YDQstC+0LIKICAgICAgIC0g0JzQvtC00LXQu9GMINC/0YDQvtCz0L3QvtC3
+0LAg0YTQuNC90LDQvdGB0L7QstC+0LPQviDRgdC+0YHRgtC+0Y/QvdC40Y8g0LrQvtC80L/QsNC9
+0LjQuC4gCiAgICAgICAtINCe0L/RgtC40LzQsNC70YzQvdGL0LUg0YLQtdC80L/RiyDRgNC+0YHR
+gtCwINC60L7QvNC/0LDQvdC40LguIAogICAgICAgLSDQn9C+0LjRgdC6INGB0L7QsdGB0YLQstC1
+0L3QvdGL0YUg0YDQtdC30LXRgNCy0L7Qsi4gCiAgICAgICAtINCa0LDQutGD0Y4g0LTQvtC70Y4g
+0L/RgNC40LHRi9C70Lgg0LzQvtC20L3QviDQuNC30LLQu9C10LrQsNGC0Ywg0LHQtdC3INGD0YnQ
+tdGA0LHQsCDQtNC70Y8g0LHQuNC30L3QtdGB0LAuIAogICAgICAgLSDQodC60L7Qu9GM0LrQviDQ
+vNC+0LbQvdC+INC/0L7RgtGA0LDRgtC40YLRjCDQvdCwINGA0LDQt9Cy0LjRgtC40LUuIAoKMTIu
+INCf0L7QtNGF0L7QtNGLINC6INC+0YbQtdC90LrQtSDRgdGC0L7QuNC80L7RgdGC0Lgg0LHQuNC3
+0L3QtdGB0LAuINCa0LDQutGD0Y4g0YbQtdC90L3QvtGB0YLRjCDQv9GA0LXQtNGB0YLQsNCy0LvR
+j9C10YIg0LrQvtC80L/QsNC90LjRjwogICAgICAgLSDQptC10LvQuCDQuCDQv9C+0LTRhdC+0LTR
+iyDQuiDQvtGG0LXQvdC60LUg0YHRgtC+0LjQvNC+0YHRgtC4INC60L7QvNC/0LDQvdC40LguINCg
+0YvQvdC+0YfQvdGL0Lkg0L/QvtC00YXQvtC0LiDQn9C+0LTRhdC+0LQg0L3QsCDQvtGB0L3QvtCy
+0LUg0LDQutGC0LjQstC+0LIuINCU0L7RhdC+0LTQvdGL0Lkg0L/QvtC00YXQvtC0LiAKICAgICAg
+IC0g0KTQsNC60YLQvtGA0YssINCy0LvQuNGP0Y7RidC40LUg0L3QsCDQvtGG0LXQvdC60YMg0YHR
+gtC+0LjQvNC+0YHRgtC4INCx0LjQt9C90LXRgdCwLiAKICAgICAgIC0g0JrQsNC6INC+0L/QtdGA
+0LDRgtC40LLQvdCw0Y8g0YDQsNCx0L7RgtCwINC4INGC0LXQutGD0YnQuNC1INGA0LXQt9GD0LvR
+jNGC0LDRgtGLINC00LXRj9GC0LXQu9GM0L3QvtGB0YLQuCDQvtGC0YDQsNC20LDRjtGC0YHRjyDQ
+vdCwINGB0YLQvtC40LzQvtGB0YLQuCDQutC+0LzQv9Cw0L3QuNC4LiAKICAgICAgIC0g0J/RgNC4
+0LzQtdGA0Ysg0L7RhtC10L3QutC4INGB0YLQvtC40LzQvtGB0YLQuCDQutC+0LzQv9Cw0L3QuNC5
+LgoKKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqCgrQlNCw0YLRiyDQv9GA0L7QstC10LTQtdC90LjRjzogMjYtMjcg0LDQv9GA
+0LXQu9GPCtCh0YLQvtC40LzQvtGB0YLRjCDRg9GH0LDRgdGC0LjRjzoxNzUwMCDRgNGD0LEKCtCg
+0LXQs9C40YHRgtGA0LDRhtC40Y8g0Lgg0LjQvdGE0L7RgNC80LDRhtC40Y86IDggKDQ5NSkgNCAx
+IDEgLSA5IDQgLSAzIDEKCtCc0LXRgdGC0L4g0L/RgNC+0LLQtdC00LXQvdC40Y86INCcT9ChS0LQ
+kCwg0JwuINCS0LTQvdGFCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRG93bmxvYWQgSW50ZWwmIzE3
+NDsgUGFyYWxsZWwgU3R1ZGlvIEV2YWwKVHJ5IHRoZSBuZXcgc29mdHdhcmUgdG9vbHMgZm9yIHlv
+dXJzZWxmLiBTcGVlZCBjb21waWxpbmcsIGZpbmQgYnVncwpwcm9hY3RpdmVseSwgYW5kIGZpbmUt
+dHVuZSBhcHBsaWNhdGlvbnMgZm9yIHBhcmFsbGVsIHBlcmZvcm1hbmNlLgpTZWUgd2h5IEludGVs
+IFBhcmFsbGVsIFN0dWRpbyBnb3QgaGlnaCBtYXJrcyBkdXJpbmcgYmV0YS4KaHR0cDovL3Auc2Yu
+bmV0L3NmdS9pbnRlbC1zdy1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5l
+cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9s
+aXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

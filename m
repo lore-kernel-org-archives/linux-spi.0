@@ -1,24 +1,28 @@
 From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Subject: Re: [PATCH v4 1/2] spi: implemented driver for
 	Cirrus EP93xx SPI	controller
-Date: Wed, 21 Apr 2010 10:16:29 +0300
-Message-ID: <20100421071629.GL19534@gw.healthdatacare.com>
+Date: Wed, 21 Apr 2010 13:46:51 +0300
+Message-ID: <20100421104651.GO19534@gw.healthdatacare.com>
 References: <cover.1271774845.git.mika.westerberg@iki.fi>
 	<e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B0270842697636D7F4E7F@AUSP01VMBX24.collaborationhost.net>
+	<0D753D10438DA54287A00B0270842697636D85BCCC@AUSP01VMBX24.collaborationhost.net>
+	<z2h56d259a01004201654y93f6c533j11b5accd7e2f46e7@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BDD8@AUSP01VMBX24.collaborationhost.net>
+	<n2u56d259a01004201810j22c17bcfn9fee59e9c65c4d7f@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BE26@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <0D753D10438DA54287A00B0270842697636D7F4E7F-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
+In-Reply-To: <0D753D10438DA54287A00B0270842697636D85BE26-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -29,88 +33,144 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 20, 2010 at 12:24:26PM -0500, H Hartley Sweeten wrote:
-> On Tuesday, April 20, 2010 8:12 AM, Mika Westerberg wrote:
-> > This patch adds an SPI master driver for the Cirrus EP93xx SPI controller found
-> > in EP93xx chips (EP9301, EP9302, EP9307, EP9312 and EP9315).
+On Tue, Apr 20, 2010 at 08:52:26PM -0500, H Hartley Sweeten wrote:
+> On Tuesday, April 20, 2010 6:10 PM, Martin Guy wrote:
+> > Not easily, but it seems a likely cause.
+> > To prevent card deselection mid-message I think we would need to
+> > handle multi-transfer messages by making the start of transfers 2..N
+> > continuous with the end of transfers 1..N-1 instead of draining the
+> > reply from each one before starting the next.
 > > 
-> > Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+> > Am I on the right track?
 > 
-> Mika,
-> 
-> I'm still looking this over but I have one quick comment.
-> 
-> > +/**
-> > + * ep93xx_spi_select_device() - select given SPI device
-> > + * @espi: ep93xx SPI controller struct
-> > + * @spi: SPI device to select
-> > + *
-> > + * Function asserts chipselect line as specified in @spi->chip_select in board
-> > + * specific manner.
-> > + *
-> > + * Note that this function is called from a thread context and can sleep.
-> > + */
-> > +static inline void ep93xx_spi_select_device(const struct ep93xx_spi *espi,
-> > +					    struct spi_device *spi)
-> > +{
-> > +	if (espi->cs_control)
-> > +		espi->cs_control(spi, !!(spi->mode & SPI_CS_HIGH));
-> > +}
-> > +
-> > +/**
-> > + * ep93xx_spi_deselect_device() - deselects given SPI device
-> > + * @espi: ep93xx SPI controller struct
-> > + * @spi: SPI device to deselect
-> > + *
-> > + * Function deasserts chipselect line as specified in @spi->chip_select in board
-> > + * specific manner.
-> > + *
-> > + * Note that this function is called from a thread context and can sleep.
-> > + */
-> > +static inline void ep93xx_spi_deselect_device(const struct ep93xx_spi *espi,
-> > +					      struct spi_device *spi)
-> > +{
-> > +	if (espi->cs_control)
-> > +		espi->cs_control(spi, !(spi->mode & SPI_CS_HIGH));
-> > +}
-> 
-> These two functions can be combined.
-> 
-> /**
->  * ep93xx_spi_chip_select() - select/deselect a given SPI device
->  * @espi: ep93xx SPI controller struct
->  * @spi: SPI device to select
->  * @assert: flag to assert the chip select line
->  *
->  * Note that this function is called from a thread context and can sleep.
->  */
-> static void ep93xx_spi_chip_select(const struct ep93xx_spi *espi,
-> 					     struct spi_device *spi, int assert)
-> {
-> 	int value = (spi->mode & SPI_CS_HIGH) ? !!assert : !assert;
-> 
-> 	if (espi->cs_control)
-> 		espi->cs_control(spi, value);
-> }
-> 
-> Then just do:
-> 
-> ep93xx_spi_select_device(espi, msg->spi, 1);	/* assert the spi chip select */
-> 
-> ep93xx_spi_select_device(espi, msg->spi, 0);	/* deassert the spi chip select */
+> Yes.  I'm just not sure how to implement this.
 
+I made a hack that allows transfer handler to continue to the next transfer directly
+if there is no special per transfer settings in the message. Could you try that out
+and report whether SFRMOUT works better with it?
 
-I think it is more readable to do:
+Note that this is just to make sure that we are on the right track.
 
-	ep93xx_spi_select_device(espi, msg->spi);
-
-and
-
-	ep93xx_spi_deselect_device(espi, msg->spi);
-
-It can be seen from the function names what we are doing.
+Patch is against v4 of the driver.
 
 Thanks,
 MW
+
+diff --git a/drivers/spi/ep93xx_spi.c b/drivers/spi/ep93xx_spi.c
+index 310032d..11dcdd1 100644
+--- a/drivers/spi/ep93xx_spi.c
++++ b/drivers/spi/ep93xx_spi.c
+@@ -106,6 +106,8 @@ struct ep93xx_spi {
+ 	unsigned long			min_rate;
+ 	unsigned long			max_rate;
+ 	bool				running;
++	bool				can_continue;
++	struct spi_transfer 		*last_transfer;
+ 	struct workqueue_struct		*wq;
+ 	struct work_struct		msg_work;
+ 	struct completion		wait;
+@@ -380,6 +382,7 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 	struct ep93xx_spi *espi = spi_master_get_devdata(spi->master);
+ 	struct spi_transfer *t;
+ 	unsigned long flags;
++	bool can_continue = true;
+ 
+ 	if (!msg || !msg->complete)
+ 		return -EINVAL;
+@@ -387,11 +390,21 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 	/* first validate each transfer */
+ 	list_for_each_entry(t, &msg->transfers, transfer_list) {
+ 		if (t->bits_per_word) {
++			can_continue = false;
+ 			if (t->bits_per_word < 4 || t->bits_per_word > 16)
+ 				return -EINVAL;
+ 		}
+-		if (t->speed_hz && t->speed_hz < espi->min_rate)
++		if (t->speed_hz) {
++			can_continue = false;
++			if (t->speed_hz < espi->min_rate)
+ 				return -EINVAL;
++		}
++		if (t->cs_change &&
++			!list_is_last(&t->transfer_list, &msg->transfers)) {
++			can_continue = false;
++		}
++		if (t->delay_usecs)
++			can_continue = false;
+ 	}
+ 
+ 	/*
+@@ -400,7 +413,7 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 	 * error in transfer and @msg->state is used to hold pointer to the
+ 	 * current transfer (or %NULL if no active current transfer).
+ 	 */
+-	msg->state = NULL;
++	msg->state = (void *)can_continue;
+ 	msg->status = 0;
+ 	msg->actual_length = 0;
+ 
+@@ -606,10 +619,33 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
+ 	ep93xx_spi_chip_setup(espi, spi_get_ctldata(msg->spi));
+ 	ep93xx_spi_select_device(espi, msg->spi);
+ 
+-	list_for_each_entry(t, &msg->transfers, transfer_list) {
+-		ep93xx_spi_process_transfer(espi, msg, t);
+-		if (msg->status)
+-			break;
++	if (msg->state) {
++		espi->can_continue = true;
++		espi->last_transfer = list_entry(msg->transfers.prev, struct spi_transfer,
++						 transfer_list);
++	} else {
++		espi->can_continue = false;
++		espi->last_transfer = NULL;
++	}
++
++	/*
++	 * In case there is no transfer specific settings in this message we
++	 * can transfer the whole message with interrupts. Otherwise we need
++	 * to perform transfer specific stuff in thread context.
++	 */
++	if (espi->can_continue) {
++		msg->state = list_first_entry(&msg->transfers, struct spi_transfer,
++					      transfer_list);
++		espi->rx = 0;
++		espi->tx = 0;
++		ep93xx_spi_enable_interrupts(espi);
++		wait_for_completion(&espi->wait);
++	} else {
++		list_for_each_entry(t, &msg->transfers, transfer_list) {
++			ep93xx_spi_process_transfer(espi, msg, t);
++			if (msg->status)
++				break;
++		}
+ 	}
+ 
+ 	/*
+@@ -792,6 +828,24 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+ 			 * interrupt then.
+ 			 */
+ 			return IRQ_HANDLED;
++		} else {
++			/*
++			 * If we can continue directly to the next transfer, do
++			 * that now.
++			 */
++			if (espi->can_continue) {
++				struct spi_message *msg = espi->current_msg;
++				struct spi_transfer *t = msg->state;
++
++				if (t != espi->last_transfer) {
++					msg->state = list_entry(t->transfer_list.next, struct spi_transfer,
++								transfer_list);
++					espi->rx = 0;
++					espi->tx = 0;
++					return IRQ_HANDLED;
++				}
++			}
++			/* otherwise we are ready */
+ 		}
+ 	}
+ 
 
 ------------------------------------------------------------------------------

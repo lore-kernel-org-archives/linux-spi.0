@@ -1,12 +1,29 @@
-From: "=?windows-1251?B?w+vg4u3t7uzzIMHz9fXj4Ovy5fDz?=" <woxipo-JzUe5qkXf0oU+61LgjiwRg@public.gmane.org>
-Subject: [SPAM] Управление Финансами. Практика бюджетированияfql
-Date: Wed, 21 Apr 2010 21:12:33 +0400
-Message-ID: <1622994903.20100421211233@solomessage.ru>
+From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: Re: [PATCH v4 1/2] spi: implemented driver for
+	Cirrus EP93xx SPI	controller
+Date: Wed, 21 Apr 2010 13:00:56 -0500
+Message-ID: <0D753D10438DA54287A00B0270842697636D8C8672@AUSP01VMBX24.collaborationhost.net>
+References: <cover.1271774845.git.mika.westerberg@iki.fi>
+	<e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
+	<0D753D10438DA54287A00B0270842697636D85BCCC@AUSP01VMBX24.collaborationhost.net>
+	<z2h56d259a01004201654y93f6c533j11b5accd7e2f46e7@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BDD8@AUSP01VMBX24.collaborationhost.net>
+	<n2u56d259a01004201810j22c17bcfn9fee59e9c65c4d7f@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BE26@AUSP01VMBX24.collaborationhost.net>
+	<20100421104651.GO19534@gw.healthdatacare.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_"
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100421104651.GO19534-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,149 +34,206 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-IDI2IC0gMjcg4O/w5ev/IDIwMTAg4+7k4AoKz87YwMPOwsDfINDAx9DAwc7SysAgzMDR0sXQLcHe
-xMbF0sA6IOHo5+3l8S3v8ODq8ujq4CDt4CDx6uLu5+379SDv8Ojs5fDg9QoKfn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
-CgrN4CDx5ezo7eDwIM/QyMPLwNjA3tLR3zog8PPq7uLu5Ojy5evoIOgg8e/l9ujg6+jx8vsg9Ojt
-4O3x7uLuLf3q7u3u7Oj35fHq6PUg7+7k8ODn5OXr5e3o6SDq7uzv4O3o6Cwg7eX06O3g7fHu4vvl
-IOzl7eXk5uXw+yDxIO3g9+Dr/O377CDz8O7i7eXsIPTo7eDt8e7i+/Ug5+3g7ejpLiDR5ezo7eDw
-IO3lIPDg8fH36PLg7SDt4CDv8O7k4ujt8/L79SDw4Ofw4OHu8vfo6u7iIOgg7u/78u379SDv7uv8
-5+7i4PLl6+XpIOH+5Obl8u379SDx6PHy5ewuCgrB3sTGxdLI0M7CwM3IxSCWIOzu+e3u5SDx8OXk
-8fLi7iDv7uL7+OXt6P8g8+/w4OLr/+Xs7vHy6CDq7uzv4O3o6Cwg6u7y7vDu5SDv7ufi7uv/5fIg
-q+726PTw7uLg8vy7IPbl6+gg4ejn7eXx4Cwg7vDj4O3o5+7i4PL8IO/l8PHu7eDrIOru7O/g7ejo
-IO3gIOj1IOTu8fLo5uXt6OUg6CDq7u3y8O7r6PDu4uDy/CDz8e/l+O3u8fL8IO/w7uTi6Obl7ej/
-IO/uIO3g7OX35e3t7uzzIO/z8uguCgrN4CDx5ezo7eDw5SDw4PHx7ODy8Oji4P7y8f8g7/Dl6Ozz
-+eXx8uLgIPPx7+X47e7j7iDh/uTm5fLt7uPuIPPv8ODi6+Xt6P8g7/Dl5O/w6P/y6OXsLCDx7uLw
-5ezl7e375SDs5fLu5Ojq6CDw4Ofw4OHu8uroLCDq7u3y8O7r/yDoIODt4Ovo5+Ag6PHv7uvt5e3o
-/yDh/uTm5fLu4i4gz+7k8O7h7e4g7uHx8+bk4P7y8f8g9PPt6vbo6CDw4Ofr6Pft+/Ug7+7k8ODn
-5OXr5e3o6SDq7uzv4O3o6CDiIP3y6PUg7/Du9uXx8eD1IOgg6PUg7vLi5fLx8uLl7e3u8fL8IOfg
-IOjx7+7r7eXt6OUg8/Li5fDm5OXt7fv1IO/r4O3u4i4gyuv+9+Xi7uUg7OXx8u4g4iDv8O7j8ODs
-7OUg8eXs6O3g8OAg5+Dt6Ozg/vIg8uX17ejq4CDoIPLl9e3u6+7j6P8g8e7x8uDi6+Xt6P8g7vLk
-5ev87fv1IPTz7er26O7t4Ov87fv1IOH+5Obl8u7iLCDgIPLg6ublIOj1IOru7fHu6+jk4Pbo6CDi
-IOH+5Obl8vsg4uXw9e3l4+4g8/Du4u3/LgoKwiDw5efz6/zy4PLlIO7h8/fl7ej/INPXwNHSzcjK
-yCAg08fNwN7SOgogICAtIOIg9+XsIOfg6uv+9+Dl8vH/IPHv5fbo9Ojq4CDh/uTm5fLt7uPuIPPv
-8ODi6+Xt6P8g6CDq4Oog6Ofi6+X3/CDo5yDt5eUg7ODq8ejs8+wg4u7n7O7m7e7j7jsgCiAgIC0g
-6uDq6OUg4f7k5uXy7fvlIPHy8PPq8vPw+yDv8Ojs5e3//vLx/yDiIPDg5+vo9+379SDu8vDg8ev/
-9SD96u7t7uzo6ugsIOgg6uDq4P8g6Ocg7ej1IO/u5O7p5OXyIMLg+OXs8yDv8OXk7/Do//Lo/jsg
-CiAgIC0g6uDq6OUg9O7w7ODy+yDh/uTm5fLu4iDo8e/u6/zn8/7yIPHu4vDl7OXt7fvlIO/w5eTv
-8Oj/8uj/OyAKICAgLSDq4Oog7vDj4O3o5+7i4PL8IO/w7vbl8fEg7+7k4+7y7uLq6CDh/uTm5fLu
-4iDoIPDg8e/w5eTl6+jy/CDu8uLl8vHy4uXt7e7x8vwg5+Ag6PUg8e7j6+Dx7uLg7ejlLCDz8uLl
-8Obk5e3o5SDoIOjx7+7r7eXt6OU7IAogICAtIO/uIOrg6ujsIPLl9e3u6+7j6P/sIOgg6uDqIPDg
-5/Dg4e7y4PL8IOH+5Obl8i4gyuDqIPHu8fLg4ujy/Cwg4ufg6Ozu8+L/5+Dy/CDoIOru7fHu6+jk
-6PDu4uDy/CDw4Ofr6Pft++Ug4f7k5uXy+yDC4Pjl6SDq7uzv4O3o6DsgCiAgIC0g6uDqIOru7fLw
-7uvo8O7i4PL8IOgg7vHz+eXx8uLr//L8IPTg6vLu8O376SDg7eDr6Ocg6PHv7uvt5e3o/yDh/uTm
-5fLgLiAKCs7RzsHFzc3O0dLcICDRxczIzcDQwDog0ODn8+zt7uUg8e735fLg7ejlIPLu6/zq7iDt
-5e7h9e7k6Ozu6SDy5e7w6Ogg6CDu4fjo8O3u4+4g7/Dg6vLo9+Xx6u7j7iDs4PLl8Ojg6+AuIMIg
-8eXs6O3g8CDi6uv+9+Xt7iDh7uv8+O7lIOru6+j35fHy4u4g4ejn7eXxLerl6fHu4iwg8ODh7vLg
-IO3g5CDq7vLu8Pvs6CDv7ufi7uvo8iDz9+Dx8u3o6uDsIOvz9/jlIO7x4u7o8vwg7uHx8+bk4OXs
-++Ug7OXy7uTo6ugsIOAg7/Do7OXw+yDo5yDu7/vy4CDg4vLu8OAg8eXs6O3g8OAg7/Du6Ovr/vHy
-8Ojw8/7yIPDl4Ov87fvlIOLu5+zu5u3u8fLoIO/w6Ozl7eXt6P8g4f7k5uXy7e7j7iDz7/Dg4uvl
-7ej/IO3gIO7y5ffl8fLi5e3t+/Ug7/Dl5O/w6P/y6P/1LgoKwiDn4Orr/vfo8uXr/O376SDk5e38
-IPP34PHy7ejq4Owg7/Dl5O7x8uDi6//l8vH/IOLu5+zu5u3u8fL8IOIg+OXx8uj34PHu4u7pIOHo
-5+3l8S3o4/DlIOfg6vDl7+jy/CDi8eUg7+7r8/fl7e375SDt4CDx5ezo7eDw5SDn7eDt6P8g6CDu
-8vDg4e7y4PL8IM3AICDP0MDK0sjKxSAg7eDi++roIPHq4u7n7e7pIPDg5/Dg4e7y6ugg4+Xt5fDg
-6/zt7uPuIOH+5Obl8uAg6u7s7+Dt6OguCgp+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4KCs/QzsPQwMzMwCAg0cXMyM3A
-0MAKCsIg9+XsIOfg6uv+9+D+8vH/IM7RzsHFzc3O0dLIIMHexMbF0s3Ow84g08/QwMLLxc3I3wog
-ICAtIM/w5eTt4Oft4Pfl7ejlIOH+5Obl8u3u4+4g8+/w4OLr5e3o/y4gCiAgIC0gzOXx8u4g6vDg
-8uru8fDu9+379SDh/uTm5fLu4iDiIPHo8fLl7OUg6u7w7+7w4PLo4u3u4+4g7+vg7ejw7uLg7ej/
-LiAKICAgLSDP6+Dt6PDu4uDt6OUg6CDh/uTm5fLo8O7i4O3o5Tog6OPw4CDx6+7iLCDv7uTs5e3g
-IO/u7f/y6Okg6OvohSAKICAgLSDB5ecg4f7k5uXy7uIg5ujy/CDt5ev85/8g7eAg8eLl8uUsIO3l
-8iEg0uDqIOvoIP3y7iDt4CDx4Ozu7CDk5evlPyAKCsHexMbF0s3bxSDR0tDTytLT0NsgyCDSxdXN
-zsvOw8jIINDAx9DAwc7SysguIMrg6ujlIOH+5Obl8vsg7fPm7fsgwuD45ekg6u7s7+Dt6Og/CiAg
-IC0g0fLw8+ry8/DgIMPl7eXw4Ov87e7j7iDB/uTm5fLgIChNYXN0ZXItQnVkZ2V0KS4gzvLw4PHr
-5eLg/yDx7+X26PTo6uA6IO3gIO/w7ujn4u7k8fLi5Swg4iDx8vDu6PLl6/zx8uLlLCDy7vDj7uLr
-5SDoIPH05fDlIPPx6/PjLiAKICAgLSDU6O3g7fHo8O7i4O3o5SDoIOjt4uXx8ujw7uLg7ejlLiDX
-8u4g7+Xw4uj37e4g7/DoIO/r4O3o8O7i4O3o6CCr6vPw6PbgIOjr6CD/6fbuuz8gCiAgIC0gz/Du
-4+3u5+376SDh4Ovg7fE6IO/w4Ory6Pfl8erg/yDt5e7h9e7k6Ozu8fL8IOjr6CDo4/D7IPLl7vDl
-8ujq7uI/IAogICAtIMPr8+Ho7eAg5OXy4Ovo5+D26Ogg4f7k5uXy4CDv8O7k4OYuIMrg6iCr7eD5
-8+/g8vwg5O3uuyDoIO3lIPPy7u3z8vw/IAogICAtIMLw5ezl7e3u6SDj7vDo5+7t8i4g0uDsLCDn
-4CDj7vDo5+7t8u7sICju8e7h5e3t7vHy6CD07vDs6PDu4uDt6P8g4+7k7uLu4+4g4f7k5uXy4CDi
-IOru7O/g7ej/9SDxIOTr6PLl6/zt++wg9ujq6+7sIO/w7ujn4u7k8fLi4CkuIAogICAtINDg5+3u
-4ujk7e7x8ugg4f7k5uXy7uI6IO/l8Oju5Oj35fHq6OksIPHq7uv85//56OksIO/l8OX17uT/+ejp
-LiAKICAgLSDO8e7h5e3t7vHy6Cwg7/Dl6Ozz+eXx8uLgIOgg7eXk7vHy4PLq6CDt7vDs4PLo4u3u
-4+4g7+vg7ejw7uLg7ej/LiAKICAgLSDK4Oog7eAg7/Dg6vLo6uUg4f7k5uXy6PDz/vIg8OXj8+vo
-8PPl7PvlIOfg8vDg8vs/IAogICAtIMTi7unt4P8g5+Dv6PH8IMvz6uggz+D37uvoIOgg4f7k5uXy
-+yDC4Pjl6SDq7uzv4O3o6C4gCgrB6Oft5fEt6uXp8fs6CiAgIC0g0ODn8ODh4PL74uDl7CDh6+7q
-LfH15ezzIOzg8fLl8C3h/uTm5fLgIOgg8fLw8+ry8/Do8PPl7CDh/uTm5fIg7/Du5ODmOyAKICAg
-LSDN7vDs6PDz5ewg8ODx9e7k+yDt4CDw5ezu7fIg7uHu8PPk7uLg7ej/OyAKICAgLSDQ4Ofh6PDg
-5ezx/yDiIOH+5Obl8u379SDi5+Do7O7x4v/n//UuIAoKwejn7eXxLe/w4Ory6OrgIO3gIPDl4Ov8
-7e7sIO/w6Ozl8OU6CiAgIC0gz+7r7ubl7ejlIO/uIO3u8Ozo8O7i4O3o/iDoIOvo7Ojy6PDu4uDt
-6P4g7u/l8OD26O7t7fv1IOfg8vDg8i4gCgrB3sTGxdLI0M7CwM3IxSDRINPXxdLOzCDQxcDLyMk6
-IE9QVElNSVNUIHZzIFBFU1NJTUlTVAogICAtIMLg8Ojg7fLt7uUg4f7k5uXy6PDu4uDt6OUuIMrg
-6iDs7uTl6+jw8/8g4fPk8/no5SDx7uH78uj/IOz7IOzu5uXsIPPv8ODi6//y/CDo9SDw4Ofi6PLo
-5ewuIAoKwejn7eXxLe/w4Ory6OrgIO3gIPDl4Ov87e7sIO/w6Ozl8OU6CiAgIC0gzO7k5evo8O7i
-4O3o5SDu7+Xw4Pbo7u3t7uPuIOH+5Obl8uAg4iDz8evu4uj/9SDt5e7v8OXk5evl7e3u8fLoIO/u
-4+7k7fv1IOgg8Pvt7vft+/Ug8/Hr7uLo6TsgCiAgIC0gz/Du4+3u5+jw7uLg7ejlIOTl7eXm7fv1
-IO/u8fLz7+vl7ejpIPEg8/fl8u7sIOLl8O7/8u3u8fLt+/Ug7vbl7e7qLiAKCtDAx9DAwc7SysAg
-wd7ExsXSzsIuIMrg6iDu8OPg7ejn7uLg8vwg7/Du9uXx8SDv6+Dt6PDu4uDt6P8g6OvoIOry7iDn
-4CD38u4g4iDu8uLl8uU/CiAgIC0gzuH65ery+yDoIPHz4frl6vL7IOH+5Obl8ujw7uLg7ej/LiDU
-8+3q9ujoIPP34PHy7ejq7uIg4f7k5uXy7e7j7iDv8O725fHx4C4gCiAgIC0gyuDqIPHk5evg8vwg
-4f7k5uXy7fvpIOru7Ojy5fIg8ODh7vLu8e/u8e7h7fvsLiDK4Orz/iDw7uv8IOTu6+bl7SDo4/Dg
-8vwg4+Xt5fDg6/zt++kg5Ojw5ery7vA/IAogICAtIMrr4PHx6PTo6uD26P8g9uXt8vDu4iDu8uLl
-8vHy4uXt7e7x8uggKNbOKS4g1+XsIO7y6+j34OXy8f8g7vLi5fLx8uLl7e3u8fL8IPDg5+vo9+37
-9SD25e3y8O7iIO7y4uXy8fLi5e3t7vHy6C4gCiAgIC0g0fLw8+ry8/DgINbOIOgg8/Du4u3oIOLr
-7ubl7ejpLiCry+j37fvluyDoIKvu4fnl8fLi5e3t++W7IOH+5Obl8vsuIAogICAtIMzg8vDo9uAg
-5+Dy8ODyIO/uIMzCxy4gCiAgIC0gwf7k5uXy6PDu4uDt6OUg7vIg7eD36PHr5e3o/yDqIO7v6+Dy
-5S4gwCDl8evoIO3g7uHu8O7yPyAKCsHo5+3l8S3q5enx+zoKICAgLSDQ4Ofw4OHg8vvi4OXsIOH+
-5Obl8iDk5e3l5u379SDv7vLu6u7iOyAKICAgLSDP6+Dt6PDz5ewg7/Du6Ofi7uTx8uLuIOgg7/Du
-5ODm6CDv8O7k8+r26Og7IAogICAtINTu8Ozo8PPl7CDh/uTm5fIg5OXh6PLu8O7iOyAKICAgLSDC
-++/u6+3/5ewg8ODh7vLzIOzg8Orl8u7r7uPgOiDw4Ofw4OHg8vvi4OXsIPDl6uvg7O376SDh/uTm
-5fIuIAoKwejn7eXxLe/w4Ory6OrgIO3gIPDl4Ov87e7sIO/w6Ozl8OU6CiAgIC0gzvDj4O3o5+D2
-6P8g8ejx8uXs+yDh/uTm5fLt7uPuIPPv8ODi6+Xt6P8g4iDx6+7m7e7o7fLl4/Do8O7i4O3t7uwg
-9e7r5Ojt4+UuIAoKysDKyMUg1M7QzMDS2yDB3sTGxdLOwiDRxcPOxM3fIM/QyMzFzd/e0j8KICAg
-LSDN4CD38u4g8evl5PPl8iDu4fDg8ujy/CDi7ejs4O3o5SDv8Ogg8ODn8ODh7vLq5SDh/uTm5fLt
-+/Ug9O7w7PPr//Du4i4gCiAgIC0gz+vg7e7i++Ug6CDu8vfl8u375SD07vDs+zog7eDx6u7r/Oru
-IO/w6O326O/o4Ov87e4g6PUg8fXu5PHy4u4uIAogICAtIMH+5Obl8vssIPH07vDs6PDu4uDt7fvl
-IO/uIPXg8ODq8uXw8yDn4PLw4PIg6CDv7iD08+3q9uj/7C4gCgrB6Oft5fEt7/Dg6vLo6uAg7eAg
-8OXg6/zt7uwg7/Do7OXw5ToKICAgLSDU7vDs4PL7IOH+5Obl8u7iIO3g9uju7eDr/O3u4+4g8u7w
-4+7i7uPuIO7v5fDg8u7w4C4gCgrKwMogys7N0tDOy8jQzsLA0twgyCDAzcDLyMfI0M7CwNLcIMjR
-z87LzcXNyMUgwd7ExsXSzsIKICAgLSDT7/Dg4uvl7ejlIO/uIO7y6uvu7eXt6P/sOyAKICAgLSDK
-IOrg6ujsIO746OHu9+377CDz7/Dg4uvl7ffl8ero7CDw5fjl7ej/7CDv8Oji7uTo8iDg7eDr6Ocg
-7+4gq+bl8fLq7uzzuyDh/uTm5fLzIOgg6uDqIOj1IOjn4eXm4PL8OyAKICAgLSDK4Oog8eTl6+Dy
-/CDh/uTm5fIgq+Po4ero7Lsg6CDv7vfl7PMg/fLuIO3lIOLx5ewg8+Tg5fLx/zsgCiAgIC0g1ODq
-8u7w7fvpIODt4Ovo5yDu8urr7u3l7ejpLiAKCsHo5+3l8S3q5enx+zoKICAgLSDQ4Ofw4OHg8vvi
-4OXsIOgg4O3g6+jn6PDz5ewg6PHv7uvt5e3o5SDh/uTm5fLgIOru7O/g7ejoLiAKCsHo5+3l8S3v
-8ODq8ujq4CDt4CDw5eDr/O3u7CDv8Ojs5fDlOgogICAtINTg6vLu8O376SDg7eDr6Ocg7vLq6+7t
-5e3o6SDu8iDh/uTm5fLgIO/w7uXq8uAuIAoK0crCzsfNzskg2MXR0sjXwNHOwtvJIMHIx83F0S3K
-xcnRIO/uIOfg6vDl7+vl7ej+IO/u6/P35e3t+/Ug7eDi++ru4iCrz+744OPu4uD/IPDg5/Dg4e7y
-6uAgzODx8uXwLeH+5Obl8uC7CiAgIC0g0fLw8+ry8/Do8PPl7CDq7uzv4O3o/iDv7iD25e3y8ODs
-IO7y4uXy8fLi5e3t7vHy6C4gCiAgIC0g0ODn8ODh4PL74uDl7CDh/uTm5fIg7e7i7uPuIO/w7uXq
-8uAuIAogICAtIM/r4O3o8PPl7CDk7vXu5Psg6u7s7+Dt6Ogg7vIg7/Du5ODmIO/w7uTz6vbo6C4g
-CiAgIC0gzvbl7eji4OXsIO/r4O3u4vvpIPDg8fXu5CDx+/D8/yDoIPTu8Ozo8PPl7CDh/uTm5fIg
-5+Dq8+/u6i4gCiAgIC0gz+vg7ejw8+XsIOTw8+Po5SDw4PH17uT7IOru7O/g7ejoLiAKICAgLSDQ
-4Ofw4OHg8vvi4OXsIMH+5Obl8iDE7vXu5O7iIOgg0ODx9e7k7uIgKMHE0CkuIAogICAtIM/r4O3o
-8PPl7CDk5e3l5u375SDv7vLu6ugg6CD07vDs6PDz5ewg7+Xw4vP+IPDl5ODq9uj+IMH+5Obl8uAg
-xOLo5uXt6P8gxOXt5ebt+/Ug0fDl5PHy4iAowcTE0SkuCiAgIC0g0ODn8ODh4PL74uDl7CDh/uTm
-5fIg6O3i5fHy6Pbo6SDoIO/r4O3o8PPl7CDv8Oji6+X35e3o5SD06O3g7fHu4vv1IPDl8fPw8e7i
-IO3gIOXj7iDw5eDr6Ofg9uj+LiDC7e7x6Owg6u7w8OXq8uji+yDiIMHExNEuIAogICAtINTu8Ozo
-8PPl7CDB/uTm5fIg7+4g4eDr4O3x7uLu7PMg6+jx8vMgKMHByykuCgp+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4KCjI2
-IC0gMjcg4O/w5ev/IDIwMTAg4+7k4C4gICgyIOTt/yDxIDEwLjAwIOTuIDE4LjAwKSAKzOXx8u4g
-7/Du4uXk5e3o/zogzO7x6uLgLCDsLiDB7vLg7ej35fHq6Okg8eDkLCAi0/fl4e3g/yDj7vHy6O3o
-9uAiCtHy7ujs7vHy/CDz9+Dx8uj/OiAxNyA1MDAg8PPhLiAowiDx8u7o7O7x8vwg4vXu5OjyIO7h
-8/fl7ejlLCDv5ffg8u375SDs4PLl8Ojg6/sg7+4g8uXs5SDx5ezo7eDw4Cwg7uHl5PssIOru9OUt
-7+Dz5/spLiDP7iDu6u7t9+Dt6Ogg4vvk4OXy8f8g8eXw8uj06Org8iDuIO/w7vXu5uTl7ejoIO7h
-8/fl7ej/IO/uIOTg7e3u6SDy5ezlLiDI7e7j7vDu5O3o7CDv7uzu5uXsIOfg4fDu7ejw7uLg8vwg
-7e7s5fDgIOIg4+7x8ujt6PblLiDO4fP35e3o5SDoIO/w7ubo4uDt6OUg4iDu5O3u7CDn5ODt6Ogu
-Cgp+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn4KCs/u5PDu4e3g/yDo7fTu8Ozg9uj/IOgg8OXj6PHy8OD26P8g7+4g8uXr
-5fTu7fM6IDggKDQ5NSkgMjI5IH4gMDQgfiAzMwoKfn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+Cn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fgoK
-CgoKwu3o7ODt6OUhIMXx6+ggwuD4IODk8OXxIPHr8/fg6e3uIO/u7+DrIOIg4eDn8yDw4PHx++vq
-6Cwg6CDC+yDh7uv8+OUg7eUg9e7y6PLlIO/u6/P34PL8IOjt9O7w7OD26P4g7uEg7uHw4Ofu4uDy
-5ev87fv1IOzl8O7v8Oj/8uj/9SwgCu/w7vHy7iDu8u/w4OL88uUg7/Px8u7lIO/o8fzs7iDiIMLg
-+OXj7iDg5PDl8eAg7eAg4OTw5fEgdW5zdWJzY3JpYmVAbm90c2VtaW5hci5ydT9zdWJqZWN0PXNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCDoIOIg8uXs5SDv6PH87OAg8+rg
-5ujy5SDC4Pgg4OTw5fEg/evl6vLw7u3t7ukg7+738vsuIAoKCsLg+CDg5PDl8SDh8+Tl8iDg4vLu
-7ODy6Pfl8eroIPPk4Ovl7SDo5yDw4PHx++vq6CDiIPLl9+Xt6OUgMSAo7uTt7uPuKSDk7f8hCgoK
-VE8gIFVOU1VCU0NSSUJFICAgU0VORCAgWU9VUiAgIEVNQUlMICAgQUREUkVTUyBJTiBTVUJKRUNU
-IFRPICAgdW5zdWJzY3JpYmVAbm90c2VtaW5hci5ydT9zdWJqZWN0PXNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldCAKCn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fgoKCgpidWRnZSAgdGkgIHJvYmFn
-cwoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
-Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+--_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+On Wednesday, April 21, 2010 3:47 AM, Mika Westerberg wrote:
+> On Tue, Apr 20, 2010 at 08:52:26PM -0500, H Hartley Sweeten wrote:
+>> On Tuesday, April 20, 2010 6:10 PM, Martin Guy wrote:
+>>> Not easily, but it seems a likely cause.
+>>> To prevent card deselection mid-message I think we would need to
+>>> handle multi-transfer messages by making the start of transfers 2..N
+>>> continuous with the end of transfers 1..N-1 instead of draining the
+>>> reply from each one before starting the next.
+>>>=20
+>>> Am I on the right track?
+>>=20
+>> Yes.  I'm just not sure how to implement this.
+>
+> I made a hack that allows transfer handler to continue to the next transf=
+er directly
+> if there is no special per transfer settings in the message. Could you tr=
+y that out
+> and report whether SFRMOUT works better with it?
+>
+> Note that this is just to make sure that we are on the right track.
+>
+> Patch is against v4 of the driver.
+>
+> Thanks,
+> MW
+>
+> diff --git a/drivers/spi/ep93xx_spi.c b/drivers/spi/ep93xx_spi.c
+> index 310032d..11dcdd1 100644
+> --- a/drivers/spi/ep93xx_spi.c
+> +++ b/drivers/spi/ep93xx_spi.c
+> @@ -106,6 +106,8 @@ struct ep93xx_spi {
+>  	unsigned long			min_rate;
+>  	unsigned long			max_rate;
+>  	bool				running;
+> +	bool				can_continue;
+> +	struct spi_transfer 		*last_transfer;
+>  	struct workqueue_struct		*wq;
+>  	struct work_struct		msg_work;
+>  	struct completion		wait;
+> @@ -380,6 +382,7 @@ static int ep93xx_spi_transfer(struct spi_device *spi=
+, struct spi_message *msg)
+>  	struct ep93xx_spi *espi =3D spi_master_get_devdata(spi->master);
+>  	struct spi_transfer *t;
+>  	unsigned long flags;
+> +	bool can_continue =3D true;
+> =20
+>  	if (!msg || !msg->complete)
+>  		return -EINVAL;
+> @@ -387,11 +390,21 @@ static int ep93xx_spi_transfer(struct spi_device *s=
+pi, struct spi_message *msg)
+>  	/* first validate each transfer */
+>  	list_for_each_entry(t, &msg->transfers, transfer_list) {
+>  		if (t->bits_per_word) {
+> +			can_continue =3D false;
+>  			if (t->bits_per_word < 4 || t->bits_per_word > 16)
+>  				return -EINVAL;
+>  		}
+> -		if (t->speed_hz && t->speed_hz < espi->min_rate)
+> +		if (t->speed_hz) {
+> +			can_continue =3D false;
+> +			if (t->speed_hz < espi->min_rate)
+>  				return -EINVAL;
+> +		}
+> +		if (t->cs_change &&
+> +			!list_is_last(&t->transfer_list, &msg->transfers)) {
+> +			can_continue =3D false;
+> +		}
+> +		if (t->delay_usecs)
+> +			can_continue =3D false;
+>  	}
+> =20
+>  	/*
+> @@ -400,7 +413,7 @@ static int ep93xx_spi_transfer(struct spi_device *spi=
+, struct spi_message *msg)
+>  	 * error in transfer and @msg->state is used to hold pointer to the
+>  	 * current transfer (or %NULL if no active current transfer).
+>  	 */
+> -	msg->state =3D NULL;
+> +	msg->state =3D (void *)can_continue;
+>  	msg->status =3D 0;
+>  	msg->actual_length =3D 0;
+> =20
+> @@ -606,10 +619,33 @@ static void ep93xx_spi_process_message(struct ep93x=
+x_spi *espi,
+>  	ep93xx_spi_chip_setup(espi, spi_get_ctldata(msg->spi));
+>  	ep93xx_spi_select_device(espi, msg->spi);
+> =20
+> -	list_for_each_entry(t, &msg->transfers, transfer_list) {
+> -		ep93xx_spi_process_transfer(espi, msg, t);
+> -		if (msg->status)
+> -			break;
+> +	if (msg->state) {
+> +		espi->can_continue =3D true;
+> +		espi->last_transfer =3D list_entry(msg->transfers.prev, struct spi_tra=
+nsfer,
+> +						 transfer_list);
+> +	} else {
+> +		espi->can_continue =3D false;
+> +		espi->last_transfer =3D NULL;
+> +	}
+> +
+> +	/*
+> +	 * In case there is no transfer specific settings in this message we
+> +	 * can transfer the whole message with interrupts. Otherwise we need
+> +	 * to perform transfer specific stuff in thread context.
+> +	 */
+> +	if (espi->can_continue) {
+> +		msg->state =3D list_first_entry(&msg->transfers, struct spi_transfer,
+> +					      transfer_list);
+> +		espi->rx =3D 0;
+> +		espi->tx =3D 0;
+> +		ep93xx_spi_enable_interrupts(espi);
+> +		wait_for_completion(&espi->wait);
+> +	} else {
+> +		list_for_each_entry(t, &msg->transfers, transfer_list) {
+> +			ep93xx_spi_process_transfer(espi, msg, t);
+> +			if (msg->status)
+> +				break;
+> +		}
+>  	}
+> =20
+>  	/*
+> @@ -792,6 +828,24 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, voi=
+d *dev_id)
+>  			 * interrupt then.
+>  			 */
+>  			return IRQ_HANDLED;
+> +		} else {
+> +			/*
+> +			 * If we can continue directly to the next transfer, do
+> +			 * that now.
+> +			 */
+> +			if (espi->can_continue) {
+> +				struct spi_message *msg =3D espi->current_msg;
+> +				struct spi_transfer *t =3D msg->state;
+> +
+> +				if (t !=3D espi->last_transfer) {
+> +					msg->state =3D list_entry(t->transfer_list.next, struct spi_transfe=
+r,
+> +								transfer_list);
+> +					espi->rx =3D 0;
+> +					espi->tx =3D 0;
+> +					return IRQ_HANDLED;
+> +				}
+> +			}
+> +			/* otherwise we are ready */
+>  		}
+>  	}
+=20
+Same results are your v4 driver.  But, I think your on the right track.
+
+I think the problem is in the ep93xx_spi_read_write routine.  That function
+returns 0 as long as there is still data left in the current transfer.  The
+only time it doesn't return 0, which will cause the can_continue, is when:
+
+	if (espi->rx =3D=3D t->len) {
+		msg->actual_length +=3D t->len;
+		return t->len;
+	}
+
+At this point the tx and rx fifos will both be empty, which causes the SSP
+peripheral to raise the SFRM signal.
+
+A picture is worth a thousand words... Attached is a logic analyzer capture
+of the Read-ID command and response from the SPI Flash.  EGPIO7 is my chip
+select to the flash.  The first 4 SPI MOSI (Tx) blocks are the 0x90, 0x00,
+0x00, 0x00 command to the flash.  You will notice that the SFRM line is
+asserted for those bytes.  A bit later are the 2 SPI MISO (Rx) responses
+from the flash with the ManID/DevID, again with the SFRM line asserted.
+
+If the can_continue stuff worked correctly the second block should be right
+with the first block.
+
+I'm going to try hacking the spi flash driver to send the command/response
+as a 6-byte full duplex message to make sure it works.
+
+Regards,
+Hartley=
+
+--_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+
+--_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_--

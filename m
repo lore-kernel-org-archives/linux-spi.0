@@ -1,27 +1,30 @@
-From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Subject: Re: [PATCH v4 1/2] spi: implemented driver for
 	Cirrus EP93xx SPI	controller
-Date: Wed, 21 Apr 2010 21:47:14 -0500
-Message-ID: <0D753D10438DA54287A00B0270842697636D8C8CDD@AUSP01VMBX24.collaborationhost.net>
+Date: Thu, 22 Apr 2010 08:45:19 +0300
+Message-ID: <20100422054519.GA26418@gw.healthdatacare.com>
 References: <cover.1271774845.git.mika.westerberg@iki.fi>
 	<e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B0270842697636D7F4E7F@AUSP01VMBX24.collaborationhost.net>
-	<20100421071629.GL19534@gw.healthdatacare.com>
-	<0D753D10438DA54287A00B0270842697636D8C84DA@AUSP01VMBX24.collaborationhost.net>
-	<20100421165420.GP19534@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D85BCCC@AUSP01VMBX24.collaborationhost.net>
+	<z2h56d259a01004201654y93f6c533j11b5accd7e2f46e7@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BDD8@AUSP01VMBX24.collaborationhost.net>
+	<n2u56d259a01004201810j22c17bcfn9fee59e9c65c4d7f@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BE26@AUSP01VMBX24.collaborationhost.net>
+	<20100421104651.GO19534@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D8C8672@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100421165420.GP19534-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <0D753D10438DA54287A00B0270842697636D8C8672-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -32,35 +35,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Mika,
+On Wed, Apr 21, 2010 at 01:00:56PM -0500, H Hartley Sweeten wrote:
+> Same results are your v4 driver.  But, I think your on the right track.
 
-I have added some debug messages to the driver trying to figure out
-how to chain the transfers in a message together in order to keep
-the SFRM signal asserted for the entire message.  I still haven't
-worked out a good solution but I did notice something else.
+Thanks for testing.
 
-First, every spi transaction, including a single byte transfer, is
-going to generate at least two interrupts.  One when the interrupts
-are first enabled because the TX FIFO is empty.  And a second when
-that byte has been transferred and the TX FIFO is again empty.
+> I think the problem is in the ep93xx_spi_read_write routine.  That function
+> returns 0 as long as there is still data left in the current transfer.  The
+> only time it doesn't return 0, which will cause the can_continue, is when:
+> 
+> 	if (espi->rx == t->len) {
+> 		msg->actual_length += t->len;
+> 		return t->len;
+> 	}
+> 
+> At this point the tx and rx fifos will both be empty, which causes the SSP
+> peripheral to raise the SFRM signal.
 
-The first interrupt can be prevented by priming the TX FIFO before
-enabling the interrupts.  All you need to do is call ep93xx_spi_read_write
-right before ep93xx_spi_enable_interrupts.
+True.
 
-Second, at high clock rates the RX FIFO will actually start to
-fill as you are putting data into the TX FIFO.  If you add an inner
-reader loop to the writer loop in ep93xx_spi_read_write you can
-take advantage of this and reduce the number of interrupts generated
-for large transfers.
+> A picture is worth a thousand words... Attached is a logic analyzer capture
+> of the Read-ID command and response from the SPI Flash.  EGPIO7 is my chip
+> select to the flash.  The first 4 SPI MOSI (Tx) blocks are the 0x90, 0x00,
+> 0x00, 0x00 command to the flash.  You will notice that the SFRM line is
+> asserted for those bytes.  A bit later are the 2 SPI MISO (Rx) responses
+> from the flash with the ManID/DevID, again with the SFRM line asserted.
 
-For instance the mmc_spi driver regularly does 3 transfer messages
-where the last transfer is a 512 byte read.  With your current v4
-driver this message averages 69 interrupts to complete.  By adding
-the inner reader it reduces the number of interrupts to an average
-of 40.
+Yeah, it clearly shows that SFRMOUT is deasserted between transfers :(
 
-Regards,
-Hartley
+I will try to work out some sort of hack which will keep the FIFOs from
+emptying.
+
+MW
 
 ------------------------------------------------------------------------------

@@ -1,29 +1,30 @@
-From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Subject: Re: [PATCH v4 1/2] spi: implemented driver for
- Cirrus EP93xx SPI controller
-Date: Thu, 22 Apr 2010 12:39:17 -0500
-Message-ID: <0D753D10438DA54287A00B0270842697636D940C95@AUSP01VMBX24.collaborationhost.net>
+	Cirrus EP93xx SPI	controller
+Date: Thu, 22 Apr 2010 20:55:03 +0300
+Message-ID: <20100422175503.GE26418@gw.healthdatacare.com>
 References: <cover.1271774845.git.mika.westerberg@iki.fi>
 	<e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B0270842697636D7F4E7F@AUSP01VMBX24.collaborationhost.net>
-	<20100421071629.GL19534@gw.healthdatacare.com>
-	<0D753D10438DA54287A00B0270842697636D8C84DA@AUSP01VMBX24.collaborationhost.net>
-	<20100421165420.GP19534@gw.healthdatacare.com>
-	<0D753D10438DA54287A00B0270842697636D8C8CDD@AUSP01VMBX24.collaborationhost.net>
-	<x2g56d259a01004220728i7f07d492t4c4f63e0ef2e38d9@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BCCC@AUSP01VMBX24.collaborationhost.net>
+	<z2h56d259a01004201654y93f6c533j11b5accd7e2f46e7@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BDD8@AUSP01VMBX24.collaborationhost.net>
+	<n2u56d259a01004201810j22c17bcfn9fee59e9c65c4d7f@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BE26@AUSP01VMBX24.collaborationhost.net>
+	<20100421104651.GO19534@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D8C8672@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
+	Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <x2g56d259a01004220728i7f07d492t4c4f63e0ef2e38d9-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <0D753D10438DA54287A00B0270842697636D8C8672-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -34,166 +35,365 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Martin,
-
-I'm replying to both of your previous messages.
-
-On Thursday, April 22, 2010 7:28 AM, Martin Guy wrote:
-> On 4/22/10, H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org> wrote:
->>  First, every spi transaction, including a single byte transfer, is
->>  going to generate at least two interrupts.  One when the interrupts
->>  are first enabled because the TX FIFO is empty.  And a second when
->>  that byte has been transferred and the TX FIFO is again empty.
->>
->>  The first interrupt can be prevented by priming the TX FIFO before
->>  enabling the interrupts.  All you need to do is call ep93xx_spi_read_write
->>  right before ep93xx_spi_enable_interrupts.
->
-> Nice. That increases the data throughput from 367 to 372 kB/sec and
-> reduces the CPU usage from 61 to 60.2% for large transfers
-
-I figured "priming the fifo" before turning the transfer over to the
-interrupt handler would help.
-
-On Thursday, April 22, 2010 7:12 AM, Martin Guy wrote:
->>  Second, at high clock rates the RX FIFO will actually start to
->>  fill as you are putting data into the TX FIFO.  If you add an inner
->>  reader loop to the writer loop in ep93xx_spi_read_write you can
->>  take advantage of this and reduce the number of interrupts generated
->>  for large transfers.
->>
->>  For instance the mmc_spi driver regularly does 3 transfer messages
->>  where the last transfer is a 512 byte read.  With your current v4
->>  driver this message averages 69 interrupts to complete.  By adding
->>  the inner reader it reduces the number of interrupts to an average
->>  of 40.
->
-> I assume you mean something like
->
->        /* read as long as RX FIFO has frames in it */
->        while (ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE) {
->                ep93xx_do_read(espi, t);
->                espi->fifo_level--;
->        }
->
->        /* write as long as TX FIFO has room */
->        while (espi->fifo_level < SPI_FIFO_SIZE && espi->tx < t->len) {
->                ep93xx_do_write(espi, t);
->                espi->fifo_level++;
->+
->+               while (ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE) {
->+                       ep93xx_do_read(espi, t);
->+                       espi->fifo_level--;
->+               }
->        }
-
-Exactly what I did.
-
-> Well, you're gonna love this :)
->
-> I've run some timing tests on this, and it turns out to give the same
-> data transfer speed but take more system CPU time: 64% instead of 60%,
-> i.e it is slower.
->
-> You are seeing a lower interrupt count, not because more useful work
-> is being done in each interrupt, but only because the extra code in
-> the inner loop makes the interrupt routine slower. Bear with me...
+On Wed, Apr 21, 2010 at 01:00:56PM -0500, H Hartley Sweeten wrote:
+>  
+> Same results are your v4 driver.  But, I think your on the right track.
 > 
-> I'm using v4 with mika's continuity hack compiled for speed not space
-> and averaging the vmstat "sy" output column over 50 seconds while
-> block-reading 20 meg with dd from /dev/mmcblk0 to /dev/null using a
-> fairly old Sandisk 1MB SD card and clocking at 3.7 MHz.
-> All tests report 367 or 368 kB/sec; the variability of the system time
-> average in successive runs is about 1%
+> I think the problem is in the ep93xx_spi_read_write routine.  That function
+> returns 0 as long as there is still data left in the current transfer.  The
+> only time it doesn't return 0, which will cause the can_continue, is when:
 > 
-> Figures are (commas separate values from successive runs)
-> v4 with Mika's hack:
->      61.9,60.2%  234724,234727 irq/MB
-> with "while" reader in write loop:
->      63.4,64.5%  197772,97801 irq/MB
-> with "if" reader in while loop:
->      61.9,62.5%  197845,197847  irq/MB
-> with an "if" reader after the write loop:
->      66.0,67.1%  278207,277166 irq/MB
-> with a "while" reader after the write loop:
->      67.0%  275000 irq/MB
-
-I am surprised my this :-(.  I thought getting rid of the extra
-interrupt context switches would help the data transfer time.  Oh well...
-
-> Further, on a suspicion about the silliness of the per-transfer
-> bits_per_word being checked right down the bottom of the lowest lever
-> byte-read/writing routine instead of once per transfer, I split
-> ep93xx_spi_read and _write into 8 and 16-bit variants, and checked
-> t->bits_per_word once outside the read and write loops.
+> 	if (espi->rx == t->len) {
+> 		msg->actual_length += t->len;
+> 		return t->len;
+> 	}
 > 
-> This gives:
->      60.0% 59.3%  285906 irq/MB
+> At this point the tx and rx fifos will both be empty, which causes the SSP
+> peripheral to raise the SFRM signal.
 
-It looks like splitting the 8/16-bit read/write routines does help
-with cpu usage compared to the tests above.  Was the data transfer
-(kB/sec) any better?
+Hi again,
 
-> Note: it takes *more* interrupts to transfer a megabyte when the
-> interrupt routine is more efficient!
-> 
-> The reason is that almost all of those interrupts happen while waiting
-> for the last 4, 3, 2 or 1 bytes of a transfer to arrive in the RX
-> FIFO. On this dreadful chip there is no interrupt mechanism to say
-> "the TX buffer is empty and the received data has finished arriving".
-> There is only "the TX buffer is half empty or less" and "the RX buffer
-> is half full or more", so repeated interrupts now perform the function
-> that the old busy-wait loop performed in v1.
+I crafted up next hack. It includes also your priming the FIFO
+finding (thanks for that). Following patch is against v4 version
+of the driver.
 
-Agree.  Kind of a pain...
+It performs another read/write after given transfer is finished.
+I'm hoping that it could make it before SFRMOUT is deasserted.
 
-> This is another good reason to unite multiple transfers into one
-> continuous stream, to have less of this effective busy-waiting with
-> interrupts spinning madly.
+Could you test this in your setup?
 
-Yes.  Too bad we can't also combine multiple messages that might be in
-the queue...
+Thanks,
+MW
 
-But, if this gets to complicated it might not be worth holding off
-getting it merged, at least into linux-next or possibly into the
-staging branch.  At that point it will be easier to provide patches.
-I still have one hanging for Mika to expand the chip select options.
-
-> It now occurs to me that another step in CPU efficiency could be had
-> by abusing the receive-fifo-is-half-full interrupt to signal the
-> completion of a transfer. This would only work for transfers of four
-> or more words and would need some careful jiggery-pokery at end of
-> transfer to turn the tx-fifo-is-half-empty interrupt enable off and
-> ensure that exactly four words would end up in the RX FIFO.
-
-That might work but I think it could break horribly.  The "jiggery-pokery"
-could end up being pretty messy.
-
-But, the tx-fifo-is-half-empty might be what is needed to handle the
-multiple transfer merging.  We know the driver is finished transfering
-the data to the fifo when (espi->tx == t->len).  At this point we are
-just wating for the last (fifo_level) bytes to come in on the rx fifo,
-this could be anything from 1 to 8 bytes.  If it's <= 4 the next interrupt
-will be a tx-fifo-is-half-empty which is killing us trying to pull those
-last bytes out of the rx fifo.  So how about something like this at the
-end of ep93xx_spi_read_write:
-
-	if (can_continue && espi->tx == t->len) {
-		if (fifo_level < SPI_FIFO_SIZE/2) {
-			/*
-			 * Pull the next transfer out of the queue and
-			 * use it to finish filling the tx fifo.  The
-			 * next interrupt will complete this transfer.
-			 * We then need to continue with the next transfer.
-			 */
-		}
-	}
-
-> It's a horrible thought, and I suspect that the DMA engine is the real answer.
-
-The DMA engine might help but it's not here yet....
-
-Regards,
-Hartley
+diff --git a/drivers/spi/ep93xx_spi.c b/drivers/spi/ep93xx_spi.c
+index 310032d..7a5c89e 100644
+--- a/drivers/spi/ep93xx_spi.c
++++ b/drivers/spi/ep93xx_spi.c
+@@ -105,6 +105,7 @@ struct ep93xx_spi {
+ 	int				irq;
+ 	unsigned long			min_rate;
+ 	unsigned long			max_rate;
++	bool				continuous;
+ 	bool				running;
+ 	struct workqueue_struct		*wq;
+ 	struct work_struct		msg_work;
+@@ -380,6 +381,7 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 	struct ep93xx_spi *espi = spi_master_get_devdata(spi->master);
+ 	struct spi_transfer *t;
+ 	unsigned long flags;
++	bool continuous = true;
+ 
+ 	if (!msg || !msg->complete)
+ 		return -EINVAL;
+@@ -389,9 +391,19 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 		if (t->bits_per_word) {
+ 			if (t->bits_per_word < 4 || t->bits_per_word > 16)
+ 				return -EINVAL;
++			continuous = false;
+ 		}
+-		if (t->speed_hz && t->speed_hz < espi->min_rate)
++		if (t->speed_hz) {
++			if (t->speed_hz < espi->min_rate)
+ 				return -EINVAL;
++			continuous = false;
++		}
++		if (t->cs_change) {
++			if (!list_is_last(&t->transfer_list, &msg->transfers))
++				continuous = false;
++		}
++		if (t->delay_usecs)
++			continuous = false;
+ 	}
+ 
+ 	/*
+@@ -399,8 +411,11 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 	 * suitable for us. We use @msg->status to signal whether there was
+ 	 * error in transfer and @msg->state is used to hold pointer to the
+ 	 * current transfer (or %NULL if no active current transfer).
++	 *
++	 * We hold continuation information in @msg->state while it is not
++	 * processed.
+ 	 */
+-	msg->state = NULL;
++	msg->state = (void *)continuous;
+ 	msg->status = 0;
+ 	msg->actual_length = 0;
+ 
+@@ -550,6 +565,91 @@ static void ep93xx_spi_process_transfer(struct ep93xx_spi *espi,
+ 		ep93xx_spi_chip_setup(espi, chip);
+ }
+ 
++/**
++ * bits_per_word() - returns bits per word for current message
++ */
++static inline int bits_per_word(const struct ep93xx_spi *espi)
++{
++	struct spi_message *msg = espi->current_msg;
++	struct spi_transfer *t = msg->state;
++
++	return t->bits_per_word ? t->bits_per_word : msg->spi->bits_per_word;
++}
++
++static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
++{
++	if (bits_per_word(espi) > 8) {
++		u16 tx_val = 0;
++
++		if (t->tx_buf)
++			tx_val = ((u16 *)t->tx_buf)[espi->tx];
++		ep93xx_spi_write_u16(espi, SSPDR, tx_val);
++		espi->tx += sizeof(tx_val);
++	} else {
++		u8 tx_val = 0;
++
++		if (t->tx_buf)
++			tx_val = ((u8 *)t->tx_buf)[espi->tx];
++		ep93xx_spi_write_u8(espi, SSPDR, tx_val);
++		espi->tx += sizeof(tx_val);
++	}
++}
++
++static void ep93xx_do_read(struct ep93xx_spi *espi, struct spi_transfer *t)
++{
++	if (bits_per_word(espi) > 8) {
++		u16 rx_val;
++
++		rx_val = ep93xx_spi_read_u16(espi, SSPDR);
++		if (t->rx_buf)
++			((u16 *)t->rx_buf)[espi->rx] = rx_val;
++		espi->rx += sizeof(rx_val);
++	} else {
++		u8 rx_val;
++
++		rx_val = ep93xx_spi_read_u8(espi, SSPDR);
++		if (t->rx_buf)
++			((u8 *)t->rx_buf)[espi->rx] = rx_val;
++		espi->rx += sizeof(rx_val);
++	}
++}
++
++/**
++ * ep93xx_spi_read_write() - perform next RX/TX transfer
++ * @espi: ep93xx SPI controller struct
++ *
++ * This function transfers next bytes (or half-words) to/from RX/TX FIFOs. If
++ * called several times, the whole transfer will be completed. Returns %0 when
++ * current transfer was not yet completed otherwise length of the transfer
++ * (>%0). When this function is finished, RX FIFO should be empty and TX FIFO
++ * should be full.
++ */
++static int ep93xx_spi_read_write(struct ep93xx_spi *espi)
++{
++	struct spi_message *msg = espi->current_msg;
++	struct spi_transfer *t = msg->state;
++
++	/* read as long as RX FIFO has frames in it */
++	while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE)) {
++		ep93xx_do_read(espi, t);
++		espi->fifo_level--;
++	}
++
++	/* write as long as TX FIFO has room */
++	while (espi->fifo_level < SPI_FIFO_SIZE && espi->tx < t->len) {
++		ep93xx_do_write(espi, t);
++		espi->fifo_level++;
++	}
++
++	if (espi->rx == t->len) {
++		msg->actual_length += t->len;
++		return t->len;
++	}
++
++	return 0;
++}
++
++
+ /*
+  * ep93xx_spi_process_message() - process one SPI message
+  * @espi: ep93xx SPI controller struct
+@@ -569,6 +669,8 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
+ 	struct spi_transfer *t;
+ 	int err;
+ 
++	espi->continuous = (bool)msg->state;
++
+ 	/*
+ 	 * Enable the SPI controller and its clock.
+ 	 */
+@@ -606,12 +708,43 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
+ 	ep93xx_spi_chip_setup(espi, spi_get_ctldata(msg->spi));
+ 	ep93xx_spi_select_device(espi, msg->spi);
+ 
+-	list_for_each_entry(t, &msg->transfers, transfer_list) {
+-		ep93xx_spi_process_transfer(espi, msg, t);
+-		if (msg->status)
+-			break;
++	if (espi->continuous) {
++		/*
++		 * We can transfer all the transfers continuously.
++		 */
++		espi->rx = 0;
++		espi->tx = 0;
++		msg->state = list_first_entry(&msg->transfers, struct spi_transfer,
++					transfer_list);
++
++		/* prime the first transfer */
++		if (ep93xx_spi_read_write(espi)) {
++			/*
++			 * Transfer was completed. Pick next one and continue
++			 * if necessary.
++			 */
++			t = msg->state;
++			if (list_is_last(&t->transfer_list, &msg->transfers))
++				goto done;
++
++			espi->rx = 0;
++			espi->tx = 0;
++			msg->state = list_entry(t->transfer_list.next,
++						struct spi_transfer,
++						transfer_list);
++		}
++
++		ep93xx_spi_enable_interrupts(espi);
++		wait_for_completion(&espi->wait);
++	} else {
++		list_for_each_entry(t, &msg->transfers, transfer_list) {
++			ep93xx_spi_process_transfer(espi, msg, t);
++			if (msg->status)
++				break;
++		}
+ 	}
+ 
++done:
+ 	/*
+ 	 * Now the whole message is transferred (or failed for some reason). We
+ 	 * deselect the device and disable the SPI controller.
+@@ -667,90 +800,6 @@ static void ep93xx_spi_work(struct work_struct *work)
+ }
+ 
+ /**
+- * bits_per_word() - returns bits per word for current message
+- */
+-static inline int bits_per_word(const struct ep93xx_spi *espi)
+-{
+-	struct spi_message *msg = espi->current_msg;
+-	struct spi_transfer *t = msg->state;
+-
+-	return t->bits_per_word ? t->bits_per_word : msg->spi->bits_per_word;
+-}
+-
+-static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
+-{
+-	if (bits_per_word(espi) > 8) {
+-		u16 tx_val = 0;
+-
+-		if (t->tx_buf)
+-			tx_val = ((u16 *)t->tx_buf)[espi->tx];
+-		ep93xx_spi_write_u16(espi, SSPDR, tx_val);
+-		espi->tx += sizeof(tx_val);
+-	} else {
+-		u8 tx_val = 0;
+-
+-		if (t->tx_buf)
+-			tx_val = ((u8 *)t->tx_buf)[espi->tx];
+-		ep93xx_spi_write_u8(espi, SSPDR, tx_val);
+-		espi->tx += sizeof(tx_val);
+-	}
+-}
+-
+-static void ep93xx_do_read(struct ep93xx_spi *espi, struct spi_transfer *t)
+-{
+-	if (bits_per_word(espi) > 8) {
+-		u16 rx_val;
+-
+-		rx_val = ep93xx_spi_read_u16(espi, SSPDR);
+-		if (t->rx_buf)
+-			((u16 *)t->rx_buf)[espi->rx] = rx_val;
+-		espi->rx += sizeof(rx_val);
+-	} else {
+-		u8 rx_val;
+-
+-		rx_val = ep93xx_spi_read_u8(espi, SSPDR);
+-		if (t->rx_buf)
+-			((u8 *)t->rx_buf)[espi->rx] = rx_val;
+-		espi->rx += sizeof(rx_val);
+-	}
+-}
+-
+-/**
+- * ep93xx_spi_read_write() - perform next RX/TX transfer
+- * @espi: ep93xx SPI controller struct
+- *
+- * This function transfers next bytes (or half-words) to/from RX/TX FIFOs. If
+- * called several times, the whole transfer will be completed. Returns %0 when
+- * current transfer was not yet completed otherwise length of the transfer
+- * (>%0). When this function is finished, RX FIFO should be empty and TX FIFO
+- * should be full.
+- */
+-static int ep93xx_spi_read_write(struct ep93xx_spi *espi)
+-{
+-	struct spi_message *msg = espi->current_msg;
+-	struct spi_transfer *t = msg->state;
+-
+-	/* read as long as RX FIFO has frames in it */
+-	while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE)) {
+-		ep93xx_do_read(espi, t);
+-		espi->fifo_level--;
+-	}
+-
+-	/* write as long as TX FIFO has room */
+-	while (espi->fifo_level < SPI_FIFO_SIZE && espi->tx < t->len) {
+-		ep93xx_do_write(espi, t);
+-		espi->fifo_level++;
+-	}
+-
+-	if (espi->rx == t->len) {
+-		msg->actual_length += t->len;
+-		return t->len;
+-	}
+-
+-	return 0;
+-}
+-
+-/**
+  * ep93xx_spi_interrupt() - SPI interrupt handler
+  * @irq: IRQ number (not used)
+  * @dev_id: pointer to EP93xx controller struct
+@@ -792,6 +841,27 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+ 			 * interrupt then.
+ 			 */
+ 			return IRQ_HANDLED;
++		} else {
++			struct spi_message *msg = espi->current_msg;
++			struct spi_transfer *t = msg->state;
++
++			if (!espi->continuous)
++				goto done;
++
++			if (!list_is_last(&t->transfer_list, &msg->transfers)) {
++				/*
++				 * Pick next transfer and refill the FIFO.
++				 */
++				msg->state = list_entry(t->transfer_list.next,
++							struct spi_transfer,
++							transfer_list);
++				espi->rx = 0;
++				espi->tx = 0;
++
++				ep93xx_spi_read_write(espi);
++				return IRQ_HANDLED;
++			}
++			/* we are done here */
+ 		}
+ 	}
+ 
+@@ -800,6 +870,7 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+ 	 * any case we disable interrupts and notify the worker to handle
+ 	 * any post-processing of the message.
+ 	 */
++done:
+ 	ep93xx_spi_disable_interrupts(espi);
+ 	complete(&espi->wait);
+ 	return IRQ_HANDLED;
 
 ------------------------------------------------------------------------------

@@ -1,28 +1,26 @@
 From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Subject: Re: [PATCH v4 1/2] spi: implemented driver for
 	Cirrus EP93xx SPI	controller
-Date: Wed, 21 Apr 2010 13:00:56 -0500
-Message-ID: <0D753D10438DA54287A00B0270842697636D8C8672@AUSP01VMBX24.collaborationhost.net>
+Date: Wed, 21 Apr 2010 21:47:14 -0500
+Message-ID: <0D753D10438DA54287A00B0270842697636D8C8CDD@AUSP01VMBX24.collaborationhost.net>
 References: <cover.1271774845.git.mika.westerberg@iki.fi>
 	<e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B0270842697636D85BCCC@AUSP01VMBX24.collaborationhost.net>
-	<z2h56d259a01004201654y93f6c533j11b5accd7e2f46e7@mail.gmail.com>
-	<0D753D10438DA54287A00B0270842697636D85BDD8@AUSP01VMBX24.collaborationhost.net>
-	<n2u56d259a01004201810j22c17bcfn9fee59e9c65c4d7f@mail.gmail.com>
-	<0D753D10438DA54287A00B0270842697636D85BE26@AUSP01VMBX24.collaborationhost.net>
-	<20100421104651.GO19534@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D7F4E7F@AUSP01VMBX24.collaborationhost.net>
+	<20100421071629.GL19534@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D8C84DA@AUSP01VMBX24.collaborationhost.net>
+	<20100421165420.GP19534@gw.healthdatacare.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100421104651.GO19534-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
+In-Reply-To: <20100421165420.GP19534-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
 Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -34,206 +32,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Mika,
 
-On Wednesday, April 21, 2010 3:47 AM, Mika Westerberg wrote:
-> On Tue, Apr 20, 2010 at 08:52:26PM -0500, H Hartley Sweeten wrote:
->> On Tuesday, April 20, 2010 6:10 PM, Martin Guy wrote:
->>> Not easily, but it seems a likely cause.
->>> To prevent card deselection mid-message I think we would need to
->>> handle multi-transfer messages by making the start of transfers 2..N
->>> continuous with the end of transfers 1..N-1 instead of draining the
->>> reply from each one before starting the next.
->>>=20
->>> Am I on the right track?
->>=20
->> Yes.  I'm just not sure how to implement this.
->
-> I made a hack that allows transfer handler to continue to the next transf=
-er directly
-> if there is no special per transfer settings in the message. Could you tr=
-y that out
-> and report whether SFRMOUT works better with it?
->
-> Note that this is just to make sure that we are on the right track.
->
-> Patch is against v4 of the driver.
->
-> Thanks,
-> MW
->
-> diff --git a/drivers/spi/ep93xx_spi.c b/drivers/spi/ep93xx_spi.c
-> index 310032d..11dcdd1 100644
-> --- a/drivers/spi/ep93xx_spi.c
-> +++ b/drivers/spi/ep93xx_spi.c
-> @@ -106,6 +106,8 @@ struct ep93xx_spi {
->  	unsigned long			min_rate;
->  	unsigned long			max_rate;
->  	bool				running;
-> +	bool				can_continue;
-> +	struct spi_transfer 		*last_transfer;
->  	struct workqueue_struct		*wq;
->  	struct work_struct		msg_work;
->  	struct completion		wait;
-> @@ -380,6 +382,7 @@ static int ep93xx_spi_transfer(struct spi_device *spi=
-, struct spi_message *msg)
->  	struct ep93xx_spi *espi =3D spi_master_get_devdata(spi->master);
->  	struct spi_transfer *t;
->  	unsigned long flags;
-> +	bool can_continue =3D true;
-> =20
->  	if (!msg || !msg->complete)
->  		return -EINVAL;
-> @@ -387,11 +390,21 @@ static int ep93xx_spi_transfer(struct spi_device *s=
-pi, struct spi_message *msg)
->  	/* first validate each transfer */
->  	list_for_each_entry(t, &msg->transfers, transfer_list) {
->  		if (t->bits_per_word) {
-> +			can_continue =3D false;
->  			if (t->bits_per_word < 4 || t->bits_per_word > 16)
->  				return -EINVAL;
->  		}
-> -		if (t->speed_hz && t->speed_hz < espi->min_rate)
-> +		if (t->speed_hz) {
-> +			can_continue =3D false;
-> +			if (t->speed_hz < espi->min_rate)
->  				return -EINVAL;
-> +		}
-> +		if (t->cs_change &&
-> +			!list_is_last(&t->transfer_list, &msg->transfers)) {
-> +			can_continue =3D false;
-> +		}
-> +		if (t->delay_usecs)
-> +			can_continue =3D false;
->  	}
-> =20
->  	/*
-> @@ -400,7 +413,7 @@ static int ep93xx_spi_transfer(struct spi_device *spi=
-, struct spi_message *msg)
->  	 * error in transfer and @msg->state is used to hold pointer to the
->  	 * current transfer (or %NULL if no active current transfer).
->  	 */
-> -	msg->state =3D NULL;
-> +	msg->state =3D (void *)can_continue;
->  	msg->status =3D 0;
->  	msg->actual_length =3D 0;
-> =20
-> @@ -606,10 +619,33 @@ static void ep93xx_spi_process_message(struct ep93x=
-x_spi *espi,
->  	ep93xx_spi_chip_setup(espi, spi_get_ctldata(msg->spi));
->  	ep93xx_spi_select_device(espi, msg->spi);
-> =20
-> -	list_for_each_entry(t, &msg->transfers, transfer_list) {
-> -		ep93xx_spi_process_transfer(espi, msg, t);
-> -		if (msg->status)
-> -			break;
-> +	if (msg->state) {
-> +		espi->can_continue =3D true;
-> +		espi->last_transfer =3D list_entry(msg->transfers.prev, struct spi_tra=
-nsfer,
-> +						 transfer_list);
-> +	} else {
-> +		espi->can_continue =3D false;
-> +		espi->last_transfer =3D NULL;
-> +	}
-> +
-> +	/*
-> +	 * In case there is no transfer specific settings in this message we
-> +	 * can transfer the whole message with interrupts. Otherwise we need
-> +	 * to perform transfer specific stuff in thread context.
-> +	 */
-> +	if (espi->can_continue) {
-> +		msg->state =3D list_first_entry(&msg->transfers, struct spi_transfer,
-> +					      transfer_list);
-> +		espi->rx =3D 0;
-> +		espi->tx =3D 0;
-> +		ep93xx_spi_enable_interrupts(espi);
-> +		wait_for_completion(&espi->wait);
-> +	} else {
-> +		list_for_each_entry(t, &msg->transfers, transfer_list) {
-> +			ep93xx_spi_process_transfer(espi, msg, t);
-> +			if (msg->status)
-> +				break;
-> +		}
->  	}
-> =20
->  	/*
-> @@ -792,6 +828,24 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, voi=
-d *dev_id)
->  			 * interrupt then.
->  			 */
->  			return IRQ_HANDLED;
-> +		} else {
-> +			/*
-> +			 * If we can continue directly to the next transfer, do
-> +			 * that now.
-> +			 */
-> +			if (espi->can_continue) {
-> +				struct spi_message *msg =3D espi->current_msg;
-> +				struct spi_transfer *t =3D msg->state;
-> +
-> +				if (t !=3D espi->last_transfer) {
-> +					msg->state =3D list_entry(t->transfer_list.next, struct spi_transfe=
-r,
-> +								transfer_list);
-> +					espi->rx =3D 0;
-> +					espi->tx =3D 0;
-> +					return IRQ_HANDLED;
-> +				}
-> +			}
-> +			/* otherwise we are ready */
->  		}
->  	}
-=20
-Same results are your v4 driver.  But, I think your on the right track.
+I have added some debug messages to the driver trying to figure out
+how to chain the transfers in a message together in order to keep
+the SFRM signal asserted for the entire message.  I still haven't
+worked out a good solution but I did notice something else.
 
-I think the problem is in the ep93xx_spi_read_write routine.  That function
-returns 0 as long as there is still data left in the current transfer.  The
-only time it doesn't return 0, which will cause the can_continue, is when:
+First, every spi transaction, including a single byte transfer, is
+going to generate at least two interrupts.  One when the interrupts
+are first enabled because the TX FIFO is empty.  And a second when
+that byte has been transferred and the TX FIFO is again empty.
 
-	if (espi->rx =3D=3D t->len) {
-		msg->actual_length +=3D t->len;
-		return t->len;
-	}
+The first interrupt can be prevented by priming the TX FIFO before
+enabling the interrupts.  All you need to do is call ep93xx_spi_read_write
+right before ep93xx_spi_enable_interrupts.
 
-At this point the tx and rx fifos will both be empty, which causes the SSP
-peripheral to raise the SFRM signal.
+Second, at high clock rates the RX FIFO will actually start to
+fill as you are putting data into the TX FIFO.  If you add an inner
+reader loop to the writer loop in ep93xx_spi_read_write you can
+take advantage of this and reduce the number of interrupts generated
+for large transfers.
 
-A picture is worth a thousand words... Attached is a logic analyzer capture
-of the Read-ID command and response from the SPI Flash.  EGPIO7 is my chip
-select to the flash.  The first 4 SPI MOSI (Tx) blocks are the 0x90, 0x00,
-0x00, 0x00 command to the flash.  You will notice that the SFRM line is
-asserted for those bytes.  A bit later are the 2 SPI MISO (Rx) responses
-from the flash with the ManID/DevID, again with the SFRM line asserted.
-
-If the can_continue stuff worked correctly the second block should be right
-with the first block.
-
-I'm going to try hacking the spi flash driver to send the command/response
-as a 6-byte full duplex message to make sure it works.
+For instance the mmc_spi driver regularly does 3 transfer messages
+where the last transfer is a 512 byte read.  With your current v4
+driver this message averages 69 interrupts to complete.  By adding
+the inner reader it reduces the number of interrupts to an average
+of 40.
 
 Regards,
-Hartley=
-
---_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Hartley
 
 ------------------------------------------------------------------------------
-
---_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---_002_0D753D10438DA54287A00B0270842697636D8C8672AUSP01VMBX24c_--

@@ -1,84 +1,54 @@
-From: "Arce, Abraham" <x0066660@ti.com>
-Subject: [PATCH 3/4] OMAP4: Ethernet: KS8851 Board Support
-Date: Thu, 22 Apr 2010 09:43:37 -0500
-Message-ID: <27F9C60D11D683428E133F85D2BB4A53043DC15EBD@dlee03.ent.ti.com>
+From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: Re: SPI-ADC
+Date: Thu, 22 Apr 2010 11:23:45 -0500
+Message-ID: <0D753D10438DA54287A00B0270842697636D940B1C@AUSP01VMBX24.collaborationhost.net>
+References: <o2idc6d3181004212320neaf99b0az27938c369e1a5557@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "Shilimkar, Santosh" <santosh.shilimkar@ti.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Russell King - ARM Linux <linux@arm.linux.org.uk>
-To: "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>
-Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Transfer-Encoding: 7bit
+To: arjun rath <rath.arjun-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <o2idc6d3181004212320neaf99b0az27938c369e1a5557-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Language: en-US
-Sender: linux-omap-owner@vger.kernel.org
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wednesday, April 21, 2010 11:20 PM, arjun rath wrote:
+> Hi Everybody,
+> 
+> I am using a SPI based 12 bit adc(max1241) from maxim.I am trying to read
+> the value from adc  using spi_read() in linux kernel.But every time i used
+> to read i am getting *0xff* only.(i have to read two consecutive bytes).To
+> the adc chip i am probing with CRO which always shows DOUT pin of ADC as
+> high provided the input to ADC is always 1.1 volt.
+> And the clock is also coming as seen in the CRO with Chip select line going
+> low.
+> 
+> Is it a delay problem since for adc's we have to wait for sometime for
+> conversion of data....????
+> 
+> Can anybody give some suggestion regarding this....
 
-Enable Micrel KS8851 SPI network chip for OMAP4430
+According to the datasheet, to start a conversion with the max124[0|1] you
+need to pull the chip select low.  At the falling edge the T/H enters its
+Hold mode and a conversion is initiated.  During this time the ADC will keep
+the DOUT pin pulled low and the SCLK must be kept low during the conversion.
+The end of conversion is signaled by DOUT going high.  At this point the
+data can be shifted out with the SCLK signal.
 
-Signed-off-by: Abraham Arce <x0066660@ti.com>
----
- arch/arm/mach-omap2/board-4430sdp.c |   30 ++++++++++++++++++++++++++++++
- 1 files changed, 30 insertions(+), 0 deletions(-)
+It appears the SPI API is supposed to support this with the SPI_READY mode
+flag.  But, the only SPI master driver in mainline that supports this flag
+is the davinci_spi driver.
 
-diff --git a/arch/arm/mach-omap2/board-4430sdp.c b/arch/arm/mach-omap2/board-4430sdp.c
-index b88f28c..801c2a7 100644
---- a/arch/arm/mach-omap2/board-4430sdp.c
-+++ b/arch/arm/mach-omap2/board-4430sdp.c
-@@ -18,6 +18,7 @@
- #include <linux/io.h>
- #include <linux/gpio.h>
- #include <linux/usb/otg.h>
-+#include <linux/spi/spi.h>
- 
- #include <mach/hardware.h>
- #include <asm/mach-types.h>
-@@ -32,6 +33,30 @@
- #include <asm/hardware/gic.h>
- #include <asm/hardware/cache-l2x0.h>
- 
-+#define ETHERNET_KS8851_IRQ		34
-+#define ETHERNET_KS8851_POWER_ENABLE	48
-+#define ETHERNET_KS8851_QUART		138
-+
-+static struct spi_board_info sdp4430_spi_board_info[] __initdata = {
-+	{
-+		.modalias               = "ks8851",
-+		.bus_num                = 1,
-+		.chip_select            = 0,
-+		.max_speed_hz           = 24000000,
-+		.irq                    = ETHERNET_KS8851_IRQ,
-+	},
-+};
-+
-+static void omap_ethernet_init(void)
-+{
-+	gpio_request(ETHERNET_KS8851_POWER_ENABLE, "ethernet");
-+	gpio_direction_output(ETHERNET_KS8851_POWER_ENABLE, 1);
-+	gpio_request(ETHERNET_KS8851_QUART, "quart");
-+	gpio_direction_output(ETHERNET_KS8851_QUART, 1);
-+	gpio_request(ETHERNET_KS8851_IRQ, "ks8851");
-+	gpio_direction_input(ETHERNET_KS8851_IRQ);
-+}
-+
- static struct platform_device sdp4430_lcd_device = {
- 	.name		= "sdp4430_lcd",
- 	.id		= -1,
-@@ -120,6 +145,11 @@ static void __init omap_4430sdp_init(void)
- 	/* FIXME: allow multi-omap to boot until musb is updated for omap4 */
- 	if (!cpu_is_omap44xx())
- 		usb_musb_init(&musb_board_data);
-+
-+	omap_ethernet_init();
-+	sdp4430_spi_board_info[0].irq = gpio_to_irq(ETHERNET_KS8851_IRQ);
-+	spi_register_board_info(sdp4430_spi_board_info,
-+			ARRAY_SIZE(sdp4430_spi_board_info));
- }
- 
- static void __init omap_4430sdp_map_io(void)
--- 
-1.5.4.3
-
+Regards,
+Hartley
+------------------------------------------------------------------------------

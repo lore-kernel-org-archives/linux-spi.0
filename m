@@ -1,19 +1,31 @@
 From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: Re: SPI-ADC
-Date: Fri, 23 Apr 2010 11:58:58 -0500
-Message-ID: <0D753D10438DA54287A00B0270842697636D941949@AUSP01VMBX24.collaborationhost.net>
-References: <o2idc6d3181004212320neaf99b0az27938c369e1a5557@mail.gmail.com>
-	<0D753D10438DA54287A00B0270842697636D940B1C@AUSP01VMBX24.collaborationhost.net>
-	<y2tdc6d3181004222208uf6f4a9ecl7d0e2f084fd56a08@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] spi: implemented driver for
+	Cirrus EP93xx SPI	controller
+Date: Fri, 23 Apr 2010 12:24:03 -0500
+Message-ID: <0D753D10438DA54287A00B0270842697636D9419BC@AUSP01VMBX24.collaborationhost.net>
+References: <e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
+	<0D753D10438DA54287A00B0270842697636D85BCCC@AUSP01VMBX24.collaborationhost.net>
+	<z2h56d259a01004201654y93f6c533j11b5accd7e2f46e7@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BDD8@AUSP01VMBX24.collaborationhost.net>
+	<n2u56d259a01004201810j22c17bcfn9fee59e9c65c4d7f@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D85BE26@AUSP01VMBX24.collaborationhost.net>
+	<20100421104651.GO19534@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D8C8672@AUSP01VMBX24.collaborationhost.net>
+	<20100422175503.GE26418@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D9410F0@AUSP01VMBX24.collaborationhost.net>
+	<20100423052003.GF26418@gw.healthdatacare.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org" <hskinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-To: arjun rath <rath.arjun-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <y2tdc6d3181004222208uf6f4a9ecl7d0e2f084fd56a08-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20100423052003.GF26418-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
 Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,62 +37,180 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday, April 22, 2010 10:09 PM, arjun rath wrote:
-> Hi ,
-
-Please do a reply-all to keep the thread on the lists.  Also, please
-do not top-post.  I fixed both here...
-
-> On Thu, Apr 22, 2010 at 9:53 PM, H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org> wrote:
->> On Wednesday, April 21, 2010 11:20 PM, arjun rath wrote:
->>> Hi Everybody,
->>>
->>> I am using a SPI based 12 bit adc(max1241) from maxim.I am trying to read
->>> the value from adc  using spi_read() in linux kernel.But every time i used
->>> to read i am getting *0xff* only.(i have to read two consecutive bytes).To
->>> the adc chip i am probing with CRO which always shows DOUT pin of ADC as
->>> high provided the input to ADC is always 1.1 volt.
->>> And the clock is also coming as seen in the CRO with Chip select line going
->>> low.
->>>
->>> Is it a delay problem since for adc's we have to wait for sometime for
->>> conversion of data....????
->>>
->>> Can anybody give some suggestion regarding this....
->>	
->> According to the datasheet, to start a conversion with the max124[0|1] you
->> need to pull the chip select low.  At the falling edge the T/H enters its
->> Hold mode and a conversion is initiated.  During this time the ADC will keep
->> the DOUT pin pulled low and the SCLK must be kept low during the conversion.
->> The end of conversion is signaled by DOUT going high.  At this point the
->> data can be shifted out with the SCLK signal.
->>	
->> It appears the SPI API is supposed to support this with the SPI_READY mode
->> flag.  But, the only SPI master driver in mainline that supports this flag
->> is the davinci_spi driver.
-	
-> Thanks for the reply.
+On Thursday, April 22, 2010 10:20 PM, Mika Westerberg wrote:
+> On Thu, Apr 22, 2010 at 03:43:24PM -0500, H Hartley Sweeten wrote:
+>> On Thursday, April 22, 2010 10:55 AM, Mika Westerberg wrote:
+>>> Could you test this in your setup?
+>> 
+>> Same results.
 >
-> You mean to say with atmel spi master it is not possible(at91sam9263)...
-> and to start the conversation i am pulling the chip select line low...
+> OK. thanks for testing.
+>
+>> I hacked your driver to allow me to toggle a gpio when the interrupt routine
+>> starts and exits.
+>> 
+>> I captured the 4 byte write/2 byte read caused by the spi_write_then_read in
+>> the sst25l driver when it does the Read-ID command.  The chip select goes low
+>> followed by the first 4 byte transfer of the message due to the fifo's getting
+>> primed.  This transfer actually doesn't finish since the rx data has not been
+>> received.  So the interrupts just get enabled as normal.
+>> 
+>> The data starts transferring when the first byte is placed in the tx fifo.  It
+>> takes about 4.45us to send/receive the 4 bytes.  Approximately 15.9us after the
+>> last byte has been received the interrupt routine starts.  It then takes about
+>> 5.7us for the second 2 byte transfer to start.  So there is a total of about
+>> 21.6us between the two transfers where SFRM is deasserted.
+>
+> If I understand this correctly, for this particular message it might have worked if
+> the priming is not done? What I mean is that if we start the transfer in interrupt
+> handler and after the transfer is finished, immediately continue with the next one
+> (like in the patch) could it make SFRM to stay asserted (at least shorten the gap)?
 
-Looking at the atmel_spi driver it appears that it currently does not
-support the SPI_READY mode.  So yes, with the driver as it is now it will
-not work correctly with the max124[0|1] parts.
+Hmmm.. It might have.  I didn't test that before I started hacking...
 
-> Is it possible that i can write the serial protocol procedure what ever
-> given in the datasheet instead of spi.
+>>>  /*
+>>>   * ep93xx_spi_process_message() - process one SPI message
+>>>   * @espi: ep93xx SPI controller struct
+>>> @@ -569,6 +669,8 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
+>>>  	struct spi_transfer *t;
+>>>  	int err;
+>>>  
+>>> +	espi->continuous = (bool)msg->state;
+>>> +
+>>>  	/*
+>>>  	 * Enable the SPI controller and its clock.
+>>>  	 */
+>>> @@ -606,12 +708,43 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
+>>>  	ep93xx_spi_chip_setup(espi, spi_get_ctldata(msg->spi));
+>>>  	ep93xx_spi_select_device(espi, msg->spi);
+>>>  
+>>> -	list_for_each_entry(t, &msg->transfers, transfer_list) {
+>>> -		ep93xx_spi_process_transfer(espi, msg, t);
+>>> -		if (msg->status)
+>>> -			break;
+>>> +	if (espi->continuous) {
+>>> +		/*
+>>> +		 * We can transfer all the transfers continuously.
+>>> +		 */
+>>> +		espi->rx = 0;
+>>> +		espi->tx = 0;
+>>> +		msg->state = list_first_entry(&msg->transfers, struct spi_transfer,
+>>> +					transfer_list);
+>>> +
+>>> +		/* prime the first transfer */
+>>> +		if (ep93xx_spi_read_write(espi)) {
+>> 
+>> On the first read/write for a transfer this condition can never succeed.
+>> 
+>> The ep93xx_spi_read_write function first empties the rx fifo then fills the
+>> tx fifo.  Putting any data in the tx fifo means that you are going to have to
+>> come back to empty the rx fifo.
+>> 
+>> So, the block below never executes.
+>
+> I also figured that out after I sent the hack to you...
+>
+>>> +			/*
+>>> +			 * Transfer was completed. Pick next one and continue
+>>> +			 * if necessary.
+>>> +			 */
+>>> +			t = msg->state;
+>>> +			if (list_is_last(&t->transfer_list, &msg->transfers))
+>>> +				goto done;
+>>> +
+>>> +			espi->rx = 0;
+>>> +			espi->tx = 0;
+>>> +			msg->state = list_entry(t->transfer_list.next,
+>>> +						struct spi_transfer,
+>>> +						transfer_list);
+>>> +		}
+>>> +
+>>> +		ep93xx_spi_enable_interrupts(espi);
+>>> +		wait_for_completion(&espi->wait);
+>> 
+>> Even if the first read/write did succeed you are not starting the second transfer.
+>> This is just passing the operation off to the interrupt routine using the second
+>> transfer in the message.
+>
+> Right.
+>
+>>> -/**
+>>>   * ep93xx_spi_interrupt() - SPI interrupt handler
+>>>   * @irq: IRQ number (not used)
+>>>   * @dev_id: pointer to EP93xx controller struct
+>>> @@ -792,6 +841,27 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+>>>  			 * interrupt then.
+>>>  			 */
+>>>  			return IRQ_HANDLED;
+>>> +		} else {
+>>> +			struct spi_message *msg = espi->current_msg;
+>>> +			struct spi_transfer *t = msg->state;
+>>> +
+>>> +			if (!espi->continuous)
+>>> +				goto done;
+>>> +
+>>> +			if (!list_is_last(&t->transfer_list, &msg->transfers)) {
+>>> +				/*
+>>> +				 * Pick next transfer and refill the FIFO.
+>>> +				 */
+>>> +				msg->state = list_entry(t->transfer_list.next,
+>>> +							struct spi_transfer,
+>>> +							transfer_list);
+>>> +				espi->rx = 0;
+>>> +				espi->tx = 0;
+>>> +
+>>> +				ep93xx_spi_read_write(espi);
+>>> +				return IRQ_HANDLED;
+>>> +			}
+>>
+>> Here the N transfer has been completed and we are trying to continue with the N+1
+>> transfer.  This should work but I need to figure out a way to capture it with my
+>> logic analyzer.  The only problem is if the N transfer is complete that means the
+>> tx and rx fifos are empty so the SFRM signal is going to be deasserted.  The N+1
+>> transfer might start really soon after but there will still be a glitch in the SFRM
+>> signal.
+>
+> It would be great if you manage to capture it with the logic analyzer.
+> Even if we get small glitch it means that we are going into right
+> direction (then we just need to figure out how to keep the FIFO
+> from emptying).
 
-The max124[0|1] is still a spi device so using the atmel_spi driver is
-the correct route.  You just need to add the necessary support to the
-driver to handle the SPI_READY mode.
+I still haven't been able to catch this.
 
-I added the author, Haavard Skinnemoen, to the Cc list to see if he has any
-ideas to help.
+> Other alternative is to use polling mode in v3 of the driver and
+> see if it works better.
+
+I think the interrupt mode is still the better way to go.
+
+I was able to hack your driver to keep the continuous transfer going in a multi-transaction
+message.  Unfortunately I don't have an easy way to generate a diff to send the necessary
+patch.  The hack does work with the sst25l driver.  It correctly detects the end of the
+first 4 byte transfer and immediately chains in the second 2 byte transfer.  It ends up
+looking like this:
+
+WWWWwwIRRRRFCRRFi
+
+Where:
+  'W' is a write for the current transfer
+  'w' is a write for the next transfer
+  'I' is the start of the interrupt
+  'R' is a read for the current transfer
+  'F' is the completion of the current transfer
+  'C' is the chain to the next transfer
+  'i' is the end of the interrupt
+
+So, at the start of the message the fifo's get primed with the 4+2 of the entire message.
+Then interrupts are enabled.  When the interrupt occurs the first 4 byte transfer is read.
+When that completes the interrupt routine chains to the next transfer and then reads the
+next 2 bytes.  When that completes the message is finished so the interrupts get disabled
+and espi->wait is completed.
+
+Unfortunately is seems to break the mmc_spi driver for some reason.  I still haven't
+figured out why.
+
+If you can post your latest updates to the v4 driver I will create a patch against it
+so others can test this also.
 
 Regards,
 Hartley
-
-
-
 ------------------------------------------------------------------------------

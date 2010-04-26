@@ -1,18 +1,12 @@
 From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: Re: [PATCH v4 1/2] spi: implemented driver
-	for	Cirrus EP93xx SPI controller
-Date: Mon, 26 Apr 2010 13:09:30 +0300
-Message-ID: <20100426100930.GH26418@gw.healthdatacare.com>
-References: <20100421104651.GO19534@gw.healthdatacare.com>
-	<0D753D10438DA54287A00B0270842697636D8C8672@AUSP01VMBX24.collaborationhost.net>
-	<20100422175503.GE26418@gw.healthdatacare.com>
-	<0D753D10438DA54287A00B0270842697636D9410F0@AUSP01VMBX24.collaborationhost.net>
-	<20100423052003.GF26418@gw.healthdatacare.com>
-	<0D753D10438DA54287A00B0270842697636D9419BC@AUSP01VMBX24.collaborationhost.net>
-	<0D753D10438DA54287A00B0270842697636D9B794A@AUSP01VMBX24.collaborationhost.net>
-	<y2x56d259a01004250229he9cb2ee3pf69669c9226f80fb@mail.gmail.com>
-	<m2l56d259a01004250238s99d6c869s1ee084b36f9736a0@mail.gmail.com>
-	<0D753D10438DA54287A00B0270842697636D9B7E66@AUSP01VMBX24.collaborationhost.net>
+Subject: Re: [PATCH v4 1/2] spi: implemented driver for
+	Cirrus EP93xx SPI	controller
+Date: Mon, 26 Apr 2010 13:34:40 +0300
+Message-ID: <20100426103440.GI26418@gw.healthdatacare.com>
+References: <cover.1271774845.git.mika.westerberg@iki.fi>
+	<e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
+	<p2h56d259a01004241114qb1b1815em9657e5a857a9d4ee@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D9B7E4F@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -25,7 +19,7 @@ Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <0D753D10438DA54287A00B0270842697636D9B7E66-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
+In-Reply-To: <0D753D10438DA54287A00B0270842697636D9B7E4F-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -36,18 +30,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Apr 25, 2010 at 03:25:16PM -0500, H Hartley Sweeten wrote:
-> With a slow enough clock you can probably get to a point where SFRMOUT
-> will stay deasserted during the entire 512 byte transfer.  But it would
-> still de-assert during the switch to the next transfer in the message.
+On Sun, Apr 25, 2010 at 02:55:08PM -0500, H Hartley Sweeten wrote:
+> On Saturday, April 24, 2010 11:15 AM, Martin Guy wrote:
+> > static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+> > {
+> > ...
+> >         if (!(irq_status & (SSPIIR_RORIS | SSPIIR_TIS | SSPIIR_RIS)))
+> >                 return IRQ_NONE; /* not for us */
+> > 
+> > -       /* clear the interrupt */
+> > -       ep93xx_spi_write_u8(espi, SSPICR, 0);
+> > 
+> >         /*
+> >          * If we got ROR (receive overrun) interrupt we know that something is
+> >          * wrong. Just abort the message.
+> >          */
+> >         if (unlikely(irq_status & SSPIIR_RORIS)) {
+> > +               /* clear the overrun interrupt */
+> > +               ep93xx_spi_write_u8(espi, SSPICR, 0);
+> >                 dev_warn(&espi->pdev->dev,
+> >                          "receive overrun, aborting the message\n");
+> >                 espi->current_msg->status = -EIO;
+> >         } else {
 > 
-> Regardless, I tend to agree with you.  Because of the chip design, it's
-> impossible (or at least you can't guarantee) to keep the SFRMOUT low
-> during a transfer.  Some devices can live with this others can't.  Oh well.
+> With this patch the interrupts only get cleared if it's a ROR interrupt.
+> 
+> Do the RIS/TIS interrupts get cleared by the upper layers?  If so, do we
+> really need to clear the ROR interrupt here?
 
-One more thing I forgot to mention. With DMA there are 2 buffers per channel which
-means that the controller can continue right to the next transfer so SFRMOUT might
-work better.
+I believe it is not necessary but doesn't hurt either so I would keep it.
 
 Regards,
 MW

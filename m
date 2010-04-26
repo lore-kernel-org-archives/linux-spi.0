@@ -1,21 +1,32 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] DaVinci SPI: Fix SPI clock prescale
-	factor computation
-Date: Mon, 26 Apr 2010 09:06:11 -0600
-Message-ID: <k2zfa686aa41004260806r691e1880i2a80b102c108be5a@mail.gmail.com>
-References: <871veaksca.fsf@deeprootsystems.com>
-	<1272272505-5021-2-git-send-email-thomas.koeller@baslerweb.com>
+From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: Re: [PATCH v4 1/2] spi: implemented driver
+	for	Cirrus EP93xx SPI controller
+Date: Mon, 26 Apr 2010 11:54:51 -0500
+Message-ID: <0D753D10438DA54287A00B0270842697636DA46474@AUSP01VMBX24.collaborationhost.net>
+References: <20100421104651.GO19534@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D8C8672@AUSP01VMBX24.collaborationhost.net>
+	<20100422175503.GE26418@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D9410F0@AUSP01VMBX24.collaborationhost.net>
+	<20100423052003.GF26418@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D9419BC@AUSP01VMBX24.collaborationhost.net>
+	<0D753D10438DA54287A00B0270842697636D9B794A@AUSP01VMBX24.collaborationhost.net>
+	<y2x56d259a01004250229he9cb2ee3pf69669c9226f80fb@mail.gmail.com>
+	<m2l56d259a01004250238s99d6c869s1ee084b36f9736a0@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D9B7E66@AUSP01VMBX24.collaborationhost.net>
+	<20100426100258.GG26418@gw.healthdatacare.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Sudhakar Rajashekhara <sudhakar.raj-l0cyMroinI0@public.gmane.org>,
-	Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
-	Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>, Philby John <pjohn-k0rHJ+Hhz/SB+jHODAdFcQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	davinci-linux-open-source-VycZQUHpC/Nq7ICLvS4PUAC/G2K4zDHf@public.gmane.org
-To: thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1272272505-5021-2-git-send-email-thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
+In-Reply-To: <20100426100258.GG26418-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,56 +37,83 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Apr 26, 2010 at 3:01 AM,  <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org> wrote:
-> From: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
+On Monday, April 26, 2010 3:03 AM, Mika Westerberg wrote:
 >
-> Computation of the clock prescaler value returned bogus results if
-> the requested SPI clock was impossible to set. It now sets either
-> the maximum or minimum clock frequency, as appropriate.
+> Hi,
 >
-> Signed-off-by: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
-> ---
-> =A0drivers/spi/davinci_spi.c | =A0 12 +++++++++---
-> =A01 files changed, 9 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-> index 956f617..02e1a76 100644
-> --- a/drivers/spi/davinci_spi.c
-> +++ b/drivers/spi/davinci_spi.c
-> @@ -153,7 +153,7 @@ static int davinci_spi_setup_transfer(struct spi_devi=
-ce *spi,
-> =A0 =A0 =A0 =A0struct davinci_spi *davinci_spi;
-> =A0 =A0 =A0 =A0struct davinci_spi_platform_data *pdata;
-> =A0 =A0 =A0 =A0u8 bits_per_word =3D 0;
-> - =A0 =A0 =A0 u32 hz =3D 0, prescale;
-> + =A0 =A0 =A0 u32 hz =3D 0, prescale =3D 0, clkspeed;
->
-> =A0 =A0 =A0 =A0davinci_spi =3D spi_master_get_devdata(spi->master);
-> =A0 =A0 =A0 =A0pdata =3D davinci_spi->pdata;
-> @@ -190,10 +190,16 @@ static int davinci_spi_setup_transfer(struct spi_de=
-vice *spi,
-> =A0 =A0 =A0 =A0set_fmt_bits(davinci_spi->base, bits_per_word & 0x1f,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0spi->chip_select);
->
-> - =A0 =A0 =A0 prescale =3D ((clk_get_rate(davinci_spi->clk) / hz) - 1) & =
-0xff;
-> + =A0 =A0 =A0 clkspeed =3D clk_get_rate(davinci_spi->clk);
-> + =A0 =A0 =A0 if (hz > clkspeed / 2)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 prescale =3D 1 << 8;
-> + =A0 =A0 =A0 if (hz < clkspeed / 256)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 prescale =3D 255 << 8;
-> + =A0 =A0 =A0 if (!prescale)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 prescale =3D ((clkspeed / hz - 1) << 8) & 0=
-x0000ff00;
+> I just answer to this last message as it seems that continuous
+> transfer is really not a 100% solid solution; It makes things more
+> complicated than need to be and benefit for that is probably not
+> worth the additional complexity. Feel free to disagree :)
 
-Is be appropriate to WARN_ON() or WARN_ONCE() when the clamp condition
-occurs?  Particularly the condition where the minimum clock speed is
-higher that the requested clock.
+I agree.  Trying to make the transfer continuous is not solid and
+does complicate the code.  Drop it.
 
-I'd also consider an if / else if / else structure for readability and clar=
-ity.
+> On Sun, Apr 25, 2010 at 03:25:16PM -0500, H Hartley Sweeten wrote:
+>> On Sunday, April 25, 2010 2:39 AM, Martin Guy wrote:
+>>> I'll run a few more tests, e.g. dropping the clock rate, but at this
+>>> point I'd be inclined to declare it impossible to keep SFRMOUT low
+>>> during a transfer, and just use the simple non-continuous code with a
+>>> comment at the top of the file that explains why you can't use SFRMOUT
+>>> as a chip select for devices that require CS to remain asserted for
+>>> the duration of a transfer.
+>> 
+>> With a slow enough clock you can probably get to a point where SFRMOUT
+>> will stay deasserted during the entire 512 byte transfer.  But it would
+>> still de-assert during the switch to the next transfer in the message.
+>> 
+>> Regardless, I tend to agree with you.  Because of the chip design, it's
+>> impossible (or at least you can't guarantee) to keep the SFRMOUT low
+>> during a transfer.  Some devices can live with this others can't.  Oh well.
+>
+> For the MMC over SPI at least we really cannot ever make fully
+> compliant solution with SFRMOUT because, during init phase protocol
+> sends CMD0 (reset) with chipselect active high (SPI_CS_HIGH). This
+> forces SD/MMC card to SPI mode. However, many cards seem to work
+> without any chipselect logic at all (with Sim.One for example).
 
-g.
+Good point.  Any driver that requests SPI_CS_HIGH will be "broken" by using
+the SFRMOUT signal for the chip select.  I think the Sim.One board test
+have just been lucky with the mmc/sc-cards.  There are probably many cards
+that will not work correctly on that platform.
 
----------------------------------------------------------------------------=
----
+> A Documentation/spi/ep93xx_spi.txt really should be created to note this
+> limitation as well as showing an example of the platform support needed to
+> use this driver.
+
+> Do we all agree that we can live with GPIOs as chipselect? Or do
+> we continue investigation to make it work with boards that use
+> SFRMOUT as CS?
+
+I think we can live with the GPIOs for chip selects.
+
+> I have following plans for v5 (in case we don't care about SFRMOUT).
+> Before doing the changes I would like to hear your opinnion.
+> 
+> 	- prime the FIFO first in every transfer (Hartley's suggestion)
+
+I think this helps regardless.  I makes sure the hardware is actually
+doing something when a transfer starts instead of waiting for the first
+interrupt to get things going.
+
+> 	- address review comments for v4
+> 	- add Martin's patch for clearing SSPICR only if we get ROR
+
+Moving the interrupt clear into the unlikely() path probably makes sense.
+It keeps the code from having to do the unnecessary memory write every time.
+
+Also, is the IRQ_NONE check before that really necessary?  The IRQ_EP93XX_SSP
+is not a chained interrupt so if ep93xx_spi_interrupt gets called I would
+assume the interrupt must be valid.
+
+> 	- add necessary documentation under Documentation/spi/ep93xx_spi.txt
+
+Sounds good.
+
+Once you post the v5 version I will test it then send you a patch for allowing
+non-built-in GPIOs to be used for chip selects.
+
+Regards,
+Hartley
+
+------------------------------------------------------------------------------

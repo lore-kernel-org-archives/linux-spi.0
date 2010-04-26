@@ -1,30 +1,21 @@
-From: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v4 1/2] spi: implemented driver for
-	Cirrus EP93xx SPI controller
-Date: Mon, 26 Apr 2010 15:35:35 +0100
-Message-ID: <k2l56d259a01004260735nb44e9dddy5b08668787070ac7@mail.gmail.com>
-References: <e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B0270842697636D8C8672@AUSP01VMBX24.collaborationhost.net>
-	<20100422175503.GE26418@gw.healthdatacare.com>
-	<0D753D10438DA54287A00B0270842697636D9410F0@AUSP01VMBX24.collaborationhost.net>
-	<20100423052003.GF26418@gw.healthdatacare.com>
-	<0D753D10438DA54287A00B0270842697636D9419BC@AUSP01VMBX24.collaborationhost.net>
-	<0D753D10438DA54287A00B0270842697636D9B794A@AUSP01VMBX24.collaborationhost.net>
-	<y2x56d259a01004250229he9cb2ee3pf69669c9226f80fb@mail.gmail.com>
-	<m2l56d259a01004250238s99d6c869s1ee084b36f9736a0@mail.gmail.com>
-	<0D753D10438DA54287A00B0270842697636D9B7E66@AUSP01VMBX24.collaborationhost.net>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] DaVinci SPI: Fix SPI clock prescale
+	factor computation
+Date: Mon, 26 Apr 2010 09:06:11 -0600
+Message-ID: <k2zfa686aa41004260806r691e1880i2a80b102c108be5a@mail.gmail.com>
+References: <871veaksca.fsf@deeprootsystems.com>
+	<1272272505-5021-2-git-send-email-thomas.koeller@baslerweb.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
-	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Sudhakar Rajashekhara <sudhakar.raj-l0cyMroinI0@public.gmane.org>,
+	Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
+	Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>, Philby John <pjohn-k0rHJ+Hhz/SB+jHODAdFcQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/Nq7ICLvS4PUAC/G2K4zDHf@public.gmane.org
+To: thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <0D753D10438DA54287A00B0270842697636D9B7E66-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
+In-Reply-To: <1272272505-5021-2-git-send-email-thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -35,66 +26,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 4/25/10, H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org> wrote:
->  During the 512+2+1 message that is sent when the mmc_spi driver is
->  doing a block read, the 512 byte transfer goes like this:
+On Mon, Apr 26, 2010 at 3:01 AM,  <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org> wrote:
+> From: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
 >
->  1) 8 writes, prime the tx fifo
->         SFRMOUT asserts when the first bit of the first byte starts
->         transmitting
->  2) Interrupt
->  3) 8 reads, we must have emptied the tx fifo and filled the rx fifo
->         SFRMOUT de-asserts after the the last bit of the last byte is
->         received
-
-Are you printk-ing the diagnostics in the irq routine?
-If so, that slows it down enough to ensure every 8-word block underruns.
-
-Here are stats for 512-word transfers from SD card at 3.7 MHz; figures are
-number of underruns/total number of reads and the distribution of
-words read per interrupt [0..8], collected during the transfer and
-printed once the transfer is over)
-
-1/102 [1,0,2,0,0,100,0,0,1]
-1/102 [1,0,2,0,0,100,0,0,1]
-1/102 [1,0,2,0,0,100,0,0,1]
-2/104 [1,1,0,2,21,76,3,1,2]
-3/102 [1,1,1,1,11,85,1,1,3]
-4/100 [1,0,1,1,7,83,3,2,4]
-
-while 1- and 2-word transfers seem to be caught on the second interrupt.
-[1,2,0,0,0,0,0,0,0]
-[1,1,0,0,0,0,0,0,0]
-
-
->  I have modifed my board so that I now have an external GPIO for the chip
->  select.
-Yes, we'll have to do that too.
-
->  > I'll run a few more tests, e.g. dropping the clock rate
+> Computation of the clock prescaler value returned bogus results if
+> the requested SPI clock was impossible to set. It now sets either
+> the maximum or minimum clock frequency, as appropriate.
 >
-> With a slow enough clock you can probably get to a point where SFRMOUT
->  will stay deasserted during the entire 512 byte transfer
+> Signed-off-by: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
+> ---
+> =A0drivers/spi/davinci_spi.c | =A0 12 +++++++++---
+> =A01 files changed, 9 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
+> index 956f617..02e1a76 100644
+> --- a/drivers/spi/davinci_spi.c
+> +++ b/drivers/spi/davinci_spi.c
+> @@ -153,7 +153,7 @@ static int davinci_spi_setup_transfer(struct spi_devi=
+ce *spi,
+> =A0 =A0 =A0 =A0struct davinci_spi *davinci_spi;
+> =A0 =A0 =A0 =A0struct davinci_spi_platform_data *pdata;
+> =A0 =A0 =A0 =A0u8 bits_per_word =3D 0;
+> - =A0 =A0 =A0 u32 hz =3D 0, prescale;
+> + =A0 =A0 =A0 u32 hz =3D 0, prescale =3D 0, clkspeed;
+>
+> =A0 =A0 =A0 =A0davinci_spi =3D spi_master_get_devdata(spi->master);
+> =A0 =A0 =A0 =A0pdata =3D davinci_spi->pdata;
+> @@ -190,10 +190,16 @@ static int davinci_spi_setup_transfer(struct spi_de=
+vice *spi,
+> =A0 =A0 =A0 =A0set_fmt_bits(davinci_spi->base, bits_per_word & 0x1f,
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0spi->chip_select);
+>
+> - =A0 =A0 =A0 prescale =3D ((clk_get_rate(davinci_spi->clk) / hz) - 1) & =
+0xff;
+> + =A0 =A0 =A0 clkspeed =3D clk_get_rate(davinci_spi->clk);
+> + =A0 =A0 =A0 if (hz > clkspeed / 2)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 prescale =3D 1 << 8;
+> + =A0 =A0 =A0 if (hz < clkspeed / 256)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 prescale =3D 255 << 8;
+> + =A0 =A0 =A0 if (!prescale)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 prescale =3D ((clkspeed / hz - 1) << 8) & 0=
+x0000ff00;
 
-I've tried it down to 400kHz and transfers still underrun (!)
+Is be appropriate to WARN_ON() or WARN_ONCE() when the clamp condition
+occurs?  Particularly the condition where the minimum clock speed is
+higher that the requested clock.
 
-So it does seem that SFRMOUT cannot be used as a chip select unless we
-revert to the old busy-wait-for-whole-transfer code, which causes 100%
-CPU usage during transfers.
-and 1ms-long pauses (for 512 words at 3.7MHz).
+I'd also consider an if / else if / else structure for readability and clar=
+ity.
 
-This suggests that we can only handle SFRMOUT used as chip select
-correctly by reinstating polling mode, adding the continuous transfer
-code and allowing the board definition code to specify that polling
-mode be used for such devices.
-(much as I hate polling mode :)
+g.
 
->  But it would
->  still de-assert during the switch to the next transfer in the message.
-
-Am I right in thinking that the GPIO chip select currently remains
-asserted as it should during a multi-transfer message?
-
-    M
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---

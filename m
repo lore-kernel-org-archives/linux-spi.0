@@ -1,12 +1,18 @@
 From: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH v4 1/2] spi: implemented driver for
 	Cirrus EP93xx SPI controller
-Date: Mon, 26 Apr 2010 13:58:54 +0100
-Message-ID: <w2r56d259a01004260558z9b59f9eu87990fb740929a5a@mail.gmail.com>
-References: <cover.1271774845.git.mika.westerberg@iki.fi>
-	<e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
-	<p2h56d259a01004241114qb1b1815em9657e5a857a9d4ee@mail.gmail.com>
-	<0D753D10438DA54287A00B0270842697636D9B7E4F@AUSP01VMBX24.collaborationhost.net>
+Date: Mon, 26 Apr 2010 15:35:35 +0100
+Message-ID: <k2l56d259a01004260735nb44e9dddy5b08668787070ac7@mail.gmail.com>
+References: <e96939d18bcbfb7a28ba4a925d7788884566db8c.1271774845.git.mika.westerberg@iki.fi>
+	<0D753D10438DA54287A00B0270842697636D8C8672@AUSP01VMBX24.collaborationhost.net>
+	<20100422175503.GE26418@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D9410F0@AUSP01VMBX24.collaborationhost.net>
+	<20100423052003.GF26418@gw.healthdatacare.com>
+	<0D753D10438DA54287A00B0270842697636D9419BC@AUSP01VMBX24.collaborationhost.net>
+	<0D753D10438DA54287A00B0270842697636D9B794A@AUSP01VMBX24.collaborationhost.net>
+	<y2x56d259a01004250229he9cb2ee3pf69669c9226f80fb@mail.gmail.com>
+	<m2l56d259a01004250238s99d6c869s1ee084b36f9736a0@mail.gmail.com>
+	<0D753D10438DA54287A00B0270842697636D9B7E66@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,7 +24,7 @@ Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <0D753D10438DA54287A00B0270842697636D9B7E4F-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
+In-Reply-To: <0D753D10438DA54287A00B0270842697636D9B7E66-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,33 +36,64 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On 4/25/10, H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org> wrote:
->  > -       /* clear the interrupt */
->  > -       ep93xx_spi_write_u8(espi, SSPICR, 0);
->  >
->  >         /*
->  >          * If we got ROR (receive overrun) interrupt we know that something is
->  >          * wrong. Just abort the message.
->  >          */
->  >         if (unlikely(irq_status & SSPIIR_RORIS)) {
->  > +               /* clear the overrun interrupt */
->  > +               ep93xx_spi_write_u8(espi, SSPICR, 0);
->  >                 dev_warn(&espi->pdev->dev,
->  >                          "receive overrun, aborting the message\n");
->  >                 espi->current_msg->status = -EIO;
->  >         } else {
+>  During the 512+2+1 message that is sent when the mmc_spi driver is
+>  doing a block read, the 512 byte transfer goes like this:
 >
-> With this patch the interrupts only get cleared if it's a ROR interrupt.
+>  1) 8 writes, prime the tx fifo
+>         SFRMOUT asserts when the first bit of the first byte starts
+>         transmitting
+>  2) Interrupt
+>  3) 8 reads, we must have emptied the tx fifo and filled the rx fifo
+>         SFRMOUT de-asserts after the the last bit of the last byte is
+>         received
+
+Are you printk-ing the diagnostics in the irq routine?
+If so, that slows it down enough to ensure every 8-word block underruns.
+
+Here are stats for 512-word transfers from SD card at 3.7 MHz; figures are
+number of underruns/total number of reads and the distribution of
+words read per interrupt [0..8], collected during the transfer and
+printed once the transfer is over)
+
+1/102 [1,0,2,0,0,100,0,0,1]
+1/102 [1,0,2,0,0,100,0,0,1]
+1/102 [1,0,2,0,0,100,0,0,1]
+2/104 [1,1,0,2,21,76,3,1,2]
+3/102 [1,1,1,1,11,85,1,1,3]
+4/100 [1,0,1,1,7,83,3,2,4]
+
+while 1- and 2-word transfers seem to be caught on the second interrupt.
+[1,2,0,0,0,0,0,0,0]
+[1,1,0,0,0,0,0,0,0]
+
+
+>  I have modifed my board so that I now have an external GPIO for the chip
+>  select.
+Yes, we'll have to do that too.
+
+>  > I'll run a few more tests, e.g. dropping the clock rate
 >
->  Do the RIS/TIS interrupts get cleared by the upper layers?  If so, do we
->  really need to clear the ROR interrupt here?
+> With a slow enough clock you can probably get to a point where SFRMOUT
+>  will stay deasserted during the entire 512 byte transfer
 
-RX/TX interrupts are cleared by emptying the RX FIFO or filling the TX
-FIFO to less/more than half full. There is no explicit clearing of the
-IRQ.
+I've tried it down to 400kHz and transfers still underrun (!)
 
-The ROR interrupt instead remains active until you explicitly clear it
-by writing (anything( to SSPICR, so it would remain on forever
-otherwise.
+So it does seem that SFRMOUT cannot be used as a chip select unless we
+revert to the old busy-wait-for-whole-transfer code, which causes 100%
+CPU usage during transfers.
+and 1ms-long pauses (for 512 words at 3.7MHz).
+
+This suggests that we can only handle SFRMOUT used as chip select
+correctly by reinstating polling mode, adding the continuous transfer
+code and allowing the board definition code to specify that polling
+mode be used for such devices.
+(much as I hate polling mode :)
+
+>  But it would
+>  still de-assert during the switch to the next transfer in the message.
+
+Am I right in thinking that the GPIO chip select currently remains
+asserted as it should during a multi-transfer message?
 
     M
 

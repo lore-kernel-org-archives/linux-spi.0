@@ -1,7 +1,8 @@
-From: "Culture et Formation" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Secretaire Medicale, pourquoi pas vous?
-Date: Thu, 29 Apr 2010 04:51:45 +0200 (CEST)
-Message-ID: <l1maoe.g921mi@front02.r7g.com>
+From: USA © VIAGRA <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] 29.4.2010 Discount #46400
+Date: Thu, 29 Apr 2010 13:32:31 +0400
+Message-ID: <08aa01cae799$74606f50$8a1a525c@veterina-0475de>
+Reply-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -16,6 +17,11 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
+
+Open in your browser
+
+http://imojgrlr.ru?59531996369=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+
 
 
 ------------------------------------------------------------------------------

@@ -1,11 +1,14 @@
-From: "De Dietrich" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Divisez votre facture de chauffage par 2 !
-Date: Thu, 29 Apr 2010 15:59:03 +0200 (CEST)
-Message-ID: <l1n5ko.yjphld@front02.r7g.com>
+From: "=?utf-8?B?MTIgTWF5IHwgTW9zY293?=" <bysum-p/8Sy9rU+owox3rIn2DAYQ@public.gmane.org>
+Subject: [SPAM] Недобросовестные пост
+	=?utf-8?B?0LDQstGJ0LjQutC4OiDQmtCw0Log0YHQvtGF0YDQsNC90LjRgtGMINCy0YvRh9C1?=
+	=?utf-8?B?0YLRiyDQuCDRg9C50YLQuNC+0YIg0LrQvtC90YTQu9C40LrRgtCwINGBINC90LA=?=
+	логовыми органами
+Date: Thu, 29 Apr 2010 21:37:20 +0400
+Message-ID: <1336061833.20100429213720@vianliga.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,5 +20,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
+SOXk7+Ly7/Pv9+Xz9O755SDw7/P04ff96evpOgrLwcsg08/I0sHOydTYIM7BzM/Hz9fZxSDX2d7F
+1NkgySDOxSDEz9DV09TJ1NggzsHS1dvFzsnRINrBy8/Oz9cuCgoxMiBNQfEgLS0gxy5NT0NL9+EK
+CioqKiDwUO/n8uFNTUEgKioqCgoxLiBNxdTPxMnexdPLycUg1cvB2sHOydEg7cnOxsnOwSDy5iDP
+IM7B2s7B3sXOyckg19nF2sTO2cggzsHMz8fP19nIINDSz9fF0s/LLgoKMi4gTWXUz8TJ3sXTy8nF
+INXLwdrBzsnRIO3JzsbJzsEg0M8g0M/J08vVIM7FxM/C0s/Tz9fF09TO2cggy8/O1NLBx8XO1M/X
+LgoKMy4gT2POz9fBzsnRINDSydrOwc7J0SDOxc/Cz9POz9fBzs7PyiDOwczPx8/Xz8og19nHz8TZ
+ICjOwSDP087P18HOyckg09XExcLOz8og0NLBy9TJy8ksIArQydPFzSDtyc7Gyc7BLCDQ0sHL1MnL
+ySDQ0s/XxdLPyykuCgo0LiD+1M8gzsXPwsjPxMnNzyDTxMXMwdTYLCDe1M/C2SDQ0s/R18nU2CDS
+wdrVzc7VwCDP083P1NLJ1MXM2M7P09TYLiDrwcvJxSDEz8vVzcXO1NkgySAKy8HL1cAgyc7Gz9LN
+wcPJwCDPIMvPztTSwcfFztTFIM7Fz8LIz8TJzc8g08/C0sHU2C4KCjUuIEvByyDawd3J1MnU2NPR
+IM/UINDSxdTFztrJyiDOwczPx8/Xz8fPIM/Sx8HOwSDPINTPzSwg3tTPIMvPztTSwcfFztQ6CiAg
+ICAtIM7FINDMwdTJ1CDOwczPx8ksIMkgzsUg08TBxdQgz9TexdTOz9PU2DsKICAgIC0gzsUgz9TX
+xd7BxdQgzsEg19PU0sXeztnFINDSz9fF0svJOwogICAgLSDOxSDOwcjPxMnU09Eg0M8gzcXT1NUg
+0sXHydPU0sHDycksIMzJws8g2sHSxcfJ09TSydLP18HOINDPIMHE0sXT1SAKICAgICAgzcHT08/X
+z8og0sXHydPU0sHDyck7CiAgICAtIMTJ0sXL1M/SIOLv7fYsIM7J3sXHzyDOxSDQz8TQydPZ18HM
+LCDFx88g0M/E0MnT2CDQz8TExczBzMk7CiAgICAtIMTJ0sXL1M/SINHXzNHF1NPRICLNwdPTz9fZ
+zSIsINcgz9TOz9vFzsnJINLVy8/Xz8TJ1MXM0SDQ0s/Xz8TR1NPRINLP2tnTy87ZxSAKICAgICAg
+zcXSz9DSydHUydE7CiAgICAtINDSz9fFxMXOztnKIM/Tzc/U0iDQz8vB2sHMLCDe1M8gy8/N0MHO
+ydEgzsUgzc/HzMEgz9TH0tXaydTYINTP18HSINMgwcTSxdPBLCAKICAgICAg1cvB2sHOzs/HzyDX
+IM7By8zBxM7Pyiwg097F1MUtxsHL1NXSxTsKICAgIC0gy8/E2SDv6/f85CDLz87U0sHHxc7UwSDO
+xSDQz9rXz8zRwNQgxc3VINDSz8na18XT1MkgxMXK09TXydEsIMvP1M/S2cUgz84gCiAgICAgINHL
+z8LZINDSz8na18XMINDPIM/Uzs/bxc7JwCDLIM7BzM/Hz9DMwdTFzNjdycvVICjOxSDNz9bF1CDX
+2dDPzM7R1Ngg0sHCz9TZLCDQz9PUwdfM0dTYIAogICAgICDUz9fB0iwg1MHLIMvByyDTz9rEwc4g
+xMzRIMnO2cggw8XMxcopLgoKNi4gQ9DP08/CINXIz8TBIM/UINDSydrOwc7J0SDOwczPx8/Xz8og
+19nHz8TZIM7Fz8LP087P18HOzs/KINDSySDawcvMwN7FzsnJIMTPx8/Xz9LP1yDTIArQz9PUwdfd
+ycvBzckg0NLJINDPzc/dySDQz9PSxcTOycvBLiAK68HLINDP09TSz8nU2CDEz8fP18/SLCDe1M/C
+2SDQ0sXUxc7ayckg0M8g0M/T1MHX3cnLwc0gzsXM2NrRIMLZzM8g0NLFxN/R18nU2C4KCjcuIPXI
+z8Qgz9Qg0NLJ2s7BzsnRIM7Fz8LP087P18HOzs/KIM7BzM/Hz9fPyiDX2cfPxNkg0NXUxc0gz9PP
+ws/HzyDT0M/Tz8LBINrBy8zA3sXOydEgCsTPx8/Xz9LP1y4KCjguIPXIz8Qgz9Qg1dDMwdTZIO7k
+8yDTIM7Bw8XOy8kg0NXUxc06CiAgICAtINrBy8zA3sXOydEgxM/Hz9fP0sEg0yDEz9DPzM7J1MXM
+2M7PyiDX2cfPxM/KOwogICAgLSDawcvMwN7FzsnFIMTPx8/Xz9LBINMg0NLFxNfB0snUxczYzs/K
+IMvV0MzFyi3Q0s/EwdbFyiDP0MPJz87BOwogICAgLSDXy8zA3sXOycUg1dPMz9fJyiDPIM7F1dPU
+z8rLxS4KCjkuIEvUbyDP1NfF3sHF1CDawSDSwcLP1NUg0yDOxcTPwtLP08/XxdPUztnNySDLz87U
+0sHHxc7Uwc3JICjEydLFy9TP0iDJzMkgwtXIx8HM1MXSKSDJINcgCsvBy8/KIN7B09TJLgoKMTAu
+IPBv1GVw0SDEz8vVzcXO1M/XINDPIM7FxM/C0s/Tz9fF09TO2c0g0M/T1MHX3cnLwc06IM7BzM/H
+z9fZxSDQz9PMxcTT1NfJ0S4g9cvB2sHOydEgCu3JzsbJzsEg0M8g0NLJ18zF3sXOycAgyyDP1NfF
+1NPU18XOzs/T1Mkg1yDUwcvPzSDTzNXewcUuIPPQz9PPwiDawd3J1Nkgz9QgzsHMz8fP19nIIArQ
+0sXUxc7aycouIPHXzNHF1NPRIMzJINDP1MXS0SDEz8vVzcXO1M/XINrB3cnUz8ogz9Qg0NLF1MXO
+2snKINDSwdfPz8jSwc7J1MXM2M7ZyCDP0sfBzs/XLgoKfn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fgpD1M/Jzc/T1Ngg1d5h09R1
+0TogOE9PTyDS1cLMxcouCk1lY9TPINDSz9fFxMXOddE6IM0uIOLB1c3BztPLwdEsINXMLiDiwdXN
+wc7Ty8HRLCDELjYsIMLJ2s7F0yDDxc7U0i4K9yBj1M/JzW/T1Ngg18jPxMnUIM3F1M/Eyd7F08vJ
+yiDNwdTF0snBzCwgz8LFxNksIMvPxsUt0MHV2tksINPF0tTJxsnLwdQuIAoK6UjmT1DtQePp8SDJ
+IFBF5+lDVFBB4+nxIPBPIFRF7EXm70j1INcgTU9DS0JFIDogOTIxIH4gM08gfjE3Lgp+fn5+fn5+
+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

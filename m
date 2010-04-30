@@ -1,14 +1,18 @@
-From: "=?windows-1251?B?z+7x8vDu5e3o5SDx6PHy5ez7IPHh+/LgIOIg6u7s7+Dt6Og=?="
-	<fines-p/8Sy9rU+owox3rIn2DAYQ@public.gmane.org>
-Subject: =?windows-1251?b?yuDqIPPi5evo9+jy/CDu4frl7CDv?=
-	=?windows-1251?b?8O7k4OYuINPv8ODi6+Xt6OUg7vLk5evu7CDx4fvy4C4=?=
-Date: Thu, 29 Apr 2010 22:47:20 +0400
-Message-ID: <1301152317.20100429224720@vianliga.ru>
+From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH 1/2] powerpc/mpc5121: move PSC FIFO
+	memory init to platform code
+Date: Fri, 30 Apr 2010 15:21:26 +0200
+Message-ID: <1272633687-6935-2-git-send-email-agust@denx.de>
+References: <1272633687-6935-1-git-send-email-agust@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>, Detelv Zundel <dzu-ynQEQJNshbs@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1272633687-6935-1-git-send-email-agust-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,71 +23,211 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-0J7QotCU0JXQmyDQodCR0KvQotCQOiDQodCf0J7QodCe0JHQqyDQo9CS0JXQm9CY0KfQldCd0JjQ
-ryDQntCR0KrQldCc0JAg0J/QoNCe0JTQkNCWCgoxMy0xNCDQvNCw0Y8gfCDQnNC+0YHQutCy0LAK
-CtCa0LDQuiDQvtCx0LXRgdC/0LXRh9C40YLRjCDQttC10LvQsNC10LzRi9C5INC+0LHRitC10Lwg
-0L/RgNC+0LTQsNC2PwrQmtCw0Log0L/RgNCw0LLQuNC70YzQvdC+INGA0LDRgdC/0YDQtdC00LXQ
-u9C40YLRjCDRgNC10YHRg9GA0YHRiyDRgdCx0YvRgtC+0LLQvtCz0L4g0L/QvtC00YDQsNC30LTQ
-tdC70LXQvdC40Y8/CtCa0YLQviwg0YLQtSDQutC70LjQtdC90YLRiywg0LrQvtGC0L7RgNGL0LUg
-0LHRg9C00YPRgiDQtNCw0LLQsNGC0Ywg0JLQsNC8INC+0YHQvdC+0LLQvdGD0Y4g0L/RgNC40LHR
-i9C70Yw/CtCT0LTQtSDQuNGFINC40YHQutCw0YLRjD8g0J/QvtGH0LXQvNGDINC+0L3QuCDQutGD
-0L/Rj9GCINGDINCS0LDRgT8g0JrQsNC6INC40Lwg0L/RgNC+0LTQsNGC0Yw/CgrQmNC90YTQvtGA
-0LzQsNGG0LjRjyDQuCDRgNC10LPQuNGB0YLRgNCw0YbQuNGPOiA4ICg0OTUpIDkyMSAzMCAxNwoK
-0JIg0L/RgNC+0LPRgNCw0LzQvNC1OgoKMS4g0J/QvtC00YHRgtGA0L7QudC60LAg0YHQsdGL0YLQ
-vtCy0L7QuSDRgdGC0YDRg9C60YLRg9GA0Ysg0L/QvtC0INGG0LXQu9C10LLQvtC5INGB0LXQs9C8
-0LXQvdGCLiDQn9C+0LLRi9GI0LXQvdC40LUgCtGN0YTRhNC10LrRgtC40LLQvdC+0YHRgtC4CtGB
-0LHRi9GC0L7QstC+0Lkg0YHRgtGA0YPQutGC0YPRgNGLICjQmtCw0Log0LzQsNC60YHQuNC80LDQ
-u9GM0L3QviDQt9Cw0YDQsNCx0LDRgtGL0LLQsNGC0Ywg0L/RgNC4INC80LjQvdC40LzQsNC70YzQ
-vdGL0YUg0LfQsNGC0YDQsNGC0LDRhT8pCjIuINCk0YPQvdC60YbQuNC+0L3QuNGA0L7QstCw0L3Q
-uNC1INGB0LHRi9GC0L7QstC+0Lkg0YHRgtGA0YPQutGC0YPRgNGLLiDQo9C/0YDQsNCy0LvQtdC9
-0LjQtSDQutC70LjQtdC90YLRgdC60L7QuSDQsdCw0LfQvtC5IArQutC+0LzQv9Cw0L3QuNC4LiDQ
-nNC10YLQvtC00YsK0YPQtNC10YDQttCw0L3QuNGPINC60LvQuNC10L3RgtC+0LIuINCg0LDRgdC/
-0YDQtdC00LXQu9C10L3QuNC1INGA0LXRgdGD0YDRgdC+0LIg0YHQsdGL0YLQvtCy0L7QuSDRgdGC
-0YDRg9C60YLRg9GA0YsuCjMuINCj0L/RgNCw0LLQu9C10L3QuNC1INGB0LHRi9GC0L7QvC4g0JzQ
-tdGC0L7QtNC40LrQsCDRgdC+0LfQtNCw0L3QuNGPINC60L7QvdC60YPRgNC10L3RgtC90YvRhSDQ
-v9GA0LXQuNC80YPRidC10YHRgtCyLiDQo9C/0YDQsNCy0LvQtdC90LjQtQrQsNGB0YHQvtGA0YLQ
-uNC80LXQvdGC0L7QvC4KNC4g0KHQsdGL0YLQvtCy0YvQtSDQvNC10YLQvtC00Ysg0L/RgNC+0LTQ
-stC40LbQtdC90LjRjyDRgtC+0LLQsNGA0L7Qsi4g0JjRgdGB0LvQtdC00L7QstCw0L3QuNC1INGG
-0LXQu9C10LLQvtCz0L4g0YHQtdCz0LzQtdC90YLQsC4gCiLQlNC10L3QtdC20L3Ri9C1IgrQvNC1
-0YLQvtC00Ysg0L/RgNC+0LTQstC40LbQtdC90LjRjy4gItCh0LXRgNCy0LjRgdC90YvQtSIg0LzQ
-tdGC0L7QtNGLINC/0YDQvtC00LLQuNC20LXQvdC40Y8uICLQotC10YXQvdC+0LvQvtCz0LjRh9C1
-0YHQutC40LUiINC80LXRgtC+0LTRiwrQv9GA0L7QtNCy0LjQttC10L3QuNGPLgo1LiDQlNC10LzQ
-v9C40L3QsyDQvdCwINGA0YvQvdC60LU6INGB0L/QvtGB0L7QsdGLINC/0YDQvtGC0LjQstC+0LTQ
-tdC50YHRgtCy0LjRjy4g0JrQsNC6INC90LUg0YHQvdC40LfQuNGC0Ywg0YbQtdC90YMg0Lgg0L3Q
-tSAK0YPQv9GD0YHRgtC40YLRjCDQv9GA0LjQsdGL0LvRjC4K0JrQsNC6INC/0YDQsNCy0LjQu9GM
-0L3QviDRgdC90LjQt9C40YLRjCDRhtC10L3Rgywg0LXRgdC70Lgg0Y3RgtC+INCy0YHQtS3RgtCw
-0LrQuCDQvdC10LjQt9Cx0LXQttC90L4uCjYuINCf0L7QtNCx0L7RgCDQvNC10L3QtdC00LbQtdGA
-0L7QsiDQv9C+INC/0YDQvtC00LDQttCw0LwuINCh0YbQtdC90LDRgNC40Lkg0LjQvdGC0LXRgNCy
-0YzRji4g0JDQvdCw0LvQuNC3INC+0YLQstC10YLQvtCyIArRgdC+0LjRgdC60LDRgtC10LvRjy4g
-0KDQsNCx0L7RgtCwCtGBINC60LDQtNGA0L7QstGL0LzQuCDQsNCz0LXQvdGC0YHRgtCy0LDQvNC4
-LiDQmtCw0Log0LjQt9Cx0LXQttCw0YLRjCDQu9C+0LLRg9GI0LrQuC4KNy4g0KHRgtC40LzRg9C7
-0LjRgNC+0LLQsNC90LjQtSDQuCDQvNC+0YLQuNCy0LjRgNC+0LLQsNC90LjQtSDQvNC10L3QtdC0
-0LbQtdGA0L7QsiDQv9C+INC/0YDQvtC00LDQttCw0LwuINCQ0L3QsNC70LjQtyAK0YHRgtC40LzR
-g9C70LjRgNGD0Y7RidC40YUK0YTQsNC60YLQvtGA0L7Qsjog0LzQsNGC0LXRgNC40LDQu9GM0L3R
-i9C5INGE0LDQutGC0L7RgDsg0L3QtdC80LDRgtC10YDQuNCw0LvRjNC90YvQtSDRhNCw0LrRgtC+
-0YDRiy4g0J/QvtGB0YLRgNC+0LXQvdC40LUg0YHQuNGB0YLQtdC80YsK0YHRgtC40LzRg9C70LjR
-gNC+0LLQsNC90LjRjyDRgdC+0YLRgNGD0LTQvdC40LrQvtCyOiDRgNCw0LfQsdC+0YAg0YLQuNC/
-0LjRh9C90YvRhSDRgdC40YLRg9Cw0YbQuNC5INC4INC+0YjQuNCx0L7QuiDQsiDQv9C+0LTRhdC+
-0LTQtSDQugrQvNC+0YLQuNCy0LjRgNC+0LLQsNC90LjRji4g0JzQsNGC0LXRgNC40LDQu9GM0L3Q
-vtC1INGB0YLQuNC80YPQu9C40YDQvtCy0LDQvdC40LU6INC60YDQuNGC0LXRgNC40Lgg0YHQvtGB
-0YLQsNCy0LvQtdC90LjRjyDQv9C70LDQvdCwIArQv9GA0L7QtNCw0LY7CtC/0L7RgdGC0YDQvtC1
-0L3QuNC1INGB0LjRgdGC0LXQvNGLINC80LDRgtC10YDQuNCw0LvRjNC90L7Qs9C+INGB0YLQuNC8
-0YPQu9C40YDQvtCy0LDQvdC40Y8uCjguINCk0L7RgNC80YPQu9GLINGA0LDRgdGH0LXRgtCwINC3
-0LDRgNCw0LHQvtGC0L3QvtC5INC/0LvQsNGC0YsgKNCx0L7QvdGD0YHRiywg0L/RgNC10LzQuNCw
-0LvRjNC90YvQtSwg0L3QsNC00LHQsNCy0LrQuCkuIArQoNCw0YHQv9GA0LXQtNC10LvQtdC90LjQ
-tQrRhNC+0L3QtNCwINC30LDRgNCw0LHQvtGC0L3QvtC5INC/0LvQsNGC0YsuINCh0L/QvtGB0L7Q
-sdGLINC90LXQvNCw0YLQtdGA0LjQsNC70YzQvdC+0LPQviDRgdGC0LjQvNGD0LvQuNGA0L7QstCw
-0L3QuNGPLgoK0KHRgtC+0LjQvNC+0YHRgtGMINGD0YfQsNGB0YLQuNGPOiAxNzUwMCDRgNGD0LHQ
-u9C10LkuCtCc0LXRgdGC0L4g0L/RgNC+0LLQtdC00LXQvdC40Y86INC8LiDQkdCw0YPQvNCw0L3R
-gdC60LDRjywg0YPQuy4g0JHQsNGD0LzQsNC90YHQutCw0Y8sINC0LjYsINCx0LjQt9C90LXRgSDR
-htC10L3RgtGAICLQktC40LrRgtC+0YDQuNGPIArQn9C70LDQt9CwIi4K0JIg0YHRgtC+0LjQvNC+
-0YHRgtGMINCy0YXQvtC00LjRgiDQvNC10YLQvtC00LjRh9C10YHQutC40Lkg0LzQsNGC0LXRgNC4
-0LDQuywg0L7QsdC10LTRiywg0LrQvtGE0LUt0L/QsNGD0LfRiywg0YHQtdGA0YLQuNGE0LjQutCw
-0YIuIArQmNC90L7Qs9C+0YDQvtC00L3QuNC8CtGD0YfQsNGB0YLQvdC40LrQsNC8INC/0L7QvNC+
-0LPQsNC10Lwg0LIg0LHRgNC+0L3QuNGA0L7QstCw0L3QuNC4INCz0L7RgdGC0LjQvdC40YbRiy4K
-CtCY0L3RhNC+0YDQvNCw0YbQuNGPINC4INGA0LXQs9C40YHRgtGA0LDRhtC40Y86IDggKDQ5NSkg
-OTIxIDMwIDE3CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Since PSC could also be used in other modes than UART mode
+we move PSC FIFO memory initialization from serial driver to
+common platform code. The initialized FIFO memory slices may
+not overlap, so the most easy way would be to configure them
+all at once at init time for all PSC devices. This is now done
+by this patch.
+
+Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+---
+ arch/powerpc/platforms/512x/mpc512x_shared.c |   78 ++++++++++++++++++++++++++
+ drivers/serial/mpc52xx_uart.c                |   69 -----------------------
+ 2 files changed, 78 insertions(+), 69 deletions(-)
+
+diff --git a/arch/powerpc/platforms/512x/mpc512x_shared.c b/arch/powerpc/platforms/512x/mpc512x_shared.c
+index 796080c..a717466 100644
+--- a/arch/powerpc/platforms/512x/mpc512x_shared.c
++++ b/arch/powerpc/platforms/512x/mpc512x_shared.c
+@@ -26,6 +26,7 @@
+ #include <asm/prom.h>
+ #include <asm/time.h>
+ #include <asm/mpc5121.h>
++#include <asm/mpc52xx_psc.h>
+ 
+ #include "mpc512x.h"
+ 
+@@ -369,9 +370,86 @@ void __init mpc512x_declare_of_platform_devices(void)
+ 	}
+ }
+ 
++#define DEFAULT_FIFO_SIZE 16
++
++static unsigned int __init get_fifo_size(struct device_node *np,
++					 char *prop_name)
++{
++	const unsigned int *fp;
++
++	fp = of_get_property(np, prop_name, NULL);
++	if (fp)
++		return *fp;
++
++	pr_warning("no %s property in %s node, defaulting to %d\n",
++		   prop_name, np->full_name, DEFAULT_FIFO_SIZE);
++
++	return DEFAULT_FIFO_SIZE;
++}
++
++#define FIFOC(_base) ((struct mpc512x_psc_fifo __iomem *) \
++		    ((u32)(_base) + sizeof(struct mpc52xx_psc)))
++
++/* Init PSC FIFO space for TX and RX slices */
++void __init mpc512x_psc_fifo_init(void)
++{
++	struct device_node *np;
++	void __iomem *psc;
++	unsigned int tx_fifo_size;
++	unsigned int rx_fifo_size;
++	int fifobase = 0; /* current fifo address in 32 bit words */
++
++	for_each_compatible_node(np, NULL, "fsl,mpc5121-psc") {
++		tx_fifo_size = get_fifo_size(np, "fsl,tx-fifo-size");
++		rx_fifo_size = get_fifo_size(np, "fsl,rx-fifo-size");
++
++		/* size in register is in 4 byte units */
++		tx_fifo_size /= 4;
++		rx_fifo_size /= 4;
++		if (!tx_fifo_size)
++			tx_fifo_size = 1;
++		if (!rx_fifo_size)
++			rx_fifo_size = 1;
++
++		psc = of_iomap(np, 0);
++		if (!psc) {
++			pr_err("%s: Can't map %s device\n",
++				__func__, np->full_name);
++			continue;
++		}
++
++		/* FIFO space is 4KiB, check if requested size is available */
++		if ((fifobase + tx_fifo_size + rx_fifo_size) > 0x1000) {
++			pr_err("%s: no fifo space available for %s\n",
++				__func__, np->full_name);
++			iounmap(psc);
++			/*
++			 * chances are that another device requests less
++			 * fifo space, so we continue.
++			 */
++			continue;
++		}
++
++		/* set tx and rx fifo size registers */
++		out_be32(&FIFOC(psc)->txsz, (fifobase << 16) | tx_fifo_size);
++		fifobase += tx_fifo_size;
++		out_be32(&FIFOC(psc)->rxsz, (fifobase << 16) | rx_fifo_size);
++		fifobase += rx_fifo_size;
++
++		/* reset and enable the slices */
++		out_be32(&FIFOC(psc)->txcmd, 0x80);
++		out_be32(&FIFOC(psc)->txcmd, 0x01);
++		out_be32(&FIFOC(psc)->rxcmd, 0x80);
++		out_be32(&FIFOC(psc)->rxcmd, 0x01);
++
++		iounmap(psc);
++	}
++}
++
+ void __init mpc512x_init(void)
+ {
+ 	mpc512x_declare_of_platform_devices();
+ 	mpc5121_clk_init();
+ 	mpc512x_restart_init();
++	mpc512x_psc_fifo_init();
+ }
+diff --git a/drivers/serial/mpc52xx_uart.c b/drivers/serial/mpc52xx_uart.c
+index 3119fdd..843e7fb 100644
+--- a/drivers/serial/mpc52xx_uart.c
++++ b/drivers/serial/mpc52xx_uart.c
+@@ -430,34 +430,10 @@ static unsigned long mpc512x_getuartclk(void *p)
+ 	return mpc5xxx_get_bus_frequency(p);
+ }
+ 
+-#define DEFAULT_FIFO_SIZE 16
+-
+-static unsigned int __init get_fifo_size(struct device_node *np,
+-					 char *fifo_name)
+-{
+-	const unsigned int *fp;
+-
+-	fp = of_get_property(np, fifo_name, NULL);
+-	if (fp)
+-		return *fp;
+-
+-	pr_warning("no %s property in %s node, defaulting to %d\n",
+-		   fifo_name, np->full_name, DEFAULT_FIFO_SIZE);
+-
+-	return DEFAULT_FIFO_SIZE;
+-}
+-
+-#define FIFOC(_base) ((struct mpc512x_psc_fifo __iomem *) \
+-		    ((u32)(_base) + sizeof(struct mpc52xx_psc)))
+-
+ /* Init PSC FIFO Controller */
+ static int __init mpc512x_psc_fifoc_init(void)
+ {
+ 	struct device_node *np;
+-	void __iomem *psc;
+-	unsigned int tx_fifo_size;
+-	unsigned int rx_fifo_size;
+-	int fifobase = 0; /* current fifo address in 32 bit words */
+ 
+ 	np = of_find_compatible_node(NULL, NULL,
+ 				     "fsl,mpc5121-psc-fifo");
+@@ -480,51 +456,6 @@ static int __init mpc512x_psc_fifoc_init(void)
+ 		return -ENODEV;
+ 	}
+ 
+-	for_each_compatible_node(np, NULL, "fsl,mpc5121-psc-uart") {
+-		tx_fifo_size = get_fifo_size(np, "fsl,tx-fifo-size");
+-		rx_fifo_size = get_fifo_size(np, "fsl,rx-fifo-size");
+-
+-		/* size in register is in 4 byte units */
+-		tx_fifo_size /= 4;
+-		rx_fifo_size /= 4;
+-		if (!tx_fifo_size)
+-			tx_fifo_size = 1;
+-		if (!rx_fifo_size)
+-			rx_fifo_size = 1;
+-
+-		psc = of_iomap(np, 0);
+-		if (!psc) {
+-			pr_err("%s: Can't map %s device\n",
+-				__func__, np->full_name);
+-			continue;
+-		}
+-
+-		/* FIFO space is 4KiB, check if requested size is available */
+-		if ((fifobase + tx_fifo_size + rx_fifo_size) > 0x1000) {
+-			pr_err("%s: no fifo space available for %s\n",
+-				__func__, np->full_name);
+-			iounmap(psc);
+-			/*
+-			 * chances are that another device requests less
+-			 * fifo space, so we continue.
+-			 */
+-			continue;
+-		}
+-		/* set tx and rx fifo size registers */
+-		out_be32(&FIFOC(psc)->txsz, (fifobase << 16) | tx_fifo_size);
+-		fifobase += tx_fifo_size;
+-		out_be32(&FIFOC(psc)->rxsz, (fifobase << 16) | rx_fifo_size);
+-		fifobase += rx_fifo_size;
+-
+-		/* reset and enable the slices */
+-		out_be32(&FIFOC(psc)->txcmd, 0x80);
+-		out_be32(&FIFOC(psc)->txcmd, 0x01);
+-		out_be32(&FIFOC(psc)->rxcmd, 0x80);
+-		out_be32(&FIFOC(psc)->rxcmd, 0x01);
+-
+-		iounmap(psc);
+-	}
+-
+ 	return 0;
+ }
+ 
+-- 
+1.6.3.3
+
+
+------------------------------------------------------------------------------

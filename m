@@ -1,7 +1,8 @@
-From: "=?ISO-8859-1?Q?Sant=E9=20V=E9to?=" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Votre animal vous coûte trop cher ?
-Date: Fri, 30 Apr 2010 20:24:01 +0200 (CEST)
-Message-ID: <l1pcfz.vblvb5@front07.g7r9.com>
+From: "Orange - Challenge mobile" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: une question par semaine pour gagner 5
+	smartphones
+Date: Sat,  1 May 2010 09:26:23 +0200 (CEST)
+Message-ID: <l1qcnz.iwz5fa@front.ta271.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

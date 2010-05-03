@@ -1,69 +1,36 @@
-From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v6 1/2] spi: implemented driver for
-	Cirrus EP93xx SPI controller
-Date: Mon, 3 May 2010 15:18:09 +0200
-Message-ID: <o2l63386a3d1005030618q1914e04x471ce544c6be82dc@mail.gmail.com>
-References: <cover.1272805161.git.mika.westerberg@iki.fi>
-	<0dce0e9fdb6af35854d26d7bd0d8af5a5ea8f76a.1272805161.git.mika.westerberg@iki.fi>
-	<h2r63386a3d1005021718k31125e4fz43a08025997b5c5c@mail.gmail.com>
-	<20100503042123.GM26418@gw.healthdatacare.com>
+From: "Arce, Abraham" <x0066660@ti.com>
+Subject: [UPDATE] [PATCH 0/4] OMAP4 Ethernet Controller Support
+Date: Mon, 3 May 2010 11:31:21 -0500
+Message-ID: <27F9C60D11D683428E133F85D2BB4A53043DE67298@dlee03.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org,
-	martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100503042123.GM26418-WfG2TfFPcQ9S6P4I59wummXnswh1EIUO@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+To: "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Language: en-US
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/5/3 Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>:
+Hi,
 
-> Yeah. It looks pretty similar. Although there seems to be differences. Do=
-cumentation
-> of the controller can be found in:
->
-> =A0 =A0 =A0 =A0http://www.cirrus.com/en/pubs/manual/EP93xx_Users_Guide_UM=
-1.pdf
->
-> It does not mention anything about AMBA PL022.
+This is an update regarding the status on the patches needed to have KS8851 SNL SPI based network controller in OMAP4430.
 
-They have surely based the hardware on the PL022. A diff document would
-surely be useful, can Cirrus answer that kind of questions for you?
+This patch has been accepted
 
-Hm, it has to be *really* different to warrant a totally new driver
-duplicate code is never fun...
+ 0001-OMAP4-Clocks-Change-SPI-Instance-Names.patch
+  http://www.mail-archive.com/linux-omap@vger.kernel.org/msg26951.html
 
->> Can you make a hexdump of the PrimeCell ID registers at offset
->> base+0xffe0..0xffff and post the contents?
->
-> Here it is, you probably meant base + 0xfe0 .. 0xfff, right?
->
-> [ =A0 =A02.410000] 0xc6070fe0: 0x0
-> [ =A0 =A02.410000] 0xc6070fe4: 0x0
-> [ =A0 =A02.410000] 0xc6070fe8: 0x0
-> [ =A0 =A02.420000] 0xc6070fec: 0x0
-> [ =A0 =A02.420000] 0xc6070ff0: 0x0
-> [ =A0 =A02.420000] 0xc6070ff4: 0x0
-> [ =A0 =A02.430000] 0xc6070ff8: 0x0
-> [ =A0 =A02.430000] 0xc6070ffc: 0x0
+No comments for the following patches, any feedback for them?
 
-Looks like it's been blanked out so atleast it is not identifying itself as
-a PL022 anymore.
+ 0002-OMAP4-SPI-Fix-Driver-Kconfig.patch
+  https://patchwork.kernel.org/patch/94136/
+ 0003-OMAP4-Ethernet-KS8851-Board-Support.patch
+  https://patchwork.kernel.org/patch/94134/
+ 0004-OMAP4-Networking-Defconfig-Support.patch
+  https://patchwork.kernel.org/patch/94135/
 
-It could also be that PL022 and the Cirrus controller has some common
-ancestor...
+Best Regards
+Abraham
 
-Yours,
-Linus Walleij
-
----------------------------------------------------------------------------=
----

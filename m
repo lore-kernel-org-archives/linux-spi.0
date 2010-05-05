@@ -1,41 +1,44 @@
-From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Subject: Re: [PATCH v6 2/2] ep93xx: SPI driver platform
-	support code
-Date: Wed, 5 May 2010 15:26:25 +0100
-Message-ID: <20100505142625.GB2606@n2100.arm.linux.org.uk>
-References: <cover.1272805161.git.mika.westerberg@iki.fi>
-	<865b5d7ca0fae1977a1fadcdabdb715e3ea1604d.1272805161.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B0270842697636EB838E1@AUSP01VMBX24.collaborationhost.net>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH v1 2/3] OMAP4: Ethernet: KS8851 Board Support
+Date: Wed, 5 May 2010 10:19:39 -0700
+Message-ID: <20100505171938.GX29604@atomide.com>
+References: <27F9C60D11D683428E133F85D2BB4A53043DEEB8C1@dlee03.ent.ti.com>
+ <E0D41E29EB0DAC4E9F3FF173962E9E94026F8C7096@dbde02.ent.ti.com>
+ <27F9C60D11D683428E133F85D2BB4A53043DEEB8D1@dlee03.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
-	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "G, Manjunath Kondaiah" <manjugk@ti.com>,
+	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>
+To: "Arce, Abraham" <x0066660@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <0D753D10438DA54287A00B0270842697636EB838E1-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <27F9C60D11D683428E133F85D2BB4A53043DEEB8D1@dlee03.ent.ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 04, 2010 at 12:21:36PM -0500, H Hartley Sweeten wrote:
-> That patch is already present in linux-next.  If Russell think there might
-> be an issue you could rebase this patch on the linux-next tree.
+* Arce, Abraham <x0066660@ti.com> [100505 01:06]:
+> Manjunath,
+> 
+> > > +
+> > > +static void omap_ethernet_init(void)
+> > > +{
+> > > +	gpio_request(ETHERNET_KS8851_POWER_ENABLE, "ethernet");
+> > > +	gpio_direction_output(ETHERNET_KS8851_POWER_ENABLE, 1);
+> > > +	gpio_request(ETHERNET_KS8851_QUART, "quart");
+> > > +	gpio_direction_output(ETHERNET_KS8851_QUART, 1);
+> > > +	gpio_request(ETHERNET_KS8851_IRQ, "ks8851");
+> > 
+> > Any reason for not checking return value of gpio_request()?
+> > 
+> 
+> Thought initially about them as dedicated lines for ethernet avoiding
+> both reasons to check for a gpio's request:
+> 
+>  1. invalid gpio
+>  2. already claimed gpio
 
-If this patch depends on 5998/1, then I'll take it via the ep93xx branch
-(which has 5998/1 on.)  It's only touching files in arch/arm so there
-shouldn't be any problem with that.
+You still need to check for the result.
 
-------------------------------------------------------------------------------
+Tony

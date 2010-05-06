@@ -1,25 +1,16 @@
-From: "Arce, Abraham" <x0066660-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v1 2/3] OMAP4: Ethernet: KS8851
-	Board Support
-Date: Wed, 5 May 2010 23:18:52 -0500
-Message-ID: <27F9C60D11D683428E133F85D2BB4A53043DEEC1CE@dlee03.ent.ti.com>
-References: <27F9C60D11D683428E133F85D2BB4A53043DEEB8C1@dlee03.ent.ti.com>
-	<E0D41E29EB0DAC4E9F3FF173962E9E94026F8C7096@dbde02.ent.ti.com>
-	<27F9C60D11D683428E133F85D2BB4A53043DEEB8D1@dlee03.ent.ti.com>
-	<20100505171938.GX29604@atomide.com>
-	<27F9C60D11D683428E133F85D2BB4A53043DEEC153@dlee03.ent.ti.com>
-	<E0D41E29EB0DAC4E9F3FF173962E9E94026F8C74CE@dbde02.ent.ti.com>
-	<E0D41E29EB0DAC4E9F3FF173962E9E94026F8C74DE@dbde02.ent.ti.com>
+From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Subject: [PATCH v7 0/2] spi: driver for Cirrus EP93xx
+	SPI controller
+Date: Thu,  6 May 2010 07:47:03 +0300
+Message-ID: <cover.1273120206.git.mika.westerberg@iki.fi>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "G, Manjunath Kondaiah" <manjugk-l0cyMroinI0@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org, ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org,
+	mika.westerberg-X3B1VOXEql0@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <E0D41E29EB0DAC4E9F3FF173962E9E94026F8C74DE-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,119 +21,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Manjunath,
+Hello,
 
-> > > > > > > +
-> > > > > > > +static void omap_ethernet_init(void)
-> > > > > > > +{
-> > > > > > > +	gpio_request(ETHERNET_KS8851_POWER_ENABLE, "ethernet");
-> > > > > > > +	gpio_direction_output(ETHERNET_KS8851_POWER_ENABLE, 1);
-> > > > > > > +	gpio_request(ETHERNET_KS8851_QUART, "quart");
-> > > > > > > +	gpio_direction_output(ETHERNET_KS8851_QUART, 1);
-> > > > > > > +	gpio_request(ETHERNET_KS8851_IRQ, "ks8851");
-> > > > > >
-> > > > > > Any reason for not checking return value of gpio_request()?
-> > > > > >
+This series implements SPI master driver for Cirrus Logic EP93xx SPI
+controllers.
 
-[snip]
+Changes to previous (v6) version:
+	- only cosmetic non-functional changes (removed unnecessary comments and
+	  few inlines) based on review comments by H Hartley Sweeten
 
-> Minor changes:
-> if (gpio_request(x))
-> 	return status;
-> if (gpio_request(y))
-> 	goto err1;
-> if (gpio_request(z))
-> 	goto err2;
-> ...
-> 	return 0;
-> 
-> err2:
-> 	free(y);
-> 
-> err1:
-> 	free(x);
-> 	return status;
+Tested on TS-7260 (ep9302) and Sim.One (ep9307) boards with mmc_spi and at25
+drivers.
 
-How about this patch?
+Note that patch 2/2 depends on patch that is already in Russell's patch
+tracking system (and in linux-next)
+	http://www.arm.linux.org.uk/developer/patches/viewpatch.php?id=5998/1
+So 2/2 should probably go in via Russell's tree.
 
-Note. I am thinking in spi_register_board_info registration:
+Regards,
+MW
 
-1. to be done if ethernet fails, other spi dev can be added in future
-2. not to be done if ethernet fails, no other dev in spi bus 1 for now
+Mika Westerberg (2):
+  spi: implemented driver for Cirrus EP93xx SPI controller
+  ep93xx: SPI driver platform support code
 
-What is the best approach? Is it to keep #2?
+ Documentation/spi/ep93xx_spi                    |   95 +++
+ arch/arm/mach-ep93xx/clock.c                    |   13 +
+ arch/arm/mach-ep93xx/core.c                     |   52 ++
+ arch/arm/mach-ep93xx/include/mach/ep93xx-regs.h |    1 +
+ arch/arm/mach-ep93xx/include/mach/ep93xx_spi.h  |   27 +
+ arch/arm/mach-ep93xx/include/mach/platform.h    |    4 +
+ drivers/spi/Kconfig                             |   10 +
+ drivers/spi/Makefile                            |    1 +
+ drivers/spi/ep93xx_spi.c                        |  938 +++++++++++++++++++++++
+ 9 files changed, 1141 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/spi/ep93xx_spi
+ create mode 100644 arch/arm/mach-ep93xx/include/mach/ep93xx_spi.h
+ create mode 100644 drivers/spi/ep93xx_spi.c
 
----
-
-#define ETH_KS8851_IRQ			34
-#define ETH_KS8851_POWER_ON		48
-#define ETH_KS8851_QUART		138
-
-static struct spi_board_info sdp4430_spi_board_info[] __initdata = {
-	{
-		.modalias               = "ks8851",
-		.bus_num                = 1,
-		.chip_select            = 0,
-		.max_speed_hz           = 24000000,
-		.irq                    = ETH_KS8851_IRQ,
-	},
-};
-
-static int omap_ethernet_init(void)
-{
-	int status;
-
-	status = gpio_request(ETH_KS8851_POWER_ON, "eth_power");
-	if (status < 0) {
-		pr_warning("Cannot request GPIO %d\n", ETH_KS8851_POWER_ON);
-		return status;
-	}
-
-	status = gpio_request(ETH_KS8851_QUART, "quart");
-	if (status < 0) {
-		pr_warning("Cannot request GPIO %d\n", ETH_KS8851_QUART);
-		goto err1;
-	}
-
-	status = gpio_request(ETH_KS8851_IRQ, "eth_irq");
-	if (status < 0) {
-		pr_warning("Cannot request GPIO %d\n", ETH_KS8851_IRQ);
-		goto err2;
-	}
-
-	gpio_direction_output(ETH_KS8851_POWER_ON, 1);
-	gpio_direction_output(ETH_KS8851_QUART, 1);
-	gpio_direction_input(ETH_KS8851_IRQ);
-
-	return status;
-
-err2:
-	gpio_free(ETH_KS8851_QUART);
-err1:
-	gpio_free(ETH_KS8851_POWER_ON);
-	return status;
-
-}
-
-
-[...]
-
-
- 	/* FIXME: allow multi-omap to boot until musb is updated for omap4 */
- 	if (!cpu_is_omap44xx())
- 		usb_musb_init(&musb_board_data);
-
-	status = omap_ethernet_init();
-	if (status)
-		pr_warning("Ethernet initialization failed: %d\n", status);
-	else
-		sdp4430_spi_board_info[0].irq = gpio_to_irq(ETH_KS8851_IRQ);
-
-	spi_register_board_info(sdp4430_spi_board_info,
-			ARRAY_SIZE(sdp4430_spi_board_info));
-
-
-Best Regards
-Abraham
 
 ------------------------------------------------------------------------------

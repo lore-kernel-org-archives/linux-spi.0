@@ -1,15 +1,12 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] SPI: add support for the PL023 derivate
-Date: Fri,  7 May 2010 10:40:53 +0200
-Message-ID: <1273221653-15654-1-git-send-email-linus.walleij@stericsson.com>
+From: "=?koi8-r?B?4NLJ09TBzSwg0tXLz9fPxMnUxczRzSwg08XNyc7B0iDQ0s8gyM/MxMnOx8k=?="
+	dur-huDBShMCN3rILq5++fvS8w@public.gmane.org
+Subject: [SPAM] Холдинги: построение, управление, защита от претензий.
+Date: Sat, 8 May 2010 00:38:29 +0400
+Message-ID: <1105002434.20100508003829@optimcons.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>, lukasz.baj-++hxYGjEMp0AvxtiuMwx3w@public.gmane.org,
-	marcin.mielczarczyk-++hxYGjEMp0AvxtiuMwx3w@public.gmane.org, STEricsson_nomadik_linux-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,277 +18,132 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This adds support for a further ST variant of the PL022 called
-PL023. Some differences in the control registers due to being
-stripped down to SPI mode only, and a new clock feedback sample
-delay config setting is available.
-
-Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
----
-Note: Grant this one is supposed to be applied on top of the
-previous patch to fix up PL022 confusion, I can resend
-these as a condensed patch series if you like, just tell me.
-
-The stuff to be queued in Dan Williams tree for DMA support has
-been tested to be applied before and after this patch and apply
-cleanly so we don't have to worry about these patch sets
-colliding.
----
- drivers/spi/amba-pl022.c   |   90 ++++++++++++++++++++++++++++++++++++--------
- include/linux/amba/pl022.h |   32 +++++++++++++++-
- 2 files changed, 104 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-index 1ad617c..2309562 100644
---- a/drivers/spi/amba-pl022.c
-+++ b/drivers/spi/amba-pl022.c
-@@ -138,6 +138,8 @@
- #define SSP_CR1_MASK_MWAIT_ST	(0x1UL << 6)
- #define SSP_CR1_MASK_RXIFLSEL_ST (0x7UL << 7)
- #define SSP_CR1_MASK_TXIFLSEL_ST (0x7UL << 10)
-+/* This one is only in the PL023 variant */
-+#define SSP_CR1_MASK_FBCLKDEL_ST (0x7UL << 13)
- 
- /*
-  * SSP Status Register - SSP_SR
-@@ -320,12 +322,14 @@ enum ssp_writing {
-  * @unidir: supports unidirection transfers
-  * @extended_cr: 32 bit wide control register 0 with extra
-  * features and extra features in CR1 as found in the ST variants
-+ * @pl023: supports a subset of the ST extensions called "PL023"
-  */
- struct vendor_data {
- 	int fifodepth;
- 	int max_bpw;
- 	bool unidir;
- 	bool extended_cr;
-+	bool pl023;
- };
- 
- /**
-@@ -552,11 +556,6 @@ static void restore_state(struct pl022 *pl022)
- 	writew(CLEAR_ALL_INTERRUPTS, SSP_ICR(pl022->virtbase));
- }
- 
--/**
-- * load_ssp_default_config - Load default configuration for SSP
-- * @pl022: SSP driver private data structure
-- */
--
- /*
-  * Default SSP Register Values
-  */
-@@ -579,6 +578,14 @@ static void restore_state(struct pl022 *pl022)
- 	GEN_MASK_BITS(SSP_INTERFACE_MOTOROLA_SPI, SSP_CR0_MASK_FRF_ST, 21) \
- )
- 
-+/* The PL023 version is slightly different again */
-+#define DEFAULT_SSP_REG_CR0_ST_PL023 ( \
-+	GEN_MASK_BITS(SSP_DATA_BITS_12, SSP_CR0_MASK_DSS_ST, 0)	| \
-+	GEN_MASK_BITS(SSP_CLK_POL_IDLE_LOW, SSP_CR0_MASK_SPO, 6) | \
-+	GEN_MASK_BITS(SSP_CLK_SECOND_EDGE, SSP_CR0_MASK_SPH, 7) | \
-+	GEN_MASK_BITS(SSP_DEFAULT_CLKRATE, SSP_CR0_MASK_SCR, 8) \
-+)
-+
- #define DEFAULT_SSP_REG_CR1 ( \
- 	GEN_MASK_BITS(LOOPBACK_DISABLED, SSP_CR1_MASK_LBM, 0) | \
- 	GEN_MASK_BITS(SSP_DISABLED, SSP_CR1_MASK_SSE, 1) | \
-@@ -596,6 +603,20 @@ static void restore_state(struct pl022 *pl022)
- 	GEN_MASK_BITS(SSP_TX_1_OR_MORE_EMPTY_LOC, SSP_CR1_MASK_TXIFLSEL_ST, 10) \
- )
- 
-+/*
-+ * The PL023 variant has further differences: no loopback mode, no microwire
-+ * support, and a new clock feedback delay setting.
-+ */
-+#define DEFAULT_SSP_REG_CR1_ST_PL023 ( \
-+	GEN_MASK_BITS(SSP_DISABLED, SSP_CR1_MASK_SSE, 1) | \
-+	GEN_MASK_BITS(SSP_MASTER, SSP_CR1_MASK_MS, 2) | \
-+	GEN_MASK_BITS(DO_NOT_DRIVE_TX, SSP_CR1_MASK_SOD, 3) | \
-+	GEN_MASK_BITS(SSP_RX_MSB, SSP_CR1_MASK_RENDN_ST, 4) | \
-+	GEN_MASK_BITS(SSP_TX_MSB, SSP_CR1_MASK_TENDN_ST, 5) | \
-+	GEN_MASK_BITS(SSP_RX_1_OR_MORE_ELEM, SSP_CR1_MASK_RXIFLSEL_ST, 7) | \
-+	GEN_MASK_BITS(SSP_TX_1_OR_MORE_EMPTY_LOC, SSP_CR1_MASK_TXIFLSEL_ST, 10) | \
-+	GEN_MASK_BITS(SSP_FEEDBACK_CLK_DELAY_NONE, SSP_CR1_MASK_FBCLKDEL_ST, 13) \
-+)
- 
- #define DEFAULT_SSP_REG_CPSR ( \
- 	GEN_MASK_BITS(SSP_DEFAULT_PRESCALE, SSP_CPSR_MASK_CPSDVSR, 0) \
-@@ -606,10 +627,16 @@ static void restore_state(struct pl022 *pl022)
- 	GEN_MASK_BITS(SSP_DMA_DISABLED, SSP_DMACR_MASK_TXDMAE, 1) \
- )
- 
--
-+/**
-+ * load_ssp_default_config - Load default configuration for SSP
-+ * @pl022: SSP driver private data structure
-+ */
- static void load_ssp_default_config(struct pl022 *pl022)
- {
--	if (pl022->vendor->extended_cr) {
-+	if (pl022->vendor->pl023) {
-+		writel(DEFAULT_SSP_REG_CR0_ST_PL023, SSP_CR0(pl022->virtbase));
-+		writew(DEFAULT_SSP_REG_CR1_ST_PL023, SSP_CR1(pl022->virtbase));
-+	} else if (pl022->vendor->extended_cr) {
- 		writel(DEFAULT_SSP_REG_CR0_ST, SSP_CR0(pl022->virtbase));
- 		writew(DEFAULT_SSP_REG_CR1_ST, SSP_CR1(pl022->virtbase));
- 	} else {
-@@ -1954,20 +1981,27 @@ static int pl022_setup(struct spi_device *spi)
- 
- 	/* Special setup for the ST micro extended control registers */
- 	if (pl022->vendor->extended_cr) {
-+		if (pl022->vendor->pl023) {
-+			/* These bits are only in the PL023 */
-+			SSP_WRITE_BITS(chip->cr1, chip_info->clkdelay,
-+				       SSP_CR1_MASK_FBCLKDEL_ST, 13);
-+		} else {
-+			/* These bits are in the PL022 but not PL023 */
-+			SSP_WRITE_BITS(chip->cr0, chip_info->duplex,
-+				       SSP_CR0_MASK_HALFDUP_ST, 5);
-+			SSP_WRITE_BITS(chip->cr0, chip_info->ctrl_len,
-+				       SSP_CR0_MASK_CSS_ST, 16);
-+			SSP_WRITE_BITS(chip->cr0, chip_info->iface,
-+				       SSP_CR0_MASK_FRF_ST, 21);
-+			SSP_WRITE_BITS(chip->cr1, chip_info->wait_state,
-+				       SSP_CR1_MASK_MWAIT_ST, 6);
-+		}
- 		SSP_WRITE_BITS(chip->cr0, chip_info->data_size,
- 			       SSP_CR0_MASK_DSS_ST, 0);
--		SSP_WRITE_BITS(chip->cr0, chip_info->duplex,
--			       SSP_CR0_MASK_HALFDUP_ST, 5);
--		SSP_WRITE_BITS(chip->cr0, chip_info->ctrl_len,
--			       SSP_CR0_MASK_CSS_ST, 16);
--		SSP_WRITE_BITS(chip->cr0, chip_info->iface,
--			       SSP_CR0_MASK_FRF_ST, 21);
- 		SSP_WRITE_BITS(chip->cr1, chip_info->endian_rx,
- 			       SSP_CR1_MASK_RENDN_ST, 4);
- 		SSP_WRITE_BITS(chip->cr1, chip_info->endian_tx,
- 			       SSP_CR1_MASK_TENDN_ST, 5);
--		SSP_WRITE_BITS(chip->cr1, chip_info->wait_state,
--			       SSP_CR1_MASK_MWAIT_ST, 6);
- 		SSP_WRITE_BITS(chip->cr1, chip_info->rx_lev_trig,
- 			       SSP_CR1_MASK_RXIFLSEL_ST, 7);
- 		SSP_WRITE_BITS(chip->cr1, chip_info->tx_lev_trig,
-@@ -1982,7 +2016,9 @@ static int pl022_setup(struct spi_device *spi)
- 	SSP_WRITE_BITS(chip->cr0, chip_info->clk_pol, SSP_CR0_MASK_SPO, 6);
- 	SSP_WRITE_BITS(chip->cr0, chip_info->clk_phase, SSP_CR0_MASK_SPH, 7);
- 	SSP_WRITE_BITS(chip->cr0, chip_info->clk_freq.scr, SSP_CR0_MASK_SCR, 8);
--	SSP_WRITE_BITS(chip->cr1, chip_info->lbm, SSP_CR1_MASK_LBM, 0);
-+	/* Loopback is available on all versions except PL023 */
-+	if (!pl022->vendor->pl023)
-+		SSP_WRITE_BITS(chip->cr1, chip_info->lbm, SSP_CR1_MASK_LBM, 0);
- 	SSP_WRITE_BITS(chip->cr1, SSP_DISABLED, SSP_CR1_MASK_SSE, 1);
- 	SSP_WRITE_BITS(chip->cr1, chip_info->hierarchy, SSP_CR1_MASK_MS, 2);
- 	SSP_WRITE_BITS(chip->cr1, chip_info->slave_tx_disable, SSP_CR1_MASK_SOD, 3);
-@@ -2211,6 +2247,7 @@ static struct vendor_data vendor_arm = {
- 	.max_bpw = 16,
- 	.unidir = false,
- 	.extended_cr = false,
-+	.pl023 = false,
- };
- 
- 
-@@ -2219,6 +2256,15 @@ static struct vendor_data vendor_st = {
- 	.max_bpw = 32,
- 	.unidir = false,
- 	.extended_cr = true,
-+	.pl023 = false,
-+};
-+
-+static struct vendor_data vendor_st_pl023 = {
-+	.fifodepth = 32,
-+	.max_bpw = 32,
-+	.unidir = false,
-+	.extended_cr = true,
-+	.pl023 = true,
- };
- 
- static struct amba_id pl022_ids[] = {
-@@ -2240,6 +2286,18 @@ static struct amba_id pl022_ids[] = {
- 		.mask	= 0xffffffff,
- 		.data	= &vendor_st,
- 	},
-+	{
-+		/*
-+		 * ST-Ericsson derivative "PL023" (this is not
-+		 * an official ARM number), this is a PL022 SSP block
-+		 * stripped to SPI mode only, it has 32bit wide
-+		 * and 32 locations deep TX/RX FIFO but no extended
-+		 * CR0/CR1 register
-+		 */
-+		.id     = 0x00080023,
-+		.mask   = 0xffffffff,
-+		.data   = &vendor_st_pl023,
-+	},
- 	{ 0, 0 },
- };
- 
-diff --git a/include/linux/amba/pl022.h b/include/linux/amba/pl022.h
-index 1a83b61..db6a191 100644
---- a/include/linux/amba/pl022.h
-+++ b/include/linux/amba/pl022.h
-@@ -182,8 +182,8 @@ enum ssp_microwire_wait_state {
- };
- 
- /**
-- * enum Microwire - whether Full/Half Duplex, only available
-- * in the ST Micro variant.
-+ * enum ssp_duplex - whether Full/Half Duplex on microwire, only
-+ * available in the ST Micro variant.
-  * @SSP_MICROWIRE_CHANNEL_FULL_DUPLEX: SSPTXD becomes bi-directional,
-  *     SSPRXD not used
-  * @SSP_MICROWIRE_CHANNEL_HALF_DUPLEX: SSPTXD is an output, SSPRXD is
-@@ -195,6 +195,31 @@ enum ssp_duplex {
- };
- 
- /**
-+ * enum ssp_clkdelay - an optional clock delay on the feedback clock
-+ * only available in the ST Micro PL023 variant.
-+ * @SSP_FEEDBACK_CLK_DELAY_NONE: no delay, the data coming in from the
-+ * slave is sampled directly
-+ * @SSP_FEEDBACK_CLK_DELAY_1T: the incoming slave data is sampled with
-+ * a delay of T-dt
-+ * @SSP_FEEDBACK_CLK_DELAY_2T: dito with a delay if 2T-dt
-+ * @SSP_FEEDBACK_CLK_DELAY_3T: dito with a delay if 3T-dt
-+ * @SSP_FEEDBACK_CLK_DELAY_4T: dito with a delay if 4T-dt
-+ * @SSP_FEEDBACK_CLK_DELAY_5T: dito with a delay if 5T-dt
-+ * @SSP_FEEDBACK_CLK_DELAY_6T: dito with a delay if 6T-dt
-+ * @SSP_FEEDBACK_CLK_DELAY_7T: dito with a delay if 7T-dt
-+ */
-+enum ssp_clkdelay {
-+	SSP_FEEDBACK_CLK_DELAY_NONE,
-+	SSP_FEEDBACK_CLK_DELAY_1T,
-+	SSP_FEEDBACK_CLK_DELAY_2T,
-+	SSP_FEEDBACK_CLK_DELAY_3T,
-+	SSP_FEEDBACK_CLK_DELAY_4T,
-+	SSP_FEEDBACK_CLK_DELAY_5T,
-+	SSP_FEEDBACK_CLK_DELAY_6T,
-+	SSP_FEEDBACK_CLK_DELAY_7T
-+};
-+
-+/**
-  * CHIP select/deselect commands
-  */
- enum ssp_chip_select {
-@@ -243,6 +268,8 @@ struct pl022_ssp_controller {
-  * @ctrl_len: Microwire interface: Control length
-  * @wait_state: Microwire interface: Wait state
-  * @duplex: Microwire interface: Full/Half duplex
-+ * @clkdelay: on the PL023 variant, the delay in feeback clock cycles
-+ * before sampling the incoming line
-  * @cs_control: function pointer to board-specific function to
-  * assert/deassert I/O port to control HW generation of devices chip-select.
-  * @dma_xfer_type: Type of DMA xfer (Mem-to-periph or Periph-to-Periph)
-@@ -266,6 +293,7 @@ struct pl022_config_chip {
- 	enum ssp_microwire_ctrl_len ctrl_len;
- 	enum ssp_microwire_wait_state wait_state;
- 	enum ssp_duplex duplex;
-+	enum ssp_clkdelay clkdelay;
- 	void (*cs_control) (u32 control);
- };
- 
--- 
-1.6.3.3
-
-
-------------------------------------------------------------------------------
+0KXQntCb0JTQmNCd0JPQmDog0L/QvtGB0YLRgNC+0LXQvdC40LUsINGD0L/RgNCw0LLQu9C10L3Q
+uNC1LCDQt9Cw0YnQuNGC0LAg0L7RgiDQv9GA0LXRgtC10L3Qt9C40LkuCgoxOCDQvNCw0Y8gfCDQ
+nNC+0YHQutCy0LAKCtCh0LXQvNC40L3QsNGAINC/0YDQtdC00L3QsNC30L3QsNGH0LXQvSDQtNC7
+0Y86INGB0L7QsdGB0YLQstC10L3QvdC40LrQvtCyLCDQtNC40YDQtdC60YLQvtGA0L7QsiDQutC+
+0LzQv9Cw0L3QuNC5LCDRhNC40L3QsNC90YHQvtCy0YvRhSDQtNC40YDQtdC60YLQvtGA0L7Qsiwg
+0Y7RgNC40YHRgtC+0LIuCgrQptC10LvRjCDRgdC10LzQuNC90LDRgNCwOiDRgNCw0YHRgdC80L7R
+gtGA0LXRgtGMINC+0YDQs9Cw0L3QuNC30LDRhtC40L7QvdC90L4t0L/RgNCw0LLQvtCy0YvQtSwg
+0Y3QutC+0L3QvtC80LjQutC+LdC/0YDQsNCy0L7QstGL0LUg0LDRgdC/0LXQutGC0Ysg0YHQvtC3
+0LTQsNC90LjRjyDQuCDQtNC10Y/RgtC10LvRjNC90L7RgdGC0Lgg0YXQvtC70LTQuNC90LPQvtCy
+OyDQstC+0L/RgNC+0YHRiyDRg9C/0YDQsNCy0LvQtdC90LjRjyDRhdC+0LvQtNC40L3Qs9C+0Lws
+INCy0LfQsNC40LzQvtC00LXQudGB0YLQstC40LUg0YEg0LTQvtGH0LXRgNC90LjQvNC4INC4INC3
+0LDQstC40YHQuNC80YvQvNC4INC60L7QvNC/0LDQvdC40Y/QvNC4LgoK0JjQvdGE0L7RgNC80LDR
+htC40Y8g0Lgg0YDQtdCz0LjRgdGC0YDQsNGG0LjRjzogOCAoNDk1KSA5MjEgfiAzMCB+IDE3CgrQ
+kiDQv9GA0L7Qs9GA0LDQvNC80LU6CjEuINCS0LjQtNGLINC+0LHRitC10LTQuNC90LXQvdC40Lku
+INCk0LjQvdCw0L3RgdC+0LLQvi3Qv9GA0L7QvNGL0YjQu9C10L3QvdCw0Y8g0LPRgNGD0L/Qv9Cw
+LiDQpdC+0LvQtNC40L3Qsy4g0J/RgNC+0YHRgtC+0LUg0YLQvtCy0LDRgNC40YnQtdGB0YLQstC+
+LiAK0J/QvtC90Y/RgtC40LUg0Lgg0YHRgtGA0YPQutGC0YPRgNCwINC+0LHRitC10LTQuNC90LXQ
+vdC40LkuINCf0YDQtdC40LzRg9GJ0LXRgdGC0LLQsCDQuCDQvdC10LTQvtGB0YLQsNGC0LrQuC4g
+0J3QsNC70L7Qs9C+0LLRi9C1INC+0YHQvtCx0LXQvdC90L7RgdGC0LguCjIuINCh0L/QvtGB0L7Q
+sdGLINC+0LHRitC10LTQuNC90LXQvdC40LkuINCU0L7Qs9C+0LLQvtGA0L3Ri9C1INGB0L/QvtGB
+0L7QsdGLINC+0LHRitC10LTQuNC90LXQvdC40LksINGD0YfQsNGB0YLQuNC1INCyINC60LDQv9C4
+0YLQsNC70LUsIArQvtGC0L3QvtGI0LXQvdC40LUg0LTQvtGH0LXRgNC90L7RgdGC0Lgg0Lgg0YIu
+0L8uINCS0LfQsNC40LzQvdCw0Y8g0L7RgtCy0LXRgtGB0YLQstC10L3QvdC+0YHRgtGMINC/0L4g
+0LPRgNCw0LbQtNCw0L3RgdC60L4t0L/RgNCw0LLQvtCy0YvQvCAK0L7QsdGP0LfQsNGC0LXQu9GM
+0YHRgtCy0LDQvC4KMy4g0J7RgNCz0LDQvdC40LfQsNGG0LjQvtC90L3Ri9C1INGB0YLRgNGD0LrR
+gtGD0YDRiyDRhdC+0LvQtNC40L3Qs9C+0LIuINCe0L/QuNGB0LDQvdC40LUg0LLQvtC30LzQvtC2
+0L3Ri9GFINGB0YLRgNGD0LrRgtGD0YAg0YXQvtC70LTQuNC90LPQvtCyOiAK0LvQuNC90LXQudC9
+0YvQuSwg0LrRgNGD0LPQvtCy0L7QuSwg0LjQvNGD0YnQtdGB0YLQstC10L3QvdGL0LksINC00L7Q
+s9C+0LLQvtGA0L3Ri9C5LCDQv9GA0L7QtdC60YLQvdGL0LksINC40L3QstC10YHRgtC40YbQuNC+
+0L3QvdGL0LksINC80L3QvtCz0L7QvtGC0YDQsNGB0LvQtdCy0L7QuSwgCtGC0LXRgNGA0LjRgtC+
+0YDQuNCw0LvRjNC90YvQuSDRhdC+0LvQtNC40L3Qsy4g0JLQtdGA0YLQuNC60LDQu9GM0L3QviDQ
+uCDQs9C+0YDQuNC30L7QvdGC0LDQu9GM0L3QviDQvtGA0LjQtdC90YLQuNGA0L7QstCw0L3QvdGL
+0LUg0YXQvtC70LTQuNC90LPQuC4gCtCU0LjQstC10YDRgdC40YTQuNGG0LjRgNC+0LLQsNC90L3R
+i9C1INGF0L7Qu9C00LjQvdCz0Lgg0Lgg0YIu0L8uINCU0L7Rh9C10YDQvdC40LUg0L7QsdGJ0LXR
+gdGC0LLQsDog0YHQv9C+0YHQvtCx0Ysg0YPQv9GA0LDQstC70LXQvdC40Y8sINGN0LrQvtC90L7Q
+vNC40YfQtdGB0LrQuNC1IArQvtGC0L3QvtGI0LXQvdC40Y8uINCf0YDQsNCy0L7QstC+0LUg0YDQ
+tdCz0YPQu9C40YDQvtCy0LDQvdC40LUg0Y3QutC+0L3QvtC80LjRh9C10YHQutC40YUg0L7RgtC9
+0L7RiNC10L3QuNC5INC+0YHQvdC+0LLQvdC+0LPQviDQuCDQtNC+0YfQtdGA0L3QtdCz0L4g0L7Q
+sdGJ0LXRgdGC0LIuIArQlNC+0LPQvtCy0L7RgC4g0J7RgdC90L7QstC90YvQtSDQv9GA0LDQstC+
+0LzQvtGH0LjRjyDRgdGD0LHRitC10LrRgtC+0LIg0LTQvtCz0L7QstC+0YDQvdGL0YUg0L7RgtC9
+0L7RiNC10L3QuNC5Lgo0LiDQo9C/0YDQsNCy0LvQtdC90LjRjyDRhdC+0LvQtNC40L3Qs9C+0Lwu
+INCS0LXRgNGC0LjQutCw0LvRjNC90L7QtSDQuCDQs9C+0YDQuNC30L7QvdGC0LDQu9GM0L3QvtC1
+INGD0L/RgNCw0LLQu9C10L3QuNC1INGF0L7Qu9C00LjQvdCz0L7QvC4g0KPQv9GA0LDQstC70Y/R
+jtGJ0LDRjyAK0LrQvtC80L/QsNC90LjRjy4g0J/RgNC+0LHQu9C10LzQsCDRgdC+0LLQvNC10YnQ
+tdC90LjRjyDQv9C+0LvQvdC+0LzQvtGH0LjQuSDQtNC40YDQtdC60YLQvtGA0LAg0YPQv9GA0LDQ
+stC70Y/RjtGJ0LXQuSDQutC+0LzQv9Cw0L3QuNC4INC4INC/0YDQtdC00YHQtdC00LDRgtC10LvR
+jyAK0YHQvtCy0LXRgtCwINC00LjRgNC10LrRgtC+0YDQvtCyINGD0L/RgNCw0LLQu9GP0LXQvNC+
+0LPQviDQu9C40YbQsC4g0J/QvtC70L3QvtC80L7Rh9C40Y8g0L3QtdC30LDQstC40YHQuNC80L7Q
+uSDRg9C/0YDQsNCy0LvRj9GO0YnQtdC5INC60L7QvNC/0LDQvdC40Lgg0LggCtC+0YHQvdC+0LLQ
+vdC+0LPQviDQvtCx0YnQtdGB0YLQstCwLiDQo9C/0YDQsNCy0LvQtdC90LjQtSDQtNC+0YfQtdGA
+0L3QuNC8INC+0LHRidC10YHRgtCy0L7QvCDQv9C+0YHRgNC10LTRgdGC0LLQvtC8INC/0LXRgNC1
+0LTQsNGH0Lgg0L/QvtC70L3QvtC80L7Rh9C40LkgCtC+0YHQvdC+0LLQvdC+0LzRgyDQvtCx0YnQ
+tdGB0YLQstGDLiDQodGA0LDRidC10L3QuNC1INCw0L/Qv9Cw0YDQsNGC0L7QsiDRg9C/0YDQsNCy
+0LvQtdC90LjRjyDQtNC+0YfQtdGA0L3QtdCz0L4g0L7QsdGJ0LXRgdGC0LLQsCDQuCDQvtGB0L3Q
+vtCy0L3QvtCz0L4gCtC+0LHRidC10YHRgtCy0LAuINCh0LXQv9Cw0YDQsNGG0LjRjyDQv9C+0LvQ
+vdC+0LzQvtGH0LjQuSDQvNC10LbQtNGDINGB0YLRgNGD0LrRgtGD0YDQsNC80Lgg0YPQv9GA0LDQ
+stC70Y/RjtGJ0LjRhS/Rg9C/0YDQsNCy0LvRj9C10LzRi9GFINC60L7QvNC/0LDQvdC40LkuIArQ
+ntGA0LPQsNC90LjQt9Cw0YbQuNGPINC/0LXRgNC10LTQsNGH0Lgg0YPQv9GA0LDQstC70LXQvdGH
+0LXRgdC60L7QuSDQuNC90YTQvtGA0LzQsNGG0LjQuCDQsiDRhdC+0LvQtNC40L3Qs9C1LiDQodC/
+0L7RgdC+0LHRiyDRg9C/0YDQsNCy0LvQtdC90LjRjyDRhdC+0LvQtNC40L3Qs9C+0LwgCtC90LAg
+0L7Qv9C10YDQsNGC0LjQstC90L7QvCDRg9GA0L7QstC90LUuINCe0LHQtdGB0L/QtdGH0LXQvdC4
+0LUg0LrQvtC90YLRgNC+0LvRjyDQstC90YPRgtGA0Lgg0LTQvtGH0LXRgNC90LjRhSDQvtCx0YnQ
+tdGB0YLQsi4KNS4g0JTQvtCz0L7QstC+0YDQvdCw0Y8g0LzQvtC00LXQu9GMINGD0L/RgNCw0LLQ
+u9C10L3QuNGPINCyINGF0L7Qu9C00LjQvdCz0LUsINGG0LXQvdGC0YDQsNC70LjQt9Cw0YbQuNGP
+LiDQlNC+0LPQvtCy0L7RgNGLINC+INC/0YDQtdC00L7RgdGC0LDQstC70LXQvdC40LggCtGD0L/R
+gNCw0LLQu9C10L3Rh9C10YHQutC40YUg0YPRgdC70YPQsywg0L/RgNC10LTQvtGB0YLQsNCy0LvQ
+tdC90LjQuCDQv9C10YDRgdC+0L3QsNC70LAg0Lgg0LTRgNGD0LPQuNC1INGA0LDQt9C90L7QstC4
+0LTQvdC+0YHRgtC4INCw0YPRgtGB0L7RgNGB0LjQvdCz0LAuINCd0LDQu9C+0LPQvtCy0YvQtSAK
+0L/RgNC+0LHQu9C10LzRiyDQstC30LDQuNC80L7QtNC10LnRgdGC0LLQuNGPINC60L7QvNC/0LDQ
+vdC40LksINC/0LXRgNC10LrQstCw0LvQuNGE0LjQutCw0YbQuNGPINGB0LTQtdC70L7Qui4g0KHQ
+v9C+0YHQvtCx0Ysg0YHQvdC40LbQtdC90LjRjyDRgNC40YHQutC+0LIuIArQntGE0L7RgNC80LvQ
+tdC90LjQtSDQvtGC0L3QvtGI0LXQvdC40LkuINCh0L7Qt9C00LDQvdC40LUg0LXQtNC40L3QvtCz
+0L4g0L/RgNCw0LLQvtCy0L7Qs9C+INC/0YDQvtGB0YLRgNCw0L3RgdGC0LLQsC4g0JrQvtC90YbQ
+tdC/0YbQuNGPINCy0L3Rg9GC0YDQtdC90L3QuNGFIArQtNC+0LrRg9C80LXQvdGC0L7QsiDRhdC+
+0LvQtNC40L3Qs9C+0LLQvtC5INC60L7QvNC/0LDQvdC40Lgg0J7RgdC90L7QstC90YvQtSDQstC9
+0YPRgtGA0LXQvdC90LjQtSDQtNC+0LrRg9C80LXQvdGC0YsuINCj0L/RgNCw0LLQu9C10L3QuNC1
+INC/0LXRgNGB0L7QvdCw0LvQvtC8IArRhdC+0LvQtNC40L3Qs9CwLgo2LiDQn9C+0YHRgtGA0L7Q
+tdC90LjQtSDRhdC+0LvQtNC40L3Qs9C+0LIg0YEg0L3QtdGA0LXQt9C40LTQtdC90YLQsNC80Lgu
+INCQ0L3QsNC70LjQtyDQv9C+0YHRgtGA0L7QtdC90LjQtSDRhdC+0LvQtNC40L3Qs9C+0LLRi9GF
+INGB0YLRgNGD0LrRgtGD0YAg0YEgCtC90LXRgNC10LfQuNC00LXQvdGC0LDQvNC4INC90LAg0L/R
+gNC40LzQtdGA0LUg0JrQuNC/0YDQsC4KNy4g0J/RgNCw0LLQvtCy0YvQtSDQsNGB0L/QtdC60YLR
+iyDQtNC10Y/RgtC10LvRjNC90L7RgdGC0Lgg0YXQvtC70LTQuNC90LPQvtCyLiDQn9GA0LDQstCw
+INC4INC+0LHRj9C30LDQvdC90L7RgdGC0Lgg0LTQvtGH0LXRgNC90LXQs9C+INC+0LHRidC10YHR
+gtCy0LAg0LggCtC+0YHQvdC+0LLQvdC+0LPQviDQvtCx0YnQtdGB0YLQstCwLCDRg9C/0YDQsNCy
+0LvRj9GO0YnQtdC5INC60L7QvNC/0LDQvdC40LguINCg0LDRgdC/0YDQtdC00LXQu9C10L3QuNC1
+INGE0YPQvdC60YbQuNC5INC4INC/0L7Qu9C90L7QvNC+0YfQuNC5LCAK0YDQsNGB0L/RgNC10LTQ
+tdC70LXQvdC40LUg0LDQutGC0LjQstC+0LIg0LIg0YXQvtC70LTQuNC90LPQtS4g0JrRgNGD0L/Q
+vdGL0LUg0YHQtNC10LvQutC4LCDRgdC00LXQu9C60Lgg0YEg0LfQsNC40L3RgtC10YDQtdGB0L7Q
+stCw0L3QvdC+0YHRgtGM0Y4uINCe0YHQvdC+0LLQsNC90LjRjyAK0L7RgdC/0LDRgNC40LLQsNC9
+0LjRjyDQuCDQt9Cw0YnQuNGC0YsuINCh0L/QvtGB0L7QsdGLINC30LDQutC70Y7Rh9C10L3QuNGP
+INGB0LTQtdC70L7QuiDQvNC40L3QuNC80LjQt9C40YDRg9GO0YnQuNC1INCy0L7Qt9C80L7QttC9
+0YvQtSDQv9GA0LXRgtC10L3Qt9C40LguCjguINCg0LXQs9GD0LvQuNGA0L7QstCw0L3QuNC1INGF
+0L7Qu9C00LjQvdCz0L7QsiDQsNC90YLQuNC80L7QvdC+0L/QvtC70YzQvdGL0Lwg0LfQsNC60L7Q
+vdC+0LTQsNGC0LXQu9GM0YHRgtCy0L7QvC4gItCQ0YTRhNC40LvQuNGA0L7QstCw0L3QvdGL0LUg
+CtC70LjRhtCwIiwgItGF0L7Qu9C00LjQvdCzIiDQuCDRgi7Qvy4g0J7RgdC90L7QstCw0L3QuNGP
+INC60L7QvdGC0YDQvtC70Y8uINCf0L7RgdC70LXQtNGB0YLQstC40Y8g0L3QsNGA0YPRiNC10L3Q
+uNC5INGC0YDQtdCx0L7QstCw0L3QuNC5IArQsNC90YLQuNC80L7QvdC+0L/QvtC70YzQvdC+0LPQ
+viDQt9Cw0LrQvtC90L7QtNCw0YLQtdC70YzRgdGC0LLQsC4KOS4g0KTQuNC90LDQvdGB0LjRgNC+
+0LLQsNC90LjQtSDQuCDQv9C10YDQtdC00LDRh9CwINC40LzRg9GJ0LXRgdGC0LLQsC4g0JLQvtC3
+0LzQvtC20L3QvtGB0YLQuCDQsdC10LfQstC+0LfQvNC10LfQtNC90L7QuSDQv9C10YDQtdC00LDR
+h9C4INC40LzRg9GJ0LXRgdGC0LLQsCDQuCAK0LTQtdC90LXQttC90YvRhSDRgdGA0LXQtNGB0YLQ
+si4g0KHRg9GC0Ywg0L3QsNC70L7Qs9C+0LLRi9GFINC/0YDQtdGC0LXQvdC30LjQuSwg0L3QsNC7
+0L7Qs9C+0L7QsdC70L7QttC10L3QuNC1INGB0LTQtdC70L7Qui4g0J/RgNC+0LHQu9C10LzRiyAK
+0LrQstCw0LvQuNGE0LjQutCw0YbQuNC4INGB0LTQtdC70L7Qui4g0KHQv9C+0YHQvtCx0Ysg0L/Q
+tdGA0LXQtNCw0YfQuCDQsNC60YLQuNCy0L7Qsi4g0KHQv9C+0YHQvtCx0Ysg0YTQuNC90LDQvdGB
+0LjRgNC+0LLQsNC90LjRjywg0LfQsNC80LXQvdCwINC30LDQudC80L7QsiAK0LjQvdGL0LzQuCDR
+gdC00LXQu9C60LDQvNC4LgoxMC4g0J3QsNC70L7Qs9C+0LLRi9C5INCw0YHQv9C10LrRgi4g0KDQ
+sNGB0YHQvNC+0YLRgNC10L3QuNC1INCz0YDRg9C/0L/RiyDQutC+0LzQv9Cw0L3QuNC5INC60LDQ
+uiDQstC30LDQuNC80L7Qt9Cw0LLQuNGB0LjQvNGL0YUg0LvQuNGGLiAK0J/QtdGA0LXQutCy0LDQ
+u9C40YTQuNC60LDRhtC40Y8g0YHQtNC10LvQvtC6LiDQn9GA0LjQvNC10L3QtdC90LjQtSDQutGA
+0LjRgtC10YDQuNC10LIg0L3QtdC00L7QsdGA0L7RgdC+0LLQtdGB0YLQvdC+0YHRgtC4INC6INCz
+0YDRg9C/0L/QtSDQu9C40YYuIArQntGB0L3QvtCy0L3Ri9C1INC00LXQu9C+0LLRi9C1INGG0LXQ
+u9C4LCDQvtCx0YrRj9GB0L3Rj9GO0YnQuNC1INC+0LHRitC10LTQuNC90LXQvdC40LUuINCf0YDQ
+uNCy0LvQtdGH0LXQvdC40LUg0YPRh9Cw0YHRgtC90LjQutC+0LIg0YXQvtC70LTQuNC90LPQsCDQ
+uiAK0LjRgdC/0L7Qu9C90LXQvdC40Y4g0L3QsNC70L7Qs9C+0LLRi9GFINC+0LHRj9C30LDQvdC9
+0L7RgdGC0LXQuSDQtNGA0YPQsyDQt9CwINC00YDRg9Cz0LAuINCQ0L3QsNC70LjQtyDQvNCw0YLQ
+tdGA0LjQsNC70L7QsiDRgdGD0LTQtdCx0L3QvtC5INC/0YDQsNC60YLQuNC60LguIAoK0KHRgtC+
+0LjQvNC+0YHRgtGMINGD0YfQsNGB0YLQuNGPOiA4MDAwINGA0YPQsdC70LXQuS4K0JzQtdGB0YLQ
+viDQv9GA0L7QstC10LTQtdC90LjRjzog0LwuINCR0LDRg9C80LDQvdGB0LrQsNGPLCDRg9C7LiDQ
+kdCw0YPQvNCw0L3RgdC60LDRjywg0LQuNiwg0LHQuNC30L3QtdGBINGG0LXQvdGC0YAgItCS0LjQ
+utGC0L7RgNC40Y8g0J/Qu9Cw0LfQsCIuCtCSINGB0YLQvtC40LzQvtGB0YLRjCDQstGF0L7QtNC4
+0YIg0LzQtdGC0L7QtNC40YfQtdGB0LrQuNC5INC80LDRgtC10YDQuNCw0LssINC+0LHQtdC00Yss
+INC60L7RhNC1LdC/0LDRg9C30YssINGB0LXRgNGC0LjRhNC40LrQsNGCLiAKCtCY0L3RhNC+0YDQ
+vNCw0YbQuNGPINC4INGA0LXQs9C40YHRgtGA0LDRhtC40Y86IDggKDQ5NSkgOTIxIH4gMzAgfiAx
+NwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
+Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

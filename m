@@ -1,19 +1,19 @@
 From: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH v7 1/2] spi: implemented driver for
 	Cirrus EP93xx SPI controller
-Date: Sat, 8 May 2010 18:32:47 +0100
-Message-ID: <AANLkTimZywbu5KVvnUouLUoY1GUxWGlYoSgIbUlRDT5w@mail.gmail.com>
+Date: Sat, 8 May 2010 18:33:46 +0100
+Message-ID: <AANLkTiksJyDAvSC73BmImpTYgNNOw6MxoEllVzmDeQCn@mail.gmail.com>
 References: <cover.1273120206.git.mika.westerberg@iki.fi>
 	<3729cd3650f5af6aebfc5bae02ff6aad1b9b1e82.1273120206.git.mika.westerberg@iki.fi>
+	<AANLkTimZywbu5KVvnUouLUoY1GUxWGlYoSgIbUlRDT5w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary=0016e6d99cb0f29f2b04861893f9
 Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org,
 	ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <3729cd3650f5af6aebfc5bae02ff6aad1b9b1e82.1273120206.git.mika.westerberg-X3B1VOXEql0@public.gmane.org>
+In-Reply-To: <AANLkTimZywbu5KVvnUouLUoY1GUxWGlYoSgIbUlRDT5w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,24 +24,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 5/6/10, Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org> wrote:
-> This patch adds an SPI master driver for the Cirrus EP93xx SPI controller found
->  in EP93xx chips.
+--0016e6d99cb0f29f2b04861893f9
+Content-Type: text/plain; charset=ISO-8859-1
 
-Hi
-   I'm confused by the change in this version of the structure of the
-board setup code.
-   Can you post example patches for the board definitions of the
-ts72xx and maybe also the Sim.One?
-   I attach the board setup patches I had working with Sim.One v4, but
-no longer see how to register the S1's card detect IRQ (the necessary
-and the spi platform data.
-   For a definitive Sim.One board definition I'll need to hear whether
-they wish to assign a GPIO for the chip select (and which) in the next
-board revision.
+On 5/8/10, Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>    I attach the board setup patches I had working with Sim.One v4
 
-Thanks
+   M
 
-     M
+--0016e6d99cb0f29f2b04861893f9
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
+
+
+--0016e6d99cb0f29f2b04861893f9
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--0016e6d99cb0f29f2b04861893f9--

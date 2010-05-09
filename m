@@ -1,37 +1,96 @@
-From: Martin Guy <martinwguy@gmail.com>
-Subject: Re: [PATCH v7 2/2] ep93xx: SPI driver platform support code
-Date: Sun, 9 May 2010 17:57:19 +0100
-Message-ID: <AANLkTikVbmYVjTcSGl72bBKRBlXoGF5KGRveuUInov-0@mail.gmail.com>
-References: <cover.1273120206.git.mika.westerberg@iki.fi>
-	<c4be393041bfab8d1c27d43dd5a2526222d1d4ef.1273120206.git.mika.westerberg@iki.fi>
+From: "=?koi8-r?B?5snOwc7Tz9fZzSDEydLFy9TP0sHNIMkg0tXLz9fPxMnUxczRzQ==?="
+	<didyrinyfegiqase-h2myTqZJoK5eoWH0uzbU5w@public.gmane.org>
+Subject: [SPAM] Оптимизация налогообложения в холдинговых структурах.
+Date: Sun, 9 May 2010 21:03:14 +0400
+Message-ID: <003d01caef99$838cfbd0$1e68a8c0@151.71.139.46>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: dbrownell@users.sourceforge.net, grant.likely@secretlab.ca,
-	hsweeten@visionengravers.com, ryan@bluewatersys.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Mika Westerberg <mika.westerberg@iki.fi>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <c4be393041bfab8d1c27d43dd5a2526222d1d4ef.1273120206.git.mika.westerberg@iki.fi>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 5/6/10, Mika Westerberg <mika.westerberg@iki.fi> wrote:
-> This patch adds platform side support code for the EP93xx SPI driver. This
->  includes clock, resources and muxing. There is a new function: ep93xx_register_spi()
->  which can be used by board support code to register new SPI devices for the
->  board.
->
->  Signed-off-by: Mika Westerberg <mika.westerberg@iki.fi>
->  Acked-by: H Hartley Sweeten <hsweeten@visionengravers.com>
-
-Acked-by: Martin Guy <martinwguy@gmail.com>
+ICAgICAg7/D06e3p+uHj6fEg7uHs7+fv7+Ls7/bl7unxIPcg6O/s5Onu5+/3+egg8/Ty9ev09fLh
+6DogCiAgICAgIMvByyDTzsnaydTYINLB08jPxNkgySDV18XMyd7J1Ngg0NLJwtnM2C4KCiAgICAg
+IDE5IM3B0SB8IO3P08vXwQoKICAgICAg6c7Gz9LNwcPJ0SDJINLFx8nT1NLBw8nROiA4ICg0OTUp
+IDkyMS0zMC0xNwoKICAgICAg9yDQ0s/H0sHNzcU6CiAgICAgCiAgICAgICAgICAgIDEuIPDPztHU
+ycUgySDQ0snOw8nQ2SDOwczPx8/Xz8fPINDMwc7J0s/Xwc7J0Tog0MzB1MnU2CDOwczPx8ksIM7P
+IM7FINDF0sXQzMHeydfB1NguIOvByyAKICAgICAgICAgICAgzc/Wzs8gySDLwcsgzsXM2NrRIM/Q
+1MnNydrJ0s/XwdTYIM7BzM/HySDTINXexdTPzSDJ2s3FzsXOycog2sHLz87PxMHUxczY09TXwSwg
+09XExcLOz8ogCiAgICAgICAgICAgINDSwcvUycvJIMkg1MXOxMXOw8nKINLB2tfJ1MnRINDSwdfP
+0NLJzcXOxc7J0S4gIv7F0s7ZxSIsICLTxdLZxSIgySAiwsXM2cUiINPIxc3ZLiAi7cXUz8QgCiAg
+ICAgICAgICAgIMjPzMTJzsfBIiDXIM7BzM/Hz9fPzSDQzMHOydLP18HOyckuIPDPztHUycUg18nS
+1NXBzNjOz8fPIMjPzMTJzsfBIMvByyDT0sXE09TXwSDOwczPx8/Xz8fPIAogICAgICAgICAgICDQ
+zMHOydLP18HOydEuIPLBw8nPzsHM2M7PxSDQz9PU0s/FzsnFIMbJzsHO08/X2cgg0M/Uz8vP1yDJ
+IMTPx8/Xz9LO2cggz9TOz9vFzsnKINcgCiAgICAgICAgICAgIMjPzMTJzsfFIN7F0sXaINLB2sTF
+zMXOycUgz8LP0s/Uz9csIMvB0MnUwczBICjQ0snC2czJKSwgwcvUydfP1ywg0MXS08/OwczBLCDP
+1M7P28XOycog0yAKICAgICAgICAgICAgy8/O1NLBx8XO1MHNySDJINLJ08vP1y4gCiAgICAgICAg
+ICAgIDIuIO3F1M/E2SDQzMHOydLP18HOydEgzsHMz8fBIM7BINDSycLZzNggySDu5PMg1yDIz8zE
+yc7HwcguIAogICAgICAgICAgICDBKSDuydrLz87BzM/Hz9fZxSDT1cLfxcvU2SAo7u7zKTogxsna
+zMnDwSAo0NLJINXTzM/XyckgzsXTydPUxc3B1Mnezs/T1MkgydrXzMXexc7J0SAKICAgICAgICAg
+ICAgxM/Iz8TBKSwg09XC38XL1Nkg09DFw8nBzNjO2cggzsHMz8fP19nIINLF1snNz9cgLSD18+4s
+IOnwIM7BIM/C3cXKINPJ09TFzcUsICLJztfBzMnEztnFIiAKICAgICAgICAgICAg09TS1cvU1dLZ
+LCAi0s/T08nK08vJxSDPxtvP0tkiLCDBINTBy9bFINDSz9PUz8Ug1M/XwdLJ3cXT1NfPINMgycgg
+1d7B09TJxc0sINXC2dTP3s7ZxSAKICAgICAgICAgICAg0NLFxNDSydHUydEgySDGydLN2Swgyc3F
+wN3JxSDQxdLF0MzB1NUg7uTzLCDawdLVwsXWztnFIM/G28/S2SDJzMkg09fR2sHOztnFINMgzsnN
+ySAKICAgICAgICAgICAgy8/N0MHOycktzsXSxdrJxMXO1Nkgydog0sXT0MXL1MHCxczYztnIIMDS
+ydPEycvDycouCiAgICAgICAgICAgIMIpICLuxcTPwtLP08/XxdPUztnFIM7BzM/Hz9DMwdTFzNjd
+ycvJIiDJIMvPztTBy9TJ0tXA3cnFINMgzsnNySDSydPLLdPU0tXL1NXS2Togy8HLIM7FzNja0SAK
+ICAgICAgICAgICAgIs/Q1MnNydrJ0s/XwdTYIi4gCiAgICAgICAgICAgINcpIPLFwczYztnFINXT
+zNXHySwg0sHCz9TZLCDB0sXOxMEsIMzJw8XO2snPzs7ZxSDQzMHUxdbJLCDQ0s/Dxc7U2Swg0s/R
+zNTJLCDb1NLBxs7ZxSAKICAgICAgICAgICAg08HOy8PJySwgzcXUz8Qg1NLBztPGxdLUzs/HzyDD
+xc7Pz8LSwdrP18HOydEgy8HLINPQz9PPwtkg1NLBztPGz9LNwcPJySAo19nXz8TBKSAKICAgICAg
+ICAgICAgzsHMz8fPz8LMwcfBxc3PyiDCwdrZINDPIM7BzM/H1SDOwSDQ0snC2czYIM7BIO7u8y4g
+CiAgICAgICAgICAgIMcpIOLF2s7BzM/Hz9fZxSDT0M/Tz8LZINDF0sXEwd7JIMTFzsXWztnIINPS
+xcTT1Ncg1yDIz8zEyc7HxS4gCiAgICAgICAgICAgIMQpIPDSz9PUz8Ug1M/XwdLJ3cXT1NfPINPV
+wt/Fy9TP1yDV0NLP3cXOzs/KINPJ09TFzdkgzsHMz8fPz8LMz9bFzsnRLCDXINQu3i4gydogCiAg
+ICAgICAgICAgICLOydrLz87BzM/Hz9fZyCIg0sXHyc/Oz9cuIO7V1s7PIMnMySDOxdQg0MzB1MnU
+2CDu5PM/CiAgICAgICAgICAgIMUpIPzLz87PzcnRIO7k8yDXINDSz8na18/E09TXxSwg19nQz8zO
+xc7JySDSwcLP1Cwgz8vB2sHOyckg1dPM1ccg3sXSxdog0sHaxMXMxc7JxSAKICAgICAgICAgICAg
+xsnOwc7Tz9fZyCDQz9TPy8/XICLTIO7k8yIgySAiwsXaIO7k8yIuIAogICAgICAgICAgICAzLiDz
+z9rEwc7JxSDSwcPJz87BzNjOz8ogxsnOwc7Tz9fPyiDJIM/Sx8HOydrBw8nPzs7PyiDIz8zEyc7H
+z9fPyiDT1NLVy9TV0tksINPIxc3ZIAogICAgICAgICAgICDUz9fB0s7PLcbJzsHO08/X2cgg0M/U
+z8vP1yDJIMTPx8/Xz9LO2cggz9TOz9vFzsnKIMjPzMTJzsfBLiDv0MXSwdTJ187PxSAKICAgICAg
+ICAgICAg0sHT0NLFxMXMxc7JxSDOwczPx8/Xz8ogzsHH0tXay8kgzcXWxNUg1d7B09TOycvBzckg
+yM/MxMnOx8EuIPLFwczYztnKINDSyc3F0iDLz83QzMXL087Px88gCiAgICAgICAgICAgIM7BzM/H
+z9fPx88g0MzBzsnSz9fBzsnRINcgyM/MxMnOx8HILiAgCiAgICAgICAgICAgIDQuIPDSyc7DydDZ
+IM7BzM/Hz9fPx88g0MzBzsnSz9fBzsnRIMnT0M/M2NrP18HOydEgz9POz9fO2cgg09LFxNPU1y4g
+5s/SzcnSz9fBzsnFIAogICAgICAgICAgICDIz8zEyc7Hz9fPyiDT1NLVy9TV0tkgxMzRIMPFzMXK
+IM3JzsnNydrBw8nJIM7BzM/Hz8/CzM/Wxc7J0SDJzdXdxdPU18EuICLo0sHOydTFzNggCiAgICAg
+ICAgICAgIMHL1MnXz9ciICjMycPPIC0g08/C09TXxc7Oycsgyc3V3cXT1NfFzs7Px88gy8/N0MzF
+y9PBKS4g7snay8/OwczPx8/X2cUgySDCxdrOwczPx8/X2cUgCiAgICAgICAgICAgINPQz9PPwtkg
+0MXSxcTB3skgyc3V3cXT1NfBICLo0sHOydTFzMAgwcvUydfP1yIuICAKICAgICAgICAgICAgNS4g
+8NLJzsPJ0NkgzsHMz8fP18/HzyDQzMHOydLP18HOydEgKM/Q1MnNydrBw8nJKSDX2dDMwdTZINrB
+0sHCz9TOz8og0MzB1Nkg1yAKICAgICAgICAgICAgyM/MxMnOx8UuIOTJ18nExc7EztnFINPIxc3Z
+IC0g2sHNxc7BINfZ0MzB1Nkg2sHS0MzB1MUgzsEgItXQ0s/dxc7LxSI/IOTPx8/Xz9LZINMgCiAg
+ICAgICAgICAgINDSxcTQ0snOyc3B1MXMxc06INfP2s3F2sTOz8fPIM/LwdrBzsnRINXTzNXHLCDX
+2dDPzM7FzsnRINLBws/ULCDBx8XO1NPLycosINTSwc7T0M/S1M7ZxSAKICAgICAgICAgICAg1dPM
+1cfJLCDNxcjBzsnazSDU0sHO08bF0tTO2cggw8XOLCDb1NLBxs7ZxSDTwc7Lw8nJLCDB0sXOxMEg
+ySDQ0i4g8sHT3sXU2SDcxsbFy9TJ187P09TJLiAgCiAgICAgICAgICAgIDYuIPfT1NLBydfBzsnF
+IMnOz9PU0sHOztnIICjXINQu3i4gzsnay8/OwczPx8/X2cgpIMvPzdDBzsnKINcg09TS1cvU1dLV
+INLP09PJytPLycggCiAgICAgICAgICAgIMjPzMTJzsfP1y4g+sHdydTBINfMwcTFzsnRIMkg08vS
+2dTJxSDTz8LT1NfFzs7Jy8EsINXIz8Qgz9QgwcbGyczJ0s/Xwc7Oz9PUySwgCiAgICAgICAgICAg
+IMnT0M/M2NrP18HOycUgxMzRIM/Q1MnNydrBw8nJIM7BzM/HwSDOwSDQ0snC2czYOiDU0sHEycPJ
+z87O2cUgKNTP0sfP18zRLCDQ0s/Dxc7U2SwgCiAgICAgICAgICAgIMTJ18nExc7E2Swg0s/RzNTJ
+LCDV08zVx8ksIMkg1C7QLikgySDOxdTSwcTJw8nPzs7ZxSDTyMXN2SAo0NLP09TPxSDUz9fB0snd
+xdPU188sIMHHxc7U08vJxSkuIAogICAgICAgICAgICD32cLP0iDA0snTxMnLw8nKLiAgCiAgICAg
+ICAgICAgIDcuIO/C2s/SIMnazcXOxc7JyiDOwczPx8/Xz8fPINrBy8/Oz8TB1MXM2NPU18Eg1yAy
+MDEwIMcuLCDLwcsgz87JINDP18zJ0czJIM7BIM7BzM/Hz9fZxSAKICAgICAgICAgICAg08jFzdku
+ICAKICAgICAKICAgICAg89TPyc3P09TYINXewdPUydE6IDgwMDAg0tXCzMXKLgoKICAgICAg7cXT
+1M8g0NLP18XExc7J0TogzS4g4sHVzcHO08vB0Swg1cwuIOLB1c3BztPLwdEsIMQuNiwgwsnazsXT
+IMPFztTSICL3ycvUz9LJ0SDwzMHawSIuCiAgICAgIPcg09TPyc3P09TYINfIz8TJ1CDNxdTPxMne
+xdPLycogzcHUxdLJwcwsIM/CxcTZLCDLz8bFLdDB1drZLCDTxdLUycbJy8HULiAKCiAgICAgIOnO
+xs/SzcHDydEgySDSxcfJ09TSwcPJ0TogOCAoNDk1KSA5MjEtMzAtMTcKICAgICAKLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
+dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
+c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

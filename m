@@ -1,63 +1,47 @@
-From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: Re: [PATCH v6 2/2] ep93xx: SPI driver platform
-	support code
-Date: Tue, 11 May 2010 09:13:02 +0300
-Message-ID: <20100511061302.GW26418@gw.healthdatacare.com>
-References: <cover.1272805161.git.mika.westerberg@iki.fi>
-	<865b5d7ca0fae1977a1fadcdabdb715e3ea1604d.1272805161.git.mika.westerberg@iki.fi>
-	<0D753D10438DA54287A00B0270842697636EB838E1@AUSP01VMBX24.collaborationhost.net>
-	<20100505142625.GB2606@n2100.arm.linux.org.uk>
-	<0D753D10438DA54287A00B0270842697636EE74B65@AUSP01VMBX24.collaborationhost.net>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH v3 0/3] OMAP4 Ethernet Controller Support
+Date: Tue, 11 May 2010 12:51:48 -0700
+Message-ID: <20100511195148.GE13931@atomide.com>
+References: <27F9C60D11D683428E133F85D2BB4A53043DFD52D4@dlee03.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org" <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>
+To: "Arce, Abraham" <x0066660@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <0D753D10438DA54287A00B0270842697636EE74B65-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <27F9C60D11D683428E133F85D2BB4A53043DFD52D4@dlee03.ent.ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, May 10, 2010 at 07:24:24PM -0500, H Hartley Sweeten wrote:
-> On Wednesday, May 05, 2010 7:26 AM, Russell King wrote:
-> > On Tue, May 04, 2010 at 12:21:36PM -0500, H Hartley Sweeten wrote:
-> >> That patch is already present in linux-next.  If Russell think there might
-> >> be an issue you could rebase this patch on the linux-next tree.
-> >
-> > If this patch depends on 5998/1, then I'll take it via the ep93xx branch
-> > (which has 5998/1 on.)  It's only touching files in arch/arm so there
-> > shouldn't be any problem with that.
+* Arce, Abraham <x0066660@ti.com> [100510 18:36]:
 > 
+> Enable network chip Micrel KS8851 for OMAP4430 SDP
 > 
-> Mika,
+> - Based on mainline version 2.6.34 rc7
+> - Tested in OMAP4430 SDP
 > 
-> Any word from the spi group on PATCH v6 1/2?
+> Throughput measurements using nuttcp application:
+>   11.9375 MB /  10.06 sec =    9.9519 Mbps 92 %TX 0 %RX 0 retrans 7.87 msRTT
+> 
+> --
+> 
+> All patches have been tagged as version 3
+> 
+> [PATCH v3 1/3] OMAP4: SPI: Fix Driver Kconfig 
+> [PATCH v3 2/3] OMAP4: Ethernet: KS8851 Board Support
+> [PATCH v3 3/3] OMAP4: Networking: Defconfig Support
+> 
+> --
+> 
+>  arch/arm/configs/omap_4430sdp_defconfig |   57 +++++++++++++++++++++-
+>  arch/arm/mach-omap2/board-4430sdp.c     |   82 ++++++++++++++++++++++++++++++++
+>  drivers/spi/Kconfig                     |    6 +-
+>  3 files changed, 140 insertions(+), 5 deletions(-)
 
-Nothing yet.
-
-> Russell wants this patch (v6 2/2) to go through his tree, please add it to
-> his patch system.  It will not be a problem if this patch goes in before the
-> actual driver since nothing "breaks".  If the driver goes in first it will
-> not work due to the missing clock resource, even if a user were to hack in the
-> platform init code.
-
-OK, will do that later on today.
+I've applied all three into omap for-next branch.
 
 Regards,
-MW
 
-------------------------------------------------------------------------------
+Tony

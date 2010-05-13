@@ -1,8 +1,8 @@
 From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 Subject: Re: [PATCH] spi: spi_mpc8xxx.c: fix potential
 	memory corruption.
-Date: Thu, 13 May 2010 09:53:37 +0200
-Message-ID: <OF929DC31D.AF8774C2-ONC1257722.002AFD3D-C1257722.002B5C6D@transmode.se>
+Date: Thu, 13 May 2010 11:36:15 +0200
+Message-ID: <OFD4A1BD4A.1E890808-ONC1257722.00336F58-C1257722.0034C1F5@transmode.se>
 References: <1273679450-4185-1-git-send-email-Joakim.Tjernlund@transmode.se>
 	<20100512162231.GA449@oksana.dev.rtsoft.ru>
 	<OFB1D6A895.8E381278-ONC1257721.005A1E7B-C1257721.005A885D@transmode.se>
@@ -24,9 +24,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
 Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote on 2010/05/12 18:43:21:
+>
 > On Wed, May 12, 2010 at 06:28:51PM +0200, Joakim Tjernlund wrote:
 > > Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote on 2010/05/12 18:22:31:
 > > >
@@ -65,34 +64,92 @@ Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote on 
 > also tested it with the spi_mmc driver on MPC8323E-RDB board.
 > Both drivers work with 8 bits words.
 
-hmm, looks like wordsize == 16 is broken in the new CPM & QE mode:
+The new QE mode is so broken :(
+This is spidev run with the original CPU mode somewhat shorten:
 
-root@localhost:~# ./spidev -D //dev/spidev0.3  -b 16
-spi mode: 0
-bits per word: 16
-max speed: 500000 Hz (500 KHz)
-
-9D 01 00 E0 00 00
-00 00 00 00 00 00
-00 00 00 00 00 00
-00 00 00 00 00 00
-00 00 00 00 00 00
-00 00 00 00 00 00
-00 00
-root@localhost:~# ./spidev -D //dev/spidev0.3
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 8
 spi mode: 0
 bits per word: 8
 max speed: 500000 Hz (500 KHz)
 
 01 9D C0 00 00 00
-00 00 00 00 00 00
-00 00 00 00 00 00
-00 00 00 00 00 00
-00 00 00 00 00 00
-00 00 00 00 00 00
-00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 16
+spi mode: 0
+bits per word: 16
+max speed: 500000 Hz (500 KHz)
 
-Notice how the bytes are swapped. This does not happen in the old CPU mode.
+01 9D E0 00 00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 32
+spi mode: 0
+bits per word: 32
+max speed: 500000 Hz (500 KHz)
+
+01 9D C0 00 00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 8 -L
+spi mode: 8
+bits per word: 8
+max speed: 500000 Hz (500 KHz)
+
+80 B9 03 00 00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 16 -L
+spi mode: 8
+bits per word: 16
+max speed: 500000 Hz (500 KHz)
+
+B9 80 00 07 00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 32 -L
+spi mode: 8
+bits per word: 32
+max speed: 500000 Hz (500 KHz)
+
+00 03 B9 80 00 00
+
+
+This is the new QE mode:
+
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 8
+spi mode: 0
+bits per word: 8
+max speed: 500000 Hz (500 KHz)
+
+01 9D E0 00 00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 16
+spi mode: 0
+bits per word: 16
+max speed: 500000 Hz (500 KHz)
+
+9D 01 00 C0 00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 32
+spi mode: 0
+bits per word: 32
+max speed: 500000 Hz (500 KHz)
+
+00 C0 9D 01 00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 8 -L
+spi mode: 8
+bits per word: 8
+max speed: 500000 Hz (500 KHz)
+
+80 B9 07 00 00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 16 -L
+spi mode: 8
+bits per word: 16
+max speed: 500000 Hz (500 KHz)
+
+80 B9 03 00 00 00
+root@localhost:~# ./spidev -D /dev/spidev0.3 -b 32 -L
+spi mode: 8
+bits per word: 32
+max speed: 500000 Hz (500 KHz)
+
+80 B9 03 00 00 00
+
+
+Notice how the byte order is swapped for word = 16, 32
+Not even sure what is right to begin with :)
+Can't see how one should fix this either.
+
+ Jocke
 
 
 ------------------------------------------------------------------------------

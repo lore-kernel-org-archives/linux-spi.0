@@ -1,10 +1,9 @@
 From: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev_test.c: Make transfer
- size suitable for wordsize 32
-Date: Fri, 14 May 2010 16:22:39 +0400
-Message-ID: <20100514122239.GB24394@oksana.dev.rtsoft.ru>
+Subject: Re: [PATCH] spi: spi_mpc8xxx.c: Fix QE mode
+	Litte Endian
+Date: Fri, 14 May 2010 16:22:18 +0400
+Message-ID: <20100514122218.GA24394@oksana.dev.rtsoft.ru>
 References: <1273828467-4593-1-git-send-email-Joakim.Tjernlund@transmode.se>
-	<1273828467-4593-2-git-send-email-Joakim.Tjernlund@transmode.se>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +11,7 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1273828467-4593-2-git-send-email-Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+In-Reply-To: <1273828467-4593-1-git-send-email-Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,32 +22,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 14, 2010 at 11:14:27AM +0200, Joakim Tjernlund wrote:
+On Fri, May 14, 2010 at 11:14:26AM +0200, Joakim Tjernlund wrote:
+> QE mode uses Little Endian so words > 8 bits are byte swapped.
+> Workaround this by always enforcing wordsize 8 for words
+> > 8 bits. Unfortunately this will not work for LSB transfers
+> where wordsize is > 8 bits so disable these for now.
+> 
+> Also move the different quirks into its own function to keep
+> mpc8xxx_spi_setup_transfer() sane.
 > 
 > Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+> ---
+
+Looks OK, thanks!
 
 Acked-by: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
-Thanks!
-
-> ---
->  Documentation/spi/spidev_test.c |    1 -
->  1 files changed, 0 insertions(+), 1 deletions(-)
-> 
-> diff --git a/Documentation/spi/spidev_test.c b/Documentation/spi/spidev_test.c
-> index 10abd37..3978e69 100644
-> --- a/Documentation/spi/spidev_test.c
-> +++ b/Documentation/spi/spidev_test.c
-> @@ -45,7 +45,6 @@ static void transfer(int fd)
->  		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
->  		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
->  		0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD,
-> -		0xF0, 0x0D,
->  	};
->  	uint8_t rx[ARRAY_SIZE(tx)] = {0, };
->  	struct spi_ioc_transfer tr = {
-> -- 
-> 1.6.4.4
 
 -- 
 Anton Vorontsov

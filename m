@@ -1,20 +1,18 @@
-From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-Subject: Re: [PATCH] spi: spi_mpc8xxx.c: fix potential
-	memory corruption.
-Date: Fri, 14 May 2010 14:30:58 +0200
-Message-ID: <OF63D31135.40E66F3C-ONC1257723.00441203-C1257723.0044C125@transmode.se>
-References: <1273679450-4185-1-git-send-email-Joakim.Tjernlund@transmode.se>
-	<20100512162231.GA449@oksana.dev.rtsoft.ru>
-	<OFB1D6A895.8E381278-ONC1257721.005A1E7B-C1257721.005A885D@transmode.se>
-	<20100512164321.GA5522@oksana.dev.rtsoft.ru>
-	<AANLkTillcDbtpIcq7ZYID9xBpHuGfcBQNNSZJFuyqHYM@mail.gmail.com>
+From: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev_test.c: Make transfer
+ size suitable for wordsize 32
+Date: Fri, 14 May 2010 16:22:39 +0400
+Message-ID: <20100514122239.GB24394@oksana.dev.rtsoft.ru>
+References: <1273828467-4593-1-git-send-email-Joakim.Tjernlund@transmode.se>
+	<1273828467-4593-2-git-send-email-Joakim.Tjernlund@transmode.se>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTillcDbtpIcq7ZYID9xBpHuGfcBQNNSZJFuyqHYM-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1273828467-4593-2-git-send-email-Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,46 +23,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org wrote on 2010/05/13 23:13:52:
->
-> On Wed, May 12, 2010 at 6:43 PM, Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> > On Wed, May 12, 2010 at 06:28:51PM +0200, Joakim Tjernlund wrote:
-> >> Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote on 2010/05/12 18:22:31:
-> >> >
-> >> > On Wed, May 12, 2010 at 05:50:50PM +0200, Joakim Tjernlund wrote:
-> >> > > tx_dma/rx_dma are already set to a dummy buffer when no
-> >> > > tx/rx buffer and t->tx_dma/t->rx_dma does not contain a dma
-> >> > > address, but NULL.
-> >> > > This may lead to corruption of kernel memory. Fix this by
-> >> > > leaving tx_dma/rx_dma alone.
-> >> > >
-> >> > > Do not INIT_TX_RX while controller is enabled, this is bad according
-> >> > > to the MPC8321 manual.
-> >> > >
-> >> > > Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-> >> >
-> >> > Acked-by: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> >> >
-> >> > Thanks!
-> >> :)
-> >>
-> >> Who will make sure this goes to Linus?
-> >
-> > I guess it's Grant. Cc'ed.
->
-> Yeah, it's me.  I'm just traveling so I'm a little slow on the uptake
-> right now.  I've picked it up.
+On Fri, May 14, 2010 at 11:14:27AM +0200, Joakim Tjernlund wrote:
+> 
+> Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 
-Thanks, I think it should go to Linus now.
+Acked-by: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-I also just sent another patch, fixing brain dead Little Endian problem
-in QE mode. You might want to consider that one too for early inclusion as
-potential QE SPI users might start using word size > 8 bits and compensate
-for LE in their app.
+Thanks!
 
-Anton should first ack it though.
+> ---
+>  Documentation/spi/spidev_test.c |    1 -
+>  1 files changed, 0 insertions(+), 1 deletions(-)
+> 
+> diff --git a/Documentation/spi/spidev_test.c b/Documentation/spi/spidev_test.c
+> index 10abd37..3978e69 100644
+> --- a/Documentation/spi/spidev_test.c
+> +++ b/Documentation/spi/spidev_test.c
+> @@ -45,7 +45,6 @@ static void transfer(int fd)
+>  		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+>  		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+>  		0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD,
+> -		0xF0, 0x0D,
+>  	};
+>  	uint8_t rx[ARRAY_SIZE(tx)] = {0, };
+>  	struct spi_ioc_transfer tr = {
+> -- 
+> 1.6.4.4
 
- Jocke
-
+-- 
+Anton Vorontsov
+email: cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+irc://irc.freenode.net/bd2
 
 ------------------------------------------------------------------------------

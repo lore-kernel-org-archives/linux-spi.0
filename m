@@ -1,18 +1,13 @@
-From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] SPI: fix up some PL022 confusion
-Date: Mon, 17 May 2010 08:21:45 +0200
-Message-ID: <AANLkTinsCSb_k3y8iqk4nJ5793SNeg-uBA7Ac95nuNsu@mail.gmail.com>
-References: <1273051695-32251-1-git-send-email-linus.walleij@stericsson.com>
-	<AANLkTil25g0DEafaicc_fShwz9gpF8Dl9NgyG6E0wu-r@mail.gmail.com>
+From: "Place des Mutuelles" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Des prix bas pour tous les profils,
+	comparez!
+Date: Mon, 17 May 2010 13:11:24 +0200 (CEST)
+Message-ID: <l2k9ri.iurck7@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, STEricsson_nomadik_linux-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>
-To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTil25g0DEafaicc_fShwz9gpF8Dl9NgyG6E0wu-r-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,21 +18,5 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/5/11 Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> 2010/5/5 Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>:
->
->> The PL022 SPI driver did not cleanly separate between the
->> original unmodified ARM version and the ST Microelectronics
->> versions. Split this more cleanly and fix some whitespace
->> moaning from checkpatch at the same time.
->
-> Grant/David have you had time to look at these two PL022
-> patches?
-
-Still travelling? I'm just worrying that if I have to make any updates
-for the merge tree I need some slack... sorry for hammering.
-
-Yours,
-Linus Walleij
 
 ------------------------------------------------------------------------------

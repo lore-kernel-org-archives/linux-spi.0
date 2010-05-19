@@ -1,16 +1,14 @@
 From: Prarit Bhargava <prarit-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
-Subject: Re: Documentation/spi/* compile warning fix
-Date: Wed, 19 May 2010 15:25:59 -0400
-Message-ID: <4BF43B47.5050906@redhat.com>
-References: <20100519175712.10378.62717.sendpatchset@prarit.bos.redhat.com>
+Subject: [PATCH]: Documentation/spi/* compile warning fix
+Date: Wed, 19 May 2010 15:30:28 -0400
+Message-ID: <20100519192633.11414.45643.sendpatchset@prarit.bos.redhat.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, randy.dunlap-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Prarit Bhargava <prarit-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Cc: Prarit Bhargava <prarit-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, randy.dunlap-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100519175712.10378.62717.sendpatchset-lwyPSKVeczd+7Tl7ptjsKdvLeJWuRmrY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,40 +19,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Sorry everyone ... I left off [PATCH]: ... will resend shortly.
+Fix this warning:
 
-(And then I top-posted too...)
+Documentation/spi/spidev_fdx.c: In function `do_msg':
+Documentation/spi/spidev_fdx.c:61: warning: cast from pointer to integer of different size
+Documentation/spi/spidev_fdx.c:64: warning: cast from pointer to integer of different size
 
-P.
+buf should be unsigned long to match native arch on 32-bit x86 compile.
 
-On 05/19/2010 02:01 PM, Prarit Bhargava wrote:
-> Fix this warning:
->
-> Documentation/spi/spidev_fdx.c: In function `do_msg':
-> Documentation/spi/spidev_fdx.c:61: warning: cast from pointer to integer of different size
-> Documentation/spi/spidev_fdx.c:64: warning: cast from pointer to integer of different size
->
-> buf should be unsigned long to match native arch on 32-bit x86 compile.
->
-> Signed-off-by: Prarit Bhargava<prarit-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
->
-> diff --git a/Documentation/spi/spidev_fdx.c b/Documentation/spi/spidev_fdx.c
-> index fc354f7..36ec077 100644
-> --- a/Documentation/spi/spidev_fdx.c
-> +++ b/Documentation/spi/spidev_fdx.c
-> @@ -58,10 +58,10 @@ static void do_msg(int fd, int len)
->   		len = sizeof buf;
->
->   	buf[0] = 0xaa;
-> -	xfer[0].tx_buf = (__u64) buf;
-> +	xfer[0].tx_buf = (unsigned long)buf;
->   	xfer[0].len = 1;
->
-> -	xfer[1].rx_buf = (__u64) buf;
-> +	xfer[1].rx_buf = (unsigned long) buf;
->   	xfer[1].len = len;
->
->   	status = ioctl(fd, SPI_IOC_MESSAGE(2), xfer);
->    
+Signed-off-by: Prarit Bhargava <prarit-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+
+diff --git a/Documentation/spi/spidev_fdx.c b/Documentation/spi/spidev_fdx.c
+index fc354f7..36ec077 100644
+--- a/Documentation/spi/spidev_fdx.c
++++ b/Documentation/spi/spidev_fdx.c
+@@ -58,10 +58,10 @@ static void do_msg(int fd, int len)
+ 		len = sizeof buf;
+ 
+ 	buf[0] = 0xaa;
+-	xfer[0].tx_buf = (__u64) buf;
++	xfer[0].tx_buf = (unsigned long)buf;
+ 	xfer[0].len = 1;
+ 
+-	xfer[1].rx_buf = (__u64) buf;
++	xfer[1].rx_buf = (unsigned long) buf;
+ 	xfer[1].len = len;
+ 
+ 	status = ioctl(fd, SPI_IOC_MESSAGE(2), xfer);
 
 ------------------------------------------------------------------------------

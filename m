@@ -1,19 +1,14 @@
-From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: PATCH [1/1] SPI: AMBA_PL022: Limit TX FIFO
-	fills based on current RX FIFO used
-Date: Wed, 19 May 2010 12:56:25 +0200
-Message-ID: <AANLkTinbLmmugmi1-KdzHZAL0Zz3omQ0VaArumuwjwaR@mail.gmail.com>
-References: <083DF309106F364B939360100EC290F805C4BF1E97@eu1rdcrdc1wx030.exi.nxp.com>
-	<63386a3d1001220456p484efc7fm811ae2240698cbdf@mail.gmail.com>
-	<fa686aa41002030948g6359ef3o4c3a7b265490b93f@mail.gmail.com>
+From: Prarit Bhargava <prarit-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Subject: Documentation/spi/* compile warning fix
+Date: Wed, 19 May 2010 14:01:06 -0400
+Message-ID: <20100519175712.10378.62717.sendpatchset@prarit.bos.redhat.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Prarit Bhargava <prarit-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, randy.dunlap-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fa686aa41002030948g6359ef3o4c3a7b265490b93f-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,26 +19,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/2/3 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>:
+Fix this warning:
 
->> As some sort of maintainer of this file I have signed it off and put
->> it into Russells
->> patch tracker for inclusion, OK? See;
->> http://www.arm.linux.org.uk/developer/patches/viewpatch.php?id=3D5893/1
->
-> I'm actively maintaining SPI now. =A0In general, I'd prefer SPI patches
-> to go through the SPI tree, unless there are commit ordering issues
-> with arch code.
+Documentation/spi/spidev_fdx.c: In function `do_msg':
+Documentation/spi/spidev_fdx.c:61: warning: cast from pointer to integer of different size
+Documentation/spi/spidev_fdx.c:64: warning: cast from pointer to integer of different size
 
-Is this working out? The patches in patchwork will be in for the merge
-window, no?
+buf should be unsigned long to match native arch on 32-bit x86 compile.
 
-Not that I feel it's a disaster if they don't get in now, it's mainly
-that I want to
-know if I can help out in some way.
+Signed-off-by: Prarit Bhargava <prarit-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 
-Yours,
-Linus Walleij
+diff --git a/Documentation/spi/spidev_fdx.c b/Documentation/spi/spidev_fdx.c
+index fc354f7..36ec077 100644
+--- a/Documentation/spi/spidev_fdx.c
++++ b/Documentation/spi/spidev_fdx.c
+@@ -58,10 +58,10 @@ static void do_msg(int fd, int len)
+ 		len = sizeof buf;
+ 
+ 	buf[0] = 0xaa;
+-	xfer[0].tx_buf = (__u64) buf;
++	xfer[0].tx_buf = (unsigned long)buf;
+ 	xfer[0].len = 1;
+ 
+-	xfer[1].rx_buf = (__u64) buf;
++	xfer[1].rx_buf = (unsigned long) buf;
+ 	xfer[1].len = len;
+ 
+ 	status = ioctl(fd, SPI_IOC_MESSAGE(2), xfer);
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------

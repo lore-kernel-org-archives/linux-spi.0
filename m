@@ -1,15 +1,17 @@
-From: "MPS & ICS EXPRESS CARGO" <unaldi.ibrahim-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?utf-8?b?IFJ1c3lhIEthcmdvbGFyxLFuxLF6xLFu?=
- =?utf-8?q?_Kapasitesi_ne_olursa_olsun=2EBiz_Adresinizden_Al=C4=B1p_M?=
- =?utf-8?q?=C3=BC=C5=9Fterinizin_Adresine_Kadar_Teslim_Garantisi_ile_Ta?=
- =?utf-8?b?xZ/EsXlvcnV6Lg==?=
-Date: Fri, 21 May 2010 12:25:21 +0300
-Message-ID: <E1OFOTp-0004FL-H8@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Subject: Re: [PATCH] spi: spi_mpc8xxx.c: Do not use
+	map_tx_dma to unmap rx_dma
+Date: Fri, 21 May 2010 19:23:43 +0200
+Message-ID: <OFD8B30A94.BD9EA490-ONC125772A.005F631A-C125772A.005F8E73@transmode.se>
+References: <1274102230-20828-1-git-send-email-Joakim.Tjernlund@transmode.se>
+	<20100517132254.GA6567@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100517132254.GA6567-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,47 +22,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-TVBTIEV4cHJlc3MgLSBSVVNZQSBnw7ZuZGVyaWxlcmluaSBrYWJ1bCBldG1leWUgZGV2YW0gZWRl
-Y2XEn2luaSBhw6fEsWtsYWTEsS4uLi4KClJ1c3lhIE1lcmtlemxpIE1QUyBFeHByZXNzICYgTG9n
-aXN0aWNzIGZpcm1hc8SxIG3DvMWfdGVyaWxlcmluZSBSdXN5YSBHw7xtcsO8xJ/DvG5kZWtpIHV5
-Z3VsYW1hbGFyIHNlYmViaXlsZSBzb3J1biB5YcWfYXlhbiDDtnplbFzFn2FoxLHFnyB2ZXlhIGt1
-cnVtbGFyIGnDp2luICBnw7xtcsO8a2zDvCB5YWRhIGfDvG1yw7xrc8O8eiB0w7xtIFJ1c3lhIEth
-cmdvbGFyxLFuxLEgcGFrZXRsZXJpbmkgYWxtYXlhIGRldmFtIGVkZXJlayBiaXIgaWxrZSBpbXph
-IGF0bWF5YSBkZXZhbSBlZGl5b3IuLiAKCkHFn2HEn8SxZGEgTVBTIEVYUFJFU1MgZmlybWFzxLFu
-xLFuIG3DvMWfdGVyaWxlcmluZSBnw7ZuZGVybWnFnyBvbGR1xJ91IGJpbGdpbGVuZGlybWUgeWF6
-xLFzxLFuxLEgeWF5xLFubMSxeW9ydXouCgoKRGVnZXJsaSBNw7xzdGVyaW1peiwKClJ1c3lhIEZl
-ZGVyYXN5b251IHRhcmFmaW5kYW4gYmlyIHPDvHJlZGlyIHV5Z3VsYW5tYWt0YSBvbGFuIGfDvG1y
-w7xrIHByb3NlZMO8cmxlcmkgbmVkZW5peWxlLCBhbGljaXNpIMO2emVsIHNhaGlzIG9sYW4gZ8O2
-bmRlcmlsZXIgUnVzeWEgZ8O8bXLDvGtsZXJpbmRlIGJla2xldGlsbWVrdGUgdmUgZ8O2bmRlcmls
-ZGlnaSDDvGxrZWxlcmUgaWFkZSBlZGlsbWVrdGVkaXIuCgpCdSB1eWd1bGFtYSwgZG9rw7xtYW4g
-Z8O2bmRlcmlsZXJpIGhhcmljaW5kZWtpIGFsaWNpc2kgw7Z6ZWwgc2FoaXMgb2xhbiB0w7xtIG51
-bXVuZSAvIHBha2V0IGfDtm5kZXJpbGVyaW5pIGthcHNhbWFrdGFkaXIuCgpNUFMgU2FkZWNlIFJ1
-c3lhIGRhIGtheWl0bGksIGl0aGFsYXQgaXpuaSBidWx1bmFuIFJ1cyBmaXJtYWxhcmksIGdlcmVr
-bGkgcHJvc2Vkw7xybGVyaSB5ZXJpbmUgxLBTVEVSIEdFVMSwUlPEsE4gxLBTVEVSIEdFVMSwUk1F
-U8SwTiBUw7xtIGfDtm5kZXJpbGVyaW5pIGfDvG1yw7xrdGVuIMOnZWtlYmlsaXlvciB2ZSBUw7xy
-a2l5ZWRlbiB0ZXNsaW0gYWxpeW9yLiAKClJ1c3lhIEfDvG1yw7xnw7xuZGVraSBidSB1eWd1bGFt
-YWRhbiBtw7xzdGVyaWxlcmltaXppbiBldGtpbGVubWVtZXNpIGnDp2luIHNhZGVjZSBhbGljaXNp
-IMO2emVsIHNhaGlzIG9sYW4gbnVtdW5lIC8gcGFrZXQgUnVzeWEgZ8O2bmRlcmlsZXJpbmkgxZ9p
-cmtldCBvbGFyYWsga2FidWwgZWRlYmlsaXlvcnV6LiAKClTDvG0gZXZyYWsvZG9rw7xtYW4gdmUg
-UnVzIGZpcm1hbGFyaW5hIHlhcGFjYWdpbml6IG51bXVuZSAvIHBha2V0IGlocmFjYXQgdmUgYcSf
-xLFyIGthcmdvbGFyxLFuxLF6YSBoaXptZXRpbWl6IGF5bmkgc2VraWxkZSBkZXZhbSBldG1la3Rl
-ZGlyLiAKCkfDtm5kZXJpbGVyaW5pemRlIGJpemkgdGVyY2loIGV0dGlnaW5peiBpY2luIHRlc2Vr
-a8O8ciBlZGVyLCBpeWkgaXNiaXJsaWdpbWl6aW4gYXJ0YXJhayBkZXZhbWluaSBkaWxlcml6LiAK
-ClNheWdpbGFyaW1pemxhLAoKTVBTIEVYUFJFU1MgJiBMT0fEsFNUxLBDJ1MgIFTDnFJLxLBZRQo5
-MCAyMTIgNDQ0IDAgMTA4CgpOb3QgLjpGaXlhdCBTb3JndWxhbWFrIHZlIHRhbGVwbGVyaW5peiBp
-w6dpbiBBxZ9hxJ9pIG1haWwgYWRyZXNsZXJpbmRlbiB0YWxlcHRlIGJ1bHVubWFuxLF6IMO2bmVt
-bGUgcmljYSBvbHVudXIuCgpSdXN5YSBIYXZhIEthcmdvIHZlIEthcmF5b2x1IFBhcnNpeWVsIMSw
-w6dpbiAuOkhhc2FuIMOcTkFMREkgICAgaGFzYW4udW5hbGRpQGludGVyLW1leC5jb20gCkF2cnVw
-YSB2ZSBPcnRhZG/En3UgS2FyZ29sYXLEsW7EsXogacOnaW4gICAgICAgICAgICAuOk5lcm1pbiBE
-VVJNQVogbmVybWluLmR1cm1hekBpbnRlci1tZXguY29tIArEsGhyYWNhdCBLYXJnb2xhcsSxbsSx
-eiBpw6dpbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLjrEsGJyYWhpbSDDnE5BTERJ
-ICAgaWJyYWhpbS51bmFsZGlAaW50ZXItbWV4LmNvbQoKCgoKX19fX19fX19fXyBFU0VUIE5PRDMy
-IEFudGl2aXJ1cyBBa++/vWxs77+9IEfvv712ZW5saWsgdGFyYWbvv71uZGFuIHNh77+9bGFuYW4g
-YmlsZ2lsZXIsIHZpcu+/vXMgaW16YSB2ZXJpdGFiYW7vv70gc++/vXLvv71t77+9OiA1MDkzICgy
-MDEwMDUwNikgX19fX19fX19fXwoK77+9bGV0aSBFU0VUIE5PRDMyIEFudGl2aXJ1cyBBa++/vWxs
-77+9IEfvv712ZW5saWsgdGFyYWbvv71uZGFuIGRlbmV0bGVuZGkuCgpodHRwOi8vd3d3Lm5vZDMy
-LmNvbS50cgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
-Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote on 2010/05/17 15:22:54:
+>
+> On Mon, May 17, 2010 at 03:17:10PM +0200, Joakim Tjernlund wrote:
+> > This fixes a typo were map_tx_dma is used instead of
+> > map_rx_dma, casing the driver to unmap rx_dma when it
+> > shouldn't.
+> >
+> > Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+>
+> Acked-by: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>
+> Thanks!
+
+Hi Grant
+
+I havn't seen any activity towards getting my patches into Linus tree, forgotten?
+
+
+------------------------------------------------------------------------------

@@ -1,16 +1,17 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: reinitialize transfer
-	parameters for each message
-Date: Sat, 22 May 2010 03:27:00 -0600
-Message-ID: <AANLkTimZ06_xg77TXLlRfWAPnVAEEcOwnN4u6XpEzAQ1@mail.gmail.com>
-References: <1268175375-13970-1-git-send-email-bniebuhr@efjohnson.com>
+Subject: Re: [PATCH] spi: atmel-spi fix cs_change
+	behaviour
+Date: Sat, 22 May 2010 03:44:06 -0600
+Message-ID: <AANLkTilADPBrg9J3n5d3r0HYjTdiaSUbKAH4Iz9Imjb8@mail.gmail.com>
+References: <4B9FA253.5030109@iis.fraunhofer.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Haavard Skinnemoen <haavard.skinnemoen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: Manuel Stahl <manuel.stahl-GeUHRtUQU7nSyEMIgutvibNAH6kLmebB@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1268175375-13970-1-git-send-email-bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
+In-Reply-To: <4B9FA253.5030109-GeUHRtUQU7nSyEMIgutvibNAH6kLmebB@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,60 +22,63 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Mar 9, 2010 at 4:56 PM, Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> It is possible that multiple messages for different SPI devices could
-> be queued. =A0The transfer parameters are currently only set for the
-> first message in the bitbang work queue. =A0If subsequent messages in
-> the queue are for devices that do not have compatible transfer
-> parameters (speed, phase, polarity, etc.) then those transfers will fail.
+On Tue, Mar 16, 2010 at 9:22 AM, Manuel Stahl
+<manuel.stahl-GeUHRtUQU7nSyEMIgutvibNAH6kLmebB@public.gmane.org> wrote:
+> There is a problem in the cs_change behaviour in atmel-spi.
 >
-> The fix is to reinitialize the transfer parameters for each message
-> rather than only once on the first message.
+> In include/linux/spi/spi.h it says:
 >
-> Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
-> ---
-> =A0drivers/spi/spi_bitbang.c | =A0 =A02 +-
-> =A01 files changed, 1 insertions(+), 1 deletions(-)
+> Chipselect stays active during the entire message
+> (unless modified by spi_transfer.cs_change !=3D 0).
 >
-> diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
-> index f1db395..1e9247a 100644
-> --- a/drivers/spi/spi_bitbang.c
-> +++ b/drivers/spi/spi_bitbang.c
-> @@ -258,7 +258,6 @@ static void bitbang_work(struct work_struct *work)
-> =A0 =A0 =A0 =A0struct spi_bitbang =A0 =A0 =A0*bitbang =3D
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0container_of(work, struct spi_bitbang, wor=
-k);
-> =A0 =A0 =A0 =A0unsigned long =A0 =A0 =A0 =A0 =A0 flags;
-> - =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 do_setup =3D -1;
-> =A0 =A0 =A0 =A0int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (*setup_transf=
-er)(struct spi_device *,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0struct spi_transfer *);
->
-> @@ -274,6 +273,7 @@ static void bitbang_work(struct work_struct *work)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0tm=
-p;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs=
-_change;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 status;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- do_setup =3D -1;
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0m =3D container_of(bitbang->queue.next, st=
-ruct spi_message,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0queue);
+> The last parameter in atmel_spi_msg_done is named stay, so it must be cal=
+led
+> with inverted cs_change value.
 
-This doesn't look right.  Effectively moving the do_setup
-initialization inside the loop completely short circuits the logic
-around setup_transfer() calls.  In some cases this change will cause
-setup_transfer() to get called twice back to back with no transfer in
-between (after the last transfer if do_setup =3D=3D 1).
-
-If the logic is wrong, then this patch should pull out and fix the bad
-logic instead instead of force-overriding it.
+Any users of this driver have an ack/nack for this patch?  Haavard perhaps?
 
 g.
+
+>
+> --- a/drivers/spi/atmel_spi.c
+> +++ b/drivers/spi/atmel_spi.c
+> @@ -501,7 +501,7 @@ atmel_spi_interrupt(int irq, void *dev_id)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (atmel_spi_xfer_is_last=
+(msg, xfer)) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* report =
+completed message */
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0atmel_spi_=
+msg_done(master, as, msg, 0,
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 =A0 =A0 xfer->cs_change);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 =A0 =A0 !xfer->cs_change);
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0} else {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (xfer->=
+cs_change) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0cs_deactivate(as, msg->spi);
+>
+> -------------------------------------------------------------------------=
+-----
+> Download Intel&#174; Parallel Studio Eval
+> Try the new software tools for yourself. Speed compiling, find bugs
+> proactively, and fine-tune applications for parallel performance.
+> See why Intel Parallel Studio got high marks during beta.
+> http://p.sf.net/sfu/intel-sw-dev
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+>
+>
+
+
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
 
 ---------------------------------------------------------------------------=
 ---

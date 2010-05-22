@@ -1,41 +1,126 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev_test.c: Make transfer
-	size suitable for wordsize 32
-Date: Sat, 22 May 2010 02:39:38 -0600
-Message-ID: <AANLkTinWmX39klqQvBPpZY44YdTK3ESb6uu6EomW7fZb@mail.gmail.com>
-References: <1273828467-4593-1-git-send-email-Joakim.Tjernlund@transmode.se>
-	<1273828467-4593-2-git-send-email-Joakim.Tjernlund@transmode.se>
-	<20100514122239.GB24394@oksana.dev.rtsoft.ru>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 1/6 Revised] SPI omap2_mcspi.c: Check params before
+	dereference or use
+Date: Sat, 22 May 2010 03:39:36 -0600
+Message-ID: <AANLkTikCydr_Nj446sySru774pY2jXLKNUNVfW3LSK9R@mail.gmail.com>
+References: <1268406713.14445.50.camel@quad>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-To: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100514122239.GB24394-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: spi-devel-general@lists.sourceforge.net,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Kevin Hilman <khilman@deeprootsystems.com>,
+	Aaro Koskinen <Aaro.Koskinen@nokia.com>,
+	Roman Tereshonkov <roman.tereshonkov@nokia.com>,
+	linux-omap@vger.kernel.org
+To: Scott Ellis <scott@jumpnowtek.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <1268406713.14445.50.camel@quad>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 14, 2010 at 6:22 AM, Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> On Fri, May 14, 2010 at 11:14:27AM +0200, Joakim Tjernlund wrote:
->>
->> Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+On Fri, Mar 12, 2010 at 9:11 AM, Scott Ellis <scott@jumpnowtek.com> wro=
+te:
+> This was previously submitted directly to the linux-kernel list.
+> It was incomplete the first time because it failed to also check
+> the chip_select value.
 >
-> Acked-by: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Check spi->controller_state before dereference.
+> Check spi->chip_select for range before use.
+>
+> Neither are necessarily valid after spi_alloc_device() and
+> then spi_add_device() fails. Calling spi_put_device() will
+> trigger the error.
+>
+> Signed-off-by: Scott Ellis <scott@jumpnowtek.com>
 
-I don't think I'll apply this one.  I know it's just sample code, but
-it still smells of masking a corner case.  If you really want to do
-this, then I'd suggest adding a runtime switch to change the transfer
-size.
+Hi Scott,
 
+Can you please respin and repost your pending patches on top of
+2.6.34?  The current patches don't apply as-is and I've lost track of
+what needs to be done.
+
+Thanks,
 g.
 
-------------------------------------------------------------------------------
+> =A0drivers/spi/omap2_mcspi.c | =A0 30 +++++++++++++++++-------------
+> =A01 files changed, 17 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+> index 715c518..fe1b56d 100644
+> --- a/drivers/spi/omap2_mcspi.c
+> +++ b/drivers/spi/omap2_mcspi.c
+> @@ -748,22 +748,26 @@ static void omap2_mcspi_cleanup(struct spi_devi=
+ce *spi)
+> =A0 =A0 =A0 =A0struct omap2_mcspi_dma =A0*mcspi_dma;
+> =A0 =A0 =A0 =A0struct omap2_mcspi_cs =A0 *cs;
+>
+> - =A0 =A0 =A0 mcspi =3D spi_master_get_devdata(spi->master);
+> - =A0 =A0 =A0 mcspi_dma =3D &mcspi->dma_channels[spi->chip_select];
+> + =A0 =A0 =A0 if (spi->controller_state) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* Unlink controller state from context=
+ save list */
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs =3D spi->controller_state;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 list_del(&cs->node);
+>
+> - =A0 =A0 =A0 /* Unlink controller state from context save list */
+> - =A0 =A0 =A0 cs =3D spi->controller_state;
+> - =A0 =A0 =A0 list_del(&cs->node);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 kfree(spi->controller_state);
+> + =A0 =A0 =A0 }
+>
+> - =A0 =A0 =A0 kfree(spi->controller_state);
+> + =A0 =A0 =A0 if (spi->chip_select < spi->master->num_chipselect) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mcspi =3D spi_master_get_devdata(spi->m=
+aster);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mcspi_dma =3D &mcspi->dma_channels[spi-=
+>chip_select];
+>
+> - =A0 =A0 =A0 if (mcspi_dma->dma_rx_channel !=3D -1) {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 omap_free_dma(mcspi_dma->dma_rx_channel=
+);
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mcspi_dma->dma_rx_channel =3D -1;
+> - =A0 =A0 =A0 }
+> - =A0 =A0 =A0 if (mcspi_dma->dma_tx_channel !=3D -1) {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 omap_free_dma(mcspi_dma->dma_tx_channel=
+);
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 mcspi_dma->dma_tx_channel =3D -1;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mcspi_dma->dma_rx_channel !=3D -1) =
+{
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 omap_free_dma(mcspi_dma=
+->dma_rx_channel);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mcspi_dma->dma_rx_chann=
+el =3D -1;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (mcspi_dma->dma_tx_channel !=3D -1) =
+{
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 omap_free_dma(mcspi_dma=
+->dma_tx_channel);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 mcspi_dma->dma_tx_chann=
+el =3D -1;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+> =A0 =A0 =A0 =A0}
+> =A0}
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+
+
+
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

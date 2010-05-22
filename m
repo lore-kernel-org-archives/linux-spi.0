@@ -1,50 +1,41 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v7 1/2] spi: implemented driver for Cirrus EP93xx SPI
-	controller
-Date: Sat, 22 May 2010 01:49:06 -0600
-Message-ID: <AANLkTimpImoDkTtsEN0AHEK6L-txuPCVK1ZPs5f14aeq@mail.gmail.com>
-References: <cover.1273120206.git.mika.westerberg@iki.fi>
-	<3729cd3650f5af6aebfc5bae02ff6aad1b9b1e82.1273120206.git.mika.westerberg@iki.fi>
-	<20100522072755.GB18613@gw.healthdatacare.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev_test.c: Make transfer
+	size suitable for wordsize 32
+Date: Sat, 22 May 2010 02:39:38 -0600
+Message-ID: <AANLkTinWmX39klqQvBPpZY44YdTK3ESb6uu6EomW7fZb@mail.gmail.com>
+References: <1273828467-4593-1-git-send-email-Joakim.Tjernlund@transmode.se>
+	<1273828467-4593-2-git-send-email-Joakim.Tjernlund@transmode.se>
+	<20100514122239.GB24394@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: dbrownell@users.sourceforge.net, martinwguy@gmail.com,
-	hsweeten@visionengravers.com, ryan@bluewatersys.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Mika Westerberg <mika.westerberg@iki.fi>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20100522072755.GB18613@gw.healthdatacare.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+To: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100514122239.GB24394-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, May 22, 2010 at 1:27 AM, Mika Westerberg <mika.westerberg@iki.fi> wrote:
-> On Thu, May 06, 2010 at 07:47:04AM +0300, Mika Westerberg wrote:
->> This patch adds an SPI master driver for the Cirrus EP93xx SPI controller found
->> in EP93xx chips.
+On Fri, May 14, 2010 at 6:22 AM, Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On Fri, May 14, 2010 at 11:14:27AM +0200, Joakim Tjernlund wrote:
 >>
->> Signed-off-by: Mika Westerberg <mika.westerberg@iki.fi>
->> Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
->> Acked-by: H Hartley Sweeten <hsweeten@visionengravers.com>
->> Cc: Ryan Mallon <ryan@bluewatersys.com>
->> Cc: David Brownell <dbrownell@users.sourceforge.net>
->> Cc: Grant Likely <grant.likely@secretlab.ca>
->> Cc: Martin Guy <martinwguy@gmail.com>
+>> Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 >
-> Hi Grant,
->
-> Ping. Any change getting this driver into .35? Platform side code
-> is already in linux-next.
+> Acked-by: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-That is my plan.
+I don't think I'll apply this one.  I know it's just sample code, but
+it still smells of masking a corner case.  If you really want to do
+this, then I'd suggest adding a runtime switch to change the transfer
+size.
 
 g.
+
+------------------------------------------------------------------------------

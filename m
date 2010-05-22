@@ -1,49 +1,50 @@
-From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: Re: [PATCH v7 1/2] spi: implemented driver for
-	Cirrus EP93xx SPI	controller
-Date: Sat, 22 May 2010 10:27:55 +0300
-Message-ID: <20100522072755.GB18613@gw.healthdatacare.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH v7 1/2] spi: implemented driver for Cirrus EP93xx SPI
+	controller
+Date: Sat, 22 May 2010 01:49:06 -0600
+Message-ID: <AANLkTimpImoDkTtsEN0AHEK6L-txuPCVK1ZPs5f14aeq@mail.gmail.com>
 References: <cover.1273120206.git.mika.westerberg@iki.fi>
 	<3729cd3650f5af6aebfc5bae02ff6aad1b9b1e82.1273120206.git.mika.westerberg@iki.fi>
+	<20100522072755.GB18613@gw.healthdatacare.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org, ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <3729cd3650f5af6aebfc5bae02ff6aad1b9b1e82.1273120206.git.mika.westerberg-X3B1VOXEql0@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: dbrownell@users.sourceforge.net, martinwguy@gmail.com,
+	hsweeten@visionengravers.com, ryan@bluewatersys.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: Mika Westerberg <mika.westerberg@iki.fi>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20100522072755.GB18613@gw.healthdatacare.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, May 06, 2010 at 07:47:04AM +0300, Mika Westerberg wrote:
-> This patch adds an SPI master driver for the Cirrus EP93xx SPI controller found
-> in EP93xx chips.
-> 
-> Signed-off-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-> Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-> Acked-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-> Cc: Ryan Mallon <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>
-> Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> Cc: Martin Guy <martinwguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Sat, May 22, 2010 at 1:27 AM, Mika Westerberg <mika.westerberg@iki.fi> wrote:
+> On Thu, May 06, 2010 at 07:47:04AM +0300, Mika Westerberg wrote:
+>> This patch adds an SPI master driver for the Cirrus EP93xx SPI controller found
+>> in EP93xx chips.
+>>
+>> Signed-off-by: Mika Westerberg <mika.westerberg@iki.fi>
+>> Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
+>> Acked-by: H Hartley Sweeten <hsweeten@visionengravers.com>
+>> Cc: Ryan Mallon <ryan@bluewatersys.com>
+>> Cc: David Brownell <dbrownell@users.sourceforge.net>
+>> Cc: Grant Likely <grant.likely@secretlab.ca>
+>> Cc: Martin Guy <martinwguy@gmail.com>
+>
+> Hi Grant,
+>
+> Ping. Any change getting this driver into .35? Platform side code
+> is already in linux-next.
 
-Hi Grant,
+That is my plan.
 
-Ping. Any change getting this driver into .35? Platform side code
-is already in linux-next.
-
-Thanks,
-MW
-
-------------------------------------------------------------------------------
+g.

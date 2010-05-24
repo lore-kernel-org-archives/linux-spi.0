@@ -1,9 +1,9 @@
 From: Scott Ellis <scott@jumpnowtek.com>
-Subject: Re: [PATCH 5/6] SPI omap2_mcspi.c: Use num chipselects from
- platform data
-Date: Mon, 24 May 2010 11:14:01 -0400
-Message-ID: <1274714041.2888.39.camel@quad>
-References: <1268407329.14445.54.camel@quad>
+Subject: Re: [PATCH 6/6] SPI omap2_mcspi.c: Limit debug messages from
+ setup_transfer
+Date: Mon, 24 May 2010 11:25:14 -0400
+Message-ID: <1274714714.2888.41.camel@quad>
+References: <1268407334.14445.55.camel@quad>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
@@ -17,18 +17,12 @@ Cc: David Brownell <dbrownell@users.sourceforge.net>,
 	Kevin Hilman <khilman@deeprootsystems.com>
 To: spi-devel-general@lists.sourceforge.net
 Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1268407329.14445.54.camel@quad>
+In-Reply-To: <1268407334.14445.55.camel@quad>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This was convenient in conjunction with some of the previous patches
-since platform_device data was already getting read for max_clk_div and
-num_cs was there too. Since max_clk_div is no more, maybe this patch
-isn't worthwhile.
+Please ignore this patch.
 
-It's not a bug fix, so no harm ignoring.
-
-I'll regenerate it if asked. 
-
+Developer preference whether you want this much detail.
 
 

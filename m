@@ -1,9 +1,9 @@
 From: Scott Ellis <scott@jumpnowtek.com>
-Subject: Re: [PATCH 4/6] SPI omap2_mcspi.c: Use the transfer speed_hz value
- if provided
-Date: Mon, 24 May 2010 10:44:38 -0400
-Message-ID: <1274712278.2888.28.camel@quad>
-References: <1268407324.14445.53.camel@quad>
+Subject: Re: [PATCH 5/6] SPI omap2_mcspi.c: Use num chipselects from
+ platform data
+Date: Mon, 24 May 2010 11:14:01 -0400
+Message-ID: <1274714041.2888.39.camel@quad>
+References: <1268407329.14445.54.camel@quad>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
@@ -17,18 +17,18 @@ Cc: David Brownell <dbrownell@users.sourceforge.net>,
 	Kevin Hilman <khilman@deeprootsystems.com>
 To: spi-devel-general@lists.sourceforge.net
 Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1268407324.14445.53.camel@quad>
+In-Reply-To: <1268407329.14445.54.camel@quad>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Please ignore this patch.
+This was convenient in conjunction with some of the previous patches
+since platform_device data was already getting read for max_clk_div and
+num_cs was there too. Since max_clk_div is no more, maybe this patch
+isn't worthwhile.
 
-The changes already in 2.6.34-rc7 are sufficient.
+It's not a bug fix, so no harm ignoring.
 
-They made it there because I initially submitted to the wrong list.
+I'll regenerate it if asked. 
 
-This patch was expanded from that one to also using the modified clock
-divider values from patches 2 and 3 of this series which I have found
-aren't needed.
 
 

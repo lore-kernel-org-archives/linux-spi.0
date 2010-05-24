@@ -1,27 +1,23 @@
 From: Scott Ellis <scott@jumpnowtek.com>
-Subject: Re: [PATCH 2/6 Revised] SPI omap2_mcspi: Add max_clk_div field to
- mcspi platform config
-Date: Mon, 24 May 2010 10:26:21 -0400
-Message-ID: <1274711181.2888.15.camel@quad>
-References: <1268407307.14445.51.camel@quad>
-	 <20100312172148.GG2900@atomide.com> <1268587548.30878.11.camel@quad>
-	 <20100315163246.GT2900@atomide.com> <1268685022.8594.130.camel@quad>
-	 <20100315210236.GE2900@atomide.com> <1269027991.586.63.camel@quad>
-	 <20100319203822.GX2900@atomide.com>
+Subject: Re: [PATCH 3/6] SPI omap2_mcspi.c: Use appropriate clock divider
+ value
+Date: Mon, 24 May 2010 10:31:56 -0400
+Message-ID: <1274711516.2888.16.camel@quad>
+References: <1268407315.14445.52.camel@quad>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>,
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
 	Grant Likely <grant.likely@secretlab.ca>,
+	Tony Lindgren <tony@atomide.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Roman Tereshonkov <roman.tereshonkov@nokia.com>,
 	linux-omap@vger.kernel.org,
 	Aaro Koskinen <Aaro.Koskinen@nokia.com>,
 	Kevin Hilman <khilman@deeprootsystems.com>
-To: Tony Lindgren <tony@atomide.com>
+To: spi-devel-general@lists.sourceforge.net
 Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20100319203822.GX2900@atomide.com>
+In-Reply-To: <1268407315.14445.52.camel@quad>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 

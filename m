@@ -1,9 +1,9 @@
 From: Scott Ellis <scott@jumpnowtek.com>
-Subject: Re: [PATCH 3/6] SPI omap2_mcspi.c: Use appropriate clock divider
- value
-Date: Mon, 24 May 2010 10:31:56 -0400
-Message-ID: <1274711516.2888.16.camel@quad>
-References: <1268407315.14445.52.camel@quad>
+Subject: Re: [PATCH 4/6] SPI omap2_mcspi.c: Use the transfer speed_hz value
+ if provided
+Date: Mon, 24 May 2010 10:44:38 -0400
+Message-ID: <1274712278.2888.28.camel@quad>
+References: <1268407324.14445.53.camel@quad>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
@@ -17,17 +17,18 @@ Cc: David Brownell <dbrownell@users.sourceforge.net>,
 	Kevin Hilman <khilman@deeprootsystems.com>
 To: spi-devel-general@lists.sourceforge.net
 Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1268407315.14445.52.camel@quad>
+In-Reply-To: <1268407324.14445.53.camel@quad>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Please disregard this patch.
+Please ignore this patch.
 
-PaulM from TI responded,
+The changes already in 2.6.34-rc7 are sufficient.
 
-"It appears that this is a documentation error. The module does support
-all 16 divide values for the CLKD field"
+They made it there because I initially submitted to the wrong list.
 
-http://e2e.ti.com/support/dsp/omap_applications_processors/f/42/p/38754/142276.aspx#142276
+This patch was expanded from that one to also using the modified clock
+divider values from patches 2 and 3 of this series which I have found
+aren't needed.
 
 

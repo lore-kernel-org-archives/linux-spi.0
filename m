@@ -1,205 +1,1163 @@
-From: "Director" <dir-/qkpn2daXV96k2ZkT/Rh8A@public.gmane.org>
-Subject: Re:
-	=?koi8-r?b?68HLINXK1Mkgz9Qgz9TXxdTT1NfFzs7P?=
-	=?koi8-r?b?09TJINDPIMTPzMfBzSDLz83Qwc7JyQ==?=
-Date: Sun, 30 May 2010 19:24:10 +0400
-Message-ID: <00e501cb000c$25c2c4c0$094ea8c0@f048183072.adsl.alicedsl.de>
-References: <002401beff48$fe3c2300$75419928@UDJNAvXa>
+From: Cory Maccarrone <darkstar6262@gmail.com>
+Subject: Re: [PATCH] Input: Add tsc2046 touchscreen driver
+Date: Sun, 30 May 2010 13:21:01 -0700
+Message-ID: <AANLkTike4Hu6xJ52fcC9TcKaeD4hLeWxHwUvA90tc3_Q@mail.gmail.com>
+References: <1260736754-374-1-git-send-email-darkstar6262@gmail.com>
+	<20100417082841.GB19866@core.coreip.homeip.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <002401beff48$fe3c2300$75419928@UDJNAvXa>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-input@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Return-path: <linux-input-owner@vger.kernel.org>
+In-Reply-To: <20100417082841.GB19866@core.coreip.homeip.net>
+Sender: linux-input-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-0KEg0L3QsNGH0LDQu9CwIDIwMDkg0LMuINCyINCk0JcgwqvQniDQvdC10YHQvtGB0YLQvtGP0YLQ
-tdC70YzQvdC+0YHRgtC4ICjQsdCw0L3QutGA0L7RgtGB0YLQstC1KcK7IDQt0LzRjyDQt9Cw0LrQ
-vtC90LDQvNC4INCy0L3QtdGB0LXQvdGLINC40LfQvNC10L3QtdC90LjRjywg0L/RgNC40YfQtdC8
-INC/0L7RgdC70LXQtNC90LjQvCDQpNCXIOKEljczINC+0YIgMjgg0LDQv9GA0LXQu9GPIDIwMDkg
-0LMgKNCy0YHRgtGD0L/QuNC7INCyINGB0LjQu9GDIDUg0LjRjtC90Y8pINCy0L3QtdGB0LXQvdGL
-INGB0LDQvNGL0LUg0LfQvdCw0YfQuNGC0LXQu9GM0L3Ri9C1INC40LfQvNC10L3QtdC90LjRjy4K
-CtCSINC90LDRgdGC0L7Rj9GJ0LjQuSDQvNC+0LzQtdC90YIg0L3QsCDQtNC40YDQtdC60YLQvtGA
-0LAg0LrQvtC80L/QsNC90LjQuCDQstC+0LfQu9Cw0LPQsNC10YLRgdGPINGB0YPQsdGB0LjQtNC4
-0LDRgNC90LDRjyDQvtGC0LLQtdGC0YHRgtCy0LXQvdC90L7RgdGC0Ywg0L/QviDQtNC+0LvQs9Cw
-0Lwg0LTQvtC70LbQvdC40LrQsCAo0LrQvtC80L/QsNC90LjQuCwg0LrQvtGC0L7RgNGD0Y4g0L7Q
-vSDQstC+0LfQs9C70LDQstC70Y/QtdGCKSDQsiDRgtC+0Lwg0YHQu9GD0YfQsNC1LCDQtdGB0LvQ
-uCDQvtC9INC90LUg0L7QsdGA0LDRgtC40LvRgdGPINCyINGB0YPQtCDQt9CwINC/0YDQuNC30L3Q
-sNC90LjQtdC8INC00L7Qu9C20L3QuNC60LAg0LHQsNC90LrRgNC+0YLQvtC8LCDRhdC+0YLRjyDQ
-v9C+0YHQu9C10LTQvdC40Lkg0L3QtSDQvNC+0LMg0YPQtNC+0LLQu9C10YLQstC+0YDQuNGC0Ywg
-0L7QtNC90L7QvNC+0LzQtdC90YLQvdC+INCy0YHQtSDQv9GA0LXQtNGK0Y/QstC70LXQvdC90YvQ
-tSDQuiDQvdC10LzRgyDRgtGA0LXQsdC+0LLQsNC90LjQuSDQutGA0LXQtNC40YLQvtGA0L7Qsiwg
-0LvQuNCx0L4g0LzQvtCzINC40YUg0L/QvtCz0LDRgdC40YLRjCwg0L3QviDRgtC+0LvRjNC60L4g
-0L/RgNC+0LTQsNCyINC40LzRg9GJ0LXRgdGC0LLQviDQsdC10Lcg0LrQvtGC0L7RgNC+0LPQviDQ
-tNC10Y/RgtC10LvRjNC90L7RgdGC0Ywg0LTQvtC70LbQvdC40LrQsCDQsdGD0LTQtdGCINC/0LDR
-gNCw0LvQuNC30L7QstCw0L3QsCwg0LvQuNCx0L4g0L3QtdCy0L7Qt9C80L7QttC90LAg0LLQvtCy
-0YHQtS4g0JTQuNGA0LXQutGC0L7RgCDRgtCw0LrQttC1INCx0YPQtNC10YIg0L7RgtCy0LXRh9Cw
-0YLRjCDQv9C+INC00L7Qu9Cz0LDQvCDQvtGA0LPQsNC90LjQt9Cw0YbQuNC4INC4INC10YHQu9C4
-INC+0L0g0L3QtSDQstC10Lsg0LHRg9GF0LPQsNC70YLQtdGA0YHQutC40Lkg0YPRh9C10YIsINC6
-0L7RgtC+0YDRi9C5INC/0L4g0LzQvdC10L3QuNGOINCc0LjQvdGE0LjQvdCwINC00L7Qu9C20L3R
-iyDQstC10YHRgtC4INCy0YHQtSDQutC+0LzQv9Cw0L3QuNC4INCyINGC0L7QvCDRh9C40YHQu9C1
-INC4INC/0YDQuNC80LXQvdGP0Y7RidC40LUg0KPQodCdLgoK0JLQstC10LTQtdC90L4g0L/QvtC9
-0Y/RgtC40LUg0LrQvtC90YLRgNC+0LvQuNGA0YPRjtGJ0LXQs9C+INC00L7Qu9C20L3QuNC60LAg
-0LvQuNGG0LAsINC60L7RgtC+0YDRi9C8INC80L7QttC10YIg0LHRi9GC0Ywg0L/RgNC40LfQvdCw
-0L0g0Lgg0YHQvtCx0YHRgtCy0LXQvdC90LjQuiDQutC+0LzQv9Cw0L3QuNC4LCDQv9GA0LjRh9C1
-0Lwg0Y3RgtC+INC70LjRhtC+INGC0LDQutC20LUg0L7RgtCy0LXRh9Cw0LXRgiDQv9C+INC00L7Q
-u9Cz0LDQvCDQvtGA0LPQsNC90LjQt9Cw0YbQuNC4LiDQndC10L7QsdGF0L7QtNC40LzQviDQvtGC
-0LzQtdGC0LjRgtGMLCDRh9GC0L4g0L3QvtCy0YvQuSDQt9Cw0LrQvtC9INC/0YDQtdC00L/QvtC7
-0LDQs9Cw0LXRgiDRhNCw0LrRgtC40YfQtdGB0LrQuCDQvtGC0LLQtdGC0YHRgtCy0LXQvdC90L7R
-gdGC0Ywg0LHQtdC3INCy0LjQvdGLINGC0LDQutC+0LPQviDQu9C40YbQsCAo0LLQstC+0LTQuNGC
-0YzRgdGPINC/0YDQtdC30YPQvNC/0YbQuNGPINCy0LjQvdGLKS4KCtCd0LXQvtCx0YXQvtC00LjQ
-vNC+INGB0L/QtdGG0LjQsNC70YzQvdC+INC+0LHRgNCw0YLQuNGC0Ywg0LLQvdC40LzQsNC90LjQ
-tSDRh9GC0L4g0LrRgNC10LTQuNGC0L7RgCDQvNC+0LbQtdGCINC/0L4g0YHRg9GC0Lgg0L/QviDR
-gdCy0L7QtdC80YMg0LLRi9Cx0L7RgNGDINC/0YDQtdC00YrRj9Cy0LjRgtGMINC/0YDQtdGC0LXQ
-vdC30LjQuCDQsiDRgdC+0LHRgdGC0LLQtdC90L3QuNC60YMg0LrQvtC80L/QsNC90LjQuCwg0LrQ
-vtGC0L7RgNGL0Lkg0L3QtSDRgtC+0LvRjNC60L4g0Y/QstC70Y/QtdGC0YHRjyDRgtCw0LrQvtCy
-0YvQvCDQvdCwINC80L7QvNC10L3RgiDQstC30YvRgdC60LDQvdC40Y8sINC90L4g0Lgg0Y/QstC7
-0Y/Qu9GB0Y8g0LjQvCDQsiDRgtC10YfQtdC90LjQuCAyLdGFINC70LXRgiDQtNC+INC/0YDQuNC3
-0L3QsNC90LjRjyDQutC+0LzQv9Cw0L3QuNC4INCx0LDQvdC60YDQvtGC0L7QvC4g0KIu0LUuINC0
-0LDQttC1INC/0YDQvtC00LDQsiDQutC+0LzQv9Cw0L3QuNGOLCDRgdC+0LHRgdGC0LLQtdC90L3Q
-uNC6INC90LUg0LzQvtC20LXRgiDRh9GD0LLRgdGC0LLQvtCy0LDRgtGMINGB0LXQsdGPINCyINCx
-0LXQt9C+0L/QsNGB0L3QvtGB0YLQuC4g0KLQsNC60LbQtSDRgNCw0YHRiNC40YDRj9GO0YLRgdGP
-INGB0YDQvtC60Lgg0L7QsdC20LDQu9C+0LLQsNC90LjRjyDRgdC00LXQu9C+0Log0LTQvtC70LbQ
-vdC40LrQsCDQv9C+INC/0YDQsNCy0LjQu9Cw0Lwg0YPRgdGC0LDQvdC+0LLQu9C10L3QvdGL0LzQ
-uCDQpNCXIOKEljczINC00L4g0YLRgNC10YUg0LvQtdGCICjRgdC/0LXRhtC40LDQu9GM0L3Ri9C1
-INC+0YHQvdC+0LLQsNC90LjRjyDQvtCx0LbQsNC70L7QstCw0L3QuNGPINGB0LTQtdC70L7Quiku
-INCS0LLQvtC00Y/RgtGB0Y8g0YLQsNC60LbQtSDQuNC90YvQtSDQuNC30LzQtdC90LXQvdC40Y8g
-0L/QvtC30LLQvtC70Y/RjtGJ0LjQtSDQutGA0LXQtNC40YLQvtGA0LDQvCDQsiDQsdC+0LvRjNGI
-0LXQuSDQvNC10YDQtSDQt9Cw0YnQuNGC0LjRgtGMINGB0LLQvtC4INC/0YDQsNCy0LAg0Lgg0LLQ
-t9GL0YHQutCw0YLRjCDQt9Cw0LTQvtC70LbQtdC90L3QvtGB0YLRjC4KCtCh0L7QstC10YDRiNC1
-0L3QvdC+INC+0YfQtdCy0LjQtNC90L4sINGH0YLQviDQvdCw0YjQtSDQs9C+0YHRg9C00LDRgNGB
-0YLQstC+LCDQsiDQu9C40YbQtSDQutCw0Log0LzQuNC90LjQvNGD0Lwg0L3QsNC70L7Qs9C+0LLR
-i9GFINC+0YDQs9Cw0L3QvtCyINC+0LHRj9C30LDRgtC10LvRjNC90L4g0LLQvtGB0L/QvtC70YzQ
-t9GD0LXRgtGB0Y8g0Y3RgtC40LzQuCDQvdC+0LLQvtCy0LLQtdC00LXQvdC40Y/QvNC4ICjQutC+
-0YLQvtGA0YvQtSDQuCDQtNC70Y8g0L3QuNGFINCyINGC0L7QvCDRh9C40YHQu9C1INGB0L7Qt9C0
-0LDQvdGLKSDQuCDQv9C+0YHRgtCw0YDQsNC10YLRgdGPINCy0LfRi9GB0LrQuNCy0LDRgtGMINC+
-0LHRj9C30LDRgtC10LvRjNC90YvQtSDQv9C70LDRgtC10LbQuCDQsiDQtNC40YDQtdC60YLQvtGA
-0L7Qsi/RgdC+0LHRgdGC0LLQtdC90L3QuNC60L7QsiDQtNC+0LvQttC90LjQutCwLgoK0J3QvtCy
-0L7QtSDQsiDQt9Cw0LrQvtC90LUg0L4g0L3QtdGB0L7RgdGC0L7Rj9GC0LXQu9GM0L3QvtGB0YLQ
-uCAo0JHQkNCd0JrQoNCe0KLQodCi0JLQlSkuIArQmtCw0Log0YPQudGC0Lgg0L7RgiDQvtGC0LLQ
-tdGC0YHRgtCy0LXQvdC90L7RgdGC0Lgg0L/QviDQtNC+0LvQs9Cw0Lwg0LrQvtC80L/QsNC90LjQ
-uCwg0Y3RhNGE0LXQutGC0LjQstC90L4g0LLQt9GL0YHQutCw0YLRjCDQt9Cw0LTQvtC70LbQtdC9
-0L3QvtGB0YLRjAoxNSDQuCDRjiDQvSDRjyAgICB8ICAg0JwgbyDRgSDQuiDQsiBhICAgfCAgICAg
-OSAgNSDQniDQniAg0YAgIHwgICAoIDQgOSA1ICkgIDIgMiAxIC4uIDUgNCAuLiAyIDQKCgrQntCx
-0YDQsNC30L7QstCw0YLQtdC70YzQvdC+0LUg0LzQtdGA0L7Qv9GA0LjRj9GC0LjQtSDQv9C+0YHQ
-stGP0YnQtdC90L4g0LDQvdCw0LvQuNC30YMg0L3QvtCy0L7QstCy0LXQtNC10L3QuNC5INC4INGA
-0LDQt9GK0Y/RgdC90LXQvdC40Y4g0YLQsNC60LjRhSDQstC+0L/RgNC+0YHQvtCyINC60LDQujoK
-ICAgMS4g0JrQsNC6INGB0L7QsdGB0YLQstC10L3QvdC40LrRgyDQuCDQtNC40YDQtdC60YLQvtGA
-0YMg0LfQsNGJ0LjRgtC40YLRjNGB0Y8g0L7RgiDQstC+0LfQvNC+0LbQvdGL0YUg0L/RgNC10YLQ
-tdC90LfQuNC5INC/0L4g0LTQvtC70LPQsNC8INC60L7QvNC/0LDQvdC40LguCiAgIDIuINCa0LDQ
-uiDQv9C+0YHRgtGA0L7QuNGC0Ywg0YHRgtGA0YPQutGC0YPRgNGDINGD0L/RgNCw0LLQu9C10L3Q
-uNGPINC4INGB0L7QsdGB0YLQstC10L3QvdC+0YHRgtC4LCDRh9GC0L7QsdGLINC/0YDQtdGC0LXQ
-vdC30LjQuSDQvNC+0LbQvdC+INCx0YvQu9C+INC40LfQsdC10LbQsNGC0YwuINCn0YLQviDQtNCw
-0YHRgiDQvtGE0YTRiNC+0YAg0Lgg0YIu0L8uCiAgIDMuINCa0LDQutC40Lwg0L7QsdGA0LDQt9C+
-0Lwg0LfQsNC60LvRjtGH0LDRgtGMINGB0LTQtdC70LrQuCwg0YfRgtC+0LHRiyDQuNGFINC30LDR
-gtGA0YPQtNC90LjRgtC10LvRjNC90L4g0LHRi9C70L4g0L7RgdC/0L7RgNC40YLRjC4g0JrQsNC6
-INC+0LHRitGP0YHQvdC40YLRjCDQv9C+0YfQtdC80YMg0YHQtNC10LvQutC4INC30LDQutC70Y7R
-h9Cw0LvQuNGB0Ywg0L3QsCDQvdC10LLRi9Cz0L7QtNC90YvRhSDRg9GB0LvQvtCy0LjRj9GFLgog
-ICA0LiDQndCwINC60LDQutC+0Lwg0L7RgdC90L7QstCw0L3QuNC4INC90LDQu9C+0LPQvtCy0YvQ
-uSDQvtGA0LPQsNC9INGB0LzQvtC20LXRgiDQv9GA0LXQtNGK0Y/QstC40YLRjCDQv9GA0LXRgtC1
-0L3Qt9C40LgsINGH0YLQviDQtNC70Y8g0Y3RgtC+0LPQviDQvdC10L7QsdGF0L7QtNC40LzQvi4K
-ICAgNS4g0JrQsNC6INC60YDQtdC00LjRgtC+0YDQsNC8INCy0L7RgdC/0L7Qu9GM0LfQvtCy0LDR
-gtGM0YHRjyDQuNC30LzQtdC90LXQvdC40Y/QvNC4INCyINC30LDQutC+0L0g0YfRgtC+0LHRiyDQ
-siDQv9C+0LvQvdC+0Lkg0LzQtdGA0LUg0LLQt9GL0YHQutCw0YLRjCDRgdCy0L7QuCDQtNC+0LvQ
-s9C4LgoK0KDQkNCh0KHQnNCQ0KLQoNCY0JLQkNCV0JzQq9CVICDQktCe0J/QoNCe0KHQqzoKCjEu
-INCe0YLQstC10YLRgdGC0LLQtdC90L3QvtGB0YLRjCDRgdC+0LHRgdGC0LLQtdC90L3QuNC60LAg
-0Lgg0YDRg9C60L7QstC+0LTQuNGC0LXQu9GPCiAgICAqINCe0YHQvdC+0LLQsNC90LjRjyDQv9GA
-0LjQt9C90LDQvdC40Y8g0LTQvtC70LbQvdC40LrQsCDQvdC10YHQvtGB0YLQvtGP0YLQtdC70YzQ
-vdGL0LwgKNCx0LDQvdC60YDQvtGC0L7QvCkuINCe0YHQvdC+0LLQsNC90LjRjyDQtNC70Y8g0L7Q
-sdGP0LfQsNGC0LXQu9GM0L3QvtCz0L4g0LTQvtCx0YDQvtCy0L7Qu9GM0L3QvtCz0L4g0L7QsdGA
-0LDRidC10L3QuNGPINCyINGB0YPQtC4g0J/RgNC10LfRg9C80L/RhtC40Y8g0LLQuNC90Ysg0Lgg
-0L3QtdC/0LvQsNGC0LXQttC10YHQv9C+0YHQvtCx0L3QvtGB0YLQuCwg0LLQstC10LTQtdC90L3R
-i9C1INCk0LXQtNC10YDQsNC70YzQvdGL0Lwg0LfQsNC60L7QvdC+0Lwg0L7RgiAyOCDQsNC/0YDQ
-tdC70Y8gMjAwOSDQsy4gTiA3My3QpNCXLgogICAgKiDQntGC0LLQtdGC0YHRgtCy0LXQvdC90L7R
-gdGC0Ywg0LTQuNGA0LXQutGC0L7RgNCwLiDQk9GA0LDQttC00LDQvdGB0LrQvi3Qv9GA0LDQstC+
-0LLQsNGPINC+0YLQstC10YLRgdGC0LLQtdC90L3QvtGB0YLRjCAo0YHRg9Cx0YHQuNC00LjQsNGA
-0L3QsNGPINC+0YLQstC10YLRgdGC0LLQtdC90L3QvtGB0YLRjCDQv9C+INC00L7Qu9Cz0LDQvCDQ
-vtGA0LPQsNC90LjQt9Cw0YbQuNC4INC4INGCLtC/LiksINGD0LPQvtC70L7QstC90LDRjyDQvtGC
-0LLQtdGC0YHRgtCy0LXQvdC90L7RgdGC0YwsINCw0LTQvNC40L3QuNGB0YLRgNCw0YLQuNCy0L3Q
-sNGPINC+0YLQstC10YLRgdGC0LLQtdC90L3QvtGB0YLRjC4KICAgICog0J7RgtCy0LXRgtGB0YLQ
-stC10L3QvdC+0YHRgtGMINC00LjRgNC10LrRgtC+0YDQsCDQv9GA0Lgg0L7RgtGB0YPRgtGB0YLQ
-stC40Lgg0LTQvtC60YPQvNC10L3RgtC+0LIuINCe0LHQvtGB0L3QvtCy0LDQvdC40LUg0YDQsNGB
-0L/RgNC+0YHRgtGA0LDQvdC10L3QuNGPINC+0LHRj9C30LDQvdC90L7RgdGC0Lgg0LLQtdC00LXQ
-vdC40Y8g0LHRg9GF0YPRh9C10YLQsCDQvdCwINCy0YHQtSDQutC+0LzQv9Cw0L3QuNC4LCDQstC9
-0LUg0LfQsNCy0LjRgdC40LzQvtGB0YLQuCDQvtGCINGD0LrQsNC30LDQvdC40Lkg0LIg0LfQsNC6
-0L7QvdC1INC+INCx0YPRhdGD0YfQtdGC0LUuINCe0YLQstC10YLRgdGC0LLQtdC90L3QvtGB0YLR
-jCDQtNC40YDQtdC60YLQvtGA0LAg0LrQvtC80L/QsNC90LjQuCDQv9GA0LjQvNC10L3Rj9GO0YnQ
-tdC5INCj0KHQnS4g0J7QsdC+0YHQvdC+0LLQsNC90LjQtSDRg9GF0L7QtNCwINC+0YIg0L7RgtCy
-0LXRgtGB0YLQstC10L3QvdC+0YHRgtC4INCyINC00LDQvdC90L7QvCDRgdC70YPRh9Cw0LUuCiAg
-ICAqINCe0YLQstC10YLRgdGC0LLQtdC90L3QvtGB0YLRjCDQutC+0L3RgtGA0L7Qu9C40YDRg9GO
-0YnQuNGFINC00L7Qu9C20L3QuNC60LAg0LvQuNGGICjRgdC+0LHRgdGC0LLQtdC90L3QuNC60L7Q
-siDQvtGA0LPQsNC90LjQt9Cw0YbQuNC5INCy0LvQsNC00LXRjtGJ0LjRhSDQsdC+0LvQtdC1IDUw
-ICUg0LTQvtC70LXQuS/QsNC60YbQuNC5LCDQuNC90YvRhSDQu9C40YYg0LrQvtGC0L7RgNGL0LUg
-0LzQvtCz0LvQuCDQtNCw0LLQsNGC0Ywg0L7QsdGP0LfQsNGC0LXQu9GM0L3Ri9C1INC00LvRjyDQ
-tNC+0LvQttC90LjQutCwINGD0LrQsNC30LDQvdC40Y8pLgoyLiDQodC/0L7RgdC+0LHRiyDRg9GF
-0L7QtNCwINC00LjRgNC10LrRgtC+0YDQsCDQvtGCINC+0YLQstC10YLRgdGC0LLQtdC90L3QvtGB
-0YLQuAozLiDQmtCw0Log0L7QsdC+0YHQvdC+0LLQsNGC0Ywg0L7RgtGB0YPRgtGB0YLQstC40LUg
-0LLQuNC90Ysg0LTQuNGA0LXQutGC0L7RgNCwINC/0YDQuCDQt9Cw0LrQu9GO0YfQtdC90LjQuCDQ
-tNC+0LPQvtCy0L7RgNC+0LIuCjQuINCi0LjQv9C40YfQvdGL0LUg0LvQtdCz0LXQvdC00YssINC/
-0L7Qt9Cy0L7Qu9GP0Y7RidC40LUg0L7QsdGK0Y/RgdC90LjRgtGMINC30LDQutC70Y7Rh9C10L3Q
-uNC1INC00L7Qs9C+0LLQvtGA0L7QsiDQvdCwINC90LXQstGL0LPQvtC00L3Ri9GFINC00LvRjyDQ
-tNC+0LvQttC90LjQutCwINGD0YHQu9C+0LLQuNGP0YUuCjUuINCh0L/QvtGB0L7QsdGLINC30LDQ
-utC70Y7Rh9C10L3QuNGPINC00L7Qs9C+0LLQvtGA0L7Qsiwg0LjRgdC60LvRjtGH0LDRjtGJ0LjQ
-tSDQv9GA0LXRgtC10L3Qt9C40Lgg0LrRgNC10LTQuNGC0L7RgNC+0LIv0YHRg9C00LAKNi4g0JrQ
-sNC6INC/0YDQvtGP0LLQuNGC0Ywg0YDQsNC30YPQvNC90YPRjiDQvtGB0LzQvtGC0YDQuNGC0LXQ
-u9GM0L3QvtGB0YLRjCDQv9GA0Lgg0LLRi9Cx0L7RgNC1INC60L7QvdGC0YDQsNCz0LXQvdGC0LAg
-0LrQsNC6INGD0YHQu9C+0LLQuNC1INC+0YLRgdGD0YLRgdGC0LLQuNGPINCy0LjQvdGLINC00LjR
-gNC10LrRgtC+0YDQsC4KNy4g0JrQsNC6INGD0LnRgtC4INC+0YIg0L7QsdCy0LjQvdC10L3QuNGP
-INCyINGD0LzRi9GB0LvQtSDQv9GA0Lgg0LfQsNC60LvRjtGH0LXQvdC40Lgg0YHQtNC10LvQutC4
-INGBINC60L7QvNC/0LDQvdC40LXQuSDQt9Cw0LLQtdC00L7QvNC+INC90LUg0LjRgdC/0L7Qu9C9
-0Y/RjtGJ0LXQuSDQvdCw0LvQvtCz0L7QstGL0LUg0L7QsdGP0LfQsNGC0LXQu9GM0YHRgtCy0LAu
-CjguINCh0L/QvtGB0L7QsdGLINGD0YXQvtC00LAg0LrQvtC90YLRgNC+0LvQuNGA0YPRjtGJ0LXQ
-s9C+INC00L7Qu9C20L3QuNC60LAg0LvQuNGG0LAg0L7RgiDQvtGC0LLQtdGC0YHRgtCy0LXQvdC9
-0L7RgdGC0Lg6CiAgICAqINCy0LvQsNC00LXQvdC40LUg0LrQvtC80L/QsNC90LjQtdC5INGH0LXR
-gNC10Lcg0L3QtdGA0LXQt9C40LTQtdC90YLQsCDQsiDRgtC+0Lwg0YfQuNGB0LvQtSDQvtGE0YTR
-iNC+0YAuCiAgICAqINCy0LvQsNC00LXQvdC40LUg0LrQvtC80L/QsNC90LjQtdC5INGH0LXRgNC1
-0Lcg0LTQvtCy0LXRgNC10L3QvdGL0YUg0LvQuNGGICjQv9C+0YDRj9C00L7QuiDQvtGE0L7RgNC8
-0LvQtdC90LjRjyDQvtGC0L3QvtGI0LXQvdC40LksINGA0LjRgdC60LgpOwogICAgKiDRhNC+0YDQ
-vNC40YDQvtCy0LDQvdC40LUg0L/QvtC70L3QvtC80L7Rh9C40Lkg0LTQuNGA0LXQutGC0L7RgNCw
-INC4INC40YHQutC70Y7Rh9C10L3QuNC1INC+0YLQstC10YLRgdGC0LLQtdC90L3QvtGB0YLQuCDR
-gdC+0LHRgdGC0LLQtdC90L3QuNC60L7QsiDQv9C+0YHRgNC10LTRgdGC0LLQvtC8INC40LfQvNC1
-0L3QtdC90LjRjyDRg9GB0YLQsNCy0L3Ri9GFINC00L7QutGD0LzQtdC90YLQvtCyINC4INC00YAu
-CjkuINCh0L7QutGA0YvRgtC40LUg0YHRgtGA0YPQutGC0YPRgNGLINGB0L7QsdGB0YLQstC10L3Q
-vdC+0YHRgtC4INGBINC/0L7QvNC+0YnRjNGOINC+0YTRhNGI0L7RgNCwL9C90LXRgNC10LfQuNC0
-0LXQvdGC0LAKMTAuINCi0YDQsNGB0YLRiyAo0L3QsCDQv9GA0LjQvNC10YDQtSDQmtC40L/RgNCw
-KTog0L/QvtC90Y/RgtC40LUsINC80LXRhdCw0L3QuNC30LzRiyDQutC+0L3RgtGA0L7Qu9GPINC3
-0LAg0LTQtdC50YHRgtCy0LjRj9C80Lgg0YLRgNCw0YHRgtC+0LLQvtCz0L4g0YPQv9GA0LDQstC7
-0Y/RjtGJ0LXQs9C+OyDQv9GA0L7RhtC10LTRg9GA0LAg0L/RgNC40L3Rg9C00LjRgtC10LvRjNC9
-0L7Qs9C+INGA0LDRgdC60YDRi9GC0LjRjyDQuNC90YTQvtGA0LzQsNGG0LjQuCDQviDQsdC10L3Q
-tdGE0LjRhtC40LDRgNC1LCDQv9GA0L7QsdC70LXQvNGLINCy0YvQstC+0LTQsCDQuNC80YPRidC1
-0YHRgtCy0LAg0Lgg0L7RgdC/0LDRgNC40LLQsNC90LjRjyDRgdC00LXQu9C+0Log0Lgg0LTRgC4K
-MTEuINCf0L7RgNGP0LTQvtC6INCy0LfRi9GB0LrQsNC90LjRjyDQtNC+0LvQs9C+0LIg0LrRgNC1
-0LTQuNGC0L7RgNC+0LIg0YEg0LTQuNGA0LXQutGC0L7RgNCwL9C60L7QvdGC0YDQvtC70LjRgNGD
-0Y7RidC40YUg0LvQuNGGINC+0YDQs9Cw0L3QuNC30LDRhtC40Lgg0LTQvtC70LbQvdC40LrQsAox
-Mi4g0KHQv9C10YbQuNCw0LvRjNC90YvQtSDRg9GB0LvQvtCy0LjRjyDQvtGB0L/QsNGA0LjQstCw
-0L3QuNGPINGB0LTQtdC70L7QuiDQv9C+INC+0YHQvdC+0LLQsNC90LjRj9C8LCDQv9GA0LXQtNGD
-0YHQvNC+0YLRgNC10L3QvdGL0LUg0KTQlyDCq9CeINC90LXRgdC+0YHRgtC+0Y/RgtC10LvRjNC9
-0L7RgdGC0LggKNCx0LDQvdC60YDQvtGC0YHRgtCy0LUpLgoxMy4g0JrRgNGD0LMg0YHQtNC10LvQ
-vtC6LCDQutC+0YLQvtGA0YvQtSDQvNC+0LPRg9GCINC+0YHQv9Cw0YDQuNCy0LDRgtGM0YHRjy4g
-0J/RgNC+0LHQu9C10LzRiyDQvtGB0L/QsNGA0LjQstCw0L3QuNGPINGB0LTQtdC70L7QuiDQvdCw
-INC+0YHQvdC+0LLQsNC90LjQuCDQv9GD0L3QutGC0L7QsiAyINC4IDMg0YHRgtCw0YLRjNC4IDEw
-MyDQpNCXIMKr0J4g0L3QtdGB0L7RgdGC0L7Rj9GC0LXQu9GM0L3QvtGB0YLQuCAo0LHQsNC90LrR
-gNC+0YLRgdGC0LLQtSnCuyDQtNGALgoxNC4g0JrQstCw0LvQuNGE0LjQutCw0YbQuNGPINC4INGD
-0YHRgtCw0L3QvtCy0LvQtdC90LjQtSDRgNCw0LfQvNC10YDQsCDRgtGA0LXQsdC+0LLQsNC90LjQ
-uSDQv9C+INC+0LHRj9C30LDRgtC10LvRjNC90YvQvCDQv9C70LDRgtC10LbQsNC8LiDQntGC0LLQ
-tdGC0YHRgtCy0LXQvdC90L7RgdGC0Ywg0LfQsCDQv9GA0LDQstC+0L3QsNGA0YPRiNC10L3QuNGP
-LgoxNS4g0JrQvtCz0LTQsCwg0L/QviDQutCw0LrQuNC8INGC0YDQtdCx0L7QstCw0L3QuNGP0Lwg
-0Lgg0L3QsCDQvtGB0L3QvtCy0LDQvdC40Lgg0LrQsNC60LjRhSDQtNC+0LrRg9C80LXQvdGC0L7Q
-siDQvdCw0LvQvtCz0L7QstGL0Lkg0L7RgNCz0LDQvSDQuNC80LXQtdGCINC/0YDQsNCy0L4g0L/R
-gNC10LTRitGP0LLQuNGC0Ywg0YLRgNC10LHQvtCy0LDQvdC40Y8g0L4g0LHQsNC90LrRgNC+0YLR
-gdGC0LLQtSDQuCDQtNGALgrQntGC0LLQtdGC0Ysg0L3QsCDQstC+0L/RgNC+0YHRiy4KClVuc3Vi
-c2NyaWJlOiB1bnN1YnNjcmliZUBwZW9wbGVzZW0ucnU/c3ViamVjdD1zcGktZGV2ZWwtZ2VuZXJh
-bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBt
-YWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBz
-Oi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFs
-Cg==
+On Sat, Apr 17, 2010 at 1:28 AM, Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
+> Hi Cory,
+>
+> Sorry for not reviewing the driver earlier.
+>
+> On Sun, Dec 13, 2009 at 12:39:14PM -0800, Cory Maccarrone wrote:
+>> This change implements a new driver for the TSC2046-series
+>> touchscreen found on many HTC OMAP850-based smartphones.
+>> This driver differs from the ADS7846 in that it uses 16-bit
+>> commands instead of 8-bit, and does not include temerature
+>> or voltage sensing capabilities.
+>>
+>> This driver was submitted in May of 2007 to the linux-omap
+>> list at:
+>>
+>> http://linux.omap.com/pipermail/linux-omap-open-source/2007-May/0097=
+45.html
+>>
+>> This is a resubmit of this driver, with additions that allows
+>> the injection of pointercal parameters from tslib through
+>> /sys. =C2=A0This was done for the Wing Linux project primarily to
+>> allow this touchscreen to work with Android, but it's useful for
+>> any userspace that doesn't support tslib calibration. =C2=A0Pointerc=
+al
+>> use is optional -- it produces raw parameters unless the use_pointer=
+cal
+>> /sys file is set to 1.
+>
+> The current poiicy is simply use tslib and push the filtering and
+> scaling out of the kernel. I do not see the reason for this driver be=
+ an
+> exception.
+>
+>>
+>> Though this driver was previously submitted to linux-omap, there
+>> is nothing omap-specific in this driver.
+>>
+>
+> Overall I would like to see this being not a standalone driver but
+> instead tsc2046 support being plugged into existing tsc2007, extendin=
+g
+> it. There are a few of TSC drivers floating around, all of them very
+> similar, with the difference of the transport (i2c vs spi) and regist=
+er
+> sets but all having very similar core interrupt handling, suspend and
+> resume algorithms... This is a waste.
+>
+>> Signed-off-by: Cory Maccarrone <darkstar6262@gmail.com>
+>> ---
+>> =C2=A0drivers/input/touchscreen/Kconfig =C2=A0 | =C2=A0 14 +
+>> =C2=A0drivers/input/touchscreen/Makefile =C2=A0| =C2=A0 =C2=A01 +
+>> =C2=A0drivers/input/touchscreen/tsc2046.c | =C2=A0740 ++++++++++++++=
++++++++++++++++++++++
+>> =C2=A0include/linux/input/tsc2046.h =C2=A0 =C2=A0 =C2=A0 | =C2=A0 26=
+ ++
+>> =C2=A04 files changed, 781 insertions(+), 0 deletions(-)
+>> =C2=A0create mode 100644 drivers/input/touchscreen/tsc2046.c
+>> =C2=A0create mode 100644 include/linux/input/tsc2046.h
+>>
+>> diff --git a/drivers/input/touchscreen/Kconfig b/drivers/input/touch=
+screen/Kconfig
+>> index 8cc453c..1f3273b 100644
+>> --- a/drivers/input/touchscreen/Kconfig
+>> +++ b/drivers/input/touchscreen/Kconfig
+>> @@ -501,6 +501,20 @@ config TOUCHSCREEN_TOUCHIT213
+>> =C2=A0 =C2=A0 =C2=A0 =C2=A0 To compile this driver as a module, choo=
+se M here: the
+>> =C2=A0 =C2=A0 =C2=A0 =C2=A0 module will be called touchit213.
+>>
+>> +config TOUCHSCREEN_TSC2046
+>> + =C2=A0 =C2=A0 tristate "TSC2046 based touchscreens"
+>> + =C2=A0 =C2=A0 depends on SPI_MASTER
+>> + =C2=A0 =C2=A0 help
+>> + =C2=A0 =C2=A0 =C2=A0 Say Y here if you have a touchscreen interfac=
+e using the
+>> + =C2=A0 =C2=A0 =C2=A0 TI TSC 2046 controller, and your board-specif=
+ic initialization
+>> + =C2=A0 =C2=A0 =C2=A0 code includes that in its table of SPI device=
+s. =C2=A0Also make
+>> + =C2=A0 =C2=A0 =C2=A0 sure the proper SPI controller is selected.
+>> +
+>> + =C2=A0 =C2=A0 =C2=A0 If unsure, say N (but it's safe to say "Y").
+>> +
+>> + =C2=A0 =C2=A0 =C2=A0 To compile this driver as a module, choose M =
+here: the
+>> + =C2=A0 =C2=A0 =C2=A0 module will be called tsc2046.
+>> +
+>> =C2=A0config TOUCHSCREEN_TSC2007
+>> =C2=A0 =C2=A0 =C2=A0 tristate "TSC2007 based touchscreens"
+>> =C2=A0 =C2=A0 =C2=A0 depends on I2C
+>> diff --git a/drivers/input/touchscreen/Makefile b/drivers/input/touc=
+hscreen/Makefile
+>> index 15fa62c..3c413f7 100644
+>> --- a/drivers/input/touchscreen/Makefile
+>> +++ b/drivers/input/touchscreen/Makefile
+>> @@ -30,6 +30,7 @@ obj-$(CONFIG_TOUCHSCREEN_TOUCHIT213) =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0+=3D touchit213.o
+>> =C2=A0obj-$(CONFIG_TOUCHSCREEN_TOUCHRIGHT) +=3D touchright.o
+>> =C2=A0obj-$(CONFIG_TOUCHSCREEN_TOUCHWIN) =C2=A0 +=3D touchwin.o
+>> =C2=A0obj-$(CONFIG_TOUCHSCREEN_TSC2007) =C2=A0 =C2=A0+=3D tsc2007.o
+>> +obj-$(CONFIG_TOUCHSCREEN_TSC2046) =C2=A0 =C2=A0+=3D tsc2046.o
+>> =C2=A0obj-$(CONFIG_TOUCHSCREEN_UCB1400) =C2=A0 =C2=A0+=3D ucb1400_ts=
+=2Eo
+>> =C2=A0obj-$(CONFIG_TOUCHSCREEN_WACOM_W8001) =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0+=3D wacom_w8001.o
+>> =C2=A0obj-$(CONFIG_TOUCHSCREEN_WM97XX) =C2=A0 =C2=A0 +=3D wm97xx-ts.=
+o
+>> diff --git a/drivers/input/touchscreen/tsc2046.c b/drivers/input/tou=
+chscreen/tsc2046.c
+>> new file mode 100644
+>> index 0000000..e45d251
+>> --- /dev/null
+>> +++ b/drivers/input/touchscreen/tsc2046.c
+>> @@ -0,0 +1,740 @@
+>> +/*
+>> + * TSC2046 Touchscreen driver
+>> + *
+>> + * Author: Kevin Hilman, MontaVista Software, Inc. <source@mvista.c=
+om>
+>> + *
+>> + * Communication details from original TI driver
+>> + * Copyright (C) 2004-2005 Texas Instruments, Inc.
+>> + *
+>> + * Structure based heavily on TSC2301 driver
+>> + * Copyright (C) 2005-2006 Nokia Corporation
+>> + *
+>> + * 2007 (c) MontaVista Software, Inc. This file is licensed under
+>> + * the terms of the GNU General Public License version 2. This prog=
+ram
+>> + * is licensed "as is" without any warranty of any kind, whether ex=
+press
+>> + * or implied.
+>> + *
+>> + */
+>> +
+>> +#include <linux/kernel.h>
+>> +#include <linux/module.h>
+>> +#include <linux/input.h>
+>> +#include <linux/interrupt.h>
+>> +#include <linux/delay.h>
+>> +#include <linux/spi/spi.h>
+>> +#include <linux/gpio.h>
+>> +
+>> +#include <linux/input/tsc2046.h>
+>> +
+>> +/* TSC2046 commands */
+>> +#define START_BYTE =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 0x8000
+>> +#define X_CMDWD =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A00xd300
+>> +#define Y_CMDWD =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A00x9300
+>> +#define Z1_CMDWD =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 0xb300
+>> +#define Z2_CMDWD =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 0xc300
+>> +
+>> +#define TSC2046_TS_SCAN_TIME 1
+>> +#define MAX_12BIT =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0((1 << 1=
+2) - 1)
+>> +
+>> +#define MIN_ABS_X =C2=A0 =C2=A0528
+>> +#define MAX_ABS_X =C2=A0 =C2=A03760
+>> +#define MIN_ABS_Y =C2=A0 =C2=A0624
+>> +#define MAX_ABS_Y =C2=A0 =C2=A03760
+>> +
+>> +/* The TSC2046 operates at a maximum speed of 2MHz */
+>> +#define TSC2046_HZ =C2=A0 2000000
+>> +
+>> +#define CONV_DATA(d1, d2) \
+>> + =C2=A0(((d1 & 0x7f) << 5) | ((d2 >> 11) & 0x1f))
+>> +
+>> +/* Convenience macros for pointercal calibration calculation */
+>> +#define PA ts->pointercal[0]
+>> +#define PB ts->pointercal[1]
+>> +#define PC ts->pointercal[2]
+>> +#define PD ts->pointercal[3]
+>> +#define PE ts->pointercal[4]
+>> +#define PF ts->pointercal[5]
+>> +#define PS ts->pointercal[6]
+>> +
+>> +struct tsc2046_ts {
+>> + =C2=A0 =C2=A0 struct input_dev =C2=A0 =C2=A0 =C2=A0 =C2=A0*idev;
+>> + =C2=A0 =C2=A0 char =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0phys[32];
+>> + =C2=A0 =C2=A0 struct timer_list =C2=A0 =C2=A0 =C2=A0 timer;
+>> + =C2=A0 =C2=A0 spinlock_t =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0lock;
+>> +
+>> + =C2=A0 =C2=A0 struct spi_transfer =C2=A0 =C2=A0 read_xfer[3];
+>> + =C2=A0 =C2=A0 struct spi_message =C2=A0 =C2=A0 =C2=A0read_msg;
+>> + =C2=A0 =C2=A0 struct spi_message =C2=A0 =C2=A0 =C2=A0enable_msg;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 data[5];
+>> +
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 x;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 y;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 p;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 old_x;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 old_y;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 old_pressure;
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 sample_cnt;
+>> +
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 ignore_last : 1;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 x_plate_ohm;
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 max_pressure;
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 touch_pressure;
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 pressure_limit;
+>> +
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 pointercal[7];
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 x_res;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 y_res;
+>> +
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 irq_enabled:1;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 pen_down:1;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 disabled:1;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 pending:1;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 use_pointercal:1;
+>> +
+>> + =C2=A0 =C2=A0 s16 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 dav_gpio;
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 (*get_pendown_state)(void);
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 irq;
+>> +};
+>> +
+>> +struct tsc2046 {
+>> + =C2=A0 =C2=A0 struct spi_device =C2=A0 =C2=A0 =C2=A0 *spi;
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 *ts;
+>> +};
+>
+> Why is such a split?
+>
+>> +
+>> +static const u16 tsc2046_ts_cmd_data[] =3D {
+>> + =C2=A0 =C2=A0 START_BYTE, X_CMDWD, Y_CMDWD, Z1_CMDWD, Z2_CMDWD,
+>> +};
+>> +
+>> +static int tsc2046_device_suspended(struct device *dev)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 *tsc =3D dev_get_drvdata(dev);
+>> + =C2=A0 =C2=A0 return dev->power.power_state.event !=3D PM_EVENT_ON=
+ || tsc->ts->disabled;
+>> +}
+>> +
+>> +static void tsc2046_update_pen_state(struct tsc2046 *tsc, int x, in=
+t y, int pressure)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> +
+>> + =C2=A0 =C2=A0 if (x <=3D ts->old_x - 4 || x >=3D ts->old_x + 4 ||
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 y <=3D ts->old_y - 4 || y >=3D ts->old=
+_y + 4 ||
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 pressure <=3D ts->old_pressure - 4 || =
+pressure >=3D ts->old_pressure + 4)
+>> + =C2=A0 =C2=A0 {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (pressure) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 if (!ts->use_pointercal || (ts->use_pointercal &&
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 x >=3D 0 &&
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 x <=3D ts->x_res - 1 &&
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 y >=3D 0 &&
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 y <=3D ts->y_res - 1))
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 input_report_abs(ts->idev, ABS_X, x);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 input_report_abs(ts->idev, ABS_Y, y);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 input_report_abs(ts->idev, ABS_PRESSURE=
+, 1);
+>
+> Why don't you report true pressure reading instead of clamping to [0,=
+1]
+> range?
+>
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 input_report_key(ts->idev, BTN_TOUCH, 1=
+);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->pen_down =3D 1;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 } else {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 input_report_abs(ts->idev, ABS_PRESSURE=
+, 0);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 input_report_key(ts->idev, BTN_TOUCH, 0=
+);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->pen_down =3D 0;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 }
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 input_report_abs(ts->idev, ABS_PRESSURE, 0);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 input_report_key(ts->idev, BTN_TOUCH, 0);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 ts->pen_down =3D 0;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
+>> +
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->old_x =3D x;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->old_y =3D y;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->old_pressure =3D pre=
+ssure;
+>> +
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 input_sync(ts->idev);
+>> +
+>> +#ifdef VERBOSE
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_dbg(&tsc->spi->dev, =
+"x %4d y %4d p %4d\n", x, y, pressure);
+>> +#endif
+>
+> dev_vdbg().
+>
+>
+>> + =C2=A0 =C2=A0 }
+>> +}
+>> +
+>> +/*
+>> + * This procedure is called by the SPI framework after the coordina=
+tes
+>> + * have been read from TSC2046
+>> + */
+>> +static void tsc2046_ts_rx(void *arg)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 *tsc =3D arg;
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> + =C2=A0 =C2=A0 unsigned int x, y, z1, z2, pressure;
+>> + =C2=A0 =C2=A0 int xN, yN;
+>> +
+>> + =C2=A0 =C2=A0 x =C2=A0=3D CONV_DATA(ts->data[2], ts->data[3]);
+>> + =C2=A0 =C2=A0 y =C2=A0=3D CONV_DATA(ts->data[1], ts->data[2]);
+>> + =C2=A0 =C2=A0 z1 =3D CONV_DATA(ts->data[3], ts->data[4]);
+>> + =C2=A0 =C2=A0 z2 =3D CONV_DATA(ts->data[4], 0);
+>> +
+>> + =C2=A0 =C2=A0 if (z1) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pressure =3D ts->x_plate=
+_ohm * x;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pressure /=3D 4096;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pressure *=3D z2 - z1;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pressure /=3D z1;
+>> + =C2=A0 =C2=A0 } else
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pressure =3D 0;
+>> +
+>> + =C2=A0 =C2=A0 if (ts->use_pointercal) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Transform pen state a=
+ccording to calibration parameters. =C2=A0This
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* algorithm is the=
+ same used by tslib and Qt to do 7-value
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* screen transform=
+s. =C2=A0See:
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* http://doc.troll=
+tech.com/4.3/qwscalibratedmousehandler.html#transform
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 xN =3D ((PA * x) + (PB *=
+ y) + PC) / PS;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 yN =3D ((PD * x) + (PE *=
+ y) + PF) / PS;
+>> +
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 x =3D (xN < 0) ? 0 : (xN=
+ > ts->x_res ? ts->x_res - 1 : (unsigned int)xN);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 y =3D (yN < 0) ? 0 : (yN=
+ > ts->y_res ? ts->y_res - 1 : (unsigned int)yN);
+>> + =C2=A0 =C2=A0 }
+>> +
+>> + =C2=A0 =C2=A0 /* If pressure value is above a preset limit (pen is=
+ barely
+>> + =C2=A0 =C2=A0 =C2=A0* touching the screen) we can't trust the coor=
+dinate values.
+>> + =C2=A0 =C2=A0 =C2=A0*/
+>> + =C2=A0 =C2=A0 if (pressure < ts->pressure_limit && x < MAX_12BIT &=
+& y < MAX_12BIT) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->pressure_limit =3D t=
+s->max_pressure;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ts->ignore_last) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 if (ts->sample_cnt)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tsc2046_update_pen_state(tsc, ts->x, ts=
+->y, ts->p);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 ts->x =3D x;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 ts->y =3D y;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 ts->p =3D pressure;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 } else
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 tsc2046_update_pen_state(tsc, x, y, pressure);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->sample_cnt++;
+>> + =C2=A0 =C2=A0 }
+>> +
+>> + =C2=A0 =C2=A0 mod_timer(&ts->timer,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 jiffies + msecs_t=
+o_jiffies(TSC2046_TS_SCAN_TIME));
+>> +}
+>> +
+>> +static int tsc2046_is_pen_down(struct tsc2046_ts *ts)
+>> +{
+>> + =C2=A0 =C2=A0 return ts->pen_down;
+>> +}
+>> +
+>> +static int tsc2046_get_pendown_state(struct tsc2046_ts *ts)
+>> +{
+>> + =C2=A0 =C2=A0 if (ts->get_pendown_state)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return ts->get_pendown_s=
+tate();
+>> +
+>> + =C2=A0 =C2=A0 return !gpio_get_value(ts->dav_gpio);
+>> +}
+>> +
+>> +/*
+>> + * Timer is called every TSC2046_TS_SCAN_TIME when the pen is down
+>> + */
+>> +static void tsc2046_ts_timer(unsigned long arg)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 *tsc =3D (void *) arg;
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> + =C2=A0 =C2=A0 unsigned long flags;
+>> + =C2=A0 =C2=A0 int ndav;
+>> + =C2=A0 =C2=A0 int r;
+>> +
+>> + =C2=A0 =C2=A0 spin_lock_irqsave(&ts->lock, flags);
+>> + =C2=A0 =C2=A0 ndav =3D tsc2046_get_pendown_state(ts);
+>> + =C2=A0 =C2=A0 if (!ndav || tsc2046_device_suspended(&tsc->spi->dev=
+)) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Pen has been lifted *=
+/
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!tsc2046_device_susp=
+ended(&tsc->spi->dev) &&
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 !ts->irq_e=
+nabled)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 ts->irq_enabled =3D 1;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 enable_irq(ts->irq);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tsc2046_update_pen_state=
+(tsc, 0, 0, 0);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->pending =3D 0;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 spin_unlock_irqrestore(&=
+ts->lock, flags);
+>> +
+>> + =C2=A0 =C2=A0 } else {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->pen_down =3D 1;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 spin_unlock_irqrestore(&=
+ts->lock, flags);
+>> +
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 r =3D spi_async(tsc->spi=
+, &ts->read_msg);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (r)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 dev_err(&tsc->spi->dev, "ts: spi_async() failed");
+>> + =C2=A0 =C2=A0 }
+>> +}
+>> +
+>> +/*
+>> + * This interrupt is called when pen is down and first coordinates =
+are
+>> + * available. That is indicated by a falling edge on DEV line. =C2=A0=
+IRQ is
+>> + * disabled here because while the pen is down the coordinates are
+>> + * read by a timer.
+>> + */
+>> +static irqreturn_t tsc2046_ts_irq_handler(int irq, void *dev_id)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 *tsc =3D dev_id;
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> + =C2=A0 =C2=A0 unsigned long flags;
+>> +
+>> + =C2=A0 =C2=A0 spin_lock_irqsave(&ts->lock, flags);
+>> + =C2=A0 =C2=A0 if (ts->irq_enabled) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->irq_enabled =3D 0;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 disable_irq_nosync(ts->i=
+rq);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->pending =3D 1;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->pressure_limit =3D t=
+s->touch_pressure;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->sample_cnt =3D 0;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 mod_timer(&ts->timer,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 jiffies + msecs_to_jiffies(TSC2046_TS_SCAN_TIME));
+>> + =C2=A0 =C2=A0 }
+>> + =C2=A0 =C2=A0 spin_unlock_irqrestore(&ts->lock, flags);
+>> +
+>> + =C2=A0 =C2=A0 return IRQ_HANDLED;
+>> +}
+>> +
+>> +/* Must be called with ts->lock held */
+>> +static void tsc2046_ts_disable(struct tsc2046 *tsc)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> +
+>> + =C2=A0 =C2=A0 if (ts->disabled)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;
+>> +
+>> + =C2=A0 =C2=A0 ts->disabled =3D 1;
+>> + =C2=A0 =C2=A0 if (!ts->pending) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->irq_enabled =3D 0;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 disable_irq(ts->irq);
+>> + =C2=A0 =C2=A0 } else {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 while (ts->pending) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 spin_unlock_irq(&ts->lock);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 msleep(1);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 spin_lock_irq(&ts->lock);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
+>> + =C2=A0 =C2=A0 }
+>> +}
+>> +
+>> +static void tsc2046_ts_enable(struct tsc2046 *tsc)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> +
+>> + =C2=A0 =C2=A0 if (!ts->disabled)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;
+>> +
+>> + =C2=A0 =C2=A0 ts->disabled =3D 0;
+>> + =C2=A0 =C2=A0 ts->irq_enabled =3D 1;
+>> + =C2=A0 =C2=A0 enable_irq(ts->irq);
+>> +}
+>> +
+>> +#ifdef CONFIG_PM
+>> +int tsc2046_ts_suspend(struct tsc2046 *tsc)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> +
+>> + =C2=A0 =C2=A0 spin_lock_irq(&ts->lock);
+>> + =C2=A0 =C2=A0 tsc2046_ts_disable(tsc);
+>> + =C2=A0 =C2=A0 spin_unlock_irq(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 return 0;
+>> +}
+>> +
+>> +void tsc2046_ts_resume(struct tsc2046 *tsc)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> +
+>> + =C2=A0 =C2=A0 spin_lock_irq(&ts->lock);
+>> + =C2=A0 =C2=A0 tsc2046_ts_enable(tsc);
+>> + =C2=A0 =C2=A0 spin_unlock_irq(&ts->lock);
+>> +}
+>> +#endif
+>> +
+>> +static void tsc2046_ts_setup_spi_xfer(struct tsc2046 *tsc)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> + =C2=A0 =C2=A0 struct spi_message *m =3D &ts->read_msg;
+>> + =C2=A0 =C2=A0 struct spi_transfer *x =3D &ts->read_xfer[1];
+>> +
+>> + =C2=A0 =C2=A0 spi_message_init(m);
+>> +
+>> + =C2=A0 =C2=A0 /* read and write data in one transaction */
+>> + =C2=A0 =C2=A0 x->tx_buf =3D &tsc2046_ts_cmd_data;
+>> + =C2=A0 =C2=A0 x->rx_buf =3D &ts->data;
+>> + =C2=A0 =C2=A0 x->len =C2=A0 =C2=A0=3D 10;
+>> + =C2=A0 =C2=A0 spi_message_add_tail(x, m);
+>> +
+>> + =C2=A0 =C2=A0 /* send another START_BYTE to (re)enable pen interru=
+pts */
+>> + =C2=A0 =C2=A0 x++;
+>> + =C2=A0 =C2=A0 x->tx_buf =3D &tsc2046_ts_cmd_data[0];
+>> + =C2=A0 =C2=A0 x->rx_buf =3D &ts->data;
+>> + =C2=A0 =C2=A0 x->len =3D 2;
+>> + =C2=A0 =C2=A0 spi_message_add_tail(x, m);
+>> +
+>> + =C2=A0 =C2=A0 m->complete =3D tsc2046_ts_rx;
+>> + =C2=A0 =C2=A0 m->context =3D tsc;
+>> +}
+>> +
+>> +/* Attribute functions */
+>> +
+>> +static ssize_t tsc2046_ts_use_pointercal_show(struct device *dev,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct devic=
+e_attribute *attr, char *buf)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*ts=
+c =3D dev_get_drvdata(dev);
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 *ts =3D tsc->=
+ts;
+>> +
+>> + =C2=A0 =C2=A0 return sprintf(buf, "%u\n", ts->use_pointercal);
+>> +}
+>> +
+>> +static ssize_t tsc2046_ts_use_pointercal_store(struct device *dev,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct devi=
+ce_attribute *attr,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 const char =
+*buf, size_t count)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*ts=
+c =3D dev_get_drvdata(dev);
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 *ts =3D tsc->=
+ts;
+>> + =C2=A0 =C2=A0 char *endp;
+>> + =C2=A0 =C2=A0 int i;
+>> +
+>> + =C2=A0 =C2=A0 i =3D simple_strtoul(buf, &endp, 10);
+>> + =C2=A0 =C2=A0 spin_lock_irq(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 if (i)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->use_pointercal =3D 1=
+;
+>> + =C2=A0 =C2=A0 else
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->use_pointercal =3D 0=
+;
+>> +
+>> + =C2=A0 =C2=A0 spin_unlock_irq(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 return count;
+>> +}
+>> +
+>> +static DEVICE_ATTR(use_pointercal, 0644, tsc2046_ts_use_pointercal_=
+show, tsc2046_ts_use_pointercal_store);
+>> +
+>> +static ssize_t tsc2046_ts_pointercal_show(struct device *dev,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct devi=
+ce_attribute *attr, char *buf)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*ts=
+c =3D dev_get_drvdata(dev);
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 *ts =3D tsc->=
+ts;
+>> +
+>> + =C2=A0 =C2=A0 return sprintf(buf, "%d %d %d %d %d %d %d\n", PA, PB=
+, PC, PD, PE, PF, PS);
+>> +}
+>> +
+>> +static ssize_t tsc2046_ts_pointercal_store(struct device *dev,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct devi=
+ce_attribute *attr,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 const char =
+*buf, size_t count)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*ts=
+c =3D dev_get_drvdata(dev);
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 *ts =3D tsc->=
+ts;
+>> + =C2=A0 =C2=A0 char *endp;
+>> + =C2=A0 =C2=A0 int i;
+>> + =C2=A0 =C2=A0 unsigned int index =3D 0, offset =3D 0;
+>> +
+>> + =C2=A0 =C2=A0 spin_lock_irq(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 for (index =3D 0; index < 7; index++) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Grab the numbers */
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 i =3D simple_strtol(buf =
++ offset, &endp, 10);
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->pointercal[index] =3D=
+ i;
+>> +
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Skip the space */
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 offset =3D endp - buf + =
+1;
+>> + =C2=A0 =C2=A0 }
+>> +
+>> + =C2=A0 =C2=A0 spin_unlock_irq(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 return count;
+>> +}
+>> +
+>> +static DEVICE_ATTR(pointercal, 0644, tsc2046_ts_pointercal_show, ts=
+c2046_ts_pointercal_store);
+>> +
+>> +static ssize_t tsc2046_ts_screen_res_show(struct device *dev,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct devi=
+ce_attribute *attr, char *buf)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*ts=
+c =3D dev_get_drvdata(dev);
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 *ts =3D tsc->=
+ts;
+>> +
+>> + =C2=A0 =C2=A0 return sprintf(buf, "%u %u\n", ts->x_res, ts->y_res)=
+;
+>> +}
+>> +
+>> +static ssize_t tsc2046_ts_screen_res_store(struct device *dev,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct devi=
+ce_attribute *attr,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 const char =
+*buf, size_t count)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*ts=
+c =3D dev_get_drvdata(dev);
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 *ts =3D tsc->=
+ts;
+>> + =C2=A0 =C2=A0 char *endp;
+>> + =C2=A0 =C2=A0 unsigned int i, offset =3D 0;
+>> +
+>> + =C2=A0 =C2=A0 spin_lock_irq(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 /* Grab the x res */
+>> + =C2=A0 =C2=A0 i =3D simple_strtoul(buf, &endp, 10);
+>> + =C2=A0 =C2=A0 ts->x_res =3D i;
+>> +
+>> + =C2=A0 =C2=A0 /* Skip the space */
+>> + =C2=A0 =C2=A0 offset =3D endp - buf + 1;
+>> +
+>> + =C2=A0 =C2=A0 /* Grab the y res */
+>> + =C2=A0 =C2=A0 i =3D simple_strtoul(buf + offset, &endp, 10);
+>> + =C2=A0 =C2=A0 ts->y_res =3D i;
+>> +
+>> + =C2=A0 =C2=A0 /* Update the device parameters */
+>> + =C2=A0 =C2=A0 input_set_abs_params(ts->idev, ABS_X, 0, ts->x_res -=
+ 1, 0, 0);
+>> + =C2=A0 =C2=A0 input_set_abs_params(ts->idev, ABS_Y, 0, ts->y_res -=
+ 1, 0, 0);
+>> +
+>> + =C2=A0 =C2=A0 spin_unlock_irq(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 return count;
+>> +}
+>> +
+>> +static DEVICE_ATTR(screen_res, 0644, tsc2046_ts_screen_res_show, ts=
+c2046_ts_screen_res_store);
+>> +
+>> +static ssize_t tsc2046_ts_pen_down_show(struct device *dev,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct devi=
+ce_attribute *attr,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 char *buf)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 *tsc =3D dev_get_drvdata(dev);
+>> +
+>> + =C2=A0 =C2=A0 return sprintf(buf, "%u\n", tsc2046_is_pen_down(tsc-=
+>ts));
+>> +}
+>> +
+>> +static DEVICE_ATTR(pen_down, S_IRUGO, tsc2046_ts_pen_down_show, NUL=
+L);
+>> +
+>> +static ssize_t tsc2046_ts_disable_show(struct device *dev,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct devic=
+e_attribute *attr, char *buf)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*ts=
+c =3D dev_get_drvdata(dev);
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 *ts =3D tsc->=
+ts;
+>> +
+>> + =C2=A0 =C2=A0 return sprintf(buf, "%u\n", ts->disabled);
+>> +}
+>> +
+>> +static ssize_t tsc2046_ts_disable_store(struct device *dev,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct devi=
+ce_attribute *attr,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 const char =
+*buf, size_t count)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*ts=
+c =3D dev_get_drvdata(dev);
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 *ts =3D tsc->=
+ts;
+>> + =C2=A0 =C2=A0 char *endp;
+>> + =C2=A0 =C2=A0 int i;
+>> +
+>> + =C2=A0 =C2=A0 i =3D simple_strtoul(buf, &endp, 10);
+>> + =C2=A0 =C2=A0 spin_lock_irq(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 if (i)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tsc2046_ts_disable(tsc);
+>> + =C2=A0 =C2=A0 else
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 tsc2046_ts_enable(tsc);
+>> +
+>> + =C2=A0 =C2=A0 spin_unlock_irq(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 return count;
+>> +}
+>> +
+>> +static DEVICE_ATTR(disable_ts, 0664, tsc2046_ts_disable_show,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tsc2046_ts_=
+disable_store);
+>> +
+>> +/* Init functions */
+>> +
+>> +static int __devinit tsc2046_probe(struct spi_device *spi)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0*tsc;
+>> + =C2=A0 =C2=A0 struct tsc2046_ts =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 *ts;
+>> + =C2=A0 =C2=A0 struct tsc2046_platform_data =C2=A0 =C2=A0*pdata =3D=
+ spi->dev.platform_data;
+>> + =C2=A0 =C2=A0 struct input_dev =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0*idev;
+>> + =C2=A0 =C2=A0 int r =3D -ENODEV;
+>> +
+>> + =C2=A0 =C2=A0 dev_dbg(&spi->dev, "%s\n", __FUNCTION__);
+>> +
+>> + =C2=A0 =C2=A0 if (!pdata) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_dbg(&spi->dev, "no p=
+latform data?\n");
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -ENODEV;
+>> + =C2=A0 =C2=A0 }
+>> +
+>> + =C2=A0 =C2=A0 tsc =3D kzalloc(sizeof(*tsc), GFP_KERNEL);
+>> + =C2=A0 =C2=A0 if (tsc =3D=3D NULL)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -ENOMEM;
+>> +
+>> + =C2=A0 =C2=A0 dev_set_drvdata(&spi->dev, tsc);
+>> + =C2=A0 =C2=A0 tsc->spi =3D spi;
+>> + =C2=A0 =C2=A0 spi->dev.power.power_state =3D PMSG_ON;
+>> +
+>> + =C2=A0 =C2=A0 spi->mode =3D SPI_MODE_1;
+>> + =C2=A0 =C2=A0 spi->bits_per_word =3D 16;
+>> +
+>> + =C2=A0 =C2=A0 /* The max speed might've been defined by the board-=
+specific
+>> + =C2=A0 =C2=A0 =C2=A0* struct */
+>> + =C2=A0 =C2=A0 if (!spi->max_speed_hz)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 spi->max_speed_hz =3D TS=
+C2046_HZ;
+>> + =C2=A0 =C2=A0 spi_setup(spi);
+>> +
+>> + =C2=A0 =C2=A0 if (spi->irq < 0) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_err(&tsc->spi->dev, =
+"need DAV IRQ/GPIO");
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -EINVAL;
+>> + =C2=A0 =C2=A0 }
+>> +
+>> + =C2=A0 =C2=A0 if (!pdata->get_pendown_state && !gpio_is_valid(pdat=
+a->gpio_pendown)) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_err(&spi->dev, "no g=
+et_pendown_state nor gpio_pendown?\n");
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -EINVAL;
+>> + =C2=A0 =C2=A0 }
+>> +
+>> + =C2=A0 =C2=A0 ts =3D kzalloc(sizeof(*ts), GFP_KERNEL);
+>> + =C2=A0 =C2=A0 if (ts =3D=3D NULL)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -ENOMEM;
+>> + =C2=A0 =C2=A0 tsc->ts =3D ts;
+>> +
+>> + =C2=A0 =C2=A0 if (pdata->get_pendown_state)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->get_pendown_state =3D=
+ pdata->get_pendown_state;
+>> + =C2=A0 =C2=A0 else {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ts->dav_gpio =3D pdata->=
+gpio_pendown;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 r =3D gpio_request(ts->d=
+av_gpio, dev_name(&tsc->spi->dev));
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (r < 0) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 dev_err(&tsc->spi->dev, "unable to get DAV GPIO");
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 goto err1;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 gpio_direction_input(ts-=
+>dav_gpio);
+>> + =C2=A0 =C2=A0 }
+>> +
+>> + =C2=A0 =C2=A0 ts->irq =3D spi->irq;
+>> +
+>> + =C2=A0 =C2=A0 init_timer(&ts->timer);
+>> + =C2=A0 =C2=A0 ts->timer.data =3D (unsigned long) tsc;
+>> + =C2=A0 =C2=A0 ts->timer.function =3D tsc2046_ts_timer;
+>> +
+>> + =C2=A0 =C2=A0 spin_lock_init(&ts->lock);
+>> +
+>> + =C2=A0 =C2=A0 ts->x_plate_ohm =3D pdata->ts_x_plate_ohm ? : 280;
+>> + =C2=A0 =C2=A0 ts->max_pressure =3D pdata->ts_max_pressure ? : MAX_=
+12BIT;
+>> + =C2=A0 =C2=A0 ts->touch_pressure =3D pdata->ts_touch_pressure ? : =
+ts->max_pressure;
+>> + =C2=A0 =C2=A0 ts->ignore_last =3D pdata->ts_ignore_last;
+>> +
+>> + =C2=A0 =C2=A0 idev =3D input_allocate_device();
+>> + =C2=A0 =C2=A0 if (idev =3D=3D NULL) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 r =3D -ENOMEM;
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err2;
+>> + =C2=A0 =C2=A0 }
+>> + =C2=A0 =C2=A0 idev->name =3D "TSC2046 touchscreen";
+>> + =C2=A0 =C2=A0 snprintf(ts->phys, sizeof(ts->phys),
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0"%s/input-ts", dev=
+_name(&tsc->spi->dev));
+>> + =C2=A0 =C2=A0 idev->phys =3D ts->phys;
+>> +
+>> + =C2=A0 =C2=A0 idev->evbit[0] =3D BIT(EV_ABS) | BIT(EV_KEY);
+>> + =C2=A0 =C2=A0 idev->absbit[0] =3D BIT(ABS_X) | BIT(ABS_Y) | BIT(AB=
+S_PRESSURE);
+>> + =C2=A0 =C2=A0 ts->idev =3D idev;
+>> +
+>> + =C2=A0 =C2=A0 tsc2046_ts_setup_spi_xfer(tsc);
+>> +
+>> + =C2=A0 =C2=A0 /* X and Y res default to 240x320 */
+>> + =C2=A0 =C2=A0 ts->x_res =3D pdata->ts_x_res ? : 240;
+>> + =C2=A0 =C2=A0 ts->y_res =3D pdata->ts_y_res ? : 320;
+>> +
+>> + =C2=A0 =C2=A0 input_set_abs_params(idev, ABS_X, 0, ts->x_res - 1, =
+0, 0);
+>> + =C2=A0 =C2=A0 input_set_abs_params(idev, ABS_Y, 0, ts->y_res - 1, =
+0, 0);
+>> + =C2=A0 =C2=A0 input_set_abs_params(idev, ABS_PRESSURE, 0, 1, 0, 0)=
+;
+>> +
+>> + =C2=A0 =C2=A0 set_bit(BTN_TOUCH, idev->keybit);
+>> +
+>> + =C2=A0 =C2=A0 r =3D request_irq(ts->irq, tsc2046_ts_irq_handler,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 IRQF_SAMPLE_RANDOM | IRQF_TRIGGER_FALLING,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 "tsc2046-ts", tsc);
+>> + =C2=A0 =C2=A0 if (r < 0) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_err(&tsc->spi->dev, =
+"unable to get DAV IRQ");
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err3;
+>> + =C2=A0 =C2=A0 }
+>> + =C2=A0 =C2=A0 set_irq_wake(ts->irq, 1);
+>> + =C2=A0 =C2=A0 ts->irq_enabled =3D 1;
+>> +
+>> + =C2=A0 =C2=A0 /* Create the various driver attributes */
+>> + =C2=A0 =C2=A0 if (device_create_file(&tsc->spi->dev, &dev_attr_pen=
+_down) < 0)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err4;
+>> + =C2=A0 =C2=A0 if (device_create_file(&tsc->spi->dev, &dev_attr_dis=
+able_ts) < 0)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err5;
+>> + =C2=A0 =C2=A0 if (device_create_file(&tsc->spi->dev, &dev_attr_use=
+_pointercal) < 0)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err6;
+>> + =C2=A0 =C2=A0 if (device_create_file(&tsc->spi->dev, &dev_attr_poi=
+ntercal) < 0)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err7;
+>> + =C2=A0 =C2=A0 if (device_create_file(&tsc->spi->dev, &dev_attr_scr=
+een_res) < 0)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err8;
+>
+> If there are still more than 1 attriute left then anonymous attribute
+> group should be used. HOwever if you remove pointercal support that
+> basically leaves disable methid and I am not too keen on having it
+> either - I believe we need a generic solution for shutting off an
+> arbitrary device and not somethign that has to be reimplemented in ev=
+ery
+> driver.
+>
+>> +
+>> + =C2=A0 =C2=A0 r =3D input_register_device(idev);
+>> + =C2=A0 =C2=A0 if (r < 0) {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_err(&tsc->spi->dev, =
+"can't register touchscreen device\n");
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err9;
+>> + =C2=A0 =C2=A0 }
+>> +
+>> + =C2=A0 =C2=A0 /* kick off a transaction to enable pen interrupts *=
+/
+>> + =C2=A0 =C2=A0 spi_async(tsc->spi, &ts->read_msg);
+>
+> Should be done in open() method.
+>
+>> +
+>> + =C2=A0 =C2=A0 return 0;
+>> +err9:
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_screen_=
+res);
+>> +err8:
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_pointer=
+cal);
+>> +err7:
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_use_poi=
+ntercal);
+>> +err6:
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_disable=
+_ts);
+>> +err5:
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_pen_dow=
+n);
+>> +err4:
+>> + =C2=A0 =C2=A0 free_irq(ts->irq, tsc);
+>> +err3:
+>> + =C2=A0 =C2=A0 input_free_device(idev);
+>> +err2:
+>> + =C2=A0 =C2=A0 if (ts->dav_gpio)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 gpio_free(ts->dav_gpio);
+>> +err1:
+>> + =C2=A0 =C2=A0 kfree(ts);
+>> + =C2=A0 =C2=A0 return r;
+>> +}
+>> +
+>> +static int __devexit tsc2046_remove(struct spi_device *spi)
+>> +{
+>> + =C2=A0 =C2=A0 struct tsc2046 *tsc =3D dev_get_drvdata(&spi->dev);
+>> + =C2=A0 =C2=A0 struct tsc2046_ts *ts =3D tsc->ts;
+>> + =C2=A0 =C2=A0 unsigned long flags;
+>> +
+>> + =C2=A0 =C2=A0 dev_dbg(&tsc->spi->dev, "%s\n", __FUNCTION__);
+>> +
+>> + =C2=A0 =C2=A0 spin_lock_irqsave(&ts->lock, flags);
+>> + =C2=A0 =C2=A0 tsc2046_ts_disable(tsc);
+>> + =C2=A0 =C2=A0 spin_unlock_irqrestore(&ts->lock, flags);
+>> +
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_disable=
+_ts);
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_pen_dow=
+n);
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_use_poi=
+ntercal);
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_pointer=
+cal);
+>> + =C2=A0 =C2=A0 device_remove_file(&tsc->spi->dev, &dev_attr_screen_=
+res);
+>> +
+>> + =C2=A0 =C2=A0 free_irq(ts->irq, tsc);
+>> + =C2=A0 =C2=A0 input_unregister_device(ts->idev);
+>> +
+>> + =C2=A0 =C2=A0 if (ts->dav_gpio)
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 gpio_free(ts->dav_gpio);
+>> +
+>> + =C2=A0 =C2=A0 kfree(ts);
+>> + =C2=A0 =C2=A0 kfree(tsc);
+>> +
+>> + =C2=A0 =C2=A0 return 0;
+>> +}
+>> +
+>> +static struct spi_driver tsc2046_driver =3D {
+>> + =C2=A0 =C2=A0 .driver =3D {
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.name =3D "=
+tsc2046",
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.bus =3D &s=
+pi_bus_type,
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.owner =3D =
+THIS_MODULE,
+>> + =C2=A0 =C2=A0 },
+>> + =C2=A0 =C2=A0 .probe =3D tsc2046_probe,
+>> + =C2=A0 =C2=A0 .remove =3D __devexit_p(tsc2046_remove),
+>> +};
+>> +
+>> +static int __init tsc2046_init(void)
+>> +{
+>> + =C2=A0 =C2=A0 printk(KERN_INFO "TSC2046 driver initializing\n");
+>> +
+>> + =C2=A0 =C2=A0 return spi_register_driver(&tsc2046_driver);
+>> +}
+>> +
+>> +static void __exit tsc2046_exit(void)
+>> +{
+>> + =C2=A0 =C2=A0 spi_unregister_driver(&tsc2046_driver);
+>> +}
+>> +
+>> +module_init(tsc2046_init);
+>> +module_exit(tsc2046_exit);
+>> +
+>> +MODULE_AUTHOR("Kevin Hilman <khilman@mvista.com>");
+>> +MODULE_LICENSE("GPL");
+>> +
+>> diff --git a/include/linux/input/tsc2046.h b/include/linux/input/tsc=
+2046.h
+>> new file mode 100644
+>> index 0000000..acb8fed
+>> --- /dev/null
+>> +++ b/include/linux/input/tsc2046.h
+>> @@ -0,0 +1,26 @@
+>> +#ifndef _LINUX_INPUT_TSC2046_H
+>> +#define _LINUX_INPUT_TSC2046_H
+>> +
+>> +#include <linux/types.h>
+>> +#include <linux/timer.h>
+>> +
+>> +struct tsc2046_platform_data {
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 (*get_pendown_state)(void);
+>> + =C2=A0 =C2=A0 int =C2=A0 =C2=A0 gpio_pendown;
+>> + =C2=A0 =C2=A0 s16 =C2=A0 =C2=A0 gpio_debounce;
+>> + =C2=A0 =C2=A0 u16 =C2=A0 =C2=A0 ts_x_plate_ohm;
+>> + =C2=A0 =C2=A0 u32 =C2=A0 =C2=A0 ts_max_pressure; =C2=A0/* Samples =
+with bigger pressure value will
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0be ignored, since t=
+he corresponding X, Y
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0values are unreliab=
+le */
+>> + =C2=A0 =C2=A0 u32 =C2=A0 =C2=A0 ts_touch_pressure;/* Pressure limi=
+t until we report a
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0touch event. After =
+that we switch
+>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0to ts_max_pressure.=
+ */
+>> + =C2=A0 =C2=A0 u32 =C2=A0 =C2=A0 ts_x_res;
+>> + =C2=A0 =C2=A0 u32 =C2=A0 =C2=A0 ts_y_res;
+>> + =C2=A0 =C2=A0 unsigned ts_ignore_last : 1;
+>> +
+>> +};
+>> +
+>> +#endif
+>> +
+>> +
+>
+> Thanks.
+>
+> --
+> Dmitry
+>
+
+Turns out the ads7846 driver works fine for this hardware -- there was
+a bug in the SPI100k driver we were using that caused a problem with
+it.  With that fixed, there's no more need for this driver.
+
+Thanks for reviewing it.
+- Cory
+--
+To unsubscribe from this list: send the line "unsubscribe linux-input" =
+in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

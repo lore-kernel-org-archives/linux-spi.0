@@ -1,8 +1,8 @@
-From: "Ecole Francaise de =?ISO-8859-1?Q?Comptabilit=E9?= par Plein Temps"
+From: "Voyage =?ISO-8859-1?Q?priv=E9?= par Plein Temps"
 	<privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Decouvrez un métiersûr et bien payé
-Date: Sun, 30 May 2010 03:19:58 +0000 (UTC)
-Message-ID: <l37qmh.iu3mmi@front02.r7g.com>
+Subject: [SPAM] des voyages d exception a prix reduit
+Date: Sun, 30 May 2010 12:35:10 +0000 (UTC)
+Message-ID: <l38gbv.dex7qs@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

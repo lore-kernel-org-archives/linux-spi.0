@@ -1,17 +1,10 @@
-From: thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org
-Subject: [PATCH] DaVinci SPI: Fix SPI clock prescale
-	factor computation
-Date: Mon, 31 May 2010 16:33:34 +0200
-Message-ID: <1272628495-13934-1-git-send-email-thomas.koeller@baslerweb.com>
-References: <k2zfa686aa41004260806r691e1880i2a80b102c108be5a@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: "megsnyder123" <megsnyder123-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: =?gb2312?b?ob62qW21paG/azYwoe4=?=
+Date: Tue, 1 Jun 2010 00:20:14 +0800
+Message-ID: <746387.39893.qm@smtp114.plus.mail.sp1.yahoo.com>
+Content-Type: multipart/mixed; boundary="===============2687317231629434103=="
+To: spiderzzl-9Onoh4P/yGk@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spidey-9Onoh4P/yGk@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <k2zfa686aa41004260806r691e1880i2a80b102c108be5a-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,53 +15,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
+--===============2687317231629434103==
+Content-Type: text/plain
 
-Computation of the clock prescaler value returned bogus results if
-the requested SPI clock was impossible to set. It now sets either
-the maximum or minimum clock frequency, as appropriate.
+╔╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤╗
+║│你│  │代│普│票│　│票│可│　│咨│  │Ｑ│联│║
+║│好│　│开│通│为│　│均│网│　│询│  │Ｑ│系│║
+║│：│本│机│国│基│税│为│上│欢│电│１│：│人│║
+║│  │公│构│税│本│点│各│查│迎│话│３│１│：│║
+║│　│司│有│、│范│从│单│询│咨│：│７│２│  │║
+║│　│与│业│地│围│优│位│或│询│　│１│８│陈│║
+║│　│全│务│税│! │。│在│验│! │　│３│１│福│║
+║│　│国│往│发│　│确│税│证│打│　│６│９│海│║
+║│　│各│来│票│　│保│务│后│扰│　│１│８│　│║
+║│　│地│，│，│　│所│局│付│请│　│２│９│　│║
+║│　│各│以│专│　│开│申│款│谅│　│８│８│　│║
+║│　│行│代│用│　│具│领│。│解│　│Ｏ│７│　│║
+║│　│业│开│发│　│发│, │　│。│　│６│８│　│║
+╚╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧╝
+ ＱＱ:１２８１９８９８７８ 陈福海  １３７１３６１２８Ｏ６
 
-Signed-off-by: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
----
- drivers/spi/davinci_spi.c |   12 +++++++++---
- 1 files changed, 9 insertions(+), 3 deletions(-)
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 
 
-diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-index 956f617..5c69d78 100644
---- a/drivers/spi/davinci_spi.c
-+++ b/drivers/spi/davinci_spi.c
-@@ -153,7 +153,7 @@ static int davinci_spi_setup_transfer(struct spi_device 
-*spi,
- 	struct davinci_spi *davinci_spi;
- 	struct davinci_spi_platform_data *pdata;
- 	u8 bits_per_word = 0;
--	u32 hz = 0, prescale;
-+	u32 hz = 0, prescale, clkspeed;
- 
- 	davinci_spi = spi_master_get_devdata(spi->master);
- 	pdata = davinci_spi->pdata;
-@@ -190,10 +190,16 @@ static int davinci_spi_setup_transfer(struct spi_device 
-*spi,
- 	set_fmt_bits(davinci_spi->base, bits_per_word & 0x1f,
- 			spi->chip_select);
- 
--	prescale = ((clk_get_rate(davinci_spi->clk) / hz) - 1) & 0xff;
-+	clkspeed = clk_get_rate(davinci_spi->clk);
-+	if (WARN_ON(hz > clkspeed / 2))
-+		prescale = 1 << 8;
-+	else if (WARN_ON(hz < clkspeed / 256))
-+		prescale = 255 << 8;
-+	else
-+		prescale = ((clkspeed / hz - 1) << 8) & 0x0000ff00;
- 
- 	clear_fmt_bits(davinci_spi->base, 0x0000ff00, spi->chip_select);
--	set_fmt_bits(davinci_spi->base, prescale << 8, spi->chip_select);
-+	set_fmt_bits(davinci_spi->base, prescale, spi->chip_select);
- 
- 	return 0;
- }
--- 
-1.7.0.3
 
+
+--===============2687317231629434103==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
+
+
+--===============2687317231629434103==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2687317231629434103==--

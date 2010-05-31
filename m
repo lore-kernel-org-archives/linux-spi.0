@@ -1,67 +1,74 @@
-From: Cory Maccarrone <darkstar6262@gmail.com>
-Subject: Re: [spi-devel-general] [PATCH] Input: Add tsc2046 touchscreen driver
-Date: Sun, 30 May 2010 14:15:12 -0700
-Message-ID: <AANLkTik0Kz0wZDcAMh8VBeIJ-nKX_oL1k023T9jjtrRj@mail.gmail.com>
-References: <AANLkTike4Hu6xJ52fcC9TcKaeD4hLeWxHwUvA90tc3_Q@mail.gmail.com>
-	<885802.70948.qm@web180316.mail.gq1.yahoo.com>
+From: thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org
+Subject: [PATCH] DaVinci SPI: Fix SPI clock prescale
+	factor computation
+Date: Mon, 31 May 2010 16:33:34 +0200
+Message-ID: <1272628495-13934-1-git-send-email-thomas.koeller@baslerweb.com>
+References: <k2zfa686aa41004260806r691e1880i2a80b102c108be5a@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-input@vger.kernel.org
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-input-owner@vger.kernel.org>
-In-Reply-To: <885802.70948.qm@web180316.mail.gq1.yahoo.com>
-Sender: linux-input-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <k2zfa686aa41004260806r691e1880i2a80b102c108be5a-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, May 30, 2010 at 2:08 PM, David Brownell <david-b@pacbell.net> w=
-rote:
-> --- On Sun, 5/30/10, Cory Maccarrone <darkstar6262@gmail.com> wrote:
->
-> I don't see the point in having a separate driver
-> for this chip ... it's just an updated ADS7846,
-> and the ads7846 driver has handled it for quite
-> a few years now, as I recall. =C2=A0There's no need for
-> =C2=A0second driver.
->
->> >> This driver differs from the ADS7846 in that it
->> >> uses 16-bit commands instead of 8-bit,
->
-> The reason the ads7846 code uses 8-bit messaging
-> is portability ... it works with SPI controllers
-> which don't support 16-bit words. =C2=A0The commands are
-> of necessity 16-bits. =C2=A0Using 16-bit words means this
-> driver won't run on as many systems; folk will still
-> need to use the ads7846 driver with tsc2046 chips..
->
->
->
-> =C2=A0and does not include
->> temerature
->> >> or voltage sensing capabilities.
->
-> Another reason not to have a separate driver: this
-> one is less capable (as well as less portable)
->
->
->> >> additions that allow
->> >> the injection of pointercal parameters from tslib through /sys.
->
-> Something the ads7846 driver could benefit from
-> too ... again, two drivers is counterproductive.
->
-> - Dave
->
->
+From: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
 
-I totally agree, thus my previous message.  This submitted patch is no
-longer relevant.
+Computation of the clock prescaler value returned bogus results if
+the requested SPI clock was impossible to set. It now sets either
+the maximum or minimum clock frequency, as appropriate.
 
-- Cory
---
-To unsubscribe from this list: send the line "unsubscribe linux-input" =
-in
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Signed-off-by: Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>
+---
+ drivers/spi/davinci_spi.c |   12 +++++++++---
+ 1 files changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
+index 956f617..5c69d78 100644
+--- a/drivers/spi/davinci_spi.c
++++ b/drivers/spi/davinci_spi.c
+@@ -153,7 +153,7 @@ static int davinci_spi_setup_transfer(struct spi_device 
+*spi,
+ 	struct davinci_spi *davinci_spi;
+ 	struct davinci_spi_platform_data *pdata;
+ 	u8 bits_per_word = 0;
+-	u32 hz = 0, prescale;
++	u32 hz = 0, prescale, clkspeed;
+ 
+ 	davinci_spi = spi_master_get_devdata(spi->master);
+ 	pdata = davinci_spi->pdata;
+@@ -190,10 +190,16 @@ static int davinci_spi_setup_transfer(struct spi_device 
+*spi,
+ 	set_fmt_bits(davinci_spi->base, bits_per_word & 0x1f,
+ 			spi->chip_select);
+ 
+-	prescale = ((clk_get_rate(davinci_spi->clk) / hz) - 1) & 0xff;
++	clkspeed = clk_get_rate(davinci_spi->clk);
++	if (WARN_ON(hz > clkspeed / 2))
++		prescale = 1 << 8;
++	else if (WARN_ON(hz < clkspeed / 256))
++		prescale = 255 << 8;
++	else
++		prescale = ((clkspeed / hz - 1) << 8) & 0x0000ff00;
+ 
+ 	clear_fmt_bits(davinci_spi->base, 0x0000ff00, spi->chip_select);
+-	set_fmt_bits(davinci_spi->base, prescale << 8, spi->chip_select);
++	set_fmt_bits(davinci_spi->base, prescale, spi->chip_select);
+ 
+ 	return 0;
+ }
+-- 
+1.7.0.3
+
+
+------------------------------------------------------------------------------

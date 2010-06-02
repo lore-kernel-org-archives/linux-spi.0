@@ -1,11 +1,12 @@
-From: "Business Division" <noreply723-zbDL293UWMcAvxtiuMwx3w@public.gmane.org>
-Subject: Important Notification
-Date: Wed, 2 Jun 2010 10:32:07 -0700
-Message-ID: <83be88642e1dee65c40dcd740010b44b@qmail.com>
+From: "De Dietrich" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: =?iso-8859-1?q?Une_alternative_=E0_la_hausse_?=
+	=?iso-8859-1?q?du_gaz=2C_le_Pack_Solaire_De_Dietrich?=
+Date: Wed,  2 Jun 2010 17:47:55 +0000 (UTC)
+Message-ID: <l3eetb.b3q5qb@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,23 +17,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
-
-********************************
-Notification for Business Owners & Managers
-********************************
-
-THE EASY WAY TO GENERATE TRAFFIC &
-SALES IS EMAIL MARKETING.
- 
-We will give you access to 200 Million
-Consumers and 45 Million Businesses.
-
-Get more info: http://relurl.com/uG9
-
-For Immediate Assistance Call 1 (888) 313-2220
-********************************
-
-
 
 
 ------------------------------------------------------------------------------

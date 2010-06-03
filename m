@@ -1,10 +1,10 @@
-From: fcfhewvvcxcvvxg-dbdLmdGazhY@public.gmane.org
-Subject: [SPAM] ===税务咨询===
-Date: Thu, 3 Jun 2010 13:21:44 +0800
-Message-ID: <E1OK2sF-0001t7-3I@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "SOFINCO par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Taux avantageux sur votre pret en ligne
+Date: Thu,  3 Jun 2010 13:36:14 +0200 (CEST)
+Message-ID: <l3fs8d.uluj79@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,27 +17,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ufO5q8u+uLrU8MjLKL6twO0vssbO8SnE+rrDo7oKICAgueO2q7i7vM6yxsuwtPrA7dPQz965q8u+
-1NqjqNXjva2hosnPuqOhornj1t2hor2ty9W1yLXYt73T0LfWuavLvqOpCiDS8r34z+69z7bgz9bN
-6rPJsrvBy8O/1MLP+srbtu62yKGjw7/UwtPQ0ruyv7fW1PbWtcuwt6LGsaOoNSXX89PSo6kKILrN
-xtXNqLeixrGjqDAuNSUtMiXX89PSo6nTxbvdtPq/qrvyus/X96OstePK/b3Ptc2howogsb65q8u+
-1qPW2LPQxbXL+dPDvvi21MrH1ebGsaOhuPzPo837xNy5u9PQu/q74dPrufPLvrrP1/ejoQq0+sDt
-t6LGsbe2zqfI58/Co7oK0rujrsbVzai5+suwt6LGsaO6MaOuyczGt8/6ytsgMqOuu/XO782z0rvP
-+srbIDOjrrmk0rUoxvPStSnP+srboaMKtv6jrsbVzai12Muwt6LGsaO6CjGjrtTLyuQotefE1LDm
-1MvK5KGiu/XUy7T6wO2hotew0LahosGq1Muhorqj1Mspo7sKMqOuxuTL/Lf+zvEoueO45rfRoaLX
-ocvet9Ghorvh0um30aGitqi27rLN0vuhotfJ0a+30bXIKaO7IAozo67G5Mv8KNfiwd6hotDQ1f7K
-wtK116jTw6Giu/q2r7O1z/rK26Git7+12LL6vbvS16Giy7DO8bT6v6opo7sKNKOuvajW/rCy17Ch
-orzTuaTQ3sDttcjXqNPDt6LGsaGjCsaxvt2++c6qy7DO8b7Wweyz9rvy08nG89K11rG907+qs/aj
-rL75v8nN+MnPsunRr7vyy7DO8dHp1qS687i2v+6howrI57nzuavLvtPQtPrA7beixrG3vcPmtcTO
-yszio6y7ttOtwLS159fJ0a+jrM7Sw8e74dTatdrSu8qxvOS72Li0xPqhoyAKICAgICAgICDBqiDP
-tSDIy6O6wfXTwMn6ICAgICAgICAgICAgICAgICAgICDLs9ejyczs96OhCiAgICAgICAgz+rH6cfr
-teejujEzNi05OTg4LTUxMjYKICAgICAgICDStSDO8SBRUaO6OTczMjg0MDcwCiAgICAgICAgtefX
-09PKz+Sjund3d2xtNjhAMTYzLmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaW5rR2VlayBh
-bmQgV0lSRUQncyBHZWVrRGFkIHRlYW0gdXAgZm9yIHRoZSBVbHRpbWF0ZSAKR2Vla0RhZCBGYXRo
-ZXIncyBEYXkgR2l2ZWF3YXkuIE9ORSBNQVNTSVZFIFBSSVpFIHRvIHRoZSAKbHVja3kgcGFyZW50
-YWwgdW5pdC4gIFNlZSB0aGUgcHJpemUgbGlzdCBhbmQgZW50ZXIgdG8gd2luOiAKaHR0cDovL3Au
-c2YubmV0L3NmdS90aGlua2dlZWstcHJvbW8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
-Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+------------------------------------------------------------------------------
+ThinkGeek and WIRED's GeekDad team up for the Ultimate 
+GeekDad Father's Day Giveaway. ONE MASSIVE PRIZE to the 
+lucky parental unit.  See the prize list and enter to win: 
+http://p.sf.net/sfu/thinkgeek-promo

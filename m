@@ -1,52 +1,43 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: [PATCH] of/spi: Fix build failure on spi_ppc4xx.c
-Date: Wed, 02 Jun 2010 13:47:30 -0600
-Message-ID: <20100602194721.6780.61396.stgit@angua>
+From: fcfhewvvcxcvvxg-dbdLmdGazhY@public.gmane.org
+Subject: [SPAM] ===税务咨询===
+Date: Thu, 3 Jun 2010 13:21:44 +0800
+Message-ID: <E1OK2sF-0001t7-3I@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Sean MacLennan <smaclennan-Qtffpm9i2AVWk0Htik3J/w@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch fixes a build error caused by the OF device_node pointer
-being moved into struct device.
-
-Fixes bug introduced by commit 61c7a080a5a061c976988fd4b844dfb468dda255
-(of: Always use 'struct device.of_node' to get device node pointer)
-
-Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-CC: Sean MacLennan <smaclennan-Qtffpm9i2AVWk0Htik3J/w@public.gmane.org>
-CC: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-CC: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
----
-
-I've applied this patch to my merge-devicetree branch
-
- drivers/spi/spi_ppc4xx.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi_ppc4xx.c b/drivers/spi/spi_ppc4xx.c
-index 19c0b3b..d53466a 100644
---- a/drivers/spi/spi_ppc4xx.c
-+++ b/drivers/spi/spi_ppc4xx.c
-@@ -397,7 +397,7 @@ static int __init spi_ppc4xx_of_probe(struct of_device *op,
- 	struct spi_master *master;
- 	struct spi_bitbang *bbp;
- 	struct resource resource;
--	struct device_node *np = op->node;
-+	struct device_node *np = op->dev.of_node;
- 	struct device *dev = &op->dev;
- 	struct device_node *opbnp;
- 	int ret;
+ufO5q8u+uLrU8MjLKL6twO0vssbO8SnE+rrDo7oKICAgueO2q7i7vM6yxsuwtPrA7dPQz965q8u+
+1NqjqNXjva2hosnPuqOhornj1t2hor2ty9W1yLXYt73T0LfWuavLvqOpCiDS8r34z+69z7bgz9bN
+6rPJsrvBy8O/1MLP+srbtu62yKGjw7/UwtPQ0ruyv7fW1PbWtcuwt6LGsaOoNSXX89PSo6kKILrN
+xtXNqLeixrGjqDAuNSUtMiXX89PSo6nTxbvdtPq/qrvyus/X96OstePK/b3Ptc2howogsb65q8u+
+1qPW2LPQxbXL+dPDvvi21MrH1ebGsaOhuPzPo837xNy5u9PQu/q74dPrufPLvrrP1/ejoQq0+sDt
+t6LGsbe2zqfI58/Co7oK0rujrsbVzai5+suwt6LGsaO6MaOuyczGt8/6ytsgMqOuu/XO782z0rvP
++srbIDOjrrmk0rUoxvPStSnP+srboaMKtv6jrsbVzai12Muwt6LGsaO6CjGjrtTLyuQotefE1LDm
+1MvK5KGiu/XUy7T6wO2hotew0LahosGq1Muhorqj1Mspo7sKMqOuxuTL/Lf+zvEoueO45rfRoaLX
+ocvet9Ghorvh0um30aGitqi27rLN0vuhotfJ0a+30bXIKaO7IAozo67G5Mv8KNfiwd6hotDQ1f7K
+wtK116jTw6Giu/q2r7O1z/rK26Git7+12LL6vbvS16Giy7DO8bT6v6opo7sKNKOuvajW/rCy17Ch
+orzTuaTQ3sDttcjXqNPDt6LGsaGjCsaxvt2++c6qy7DO8b7Wweyz9rvy08nG89K11rG907+qs/aj
+rL75v8nN+MnPsunRr7vyy7DO8dHp1qS687i2v+6howrI57nzuavLvtPQtPrA7beixrG3vcPmtcTO
+yszio6y7ttOtwLS159fJ0a+jrM7Sw8e74dTatdrSu8qxvOS72Li0xPqhoyAKICAgICAgICDBqiDP
+tSDIy6O6wfXTwMn6ICAgICAgICAgICAgICAgICAgICDLs9ejyczs96OhCiAgICAgICAgz+rH6cfr
+teejujEzNi05OTg4LTUxMjYKICAgICAgICDStSDO8SBRUaO6OTczMjg0MDcwCiAgICAgICAgtefX
+09PKz+Sjund3d2xtNjhAMTYzLmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaW5rR2VlayBh
+bmQgV0lSRUQncyBHZWVrRGFkIHRlYW0gdXAgZm9yIHRoZSBVbHRpbWF0ZSAKR2Vla0RhZCBGYXRo
+ZXIncyBEYXkgR2l2ZWF3YXkuIE9ORSBNQVNTSVZFIFBSSVpFIHRvIHRoZSAKbHVja3kgcGFyZW50
+YWwgdW5pdC4gIFNlZSB0aGUgcHJpemUgbGlzdCBhbmQgZW50ZXIgdG8gd2luOiAKaHR0cDovL3Au
+c2YubmV0L3NmdS90aGlua2dlZWstcHJvbW8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

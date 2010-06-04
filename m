@@ -1,7 +1,7 @@
-From: "SOFINCO par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Taux avantageux sur votre pret en ligne
-Date: Thu,  3 Jun 2010 13:36:14 +0200 (CEST)
-Message-ID: <l3fs8d.uluj79@front.ta271.com>
+From: "Mediatis par Objectif Patrimoine" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Donnez du soleil à votre budget!
+Date: Fri,  4 Jun 2010 14:06:29 +0200 (CEST)
+Message-ID: <l3hoas.6m3c0e@front.ta271.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

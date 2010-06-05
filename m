@@ -1,16 +1,13 @@
-From: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: reinitialize transfer
-	parameters for every message
-Date: Fri, 4 Jun 2010 15:18:41 -0500
-Message-ID: <AANLkTimNKcaW7zZya70qU2qG3dQ5sbgMZJUxfx02sIMu@mail.gmail.com>
-References: <1275682387-10681-1-git-send-email-bniebuhr@efjohnson.com>
+From: Alhaji Mujahid Dokubo-Asari. <info-81mh2MTXFtZRmm7lajqKJR2eb7JE58TQ@public.gmane.org>
+Subject: [SPAM] From  Alhaji Mujahid Dokubo-Asari
+Date: Sat, 05 Jun 2010 01:14:14 -0500
+Message-ID: <E1OKme6-000057-9l@web.4ahly.net>
+Reply-To: alhajiasaridokubo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1275682387-10681-1-git-send-email-bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,130 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jun 4, 2010 at 3:13 PM, Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> This patch fixes the setup_transfer logic to account for the case where
-> multiple messages to different SPI devices are queued simultaneously.
-> With the current logic, the second message in the queue will end up
-> using the transfer parameters for the previous message in the queue.
->
-> The fix is to reinitialize the transfer parameters for each message
-> rather than only once on the first message.
->
-> Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
-> ---
-> =A0drivers/spi/spi_bitbang.c | =A0 12 +++++++-----
-> =A01 files changed, 7 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
-> index 5265330..8c0c0b8 100644
-> --- a/drivers/spi/spi_bitbang.c
-> +++ b/drivers/spi/spi_bitbang.c
-> @@ -259,7 +259,6 @@ static void bitbang_work(struct work_struct *work)
-> =A0 =A0 =A0 =A0struct spi_bitbang =A0 =A0 =A0*bitbang =3D
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0container_of(work, struct spi_bitbang, wor=
-k);
-> =A0 =A0 =A0 =A0unsigned long =A0 =A0 =A0 =A0 =A0 flags;
-> - =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 do_setup =3D -1;
-> =A0 =A0 =A0 =A0int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (*setup_transf=
-er)(struct spi_device *,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0struct spi_transfer *);
->
-> @@ -275,6 +274,8 @@ static void bitbang_work(struct work_struct *work)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0tm=
-p;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cs=
-_change;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 status;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- do_setup =3D 1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- restore_param =3D 0;
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0m =3D container_of(bitbang->queue.next, st=
-ruct spi_message,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0queue);
-> @@ -295,10 +296,11 @@ static void bitbang_work(struct work_struct *work)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0list_for_each_entry (t, &m->transfers, tra=
-nsfer_list) {
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* override speed or words=
-ize? */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (t->speed_hz || t->bits_=
-per_word)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (t->speed_hz || t->bits_=
-per_word) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0do_setup =
-=3D 1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 restore_par=
-am =3D 1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* init (-1) or override (1=
-) transfer params */
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (do_setup !=3D 0) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (!setup=
-_transfer) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0status =3D -ENOPROTOOPT;
-> @@ -307,6 +309,7 @@ static void bitbang_work(struct work_struct *work)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0status =3D=
- setup_transfer(spi, t);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (status=
- < 0)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0break;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 do_setup =
-=3D 0;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* set up default clock po=
-larity, and activate chip;
-> @@ -368,9 +371,8 @@ static void bitbang_work(struct work_struct *work)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0m->complete(m->context);
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* restore speed and wordsize if it was ov=
-erridden */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (do_setup =3D=3D 1)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (restore_param =3D=3D 1)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0setup_transfer(spi, NULL);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 do_setup =3D 0;
->
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* normally deactivate chipselect ... unle=
-ss no error and
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 * cs_change has hinted that the next mess=
-age will probably
-> --
-> 1.6.3.3
+ Alhaji Mujahid Dokubo-Asari
+Niger Delta People's Volunteer Force (NDPVF)
+# 3 Agip Estate Port Harcourt Tourist Beach River State.
+Email:alhajimujahiddokubo2009-/E1597aS9LQAvxtiuMwx3w@public.gmane.org 
+Telephone No: +2348087698948
 
-Grant -
+Dear Friend,
 
-I am resubmitting this patch with some changes given your previous
-comments.  Basically the problem that David fixed with his original
-patch still exists for the case where multiple messages to different
-SPI devices on the same controller are in the work queue
-simultaneously.  I have tested this on a board that has multiple SPI
-devices on the same bus that use dramatically different transfer
-parameters.  Without the patch a stress test fails quickly because the
-driver ends up using the wrong transfer parameters.  With the patch
-the problems are cleared up.
+I am a Muslim by religion from the Delta State of Nigeria; I know this letter will come to you as a surprise as you don't know me and we've not have previous interaction before I have decided to communicate with you because of the present predicament our find ourselves,so that I can tell you more about our story in the Niger Delta. I am the community leader in the Niger Delta of Nigeria.The Government called us militant because of the trouble's we have been giving them for settlement of the communities in Niger Delta of Nigeria Due to the marginalization we have been suffering from the major tribes who rule our country Nigeria , we have decided to take our destiny into our own hands to emancipate our people.
 
-David -
+For over Forty years now our Federal Government in collaboration with foreign firms has been selling out crude oil from our Communities and also been drilling crude oil in our communities in Niger Delta up today. After all these years, there is nothing we benefit from the Federal Government of Nigeria as you know many lose of crude also has a bad effect on our agricultural statue and there is still nothing to show for it, hence we decided to tab the oil ourselves and sell to whomever is ready to buy.Presently, we sold crude oil we tabbed from our community which has been unknown to our government and I have the sum of 100.5 million's of U.S. Dollars in my possession which I want to send out my country for safe keeping,until am free to meet with your family,I can't deposit such money to Nig
+ erian account as my government had closed all my account in Nigeria and sized my international Passport with my National Identification Card.
 
-Can you take a look at this and see if it is still in line with the
-intent of your original fix?
+This fund emanated from transactions with Russian Fishing Vessels. As is the custom,in unauthorized crude oil business, all transactions are done on cash basis. But since I cannot operate a foreign account nor have access to operate one I've decided to seek assistance from you if you will be willing to help me receive this money. I have made arrangement for the movement of this money by diplomatic courier delivery to any point outside Nigeria and for the fund to be delivered to you if you are interested to help me secure this fund into your bank account once this 100.5 million's of U.S. Dollars leaves Nigeria to you,i will forward you the information needed for the release of the fund.I will be grateful if you will oblige me this favor.Your commitments will not be much as what is required 
+ from you to states your willingness to receive the cash money in your country or anywhere which the International diplomat had agreed to meet with you any country for the delivery of these funds. If you are interested in giving a helping hand,kindly send me your contact address with your private telephone number and your home address.
 
-Thanks,
 
-Brian
+For your assistance, I will offer you 25% from the total sum of Money as soon as your help in securing this money for me and 5% will be set aside for miscellaneous payment (tax, etc.), The balance of 70% will be held in your account for me and until am free to meet with you in your country and you shall reintroduces me to good business of your line to invest the money.To be able to achieve this objective, you must have to tell me the truth on each other as Muslim i am cause i hate cheating. If you know that you are willing to help by partaking in this transaction, for more information, you can view this website for more information on what we are passing through in Niger Delta of Nigeria: http://www.globalsecurity.org/military/world/war/nigeria-2.htm
 
----------------------------------------------------------------------------=
----
-ThinkGeek and WIRED's GeekDad team up for the Ultimate =
+Please I would like you to keep this proposal as a top secret and delete it if you are not interested.Note that this mail is not one of those Internet jokes and should be treated with seriousness, most important and confidentiality. Your quick response will be highly appreciated. However, you are not disposed to assist, Let me know so that I can find someone that I can trust the way I trusted you as a family, in view of the confidentiality of the proposed transaction is unknown to my government even the foreign diplomat will not know the content of the Luggage of Box that he will transfer to you, so this business is %100 free risk and i will also need your advise on the easier way for to get this money for the interest of the personalities involved.
 
-GeekDad Father's Day Giveaway. ONE MASSIVE PRIZE to the =
+   We however trust that this will be the beginning of a lasting business relationship between you and me as I shall appreciate your advice on the investment opportunities in your line of business or any other type of viable business in your country. I will also send you my pictures with my Identity Card for you to know my genuine as I have seen your profile which I asked Allah to direct me to the right Muslim family.
 
-lucky parental unit.  See the prize list and enter to win: =
+Yours Sincerely,
+Alhaji Mujahid Dokubo-Asari.
+alhajiasaridokubo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 
+
+
+
+
+------------------------------------------------------------------------------
+ThinkGeek and WIRED's GeekDad team up for the Ultimate 
+GeekDad Father's Day Giveaway. ONE MASSIVE PRIZE to the 
+lucky parental unit.  See the prize list and enter to win: 
 http://p.sf.net/sfu/thinkgeek-promo
